@@ -1,112 +1,141 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9256E368294
-	for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 00:34:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965C333987
+	for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 02:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773189251; cv=none; b=WQoGYp7ngC+mDjs0jcbl10qQGANuypwW1wG9YTuwsnOq4Yi8O15n1t7+C8v1aAKo6+B03LzWJV/9L6rX/3kUn0MnmKjIEpHd+1WfGdZ4U5PMJOugkBiLGRdE/d0R6VSS3YbOoF9vULaSqX4MTo/FaryjZGTpAKYNx85gLrwKFK0=
+	t=1773194645; cv=none; b=Jd3YUCIQwRyGZu3LeDqxLu0lzrnYzVdHqWaeISX6CL+/C6CuGWSNQ509FYmenpZRGX6M48PI6p7/+EmraaxotPY/+7p/oTtdg3kzBk6OyXmHtcmhsKCelTQPNc8O4zNQ1mdM3mL3aze8FSDD8FyK0REKLK9SA+GjMOrxcUWXuwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773189251; c=relaxed/simple;
-	bh=7Om9PaNSbH3o9snTxwvrRdRO+tJyXxxbS8Gn1LzLrWA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=k1WQWr4+GnjD9Of1/vpm22PBdcIufN+RzACuIQWq5E4QUkkKLzs1c4TQ2FQ8DuK4lUJpueLCe+pbDs/FtGkRDCI0UxcVuucHcNq7Q0RzR5T2NjSsVk2JY6EITnXLuhazpJFc1Y+u2J63VIWHBKdXNzoP67i/VIithZwymz0468w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pzz6N5tT; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1773194645; c=relaxed/simple;
+	bh=PPErToIQW3sWxAd1STr1jsqwiscRK1JDHqYlV2RxXEw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Xw/UgFZxKytRjExzRe2IXv5qhbKdIV2VtXHgiqFt/I5Fzzu4TmW3GIWYVz56A5wGtrMgaiBoChjwNK/UpIQrH07YFW9DO9BerxFAJxs4MhzVg6ha+w2CoLuGPgPBd978PUMxvji8y5ZMa47H4xp+skJBIjP2YXRMtJTg7V1LUl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MD4bS3iB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pzz6N5tT"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82983c9d78aso18812003b3a.2
-        for <linux-coco@lists.linux.dev>; Tue, 10 Mar 2026 17:34:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773189247; x=1773794047; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=r+juLCyU3+NAIYivhdo5Xlsn2qwlsyffxNBIS7NuIQ8=;
-        b=pzz6N5tT1/Px3HEpJmURx8WBKR+Qvr4HvV8j3jkaEsR/pAJoC/toRfX0vMMwLonwcV
-         OGCIDXiitsMhIsgWrKH5GuSOTstT5Eg+c3UkGwf3+CiAUu1mWFVejjH84NuCC3gk/Yny
-         guQz070Oy/DlemelR+tPMdwRoPtbxCgsR8YcR497aB8pxkeOMDLRUrONCZcqU4WH9ZEA
-         3HZOrIYX2yfl31BDhX1/dOPyXk2Zf5ejCwKHcCAmrPtXVgjxrmxdGc47dOSvh5KQ12kk
-         vbPszPeV4roqa2A9wt//vPct4yJafMm9acFb6vnQfSZxjJla4O4VO4422nIA+kCMgo5D
-         t1/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773189247; x=1773794047;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=r+juLCyU3+NAIYivhdo5Xlsn2qwlsyffxNBIS7NuIQ8=;
-        b=RAYjZBCNb6ooijw6k4QbvDjBL3eQfdcH97Wx/piHlZZb3jlgfsOrIfIF7RPuF3/JmI
-         wgxfyzCJMBEnEzrKRqescOwGzGMVSTcEG4YxM12HuPtFSi230SxuuMXOv9wufPt3tcZ2
-         wR6x6zKC5pEsqBEM3T2LpFJFDgPeHG8oblXlcKvTwa9ewCdAtNXrMpJDEgUCRQMHcmeI
-         EUmCAyxNXgMeQvUNcoa63h21eQ1V1iEaZKMSzTPxi9X5Dj3Mra9gl0BHwdmKGn2JEtls
-         6gUR4bBdbtbLQwgO+kT3TOqjBq+VuuSZQ/QLPweobwAHudOy2IxXv9XDeGsF47525V+O
-         8Ciw==
-X-Forwarded-Encrypted: i=1; AJvYcCVTbEU/ab2JLh//H5P048WoU/+VRWYE8GmIuizBSplR3d0di4d87Yi2DV31D/5XBRV+xvCsqvnDTgpS@lists.linux.dev
-X-Gm-Message-State: AOJu0YxLIeRe21P3bezoNugMeQJ7Iqh27tsghxMEi36M9jU+xG9WF/Ob
-	rsXXtua6SUMh4gfue5Kummd6kdo+yTcVDQJ+2OA/SY9uSYPeFn2Wg+SzF7KQg76+0ydGlDN4/Ty
-	WtCDiqA==
-X-Received: from pfkq5.prod.google.com ([2002:a05:6a00:845:b0:829:72ec:561c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:13a5:b0:824:b1bb:f6b5
- with SMTP id d2e1a72fcca58-829f71bcb9fmr777882b3a.63.1773189246869; Tue, 10
- Mar 2026 17:34:06 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 10 Mar 2026 17:33:46 -0700
-In-Reply-To: <20260311003346.2626238-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MD4bS3iB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7928BC2BC87
+	for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 02:04:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773194645;
+	bh=PPErToIQW3sWxAd1STr1jsqwiscRK1JDHqYlV2RxXEw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=MD4bS3iBtcgWieB3asBVkN1MOGU1gD5yDC/TzMVPWq4bOx/kQdL46HpKVgd4XMUNq
+	 Ulrd8QDJdo95s9mNVLJ1eEwUO9QJJd+8gtBLeWAZ6+O8ewm9GmjOyRNOGftKn+zJzH
+	 OLyChipIlL098KhgSFmig6DqdyTTpgd+LY5RJMjoYvmpDuv9gcKnSdLZKRq26nx64W
+	 up9ZDNxVH33DK15Plngvsovs3vK/rm+TxcMkKR1NmySNMY1tIOzVOs0QmYNJd309mu
+	 UOPM6lAdiCVqcqtGdKQujn6AX+zMWdfgd8HfE8pKl1Sz6q9D6oU4gUWgg3J92ooCs5
+	 fzhw5npi/IH+w==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b943b75dc42so761640566b.3
+        for <linux-coco@lists.linux.dev>; Tue, 10 Mar 2026 19:04:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVV72z+25okOidxs3zZzLYhPqOSWbDXwKKhZnX3dmsPLrPLxppMBUXf3sQxmhPjCd91rYYVPFyapI4l@lists.linux.dev
+X-Gm-Message-State: AOJu0YyoEdWGUiATigPSLbvmk92UnihGU9zXrd1invvad6FQZ/sDtblO
+	71T0/CCwQYAuSoI11gHDXSAoSUucC1Niw0fGzgaNAIci6NwOpyOkQJRCIX3v36Lcpm/vrAXdQM8
+	Dr0NZegF2JJ+9Pwmk7uUgMb42a4TTdBE=
+X-Received: by 2002:a17:907:a088:b0:b8a:f7ec:d995 with SMTP id
+ a640c23a62f3a-b972e167afbmr38189666b.9.1773194644316; Tue, 10 Mar 2026
+ 19:04:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260311003346.2626238-1-seanjc@google.com>
-X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260311003346.2626238-8-seanjc@google.com>
-Subject: [PATCH 7/7] *** DO NOT MERGE *** KVM: x86: Pretend that APX is
- supported on 64-bit kernels
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Kiryl Shutsemau <kas@kernel.org>
-Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, "Chang S . Bae" <chang.seok.bae@intel.com>
+MIME-Version: 1.0
+References: <20260311003346.2626238-1-seanjc@google.com> <20260311003346.2626238-5-seanjc@google.com>
+In-Reply-To: <20260311003346.2626238-5-seanjc@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 10 Mar 2026 19:03:53 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNBEOJrxbx8ob2KRLRKkd_aZjz8tyXGqXxs0=TJq4fU6Q@mail.gmail.com>
+X-Gm-Features: AaiRm53EpaamTGlu_jPI-y69DhSfy2spGK0sYTQIJ2IkTVwh7LQIU9EaVnAaL2g
+Message-ID: <CAO9r8zNBEOJrxbx8ob2KRLRKkd_aZjz8tyXGqXxs0=TJq4fU6Q@mail.gmail.com>
+Subject: Re: [PATCH 4/7] KVM: x86: Add wrapper APIs to reset dirty/available
+ register masks
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, 
+	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	"Chang S . Bae" <chang.seok.bae@intel.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/include/asm/kvm_host.h | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+On Tue, Mar 10, 2026 at 5:34=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> Add wrappers for setting regs_{avail,dirty} in anticipation of turning th=
+e
+> fields into proper bitmaps, at which point direct writes won't work so
+> well.
+>
+> Deliberately leave the initialization in kvm_arch_vcpu_create() as-is,
+> because the regs_avail logic in particular is special in that it's the on=
+e
+> and only place where KVM marks eagerly synchronized registers as availabl=
+e.
+>
+> No functional change intended.
+>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/x86/kvm/kvm_cache_regs.h | 19 +++++++++++++++++++
+>  arch/x86/kvm/svm/svm.c        |  4 ++--
+>  arch/x86/kvm/vmx/nested.c     |  4 ++--
+>  arch/x86/kvm/vmx/tdx.c        |  2 +-
+>  arch/x86/kvm/vmx/vmx.c        |  4 ++--
+>  5 files changed, 26 insertions(+), 7 deletions(-)
+>
+> diff --git a/arch/x86/kvm/kvm_cache_regs.h b/arch/x86/kvm/kvm_cache_regs.=
+h
+> index ac1f9867a234..94e31cf38cb8 100644
+> --- a/arch/x86/kvm/kvm_cache_regs.h
+> +++ b/arch/x86/kvm/kvm_cache_regs.h
+> @@ -105,6 +105,25 @@ static __always_inline bool kvm_register_test_and_ma=
+rk_available(struct kvm_vcpu
+>         return arch___test_and_set_bit(reg, (unsigned long *)&vcpu->arch.=
+regs_avail);
+>  }
+>
+> +static __always_inline void kvm_reset_available_registers(struct kvm_vcp=
+u *vcpu,
+> +                                                         u32 available_m=
+ask)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index cff9023f12c7..3d9c8cc9d515 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -190,6 +190,27 @@ enum kvm_reg {
- 	VCPU_REGS_R13 = __VCPU_REGS_R13,
- 	VCPU_REGS_R14 = __VCPU_REGS_R14,
- 	VCPU_REGS_R15 = __VCPU_REGS_R15,
-+#define CONFIG_X86_APX
-+
-+#endif
-+
-+#ifdef CONFIG_X86_APX
-+	VCPU_REG_R16 = VCPU_REGS_R15 + 1,
-+	VCPU_REG_R17,
-+	VCPU_REG_R18,
-+	VCPU_REG_R19,
-+	VCPU_REG_R20,
-+	VCPU_REG_R21,
-+	VCPU_REG_R22,
-+	VCPU_REG_R23,
-+	VCPU_REG_R24,
-+	VCPU_REG_R25,
-+	VCPU_REG_R26,
-+	VCPU_REG_R27,
-+	VCPU_REG_R28,
-+	VCPU_REG_R29,
-+	VCPU_REG_R30,
-+	VCPU_REG_R31,
- #endif
- 	NR_VCPU_GENERAL_PURPOSE_REGS,
- 
--- 
-2.53.0.473.g4a7958ca14-goog
+Not closely following this series and don't know this code well, but
+this API is very confusing for me tbh. Especially in comparison with
+kvm_reset_dirty_registers().
 
+Maybe rename this to kvm_clear_available_registers(), and pass in a
+"clear_mask", then reverse the polarity:
+
+vcpu->arch.regs_avail &=3D ~clear_mask;
+
+Most callers are already passing in an inverse of a mask, so might as
+well pass the mask as-is and invert it here, and it helps make the
+name clear, we're passing in a bitmask to clear from regs_avail.
+
+> +{
+> +       /*
+> +        * Note the bitwise-AND!  In practice, a straight write would als=
+o work
+> +        * as KVM initializes the mask to all ones and never clears regis=
+ters
+> +        * that are eagerly synchronized.  Using a bitwise-AND adds a bit=
+ of
+> +        * sanity checking as incorrectly marking an eagerly sync'd regis=
+ter
+> +        * unavailable will generate a WARN due to an unexpected cache re=
+quest.
+> +        */
+> +       vcpu->arch.regs_avail &=3D available_mask;
+> +}
+> +
+> +static __always_inline void kvm_reset_dirty_registers(struct kvm_vcpu *v=
+cpu,
+> +                                                     u32 dirty_mask)
+> +{
+> +       vcpu->arch.regs_dirty =3D dirty_mask;
+> +}
+> +
+>  /*
+>   * The "raw" register helpers are only for cases where the full 64 bits =
+of a
+>   * register are read/written irrespective of current vCPU mode.  In othe=
+r words,
