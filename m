@@ -1,213 +1,133 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E760D348452;
-	Thu, 12 Mar 2026 03:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443802D5924;
+	Thu, 12 Mar 2026 08:01:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773286952; cv=none; b=UnMjFfyQ1r3Efbrl8Q+dL+uheihZH9IVAXUO71pzH9HIvJ2rDBQ3MLaLpY4YiEpJCscXhGloSlBj04yhAPO/2quEyj1KI+sSoFFI01FLyLjBt6CPvW+NXTptUu5kNISINtgfZI07CROndbYrDiuJke0odxgHACZ/kXxzqfs/TJo=
+	t=1773302512; cv=none; b=TVzUf0x8izJY3CSyU8uGLg/XXS0CpY9zBYPlrvf0qO4PciTTHOLGuFG9pNtqVY/lmybggvudwyqa6wtPcIjie7r0SzgeG9fEF2mzaBfbe3UBXDx2kktwkEfk4LEPq8LA0GEXUwL5WXohqnipyjvGENoMnMzgf4w/ZAxJ357zaTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773286952; c=relaxed/simple;
-	bh=k66SwT2CrRXnmYea4HwxTf4zjYXWkJzLCeBRb9Ce94o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fgYweawLMvQVWxWNAA8uU/eSalvvSXBka65F+Ype6os1lnuQMs61gjFuI5lRuOUW9d0b5SU1K07vpzP+CzO+PvMAZ97S4IGjpnyHs9d0JDd/W8a8+5ePY7sQz8wE4Z4JeCSUlssFyt9uVEgYxDzf6PPjY8GjoHSuBtbqFQZDB7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IKBB9Eu8; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773302512; c=relaxed/simple;
+	bh=5qx9TyPQVtWhPZ9FQXNhQRM042DHMTHeDIx/YqC06yY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GDXL7b5T1fsHTsX1/dl1NGWH+IWQv4A90d6e78BNgQjOrYxxI7JGECcRxvFLH7CWP2mIJ3aumDvC0Uj/hvWvP5Szq9PiQB8upraG6wHt9DDrmjLNq2HyE4zf9aNQ/+9h6r6mM6EJ9hmgMe4HhsD2a9FiKYZHYyZpLShPGdxkst8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m6kRA59+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IKBB9Eu8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773286950; x=1804822950;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=k66SwT2CrRXnmYea4HwxTf4zjYXWkJzLCeBRb9Ce94o=;
-  b=IKBB9Eu82LDu6GhPoJ90irLipRyds+IPDfgTm8Cv2QrNwwqkvEn387RS
-   V2GXTyozoQf6HCMzcSbuOwiOt+7qYk9hv27VfqCCrvgVGjpild0A3oMrQ
-   Ras569sAYOUygoks5TUOEyLh5J4k4EgycpmqjiLcAh6YiYl7gPtIa8Mvh
-   kWNwcPQqpvF2gRPvi66h48jtLqEahVJU3A046NllZ5VDoNUcu9veLLnc2
-   2OMzMCC2IypCgVpUBQQiQPyRkq7yHDSd8A9335YMpcvdtPO+13biaVSzu
-   YSZMHRkPZNumbGEVKGfosg3nq6TC55QME0U8UngQ6zS7XWogLcntmsMQo
-   Q==;
-X-CSE-ConnectionGUID: oIZw1JXwSxynJHazCzhCSA==
-X-CSE-MsgGUID: zBPOM7e2TuObLqGutMRwbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="73386657"
-X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="73386657"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 20:42:30 -0700
-X-CSE-ConnectionGUID: pg2FiJu1QE6WIsmaAzNCaQ==
-X-CSE-MsgGUID: MKFyLNCXToKe6fDbqnVz3g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="217277110"
-Received: from lkp-server01.sh.intel.com (HELO 418530b1a366) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 11 Mar 2026 20:42:27 -0700
-Received: from kbuild by 418530b1a366 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w0WwJ-0000000021n-43fx;
-	Thu, 12 Mar 2026 03:42:23 +0000
-Date: Thu, 12 Mar 2026 11:41:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kim Phillips <kim.phillips@amd.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, x86@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Borislav Petkov <borislav.petkov@amd.com>,
-	Naveen Rao <naveen.rao@amd.com>,
-	David Kaplan <david.kaplan@amd.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Kim Phillips <kim.phillips@amd.com>, stable@kernel.org
-Subject: Re: [PATCH v2 1/3] cpu/bugs: Allow forcing Automatic IBRS with SNP
- enabled using spectre_v2=eibrs
-Message-ID: <202603121136.bc8zNsHS-lkp@intel.com>
-References: <20260311130611.2201214-2-kim.phillips@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m6kRA59+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2ADC4CEF7;
+	Thu, 12 Mar 2026 08:01:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773302511;
+	bh=5qx9TyPQVtWhPZ9FQXNhQRM042DHMTHeDIx/YqC06yY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=m6kRA59+M5dMhr5K54MjyCCaNC8/XrSZ3S1TEsKzG5djczYszxUzKiTMBvCG3uAC+
+	 PxBHglgi9JfqyFKionjeOs9I5KiSmLKIyjODCFtOh6n42u9WeRHWN1/ufyNlR32oM3
+	 jO3d8HH0ulYgercsDyyDppDPspG8PO9EAl/6/xCzGrgkVb+HJGZcm08hvqg3kPZ8sy
+	 t7zl199rqtX7aT+20QFHVdrA9TEqSo0O81U1Pkg9WyFBJQyjBM892bugtFVn6krr/e
+	 ReQrzPeUr9gjnVNtmuULNBXpjaUo0fWyQDDDgKaZ/WRzcNy/Gyfleu4BBdnPGWzNZ6
+	 +Z14TlJ4yTPJQ==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org,
+	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Subject: [RFC PATCH v3 00/10] coco/TSM: Host-side Arm CCA IDE setup via connect/disconnect callbacks
+Date: Thu, 12 Mar 2026 13:31:19 +0530
+Message-ID: <20260312080129.3483585-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260311130611.2201214-2-kim.phillips@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Kim,
+This patch series implements the TSM ->connect() and ->disconnect() callbacks
+required for the Arm CCA IDE setup as per the RMM ALP17 specification [1].
 
-kernel test robot noticed the following build warnings:
+This patchset includes the host-side flow needed by connect/disconnect,
+including:
+- DA feature detection helpers
+- host TSM callback wiring and IDE stream allocation support
+- creation/registration of RMM pdev descriptors
+- RMM pdev communication helpers
+- pdev stop and teardown helpers for disconnect
+- pdev instantiation from the connect path
+- public key registration with RMM
 
-[auto build test WARNING on 7726ce2287804e70b2bf2fc00f104530b603d3f3]
+To support public-key handling from the device certificate chain, the series
+also includes the required X.509 parser updates.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kim-Phillips/cpu-bugs-Allow-forcing-Automatic-IBRS-with-SNP-enabled-using-spectre_v2-eibrs/20260311-211730
-base:   7726ce2287804e70b2bf2fc00f104530b603d3f3
-patch link:    https://lore.kernel.org/r/20260311130611.2201214-2-kim.phillips%40amd.com
-patch subject: [PATCH v2 1/3] cpu/bugs: Allow forcing Automatic IBRS with SNP enabled using spectre_v2=eibrs
-config: x86_64-randconfig-101-20260312 (https://download.01.org/0day-ci/archive/20260312/202603121136.bc8zNsHS-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+The series builds upon the TSM framework patches posted at [2] and depends on
+the KVM CCA patchset [3]. A git repository containing all the related changes is
+available at [4].
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603121136.bc8zNsHS-lkp@intel.com/
+Testing / Usage
 
-cocci warnings: (new ones prefixed by >>)
->> arch/x86/kernel/cpu/bugs.c:2190:42-44: WARNING !A || A && B is equivalent to !A || B
+To initiate the IDE setup:
+	echo tsm0 > /sys/bus/pci/devices/$DEVICE/tsm/connect
 
-vim +2190 arch/x86/kernel/cpu/bugs.c
+To disconnect:
+	echo tsm0 > /sys/bus/pci/devices/$DEVICE/tsm/disconnect
 
-  2122	
-  2123	static void __init spectre_v2_select_mitigation(void)
-  2124	{
-  2125		if ((spectre_v2_cmd == SPECTRE_V2_CMD_RETPOLINE ||
-  2126		     spectre_v2_cmd == SPECTRE_V2_CMD_RETPOLINE_LFENCE ||
-  2127		     spectre_v2_cmd == SPECTRE_V2_CMD_RETPOLINE_GENERIC ||
-  2128		     spectre_v2_cmd == SPECTRE_V2_CMD_EIBRS_LFENCE ||
-  2129		     spectre_v2_cmd == SPECTRE_V2_CMD_EIBRS_RETPOLINE) &&
-  2130		    !IS_ENABLED(CONFIG_MITIGATION_RETPOLINE)) {
-  2131			pr_err("RETPOLINE selected but not compiled in. Switching to AUTO select\n");
-  2132			spectre_v2_cmd = SPECTRE_V2_CMD_AUTO;
-  2133		}
-  2134	
-  2135		if ((spectre_v2_cmd == SPECTRE_V2_CMD_EIBRS ||
-  2136		     spectre_v2_cmd == SPECTRE_V2_CMD_EIBRS_LFENCE ||
-  2137		     spectre_v2_cmd == SPECTRE_V2_CMD_EIBRS_RETPOLINE) &&
-  2138		    !boot_cpu_has(X86_FEATURE_IBRS_ENHANCED)) {
-  2139			pr_err("EIBRS selected but CPU doesn't have Enhanced or Automatic IBRS. Switching to AUTO select\n");
-  2140			spectre_v2_cmd = SPECTRE_V2_CMD_AUTO;
-  2141		}
-  2142	
-  2143		if ((spectre_v2_cmd == SPECTRE_V2_CMD_RETPOLINE_LFENCE ||
-  2144		     spectre_v2_cmd == SPECTRE_V2_CMD_EIBRS_LFENCE) &&
-  2145		    !boot_cpu_has(X86_FEATURE_LFENCE_RDTSC)) {
-  2146			pr_err("LFENCE selected, but CPU doesn't have a serializing LFENCE. Switching to AUTO select\n");
-  2147			spectre_v2_cmd = SPECTRE_V2_CMD_AUTO;
-  2148		}
-  2149	
-  2150		if (spectre_v2_cmd == SPECTRE_V2_CMD_IBRS && !IS_ENABLED(CONFIG_MITIGATION_IBRS_ENTRY)) {
-  2151			pr_err("IBRS selected but not compiled in. Switching to AUTO select\n");
-  2152			spectre_v2_cmd = SPECTRE_V2_CMD_AUTO;
-  2153		}
-  2154	
-  2155		if (spectre_v2_cmd == SPECTRE_V2_CMD_IBRS && boot_cpu_data.x86_vendor != X86_VENDOR_INTEL) {
-  2156			pr_err("IBRS selected but not Intel CPU. Switching to AUTO select\n");
-  2157			spectre_v2_cmd = SPECTRE_V2_CMD_AUTO;
-  2158		}
-  2159	
-  2160		if (spectre_v2_cmd == SPECTRE_V2_CMD_IBRS && !boot_cpu_has(X86_FEATURE_IBRS)) {
-  2161			pr_err("IBRS selected but CPU doesn't have IBRS. Switching to AUTO select\n");
-  2162			spectre_v2_cmd = SPECTRE_V2_CMD_AUTO;
-  2163		}
-  2164	
-  2165		if (spectre_v2_cmd == SPECTRE_V2_CMD_IBRS && cpu_feature_enabled(X86_FEATURE_XENPV)) {
-  2166			pr_err("IBRS selected but running as XenPV guest. Switching to AUTO select\n");
-  2167			spectre_v2_cmd = SPECTRE_V2_CMD_AUTO;
-  2168		}
-  2169	
-  2170		if (!boot_cpu_has_bug(X86_BUG_SPECTRE_V2)) {
-  2171			spectre_v2_cmd = SPECTRE_V2_CMD_NONE;
-  2172			return;
-  2173		}
-  2174	
-  2175		switch (spectre_v2_cmd) {
-  2176		case SPECTRE_V2_CMD_NONE:
-  2177			return;
-  2178	
-  2179		case SPECTRE_V2_CMD_AUTO:
-  2180			if (!should_mitigate_vuln(X86_BUG_SPECTRE_V2))
-  2181				break;
-  2182			fallthrough;
-  2183		case SPECTRE_V2_CMD_FORCE:
-  2184			/*
-  2185			 * Unless forced, don't use AutoIBRS when SNP is enabled
-  2186			 * because it degrades host userspace indirect branch performance.
-  2187			 */
-  2188			if (boot_cpu_has(X86_FEATURE_IBRS_ENHANCED) &&
-  2189			    (!boot_cpu_has(X86_FEATURE_SEV_SNP) ||
-> 2190			     (boot_cpu_has(X86_FEATURE_SEV_SNP) &&
-  2191			      spectre_v2_cmd == SPECTRE_V2_CMD_FORCE))) {
-  2192				spectre_v2_enabled = SPECTRE_V2_EIBRS;
-  2193				break;
-  2194			}
-  2195	
-  2196			spectre_v2_enabled = spectre_v2_select_retpoline();
-  2197			break;
-  2198	
-  2199		case SPECTRE_V2_CMD_RETPOLINE_LFENCE:
-  2200			pr_err(SPECTRE_V2_LFENCE_MSG);
-  2201			spectre_v2_enabled = SPECTRE_V2_LFENCE;
-  2202			break;
-  2203	
-  2204		case SPECTRE_V2_CMD_RETPOLINE_GENERIC:
-  2205			spectre_v2_enabled = SPECTRE_V2_RETPOLINE;
-  2206			break;
-  2207	
-  2208		case SPECTRE_V2_CMD_RETPOLINE:
-  2209			spectre_v2_enabled = spectre_v2_select_retpoline();
-  2210			break;
-  2211	
-  2212		case SPECTRE_V2_CMD_IBRS:
-  2213			spectre_v2_enabled = SPECTRE_V2_IBRS;
-  2214			break;
-  2215	
-  2216		case SPECTRE_V2_CMD_EIBRS:
-  2217			spectre_v2_enabled = SPECTRE_V2_EIBRS;
-  2218			break;
-  2219	
-  2220		case SPECTRE_V2_CMD_EIBRS_LFENCE:
-  2221			spectre_v2_enabled = SPECTRE_V2_EIBRS_LFENCE;
-  2222			break;
-  2223	
-  2224		case SPECTRE_V2_CMD_EIBRS_RETPOLINE:
-  2225			spectre_v2_enabled = SPECTRE_V2_EIBRS_RETPOLINE;
-  2226			break;
-  2227		}
-  2228	}
-  2229	
+Previous posting:
+rfc-v1 https://lore.kernel.org/all/20250728135216.48084-1-aneesh.kumar@kernel.org
+rfc-v2 https://lore.kernel.org/all/20251027095602.1154418-1-aneesh.kumar@kernel.org
+
+Changes from v2:
+* rebase to latest kernel and core TSM changes
+* Address review feedback.
+
+[1] https://developer.arm.com/-/cdn-downloads/permalink/Architectures/Armv9/DEN0137_1.1-alp17.zip
+[2] https://lore.kernel.org/all/20260303000207.1836586-1-dan.j.williams@intel.com
+[3] https://lore.kernel.org/all/461fa23f-9add-40e5-a0d0-759030e7c70b@arm.com
+[4] https://gitlab.arm.com/linux-arm/linux-cca.git cca/topics/cca-tdisp-upstream-rfc-v3
+
+
+Aneesh Kumar K.V (Arm) (7):
+  KVM: arm64: RMI: Add and export kvm_has_da_feature helper
+  coco: host: arm64: Add host TSM callback and IDE stream allocation
+    support
+  coco: host: arm64: Build and register RMM pdev descriptors
+  coco: host: arm64: Add RMM device communication helpers
+  coco: host: arm64: Add helper to stop and tear down an RMM pdev
+  coco: host: arm64: Instantiate RMM pdev during device connect
+  coco: host: arm64: Register device public key with RMM
+
+Lukas Wunner (3):
+  X.509: Make certificate parser public
+  X.509: Parse Subject Alternative Name in certificates
+  X.509: Move certificate length retrieval into new helper
+
+ arch/arm64/include/asm/kvm_rmi.h          |   1 +
+ arch/arm64/include/asm/rmi_cmds.h         |  78 +++
+ arch/arm64/include/asm/rmi_smc.h          | 183 ++++++-
+ arch/arm64/kvm/rmi.c                      |   6 +
+ crypto/asymmetric_keys/x509_cert_parser.c |   9 +
+ crypto/asymmetric_keys/x509_loader.c      |  38 +-
+ crypto/asymmetric_keys/x509_parser.h      |  42 +-
+ drivers/firmware/smccc/rmm.c              |  12 +
+ drivers/firmware/smccc/rmm.h              |   8 +
+ drivers/firmware/smccc/smccc.c            |   1 +
+ drivers/virt/coco/Kconfig                 |   2 +
+ drivers/virt/coco/Makefile                |   1 +
+ drivers/virt/coco/arm-cca-host/Kconfig    |  23 +
+ drivers/virt/coco/arm-cca-host/Makefile   |   5 +
+ drivers/virt/coco/arm-cca-host/arm-cca.c  | 274 ++++++++++
+ drivers/virt/coco/arm-cca-host/rmi-da.c   | 639 ++++++++++++++++++++++
+ drivers/virt/coco/arm-cca-host/rmi-da.h   | 122 +++++
+ include/keys/asymmetric-type.h            |   2 +
+ include/keys/x509-parser.h                |  57 ++
+ 19 files changed, 1448 insertions(+), 55 deletions(-)
+ create mode 100644 drivers/virt/coco/arm-cca-host/Kconfig
+ create mode 100644 drivers/virt/coco/arm-cca-host/Makefile
+ create mode 100644 drivers/virt/coco/arm-cca-host/arm-cca.c
+ create mode 100644 drivers/virt/coco/arm-cca-host/rmi-da.c
+ create mode 100644 drivers/virt/coco/arm-cca-host/rmi-da.h
+ create mode 100644 include/keys/x509-parser.h
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
