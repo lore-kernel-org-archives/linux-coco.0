@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40052D8DD6
-	for <linux-coco@lists.linux.dev>; Thu, 12 Mar 2026 20:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C88344DB5
+	for <linux-coco@lists.linux.dev>; Thu, 12 Mar 2026 20:20:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346508; cv=none; b=lLrG9uCVGkONS/LbkwQfZzYEHxfr0hunzmCTKBouzD1jaQ8ekSvpo94sMkkYqta+RVJGBjIMKTp3cVOdp8TMmwGPma9mbeZtpm+hXQL5DLvguXHJTyu+n5eFaxhPrqauyewM32HfiSJCa9jIDlzSQQWVET6qv2e2lPw7ngKx9SM=
+	t=1773346815; cv=none; b=AVOG+6eAQZgYaoXeYaVgPfcnrTc7vF5feug4k0CN2EFKkV9FSafDc1Q+enJxUmJOEJXCOKNkEC4gHkQ9Dqh4ihfvxNl21hsfXZs9rc1J8WL40cQV9XbLiQv0+JkI0P/zVU+TvfX2cH7zLAqDLjfYdV2K8S9T9xtW3xGXSbHce5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346508; c=relaxed/simple;
-	bh=kgxDzNqGQqZSOpTKWviJSKvBpH2bYJ3TsGmS7eqeWZ0=;
+	s=arc-20240116; t=1773346815; c=relaxed/simple;
+	bh=ixR51lrAtG3i5OlMsJA2QgqizymKXcvQ+DxjpaKToms=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cYLUDG8B/TolvtJ/HvSjef+t7TLbp7ZGhGocYqGV3A37tOwSgGUAXy0al++yeLyTLRFG7dOrduDCLxdocbjvLMpo+1kP0IionZ4NZItNG4yLFUheYR2IA8VANbUFo8eAx0rdkECczs8/MuPngzC6FVa1EWeqyyX4p7W3cyNukRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cTHjf6rl; arc=none smtp.client-ip=198.175.65.21
+	 In-Reply-To:Content-Type; b=CIiv8EziHLow6i9MfOxAX7x1inzxz1kcMeEpApZH+S/H/hvfGEBP+AKUhVPcwXvNfCZtmjl4f5MWglqm46z7MQ6t1GQ/5iBhSS4pOiNXAhdnk/LFhT9J+RxKVCMFBIKaoEWRHBJtFkfVDrivFgx72cgmx2rpudEDTdX+zvo2IZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T2H6XmVc; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cTHjf6rl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T2H6XmVc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773346508; x=1804882508;
+  t=1773346814; x=1804882814;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=kgxDzNqGQqZSOpTKWviJSKvBpH2bYJ3TsGmS7eqeWZ0=;
-  b=cTHjf6rlIutyscWbkN0SCKB0M/dGas6ctEXmGWGaPW5PeoH4dhClfQWE
-   bXWPpDfcnBKvMNYJobNNKXuOTDcMSJbcEF9O89tlBVrigcGenyGvxNYnr
-   ySAnLhusQHQOpTthp28/WDDsuc0FmBp0ARu+Mz+6LJJeqKxsrcfeCihW8
-   HE7RYyaxHfKMDxuMSq50yPjOnNyFOuqo4MNHizGYISgrUf38D4njKmsfZ
-   2KaZxWXPaw7A4SbzB+rsrrxLSDQKRK+YzgztgyuICVV9262fWRaJxoi9E
-   JjdEf1IKL3vxRRdwpYhTijt1at4yq6OUl26B91YDzwnfoQKJexqZohoEr
-   Q==;
-X-CSE-ConnectionGUID: 0hESbL01T4utJ8DwV47HMg==
-X-CSE-MsgGUID: 3O04PXnQROq+6PxxRCAYgw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="74335058"
+  bh=ixR51lrAtG3i5OlMsJA2QgqizymKXcvQ+DxjpaKToms=;
+  b=T2H6XmVcJGzEpNuGPVA8Bu3OA8eTjiNJ46u1IZKgXh+g4Ug5eyciOjz2
+   u/TAzIx9cQ+S3azfVx8CA/pE0Gj3qxd38XyKwI2hlh2tzQ74ebWCnz/H/
+   hsAqzzbGajbRRWuiTW+CRIEjVk1Z1vPLQ6ZPoOs0gToHipKr6BXttiwQl
+   CNw/rnTfcCYxHQpAZ/zYGYisQKcY7FzH059yYD4S0h3biWFsthFluosNA
+   snFZskl9B23AdlXwv7xmmp75BJv9v/GCt7fxivFPkz2q5f0KEY0q4pqqK
+   R6GKSm4/6VfJrAtDv/mYd5bbfcMdQZkrD+lZYT8O7la/nN5yv0bfF5agi
+   w==;
+X-CSE-ConnectionGUID: vE9NAt/aTaOlJED7dmGvAw==
+X-CSE-MsgGUID: 8JboMjxHSm+IX3YkFvoooA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="74493157"
 X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="74335058"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 13:15:07 -0700
-X-CSE-ConnectionGUID: TqRnnO7lQEqVvf7aKqlC5A==
-X-CSE-MsgGUID: PDR9wsxsTxmMD6NKvRnR+Q==
+   d="scan'208";a="74493157"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 13:20:14 -0700
+X-CSE-ConnectionGUID: z5SHXcNPSlGRg4il7ziesA==
+X-CSE-MsgGUID: Gv6rU9FlS4m1m9574PtBYg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="225394827"
+   d="scan'208";a="221001863"
 Received: from unknown (HELO [10.24.81.183]) ([10.24.81.183])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 13:15:07 -0700
-Message-ID: <745e7394-4223-4150-bd9b-7d52e4e1e74c@intel.com>
-Date: Thu, 12 Mar 2026 13:15:21 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 13:20:14 -0700
+Message-ID: <7b3babcd-0b09-4d36-b713-3e55ded1696d@intel.com>
+Date: Thu, 12 Mar 2026 13:20:27 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,36 +52,20 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 04/24] x86/virt/seamldr: Introduce a wrapper for
- P-SEAMLDR SEAMCALLs
-To: "Huang, Kai" <kai.huang@intel.com>, "Gao, Chao" <chao.gao@intel.com>
-Cc: "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "tglx@kernel.org" <tglx@kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "bp@alien8.de" <bp@alien8.de>, "kas@kernel.org" <kas@kernel.org>,
- "Chatre, Reinette" <reinette.chatre@intel.com>,
- "mingo@redhat.com" <mingo@redhat.com>, "Weiny, Ira" <ira.weiny@intel.com>,
- "seanjc@google.com" <seanjc@google.com>,
- "Verma, Vishal L" <vishal.l.verma@intel.com>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
- "hpa@zytor.com" <hpa@zytor.com>, "Annapurve, Vishal"
- <vannapurve@google.com>, "Chen, Farrah" <farrah.chen@intel.com>,
- "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "sagis@google.com" <sagis@google.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "paulmck@kernel.org" <paulmck@kernel.org>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>, "Williams, Dan J"
- <dan.j.williams@intel.com>
+Subject: Re: [PATCH v4 08/24] x86/virt/seamldr: Block TDX Module updates if
+ any CPU is offline
+To: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org
+Cc: reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
+ dan.j.williams@intel.com, yilun.xu@linux.intel.com, sagis@google.com,
+ vannapurve@google.com, paulmck@kernel.org, nik.borisov@suse.com,
+ zhenzhong.duan@intel.com, seanjc@google.com, rick.p.edgecombe@intel.com,
+ kas@kernel.org, dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
+ binbin.wu@linux.intel.com, tony.lindgren@linux.intel.com,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
 References: <20260212143606.534586-1-chao.gao@intel.com>
- <20260212143606.534586-5-chao.gao@intel.com>
- <2683dff7a7950c57aa7a73584d86cf1b34bcfc07.camel@intel.com>
- <aZ0Nnay7ygKeXmuC@intel.com>
- <75dae98e3b70b66a56bde9b57992fc7d45671c36.camel@intel.com>
+ <20260212143606.534586-9-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -127,13 +111,16 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <75dae98e3b70b66a56bde9b57992fc7d45671c36.camel@intel.com>
+In-Reply-To: <20260212143606.534586-9-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 2/24/26 02:25, Huang, Kai wrote:
-> But I agree making it IRQ safe is the simplest way so that we don't need to
-> worry about the deadlock.
+On 2/12/26 06:35, Chao Gao wrote:
+> P-SEAMLDR requires every CPU to call SEAMLDR.INSTALL during updates. So,
+> every CPU should be online during updates.
 
-Uh, we don't just disable interrupts so we don't have to worry about
-things. We disable them when we *need* to functionally.
+Gah, how did another one of these creep in? We've already fixed like a
+half dozen of these.
+
+There needs to be a *LONG* justification why there is no other choice
+here. There are very good reasons to leave CPUs offline forever.
