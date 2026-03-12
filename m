@@ -1,46 +1,46 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012017.outbound.protection.outlook.com [52.101.53.17])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013058.outbound.protection.outlook.com [40.93.201.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F5A3382F1
-	for <linux-coco@lists.linux.dev>; Thu, 12 Mar 2026 20:38:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051563783BD
+	for <linux-coco@lists.linux.dev>; Thu, 12 Mar 2026 20:38:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.58
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773347883; cv=fail; b=E6QF0ENUwme8M2OT/iNO1RH2gPfJJXzUp8PavkeBlDHj7kFh4u+9ARKzYnFoVNaP26WLjb47PQ8ruH5RW0R2Qu3AWrqrUgd11WWpXKmo0mgrqoeoFDSHjrCFhdYR03c9C/JAiakbiJcBF7igmyL70OAY2CdkRsjRDxznYyRbwqo=
+	t=1773347904; cv=fail; b=pIA40w34d/pSpm1DYvIMApHkOzCAK5VwnJgCiWZ2Xj0hVCm4IQz3ePiy3Nn4x/8yCeSFJGHMJ1Ge1EvwO7358AeIcFpUjEXAcs1dY7jKqHL80vCozWJg9TE7e7MMgkjxWaWgA1VXaBoBshWz0IRQWAJhTwV9NntTiQEYGHmSWr0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773347883; c=relaxed/simple;
-	bh=80l7OmSYZiP1v8jH6fJ4zGz9Rtnh5YKNo9/Ad/8hxog=;
+	s=arc-20240116; t=1773347904; c=relaxed/simple;
+	bh=jKM9FkSjrzWrkPpsisfV6uCds8FDHlHEymWNMM7gKfA=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lL9qe9m2HVYJcnNErK/RNL0y1IrHO7emDIXNjsja6eXBpIXWHcQWrkeB7afEom4EUGAjL/eTViwNVtLOzuQ3rgvvLaeDfFOVOkbRUc1d4mDv8nopJuUIhcCwkm3UVlY0wzVRQLfoHCx48e4v4gT1adNGze8AUzZ7NUxVS4DDhq4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4Os6Z+4V; arc=fail smtp.client-ip=52.101.53.17
+	 MIME-Version:Content-Type; b=nppKxHjHr5126d8Q2nRY4muDbacPCMB47N0fuVNfsfkom60KURcjV/S1bZXWS3p2QeU0OZzTYgS5aZY+c9DH3EhoCTBGcg5qTCdmtXOeYjQu11bmiBVEVumDLbMl0OtbA9k1HPNTt4aY/h79D79R9kz/IsBSW/fcSDpcwku2lkI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=lKV1Ezto; arc=fail smtp.client-ip=40.93.201.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4Os6Z+4V"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="lKV1Ezto"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D8NmYrt7bdb8LDvH3IGcN/kEHhBjf3O/+vV53ohXEqBTgaMp72XFPeHK5r3xJIOV5+2wHdXcvUXdfPSBoU1B1B+DIcD48TEDZLeQuqYGV3a3l/WGDOvpWwpQ4Taf7LWgFQx13Qd3VUcW81B2lBGF3EUGZgOxT28skjyOC5i1r//P5EKk4IS1QOIRiAFAbE1DSCrgXVVZV49RN1EVMCoae4oT54heBLT5HsdPLmG8CyA+zxRPYOO8dLkPfehr3213+FKrVtaDEdVpggFqvb6BeHjvVbyuis2wQgjOT61Xp+iPbuRTktEr/o8/9AA8vwwqe98TS1a3a/FWY/LXtAvLlg==
+ b=kto1FauL6P2eqR4sXbWAxnu5iZmRYB0yuEpM1wP7TlgfQ4JCaOMdskF6iMIk8JeMJWSlTOQhQjXluRwPxRMx/2G9GkcOPNpBYuLuzvKdlc+p0P5BJiy2r9bu1vzZqRrWcI4sX4hsPrqJ1cqdSWchmBRkysDdTAmT7ygDqBghspUk2P4efDhDTRu7CPoUitk/z0WOjouBku8WpFgrUZFgNjmDzq0ABD1PLhd3xVENs/e0UtIWWfeNenmAouqAbKqmloNxL/2ZrkJsu12pQgB1jhCdM7CpjgoIEPfWKvGLxvJeguY5K2Rp3PzZORbfKYhYqc1g3XeNbRRUJ+HeM8H2Ow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=De2fZTivtAXGHuU4t6XRp2aZvUjl93Z0to+QVh22+yE=;
- b=NGPfR5xjOXbzRVqFdt948+O3RbsVmhSMBAJu/7EfDjJsNK0BLR/bA9ixT6OXiYiumXlICO9TE6ZuIDLceZAQB9dC9kFSbcQz/qTR4DKfpR2PCHyd5dBVR3GD2PnmuoduZRSGXZOs+2JI1gbpCvOf5GhgzsteZEy4ksTQK4gSj+t4qCGxGenRMm2OOUft7HgPUuxJncCHzTsNDJhxFEke+NUr+muJMCiZGynL5lo0Of9B35H94LOzDTt2SpUG9c/i3Eii9ldGoR8ruRYMWesEdvBeBFAoOQzpkCRNLdTz+xFmbuPcvXN5o6DYNNoB20hbinEUYA6TSRV2XKn7d+Wl7A==
+ bh=SngrGLAk6sd3U39pb3UBVS2a/XrG6R326BNVpMw78Ts=;
+ b=C9TdxPHzotdQTT5Dqqzdty4rTyGJr8at+AdnQMsfbldYXDhaEgVptV7w1MpHLnkGZcXmVBtVXAkqEBSOVL8wtqs3C/5BmGNe6EW+Rup7+N30rfB1vG7ot0Fs/dNkJnimwWBq1Kgo5LIYSwoPdN9h5wwlQvvvhLDNqPcJR2w6JlbvHxPNmdkGI3oWriyLJtfQEo0tzU7ioRn7YfVPsLihNDj6ciZ0oS0NzDG5pMKjuZX6FpW9kgiEVwdTrQk3KpIePzkaXiuAOLP/u/PSGGbASowowP0+NoIFtrn/93qYOrtWfy2bdB4BWIaprx2VaZivpl3pSbAdG+5F7FXLxVt9pQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lwn.net smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=De2fZTivtAXGHuU4t6XRp2aZvUjl93Z0to+QVh22+yE=;
- b=4Os6Z+4VINEcB8kQfijoZIkhpMYjPciZ585mO7p2zTtH9dNyKSQVt/GJ1csKtRBRO+aX+oYjkFwTiKgKvVsenykHfiENptwsWEypFdV5xOhayD25mhtHQ0xW+Svr5aqcS3UFmEJIXDm4nrXoHdbWAjB30xznaNPoajzg4vsMnhg=
-Received: from BYAPR06CA0031.namprd06.prod.outlook.com (2603:10b6:a03:d4::44)
- by DS0PR12MB7748.namprd12.prod.outlook.com (2603:10b6:8:130::22) with
+ bh=SngrGLAk6sd3U39pb3UBVS2a/XrG6R326BNVpMw78Ts=;
+ b=lKV1EztouP7tojmpi+D3fOy6duLMZkHL40d/0ddqXogpYVnaQtX4p5Cq1T6c2YJZgklHiELM25cq4bi4VPwXwRLszFVv1kTPuiMDlpqf0NkAR8L9R7md5qAA9WisdAoyk3VOFfnuaQ1IZ/7YU/uTS3+inMU/GuPSNAdHlJ9+UCo=
+Received: from BYAPR06CA0039.namprd06.prod.outlook.com (2603:10b6:a03:14b::16)
+ by MW4PR12MB5626.namprd12.prod.outlook.com (2603:10b6:303:169::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.6; Thu, 12 Mar
- 2026 20:37:53 +0000
-Received: from SJ5PEPF000001D5.namprd05.prod.outlook.com
- (2603:10b6:a03:d4:cafe::8) by BYAPR06CA0031.outlook.office365.com
- (2603:10b6:a03:d4::44) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.29 via Frontend Transport; Thu,
- 12 Mar 2026 20:37:48 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.4; Thu, 12 Mar
+ 2026 20:38:16 +0000
+Received: from SJ5PEPF000001D0.namprd05.prod.outlook.com
+ (2603:10b6:a03:14b:cafe::1b) by BYAPR06CA0039.outlook.office365.com
+ (2603:10b6:a03:14b::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.26 via Frontend Transport; Thu,
+ 12 Mar 2026 20:38:17 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,13 +48,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF000001D5.mail.protection.outlook.com (10.167.242.57) with Microsoft
+ SJ5PEPF000001D0.mail.protection.outlook.com (10.167.242.52) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Thu, 12 Mar 2026 20:37:53 +0000
+ 15.20.9678.18 via Frontend Transport; Thu, 12 Mar 2026 20:38:16 +0000
 Received: from bmoger-ubuntu.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 12 Mar
- 2026 15:37:51 -0500
+ 2026 15:38:07 -0500
 From: Babu Moger <babu.moger@amd.com>
 To: <corbet@lwn.net>, <tony.luck@intel.com>, <reinette.chatre@intel.com>,
 	<Dave.Martin@arm.com>, <james.morse@arm.com>, <tglx@kernel.org>,
@@ -73,9 +73,9 @@ CC: <skhan@linuxfoundation.org>, <babu.moger@amd.com>, <x86@kernel.org>,
 	<elena.reshetova@intel.com>, <linux-doc@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
 	<kvm@vger.kernel.org>, <eranian@google.com>, <peternewman@google.com>
-Subject: [PATCH v2 04/16] x86/resctrl: Support Privilege-Level Zero Association (PLZA)
-Date: Thu, 12 Mar 2026 15:36:49 -0500
-Message-ID: <36b849d6548e8ec16db1013e551e4d199795f048.1773347820.git.babu.moger@amd.com>
+Subject: [PATCH v2 06/16] resctrl: Introduce kmode static key enable/disable helpers
+Date: Thu, 12 Mar 2026 15:36:51 -0500
+Message-ID: <03eda07e09a7716a78610962952c1ac63b12a7ff.1773347820.git.babu.moger@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1773347820.git.babu.moger@amd.com>
 References: <cover.1773347820.git.babu.moger@amd.com>
@@ -91,116 +91,118 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D5:EE_|DS0PR12MB7748:EE_
-X-MS-Office365-Filtering-Correlation-Id: 67d467b3-c3b1-432d-6513-08de80773c33
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D0:EE_|MW4PR12MB5626:EE_
+X-MS-Office365-Filtering-Correlation-Id: d3dd1207-b1dc-46d3-06aa-08de80774a26
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|82310400026|1800799024|36860700016|56012099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|36860700016|18002099003|22082099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	qf8w092WzACH1LIVYysJrh9nsQw0ECBok0eDOCVgNk38IZRtqPVNvjpNmwQ0LlITwbE52yVU0BZ5v+aVn5BGu55Cxk/1VbQY4gylP3k7N9MC3H4QLocnaTsSQNjFI8+XyUVYOc5OTSET7RW4SdOobckeOsErsrruToTKneLfJLpjC8mz8JGTTuxKu6cowF/fpxCrWCQUM+nYY5vIunHBZ0zYzE635G8vwhP2JBO+0S1pdm19WJ3WcWyof14sWRXRzOK42SYEJZeSCseTI8/+7AgNufIybbuXwelEwqCEKeBygVl4qnVg4mzVBz4U2OQTFr9NPIaNNej1eVkE/VChEeteXW6QVEhW89cG/yckpWLoh/CIls1CEPQiSkcYlRTE5rPFj1xA7MgN8ki8mWobpgEmNFOCet3kvW6DFGM9UQVGPFigbT95loXWxKHiB8cUdodSLXpfnnCJ+/1/KOpQ8odKDuaSGevtBpdqIWquoVAxlhGGS1TPoOBZUVhfsIWKZt6HV2Qj9Rmygw0wZg5N3VO4XEQRJ6d9lb7dVsFgyqNvgAmbxIoDGb2sBBgK7hmiu+a4G4cJ+HkIND/0/D45Tvb1d0iVZQgvAV8u3hzPk/HyroFK5bFcRFZ2SH4gI5ImfC/SGSWAEnJ92Up9/UdOJdb5K0DccgwytSb6p4i7HL8bV8gLw0jWCtoxkWE1GXlQzysaBgpgeqyXFnWlJG8W+vkDGlwMU3kAAziYppH9BgUmT9PxJ+HArWMNbLINPBw92th99+K3y69RbZ/oDOsZeQ==
+	Nf9KRTJ4OpgkGCMPdj00b1lDvaBlczON96MenEvki6rS14fg7zC32JU3peyQ+G7UEESnO7bRA4aP2KWGmf3IEgTmUN4ex+TEIIY30im9QDAbhHLt0xIk5AESc4n0oCKkW8U20XcM+PM1SCNd6aL//Da2Ug9DgSzLhQ9XYba9OCHLLgkGcRNegEzWTJu886SL5JEWRvXNyuFsp7AtalTYz+k2AIKyR1Oguwt4SPX8cG8UFfH0RxVEREdfS17GwFxY47jz+7tONPKUG/SRnQg2TiF613PHql8uWCNN4neP3X3LvS+Yy8G+DvzUXIUG5JX4IN0TV+VrDq1Lfgj/Kqpuruk5aWcpcpfBTd0qwe6JFlEM7HGhuzWLRoetwOt0b3Qa6mJbyM8aNjCB/dBAhnmVOZxUW91IIWdq4ZiesnERhqOsCE2lHBq/GV86Y7UfdebyszU4v3Hbc4pzfu/Sa2bFD5y7cKtxNzNETazYHVaVEh96Ld4li6Stas5ZHXdN8UUW+5CDZ6DFrU4Id7+P71GclrK2TkH72cmqZt9uvRePSWYCjLXKO2qBqnrF9Y2/wk9fJqnsLtcy8T7NS1ipp9pnb//4xpMXvIlkbuM49Vgn7F0WQVFXgF7p7bljg3KmOkBHG4tXectSh4T0FhlOBuGqwXXW1C547HTt2al/R1Jtd66w9HlDVlU8e0GpPRDI7vLnU+tizDIvEhjrk58mF3VnwcHew2coS7nenFDKbSsy2+3M93ABhbcReNMQPAtIk0qZX25/U8L2l2y9+rolR3+zmA==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(1800799024)(36860700016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(36860700016)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	f/8gLUdWXw+Cx+R13VP5asRVBF4f4xhRH5Ea6iCXjzxa4EJozo8fGwSpHQNim8jlc07xPHIJfeG8noSsEStEmYAaY+n3yr7VyuvTQfa7W+W5E4Ips+BwQaoHO2wHRUZvByumrHDBz7KlDciIX/ZyPvkFA7QVsCuzqdo8RasnyBe2w0Wcjs7OrAJMsEFqSKhWyhljm+wuE2wNeP/SG0Z/P/fmzEhuDK0wUK9GPjCdJYeDS/Ee07hSZkdCeOU0WgQY9aYFrM3gGeEcK2rPqmx2o/hQnQoDfXyfSDQE3QbP6Bffy/8AKPsjPOQ+ad/FfdOjaYMwyN4JXmvrGuI1NncqlRI5XLZBoBSxmMx/RjViK9pR9lvwYHgiEuk2ve2PTsk9yy9WV0BMY4qN1MXH9KBu/AAsGuYHzamH4NcY20T6eJzDsts1o38LR8YfCvQyqBuW
+	8VhDgUgJbkqrBas50j4DvJRKjSCjdslMS4WeQYfnUqu3ODjS9DQfW+f8PXAhZowuRDnBJul69ldQJyYIMukcaKVHvjE2MVB66c5e3M4Vak4gfk37/wbBLoGBez1Ll8b+mC8hYuz9XiwMCYUWmuyFbFvB9CHajYeGgQ7fgzOomhEUjImXXOm0CP4j8h6S9X2OvWHd8gHhCvAilefyU7h0TMFnkEUxZpNkjl+/Fs1vVneXeoDMzCYNy+9TIKxjohC5LUIE8e++YFC3buLFk5shqu9UpU7aN+0F3qz2hP7rpxM5Nfa9MM22EWVC6NcdrCrewtnsCPckHXhoT7Ed3+j9vdPxp0iRiE4llzWwgvvyNyGo0UlYVEPm9u2abZM1twMZ1Xz72rBcRw0LM8GE/iF0F6AAca6kybgujE5DEtVrWfpJ9xYeqVHGkd1HNHk9ieD/
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 20:37:53.1299
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 20:38:16.5295
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 67d467b3-c3b1-432d-6513-08de80773c33
+X-MS-Exchange-CrossTenant-Network-Message-Id: d3dd1207-b1dc-46d3-06aa-08de80774a26
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001D5.namprd05.prod.outlook.com
+	SJ5PEPF000001D0.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7748
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5626
 
-Customers have identified an issue while using the QoS resource Control
-feature. If a memory bandwidth associated with a CLOSID is aggressively
-throttled, and it moves into Kernel mode, the Kernel operations are also
-aggressively throttled. This can stall forward progress and eventually
-degrade overall system performance. AMD hardware supports a feature
-Privilege-Level Zero Association (PLZA) to change the association of the
-thread as soon as it begins executing.
+The resctrl subsystem uses static keys to efficiently toggle allocation and
+monitoring features at runtime (e.g., rdt_alloc_enable_key,
+rdt_mon_enable_key). Privilege-Level Zero Association (PLZA) is a new,
+optional capability that should only impact fast paths when enabled.
 
-Privilege-Level Zero Association (PLZA) allows the user to specify a CLOSID
-and/or RMID associated with execution in Privilege-Level Zero. When enabled
-on a HW thread, when the thread enters Privilege-Level Zero, transactions
-associated with that thread will be associated with the PLZA CLOSID and/or
-RMID. Otherwise, the HW thread will be associated with the CLOSID and RMID
-identified by PQR_ASSOC.
-
-Add PLZA support to resctrl and introduce a kernel parameter that allows
-enabling or disabling the feature at boot time.
+Introduce a new static key, rdt_kmode_enable_key, and wire it up with arch
+helpers that mirror the existing alloc/mon pattern. This provides a
+lightweight, unified mechanism to guard PLZA-specific paths and to keep the
+global resctrl usage count accurate.
 
 Signed-off-by: Babu Moger <babu.moger@amd.com>
 ---
-v2: - Rebased on top of the latest tip.
+v2: Changed the name from PLZA to kmode to better reflect the purpose of the static key.
 ---
- Documentation/admin-guide/kernel-parameters.txt | 2 +-
- arch/x86/include/asm/cpufeatures.h              | 1 +
- arch/x86/kernel/cpu/resctrl/core.c              | 2 ++
- arch/x86/kernel/cpu/scattered.c                 | 1 +
- 4 files changed, 5 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/resctrl.h         | 13 +++++++++++++
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c |  2 ++
+ fs/resctrl/rdtgroup.c                  |  6 ++++++
+ 3 files changed, 21 insertions(+)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index cb850e5290c2..b1ea28505835 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -6439,7 +6439,7 @@ Kernel parameters
- 	rdt=		[HW,X86,RDT]
- 			Turn on/off individual RDT features. List is:
- 			cmt, mbmtotal, mbmlocal, l3cat, l3cdp, l2cat, l2cdp,
--			mba, smba, bmec, abmc, sdciae, energy[:guid],
-+			mba, smba, bmec, abmc, sdciae, plza, energy[:guid],
- 			perf[:guid].
- 			E.g. to turn on cmt and turn off mba use:
- 				rdt=cmt,!mba
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index dbe104df339b..b7932ffc185b 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -515,6 +515,7 @@
- 						      * and purposes if CLEAR_CPU_BUF_VM is set).
- 						      */
- #define X86_FEATURE_X2AVIC_EXT		(21*32+20) /* AMD SVM x2AVIC support for 4k vCPUs */
-+#define X86_FEATURE_PLZA		(21*32+21) /* Privilege-Level Zero Association */
+diff --git a/arch/x86/include/asm/resctrl.h b/arch/x86/include/asm/resctrl.h
+index 575f8408a9e7..4b4291006e78 100644
+--- a/arch/x86/include/asm/resctrl.h
++++ b/arch/x86/include/asm/resctrl.h
+@@ -48,6 +48,7 @@ extern bool rdt_mon_capable;
+ DECLARE_STATIC_KEY_FALSE(rdt_enable_key);
+ DECLARE_STATIC_KEY_FALSE(rdt_alloc_enable_key);
+ DECLARE_STATIC_KEY_FALSE(rdt_mon_enable_key);
++DECLARE_STATIC_KEY_FALSE(rdt_kmode_enable_key);
  
+ static inline bool resctrl_arch_alloc_capable(void)
+ {
+@@ -83,6 +84,18 @@ static inline void resctrl_arch_disable_mon(void)
+ 	static_branch_dec_cpuslocked(&rdt_enable_key);
+ }
+ 
++static inline void resctrl_arch_enable_kmode(void)
++{
++	static_branch_enable_cpuslocked(&rdt_kmode_enable_key);
++	static_branch_inc_cpuslocked(&rdt_enable_key);
++}
++
++static inline void resctrl_arch_disable_kmode(void)
++{
++	static_branch_disable_cpuslocked(&rdt_kmode_enable_key);
++	static_branch_dec_cpuslocked(&rdt_enable_key);
++}
++
  /*
-  * BUG word(s)
-diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
-index 4c3ab2d93909..8fb9029fe547 100644
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -799,6 +799,7 @@ enum {
- 	RDT_FLAG_BMEC,
- 	RDT_FLAG_ABMC,
- 	RDT_FLAG_SDCIAE,
-+	RDT_FLAG_PLZA,
- };
+  * __resctrl_sched_in() - Writes the task's CLOSid/RMID to IA32_PQR_MSR
+  *
+diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+index 885026468440..05299117d871 100644
+--- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
++++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+@@ -38,6 +38,8 @@ DEFINE_STATIC_KEY_FALSE(rdt_mon_enable_key);
  
- #define RDT_OPT(idx, n, f)	\
-@@ -826,6 +827,7 @@ static struct rdt_options rdt_options[]  __ro_after_init = {
- 	RDT_OPT(RDT_FLAG_BMEC,	    "bmec",	X86_FEATURE_BMEC),
- 	RDT_OPT(RDT_FLAG_ABMC,	    "abmc",	X86_FEATURE_ABMC),
- 	RDT_OPT(RDT_FLAG_SDCIAE,    "sdciae",	X86_FEATURE_SDCIAE),
-+	RDT_OPT(RDT_FLAG_PLZA,	    "plza",	X86_FEATURE_PLZA),
- };
- #define NUM_RDT_OPTIONS ARRAY_SIZE(rdt_options)
+ DEFINE_STATIC_KEY_FALSE(rdt_alloc_enable_key);
  
-diff --git a/arch/x86/kernel/cpu/scattered.c b/arch/x86/kernel/cpu/scattered.c
-index 42c7eac0c387..acc137d327b5 100644
---- a/arch/x86/kernel/cpu/scattered.c
-+++ b/arch/x86/kernel/cpu/scattered.c
-@@ -59,6 +59,7 @@ static const struct cpuid_bit cpuid_bits[] = {
- 	{ X86_FEATURE_BMEC,			CPUID_EBX,  3, 0x80000020, 0 },
- 	{ X86_FEATURE_ABMC,			CPUID_EBX,  5, 0x80000020, 0 },
- 	{ X86_FEATURE_SDCIAE,			CPUID_EBX,  6, 0x80000020, 0 },
-+	{ X86_FEATURE_PLZA,			CPUID_EBX,  9, 0x80000020, 0 },
- 	{ X86_FEATURE_TSA_SQ_NO,		CPUID_ECX,  1, 0x80000021, 0 },
- 	{ X86_FEATURE_TSA_L1_NO,		CPUID_ECX,  2, 0x80000021, 0 },
- 	{ X86_FEATURE_AMD_WORKLOAD_CLASS,	CPUID_EAX, 22, 0x80000021, 0 },
++DEFINE_STATIC_KEY_FALSE(rdt_kmode_enable_key);
++
+ /*
+  * This is safe against resctrl_arch_sched_in() called from __switch_to()
+  * because __switch_to() is executed with interrupts disabled. A local call
+diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
+index 081da61bfe84..bb775afc78f5 100644
+--- a/fs/resctrl/rdtgroup.c
++++ b/fs/resctrl/rdtgroup.c
+@@ -2911,6 +2911,9 @@ static int rdt_get_tree(struct fs_context *fc)
+ 		resctrl_arch_enable_alloc();
+ 	if (resctrl_arch_mon_capable())
+ 		resctrl_arch_enable_mon();
++	if (resctrl_kcfg.kmode & (GLOBAL_ASSIGN_CTRL_INHERIT_MON |
++				  GLOBAL_ASSIGN_CTRL_ASSIGN_MON))
++		resctrl_arch_enable_kmode();
+ 
+ 	if (resctrl_arch_alloc_capable() || resctrl_arch_mon_capable())
+ 		resctrl_mounted = true;
+@@ -3233,6 +3236,9 @@ static void rdt_kill_sb(struct super_block *sb)
+ 		resctrl_arch_disable_alloc();
+ 	if (resctrl_arch_mon_capable())
+ 		resctrl_arch_disable_mon();
++	if (resctrl_kcfg.kmode & (GLOBAL_ASSIGN_CTRL_INHERIT_MON |
++				  GLOBAL_ASSIGN_CTRL_ASSIGN_MON))
++		resctrl_arch_disable_kmode();
+ 	resctrl_mounted = false;
+ 	kernfs_kill_sb(sb);
+ 	mutex_unlock(&rdtgroup_mutex);
 -- 
 2.43.0
 
