@@ -1,118 +1,123 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D9E23C4F2;
-	Thu, 12 Mar 2026 10:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8157E224B04
+	for <linux-coco@lists.linux.dev>; Thu, 12 Mar 2026 12:06:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773312327; cv=none; b=kh0srF7+AvCWYFgnJCW7wwcxhSjVAmqAfn05pyJ5uNZp5v9D4ODJullOUqvXGmhHKn4N1FZvS5hX2Jm9dOmS86f8MBoODWwAZBy7/tQ4/zBJELcQiXzZO6py00Mkq44il0frKAMe+4yAjnmkf6HvBfQL421GKAaR5c5cSxW7XDo=
+	t=1773317170; cv=none; b=SlR5dJkKz7YXdbqXwIyXNos0sh8+ljzRActE/V0gLzDJCDS8BoncGlAZdOWjcI4hIeMdMINN7r3GmEtkAwdLIFrdt7p5zxiJPLb7c7R6ZhQvD37erWBjcypCAbgc4RYi+58JF9p8ADsDGAsfCUF4bzA54FSNcr3OCvncBefFzrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773312327; c=relaxed/simple;
-	bh=l08jxwdCYCfpzqBDE5vY1CxLuVpa9caXm3o6QBAP73c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=raXvFbDkqucdotqY014BIeUit+yREZaXuquJ5+AUyO8v6fDxV0UXnMVLWTzgpcXesQPLwXjgFxPbjBDpEDfEbAq95RfXJDtImh0I6gAUvETq3MTS24rENX/qrtfZ6fEIqdM43IlegDX4TGjxjeSz8QNhFtrEI+ZuZuXUxCJhyh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CC80E165C;
-	Thu, 12 Mar 2026 03:45:18 -0700 (PDT)
-Received: from [10.1.26.37] (e122027.cambridge.arm.com [10.1.26.37])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B85C3F694;
-	Thu, 12 Mar 2026 03:45:21 -0700 (PDT)
-Message-ID: <45798b53-e18b-4e7b-a49c-37d1783f3444@arm.com>
-Date: Thu, 12 Mar 2026 10:45:19 +0000
+	s=arc-20240116; t=1773317170; c=relaxed/simple;
+	bh=pLE9KQjABbXYq0V8sOoF2HYf/JGl7DSdVHj+w9thxVk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=THBb+EM2jyhquG4CTks7/21F/5vxOvDG7yqLkZ40ktZzRLv4YE700/f/MuaIdX3MOY02e4B63tBb81aEg7RzDUG6NbYssAT7NaY1gG3I/kUupX/3ifaqIpU9aMzRZYotGO2/5DyhwieHb5hJxBE/aeLhKN6LNiu2xA/AtuN4OzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=gAoZ5GMa; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="gAoZ5GMa"
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8cb3bae8d3eso89470385a.1
+        for <linux-coco@lists.linux.dev>; Thu, 12 Mar 2026 05:06:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1773317168; x=1773921968; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pw97G/mFXVE/FuLAkp3lotBvQF2JekIeUS8x5bLQ+LE=;
+        b=gAoZ5GMaTcXUILNehPSyuuy72dfA3pAyr+CAIdKvBcxl/MuwhT0xjOqM2P1OVsarFr
+         OkmTa5Ig+3JMp4hdBJ7pfSv6jaTP9lRczRCd/CCvxSP+DnPXzclvqemm7g9gPOKbJg0f
+         NjJn7J6VTbtHcelxAll/2t1cHACLKrqn3ansMqlrMnlwnHUWxwK4ZohBjS3w7xU2q0V5
+         ZskDA5y88DxDO+2O1CihRC06l3LHZnlygrG6rhjrwkkJRQdnvVs5eJlm1Db/jeEyzEr7
+         bEdcEAFcJFuBe4maZdds7lH3uXoDiQMTlgF0dIaCKXAJNTuP3KtnOHREzjaInqqpjHoF
+         TEJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773317168; x=1773921968;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Pw97G/mFXVE/FuLAkp3lotBvQF2JekIeUS8x5bLQ+LE=;
+        b=gW35qAtGHFLxoMwU6lOHWxgjlei+aetkw1A1HaYe1buUlrYG142aqoto4NHI5KkjZH
+         yjURAqbYeEzBj0rbuigoCvA7Lng6vHeQP2tc9+kUXFLGHhc1pDjjHeW1Gl8weFQuNCTB
+         BN8hB99KKjTSxoN1xXnSTVpHlxs8GEcR2z3HHz0im+p1mzMi3SFnQe8hgwLShrZphD1O
+         yqCX/B7hK/ug4o1c6UTYfBJsmnnf4dxDQzEpd4NC9+6WoPH0REFjdST/YCgPlZURzp0I
+         Jcff725P09IcV3E6Qk2iV2Nut7C4zYJUZe7L2s+5aII0LhcTegmi1KKgLkcHybopAVO7
+         5t3g==
+X-Forwarded-Encrypted: i=1; AJvYcCXvusXseX0SBqGiK16GKm0noe19rZrcCQJ/saRcYUvYnNgHP+yY/XurOE3vdcnVMZH3RahDja9i3HUc@lists.linux.dev
+X-Gm-Message-State: AOJu0YyffcEoheJS75Q5EHOt88zgNgjJkbCOqmH4hPovh1fDJpppTptU
+	ndqB7A4wNW+FJ5OYzwHs2/3LQWjVCT4cuoRgJUun/a3UhgkvKn+PlX4gBu22sUT1lA0=
+X-Gm-Gg: ATEYQzx3vcl5C5SvkfVLYEkf0ye5CqjrPMyhUtUwhz0MhbPeeJpVX0emLY0KNmpvwgp
+	/Vir61JJXMrSFtQIkjOTMFcGXxqbIOWYU2wXedrcVjIF6tEfRtwNNsvGwzTLiA7OctD1Bh7vQXn
+	g6SDH+eqWzGN9v7waO+pD9ZyrQ636D/C/YfPFPDU7TVwefLgWGbAi3zN8iUFc4Y5thM6BZ0Cudz
+	qdL1EnRp2bkeL75GtgAtNlc4OVUsrrgGj/q3jf7qcgl0ouQYhwNg5ak7GZTsSQjdCizdKyEb2Aq
+	3HXA/JyS4kEy0b3MczNw2rK6OX4aHvegEM/F08eXghheBoXInaFTMBxFMaihvltCaVFfqctJKHf
+	qB5KS7TKyHUb2ssHJq4sBsw/g5cZzNV5Xfc0uKuqP/bSBX4nEw1w9mZFTnA/FiU5dhA88RZZjMr
+	rdy15H8hdL4QwBm+OiFoKhlmMieQ4KM7kHRI6zyf4sxBDVBVN20xLAconedOyL1FFFNQuTQTmTP
+	uSFivy8
+X-Received: by 2002:a05:620a:4e93:b0:8cd:a4d8:cd8d with SMTP id af79cd13be357-8cda4d8d254mr527718485a.14.1773317168272;
+        Thu, 12 Mar 2026 05:06:08 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda1fbcd23sm361027485a.1.2026.03.12.05.06.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 05:06:07 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1w0enm-00000006ejP-0ZCe;
+	Thu, 12 Mar 2026 09:06:06 -0300
+Date: Thu, 12 Mar 2026 09:06:06 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: Leon Romanovsky <leon@kernel.org>, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev,
+	linux-media@vger.kernel.org, sumit.semwal@linaro.org,
+	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com,
+	jstultz@google.com, tjmercier@google.com, christian.koenig@amd.com,
+	m.szyprowski@samsung.com, robin.murphy@arm.com,
+	sean.anderson@linux.dev, ptesarik@suse.com, catalin.marinas@arm.com,
+	aneesh.kumar@kernel.org, suzuki.poulose@arm.com,
+	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com,
+	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH net-next v3 1/2] dma-mapping: introduce
+ DMA_ATTR_CC_DECRYPTED for pre-decrypted memory
+Message-ID: <20260312120606.GC1469476@ziepe.ca>
+References: <20260305123641.164164-1-jiri@resnulli.us>
+ <20260305123641.164164-2-jiri@resnulli.us>
+ <20260308101948.GO12611@unreal>
+ <20260309131530.GJ1687929@ziepe.ca>
+ <20260309140233.GW12611@unreal>
+ <20260309151857.GO1687929@ziepe.ca>
+ <phry3e2dtgxzxdqvrnqfuskangp4al64f2auithwme5kwkgepe@7qtftrhgv4l7>
+ <20260312003408.GA1469476@ziepe.ca>
+ <pmfxzgtazwa7fwz4mx53htdg4jjifwyq3gyzwklc45affy3xrp@57hxan4pqnkx>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 06/46] arm64: RMI: Define the user ABI
-To: Marc Zyngier <maz@kernel.org>, Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>
-References: <20251217101125.91098-1-steven.price@arm.com>
- <20251217101125.91098-7-steven.price@arm.com> <86tsuy8g0u.wl-maz@kernel.org>
- <33053e22-6cc6-4d55-bc7f-01f873a15d28@arm.com> <87v7f2chde.wl-maz@kernel.org>
- <dd6f4715-e8be-41d1-af60-00f068e9d730@arm.com> <86342575ev.wl-maz@kernel.org>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <86342575ev.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <pmfxzgtazwa7fwz4mx53htdg4jjifwyq3gyzwklc45affy3xrp@57hxan4pqnkx>
 
-On 12/03/2026 09:39, Marc Zyngier wrote:
-> On Thu, 12 Mar 2026 09:28:16 +0000,
-> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->>
->> On 11/03/2026 19:10, Marc Zyngier wrote:
->>> On Mon, 02 Mar 2026 15:23:44 +0000,
->>> Steven Price <steven.price@arm.com> wrote:
->>>>
->>>>>> +  struct kvm_arm_rmi_populate {
->>>>>> +	__u64 base;
->>>>>> +	__u64 size;
->>>>>> +	__u64 source_uaddr;
->>>>>> +	__u32 flags;
->>>>>> +	__u32 reserved;
->>>>>> +  };
->>>>>> +
->>>>>> +Populate a region of protected address space by copying the data from the user
->>>>>> +space pointer provided. This is only valid before any VCPUs have been run.
->>>>>> +The ioctl might not populate the entire region and user space may have to
->>>>>> +repeatedly call it (with updated pointers) to populate the entire region.
->>>>>
->>>>> size as a __u64 is odd, as the return value from the ioctl is a signed
->>>>> int. This implies that you can't really report how many bytes you have
->>>>> copied.  Some form of consistency wouldn't hurt.
->>>>
->>>> Good spot. In practice this works because >2GB in one operation is
->>>> highly unlikely to be processed in one go. But I guess I'll change this
->>>> to have an output size argument. I guess I could make the kernel update
->>>> all of base,size,source_uaddr which would simplify user space.
->>>
->>> In a conversation with Suzuki, I suggested that splice(2) could be a
->>> nicer way to express this, and allow asynchronous use with io-uring.
->>>
->>> After all, having a guestmem backend for CCA is not exactly
->>> outlandish, and having a splice implementation realistic enough.
->>>
->>> Thoughts?
->>
->> One issue that I realised, is about the "flags" for the populate.
->> Data can be loaded as measured vs unmeasured in CCA (and in TDX
->> and SNP). I don't see a way to convey this with splice.
+On Thu, Mar 12, 2026 at 10:03:37AM +0100, Jiri Pirko wrote:
+> >Alot of device MMIO is decrypted by nature and can't be encrypted, so
+> >you'd have to use both flags. eg in VFIO we'd want to do this.
 > 
-> Surely that should me a property of the memory region, and not the way
-> it is copied, right?
+> Why both flags? Why MMIO flag is not enough? You still want to hit
+> "if (attrs & DMA_ATTR_MMIO) {" path, don't you?
 
-I'm not sure what the current thoughts on the matter are, but there was
-an intention in the past that some data could be measured and some not
-within a region which is logically the same. E.g. the DT might be
-deliberately unmeasured so that the same measurement would cover a
-selection of different configurations (with the guest obviously
-validating that it was sane before continuing). Forcing the memory to be
-split into multiple memslots just so a measurement flag can be set
-correctly seems like a poor uAPI.
+Because we will eventually have both decrypted and encrypted MMIO.
 
-While splice(2) certainly looks similar to what we want, it does
-(according to the man page at least) have the requirement that "one of
-the file descriptors must refer to a pipe" which seems less than ideal
-for the DT case where it's likely to be generated in memory by the VMM.
-Or is my man page out of date and the pipe restriction isn't there in
-the kernel?
+> I mean, CC_DECRYPTED says the memory to be mapped was explicitly
+> decrypted before the call. MMIO was not explicitly decrypted, it is
+> decrypted by definition. For me that does not fit the CC_DECRYPTED
+> semantics.
 
-Thanks,
-Steve
+I would say CC_DECRYPTED means that pgprot_decrypted must be used to
+form a PTE, and !CC_DECRYPTED means that pgprot_encrypted() was used
 
+This flag should someday flow down into the vIOMMU driver and set the
+corresponding C bit the IOPTE (for AMD) exactly as the pgprot does.
+
+Less about set_memory_encrypted as that is only for DRAM.
+
+Jason
