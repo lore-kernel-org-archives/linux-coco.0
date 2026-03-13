@@ -1,106 +1,75 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012001.outbound.protection.outlook.com [52.101.53.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FAD739768E
-	for <linux-coco@lists.linux.dev>; Fri, 13 Mar 2026 18:53:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1EA35DA6F
+	for <linux-coco@lists.linux.dev>; Fri, 13 Mar 2026 19:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773428003; cv=fail; b=bIqOB6bJQqUrOWi3QG/B3GSt20HBq3Uhlc4Qr77jKa/KZAfnxyMIvseRiX6wAMSnGOw9sqzmAC+CSqXMj0/Rtk+GNPPOGYDqMvj29JRFQP+zXjseYnJy8Fgmrtxh9o2FoM8TEu4HdNuCSS/3qgS9ZKzy4EaPw9s/SW3+xVonfVM=
+	t=1773428879; cv=fail; b=JSsHGS2uchNmm9jTzDFPYjkWwo0JIiWYBz/U9hJWDDvqN0AOGdBcNox/q2GiNuQNqxoAyCxgp5mCYw7A72HfFSPzIFtABe2DLk1I4hS++luvsuXiV/1P3gCNHT1F5eW7jw/dLw30chVvV6bDVB2yIbYgNOlvjBqeRnK9iW+oM58=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773428003; c=relaxed/simple;
-	bh=Cmlqv1RUMAmzXpgj3zjpIKWB0sjUO8zdQ2OcfdFkDDk=;
-	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
-	 Content-Type:MIME-Version; b=mvN1eFG8/oKu9CQV+rW+Rsi/QsY6bVTOOTf07rYK7mZqxJiUib3QZHANp9BTQQYnFXtJ70WWJD7fEbvSP0gPB+OsoRtsLuJk6JYgaqsziqudLkBh2tQ4ugWr8w86DPA1jHhSKE6oJi/Ne6ukit1o3W792B/frx1ZH/8I7FLwqjg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ifVynoyw; arc=fail smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773428879; c=relaxed/simple;
+	bh=ZP/419+gfDET7cQ7CkMV/f3dAyDaXDTZgkh9pdRsdms=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ItXUdWMGrS1uyuIK5s++nkOyWP3dmKCylDVi+LiT/daAdFS8yeffFLBj9Gd3yBIj7+5Wxi/hd7MdkhCkHlaeDnlHefcxKEtFcdDMTmtBq8ikMcuWx1+bIxJjiPTKHQ1tJXGbeUVJHgfZ3Sw6Er8HHymXu8+fAy1a3tGMvrYHU40=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=X1iJxOtt; arc=fail smtp.client-ip=52.101.53.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ifVynoyw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773428002; x=1804964002;
-  h=from:date:to:cc:message-id:in-reply-to:references:
-   subject:content-transfer-encoding:mime-version;
-  bh=Cmlqv1RUMAmzXpgj3zjpIKWB0sjUO8zdQ2OcfdFkDDk=;
-  b=ifVynoywN/jh+BZbdZMByrCWKUICL34bkajl/k4aJINEV0lchWoz5ucy
-   7guLSjtW9x3chpiOtju+m5opfsy42urEAvib0oFmodpt09mhYeIFbNIpX
-   1KJi1IOsPrgEGUSPCCb+Oq/e6UuSO6YNHZTJqXQhfmlQeK9xndzKmYwH9
-   3vFepQ6mJo+5KTgFROnW5IRUphYK6HNgMmjsLvoB7lO80t9rHpmcDyhbr
-   0uj58LiECDTSDFIfaU1JuGGfzim+m9S0kFpYpgm6Gy5hcogHbvV54AV2E
-   fexQSR5BWL00Gfi5fJ97BBA9K/BMBOK8sG/2XrFbjz7/tcgCi3Dvhmilt
-   A==;
-X-CSE-ConnectionGUID: ax2xnBa8RcukVZ71RVd1fQ==
-X-CSE-MsgGUID: /xzTOo6BSA2oMsFWOYfoWw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11728"; a="74513101"
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="74513101"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 11:53:22 -0700
-X-CSE-ConnectionGUID: ko22Iqy/TVu2bUs8AzvL3w==
-X-CSE-MsgGUID: 7Hv3GDl5RfmBYj4Mo6v/MA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="218569497"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 11:53:21 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 13 Mar 2026 11:53:20 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 13 Mar 2026 11:53:20 -0700
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.27) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 13 Mar 2026 11:53:20 -0700
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="X1iJxOtt"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dFSa5HhAUd/+8xnbx2H60fY/EzlyG3nlWYutNde9OdBG4pWD2vUWuQySbvJz//JnYI5CatNGiPUWtGBoK7rlve5b4nNXNcaO9Zc9LYdQJ70nK7SjXtvMH1jvW0O27mhvpPJdtiA9WyzekHYBgykNEzSLrqLMDchHPMOcbxa2sRGgnvySmZ8R7PVGauxwcbjr4/NXomU/ctqclHCxS4q56iWnqoOeoh1tMaDwnWDH0RtMtKJleeKitek5gdyWhBYsPKvivnIbDQmGy5U6w6UMpL3nwDHe0ptaFt1BlA9i/CKnwnZkg83T9BIeQMv8i9H/YD7i/V/psSzdFtePzBJUgw==
+ b=YfVi4/UvHEaomPlTciOvd0XlBhj5X3UkxbxeFGNBPP2tbyM+KHL2LyD8zXMHwip93Ox/3FnEqDkVfOLG3pbdD9reOEYwssg0Qqi15nD27hnhDRPOcB4pfvBtFfUYQiNlxTXEGNojL1k4UR6LaTBV/mCKCoV3LAc1Ie2ed5QqRREeHQeNwJvuUe+RHHMIRyvi4yWJYqS6bChf/T9KZEeOHNPM/zIPrW5sNOyLgkp7SFE3f2Asu0kdDo2bAWYnEKXA1BzpyOf61x1XLm316sIz5tP1sxUE5Z6816SZ2FnHO+w+coh+DBA+En0I5iiJ+LneAOlhGcxVTRz80Nr9VBOk4g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O/PTHQ4SRBF0bGi8SaI6xCZX+QzRwNH9JI4The1h76o=;
- b=jHAZKMtOpVEU3yOgOG0Fiu2xBNIbvbCVAQ30C9OMz/viNUMygckkc04FjGuc2uko8ykjh7GAORl1uCK/p23kw/8Wwg4rJmE7ipGk0jCaL1HqFm+opskVb8nJSsHBMciVWgtBURDYvwT3Jy2/Rq4xe6PSeFxxulI+uvwTzOdo0pPzZcNWIYweUC6HZcdwjcs8b1cLSDmszHx0nF5/C8CjrBXOuiSjK1bWyap0B/OoTmsiq3vtV+tjKLAaujdwINL2EAHA59YWiTkd42cA2w8IOENhuqyugW5/WyhaZ+no3/C6oVbx0BEBrRZHDyv3zuCLDH3k/HaTY6EU1d1gUp6/fA==
+ bh=tEW4JpJPsUWgYq1VB1aeoH+7qGbVSutbsOELyWHGUjk=;
+ b=iy5w2rlFOpY/UK2O6ak32snlMWU/bhX040cfDBNjdL44kyG0iEEVHdnToDaLYpP4JOXqHcP6q7H+Gl5b6jlpe/A1bnmZ5TOsBcrxjgF37SydOvOhIvuSi77UuQOHWxTxxjME331bLGMTq2Td+8x/OcjmRZRoSwB8lIoxnvqhYIxXrTFrRzK/5AvLTnB8xTbTZFSU6iE2Iw6l8D6Atc4sA6AsIWuqlcfihaNClNkagWdQMT2MdAk4Q02kvItkiZbZe51O26x4x0YkhvMnOXW0zP2N2p2pbG6YigRF2YPOHP+lIVoaQN+26ALnoo5EsQUyykP7HY0KwDFtJqcaZnB+HA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tEW4JpJPsUWgYq1VB1aeoH+7qGbVSutbsOELyWHGUjk=;
+ b=X1iJxOttisDVkUxNzM5XpO8Kr0iEjq+J/zMzQKz17DjTb+NFa0mBM7C6EA5556Ro2/43e8GlrBRyLTMjEWuhgvW+Wt7HbHd8lpLZ2mYszshxAs/PSZNuSmKHHW4YVeHm0VjDk9UPIpp8EhTNdTf+IVxty658KG5iVo0m3dlvY49Wq3fPaqWRTxHSnjt7pCA/AAPww7z7vv5nf77Rcm4Oq900SxHqTGn473e3qNsMKejRcj+yFHyVY6qKZzEnO19Ey2UMn0BkmKhY78dm8asVJ2j/YWaHbU7gPRZhfwviargvaKtgr6JtSTixr9T+ky7VpVGQsBBOW+A24HFoT6Gmpg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by SJ2PR11MB7670.namprd11.prod.outlook.com (2603:10b6:a03:4c3::18) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by SN7PR12MB6912.namprd12.prod.outlook.com (2603:10b6:806:26d::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.8; Fri, 13 Mar
- 2026 18:53:13 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::1ff:1e09:994b:21ff]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::1ff:1e09:994b:21ff%3]) with mapi id 15.20.9723.008; Fri, 13 Mar 2026
- 18:53:12 +0000
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 13 Mar 2026 11:53:11 -0700
-To: Greg KH <gregkh@linuxfoundation.org>, Dan Williams
-	<dan.j.williams@intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>, <aik@amd.com>,
-	<aneesh.kumar@kernel.org>, <yilun.xu@linux.intel.com>, <bhelgaas@google.com>,
-	<alistair23@gmail.com>, <lukas@wunner.de>, <jgg@nvidia.com>, "Christoph
- Hellwig" <hch@lst.de>, Jason Gunthorpe <jgg@ziepe.ca>, Marek Szyprowski
-	<m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, Roman Kisel
-	<romank@linux.microsoft.com>, Samuel Ortiz <sameo@rivosinc.com>, "Rafael J.
- Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
-Message-ID: <69b45d178ae17_b2b6100f2@dwillia2-mobl4.notmuch>
-In-Reply-To: <2026031319-payee-photo-bdd9@gregkh>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.4; Fri, 13 Mar
+ 2026 19:07:54 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9654.022; Fri, 13 Mar 2026
+ 19:07:54 +0000
+Date: Fri, 13 Mar 2026 16:07:53 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, aik@amd.com, aneesh.kumar@kernel.org,
+	yilun.xu@linux.intel.com, bhelgaas@google.com, alistair23@gmail.com,
+	lukas@wunner.de, Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Roman Kisel <romank@linux.microsoft.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH v2 03/19] device core: Introduce confidential device
+ acceptance
+Message-ID: <20260313190753.GF1586734@nvidia.com>
 References: <20260303000207.1836586-1-dan.j.williams@intel.com>
  <20260303000207.1836586-4-dan.j.williams@intel.com>
  <2026031230-mastiff-create-7593@gregkh>
  <69b38e7427a61_b2b610073@dwillia2-mobl4.notmuch>
  <2026031319-payee-photo-bdd9@gregkh>
-Subject: Re: [PATCH v2 03/19] device core: Introduce confidential device
- acceptance
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR05CA0070.namprd05.prod.outlook.com
- (2603:10b6:a03:74::47) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+ <69b45d178ae17_b2b6100f2@dwillia2-mobl4.notmuch>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <69b45d178ae17_b2b6100f2@dwillia2-mobl4.notmuch>
+X-ClientProxiedBy: BL1P223CA0039.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:208:5b6::10) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -108,213 +77,88 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SJ2PR11MB7670:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e21d793-e5dd-4aac-aaa9-08de8131c71a
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|SN7PR12MB6912:EE_
+X-MS-Office365-Filtering-Correlation-Id: 85584f58-6992-4629-81e6-08de8133d456
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info: yRyywZWWbUAbvPFrmAgCtGnV0moIie1LstHUG2v9Lm0oCmiOK5FJ+/wlruxombs2okrs6m4knXn1RlZF2jZ+jNA7x+puBCGoxLqjmu9jdwEUbST3UJAqbwqT4Ljt3UB5ibX+LVN2bcAhvjkM/iaS7JI7dTcjrl+g8MevY5Ux4ZgvDMPmOYYEGsZpetjCtGeR7UZmn7iusnByLZI3Y5fFe8nM/PoRGEJo4AKWqPTEA2X4rITPOB5Pe/pKQcVFv8f14D77xC4pKim1DdF5qlgbK8YQHLJZT4PRtM5W1w4zelolPP+QO2X2RJKwkQKixxDcY7jfEhWOOnczjooQIhDe+bIaixJKLZYlla+4VoATJX/7xHNTspx9eynoMAdoEN9rypbyf/tkJiwdF+eGhNAABatPKLAkkEaObuYX+0KjKYWM5SeKCYQZdSOd2faonAjWzcddd69SaoOKn8vAzfmzAhK6vj/3VvCwWr6knUeaoGb/cLWTPEvdR0wAcRfp+38uWCO/3Uk09DXLGSzI9TcSpWqf6K7s5XTprGz/ktUEltJ8JOsP4hWCqBrClCmM6KjDVJB54bls5WDb6jAETc1IohOvJEwzOPiWYGmjwvmGJ89oLtgR0e4K+fORy8oEKaM7Vn+n5OsMF/DxXo5jpg+mIJiXD0hxivuB0/w32UaO1aHmt9v00svVYPHW0DU1UaPV9tIMWPUmttIw8ODN0+2zopnPT/SMpy49UJ8w0qiZjwc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	roYkbONocVJcfeKctuXOOUBABt1TQYvQZckJJJNfEdA59w9bZiH3LKnOKakmijo/UKGS+YrTXOJ/RjpxSxxKOP78EK0c8OTPenlT5+0BNFew7na0HOZZZ+p0U0V6qQsrvcJmgGLvBkapJxEGSz8UNnQOw9Dpd2WcI5LzlBeTS2WPD0POUlGd81SxBQJJdFzfCtLPUW+mZAAo0vMgIOOhrjmoWJ1zrZ2SmupC0lNdRM5/VhH63vjgQPUjOiegq3w0KwnW8rlKJUwft/rq8qVSSrL6IS++vjFJ4lTF2z8ShjlJZPGwjLrg/ZYVw/Qr3ajtMG/0O1x31YH79fjs1BkX8eHvvH0gnQsz9ZFz2U57Z1ZeEiUReN7GssNGtBrPxtgB7JdplQSiupH3083SdrtddC0uIFWTx/Pr7eLAGZ8Pte6Ns46rtJumMh1UKPbhMQUv5nyGPgms2KbvWkHtdtkVwQZl2gaK8eXABZ9HZbZBk2n3h5WosUW+NKPzqyBwBqf4Nrt7o/BTBSG1qltWC1hYsbVyZAR2n3LNG1M/u6rTCByHohbnpIJxWRezwNX5g9+0DRHnH1tAnXRsmLfqIOZRwGh2gUwKTekWZaXuxjqL4nct3i4p07rkpziWnXj5P0QCa6mfMIoC3x25EGlmlmSqcpLfCBXnS71TdxEhpSAmAUhoqxFNnKaI3lzRPHe6THgOHHfZ6XxOeanaZfYGkZSVH8BZtT9S8eT5DJOb34kVuK8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T2xjUFNzdjYrOTl1bG12a1QvOFZhemRhQ05wUlNEZnNBZVlFcFhnS21QdzN2?=
- =?utf-8?B?eFpMYnpkU1ViRmw2US8yME5pcGM3MW13MThXN3dVWndobG9ucXJZdUN5QjdD?=
- =?utf-8?B?T0l6Y2FwdkFEU1VMODV3cVBvNjhKNGtGWTVvWmVzNHFzSjJaRzA2cHJiL3RR?=
- =?utf-8?B?Zzc3OEkxZGxCNzBWZ1FGbU5XQk56N3VSNFZHNjd0NUZOMm4xT3lqMVFWejFU?=
- =?utf-8?B?VmVZYjUyVTB3YmZsTGNQeDdLZ21yN2tsTnZNOFBXQTdSQk1uR0laOGFIazBI?=
- =?utf-8?B?TXlkYkZnVFlDMVo3eU1hY2Qrb3V1ci90NVBXM3J5cE1meHdyT0p3cmxDby8r?=
- =?utf-8?B?ajRYMlU0QWhMeUFmQjgxY1lJbWpJeFpyeXRTNVVabWF1bTFXQ212S0grUkh5?=
- =?utf-8?B?ajc2WGNkZElWQ3NPOEQxalN3Z0lLZWY4N1o2eUlhSGU4NUZnUE5IZjl1N0to?=
- =?utf-8?B?TkJHWGpmek55SFNPK3ErR0FYaU5kNUhIb0xTNExTaGVhc2Q0U2hDbFgrWjUv?=
- =?utf-8?B?YUc0b2Ixamc4YmhVTktXQ2dqTzZBaktYMDhIMzZLNUZTUlBNMHM0TDdKKzF3?=
- =?utf-8?B?Y1pVellhT1liVUxlRkhQbnVzdWcvSGtRNVlROFgvUndkUDhBS0hCS0hPc0FK?=
- =?utf-8?B?MS9GaFNNUWtzaG4rQzNxMkZ6cXd3SFpVTldwRnRrWkEyQVdxYlpwZTFxZmI2?=
- =?utf-8?B?SGNVdm5zNUJMNFZpaXpoOFlqMjF4RzNSMVVxR3JXd2JFZmRZSGdyWURUSUJu?=
- =?utf-8?B?NDlsL3ZYcHNPT1FjKzlrWWhrbE5EbmJCSXZnY29kaS92MlRyRTNLUjl4aUpJ?=
- =?utf-8?B?L2FYWEFpVHppSkVjRDFRT1ZJUHIyT1cxUU9pcDdkR3cxa1B3U2toOWk2Qk15?=
- =?utf-8?B?V3NnL2NMNTFmN0dvTENOeDExUDhYWnFtNWlneGY0QVRLVW9rWWJuY0Fmelcx?=
- =?utf-8?B?SmRyT0krVGIxUThOY0IzSk9adGpRYThqNURQQ05kajZjRURKUFlFSUhyR1ZP?=
- =?utf-8?B?bSthbm5udVIrQ3dhcURvUThKMFRlTnJBZE9NbGUvbldLN0dOOGh3Y3V4UDJp?=
- =?utf-8?B?bFNMTUpramNycmJ6NURPSnVzNUVIYmxsWThiQThpK2ppT1VTdy9WRkFvejM1?=
- =?utf-8?B?L1RQZHNJNVg1aFB0Q1YxZllId3Vzd2dTd0tNMUlKWUM3V2NnS3dqS0w2dW1P?=
- =?utf-8?B?KzBsdjFBZ1A5dDhjYUNCUlFKMDRRemtzV0ExUWdOOEFmVkduamlBVkEwQ1kw?=
- =?utf-8?B?aWl0a0c3aUl5M1ozdnBENVR0VFBCdEpha0pTcjZWUVI1ekFFMUpXdEZIODNY?=
- =?utf-8?B?b241YWdoenFCU25ISER6a3VUVWp0SVJlWjBHV2dvRHVIQzcrQWFUd1ZqeTM2?=
- =?utf-8?B?dUtvbzVDR3hzVnZKQ2pzSnd2a3lOSXZSKzRkeXNWa1NQRm1lWFlBcHA1aU5u?=
- =?utf-8?B?ZEk4UzZadmJlbzVnQzBGOFJDTWFjU01YbTR0WUhwVFBWRjRWdmtqNkNDK0kz?=
- =?utf-8?B?QnhhZ0VuQ0hLcEUwTDMzekZnQ1BQOEZvQUhIK2daQ05wbDFRcEd4Ny9qM3hJ?=
- =?utf-8?B?cDNFbEhFbnpob2ZvbjFuNDZPMVNBWmdtVHNySXpUbkRBckNRSVBVRVNYRXA0?=
- =?utf-8?B?YktzT1J1NDBPTU9PRHd6MlRTaG9CdnVTSXk0TmpqRFJ1OU9xdGcvV1NubTZv?=
- =?utf-8?B?MVRDQnZlUEVoVDJwSVdDMVdZTkZUTE5FeFh0Vnc2SXNWbWRSOTRLOFZPelhu?=
- =?utf-8?B?UlREU3NrZ1kzSXdLYVQ2eGRHcEMrb1UzUDNDakg5S3daeGpWRjdGSnRjQnk5?=
- =?utf-8?B?dXdMYm5waWZWM1RPMEtUM1BiV1BacUkzOGJyVVlBR1hjUmFEMzl2aUVGMHV3?=
- =?utf-8?B?ZnNEeVZEbGplTWVuZkowajdhdzRaZWNERE5SZjFXQXFGRStGbUYraElKWEZz?=
- =?utf-8?B?VUdwR08vVVZRcDBMbFJXMW83cExHckZIRlI4UzBld3orckpVUlNFVmVkZWI3?=
- =?utf-8?B?LzBrekVtdExwbnVsS1pjWWZtQUphL2tGM2VYbFZBTVZvZnB2QkVMMjRaQm9h?=
- =?utf-8?B?V3paN2orS1o5a0ZtWVorMDBJV2hUbGY1dWE1RVFOR0Zib1ZWVW4wS0NUK3lp?=
- =?utf-8?B?eDBlYzZTTG5TQWppUUo2UHBLQlY0L3BWai80aWJGeXZoQVpDeXgvZzlUL0Yr?=
- =?utf-8?B?TkFBVy9XN3hUNjFEMVpVNFdncytKNllWNlIxUm12ejhPSGNucjQ1NDVUTVE3?=
- =?utf-8?B?SmpMak9OWVRCc0pUaVRUUTFZTVFDMzl3RGRSN0NRaURGM05RaFJPaFA1VmJI?=
- =?utf-8?B?VjdaV0cyOTBaYk5UQ0ZpNTMyVkJxVFhhYmZiMHMwbHZxNEVuNzU3ZnlxSVM2?=
- =?utf-8?Q?kATqKl5KQijNfARk=3D?=
-X-Exchange-RoutingPolicyChecked: Hy9B1XbPBfFmcR3sK7OsGa7HiPqAKJ2YDVjrdrubOFkY5sdpxoFoYEN+6DVa0KJqpoowZ3tEcbmfx05sxg1G2ioxrkTOLL+yGFBNMxWZDPe6exFAi6+ylb8b0C5q6WnaWP1p5DwnJSDWR3X08rMBN0SuJtg+xokBGxOhG1YEZR/UaE9fY0DJmY2qwpNyZPW3BC1s86R/tfMGKeC2O7oQ9e8UlXRAOqrxuKWW4IOPyckRg9jDSY6zj9c+Mj2YtwvBz/FaXLgsQS3zaotQG+MPFCfNLaFw7Mmj9cryi+gEm9G6jocC6f64BH3Uo3ozDpWFI5J+G/WcErcsrc7r7hd3dg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e21d793-e5dd-4aac-aaa9-08de8131c71a
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?KnGZRuHw1KvdQbtBff4gx8gYSBD/5QQl3J8twFVoOeClX/kYId1icmeNWMNF?=
+ =?us-ascii?Q?hmKmmj2XnrGU9tLlKmv1BN6Tkc7JWwNK3WRZuY5ZgD0GMvzAJSCnqeljLnL2?=
+ =?us-ascii?Q?e8MI0fANKzPmUSlvd3p4iz++zSmtUrI1sjpuD+NBhHH7zQLtfzLb21c1gsEX?=
+ =?us-ascii?Q?YZMkd/VgiyyZilpqQ4c0dH0plU7kCGo5qVK3JHODqqL/igGIQSGTWgYB2woK?=
+ =?us-ascii?Q?b/L7fF204LRrrst18sJT3J3HRN4UdYX3J+3hc1FZWDA5N1ZBnyQpVgkEbHgj?=
+ =?us-ascii?Q?T6u/p2Wnl0yNXfthFIQA7SIARCsINXdNyR5Lt5EUUepHyV9uOBpqkPioxeoz?=
+ =?us-ascii?Q?1cOrkqrVk1dEo16jq3qS/T722XsU5gqmmHjr1IxNvrvxpVFzgzjnEBsNmcg5?=
+ =?us-ascii?Q?1v5sGz5gAmBW7zWZsP5iGf9En0EgD+WKqUPgvnneSn04x4SwEqI1H5rnAdFq?=
+ =?us-ascii?Q?hvgXFFgGxGwd2ZPWcmVaXgmSRf8jEE3898e4wAHRNsN+Tan/GZdFrS3NLQj8?=
+ =?us-ascii?Q?WrWY6uNi3bX9GoqRqrNTsLV8I6+XwiiIxcUv0KiZNXPb5O4tzQrJA/6mA0MG?=
+ =?us-ascii?Q?Q3bLSFr0lAQUKOHKh5B5c5GvoPKhNM7O7yMqGuRvwBq6RMhZKbN6hGjGzsl8?=
+ =?us-ascii?Q?8tAHzeKBEizBMLQzgWnVcK3TWhgsxYrWltyXtuOl2MFdtS3CraGUN9GkOxT6?=
+ =?us-ascii?Q?1/4uh6QinXWQSyvnQTwwjB8dVCOX9bVg+SMgA5LiPDdKPSWOejQcyJsp7feH?=
+ =?us-ascii?Q?CzOY6G9xEJaeQnT02+YyMUFXRs8WUUOKU6w7nZKCgnH64byf6xFq8VWAn7lT?=
+ =?us-ascii?Q?UsblXIdO8KLRwyi1lrDCs0ReJuowOF/meCr6mUvgc/uy+JwRDJZWOouh8rWc?=
+ =?us-ascii?Q?o8F5Zowt8cCA4AsM6/oXnFUgBxlAcOyKhzDiQbQDtE2Ycui1rZ8NSRn4J/LK?=
+ =?us-ascii?Q?jHzbifDlypzxNMpGooB+mup4KU+RuoTNq5l7O4c3+VH7/ss/DkHAm5ruChKb?=
+ =?us-ascii?Q?WwdUP+dOBp+nCnz5qBNOiZha112UA6r7ULghnXVYhFKLQy8iWl71WORJY27f?=
+ =?us-ascii?Q?+bs6/1ogNVKnx/dwT6Dv2c/KTKMszO70ohbd9tB5g04+sz3+0GdPW33A61bA?=
+ =?us-ascii?Q?MHkGsSHt1EbykNtC+zLrCaqN8DMJGvDumtARMXhkPjaXsv39G0tN7Y7qPy6N?=
+ =?us-ascii?Q?XA+2obYzKQDY6iUoSZGnGh50eYDs0PFdqX3LDuJYHcHcA/xsxF2Doz8yiLF9?=
+ =?us-ascii?Q?UBgi6Up/0zm61+HdBwTvS3+oQVycbBgdr+lpiLK7z1/MYOznM48DqAcx7b5w?=
+ =?us-ascii?Q?kFYuVhG2Q5svwLbtH153UBm2IkxLKwMoaudAmjFyr7cJJlj6djISRK9K+97K?=
+ =?us-ascii?Q?qpud8w43vnMGFwCOxDxJydDgHbS8IBWbfQpK8HcNRH4uawJeILiD+nlr1SAy?=
+ =?us-ascii?Q?L9kTWFz98UHYxQBz681R9bG9NxjTY8UE4U7rKFmfeJtXk2SYqbQoIyjr8Yl/?=
+ =?us-ascii?Q?xcz6T5lkmTyNVClOSeVVb97uJRDTNqOcR+yvp+byvWX60kWXs36gVxuzPzE0?=
+ =?us-ascii?Q?nQFrRErOf3pBuE7SAFrIzfkWeX2us69n+Kdtl0UnILv4B9MFZK+1HLB/96P9?=
+ =?us-ascii?Q?bJiC5DfgGAgStW4xjIx6vojODX5lUtgdfUJ+1B+31z6EwCd/XJt+DNaTOyX6?=
+ =?us-ascii?Q?FVR+X4HbK1AIAUk0YohfE28dqYFuIA+6WObxvMtt8TVsxPjmD1Z0cEll+TiV?=
+ =?us-ascii?Q?x2NAGzz+vw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 85584f58-6992-4629-81e6-08de8133d456
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 18:53:12.8297
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 19:07:54.0612
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SneSktsC9rLEGq9XLIGfquPRAyiIMxiJ/bt0pAGdYf9dnIkkilMRdBjMTvlRwGxI0vcGAh+8fiepEeIvPkC0AFUbdmAlDw/GYYxke13G6/0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7670
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6qMftm8eC1IPWyKGVFISInrxxMIcQoaPEmrUwa+cR7KQua86GYHvk2wI/lq/REYi
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6912
 
-Greg KH wrote:
-> On Thu, Mar 12, 2026 at 09:11:32PM -0700, Dan Williams wrote:
-> > Greg KH wrote:
-> > > On Mon, Mar 02, 2026 at 04:01:51PM -0800, Dan Williams wrote:
-> > > > An "accepted" device is one that is allowed to access private memory within
-> > > > a Trusted Computing Boundary (TCB). The concept of "acceptance" is distinct
-> > > > from other device properties like usb_device::authorized, or
-> > > > tb_switch::authorized. The entry to the accepted state is a violent
-> > > > operation in which the device will reject MMIO requests that are not
-> > > > encrypted, and the device enters a new IOMMU protection domain to allow it
-> > > > to access addresses that were previously off-limits.
-> > > 
-> > > Trying to mix/match "acceptance" with "authorized" is going to be a
-> > > nightmare, what's the combination that can happen here over time?
+On Fri, Mar 13, 2026 at 11:53:11AM -0700, Dan Williams wrote:
+
+> Jason's framing of an enum rather than a boolean for "trust" seems
+> workable to me and melds "authorization" and "CC acceptance" into one
+> concept.
+
+I think you can also fold the auto-probe into this as well.
+
+The kernel would have some default policy for what enum value to set
+upon discovery and instead of 'disable auto probe' you'd arrange to
+set trust level 0 which would block driver binding and probing
+inherently.
+
+Policy in userspace then has to increase the trust level which could
+trigger an auto-bind.
+
+> > > Instead, give userspace all the tools it needs to deploy policy about
+> > > when to operate a device. When it does decide to operate the device give
+> > > it the mechanism to add confidentiality, integrity and performance to
+> > > that operation.
 > > 
-> > I do think Linux needs to mix/match these concepts. "Authorization" is a
-> > kernel policy to operate a device at all. "Acceptance" is a mechanism
-> > to operate a device within a hardware TCB boundary.
-> > 
-> > So, the truth table of combinations would be:
-> > 
-> > accepted	authorized	result
-> > 0		0		logically and physically disconnected device
-> > 
-> > 0		1		connected device, DMA is bounce buffered
-> > 				and loses confidentiality, integrity,
-> > 				and performance
-> > 
-> > 1		0		logically disconnected device, but a
-> > 				relying party trusts that the device is
-> > 				not spoofing authorization.
-> > 
-> > 1		1		connected device, DMA is direct and gains
-> > 				confidentiality, integrity and performance
-> > 
-> > To say it another way, when the above distinguishes "logically" vs
-> > "physically" disconnected it is whether the device interface can be
-> > verified to not be under adversarial control. An unaccepted device can
-> > do limited damage, but still can bounce buffer secrets out of the TCB if
-> > so directed.
+> > Yes, this is a policy decision, and if you are only saying this is about
+> > "which IOMMU should we select", then that's a dma layer configuration
+> > option.  Let's not call that "acceptance" please.
 > 
-> I really don't agree with this, but I can't think of why at the moment.
-> I feel like you are looking at this purely in the TCB point of view,
-> while I don't feel that is something that should be considered "special"
-> at all here.  Linux has, for the most part, always trusted the hardware,
-> and now you are wanting to not trust the hardware.
+> Done.
 
-I think framing "trust" as an enum rather than a boolean better
-addresses this problem.
+AFAICT "which IOMMU should we select" should entirely be driven by the
+TDISP state being in RUN
 
-> for some things and parts of the kernel.  Which is great, it's
-> something that I have wanted to change for a very long time now, but
-> let's do it right if at all possible.
-> 
-> Give me a few days to come up with a better reply, let me think about
-> this some more...
-
-Sure, but I also think we might already be converging, more below...
-
-> > > We need to either "trust" or "not trust" the device, and the bus can
-> > > decide what to do with that value (if anything).  The DMA layer can then
-> > > use that value to do:
-> > 
-> > Trust is separate. For example, there are deployed use cases today where
-> > the device is trusted, but unaccepted. Acceptance support for those
-> > cases is mostly a performance optimization to be able to stop performing
-> > software encryption on top of DMA bounce buffering.
-> 
-> If "acceptance" is just a performance issue, I think you all need to go
-> back to the marketing people as that's probably not what they intended
-> to have happen here.  For some reason I thought they were selling this
-> as "security", not "speed" :)
-
-Do not get me wrong there are several threat models mitigated by having
-hardware assurance that all communications with the device are
-confidentiality and integrity protected. Hardware assurances that
-attempts to subvert those protections result in hardware error states is
-part of the value. However, you can approximate a subset of those
-protections with high overhead workarounds.
-
-> > > > Subsystems like the DMA mapping layer, that need to modify their behavior
-> > > > based on the accept state, may only have access to the base 'struct
-> > > > device'.
-> > > 
-> > > ^this.
-> > 
-> > The DMA layer is not operating on a trust concept it is effectively
-> > being told to select an IOMMU.
-> 
-> Ok, then that's independent of "acceptance", that is "use this IOMMU vs.
-> that one" type of thing which is just a "basic configuration for speed"
-> type of thing as you mention above :)
-> 
-> Let's not confuse that with anything else like "acceptance" please.
-
-That is fine, and I think you and Jason may be hitting on the same
-concern.
-
-> 
-> > > > It is also likely that the concept of TCB acceptance grows beyond
-> > > > PCI devices over time. For these reasons, introduce the concept of
-> > > > acceptance in 'struct device_private' which is device common, but only
-> > > > suitable for buses and built-in infrastructure to consume.
-> > > 
-> > > Busses are what can control this, but please, let's not make this a
-> > > cc-only type thing.  We have the idea of trust starting to propagate
-> > > through a number of different busses, let's get it right here, so we
-> > > don't have to have all of these different bus-specific hacks like we do
-> > > today.
-> > 
-> > The conflation of "trust" and "acceptance" has been the main stumbling
-> > block of past proposals. As you have said before "kernel drivers trust
-> > their devices". That precedent is not being touched in this proposal.
-> 
-> Ah, but I WANT to touch that.  Let's FINALLY solve that!  Or at the very
-> least, provide the infrastructure in the driver core to allow busses
-> that want to do that, to be able to do so.
-
-Jason's framing of an enum rather than a boolean for "trust" seems
-workable to me and melds "authorization" and "CC acceptance" into one
-concept.
-
-> > Instead, give userspace all the tools it needs to deploy policy about
-> > when to operate a device. When it does decide to operate the device give
-> > it the mechanism to add confidentiality, integrity and performance to
-> > that operation.
-> 
-> Yes, this is a policy decision, and if you are only saying this is about
-> "which IOMMU should we select", then that's a dma layer configuration
-> option.  Let's not call that "acceptance" please.
-
-Done.
-
-...and there is precedent for a "trust" enum, lockdown levels. In that
-case as well there are a menu of priveleges that can be incrementally
-enabled by a policy.
-
-> > This is a "CC-only type thing" because only CC partitions the system
-> > into two device domains. One where "trusted unaccepted" devices can
-> > operate without CC protections and "trusted accepted" devices can
-> > operate with CC protections and direct DMA.
-> 
-> In other words, it's an IOMMU switch, so why not use the switch
-> infrastructure?  </me runs away...>
-> 
-> anyway, let me think about this some more...
-
-Will do, however in the meantime I am going to speculate that this "trust
-as enum" idea is workable and start drafting some patches towards that.
+Jason
