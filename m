@@ -1,66 +1,41 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F07367F40
-	for <linux-coco@lists.linux.dev>; Fri, 13 Mar 2026 10:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DC034B1AC;
+	Fri, 13 Mar 2026 10:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773398796; cv=none; b=D7QPWM7BxnLrmc2LFqnouZmWIl4GHxMD8rhaxWFcI/3AzYWT2L4zAlOQyhaSDQl+4pe9ewYgbxZZdsi0mVNrDIWFkKayRLWAOWliWxmPfCNbHXr13zJ544qwFYC9GgWA6bXVkaA4XDU5Jzms1xFwqZx9jkqf4TmHZYGmLQM5TaE=
+	t=1773398953; cv=none; b=YBCfVL6KMw5ozrrBIQwUdc0iY4o2UUc0F1+oZMPJddg79rzDSScbQTQvmHMV+SO3lsvrfbNeeRFOMoHa4ZPdTI9bAoxKQPQFBAjC8OPmEDwozL5C5+6vAfaBoBRcZUU31jv6bh/Rygk+ngkL9RlK/+DpBbTMj/ot7zV3gVV5Khs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773398796; c=relaxed/simple;
-	bh=PTmY2nKD6hoY/LGYYNm8rJAUyVDhur4/C7CTrQQPHqU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HI18Kv76IzXokuuRA5l6VojRBlNwrRaSVMIqIgbMHmOqWXnwc2fpGHCrHqqMrlp+a7aJBFwEsfCf46fygGO6BCTYapHZU2hDIzIIWUzHQpTRQma1FnRgAuktOglHwT2y77VBLvTJ4vVNOUILTA/Sba/m20b6fglklJqcI0KxCY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fZge6TEc; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1773398953; c=relaxed/simple;
+	bh=f1vlby8IepCE6zMqXtz5XmFhmdjBRd/wUtjNIzvqj4g=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=elaieqa+uBxMguuCAz2INEQjdibt+8jLmSJryrebh+qKISkIF4OYqYGr9vdzDNsJlhIXYpb73Ffc5UHsDIvGIBqT8kRjP/WuzwL6tYg6xW+pf+XQ4G05jBGw2NO7A76B/tBEXeOK3Z8KHvnQlfgoFLWUwOvZ9oCGt1WqJqWhBhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=Dyy12mvY; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fZge6TEc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773398795; x=1804934795;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PTmY2nKD6hoY/LGYYNm8rJAUyVDhur4/C7CTrQQPHqU=;
-  b=fZge6TEc2HVgc9YXVZPkJw55GL5EELLWTuq8WgJJlkWFQSDXux/gG3C+
-   lyKCWwnudSvddpETPmd0zGoPkBdEkGV4YqSxSqcSqp4ai4ODvBbW5wfpv
-   LZJkcS1zMgyzpJ4RADd8NOeJSwGgfxndQGsefo8wNvWva1UG1bchcK/Ge
-   nXPiLXSolzOMZalt3pK2w0G6hDG0XzzHKOj0nSZfhulITdn7IJszmWeEk
-   gdXBd5GUr+cHhg0wpkiE+oEj8Dl+Z9dPzDx2CQYaLvVEXudP18c0N9ajh
-   tE5F0Fs1fgFAVJfqwbgHzkyI6hOCvfkTHk3Zki/1GrZM884Fwnq4iQfL3
-   A==;
-X-CSE-ConnectionGUID: I2peHxJ+TEiGDroLAvZaDw==
-X-CSE-MsgGUID: G6EvSMCJSGOp7uZP4v86Pw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="74692811"
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="74692811"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 03:46:35 -0700
-X-CSE-ConnectionGUID: Ko8UEkYQR9+8HbK6k84lPA==
-X-CSE-MsgGUID: qY5hGhJWRMe74quojS+aTg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="221077974"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa009.jf.intel.com with ESMTP; 13 Mar 2026 03:46:31 -0700
-Date: Fri, 13 Mar 2026 18:26:14 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org, aik@amd.com,
-	bhelgaas@google.com, alistair23@gmail.com, lukas@wunner.de,
-	jgg@nvidia.com, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>
-Subject: Re: [PATCH v2 10/19] x86, swiotlb: Teach swiotlb to skip "accepted"
- devices
-Message-ID: <abPmRsJ7cvLJ272k@yilunxu-OptiPlex-7050>
-References: <20260303000207.1836586-1-dan.j.williams@intel.com>
- <20260303000207.1836586-11-dan.j.williams@intel.com>
- <yq5ah5qx9t77.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="Dyy12mvY"
+Received: from 8bytes.org (p200300f6af1d96009e24f893febe622b.dip0.t-ipconnect.de [IPv6:2003:f6:af1d:9600:9e24:f893:febe:622b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 5776A1A4829;
+	Fri, 13 Mar 2026 11:49:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1773398945;
+	bh=f1vlby8IepCE6zMqXtz5XmFhmdjBRd/wUtjNIzvqj4g=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=Dyy12mvYn7KHjEjWwdklZE7GJM+5P5nXxR4selq5Wmz8uxpur75IXyVSVIbvv6ne2
+	 M28lmzGPclPNUaMkextyllk2zQsI251HwcUNXLW8MuyS6XoJ3mIee8d25Tv+zPQET6
+	 nLPa5hf9K6IFRM2UTH8UDNoeG10iTmfloT3Pj1AfZNNyjyHdkBJYiy2lUNqUVRqKSt
+	 Pi/gyKbJ0WBG+zv+YX+Mp//12vd/HFuPFd5Ckthr97RvGNX362OO4KJcRZxR7Ceg7O
+	 OJMaqqr1aVEj7F7uY+ngrL7hGVwJwmiZegTjLYbRv+ADI02mOj1ySQQVwam1RcCJD6
+	 Ply5oTWM6QJZQ==
+Date: Fri, 13 Mar 2026 11:49:04 +0100
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: Re: SVSM Development Call March 11, 2026
+Message-ID: <oppeoroxsrwvfmgc3m7f6fovq7xztxwdkei4fjeyfbew6zkoqu@bogesz5wdfgu>
+References: <ete4u42tzmawocptkhibgkv6tgg7rlqcpncdutnk36qtpdejcz@cxhur5ib7dzz>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,23 +44,10 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <yq5ah5qx9t77.fsf@kernel.org>
+In-Reply-To: <ete4u42tzmawocptkhibgkv6tgg7rlqcpncdutnk36qtpdejcz@cxhur5ib7dzz>
 
-> > @@ -365,6 +365,7 @@ void __init swiotlb_init_remap(bool addressing_limit, unsigned int flags,
-> >  
-> >  	io_tlb_default_mem.force_bounce =
-> >  		swiotlb_force_bounce || (flags & SWIOTLB_FORCE);
-> > +	io_tlb_default_mem.bounce_unaccepted = flags & SWIOTLB_UNACCEPTED;
-> >
-> 
-> This should be.
-> 
-> @@ -373,7 +373,7 @@ void __init swiotlb_init_remap(bool addressing_limit, unsigned int flags,
->  
->  	io_tlb_default_mem.force_bounce =
->  		swiotlb_force_bounce || (flags & SWIOTLB_FORCE);
-> -	io_tlb_default_mem.bounce_unaccepted = flags & SWIOTLB_UNACCEPTED;
-> +	io_tlb_default_mem.bounce_unaccepted = !!(flags & SWIOTLB_UNACCEPTED);
+Meeting minutes are now posted here:
 
-Ah yes, I just realized assigning to a 1-bit field would truncate the
-assigned value to its LSB...
+	https://github.com/coconut-svsm/governance/pull/99
+
+-Joerg
