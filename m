@@ -1,60 +1,61 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDD8264614
-	for <linux-coco@lists.linux.dev>; Fri, 13 Mar 2026 10:27:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A062381B18
+	for <linux-coco@lists.linux.dev>; Fri, 13 Mar 2026 10:44:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773397667; cv=none; b=geaMgsinZBkK44qHVwBiiNHJpfW7LSJS/f31naucYQfHYDFDBPOJiH5R9v+V+chyNByH3NUmnyXMvFZUlUt4MD6dHxi33N/ujp2pQtHL07rftD2VE0NYCeoKshQJNSHIbW4JZIcCpVRGAQvWBlbCMp6+0GZffVYO5BQpOyyVhNY=
+	t=1773398652; cv=none; b=nmXvrFt/ah4ydR3JihNKrkZ28RMDneBT0yC4p/dettxB/RaK4uEbecJvibFjFyJnTZW1E8TjJebqZY7PAiAYO7HUXVsWWbCtykKNYAHhSTNhrdF9wC6PeI3g95RqKQNQdwU3ybmDRK/WHeyZISkPXlz9qajIyawWZsxvwF48Pi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773397667; c=relaxed/simple;
-	bh=LRvz29aOmDthviDx9NvYAHEaIikV3tNGXz0Q25oWcNY=;
+	s=arc-20240116; t=1773398652; c=relaxed/simple;
+	bh=qj7zF2/b8p7pJFMEJOM5RewBphD0eNXZF/m0BHqgcW4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tgZFodx4PT/VfdPOpkeMUv2A6pKB2wXdQt4OSS0c1+1X3FsKJRnb/xg5EgX1C2fWQ7E/29ZXWdSpQpEUI3q9xEUskjxqbCFO+HEvDmJPmxUJnBOi6fS6Fqs3wxmLiny08JH9nXufKc2Tx5LkBzbjs1yLM5ueiIxq+5K9qwW1v9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X4b1IqKA; arc=none smtp.client-ip=198.175.65.10
+	 Content-Type:Content-Disposition:In-Reply-To; b=E49z7bSIF01n3h1gceH90UytwA9nV1e2VY6TDrGG9dYIeplO/E4Xaa96MGEOpwZuZ4gof2cWAQWQ53ZVaD0MhjyK+T04ObUUwGTUh7lUp2euB/67IVkFt0Sznzd/MeOWX3aYamfmdtN4uoPJBp+RIK/gyeEgnVk41TwUygMZT+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IW4r9OLM; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X4b1IqKA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IW4r9OLM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773397666; x=1804933666;
+  t=1773398651; x=1804934651;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=LRvz29aOmDthviDx9NvYAHEaIikV3tNGXz0Q25oWcNY=;
-  b=X4b1IqKAQN0mpOMzOadhgM2VqF12NhcwAHKlNVwXVJamNOd/wuNqQnel
-   J3k8JFP9g2OlbDjOpKSJ/qpS4sXVoewTWbfO6X5iWCtc5Zw70JwJLzZs1
-   6m7BhimE226iST5Iypbd68jtN8XaOlVEF/RQETLsSZ05rwzK63XuLC7JD
-   dDsGzmUvllQpVyfGiuyMFpaeC0Mgu43nHAApAExU2/X3AIu7awdrlQL58
-   E7l5Dq7zBhLvyxhx0KyVwzNb+tiXGcvmH0fsx0z+40aIXyNpKcRM1rdXZ
-   1UFi1O+JwfGenOSJ4XmYcYNN8Ho5DTRS/78TfDy3KcccoPYq/Cz2Lhuve
+  bh=qj7zF2/b8p7pJFMEJOM5RewBphD0eNXZF/m0BHqgcW4=;
+  b=IW4r9OLMvETZiiI5wVU3LZBHnBOMvI8VK4gX5iUa4L2G5Jg+0qHsyd/p
+   p9XVnjFnUguBaoFOXtzm1qqCD9BfHHtrWSDfeRe3Nj9TMiA8LS2iDpgoX
+   9MBg+owPssY9sPkZaWDUlc+FOiGllvb0Dnrcgnpjm5HAmBG3t5KOE2YEU
+   xEZU2ddMZT0GvHpdcNmOM3ZRjyoHCzHwFTt7Mcld+0jGebzlEY/cajqfX
+   JXvUOyvvX9W3SSGk78BQlCzg8l2LbylI9lu8esLrKrG3dZyhvHJUp8RuZ
+   uIHZhEXL18uF7pKXvf4dIZegIiVYs1usuqAtBgdVTXxo7ZDaJr2sCEdD+
    A==;
-X-CSE-ConnectionGUID: H9D3gT4WQCmQyTzl2EFwug==
-X-CSE-MsgGUID: gCjuP8/CTVSzX9brQCH20Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="91884299"
+X-CSE-ConnectionGUID: 0rVteNJpReytaP5bRjtGUQ==
+X-CSE-MsgGUID: mBtuOvWWQFWl+TmlCoeFng==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="73520519"
 X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="91884299"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 03:27:46 -0700
-X-CSE-ConnectionGUID: ql9T5RDOTrm0HsrOIaLBzA==
-X-CSE-MsgGUID: SyULQGfjR7OCZUjrsWglMQ==
+   d="scan'208";a="73520519"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 03:44:10 -0700
+X-CSE-ConnectionGUID: dSBoXgbYSNyTfGuRUaPTIA==
+X-CSE-MsgGUID: m7xu9zO5Qb+n5S1ey7QKKw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="251640572"
+   d="scan'208";a="244149218"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa002.jf.intel.com with ESMTP; 13 Mar 2026 03:27:43 -0700
-Date: Fri, 13 Mar 2026 18:07:25 +0800
+  by fmviesa002.fm.intel.com with ESMTP; 13 Mar 2026 03:44:08 -0700
+Date: Fri, 13 Mar 2026 18:23:51 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	gregkh@linuxfoundation.org, aik@amd.com, aneesh.kumar@kernel.org,
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org, aik@amd.com,
 	bhelgaas@google.com, alistair23@gmail.com, lukas@wunner.de,
-	jgg@nvidia.com, Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH v2 08/19] PCI/TSM: Add "evidence" support
-Message-ID: <abPh3d4+opAkot3p@yilunxu-OptiPlex-7050>
+	jgg@nvidia.com, Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH v2 09/19] PCI/TSM: Support creating encrypted MMIO
+ descriptors via TDISP Report
+Message-ID: <abPlt8oNUOqGvbA3@yilunxu-OptiPlex-7050>
 References: <20260303000207.1836586-1-dan.j.williams@intel.com>
- <20260303000207.1836586-9-dan.j.williams@intel.com>
+ <20260303000207.1836586-10-dan.j.williams@intel.com>
+ <yq5a4imuanoa.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -63,47 +64,46 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260303000207.1836586-9-dan.j.williams@intel.com>
+In-Reply-To: <yq5a4imuanoa.fsf@kernel.org>
 
-> +void pci_tsm_init_evidence(struct pci_tsm_evidence *evidence, int slot,
-> +			   enum hash_algo digest_algo)
-> +{
-> +	evidence->slot = slot;
-> +	evidence->generation = 1;
-> +	evidence->digest_algo = digest_algo;
-> +	init_rwsem(&evidence->lock);
+> > +		if (last_bar < bar) {
+> > +			/* transition to a new bar */
+> > +			last_bar = bar;
+> > +			/*
+> > +			 * The tsm_offset for the first range of the BAR
+> > +			 * corresponds to the BAR base.
+> > +			 */
+> > +			reporting_bar_base = tsm_offset;
+> > +		} else if (tsm_offset < last_reporting_end) {
+> > +			pci_dbg(pdev, "Reporting ranges within BAR not in ascending order\n");
+> > +			return NULL;
+> > +		}
+> >
+> ....
+> > +		range_off = tsm_offset - reporting_bar_base;
+> > 
+> range_off will always be zero? Should we do
 
-IIUC, this function is for link tsm driver, is it? But in the following
-patch, devsec tsm would consume pci_tsm_mmio_alloc() which uses
-evidence->lock. So my solution is to initialize the lock on tsm
-construction.
+tsm_offset comes from Device Interface Report, MMIO RANGE, First 4k
+Page. How do you interpret the exact meaning of this field?
 
---------8<--------
-diff --git a/drivers/pci/tsm/core.c b/drivers/pci/tsm/core.c
-index 9f062218c312..c55deeafe32b 100644
---- a/drivers/pci/tsm/core.c
-+++ b/drivers/pci/tsm/core.c
-@@ -1175,7 +1175,6 @@ void pci_tsm_init_evidence(struct pci_tsm_evidence *evidence, int slot,
-        evidence->slot = slot;
-        evidence->generation = 1;
-        evidence->digest_algo = digest_algo;
--       init_rwsem(&evidence->lock);
- }
- EXPORT_SYMBOL_GPL(pci_tsm_init_evidence);
+My understanding is, it is the obfuscated host start pfn of this range,
+if this range has offset to the BAR start, this field should also be
+offsetted.
 
-@@ -1198,6 +1197,7 @@ int pci_tsm_link_constructor(struct pci_dev *pdev, struct pci_tsm *tsm,
-        }
-        tsm->pdev = pdev;
-        tsm->tsm_dev = tsm_dev;
-+       init_rwsem(&tsm->evidence.lock);
+But if the first range in the BAR should be aligned to BAR, otherwise
+there is no way for guest to position the range in the BAR.
 
-        return 0;
- }
-@@ -1221,6 +1221,7 @@ int pci_tsm_devsec_constructor(struct pci_dev *pdev, struct pci_tsm_devsec *tsm,
-        pci_tsm->tdi = NULL;
-        pci_tsm->pdev = pdev;
-        pci_tsm->tsm_dev = tsm_dev;
-+       init_rwsem(&pci_tsm->evidence.lock);
+So the logic here is:
 
-        return 0;
- }
+  reporting_bar_base:	the first obfuscated pfn for the BAR, the BAR pfn
+  tsm_offset:		the current obfucated pfn for the BAR.
+  tsm_offset - reporting_bar_base: the offset to the BAR.
+
+> 
+>  		range_off = tsm_offset & (pci_resource_len(pdev, bar) - 1);
+> 
+> 
+> So that we correctly handle if the interface report is reporting a range
+> within a bar. The only requirement here is bar address should be aligned
+> to its size and mmio_reporting_offset should not add offsets in that range.
