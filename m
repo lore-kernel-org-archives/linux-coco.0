@@ -1,51 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA6C36CE05
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B8F36D4FA
 	for <linux-coco@lists.linux.dev>; Sun, 15 Mar 2026 13:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773583194; cv=none; b=pP+Tr/uFIXHTtghgBq+SS/YJefX6LJZhS4yNZRVCNhz3a/FMAzbY18TslfltJYafQouJoLlob8huDr4hRUwPbWKg8AI2MBPIVxr4zEXaYSYtOnSD5Mz18w+DdGGNTi+wL0VImIhTJ39/ndJZWayND8Z57vp31yFQ4nXTzGnwJGI=
+	t=1773583210; cv=none; b=G8T6PurYdA+APl6gUPWguANZHhCGf4W5urlySqCyx5ZPqRENGobCUwr3srxxw7o8nqZlrPpYqeyjSQO/JnYEfdz7FM5UnIO1KQeHW15h0l6W+oUcSDJUMMVZYKkfghocmF9syWQmw1yWh/WyaUGjCjRh9cTxpH4wq+OtkcKT9Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773583194; c=relaxed/simple;
-	bh=lS5h9Kr8Hw4PlPxrBW5fZQ5sCJHX/djsuyeiSlkQS6s=;
+	s=arc-20240116; t=1773583210; c=relaxed/simple;
+	bh=NsSwEUJo/IKxts+1rlSdsmQb/o/Uv38ZVDhpgJa+5Bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDK4ED0XZjmAM1WnUR0oeRGr4+clSSKKkbxjq4GqSnhykpbjsw+TjWs/53TEn4+K/LiIsx/RsGfeAJcQU54MwSA65BURjEdnPlyYGaDzFUgA3oGGMPqTkmizx2DsebaYRTysxGHyww6tvScXBTh263ImKRpSlqj+kyop+vzhQwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LdGpw17A; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=oGmBJvx9KdapZT9nAa29lC9acw49EtB9SKwUC6nnL2Md1mVUohkEAn2Dg9gyjWRe20qI0cuWDPtDlo4hAsiXFS4tt/sC1ZgktP15od9VuAodVos6dfLhZupLO0plx1gP1NUyM/krTRTTu/llAb/tS8Kaq+MkyGMIaFgkbOQvifY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JhL/BLV7; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LdGpw17A"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JhL/BLV7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773583192; x=1805119192;
+  t=1773583193; x=1805119193;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=lS5h9Kr8Hw4PlPxrBW5fZQ5sCJHX/djsuyeiSlkQS6s=;
-  b=LdGpw17AwAF1AkyTOpanqY2p2RPedRFqU2VE6cncFVYhT/5tU7Gth0YU
-   lTzAwHoxHJmDQ9oHY71irilCiytDwQxC2Uta2/4uCQrk18ReLLhEzjAtv
-   cbMEXwGY7XcVDaEsc7RC94wqgP+0cVf/NAyaHJZPQtyr/4YcGRznzVjkY
-   HFMYsGilsal0h4+EdMrDVGe5yeVJgMq8QU231RJWZwsmqms54uSHMbzvF
-   Vu7AfXDQ2Z+prWniFtpa41bZwNQNIWP5ykvNQGZz2B0uf2YhZdgUWUIfO
-   77nO1GTQxoY5nJnRRqU9XXT+EeVWKp7wQO3YtMbQ/fK3wRhxMq7zH+cnl
+  bh=NsSwEUJo/IKxts+1rlSdsmQb/o/Uv38ZVDhpgJa+5Bk=;
+  b=JhL/BLV7Y1sGZZC/RqQoFRJaweUzQMT+0EWc8NPH4a2U8rl2BBgEzQ0p
+   LTa1ZeKJ/z+LXQfBFcruf4o4OZg6+8u1chWtg7Ed7JBsW+ntq9aivJWai
+   aZpY61LHZpFEdBrCl6mL1oBaT6bR7dlpS0n4gyHqFipflbUwzVRD6PCW2
+   aweqEaY6UQFD08LaKRQvPoDvI7c1Hg9dVK+MfYx87CZRupSJrJl/9Tn8i
+   Su8cQRvjDh4yJFeRG9PjZEGMqguPJUd08ukmfP/a8InWjie4m5lrmyrrx
+   /H6yYFfzmHPJHH/6SPYomKe8jsOlW4uE3Zx60nWa8nd3Oduooyc4xtHoD
    g==;
-X-CSE-ConnectionGUID: Tc0aQL3ZQEm7MTX2gNxQeg==
-X-CSE-MsgGUID: Pf0Cv26SQOCo9gMLOsYOrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="74732574"
+X-CSE-ConnectionGUID: mKFCrNxpTQ+eQK7PaKIHsQ==
+X-CSE-MsgGUID: H9nkG4xxR+2oH0S3oSeXdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="74732584"
 X-IronPort-AV: E=Sophos;i="6.23,122,1770624000"; 
-   d="scan'208";a="74732574"
+   d="scan'208";a="74732584"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
   by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2026 06:59:46 -0700
-X-CSE-ConnectionGUID: u20j5D/XS0OuA2jry8JNxA==
-X-CSE-MsgGUID: r9qqBnKfQ9iPruNxn5RNcA==
+X-CSE-ConnectionGUID: zDYqwXEeT2a1uv5vcnit5Q==
+X-CSE-MsgGUID: O0jjjL4yQomgxaL/LXqQYw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,122,1770624000"; 
-   d="scan'208";a="226123090"
+   d="scan'208";a="226123094"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
   by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2026 06:59:46 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
 	linux-coco@lists.linux.dev,
 	kvm@vger.kernel.org
 Cc: binbin.wu@linux.intel.com,
@@ -70,12 +69,10 @@ Cc: binbin.wu@linux.intel.com,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH v5 21/22] x86/virt/tdx: Document TDX module update
-Date: Sun, 15 Mar 2026 06:58:41 -0700
-Message-ID: <20260315135920.354657-22-chao.gao@intel.com>
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH v5 22/22] x86/virt/seamldr: Log TDX module update failures
+Date: Sun, 15 Mar 2026 06:58:42 -0700
+Message-ID: <20260315135920.354657-23-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260315135920.354657-1-chao.gao@intel.com>
 References: <20260315135920.354657-1-chao.gao@intel.com>
@@ -87,70 +84,56 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Document TDX module update as a subsection of "TDX Host Kernel Support" to
-provide background information and cover key points that developers and
-users may need to know, for example:
+Currently, there is no way to restore a TDX module from shutdown state to
+running state. This means if errors occur after a successful module
+shutdown, they are unrecoverable since the old module is gone but the new
+module isn't installed. All subsequent SEAMCALLs to the TDX module will
+fail, so TDs will be killed due to SEAMCALL failures.
 
- - update is done in stop_machine() context
- - update instructions and results
- - update policy and tooling
+Log a message to clarify that SEAMCALL errors are expected in this
+scenario. This ensures that after update failures, the first message in
+dmesg explains the situation rather than showing confusing call traces from
+various code paths.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+Acked-by: Kai Huang <kai.huang@intel.com>
 ---
-v5:
- - use "update" when refer to the update feature/concept [Kai]
+v4:
+ - Use pr_warn_once() instead of reinventing it [Yilun]
+v3:
+ - Rephrase the changelog to eliminate the confusing uses of 'i.e.' and 'e.g.'
+   [Dave/Yilun]
 ---
- Documentation/arch/x86/tdx.rst | 36 ++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ arch/x86/virt/vmx/tdx/seamldr.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/Documentation/arch/x86/tdx.rst b/Documentation/arch/x86/tdx.rst
-index 61670e7df2f7..d4e257542d4c 100644
---- a/Documentation/arch/x86/tdx.rst
-+++ b/Documentation/arch/x86/tdx.rst
-@@ -99,6 +99,42 @@ initialize::
+diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+index e6b7af410c54..4e1ad06506cc 100644
+--- a/arch/x86/virt/vmx/tdx/seamldr.c
++++ b/arch/x86/virt/vmx/tdx/seamldr.c
+@@ -222,6 +222,11 @@ static void ack_state(void)
+ 		set_target_state(update_data.state + 1);
+ }
  
-   [..] virt/tdx: module initialization failed ...
- 
-+TDX module Runtime Update
-+-------------------------
++static void print_update_failure_message(void)
++{
++	pr_err_once("update failed, SEAMCALLs will report failure until TDs killed\n");
++}
 +
-+The TDX architecture includes a persistent SEAM loader (P-SEAMLDR) that
-+runs in SEAM mode separately from the TDX module. The kernel can
-+communicate with P-SEAMLDR to perform runtime updates of the TDX module.
-+
-+During update, the TDX module becomes unresponsive to other TDX operations.
-+To prevent components using TDX (such as KVM) from experiencing unexpected
-+errors during updates, updates are performed in stop_machine() context.
-+
-+TDX module update has complex compatibility requirements; the new module
-+must be compatible with the current CPU, P-SEAMLDR, and running TDX module.
-+Rather than implementing complex module selection and policy enforcement
-+logic in the kernel, userspace is responsible for auditing and selecting
-+appropriate updates.
-+
-+Updates use the standard firmware upload interface. See
-+Documentation/driver-api/firmware/fw_upload.rst for detailed instructions
-+
-+Successful updates are logged in dmesg:
-+  [..] virt/tdx: version 1.5.20 -> 1.5.24
-+
-+If updates failed, running TDs may be killed and further TDX operations may
-+be not possible until reboot. For detailed error information, see
-+Documentation/ABI/testing/sysfs-devices-faux-tdx-host.
-+
-+Given the risk of losing existing TDs, userspace should verify that the
-+update is compatible with the current system and properly validated before
-+applying it.
-+
-+A reference userspace tool that implements necessary checks is available
-+at:
-+
-+  https://github.com/intel/tdx-module-binaries
-+
- TDX Interaction to Other Kernel Components
- ------------------------------------------
- 
+ /*
+  * See multi_cpu_stop() from where this multi-cpu state-machine was
+  * adopted, and the rationale for touch_nmi_watchdog().
+@@ -266,6 +271,8 @@ static int do_seamldr_install_module(void *seamldr_params)
+ 			if (ret) {
+ 				scoped_guard(raw_spinlock, &update_data.lock)
+ 					update_data.failed++;
++				if (curstate > MODULE_UPDATE_SHUTDOWN)
++					print_update_failure_message();
+ 			} else {
+ 				ack_state();
+ 			}
 -- 
 2.47.3
 
