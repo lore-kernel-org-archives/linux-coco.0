@@ -1,222 +1,207 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79E7374171
-	for <linux-coco@lists.linux.dev>; Mon, 16 Mar 2026 09:07:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773652026; cv=fail; b=k3FxXZ9xW7hShpS+UlTbod3ODwEnZbwGdh0mEbvgUXbJmk5WpkKGtMh2eXJuk9QgHAVZBjg1w7SsxwbXPaHABhcAxjzm9I9k55IRO3f8QRkJf+FXKViN6HRR10hwtcI87euIC/P/WHvc6nyaQSBqwRu3BaMYEANNs05+1Jq5qQ0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773652026; c=relaxed/simple;
-	bh=gSZ+1GcIUdP4rm+G7j3QhiSolTnRQXBv87v+xgVgQt4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YDDMXnbxw20CC9WCJiXzHCDJmi0+hDU+wKtQ3nyu6EUEijhgVymnmybcntpN7b1ib/fjReymZynO1MTHSd0heCGwJ8ou3M/R0yhffJ77PuZjLDguvIO8Cg6/NubZ5LsXjbPglNbxqeK4Mpoghk/t3dgHUQM1WWKBtIB5ssZCuyM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TezdgO3k; arc=fail smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4765C3932F9
+	for <linux-coco@lists.linux.dev>; Mon, 16 Mar 2026 11:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773661875; cv=none; b=YmIqpvEeOPRxYYAoPgGqbx4OmLqiWmHHgWjH3629HJ9gP2NNVEzFB7eyqyxI14j61de+3EZW1DvqOJ8nnTbtX0YGqG7F13NdsJhwlgdV1dq2ntI3t5vj2mkW7s6i+iLZyuj3c2+eFbgRAl1QLaBgZbaojknFQM6Sv90G/Sn3tyM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773661875; c=relaxed/simple;
+	bh=T0JYGOr6ugZU2jMvsc9HFYY1EYF/qs9KP14VMrqzgE8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V2wW02xHM2J4gUxiEsiamaqZ8B/rhZLf4Nt+6uGnF06tVvrC+9EgOWnRL5Qha3MUcRwaMSKZllMahD/NFY0dZB16g83NRem11qzw2K5zZYA+tMAV0JKVWoMej36ViAJbcu+0b9ilJvefCcjEXe2SnfU1doKYRF4gGgUt3V6WPbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eBO+8Led; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TezdgO3k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773652025; x=1805188025;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=gSZ+1GcIUdP4rm+G7j3QhiSolTnRQXBv87v+xgVgQt4=;
-  b=TezdgO3kekyv7LPgeAuymKgziKJls03VDw3ygHFkjFqWVAUSvlnw/hrw
-   fEO/yTXLxB+X8Ih91szES2czFuTdqNU+N0eg+QTCfZuiZ/BY/K1NrJR/N
-   ZtwwZFDQxQNms/GxTYxzgIRMojoGPrC5V6SIPmi+iaoMIRSRUWr0YNqFW
-   ED9BznHuiuaxuqycTeY/O5jYxikPs3k2CIpkCGirqjHjwuT7WVkrHsMD9
-   qxQuvIb35VWDe3NtiplKK8JVFW/52guPRmGTtZKd5t0nA8tcwIbLRgbaD
-   zZryT2Lz28Cq7SSJTkbN2gb1xw11j2iQvLPVEVTk8DSV3iK84NINYonnh
-   A==;
-X-CSE-ConnectionGUID: LyC5CKcXT+6Y7leQ6k+EHQ==
-X-CSE-MsgGUID: OpLg0+LoTwSpsK01uxfLGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="74849128"
-X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; 
-   d="scan'208";a="74849128"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 02:07:04 -0700
-X-CSE-ConnectionGUID: zng6GygKQCmROZHB82dFlQ==
-X-CSE-MsgGUID: MTyVpw3nQ06zOm1GBn+9tA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; 
-   d="scan'208";a="226846419"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 02:07:03 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 16 Mar 2026 02:07:02 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 16 Mar 2026 02:07:02 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.65) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 16 Mar 2026 02:07:01 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I+zW1oQNXEXqL1V6hmgpi0xjxNVPqz98RRwdLiG/9SsUK6uPOKKxO6U+aSOuYVxIyUEibDoEWToCC+5t6F+HiWG4XCZv8yPi0b5xdT9RlRDQiuWq2bVzDlmYv+Y6khzuVg2hw/eAnIiTQJ8wYtOnIX/xWdrFC6EwMCKNTudw8NJo4cakuYDwfi57JQOz7PrltrSofftXJl4rq5MUXc/73IB2XBgg4PF7m6imd3df5CocnPKLI4grJVw3QxmIxTFHIsDg0TjGF79P5Qe0fhJdqoSAX3u7FwPyTgwrCFp8ygT0P1G0dmcxdBgsGKpL0gyECOy7LifZn5NsXcCyxovBlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gSZ+1GcIUdP4rm+G7j3QhiSolTnRQXBv87v+xgVgQt4=;
- b=fVAojDjYdsRAmPgrEb+x8uog/0Xq1KvD6DVufdy/Woq7YJYAZEWWd7H6fvaU69dsVsCxhhrgGS/rXrNXJ0RVPSarwSbF1xUgi66d+9BRotK8dL7RiKl0CX2WaJsS2p0Sqkor8uDfvyoN94vcZqYuiGYztODU9lHKzO0vg6oHSre9gA9LsVG9RVnoFKT45ScN+6D95EnoNbmlkECLzj4YXmNa/0+AqcFx8BtiIgsU2wTXxkmyfmV5Pq49xMSltRHxOa4D2g7v0BnGL1hkh4gDdYLHTnOEDp01u6fRvVlb47CZCsBV2/2ywAjWWcPSE8JWafrQWfIltqmvqsIbfymAPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM6PR11MB2650.namprd11.prod.outlook.com (2603:10b6:5:c4::18) by
- SN7PR11MB7975.namprd11.prod.outlook.com (2603:10b6:806:2eb::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.13; Mon, 16 Mar 2026 09:06:49 +0000
-Received: from DM6PR11MB2650.namprd11.prod.outlook.com
- ([fe80::ec1e:bdbd:ecd8:4c86]) by DM6PR11MB2650.namprd11.prod.outlook.com
- ([fe80::ec1e:bdbd:ecd8:4c86%6]) with mapi id 15.20.9723.013; Mon, 16 Mar 2026
- 09:06:49 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Gao, Chao" <chao.gao@intel.com>
-CC: "x86@kernel.org" <x86@kernel.org>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>,
-	"seanjc@google.com" <seanjc@google.com>, "Chatre, Reinette"
-	<reinette.chatre@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>,
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "Verma, Vishal L"
-	<vishal.l.verma@intel.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>,
-	"mingo@redhat.com" <mingo@redhat.com>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "tony.lindgren@linux.intel.com"
-	<tony.lindgren@linux.intel.com>, "sagis@google.com" <sagis@google.com>,
-	"Annapurve, Vishal" <vannapurve@google.com>, "hpa@zytor.com" <hpa@zytor.com>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "paulmck@kernel.org"
-	<paulmck@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>,
-	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "Williams, Dan J"
-	<dan.j.williams@intel.com>, "bp@alien8.de" <bp@alien8.de>
-Subject: Re: [PATCH v5 12/22] x86/virt/tdx: Reset software states during TDX
- module shutdown
-Thread-Topic: [PATCH v5 12/22] x86/virt/tdx: Reset software states during TDX
- module shutdown
-Thread-Index: AQHctIP+QgonfM6NE0ygNTGLoWRFtrWw32MA
-Date: Mon, 16 Mar 2026 09:06:49 +0000
-Message-ID: <996e42a31101bb90575e7b2b6f33b3bd607b5e6e.camel@intel.com>
-References: <20260315135920.354657-1-chao.gao@intel.com>
-	 <20260315135920.354657-13-chao.gao@intel.com>
-In-Reply-To: <20260315135920.354657-13-chao.gao@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.58.3 (3.58.3-1.fc43) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM6PR11MB2650:EE_|SN7PR11MB7975:EE_
-x-ms-office365-filtering-correlation-id: 386e7aba-39a6-497e-8547-08de833b5b6f
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016|18002099003|56012099003|22082099003|38070700021;
-x-microsoft-antispam-message-info: tTsSjj6/0GdGJlLj0s1/0jUc2Xp6p5jKB0DrXRN32aXhyuEMu67PubK4AmtGlsvDPVMoKNmLtyAuffbzaS+Lc8cn/lmfBXxc3uwmpbMYLfMx5BGzOHhztvYjtZWLZSKxEQhWDbLg8OSwZFbhF5spsOacbK3RbUO/jXT/a8ohnf6ZhZ2F9ye7aE1XtLxz/WzJNf57BAT+8VmciyulG3TDago4KfEinYnXJ2kz9R1hF2OxLwht1FRdARo7EfIO62X1h7wc7t5ZWAguKBod6wnOC/uvPn08LFxmjWZy1hqIiN5iSc+J7rZCm4s8z4XgbMxtuRhVHIsJWrjFT1CaE0NlRsTO48Zok+0Tq7r5h3NGg/WKaAKrxQdlvBisj8q1OX9b+rJAfcw/g48um09cAKgp2tjLsYOskpcEuaHTpAc5FIY2BF6PR6SoWkfY+GIkGOoG9CcG5zXdWp/HhRT95KJ2cC0XnyVrI+0UGRV/nmagVNddCFh0jL3wYMqL3n/e0n7zND5Sr49yiwmiV0V0STjGqxYgSSrb2S7r5cExg4Aref69DprRiJ/rj3HLDNUv0YbN5BbtqBDnQmKe5abnVkxmjn8Ob3OzxBZkfM4LoN6dBkSCCkp+fViC7Yekx1KBr3FIJvM3fgYSuppcp8r0zmna+Vz9NJ9+5LZpoYhXZRlqndydzSm3fZt6A9awi0Lu/l1jxLb1OQ+utwNAGvyMxU/+2zt0tgkH+IeeSYVTfFcFdMDYYktlKFiTkR/Y0Y0QOvEoqF5fxbxEVncTTzqnWQKb92btBj5AKmTMJUC99KxXr5I=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB2650.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(18002099003)(56012099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?akhQVUsrQXdqWlNUQVQxRDFtV1NGbGNPQ21KR1dRUEJ4Vm5TR2FzRjFNKzBO?=
- =?utf-8?B?dmdNU1pOWTJlRnNoT2NZOE9Fcks1eTFYQSs4dDFNNTcvZFhpUnlWS25xcDM1?=
- =?utf-8?B?a1RIQUxmazJ0b05PSkVsNkt1cGlzc2xQeG1xYWI0UFhJY0ZTcko3WG82T0ds?=
- =?utf-8?B?MGt0Rlc3RHNFSUhsU1pLSEZpY0I5bXpJV2g0TkZSSHcyaks1eDY1RlFxaXRz?=
- =?utf-8?B?aXk5UEZQSlg0bnBDWlM4TTVBSWVkNDF4bE9nRUlBaXlGY0RuS3NJbGdmT2dn?=
- =?utf-8?B?OW9NVVI3ZS9FMjhnNThHeGwvWE5DenMxKzFFVEhDSDdrOThJcmpkUlFDbFB4?=
- =?utf-8?B?L3RhSERjOGg3NWJZMUhLTmFJVlFDaE1GSDhWWlhOV1ltV0RpZkN4VStjTmhI?=
- =?utf-8?B?Vm9VU2crdlJEb1NHMjRmVk0vaEpYMlNReGxTVmZyV3VhKzdNTTVXc3lsS21T?=
- =?utf-8?B?elNZNHVNNjdxekNDQk4wTjBWL0N5SWk5TWJZVTl4U3UxeHNZVms1eHpnMWRC?=
- =?utf-8?B?djNoRVVpZTRpWURVRmNUdldvV05ZRjdJdXVEcndnUW5ZY0hlSytUSEd3ZmtU?=
- =?utf-8?B?WTdDY1g1aitJVWpRcm9qM2ErdFdodVNXMjVKS2JlL1BRR3dXU0thSFRSU2Qz?=
- =?utf-8?B?SzF1Mjc1dHFGbm5uUzZrcVpLNVBHQ1JLVW96b3lrZkNqcUFWN0FUWUkwbEgw?=
- =?utf-8?B?Wk5ZQ3UvOExvVGpPMGRyVlE0ZGVEK25RSmhsdUdTTGU2UVpEWmZpVUlNKzJR?=
- =?utf-8?B?bGt4RUt6MTlleWc4aEJlakxzQnFyeDFHUlo5N0duSHVheTBlRDhva1NYUzlU?=
- =?utf-8?B?UVB5c29jOVhQMElEQkVrQTJudEFZWDY0Q2N6NkZneG5rRzE4em1HdVQxSzBG?=
- =?utf-8?B?emR6QzM1RCtRTENTVGVKU1YzRkhBZ2xwVG1zandxRE82dHJQcUc1YTcwVVhJ?=
- =?utf-8?B?YWJNYU5qRFllRGY5Qk9ja0tqY1RYM09VMHNPK1kzdTZ0ZWYrWnVXc3M3ZVRz?=
- =?utf-8?B?NU5rWXJaQjRFeit3NnV6Z1RHdS9xejBTSXNNNktxcTR4elArd0lWeHM3bHFi?=
- =?utf-8?B?dHE0T0h6L1hIL0tuN3hXcjRWTit0bjczUk1NaWVxbVJxaGZwczNDVFZaVWMw?=
- =?utf-8?B?c1dKRG4vNzlFQldxamVnVjRaS2YyWndsbVlMN2ZVOUtXOVNkRFduU1VsSkh4?=
- =?utf-8?B?SVpYc21TYzM1S3hISkJBaktHRzhIaWVWRVc4cWNSNExDZFZsM1krek9udDZp?=
- =?utf-8?B?L0wrWUpmcFVmaVk2Uys5Z0VoRmJUZnRNb2RWTjZWbm1tOU0rUFJ2cURLWHcx?=
- =?utf-8?B?MElDNWtsNmpMVDR4WW9ocDVxWlY2WHErR1R3Q3pHNnY5OUFlenlCeEtHTDlV?=
- =?utf-8?B?ditxZjVsemZ1RDY2MWdLQjN2QzJrRElMLzF3TWtrQ29yams0YjQ5RWZmUFQ5?=
- =?utf-8?B?MTNsY2dyU2JlaEcwV1U5S2luYlEySDNGSGFGcEVISDFPeGlXMzBTZlNrZGxy?=
- =?utf-8?B?bG56d2NPQkg1TUdCY1pQUGhKWklMbFo0UXZTb1NocTRjMUZBelBnTXpueDk3?=
- =?utf-8?B?V1V4SzNpNldBUGw0ek45d2Y2VEVlaEUvVXBIbFR4R1dQTHNxSms4UWFUdzUw?=
- =?utf-8?B?MXg2cHlIVjJyL3dwL0lKa0xNNXlyT3lnYm5DM1oyL2F6M21DRmxtc21DdUVP?=
- =?utf-8?B?VFpmR3hwbitaMEhUVGNVZ05FT2ZvM0ZqMGYwUzhjcVV1WGt2dml0cUdYRElh?=
- =?utf-8?B?eisyZDQ2QU1ILzdoSWF5QVVMcHErU0h6T0pFcWQxZU9pV0IrRVBIZ3Z3NHM4?=
- =?utf-8?B?VU1OQTlWRHNYRjdQRThKcEJjNmo3cmt2OUo4alBVMEdkRndzQ01FR0F6NEJJ?=
- =?utf-8?B?dGl1Zk94WVhVMTJtSkw3WXd6dDNkYnhCQWNwMEM2VU02UUF5cGdPUnFLL0RM?=
- =?utf-8?B?WVBkYk1vUTZYaGVnUVhPUHVrVDA1d0NyaFZ2Sy9aOHNFNEtnQXJjVEdVaDFC?=
- =?utf-8?B?QjJacGVMdEtweFFGcTdycFhJNlFOM1RiNEdBT2hSWGY5SER0UFN4ajgxZHBL?=
- =?utf-8?B?eitPZXJEb1VpSmdLYWx0b2hBVzBOUDVSTGlJYXNyU1c5dHEweXdEY09WS3pj?=
- =?utf-8?B?ZmFnQjRCUDFtdi9iYi9aZVEvUTJLekxWZi9hYVZpcXQrdUk3amNsNHdzNEJn?=
- =?utf-8?B?VDVTZUoxeTg5NFVRRS9SdC9JZ0Q1SU1vRE1MZGFTZW84RDNDNWFpQTFqWnNo?=
- =?utf-8?B?K1paa0VrSUZ4U0p4TUtKTWRhdjJzTDNVRFEwL3JKb0RZUXpMNlJqMXhEdGVD?=
- =?utf-8?B?bTg1Qk91WHVKa0RxRnEzMHNtYnNrZW1HWG54NGRZR2Evam9kMzlHdz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <2E664941D9996F4FB2CE1B3555F4D1E5@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eBO+8Led"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA49C19424;
+	Mon, 16 Mar 2026 11:51:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773661874;
+	bh=T0JYGOr6ugZU2jMvsc9HFYY1EYF/qs9KP14VMrqzgE8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eBO+8Led9woWAONG8gUtaXPJa+McQVCCkO8guYoIMxgIZFPOEWYLHx5XG8TN8oDIY
+	 BaFWsN+7Vf8Wv5hbkPYN7WFKID/5qylTpFBgIkjZfnq+LICoWF1QgPT9TixhTqPmIA
+	 +D5e5LCcyvNmUbz69g/35AQWwthmxml+QNNOgL+0L1319JIDymYlDuPeM8+2D/9E8n
+	 BGBIF9moELPae94hROyApkztc/am8n3ceXQJCB1j2jmu+A3ORALZ/TmhWkx9zHaU7+
+	 uR+1HRSsvWiGK+e0EZ0WpZz2xoCK0H/1EQZ+mvbPEA05mwxlvojFoXCFvJE+WaEA0o
+	 IfITlxe9xqFiA==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 6278EF40069;
+	Mon, 16 Mar 2026 07:51:13 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Mon, 16 Mar 2026 07:51:13 -0400
+X-ME-Sender: <xms:se63adRfw8h56GxTOsa2Nfp5EZWnrJDqUp6HFt5VGFjq4dWSiLX11g>
+    <xme:se63aZHpsc9lAVSNZ0qiOXcw7p1naHyHoDNYZ_4yIRxBAxQFE0QK7qbs1CF1IEESp
+    BQfuQ4YRh55U5AaeK3FuJ8KLsBkp6z3PfswRrsXXuRHmVCRu4Oxhw>
+X-ME-Received: <xmr:se63aRgWGHMZLnpGiUJqagSb9JZ8WknvT-dDnBviP4rjVXQ_o4-t06-CMhH-_Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleekfedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfedvpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehrihgtkhdrphdrvggughgvtghomhgsvgesihhnthgvlhdrtghomhdprhgtphhtth
+    hopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehi
+    nhhtvghlrdgtohhmpdhrtghpthhtohephhhprgesiiihthhorhdrtghomhdprhgtphhtth
+    hopehkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidq
+    tghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkh
+    gvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhinhhgohes
+    rhgvughhrghtrdgtohhmpdhrtghpthhtohepphgsohhniihinhhisehrvgguhhgrthdrtg
+    homh
+X-ME-Proxy: <xmx:se63aR8OaExk9SsirPQYh_jH4J_6z9g_IqQN7nQjOEUOVxfekJjJvA>
+    <xmx:se63aUL6IolEf2bAAb4N-kYsl27U_XMh7tM_jn0dmioUnnoJBIdc9w>
+    <xmx:se63aRqKY_E8eMggAP7TyMHdxKEdqAhSWuypYfJX3-kOQ2p5HNdPAA>
+    <xmx:se63aQw_4hs3SffuX69NLifqthW1nwpjP7dN-UfMzCZQvmrfYyL4vA>
+    <xmx:se63aeqHeklOzbJvlnukp5WjFkM7_aAi4rpKUy59p_dTnDMPonEV80HX>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 16 Mar 2026 07:51:11 -0400 (EDT)
+Date: Mon, 16 Mar 2026 11:51:06 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, dave.hansen@intel.com, hpa@zytor.com, 
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	mingo@redhat.com, pbonzini@redhat.com, seanjc@google.com, tglx@kernel.org, 
+	x86@kernel.org, chao.gao@intel.com, kai.huang@intel.com, ackerleytng@google.com, 
+	vishal.l.verma@intel.com
+Subject: Re: [PATCH 3/4] x86/virt/tdx: Add SEAMCALL wrapper for
+ TDH.SYS.DISABLE
+Message-ID: <abftAJkiU3Q24wYQ@thinkstation>
+References: <20260307010358.819645-1-rick.p.edgecombe@intel.com>
+ <20260307010358.819645-4-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: WbuJIwadcofa8pcnVVE9bqV1I3HNDLP9G5KyqYyLuzBuCBOnFiLujvw/St2cxD+mQRiegP/T7+cgFJPdpycQGHQmvXAV/e4SPn2K9/GM8IbW/AKcYJsOTEYpycbFFGpXufjSAuynPsruh6k6YLPtkfUoxHfOHCT0ycvusFnmjD1W3ZKokerpusbqGbOvINFGy3YkAAeCo/lf59toznTwrPK/wC6kPy0bNHFCMOh9CPNBuiq0/yjQCnA84Ypv6iGmw2LYZTIL1BQV1pR7LjvqSFohUvttcbPSuKzn63k+03lhVst3/m8uaw6cZtqNej9Hvu2UAsHU1q+BnV9zwPz0Pw==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB2650.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 386e7aba-39a6-497e-8547-08de833b5b6f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Mar 2026 09:06:49.3377
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: oGJ3n5a/esmkkqXVXA5DGHXf227e1pv4VDG1NxvZOSnAI/+EAX+Ns4rtgVW7uf+fkfnNxN/Ax9tw7Wd+uWypaw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7975
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260307010358.819645-4-rick.p.edgecombe@intel.com>
 
-DQo+IEBAIC0xMTc5LDYgKzExNzksNyBAQCBFWFBPUlRfU1lNQk9MX0ZPUl9LVk0odGR4X2VuYWJs
-ZSk7DQo+ICBpbnQgdGR4X21vZHVsZV9zaHV0ZG93bih2b2lkKQ0KPiAgew0KPiAgCXN0cnVjdCB0
-ZHhfbW9kdWxlX2FyZ3MgYXJncyA9IHt9Ow0KPiArCWludCByZXQsIGNwdTsNCj4gIA0KPiAgCS8q
-DQo+ICAJICogU2h1dCBkb3duIHRoZSBURFggbW9kdWxlIGFuZCBwcmVwYXJlIGhhbmRvZmYgZGF0
-YSBmb3IgdGhlIG5leHQNCj4gQEAgLTExODgsNyArMTE4OSwyMiBAQCBpbnQgdGR4X21vZHVsZV9z
-aHV0ZG93bih2b2lkKQ0KPiAgCSAqIG1vZHVsZXMgYXMgbmV3IG1vZHVsZXMgbGlrZWx5IGhhdmUg
-aGlnaGVyIGhhbmRvZmYgdmVyc2lvbi4NCj4gIAkgKi8NCj4gIAlhcmdzLnJjeCA9IHRkeF9zeXNp
-bmZvLmhhbmRvZmYubW9kdWxlX2h2Ow0KPiAtCXJldHVybiBzZWFtY2FsbF9wcmVycihUREhfU1lT
-X1NIVVRET1dOLCAmYXJncyk7DQo+ICsJcmV0ID0gc2VhbWNhbGxfcHJlcnIoVERIX1NZU19TSFVU
-RE9XTiwgJmFyZ3MpOw0KPiArCWlmIChyZXQpDQo+ICsJCXJldHVybiByZXQ7DQo+ICsNCj4gKwl0
-ZHhfbW9kdWxlX3N0YXR1cyA9IFREWF9NT0RVTEVfVU5JTklUSUFMSVpFRDsNCj4gKwlzeXNpbml0
-X2RvbmUgPSBmYWxzZTsNCj4gKwlzeXNpbml0X3JldCA9IDA7DQo+ICsNCj4gKwkvKg0KPiArCSAq
-IEJ5IHJlYWNoaW5nIGhlcmUgQ1BVSFAgaXMgZGlzYWJsZWQgYW5kIGFsbCBwcmVzZW50IENQVXMN
-Cj4gKwkgKiBhcmUgb25saW5lLiBJdCdzIHNhZmUgdG8ganVzdCBsb29wIGFsbCBvbmxpbmUgQ1BV
-cyBhbmQNCj4gKwkgKiByZXNldCB0aGUgcGVyLWNwdSBmbGFnLg0KPiArCSAqLw0KPiArCWZvcl9l
-YWNoX29ubGluZV9jcHUoY3B1KQ0KPiArCQlwZXJfY3B1KHRkeF9scF9pbml0aWFsaXplZCwgY3B1
-KSA9IGZhbHNlOw0KDQpTaW5jZSB5b3UgaGF2ZSByZW1vdmVkIHRoZSByZXF1aXJlbWVudCB0aGF0
-IFAtU0VBTUxEUi5JTlNUQUxMIG11c3QgYmUgZG9uZQ0Kb24gYWxsIENQVXMsIGFuZCByZW1vdmVk
-IHRoZSByZWxldmFudCBwYXRjaCwgdGhlICJhbGwgcHJlc2VudCBDUFVzIGFyZQ0Kb25saW5lIiBw
-YXJ0IGlzbid0IGNvcnJlY3QgYW55bW9yZS4NCg0KQW5kIHVzaW5nIGZvcl9lYWNoX29ubGluZV9j
-cHUoKSBpc24ndCBlbm91Z2ggc2luY2UgdGhpcyBkb2Vzbid0IHJlc2V0IHRoZQ0KdGR4X2xwX2lu
-aXRpYWxpemVkIGZvciBvZmZsaW5lIENQVXMuDQoNCk9uZSB3YXkgaXMgdG8ganVzdCB1c2UgZm9y
-X2VhY2hfcG9zc2libGVfY3B1KCkgaGVyZSBzbyB0ZHhfbHBfaW5pdGlhbGl6ZWQNCmZvciBhbGwg
-Q1BVcyBhcmUgcmVzZXQuICBTaW5jZSB0aGUgIkNQVUhQIGlzIGRpc2FibGVkIiBwYXJ0IGlzIHN0
-aWxsIGNvcnJlY3QNCkFGQUlDVCAoc2luY2Ugc3RvcF9tYWNoaW5lKCkgZGlzYWJsZXMgQ1BVSFAg
-aW50ZXJuYWxseSBkdXJpbmcgdGhlDQpvcGVyYXRpb24pLCByZXNldHRpbmcgdGR4X2xwX2luaXRp
-YWxpemVkIGZvciBvZmZsaW5lIENQVXMgd29uJ3QgcmFjZSB3aXRoDQpDUFVIUC4NCg0KQW5kIGFz
-c3VtaW5nIHRoaXMgc2VyaWVzIHdpbGwgYmUgYXBwbGllZCBhZnRlciBTZWFuJ3MgVk1YT04gc2Vy
-aWVzLCB3ZSB3aWxsDQpoYXZlIGEgVERYLXNwZWNpZmljIENQVUhQIGNhbGxiYWNrIHRkeF9vbmxp
-bmVfY3B1KCkgaW4gVERYIHg4NiBjb3JlIHRvIGRvDQp0ZHhfY3B1X2VuYWJsZSgpLCB3aGljaCB3
-aWxsIHRoZW4gZW5hYmxlIFREWCBhZ2FpbiBvbiB0aGUgbmV3LW9ubGluZSBDUFUuDQoNCkJ0dywg
-dy9vIFNlYW4ncyBWTVhPTiBzZXJpZXMsIGN1cnJlbnRseSBvbmx5IEtWTSBwcm92aWRlcyB0aGUg
-VERYLXNwZWNpZmljDQpDUFVIUCBjYWxsYmFjay4gIFNvIGl0IHNlZW1zIGlmIG1vZHVsZSB1cGRh
-dGUgaXMgZG9uZSB3aGVuIEtWTSBpcyBub3QNCmxvYWRlZCwgdGhlcmUgd2lsbCBiZSBubyBURFgt
-c3BlY2lmaWMgQ1BVSFAgY2FsbGJhY2sgdG8gcmUtZW5hYmxlIFREWCBmb3INCnRoZSBuZXctb25s
-aW5lIENQVS4gIFRoaXMgbWVhbnMgYW55IFNFQU1DQUxMIG9uIHRoYXQgQ1BVIHdpbGwgZmFpbCBi
-ZWZvcmUNCktWTSBtb2R1bGUgaXMgbG9hZGVkIGFnYWluICh3aGljaCB3aWxsIHRoZW4gcmUtcmVn
-aXN0ZXIgdGhlIFREWC1zcGVjaWZpYw0KQ1BVSFAgYW5kIHJ1biB0ZHhfY3B1X2VuYWJsZSgpIGZv
-ciBhbGwgb25saW5lIENQVXMpLiANCg0KQnV0IEkgZG9uJ3QgdGhpbmsgd2Ugc2hvdWxkIGNvbnNp
-ZGVyIHRoaXMgY2FzZS4NCg0KDQo=
+On Fri, Mar 06, 2026 at 05:03:57PM -0800, Rick Edgecombe wrote:
+> From: Vishal Verma <vishal.l.verma@intel.com>
+> 
+> Some early TDX-capable platforms have an erratum where a partial write
+> to TDX private memory can cause a machine check on a subsequent read.
+> On these platforms, kexec and kdump have been disabled in these cases,
+> because the old kernel cannot safely hand off TDX state to the new
+> kernel. Later TDX modules support the TDH.SYS.DISABLE SEAMCALL, which
+> provides a way to cleanly disable TDX and allow kexec to proceed.
+
+Does it need to be enumerated?
+
+I don't see this SEAMCALL be covered in the public documentation.
+</me looking around>
+Ah! Found it the the draft. So the feature is not yet finalized.
+
+"Support of TDH.SYS.DISABLE is enumerated by TDX_FEATURES0. SYS_DISABLE
+(bit 53)"
+
+I am seeing the next patch calling it unconditionally. Is it okay?
+
+> This can be a long running operation, and the time needed largely
+> depends on the amount of memory that has been allocated to TDs. If all
+> TDs have been destroyed prior to the sys_disable call, then it is fast,
+> with only needing to override the TDX module memory.
+> 
+> After the SEAMCALL completes, the TDX module is disabled and all memory
+> resources allocated to TDX are freed and reset. The next kernel can then
+> re-initialize the TDX module from scratch via the normal TDX bring-up
+> sequence.
+> 
+> The SEAMCALL may be interrupted by an interrupt. In this case, it
+> returns TDX_INTERRUPTED_RESUMABLE, and it must be retried in a loop
+> until the operation completes successfully.
+> 
+> Add a tdx_sys_disable() helper, which implements the retry loop around
+> the SEAMCALL to provide this functionality.
+> 
+> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> ---
+>  arch/x86/include/asm/tdx.h  |  3 +++
+>  arch/x86/virt/vmx/tdx/tdx.c | 18 ++++++++++++++++++
+>  arch/x86/virt/vmx/tdx/tdx.h |  1 +
+>  3 files changed, 22 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index f0826b0a512a..baaf43a09e99 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -173,6 +173,8 @@ static inline int pg_level_to_tdx_sept_level(enum pg_level level)
+>          return level - 1;
+>  }
+>  
+> +void tdx_sys_disable(void);
+> +
+>  u64 tdh_vp_enter(struct tdx_vp *vp, struct tdx_module_args *args);
+>  u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page);
+>  u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, struct page *page, struct page *source, u64 *ext_err1, u64 *ext_err2);
+> @@ -204,6 +206,7 @@ static inline void tdx_init(void) { }
+>  static inline u32 tdx_get_nr_guest_keyids(void) { return 0; }
+>  static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
+>  static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
+> +static inline void tdx_sys_disable(void) { }
+>  #endif	/* CONFIG_INTEL_TDX_HOST */
+>  
+>  #endif /* !__ASSEMBLER__ */
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index 0802d0fd18a4..68bd2618dde4 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -37,6 +37,7 @@
+>  #include <asm/msr.h>
+>  #include <asm/cpufeature.h>
+>  #include <asm/tdx.h>
+> +#include <asm/shared/tdx_errno.h>
+>  #include <asm/cpu_device_id.h>
+>  #include <asm/processor.h>
+>  #include <asm/mce.h>
+> @@ -1940,3 +1941,20 @@ u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page)
+>  	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
+>  }
+>  EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
+> +
+> +void tdx_sys_disable(void)
+> +{
+> +	struct tdx_module_args args = {};
+> +
+> +	/*
+> +	 * SEAMCALLs that can return TDX_INTERRUPTED_RESUMABLE are guaranteed
+> +	 * to make forward progress between interrupts, so it is safe to loop
+> +	 * unconditionally here.
+> +	 *
+> +	 * This is a 'destructive' SEAMCALL, in that no other SEAMCALL can be
+> +	 * run after this until a full reinitialization is done.
+> +	 */
+> +	while (seamcall(TDH_SYS_DISABLE, &args) == TDX_INTERRUPTED_RESUMABLE)
+> +		;
+
+Silently ignore any other errors?
+
+> +}
+> +
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+> index dde219c823b4..e2cf2dd48755 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.h
+> +++ b/arch/x86/virt/vmx/tdx/tdx.h
+> @@ -46,6 +46,7 @@
+>  #define TDH_PHYMEM_PAGE_WBINVD		41
+>  #define TDH_VP_WR			43
+>  #define TDH_SYS_CONFIG			45
+> +#define TDH_SYS_DISABLE			69
+>  
+>  /*
+>   * SEAMCALL leaf:
+> -- 
+> 2.53.0
+> 
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
