@@ -1,61 +1,63 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6D6396B98
-	for <linux-coco@lists.linux.dev>; Mon, 16 Mar 2026 12:59:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5997029BDB5
+	for <linux-coco@lists.linux.dev>; Mon, 16 Mar 2026 12:59:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773665945; cv=none; b=P7KRPFnQR2fs/wBqJdRSBmm1CgCzs9USX+csWfhQdFk/QHzAs9yxdLO0T9I7hXWP+0mm33dlopxH08kwnWYvU/h3wU+nuV3EVr+jDxg/9jKZ8XPVDn/UDSWKDl6XCKL/j5UWU490+SIK1PubUTxKuTKZZDsxvypNI4v4EIYwJGI=
+	t=1773665946; cv=none; b=OQFkhrkT9Lvw8xQK+mLF2JFK+j1ddENrqhww40JSL/zf5bv5w2q0P7eHy34mR09LyBnnWWUrN53OurLtpUIM3E4aSLC7KwuE5GKVjngm0WVyn/7+bJO4TO462LhBLscW2FbbsPNBlimOiuyGSHToA51VaBXLGEeOq0m5Qt/+XNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773665945; c=relaxed/simple;
-	bh=Lg2AUKdIw2znElHkpszuxWA7eoByATIIPmoC0QDvUj8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EAJHUncktFAG47lixpnNPZghrROzwSUqwZB4vigdBcXgQySlmAEdBP9X5X4rD1ISpbGHQ982pd21DmHFXmhVLoN1g3nHpE0rRbDfA/yVfFEm+ZaFw5Teq4rCvosxasE76dKZtf7bfUjt9jqytE8+LzfTE3BmrNZ1CyKKrdHpEEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=yPDm1WeL; arc=none smtp.client-ip=209.85.221.44
+	s=arc-20240116; t=1773665946; c=relaxed/simple;
+	bh=dmuGILWcHUqJ0kSdd8/WBluFOd4yziQOvdp/K5MgbTg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QZhw8KWwIJTP38k0n2wdSjqUTGSxx7s/UuvxDoH5Hjo/Y6cACfm7+udgWQVKo/aiiy+uuTIUOyhBiWRShHQPM5Gpj35dwNcyYhB6JcBiFDREnXgOq3d3pCPFubqk3quwMnPI29myX8iuhD4b8lpwWPgdb5RaeKHYnI2noVva9xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=kOB+a606; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="yPDm1WeL"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-439b94a19fdso4172372f8f.0
-        for <linux-coco@lists.linux.dev>; Mon, 16 Mar 2026 05:59:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="kOB+a606"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso39837125e9.1
+        for <linux-coco@lists.linux.dev>; Mon, 16 Mar 2026 05:59:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1773665940; x=1774270740; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QiV2UgPzDyf2BIxEKlEP0kmveErchJjvWqwkP1nC5aU=;
-        b=yPDm1WeLbERctqmJkFrv0XnJJf3Ec9Vx9PbzmC20OespKg/w+R8djD7rL8L6Wq7UOt
-         A5dxKgCQFvURSnnMWoLlzsvySAtm3QTkNWCmQkxsuUwPe1MUPwrMnOv1mfMhGlkzkY1/
-         92ObUdI5CnzP3H/BsxY9Z4qoiMxQoxTZZKA/7Ro7APqGym+iEXAlc1oEjvEFMjvWLJcO
-         6dW/k0GRSBaa2AJwwThuUSydFoNZHQKSI8FPrPJFVHhARcD7TaBWkmALBT3wjhJ3U4F0
-         62oulcwIxqFH+s8AeF6vvuk6+CGfr9UW8KP+2jdrNwNMFIn+KXKa3YYK1v/afSVatwqm
-         9jtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773665940; x=1774270740;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1773665941; x=1774270741; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QiV2UgPzDyf2BIxEKlEP0kmveErchJjvWqwkP1nC5aU=;
-        b=FTfsVb66jAXvJdKbMQDrm1d0Z1oQhcMDc010+T+KbPgk8O4keVWlKAIhie7ED47SB1
-         7MwRBkIsuH7ypoQUtUKUOWBZSuOxddJS366D5mvm38I1+DGlh9dohqZmkAQmH+35gr8p
-         WOx6f1LXEemi0n+vLSFPXGQ817hgX8b3cqSk7rq79rLo3fGVLNYHe3vzKs3hkWkCmrHF
-         XAygGlvWIN14bPU2kB51qUwEoXUQDetbauDIybZ1f/dSNy7MTqORRq1+DnX6C3EDBEe9
-         o/xjV1jCSdG0nOU2fdnvwh7mmkWnUjLrIGv8u/Q8uL9MQ3OOrB98e21nVm2/oU6PPZIw
-         5KmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX/Z76bgrekaW/AKnTBGNHWnHILT+Ffl7H1IRtbuzyGZUwL3owpErnwMZzscfAUiIrLgk6NfZ2e+8Ky@lists.linux.dev
-X-Gm-Message-State: AOJu0YxbLkOtW9If7MjjadsMkP3Xr9tkK7uDJyVGNtsv3Seb0976cJtu
-	tZAwTfXViCF8dBUwWw5m8YvI0xpdVa9YOQ45dTDa6n+vFPadi6pFuTRwy2cNICSmW+8=
-X-Gm-Gg: ATEYQzzlX7ZO84aGv8u2W8KT7to4EcOmF3axqoj96sbjFT2QJIDQTjcAoU3nMlQGNQh
-	msqlghbDEAwK/oh7CtxG/1uuTD8uD/ysnQuezEYmSD2yfLmKrRMiUNhUL3cCnf/d3wQOjRXkmzg
-	xhvc/IZjZr2XCjw/fweF5E4g3htSambMM+z4nweWt+ffneCja/Fo9/mtMnG3ZoSStT7YQegGOJU
-	oHvwjKKQFzNs6N0J+DVANQDRJGrrlHYTVV5s6HgxYR/N09Zhw+TtXnsmkAGGkO9dL6wZVKHUpu6
-	5uJNH+m5fwDDegPwlIGMBLyLZ5IR59P2v4afOrailVAzd9qgvHuE4YtH5WGyJAwwJ6vP9ekB5Hf
-	Vq2G7cRfMLyli7qOSmIiOjYQ5dTtpqY4OSloL7w6ALjCAyfhVYeK2JFuLZG3/hk3tbj3guaU+5j
-	bn/5eySl69GE/IKg==
-X-Received: by 2002:a05:6000:18a8:b0:439:ccec:fcd0 with SMTP id ffacd0b85a97d-43a04db4fb9mr22368246f8f.29.1773665939476;
-        Mon, 16 Mar 2026 05:58:59 -0700 (PDT)
+        bh=emL9z4Qbm9oQec+/P2Nv6r0/NLIOGJvL2ewVYE7x7Io=;
+        b=kOB+a606SKnvrEBzSN3s3sTbEP7lqW2UdIlIsJgvGVpJjXBHRoNjUVPRZ5cKzqrjNK
+         E6E9hQA1s8zSUj8neG3tx/nbzNCxn/b43mujMWGFzleaCj+ApUcfCAaeIWc4ZvvfDsWI
+         3U5+SULfOb9cxoGT/lFAWPQkHoknu3d6YLrh73czISHqOjW+gyK7kZcPGU8FY6+sCJfC
+         Q5KI6UzPNcDYv0JY66PM+M4uyPRM3elDSxG43S9Vko0OdEuGXYczS8z6T32f4Jhbs7PV
+         ZqEKaF6uds5CPD2jAUf6K92FyFJm8nYSWXOB2fZ1hCcNFkDGgOIRwSeRhjHlv5ae49lG
+         Utqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773665941; x=1774270741;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=emL9z4Qbm9oQec+/P2Nv6r0/NLIOGJvL2ewVYE7x7Io=;
+        b=YrskGlD94PoPOuUWVmHDiwdLENw2x1As4ugLrtqUBOTRoYvvd9Ko8nV4wP9aLkljhN
+         kfAy3YEKsOlXOiyVxE3oVzRqtnM0YaOkC5Rg54RwmSAeC7+4sqAfhZRja+mANdQf+xze
+         dCF4E/S5TNVwRZYZL36dPYDQli9PTjRzDGBo6w8B0ZUJygnMMztTv43bVpjXwpgOsamu
+         fj09vEWvVF3brlx84FK/DtyP32Z/GGNKJLVBKY3wny8qUlEp64MiMCbG4/RFojEclQf4
+         IC9sPnEw0ePxiYu7wmMowrw49gwlXAWTYQDE89xWqWP1/QatDy5c0kdWrZYQvWzajcEE
+         1wgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUZTms+1oSDZAw3+cvfwIRNIT1buvukONvC1EDP6aJKikArNiYmTqo4e9B/JA3XuwfdVz/tXXjXFfd7@lists.linux.dev
+X-Gm-Message-State: AOJu0YznyD7aTIebfZ2oE72cd3gNBSuY5uxWFS8HwrktV874hMDzkC10
+	dXzFSSwiHG0DNdif896XaPYfE/APywAEQPVKQmkfUhwMAC2PoHw02Qzp+jRsn4xwuxw=
+X-Gm-Gg: ATEYQzw5bl6WvpIBkcEZVKfrrIUCx4A0HJKFzh5SBMmkv6a7ouc72ama2h1fk0+H+Di
+	HNMWVWPPH4kIBhLG7E878zANxC1MH2dnNepryy7UBIJp+shtzrq91J4B4ZtHX6X+uMHah7GY8xe
+	+WBNJadFuk/9WXJEM5wUSe4YfJSSXQoR83WAmx9KL8TgJaekF7YU+l346Oa41tMOx500viYrPOI
+	F+oMI0jlS3n9VJNJzeXfwpMU5g/Ek5dqwCAmsWLO8zJBJfMuE1rKAEfPsJ9O3GmhwdYXtjksqC+
+	DLFyy1vZTjM8FLS2jyJeMVX8g0En5yPVVaB+IRNxosQAyL+kXpjx/WCHnSn1OkkGpKPhIaf+84C
+	sASBh3uaakQL9UF3ei64YFNxPpSCg7hoJId6gcuOFXM8XewU2ZskOWToWrqEm5uZ8mrFB0tZdGX
+	jqKOp0atlpU9DCD7KEnCKWK3EN
+X-Received: by 2002:a05:600c:3b90:b0:485:345b:ccb1 with SMTP id 5b1f17b1804b1-48556720f86mr199505885e9.27.1773665940699;
+        Mon, 16 Mar 2026 05:59:00 -0700 (PDT)
 Received: from localhost ([85.163.81.98])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b3e9a4fcdsm14591157f8f.8.2026.03.16.05.58.58
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b45e51681sm4423103f8f.25.2026.03.16.05.59.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 05:58:58 -0700 (PDT)
+        Mon, 16 Mar 2026 05:59:00 -0700 (PDT)
 From: Jiri Pirko <jiri@resnulli.us>
 To: dri-devel@lists.freedesktop.org,
 	linaro-mm-sig@lists.linaro.org,
@@ -82,10 +84,12 @@ Cc: sumit.semwal@linaro.org,
 	ashish.kalra@amd.com,
 	suravee.suthikulpanit@amd.com,
 	linux-coco@lists.linux.dev
-Subject: [PATCH v4 0/2] dma-buf: heaps: system: add an option to allocate explicitly decrypted memory
-Date: Mon, 16 Mar 2026 13:58:55 +0100
-Message-ID: <20260316125857.617836-1-jiri@resnulli.us>
+Subject: [PATCH v4 1/2] dma-mapping: introduce DMA_ATTR_CC_DECRYPTED for pre-decrypted memory
+Date: Mon, 16 Mar 2026 13:58:56 +0100
+Message-ID: <20260316125857.617836-2-jiri@resnulli.us>
 X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20260316125857.617836-1-jiri@resnulli.us>
+References: <20260316125857.617836-1-jiri@resnulli.us>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -96,40 +100,143 @@ Content-Transfer-Encoding: 8bit
 
 From: Jiri Pirko <jiri@nvidia.com>
 
-Confidential computing (CoCo) VMs/guests, such as AMD SEV and Intel TDX,
-run with encrypted/protected memory which creates a challenge
-for devices that do not support DMA to it (no TDISP support).
+Current CC designs don't place a vIOMMU in front of untrusted devices.
+Instead, the DMA API forces all untrusted device DMA through swiotlb
+bounce buffers (is_swiotlb_force_bounce()) which copies data into
+decrypted memory on behalf of the device.
 
-For kernel-only DMA operations, swiotlb bounce buffering provides a
-transparent solution by copying data through decrypted memory.
-However, the only way to get this memory into userspace is via the DMA
-API's dma_alloc_pages()/dma_mmap_pages() type interfaces which limits
-the use of the memory to a single DMA device, and is incompatible with
-pin_user_pages().
+When a caller has already arranged for the memory to be decrypted
+via set_memory_decrypted(), the DMA API needs to know so it can map
+directly using the unencrypted physical address rather than bounce
+buffering. Following the pattern of DMA_ATTR_MMIO, add
+DMA_ATTR_CC_DECRYPTED for this purpose. Like the MMIO case, only the
+caller knows what kind of memory it has and must inform the DMA API
+for it to work correctly.
 
-These limitations are particularly problematic for the RDMA subsystem
-which makes heavy use of pin_user_pages() and expects flexible memory
-usage between many different DMA devices.
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+---
+v3->v4:
+- added some sanity checks to dma_map_phys and dma_unmap_phys
+- enhanced documentation of DMA_ATTR_CC_DECRYPTED attr
+v1->v2:
+- rebased on top of recent dma-mapping-fixes
+---
+ include/linux/dma-mapping.h | 10 ++++++++++
+ include/trace/events/dma.h  |  3 ++-
+ kernel/dma/direct.h         | 14 +++++++++++---
+ kernel/dma/mapping.c        | 13 +++++++++++--
+ 4 files changed, 34 insertions(+), 6 deletions(-)
 
-This patch series enables userspace to explicitly request decrypted
-(shared) memory allocations from new dma-buf system_cc_decrypted heap.
-Userspace can mmap this memory and pass the dma-buf fd to other
-existing importers such as RDMA or DRM devices to access the
-memory. The DMA API is improved to allow the dma heap exporter to DMA
-map the shared memory to each importing device.
-
-Jiri Pirko (2):
-  dma-mapping: introduce DMA_ATTR_CC_DECRYPTED for pre-decrypted memory
-  dma-buf: heaps: system: add system_cc_decrypted heap for explicitly
-    decrypted memory
-
- drivers/dma-buf/heaps/system_heap.c | 103 ++++++++++++++++++++++++++--
- include/linux/dma-mapping.h         |  10 +++
- include/trace/events/dma.h          |   3 +-
- kernel/dma/direct.h                 |  14 +++-
- kernel/dma/mapping.c                |  13 +++-
- 5 files changed, 132 insertions(+), 11 deletions(-)
-
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index 29973baa0581..476964d2b22f 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -85,6 +85,16 @@
+  * a cacheline must have this attribute for this to be considered safe.
+  */
+ #define DMA_ATTR_CPU_CACHE_CLEAN	(1UL << 11)
++/*
++ * DMA_ATTR_CC_DECRYPTED: Indicates the DMA mapping is decrypted (shared) for
++ * confidential computing guests. For normal system memory the caller must have
++ * called set_memory_decrypted(), and pgprot_decrypted must be used when
++ * creating CPU PTEs for the mapping. The same decrypted semantic may be passed
++ * to the vIOMMU when it sets up the IOPTE. For MMIO use together with
++ * DMA_ATTR_MMIO to indicate decrypted MMIO. Unless DMA_ATTR_MMIO is provided
++ * a struct page is required.
++ */
++#define DMA_ATTR_CC_DECRYPTED	(1UL << 12)
+ 
+ /*
+  * A dma_addr_t can hold any valid DMA or bus address for the platform.  It can
+diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
+index 33e99e792f1a..b8082d5177c4 100644
+--- a/include/trace/events/dma.h
++++ b/include/trace/events/dma.h
+@@ -32,7 +32,8 @@ TRACE_DEFINE_ENUM(DMA_NONE);
+ 		{ DMA_ATTR_ALLOC_SINGLE_PAGES, "ALLOC_SINGLE_PAGES" }, \
+ 		{ DMA_ATTR_NO_WARN, "NO_WARN" }, \
+ 		{ DMA_ATTR_PRIVILEGED, "PRIVILEGED" }, \
+-		{ DMA_ATTR_MMIO, "MMIO" })
++		{ DMA_ATTR_MMIO, "MMIO" }, \
++		{ DMA_ATTR_CC_DECRYPTED, "CC_DECRYPTED" })
+ 
+ DECLARE_EVENT_CLASS(dma_map,
+ 	TP_PROTO(struct device *dev, phys_addr_t phys_addr, dma_addr_t dma_addr,
+diff --git a/kernel/dma/direct.h b/kernel/dma/direct.h
+index e89f175e9c2d..c047a9d0fda3 100644
+--- a/kernel/dma/direct.h
++++ b/kernel/dma/direct.h
+@@ -84,16 +84,24 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
+ 	dma_addr_t dma_addr;
+ 
+ 	if (is_swiotlb_force_bounce(dev)) {
+-		if (attrs & DMA_ATTR_MMIO)
+-			return DMA_MAPPING_ERROR;
++		if (!(attrs & DMA_ATTR_CC_DECRYPTED)) {
++			if (attrs & DMA_ATTR_MMIO)
++				return DMA_MAPPING_ERROR;
+ 
+-		return swiotlb_map(dev, phys, size, dir, attrs);
++			return swiotlb_map(dev, phys, size, dir, attrs);
++		}
++	} else if (attrs & DMA_ATTR_CC_DECRYPTED) {
++		return DMA_MAPPING_ERROR;
+ 	}
+ 
+ 	if (attrs & DMA_ATTR_MMIO) {
+ 		dma_addr = phys;
+ 		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
+ 			goto err_overflow;
++	} else if (attrs & DMA_ATTR_CC_DECRYPTED) {
++		dma_addr = phys_to_dma_unencrypted(dev, phys);
++		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
++			goto err_overflow;
+ 	} else {
+ 		dma_addr = phys_to_dma(dev, phys);
+ 		if (unlikely(!dma_capable(dev, dma_addr, size, true)) ||
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index 3928a509c44c..abb0c88b188b 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -157,6 +157,7 @@ dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
+ {
+ 	const struct dma_map_ops *ops = get_dma_ops(dev);
+ 	bool is_mmio = attrs & DMA_ATTR_MMIO;
++	bool is_cc_decrypted = attrs & DMA_ATTR_CC_DECRYPTED;
+ 	dma_addr_t addr = DMA_MAPPING_ERROR;
+ 
+ 	BUG_ON(!valid_dma_direction(dir));
+@@ -165,8 +166,11 @@ dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
+ 		return DMA_MAPPING_ERROR;
+ 
+ 	if (dma_map_direct(dev, ops) ||
+-	    (!is_mmio && arch_dma_map_phys_direct(dev, phys + size)))
++	    (!is_mmio && !is_cc_decrypted &&
++	     arch_dma_map_phys_direct(dev, phys + size)))
+ 		addr = dma_direct_map_phys(dev, phys, size, dir, attrs);
++	else if (is_cc_decrypted)
++		return DMA_MAPPING_ERROR;
+ 	else if (use_dma_iommu(dev))
+ 		addr = iommu_dma_map_phys(dev, phys, size, dir, attrs);
+ 	else if (ops->map_phys)
+@@ -203,11 +207,16 @@ void dma_unmap_phys(struct device *dev, dma_addr_t addr, size_t size,
+ {
+ 	const struct dma_map_ops *ops = get_dma_ops(dev);
+ 	bool is_mmio = attrs & DMA_ATTR_MMIO;
++	bool is_cc_decrypted = attrs & DMA_ATTR_CC_DECRYPTED;
+ 
+ 	BUG_ON(!valid_dma_direction(dir));
++
+ 	if (dma_map_direct(dev, ops) ||
+-	    (!is_mmio && arch_dma_unmap_phys_direct(dev, addr + size)))
++	    (!is_mmio && !is_cc_decrypted &&
++	     arch_dma_unmap_phys_direct(dev, addr + size)))
+ 		dma_direct_unmap_phys(dev, addr, size, dir, attrs);
++	else if (is_cc_decrypted)
++		return;
+ 	else if (use_dma_iommu(dev))
+ 		iommu_dma_unmap_phys(dev, addr, size, dir, attrs);
+ 	else if (ops->unmap_phys)
 -- 
 2.51.1
 
