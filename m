@@ -1,242 +1,188 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5997029BDB5
-	for <linux-coco@lists.linux.dev>; Mon, 16 Mar 2026 12:59:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B7DA55;
+	Mon, 16 Mar 2026 13:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773665946; cv=none; b=OQFkhrkT9Lvw8xQK+mLF2JFK+j1ddENrqhww40JSL/zf5bv5w2q0P7eHy34mR09LyBnnWWUrN53OurLtpUIM3E4aSLC7KwuE5GKVjngm0WVyn/7+bJO4TO462LhBLscW2FbbsPNBlimOiuyGSHToA51VaBXLGEeOq0m5Qt/+XNM=
+	t=1773666339; cv=none; b=rWXPFeePr52ZPJymiNfblAY1iFLhiO60CNnwmQXuWWlWv+7Me/ebtLJMAx6DxAlvMcuW0GIbL4U3vhgst6P7mPODush7gTX3DvlUDvULjr9coZao3tzt8hNil3eclgloChwkIk2uYf8/Gs79jPn4vKWwUDDddRix0fa58Jc5rGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773665946; c=relaxed/simple;
-	bh=dmuGILWcHUqJ0kSdd8/WBluFOd4yziQOvdp/K5MgbTg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QZhw8KWwIJTP38k0n2wdSjqUTGSxx7s/UuvxDoH5Hjo/Y6cACfm7+udgWQVKo/aiiy+uuTIUOyhBiWRShHQPM5Gpj35dwNcyYhB6JcBiFDREnXgOq3d3pCPFubqk3quwMnPI29myX8iuhD4b8lpwWPgdb5RaeKHYnI2noVva9xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=kOB+a606; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1773666339; c=relaxed/simple;
+	bh=g5kZmA0yw/DQF+KEhs3w8BmQ1L3CG3z1AwFKMk3kBG8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U+NdkU6uaeV2hc0Q/8Ek2PIfT5Lk2XJAsjo/wsfj+xHG/4Zm3yDgahhr1m6StmIIkd1vfTfTFDC814STyfAPJ5qRDpjVlR3M1SnNETjCMr2GJvYnMp8El8Q5QE8/dLK6y6qDSI9SqQzAinMn5WTJTLuFf3SnjPupPW0K8RyKkxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B6IZ/uuP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="kOB+a606"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso39837125e9.1
-        for <linux-coco@lists.linux.dev>; Mon, 16 Mar 2026 05:59:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1773665941; x=1774270741; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=emL9z4Qbm9oQec+/P2Nv6r0/NLIOGJvL2ewVYE7x7Io=;
-        b=kOB+a606SKnvrEBzSN3s3sTbEP7lqW2UdIlIsJgvGVpJjXBHRoNjUVPRZ5cKzqrjNK
-         E6E9hQA1s8zSUj8neG3tx/nbzNCxn/b43mujMWGFzleaCj+ApUcfCAaeIWc4ZvvfDsWI
-         3U5+SULfOb9cxoGT/lFAWPQkHoknu3d6YLrh73czISHqOjW+gyK7kZcPGU8FY6+sCJfC
-         Q5KI6UzPNcDYv0JY66PM+M4uyPRM3elDSxG43S9Vko0OdEuGXYczS8z6T32f4Jhbs7PV
-         ZqEKaF6uds5CPD2jAUf6K92FyFJm8nYSWXOB2fZ1hCcNFkDGgOIRwSeRhjHlv5ae49lG
-         Utqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773665941; x=1774270741;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=emL9z4Qbm9oQec+/P2Nv6r0/NLIOGJvL2ewVYE7x7Io=;
-        b=YrskGlD94PoPOuUWVmHDiwdLENw2x1As4ugLrtqUBOTRoYvvd9Ko8nV4wP9aLkljhN
-         kfAy3YEKsOlXOiyVxE3oVzRqtnM0YaOkC5Rg54RwmSAeC7+4sqAfhZRja+mANdQf+xze
-         dCF4E/S5TNVwRZYZL36dPYDQli9PTjRzDGBo6w8B0ZUJygnMMztTv43bVpjXwpgOsamu
-         fj09vEWvVF3brlx84FK/DtyP32Z/GGNKJLVBKY3wny8qUlEp64MiMCbG4/RFojEclQf4
-         IC9sPnEw0ePxiYu7wmMowrw49gwlXAWTYQDE89xWqWP1/QatDy5c0kdWrZYQvWzajcEE
-         1wgw==
-X-Forwarded-Encrypted: i=1; AJvYcCUZTms+1oSDZAw3+cvfwIRNIT1buvukONvC1EDP6aJKikArNiYmTqo4e9B/JA3XuwfdVz/tXXjXFfd7@lists.linux.dev
-X-Gm-Message-State: AOJu0YznyD7aTIebfZ2oE72cd3gNBSuY5uxWFS8HwrktV874hMDzkC10
-	dXzFSSwiHG0DNdif896XaPYfE/APywAEQPVKQmkfUhwMAC2PoHw02Qzp+jRsn4xwuxw=
-X-Gm-Gg: ATEYQzw5bl6WvpIBkcEZVKfrrIUCx4A0HJKFzh5SBMmkv6a7ouc72ama2h1fk0+H+Di
-	HNMWVWPPH4kIBhLG7E878zANxC1MH2dnNepryy7UBIJp+shtzrq91J4B4ZtHX6X+uMHah7GY8xe
-	+WBNJadFuk/9WXJEM5wUSe4YfJSSXQoR83WAmx9KL8TgJaekF7YU+l346Oa41tMOx500viYrPOI
-	F+oMI0jlS3n9VJNJzeXfwpMU5g/Ek5dqwCAmsWLO8zJBJfMuE1rKAEfPsJ9O3GmhwdYXtjksqC+
-	DLFyy1vZTjM8FLS2jyJeMVX8g0En5yPVVaB+IRNxosQAyL+kXpjx/WCHnSn1OkkGpKPhIaf+84C
-	sASBh3uaakQL9UF3ei64YFNxPpSCg7hoJId6gcuOFXM8XewU2ZskOWToWrqEm5uZ8mrFB0tZdGX
-	jqKOp0atlpU9DCD7KEnCKWK3EN
-X-Received: by 2002:a05:600c:3b90:b0:485:345b:ccb1 with SMTP id 5b1f17b1804b1-48556720f86mr199505885e9.27.1773665940699;
-        Mon, 16 Mar 2026 05:59:00 -0700 (PDT)
-Received: from localhost ([85.163.81.98])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b45e51681sm4423103f8f.25.2026.03.16.05.59.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 05:59:00 -0700 (PDT)
-From: Jiri Pirko <jiri@resnulli.us>
-To: dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	iommu@lists.linux.dev,
-	linux-media@vger.kernel.org
-Cc: sumit.semwal@linaro.org,
-	benjamin.gaignard@collabora.com,
-	Brian.Starkey@arm.com,
-	jstultz@google.com,
-	tjmercier@google.com,
-	christian.koenig@amd.com,
-	m.szyprowski@samsung.com,
-	robin.murphy@arm.com,
-	jgg@ziepe.ca,
-	leon@kernel.org,
-	sean.anderson@linux.dev,
-	ptesarik@suse.com,
-	catalin.marinas@arm.com,
-	aneesh.kumar@kernel.org,
-	suzuki.poulose@arm.com,
-	steven.price@arm.com,
-	thomas.lendacky@amd.com,
-	john.allen@amd.com,
-	ashish.kalra@amd.com,
-	suravee.suthikulpanit@amd.com,
-	linux-coco@lists.linux.dev
-Subject: [PATCH v4 1/2] dma-mapping: introduce DMA_ATTR_CC_DECRYPTED for pre-decrypted memory
-Date: Mon, 16 Mar 2026 13:58:56 +0100
-Message-ID: <20260316125857.617836-2-jiri@resnulli.us>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20260316125857.617836-1-jiri@resnulli.us>
-References: <20260316125857.617836-1-jiri@resnulli.us>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B6IZ/uuP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147A4C19424;
+	Mon, 16 Mar 2026 13:05:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773666338;
+	bh=g5kZmA0yw/DQF+KEhs3w8BmQ1L3CG3z1AwFKMk3kBG8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B6IZ/uuPYeW7c2/H5K7xRSNM/hYpzRUlmiz0MCVcu/fA12VOlBmLOHxzLD21/RtCy
+	 j8/9EsakS0klSL/K5ewcs62wYBe/0GMl6YOL55OsbcDfxmpS7evc7welhlulnx8AQP
+	 RdT7nSqq+qaosHcmSX7F2gAT1SNMbI2HLfiCgAZGPIacHEDWtOs3WG224/EWjvaRUQ
+	 L/y1+pSZ96Px0Uj3Ie7Qqxsjk3Ycoe4NVuvv/iEkLFM8giyd45/mfLFBlRfUr/exlK
+	 tRp44jTNInIhTAqVxetUAwdr+lRDqg43ZKB1P9PLhNx9xuET+9TzSsdbe5bUn6eI1U
+	 DMnRGP5SW0NTg==
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 321E2F40070;
+	Mon, 16 Mar 2026 09:05:37 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Mon, 16 Mar 2026 09:05:37 -0400
+X-ME-Sender: <xms:IQC4aWKTsRuGC-EUFnmc5x-kGpXz6GZPxB9qd93RmiEv6aHMp4oETg>
+    <xme:IQC4adDzzTJi3pgIu17LLuWGkQVghHbIy4FHlmGE0MxCktoCF2AlbuusjNN9rRsSp
+    aUQPWQLSl7izFmSyAhHs9p0X681Ruc-M3jDZexA_HQVqihGu4-uSN0>
+X-ME-Received: <xmr:IQC4aXE79LMsuNqehTOR921-sk44G-wzRaSDRVnlsHwd7_LS3sV47VJ3SeWIdw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleekgeehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefmihhrhihl
+    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeevhffgudeuleelueehfedtveduudehieefudehvdduheeivdeijeejledvgeeg
+    feenucffohhmrghinhepihhnthgvlhdrtghomhenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkh
+    gvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeh
+    vddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhrghordhgrghosehinhhtvg
+    hlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqtghotghosehlihhsthhsrdhlihhnuh
+    igrdguvghvpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopegsihhnsghinhdrfihusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpth
+    htohepuggrnhdrjhdrfihilhhlihgrmhhssehinhhtvghlrdgtohhmpdhrtghpthhtohep
+    uggrvhgvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhope
+    hirhgrrdifvghinhihsehinhhtvghlrdgtohhmpdhrtghpthhtohepkhgrihdrhhhurghn
+    ghesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:IQC4aQbe1QEQy_hMtzVNlE-_9JgAfBJrykOH8aijcJ6dHrjXHYNdXg>
+    <xmx:IQC4afGmr2XPdg0rS1Et6EZDjmohugkeNtw4TPXfnteBDIpl-3mCdw>
+    <xmx:IQC4aWCoRPad65ZbDpVcFDu_2Fb8D0ZYqMSR-we2B8bVW7rkWTb9Nw>
+    <xmx:IQC4aYHQer6IRgkJ88p_2hg1VFrFirJ8IMIAVlcbpA7C3mD-8sflfA>
+    <xmx:IQC4aRLKwioCZQAbLDfs-rezdUh8ZIq0DjqrWQtduXyqkUeMC4IxDzJb>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 16 Mar 2026 09:05:34 -0400 (EDT)
+Date: Mon, 16 Mar 2026 13:05:28 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, binbin.wu@linux.intel.com, dan.j.williams@intel.com, 
+	dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
+	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
+	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
+	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
+	yilun.xu@linux.intel.com, Farrah Chen <farrah.chen@intel.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v5 04/22] x86/virt/seamldr: Introduce a wrapper for
+ P-SEAMLDR SEAMCALLs
+Message-ID: <abf-3xRg7ouZw-F4@thinkstation>
+References: <20260315135920.354657-1-chao.gao@intel.com>
+ <20260315135920.354657-5-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260315135920.354657-5-chao.gao@intel.com>
 
-From: Jiri Pirko <jiri@nvidia.com>
+On Sun, Mar 15, 2026 at 06:58:24AM -0700, Chao Gao wrote:
+> The TDX architecture uses the "SEAMCALL" instruction to communicate with
+> SEAM mode software. Right now, the only SEAM mode software that the kernel
+> communicates with is the TDX module. But, there is actually another
+> component that runs in SEAM mode but it is separate from the TDX module:
+> the persistent SEAM loader or "P-SEAMLDR". Right now, the only component
+> that communicates with it is the BIOS which loads the TDX module itself at
+> boot. But, to support updating the TDX module, the kernel now needs to be
+> able to talk to it.
+> 
+> P-SEAMLDR SEAMCALLs differ from TDX module SEAMCALLs in areas such as
+> concurrency requirements. Add a P-SEAMLDR wrapper to handle these
+> differences and prepare for implementing concrete functions.
+> 
+> Note that unlike P-SEAMLDR, there is also a non-persistent SEAM loader
+> ("NP-SEAMLDR"). This is an authenticated code module (ACM) that is not
+> callable at runtime. Only BIOS launches it to load P-SEAMLDR at boot;
+> the kernel does not need to interact with it for runtime update.
+> 
+> For details of P-SEAMLDR SEAMCALLs, see Intel® Trust Domain CPU
+> Architectural Extensions, Revision 343754-002, Chapter 2.3 "INSTRUCTION
+> SET REFERENCE".
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Tested-by: Farrah Chen <farrah.chen@intel.com>
+> Link: https://cdrdv2.intel.com/v1/dl/getContent/733582 # [1]
+> ---
+> v5:
+>  - Don't save/restore irq flags as P-SEAMLDR calls are made only in process
+>    context
+>  - clarify why raw_spinlock is used [Dave]
+> v4:
+>  - Give more background about P-SEAMLDR in changelog [Dave]
+>  - Don't handle P-SEAMLDR's "no_entropy" error [Dave]
+>  - Assume current VMCS is preserved across P-SEAMLDR calls [Dave]
+>  - I'm not adding Reviewed-by tags as the code has changed significantly.
+> v2:
+>  - don't create a new, inferior framework to save/restore VMCS
+>  - use human-friendly language, just "current VMCS" rather than
+>    SDM term "current-VMCS pointer"
+>  - don't mix guard() with goto
+> ---
+>  arch/x86/virt/vmx/tdx/Makefile  |  2 +-
+>  arch/x86/virt/vmx/tdx/seamldr.c | 24 ++++++++++++++++++++++++
+>  2 files changed, 25 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/x86/virt/vmx/tdx/seamldr.c
+> 
+> diff --git a/arch/x86/virt/vmx/tdx/Makefile b/arch/x86/virt/vmx/tdx/Makefile
+> index 90da47eb85ee..d1dbc5cc5697 100644
+> --- a/arch/x86/virt/vmx/tdx/Makefile
+> +++ b/arch/x86/virt/vmx/tdx/Makefile
+> @@ -1,2 +1,2 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+> -obj-y += seamcall.o tdx.o
+> +obj-y += seamcall.o seamldr.o tdx.o
+> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+> new file mode 100644
+> index 000000000000..7ed9be89017c
+> --- /dev/null
+> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
+> @@ -0,0 +1,24 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * P-SEAMLDR support for TDX module management features like runtime updates
+> + *
+> + * Copyright (C) 2025 Intel Corporation
+> + */
+> +#define pr_fmt(fmt)	"seamldr: " fmt
+> +
+> +#include <linux/spinlock.h>
+> +
+> +#include "seamcall_internal.h"
+> +
+> +/*
+> + * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
+> + * interact with P-SEAMLDR simultaneously. Use raw version as the calls can
+> + * be made with interrupts disabled.
 
-Current CC designs don't place a vIOMMU in front of untrusted devices.
-Instead, the DMA API forces all untrusted device DMA through swiotlb
-bounce buffers (is_swiotlb_force_bounce()) which copies data into
-decrypted memory on behalf of the device.
+Hm. I am not sure how it explains use of raw_spinlock. What's wrong with
+using plain spinlock with interrupts disabled?
 
-When a caller has already arranged for the memory to be decrypted
-via set_memory_decrypted(), the DMA API needs to know so it can map
-directly using the unencrypted physical address rather than bounce
-buffering. Following the pattern of DMA_ATTR_MMIO, add
-DMA_ATTR_CC_DECRYPTED for this purpose. Like the MMIO case, only the
-caller knows what kind of memory it has and must inform the DMA API
-for it to work correctly.
+> + */
+> +static DEFINE_RAW_SPINLOCK(seamldr_lock);
+> +
+> +static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
+> +{
+> +	guard(raw_spinlock)(&seamldr_lock);
+> +	return seamcall_prerr(fn, args);
+> +}
+> -- 
+> 2.47.3
+> 
 
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
----
-v3->v4:
-- added some sanity checks to dma_map_phys and dma_unmap_phys
-- enhanced documentation of DMA_ATTR_CC_DECRYPTED attr
-v1->v2:
-- rebased on top of recent dma-mapping-fixes
----
- include/linux/dma-mapping.h | 10 ++++++++++
- include/trace/events/dma.h  |  3 ++-
- kernel/dma/direct.h         | 14 +++++++++++---
- kernel/dma/mapping.c        | 13 +++++++++++--
- 4 files changed, 34 insertions(+), 6 deletions(-)
-
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index 29973baa0581..476964d2b22f 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -85,6 +85,16 @@
-  * a cacheline must have this attribute for this to be considered safe.
-  */
- #define DMA_ATTR_CPU_CACHE_CLEAN	(1UL << 11)
-+/*
-+ * DMA_ATTR_CC_DECRYPTED: Indicates the DMA mapping is decrypted (shared) for
-+ * confidential computing guests. For normal system memory the caller must have
-+ * called set_memory_decrypted(), and pgprot_decrypted must be used when
-+ * creating CPU PTEs for the mapping. The same decrypted semantic may be passed
-+ * to the vIOMMU when it sets up the IOPTE. For MMIO use together with
-+ * DMA_ATTR_MMIO to indicate decrypted MMIO. Unless DMA_ATTR_MMIO is provided
-+ * a struct page is required.
-+ */
-+#define DMA_ATTR_CC_DECRYPTED	(1UL << 12)
- 
- /*
-  * A dma_addr_t can hold any valid DMA or bus address for the platform.  It can
-diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
-index 33e99e792f1a..b8082d5177c4 100644
---- a/include/trace/events/dma.h
-+++ b/include/trace/events/dma.h
-@@ -32,7 +32,8 @@ TRACE_DEFINE_ENUM(DMA_NONE);
- 		{ DMA_ATTR_ALLOC_SINGLE_PAGES, "ALLOC_SINGLE_PAGES" }, \
- 		{ DMA_ATTR_NO_WARN, "NO_WARN" }, \
- 		{ DMA_ATTR_PRIVILEGED, "PRIVILEGED" }, \
--		{ DMA_ATTR_MMIO, "MMIO" })
-+		{ DMA_ATTR_MMIO, "MMIO" }, \
-+		{ DMA_ATTR_CC_DECRYPTED, "CC_DECRYPTED" })
- 
- DECLARE_EVENT_CLASS(dma_map,
- 	TP_PROTO(struct device *dev, phys_addr_t phys_addr, dma_addr_t dma_addr,
-diff --git a/kernel/dma/direct.h b/kernel/dma/direct.h
-index e89f175e9c2d..c047a9d0fda3 100644
---- a/kernel/dma/direct.h
-+++ b/kernel/dma/direct.h
-@@ -84,16 +84,24 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
- 	dma_addr_t dma_addr;
- 
- 	if (is_swiotlb_force_bounce(dev)) {
--		if (attrs & DMA_ATTR_MMIO)
--			return DMA_MAPPING_ERROR;
-+		if (!(attrs & DMA_ATTR_CC_DECRYPTED)) {
-+			if (attrs & DMA_ATTR_MMIO)
-+				return DMA_MAPPING_ERROR;
- 
--		return swiotlb_map(dev, phys, size, dir, attrs);
-+			return swiotlb_map(dev, phys, size, dir, attrs);
-+		}
-+	} else if (attrs & DMA_ATTR_CC_DECRYPTED) {
-+		return DMA_MAPPING_ERROR;
- 	}
- 
- 	if (attrs & DMA_ATTR_MMIO) {
- 		dma_addr = phys;
- 		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
- 			goto err_overflow;
-+	} else if (attrs & DMA_ATTR_CC_DECRYPTED) {
-+		dma_addr = phys_to_dma_unencrypted(dev, phys);
-+		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
-+			goto err_overflow;
- 	} else {
- 		dma_addr = phys_to_dma(dev, phys);
- 		if (unlikely(!dma_capable(dev, dma_addr, size, true)) ||
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 3928a509c44c..abb0c88b188b 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -157,6 +157,7 @@ dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
- {
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
- 	bool is_mmio = attrs & DMA_ATTR_MMIO;
-+	bool is_cc_decrypted = attrs & DMA_ATTR_CC_DECRYPTED;
- 	dma_addr_t addr = DMA_MAPPING_ERROR;
- 
- 	BUG_ON(!valid_dma_direction(dir));
-@@ -165,8 +166,11 @@ dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
- 		return DMA_MAPPING_ERROR;
- 
- 	if (dma_map_direct(dev, ops) ||
--	    (!is_mmio && arch_dma_map_phys_direct(dev, phys + size)))
-+	    (!is_mmio && !is_cc_decrypted &&
-+	     arch_dma_map_phys_direct(dev, phys + size)))
- 		addr = dma_direct_map_phys(dev, phys, size, dir, attrs);
-+	else if (is_cc_decrypted)
-+		return DMA_MAPPING_ERROR;
- 	else if (use_dma_iommu(dev))
- 		addr = iommu_dma_map_phys(dev, phys, size, dir, attrs);
- 	else if (ops->map_phys)
-@@ -203,11 +207,16 @@ void dma_unmap_phys(struct device *dev, dma_addr_t addr, size_t size,
- {
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
- 	bool is_mmio = attrs & DMA_ATTR_MMIO;
-+	bool is_cc_decrypted = attrs & DMA_ATTR_CC_DECRYPTED;
- 
- 	BUG_ON(!valid_dma_direction(dir));
-+
- 	if (dma_map_direct(dev, ops) ||
--	    (!is_mmio && arch_dma_unmap_phys_direct(dev, addr + size)))
-+	    (!is_mmio && !is_cc_decrypted &&
-+	     arch_dma_unmap_phys_direct(dev, addr + size)))
- 		dma_direct_unmap_phys(dev, addr, size, dir, attrs);
-+	else if (is_cc_decrypted)
-+		return;
- 	else if (use_dma_iommu(dev))
- 		iommu_dma_unmap_phys(dev, addr, size, dir, attrs);
- 	else if (ops->unmap_phys)
 -- 
-2.51.1
-
+  Kiryl Shutsemau / Kirill A. Shutemov
