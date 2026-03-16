@@ -1,68 +1,67 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B7DA55;
-	Mon, 16 Mar 2026 13:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4676C382362;
+	Mon, 16 Mar 2026 13:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773666339; cv=none; b=rWXPFeePr52ZPJymiNfblAY1iFLhiO60CNnwmQXuWWlWv+7Me/ebtLJMAx6DxAlvMcuW0GIbL4U3vhgst6P7mPODush7gTX3DvlUDvULjr9coZao3tzt8hNil3eclgloChwkIk2uYf8/Gs79jPn4vKWwUDDddRix0fa58Jc5rGQ=
+	t=1773666734; cv=none; b=XOeCTEYHOT4ayeqrWcVQVLlTg04xFoDB2uhdEjsK9FDaMUdhRnjE06W4Pcs+0DwlFWBvuaTt2VN63GwRCSfJ6STkL7jH9w6Qt9amIMkTuZlJilu6RYDQpZi/gIXMBZzw6Xm7Sd8uKKT037pj2broM9Tb5aiLwJ2kcm9gQzvJrig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773666339; c=relaxed/simple;
-	bh=g5kZmA0yw/DQF+KEhs3w8BmQ1L3CG3z1AwFKMk3kBG8=;
+	s=arc-20240116; t=1773666734; c=relaxed/simple;
+	bh=X3364DyV9+qQmR1c70C3WBPf+wo2HbpBx91Oa7wP6FI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U+NdkU6uaeV2hc0Q/8Ek2PIfT5Lk2XJAsjo/wsfj+xHG/4Zm3yDgahhr1m6StmIIkd1vfTfTFDC814STyfAPJ5qRDpjVlR3M1SnNETjCMr2GJvYnMp8El8Q5QE8/dLK6y6qDSI9SqQzAinMn5WTJTLuFf3SnjPupPW0K8RyKkxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B6IZ/uuP; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=CrjZ9TTH5ROswyuomXk/VMarCVZopRTdSNFvkzEsmxab/ypPu/t8AN+C16ckCewOREKGfxWFAZ/YvULvwUngi9wE77o2BMdaEPJEZQ9SGMv3w3cU3BI+nxdoDSDUI74+Fh7PyFJQcLMhvJA8FHI8xRO3ZGE1EA5x58u8Zv6m64Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nc39I1Nr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B6IZ/uuP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147A4C19424;
-	Mon, 16 Mar 2026 13:05:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nc39I1Nr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137A7C19421;
+	Mon, 16 Mar 2026 13:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773666338;
-	bh=g5kZmA0yw/DQF+KEhs3w8BmQ1L3CG3z1AwFKMk3kBG8=;
+	s=k20201202; t=1773666733;
+	bh=X3364DyV9+qQmR1c70C3WBPf+wo2HbpBx91Oa7wP6FI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B6IZ/uuPYeW7c2/H5K7xRSNM/hYpzRUlmiz0MCVcu/fA12VOlBmLOHxzLD21/RtCy
-	 j8/9EsakS0klSL/K5ewcs62wYBe/0GMl6YOL55OsbcDfxmpS7evc7welhlulnx8AQP
-	 RdT7nSqq+qaosHcmSX7F2gAT1SNMbI2HLfiCgAZGPIacHEDWtOs3WG224/EWjvaRUQ
-	 L/y1+pSZ96Px0Uj3Ie7Qqxsjk3Ycoe4NVuvv/iEkLFM8giyd45/mfLFBlRfUr/exlK
-	 tRp44jTNInIhTAqVxetUAwdr+lRDqg43ZKB1P9PLhNx9xuET+9TzSsdbe5bUn6eI1U
-	 DMnRGP5SW0NTg==
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 321E2F40070;
-	Mon, 16 Mar 2026 09:05:37 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Mon, 16 Mar 2026 09:05:37 -0400
-X-ME-Sender: <xms:IQC4aWKTsRuGC-EUFnmc5x-kGpXz6GZPxB9qd93RmiEv6aHMp4oETg>
-    <xme:IQC4adDzzTJi3pgIu17LLuWGkQVghHbIy4FHlmGE0MxCktoCF2AlbuusjNN9rRsSp
-    aUQPWQLSl7izFmSyAhHs9p0X681Ruc-M3jDZexA_HQVqihGu4-uSN0>
-X-ME-Received: <xmr:IQC4aXE79LMsuNqehTOR921-sk44G-wzRaSDRVnlsHwd7_LS3sV47VJ3SeWIdw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleekgeehucetufdoteggodetrf
+	b=nc39I1NrmvOmWfTmfTq3bRQ/XNiZVrid91WoQ69sNdF1IJPlXO/LGKxfxZAtonZkX
+	 8VMSgHwJgUxzC0V2Suzo/4ryDnsFK03YmOa6ruDwZ9J8dfj8yaAO9CMCeS34+t5cUN
+	 97nx54vn5VHU9hl3QoyTcnEq2/nPXaSVH+a9AlOnMe0PYjgSf8SLBh8MRs6l2yD53U
+	 PVNz4ASrcp5QVSE+X0SLPjEG6apVSNd33P9Rrt8cbPFE2wcD7SBI5WtsEUjcHgv3/3
+	 N94sSPHncpW5/pmWx28JX4p8gy4P4M23OheD4FUET/iqwTt5rWJbSM3tHyBcGlH41D
+	 Zw2pTn9v0cwsQ==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 2FF56F40075;
+	Mon, 16 Mar 2026 09:12:12 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Mon, 16 Mar 2026 09:12:12 -0400
+X-ME-Sender: <xms:rAG4abo58vO0SWsllMuo5vQ3lNAyBeRgNLOkIih9LDD38F8g2JdN9A>
+    <xme:rAG4aUjX5wSWJcqZC_UFsJEz2HsjZBu2Egje-h9qNJ9L1sglK9xsa2FHVbTiIGgNF
+    ps670rpqCFuRi-yJg8mrF1wd5F_N2LNVo4IUVk7cLhzYGNMOmx7gA>
+X-ME-Received: <xmr:rAG4aYnl9y3Y7xKekxr9YEXzQJuZdrJQ41Gn8gbgH-dWZjmhGHorqHoLn0tehA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleekgeeiucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefmihhrhihl
     ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeevhffgudeuleelueehfedtveduudehieefudehvdduheeivdeijeejledvgeeg
-    feenucffohhmrghinhepihhnthgvlhdrtghomhenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgv
-    rhhsohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkh
-    gvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeh
-    vddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhrghordhgrghosehinhhtvg
-    hlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqtghotghosehlihhsthhsrdhlihhnuh
-    igrdguvghvpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopegsihhnsghinhdrfihusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpth
-    htohepuggrnhdrjhdrfihilhhlihgrmhhssehinhhtvghlrdgtohhmpdhrtghpthhtohep
-    uggrvhgvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhope
-    hirhgrrdifvghinhihsehinhhtvghlrdgtohhmpdhrtghpthhtohepkhgrihdrhhhurghn
-    ghesihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:IQC4aQbe1QEQy_hMtzVNlE-_9JgAfBJrykOH8aijcJ6dHrjXHYNdXg>
-    <xmx:IQC4afGmr2XPdg0rS1Et6EZDjmohugkeNtw4TPXfnteBDIpl-3mCdw>
-    <xmx:IQC4aWCoRPad65ZbDpVcFDu_2Fb8D0ZYqMSR-we2B8bVW7rkWTb9Nw>
-    <xmx:IQC4aYHQer6IRgkJ88p_2hg1VFrFirJ8IMIAVlcbpA7C3mD-8sflfA>
-    <xmx:IQC4aRLKwioCZQAbLDfs-rezdUh8ZIq0DjqrWQtduXyqkUeMC4IxDzJb>
+    gvrhhnpeeludettdeigfefhffhhfelveeludeuleduvefhgefgueeitedtleffudegfffg
+    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
+    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
+    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
+    drnhgrmhgvpdhnsggprhgtphhtthhopeehvddpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtoheptghhrghordhgrghosehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugi
+    dqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
+    gidqtghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepkhhvmhesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegsihhnsghinhdrfihusehlihhn
+    uhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepuggrnhdrjhdrfihilhhlihgrmhhsse
+    hinhhtvghlrdgtohhmpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnheslhhinhhugidr
+    ihhnthgvlhdrtghomhdprhgtphhtthhopehirhgrrdifvghinhihsehinhhtvghlrdgtoh
+    hmpdhrtghpthhtohepkhgrihdrhhhurghnghesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:rAG4aT7aVt6K6FdLZSasXL1aTp-HzOcTxfuPYl5NWUrBlNh3D1Z23g>
+    <xmx:rAG4acla1T5U09X6ZvaaHFRm15NZWheNk0dRb8qCQIAV9MPjxASG7Q>
+    <xmx:rAG4aVhLBmb6Gx0lv_hhsgQQwlsLb7XNdMi2OMZDYm4rsqMG0lmHYg>
+    <xmx:rAG4aRkE-Jhf-0sgCBMsVkkMVVDpw3Fgg6n7W6ufz6mNRX0fLOQDbw>
+    <xmx:rAG4acpRjA7qLoBErlMhlPL8wfwH7thjWe93LWSQ0bMOFYobs0CJol4K>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Mar 2026 09:05:34 -0400 (EDT)
-Date: Mon, 16 Mar 2026 13:05:28 +0000
+ 16 Mar 2026 09:12:10 -0400 (EDT)
+Date: Mon, 16 Mar 2026 13:12:05 +0000
 From: Kiryl Shutsemau <kas@kernel.org>
 To: Chao Gao <chao.gao@intel.com>
 Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
@@ -74,11 +73,10 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	yilun.xu@linux.intel.com, Farrah Chen <farrah.chen@intel.com>, 
 	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v5 04/22] x86/virt/seamldr: Introduce a wrapper for
- P-SEAMLDR SEAMCALLs
-Message-ID: <abf-3xRg7ouZw-F4@thinkstation>
+Subject: Re: [PATCH v5 05/22] x86/virt/seamldr: Retrieve P-SEAMLDR information
+Message-ID: <abgBFmEhlsdmxa1k@thinkstation>
 References: <20260315135920.354657-1-chao.gao@intel.com>
- <20260315135920.354657-5-chao.gao@intel.com>
+ <20260315135920.354657-6-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -88,98 +86,147 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260315135920.354657-5-chao.gao@intel.com>
+In-Reply-To: <20260315135920.354657-6-chao.gao@intel.com>
 
-On Sun, Mar 15, 2026 at 06:58:24AM -0700, Chao Gao wrote:
-> The TDX architecture uses the "SEAMCALL" instruction to communicate with
-> SEAM mode software. Right now, the only SEAM mode software that the kernel
-> communicates with is the TDX module. But, there is actually another
-> component that runs in SEAM mode but it is separate from the TDX module:
-> the persistent SEAM loader or "P-SEAMLDR". Right now, the only component
-> that communicates with it is the BIOS which loads the TDX module itself at
-> boot. But, to support updating the TDX module, the kernel now needs to be
-> able to talk to it.
+On Sun, Mar 15, 2026 at 06:58:25AM -0700, Chao Gao wrote:
+> P-SEAMLDR returns its information such as version number, in response to
+> the SEAMLDR.INFO SEAMCALL.
 > 
-> P-SEAMLDR SEAMCALLs differ from TDX module SEAMCALLs in areas such as
-> concurrency requirements. Add a P-SEAMLDR wrapper to handle these
-> differences and prepare for implementing concrete functions.
+> This information is useful for userspace. For example, the admin can decide
+> which TDX module versions are compatible with the P-SEAMLDR according to
+> the P-SEAMLDR version.
 > 
-> Note that unlike P-SEAMLDR, there is also a non-persistent SEAM loader
-> ("NP-SEAMLDR"). This is an authenticated code module (ACM) that is not
-> callable at runtime. Only BIOS launches it to load P-SEAMLDR at boot;
-> the kernel does not need to interact with it for runtime update.
+> Retrieve P-SEAMLDR information in preparation for exposing P-SEAMLDR
+> version and other necessary information to userspace. Export the new kAPI
+> for use by tdx-host.ko.
 > 
-> For details of P-SEAMLDR SEAMCALLs, see Intel® Trust Domain CPU
-> Architectural Extensions, Revision 343754-002, Chapter 2.3 "INSTRUCTION
-> SET REFERENCE".
+> Note that there are two distinct P-SEAMLDR APIs with similar names:
+> 
+>   SEAMLDR.INFO: Returns a SEAMLDR_INFO structure containing SEAMLDR
+>                 information such as version and remaining updates.
+> 
+>   SEAMLDR.SEAMINFO: Returns a SEAMLDR_SEAMINFO structure containing SEAM
+>                     and system information such as Convertible Memory
+> 		    Regions (CMRs) and number of CPUs and sockets.
+> 
+> The former is used here.
+> 
+> For details, see "Intel® Trust Domain Extensions - SEAM Loader (SEAMLDR)
+> Interface Specification" revision 343755-003.
 > 
 > Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 > Tested-by: Farrah Chen <farrah.chen@intel.com>
-> Link: https://cdrdv2.intel.com/v1/dl/getContent/733582 # [1]
 > ---
-> v5:
->  - Don't save/restore irq flags as P-SEAMLDR calls are made only in process
->    context
->  - clarify why raw_spinlock is used [Dave]
-> v4:
->  - Give more background about P-SEAMLDR in changelog [Dave]
->  - Don't handle P-SEAMLDR's "no_entropy" error [Dave]
->  - Assume current VMCS is preserved across P-SEAMLDR calls [Dave]
->  - I'm not adding Reviewed-by tags as the code has changed significantly.
-> v2:
->  - don't create a new, inferior framework to save/restore VMCS
->  - use human-friendly language, just "current VMCS" rather than
->    SDM term "current-VMCS pointer"
->  - don't mix guard() with goto
-> ---
->  arch/x86/virt/vmx/tdx/Makefile  |  2 +-
->  arch/x86/virt/vmx/tdx/seamldr.c | 24 ++++++++++++++++++++++++
->  2 files changed, 25 insertions(+), 1 deletion(-)
->  create mode 100644 arch/x86/virt/vmx/tdx/seamldr.c
+> Kai also suggested merging this patch with the first use of the new
+> kAPI, so we don't need to add a comment for slow_virt_to_phys() (as the
+> reason can be seen from the call site). I am fine with it, but the
+> changelog may be a bit lengthy.
 > 
-> diff --git a/arch/x86/virt/vmx/tdx/Makefile b/arch/x86/virt/vmx/tdx/Makefile
-> index 90da47eb85ee..d1dbc5cc5697 100644
-> --- a/arch/x86/virt/vmx/tdx/Makefile
-> +++ b/arch/x86/virt/vmx/tdx/Makefile
-> @@ -1,2 +1,2 @@
->  # SPDX-License-Identifier: GPL-2.0-only
-> -obj-y += seamcall.o tdx.o
-> +obj-y += seamcall.o seamldr.o tdx.o
-> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+> v5:
+>  - add a comment for slow_virt_to_phys() [Kai]
+> v4:
+>  - put seamldr_info on stack [Dave]
+>  - improve changelogs to explain SEAMLDR.INFO and SEAMLDR.SEAMINFO [Dave]
+>  - add P-SEAMLDR spec information in the changelog [Dave]
+>  - add proper comments above ABI structure definition [Dave]
+>  - add unused ABI structure fields rather than marking them as reserved
+>    to better align with the specc [Dave] (I omitted "not used by kernel"
+>    tags since there are 5-6 such fields and maintaining these tags would
+>    be tedious.)
+> ---
+>  arch/x86/include/asm/seamldr.h  | 36 +++++++++++++++++++++++++++++++++
+>  arch/x86/virt/vmx/tdx/seamldr.c | 19 ++++++++++++++++-
+>  2 files changed, 54 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/x86/include/asm/seamldr.h
+> 
+> diff --git a/arch/x86/include/asm/seamldr.h b/arch/x86/include/asm/seamldr.h
 > new file mode 100644
-> index 000000000000..7ed9be89017c
+> index 000000000000..c67e5bc910a9
 > --- /dev/null
-> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-> @@ -0,0 +1,24 @@
-> +// SPDX-License-Identifier: GPL-2.0
+> +++ b/arch/x86/include/asm/seamldr.h
+> @@ -0,0 +1,36 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ASM_X86_SEAMLDR_H
+> +#define _ASM_X86_SEAMLDR_H
+> +
+> +#include <linux/types.h>
+> +
 > +/*
-> + * P-SEAMLDR support for TDX module management features like runtime updates
+> + * This is called the "SEAMLDR_INFO" data structure and is defined
+> + * in "SEAM Loader (SEAMLDR) Interface Specification".
 > + *
-> + * Copyright (C) 2025 Intel Corporation
+> + * The SEAMLDR.INFO documentation requires this to be aligned to a
+> + * 256-byte boundary.
 > + */
-> +#define pr_fmt(fmt)	"seamldr: " fmt
+> +struct seamldr_info {
+> +	u32	version;
+> +	u32	attributes;
+> +	u32	vendor_id;
+> +	u32	build_date;
+> +	u16	build_num;
+> +	u16	minor_version;
+> +	u16	major_version;
+> +	u16	update_version;
+> +	u32	acm_x2apicid;
+> +	u32	num_remaining_updates;
+> +	u8	seam_info[128];
+> +	u8	seam_ready;
+> +	u8	seam_debug;
+> +	u8	p_seam_ready;
+> +	u8	reserved[93];
+> +} __packed __aligned(256);
 > +
-> +#include <linux/spinlock.h>
+> +static_assert(sizeof(struct seamldr_info) == 256);
 > +
-> +#include "seamcall_internal.h"
+> +int seamldr_get_info(struct seamldr_info *seamldr_info);
 > +
-> +/*
-> + * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
-> + * interact with P-SEAMLDR simultaneously. Use raw version as the calls can
-> + * be made with interrupts disabled.
-
-Hm. I am not sure how it explains use of raw_spinlock. What's wrong with
-using plain spinlock with interrupts disabled?
-
-> + */
-> +static DEFINE_RAW_SPINLOCK(seamldr_lock);
+> +#endif /* _ASM_X86_SEAMLDR_H */
+> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+> index 7ed9be89017c..7c0cbab2c4c0 100644
+> --- a/arch/x86/virt/vmx/tdx/seamldr.c
+> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
+> @@ -8,8 +8,13 @@
+>  
+>  #include <linux/spinlock.h>
+>  
+> +#include <asm/seamldr.h>
 > +
-> +static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
+>  #include "seamcall_internal.h"
+>  
+> +/* P-SEAMLDR SEAMCALL leaf function */
+> +#define P_SEAMLDR_INFO			0x8000000000000000
+> +
+>  /*
+>   * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
+>   * interact with P-SEAMLDR simultaneously. Use raw version as the calls can
+> @@ -17,8 +22,20 @@
+>   */
+>  static DEFINE_RAW_SPINLOCK(seamldr_lock);
+>  
+> -static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
+> +static int seamldr_call(u64 fn, struct tdx_module_args *args)
+>  {
+>  	guard(raw_spinlock)(&seamldr_lock);
+>  	return seamcall_prerr(fn, args);
+>  }
+> +
+> +int seamldr_get_info(struct seamldr_info *seamldr_info)
 > +{
-> +	guard(raw_spinlock)(&seamldr_lock);
-> +	return seamcall_prerr(fn, args);
+> +	/*
+> +	 * Use slow_virt_to_phys() since @seamldr_info may be allocated on
+> +	 * the stack.
+> +	 */
+> +	struct tdx_module_args args = { .rcx = slow_virt_to_phys(seamldr_info) };
+> +
+> +	return seamldr_call(P_SEAMLDR_INFO, &args);
+
+On what condition this information can change?
+
+I see the next patch calls this on every _show operation. Would we
+benefit from caching the response?
+
 > +}
+> +EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
 > -- 
 > 2.47.3
 > 
