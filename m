@@ -1,133 +1,395 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F99386569
-	for <linux-coco@lists.linux.dev>; Mon, 16 Mar 2026 12:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF329396D15
+	for <linux-coco@lists.linux.dev>; Mon, 16 Mar 2026 12:59:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773665655; cv=none; b=YoxtVkP/CIHnNpv839hUBUMKzrRcMUVa8NYdyOfZej6VC27gBlEdB/GdW3dAqOLMwHeuROUU7AX0oAhhm1Kp+89xSuYi1XsWx1cYeCyz7nEG9ZMFj4oyd6lQ4UVOAmW13eMnVriu4b7cMPkKVQmvUBelyToVrr5e3aUHtfvHSdE=
+	t=1773665945; cv=none; b=cDPQjA/w3MMGkPA5kLr4tjqe76DhOSpuALQCUQa1YeKN+yQKphfjUnDgJhRdHVx4+i5A3DytQSDf+HiksDPIg+GPgl/jQ+0y4H0dqacIfJTtDkiRP1II4glqR1XhD2zl9EiNFY+Qaa+DQFMHB6h3K4G0RdmWAu+x9T9GNR0IW/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773665655; c=relaxed/simple;
-	bh=aEz6nDUHUvdTqHUE/gSiSeYGwSbsg8rYjmJCqbw9g54=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qr1bMH8Pcufw5NSVxws/+BkxGFJXVeL+vtVQZRDo8FCMNr6WOqVVvVWG31H5wP6iF+TqHtViuNo21oscf67WGc0QOOWmElc1HjNO6gdTAMTrjW/votEEpt58bAf0Cyo9fs1Gcw5hjJIFu0b5+9sFWYI+t45UosjdlXVj9yf4j1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XgwE/70f; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773665945; c=relaxed/simple;
+	bh=wDgegmsP+YrNBy8SLol1GMKHL9XRfmTjnZLTWVMaWEg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Cween75jMVXOdAYKhl05kNEI/D3Id297+NGNrpotkbE41W2ZxqgzFitQDG6rpoeflVpWjWuqdsIzaHv/3Et4hPsTjFrVGQTjLMN2MwUb1tVaVarWvII3nQnpQH7stwFg3YOC08kEkSB4LwwggchB9UEVz+YrtER8GIQYPBGiJCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=FJOTTWA4; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XgwE/70f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19F2C19421;
-	Mon, 16 Mar 2026 12:54:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773665655;
-	bh=aEz6nDUHUvdTqHUE/gSiSeYGwSbsg8rYjmJCqbw9g54=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XgwE/70fcwoPdVyHPmOezDmFGi4eyDiyUh38kiW0ymdIumFd6M2O8e8WjygTraXc5
-	 MBtdFCKT3b8JmjCfHFoD4gIfMXNpcDS/PHldej9Zcxr6AB9YV55F8CEQGqa5wDZJ2q
-	 pxCJ735Drdjp04TxO/mHgwppxaFGX+8LWgKmW4aNGlSd/3lSq0EiS1KCkOSFoaL1f3
-	 kEVU9wAeG7IjhGaj9sV++Yl3XfoOD47Ia+3KNwvTnhEPLrv1SrvCyMGfEOZq1mDZ+i
-	 nY/YUxmm/Y09GYS43z07H1APAXu9qIyfyOWeozfHpWvLfvmrrd3lkMo3BUzbsOGglL
-	 h3AtpuuLYAzjw==
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfauth.phl.internal (Postfix) with ESMTP id BF4E6F40080;
-	Mon, 16 Mar 2026 08:54:13 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Mon, 16 Mar 2026 08:54:13 -0400
-X-ME-Sender: <xms:df23aTiRjXLopp2TKPHScGqiQh4JVGnmktPMr1c6z3UfAQ1_LkULCw>
-    <xme:df23aeoYD9fIXQFntkD1npFhzFO8XroQ_e_QVTAoL9MVjkOxZ4xOqG-DylaKF_d3C
-    H0tW1JSG7ywvJTWvH49HlgWM2czu8ErKoi6apA31ObJ5nOafY2hrDk>
-X-ME-Received: <xmr:df23aStnQkpuu2mLY4yga9C-hl3rZRx2do6ERcznLS8Jh6jEjv-lLG-Mj1-7Nw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleekgeefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepffffkeegffejgfekvdejgeegtddtleejkefhhfduieduhfeigfduuefghfehffdu
-    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgv
-    rhhsohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkh
-    gvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeg
-    vddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhrghordhgrghosehinhhtvg
-    hlrdgtohhmpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    lhhinhhugidqtghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepkh
-    hvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghr
-    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegsihhnsghinhdrfi
-    husehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepuggrnhdrjhdrfihilhhl
-    ihgrmhhssehinhhtvghlrdgtohhmpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnheslh
-    hinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehirhgrrdifvghinhihsehinhht
-    vghlrdgtohhm
-X-ME-Proxy: <xmx:df23aWfwIy2IsJe7dN_mMrpOMXXDOZgeKpsXzGL3dWACffQFR60o2A>
-    <xmx:df23aWB95KLQnb0kReQEySGTFHxGJhFIw8jk2u3PyLGF9nJErZBtfg>
-    <xmx:df23aZm3353S2RdDJWwfZX32Em7krNa6n_SwTiC2ssVclvw8XNwStQ>
-    <xmx:df23aci44RiGmUIBL8_xXVQsn-kLmdVfSCs2nGfsNA1y8LBWe4xYoA>
-    <xmx:df23aR1tLY9NXvI_iNy3qfJaHX82MBFcjJYsUSvLKAZu6vRzNRGOfnG8>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Mar 2026 08:54:12 -0400 (EDT)
-Date: Mon, 16 Mar 2026 12:54:05 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Chao Gao <chao.gao@intel.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, binbin.wu@linux.intel.com, dan.j.williams@intel.com, 
-	dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
-	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
-	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
-	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
-	yilun.xu@linux.intel.com
-Subject: Re: [PATCH v5 03/22] coco/tdx-host: Expose TDX module version
-Message-ID: <abf9P2Btc3MQ8IBe@thinkstation>
-References: <20260315135920.354657-1-chao.gao@intel.com>
- <20260315135920.354657-4-chao.gao@intel.com>
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="FJOTTWA4"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso39837405e9.1
+        for <linux-coco@lists.linux.dev>; Mon, 16 Mar 2026 05:59:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1773665942; x=1774270742; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rr9absNRExPJZzcjqc7YTRhRpEhw3tbImX4CnZibLO0=;
+        b=FJOTTWA4YXEMaZ1Ll/0nMP9K+fn3aEJFbBek7Zp6ivSIz6Xf9F1typStxFgHo/6cWc
+         AiKXFbyeiNKFapvL7Z1ltcpbQQL3QAAoBENxL2qfoJWU2Vk1K8qMo7WdUVZmnS7o9uPt
+         zGn6ojjsILBNjEcn6bbtT67Zbbm7mYllfyrdXpdBLclr6OFc7b5BEsi/OmfjqylLgCAL
+         ZqhMLYtn2W8gc/k78VUq3gcx+LZV++xeG8RlQN4Hj+hRSsHmhxXumho0Za1KdlYolvI0
+         5p/8Zexky2zgZzjQEoH0InJNtq6OCzKgc61sbh01dlB5zya5Yq63nlrCwKPqXmfg26ED
+         iBnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773665942; x=1774270742;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Rr9absNRExPJZzcjqc7YTRhRpEhw3tbImX4CnZibLO0=;
+        b=jqnfC95F+sEix3paiYgD8SALd5Rcc9g+TYEyN48eRMDr1IQ5/+mzv/XynZ9kAPkNWT
+         IEwudGm5azdNcyd4Sr8ZEtyXSeaShJiDg18HlQ/wLEWO76gxTCbjfkuhHK5/LWEIj0+Z
+         yKCuVh/FVwhVEOdiRMfcyO/hrfB5Rm/5A/Zu9+NCdwIx02oij93gEnRAuY1v5SoGuzgx
+         twEGaiYDCJhslaVn3xCtMixtwJVPH9e+t/9V6TNE8wR17op47Zivtj0O4SOPkK3qfQVS
+         T3HmXKRL2Ws9NyIOnkeY1yljK6d92m4nDnpV8XU+sd9BPgfbNHUJfQvAlJW5RsMf2AMe
+         g9SA==
+X-Forwarded-Encrypted: i=1; AJvYcCXFnxRDuId35QlguxImo1FQSdOrkPPFrH4fyld/Dk3Ir1Y/6uji4cThlxl7QaBbfFXiNGZ4TdTQDnZ8@lists.linux.dev
+X-Gm-Message-State: AOJu0YxfbLtUZBLZlE3jBt+uIIqjQqIjo426JfVf42HU+sltPqvxNFcK
+	tzh21ZixcsLQ/R1TgPHM6DHFF+vJEBVNE38gaf6yzcz/19OGNa4wf1w9Jx78lCsAWCE=
+X-Gm-Gg: ATEYQzxPta8x/3LEp0taop/htS5Y8EnmupSxyCT5zqI/H3nrL988Wm4Ju6rGebnrJKY
+	q2vnpoSkkn3vjcRo0aXzBIEpXDpPz4M0SkWsmibOBdCDsYF5Gm2MlI/BpsyxpvqGPDVzlu19BcV
+	uQx9XWU1oYdCxsKsGsEVzE77Cqclh/NPYIontwL1REVRoU3I3xnj17I6wsI6X3g7byKiSdSGuc1
+	6lKNGapMu9c6YkeenafXvtUdoepGaRf6+3VQZaSXh6UcfEaaIqmZUtm50D+jNQl1Oo4aeZYBBiL
+	kZvDu8nErm/0S9LFsMX0Fjd7x1N1m2DWkvtjuHTyzyh+hvYRL/jdrr5x2tmhxKicgj61i363Lqa
+	HXIf0EOkv8AScJhikSa+TLkq9ez9vVHUroKEuIDFkzJ38Rrdd8oP0QhZSAzA4PuJV0Bfic5A7Cu
+	nB8ZKcEyrhp7nb47rZ0bhzXinM
+X-Received: by 2002:a05:600c:3b90:b0:483:64b4:79da with SMTP id 5b1f17b1804b1-48556720ea0mr197189875e9.26.1773665941985;
+        Mon, 16 Mar 2026 05:59:01 -0700 (PDT)
+Received: from localhost ([85.163.81.98])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b6070acsm372027345e9.8.2026.03.16.05.59.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2026 05:59:01 -0700 (PDT)
+From: Jiri Pirko <jiri@resnulli.us>
+To: dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org,
+	iommu@lists.linux.dev,
+	linux-media@vger.kernel.org
+Cc: sumit.semwal@linaro.org,
+	benjamin.gaignard@collabora.com,
+	Brian.Starkey@arm.com,
+	jstultz@google.com,
+	tjmercier@google.com,
+	christian.koenig@amd.com,
+	m.szyprowski@samsung.com,
+	robin.murphy@arm.com,
+	jgg@ziepe.ca,
+	leon@kernel.org,
+	sean.anderson@linux.dev,
+	ptesarik@suse.com,
+	catalin.marinas@arm.com,
+	aneesh.kumar@kernel.org,
+	suzuki.poulose@arm.com,
+	steven.price@arm.com,
+	thomas.lendacky@amd.com,
+	john.allen@amd.com,
+	ashish.kalra@amd.com,
+	suravee.suthikulpanit@amd.com,
+	linux-coco@lists.linux.dev
+Subject: [PATCH v4 2/2] dma-buf: heaps: system: add system_cc_decrypted heap for explicitly decrypted memory
+Date: Mon, 16 Mar 2026 13:58:57 +0100
+Message-ID: <20260316125857.617836-3-jiri@resnulli.us>
+X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20260316125857.617836-1-jiri@resnulli.us>
+References: <20260316125857.617836-1-jiri@resnulli.us>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260315135920.354657-4-chao.gao@intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Mar 15, 2026 at 06:58:23AM -0700, Chao Gao wrote:
-> For TDX module updates, userspace needs to select compatible update
-> versions based on the current module version. This design delegates
-> module selection complexity to userspace because TDX module update
-> policies are complex and version series are platform-specific.
-> 
-> For example, the 1.5.x series is for certain platform generations, while
-> the 2.0.x series is intended for others. And TDX module 1.5.x may be
-> updated to 1.5.y but not to 1.5.y+1.
-> 
-> Expose the TDX module version to userspace via sysfs to aid module
-> selection. Since the TDX faux device will drive module updates, expose
-> the version as its attribute.
-> 
-> One bonus of exposing TDX module version via sysfs is: TDX module
-> version information remains available even after dmesg logs are cleared.
-> 
-> == Background ==
-> 
-> The "faux device + device attribute" approach compares to other update
-> mechanisms as follows:
-> 
-> 1. AMD SEV leverages an existing PCI device for the PSP to expose
->    metadata. TDX uses a faux device as it doesn't have PCI device
->    in its architecture.
-> 
-> 2. Microcode uses per-CPU virtual devices to report microcode revisions
->    because CPUs can have different revisions. But, there is only a
->    single TDX module, so exposing the TDX module version through a global
->    TDX faux device is appropriate
-> 
-> 3. ARM's CCA implementation isn't in-tree yet, but will likely follow a
->    similar faux device approach, though it's unclear whether they need
->    to expose firmware version information
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-> Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Link: https://lore.kernel.org/all/2025073035-bulginess-rematch-b92e@gregkh/ # [1]
+From: Jiri Pirko <jiri@nvidia.com>
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Add a new "system_cc_decrypted" dma-buf heap to allow userspace to
+allocate decrypted (shared) memory for confidential computing (CoCo)
+VMs.
 
+On CoCo VMs, guest memory is encrypted by default. The hardware uses an
+encryption bit in page table entries (C-bit on AMD SEV, "shared" bit on
+Intel TDX) to control whether a given memory access is encrypted or
+decrypted. The kernel's direct map is set up with encryption enabled,
+so pages returned by alloc_pages() are encrypted in the direct map
+by default. To make this memory usable for devices that do not support
+DMA to encrypted memory (no TDISP support), it has to be explicitly
+decrypted. A couple of things are needed to properly handle
+decrypted memory for the dma-buf use case:
+
+- set_memory_decrypted() on the direct map after allocation:
+  Besides clearing the encryption bit in the direct map PTEs, this
+  also notifies the hypervisor about the page state change. On free,
+  the inverse set_memory_encrypted() must be called before returning
+  pages to the allocator. If re-encryption fails, pages
+  are intentionally leaked to prevent decrypted memory from being
+  reused as private.
+
+- pgprot_decrypted() for userspace and kernel virtual mappings:
+  Any new mapping of the decrypted pages, be it to userspace via
+  mmap or to kernel vmalloc space via vmap, creates PTEs independent
+  of the direct map. These must also have the encryption bit cleared,
+  otherwise accesses through them would see encrypted (garbage) data.
+
+- DMA_ATTR_CC_DECRYPTED for DMA mapping:
+  Since the pages are already decrypted, the DMA API needs to be
+  informed via DMA_ATTR_CC_DECRYPTED so it can map them correctly
+  as unencrypted for device access.
+
+On non-CoCo VMs, the system_cc_decrypted heap is not registered
+to prevent misuse by userspace that does not understand
+the security implications of explicitly decrypted memory.
+
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+---
+v2->v3:
+- removed couple of leftovers from headers
+v1->v2:
+- fixed build errors on s390 by including mem_encrypt.h
+- converted system heap flag implementation to a separate heap
+---
+ drivers/dma-buf/heaps/system_heap.c | 103 ++++++++++++++++++++++++++--
+ 1 file changed, 98 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/system_heap.c
+index b3650d8fd651..a525e9aaaffa 100644
+--- a/drivers/dma-buf/heaps/system_heap.c
++++ b/drivers/dma-buf/heaps/system_heap.c
+@@ -10,17 +10,25 @@
+  *	Andrew F. Davis <afd@ti.com>
+  */
+ 
++#include <linux/cc_platform.h>
+ #include <linux/dma-buf.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dma-heap.h>
+ #include <linux/err.h>
+ #include <linux/highmem.h>
++#include <linux/mem_encrypt.h>
+ #include <linux/mm.h>
++#include <linux/set_memory.h>
+ #include <linux/module.h>
++#include <linux/pgtable.h>
+ #include <linux/scatterlist.h>
+ #include <linux/slab.h>
+ #include <linux/vmalloc.h>
+ 
++struct system_heap_priv {
++	bool decrypted;
++};
++
+ struct system_heap_buffer {
+ 	struct dma_heap *heap;
+ 	struct list_head attachments;
+@@ -29,6 +37,7 @@ struct system_heap_buffer {
+ 	struct sg_table sg_table;
+ 	int vmap_cnt;
+ 	void *vaddr;
++	bool decrypted;
+ };
+ 
+ struct dma_heap_attachment {
+@@ -36,6 +45,7 @@ struct dma_heap_attachment {
+ 	struct sg_table table;
+ 	struct list_head list;
+ 	bool mapped;
++	bool decrypted;
+ };
+ 
+ #define LOW_ORDER_GFP (GFP_HIGHUSER | __GFP_ZERO)
+@@ -52,6 +62,34 @@ static gfp_t order_flags[] = {HIGH_ORDER_GFP, HIGH_ORDER_GFP, LOW_ORDER_GFP};
+ static const unsigned int orders[] = {8, 4, 0};
+ #define NUM_ORDERS ARRAY_SIZE(orders)
+ 
++static int system_heap_set_page_decrypted(struct page *page)
++{
++	unsigned long addr = (unsigned long)page_address(page);
++	unsigned int nr_pages = 1 << compound_order(page);
++	int ret;
++
++	ret = set_memory_decrypted(addr, nr_pages);
++	if (ret)
++		pr_warn_ratelimited("dma-buf system heap: failed to decrypt page at %p\n",
++				    page_address(page));
++
++	return ret;
++}
++
++static int system_heap_set_page_encrypted(struct page *page)
++{
++	unsigned long addr = (unsigned long)page_address(page);
++	unsigned int nr_pages = 1 << compound_order(page);
++	int ret;
++
++	ret = set_memory_encrypted(addr, nr_pages);
++	if (ret)
++		pr_warn_ratelimited("dma-buf system heap: failed to re-encrypt page at %p, leaking memory\n",
++				    page_address(page));
++
++	return ret;
++}
++
+ static int dup_sg_table(struct sg_table *from, struct sg_table *to)
+ {
+ 	struct scatterlist *sg, *new_sg;
+@@ -90,6 +128,7 @@ static int system_heap_attach(struct dma_buf *dmabuf,
+ 	a->dev = attachment->dev;
+ 	INIT_LIST_HEAD(&a->list);
+ 	a->mapped = false;
++	a->decrypted = buffer->decrypted;
+ 
+ 	attachment->priv = a;
+ 
+@@ -119,9 +158,11 @@ static struct sg_table *system_heap_map_dma_buf(struct dma_buf_attachment *attac
+ {
+ 	struct dma_heap_attachment *a = attachment->priv;
+ 	struct sg_table *table = &a->table;
++	unsigned long attrs;
+ 	int ret;
+ 
+-	ret = dma_map_sgtable(attachment->dev, table, direction, 0);
++	attrs = a->decrypted ? DMA_ATTR_CC_DECRYPTED : 0;
++	ret = dma_map_sgtable(attachment->dev, table, direction, attrs);
+ 	if (ret)
+ 		return ERR_PTR(ret);
+ 
+@@ -188,8 +229,13 @@ static int system_heap_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)
+ 	unsigned long addr = vma->vm_start;
+ 	unsigned long pgoff = vma->vm_pgoff;
+ 	struct scatterlist *sg;
++	pgprot_t prot;
+ 	int i, ret;
+ 
++	prot = vma->vm_page_prot;
++	if (buffer->decrypted)
++		prot = pgprot_decrypted(prot);
++
+ 	for_each_sgtable_sg(table, sg, i) {
+ 		unsigned long n = sg->length >> PAGE_SHIFT;
+ 
+@@ -206,8 +252,7 @@ static int system_heap_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)
+ 		if (addr + size > vma->vm_end)
+ 			size = vma->vm_end - addr;
+ 
+-		ret = remap_pfn_range(vma, addr, page_to_pfn(page),
+-				size, vma->vm_page_prot);
++		ret = remap_pfn_range(vma, addr, page_to_pfn(page), size, prot);
+ 		if (ret)
+ 			return ret;
+ 
+@@ -225,6 +270,7 @@ static void *system_heap_do_vmap(struct system_heap_buffer *buffer)
+ 	struct page **pages = vmalloc(sizeof(struct page *) * npages);
+ 	struct page **tmp = pages;
+ 	struct sg_page_iter piter;
++	pgprot_t prot;
+ 	void *vaddr;
+ 
+ 	if (!pages)
+@@ -235,7 +281,10 @@ static void *system_heap_do_vmap(struct system_heap_buffer *buffer)
+ 		*tmp++ = sg_page_iter_page(&piter);
+ 	}
+ 
+-	vaddr = vmap(pages, npages, VM_MAP, PAGE_KERNEL);
++	prot = PAGE_KERNEL;
++	if (buffer->decrypted)
++		prot = pgprot_decrypted(prot);
++	vaddr = vmap(pages, npages, VM_MAP, prot);
+ 	vfree(pages);
+ 
+ 	if (!vaddr)
+@@ -296,6 +345,14 @@ static void system_heap_dma_buf_release(struct dma_buf *dmabuf)
+ 	for_each_sgtable_sg(table, sg, i) {
+ 		struct page *page = sg_page(sg);
+ 
++		/*
++		 * Intentionally leak pages that cannot be re-encrypted
++		 * to prevent decrypted memory from being reused.
++		 */
++		if (buffer->decrypted &&
++		    system_heap_set_page_encrypted(page))
++			continue;
++
+ 		__free_pages(page, compound_order(page));
+ 	}
+ 	sg_free_table(table);
+@@ -347,6 +404,8 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+ 	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+ 	unsigned long size_remaining = len;
+ 	unsigned int max_order = orders[0];
++	struct system_heap_priv *priv = dma_heap_get_drvdata(heap);
++	bool decrypted = priv->decrypted;
+ 	struct dma_buf *dmabuf;
+ 	struct sg_table *table;
+ 	struct scatterlist *sg;
+@@ -362,6 +421,7 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+ 	mutex_init(&buffer->lock);
+ 	buffer->heap = heap;
+ 	buffer->len = len;
++	buffer->decrypted = decrypted;
+ 
+ 	INIT_LIST_HEAD(&pages);
+ 	i = 0;
+@@ -396,6 +456,14 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+ 		list_del(&page->lru);
+ 	}
+ 
++	if (decrypted) {
++		for_each_sgtable_sg(table, sg, i) {
++			ret = system_heap_set_page_decrypted(sg_page(sg));
++			if (ret)
++				goto free_pages;
++		}
++	}
++
+ 	/* create the dmabuf */
+ 	exp_info.exp_name = dma_heap_get_name(heap);
+ 	exp_info.ops = &system_heap_buf_ops;
+@@ -413,6 +481,13 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+ 	for_each_sgtable_sg(table, sg, i) {
+ 		struct page *p = sg_page(sg);
+ 
++		/*
++		 * Intentionally leak pages that cannot be re-encrypted
++		 * to prevent decrypted memory from being reused.
++		 */
++		if (buffer->decrypted &&
++		    system_heap_set_page_encrypted(p))
++			continue;
+ 		__free_pages(p, compound_order(p));
+ 	}
+ 	sg_free_table(table);
+@@ -428,6 +503,14 @@ static const struct dma_heap_ops system_heap_ops = {
+ 	.allocate = system_heap_allocate,
+ };
+ 
++static struct system_heap_priv system_heap_priv = {
++	.decrypted = false,
++};
++
++static struct system_heap_priv system_heap_cc_decrypted_priv = {
++	.decrypted = true,
++};
++
+ static int __init system_heap_create(void)
+ {
+ 	struct dma_heap_export_info exp_info;
+@@ -435,8 +518,18 @@ static int __init system_heap_create(void)
+ 
+ 	exp_info.name = "system";
+ 	exp_info.ops = &system_heap_ops;
+-	exp_info.priv = NULL;
++	exp_info.priv = &system_heap_priv;
++
++	sys_heap = dma_heap_add(&exp_info);
++	if (IS_ERR(sys_heap))
++		return PTR_ERR(sys_heap);
++
++	if (IS_ENABLED(CONFIG_HIGHMEM) ||
++	    !cc_platform_has(CC_ATTR_MEM_ENCRYPT))
++		return 0;
+ 
++	exp_info.name = "system_cc_decrypted";
++	exp_info.priv = &system_heap_cc_decrypted_priv;
+ 	sys_heap = dma_heap_add(&exp_info);
+ 	if (IS_ERR(sys_heap))
+ 		return PTR_ERR(sys_heap);
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.51.1
+
