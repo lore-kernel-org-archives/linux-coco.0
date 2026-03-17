@@ -1,132 +1,193 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A7632D45C
-	for <linux-coco@lists.linux.dev>; Tue, 17 Mar 2026 15:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5D432D45C
+	for <linux-coco@lists.linux.dev>; Tue, 17 Mar 2026 15:40:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773761661; cv=none; b=cE3a/0wwbYhiEFuDlg+H89NfOYS9etj1+euTJDmFz4cf4pat4iXvZYip/x3bUXkPLRIPc8pLd/08SE064VjFeEVlvZ9UEY+Sj5MlpG/zIJvjJMBwUq2Vc8eJeKfH/VkS5YB0SdTdoeXAF4pceQEn7hXPjOaWOuJv7PARRGgc5pE=
+	t=1773762011; cv=none; b=jyR4r9T1UlIplbozfm9Lg367FNEEJk5UBa37ILin38E7KGdqkZKbtmGEyD+Ulir5CWtOZ6U/7Zo45yDbUenqWRJD38IHAy/Jdo1QyM5wrXCEKL2CUTLEVMQ0ZUBZ+7wfEg3bv1oV6BSBkNl+usMBLwgyehtwzTOQ+l6kmgsGOrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773761661; c=relaxed/simple;
-	bh=tM7MPS2JCkk7DuNXpuY1WgEjcjH9UxOCDa7a/4ge/Po=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jkFAtcO9zWIfju1KuzbS+LdqkJtbg0lHrbwXaNy3pleeRGNBe6dzjXG/Jv74cFBbjy7PCLTyqJ6fhBy4e6iQEZVLpqXAKjt4xVaaBN7QvggW21SEnYq7F016EcwKty73fskxm2f0n/ubGaS5HYmQBil6jT2cluf2R2m1akH2934=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RKbT0JoL; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773762011; c=relaxed/simple;
+	bh=sBrzgYqy4YhXBaHZkGEzLEeQP1vB36ZIIqh/wd2RhOI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=honTyaGEuc8M8ln/RLKqdrjHpPQlCEQJNYaCj4uN4XU83I9WBVuqi0tBdVmxk6WdhkX384+9BzjFXVaOBxnbOq3tJmOV3elhmtVOm9Y+N9if+Mqf9AFAofxP7+ZZf8aKLz83mJ3/k+OctQiSihKrghRtDqK4LmA7bmWIFyOMONE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wMsjz+CO; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RKbT0JoL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773761658; x=1805297658;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=tM7MPS2JCkk7DuNXpuY1WgEjcjH9UxOCDa7a/4ge/Po=;
-  b=RKbT0JoLIwxRPeIQR1+VwvAQglYO6yXP+0vRLCCVbulEfW2hio7bQFoZ
-   3SSJenNQ7A+zM97wGqDhlqUy7L9OpRQEuDbCFW5Ptvnktls17MRvlEVc3
-   lRxD1znQBlL++PkTAbQbgahZ3f0GaOQ77ZO0uPmYmuvpU+TusjAcRI0f7
-   9MBjNyMuoxZcqAV2NgjhMUl5ZimTGSfcYzog3S6XB0wHUujs/A+nkY+y5
-   VTWPZyhbcHVxPyzW/iZ3W/kQHaGAKAl7GxeJL041byT0JgNpBAlOP/ocq
-   W550CpV/JKXKvmQoMccdX1+DuJxhIiQpftPtvCQQwrX5gZcUXBhtEBQoW
-   Q==;
-X-CSE-ConnectionGUID: kjm7uYqkT5ipccNeFElp/A==
-X-CSE-MsgGUID: /C7P7j3ETjSVRY3dlSGAcQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="78692083"
-X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
-   d="scan'208";a="78692083"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 08:34:17 -0700
-X-CSE-ConnectionGUID: IstXKUjCQwWZ3G4wp7DHwg==
-X-CSE-MsgGUID: qjA+1VptQ7Gam35ZYi6dsw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
-   d="scan'208";a="226440744"
-Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.108.160]) ([10.125.108.160])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 08:34:17 -0700
-Message-ID: <7f7b609c-f351-486e-94c3-d408adc5ffe0@intel.com>
-Date: Tue, 17 Mar 2026 08:34:16 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wMsjz+CO"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4852af55981so92875e9.0
+        for <linux-coco@lists.linux.dev>; Tue, 17 Mar 2026 08:40:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773762006; x=1774366806; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=CDw4r5ujTl31OHrtYbqvixsT9t+9enT6zG9dzarVNeI=;
+        b=wMsjz+COE/ZLk8R+i18cYqqKpSaJ5xcPb5K7vlk0MYstN08Defc6zIUw77Mc32OVP3
+         2bzCGriS8qR0wRpcXnsSeIBKNpVk2zqVTEvsd58Prvahwcn6KWJaTvjH4OttBpw8cx7t
+         KPMmzTWLqGPtwhN5IUkuuJztRuI/Xz/xu5cJzAtwWQ5cYXYD1b4C+ybaKJrFzmc8LcTI
+         o7zAncnMj/NJWthUJ39wkfLIPziLkY7/6Flhq1LHxsfJSFodg+o6YaXewy00Es9Nh5/+
+         dQ/jcmLlz1ARN0Jh3EVVJb5x/acjRqcIvbVEyQeMoQcpHDiQNvYkr5Rbmm+d/bLeLMDr
+         IRrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773762006; x=1774366806;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CDw4r5ujTl31OHrtYbqvixsT9t+9enT6zG9dzarVNeI=;
+        b=aupJMeESLq5XLD5OYkIQxo8SxEdYIyLZTtAIN+fuKBonEt2LIie4DT4QEorA1+bVsr
+         oRo3C40odJVdW5jFoDmwqYOEla3lQAXxe+5kM/AZvyj2IlD0oulaNlQI2+Pg2o+rIxY4
+         wIRcwX+B+EXjLJ5gmrvUR4IcTZcjFQ5Wicv3vpu+CwvcP0huagyiOFs9hhZttHd8sGP7
+         XKjLUBjdtVOXhc1gySi/mht/UMT+Gmzm7zosgMQBfbJXQqFxDzaoiaQn3MQkigmTzHdR
+         WscwzQ/Q4/PQw1puaPzD5pEQJ/6TnvkaQfDskN5UoP4mukZqMaWL6aH+gRMKpYiXU1Eu
+         oosg==
+X-Forwarded-Encrypted: i=1; AJvYcCXj0xVMfik8sPwfFAPI0n61FoCLod+fG25RVso+P/WQ0QZsyApZNqkW1sq5s4FhezSzidTRIrDO5VLW@lists.linux.dev
+X-Gm-Message-State: AOJu0YyvyQxPm9XqSUaf6WkNk1YtWg0sUaDbyo9f9iZuU39NOsDEZ6jB
+	wLDKYvkp9rAhj97q5mM0bfT5BNRE6O1jBlZLlffsBai85xHqcMDLE8yqf8Ym9T7+Mw==
+X-Gm-Gg: ATEYQzwkvMKUtEfvSWt+uibhF59GQQqWSBgLrSPrwPh5URDeGFg7fLptaARga/N+M+P
+	DSc4Jpr6QPIQexWXZHvb6yfIAYCNAqsEy1kL5Am3N8/vJ/pvLnCYn9joYRCdCR8HHjphL4mG7YW
+	FQe9uxmBAaKwXUl9A9cEBkrkEvf5LyC09530CvdqaDvNjadGVaDXKw3iF47cQVuZof/EpVQeQxs
+	SVSzIFuSKBMBh4+84ySpHtTkd/yccJFpm3RpFUnNdCGUmdrNWHIfATfqVTNDjzDejiSFLZtUEra
+	xWaXIbfQmueqa87u1zrlavi0dC/RS+x/+HuJT7ghrdmkGfoLosA2qImmn1LWEg7bPiXwiSrqTjn
+	xPXN/MOZmh6EpS1DWayw4LWMj6adIPKWna/dMGljURACMOBXGJI/xK8UcOCQkNww9vJC0Xm6UWO
+	V4EVIqiCui3MJkTPD4IhXrBCc5mVp9QC7i2Q5wKX3gTXYtAa4tuERUkbM+
+X-Received: by 2002:a7b:cb8b:0:b0:483:6f85:b16e with SMTP id 5b1f17b1804b1-485709958a2mr850705e9.3.1773762005359;
+        Tue, 17 Mar 2026 08:40:05 -0700 (PDT)
+Received: from google.com (54.95.38.34.bc.googleusercontent.com. [34.38.95.54])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4856eae3396sm72909465e9.9.2026.03.17.08.40.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 08:40:04 -0700 (PDT)
+Date: Tue, 17 Mar 2026 15:40:01 +0000
+From: Mostafa Saleh <smostafa@google.com>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	iommu@lists.linux.dev, linux-media@vger.kernel.org,
+	sumit.semwal@linaro.org, benjamin.gaignard@collabora.com,
+	Brian.Starkey@arm.com, jstultz@google.com, tjmercier@google.com,
+	christian.koenig@amd.com, m.szyprowski@samsung.com,
+	robin.murphy@arm.com, jgg@ziepe.ca, leon@kernel.org,
+	sean.anderson@linux.dev, ptesarik@suse.com, catalin.marinas@arm.com,
+	aneesh.kumar@kernel.org, suzuki.poulose@arm.com,
+	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com,
+	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH net-next v3 0/2] dma-buf: heaps: system: add an option to
+ allocate explicitly decrypted memory
+Message-ID: <abl10SQ4tdasfErt@google.com>
+References: <20260305123641.164164-1-jiri@resnulli.us>
+ <ablV_f_l7wD2m63E@google.com>
+ <xdy5anped2koy47cuxbbqocyypisl7lagwvpuokpzpggohk2dp@yilc5ihictph>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 06/22] coco/tdx-host: Expose P-SEAMLDR information via
- sysfs
-To: Kiryl Shutsemau <kas@kernel.org>, Chao Gao <chao.gao@intel.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, binbin.wu@linux.intel.com,
- dan.j.williams@intel.com, dave.hansen@linux.intel.com, ira.weiny@intel.com,
- kai.huang@intel.com, nik.borisov@suse.com, paulmck@kernel.org,
- pbonzini@redhat.com, reinette.chatre@intel.com, rick.p.edgecombe@intel.com,
- sagis@google.com, seanjc@google.com, tony.lindgren@linux.intel.com,
- vannapurve@google.com, vishal.l.verma@intel.com, yilun.xu@linux.intel.com
-References: <20260315135920.354657-1-chao.gao@intel.com>
- <20260315135920.354657-7-chao.gao@intel.com> <abkmceqUtMTnLI0V@thinkstation>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <abkmceqUtMTnLI0V@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <xdy5anped2koy47cuxbbqocyypisl7lagwvpuokpzpggohk2dp@yilc5ihictph>
 
-On 3/17/26 03:06, Kiryl Shutsemau wrote:
->> +	return sysfs_emit(buf, "%u.%u.%02u\n", info.major_version,
->> +					       info.minor_version,
->> +					       info.update_version);
-> Maybe a comment why %02u used for update_version?
+On Tue, Mar 17, 2026 at 02:37:02PM +0100, Jiri Pirko wrote:
+> Tue, Mar 17, 2026 at 02:24:13PM +0100, smostafa@google.com wrote:
+> >Hi Jiri,
+> >
+> >On Thu, Mar 05, 2026 at 01:36:39PM +0100, Jiri Pirko wrote:
+> >> From: Jiri Pirko <jiri@nvidia.com>
+> >> 
+> >> Confidential computing (CoCo) VMs/guests, such as AMD SEV and Intel TDX,
+> >> run with encrypted/protected memory which creates a challenge
+> >> for devices that do not support DMA to it (no TDISP support).
+> >> 
+> >> For kernel-only DMA operations, swiotlb bounce buffering provides a
+> >> transparent solution by copying data through decrypted memory.
+> >> However, the only way to get this memory into userspace is via the DMA
+> >> API's dma_alloc_pages()/dma_mmap_pages() type interfaces which limits
+> >> the use of the memory to a single DMA device, and is incompatible with
+> >> pin_user_pages().
+> >> 
+> >> These limitations are particularly problematic for the RDMA subsystem
+> >> which makes heavy use of pin_user_pages() and expects flexible memory
+> >> usage between many different DMA devices.
+> >> 
+> >> This patch series enables userspace to explicitly request decrypted
+> >> (shared) memory allocations from the dma-buf system heap.
+> >> Userspace can mmap this memory and pass the dma-buf fd to other
+> >> existing importers such as RDMA or DRM devices to access the
+> >> memory. The DMA API is improved to allow the dma heap exporter to DMA
+> >> map the shared memory to each importing device.
+> >
+> >I have been looking into a similar problem with restricted-dma[1] and
+> >the inability of the DMA API to recognize that a block of memory is
+> >already decrypted.
+> >
+> >However, in your case, adding a new attr “DMA_ATTR_CC_DECRYPTED” works
+> >well as dma-buf owns the memory, and is both responsible for the
+> >set_memory_decrypted() and passing the DMA attrs.
+> >
+> >On the other hand, for restricted-dma, the memory decryption is deep
+> >in the DMA direct memory allocation and the DMA API callers (for ex
+> >virtio drivers) are clueless about it and can’t pass any attrs.
+> >My proposal was specific to restricted-dma and won’t work for your case.
+> >
+> >I am wondering if the kernel should have a more solid, unified method
+> >for identifying already-decrypted memory instead. Perhaps we need a
+> >way for the DMA API to natively recognize the encryption state of a
+> >physical page (working alongside force_dma_unencrypted(dev)), rather
+> >than relying on caller-provided attributes?
+> 
+> I actually had it originally implemented probably in the similar way you
+> suggest. I had a bit in page/folio struct to indicate the
+> "shared/decrypted" state. However I was told that adding such bit is
+> basically a no-go. Isn't that right?
+> 
 
-Could we just stick this in a:
+Yes, I believe it’s discouraged to add new fields to the struct page.
+But I see the memory encryption API is spilling in different places
+and I am not sure if that’s a good enough justification for that or
+maybe we just need to re-architect it.
+For the restricted-dma stuff, we don’t actually care about the
+address, a device can either handle encryption or not, so relying on
+force_dma_unencrypted(struct device *) which is implemented by the
+architecture is enough, and we just need to integrate that so it
+can be used from SWIOTLB and DMA-direct (and other places)
+consistently. (although that might not be a simple as it sounds)
 
-#define TDX_VERSION_FMT	"%u.%u.%02u"
+I am not sure in the dma-buf case if that would be enough, but
+another way to have this per page and to avoid encoding this in
+struct page, is to push this problem to the arch code and it can
+rely on things as the page table (I believe ARM CCA have a bit
+for that)
 
-and document it there, once and for all?
+Anyway, I think there should be some boundaries in the kernel that
+defines that instead of each subsystem having its assumptions,
+especially memory encryption/decryption problems that can easily
+cause security issues.
 
-Users can do:
+Thanks,
+Mostafa
 
-	return sysfs_emit(buf, TDX_VERSION_FMT "\n", ...
-
-There are going to be a couple of these, I expect.
+> 
+> >
+> >[1] https://lore.kernel.org/all/20260305170335.963568-1-smostafa@google.com/
+> >
+> >Thanks,
+> >Mostafa
+> >
+> >
+> >> 
+> >> Jiri Pirko (2):
+> >>   dma-mapping: introduce DMA_ATTR_CC_DECRYPTED for pre-decrypted memory
+> >>   dma-buf: heaps: system: add system_cc_decrypted heap for explicitly
+> >>     decrypted memory
+> >> 
+> >>  drivers/dma-buf/heaps/system_heap.c | 103 ++++++++++++++++++++++++++--
+> >>  include/linux/dma-mapping.h         |   6 ++
+> >>  include/trace/events/dma.h          |   3 +-
+> >>  kernel/dma/direct.h                 |  14 +++-
+> >>  4 files changed, 117 insertions(+), 9 deletions(-)
+> >> 
+> >> -- 
+> >> 2.51.1
+> >> 
