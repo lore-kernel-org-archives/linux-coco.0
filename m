@@ -1,278 +1,256 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0758E38F658
-	for <linux-coco@lists.linux.dev>; Tue, 17 Mar 2026 08:26:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773735989; cv=none; b=DXtYcbmQJAq2txfrvkw7xCuFCEl16qG2P3beGoob/aAY1+JNyMZfymq0GelNKKyVCPNvQJvoRjeqQTvV1HopvdFGAlOBMdi2omGwwbSl4gDrG+oyA+3CIoLuqlMenIu/L8Hd7N6qqarSZQhrNU/67l9bqtXP9ZxOe/yH89AdE3E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773735989; c=relaxed/simple;
-	bh=0irRjcsn/6mH9qY9dx/psDtVRnHKTVG73clSDMUFvDA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W7zB18AqD8XLrMG35G6oSRP0PIzFH1mbaFeUE+K+IXFarsbWQs0oDzK7S2Qnzb62ivZs4Kce+nxXcD+uPxr+n4HrHwzfD7d05xn9R2b+BH86es0ZcJsTwuCBOZ2dO50HJLuZwURNuHMUNrMcSAv7+eIvBIYLbVD1n8WLY/MphDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=ZevpSKfk; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF04738F658
+	for <linux-coco@lists.linux.dev>; Tue, 17 Mar 2026 08:27:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773736052; cv=fail; b=DVJ0xLiaccJpvhO6WK7fNomNWRADyyNTvZ0353yfAcSZdWvKxK/ydMy5k4hm4/uA9BaRW18xX901PWAXGYhGPsACXq8h1T/qnkbmawa21koLInyCCRdhV18FWbfyld+7JjwFL8Wr7RYs5uIzZQu09NC5gZ3gDcXK2Dfv0M8zM00=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773736052; c=relaxed/simple;
+	bh=Cazx21QFtX6hpKvDTjv9ZGDVhPkPqvd7mOTWJCYzgA8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=D1y/jwTzk8dYgVW5IB0ZDG8PYCQ/+hy+IoK6QHInUEeFIO5qqoesALaYX3k4HRyEhvJelpl2eWSnv3UuOJnaFY+lD4XWZEQ73L7IAx/fotcrHBZWLuTY4emGtu8T0kxzWcYW9qt0QEqybLdillfR7NrRhBcFFzpGjRILwToj9F8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JQxWMhGt; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="ZevpSKfk"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48541edecf9so59315875e9.1
-        for <linux-coco@lists.linux.dev>; Tue, 17 Mar 2026 01:26:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1773735985; x=1774340785; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xf2CUvi8YSfRB4MbEru11u5aBtMS7TuUP2oF3ZpZ3ic=;
-        b=ZevpSKfkbSucEkhAPiJDMMKQUzlzzlzNm/BQgkQhVUGTf50uVNk9Bo2+kTCHhULfdn
-         yzUxxlqDwHUwNKVe1VDSZCCctORLkrXzSAlVuWfKBSyJAAgw1Sy+hZXqKt9Z1sb+MnLi
-         R2/Caj/miQ7jPbEnur4Zn+k4Ck1mhWuP0GdfiY+pNGUJA/OVZH2TsHJ9HpBuEhjScZNJ
-         wbmQrvK1Ualt8bb+HfCfEifGX3rGiHjDzTZnzwuahO5Kq6QS26vgAgQZmViZhcqRoLkl
-         Uf8NUNdwX68vqBflCggnvQ+u9TXWLEk02WrKEFxY1ZCpwqa80h4S10Jqg2wn6MpKx4Rd
-         yPIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773735985; x=1774340785;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xf2CUvi8YSfRB4MbEru11u5aBtMS7TuUP2oF3ZpZ3ic=;
-        b=pfsdgXGpfSWJyVxlyDvyfn2aje6l63bM+ZtLLvTSMDPcnwHBvnPwOM7a0IKfbbR5iC
-         GDiTq+E2u6mj0IKOCFA1XxerldB87vyLtVOe+OBzntBXhNvOgdRw/pzOR7QkE6OnjHMO
-         KuPZS/yVBf/EkyaSRfjel6IHUX5oH5M3P3IAqqsxhZTQrMjUm4fsWhEbBu8xXZf4uEye
-         jFMC4aLiZ4YsQ3xLBxQZCFlRGrYo+Cfo4hh6opc8QQDhx8+5wzqTUM7GHyojsDV4w1Ds
-         aqfBgH4bsw9N5LUTqEx35ykTuuDzVR28cxcrLQ0pJ4S0sLW4MTT1/rgsi1uaEgQHL5nl
-         D9lw==
-X-Forwarded-Encrypted: i=1; AJvYcCXpvct64HarmASGZ3rE778cG9gPU7wxHJxsIr1KcCGOsLl1RMXdC71fDyo7ArXkR82QyAiPxX5pYWnW@lists.linux.dev
-X-Gm-Message-State: AOJu0YywIt0k0KryQbho7ZWcshYzxtDzh0liqZKh1BnEYc2Rrf7jw3/G
-	NryASvpMRzrOeUit2x41V4wufsL4qLLKm/BjcqrLrf2g+n2LuC29zIRUZ8YZl54JBpE=
-X-Gm-Gg: ATEYQzxeZ3LSPHYdMxTRlBv7CGA+VXHqPecEvENQMFQZLZEH9xf1SnlPNZlsurTDu0v
-	UNYcZt+y6tpLun5TdpZwpX46ZvAtpYOdZ/i/roQ2UDzYm3PDKGxQEKkO+1JGwotBPXTmsuqJJI2
-	xG/dbvxqP32BSQHVbuMYKcyjC2g3uuh3WA51EI5H9pZtmD5sWu1nX9WiNJo2mA1HGfm/7I8HNDj
-	EbWNbnYPNcuP2Z6suRWuk0mqL+UYQdxGZXNRBJ6h+2//tdZRgI/k3Nfh5HBMxkRiiWJh4Z5YsDg
-	0KecUo4OIK6zUmFHl3AMgyJR8NiGuOJzkFcHxPWN8Kqb1LP15nKnh1aHwAU2gGSkkellMujZZ0e
-	omZmeyXYrD72TfmUWBXl5BFVhepj/tRnS5ADzsTitzYkXZ84TgiahEmNOJWAoyaw22SyndmfUdd
-	qwGthW+b5Y4E6Ul3MWH8spLvVt2yUz4jd4QImshZeXedM=
-X-Received: by 2002:a05:600c:c8f:b0:485:3c05:24dc with SMTP id 5b1f17b1804b1-48556710c02mr263331735e9.33.1773735985061;
-        Tue, 17 Mar 2026 01:26:25 -0700 (PDT)
-Received: from FV6GYCPJ69 ([2001:1ae9:6084:ab00:81f8:c391:4972:647b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4856ea97e8esm52842845e9.5.2026.03.17.01.26.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Mar 2026 01:26:24 -0700 (PDT)
-Date: Tue, 17 Mar 2026 09:26:21 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	iommu@lists.linux.dev, linux-media@vger.kernel.org, sumit.semwal@linaro.org, 
-	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, jstultz@google.com, tjmercier@google.com, 
-	christian.koenig@amd.com, m.szyprowski@samsung.com, jgg@ziepe.ca, leon@kernel.org, 
-	sean.anderson@linux.dev, ptesarik@suse.com, catalin.marinas@arm.com, 
-	aneesh.kumar@kernel.org, suzuki.poulose@arm.com, steven.price@arm.com, 
-	thomas.lendacky@amd.com, john.allen@amd.com, ashish.kalra@amd.com, 
-	suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v4 1/2] dma-mapping: introduce DMA_ATTR_CC_DECRYPTED for
- pre-decrypted memory
-Message-ID: <lufy3ppgiy7637iravgzabajj67chmqvg22qc3fd2yqe2p33ws@b54vibhehth2>
-References: <20260316125857.617836-1-jiri@resnulli.us>
- <20260316125857.617836-2-jiri@resnulli.us>
- <15fcfa5e-c4b9-4b56-8f84-20dd5f66d643@arm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JQxWMhGt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773736050; x=1805272050;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=Cazx21QFtX6hpKvDTjv9ZGDVhPkPqvd7mOTWJCYzgA8=;
+  b=JQxWMhGteojbCceUTIcG5EqnEUq7CavzhCVXTvtXJavye3tIXSpI6RM/
+   0gyqgIyoo7jY3hjFbaaXG6E9vEujYn0BqHV2cHal1wxEugW4p63S7vwME
+   yG4kS1hocwTJncie/b8g9Gi1MY3kTF1SiiA6Hw0inWssi1gmOGVk99OmP
+   xcykOsWuF7Z9ryPDCpbCX98OOKv+DY6uw8UT7zGgkuIPy+XNozCc20QB2
+   GGC/VPVAZoFVtwKZO6DmTjXNzKQB2GkbUkrojYWBohmoIYv7Ni1YjEINA
+   bR2U4CKsYG+P6mIt4wQ1lrcnFlUwuByTX3xw1We4BoUk8t6Nm9Euy3ghD
+   g==;
+X-CSE-ConnectionGUID: n23CbtshQ1iPwsYC5Xo0zg==
+X-CSE-MsgGUID: FUMkTm7lQv+ZBsUZwlvwYQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="74840772"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="74840772"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 01:27:30 -0700
+X-CSE-ConnectionGUID: PvCUqNh1SH2AM73FYwyNPA==
+X-CSE-MsgGUID: uPUr7tJBQXO2lZvtZPD99A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="260100494"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 01:27:30 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 17 Mar 2026 01:27:29 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 17 Mar 2026 01:27:28 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.23) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 17 Mar 2026 01:27:28 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ct9saHFt9E2qBCWz23v/uYIYkPekm8mJxEITx41gDUIcV7+9NOWnOQpqHrWDcndhzJSH09/9iOiabbqU/9LEq9/bETCFGBphc/+1e3ZUz+3KOk2g/BuhmT4GL3/BC1lqQceZBODkPNQfvR+iyqQek2jhXfsC6Gm59e/SVCUNqr6HdpGwr8Ndys/HZYlrcJ2hqwaOC9wW4GO3xe0d3ZB6JLJYvvWaP4RWj4MbRS6hzp+kZGTLati8OxyOwKPYG8aTE20FiGkRG2VTDRNc9wUuqVCQItumgflVxJWG9T5W34vEI96eBD/H2utFC31cdkud/SzvyZ2WVo9ydJYhbwi4/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=d8VDKZaspW6WVObrAqIG7D1ytUKzbpI6XmuOYXLdNJ0=;
+ b=BJIzOKwDykrhN2+NwUAoQ3QWXSFJKRetplApdZnHls3qcKMDETM0gJrUrEQPdMbH1sJQC/3oE5vuabIRqkC2vtHpI2o9xj5bDJ3xdA8ZLpZAo/FKtQCe7lrOhnQb2205b8STmH7fE9qbFKZeUrzZZxBNs8+EIhq5AgBP1wQAZKR/kHI1i5TzBzZpTpqbEOueJaxWQsnOk6NDw0Dt1orLqGveB47wuIVGu9cYsww9OkzpWVbsow38hJigOJisOtuYm8JJfp8OZRV88uzRsOlMUJtQclbQ4/UG0X8BOuvHA62vSI+y1j6HTIxOGBj7j38VvFfuKSHYXEV5HLFjluTvuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ by PH7PR11MB5817.namprd11.prod.outlook.com (2603:10b6:510:13a::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.6; Tue, 17 Mar
+ 2026 08:27:19 +0000
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9723.018; Tue, 17 Mar 2026
+ 08:27:18 +0000
+Date: Tue, 17 Mar 2026 16:27:06 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: "Huang, Kai" <kai.huang@intel.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org"
+	<kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>, "Chatre, Reinette"
+	<reinette.chatre@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>,
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "Verma, Vishal L"
+	<vishal.l.verma@intel.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>,
+	"mingo@redhat.com" <mingo@redhat.com>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "tony.lindgren@linux.intel.com"
+	<tony.lindgren@linux.intel.com>, "sagis@google.com" <sagis@google.com>,
+	"Annapurve, Vishal" <vannapurve@google.com>, "hpa@zytor.com" <hpa@zytor.com>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "paulmck@kernel.org"
+	<paulmck@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>,
+	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "Williams, Dan J"
+	<dan.j.williams@intel.com>, "bp@alien8.de" <bp@alien8.de>
+Subject: Re: [PATCH v5 12/22] x86/virt/tdx: Reset software states during TDX
+ module shutdown
+Message-ID: <abkQWsqR7BURMZxc@intel.com>
+References: <20260315135920.354657-1-chao.gao@intel.com>
+ <20260315135920.354657-13-chao.gao@intel.com>
+ <996e42a31101bb90575e7b2b6f33b3bd607b5e6e.camel@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <996e42a31101bb90575e7b2b6f33b3bd607b5e6e.camel@intel.com>
+X-ClientProxiedBy: TP0P295CA0042.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:910:4::10) To CH3PR11MB8660.namprd11.prod.outlook.com
+ (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <15fcfa5e-c4b9-4b56-8f84-20dd5f66d643@arm.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|PH7PR11MB5817:EE_
+X-MS-Office365-Filtering-Correlation-Id: 841a2758-1cb5-4d1a-b55c-08de83ff0079
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7416014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info: PmsivU4Mcat8wz3/Lbk6cr7/lulv9eqn1iyLCqlN4bXHLf/b6gTbtHYteDoUmDPeP2VSMxVQbpsJKeSikskUW4ydSKZ89nZlKq1YhBMRQ3c4OO4Uk5m1VOgL6RjEwEGDdwk1BRz4Kc1rP2O5OLzRTjecxHDpNnCXQaQ4jNxabjaWssZ0Vj+Ds5tiR3D1jCV6nFB38xQ2K1LDzSdlanWjSZmZ4o8jdXwGUlvoqYzmc+mKfZ58wuVT/T3vNyowpBcZ8xrgbRKyGjaNsGuqP5cY4wi8nGCnaGErsl+f2qYPPTEbbnSPrdAfTWAwFEt9kAAHuW39pBRjlCMtgNCAyyboB8bN8fSV+vrd6ttqtH9cMyZKjN4nlrjdlkzXam5cxYwDylIG6NVyYN2RFF9eGMU6pjyl9eGuKG87prqCeuNeF2wzi3uGXPeALey2klQ9uOS/xyqtiOLh+7VNF/w68g23eq/TWQyZLO0bhfAEQ/wXnTLrcBPQR4lKiaKP0Zia89RLrVNenK1kchYyK1lMQX3Q+YME8eHdoN6243ZnM27oNEdSnOW9mPvYrpiNzto9ougLjMWhIoWyH7rvYmg3ODQcJK59eUChVwJR7OMOvUC0b1q9Wfggcv2WN6aJ6hXTAO5P7tHX9JmZzyb54/j89uwwiE5GIOJKKl84qjiCWNgxvwWOwXOYjdJCBq36l0g9ZpjWlC+rqKOT9YMj7TTABrEfiFioBncKrzIfGRHkjf8B32E=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?PB0JiSQhy1oe8k4C0/gcRfxUAJuC0PpfLfq7mD3MDu/TjY00/XBxJa57kn1r?=
+ =?us-ascii?Q?X4eAB4rTNI3LkSqJz/1Q6qfBjQCufxUCJG2/UtyP+sFt5jZY3ahOwQzNzdsx?=
+ =?us-ascii?Q?GIdAW5aGwb32ba08owE/6yLiwX80QK8w3GraYxSIXr8aN5VePoEy1YlVHeNx?=
+ =?us-ascii?Q?VIHyuc0v1njUQbWRhnEBWSmuac3m4LOUIsnA1CzczEsHTWjXyxOJOw6JaBh5?=
+ =?us-ascii?Q?QoXDun+/BEHP0LFOyIAFfBPmE5hrenkiBe1bjDiSdDG0/M6ajHGpz+YYse6h?=
+ =?us-ascii?Q?gVwKOG5FmhsY2Ac1ZZwoQN9gAlXEH8XndJIe1b6gwN8up5BUDn9feWs6Fc86?=
+ =?us-ascii?Q?XOJxfH2qb0vQSMDWYo2lfKoqUPlg2gfoPrbc+CfgNEpxApRKlURaESITEIFX?=
+ =?us-ascii?Q?nLlgQ26i7+DCyidoFmD+aMA/YNJ/NNtuiVvaVA8f+D4KgJCdU+Be48QfS5tF?=
+ =?us-ascii?Q?aruNLD+yhks9NMJTkl0RFLJi5WN0iSeIpLXK01xeJErzS9c0E+KbN6gY6Quv?=
+ =?us-ascii?Q?CcxYn1tXaKxcV7XVHJU/U3tydQF6yHEPDSb7CY0C1Eqy9bZWL++Se06F84EA?=
+ =?us-ascii?Q?bZwj8e11frbrjPF0ebRiSQ+VxBY1jiN8PntZr107cfq7R68a12xckhvn/pAY?=
+ =?us-ascii?Q?Xkvouqz5RsEK7u0ig8rPINYXV8lPZ/9mtN8rS9PlVdgAKjWgv6Y0MZzVq9dW?=
+ =?us-ascii?Q?ohgnGMk7i8sMEIjqjb09sLHlB3A7ZCVJwlHfRbI7KmA2lzzBFVilOIkNHsuN?=
+ =?us-ascii?Q?4BLSK456c0q6QgnqnvFghbNSb/++i8hhR2g+pSoKC75B7A/8CKC1hMUI4jL/?=
+ =?us-ascii?Q?2TlOrzMElx13Xu3iKxPZDJlv0Ce3dWIF2XrNOoVfxjCH4nsm8J/WgZFkb7X5?=
+ =?us-ascii?Q?abBOKbChULcmzKY+hn66NCO6GMfXT/nax5utoVNnjUj1ahUzu3oox/GkWx+L?=
+ =?us-ascii?Q?SftP7UpcXTV4BIkP3CwuHTvnwQT7WbII1KxKLHJPBxf8CiXEtyZiImcpxCah?=
+ =?us-ascii?Q?QEgzTbKnSdx6zvEqIvyYxuVIPMgh1770+y4/FsyrXhan3RBOmHq1/NZp0CTe?=
+ =?us-ascii?Q?LzJvRy4Hcay62Dpf46Wcjk59NxJAo9o/49V9gSLnTmaBSQiVg5eDf/opZymc?=
+ =?us-ascii?Q?L+0i1l7B+YKj06i3SVMpJH0UhE5s+ZsOtFAkHpy3CnV0ZA20XeMzTy26LNVh?=
+ =?us-ascii?Q?/UD7KZPRMiOOOcB2L/9jPWZwaklkxD3HZCdvk1rILHpyXTsHm62EtR44HX1h?=
+ =?us-ascii?Q?Z3aP/rrjWDSCeS/XinfGHATqrZyPJAXyoI+6QKG0eqPjv9xAq3kUzJM54i/M?=
+ =?us-ascii?Q?tPynWW/yBdo56MyD1rvbgLH4JbrfNB0NAJmtp/WSjX5xynnqf06krtJSw0NY?=
+ =?us-ascii?Q?PkMmE7wx+U89QGumXIoERAHGGJrNvzwupNhPkskbRrLkv6UTcbhSqGOVgb9r?=
+ =?us-ascii?Q?2DA5q38L+qcHksuKIuCH7r2GvNeyzxi0nXKaovrvbnWqvonUclaldHUChmfs?=
+ =?us-ascii?Q?m/qh9v4tHbpLLKQnjed8VTn8rkt5KGx8extgmAVHq+PI2Ju5TjtgIyYDIdPk?=
+ =?us-ascii?Q?EztcBxFPyMiY+nfq9wHfNpKwqAaklzADfp+Yh953Izc/nzkYNgG8OB/ZvbsR?=
+ =?us-ascii?Q?NpgVsYw+nvdBWnAGSsw83J6/AyiZT2Hhfz59y8JgF4Bi3Rj6X8Eyw30K0/26?=
+ =?us-ascii?Q?uRtS3xPZm1Hmh6qLiFa4/oRbV4AWtfQYpaJ33rblnBtjpzzwz0Y2dikFMGxR?=
+ =?us-ascii?Q?dEVDi4liew=3D=3D?=
+X-Exchange-RoutingPolicyChecked: gmkBsefcjNDHhx7N88J/ilPw4nm/dcFw3lGuvrDlBmRgM4WqhKsIZQlpheNnSKvaRx6RLTPdChynSrLm8HTuEB0ne2lBJY3bhgYpwTUSPAxE1azELagHrqaGnFI9QbFuoaWYoeBTYm4CLvBN1T+am1c+uhCiG8yNIl0jApkzDy/KxyCZzOlxD8F04KVWM4gwOitEtCyjCsV/0zmV/AOl17haPtFYshGOHYayCkSpH2wvhP8WCiIemQ2DkJBQlOIwYkSYi5gYm1PE8XLjZS64kuSttPb6/7IcBprDhQxO99C1DzhdGGzGVmAHf12O34FIX4iaiqMxx5n0y+kd7gXptA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 841a2758-1cb5-4d1a-b55c-08de83ff0079
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 08:27:18.4881
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AMKPB4ySphn7xArYEWYAGaiWChqoe4efrwQj/XoXMV1Pgi4UJ7v5GMyKzeVX4f+HPHnRtJZgmhM4bwGMG6ECmA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5817
+X-OriginatorOrg: intel.com
 
-Mon, Mar 16, 2026 at 07:25:55PM +0100, robin.murphy@arm.com wrote:
->On 2026-03-16 12:58 pm, Jiri Pirko wrote:
->> From: Jiri Pirko <jiri@nvidia.com>
->> 
->> Current CC designs don't place a vIOMMU in front of untrusted devices.
->> Instead, the DMA API forces all untrusted device DMA through swiotlb
->> bounce buffers (is_swiotlb_force_bounce()) which copies data into
->> decrypted memory on behalf of the device.
->> 
->> When a caller has already arranged for the memory to be decrypted
->> via set_memory_decrypted(), the DMA API needs to know so it can map
->> directly using the unencrypted physical address rather than bounce
->> buffering. Following the pattern of DMA_ATTR_MMIO, add
->> DMA_ATTR_CC_DECRYPTED for this purpose. Like the MMIO case, only the
->> caller knows what kind of memory it has and must inform the DMA API
->> for it to work correctly.
+On Mon, Mar 16, 2026 at 05:06:49PM +0800, Huang, Kai wrote:
 >
->Echoing Jason's point, if the intent of this is to indicate shared memory,
->please call it DMA_ATTR_CC_SHARED. Yes, some of the existing APIs are badly
->named because they conflated intent with implementation details; that is no
->reason to keep wilfully making the same mistake.
->
->At least with Arm CCA, the architecture enforces *confidentiality* pretty
->much orthogonally to encryption - if your threat model excludes physical
->attacks against DRAM, you can still have Realms isolated from each other (and
->of course other execution states) without even implementing the memory
->encryption feature; conversely if you do have it, then even all the
->shared/host memory may still be physically encrypted, it just has its own
->context (key) distinct from the Realm ones. Similarly, while it's not a
->"true" CoCo environment, pKVM has a similar notion of shared vs. private
->which can benefit from piggy-backing off much of the CoCo infrastructure in
->places like the DMA layer, but has nothing whatsoever to do with actual
->encryption.
->
->Furthermore, "shared" is just shorter and more readable, even before I invoke
->the previous discussion of why it should be "unencrypted" rather than
->"decrypted" anyway ;)
-
-Okay, fair points. I'll rename it to shared for "v5". Thanks!
-
-
->
->> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
->> ---
->> v3->v4:
->> - added some sanity checks to dma_map_phys and dma_unmap_phys
->> - enhanced documentation of DMA_ATTR_CC_DECRYPTED attr
->> v1->v2:
->> - rebased on top of recent dma-mapping-fixes
->> ---
->>   include/linux/dma-mapping.h | 10 ++++++++++
->>   include/trace/events/dma.h  |  3 ++-
->>   kernel/dma/direct.h         | 14 +++++++++++---
->>   kernel/dma/mapping.c        | 13 +++++++++++--
->>   4 files changed, 34 insertions(+), 6 deletions(-)
->> 
->> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
->> index 29973baa0581..476964d2b22f 100644
->> --- a/include/linux/dma-mapping.h
->> +++ b/include/linux/dma-mapping.h
->> @@ -85,6 +85,16 @@
->>    * a cacheline must have this attribute for this to be considered safe.
->>    */
->>   #define DMA_ATTR_CPU_CACHE_CLEAN	(1UL << 11)
->> +/*
->> + * DMA_ATTR_CC_DECRYPTED: Indicates the DMA mapping is decrypted (shared) for
->> + * confidential computing guests. For normal system memory the caller must have
->> + * called set_memory_decrypted(), and pgprot_decrypted must be used when
->> + * creating CPU PTEs for the mapping. The same decrypted semantic may be passed
->> + * to the vIOMMU when it sets up the IOPTE. For MMIO use together with
->
->That being "the vIOMMU" that you said doesn't exist, and which is explicitly
->not supported?...
-
-Yeah, I wanted to draw the full picture. I can put a not like "(when it
-is going to be introduced)" or something like that to be clear.
-
-
->
->> + * DMA_ATTR_MMIO to indicate decrypted MMIO. Unless DMA_ATTR_MMIO is provided
->> + * a struct page is required.
->> + */
->> +#define DMA_ATTR_CC_DECRYPTED	(1UL << 12)
->>   /*
->>    * A dma_addr_t can hold any valid DMA or bus address for the platform.  It can
->> diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
->> index 33e99e792f1a..b8082d5177c4 100644
->> --- a/include/trace/events/dma.h
->> +++ b/include/trace/events/dma.h
->> @@ -32,7 +32,8 @@ TRACE_DEFINE_ENUM(DMA_NONE);
->>   		{ DMA_ATTR_ALLOC_SINGLE_PAGES, "ALLOC_SINGLE_PAGES" }, \
->>   		{ DMA_ATTR_NO_WARN, "NO_WARN" }, \
->>   		{ DMA_ATTR_PRIVILEGED, "PRIVILEGED" }, \
->> -		{ DMA_ATTR_MMIO, "MMIO" })
->> +		{ DMA_ATTR_MMIO, "MMIO" }, \
->> +		{ DMA_ATTR_CC_DECRYPTED, "CC_DECRYPTED" })
->>   DECLARE_EVENT_CLASS(dma_map,
->>   	TP_PROTO(struct device *dev, phys_addr_t phys_addr, dma_addr_t dma_addr,
->> diff --git a/kernel/dma/direct.h b/kernel/dma/direct.h
->> index e89f175e9c2d..c047a9d0fda3 100644
->> --- a/kernel/dma/direct.h
->> +++ b/kernel/dma/direct.h
->> @@ -84,16 +84,24 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
->>   	dma_addr_t dma_addr;
->>   	if (is_swiotlb_force_bounce(dev)) {
->> -		if (attrs & DMA_ATTR_MMIO)
->> -			return DMA_MAPPING_ERROR;
->> +		if (!(attrs & DMA_ATTR_CC_DECRYPTED)) {
->> +			if (attrs & DMA_ATTR_MMIO)
->> +				return DMA_MAPPING_ERROR;
->> -		return swiotlb_map(dev, phys, size, dir, attrs);
->> +			return swiotlb_map(dev, phys, size, dir, attrs);
->> +		}
->> +	} else if (attrs & DMA_ATTR_CC_DECRYPTED) {
->> +		return DMA_MAPPING_ERROR;
->>   	}
->>   	if (attrs & DMA_ATTR_MMIO) {
->>   		dma_addr = phys;
->>   		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
->>   			goto err_overflow;
->> +	} else if (attrs & DMA_ATTR_CC_DECRYPTED) {
->> +		dma_addr = phys_to_dma_unencrypted(dev, phys);
->> +		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
->> +			goto err_overflow;
->>   	} else {
->>   		dma_addr = phys_to_dma(dev, phys);
->>   		if (unlikely(!dma_capable(dev, dma_addr, size, true)) ||
->> diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
->> index 3928a509c44c..abb0c88b188b 100644
->> --- a/kernel/dma/mapping.c
->> +++ b/kernel/dma/mapping.c
->> @@ -157,6 +157,7 @@ dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
->>   {
->>   	const struct dma_map_ops *ops = get_dma_ops(dev);
->>   	bool is_mmio = attrs & DMA_ATTR_MMIO;
->> +	bool is_cc_decrypted = attrs & DMA_ATTR_CC_DECRYPTED;
->>   	dma_addr_t addr = DMA_MAPPING_ERROR;
->>   	BUG_ON(!valid_dma_direction(dir));
->> @@ -165,8 +166,11 @@ dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
->>   		return DMA_MAPPING_ERROR;
->>   	if (dma_map_direct(dev, ops) ||
->> -	    (!is_mmio && arch_dma_map_phys_direct(dev, phys + size)))
->> +	    (!is_mmio && !is_cc_decrypted &&
->> +	     arch_dma_map_phys_direct(dev, phys + size)))
->>   		addr = dma_direct_map_phys(dev, phys, size, dir, attrs);
->> +	else if (is_cc_decrypted)
->> +		return DMA_MAPPING_ERROR;
->>   	else if (use_dma_iommu(dev))
->
->...although, why *shouldn't* this be allowed with a vIOMMU? (Especially given
->that a vIOMMU for untrusted devices can be emulated by the host VMM without
->the CoCo hypervisor having to care at all - again, at least on Arm and other
->architectures where IOMMUs are regular driver model devices)
-
-Well, when iommu path is able to consume the attr, this restriction
-should be lifted. This is basically a sanity check for the
-dma_map_phys() caller.
-
-
->
->>   		addr = iommu_dma_map_phys(dev, phys, size, dir, attrs);
->>   	else if (ops->map_phys)
->
->Or indeed any other non-direct ops? Obviously all the legacy architectures
->like Alpha are never going to see this or care, but I could imagine Xen and
->possibly PowerPC might.
-
-Same here.
-
-
->
->Thanks,
->Robin.
->
->> @@ -203,11 +207,16 @@ void dma_unmap_phys(struct device *dev, dma_addr_t addr, size_t size,
->>   {
->>   	const struct dma_map_ops *ops = get_dma_ops(dev);
->>   	bool is_mmio = attrs & DMA_ATTR_MMIO;
->> +	bool is_cc_decrypted = attrs & DMA_ATTR_CC_DECRYPTED;
->>   	BUG_ON(!valid_dma_direction(dir));
+>> @@ -1179,6 +1179,7 @@ EXPORT_SYMBOL_FOR_KVM(tdx_enable);
+>>  int tdx_module_shutdown(void)
+>>  {
+>>  	struct tdx_module_args args = {};
+>> +	int ret, cpu;
+>>  
+>>  	/*
+>>  	 * Shut down the TDX module and prepare handoff data for the next
+>> @@ -1188,7 +1189,22 @@ int tdx_module_shutdown(void)
+>>  	 * modules as new modules likely have higher handoff version.
+>>  	 */
+>>  	args.rcx = tdx_sysinfo.handoff.module_hv;
+>> -	return seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
+>> +	ret = seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
+>> +	if (ret)
+>> +		return ret;
 >> +
->>   	if (dma_map_direct(dev, ops) ||
->> -	    (!is_mmio && arch_dma_unmap_phys_direct(dev, addr + size)))
->> +	    (!is_mmio && !is_cc_decrypted &&
->> +	     arch_dma_unmap_phys_direct(dev, addr + size)))
->>   		dma_direct_unmap_phys(dev, addr, size, dir, attrs);
->> +	else if (is_cc_decrypted)
->> +		return;
->>   	else if (use_dma_iommu(dev))
->>   		iommu_dma_unmap_phys(dev, addr, size, dir, attrs);
->>   	else if (ops->unmap_phys)
+>> +	tdx_module_status = TDX_MODULE_UNINITIALIZED;
+>> +	sysinit_done = false;
+>> +	sysinit_ret = 0;
+>> +
+>> +	/*
+>> +	 * By reaching here CPUHP is disabled and all present CPUs
+>> +	 * are online. It's safe to just loop all online CPUs and
+>> +	 * reset the per-cpu flag.
+>> +	 */
+>> +	for_each_online_cpu(cpu)
+>> +		per_cpu(tdx_lp_initialized, cpu) = false;
 >
+>Since you have removed the requirement that P-SEAMLDR.INSTALL must be done
+>on all CPUs, and removed the relevant patch, the "all present CPUs are
+>online" part isn't correct anymore.
+>
+>And using for_each_online_cpu() isn't enough since this doesn't reset the
+>tdx_lp_initialized for offline CPUs.
+>
+>One way is to just use for_each_possible_cpu() here so tdx_lp_initialized
+>for all CPUs are reset.  Since the "CPUHP is disabled" part is still correct
+>AFAICT (since stop_machine() disables CPUHP internally during the
+>operation), resetting tdx_lp_initialized for offline CPUs won't race with
+>CPUHP.
+>
+>And assuming this series will be applied after Sean's VMXON series, we will
+
+Yes.
+
+>have a TDX-specific CPUHP callback tdx_online_cpu() in TDX x86 core to do
+>tdx_cpu_enable(), which will then enable TDX again on the new-online CPU.
+
+Good point.
+
+Clearing tdx_lp_initialized for offlined CPUs makes sense, but I'd rather not
+justify this through "enabling TDX on new-online CPUs" since many details
+remain unclear. For example, there will be a SEAMCALL to disable TDX per-CPU.
+It should be called when CPUs go offline so that those CPUs can be exempting
+from doing SEAMLDR.INSTALL during module updates. tdx_lp_initialized should
+have been cleared along with that "disable TDX per-CPU" SEAMCALL for offlined
+CPUs.
+
+I'm not arguing against for_each_present_cpu(). I just think discussing how
+to support TDX module update with offlined CPUs in the comment would be a bit
+premature. How about keeping it simple:
+
+/*
+ * Since the TDX module is shut down and gone, mark all CPUs (including
+ * offlined ones) as uninitialied. This is called in stop_machine() (where
+ * CPU hotplug is disabled), preventing races with other tdx_lp_initialized
+ * accesses.
+ */
+
+>
+>Btw, w/o Sean's VMXON series, currently only KVM provides the TDX-specific
+>CPUHP callback.  So it seems if module update is done when KVM is not
+>loaded,
+
+w/o VMXON series, module update isn't possible if KVM isn't loaded.
+
+>there will be no TDX-specific CPUHP callback to re-enable TDX for
+>the new-online CPU.  This means any SEAMCALL on that CPU will fail before
+>KVM module is loaded again (which will then re-register the TDX-specific
+>CPUHP and run tdx_cpu_enable() for all online CPUs). 
+>
+>But I don't think we should consider this case.
+>
+>
+Agreed.
