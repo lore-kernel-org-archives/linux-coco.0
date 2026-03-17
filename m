@@ -1,79 +1,132 @@
-Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392433A9DB6
-	for <linux-coco@lists.linux.dev>; Tue, 17 Mar 2026 14:21:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A7632D45C
+	for <linux-coco@lists.linux.dev>; Tue, 17 Mar 2026 15:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773757306; cv=none; b=nhhqe4gA57TGk8GbuVSsypceZwA89hhrmfh36we6RNASo+yRDkCl6GeSa9ODlsdJMJDWx6v7GHlCaYXhR049RUx3e4VMVSmtX553baXmIq6xbLGsrqjWUR07SaVMOTKUpwp6UHi56IQCZ9UnOnIex9YrFqzT7KPziDRTPLZfF1U=
+	t=1773761661; cv=none; b=cE3a/0wwbYhiEFuDlg+H89NfOYS9etj1+euTJDmFz4cf4pat4iXvZYip/x3bUXkPLRIPc8pLd/08SE064VjFeEVlvZ9UEY+Sj5MlpG/zIJvjJMBwUq2Vc8eJeKfH/VkS5YB0SdTdoeXAF4pceQEn7hXPjOaWOuJv7PARRGgc5pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773757306; c=relaxed/simple;
-	bh=UT2Vm0q/z2JCshk1kuXaNGNAgH5qu8C7r3kvHOBPxWY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HQIaCL0HZdRs4RqOpBUZlSXB5W78mpuRfb7joSvlNuUuwSTMTzyKW/inJkuJIQSdyS+7RefGKhCpRowf7Zh2cPeXi1XkbvEsIFNlz2tH42yzRHVhl4T9vWlRkiRuv1QO0GhQEYZIB+vGDjtdCxFRHKDf6u5Im6tIGx1ugFvEGRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.95.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
-	 client-signature ECDSA (secp384r1) client-digest SHA384)
-	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
-	by mailout1.hostsharing.net (Postfix) with ESMTPS id B95AA389;
-	Tue, 17 Mar 2026 15:13:16 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id A10DA60297F9; Tue, 17 Mar 2026 15:13:16 +0100 (CET)
-Date: Tue, 17 Mar 2026 15:13:16 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	gregkh@linuxfoundation.org, aik@amd.com, aneesh.kumar@kernel.org,
-	yilun.xu@linux.intel.com, bhelgaas@google.com, alistair23@gmail.com,
-	jgg@nvidia.com, Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH v2 08/19] PCI/TSM: Add "evidence" support
-Message-ID: <ablhfHEIsz5IPW14@wunner.de>
-References: <20260303000207.1836586-1-dan.j.williams@intel.com>
- <20260303000207.1836586-9-dan.j.williams@intel.com>
- <abWq1oiE-YkksxNu@wunner.de>
- <69b8646c8aeb1_452b100aa@dwillia2-mobl4.notmuch>
- <69b88bfe2662f_40c01002c@dwillia2-mobl4.notmuch>
+	s=arc-20240116; t=1773761661; c=relaxed/simple;
+	bh=tM7MPS2JCkk7DuNXpuY1WgEjcjH9UxOCDa7a/4ge/Po=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jkFAtcO9zWIfju1KuzbS+LdqkJtbg0lHrbwXaNy3pleeRGNBe6dzjXG/Jv74cFBbjy7PCLTyqJ6fhBy4e6iQEZVLpqXAKjt4xVaaBN7QvggW21SEnYq7F016EcwKty73fskxm2f0n/ubGaS5HYmQBil6jT2cluf2R2m1akH2934=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RKbT0JoL; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RKbT0JoL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773761658; x=1805297658;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=tM7MPS2JCkk7DuNXpuY1WgEjcjH9UxOCDa7a/4ge/Po=;
+  b=RKbT0JoLIwxRPeIQR1+VwvAQglYO6yXP+0vRLCCVbulEfW2hio7bQFoZ
+   3SSJenNQ7A+zM97wGqDhlqUy7L9OpRQEuDbCFW5Ptvnktls17MRvlEVc3
+   lRxD1znQBlL++PkTAbQbgahZ3f0GaOQ77ZO0uPmYmuvpU+TusjAcRI0f7
+   9MBjNyMuoxZcqAV2NgjhMUl5ZimTGSfcYzog3S6XB0wHUujs/A+nkY+y5
+   VTWPZyhbcHVxPyzW/iZ3W/kQHaGAKAl7GxeJL041byT0JgNpBAlOP/ocq
+   W550CpV/JKXKvmQoMccdX1+DuJxhIiQpftPtvCQQwrX5gZcUXBhtEBQoW
+   Q==;
+X-CSE-ConnectionGUID: kjm7uYqkT5ipccNeFElp/A==
+X-CSE-MsgGUID: /C7P7j3ETjSVRY3dlSGAcQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="78692083"
+X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
+   d="scan'208";a="78692083"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 08:34:17 -0700
+X-CSE-ConnectionGUID: IstXKUjCQwWZ3G4wp7DHwg==
+X-CSE-MsgGUID: qjA+1VptQ7Gam35ZYi6dsw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
+   d="scan'208";a="226440744"
+Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.108.160]) ([10.125.108.160])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 08:34:17 -0700
+Message-ID: <7f7b609c-f351-486e-94c3-d408adc5ffe0@intel.com>
+Date: Tue, 17 Mar 2026 08:34:16 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <69b88bfe2662f_40c01002c@dwillia2-mobl4.notmuch>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 06/22] coco/tdx-host: Expose P-SEAMLDR information via
+ sysfs
+To: Kiryl Shutsemau <kas@kernel.org>, Chao Gao <chao.gao@intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, binbin.wu@linux.intel.com,
+ dan.j.williams@intel.com, dave.hansen@linux.intel.com, ira.weiny@intel.com,
+ kai.huang@intel.com, nik.borisov@suse.com, paulmck@kernel.org,
+ pbonzini@redhat.com, reinette.chatre@intel.com, rick.p.edgecombe@intel.com,
+ sagis@google.com, seanjc@google.com, tony.lindgren@linux.intel.com,
+ vannapurve@google.com, vishal.l.verma@intel.com, yilun.xu@linux.intel.com
+References: <20260315135920.354657-1-chao.gao@intel.com>
+ <20260315135920.354657-7-chao.gao@intel.com> <abkmceqUtMTnLI0V@thinkstation>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <abkmceqUtMTnLI0V@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 16, 2026 at 04:02:22PM -0700, Dan Williams wrote:
-> Dan Williams wrote:
-> > Lukas Wunner wrote:
-> > > This doesn't look like it's ever been tested, so at the very least
-> > > it should be marked RFC in the subject to convey that it's not yet
-> > > in a cut-and-dried state.
-> > 
-> > The 16MB limit has indeed not been tested, the test script in this set
-> > was using smaller than 64K payloads to check out the interface.
-> 
-> So 16MB works ok, slow, but works. A given attribute in this
-> implementation never exceeds the limit
+On 3/17/26 03:06, Kiryl Shutsemau wrote:
+>> +	return sysfs_emit(buf, "%u.%u.%02u\n", info.major_version,
+>> +					       info.minor_version,
+>> +					       info.update_version);
+> Maybe a comment why %02u used for update_version?
 
-Famous last words.
+Could we just stick this in a:
 
-If you look at netlink_dump(), it sizes the skb based on
-nlk->max_recvmsg_len.  If that's larger than 64k, you'll
-try to fill as much as possible of that space with a single
-netlink attribute.  The computation of "available" in your
-patch doesn't take the 65531 bytes limit for a netlink attribute
-into account so it looks like you'll end up overflowing the length
-of the netlink attribute.
+#define TDX_VERSION_FMT	"%u.%u.%02u"
 
-Unfortunately nla_put() doesn't prevent such overflows, it does
-all the size calculations with an int, not a u16.
+and document it there, once and for all?
 
-Thanks,
+Users can do:
 
-Lukas
+	return sysfs_emit(buf, TDX_VERSION_FMT "\n", ...
+
+There are going to be a couple of these, I expect.
