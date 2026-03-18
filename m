@@ -1,214 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725723A7848
-	for <linux-coco@lists.linux.dev>; Wed, 18 Mar 2026 09:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773826594; cv=fail; b=EZHRoxozkrQaob054G8CDa+GrezqatuqDcdvvn1b7uPGdYg7tAL9Gc6K0sJbu3LlAfVscqyIrby7AjSVsq4F9z99jyJiwqOJ2LLZqPMkPimXA7c8x3tlckzFpYMI0nbZNuiUQURMofrOKLtg8ym/fbUWYu4RHfRlyugG/glw8ds=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773826594; c=relaxed/simple;
-	bh=8r57ttRgOPxIc2pYl5FG+PAypHKlOzwykGwUR8nGVr4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=smDvD3vkv0Punwcs4wAVzeHJ1R+sPvWgS4a9KW77NIVFC572xL2bQ+YNbncks/xmtZ6S2A7ppTvSChag88u6zSDp4EZWMsbVoBooFlTPvDFc6y+6WPEnGnA0YbhynAenYtgmSX+GwRUrd8HhCIDE7e1TTWhlCWGgccwh58UmAt4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nPPt2sV0; arc=fail smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33E634DB66;
+	Wed, 18 Mar 2026 10:50:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773831031; cv=none; b=GWP0VWyT8g3KMpPdtjRgCYR7Co6I+t7oBdKVDYljvZhTt1oyc79TwO2Ca/D78RxMdi47WmY8xOqr8fWC/OV2ZvPN8EV82oOTyBbyrvjUTuLPGTfW3Ym62Jd8x4NoscWtWf7BAZxT1dhRh0F85KqrG4AvGaqA8nRCTbFX1Y8Rqkc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773831031; c=relaxed/simple;
+	bh=okXOWphObIXIAlBWIeZzQv6uCPpw5hPKczJAOq3IjHY=;
+	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=iI9EmBcG3gG/1pwV+TpTKAV3/IpW2rBRPmxK9Y5iJ4MGYzoJ7ZcpsxHHBebjbjYe0J83iv9U1uuJ/TVaJlC8xkQ9Vn3QPrZnYyTDTrjKNvHokxctCDwZn+B3x3qco6hsLXjXmmUb75NOGo1ma7xE+IPte5dHWCtvu8aRzTbmoko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAN4uUE1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nPPt2sV0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773826586; x=1805362586;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=8r57ttRgOPxIc2pYl5FG+PAypHKlOzwykGwUR8nGVr4=;
-  b=nPPt2sV0nlC+DH4K8d0siijJ4PFBDnSWQeTA2zOQAoROdUNZQj/+u6FP
-   YSxyYfV41/GxV42r1qpDwcQI+Elx3PObmAVXwou/y0i42bT9+zwrwmqHm
-   RzLtCT3dEAQanRPCJKCHCqcHAYnTtWPJOW3QqYv3BS14z0oytcK+VRX3j
-   L9zsTp5xlhycXASvJqgPlMedtrs3KkYk3Bimv/6WkYSZgl55jW/M+NokN
-   fCX0af3JMaCmAyV+iDfkmBGRRX4W4ba+dje64vklJpMU5aEYBHxyJN+hZ
-   JVmup+tIm6cPVK7s4dHpOhyXWidUHmRk319zHP4Wum2b3aAAvm+/CglT2
-   w==;
-X-CSE-ConnectionGUID: kaSmb/ALRoeZy8gu1Sm+4Q==
-X-CSE-MsgGUID: bEu4qIO1QyywiiUvwXOvhA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="100336037"
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
-   d="scan'208";a="100336037"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 02:36:25 -0700
-X-CSE-ConnectionGUID: TA3/z/KARsm5dwqH+VBzrA==
-X-CSE-MsgGUID: PUaA7UI7TieZQTllnkeG2A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
-   d="scan'208";a="220021561"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 02:36:25 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 18 Mar 2026 02:36:24 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 18 Mar 2026 02:36:24 -0700
-Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.36) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 18 Mar 2026 02:35:45 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m09zTOWg7oD6+sUST5NiNa7P62O2t492G1zG0NWckVT/H1iLQk2tyhj6RzHZHnEurZgc1sYmzXwzCR9XUHvh+yFHaD+FVv4wZeJv/m3IB+OFAaE62vi/bMQXPO1bCFWnHERPVhkz2f1DXBwYWcAE5JMu+7qVutPGKCLwAOcGDO2nMNmS91oJxycqHupW/OpG9BhY9N0EqRLGYYXDWgNSuJJPJt1kRWJQKKboB95Roi/VAgFGT0/+OOELayvEsYe7fjMWqxL8tjY+5ypDEUDLP8DXFPcEKHZLZZ+gerXOBKw/60Z0qNhrLBomysBFsbC/hhphXjqNUhdMfFjA7kxNBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tvT9n1aEfR4zhlUPe82dcRFdXWndtBkF+D/f1rxmlA8=;
- b=lRQIzbZkE2i64LVIhtVQXw+uchx+0qXxC4dU+8TAH2raQHyIqU+NqHsPq1RwthubDVcdJloRFj3inEB1EUBdgIHs3+OmFe6sjKmF/P0lx6wjlIHjD1s0ew4mWhZsX046VGY64D0zMZ4vMEo0Hxvl1JkjE8ouJ4c4Ih9SsnRcBv4/zn3O9vWfKcqTVLBHpkWBgGqZp90FYhZF6UeOnS2CpRs1vIqwjjmDFIIwAByo9zPgXYRHFlJ4+GxmRfV6X0ELqGTJRi2C3XqTbNxzW0i2rr+2La1EU1JagqjZx+a2GejgZm66TCMaWjG8WcQ9zl2ZG8OS+dS70lW0hdTd4E+ZmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
- by IA0PR11MB7882.namprd11.prod.outlook.com (2603:10b6:208:40f::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
- 2026 09:35:09 +0000
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9745.007; Wed, 18 Mar 2026
- 09:35:08 +0000
-Date: Wed, 18 Mar 2026 17:34:53 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <binbin.wu@linux.intel.com>,
-	<dan.j.williams@intel.com>, <dave.hansen@linux.intel.com>,
-	<ira.weiny@intel.com>, <kai.huang@intel.com>, <kas@kernel.org>,
-	<nik.borisov@suse.com>, <paulmck@kernel.org>, <pbonzini@redhat.com>,
-	<reinette.chatre@intel.com>, <rick.p.edgecombe@intel.com>,
-	<sagis@google.com>, <seanjc@google.com>, <tony.lindgren@linux.intel.com>,
-	<vannapurve@google.com>, <vishal.l.verma@intel.com>,
-	<yilun.xu@linux.intel.com>, Farrah Chen <farrah.chen@intel.com>, "Thomas
- Gleixner" <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v5 04/22] x86/virt/seamldr: Introduce a wrapper for
- P-SEAMLDR SEAMCALLs
-Message-ID: <abpxvVk9XrEU6ssJ@intel.com>
-References: <20260315135920.354657-1-chao.gao@intel.com>
- <20260315135920.354657-5-chao.gao@intel.com>
- <935081ba-9f66-4bdf-a408-c19be32c6ad3@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <935081ba-9f66-4bdf-a408-c19be32c6ad3@intel.com>
-X-ClientProxiedBy: SI2P153CA0031.APCP153.PROD.OUTLOOK.COM (2603:1096:4:190::7)
- To CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAN4uUE1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B979BC2BCAF;
+	Wed, 18 Mar 2026 10:50:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773831031;
+	bh=okXOWphObIXIAlBWIeZzQv6uCPpw5hPKczJAOq3IjHY=;
+	h=Date:From:To:Subject:From;
+	b=hAN4uUE1gGNmN7j+iUAkSBQChFbatzDAOCblBsGPrfxuCNa3ThJwlQy41HXXC2Njc
+	 66I/epeuhWTKKads/gv9CM5mRpOph+ztIftofHCf/MdML51Ep6bRFQjuN8GbfudYR+
+	 Xu2JJ3tjGPn85u9t1C19SnO1Ydt26/z593eM0v+D+2MjsBAKpYJ3dZBcBnwtk+Fo68
+	 6LGnabQrJsNOZtk3urfRuhGfHh8ppGQepeEw65oLT/kezPgcbvKJfq6Dq9A1QneC8R
+	 c9NA4E1lUwKpfdeznlekxn+zfmb4nV3Uy9pKFlP5Vrh3c4QXTbYCizItcUUftquObf
+	 JEJIy8oH62IzQ==
+Message-ID: <22d1bdf9-4d21-4252-8558-e9618a409bc5@kernel.org>
+Date: Wed, 18 Mar 2026 11:50:21 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|IA0PR11MB7882:EE_
-X-MS-Office365-Filtering-Correlation-Id: d238874e-7cf7-4181-5ef3-08de84d1a4a2
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info: OsFh5B/EdMvFuG1CC7h0OekQ0sWRxt7L3yDshuoW3nkRfIWeNmWF+aH6sWezMPGt4zwiJl94kR03JdA+oPnJ8xeuxSXf9eDHlkbkmIufT9DgOSL+zl44jh6io/6IaAXKHQk/k7tBYKcE5atQkIU+8IS2SG1ubCultZ2jhk/PvuPBiJDI9zlmb7KmYtualaQ2Glru39d9rpt3bv6M25HSpBbzRiB40zKdmfQTNtdug+/muKQiSWiz4FT+cW+Ps18fR0wsmNEHIdws+1+jgmnKo99KJvoqv7BhteEYGXyB5W7TL68xI8km+A54Og7XkfiQckRa8VzuXip6qsB7Er2aAVBdn2Lqj3zZooywwVuFo8+6/nt6XWVh8WbNVOd5pG53k1TAraglsFGgQPafJOqZJ51wSKqC/dgkxeZPMXlUa3YHD+yItIdW/pj3MeoQxq6k2tnwE0vrmmoxyBe/96e448Ht88HpcElzOVUPebLozzq7TMWeCiqpkxcOBw4zA9jGU5WzdAske6SYS7FjhYAvt2uGVwouiYxyC/sCAH0ugNIZXgz6CgYgwWziu4R78puKP+sYcW8uSPB74ezGCmMT8D09/SCGGLGjEg6MQ92VWQY9IZDQm+XIUuQK18UO36OuVzUSo6PMC29U1Pd1th5/KMsrmiAu0/jrtfFcRPhV6YCZhjxMkhePXMYGy7tkzmC0xjPnESwOHxviF5s9s9rpJCsRU97ywgiI0GLfDpgVNa8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?QSLn9VNOQkzu39XXoGYrbYxkVN2zhj7/OCDkBH2YHJJKKpyLDJbIEZuH9/?=
- =?iso-8859-1?Q?V5WNzk9fo3jrgkDgGTECkmyyfsAhVMdnb6P2sU4BKEYRPG3HMLNElvCWix?=
- =?iso-8859-1?Q?UWLiwhAKIdqbbA9HwYQNIPZDA59O4CrezORLUm6NKMPV9QBMPzaeDzqQdc?=
- =?iso-8859-1?Q?xfSEb37rwj/mX9kZxVFgRlkzHRWRXexOBWyzlTxpd5EZrShF4HZSz9dE/6?=
- =?iso-8859-1?Q?vcD133matfdjvCOvyVGQ1VyEtmuNugHkkpsSM0fhT8O58K47XvsLeaJXr4?=
- =?iso-8859-1?Q?fEaCXc+BcI4L8DSrbE4EDQklzc/mXZklNlsQvnVADHbb9Pic1X7XHYEWrY?=
- =?iso-8859-1?Q?rkiogbrNoAuzqoSxLuNeBjUNdQiJ92HMJfFZ/Z+9DwgebE/sUvi9OHDBdf?=
- =?iso-8859-1?Q?FbSpolSHUYohsnIIHympc+MQt72uBL3GwzVI2BmDcSZq7Dj4ZHfyoAvUOI?=
- =?iso-8859-1?Q?LrAu3S549RZuqyq3YC5DR1fLp+kC9ApJ0M6t6AiFYoIQUD0K9d2TX2wtxK?=
- =?iso-8859-1?Q?dIGI1Ju2nJ5/0mKG4e0QsM1O8r0ac+3DxP3eUamxPY80LZfY8tU32uTSxL?=
- =?iso-8859-1?Q?6cMzyTIkAM5FjU75udiLEw4maagFaIqgYr2nnMqXdF8jhVRFcLSlUmPVk7?=
- =?iso-8859-1?Q?Pv7pGpU3IZXSrOwerdxSQqLOjj3nDTh7jhmHgySCXzSFmJ664cD5dOGQSl?=
- =?iso-8859-1?Q?1o23fKdqNiO9O3aysYwg6EXE240378ZlSv3PrVqzAI3fAgncoEHnyFs1wh?=
- =?iso-8859-1?Q?vpuLmXOjJrqJ53MFuPr5aH/+nqTVFM85uTSUSpPK6RaQxFBtFCTQO+I5mN?=
- =?iso-8859-1?Q?emo7bGhbvpKQ55Z5qypMsqwecLk2DmPs2TcOH9IoykndBMfrvtZvHT2pgK?=
- =?iso-8859-1?Q?NaFXkKbqvL7QUNYDo+wPVaVCzRe0/0CqL+Pem6nDmFG9hbdshyzZPSWRAV?=
- =?iso-8859-1?Q?Ynx1Xlzio+OBiX9T3+MT4Zpw//sTu8UXKCQ37ZkilUf5IJBVYhYQD00Mx7?=
- =?iso-8859-1?Q?1nb1jYKBSr0Mec/a76PM3a2PdNwWAeDFvZ7mfTSgKuOZJbIYGu5e3PBfqG?=
- =?iso-8859-1?Q?HJJF5GpwIqDZLvFGyS9NjAmCaaQ4Uk6uEI8Vbey8x0GH+o2AQb23CrE4+x?=
- =?iso-8859-1?Q?BPF4d9l5zgqfsoLQc555PWINQiBQ491WBJgSlv9My1lprIi6Jb8yJ7BWuO?=
- =?iso-8859-1?Q?5y3DdHEh4declrCb/aAJkTF8zTSuROn41sC+qWpGM8S3tPXS2rou6wVK3f?=
- =?iso-8859-1?Q?4eW1sS/c01yZgml1rzqvRid/GZJ+/mMxLXnA4Wd87WO1lazXT3BS5oM9ur?=
- =?iso-8859-1?Q?wILHQOQjG14IGWaMS9QRfvjeewXmoV6zCpK23wouPba4dxIPDf3YHyd+/r?=
- =?iso-8859-1?Q?7K4X49wTOVU/8ynpXbNf8B3rlR6k8i4ACEAaF9Je9q1+RBa7ka0bGrEfzT?=
- =?iso-8859-1?Q?M6to/toVLU028n4OuF20YCfTJnvBpK1O2VkUgA3Ta/d1jDIuZHl88KgWQe?=
- =?iso-8859-1?Q?pjUpldAWmhsclOFtkY533/2O3MdxKG9upF714kZ4TZffqMsnk07EXpCaUr?=
- =?iso-8859-1?Q?juzkZHCHsH07xDS1mwcVK3Z2YF7HKi66wNp/yUY2UEEI0X9V9DLG+CaktN?=
- =?iso-8859-1?Q?DsVHXldQsyHKJGOZQjayzRPB2M2Oe4j691VOAso0JQk5hKOMAXpKPs6EG/?=
- =?iso-8859-1?Q?lyxFM1KMljO3ypKdsznkmyAP36dlMXRwqQ8U3x9c5AO7ZCCm6MBA3xr5lr?=
- =?iso-8859-1?Q?TkMQ2tUw+KnO7+IxOKYpAZG4mnQxjldi5mC5ULFX/DHycqPEKtyEvxIbUq?=
- =?iso-8859-1?Q?U1HmsRaZhg=3D=3D?=
-X-Exchange-RoutingPolicyChecked: mZUxid8GXsei2yPC+VaaAI09ZpJdxbNRkjGEoZaOahQ/vX3fcFYKYcPEnqmSfy0g4MGun9Fhi2n0H6o05b2p8y/XexTvHYH8CDlYG/Gb0VadJzBFMyNIq7uX0foKkhnjwr4T+OrJdqHYxv1h7JEi+JuOd9foLbcCZ0s4Jf8ge4qi1t1bBRorw/8M9FPr3ArFO31O/iut3Ll1Iq59kDz+eTKJ96Mz5B+RRtuXBe4GXykKkVDb9YE8HWpLv3AtpVp60PGZvYyTmEZHv5aRk2s68GVtM0NSHRc8rqCv/BMdVCqV0LUgg03ovEqFg1vcStVARzyzfYSuUs1hG0+iK4g9Yg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: d238874e-7cf7-4181-5ef3-08de84d1a4a2
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 09:35:08.1763
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Hvgh0lIHFZt98hNa7xoJtZUAxlfHv+rXm1zDYd7NnmGGPslvrjuz6mzscYLRdWBorSqWNT+SPk/Gx80qqPe+0w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7882
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-03-19
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 18, 2026 at 03:13:06PM +0800, Xiaoyao Li wrote:
->On 3/15/2026 9:58 PM, Chao Gao wrote:
->> The TDX architecture uses the "SEAMCALL" instruction to communicate with
->> SEAM mode software. Right now, the only SEAM mode software that the kernel
->> communicates with is the TDX module. But, there is actually another
->> component that runs in SEAM mode but it is separate from the TDX module:
->> the persistent SEAM loader or "P-SEAMLDR". Right now, the only component
->> that communicates with it is the BIOS which loads the TDX module itself at
->> boot. But, to support updating the TDX module, the kernel now needs to be
->> able to talk to it.
->> 
->> P-SEAMLDR SEAMCALLs differ from TDX module SEAMCALLs in areas such as
->> concurrency requirements. Add a P-SEAMLDR wrapper to handle these
->> differences and prepare for implementing concrete functions.
->> 
->> Note that unlike P-SEAMLDR, there is also a non-persistent SEAM loader
->> ("NP-SEAMLDR"). This is an authenticated code module (ACM) that is not
->> callable at runtime. Only BIOS launches it to load P-SEAMLDR at boot;
->> the kernel does not need to interact with it for runtime update.
->> 
->> For details of P-SEAMLDR SEAMCALLs, see Intel® Trust Domain CPU
->> Architectural Extensions, Revision 343754-002, Chapter 2.3 "INSTRUCTION
->> SET REFERENCE".
->
->SDM started to contain SEAMCALL definitions. How about just dropping this
->paragraph to avoid people from reading the old doc?
+Hi,
 
-I didn't realize that. Thanks for the information.
+Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+2026-03-19 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-But I don't think this is a stale reference. The SDM description is high-level
-and points to the same spec for details:
+!!! Note the GMT-08:00 -> GMT-07:00 change due to DST in the US :) !!!
 
-  The details of such transitions are specified in the Intel® Trust Domain CPU
-  Architectural Extensions.
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
 
->
->...
->
->> +static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
->> +{
->> +	guard(raw_spinlock)(&seamldr_lock);
->> +	return seamcall_prerr(fn, args);
->
->How about adding the reason of why choosing seamcall_prerr() instead of
->seamcall_prerr_ret() in the changelog?
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write me
+or Ackerley a mail.
 
-Sure. Will add:
+In this meeting, we'll talk about the in-place conversion series and ABI
+implications ... and I'm sure other things will come up (pKVM update? :) ).
 
-Use seamcall_prerr() (not '_ret') because current P-SEAMLDR calls do not use
-any output registers other than RAX.
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
+
+[1]
+https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+
+-- 
+Cheers,
+
+David
+
