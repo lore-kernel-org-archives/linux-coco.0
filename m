@@ -1,121 +1,141 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FF2366DAE
-	for <linux-coco@lists.linux.dev>; Wed, 18 Mar 2026 19:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CCA3EF0CF
+	for <linux-coco@lists.linux.dev>; Wed, 18 Mar 2026 19:43:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773860533; cv=none; b=PR+Ra8sD9SEgnktPV0JyJAcUyH60RQIK/16NVqc1qf4izYiHJBsNT+a43mcDDZQWxN52GxAuPx2ed0GeXqAgEcNvnEwWt8hVcYgpddgzBMqiue7TfMiE8vo5G57p+eG+U7v09+o5AFbq7GyfJQevTzidcLWCQb3ZU2u1x7efMZQ=
+	t=1773862981; cv=none; b=PHryEFA00QqEhawx65xogrqmQaPI2tAvwM7aQuRfe+Vuz5kLsi2TvPhEqMORKAFCA5vhXrbH71lRoM993w9uytyetKk3T79wecAVrG6uj5KumgPKlj8jCpAftfnSFNEX+LtD0q53NgUL/q6mcWt/sgaw/iJ/vUh83zIsmGwg6OM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773860533; c=relaxed/simple;
-	bh=z+2sf/5km6HTWQdHuHjaRmn83kq0xn9ypsPl2UqNUbg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uvqsGOxQSWvsxHKvn4iwEt5LIun+fhqLdRf2jZdBje3IqPihRvmKxRwAeCDHf8f/WfLZiwnrJnqPD9TKU1bJfaR3KPgq9tsUb/OfF3g842caukYUw2HB1LmMwBmQe9VEl2QD6DXNdr8SM0DThiM8NqPIVCKRwR+HXhggqSMYVDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=f5UAM3Yc; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1773862981; c=relaxed/simple;
+	bh=gzi3FtDVJpNJOUK9u6hEd7MMLRAZWZY+nhQT7w+JqmM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pAg1GgkBwtXDSZ7kChj8hFLTQpfJgZu3ZhRXacP87UOEfWTifPZqvmRoxXo9o5hystCSc28gg7byXl4gHfkOKnNfP1eVoYawVQvFA9cDtpQ1McBG/HP3lqPzp9qEF/lHdJyptBaVKB2XR/Foc2KZ4GOfD8vEAZj/a9FTZ6pST0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IUrRXTmy; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="f5UAM3Yc"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48539d21b76so1477955e9.1
-        for <linux-coco@lists.linux.dev>; Wed, 18 Mar 2026 12:02:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1773860531; x=1774465331; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4pIf+VLPRohGstCaliNQzf45fwV/wxcML8JuOKn3Xfg=;
-        b=f5UAM3YcKzqAWMK90WfSJIbOh4Vp1Wx0c3GVi6yW00KO2wtYOnhU/GR35Pw/4lOgMn
-         ZYVSnkiRvZV+xUR2p2onHXKDwi64at4+jRMFGRSQ9VT1tX5VtspMUB2OJbpaTMDVc782
-         EUluQyYm1nF9+Y7/Xebo40QeZ2EFYRjQ7q8ds=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773860531; x=1774465331;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4pIf+VLPRohGstCaliNQzf45fwV/wxcML8JuOKn3Xfg=;
-        b=X+KbdRUW/FORx86DUueXhCe76OK+docfyFEbtKFFfnNLTi0ZHRy2jU6KifMnNWBCWI
-         0Ms1QEH1hEyr4MoMTTaSvCZPCtWdPTnUOlUuQsU7AdUo8mBM0+KHIeiKXVMauazkw2xE
-         JJci9ioMHA2XFGKTnuOrDUz2tDqubvwjpAWkXyfkOVxzwv2dyJZEXT0r0+e2FxhO/ZRE
-         SNfuaOb79vrLZFhLCZ+aX5I51jjcaRIEcKUJpPPd+wlagq2g0BhtICboyspBPJg3tbeN
-         Sp84oA5Xl8LJY2h/hc9KciZZc/dMs33OHg9jIxJaN7RZN++7rgLv7OkqbkovQJtL2WTb
-         4N5w==
-X-Forwarded-Encrypted: i=1; AJvYcCWS5CdodEauzFqBl/CSLZU+taCH/i9S6m4u0UQhZK4eB+lIt6d9sgR+tjTPp4ch03scp2RR2AGJsIVr@lists.linux.dev
-X-Gm-Message-State: AOJu0YzmNTAFox5E4mAEU6W1fMRG4rpqrbXoOY3hYVpRNxzjH1t9wfG/
-	KYJMbOBQsH744xiQMDvr+RQghIEDT/klSXbsy5vuo0e/USgTk83wHtPTLEPqfGJKAg==
-X-Gm-Gg: ATEYQzzsiBithXqTVLvGFb7Gu5EFI56WQAaYLaP+T3jaO8uzek842NAu1jyky3cDopm
-	e6YQYfMBAA7iM0eVGxo15xuogfni7cJQ2PLrNZMEc7cNrQPrSmLwliZhyr3uxECtMNyawSCtnHh
-	aoKNsEZeBJJThMjLISUh6MIvVQoyHut1MdDGP2ZYanIyZIfwb/0AAH+mIY2nIrkr1ow9hfpyIK+
-	YNBSb4chj+lhzgWvk349WG4lrIBq5ZPVMuS6em3mF1wjiZi+JNG5UgjDp5WLzKS7CCXTCOSKqNO
-	bfQifWuPDwdhMD7/SwVID+reYLxxfoshnswAY/MywGGZRE+5f6BCDfS8L+A6htBzRrZF2pDNJEA
-	FQ13MJ6rqEJ2Eyo6ioJ13LJtxcqLB31WhCZBtx00yJ/Ztdc4YNVHiKwzPQH5iIa/wzegLo54XJW
-	POsi/6tTH3F0PUZ+NQhaJwcSVXcKwTDNfN3Vd+PQkuQGRY2rBQHRyaXiXFNvNDamNzjltiu7d42
-	QmU4ImIdx9o
-X-Received: by 2002:a05:600c:8b65:b0:485:34a2:919e with SMTP id 5b1f17b1804b1-486f44607e8mr76256695e9.33.1773860530585;
-        Wed, 18 Mar 2026 12:02:10 -0700 (PDT)
-Received: from dmaluka.c.googlers.com.com (202.88.205.35.bc.googleusercontent.com. [35.205.88.202])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f8c35057sm8461275e9.5.2026.03.18.12.02.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 12:02:10 -0700 (PDT)
-From: Dmytro Maluka <dmaluka@chromium.org>
-To: kvm@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Isaku Yamahata <isaku.yamahata@intel.com>
-Cc: Dmytro Maluka <dmaluka@chromium.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	linux-coco@lists.linux.dev (open list:X86 TRUST DOMAIN EXTENSIONS (TDX))
-Subject: [PATCH] KVM: TDX: Fix APIC MSR ranges in tdx_has_emulated_msr()
-Date: Wed, 18 Mar 2026 19:01:03 +0000
-Message-ID: <20260318190111.1041924-1-dmaluka@chromium.org>
-X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IUrRXTmy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773862980; x=1805398980;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=gzi3FtDVJpNJOUK9u6hEd7MMLRAZWZY+nhQT7w+JqmM=;
+  b=IUrRXTmyiu6xsimdATAFW9XuWhEbQwTaR++TkDvdR2VbJcsB9I3kC1El
+   +IgzFkd13tzTndHmIkW813K5qAkHWoLv2zWjc0yKw2UV5qsulDB1XmX4h
+   vFvViKDvp0v+ClBL82OOeDePfl+o5ls5u/VgS7G3P3TPawLZpuORECiaJ
+   xzdr93VZM0LuO4tzkU9PSGNxO04r0CM7gX2kEiMHYQaRtCc9zTRi1+Eew
+   oUvowhQyjORsgSRHGIT5w3y9ztycqPPKOWJTnRk4/nQfZ9nayWr2mIwGA
+   2D8X8oThUMh6okJk8tZN2T55ewWGW4gb68PruR8Binlqiqxkr0xZs9Vnc
+   Q==;
+X-CSE-ConnectionGUID: 2vFp1GpgSV6o60PunDJY/w==
+X-CSE-MsgGUID: pr31+dhGQt2s7IkjTA9DdA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="86407467"
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="86407467"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 12:43:00 -0700
+X-CSE-ConnectionGUID: 4kXyUPGkQ6CHSmx0BmI1CA==
+X-CSE-MsgGUID: F//STjS4RqKgN+SWdlndsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="253225871"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.109.14]) ([10.125.109.14])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 12:42:59 -0700
+Message-ID: <94b06319-2be8-4f01-87d1-8989ae1ca85d@intel.com>
+Date: Wed, 18 Mar 2026 12:42:59 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: TDX: Fix APIC MSR ranges in tdx_has_emulated_msr()
+To: Dmytro Maluka <dmaluka@chromium.org>, kvm@vger.kernel.org,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Isaku Yamahata <isaku.yamahata@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Binbin Wu <binbin.wu@linux.intel.com>,
+ "open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)"
+ <linux-kernel@vger.kernel.org>,
+ "open list:X86 TRUST DOMAIN EXTENSIONS (TDX)" <linux-coco@lists.linux.dev>
+References: <20260318190111.1041924-1-dmaluka@chromium.org>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260318190111.1041924-1-dmaluka@chromium.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Note: compile-tested only. Bug found by code inspection.
+On 3/18/26 12:01, Dmytro Maluka wrote:
+> +		case X2APIC_MSR(APIC_ISR) ... X2APIC_MSR(APIC_ISR) + APIC_ISR_NR - 1:
+> +		case X2APIC_MSR(APIC_TMR) ... X2APIC_MSR(APIC_TMR) + APIC_ISR_NR - 1:
+> +		case X2APIC_MSR(APIC_IRR) ... X2APIC_MSR(APIC_IRR) + APIC_ISR_NR - 1:
 
-X2APIC_MSR(APIC_xxx + APIC_ISR_NR) is incorrect, since APIC_ISR_NR is
-0x8, not 0x80, so shifting it in X2APIC_MSR() results in losing those
-lower bits, making it simply equal to X2APIC_MSR(APIC_xxx), i.e. making
-the entire range consist of APIC_xxx only. So adding APIC_ISR_NR needs
-to be outside X2APIC_MSR().
+Thanks for the patch, Dmytro.
 
-Additionally, since "..." ranges are inclusive, need to subtract 1.
+<sigh>
 
-Fixes: dd50294f3e3c ("KVM: TDX: Implement callbacks for MSR operations")
-Signed-off-by: Dmytro Maluka <dmaluka@chromium.org>
----
- arch/x86/kvm/vmx/tdx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+So this code never worked (at least for a big chunk of the ranges.
+Isaku, could you please go try to figure out if there are tests for this
+somewhere, and why this never bit us?
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index c5065f84b78b..466a7de660c2 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -2136,9 +2136,9 @@ bool tdx_has_emulated_msr(u32 index)
- 		case X2APIC_MSR(APIC_TASKPRI):
- 		case X2APIC_MSR(APIC_PROCPRI):
- 		case X2APIC_MSR(APIC_EOI):
--		case X2APIC_MSR(APIC_ISR) ... X2APIC_MSR(APIC_ISR + APIC_ISR_NR):
--		case X2APIC_MSR(APIC_TMR) ... X2APIC_MSR(APIC_TMR + APIC_ISR_NR):
--		case X2APIC_MSR(APIC_IRR) ... X2APIC_MSR(APIC_IRR + APIC_ISR_NR):
-+		case X2APIC_MSR(APIC_ISR) ... X2APIC_MSR(APIC_ISR) + APIC_ISR_NR - 1:
-+		case X2APIC_MSR(APIC_TMR) ... X2APIC_MSR(APIC_TMR) + APIC_ISR_NR - 1:
-+		case X2APIC_MSR(APIC_IRR) ... X2APIC_MSR(APIC_IRR) + APIC_ISR_NR - 1:
- 			return false;
- 		default:
- 			return true;
--- 
-2.53.0.851.ga537e3e6e9-goog
+It might also be handy to have a:
 
+#define X2APIC_LAST_MSR(r)	(X2APIC_MSR(x)+APIC_ISR_NR-1)
+
+so that the resulting code is a bit more readable:
+
+	case X2APIC_MSR(APIC_IRR) ... X2APIC_LAST_MSR(APIC_IRR):
+
+Dmytro, if you feel a burning need to respin this, don't let me stop
+you. I can probably just fix this up when it gets applied, or Isaku can
+make those changes and resend it too.
