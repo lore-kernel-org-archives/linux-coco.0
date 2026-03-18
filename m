@@ -1,141 +1,128 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CCA3EF0CF
-	for <linux-coco@lists.linux.dev>; Wed, 18 Mar 2026 19:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B5F326927
+	for <linux-coco@lists.linux.dev>; Wed, 18 Mar 2026 19:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773862981; cv=none; b=PHryEFA00QqEhawx65xogrqmQaPI2tAvwM7aQuRfe+Vuz5kLsi2TvPhEqMORKAFCA5vhXrbH71lRoM993w9uytyetKk3T79wecAVrG6uj5KumgPKlj8jCpAftfnSFNEX+LtD0q53NgUL/q6mcWt/sgaw/iJ/vUh83zIsmGwg6OM=
+	t=1773863847; cv=none; b=UUJ8p27GX0ra3KojpJpsVBEz3XCnbsYGp+h8+bVNXmi7an+OG2o5R/i9B6WNz0FRqJDFkrzvs1rb2uAbXgn1VmaECWbQmlS6hi91HqJud+tAiLQdyNDaNz5xSYe4QFR1zqTCiq78tXWRRwotO8MAxk5yw5uivkyYvqH6dTnfTGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773862981; c=relaxed/simple;
-	bh=gzi3FtDVJpNJOUK9u6hEd7MMLRAZWZY+nhQT7w+JqmM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pAg1GgkBwtXDSZ7kChj8hFLTQpfJgZu3ZhRXacP87UOEfWTifPZqvmRoxXo9o5hystCSc28gg7byXl4gHfkOKnNfP1eVoYawVQvFA9cDtpQ1McBG/HP3lqPzp9qEF/lHdJyptBaVKB2XR/Foc2KZ4GOfD8vEAZj/a9FTZ6pST0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IUrRXTmy; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773863847; c=relaxed/simple;
+	bh=LidL4J9zLPkbYvfBgGkS/sMRcTCfLgpiUPfrnQgIiu8=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=tq8NIBT9MXZZ61vmcqFx2tcm+fsd5Y4qO35z4OY5/AnlmdXO7u4PdoFM5d+7QyEo5gACxQM4iczGZNkm23DXMlueondMFS3n/H6HazqpVvgDvUDmSPq4wLkEK7EAdRi1Onm35TBzqLPMs2NimnXOxnuDVNfeIY2tRtN1T+DPSRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=qdue4iyL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=3GxasUMD; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IUrRXTmy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773862980; x=1805398980;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=gzi3FtDVJpNJOUK9u6hEd7MMLRAZWZY+nhQT7w+JqmM=;
-  b=IUrRXTmyiu6xsimdATAFW9XuWhEbQwTaR++TkDvdR2VbJcsB9I3kC1El
-   +IgzFkd13tzTndHmIkW813K5qAkHWoLv2zWjc0yKw2UV5qsulDB1XmX4h
-   vFvViKDvp0v+ClBL82OOeDePfl+o5ls5u/VgS7G3P3TPawLZpuORECiaJ
-   xzdr93VZM0LuO4tzkU9PSGNxO04r0CM7gX2kEiMHYQaRtCc9zTRi1+Eew
-   oUvowhQyjORsgSRHGIT5w3y9ztycqPPKOWJTnRk4/nQfZ9nayWr2mIwGA
-   2D8X8oThUMh6okJk8tZN2T55ewWGW4gb68PruR8Binlqiqxkr0xZs9Vnc
-   Q==;
-X-CSE-ConnectionGUID: 2vFp1GpgSV6o60PunDJY/w==
-X-CSE-MsgGUID: pr31+dhGQt2s7IkjTA9DdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="86407467"
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
-   d="scan'208";a="86407467"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 12:43:00 -0700
-X-CSE-ConnectionGUID: 4kXyUPGkQ6CHSmx0BmI1CA==
-X-CSE-MsgGUID: F//STjS4RqKgN+SWdlndsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
-   d="scan'208";a="253225871"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.109.14]) ([10.125.109.14])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 12:42:59 -0700
-Message-ID: <94b06319-2be8-4f01-87d1-8989ae1ca85d@intel.com>
-Date: Wed, 18 Mar 2026 12:42:59 -0700
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="qdue4iyL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="3GxasUMD"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id 3E72B1D0012B;
+	Wed, 18 Mar 2026 15:57:23 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Wed, 18 Mar 2026 15:57:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773863843;
+	 x=1773950243; bh=Hv2JDo/h3dfYJP5SOe3RfmBdCEK5P70Y0N/U3cfXu7c=; b=
+	qdue4iyLJH2itNTeoiC6rvqyp+8/f2K2h2OJdsjfCJn3RY2fMbJWXtctt3p48VfQ
+	tROnvLx4ymcHxRDwRF1bb7Sm20SdW3YeYJqJyOym92kmEInghmodAXkM/jye3Fu4
+	p6x/UOJ35i2G8mW0FLNK2UR8BBLBJcANSCFBTDnm89kNV/TqxWbCAU4rFuxTSH99
+	jjb9SDGHNDtTXqjZNNh7yGQnzlzu2ZlZ1ezZ50nXXLnfhsWXJx+PyuFHty1NP927
+	2ZASb9OCeUaATVtOArrDM/ZHwwhprAp6HrNWyqBKGc/AN6+lFZUvZJ0GeImvpLuE
+	Af6IDX1jHD33HtjtwvqafA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773863843; x=
+	1773950243; bh=Hv2JDo/h3dfYJP5SOe3RfmBdCEK5P70Y0N/U3cfXu7c=; b=3
+	GxasUMD3Qu1Cm48Y3fXL6bV47hKG5DAifxsAbyrtr8bASFRhrfD57sXwp9TocQYU
+	KiA4oE8brWQhXqbIpyVLeLJXdbkD+7Fji66y/WcAXBI0o6jJAGXxWavvTWXdttSC
+	2umfu8K2kZgDAjpnimUrEbA7OEr+AUB4bIP0Atdvnt9A49RG1/cgBdUBDAoSSd/D
+	UVzq+dYBvqaP5hc5TG9XwG9n30UlDvUEEkUYja3MsqwSDJ288h+TCDWwxXMZMvD2
+	m7N6kiMJJejburQdLomcnRf3e34Gmpt81g17HM/XFfSDxkZDZUYNiZH6GJ8DkJSU
+	wlN8NZqf9JQR5YvaUO9wg==
+X-ME-Sender: <xms:ogO7abov_C-TYtcFn5jsq57w-jRBTB0Wh0xPYwGkG1Y1qMF6-I8NNA>
+    <xme:ogO7aQdCSCiS24vPYS9DhLNz0hbmcoaA8j3gPIebvOhJXCEJWNdnqRUFnc-fJAQ3_
+    hYxuVR5qkUCfK8WLKebzsiCQtwy64x-0i5K5EtBuGzcAogn5Hot-Ro>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdehtdefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
+    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
+    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudehpdhmohguvgepshhmthhpohhu
+    thdprhgtphhtthhopegtohhlihhnrdhirdhkihhnghesghhmrghilhdrtghomhdprhgtph
+    htthhopeguihhonhhnrghglhgriigvsehgohhoghhlvgdrtghomhdprhgtphhtthhopegt
+    vggurhhitgdrgihinhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepuggrnhdrjhdrfi
+    hilhhlihgrmhhssehinhhtvghlrdgtohhmpdhrtghpthhtoheprghruggssehkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopegrrhhnugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    epvggsihhgghgvrhhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmhhhirhgrmhgr
+    theskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepiihhohhuhihuhhgrnhhgsehkhihlih
+    hnohhsrdgtnh
+X-ME-Proxy: <xmx:ogO7aevMUU2i_g-gDC57m0pzheDluLCZgW6j-dECYEoaBK-_n-taGw>
+    <xmx:ogO7aT7VPVBOivpokpAPz5D1SBE0kYY7qYlbnF4jzGzlJws7V055Rw>
+    <xmx:ogO7aZjv9HFUWqnFGEW9huNyxXbzYbuneZK48kXEc9Kym_LjE6dJTA>
+    <xmx:ogO7aVljPpv9GxIMBC_YYAvVy5IOC8L553sajU3o4pq4tHJj3NFNjg>
+    <xmx:owO7aYBIsb0Kp6qpNAfdL0mMWW0qBlhJJ0K8LLd8myWY3j9Vj9T77TqW>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 3D6C4700065; Wed, 18 Mar 2026 15:57:22 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: TDX: Fix APIC MSR ranges in tdx_has_emulated_msr()
-To: Dmytro Maluka <dmaluka@chromium.org>, kvm@vger.kernel.org,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Isaku Yamahata <isaku.yamahata@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Binbin Wu <binbin.wu@linux.intel.com>,
- "open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)"
- <linux-kernel@vger.kernel.org>,
- "open list:X86 TRUST DOMAIN EXTENSIONS (TDX)" <linux-coco@lists.linux.dev>
-References: <20260318190111.1041924-1-dmaluka@chromium.org>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260318190111.1041924-1-dmaluka@chromium.org>
-Content-Type: text/plain; charset=UTF-8
+X-ThreadId: ArlFyPd34Br3
+Date: Wed, 18 Mar 2026 20:57:01 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Eric Biggers" <ebiggers@kernel.org>, linux-crypto@vger.kernel.org
+Cc: "Arnd Bergmann" <arnd@kernel.org>,
+ "Dan Williams" <dan.j.williams@intel.com>,
+ "Dionna Amalie Glaze" <dionnaglaze@google.com>,
+ "Cedric Xing" <cedric.xing@intel.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "Zi Li" <zi.li@linux.dev>,
+ "Masami Hiramatsu" <mhiramat@kernel.org>,
+ "Lance Yang" <lance.yang@linux.dev>, "Zhou Yuhang" <zhouyuhang@kylinos.cn>,
+ "Colin Ian King" <colin.i.king@gmail.com>,
+ "Ard Biesheuvel" <ardb@kernel.org>, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Message-Id: <dc124ea8-05b8-42d2-93ad-d265e0ecf585@app.fastmail.com>
+In-Reply-To: <20260318164233.19800-1-ebiggers@kernel.org>
+References: <20260318164233.19800-1-ebiggers@kernel.org>
+Subject: Re: [PATCH] sample/tsm-mr: Use SHA-2 library APIs
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-On 3/18/26 12:01, Dmytro Maluka wrote:
-> +		case X2APIC_MSR(APIC_ISR) ... X2APIC_MSR(APIC_ISR) + APIC_ISR_NR - 1:
-> +		case X2APIC_MSR(APIC_TMR) ... X2APIC_MSR(APIC_TMR) + APIC_ISR_NR - 1:
-> +		case X2APIC_MSR(APIC_IRR) ... X2APIC_MSR(APIC_IRR) + APIC_ISR_NR - 1:
+On Wed, Mar 18, 2026, at 17:42, Eric Biggers wrote:
+> Given that tsm_mr_sample has a particular set of algorithms that it
+> wants, just use the library APIs for those algorithms rather than
+> crypto_shash.  This is more straightforward and a bit more efficient.
+>
+> This fixes an issue where this module failed to build due to the kconfig
+> options CRYPTO and CRYPTO_HASH not being selected.  Also, even if it
+> built, crypto_alloc_shash() could fail at runtime due to the needed
+> algorithms not being available.
+>
+> The library functions simply use direct linking.  So if it builds, which
+> it will due to the kconfig options being enabled, they are available.
+>
+> Fixes: f6953f1f9ec4 ("tsm-mr: Add tsm-mr sample code")
+> Fixes: 44a3873df811 ("coco/guest: Remove unneeded selection of CRYPTO")
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> ---
+>
+> I'd like to take this via libcrypto-next, as that is where
+> "coco/guest: Remove unneeded selection of CRYPTO" is.
 
-Thanks for the patch, Dmytro.
+Thanks for fixing this! It is indeed nicer than the fix
+I sent earlier today.
 
-<sigh>
-
-So this code never worked (at least for a big chunk of the ranges.
-Isaku, could you please go try to figure out if there are tests for this
-somewhere, and why this never bit us?
-
-It might also be handy to have a:
-
-#define X2APIC_LAST_MSR(r)	(X2APIC_MSR(x)+APIC_ISR_NR-1)
-
-so that the resulting code is a bit more readable:
-
-	case X2APIC_MSR(APIC_IRR) ... X2APIC_LAST_MSR(APIC_IRR):
-
-Dmytro, if you feel a burning need to respin this, don't let me stop
-you. I can probably just fix this up when it gets applied, or Isaku can
-make those changes and resend it too.
+Acked-by: Arnd Bergmann <arnd@arndb.de>
