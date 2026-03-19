@@ -1,98 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BC02D8387;
-	Thu, 19 Mar 2026 00:00:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71EB28E0F
+	for <linux-coco@lists.linux.dev>; Thu, 19 Mar 2026 01:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773878420; cv=none; b=BXQ+RgsKZPkCA4h8rO7UlnELkg/dr3/BmkBwV3vZQiGg0F+zUYApR0SDc0I0vOu3Er63Uyk71EhHNjAe+4+l69RlVCwLOyIqCcxqCldMcyQ+QV5B/B3XMVLy5336X/V2Cwy3CE4CdwZ8ySBoz9tMPWLPZT0MFTxcpE4F7jRJRg4=
+	t=1773882895; cv=none; b=oU5UH05ULFDFhqlkMQ9Aq263Zdn4uS7pW9sJC7g7hr7rq4rUNCVSjuejB13Tgk71jE3ww1dhuZfEzpW6Gfy8FvydNZNLxoLqNgZKYN0QsOJQoO9Pbt2T+i5M1Rj0sQagiDfaBWqb03KWHuV71kUfHpb+sAV+CeqrVObFvMViQdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773878420; c=relaxed/simple;
-	bh=7rDKEIezJCkg1O+c8sPftbNmz4kUGQQ7YCxFuSCBxVk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UFwmpblzh2J7cObCTLWKbXqOHTcpswa2nZVcd5FRZrlqRtFb3LtyyAOF8kM9quCRkoLnvX79GJwMbd+rgvYZH/5EV/ZP2LSvuM0udFCmQbIwe3QAp7cvm6atUzy9mUMYmHYEWgWRCTwo0Ui3u4nax2D2sc0DPAsQwePh5kelBaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n1bI6lFi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773882895; c=relaxed/simple;
+	bh=zOdYHBeWCMAIDgoUSHr1MvT4bfeCmY8f5H0QH5wzXY4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rBgcwHm6dWU+pzXSw6SO8AAthm9aRPwEYGLPkVFgvyJBT0QtBlBpy9r3SRUYeKUYoFajT1o/pI4co1SkEJOcmptmwIJik92E+KrNNWSzuDZ5No0ubFSzkwRw+xelkSvlyuuPEyXkdIKxTcBmjBJytJC44W8JIOqw+TM4xKO+Leo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jkSGwJ8N; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n1bI6lFi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6917FC19421;
-	Thu, 19 Mar 2026 00:00:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773878420;
-	bh=7rDKEIezJCkg1O+c8sPftbNmz4kUGQQ7YCxFuSCBxVk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=n1bI6lFizaZQNVAeYZfV6+w2RPzzRLFr5V8WT0/jyAHIqkm9ktuJ0FPqhL81Vv1pP
-	 8MSLmisTgKhvaHFsQxEkBwcqy/pj+EZZArVY5ep1IsmzCW8Rq7sBQcyg7dtbKvtrb6
-	 TWWqa5DDZ99xm0+Wgz6BecJTGDdUie+M+6VWI0q1BeErG2jB3j8tpxPz4RL1N9ivC8
-	 6K999o+AUDIm3xeR9DAgMCkSFUnbCb7UgvmxvOA4SLz1iu+BJesVz6eAWR7MDMdyRt
-	 S4kY8F0dNrZ+B7E0iER7fKeikt5d0+dIfFr0vALuJsKeKAuYiIWfU/5btM8JRg5dJh
-	 QJ4vc+j5Zh6tg==
-Date: Wed, 18 Mar 2026 17:00:14 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
- <gregkh@linuxfoundation.org>, <aik@amd.com>, <aneesh.kumar@kernel.org>,
- <yilun.xu@linux.intel.com>, <bhelgaas@google.com>, <alistair23@gmail.com>,
- <lukas@wunner.de>, <jgg@nvidia.com>, Donald Hunter
- <donald.hunter@gmail.com>
-Subject: Re: [PATCH v2 08/19] PCI/TSM: Add "evidence" support
-Message-ID: <20260318170014.6650d2bf@kernel.org>
-In-Reply-To: <69b8b234177ea_452b1001a@dwillia2-mobl4.notmuch>
-References: <20260303000207.1836586-1-dan.j.williams@intel.com>
-	<20260303000207.1836586-9-dan.j.williams@intel.com>
-	<20260314111245.76d18d73@kernel.org>
-	<69b8b234177ea_452b1001a@dwillia2-mobl4.notmuch>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jkSGwJ8N"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773882894; x=1805418894;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=zOdYHBeWCMAIDgoUSHr1MvT4bfeCmY8f5H0QH5wzXY4=;
+  b=jkSGwJ8N45hZN+HoQozhS930o/x4H9/0ZKG2tD+lWpk7E1G91UJxyTUQ
+   JFYlDALiKmptrSQPVEO4LkFyP7uULRTZ4i3bZiFPtPjZ1oHQk1u4UuBw5
+   osgnu/McxfnDtS7/NuWdLF0Wx7wbh0dcFT4XnegjVe85EonKZ3vLqoKO3
+   xHvQl3GEz1ZNr7GtapdTkvMl5KfTdbwIRXHQCRyjlkbBp05MPx5CpV0jn
+   WqrzMq/tAl2wj6r1rczLBvskqbCn50XOJUheuToi+DcTzDwuGR5Ga1DxG
+   jHwOkHecyWl2/zixDB5DgWN4TecSDwP8zpei4pwq5w+FTxBeM9CyN1X8F
+   Q==;
+X-CSE-ConnectionGUID: gqXhll2DRLalTabGtL26bg==
+X-CSE-MsgGUID: Tm8PyMXoT6e7oCpfPw+BHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="74647245"
+X-IronPort-AV: E=Sophos;i="6.23,128,1770624000"; 
+   d="scan'208";a="74647245"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 18:14:53 -0700
+X-CSE-ConnectionGUID: 2RlpzaldS0SAnKNiaZCZhQ==
+X-CSE-MsgGUID: BLP0ee8aS4imVk867dC4Zg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,128,1770624000"; 
+   d="scan'208";a="226944021"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.240.207]) ([10.124.240.207])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 18:14:49 -0700
+Message-ID: <cb99e44c-8bc9-4bab-b485-9f63a4d0b262@linux.intel.com>
+Date: Thu, 19 Mar 2026 09:14:46 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: TDX: Fix APIC MSR ranges in tdx_has_emulated_msr()
+To: Dave Hansen <dave.hansen@intel.com>, Dmytro Maluka
+ <dmaluka@chromium.org>, kvm@vger.kernel.org,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Isaku Yamahata <isaku.yamahata@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ "open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)"
+ <linux-kernel@vger.kernel.org>,
+ "open list:X86 TRUST DOMAIN EXTENSIONS (TDX)" <linux-coco@lists.linux.dev>
+References: <20260318190111.1041924-1-dmaluka@chromium.org>
+ <94b06319-2be8-4f01-87d1-8989ae1ca85d@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <94b06319-2be8-4f01-87d1-8989ae1ca85d@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Mon, 16 Mar 2026 18:45:24 -0700 Dan Williams wrote:
-> Jakub Kicinski wrote:
-> > On Mon,  2 Mar 2026 16:01:56 -0800 Dan Williams wrote:  
-> > > The implementation adheres to the guideline from:
-> > > Documentation/userspace-api/netlink/genetlink-legacy.rst
-> > > 
-> > >     New Netlink families should never respond to a DO operation with
-> > >     multiple replies, with ``NLM_F_MULTI`` set. Use a filtered dump
-> > >     instead.  
-> > 
-> > My understanding of F_MULTI is that deserializer is supposed to
-> > continue deserializing into current object. IOW if we have:
-> > 
-> > struct does_this {
-> > 	int really;
-> > 	int have_to;
-> > 	int be_netlink;
-> > };  
-> 
-> Heh, sensing a subtle message here...
 
-One learns to optimize for conserving one's own attention wherever
-possible :>
 
-> > The main strength of Netlink is "do" commands with multiple optional
-> > attrs.  
+On 3/19/2026 3:42 AM, Dave Hansen wrote:
+> On 3/18/26 12:01, Dmytro Maluka wrote:
+>> +		case X2APIC_MSR(APIC_ISR) ... X2APIC_MSR(APIC_ISR) + APIC_ISR_NR - 1:
+>> +		case X2APIC_MSR(APIC_TMR) ... X2APIC_MSR(APIC_TMR) + APIC_ISR_NR - 1:
+>> +		case X2APIC_MSR(APIC_IRR) ... X2APIC_MSR(APIC_IRR) + APIC_ISR_NR - 1:
 > 
-> Yes, that is attractive and saves a pile of bug prone ioctl handling.
+> Thanks for the patch, Dmytro.
 > 
-> The gap I need to fill first though is a uAPI that allows for large
-> blobs to be fetched after being regenerated / reformatted besed on some
-> input attributes.
+> <sigh>
 > 
-> "Multi message netlink attributes" while inventive, feels less awkward
-> and more future proof than a sysfs binary attribute scheme to do the
-> same.
+> So this code never worked (at least for a big chunk of the ranges.
+> Isaku, could you please go try to figure out if there are tests for this
+> somewhere, and why this never bit us?
 
-Alright, so to make this more Netlink-y you can either:
- - delete the F_MULTI and replicate other attrs in each message and 
-   add an offset attr; this will make each message in the dump more
-   standalone. 
- - keep the F_MULTI but object_val has to be a multi-attr, and then 
-   we have to teach YNL to correctly append the attrs.
+The bug doesn't cause problems for TDs because:
+- These x2apic MSRs (TASKPRI, PROCPRI, EOI, ISRx, TMRx, IRRx) are virtualized by CPU,
+  when a TD accesses these MSRs, it doesn't cause #VE, thus no TDVMCALL from the TD to
+  request the emulation of these MSRs.
+- The bug make the "false" range of APIC MSRs smaller, so it doesn't impact the result
+  for the rest of the APIC MSRs.
 
-Former is definitely less work. Latter could end up being cleaner
-but there are some unknowns so hard to tell for sure; more plumbing.
+The bug could be triggered if a TD issues a TDVMCALL directly to request the
+read/write operations for these x2apic MSRs, but a sane TD will not do it. 
+
+Currently, we don't have dedicated KVM selftests code to call TDVMCALL directly to request
+the emulation for these x2apic MSRs.
+
+> 
+> It might also be handy to have a:
+> 
+> #define X2APIC_LAST_MSR(r)	(X2APIC_MSR(x)+APIC_ISR_NR-1)
+> 
+> so that the resulting code is a bit more readable:
+> 
+> 	case X2APIC_MSR(APIC_IRR) ... X2APIC_LAST_MSR(APIC_IRR):
+> 
+> Dmytro, if you feel a burning need to respin this, don't let me stop
+> you. I can probably just fix this up when it gets applied, or Isaku can
+> make those changes and resend it too.
+> 
+
