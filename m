@@ -1,67 +1,67 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AF83D3CFC
-	for <linux-coco@lists.linux.dev>; Thu, 19 Mar 2026 12:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540AF3D4134;
+	Thu, 19 Mar 2026 13:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773925142; cv=none; b=BDOaArkvK+Wi00IiKlomsNLWgnJU4B2TktDbTZO0Eb8gnRe9a5J5vY3vnwnQpE17z+CIosOHqUeVFe4RpiLKDRb05v8eMEFgJYALcXOuUHPoZmLjlZHc0EsvKYMuWri3H1AYRgVMS32jdko8VUUKnA7zGqintrhDfbcd1URUv80=
+	t=1773926107; cv=none; b=Fv221N1OnZdE8vmaV4VRD7XULC5gScMmlOWzEabA0i/JmA1K+SKs/pgJRmr+PviVmdyTJH6XuYqF6N4M9di3Og4kKVs1VpdR2JNVTZudUyG8WMXhNaXNlU/hB93H7UhNH5UKagA4tQb+uCMLDvDKCqmvm2luYSUY8YBDsKz5Vws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773925142; c=relaxed/simple;
-	bh=Y9qsyfkl3sYMNjldvTWvMtzLcpWYmAQhkmy29ttSrBk=;
+	s=arc-20240116; t=1773926107; c=relaxed/simple;
+	bh=5if652ifix7m4r6JjLyYoN8p4oc9k9AQF9kES9+XFR0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dzArhlY/QcU63tfZ3i7f2aSrg9FPuRzDuUj6oKyKFwONx2117ubxjdLtBq8wd4rnBcFV2eQrRkizHGIm3NHYtDfrpowTPvXX+5pIlj6KLkeDAKenVDuMjCRLjp9suIYGL7ytvPVqYDPEZ8xZRDzCNzeBNKOe1aMByDvQyydJfus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zc63gJDz; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=cidBMaNOUfHLkF5EHBG9ZTRd43aXbCJeuZdvXvlU1IpF5Uz+samRJyWrv5YJ7yPM6cRex29xYqy0cepVcpLhHovxWp3oD0MuQ0vM/21V684DKGDzepFpG1F7XMHqDfDQUXoBEgfK6WG5E05tV6SsOoP70iSFgs6b/qj2quK4roU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XouKpJly; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zc63gJDz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F19C4AF09;
-	Thu, 19 Mar 2026 12:59:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XouKpJly"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AE2C19424;
+	Thu, 19 Mar 2026 13:15:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773925142;
-	bh=Y9qsyfkl3sYMNjldvTWvMtzLcpWYmAQhkmy29ttSrBk=;
+	s=k20201202; t=1773926107;
+	bh=5if652ifix7m4r6JjLyYoN8p4oc9k9AQF9kES9+XFR0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zc63gJDzU1vSeTbkHj2WFr/ot2EDkVNWE9ZdkuqhrdR9X5PKpx3NGLCAjVtbfNHND
-	 0g0sM423swDuKnNnSgwpWf1cOL5ywAIzLTMGFvWWmoiqGgACoJ3hJ2mnSptNfSLjil
-	 ptpzsMchBBqsWn91b4ipmYjEECEGzx+bsmvTu+DOc+K3BmMVWzMqJWMCqOLWuQS2ca
-	 NFM+zH1x7lwpcBE4iqRZ32XEb73qSOe47N4qd1l1OomSVXz50oWDW1AA16q52bq068
-	 QvGjFOivY2yx33hhmPLqALMFJVNAXIJGge4BjItBkzRkZuZHyMu9WrnTIo32b/giFM
-	 9rEMT4kkfuZ6w==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 423C8F40082;
-	Thu, 19 Mar 2026 08:58:59 -0400 (EDT)
+	b=XouKpJlybgb2gbfvsKBMNz48jiY71rjYPAdlCf/iIG/o3x4077m5y5TDQCKjyKSV/
+	 YF/XehWNtd0y5Qvtj67tOZP9o2VLiVFl+W23rIEL8DyQ19n5Q9rJdqw/PImf0eBJ7j
+	 9qE2fRbJl35rOQGTP3c3rnGYlMrIsTBw+aVC04sDeo6eXSTKRCtttAnGtfWZYG6TPl
+	 dHrDTRKzGObGDbIW0DVfV1aOTt/6x7z3vfmfr5x3J97mxqWR3dTWJQFLcuFamO0J6u
+	 lR0HsKtj4oB+WuDhDnZumI0Y6oRk/4CFHvsw0MN/5W9w2KtVTwo8FRqPjEc259tDQ8
+	 8okOe1MqWqyoA==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 533C7F4006E;
+	Thu, 19 Mar 2026 09:15:05 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 19 Mar 2026 08:58:59 -0400
-X-ME-Sender: <xms:E_O7aZVd61gAuRmejkGDiDLCjv9Xm7CAYxhbuiRBQj62IzdvqEyRmw>
-    <xme:E_O7aaTC7rIp1A4vYDwXNFIx7CXR8-I8VmRHdjIFv74N2PEqOFf06rdj5TAeJ_1_9
-    6-RatSWfiiNsE59JLawPyBXyu8MWkDZf4JUPjvuvw6ZKWRle7D_jxA>
-X-ME-Received: <xmr:E_O7aQefr4g1a_feWZ-bJe-I_zOh9-i_YUner3mqsef9g5i9CxvDmlczHJeD6Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdejtdejucetufdoteggodetrf
+  by phl-compute-11.internal (MEProxy); Thu, 19 Mar 2026 09:15:05 -0400
+X-ME-Sender: <xms:2fa7aQA-chx6RUCCqQkdPPYpElEWWRla5DDu8MKs9NuY3b2-JzU7tw>
+    <xme:2fa7aTNyoM0E2RvXHeEah9QfjJJjuLWAJjRf9UxcM78N9vK4omM243RQjl_502F9p
+    ceC1MvwTiPDLxvdpXekfZLkU17ZAP8qmUMMshX6ikf6OSEm0Tft-XkC>
+X-ME-Received: <xmr:2fa7aerY5WMjGVKCFa8uBlouzicluByyZ7xpo1tmudfZ3_StWdVipl8kz8uoLQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdejuddtucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohephedtpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegthhgrohdrghgrohesihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqd
-    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhig
-    qdgtohgtoheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehkvhhmsehvgh
-    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghinhgsihhnrdifuheslhhinhhu
-    gidrihhnthgvlhdrtghomhdprhgtphhtthhopegurghnrdhjrdifihhllhhirghmshesih
-    hnthgvlhdrtghomhdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhi
-    nhhtvghlrdgtohhmpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
-    dprhgtphhtthhopehkrghirdhhuhgrnhhgsehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:E_O7acXR6woc04DX41OVa-vtO-7jVv0XH7sHrsl-EvQiy4KE3yXjmA>
-    <xmx:E_O7aWjYzc48pgwLOl1jpSld7qedhFpugIaZh7xPA93j7_Y-PucxRw>
-    <xmx:E_O7aaGfN7UV5WFlg0FNCJYvRc_7XD2PMuFC_bT0xzKsmcSQn0cmzw>
-    <xmx:E_O7acLBoduDr3A64QlXQ13LnALBJlyO1il7G_fRgi_WrjrIdtlsrg>
-    <xmx:E_O7aSsMFFlDEZ5mNE5Q4-yGq5Z8as6Ix9znylvwJ4nB53aezuNJVqfy>
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefmihhrhihl
+    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeeludettdeigfefhffhhfelveeludeuleduvefhgefgueeitedtleffudegfffg
+    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
+    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
+    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
+    drnhgrmhgvpdhnsggprhgtphhtthhopeehtddpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtoheptghhrghordhgrghosehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugi
+    dqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
+    gidqtghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepkhhvmhesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegsihhnsghinhdrfihusehlihhn
+    uhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepuggrnhdrjhdrfihilhhlihgrmhhsse
+    hinhhtvghlrdgtohhmpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnheslhhinhhugidr
+    ihhnthgvlhdrtghomhdprhgtphhtthhopehirhgrrdifvghinhihsehinhhtvghlrdgtoh
+    hmpdhrtghpthhtohepkhgrihdrhhhurghnghesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:2fa7aWxpSFCPc1VeySjcvd1EynLLdptXynQkfxZa_iDBx9SsGLmHKQ>
+    <xmx:2fa7aYN0bie4tBPAaYUGtZuknA0_E-Ol4f_jMdX4Td2DM8cSM2eLZw>
+    <xmx:2fa7aSBZvhAxu-U2gfkLwqkBCdIURwMGdRFEjFp-16zEVSHd-gqMew>
+    <xmx:2fa7adXWugHh-mAvqFo9EPxJeAKN50WoNI6qpCcFhbv0ZOlcNoG_SA>
+    <xmx:2fa7aUIXNQKLiwHE1h_VDD02o4sl8sJOATeEjDdkSLbH8WNuaaNES-fG>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 19 Mar 2026 08:58:58 -0400 (EDT)
-Date: Thu, 19 Mar 2026 12:58:38 +0000
+ 19 Mar 2026 09:15:04 -0400 (EDT)
+Date: Thu, 19 Mar 2026 13:15:02 +0000
 From: Kiryl Shutsemau <kas@kernel.org>
 To: Chao Gao <chao.gao@intel.com>
 Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
@@ -73,58 +73,87 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	yilun.xu@linux.intel.com, Thomas Gleixner <tglx@kernel.org>, 
 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v5 08/22] x86/virt/seamldr: Allocate and populate a
- module update request
-Message-ID: <abvy8dyvtjfDqYQC@thinkstation>
+Subject: Re: [PATCH v5 09/22] x86/virt/seamldr: Introduce skeleton for TDX
+ module updates
+Message-ID: <abv2PWj4jBwm6zKO@thinkstation>
 References: <20260315135920.354657-1-chao.gao@intel.com>
- <20260315135920.354657-9-chao.gao@intel.com>
- <abkvOYQIi2RvEYh8@thinkstation>
- <abpnWkENgaWoofZV@intel.com>
- <abqFJZo632DAFsl_@thinkstation>
- <abukxFDD3g0sKYXP@intel.com>
+ <20260315135920.354657-10-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <abukxFDD3g0sKYXP@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260315135920.354657-10-chao.gao@intel.com>
 
-On Thu, Mar 19, 2026 at 03:24:52PM +0800, Chao Gao wrote:
-> On Wed, Mar 18, 2026 at 10:58:44AM +0000, Kiryl Shutsemau wrote:
-> >On Wed, Mar 18, 2026 at 04:50:34PM +0800, Chao Gao wrote:
-> >> >> +	ptr = sig;
-> >> >> +	for (i = 0; i < sig_size / SZ_4K; i++) {
-> >> >> +		/*
-> >> >> +		 * Don't assume @sig is page-aligned although it is 4KB-aligned.
-> >> >> +		 * Always add the in-page offset to get the physical address.
-> >> >> +		 */
-> >> >
-> >> >I don't follow this. If @sig is 4k aligned in VA, it is page aligned.
-> >> 
-> >> Dan's concern was that PAGE_SIZE is not guaranteed to be 4096.
-> >> 
-> >> I agree that PAGE_SIZE is 4K on x86 today. But to address that concern, I saw
-> >> two options:
-> >> 
-> >>   1. Add WARN_ON_ONCE(PAGE_SIZE != SZ_4K), or
-> >>   2. Handle it as in the code above.
-> >> 
-> >> I didn't find existing code using option 1 in x86, so I chose option 2.
-> >
-> >Please, make it clear in the comment that you are talking about PAGE_SIZE != SZ_4K.
+On Sun, Mar 15, 2026 at 06:58:29AM -0700, Chao Gao wrote:
+> TDX module updates require careful synchronization with other TDX
+> operations. The requirements are (#1/#2 reflect current behavior that
+> must be preserved):
 > 
-> Sure. How about:
+> 1. SEAMCALLs need to be callable from both process and IRQ contexts.
+> 2. SEAMCALLs need to be able to run concurrently across CPUs
+> 3. During updates, only update-related SEAMCALLs are permitted; all
+>    other SEAMCALLs shouldn't be called.
+> 4. During updates, all online CPUs must participate in the update work.
 > 
-> 		/*
-> 		 * @sig is 4KB-aligned, but that does not imply PAGE_SIZE
-> 		 * alignment when PAGE_SIZE != SZ_4K. Always include the
-> 		 * in-page offset.
-> 		 */
+> No single lock primitive satisfies all requirements. For instance,
+> rwlock_t handles #1/#2 but fails #4: CPUs spinning with IRQs disabled
+> cannot be directed to perform update work.
+> 
+> Use stop_machine() as it is the only well-understood mechanism that can
+> meet all requirements.
+> 
+> And TDX module updates consist of several steps (See Intel® Trust Domain
+> Extensions (Intel® TDX) Module Base Architecture Specification, Revision
+> 348549-007, Chapter 4.5 "TD-Preserving TDX module Update"). Ordering
+> requirements between steps mandate lockstep synchronization across all
+> CPUs.
+> 
+> multi_cpu_stop() is a good example of performing a multi-step task in
+> lockstep. But it doesn't synchronize steps within the callback function
+> it takes. So, implement one based on its pattern to establish the
+> skeleton for TDX module updates. Specifically, add a global state
+> machine where each state represents a step in the update flow. The state
+> advances only after all CPUs acknowledge completing their work in the
+> current state. This acknowledgment mechanism is what ensures lockstep
+> execution.
+> 
+> Potential alternative to stop_machine()
+> =======================================
+> An alternative approach is to lock all KVM entry points and kick all
+> vCPUs. Here, KVM entry points refer to KVM VM/vCPU ioctl entry points,
+> implemented in KVM common code (virt/kvm). Adding a locking mechanism
+> there would affect all architectures KVM supports. And to lock only TDX
+> vCPUs, new logic would be needed to identify TDX vCPUs, which the KVM
+> common code currently lacks. This would add significant complexity and
+> maintenance overhead to KVM for this TDX-specific use case.
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 
-Ack.
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+
+One question below.
+
+> +static struct {
+> +	enum module_update_state state;
+> +	int thread_ack;
+> +	/*
+> +	 * Protect update_data. Raw spinlock as it will be acquired from
+> +	 * interrupt-disabled contexts.
+> +	 */
+> +	raw_spinlock_t lock;
+> +} update_data = {
+> +	.lock = __RAW_SPIN_LOCK_UNLOCKED(update_data.lock)
+> +};
+
+multi_stop_cpu() used atomic_t for thread_ack insead of spinlock.
+Any particular reason you took different direction?
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
