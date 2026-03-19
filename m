@@ -1,67 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F4D1459F6;
-	Thu, 19 Mar 2026 13:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93DB2D3A7B
+	for <linux-coco@lists.linux.dev>; Thu, 19 Mar 2026 14:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773927796; cv=none; b=VMg1hdqZeQFRpfIOHT89aLMcWRLC7b601OHVifExGV6mss+3Of6GWEaVS9iDTifAwQ3kTDyB3WenLJcl15oZKmFECo+scK3w8Uj6aQ43sXMhwZ+tx55egwMybqlL2BchtPPSyj8BuEtMgRKUD8UGcSdc+rE2XV5InC1SCQKmHVo=
+	t=1773928812; cv=none; b=j4qdZ0glbnxIn5KjyRhmwNs4faE7y4ljHlGQu/uLFzlCxzYiBhmOH17pHkwtwxnjb4vbk3aLHGm/5WnM9Gdvo13KXMThHRVydwPF8Nvrl29DjGMm5diPe9oJegXMW6Btgd9lRJc6yUVtcTgxRm1+rcn3AkrQguX5zYda3d/51KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773927796; c=relaxed/simple;
-	bh=yP3RZToQo4cbnbFuGrCYtRZiwEUU1IeskM85/sIfISw=;
+	s=arc-20240116; t=1773928812; c=relaxed/simple;
+	bh=ptqasTbvLk6qAg4r3+mXURAX+L7sHXZC7KS9ks6RaOI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tg0BMisieeQrT8vtupI5CsHyX8h1UMBwUPIEa8wSCaWwDw6GN7i6kSrRcuiBZpzKAdf6/6/if6QK4SPrL7OBU1yxbew6BNXyXDS2T/KZe4OEAvDpOLJxtDj43VI7biTlM36cQ+Mjlbd0ImJGTsxiUT3tnLYZQpsqqDGyj6vfQtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uU18eSqg; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=no7gnTJoQPhy0e0ZhEVqL9C4TJiEsAVlMbPj7eKPsblA80l6uZ0r3Fyawh+oKn39LPyKr2z1Na4Gohhijw54jLUKmCEq93OXXhwsjWQE4aoUxoZK8D+gt31eQ/J5TZ//JzS/V+AeQToS+jm8XdnISDRNuxkocjeI577KUHqqsV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YLPVcKu+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uU18eSqg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1AAC19424;
-	Thu, 19 Mar 2026 13:43:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YLPVcKu+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3B4C2BCAF;
+	Thu, 19 Mar 2026 14:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773927796;
-	bh=yP3RZToQo4cbnbFuGrCYtRZiwEUU1IeskM85/sIfISw=;
+	s=k20201202; t=1773928812;
+	bh=ptqasTbvLk6qAg4r3+mXURAX+L7sHXZC7KS9ks6RaOI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uU18eSqgSvwhnfI7YjU8jPz2wisQpjSLUgHZ3EBr5aRqilr3QTd+MgT60y+v8T4Ac
-	 iw+U9qPnjIQAKYkchSBGS5tCwmSIUWhYIzUtjtnonUMFb+FdLRXiaKb1Z2BKJtQuPj
-	 eRPXVbOKQfTcnSNFhOtBgUF7bPu0oy5e4LtXwKnCriXdIBVmME+QWu2du/PGV3hMU9
-	 PWg0V3tNiYQo3BYxLTIU/TJsrC9Kagq7Mojd62Ou5e4pajZ2HG+Jy+jATbEFRNihll
-	 HY0iFV5sSZYV6MpddEMq4OC0TQHmljRaNKGmehsUqTA6L/ATmhFfQmDvZZAhZiw76v
-	 2TcHt6hGYpBnw==
+	b=YLPVcKu+QBzn9tsaBjk4dWBc79mzCBrA9w0zpn5X5BRE/8vTOD9Z9fyrEmpKeE8CQ
+	 wPBzK9PnQY5SDcUtKUr8L9r5u7ENAkofmV3YH4esJGt4bAbLm+izHJZYPm/1pfDg8h
+	 3Je9u0iGnEZwjh7fzSAJqRWYJY25uRxivXh5BkyDs1HMpYj9GW4gRaDtx8YYpsbMjm
+	 /0WoufNsl6t8NieUA0HyxqqBF1QONigVsjMVEgxJ5tSOVeUShaJ8xqh0FBiBWSb8i5
+	 PwYiP2S2VEVlKXw5/9qX3jSkcBLwxN+nhJwzLdJvqfjucZFUi2kxxlzNMvVC01b70e
+	 z4oNIBfGDFOKA==
 Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 498C6F4006B;
-	Thu, 19 Mar 2026 09:43:14 -0400 (EDT)
+	by mailfauth.phl.internal (Postfix) with ESMTP id 1F1E6F40076;
+	Thu, 19 Mar 2026 10:00:09 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Thu, 19 Mar 2026 09:43:14 -0400
-X-ME-Sender: <xms:cv27aZr87o1Cv3uR1cHFFNxTCaKNUwS2kDJIiekoo1qh2bEvrXxJbg>
-    <xme:cv27acX183RxdA0aFhE0ZV5SdhDUb4QiJRHsy8H4L7Ua2Pv6DlJUfKVAGNbGre-lC
-    7jC3Kae4JMMhEYTaQ6Srg3cEILkAWh7s0Nhw0XG2Y3d7GhOv_Yl3_E>
-X-ME-Received: <xmr:cv27aRQKQpFnIxXb8LR_pzKZv4yb9wR7_mXnbDTxTe5zRNcqk_4HBWxkkkjT6Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdejudeiucetufdoteggodetrf
+  by phl-compute-06.internal (MEProxy); Thu, 19 Mar 2026 10:00:10 -0400
+X-ME-Sender: <xms:aQG8afSLcv9LH1-7DCsaukaeRvnKU5FhaOH4jco1oydKVbenXwwmAQ>
+    <xme:aQG8aRfbui8KE1tM6hH8dVPZYBCrD1TyyCn5OcYTzWinDQsgwaGPBbHxKomBQVWMQ
+    ZJ4wsvtuz7tACqTMjx-AF80SJ0EPBW5IR26YTHKngm2DEVk9o0p2mM>
+X-ME-Received: <xmr:aQG8af5ZkU2Il8H_4xYgCalyuq7PGLVXwIjU18Z_RPdyr7XEDrDd_2fD92x01A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdejudelucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
     ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohephedtpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegthhgrohdrghgrohesihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqd
-    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhig
-    qdgtohgtoheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehkvhhmsehvgh
-    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghinhgsihhnrdifuheslhhinhhu
-    gidrihhnthgvlhdrtghomhdprhgtphhtthhopegurghnrdhjrdifihhllhhirghmshesih
-    hnthgvlhdrtghomhdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhi
-    nhhtvghlrdgtohhmpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
-    dprhgtphhtthhopehkrghirdhhuhgrnhhgsehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:cv27aU4UbTPsaa2072waZ7C6bQH-h7h4ZQmAR6GxmOnWZad3Msr0jg>
-    <xmx:cv27ab1C6lN4wu8GUCHFjyLb9qIgpmqo_7qeK6t-RDPa2wq5Lk270Q>
-    <xmx:cv27adJDNaYUu3jWvoydN6ca0_4AtYwu8Zj-KTCvmLXGNpUBsJuOyQ>
-    <xmx:cv27aZ-wUDSNYwYdyXOh9gP_ghoN5MJI04C_cYw9h402mMcrhJTPGg>
-    <xmx:cv27aURO5h-Xv1z-eWaOt66pH4yt1WuQ3wOjr2HqMUnKRxN-saB4mcxu>
+    hrnhepffffkeegffejgfekvdejgeegtddtleejkefhhfduieduhfeigfduuefghfehffdu
+    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkh
+    gvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeh
+    tddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhrghordhgrghosehinhhtvg
+    hlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqtghotghosehlihhsthhsrdhlihhnuh
+    igrdguvghvpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopegsihhnsghinhdrfihusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpth
+    htohepuggrnhdrjhdrfihilhhlihgrmhhssehinhhtvghlrdgtohhmpdhrtghpthhtohep
+    uggrvhgvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhope
+    hirhgrrdifvghinhihsehinhhtvghlrdgtohhmpdhrtghpthhtohepkhgrihdrhhhurghn
+    ghesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:aQG8afBWtjofsC4CntPMobFwuAuqv6tJDv8SsK7a2K0ftiI4aOAM2A>
+    <xmx:aQG8abctUSmQrcbfCOLM2dWVE_G9tSlc4F-pJcIfvhtTss0b3nILTQ>
+    <xmx:aQG8aUTsm2SywBI4-a-H5RAEFgsofOqJdwJma1xBoc-ywoKb9ui6Yw>
+    <xmx:aQG8aSnVdKbYCVRg8yS_Fxy5rfA4m_mUY8OjrOup2_8WSRNPZcxP-g>
+    <xmx:aQG8aQbZVY3Z2Trc7kVzCy1ubo9iQNJb4j37D_w7id75gxZCjAgCYSrk>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 19 Mar 2026 09:43:11 -0400 (EDT)
-Date: Thu, 19 Mar 2026 13:43:07 +0000
+ 19 Mar 2026 10:00:06 -0400 (EDT)
+Date: Thu, 19 Mar 2026 14:00:00 +0000
 From: Kiryl Shutsemau <kas@kernel.org>
 To: Chao Gao <chao.gao@intel.com>
 Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
@@ -73,11 +74,11 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	yilun.xu@linux.intel.com, Thomas Gleixner <tglx@kernel.org>, 
 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v5 16/22] x86/virt/tdx: Update tdx_sysinfo and check
- features post-update
-Message-ID: <abv9V8XE957bNGbi@thinkstation>
+Subject: Re: [PATCH v5 17/22] x86/virt/tdx: Avoid updates during
+ update-sensitive operations
+Message-ID: <abwAmw_JfpWScKGO@thinkstation>
 References: <20260315135920.354657-1-chao.gao@intel.com>
- <20260315135920.354657-17-chao.gao@intel.com>
+ <20260315135920.354657-18-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -86,34 +87,47 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260315135920.354657-17-chao.gao@intel.com>
+In-Reply-To: <20260315135920.354657-18-chao.gao@intel.com>
 
-On Sun, Mar 15, 2026 at 06:58:36AM -0700, Chao Gao wrote:
-> tdx_sysinfo contains all metadata of the active TDX module, including
-> versions, supported features, and TDMR/TDCS/TDVPS information etc. These
-> values may change over updates. Blindly refreshing the entire tdx_sysinfo
-> could disrupt running software, as it may subtly rely on the previous state
-> unless proven otherwise.
-> 
-> Adopt a conservative approach, like microcode updates, by only refreshing
-> version information that does not affect functionality, while ignoring
-> all other changes. This is acceptable as new modules are required to
-> maintain backward compatibility.
-> 
-> Any updates to metadata beyond versions should be justified and reviewed on
-> a case-by-case basis.
-> 
-> Note that preallocating a tdx_sys_info buffer before updates is to avoid
-> having to handle -ENOMEM when updating tdx_sysinfo after a successful
-> update.
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-> Reviewed-by: Kai Huang <kai.huang@intel.com>
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+On Sun, Mar 15, 2026 at 06:58:37AM -0700, Chao Gao wrote:
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index b3a7301e77c6..4c4f7acd4044 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -26,11 +26,18 @@
+>  #define TDX_SEAMCALL_GP			(TDX_SW_ERROR | X86_TRAP_GP)
+>  #define TDX_SEAMCALL_UD			(TDX_SW_ERROR | X86_TRAP_UD)
+>  
+> +#define TDX_SEAMCALL_STATUS_MASK		0xFFFFFFFF00000000ULL
+> +
+>  /*
+>   * TDX module SEAMCALL leaf function error codes
+>   */
+> -#define TDX_SUCCESS		0ULL
+> -#define TDX_RND_NO_ENTROPY	0x8000020300000000ULL
+> +#define TDX_SUCCESS			0ULL
+> +#define TDX_RND_NO_ENTROPY		0x8000020300000000ULL
+> +#define TDX_UPDATE_COMPAT_SENSITIVE	0x8000051200000000ULL
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+This competes with other patchset[1].
+
+[1] https://lore.kernel.org/all/20260307010358.819645-1-rick.p.edgecombe@intel.com
+
+> @@ -1189,9 +1192,21 @@ int tdx_module_shutdown(void)
+>  	 * modules as new modules likely have higher handoff version.
+>  	 */
+>  	args.rcx = tdx_sysinfo.handoff.module_hv;
+> -	ret = seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
+> -	if (ret)
+> -		return ret;
+> +
+> +	if (tdx_supports_update_compatibility(&tdx_sysinfo))
+> +		args.rcx |= TDX_SYS_SHUTDOWN_AVOID_COMPAT_SENSITIVE;
+
+Hm. So what happens if the module doesn't support it? We just ignore
+problem?
+
+Maybe we should just block updates on such modules?
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
