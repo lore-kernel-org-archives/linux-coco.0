@@ -1,50 +1,33 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE8A21423C
-	for <linux-coco@lists.linux.dev>; Thu, 19 Mar 2026 03:20:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A082D248B;
+	Thu, 19 Mar 2026 06:05:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773890457; cv=none; b=EXhOWfA6DlF77hA7nHGf14m73mI71+xrvY38JZebK3pZkxqqXY/fVNXwo/jxg5wBzbOZOxmWYcF+qPFT2hMBtf9anI9eDwzJtcKf4/J8D1wuubGfM4z9mhp717xSvNubZ8tnY7mOYo1aTY3iZGDDaLHwqt9m7607GimuemP+SeE=
+	t=1773900316; cv=none; b=P0d6i8OZun7WfhL9U1nzhE2LfLSHZdnlnK2nhievO9AK4ih6RwO9n8VsnPOYkJ5wUgb9vRIJLO8xs6MXtyPhAtBxeUZRu3Fs1DXm323ans35c716eiW3RwwNPyMCnmCtispVzrIhQUp2zpTsRmUNHWYLscXWrI4tu/ba42xFRHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773890457; c=relaxed/simple;
-	bh=Y90Esd47kwaRCBXkEl+fwzGkBOvFJDkib2fuq4NRaoE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KOfXwOu/nmxqBua7XQB2q1YXlTJG2FWDGq63TiXNurvGxn9EE6u14gGqoNsQXR8UjqcdF1YOrftrbDPribssiSQbK5oQQ081tllhq+JThtAk50CWAQbj0bVo42D2iIu1Oy7OGsh32s8a1M5LfrKvQrz0ylcJOBtEODxByG8WmhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Qehd6MCB; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773900316; c=relaxed/simple;
+	bh=YSuWgb/bZv40t/PkTFpxAbYeBoEA1FokMoyj2hWvVcM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=XDD0KNCCKRBzzvZCKv6eNoKrPQIHm8ov+NF4iRtGpXwKysxZpJaS1+o5uQ6O8QJNTDuNwqR3Pn+XbH0/Xt9B2TW7+zdPYVhUKKU21091BCP+SggvT8Vt8cFU8QpJHAFN3atZvu5ozl4FxA/5LkX09MDV4wfTUeZQAK/vRvJC5+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lKZGunh+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Qehd6MCB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773890456; x=1805426456;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Y90Esd47kwaRCBXkEl+fwzGkBOvFJDkib2fuq4NRaoE=;
-  b=Qehd6MCBwRiBLsRSukrZSty1GkbzyZXBkrTLnKqXBGr61pVVfYRFEG5N
-   wp4Py0HtfjQrqdV2ucxvjbh24F+I8D/C2ajksCv7IIMg6xMoiTD0d3ANp
-   gMf5OKQhQEpBuLPiREcd4umniDkTQ1ilsLYHNAEN5NSXP8cpPyYInSgSB
-   pOA1J5iyfFOJzgTo7e3EZV/MOZX/j7lgq3wsg7b/F/EvvCKGzAAkcQ5HZ
-   8zlD8B6kMTnUDZqiJleQtrFGmElSgEZpB+2HJo4iXahdW0KNQ3no3DENT
-   1Sj64/ADUSjkYG1EgjjXxxB3FHKrU17yKaFLQemDQr+iwZMtLedVEISKg
-   w==;
-X-CSE-ConnectionGUID: Ar1SdmEkTMqDtpS+HJebCQ==
-X-CSE-MsgGUID: Lw6y2sYRT3ep5SkNyX4vjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="86435758"
-X-IronPort-AV: E=Sophos;i="6.23,128,1770624000"; 
-   d="scan'208";a="86435758"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 20:20:56 -0700
-X-CSE-ConnectionGUID: aRz+UuW8R/u6bTxL3fv7BQ==
-X-CSE-MsgGUID: JsjX2u5rSwyQpcKyWybAcw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,128,1770624000"; 
-   d="scan'208";a="226963782"
-Received: from unknown (HELO [10.239.158.72]) ([10.239.158.72])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 20:20:51 -0700
-Message-ID: <623ac08e-07a7-4823-bd0a-777d8df5c128@intel.com>
-Date: Thu, 19 Mar 2026 11:20:48 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lKZGunh+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEB2C19425;
+	Thu, 19 Mar 2026 06:05:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773900315;
+	bh=YSuWgb/bZv40t/PkTFpxAbYeBoEA1FokMoyj2hWvVcM=;
+	h=Date:Subject:From:To:References:In-Reply-To:From;
+	b=lKZGunh+OeRh2W28KsmGk4gyIdYc9TwWYnyMbJ1grZRedgbv5ZQGNbf/9fwScRW03
+	 AHXgEmsT++mHjZUwe8nNflHgqK9qRPaB9Zr5HNxmnS0Bkjpc+MlMfAAo/4x9QZfq7g
+	 ms8/jM1PS/epD7b9haLyB+S6RxMujDwjWscL9Dhgw16L3MK0EITApQPOmnnyAbYvyC
+	 6dH+7s9YlGwzaa1MqiGYHBX8RHxIx6JVnT1fwPSSNPDvGrWXYITgLu2BDifXv3vJp8
+	 iUPdjwDc+MfHhJY/wVTyXQyf1YSLYUWJIlbOBIUOUII9gDdt6GLIu9PyYwUpRmuJaI
+	 A1WOkDvE2NnaQ==
+Message-ID: <7b7d07c7-7717-404e-b2f8-772987523efd@kernel.org>
+Date: Thu, 19 Mar 2026 07:05:07 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,168 +35,76 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] x86/virt/tdx: Use PFN directly for unmapping guest
- private memory
-To: Yan Zhao <yan.y.zhao@intel.com>, seanjc@google.com, pbonzini@redhat.com,
- dave.hansen@linux.intel.com
-Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, kas@kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, kai.huang@intel.com, rick.p.edgecombe@intel.com,
- yilun.xu@linux.intel.com, vannapurve@google.com, ackerleytng@google.com,
- sagis@google.com, binbin.wu@linux.intel.com, isaku.yamahata@intel.com
-References: <20260319005605.8965-1-yan.y.zhao@intel.com>
- <20260319005808.9013-1-yan.y.zhao@intel.com>
+Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2026-03-19
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+References: <22d1bdf9-4d21-4252-8558-e9618a409bc5@kernel.org>
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260319005808.9013-1-yan.y.zhao@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <22d1bdf9-4d21-4252-8558-e9618a409bc5@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 3/19/2026 8:58 AM, Yan Zhao wrote:
-> From: Sean Christopherson <seanjc@google.com>
+On 3/18/26 11:50, David Hildenbrand (Arm) wrote:
+> Hi,
 > 
-> Remove the completely unnecessary assumptions that memory unmapped from a
-> TDX guest is backed by refcounted struct page memory.
+> Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+> 2026-03-19 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 > 
-> APIs tdh_phymem_page_wbinvd_hkid(), tdx_quirk_reset_page() are used when
-> unmapping guest private memory from S-EPT. Since mapping of guest private
-> memory places no requirements on how KVM and guest_memfd manage memory,
-> neither does guest private memory unmapping.
-> 
-> Rip out the misguided struct page assumptions/constraints by having the two
-> APIs take PFN directly. This ensures that for future huge page support in
-> S-EPT, the kernel doesn't pick up even worse assumptions like "a hugepage
-> must be contained in a single folio".
-> 
-> Use "kvm_pfn_t pfn" for type safety. Using this KVM type is appropriate
-> since APIs tdh_phymem_page_wbinvd_hkid() and tdx_quirk_reset_page() are
-> exported to KVM only.
-> 
-> Update mk_keyed_paddr(), which is invoked by tdh_phymem_page_wbinvd_hkid(),
-> to take PFN as parameter accordingly. Opportunistically, move
-> mk_keyed_paddr() from tdx.h to tdx.c since there are no external users.
-> 
-> Have tdx_reclaim_page() remain using struct page as parameter since it's
-> currently not used for removing guest private memory yet.
-> 
-> [Yan: Use kvm_pfn_t, drop reclaim API param update, move mk_keyed_paddr()]
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-> ---
->   arch/x86/include/asm/tdx.h  | 15 ++-------------
->   arch/x86/kvm/vmx/tdx.c      | 10 +++++-----
->   arch/x86/virt/vmx/tdx/tdx.c | 16 +++++++++++-----
->   3 files changed, 18 insertions(+), 23 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index f3f0b1872176..6ceb4cd9ff21 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -153,7 +153,7 @@ int tdx_guest_keyid_alloc(void);
->   u32 tdx_get_nr_guest_keyids(void);
->   void tdx_guest_keyid_free(unsigned int keyid);
->   
-> -void tdx_quirk_reset_page(struct page *page);
-> +void tdx_quirk_reset_page(kvm_pfn_t pfn);
->   
->   struct tdx_td {
->   	/* TD root structure: */
-> @@ -177,17 +177,6 @@ struct tdx_vp {
->   	struct page **tdcx_pages;
->   };
->   
-> -static inline u64 mk_keyed_paddr(u16 hkid, struct page *page)
-> -{
-> -	u64 ret;
-> -
-> -	ret = page_to_phys(page);
-> -	/* KeyID bits are just above the physical address bits: */
-> -	ret |= (u64)hkid << boot_cpu_data.x86_phys_bits;
-> -
-> -	return ret;
-> -}
-> -
->   static inline int pg_level_to_tdx_sept_level(enum pg_level level)
->   {
->           WARN_ON_ONCE(level == PG_LEVEL_NONE);
-> @@ -219,7 +208,7 @@ u64 tdh_mem_track(struct tdx_td *tdr);
->   u64 tdh_mem_page_remove(struct tdx_td *td, u64 gpa, u64 level, u64 *ext_err1, u64 *ext_err2);
->   u64 tdh_phymem_cache_wb(bool resume);
->   u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td);
-> -u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page);
-> +u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, kvm_pfn_t pfn);
->   #else
->   static inline void tdx_init(void) { }
->   static inline u32 tdx_get_nr_guest_keyids(void) { return 0; }
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index 1f1abc5b5655..75ad3debcd84 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -343,7 +343,7 @@ static int tdx_reclaim_page(struct page *page)
->   
->   	r = __tdx_reclaim_page(page);
->   	if (!r)
-> -		tdx_quirk_reset_page(page);
-> +		tdx_quirk_reset_page(page_to_pfn(page));
->   	return r;
->   }
->   
-> @@ -597,7 +597,7 @@ static void tdx_reclaim_td_control_pages(struct kvm *kvm)
->   	if (TDX_BUG_ON(err, TDH_PHYMEM_PAGE_WBINVD, kvm))
->   		return;
->   
-> -	tdx_quirk_reset_page(kvm_tdx->td.tdr_page);
-> +	tdx_quirk_reset_page(page_to_pfn(kvm_tdx->td.tdr_page));
->   
->   	__free_page(kvm_tdx->td.tdr_page);
->   	kvm_tdx->td.tdr_page = NULL;
-> @@ -1776,9 +1776,9 @@ static int tdx_sept_free_private_spt(struct kvm *kvm, gfn_t gfn,
->   static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
->   					 enum pg_level level, u64 mirror_spte)
->   {
-> -	struct page *page = pfn_to_page(spte_to_pfn(mirror_spte));
->   	int tdx_level = pg_level_to_tdx_sept_level(level);
->   	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
-> +	kvm_pfn_t pfn = spte_to_pfn(mirror_spte);
->   	gpa_t gpa = gfn_to_gpa(gfn);
->   	u64 err, entry, level_state;
->   
-> @@ -1817,11 +1817,11 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
->   	if (TDX_BUG_ON_2(err, TDH_MEM_PAGE_REMOVE, entry, level_state, kvm))
->   		return;
->   
-> -	err = tdh_phymem_page_wbinvd_hkid((u16)kvm_tdx->hkid, page);
-> +	err = tdh_phymem_page_wbinvd_hkid((u16)kvm_tdx->hkid, pfn);
->   	if (TDX_BUG_ON(err, TDH_PHYMEM_PAGE_WBINVD, kvm))
->   		return;
->   
-> -	tdx_quirk_reset_page(page);
-> +	tdx_quirk_reset_page(pfn);
->   }
->   
->   void tdx_deliver_interrupt(struct kvm_lapic *apic, int delivery_mode,
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index a9dd75190c67..2f9d07ad1a9a 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -730,9 +730,9 @@ static void tdx_quirk_reset_paddr(unsigned long base, unsigned long size)
->   	mb();
->   }
->   
-> -void tdx_quirk_reset_page(struct page *page)
-> +void tdx_quirk_reset_page(kvm_pfn_t pfn)
+> !!! Note the GMT-08:00 -> GMT-07:00 change due to DST in the US :) !!!
 
-So why keep the function tdx_quirk_reset_page() but expect passing in 
-the kvm_pfn_t? It looks werid that the name indicates to reset a page 
-but what gets passed in is a pfn.
+As Google calendar keeps dropping all invitees from the meeting for some
+reason at random points in time--I suspect because I moved the calendar
+entry over from my RH account by changing the owner--I just created a
+new calendar entry and sent out invitations.
 
-I think we have 2 options:
+Hopefully it sticks now ...
 
-1. Drop helper tdx_quirk_reset_page() and use tdx_quirk_reset_paddr() 
-directly.
+-- 
+Cheers,
 
-2. keep tdx_quirk_reset_page() as-is for the cases of tdx_reclaim_page() 
-and tdx_reclaim_td_control_pages() that have the struct page. But only 
-change tdx_sept_remove_private_spte() to use tdx_quirk_reset_paddr() 
-directly.
+David
