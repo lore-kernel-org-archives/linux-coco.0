@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF32274FD0
-	for <linux-coco@lists.linux.dev>; Thu, 19 Mar 2026 07:41:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1FE3AEF20
+	for <linux-coco@lists.linux.dev>; Thu, 19 Mar 2026 08:56:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773906067; cv=none; b=I6L0DKxP+5udR7b3y5rFbuXIaYdE9jNrSYph8Y7LNTpdDGCwHcDmk8C04GS5vRT7PeAKYe/J30tL9pFWASfocKjwQ4mCs1PPvu1iazQrwHYD/HoBW7a7R7keZD15/I+IA8kFs3HI4lUnyxhOnHvEv2+3SFrsQ/WcXRupE0UrKvQ=
+	t=1773910581; cv=none; b=Zv+Kvz3YcBZkCGKfZR/A1klB1nX4P9VkbSloxJr97upm8VSrTByG6uliqaEgL8lOXRgik+n8ZOQS9T9dkYjzn6oUAA1AoXyj1yDqnKTSzYKfK1Vw4nr2075Hgdk4y8Gz+zMUTItjuyCuiyz+CCBuZhfX7hsp41X9VIDb2bD8M2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773906067; c=relaxed/simple;
-	bh=YAdgkJT5EhYWgef8Gj2bqOw2vGrbvl/WEYj6Kfqe13g=;
+	s=arc-20240116; t=1773910581; c=relaxed/simple;
+	bh=AM9Ca6izb+1mQmXs16F3D4WDBQ7w+heKs1wpaUQK/zs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A7VoEwKoqObou5QAeB8JPN5oK5Pc8MyJVsNqkNPvEOp3oUuxGy96RO2UNkDYl1vZ6gjpwuURIFWZScVrDqZHCgyps0fP8jBE3ECw6fMqw34eCO/hVrj9SYyOwHpdYe7ATB2BAVAMa8Lwr3Ezu2eqV6hZb/sYtZEFydMTjq4Sk+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ijJtX6w9; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=Yw6CJwRLRSAvp2XD797yy7GpygX32CHQ6+/P19XiTDSG33//0ZnE1Dxdl1zLADD/oyZoR7AS3AmQzpmyPPEyaevmUG4UNYXMaKZBYoSI9QQnZnamWyGikeEnkHeDTMGIVx3/ZDMKQIG212348P5y7DrB+aECZyoGYTsV3OyshIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=igQKqrd9; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ijJtX6w9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="igQKqrd9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773906066; x=1805442066;
+  t=1773910578; x=1805446578;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=YAdgkJT5EhYWgef8Gj2bqOw2vGrbvl/WEYj6Kfqe13g=;
-  b=ijJtX6w99iEyShbnQiVhFYkhzfR0oVpJjD+uDk25fu44r+E79AvtsKTC
-   XQkzgvTlwlm09LOHSkXCQXVdA0MDwnt4+LWKML76YpbZk+FcmLTgpVFlT
-   80TYXvQ2/kkLSTI6xDdDrJb8o6JUnqd7Miu3DMZGjrr2bYbh/bsgnFZSk
-   EEmqlwSlWCwduOxvFV0AIV8ZwhDhudbPRvvrWNixjLBKKCN6M+iTHNU8+
-   LFEzk4KsB8frWd9jF9cJdnVhcUXAZrP/ewsVnK8xh1GL3IIIe1yc6BTHd
-   12YFTGWlVXXn5jhyFKJIlSuXkAZe38jPWQDYMvQmm4V6VSHWa36jKGhHm
-   g==;
-X-CSE-ConnectionGUID: yxK08n3oTziuzGgjkk2N5Q==
-X-CSE-MsgGUID: O+gewisYQua6Z/yzX4pabg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="74668952"
+  bh=AM9Ca6izb+1mQmXs16F3D4WDBQ7w+heKs1wpaUQK/zs=;
+  b=igQKqrd9j1EGtCT6W9sppAGA5Z7xyz13PrIWm9ynASChJuNMgeJdkNLd
+   0jK5IwJEadzQNysqcXLE3nBWYlNTznXxdgQHBcK7gB4xI3LRMW8lnSouI
+   K8VzVXERFTXs15RdSNneuD+oou5psWeZhkNAp+sc+/OWHFTTyqTV5UkUa
+   Zd98vxyaZV7BbqjQ551xoAbexFenPEzA7vSSiIWlsAe9d6OqZ3u/Rzu0k
+   Nu9bKTw4+k5CfCsPQJ0Dgu162W0/Yp0WxO3ex2m6ykV2etZqI63oYWSch
+   0bat4jvDMEuQfpQisnCuVfiDG2UsSWpWstOmboCAFng9o6sTm2+MxKJ3f
+   w==;
+X-CSE-ConnectionGUID: Wjt+ftngQrGd0G1ypkZfmg==
+X-CSE-MsgGUID: eZKaqln9QYu+KbQlma3BPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="75009659"
 X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
-   d="scan'208";a="74668952"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 00:41:05 -0700
-X-CSE-ConnectionGUID: VE5wNEgSS4+fmaeigvdCZA==
-X-CSE-MsgGUID: 8y7lzHeWQw+01QCs6seuSA==
+   d="scan'208";a="75009659"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 01:56:17 -0700
+X-CSE-ConnectionGUID: 9/HuI9/gTmmMy5i8otPHmw==
+X-CSE-MsgGUID: v+9JezG0QBe1fC45yHF25Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
-   d="scan'208";a="227830118"
-Received: from unknown (HELO [10.238.1.83]) ([10.238.1.83])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 00:41:02 -0700
-Message-ID: <ee8d7ea3-0ece-43cf-ab07-6954df4c01ad@linux.intel.com>
-Date: Thu, 19 Mar 2026 15:40:59 +0800
+   d="scan'208";a="227598395"
+Received: from unknown (HELO [10.239.158.72]) ([10.239.158.72])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 01:56:12 -0700
+Message-ID: <b74acb4b-4658-4113-9fce-9faf972975c4@intel.com>
+Date: Thu, 19 Mar 2026 16:56:10 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,62 +52,60 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: TDX: Fix APIC MSR ranges in tdx_has_emulated_msr()
-To: Dave Hansen <dave.hansen@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Dmytro Maluka <dmaluka@chromium.org>, kvm@vger.kernel.org,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Isaku Yamahata <isaku.yamahata@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
- "open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)"
- <linux-kernel@vger.kernel.org>,
- "open list:X86 TRUST DOMAIN EXTENSIONS (TDX)" <linux-coco@lists.linux.dev>
-References: <20260318190111.1041924-1-dmaluka@chromium.org>
- <94b06319-2be8-4f01-87d1-8989ae1ca85d@intel.com>
- <cb99e44c-8bc9-4bab-b485-9f63a4d0b262@linux.intel.com>
- <93358559-5ed1-4574-8951-24d7ea9354e4@intel.com>
+Subject: Re: [PATCH 2/2] x86/virt/tdx: Use PFN directly for unmapping guest
+ private memory
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de, kas@kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, kai.huang@intel.com, rick.p.edgecombe@intel.com,
+ yilun.xu@linux.intel.com, vannapurve@google.com, ackerleytng@google.com,
+ sagis@google.com, binbin.wu@linux.intel.com, isaku.yamahata@intel.com
+References: <20260319005605.8965-1-yan.y.zhao@intel.com>
+ <20260319005808.9013-1-yan.y.zhao@intel.com>
+ <623ac08e-07a7-4823-bd0a-777d8df5c128@intel.com>
+ <abubmi7BjMwgnrvC@yzhao56-desk.sh.intel.com>
 Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <93358559-5ed1-4574-8951-24d7ea9354e4@intel.com>
-Content-Type: text/plain; charset=UTF-8
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <abubmi7BjMwgnrvC@yzhao56-desk.sh.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-
-
-On 3/19/2026 9:48 AM, Dave Hansen wrote:
-> On 3/18/26 18:14, Binbin Wu wrote:
->> The bug doesn't cause problems for TDs because:
->> - These x2apic MSRs (TASKPRI, PROCPRI, EOI, ISRx, TMRx, IRRx) are virtualized by CPU,
->>   when a TD accesses these MSRs, it doesn't cause #VE, thus no TDVMCALL from the TD to
->>   request the emulation of these MSRs.
->> - The bug make the "false" range of APIC MSRs smaller, so it doesn't impact the result
->>   for the rest of the APIC MSRs.
+On 3/19/2026 2:45 PM, Yan Zhao wrote:
+> On Thu, Mar 19, 2026 at 11:20:48AM +0800, Xiaoyao Li wrote:
+>> On 3/19/2026 8:58 AM, Yan Zhao wrote:
+>>> From: Sean Christopherson <seanjc@google.com>
+[...]
+>>> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+>>> index a9dd75190c67..2f9d07ad1a9a 100644
+>>> --- a/arch/x86/virt/vmx/tdx/tdx.c
+>>> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+>>> @@ -730,9 +730,9 @@ static void tdx_quirk_reset_paddr(unsigned long base, unsigned long size)
+>>>    	mb();
+>>>    }
+>>> -void tdx_quirk_reset_page(struct page *page)
+>>> +void tdx_quirk_reset_page(kvm_pfn_t pfn)
+>>
+>> So why keep the function tdx_quirk_reset_page() but expect passing in the
+>> kvm_pfn_t? It looks werid that the name indicates to reset a page but what
+>> gets passed in is a pfn.
+> I thought about introducing tdx_quirk_reset_pfn(). But considering
+> tdx_quirk_reset_pfn() has to be an exported API, I'm reluctant to do that.
 > 
-> Could we fix this up so that the code that's there is actually usable
-> and testable, please?
+> Given that even with tdx_quirk_reset_pfn(), it still expects TDX convertible
+> RAM, I think having tdx_quirk_reset_page() to take pfn is still acceptable.
 > 
+> We just don't want KVM to do pfn --> struct page --> pfn conversions.
 
-tdx_has_emulated_msr() is used by KVM to decide whether to emulate a MSR access from the
-TDVMCALL or just return the error code.
+Only tdx_sept_remove_private_spte() is doing such conversions. While 
+tdx_reclaim_page() and tdx_reclaim_td_control_pages() already have the 
+struct page natively.
 
-During an off-list discussion, Rick noted that #VE reduction could change the behavior of
-accessing an MSR (e.g., from #VE to #GP or to be virtualized by the TDX module) without
-KVM knowing.Because KVM lacks the full context to perfectly decide if an MSR should be
-emulated, the question was raised: Can we just delete tdx_has_emulated_msr() entirely?
+So why not considering option 2?
 
-However, these native type x2apic MSRs are a special case. Since the TDX module owns the
-APICv page, KVM cannot emulate these MSRs. If we remove tdx_has_emulated_msr(), a guest
-directly issuing TDVMCALLs for these native type x2apic MSRs will trigger a silent failure,
-even though this is the guest's fault.
+   2. keep tdx_quirk_reset_page() as-is for the cases of
+      tdx_reclaim_page() and tdx_reclaim_td_control_pages() that have the
+      struct page. But only change tdx_sept_remove_private_spte() to use
+      tdx_quirk_reset_paddr() directly.
 
-It comes down to a tradeoff. Should we prioritize code simplicity by dropping the function,
-or keep it to explicitly catch this misbehaving guest corner case?
-
-
-BTW, besides the bug described by this patch, according to the latest published TDX module
-ABI table, MSR IA32_X2APIC_SELF_IPI is native type, but not included in the list.
-There are some MSRs, which are reserved for xAPIC MSR, not included in the list, but they
-can be covered by the KVM common code.
+It will need export tdx_quirk_reset_paddr() for KVM. I think it will be OK?
