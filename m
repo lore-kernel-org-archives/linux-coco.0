@@ -1,296 +1,199 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C513AF64B
-	for <linux-coco@lists.linux.dev>; Thu, 19 Mar 2026 23:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773961331; cv=none; b=H28GJlrPp8CiqEPbd08EuP+sdDYPyynJEO6L9RwgtlcTgagq1CYjcIduLLLjeObtDBEtJsTBogi0rfDga4X4HafkceFzTPslAymWRVSGhjTRzzLOYyc5RS6hEnuia/V146SgbYXuv3Knztkfn2ekz5xfS3P4i/mJRGB9r5MwSAA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773961331; c=relaxed/simple;
-	bh=O/xNBL1lFnlrFZEUcSb88lJibJ0mr+kRo4zwFbNpyvM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jGRZls+4wALLCPPmB33MNDxWnjKgUxjvZ9MBIih2uk2M/JpCWmlkb8F2xkJkZzI13Kx0XG8Q2CDPmQZLd45ajUGw7yGuo04fIO11iGg87+uGxp8sZryIjFRSkOQka3ahiIdbUxdQ/vhF0izaMZbGxt1DiOcrtfuEJEpjMOlxAig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XBOtnT8B; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1311C2C1593
+	for <linux-coco@lists.linux.dev>; Fri, 20 Mar 2026 02:50:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773975035; cv=fail; b=PNcNSdNEZHob6cfWG36w7XFUbIsFUd4fHovWkRAN6VBuX04x5vFa1c63G54nbik25c70b4b3e70UvuP6OyoQs6qZslFzK4gA37hK+vJvrnNxA03V1k1tXiEJAAqgvPuk8yKZnMesYC/VXdqo8M+b3BA3q2dx8I8SRF7vOuIh9xM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773975035; c=relaxed/simple;
+	bh=JBve/V/Cj6RaZCg5tlKe6lzau+Sz5dmWfuu0oRa0Iwk=;
+	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
+	 Content-Type:MIME-Version; b=bFzR9GOQ9T3Cbs65G4405zmteQHx3O6G2NjlpPBLsFHumuXly/q4oI/5OuzKaKRBAKuEMtfXzFJH9DkxUnuWL0vGj8qoLLqFBtX/xHFx88R5Z38SpSytxTipF59G85hTMFM/VJg1Qaqv7Tdcu9BSObsW8By1I+Fcv+v1Kw3+1fs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ndonUDps; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XBOtnT8B"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2b061b6cf36so334335ad.3
-        for <linux-coco@lists.linux.dev>; Thu, 19 Mar 2026 16:02:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1773961329; x=1774566129; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DtVhzb0DV85uGcvAl9P82/7gTaMXIzZ0xIhVOg4FCYk=;
-        b=XBOtnT8BX6eirB/meoiM/tfJW2QwRU4M8v9amslj/SoBmpmRgqwvWrlbWigrJ6OSV/
-         QNvcphwKS3KOvFG8XMoqgao6/MUQjwdtQMdBE7NuD3UFVyG7s43JWNVj2x7kHHc+ogzD
-         Q8f68PlhAD9SQQf5aJLoQEBVURnlFqnmUYG0OxDkBi/701p6/OTVewdN+c9uIAaMHKgJ
-         ceaInbY1z0W/0twfBF0KNfrmgNnWrNCJyklXPNkNMaAdaMIbzmsjSbNu3KaZ82NmRpo1
-         W+VzOU4P/F/Mn0IAWzA6FTJ6+iFtjr/jz/Nhon66/UJqP9QwRXqGjrGV9hVeBh9gLiXV
-         k0pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773961329; x=1774566129;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DtVhzb0DV85uGcvAl9P82/7gTaMXIzZ0xIhVOg4FCYk=;
-        b=FuLZHE5jkUyYdYkYnR8toSQZ09LPMY3/ZF6svY7F1zuSrNyjfjI0bVFeG4av904HK3
-         bfxqihRnpGi+gMG0ov+HXNFki51Z8LUCnhJUYpyj8TNqU0yU7nw3vs+LnkxMXWvjE9cO
-         /UrPQ6CH55/XZ+wcgueHkk9DdN3Ih0jS9FvsK0NwRlSSPe0z9AjDFpYzvGiiOjyXdYMr
-         tiadVwinmRWoFXgjmH1bLUgZN6Xs0VARPw9gvaUWNv8SX/x/l/fPMJO7IB87tvdesGry
-         nOAJh3tglmuXxS2lJnosMpNvnYurO/dfq2dhQSD/n9txfqnng6nXjsdHkaMBVd6G/juv
-         ao0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV170Hc3V+VnM8Qtjeg98DikrX/VyScDwgo8OHM3+41ZFYxEs+sx95Dy9KWN7MhZjR/Z1G3gmFrSEUD@lists.linux.dev
-X-Gm-Message-State: AOJu0YzesPnFB8Zdd/hvnw4MXN2UM/We4zbbSThjtTHJWYuGgms5ndMu
-	P6v6iO+eZew2DQ152GSt/CMaeuUSmWV0mZUa8Lz9gU5Gq0dYihmuRL4diMyHtO5nxGY=
-X-Gm-Gg: ATEYQzw4jfjptNp0ta1Q1Q5m8SUqHgpnHW+xQcwbpMH5UC42VUMc3cYGmdLUNWtKkvQ
-	H0aOXpVTuMNTMH/HxpHbaZboGrePz1W9AINUUHLuIBcbjvAcE8EEtVpt71ruzrnnPEp+lgkzx6v
-	bdiR7CGeXyWKeszaYokqLLP3yZepgdGtUhYAW7Ss6Z0O0w+zI7An3ZflHBKoTnkYvvsE6wuJKiq
-	Ue8+1mU6y45OXMzofzTjMly4fprHDnIqKCR5KQTvqpiXdPcRZYYkRnIEcaxb0OdOOJkhWGn1puu
-	3kcWPpz1KZNmmexGUkQ7Jc7EcYlkN2hIaWRPVt1YgMniGtaPgv7QJsiO+wfinfP6eM35yONleS6
-	Syimr4qj6sIwOr1rHiK9PO5MsgahZihIV9+7Vz7WYx314/+zG8zgF2qMXX4rgWwzjpc41nE1h2b
-	hEr0bc1yWhkM3iam5tCVmoAsAgOy7OOCZlDjXj4Q==
-X-Received: by 2002:a17:902:d582:b0:2ae:4f15:1aba with SMTP id d9443c01a7336-2b08278b1b3mr7031995ad.30.1773961328468;
-        Thu, 19 Mar 2026 16:02:08 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:bc0d:d18f:b06e:7b15])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0836ace98sm2468535ad.80.2026.03.19.16.02.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 16:02:07 -0700 (PDT)
-Date: Thu, 19 Mar 2026 17:02:04 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>
-Subject: Re: [PATCH v13 00/48] arm64: Support for Arm CCA in KVM
-Message-ID: <abyAbPIkDn2bGZwd@p14s>
-References: <20260318155413.793430-1-steven.price@arm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ndonUDps"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773975034; x=1805511034;
+  h=from:date:to:cc:message-id:in-reply-to:references:
+   subject:content-transfer-encoding:mime-version;
+  bh=JBve/V/Cj6RaZCg5tlKe6lzau+Sz5dmWfuu0oRa0Iwk=;
+  b=ndonUDpse+lwFbNfdgsU4s93iReoTaLFf7giVJ4WplMIK7tTXVNV3pjD
+   /FnrZud9W9bXD1KRrbnLDY/sKFkfYvv53ULD6budeRzM73yPjpubZ+S+P
+   Fj4zj4Tx+Gz7lFO7CBrd67OnXNmmWwwK7KcW2bS3nhqWxqK64jHhsfyaD
+   NXMNeWIspfEfgZNlijSOZuJney0G95qiQ+bpruqRib1R0xovpsrXGud2F
+   ABDHe/5BUvhER/B/rZq/0MlvQIE4B3dHelkwUWJ7qspxnZWRFNIUwxs1b
+   Hwmu4ZZr+qri2ICuxRIfXqhMkHhWrJRGqC4QFX/hT8tiuyEImexN4Cgyf
+   A==;
+X-CSE-ConnectionGUID: mj5zP2gNSaqnHnv5MoblQA==
+X-CSE-MsgGUID: 7sGdcKaPSy2zkHnErwV3oQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="75129952"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
+   d="scan'208";a="75129952"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 19:50:33 -0700
+X-CSE-ConnectionGUID: kUKv1FeHT6W+bASqbmVuiQ==
+X-CSE-MsgGUID: jFLd0VV5TeyzSNOw8xct8w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
+   d="scan'208";a="219005524"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 19:50:33 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 19 Mar 2026 19:50:32 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 19 Mar 2026 19:50:32 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.49)
+ by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 19 Mar 2026 19:50:30 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bd8ZmZfOU5RWLGQNHmmBUYdU2ZQP1tR7Kv6mnalK+6KUGEES9/NuhkTZHr9IcbkY4t59lolO8MdtFgcSCh5lGgb3ZivUNGqp01Ls7ZtuZtdxCQvYqRQfU4Edd3k2X2WusdrH/od0D+7XStk0NExPfbUIFgfWscvp2Mojjh4K2sFiwm4m5rFU55UucVulCQxlEpTkVfRR1a+npCM4KETJPjkfjWHwIDiCbbboIu7K6RbJTPT+K9MMvnQueUN3ilKjaGB0+yatqgnhriSJUp7idUMincW3rHR5ljocKOKZGJrHDbiuJZrOW/NTzkv/rENW0cVHH1sgqVB1nf0KEY10FA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8dIL0bCwALdkrrLWihwW5/LJNUKbn9BFlZzz3En3O9w=;
+ b=JyNiGjmzwGAQyP1mXPTlB0b6R9Yc8iUn6vsIBn58Ah5OgFFzYkj1Gir5uL1/sV7spBsTBTNJyt9kDvOFEdBCpz26usGQa/XRObD8H61leDVUYD3e4repY158aBIL49mY8l4MBI30veAB9otWobf6NTJXiUB9qkhHCQCyt5sVR00daMlDYVCpTf5lOABEdZ7MKrg9qnqH48NSrnTs44iV7TwiwWsv84TVIiiULgY9Fkcb39+q6hXc94pJnOwKsC7E6RO+co52Rko8QeZEcj0n0rDKEjQ6e2UGCk2dIGOWffZuHur2HJ08/nanI6w2fKAnG54ZtHujNNxg5VoGqMWRdA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by CY8PR11MB7081.namprd11.prod.outlook.com (2603:10b6:930:53::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Fri, 20 Mar
+ 2026 02:50:27 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff%3]) with mapi id 15.20.9723.018; Fri, 20 Mar 2026
+ 02:50:27 +0000
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 19 Mar 2026 19:50:25 -0700
+To: Jakub Kicinski <kuba@kernel.org>, Dan Williams <dan.j.williams@intel.com>
+CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
+	<gregkh@linuxfoundation.org>, <aik@amd.com>, <aneesh.kumar@kernel.org>,
+	<yilun.xu@linux.intel.com>, <bhelgaas@google.com>, <alistair23@gmail.com>,
+	<lukas@wunner.de>, <jgg@nvidia.com>, Donald Hunter <donald.hunter@gmail.com>
+Message-ID: <69bcb5f1412cc_40c0100ac@dwillia2-mobl4.notmuch>
+In-Reply-To: <20260318170014.6650d2bf@kernel.org>
+References: <20260303000207.1836586-1-dan.j.williams@intel.com>
+ <20260303000207.1836586-9-dan.j.williams@intel.com>
+ <20260314111245.76d18d73@kernel.org>
+ <69b8b234177ea_452b1001a@dwillia2-mobl4.notmuch>
+ <20260318170014.6650d2bf@kernel.org>
+Subject: Re: [PATCH v2 08/19] PCI/TSM: Add "evidence" support
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR04CA0244.namprd04.prod.outlook.com
+ (2603:10b6:303:88::9) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260318155413.793430-1-steven.price@arm.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|CY8PR11MB7081:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6a3fb48e-124f-4ed7-e3d4-08de862b70f2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info: muHcEIakwZVWtkb/5X//tai/Lf3CeNUAiCfEu0F0xX7fK0SLjWes5LW+6G6VoYRLMZpp/Gvn14LCS0TNmQKStG7hTpN5Q0Za1NcdJ6LJuAg6KMWDfnt3u+b5cbUzs+xlhT1Xunm0opNLLb6q3rasM/KtBHxd2RuHMpWynFsnL75fb/skHdxKPFq6xMLxLeQLYGuq6eJ4iTYUonlvWqnIvQA57YloCjjEcV7R6HFROSKhFbLGmUKdnPuADEMfAuitIqnseFvjA1CDYTnERLkcpeTiv+ME5Y+KyXk4bqM5Hg9rlaASKmC+D40J8CceaTW3eu3bEZCAzEJaLxHZFCEaAeAZ6i9ZhVRHR0R5KNX18h5P68/kQD9BUxB1O4yKItGF2DvFjbe7dPCmOOslo7DPr+9w7HzpUBYGnEj9IO93+7Pz0QiYtINbgtFWXAlBTR5+i9/4w/wDFIV0dClLLi41SKoDx02eIv9m6rEz19EdlRAEKSprGaQyWyHIHNOD2eNLqnw6IU3gC8qYVf6OCRjPQEBpwC8XwKvejq3toX8T9nDPWjOcus+cVP2buXMoDMaoFV/wOzaU1ZcH9fWJ26Xo9xWPFmrNiyLOgtiNPriWXqys5gDQTO5f9sWE15k438bR+AWqwXB3H5pu6I0jaE9ofuq8yIMCXi+zsvhh0Kb8oYrXmN8nPrfRSl5QG7QQFDCcea9C7QqDZc6MlrVfJjKHwXNrfCTYyKfcmknP1/NJp+E=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QUdOLzE5RFo4RDVURVBjZXZHblpVVU95aVhrWnpheVlvWnFjNlRwazRWZE42?=
+ =?utf-8?B?bElWVU1LRmNNNmNXWkd1MTg5d2JCT3N1S0U4d0VGck9RTDNIN1JTbER2dHAx?=
+ =?utf-8?B?U1hBMCtGZURpV2t2cWFpa2FENkNNa2FNMTd4NU9RYVo5UCs3SldESUhNaE9I?=
+ =?utf-8?B?Q1dudzQwL2FHcEdyNE52RGpLOXgzYmdhMnlvTEgvaFlPQmlpL0dhTW1VZkRo?=
+ =?utf-8?B?RHdOZ0U3NjQxZEM3MXozUnYrTTdyTE5vK1F6SGs2enR4VkN3Q1dKZEFGZnV6?=
+ =?utf-8?B?ZndIZUVtRm5CZDdOaEZaZEJ4Z2ZGVHZxekt6YkRkQ2Y4OWxNZzQxbkhScnFC?=
+ =?utf-8?B?OVBFVGdpWDBSTUpKZVU5NDBSNkVXbk9hOWtsTnk4UjMzUUJKMlZNQTdtM3Q2?=
+ =?utf-8?B?UzhKSFpkb1VWTW96c0VJUVZCdjJjOUdSZEZrSHdRTFpHRzlsb09YU2lDdVBu?=
+ =?utf-8?B?ZUkrc0RtNTVYMmRmK3BLQjQ4UXNZTlFXWkZaVUtaUjRmZGpZUW9idXhsSFpz?=
+ =?utf-8?B?b1lqK3A4N2s5MGx0bTZsbGdzN0s1T3B6NzhlVk5DeGp1VC9OQ2FnakpVMW45?=
+ =?utf-8?B?dzBBZGpzL1ErajAzWjNId0NWRXlTQkF3VVRoS1Rza1hqaFh0OVZodVNBSFNR?=
+ =?utf-8?B?N3d0cnVCOUQ3WHY2Wlc4TmNBQWc3LzMvNWtJeFhUdUxkU3Z4TXRDYlpEVmdB?=
+ =?utf-8?B?Ujl3R2x5RnBZcFBxWEs3N1hKbDg5aTZjcVNHcmgxMk1HT2dmblBiblRUTVYv?=
+ =?utf-8?B?M2RqWmo4QzFGbEsrZUdJVDQwU212UVZSaWpGaVR5c1owanY3OEFuWERJME9y?=
+ =?utf-8?B?b3lURWZXQzgxZEtmcjdtSVlxWEM1SG1GbjVvQkI5WGxvYzR3VEVsOHkreGUy?=
+ =?utf-8?B?UnJkWk5LeG1lUEVJR3NXMlMvTzdqWnpFNkhEdG9RUnlwbk4zVW5zYy90cGF0?=
+ =?utf-8?B?WS9aN1hRTmxHbW0wOWZoa1ZnK1lySndENTVXMjA0aEoxRmhYZ0pGVnVyT01l?=
+ =?utf-8?B?T2RHbUUxUVFKeWlnVEpWandMMm9VRkcvNERBeDF5Z1A3SFc3MEdPeFltRXF1?=
+ =?utf-8?B?S2NPNWQzYlA2dzBkQzBJZTlWQ0ZXeExtc3MzUUg0UG1tRWFxKzdEMW12dnR2?=
+ =?utf-8?B?YzlaUG5NMjZGUmxOWURpZmRIQmlnWnlEcVc0c1ZFTytBV0F1dTM1WmZYM2V3?=
+ =?utf-8?B?VFpUVjRwQ3RGRVVRUUdNa3BmNE1yQk9LMzM4d2JIMHA5MkVpTGh3bWY3Ty8x?=
+ =?utf-8?B?bmFMWFdEKzhMc2lWalIrMEJrWTZnbTFsUnowdFZqY21YeVdpS0YwUno4ajAy?=
+ =?utf-8?B?alM4YytYOVdZQlVrWTNYK3IrTjJFMldSK29BRnNWWmozSktJUEZSZmhwcEtn?=
+ =?utf-8?B?ejNQOXBHTzZQaE9LbENUdS9FN0RFQ0lLWHhxNW9uYWcxZzYyVWlITWxrMkJE?=
+ =?utf-8?B?OUUvUEx2WVZiNDdXSEwrSjAzUThYTFd6OE1xWTArWjhFUnpReFJJalkvVDNI?=
+ =?utf-8?B?eEVuT2RrOUs4N2J6ZDUxWG9qcDZydTVDcU1wU3FsdnUwUzR0cGFsY0N1MTh4?=
+ =?utf-8?B?S3pSYllReGdzL1ppUjZKdktMd09OSWJQNHNuaXBza0VGanJoUnM1Q21lRGM2?=
+ =?utf-8?B?VzVOdm16SXJ4MEZ4WXRZWWc2emhKbjZZQmFxaGpaMjRxYWRmNStoK3Zya1Vr?=
+ =?utf-8?B?Y3BTa0ZIRmZxcmIwRmhPbng3cGprSUgyRmhoNGRvbVJZRnN0R1Z1R2NWd0FL?=
+ =?utf-8?B?S3UyV1lnZW81dEN5ZHVVU2srTmtGRlIrUzY1aW02am15NXJINzFOSC9lY05G?=
+ =?utf-8?B?eEFNc212THpubExpSUZ2T005WWFDRW51U01CUE4xa01DQzEwN0lMS3FRSFRL?=
+ =?utf-8?B?T3JVRE5TM2dQRnRFdWthQ2JRU1A5dGFwMVIrdW43MjJTK2lYd0NSeUgxdmJJ?=
+ =?utf-8?B?cVFjeGZqb2w1RkVCU0d6aSswZ2F6OEhGUTluVXd1eGF2TkxCTnNNYUtmbUFt?=
+ =?utf-8?B?Rit0aU5qNk8rMlByTlZFcjZvdGozVnl0R2Y2SXYrYXhGc3U0ZmtXcTRCcVdy?=
+ =?utf-8?B?VWJZVHV3elVkN2haK29vdk5xSXI4YXZ2azQvZ2daYTFWbWc4R0ZiNlBCclV5?=
+ =?utf-8?B?K1djL2RaRjFxWEtHeXQvMkxRUjZ3aXVML1QrUk4zTGg5RlBqakoyMDQyK0cr?=
+ =?utf-8?B?KzJOaW5WSmROS2JsSSt4dVlwbW04V3piMTJNR04vMnNJT3pzZ1lrR1JxZ0p0?=
+ =?utf-8?B?NkRraGR3dlNCMnBZNmJWd1pHWVZSbFZlRmNmM251c0tsL0lreGZrUzY0Q0tz?=
+ =?utf-8?B?b2gwRnBOUzkyMm93YVJuWWVQNStveVppd1U1MEM1SkMyMUNmMDhrMkxlOG0y?=
+ =?utf-8?Q?V+AyiAQywBnhaVSE=3D?=
+X-Exchange-RoutingPolicyChecked: T2hPp3LGwScnd6xYPApR5th5zoco59893k5mJ26wyeaDciRFEVDqYuMakxFUxwe3CiodsvzWKcy+hXZ6HsSq5sDf5nOMUse+k5PdFYA0fzjNxTuHsapGdnqL9AijfdHQD6F/PhSXR/+0/siyXg6LDmFIW/AM0Z0u5lZniYfPzQ5la5VQrVBDkGfU8itG4yjPegQfaCpR9GrHP7w5iJnjocH9+PVEQHcYnY5watU8OmVx2+Npy4sNkHlrzkUoSOBHympIE95EEJqyUoKtbwx7YrTLuNVpeB2S2HfPnY1L2uBqyFow8QScwqXCyI0mO1mbxrynDvw2etcXEMfpfBTzZw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6a3fb48e-124f-4ed7-e3d4-08de862b70f2
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 02:50:27.1859
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Y0zG/Vd0Vfha6FECsaVzB4rhsViXMpT+0pgCgklyZ6ukHa2oQY5L8gO4qC5ub4kTs7LOe3CJhSCSZXGh5WtPel8AxYTt/V6kkkGL24Wy6tQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7081
+X-OriginatorOrg: intel.com
 
-Good day,
+Jakub Kicinski wrote:
+[..] 
+> > > The main strength of Netlink is "do" commands with multiple optional
+> > > attrs.  
+> > 
+> > Yes, that is attractive and saves a pile of bug prone ioctl handling.
+> > 
+> > The gap I need to fill first though is a uAPI that allows for large
+> > blobs to be fetched after being regenerated / reformatted besed on some
+> > input attributes.
+> > 
+> > "Multi message netlink attributes" while inventive, feels less awkward
+> > and more future proof than a sysfs binary attribute scheme to do the
+> > same.
+> 
+> Alright, so to make this more Netlink-y you can either:
+>  - delete the F_MULTI and replicate other attrs in each message and 
+>    add an offset attr; this will make each message in the dump more
+>    standalone. 
+>  - keep the F_MULTI but object_val has to be a multi-attr, and then 
+>    we have to teach YNL to correctly append the attrs.
+> 
+> Former is definitely less work. Latter could end up being cleaner
+> but there are some unknowns so hard to tell for sure; more plumbing.
 
-On Wed, Mar 18, 2026 at 03:53:24PM +0000, Steven Price wrote:
-> This series adds support for running protected VMs using KVM under the
-> Arm Confidential Compute Architecture (CCA).
-> 
-> New major version number! This now targets RMM v2.0-bet0[1]. And unlike
-> for Linux this represents a significant change.
-> 
-> RMM v2.0 brings with it the ability to configure the RMM to have the
-> same page size as the host (so no more RMM_PAGE_SIZE and dealing with
-> granules being different from host pages). It also introduces range
-> based APIs for many operations which should be more efficient and
-> simplifies the code in places.
-> 
-> The handling of the GIC has changed, so the system registers are used to
-> pass the GIC state rather than memory. This means fewer changes to the
-> KVM code as it looks much like a normal VM in this respect.
-> 
-> And of course the new uAPI introduced in the previous v12 posting is
-> retained so that also remains simplified compared to earlier postings.
-> 
-> The RMM support for v2.0 is still early and so this series includes a
-> few hacks to ease the integration. Of note are that there are some RMM
-> v1.0 SMCs added to paper over areas where the RMM implementation isn't
-> quite ready for v2.0, and "SROs" (see below) are deferred to the final
-> patch in the series.
-> 
-> The PMU in RMM v2.0 requires more handling on the RMM-side (and
-> therefore simplifies the implementation on Linux), but this isn't quite
-> ready yet. The Linux side is implemented (but untested).
-> 
-> PSCI still requires the VMM to provide the "target" REC for operations
-> that affect another vCPU. This is likely to change in a future version
-> of the specification. There's also a desire to force PSCI to be handled
-> in the VMM for realm guests - this isn't implemented yet as I'm waiting
-> for the dust to settle on the RMM interface first.
-> 
-> Stateful RMI Operations
-> -----------------------
-> 
-> The RMM v2.0 spec brings a new concept of Stateful RMI Operations (SROs)
-> which allow the RMM to complete an operation over several SMC calls and
-> requesting/returning memory to the host. This has the benefit of
-> allowing interrupts to be handled in the middle of an operation (by
-> returning to the host to handle the interrupt without completing the
-> operation) and enables the RMM to dynamically allocate memory for
-> internal tracking purposes. One example of this is RMI_REC_CREATE no
-> longer needs "auxiliary granules" provided upfront but can request the
-> memory needed during the RMI_REC_CREATE operation.
-> 
-> There are a fairly large number of operations that are defined as SROs
-> in the specification, but current both Linux and RMM only have support
-> for RMI_REC_CREATE and RMI_REC_DESTROY. There a number of TODOs/FIXMEs
-> in the code where support is missing.
-> 
-> Given the early stage support for this, the SRO handling is all confined
-> to the final patch. This patch can be dropped to return to a pre-SRO
-> state (albeit a mixture of RMM v1.0 and v2.0 APIs) for testing purposes.
-> 
-> A future posting will reorder the series to move the generic SRO support
-> to an early patch and will implement the proper support for this in all
-> RMI SMCs.
-> 
-> One aspect of SROs which is not yet well captured is that in some
-> circumstances the Linux kernel will need to call an SRO call in a
-> context where memory allocation is restricted (e.g. because a spinlock
-> is held). In this case the intention is that the SRO will be cancelled,
-> the spinlock dropped so the memory allocation can be completed, and then
-> the SRO restarted (obviously after rechecking the state that the
-> spinlock was protecting). For this reason the code stores the memory
-> allocations within a struct rmi_sro_state object - see the final patch
-> for more details.
-> 
-> This series is based on v7.0-rc1. It is also available as a git
-> repository:
-> 
-> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v13
-> 
-> Work in progress changes for kvmtool are available from the git
-> repository below:
-> 
-> https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v11
-> 
-> Note that the kvmtool code has been tidied up (thanks to Suzuki) and
-> this involves a minor change in flags. The "--restricted_mem" flag is no
-> longer recognised (or necessary).
-> 
-> The TF-RMM has not yet merged the RMMv2.0 support, so you will need to
-> use the following branch:
-> 
-> https://git.trustedfirmware.org/TF-RMM/tf-rmm.git topics/rmm-v2.0-poc
+Makes sense, and not yet sure which one is lower maintenance burden
+long term. I will play with it a bit.
 
-This RMM version is expecting a RMM EL3 interface version of at least 2.0.  Do
-you have a TF-A to use with it?
+I am leaning to the first option more for the fact that it puts the
+burden of being strange squarely on the implementation that wants it. If
+this discussion attracts more large blob dumpers then the second option.
 
-Thanks,
-Mathieu
-
-> 
-> [1] https://developer.arm.com/documentation/den0137/2-0bet0/
-> 
-> Jean-Philippe Brucker (7):
->   arm64: RMI: Propagate number of breakpoints and watchpoints to
->     userspace
->   arm64: RMI: Set breakpoint parameters through SET_ONE_REG
->   arm64: RMI: Initialize PMCR.N with number counter supported by RMM
->   arm64: RMI: Propagate max SVE vector length from RMM
->   arm64: RMI: Configure max SVE vector length for a Realm
->   arm64: RMI: Provide register list for unfinalized RMI RECs
->   arm64: RMI: Provide accurate register list
-> 
-> Joey Gouly (2):
->   arm64: RMI: allow userspace to inject aborts
->   arm64: RMI: support RSI_HOST_CALL
-> 
-> Steven Price (36):
->   kvm: arm64: Avoid including linux/kvm_host.h in kvm_pgtable.h
->   arm64: RME: Handle Granule Protection Faults (GPFs)
->   arm64: RMI: Add SMC definitions for calling the RMM
->   arm64: RMI: Temporarily add SMCs from RMM v1.0 spec
->   arm64: RMI: Add wrappers for RMI calls
->   arm64: RMI: Check for RMI support at KVM init
->   arm64: RMI: Configure the RMM with the host's page size
->   arm64: RMI: Check for LPA2 support
->   arm64: RMI: Ensure that the RMM has GPT entries for memory
->   arm64: RMI: Define the user ABI
->   arm64: RMI: Basic infrastructure for creating a realm.
->   KVM: arm64: Allow passing machine type in KVM creation
->   arm64: RMI: RTT tear down
->   arm64: RMI: Activate realm on first VCPU run
->   arm64: RMI: Allocate/free RECs to match vCPUs
->   arm64: RMI: Support for the VGIC in realms
->   KVM: arm64: Support timers in realm RECs
->   arm64: RMI: Handle realm enter/exit
->   arm64: RMI: Handle RMI_EXIT_RIPAS_CHANGE
->   KVM: arm64: Handle realm MMIO emulation
->   KVM: arm64: Expose support for private memory
->   arm64: RMI: Allow populating initial contents
->   arm64: RMI: Set RIPAS of initial memslots
->   arm64: RMI: Create the realm descriptor
->   arm64: RMI: Runtime faulting of memory
->   KVM: arm64: Handle realm VCPU load
->   KVM: arm64: Validate register access for a Realm VM
->   KVM: arm64: Handle Realm PSCI requests
->   KVM: arm64: WARN on injected undef exceptions
->   arm64: Don't expose stolen time for realm guests
->   arm64: RMI: Always use 4k pages for realms
->   arm64: RMI: Prevent Device mappings for Realms
->   arm64: RMI: Enable PMU support with a realm guest
->   KVM: arm64: Expose KVM_ARM_VCPU_REC to user space
->   arm64: RMI: Enable realms to be created
->   [WIP] arm64: RMI: Add support for SRO
-> 
-> Suzuki K Poulose (3):
->   kvm: arm64: Include kvm_emulate.h in kvm/arm_psci.h
->   kvm: arm64: Don't expose unsupported capabilities for realm guests
->   arm64: RMI: Allow checking SVE on VM instance
-> 
->  Documentation/virt/kvm/api.rst       |   86 +-
->  arch/arm64/include/asm/kvm_emulate.h |   31 +
->  arch/arm64/include/asm/kvm_host.h    |   15 +-
->  arch/arm64/include/asm/kvm_pgtable.h |    5 +-
->  arch/arm64/include/asm/kvm_pkvm.h    |    2 +-
->  arch/arm64/include/asm/kvm_rmi.h     |  129 ++
->  arch/arm64/include/asm/rmi_cmds.h    |  692 +++++++++
->  arch/arm64/include/asm/rmi_smc.h     |  430 ++++++
->  arch/arm64/include/asm/virt.h        |    1 +
->  arch/arm64/kernel/cpufeature.c       |    1 +
->  arch/arm64/kvm/Kconfig               |    2 +
->  arch/arm64/kvm/Makefile              |    2 +-
->  arch/arm64/kvm/arch_timer.c          |   28 +-
->  arch/arm64/kvm/arm.c                 |  178 ++-
->  arch/arm64/kvm/guest.c               |   95 +-
->  arch/arm64/kvm/hyp/pgtable.c         |    1 +
->  arch/arm64/kvm/hypercalls.c          |    4 +-
->  arch/arm64/kvm/inject_fault.c        |    5 +-
->  arch/arm64/kvm/mmio.c                |   16 +-
->  arch/arm64/kvm/mmu.c                 |  214 ++-
->  arch/arm64/kvm/pmu-emul.c            |    6 +
->  arch/arm64/kvm/psci.c                |   30 +
->  arch/arm64/kvm/reset.c               |   13 +-
->  arch/arm64/kvm/rmi-exit.c            |  207 +++
->  arch/arm64/kvm/rmi.c                 | 1948 ++++++++++++++++++++++++++
->  arch/arm64/kvm/sys_regs.c            |   53 +-
->  arch/arm64/kvm/vgic/vgic-init.c      |    2 +-
->  arch/arm64/mm/fault.c                |   28 +-
->  include/kvm/arm_arch_timer.h         |    2 +
->  include/kvm/arm_pmu.h                |    4 +
->  include/kvm/arm_psci.h               |    2 +
->  include/uapi/linux/kvm.h             |   41 +-
->  32 files changed, 4176 insertions(+), 97 deletions(-)
->  create mode 100644 arch/arm64/include/asm/kvm_rmi.h
->  create mode 100644 arch/arm64/include/asm/rmi_cmds.h
->  create mode 100644 arch/arm64/include/asm/rmi_smc.h
->  create mode 100644 arch/arm64/kvm/rmi-exit.c
->  create mode 100644 arch/arm64/kvm/rmi.c
-> 
-> -- 
-> 2.43.0
-> 
-> 
+Thanks for spending some attention here.
