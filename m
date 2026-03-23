@@ -1,228 +1,624 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010020.outbound.protection.outlook.com [52.101.69.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F4A225791
-	for <linux-coco@lists.linux.dev>; Mon, 23 Mar 2026 02:15:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774232105; cv=fail; b=N2AKmuVQ8i5qha9cqbwd60EvYdOnEqi3k/Ljs/0F11R4jWZIVpClGsMF3qxskDYfFU2DIHpAu0m3hztR9xR6pfZjNk/knKfu9u1VtlIt2ELgcKgO8+YWcOqru5KdcoDwgGL9m+jjD2ilkujI7+XVLJvl1h9w4KYJrYwu6m2F3f8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774232105; c=relaxed/simple;
-	bh=idSI3NDXqoU9sMneh5RJBR4gOmgHFhF5PbRbvPNZsAY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=WzbtZ/GncIbTmwWeZCz7fNp9ntsaQhbWyZQB3IzKBSzn9wxWWkpr/1CKjwfcXiljLRlZjocqPTd79ixlD/fwGKIWRvoMGK1JIuDDIIpK9Zdl76sTBTMCKM4UnZc/LnG/rs9nw0mCWslzr8Yll2UXv13HlDYQACGo1RpuZ0+DkFQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Do0tn+bB; arc=fail smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BE3388E60;
+	Mon, 23 Mar 2026 10:04:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.20
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774260262; cv=fail; b=VmGuFYL4EHg+XVD/B4TZpUNmt+u7RZEKxU/eaMGAH5rdOouDZ8itZ985sAw6lxFpoWpB5TGdby9N4/kj72i3J3Bifm2FeNtUta2YpXf4wh3YW1K5ULuamj/UoXb2ppJCGz8M2I3cG0kIjqKMizd0xoMgclqGSE+jTEakGwbtrvg=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774260262; c=relaxed/simple;
+	bh=aQAYr2CW7yA2NfpfjPthn9Rlv3XuBqYsWEFTyY7eqeQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=fYLPbFekwgtQujscVOS7ZR2u0XmtIjdzNlRH+vJLj7aWBWfe5NhyNp8G2pkB+EUccqtDRptfuXJqBe04ZChzPBD+RkN8UJ20q+KnKLTe71nAHfKVNgaRqHBRGVvZJWC1O+xw/GRRMk+3lolh59HQYbEaw0uwh3ASZBLvCsjPXOM=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=j5DHTzd+; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=j5DHTzd+; arc=fail smtp.client-ip=52.101.69.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Do0tn+bB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774232102; x=1805768102;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=idSI3NDXqoU9sMneh5RJBR4gOmgHFhF5PbRbvPNZsAY=;
-  b=Do0tn+bBCDiBfxWnFwi6dQkmDiTPZduge36ZcyaLGzw/gyVC6WdYuk8o
-   mAhXDWGP9KMJeNM3AyO/Se9UuqmuGT7TVXOQqUmmLI6Aho8oUEaGCUUdT
-   0fCjFeT09Tvjujh0D2mUNlgpewvJTqDOquZF084+mHLTnIOpz9VJkFrGH
-   n9gF+nksDSSK4qhHDJHm0jQXuk2nmCDMTW3ilNASxyRxp+u4y1igPRjuT
-   9l5CEEy3fUMFzQk9wHkxVm1g13Vo1dzVb663jBnjgjuRxTtrdtxMcT1r/
-   N26N6ZJ2zxpFdc27K3QDI1Wd2y72/PPLZs7d+jk0Oq2yMsgxzxnVlIifQ
-   g==;
-X-CSE-ConnectionGUID: DXhyRPf7QxuokzVr+QrrSg==
-X-CSE-MsgGUID: 4+7T1b3XS9C+p4l/xdj0DQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="86300010"
-X-IronPort-AV: E=Sophos;i="6.23,136,1770624000"; 
-   d="scan'208";a="86300010"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2026 19:15:01 -0700
-X-CSE-ConnectionGUID: Htb2jnwnR/SHJBY4A7Jwfw==
-X-CSE-MsgGUID: /YzJJMESQX2RftgqdO5S8w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,136,1770624000"; 
-   d="scan'208";a="219104940"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2026 19:15:02 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Sun, 22 Mar 2026 19:15:01 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Sun, 22 Mar 2026 19:15:01 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.15) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Sun, 22 Mar 2026 19:15:01 -0700
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="j5DHTzd+";
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="j5DHTzd+"
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=VSrA1MsPVeRaRmY+fUHjGFej7motqy4+t9cHstWZ//6dM8zRGpH29CNXf7nMuMCfywBnO8nAZBIPiYxZtfvOtYqG23cg72aSaYZbdGZSt/EWuFfdL58MUBKEgcamYjl9xNG4vGUGY7/WSMKwgdauv0YJdsb7h9zGRJ00eEaCvBjbo4Z7ruu8NeTi9u+e3MId6GQPcQVc5P18q9Is+0GbfWp7vznZg8AbguId0qs/rRzEMBckOJJkaxQ3Gfiy7Pap7CIZPYLmV3xXWr7XwTX/M4Ux097EnbmgmfYmA/w38vJaflXUcUbUiZN+7elYGMIECjJ1cHzAyFUV5Iy81ANurw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fSYA65+9d5MDSn0CilZjvhCrGO8fEsZRTewrnqwiqDc=;
+ b=PkhFqh5Z6Y0Y5TXmbmZTwrrvopSm7CKuGZugGGBzs85F+mjtZi/GkRY8vQOaP0ua2XYHs2ml3jogPBskzqPxm/NbOXKV7lX5u7Et/+CCrGm8nnieU1C8C4QUA00sCFfioPDpyvjyWCDueAqJRmQr+lDgGFb5rogF5wUZoG+5iFLqKRE1TaNotnN8CKuSnd3ZEOwMZjahY2vxTp6PfFWvZe4UOxzYPhU1xaV2XTOR/z7Nztbaus2FFKsDjZjvuONCyp4frF3M2FJGzRMaIpq3N9KeKhojdQIS58gemxh0e0JNRzbjxX3UJ9eFWYE2YADhGORS29NontF9Cr9w9Eeaow==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fSYA65+9d5MDSn0CilZjvhCrGO8fEsZRTewrnqwiqDc=;
+ b=j5DHTzd+upfkJwbyPhXsCf9ooOqI3tRUZ6UXfNXWQwheakaUnRHC1IKR6d5zrzqFsD8xkUxf642ufIy8oHvMFwD63zcXr21n0Sv/JNz/lCB/MF7WVWv+dhif8fvy2dxwvqgeQimYizieo2+zyzqR0rD5R3G1Gidh3ANBjMuEmHE=
+Received: from AM6P193CA0098.EURP193.PROD.OUTLOOK.COM (2603:10a6:209:88::39)
+ by VI0PR08MB10896.eurprd08.prod.outlook.com (2603:10a6:800:254::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Mon, 23 Mar
+ 2026 10:04:08 +0000
+Received: from AM4PEPF00027A6B.eurprd04.prod.outlook.com
+ (2603:10a6:209:88:cafe::c0) by AM6P193CA0098.outlook.office365.com
+ (2603:10a6:209:88::39) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.25 via Frontend Transport; Mon,
+ 23 Mar 2026 10:04:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ AM4PEPF00027A6B.mail.protection.outlook.com (10.167.16.89) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.19
+ via Frontend Transport; Mon, 23 Mar 2026 10:04:07 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RTJhUwX4IsbRMIESiTft9fO4t9QS/ztZIILuSIwK0Wbc1eloWL2gw+stLUCpmu5Am1evN2PQcnr1cb4DagWgxYZzkLpgTupWijlruynXb5whg+uLI09eLzPAAlfFawvSoYd/CMw1oDCYlyajMPDUJ270Mur/gXQpyUgvi5fdK9GmMn2jNRNcT3HZlc+10ns1h2mYWWu4vmDMjXRNBRA1kTT4YeHk42sUccp1GwPKyL7sj1BTFVIYTG6QboBcG0cbvQrjBSsatSPHKpmElKo6uODg0uDsTNWYkgcP7K8naKqlzP9p+FuL0mrwRL6yx3JaAQTqgZqJr1GE46O4jYe/LA==
+ b=sD4Liw8mBF3we7fH51s2iDSXBhXWU6J1vpzgJCfQ8rsdbopWJ577Yy6TIPwLV2MuzPmab69cWeV7FMSR6+9mGAN7t1JoP/xkw0Fy1hSOO0NPLQKxxaXMbth2LAjAq0EFW0Mt+OzX7HKl8EnWPyJ20uV0wQssWaEpeh1Gk1N4LNAcRXNNTgKqq5o6ANCNWchSR+d6/sfER1b1RhRbjvmvuJYtzxigjEFHjXsi75MqEE3oKuAi9uV/xz0kv1NT1V/vYzlP0eLYS3njVZdaj9Oi8k4eKKJzjDf49AnTdKKXhYdHos0FU/cynuLJBXma9a/gzkhdjjEEhSvSRFf+i/mgLA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B2L4CueYAXocYvUYVqBSIzAQSZdFWcnL5QR/dD1VfeM=;
- b=kCdK3rivNWh69Z+w7tE3LN1WdQgv9XQAf7gW5j9KJr+Rz7qJObesHI4JdTYACXJ7UuT6iiflz1nFoDqTHHnXDpajIHb7CnYxa0TPGY5/bKwpAvJBKLZyAY/M9ZMIiXUAEpaQ0kY4vrFPP/5VipVWvzLCxLfbrSQj0v6ecC5Qoare40yHkA5p3CzQ8ddwsrOIFoGml9njpU3c6kFwhlWlmbMS3Vn/EbwK4L9kJ/vGcX9eHtd8Oj0QqaGfdN/1pRPP+EZh7pcFq6M1jA0A4RM5PohyXZHCg/EMwAr5WJ/61kcjCKRviWSM13zh//Prrrq99nmE2bllVUGB1mSHLZc20w==
+ bh=fSYA65+9d5MDSn0CilZjvhCrGO8fEsZRTewrnqwiqDc=;
+ b=KrEh0pO5LftgzHr3PD2oOjRI6/N6Ics9EMPmZd9jceRLCh/+kC9ToQ6AaJCugzsvTFwtouxVBQa5q074xut5JggSmGdvB3Ck+bOWUz4ZXK/y76sFcUN1+TsZGr5nYjja9UR+Jdi2A0/YBv2Ied4El+N6WysF9KU2hsQNn7073016FttY2SbkdR8hYDtUu1FSmwRzRGFMqq8NxRau3TYZY4yPEcfHqLYoHCCfYk752gjER3s7fc8jyG7PtqEhdGZ6bjzfzwGoePun7bWb5uQRq/S5LbbJPDriFVMxjbuYEW4ahyBZCdQm+elqTvec0HE2SzCXt7qTi1kUBCa860zGsg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
- by CH3PR11MB7940.namprd11.prod.outlook.com (2603:10b6:610:130::18) with
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fSYA65+9d5MDSn0CilZjvhCrGO8fEsZRTewrnqwiqDc=;
+ b=j5DHTzd+upfkJwbyPhXsCf9ooOqI3tRUZ6UXfNXWQwheakaUnRHC1IKR6d5zrzqFsD8xkUxf642ufIy8oHvMFwD63zcXr21n0Sv/JNz/lCB/MF7WVWv+dhif8fvy2dxwvqgeQimYizieo2+zyzqR0rD5R3G1Gidh3ANBjMuEmHE=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from DU4PR08MB11769.eurprd08.prod.outlook.com (2603:10a6:10:644::21)
+ by AS8PR08MB8924.eurprd08.prod.outlook.com (2603:10a6:20b:5b2::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Mon, 23 Mar
- 2026 02:14:52 +0000
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9745.019; Mon, 23 Mar 2026
- 02:14:52 +0000
-Date: Mon, 23 Mar 2026 10:14:39 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <binbin.wu@linux.intel.com>,
-	<dan.j.williams@intel.com>, <dave.hansen@linux.intel.com>,
-	<ira.weiny@intel.com>, <kai.huang@intel.com>, <nik.borisov@suse.com>,
-	<paulmck@kernel.org>, <pbonzini@redhat.com>, <reinette.chatre@intel.com>,
-	<rick.p.edgecombe@intel.com>, <sagis@google.com>, <seanjc@google.com>,
-	<tony.lindgren@linux.intel.com>, <vannapurve@google.com>,
-	<vishal.l.verma@intel.com>, <yilun.xu@linux.intel.com>, Thomas Gleixner
-	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v5 13/22] x86/virt/seamldr: Install a new TDX module
-Message-ID: <acCiD6illR2qRidT@intel.com>
-References: <20260315135920.354657-1-chao.gao@intel.com>
- <20260315135920.354657-14-chao.gao@intel.com>
- <abv6fT8Rvk01DGah@thinkstation>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <abv6fT8Rvk01DGah@thinkstation>
-X-ClientProxiedBy: KU0P306CA0062.MYSP306.PROD.OUTLOOK.COM
- (2603:1096:d10:23::9) To CH3PR11MB8660.namprd11.prod.outlook.com
- (2603:10b6:610:1ce::13)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.25; Mon, 23 Mar
+ 2026 10:03:04 +0000
+Received: from DU4PR08MB11769.eurprd08.prod.outlook.com
+ ([fe80::d424:cd62:81a8:490f]) by DU4PR08MB11769.eurprd08.prod.outlook.com
+ ([fe80::d424:cd62:81a8:490f%5]) with mapi id 15.20.9723.022; Mon, 23 Mar 2026
+ 10:03:04 +0000
+Message-ID: <c4e30ad1-6fbe-448f-a9fe-6a2480581082@arm.com>
+Date: Mon, 23 Mar 2026 10:03:03 +0000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 20/48] arm64: RMI: Handle realm enter/exit
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>
+References: <20260318155413.793430-1-steven.price@arm.com>
+ <20260318155413.793430-21-steven.price@arm.com>
+ <8929a008-0991-4e3c-98a1-f00af47dd0ff@arm.com>
+ <02582577-3701-4d5c-88c6-3ce0b3328377@arm.com>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <02582577-3701-4d5c-88c6-3ce0b3328377@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO4P265CA0141.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c4::11) To DU4PR08MB11769.eurprd08.prod.outlook.com
+ (2603:10a6:10:644::21)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|CH3PR11MB7940:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0eb1a5a8-2898-4346-048b-08de8881f7bf
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic:
+	DU4PR08MB11769:EE_|AS8PR08MB8924:EE_|AM4PEPF00027A6B:EE_|VI0PR08MB10896:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5ae751cb-3a29-49cd-6c10-08de88c385e2
+x-checkrecipientrouted: true
+NoDisclaimer: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: 6US7kKJf1peC9jTmKGx8uaXPUEPcQuwX4SinLPcF2OIwvlwz4HYLSKRmcRt/Bde462TQxCHSZVo883fDBXpPO+V9zB7vEaD5eSSggIfzSW17qCL1RSluXjf5bRBLhG/6NsffCFyZGbEtgQtRmSQhHg8mLvxvtx2kw6jUIrJNlKWihO2dVZdqkBSjXMPVkiVhpA1M7woAueSu/fyaruSe0LCPbeGlL1MOp9QqtWIqnl8cqXo+S6Li+DaxcbnzRGJ2UOndCWmy+x/1R01oQxcr0m9AMgHigg8uBzdCGOPlJ5wWoCoNvFuAv2HkoCB8qM1YKhK8MsVA/UNz1YPnnkbkz8oyIJsuI4Z1I8gjygb44Oek6KDv1efsvY0vcRt7mFvHX5o/hqyWRLILsYOstCiPGdlX45N3RSFzVCo7b+sMTX5YlIQ+UKNpbM6WeS5sDuLHPTQtmCyywt3exMdJz25tjUuG+eKonfrGD40EMlaFmqopOOdO0tsvkS7UbFc5PlImlYrA21NJwULtpVkgDO7ybq1peMSJHRHnNGOmqhtXtCjOjgZn3n5CE6QXSInyeJNTQ9UssQZDOQcLSuNyPvSGIsjMmb16LdOolE183IbJlRnlFMXLhxwTH9qODsZnOZ4jWaUANTVzBDEy1tqE1i7c57vyp34qapvRPKVZRoQSrqkrWaB5MaSFBOnN7pltH0aAF1IFgvyOOLkHUv4GvYbsuKL7MrfvMcbQgcok9XmxW3U=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|1800799024|7416014|376014|366016|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ I0ge3/ScBjMDga9Gg4pvgibKOFK4low1vRuUIY8Nuo7oDXO9/ta/7yZLdpDyEtkcWChzV4btNSyXdlZpM/MvjHgg6KXZGt/r0OO+qb01j6oqw/+599g4p2nCuvqESVZcKY/J1IyhL48ddcOtXoyih3afW3E4SPVXMRCJxZzrTqmV+0TjtvNvNs50HfgEhamGpUe/P+Cu9MhTzHXexabMpPhxtaonyIjDVamSafoGPo01DEnNgH5O9PsjBoO1imZbszCQwJMU16lOTslwexsVDNyjkn1m8IiSv3cVE/Uks7JpnxQ7G0PfQScb/wlPcu7jSya3xDe+gQ/3eSb7OeZ8vKhD1Rn7fnDcKsFulWNGMuPNimNvbBwPUrPIHIDAu2o0dNFOH/ZXHPz1qlBaMCIulACFW1G7JdCMdpl34MYGxQeljs1bOP1PU6Z14/c155x7Ak06Hjxqw6TEU9iTAjhcuR1dmmk/cVXGrCZtjDuNnEFVmU83rtFOuuYO8gl/VGtKsk3YVfR0I7MEdGeouxAnnckAbLItMkeBpKm/lDYUJ3Mm+5m9pHwaChWwf88c4IQk99iI3/PKe3PVV87Yy9lWTY33yUQSY+tOyGVNMLgg2D14Xh+O3ElNbbDdCJrDQxU7gZzvzlXD9lWmwNlOmQYp9QY9D4UDOgvG5L8+Hecx75Z90uR/EoHPatJJoEa1qkg36Zl7cqG/3f7VLTCFJteixTgMqOAgHzLAeWYABcS0G+A=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU4PR08MB11769.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ BcaejAZT/cxu1y72G+JCS1PGoKAM5KksQ6Y4XyfiqhE1eciI/iQQpGIBVku8EpuLSGfhGePcv1mq7mZC901Oz4/x0ObILSy5DeR4UI6TX5YbngeidOMJuDQgP2neZOmprmlu5F402n2nTZSes0j0t+j5s9ZmFf0RR+7V+yNlwN0ysHSZvZoElHUMnOGMhVAs650ebaQwlDJopX83PpxWd3IJ2XIV0KzhULu7sMDCydNrH2kpsUCJ5sBtBIwn2RO0mkpRLohj+ao6L7nahXEVtiaJqH108yg7x6RQXEkh4okyVhzEeajHmC5kqDRsPcFs7tG2HrWvZSdoLhfiCoQVgQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB8924
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AM4PEPF00027A6B.eurprd04.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	5f9f3b41-368e-40c2-783d-08de88c36023
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|14060799003|376014|7416014|36860700016|82310400026|35042699022|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	SIxTIhVJwayC8wjROtCHn1XvRIAFuVpvFEZ24vedZA4nChb3XlUaHS2FvOyP0HYitLEOFFNsqlPbZnw4qs1nBQZQ8gay18YgVPUOoEzw6SWDiOgNMS7+8MEsyLVQmeSTpl/dgqsoAI1mnLvsK/Cua2TX8K+mvu/iaP3I/wLnxcURRGfJslayOmWG8AGsvOGhIKxPAoOlYW6IohTUPhwv/iXOEqFeFbsxdUAEBb61WMh3xLnjAQ1e5/CrQMA9BxYO1nTpm5b7whVAcqk3yn8VR1TrX0et6u0T2r063rzN95jT6aKIJw7RC7z3Qu7fKtXKovei8cjPTAOL9J7N2+jQcVbHe1U+D9bATRhQf0oFxqZ78+lONk7NbGxn0dgk90JtepTVspn7MswDkI1Q9vbSSkfYFKsSn9dq8/kDnSROK1auZbpAlUtKzs638k6jm1UOXnD5qgPy7MTP0UdLKtAH8RUFBogmlpZ7vfMdRBlP+Ez4YYFCSSnco9JDsxgc3f5AH68dO6y8wU3MwS1f+0VsMGf/dgfmfd1+MBwUcIndP5umP9SrVe1VoMFQMleaBdjuz/pIwVg8PuXJ9BMBFtUc/XU6y4o78CJuABOPB9SFaI/6zqFfjGqEJIC6AExrkHifMRtd3s9UCenZFFRu6ddFCzICWp8JpnOyYivih0lZ/nW8nr7wIo48PD3xw1HpNKaULVqfdv8NaLh/9PItsTtmhqJD4fbETHzDrhfywrHD9CAzcrKF/wq9e+YU3P6anVXEM+qwvsPoscGRFQUjVVdPwg==
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(14060799003)(376014)(7416014)(36860700016)(82310400026)(35042699022)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?WWwaIHVSgB58x+LJWWIj+jfrSpCMCZtzNZHt2IxnBuvMcFTwhCDUp9ffDOjD?=
- =?us-ascii?Q?cVyyO7lELx7lG9wX42QDmzEcnI2CCi4GPydXdidxvLlwxMRFGwP5BoafFnYj?=
- =?us-ascii?Q?7jsGZO5NiIsYAVw5wrkJzTB41lXUo/vZqsc4n/WpIQwtTFOwwLtczbC53ZdI?=
- =?us-ascii?Q?SY4dXu5TgyMPPZDN1F+QCG4A0aMy6XtiUpcerDEaxP6s8kIdZzfURE4k7EKn?=
- =?us-ascii?Q?VZ/2WWdpZrN6ormKQTOyyoZneCgN377PA1qhBcwVE8W1iBtMJOU2PN8pqEYm?=
- =?us-ascii?Q?WgZaIbqUWly2ac9+h+0SFz/sCPF7k+IK8POyXo4nIJhykKfmnwit5RIbrYE2?=
- =?us-ascii?Q?G1dSE0DVrAvOG8jET3jmDPa47b/TfCGniqPkvUphejGWXcLrLHdN4H4NoKHl?=
- =?us-ascii?Q?iKBdKFfOeAWx7sVspYokFMhUAqlAQT6yaAySNLEvPoE1eri4Ck2LgPZDI4Xa?=
- =?us-ascii?Q?uQABaGzQwgCQ/IVuIqy9udxEGJ37dhLWqNGM2vXXEApcqrgNtwy+qb6dJeLL?=
- =?us-ascii?Q?ZxIHvxPiZ+mvUEzxn6haeI0wkeeLi0CZ8HFpua8b+/g17gQAILSm5KtroV1P?=
- =?us-ascii?Q?JJoV+TARJ6EUUHs+YELaC4biaayAIJ0w2yK1/YgIG5QVVC5W6R1A5WwCPmhX?=
- =?us-ascii?Q?vTewXLozqzeJs0MJmXn2v3jIpmD+OSCBnFB8pn6IU2ZSInCa07dMN5eBzhd2?=
- =?us-ascii?Q?TP3jMI6RK9446Uu1djG5PZn4kphzIAdm8xzo3N4OmcFA40JbPfu0PBzhdjhj?=
- =?us-ascii?Q?Cj0D+iAF0FxtTNhlVCxBkAKzn9jVCNYTB0f49954G5yG+Y5KeuXZJmUFELug?=
- =?us-ascii?Q?DskYoNFjCiXgFFoB53bJmcM1XDr1Sm5QXNijrz+wE8e98QkFvD/LZGa9NcfU?=
- =?us-ascii?Q?cz22x7tNzmlllpkYyGmxQ31rNzm61HnitWNDfIFhOVN5OF/wMkEk2qDgR7FN?=
- =?us-ascii?Q?+0LKLYMmbwQxsIr3K3M91vTJNS5qbd96cnFSPwbofCtkGiAms1ne8M/jUSEz?=
- =?us-ascii?Q?vJBBhlmu2yy7oCyHlqoNFMEnnBOLgZRPpjFHI5FBZ5R5TwwsdJEnEZ/hOSrs?=
- =?us-ascii?Q?fT5YmNUQuAEZvmYCqI6cEavn/ewfq7Dqh3DEmyq22o9tLbjniBi9o2r//O9A?=
- =?us-ascii?Q?aeJ0IxMrch9eawhfXNRddk3n25HMRQrWP2MN4NhLb3ncTUjqrrwQ90yjwFk9?=
- =?us-ascii?Q?DF7PuX9ZVbOL1t16IBEUIb2lXxg3clC6hZZ9rf+OvDmokVypdbHSD7lTcQFk?=
- =?us-ascii?Q?pO+1Ho2ORUUnHRLLS4scB/inGnfNtv+/vZnHk1j2Y8b8By/77ySO2L1ymRzg?=
- =?us-ascii?Q?XYof0fAaj2oeZzfHbQd5UNGNaa8EfF1ReRCxFFBv+NrbLTQFdzLB3TED62xd?=
- =?us-ascii?Q?rzKdLQyQkxDbpds6O06nFAb4r3VxbIHXkez5qASUUNbuM3qQOzzcAVNeGbnv?=
- =?us-ascii?Q?SJ+ntxDK06dJEzzMEs+lpqPVNa0Qspl6/8FsoM4jaPodHXAWe/VNxaG8/YTZ?=
- =?us-ascii?Q?m5Aod2R+Dq8emR/CpKEVedYgQS47RVJ9WEHcYhCj4Fsmy5DvwOPX4SMxj/Zu?=
- =?us-ascii?Q?gzW+SNfgENtp5Y2SsLBVVI51Ss2Nvoyoc2NziMFjLwbAeWQjDrtZsTnkZm/c?=
- =?us-ascii?Q?H6G/yZoMq4ePv0SflJcQ8sOljNPKZBdIgjQUFGF8HY+inX9gbjzGIh8EFuZc?=
- =?us-ascii?Q?WUhbId4L+5GdkwqRreda0UTn2PB+QHZA3cvNDPo+Tak8f1iIXnLqsSKcB8P/?=
- =?us-ascii?Q?DcXuuEujpg=3D=3D?=
-X-Exchange-RoutingPolicyChecked: FV2P1OLmxws/u6bV+DEa4HjGBpbgPkOSTEp9t+M6/yU8wcnlYIabLEOGNXt8POMkA594+eNGX8OCU/XxzgOOO6O+fhWgusaoBSbk+OOHeAmwtztmI8bnFTc1zIup8qFjSRuqgV2lC8codKbik30JmUxy6Pau5RxRQn0t3TnJkwfPtPolTARGgprDy2VI1Ysf1C9a6sSbVIW73tGH8xZz1V+TTaE0Jr7va8j1nW7ZnDTJjV+8WerZ67V2qbjK86W4EJ91jJBVG0KOx4s+FKl75s5mdw2IA/v0v8KpFIxj6vdMXyIL4XChW1wy5vqv0IF/7YPHKZwoY3zmXKOTfOZCqw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0eb1a5a8-2898-4346-048b-08de8881f7bf
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 02:14:52.3434
+X-MS-Exchange-AntiSpam-MessageData-0:
+	nnaU3VuxjIc/4A92J/Lz++3rYIy4RJC6fTyZOSfq8W29I9g2DRAzTOeWN2NrjEIaOBXvDxWqhcDeIs6Osq1j9otsAZ3xtB7Zver0OpveQSTU2+Xv/4gcNMy45Sg69y0oAUxi4Qj5wDcDSk7RVg3ApPql8GqqU5HaMbJmVfnIjTggfdELyXqpv40oggvF3WfdDdW6dWvsHSRi6XmY7DA8fUM1ZxXI3k4rtlbzsdag22INylNTWNmBME7HR3+/FMuISV6p9iBoMIWiuZ3bQMJ13zh5ko1zJkXV/wwI+t9K9MHAUyRe/yCqfy0zH7BeiFHQrJdqse9eI/rwHvC+5nBDjO0dlqGkeIWxtij0O3ErM7fgU6LCYfi2FicstJ565/5LEQ7jVGOgpuoqNAMVpVt+UzZ5ZnrLgxgK0G6FiQ4MUNtxLy0i31yuCQUlVkwBMTjj
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 10:04:07.8335
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: c4Qe209hz494nhXfdX9z3SNWLJvrsF7SIZIck4ZQr1l03B9cTxHr+AzOlxtAE3GB/FWl4c9WjiKKpumvmaqLvg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7940
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5ae751cb-3a29-49cd-6c10-08de88c385e2
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM4PEPF00027A6B.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB10896
 
-On Thu, Mar 19, 2026 at 01:32:07PM +0000, Kiryl Shutsemau wrote:
->On Sun, Mar 15, 2026 at 06:58:33AM -0700, Chao Gao wrote:
->> @@ -225,6 +227,7 @@ static void ack_state(void)
->>  static int do_seamldr_install_module(void *seamldr_params)
->>  {
->>  	enum module_update_state newstate, curstate = MODULE_UPDATE_START;
->> +	struct tdx_module_args args = {};
->>  	int cpu = smp_processor_id();
->>  	bool primary;
->>  	int ret = 0;
->> @@ -243,6 +246,10 @@ static int do_seamldr_install_module(void *seamldr_params)
->>  				if (primary)
->>  					ret = tdx_module_shutdown();
->>  				break;
->> +			case MODULE_UPDATE_CPU_INSTALL:
->> +				args.rcx = __pa(seamldr_params);
->> +				ret = seamldr_call(P_SEAMLDR_INSTALL, &args);
->
->I think it should be in a helper alongside with the tdx_module_args.
+On 20/03/2026 16:32, Steven Price wrote:
+> On 20/03/2026 14:08, Suzuki K Poulose wrote:
+>> On 18/03/2026 15:53, Steven Price wrote:
+>>> Entering a realm is done using a SMC call to the RMM. On exit the
+>>> exit-codes need to be handled slightly differently to the normal KVM
+>>> path so define our own functions for realm enter/exit and hook them
+>>> in if the guest is a realm guest.
+>>>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>>> ---
+>>> Changes since v12:
+>>>    * Call guest_state_{enter,exit}_irqoff() around rmi_rec_enter().
+>>>    * Add handling of the IRQ exception case where IRQs need to be briefly
+>>>      enabled before exiting guest timing.
+>>> Changes since v8:
+>>>    * Introduce kvm_rec_pre_enter() called before entering an atomic
+>>>      section to handle operations that might require memory allocation
+>>>      (specifically completing a RIPAS change introduced in a later patch).
+>>>    * Updates to align with upstream changes to hpfar_el2 which now
+>>> (ab)uses
+>>>      HPFAR_EL2_NS as a valid flag.
+>>>    * Fix exit reason when racing with PSCI shutdown to return
+>>>      KVM_EXIT_SHUTDOWN rather than KVM_EXIT_UNKNOWN.
+>>> Changes since v7:
+>>>    * A return of 0 from kvm_handle_sys_reg() doesn't mean the register has
+>>>      been read (although that can never happen in the current code). Tidy
+>>>      up the condition to handle any future refactoring.
+>>> Changes since v6:
+>>>    * Use vcpu_err() rather than pr_err/kvm_err when there is an associated
+>>>      vcpu to the error.
+>>>    * Return -EFAULT for KVM_EXIT_MEMORY_FAULT as per the documentation for
+>>>      this exit type.
+>>>    * Split code handling a RIPAS change triggered by the guest to the
+>>>      following patch.
+>>> Changes since v5:
+>>>    * For a RIPAS_CHANGE request from the guest perform the actual RIPAS
+>>>      change on next entry rather than immediately on the exit. This allows
+>>>      the VMM to 'reject' a RIPAS change by refusing to continue
+>>>      scheduling.
+>>> Changes since v4:
+>>>    * Rename handle_rme_exit() to handle_rec_exit()
+>>>    * Move the loop to copy registers into the REC enter structure from the
+>>>      to rec_exit_handlers callbacks to kvm_rec_enter(). This fixes a bug
+>>>      where the handler exits to user space and user space wants to modify
+>>>      the GPRS.
+>>>    * Some code rearrangement in rec_exit_ripas_change().
+>>> Changes since v2:
+>>>    * realm_set_ipa_state() now provides an output parameter for the
+>>>      top_iap that was changed. Use this to signal the VMM with the correct
+>>>      range that has been transitioned.
+>>>    * Adapt to previous patch changes.
+>>> ---
+>>>    arch/arm64/include/asm/kvm_rmi.h |   4 +
+>>>    arch/arm64/kvm/Makefile          |   2 +-
+>>>    arch/arm64/kvm/arm.c             |  26 ++++-
+>>>    arch/arm64/kvm/rmi-exit.c        | 178 +++++++++++++++++++++++++++++++
+>>>    arch/arm64/kvm/rmi.c             |  43 ++++++++
+>>>    5 files changed, 247 insertions(+), 6 deletions(-)
+>>>    create mode 100644 arch/arm64/kvm/rmi-exit.c
+>>>
+>>> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/
+>>> asm/kvm_rmi.h
+>>> index 4e2c61e71a38..7bec3a3976e7 100644
+>>> --- a/arch/arm64/include/asm/kvm_rmi.h
+>>> +++ b/arch/arm64/include/asm/kvm_rmi.h
+>>> @@ -92,6 +92,10 @@ void kvm_destroy_realm(struct kvm *kvm);
+>>>    void kvm_realm_destroy_rtts(struct kvm *kvm);
+>>>    void kvm_destroy_rec(struct kvm_vcpu *vcpu);
+>>>    +int kvm_rec_enter(struct kvm_vcpu *vcpu);
+>>> +int kvm_rec_pre_enter(struct kvm_vcpu *vcpu);
+>>> +int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
+>>> +
+>>>    static inline bool kvm_realm_is_private_address(struct realm *realm,
+>>>                            unsigned long addr)
+>>>    {
+>>> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
+>>> index e17c4077d8e7..4b103bcbe760 100644
+>>> --- a/arch/arm64/kvm/Makefile
+>>> +++ b/arch/arm64/kvm/Makefile
+>>> @@ -16,7 +16,7 @@ CFLAGS_handle_exit.o += -Wno-override-init
+>>>    kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
+>>>         inject_fault.o va_layout.o handle_exit.o config.o \
+>>>         guest.o debug.o reset.o sys_regs.o stacktrace.o \
+>>> -     vgic-sys-reg-v3.o fpsimd.o pkvm.o rmi.o \
+>>> +     vgic-sys-reg-v3.o fpsimd.o pkvm.o rmi.o rmi-exit.o \
+>>>         arch_timer.o trng.o vmid.o emulate-nested.o nested.o at.o \
+>>>         vgic/vgic.o vgic/vgic-init.o \
+>>>         vgic/vgic-irqfd.o vgic/vgic-v2.o \
+>>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>>> index 45eff4c41cde..badb94b398bc 100644
+>>> --- a/arch/arm64/kvm/arm.c
+>>> +++ b/arch/arm64/kvm/arm.c
+>>> @@ -1311,6 +1311,9 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>>>            if (ret > 0)
+>>>                ret = check_vcpu_requests(vcpu);
+>>>    +        if (ret > 0 && vcpu_is_rec(vcpu))
+>>> +            ret = kvm_rec_pre_enter(vcpu);
+>>> +
+>>>            /*
+>>>             * Preparing the interrupts to be injected also
+>>>             * involves poking the GIC, which must be done in a
+>>> @@ -1358,7 +1361,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>>>            trace_kvm_entry(*vcpu_pc(vcpu));
+>>>            guest_timing_enter_irqoff();
+>>>    -        ret = kvm_arm_vcpu_enter_exit(vcpu);
+>>> +        if (vcpu_is_rec(vcpu))
+>>> +            ret = kvm_rec_enter(vcpu);
+>>> +        else
+>>> +            ret = kvm_arm_vcpu_enter_exit(vcpu);
+>>>              vcpu->mode = OUTSIDE_GUEST_MODE;
+>>>            vcpu->stat.exits++;
+>>> @@ -1404,7 +1410,9 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>>>             * context synchronization event) is necessary to ensure that
+>>>             * pending interrupts are taken.
+>>>             */
+>>> -        if (ARM_EXCEPTION_CODE(ret) == ARM_EXCEPTION_IRQ) {
+>>> +        if (ARM_EXCEPTION_CODE(ret) == ARM_EXCEPTION_IRQ ||
+>>> +            (vcpu_is_rec(vcpu) &&
+>>> +             vcpu->arch.rec.run->exit.exit_reason == RMI_EXIT_IRQ)) {
+>>>                local_irq_enable();
+>>>                isb();
+>>>                local_irq_disable();
+>>> @@ -1416,8 +1424,13 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>>>              trace_kvm_exit(ret, kvm_vcpu_trap_get_class(vcpu),
+>>> *vcpu_pc(vcpu));
+>>>    -        /* Exit types that need handling before we can be preempted */
+>>> -        handle_exit_early(vcpu, ret);
+>>> +        if (!vcpu_is_rec(vcpu)) {
+>>> +            /*
+>>> +             * Exit types that need handling before we can be
+>>> +             * preempted
+>>> +             */
+>>> +            handle_exit_early(vcpu, ret);
+>>> +        }
+>>>              kvm_nested_sync_hwstate(vcpu);
+>>>    @@ -1442,7 +1455,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu
+>>> *vcpu)
+>>>                ret = ARM_EXCEPTION_IL;
+>>>            }
+>>>    -        ret = handle_exit(vcpu, ret);
+>>> +        if (vcpu_is_rec(vcpu))
+>>> +            ret = handle_rec_exit(vcpu, ret);
+>>> +        else
+>>> +            ret = handle_exit(vcpu, ret);
+>>>        }
+>>>          /* Tell userspace about in-kernel device output levels */
+>>> diff --git a/arch/arm64/kvm/rmi-exit.c b/arch/arm64/kvm/rmi-exit.c
+>>> new file mode 100644
+>>> index 000000000000..f5701153dec0
+>>> --- /dev/null
+>>> +++ b/arch/arm64/kvm/rmi-exit.c
+>>> @@ -0,0 +1,178 @@
+>>> +// SPDX-License-Identifier: GPL-2.0-only
+>>> +/*
+>>> + * Copyright (C) 2023 ARM Ltd.
+>>> + */
+>>> +
+>>> +#include <linux/kvm_host.h>
+>>> +#include <kvm/arm_hypercalls.h>
+>>> +#include <kvm/arm_psci.h>
+>>> +
+>>> +#include <asm/rmi_smc.h>
+>>> +#include <asm/kvm_emulate.h>
+>>> +#include <asm/kvm_rmi.h>
+>>> +#include <asm/kvm_mmu.h>
+>>> +
+>>> +typedef int (*exit_handler_fn)(struct kvm_vcpu *vcpu);
+>>> +
+>>> +static int rec_exit_reason_notimpl(struct kvm_vcpu *vcpu)
+>>> +{
+>>> +    struct realm_rec *rec = &vcpu->arch.rec;
+>>> +
+>>> +    vcpu_err(vcpu, "Unhandled exit reason from realm (ESR: %#llx)\n",
+>>> +         rec->run->exit.esr);
+>>> +    return -ENXIO;
+>>> +}
+>>> +
+>>> +static int rec_exit_sync_dabt(struct kvm_vcpu *vcpu)
+>>> +{
+>>> +    return kvm_handle_guest_abort(vcpu);
+>>> +}
+>>> +
+>>> +static int rec_exit_sync_iabt(struct kvm_vcpu *vcpu)
+>>> +{
+>>> +    struct realm_rec *rec = &vcpu->arch.rec;
+>>> +
+>>> +    vcpu_err(vcpu, "Unhandled instruction abort (ESR: %#llx).\n",
+>>> +         rec->run->exit.esr);
+>>> +    return -ENXIO;
+>>> +}
+>>> +
+>>> +static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
+>>> +{
+>>> +    struct realm_rec *rec = &vcpu->arch.rec;
+>>> +    unsigned long esr = kvm_vcpu_get_esr(vcpu);
+>>> +    int rt = kvm_vcpu_sys_get_rt(vcpu);
+>>> +    bool is_write = !(esr & 1);
+>>> +    int ret;
+>>> +
+>>> +    if (is_write)
+>>> +        vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[0]);
+>>
+>> The RMM has been fixed to indicate the correct value in ESR_ELx_SRT. So
+>> this could be :
+>>          vcpu_set_reg(vcpu, rt, rec->run->ext.gprs[rt]); ?
+>>
+>>> +
+>>> +    ret = kvm_handle_sys_reg(vcpu);
+>>> +    if (!is_write)
+>>> +        rec->run->enter.gprs[0] = vcpu_get_reg(vcpu, rt);
+>>
+>> Same here ^
+> 
+> True, although no functional change because it's always going to be 0.
+> 
+>>> +
+>>> +    return ret;
+>>> +}
+>>> +
+>>> +static exit_handler_fn rec_exit_handlers[] = {
+>>> +    [0 ... ESR_ELx_EC_MAX]    = rec_exit_reason_notimpl,
+>>> +    [ESR_ELx_EC_SYS64]    = rec_exit_sys_reg,
+>>> +    [ESR_ELx_EC_DABT_LOW]    = rec_exit_sync_dabt,
+>>> +    [ESR_ELx_EC_IABT_LOW]    = rec_exit_sync_iabt
+>>> +};
+>>> +
+>>> +static int rec_exit_psci(struct kvm_vcpu *vcpu)
+>>> +{
+>>> +    struct realm_rec *rec = &vcpu->arch.rec;
+>>> +    int i;
+>>> +
+>>> +    for (i = 0; i < REC_RUN_GPRS; i++)
+>>> +        vcpu_set_reg(vcpu, i, rec->run->exit.gprs[i]);
+>>> +
+>>> +    return kvm_smccc_call_handler(vcpu);
+>>> +}
+>>> +
+>>> +static int rec_exit_ripas_change(struct kvm_vcpu *vcpu)
+>>> +{
+>>> +    struct kvm *kvm = vcpu->kvm;
+>>> +    struct realm *realm = &kvm->arch.realm;
+>>> +    struct realm_rec *rec = &vcpu->arch.rec;
+>>> +    unsigned long base = rec->run->exit.ripas_base;
+>>> +    unsigned long top = rec->run->exit.ripas_top;
+>>> +    unsigned long ripas = rec->run->exit.ripas_value;
+>>> +
+>>> +    if (!kvm_realm_is_private_address(realm, base) ||
+>>> +        !kvm_realm_is_private_address(realm, top - 1)) {
+>>> +        vcpu_err(vcpu, "Invalid RIPAS_CHANGE for %#lx - %#lx, ripas:
+>>> %#lx\n",
+>>> +             base, top, ripas);
+>>> +        /* Set RMI_REJECT bit */
+>>> +        rec->run->enter.flags = REC_ENTER_FLAG_RIPAS_RESPONSE;
+>>> +        return -EINVAL;
+>>> +    }
+>>> +
+>>> +    /* Exit to VMM, the actual RIPAS change is done on next entry */
+>>> +    kvm_prepare_memory_fault_exit(vcpu, base, top - base, false, false,
+>>> +                      ripas == RMI_RAM);
+>>> +
+>>> +    /*
+>>> +     * KVM_EXIT_MEMORY_FAULT requires an return code of -EFAULT, see the
+>>> +     * API documentation
+>>> +     */
+>>> +    return -EFAULT;
+>>> +}
+>>> +
+>>> +static void update_arch_timer_irq_lines(struct kvm_vcpu *vcpu)
+>>> +{
+>>> +    struct realm_rec *rec = &vcpu->arch.rec;
+>>> +
+>>> +    __vcpu_assign_sys_reg(vcpu, CNTV_CTL_EL0, rec->run->exit.cntv_ctl);
+>>> +    __vcpu_assign_sys_reg(vcpu, CNTV_CVAL_EL0, rec->run-
+>>>> exit.cntv_cval);
+>>> +    __vcpu_assign_sys_reg(vcpu, CNTP_CTL_EL0, rec->run->exit.cntp_ctl);
+>>> +    __vcpu_assign_sys_reg(vcpu, CNTP_CVAL_EL0, rec->run-
+>>>> exit.cntp_cval);
+>>> +
+>>> +    kvm_realm_timers_update(vcpu);
+>>> +}
+>>> +
+>>> +/*
+>>> + * Return > 0 to return to guest, < 0 on error, 0 (and set
+>>> exit_reason) on
+>>> + * proper exit to userspace.
+>>> + */
+>>> +int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_ret)
+>>> +{
+>>> +    struct realm_rec *rec = &vcpu->arch.rec;
+>>> +    u8 esr_ec = ESR_ELx_EC(rec->run->exit.esr);
+>>> +    unsigned long status, index;
+>>> +
+>>> +    status = RMI_RETURN_STATUS(rec_run_ret);
+>>> +    index = RMI_RETURN_INDEX(rec_run_ret);
+>>> +
+>>> +    /*
+>>> +     * If a PSCI_SYSTEM_OFF request raced with a vcpu executing, we
+>>> might
+>>> +     * see the following status code and index indicating an attempt
+>>> to run
+>>> +     * a REC when the RD state is SYSTEM_OFF.  In this case, we just
+>>> need to
+>>> +     * return to user space which can deal with the system event or
+>>> will try
+>>> +     * to run the KVM VCPU again, at which point we will no longer
+>>> attempt
+>>> +     * to enter the Realm because we will have a sleep request
+>>> pending on
+>>> +     * the VCPU as a result of KVM's PSCI handling.
+>>> +     */
+>>> +    if (status == RMI_ERROR_REALM && index == 1) {
+>>> +        vcpu->run->exit_reason = KVM_EXIT_SHUTDOWN;
+>>> +        return 0;
+>>> +    }
+>>> +
+>>> +    if (rec_run_ret)
+>>> +        return -ENXIO;
+>>> +
+>>> +    vcpu->arch.fault.esr_el2 = rec->run->exit.esr;
+>>
+>> Even ESR_EL2 is only valid when the exit reason is RMI_EXIT_SYNC or
+>> RMI_EXIT_SERROR.
+>> Doing this unconditional copying is fine, as long as we don't consume
+>> the esr_el2 in exit handling without consulting the exit reason, which
+>> may not be available to the rest of the KVM. It may be safer to set it
+>> to 0 ?
+> 
+> For HPFAR_EL2 there is code in the kernel which hijacks the EL2_NS bit a
+> 'valid' bit, hence we have to handle that one specially to record
+> whether the value is valid or not.
+> 
+> esr_el2/far_el2 may or may not be valid depending on the exit, but
+> there's no 'valid' flag for the generic kernel code to look for - so
+> that generic code either depends on the value (in which case 0 is just
+> as invalid) or doesn't use it.
+> 
+> My preference is to avoid trying to keep track of the exit reasons where
+> such flags are valid and just provide the generic code with whatever the
+> RMM provides. In any case the values are generally 'sanitised' by the
+> RMM so they don't represent the real CPU registers.
+> 
+>>> +    vcpu->arch.fault.far_el2 = rec->run->exit.far;
+>>> +    /* HPFAR_EL2 is only valid for RMI_EXIT_SYNC */
+>>> +    vcpu->arch.fault.hpfar_el2 = 0;
+>>> +
+>>> +    update_arch_timer_irq_lines(vcpu);
+>>> +
+>>> +    /* Reset the emulation flags for the next run of the REC */
+>>> +    rec->run->enter.flags = 0;
+>>> +
+>>> +    switch (rec->run->exit.exit_reason) {
+>>> +    case RMI_EXIT_SYNC:
+>>> +        /*
+>>> +         * HPFAR_EL2_NS is hijacked to indicate a valid HPFAR value,
+>>> +         * see __get_fault_info()
+>>> +         */
+>>> +        vcpu->arch.fault.hpfar_el2 = rec->run->exit.hpfar |
+>>> HPFAR_EL2_NS;
+>>> +        return rec_exit_handlers[esr_ec](vcpu);
+>>> +    case RMI_EXIT_IRQ:
+>>> +    case RMI_EXIT_FIQ:
+>>> +        return 1;
+>>> +    case RMI_EXIT_PSCI:
+>>> +        return rec_exit_psci(vcpu);
+>>> +    case RMI_EXIT_RIPAS_CHANGE:
+>>> +        return rec_exit_ripas_change(vcpu);
+>>
+>> RMI_EXIT_SERROR is missing in the list above.
+> 
+> Indeed, I think I need to read up on how that's meant to be handled.
+> 
+>>> +    }
+>>> +
+>>> +    kvm_pr_unimpl("Unsupported exit reason: %u\n",
+>>> +              rec->run->exit.exit_reason);
+>>
+>>
+>>
+>>> +    vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
+>>> +    return 0;
+>>> +}
+>>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>>> index 6daf14c4b413..ee8aab098117 100644
+>>> --- a/arch/arm64/kvm/rmi.c
+>>> +++ b/arch/arm64/kvm/rmi.c
+>>> @@ -394,6 +394,49 @@ static int realm_ensure_created(struct kvm *kvm)
+>>>        return -ENXIO;
+>>>    }
+>>>    +/*
+>>> + * kvm_rec_pre_enter - Complete operations before entering a REC
+>>> + *
+>>> + * Some operations require work to be completed before entering a
+>>> realm. That
+>>> + * work may require memory allocation so cannot be done in the
+>>> kvm_rec_enter()
+>>> + * call.
+>>> + *
+>>> + * Return: 1 if we should enter the guest
+>>> + *       0 if we should exit to userspace
+>>> + *       < 0 if we should exit to userspace, where the return value
+>>> indicates
+>>> + *       an error
+>>> + */
+>>> +int kvm_rec_pre_enter(struct kvm_vcpu *vcpu)
+>>> +{
+>>> +    struct realm_rec *rec = &vcpu->arch.rec;
+>>> +
+>>> +    if (kvm_realm_state(vcpu->kvm) != REALM_STATE_ACTIVE)
+>>> +        return -EINVAL;
+>>> +
+>>> +    switch (rec->run->exit.exit_reason) {
+>>> +    case RMI_EXIT_HOST_CALL:
+>>> +    case RMI_EXIT_PSCI:
+>>> +        for (int i = 0; i < REC_RUN_GPRS; i++)
+>>> +            rec->run->enter.gprs[i] = vcpu_get_reg(vcpu, i);
+>>> +        break;
+>>> +    }
+>>> +
+>>> +    return 1;
+>>> +}
+>>> +
+>>> +int noinstr kvm_rec_enter(struct kvm_vcpu *vcpu)
+>>> +{
+>>> +    struct realm_rec *rec = &vcpu->arch.rec;
+>>> +    int ret;
+>>> +
+>>> +    guest_state_enter_irqoff();
+>>> +    ret = rmi_rec_enter(virt_to_phys(rec->rec_page),
+>>> +                virt_to_phys(rec->run));
+>>
+>> In the normal VM case, we try to fixup some of the exits (e.g., GIC
+>> CPUIF register accesses) which may be applicable to Realms. Do we
+>> need such fixups here ? Given the cost of world switch, it is
+>> debatable whether it matters or not.
+> 
+> I'm not really sure what you are referring to here. Can you point me at
+> the normal VM case? This function is the equivalent of
+> kvm_arm_vcpu_enter_exit().
 
-Will do. Here is the updated version:
+This happens via fixup_guest_exit() in either vhe/nvhe cases. The VGIC
+registers are emulated in the fast path for normal VMs (when trapping is
+enabled)
 
-diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index bb4aa6327eee..cd2aa2eabb65 100644
---- a/arch/x86/virt/vmx/tdx/seamldr.c
-+++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -19,6 +19,7 @@
- 
- /* P-SEAMLDR SEAMCALL leaf function */
- #define P_SEAMLDR_INFO			0x8000000000000000
-+#define P_SEAMLDR_INSTALL		0x8000000000000001
- 
- #define SEAMLDR_MAX_NR_MODULE_4KB_PAGES	496
- #define SEAMLDR_MAX_NR_SIG_4KB_PAGES	4
-@@ -72,6 +73,13 @@ int seamldr_get_info(struct seamldr_info *seamldr_info)
- }
- EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
- 
-+static int seamldr_install(const struct seamldr_params *params)
-+{
-+	struct tdx_module_args args = { .rcx = __pa(params) };
-+
-+	return seamldr_call(P_SEAMLDR_INSTALL, &args);
-+}
-+
- static void free_seamldr_params(struct seamldr_params *params)
- {
-	free_page((unsigned long)params);
-@@ -186,6 +194,7 @@ static struct seamldr_params *init_seamldr_params(const u8 *data, u32 size)
- enum module_update_state {
-	MODULE_UPDATE_START,
-	MODULE_UPDATE_SHUTDOWN,
-+	MODULE_UPDATE_CPU_INSTALL,
-	MODULE_UPDATE_DONE,
- };
- 
-@@ -243,6 +252,9 @@ static int do_seamldr_install_module(void *seamldr_params)
-				if (primary)
-					ret = tdx_module_shutdown();
-				break;
-+			case MODULE_UPDATE_CPU_INSTALL:
-+				ret = seamldr_install(seamldr_params);
-+				break;
-			default:
-				break;
-			}
+
+Cheers
+Suzuki
+
+> 
+> Thanks,
+> Steve
+> 
+>> Suzuki
+>>> +    guest_state_exit_irqoff();
+>>> +
+>>> +    return ret;
+>>> +}
+>>> +
+>>>    static void free_rec_aux(struct page **aux_pages,
+>>>                 unsigned int num_aux)
+>>>    {
+>>
+> 
 
