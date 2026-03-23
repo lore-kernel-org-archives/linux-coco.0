@@ -1,138 +1,253 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012005.outbound.protection.outlook.com [40.93.195.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEDF2777FC
-	for <linux-coco@lists.linux.dev>; Mon, 23 Mar 2026 18:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774290025; cv=fail; b=UlT8C/rrocESH6/GoTANMFuB+jp+pSojYIm9fJfHDZhccY+x0XxonXTj+r9Gon9fav+3VlfOsJRYhxAUxJmOusph/rXP5+706IZe72S/GOopTb1lTQ+OJmxf/SKs66yEoFlS2s39RMw1++G3UVmfS00BKB+rIwsHYHoJnCMR5QM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774290025; c=relaxed/simple;
-	bh=6pET2kt3BUaYbSH7YaGe7O1m1s+tipUM6DLuE1S2PeI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=DYdSYl92Q7GeI8OIui7CCXj3dGS4vDpnOW7CyLSn0OQsEMC5cNiIpVo8vvKll5nRcpoB+eMOWFJ3q0uwM8ryCqq6SjklzmHffHlDZ16tJ/FL3RkwYtbl5zi+wt6VgIEvYJrLRKZ+lVjZCdUc/zpDiZ2jCizDDtTPksfX3SofwBY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FBQOsVpy; arc=fail smtp.client-ip=40.93.195.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D1F3E63B2
+	for <linux-coco@lists.linux.dev>; Mon, 23 Mar 2026 20:59:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774299563; cv=none; b=qVbnytl4DWPKxikummG1+Ttme89LZ73r/mM2xfQmYuXSYSnGDQewz0ig+rHDKFNlwZHnHlTRq0EUj+DcN0D4GFj5OMWPROkLxa/t4DvXhISYC8uKj0+s9Qa3x2dzkXkyIuDNn+AAfCc4Y/mzqv8fjf8MxuN2wyRMv8i/KFDWiEU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774299563; c=relaxed/simple;
+	bh=13NpKMoBJ+FHJKpREai3gRyzjuVCf9u9LDtVyZ0kVkk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Uh9U3vwNBWV/nC5rVe07ZSEznmNTEJUTj+nsTNV6KhyKkVV6XAPFr660Kk4zvtm+mA9hIB0y8k1CyTcEYabwGxuGkHqfVwhXhmup67h2NuXucjlRbP1g0gkEJ1z3uuj/jkxMUza8PExA/SxaHYo0qZeXj7B3Ch3mKYAFTV4H7ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kr0nnkUh; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FBQOsVpy"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GJbeas47ZLaZdUCMRjGrdQB9UvFO979GNcxvDg0qJ1NVjIQO8d8nQsp04KgFx2dh6K19A6OdCdqAKgtgBIJ2ozPgncfgzJubPdpcvnLD5xoLB59b1OFrxI0f7xoHDjEvH0waIgSn43N0p3vO2UrJUa7Q+1K38eo0Jbxa6a+K7fpVj356hVRW6S/qAdLP57RZHxXnhhwbdCOxXHY3BSt2K+TDJow+X4+QpgGQUueSEYfJgXImRFZ3a3oxx7DDesHVoet+HrwkuB/+HZ7MvlzRvn58UW1LJEntvvI6l1NeZ4Mpw6iwme8B1qvPW4U8GsIYxJ99SSo5oL0m82RvElStWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6pET2kt3BUaYbSH7YaGe7O1m1s+tipUM6DLuE1S2PeI=;
- b=lyUYOkiL7olvQ1P70fy8Mh6Grh54ON1BQkQGOh4ROKoNomSSJZpYfU4KOYCHNztlt9uOONqOLnpN6mCzGaZ/nbZP0CupxtKRDb1DUVKfNR6kNNpXRwC8DGkX8gTnFGvSsWH7qjkKfhZZVomBY33/pzZuuITvaWJjkn73bPD9t4zF+lAARnd3y0u/O5liwJwsvoe4SugCsBzzGRYLXGyxdgxenfszybO4HGdG04nagscvNRQZAr8Vc7pWd6xZNAHl6lO3Z4vW1D3vVXXPqfEKK7pe2cVUpzdBl2zG6iydvGj1NgVtK5AAmrcFkRHCvNSfWOS9/sGsLFG1mZDJqqBo+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6pET2kt3BUaYbSH7YaGe7O1m1s+tipUM6DLuE1S2PeI=;
- b=FBQOsVpynJ0d2XJaSbcffT7LubGaOcglvZkXxtEmJeBDe6dPhMdEJDlFX0kDyAj01aKaMGzyaRgl1y70/qEuNgKBgb24qAtRvqezNPrdUVezke7v0mVmsmDf0vtyxPvu7q9epG7QBnmWItPaaMfVF7KBw36VmP9dJ7jnXq7Sp5Yvvrfm00nnt9CzdZLkN6VzmKbEESCUx0I98VAxX7misyS/7uZDoVP+xk0rs6dyREsnieFSMmyNRg6MnXYUruvL8cy0lzZXpCpi4SK6oPJP4XaG4W6v9p+f2pK6ltT8jteEpQO5sMLAfUmKN3+gdbk13oFJPH/rmFmPyKrzZaUrKA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by PH7PR12MB7794.namprd12.prod.outlook.com (2603:10b6:510:276::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Mon, 23 Mar
- 2026 18:20:16 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9745.019; Mon, 23 Mar 2026
- 18:20:16 +0000
-Date: Mon, 23 Mar 2026 15:20:14 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
-	bhelgaas@google.com, alistair23@gmail.com, lukas@wunner.de,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH v2 09/19] PCI/TSM: Support creating encrypted MMIO
- descriptors via TDISP Report
-Message-ID: <20260323182014.GR7340@nvidia.com>
-References: <20260303000207.1836586-1-dan.j.williams@intel.com>
- <20260303000207.1836586-10-dan.j.williams@intel.com>
- <yq5a4imuanoa.fsf@kernel.org>
- <abPlt8oNUOqGvbA3@yilunxu-OptiPlex-7050>
- <228298b7-76bc-4ffb-bec0-0c35fd487c4c@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <228298b7-76bc-4ffb-bec0-0c35fd487c4c@amd.com>
-X-ClientProxiedBy: BL1P223CA0023.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:208:2c4::28) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kr0nnkUh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774299561; x=1805835561;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=13NpKMoBJ+FHJKpREai3gRyzjuVCf9u9LDtVyZ0kVkk=;
+  b=Kr0nnkUh+Mv/PIs2IjZacY43Z+KACN/4Uxu5hkj7jrCJvoHdkEghJIsz
+   8Lo/CVhPlY3Qzlbog6nlXF0iiPjyqiUlGX3SkYCT508T5A3a5u+c6dIS0
+   LkjebcbXu85TmyjG4h969M3R4ea8wFuy+Px9D5gQ9bICku43xw5Rn0bia
+   nkDqkZn4h2jYLs1kmRby3QhyQjO5xcR1IR7j5UVQalTfZyDDACpMai7b/
+   0bWkn4VrpfN5+4c2HQuOuQd9QKBZchh0NkZjDPoHxlzKoPlpXAFvznauL
+   0Xc/yB8qa1ngEcWoePTwyxXH4SpS+PMff0nMtzfNFuwDf4NolEYfSDOXR
+   g==;
+X-CSE-ConnectionGUID: 0sAUs4lkTESx599QMrT2AQ==
+X-CSE-MsgGUID: kT0lx1PYSf21zXw5FKftqg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="74491131"
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
+   d="scan'208";a="74491131"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 13:59:20 -0700
+X-CSE-ConnectionGUID: 8Kyhv08cRz6OtWGSVSEgEg==
+X-CSE-MsgGUID: sdPjfV4QRkSc74pvfy3wrA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
+   d="scan'208";a="224156851"
+Received: from vverma7-desk1.amr.corp.intel.com (HELO [192.168.1.200]) ([10.124.221.51])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 13:59:19 -0700
+From: Vishal Verma <vishal.l.verma@intel.com>
+Subject: [PATCH v2 0/5] Fuller TDX kexec support
+Date: Mon, 23 Mar 2026 14:59:03 -0600
+Message-Id: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|PH7PR12MB7794:EE_
-X-MS-Office365-Filtering-Correlation-Id: faf9a0a5-5f68-4c63-883b-08de8908d4dd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	GvSNi7AvS+evcZUAQpPiJ+CFqHDAFaEv96XKRI8adzki0K9PjebeqcjGC2PFZFNIpQ7UfxXrQgDY64yx6N5YQnxlsi+WeXanoAVlvZTn9eAYXaOEio+d/N5u+KPbSWASQ0FwkMb1EQaOo26QMfLZ2/vYryS5hwnARnJIUFQT/smUY1K8hvO2gtSTSG3Vh8m7QIDI4DQuAcn15mSJhUwjdxrQpMnV9hoKtYjDLPggpnQ5/Q6qEkb5SS1Gc9/Mh7v+apvz95tTB3jAhrqI9Lr1lZ4Ixnj6o1sh7ZfXpsT+P7Lmoo70kt207iWt/CEx+4yIXFs0CnQdy3y0O4OxaoGTOGQ2GEbi7tGYkcpRLz8fPu1OBfmUXHSdGaX9RO9mI/zyeZ5Vg8HLtzLBQJl+OWzirTt1GPIGXrKpH4UgvVkL13vED4CPPuq2pGeI8Mo7V5HnPgSgn4xKnE2rpOkoNgvqMo5NcyPPgdTx1d7sLyzr9l18qxn//xV8TF3NHgRNUrp5fEpEbGJBEVLZgvPI48oKxp42HPTaKJVR7ANMObJoqGOklCe0fkzwvRI/6mzTMfWipj5uvx1azQcuT4FSP1w2oZ/CQUNtyAYEOALXlZ7W4dWYB8y1/JFxxU6nusK7olByvZnCn7rbaiIesURaI3ev/xxQQHjjecY1BWbg2zZfUO/6POCffYieQ6qAMPYOkeQNCxeN0dsoS6fa1wzOMm4AMw2tXW5VXRWldyhyKBI68LY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?tzsc1DvNPmeS1SqDuICwqefUTHT5KYrJO0hRvkNdO69KVj7i8R9SRXglV+E1?=
- =?us-ascii?Q?b6qRd2pAsmYtwqUAcYkeW6IMEqEF9wgIIPe4NmKtG1AoSkpvsm6ttFOirZGz?=
- =?us-ascii?Q?nG8nG3mE1pnNIuIFxaSf8M/CMbUXghMSFeyG+WiEbkYmswf0v5A8uzyIS1QD?=
- =?us-ascii?Q?fLaYxEAZvUZPrVzsrDtNZxJoqmMjDDHcKnA0tFdW3gYm+umjSK/fsgrNYcql?=
- =?us-ascii?Q?doVTbpx1vTx4vdrbo5gv2jWGz1TLT1S0UdzgUROGPeWkIefJn7h2kuxkDr77?=
- =?us-ascii?Q?v3VeZElTINkkqy9nfn5vJznjEMwnqohNsrevR6HIAfvuTGIbqs/+lzRsv1Su?=
- =?us-ascii?Q?yWz95+8eKLlPBEf0h8v8z+oKNkEzie88I97pLheKaBkqna3N5SEf0jCSyWpZ?=
- =?us-ascii?Q?Ep0weTU71SgvSgsGKwwtyToR9SrkxwdV92CgFoLHFI9rWHZWHHJxEwVNEkwJ?=
- =?us-ascii?Q?cSymoouk9w4/AB7MzmXz90hk+Sxab/oNVmFFDnzKSszq2WLtp5z1uTVch+O3?=
- =?us-ascii?Q?xwnl5vmKcuE2+3LzHNVdjpMfYhzYoLDbtbS4rleOMixf918LWvj8BLIgrdfB?=
- =?us-ascii?Q?5a3fYJ0sht1PnvKCk7DnVTKBtxgm31PLelvViiDgGE6F/MTI+7jKhCMaRXkb?=
- =?us-ascii?Q?Bld+U7X+/rasQdGNIee1LHRzDAv0g4n1s95ZQHqpkAGSlmzR0KCcGQfIXmtx?=
- =?us-ascii?Q?aGJY2LwrKyB8sy+QAt2dW3SkZC06TFTl8V8Yu8IUqG2ESP3P2q6mHueMK8IX?=
- =?us-ascii?Q?FgpWmfp+6lnJAh/HKbqJSLKMp+Eb3A4GXanu5lh6Cv6fysneYQ1jj1sctBz8?=
- =?us-ascii?Q?Xfunf456COiQQDeqXWUS+7Z7aJUstwoJT+rk/B8g1aJXds8mIWVM+ZwitJe3?=
- =?us-ascii?Q?tQc4sGj4fWIqPkFakq1dzf6b5VHgSIBDWywTXw+cptpRyuNHo49Iyv+ffrPu?=
- =?us-ascii?Q?BoMrVgbI3xXg2pF/aF1F0PGI3Ec8Q28yjk9WR9uhbzGWHlZy2RFEGK1Cm/bN?=
- =?us-ascii?Q?RxAJgMfle+llrmY1DEZZ8vp3g4OXwwwmq+WdBQ386R9NRZOQrZ0zP4ctEz1z?=
- =?us-ascii?Q?8HfIHo+j5RF5T2iZL2Vaok1XZmn7ZuCdQRJf4sA7pOMeZoTXYWnUYEivnrUB?=
- =?us-ascii?Q?h/VJ/mrTFsR/Hhv59Ri2gM3vA+hUcyuV+cd6YTpuMQ7uq0IxivZHctMfVzG4?=
- =?us-ascii?Q?Q34Gz+Mn+8v1ZzhF9eX7ZlBe7xAGd4XhUETMVriWVBBkYQ/QqLc6N9O5EoRP?=
- =?us-ascii?Q?tDEYzjKKs7n8dgoiYOm5lastLfinKA0VO/jBpI9bzn0Uxvd9OgQFZcAZh2eb?=
- =?us-ascii?Q?W1uWuS+i4WCgmLxipviTtwd2L6Xms2IVKIa9poDRx/B5Uve66t8SiYn+wmgD?=
- =?us-ascii?Q?S3yh5JpmLSOpCXIbONUUZPpNA+M+RWa01UxOjoOcmeFnnB5fSKG0Ol7NpfeQ?=
- =?us-ascii?Q?ZUoPGcqwkxyk/ZwGTmNg46cIbvIu0hd0dbQH1DEqGt0vs4yV1yT+Q0/qQwMR?=
- =?us-ascii?Q?kn0lyq6LbOifEKkBQlZB5++M70P1r+T0klJr0aSs0lUisw14myLiwTmnWjSq?=
- =?us-ascii?Q?DVu7ika3CuKXwFcs5UbtbVAPvfNG6mi7QichDg8sC62ln2jR2s9V0YPiMk1A?=
- =?us-ascii?Q?jOruYf5ARzGM8HPCfxTNYOCLbA3bBuMfsYnRKRthnZnulNMDsSWsTSz6u/+z?=
- =?us-ascii?Q?aAmeyt7UT+1A8cxn91smwjZ57MDzUy41vLV/anQymhu6lT76?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: faf9a0a5-5f68-4c63-883b-08de8908d4dd
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 18:20:16.4271
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8QCW3CcgcAVqHnP6J3X+/iyZFiLji8lBg6HGZY9I+A2PkbbsYaPsviLbo91v5jMl
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7794
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/02Nyw6DIBREf6VhXQj4AO2q/9E0RvCq1Be5YGNi/
+ Pdiu+luTjJzZice0IInt8tOEN7W22WOkFwvxPT13AG1TWSS8ETyVCjaruMIWIVmqwbYwFR+dW7
+ BQLVRpSwzqQoNJM4dQmu3r/rx/LFf9QtMOH1no8VloqFHqP8uuOKCp3nBClHKLKeCojUDcwyaD
+ swyabjbOcDIYibH8QH1Xa61wQAAAA==
+X-Change-ID: 20260317-fuller_tdx_kexec_support-bc79694678be
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Kiryl Shutsemau <kas@kernel.org>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+ Sean Christopherson <seanjc@google.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+ kvm@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>, 
+ Kai Huang <kai.huang@intel.com>, Kiryl Shutsemau <kas@kernel.org>
+X-Mailer: b4 0.16-dev-8c19c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7369;
+ i=vishal.l.verma@intel.com; h=from:subject:message-id;
+ bh=13NpKMoBJ+FHJKpREai3gRyzjuVCf9u9LDtVyZ0kVkk=;
+ b=owGbwMvMwCXGf25diOft7jLG02pJDJkHVy6ccjDFKNO1NnJmzrrCMoHDv5h0L5gEJLxkuxLHl
+ bC7sFC4o5SFQYyLQVZMkeXvno+Mx+S25/MEJjjCzGFlAhnCwMUpABPJ42JkODj74J51YbdO/aj8
+ mPhyyXuRyzyWs49bXV3qccrv1A9LywJGhq037whaNLUYLZyxSfXG5dzrJb0x/fs03rfos9w6KRh
+ Uwg4A
+X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp;
+ fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
 
-On Mon, Mar 16, 2026 at 04:19:30PM +1100, Alexey Kardashevskiy wrote:
+Hi,
 
-> and btw this only works if the entity generating the MMIO reporting
-> offset (==TSM) knows about BARs sizes, which is not the case for AMD
-> - the FW has no access to the config space (so the HV needs to feed
-> this to the FW? may be). Thanks,
+This series adds a couple of cool things -
+ 1. Allow kexec and kdump on systems with the partial write errata
+ 2. Allow using TDX in the second (kexec'ed) kernel
 
-Then your platform just shouldn't use the mmio offset feature. Set it
-to 0 always.
+It has been waiting for VMXON refactor to land because the implementation
+is much cleaner on top of that.
 
-Jason
+KVM folks, just a few deletions on your side and the long discussed moving
+of tdx_errno.h. Tip folks and reviewers, the changes here are pretty small.
+Optimistically, I'm hoping we can iterate this quickly and see it off the
+list in the next few weeks.
+
+Background
+==========
+Some early TDX-capable platforms have an erratum where a partial write
+to TDX private memory can cause a machine check on a subsequent read.
+Currently, kexec and kdump are disabled on these platforms because the
+new (or kdump) kernel may trip over these, causing a machine check.
+
+Future TDX modules will support TDH.SYS.DISABLE SEAMCALL, which disables
+the TDX module and reclaims all memory resources allocated to TDX, and
+cleans up any poison. After this SEAMCALL succeeds, the new kernel
+can also re-initialize the TDX module from scratch via the normal bring-up
+sequence.
+
+It is probably worth mentioning that this is a different kind of cleanup
+than the WBINVD stuff that was the cause of all the fuss in the earlier
+kexec enabling. The WBINVD is flushing private keyid cachelines so they
+are not later written back over the new kernels memory. It needs to happen
+after the last SEAMCALL that might have produced them. So this new
+SEAMCALL is for something else, but also needs to be slotted with respect
+to WBINVD.
+
+Implementation
+==============
+The series adds:
+
+ 1. A pre-requisite patch to move TDX error code definitions to a
+    shared location so that TDX_INTERRUPTED_RESUMABLE etc. are
+    accessible from arch/x86/virt/vmx/tdx/. This comes from the Dynamic
+    PAMT series [0], but is also needed by some other series, and can
+    benefit them all from an early merge.
+
+ 2. A preparatory patch to move some straggling stuff into arch/x86 in the
+    wake of the VMXON series.
+
+ 3. A tdx_sys_disable() helper that wraps calls TDH.SYS.DISABLE with a
+    retry loop to handle TDX_INTERRUPTED_RESUMABLE.
+
+ 4. Integration into the kexec path: Remove the check for partial write
+    errata platforms as this is addressed by the SEAMCALL clearing any
+    poisoned memory locations. Call tdx_sys_disable() in tdx_shutdown
+    which is called via syscore ops in the kexec path. Call
+    tdx_sys_disable() in native_machine_crash_shutdown() to cover the
+    crash (kdump) path.
+
+ 5. A patch to update (remove) the kexec section in TDX docs.
+
+Testing
+=======
+The implementation is based on the draft TDX module spec available at
+[1], and was smoke tested with an engineering build of the TDX module
+that supports the new SEAMCALL. The new kernel was able to initialize
+the TDX module successfully:
+
+  kvm: exiting hardware virtualization
+  kexec_core: Starting new kernel
+  Linux version 7.0.0-rc2-g0077f702b21c...
+  ...
+  virt/tdx: 1034220 KB allocated for PAMT
+  virt/tdx: TDX-Module initialized
+
+All the other TDX CI tests pass, and some other scenarios that were
+manually tested and also pass or behave as expected:
+ - Running on a completely non-TDX system
+ - Running on a TDX capable system with an old module
+ - Running on a TDX capable system where the module hasn't been
+   initialized
+
+During development further testing was done by mocking up the new
+SEAMCALL to introduce delays and exercise the retry loops, combined with
+kexec, kdump, reboot and shutdown flows.
+
+Base
+====
+This series is based on the vmxon branch Sean pushed to kvm_x86,
+kvm-x86-vmxon-2026.03.05.
+
+[0]: https://lore.kernel.org/kvm/20260129011517.3545883-11-seanjc@google.com/
+[1]: https://cdrdv2.intel.com/v1/dl/getContent/871617
+
+---
+Changes in v2:
+- Use patch 1 from the DPAMT series with other feedback (Kai)
+- Fix commit message typo (s/adjust_/adjust /)
+- In patch 2, drop "too late to be helpful" in favor of something more
+  explicit (Kai)
+- Fix commit message typo in patch 2 (s/both/bother/)
+- In patch 2, add a bit about dropping the TDX specific WBINVD (Kai)
+- Reword some commit logs to use the imperative mood (Chao)
+- Kai raised offline that TDH.SYS.DISABLE can return TDX_SYS_BUSY too.
+  In theory this could happen if another SEAMCALL happens concurrently,
+  however that contention should be short lived. Update the loop to
+  continue on a TDX_SYS_BUSY error code too. (Kai)
+- Patch 3: Add a print for SEAMCALL errors reported by the TDX module
+  (excluding SW errors like #UD and #GP) (Kiryl)
+- Patch 3: Add a sentence to the log about skipping enumeration for the
+  new SEAMCALL (Kiryl)
+- Adjust the patch 4 subject (Chao)
+- Add a new patch to update the docs (Chao)
+- Smoke test with TDX module engineering build with the new SEAMCALL.
+
+Kiryl Shutsemau (1):
+      x86/tdx: Move all TDX error defines into <asm/shared/tdx_errno.h>
+
+Rick Edgecombe (2):
+      x86/virt/tdx: Pull kexec cache flush logic into arch/x86
+      x86/virt/tdx: Remove kexec docs
+
+Vishal Verma (2):
+      x86/virt/tdx: Add SEAMCALL wrapper for TDH.SYS.DISABLE
+      x86/tdx: Disable the TDX module during kexec and kdump
+
+ Documentation/arch/x86/tdx.rst                       |  7 -------
+ arch/x86/include/asm/shared/tdx.h                    |  1 +
+ arch/x86/{kvm/vmx => include/asm/shared}/tdx_errno.h | 29 +++++++++++++++++++++++------
+ arch/x86/include/asm/tdx.h                           | 30 +++---------------------------
+ arch/x86/kvm/vmx/tdx.h                               |  1 -
+ arch/x86/virt/vmx/tdx/tdx.h                          |  1 +
+ arch/x86/kernel/crash.c                              |  2 ++
+ arch/x86/kernel/machine_kexec_64.c                   | 16 ----------------
+ arch/x86/kvm/vmx/tdx.c                               | 10 ----------
+ arch/x86/virt/vmx/tdx/tdx.c                          | 54 ++++++++++++++++++++++++++++++++++++++++++------------
+ 10 files changed, 72 insertions(+), 79 deletions(-)
+
+--
+2.53.0
+
+---
+Kiryl Shutsemau (1):
+      x86/tdx: Move all TDX error defines into <asm/shared/tdx_errno.h>
+
+Rick Edgecombe (2):
+      x86/virt/tdx: Pull kexec cache flush logic into arch/x86
+      x86/virt/tdx: Remove kexec docs
+
+Vishal Verma (2):
+      x86/virt/tdx: Add SEAMCALL wrapper for TDH.SYS.DISABLE
+      x86/tdx: Disable the TDX module during kexec and kdump
+
+ Documentation/arch/x86/tdx.rst                     |  7 ---
+ arch/x86/include/asm/shared/tdx.h                  |  1 +
+ .../{kvm/vmx => include/asm/shared}/tdx_errno.h    | 29 +++++++++---
+ arch/x86/include/asm/tdx.h                         | 30 ++----------
+ arch/x86/kvm/vmx/tdx.h                             |  1 -
+ arch/x86/virt/vmx/tdx/tdx.h                        |  1 +
+ arch/x86/kernel/crash.c                            |  2 +
+ arch/x86/kernel/machine_kexec_64.c                 | 16 -------
+ arch/x86/kvm/vmx/tdx.c                             | 10 ----
+ arch/x86/virt/vmx/tdx/tdx.c                        | 54 +++++++++++++++++-----
+ 10 files changed, 72 insertions(+), 79 deletions(-)
+---
+base-commit: f630de1f8d70d7e29e12bc25dc63f9c5f771dc59
+change-id: 20260317-fuller_tdx_kexec_support-bc79694678be
+
+Best regards,
+--  
+Vishal Verma <vishal.l.verma@intel.com>
+
