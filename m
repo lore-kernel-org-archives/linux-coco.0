@@ -1,162 +1,168 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3FB3D5246
-	for <linux-coco@lists.linux.dev>; Tue, 24 Mar 2026 15:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774365737; cv=none; b=M+tfHMTlOWjkterrLdirZUQlb++3C1gFGNjlPR2R78mRKLbdztSg5m6ycCZxsYwBs5YW0hN1Sw4LPXeC8Wo4Gdlrakl7BN1dOb/eBiLUYwsKzUTY8l/vJjAakdbw9x6kmtA3ujPDD8Cvxdy6CwUsHkhHto3PmLRmAvC2yIonfcE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774365737; c=relaxed/simple;
-	bh=PN3HvjjBSqxv3mdUtK4Vday1Ob37LpIx4b9QqWvpTl0=;
-	h=From:Date:Subject:MIME-Version:Message-Id:References:In-Reply-To:
-	 To:Cc:Content-Type; b=GBPCgHtngAGT9GrMsqgPmQOuWn/6Gl1xPr8OVlR9ZaV8tgTxCfQG1cMEfZEIL6QtVO21lI/fcPkCdTleBKxQglLjL97WGh8QWHqotfXawmyjH8/PNdUIo02a9Ylshx9BzMk51qHl0j6acaBaN9cd/G1pDAiKoFBx3CE+ftM63k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d2vLEFA7; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C50A3E5EC1
+	for <linux-coco@lists.linux.dev>; Tue, 24 Mar 2026 17:36:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774373797; cv=pass; b=Ad2PlPWxf2isFwVqgvg5zmyzjJyLGPn1NAFouo95//7hNYTVrFDGiKiqUywnZWQBBg2cpupYJ02EIsK8RwiWpk4qzzcvC1DOCrZwPVvIZcd5cwD0wJaJ1y9862h3frteDNWZ4OF/MAVrNGnR9A6I2qzqkwAybp6vex2i+qPVc4c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774373797; c=relaxed/simple;
+	bh=QKH3FIlHUJB8Q1byrwVmEses+K6AxcmCpK6mo9PTNmI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Okj0d0uzW+ZRfjK0rcOcpuccAB5kcapJwqiKcfAxSjebTaRyiWUfKBwNc56X/KjZb7oL25MFMQzDtNf4SrB+YbbcxDMg99qldUPj24C/YcNtgBp22TkxQ3uQgaDWPb2W4+v51m5lcMyA76V4dnQ2BkwcOBbOZZX7qbPxWJxLkiY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GYjK2GX+; arc=pass smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d2vLEFA7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774365735;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5lRIyVAak8AiAXthiS6lC9CdPmPjeRvtYV0tyXWa32M=;
-	b=d2vLEFA7utQ1beL0xEJ1rEDx0GQu9YIlYhwZIe9UcMIlQ3Myq6eHSVhR2j1k5th0Y79LQn
-	h1PIG06oQNBWGBR/8MnibXAq8/0M71p/+co6uPDWDvR6AQDnMmws/cOTtOgu6dt/DzyXNr
-	Pe/r0IBOc3jMLefPLUQm/EWU0tEVYfk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-bNhvwRVLNn-7fFqWYg6q7w-1; Tue,
- 24 Mar 2026 11:22:13 -0400
-X-MC-Unique: bNhvwRVLNn-7fFqWYg6q7w-1
-X-Mimecast-MFC-AGG-ID: bNhvwRVLNn-7fFqWYg6q7w_1774365731
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5D0CC1800281;
-	Tue, 24 Mar 2026 15:22:11 +0000 (UTC)
-Received: from localhost (unknown [10.44.22.4])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C2807180058B;
-	Tue, 24 Mar 2026 15:22:09 +0000 (UTC)
-From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Date: Tue, 24 Mar 2026 19:21:48 +0400
-Subject: [PATCH 2/2] x86/tdx: Accept hotplugged memory before online
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GYjK2GX+"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-509069a7a7fso42041cf.0
+        for <linux-coco@lists.linux.dev>; Tue, 24 Mar 2026 10:36:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774373795; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bU9ushIPq38iN81jyzCxrre0t6mmtNRaDHewweqR2yK+TfSkv02Ve9waqZC64RyjHY
+         x2wFrKIKp8fKXyaaSVYYPRQmqR6L3TfVJCrCVTXbbOsJp2dguPdeLZfsbwY9V3zd/L5Z
+         lXE96t7DnbtI9ybbri5KgRpHqBDv7zpTb19yCxiTE452sidEwVtly15CMDRKThIqxsQw
+         M8CMO9x/+aHxfanoordQYBGs5+24k0ud/pH/GeOgmZKYN32luPsIcbWviuFsBWsyFuWG
+         intPRMuI/JNWPNneHqMDfO5Spl9Yt78pZVW6VXU/pd66P2i2uszzVLTDvp64XQxdObua
+         cILQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=T7cRZZnHlvElmV5E4d+ARimoSvXKMR3JQuoEi7NRgdM=;
+        fh=/tzr9ImKv/v1GyJvQOaiGAlSM/1PU3B6dDjcD5nxwnU=;
+        b=cQ9XERzrTj45+NxQtLKPcqyfQTkAONGd0z0Xp7g4ghkDB5unom/PwVsGkr8UW9IRxw
+         46VLW2NV2a48JIE3jy4fbc3BnJzOfL0nS97S6on4yHJGwBwg1+VUxlOl3IeSo57qOGtN
+         0kq6bV44iCSi3m8kOL1wIRsq7cY2RBIuGaVJUHBgpNMgxRuUhog8CRUrwuMc5WYOzrm9
+         W5gn8x3u0lvyOaqHf5IedgUONI6oe9ugB/oRhhqfazzRNf0GRUeot8gj5wktp/BuxSrf
+         2m8/1YYf+Pk6JP5tEFaTkWlqrC7hH9MtIfw6kmlX5B6cDlTH3H5u5WcLnarFAJ/kzKDH
+         y91g==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774373795; x=1774978595; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T7cRZZnHlvElmV5E4d+ARimoSvXKMR3JQuoEi7NRgdM=;
+        b=GYjK2GX+LXIlRx4zjtv6IPyBkm6DbjHr1Aevwm/sUV7EEtg7fhxginGiR99OFAc16G
+         9TqmWvj/6CupkmMmjXQwlLfmE23b001Kwyftn2d8n8TE/c/uSZFX3UZya9YHSt5EGHcm
+         YnwVIbn4GNZUjWXQoORVw1eHMQIkLdZ8Dxge6C1p1+Xe+plLrcj2QQrz3VJgBk/Tus4y
+         U5boXrsm64PAwKNv/QfIL1NHgunXroI6J5BOuzjGewO85jG2cuUWjz1FpekpezlaWbeP
+         Tafh0Y6bJ+cK/OWuwVcQxzEIjFFeZ94Ju0iTxDOpuLqbf+EQMGP1Csw7xSjrbKdNHLaD
+         feSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774373795; x=1774978595;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=T7cRZZnHlvElmV5E4d+ARimoSvXKMR3JQuoEi7NRgdM=;
+        b=qXmpWOJPtux3fQ0QPe5eriiQRkSgPDtnyBf0pTGOpu3aXM+fqg/d4OOUvjHRu/kNui
+         USZTLnqqxOA2veNv1lKyqkwE4UXh9wHhpcp/oll5tFpf27EaGybv1jCu5cwjGxN8Sjda
+         zLkTe/M4xuRLGLAZVuqaHx6mdV/wG6rAuG9FFshmY3yvSXOtjUFsdsBmtx/AaVfvSiBV
+         S515ClI2trS9m6bHB65H7hlhIGvV7TzvRgtJQlG40sE5RdSrgBu8kxOLzg6GpustiSiK
+         x4ZDOy14aQzPaTodOq4LY//jw26vuHDEzjv+tDIm1ghSDTSXvlo5NzR+23yvv13e/lUZ
+         M06Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWo/ofjADvhnWdhew+M7VPY6Gk8peQUhZcwfDhEDH+AsBjvWVlm5FEzHDVeqtS95vQ+HPZuIEYCT2ce@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx9SnTwP2jtwkCKv16Afa3/z7NVX7Mn4/l5QbfD1qQRek2yqg+S
+	NWm7FYtj3MGN8RDs133kouHxiFTgcEm15mH3s/gkB2MmQ46pTQsPitvcRtC0W8XErGqwMCbqkd+
+	MMRGjkyyp+JlT4hmG17E99qiEqNry9J5C/ATtwQz0
+X-Gm-Gg: ATEYQzz+iQcq7c1L9GA+wGCslRxQgsZgZJWSgn+4G9YvSQl9N8hMSnughhtuAqsz3wh
+	TbdXCcNKZ5v6H2xwW3MGIkLSDGVjlcW4bN4PYXTLMXqyrQBlQnI7GhjbTPQBO4Dj4SXRyLD8roO
+	6FwkM1f6Q35xAzRco28nNR25PfmcjLAjz58SVOgEmUV5C2pMSa6gaylYOi0N9D6TPurN/1HyHZQ
+	XLoptclstbdwk1ZEKGdSuPc++EOwL1P0xtwqKZKcBoqMtQz8M91zTjiskLRuMovExxMM+/IQJbu
+	4aiC3fRbBmyogSZ30eAO2SpPfuV6RdEwXLd4f6g=
+X-Received: by 2002:ac8:5a41:0:b0:508:fd42:fd05 with SMTP id
+ d75a77b69052e-50b823fa2ddmr354431cf.15.1774373794536; Tue, 24 Mar 2026
+ 10:36:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-Id: <20260324-tdx-hotplug-fixes-v1-2-8f29f2c17278@redhat.com>
-References: <20260324-tdx-hotplug-fixes-v1-0-8f29f2c17278@redhat.com>
-In-Reply-To: <20260324-tdx-hotplug-fixes-v1-0-8f29f2c17278@redhat.com>
-To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
- Kiryl Shutsemau <kas@kernel.org>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>, 
- Chenyi Qiang <chenyi.qiang@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
- kvm@vger.kernel.org, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2080;
- i=marcandre.lureau@redhat.com; h=from:subject:message-id;
- bh=PN3HvjjBSqxv3mdUtK4Vday1Ob37LpIx4b9QqWvpTl0=;
- b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBpwqwRG4sP1eM/Pr7qCPiX4yJNHlQoof8tzGaTz
- y8gA7PUiMuJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCacKsEQAKCRDa6OEJdZac
- 5dO1D/44rQsX5CljWFmmXG35rc4U6+2QCQFpqqXxe35GuDhYZr8HxCQVb+9+wk+070jhDlmmO3C
- l1u1yrsl6so3pJ8dA5uR+bYjgE5TNVwhMFI9tjaABNhyPOfvktK6/kiPPBUeZH8Dfy91QF1YPRe
- HJbcCHqrZg+j7+GJWpjlohNkCVY7sFTR4PmOIp46bhwPUbY/hO4nnDVEZKpvCg2/lDajcoE5Suh
- C/dSOuDgJepSkolOtl0xYgv/48cHsJ7Dk6SXci9CV6/8jsswke0ui8jKsLDVH3RTksGpEEuaj+T
- cjza5cmhUNVD7LeIdCwRtMNy+C8D6p6kldCy9cjgS6uQ+JoHeqV59rs3dTle9NM9yg9u/YHvFJW
- kMFzu7evxl3Bm/WFFoMsxXx3lZ+eM+GaLdIRgZTckYJWFx1eVV1QL1sBkdkSLWg8QhnLpxX1yJc
- wvppC0d2FMW6Cdo9zRJTzDjlwdsacSyVm8LsVbvAbThX4FaxYVgmq8tz2LDcfuf5mliI179ZAD4
- 3uLEqWqr6mMnSpeS7D5leWdUrSyXIqj6qqt0FL2WcB2+dS9kDGVcEG2v+l3GEhSvXTNGZ5F9Fhh
- o5KAYsThqPqBewkuqIFuTYCDrHzL3+RwYAr0hQyrxhpjmXsOsja452N0gbSj6OiEHQ+4hdGISC7
- y4bOJPL+Hvtnq6g==
-X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
- fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: DPmZDGn0aK2BkV-5tRvw2_M3d4-n7OXq_63EdZwY3hw_1774365731
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20260305123641.164164-1-jiri@resnulli.us> <ablV_f_l7wD2m63E@google.com>
+ <20260324120057.GC8437@ziepe.ca> <CAFgf54qoFhvVR2yfROGaTJmLcjuLACswVFv=trqgJwGb_DB3zA@mail.gmail.com>
+ <20260324122416.GD8437@ziepe.ca>
+In-Reply-To: <20260324122416.GD8437@ziepe.ca>
+From: Mostafa Saleh <smostafa@google.com>
+Date: Tue, 24 Mar 2026 17:36:23 +0000
+X-Gm-Features: AaiRm51PAsNGUjv3vtee5YHklYnd6tfPfqFJtrYrMATN4cWFgoB-kqA4e1zQENQ
+Message-ID: <CAFgf54qwA2D1Xa4rnruJ4Nfp5BsB=T_pB3hzz9HBjh22TL17uA@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 0/2] dma-buf: heaps: system: add an option to
+ allocate explicitly decrypted memory
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jiri Pirko <jiri@resnulli.us>, dri-devel@lists.freedesktop.org, 
+	linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev, 
+	linux-media@vger.kernel.org, sumit.semwal@linaro.org, 
+	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, jstultz@google.com, 
+	tjmercier@google.com, christian.koenig@amd.com, m.szyprowski@samsung.com, 
+	robin.murphy@arm.com, leon@kernel.org, sean.anderson@linux.dev, 
+	ptesarik@suse.com, catalin.marinas@arm.com, aneesh.kumar@kernel.org, 
+	suzuki.poulose@arm.com, steven.price@arm.com, thomas.lendacky@amd.com, 
+	john.allen@amd.com, ashish.kalra@amd.com, suravee.suthikulpanit@amd.com, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In TDX guests, hotplugged memory (e.g., via virtio-mem) is never
-accepted before use. The first access triggers a fatal "SEPT entry in
-PENDING state" EPT violation and KVM terminates the guest.
+On Tue, Mar 24, 2026 at 12:24=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wro=
+te:
+>
+> On Tue, Mar 24, 2026 at 12:14:36PM +0000, Mostafa Saleh wrote:
+> > On Tue, Mar 24, 2026 at 12:01=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca>=
+ wrote:
+> > >
+> > > On Tue, Mar 17, 2026 at 01:24:13PM +0000, Mostafa Saleh wrote:
+> > >
+> > > > On the other hand, for restricted-dma, the memory decryption is dee=
+p
+> > > > in the DMA direct memory allocation and the DMA API callers (for ex
+> > > > virtio drivers) are clueless about it and can=E2=80=99t pass any at=
+trs.
+> > > > My proposal was specific to restricted-dma and won=E2=80=99t work f=
+or your case.
+> > >
+> > > How is this any different from CC?
+> > >
+> > > If the device cannot dma to "encrypted" memory, whatever that means
+> > > for you, then the DMA API:
+> > >  - Makes dma alloc coherent return "decrypted" memory, and the built
+> > >    in mapping of coherent memory knows about this
+> > >  - Makes dma_map_xxx use SWIOTLB to bounce to decrypted memory
+> > >
+> > > There is no need for something like virtio drivers to be aware of
+> > > any of this.
+> > >
+> > > On the other hand if the driver deliberately allocates decrypted
+> > > memory without using DMA API alloc coherent then it knows it did it
+> > > and can pass the flag to map it.
+> > >
+> >
+> > The problem is that the DMA API currently gets confused by this; it
+> > can end up double decrypting the memory or using the wrong functions
+> > as mentioned in [1]
+>
+> I fully belive there are bugs, but the API design is sound. If you use
+> the coherent allocations from the DMA API then it knows decryption has
+> happened when it generates a dma_addr_t and there should be no issue.
+>
+> Now, if drivers are using the DMA API wrong, like trying to double map
+> coherent allocations then they are broken. I also would not be
+> surprised to find cases like this.
+>
 
-Fix this by registering a MEM_GOING_ONLINE memory hotplug notifier that
-calls tdx_accept_memory() for the range being onlined.
+But it's not about drivers in that case, it's about many places
+(SWIOTLB and DMA-direct) calling set_memory_decrypted() without clear
+ownership so in some cases they step on each other's toes, and I don't
+think that will get simpler with yet another caller in this series
 
-The notifier returns NOTIFY_BAD on acceptance failure, preventing the
-memory from going online.
+I am fine with the API design you mentioned, but I believe that it
+needs clear documentation specifying who is responsible for
+decryption. The code should provide wrappers checking for these cases
+instead of having is_swiotlb_for_alloc() and force_dma_unencrypted()
+everywhere in DMA-direct.
 
-Assisted-by: Claude:claude-opus-4-6
-Reported-by: Chenyi Qiang <chenyi.qiang@intel.com>
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- arch/x86/coco/tdx/tdx.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+Thanks,
+Mostafa
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 7b2833705d475..89f90bc303258 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -8,6 +8,7 @@
- #include <linux/export.h>
- #include <linux/io.h>
- #include <linux/kexec.h>
-+#include <linux/memory.h>
- #include <asm/coco.h>
- #include <asm/tdx.h>
- #include <asm/vmx.h>
-@@ -1194,3 +1195,40 @@ void __init tdx_early_init(void)
- 
- 	tdx_announce();
- }
-+
-+#ifdef CONFIG_MEMORY_HOTPLUG
-+static int tdx_guest_memory_notifier(struct notifier_block *nb,
-+				     unsigned long action, void *v)
-+{
-+	struct memory_notify *mn = v;
-+	phys_addr_t start, end;
-+
-+	if (action != MEM_GOING_ONLINE)
-+		return NOTIFY_OK;
-+
-+	start = PFN_PHYS(mn->start_pfn);
-+	end = start + PFN_PHYS(mn->nr_pages);
-+
-+	if (!tdx_accept_memory(start, end)) {
-+		pr_err("Failed to accept memory [0x%llx, 0x%llx)\n",
-+		       (unsigned long long)start,
-+		       (unsigned long long)end);
-+		return NOTIFY_BAD;
-+	}
-+
-+	return NOTIFY_OK;
-+}
-+
-+static struct notifier_block tdx_guest_memory_nb = {
-+	.notifier_call = tdx_guest_memory_notifier,
-+};
-+
-+static int __init tdx_guest_memory_init(void)
-+{
-+	if (!cpu_feature_enabled(X86_FEATURE_TDX_GUEST))
-+		return 0;
-+
-+	return register_memory_notifier(&tdx_guest_memory_nb);
-+}
-+core_initcall(tdx_guest_memory_init);
-+#endif
-
--- 
-2.53.0
-
+> Jason
