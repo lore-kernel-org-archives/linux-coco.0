@@ -1,432 +1,351 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB273845B5
-	for <linux-coco@lists.linux.dev>; Mon, 23 Mar 2026 23:25:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FFA386C35
+	for <linux-coco@lists.linux.dev>; Tue, 24 Mar 2026 02:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774308362; cv=pass; b=AcfRVFp2vn9yCJFSJXWS+kG4QmpFPhZyFd/uM0f8CkjjuI83iexjqbOpuMmWs+sydSQICHz/UGUFq5aamUmkkFkqtzwpx+o7McQ28IpucYJ9Uds8ihgp6+9KptXJIIJpGCKzKPNPNo9iE51sUMgCLnbbmd0R+LwWKYWYPFMHmVA=
+	t=1774318957; cv=fail; b=LAPmLGL060BDVEtaqcgjSlzXH7mvDQYcxbOt1SO6uY4WLR8Ot2ShqImXCb7hxJQ8uFyW6MCXQuiKs6vYTf5w+Ca6wKtUaIKupIDQE9u+axGkhgFmjkjl60GFLszG4bA9G+gKuEg1vg2FAwgCtctk5f7xamEoxURd2WnSEBnzRro=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774308362; c=relaxed/simple;
-	bh=09UBAf8xcfnmqaigEjrBhwyzAMugRPC7W07kbYmjjKc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kHe9JTT2hxkIK/m1lKQsODrQiLUxT+6RyISlsHZlNUAOteUOe2pbV6OvDc8lSSzJ552DaMlQvEjptLNtwTE4SuiBs2nyqBHs+JhkYX3pldUAsDE5wfpyzLbfUbb1pqcmCRBXMsVSIKyu6lDMvpoHHnTjwqQVafbKv05eGJYCUKA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Wn0agZ2C; arc=pass smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1774318957; c=relaxed/simple;
+	bh=bdf78w8REJzoOnQMRKPQW+/W/BHbiftFu1P0jD0KO1Q=;
+	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
+	 Content-Type:MIME-Version; b=nHmr0SDhz28X9P2anmw4H7Z/W4ySFVsOfy99oKOhjXd6arYYeyl8/n0IhXP0o7QkpFesOYERPdolZ5P3FZGum+Y24CHOWPFAfvCpfwJJG1aEQy2XV9EbTDNu5YBmqvmg9de2c2ajEY+ZoD3VE/qRTogxL1HPl5i7iFDDvcHvu94=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MvLHwLP8; arc=fail smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Wn0agZ2C"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4852ef20fe8so17525e9.1
-        for <linux-coco@lists.linux.dev>; Mon, 23 Mar 2026 16:25:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774308358; cv=none;
-        d=google.com; s=arc-20240605;
-        b=b1l06S5a+GVz/w/s08H4ctTy7ZGjIZfd1obDHu10wi+Zuw+CU9p2uyBjEQ4h9CduMh
-         EAJ9JMw2oCPpAc7acwzS61Oi8WzBZpwRksaLdK/b8otbdvOqEIqlCWVnQNmrl07fT5v7
-         SFa0kbAoZbzXE6EeP7XhRtXUtofN2sT7KEYeLFNJADKvEMihrbMk/Pq3/WxqezqTvblo
-         QWDV/zJpTZoYgAZUS+oH1fmmWDDz+/OWE7o2l2Vl1ZnfcXup13xGTUSK7ZLdENtibDVr
-         F3GDT5LobKTZxltdu7KE/JjiA446X/QNJyRnJR2hmyYh9po+Fb7eKKmVfpo5XYT+phY+
-         VeBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wsdu7cH+tJM9BcvV/aAG6iPqbhR4QDoeSOE9glJa45Q=;
-        fh=FMUmAf4+yuKfhFBb1ZBb8TvfaEhpMD+YUPFuan/rZBs=;
-        b=DV/QwyNnOMjkGKYoV3CxxoQPlVfJVCJU8mRPYrzrkEqpaofVygSIEGrzyuJ7lon7MO
-         mNlocIUW7893+lGnog8efV5tASEGpj90E73BXGHNIpFYbF+IHZzZLHrFMpxSUwkv8b6e
-         FDJ6h8yTtsnSC6QyRqmWOTRyEOyjNWpbMc3K3cvgXRxgdyJwhOo1/zEyTY5lQXZMgp0e
-         L03iOtAr1xI62aONxVhf8nYOysSP7dl6qNd9Pxk7oZa0Gxh8G7/3fL4gHiKMOE7XldFC
-         siLcFsmnT3Q4Yow5GbnRL9haf7E3B5BYCMfTj5TFrF4xybEN3zVgWnzgil7ZCdrR9d0R
-         cJdQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774308358; x=1774913158; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wsdu7cH+tJM9BcvV/aAG6iPqbhR4QDoeSOE9glJa45Q=;
-        b=Wn0agZ2CDRbM3/buRs2bhf1gauRUNsGIZBTWoYYKNKkt83ravg9NV5IjhGiDdpKr/b
-         QAX4wb1Bxud6BlLvC8FZUUUPcz3idJ7t5RyajnEJkwzgWmEaRrKeBFjBek08PhVD3n8g
-         fo+dVn6IW8SEx4kCsLcZBPIsPXnD/wAju03Y63QYAJvjskvkV4gxnFsaqRvODf+NJiQJ
-         GKJbXxKtnZlKtsICql4iSdXeP2mmQbRLQbMYQZZDCU0ivJxlrYDog1J943GIhnEgTVwf
-         Wnnn1c/4nu/khORh6L13tV4T0TkJ5WiahHytmnD8APJgQXDcWWoJO5pRpm0BImqV//OX
-         Hc/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774308358; x=1774913158;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wsdu7cH+tJM9BcvV/aAG6iPqbhR4QDoeSOE9glJa45Q=;
-        b=Zz5FbQh06/QJAWJPytW55jRMgIjLX+e8fds7Kk+YOzamuphAhCvPSGfYu88AbCT/IF
-         tyAO9sr6UI4P4kKWQQyPdYViL4SBaCa1Z3R1evyoG3iZ3xX+eMUFPA6O3JtT8ZaBoYKC
-         eHGGUuuRKGLyHwptg5RgDRDeI+o+6VunHL8IFRLGwGgHl9tkVzZJYQ3UzsfyUOHvOnln
-         O2ppzQiVTz9ZIwq3Wdo/XkwDrfl1ob/kaU+x9EK+dnpwEiaFbqUSN2fK0nBPn+6ejLUM
-         mFrsheuEv2SJI8aJKYIcxjU1BLsGohXpIZvNeFJIh+mfFOkp6Ed0gln17soWCh3cHibF
-         hKqw==
-X-Forwarded-Encrypted: i=1; AJvYcCX+LORjlnthjvVd4jUGwXI2oIXgxIRUNqWCe4hR5K4OUPHqk2SgXuuvSIcBwXUT6yMn2GjqcN47AsdJ@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx2r5aTWnuQVAQVjSnjglHhPVTHFSAoCezUBH8c4HDzjQk+S5Jc
-	MYZDadQuwiIio6gznbGSEPo2w53cYSUxuW3Avhga/x0q+2vPmj/NPzjpSzbEBGbpVUdqZzRhLq3
-	y9DUxkyaoI+kD7mXfwuMXwo2JwP1MKfnyNKvVlgdd
-X-Gm-Gg: ATEYQzzXZeeq7mB3Rk1EcaC6KcBc0u6y/bMaZClNRkADwYHoa5VAdQ/l+up9qgZhlvQ
-	SuLNbg78nMAuLpRzWEl0iCjpCrwPB2B5tMkI+fbseGJ4ZD+VqT9h1tua6x1hdIPo/rV5ctQLE2O
-	vPflArj2sAwry2FHKqDTiYT6ZQGk3e1OIzA4M8FKTELeRlGsCEPmDZuJOjJZQcMT1b+XoBzkIYh
-	w9UfmxL+K+YEGEw97P+dnMos8yhDsmfHhuHAc3uHlHT0Ra85R1rOeWRUCATY1jPmXRWTwngfb+4
-	LmI6vWplV1XkFpht5l9cGjSAI2kJJiCvn0BJTg==
-X-Received: by 2002:a05:600c:4e14:b0:485:1a54:9407 with SMTP id
- 5b1f17b1804b1-4870f497b4fmr377175e9.0.1774308357801; Mon, 23 Mar 2026
- 16:25:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MvLHwLP8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774318954; x=1805854954;
+  h=from:date:to:cc:message-id:in-reply-to:references:
+   subject:content-transfer-encoding:mime-version;
+  bh=bdf78w8REJzoOnQMRKPQW+/W/BHbiftFu1P0jD0KO1Q=;
+  b=MvLHwLP8llCoA6uHR1mKgpmsaT4AsUMi5YSBMHD3Ul086C/nlooUgXXj
+   kZ5JdlwsdqPhZY9ix4/qXwQUhyuhtLc7mnT3OxcDo5/ZCFF30EViylB22
+   XcEkEyvRr9REI6vvHfh/XrlMrLpXtD8Oao4sa2SOZSA+ULipdNJfW5MN6
+   hQA04nFZHoFPVXMr88sAIkQ6J7zSZuHSVZDTnivGhw+VVxw3i0qFl2Kba
+   QURvhjwmYnb4h+5R14Y/SDS6sWyMuWhL3mchYziAHIVKSgYgu/SDwJwt5
+   /AuvJ832NF18fUWQX86DYX9YiHFaLQNL+Kg0Ym3JZtv87lgqbY/gPni6B
+   Q==;
+X-CSE-ConnectionGUID: dT1x+5HBSO+7mwhIO0N6QA==
+X-CSE-MsgGUID: sOofuZl8SguC960dhB0LYw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="75446897"
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="75446897"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 19:22:32 -0700
+X-CSE-ConnectionGUID: hCbHFC3zTYCnQlaxgyRWBQ==
+X-CSE-MsgGUID: 89hzJKf5TvGeLcOu75NTag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="219793967"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 19:18:29 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 23 Mar 2026 19:18:28 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 23 Mar 2026 19:18:28 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.61) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 23 Mar 2026 19:18:27 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RwResHNL74+zCQexDL6sxk//qv8Ivh55ofr97w82VuTYSwfIn+/xvDVZ5OdS7FlzFQl58GTF/K5pbBacNNUgNzX6WPR2YHM6KbwsEOPLLghc3vztgzYW7geOIpaNfqR7SCHiFLqqwf7vNhJzPD9jg3vYZQl6x/KypXgs2sYXj6YKY3sRGGjgkOooYsx3vobl0B3pHbCLRcFQPbM+Wc7d1Bfy4L8RvbWNTmJzk9fDp3pNopLnLNhRYi7IDitYX21EwVTsaSi1Q1kW44mqh/xeB8uOZ6hJu5yQ4MzK0aldUWbLIL2Ohcrtb5fBOfaQRYPsNaLapdeC5NKgdFKM3R5pRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jc7jCa3jj/LEcv/T7VkKO/Wbd3HZWphDPVPGsdVQCsc=;
+ b=hDdIsbEpEz9zWx948zO5mdBtfmSDj+NTuPKbCq9PStP+mpyIC3h+Ga7TM1G89cysjZIiDRofk/Ooyc8UDX+flECz3LJqdDJTQmhseQwabsrBVpK3whYcD8L1UW+LAec6zPkIJPP/ke40rT4B1H9beNBgykUNQvFet8YG7UoPWVpKv07UIHf1fQ57tKisgx6VH4gEOOx/pSUFjNKGlcaZ1H/B1C/WgNJxXfQ5z35E8PEBichT1EhfazcUSu8DHNkDi74OxLZ3d+QNmqe8al4V5KjwPI14W4Ue+req/O1ejl0Y7xOedQT5JuyvZZ5YuKb0ycz7tbqexF6kU2qxxe/WxA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by PH0PR11MB7616.namprd11.prod.outlook.com (2603:10b6:510:26d::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Tue, 24 Mar
+ 2026 02:18:20 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff%3]) with mapi id 15.20.9745.019; Tue, 24 Mar 2026
+ 02:18:20 +0000
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 23 Mar 2026 19:18:17 -0700
+To: Jason Gunthorpe <jgg@nvidia.com>, Dan Williams <dan.j.williams@intel.com>
+CC: Greg KH <gregkh@linuxfoundation.org>, <linux-coco@lists.linux.dev>,
+	<linux-pci@vger.kernel.org>, <aik@amd.com>, <aneesh.kumar@kernel.org>,
+	<yilun.xu@linux.intel.com>, <bhelgaas@google.com>, <alistair23@gmail.com>,
+	<lukas@wunner.de>, Christoph Hellwig <hch@lst.de>, Marek Szyprowski
+	<m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, Roman Kisel
+	<romank@linux.microsoft.com>, Samuel Ortiz <sameo@rivosinc.com>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+Message-ID: <69c1f469f2814_51621100bc@dwillia2-mobl4.notmuch>
+In-Reply-To: <20260323181413.GP7340@nvidia.com>
+References: <20260303000207.1836586-1-dan.j.williams@intel.com>
+ <20260303000207.1836586-4-dan.j.williams@intel.com>
+ <2026031230-mastiff-create-7593@gregkh>
+ <69b38e7427a61_b2b610073@dwillia2-mobl4.notmuch>
+ <20260313133235.GC1586734@nvidia.com>
+ <69b46bd7935d9_b2b6100b7@dwillia2-mobl4.notmuch>
+ <20260313202421.GG1586734@nvidia.com>
+ <69b4baab2b950_b2b610013@dwillia2-mobl4.notmuch>
+ <20260323181413.GP7340@nvidia.com>
+Subject: Re: [PATCH v2 03/19] device core: Introduce confidential device
+ acceptance
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR03CA0295.namprd03.prod.outlook.com
+ (2603:10b6:303:b5::30) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260316125857.617836-1-jiri@resnulli.us> <20260316125857.617836-3-jiri@resnulli.us>
-In-Reply-To: <20260316125857.617836-3-jiri@resnulli.us>
-From: "T.J. Mercier" <tjmercier@google.com>
-Date: Mon, 23 Mar 2026 16:25:46 -0700
-X-Gm-Features: AQROBzDCFwWsy0-ozjsBb2bwEOaZ0_wnDJdRRApw7r8ld8wpTu_Wh01I0Gdm1Bs
-Message-ID: <CABdmKX0Ux2HMTTuOnvZryBBRwCjH0zUe-EMvL9k1VxZtz+BWiA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] dma-buf: heaps: system: add system_cc_decrypted
- heap for explicitly decrypted memory
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	iommu@lists.linux.dev, linux-media@vger.kernel.org, sumit.semwal@linaro.org, 
-	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, jstultz@google.com, 
-	christian.koenig@amd.com, m.szyprowski@samsung.com, robin.murphy@arm.com, 
-	jgg@ziepe.ca, leon@kernel.org, sean.anderson@linux.dev, ptesarik@suse.com, 
-	catalin.marinas@arm.com, aneesh.kumar@kernel.org, suzuki.poulose@arm.com, 
-	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com, 
-	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH0PR11MB7616:EE_
+X-MS-Office365-Filtering-Correlation-Id: ea8fd708-6de3-45a0-c388-08de894b9e19
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info: 723qYI7QHiE7pP1kr3G0V1F6H/iTCBk7HZYDUl09PZZHJftUMZQHKEFFDrlxR7AewPTQE5mPzekgMfY3044e71sIhp4dDskYXUMsNNJe3IZTLePwPDGoavqXZfGlnMM742HiqhBv21wZ3MPSmXBallhDUavyX6PuO02d7FGASa6QSkG6ERCm58rZowjQ8KOsmQ1jmDnu+VynrtQk03pyHn2ON/EhVrAObVbhuoO51o/wzAWMWj34KiNyZImc3fcvezp3nFOnjnnR7xXaudEI0HaQD+f18sKF8u1YK0leyy0JZwiQNO8EZSsHVsUMLzOpV3SG6XS4dQll5PQ7j/JRWazSE+Z6+kDW83sABfN3GkIkpLFsI5DYJkDnd4+W9QaPMqFwCd3egx5uf0rkNO+8eBDbqKmFgO1OTZL1KZ7EuNTMDp3fHZcQf65toXA0LWJNXYX6qWdw8N7Nsrpyxg1+6Z6IkLyZk1RBx892bwjMyAo0pyTkJbU0RdhGalS6xKwE1L82+PnA+SKqEQWRm6rGNdU72U8cN7pWYP+Cl/exq2tV/moe2Z3K3yTU6/0U2wF0HHP774SnyJOk3yaX17zzPjjM5+kloiMJmWhZCG5klkcsqgxUarKOWievNqJ67mD1B3sQwkBdYKlDh2sRz01CP9asp40pbiQGt7E7V6OuRnnJ3RVKRusD1Vzl/zVbsMPe0ZnCAaqYptQVECXqzmw07/UdNgLygTW/0zg1ZBJVjzE=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Tngzc3J0VWFXZHUwS1VYWFFweDBTT2FmQXNVZDFHdzgxakJabDRrYzB2Q3Zw?=
+ =?utf-8?B?eUFBZVFsbzBnd3AySit4MW9NT2xhVmRkcmJMUGZsMU00ZFdBdkg1alNIcFdC?=
+ =?utf-8?B?R3VoZi9FZG1hd2NkeW55KzM0RGJ1WTNRbXd0a285VVVweFB0a21lM2RLckZC?=
+ =?utf-8?B?Q0phNWRPbTFiRkFBTkhuR1k2ODlvZFdGYWhnUjhGdGdhdGd4TmU1eUdKVGdF?=
+ =?utf-8?B?R00rUDcxcGpOSjUxdXNPYU1qN1Rsdm9CZkx3TEtuZm5KcmU5SzZ1UnRSRDR3?=
+ =?utf-8?B?ckQvNGVMQ1JYWHdsUEJva21zbHVSZGh4WksrQkFpMG8rb2ttRk53Z0tXcXRh?=
+ =?utf-8?B?cnRzeTEzQzVyWmh2UEEyWkwyeW9CcTJLZUNCMkRhcmh1d3I3V0NhcWJhbmY5?=
+ =?utf-8?B?QlNvSFE2Z0l6ME05WjE3MUVlQU9HcnZCeXE3L1FsTDBvc2hvN2Fpa3d0c3Fl?=
+ =?utf-8?B?OU5mUjYwYkcwWUlaZTU1UnFjNHp0Y0w0eUwxN0NVTGpRRjh1R1AwdCtWRDda?=
+ =?utf-8?B?MWY3emM4UWFjeTc1RDlGeGFEM3JFN2F1ZmxZTG5US3V4YitkdzNLZ0QwQ0dv?=
+ =?utf-8?B?L01CYk54U2NLN0REb2JsNW9jNk9sYXE5MDEvRlRZbnc0bmk3YXVkWVFIbThv?=
+ =?utf-8?B?OTRoNUs1aERlb3gzalB6Z1VUV0p4N2RFZW53UFQ2N3RuL1BrN2xqbG1RcjBz?=
+ =?utf-8?B?c0UwQVRHSEkycXBSMEhpNDFNM2VydVlYVHppSHFGWVM4dzlmLzlaZXA1RzRL?=
+ =?utf-8?B?b2l4QncyWFBaU3VkUm4rVDdYd00zdWJZQlNudUR1N1RHNXhyQTdocjIxQklX?=
+ =?utf-8?B?RklMZitQRGdKNFN3amxyTjZTUGNYOFBSRzBuaERBSyswSWhHNUlsUG1zVFNv?=
+ =?utf-8?B?cVRvRVJ0STBOTHBXVTBEWjZqQnRzcVpid2QrSlNiVWFEc3ZqODc3VXdITnBp?=
+ =?utf-8?B?bnhxNC9nQmVsQ3JleUhGdUhCNUViQzdFOW5vZEdxL3o3TENQYjVROTFvTHNq?=
+ =?utf-8?B?djFtNlNvZDlXaG1va2dvZitaYUxEcllZM0h5cUNCY3NMdjVmdmJzNlZrMU1s?=
+ =?utf-8?B?aEYyRU5qL2k4SjJrYjJDd1BhNitnTGZCTk9jNUtaajl6ZnFwYi9MYis3di9Y?=
+ =?utf-8?B?RWRaYjduaCt1MGJ0SEMzOE13bFB1aEd2T0Z2RGRySmFkTndKRGtPREtTMmJF?=
+ =?utf-8?B?SmEwVlpPTUlnNXMvNFRPdmxkczZXNndjcjRYOXBVQXNXZFA4dExxYzU0NUFV?=
+ =?utf-8?B?UVlVZ1l2bzU0QjJkMlFYN1RDVUtobS90SXVtb2Q4MkZQRjd2MHdUbWU5b1Bn?=
+ =?utf-8?B?b0dBUStCVzFUNC80V21NejZYaFhidHNYay8zWUt1OUpDMzl5YTFXb3krNG5r?=
+ =?utf-8?B?OUtQQmxPcVV1YjdJbTlFN0syQUY5SFhnWDMvOGJvOGNzdjNObFpjbzVFUTJv?=
+ =?utf-8?B?RVBNSVk5M0FZZVV1aEpUZDBXeHM1bU5KZ2tlcG56Q2EzTnRpSVB5UjlxenRu?=
+ =?utf-8?B?bUIwZitzVHczbnlaYkxEVG43M3dlcW1jOER3MEdYOGZaWklJRGlXZFY1WDJm?=
+ =?utf-8?B?TVJYNXgvc0daMmtQT3lDM2ticDlKSjVuZjFtUU5iNHZxcTU5NHY2cTRUVmZY?=
+ =?utf-8?B?d1JGak5JeUhWV2Q5Smp6TFI5U2JQMG1ERFdJcEwvQ0pEOVIzSnFMSnRYaGhJ?=
+ =?utf-8?B?OEI0ZVRBTTZZS3NlVm82OWxOamFzeE9pdDhjVGIyU1d1M29jTGF3ODhYeFlo?=
+ =?utf-8?B?cWlPK3hLbjVCaHYwVFRONFZFaWRGTnhWT1FweDUyZjhacVdhZ0hmdytoUDJX?=
+ =?utf-8?B?cFBQZ2pnWEt2cThLbSsxV1F5c3M0VEk1Z0w3MU4vdm9KbW9jbUV3UWFxQnJU?=
+ =?utf-8?B?eGlCU2pBNDgwNm9ZWlNJQzAraGVlSWFVWjRNQ2tyVVZ1THgzbENZdlpDZjFM?=
+ =?utf-8?B?K2p4NmxIbi9tTUJGL2ZFU0J5MG16SW9kbzV2cDdsMlFPUFVOY2N4WVg2RzJQ?=
+ =?utf-8?B?RnE3RHFyVjZaYmdXRG5qSlRhK1R0SHl5aTVOdzU5WmR6a1dnSStOQ0l6RzFx?=
+ =?utf-8?B?UmY0d0hCbmNjYVl1NjMxNEh4Y2hFMEMySFg3eXpGQXBtNXZTYWRBNDl5WWJ3?=
+ =?utf-8?B?Si93ZEJxanVoTHpLdHYyZVo5Y0NoZ1kwVm1hMTMyRllQMnF6RWNvZklHUU9J?=
+ =?utf-8?B?N2lRS05HdWxDd1pkQ0RKcTYzV2NBSXlqbU94QXgrd3pjbkU3SGxCZU1ETGY0?=
+ =?utf-8?B?UlV6Yk90dXVDNnBWdGJBc2ZOUGRrYlI0VzN0ejhTUkhYbkgwY2lCYjF0T2pz?=
+ =?utf-8?B?UUg1VHZnWUl6dVZEOVZxdUdMN0Q4OTc2Mk1VRVF2UDMrb2dvSzkyeElKQ0pG?=
+ =?utf-8?Q?vC9YZUUh6kaSLKic=3D?=
+X-Exchange-RoutingPolicyChecked: sqfhLVZhZKb2yStklW8Tx69M87UwcTgEm2fv9tD7aSEpynbnJahg3zyB56jhtfh8NtnL0zz2fvIYBYGNfHX2CB2ql8zDUayn3wyXPs4Sa185ZWgWfg4lTYvCjQl6UuNVoTn5OtfLI0/1unn9otViyIAUaFSiXCo0XOTPTUrprqfZoaMfCiA3oEDxNpyX766buJnGfA8Hbga/WS4Y2NyT8tgQXxXHwUxQoz43DAn35IixfbR4UiPVX9ApWwaxepCK3KUUqMpgR0h1/bU5NyznsHdxKZ7bc4lDSRDnVhmrum+sWJhRrDpHDJ5s72JrCSjkxFh12+GcetlQuIwBl1hGog==
+X-MS-Exchange-CrossTenant-Network-Message-Id: ea8fd708-6de3-45a0-c388-08de894b9e19
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 02:18:20.5028
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yjmIsKFokCBDHeHdGPJnpG3A+q2i0H1sFNWyTqEMt/n3rOEWR+k8TCRojNunXwcSDXF1FPJLdzNF8X3EHhGhbOy4ZYTMkqdWC8vOrgYEQtY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7616
+X-OriginatorOrg: intel.com
 
-On Mon, Mar 16, 2026 at 5:59=E2=80=AFAM Jiri Pirko <jiri@resnulli.us> wrote=
-:
->
-> From: Jiri Pirko <jiri@nvidia.com>
->
-> Add a new "system_cc_decrypted" dma-buf heap to allow userspace to
-> allocate decrypted (shared) memory for confidential computing (CoCo)
-> VMs.
->
-> On CoCo VMs, guest memory is encrypted by default. The hardware uses an
-> encryption bit in page table entries (C-bit on AMD SEV, "shared" bit on
-> Intel TDX) to control whether a given memory access is encrypted or
-> decrypted. The kernel's direct map is set up with encryption enabled,
-> so pages returned by alloc_pages() are encrypted in the direct map
-> by default. To make this memory usable for devices that do not support
-> DMA to encrypted memory (no TDISP support), it has to be explicitly
-> decrypted. A couple of things are needed to properly handle
-> decrypted memory for the dma-buf use case:
->
-> - set_memory_decrypted() on the direct map after allocation:
->   Besides clearing the encryption bit in the direct map PTEs, this
->   also notifies the hypervisor about the page state change. On free,
->   the inverse set_memory_encrypted() must be called before returning
->   pages to the allocator. If re-encryption fails, pages
->   are intentionally leaked to prevent decrypted memory from being
->   reused as private.
->
-> - pgprot_decrypted() for userspace and kernel virtual mappings:
->   Any new mapping of the decrypted pages, be it to userspace via
->   mmap or to kernel vmalloc space via vmap, creates PTEs independent
->   of the direct map. These must also have the encryption bit cleared,
->   otherwise accesses through them would see encrypted (garbage) data.
->
-> - DMA_ATTR_CC_DECRYPTED for DMA mapping:
->   Since the pages are already decrypted, the DMA API needs to be
->   informed via DMA_ATTR_CC_DECRYPTED so it can map them correctly
->   as unencrypted for device access.
->
-> On non-CoCo VMs, the system_cc_decrypted heap is not registered
-> to prevent misuse by userspace that does not understand
-> the security implications of explicitly decrypted memory.
->
-> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-> ---
-> v2->v3:
-> - removed couple of leftovers from headers
-> v1->v2:
-> - fixed build errors on s390 by including mem_encrypt.h
-> - converted system heap flag implementation to a separate heap
-> ---
->  drivers/dma-buf/heaps/system_heap.c | 103 ++++++++++++++++++++++++++--
->  1 file changed, 98 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/=
-system_heap.c
-> index b3650d8fd651..a525e9aaaffa 100644
-> --- a/drivers/dma-buf/heaps/system_heap.c
-> +++ b/drivers/dma-buf/heaps/system_heap.c
-> @@ -10,17 +10,25 @@
->   *     Andrew F. Davis <afd@ti.com>
->   */
->
-> +#include <linux/cc_platform.h>
->  #include <linux/dma-buf.h>
->  #include <linux/dma-mapping.h>
->  #include <linux/dma-heap.h>
->  #include <linux/err.h>
->  #include <linux/highmem.h>
-> +#include <linux/mem_encrypt.h>
->  #include <linux/mm.h>
-> +#include <linux/set_memory.h>
->  #include <linux/module.h>
-> +#include <linux/pgtable.h>
->  #include <linux/scatterlist.h>
->  #include <linux/slab.h>
->  #include <linux/vmalloc.h>
->
-> +struct system_heap_priv {
-> +       bool decrypted;
-> +};
+Jason Gunthorpe wrote:
+> On Fri, Mar 13, 2026 at 06:32:27PM -0700, Dan Williams wrote:
+> 
+> > The problem is that for all the buses that do not currently have a
+> > "device authorization" concept only userspace can decide that a device
+> > should skip bind by default. For that, I propose module autoprobe policy
+> > [1]. Not yet convinced the kernel needs its own per-device "no bind"
+> > policy.
+> 
+> I think it is just part of the broader definition of the level that
+> extends into the iommu and so on. It makes sense to have this kind of
+> no-binding security level, IMHO.
 
-Hi Jiri,
+Easy to include for completeness.
 
-I wonder if it'd better to call this cc_decrypted (or I guess
-cc_shared based on Robin's comment in the previous patch) like the DMA
-attr? There's a separate effort for "restricted" heaps with TEE for
-(encrypted) video playback, which doesn't involve VMs or RDMA. I think
-the cc_ prefix might help avoid any confusion between the usecase here
-and restricted heaps.
+In a CC VM userspace can set "$module autoprobe=0" to get a control
+point to set @trust to zero, but @trust otherwise defaults to 1. This
+allows for userspace policy to generically distrust devices, but without
+needing to build a new mechanism to specify which devices start life at
+trust == 0 (i.e.  "device filter" proposal previously NAK'd).
 
+> > > The DMA API just wants a flag in the struct device that says if the
+> > > device can access encrypted memory or only decrypted.
+> > 
+> > You mean separate "trusted to access private" and "currently enabled to
+> > access private" properties? I am trying to think of a situation where
+> > "dev->trust >= 3" and a flag saying "disable bouncing for encrypted
+> > memory" would ever disagree.
+> 
+> I'm steering the trust level toward more of an acceptance criteria.
+> If the trust level is you have access to private memory but the device
+> can't actually do that then fail the trust level change.
+> 
+> Same for the reverse, if the trust level says no private memory and the
+> device is T=1 then fail the trust level change.
 
+Ok, so the uapi for PCI/TDISP would be:
 
-> +
->  struct system_heap_buffer {
->         struct dma_heap *heap;
->         struct list_head attachments;
-> @@ -29,6 +37,7 @@ struct system_heap_buffer {
->         struct sg_table sg_table;
->         int vmap_cnt;
->         void *vaddr;
-> +       bool decrypted;
->  };
->
->  struct dma_heap_attachment {
-> @@ -36,6 +45,7 @@ struct dma_heap_attachment {
->         struct sg_table table;
->         struct list_head list;
->         bool mapped;
-> +       bool decrypted;
->  };
->
->  #define LOW_ORDER_GFP (GFP_HIGHUSER | __GFP_ZERO)
-> @@ -52,6 +62,34 @@ static gfp_t order_flags[] =3D {HIGH_ORDER_GFP, HIGH_O=
-RDER_GFP, LOW_ORDER_GFP};
->  static const unsigned int orders[] =3D {8, 4, 0};
->  #define NUM_ORDERS ARRAY_SIZE(orders)
->
-> +static int system_heap_set_page_decrypted(struct page *page)
-> +{
-> +       unsigned long addr =3D (unsigned long)page_address(page);
-> +       unsigned int nr_pages =3D 1 << compound_order(page);
-> +       int ret;
-> +
-> +       ret =3D set_memory_decrypted(addr, nr_pages);
-> +       if (ret)
-> +               pr_warn_ratelimited("dma-buf system heap: failed to decry=
-pt page at %p\n",
-> +                                   page_address(page));
-> +
-> +       return ret;
-> +}
-> +
-> +static int system_heap_set_page_encrypted(struct page *page)
-> +{
-> +       unsigned long addr =3D (unsigned long)page_address(page);
-> +       unsigned int nr_pages =3D 1 << compound_order(page);
-> +       int ret;
-> +
-> +       ret =3D set_memory_encrypted(addr, nr_pages);
-> +       if (ret)
-> +               pr_warn_ratelimited("dma-buf system heap: failed to re-en=
-crypt page at %p, leaking memory\n",
-> +                                   page_address(page));
-> +
-> +       return ret;
-> +}
-> +
->  static int dup_sg_table(struct sg_table *from, struct sg_table *to)
->  {
->         struct scatterlist *sg, *new_sg;
-> @@ -90,6 +128,7 @@ static int system_heap_attach(struct dma_buf *dmabuf,
->         a->dev =3D attachment->dev;
->         INIT_LIST_HEAD(&a->list);
->         a->mapped =3D false;
-> +       a->decrypted =3D buffer->decrypted;
->
->         attachment->priv =3D a;
->
-> @@ -119,9 +158,11 @@ static struct sg_table *system_heap_map_dma_buf(stru=
-ct dma_buf_attachment *attac
->  {
->         struct dma_heap_attachment *a =3D attachment->priv;
->         struct sg_table *table =3D &a->table;
-> +       unsigned long attrs;
->         int ret;
->
-> -       ret =3D dma_map_sgtable(attachment->dev, table, direction, 0);
-> +       attrs =3D a->decrypted ? DMA_ATTR_CC_DECRYPTED : 0;
-> +       ret =3D dma_map_sgtable(attachment->dev, table, direction, attrs)=
-;
->         if (ret)
->                 return ERR_PTR(ret);
->
-> @@ -188,8 +229,13 @@ static int system_heap_mmap(struct dma_buf *dmabuf, =
-struct vm_area_struct *vma)
->         unsigned long addr =3D vma->vm_start;
->         unsigned long pgoff =3D vma->vm_pgoff;
->         struct scatterlist *sg;
-> +       pgprot_t prot;
->         int i, ret;
->
-> +       prot =3D vma->vm_page_prot;
-> +       if (buffer->decrypted)
-> +               prot =3D pgprot_decrypted(prot);
-> +
->         for_each_sgtable_sg(table, sg, i) {
->                 unsigned long n =3D sg->length >> PAGE_SHIFT;
->
-> @@ -206,8 +252,7 @@ static int system_heap_mmap(struct dma_buf *dmabuf, s=
-truct vm_area_struct *vma)
->                 if (addr + size > vma->vm_end)
->                         size =3D vma->vm_end - addr;
->
-> -               ret =3D remap_pfn_range(vma, addr, page_to_pfn(page),
-> -                               size, vma->vm_page_prot);
-> +               ret =3D remap_pfn_range(vma, addr, page_to_pfn(page), siz=
-e, prot);
->                 if (ret)
->                         return ret;
->
-> @@ -225,6 +270,7 @@ static void *system_heap_do_vmap(struct system_heap_b=
-uffer *buffer)
->         struct page **pages =3D vmalloc(sizeof(struct page *) * npages);
->         struct page **tmp =3D pages;
->         struct sg_page_iter piter;
-> +       pgprot_t prot;
->         void *vaddr;
->
->         if (!pages)
-> @@ -235,7 +281,10 @@ static void *system_heap_do_vmap(struct system_heap_=
-buffer *buffer)
->                 *tmp++ =3D sg_page_iter_page(&piter);
->         }
->
-> -       vaddr =3D vmap(pages, npages, VM_MAP, PAGE_KERNEL);
-> +       prot =3D PAGE_KERNEL;
-> +       if (buffer->decrypted)
-> +               prot =3D pgprot_decrypted(prot);
-> +       vaddr =3D vmap(pages, npages, VM_MAP, prot);
->         vfree(pages);
->
->         if (!vaddr)
-> @@ -296,6 +345,14 @@ static void system_heap_dma_buf_release(struct dma_b=
-uf *dmabuf)
->         for_each_sgtable_sg(table, sg, i) {
->                 struct page *page =3D sg_page(sg);
->
-> +               /*
-> +                * Intentionally leak pages that cannot be re-encrypted
-> +                * to prevent decrypted memory from being reused.
-> +                */
-> +               if (buffer->decrypted &&
-> +                   system_heap_set_page_encrypted(page))
-> +                       continue;
-> +
->                 __free_pages(page, compound_order(page));
->         }
->         sg_free_table(table);
-> @@ -347,6 +404,8 @@ static struct dma_buf *system_heap_allocate(struct dm=
-a_heap *heap,
->         DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
->         unsigned long size_remaining =3D len;
->         unsigned int max_order =3D orders[0];
-> +       struct system_heap_priv *priv =3D dma_heap_get_drvdata(heap);
-> +       bool decrypted =3D priv->decrypted;
->         struct dma_buf *dmabuf;
->         struct sg_table *table;
->         struct scatterlist *sg;
-> @@ -362,6 +421,7 @@ static struct dma_buf *system_heap_allocate(struct dm=
-a_heap *heap,
->         mutex_init(&buffer->lock);
->         buffer->heap =3D heap;
->         buffer->len =3D len;
-> +       buffer->decrypted =3D decrypted;
->
->         INIT_LIST_HEAD(&pages);
->         i =3D 0;
-> @@ -396,6 +456,14 @@ static struct dma_buf *system_heap_allocate(struct d=
-ma_heap *heap,
->                 list_del(&page->lru);
->         }
->
-> +       if (decrypted) {
-> +               for_each_sgtable_sg(table, sg, i) {
-> +                       ret =3D system_heap_set_page_decrypted(sg_page(sg=
-));
-> +                       if (ret)
-> +                               goto free_pages;
-> +               }
-> +       }
-> +
->         /* create the dmabuf */
->         exp_info.exp_name =3D dma_heap_get_name(heap);
->         exp_info.ops =3D &system_heap_buf_ops;
-> @@ -413,6 +481,13 @@ static struct dma_buf *system_heap_allocate(struct d=
-ma_heap *heap,
->         for_each_sgtable_sg(table, sg, i) {
->                 struct page *p =3D sg_page(sg);
->
-> +               /*
-> +                * Intentionally leak pages that cannot be re-encrypted
-> +                * to prevent decrypted memory from being reused.
-> +                */
-> +               if (buffer->decrypted &&
-> +                   system_heap_set_page_encrypted(p))
-> +                       continue;
->                 __free_pages(p, compound_order(p));
->         }
->         sg_free_table(table);
-> @@ -428,6 +503,14 @@ static const struct dma_heap_ops system_heap_ops =3D=
- {
->         .allocate =3D system_heap_allocate,
->  };
->
-> +static struct system_heap_priv system_heap_priv =3D {
-> +       .decrypted =3D false,
-> +};
-> +
-> +static struct system_heap_priv system_heap_cc_decrypted_priv =3D {
-> +       .decrypted =3D true,
-> +};
-> +
->  static int __init system_heap_create(void)
->  {
->         struct dma_heap_export_info exp_info;
-> @@ -435,8 +518,18 @@ static int __init system_heap_create(void)
->
->         exp_info.name =3D "system";
->         exp_info.ops =3D &system_heap_ops;
-> -       exp_info.priv =3D NULL;
-> +       exp_info.priv =3D &system_heap_priv;
-> +
-> +       sys_heap =3D dma_heap_add(&exp_info);
-> +       if (IS_ERR(sys_heap))
-> +               return PTR_ERR(sys_heap);
-> +
-> +       if (IS_ENABLED(CONFIG_HIGHMEM) ||
-> +           !cc_platform_has(CC_ATTR_MEM_ENCRYPT))
-> +               return 0;
->
-> +       exp_info.name =3D "system_cc_decrypted";
-> +       exp_info.priv =3D &system_heap_cc_decrypted_priv;
->         sys_heap =3D dma_heap_add(&exp_info);
->         if (IS_ERR(sys_heap))
->                 return PTR_ERR(sys_heap);
-> --
-> 2.51.1
->
+echo $tsm > $pdev/tsm/lock
+<gather evidence, validate with relying party>
+echo 3 > $pdev/trust
+
+...where that @trust attribute is a generic device semantic, but in the
+case of PCI device connected to a given TSM it invokes the TSM hypercall
+to transition the device to the RUN state and the TSM local call to
+unblock DMA to private memory.
+
+So, userspace can generically understand what privileges come with which
+trust levels, but the mechanism to get those privileges remains bus
+specific.
+
+> > That bit though has lock-to-run consistency expectations. So if the
+> > kernel does not yet fully trust the device by time the relying party is
+> > satisfied, and the uAPI to transition the device into the TCB (level 3)
+> > is driver-core generic it raises TOCTOU issues in my mind. The
+> > driver-core would need to ask the bus "user now trusts this device, do
+> > you?".
+> 
+> Huh? No, there is no concept of trust in the kernel. The userspace
+> setting level 3 is "I now ack that this device is trusted", there is
+> no further trust cross check. If TSM side says it is in RUN/T=1 then
+> we are done.
+
+Ok, so maybe I misunderstood your point. Per the above, if the trust
+setting is what kicks the bus to finalize T=1 then it makes sense. If
+that kick fails, the user's trust setting request fails.
+
+What I expect is unwanted / surprising is device has already been
+transitioned to T=1 state ahead of the trust setting, it is a
+synchronous mechanism.
+
+> If we fall out of RUN then the level auto-resets back to 0 and
+> userspace has to go around and fix it again. (ignoring driver RAS)
+
+Yes, at the moment that the bus detects that an event like SPDM session
+loss, IDE link loss, TDISP ERROR state entry has occurred it can
+downgrade trust and notify. That notification fits well with netlink
+because all of those events are downstream of evidence validation.
+
+> > Aneesh and I are currently debating on Discord whether the kernel needs
+> > to protect against guest userspace confusing itself. 
+> 
+> Userspace that controls acceptance must be part of the TCB or the
+> whole model is fully broken. If your guest userspace is so security
+> broken it can accept devices it doesn't mean to then just forget it.
+
+Agree, it is a non-problem. If guest userspace confuses itself by racing
+sysfs operations then the relying party should not trust that userspace.
+
+> > However, to Aneesh's point we could protect against that with a
+> > transactional uAPI like netlink that can express "trust if and only if
+> > the device has not been relocked before final accept" by passing a
+> > cookie obtained at lock to accept. That would be awkward to coordinate
+> > with driver-core generic uAPI for trust.
+> 
+> You could, but why make it so complicated? The whole LOCKED/RUN thing
+> is already supposed to deal with TOCTOU, doesn't it?
+
+Right, the threat vector is the guest accepting something it has had no
+chance to validate. Guest userspace confusion is not that. Guest
+userspace asking the device to be re-locked in a way that confuses an
+ongoing evidence validation sequence in another thread is a "you get to
+keep the pieces" event.
+
+> The CSP cannot trick a device to fall out of LOCKED an the re-enter
+> LOCKED without the VM knowing.
+> 
+> The VM attacking itself on something as security critical as device
+> accepance can't be in scope :\
+
+The complication vs benefit tradeoff is indeed not mathing, but wanted
+to do justice to Aneesh's proposal and the suitability of the sysfs
+uapi.
+
+> > > This way nothing is coupled and the kernel can offer all kinds of
+> > > different uAPI for device verification. Userspaces picks the
+> > > appropriate one and acks it with the level change.
+> > 
+> > Thunderbolt already has authorized uAPI. I expect adding dev->trust
+> > support to thunderbolt is more related to ATS privilege and private
+> > memory privilege.
+> 
+> It brings it into the whole 'measure the device and then decide what
+> to do with it' framework. The trust level is still the generic ack
+> that the device is allowed the participate in the system with whatever
+> level of security.
+
+Some thought experiments to confirm alignment...
+
+'Generic ack' is a synchronous mechanism for the bus to evaluate. So if
+@trust appears for any device, and by consequence alongside @authorized
+for a thunderbolt device, it should be the case that these operations
+are equivalent:
+
+# echo 1 > $dev/trust
+# echo 1 > $dev/authorized
+
+...and the result is cross-reflected for comptability:
+
+# echo 1 > $dev/trust
+# cat $dev/authorized
+1
+
+Consequently this:
+
+# echo 2 > $dev/trust
+
+...would be equivalent to authorizing the device and unblocking ATS (if
+such a thing existed).
+
+For bare metal PCI device security the TSM 'connection' needs to be
+established in order to enable device evidence collection.
+
+echo $tsm > $pdev/tsm/connect
+<validate device evidence>
+echo 2 > $pdev/trust
+
+Now, I question whether 5 trust levels instead of 4. This would be to
+explicitly only trust devices where the TSM has established physical
+link encryption, or the TSM has asserted that the link is protected by
+other means. So the trust levels are:
+
+0 disconnected: bus does not attach drivers
+1 limited: core code deploys hostile device mitigations like disable
+           ATS, CC force shared memory bouncing.
+2 DMA: full DMA access, driver responsible for protecting against
+       adverarial devices.
+3 Link: mitigations against physical integrity and snooping attacks
+        deployed
+4 TCB: full device interface validation via a protocol like TDISP,
+       CC private memory access granted.
+
+Where the native Rust library based SPDM driver only offers trust level
+2, bare metal TSMs can support trust level 3, and the TSM interfaces in
+CC VMs can support trust level 4. I could see squashing 2 and 3 and
+making it a documentation problem to understand the capabilities of the
+various TSM drivers.
