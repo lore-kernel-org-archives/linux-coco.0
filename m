@@ -1,117 +1,67 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A8C3D0917
-	for <linux-coco@lists.linux.dev>; Tue, 24 Mar 2026 19:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360F8396D30;
+	Tue, 24 Mar 2026 19:14:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774379509; cv=none; b=ElIo5qh2YNbaw1wa57Ye43z54HOnuzWniOvD5OgnBrOH2wEYT5HsEGWA7EotbrhvXkZDAItWIE8ztbt/2UyP2ciywv+PBWTARSNur4CT5hWbOxYpkoHfhL0nDyFmlMP48VDFEXur8AqyIhONwJJOaNq2+B+b6SSFq2vvGywMnYw=
+	t=1774379667; cv=none; b=Q+i/6yfgNkMZYSNcBxU1ny37vsfhAU22k8L8Iw0CMuW2GenZtd545IFmkyWRa3BitReeDUzdd/gEEPCDAm5H7pc57k9hz7WXcLcsEJTxeFuutcAlttMDNXGAtaxROYIoVGe8Fp+vyiC/2abHYPH1PXrcxrEE0bNq/fHZQ8kWk/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774379509; c=relaxed/simple;
-	bh=DdHohqsrtbIkU1aFssJcCqXYWFKSTBkMjOlKSANv6rU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BR3VpJkF24iulrzcUL87a94ja9qkWHebR9RnQeaduzSiZJhLdsGkUmViPsBR/9TmNax4aM/W8VSfwr74/xBZTbdhhzZClltBfw7d+vTrwHOsUKTTEVz7+A5PNgvsSEMkYwyr1D5Txb2QFu43IsCI4TbLf2qArdbNUgzoZ+j7Pmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=eF7WiJBo; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1774379667; c=relaxed/simple;
+	bh=aTy8W7SgWTy9MJdjHu3wk/HtiWHlpjo1ZfaA7EhmecI=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ZzDMU9KF1piyfR3fSkHmtKCKlEcPJfvHOAs3O4LL5odFnkKaDTa5TaRp/TvBLFzXZU3eERihgNsk6QWJnyFAsF+bG0yD3WQxH4KUSxjw2163+pxZ1TYX3A0vSQO9Jn79WGEtzoIrEaisEuzGSd+eGk/BjIVZLrdRz0rsKaTRErc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=HvAYLpvo; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="eF7WiJBo"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8cfc497a604so604824485a.3
-        for <linux-coco@lists.linux.dev>; Tue, 24 Mar 2026 12:11:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1774379505; x=1774984305; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GgkzaFQD+hUjoaCAACM9eToN2Ozqi3oZGhlYET6dGi8=;
-        b=eF7WiJBoEF075oSRdCzDmhdJKcNlYxelMVue93x5jyODP818h4g6ZJuO15q9aZSzZ+
-         8nvt+lluIFYopr+0E3Ftj23kNmnXbuztagDdu9qlA0sOJKrUIZh6x/bi9O99+ON+0dPV
-         ucyny/RWvXhS0cEKL0o2NgfoYEzq27S2BNhsv25Vw/zJr9pVJC5aw5poIx9ICat+Vli/
-         kGujjKBRRXyPNMT4JRSp+bgMHRmOQc4bIn9I/eCw8zGAUoVWLYTgZZ1fusRR5BNt1FUq
-         fszPoTUbJcbdrvCRtLfneQgdrjmiPqqNyNc3fycAghSC+E+ezWZXcpBbsVXTtN1vGq9B
-         Dv/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774379505; x=1774984305;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GgkzaFQD+hUjoaCAACM9eToN2Ozqi3oZGhlYET6dGi8=;
-        b=W0x/X22GJ9D0svse/Vm/oihGxsyheQzxI1Oc1wUXCqbhIqVMfq6CZkdykoAKJIscUP
-         wn+vB1XWJnr7LJpYlNAd5xMQZrCbCEqRjnYGBIPkhCR7wEnrtpfsRDcXIOFrPzYK04/o
-         7YTDPADxZz3XfBAtf8PktXAgXxxqCV/Ly1n4ivfAwRZBiVA1COCobJcxXAdzUYAuSFbN
-         cjlXmxNXgURfdtaHv9y0EIAYPDg9qrNXx/d2xwklB3VcHv+p14Z7a5mHVH5ZU10tsQMr
-         Rt8Ms5btYLzQdOi0N9MdsyIwJJOGpiqTfmkSubrjVIYvQxXpjizsNu3l7N4ygvvQaLQt
-         HD7g==
-X-Forwarded-Encrypted: i=1; AJvYcCVkJx0L+PjMdgC3a+irxFiFd+bBunlU4IXWJqSORLB4rWjnfKssYXmkJFau8htWTkVNd49WpvCItfVp@lists.linux.dev
-X-Gm-Message-State: AOJu0YyfP5GAgLkiynKGa7dgkxZMufgTrZMWl8ysFu1zYi04999tWTHs
-	VKIjOQurHKrFthnCz0jqD7SSJ+M+6fm9tUPzrEIY17YisMX1elcvSdZNskr2NV17Eoc=
-X-Gm-Gg: ATEYQzwih9KiKNcH6KIXAQM9sBLepP3BWCZFuyxhYy7XNh91CK9BF5Kysf4MSxJPMB/
-	HHk70B4G8EER68uXUjH4mlJ3+YBWLkaBrIduYMHs4t5VRmIYZ83hKvx4pbbNdj2DEOR1GcpGZ8h
-	u9urqbUlARKRUm8ZPX8oPvprlD9tzucO6PswgneXctafMTh0bksgPlDbzVM8h2FWk4uWLCAMEMf
-	5J7TXFKJFttXnhztgHJ5ALdWreNqiF4ljsFXfCYlMm3iaKeHQW+lF6TO7cOPCidF2PyNsYaqtsp
-	FhS2AvStaEGY4NF+U8eqftiTbFMkOV/v6+B7b0/mZvej1z9Tf1cpw3eoG2Hs1ptm8MKnrhbzLG5
-	kwH//cN4+iydJzcrv1STjZeOp1N7wwNsmQNZZtvnDV7B0CK0f9A1j1i+Txsx9XtuCAxsOA/A3Zg
-	rBTafMvopd+aoD/sho8V5IhYqUl/GQl5tKDPNzfpvucLU5IJT9dyHxgFRh7B3ZKr0QD3I5VQ==
-X-Received: by 2002:a05:620a:17a7:b0:8cd:7fc0:ee1c with SMTP id af79cd13be357-8d0010038c4mr104803685a.22.1774379505164;
-        Tue, 24 Mar 2026 12:11:45 -0700 (PDT)
-Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cfc8f91d32sm1083581885a.14.2026.03.24.12.11.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 12:11:44 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1w57AF-00000000JZi-3000;
-	Tue, 24 Mar 2026 16:11:43 -0300
-Date: Tue, 24 Mar 2026 16:11:43 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: Robin Murphy <robin.murphy@arm.com>, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev,
-	linux-media@vger.kernel.org, sumit.semwal@linaro.org,
-	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com,
-	jstultz@google.com, tjmercier@google.com, christian.koenig@amd.com,
-	m.szyprowski@samsung.com, leon@kernel.org, sean.anderson@linux.dev,
-	ptesarik@suse.com, catalin.marinas@arm.com, aneesh.kumar@kernel.org,
-	suzuki.poulose@arm.com, steven.price@arm.com,
-	thomas.lendacky@amd.com, john.allen@amd.com, ashish.kalra@amd.com,
-	suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v4 1/2] dma-mapping: introduce DMA_ATTR_CC_DECRYPTED for
- pre-decrypted memory
-Message-ID: <20260324191143.GF8437@ziepe.ca>
-References: <20260316125857.617836-1-jiri@resnulli.us>
- <20260316125857.617836-2-jiri@resnulli.us>
- <15fcfa5e-c4b9-4b56-8f84-20dd5f66d643@arm.com>
- <lufy3ppgiy7637iravgzabajj67chmqvg22qc3fd2yqe2p33ws@b54vibhehth2>
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="HvAYLpvo"
+Received: from 8bytes.org (p4ffe051a.dip0.t-ipconnect.de [79.254.5.26])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 112E01A625F;
+	Tue, 24 Mar 2026 20:14:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1774379659;
+	bh=aTy8W7SgWTy9MJdjHu3wk/HtiWHlpjo1ZfaA7EhmecI=;
+	h=Date:From:To:Subject:From;
+	b=HvAYLpvo0usn6FaFzoPcjp6i0cEEidn0EKgidw0pfgQn4s4hAOG/abvaz4RcxX/fn
+	 ebKRw5tONTlo3CO5xayv3SDujLzppsnoN6z6+RvH18Gd6R7+5jovmt1fXwTzagNrKl
+	 oWYqJyf3zANigaxehgsGkEJO+CI1/Bcf6irg6GHqMMHvhbr4oF8Jb1YwsVf1chR9aB
+	 EJJQmudIsSWqJMnUeAN/jh6GRapO6yelz/OyT8CpzCMsjqXCZ+ZcpGwGorQSE7clkh
+	 Or/wZAiUfTUpoz2o3iS357SFvH3BLKH9QPBnNUICnBSsL7IY5nprD0lyWbtN+4MzL2
+	 g1nl+Fj8I1QDQ==
+Date: Tue, 24 Mar 2026 20:14:17 +0100
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: SVSM Development Call March 25, 2026
+Message-ID: <iuafzrd25l3whbifc3m7tcxf2bq3hqe4bymuwrqhtpmcujipfc@2qxd6c547gz2>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <lufy3ppgiy7637iravgzabajj67chmqvg22qc3fd2yqe2p33ws@b54vibhehth2>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 17, 2026 at 09:26:21AM +0100, Jiri Pirko wrote:
-> >...although, why *shouldn't* this be allowed with a vIOMMU? (Especially given
-> >that a vIOMMU for untrusted devices can be emulated by the host VMM without
-> >the CoCo hypervisor having to care at all - again, at least on Arm and other
-> >architectures where IOMMUs are regular driver model devices)
-> 
-> Well, when iommu path is able to consume the attr, this restriction
-> should be lifted. This is basically a sanity check for the
-> dma_map_phys() caller.
+Hi,
 
-Right we eventually need a matching IOMMU_DECRYPTED.
+Here is the call for agenda items for this weeks SVSM development call.  Please
+send any agenda items you have in mind as a reply to this email or raise them
+in the meeting.
 
-It needs to mirror how the CPUs work - any place that would use
-pgprot_decrypted to create a PTE should use IOMMU_PROT_DECRYPTED to
-create an iommu mapping.
+We will use the LF Zoom instance. Details of the meeting  can be found in our
+governance repository at:
 
-The current hack in AMD assumes IOMMU_DECRYPTED behavior for
-IOMMU_MMIO, but that isn't general enough..
+	https://github.com/coconut-svsm/governance
 
-There is some maze to get there but for the moment I think it is fine
-to just not support vIOMMU, it isn't like any vIOMMU drivers even
-exist for CC VMs right now.
+The link to the COCONUT-SVSM calendar is:
 
-Jason
+	https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
+
+The meeting will be recorded and the recording eventually published.
+
+Regards,
+
+	Jörg
