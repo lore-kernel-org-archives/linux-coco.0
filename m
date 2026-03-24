@@ -1,144 +1,117 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFF03A3E69
-	for <linux-coco@lists.linux.dev>; Tue, 24 Mar 2026 18:32:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774377150; cv=pass; b=VqyLMPmypIMhhhbyR9QB74vCgvuS4Ad6szdrTkB3J6Ou1yo149hPdKbKH/1oK9YSwfHvbw8/5TXjrA9QUfpDO59X7uDw/UZ1AfjERcyRNrYUrYoXQX+dH53u24LHcvMmQPxvHaNvG1bXH5BrlZPGniG8Tl4Kl2cEv4jNqPbLcpU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774377150; c=relaxed/simple;
-	bh=capQ/2P6O0wzFj3JGECHvmPV76dOzNCALYeUIxrihD8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iRKBTI4AUPHVxOK4L4yRXKl2EE5A2sxBO89CPQwdETB5T3P0m+CtAuksJniRSOxJVLbQBYB+H6e8rWRjldtLOc1jiYj7FJ7ExYiZJYppYmtjcNSpbyIxdsyapFo5i/D6k0ABzJ71TiUz+FKJnz2JLvXcg3aM1Xs9K58r22o6uqw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ojdPX08b; arc=pass smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A8C3D0917
+	for <linux-coco@lists.linux.dev>; Tue, 24 Mar 2026 19:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774379509; cv=none; b=ElIo5qh2YNbaw1wa57Ye43z54HOnuzWniOvD5OgnBrOH2wEYT5HsEGWA7EotbrhvXkZDAItWIE8ztbt/2UyP2ciywv+PBWTARSNur4CT5hWbOxYpkoHfhL0nDyFmlMP48VDFEXur8AqyIhONwJJOaNq2+B+b6SSFq2vvGywMnYw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774379509; c=relaxed/simple;
+	bh=DdHohqsrtbIkU1aFssJcCqXYWFKSTBkMjOlKSANv6rU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BR3VpJkF24iulrzcUL87a94ja9qkWHebR9RnQeaduzSiZJhLdsGkUmViPsBR/9TmNax4aM/W8VSfwr74/xBZTbdhhzZClltBfw7d+vTrwHOsUKTTEVz7+A5PNgvsSEMkYwyr1D5Txb2QFu43IsCI4TbLf2qArdbNUgzoZ+j7Pmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=eF7WiJBo; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ojdPX08b"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5091ed02c54so59051cf.1
-        for <linux-coco@lists.linux.dev>; Tue, 24 Mar 2026 11:32:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774377148; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Ms+PJlkALuge8Ss4cNy7Dhe30MlBd9zH+G2Vq2mOW/TFMdsmJtHiFaICtjiE47RJGr
-         eyVHO2kn0TTL0IQjgYK1iHwrYxljAPxZU+1wVeX79ey0Q9Sspa+2ZWUAj06WOE3HBu3Q
-         nzonvNpXUk7RkEMtqx1tWCSVPyiueVTMMTyhJrHft8Z5dMJkOB/f8zgaCzzyj+rybsUj
-         RCQgdOJMOqXRjluDdBKTqMstbk0sNUtdRRXyOf2xIjbQ3naZw+mvsuSUoLkQXWGifyS+
-         YMI2l4AfkMManz2XY14PKIpgRfeq3grbgRKvkeCC7Uatr317rI9VoM3C8zvFanbdRzYd
-         0aEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=capQ/2P6O0wzFj3JGECHvmPV76dOzNCALYeUIxrihD8=;
-        fh=cBUjJ4w5+cj76UXmIoTqNGfxQi9nSIADHufVqoMGmQE=;
-        b=El1564xqzWiFPUuG8qk4ViMWZ5swTX1NCqvasV7a7zhvu2RSbRzs9ojx/aK+EDtntz
-         iJaaV2wO10Q94mlsFFGq5uDNChEJ4P6gons6KBLaTp+1xZnDDVF3A00XnACd7CJLNRxu
-         KzHThQmG8QXAg2ST4BLQHio73PaaADmW4OrI/dViyuIbGqAGAlHWDMGw0EBGdR0KWiWE
-         ZZ1rgobN5bede80Q2pE4CcrHf4XEmF5AKeqKBwxOp8TGjtxWxSjsoWQM8r29Wa0ixyBe
-         yUM8N3VSPSqM5dQ0GQa4Va803kPmkqHUZFHu8il6PfGNu5+PLLoZaFlodqtfPKA8VHMN
-         /Lsw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="eF7WiJBo"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8cfc497a604so604824485a.3
+        for <linux-coco@lists.linux.dev>; Tue, 24 Mar 2026 12:11:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774377148; x=1774981948; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=capQ/2P6O0wzFj3JGECHvmPV76dOzNCALYeUIxrihD8=;
-        b=ojdPX08beXR96hNkwnFnQ2MMVb1dqzh5JK+NRHax00dA81SEYR358z1ws+fE1Yog9Y
-         bQVjdFvol+Lr8zCaIKI8TFZwLrfFel/hNzdW2gg+f6aex7mkwsCb3ZMPPDqxehd3yBbU
-         rJDIdlB0+Uwqm/Oo4h7RB+WEgZTFXDsuP1lBat48KHBv711+i8eq9Xz4Fbo6aot1A/nf
-         m0cfHoAYKKy3XzKgEUmul0LajhN2lRWNcs3UCd2zl2IxUrkZhr60koNBUO8gHwZVFdJ6
-         VrQLgCr9FVCoFNsHCiRsTg3MMbPQityCKusCXmCv1ynRFmjRdZg6HSRgrej+Hbna2GQB
-         59Sw==
+        d=ziepe.ca; s=google; t=1774379505; x=1774984305; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GgkzaFQD+hUjoaCAACM9eToN2Ozqi3oZGhlYET6dGi8=;
+        b=eF7WiJBoEF075oSRdCzDmhdJKcNlYxelMVue93x5jyODP818h4g6ZJuO15q9aZSzZ+
+         8nvt+lluIFYopr+0E3Ftj23kNmnXbuztagDdu9qlA0sOJKrUIZh6x/bi9O99+ON+0dPV
+         ucyny/RWvXhS0cEKL0o2NgfoYEzq27S2BNhsv25Vw/zJr9pVJC5aw5poIx9ICat+Vli/
+         kGujjKBRRXyPNMT4JRSp+bgMHRmOQc4bIn9I/eCw8zGAUoVWLYTgZZ1fusRR5BNt1FUq
+         fszPoTUbJcbdrvCRtLfneQgdrjmiPqqNyNc3fycAghSC+E+ezWZXcpBbsVXTtN1vGq9B
+         Dv/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774377148; x=1774981948;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=capQ/2P6O0wzFj3JGECHvmPV76dOzNCALYeUIxrihD8=;
-        b=OXULHVM+2SXCdmDmt6B5hxkj5dr4vP0kTTMFxa6vkKY/D4OjvWv0yddO5JRWfFoUoQ
-         26KHH6eZ5JsEmkOFPBNokIYsX284y77p7Mz9eS3Y5wqep1k71zYFlxpkmOJsIZ4Ej15C
-         C7y068ntUvJv2vB7mGNqlbZ6BLgXWypLg91GhIFAuDc6AFJ0Uz5JFz7aLdJYh/aIayTh
-         R46wpI4uOOJ36hWfRgGzZIQgOOMr955bROriOV10pxfNhXEpyxX+TWUZOax0QPLuVLGH
-         Cswev60vnCt3HhlOE1kslwvOH5lCapZq9khbBE3/fk5PV+nNh8TXPN/yLoRdiJEFJVAg
-         kMxA==
-X-Forwarded-Encrypted: i=1; AJvYcCUZtA9PijV+QG85uhswv//NhhP5RkDe0WF0iJALegV0KbbMZlRvhgWEQ3qJIph7SO8AgwwHHS+N73rt@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywn3wFMg/w+KWaELN8iSRdi/KMKtWpe6MVsGYIp00U74u4m8SFP
-	emTnKbTwuBgKukE3auL6u7HilByjgXf+bx2gjGah9/NeZe3csnTGdLxYJrhcsYkb0Mua05eoBRZ
-	9eLUjQCowyw0OfNaPDVd/SSWgakUSb46gwDUdmZjC
-X-Gm-Gg: ATEYQzwmBOFhF5e7fmL2RWQW2sjVgNdkBNj58W/FVr8Kxygh5C+3MCmvqBCY3uvIWMb
-	1TPAuPmqKHWXD1bbX3NC7jbmpeduUwrQBW0sxA5nYt3NWJpppWMGA/bPiUO8vMq/1lh4CqerRyK
-	xhLZQuR7Cji5296TIHjDte7Wnv82wXQo+aWPvdx6aKPiwUqN/QRpECf+vFSpOrTmTJN7Lalnw92
-	LdD7g34JCOM4+sVsLw3skxat1+vBv3UulMMLmBHiUasOTfcI9fc1iInV9NBu8jHUS9lAUp60B8X
-	Be8TJW2GVKxOGpi6z+V7e6ZPGH9Jjmrzx1BlByQ=
-X-Received: by 2002:a05:622a:a94a:20b0:509:14f0:bff2 with SMTP id
- d75a77b69052e-50b8221e273mr1541411cf.12.1774377147169; Tue, 24 Mar 2026
- 11:32:27 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774379505; x=1774984305;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GgkzaFQD+hUjoaCAACM9eToN2Ozqi3oZGhlYET6dGi8=;
+        b=W0x/X22GJ9D0svse/Vm/oihGxsyheQzxI1Oc1wUXCqbhIqVMfq6CZkdykoAKJIscUP
+         wn+vB1XWJnr7LJpYlNAd5xMQZrCbCEqRjnYGBIPkhCR7wEnrtpfsRDcXIOFrPzYK04/o
+         7YTDPADxZz3XfBAtf8PktXAgXxxqCV/Ly1n4ivfAwRZBiVA1COCobJcxXAdzUYAuSFbN
+         cjlXmxNXgURfdtaHv9y0EIAYPDg9qrNXx/d2xwklB3VcHv+p14Z7a5mHVH5ZU10tsQMr
+         Rt8Ms5btYLzQdOi0N9MdsyIwJJOGpiqTfmkSubrjVIYvQxXpjizsNu3l7N4ygvvQaLQt
+         HD7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVkJx0L+PjMdgC3a+irxFiFd+bBunlU4IXWJqSORLB4rWjnfKssYXmkJFau8htWTkVNd49WpvCItfVp@lists.linux.dev
+X-Gm-Message-State: AOJu0YyfP5GAgLkiynKGa7dgkxZMufgTrZMWl8ysFu1zYi04999tWTHs
+	VKIjOQurHKrFthnCz0jqD7SSJ+M+6fm9tUPzrEIY17YisMX1elcvSdZNskr2NV17Eoc=
+X-Gm-Gg: ATEYQzwih9KiKNcH6KIXAQM9sBLepP3BWCZFuyxhYy7XNh91CK9BF5Kysf4MSxJPMB/
+	HHk70B4G8EER68uXUjH4mlJ3+YBWLkaBrIduYMHs4t5VRmIYZ83hKvx4pbbNdj2DEOR1GcpGZ8h
+	u9urqbUlARKRUm8ZPX8oPvprlD9tzucO6PswgneXctafMTh0bksgPlDbzVM8h2FWk4uWLCAMEMf
+	5J7TXFKJFttXnhztgHJ5ALdWreNqiF4ljsFXfCYlMm3iaKeHQW+lF6TO7cOPCidF2PyNsYaqtsp
+	FhS2AvStaEGY4NF+U8eqftiTbFMkOV/v6+B7b0/mZvej1z9Tf1cpw3eoG2Hs1ptm8MKnrhbzLG5
+	kwH//cN4+iydJzcrv1STjZeOp1N7wwNsmQNZZtvnDV7B0CK0f9A1j1i+Txsx9XtuCAxsOA/A3Zg
+	rBTafMvopd+aoD/sho8V5IhYqUl/GQl5tKDPNzfpvucLU5IJT9dyHxgFRh7B3ZKr0QD3I5VQ==
+X-Received: by 2002:a05:620a:17a7:b0:8cd:7fc0:ee1c with SMTP id af79cd13be357-8d0010038c4mr104803685a.22.1774379505164;
+        Tue, 24 Mar 2026 12:11:45 -0700 (PDT)
+Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cfc8f91d32sm1083581885a.14.2026.03.24.12.11.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 12:11:44 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1w57AF-00000000JZi-3000;
+	Tue, 24 Mar 2026 16:11:43 -0300
+Date: Tue, 24 Mar 2026 16:11:43 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: Robin Murphy <robin.murphy@arm.com>, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev,
+	linux-media@vger.kernel.org, sumit.semwal@linaro.org,
+	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com,
+	jstultz@google.com, tjmercier@google.com, christian.koenig@amd.com,
+	m.szyprowski@samsung.com, leon@kernel.org, sean.anderson@linux.dev,
+	ptesarik@suse.com, catalin.marinas@arm.com, aneesh.kumar@kernel.org,
+	suzuki.poulose@arm.com, steven.price@arm.com,
+	thomas.lendacky@amd.com, john.allen@amd.com, ashish.kalra@amd.com,
+	suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v4 1/2] dma-mapping: introduce DMA_ATTR_CC_DECRYPTED for
+ pre-decrypted memory
+Message-ID: <20260324191143.GF8437@ziepe.ca>
+References: <20260316125857.617836-1-jiri@resnulli.us>
+ <20260316125857.617836-2-jiri@resnulli.us>
+ <15fcfa5e-c4b9-4b56-8f84-20dd5f66d643@arm.com>
+ <lufy3ppgiy7637iravgzabajj67chmqvg22qc3fd2yqe2p33ws@b54vibhehth2>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260305123641.164164-1-jiri@resnulli.us> <ablV_f_l7wD2m63E@google.com>
- <20260324120057.GC8437@ziepe.ca> <CAFgf54qoFhvVR2yfROGaTJmLcjuLACswVFv=trqgJwGb_DB3zA@mail.gmail.com>
- <20260324122416.GD8437@ziepe.ca> <CAFgf54qwA2D1Xa4rnruJ4Nfp5BsB=T_pB3hzz9HBjh22TL17uA@mail.gmail.com>
- <20260324175717.GE8437@ziepe.ca>
-In-Reply-To: <20260324175717.GE8437@ziepe.ca>
-From: Mostafa Saleh <smostafa@google.com>
-Date: Tue, 24 Mar 2026 18:32:16 +0000
-X-Gm-Features: AQROBzDqJGwLGVWhhqLuGOrSUtCUROoHSgJZU7HhysiSVnX9qJjxIyI0nzG2rDw
-Message-ID: <CAFgf54pB1pikjtx588khBAXDg4vHne+tJL6gBqF64buX0K93mQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 0/2] dma-buf: heaps: system: add an option to
- allocate explicitly decrypted memory
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Jiri Pirko <jiri@resnulli.us>, dri-devel@lists.freedesktop.org, 
-	linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev, 
-	linux-media@vger.kernel.org, sumit.semwal@linaro.org, 
-	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, jstultz@google.com, 
-	tjmercier@google.com, christian.koenig@amd.com, m.szyprowski@samsung.com, 
-	robin.murphy@arm.com, leon@kernel.org, sean.anderson@linux.dev, 
-	ptesarik@suse.com, catalin.marinas@arm.com, aneesh.kumar@kernel.org, 
-	suzuki.poulose@arm.com, steven.price@arm.com, thomas.lendacky@amd.com, 
-	john.allen@amd.com, ashish.kalra@amd.com, suravee.suthikulpanit@amd.com, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <lufy3ppgiy7637iravgzabajj67chmqvg22qc3fd2yqe2p33ws@b54vibhehth2>
 
-On Tue, Mar 24, 2026 at 5:57=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wrot=
-e:
->
-> On Tue, Mar 24, 2026 at 05:36:23PM +0000, Mostafa Saleh wrote:
-> > But it's not about drivers in that case, it's about many places
-> > (SWIOTLB and DMA-direct) calling set_memory_decrypted() without clear
-> > ownership so in some cases they step on each other's toes, and I don't
-> > think that will get simpler with yet another caller in this series
->
-> I don't understand how this can be, ownership is clear. SWIOTLB owns
-> the buffer, dma alloc coherent owns the buffer, user owns the
-> buffer. There should be no other cases, and they don't step on each
-> other unless the APIs are being used wrong.
->
+On Tue, Mar 17, 2026 at 09:26:21AM +0100, Jiri Pirko wrote:
+> >...although, why *shouldn't* this be allowed with a vIOMMU? (Especially given
+> >that a vIOMMU for untrusted devices can be emulated by the host VMM without
+> >the CoCo hypervisor having to care at all - again, at least on Arm and other
+> >architectures where IOMMUs are regular driver model devices)
+> 
+> Well, when iommu path is able to consume the attr, this restriction
+> should be lifted. This is basically a sanity check for the
+> dma_map_phys() caller.
 
-Logically, that's the case, but the DMA-direct code currently loses
-this information and assumes it can encrypt/decrypt any memory even
-the SWIOTLB one.
-That's what I am fixing in my series. When I respin, I can try to
-introduce some more helpers around that to make it easier to integrate
-new cases.
+Right we eventually need a matching IOMMU_DECRYPTED.
 
-Thanks,
-Mostafa
+It needs to mirror how the CPUs work - any place that would use
+pgprot_decrypted to create a PTE should use IOMMU_PROT_DECRYPTED to
+create an iommu mapping.
 
-> > I am fine with the API design you mentioned, but I believe that it
-> > needs clear documentation specifying who is responsible for
-> > decryption. The code should provide wrappers checking for these cases
-> > instead of having is_swiotlb_for_alloc() and force_dma_unencrypted()
-> > everywhere in DMA-direct.
->
-> Redoingt how dma-api works internally is some other project... It
-> would be nice if swiotlb would sort of recursively DMA map using the
-> new flag instead of open coding it but that is pretty minor.
->
-> Jason
+The current hack in AMD assumes IOMMU_DECRYPTED behavior for
+IOMMU_MMIO, but that isn't general enough..
+
+There is some maze to get there but for the moment I think it is fine
+to just not support vIOMMU, it isn't like any vIOMMU drivers even
+exist for CC VMs right now.
+
+Jason
