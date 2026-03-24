@@ -1,133 +1,132 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392B536680F
-	for <linux-coco@lists.linux.dev>; Tue, 24 Mar 2026 12:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB2E227B8E
+	for <linux-coco@lists.linux.dev>; Tue, 24 Mar 2026 15:22:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774357094; cv=none; b=EIh35X2GVJzGlTapqy2gugPUyEaklWlzbqS5XAeGWoRZk/ZXlNfESm335cQZuRpM4/alN8HOsjqM2vEjl168SuhLB8ttUJl4KMNUGBe+QVg7ttAo5pAbCYmA+jOSIG5ZFhUtG3gSEaGy3rSvBj9dE50CNM8MNapWkbGN/sOBW/8=
+	t=1774365725; cv=none; b=KNRmyY99H0R7Bms7MZkuF0LvEw1obJ/6MKwIukav+4qFcgf9oVSJ6t0w4pSXLGdQSU46b4RLmZwJHwegaDBnbGsdgVGfCICAbFJFGHXEjPx4ymwBdmhjZyM3PrQA/qGxj8cczEAgKaJPEfzHGQpKu/OfDQLcQecsnLVXq/kYPyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774357094; c=relaxed/simple;
-	bh=UekqH47k2cwGT4dCv4/f1JuxckWHtyDjuoLAl39hWmg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mjBri2DdC1xsRfEkFNLPz4MJGvbnfNt1mJA1qNPUYoeLQEYBICZ2CHjFjnNJyJWuv3g/mNizS/vwF/rxynF+dwdSvQ9oc8nUI/AlgqNQMUXyuSC81C28oaQlJYC1YpWMGTAerPMWBW4FIUktPyHueDaSHJ8ech3sLrix7plRgr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=FhOFDzgm; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1774365725; c=relaxed/simple;
+	bh=kl8CtbvWh07s3HuWlRuuMORMFo8Hg9fw7Db7pLB0m10=;
+	h=From:Subject:Date:Message-Id:MIME-Version:To:Cc:Content-Type; b=q+2N2kusV9YDOHmlo7fAc9y009sJFyinSnKYkZU9TtIhSpfpEWEroN9s8uBT5+sSDedIhEaavQZYbFXDvwhyGZLDvRKro3UkvkFcQraiVQ07whS6ERqyG5YrgIIHRdozzdk06O2tX3TyvgjgSfYWQrknKV8QAU5ZVQXLl7KCTlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jVQ38atq; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="FhOFDzgm"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-48700b1ba53so37158075e9.1
-        for <linux-coco@lists.linux.dev>; Tue, 24 Mar 2026 05:58:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1774357091; x=1774961891; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=EJ9KhFxElQQZSu9ghWXCoeiyYOoUrbSYY15jZoKWOCg=;
-        b=FhOFDzgmTriFKA0UDhRdzgQIdYQ1x09nfY6kuXEJq1oxfoYlyf+QTlEdh3IjlTMoPQ
-         wDWmCnHE1sgCRgakUJQTyNCEhZYiOM7jwbkTJb5vK5Lw+ceh0DXiS7ZAUj9dA++aJxUW
-         K9oP+CZPiCipL8YDTdFlIauY4DJrMv5JhbjmnlYa3GK1NKML3j6qGNBz8JqQaiNBGXQB
-         THWDFTTiIQG86Z4woMmntw0VzXpvfYyGQ2BKdDC73VPxxSnZfnNe/w45DUCNU0AGFx4s
-         EC7eUBGHAcXd+SSpmxUgEp/DTgAyxyNBTU71rFii95W9YUeTU8yDK39NP29PoyxghfwB
-         DPUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774357091; x=1774961891;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EJ9KhFxElQQZSu9ghWXCoeiyYOoUrbSYY15jZoKWOCg=;
-        b=pALu2Dg5RDxvyl+Lmsi8iwJSIuFJM2o1dosQ6rkGn3eZhNnzNJPr5KTJy4adKuJUVz
-         sdC89COH0FD7xOMfTjRoDONf0ZbH3Hp0F4GWhpjrBs44TFd8yxEPuPS6kZn93jwi6ewF
-         kmEhU2hSCzP4P3QV/yxLwuaB2TaLEVT8Vwgf6Q3uzNtqb6xYom6Mm+VRCcm5Oi/ZZQwo
-         79WTbpdZCjhLSo/cxHJ+V/JDEVAXvsDnOHM75jHSIcG2jHFx0BtwRUgvOfFzUZReektL
-         M1fFcicRAx+MNMcP2Np6DZaq0XnrEO6IrRhho765MJo+sKJrB5vlTW22wuRrt2Vlx/Qe
-         5OKw==
-X-Forwarded-Encrypted: i=1; AJvYcCUpPx7+t8RjJSKUCD7r7f3p8D6NB7o+baxVKHhSgOVxSztYwseCuB9zQqf74NLl6uNgLEsUEJqFSZpK@lists.linux.dev
-X-Gm-Message-State: AOJu0YwEArzFBgSpH02Bf2ThT2wvshqzXNBkCkHrYF3ddiZ4r4S5NVOz
-	RdOQRn+OP2yRom+d5+lD65qyqZHvid1iMnfWWX6LxEL5JRKNosiN7NcK4WL2SpxXIFU=
-X-Gm-Gg: ATEYQzxxh3M5TO8Vtofbk5xc6zn4QhYVCmXRlI0S+jrQfDUeSc0yYDiw2Hqkba25boT
-	DQM7X3vLFBVtJ8frFD3vaKtn4NqtVRXDCvX6qooO5z86BayjuT2ljGTECzpOHamZZoMnrLzVixJ
-	VWJQwlLnA3CpNWEH5lxH8ei1ggMv5r166JFYhsx0LPkTMb6+RtS35vhXXJ1TVmIn6fY4bPZwQS4
-	N0Rz/fkTaGXsiPD8OzmLp67XyowCl1L3jh86WyiJYY6bUcDPVWCpGh8bgxUjkDOazngZdLKiL1R
-	u0q6wqHpip+6RsYVkFIZkmgyD1KzQVR4v93+I9xpTx1EtovsttfLPmlSjBkVYy67fuvw1hmccEJ
-	FDfLo+38IpOCsolCuYec5vCxX0RdII7DfEMW4bYTl4owNQ8uUsixz6fYfpCunxKYhn56fyWclL2
-	yBiLqdwvpghuLLxPWHsEckH3qWAd884SNyUSM=
-X-Received: by 2002:a05:600c:3b07:b0:47e:e2eb:bc22 with SMTP id 5b1f17b1804b1-486febb59acmr211442975e9.5.1774357091334;
-        Tue, 24 Mar 2026 05:58:11 -0700 (PDT)
-Received: from FV6GYCPJ69 ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4871109e659sm17440195e9.23.2026.03.24.05.58.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 05:58:10 -0700 (PDT)
-Date: Tue, 24 Mar 2026 13:58:07 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: "T.J. Mercier" <tjmercier@google.com>
-Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	iommu@lists.linux.dev, linux-media@vger.kernel.org, sumit.semwal@linaro.org, 
-	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, jstultz@google.com, 
-	christian.koenig@amd.com, m.szyprowski@samsung.com, robin.murphy@arm.com, jgg@ziepe.ca, 
-	leon@kernel.org, sean.anderson@linux.dev, ptesarik@suse.com, 
-	catalin.marinas@arm.com, aneesh.kumar@kernel.org, suzuki.poulose@arm.com, 
-	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com, 
-	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v4 2/2] dma-buf: heaps: system: add system_cc_decrypted
- heap for explicitly decrypted memory
-Message-ID: <vflgbxlfg4pzj3yrnkz7g5dwncnod6uenwpwgs5z2qflbrjucv@coqj6fmjkyye>
-References: <20260316125857.617836-1-jiri@resnulli.us>
- <20260316125857.617836-3-jiri@resnulli.us>
- <CABdmKX0Ux2HMTTuOnvZryBBRwCjH0zUe-EMvL9k1VxZtz+BWiA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jVQ38atq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774365723;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=KyXoMxPLMzIjjaRu95KWvtWstQU6b4xGXqr1BK5wONc=;
+	b=jVQ38atq12lKeVX/kA/mDaTmGJ9AfMQ0jmQtP1dzjO8JR/5VwjzlQ74UOfOlNBuKAB6RYV
+	zoTl2qye+Civpm4Wun7584a4P6GOj9xDf3LvHD6ds2AzD9LSBXCkYiYFCiQHa9JMvsJhP6
+	mu95148Sc2+UJbaTSMcfNN8GUc0v1DQ=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-210-NDDkbgv7NRmHTbj2s8qVUg-1; Tue,
+ 24 Mar 2026 11:22:00 -0400
+X-MC-Unique: NDDkbgv7NRmHTbj2s8qVUg-1
+X-Mimecast-MFC-AGG-ID: NDDkbgv7NRmHTbj2s8qVUg_1774365718
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8F0D7195608D;
+	Tue, 24 Mar 2026 15:21:58 +0000 (UTC)
+Received: from localhost (unknown [10.44.22.4])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0C6CB180058B;
+	Tue, 24 Mar 2026 15:21:56 +0000 (UTC)
+From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH 0/2] x86/tdx: Fix memory hotplug in TDX guests
+Date: Tue, 24 Mar 2026 19:21:46 +0400
+Message-Id: <20260324-tdx-hotplug-fixes-v1-0-8f29f2c17278@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3LQQqAIBBA0avErBswE6GuEi2imXQgLLQiEO+et
+ Hx8fobEUTjB2GSI/EiSI1R0bQOrX4JjFKoGrbRVvTZ40Yv+uM79drjJywmtMaTUQAvZHup3Rv5
+ D3aa5lA8jqjNRYwAAAA==
+X-Change-ID: 20260324-tdx-hotplug-fixes-644d009dad63
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Kiryl Shutsemau <kas@kernel.org>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+ Chenyi Qiang <chenyi.qiang@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+ kvm@vger.kernel.org, 
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1826;
+ i=marcandre.lureau@redhat.com; h=from:subject:message-id;
+ bh=kl8CtbvWh07s3HuWlRuuMORMFo8Hg9fw7Db7pLB0m10=;
+ b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBpwqwR1s6ob2QVocgSTxamDC3kgJuIWjyet8JcA
+ jUL9/wWIlmJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCacKsEQAKCRDa6OEJdZac
+ 5fQwD/9/jYD2cjfNUCLCtKUHJPxSAfZNLCJ19Di8SzGCwNQ0itWINJv+kIjzCNhHoD6T+lh3AsI
+ LOXkZpH/4IKpa5QQAQTrPpKphHpVIHkhmxk1K0pD4c/AaJehzZ5tR6PCV3QY68qWMK/bSc8HeCD
+ z7oMP6W3z8E7Pj9DLWctqgPISltKWPXdFBBcI3qjOYR7/D0lqWMb00fkw358lIfor3n6acNk4mi
+ ovWzKUUoa0JiuS5VRU00gWOmDxN8gkz6m9G+rKchoRjWiECMzaMQ0LKlz1Jum4sK0xXek7s0Sqr
+ 1aFAwczCV1AEuZrBLaHcvwPd07dEg+vonyO2qEhje54QhtP2KbRE2YivV6RsxENHT8B9zC3umLI
+ T5Sm2bIfxgXG/C6fql205c2uYbVSmdKMmp5jCKkw15w/ZqSkV3kygtx9D+ez2X2QfEPnTp2c9mS
+ O3C3Lu8UvkL/+v5qkVK1u8TB5REERCvt+GriOrdKLfpoergsoM/bvNp80sjX/WySVC/EyB2WoC+
+ kfZbPAwKTON+N/xZNp7G37eWMMEIH6hE0m0GJmfMrpU+ZBIZkMHwNXL6yeaMcWf/TdSMK6QV8zS
+ Zqw7GeudDpeakq+ov3uVZiySR+LAhxQv63gNDXOeYJ8/7FabVOuzcwNVAmMxKRyfQOpHTdodGBD
+ geIg4Oj0UNgh9Zw==
+X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
+ fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: EvbKt4SQoaoYsEpAj8ZCJIY4l-YtGnA_MNSBZycwBNQ_1774365718
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABdmKX0Ux2HMTTuOnvZryBBRwCjH0zUe-EMvL9k1VxZtz+BWiA@mail.gmail.com>
 
-Tue, Mar 24, 2026 at 12:25:46AM +0100, tjmercier@google.com wrote:
->On Mon, Mar 16, 2026 at 5:59 AM Jiri Pirko <jiri@resnulli.us> wrote:
+In TDX guests, hotplugged memory (e.g., via virtio-mem) must be accepted
+via TDG.MEM.PAGE.ACCEPT before use. The first access to an unaccepted
+page triggers a fatal "SEPT entry in PENDING state" EPT violation and
+KVM terminates the guest.
 
-[..]
+This was discovered while testing virtio-mem resize with TDX guests.
+The associated QEMU virtio-mem + TDX patch series is under review at:
+https://patchew.org/QEMU/20260226140001.3622334-1-marcandre.lureau@redhat.com/
 
+The fix has two parts:
 
->> --- a/drivers/dma-buf/heaps/system_heap.c
->> +++ b/drivers/dma-buf/heaps/system_heap.c
->> @@ -10,17 +10,25 @@
->>   *     Andrew F. Davis <afd@ti.com>
->>   */
->>
->> +#include <linux/cc_platform.h>
->>  #include <linux/dma-buf.h>
->>  #include <linux/dma-mapping.h>
->>  #include <linux/dma-heap.h>
->>  #include <linux/err.h>
->>  #include <linux/highmem.h>
->> +#include <linux/mem_encrypt.h>
->>  #include <linux/mm.h>
->> +#include <linux/set_memory.h>
->>  #include <linux/module.h>
->> +#include <linux/pgtable.h>
->>  #include <linux/scatterlist.h>
->>  #include <linux/slab.h>
->>  #include <linux/vmalloc.h>
->>
->> +struct system_heap_priv {
->> +       bool decrypted;
->> +};
->
->Hi Jiri,
->
->I wonder if it'd better to call this cc_decrypted (or I guess
->cc_shared based on Robin's comment in the previous patch) like the DMA
->attr? There's a separate effort for "restricted" heaps with TEE for
->(encrypted) video playback, which doesn't involve VMs or RDMA. I think
->the cc_ prefix might help avoid any confusion between the usecase here
->and restricted heaps.
+1. Handle TDG.MEM.PAGE.ACCEPT "success-with-warning" returns for pages
+   that are already in MAPPED state (e.g., after offline/re-online
+   cycles), instead of treating them as fatal errors.
 
-Sure. I'll rename this.
+2. Register a MEM_GOING_ONLINE memory hotplug notifier that calls
+   tdx_accept_memory() before pages are freed to the buddy allocator.
+   The TDCALL transparently triggers KVM-side page augmentation (AUG)
+   followed by acceptance, avoiding the fatal EPT violation path.
 
-Thanks!
+The solution was suggested by Claude Code (Anthropic) and has been
+tested with virtio-mem hot-add on a TDX guest. I did my best to review
+the produced code and comments. Apologies if the agent did hallucinate.
+Let me know if I need to check or correct something.
 
-[..]
+Thanks,
+
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+Marc-André Lureau (2):
+      x86/tdx: Handle TDG.MEM.PAGE.ACCEPT success-with-warning returns
+      x86/tdx: Accept hotplugged memory before online
+
+ arch/x86/coco/tdx/tdx-shared.c |  2 +-
+ arch/x86/coco/tdx/tdx.c        | 38 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 39 insertions(+), 1 deletion(-)
+---
+base-commit: c369299895a591d96745d6492d4888259b004a9e
+change-id: 20260324-tdx-hotplug-fixes-644d009dad63
+
+Best regards,
+-- 
+Marc-André Lureau <marcandre.lureau@redhat.com>
+
