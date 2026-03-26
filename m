@@ -1,52 +1,54 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10D3346E57
-	for <linux-coco@lists.linux.dev>; Thu, 26 Mar 2026 08:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4D1374E42;
+	Thu, 26 Mar 2026 08:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774514731; cv=none; b=OgywIcyhm5Uq6bA/kFJuLiovS/rg/f/HxLDbm3QlMEXcJdXEr0kqJjBON5aOm6gDgIapE+Sk4jrzUwN6ZknQ5YNLr7q0TONL+too2cHQlqy7KLEI68e1GNuDoLfiqtkdOZ8lCm7LBlowpl2ZgPSxH/cFJQqk6YC5MaHz3tw9E70=
+	t=1774514733; cv=none; b=i1pxcNKtxD5OcIV37KhUAD7ejCskJWbWWJphnNjG4yKkFS53cUPdS1cfz06z9mXU1hrfMzThprYuv1g4KqX3t5dVkswfklreoZ4MqwIntmjH4P3TRpvjhBUX0vmTCOPMFvwBgH4ZA7Vfwme+vHkeltJ3aV4PxkCpGnnbDttXmxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774514731; c=relaxed/simple;
-	bh=XxIgQcAcyMd5H7690pXjhaIqBzApFZIsZ/yE8oe9azU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MAI0USjy7Q/FcGlAcA/lyFfM5z3LCiBK5WisePMNu1RAALG7m63BfyxW6bQQcikzoCGEXLtOw6Rq/8QLPWmt264Bta/U/U/QC4LgaCbz7I9rUDUrpRfAU5cDcb5OilP+ncwmcehk4cOz+PSgvaxiB9xLkDiV1Aa5kG0wGpSShuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W35HCP/1; arc=none smtp.client-ip=198.175.65.13
+	s=arc-20240116; t=1774514733; c=relaxed/simple;
+	bh=MZXqAQ4zdN0f57LW1dQvAf0WZXspZu5jCd0wgZsCdgo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AGb91SP2LG6Fxl6ioUPE13R3w+rqapPzl28Wy4gpZRJIWHtxYKlon3jVS7LsYln0nq5Un7rSOaM0T6wr2oMeK1SVBJuHowdashAU6gAW/MGO0/t/fbGwD07C5TuBN9Z57pMDHwULuebRG3/3Q9kdtbh+w15JGo3tLy4fl+r1OZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hipuixM6; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W35HCP/1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hipuixM6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774514730; x=1806050730;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=XxIgQcAcyMd5H7690pXjhaIqBzApFZIsZ/yE8oe9azU=;
-  b=W35HCP/1O2fC5rcXSABsDdMyk6de+h/RboTprWTG2totvAgzujfK/+SJ
-   1LbxmIIrhvfJ/KKZCU1ZHze6o/IBNAbq3PRjc01Ftyuet8pZYp5PKRceq
-   UzonwR9JRMfov7sp/d5LAtS0QSk7euZlYHCQVpd9CLVI7mUoYT6LhRFUk
-   wNUJREkbKV5Ib/0VMXH6pRcGNOgBmWHSWxuM01pm+ui70n9r0jNC9yJlG
-   lHZkNbhZlAVHPOit5+WQ3jJbgUURtCnxf2/bsmrbo6qvoICidmkiR1PC2
-   uqsQv5EtC70rCO/vaIBeErk57cFG1MYJ5aJmMTUi459oP6whAMOIgnVP/
-   Q==;
-X-CSE-ConnectionGUID: GTtKrVqJT2qvi2IRlAqCdw==
-X-CSE-MsgGUID: W93kA1U5RPKwjHePp8hAsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86644606"
+  t=1774514731; x=1806050731;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=MZXqAQ4zdN0f57LW1dQvAf0WZXspZu5jCd0wgZsCdgo=;
+  b=hipuixM6t2zfe6spUkJda7wIKGi4x/1AqjcWermh1QM7jXBKkBpcD6T6
+   GjND684nclJ0QcX7Ttv3oE5SJtVmX5RHDmm90MlVO30eXvoJxHsUGfbYu
+   jKBy3VmQJkKuTUUwD4EitqMIQY7kDsZoBnF6LiAoj+HOZltPV46UWWKyy
+   zXJJ81Ay1oNfJ5umwH90frCcgIc68SXBR3vZpRYT8z0RRkys9+/5Fzwd/
+   OsfVtvHWIzDz1fx+okS/r4H6JciHxTQ20v0fQp2RemxAOf/u4fApHO85d
+   DRLSFQAZaenjqxBns4aKXUHV6bEhLlBxDjIs7g70UA+VDWXQNQiF0pnyT
+   A==;
+X-CSE-ConnectionGUID: l9I0JKbUShOw03vqo2TXgQ==
+X-CSE-MsgGUID: MOT8T0UvSrmjCTfxo6twUQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86644591"
 X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="86644606"
+   d="scan'208";a="86644591"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
   by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:19 -0700
-X-CSE-ConnectionGUID: IUyU8K3sS0GWyIr6CRRENw==
-X-CSE-MsgGUID: aseyin/7Sjmay0lkLRkD0w==
+X-CSE-ConnectionGUID: KrjmwmSpR3ClGl/AM/ULPw==
+X-CSE-MsgGUID: 175/2mEpQ8iqKRCH2ivF6Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="224967108"
+   d="scan'208";a="224967090"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:16 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:14 -0700
 From: Chao Gao <chao.gao@intel.com>
-To: linux-kernel@vger.kernel.org,
+To: kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	x86@kernel.org
 Cc: binbin.wu@linux.intel.com,
 	dan.j.williams@intel.com,
 	dave.hansen@linux.intel.com,
@@ -67,196 +69,249 @@ Cc: binbin.wu@linux.intel.com,
 	xiaoyao.li@intel.com,
 	yan.y.zhao@intel.com,
 	Chao Gao <chao.gao@intel.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v6 02/22] coco/tdx-host: Introduce a "tdx_host" device
-Date: Thu, 26 Mar 2026 01:43:53 -0700
-Message-ID: <20260326084448.29947-3-chao.gao@intel.com>
+	Clark Williams <clrkwllms@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: [PATCH v6 00/22] Runtime TDX module update support
+Date: Thu, 26 Mar 2026 01:43:51 -0700
+Message-ID: <20260326084448.29947-1-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260326084448.29947-1-chao.gao@intel.com>
-References: <20260326084448.29947-1-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-TDX depends on a platform firmware module that is invoked via instructions
-similar to vmenter (i.e. enter into a new privileged "root-mode" context to
-manage private memory and private device mechanisms). It is a software
-construct that depends on the CPU vmxon state to enable invocation of
-TDX module ABIs. Unlike other Trusted Execution Environment (TEE) platform
-implementations that employ a firmware module running on a PCI device with
-an MMIO mailbox for communication, TDX has no hardware device to point to
-as the TEE Secure Manager (TSM).
+Hi Reviewers,
 
-Create a virtual device not only to align with other implementations but
-also to make it easier to
+Please review patches 6 and 17; others already have 2+ RB tags.
 
- - expose metadata (e.g., TDX module version, seamldr version etc) to
-   the userspace as device attributes
+Patch 6 was reworked to use is_visible() for attribute visibility (which is
+the standard practice), so previous RB tags were dropped. Patch 17 has
+fewer reviews so far and needs another look.
 
- - implement firmware uploader APIs which are tied to a device. This is
-   needed to support TDX module runtime updates
+I believe this series is quite mature and also self-contained (no impact to
+the rest of kernel unless an update is triggered through the dedicated
+sysfs ABIs). I'm hoping it can be merged for 7.1.
 
- - enable TDX Connect which will share a common infrastructure with other
-   platform implementations. In the TDX Connect context, every
-   architecture has a TSM, represented by a PCIe or virtual device. The
-   new "tdx_host" device will serve the TSM role.
+Changelog:
+v5->v6:
+ - use TDX_VERSION_FMT macro [Dave/Kiryl]
+ - use is_visible() to control seamldr attribute visibility [Yilun]
+ - drop revision/chapter numbers when referring to a spec [Kiryl/Xiaoyao]
+ - change update failure indicator from int to boolean [Kiryl]
+ - reset tdx_lp_initialized for offlined CPUs [Kai]
+ - add a wrapper for seamldr_call(P_SEAMLDR_INSTALL..) [Kiryl]
+ - clarify the "do nothing" choice when collision detection isn't
+   supported [Kai/Kiryl]
+ - other minor code changes, changelog improvements and typo fixes [Kiryl/Kai/Xiaoyao]
+ - collect review tags from Kiryl/Kai
+ - v5: https://lore.kernel.org/kvm/20260315135920.354657-1-chao.gao@intel.com/
 
-A faux device is used for TDX because the TDX module is singular within
-the system and lacks associated platform resources. Using a faux device
-eliminates the need to create a stub bus.
+(For transparency, note that I used AI tools to help proofread this
+cover-letter and commit messages)
 
-The call to tdx_get_sysinfo() ensures that the TDX module is ready to
-provide services.
+This series adds support for runtime TDX module updates that preserve
+running TDX guests. It is also available at:
 
-Note that AMD has a PCI device for the PSP for SEV and ARM CCA will
-likely have a faux device [1].
+  https://github.com/gaochaointel/linux-dev/commits/tdx-module-updates-v6/
 
-Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Link: https://lore.kernel.org/all/2025073035-bulginess-rematch-b92e@gregkh/ # [1]
----
-v3:
- - add Jonathan's reviewed-by
- - add tdx_get_sysinfo() in module_init() to ensure the TDX module is up
-   and running.
- - note in the changelog that both AMD and ARM have devices for coco
----
- arch/x86/virt/vmx/tdx/tdx.c           |  2 +-
- drivers/virt/coco/Kconfig             |  2 ++
- drivers/virt/coco/Makefile            |  1 +
- drivers/virt/coco/tdx-host/Kconfig    | 10 +++++++
- drivers/virt/coco/tdx-host/Makefile   |  1 +
- drivers/virt/coco/tdx-host/tdx-host.c | 43 +++++++++++++++++++++++++++
- 6 files changed, 58 insertions(+), 1 deletion(-)
+== Background ==
+
+Intel TDX isolates Trusted Domains (TDs), or confidential guests, from the
+host. A key component of Intel TDX is the TDX module, which enforces
+security policies to protect the memory and CPU states of TDs from the
+host. However, the TDX module is software that requires updates.
+
+== Problems ==
+
+Currently, the TDX module is loaded by the BIOS at boot time, and the only
+way to update it is through a reboot, which results in significant system
+downtime. Users expect the TDX module to be updatable at runtime without
+disrupting TDX guests.
+
+== Solution ==
+
+On TDX platforms, P-SEAMLDR[1] is a component within the protected SEAM
+range. It is loaded by the BIOS and provides the host with functions to
+install a TDX module at runtime.
+
+Implement a TDX module update facility via the fw_upload mechanism. Given
+that there is variability in which module update to load based on features,
+fix levels, and potentially reloading the same version for error recovery
+scenarios, the explicit userspace chosen payload flexibility of fw_upload
+is attractive.
+
+This design allows the kernel to accept a bitstream instead of loading a
+named file from the filesystem, as the module selection and policy
+enforcement for TDX modules are quite complex (see patch "coco/tdx-host:
+Implement firmware upload sysfs ABI for TDX module updates"). By doing
+so, much of this complexity is shifted out of the kernel. The kernel
+needs to expose information, such as the TDX module version, to
+userspace.  Userspace must understand the TDX module versioning scheme
+and update policy to select the appropriate TDX module (see "TDX module
+Versioning" below).
+
+In the unlikely event the update fails, for example userspace picks an
+incompatible update image, or the image is otherwise corrupted, all TDs
+will experience SEAMCALL failures and be killed. The recovery of TD
+operation from that event requires a reboot.
+
+Given there is no mechanism to quiesce SEAMCALLs, the TDs themselves must
+pause execution over an update. The most straightforward way to meet the
+'pause TDs while update executes' constraint is to run the update in
+stop_machine() context. All other evaluated solutions export more
+complexity to KVM, or exports more fragility to userspace.
+
+== How to test this series ==
+
+First, load kvm-intel.ko and tdx-host.ko if they haven't been loaded:
+
+ # modprobe -r kvm_intel
+ # modprobe kvm_intel tdx=1
+ # modprobe tdx-host
+
+Then, use the userspace tool below to select the appropriate TDX module and
+install it via the interfaces exposed by this series:
+
+ # git clone https://github.com/intel/tdx-module-binaries
+ # cd tdx-module-binaries
+ # python version_select_and_load.py --update
+
+this version changes the firmware directory name from seamldr_upload to
+tdx_module, so, below change should be applied to version_select_and_load.py:
+
+diff --git a/version_select_and_load.py b/version_select_and_load.py
+index 2193bd8..6a3b604 100644
+--- a/version_select_and_load.py
++++ b/version_select_and_load.py
+@@ -38,7 +38,7 @@ except ImportError:
+     print("Error: cpuid module is not installed. Please install it using 'pip install cpuid'")
+     sys.exit(1)
+
+-FIRMWARE_PATH = "/sys/class/firmware/seamldr_upload"
++FIRMWARE_PATH = "/sys/class/firmware/tdx_module"
+ MODULE_PATH = "/sys/devices/faux/tdx_host"
+ SEAMLDR_PATH = "/sys/devices/faux/tdx_host/seamldr"
+ allow_debug = False
+
+
+== Other information relevant to Runtime TDX module updates ==
+
+=== TDX module versioning ===
+
+Each TDX module is assigned a version number x.y.z, where x represents the
+"major" version, y the "minor" version, and z the "update" version.
+
+Runtime TDX module updates are restricted to Z-stream releases.
+
+Note that Z-stream releases do not necessarily guarantee compatibility. A
+new release may not be compatible with all previous versions. To address this,
+Intel provides a separate file containing compatibility information, which
+specifies the minimum module version required for a particular update. This
+information is referenced by the tool to determine if two modules are
+compatible.
+
+=== TCB Stability ===
+
+Updates change the TCB as viewed by attestation reports. In TDX there is
+a distinction between launch-time version and current version where
+runtime TDX module updates cause that latter version number to change,
+subject to Z-stream constraints.
+
+The concern that a malicious host may attack confidential VMs by loading
+insecure updates was addressed by Alex in [3]. Similarly, the scenario
+where some "theoretical paranoid tenant" in the cloud wants to audit
+updates and stop trusting the host after updates until audit completion
+was also addressed in [4]. Users not in the cloud control the host machine
+and can manage updates themselves, so they don't have these concerns.
+
+See more about the implications of current TCB version changes in
+attestation as summarized by Dave in [5].
+
+=== TDX module Distribution Model ===
+
+At a high level, Intel publishes all TDX modules on the github [2], along
+with a mapping_file.json which documents the compatibility information
+about each TDX module and a userspace tool to install the TDX module. OS
+vendors can package these modules and distribute them. Administrators
+install the package and use the tool to select the appropriate TDX module
+and install it via the interfaces exposed by this series.
+
+[1]: https://cdrdv2.intel.com/v1/dl/getContent/733584
+[2]: https://github.com/intel/tdx-module-binaries
+[3]: https://lore.kernel.org/all/665c5ae0-4b7c-4852-8995-255adf7b3a2f@amazon.com/
+[4]: https://lore.kernel.org/all/5d1da767-491b-4077-b472-2cc3d73246d6@amazon.com/
+[5]: https://lore.kernel.org/all/94d6047e-3b7c-4bc1-819c-85c16ff85abf@intel.com/
+
+
+
+Chao Gao (21):
+  coco/tdx-host: Introduce a "tdx_host" device
+  coco/tdx-host: Expose TDX module version
+  x86/virt/seamldr: Introduce a wrapper for P-SEAMLDR SEAMCALLs
+  x86/virt/seamldr: Add a helper to retrieve P-SEAMLDR information
+  coco/tdx-host: Expose P-SEAMLDR information via sysfs
+  coco/tdx-host: Implement firmware upload sysfs ABI for TDX module
+    updates
+  x86/virt/seamldr: Allocate and populate a module update request
+  x86/virt/seamldr: Introduce skeleton for TDX module updates
+  x86/virt/seamldr: Abort updates if errors occurred midway
+  x86/virt/seamldr: Shut down the current TDX module
+  x86/virt/tdx: Reset software states during TDX module shutdown
+  x86/virt/seamldr: Install a new TDX module
+  x86/virt/seamldr: Do TDX per-CPU initialization after updates
+  x86/virt/tdx: Restore TDX module state
+  x86/virt/tdx: Update tdx_sysinfo and check features post-update
+  x86/virt/tdx: Avoid updates during update-sensitive operations
+  coco/tdx-host: Don't expose P-SEAMLDR features on CPUs with erratum
+  x86/virt/tdx: Enable TDX module runtime updates
+  coco/tdx-host: Document TDX module update compatibility criteria
+  x86/virt/tdx: Document TDX module update
+  x86/virt/seamldr: Log TDX module update failures
+
+Kai Huang (1):
+  x86/virt/tdx: Move low level SEAMCALL helpers out of <asm/tdx.h>
+
+ .../ABI/testing/sysfs-devices-faux-tdx-host   |  75 ++++
+ Documentation/arch/x86/tdx.rst                |  36 ++
+ arch/x86/include/asm/cpufeatures.h            |   1 +
+ arch/x86/include/asm/seamldr.h                |  37 ++
+ arch/x86/include/asm/tdx.h                    |  64 +---
+ arch/x86/include/asm/tdx_global_metadata.h    |   5 +
+ arch/x86/include/asm/vmx.h                    |   1 +
+ arch/x86/kvm/vmx/tdx_errno.h                  |   2 -
+ arch/x86/virt/vmx/tdx/Makefile                |   2 +-
+ arch/x86/virt/vmx/tdx/seamcall_internal.h     | 109 ++++++
+ arch/x86/virt/vmx/tdx/seamldr.c               | 335 ++++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.c                   | 166 ++++++---
+ arch/x86/virt/vmx/tdx/tdx.h                   |  11 +-
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c   |  20 ++
+ drivers/virt/coco/Kconfig                     |   2 +
+ drivers/virt/coco/Makefile                    |   1 +
+ drivers/virt/coco/tdx-host/Kconfig            |  12 +
+ drivers/virt/coco/tdx-host/Makefile           |   1 +
+ drivers/virt/coco/tdx-host/tdx-host.c         | 250 +++++++++++++
+ 19 files changed, 1027 insertions(+), 103 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-devices-faux-tdx-host
+ create mode 100644 arch/x86/include/asm/seamldr.h
+ create mode 100644 arch/x86/virt/vmx/tdx/seamcall_internal.h
+ create mode 100644 arch/x86/virt/vmx/tdx/seamldr.c
  create mode 100644 drivers/virt/coco/tdx-host/Kconfig
  create mode 100644 drivers/virt/coco/tdx-host/Makefile
  create mode 100644 drivers/virt/coco/tdx-host/tdx-host.c
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 06d9709ade85..172f6d4133b5 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1435,7 +1435,7 @@ const struct tdx_sys_info *tdx_get_sysinfo(void)
- 
- 	return p;
- }
--EXPORT_SYMBOL_FOR_KVM(tdx_get_sysinfo);
-+EXPORT_SYMBOL_FOR_MODULES(tdx_get_sysinfo, "kvm-intel,tdx-host");
- 
- u32 tdx_get_nr_guest_keyids(void)
- {
-diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
-index df1cfaf26c65..f7691f64fbe3 100644
---- a/drivers/virt/coco/Kconfig
-+++ b/drivers/virt/coco/Kconfig
-@@ -17,5 +17,7 @@ source "drivers/virt/coco/arm-cca-guest/Kconfig"
- source "drivers/virt/coco/guest/Kconfig"
- endif
- 
-+source "drivers/virt/coco/tdx-host/Kconfig"
-+
- config TSM
- 	bool
-diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
-index cb52021912b3..b323b0ae4f82 100644
---- a/drivers/virt/coco/Makefile
-+++ b/drivers/virt/coco/Makefile
-@@ -6,6 +6,7 @@ obj-$(CONFIG_EFI_SECRET)	+= efi_secret/
- obj-$(CONFIG_ARM_PKVM_GUEST)	+= pkvm-guest/
- obj-$(CONFIG_SEV_GUEST)		+= sev-guest/
- obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx-guest/
-+obj-$(CONFIG_INTEL_TDX_HOST)	+= tdx-host/
- obj-$(CONFIG_ARM_CCA_GUEST)	+= arm-cca-guest/
- obj-$(CONFIG_TSM) 		+= tsm-core.o
- obj-$(CONFIG_TSM_GUEST)		+= guest/
-diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
-new file mode 100644
-index 000000000000..d35d85ef91c0
---- /dev/null
-+++ b/drivers/virt/coco/tdx-host/Kconfig
-@@ -0,0 +1,10 @@
-+config TDX_HOST_SERVICES
-+	tristate "TDX Host Services Driver"
-+	depends on INTEL_TDX_HOST
-+	default m
-+	help
-+	  Enable access to TDX host services like module update and
-+	  extensions (e.g. TDX Connect).
-+
-+	  Say y or m if enabling support for confidential virtual machine
-+	  support (CONFIG_INTEL_TDX_HOST). The module is called tdx_host.ko.
-diff --git a/drivers/virt/coco/tdx-host/Makefile b/drivers/virt/coco/tdx-host/Makefile
-new file mode 100644
-index 000000000000..e61e749a8dff
---- /dev/null
-+++ b/drivers/virt/coco/tdx-host/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_TDX_HOST_SERVICES) += tdx-host.o
-diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-new file mode 100644
-index 000000000000..c77885392b09
---- /dev/null
-+++ b/drivers/virt/coco/tdx-host/tdx-host.c
-@@ -0,0 +1,43 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * TDX host user interface driver
-+ *
-+ * Copyright (C) 2025 Intel Corporation
-+ */
-+
-+#include <linux/device/faux.h>
-+#include <linux/module.h>
-+#include <linux/mod_devicetable.h>
-+
-+#include <asm/cpu_device_id.h>
-+#include <asm/tdx.h>
-+
-+static const struct x86_cpu_id tdx_host_ids[] = {
-+	X86_MATCH_FEATURE(X86_FEATURE_TDX_HOST_PLATFORM, NULL),
-+	{}
-+};
-+MODULE_DEVICE_TABLE(x86cpu, tdx_host_ids);
-+
-+static struct faux_device *fdev;
-+
-+static int __init tdx_host_init(void)
-+{
-+	if (!x86_match_cpu(tdx_host_ids) || !tdx_get_sysinfo())
-+		return -ENODEV;
-+
-+	fdev = faux_device_create(KBUILD_MODNAME, NULL, NULL);
-+	if (!fdev)
-+		return -ENODEV;
-+
-+	return 0;
-+}
-+module_init(tdx_host_init);
-+
-+static void __exit tdx_host_exit(void)
-+{
-+	faux_device_destroy(fdev);
-+}
-+module_exit(tdx_host_exit);
-+
-+MODULE_DESCRIPTION("TDX Host Services");
-+MODULE_LICENSE("GPL");
+
+base-commit: 0f409eaea53e49932cf92a761de66345c9a4b4be
 -- 
 2.47.3
 
