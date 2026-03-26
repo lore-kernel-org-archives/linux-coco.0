@@ -1,270 +1,128 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B053C2750ED
-	for <linux-coco@lists.linux.dev>; Thu, 26 Mar 2026 13:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774530222; cv=fail; b=S9v+KLXm0P2mXihuyB6R5MLfrh5ERvboKMtN5SqIIXxHfUQwA7ZakJiMZqcjLtcxODq2sxm1zCLWavPsQLKI8gfxrzREfAUoOHtEWgqZ8CbWB4kg3DGWMQSduNXWmeKGgcwhNLqVTFXGbODpIbnBTCki8u+LlYacINjikCUHD2g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774530222; c=relaxed/simple;
-	bh=tCgkHS+GKAioeTycHwXMU2nI87Y0UdcmQH80/IYXueg=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=nO1k3vetvob7/SlPf7e9jIT8jHqyLzCAffjDkWHdtPrqA4dERg329zuCPtGcaoHyzz3hU2RjTXml+Lj3sM2zAUZfCqu6W8G1NRfd49Z6chxaJxI/xd6V74Z0MlnbE+irqRw6Hs4tWILEwapj54cBVgjhJ9Y6MKeww8fuhMFl28k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NaBCRZmj; arc=fail smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5251F0E29;
+	Thu, 26 Mar 2026 15:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774537263; cv=none; b=o1p/lyaddI8CylGSAY9zaop7sDnsd8WBS7iCOJeguQCSEjlE1m1JTMo+K7rYPJF2SxAe6S79XDDZw9Ci8fi+zmPVrQxttqb8ea/ODEVdfA28eRFk/w5Sn69SaUxP90OqkfXFoLFzrlX7a1SI7UxHmaaHlvD7xMa5+wTh8VrpKAs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774537263; c=relaxed/simple;
+	bh=uI9MNPdYl2qeJy2pXhMeCNu//MkAd1POrXug5aIHWY8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lLb6cGahCYq0SbvZjNPoB84FmVlMJNAoUcjPsDYF0eOE8Mxbp3DzSyFF+6hdfBVtYRc9KhANnf6m1+TPBhW7JMe0s4f4swpIpqqrcjRSDaH/bapVLZnSog82iq6jo8V45MOB3uKpDp4EeG/lOoo0fCfpZcLFq6IdK0sAYGnMYAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+kFz+WE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NaBCRZmj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774530221; x=1806066221;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=tCgkHS+GKAioeTycHwXMU2nI87Y0UdcmQH80/IYXueg=;
-  b=NaBCRZmjL4FszS07i4QNb4IolxT/1digDZOzIxpYCl8xo90kXe0KnNJp
-   pGz45s3wDWr+ZCsofRHdpfKwHkNKWZ3BkouafLv/43RGhj1MgT0Iambsq
-   DZ22PuDDXFhQWdkj9EMJXuebjr2HM2dL8WlzvXeFzPoCcDbAZq59HZSCd
-   MrajPEHJt7bH1Y7sJI5T93OVmMn6Mx68XHCjB4jJC1f0NVDWpgCd5pJtA
-   E+eY8ebO3ggO3cv7VQcrS1poaeGJiNkBuP71UVjDq+Czchaqd6meDsZA/
-   ddjZVqP/KFF/SsaHzztIxtNQdLdrWQENwREFG6455E+jIGRfsgtSRTzi7
-   A==;
-X-CSE-ConnectionGUID: X1Kn6WqNSm+tCso39MbP4Q==
-X-CSE-MsgGUID: DOg6scICSZ+lrIMFOStPUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="92969311"
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="92969311"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 06:03:40 -0700
-X-CSE-ConnectionGUID: TlSr0Y9+Sp6sOqOQQc7ngg==
-X-CSE-MsgGUID: Ry1uY6jTSDGfcU1CG5dgSw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="226635735"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 06:03:40 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 26 Mar 2026 06:03:39 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 26 Mar 2026 06:03:39 -0700
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.7) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 26 Mar 2026 06:03:38 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HY3IsjRQCI4wlmSDXEysMu9schGgc44uzcr7gNVlmI9Q8MvPEW9lgIcQSz4wM3KR0mdRgk1YwzZO7yqFwztJ9jB0JQeM9CopMiDWAiR8kJxoA3DQdprqiJiLHTw7ir5dANwDkbGUnqZ9I3R4pLE47CukdyNG/qEJZzjR/CMLjrzkyqJnIvulj2EPKaRVGrepBLnnLYXcsEBuTFWpMvukXqPDTDc/chBDS4oiVe/DtsZN8cAfEJq6s0i49gp/NjUCy5IVPgUPtV5ezucQVXolos/3JR+rcTbK2LLojPNEMdduGE69EXjiZuevUg+thmo5wysoFESo8cfwUI3l+IzWfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ONAmzuFTJ8MBIkZyC/+mldj1gtzl7xltultE4c5LfXI=;
- b=R5nq7eyHQvNqdtTo41ydELCRtXXOHq/Jr88gGK25yaUyPtZHOgdsHUXsLK7UwIfhuqRO2YPnUcnNC0A/a9uiK8/UI+Pnqre2EB26vrVF1IkOWNIpO5AdFGom4I87tx+3ce4jn46QAj7ZMBGx33Y2Xd+cbNvhoUVxtTw1jTiDBIu2GHCn7/kqgHCd3NUQTG3J+gotiLQEHClWVNlYz9/h+QOzf+tanEyMJv0VonFf2tQuJhT6pplit13S/2X6/0L0Lbg78WHcGGjPcH1dWm5uTqPBVax7Jq8OPFpOv/WG6WeXxtNC8bzBjqjSEWjitcrpCkigVghMTHE5Do3QsDvDwg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
- by PH7PR11MB8526.namprd11.prod.outlook.com (2603:10b6:510:30a::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Thu, 26 Mar
- 2026 13:03:34 +0000
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf%3]) with mapi id 15.20.9769.004; Thu, 26 Mar 2026
- 13:03:34 +0000
-Date: Thu, 26 Mar 2026 21:03:18 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: <linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<kvm@vger.kernel.org>
-CC: <binbin.wu@linux.intel.com>, <dan.j.williams@intel.com>,
-	<dave.hansen@linux.intel.com>, <ira.weiny@intel.com>, <kai.huang@intel.com>,
-	<kas@kernel.org>, <nik.borisov@suse.com>, <paulmck@kernel.org>,
-	<pbonzini@redhat.com>, <reinette.chatre@intel.com>,
-	<rick.p.edgecombe@intel.com>, <sagis@google.com>, <seanjc@google.com>,
-	<tony.lindgren@linux.intel.com>, <vannapurve@google.com>,
-	<vishal.l.verma@intel.com>, <yilun.xu@linux.intel.com>,
-	<xiaoyao.li@intel.com>, <yan.y.zhao@intel.com>, Thomas Gleixner
-	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v6 16/22] x86/virt/tdx: Update tdx_sysinfo and check
- features post-update
-Message-ID: <acUulqgwq/2tgOJg@intel.com>
-References: <20260326084448.29947-1-chao.gao@intel.com>
- <20260326084448.29947-17-chao.gao@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260326084448.29947-17-chao.gao@intel.com>
-X-ClientProxiedBy: SI2PR02CA0020.apcprd02.prod.outlook.com
- (2603:1096:4:195::7) To CH3PR11MB8660.namprd11.prod.outlook.com
- (2603:10b6:610:1ce::13)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+kFz+WE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79464C19423;
+	Thu, 26 Mar 2026 15:01:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774537263;
+	bh=uI9MNPdYl2qeJy2pXhMeCNu//MkAd1POrXug5aIHWY8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=w+kFz+WERn3ujSYopOv/94SQsVwhgKZer/eC+2dqGDF1Fv5QNhftEgUH/eBI6vYnb
+	 Bjrsiu4mA6DUkIrtIAgJW/Tv6baMxohxfX9r+H73kSSOofEGkKwIWnGTw400wzDJH5
+	 xnWxF69fu3XAYwl5M7Ds/B6ZQ0hb6sXBssHo05ls=
+Date: Thu, 26 Mar 2026 16:00:38 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, aik@amd.com, aneesh.kumar@kernel.org,
+	yilun.xu@linux.intel.com, bhelgaas@google.com, alistair23@gmail.com,
+	lukas@wunner.de, Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Roman Kisel <romank@linux.microsoft.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH v2 03/19] device core: Introduce confidential device
+ acceptance
+Message-ID: <2026032621-astound-mounted-07a6@gregkh>
+References: <69b46bd7935d9_b2b6100b7@dwillia2-mobl4.notmuch>
+ <20260313202421.GG1586734@nvidia.com>
+ <69b4baab2b950_b2b610013@dwillia2-mobl4.notmuch>
+ <20260323181413.GP7340@nvidia.com>
+ <69c1f469f2814_51621100bc@dwillia2-mobl4.notmuch>
+ <20260324123649.GY7340@nvidia.com>
+ <69c360d2107ca_7ee310052@dwillia2-mobl4.notmuch>
+ <20260325115607.GB67624@nvidia.com>
+ <69c48b682e6fe_7ee310068@dwillia2-mobl4.notmuch>
+ <20260326120046.GG67624@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|PH7PR11MB8526:EE_
-X-MS-Office365-Filtering-Correlation-Id: b6756e86-f006-460b-98ac-08de8b381604
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7416014|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info: S+UOynDaMXYEtYbdRn5qmGfbWGDfm5MHbUWTFTiqdtaAvjeR2nRHFQa2SQcgvi7b0JjG7uOI+jD+g59yxFhMXwlEEB9SO3e1qeiBUpU4zMgh2ie9aqkuYuMrlPCBQ1UM9WOxoXmBq1VIbcc4bY6gmV76R5+FT3Jx1rUsU8mCQKehpdY8Fn/6LU3NejuI7d1P0TLMWil/lqZQtJYxvuhiX3YPGBJziNRRKo66oUDy6QdxPF5gIFm2/4CiA29KtrdnQiVvU2K2S1Ce+mkXUnGGQVNbsF+8dbEN/WUtsFetGmB1ZIfJNRqpdMSuJtd2QFM8JK803iYTKlx0cmZqZhbKzzLQre1m3bE17SyzUkMf4riIpvhrCX1/xrUPfyBnYBGwLPx/hMF7BntP7nqVy9v28V2FZ0PbTvwCTla22JM0qw0NejO+8oXQrllzXwpWlR9eaIaJ6rcKiGMOV326r6ORIQhsVCB1iV5bJPHCxdsZ4g2WWHhxWXPdalJvihe5j8XrCbcta3rXA0TmQXF/iAQ5fbV2kWlXrMwG6VoVbkeo8xgtvlhI4gTzUx+JchwQsQnj1X3SVFV2BDeBkYucbQdpnygZSLVTaFvsjlXBUqbrpedZKDfcxtfLjwT7l6Wc4p6oQmfJ+oVJzDi1ZCO9uReRqpaaXZrzqTnNtUOGwLVNNOpWNVtCRyqOZCtWotE6kSKXP7Xrlb8gUqggLFDQQo5eRGdnnzz0LhjXHrNJsh0o6LQ=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?x6EdI/Y7xyTtYnTHDnifh7XU6co/9zN15Bhts5XI5plqlCOBadjI5QS88zML?=
- =?us-ascii?Q?kWZkNF/gHTHJ3rZuLHeBmplZmfeLOnHjiDuPOqlhroj5R5T2lwhDNafdH0RC?=
- =?us-ascii?Q?FF6LGP3hgBVAM8xqIjnY1jKKc4Tl4jOzqU1jDdJuQnmnoNrsGOZsZlhHhlJm?=
- =?us-ascii?Q?0hj9tKZoNJo/BPPL6cephGAsLIKxP3Z3zMQAEjPR8PH7IZJz8eGiLitbxXGt?=
- =?us-ascii?Q?g5fIejxf7CZZ26zwcSmRkJKwove/r0j0ZADgMqVxKzn48pO3qUdwBKrlgG2h?=
- =?us-ascii?Q?Fz/fQ1I36KdpeTRdXKlkiqkRHGwXAzyjL8qDSyvV5lEqfbpXlOYyCdP7Xjcp?=
- =?us-ascii?Q?ENlmo55OXp4MkK5LFOIDdAIiQQDqqvp0/td7cXbFhVKK0VXhNyj46F7/ylrg?=
- =?us-ascii?Q?tAvNOVzJYsNIm55LhVmM+KfLQChfJ/O1Wh8NpdEuwWSmexg9gGvbAe6jvltl?=
- =?us-ascii?Q?JaUPhxAzOGvDnwhigVL4lBioHeeG58OW6gCX/LPoI6UscEg1YY1LGfiNBPzj?=
- =?us-ascii?Q?O979YVXc9bahjXH8TJU55yHfdIQy0Vr2PyLbhqu+tZCEVVTcxO/N/vt7Kuh9?=
- =?us-ascii?Q?Rlk/yvAa6WkrZpgyVO+ZYB/TQGoFQwYMZ6wdjrUAEU2rpD89bC0zSfDtWile?=
- =?us-ascii?Q?GK7Br5utaYLS2nrfu3LqWHOlkY8ZOjSRu57d4u+UV9ERfXgYB06aHm7wIx4i?=
- =?us-ascii?Q?bAFRXYse6X25nfAlMxGEkKLkLoHwvtm+MAmEOASjheDt2B4nLxc5r/4VIisL?=
- =?us-ascii?Q?ZrCGX+gSL6qnZzILbVALFMV1g9d9Gm8M7CD4MES1QBUSnoVBuiYAC9so+2Bi?=
- =?us-ascii?Q?kEVFAO9sICyQq0mfKwx0quw9wr7WMY4lHMw4f66gBvEjuUHtZw61oieqlEne?=
- =?us-ascii?Q?Sap/U9rvCSvFBcSxzsKbQt+Im0FUY0oOGXn0nS5+ySVojjSBWek7M6iEtDSJ?=
- =?us-ascii?Q?Vxlc/YuqP9Py/QCWkteJ47nJT9dTBKZ05S5jl0Tb1NmN89SFdXrtiZ+M3RWb?=
- =?us-ascii?Q?qz95uIuUJxy8JjC6E8ku9QxziHgJkTqITZXWW4q5PLBDqRwAqxk6LIxU0GaD?=
- =?us-ascii?Q?Nk/G+QZPGtoefvjCylWOAfbzW61AEZwTQ22JaAzsiCSTaA4x0bOfzg2m9+Es?=
- =?us-ascii?Q?O6ZJyHpEeOoAOPly+/eClPYb81ZWL5ZS7VwGJeNi9e4lYcJT0IYMaca05372?=
- =?us-ascii?Q?et2/eFhXWHNhH1AmNVhy0cGiRYGvislAcIi+T6bac+ILHdmKMW9io6DDhSsf?=
- =?us-ascii?Q?kB+Bk3wMiUMs+gcGgbF0jjV67umLDh8bN/tdqmLUlAILsKriGr26/a3w7Qjz?=
- =?us-ascii?Q?0waYkzfpaEQy3j6+oUNPCJJ3Pq/xXWAQlJz1HbC8yD01xeM+kjAQ3sVK3Sr9?=
- =?us-ascii?Q?IYL7HBgOT8cXoX9DWPVZMz3NR6cKF0Ek1qAakbtDQOj51iFLmDD2YoGPcxh0?=
- =?us-ascii?Q?C5N9PShrDMUf7Yjlq5Z8JtabwR9LiBCWqUGyr8djv8l816YrffRm3L11E81V?=
- =?us-ascii?Q?5NtZeLT0r9FNdDGYgClfhpRWZ2Z7gMkkzY59p+eKnReU8NSHitPRwXB4+Edk?=
- =?us-ascii?Q?m16MtTCswciFh69Cawp0+V6bIXEml3eZLkAMPD0JslSyR3qyeP/PzfCu+B/q?=
- =?us-ascii?Q?D+J88jDLL7AnDb0QXYcxupfG0x0bsKIPjcd2oGtJvcUo0/637BovOw6oi+Ya?=
- =?us-ascii?Q?2t+0fQI9N+d6P1/gGeQl3IXKEMxrEJBvAHI5xOSyrPvxsGdnkEDcXu7+uAjO?=
- =?us-ascii?Q?gCisaTrAtg=3D=3D?=
-X-Exchange-RoutingPolicyChecked: pqs9a3KVuzmEj4DTA8fGdWVXZxoYxY/5v8hwR+0CJclQhOYu8DCr08ohSvHwIKpZV8MPnOHWtOCz9smu/PGU1WaTI+uidUpcw/ZC3LPmYnPXhD/lJ0EgEaNOkDis2Yb10F7354G1dDg9/elM9UTkp1QHtNBw6eMxk3AptqG+5QfQ2l+bbMm7eUpn0jWcQ0Aq1AfTtRYDxCWrYUhbsyFIgzl3O+WbRfWDd7+562KScFnxM/OAlhFf0BQIhZm6MjwCYZMCcpcCmaUNSzelqD+kO2j1d7i0NnemsOs6vYBVmHOmgdtqpKl92sN1+EeqngVDRLMJmroWKcM94Lizdb8CnA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6756e86-f006-460b-98ac-08de8b381604
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 13:03:33.8917
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7nv+1toiRpIxMdRdFSMnO+/cznPBmVPKDgJv/pGCSC9vQFab4Gt/fXa6wG0sDGwfxAdeaqzqP0z+GjeI806mUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8526
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260326120046.GG67624@nvidia.com>
 
->+int tdx_module_post_update(struct tdx_sys_info *info)
->+{
->+	struct tdx_sys_info_version *old, *new;
->+	int ret;
->+
->+	/* Shouldn't fail as the update has succeeded. */
->+	ret = get_tdx_sys_info(info);
->+	if (WARN_ONCE(ret, "version retrieval failed after update, replace the TDX module\n"))
->+		return ret;
->+
->+	old = &tdx_sysinfo.version;
->+	new = &info->version;
->+	pr_info("version %u.%u.%02u -> %u.%u.%02u\n", old->major_version,
->+						      old->minor_version,
->+						      old->update_version,
->+						      new->major_version,
->+						      new->minor_version,
->+						      new->update_version);
->+
->+	/*
->+	 * Blindly refreshing the entire tdx_sysinfo could disrupt running
->+	 * software, as it may subtly rely on the previous state unless
->+	 * proven otherwise.
->+	 *
->+	 * Only refresh version information (including handoff version)
->+	 * that does not affect functionality, and ignore all other
->+	 * changes.
->+	 */
->+	tdx_sysinfo.version	= info->version;
->+	tdx_sysinfo.handoff	= info->handoff;
-
-Sashiko commented:
-"""
-Because stop_machine() has already completed in seamldr_install_module(),
-other CPUs will have resumed execution by the time this is called.
-Since tdx_sysinfo.version and tdx_sysinfo.handoff are multi-byte structures
-and are updated here without holding a lock, could concurrent readers observe
-torn reads if they access these fields simultaneously?
-"""
-
-This is valid. tdx_sysinfo.handoff has no concurrent readers. so, no fix is
-needed.
-
-tdx_sysinfo.version may be read by userspace via sysfs. However, major/minor
-versions don't change across updates, so only update_version needs
-READ/WRITE_ONCE() to prevent torn reads. I will apply this fix:
-
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 432d80b21ef0..0e7668bf20a1 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1276,7 +1276,7 @@ int tdx_module_post_update(struct tdx_sys_info *info)
-         * that does not affect functionality, and ignore all other
-         * changes.
-         */
--       tdx_sysinfo.version     = info->version;
-+       WRITE_ONCE(tdx_sysinfo.version.update_version, info->version.update_version);
-        tdx_sysinfo.handoff     = info->handoff;
- 
-        if (!memcmp(&tdx_sysinfo, info, sizeof(*info)))
-diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-index d4a552853021..43a55666145c 100644
---- a/drivers/virt/coco/tdx-host/tdx-host.c
-+++ b/drivers/virt/coco/tdx-host/tdx-host.c
-@@ -40,7 +40,7 @@ static ssize_t version_show(struct device *dev, struct device_attribute *attr,
- 
-        return sysfs_emit(buf, TDX_VERSION_FMT"\n", ver->major_version,
-                                                    ver->minor_version,
--                                                   ver->update_version);
-+                                                   READ_ONCE(ver->update_version));
- }
- static DEVICE_ATTR_RO(version);
-
->+
->+	if (!memcmp(&tdx_sysinfo, info, sizeof(*info)))
->+		return 0;
->+
->+	pr_info("TDX module features have changed after updates, but might not take effect.\n");
->+	pr_info("Please consider updating your BIOS to install the TDX module.\n");
->+	return 0;
->+}
->+
-> static bool is_pamt_page(unsigned long phys)
-> {
-> 	struct tdmr_info_list *tdmr_list = &tdx_tdmr_list;
->diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
->index c62874b87d7a..f8686247c660 100644
->--- a/arch/x86/virt/vmx/tdx/tdx.h
->+++ b/arch/x86/virt/vmx/tdx/tdx.h
->@@ -4,6 +4,8 @@
+On Thu, Mar 26, 2026 at 09:00:46AM -0300, Jason Gunthorpe wrote:
+> On Wed, Mar 25, 2026 at 06:27:04PM -0700, Dan Williams wrote:
+> > Jason Gunthorpe wrote:
+> > [..]
+> > > > Right, the potential to see in-between states concerns me because TSM
+> > > > uAPIs would have fully enabled the device to wreak havoc, meanwhile
+> > > > dev->trust is still showing the device at some lower level of trust. So
+> > > > I think trust modification needs to be synchronous with privileges
+> > > > granted/revoked.
+> > > 
+> > > If an iommu is present then the device will still be blocked even
+> > > though it is in RUN, I'm not sure this synchronicity is so important.
+> > 
+> > Oh, maybe we are just quibbling about where the mechanism lives. The
+> > "unblock DMA" step in current preliminary patches is currently behind
+> > the "struct pci_tsm_ops::accept()" op which also handles transitioning
+> > the device to RUN / T=1. It is a bus callback.
+> > 
+> > However, if the IOMMU layer is enlightened to block/unblock DMA on trust
+> > setting then the TDISP "unblock DMA" step can be factored out of this bus
+> > callback and into the IOMMU trust responder.
 > 
-> #include <linux/bits.h>
+> Yes, I would prefer this because it makes the whole IOMMU mechanism
+> entirely general and not tied to TDISP - which I think is sort of what
+> Greg is pushing on too.
+
+That is what I am going to _require_ here :)
+
+> > I assume this would also expect that encrypted MMIO mappings are also
+> > not established while trust is less than "TCB"? That would require some
+> > additional enabling to catch attempts to establish an encrypted mapping
+> > that the hardware is prepared for, but dev->trust is not, all without
+> > needing to modify the driver to worry about this difference. Drivers
+> > would just see ioremap() failure in this case.
 > 
->+#include <asm/tdx_global_metadata.h>
->+
-> /*
->  * This file contains both macros and data structures defined by the TDX
->  * architecture and Linux defined software data structures and functions.
->@@ -122,5 +124,6 @@ struct tdmr_info_list {
+> Hmm.. I don't know if this matters. Once we decide to use the device
+> the MMIO should be mapped in the correct way, whatever that is.
 > 
-> int tdx_module_shutdown(void);
-> int tdx_module_run_update(void);
->+int tdx_module_post_update(struct tdx_sys_info *info);
+> If we decide to eventually allow a lower trust while T=1 then that
+> should be taken to mean the user wants all the features protecting the
+> communication channel but also all the IOMMU features restricting what
+> memory the device can access.
 > 
-> #endif
->-- 
->2.47.3
->
+> Remember there are two parallel things here, one is T=1 which is
+> designed to protect against hypervisor and physical attacks, the other
+> is the trust level and iommu which would be able to protect against
+> attacks from an attested device itself.
+> 
+> Even if you are in a T=1 environment you may still decide you don't
+> really trust the device firmware that much and would prefer to have it
+> more restricted.
+> 
+> For example, if you have a system with a NVMe drive then all the data
+> on the drive is probably still encrypted and has be CPU-decrypted
+> before it can be used. It would be reasonable to run in T=1 and attest
+> the drive to limit attack surface but also use the IOMMU to limit NVMe
+> access to only the memory used to bounce to the CPU decryption as an
+> additional fortification.
+> 
+> This is why I am tending to prefer that the kernel's view of trust
+> level and the physical HW capability are somewhat orthogonal
+> things. Even if the HW has high security the user may still prefer
+> that the kernel distrust.
+
+I agree, that's a good way of putting this.
+
+greg k-h
