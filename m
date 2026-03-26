@@ -1,194 +1,262 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012013.outbound.protection.outlook.com [52.101.48.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76732258EDE
-	for <linux-coco@lists.linux.dev>; Thu, 26 Mar 2026 02:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774491304; cv=fail; b=SJH83Ku6L7tcWdsY3Il2axksoR2ckUPPM2VXRWzjo8ROgkXidIGxtJjVr+p6U1/byXiOfAQcXIsWpiy/aAS3w3bom1e7bXJpLDy6xwMPAKoAUDpOB9sBpkTjITxpzGmSr4AaQYDYrywAm5rjWr30CDIJVbnnLjqD1LUWa819LRA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774491304; c=relaxed/simple;
-	bh=b8RVqY5vEmjPjzAn542RXKlK1ghD5w8kULOA+9mflME=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UqmeClzVevCINu801f4GKfTvYcQIFEwZlXph/kCyeBbbxBS3QtA+rHKed72fxtvaRTxl9e9hR2mVs8hhgqgY2YaGxk0GPQBSOVKVCIS0SbalZI19O1el6tixs6yH/ZdVhOsbAbFHTFKWRb2ioDKPWN+/twB9EeUajasutY2vERg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=q0BdqyMu; arc=fail smtp.client-ip=52.101.48.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10D3346E57
+	for <linux-coco@lists.linux.dev>; Thu, 26 Mar 2026 08:45:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774514731; cv=none; b=OgywIcyhm5Uq6bA/kFJuLiovS/rg/f/HxLDbm3QlMEXcJdXEr0kqJjBON5aOm6gDgIapE+Sk4jrzUwN6ZknQ5YNLr7q0TONL+too2cHQlqy7KLEI68e1GNuDoLfiqtkdOZ8lCm7LBlowpl2ZgPSxH/cFJQqk6YC5MaHz3tw9E70=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774514731; c=relaxed/simple;
+	bh=XxIgQcAcyMd5H7690pXjhaIqBzApFZIsZ/yE8oe9azU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MAI0USjy7Q/FcGlAcA/lyFfM5z3LCiBK5WisePMNu1RAALG7m63BfyxW6bQQcikzoCGEXLtOw6Rq/8QLPWmt264Bta/U/U/QC4LgaCbz7I9rUDUrpRfAU5cDcb5OilP+ncwmcehk4cOz+PSgvaxiB9xLkDiV1Aa5kG0wGpSShuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W35HCP/1; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="q0BdqyMu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HEqq0qOUYbQNLYM75jSTTL9BqGG/3pTO04jLpGc7p2JJeHnCj4IEcl4rK+3izu7pMUTlDCGKeCE4kqUyIFTkGX5J+ESLf1qpx7ifufGQOU+j50zW8h+YCioHo7is77DDtT38sQ3dnS53HHhWJ2p1/VYlrDK3369nY/7ZfZGoliXqqaX2h2/GvgVnj9sCUgslxyTv1k6PDNe0o8mIH3kho5QFwM4sTBenqMLgMfjRpIQ2wFCPgFliIxxZ4sUuBqMZJowH9FqeiXQrtWbyBWGI/RSmcs4xFujsvImYW4o9BdJV6tAOkx6xWi40B56nd6chmPdkzbfeVbS6nk1wkZ5pFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GROvV4t/MBm1+B7l2smkCnD64fblO2z4lg32mfNaBPs=;
- b=Ld7vYxFfR8NayHAmidmx9UCygbC809PqzZeNxrApoTWxZrphbXKagsRHiv4fe/FVxEF3/efBtsc6Ky42iefKnlvJtaGTDZIh5+J1OmtUDcmg4a/rXBOHBIAYRkbEdlNucaRuGagBFx0RVEYTR+OfSPA+cV42C2w2FJJOewftCOJfHiDPKcOXXX8u+Syu+/kIOeFqyKHCERk9dTD5aPeodIONcPVvwiml7NqO7PCj7KrbLi+WEJ2AhiRviYHB8UVR/eCSFDecT4RwiuRx6WtN3hE/t9Ed1sg7FWfGoHc6PdCzOcl3VqDrM+qXzZ1LbivRiVLVvAqFLIQT8vN9BBLaGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GROvV4t/MBm1+B7l2smkCnD64fblO2z4lg32mfNaBPs=;
- b=q0BdqyMuAK404K8ClMBSo4aIS598UVWxFF2pfOxFT/8jidvWEflYCbPfemQ+xkR7K1D6J6J7PJtJp9hF19tDO4L4LZ5tVkkBnjnp1mzRpmUzHyTUXFwu5OuvR3M5aTQ7itAz3Jgsj0Bi+t9xckbcRfqm9Rl85KPYeHwQCN6ddOE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB9066.namprd12.prod.outlook.com (2603:10b6:510:1f6::5)
- by SJ2PR12MB8109.namprd12.prod.outlook.com (2603:10b6:a03:4f5::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Thu, 26 Mar
- 2026 02:15:00 +0000
-Received: from PH7PR12MB9066.namprd12.prod.outlook.com
- ([fe80::f71e:4264:146c:b356]) by PH7PR12MB9066.namprd12.prod.outlook.com
- ([fe80::f71e:4264:146c:b356%5]) with mapi id 15.20.9745.019; Thu, 26 Mar 2026
- 02:15:00 +0000
-Message-ID: <66ddc571-1d3f-4cfd-a2a6-8e66be861e83@amd.com>
-Date: Wed, 25 Mar 2026 21:14:54 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/7] x86/sev: add support for RMPOPT instruction
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-To: Andrew Cooper <andrew.cooper3@citrix.com>, dave.hansen@intel.com
-Cc: KPrateek.Nayak@amd.com, Michael.Roth@amd.com, Nathan.Fontenot@amd.com,
- Tycho.Andersen@amd.com, aik@amd.com, ardb@kernel.org, babu.moger@amd.com,
- bp@alien8.de, darwi@linutronix.de, dave.hansen@linux.intel.com,
- davem@davemloft.net, dyoung@redhat.com, herbert@gondor.apana.org.au,
- hpa@zytor.com, jackyli@google.com, jacobhxu@google.com, john.allen@amd.com,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
- mingo@redhat.com, nikunj@amd.com, pawan.kumar.gupta@linux.intel.com,
- pbonzini@redhat.com, peterz@infradead.org, pgonda@google.com,
- rientjes@google.com, seanjc@google.com, tglx@kernel.org,
- thomas.lendacky@amd.com, x86@kernel.org, xin@zytor.com
-References: <a1701ab4-d80f-496c-bdb3-5d94d2d2f673@intel.com>
- <4ec520a1-68c7-4833-9e8f-edc610e5fdfa@citrix.com>
- <48f11469-6435-4f3c-ab67-705ad730b042@amd.com>
- <dc8d4117-3089-48bb-8911-b4d64481fc44@citrix.com>
- <4698d9ba-7030-4447-89c0-c992b776377b@amd.com>
-Content-Language: en-US
-In-Reply-To: <4698d9ba-7030-4447-89c0-c992b776377b@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH5P222CA0017.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:610:1ee::21) To PH7PR12MB9066.namprd12.prod.outlook.com
- (2603:10b6:510:1f6::5)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W35HCP/1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774514730; x=1806050730;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=XxIgQcAcyMd5H7690pXjhaIqBzApFZIsZ/yE8oe9azU=;
+  b=W35HCP/1O2fC5rcXSABsDdMyk6de+h/RboTprWTG2totvAgzujfK/+SJ
+   1LbxmIIrhvfJ/KKZCU1ZHze6o/IBNAbq3PRjc01Ftyuet8pZYp5PKRceq
+   UzonwR9JRMfov7sp/d5LAtS0QSk7euZlYHCQVpd9CLVI7mUoYT6LhRFUk
+   wNUJREkbKV5Ib/0VMXH6pRcGNOgBmWHSWxuM01pm+ui70n9r0jNC9yJlG
+   lHZkNbhZlAVHPOit5+WQ3jJbgUURtCnxf2/bsmrbo6qvoICidmkiR1PC2
+   uqsQv5EtC70rCO/vaIBeErk57cFG1MYJ5aJmMTUi459oP6whAMOIgnVP/
+   Q==;
+X-CSE-ConnectionGUID: GTtKrVqJT2qvi2IRlAqCdw==
+X-CSE-MsgGUID: W93kA1U5RPKwjHePp8hAsA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86644606"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
+   d="scan'208";a="86644606"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:19 -0700
+X-CSE-ConnectionGUID: IUyU8K3sS0GWyIr6CRRENw==
+X-CSE-MsgGUID: aseyin/7Sjmay0lkLRkD0w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
+   d="scan'208";a="224967108"
+Received: from 984fee019967.jf.intel.com ([10.23.153.244])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:16 -0700
+From: Chao Gao <chao.gao@intel.com>
+To: linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org
+Cc: binbin.wu@linux.intel.com,
+	dan.j.williams@intel.com,
+	dave.hansen@linux.intel.com,
+	ira.weiny@intel.com,
+	kai.huang@intel.com,
+	kas@kernel.org,
+	nik.borisov@suse.com,
+	paulmck@kernel.org,
+	pbonzini@redhat.com,
+	reinette.chatre@intel.com,
+	rick.p.edgecombe@intel.com,
+	sagis@google.com,
+	seanjc@google.com,
+	tony.lindgren@linux.intel.com,
+	vannapurve@google.com,
+	vishal.l.verma@intel.com,
+	yilun.xu@linux.intel.com,
+	xiaoyao.li@intel.com,
+	yan.y.zhao@intel.com,
+	Chao Gao <chao.gao@intel.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH v6 02/22] coco/tdx-host: Introduce a "tdx_host" device
+Date: Thu, 26 Mar 2026 01:43:53 -0700
+Message-ID: <20260326084448.29947-3-chao.gao@intel.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260326084448.29947-1-chao.gao@intel.com>
+References: <20260326084448.29947-1-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB9066:EE_|SJ2PR12MB8109:EE_
-X-MS-Office365-Filtering-Correlation-Id: abf2b59f-c923-477b-2c17-08de8add7ba1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	F+wkrRezRxSbyIysAzkLN9T+L3U6/prtA52TNB55JIgUuYmX25AmCadqP93hzOsk0z+t/+QL0aS1IMJcoRuya+KdEVcTPaVGqNlmr2lgD7jPrWo8HHHHYEBotY830ombrgKzipecYUUMm30R0yJ4TpMVb82rN4DjHC8/BXIP4IHveOsas4cfuLoO8xiaapLTS0QOj+t0qF3C0lBlRo8holmZ9hsc8ycosgTMBSWSzYEkFPKnQbvUxiWKsMXtCPheObB7i6giwpJrrUZCYoO7e26sq0HWAjMEKgTHsVufkGYlH5StcBafJWz53adzd/LD/4EgL19HQQ2bmOOtoM2YokY5jbkckxtVreBsaQqffc1+qZ/9U4N0Kyl2j5UuihHzXSdcEYuQSi6Yt6XRQTiCzCH/eq02aQLDHfxchyh44rpbWviyMKSuVCav54nwz/31QyKY78rBlviN8yQ3pSTZqhawv1x+WbwhlfMVFOVO/nQhk9wshLrMOUJ8Ozcf5Q1MyQSQF0+2nsX+Q2IAI7fO/T4iIMwuom3B3H5bqxlaNPl/mGP6PwaTi0S8vCPkVEB+XZ+jUHqgd7chhHPL4Go1VyW95jbtVhJU3TVaR3uuDhwL1GciBmmG0eIEgnqJU8HD3AarnOhlNis5lmArbWkjr1JI+BsnaBL+/ve3TpRrqpbTpSqlpqMnvmHNu+7nzJgjnjmki0p6HX1wcmWTKlTqepsYttXb/74wIvpyAz6GDfM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB9066.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YjMrMUhqSjJoaENjT3AvWW1KaEhqSitiYWxQM0pRQklCMml2MzQ0cFZVU1J5?=
- =?utf-8?B?VTc5dFNrdTdDT3I2VjA4Ulpma0VRNGw5Zk9SNmROM1Rnc1BHRGdyL1pJaFpT?=
- =?utf-8?B?NCtjQTI5eEcxMzZhR2ZxM3FPMzR6eExNUjNIdlBWTDVkRGlqWHdiZUorVk5n?=
- =?utf-8?B?U2pHWXVpYzJobmZhV0pZbnQ2M0pqZ0FadkJTVTVwZXVRZnlRdjlyZXZ0ODZn?=
- =?utf-8?B?d0JyejJOc3VnZ2JRNUlPUTZQVlFWNHlpZjhONHNzK2NTWG5OSmVUYWpuM3Fz?=
- =?utf-8?B?cE1vVFFLWjgrSzhWNHp1ZXRkNHJSbzRUSXp0MFhzNG1LUGFFdDNCaTlMeE5w?=
- =?utf-8?B?TUJZZlBoRGcybTlkclBIem9iRTNXaE1MRGpTUys4dVIxc1hIUnY3eWs0ZzJa?=
- =?utf-8?B?R292bkdlS0ZRcExRZ1A4Z0ZSa3RSS0tCbkF1bXBuWVdRdkR6cGFVNEc2UmQ5?=
- =?utf-8?B?S0dkSU54K1dONndvZU9ObmNXeVlaN1ZSRkZHajBPbkRBSUh6WXl0cDJORzU0?=
- =?utf-8?B?MDdKRkFRc1E0NU5NWFhMdUVwejJlOTY5ajVpcjFTOGZSSWZYcHNEblp5cTBx?=
- =?utf-8?B?dUlHT3BqQ1V5cFdNMnlydnFNREVIenZ2QXlMdWcrcGY4UVBpVndNbUZnL3Br?=
- =?utf-8?B?V2VGU1hYTjZMUjN6Nk5OMlVSeGtLMTVRRTRaM0FWVzd2aWV1SnV5blZKQTJs?=
- =?utf-8?B?ZDZNeVVQbUtvbW1YUzN3bWNIV1AxN3FJc3ZTZVZDUG5lbXl5QmZ5MHBId29K?=
- =?utf-8?B?VEhPOTFpcCsyYVk4SUhmOWJxNVRPTm53QzJNcWxaVHV6UGtLd25MR3RXSzYw?=
- =?utf-8?B?WUxjMGJYMGp6V1l4TmVGbnFHdzRJNnFCaDkybUo4TmpraVJJbkJqSlhmLzNS?=
- =?utf-8?B?UWNOdGVqR1lxUlhueFI0anhKMzl5UWpMd2d4Skl4aWNuNmI5TmMrYzhGN0JJ?=
- =?utf-8?B?TDMrck9PMHkzZVpFUlFPZzZwb2V5Q0gzRmlJYzg4SFVxamdueDV2ZHBuQ29w?=
- =?utf-8?B?eTcxaitrWnlOdzZlbWhIQU4yRVVTUEVsK0p2OG5YY1RWMGZGTUhQdVB5TGd6?=
- =?utf-8?B?TnNvNkJFbTIyMW1HaWVmM3F3ZTNjN1JkRVUvcE5ldktyR0h4azEvZElRNVpG?=
- =?utf-8?B?QzlBMkpoMHlYZktnd2JtbTR5S3ZqMjI0VWNYOUo4dUNLNHYyZ1hWZk52a2VS?=
- =?utf-8?B?Y1ZSSExpWjZEL2Rrakp5YnpUZExnbWFGNnhIbk80VUlBRHcySDZUTDNTQmF6?=
- =?utf-8?B?TmI0NysvUmtoZkdEa0VIb3JOdXdxeXAvWjdYWW9ieDlwR0VKRlQ5SWppblZx?=
- =?utf-8?B?RnVzaE55L3FKeVNQUG4yOXZIZXVrbXcrWVpyVTZ3QndQaE5GMHVqYnJJNWhj?=
- =?utf-8?B?akJBTzI4SG1CWFZnR25HVjJqOGNWU29XUDJBeldDM0huenhyWklUWHJJLzhG?=
- =?utf-8?B?SXgwaXI4c0Z3UlZvaGtCOXh1L2thMWRWb2VOaDRqZ0pCQm94ZHF6SVcxdDcx?=
- =?utf-8?B?c0h1VzFEME5RbHF3aVBCU0pmVm1sNjVtNTkzRTNxbU01azdVWjRHUGY0c1E2?=
- =?utf-8?B?K1lqbWVyd0w2YmIvY2tVRHcyc3pTdTlPU3FkK1Vuem9SVmtQTTlFSHZyOXo1?=
- =?utf-8?B?VVZiWm5HQ2g0M0k3ZkQ2Y0tmclEreHgvc2x1MjJ4ME1QWWpDK0h6aFFDQ1Rh?=
- =?utf-8?B?eEwySDRaM1JnazFqS2krbWtpTVNPQmRlcjFQN1d6ZnpsWERrK3hQazJYUUhK?=
- =?utf-8?B?cjVsL3ZyKzNGaXhKZFVxandrSFFUV1htbnFpTlpXMnJ4eHZKZW5GOGNDS3F4?=
- =?utf-8?B?WmZBcmFYZUJ0MTRQTG0rS05zYjVxZm1NMkhFMkFkRVlIRzBQcmYrdndYSktS?=
- =?utf-8?B?d09nbytVMDEzbE9CalBxWC9lUHJ6d2tZNStsV0hId1dxSTRZU0ZYQlk1RFZo?=
- =?utf-8?B?cHQ1UTlzamIvZVN3UjQvTHZnelFJaGkxSVpWRldlVE1yQjZ3Yk9UY0dzM053?=
- =?utf-8?B?bnQzK0h4VnB0M1dQaDhLNTE4Q1hlNzZBQzkwb0FlMEpXUGk0US96WDc1QTRI?=
- =?utf-8?B?c0VhY1dHajV0VjVLQUFIaDYvRHpmUXF2djIrNXNkNEprVXc2a0NLMnNOSGxW?=
- =?utf-8?B?TTA0a1dielQ1S0Rjais4R09KcFhTdjVic2syeks0bzl4K3ZTVDFYTVdMY09N?=
- =?utf-8?B?bnFLcm44czcvR1ljYVhqMGtIbVUyRkxBYzBsM3ZtT0hVRGZZN3d5Vk5QZjR4?=
- =?utf-8?B?K25YTHJ4K29qZVF6UFhjZ0hYdXZKZlQvK2tuaCtaTWIxSk55bGIxbWNLR3lQ?=
- =?utf-8?B?NS9oeDNKNXJIZ2VjcjBTZjQ4dlZENEZJaThNNU1XdzFjbWwrRmRudz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: abf2b59f-c923-477b-2c17-08de8add7ba1
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB9066.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 02:15:00.1306
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6PdZrhE7NfPSRzAHCLZBWQCYhKFcNbliz++I/Ur5aWb6MTLztexOIxpF6H1Gp7gamJAQqZ31EjozCSC8IvDYdQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8109
+Content-Transfer-Encoding: 8bit
 
+TDX depends on a platform firmware module that is invoked via instructions
+similar to vmenter (i.e. enter into a new privileged "root-mode" context to
+manage private memory and private device mechanisms). It is a software
+construct that depends on the CPU vmxon state to enable invocation of
+TDX module ABIs. Unlike other Trusted Execution Environment (TEE) platform
+implementations that employ a firmware module running on a PCI device with
+an MMIO mailbox for communication, TDX has no hardware device to point to
+as the TEE Secure Manager (TSM).
 
-On 3/25/2026 9:02 PM, Kalra, Ashish wrote:
-> 
-> On 3/25/2026 7:40 PM, Andrew Cooper wrote:
->> On 25/03/2026 9:53 pm, Kalra, Ashish wrote:
->>> On 3/4/2026 9:56 AM, Andrew Cooper wrote:
->>>> It should be:
->>>>
->>>> static inline bool __rmpopt(unsigned long addr, unsigned int fn)
->>>> {
->>>>     bool res;
->>>>
->>>>     asm volatile (".byte 0xf2, 0x0f, 0x01, 0xfc"
->>>>                  : "=ccc" (res)
->>>>                  : "a" (addr), "c" (fn));
->>>>
->>>>     return res;
->>>> }
->>>>
->>> The above constraints to use on_each_cpu_mask() is forcing the use of:
->>>
->>> void rmpopt(void *val)
->>
->> No.  You don't break your thin wrapper in order to force it into a
->> wrong-shaped hole.
->>
->> You need something like this:
->>
->> void do_rmpopt_optimise(void *val)
->> {
->>     unsigned long addr = *(unsigned long *)val;
->>
->>     WARN_ON_ONCE(__rmpopt(addr, OPTIMISE));
->> }
->>
->> to invoke the wrapper safely from the IPI.  That will at obvious when
->> something wrong occurs.
-> 
-> This wrapper i can/will use, but doing a WARN_ON_ONCE() is probably avoidable as 
-> there will be ranges where RMPOPT will always fail, such as while checking 
-> the RMP table entries itself, so there is a good chance that we will always trigger
-> the WARN_ON_ONCE() on the memory range containing the RMP table.
-> 
+Create a virtual device not only to align with other implementations but
+also to make it easier to
 
-To add, the above is in context of the current implementation, where we scan all 
-memory up-to 2TB for applying RMP optimizations when SNP is enabled (and/or SNP_INIT).
+ - expose metadata (e.g., TDX module version, seamldr version etc) to
+   the userspace as device attributes
 
-We will *always* get this stack trace during booting, so i think it makes sense
-to avoid this WARN_ON_ONCE().
+ - implement firmware uploader APIs which are tied to a device. This is
+   needed to support TDX module runtime updates
 
-Thanks,
-Ashish
+ - enable TDX Connect which will share a common infrastructure with other
+   platform implementations. In the TDX Connect context, every
+   architecture has a TSM, represented by a PCIe or virtual device. The
+   new "tdx_host" device will serve the TSM role.
+
+A faux device is used for TDX because the TDX module is singular within
+the system and lacks associated platform resources. Using a faux device
+eliminates the need to create a stub bus.
+
+The call to tdx_get_sysinfo() ensures that the TDX module is ready to
+provide services.
+
+Note that AMD has a PCI device for the PSP for SEV and ARM CCA will
+likely have a faux device [1].
+
+Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Link: https://lore.kernel.org/all/2025073035-bulginess-rematch-b92e@gregkh/ # [1]
+---
+v3:
+ - add Jonathan's reviewed-by
+ - add tdx_get_sysinfo() in module_init() to ensure the TDX module is up
+   and running.
+ - note in the changelog that both AMD and ARM have devices for coco
+---
+ arch/x86/virt/vmx/tdx/tdx.c           |  2 +-
+ drivers/virt/coco/Kconfig             |  2 ++
+ drivers/virt/coco/Makefile            |  1 +
+ drivers/virt/coco/tdx-host/Kconfig    | 10 +++++++
+ drivers/virt/coco/tdx-host/Makefile   |  1 +
+ drivers/virt/coco/tdx-host/tdx-host.c | 43 +++++++++++++++++++++++++++
+ 6 files changed, 58 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/virt/coco/tdx-host/Kconfig
+ create mode 100644 drivers/virt/coco/tdx-host/Makefile
+ create mode 100644 drivers/virt/coco/tdx-host/tdx-host.c
+
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 06d9709ade85..172f6d4133b5 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1435,7 +1435,7 @@ const struct tdx_sys_info *tdx_get_sysinfo(void)
+ 
+ 	return p;
+ }
+-EXPORT_SYMBOL_FOR_KVM(tdx_get_sysinfo);
++EXPORT_SYMBOL_FOR_MODULES(tdx_get_sysinfo, "kvm-intel,tdx-host");
+ 
+ u32 tdx_get_nr_guest_keyids(void)
+ {
+diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
+index df1cfaf26c65..f7691f64fbe3 100644
+--- a/drivers/virt/coco/Kconfig
++++ b/drivers/virt/coco/Kconfig
+@@ -17,5 +17,7 @@ source "drivers/virt/coco/arm-cca-guest/Kconfig"
+ source "drivers/virt/coco/guest/Kconfig"
+ endif
+ 
++source "drivers/virt/coco/tdx-host/Kconfig"
++
+ config TSM
+ 	bool
+diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
+index cb52021912b3..b323b0ae4f82 100644
+--- a/drivers/virt/coco/Makefile
++++ b/drivers/virt/coco/Makefile
+@@ -6,6 +6,7 @@ obj-$(CONFIG_EFI_SECRET)	+= efi_secret/
+ obj-$(CONFIG_ARM_PKVM_GUEST)	+= pkvm-guest/
+ obj-$(CONFIG_SEV_GUEST)		+= sev-guest/
+ obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx-guest/
++obj-$(CONFIG_INTEL_TDX_HOST)	+= tdx-host/
+ obj-$(CONFIG_ARM_CCA_GUEST)	+= arm-cca-guest/
+ obj-$(CONFIG_TSM) 		+= tsm-core.o
+ obj-$(CONFIG_TSM_GUEST)		+= guest/
+diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+new file mode 100644
+index 000000000000..d35d85ef91c0
+--- /dev/null
++++ b/drivers/virt/coco/tdx-host/Kconfig
+@@ -0,0 +1,10 @@
++config TDX_HOST_SERVICES
++	tristate "TDX Host Services Driver"
++	depends on INTEL_TDX_HOST
++	default m
++	help
++	  Enable access to TDX host services like module update and
++	  extensions (e.g. TDX Connect).
++
++	  Say y or m if enabling support for confidential virtual machine
++	  support (CONFIG_INTEL_TDX_HOST). The module is called tdx_host.ko.
+diff --git a/drivers/virt/coco/tdx-host/Makefile b/drivers/virt/coco/tdx-host/Makefile
+new file mode 100644
+index 000000000000..e61e749a8dff
+--- /dev/null
++++ b/drivers/virt/coco/tdx-host/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_TDX_HOST_SERVICES) += tdx-host.o
+diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
+new file mode 100644
+index 000000000000..c77885392b09
+--- /dev/null
++++ b/drivers/virt/coco/tdx-host/tdx-host.c
+@@ -0,0 +1,43 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * TDX host user interface driver
++ *
++ * Copyright (C) 2025 Intel Corporation
++ */
++
++#include <linux/device/faux.h>
++#include <linux/module.h>
++#include <linux/mod_devicetable.h>
++
++#include <asm/cpu_device_id.h>
++#include <asm/tdx.h>
++
++static const struct x86_cpu_id tdx_host_ids[] = {
++	X86_MATCH_FEATURE(X86_FEATURE_TDX_HOST_PLATFORM, NULL),
++	{}
++};
++MODULE_DEVICE_TABLE(x86cpu, tdx_host_ids);
++
++static struct faux_device *fdev;
++
++static int __init tdx_host_init(void)
++{
++	if (!x86_match_cpu(tdx_host_ids) || !tdx_get_sysinfo())
++		return -ENODEV;
++
++	fdev = faux_device_create(KBUILD_MODNAME, NULL, NULL);
++	if (!fdev)
++		return -ENODEV;
++
++	return 0;
++}
++module_init(tdx_host_init);
++
++static void __exit tdx_host_exit(void)
++{
++	faux_device_destroy(fdev);
++}
++module_exit(tdx_host_exit);
++
++MODULE_DESCRIPTION("TDX Host Services");
++MODULE_LICENSE("GPL");
+-- 
+2.47.3
+
