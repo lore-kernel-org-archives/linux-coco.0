@@ -1,72 +1,75 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010006.outbound.protection.outlook.com [52.101.61.6])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010011.outbound.protection.outlook.com [52.101.56.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA7E199FB0
-	for <linux-coco@lists.linux.dev>; Wed, 25 Mar 2026 21:53:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90513224B05
+	for <linux-coco@lists.linux.dev>; Thu, 26 Mar 2026 00:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774475616; cv=fail; b=M1FOcYfr7rPROrPB4zez3PQk2pARz6Zr3H4Iyld6aSpcaggHDzhwsVEXMy5xCIFlJBnZKGPWjsc0pBkM3leWa/N0lQRuxmXOjmavd57qI3opsDW6/WgFa0l8IuisEVFt9YytBi9OQuEpJSNvZnSN24nDQIr1nKQEStB0fpqyRzM=
+	t=1774485637; cv=fail; b=OF3XWedXVNogrVc3fqLvGPdaSOe/affvzEg0fGfTBfpgG6SW3VgSupgnFchvsdIjCZqisMg0a25+bZYQytUemfnzLdfEOW4f4RX7wRJf55dNXO1j2yOK62TVxUhO4hDe/5KAd+Fx+0DZ2bpw6D82b0HMcKlNb55vUNeJkB+tklY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774475616; c=relaxed/simple;
-	bh=02YXm6TApnmdm8brpHh2rKTaEmixoBBcvHU961kNFyo=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=CXtIwlytdQLo7/eBESNEpJhhLsXuX7Mj/1be809v3Ou6HrJaE0xQykOrRvKkAKk6pW8ZLpdljGr+/wvYKy5zzJac2jEdBNtnBDNTRDi+7lUqUERmBzT/VxbUbvUpiG7/aYfk6DZwZd8bAMxuMmBsVnEqgXh+6SlLzxPewYZJC3Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=5jANi6Af; arc=fail smtp.client-ip=52.101.61.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1774485637; c=relaxed/simple;
+	bh=Vlaa4LHgK27wE6EwdU+VlrDqnWPC9QzVW02wWT4jU3w=;
+	h=Message-ID:Date:Cc:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=rJNVu552ji8v2PFAaflFiqttNDn0G+HUCirzQum9hPUJYS1Ha02IKgus30RJ3h/X4FEwsz4H7/URP2bPm1oa5WCeQtAbndoRkvMvXeb/6zfVoBZkYagj7HTnSV/+sueNVgML/co4SsVO7zOoCt/fduVnXnUYnd6TTdEGOelz/kk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=citrix.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=MB1A1WWg; arc=fail smtp.client-ip=52.101.56.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=citrix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="5jANi6Af"
+	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="MB1A1WWg"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lNIuiYjzesm92g4fBynmMj0DUuw0rDH2JdmJ/RKEBOKZPGxMiHNzqsSZra6ZxbGNEmqMm3rpXjSSRQAAVe1ZpQlEFAdUElxW6udkaA+T3rsXqXKA3qEERGjxq0w4mU7DL3XNDHpuijTzbcTaGPtkJ1ejM6H1fXIgU80Rt5c9pw7GXcuVjYsn71aUsNSJxpuPQuL1C8IU2vaTf6XoP498EJXPssxMpM8h9OwlzPPe+0xkFEj+CtJLzL3JEBMMz4+84MryrJekZcKV+2S1/PicS+6HxzVjZv4z0KsU+ucp/8qDc8zlncbiraHAdBdr6QuOtMb205ZCUiRRGDZR0RMoaQ==
+ b=dAwmkLL6HiJn3J3pqVFB7Z0ukl67BwArqoShucm95a4+JPTo9KDM9sGgD38aGMcP6pm3x6RhBdb8VIZ4SDP5AcwXfrPCATWUJV9JwVCB0vJVgpIBPnkXJss1ppRAmxpDi3c+sChQIg9lipbn3/Vpj+2REZTsCaQMxortd/owaCL6+ETQaCIhOqh+ZU10fDFoQu+HSNclGuFpu94ScbVvv4dP+e3bsh59yAEJFKuIRcqo8o3x51smBFuLWI6D7aJkUkgLfh/wOt24Umbph/NiQ7hNlLIv0OfYkC8h83imRS+9VAb05YyEcd3eWIrwG5RTNKZUFenx+Vtd0eg0i5sxcw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W4lKXO7+7TwacohCjD3/WS3TwEuEcAUIGJ1sjIaywlM=;
- b=RmIeSHGga4+jf6LMEx/kDsI5aNH3vC1DwRI3W7pnNmDloDQOm65XlId7w1Q41Cvm3v094JLqFXk1F9FbPB1YkiEtNxlevHO/vvrNrmHfkeSvgBJebtjpYFzW9Lq/TrrNv13a2NPtENEGHeJxNEZIVemk6hw+DJaozqkaf/Qd1m+TnUDPG0grp8IxsYbaHzimGhy36C42f9SYa3tdrRRCaKgUHs8tykWmzyNs+HIZhppguHGyL67eWpXajXUBMpUVSR6w5Cs/AJV1ISFx20P+CHvu/zS4UX1QLMcQ8KHcT3akOzISPZIC2PJoCH2hTr5Vgqx57KBBmDDNYvgJAn9odw==
+ bh=Vlaa4LHgK27wE6EwdU+VlrDqnWPC9QzVW02wWT4jU3w=;
+ b=miGtAzL+Jl2rmsdng7Iu6oUYYNKOo/pwCsTTVWcwCy6GB1SDXzsG3mhWiWxX+ce4MStjJtK86vmOZ3MnsRiasUA0ub6hLMYbGIr+lvZ99PokqXsHnbdw0t3k17vT8k/YdLzWbiQDJANJ82M/yKvmMy9tUZuo1hYd+8SEsQ9GzZyNtDG4uiCMf+lao0abW9vXkrYq9ldldmz+t9da2mQyYjBeiG88tS81B52tAU4QoJkUvTemxJzbOtY6XqP3O91RfBFQCmq8sx3nQ2VPhFd4dxmvLJvRzrUtCI343j/Xxjz3EcmHMftopnhrkGiST6qBgRrThx59dNMOFcHxqkQiJg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=citrix.com; dmarc=pass action=none header.from=citrix.com;
+ dkim=pass header.d=citrix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=citrix.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W4lKXO7+7TwacohCjD3/WS3TwEuEcAUIGJ1sjIaywlM=;
- b=5jANi6AfdRnmE5rIq/mTkfSL7yH2T3Llwg3/kEVooul/C19QcFXlCGEQ4cNggtpiizn+bEkb6vocoKI/Ir/myZ3Wg8K2BxfY8jNKhAAu7q/yQRq239brCF2DSvjwuvWUsAe5IBuB+7XtvdtWresxhYgeWJA1bZryCtiygASyYkU=
+ bh=Vlaa4LHgK27wE6EwdU+VlrDqnWPC9QzVW02wWT4jU3w=;
+ b=MB1A1WWgjZh4KJuDbY/pwwnrlclmtehP3yPKZZkQ0Ek8i54bvvHp6+1GOk1g0Cvys8gkIqXSWS3xUb5ZG7wDK0F05OWHTlDXki6ped4wA+NfRbj2Adw2U2/+C+47fBqqZqSAHZqDa79ZFWFzOZaPhtlXfh1qtU5YtzkuzzwUt/s=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB9066.namprd12.prod.outlook.com (2603:10b6:510:1f6::5)
- by CH1PR12MB9695.namprd12.prod.outlook.com (2603:10b6:610:2af::10) with
+ header.d=none;dmarc=none action=none header.from=citrix.com;
+Received: from CH8PR03MB8275.namprd03.prod.outlook.com (2603:10b6:610:2b9::7)
+ by MW5PR03MB6878.namprd03.prod.outlook.com (2603:10b6:303:1c8::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
- 2026 21:53:30 +0000
-Received: from PH7PR12MB9066.namprd12.prod.outlook.com
- ([fe80::f71e:4264:146c:b356]) by PH7PR12MB9066.namprd12.prod.outlook.com
- ([fe80::f71e:4264:146c:b356%5]) with mapi id 15.20.9745.019; Wed, 25 Mar 2026
- 21:53:30 +0000
-Message-ID: <48f11469-6435-4f3c-ab67-705ad730b042@amd.com>
-Date: Wed, 25 Mar 2026 16:53:25 -0500
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Thu, 26 Mar
+ 2026 00:40:32 +0000
+Received: from CH8PR03MB8275.namprd03.prod.outlook.com
+ ([fe80::a70d:dc32:bba8:ce37]) by CH8PR03MB8275.namprd03.prod.outlook.com
+ ([fe80::a70d:dc32:bba8:ce37%6]) with mapi id 15.20.9745.019; Thu, 26 Mar 2026
+ 00:40:31 +0000
+Message-ID: <dc8d4117-3089-48bb-8911-b4d64481fc44@citrix.com>
+Date: Thu, 26 Mar 2026 00:40:24 +0000
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/7] x86/sev: add support for RMPOPT instruction
-To: Andrew Cooper <andrew.cooper3@citrix.com>, dave.hansen@intel.com
-Cc: KPrateek.Nayak@amd.com, Michael.Roth@amd.com, Nathan.Fontenot@amd.com,
- Tycho.Andersen@amd.com, aik@amd.com, ardb@kernel.org, babu.moger@amd.com,
- bp@alien8.de, darwi@linutronix.de, dave.hansen@linux.intel.com,
- davem@davemloft.net, dyoung@redhat.com, herbert@gondor.apana.org.au,
- hpa@zytor.com, jackyli@google.com, jacobhxu@google.com, john.allen@amd.com,
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>, KPrateek.Nayak@amd.com,
+ Michael.Roth@amd.com, Nathan.Fontenot@amd.com, Tycho.Andersen@amd.com,
+ aik@amd.com, ardb@kernel.org, babu.moger@amd.com, bp@alien8.de,
+ darwi@linutronix.de, dave.hansen@linux.intel.com, davem@davemloft.net,
+ dyoung@redhat.com, herbert@gondor.apana.org.au, hpa@zytor.com,
+ jackyli@google.com, jacobhxu@google.com, john.allen@amd.com,
  kvm@vger.kernel.org, linux-coco@lists.linux.dev,
  linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
  mingo@redhat.com, nikunj@amd.com, pawan.kumar.gupta@linux.intel.com,
  pbonzini@redhat.com, peterz@infradead.org, pgonda@google.com,
  rientjes@google.com, seanjc@google.com, tglx@kernel.org,
  thomas.lendacky@amd.com, x86@kernel.org, xin@zytor.com
+Subject: Re: [PATCH v2 3/7] x86/sev: add support for RMPOPT instruction
+To: "Kalra, Ashish" <ashish.kalra@amd.com>, dave.hansen@intel.com
 References: <a1701ab4-d80f-496c-bdb3-5d94d2d2f673@intel.com>
  <4ec520a1-68c7-4833-9e8f-edc610e5fdfa@citrix.com>
-Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-In-Reply-To: <4ec520a1-68c7-4833-9e8f-edc610e5fdfa@citrix.com>
+ <48f11469-6435-4f3c-ab67-705ad730b042@amd.com>
+Content-Language: en-GB
+From: Andrew Cooper <andrew.cooper3@citrix.com>
+In-Reply-To: <48f11469-6435-4f3c-ab67-705ad730b042@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR05CA0095.namprd05.prod.outlook.com
- (2603:10b6:a03:e0::36) To PH7PR12MB9066.namprd12.prod.outlook.com
- (2603:10b6:510:1f6::5)
+X-ClientProxiedBy: LO4P265CA0121.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c6::9) To CH8PR03MB8275.namprd03.prod.outlook.com
+ (2603:10b6:610:2b9::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -74,133 +77,102 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB9066:EE_|CH1PR12MB9695:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3ff0c71b-031b-4440-91d6-08de8ab8f3e9
+X-MS-TrafficTypeDiagnostic: CH8PR03MB8275:EE_|MW5PR03MB6878:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0343cb96-a289-41ac-0d2f-08de8ad04918
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|7416014|1800799024|22082099003|56012099003|18002099003;
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|18002099003|56012099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	FRwAY5JHG5elRd/Uct6mPmv2nxu9HfwgqdPXFulCt9B3NmJeKKaU7baAzaLab0k6RP1gA9+MGOSe/b7jqrJ25Mcc1rb3+PlAtjZIgqHmrzbvHEMW/9aLMLHVGI+tWH6YsAiuHdbscq1Gar9wq19KitdC77RP3sqblYdr0x332ihpq2C5xAtVQE4qENOUGLxXlgE4Q+sdAdF/2uOnKn65w/TJ24O7kwphr2Tkv973AzjGa3OVr8vdFS+jdFMM1LYKD9LHTaqC6oZnYM2Uoq7UdpjCjVjioIdFQmjmvwn+vDx8S4cdHWvHbvMRI04sKBhfMF3+Q7nvb9SyYOrAbYhb7qbXdygFgE7R47J0fLnBbK/eOTqz1mOh9S952s5Ol3npIaD4uB1LG9bnJ7paT+a7LEH+xXMIsqDj3+2zMEB0S4ZAPMQty9E3L+fNiauTfiJv1HBPjHgfZenJZ9tyDTe2V+FQ7UdsfgiHeiNEKM6r89Ajd0uNxh1aMgCPrXTNb0eDQvlT+q6h9twuwtVhXmCZGt3OGeeRzGn+fq8KYLXIQS+jAR03eOMItsFdhR4uA+3pcCG4zMpnB17iB6PJw0Jrw8Xvgso/K8KPbj1sK4W9QZwcaHEsIKHxkf+HxUXgLQaLzK8+LHhWqsmvG1FHWBA5rCso53jrWTNvaBKvv/dJ5Met2/HUAoyChBtT2NVT0V4/Ra700HSPHes6banlK6rdlX5qlaBf+1v66rEhAgOrNP4=
+	v1byWSP2kWlmE5vtt/60Qzc2u9xYWVx/YFz6nsb+/zDxurCCIOyAhxC3emmoIBpURoXZzFuX4T+r2oqltsj3vYRkg1/iKbXebsmQ8DxsX0p3L2bUWJsHWF61cQm1oyiHWmRIboPfSEOZYWakHgzBJNSvrVjjfZf09f0EFmUh2ad7X5dthee8vXrCq5e/Y0pLO29teOYo2HlgsEKw4SJ+t4lzBSm/xOJBCn97ECeZ1NFF7jb/AkgRTI8iTrPr9U+u7VfjyZ+20oFx97i8Xe1cTc2cq5jk6vZvRxjmas4H5bJ+0NdzhQAiUK7LUXPu0pBXFriKneZsQB5SEtz/lJB/671gqQL2/KK8YcV6y1VnhNqDabpSHXmD2umLp0mfr0SMayNY+iOKGzm8jwvq4RISvJwaErw8hxKecPuObSAOV1+QykMUaPPAvaAEH6ZCAd++glXxVGGPgMlH3w19cWupRK+svAy96kINnXnlN4Av4t9MwSXw5K0J2Fp9b+UZZppAar3YbSmbEEoejoVtOIgq6c5gggWX+b/BL4qfn7IOPcuMwILBoGMf/paQIPe/9kElx8h/KFoGHMHJXSTTZb8+up7qeFVNr3ZkLjaN9NaqJ3zLRQutZpSvVrHR3pZmX1oP2wUNCCrJ/sPqK/QQykkz9BaMHXzGcbO2JRsAIcQt+t0+DMkWysfVZ6QwbCW0bNo7h78l3VaT8427BaMB1zmWlnGuEarQLDr9bDNKGokV9U0=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB9066.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH8PR03MB8275.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VkNhUjdSQlAySTV2eGFIZHJhaHA3RlE1a0RDTTlyOTZxZ1YwbUFZVGhMZnJn?=
- =?utf-8?B?c0drWFpWWkd0bjRuTU16cjFvcklxclMvMkd6N0dleVJoQTYxRW5ZN1RYMXVV?=
- =?utf-8?B?ZFJJWFlUeGlqZHROSVBWMjlXOW9LNjVjenB6RXNMdTZWNmlpVjdpS3lhU3Zv?=
- =?utf-8?B?aksvUlM2dnRJd0JMbVFza2ZyMWo5ZDEyZGl0VzZQaldCcE95Z0Vjby9YbC95?=
- =?utf-8?B?WnRMZDM1Ti9GTmkyQWR1YUc3Tks4ZE02dFZVV3FDMytDQXRHZTRJcER0UjdI?=
- =?utf-8?B?ZzJwZ3ZSZG12cnNrZmNoTFd4YTk5Wk5sU3VnQjdvWUdxNTBoMjJOa0FQQ0RD?=
- =?utf-8?B?UlFlN3k1Zm5LSXg4bmExUm9BVXlMRHVxdEdYa2p6NUxiQzhBNWp5WHRpY3ZY?=
- =?utf-8?B?YjB1K1BNS3NMbHVlY0Y2NTNwUm9sRDVUZ3RxRWptU2V4QzNrWTBGQmVxQk1o?=
- =?utf-8?B?NitXSndyUHduSStVek45alNBN00wN3Rwdm1rS3U0SG9BTDhLSDJEQmNUSWs0?=
- =?utf-8?B?S1VQd1hESWJUbmpoSkU3RG5scFV2YThOc1QyWGI0WEh5OVFKUDB2WVJaU3l2?=
- =?utf-8?B?MERIVzl5RzNpbnFDcHpmTGd6WFRZVm5hUVJINzZBMXBmaG9BbFpwTjhRMDRP?=
- =?utf-8?B?SlVrTWJMZ2VaV0FaWHk1MjMxQVF1RjY2VHpnMXg2WUp5T2t1NFB1WlVYVmNM?=
- =?utf-8?B?V0ZETGpHZ1pYemlUTGtMQVdGaEE0SHlTM1dDWG9kTWtYbjRyZXdEWVdCUnlJ?=
- =?utf-8?B?M3ZTUlRPK2oyQmV5MVZ3RldyeXZXWFM3bVB3R2ZLN3MxTEVHRjlEUnlPRGkr?=
- =?utf-8?B?bGgrOWNSam9kZEVyY1dVcFNPV0tEZHA3aVNzQzdHRm9QR2hIWWpMV1AxMVhu?=
- =?utf-8?B?c2R1Y1piUjVXZVFBSk0rY0Q0OXo1YVB4WVorbGROVmFFcEtaZWVvdkdDU3ZD?=
- =?utf-8?B?K0JCQkVtTjNpbTNDWXZtMHFvYWRCRVVSRCs3ZTlyZy9HR3d3MzBXa1Q5Yk5u?=
- =?utf-8?B?VUhSRDhhLzM1VEE2NG5MZFRRdlR6ZlFuOUN1M2RGYjZ5Y2VxdHJSYWg3bHpE?=
- =?utf-8?B?czdIT0RtSEJJUEo5SGx1N0xmQ1c1Y2F4QldWd3lKMW5LQ2VSS2hsQkhCTkF3?=
- =?utf-8?B?L2hITGZ4cGFidVhRUGQxaE4yVFVGSDlEaDFkcmt3V09BMmdYR05FMU96c3JG?=
- =?utf-8?B?d2lhSTVRTW1HMTFScUV0bWxJNC9VTkZIbEZSRGRzT2V0RDRRNkZWN3N0a0VX?=
- =?utf-8?B?Zm9NM0YrVEp4NjdraUlSY09RZlgxaER3SldhNzZQL1hwc1JvcS8vbGFOVWdu?=
- =?utf-8?B?bGxQZWNzZVRlbng5UnNBYVBHOXBKSHFvT25rYUtNSmlEY3NlZmlpZDE3UjFi?=
- =?utf-8?B?RktxSytVNENUSGhjb1ZCNjNUcEZjUWlUanBqZ2ZIVEJSN1hFTjBMYitseHhy?=
- =?utf-8?B?N0U0clUxcWZoSUJkZEFhRXlmdmhLZ3pwL2NNSWZoNWE2YVhOL0plRzNJODFn?=
- =?utf-8?B?aXZuTm9pck1zOWU4ODFPM2pEejRpZEdBRHVwdkQvWkR1YkVVTUh6MDhZZXR1?=
- =?utf-8?B?L1pZcDFmU0ZSMXorSVg3MVplTHRTdGNaTkI1MUZrVmJ3VE9oanBKSnIzUkdM?=
- =?utf-8?B?cHN6U2ExUnBicXJZWWJQVUtPNitBMUlaZ0w2WHkzci8zaGhidEtXUTVjWjcr?=
- =?utf-8?B?L2VpS3VYZEZBbG52ekNkdHRtN0Yxa1dMN24wc0w1Q0ZKU0F3eVdabTNoTzBB?=
- =?utf-8?B?aHNhZGNhMlR3eWxIZGY0cm45WnI1RTF3VXlwMndpT3ZxSXNBeWtyTDFESGVq?=
- =?utf-8?B?akt3V1VZaUxsTGgxMFhRYURlS2VrcmtMTm8xb2Y2RFNQeHUvQXpXM3RMSUR2?=
- =?utf-8?B?eE16RkUydCtQR05rOUtwQkswWjFFdW1tSjRsekN0dllVeUxEYk9LRUh5NWlP?=
- =?utf-8?B?THFpcTU0TVpzMGRyMlpma0hEZDh1S0pEUVgxWjAyQTVJZllibjNHandEWnJV?=
- =?utf-8?B?bUUzaWdodG1HWEN6bjA1dmE2S0JzT1hBaCtOYVExQlYwbDlOeGZCeVFFcXUw?=
- =?utf-8?B?V3NzdTVJVkhFY2d6VDNqZU53NHVDcWQwbTVUemFYTklNM0tDWGx3UXFETHcx?=
- =?utf-8?B?TGxiTFlBNytXSmVOZlJ1VjM5V2VNaDBsbUtuWlllWUppOUtXd2dSRm5objFV?=
- =?utf-8?B?QlhGT05wRlgvS1BOM25DK2VMVlJWajdWaUpFUEJlU3BNNU5ocEJUbDVNT3Bz?=
- =?utf-8?B?MnRHeURDU3FKb2pLKzI5MnRVTnhRTTB1dWN2NWxlSlE0M1ZscG80cWtCTGlr?=
- =?utf-8?B?eC9BVFRXUVBVd2lEdHRmaUZHUjJpQjdvaWxiTndBK2dJS0VRM1FGQT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ff0c71b-031b-4440-91d6-08de8ab8f3e9
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB9066.namprd12.prod.outlook.com
+	=?utf-8?B?b1RaSi9wNVN0Yi9Gcm9kRzl0UFcwejRIYUVCZ2F5b0R6b05mWmxBWTRqRlRk?=
+ =?utf-8?B?eDArc3JCQk5XaStyeUVyaFp1Z2YvTXdxV1p2Mkg1NFNTMHlVdTBUQjcwME1k?=
+ =?utf-8?B?R3R6N1lFVkFtdDViaFhIK1JidlhnQWMvWTY0YmVsY3c0T25teFNuK1o0bldP?=
+ =?utf-8?B?c0FpK0dsYXZZT2lqdTZEbCtvRVZIZG15SE52cTd2Z3FhNmJTZ3FPZFVTUkZP?=
+ =?utf-8?B?REYxQllKME1YZVJOWElwWFU2SXBreE5kYUFsMTJyaENxTEc1N1NGcC8wRUpW?=
+ =?utf-8?B?bFYvU2pvUU1uUVREaDZ3TlBHcmMrb1gxWUdCeU5pT0crc1hncyt5L3hJOTU4?=
+ =?utf-8?B?SDVrc2hFY1V5VEljaE5FK1hReThRMkRnSDVrZ01lT01teEpnWUFlM0FYOXEw?=
+ =?utf-8?B?cThMUXZrV1hLTVV5SU9PY3RTQzVxdVpNSG5iYlFLOFNrcUxzb25tWWJqUkNG?=
+ =?utf-8?B?T1FINksxczV3alRaQXlBV3lrRUJPYUwyT3FrdnloVThuci9FaFpDTU9QTnFm?=
+ =?utf-8?B?djR6R3hrUXliS3lsa29pSnN1RVgyMGZ0enI2Zy84YnpQQVd3TGlEdmlKb1Zj?=
+ =?utf-8?B?NnNTUVEyKzd5MXlwdUdlM2FITi83NWU2SVNZeHNiNDdZMmNFaDliWFhxbHRV?=
+ =?utf-8?B?ZkdSYm5MZEUwY3B3YzJnRW95QytLcWRuNVd2QkNoKzMzeFEzZnk2ekQrdjE2?=
+ =?utf-8?B?d2NGMzJVWndySVBRQUl5eFRBeUJsV0Jvb3gzZ09GNUVjckRzYnZPbmZHZmdC?=
+ =?utf-8?B?K3NmaEE3YUt0eit5a3l3d1BCRjBHRk53S3VubTRPYmFLeExBZk5IZ0ZvY0xr?=
+ =?utf-8?B?Q2NGcGU5WDdUaXprYkM0dG1pMldKaDVZTHFlbXdYWjJHalJlVlBBOExGeXBr?=
+ =?utf-8?B?Z29UQU4vaDUyVkpTZzk1bEdFaWxRNkVJbklTZDk1SUNOZktOTmIyaFZmZG9o?=
+ =?utf-8?B?eWR1eDd1NHhUTWo2VWJXK3c5N0JyamdINGJ4TDg1ZlpaN21wMXN5V1NUQWZj?=
+ =?utf-8?B?eXJWdnBJSEdrTWdWWjhzQW83V2pOaDVmNThBa0FHS24vVEcwSmoyMHVpNnRZ?=
+ =?utf-8?B?WXJNdlJrOE1aNTBkeVd6U3pEbmc1a1dOMlVIRjJKdzI4WFZxckhkQXRRc1ZN?=
+ =?utf-8?B?M3h5Y1VrblI2QlRoeG9LMDVKT1lLY3g2dytQRnJRb1V5b21kbWE2Z0I4SExU?=
+ =?utf-8?B?RnJhSGtTRjM0cXZKN3FBZStVQXV3S2VaZjVsNTdUR3lpTjN5elhxSXJScUdi?=
+ =?utf-8?B?aDJJTDBqZHQ5dEJ0M0F0RS8xcXdDODB6aXpRSjBNVXF0U20vNUI0NVlQRVBt?=
+ =?utf-8?B?OXhyOE1RdDRYWkt4ZlMzMURHcCtxWGNEbXdOWDdsSDc5RWFlWVdPRUNoU3V3?=
+ =?utf-8?B?RVkrRzVWRkRVNEhtVkJXTTAvaGdOcnlWZnI3NVFNeXRsb2xjUHZJWEpjY01J?=
+ =?utf-8?B?bjdTcFpmRkhLYUZJYUhlckxhMXR0TWc2NlJuN1JFSFJodzY2dFoybHpleHVo?=
+ =?utf-8?B?dHVSUVhrNHUzQXpQZFJKaFBTdlIyS0sybGhXQlh6Z3BGMVQ0WFlFMGFVUURn?=
+ =?utf-8?B?RHVYdG5VQWljS0p2b3NicU5GWEhYL3RFYkVZMlR4U25NZ3pyN20vQXJqZ1Ba?=
+ =?utf-8?B?NXVaK1lxVUZnRWJzY2Z0MGpNTFlzZHBOcU5Lb2cwampJdFh0OFZDMzBZWElV?=
+ =?utf-8?B?eUN3Rm5LWlJ0ZWFUU2RBT1B4YWJaYklBN3RkcVRZQ25jWEdaS01xTFgzWTFz?=
+ =?utf-8?B?WWFjckdWdmdlL0hZdmlYOXdrSUU5SjR3RTVWRVA4dmI0RXl5T2NEa1VXNExY?=
+ =?utf-8?B?bWYrOGVQQXhpcUYyb2dOZS95bjhnOUx2Ly9hZWZvTElGL3Q4Ymo4ZlorSFp4?=
+ =?utf-8?B?b3lHNXZ2VXQxWjBCVEI0TWxxR0RGNGwxeXVTZDhXSUs3RmhTRHBwaUtpTFJl?=
+ =?utf-8?B?U1AvMmdENmtLTDQ3NUg3Y2Z2WXR3N0tYSzN6Nm5LajJ5YWVpNWp2TklsVjFJ?=
+ =?utf-8?B?b1VQUDF3bzFNZWNBcUFmUWphNnNUdjBMZGZnOElkM2tKV1ZwZGxRS3I1SXla?=
+ =?utf-8?B?RW0yUkxLRFBhR2tIWDNRaVJFYmxVRTZpTUV5T0FzTHV5MXRJZE8yYys5ck50?=
+ =?utf-8?B?QzRiZEwvTFBKbi9yU0NuanhjaTVtR3VwaTJBUW1PK1czRTFyL0NOdDJVWmZR?=
+ =?utf-8?B?OWRQd0tZbTllaC9tazE3aDVGRlF5akt6SGd4c2lTbENUUi9yZ0tMRzFld3FS?=
+ =?utf-8?B?SkVBYXp6a05zSGM4SDVYSjQrSlJ4ZXlPbzlsQ1A2bW5TQytNV254VzJsRU40?=
+ =?utf-8?B?OHlya2VjdkpHL3BCZVg0bE93WkZSY2p1QTVtZzJzMGNRZ2gxMWdITjRsU2Rh?=
+ =?utf-8?Q?si6NPsiYLv+3yQ/o=3D?=
+X-OriginatorOrg: citrix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0343cb96-a289-41ac-0d2f-08de8ad04918
+X-MS-Exchange-CrossTenant-AuthSource: CH8PR03MB8275.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 21:53:30.6860
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 00:40:31.8993
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kmnkp7vYnEceJwXb2WAQF294T1KE5ZS6rjRBDspZShdLknARMPXO+h/7yK069kmVxJcXihwvNhHk2Z6QE9rSAw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9695
+X-MS-Exchange-CrossTenant-UserPrincipalName: FpGYn6E+J0VytbXs3zkJSy5mUilZqiG4u2czYRwugyg/hmbm4l+R0eDpBSpEsfnCJd14Fho0JV8xsjpVY4seAex9Sh99G68TG3R8kzYmaqA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR03MB6878
 
-
-On 3/4/2026 9:56 AM, Andrew Cooper wrote:
->>> +/* + * 'val' is a system physical address aligned to 1GB OR'ed with
->>> + * a function selection. Currently supported functions are 0 + *
->>> (verify and report status) and 1 (report status). + */ +static void
->>> rmpopt(void *val) +{ + asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc" +
->>> : : "a" ((u64)val & PUD_MASK), "c" ((u64)val & 0x1) + : "memory",
->>> "cc"); +}
->> Doesn't this belong in:
+On 25/03/2026 9:53 pm, Kalra, Ashish wrote:
+> On 3/4/2026 9:56 AM, Andrew Cooper wrote:
+>> It should be:
 >>
->> arch/x86/include/asm/special_insns.h
+>> static inline bool __rmpopt(unsigned long addr, unsigned int fn)
+>> {
+>>     bool res;
 >>
->> Also, it's not reporting *any* status here, right? So why even talk
->> about it if the kernel isn't doing any status checks? It just makes it
->> more confusing.
-> 
-> The "c" (val & 0x1) constraint encodes whether this is a query or a
-> mutation, but both forms produce an answer via the carry flag.
-> 
-> Because it's void, it's a useless helper, and the overloading via one
-> parameter makes specifically poor code generation.
-
-RMPOPT instructions for a given 1 GB page can be executed concurrently across CPUs,
-reducing the overall penalty of enabling the optimization, hence we use 
-on_each_cpu_mask() to execute RMPOPT instructions in parallel.
-
-Now, the issue with that is the callback function to run on_each_cpu_mask() is of the type: 
-(typedef void (*smp_call_func_t)(void *info)).
-
-Hence, the rmpopt() function here has return "void" type and additionally takes "void *"
-as parameter.
-
-> 
-> It should be:
-> 
-> static inline bool __rmpopt(unsigned long addr, unsigned int fn)
-> {
->     bool res;
-> 
->     asm volatile (".byte 0xf2, 0x0f, 0x01, 0xfc"
->                  : "=ccc" (res)
->                  : "a" (addr), "c" (fn));
-> 
->     return res;
-> }
+>>     asm volatile (".byte 0xf2, 0x0f, 0x01, 0xfc"
+>>                  : "=ccc" (res)
+>>                  : "a" (addr), "c" (fn));
+>>
+>>     return res;
+>> }
+>>
+> The above constraints to use on_each_cpu_mask() is forcing the use of:
 >
+> void rmpopt(void *val)
 
-The above constraints to use on_each_cpu_mask() is forcing the use of:
+No.  You don't break your thin wrapper in order to force it into a
+wrong-shaped hole.
 
-void rmpopt(void *val)
+You need something like this:
 
-Thanks,
-Ashish
- 
-> with:
-> 
->     static inline bool rmpopt_query(unsigned long addr)
->     static inline bool rmpopt_set(unsigned long addr)
-> 
-> built on top.
-> 
-> Logic asking hardware to optimise a 1G region because of no guest memory
-> should at least WARN() if hardware comes back and says "well hang on now..."
-> 
-> The memory barrier isn't necessary and hinders the optimiser.
-> 
-> ~Andrew
+void do_rmpopt_optimise(void *val)
+{
+    unsigned long addr = *(unsigned long *)val;
+
+    WARN_ON_ONCE(__rmpopt(addr, OPTIMISE));
+}
+
+to invoke the wrapper safely from the IPI.  That will at obvious when
+something wrong occurs.
+
+~Andrew
