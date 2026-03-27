@@ -1,149 +1,152 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEA938A732
-	for <linux-coco@lists.linux.dev>; Fri, 27 Mar 2026 19:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3E538F245
+	for <linux-coco@lists.linux.dev>; Fri, 27 Mar 2026 19:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774640621; cv=pass; b=uEeUszp8B5zx5XI/ieKxFwissU9oG6tJSNNbdNXucNODSrQ6gKYkcDGLZyJjbBTQA2nGOJIVDgb3gUNjjUWiZHbjyTUTsPHauRPPUSoj7YHTVebJqz6IndaZttYwyLeSBTWu+6A3NUWmZSv0+0RSmqdNz055fklalJMaKtNj9CY=
+	t=1774640628; cv=pass; b=J2TOx59VzF5Hwds/7QX2BRI6i8MUlrnF6HdgN0NfAqNh6RaGq5VGcNkid6RpdUrN+6S243wZtz9ZIVUOwT2421rnCHvzezfRobaghOiruClPuVheUBXMUFxMGJPWKCGYwWmxGCCzrY5yGwwyS5V6Mxe6xz2UpEidS4L+8+72AAM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774640621; c=relaxed/simple;
-	bh=mAa0q11vT2K7+sL7S++M6Oz+Ma+owZM4tYL8Ai5PqnY=;
+	s=arc-20240116; t=1774640628; c=relaxed/simple;
+	bh=bp8Rzg51lEDwzJFZ6phUlxNkzebzC2DJpAPYxDIaxlM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eUO7wwjzWpQEge83vWkkIrQeaM1ZvQWdbPWbL/5lSOvc2RMoiGFU5TFQx6/qBRwG46ZKE5oYmaT0N5rlbZvf1qzmZtCjikhkk0/M44ptt/0CKKMNWNTES4pXEiFMSjGw3oRF/6mR/730rSYO6CUFVzkZOvifa47koUYh5E/W+nI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rxF1CPGb; arc=pass smtp.client-ip=209.85.128.43
+	 To:Cc:Content-Type; b=SNwZKlkttSnURbMyG0gx77btlr8Zm8Jgr8xcbYY4/hyMl7kHu5mjxLksIbLTr31H4BuTlAVK1zWnsNg7PCnI21L+tGRxalOCfK3Sql+s8nKvvrIhUQ1yTGSxHEIjeoIP3tG80d1mTb6XrTzbiaE7Vcpz9cxQApkOyg9O/Y1brII=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cMzWvZhO; arc=pass smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rxF1CPGb"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48569636800so17415e9.0
-        for <linux-coco@lists.linux.dev>; Fri, 27 Mar 2026 12:43:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774640613; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cMzWvZhO"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48569636800so17495e9.0
+        for <linux-coco@lists.linux.dev>; Fri, 27 Mar 2026 12:43:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774640621; cv=none;
         d=google.com; s=arc-20240605;
-        b=ECIngC6a6TzsFsw88JBbxUcFQUwUocu8jCgybWH/svGD4om5NK3tvTYvOy47ucE/Ky
-         YRg4Z9zLDkutKNH05T4+dbY1rFGln6mkGTaD7n0xPAsXK6YvLwx7DqEBxqQc1DNlxNE9
-         pQWwqgeVf3TUYKdwZ1wIt+pcnQx2Ulh7q0qsXuLGyKW+CqBhY3PS/VtK//7Wdk33yADs
-         gf6757E9JG0bRGM9Lh9uc2gufyj5XjQyDN/0TCZoBAsDvRYdRLbD3ElLw57Ed39dD6MH
-         E6q0exMXzrUZ3ocZrgasjVDWxxtM+JTu2uG29k1yz3MzAzzqhQrzOBVrmXYrG1GVKE9r
-         vxeQ==
+        b=KoDguLwiDrtJTLWt9Nnt9iWgh+9JMwpGJmzTCEKLG4Mp1D4E187TBgYAR+DCxAGTmy
+         sqO1bdbpyxzIfq8hBZgusapDJjmjqPcKrs9PT6TLo10cmy2T0fVNp/cH9ExyDNJ7kVCb
+         RuSkyImAceyBvls/XeJtYiyRJMxKwABgNshAvpVoaU5e11MlzOIcuR7M+i7b9AMLOeAb
+         gInIqVi6Bw+Gd/SPtKmzikoGQZec7CidVsgMo4mw+Sw0L0NGT6SMYNCuMGeurIfw48Qu
+         AxYFEF5rwcGEejvrRebHAawuHe4Mg/Q/xm0Vr3z0YdkLhZty99L93lpC2cqZCJYox9S4
+         Adig==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=7tjhOfzQT3ZRSG3eV9w6+z7kzXwwNkzHiubxpA2Yl+8=;
-        fh=Q09reO363z6sh7A1G8qlxFKbquiRkPP1cwczCA45rPU=;
-        b=Zx3MqdGUupMyLDFWaFzVHLhfVF4IFABtIr3UjIhNuocWqzQpGwf+mERknz1h3sqdht
-         b+UG95hKr/TVmQdLRwIf8vVdZ5XexlNkt4u2z6eSWDPQVjMlMxm10eLE+LoefDqafwQH
-         TdxvFdu45zqG8cOqh2waWy0VyJl8OrBEUDf+Vk+NXADYvATU9aUtcF/wzrg/IqCKzf25
-         PlgiGjvTO38DSACY9JP+4O8+z/kA/ykoyAMBM89Ti6aMoO9hiehChatogWUIYS3yKcjI
-         PuCxU868Nr6eJBSbcnyE5tqjVyBFf6jRyu5B5kkNW86WUBPKduqLpFBrY0h4kWZNMyVa
-         AzJw==;
+        bh=bp8Rzg51lEDwzJFZ6phUlxNkzebzC2DJpAPYxDIaxlM=;
+        fh=sJUdJwGxWly05aS8WZK/SSi0BgDuwyD1/iDfdltzX5E=;
+        b=IqBvuqTAR/Yn+N1GmWiJJ8XN0Sx0WGuyPulW3JTjebrZpa2lCMVglzYDIK0yltnZnB
+         QLvsFNp2OUUy/PO7RtU3wG8W14jDS4xo1hIOgqM7YtMHxA01hRwdfrFtS66PlaRvNiaC
+         14MpU+mLWNQJq3cuZrIlZQuu6mk68d0Avz8WToyLD+sfmN1S9vJayNbKpv2+LR3G/3F0
+         ePL7NlHRp1oD5NRqkgjlMDRNKqxDuNxGkON7bHAwqUhaAnstzkO/9ue7Wyqm15JWfrfO
+         QvacoL9mOyHldnduAuOHF2Avdp6TixsfQyzFO5pnge4QGVlnCu+2CEaITGmnD0fHr1LN
+         8FlA==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774640613; x=1775245413; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1774640621; x=1775245421; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7tjhOfzQT3ZRSG3eV9w6+z7kzXwwNkzHiubxpA2Yl+8=;
-        b=rxF1CPGbcU11kRXQB5N9DS8JQvNNeZXWml+bE+LR2NrLR29DGARZ7d42+VdKQL55Ox
-         gL+w5l7A5IaoRRD89Z/XHLq2QYqUu4M8JjPpxcEYroV22+y1N5VrRa7MJjKIAaJ8As46
-         orJf5E8qyvIagpywo2sqtXwVmZcfeRZLXGI5chP8wlcW+T+NkW9uBltTdBy70yDfOsmK
-         DplUgMmUEXCe1qA8KDxw7G44WSIZSZxiEGjIy9Naooj6RtUFSHrr5EEVzygBVNA3M3uS
-         AikiDYvxWKFbn5WDDBzTZZAQ5boBlmlAnJCpyzMsQMeNZU1qGHLSbZE/lpUjvSHwCg1v
-         RKBQ==
+        bh=bp8Rzg51lEDwzJFZ6phUlxNkzebzC2DJpAPYxDIaxlM=;
+        b=cMzWvZhO2iRjI/GiO69hMhoeJDpc4OAcBCYZ3GkrwwjeG5g+OGki+YzfI9n296Awsx
+         JtwOen95Zomh2HFhpOdLKosjaMAgIWunQHqvVtZgSjnU45moO6FPTYBUk5gAfDhmlJ2A
+         mCey8ZktUbIs4lrleCY7UsdPeAMbmL3rcjPFtL5WPCLmzaALWn9+VzFxS6pSYxuiRnEz
+         PR3O2ENw3Mn6S3PuH1+2HnOA8p8Tx8FX8akP74//iYqCyEhypMShKvSfGVkHEzcu/uv5
+         rsCanj7Qo+yUkil2tKCIWJT342d+ZzhTQXEMIklroQB5aEy/oov9r0dXJ6udkL2OuGR0
+         SCjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774640613; x=1775245413;
+        d=1e100.net; s=20251104; t=1774640621; x=1775245421;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=7tjhOfzQT3ZRSG3eV9w6+z7kzXwwNkzHiubxpA2Yl+8=;
-        b=G/pdlDbj7yMXNiKjMQ0mPDUnd+bWE3nXSm69XEPYVerJvZcAxFR2T2vkY+JXTAzCAI
-         AINryL17LgBRbqo8bL/xiikjdy6DRyGIoJZFVzT2A5dCeQCxo11stxlR504kVM1N5fA5
-         m3MBtqw+7IqAt7XdoQw9llrBQuVZMXxedNoTVn9gvaJkTXub0yKORoYxfNQQGoQj3g3H
-         4cGmorvQFHa8zQENNs4RhJQ3LrGvnDuSCowdxKr1h6u2BuXbaMh8Y85qOKRNYcXQH60W
-         WykYAJkuZDOinfnYa63OkBg8e0iIqRTB3hwqTNU9z7glYDgBYTKscSOHRIsgFnmjkPwx
-         Lnag==
-X-Forwarded-Encrypted: i=1; AJvYcCUnTWF8xDCCqqxEJsSsFIj/T9s95Wy6nswTBw8EkIMKeKkQ3oaPQO3qOaP8IMvy+VprBklzBUKWYbX+@lists.linux.dev
-X-Gm-Message-State: AOJu0YzYMLNcGvc9RmXko0Jf9pY34jy+//n1D7VUFn/qe8P9CXpbJGpE
-	mdCpPLfi+2uuBSp9gwj+VPJsmbk618BaaiXjFmBdjeFxVdSqL9/YlOF2DqKUuE8bMDw5lMK2+SA
-	g+3bg18P0kdJ/nS6N80IreKW6xUTmgF9r8hqpzaK6
-X-Gm-Gg: ATEYQzyMHUDqFzO+kwNMcGZm00WY8UwyvP5kcp6Ci+NTgNju78eQNnk0QwRzagnxRdR
-	Y3iQl3mJWtdMfcYB8Bzgw4eeaHGPDwa6sUjg1SGTDjfk9DjGITn20HOECE8tzXB0RLZp2VDEt3A
-	Tmn/W4JQaPGLU4s/4NpLBqq/axXP5xL7HledaixqIjM6857VQpRdIW9THe43WKu9Vnixj9AqXeo
-	2eDAbFwLyWhGKVlzVXX9ECwNvTPMOkn5GAwARNSOaFKtUKAN/OSIWfsAe2xgt4YZjtoutekMZ5Q
-	Mh6ghHDP3vwC1gcGC8b0++t0E0cufGcHCP28HSTJgIb2mg0iYwUMUQcqE71osMMmfLWE
-X-Received: by 2002:a05:600c:898:b0:483:6a76:11a6 with SMTP id
- 5b1f17b1804b1-4872fb4af58mr49025e9.5.1774640612616; Fri, 27 Mar 2026 12:43:32
- -0700 (PDT)
+        bh=bp8Rzg51lEDwzJFZ6phUlxNkzebzC2DJpAPYxDIaxlM=;
+        b=XJkaKAYpuS/QpuAuoX+Exf9Loijf8Trv9LPrIk5A8ss4PpVIveebLsxjHPgqqY1ivK
+         u89YOhvXPDW0xa59Am8H4AfOPqwaSw9di6zbZy9KczB28B0p8NaIaptJjjkNB8bNfrye
+         CEXAcwZJDuRPIMy0GywjWblPZuM4Kn6rUzraYHpacgTuTIvNSelYZgEZ9dsC416qtDZt
+         UeANl1ibbBYDVkJVYVA/yyer4SKDSgzoZNjM+JJbgd1SqY+PAkzaJ5g4WCug9W10CMyv
+         oZwqnY4nb6uc0ll2eAzppWLyIxlIOlSzlUd0UzKcLvLGtqQZ5iMGYeaWtFiOI8mQ5mhK
+         qlHg==
+X-Forwarded-Encrypted: i=1; AJvYcCWfHbI6Q8PbIR3rS5KgR9ZmMWspSw9dvl4vIlfIHVNutDji6u3hY53zaCsOdvbVzqkPdgryUnGadUjG@lists.linux.dev
+X-Gm-Message-State: AOJu0YyivkEfdr+ggzV9DEndSPMY/C2y8SNpMhbBZEg73Zi5UrRyZ3vH
+	DAXaMeI/gv2d8bo5A98uxzlIaMKLnU2FmUDa0pCZDsoM935XNBPNCOfpPO4cdI5DzHdgyhYvmhz
+	Lw/i3/2RRLF8HNRZhrydBQ+RYNAb4KVJm+mo2UFzH
+X-Gm-Gg: ATEYQzxcaDpObw2oOvHL7G5PnJl3OBHpUb3SpxwSYJHoP4OdzCUvGHbniPr8oMYYGiv
+	m53wOKbGx8c+M3xU9HB02h/ZB1eYJt5pyE44MpXcEj3z4VuW2u4LOgFqudeUI4GkyC1pTGRcYsh
+	w3/iQLTexJqizH/u9pwB+yMMJBQXPs6r2fFWf/Ci2VXSRrHDPbA8yuQ6WH+j7JkSx/rnE6gxiNX
+	L8mp32mISVBmV8dkAz0oCRlTFJmMInzOdGcjsh/pgCII/NV/kvJiRrf+MnmaWZQCiiBZrXAch74
+	TlAykXnD7qKqc12oKfE8W5ICTTPVqUmmcqjkp12t1kMn8pNu4Knwxgmo7fnwLwkIMitk
+X-Received: by 2002:a05:600c:474a:b0:47e:de1d:ce99 with SMTP id
+ 5b1f17b1804b1-4872fb2db92mr169905e9.12.1774640620548; Fri, 27 Mar 2026
+ 12:43:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260325192352.437608-1-jiri@resnulli.us> <20260325192352.437608-3-jiri@resnulli.us>
-In-Reply-To: <20260325192352.437608-3-jiri@resnulli.us>
+References: <CGME20260325192400eucas1p2ae38ff4c2b3ab35a7047cfd680d9fda3@eucas1p2.samsung.com>
+ <20260325192352.437608-1-jiri@resnulli.us> <f2047cd7-91a8-4f6a-b6b9-0e4f143f6854@samsung.com>
+ <20260327121021.GB246076@ziepe.ca>
+In-Reply-To: <20260327121021.GB246076@ziepe.ca>
 From: "T.J. Mercier" <tjmercier@google.com>
-Date: Fri, 27 Mar 2026 12:43:20 -0700
-X-Gm-Features: AQROBzBYesqFRGc3W9I0GrvLQe43hwnK276StdxFy-fmLYpUjceKHOTqIZ5lfxQ
-Message-ID: <CABdmKX2G-RavjPxmeTH4iiawNqN8ronj5dytYxKTYRJvtDXoFg@mail.gmail.com>
-Subject: Re: [PATCH v5 2/2] dma-buf: heaps: system: add system_cc_shared heap
- for explicitly shared memory
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+Date: Fri, 27 Mar 2026 12:43:28 -0700
+X-Gm-Features: AQROBzCEcKgPP9gV3lvkFItmqoWSRLzeH8nf-BLcIkZAnZ3bjMQA_OWXnQtSUH4
+Message-ID: <CABdmKX0HYg_HQAb44QGcO-frCTu+0h=uqS70CTcYtRs-Y=y21g@mail.gmail.com>
+Subject: Re: [PATCH v5 0/2] dma-buf: heaps: system: add an option to allocate
+ explicitly shared/decrypted memory
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Jiri Pirko <jiri@resnulli.us>, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
 	iommu@lists.linux.dev, linux-media@vger.kernel.org, sumit.semwal@linaro.org, 
 	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, jstultz@google.com, 
-	christian.koenig@amd.com, m.szyprowski@samsung.com, robin.murphy@arm.com, 
-	jgg@ziepe.ca, leon@kernel.org, sean.anderson@linux.dev, ptesarik@suse.com, 
-	catalin.marinas@arm.com, aneesh.kumar@kernel.org, suzuki.poulose@arm.com, 
-	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com, 
-	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com, 
-	linux-coco@lists.linux.dev
+	christian.koenig@amd.com, robin.murphy@arm.com, leon@kernel.org, 
+	sean.anderson@linux.dev, ptesarik@suse.com, catalin.marinas@arm.com, 
+	aneesh.kumar@kernel.org, suzuki.poulose@arm.com, steven.price@arm.com, 
+	thomas.lendacky@amd.com, john.allen@amd.com, ashish.kalra@amd.com, 
+	suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 25, 2026 at 12:23=E2=80=AFPM Jiri Pirko <jiri@resnulli.us> wrot=
+On Fri, Mar 27, 2026 at 5:10=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> wrot=
 e:
 >
-> From: Jiri Pirko <jiri@nvidia.com>
+> On Fri, Mar 27, 2026 at 10:38:10AM +0100, Marek Szyprowski wrote:
+> > On 25.03.2026 20:23, Jiri Pirko wrote:
+> > > From: Jiri Pirko <jiri@nvidia.com>
+> > >
+> > > Confidential computing (CoCo) VMs/guests, such as AMD SEV and Intel T=
+DX,
+> > > run with private/encrypted memory which creates a challenge
+> > > for devices that do not support DMA to it (no TDISP support).
+> > >
+> > > For kernel-only DMA operations, swiotlb bounce buffering provides a
+> > > transparent solution by copying data through shared memory.
+> > > However, the only way to get this memory into userspace is via the DM=
+A
+> > > API's dma_alloc_pages()/dma_mmap_pages() type interfaces which limits
+> > > the use of the memory to a single DMA device, and is incompatible wit=
+h
+> > > pin_user_pages().
+> > >
+> > > These limitations are particularly problematic for the RDMA subsystem
+> > > which makes heavy use of pin_user_pages() and expects flexible memory
+> > > usage between many different DMA devices.
+> > >
+> > > This patch series enables userspace to explicitly request shared
+> > > (decrypted) memory allocations from new dma-buf system_cc_shared heap=
+.
+> > > Userspace can mmap this memory and pass the dma-buf fd to other
+> > > existing importers such as RDMA or DRM devices to access the
+> > > memory. The DMA API is improved to allow the dma heap exporter to DMA
+> > > map the shared memory to each importing device.
+> > >
+> > > Based on dma-mapping-for-next e7442a68cd1ee797b585f045d348781e9c0dde0=
+d
+> >
+> > I would like to merge this to dma-mapping-next, but I feel a bit
+> > uncomfortable with my lack of knowledge about CoCo and friends. Could
+> > those who know a bit more about it provide some Reviewed-by tags?
 >
-> Add a new "system_cc_shared" dma-buf heap to allow userspace to
-> allocate shared (decrypted) memory for confidential computing (CoCo)
-> VMs.
+> I'm confident in the CC stuff, I was hoping to see someone from dmabuf
+> heap land ack that the uAPI design is OK.. TJ?
 >
-> On CoCo VMs, guest memory is private by default. The hardware uses an
-> encryption bit in page table entries (C-bit on AMD SEV, "shared" bit on
-> Intel TDX) to control whether a given memory access is private or
-> shared. The kernel's direct map is set up as private,
-> so pages returned by alloc_pages() are private in the direct map
-> by default. To make this memory usable for devices that do not support
-> DMA to private memory (no TDISP support), it has to be explicitly
-> shared. A couple of things are needed to properly handle
-> shared memory for the dma-buf use case:
->
-> - set_memory_decrypted() on the direct map after allocation:
->   Besides clearing the encryption bit in the direct map PTEs, this
->   also notifies the hypervisor about the page state change. On free,
->   the inverse set_memory_encrypted() must be called before returning
->   pages to the allocator. If re-encryption fails, pages
->   are intentionally leaked to prevent shared memory from being
->   reused as private.
->
-> - pgprot_decrypted() for userspace and kernel virtual mappings:
->   Any new mapping of the shared pages, be it to userspace via
->   mmap or to kernel vmalloc space via vmap, creates PTEs independent
->   of the direct map. These must also have the encryption bit cleared,
->   otherwise accesses through them would see encrypted (garbage) data.
->
-> - DMA_ATTR_CC_SHARED for DMA mapping:
->   Since the pages are already shared, the DMA API needs to be
->   informed via DMA_ATTR_CC_SHARED so it can map them correctly
->   as unencrypted for device access.
->
-> On non-CoCo VMs, the system_cc_shared heap is not registered
-> to prevent misuse by userspace that does not understand
-> the security implications of explicitly shared memory.
->
-> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+> Jason
 
-Reviewed-by: T.J. Mercier <tjmercier@google.com>
+Hi, yes LGTM. From a uAPI perspective it's just another dma-buf heap.
