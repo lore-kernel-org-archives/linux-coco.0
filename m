@@ -1,160 +1,108 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502A934EEF4;
-	Fri, 27 Mar 2026 09:22:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774603327; cv=none; b=OOW10QlxgTTUOHehUcpssTFzC5eDLC6VCWtsaX4iJXaIFIXgqV19qzZhP5GjLJn8owxsiVd6GeCPM0W6BCwikiNK3dL01YlrshuXWIb1m7lp50q2PNGngBt3BnIwG5xocyUznfqZHiD6kxUhNpryckRoCFln1HBP+UYMcWRbJ+c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774603327; c=relaxed/simple;
-	bh=vEGZC83rxmW07zHQFknwFo9lKgIJBePeoyZucSBzCLk=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=rqS1Cn9siBM0okYOX2pJdTU2yOXOCXXfHVzFWAINuYZTaIEBIkiBrSrAoOjl8LwzA9vT2vkS8q9vV9g1zkzPiPuTcLda8MkRnYUJJG75tuYld8DTWn8RSsZYTg7JkZFmfYKD27ho2GX1KnnzOwlPArAmt8jZ0rEPJ5Ev5A+F+ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=i8C9bIC8; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="i8C9bIC8"
-Received: from 8bytes.org (p4ffe051a.dip0.t-ipconnect.de [79.254.5.26])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id AFD971A6ADF;
-	Fri, 27 Mar 2026 10:21:59 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1774603319;
-	bh=vEGZC83rxmW07zHQFknwFo9lKgIJBePeoyZucSBzCLk=;
-	h=Date:From:To:Subject:From;
-	b=i8C9bIC87P9HLSEiaYPCJ+1F8am2Zr1ffDCH1eVBUlz6OnQH7mzXOmPUuVLU/ZS9M
-	 ZjXu19d+PXRZLwD/yQ77XtACyj+wZE4hDi6nPbCFc89tbCdJK5/R5nIH/+t/veyNCU
-	 BZcYpH216WJFDXeqUraZzIfWSJRlCvpFUQ+CtooAKcQf2fNTEy2vLwi3wjANOML/Xa
-	 P6jSYHHjLD0dFAOGHZZ+iU1NrRQU6qPeqr5TD/5+Y9X1nyAaTgETT2wJCdoxdGOTkR
-	 tbLxORdib/YD7wy25Ciw2Mm1DV/XFW3gaCGKnNlX8BxM8s6SGYa71YG59y+ze51SjT
-	 3CAYBQuXLlZ7w==
-Date: Fri, 27 Mar 2026 10:21:58 +0100
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Subject: COCONUT-SVSM Development Release v2026.03-devel
-Message-ID: <xmszcrswhbn4testupljhakkakdnofaic2g2ksrnjl35rqix3w@upvt7a2ab4la>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0F13D3318
+	for <linux-coco@lists.linux.dev>; Fri, 27 Mar 2026 09:38:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774604297; cv=none; b=t7rBXQNZ4rVvNiOu4nc2poWdnoBIqzGfxSxu+FDWXNz7kIC6B5ee063S6tsU69wdYtZ30n2CITlX1U6zYImWJnW93I0mTOJjvK/LP0ZlU0aL9GQVgx0vx1WB+c20NKNT9fzKGMtN0X0TSA39SHbtvZDjzATrFMKMQZRy928XxnE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774604297; c=relaxed/simple;
+	bh=VTGR2oZeOTUkXAjoxaQQHWqP5TfqoEgIsXg4YWroNFk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=Nwo0OkzXV3fBsluOZ/RttzPsuOTj/Yl+PXhS/i6MvAE2piPm+TFSmSC8wJeqTc7FDIVwkwgWrpOZog1dqge78h2tu0uen/oDb/jb9HE5l1e4cchqwbyDEuMQiqMbDEsKTY6jtf3XHOXnVxhdDIGNCCdjS2IwF/to+qHMBeLXopM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=tEJ9O1Jn; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="tEJ9O1Jn"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260327093813euoutp01c8576a67592da11d1e160a86cf0b1c8b~gqTP0zqJv0160501605euoutp01T
+	for <linux-coco@lists.linux.dev>; Fri, 27 Mar 2026 09:38:13 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260327093813euoutp01c8576a67592da11d1e160a86cf0b1c8b~gqTP0zqJv0160501605euoutp01T
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1774604293;
+	bh=0wrrBT9Vgx5xYr3ZtqLPUbt27G4B7MOzYfS2jPrN8kQ=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=tEJ9O1Jnk3kcIWa/GQWlYDVsdjOZbDe2dmIbrigJ2c8G34HJxvn4IGvWDvX6x+guU
+	 7OpBFxvD7I7peNfcsUSBPn89cUk2ApU4PUTRxPyPG696UClnlWenGkehnLiZR0L6c7
+	 OM7P/DSIpX29McX5cWpjCy5Zro3ZtRdqNda5cH0o=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260327093813eucas1p2491c30df8c61bc550d31f05d90811332~gqTPXpzSE0810508105eucas1p2a;
+	Fri, 27 Mar 2026 09:38:13 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260327093811eusmtip192818a11797378662e842d7b047a01bf~gqTNROVR00077200772eusmtip1F;
+	Fri, 27 Mar 2026 09:38:11 +0000 (GMT)
+Message-ID: <f2047cd7-91a8-4f6a-b6b9-0e4f143f6854@samsung.com>
+Date: Fri, 27 Mar 2026 10:38:10 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v5 0/2] dma-buf: heaps: system: add an option to
+ allocate explicitly shared/decrypted memory
+To: Jiri Pirko <jiri@resnulli.us>, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev,
+	linux-media@vger.kernel.org
+Cc: sumit.semwal@linaro.org, benjamin.gaignard@collabora.com,
+	Brian.Starkey@arm.com, jstultz@google.com, tjmercier@google.com,
+	christian.koenig@amd.com, robin.murphy@arm.com, jgg@ziepe.ca,
+	leon@kernel.org, sean.anderson@linux.dev, ptesarik@suse.com,
+	catalin.marinas@arm.com, aneesh.kumar@kernel.org, suzuki.poulose@arm.com,
+	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com,
+	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com,
+	linux-coco@lists.linux.dev
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20260325192352.437608-1-jiri@resnulli.us>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20260327093813eucas1p2491c30df8c61bc550d31f05d90811332
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260325192400eucas1p2ae38ff4c2b3ab35a7047cfd680d9fda3
+X-EPHeader: CA
+X-CMS-RootMailID: 20260325192400eucas1p2ae38ff4c2b3ab35a7047cfd680d9fda3
+References: <CGME20260325192400eucas1p2ae38ff4c2b3ab35a7047cfd680d9fda3@eucas1p2.samsung.com>
+	<20260325192352.437608-1-jiri@resnulli.us>
 
-Hi,
+On 25.03.2026 20:23, Jiri Pirko wrote:
+> From: Jiri Pirko <jiri@nvidia.com>
+>
+> Confidential computing (CoCo) VMs/guests, such as AMD SEV and Intel TDX,
+> run with private/encrypted memory which creates a challenge
+> for devices that do not support DMA to it (no TDISP support).
+>
+> For kernel-only DMA operations, swiotlb bounce buffering provides a
+> transparent solution by copying data through shared memory.
+> However, the only way to get this memory into userspace is via the DMA
+> API's dma_alloc_pages()/dma_mmap_pages() type interfaces which limits
+> the use of the memory to a single DMA device, and is incompatible with
+> pin_user_pages().
+>
+> These limitations are particularly problematic for the RDMA subsystem
+> which makes heavy use of pin_user_pages() and expects flexible memory
+> usage between many different DMA devices.
+>
+> This patch series enables userspace to explicitly request shared
+> (decrypted) memory allocations from new dma-buf system_cc_shared heap.
+> Userspace can mmap this memory and pass the dma-buf fd to other
+> existing importers such as RDMA or DRM devices to access the
+> memory. The DMA API is improved to allow the dma heap exporter to DMA
+> map the shared memory to each importing device.
+>
+> Based on dma-mapping-for-next e7442a68cd1ee797b585f045d348781e9c0dde0d
 
-The COCONUT-SVSM development release for March is now tagged. It features 48
-non-merge commits since the February release, among them changes from
-first-time contributors.
+I would like to merge this to dma-mapping-next, but I feel a bit 
+uncomfortable with my lack of knowledge about CoCo and friends. Could 
+those who know a bit more about it provide some Reviewed-by tags?
 
-The highlights of this release are:
-
-	- More improvements to the boot flow to get closer to a minimal stage2
-	  implementation.
-
-	- Memory management improvements.
-
-	- Lots of changes to our CI workflows to improve their security, speed,
-	  and coverage.
-
-The shortlog is attached. Happy testing!
-
--Joerg
-
-Carlos López (14):
-      mm/alloc: remove recursion from HeapMemoryRegion::free_page_order()
-      mm/alloc: remove recursion from HeapMemoryRegion::refill_page_list()
-      mm/alloc/tests: verify error variant in test_page_alloc_oom()
-      Makefile: add Miri target
-      Documentation: INSTALL: document --no-detdev option
-      Documentation: add TESTING.md
-      kernel: mm/pgtable: homogenize PageTable::map_4k()
-      kernel: mm/pgtable: homogenize PageTable::map_2m()
-      boot: bootimg/elf: page-align kernel ELF size
-      virtio-drivers: remove enumn dependency
-      libtcgtpm: disable bindgen unneeded features
-      github/workflows: do not add rust-src component
-      github/workflows: run builds in parallel
-      github/workflows: update actions to Node.js 24
-
-Joerg Roedel (7):
-      github/workflows: Implement security best practices
-      github/workflows: Add a dependency review workflow
-      docs: Document GitHub workflow security requirements
-      workflows/publish-docs: Limit permissions even more
-      workflows/manual-verify: Do not use pre-built verusfmt
-      workflows/publish-docs: Install mkdocs from packages
-      COCONUT-SVSM Release 2026.03-devel
-
-Jon Lange (16):
-      boot_params: remove vtom from boot parameter block
-      stage2: make VTOM a register parameter
-      boot_params: remove stage1 info from boot params
-      stage1: remove non-TDX logic
-      sev: remove SEV metadata generation
-      Merge pull request #989 from 00xc/mm/pgtable/map_4k
-      idt: allocate kernel IDT in the boot image
-      kernel: enable suppression of VTOM in the SVSM
-      Merge pull request #1003 from joergroedel/gh-workflows
-      bootimg: map the kernel heap with 2 MB pages
-      kernel: simplify memory launch parameters
-      svsm: dynamically expand the kernel region from the kernel
-      Merge pull request #1007 from luigix25/makefile_cleanup
-      workflows: move CI test artifacts to a separate directory
-      svsm: fix heap size calculation after kernel region expansion
-      svsm: validate memory correctly during kernel region expansion
-
-Jörg Rödel (15):
-      Merge pull request #970 from msft-jlange/stage1
-      Merge pull request #967 from 00xc/mm/alloc
-      Merge pull request #993 from TanyaAgarwal25/tanya/add-nocc-doc
-      Merge pull request #995 from 00xc/boot/bootimg/align_heap
-      Merge pull request #996 from luigix25/add_missing_spdx
-      Merge pull request #991 from osteffenrh/igvmmeasure-error-msg
-      Merge pull request #999 from luigix25/remove_sudo
-      Merge pull request #1000 from n-ramacciotti/update_gdbstub
-      Merge pull request #1008 from msft-jlange/no_vtom
-      Merge pull request #1001 from 00xc/ci/parallel-v2
-      Merge pull request #1009 from nhandt64/chore/ignore-vscode
-      Merge pull request #1017 from msft-jlange/qemu_ci
-      Merge pull request #1016 from 00xc/ci/actions-node24
-      Merge pull request #1013 from joergroedel/gh-workflows
-      Merge pull request #1019 from msft-jlange/heap_info
-
-Luigi Leonardi (4):
-      block: remove `VirtIOBlkDevice` abstraction
-      workspace: add missing SPDX headers
-      scripts/launch_guest: avoid sudo when using TCG acceleration
-      Makefile: remove broken targets
-
-Nhan Dang (1):
-      gitignore: ignore .vscode folder
-
-Nicola Ramacciotti (1):
-      cargo.toml: Update gdbstub to 0.7.10
-
-Oliver Steffen (5):
-      igvmmeasure: Report the value of a wrong CR0 setting
-      igvmmeasure: Report unexpected VMSA GPA values
-      igvmmeasure: KVM check: allow real-mode
-      igvmmeasure: Split off KVM check errors
-      igvmmeasure: Reformat error message
-
-Peter Fang (1):
-      Merge pull request #1005 from msft-jlange/dynamic_heap
-
-Stefano Garzarella (4):
-      Merge pull request #979 from 00xc/docs/dev/testing
-      Merge pull request #980 from luigix25/blk_refactor
-      Merge pull request #983 from TanyaAgarwal25/main
-      Merge pull request #985 from TanyaAgarwal25/tanya/use-prefix
-
-Tanya Agarwal (3):
-      doc/INSTALL: fix PKG_CONFIG_PATH typo in configure command
-      doc/INSTALL: simplify QEMU build instructions
-      docs: add native mode instructions to run SVSM without coco hardware
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
