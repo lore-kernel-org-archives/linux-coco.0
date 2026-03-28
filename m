@@ -1,53 +1,53 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9026822D4DC;
-	Sat, 28 Mar 2026 16:57:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C952733D4E9;
+	Sat, 28 Mar 2026 19:58:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774717070; cv=none; b=MljWpjZ2BBqlS9uPnGu329UTam7MezOvmmUrbSm+aWWN0m0BllMisrcSL1FKCNG4wBP5OI0Tm6sFh49QAbMzxW2YMsK4pK/UtYrHbo2PdEQJ/yM+uVm8SC6f6F1o+JyOvns5H8WfSHHMbQt5GUuBzN0ZeyJcotNnH+eme9mEt9M=
+	t=1774727939; cv=none; b=nNEhZ3UEjUXFiGH0WNmOSNM3RBieg7Y8+7xCeit5nFtC0VFbjsNuAbdpkkO7N0tG95Gzed+8VOpsxkPXU+Ra3aMFuiTSfpmtdoMaWxEXx5j5mfSBmlLd+3TAttFExLLBLAfuyOypeGZvaOTcPxGPVUWEXymSILawtRYGuhoDCnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774717070; c=relaxed/simple;
-	bh=y/qxSyVeI3PObxX+49CAWDn0IKCh/fhFCy1cSY5dJSo=;
+	s=arc-20240116; t=1774727939; c=relaxed/simple;
+	bh=cy9GXw5t/wXh0caSG/6pf6d4N6q2KotxV8ZwIQvq7ac=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NCILCPxtGfQ+qmNMLrr40dE8e2oSKPyOP/uDLO7fl+6ljiihSWZEXISPTjwmd6hY9dR18RW9fZpHXwg9nm6red8fC0fdWcbYHWmtVt30nlmKs546uTwyyJC4LoHhQ0neULzOvT2kbn5cEVDSHbHuQh6YYcV27NxNzTYqkseTHf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Co6t69Sk; arc=none smtp.client-ip=192.198.163.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=RL47iDO12HoEj9DFkwuYJnUJafk6ounna3l5kkNbGeu8PHno3xKqZalsGUZiUPGRTheLF9fqacemsfAek9toJzzpFqK10aGFxzZ0V1RuDegiDJFP25c6Wc2g/ga3EBohQzKn1qTw4Yx8DDURNoeqnErvqmN3s1yPVCchZNf1Goc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Uj4tr5e+; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Co6t69Sk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Uj4tr5e+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774717069; x=1806253069;
+  t=1774727937; x=1806263937;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=y/qxSyVeI3PObxX+49CAWDn0IKCh/fhFCy1cSY5dJSo=;
-  b=Co6t69SkVuDrZt3FjGWGGWzwIHAJ34O4Mc8MacHYyMZ9OVunryTNHxNP
-   btnu2kqfRgYv/KDlcRuDeoKEyJ4feTAoLwn2jmdtOAvHPQvWffUZgpxyt
-   acg47OPDYtfIPZOZ8pRlyP9rYff2QZSu4tGBjMVdoNvWUwRtmi29F9Ort
-   unewwHD0sVeIsbXIH7TdS4KPUhMsHk/LPTCmoiOwEI9F00juy17jcCcFP
-   fNkNZn36wkJQzvYn1zYdjAg5a11O+BpDEHtkBW6bAgfpqVo3JsjUz8/4m
-   sctCLye90K5wB1dsxs3S01X4RHXkApwEMsXDI2Z/UKQqmQp8KrAM84kpn
-   A==;
-X-CSE-ConnectionGUID: j1PJMAevTyq5SoCIQB57nA==
-X-CSE-MsgGUID: E2N4onLHS5msF2KV1o6KEQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="75829240"
+  bh=cy9GXw5t/wXh0caSG/6pf6d4N6q2KotxV8ZwIQvq7ac=;
+  b=Uj4tr5e+6XUQVC5IGbGg+AGMQJ0xKmaW2jQpiaMWFldYAQO+9PP0XOHO
+   f9W8+OhlUWhu8cA9a+Xh6cZoZuAPpsdEEdCFN+JyKAJzGkxAzr+O/bOIV
+   8vYvVg+nplS87pWebDrKkx3CjEo2Zx4cjGxZzKDlvnco8NyNkZ787UoNh
+   4hHoVh9iRLp+75NRWa9di3/LA0Fxft6yVRazyXXW6dDGE5H5UVd/BwR8Z
+   0MP+98GpEBEjTL7uEZhIY6HVENKxRhUwV+q8MLkDTGJ3PanaPk1PvIq0I
+   JusKkwQRmbUWmZrTTNpIK1I/AXxpAg1WYUF9HYf6v71k62nYfk6OmgTOC
+   w==;
+X-CSE-ConnectionGUID: /u0CoiKdT0+aWN3FtLRHrQ==
+X-CSE-MsgGUID: zu7khrWUQOGYzYzMThhlwQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="87158409"
 X-IronPort-AV: E=Sophos;i="6.23,146,1770624000"; 
-   d="scan'208";a="75829240"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2026 09:57:48 -0700
-X-CSE-ConnectionGUID: JkixPn/tT2WqHybIc5qRGA==
-X-CSE-MsgGUID: bsYNMB26TkGx4Koyv2usaA==
+   d="scan'208";a="87158409"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2026 12:58:57 -0700
+X-CSE-ConnectionGUID: d45D8WvkQKSEh8Z+cmPkvw==
+X-CSE-MsgGUID: WC6z1TObQiWYd85xGEhUxQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,146,1770624000"; 
-   d="scan'208";a="225499237"
+   d="scan'208";a="227246231"
 Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 28 Mar 2026 09:57:43 -0700
+  by fmviesa004.fm.intel.com with ESMTP; 28 Mar 2026 12:58:53 -0700
 Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1w6Wyi-00000000BbF-2MxD;
-	Sat, 28 Mar 2026 16:57:40 +0000
-Date: Sun, 29 Mar 2026 00:57:23 +0800
+	id 1w6Zo3-00000000BjB-0aGI;
+	Sat, 28 Mar 2026 19:58:51 +0000
+Date: Sun, 29 Mar 2026 03:58:16 +0800
 From: kernel test robot <lkp@intel.com>
 To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
 	linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
@@ -59,7 +59,7 @@ Cc: oe-kbuild-all@lists.linux.dev, chao.gao@intel.com, dave.jiang@intel.com,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2 19/31] iommu/vt-d: Reserve the MSB domain ID bit for
  the TDX module
-Message-ID: <202603290006.za7iiDgF-lkp@intel.com>
+Message-ID: <202603290317.BVIn0aoy-lkp@intel.com>
 References: <20260327160132.2946114-20-yilun.xu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -81,19 +81,18 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Xu-Yilun/x86-tdx-Move-all
 base:   11439c4635edd669ae435eec308f4ab8a0804808
 patch link:    https://lore.kernel.org/r/20260327160132.2946114-20-yilun.xu%40linux.intel.com
 patch subject: [PATCH v2 19/31] iommu/vt-d: Reserve the MSB domain ID bit for the TDX module
-config: i386-randconfig-141-20260328 (https://download.01.org/0day-ci/archive/20260329/202603290006.za7iiDgF-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-smatch: v0.5.0-9004-gb810ac53
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260329/202603290006.za7iiDgF-lkp@intel.com/reproduce)
+config: x86_64-defconfig (https://download.01.org/0day-ci/archive/20260329/202603290317.BVIn0aoy-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260329/202603290317.BVIn0aoy-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603290006.za7iiDgF-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603290317.BVIn0aoy-lkp@intel.com/
 
 All warnings (new ones prefixed by >>, old ones prefixed by <<):
 
->> WARNING: modpost: vmlinux: section mismatch in reference: iommu_max_domain_id+0x55 (section: .text.iommu_max_domain_id) -> acpi_table_parse_keyp (section: .init.text)
+>> WARNING: modpost: vmlinux: section mismatch in reference: alloc_iommu.cold+0x49 (section: .text.unlikely) -> acpi_table_parse_keyp (section: .init.text)
 
 -- 
 0-DAY CI Kernel Test Service
