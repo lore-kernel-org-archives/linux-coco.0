@@ -1,226 +1,197 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013047.outbound.protection.outlook.com [40.107.201.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B703A1A55
-	for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 14:23:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774880606; cv=none; b=hGhUzBBIC3FZ2Mf/rgqgZRm5KjxkjZerDUKCno0VDkj0EnQZnVkvqX9L86T4mlzrb6ze7IvR9v4oWdYTMQopMiIT0Fw46aqyhtsDZMm6x8Togq1etVuJ8UXsipIbwFR8SZXv1yCtDeSTW81fvPvQarb9zXpsLYBvaDTNwxOW7Sg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774880606; c=relaxed/simple;
-	bh=2t8eCwKvWcyTG6BLF1k6kvidUmENGblJrAN4O0/8Zp0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nGzz3qUfsl0vrVrDewIzH4CNb78xpN4e/fHQY/LY3uP7TYYo2RKiSGNeVg4Y6DukTPVPR0tqdmRQ/1q7CeE/NxSJ69oDeU+ojl3qEvnJDi361uFid+No4kzIbq0aiwwFxmNTKLQ1xe4UoEZLl7ptgC2KKT1AX/gjpeLRb+5W+zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=RodLGMCD; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A613385B6
+	for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 15:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774883426; cv=fail; b=muLKPgwnSknL/jlDiKWN27lQFjgI9UMc/VaUiXwS3tKPWuQQyx3Yb2U+zCOB5eFgxOQTpoAH7NRjvT25BMqj1zvwyhHLneuBmMw5SkQuzelA4OhAkJUcXjMim6SPnnEChtsCUo17Sjyzor9p7CLBvikD8AaAZp02sAhNhXr8qsw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774883426; c=relaxed/simple;
+	bh=/yO5mVLyrrI/vwn1LSwwn+TOJejHySDhlo12qSTG5J0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=EsFS3n2Zv+75+EXTPDlmYzk8pUeXaellmL9j/gbkk7OMgAl/kky9EqStMIx4wKetj7IiRhdOSX4pefrHK0v4lPOG0bONtjzJPXZ/zTKME9T/JLA14k6Tb99WjfhW0lRCv0OQiwM2y26vLp+ObtC2DJwJhzZF5kbkzAAT21x2tAk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=VDKmxwWc; arc=fail smtp.client-ip=40.107.201.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="RodLGMCD"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43cfe71e5d3so972177f8f.0
-        for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 07:23:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1774880604; x=1775485404; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZM+5dyHe83nqy+4nGn8DT9A5VxOBbDn6eu5qTwyUTxM=;
-        b=RodLGMCDqX3L4FSetuFoqZoNY6RzyKN7zNpJPy2I82T3iYBbSnS1OO9/2OKZ6Jq7lr
-         MXG5AzR0P5W1yJbAZidJTxaILa7AxaYde0jnHJ8V4VJjyOA9DWwvHVmJd3T1YMJpFe2T
-         gkOy+0VQWE3aEZwJ0ZnDfNDJ1R+Yb6dsJVn/kljKqCyOBTLj5m6cCEizEK3bx4RhcGTi
-         +dtZP7NpfYIGQfDPht7EBkCxnFbDPooF6uSVm+tQFDrR7SSHm+k/wfQo19GFQvr0zLML
-         NstuqIkobVKUMUkXKTt8jyiS1J3/2yUazh+c9/o7Wp/bm04QWB6Iwv4N082bRmVuKzA1
-         kKSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774880604; x=1775485404;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZM+5dyHe83nqy+4nGn8DT9A5VxOBbDn6eu5qTwyUTxM=;
-        b=Mg854/AOFmx8o3jGgMXFDqBG7Rh/Z7IAr91weSO2IqqG4Wf/UaoeUfcJcV4VGANjDZ
-         n+iroyo18sTnEpOC7QSPVneqMnCDukLqQKOnPNIWQvq+8jKRn1a9EmxgiLEl/mnkzkYp
-         sdeeVoewDP3u6NxOjFInN7/2WQi+7uIyKcUDpv75lShfIKZHT92iZGe0ZPwOUcqd0RL2
-         W58tZ6hXOKjAKWtTe7VAPqVT5Dwn8WNJ5pGSbynz0wNjpZxN6u3FyY/CKYNkrt5s76q8
-         PUbea0UaErB6w7hQu64qeNqhhfSkkW2k5sKUDEOVHPi02ulcyvrc1mna02jEXMGXyOui
-         qu/w==
-X-Forwarded-Encrypted: i=1; AJvYcCWI4GFP8ASJJRrgPliCjtZnkWq4NGzUIkkyfKELd41iDep9C8Cuf/aD5SFTQfCUDFKCZy+n9442vgzp@lists.linux.dev
-X-Gm-Message-State: AOJu0YwWgFvZBlugjN7qzXI71dmOrLNycV6phxCf4lafYGzqOG6lYMJE
-	m+R4yEVlJXAJb1+BFvqwRB3s7wyGpyQOZZ0C1xfy5FWiQER2+gEe+OhtL2RXAAY9omE=
-X-Gm-Gg: ATEYQzxl7qcgPijsYRsffozHWGMZ2e/xyrdEol9vZS0DU5DAdpYKTy/gjWgOOfRNDHA
-	ZiX9JjTW8iG9prsksx+L8G/CZ6Vw7ThF0qUwx6b/HqtA+nfsAPMY9OiGlZvbF5l5BduMGj07v43
-	3APJQCM8Aa2KkX7i0ie79Yc/nb/lhR8aB6tx5Gw523Wnut9H/lCATVY302Oy1/PwVtLMpn1s6PJ
-	rEBjIvx6HODqcKwp9/hIBpryjfCPkGRI73khou0ePk1rDj4CTEsQ+uN7c2wNkuSfPjMOz7cpwoS
-	2nX79Ug9Hbvl2nQ8Ag2x/RqxxJQRjqKi9PVKtQdU217pUYO5GSm3qI9CbYpB4FJSfblZgPGf+Dr
-	BrWqRI2p5s1+xY2p9KfjyC4lFdvMTQG+7N/d1YFNmCXcT1LC5LEpUpWwbvfMfwqZjsjavnsQQ2u
-	TA7ab9EhpP0EK1UNi+Jo7AwnIWEA==
-X-Received: by 2002:a5d:5f85:0:b0:43b:4ec7:f90b with SMTP id ffacd0b85a97d-43b9ea9b2cbmr21194998f8f.27.1774880603519;
-        Mon, 30 Mar 2026 07:23:23 -0700 (PDT)
-Received: from [192.168.0.20] ([212.21.133.10])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf90424fcsm14278058f8f.32.2026.03.30.07.23.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Mar 2026 07:23:22 -0700 (PDT)
-Message-ID: <a68bb3d5-0f93-428f-ac8c-f3400d1fc028@suse.com>
-Date: Mon, 30 Mar 2026 17:23:21 +0300
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VDKmxwWc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Y3l9O/4LwaHY3c6doc4tZrymP5ep8VIzLgCyRFa+TsqHIg293dxG6kP10Lte4IHMBZfPhci1fTd3rQp7alP9TJuXW5UhkEe3dqJhcvGSdkiE3tMUvKyKsSsZJTYu1oyCirPBvT5up+hhYSkcaUnSU6UnnisCuiKQwefeOujqH9HsynZh8K59fm1i/kOmSlIluoakfsd41UV+7g+1v1F9whD4qVh+6vNaHhdMQn3OuoKzHIguriX7m0pcZ7fBFKODcd2jNrOOYc8PSrAyPoRGb9WZh5kP54BSmqe2o8tW1sFxB2RLjy7Dw9lOPS++huVulh3pt+8auf99canHmCNkDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MfYR6EurIpgsqx0lMu6rQuKrg04U/h1/eMZzS1Z6Lb0=;
+ b=U1mOm6eY1X1WOrgw0yTyoGbdoaT0nhL/YgLqqHbR1wIaLYwD/b/C7JijQz9AdkhBi92+KzY8RvKwoH0raTBbN3I3seQf+oggGwz70EiMIKM3wG+ed0sTHp+NYECsphJiYtolMkuDaJN0verYClF9w4OIlYs+QXzE/OH1gvCOfsDGQNBLf5TpuvWKyXX0yFbkuz66yZ4MFGBmpyv/XcR51W5mEJ9HqCRWmC2PBPVdXLOgpHYdjeGB+gUzSFuUJj11Lv6/QlIFnj+scHkAyCMVT9V9oc27S+6pWrx6cv0tZJNe+hgY7pUVjXMtUIeLICmSQcCQHnLE4kir5Zkm3tfxRw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MfYR6EurIpgsqx0lMu6rQuKrg04U/h1/eMZzS1Z6Lb0=;
+ b=VDKmxwWcSyosyUovrBBv/s6ntVu5K+1L3Kvxcm4POjAEIjs+ohUx4uR0ux0rw28ezWIBG1vuwBrGWgLDA/ZS1mTlrzwwLz27N+1Iq5HsoUtWnJbLtD7LKOnyk7wipOsq0W3lsGA1kmxyqFgzGINxZuBrZx24x++GnQiu8rd0DvU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB8660.namprd12.prod.outlook.com (2603:10b6:610:177::5)
+ by SJ2PR12MB9242.namprd12.prod.outlook.com (2603:10b6:a03:56f::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
+ 2026 15:10:19 +0000
+Received: from CH3PR12MB8660.namprd12.prod.outlook.com
+ ([fe80::87aa:52e5:4b72:d5f3]) by CH3PR12MB8660.namprd12.prod.outlook.com
+ ([fe80::87aa:52e5:4b72:d5f3%6]) with mapi id 15.20.9745.019; Mon, 30 Mar 2026
+ 15:10:18 +0000
+Message-ID: <cab5371d-e0f4-42b7-bae9-2c7f981b26b2@amd.com>
+Date: Mon, 30 Mar 2026 11:10:15 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] x86/tdx: Accept hotplugged memory before online
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>
+Cc: "x86@kernel.org" <x86@kernel.org>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "marcandre.lureau@redhat.com" <marcandre.lureau@redhat.com>,
+ "kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+ "Qiang, Chenyi" <chenyi.qiang@intel.com>, "tglx@kernel.org"
+ <tglx@kernel.org>, "linux-coco@lists.linux.dev"
+ <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+References: <20260324-tdx-hotplug-fixes-v1-0-8f29f2c17278@redhat.com>
+ <20260324-tdx-hotplug-fixes-v1-2-8f29f2c17278@redhat.com>
+ <56190adc345148396ba6b3e52672e662145f7dc7.camel@intel.com>
+ <CAMxuvaytU-pM+rviUbNGWMhvbAYutwvaSXW_O=sn+QfOzF35Xw@mail.gmail.com>
+ <7802b50589c80a7276a50cc473c1aa579750a30c.camel@intel.com>
+ <CABgObfZ7_w8Q-dW=Sd4YA3P==BuN1edPv7Ty4EpPyU8ctW6RLg@mail.gmail.com>
+ <424048885a01dcb6a7ef0256f0dc8a9adb546f22.camel@intel.com>
+Content-Language: en-US
+From: "Pratik R. Sampat" <prsampat@amd.com>
+In-Reply-To: <424048885a01dcb6a7ef0256f0dc8a9adb546f22.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: CH2PR20CA0026.namprd20.prod.outlook.com
+ (2603:10b6:610:58::36) To CH3PR12MB8660.namprd12.prod.outlook.com
+ (2603:10b6:610:177::5)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/31] x86/virt/tdx: Read global metadata for TDX
- Module Extensions/Connect
-To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
-Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
- yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
- rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, kas@kernel.org,
- xiaoyao.li@intel.com, vishal.l.verma@intel.com, linux-kernel@vger.kernel.org
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-7-yilun.xu@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20260327160132.2946114-7-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8660:EE_|SJ2PR12MB9242:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5d59810b-76ac-4984-4a6c-08de8e6e7498
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	fvKkXAiEB5FtHDmnq+MfgdGt+c8e3WtbL4I+FByxytlHyF0KeX8+GzB94as0KFyHE82WdsM6owOTJxMkeoJeLMzVefHILnkncfK5GVleKySbdZrYyS0PE93knwGOBDuqXmDQVdg7yv5dYKI4M0+j98zLStIqMzNIFSscX1mFMhyN7w+4qEDiODM94q6pP4kkfVUaq9XKHGX8Q8iJ0Socvr8uiWDKa+JsMTdiLUpJMWZYCcm1462ciZ7mpM696COATRwBGxJ1KxPtZLI4RsXfL+P4+R4cymFO3V3uyoVRTsmTJgjI0FPyEPV7Ys7TMaRmFVpZyEviTx5v11ydwc49PSoXN+odWv1C5OxTr9f28mB7fGxS5B0PmWC6/2NEA/D+G8HRYyKEIdhqxIo8nw9j/3bgINhDGq5AJRd3G7qUKWTtzNxeYxcWWQk9VdgiPhZT+vIrTYJRlKs72GOK83yLtpZqq+qIEssog4ZjENM+BNFdcnBJJNKGySq8nEsz+7jYWAKbG/UfunyWALryVC9POu88TrWHnD3LMjBKu334KB1UP7jMn6jIlWtGjvTDAEbkdF4yK4Bzoxejqd4MNKiQQ9qsbuYHsNP6yl3wWMBoq0PVnqz+RZtJwGQhqn2wdfnDWqrRLP/IPFAcs/9lR3M6cDElarCz8GjoEEtnphNdtAIBdg1Z4ad7WLGbmevVOigz8wfvHXVOBLDRFeVQg6MjUPx777JVcJPc8oWcCwy2Kpk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8660.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dkZNUko5OEp2TDkzZFdISjlxYVJHRzRQZ2ZjOGVnUHlEa2hQTXVYOXA2MWM3?=
+ =?utf-8?B?blZmQ1dGV0FYSXVFM3BXUEpjdGtGemVjMHptbnZqSG9pVTA3Wm1QbkZLVFgx?=
+ =?utf-8?B?WldXc2JCVzh1b0JuK3lLMmo5YUoyekpRdnFTMlQwZ1FoTFB1WitFclFmTmNX?=
+ =?utf-8?B?NisvWlFyc002ZTlJdGJSMmgvTHF5RFV6bEFnSDJHVytZSzdiMFFkOC9oT0Ft?=
+ =?utf-8?B?SnhXbWI5enhCQk9DMFh2RDRXS1IzelJGK1dDNFBLdTdVS2Nwb2Q0TytQNm5Q?=
+ =?utf-8?B?U08vcVRQVGJMZW13Z2ZMeWFNK045WWlUQ2VDV2dPb0k2SDc1T2l0ekpxWUJR?=
+ =?utf-8?B?V0krQU1SQ1lRajVrUjV1S1Zha2YxOU9acUcwa0dTa2h4WnVNN2FoaGxSTWdo?=
+ =?utf-8?B?V1d2TWhsZGR5aVlhaEZTdUcrd3dhTEpFWTJTbkpiVDRJdlArVk5qYW0wZ0Q1?=
+ =?utf-8?B?a2FxS1FiVmRaei9IVXFkWWxVamg0VFVzN3g0ZmlObFFGcE9kU2FlRlJDbndY?=
+ =?utf-8?B?dnRMWGZXUVk3RTdpUTRWdGtqQndmcmlaclM0MXJ6cWt3Rnh6aC9mcHhkTjUw?=
+ =?utf-8?B?cm9NazgrY0kxUGh6L2pZdTYzMm1zaG0wUDlqcnUrRytGZnI1RzRYWiswTVV0?=
+ =?utf-8?B?N3BXTUNBd2dYVHNIMk92Yis0WkMydXNPNXJRaVdmT2QvYU1EQmhnTXlOOEZZ?=
+ =?utf-8?B?cGV4Nk9WdDFNZS82TmdJNVZZNFhqVytOTDFxMUgwa1hERWR5bTFTa1F4UkE2?=
+ =?utf-8?B?bFRBUWNLS0psRWdubERvM296NjVpYXh6N1J0U01uNC9JQ0JSZkh1K0ZXdTRH?=
+ =?utf-8?B?VXRHM1JCeW5hYVRZN2s4UlNYeGpPcUNWd1VVZ3h5TjU3QXFUZkJFRFN6b0xQ?=
+ =?utf-8?B?c21iZ2RoYWN0SlBYUWp4TDZyUHVwQ081TXl0dTQxRytIaS9SbjAwU080RnA2?=
+ =?utf-8?B?Qno3N05GRFRMR1IzaHkvOWNvVFl5TWpvT05oM2JycXdvWEhOd21OWlJpbFRL?=
+ =?utf-8?B?VW1PRndnb1lTUjZVTTI5OGMvN2hjZFAyRlQxVnFUYk14bWhSK3EvYjJKOXh3?=
+ =?utf-8?B?MmVEamdDU0VWcTVydEtLc01KVHppZ0dxLy9CVmlQU2QybldBMldmdHprNE9M?=
+ =?utf-8?B?YXkzSlpFTU5sWktrRFlLaGZ4dzU0bU54NE1sdks1VlhzVFdsM1FkMHdMRm5w?=
+ =?utf-8?B?NHhwREUvUlQ5V0s3Q3k1a0lrYVNoV0hUWEs1a01WR0htalU1Mm5rVmk2QXVZ?=
+ =?utf-8?B?OXpQRlJCQ2Jpdml3aVUxRUc0SGpjU2JSdFlFZTJkS2VtcnA0MmRPb2xzS284?=
+ =?utf-8?B?VktqMWI5aVFRYWJweHMyYUl6ZTRyTVpSRS9FbTBxYlB3NlZIbjlMdnNrZnU3?=
+ =?utf-8?B?Yks5eXVjd3dNaFpPbEVFWGtGWDZMWGJHblVuY01vWFNWc1llVEdIUmFYMUpt?=
+ =?utf-8?B?SkxuNWlkMWVwQzVrRVFwTTdyVGJLV0Nmb0VCMHB5WktoOUsyRUJpS3FyRFph?=
+ =?utf-8?B?MGVpTmZaajhxOVNCNlBSdkhOYUUvNWhJNUd3NVlvWVcweFFVSUt3elJDaVZF?=
+ =?utf-8?B?RkZaSHdMbE9EK0Iwekxrck5BM25obXFjcVh1b2MxbURycWU2RUppOWluSjY3?=
+ =?utf-8?B?RWs2Q2VCekRPS2IwaWs3UE5qbXpZVGRVMEMxa09LVC93VHExdllDclZ1RlY0?=
+ =?utf-8?B?VWt0OFhocUhlRTRUcnFkOG0ycXJPT0prYzBVWEhMc2p6d1YxdHh6N3VhQ1dI?=
+ =?utf-8?B?TXhJbzVlczJrTndmY2xrY2s2RTRCYWxaRlUxTEhDRG1rOXU3OXpURGZRUU5X?=
+ =?utf-8?B?blBHSXh4Wks3eVc5d2wvZ3dFczNDOEZSTTQwRTNNTjBIOHZERWFnYk9rdi9T?=
+ =?utf-8?B?Mllhb0dUQnF0UGVabmRhMTB0SWpCelJXdG9nRFhJNkxNVHNuVzBLS3ZxV3g3?=
+ =?utf-8?B?RG5FNGdkbVFTWXl0OGtuZlFQd3k2NlR2TkRsT0hsQmdsMkFiN3ZZTE9ZdkxK?=
+ =?utf-8?B?U2NJY0xYbDFaL3g3dzVWMElxMjRBUUtJbGZjRHRkSWUwSWJDdlU5SEtCRGJQ?=
+ =?utf-8?B?S25rMnU2cXNXanpwaWFwZlFRNWtsVGwrZTFzeWRFdG9FSDEyZFNMbVQ3Tk5l?=
+ =?utf-8?B?NVJTRjUzNExaSTdDdGdQOTdoYWpRSG5sbEVwcU1FSis0ZFk1bzAycjhPR0s3?=
+ =?utf-8?B?YzA0RXhVUGFQaGd2RkwvRDdsMitNZUEvMlI5QTBENXphNDMyMUJKR1IrSGpO?=
+ =?utf-8?B?eDRNQmd2MzJVQWQzNkpPNVZKYVMvRnBoWnZqT3ZyWEJwM1RhMlZFQ2Zhcng3?=
+ =?utf-8?Q?X5PBApzmwwyHE/baho?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5d59810b-76ac-4984-4a6c-08de8e6e7498
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8660.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 15:10:18.8438
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7egvQBfzBVEQoONXIBIZE/cFakz5l1sJFQlnBVIdauihfFTvG0P1JNzo6Mo/mUgUTp83sihAjj7G0tHY3L4Itw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9242
 
 
 
-On 27.03.26 г. 18:01 ч., Xu Yilun wrote:
-> Add reading of the global metadata for TDX Module Extensions & TDX
-> Connect. Add them in a batch as TDX Connect is currently the only user
-> of TDX Module Extensions and no way to initialize TDX Module Extensions
-> without firstly enabling TDX Connect.
+On 3/26/26 4:40 PM, Edgecombe, Rick P wrote:
+> Hi Paolo!
 > 
-> TDX Module Extensions & TDX Connect are optional features enumerated by
-> TDX_FEATURES0. Check the TDX_FEATURES0 before reading these metadata to
-> avoid failing the whole TDX initialization.
+> On Thu, 2026-03-26 at 19:25 +0100, Paolo Bonzini wrote:
+>>> Another option could be to perform a TDG.MEM.PAGE.RELEASE TDCALL from
+>>> the guest when it unplugs the memory, to put it in an unaccepted state.
+>>> This would be more robust to buggy VMM behavior. But working around
+>>> buggy VM behavior would need a high bar.
+>>
+>> Wouldn't it actually be a very low bar? Just from these two paragraphs
+>> of yours, it's clear that the line between buggy and malicious is
+>> fine, in fact I think userspace should not care at all about removing
+>> the memory. Only the guest cares about acceptance state.
+>>
+>> Doing a RELEASE TDCALL seems more robust and not hard.
 > 
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> ---
->   arch/x86/include/asm/tdx.h                  |  2 ++
->   arch/x86/include/asm/tdx_global_metadata.h  | 14 ++++++++
->   arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 36 +++++++++++++++++++++
->   3 files changed, 52 insertions(+)
+> I mean I guess the contract is a bit fuzzy. The reason why I was thinking it was
+> a host userspace bug is because the conventional bare metal behavior of
+> unplugging memory should be that it is no longer accessible, right? If the guest
+> could still use the unplugged memory, it could be surprising for userspace and
+> the guest. Also, ideally I'd think the behavior wouldn't cover up guest bugs
+> where it tried to keep using the memory. So forgetting about TDX, isn't it
+> better behavior in general for unplugging memory, to actually pull it from the
+> guest? Did I look at that wrong?
 > 
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index d5f1d7b7d1e7..d7605235aa9b 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -129,7 +129,9 @@ int tdx_enable(void);
->   const char *tdx_dump_mce_info(struct mce *m);
->   
->   /* Bit definitions of TDX_FEATURES0 metadata field */
-> +#define TDX_FEATURES0_TDXCONNECT	BIT_ULL(6)
->   #define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
-> +#define TDX_FEATURES0_EXT		BIT_ULL(39)
->   
->   const struct tdx_sys_info *tdx_get_sysinfo(void);
->   
-> diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
-> index 060a2ad744bf..e7948bca671a 100644
-> --- a/arch/x86/include/asm/tdx_global_metadata.h
-> +++ b/arch/x86/include/asm/tdx_global_metadata.h
-> @@ -34,11 +34,25 @@ struct tdx_sys_info_td_conf {
->   	u64 cpuid_config_values[128][2];
->   };
->   
-> +struct tdx_sys_info_ext {
-> +	u16 memory_pool_required_pages;
-> +	u8 ext_required;
-> +};
-> +
-> +struct tdx_sys_info_connect {
-> +	u16 ide_mt_page_count;
-> +	u16 spdm_mt_page_count;
-> +	u16 iommu_mt_page_count;
-> +	u16 spdm_max_dev_info_pages;
-> +};
-> +
->   struct tdx_sys_info {
->   	struct tdx_sys_info_features features;
->   	struct tdx_sys_info_tdmr tdmr;
->   	struct tdx_sys_info_td_ctrl td_ctrl;
->   	struct tdx_sys_info_td_conf td_conf;
-> +	struct tdx_sys_info_ext ext;
-> +	struct tdx_sys_info_connect connect;
->   };
->   
->   #endif
-> diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-> index 13ad2663488b..a07f1e7b18e8 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-> @@ -85,6 +85,36 @@ static int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *sysinfo_td_conf
->   	return ret;
->   }
->   
-> +static int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
-> +{
-> +	int ret = 0;
-> +	u64 val;
-> +
-> +	if (!ret && !(ret = read_sys_metadata_field(0x3100000100000000, &val)))
+> As for the bar to change the guest, I was first imagining it would be the size
+> of the accept memory plumbing. Which was not a small effort and has had a steady
+> stream of bugs to squash where the accept was missed.
+> 
+> But I didn't actually POC anything to check the scope so maybe that was a bit
+> hasty. Should we do a POC? But considering the scope, I wonder if SNP has the
+> same problem.
 
-nit: This is likely generated by a script/llm because I see no other 
-explanation why !ret is being checked here...
+SNP likely has an analogous issue too.
+Failing to switch states on remove will cause that RMP entry to remain
+validated. A malicious hypervisor could then remap this GPA to another HPA
+which would put this in the Guest-Invalid state. On re-hotplug if we ignore
+errors suggested by Patch 1 (in our case that'd be PVALIDATE_FAIL_NOUPDATE
+error likely), we could have two RMP entries for the same GPA and both being
+validated. This is dangerous because hypervisor could swap these at will.
 
-> +		sysinfo_ext->memory_pool_required_pages = val;
-> +	if (!ret && !(ret = read_sys_metadata_field(0x3100000100000001, &val)))
-> +		sysinfo_ext->ext_required = val;
-> +
-> +	return ret;
-> +}
-> +
-> +static int get_tdx_sys_info_connect(struct tdx_sys_info_connect *sysinfo_connect)
-> +{
-> +	int ret = 0;
-> +	u64 val;
-> +
-> +	if (!ret && !(ret = read_sys_metadata_field(0x3000000100000001, &val)))
+Would it not be better to have this information in the unaccepted bitmap which
+we could explicitly query to accept/unaccept?
 
-Ditto
-<snip>
+For ACPI hardware-style hotplug I was working with the UEFI side on a POC to
+reflect SRAT hotplug windows in UEFI_UNACCEPTED_MEMORY using
+EFI_MEMORY_HOT_PLUGGABLE attribute and working to modify that spec. I’m less
+sure what this description for virtio-mem would look like and if it'd be
+possible to do this early-boot.
+
+Thanks,
+--Pratik
