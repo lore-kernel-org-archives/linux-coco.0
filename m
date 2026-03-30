@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1433939BD
-	for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 07:31:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD42C3AC0D4
+	for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 08:28:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774855900; cv=none; b=bjlkOivsJCuAlAeyyjU+97Suvi/gLziZF9yqEl8Xb/UBSDLss2uXuyh5PS/PQh5kRmE7a2MtOdc3FTNcFB9I52Rqp8SyuVmLeEuwz4mESV2xLSpKpZ1JCQxvnQEPa0Q/D8hHmTMy4JfHxQFWfkj0dCam1IVS+36iQ+NfKYorOGI=
+	t=1774859309; cv=none; b=QQPKIVey5uDGBdW5l7S/uV6IG9YrC6947FD1CFVU+weW0TQvgme+/ae0/X1gt0o99643JlxA9cFJlHqe02gg3dnGygNO59MeVYQgqZtN91ma+7TYt7MaiMT8n/B+6XZr7zvQu1UuBv/N/PV4jMao2eSEjEbciIr5lt2EHpO9uyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774855900; c=relaxed/simple;
-	bh=c/rMpV9IvK5o7i+Dqp5d7DXROYsKkHh+wmyTeT4H1Lc=;
+	s=arc-20240116; t=1774859309; c=relaxed/simple;
+	bh=l2bHC8LwINvO+IZl5D/cdzklvOqQJAZ3NWR5QW2XcC0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eKck1Up0/cfK2xHqURybKzKbDu1tW7crAnmBRsLD5kwzUVnMURBIchG2foLdRfAQ42hr0PsiFWYBKwHLUMzUQTqlKzj3eYPBoC/AhE85jHqQQVa3xGAMDd1sS8DaL9P23GeEvcRb9IQ+3KerycQfxaspmGHDBgoCu4dj2V5CI7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aT1IoHNQ; arc=none smtp.client-ip=198.175.65.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=ntI+p6c+P1x7iMVXgJgzQPTFXlIc/Wa9kE4OIhiIYwcf09ju/UAGsHVRcs9oCq2UPNIRoht8xOUtKEtI8V1jv6q+xP2rq+F+3INasycRentfFYWcd501Nitd9rhwZQ7P6MGWyfp5Gq0uCVBqfKkd85SFqiVU4j28dlcjGo3QmhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dB0lIU49; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aT1IoHNQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dB0lIU49"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774855899; x=1806391899;
+  t=1774859307; x=1806395307;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=c/rMpV9IvK5o7i+Dqp5d7DXROYsKkHh+wmyTeT4H1Lc=;
-  b=aT1IoHNQ5FPzIkOIrjXhGePyyWnxfTFjt89F53TpBxEqVgjEfyJLcxAR
-   BNq8YPsZ3XZ+Ge1weWiZ142TXRby/YVJwiO2azRpoQjI/pAGRZG+hg1Lq
-   2GfHkRu7iWUlLgHVbQjwC64/77m4R+htPQy1zEgiNQ0P8JeAvjCzQN/n+
-   gtM9fHEhudWK8smb5lMLOUZpyg2VzpzdOPo+f0ZL/9xQ3FjrA/wSaczq4
-   Unr+7mYSNAQBHE35jR3AgHHwP+BQVtuRpJdGKfIq48Jmr1W76GKAbhEOh
-   5TXkTIG6FW8W7oiZN6WfIzFNozjnuhe1etGVT035Rvs01ZLr7olj4rKnX
-   w==;
-X-CSE-ConnectionGUID: ZLb80C2zQHqxd+kgFbDp2g==
-X-CSE-MsgGUID: fWhHm+6zQmKPIwxa31rg8g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="79442737"
+  bh=l2bHC8LwINvO+IZl5D/cdzklvOqQJAZ3NWR5QW2XcC0=;
+  b=dB0lIU49IOupKZrMiJtajUwWXhEYxVof0L3MRfThsUv+XnW6HxRMnKrw
+   bHBXLvUJg1jbsoT3sDM+F9GI5OfW6E7vzrw9T3X47lnEVZKXpm2N6L5/Y
+   lE2gMQRKDohAVW/ovVSZ9l77wbVm82W3ym9lFv5ZKAAT5FQOCwuF7BWeh
+   s/r/fiAbnoWtE85nO5nqTR6lJAIX6R5FDOrFqE5wyIoLdPdriylscg+ML
+   Cx5NMYrnNHDjzLEyYZ5XRRyMRe3hfCQg+MVPZ5kGHkaAj3UrJuM2wLJiy
+   I+WK4eavpLQXkoyYjChICXyZGJ9bZr4/9C0TctHCrCD1XomOQLw61gJ0C
+   g==;
+X-CSE-ConnectionGUID: XYF3kiGcRg+eh/RTzTMcBA==
+X-CSE-MsgGUID: U7OicETWS2G8m38SmKeERw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="75023586"
 X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; 
-   d="scan'208";a="79442737"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 00:31:39 -0700
-X-CSE-ConnectionGUID: kGphVsi0TLuaYfpyvY09UQ==
-X-CSE-MsgGUID: a9xYO6+CTuK8aQe9zMifoQ==
+   d="scan'208";a="75023586"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 01:28:27 -0700
+X-CSE-ConnectionGUID: Yjis9Aw/T8CvuiGSt6vczQ==
+X-CSE-MsgGUID: G0CulPKMSymqjBYrprB7sA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; 
-   d="scan'208";a="223110347"
+   d="scan'208";a="227603436"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa008.fm.intel.com with ESMTP; 30 Mar 2026 00:31:35 -0700
-Date: Mon, 30 Mar 2026 15:10:29 +0800
+  by fmviesa004.fm.intel.com with ESMTP; 30 Mar 2026 01:28:24 -0700
+Date: Mon, 30 Mar 2026 16:07:18 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
 Cc: "Williams, Dan J" <dan.j.williams@intel.com>,
@@ -60,12 +60,12 @@ Cc: "Williams, Dan J" <dan.j.williams@intel.com>,
 	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
 	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 01/31] x86/tdx: Move all TDX error defines into
- <asm/shared/tdx_errno.h>
-Message-ID: <acoh5RwfPyEvbqQv@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH v2 02/31] x86/virt/tdx: Move bit definitions of
+ TDX_FEATURES0 to public header
+Message-ID: <acovNqeS5c74pVgL@yilunxu-OptiPlex-7050>
 References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-2-yilun.xu@linux.intel.com>
- <a78f0ac35b137eed6306dd7ad8db37dd9d930aac.camel@intel.com>
+ <20260327160132.2946114-3-yilun.xu@linux.intel.com>
+ <4228c004ebd59f9737fb39c6c9815bf6e7711acc.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -74,17 +74,20 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a78f0ac35b137eed6306dd7ad8db37dd9d930aac.camel@intel.com>
+In-Reply-To: <4228c004ebd59f9737fb39c6c9815bf6e7711acc.camel@intel.com>
 
-> I think it is missing Kai's RB from sys disable v1, and your sign off.
+On Fri, Mar 27, 2026 at 11:45:39PM +0000, Edgecombe, Rick P wrote:
+> On Sat, 2026-03-28 at 00:01 +0800, Xu Yilun wrote:
+> > Move bit definitions of TDX_FEATURES0 to TDX core public header.
+> 
+> Patch seems reasonable, but not sure about the "public header" language. Maybe
+> more widely accessibly header? Or a better name?
+> 
 
-Ah, yes. I picked from the latest post:
+Yes, I try to make it more explicit, is it better:
 
-https://lore.kernel.org/all/20260323-fuller_tdx_kexec_support-v2-1-87a36409e051@intel.com/
+    x86/virt/tdx: Move TDX_FEATURES0 bit defines to arch x86 header
 
-But didn't realize the older thread has different RB set and b4 didn't
-catch, will add it manually.
+    Move TDX_FEATURES0 bit definitions to arch x86 header.
 
-I'll also add my sign off.
-
-Thanks
+    ...
