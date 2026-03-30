@@ -1,135 +1,126 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831002EB10;
-	Mon, 30 Mar 2026 10:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388083C5DCD;
+	Mon, 30 Mar 2026 11:42:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774868293; cv=none; b=JnUTnOpJy7wzyIXafe3ji21bBpns8Acrzjt8XlDLp3V1q5mbliLiVfDUELuzJW0sBSk7hgAY+ez3H3Lo7vbQgV8Q+D6wTTZ9KNPv8VwrAiqrgMP2oIml6ls/6bC8PLI1orLa5thldkECiEAjtm8s/KzzRIiFLusj09oHLbFe4jo=
+	t=1774870938; cv=none; b=I8Ji27VC1eA4+xTIaYwJZPHW9wwoS4Tn7xIlXXXfU6u/L2duhiDs9tucTbWfYsyDfuAyj1J7l/JU7e8hziF7BjyEmMizP596qWp+xvAZ1LELueVtpK2l+sD0+8/MkYUVVd958LYKimTHJnAjf4/Glc/kxmqD2YAWXOPgZlusl+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774868293; c=relaxed/simple;
-	bh=mONBCtbmbPff0A3dabS2nwwbs9ct9e5u1BA9P4VrR5c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JtqPYMoRSgarA0T9Zp3OjKx6WJZNJzaHy6NVs1bZacXwhyB7Ef3erMf2q6QSlPjFrrvf5wGBVDFT7o5+JkRMtLMFFYYG7MHaCNLDNBiRDz3td7nZ42E8QTAQwwUIcbtJurphoiI5iO4AACt1w2YSEJKGH3aehKF/s2eY7Uba3Fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=O7cDYZFH; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1774870938; c=relaxed/simple;
+	bh=vB4s3YFWgv8MKgglsnUDvrSHERw1GbGb9mSfgsGzfhE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VNNeNwUnipcR4lRv2Uhke28lRcHECtCjF+yWwV6+vl9opWZTil6Yw5KKU8zvinh6BRMByzEmQS99px7TymvFwby2wmXo9zhdJx70qZs0wjugk6CmDTnizijqEPttzU/MebvBTcyy6iumopCtTEz3VkSZaLn5vQRUI1dRkt+Me2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fZOucjKX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="O7cDYZFH"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6B3351C01;
-	Mon, 30 Mar 2026 03:58:02 -0700 (PDT)
-Received: from [10.57.13.56] (unknown [10.57.13.56])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0D4A13F915;
-	Mon, 30 Mar 2026 03:58:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774868288; bh=mONBCtbmbPff0A3dabS2nwwbs9ct9e5u1BA9P4VrR5c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=O7cDYZFHXEzuxS8cQTR9gIEc1iShETlDG4sQ/XazlOkV5Mry75J+eICB0NiKv1k8b
-	 vleJTNMbKT4ovAUQsnrDoU09OL258RoFomntVNwjHtTcFp2F0bgoQYw7qTcvmA15iV
-	 0fBuYUY/dJ4ycbTn4G3WwWoi/4cWPdqxRX0+03BQ=
-Message-ID: <053a048d-bcb7-46ef-a4c2-c5d0c84a3177@arm.com>
-Date: Mon, 30 Mar 2026 11:58:03 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fZOucjKX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CA2C2BCB2;
+	Mon, 30 Mar 2026 11:42:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774870938;
+	bh=vB4s3YFWgv8MKgglsnUDvrSHERw1GbGb9mSfgsGzfhE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fZOucjKXzaErglbP2eZt+0/slK5YVkc2COskjLrIlb8brOy57nP/d1yCnEZAfjW2c
+	 it8u69oJXRPckTdoCMNEFPvQVg97p2XhB5x4VoCfqf/MWj3cwcZhs8kbWeuqKRZ7sM
+	 x86Rf7Q35XsaM9n7EOJIapaRDNwL+eDWREIEBQPIHyzPJ7YrapZ4KXq27SWyPPjl1N
+	 jHjyr/I+3b5npyNwAet80fEybc5GXAmvZojyEZKp070pc5UR1dVFzMpov9ID8ms3Aw
+	 0Z7T5kqTm1XoHZrOzLllwJhwcf1RzbFO2bLKV0fj4l4vLObOhHfYiboW7qTcC41GWi
+	 Abf1tTjyjXliA==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 8DF58F40072;
+	Mon, 30 Mar 2026 07:42:16 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Mon, 30 Mar 2026 07:42:16 -0400
+X-ME-Sender: <xms:mGHKacZCRfRsjAsrZtkA8g7q1WWOaRoC96kmQGLk_j6TfbocamK7hw>
+    <xme:mGHKaXgyC-ywCZoTwV3n6w8QWMk7uu1mbaQliNsirfSljvOx3OEeL57UVTfgWa_Sc
+    5E2nzvAfF8Hyr-g7IAG2BAdoE9AfO59zJmMCWpQQ_-nWPrHr0egL8U>
+X-ME-Received: <xmr:mGHKaUyrkiETXjNYDwJv2A_cnjx4as-71YEubw5U1ksnzwUAMV86feWASeE4tg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeekkeekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepvdekpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehvihhshhgrlhdrlhdrvhgvrhhmrgesihhnthgvlhdrtghomhdprhgtphhtthhope
+    htghhlgieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhinhhgohesrhgvughhrght
+    rdgtohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepuggrvh
+    gvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopeigkeei
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehhphgrseiihihtohhrrdgtohhmpdhrtg
+    hpthhtoheprhhitghkrdhprdgvughgvggtohhmsggvsehinhhtvghlrdgtohhmpdhrtghp
+    thhtohepshgvrghnjhgtsehgohhoghhlvgdrtghomh
+X-ME-Proxy: <xmx:mGHKaa52XndDMwTwUGU8ItmBBOlsvl5n0LfJGHvecS_PcVV9WkR26w>
+    <xmx:mGHKaV2KWli69DSeL4E8RnpqsdsElrI_4lHceAoZoJaPvg04c2cClw>
+    <xmx:mGHKaT1rHto1OMufc2BIw7bhwRk3SVcg_XjjHunDv_Zt4J-8ezHG3g>
+    <xmx:mGHKaUed-ti7oE2O--J_5ae6KMVdFLagjl3YUgThNSSLpNXGmSNnEw>
+    <xmx:mGHKadLCCRWMTNynkPV4WjHro_4VGw93kqoEHP1YFKj_Bs5qGVhcUSW0>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 30 Mar 2026 07:42:14 -0400 (EDT)
+Date: Mon, 30 Mar 2026 11:42:09 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Kai Huang <kai.huang@intel.com>
+Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Pull kexec cache flush logic into
+ arch/x86
+Message-ID: <acphYSbBAfm3HkCV@thinkstation>
+References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
+ <20260323-fuller_tdx_kexec_support-v2-2-87a36409e051@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 34/48] arm64: RMI: support RSI_HOST_CALL
-Content-Language: en-GB
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Joey Gouly <joey.gouly@arm.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>
-References: <20260318155413.793430-1-steven.price@arm.com>
- <20260318155413.793430-35-steven.price@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260318155413.793430-35-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260323-fuller_tdx_kexec_support-v2-2-87a36409e051@intel.com>
 
-On 18/03/2026 15:53, Steven Price wrote:
-> From: Joey Gouly <joey.gouly@arm.com>
+On Mon, Mar 23, 2026 at 02:59:05PM -0600, Vishal Verma wrote:
+> From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 > 
-> Forward RSI_HOST_CALLS to KVM's HVC handler.
-
-Minor nit: Please could we add a line or two, explaining what 
-RSI_HOST_CALL is ? e.g.:
-
-Realm's can talk to the hypervisor using the RSI_HOST_CALL, which
-the RMM forwards to the KVM. Handle them as regular hypercalls.
-
-Suzuki
-
+> KVM tries to take care of some required cache flushing earlier in the
+> kexec path in order to be kind to some long standing races that can occur
+> later in the operation. Until recently, VMXOFF was handled within KVM.
+> Since VMX being enabled is required to make a SEAMCALL, it had the best
+> per-cpu scoped operation to plug the flushing into. So it is kicked off
+> from there.
 > 
-> Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> ---
-> Changes since v7:
->   * Avoid turning a negative return from kvm_smccc_call_handler() into a
->     error response to the guest. Instead propogate the error back to user
->     space.
-> Changes since v4:
->   * Setting GPRS is now done by kvm_rec_enter() rather than
->     rec_exit_host_call() (see previous patch - arm64: RME: Handle realm
->     enter/exit). This fixes a bug where the registers set by user space
->     were being ignored.
-> ---
->   arch/arm64/kvm/rmi-exit.c | 15 +++++++++++++++
->   1 file changed, 15 insertions(+)
+> This early kexec cache flushing in KVM happens via a syscore shutdown
+> callback. Now that VMX enablement control has moved to arch/x86, which has
+> grown its own syscore shutdown callback, it no longer make sense for it to
+> live in KVM. It fits better with the TDX enablement managing code.
 > 
-> diff --git a/arch/arm64/kvm/rmi-exit.c b/arch/arm64/kvm/rmi-exit.c
-> index b4843f094615..7eff6967530c 100644
-> --- a/arch/arm64/kvm/rmi-exit.c
-> +++ b/arch/arm64/kvm/rmi-exit.c
-> @@ -116,6 +116,19 @@ static int rec_exit_ripas_change(struct kvm_vcpu *vcpu)
->   	return -EFAULT;
->   }
->   
-> +static int rec_exit_host_call(struct kvm_vcpu *vcpu)
-> +{
-> +	int i;
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +
-> +	vcpu->stat.hvc_exit_stat++;
-> +
-> +	for (i = 0; i < REC_RUN_GPRS; i++)
-> +		vcpu_set_reg(vcpu, i, rec->run->exit.gprs[i]);
-> +
-> +	return kvm_smccc_call_handler(vcpu);
-> +}
-> +
->   static void update_arch_timer_irq_lines(struct kvm_vcpu *vcpu)
->   {
->   	struct realm_rec *rec = &vcpu->arch.rec;
-> @@ -183,6 +196,8 @@ int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_ret)
->   		return rec_exit_psci(vcpu);
->   	case RMI_EXIT_RIPAS_CHANGE:
->   		return rec_exit_ripas_change(vcpu);
-> +	case RMI_EXIT_HOST_CALL:
-> +		return rec_exit_host_call(vcpu);
->   	}
+> In addition, future changes will add a SEAMCALL that happens immediately
+> before VMXOFF, which means the cache flush in KVM will be too late to
+> flush the cache before the last SEAMCALL. So move it to the newly added TDX
+> arch/x86 syscore shutdown handler.
+> 
+> Since tdx_cpu_flush_cache_for_kexec() is no longer needed by KVM, make it
+> static and remove the export. Since it is also not part of an operation
+> spread across disparate components, remove the redundant comments and
+> verbose naming.
+> 
+> In the existing KVM based code, CPU offline also funnels through
+> tdx_cpu_flush_cache_for_kexec(). So the centralization to the arch/x86
+> syscore shutdown callback elides this CPU offline time behavior. However,
+> WBINVD is already generally done at CPU offline as matter of course. So
+> don't bother adding TDX specific logic for this, and rely on the normal
+> WBINVD to handle it.
+> 
+> Acked-by: Kai Huang <kai.huang@intel.com>
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 
-Probably we should move the RMI_EXIT_HOST_CALL case addition in 
-kvm_rec_pre_enter() to this hunk to keep all in one place ?
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-Otherwise, looks good to me.
-
-Suzuki
-
-
->   
->   	kvm_pr_unimpl("Unsupported exit reason: %u\n",
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
