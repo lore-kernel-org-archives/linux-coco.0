@@ -1,494 +1,194 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010049.outbound.protection.outlook.com [40.93.198.49])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE5CEEBB
-	for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 18:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306E1397E7D
+	for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 19:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774896431; cv=fail; b=ZfdPL4nd8CG9c9vZGsQBfhVHv0V0OWst38EdIFq04gZiM++KMWA40/hlpEE/dpPEtpV21GkILKQRmbIF6FaV0TF8UaePFPbqLDedJ+7jm1TjgUG75+cbNHmkWYfjN4yVzJR2hHG40IhvvGlGEyKcpxdbMwQp780AVTlaizLiKCY=
+	t=1774898734; cv=fail; b=SiJQBKUkxUX+cSgdNf7UwcTlag80RSFOgNB+HZEeWBeK3pFb82NATqHW4PW1tUhbS3Pg41jrdYleZvd2Ph9ScqlpSMRZ8IctGsHY8738E8PvZDQE8DjYEtuF931awyYhj2B5WNMGMW/o3YPGp2tH/RnkrkcuYhZJBW2Pxw/C9z8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774896431; c=relaxed/simple;
-	bh=jObivo/hu6o5KQVDX1Lopr180zhI8LmvtDnp98zoIhs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=QNFtDua4rLJu2Lqb0VRK+9SFAut9JPv9SHf1BEIg8oKrhP6HBOxeFCOOmJGuHWZWAszNm6Nviouo21aYQZhUiJJokN9rku2eQh+T7B3gs2PXbc6J34ecgM0b5Xzr9A+9obs2jJl4Llh8vL2KgImgp4NY2cavNKST2RntFT3DZ1o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=dBSXlMsP; arc=fail smtp.client-ip=40.93.198.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1774898734; c=relaxed/simple;
+	bh=P+U+DnuO9cMqQGeGmevQZIlkFyqgvviFM3oAuVRPh0U=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=IChtXchHnsgakcftUmglRlLj81osXDfM3+DOUIB513lx3yOa8BxpATuhzmB7QNnRBM5HhBSmbYegDIAi6/rR/yPys2BD4XmoQXKC/6o7XpTJWMviMt/0AhlhcINyoehNVIxDFjNFWiEXTZoHk+hnCdbvnFEFbBt0Cn6B8PRUr+o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dYpNG7tg; arc=fail smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="dBSXlMsP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dYpNG7tg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774898733; x=1806434733;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=P+U+DnuO9cMqQGeGmevQZIlkFyqgvviFM3oAuVRPh0U=;
+  b=dYpNG7tgOSJawuykryoK790/RpI4OKInh4zUfr9a8FodTG95uT0h+dW7
+   t5KX51Yl7urjahm7fCrnvw16tCLRcqKBle9HPqvf7+MeRNVph2wBuVo3c
+   LQnSNe5l0PcmaTddMehpQCUx6h8vHppT7FNMcyejIFnjo1vMIA73qM+27
+   STr+4B0DQP0RRxU7pcZbVrcFnkx9JsTBUfO7QjiceStOKXQUOLuRwZ3yT
+   Cq+yZ4i1jIXnIba2iyz01vC+tu03yYlLNG2bU+8gHMjMwKTrM4N8Dfi2+
+   G+GqtVq0pGcdCjdST3wr1Jmf2xv28r84LHwtDolKrkzD4HlRmYTDtGYle
+   Q==;
+X-CSE-ConnectionGUID: yqt068WLRZ+eJU+lUyySFQ==
+X-CSE-MsgGUID: BUxVYI8FQrWb0r4/aGXxVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="76011443"
+X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
+   d="scan'208";a="76011443"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 12:25:32 -0700
+X-CSE-ConnectionGUID: 22259oYRQRWae0r650Ou+g==
+X-CSE-MsgGUID: ASwDZK6/QaqW5NQQwAjwsw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
+   d="scan'208";a="226402419"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 12:25:32 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 30 Mar 2026 12:25:31 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 30 Mar 2026 12:25:31 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.54) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 30 Mar 2026 12:25:29 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q6hLzMWpsnWvIGsezyOvXcx5vJMtSSJmxyMXUIh2LGq++1RVzA1qHHy76av1mLmA0StfMRRjml47qbMP1gqWgb61tKQI7k7T1FwQ5bTVPStLElhcGpK6MsRDcSga6KklFOWFt6JJty4trr+qF6EavjtpFfhKmbcHSv+cfJRhoYyoN7GyWufs41vWoXyGmAAnSW2NJf8pzsANj/03g+CeNEvctKeECiE+u+YUAbTq0mhISZqi6flLjqapSPUN19TMQI7hIgSReceW7NDRcrsJzTdEPH1X0qPA4wLiuUdiz3teqF/Qwo2RF7YmOxfD0oKYSrzkF5gctwaOgn0zX5Un4Q==
+ b=T1uoLYAQOejP5PCzBXnh5C7LZ3nigKOwFLCM0j09VyG/X9E8kx5zquJsAcIojBho2j5hCKOwonv8cfFNHe48DsSRzmRMt3N2UwR0kf2eCMDNQqVwYsziasXnStdgLsyCWG53J32PU62zN3fLLeF7ItohFiu24kgWEeSkOwv7CCGA7bZSy5snjjuSWv1hXiVDGxrTJB9I901xkvGOo6J7WSr07LUAv6uSlWPvVFYSGNCWPDuaBZHTGeauUFFypPgxyo1u0Tsqo0i8/5R2Lct1mssQ0tCvGwNXuUDtwxVCcQwrqBkfN5BEc0quLsjbfxxv2citpFWlgpNPVuETT0SVvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8+eeNBkP9gTuOb8iy+lQFsINTUB+X8kGIJnkEcDUfbc=;
- b=GLAk8s2+qITRZfZmaxv7IizBfGkFGmKuNUE/cFKsU+mGPWesV8ryyCYG8b0O+Cnz6bUiHi/PuBWVHjvztPV7lxGbeGaZ/o6u1GXYr/7DI8nksWLuBhESH7a2UlQib10mt5ZQk4FwvTqLne0Kot6V3CONd9Y8TRlJupaV1isCnjHhG/8GqiqgQdXs3ZQ0N0aC2pQPObt+wmMa2mMhfne6XB3zjNztAFF7s765Bhjg/zZ1vo6cNIzSuWAEpw80Sw08hgRi0+fBxAzo2WFv/i5+Qthdoz4bl2+zdyxYW284Vw34WztLH9WEYCBeji5xgZSk3BMIslppB52gE6zetWIc5A==
+ bh=P+U+DnuO9cMqQGeGmevQZIlkFyqgvviFM3oAuVRPh0U=;
+ b=WrwAfcoKVFb7bXso/2EifOOrcZ3iCV1InZdfmnhAHVoKsXze939P6GUdI5C+Xx+xBc6vB+UKtRcnfzOBdpjUp8GmPo23L2xrzUrkfmsvPOAYlcfhdmKc/eJrj4ohPjymbLQhlbjjSpjIOQrWeKH7flU+LUG2lBMunsIUb3aKZqeT1Yyjc/tk2TWam1Gp1guBfTsM9KWiaL02lZLHCpwR9NbmQe43s7tmNlasVH3k+2irjFXAu7sfvHIitOR7fuPbTkHJMejvVN2kIQMFOCYSU94avmAZK5Yeu1ukij3sIBi1jmfa52aQSnleadGgcCB+8PUTtqEK8O1GISdO5oSz0w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8+eeNBkP9gTuOb8iy+lQFsINTUB+X8kGIJnkEcDUfbc=;
- b=dBSXlMsPWzaLlsU+Y1dbQ6HsaEalKjTlkze/G8OtlIHGyhRGa9xaQNYPZsiijSbvGvvLpheyMQkx+zZAEEwOw6+/oGS5twdhAvft2gqwftN9s6TT20PAnCqrUzypx8qA/E182v/jm9hKcsZ9ZBnv4iBcgmyHKPHWPTsQ9XXoZnQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from IA0PPF9A76BB3A6.namprd12.prod.outlook.com
- (2603:10b6:20f:fc04::bdc) by SJ0PR12MB5673.namprd12.prod.outlook.com
- (2603:10b6:a03:42b::13) with Microsoft SMTP Server (version=TLS1_2,
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
+ by SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
- 2026 18:46:59 +0000
-Received: from IA0PPF9A76BB3A6.namprd12.prod.outlook.com
- ([fe80::e192:692b:abba:8c88]) by IA0PPF9A76BB3A6.namprd12.prod.outlook.com
- ([fe80::e192:692b:abba:8c88%3]) with mapi id 15.20.9769.011; Mon, 30 Mar 2026
- 18:46:59 +0000
-Message-ID: <30deeb5b-d2ec-4f85-aa4f-c21400df3486@amd.com>
-Date: Mon, 30 Mar 2026 13:46:55 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/16] fs,x86/resctrl: Add kernel-mode (e.g., PLZA)
- support to the resctrl subsystem
-To: Reinette Chatre <reinette.chatre@intel.com>, corbet@lwn.net,
- tony.luck@intel.com, Dave.Martin@arm.com, james.morse@arm.com,
- tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com
-Cc: skhan@linuxfoundation.org, x86@kernel.org, hpa@zytor.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, kas@kernel.org,
- rick.p.edgecombe@intel.com, akpm@linux-foundation.org, pmladek@suse.com,
- rdunlap@infradead.org, dapeng1.mi@linux.intel.com, kees@kernel.org,
- elver@google.com, paulmck@kernel.org, lirongqing@baidu.com,
- safinaskar@gmail.com, fvdl@google.com, seanjc@google.com,
- pawan.kumar.gupta@linux.intel.com, xin@zytor.com, tiala@microsoft.com,
- Neeraj.Upadhyay@amd.com, chang.seok.bae@intel.com, thomas.lendacky@amd.com,
- elena.reshetova@intel.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, eranian@google.com, peternewman@google.com
-References: <cover.1773347820.git.babu.moger@amd.com>
- <14a8ad0a-e842-4268-871a-0762f1169e03@intel.com>
- <47c0db32-d0e0-4c53-90bd-b74863d233dc@amd.com>
- <88eebfac-5286-4788-b244-911c659c0439@intel.com>
+ 2026 19:25:22 +0000
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::3ad:5845:3ab9:5b65]) by MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::3ad:5845:3ab9:5b65%6]) with mapi id 15.20.9769.014; Mon, 30 Mar 2026
+ 19:25:22 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "kas@kernel.org" <kas@kernel.org>, "Verma, Vishal L"
+	<vishal.l.verma@intel.com>
+CC: "seanjc@google.com" <seanjc@google.com>, "bp@alien8.de" <bp@alien8.de>,
+	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"mingo@redhat.com" <mingo@redhat.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [PATCH v2 3/5] x86/virt/tdx: Add SEAMCALL wrapper for
+ TDH.SYS.DISABLE
+Thread-Topic: [PATCH v2 3/5] x86/virt/tdx: Add SEAMCALL wrapper for
+ TDH.SYS.DISABLE
+Thread-Index: AQHcuwf0xG4i7UD/nE2Ttuc0mPAERbXHAxsAgAB9PQA=
+Date: Mon, 30 Mar 2026 19:25:22 +0000
+Message-ID: <def1f4395865ad0d22be245647fbb75ab8698ab8.camel@intel.com>
+References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
+	 <20260323-fuller_tdx_kexec_support-v2-3-87a36409e051@intel.com>
+	 <acpiGUKS-WRmLoxp@thinkstation>
+In-Reply-To: <acpiGUKS-WRmLoxp@thinkstation>
+Accept-Language: en-US
 Content-Language: en-US
-From: Babu Moger <babu.moger@amd.com>
-In-Reply-To: <88eebfac-5286-4788-b244-911c659c0439@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH5PR04CA0020.namprd04.prod.outlook.com
- (2603:10b6:610:1f4::21) To IA0PPF9A76BB3A6.namprd12.prod.outlook.com
- (2603:10b6:20f:fc04::bdc)
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.52.3-0ubuntu1.1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|SA1PR11MB6733:EE_
+x-ms-office365-filtering-correlation-id: d58f12ee-7fec-49f7-8fe8-08de8e921651
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|7416014|366016|1800799024|376014|38070700021|22082099003|56012099003|18002099003;
+x-microsoft-antispam-message-info: JCha2nvaLPczaMqXo9uUEQl/BLb0QxcuY1B7wtBW8u998t0fdQgdjHcsXGeQY6G/BnQV2ABKpzVGnWItCCw0CWybC31biuJfJqw716CdHhSwKP7GbZ8Gh1oiKDmpqe+Qfg/G/ZBtmn7ohs+m601VJU1StH5KCD2N9octsLtGXWZac6MVd27XJYBFx9mMH0y/xraG62CBmsT21et0Mixgcvk1aBIP1UuVN6CPXlqjEdRe3yByq1+WQ1eeTWZZ/+H35DqCa71AXWeEDHZy4IEXJZ6o754IFoj2cwpFYibRcTy5tnjHFMq2PxNmV+4rgGJOjNrSzQdl/EfG2oUrXP6sMJ/RfgCLMDpK1ZJiNcpy/WLpB9QWIEJJUwBnW37SUQkWu0xiQnz6zIiMhJENb0PZZzpTYRaPAK0v3yOiMDKMg+9hWKr8J7+XJU/WJc+k9Z6JlZNNR2dM76I/w/5RPqXWPu5IkDqg8VfUYGRF7lYln+SDnFQUYMwcUSXMlf+lvNZGDQexEJhMx4TpCSqPwaUUkcJ228hZu1j66/W9lsTzHEgKRtirreQ4zBCNYovKlzotWRLszxR8xwdRSsnkUj8Jqnh2Ss9qocHvrI+dSi0wxXGlpznfpSoR8XQBg1HdOHOG5dev9P2EasEmO6CumJ8HjTOTXoMyII8nx0dqJ9/qAXAwfBmtPxG3RWQLHKB4dy5jJmLkA1BHm3ai06Nq+yus28F2IVBWr0Kf/tPIeDK1eDTGh/t7NKeI6XXysab+3ucgSmVL1geGVKFD0iz5rXYED96IztLLJYMan62FO/dBeuw=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014)(38070700021)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?amhjT0FKOW0wNWdFWlo3Tk1IOG13eGlUM0ViaHBYL3ZVeEljd01XVDFSeXdE?=
+ =?utf-8?B?TlQvYjBnUEZoU1g0dFE0c3RCM2dRUjVaajFjNFhXZ0FqV0p5bExEOEV1SnA5?=
+ =?utf-8?B?djcyc3pHOGlabnhCWlBzVGZOK2FhOUh6Z09mRjIrNHh4ZHg5aUZYZkJDRTdG?=
+ =?utf-8?B?T1VvUFZXajJ1V1ZrR0Focnp6N0dpUUxyM25paElUZFBCeG9QRzNOY3NqVDQ0?=
+ =?utf-8?B?U1BCWnl6N29IeUdRNDEwK0VsTTBxT0JoSHh6MnREK1NhZFFqenMvVGtPTjk0?=
+ =?utf-8?B?bHlRQU5LZCswNklPT3A2Q0hkSkxzWk9wWVpJc1JhUHBlcTlJOWRaVFVDMitu?=
+ =?utf-8?B?NVpEV1E4RzE2YS9SWG1BSnd3Ny9TSWM0LzhtMVUxWVFlSEp3bFF5NTBNWVFp?=
+ =?utf-8?B?NXJVOTR6Wm9nUWk4aGErQ2t1YVYvaXEyZWVpWHpldENJQjBaMjJOV1NHdUFO?=
+ =?utf-8?B?c0hMd1JaVTQyRWU5ZEhVOWR2dFMrV3lxbkRuWXEwc01HSkxNY1pDZ3ZwOXpj?=
+ =?utf-8?B?TG9PcnF1Z29LQVM2ZFBxbURBZkV5UUhEZ0pOaFNNejRXUzBVSDJJSEtOQlY0?=
+ =?utf-8?B?QUhJbkY5bmlsQ01uUFowdm4venN4V1NrdVpkREpBbGd0YjZRTktvL3Z5a2tY?=
+ =?utf-8?B?UkVuY2pCUEVMenFiZFh3a2xLZVJ0MzRiNkRpZEFIakNUb1RNUkhIS3FneFVZ?=
+ =?utf-8?B?blBPTFlxNnQvOG5YME5mbTUydXFmZ1JJU2NveEQ5Wk1ZZEdSMG44U1JEc254?=
+ =?utf-8?B?bDFiejlQbUtmVmNFOTU1cUxuUmZUcTJIeUgrNk9ubGVvcmdZWUF2a3dleHJC?=
+ =?utf-8?B?ZW1IOEFQdlpBWHNGcTNPVlY1SEFvYU5ZUmlka2xPSlc4N2FlL0pxNGFCcXlL?=
+ =?utf-8?B?RWdTNWthTjFYRjdJdkJrdUNpdytMV3d5dUNFZ2lRL2ZoZ2ZOb2NCSnI3MENK?=
+ =?utf-8?B?ZGtpRUowcDF6ZngyN2UzNFhyK1hhRUNYdS96L3MxVDBMMmY3aVRIdzd3cTR3?=
+ =?utf-8?B?V3N3R1BZZGxyUlBwOUMvMGxpNEtrVnV6TktKeUw1T1gycVVhbW5XL082VGZz?=
+ =?utf-8?B?NStPb0FVbGpTV25PTUZzSnNMVEhoUU14UitVUi9GcDUyUVFmc0FqbDdjbTJD?=
+ =?utf-8?B?bW1VTzZBS0c1U1A4RkJiYlZGMWFXWUErRTNUcDdBZy9oUForbGhENXBmdWVS?=
+ =?utf-8?B?QVpod1ZnR0swdVFpNEFsMG8wQkxMSGJic09SdmZCNTNJYjFiVXBaQ1NKMHBX?=
+ =?utf-8?B?TVQ5S0JLMXBlcThqa2VScnVDRGoySTNqWko5WVh2TktMbjZESlhnUjdTRXlT?=
+ =?utf-8?B?QnB4TDBON2ZiT1RUQzNKR1dQUk1SVHZSMitIVEMyWElhM1FmVUxNOFRDNjJX?=
+ =?utf-8?B?cVFDTHVZZzY0b0d1NGhJWUdUenZrSTU5OG5sTmtVam14R2ZmKzF5SlBSb3kw?=
+ =?utf-8?B?dXpMUXRsNDRqMDJBbFVhWUdRVk1QdHRsaitnNTFUQzMrUVY3VDlMZUhHeEJi?=
+ =?utf-8?B?QlE5ZXRzNlBRb3g2dlpueC82UlQzUlpmcENIeEJOOFNLRk9qUFZ3ekFuWU5G?=
+ =?utf-8?B?M2VRTFNDdHR2emVONk9aZXJyL0wzakp4WHlmcDVPeUFLc253Q0E2S01KeEw4?=
+ =?utf-8?B?MmNidXpCdi8vbk5GclFKekdHYTNWSkxPcGxpS3N4cExZMVM5NExtdW9PTnJm?=
+ =?utf-8?B?OTkyT2UvZzNkVmIxMXk3b0QvUGpJRzhtVlVwakFadXV2ODF4RUhWVWUrcDAv?=
+ =?utf-8?B?UXFVZy9NQm1TVmhOZDhXelFQZ2pTZCtOWXRCc2dyWll3ZUtTZ0Q3ZjVzdUI0?=
+ =?utf-8?B?ZW1XTVE1dmZUc0xsTHkrVFdTQjl4RitnczA4OHNzci9zaXArUnhXdEN5bGd3?=
+ =?utf-8?B?MEFQRDVDRHI2NndMZE4rdFQrVmtJNzkvZWZUU1JuQU9HM1JiWFQ1Y0tjYk94?=
+ =?utf-8?B?Y2xQSVQ2V0xZZ3VReG9YNXpPL3hhWnBwVnovRHIwYjFRRGFkL1BHbzhKQWZU?=
+ =?utf-8?B?TXg1QUg5MjZMUm1zQ3BlT1FSeGV2SlN4WDEra2RsN1B5dkxQbnkrdVRKdEFa?=
+ =?utf-8?B?Z0xWRzUzNk1GVVJYSG0ydW8wLyt5WGZYTnNXTk1DNHltK3czemtHd2ZRRkRS?=
+ =?utf-8?B?bnZ4SitxbkZoMlNreTNqODN4SGJUeVpIMGViU0JrazR5MEwyV2s1T1FHRW80?=
+ =?utf-8?B?WTRINjE2QXk4ZWF2cE9rMnNhaklram9pYnZhNDRrbk5OWUZKTldiS0x5Y1Rh?=
+ =?utf-8?B?MDhnR3NwaGxBT2kzaVVGZUxnVTBqWTF4UmpqUWZjU3NMK2k4Z0dCS2ZvZW5T?=
+ =?utf-8?B?b0hrdURwNXljdjFzRmZ0TktOdWthcVdLWWVISU0zY2JGVWhPMHdWdmtNTHUv?=
+ =?utf-8?Q?AXbqAWkZ1Z3q8LYw=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <543E95FBE449DD4CAE46BFC97E2DDA31@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PPF9A76BB3A6:EE_|SJ0PR12MB5673:EE_
-X-MS-Office365-Filtering-Correlation-Id: 83aa9b6a-ae60-4b29-bad1-08de8e8cb99b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|13003099007|56012099003|22082099003|18002099003|18092099006;
-X-Microsoft-Antispam-Message-Info:
-	Zy5oPq1pkUZ27etwZMS2GQQn3Hl/znJts6f6Jk9tAXQMiIzpKNfpXLYsJY+Mi+qymrkXtbBmmIJ9JMXJya4op+nqM6QDhv+POr0T5au/TTD4HR24laS/h+yLaC+GSRjlPpl5tmm9OEswJWhVtLk7YQ68jA0okGtN77C21w4Y5O0gOYJCIb6eJbk+NzQFemw2SdkDT2ZCmLw+pXMCNDX2pOqIpGM7fqSZSfcVc6Q1pLD/GrqZGPRuYXRYF5ThKi8jQ2h2gR4N6xI6gq0cQDmX8SYpKlZIdQ9iziqkBP/WZ0r94z/4lqZhUWz0Q/anTZabim7y2wfWuNLNw+No8XLzz1BIjv27HLlGgrpeYEkmSFDqbYVTGqCKiHPxveaC5qIOJXyZ/Xk4YuhurbUsretpUiKDH53Ek0a0dazOaW2ZA2MrHB/jvv6afQpkL9mTR2XX+7LHrB3KrTfJf4L1HFGWLWH71xjnBw+z8Lh1Uroyq8JBZZrDJokbaLbiULkY4GbLk8HbSNeJtst8uvbwBMBGeiKVsOALQueY9e6uyYqKIs+7GwETKcV70oaxC18DU9xaCUezlQwGyCraIcqyQFFJJiyiGQCg0wE1wxC7Y1bk3zX6Zpdqkk1cz6YgFq0ijEAtUca9mHROli61OzMax2d6BYXtiKH/cE86TR/ehYUPLPlp9FnhIyeW+HQneQwBgXH/mSDT7vPQLy3wz5lM3oSbwi/2l2z9Jzgh7DkS1p0sn31GWyhYDym3g+aOXcNpH4ym
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PPF9A76BB3A6.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(13003099007)(56012099003)(22082099003)(18002099003)(18092099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SUZua3Q2Q1JPV1loSURpaHJrU2pvRzNXei9aWVhFUnhLWWdPSWxtU2ppZkV1?=
- =?utf-8?B?cnp2ZGtVTFZEam84VXZVTTFuTFZKampCRldhYVhWRXFadElyakY1WHNFakM3?=
- =?utf-8?B?SGl2dG1FeUptMDJlTWQ4cWl6bjhNMkhKL3REUXF4UStjNTNqYk1yNXk4RGlm?=
- =?utf-8?B?N2pmYVVTdXNmR3JhMURpU2c0OG1wYy9qQWVKdTVoc2JxSnFLMmtIa0tQa0JH?=
- =?utf-8?B?ck9kNkRPS1FzdDJwYmgxUEQyNXNkaW1ZbndMOVk2S1FMLzZ2c0o4WmI4L0FW?=
- =?utf-8?B?bDZESTUxeXUwTGUvWEFlWjhzanNWNzBSTGhiSklhVitSeUgzWXg2Q3hZWTNx?=
- =?utf-8?B?aWJVU1A1aFpYMWI5SGE1Y3h3RHQ1TmNEWUN0djgwVkZCS3dXTG5VYzNiaGNz?=
- =?utf-8?B?SUVESS9iTUpEOTMyWXZlby9uRCt4Qm1xWXFtVHNaeVA3N0RWUTA0d2FvWGZu?=
- =?utf-8?B?UG9vdnRtRWFTK0d0bExKOTl3eVBIak83V05EQ29DVEdNcXgySjBiZG5xNmow?=
- =?utf-8?B?dFhRdE9adEJLN0hraFNXQkdxckNsaXZrOWlXN1pjL3JwcHU3QVhwY1FPVkNs?=
- =?utf-8?B?Qk5kWGpzUmZjYlQ5UllKNEFpU1ZqY0xVNFBuRjVXTE5TcFJ3bmlJMmNET0Y5?=
- =?utf-8?B?RE5NTWlMQXJsc3VEZmIrUyttQzc0UXROWUpNQTUzeGgzd2wxdkVENWpYZmZv?=
- =?utf-8?B?cDFLd3B6U0pDQVpOTUtmOGJhSGtqQVdzQ1loZm4xTXZvckZwZi9iZTg2RFM3?=
- =?utf-8?B?Yi9kRTQ3dFNsdENjRnlvWXZRUWw1aWUxdm1LU3Zud2JiK29lSE90REpNWnRl?=
- =?utf-8?B?MW9hZXRpSXdxZTBQWHJkNGNjWjkvemNDQkQ2K2lZSkE3dVRac0p6Q3JoWVor?=
- =?utf-8?B?QldiaU9iZUR4S05kZFF3eEhVRTZlb0xGTmFiaGhTV3pDVit5VzNackdRZmJ6?=
- =?utf-8?B?L1hoSmNwdFRDTml5SWlWOEJ0Vk43QUtHSHBpekVsa1RzSHhCOFQxVFF4cGt6?=
- =?utf-8?B?VlRRRjJPZ0FuQkFvSDNKU2VvZ0JuTWxtd0wrZ3lVUmo2c3hyQnlaQkRUMHNX?=
- =?utf-8?B?eWQ2UUlTZU92dDBnWldBazVUcUppaDQvMjJ6YzZIU2xCckJ5QWhCUzBMSUxu?=
- =?utf-8?B?Wkg2TEVCMUthL3lnRHduMW1rTzZZT25lbW9JckM4eTgwWG9Idy9yVVpDTmpx?=
- =?utf-8?B?MWhTa3hnZ0lsQU1LeDQ4aDlTNXRxU3M1Qk5HUlIzeU01eUI5UWhMWHV6L0l2?=
- =?utf-8?B?NUlKdzZLZ2JzRHdvL2VnVjg0ZHFVNFl4Y2tLL0YxdTYzOXJtTld2bXdWMkRJ?=
- =?utf-8?B?b2lzdStWMGJGVHRNTlJFYlVKQ3ptNkpnSXg1RkNWUDdmVEpic1NBTWtSSHBO?=
- =?utf-8?B?Z3paemo2amdvdWVCWUNXTDhOcW9vMkd1TWd4d1BVQTVsS3A4NmtXL1NUblRz?=
- =?utf-8?B?LzVlNERtOW5XSkIxYnFhY1N6ZGJYL1YxT0RSZjdiYm40SnZVZnduK0xaNkNM?=
- =?utf-8?B?SGU1UHhnbGdsTXBXdWJrbU5SaWozMXFNOWFIRGd4czRCZEVzRWw3LysvejFk?=
- =?utf-8?B?b1NxQk82UkMzc0dLMFVXS2JNeXBQUUJMRnVLL1FFR1dBK1N3cVROU3dEdVJK?=
- =?utf-8?B?TWVXUDlHVUMrVHVCODFXYlpLeW1uVmpvKzBBckFyYmcrb1E5RWRrMW41Ymt5?=
- =?utf-8?B?UTZ1YWNLakpQT3d4UlFkYUdzTFRNKzhxWktCcWJ0YVYwM3Rnb3Q2c1BhQi8z?=
- =?utf-8?B?NHViVVdNQmhsNm9aY2hGOFFsS3NxanAwbXlWWi9FNEhtOHVBNVY5dFJCNGV6?=
- =?utf-8?B?eHdwb1FqK3dyNnVHaEt1dU92Uk1za3M4TktCSVB3c3BXZHRQRGFxQ3dsWWdF?=
- =?utf-8?B?ZlNkU3hBamRlYkdFQVpNVFlsMlNnYmxkOTllaEdYMklHbi9IdzRjdnBrRmhm?=
- =?utf-8?B?Q0prbkxZSy9kcWo3aDkvNlpOM2YvbFVtVjErdGtnblZ4cDRrVXRFSzN3TTFt?=
- =?utf-8?B?elcrRkFnVnBWWGlMNmtUSUwzMDB6WUEzdVlta2NmcElIa1A3L1kvU2xiRHA1?=
- =?utf-8?B?bmxUZS9NTzdodTNURjVkMlBsbUpqMWhkU1JFTzNJcUhCeFNvdFV4Yi8wZU9V?=
- =?utf-8?B?aytMUmJSWXlFcExyOUl6VmhoRFNKbStzNmRVWWs1ejhrRkFRTW5UM2hRcjFV?=
- =?utf-8?B?RHRtR0RsRk5yQ2FWbkk2WFFISmVFam5mcGxEbktFUEsyNUpkVnBaVHl1YVp0?=
- =?utf-8?B?eExZSWZYOTNOd3N3KzFkR1JIV05YMWNiVlg5L3hQZnJYWHB6cENQSEkzYUVE?=
- =?utf-8?Q?dvUXd4fZ9KgK91xJX2?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 83aa9b6a-ae60-4b29-bad1-08de8e8cb99b
-X-MS-Exchange-CrossTenant-AuthSource: IA0PPF9A76BB3A6.namprd12.prod.outlook.com
+X-Exchange-RoutingPolicyChecked: p8s2ERiH4ZEFU9UTlrXkAg/evw97Gh0NuwRXoWXiWqOVEvQsoJcV2bcqjQUrie5de8F54V7B6qZ0MSd4YjE/3VLbojTyn3pVl+DU6WZHkcQO0rXU+bWqOpg/LsRa0hFDQWDjOGbdUoRO4j4fwpE6qfM48Lm1mM5WKO0J835e/CGGn9lp9aMvirwsTCm+1NNdlU8lNQ+l3aoNsvGvsnJn1FZXcJ4NB8IoKCUVokUHjYqDG68Tnc71yPiKGV9Pt8N9ktwbm60iBCx/lvGiW+CMvt0YlLozb/nPsah0jZPhzfQJN6I+YDSTyI34x9G4f2lBlAacT8HKo1oCSuQnHIrj8g==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 18:46:59.6283
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d58f12ee-7fec-49f7-8fe8-08de8e921651
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Mar 2026 19:25:22.3759
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AKvelSfs4L90gn2LLoKMy3hmXVo9KUJmMItuSCFqvQc/btUX/a5Xh0cvXFU4tms3
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5673
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: IrO44cWY8kLiL1PPbZmBgwg+bPVxhNkaXBWrFNJbPzz/CRCwrOv6HukopfX27FbGg+OsO2EHU/Db2LQP0B1WNJtkFo0MG8dcHJ8CbLvw3YE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6733
+X-OriginatorOrg: intel.com
 
-Hi Reinette,
-
-On 3/27/26 17:11, Reinette Chatre wrote:
-> Hi Babu,
->
-> On 3/26/26 10:12 AM, Babu Moger wrote:
->> Hi Reinette,
->>
->> Thanks for the review comments. Will address one by one.
->>
->> On 3/24/26 17:51, Reinette Chatre wrote:
->>> Hi Babu,
->>>
->>> On 3/12/26 1:36 PM, Babu Moger wrote:
->>>> This series adds support for Privilege-Level Zero Association (PLZA) to the
->>>> resctrl subsystem. PLZA is an AMD feature that allows specifying a CLOSID
->>>> and/or RMID for execution in kernel mode (privilege level zero), so that
->>>> kernel work is not subject to the same resource constrains as the current
->>>> user-space task. This avoids kernel operations being aggressively throttled
->>>> when a task's memory bandwidth is heavily limited.
->>>>
->>>> The feature documentation is not yet publicly available, but it is expected
->>>> to be released in the next few weeks. In the meantime, a brief description
->>>> of the features is provided below.
->>>>
->>>> Privilege Level Zero Association (PLZA)
->>>>
->>>> Privilege Level Zero Association (PLZA) allows the hardware to
->>>> automatically associate execution in Privilege Level Zero (CPL=0) with a
->>>> specific COS (Class of Service) and/or RMID (Resource Monitoring
->>>> Identifier). The QoS feature set already has a mechanism to associate
->>>> execution on each logical processor with an RMID or COS. PLZA allows the
->>>> system to override this per-thread association for a thread that is
->>>> executing with CPL=0.
->>>> ------------------------------------------------------------------------
->>>>
->>>> The series introduces the feature in a way that supports the interface in
->>>> a generic manner to accomodate MPAM or other vendor specific implimentation.
->>>>
->>>> Below is the detailed requirements provided by Reinette:
->>>> https://lore.kernel.org/lkml/2ab556af-095b-422b-9396-f845c6fd0342@intel.com/
->>> Our discussion considered how resctrl could support PLZA in a generic way while
->>> also preparing to support MPAM's variants and how PLZA may evolve to have similar
->>> capabilities when considering the capabilities of its registers.
->>>
->>> This does not mean that your work needs to implement everything that was discussed.
->>> Instead, this work is expected to just support what PLZA is capable of today but
->>> do so in a way that the future enhancements could be added to.
->>>
->>> This series is quite difficult to follow since it appears to implement a full
->>> featured generic interface while PLZA cannot take advantage of it.
->>>
->>> Could you please simplify this work to focus on just enabling PLZA and only
->>> add interfaces needed to do so?
->> Sure. Will try. Lets continue the discussion.
->>>> Summary:
->>>> 1. Kernel-mode/PLZA controls and status should be exposed under the resctrl
->>>>      info directory:/sys/fs/resctrl/info/, not as a separate or arch-specific path.
->>>>
->>>> 2. Add two info files
->>>>
->>>>    a. kernel_mode
->>>>       Purpose: Control how resource allocation and monitoring apply in kernel mode
->>>>       (e.g. inherit from task vs global assign).
->>>>
->>>>       Read: List supported modes and show current one (e.g. with [brackets]).
->>>>       Write: Set current mode by name (e.g. inherit_ctrl_and_mon, global_assign_ctrl_assign_mon).
->>>>
->>>> b. kernel_mode_assignment
->>>>
->>>>      Purpose: When a “global assign” kernel mode is active, specify which resctrl group
->>>>      (CLOSID/RMID) is used for kernel work.
->>>>
->>>>      Read: Show the assigned group in a path-like form (e.g. //, ctrl1//, ctrl1/mon1/).
->>>>      Write: Assign or clear the group used for kernel mode (and optionally clear with an empty write).
->>>>
->>>> The patches are based on top of commit (v7.0.0-rc3)
->>>> 839e91ce3f41b (tip/master) Merge branch into tip/master: 'x86/tdx'
->>>> ------------------------------------------------------------------------
->>>>
->>>> Examples: kernel_mode and kernel_mode_assignment
->>>>
->>>> All paths below are under /sys/fs/resctrl/ (e.g. info/kernel_mode means
->>>> /sys/fs/resctrl/info/kernel_mode). Resctrl must be mounted and the platform
->>>> must support the relevant modes (e.g. AMD with PLZA).
->>>>
->>>> 1) kernel_mode — show and set the current kernel mode
->>>>
->>>>      Read supported modes and which one is active (current in brackets):
->>>>
->>>>        $ cat info/kernel_mode
->>>>        [inherit_ctrl_and_mon]
->>>>        global_assign_ctrl_inherit_mon
->>>>        global_assign_ctrl_assign_mon
->>>>
->>>>      Set the active mode (e.g. use one CLOSID+RMID for all kernel work):
->>>>
->>>>        $ echo "global_assign_ctrl_assign_mon" > info/kernel_mode
->>>>        $ cat info/kernel_mode
->>>>        inherit_ctrl_and_mon
->>>>        global_assign_ctrl_inherit_mon
->>>>        [global_assign_ctrl_assign_mon]
->>>>
->>>>      Mode meanings:
->>>>      - inherit_ctrl_and_mon: kernel uses same CLOSID/RMID as the current task (default).
->>>>      - global_assign_ctrl_inherit_mon: one CLOSID for all kernel work; RMID inherited from user.
->>>>      - global_assign_ctrl_assign_mon: one resource group (CLOSID+RMID) for all kernel work.
->>>>
->>>> 2) kernel_mode_assignment — show and set which group is used for kernel work
->>>>
->>>>      Only relevant when kernel_mode is not "inherit_ctrl_and_mon". Read the
->>> To help with future usages please connect visibility of this file with the mode in
->>> info/kernel_mode. This helps us to support future modes with other resctrl files, possible
->>> within each resource group.
->>> Specifically, kernel_mode_assignment is not visible to user space if mode is "inherit_ctrl_and_mon",
->>> while it is visible when mode is global_assign_ctrl_inherit_mon or global_assign_ctrl_assign_mon.
->> Sure. Will do.
->>
->>>>      currently assigned group (path format is "CTRL_MON/MON/"):
->>> The format depends on the mode, right? If the mode is "global_assign_ctrl_inherit_mon"
->>> then it should only contain a control group, alternatively, if the mode is
->>> "global_assign_ctrl_assign_mon" then it contains control and mon group. This gives
->>> resctrl future flexibility to change format for future modes.
->> This can be done both ways.  Whole purpose of these groups is to get CLOSID and RMID to enable PLZA. User can echo CTRL_MON or MON group to kernel_mode_assignment in any of the modes.  We can decide what needs to be updated in MSR (PQR_PLZA_ASSOC) based on what kernel mode is selected.
-> The "both ways" are specific to one of the two active modes though.
-> PLZA only needs the RMID when the mode is "global_assign_ctrl_assign_mon".
->
-> Displaying and parsing monitor group when the mode is
-> "global_assign_ctrl_inherit_mon" creates an inconsistent interface since the mode
-> only uses a control group. The interface to user space should match the mode otherwise
-> it becomes confusing.
-Ok. That is fine. We can do that.
-> ...
->
->
->>>>        Tony suggested using global variables to store the kernel mode
->>>>        CLOSID and RMID. However, the kernel mode CLOSID and RMID are
->>>>        coming from rdtgroup structure with the new interface. Accessing
->>>>        them requires holding the associated lock, which would make the
->>>>        context switch path unnecessarily expensive. So, dropped the idea.
->>>>        https://lore.kernel.org/lkml/aXuxVSbk1GR2ttzF@agluck-desk3/
->>>>        Let me know if there are other ways to optimize this.
->>> I do not see why the context switch path needs to be touched at all with this
->>> implementation. Since PLZA only supports global assignment does it not mean that resctrl
->>> only needs to update PQR_PLZA_ASSOC when user writes to info/kernel_mode and
->>> info/kernel_mode_assignment?
->> Each thread has an MSR to configure whether to associate privilege level zero execution with a separate COS and/or RMID, and the value of the COS and/or RMID.  PLZA may be enabled or disabled on a per-thread basis. However, the COS and RMID association and configuration must be the same for all threads in the QOS Domain.
-> Based on previous comment in https://lore.kernel.org/lkml/abb049fa-3a3d-4601-9ae3-61eeb7fd8fcf@amd.com/
-> and this implementation all fields of PQR_PLZA_ASSOC except PQR_PLZA_ASSOC.plza_en must be the
-> same for all CPUs on the system, not just per QoS domain. Could you please confirm?
-
-Sorry for the confusion. It is "per QoS domain".
-
-All the fields of PQR_PLZA_ASSOC except PQR_PLZA_ASSOC.plza_enmust be set to the same value for all HW threads in the QOS domain for 
-consistent operation (Per-QosDomain).
-
->
->> So, PQR_PLZA_ASSOC is a per thread MSR just like PQR_ASSOC.
->>
->> Privilege-Level Zero Association (PLZA) allows the user to specify a COS and/or RMID associated with execution in Privilege-Level Zero. When enabled on a HW thread, when that thread enters Privilige-Level Zero, transactions associated with that thread will be associated with the PLZA COS and/or RMID. Otherwise, the HW thread will be associated with the COS and RMID identified by  PQR_ASSOC.
->>
->> More below.
->>
->>> Consider some of the scenarios:
->>>
->>> resctrl mount with default state:
->>>
->>>      # cat info/kernel_mode
->>>      [inherit_ctrl_and_mon]
->>>      global_assign_ctrl_inherit_mon
->>>      global_assign_ctrl_assign_mon
->>>      # ls info/kernel_mode_assignment
->>>      ls: cannot access 'info/kernel_mode_assignment': No such file or directory
->>>
->>> enable global_assign_ctrl_assign_mon mode:
->>>      # echo "global_assign_ctrl_assign_mon" > info/kernel_mode
->>>
->>> Expectation here is that when user space sets this mode as above then resctrl would
->>> in turn program MSR_IA32_PQR_PLZA_ASSOC on all CPUs to be:
->>>      MSR_IA32_PQR_PLZA_ASSOC.rmid=0
->>>      MSR_IA32_PQR_PLZA_ASSOC.rmid_en=1
->>>      MSR_IA32_PQR_PLZA_ASSOC.closid=0
->>>      MSR_IA32_PQR_PLZA_ASSOC.closid_en=1
->>>      MSR_IA32_PQR_PLZA_ASSOC.plza_en=1
->>>
->>> I do not see why it is necessary to maintain any per-CPU or per-task state or needing
->>> to touch the context switch code. Since PLZA only supports global could it not
->>> just set MSR_IA32_PQR_PLZA_ASSOC on all online CPUs and be done with it?
->>> Only caveat is that if a CPU is offline then this setting needs to be stashed
->>> so that MSR_IA32_PQR_PLZA_ASSOC can be set when new CPU comes online.
->>>
->>> The way that rdtgroup_config_kmode() introduced in patch #11 assumes it is dealing
->>> with RDT_RESOURCE_L3 and traverses the resource domain list and resource group
->>> CPU mask seems unnecessary to me as well as error prone since the system may only
->>> have, for example, RDT_RESOURCE_MBA enabled or even just monitoring. Why not just set
->>> MSR_IA32_PQR_PLZA_ASSOC on all CPUs and be done?
->>>
->>> To continue the scenarios ...
->>>
->>> After user's setting above related files read:
->>>      # cat info/kernel_mode
->>>      inherit_ctrl_and_mon
->>>      global_assign_ctrl_inherit_mon
->>>      [global_assign_ctrl_assign_mon]
->>>      # cat info/kernel_mode_assignment
->>>      //
->>>
->>> Modify group used by global_assign_ctrl_assign_mon mode:
->>>      # echo 'ctrl1/mon1/' > info/kernel_mode_assignment
->>>
->>> Expectation here is that when user space sets this then resctrl would
->>> program MSR_IA32_PQR_PLZA_ASSOC on all CPUs to be:
->>>      MSR_IA32_PQR_PLZA_ASSOC.rmid=<rmid of mon1>
->>>      MSR_IA32_PQR_PLZA_ASSOC.rmid_en=1
->>>      MSR_IA32_PQR_PLZA_ASSOC.closid=<closid of ctrl1>
->>>      MSR_IA32_PQR_PLZA_ASSOC.closid_en=1
->>>      MSR_IA32_PQR_PLZA_ASSOC.plza_en=1
->>
->> This works correctly when PLZA associations are defined by per CPU. For example, lets assume that *ctrl1* is assigned *CLOSID 1*.
->>
->> In this scenario, every task in the system running on a any CPU will use the limits associated with *CLOSID 1* whenever it enters Privilege-Level Zero, because the CPU's *PQR_PLZA_ASSOC* register has PLZA enabled and CLOSID is 1.
->>
->> Now consider task-based association:
->>
->> We have two resctrl groups:
->>
->>   * *ctrl1 -> CLOSID 1 -> task1.plza = 1   : *User wants PLZA be enabled
->>     for this task.
->>   * *ctrl2 -> CLOSID 2 -> task2.plza = 0   : *User wants PLZA
->>     disabled for this task.
->>
->> Suppose *task1* is first scheduled on *CPU 0*. This behaves as expected: since CPU 0 's *PQR_PLZA_ASSOC* contains *CLOSID 1, plza_en =1*, task1 will use the limits from CLOSID 1 when it enters Privilege-Level Zero.
->>
->> However, if *task2* later runs on *CPU 0*, we expect it to use *CLOSID 2* in both user mode and kernel mode, because user has PLZA disabled for this task. But CPU 0 still has *CLOSID 1, **plza_en =1* in its PQR_PLZA_ASSOC register.
->>
->> As a result, task2 will incorrectly run with *CLOSID 1* when entering Privilege-Level Zero something we explicitly want to avoid.
->>
->> At that point, PLZA must be disabled on CPU 0 to prevent the unintended association. Hope this explanation makes the issue clear.
->>
-> A couple of points:
-> - Looks like we still need to come to agreement what is meant by "global" when it
->    comes to kernel mode.
->
->    In your description there is a "global" configuration, but the assignment is "per-task".
->    To me this sounds like a new and distinct kernel_mode from the "global" modes
->    considered so far. This seems to move to the "per_task" mode mentioned in but
->    the implementation does not take into account any of the earlier discussions
->    surrounding it:
->    https://lore.kernel.org/lkml/2ab556af-095b-422b-9396-f845c6fd0342@intel.com/
->
->    We only learned about one use case in https://lore.kernel.org/lkml/CABPqkBSq=cgn-am4qorA_VN0vsbpbfDePSi7gubicpROB1=djw@mail.gmail.com/
->    As I understand this use case requires PLZA globally enabled for all tasks. Thus
->    I consider task assignment to be "global" when in the "global_*" kernel modes.
->    If this is indeed a common use case then supporting only global configuration
->    but then requiring user space to manually assign all tasks afterwards sounds
->    cumbersome for user space and also detrimental to system performance with all
->    the churn to modify all the task_structs involved. The accompanying documentation
->    does not mention all this additional user space interactions required by user
->    space to use this implementation.
->
->    I find this implementation difficult and inefficient to use in the one use case
->    we know of. I would suggest that resctrl optimizes for the one known use case.
->
-> - This implementation ignores discussion on how existing resctrl files should
->    not be repurposed.
->
->    This implementation allows user space to set a resource group in
->    kernel_mode_assignment with the consequence that this resource group's
->    "tasks" file changes behavior. I consider this a break of resctrl interface.
->    We did briefly consider per-task configuration/assignment in previous discussion
->    and the proposal was for it to use a new file (only when and if needed!).
->
-> - Now a user is required to write the task id of every task that participates
->    in PLZA. Apart from the churn already mentioned this also breaks existing
->    usage since it is no longer possible for new tasks to be added to this
->    resource group. This creates an awkward interface where all tasks belonging
->    to a resource group inherits the allocations/monitoring for their user space
->    work and will get PLZA enabled whether user requested it or not while
->    tasks from other resource groups need to be explicitly enabled. This creates
->    an inconsistency when it comes to task assignment. The only way to "remove"
->    PLZA from such a task would be to assign it to another resource group which
->    may not have the user space allocations ... and once this is done the task
->    cannot be moved back.
->    There is no requirement that CLOSID/RMID should be dedicated to kernel work
->    but this implementation does so in an inconsistent way.
->
-> - Apart from the same issues as with repurposing of tasks file, why should same
->    CPU allocation be used for kernel and user space?
->
-Yes, I agree with your concerns. The goal here is to make the interface 
-less disruptive while still addressing the different use cases.
-
-
-      Background: Customers have identified an issue with the QoS
-      Bandwidth Control feature: when a CLOS is aggressively throttled
-      and execution transitions into kernel mode, kernel operations are
-      also subject to the same aggressive throttling.
-
-Privilege-Level Zero Association (PLZA) allows a user to specify a COS 
-and/or RMID to be used during execution at Privilege Level Zero. When 
-PLZA is enabled on a hardware thread, any execution that enters 
-Privilege Level Zero will have its transactions associated with the PLZA 
-COS and/or RMID. Otherwise, the thread continues to use the COS and RMID 
-specified by |PQR_ASSOC|. In other words, the hardware provides a 
-dedicated COS and/or RMID specifically for kernel-mode execution.
-
-There are multiple ways this feature can be applied. For simplicity, the 
-discussion below focuses only on CLOSID.
-
-
-      1. Global PLZA enablement
-
-PLZA can be configured as a global feature by setting 
-|PQR_PLZA_ASSOC.closid = CLOSID| and |PQR_PLZA_ASSOC.plza_en = 1| on all 
-threads in the system. A dedicated CLOSID is reserved for this purpose, 
-and all CPU threads use its allocations whenever they enter Privilege 
-Level Zero. This CLOSID does not need to be associated with any resctrl 
-group. The user can explicitly enable or disable this feature. There is 
-no context switch overhead but there is no flexibility with this approach.
-
-
-      2. Group based PLZA allocation :  PLZA is managed via dedicated
-      restctrl group. A separate resctrl group can be created
-      specifically for PLZA, with a dedicated CLOSID used exclusively
-      for kernel mode execution. This approach can be further divided
-      into two association models:
-
-i) CPU based association
-CPUs are assigned to the PLZA group, and PLZA is enabled only on those 
-CPUs. This effectively creates a dedicated PLZA group. MSRs 
-(|PQR_PLZA_ASSOC)| are programmed only when the user changes CPU 
-assignments. This approach requires no changes to the context switch 
-code and introduces no additional context switch overhead.
-
-ii) Task based association
-Tasks are explicitly assigned by the user to the PLZA group. Tasks need 
-to be updated when user adds a new task. Also, this requires updates 
-during task scheduling so that the MSRs (|PQR_PLZA_ASSOC)| are 
-programmed on each context switch, which introduces additional context 
-switch overhead.
-
-I tried to fit these requirements into  the interface files in 
-/sys/fs/resctrl/info/.  I may have missed few things while trying to 
-achieve it.  As usual, I am open for the discussion and recommendations.
-
-Thanks,
-Babu
-
+T24gTW9uLCAyMDI2LTAzLTMwIGF0IDExOjU4ICswMDAwLCBLaXJ5bCBTaHV0c2VtYXUgd3JvdGU6
+DQo+ID4gKwkgKsKgIC0gVERYX1NZU19CVVNZIGNvdWxkIHRyYW5zaWVudGx5IGNvbnRlbmQgd2l0
+aA0KPiA+IFRESC5TWVMuKiBTRUFNQ0FMTHMsDQo+ID4gKwkgKsKgwqDCoCBidXQgd2lsbCBsb2Nr
+IG91dCBmdXR1cmUgb25lcy4NCj4gDQo+IExvY2tlZCBvdXQgYnkgd2hvPyBJcyBpdCBURFggbW9k
+dWxlIGNvbnRyYWN0PyBJIGRvbid0IHNlZSBpdA0KPiBkb2N1bWVudGVkIGluDQo+IHRoZSBzcGVj
+Lg0KDQpZZWEsIGJ5IHRoZSBURFggbW9kdWxlLg0KDQpXZSByZWxheWVkIHRoYXQgd2UgbmVlZCB0
+aGlzIHNwZWNpZmljIGJlaGF2aW9yIGFyb3VuZCBURFhfU1lTX0JVU1kNCmNvbnRlbnRpb24sIGJ1
+dCB0aGUgaW1wbGVtZW50YXRpb24gaXNuJ3QgZG9uZS4gVGhhdCBzcGVjIGlzIGFjdHVhbGx5DQpz
+dGlsbCBpbiBkcmFmdCBmb3JtLiBXaGljaCBpcyByZWZyZXNoaW5nLCBiZWNhdXNlIHdlIGNhbiBh
+Y3R1YWxseSB0d2Vhaw0KdGhpbmdzIGxpa2UgdGhpcyBiYXNlZCBvbiB3aGF0IHRoZSBrZXJuZWwg
+bmVlZHMuDQoNCj4gDQo+IEkgYXNzdW1lZCB0aGF0IGlmIHRoZSBTRUFNQ0FMTCBmYWlscyBvdGhl
+ciBTRUFNQ0FMTHMgc3VwcG9zZSB0byBiZQ0KPiBmdW5jdGlvbmFsLiBIbT8NCg0KVGhlIGJlaGF2
+aW9yIHNob3VsZCBiZSB0aGF0IG9uY2UgeW91IG1ha2UgdGhpcyBzZWFtY2FsbCAoYXNzdW1pbmcg
+aXQncw0Kc3VwcG9ydGVkKSB0aGF0IG5vIG90aGVyIHNlYW1jYWxscyBjYW4gYmUgbWFkZS4gVGhl
+eSB3aWxsIHJldHVybiBhbg0KZXJyb3IuIERvIHlvdSB0aGluayBzb21ldGhpbmcgZWxzZSB3b3Vs
+ZCBiZSBiZXR0ZXI/IElmIGl0J3MgYW4gb2xkIFREWA0KbW9kdWxlLCBub3RoaW5nIGhhcHBlbnMg
+b2YgY291cnNlLg0KDQpTbyBsZXQncyBjaGFuZ2UgdGhlIG1vZHVsZSBpZiB3ZSBzZWUgYSBwcm9i
+bGVtLiBXaGF0IHNob3VsZCBpdCBiZT8NCg==
