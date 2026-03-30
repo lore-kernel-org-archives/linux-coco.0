@@ -1,244 +1,196 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E47F2FFFB5;
-	Mon, 30 Mar 2026 10:36:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1483C13FA
+	for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 10:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774866979; cv=none; b=TYtWl4fPa9kbzXbv+w6jcFipdOmylZIQLtEkmRo3HEE2FBI8Ql5HDuuYFbveoZCzxzC5rQ25e2oCWK0dfZGDoAV3akx+LkjeaNAxJICPTc5dTaqH33zd4OG6NPK03WfmMMgBCxWhXktVC9gsjYp4778bR10Dxb/cGcwKs25oIQ0=
+	t=1774867623; cv=none; b=l1TfxaaxZzoXzrPjdl0RtmXH5TOvza9TFlcfO7QshR/9gn7cIdds5Td7eA0MF6P6YGRRZrKIb/2bQP7pv2j395ViOEIvO1Zwdil9plZlecCgGloQuuSORb2UncK7d1cpgNob8sxzr1eN4jTHcjumYugyirvrat6iWtbI6sWT3IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774866979; c=relaxed/simple;
-	bh=jz2gi11NiG/KZMld4u+nIsujltktGVyGRcWg97yjGS0=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=r6cSxc5D1fbrLd72puTDW5iygL2FnWnvEvF8ZB0/n5pDH9db/HCf35TspR1xampBCdocU7dKu00fPZSUBc4fmN5NwzkD/A0KwAtCZMsqVk6qnct4cjJ5ax3wfFaBQe3b3UF9+R2LZ7zHdr9MP2D/APJ5kQNLkbFEShHPyNcZCbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ZVn46wu2; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1774867623; c=relaxed/simple;
+	bh=JTmWijjJqe8MuLp6ucrTKNqj9bocCIOLRm/Wv8fhfIg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P3zfmtYuTYH9tlt2Ovur8HOs93Ew5QiQyXpdMu5A7nJm1m3fu0FiwerZHDi5j6gayPxsNirXn7/6b9CmRlR9QUQ0v1p+U4POtjFIllxMvDa36WSupWHF76hcYKiCKWezycqLQm8Vuu+0zsNkyuJE7pWxYFAPMYYpD9/1mbsIpY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lvWsTYfi; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ZVn46wu2"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9C50A1684;
-	Mon, 30 Mar 2026 03:36:11 -0700 (PDT)
-Received: from [10.57.13.56] (unknown [10.57.13.56])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2B9B03F915;
-	Mon, 30 Mar 2026 03:36:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774866977; bh=jz2gi11NiG/KZMld4u+nIsujltktGVyGRcWg97yjGS0=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=ZVn46wu2i0+k6UlKc80S1S6R1+BCanT5RW1OehNARboz2md1u1ESA54kYJcVM8fBY
-	 ru8ufmp1ujB0annXg4MAPeQhzK9RROmf01Ve0Ua31mnUjJcUxFQL236bmdNf52m0M+
-	 JJcgTQyjFMTTQ5Snfcr4hbVwbu765iwiOSlaGI9I=
-Message-ID: <9bf7ad5a-9a07-4150-9dbb-c3cf7cac0cb7@arm.com>
-Date: Mon, 30 Mar 2026 11:36:12 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lvWsTYfi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774867622; x=1806403622;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=JTmWijjJqe8MuLp6ucrTKNqj9bocCIOLRm/Wv8fhfIg=;
+  b=lvWsTYfieVKVS+sNkqxKHjJVAc5uDeNgMh92K2RsHbT1cbB4UQgATQqU
+   NLPQhN1Oj2gvOQkH+fJOzeWrW8wxT55pZqzI20CibWDii2JBraEqokmrK
+   k7/ZjfpfDaIS0bwuFnFXQyVoMPOPRqlt8KoqmBqKVNwC7wqacNGuTI9bW
+   tbgmzHYI27KOiWbkwjhmgjtKF6THxwEFXtTRhQYX8AoLYNXYqFP14tk8b
+   SJA1fOZDNYetOFZfd/Hs1+PIWLV4nnfBB0CVuglTmjwGkN/lgrAAdwPg+
+   /2tkx7Y25+g/qeKCJBB3TLltY3LmENT1S7T3jlJxxLPMrujwTpH82DTbB
+   g==;
+X-CSE-ConnectionGUID: 1uxfLy0fTn6VJ7aqm5NfUg==
+X-CSE-MsgGUID: MlEjYOMCTg68d+fJvLbWRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="75968244"
+X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; 
+   d="scan'208";a="75968244"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 03:47:02 -0700
+X-CSE-ConnectionGUID: qQE/yCadTj2iWhNU8MQADg==
+X-CSE-MsgGUID: TuxXC+usRCKcPWY2UwC09w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; 
+   d="scan'208";a="223153707"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa008.fm.intel.com with ESMTP; 30 Mar 2026 03:46:58 -0700
+Date: Mon, 30 Mar 2026 18:25:52 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "Williams, Dan J" <dan.j.williams@intel.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Jiang, Dave" <dave.jiang@intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 03/31] x86/virt/tdx: Add tdx_page_array helpers for
+ new TDX Module objects
+Message-ID: <acpPsPivfllpWfv1@yilunxu-OptiPlex-7050>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-4-yilun.xu@linux.intel.com>
+ <1dd0b8f4d1ad5cd07b5139ed8c944e1e1d004661.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: Re: [PATCH v13 30/48] KVM: arm64: Handle Realm PSCI requests
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>
-References: <20260318155413.793430-1-steven.price@arm.com>
- <20260318155413.793430-31-steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260318155413.793430-31-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1dd0b8f4d1ad5cd07b5139ed8c944e1e1d004661.camel@intel.com>
 
-On 18/03/2026 15:53, Steven Price wrote:
-> The RMM needs to be informed of the target REC when a PSCI call is made
-> with an MPIDR argument. Expose an ioctl to the userspace in case the PSCI
-> is handled by it.
+> On Sat, 2026-03-28 at 00:01 +0800, Xu Yilun wrote:
+> > Add struct tdx_page_array definition for new TDX Module object
+> > types - HPA_ARRAY_T and HPA_LIST_INFO. 
 > 
-> [NOTE: A future version of the RMM specification is likely to remove the
-> need for this ioctl.]
+> This is unfortunate. I see you agree in the comments.
 
-This will need to stay for the PSCI_CPU_ON case, where the host has to
-acknowledge the onlining of a vCPU.
+Yes, basically they are defining the same concept, behave mostly the same
+but some differences...
 
 > 
-> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-
-For the record, we can drop the UAPI following our discussions and 
-implicitly do the PSCI complete before REC_ENTER, similar to what
-we do for the SET_RIPAS request. The VMM/KVM can treat the case
-as a normal PSCI_CPU_ON request and return the result as in normal
-VMs.
-
-The target REC may ENTER before we complete the reporting, but we can
-handle this error case (RMI_ERROR_REC) and return -EAGAIN to the
-userspace.
-
-Suzuki
-
-
-> ---
-> Changes since v12:
->   * Chance return code for non-realms to -ENXIO to better represent that
->     the ioctl is invalid for non-realms (checkpatch is insistent that
->     "ENOSYS means 'invalid syscall nr' and nothing else").
-> Changes since v11:
->   * RMM->RMI renaming.
-> Changes since v6:
->   * Use vcpu_is_rec() rather than kvm_is_realm(vcpu->kvm).
->   * Minor renaming/formatting fixes.
-> ---
->   arch/arm64/include/asm/kvm_rmi.h |  3 +++
->   arch/arm64/kvm/arm.c             | 25 +++++++++++++++++++++++++
->   arch/arm64/kvm/psci.c            | 30 ++++++++++++++++++++++++++++++
->   arch/arm64/kvm/rmi.c             | 14 ++++++++++++++
->   4 files changed, 72 insertions(+)
+> > 
+> > They are used as input/output
+> > parameters in newly defined SEAMCALLs. Also define some helpers to
+> > allocate, setup and free tdx_page_array.
+> > 
+> > HPA_ARRAY_T and HPA_LIST_INFO are similar in most aspects. They both
+> > represent a list of pages for TDX Module accessing. There are several
+> > use cases for these 2 structures:
+> > 
+> >  - As SEAMCALL inputs. They are claimed by TDX Module as control pages.
+> >    Control pages are private pages for TDX Module to hold its internal
+> >    control structures or private data. TDR, TDCS, TDVPR... are existing
+> >    control pages, just not added via tdx_page_array.
+> >  - As SEAMCALL outputs. They were TDX Module control pages and now are
+> >    released.
+> >  - As SEAMCALL inputs. They are just temporary buffers for exchanging
+> >    data blobs in one SEAMCALL. TDX Module will not hold them for long
+> >    time.
 > 
-> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-> index 38208be3c602..1ee5ed0f5ab2 100644
-> --- a/arch/arm64/include/asm/kvm_rmi.h
-> +++ b/arch/arm64/include/asm/kvm_rmi.h
-> @@ -117,6 +117,9 @@ int realm_map_non_secure(struct realm *realm,
->   			 unsigned long size,
->   			 enum kvm_pgtable_prot prot,
->   			 struct kvm_mmu_memory_cache *memcache);
-> +int realm_psci_complete(struct kvm_vcpu *source,
-> +			struct kvm_vcpu *target,
-> +			unsigned long status);
->   
->   static inline bool kvm_realm_is_private_address(struct realm *realm,
->   						unsigned long addr)
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 304fb1f2b3ff..61182eb0cf70 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -1846,6 +1846,22 @@ static int kvm_arm_vcpu_set_events(struct kvm_vcpu *vcpu,
->   	return __kvm_arm_vcpu_set_events(vcpu, events);
->   }
->   
-> +static int kvm_arm_vcpu_rmi_psci_complete(struct kvm_vcpu *vcpu,
-> +					  struct kvm_arm_rmi_psci_complete *arg)
-> +{
-> +	struct kvm_vcpu *target = kvm_mpidr_to_vcpu(vcpu->kvm, arg->target_mpidr);
-> +
-> +	if (!target)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * RMM v1.0 only supports PSCI_RET_SUCCESS or PSCI_RET_DENIED
-> +	 * for the status. But, let us leave it to the RMM to filter
-> +	 * for making this future proof.
-> +	 */
-> +	return realm_psci_complete(vcpu, target, arg->psci_status);
-> +}
-> +
->   long kvm_arch_vcpu_ioctl(struct file *filp,
->   			 unsigned int ioctl, unsigned long arg)
->   {
-> @@ -1974,6 +1990,15 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
->   
->   		return kvm_arm_vcpu_finalize(vcpu, what);
->   	}
-> +	case KVM_ARM_VCPU_RMI_PSCI_COMPLETE: {
-> +		struct kvm_arm_rmi_psci_complete req;
-> +
-> +		if (!vcpu_is_rec(vcpu))
-> +			return -ENXIO;
-> +		if (copy_from_user(&req, argp, sizeof(req)))
-> +			return -EFAULT;
-> +		return kvm_arm_vcpu_rmi_psci_complete(vcpu, &req);
-> +	}
->   	default:
->   		r = -EINVAL;
->   	}
-> diff --git a/arch/arm64/kvm/psci.c b/arch/arm64/kvm/psci.c
-> index 3b5dbe9a0a0e..a68f3c1878a5 100644
-> --- a/arch/arm64/kvm/psci.c
-> +++ b/arch/arm64/kvm/psci.c
-> @@ -103,6 +103,12 @@ static unsigned long kvm_psci_vcpu_on(struct kvm_vcpu *source_vcpu)
->   
->   	reset_state->reset = true;
->   	kvm_make_request(KVM_REQ_VCPU_RESET, vcpu);
-> +	/*
-> +	 * Make sure we issue PSCI_COMPLETE before the VCPU can be
-> +	 * scheduled.
-> +	 */
-> +	if (vcpu_is_rec(vcpu))
-> +		realm_psci_complete(source_vcpu, vcpu, PSCI_RET_SUCCESS);
->   
->   	/*
->   	 * Make sure the reset request is observed if the RUNNABLE mp_state is
-> @@ -115,6 +121,11 @@ static unsigned long kvm_psci_vcpu_on(struct kvm_vcpu *source_vcpu)
->   
->   out_unlock:
->   	spin_unlock(&vcpu->arch.mp_state_lock);
-> +	if (vcpu_is_rec(vcpu) && ret != PSCI_RET_SUCCESS) {
-> +		realm_psci_complete(source_vcpu, vcpu,
-> +				    ret == PSCI_RET_ALREADY_ON ?
-> +				    PSCI_RET_SUCCESS : PSCI_RET_DENIED);
-> +	}
->   	return ret;
->   }
->   
-> @@ -142,6 +153,25 @@ static unsigned long kvm_psci_vcpu_affinity_info(struct kvm_vcpu *vcpu)
->   	/* Ignore other bits of target affinity */
->   	target_affinity &= target_affinity_mask;
->   
-> +	if (vcpu_is_rec(vcpu)) {
-> +		struct kvm_vcpu *target_vcpu;
-> +
-> +		/* RMM supports only zero affinity level */
-> +		if (lowest_affinity_level != 0)
-> +			return PSCI_RET_INVALID_PARAMS;
-> +
-> +		target_vcpu = kvm_mpidr_to_vcpu(kvm, target_affinity);
-> +		if (!target_vcpu)
-> +			return PSCI_RET_INVALID_PARAMS;
-> +
-> +		/*
-> +		 * Provide the references of the source and target RECs to the
-> +		 * RMM so that the RMM can complete the PSCI request.
-> +		 */
-> +		realm_psci_complete(vcpu, target_vcpu, PSCI_RET_SUCCESS);
-> +		return PSCI_RET_SUCCESS;
-> +	}
-> +
->   	/*
->   	 * If one or more VCPU matching target affinity are running
->   	 * then ON else OFF
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index 30292814b1ec..e56c8af2ad61 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-> @@ -353,6 +353,20 @@ static void free_rtt(phys_addr_t phys)
->   	kvm_account_pgtable_pages(phys_to_virt(phys), -1);
->   }
->   
-> +int realm_psci_complete(struct kvm_vcpu *source, struct kvm_vcpu *target,
-> +			unsigned long status)
-> +{
-> +	int ret;
-> +
-> +	ret = rmi_psci_complete(virt_to_phys(source->arch.rec.rec_page),
-> +				virt_to_phys(target->arch.rec.rec_page),
-> +				status);
-> +	if (ret)
-> +		return -EINVAL;
-> +
-> +	return 0;
-> +}
-> +
->   static int realm_rtt_create(struct realm *realm,
->   			    unsigned long addr,
->   			    int level,
+> This is kind of verbose for what it seems to be trying to say. It's just that
 
+I assume if you feel the explanation of "what is control page" is off
+track. I added it cause the term firstly appears in x86 (only in KVM
+TDX previously), and people ask the definition:
+
+https://lore.kernel.org/all/cfcfb160-fcd2-4a75-9639-5f7f0894d14b@intel.com/
+
+> these types can be input or output params. The TDX module could hold on to the
+> pages for a long time, or just transiently.
+
+Mm.. I'm trying to ramp up on the kernel API level flow:
+
+For control pages, it would be hold by TDX Module long time, so host
+inputs the page array, later TDX Module outputs the page array back.
+Host need to verify the outputs.
+
+For shared pages, TDX Module's accessing is transient in one SEAMCALL,
+so only as input, TDX Module never needs to output the array.
+
+I think the verboseness makes the following pseudo code easier to
+understand.
+
+> For that latter part I think you are
+> trying to say sometimes they need flushing and sometimes they don't?
+
+Yeah.
+control pages => long term => host verifies and releases => flush on release
+shared pages => transient => no verify and releases => no flush
+
+Maybe I should mention the flushing is already covered by releasing
+kAPI.
+> 
+> > 
+> > The 2 structures both need a 'root page' which contains a list of HPAs.
+> > They collapse the HPA of the root page and the number of valid HPAs
+> > into a 64 bit raw value for SEAMCALL parameters. The root page is
+> > always a medium for passing data pages, TDX Module never keeps the
+> > root page.
+> > 
+> > A main difference is HPA_ARRAY_T requires singleton mode when
+> > containing just 1 functional page (page0). In this mode the root page is
+> > not needed and the HPA field of the raw value directly points to the
+> > page0. But in this patch, root page is always allocated for user
+> > friendly kAPIs.
+> 
+> "singleton mode"? What is it? If it's the case of not needing populate loop, it
+
+It is the SEAMCALL level detail for HPA_ARRAY_T. It is literally as
+explained above - the HPA field should be filled by page0, not root page.
+
+> probably deserves more explanation. I'm not sure, but the populate loop seems to
+> drive a lot of the struct design?
+
+The caller is not aware of singleton mode. Actually, I'm trying to make
+the tdx_page_array independent of HPA_ARRAY_T or HPA_LIST_INFO details
+when allocating/populating, root page is still populated even not needed
+for singleton mode. The differences only happen when collaping the struct
+into u64 SEAMCALL parameters.
+
+> 
+> > 
+> > Another small difference is HPA_LIST_INFO contains a 'first entry' field
+> > which could be filled by TDX Module. This simplifies host by providing
+> > the same structure when re-invoke the interrupted SEAMCALL. No need for
+> > host to touch this field.
+> 
+> Not clear what this is talking about. But I'm starting to wonder if we should be
+> so bold to claim that the differences between the types really simplify the
+> host. 
+
+I'm talking about another SEAMCALL level detail. Sometimes TDX Module
+got interrupted in the middle of page array processing, it needs an
+anchor to resuming from where it stops, TDX Module record the anchor
+in the 'first entry'.
+
+By illustrating these SEAMCALL level differences, I want to explain
+they don't impact the general SW flow and kAPI cares about them
+internally.
+
+Yes in POC code we do write dedicated code for each type, but it ends up
+with plenty of similar logics on caller side about root page
+manipulation. By now, the differences are not much, but I think we
+should not write copies for every type, we should stop new types.
+
+Please allow me to stop here, will continue later...
+
+Thanks. 
