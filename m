@@ -1,66 +1,66 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC86919046E
-	for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 13:48:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B703A1A55
+	for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 14:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774878522; cv=none; b=Bw1taaNnXPSL3FY/vJuHbI4Q1JmE8/RRfutFYae3laS3lmzxfqZ2z/hSPCaeKH2yVMi0WQnU1PNqhOJdI6WmU6w4FtV3k8qiHsrfhMbto5fDmhC82H28DYSbrB6rFm9SRReHVjyDUZ3VrA3qrS3hbj6OSGwqR/BUhRbPSAKQg5Y=
+	t=1774880606; cv=none; b=hGhUzBBIC3FZ2Mf/rgqgZRm5KjxkjZerDUKCno0VDkj0EnQZnVkvqX9L86T4mlzrb6ze7IvR9v4oWdYTMQopMiIT0Fw46aqyhtsDZMm6x8Togq1etVuJ8UXsipIbwFR8SZXv1yCtDeSTW81fvPvQarb9zXpsLYBvaDTNwxOW7Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774878522; c=relaxed/simple;
-	bh=f3kEW98WK9EcyX72K/U5UD+F3rGK/4d/or99b/Abpxk=;
+	s=arc-20240116; t=1774880606; c=relaxed/simple;
+	bh=2t8eCwKvWcyTG6BLF1k6kvidUmENGblJrAN4O0/8Zp0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ddzzd4cTBIZ3PrTYOvPHUN6h27kcVm6LJt0zKNYW//adSR9jzPDzXxur2dNG6P6yK0gx54eaqROgNwf+woPFSbx0L1vTrPYGS9TwHAbvCotiYzqPdDoQ9aVZUUeLwVVqS5WGt9jv5uz/mW8hbRzDRhi5+/eUvtCwr5NIdZp9bfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=AWCoBXv+; arc=none smtp.client-ip=209.85.221.46
+	 In-Reply-To:Content-Type; b=nGzz3qUfsl0vrVrDewIzH4CNb78xpN4e/fHQY/LY3uP7TYYo2RKiSGNeVg4Y6DukTPVPR0tqdmRQ/1q7CeE/NxSJ69oDeU+ojl3qEvnJDi361uFid+No4kzIbq0aiwwFxmNTKLQ1xe4UoEZLl7ptgC2KKT1AX/gjpeLRb+5W+zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=RodLGMCD; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="AWCoBXv+"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43ba1f3fa7eso2558505f8f.2
-        for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 06:48:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="RodLGMCD"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43cfe71e5d3so972177f8f.0
+        for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 07:23:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1774878518; x=1775483318; darn=lists.linux.dev;
+        d=suse.com; s=google; t=1774880604; x=1775485404; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=m2UWLhFLqzaB3574DuyBh7oJTMtmzHTn/Ed1EUPm7SE=;
-        b=AWCoBXv+RHljv77DCD91O9x+S0QYeFDVU93+SSGmHGk+hu4DACxk026NZhvmcZL4pr
-         1UOQrYSc8ONU7jxzgtJdZZ7U5PUIaYTooDMQrTIXE1WyOd4N/+cJzHYYizmOkcXPUt1a
-         LMBBlfHoICtc8NF3ddYfVn+OJVA7CNA7cmHiTdcg5XTsFRoMkovc7Y43nsmzFZaaliba
-         Mt47agHy448znYLVpDPBzywuibwC41qccYHEsH3lW86kBnXNsDkk5ud4w/UwiRtezqTR
-         uQyhybO9wNy8EwFTdWYmDipqxWENeK4engmZbOcbnED22p3Gm8WPJjvenJaac/MiFu6+
-         KlyQ==
+        bh=ZM+5dyHe83nqy+4nGn8DT9A5VxOBbDn6eu5qTwyUTxM=;
+        b=RodLGMCDqX3L4FSetuFoqZoNY6RzyKN7zNpJPy2I82T3iYBbSnS1OO9/2OKZ6Jq7lr
+         MXG5AzR0P5W1yJbAZidJTxaILa7AxaYde0jnHJ8V4VJjyOA9DWwvHVmJd3T1YMJpFe2T
+         gkOy+0VQWE3aEZwJ0ZnDfNDJ1R+Yb6dsJVn/kljKqCyOBTLj5m6cCEizEK3bx4RhcGTi
+         +dtZP7NpfYIGQfDPht7EBkCxnFbDPooF6uSVm+tQFDrR7SSHm+k/wfQo19GFQvr0zLML
+         NstuqIkobVKUMUkXKTt8jyiS1J3/2yUazh+c9/o7Wp/bm04QWB6Iwv4N082bRmVuKzA1
+         kKSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774878518; x=1775483318;
+        d=1e100.net; s=20251104; t=1774880604; x=1775485404;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=m2UWLhFLqzaB3574DuyBh7oJTMtmzHTn/Ed1EUPm7SE=;
-        b=bN52AgJTTlFMkKvgwGHRgtHz4bu0TX5MQqdQ2jXoUeyTgyQw9+siBOzRud1gQQuOBw
-         06upa5QGDZfeRdAcPJXPPqro/UAu5DdWyCQeJ/3HUxsqJRMAn4X6D1UFX5ULd5LxRp8U
-         CQj+uc2mBNHKU8kADhgXrSzsq5PnadcXAK0QR0dKQq6SSSHr6drz9+t8jYEeGhOBESWw
-         VE149657ixy4ibtTbyWfRG8cu+gmH0fwzekrGi6y685q77W/b/Idg6u4vV7XaFfvTN/1
-         xGz05GvbZvFFhYHRwyXf2Oj6wcNDHXwE4Dcg+ATkybtn4ZFdn7OJmLgTKUGxERVybO7o
-         1Jxw==
-X-Forwarded-Encrypted: i=1; AJvYcCWSugMdcp+HQy3fm1XT9iORomVP2SidU05iS9sSVSh4x3wJhK1qxFFZmqXprMBoVhoFeoh9r25m2CPw@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz4QWjMzLYiFtMcOQbdwwFvqK0KGOBm+dnsDTO9rkDJcJT74xiS
-	IaLaurT2EudgF6ABFfvwYI86Rkk3xEZRb9ynzBhQD1j3HvopnOT6LeMAEfdn/sWUNho=
-X-Gm-Gg: ATEYQzxLGyRO/6ZEFuTjbU+eTmSDV7IUaEOAZ1xtL3PSlhXgqOh0sN6BL/j1q2i1FAO
-	ie57NV6zrJ2x4BeB3Uie6+7UgNQl8H1CSkM9EfRnSpKgI2sgKcJF1aV4X+uMDPNajjHLY0w+3z5
-	jM8R0XO7l7eSFCQptKOFzFMQIl1EuVEQCfVlP5uB7n5bFAxTy//oA17TU9gRg2hdSo7B7HMvxWz
-	3JK2lrXQzdncX1cm6UtVxn894tt2fH32Tzy38U4+OFnRpLDY4e9AJpBLSDW4ys64IgU9FSyL2Xj
-	ReaafD4ZilNoGE2SmTBcS37Pe0b2I+LNl3bFk7LuwBl9d/9XzohKuJRHy7n34IMbRu7hiTCahwm
-	OomVKHlZaVKzA/R1Cad7u2HTL9eQRPdSL3/+hoiTf0RsrVXfBivLNnIN9TJP4E5dQLseyTXjcGM
-	PE00229OHC118EtcvkyFPLKa89Qw==
-X-Received: by 2002:a05:6000:186f:b0:43d:184:8a9c with SMTP id ffacd0b85a97d-43d01848d07mr4354587f8f.12.1774878518231;
-        Mon, 30 Mar 2026 06:48:38 -0700 (PDT)
+        bh=ZM+5dyHe83nqy+4nGn8DT9A5VxOBbDn6eu5qTwyUTxM=;
+        b=Mg854/AOFmx8o3jGgMXFDqBG7Rh/Z7IAr91weSO2IqqG4Wf/UaoeUfcJcV4VGANjDZ
+         n+iroyo18sTnEpOC7QSPVneqMnCDukLqQKOnPNIWQvq+8jKRn1a9EmxgiLEl/mnkzkYp
+         sdeeVoewDP3u6NxOjFInN7/2WQi+7uIyKcUDpv75lShfIKZHT92iZGe0ZPwOUcqd0RL2
+         W58tZ6hXOKjAKWtTe7VAPqVT5Dwn8WNJ5pGSbynz0wNjpZxN6u3FyY/CKYNkrt5s76q8
+         PUbea0UaErB6w7hQu64qeNqhhfSkkW2k5sKUDEOVHPi02ulcyvrc1mna02jEXMGXyOui
+         qu/w==
+X-Forwarded-Encrypted: i=1; AJvYcCWI4GFP8ASJJRrgPliCjtZnkWq4NGzUIkkyfKELd41iDep9C8Cuf/aD5SFTQfCUDFKCZy+n9442vgzp@lists.linux.dev
+X-Gm-Message-State: AOJu0YwWgFvZBlugjN7qzXI71dmOrLNycV6phxCf4lafYGzqOG6lYMJE
+	m+R4yEVlJXAJb1+BFvqwRB3s7wyGpyQOZZ0C1xfy5FWiQER2+gEe+OhtL2RXAAY9omE=
+X-Gm-Gg: ATEYQzxl7qcgPijsYRsffozHWGMZ2e/xyrdEol9vZS0DU5DAdpYKTy/gjWgOOfRNDHA
+	ZiX9JjTW8iG9prsksx+L8G/CZ6Vw7ThF0qUwx6b/HqtA+nfsAPMY9OiGlZvbF5l5BduMGj07v43
+	3APJQCM8Aa2KkX7i0ie79Yc/nb/lhR8aB6tx5Gw523Wnut9H/lCATVY302Oy1/PwVtLMpn1s6PJ
+	rEBjIvx6HODqcKwp9/hIBpryjfCPkGRI73khou0ePk1rDj4CTEsQ+uN7c2wNkuSfPjMOz7cpwoS
+	2nX79Ug9Hbvl2nQ8Ag2x/RqxxJQRjqKi9PVKtQdU217pUYO5GSm3qI9CbYpB4FJSfblZgPGf+Dr
+	BrWqRI2p5s1+xY2p9KfjyC4lFdvMTQG+7N/d1YFNmCXcT1LC5LEpUpWwbvfMfwqZjsjavnsQQ2u
+	TA7ab9EhpP0EK1UNi+Jo7AwnIWEA==
+X-Received: by 2002:a5d:5f85:0:b0:43b:4ec7:f90b with SMTP id ffacd0b85a97d-43b9ea9b2cbmr21194998f8f.27.1774880603519;
+        Mon, 30 Mar 2026 07:23:23 -0700 (PDT)
 Received: from [192.168.0.20] ([212.21.133.10])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf245e2f6sm19726998f8f.18.2026.03.30.06.48.36
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf90424fcsm14278058f8f.32.2026.03.30.07.23.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Mar 2026 06:48:37 -0700 (PDT)
-Message-ID: <7d67722b-5107-4dc3-b8fb-04c3c86a1563@suse.com>
-Date: Mon, 30 Mar 2026 16:48:36 +0300
+        Mon, 30 Mar 2026 07:23:22 -0700 (PDT)
+Message-ID: <a68bb3d5-0f93-428f-ac8c-f3400d1fc028@suse.com>
+Date: Mon, 30 Mar 2026 17:23:21 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -68,8 +68,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/31] x86/virt/tdx: Support allocating contiguous
- pages for tdx_page_array
+Subject: Re: [PATCH v2 06/31] x86/virt/tdx: Read global metadata for TDX
+ Module Extensions/Connect
 To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
  linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
 Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
@@ -77,7 +77,7 @@ Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
  rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, kas@kernel.org,
  xiaoyao.li@intel.com, vishal.l.verma@intel.com, linux-kernel@vger.kernel.org
 References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-5-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-7-yilun.xu@linux.intel.com>
 From: Nikolay Borisov <nik.borisov@suse.com>
 Content-Language: en-US
 Autocrypt: addr=nik.borisov@suse.com; keydata=
@@ -123,143 +123,104 @@ Autocrypt: addr=nik.borisov@suse.com; keydata=
  JDjakbdjBoYDWVoaPbp5KAQ2VQRiR54lir/inyqGX+dwzPX/F4OHfB5RTiAFLJliCxniKFsM
  d8eHe88jWjm6/ilx4IlLl9/MdVUGjLpBi18X7ejLz3U2quYD8DBAGzCjy49wJ4Di4qQjblb2
  pTXoEyM2L6E604NbDu0VDvHg7EXh1WwmijEu28c/hEB6DwtzslLpBSsJV0s1/jE=
-In-Reply-To: <20260327160132.2946114-5-yilun.xu@linux.intel.com>
+In-Reply-To: <20260327160132.2946114-7-yilun.xu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
 On 27.03.26 г. 18:01 ч., Xu Yilun wrote:
-> The current tdx_page_array implementation allocates scattered order-0
-> pages. However, some TDX Module operations benefit from contiguous
-> physical memory. E.g. Enabling TDX Module Extensions (an optional TDX
-> feature) requires ~50MB memory and never returns. Such allocation
-> would at worst cause ~25GB permanently fragmented memory if each
-> allocated page is from a different 2M region.
+> Add reading of the global metadata for TDX Module Extensions & TDX
+> Connect. Add them in a batch as TDX Connect is currently the only user
+> of TDX Module Extensions and no way to initialize TDX Module Extensions
+> without firstly enabling TDX Connect.
 > 
-> Support allocating contiguous pages for tdx_page_array by making the
-> allocation method configurable. Change the tdx_page_array_alloc() to
-> accept a custom allocation function pointer and a context parameter.
-> Wrap the specific allocation into a tdx_page_array_alloc_contig()
-> helper.
-> 
-> The foreseeable caller will allocate ~50MB memory with this helper,
-> exceeding the maximum HPAs (512) a root page can hold, the typical usage
-> will be:
-> 
->   - struct tdx_page_array *array = tdx_page_array_alloc_contig(nr_pages);
->   - for each 512-page bulk
->     - tdx_page_array_populate(array, offset);
->     - seamcall(TDH_XXX_ADD, array, ...);
-> 
-> The configurable allocation method would also benefit more
-> tdx_page_array usages. TDX Module may require more specific memory
-> layouts encoded in the root page. Will introduce them in following
-> patches.
+> TDX Module Extensions & TDX Connect are optional features enumerated by
+> TDX_FEATURES0. Check the TDX_FEATURES0 before reading these metadata to
+> avoid failing the whole TDX initialization.
 > 
 > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 > ---
->   arch/x86/virt/vmx/tdx/tdx.c | 42 +++++++++++++++++++++++++++++++++----
->   1 file changed, 38 insertions(+), 4 deletions(-)
+>   arch/x86/include/asm/tdx.h                  |  2 ++
+>   arch/x86/include/asm/tdx_global_metadata.h  | 14 ++++++++
+>   arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 36 +++++++++++++++++++++
+>   3 files changed, 52 insertions(+)
 > 
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index a3021e7e2490..6c4ed80e8e5a 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -289,7 +289,8 @@ static void tdx_free_pages_bulk(unsigned int nr_pages, struct page **pages)
->   		__free_page(pages[i]);
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index d5f1d7b7d1e7..d7605235aa9b 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -129,7 +129,9 @@ int tdx_enable(void);
+>   const char *tdx_dump_mce_info(struct mce *m);
+>   
+>   /* Bit definitions of TDX_FEATURES0 metadata field */
+> +#define TDX_FEATURES0_TDXCONNECT	BIT_ULL(6)
+>   #define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
+> +#define TDX_FEATURES0_EXT		BIT_ULL(39)
+>   
+>   const struct tdx_sys_info *tdx_get_sysinfo(void);
+>   
+> diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
+> index 060a2ad744bf..e7948bca671a 100644
+> --- a/arch/x86/include/asm/tdx_global_metadata.h
+> +++ b/arch/x86/include/asm/tdx_global_metadata.h
+> @@ -34,11 +34,25 @@ struct tdx_sys_info_td_conf {
+>   	u64 cpuid_config_values[128][2];
+>   };
+>   
+> +struct tdx_sys_info_ext {
+> +	u16 memory_pool_required_pages;
+> +	u8 ext_required;
+> +};
+> +
+> +struct tdx_sys_info_connect {
+> +	u16 ide_mt_page_count;
+> +	u16 spdm_mt_page_count;
+> +	u16 iommu_mt_page_count;
+> +	u16 spdm_max_dev_info_pages;
+> +};
+> +
+>   struct tdx_sys_info {
+>   	struct tdx_sys_info_features features;
+>   	struct tdx_sys_info_tdmr tdmr;
+>   	struct tdx_sys_info_td_ctrl td_ctrl;
+>   	struct tdx_sys_info_td_conf td_conf;
+> +	struct tdx_sys_info_ext ext;
+> +	struct tdx_sys_info_connect connect;
+>   };
+>   
+>   #endif
+> diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+> index 13ad2663488b..a07f1e7b18e8 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+> @@ -85,6 +85,36 @@ static int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *sysinfo_td_conf
+>   	return ret;
 >   }
 >   
-> -static int tdx_alloc_pages_bulk(unsigned int nr_pages, struct page **pages)
-> +static int tdx_alloc_pages_bulk(unsigned int nr_pages, struct page **pages,
-> +				void *data)
->   {
->   	unsigned int filled, done = 0;
->   
-> @@ -326,7 +327,10 @@ void tdx_page_array_free(struct tdx_page_array *array)
->   EXPORT_SYMBOL_GPL(tdx_page_array_free);
->   
->   static struct tdx_page_array *
-> -tdx_page_array_alloc(unsigned int nr_pages)
-> +tdx_page_array_alloc(unsigned int nr_pages,
-> +		     int (*alloc_fn)(unsigned int nr_pages,
-> +				     struct page **pages, void *data),
-> +		     void *data)
-
-This interface seems cumbersome, since you will always have separate 
-allocation paths:
-
-Contig, Bulk and Iommu mt pages let's just keep them separate. I.e the 
-flow should be:
-
-1. Do common allocation by calling tdx_page_array_alloc (you aren't 
-passing the alloc function) you just get a bare-bones tdx_page_array struct
-
-2. Do the specific allocation in either :
-
-tdx_page_array_create - for the bulk case
-tdx_page_array_alloc_contig - for the contig case
-tdx_page_array_create_iommu_mt - for the iommu case. Here you can open 
-code tdx_alloc_pages_iommu_mt.
-
-And keep the specific clearly separate in each function.
-
->   {
->   	struct tdx_page_array *array = NULL;
->   	struct page **pages = NULL;
-> @@ -348,7 +352,7 @@ tdx_page_array_alloc(unsigned int nr_pages)
->   	if (!pages)
->   		goto out_free;
->   
-> -	ret = tdx_alloc_pages_bulk(nr_pages, pages);
-> +	ret = alloc_fn(nr_pages, pages, data);
->   	if (ret)
->   		goto out_free;
->   
-> @@ -388,7 +392,7 @@ struct tdx_page_array *tdx_page_array_create(unsigned int nr_pages)
->   	if (nr_pages > TDX_PAGE_ARRAY_MAX_NENTS)
->   		return NULL;
->   
-> -	array = tdx_page_array_alloc(nr_pages);
-> +	array = tdx_page_array_alloc(nr_pages, tdx_alloc_pages_bulk, NULL);
->   	if (!array)
->   		return NULL;
->   
-> @@ -521,6 +525,36 @@ int tdx_page_array_ctrl_release(struct tdx_page_array *array,
->   }
->   EXPORT_SYMBOL_GPL(tdx_page_array_ctrl_release);
->   
-> +static int tdx_alloc_pages_contig(unsigned int nr_pages, struct page **pages,
-> +				  void *data)
+> +static int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
 > +{
-> +	struct page *page;
-> +	int i;
+> +	int ret = 0;
+> +	u64 val;
 > +
-> +	page = alloc_contig_pages(nr_pages, GFP_KERNEL, numa_mem_id(),
-> +				  &node_online_map);
-> +	if (!page)
-> +		return -ENOMEM;
+> +	if (!ret && !(ret = read_sys_metadata_field(0x3100000100000000, &val)))
+
+nit: This is likely generated by a script/llm because I see no other 
+explanation why !ret is being checked here...
+
+> +		sysinfo_ext->memory_pool_required_pages = val;
+> +	if (!ret && !(ret = read_sys_metadata_field(0x3100000100000001, &val)))
+> +		sysinfo_ext->ext_required = val;
 > +
-> +	for (i = 0; i < nr_pages; i++)
-> +		pages[i] = page + i;
-> +
-> +	return 0;
+> +	return ret;
 > +}
 > +
-> +/*
-> + * For holding large number of contiguous pages, usually larger than
-> + * TDX_PAGE_ARRAY_MAX_NENTS (512).
-> + *
-> + * Similar to tdx_page_array_alloc(), after allocating with this
-> + * function, call tdx_page_array_populate() to populate the tdx_page_array.
-> + */
-> +static __maybe_unused struct tdx_page_array *
-> +tdx_page_array_alloc_contig(unsigned int nr_pages)
+> +static int get_tdx_sys_info_connect(struct tdx_sys_info_connect *sysinfo_connect)
 > +{
-> +	return tdx_page_array_alloc(nr_pages, tdx_alloc_pages_contig, NULL);
-> +}
+> +	int ret = 0;
+> +	u64 val;
 > +
->   #define HPA_LIST_INFO_FIRST_ENTRY	GENMASK_U64(11, 3)
->   #define HPA_LIST_INFO_PFN		GENMASK_U64(51, 12)
->   #define HPA_LIST_INFO_LAST_ENTRY	GENMASK_U64(63, 55)
+> +	if (!ret && !(ret = read_sys_metadata_field(0x3000000100000001, &val)))
 
+Ditto
+<snip>
