@@ -1,139 +1,238 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012016.outbound.protection.outlook.com [52.101.53.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5FA3B4EBC
-	for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 11:49:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774871351; cv=fail; b=Hr6Hdoezw5LdL5UO1VRm1isZ3V+2XLShFKCK8P48OiehRICurBAdQl9jD/qYMARkNoWb3ihQx9iw4vQRj88ZEogcaKY7o0b8ppxVSd76t7WeYWPPmeZJE7NNGHGUiaEQ9WbtQt9gZUpNRv1kXxwLXAjohWc+6CeXLrjTBF1iawE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774871351; c=relaxed/simple;
-	bh=d9kZz61VR9SLJ9YHX/CsrLfqDosnky/zNhxodyRxeOw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=k5/S1ekSgdOFKHGqBqOd4n1GxLR4EY8K2L/iSikNrbciNqgSyWoflf+vanYzsJ9CpdngFiqqfmELpdGwwx39h/O1PDaqOea2926Ym0rZexBLKJclIB8iHNrbKvmVzOhIf3o3KY+iW7W4Xr4pcyCbZhKiIuggwDUqfgApLWtpLAs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NIqxsNAv; arc=fail smtp.client-ip=52.101.53.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64233C9ECC
+	for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 11:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774871945; cv=none; b=KVuvxHfXTwVcLt3MaINMACxnvp1PTqm5YMmyN//5POo+H1xRiascZYJdeVS9YLHcGJHI3D7ksfgtHPLoL+5qcUmjNAXtRYrcSyurpZ5GZ/YP2YmeJgMJqWAQMJPeRygCR1BLgZPYpJFK3gH7gmKTq9P55ftmZdYhuiAsyu0a78g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774871945; c=relaxed/simple;
+	bh=OjF9jnKvHJuUhcj8kbGOZ7BW8KyRGB6l0B8doDNPLi4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P+VTXdioMM62bTxm3CwBwHPWbT3bmYf3M+qLXG+Q3dOfvkFAQ9hlGie5WN0hRdpZAKoNEhMhlyi219GJj4HsRHOxGy8Whdp7SDVaEXj/miLJQEoOdnqPB7TFYJEDYUslMRzcoWuhj6v9pWCzZNxedyk8bADqPG6UQn1Pi9s6blQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hqi0p01m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NIqxsNAv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PIPUxkiJuDJba32Bc7AJCV3u3B162VTZa/fpUHFZEHF+gR/BynVI2cqNr3/zSJTbO4mwmjQGc0eSV8R1fL3029dBQspjXuwT29Hz8apevo87LTNrCzjsM+rEFV2Hh49oUSiisiNMdKwBBnb1gGWXZgCegNZAH+hPMG3J+4jgeCahawxlZsDMJ9Fyq1BwOMf8WSkipKyPNN9MN1sXcjPF7Xl5t+u9yqn7YO98sI3W0YIIf9oNAa2LSwoGdA+XiswrMrBqUY2ahyoyqHQelhEgSuiNgrVeU753I2YwVTdNG4MQcg4BJ/scW43OtWgqv7mOJ0jj2TzXMfNZ3gm92YG0LQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d9kZz61VR9SLJ9YHX/CsrLfqDosnky/zNhxodyRxeOw=;
- b=hyDg0872ID0E3MgL7uuqVJVA6r33p8QQuqtM1lZUeLtGvQayrREHLOJZOFMDf7Vj1PVA/q8TMJgi+PvyDIVf02UTEqD4ENAADTAlfYW5qZiEDhupTifqeBdC3IwSAj5qaDr62LxYUs/i5KZb1Zgo+Bo2PRQTUprh7u2+nkcnHvBxS6tXpb4ieYhc14XYps+RWMGEiEBSKOxxhNw9RmKBZ8zeHj/EweSFSumOGO+yAjocy9PO2iWP+M1NGymTXp4oWB6CGWyjK9bVlvjOyO2C2TCjoLfphvyuA0ZzzuP8mkXQ/tZ+qVbHoWMyh2fUY9H8cTEy/Qz9vLmxGE/m7CbfvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d9kZz61VR9SLJ9YHX/CsrLfqDosnky/zNhxodyRxeOw=;
- b=NIqxsNAvEgKVx9LPcLBv6uTALQUSQS4G5/yjx20VtzV3L21+gAAJ0uJzPncCt4Qq59KU0JoGmCqr9R5xi1Pz3v9J5kovlnPDWSJ3kEGneXYogs6ur9N3AnK/ljV96IfkNnmqMC5xdxK2gRR+CVYmDkc0v7ceOZuDD093ilyzYIx5DPWPSYLWSiBl7Y1IGvCaHN8v5w+zPEoCkm8P+cb7Rk4U1L/ShKyZZWU0oF97sMFvhHyXBdoMDkdnIMr1COaL7T+tXstSOGHRcWVht8dESQTf/MdgobhX/qD/Cm3yDnR1vvR6Nz7Z/JvDVo9Z/SN+nx2FYdUz5Ud9wwww8d6QPw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by CH3PR12MB9122.namprd12.prod.outlook.com (2603:10b6:610:196::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
- 2026 11:49:04 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9769.014; Mon, 30 Mar 2026
- 11:49:04 +0000
-Date: Mon, 30 Mar 2026 08:49:02 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
-	bhelgaas@google.com, alistair23@gmail.com, lukas@wunner.de,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH v2 09/19] PCI/TSM: Support creating encrypted MMIO
- descriptors via TDISP Report
-Message-ID: <20260330114902.GA310919@nvidia.com>
-References: <20260303000207.1836586-1-dan.j.williams@intel.com>
- <20260303000207.1836586-10-dan.j.williams@intel.com>
- <yq5a4imuanoa.fsf@kernel.org>
- <abPlt8oNUOqGvbA3@yilunxu-OptiPlex-7050>
- <228298b7-76bc-4ffb-bec0-0c35fd487c4c@amd.com>
- <20260323182014.GR7340@nvidia.com>
- <fa1c6e1e-068c-46d7-a623-58c225bb03f4@amd.com>
- <20260327114921.GL67624@nvidia.com>
- <d5059386-1ed1-4110-8283-16e3a8407760@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d5059386-1ed1-4110-8283-16e3a8407760@amd.com>
-X-ClientProxiedBy: BL1PR13CA0400.namprd13.prod.outlook.com
- (2603:10b6:208:2c2::15) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hqi0p01m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6B8C4AF09;
+	Mon, 30 Mar 2026 11:59:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774871945;
+	bh=OjF9jnKvHJuUhcj8kbGOZ7BW8KyRGB6l0B8doDNPLi4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hqi0p01miFDcfjtDesxXRXmpNbgBafEO4gb1/suHg0ZWzk0sw96LgOAVmeB4N+9kL
+	 mst2v1uSS3A+qdLAv49n2zw1avUgmHHir8rQu4OXSAmqW0SGCVR4lXa/QKzoV9lzVy
+	 +YSHjcYnPj8ez0u57CZmFAm+xc+kNVnlVmgtPm8Qgzyoh/FSW99+zxuNBd8kbAW9IA
+	 srNv+kWsCxWtjW3zJ0UFEPBoZhz4fusYjve0re+HFSDL6wX/JcEac2ojU5OsBlIVlT
+	 pXtsf8C2shw6Bw7S1Zo4m3DIMZVNpfZxUqP8VwRdIMihBUnlM+bfdNaDOrdj+J0/tx
+	 iCoKawthjDhYg==
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 2F468F4006C;
+	Mon, 30 Mar 2026 07:59:04 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-08.internal (MEProxy); Mon, 30 Mar 2026 07:59:04 -0400
+X-ME-Sender: <xms:iGXKaSbAzoikW_mRVcDGqgZOL52Gj1s8wqLoFFQA5IHmroHr1L37_A>
+    <xme:iGXKaeslEAn5JGFx7WlYpRYQP8J1LP-18BY87e-9VuBP0vhuXRDOqIv0FyF0pll0k
+    lyquAyJOxGGgUUytu-F01soPihKfCaRWQWQnbj9P0SfF5bZg_IETo-E>
+X-ME-Received: <xmr:iGXKaU-wZmZl1SlKcj6iJVcVaTsY-uHTbsnCjx3146hnzv6XSYxsZfww2NvECg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeekleefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepvdeipdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehvihhshhgrlhdrlhdrvhgvrhhmrgesihhnthgvlhdrtghomhdprhgtphhtthhope
+    htghhlgieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhinhhgohesrhgvughhrght
+    rdgtohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepuggrvh
+    gvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopeigkeei
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehhphgrseiihihtohhrrdgtohhmpdhrtg
+    hpthhtoheprhhitghkrdhprdgvughgvggtohhmsggvsehinhhtvghlrdgtohhmpdhrtghp
+    thhtohepshgvrghnjhgtsehgohhoghhlvgdrtghomh
+X-ME-Proxy: <xmx:iGXKaeVqAyvsd1dlNtVHl7CI1RkkeQTlIw2xmHemQ_Gh0dEQVy6weA>
+    <xmx:iGXKaYvriyc1NMRB0emm3peeP6Cr0rYscEfrwTvzjR5N9pq80j42bg>
+    <xmx:iGXKac-DTfL7bm0NGxRQySDtQor3sQGL69gxeJS-Q1c2P0LxK9Susg>
+    <xmx:iGXKaZ0v5V0DeaQ4IWN1pwOLhzBDACddYSsx35ZEikvAgPCJ4vb5vw>
+    <xmx:iGXKaZRdyT3D1D5-kHagGbFMX6hFt7XFgohYaffII5raSGMfzSLBKQnR>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 30 Mar 2026 07:59:01 -0400 (EDT)
+Date: Mon, 30 Mar 2026 11:58:56 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] x86/virt/tdx: Add SEAMCALL wrapper for
+ TDH.SYS.DISABLE
+Message-ID: <acpiGUKS-WRmLoxp@thinkstation>
+References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
+ <20260323-fuller_tdx_kexec_support-v2-3-87a36409e051@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|CH3PR12MB9122:EE_
-X-MS-Office365-Filtering-Correlation-Id: dbcd6072-a343-4cc5-5bca-08de8e525734
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	4xAv9TdQ4sPrN/JELBRhSufw/oK0eneHWJJg4+zAG9+b/fOZTsYk4otTgCjK2xUrztzS+YhbqqE1dHBi68PrWWBAO5qUvHog1AKzU6GAhGbyl3ugIvL+mehcwsgFnr6Tt9g4vXXtr05D9qn49SS+vtRiCru9hE2Zjly7p1dkY4Yg5MUbXFz/70TxFN6QTDrZIJfoBFAk9/MJp9s/nn43T2JOAwfQ1a1twRJ/pxsbsCBCjbzKSGVWoshxY/M8RgfomsWt6rWWVNHlDeyciashLe3rZ5S6po9W0+yWtFGVyzcX8Irl4HipbWRyv0ARY1zyIccc/wNOSSbJsBRVjUQ+F0199Qp7WjWD6nCYuylBJ6MK7BgXWg6kZcACAZNIOv+118xeHI4KK8xgMzOm9ENKoiqPt0GCpfZwThcLK/qc04HKH/ARkbhwsvd5X13X4dcC73kdl5dj94GXz2KyaNv5rKb7e1MwSzNRxIf5nHrPzPAWFDk2Pp7bNWG/R9jp6hZWu1q97nrzagERy20Hanv84gdBzABFuZQA7bAPAPkrLRbKg1zOGPSQcvW9EZdKksNT+yLdoacbEXjrJUjDg5hKnLxI43qoZ9bz5ZXzuFwv5CMQbOUZPYW1+Z63Z7WiNWHHcr2CsbIDnDq+wvQQx5qmiVZ0JCWotz/lJRPnGui0p0EahmHy14oNRvkKrTNwqF6E0/jqTU0/nfotzAvIGq5GUBudsxVwCJzrSw97WeYEgEQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?sQvSr1TF2E4Pp1+szJxmb3+z+aYbM+MdQdoNA2TB/iB/Vix3GwlxC8KS10L9?=
- =?us-ascii?Q?VzQW28Zyh5+26YiV3madSNOlqIFyHGErJIuLReYimmzpmBBKBrW97FP627xK?=
- =?us-ascii?Q?dTVHGbwiY+pwy+MNcmpo1D1UcwbTTwmI/9MjgaXRHrBNXSPO20Skqz5t5lHe?=
- =?us-ascii?Q?sRaEVpM1L1VKXxf/cP5uonPNs4w/X+2mekFT7Pb3SkqYy+vksFLmyzxJC04m?=
- =?us-ascii?Q?+OyHpD9cQAE4oNmbK7hHtE4GuzJ1JTrWdtAjBJbLR/9zJaY1OC0iISm6XTp9?=
- =?us-ascii?Q?1obbOIG6PP6JEOwV2l+ViPwnPoivl4NHZNXJ6Nusk3g5z1Gife3gSa27t00i?=
- =?us-ascii?Q?bx2KEISl8/ALi9JqfDKo59y5RIx0BlFwr6x8LyGnVVuQu0g6K3WRyRA1TwED?=
- =?us-ascii?Q?UDVBbkg/24Bo1PRMLd63TM+CpFyhyY+uwlB+I6Q2UlNIBdAzCikNd2YW/hdd?=
- =?us-ascii?Q?6kgsNUmy4prlkw88ObiCP6aMM1fsAJkHRZkMKwtZDWR05AQ5pFQjREmudDgN?=
- =?us-ascii?Q?rymIKdkKqUEs72VLmiEpTwl6OEy5DNSbpSwLpRLL01mOVSFEX0uGO3j78bZn?=
- =?us-ascii?Q?XmcdYE3PFTBXDeH0y6MgxFYggW179Oeze1+70HmdgE6zL5gz0dLxZYudGIBN?=
- =?us-ascii?Q?58q+pk5tpKFexEDVKxddBcciuPRLznyTZVekLlixute63d8tVuRGfX/t7oOG?=
- =?us-ascii?Q?IFk/3cCJX62GPaooYOwwPl5waSCc50qbZHtjnt8o1u+WNpfi0sldqGDaoMQE?=
- =?us-ascii?Q?3e80nNN7vrfWvBpMN0HcwyDAsYi5wmiieVUg1yapNBgApsRchHVJVupdGFQA?=
- =?us-ascii?Q?ZyjSzi4sfThpMYv0O5ROrkw4x6YrCOlr5NJI6RoC7dfU+2OH/0x9K+q+F8s8?=
- =?us-ascii?Q?eFnVsZlKdrPK2UtDMtCmp+iaY8VOWYRFZQk8Wxv0hBevBDlKu7dYRUmJS7RP?=
- =?us-ascii?Q?ufZXw7YrwROm/47MOaWzZudRFi9q5DZqkH2B2tTo9qIXBWY6nuAxc0xXsbDZ?=
- =?us-ascii?Q?Ihmc5hZxE3dYMe+uGI3Pt5nbXcahVrMIoM8c9fDY87YDt9uw0ZSorCPHPWiI?=
- =?us-ascii?Q?+P6kraO5IVENYTEn46zJ71oc3L+N+rOiXGqAmUZF+IsH785lTy5cIdY2Q2rU?=
- =?us-ascii?Q?MQoT1J4x9SwhhWL4oiLQlKo2Yz21iGtqtiJKxJxwsP2/DELYuJErXwz5Okfg?=
- =?us-ascii?Q?YSm0Dh8j9Xe89p+RWb44bY786KsIYKp0DFNjIeJNhWERZVtM2a2QTAzOXUZr?=
- =?us-ascii?Q?SoyF+bBoJV3pDBS0oz1yTY2JTgprAJpLbuasMwITxCaJ1PTMmcoj5xO7bXv7?=
- =?us-ascii?Q?3X46YQXQlcKsQPWQdR3aZBH+4ccEFTFApFnLtBqqQBkkVECEl+P5qsmohO3S?=
- =?us-ascii?Q?A654VGzTviBhQC7oTbfPSreFvhNQDWKeALkulh6eegJoX2/U7B5VAZ0RY/gF?=
- =?us-ascii?Q?tzrK1cTuc0UVhW08jnL9k4R3CpUGclUEXyGUgB1Vjzs+TimlcZZVivqouRN2?=
- =?us-ascii?Q?ejDaz4gXIl5FuCPYnoCuc76kuJFKm4C/p4mwB+cxqj/zqDsj0OKzt/kCwH25?=
- =?us-ascii?Q?BJJQRbxUZMQXkCVYn+a2G5xdOtVI6qINJE1rz912o+Ls83ITGu7GKJdPiReK?=
- =?us-ascii?Q?X6xYXtVWw2qR9J9o8iDDsrqtmYteMaFLDw0lr8jsY/TF/VLE6aIp/m/XqSe2?=
- =?us-ascii?Q?8vfiHBU/7CTIJWJU5iXSXVNnocIcjNn+/bQ+Bl85oXzuf+9/?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dbcd6072-a343-4cc5-5bca-08de8e525734
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 11:49:03.9851
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XzTRyeuaozr9px2EBpo91T8pqUhYNgjMdgeLmGaPfm1TrQnXVAcNHbRXmFErvHXD
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9122
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260323-fuller_tdx_kexec_support-v2-3-87a36409e051@intel.com>
 
-On Mon, Mar 30, 2026 at 04:47:44PM +1100, Alexey Kardashevskiy wrote:
+On Mon, Mar 23, 2026 at 02:59:06PM -0600, Vishal Verma wrote:
+> Some early TDX-capable platforms have an erratum where a partial write
+> to TDX private memory can cause a machine check on a subsequent read.
+> On these platforms, kexec and kdump have been disabled in these cases,
+> because the old kernel cannot safely hand off TDX state to the new
+> kernel. Later TDX modules support the TDH.SYS.DISABLE SEAMCALL, which
+> provides a way to cleanly disable TDX and allow kexec to proceed.
+> 
+> The new SEAMCALL has an enumeration bit, but that is ignored. It is
+> expected that users will be using the latest TDX module, and the failure
+> mode for running the missing SEAMCALL on an older module is not fatal.
+> 
+> This can be a long running operation, and the time needed largely
+> depends on the amount of memory that has been allocated to TDs. If all
+> TDs have been destroyed prior to the sys_disable call, then it is fast,
+> with only needing to override the TDX module memory.
+> 
+> After the SEAMCALL completes, the TDX module is disabled and all memory
+> resources allocated to TDX are freed and reset. The next kernel can then
+> re-initialize the TDX module from scratch via the normal TDX bring-up
+> sequence.
+> 
+> The SEAMCALL can return two different error codes that expect a retry.
+>  - TDX_INTERRUPTED_RESUMABLE can be returned in the case of a host
+>    interrupt. However, it will not return until it makes some forward
+>    progress, so we can expect to complete even in the case of interrupt
+>    storms.
+>  - TDX_SYS_BUSY will be returned on contention with other TDH.SYS.*
+>    SEAMCALLs, however a side effect of TDH.SYS.DISABLE is that it will
+>    block other SEAMCALLs once it gets going. So this contention will be
+>    short lived.
+> 
+> So loop infinitely on either of these error codes, until success or other
+> error.
+> 
+> Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+> ---
+>  arch/x86/include/asm/shared/tdx_errno.h |  1 +
+>  arch/x86/include/asm/tdx.h              |  3 +++
+>  arch/x86/virt/vmx/tdx/tdx.h             |  1 +
+>  arch/x86/virt/vmx/tdx/tdx.c             | 28 ++++++++++++++++++++++++++++
+>  4 files changed, 33 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/shared/tdx_errno.h b/arch/x86/include/asm/shared/tdx_errno.h
+> index 8bf6765cf082..246b4fd54a48 100644
+> --- a/arch/x86/include/asm/shared/tdx_errno.h
+> +++ b/arch/x86/include/asm/shared/tdx_errno.h
+> @@ -15,6 +15,7 @@
+>  #define TDX_NON_RECOVERABLE_TD_NON_ACCESSIBLE	0x6000000500000000ULL
+>  #define TDX_NON_RECOVERABLE_TD_WRONG_APIC_MODE	0x6000000700000000ULL
+>  #define TDX_INTERRUPTED_RESUMABLE		0x8000000300000000ULL
+> +#define TDX_SYS_BUSY				0x8000020200000000ULL
+>  #define TDX_OPERAND_INVALID			0xC000010000000000ULL
+>  #define TDX_OPERAND_BUSY			0x8000020000000000ULL
+>  #define TDX_PREVIOUS_TLB_EPOCH_BUSY		0x8000020100000000ULL
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index 7674fc530090..a0a4a15142fc 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -172,6 +172,8 @@ static inline int pg_level_to_tdx_sept_level(enum pg_level level)
+>          return level - 1;
+>  }
+>  
+> +void tdx_sys_disable(void);
+> +
+>  u64 tdh_vp_enter(struct tdx_vp *vp, struct tdx_module_args *args);
+>  u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page);
+>  u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, struct page *page, struct page *source, u64 *ext_err1, u64 *ext_err2);
+> @@ -203,6 +205,7 @@ static inline void tdx_init(void) { }
+>  static inline u32 tdx_get_nr_guest_keyids(void) { return 0; }
+>  static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
+>  static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
+> +static inline void tdx_sys_disable(void) { }
+>  #endif	/* CONFIG_INTEL_TDX_HOST */
+>  
+>  #endif /* !__ASSEMBLER__ */
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+> index dde219c823b4..e2cf2dd48755 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.h
+> +++ b/arch/x86/virt/vmx/tdx/tdx.h
+> @@ -46,6 +46,7 @@
+>  #define TDH_PHYMEM_PAGE_WBINVD		41
+>  #define TDH_VP_WR			43
+>  #define TDH_SYS_CONFIG			45
+> +#define TDH_SYS_DISABLE			69
+>  
+>  /*
+>   * SEAMCALL leaf:
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index 0802d0fd18a4..3a76000dec7a 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -37,6 +37,7 @@
+>  #include <asm/msr.h>
+>  #include <asm/cpufeature.h>
+>  #include <asm/tdx.h>
+> +#include <asm/shared/tdx_errno.h>
+>  #include <asm/cpu_device_id.h>
+>  #include <asm/processor.h>
+>  #include <asm/mce.h>
+> @@ -1940,3 +1941,30 @@ u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page)
+>  	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
+>  }
+>  EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
+> +
+> +void tdx_sys_disable(void)
+> +{
+> +	struct tdx_module_args args = {};
+> +	u64 ret;
+> +
+> +	/*
+> +	 * Don't loop forever.
 
-> What do I miss? Thanks,
+Nit: Add a new line here.
 
-You can't tell where things start so there is no way to relate the
-offsets to something the kernel can understand.
+> +	 *  - TDX_INTERRUPTED_RESUMABLE guarantees forward progress between
+> +	 *    calls.
 
-Jason
+And here.
+
+> +	 *  - TDX_SYS_BUSY could transiently contend with TDH.SYS.* SEAMCALLs,
+> +	 *    but will lock out future ones.
+
+Locked out by who? Is it TDX module contract? I don't see it documented in
+the spec.
+
+I assumed that if the SEAMCALL fails other SEAMCALLs suppose to be
+functional. Hm?
+
+> +	 *
+> +	 * This is a 'destructive' SEAMCALL, in that no other SEAMCALL can be
+> +	 * run after this until a full reinitialization is done.
+> +	 */
+> +	do {
+> +		ret = seamcall(TDH_SYS_DISABLE, &args);
+> +	} while (ret == TDX_INTERRUPTED_RESUMABLE || ret == TDX_SYS_BUSY);
+> +
+> +	/*
+> +	 * Print SEAMCALL failures, but not SW-defined error codes
+> +	 * (SEAMCALL faulted with #GP/#UD, TDX not supported).
+> +	 */
+> +	if (ret && (ret & TDX_SW_ERROR) != TDX_SW_ERROR)
+> +		pr_err("TDH.SYS.DISABLE failed: 0x%016llx\n", ret);
+> +}
+> 
+> -- 
+> 2.53.0
+> 
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
