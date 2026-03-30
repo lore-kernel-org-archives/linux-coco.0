@@ -1,99 +1,220 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7993D333F;
-	Mon, 30 Mar 2026 13:07:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652232580CF
+	for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 13:31:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774876055; cv=none; b=gV9kinuLsEoZQI0Y28bJSWnhcR7Kh+4jZKS5w9or/LZPwfBvN5ZAZmeUucEDzZLRNsWQxst/jY0EfQUeWVEBzAd2izZUmODWpJ+yD9PPjOAPQ/WyTm1fyDIB84MoNWlPMHLAD/7rUXwGhhTMebgkhdpvje/Uv+rGTbT9UI5eWMU=
+	t=1774877508; cv=none; b=hgdQj5KwvQf82R+AvA+AZNxJ/xV/SwKwAJBwEz2LjmkjeKk4PX22nUu1eD76etEorRLCjz4XwUpK89gYGG1U9yPPP3aMPvRwWC3A6nTtzT3N3/9OB7NGeDbHiiVt9wIOE4oLrl7XZdr8pGUYG+HhGrX/qfyG+LXpAkfUPm/Hvn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774876055; c=relaxed/simple;
-	bh=HBsUbCbUCmapLutDlqMPyNFzTJGNey32KkW/5X5/nKg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l1TpunF8ZyvAQsFyvDE3s7cXWQtaEQ+QlC4ii3z+SvbIDhRsBmr/z+MFrjKSZOrNbi3NB+rXDpdVkoqyS/mTBqrbNA6a0vV1s5hxV0f54BF+3atrcezqWHcc0svphoa/3ckWItwVIEfKwjxn+yCHoYq4CZEJSv78FyFoo2JKeG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BoZUWCMM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774877508; c=relaxed/simple;
+	bh=woCJP45a6EA21SxJu6STX2rgJi9X1G42iPDRT5kx8pc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oGMnRTzorjspFHkzW4yasQzHyALmxLS9tZoMv4NwwP7JNWpgT7vFtA60w/k+k1BVigsxcusbmy/JYHaXmEbQrIWwCjQ5Jfwuuwk9+++RkxFMCr/pN53AW/9krjddm0KJxTgdaVWaYPWWohhHfISy31dQZX6rK8Z5PZcLvlBJoU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=X8hh7ut1; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BoZUWCMM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC3FC2BCB0;
-	Mon, 30 Mar 2026 13:07:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774876055;
-	bh=HBsUbCbUCmapLutDlqMPyNFzTJGNey32KkW/5X5/nKg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BoZUWCMMqxwpR8hUJqrucYQELiFvh+Me9IUFzpqOLaqaNewM3lqjpnnAgbRpdw/zh
-	 w2KN1ZJZZglgVs7e1BXcLkz0empNOzNliwlOggJ+kVA6QE2knkfmAyobZMPCcLx0+v
-	 J1VYHLIbJo8348ma0+u4oCegaKWI830kaUn2m4YFY8j5cQ1nQPl7artQGI6HTbd09D
-	 a15ccWLkgDVnia7Fkdn0u/dcWtpo/C2kMi7gzHz/IwgzjaX/DpVjlDOhwtxPMEcmmp
-	 CEU90izu1mytbWUivgkxei9O3drBhjV0aRy0JCVCQKb+us6Mtzax/zkrX+mG7eteko
-	 XB4WjXpu7Zalw==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 81566F40076;
-	Mon, 30 Mar 2026 09:07:33 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Mon, 30 Mar 2026 09:07:33 -0400
-X-ME-Sender: <xms:lXXKaSJ90RvdFqbDiOf4s8jfDK4C1k4l7PUbcqnE6QRy1Az5G3VzNQ>
-    <xme:lXXKaRiU4zOPf1og7hWZAppAkmrMVUDtUAaxNF2KTms4IMw12A9hOLrsEfSxFWZGD
-    nfRhpfaJNUc0A9HZfHt0RhcQ0ToT1bM2Gd6Eao3MMgnxGjMBxN09WA>
-X-ME-Received: <xmr:lXXKadDFAwwF_9D1mB4GsLahpTE78SXxsfvtPfQoH38XW-EAJwbXtY_M91HmBw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeeltdeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepheegpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegthhgrohdrghgrohesihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqd
-    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhig
-    qdgtohgtoheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehkvhhmsehvgh
-    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghinhgsihhnrdifuheslhhinhhu
-    gidrihhnthgvlhdrtghomhdprhgtphhtthhopegurghnrdhjrdifihhllhhirghmshesih
-    hnthgvlhdrtghomhdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhi
-    nhhtvghlrdgtohhmpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
-    dprhgtphhtthhopehkrghirdhhuhgrnhhgsehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:lXXKadZWgFquRYElq7s-v70ObF-Qs4En4JQdRuVlRfecEhYEjx6ISg>
-    <xmx:lXXKadLTblbSv-Fex4pBfsrXxPxT9So63_vmL2KnIrplnyqJdr6CHA>
-    <xmx:lXXKaVbdYTDz4fPvfS9gQFo88KF1Sd4u1-6o9fa8WKox5Ujv6VbXXg>
-    <xmx:lXXKafUJt0HRMU1rqgpBi1llTI2bdFcBaCxVkBCzSsms8_27Sru0ew>
-    <xmx:lXXKaeuM3IRgfFoz2jKeT4VWyd1IAFJSUVPP1-E4pFqB_59vLKjs7YTs>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 30 Mar 2026 09:07:31 -0400 (EDT)
-Date: Mon, 30 Mar 2026 13:07:27 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, binbin.wu@linux.intel.com, dan.j.williams@intel.com, 
-	dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
-	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
-	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
-	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
-	yilun.xu@linux.intel.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v6 17/22] x86/virt/tdx: Avoid updates during
- update-sensitive operations
-Message-ID: <acp1YAMOCiKpcZaz@thinkstation>
-References: <20260326084448.29947-1-chao.gao@intel.com>
- <20260326084448.29947-18-chao.gao@intel.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="X8hh7ut1"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-487012ce896so27484565e9.0
+        for <linux-coco@lists.linux.dev>; Mon, 30 Mar 2026 06:31:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1774877506; x=1775482306; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=jYIEqXC79JFDsMuBE9uscqcAqN7ideMUIHhPBH738yQ=;
+        b=X8hh7ut1xEbTlc+K3Vu950Hd7OZC534FlG3jsAPCxxVxnrM6LzztgUWsdJW98LjD5O
+         wiZy1DjtoeRs+VWXWuyFH5SbCVAEyG8U9J+pY6x3h+B7Q3DgGm24boOHKEoGSSa0rC7i
+         CL+lIlPrv3x4S/YZ98HZeWPtNFy7jWxlbRcbqApHpFPAhGdLLLrJWGULK1wFzKCSBQqO
+         OMC+Eaqb+zGM/eieBqu3nih4d1IZy/xad27k334Drc1zcObDxd50oUqkzVmuuS15AoDS
+         2aL0aREKUfJwl65x9vYsU2MKmSTt+YdxdqpyAR2Y2qPrGCSrCzLjOcv/4u322dtK+EDl
+         /IoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774877506; x=1775482306;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jYIEqXC79JFDsMuBE9uscqcAqN7ideMUIHhPBH738yQ=;
+        b=C2LGhQYls83FPuyCEz3JJckURkBgn6wwfk5GwPGfeXFw+Uu3jHSISiytCQ6quOLvoz
+         x5v5Z75vQGob7Xm+NVKeFhJz6dfuoZLMQJZLPQOejG6F3dgdA8/T3wTGK1pDxsOjjZwU
+         Go/R3WkOGADVfu+N60xKY+9+JAscLprHTcHo4AllURefQsffV9glnKza7Mssy/f5vo7n
+         pgbM8LdezGRpEutKGm++3VsH2VoQuKhJDaUiEVbOmBhu3NcSZ0FDsHg7BjN5OZm2v+EO
+         j/ie7J5mg038pFLS7ljcSr7g8HANhFoR4qIS0CXKkb1/RAvqETRrWC+PHkl67iJuTgvO
+         DmfA==
+X-Forwarded-Encrypted: i=1; AJvYcCVZrmH3EyW0Pd2ArwhVpGgQXsNkIQd20tZ7luwzFoxgsO0QnllPjhtz3sP/PgI77Yc6uS67DUyeizic@lists.linux.dev
+X-Gm-Message-State: AOJu0YyEu3RasAwafhqwCUoWleWkUn4Yvaomx4LAb0DCoh6ektGNDN5E
+	tdqCQP/fgNAnUFLVsvn7FOJPShgLQIYA7Su5UcBKB/Ah+R6rAB4qAQOFe4Qydii5vr8=
+X-Gm-Gg: ATEYQzzyd4gwVJl/3cN4rqHrV5CrxwNdw9V6sA5Z/8fnZaLXcZ6D3Eg9jZZA4HZu3Vu
+	jV49Si1ZnbRCv8XmA6X2Wn4sqeNiw4jqSIz+5psep+sRTEWj6P7IcZ1qnnwuj/yrimLDp/rHGoP
+	wJFp2+O2g57syRadp9nJP4LD5qjTuDEI09/gNvstZLugjaPYiTd1Tq5mCC9nByMbYf1ajHm3fpx
+	997F63eKGtZZrgWxNC7K6ExkU9oK6pkACtvrPfvAGNALfcDrG/qt5SGqWJu6Q3WIX+PJwapZyFF
+	4f3uGNXfPVPn3hESlF883UFOJewYnHDUUbn812/5RuFIXrQGsZrihfyYSJkzq9tQka+zHCIgpuz
+	mvQcpZsruBXGL4cUbg288s0a9yMnjRzGJ6k2aitJD0A4zmAMSGHRoJ6meq53aGmF2jICX2bw0Sv
+	YVw33xMI3E8mVtiwpjEZPK3DHfaA==
+X-Received: by 2002:a05:600c:c178:b0:487:59c:2bb8 with SMTP id 5b1f17b1804b1-48727ef16bamr212768095e9.27.1774877505632;
+        Mon, 30 Mar 2026 06:31:45 -0700 (PDT)
+Received: from [192.168.0.20] ([212.21.133.10])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722c6b495sm537578025e9.2.2026.03.30.06.31.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Mar 2026 06:31:45 -0700 (PDT)
+Message-ID: <4af194d0-f1d7-4acf-aeef-cf3bb3a4b10e@suse.com>
+Date: Mon, 30 Mar 2026 16:31:43 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260326084448.29947-18-chao.gao@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 03/31] x86/virt/tdx: Add tdx_page_array helpers for new
+ TDX Module objects
+To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
+Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
+ yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
+ rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, kas@kernel.org,
+ xiaoyao.li@intel.com, vishal.l.verma@intel.com, linux-kernel@vger.kernel.org
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-4-yilun.xu@linux.intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20260327160132.2946114-4-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 26, 2026 at 01:44:08AM -0700, Chao Gao wrote:
-> +	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_UPDATE_COMPAT)
-> +		args.rcx |= TDX_SYS_SHUTDOWN_AVOID_COMPAT_SENSITIVE;
 
-I think you need to explain what would happen if the feature is not
-supported.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+On 27.03.26 г. 18:01 ч., Xu Yilun wrote:
+<snip>
+
+> +/**
+> + * tdx_page_array_ctrl_leak() - Leak data pages and free the container
+> + * @array: The tdx_page_array to be leaked.
+> + *
+> + * Call this function when failed to reclaim the control pages. Free the root
+> + * page and the holding structures, but orphan the data pages, to prevent the
+> + * host from re-allocating and accessing memory that the hardware may still
+> + * consider private.
+> + */
+> +void tdx_page_array_ctrl_leak(struct tdx_page_array *array)
+> +{
+> +	if (!array)
+> +		return;
+> +
+> +	kfree(array->pages);
+> +	kfree(array->root);
+> +	kfree(array);
+> +}
+> +EXPORT_SYMBOL_GPL(tdx_page_array_ctrl_leak);
+
+This instantly raises a red flag if by design an API has the ability to 
+simply leak memory. Under what conditions this might be required, can't 
+we do something to gracefully handle the case when pages cannot be freed 
+instantly, i.e queued freeing or some such ? Simply leaking them is a 
+big NO.
+
+> +
+> +static bool tdx_page_array_validate_release(struct tdx_page_array *array,
+> +					    unsigned int offset,
+
+This function is only ever called with offset of 0, if it's intended to 
+be used later then I'd rather see this argument added in an explicit 
+patch with rationale why it's needed.
+
+> +					    unsigned int nr_released,
+> +					    u64 released_hpa)
+> +{
+> +	unsigned int nents;
+> +
+> +	if (offset >= array->nr_pages)
+> +		return false;
+> +
+> +	nents = umin(array->nr_pages - offset, TDX_PAGE_ARRAY_MAX_NENTS);
+> +
+> +	if (nents != nr_released) {
+> +		pr_err("%s nr_released [%d] doesn't match page array nents [%d]\n",
+> +		       __func__, nr_released, nents);
+> +		return false;
+> +	}
+> +
+> +	/*
+> +	 * Unfortunately TDX has multiple page allocation protocols, check the
+> +	 * "singleton" case required for HPA_ARRAY_T.
+> +	 */
+> +	if (page_to_phys(array->pages[0]) == released_hpa &&
+> +	    array->nr_pages == 1)
+> +		return true;
+> +
+> +	/* Then check the "non-singleton" case */
+> +	if (virt_to_phys(array->root) == released_hpa) {
+> +		u64 *entries = array->root;
+> +		int i;
+> +
+> +		for (i = 0; i < nents; i++) {
+> +			struct page *page = array->pages[offset + i];
+> +			u64 val = page_to_phys(page);
+> +
+> +			if (val != entries[i]) {
+> +				pr_err("%s entry[%d] [0x%llx] doesn't match page hpa [0x%llx]\n",
+> +				       __func__, i, entries[i], val);
+> +				return false;
+> +			}
+> +		}
+> +
+> +		return true;
+> +	}
+> +
+> +	pr_err("%s failed to validate, released_hpa [0x%llx], root page hpa [0x%llx], page0 hpa [%#llx], number pages %u\n",
+> +	       __func__, released_hpa, virt_to_phys(array->root),
+> +	       page_to_phys(array->pages[0]), array->nr_pages);
+> +
+> +	return false;
+> +}
+
+
+> +<snip>
