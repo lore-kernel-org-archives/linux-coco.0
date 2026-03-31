@@ -1,66 +1,33 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EF33A6B6F
-	for <linux-coco@lists.linux.dev>; Tue, 31 Mar 2026 11:00:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D613AA502;
+	Tue, 31 Mar 2026 11:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774954830; cv=none; b=oFkrXL/C6ddDCp9gk+7EW+3i2IEEz/LicCZTGMr2q7pjQr/fx2Ik6aBjUSMMwjVlRgA4MJXBowRbVG/BW0XZeYjfPNdTVrfsdjy8ZNXmWCKJp9BlVeYrcFiuon1y29Gn0FT3BXbmd4GspOcyU+wzZQdrnu4WXj4LDipocVTngFE=
+	t=1774955154; cv=none; b=gku/mTitXTuLad9FcXLWp1YsuHqvxjGTVzppNtIdtcinslI79E1OkQwZx8TtCq5x+Hmd05MoQiPWVu9PjULOUxDj5vtowuCOEOYtIWtZ+dSQJhGd+m1tbjiUTwkK6il4H6YE6U87nKExx4xHKvE+GmibTK7QLIBCLseQGLzPBWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774954830; c=relaxed/simple;
-	bh=hGiALNHuqe9lChW6zej1kx4xR06ikgMYVbl+kBtn1Rw=;
+	s=arc-20240116; t=1774955154; c=relaxed/simple;
+	bh=SXqEk71BSaaBeUSF2ew0z1un4HM7vo7rVW84ixT4WY4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iopXO2zpKMCenVphewB1igQMVSLHJxVObAwdUeS/WotmBLquLRN/YMSKjy07xiTOX8SeffGE5UjT9nyxsvFNFJ8O1iXcr+usFBZeAoL5PzBvyj/X3emuihNoMKYzPFoNma8Or0NasV2N3h0o9rAlsbMZ+UivUdLvizbVNtLrvZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=QSrTUKFF; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	 In-Reply-To:Content-Type; b=VAm6lXFtULMaiU+xN7C+uySIaGsYiylO5z3CZ1u26QICMLKiUTWHZtoehl9I1Qvz5FqalecPFdt+m0QeNfLoqhNcJTIAMiSuyo8nJzzU+aMKRUNxVlgPbmw35/K4rxUFxwCuu49QlgIbix9BLaWoXqttwKex0X7FMKc7p0hNf8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=H7Gb0/Lc; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="QSrTUKFF"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43d02a71526so962363f8f.3
-        for <linux-coco@lists.linux.dev>; Tue, 31 Mar 2026 04:00:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1774954827; x=1775559627; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=4It0WZmVl5/qXPN0CzryvWQuSnTLqQkkeu2Hra/fxBs=;
-        b=QSrTUKFFcn8ong5NxN4l8F9o79vKvCGnM2iKrtCOQII3wQ36RHqKU8FpZQQnOwwNGf
-         +1J9W8BXYHgZYw0l57F0vEtn5uOk06jcgUKuOfrz8TqilG1JJn4qNO69ocYzM7ct2/Lk
-         3VWGs/CgEoqUY8pEdEUqJ/XE0B9//OpohAF80uaDAUGj1283xEB9aQOf3OVeAJghSYS/
-         IO5HZqaron/uUvNm5sIgm04ZshMOiX7Plv4JzRRrjWE/WzSCPRO62fOdWM9gmKl2gFrq
-         U1D4Ihv5iIjoLDr1fmFcyJ0ps3N/RAtBNkJgCRyUN6ZZ6vS9U1y1HDpyROSLy8EkDY3e
-         83eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774954827; x=1775559627;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4It0WZmVl5/qXPN0CzryvWQuSnTLqQkkeu2Hra/fxBs=;
-        b=J8lMMvxb4vMwqAyz6gcSmS/ysoBqWtVW/YLL+ibgOas8o5nKhH2zFlEv66tBDXsvT7
-         dR1sb3TM6yPtiu3sMEtRrOaB18yb2i3Mwp30hiM3Fda73eo66eaPKrP5/DG1ppVTIU2a
-         eIzIMBf0s+rjMnIAUFPVzJxr9dTsaeag5a/gX3y5PYwnqnb5f/HmA4EqBvRyDFRq37qL
-         OZ1MrK1fysYCRQpMY158WdmjkdbJZpFZz64c8o+ywEhx/MKsmfm3vCfF2kQ+KysKz8s3
-         LfeXItH4t1HV4PHtFvO2hbwoq+meyd53oYC3VpFgjaJ0XR3Smof8XwYJfADhCevCWlV7
-         jURA==
-X-Forwarded-Encrypted: i=1; AJvYcCVDqwqpezhTmlHGr/XOjsVzlNom1QqP3Uk17pXRkC+78nOJv0xmfS0SBNJEzWKF9HkbBP2NPr9KvEbv@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx4KTvWLWdchaptXOsBJi1rk3G6y/9MYQoAtG/Z+gSOA+JimD4X
-	RjxeelRdKGX5SjvmVIOZBD8519tbMIC9Kxwchv/E90djLZZvst3NrpuF9XFNqDG6SzA=
-X-Gm-Gg: ATEYQzy4q/4ORtEYE4gwUAqSaN3GOxZ2/9IHzP0NLdyt10a0p3/4B8PjYxDREPOsXIs
-	m9Y6S6bkmXDMUhkBbB9VKTeRGcrEwTTD8OvP+C89W76w4IZ4WhtQMl2M2Lv2L2f1/sf0T+iYmxS
-	NrJ7cAWKpmSO4xBo1M/r82WK8tb/IadYiZZrmMunPrtvomeKRC3/7One/iudOWyBBUiiUePe2ct
-	CvzGe/AhkyftwG8BMflnwIEgnchFNHFD5AKpYqiJyYsNYzeNX2bIUOY9x9X2O6FF0iOVJ3igZhI
-	9mevXqTRZIldb7PWiCKSVtGiJg1A8ZH8nxXBB+tro3zTUKZlvCWjVuMj+fE1as7JQ2PmtbfvFEa
-	rCtZIH3FZqOq3/Sn7jlAxjI5C9aA5SGwuEwrFssDbbhb3toSvJLyFpW2JBuTpz5u1Ut1YI3RraH
-	fgjbErR0kwMU4vm81CkqtBBOTfcQ==
-X-Received: by 2002:a05:6000:2505:b0:43b:962b:5314 with SMTP id ffacd0b85a97d-43b9e9e8f39mr27390891f8f.19.1774954827290;
-        Tue, 31 Mar 2026 04:00:27 -0700 (PDT)
-Received: from [192.168.0.20] ([212.21.133.10])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf21ebef9sm27611019f8f.13.2026.03.31.04.00.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Mar 2026 04:00:26 -0700 (PDT)
-Message-ID: <d9f09a41-9d10-4778-b49a-d54504020636@suse.com>
-Date: Tue, 31 Mar 2026 14:00:25 +0300
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="H7Gb0/Lc"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F3D4C4983;
+	Tue, 31 Mar 2026 04:05:45 -0700 (PDT)
+Received: from [10.57.17.66] (unknown [10.57.17.66])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EF3FA3F641;
+	Tue, 31 Mar 2026 04:05:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1774955151; bh=SXqEk71BSaaBeUSF2ew0z1un4HM7vo7rVW84ixT4WY4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=H7Gb0/LcvB0+eLbF5RvOApy2pS6wZvhm623HaPVBt4XeMLB0uQZ16neUC2vLOdAzl
+	 0soNXv7Pgbu6loJbbx8OAh8hXbrM4Vw+1kwi75/1fWNtgf32alsML8n3SklnvDsOPy
+	 2ZY0jSixIxU7I23ihVmOkK9wYuhcN3f7T3RfUEEk=
+Message-ID: <152f5070-fda6-4381-bc40-4a70908c27c1@arm.com>
+Date: Tue, 31 Mar 2026 12:05:47 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -68,144 +35,255 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/31] x86/virt/tdx: Add extra memory to TDX Module for
- Extensions
-To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
-Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
- yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
- rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, kas@kernel.org,
- xiaoyao.li@intel.com, vishal.l.verma@intel.com, linux-kernel@vger.kernel.org
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-11-yilun.xu@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20260327160132.2946114-11-yilun.xu@linux.intel.com>
+Subject: Re: [PATCH v13 10/48] arm64: RMI: Ensure that the RMM has GPT entries
+ for memory
+Content-Language: en-GB
+To: Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>
+References: <20260318155413.793430-1-steven.price@arm.com>
+ <20260318155413.793430-11-steven.price@arm.com> <acrj-cKphy4hJsEG@p14s>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <acrj-cKphy4hJsEG@p14s>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
+Hi Mathieu,
 
+On 30/03/2026 21:58, Mathieu Poirier wrote:
+> Hi,
+> 
+> On Wed, Mar 18, 2026 at 03:53:34PM +0000, Steven Price wrote:
+>> The RMM may not be tracking all the memory of the system at boot. Create
+>> the necessary tracking state and GPTs within the RMM so that all boot
+>> memory can be delegated to the RMM as needed during runtime.
+>>
+>> Note: support is currently missing for SROs which means that if the RMM
+>> needs memory donating this will fail (and render CCA unusable in Linux).
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> New patch for v13
+>> ---
+>>   arch/arm64/kvm/rmi.c | 89 ++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 89 insertions(+)
+>>
+>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>> index 9590dff9a2c1..80aedc85e94a 100644
+>> --- a/arch/arm64/kvm/rmi.c
+>> +++ b/arch/arm64/kvm/rmi.c
+>> @@ -4,6 +4,7 @@
+>>    */
+>>   
+>>   #include <linux/kvm_host.h>
+>> +#include <linux/memblock.h>
+>>   
+>>   #include <asm/kvm_pgtable.h>
+>>   #include <asm/rmi_cmds.h>
+>> @@ -56,6 +57,18 @@ static int rmi_check_version(void)
+>>   	return 0;
+>>   }
+>>   
+>> +/*
+>> + * These are the 'default' sizes when passing 0 as the tracking_region_size.
+>> + * TODO: Support other granule sizes
+>> + */
+>> +#ifdef CONFIG_PAGE_SIZE_4KB
+>> +#define RMM_GRANULE_TRACKING_SIZE	SZ_1G
+>> +#elif defined(CONFIG_PAGE_SIZE_16KB)
+>> +#define RMM_GRANULE_TRACKING_SIZE	SZ_32M
+>> +#elif defined(CONFIG_PAGE_SIZE_64KB)
+>> +#define RMM_GRANULE_TRACKING_SIZE	SZ_512M
+>> +#endif
+>> +
+>>   static int rmi_configure(void)
+>>   {
+>>   	struct rmm_config *config __free(free_page) = NULL;
+>> @@ -95,6 +108,80 @@ static int rmi_configure(void)
+>>   	return 0;
+>>   }
+>>   
+>> +static int rmi_verify_memory_tracking(phys_addr_t start, phys_addr_t end)
+>> +{
+>> +	start = ALIGN_DOWN(start, RMM_GRANULE_TRACKING_SIZE);
+> 
+> This will produce an error on systems where the start of system memory is not
+> aligned to RMM_GRANULE_TRACKING_SIZE.  For instance, on QEMU-SBSA the system
+> memory starts at 0x100_4300_0000.  With the above and RMM_GRANULE_TRACKING_SIZE
+> set to SZ_1G, @start becomes 0x100_4000_0000, which falls outside the memory map
+> known to the TF-A.  I fixed it with these modifications:
 
-On 27.03.26 г. 18:01 ч., Xu Yilun wrote:
-> Adding more memory to TDX Module is the first step to enable Extensions.
+Thanks for raising this. This would need to be addressed in the RMM
+spec, I have raised it with the team and will be addressed soon.
+
 > 
-> Currently, TDX Module memory use is relatively static. But, some new
-> features (called "TDX Module Extensions") need to use memory more
-> dynamically. While 'static' here means the kernel provides necessary
-> amount of memory to TDX Module for its basic functionalities, 'dynamic'
-> means extra memory is needed only if new optional features are to be
-> enabled. So add a new memory feeding process backed by a new SEAMCALL
-> TDH.EXT.MEM.ADD.
+> LINUX:
 > 
-> The process is mostly the same as adding PAMT. The kernel queries TDX
-> Module how much memory needed, allocates it, hands it over, and never
-> gets it back.
-> 
-> TDH.EXT.MEM.ADD uses tdx_page_array to provide control (private) pages
-> to TDX Module. Introduce a tdx_clflush_page_array() helper to flush
-> shared cache before SEAMCALL, to avoid shared cache write back damages
-> these private pages.
-> 
-> For now, TDX Module Extensions consume relatively large amount of
-> memory (~50MB). Use contiguous page allocation to avoid permanently
-> fragment too much memory. Print this readout value on TDX Module
-> Extensions initialization for visibility.
-> 
-> Co-developed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> ---
->   arch/x86/virt/vmx/tdx/tdx.h |  1 +
->   arch/x86/virt/vmx/tdx/tdx.c | 92 ++++++++++++++++++++++++++++++++++++-
->   2 files changed, 91 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-> index 870bb75da3ba..31ccdfcf518c 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.h
-> +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> @@ -60,6 +60,7 @@
->   #define TDH_VP_WR			43
->   #define TDH_SYS_CONFIG_V0		45
->   #define TDH_SYS_CONFIG			SEAMCALL_LEAF_VER(TDH_SYS_CONFIG_V0, 1)
-> +#define TDH_EXT_MEM_ADD			61
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> index 10ff1c3bddaf..21bfbbe2f047 100644
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -424,7 +424,9 @@ static int rmi_configure(void)
 >   
->   /* TDX page types */
->   #define	PT_NDA		0x0
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index 4fb56bb442f0..5fae17c13191 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -560,7 +560,7 @@ static int tdx_alloc_pages_contig(unsigned int nr_pages, struct page **pages,
->    * Similar to tdx_page_array_alloc(), after allocating with this
->    * function, call tdx_page_array_populate() to populate the tdx_page_array.
->    */
-> -static __maybe_unused struct tdx_page_array *
-> +static struct tdx_page_array *
->   tdx_page_array_alloc_contig(unsigned int nr_pages)
+>   static int rmi_verify_memory_tracking(phys_addr_t start, phys_addr_t end)
 >   {
->   	return tdx_page_array_alloc(nr_pages, tdx_alloc_pages_contig, NULL);
-> @@ -643,7 +643,7 @@ EXPORT_SYMBOL_GPL(tdx_page_array_create_iommu_mt);
->   #define HPA_LIST_INFO_PFN		GENMASK_U64(51, 12)
->   #define HPA_LIST_INFO_LAST_ENTRY	GENMASK_U64(63, 55)
+> -       start = ALIGN_DOWN(start, RMM_GRANULE_TRACKING_SIZE);
+> +       phys_addr_t offset;
+> +
+> +       offset = start - ALIGN_DOWN(start, RMM_GRANULE_TRACKING_SIZE);
+>          end = ALIGN(end, RMM_GRANULE_TRACKING_SIZE);
 >   
-> -static u64 __maybe_unused hpa_list_info_assign_raw(struct tdx_page_array *array)
-> +static u64 hpa_list_info_assign_raw(struct tdx_page_array *array)
->   {
->   	return FIELD_PREP(HPA_LIST_INFO_FIRST_ENTRY, 0) |
->   	       FIELD_PREP(HPA_LIST_INFO_PFN,
-> @@ -1513,6 +1513,94 @@ static void tdx_clflush_page(struct page *page)
->   	clflush_cache_range(page_to_virt(page), PAGE_SIZE);
->   }
+>          while (start < end) {
+> @@ -439,7 +441,13 @@ static int rmi_verify_memory_tracking(phys_addr_t start, phys_addr_t end)
+>                                  start);
+>                          return -ENODEV;
+>                  }
+> -               start += RMM_GRANULE_TRACKING_SIZE;
+> +
+> +               if (offset) {
+> +                       start += (RMM_GRANULE_TRACKING_SIZE - offset);
+> +                       offset = 0;
+> +               } else {
+> +                       start += RMM_GRANULE_TRACKING_SIZE;
+> +               }
+>          }
 >   
-> +static void tdx_clflush_page_array(struct tdx_page_array *array)
-> +{
-> +	for (int i = 0; i < array->nents; i++)
+>          return 0;
+> 
+> RMM:
+> 
+> diff --git a/runtime/rmi/granule.c b/runtime/rmi/granule.c
+> index cef521fc0869..60358d9ee81e 100644
+> --- a/runtime/rmi/granule.c
+> +++ b/runtime/rmi/granule.c
+> @@ -209,9 +209,11 @@ void smc_granule_tracking_get(unsigned long addr,
+>                  return;
+>          }
+>   
+> +#if 0
+>          if (!ALIGNED(addr, RMM_INTERNAL_TRACKING_REGION_SIZE)) {
+>                  return;
+>          }
+> +#endif
+>   
+>          g = find_granule(addr);
+>          if (g != NULL) {
+> 
+> This is likely not the right fix but hopefully provides some guidance.  Send me
+> your patches when you have an idea and I'll test them.
 
-shouldn't the actual number of entries be adjusted as per offset, 
-similarly to how 'nents' in tdx_page_array_validate_release is calculated?
+We will send you the update once it is fixed in the RMM spec. The rough 
+idea is to remove the ALIGNMENT restrictions and return a Range that
+the host can iterate over to find "regions" with the same type of
+memory.
 
 
-<snip>
+Cheers
+Suzuki
+
+
+> 
+> Thanks,
+> Mathieu
+> 
+> 
+>> +	end = ALIGN(end, RMM_GRANULE_TRACKING_SIZE);
+>> +
+>> +	while (start < end) {
+>> +		unsigned long ret, category, state;
+>> +
+>> +		ret = rmi_granule_tracking_get(start, &category, &state);
+>> +		if (ret != RMI_SUCCESS ||
+>> +		    state != RMI_TRACKING_FINE ||
+>> +		    category != RMI_MEM_CATEGORY_CONVENTIONAL) {
+>> +			/* TODO: Set granule tracking in this case */
+>> +			kvm_err("Granule tracking for region isn't fine/conventional: %llx",
+>> +				start);
+>> +			return -ENODEV;
+>> +		}
+>> +		start += RMM_GRANULE_TRACKING_SIZE;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static unsigned long rmi_l0gpt_size(void)
+>> +{
+>> +	return 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
+>> +				      rmm_feat_reg1));
+>> +}
+>> +
+>> +static int rmi_create_gpts(phys_addr_t start, phys_addr_t end)
+>> +{
+>> +	unsigned long l0gpt_sz = rmi_l0gpt_size();
+>> +
+>> +	start = ALIGN_DOWN(start, l0gpt_sz);
+>> +	end = ALIGN(end, l0gpt_sz);
+>> +
+>> +	while (start < end) {
+>> +		int ret = rmi_gpt_l1_create(start);
+>> +
+>> +		if (ret && ret != RMI_ERROR_GPT) {
+>> +			/*
+>> +			 * FIXME: Handle SRO so that memory can be donated for
+>> +			 * the tables.
+>> +			 */
+>> +			kvm_err("GPT Level1 table missing for %llx\n", start);
+>> +			return -ENOMEM;
+>> +		}
+>> +		start += l0gpt_sz;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int rmi_init_metadata(void)
+>> +{
+>> +	phys_addr_t start, end;
+>> +	const struct memblock_region *r;
+>> +
+>> +	for_each_mem_region(r) {
+>> +		int ret;
+>> +
+>> +		start = memblock_region_memory_base_pfn(r) << PAGE_SHIFT;
+>> +		end = memblock_region_memory_end_pfn(r) << PAGE_SHIFT;
+>> +		ret = rmi_verify_memory_tracking(start, end);
+>> +		if (ret)
+>> +			return ret;
+>> +		ret = rmi_create_gpts(start, end);
+>> +		if (ret)
+>> +			return ret;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>   static int rmm_check_features(void)
+>>   {
+>>   	if (kvm_lpa2_is_enabled() && !rmi_has_feature(RMI_FEATURE_REGISTER_0_LPA2)) {
+>> @@ -120,6 +207,8 @@ void kvm_init_rmi(void)
+>>   		return;
+>>   	if (rmi_configure())
+>>   		return;
+>> +	if (rmi_init_metadata())
+>> +		return;
+>>   
+>>   	/* Future patch will enable static branch kvm_rmi_is_available */
+>>   }
+>> -- 
+>> 2.43.0
+>>
+>>
+
