@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0300E3B4E8B;
-	Tue, 31 Mar 2026 07:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5923D5253
+	for <linux-coco@lists.linux.dev>; Tue, 31 Mar 2026 09:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774941735; cv=none; b=tjfL7j1Vm3bhA4JJRkfan6is5uVHQKs9CsV9CBdxoB7x1b0DEuZtUFQ2mdm6w7Biy6ggUqL/G6Fqwqrb+EAr/xnhjYvoE5g81b2Ce+SG4wVRKzZoQPgJ9sBoDNf9TKx06oheh1muDs6/hxPiv0wjhcNkj2Jmo0YfPmR33VLl1sI=
+	t=1774950697; cv=none; b=SOR8PRD9ceLdNRGSj7wTS/D9r/VIqG4Ym9AN5qKfbCm/ZayZQDmghCg5FnTvga3PRd/gJsHariP15tzIhyzUdcgHlRg5HuxaIqBQ6S4OYncPh1WdJpdvsNtoiiBfyftF0PmWNHcH/aH66iOWBxrMHs2Zm4UrrjPr3HkTVZY6bdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774941735; c=relaxed/simple;
-	bh=C1YKXGKjApcPGj6BR6AhID4Gp4kW/avbsOowHqInjZc=;
+	s=arc-20240116; t=1774950697; c=relaxed/simple;
+	bh=zC/XH9x3T6AByR7y3dQUQovxjNsWGhMtgeQ4cgnecIk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eSJlDHDczcDlhnFSNToSw2xvQ+Y/ePcUGO1SHylO5TGERewb6QvTkjCTLsXoyuUpnlDY72PGu33KdY+xULQbUb6wpkyls3qW2F30ukzw73kyyLkBI8s+q9KbWu3M9O0TC406JStXLGNDIRBpOgGHxS33m6lwycAC3vwOjUtac0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l850NY0b; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=CJ+i7Iq5kinkuY6qmq6UAJ6Jg4ki4TPg6hoWi/CznbgA4mqOepGnuLH5kz7NfSevw4YZeszC1RIoPk/jooPnynj01He5cS8loGjxJFUK/UdGrGtXsn1mzC5sOaXkneg/8LeQgxBfrD5XWrG1HbfGKC5lFTLOBML3aFFOLvlMyRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NwnqXGcJ; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l850NY0b"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NwnqXGcJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774941733; x=1806477733;
+  t=1774950696; x=1806486696;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=C1YKXGKjApcPGj6BR6AhID4Gp4kW/avbsOowHqInjZc=;
-  b=l850NY0b30hXs0cvJjwy+0UtJARQgD5okXgxfq308f1AczMc94PUJtKV
-   UdleadmiwnN/9xVZDTN0f+5JxDAok5yskmBdpG2xhPIAYjW9M/dSEri87
-   Xx1xeIZdDUNTe1pcpnucuskvwKZctVVsk52IJP1xjX/lkvp/NAlx2TvtV
-   VDQhzyphplN8v2jc34cyxhGgh722UasIfLqtmpRlC2Oa3qFE46pW1ONGh
-   HeQTuJPwouR3J0DSMDPi+h/Uv46N0UTzqevNA03VrL8nqn6RF/5SHNSOT
-   Yom9YIm0PFqFsbLK9FNjB+mWyoOs6L4LJUnhQBLN0VYwoeacKUPE5AFrX
+  bh=zC/XH9x3T6AByR7y3dQUQovxjNsWGhMtgeQ4cgnecIk=;
+  b=NwnqXGcJ+fBQz7Yf+eTYiafH4Xv50A47BMsPHaucmoBSZMfh5IS1I7vl
+   QLFnJzV+v5Pr2cSqM2gLLhzn2EviNMOJP8wEBZsEeG+cFdm/R999JfPOa
+   kZ+ufJfwg9ExQubkX5g43rXNK7NrRxtEqEbmU1zFIIukCLmvZ6ehgxWfl
+   WorMH6qDwGKt2heFvmjGDVFs9dXLbwjxn3QmuTCWgBzha8SLyqb5DosQH
+   7IDTxPebwN+lzQC8HW/s0Kb3f5yEjEtsrkY1yuPFfdfPB9s2z5GP+vm8W
+   +f22L5ugSghXjHUOA3byt/TLl1Ukk3wkAVjIuG9wQGZ3H9J/Y4Ntoa2ge
    w==;
-X-CSE-ConnectionGUID: IobMgaT/TieZeyKkQuZvew==
-X-CSE-MsgGUID: jKhShSS6QVG0rTXeAExaAA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="93328657"
+X-CSE-ConnectionGUID: Rpw+5YkzSeehewvCLiQ/FQ==
+X-CSE-MsgGUID: FjTk1QDEQ8WuzeQjCjn+SA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="75975316"
 X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
-   d="scan'208";a="93328657"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 00:22:13 -0700
-X-CSE-ConnectionGUID: x0CbGA/6S6GVD2t9iXXBoA==
-X-CSE-MsgGUID: SWJYIpSRQgS7gMnP8WtOmA==
+   d="scan'208";a="75975316"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 02:51:35 -0700
+X-CSE-ConnectionGUID: Ry+slhW2QHyMEuYdpyrX3w==
+X-CSE-MsgGUID: 4hfr+qsHQ6WLJvNt1IOM/Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
-   d="scan'208";a="225287432"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 00:22:08 -0700
-Message-ID: <4be868dc-d6e1-4488-8f28-34ef1d3659ac@linux.intel.com>
-Date: Tue, 31 Mar 2026 15:20:44 +0800
+   d="scan'208";a="231133646"
+Received: from unknown (HELO [10.239.158.60]) ([10.239.158.60])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 02:51:29 -0700
+Message-ID: <b010e305-d558-43d3-92a1-25070364fbaf@intel.com>
+Date: Tue, 31 Mar 2026 17:51:27 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,145 +52,67 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 19/31] iommu/vt-d: Reserve the MSB domain ID bit for
- the TDX module
-To: kernel test robot <lkp@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>,
- linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
- dan.j.williams@intel.com, x86@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, chao.gao@intel.com, dave.jiang@intel.com,
- yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
- rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, kas@kernel.org,
- xiaoyao.li@intel.com, vishal.l.verma@intel.com, linux-kernel@vger.kernel.org
-References: <20260327160132.2946114-20-yilun.xu@linux.intel.com>
- <202603290006.za7iiDgF-lkp@intel.com>
+Subject: Re: [PATCH v6 01/22] x86/virt/tdx: Move low level SEAMCALL helpers
+ out of <asm/tdx.h>
+To: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org
+Cc: binbin.wu@linux.intel.com, dan.j.williams@intel.com,
+ dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com,
+ kas@kernel.org, nik.borisov@suse.com, paulmck@kernel.org,
+ pbonzini@redhat.com, reinette.chatre@intel.com, rick.p.edgecombe@intel.com,
+ sagis@google.com, seanjc@google.com, tony.lindgren@linux.intel.com,
+ vannapurve@google.com, vishal.l.verma@intel.com, yilun.xu@linux.intel.com,
+ yan.y.zhao@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>
+References: <20260326084448.29947-1-chao.gao@intel.com>
+ <20260326084448.29947-2-chao.gao@intel.com>
 Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <202603290006.za7iiDgF-lkp@intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260326084448.29947-2-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 3/29/26 00:57, kernel test robot wrote:
-> kernel test robot noticed the following build warnings:
+On 3/26/2026 4:43 PM, Chao Gao wrote:
+> From: Kai Huang <kai.huang@intel.com>
 > 
-> [auto build test WARNING on 11439c4635edd669ae435eec308f4ab8a0804808]
+> TDX host core code implements three seamcall*() helpers to make SEAMCALL
+> to the TDX module.  Currently, they are implemented in <asm/tdx.h> and
+> are exposed to other kernel code which includes <asm/tdx.h>.
 > 
-> url:https://github.com/intel-lab-lkp/linux/commits/Xu-Yilun/x86-tdx-Move- 
-> all-TDX-error-defines-into-asm-shared-tdx_errno-h/20260328-151524
-> base:   11439c4635edd669ae435eec308f4ab8a0804808
-> patch link:https://lore.kernel.org/r/20260327160132.2946114-20- 
-> yilun.xu%40linux.intel.com
-> patch subject: [PATCH v2 19/31] iommu/vt-d: Reserve the MSB domain ID bit for the TDX module
-> config: i386-randconfig-141-20260328 (https://download.01.org/0day-ci/archive/20260329/202603290006.za7iiDgF- 
-> lkp@intel.com/config)
-> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-> smatch: v0.5.0-9004-gb810ac53
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260329/202603290006.za7iiDgF- 
-> lkp@intel.com/reproduce)
+> However, other than the TDX host core, seamcall*() are not expected to
+> be used by other kernel code directly.  For instance, for all SEAMCALLs
+> that are used by KVM, the TDX host core exports a wrapper function for
+> each of them.
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot<lkp@intel.com>
-> | Closes:https://lore.kernel.org/oe-kbuild-all/202603290006.za7iiDgF-lkp@intel.com/
+> Move seamcall*() and related code out of <asm/tdx.h> and make them only
+> visible to TDX host core.
 > 
-> All warnings (new ones prefixed by >>, old ones prefixed by <<):
+> Since TDX host core tdx.c is already very heavy, don't put low level
+> seamcall*() code there but to a new dedicated "seamcall_internal.h".  Also,
+> currently tdx.c has seamcall_prerr*() helpers which additionally print
+> error message when calling seamcall*() fails.  Move them to
+> "seamcall_internal.h" as well. In such way all low level SEAMCALL helpers
+> are in a dedicated place, which is much more readable.
 > 
->>> WARNING: modpost: vmlinux: section mismatch in reference: iommu_max_domain_id+0x55 (section: .text.iommu_max_domain_id) -> acpi_table_parse_keyp (section: .init.text)
+> Copy the copyright notice from the original files and consolidate the
+> date ranges to:
+> 
+> 	Copyright (C) 2021-2023 Intel Corporation
+> 
+> Signed-off-by: Kai Huang <kai.huang@intel.com>
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-acpi_table_parse_keyp() is marked as __init. But this patch causes the
-intel iommu driver to call it from a runtime function.
+[...]
 
-int __init_or_acpilib
-acpi_table_parse_keyp(enum acpi_keyp_type id,
-                       acpi_tbl_entry_handler_arg handler_arg, void *arg)
-{
-         return __acpi_table_parse_entries(ACPI_SIG_KEYP,
-                                           sizeof(struct 
-acpi_table_keyp), id,
-                                           NULL, handler_arg, arg, 0);
-}
+> -static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
+> -			   struct tdx_module_args *args)
 
-One way to solve this might be parsing the table once in the __init
-context and store the result in variable that could be used after boot.
-
-How about the following additional change (untested)?
-
-diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
-index 097c4a90302f..0b384a58a3a0 100644
---- a/drivers/iommu/intel/dmar.c
-+++ b/drivers/iommu/intel/dmar.c
-@@ -63,6 +63,7 @@ LIST_HEAD(dmar_drhd_units);
-  struct acpi_table_header * __initdata dmar_tbl;
-  static int dmar_dev_scope_status = 1;
-  static DEFINE_IDA(dmar_seq_ids);
-+static bool tdx_tvm_usable __ro_after_init;
-
-  static int alloc_iommu(struct dmar_drhd_unit *drhd);
-  static void free_iommu(struct intel_iommu *iommu);
-@@ -915,6 +916,17 @@ dmar_validate_one_drhd(struct acpi_dmar_header 
-*entry, void *arg)
-  	return 0;
-  }
-
-+static void __init intel_iommu_check_tdxc_enhancement(void)
-+{
-+	int tvm_usable = 0;
-+	int ret;
-+
-+	ret = acpi_table_parse_keyp(ACPI_KEYP_TYPE_CONFIG_UNIT,
-+				    keyp_config_unit_tvm_usable, &tvm_usable);
-+	if (ret >= 0)
-+		tdx_tvm_usable = !!tvm_usable;
-+}
-+
-  void __init detect_intel_iommu(void)
-  {
-  	int ret;
-@@ -923,6 +935,8 @@ void __init detect_intel_iommu(void)
-  		.ignore_unhandled = true,
-  	};
-
-+	intel_iommu_check_tdxc_enhancement();
-+
-  	down_write(&dmar_global_lock);
-  	ret = dmar_table_detect();
-  	if (!ret)
-@@ -1046,24 +1060,6 @@ static int keyp_config_unit_tvm_usable(union 
-acpi_subtable_headers *header,
-  	return 0;
-  }
-
--static bool platform_is_tdxc_enhanced(void)
--{
--	static int tvm_usable = -1;
--	int ret;
--
--	/* only need to parse once */
--	if (tvm_usable != -1)
--		return !!tvm_usable;
--
--	tvm_usable = 0;
--	ret = acpi_table_parse_keyp(ACPI_KEYP_TYPE_CONFIG_UNIT,
--				    keyp_config_unit_tvm_usable, &tvm_usable);
--	if (ret < 0)
--		tvm_usable = 0;
--
--	return !!tvm_usable;
--}
--
-  static unsigned long iommu_max_domain_id(struct intel_iommu *iommu)
-  {
-  	unsigned long ndoms = cap_ndoms(iommu->cap);
-@@ -1075,7 +1071,7 @@ static unsigned long iommu_max_domain_id(struct 
-intel_iommu *iommu)
-  	 * the VMM’s DID setting, reserving the MSB bit for the TDX module. The
-  	 * TDX module always sets this reserved bit on the trusted DMA table.
-  	 */
--	if (ecap_tdxc(iommu->ecap) && platform_is_tdxc_enhanced()) {
-+	if (ecap_tdxc(iommu->ecap) && tdx_tvm_usable) {
-  		pr_info_once("Most Significant Bit of domain ID reserved.\n");
-  		return ndoms >> 1;
-  	}
-
-Thanks,
-baolu
+Nit: Maybe take the chance to align the second line?
