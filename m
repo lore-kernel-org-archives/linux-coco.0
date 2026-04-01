@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9961944D039
-	for <linux-coco@lists.linux.dev>; Wed,  1 Apr 2026 14:23:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37C22D9EE7
+	for <linux-coco@lists.linux.dev>; Wed,  1 Apr 2026 15:02:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775053435; cv=none; b=eazkTKNiB0PSYCxS6tQh/VEVY9KOGc69vDc8NUZ73DIb9+Qxrs/KhuFqcUwckoYk7Po5gjHmpiD3H6tz+u1dwjS+l2pNjnDYN0YlZ5Jn7hcjkad4Q9iyFSntjMBMEGskMuSRT7nVz258yLsivIZxvLUnhnSiPFohGBFuKSx4Ltw=
+	t=1775055778; cv=none; b=UEEacq+GGYDmgM0089TYocyC0bbVFuAz3vPa1KWZnr5eVsTxLSaJShGnqZPsSk+yI3oGkzrVs7VLVTLGZHuRj03tn1SjbDq7tNWU9NRnn85Hdj2iv8RLa5+vyaQfSMUP56vdggeRHZrwJ6T7l/JUOaKiwBlgqo42C+1NdCLBAr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775053435; c=relaxed/simple;
-	bh=DryLhhG4NN71YimAfpuPlkKlSrpcP5IEAQgbutXVFjQ=;
+	s=arc-20240116; t=1775055778; c=relaxed/simple;
+	bh=N4nxM/Zs/+7tD+W3WyNTlGiHot0Q1qTpcJ50VI5YIWg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UstHNIece61rjZt+ZjEX9NmcDw09zTbHR1YgNUqL3qfLc7wlzHpWv/yhVqJ5Dk8bgmC5X3p8XZJBTl2ulhrdkP8mNmn6pNl937gSlg8wJobAh4Ekbd7qrSO9cCtukCcRDz4tTINp9j14hlWSgkI7lotKcY1LF2ueLb1uAT0AesE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dXSR6hAG; arc=none smtp.client-ip=192.198.163.12
+	 In-Reply-To:Content-Type; b=RLzO8BbVXYozi1iYZTs7AsmB89x8Wjb46Bl6Jm4EnGD4vdtoWB+09bHQhuNDaPQiwh4a8kgzM73dUox/gQxkgSfglGBsNrGG2UTDENH1vXiRlR0pmynaG+zO5DB+aRpXgeyyTsFI2Gy3w4vk43c877YfZz0JZZ35dmLOIvs5dbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VIlTH3Fd; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dXSR6hAG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VIlTH3Fd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775053433; x=1806589433;
+  t=1775055777; x=1806591777;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=DryLhhG4NN71YimAfpuPlkKlSrpcP5IEAQgbutXVFjQ=;
-  b=dXSR6hAGIi8a06xJ3l1NrJB9SZUdEktXn61i4mKvTlCSntzDg5FxMopK
-   rZqgwmmam0mO5ghi0c5uZqGymtJ+sJ1SR3I5vEGqxcQIEJcFYm8VrncKw
-   On6XAA0EZYem6iHqkcPri5vlwfNwy1LUF0X//QXan8in+/Ufiwj5uhEWU
-   o95S8UXnhDBiLT2/4nabu8S+vFzpqpXbmcf4AdpG5RvQPRJLJDOvA28L2
-   5fzl7NJ/244eJBl4SSq4c9CV49dx+8MWtiaXoeXmlKnCgNH0FXZ8moACe
-   NBlzGULVO/QrYKw+6hPGws0ezPTykroodXVaSLnHVKylvcwz+1oyGweOG
+  bh=N4nxM/Zs/+7tD+W3WyNTlGiHot0Q1qTpcJ50VI5YIWg=;
+  b=VIlTH3FdoYXqhQUDJYzVlrbFfJvI7LJhpEVO9T6LefOmeHqIKhmIuy9I
+   tm522yW5w+bEzRC77VdaYCVkWbrU+1WGQWeOXWVQvvbLZQq0Pb4CtGoFB
+   6fGdhXGtRol2DSg8iBZA0rBQdXd1qqasdfibd5x1/w0EeirQ10khBZsdn
+   2kItAT9PRa8VdKnUGScKjFEKe/2uf/bIyIze7S6lxJ4EeKkYIxESjzGOV
+   oVq1+BaYsJagzfolMa6LfG51iY4WSDYCXge6jyGATnId2cLmJ2k86NoV5
+   jqftazx3CTAyxt/VkroroRvOiGcf8MG3g9GVYxUxIjHlclVrlUjauoalK
    g==;
-X-CSE-ConnectionGUID: 2fIzdGBZTbS646c/3NCp/g==
-X-CSE-MsgGUID: ItLyHz/gRZWqOxbEAbWkag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="79980420"
+X-CSE-ConnectionGUID: Qz9Mf9BbR2K/FVAJyj1vkQ==
+X-CSE-MsgGUID: bjhVmKBQQPmMvkmO6DUGXQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="75272309"
 X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="79980420"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 07:23:53 -0700
-X-CSE-ConnectionGUID: A4o2gcf+QSGnQ54UDaA6eQ==
-X-CSE-MsgGUID: AS6L6CMYTbGOJTBlROViPQ==
+   d="scan'208";a="75272309"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 08:02:56 -0700
+X-CSE-ConnectionGUID: z+My3eUxS0uH0ZEAm0HmDA==
+X-CSE-MsgGUID: w0yt8C68SCmiiGs1Ht19og==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="226938217"
+   d="scan'208";a="221855782"
 Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.111.95]) ([10.125.111.95])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 07:23:52 -0700
-Message-ID: <eabf56d3-3b6b-478e-9901-8c639291d79a@intel.com>
-Date: Wed, 1 Apr 2026 07:24:00 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 08:02:55 -0700
+Message-ID: <830f1e46-0fb7-4756-827b-c8f46af24374@intel.com>
+Date: Wed, 1 Apr 2026 08:03:02 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,14 +52,14 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/5] x86/virt/tdx: Add SEAMCALL wrapper for
- TDH.SYS.DISABLE
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "Verma, Vishal L" <vishal.l.verma@intel.com>, "kas@kernel.org"
- <kas@kernel.org>
-Cc: "seanjc@google.com" <seanjc@google.com>, "bp@alien8.de" <bp@alien8.de>,
- "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
+Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Pull kexec cache flush logic into
+ arch/x86
+To: Sean Christopherson <seanjc@google.com>,
+ Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Vishal L Verma <vishal.l.verma@intel.com>, Kai Huang
+ <kai.huang@intel.com>, "bp@alien8.de" <bp@alien8.de>,
+ "x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>,
+ "hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
  "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
  "tglx@kernel.org" <tglx@kernel.org>,
@@ -67,12 +67,10 @@ Cc: "seanjc@google.com" <seanjc@google.com>, "bp@alien8.de" <bp@alien8.de>,
  "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
  "kvm@vger.kernel.org" <kvm@vger.kernel.org>
 References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
- <20260323-fuller_tdx_kexec_support-v2-3-87a36409e051@intel.com>
- <acpiGUKS-WRmLoxp@thinkstation>
- <def1f4395865ad0d22be245647fbb75ab8698ab8.camel@intel.com>
- <acu4raBTjdFcfVlS@thinkstation>
- <b9aa84d76c131132b5268712a44200e804c31aeb.camel@intel.com>
- <944b3fe5fa8955319030a7dfc0ea164bb0266e68.camel@intel.com>
+ <20260323-fuller_tdx_kexec_support-v2-2-87a36409e051@intel.com>
+ <acwe7kKyjfEQ0sIf@google.com>
+ <6ad3ff51bbab85147b716de0b1f4e8b994b1998b.camel@intel.com>
+ <acxTBwaw6_xYSShf@google.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -118,46 +116,26 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <944b3fe5fa8955319030a7dfc0ea164bb0266e68.camel@intel.com>
+In-Reply-To: <acxTBwaw6_xYSShf@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 3/31/26 14:36, Edgecombe, Rick P wrote:
-> On Tue, 2026-03-31 at 18:22 +0000, Verma, Vishal L wrote:
->>> I guess the actual behaviour is dependant on the return code. It is
->>> obviously going to be the case for TDX_SUCCESS. And from the discussion,
->>> I guess that's true for TDX_SYS_BUSY and TDX_INTERRUPTED_RESUMABLE.
->>>
->>> What about other cases? The spec draft also lists TDX_SYS_NOT_READY and
->>> TDX_SYS_SHUTDOWN.
->> I think these are safe too - TDX_SYS_SHUTDOWN means the module has
->> already been shutdown, which this seamcall would've done, so things
->> should be in the same state either way.
->>
->> TDX_SYS_NOT_READY means the module hasn't been initialized yet. This
->> seamcall should just exit, and the module is already blocking any
->> seamcall that need the module to be initialized. The seamcalls to
->> initialize the module will be allowed, as they are after a sys_disable
->> call anyway.
-> Should the seamcall return success in the case where it would return
-> TDX_SYS_NOT_READY? It is in basically a reset state right? The errors we care
-> about are actual errors (TDX_SW_ERROR), so it makes no difference to the code in
-> the patch. But it might be a nicer API for the seamcall?
+On 3/31/26 16:04, Sean Christopherson wrote:
+> But unless the WBINVD is actually costly, why bother getting fancy?
 
-The problem is that the module doesn't have *a* reset state.
-TDX_SYS_NOT_READY gets returned before the module is initialized and
-initialization is a long, arduous process.
+WBINVD might be the most expensive single instruction in the whole ISA.
 
-For instance, I believe the module stays "not ready" in the middle of
-giving it PAMT memory and a keyID and all that jazz.
+That said, I'd much rather have a potentially unnecessary WBINVD than
+miss one. The thing I'd be worried about would be something wonky like:
 
-TDX_SYS_NOT_READY is a way of saying it can't easily *make* it to the
-actual reset state that TDH.SYS.DISABLE wants it to be in.
+	1. CPU offline does WBINVD
+	2. Some other TDX call gets made, dirties caches again
+	3. tdx_offline_cpu() skips WBINVD
 
-It's arguable that the module should be made more resilient to stop
-returning TDX_SYS_NOT_READY. But it's not as simple as just changing a
-return code in the module.
+So, let's just do both for now: Do WBINVD in tdx_offline_cpu() and
+comment that it might be redundant with other things in the CPU offline
+procedure.
 
-I'm OK with it continuing to return TDX_SYS_NOT_READY for now. I think
-it's a useful indicator. Maybe the kernel can't do much with it, but
-it's a little window into what went wrong.
+This really needs to be solved with infrastructure and keeping data
+about the reasons for needing WBINVD, not relying on code ordering or
+fragile semantics.
