@@ -1,115 +1,165 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE093B2FCA;
-	Wed,  1 Apr 2026 08:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3CF3D5666;
+	Wed,  1 Apr 2026 09:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775032494; cv=none; b=b3b0JuV86p79qi/R0TYJ2FtRVr92Nvhic5/UH3cbxbj4BuJwwMZhGu4Wntg9d4+0+4xVIuluT66u4KJcI5xWtpMA/W4cveDpr9PTgKcKUnmCFb6RjjaFV0McXfDuD2SYMDwVSWY7cdv4nCOQNfgE89cU8k5hjItZf8NILhA20ns=
+	t=1775035604; cv=none; b=rWqdRb5RC4Xl57quVLqmiqQMCbCinutvyL6JflGHyi+ve5CyBGci8/hN/vyhHuznL5enQZ+I9SO3ljue+CCssn6CWkeZP2ZBk+aAxQhaYhGDPxHDICmSHX+5/XS7351CLDebbEoNpXCSLOPr0b7fP7Cm2OkgUvDfMpjNj0NCLZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775032494; c=relaxed/simple;
-	bh=8LWqVYVupsHf2WpfKI7Tx2LrsjGmOFFgtNiUEes0yjk=;
+	s=arc-20240116; t=1775035604; c=relaxed/simple;
+	bh=vQoKBDVUQCrnlg4i6bDknEFEH566QDHvDtOP+1cfVMg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lx+UXHayX2SuYsxbxy22lXR8pbuKuBhmyrj4fXNyIuTrgfUxMHj6c8Sv+wOarrisxEea0VxO/0hhXtSIjvGLy7qfEcEHoVR6Gez6y0i575LsyuDdWxJITKRVVMWY57rVDVFsS8UFO/ILSuuFD/0E0U3kH8gTiyB/bqcQNbqNKVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hnpcxEqt; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=IOV5KsbCMWK4FRgNJNAUC+Cbt3CaKb7m56EEKUJA8SoCKjwVVuN/yuPI4iy/a1F9d3FGiqSDLXa2SXBVQx4d1SFIvSDOtqgH4c8japxAWzEoeZ9xFSh3h13LvMIlgA2jSowP2DCYRF5PCaoGj+71+ERVhe6pD9iTXYoDH7HApGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eR45Cdzx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hnpcxEqt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E190C2BC9E;
-	Wed,  1 Apr 2026 08:34:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eR45Cdzx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A197C2BCB3;
+	Wed,  1 Apr 2026 09:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775032494;
-	bh=8LWqVYVupsHf2WpfKI7Tx2LrsjGmOFFgtNiUEes0yjk=;
+	s=k20201202; t=1775035602;
+	bh=vQoKBDVUQCrnlg4i6bDknEFEH566QDHvDtOP+1cfVMg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hnpcxEqtNSrREXdRGUltJRsBgRljQFjyTyG070aV5TJ6OGoQDS4wYTBg5tYIXEUjG
-	 1axkaBU7lvMrW/bdAnfYC5INBzRofBlmLiu2YKdkboikJGIGxOYX6gCAVJ+IOD3Pqt
-	 MzPibK3zsvZnPlMTS7gsnucz/CNcYnwNutmXzHoGVhv3W0K118/vIYgzNqSgKfbQ8p
-	 gDo+zM2ZiOB8YEMk1+tM83mlbt759oeeQHEg8ohRoTRswAwljlefN5VF9YAMmg2IyT
-	 vQk+gWEH2B1r25aytzzJZKdeLQc7jxQwXGMzeXO2dCGJxz7ivKqlRCLsIxvraB5Vp5
-	 5Z2ZCkSXZvl2w==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id ADA3DF4006B;
-	Wed,  1 Apr 2026 04:34:52 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Wed, 01 Apr 2026 04:34:52 -0400
-X-ME-Sender: <xms:rNjMafuhn_FAUVDkXz3K70LYyVp6bUmqLflbZKgWHtFSwzPXg1f9TQ>
-    <xme:rNjMaRrNBod4OHBZaHuiisaWZteqrom0D41m5p6HCdnmsLpzwvvZi19Hx0ck3QKhR
-    CW9PXvQE_DRm9Tq4xbvaKzCpJYqeErhPCssJNX_0cttoNdXYy4dQBhG>
-X-ME-Received: <xmr:rNjMaTOa3R6sEKH-YwyI8JxxQrZR7cBc_eloNciMIFONFq1yINqzrjT3-Uum5Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvieegucetufdoteggodetrfdotf
+	b=eR45CdzxqaI3lDQ63QkFzdtfXBmqNY89rHXpPWgx6IYd/FTqsAuqjVnYRkaYg354w
+	 mpKCbUWq8EBPaC7VG8xNk2kyqeSv+mLRoDfl+uaJlB0CKXQBYL4eIwUPPzeJ3WHI2p
+	 pPtUbf07viuu//7hVap18gAn5YuR6DwjNadGJjN1xaZuNKT5HBPVcVq9KnWdIwwEZC
+	 Z2XV9Ldz14b4vGzUWjf1JSxl7z4cMaFIRMup4/J8n+2w9YFUfBIBH3p2TSWdApDFof
+	 gDuqRIiO2oFy+n6HVFQab5JcL/veF62B/ujE17R7AtnjdQOReC2uM0Hkgvwy8eUMap
+	 0gH1R1E9XO8LQ==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 56C89F40079;
+	Wed,  1 Apr 2026 05:26:41 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 01 Apr 2026 05:26:41 -0400
+X-ME-Sender: <xms:0eTMaelKbwcCtXUwAu07n1msc4QbNChZJ8vYe4zsFEsUTAXC0FL7CA>
+    <xme:0eTMafJs2jUfany_sOYLJ-awKE76c-mBtrWXxYqKTRDVO0RKtuejk-7DBF5SlgOS3
+    cJlj-bUtjrNiOTYsrHzsJ-Wj9KQbfppD1avsnRjUSmjCgbRW4miiA>
+X-ME-Received: <xmr:0eTMaUo4y8Ddo8yzyxNHJsz81u6-Z7pl7U37SJ9i98crLCJmEOrTDT_XVzUDYg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvjeehucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
     lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcuufhh
-    uhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnh
-    epffffkeegffejgfekvdejgeegtddtleejkefhhfduieduhfeigfduuefghfehffdunecu
-    ffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhs
-    ohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrh
-    hnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedviedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshgrthhhhigrnhgrrhgrhigrnhgrnh
-    drkhhuphhpuhhsfigrmhihsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohep
-    thhglhigsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhnghhosehrvgguhhgrth
-    drtghomhdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopegurghv
-    vgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepgiekie
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhhprgesiiihthhorhdrtghomhdprhgt
-    phhtthhopehrihgtkhdrphdrvggughgvtghomhgsvgesihhnthgvlhdrtghomhdprhgtph
-    htthhopehtshihrhhulhhnihhkohhvrdgsohhrhihssehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:rNjMaXn9MxrG_QpJ4zKSGey5QZafb9MNh3t5kGzKeMi3q4ta6Ov2DA>
-    <xmx:rNjMaVsKz6Pnd9UvI5j6bBhbbgD-OjoIsIyx2_fB2lK-KtmvNMGijA>
-    <xmx:rNjMaekKYaYGnmeLXjn02NY-a1tgjHugyI1H1vZxI1B0kx-rFO2Wow>
-    <xmx:rNjMaWlZwR5oDMJeaYdhlkgPeTFIZaBuBNWhC8O5OG75XNNxirV10w>
-    <xmx:rNjMaQenaN36Yt2L1gw_L2eT8FuTzYrugYLPb6qy_t5V_6FKeHyedLzC>
+    epfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpeeludettdeigfefhffhhfelveeludeuleduvefhgefgueeitedtleffudegfffggfen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
+    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
+    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
+    grmhgvpdhnsggprhgtphhtthhopedviedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    oheprhhitghkrdhprdgvughgvggtohhmsggvsehinhhtvghlrdgtohhmpdhrtghpthhtoh
+    epvhhishhhrghlrdhlrdhvvghrmhgrsehinhhtvghlrdgtohhmpdhrtghpthhtohepshgv
+    rghnjhgtsehgohhoghhlvgdrtghomhdprhgtphhtthhopegsphesrghlihgvnhekrdguvg
+    dprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehhphgrseii
+    hihtohhrrdgtohhmpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhmpdhrtg
+    hpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepuggrvhgvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:0eTMacTSYP_YVEONvX605NoRdNRWtXTZi5xqDsX2eUVIBeitSVr6zw>
+    <xmx:0eTMaX5_N6J7fj_fbmsDjGh3Ct4zW_DbyMFNffX35n7Wzdzk_58LEQ>
+    <xmx:0eTMaUbUS3K8H88pqiTcjhZSg9PlLsFva86lOY0iRVpLVTJT-tVjzw>
+    <xmx:0eTMaUhcLLlcoE2_-GVXbJIJMt0QqI43SXbBUz4uVSEpV2N62ZZkSQ>
+    <xmx:0eTMaWME3YTbFrQQZco3tjiYmV76tkcDWs8sjsE5PKIu6wCfprM4rtNK>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 1 Apr 2026 04:34:52 -0400 (EDT)
-Date: Wed, 1 Apr 2026 09:34:50 +0100
+ 1 Apr 2026 05:26:40 -0400 (EDT)
+Date: Wed, 1 Apr 2026 10:26:39 +0100
 From: Kiryl Shutsemau <kas@kernel.org>
-To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H . Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] x86/tdx: Fix off-by-one in port I/O handling
-Message-ID: <aczYg5hk8yoIi05W@thinkstation>
-References: <20260331112430.71425-1-kas@kernel.org>
- <20260331112430.71425-2-kas@kernel.org>
- <ee096f1e-b994-4d56-a78c-cb0e867ea047@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "Verma, Vishal L" <vishal.l.verma@intel.com>, 
+	"seanjc@google.com" <seanjc@google.com>, "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [PATCH v2 3/5] x86/virt/tdx: Add SEAMCALL wrapper for
+ TDH.SYS.DISABLE
+Message-ID: <aczZPrNFYxYi0d51@thinkstation>
+References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
+ <20260323-fuller_tdx_kexec_support-v2-3-87a36409e051@intel.com>
+ <acpiGUKS-WRmLoxp@thinkstation>
+ <def1f4395865ad0d22be245647fbb75ab8698ab8.camel@intel.com>
+ <acu4raBTjdFcfVlS@thinkstation>
+ <b9aa84d76c131132b5268712a44200e804c31aeb.camel@intel.com>
+ <944b3fe5fa8955319030a7dfc0ea164bb0266e68.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <ee096f1e-b994-4d56-a78c-cb0e867ea047@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <944b3fe5fa8955319030a7dfc0ea164bb0266e68.camel@intel.com>
 
-On Tue, Mar 31, 2026 at 02:57:32PM -0700, Kuppuswamy Sathyanarayanan wrote:
-> Hi Kirill,
+On Tue, Mar 31, 2026 at 09:36:03PM +0000, Edgecombe, Rick P wrote:
+> On Tue, 2026-03-31 at 18:22 +0000, Verma, Vishal L wrote:
+> > > 
+> > > I guess the actual behaviour is dependant on the return code. It is
+> > > obviously going to be the case for TDX_SUCCESS. And from the discussion,
+> > > I guess that's true for TDX_SYS_BUSY and TDX_INTERRUPTED_RESUMABLE.
+> > > 
+> > > What about other cases? The spec draft also lists TDX_SYS_NOT_READY and
+> > > TDX_SYS_SHUTDOWN.
+> > 
+> > I think these are safe too - TDX_SYS_SHUTDOWN means the module has
+> > already been shutdown, which this seamcall would've done, so things
+> > should be in the same state either way.
+> > 
+> > TDX_SYS_NOT_READY means the module hasn't been initialized yet. This
+> > seamcall should just exit, and the module is already blocking any
+> > seamcall that need the module to be initialized. The seamcalls to
+> > initialize the module will be allowed, as they are after a sys_disable
+> > call anyway.
 > 
-> On 3/31/2026 4:24 AM, Kiryl Shutsemau (Meta) wrote:
-> > handle_in() and handle_out() in arch/x86/coco/tdx/tdx.c use:
+> Should the seamcall return success in the case where it would return
+> TDX_SYS_NOT_READY? It is in basically a reset state right? The errors we care
+> about are actual errors (TDX_SW_ERROR), so it makes no difference to the code in
+> the patch. But it might be a nicer API for the seamcall?
+
+I am not sure. TDX_SYS_NOT_READY can be useful as might indicate
+mismatch of system state understanding between kernel and TDX module.
+
+> > > I wounder if it can affect the kernel. Consider the case when kexec
+> > > (crash kernel start) happens due to crash on TDX module.
+> > > 
+> > > Will we be able to shutdown TDX module cleanly and make kexec safe?
 > > 
-> >     u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
-> > 
-> > GENMASK(h, l) includes bit h. For size=1 (INB), this produces
-> > GENMASK(8, 0) = 0x1FF (9 bits) instead of GENMASK(7, 0) = 0xFF (8
-> > bits). The mask is one bit too wide for all I/O sizes.
-> > 
-> > Fix the mask calculation.
-> > 
-> > Fixes: 03149948832a ("x86/tdx: Port I/O: Add runtime hypercalls")
-> > Reported-by: Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>
-> > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> > Cc: stable@vger.kernel.org
-> > ---
+> > Hm  -are the semantics for what happens if there is a crash in the
+> > module defined?
+
+I meant kernel crash around/before TDX module initialization. Sorry for
+confusion.
+
+> > I think Linux should expect that sys_disable should
+> > either start doing its shutdown work, or exit with one of the other
+> > defined exit statuses. Anything else would be considered a module bug.
 > 
-> LGTM. Can you include a link to the bug report or related discussion in 
-> the commit log? It will help understand the impact of this issue.
+> We often have the question come up about how much we should to guard against
+> bugs in the TDX module. I tend to also think we should not do defensive
+> programming, same as we do for the kernel. If it's easy to handle something or
+> emit a warning it's nice, but otherwise the solution for such cases should be to
+> fix the TDX module bug.
+> 
+> But for the kdump case, we don't actually need sys disable to succeed. The kdump
+> kernel will not load the TDX module.
 
-Link: https://lore.kernel.org/all/CAKw_Dz96rfSQc6Rn+9QBcUFHhmkK+9zu+P=bxowfZwxrATCBRg@mail.gmail.com/
+AFAIK, it is possible to start a normal kernel after kdump is done with
+kexec (requires memmap= tricks). And the normal kernel might want to use
+TDX again.
 
-It is relevant for both.
+Not sure if it is done in practice. I would rather go full reboot path
+after crash.
+
+> And as for the errata, this already needs a
+> special situation to be a problem. But even if it happens, I'd think better to
+> try to the kdump. Not sure what the fix would be for that scenario, even if we
+> allowed for a large complexity budget. So best effort seems good.
+> 
+> Does it seem reasonable?
+
+I am probably too picky here. We want to start from make basic kexec
+functionality to work for start.
+
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
