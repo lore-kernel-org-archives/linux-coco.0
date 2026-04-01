@@ -1,110 +1,137 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16F030FC2E
-	for <linux-coco@lists.linux.dev>; Wed,  1 Apr 2026 18:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614262F99B8
+	for <linux-coco@lists.linux.dev>; Wed,  1 Apr 2026 18:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775067127; cv=none; b=P/v2BpmLqal41unDL1z5OPKGTM5LJcwYKbW7mpX3V4g5xyILunRSEwIEQYKQrE0weaYCZuNGdCnrQXUc0QdmdZD7kGW85b4aLegga8o+thYI3dFi7dhLz4uaK5T9SDbj1VPOMUHprFuD8PHUDJQDAEojzERheXTEUCXjbFqfLXs=
+	t=1775068216; cv=none; b=SHm0Y7kqTn48PmgWXYBc3YWPj6LYoWYDgE5ib1lscgdCIF88YYZqo5Hg0hPf3ji7iUTzcr8nvlRs7iJI+6Hg+ODC56gsYu+PiYabwNIKVDMD7tnGdmWeqyj5KTfyx1Ev+rPyv+cESIosYB5ifDLUKkDtRWePKTRMP0F6l0DINvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775067127; c=relaxed/simple;
-	bh=71II0EatvhljVaIL9l3M+R/q80RIz409yIhJNQPejPc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PYaVgEtbJOD+wwzVMOCOx5cEn7Y0TZnlal9lXRhCY8ob6qLlTo1vdCW8QQSjemxX5T5KZ8D6pntMfPO55XmQBNTs5UjtkGuFIyODXDcybmjijT3xzGfvsnHjZziG62zJyR4JphHpyvGPNBIin2Ooz6TlQYR8SKq1BZOi6YphsNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B+e990KZ; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1775068216; c=relaxed/simple;
+	bh=j3dW7Y5ZFl7ejx+K0m5YQjOz8Xi7YjIUYeJUo5MkZIw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R9BMy2XW2azbLmaSunNRuyuHALGJ09pKXvIhrFSC4JVQe0cLweDiMuIxe3nYlAbMwmE73N6fh2TGpRolCRSBCNdfAC0g9ZwEI2fBjQ8EVcW3rlSFlk3Tgm7bzltHMMmI9FYnwL1dudPC4Ji+qJA/6I8D8dFZxzXuqvsjRZIlvxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f9Hfs6uj; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B+e990KZ"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82c1e1a6cfbso33098b3a.0
-        for <linux-coco@lists.linux.dev>; Wed, 01 Apr 2026 11:12:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775067126; x=1775671926; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AbEr00zbJN9l4OpkyONzYOWax76lpPtRnsktjJvjXs8=;
-        b=B+e990KZGxsp3xjDyshTieMD3+R849mze4JZ2V4kumjVE5GVN5TS5ZFVvdiKGYb7X7
-         6x/DUcjw3I9tcmjDCC5ti+jPk2lrO/cwKhbK1mfDFl6KzP1S1XXEFOVub2Ww+sfb1CrR
-         N5BxkTF6qMxs1Npara1g7w3+TAlMPIUTSKFdmDCTrXhqEmHYY6wHJeId4UHeNK5n2pRS
-         EHLlvsXkurZvvB9ITJUkK39NIVON/A/CDfqCVj1IhvedP9vfXzgdI+PN+fGoWVCZ/1Es
-         lspPi3kmj13t2PRV7sMitUrhXdGAAvgcIHqLW9cmOGXH33ZBf1rQKqIugTZWTEbT3FEE
-         x5Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775067126; x=1775671926;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AbEr00zbJN9l4OpkyONzYOWax76lpPtRnsktjJvjXs8=;
-        b=CvBSbjSgZS+D9MRPz0feOAM6IrXBYFmXqAH0euNgSTR2EPs1DHEDG1Iy88O6NB+XIg
-         Bb9WqrnLIfNuuZ0j6zjieKSWVcbIzaZunyXUJtErDoFWdP2FD/ylJV4/zvB3pGH6Suc3
-         cN9xDRdsnDhmPrOvYvgd515AvGFw4JCc0wZhEysHPjcm0WZVC3b7UqoNoq/qRBa2yPCD
-         U6MhVKjVBJm6c3ZoV6/Vkp2NyvI+KUZU83FIcW41DECVBH8jckUVxJ49IUOlAwTKl8ax
-         6LlAnBUR5qtZo6iXZWjm7vdPYwPx1UHrCbII6gbB3cgVIWgkVolVhVJqVHbcq8Y3mBYf
-         K77Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXMksmtDkeZ6VM49fD2sbBueB9m2zIfkaZbYa8EANrPME6KzYgGOTu0PGUD39RLGu7WP3ZAtb28afyR@lists.linux.dev
-X-Gm-Message-State: AOJu0YwJuI4NgboJuaFSqVJxOy27tG6B81ldUwC5W5j6QShVL6a0OFVz
-	O3OABlG8K6P2oe7n4jvPUbV2S8ncV7qPqPsu2zyI1wMCJkjfGlNbhNUhC8UQSHZJiIHRDeDsq57
-	9sL7K9A==
-X-Received: from pfbhh9.prod.google.com ([2002:a05:6a00:8689:b0:829:f706:70e4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3988:b0:82c:24d3:29d7
- with SMTP id d2e1a72fcca58-82ce88ead18mr5007330b3a.9.1775067125841; Wed, 01
- Apr 2026 11:12:05 -0700 (PDT)
-Date: Wed, 1 Apr 2026 11:12:04 -0700
-In-Reply-To: <76F29857-47D8-470B-9F4D-DD98D8755EB0@zytor.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f9Hfs6uj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775068215; x=1806604215;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=j3dW7Y5ZFl7ejx+K0m5YQjOz8Xi7YjIUYeJUo5MkZIw=;
+  b=f9Hfs6uj9fTezH17o3/0D5XmQF926J0hDNKZ+362W8I3dKCE4hTlvSoG
+   x2/WbtWWYvuFq0NYpZVQwdvqiwTl+w2rZ3H2+04XVQnCojjUwzyaHvn2G
+   kDklJDrBzTcuHgeaL3No3tLpMX0AGYZHBVFv0R/E645GMmvykAy6M881t
+   cEM8N42J56EBwZvnK4jZBgzB9qYdWDWwZABSeCWH+bKnx+8QnCxPwR+AN
+   edNcbMRyNYEyFNrnTUm1Lm2yARFgOJ6SRnSrsd+S5w+XwrMnY5T9mv+Tq
+   1iDImYirA8PQ7HDSnT1PlNHazd4DQ0SRNgZ/VJ2xInzEsQSx8ELGv+IEq
+   g==;
+X-CSE-ConnectionGUID: eJyPEHB5QpmQ+UTGxdPWjQ==
+X-CSE-MsgGUID: e2IldLImSxuW6EVpHt8heQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="78713191"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="78713191"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 11:30:14 -0700
+X-CSE-ConnectionGUID: lRWM8gBVRjOCnQLWL39MUA==
+X-CSE-MsgGUID: pqVK514SSKuI9+NttUXH1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="221907622"
+Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.129]) ([10.125.111.129])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 11:30:13 -0700
+Message-ID: <93153bca-6668-47f6-8dcc-7baaaa5b2ec6@intel.com>
+Date: Wed, 1 Apr 2026 11:30:21 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Pull kexec cache flush logic into
+ arch/x86
+To: Sean Christopherson <seanjc@google.com>, "H. Peter Anvin" <hpa@zytor.com>
+Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+ Vishal L Verma <vishal.l.verma@intel.com>, Kai Huang <kai.huang@intel.com>,
+ "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+ "kas@kernel.org" <kas@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "tglx@kernel.org" <tglx@kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>
 References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
  <20260323-fuller_tdx_kexec_support-v2-2-87a36409e051@intel.com>
- <acwe7kKyjfEQ0sIf@google.com> <6ad3ff51bbab85147b716de0b1f4e8b994b1998b.camel@intel.com>
- <acxTBwaw6_xYSShf@google.com> <830f1e46-0fb7-4756-827b-c8f46af24374@intel.com>
+ <acwe7kKyjfEQ0sIf@google.com>
+ <6ad3ff51bbab85147b716de0b1f4e8b994b1998b.camel@intel.com>
+ <acxTBwaw6_xYSShf@google.com>
+ <830f1e46-0fb7-4756-827b-c8f46af24374@intel.com>
  <76F29857-47D8-470B-9F4D-DD98D8755EB0@zytor.com>
-Message-ID: <ac1f9KntTv0SaktS@google.com>
-Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Pull kexec cache flush logic into arch/x86
-From: Sean Christopherson <seanjc@google.com>
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Dave Hansen <dave.hansen@intel.com>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
-	Vishal L Verma <vishal.l.verma@intel.com>, Kai Huang <kai.huang@intel.com>, 
-	"bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, 
-	"mingo@redhat.com" <mingo@redhat.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+ <ac1f9KntTv0SaktS@google.com>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
+In-Reply-To: <ac1f9KntTv0SaktS@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 01, 2026, H. Peter Anvin wrote:
-> On April 1, 2026 8:03:02 AM PDT, Dave Hansen <dave.hansen@intel.com> wrote:
-> >On 3/31/26 16:04, Sean Christopherson wrote:
-> >> But unless the WBINVD is actually costly, why bother getting fancy?
-> >
-> >WBINVD might be the most expensive single instruction in the whole ISA.
-> >
-> >That said, I'd much rather have a potentially unnecessary WBINVD than
-> >miss one. The thing I'd be worried about would be something wonky like:
-> >
-> >	1. CPU offline does WBINVD
-> >	2. Some other TDX call gets made, dirties caches again
-> >	3. tdx_offline_cpu() skips WBINVD
-> >
-> >So, let's just do both for now: Do WBINVD in tdx_offline_cpu() and
-> >comment that it might be redundant with other things in the CPU offline
-> >procedure.
-> >
-> >This really needs to be solved with infrastructure and keeping data
-> >about the reasons for needing WBINVD, not relying on code ordering or
-> >fragile semantics.
-> 
-> It is, *by far*, the most expensive *uninterruptible* instruction in the ISA.
-> REP string instructions can of course be arbitrarily long, but are
-> interruptible and so don't really count.
-> 
-> Some MSRs used during very early (pre-OS) initialization might be even slower
-> on some implementations, but that's not visible to Linux and no workload of
-> any kind is running.
+On 4/1/26 11:12, Sean Christopherson wrote:
+> Sorry, "costly" wasn't the right word.  I know WBINVD super
+> expensive, but unless someone cares deeply about the latency of
+> offlining a CPU after its down TDX stuff, the "cost" is effectively
+> zero.
 
-Sorry, "costly" wasn't the right word.  I know WBINVD super expensive, but unless
-someone cares deeply about the latency of offlining a CPU after its down TDX stuff,
-the "cost" is effectively zero.
+I once increased the CPU online/offline latency once and got nastygrams
+from folks. IIRC, I added a synchronize_rcu() which incurs way more
+latency than WBINVD, but folks _do_ care about CPU online/offline
+latency surprisingly.
+
+In this case, though, I'm happy to add the WBINVD for simplicity and
+wait for a possible repeat of the torches an pitchforks.
