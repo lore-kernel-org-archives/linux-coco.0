@@ -1,208 +1,289 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012005.outbound.protection.outlook.com [52.101.66.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D953DCD82;
-	Thu,  2 Apr 2026 09:53:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.5
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775123633; cv=fail; b=ebAxota8fm++HJSpufA1oUnFgmmVMSE2UGB/ee6uo1PLdJrKBAO4tp5gfrVOaKOCAYrwlnFd2fxYrPk/DwQC+I0mgzytqLS7EiJ+aa0SdtbSCFOS3m9NOIlTeLpH+77U+HUDXl/Z2wkIfpo0SGtbeSEjZO5MjQKEA7mqT1d6zLw=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775123633; c=relaxed/simple;
-	bh=ugIPSqRf27S5yZ9i/2sMLODiQDddDSxi3fQZxsPlkQE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Oypop0wysf3KbCOeBWor41uu0wKk4D9NLaFDn/whjd56Ol97PdbP+2+JJFxRz1hqjZY2k/G/YQHFkWZzrVzpmyyt26+p4tP4a5/doudF6VNxL9Fg361Syd9aLz0bVb+3AxZWZN1DqYZRFyZ9P1toVn70vPSNkOqtBm0F+hdOaE0=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ankHA/3y; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ankHA/3y; arc=fail smtp.client-ip=52.101.66.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0B7311592
+	for <linux-coco@lists.linux.dev>; Thu,  2 Apr 2026 11:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775129398; cv=none; b=QdgeS6RgHClruwbTbAGeT9g4wQAdIC3Gj9+UMOy+jxVqxuLP/WPv3+xs2VfU52B/8suquzZ3VXTlgImTUAHhC18SwHi6P+DI1VhuPxK+A1iGSEIPAPr4oE39BFiz46gdg2ktYuWdaxa0GBToJ1JTymIpFYQVAB+hjHI+dJZuqp0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775129398; c=relaxed/simple;
+	bh=8HPlO9h6syLezPB7tv8QuwjjhDGwxOtjBCDDTl2STnY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HJ2vMsPcly7hxDYDySF9ZVVS+CscRBS5+cnryyGPH5F75f2LeHDFXD4mJ36UlqsmAu2IFo23QMyiu3U7G1hfgZStX5kl3bMhk90VC+sAbMrebSXYrViluJonzrCketa8SZTTZB4rqcNmtZUheeQRzJy4sJJpAh2TTYje1+JnHhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=RJy2290n; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ankHA/3y";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ankHA/3y"
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=MXUVYBZIqt3ZO73tyslvtqQYJK9HnQbB6UZWRxXQDufQy8HsALFHNZgesczH6dd6VL8r1QFm1ElWmp5/sOsm+T1rTk+4Nh/nTW6Ed+fRscO3cVlYj+sWvcdKWWonjEmJBAep8lN7Obn8oXI4s2uSen8GBimslj1yGPKnz98e9rCj3PWMEPpwk/maNsM8ORy1ObPrg0ErCVsSJc6bE6g8MZ+iUIH5lWThURaFL5gOgiuHBWkZUgafpLKDTzmQGPY9h3vVrSUdZQqmpRoNq8wXcLUDFS4FqrdPvKDER3h845qaybWaZSMo2nkz4lJKRApCnPbG6kSiNmPgJgQo8eTbew==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xQFXj5GbtCy5VmyzqVbACKsvZRZaxmg9OvpIYmMVr6E=;
- b=k+O/V2WrHUDc13mnFSz9M8095hhjZ0u22p7ojXhwQIdjv7nMgtf0+7B1MH9LMtuZTuPNKaGZ1aXR8CgBOeu5Yd9fvMSlAAm3uVD2xo+OyoLhChRbyEIuk1C11wBl5p1hAw1/qHKERQekxi8OO7GcD8IPkTZbKuiavmfCUFpFG3IMBUP0L9WvGllFlRQDkcOqwh5QmYHAKFQ/LOlOO8NJywjP650woDwtE+HYTlRILwxVpG8d45lrKf7reTpA+G657JaSsQ0NWUz0esScoR6N0yiSF2Foc+MNwXcjMGgWjPm0YQ9TdSYnzldRVx0d+XTXUjQ1uxx6WH096nVrCPTPYw==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=resnulli.us smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xQFXj5GbtCy5VmyzqVbACKsvZRZaxmg9OvpIYmMVr6E=;
- b=ankHA/3y45MgeGu7rwxzIWFk+BiUGIkADYHEvmHlBsuwrY7/Gyp8MvOxfZUhzdFIUjCb0w46pPd9cO7c+E48rhXSmPFisGX5cgZvDCCssE+oYRWo1lA2yGGaNSCsOu7y51fYVBcMupMbyCWzpcGyknAEtrsdJHQn9looEySyV98=
-Received: from DUZPR01CA0282.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b9::17) by DBBPR08MB5882.eurprd08.prod.outlook.com
- (2603:10a6:10:200::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Thu, 2 Apr
- 2026 09:53:43 +0000
-Received: from DB1PEPF000509F7.eurprd02.prod.outlook.com
- (2603:10a6:10:4b9:cafe::d0) by DUZPR01CA0282.outlook.office365.com
- (2603:10a6:10:4b9::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.18 via Frontend Transport; Thu,
- 2 Apr 2026 09:53:43 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DB1PEPF000509F7.mail.protection.outlook.com (10.167.242.153) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.17
- via Frontend Transport; Thu, 2 Apr 2026 09:53:42 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Uk5P2wcTzbwyCtV5NAuB17k9S/vCKOlEVUPRB5yDcELjeCSq2AGrG8bDGF8X+PtWe/BIB9Hd0VLtk5UssQn6ywZloKarr1jn9fkTePwBeVL+0g0YeSBm/KK8YXsAAf3NO8uy42gBCk1wvtIukQ7jGsf1sRvZdc4wkigMhLF62vnDEbNybvwtkdttc0lv7qGVn7E1UlepBenQ0UHF6twV6bJEwtAfV0YoCDmlEiyFJh8tWlI3aWoR2rUhT6T/AC3hKWv+sinJofg8ZajCmc2rXoNmb4VZooiHg4tfi3+vHfz/kyObcf167GIp2bnFL9bKs+b+3ilS4nJzsgJbZWK+0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xQFXj5GbtCy5VmyzqVbACKsvZRZaxmg9OvpIYmMVr6E=;
- b=LBh72o8bjPt8bRQCUUVD7YdbZ3gg2Hfn8rIN3J5K1bAAkwzYDpL0hKO8vRJOITny1f5PAblfKloSccUapP+Sxu6Ib4PnFaRxHp9HiEA/Q7mG1Hm+iSPK9sXVz0Drfr1QsuTkzjmynQrileuKtaVBf8EaP1sv0zzDUnTurgD+oqojQzPrb48LbbiLfoXRVTTmy85nfvchYUGCepNNAnxMG47va5HBNnabWdufrP2BapiNBX+5q3nUrTt/pC6O3zpcQSbqWZ5DvFq0c0IbnqFVehucE0shYMlujZBDtKvVA/NCnkqyUAuO/g8ds94DhYMWz2GGoFw1N5WQB/nvz+ErFQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xQFXj5GbtCy5VmyzqVbACKsvZRZaxmg9OvpIYmMVr6E=;
- b=ankHA/3y45MgeGu7rwxzIWFk+BiUGIkADYHEvmHlBsuwrY7/Gyp8MvOxfZUhzdFIUjCb0w46pPd9cO7c+E48rhXSmPFisGX5cgZvDCCssE+oYRWo1lA2yGGaNSCsOu7y51fYVBcMupMbyCWzpcGyknAEtrsdJHQn9looEySyV98=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from VI0PR08MB11822.eurprd08.prod.outlook.com
- (2603:10a6:800:312::10) by PAXPR08MB6574.eurprd08.prod.outlook.com
- (2603:10a6:102:12d::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Thu, 2 Apr
- 2026 09:52:37 +0000
-Received: from VI0PR08MB11822.eurprd08.prod.outlook.com
- ([fe80::bbe2:97f2:3aed:5e4e]) by VI0PR08MB11822.eurprd08.prod.outlook.com
- ([fe80::bbe2:97f2:3aed:5e4e%6]) with mapi id 15.20.9769.016; Thu, 2 Apr 2026
- 09:52:37 +0000
-Date: Thu, 2 Apr 2026 10:52:34 +0100
-From: Brian Starkey <brian.starkey@arm.com>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	iommu@lists.linux.dev, linux-media@vger.kernel.org, sumit.semwal@linaro.org, 
-	benjamin.gaignard@collabora.com, jstultz@google.com, tjmercier@google.com, 
-	christian.koenig@amd.com, m.szyprowski@samsung.com, robin.murphy@arm.com, jgg@ziepe.ca, 
-	leon@kernel.org, sean.anderson@linux.dev, ptesarik@suse.com, 
-	catalin.marinas@arm.com, aneesh.kumar@kernel.org, suzuki.poulose@arm.com, 
-	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com, 
-	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev, 
-	nd@arm.com
-Subject: Re: [PATCH v5 0/2] dma-buf: heaps: system: add an option to allocate
- explicitly shared/decrypted memory
-Message-ID: <4s75rtsmdfrze4rscbqzyrjyrko7n6sehe7agrngqag2cna5bz@eflmf4kwjocj>
-References: <20260325192352.437608-1-jiri@resnulli.us>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325192352.437608-1-jiri@resnulli.us>
-X-ClientProxiedBy: PR1P264CA0196.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:34d::7) To VI0PR08MB11822.eurprd08.prod.outlook.com
- (2603:10a6:800:312::10)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="RJy2290n"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-482f454be5bso19991635e9.0
+        for <linux-coco@lists.linux.dev>; Thu, 02 Apr 2026 04:29:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1775129386; x=1775734186; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=tT7D8o4V9+zDHS/oQifH2ZnOFQaAuku/SG4Se+wsZAk=;
+        b=RJy2290ngYSo/9AEvdf+7MRHdNy9+fxTbfgOHbguY3rs9cCDHQ/bO1NMeJJ0pufmYr
+         R25oXVbJ7dz5VGxZ8Wpiq4RJTepEFJKatXnP7OBh5lrip25beXoGWmloQgktl/oHA2OL
+         vm3bKti0UTuQRIoZ6JQMj3GDzmgcrE0e77b+pUawl6AzxAC54skv+gD1rN38w2e/3HRH
+         1SHmLqy1PG7Z5hSU13aOnW2dozQjlHNMyjai3LYw4nhvp7s+LR7ZExpA+PBB3LqPFp+S
+         QiMUWE2U68FKnMRrNvAn2DCMmz08iBITVmrvqdDTVbinL6CFikWALklviCMlacLhqiVQ
+         +QCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775129386; x=1775734186;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tT7D8o4V9+zDHS/oQifH2ZnOFQaAuku/SG4Se+wsZAk=;
+        b=kQjGCkrJwDguA7lcM17UdJPl/s46DOQ73QtVclDKD7yi2iVcJGsTewO7hRD4ixCN2Q
+         r7tfgJ0CM4NcKodwIdUp2PGn/fMEfo1Uk+srCC48r3gtolHg1xHxQ4N3nW7OCw22/nIh
+         ZPlOeeNP8255khaZvQMhbz21IeX7iurdILP2rJtxEeAaotvRbq2rMmGo8BmesL02yBfm
+         HSvz6gFQlFbO8ZBwQ2l+HVl8wcQM2IzMy/dUEql6PbCx+nmekEs2keWlVd0rF8FEuHSH
+         AT37Q0NyFnVL5dZbFxSrMmDItqQfViXQ3Aa2NTklkfNlyzwNwBOVSdH+T1aP4Hjtj56E
+         WoLA==
+X-Forwarded-Encrypted: i=1; AJvYcCUTemEhObkWNZkhrhFJY3314ocXChNXFH/psDnG2hP/dEH82GsNz2kkN3WkJcAE8zyLYfXwlWzCffN8@lists.linux.dev
+X-Gm-Message-State: AOJu0YxfBA0Isj+m0aCZSI5t+bcuvvIylysqOiJfkO+nRv/tvbJjw5Fh
+	D+TPFmJdi7Fc/GRItvR/wxlbOUk5c6PJfuXJtyEvfODRofbtFu6v2IO5yoHPtgFkN/w=
+X-Gm-Gg: ATEYQzxXOxXZP1dtL96OH4HHUNHvJxHAmltkKWAPt1Uqzg9Muftr1CAoDeXNkoK/jKC
+	S8NVwUDD67q2VuAOOfInkStyHp+BaDy+ga2qCJvLGPlBRDrg5YHaGYr4N4BlxWzjOT21VaAuv80
+	x26Ab9l5Tdwp6qBO1UBRojxXzg7kg2lKdpWBurLONVtXloqiXPyXI8c192a8q5NLpgtDg+ZieX0
+	zkCk4QHjAcRhS9iSKT8IIhU1dUFAFjVH2HYzVUnqUs22+Dn6adUuF13OGFI0Tv7pkq68/f8wCkE
+	ykwqDUgONyv8jpPo6sma4MoLgkjBMiLLYLWtFfOyg23tY1dkLhPfycoF06Y22sWTcc6DQnuz1Pv
+	H2unRTrxPCl1oRxAlycmPC0UCedvE6LihIvXexRhfNYPsfcVy6M4Peo09S12Ry6D5wNb6YXMCx5
+	ZtQXMLG6+9chDycDtgqm723UHX7A==
+X-Received: by 2002:a05:600c:8483:b0:487:22ad:403e with SMTP id 5b1f17b1804b1-4888e0cf3a0mr32634805e9.14.1775129386217;
+        Thu, 02 Apr 2026 04:29:46 -0700 (PDT)
+Received: from [192.168.0.20] ([212.21.133.10])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4888a705ebdsm74104865e9.10.2026.04.02.04.29.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Apr 2026 04:29:45 -0700 (PDT)
+Message-ID: <51f2be5a-47d2-4a06-92bb-368aaed73530@suse.com>
+Date: Thu, 2 Apr 2026 14:29:44 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	VI0PR08MB11822:EE_|PAXPR08MB6574:EE_|DB1PEPF000509F7:EE_|DBBPR08MB5882:EE_
-X-MS-Office365-Filtering-Correlation-Id: d03d066c-8524-4c5c-eb95-08de909db943
-X-LD-Processed: f34e5979-57d9-4aaa-ad4d-b122a662184d,ExtAddr,ExtAddr
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|376014|7416014|366016|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info-Original:
- U2oWXbR27dZdIONisHNe6Re0DdqwRTpN7nPyO1z1c0UYpmT6Z2IOncYIMoGQPxiaE69inNV9OF5A2MP8GaC/vXo7UL6ShZ2BBqEWXBrVyug0BhhF2/MmW9Wru2LPrPp3N9fmLpFA31aO67AcM+u/xFYeqJNN4P+zfRYbwpnTbxVGTg8CAVmdTO2mRCIVvIDtkcOy91aHEu+/PUePyI8MRFg88RkXpX//UcSVwWIh3CZ1EmbLQEyBynRUrRf7bBrGvgyh59FK6Tu2snqNrYnWodJjiwQcyDoVJAiFgDXPw8vreDcpLdM1kufRqsn9aVLJJ9Oa3FlCsS/dhtFyLcYrnB6uUadlTq107gYXAs3U8JjR2/a73uXpRxzutN2/LO/x1AVAAtKPbNVRLA1Vn+Pxl5WjJLIKjA+mfgJPZK0qHFOfRA6SjmjxT2B9Ut/Wwe4LNhEGAV2v7yldoyYwAnuhaKqLmBxoNiocfvVzYgUKBty8weE9mmhCCX22dGXe/yIFX2Iq/B6sScjSp/d8seSVYBvpMYRVF20Kls5qEbWJE5mBnQfotNrhRnVS31edQN5F/ipwjh2kh1tzR+kAkJyi5g0r4LHhQfyxTuVCeZVBB31VlO8Gt44mfl7ABHzgvEsnBQI9smlgov9liL2h6/P6eSvmnszBBBoDbVG5YUB2KJIVPdwuls+QRXDg5V1KIcvS6QQA8L+SFx+pFE2ZvRZSUkhQgvWWvEqoafwbBEk9BKU=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB11822.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- eVL5NiKBK7TULnwzqk3bI5gxpSWIESAe5TKHVq1V5uoWq8kUPR+9MXeW76m9uHaOC8TaVnpjGI699U0nxzqYo/vrCaKLZ+zHiPnx5VuY8sLw/mP1a6sNZK6ot3jpu9rsnPLg8BCCeJrxJAGoX/ubQ1BTE6Dp2u8bDWo5t1TTuyO1NA01vtVJI4CAqavRYzR74pytZfqx3C8Ut8kou7iuJp6QT3NSdZ7KFdcYkfvBRllQeDBjTajTsuuGBa+HRNf5id4WlrrFCEPoPX97ygISi4eYWZmeSANJgC909vwDT1ukJ1SA4kFdOJKiT4AcLSY4cKZzRXvWIcQu1sphp7cfDA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR08MB6574
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DB1PEPF000509F7.eurprd02.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	338df8ba-08cc-495e-3531-08de909d91fc
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|14060799003|82310400026|36860700016|376014|7416014|35042699022|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	zaQcjOReH12oTyCwhXrZZPbLoHrxkLRz9lrm2X2w15/BrmPhqcwS2JfEC6nVsXuIKRWmKHcuoWuwvKpI3hgdMHpU8tv/FwEM/eBHe00q6TSgnz3+EWvMI1kZ2e9TyvYaMRdbYi4E6qRVjJtgY7AQ/V4N67ZSV0S57aIoll2Kk+pTceVIc75QOBWDPeZcW6fgY8BSasd4k0yQOuSXGAtFLTrMr5yhXro0HkZdBt3DPNb/M5sAn2jwGji74y9io2SuPFusA+K0o2/tJrb6V+cqEgjEEK4/uwiuel8InP8AHh7wn/HXVV4STmM7ylAiqHJ4qxASwjyozkShEXTK6TbX+VGIXkIvYrlrK+bPv0sI6LGl4tYsM673LRHTLnZqwQ+WtCd2OnJQzG9qU8qhW+ZfvoTbYWIzf3mJtkAdMtDajdO9Km+kg3Y5mG5dbxrrLV4TBmE2my62YMBg4ND/6fU/lpPhBUgBRT9DEAYX56yh7cnV2sWtCZf38YoOVkuNaaq7KA66hmgpq/a6OsBNO85niIlGW6m3Ni+cyj772LHMcPJpm7TzTU9uP52QdIK+jfABdu7GGNevxx0fiM7dDL9DqX8yXdzRwGusEt7qsis3syHWb5Xj9eSj9XQN/UcngNO3X/wBuG1TbP5r65NzSaJ58d+evu7rFpou9O+tE3yhFHJQFxJQ/y2oZvhSZrGA++GBmnP+SQcZxL6HlyC9vmuZcHyqvRig6pZKwg04LUiAIZpFssmLpnpRRicbXLDNON8MMcdn8oDaG8Yzown1MUGhUQ==
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(82310400026)(36860700016)(376014)(7416014)(35042699022)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	iQMLY0xoiTGu6wXNfSeTAg7C+zNcCFCNZYIRENfXQK5DXtN8N4BP0u6RmOvYG5+A4ozUbO0OU5110otjFcysr74ZgPrlZqid/DTYJCZOF/L0/JQzVHGefSVmQ7QK/lDop8YLeR65OGLgroAacKgHo6/T6n4JIki0ssb1ag6v+Fvbq//YK54kdpplhlEpwPEUzhpsPoo05VA5/PgCmdNuFkDI/ZKI90BbpMwyK22hHART1adOHrJwt6c7OfltKug3ze5212qapoTOQfdwlL34K6m2hdEeOSmOreyCgHLLCdpy28FEEDV0o5l5aDO06UFdgZ0ui7J5FqwgUEfyO7uouj6nr9c1h7QE4IUBNWo+syY9J643YRml+WqSeBGiW8Fwt4lWI/4fi3pBZKcdWkU/0q9wJQbaw4l3pDj+NyNbE1EftmsJvAg/7OR6XuN+RLWM
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 09:53:42.4692
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d03d066c-8524-4c5c-eb95-08de909db943
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF000509F7.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR08MB5882
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 27/31] coco/tdx-host: Implement SPDM session setup
+To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
+Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
+ yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
+ rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, kas@kernel.org,
+ xiaoyao.li@intel.com, vishal.l.verma@intel.com, linux-kernel@vger.kernel.org
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-28-yilun.xu@linux.intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20260327160132.2946114-28-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi,
 
-I know I'm late to the party here...
 
-Like John, I'm also not very close to this stuff any more, but I agree
-with the other discussions: makes sense for this to be a separate
-heap, and cc_shared makes sense too.
+On 27.03.26 г. 18:01 ч., Xu Yilun wrote:
+> From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> 
+> Implementation for a most straightforward SPDM session setup, using all
+> default session options. Retrieve device info data from TDX Module which
+> contains the SPDM negotiation results.
+> 
+> TDH.SPDM.CONNECT/DISCONNECT are TDX Module Extension introduced
+> SEAMCALLs which can run for longer periods and interruptible. But there
+> is resource constraints that limit how many SEAMCALLs of this kind can
+> run simultaneously. The current situation is One SEAMCALL at a time.
+> Otherwise TDX_OPERAND_BUSY is returned. To avoid "broken indefinite"
+> retry, a tdx_ext_lock is used to guard these SEAMCALLs.
+> 
+> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>   arch/x86/include/asm/shared/tdx_errno.h |   2 +
+>   drivers/virt/coco/tdx-host/tdx-host.c   | 301 +++++++++++++++++++++++-
+>   2 files changed, 299 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/shared/tdx_errno.h b/arch/x86/include/asm/shared/tdx_errno.h
+> index 8bf6765cf082..7db04fe30378 100644
+> --- a/arch/x86/include/asm/shared/tdx_errno.h
+> +++ b/arch/x86/include/asm/shared/tdx_errno.h
+> @@ -29,6 +29,8 @@
+>   #define TDX_EPT_WALK_FAILED			0xC0000B0000000000ULL
+>   #define TDX_EPT_ENTRY_STATE_INCORRECT		0xC0000B0D00000000ULL
+>   #define TDX_METADATA_FIELD_NOT_READABLE		0xC0000C0200000000ULL
+> +#define TDX_SPDM_SESSION_KEY_REQUIRE_REFRESH	0xC0000F4500000000ULL
+> +#define TDX_SPDM_REQUEST			0xC0000F5700000000ULL
+>   
+>   /*
+>    * SW-defined error codes.
+> diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
+> index 06f3d194e0a8..4d127b7c2591 100644
+> --- a/drivers/virt/coco/tdx-host/tdx-host.c
+> +++ b/drivers/virt/coco/tdx-host/tdx-host.c
+> @@ -14,6 +14,7 @@
+>   #include <linux/pci-doe.h>
+>   #include <linux/pci-tsm.h>
+>   #include <linux/tsm.h>
+> +#include <linux/vmalloc.h>
+>   
+>   #include <asm/cpu_device_id.h>
+>   #include <asm/tdx.h>
+> @@ -32,8 +33,43 @@ MODULE_DEVICE_TABLE(x86cpu, tdx_host_ids);
+>    */
+>   static const struct tdx_sys_info *tdx_sysinfo;
+>   
+> +#define TDISP_FUNC_ID		GENMASK(15, 0)
+> +#define TDISP_FUNC_ID_SEGMENT		GENMASK(23, 16)
+> +#define TDISP_FUNC_ID_SEG_VALID		BIT(24)
+> +
+> +static inline u32 tdisp_func_id(struct pci_dev *pdev)
+> +{
+> +	u32 func_id;
+> +
+> +	func_id = FIELD_PREP(TDISP_FUNC_ID_SEGMENT, pci_domain_nr(pdev->bus));
+> +	if (func_id)
+> +		func_id |= TDISP_FUNC_ID_SEG_VALID;
 
-I'm not clear why the heap depends on !CONFIG_HIGHMEM, but I also
-don't know anything about SEV/TDX.
+This check implies pci_domain_nr returning 0 is considered invalid. 
+Other callers in the kernel seem to not care, they just use the domain 
+nr, so is this check spurious or intentional ?
 
--Brian
+> +	func_id |= FIELD_PREP(TDISP_FUNC_ID,
+> +			      PCI_DEVID(pdev->bus->number, pdev->devfn));
+> +
+> +	return func_id;
+> +}
+> +
+> +struct spdm_config_info_t {
+> +	u32 vmm_spdm_cap;
+> +#define SPDM_CAP_HBEAT          BIT(13)
+> +#define SPDM_CAP_KEY_UPD        BIT(14)
 
-On Wed, Mar 25, 2026 at 08:23:50PM +0000, Jiri Pirko wrote:
-> From: Jiri Pirko <jiri@nvidia.com>
-> 
-> Confidential computing (CoCo) VMs/guests, such as AMD SEV and Intel TDX,
-> run with private/encrypted memory which creates a challenge
-> for devices that do not support DMA to it (no TDISP support).
-> 
-> For kernel-only DMA operations, swiotlb bounce buffering provides a
-> transparent solution by copying data through shared memory.
-> However, the only way to get this memory into userspace is via the DMA
-> API's dma_alloc_pages()/dma_mmap_pages() type interfaces which limits
-> the use of the memory to a single DMA device, and is incompatible with
-> pin_user_pages().
-> 
-> These limitations are particularly problematic for the RDMA subsystem
-> which makes heavy use of pin_user_pages() and expects flexible memory
-> usage between many different DMA devices.
-> 
-> This patch series enables userspace to explicitly request shared
-> (decrypted) memory allocations from new dma-buf system_cc_shared heap.
-> Userspace can mmap this memory and pass the dma-buf fd to other
-> existing importers such as RDMA or DRM devices to access the
-> memory. The DMA API is improved to allow the dma heap exporter to DMA
-> map the shared memory to each importing device.
-> 
-> Based on dma-mapping-for-next e7442a68cd1ee797b585f045d348781e9c0dde0d
-> 
-> Jiri Pirko (2):
->   dma-mapping: introduce DMA_ATTR_CC_SHARED for shared memory
->   dma-buf: heaps: system: add system_cc_shared heap for explicitly
->     shared memory
-> 
->  drivers/dma-buf/heaps/system_heap.c | 103 ++++++++++++++++++++++++++--
->  include/linux/dma-mapping.h         |  10 +++
->  include/trace/events/dma.h          |   3 +-
->  kernel/dma/direct.h                 |  14 +++-
->  kernel/dma/mapping.c                |  13 +++-
->  5 files changed, 132 insertions(+), 11 deletions(-)
-> 
-> -- 
-> 2.51.1
-> 
+nit: move those defines above the struct definition, they just break the 
+reading flow as it is.
+
+> +	u8 spdm_session_policy;
+> +	u8 certificate_slot_mask;
+> +	u8 raw_bitstream_requested;
+> +} __packed;
+> +
+>   struct tdx_tsm_link {
+>   	struct pci_tsm_pf0 pci;
+> +	u32 func_id;
+> +	struct page *in_msg;
+> +	struct page *out_msg;
+> +
+> +	u64 spdm_id;
+> +	struct page *spdm_conf;
+> +	struct tdx_page_array *spdm_mt;
+> +	unsigned int dev_info_size;
+> +	void *dev_info_data;
+>   };
+>   
+>   static struct tdx_tsm_link *to_tdx_tsm_link(struct pci_tsm *tsm)
+
+<snip>
+
+> +
+> +static void *tdx_dup_array_data(struct tdx_page_array *array,
+> +				unsigned int data_size)
+> +{
+> +	unsigned int npages = (data_size + PAGE_SIZE - 1) / PAGE_SIZE;
+
+nit: There's DIV_ROUND_UP
+
+> +	void *data, *dup_data;
+> +
+> +	if (npages > array->nr_pages)
+> +		return NULL;
+> +
+> +	data = vm_map_ram(array->pages, npages, -1);
+> +	if (!data)
+> +		return NULL;
+> +
+> +	dup_data = kmemdup(data, data_size, GFP_KERNEL);
+> +	vm_unmap_ram(data, npages);
+> +
+> +	return dup_data;
+> +}
+> +
+
+<snip>
+
+> +
+> +DEFINE_FREE(tdx_spdm_session_teardown, struct tdx_tsm_link *,
+> +	    if (!IS_ERR_OR_NULL(_T)) tdx_spdm_session_teardown(_T))
+> +
+>   static int tdx_tsm_link_connect(struct pci_dev *pdev)
+>   {
+> -	return -ENXIO;
+> +	struct tdx_tsm_link *tlink = to_tdx_tsm_link(pdev->tsm);
+> +
+> +	struct tdx_tsm_link *tlink_spdm __free(tdx_spdm_session_teardown) =
+> +		tdx_spdm_session_setup(tlink);
+
+Is the free() really needed here, either the session is correctly setup 
+and tlink_spdm is returned. But if session_setup() files then what about 
+calling spdm_session_disconnect() on an unestablished session?
+
+
+> +	if (IS_ERR(tlink_spdm)) {
+> +		pci_err(pdev, "fail to setup spdm session\n");
+> +		return PTR_ERR(tlink_spdm);
+> +	}
+> +
+> +	retain_and_null_ptr(tlink_spdm);
+> +
+> +	return 0;
+>   }
+>   
+
+<snip>
+
