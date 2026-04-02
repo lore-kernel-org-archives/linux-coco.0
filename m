@@ -1,83 +1,65 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84C93CD8B3
-	for <linux-coco@lists.linux.dev>; Thu,  2 Apr 2026 12:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428B02D3ED2
+	for <linux-coco@lists.linux.dev>; Thu,  2 Apr 2026 12:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775132599; cv=none; b=H/S2coSC351s7bKCT06ElHimHKUvA+e8oO76ZyesP3DN/4TrdBRjk0xW6HDSXeW5cChv2fpO+clC4hsnNfS1eF6yEMvQyWx/Q3Eg34c30gWmuyUCpNIAJ1Im0O7XqYYNR+dOKH6sspffUaBTbRoK6Z7zyXtHerHOSN4pAcKQsPs=
+	t=1775134571; cv=none; b=NPIVfjW6t/sCB+jsTgx6Y27rH2jBmfhla0PtwD8Ah6m2QhD0BDm3kAdBAwq3re+b4tCqCgecFuEpNXVhW2AsuXOJovpJDRTHTE9l81Pv7CQbmAAYSbNoc0ItIQ9XGa16DNSGhfUnkX2hqMlyUnQhsEm1mbhSGVUKS8ww3UiOmrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775132599; c=relaxed/simple;
-	bh=ZmBGSEKxrm2sD1+zHMG9w0btvdw9ZsL148HNd6FLqgg=;
+	s=arc-20240116; t=1775134571; c=relaxed/simple;
+	bh=2p+a85skg1xtIimTdmJjZJySYA2FlAdgDf3eby1isD4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D5UfOuNZOMc7NKNEd/vtntFIWKno+NgGsYN6F7F9J/RscizkiXBNtJOSiTRh1DKA8+euPvgxTIjM1m89TTy7OAfD6edME0tfaQnqUdkHwhcMjZdVlGnbtAItRx8o8q2C1y8OYzTr+oUKmdiBK6AhMuydOlWuJuHpEXduB8CBAhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LjGKf2zr; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mTVyePCt; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=dc1Gw71IGyQY92MuL0vPvlPppLDU5TB4AT69Y0yCLckDpt6ytnHZVys7h3+jkn6N0zRpGdU7gGQoG9o6hw04iV36y81A2NkgsANpxVHNqetlWot2JBG4zqr/vy+g+yLcK0fcu917CabKupxfdxdGRFejP4tRvcJOmgG84VuQ5/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=Y+tnG1FR; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LjGKf2zr";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mTVyePCt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775132596;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xRxSNukj518ppA3ZO+j946SBDUenrVVHerZheyJEcDQ=;
-	b=LjGKf2zr/aRN2tOMCkH/oG/HIdRBC5uKqP6cQPGO8HHAZEo2aWMkwGJPnwtQMjQ1WfvEss
-	X7lW/Qvv5sFC5A2wc2MmRq7OE13+Oly3HQBVJIRIx7h90ZT6ZRWNfdQ8D6Qkxm+ypkkJpy
-	vQaBHQ1oaIwxQ0p6GN0PTaVV4PLNuRA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-LKtq9YQPPRWBMG2cDQCkKg-1; Thu, 02 Apr 2026 08:23:15 -0400
-X-MC-Unique: LKtq9YQPPRWBMG2cDQCkKg-1
-X-Mimecast-MFC-AGG-ID: LKtq9YQPPRWBMG2cDQCkKg_1775132594
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43d03bad787so808174f8f.1
-        for <linux-coco@lists.linux.dev>; Thu, 02 Apr 2026 05:23:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="Y+tnG1FR"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-486b9675d36so7015245e9.0
+        for <linux-coco@lists.linux.dev>; Thu, 02 Apr 2026 05:56:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1775132594; x=1775737394; darn=lists.linux.dev;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1775134563; x=1775739363; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xRxSNukj518ppA3ZO+j946SBDUenrVVHerZheyJEcDQ=;
-        b=mTVyePCtO5uGPB26N1E+pa80zhA9Pz/913K17i8cT6t1XzAuG4roVhuSY2D+aZe6zf
-         nhehGhWP/gQ1SJHPxHNyjdDtLiH8ueKlo67HQfx2mPprsid/2Vu8b8Gya4+eZhLXO4cN
-         S/qQRn+xah+iBhILTtIXMu8wnq9QxQkXG/pnupvNAWNQCBQYFduhZH4b+KzKG2H1mf2/
-         Jkp85YRyXrTUCs0G/v3YvReCeDtkm11eoTrX3ibg4q4zEKHg6fNXtySN/wTVPaI5WUHq
-         bATDzKHL07mkQbLqB19iW2/ruqFuXr0GxM/vOwbo64aA6qckDnqtZ8w/zUfPZLuxfVJ7
-         BSwQ==
+        bh=sdBGEtOVUOrqsu+m2DU0Xpq65+UG7RkCtVPt0Shx5yg=;
+        b=Y+tnG1FRZculBCfN5RP271aj6wD6+fvevy+vMc8n9UNBHnOnOltAAf8Gq30RQVFD7C
+         awd6muoodRarFwF2EG+wNTPg3aT/6/8wzsackyyDrrQh/jGyfEIo4kDf8CfzRmcJzaZd
+         gHc/u9kRX1wvu5Jhk+1AFaftY+gE2o68NVhsZX1fOQr/1869Yqyg1xkQ185U0gVv8atY
+         u583PNkLXGdUzzUbwGV9nZ8U9Q7pvHcKEOpb91USlaHjVCOzb0JYGAJ2SsahPAZXb4Y9
+         +GPC7dxDa0Sum1t2ZZQU1my05f20p6X+XrmjOmhfG5JkHkzCm6S1QMA6+AO914q6FNY0
+         9Tyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775132594; x=1775737394;
+        d=1e100.net; s=20251104; t=1775134563; x=1775739363;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xRxSNukj518ppA3ZO+j946SBDUenrVVHerZheyJEcDQ=;
-        b=fcMbzYscAkV2ERupXRKRfvQkNMa86joRzd1dnMzXHM0vvs9Izn7TkxO7TUsevi7q95
-         pX4vxgrk0BQJQIM9mSzjJkk0cCyWSfTb3asr+Sd5rJ+SQr0FdangJHXdkLwBVMMqPWjz
-         89iZs1CnbWy/J00yJLzFd5vn0V3nAwE1kiLfSQnwed1jdUAmuSitWJpMtx8GrsW+/4wI
-         vn9amEgSAqNQ8zaA3WjYpMLhvq4JS5rhBDlC8oFW+9vJ9tl7/jCRSHOmMmP38+82Sd1F
-         5MiNwL5Q+TO68Qa8FsZJVEcQYPS761W2yGbNMWqJhsxYZeAtLbJvkzNU83ABecOZBNlL
-         IQmw==
-X-Forwarded-Encrypted: i=1; AJvYcCVJ40owxp6+2VdRhv+AqnyhXB+g4lcok91Hl90j/wyY92YlMDu+2KAndpdJlUaO4KQlCQzPey33r0Hw@lists.linux.dev
-X-Gm-Message-State: AOJu0YyN12RAemjSpvtZiIrWK5RWQ3COBBCCPBtfvFN1upQPsqGDfD7E
-	DqQ/sdfTa1De11NJkbKjEupoyOOfpiwITJlcDj6+84XD4/53Ol6eVt+837ZKt6CkBIRXVLjkj3D
-	2/SSiXEqyijQT3a8StoBdK/he9tW/IdGvAOK9EfZ6LgvLCUASO5nnzhU+sf5wlwo=
-X-Gm-Gg: AeBDievi0/q3Z8I6eMbojkpCbKSxkVee8AFZ52/kwobWNA3/hTRSEM4FaEDU8Z49fol
-	s6UOrAsFouwfvouYfK4nz5DKGZ7ECIM0w92LZEBui1Wjuzw8zCpbiUAeUMyLvpnOpVi5bOLl1Tg
-	R0TSLCkTySUAQDw+C1FFTyw4E3FPUUekMNFgzW/Qc8udAAqIRIwAuFLrZ0JtQsvldCAPuNG6t4H
-	gNp3fSKhLwxwq/ogxHJ4pLxqlJFS7x+65F0e22slzViHoJZLJ1uK65E6JUa4TVrNoJk5vutikVZ
-	D2Bwlfx3+bb+dp7bu2D+wg59+sDizRfvOclIEVle3OiSbTSiEGjToI6tzBwCpX23VVWK2c6M7w=
-	=
-X-Received: by 2002:a05:6000:2409:b0:43b:6a16:17e with SMTP id ffacd0b85a97d-43d1505b105mr13705376f8f.11.1775132594183;
-        Thu, 02 Apr 2026 05:23:14 -0700 (PDT)
-X-Received: by 2002:a05:6000:2409:b0:43b:6a16:17e with SMTP id ffacd0b85a97d-43d1505b105mr13705319f8f.11.1775132593703;
-        Thu, 02 Apr 2026 05:23:13 -0700 (PDT)
-Received: from localhost ([2a01:e0a:b25:f902::ff])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d214f2b63sm4510096f8f.28.2026.04.02.05.23.12
+        bh=sdBGEtOVUOrqsu+m2DU0Xpq65+UG7RkCtVPt0Shx5yg=;
+        b=hPmgaAKsT4dU7LODqk+r57tyw24sWSsjqayVn0U3I4vBZbQOgOsCMARX2KnnXi5fkL
+         2KaRgWWVxTZU60dPTuhUhFhzcHT0UFcGpCBpEwtoTYuFKaIsJgRoOhgDtVgArEx4Y87H
+         tV4PEXAFm+zvuj+GEXlq7NFPSFrs9FfgJ9UuT3i8cHyN8gNTHRw010MWq9r3XIDUrLhT
+         YB7tjs/hewgkpzIuFnvoN236LcoJTRmzVHMi8Z2CJyQlH8ZUfWfbyddr9RgVhs07xZSS
+         FumNOq4TpzHfIVGi/GJnwtNx+NYGAlEt4TBYsPy48n9ASxeODdvv3jJ1hlcTTZcnxzPA
+         v7vQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUAMxvrvm3dddd2Dd3xCJ5tKHy454Ed+UCoy8JoDzVMqBhZyWlJHQxS7H57yAd4QfJ16/cB/mIVBNXY@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx+ySA5vNOck7uT3AGJbqUKQEyM5RGw5qabn/x2jOMqTJ1oLPie
+	CaE4e0PMQqw4H3HxOThsBvVDqyheaJ7pdZihIau5VMS2sskev+jU3qdu9d7XiBgjKHc=
+X-Gm-Gg: ATEYQzwt7FNNqgigNIoSAfKwqRUhxzxqLHsivKqydv4CNL0rozVBB6CnawCtoAd37zD
+	5LLEeW29L36gB+1d9FR3Js6sDn3cGAtkv9N3PpezfPDOLmDFOdclNd4BWcknnUOBidVopLjELS2
+	BWAL/3XeazHtTWf9Y4HJNoatbQYXE4UpQEziPTzmbwo//RlCpnM1txQz3vkKlbp9HyT2R5AKRFL
+	n/EEqkVAQOZgGaxx84ZS3sA0L7SFlcJXMQBTvzhUHxBDH17Q8pX7zyo1yp4v1WHX4NtNWx57Zqv
+	inoVNKPpZwqOuK6SjWqEUxSm8rPoPq/QdiQ5SxJ+cJwT8EUxSpOj5VzhEGps5Dykha4CCyO1q30
+	jUkpuUm7sxjjFB7aR35l3x198/9HNDhj3RQ1NxuCz11YrXoZGcxce1SaLk1So5XbJOB0QZkY1Wk
+	26ogVYsZ0Yfg0xlLFaf4/02bTUlBqbIic=
+X-Received: by 2002:a05:600c:a31c:b0:487:338:b4eb with SMTP id 5b1f17b1804b1-4888b7b89a1mr36557135e9.28.1775134563095;
+        Thu, 02 Apr 2026 05:56:03 -0700 (PDT)
+Received: from FV6GYCPJ69 ([208.127.45.21])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4e56fesm7943310f8f.27.2026.04.02.05.56.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 05:23:13 -0700 (PDT)
-Date: Thu, 2 Apr 2026 14:23:12 +0200
-From: Maxime Ripard <mripard@redhat.com>
-To: Jiri Pirko <jiri@resnulli.us>
+        Thu, 02 Apr 2026 05:56:02 -0700 (PDT)
+Date: Thu, 2 Apr 2026 14:56:00 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Maxime Ripard <mripard@redhat.com>
 Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
 	iommu@lists.linux.dev, linux-media@vger.kernel.org, sumit.semwal@linaro.org, 
 	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, jstultz@google.com, tjmercier@google.com, 
@@ -88,93 +70,75 @@ Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
 	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
 Subject: Re: [PATCH v5 2/2] dma-buf: heaps: system: add system_cc_shared heap
  for explicitly shared memory
-Message-ID: <20260402-discreet-glossy-perch-bda4f9@houat>
+Message-ID: <qvp2zepvwnlgcw36bcx47xouskuqk3tzjuomnhnwwg5ahiswt3@zbseau5arjho>
 References: <20260325192352.437608-1-jiri@resnulli.us>
  <20260325192352.437608-3-jiri@resnulli.us>
+ <20260402-discreet-glossy-perch-bda4f9@houat>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="e65sn5i4kwgewwdb"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260325192352.437608-3-jiri@resnulli.us>
+In-Reply-To: <20260402-discreet-glossy-perch-bda4f9@houat>
 
+Thu, Apr 02, 2026 at 02:23:12PM +0200, mripard@redhat.com wrote:
+>Hi Jiri,
+>
+>On Wed, Mar 25, 2026 at 08:23:52PM +0100, Jiri Pirko wrote:
+>> From: Jiri Pirko <jiri@nvidia.com>
+>> 
+>> Add a new "system_cc_shared" dma-buf heap to allow userspace to
+>> allocate shared (decrypted) memory for confidential computing (CoCo)
+>> VMs.
+>> 
+>> On CoCo VMs, guest memory is private by default. The hardware uses an
+>> encryption bit in page table entries (C-bit on AMD SEV, "shared" bit on
+>> Intel TDX) to control whether a given memory access is private or
+>> shared. The kernel's direct map is set up as private,
+>> so pages returned by alloc_pages() are private in the direct map
+>> by default. To make this memory usable for devices that do not support
+>> DMA to private memory (no TDISP support), it has to be explicitly
+>> shared. A couple of things are needed to properly handle
+>> shared memory for the dma-buf use case:
+>> 
+>> - set_memory_decrypted() on the direct map after allocation:
+>>   Besides clearing the encryption bit in the direct map PTEs, this
+>>   also notifies the hypervisor about the page state change. On free,
+>>   the inverse set_memory_encrypted() must be called before returning
+>>   pages to the allocator. If re-encryption fails, pages
+>>   are intentionally leaked to prevent shared memory from being
+>>   reused as private.
+>> 
+>> - pgprot_decrypted() for userspace and kernel virtual mappings:
+>>   Any new mapping of the shared pages, be it to userspace via
+>>   mmap or to kernel vmalloc space via vmap, creates PTEs independent
+>>   of the direct map. These must also have the encryption bit cleared,
+>>   otherwise accesses through them would see encrypted (garbage) data.
+>> 
+>> - DMA_ATTR_CC_SHARED for DMA mapping:
+>>   Since the pages are already shared, the DMA API needs to be
+>>   informed via DMA_ATTR_CC_SHARED so it can map them correctly
+>>   as unencrypted for device access.
+>> 
+>> On non-CoCo VMs, the system_cc_shared heap is not registered
+>> to prevent misuse by userspace that does not understand
+>> the security implications of explicitly shared memory.
+>> 
+>> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+>
+>I'm a bit late to the party, sorry.
+>
+>This new heap must be documented in
+>Documentation/userspace-api/dma-buf-heaps.rst, but (and especially since
+>it seems like it was merged already) it can be done as a follow-up
+>patch.
 
---e65sn5i4kwgewwdb
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v5 2/2] dma-buf: heaps: system: add system_cc_shared heap
- for explicitly shared memory
-MIME-Version: 1.0
+Okay, will send a follow-up. Thanks!
 
-Hi Jiri,
+>
+>Maxime
 
-On Wed, Mar 25, 2026 at 08:23:52PM +0100, Jiri Pirko wrote:
-> From: Jiri Pirko <jiri@nvidia.com>
->=20
-> Add a new "system_cc_shared" dma-buf heap to allow userspace to
-> allocate shared (decrypted) memory for confidential computing (CoCo)
-> VMs.
->=20
-> On CoCo VMs, guest memory is private by default. The hardware uses an
-> encryption bit in page table entries (C-bit on AMD SEV, "shared" bit on
-> Intel TDX) to control whether a given memory access is private or
-> shared. The kernel's direct map is set up as private,
-> so pages returned by alloc_pages() are private in the direct map
-> by default. To make this memory usable for devices that do not support
-> DMA to private memory (no TDISP support), it has to be explicitly
-> shared. A couple of things are needed to properly handle
-> shared memory for the dma-buf use case:
->=20
-> - set_memory_decrypted() on the direct map after allocation:
->   Besides clearing the encryption bit in the direct map PTEs, this
->   also notifies the hypervisor about the page state change. On free,
->   the inverse set_memory_encrypted() must be called before returning
->   pages to the allocator. If re-encryption fails, pages
->   are intentionally leaked to prevent shared memory from being
->   reused as private.
->=20
-> - pgprot_decrypted() for userspace and kernel virtual mappings:
->   Any new mapping of the shared pages, be it to userspace via
->   mmap or to kernel vmalloc space via vmap, creates PTEs independent
->   of the direct map. These must also have the encryption bit cleared,
->   otherwise accesses through them would see encrypted (garbage) data.
->=20
-> - DMA_ATTR_CC_SHARED for DMA mapping:
->   Since the pages are already shared, the DMA API needs to be
->   informed via DMA_ATTR_CC_SHARED so it can map them correctly
->   as unencrypted for device access.
->=20
-> On non-CoCo VMs, the system_cc_shared heap is not registered
-> to prevent misuse by userspace that does not understand
-> the security implications of explicitly shared memory.
->=20
-> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-
-I'm a bit late to the party, sorry.
-
-This new heap must be documented in
-Documentation/userspace-api/dma-buf-heaps.rst, but (and especially since
-it seems like it was merged already) it can be done as a follow-up
-patch.
-
-Maxime
-
---e65sn5i4kwgewwdb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCac5frAAKCRAnX84Zoj2+
-dnVEAX9CFXx//98RE08S4/htofGJDNunF07/14IluU1iYb8+94vCMi2iUvSzXSKI
-zbgrVRgBfRy+pMU2nc+zOonhVfFvK813bX4cN9vLtMfH0/h/fKnFJKCc5msL12k4
-8g97/3uO3A==
-=FGaV
------END PGP SIGNATURE-----
-
---e65sn5i4kwgewwdb--
 
