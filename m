@@ -1,57 +1,55 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8D425D527
-	for <linux-coco@lists.linux.dev>; Mon,  6 Apr 2026 15:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF6531985C
+	for <linux-coco@lists.linux.dev>; Mon,  6 Apr 2026 15:40:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775489287; cv=none; b=eeGXSHoDUgUymD4f31wJ/NFtoLJpV4ra2QOWvEU7cTfp+98799nutEERwLjERmiijaBACt3sR6r9V69wOG0E8BcF9rgyDjQu8xw87XGxKUD5FopIF1xQe7PnUSf5CkeJIz/m/IKdnQWqr1QXK7b8hwxUwXgCzFLZWsb7WFvcQGI=
+	t=1775490057; cv=none; b=nnadJMQqJfzlQAcFVeErKwXAjbejUzSxZdO6rVRHRX+mB3tUQ/ZsooA/uYFCsdTtvNz9gUHdS+bOoAEWFyMDUIcNkWmlnihaiZIJZ6m8HDlcFsigv98tEvP5hlKEYzaVTfCf/JW2Rw6OVLjRogabx13RKh1QHvV31w8VELpN0DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775489287; c=relaxed/simple;
-	bh=6LCgBNgKj6hIuQM0MBfpWJ8Gv1PrS0Ny0OnBP+DkHs4=;
+	s=arc-20240116; t=1775490057; c=relaxed/simple;
+	bh=GeL5TklS9/MJdTTnMy6rhg+Erv9B1Kj4QIkaGUhKAHQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=h9B8OSS2PDDaVv5V2LJYHBD8XpYCXKZvTDh17gOc0307U7oCNVLH5jgDwdO2TYXP0uwTYoyIsMFD+YTanJ+rt+njnTcJ3n6dJ+RwMgObfSOGnai6uENJ3+kFuFGKRfACBYX1td2TtnKgY5VUEqvnYjpk/AE3hr6Nn0xB+LGV2+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PeTH1scQ; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=owls7ApGS9cOnj/xeHLGVifUaij3NfxS3VYRezJY171kZE0vI9VDzNWfmoT3GjmScApB9YkslOB841rrs49w809waxQTU6ufhj/rpcV1Wa+NgcdSVt17EOuqHRpyPaL1H7D18Oe/+IawYtsejnj7OIDQBR1jOuFI0akuLl8dM4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GzOIM9sc; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PeTH1scQ"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82cf084fe58so2224322b3a.1
-        for <linux-coco@lists.linux.dev>; Mon, 06 Apr 2026 08:28:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GzOIM9sc"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82cd9fa609aso2501178b3a.3
+        for <linux-coco@lists.linux.dev>; Mon, 06 Apr 2026 08:40:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775489285; x=1776094085; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sEHfg1OZfS+Y9HeFZv48ajvxZYCSphKNKK/6SLJOTyE=;
-        b=PeTH1scQ7ooJhkdInEr3P1ousMDQeCAKquE1nuzYHR+qs0XlRPwMBdRv+nYYbmDFSi
-         /sDo3x27BeCnJFW5fcIvCimfLIherzl9TPHhJ3ciIZcLvORcWrhUhUecz3QgF68lE2py
-         E+6e2Jw6TOgurLlwzjRUiFMePN0VwjtgxTTy+2F+hxhIHQPVnfJDLdZiRJGYmHOs1dLx
-         1By6mAeFlrzsrgExVfnz2ZSZFnYetFqvAVPBmdyMpN7ExNFofBJp1ggQf80TmKmd89wZ
-         TGE87Zyo6bht+RaqP8eF0lU8GYv3M+z5NMtpIwdYUPAOF4X3Ev0fW3jcZyTEbDsQS1P1
-         pSDg==
+        d=google.com; s=20251104; t=1775490056; x=1776094856; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=U3Kk35EVNlkIAvGN2qGdLIz8gWMcjgIydFJ5LWEu5vc=;
+        b=GzOIM9sc27zS939wfERfqqAa0aXRpJB9mf0jrR0kxLzJddb3Pj+ewwcaKXWSxid4Gk
+         WuN3xy8jiKHqZqWemrMe9HXKHODkViyQrFRH+mVVipnSiDS2Z8MsiV4ujnXnlf+j2miH
+         mp4uixCwGmlu28/ve1z8gVuHm4cfSJcogrO+HjbP8A19yCFen8ECyCpo+1q/CG1e/QZA
+         6FoAAYIiQXFMqQ8yf9qlEAJ5+jFaAxi//QxXVaGzSFMsC5d6ILyK1u/OOq1uE254PyHI
+         lOm14PG9iCKstVVOGe6VBSVVjIPc0ewpUZh1aTRCWYoaUSBj7pUPNQPaIdqUYjRSlEtA
+         paOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775489285; x=1776094085;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=sEHfg1OZfS+Y9HeFZv48ajvxZYCSphKNKK/6SLJOTyE=;
-        b=oGM05K3H9FidpEb3cbeKEsZH9RC+28bO1NkAL3WYtMzRmzRb7Dt6p/DWoWSngNzyUO
-         B9S8oJLVZCNNvRhFfWIgAsnf6BhwoD+3H65clTl+Q+IvTfNqof7Qo5AerWxKxl7uCyGi
-         eKV7cNGK9Ub6CKq4jOhkYO7lw2fJyHaLEiBlL8M4ZvAIP3CduydqAy/8U1i7RQaf0+wW
-         chp2PkCxt1b4kHlrHzg1t3PJ5AiVaoPLQzQKGkOghcdH2GDL08zr3KLM3Hj4pvWdLMXn
-         r6LDVpBrX7PW/xThO1rvw0bbM/+jzvC+oX+cRTsJK4+o352xKPcpRlgjPSwUketSs7ON
-         RWvg==
-X-Forwarded-Encrypted: i=1; AJvYcCWAIe8TVJEtlWGI9FbvYJOyXWIJuteNV5BnC145eHLfynBFdJD6y6VI/A1GNXf8PYdWFUMoR8x3ilET@lists.linux.dev
-X-Gm-Message-State: AOJu0YzR2oXwGB0RdmjqHT5idDj4fPTUk+miSm+TEZfxKMQ6jP5YHA5j
-	WExkRcaG/nz5dWpkT5FbK54PBpDtIzSVX+++Le19SMiItJl1r35SuNVcxCzlnNzsKlReww3VbRK
-	JKdDhtQ==
-X-Received: from pfbde20.prod.google.com ([2002:a05:6a00:4694:b0:82c:6e7c:ac6d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8018:b0:82c:215d:5e9d
- with SMTP id d2e1a72fcca58-82d0db6bfc5mr12524946b3a.32.1775489285334; Mon, 06
- Apr 2026 08:28:05 -0700 (PDT)
-Date: Mon, 6 Apr 2026 08:28:03 -0700
-In-Reply-To: <CABgObfY05NU8DS82jkwpF89_p1nR7VJ30HBq_xaMg_u+-j=0Cw@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1775490056; x=1776094856;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=U3Kk35EVNlkIAvGN2qGdLIz8gWMcjgIydFJ5LWEu5vc=;
+        b=eqg4r7Qb8sUG0K6+dev3DB4jYxar6AJxQd0eA1BRgAn1WV+ms0ByAHKcP1Dwdok1YC
+         +FLunSQmwIZSj986RTMuxyQm0UEzYnnmxtR+gJk9xBho0zqCvW1/lxa15XgZJzgoJfjY
+         ftPJveZ9squpBWsQ6HvDBH8pobC88pqwuTr/IICvNGXlMIHb6zzovmqYFLIdAb1ssnUz
+         FQwrns0SPljErdvKSvm9dAcebkM+X0fZjHmulh5wPrCD7P3ZCLwQuP5R5UkSzU/98nM9
+         4GaqfWTbwYnaBhHBfjfsrr7h8OuhZP+a+0/P4KbvAiJfFmHdxTSBp0+TJW/b47QR+R2E
+         JZGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVuA0pfJO/dy/Tk9k1fPQLMlKyGAfq72ynEg7L8B+gqnX4otgiXeA8zx5asUDAvUqIg4yvnMveCNepc@lists.linux.dev
+X-Gm-Message-State: AOJu0YzHwaOCA+aMTOJw3fUsc5bqPgfHzvX6YTSVkvLHIkZ5wLQmOKiP
+	HNJ1quXAH8NMKAzwOU+B1rvWFrAuzzgOyEPlEGZtWjxMm+QHtA6TuXnK9Ve2LEWUQE4H7gwqnDV
+	kje+LHQ==
+X-Received: from pfblr14.prod.google.com ([2002:a05:6a00:738e:b0:82a:69ed:da7f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:f89:b0:82c:9c5a:4c32
+ with SMTP id d2e1a72fcca58-82d0da45875mr11660901b3a.6.1775490055769; Mon, 06
+ Apr 2026 08:40:55 -0700 (PDT)
+Date: Mon, 6 Apr 2026 08:40:54 -0700
+In-Reply-To: <fb9e61cc-20df-47cd-b324-1dd8d5985372@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -59,170 +57,39 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260311003346.2626238-1-seanjc@google.com> <7ec084f8-812e-42f2-8470-e416fa7ee848@redhat.com>
- <ac75iuf9gHIhvm9u@google.com> <88e9d7f0-35b8-4559-9f4d-c7daf1af6012@redhat.com>
- <aea176c8-35de-4042-bf98-e42ce05f93fb@intel.com> <CABgObfY05NU8DS82jkwpF89_p1nR7VJ30HBq_xaMg_u+-j=0Cw@mail.gmail.com>
-Message-ID: <adPRA4ZhnvbaXSn0@google.com>
+ <ac75iuf9gHIhvm9u@google.com> <fb9e61cc-20df-47cd-b324-1dd8d5985372@intel.com>
+Message-ID: <adPUBrHO9gdGG4k3@google.com>
 Subject: Re: [PATCH 0/7] KVM: x86: APX reg prep work
 From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, 
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, 
 	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Andrew Cooper <andrew.cooper3@citrix.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	"Chang S . Bae" <chang.seok.bae@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-+Andrew
+On Fri, Apr 03, 2026, Dave Hansen wrote:
+> On 4/2/26 16:19, Sean Christopherson wrote:
+> > Do we know what the compiler and/or kernel rules for using R16-R31 will be?
+> > E.g. if C code is allowed to use R16-R31 at will, then KVM will either need to
+> > swap R16-R31 in assembly, or annotate a pile of functions as "no_egpr" or
+> > whatever.
+> 
+> My _assumption_ is that the speedup from using the new GPRs as GPRs in
+> the kernel is going to be enough for us to support it. This is even
+> though those kernel binaries won't run on old hardware.
+> 
+> If I'm right, then we're going to have to handle the new GPRs just like
+> the existing ones and save them on kernel entry before we hit C code.
 
-On Sat, Apr 04, 2026, Paolo Bonzini wrote:
-> On Sat, Apr 4, 2026 at 12:05=E2=80=AFAM Chang S. Bae <chang.seok.bae@inte=
-l.com> wrote:
-> >
-> > On 4/3/2026 9:03 AM, Paolo Bonzini wrote:
-> > >
-> > > But until the kernel starts using APX, I would do the save/restore ne=
-ar
-> > > kvm_load_xfeatures(), because __vmx_vcpu_run()/__svm_vcpu_run() would
-> > > have to check whether xcr0.apx is set or not.
-> > Right, I'd much prefer this. Then, it requires to audit whether any
-> > fast-path handler could access EGPRs.
-> >
-> > But there are cases with the new {RD|WR}MSR (MSR_IMM) instructions that
-> > appear to access GPRs. Because of this, the EGPR saving/restoring needs
-> > to happen earlier.
->=20
-> You're right about fast paths...
+Ooof, one nasty wrinkle to prepare for is an NMI that arrives after VM-Exit on
+Intel CPUs.  Unless Intel extends VMX to context switch XCR0 at VM-Entry/VM-Exit,
+and/or provides GIF-like functionality (which would be awesome!), it will be
+possible for an NMI to be taken with the guest's XCR0 loaded, i.e. with XCR0.APX=0
+even when APX is fully enabled in the host.
 
-Ya, potential fastpath usage is why I wanted to just context switch around
-entry/exit.
-
-> so something like the attached patch.
-> It is not too bad to translate into assembly, where it could use
-> alternatives (in the same way as
-> RESTORE_GUEST_SPEC_CTRL/RESTORE_GUEST_SPEC_CTRL_BODY) in place of
-> static_cpu_has(). Maybe it's best to bite the bullet and do it
-> already...
-
-My strong vote is to context switch in assembly, but _conditionally_ contex=
-t
-switch R16-R31.  All of this started from Andrew's comment:
-
- : You can't unconditionally use PUSH2/POP2 in the VMExit, because at that
- : point in time it's the guest's XCR0 in context.  If the guest has APX
- : disabled, PUSH2 in the VMExit path will #UD.
- :=20
- : You either need two VMExit handlers, one APX and one non-APX and choose
- : based on the guest XCR0 value, or you need a branch prior to regaining
- : speculative safety, or you need to save/restore XCR0 as the first
- : action.  It's horrible any way you look at it.
-
-But that second paragraph isn't quite correct, at least not for KVM.  Speci=
-fically,
-"need a branch prior to regaining speculative safety" isn't correct, as tha=
-t holds
-true if and only if "regaining speculative safety" requires executing code =
-that
-might access R16-R31.  If we massage __vmx_vcpu_run() to restore SPEC_CTRL =
-in
-assembly, same as __svm_vcpu_run(), then __{svm,vmx}_vcpu_run() can simply =
-context
-switch R16-R31 if and only if APX is enabled in XCR0.
-
-KVM always intercepts XCR0 writes (when XCR0 isn't context switched by "har=
-ware",
-i.e. ignoring SEV-ES+ and TDX guests), and IIUC all access to R16-R31 is ga=
-ted on
-XCR0.APX=3D1.  So unless I'm missing something (or hardware is flawed and l=
-ets the
-guest speculative consume R16-R31, which would be sad), it's perfectly safe=
- to
-run the guest with host state in R16-R31.
-
-That would avoid pointlessly context switching 16 registers when APX is not=
- being
-used by the guest, and would avoid having to write XCR0 in the fastpath.
-
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
-ost.h
-> index 959fcc01ee0f..9a1766037b6f 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -887,6 +887,7 @@ struct kvm_vcpu_arch {
->  	struct fpu_guest guest_fpu;
-> =20
->  	u64 xcr0;
-> +	u64 early_xcr0;
-
-...
-
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 0757b93e528d..69abfdd946dd 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -1220,9 +1220,13 @@ static void kvm_load_xfeatures(struct kvm_vcpu *vc=
-pu, bool load_guest)
->  	if (!kvm_is_cr4_bit_set(vcpu, X86_CR4_OSXSAVE))
->  		return;
-> =20
-> -	if (vcpu->arch.xcr0 !=3D kvm_host.xcr0)
-> +	/*
-> +	 * Do not load the definitive XCR0 yet; vcpu->arch.early_xcr0 keeps
-> +	 * APX enabled so that the kernel can move to and from r16...r31.
-> +	 */
-> +	if (vcpu->arch.early_xcr0 !=3D kvm_host.xcr0)
->  		xsetbv(XCR_XFEATURE_ENABLED_MASK,
-> -		       load_guest ? vcpu->arch.xcr0 : kvm_host.xcr0);
-> +		       load_guest ? vcpu->arch.early_xcr0 : kvm_host.xcr0);
-
-Even _if_ we want to play XCR0 games, tracking early_xcr0 is unnecessary.  =
-This
-can be:
-
-	/*
-	 * XCR0 is context switched around VM-Enter/VM-Exit if APX is enabled
-	 * in the host but not in the guest.
-	 */
-	if (vcpu->arch.xcr0 !=3D kvm_host.xcr0 &&
-	    (!cpu_feature_enabled(X86_FEATURE_APX) ||
-	     vcpu->arch.xcr0 & XFEATURE_MASK_APX))
-		xsetbv(XCR_XFEATURE_ENABLED_MASK,
-		       load_guest ? vcpu->arch.xcr0 : kvm_host.xcr0);
-
-And then __kvm_load_guest_apx()
-
-	<context switch R16-R31>
-
-	if (cpu_feature_enabled(X86_FEATURE_APX) &&
-	    !(vcpu->arch.xcr0 & & XFEATURE_MASK_APX))
-		xsetbv(XCR_XFEATURE_ENABLED_MASK, vcpu->arch.xcr0);
-
-And __kvm_save_guest_apx() would reverse the order of __kvm_load_guest_apx(=
-).
-
-> @@ -11056,6 +11061,49 @@ static void kvm_vcpu_reload_apic_access_page(str=
-uct kvm_vcpu *vcpu)
->  	kvm_x86_call(set_apic_access_page_addr)(vcpu);
->  }
-> =20
-> +/*
-> + * Assuming the kernel does not use APX for now.  When
-> + * the kernel starts using APX this needs to move into
-> + * assembly, and KVM_GET/SET_XSAVE needs to fill in
-> + * EGPRs from vcpu->arch.regs.
-> + */
-> +void __kvm_load_guest_apx(struct kvm_vcpu *vcpu)
-> +{
-> +	if (vcpu->arch.early_xcr0 !=3D vcpu->arch.xcr0)
-> +		xsetbv(XCR_XFEATURE_ENABLED_MASK, vcpu->arch.xcr0);
-
-This is wrong.  The "real" xcr0 needs to be loaded *after* accessing R16+.
-
-> +	if (!(vcpu->arch.xcr0 & XFEATURE_MASK_APX))
-> +		return;
-> +
-> +	WARN_ON_ONCE(!irqs_disabled());
-> +
-> +	asm("mov %[r16], %%r16\n"
-> +	    "mov %[r17], %%r17\n" // ...
-> +	    : : [r16] "m" (vcpu->arch.regs[16]),
-> +	        [r17] "m" (vcpu->arch.regs[17]));
-> +}
+> I'm not sure I want to be messing with XSAVE there. XSAVE requires
+> munging a header which means even if we used XSAVE we'd need to XSAVE
+> and then copy things over to pt_regs (assuming we continue using pt_regs).
+> 
+> That doesn't seem like loads of fun because we'll also need to copy out
+> to the XSAVE UABI spots, like PKRU times 32.
