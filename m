@@ -1,149 +1,193 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A72BA2512C8
-	for <linux-coco@lists.linux.dev>; Mon,  6 Apr 2026 20:20:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775506849; cv=pass; b=Ze5C4k6Ial01Lwf2niwLnZyoyWjA8j04eJiRuNkXm9V21FxMOQkO7cc9GiVCNBAaY364YuMs0zMYX2uc/nIZNOkycs1FGvVdnocvgqDeZOyIS602hGM328yeo4p1YpNuXXLkMWB5R+JDKLmyZkHfxz9xme/d2WFqINl77t83cys=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775506849; c=relaxed/simple;
-	bh=Io1U+2H98QfGuSNNSPp+Om8lrtZl2OSidEXkxdnTsLU=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FA839C65F
+	for <linux-coco@lists.linux.dev>; Mon,  6 Apr 2026 21:41:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775511715; cv=none; b=qppeOkCfCyqy0KLJBoFPkHVMqwlmRYzFZ/1ZoHX23ketkIhk877cq01YBA5yW31O9tnCNHk6arwe71h8G9AyuhMAFYNKySuz2ezNjvZSlc+q7ywm62/NOH+ks0cL6VIhvWqShv4mxBFXRaa7TX3ImwhbVmm+SBhmRe3uE9ERyno=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775511715; c=relaxed/simple;
+	bh=LqeWjRAjleQEgVlvFe8IGD4Aykcb3VyJFHWIx7meAD4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Im40s0VTQCmhHOj/fxqwrvh4RNxbMAZuLGs6L58Uvq3qG3RB+8vDQv7DDe7gDwUF8LEczv/EXyxSAzlmbfywkAzujq0buZP8XJPLnww6qJBcYrQzHAUasKYXsxE0x60mFEIRKsPly0eMuRyG4f0rV9Y7vZiMD3BnNZ0vW5oYjrs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WHNWpX/I; arc=pass smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=Rk7HDB2ENawmqUOL9fwfhls73atKePNE7VMtpw5qnDTXSpGVrqRKYSItH5T/Wz3SbpGIdErxO+dAbRv7qnVwHVetOWI0ltcPcUB2WgmRlxHI2XiUr6sP0XEca5DGlJ6zwAsmQIX7Pnvb+gEJ+LMAVnksXmD3d7HnXbrpJ/d6cZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HcWDexsr; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WHNWpX/I"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488940ccfa6so199785e9.1
-        for <linux-coco@lists.linux.dev>; Mon, 06 Apr 2026 13:20:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775506846; cv=none;
-        d=google.com; s=arc-20240605;
-        b=aQ67YleB8iCI7mi92t06aD39WNcHyAPEjCVMXw5c+cK4BG0xWkpH7K9mYnq9aGnVX/
-         n9InjVfLvJuaF17Q6tESvH4vHSKVi44wQlvk49w81StjvOkPc8AY41p66JQn5YVDI7H+
-         zIVnj9tR9kbKWJXBHsn/tcIar3QQcqjB9f+FnDCjWDxFp77uDKrMbA5sFY8urG3YKs6F
-         sidq4/ArBlXheDxtTpPEGF+k5OETFe3yYC/3OlOBUp0eRwQ5WWQEK3SP+Sn6SpWYXJgC
-         HYNtHMRcmZDYy/aIB0H5J0/mL5P6a/YfSspXZWqcfI/PaNiYoxv7Ek92cEEs7oavoP0x
-         MTuw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DAq+hiOQoaI832cP+7lQvu5renHjvWZOnK9BIt/n8bg=;
-        fh=S+j0792Ky4fLXYw8LXKPRqQYSCf6DjvoQu/Mkv+bGGg=;
-        b=QBnP2VefgsAUXJZe0TqcqDuv2pajJe9LCK53KcFEwnUyX6vlI9HYBXO25LhNmkTADa
-         SUr0m8r4Vg0LR8WrfKm1kMFIhmoGLyL6S+4jTi3f79fZ6jHWZV0bXNfjHibUNQCe1iIO
-         K7qTMnzste5N0Gws3ysrVvM0cS8uTMAr5g8XBW4K43ze4hNj74gKWb6g6KcHSNTFG8zp
-         1nrj3CXyzEsEpvb6OL6cLr0/gg/TpGQBvQ6Hg65BZl2KtLbDrbgzoaQrO2Gxs8EF2Te5
-         ZIKAtcPfmqGiqyj+ep6uWo5CY9MOFt52JwLKS2YqcJbwM3pJfrB11R8mb4ufz2JIaGzu
-         rqrQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775506846; x=1776111646; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DAq+hiOQoaI832cP+7lQvu5renHjvWZOnK9BIt/n8bg=;
-        b=WHNWpX/II57I/OHGOky863sAzLjJHU1C7hjGlvVqP50IQpsrBUWdIKXUKSS/2vCb3P
-         i6oXUGczBjHLIRFG+zE/sdyj2xXNu00aJg27DA2DV8AXyDIZ1Ud5+SbOeLEgmYx43xk4
-         r8sx1ul68sa2Vuj749zi6bJeYY53Yz0svIsMvFQogpqMjgzHyi9pAB6uPejw5PpCv8RL
-         ynq5uPUejdPgIZlDZN5nbc7ko2gIVDp5eSSq9d92iwLEnzs9/7tT3VZ8JB/WUYb2DqCw
-         rLJJVbX8q4pJhvd4KOeP9cjAZDVIhzkkjNzNHk3u/kOV1FRbCg27oh30SUbGUM2IUs8W
-         5iHg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HcWDexsr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775511712;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eoWSSC8sEj5p74YK+Y0Flq8SEgfEahb8YNR6rLS40LU=;
+	b=HcWDexsruaCK0XTgFGzs21EbTzPCEAHRksmILyNKXKhthz11G81mPTWkCfUWyvGi5BP+J6
+	6xDXHNXc2NpSOar3FUQTks36upN1JifL/47vkCPC1AGkUtSetg4Rd1jfKJPFjf8cGaIiim
+	XHdwZifjKCWptHbqYHf8sr5ZDB3wwF8=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-66-HYhn5ncgPxmqfhBBKYAbyg-1; Mon, 06 Apr 2026 17:41:51 -0400
+X-MC-Unique: HYhn5ncgPxmqfhBBKYAbyg-1
+X-Mimecast-MFC-AGG-ID: HYhn5ncgPxmqfhBBKYAbyg_1775511710
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4362197d1easo4006204f8f.2
+        for <linux-coco@lists.linux.dev>; Mon, 06 Apr 2026 14:41:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775506846; x=1776111646;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DAq+hiOQoaI832cP+7lQvu5renHjvWZOnK9BIt/n8bg=;
-        b=hCFGFlujILQe5tSkxlJqgkcYWnBww0DEA+YguBHEPgY6x/WzX+6WgW3IAx2KdEse6M
-         yemHpxOzROLiwts+ZybxtGC+aFKuJcV6WU2LYhFdYymHoEXM0xAVoSha+b6wh27MqNWG
-         71RvzjGn4PFSZ/s74Q19h2xpbBuyJOpd2D3wDyzHWz/Uecm7z9OVRYvt17Zmy0JybzjH
-         84VN6RyYC73wW72AYmydzNG1P4haun/80Xbln1JbifMuopWJVZ3qJb9mDCMmkOuSHGo0
-         SxpfF3+pzVemhFd6aE8n+KN0l0FNULdZcLQpNdRiM0W3gHXu7sKfy0dNhpOGcrZvS4th
-         M4Dw==
-X-Forwarded-Encrypted: i=1; AJvYcCUEqAB2dV4bzPt7pAn3bnyuAmzcRcFcedOr0EQsi46YSyYEyCF3JwrdImSoUN8L15TaQCT8GHx572CW@lists.linux.dev
-X-Gm-Message-State: AOJu0YyZK+T4TStKkFYCkanfxPh4hbJ6Tt1V8ntL6gDYFsmPlZWARnjg
-	qkAV3qT8Jg84f7QH0FdtqKxR5/3bdca2QR8kKWscNGh3xsfOagT7pLhvr5qRp2Y2Pf2lU5zIAbW
-	RSAb6v8fU48iJjutPz3V3rysunVhbIDev3t9MjRia
-X-Gm-Gg: AeBDievwmsuXYRSsG7fjftROKx536sQNL/uBo7ssc/9fMzW1jjboCb4QnDHHPrh+6ei
-	lYtPwQOYQ1YUX3FQEw2cPWO2gG/RoQNhznIT5m0KNMqWOmOTDpPZfxOc/QI4yOjXqBXvm3N/MTA
-	D3kUksLvGv+mxlDJXPTt6fGfnAGpy2ZHLz2njYo8yG7eGeMa9YfFoTx+jsIUv1qIea/wbtAStNH
-	i6oAqCpfqqT9enxi1qbMpvcfMFkkIUvRhFzp6B7xEF5WvRfiojmWATTP0Zg3NaICXVOGWcSpEwT
-	W7sJQb99RZpjSQ/Md0Sbc19XkxUp3XtgBp+qbw==
-X-Received: by 2002:a05:600c:6b19:b0:477:86fd:fb47 with SMTP id
- 5b1f17b1804b1-4889a458061mr2963095e9.8.1775506845674; Mon, 06 Apr 2026
- 13:20:45 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775511710; x=1776116510;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eoWSSC8sEj5p74YK+Y0Flq8SEgfEahb8YNR6rLS40LU=;
+        b=ahR0yLBrzUNKHT8PFEhY9nyLQjlq/YIqqEkMACMgVr1yD9kU0fIvRs8opMqDLQRv8U
+         LnC5/SMNBQ1icRKvKGyCiAcczXjEj3O3RBp9BUzyvIlqs36Ojkv4ik472AHBw8jHn+zE
+         xvM3JgxLgMscDum0ZJjEwr1JTQP8QIJMIdnUgGzd1Jmj5+DTSdJ4VJQb7LnGE2zqRsbI
+         SBYP6VNcvYfCQiagu4zAPoVJ42bnmPJtdN4LUF4nGGB9jq6xFd7ISG3QDpivXE0nmZ+0
+         GPfUtkEsSuejbf643v7G5EFXy/wmdHulWXVwGNVGkLOkQsvJBeP27pKjT8nMAm0hfhoD
+         BvmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX7nw/64vItEmSFyAO+Nmo9TFQLkraYti9jLV07beSZ1fv083rxzwmtivgE6AFEpNRSnJ0A5vVNWH9r@lists.linux.dev
+X-Gm-Message-State: AOJu0YyJaog3NT8d+N3VXZiTaXOX2uPqlIuX5JiJrd64BzTrrqr9KWQN
+	DcPZdG7vd5Fzm0a4ZD+/0QdHJkhIgudYlzGKqLl1DOl8PmB4J2lYGO8xN0M+JjWK4rNH9wjVVM5
+	bdlJLkzjcWgwg8R2e//iMZjFJXOsgB7VC6HISiQRvF5JgBqm1cgAYKB1dJBaaVpHIfLm/tmKmLM
+	L38c49BoLCKyX1a3k8pULRaKczPbE1EW4qbKxMdA==
+X-Gm-Gg: AeBDieuLqVsYuSiAi6xtBXDgeOa8D/NPweDx2qQpEFnlAi/9tBlQPF9aNmoOe61yr3l
+	SgAlRlf8YH4t9c0Ayn8EVnbNHQRic1wpM+nSiBmwDGXN8YCv8kEjLIZiSRcHYHXH/dwsga2b1kb
+	6E/jUNLmlEQGCgj4do2PjwRRN1AEtbbeqlssWxlpH7OAW/Hr5+MrrW348VL007I4Bg5YDhaPrAg
+	daSYHA7+PJvjNkFkPY4G95CeruvvGseeAca28zujjpETAWZVr51Prx7xvbD/+BQFkzDGM9zUqgR
+	2I1U
+X-Received: by 2002:a05:6000:26c2:b0:43d:32a:8595 with SMTP id ffacd0b85a97d-43d29294c00mr19903991f8f.20.1775511710178;
+        Mon, 06 Apr 2026 14:41:50 -0700 (PDT)
+X-Received: by 2002:a05:6000:26c2:b0:43d:32a:8595 with SMTP id
+ ffacd0b85a97d-43d29294c00mr19903969f8f.20.1775511709729; Mon, 06 Apr 2026
+ 14:41:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260402141103.598495-1-jiri@resnulli.us>
-In-Reply-To: <20260402141103.598495-1-jiri@resnulli.us>
-From: "T.J. Mercier" <tjmercier@google.com>
-Date: Mon, 6 Apr 2026 13:20:33 -0700
-X-Gm-Features: AQROBzBphM-pvVrX6rS78TlEjxwdox4kg-mNa-24N1cUfIDHIUevXFcYB-smPLY
-Message-ID: <CABdmKX3N70j8ZZs5DNhx6fhRi=Aa_+2xY1JHcW+uDoaV2+Sngw@mail.gmail.com>
-Subject: Re: [PATCH] dma-buf: heaps: system: document system_cc_shared heap
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	iommu@lists.linux.dev, linux-media@vger.kernel.org, sumit.semwal@linaro.org, 
-	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, jstultz@google.com, 
-	christian.koenig@amd.com, m.szyprowski@samsung.com, robin.murphy@arm.com, 
-	jgg@ziepe.ca, leon@kernel.org, sean.anderson@linux.dev, ptesarik@suse.com, 
-	catalin.marinas@arm.com, aneesh.kumar@kernel.org, suzuki.poulose@arm.com, 
-	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com, 
-	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com, 
-	linux-coco@lists.linux.dev
+References: <20260311003346.2626238-1-seanjc@google.com> <7ec084f8-812e-42f2-8470-e416fa7ee848@redhat.com>
+ <ac75iuf9gHIhvm9u@google.com> <88e9d7f0-35b8-4559-9f4d-c7daf1af6012@redhat.com>
+ <aea176c8-35de-4042-bf98-e42ce05f93fb@intel.com> <CABgObfY05NU8DS82jkwpF89_p1nR7VJ30HBq_xaMg_u+-j=0Cw@mail.gmail.com>
+ <adPRA4ZhnvbaXSn0@google.com>
+In-Reply-To: <adPRA4ZhnvbaXSn0@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 6 Apr 2026 23:41:37 +0200
+X-Gm-Features: AQROBzARX7cm2pOzcONamsrvF9MI0sPk77RETM76_dTtAevKjRTQ49z83c779Dw
+Message-ID: <CABgObfbLm3FR4f_nv5EyYJx4jwfeBaVgTLhr7P++hmhCP98e3Q@mail.gmail.com>
+Subject: Re: [PATCH 0/7] KVM: x86: APX reg prep work
+To: Sean Christopherson <seanjc@google.com>
+Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, Kiryl Shutsemau <kas@kernel.org>, kvm <kvm@vger.kernel.org>, 
+	"the arch/x86 maintainers" <x86@kernel.org>, linux-coco@lists.linux.dev, 
+	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, Andrew Cooper <andrew.cooper3@citrix.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: bPu97n_Ys2-cEv9U59lL0tnMbWUvIMYmsZbU3uT-d9Y_1775511710
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 2, 2026 at 7:11=E2=80=AFAM Jiri Pirko <jiri@resnulli.us> wrote:
+Il lun 6 apr 2026, 17:28 Sean Christopherson <seanjc@google.com> ha scritto:
+> > You're right about fast paths...
 >
-> From: Jiri Pirko <jiri@nvidia.com>
+> Ya, potential fastpath usage is why I wanted to just context switch around
+> entry/exit.
 >
-> Document the system_cc_shared dma-buf heap that was introduced
-> recently. Describe its purpose, availability conditions and
-> relation to confidential computing VMs.
+> > so something like the attached patch.
+> > It is not too bad to translate into assembly, where it could use
+> > alternatives (in the same way as
+> > RESTORE_GUEST_SPEC_CTRL/RESTORE_GUEST_SPEC_CTRL_BODY) in place of
+> > static_cpu_has(). Maybe it's best to bite the bullet and do it
+> > already...
 >
-> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-> ---
->  Documentation/userspace-api/dma-buf-heaps.rst | 8 ++++++++
->  1 file changed, 8 insertions(+)
+> My strong vote is to context switch in assembly, but _conditionally_ context
+> switch R16-R31.
 >
-> diff --git a/Documentation/userspace-api/dma-buf-heaps.rst b/Documentatio=
-n/userspace-api/dma-buf-heaps.rst
-> index 05445c83b79a..591732393e7d 100644
-> --- a/Documentation/userspace-api/dma-buf-heaps.rst
-> +++ b/Documentation/userspace-api/dma-buf-heaps.rst
-> @@ -16,6 +16,14 @@ following heaps:
+> But that second paragraph isn't quite correct, at least not for KVM.  Specifically,
+> "need a branch prior to regaining speculative safety" isn't correct, as that holds
+> true if and only if "regaining speculative safety" requires executing code that
+> might access R16-R31.  If we massage __vmx_vcpu_run() to restore SPEC_CTRL in
+> assembly, same as __svm_vcpu_run(), then __{svm,vmx}_vcpu_run() can simply context
+> switch R16-R31 if and only if APX is enabled in XCR0.
+
+I might even have patches for that lying around (the SPEC_CTRL part).
+
+> KVM always intercepts XCR0 writes (when XCR0 isn't context switched by "hardware",
+> i.e. ignoring SEV-ES+ and TDX guests), and IIUC all access to R16-R31 is gated on
+> XCR0.APX=1
+
+Right, fortunately.
+
+> .  So unless I'm missing something (or hardware is flawed and lets the
+> guest speculative consume R16-R31, which would be sad), it's perfectly safe to
+> run the guest with host state in R16-R31.
 >
->   - The ``system`` heap allocates virtually contiguous, cacheable, buffer=
-s.
+> That would avoid pointlessly context switching 16 registers when APX is not being
+> used by the guest, and would avoid having to write XCR0 in the fastpath.
+
+For now yes, but once/if the kernel starts using the registers there's
+no way out of writing XCR0 for APX-disabled guests in the fast path.
+
+If we ignore that, we can keep guest XCR0 all the time for now, and
+that would be:
+- move SPEC_CTRL to assembly
+- not changing XCR0 handling at all
+- use XCR0 in addition to just static_cpu_has(X86_FEATURE_APX) to make
+r16-r31 swap conditional
+
+> > -     if (vcpu->arch.xcr0 != kvm_host.xcr0)
+> > +     /*
+> > +      * Do not load the definitive XCR0 yet; vcpu->arch.early_xcr0 keeps
+> > +      * APX enabled so that the kernel can move to and from r16...r31.
+> > +      */
+> > +     if (vcpu->arch.early_xcr0 != kvm_host.xcr0)
+> >               xsetbv(XCR_XFEATURE_ENABLED_MASK,
+> > -                    load_guest ? vcpu->arch.xcr0 : kvm_host.xcr0);
+> > +                    load_guest ? vcpu->arch.early_xcr0 : kvm_host.xcr0);
 >
-> + - The ``system_cc_shared`` heap allocates virtually contiguous, cacheab=
-le,
-> +   buffers using shared (decrypted) memory. It is only present on
-> +   confidential computing (CoCo) VMs where memory encryption is active
-> +   (e.g., AMD SEV, Intel TDX). The allocated pages have the encryption
-> +   bit cleared, making them accessible for device DMA without TDISP
-> +   support. On non-CoCo VMs configurations, this heap is
+> Even _if_ we want to play XCR0 games,
 
-"non-CoCo VM configurations"
+(which depends on whether we want to be ready for kernel usage of APX, right?)
 
-> +   not registered.
+> tracking early_xcr0 is unnecessary.  This can be:
+>
+>         /*
+>          * XCR0 is context switched around VM-Enter/VM-Exit if APX is enabled
+>          * in the host but not in the guest.
+>          */
+>         if (vcpu->arch.xcr0 != kvm_host.xcr0 &&
+>             (!cpu_feature_enabled(X86_FEATURE_APX) ||
+>              vcpu->arch.xcr0 & XFEATURE_MASK_APX))
+>                 xsetbv(XCR_XFEATURE_ENABLED_MASK,
+>                        load_guest ? vcpu->arch.xcr0 : kvm_host.xcr0);
 
-Doesn't seem like you need to wrap this line.
+This is a bit more complex however, because in the end early_xcr0 is
+precomputing the same conditions and optimizations. For example...
 
-with that: Reviewed-by: T.J.Mercier <tjmercier@google.com>
+> > +void __kvm_load_guest_apx(struct kvm_vcpu *vcpu)
+> > +{
+> > +     if (vcpu->arch.early_xcr0 != vcpu->arch.xcr0)
+> > +             xsetbv(XCR_XFEATURE_ENABLED_MASK, vcpu->arch.xcr0);
+>
+> This is wrong.  The "real" xcr0 needs to be loaded *after* accessing R16+.
 
-> +
->   - The ``default_cma_region`` heap allocates physically contiguous,
->     cacheable, buffers. Only present if a CMA region is present. Such a
->     region is usually created either through the kernel commandline
+... this is actually the same optimization you mention above: the real
+xcr0 only needs to be loaded if APX is off in the guest, and in that
+case you don't need to load r16-r31. So you can load xcr0 first, and
+then any components (for now only APX) that need to be swapped.
 
-Each paragraph starting with '-' confused me for a second there. Those
-aren't part of the diff. :)
+> > +     if (!(vcpu->arch.xcr0 & XFEATURE_MASK_APX))
+> > +             return;
+
+... Because the loads are conditional on APX being enabled in the real xcr0.
+
+Paolo
+
+> > +
+> > +     WARN_ON_ONCE(!irqs_disabled());
+> > +
+> > +     asm("mov %[r16], %%r16\n"
+> > +         "mov %[r17], %%r17\n" // ...
+> > +         : : [r16] "m" (vcpu->arch.regs[16]),
+> > +             [r17] "m" (vcpu->arch.regs[17]));
+> > +}
+>
+
