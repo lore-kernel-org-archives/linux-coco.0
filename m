@@ -1,130 +1,228 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6D630DEAC
-	for <linux-coco@lists.linux.dev>; Sat,  4 Apr 2026 06:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8D425D527
+	for <linux-coco@lists.linux.dev>; Mon,  6 Apr 2026 15:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775284760; cv=none; b=aBI/rH6SwTAPAKbKHUVDeNjyKCGyzCndFPKwnxa14ZSYjHB1Q+Snl+OII7VpRT9Dpa8a/4EdutK8lv0LP7l7iLDKuCLMQfJYI1i3i052tD2oIaG3vIY1mpRMX0qndF776PnunKvJ02xlqrFp8GPTA52pchjx1oDoxkau1ZgGrzw=
+	t=1775489287; cv=none; b=eeGXSHoDUgUymD4f31wJ/NFtoLJpV4ra2QOWvEU7cTfp+98799nutEERwLjERmiijaBACt3sR6r9V69wOG0E8BcF9rgyDjQu8xw87XGxKUD5FopIF1xQe7PnUSf5CkeJIz/m/IKdnQWqr1QXK7b8hwxUwXgCzFLZWsb7WFvcQGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775284760; c=relaxed/simple;
-	bh=McGyDekfBjCwydZU20s/UChMZdZPU3E1R275x2EL5Zs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CvsdtSPR/3CWWmKsF88k1JRHE2hZyXzIexw0FqPjxTtdt48Wqie8VqFtPq3ztR2mUyI+ByjSkQvgeJhJeLHnhw6bIL72QB2DidGDJHB4FFNZaN1bNPbsBxCZdVCkrBld+MR50wOLzD9drww8hU4jjNsKzuws0FRY28TLSRtvHLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UzlWYaOG; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1775489287; c=relaxed/simple;
+	bh=6LCgBNgKj6hIuQM0MBfpWJ8Gv1PrS0Ny0OnBP+DkHs4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=h9B8OSS2PDDaVv5V2LJYHBD8XpYCXKZvTDh17gOc0307U7oCNVLH5jgDwdO2TYXP0uwTYoyIsMFD+YTanJ+rt+njnTcJ3n6dJ+RwMgObfSOGnai6uENJ3+kFuFGKRfACBYX1td2TtnKgY5VUEqvnYjpk/AE3hr6Nn0xB+LGV2+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PeTH1scQ; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UzlWYaOG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775284757;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hJBlG4MwmMO+DM/eFmNfZAfs7+hYAERwy63POpRNOvA=;
-	b=UzlWYaOGVkZAkrSDb3ZzTSI4NalyDE4E6sCfD/yGj0L9r95r8ITwooBnrALQCMwEOF0IIp
-	nEtku/jO5UkGyXj4YzYoRPtCQ7ikXvpsTdxBINwoJQSW6Q01LVMyyAWOyS+ACBGTWUJISa
-	3txfD5Ybz/J4H9nWvtlHIVi6WYzhk48=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-127-Efi2LuinMlaC_TVDWHR3Ig-1; Sat,
- 04 Apr 2026 02:39:14 -0400
-X-MC-Unique: Efi2LuinMlaC_TVDWHR3Ig-1
-X-Mimecast-MFC-AGG-ID: Efi2LuinMlaC_TVDWHR3Ig_1775284751
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7CFE419560B0;
-	Sat,  4 Apr 2026 06:39:10 +0000 (UTC)
-Received: from [10.44.48.31] (unknown [10.44.48.31])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 649963000223;
-	Sat,  4 Apr 2026 06:39:02 +0000 (UTC)
-Message-ID: <5b3110f4-4e46-4573-b68e-54e220ae1c19@redhat.com>
-Date: Sat, 4 Apr 2026 08:39:00 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PeTH1scQ"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82cf084fe58so2224322b3a.1
+        for <linux-coco@lists.linux.dev>; Mon, 06 Apr 2026 08:28:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775489285; x=1776094085; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sEHfg1OZfS+Y9HeFZv48ajvxZYCSphKNKK/6SLJOTyE=;
+        b=PeTH1scQ7ooJhkdInEr3P1ousMDQeCAKquE1nuzYHR+qs0XlRPwMBdRv+nYYbmDFSi
+         /sDo3x27BeCnJFW5fcIvCimfLIherzl9TPHhJ3ciIZcLvORcWrhUhUecz3QgF68lE2py
+         E+6e2Jw6TOgurLlwzjRUiFMePN0VwjtgxTTy+2F+hxhIHQPVnfJDLdZiRJGYmHOs1dLx
+         1By6mAeFlrzsrgExVfnz2ZSZFnYetFqvAVPBmdyMpN7ExNFofBJp1ggQf80TmKmd89wZ
+         TGE87Zyo6bht+RaqP8eF0lU8GYv3M+z5NMtpIwdYUPAOF4X3Ev0fW3jcZyTEbDsQS1P1
+         pSDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775489285; x=1776094085;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=sEHfg1OZfS+Y9HeFZv48ajvxZYCSphKNKK/6SLJOTyE=;
+        b=oGM05K3H9FidpEb3cbeKEsZH9RC+28bO1NkAL3WYtMzRmzRb7Dt6p/DWoWSngNzyUO
+         B9S8oJLVZCNNvRhFfWIgAsnf6BhwoD+3H65clTl+Q+IvTfNqof7Qo5AerWxKxl7uCyGi
+         eKV7cNGK9Ub6CKq4jOhkYO7lw2fJyHaLEiBlL8M4ZvAIP3CduydqAy/8U1i7RQaf0+wW
+         chp2PkCxt1b4kHlrHzg1t3PJ5AiVaoPLQzQKGkOghcdH2GDL08zr3KLM3Hj4pvWdLMXn
+         r6LDVpBrX7PW/xThO1rvw0bbM/+jzvC+oX+cRTsJK4+o352xKPcpRlgjPSwUketSs7ON
+         RWvg==
+X-Forwarded-Encrypted: i=1; AJvYcCWAIe8TVJEtlWGI9FbvYJOyXWIJuteNV5BnC145eHLfynBFdJD6y6VI/A1GNXf8PYdWFUMoR8x3ilET@lists.linux.dev
+X-Gm-Message-State: AOJu0YzR2oXwGB0RdmjqHT5idDj4fPTUk+miSm+TEZfxKMQ6jP5YHA5j
+	WExkRcaG/nz5dWpkT5FbK54PBpDtIzSVX+++Le19SMiItJl1r35SuNVcxCzlnNzsKlReww3VbRK
+	JKdDhtQ==
+X-Received: from pfbde20.prod.google.com ([2002:a05:6a00:4694:b0:82c:6e7c:ac6d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8018:b0:82c:215d:5e9d
+ with SMTP id d2e1a72fcca58-82d0db6bfc5mr12524946b3a.32.1775489285334; Mon, 06
+ Apr 2026 08:28:05 -0700 (PDT)
+Date: Mon, 6 Apr 2026 08:28:03 -0700
+In-Reply-To: <CABgObfY05NU8DS82jkwpF89_p1nR7VJ30HBq_xaMg_u+-j=0Cw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] x86/virt/tdx: Use PFN directly for unmapping guest
- private memory
-To: Yan Zhao <yan.y.zhao@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: seanjc@google.com, dave.hansen@linux.intel.com, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, kas@kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, kai.huang@intel.com, rick.p.edgecombe@intel.com,
- yilun.xu@linux.intel.com, vannapurve@google.com, ackerleytng@google.com,
- sagis@google.com, binbin.wu@linux.intel.com, isaku.yamahata@intel.com
-References: <20260319005605.8965-1-yan.y.zhao@intel.com>
- <20260319005808.9013-1-yan.y.zhao@intel.com>
- <623ac08e-07a7-4823-bd0a-777d8df5c128@intel.com>
- <abubmi7BjMwgnrvC@yzhao56-desk.sh.intel.com>
- <b74acb4b-4658-4113-9fce-9faf972975c4@intel.com>
- <abu6MVdXar3MmTdF@yzhao56-desk.sh.intel.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <abu6MVdXar3MmTdF@yzhao56-desk.sh.intel.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: 1yJIlyWe5ZRPc2F11C0JLI7sjf3tbEBj06hLY1m6BrM_1775284751
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260311003346.2626238-1-seanjc@google.com> <7ec084f8-812e-42f2-8470-e416fa7ee848@redhat.com>
+ <ac75iuf9gHIhvm9u@google.com> <88e9d7f0-35b8-4559-9f4d-c7daf1af6012@redhat.com>
+ <aea176c8-35de-4042-bf98-e42ce05f93fb@intel.com> <CABgObfY05NU8DS82jkwpF89_p1nR7VJ30HBq_xaMg_u+-j=0Cw@mail.gmail.com>
+Message-ID: <adPRA4ZhnvbaXSn0@google.com>
+Subject: Re: [PATCH 0/7] KVM: x86: APX reg prep work
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, 
+	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Andrew Cooper <andrew.cooper3@citrix.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/19/26 09:56, Yan Zhao wrote:
-> On Thu, Mar 19, 2026 at 04:56:10PM +0800, Xiaoyao Li wrote:
->> So why not considering option 2?
->>
->>    2. keep tdx_quirk_reset_page() as-is for the cases of
->>       tdx_reclaim_page() and tdx_reclaim_td_control_pages() that have the
->>       struct page. But only change tdx_sept_remove_private_spte() to use
->>       tdx_quirk_reset_paddr() directly.
->>
->> It will need export tdx_quirk_reset_paddr() for KVM. I think it will be OK?
-> I don't think it's necessary. But if we have to export an extra API, IMHO,
-> tdx_quirk_reset_pfn() is better than tdx_quirk_reset_paddr(). Otherwise,
-> why not only expose tdx_quirk_reset_paddr()?
++Andrew
 
-That works for me, it seems the cleanest.
+On Sat, Apr 04, 2026, Paolo Bonzini wrote:
+> On Sat, Apr 4, 2026 at 12:05=E2=80=AFAM Chang S. Bae <chang.seok.bae@inte=
+l.com> wrote:
+> >
+> > On 4/3/2026 9:03 AM, Paolo Bonzini wrote:
+> > >
+> > > But until the kernel starts using APX, I would do the save/restore ne=
+ar
+> > > kvm_load_xfeatures(), because __vmx_vcpu_run()/__svm_vcpu_run() would
+> > > have to check whether xcr0.apx is set or not.
+> > Right, I'd much prefer this. Then, it requires to audit whether any
+> > fast-path handler could access EGPRs.
+> >
+> > But there are cases with the new {RD|WR}MSR (MSR_IMM) instructions that
+> > appear to access GPRs. Because of this, the EGPR saving/restoring needs
+> > to happen earlier.
+>=20
+> You're right about fast paths...
 
-Paolo
+Ya, potential fastpath usage is why I wanted to just context switch around
+entry/exit.
 
+> so something like the attached patch.
+> It is not too bad to translate into assembly, where it could use
+> alternatives (in the same way as
+> RESTORE_GUEST_SPEC_CTRL/RESTORE_GUEST_SPEC_CTRL_BODY) in place of
+> static_cpu_has(). Maybe it's best to bite the bullet and do it
+> already...
+
+My strong vote is to context switch in assembly, but _conditionally_ contex=
+t
+switch R16-R31.  All of this started from Andrew's comment:
+
+ : You can't unconditionally use PUSH2/POP2 in the VMExit, because at that
+ : point in time it's the guest's XCR0 in context.  If the guest has APX
+ : disabled, PUSH2 in the VMExit path will #UD.
+ :=20
+ : You either need two VMExit handlers, one APX and one non-APX and choose
+ : based on the guest XCR0 value, or you need a branch prior to regaining
+ : speculative safety, or you need to save/restore XCR0 as the first
+ : action.  It's horrible any way you look at it.
+
+But that second paragraph isn't quite correct, at least not for KVM.  Speci=
+fically,
+"need a branch prior to regaining speculative safety" isn't correct, as tha=
+t holds
+true if and only if "regaining speculative safety" requires executing code =
+that
+might access R16-R31.  If we massage __vmx_vcpu_run() to restore SPEC_CTRL =
+in
+assembly, same as __svm_vcpu_run(), then __{svm,vmx}_vcpu_run() can simply =
+context
+switch R16-R31 if and only if APX is enabled in XCR0.
+
+KVM always intercepts XCR0 writes (when XCR0 isn't context switched by "har=
+ware",
+i.e. ignoring SEV-ES+ and TDX guests), and IIUC all access to R16-R31 is ga=
+ted on
+XCR0.APX=3D1.  So unless I'm missing something (or hardware is flawed and l=
+ets the
+guest speculative consume R16-R31, which would be sad), it's perfectly safe=
+ to
+run the guest with host state in R16-R31.
+
+That would avoid pointlessly context switching 16 registers when APX is not=
+ being
+used by the guest, and would avoid having to write XCR0 in the fastpath.
+
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
+ost.h
+> index 959fcc01ee0f..9a1766037b6f 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -887,6 +887,7 @@ struct kvm_vcpu_arch {
+>  	struct fpu_guest guest_fpu;
+> =20
+>  	u64 xcr0;
+> +	u64 early_xcr0;
+
+...
+
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 0757b93e528d..69abfdd946dd 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -1220,9 +1220,13 @@ static void kvm_load_xfeatures(struct kvm_vcpu *vc=
+pu, bool load_guest)
+>  	if (!kvm_is_cr4_bit_set(vcpu, X86_CR4_OSXSAVE))
+>  		return;
+> =20
+> -	if (vcpu->arch.xcr0 !=3D kvm_host.xcr0)
+> +	/*
+> +	 * Do not load the definitive XCR0 yet; vcpu->arch.early_xcr0 keeps
+> +	 * APX enabled so that the kernel can move to and from r16...r31.
+> +	 */
+> +	if (vcpu->arch.early_xcr0 !=3D kvm_host.xcr0)
+>  		xsetbv(XCR_XFEATURE_ENABLED_MASK,
+> -		       load_guest ? vcpu->arch.xcr0 : kvm_host.xcr0);
+> +		       load_guest ? vcpu->arch.early_xcr0 : kvm_host.xcr0);
+
+Even _if_ we want to play XCR0 games, tracking early_xcr0 is unnecessary.  =
+This
+can be:
+
+	/*
+	 * XCR0 is context switched around VM-Enter/VM-Exit if APX is enabled
+	 * in the host but not in the guest.
+	 */
+	if (vcpu->arch.xcr0 !=3D kvm_host.xcr0 &&
+	    (!cpu_feature_enabled(X86_FEATURE_APX) ||
+	     vcpu->arch.xcr0 & XFEATURE_MASK_APX))
+		xsetbv(XCR_XFEATURE_ENABLED_MASK,
+		       load_guest ? vcpu->arch.xcr0 : kvm_host.xcr0);
+
+And then __kvm_load_guest_apx()
+
+	<context switch R16-R31>
+
+	if (cpu_feature_enabled(X86_FEATURE_APX) &&
+	    !(vcpu->arch.xcr0 & & XFEATURE_MASK_APX))
+		xsetbv(XCR_XFEATURE_ENABLED_MASK, vcpu->arch.xcr0);
+
+And __kvm_save_guest_apx() would reverse the order of __kvm_load_guest_apx(=
+).
+
+> @@ -11056,6 +11061,49 @@ static void kvm_vcpu_reload_apic_access_page(str=
+uct kvm_vcpu *vcpu)
+>  	kvm_x86_call(set_apic_access_page_addr)(vcpu);
+>  }
+> =20
+> +/*
+> + * Assuming the kernel does not use APX for now.  When
+> + * the kernel starts using APX this needs to move into
+> + * assembly, and KVM_GET/SET_XSAVE needs to fill in
+> + * EGPRs from vcpu->arch.regs.
+> + */
+> +void __kvm_load_guest_apx(struct kvm_vcpu *vcpu)
+> +{
+> +	if (vcpu->arch.early_xcr0 !=3D vcpu->arch.xcr0)
+> +		xsetbv(XCR_XFEATURE_ENABLED_MASK, vcpu->arch.xcr0);
+
+This is wrong.  The "real" xcr0 needs to be loaded *after* accessing R16+.
+
+> +	if (!(vcpu->arch.xcr0 & XFEATURE_MASK_APX))
+> +		return;
+> +
+> +	WARN_ON_ONCE(!irqs_disabled());
+> +
+> +	asm("mov %[r16], %%r16\n"
+> +	    "mov %[r17], %%r17\n" // ...
+> +	    : : [r16] "m" (vcpu->arch.regs[16]),
+> +	        [r17] "m" (vcpu->arch.regs[17]));
+> +}
