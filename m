@@ -1,173 +1,164 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012035.outbound.protection.outlook.com [40.107.209.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEF223507C
-	for <linux-coco@lists.linux.dev>; Mon,  6 Apr 2026 22:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775514078; cv=fail; b=qQrMdHA2Gxw22lznvIi5kjvraEHS8m/c85wc1kx+q6HhfbOs3Id3Caac/sifA63NBFUAVsubxHgjA0mEBVkp2j4Byf94LYE82Sczwb4G6uRRoJuvrzbrKpJPCE8adZp4k8WGPQKage2HSfU2geFfMUEhdc6DXYm2sFUW2wltwxM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775514078; c=relaxed/simple;
-	bh=D5RR+YrrC6RBvEuMtHpBYCQiqL1huWNWfIZUaDVq/Mc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=DnBAwSkru38HATKxtuTo5JFMSiMN2axPr/5l2xv0boSBWuHr/RNFn0eaxVuKzT3bK8z/iy25z+1Ad+MLgzc0WEFYjqtdt75VTOOv1OMIiP5MaQwoSXFIhz22FFdoR3m+LcRI2hghnr2atJiNTQAPLqlx8w70GA4gWENAQHcC4EE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=djwDTTd0; arc=fail smtp.client-ip=40.107.209.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952F738F62D
+	for <linux-coco@lists.linux.dev>; Mon,  6 Apr 2026 22:29:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775514574; cv=none; b=KueGiyW4iZ4GzC9vXy4UVZf4qaobR2ybJQuTx7wH828VxqakqA8gllIq1Gs9fLmwwfQoH7RBDeNyZQkBCp71VRPSVcXKBPmH3W/g/V3H8hsoHI9nn6rhnyE9/M9SsCu9WxisKwuejIdDnPqqUYdQzzI4DCPNHS+1vcIZsXJF8fI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775514574; c=relaxed/simple;
+	bh=D3KOeP/lm1TkbZwNyXgjGb/xIk25CQwDhpR6K8Yljzk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=S47UB5cAuZNyIyF4KffLJnfz348Ami7wAHHE3Vx7vAOR9Lqjiezy2Gq00r9TBdRFC3YCUDgMV6TXw6A3x0HAM0TjtxKpgSq7UHMF6db3lc1K3YGDNNwdDXMiFH56LFLehauk4BD6OivYrYgpJq5mvvrOn1MX/Ywol86QtfEud4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YlLddwJv; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="djwDTTd0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Qy4f+718eNOrOEStgbPK5Ry/v02ApHmjFtsmnQw4CpGxSgVLukBkxP2fUBomVtiQ0FkvTIA1DzJz7yA4zxfIiRrfBDoA4TpnYLz/8L5EqCCqnaxEIVV/PgpE/tulgKCrnfIJ4LMWtEPFqGBRPFz0TErUoknXRBTtg9GGHrs8tXYceaqbyw6L09KhNBs1+UfZSS34fGp8a1xMf108cWqRXfnjMJjQd4EzRGU/5DqUa69cqnmXD/a4qqeRxxe2m5p+p8rqN4cU0+PBijO3DgsZy7X/lBxWc0qM2kOBNuQL2GVja5d3cYpJU0xBj/FjV5iSgsvMZrrqMg6W7b+mgUJUyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BUvHL53Uuz+/KT0v3p28CcHmkS1DQsq+iGLFAhNk8cA=;
- b=gSJAYSgfCy6Ru13KAkm5CxhfLBHFxGuw69iHIBh3r4M5+oLLO4WX7+2hwWU+xt+H/r9P7hf+Q750SjAIl1vMCBthzKIbYJs86CjdsJJUq+CLJW81JdVB16JSD5jYbPtJzEI4C84Tbm23LDbREz5rzelXjEqwKArs+aXLy8v18ZdbD/07CVSCEz2dRSqn5ah1u30DvAn9PfdJ+Znn7Qoc68iXPKfZhpoRMkQcCmo2JbQX1dIK1aJN5JBZFKeOHCUQCpKGv0ZEYLYNWTbIpuwaBniDE9DKUnXyZwWHJCR4KXSwenD48XFDaT3MoyasemuGLrTbI+q4T0nr00KCqBRz9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BUvHL53Uuz+/KT0v3p28CcHmkS1DQsq+iGLFAhNk8cA=;
- b=djwDTTd0EPPEdX64G51dhQKL9Qkmv9tWceuFySYuTQOLdH9626xqO+1nFiXSdeMl6DRx8grRBPaP1eshlqwQ4SaXI4vQ0PCuVDTG1rrCtDh/oGJl3CrlKf7qAfI6nX4hJ6DyVJWu7+5yh2U/gBUpR6JODIVDS4/6rrjjjGk3XDLPBuKp8rpFV18+n3TqrlGgQNvNF3Ebttl6Oyd8skWxG2HoKg0QpqRRjUTFI8sIud++0wfnW1o0iv6a1f4aE1S1PUY1CM+WtnoZJbdp4hzKzqnnbCRhicbV1zcmKd+2s2uLsET/KXwa13KHeiIRk3W72WOE0eTIqmqxO6ykQH5eng==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by MW5PR12MB5682.namprd12.prod.outlook.com (2603:10b6:303:19f::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.19; Mon, 6 Apr
- 2026 22:21:13 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9769.017; Mon, 6 Apr 2026
- 22:21:13 +0000
-Date: Mon, 6 Apr 2026 19:21:09 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
-	bhelgaas@google.com, alistair23@gmail.com, lukas@wunner.de,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH v2 09/19] PCI/TSM: Support creating encrypted MMIO
- descriptors via TDISP Report
-Message-ID: <20260406222109.GQ310919@nvidia.com>
-References: <abPlt8oNUOqGvbA3@yilunxu-OptiPlex-7050>
- <228298b7-76bc-4ffb-bec0-0c35fd487c4c@amd.com>
- <20260323182014.GR7340@nvidia.com>
- <fa1c6e1e-068c-46d7-a623-58c225bb03f4@amd.com>
- <20260327114921.GL67624@nvidia.com>
- <d5059386-1ed1-4110-8283-16e3a8407760@amd.com>
- <20260330114902.GA310919@nvidia.com>
- <46de1d41-a660-460c-a49f-ae2d2ad7afe1@amd.com>
- <20260403140858.GJ310919@nvidia.com>
- <70912675-0737-4ebf-8ba0-ab9a2e493bbe@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <70912675-0737-4ebf-8ba0-ab9a2e493bbe@amd.com>
-X-ClientProxiedBy: SCVP298CA0007.CHLP298.PROD.OUTLOOK.COM
- (2603:10d6:300:14e::17) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YlLddwJv"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35d9010602bso4485922a91.3
+        for <linux-coco@lists.linux.dev>; Mon, 06 Apr 2026 15:29:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775514573; x=1776119373; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Mq8leRxD41dHOGYa35vjH2K0hrW+lX252WdYaTg5Xs=;
+        b=YlLddwJvk4+a9GSIaItx0Zo7gxKErC/A/DgzZsBNo7BIEu2bCpZxMhjWeuLCajN9vE
+         S6srSXmEfCTy63zTR6YEn1jBT+/EdLevKcgM9cuYFZX6Dd4Z8bGeF2gg8Pd3myrzItsk
+         1TvqH/Y0MMjkaofiQWpxEObd7WZTo6XtYzHq+6Ia1oXxRL5asVyG8JvbpBrKJu1Go5Dn
+         fxMA9r3tOQjXnfGGYGWySjPT2aMxmQdJQofglf2I3Q9m7yNA0SaYzSisemjW7gN1X8zG
+         GrtY6Bila7cm4gFnZu+Q2z0qvk0ZiWoKiEYvOj6DJ0Akst8v/3qvPjSQIN8RmuIYUx5e
+         JARQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775514573; x=1776119373;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Mq8leRxD41dHOGYa35vjH2K0hrW+lX252WdYaTg5Xs=;
+        b=WOw6F3vhchW0MHFMKq5h8jS+0Gfd+Vl7gLETPc+4Vw8GJC47iVeBBTeb2QBuUy4V8e
+         0FIgIy8t/IIDYnsvXOrVfDrBvza2BiJOr2JwVj3h89M2GnIsyVkKFVeQIm1gzvTGefWv
+         MtkPcGnNUgdiM5JQRvVwJK1SJ2lwJF58nn0vn0WCXM1LBxf2OQ89+Mb3DyapcCvUy+zt
+         nqzLr6RitA6ZnXuehyxrUmU4ntAuvUuaq9GV2SSZSxBkGpRxKh5vE4r+uFBIqYMhsr8c
+         Y4mVnbrrm8T4iS8SlviDrFGqGYZ8GIKtiEgyudCIMLcX3ya+Spu846mMuGKe6KH69OCx
+         w73A==
+X-Forwarded-Encrypted: i=1; AJvYcCXECGhyNN/Bs0Oih+KSBV1ziOy1HXroams6uEUhvFFvE+7QfclPNhrWKHpQOx1ax/OAgn2A7Lmaw19I@lists.linux.dev
+X-Gm-Message-State: AOJu0YwNMcbkrLbZLz7ZsBv+mZWXUCtZ0zjmYEyyJwv9Ra5cGn2oUB8d
+	EBlS2F3At6rkzuodCZuMAbQDE8bf8PPD1J4hYlw7nHpdJoTzgyoCy79LR4hLCEW1Yl7oqUosn9t
+	6GoNZ2g==
+X-Received: from pgac12.prod.google.com ([2002:a05:6a02:294c:b0:c76:98c9:d80a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3f08:b0:35d:997c:8eb8
+ with SMTP id 98e67ed59e1d1-35de697d01bmr12921654a91.24.1775514572748; Mon, 06
+ Apr 2026 15:29:32 -0700 (PDT)
+Date: Mon, 6 Apr 2026 15:29:31 -0700
+In-Reply-To: <20260331124214.117808-18-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|MW5PR12MB5682:EE_
-X-MS-Office365-Filtering-Correlation-Id: 018dd386-f748-4caf-fc3a-08de942ad023
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	/JnirPQs8ivxvhCm1yXG6/Tbe0K08IvAUSclGNDTCPER86htsdA5lgJyqc8zfFNj5AiTyI6X45Sonn2Y0VZbL3HPRicQdOiLuq9tCykzvKyJxjhMMEkoQ/yDu0GJ/Egw+AaKj47O0p5kfJPtmQZ6oQKSFkyBbdqDRaW/22iscXW330OnNXt8pER+Mg/NsWysZ9kfd3VW+DNCV+WAJQyqR4FEsVzLYclXAraxePkZUd5cwx0c+WLvndEm2MymsgTOAWYJX4hPb8o5p6fjMjQck5D7Sjj0IIMpAWiMKHUEkN/cgNVRR2EbN3hlrhl8KmwVSLa14X/ldPIXKiK7bv0Ou+mkV/++JeldlG9lJ13bMBxK1QZ5eo+/SyQTsC50Ri/FlPjIBKwSRqtI0GH4qDeYiN7p9dV3zeCJp4308G7lJLEgGEDCuNZiL57CGfxeJktMv50nolEHvevMzC410snSPFobvSsKnz+cbvaTWJItZOI15XJf5BYIJ3ustQWHsv2vtEXSL1Gh+/ZdBw7aLiGwTZy3sEL/of/8YTsTYkxbjg/iVbtrTRT3LShqSMROYGKdSTVOzapGozKdUvo2VuEijWM+KYT0qGIpSdO1F+31//YjhnAvlUaVwe/Rzq2nnu32xOjI7YIdOTc9a02azusujyvZ36n4FVLwodq4Trs2R9Aw79tG5jOkp6irjYRany5Rt3T5tlXQMdXMNkLpRvx8DY1KeNPKzcHbukhFiG4yedM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?b/Vxsj6T7iLzZqiRFFtbkA5CEbvNJ+U/nM4qp72A4huht35eNNWUTsipK3S6?=
- =?us-ascii?Q?PRM1WWa8Md1v/w7X4Z0sS9Oc9vCbppi0iZC+QZTmm4IiPCKF3bViBYKcADiz?=
- =?us-ascii?Q?6jdXF8JKm8054GUf6M2z4afgXxsNM0ztaAZtT+CDMuzDmDdjw8mRUrVciX8H?=
- =?us-ascii?Q?xTG0yT2g3+pPOu138HbYEH8cPOIrMHtGIoo+/nubJqnMj+7uT2Wl83tpnBLm?=
- =?us-ascii?Q?eF4cyAPDk5gmxNeppYD5/4rdLIwBi8GYfS/C+bv7FwX+ooZKKwPyjmevaNHx?=
- =?us-ascii?Q?usznFO7wKahYR7Dx0njs16fyiehQuf0I+1gEG8NntPGMawown7cdzQf2d7hY?=
- =?us-ascii?Q?STny3e9Nzx7qhhkC9WH02rqTz5nKzI7iG+BZi9lNcijBayzU4H7Z0m65bHcb?=
- =?us-ascii?Q?IeNPlb5fOHR9eITHmZ7hN1QVA4BnD6TWj5urKMRyCilAiA12zP42KlZfw06S?=
- =?us-ascii?Q?qm9MfF8E4sXkubQa18P2Gyi5eL2nC6N7YhzM/fL9sepaWks8L0XWaU+xH6ff?=
- =?us-ascii?Q?ZRDzAKs6hV0QeTytz/ZbCiuvHNheyVm7RsNwL1LPQ/9HPg+LpH6ygF2DQJB4?=
- =?us-ascii?Q?wxiPhzKhME37BPeOZiNu7L0NJBAxOI0AAGzy1sXgOen6ra89ts0wOBir8fAD?=
- =?us-ascii?Q?OqwCbLjp4z+SQlLML/iRzMvfQ+DVsYEkJWb2EUKowAeiFBlRiowXj19O9cju?=
- =?us-ascii?Q?KCz1LQdsvpjcy6BVoyznVLPHNVsonO/JFTVazyO0rzN/As+SI/nKoYZaOL7Y?=
- =?us-ascii?Q?qlTMPMvZjmzhL2H/XoUiX1QlvQ4kGfpBVBlSk8T51Xg949GetvRMQOT/NY9Z?=
- =?us-ascii?Q?AtAxB7vKH/WdFmUFPDiNq0MKdaCRFReelCDxo9GMSJv1y+QVqt49OLMFjUnh?=
- =?us-ascii?Q?a7Mrk9Njcni66VLwp7uN2g5juPE7wDbeBlhQUk0rwhmS1EDbMcjVeJAJEcFj?=
- =?us-ascii?Q?f5NVkRhfKDUKrFpbDYDw72BOTuC6LbFGJmWldCEohEws0GbmuedKGvtB9Kud?=
- =?us-ascii?Q?fZUBYHZ2Txa3vjpVdO6O0pzSlWyaOkK8dLrV59MGYLpTJfstjwf1oPnjXkwl?=
- =?us-ascii?Q?wMdSXbiHk9zVwvuCZeI88tW2ZEb1JWDnH7Pw4b/NL+lFjV2hqjM2DhPvLELl?=
- =?us-ascii?Q?rdnzFFh7jbXnXSfKbpx+JyBZAZQEj3WHQ/tnwhQUOKtw8ZT+EKlLPMMI+zw5?=
- =?us-ascii?Q?VC1UjXK/sjIOAvQHOxQlDExPbneOFd6ErK0y1JkMHSeDnXQa8u1ebRJFcT/c?=
- =?us-ascii?Q?S45HyFZIZetCw/aSTNPKo24nI6XS027Fx4dDQ6vFtV1v5KDFaIW1AYIE0/xq?=
- =?us-ascii?Q?RyrRGykAxSUjDLBbghPptEvZGPMh7lTiszLk38Ym6gRaWlK8jJxKsOg5NLnF?=
- =?us-ascii?Q?9QVcEaLPDCbBykXwuZacavUgASlqdP3XV6ttJyjGSknwLjpERaT5FBn/2H+5?=
- =?us-ascii?Q?16KehtWPHx5AFwnNFYju/z4+Bos54zdsSIylIvQCa1zjNhC7mGdF0JuP84fw?=
- =?us-ascii?Q?zCZHY6J2WwCfys8qj59hyzOwZKRDeq6oaqe1nxYFhSR8HR+iAK2zWEhanlGK?=
- =?us-ascii?Q?Aa8wzJdR/g4HKTO8H+7holcehrfwgJixKBh8ismqZ//Jk9d/EHlxuciYjxBY?=
- =?us-ascii?Q?m9x9G59TnhhA0r/7lDGDth/Gx4NkJJ9Fp3ENy4SyJIJ5aAvcEo0MHkUS49OA?=
- =?us-ascii?Q?znwOSjhVBVLU/FLgbETpcy50zKVKlLF782OO5EREzJlBqNQ5?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 018dd386-f748-4caf-fc3a-08de942ad023
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2026 22:21:13.6290
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZY4vcNKp1G0YxvhO2eYZ85DdNsKxyNNlHuip2paWjNv9uedh90aK4QmstVQjmn3S
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR12MB5682
+Mime-Version: 1.0
+References: <20260331124214.117808-1-chao.gao@intel.com> <20260331124214.117808-18-chao.gao@intel.com>
+Message-ID: <adQzy1-FIwDiuGAP@google.com>
+Subject: Re: [PATCH v7 17/22] x86/virt/tdx: Avoid updates during
+ update-sensitive operations
+From: Sean Christopherson <seanjc@google.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, binbin.wu@linux.intel.com, dan.j.williams@intel.com, 
+	dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com, 
+	kas@kernel.org, nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com, 
+	reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com, 
+	tony.lindgren@linux.intel.com, vannapurve@google.com, 
+	vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com, 
+	yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Apr 07, 2026 at 08:08:51AM +1000, Alexey Kardashevskiy wrote:
+On Tue, Mar 31, 2026, Chao Gao wrote:
+> A runtime TDX module update can conflict with TD lifecycle operations that
+> are update-sensitive.
 > 
+> Today, update-sensitive operations include:
 > 
-> On 4/4/26 01:08, Jason Gunthorpe wrote:
-> > On Fri, Apr 03, 2026 at 11:41:25PM +1100, Alexey Kardashevskiy wrote:
-> > > 
-> > > 
-> > > On 30/3/26 22:49, Jason Gunthorpe wrote:
-> > > > On Mon, Mar 30, 2026 at 04:47:44PM +1100, Alexey Kardashevskiy wrote:
-> > > > 
-> > > > > What do I miss? Thanks,
-> > > > 
-> > > > You can't tell where things start so there is no way to relate the
-> > > > offsets to something the kernel can understand.
-> > > 
-> > > Reported ranges have BAR indexes and start addresses (with the
-> > > reported MMIO offset added), and the first reported range starts at
-> > > the first 4K of that BAR.
-> > 
-> > I was told this is not the case, the first reported range can start
-> > anywhere in the BAR?
+> - TD build: TD measurement is accumulated across multiple
+>   TDH.MEM.PAGE.ADD, TDH.MR.EXTEND, and TDH.MR.FINALIZE calls.
 > 
-> This is what I am trying to clarify - if all ranges must be reported
-> (as some think this is what the PCIe spec says), then no, not
-> anywhere.
+> - TD migration: intermediate crypto state is saved/restored across
+>   interrupted/resumed TDH.EXPORT.STATE.* and TDH.IMPORT.STATE.* flows.
 > 
-> pcie r7, Table 11-16 TDI Report Structure, MMIO_RANGE:
+> If an update races TD build, for example, TD measurement can become
+> incorrect and attestation can fail.
 > 
-> "Each MMIO Range of the TDI is reported with the MMIO reporting offset added."
+> The TDX architecture exposes two approaches:
+> 
+> 1) Avoid updates during update-sensitive operations.
+> 2) Detect incompatibility after update and recover.
+> 
+> Post-update detection (option #2) is not a good fit: as discussed in [1],
+> future module behavior may expand update-sensitive operations in ways that
+> make KVM ABIs unstable and will break userspace.
+> 
+> "Do nothing" is also not preferred: while it keeps kernel code simple, it
+> lets the issue leak into the broader stack, where both detection and
+> recovery require significantly more effort.
+> 
+> So, use option #1. Specifically, request "avoid update-sensitive" behavior
+> during TDX module shutdown and map the resulting failure to -EBUSY so
+> userspace can distinguish an update race from other failures.
+> 
+> When the "avoid update-sensitive" feature isn't supported, proceed with
+> updates. If a race occurs between module update and update-sensitive
+> operations, failures happen at a later stage (e.g., incorrect TD
+> measurements in attestation reports for TD build). Effectively, this
+> means "let userspace update at their own risk". Userspace can check if
+> the feature is supported or not. The alternative of blocking updates
+> entirely is rejected [2] as it introduces permanent kernel complexity to
+> accommodate limitations in early TDX module releases that userspace can
+> handle.
+> 
+> Note: this implementation is based on a reference patch by Vishal [3].
+> Note2: moving "NO_RBP_MOD" is just to centralize bit definitions.
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> Link: https://lore.kernel.org/linux-coco/aQIbM5m09G0FYTzE@google.com/ # [1]
+> Link: https://lore.kernel.org/kvm/699fe97dc212f_2f4a100b@dwillia2-mobl4.notmuch/ # [2]
+> Link: https://lore.kernel.org/linux-coco/CAGtprH_oR44Vx9Z0cfxvq5-QbyLmy_+Gn3tWm3wzHPmC1nC0eg@mail.gmail.com/ # [3]
+> ---
 
-I think the argument was something like it didn't have to report
-non-secure ranges? But I don't know, it was hashed out in some thread
-for ARM and then I know our folks looked at it and nobody pushed back
-to insist that every single byte of the BAR had to be covered by a
-reported range.
+For the STATUS_MASK movement:
 
-I wouldn't take the sentance you quoted as confirmation, you need a
-sentance that says every single byte of the BAR is covered by a single
-reported range.
+Acked-by: Sean Christopherson <seanjc@google.com>
 
-Jason
+> ---
+>  arch/x86/include/asm/tdx.h   | 11 +++++++++--
+>  arch/x86/kvm/vmx/tdx_errno.h |  2 --
+>  arch/x86/virt/vmx/tdx/tdx.c  | 25 +++++++++++++++++++++----
+>  arch/x86/virt/vmx/tdx/tdx.h  |  3 ---
+>  4 files changed, 30 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index 79733fdb35c6..00751506dd3c 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -26,11 +26,18 @@
+>  #define TDX_SEAMCALL_GP			(TDX_SW_ERROR | X86_TRAP_GP)
+>  #define TDX_SEAMCALL_UD			(TDX_SW_ERROR | X86_TRAP_UD)
+>  
+> +#define TDX_SEAMCALL_STATUS_MASK		0xFFFFFFFF00000000ULL
+> +
+
+...
+
+> diff --git a/arch/x86/kvm/vmx/tdx_errno.h b/arch/x86/kvm/vmx/tdx_errno.h
+> index 6ff4672c4181..215c00d76a94 100644
+> --- a/arch/x86/kvm/vmx/tdx_errno.h
+> +++ b/arch/x86/kvm/vmx/tdx_errno.h
+> @@ -4,8 +4,6 @@
+>  #ifndef __KVM_X86_TDX_ERRNO_H
+>  #define __KVM_X86_TDX_ERRNO_H
+>  
+> -#define TDX_SEAMCALL_STATUS_MASK		0xFFFFFFFF00000000ULL
+> -
+>  /*
+>   * TDX SEAMCALL Status Codes (returned in RAX)
+>   */
