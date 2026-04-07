@@ -1,90 +1,95 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4983A5E63
-	for <linux-coco@lists.linux.dev>; Tue,  7 Apr 2026 16:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858713A4517
+	for <linux-coco@lists.linux.dev>; Tue,  7 Apr 2026 16:36:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775579052; cv=none; b=CvlLtB1ifWGZvoPfEFsuf3M00oxiKAaxTVHT0UkwXeck5z30JNej6Yu/heLxGnnfdIaLfjib2aKfQDaet8x+SrnJTxhKaCUGUvmBiP1Tjbg8nQ4IkBz/eCulqRv/B1M9TiYYT25O/AChqXOTOTP0e1WdoZEKjxntVecZaQ5A+Wg=
+	t=1775579799; cv=none; b=KiJtk2hDzbK3pH7u56DWE7cBXxDorqhKfqc+APAp0nMuTXleD6ISbMho+UnZ9Jyng7XMYEvCmgAtbtCdMqHBxb/p7o74R1rkI48LAvgLTBzYmgpM6ewUMRWLZiwHZfvXC4r/p1q12hskiVUk0SRTu2sz5OmCW9QSikdDQNcfYE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775579052; c=relaxed/simple;
-	bh=9FeJFyp0FaZnv7lMyE8/o9uC1lGRabz7wKdgpqoqhx8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uuxyl31tu4wxU1Bo+lCBs8D48HVapK066csK3mHlit31RC05J/qGj22MAh9DUF81AqXmlOnA87u7Or29lLEfI0qiXw18nu+IrYGegIm3bU+4sru2HyFAs7WbKoDL0elNBbXyf9/kpB2+R9p8CzN9jz4A/cZbO0ofqoFAPj/bP9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EpAauxTx; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1775579799; c=relaxed/simple;
+	bh=ZsZWGK8NPQVAaVImU3h0Z3K3DNLW37epYpfvEpL7kmI=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=OCB9oeh1OU3TdbXLdsqQni4IBrzc3HxsDpOSgSLACr8ceZ76YVvh/q64NsB0x5vc1yCwisFhZYbOITqNVny//Md6VuQI/uniqg9fj4/aConjnUD/r+urZSx4+5k45zL2TGSstD71Pu8x6qqjuHNLEvFLEaJfDVILu7gLD7Eobug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H5MCBVjR; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EpAauxTx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775579050; x=1807115050;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9FeJFyp0FaZnv7lMyE8/o9uC1lGRabz7wKdgpqoqhx8=;
-  b=EpAauxTxe+h8nRrpKDnnMzWzXIaUk005wYVQSDqpeUNHK5O/YL9tdRQw
-   G5pmQMiNl/XeVbUfGrYCLHcPCjAFiZMBlN1y3b8Q8q0/+7qTdgsac4syP
-   ubAOUvnsgAdvMwR/6uUYdtnKUNp5Q0FyOnk/ReRpeijgKDWzOiB8DkY/M
-   oKDqLMb8+UgHjPWSwV20e/BYOBYhm2Nbp9NDLTTLAItKSWSOet7DZ0f3p
-   sFnRd2BnswsPIJ7NFR2tiT3YxrKBozAQBbkdYk5OK8bDaCjUz8iMqCst8
-   yi8y42g3leIfNmOzhIUDu/FdSf4jixVT0YenvULtFtypwXfy107ePWtVL
-   A==;
-X-CSE-ConnectionGUID: EXCMK+3uR3SjEIXH2zXv+g==
-X-CSE-MsgGUID: sZwzBjn0RnqUm3CtJGouEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="79137093"
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
-   d="scan'208";a="79137093"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 09:24:09 -0700
-X-CSE-ConnectionGUID: +2Jwot1rQC6eUXiRWlp2yA==
-X-CSE-MsgGUID: hkMlB8cmTy6L/5Cqw9Xajw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
-   d="scan'208";a="223431250"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa006.fm.intel.com with ESMTP; 07 Apr 2026 09:24:07 -0700
-Date: Wed, 8 Apr 2026 00:02:37 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	gregkh@linuxfoundation.org, aik@amd.com, aneesh.kumar@kernel.org,
-	bhelgaas@google.com, alistair23@gmail.com, lukas@wunner.de,
-	jgg@nvidia.com
-Subject: Re: [PATCH v2 01/19] PCI/TSM: Report active IDE streams per host
- bridge
-Message-ID: <adUqnUwBBtrqXcX7@yilunxu-OptiPlex-7050>
-References: <20260303000207.1836586-1-dan.j.williams@intel.com>
- <20260303000207.1836586-2-dan.j.williams@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H5MCBVjR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775579796;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type;
+	bh=LJCTQ6yvzucVb7LSRfCEx4d2sHWJ53AMLsBBh6zk0Fo=;
+	b=H5MCBVjR25lE28jUnhFyKsHiOP/jGTvRgT57rt5KZW3VP39oSZb0Z2Ubi2cjtm4Rduupbp
+	gP6U7jGMtZ9EL9yp9lbIC/QRmmo3J+5qSh1I5Vo8OqYR3K09Mty+k0+tEAfXodC2nUc3Gt
+	ZpbjTahDovADZmrKK3GF4rakTo0Ho4c=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-584-Nk2qDMVUObWpZfMn8N0S4A-1; Tue, 07 Apr 2026 12:36:35 -0400
+X-MC-Unique: Nk2qDMVUObWpZfMn8N0S4A-1
+X-Mimecast-MFC-AGG-ID: Nk2qDMVUObWpZfMn8N0S4A_1775579795
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-35daf3d3030so5230357a91.1
+        for <linux-coco@lists.linux.dev>; Tue, 07 Apr 2026 09:36:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775579794; x=1776184594;
+        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LJCTQ6yvzucVb7LSRfCEx4d2sHWJ53AMLsBBh6zk0Fo=;
+        b=XSdG1ucb93uXDA02GGZqrCm1Qmm61Rb0viD4NzbouCJfDVxnzr8xw5IgR7H7uBmHR1
+         qj4OHVVrO5RNYVLJvlpce8J/VStENYjQ+gqMxqbGPGOkP1tHAd/ex1+zUEbfjVnFM8eo
+         y9nSPubdbq4CmrJfuSz/qkGYd4wViGwQ2Z3CWcbiRqZoji/eiCsbdNAuEvE1vIsZCUor
+         XGGp+jfm5O+Sz4eZZa6ZxuyrZwAmmit9KYwnqZSL7erAIfaGxrl4+KjrKjlLfqGDp9V+
+         pJQaJch2OJaeLjc+3ijfNrAOZH52kPvhpK/rMDMfIwoFAnxuOmjCuRHGUv3hL+N1mgRa
+         9+vw==
+X-Forwarded-Encrypted: i=1; AJvYcCXX2nOYnPmt3fElrZEKUDJ+XXwCbCs+dZhaMe4p1IGkewIvk48RdH+KdoSOFFp8EZOUY9hb0Kj7wT7c@lists.linux.dev
+X-Gm-Message-State: AOJu0YwkFk4QzT1L7rHbZHhzow6oUgscqqSpph4Pkr89LUxLVZC60S3c
+	wnqyLxWO/n11VMgfPjYSOFmG7lLHZWmiIKL7KV1E1Rqu8Cg5TPz+PhcVJUKAOp7XUOlXR95Z6m6
+	dWedYM3lqzUBqzMLLGmp/OkX4d/kAHU5dyU9Kr00MDF1u7q4U3hLzpvAJaAfgDBikLpG05mSuRm
+	riYJCRzJT2iom8YYiMaqPDkq4H24dwoIIxaxrK7OOLvMFtiljZ
+X-Gm-Gg: AeBDieufZQ5Yz3KRPZPoVDBhM62Abm5CAXZAuyndDJWUu7fVhBBTttIH8nSaksALPki
+	PlypeBh+fmJWuHpgo6tCUFEn2cDXsFbVryCuEiiykEoNvblfrcNULH9/ohYt1/Q2oRGf/pCs5h9
+	51MWBscgg180aaDgErQT6kFcLdWLu71RzpcgX92oAweAKA2RyeprJk/7GEr2aOqduNQKDnB6IYr
+	pwR
+X-Received: by 2002:a17:90b:2e0d:b0:35d:982d:96c7 with SMTP id 98e67ed59e1d1-35de6980b71mr18628843a91.27.1775579793971;
+        Tue, 07 Apr 2026 09:36:33 -0700 (PDT)
+X-Received: by 2002:a17:90b:2e0d:b0:35d:982d:96c7 with SMTP id
+ 98e67ed59e1d1-35de6980b71mr18628800a91.27.1775579793278; Tue, 07 Apr 2026
+ 09:36:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260303000207.1836586-2-dan.j.williams@intel.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Tue, 7 Apr 2026 18:36:22 +0200
+X-Gm-Features: AQROBzDB-aEaoPKvHT8F596oTqnKgNiJsmIBcp2TBkUe2U9M5Fm9UyxZ_pqFgDQ
+Message-ID: <CAGxU2F6OApB3K61_sPujnvK_gx_K8zFWyOSTPV9mzWOCyNkBJg@mail.gmail.com>
+Subject: SVSM Development Call April 8th, 2026
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: N8LTqB8MD1DYxfstEey1aNM5Bj1hBM-f1bI-PqV0W1M_1775579795
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Mar 02, 2026 at 04:01:49PM -0800, Dan Williams wrote:
-> The first attempt at an ABI for this failed to account for naming
-> collisions across host bridges:
-> 
-> Commit a4438f06b1db ("PCI/TSM: Report active IDE streams")
-> 
-> Revive this ABI with a per host bridge link that appears at first stream
-> creation for a given host bridge and disappears after the last stream is
-> removed.
-> 
-> For systems with many host bridge objects it allows:
-> 
->     ls /sys/class/tsm/tsmN/pci*/stream*
-> 
-> ...to find all the host bridges with active streams without first iterating
-> over all host bridges. Yilun notes that is handy to have this short cut [1]
-> and from an administrator perspective it helps with inventory for
-> constrained stream resources.
-> 
-> Link: http://lore.kernel.org/aXLtILY85oMU5qlb@yilunxu-OptiPlex-7050 [1]
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Hi,
 
-Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+Here is the call for agenda items for this week's SVSM development
+call. Please send any agenda items you have in mind as a reply to this
+email or raise them in the meeting.
+
+We will use the LF Zoom instance. Details of the meeting can be found
+in our governance repository at:
+
+        https://github.com/coconut-svsm/governance
+
+The link to the COCONUT-SVSM calendar is:
+
+        https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
+
+The meeting will be recorded and the recording eventually published.
+
+Regards,
+Stefano
+
