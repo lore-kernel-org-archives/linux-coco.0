@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81A73C457D
-	for <linux-coco@lists.linux.dev>; Tue,  7 Apr 2026 15:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0133CB2E6
+	for <linux-coco@lists.linux.dev>; Tue,  7 Apr 2026 15:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775577228; cv=none; b=eOwWeWhhor+RYBG9WHC0zQeHa7sADZUP0/gbLNJAfogXug1ma4VxOdZ0yD5CD6pQ/vNm0NBA7beQbmBi2vU92kmBYT0Eox57mPn7a6tQU7rjwKnFRzPQl3Th+Zo+l3JQEv8xBgZd2pb2bCb74gU5UygVu/ny2gETc2YAGH/aOeM=
+	t=1775577322; cv=none; b=cS7S2f/9/uQZuhz3v/jEKGEHvuYRZyA/15t5CADQjGMV8twSIGqbAb0fU6FyfCOQE+UHxBKqUPeXWLaf1tIpXCdM2S1PhYbfoarfr3Yb4Zpit5HzHAq0PwbdP1sCmxczHMQG3V6cN71s85K0NqYwU8r2TOA8pELKSUBYSUmipSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775577228; c=relaxed/simple;
-	bh=gBboB7jILXBFr9ffJFnBzf1ojSwiF96vUM3rbWEfdwQ=;
+	s=arc-20240116; t=1775577322; c=relaxed/simple;
+	bh=HEyloCqmm1gPL3ztxISNEUF8ewu29tYDVHB278HK3Rs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XojgnbgO6P9eEMrDtL7DEu8LUniQ4kW/SM/Bb7qE+2tKgY+KFnGELiptpkvaGeQJuBVJfIFtzTINmP2TJT6Wt8ppXb7QmTZ4eSXxu3CvA/WO7/5Vr7+Dj68oUonytsNaYzsW9VkVDQ4RqHytZcvBEeFo/zYxXMuOp3Y4+SgqeNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BJK//qab; arc=none smtp.client-ip=192.198.163.16
+	 In-Reply-To:Content-Type; b=ZR7jS04aZhYkDgqe+Pkdc0vLxRt6k/YY1zjXkEKUy4JuIlZqNXkxDdTKXLYSwhKsrgRynNigHNoLo6SO8nghFqmoXPed66sGgdn4AD+cTSzhaA6f166ILXoDxm7tXnYqRYMFyhpPu9OaNM4ya2+QBCPI4r//Qr2E7Q1+ArbEWzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZRdcdNPu; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BJK//qab"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZRdcdNPu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775577223; x=1807113223;
+  t=1775577316; x=1807113316;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=gBboB7jILXBFr9ffJFnBzf1ojSwiF96vUM3rbWEfdwQ=;
-  b=BJK//qab0xeGZ1C8LIjT/PiSkB6fcNtvzCql3gHYTKZxMOyFujiBK/UO
-   CKa4/x7u1M3ggEmGlDryJwtu3z+hgWrDCZf/A2NCDYeDlxM5TFkeQwbvq
-   B9hL3XGwCKMepKy1GGoVzY8qPIJ2KU91e2X/2Cv/TExF/WZsYOpfeF91b
-   2owyc8/phQ4UdpoDwOtkTj+6ruDzhr7WeRyvV2bML/jFg9Mxj1Py8uLDO
-   Yte/zzD3pRFcL+CfTivLQRPreYZ5gMYOlkMeThlSz61VoH6F1JBIqi5yf
-   2Z+Peq97atG3WQuyoBSfitAtGx2oDTN/Rq/PEUSkfrcYv9OvqjzQuCO0R
-   g==;
-X-CSE-ConnectionGUID: NSnvs5AJTamQpawVpx40DQ==
-X-CSE-MsgGUID: JtDJUoKPRUuyTvE82JyTig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="64087875"
+  bh=HEyloCqmm1gPL3ztxISNEUF8ewu29tYDVHB278HK3Rs=;
+  b=ZRdcdNPu5RIk7DuA8majH5ikdiZmrrBnkEfxN9cv/eboNhMP+RnN1y4F
+   Mw0wGLRmAq6p/i7KNq1ExdJ/rVEm69LFW/UD7yZf3tOS4Mpu6ixuZr9Iu
+   r6qzemYyYgEE3Ft/wgh5imlyba2Q2mfOnIhpi5sAfQq3HxazrHd0zupqp
+   6cLqQB9IaAZBwyQRsOYoApaKVflrRAwYhEOUblWyWg3yg1vxDGcbYY20h
+   JYe2tlpg/Yr6JGvqJzlESU/bzJUSvLkrUwXtwpM1bdtUwIo12cqUJQGL/
+   U3C04MXkf+Le6S364xAdqCL5Y+p/DRuTjF+MgbWbkLfktfepmkfW8qefm
+   A==;
+X-CSE-ConnectionGUID: CWaGZnx3QPGLXUqDYPlo1A==
+X-CSE-MsgGUID: At9i3yYcQRumi3gqIraE4g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="64088741"
 X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
-   d="scan'208";a="64087875"
+   d="scan'208";a="64088741"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 08:53:38 -0700
-X-CSE-ConnectionGUID: 2VkMVn+MQzaJOjLPxhUNcg==
-X-CSE-MsgGUID: pLjvmznoSbWWzixy269y6Q==
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 08:55:11 -0700
+X-CSE-ConnectionGUID: CwWv3xw+QHGm+sbXPRAJ5g==
+X-CSE-MsgGUID: GtnEdxq4QuKHtlhlQ8o6tw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
-   d="scan'208";a="232601295"
+   d="scan'208";a="232602605"
 Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.118]) ([10.125.108.118])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 08:53:36 -0700
-Message-ID: <8b9d7fa7-6534-48e7-a4fa-c21260b1c762@intel.com>
-Date: Tue, 7 Apr 2026 08:53:47 -0700
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 08:55:10 -0700
+Message-ID: <5a7e7383-1963-40df-adf8-a36b81beaa1e@intel.com>
+Date: Tue, 7 Apr 2026 08:55:21 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 16/22] x86/virt/tdx: Update tdx_sysinfo and check
- features post-update
+Subject: Re: [PATCH v7 09/22] x86/virt/seamldr: Introduce skeleton for TDX
+ module updates
 To: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
  linux-coco@lists.linux.dev, kvm@vger.kernel.org
 Cc: binbin.wu@linux.intel.com, dan.j.williams@intel.com,
@@ -67,7 +67,7 @@ Cc: binbin.wu@linux.intel.com, dan.j.williams@intel.com,
  Borislav Petkov <bp@alien8.de>, x86@kernel.org,
  "H. Peter Anvin" <hpa@zytor.com>
 References: <20260331124214.117808-1-chao.gao@intel.com>
- <20260331124214.117808-17-chao.gao@intel.com> <adT1Tkz+/ysSZ1Ua@intel.com>
+ <20260331124214.117808-10-chao.gao@intel.com> <adTvNKVRxsp9Vz10@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -113,29 +113,16 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <adT1Tkz+/ysSZ1Ua@intel.com>
+In-Reply-To: <adTvNKVRxsp9Vz10@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/7/26 05:15, Chao Gao wrote:
-> Dave's comment on another patch applies here too: don't preemptively handle
-> errors that never occur. The custom error message is unnecessary, and
-> propagating the error isn't worth it. Will simplify it to:
+On 4/7/26 04:49, Chao Gao wrote:
+> Applying Dave's feedback to simplify comments across the series. I will change
+> this to:
 > 
-> 	/* Shouldn't fail as the update has succeeded. */
-> 	WARN_ON_ONCE(get_tdx_sys_info(info));
+> /* The lockstep update needs a stable set of online CPUs. */
 
-This is nit territory, but I don't like that either.
+Try to speak in imperative voice, please:
 
-Actual, important, normal-program-flow logic should stand on its own,
-separate from warnings.
-
-OK:
-	ret = foo()
-	WARN_ON(ret);
-
-Not OK:
-	WARN_ON(foo());
-
-
-
+	/* Ensure a stable set of online CPUs for ...
