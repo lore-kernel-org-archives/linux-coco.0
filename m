@@ -1,114 +1,134 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F8534C98C
-	for <linux-coco@lists.linux.dev>; Tue,  7 Apr 2026 07:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8121DFDE
+	for <linux-coco@lists.linux.dev>; Tue,  7 Apr 2026 09:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775546342; cv=none; b=RPZSKUTER/pZ/DcngWmb510KvXkN4TWI3C78NIr7a8rrTW+olnodr96UGJphd5mbLR/vEaVy/vPfS9yncbdab61fIUSJg2Iypy89Q9mf9OXAr1LbI3f0QfmJy9cw+om+WiY7BSD6+fIRHmRgBkV/5KhqakojDX5Gg+zcpFV+FMw=
+	t=1775553924; cv=none; b=NKKOjIS5MRbDIuZ1cSGrMvQB5oVrPUhV8MTAm1icMIm37mtSKRa+2lyQPVhzDHdOlGeJWNjFxJc+6ApQXSS12j00SAk2LgYwx5G/miKmFDHbDamDUKEp76Ryf8K5Hkw7ijvSMIDfhlhlfBm9O+BoznHUFaxHzCoJcmDzAxWh3vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775546342; c=relaxed/simple;
-	bh=oK66n8s+O/hYsgxUx+3OljUGmEFfW+ZrHSNTkfOI6FU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=alx9qb1sNEbq+CJbajpW3YEEpg4hH/ga2NRya2nBp2U6NODCqZRIeONuvrQmbnVYNfo+d15iNOsniNdLFOcQwKprspgEW/LkzOpdw1zy8W98bUcl1l5nev68zIAxfRhB0IVHT3kk3iIyuIOR74AwWojMuTOIjJy4ltvSohCMPPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WX25gQz9; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1775553924; c=relaxed/simple;
+	bh=EL1uS51GqLRXczIb69xOmfNqtX6Z7UkZCrcbE2W7W8o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IRQArHJU/eKGOBhT3td0HE6RF/3CnYrfu7rhkSdrXj0DywbzWTvAwyF7YqpOFItC0m3Pq0jp9FoG02xnv/jlp2rwGn7k4aTEnodpV57Nvd4oy9+aofa/IXG6KpylHpDD7hfimBlp9FFj7ANBavLCDp9wnFzsrQifPlB96/39ulo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=L+7DH+2G; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WX25gQz9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775546339;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mljjuQYWVEJA5/gTJORfrhvkCXmvQyM1a+kpTpApJBc=;
-	b=WX25gQz94MPVagvbyPJNHoKCx6QyoUnuLKWriBrj136itDYbwLJSqQjktI0dl20SpyA8AR
-	Th+1sImBLnHJEC4nIdBQOmnaS6qRKyteiHEE9gu90ToDelSStfUTAQApBobzlx+N2CAu7p
-	NSnDtbcWwQvlNrWVcLgTRBZUuFxi/DU=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-688-z6FHlqXqM3uLgl1AwNp2Jw-1; Tue, 07 Apr 2026 03:18:58 -0400
-X-MC-Unique: z6FHlqXqM3uLgl1AwNp2Jw-1
-X-Mimecast-MFC-AGG-ID: z6FHlqXqM3uLgl1AwNp2Jw_1775546337
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43b99add7f3so3086995f8f.1
-        for <linux-coco@lists.linux.dev>; Tue, 07 Apr 2026 00:18:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="L+7DH+2G"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-43b9d3ebed5so4042676f8f.1
+        for <linux-coco@lists.linux.dev>; Tue, 07 Apr 2026 02:25:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1775553918; x=1776158718; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ChD0onF1gDOUOLYFpD7x1c0kz7T4QILlyJ39777mmvM=;
+        b=L+7DH+2GOqf9BABK5stnc9ZS1cCmT9bWN1BUtkaAPrgV6Fkghm6LvFGacj+DbwAuBI
+         zjfrzmJOywwdsy79BqoAsRj8MjlDQfWPcOURPpuDQ13YcJtFVGR8IX/aA2lcIGIOGoT7
+         abv6qlbjGzZ+NKYq6Jlh7DHpdGJsXR19g4EeUV2HhyEujXpEo+ARmMwwjh6XVapyfNyF
+         nLy+AGy1hcmQpthvTKAQYbaUOLXBVVkbJu4h5LtM33vie30hfDOa7zmWoqOREcgLlty0
+         h91yCZ5QaauxDnh+FsqdwKAZdxP2e/mNs6UWMoKEqpXw2DDm02los6MqX9X+o9LA5I3c
+         drFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775546337; x=1776151137;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mljjuQYWVEJA5/gTJORfrhvkCXmvQyM1a+kpTpApJBc=;
-        b=ZhQClWGqPuT5J3WJ5t6Can4L6S40X+T5THoKzL/5OnwVXAm7XECHnvydJwdAc8vzul
-         GbXTnmOyNPhgXZe74dETKNAvTuiChH88Z0KKaiWnVsTi0NVwmSqDHFACY42u+LYPvTVx
-         mOPweE1R7fYzx3XHJ2YvzFRyY2d9IGUc4g/OXUVFcMj88byv+meBHc6muA/0nQsBlOzl
-         ihqRbtxqdqyt2wvD/Qo0BjA4ClbFhjHT5kWn6GUFHS//nZUssVTTG/R2eTDF53zzfntT
-         zqPtknH7N4IGIrNVRgfVWwBtWawm7uAE6S94Ig4+9Rg5SIycCgaiI7R0eSTzMTuKG2bj
-         kfYA==
-X-Forwarded-Encrypted: i=1; AJvYcCVxG+wInJPjEls80uM1eAcSrLuNDYkYlkx9wDV4/prOjIa88giSc5yzXIQ+RqCaNK8QKMGAfUmiQWuI@lists.linux.dev
-X-Gm-Message-State: AOJu0YxmjYkzm3kJKtuzShLN4w6/ZrsYx6Em2rmmWt4I6DtzbjnE/9qL
-	1HofrBIeDD2SFkb6f+mztoDxTLndZr8LLV0n/ndVcdSpORMjdHP74XWTKQww1ygQqcI05AKT/Pj
-	7P6atrjCoc6JKmfNBi/iJxY0j49UEGVYYNZuofGmF3+gtaDWXt0S7lSp+9nN06wwtTdnePZZgsL
-	pezHtOYFK0XOaoahridG2vNT08409werSaI481HQ==
-X-Gm-Gg: AeBDietB8NERlVPQJiGm8oo0w7R5atLdre6Z9Z0bwX6+XK5xeZQWvxEdp2rnpWH2PYq
-	W7dQuo3JCVC8Ozp6zCILD7UGfshk1rTNeZ5IJ8cFgZGiX2a7R5S9+CIYtoSfo/rDDoGBVic4i2y
-	SbMiWS7EPPV+2xhHbPNRctp/ma2OHueaSpge9KBJm5hTfiaL3sTM15LimpBAIB36T7Ib2Z2Avfq
-	U5UOiRhhNtDv3dOsac2wviG0aK83xibRTttRKkRL23lB179lRb/KoNvHByzj4RX8+YxAH0xGTXu
-	h7hX
-X-Received: by 2002:a05:6000:2886:b0:43c:fc5c:aa08 with SMTP id ffacd0b85a97d-43d28f95b8emr23587399f8f.8.1775546337116;
-        Tue, 07 Apr 2026 00:18:57 -0700 (PDT)
-X-Received: by 2002:a05:6000:2886:b0:43c:fc5c:aa08 with SMTP id
- ffacd0b85a97d-43d28f95b8emr23587346f8f.8.1775546336701; Tue, 07 Apr 2026
- 00:18:56 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775553918; x=1776158718;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ChD0onF1gDOUOLYFpD7x1c0kz7T4QILlyJ39777mmvM=;
+        b=Y8lxIEA7/kzWi1dcW2z9oqNnITXdT2+HfhVegre54wRZFtbdMx2ThoMkvxwv2MP6Rc
+         8bjssWg9UlwiE9i48EBt6uilnHQ8LNCx6/AekSEIwMp/T4Caq7+kZvrB+inCZt295WrA
+         e/RZ8fey1x7/b4bFPxk6Tk4UObOZI1HGubXJnDcAOSF7dpSMLk2gLXB8a3EvvemMyRAi
+         lr+36twkIZjUzF9o/jajAdSgqECm335LKsS9WluScIPmWXpiJ/G4KCjcH1r3fVe6R8KI
+         6E102VmSMCxJi7bTPu3PYsFat3BUSusXSbj7zYhpKSdCNI+QVGJ7r7DThOURTdQKzLiG
+         ieng==
+X-Forwarded-Encrypted: i=1; AJvYcCVS6qmOlJKRWmWhfGsrxEN3ZoUmjexzsJsAJdZSZdUXApbc4HeAcEI2wOI5z1sGt2ae003ur4ePqAIn@lists.linux.dev
+X-Gm-Message-State: AOJu0YxCWyP6p/c2ZRjppaBIcejkndeJjJXhXyVBJTJYL4QrFAuYiB0H
+	8/Aq6xlfJhtd+78kh0ZNT8LZIXdX0gVmO5GnUp0aofP/2SnoK67QVCQudDuXXcBaPXM=
+X-Gm-Gg: AeBDieu8WaKpT5NYKfiFt1R+1O+QAUP2/4Zkzukc7Pkd/IjcFNdILnS3zlthCeZOq44
+	T4VUpNJTHqASBOtDIdqfQTqPm+rIx0F7K/sm0BALMhKa+xSzfmQk5cUmfRBjYpLYXgtkj4Ve5Gv
+	2w7J/1cQvThiRHYFou35T4q9g3Y5DBFvkgBJPQa2UfEAXe0iXc/mBb5dwIApK2bOid6hUPHazxo
+	DOqMdnfQZccpMsoo3chjGZoWR24bja9FiRwdTAtFkTgLpCPqZlnOMnvRsFP8mZMzAZIDMJobWXj
+	iRiSDknprRXNI7xfODmjReEi/rA84xUe8xyhtnWo8d5PzLAVtYQxolrgX4k/m6ZxzzL7b7eIIX9
+	LUDBUP+DC4Zh5GYkaR9BHbiF3FxyT55p7RUUPBK9GnF3T1pKvC6d4q10KC3/Ue6FEkauKWZQpVs
+	1mCqL22yNapNbF/PvCuSeIfYsO/RqTt70=
+X-Received: by 2002:a05:6000:4201:b0:43c:f95c:3e66 with SMTP id ffacd0b85a97d-43d29294b62mr24203622f8f.21.1775553918478;
+        Tue, 07 Apr 2026 02:25:18 -0700 (PDT)
+Received: from FV6GYCPJ69 ([85.163.81.98])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4f5016sm52091538f8f.33.2026.04.07.02.25.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 02:25:17 -0700 (PDT)
+Date: Tue, 7 Apr 2026 11:25:15 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: "T.J. Mercier" <tjmercier@google.com>
+Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	iommu@lists.linux.dev, linux-media@vger.kernel.org, sumit.semwal@linaro.org, 
+	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, jstultz@google.com, 
+	christian.koenig@amd.com, m.szyprowski@samsung.com, robin.murphy@arm.com, jgg@ziepe.ca, 
+	leon@kernel.org, sean.anderson@linux.dev, ptesarik@suse.com, 
+	catalin.marinas@arm.com, aneesh.kumar@kernel.org, suzuki.poulose@arm.com, 
+	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com, 
+	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
+Subject: Re: [PATCH] dma-buf: heaps: system: document system_cc_shared heap
+Message-ID: <5l5ack3pgpajrkbcactkiyvfi5pir3jn5eg6tmohcrdgiuqtn5@odbwbvsn4vrj>
+References: <20260402141103.598495-1-jiri@resnulli.us>
+ <CABdmKX3N70j8ZZs5DNhx6fhRi=Aa_+2xY1JHcW+uDoaV2+Sngw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260311003346.2626238-1-seanjc@google.com> <7ec084f8-812e-42f2-8470-e416fa7ee848@redhat.com>
- <ac75iuf9gHIhvm9u@google.com> <88e9d7f0-35b8-4559-9f4d-c7daf1af6012@redhat.com>
- <aea176c8-35de-4042-bf98-e42ce05f93fb@intel.com> <CABgObfY05NU8DS82jkwpF89_p1nR7VJ30HBq_xaMg_u+-j=0Cw@mail.gmail.com>
- <adPRA4ZhnvbaXSn0@google.com> <CABgObfbLm3FR4f_nv5EyYJx4jwfeBaVgTLhr7P++hmhCP98e3Q@mail.gmail.com>
- <adQs4LQgy3mS2t89@google.com>
-In-Reply-To: <adQs4LQgy3mS2t89@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 7 Apr 2026 09:18:43 +0200
-X-Gm-Features: AQROBzBFAoXmOuQaya9SW3dphnVY0dfdZmgdgdkvSsxEIlf_53nmfMraq_tgj-4
-Message-ID: <CABgObfaFqrSENS=_eNgkyxebqL1vFauNqG3XAgZm0EHfkbQ_gw@mail.gmail.com>
-Subject: Re: [PATCH 0/7] KVM: x86: APX reg prep work
-To: Sean Christopherson <seanjc@google.com>
-Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, Kiryl Shutsemau <kas@kernel.org>, kvm <kvm@vger.kernel.org>, 
-	"the arch/x86 maintainers" <x86@kernel.org>, linux-coco@lists.linux.dev, 
-	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, Andrew Cooper <andrew.cooper3@citrix.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 16AweblQQc7iZa1UeSDQMwSWeEYo6eKTYUsuBa1TKf4_1775546337
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABdmKX3N70j8ZZs5DNhx6fhRi=Aa_+2xY1JHcW+uDoaV2+Sngw@mail.gmail.com>
 
-Il mar 7 apr 2026, 00:00 Sean Christopherson <seanjc@google.com> ha scritto:
+Mon, Apr 06, 2026 at 10:20:33PM +0200, tjmercier@google.com wrote:
+>On Thu, Apr 2, 2026 at 7:11 AM Jiri Pirko <jiri@resnulli.us> wrote:
+>>
+>> From: Jiri Pirko <jiri@nvidia.com>
+>>
+>> Document the system_cc_shared dma-buf heap that was introduced
+>> recently. Describe its purpose, availability conditions and
+>> relation to confidential computing VMs.
+>>
+>> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+>> ---
+>>  Documentation/userspace-api/dma-buf-heaps.rst | 8 ++++++++
+>>  1 file changed, 8 insertions(+)
+>>
+>> diff --git a/Documentation/userspace-api/dma-buf-heaps.rst b/Documentation/userspace-api/dma-buf-heaps.rst
+>> index 05445c83b79a..591732393e7d 100644
+>> --- a/Documentation/userspace-api/dma-buf-heaps.rst
+>> +++ b/Documentation/userspace-api/dma-buf-heaps.rst
+>> @@ -16,6 +16,14 @@ following heaps:
+>>
+>>   - The ``system`` heap allocates virtually contiguous, cacheable, buffers.
+>>
+>> + - The ``system_cc_shared`` heap allocates virtually contiguous, cacheable,
+>> +   buffers using shared (decrypted) memory. It is only present on
+>> +   confidential computing (CoCo) VMs where memory encryption is active
+>> +   (e.g., AMD SEV, Intel TDX). The allocated pages have the encryption
+>> +   bit cleared, making them accessible for device DMA without TDISP
+>> +   support. On non-CoCo VMs configurations, this heap is
 >
-> > > .  So unless I'm missing something (or hardware is flawed and lets the
-> > > guest speculative consume R16-R31, which would be sad), it's perfectly safe to
-> > > run the guest with host state in R16-R31.
-> > >
-> > > That would avoid pointlessly context switching 16 registers when APX is not being
-> > > used by the guest, and would avoid having to write XCR0 in the fastpath.
-> >
-> > For now yes, but once/if the kernel starts using the registers there's
-> > no way out of writing XCR0 for APX-disabled guests in the fast path.
+>"non-CoCo VM configurations"
 >
-> Why's that?  So long as KVM uses vcpu->arch.regs[R16-R31] as the source of truth
-> when emulating anything, there's no danger of taking a #UD in the host due to
-> accessing R16-R31 with XCR0.APX=0.
+>> +   not registered.
+>
+>Doesn't seem like you need to wrap this line.
+>
+>with that: Reviewed-by: T.J.Mercier <tjmercier@google.com>
 
-Yes I agree with that. But the unavoidable part is the XSETBV because
-only the assembly code can run with XCR0.APX=0. As soon as you go back
-to C, including during the fast path, you have to ensure XCR0.APX=1
-again if the kernel is compiled with -mapxf.
+Okay. Thanks!
 
-For now, I agree that early_xcr0 isn't needed and you can run all the
-time with XCR0.APX=0.
 
-Paolo
-
+>
+>> +
+>>   - The ``default_cma_region`` heap allocates physically contiguous,
+>>     cacheable, buffers. Only present if a CMA region is present. Such a
+>>     region is usually created either through the kernel commandline
+>
+>Each paragraph starting with '-' confused me for a second there. Those
+>aren't part of the diff. :)
