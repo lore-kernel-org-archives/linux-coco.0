@@ -1,98 +1,141 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162833B47D0
-	for <linux-coco@lists.linux.dev>; Tue,  7 Apr 2026 13:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81A73C457D
+	for <linux-coco@lists.linux.dev>; Tue,  7 Apr 2026 15:53:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775568026; cv=none; b=VpL3RgG9F68QSveT5guJsVHZbU8y2OF+PTAokw/U01ZrHgtI285V+yshSKZDzDwyxbUzxFHJt9tStgVqNPr2Qhb3HrzDboWa0b18nMplJ1wiCP/aMuJ9KQJXDtJK66q5Bu3BsgT4w0e4AKzk+ARMZPW4SDgmEd+Fub8eddFETJg=
+	t=1775577228; cv=none; b=eOwWeWhhor+RYBG9WHC0zQeHa7sADZUP0/gbLNJAfogXug1ma4VxOdZ0yD5CD6pQ/vNm0NBA7beQbmBi2vU92kmBYT0Eox57mPn7a6tQU7rjwKnFRzPQl3Th+Zo+l3JQEv8xBgZd2pb2bCb74gU5UygVu/ny2gETc2YAGH/aOeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775568026; c=relaxed/simple;
-	bh=87CyfNDwFF/L5cnHCUC0dfv1t/cS4nWw6mZ5x+xXPiM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BCk9RZzsfaVUalP2dNmI4I8zuYiWrWTfE6lULiY3lP7k0HEzF8G36zuQ0ImQzA4F9FtvlRTVtwgZkWQCqcl1TmM2/+Fm4FtT+1iYBbXD1kblwjyg0ICVZVHXInqJLkakQ1VA0r7wy450blZG0u73B+6lq+DGzDkz09ScMYHWhIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IhqcujDk; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1775577228; c=relaxed/simple;
+	bh=gBboB7jILXBFr9ffJFnBzf1ojSwiF96vUM3rbWEfdwQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XojgnbgO6P9eEMrDtL7DEu8LUniQ4kW/SM/Bb7qE+2tKgY+KFnGELiptpkvaGeQJuBVJfIFtzTINmP2TJT6Wt8ppXb7QmTZ4eSXxu3CvA/WO7/5Vr7+Dj68oUonytsNaYzsW9VkVDQ4RqHytZcvBEeFo/zYxXMuOp3Y4+SgqeNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BJK//qab; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IhqcujDk"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c7423ba5342so7677738a12.0
-        for <linux-coco@lists.linux.dev>; Tue, 07 Apr 2026 06:20:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775568024; x=1776172824; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0bPS983cAWq0du21wO/6yMH6IgpBLm9JLdEvcLcXdGw=;
-        b=IhqcujDkMRdus6saLJMJj8F2l7XTHuCzk3pNbAtDucE1I/MmF2cVgQquNhEaIwPcUl
-         c8aSI+OwDZYUSvSHArBz2EtJ4GDq3ui23h8Enkrnnry7c6M/Q2ZNpLOS72KAznBlZEQc
-         Td7LY+m8vLc16i58GUkyRM0yCJLOnUYsA2yFUOlWm+WbXEkYOHuKbmU286+325iX2fRV
-         39UDanhTR9qGL0LL1icIJgKuqOYt3glHwJWitx25T4Ny7417HItrIaok/CPfLHtziqC7
-         JyjigyFp6qx40kS39kLn8dBNaPehtTnnaLbvfjQKtoIq2Xxr4OgvfioOKQBj31jD8DI+
-         4rWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775568024; x=1776172824;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0bPS983cAWq0du21wO/6yMH6IgpBLm9JLdEvcLcXdGw=;
-        b=nbspfK19h+b+pjAlAmRF2HifYixrv0eodiyPEQUbrcdAAQFTbng3T/6qG6p8L22yVg
-         4v+0Lgd8fIctleE9t4EoeLM8J1WjAtTkJCeFmoQndw+0oJXKSsgQWuK+Pi8xKtCbbOp3
-         5YwfEkfEn0No0o4dSEtqPl0vaFAZVSe48TAFn0CwqNrgbS8nvDpjm3iXdGMYEXLI53W0
-         lsjaFOfyZuHxxsS8ZpAZd05KJ6RVgpZ+YRW7vZaEQdroj7UqdOM0cpha4IKKrchhjtFH
-         DMp2HNdcrlkRYUlAaQtV7fQhN495Cmx+CLbzrVbE2qdU9hn6/JdoZcCD2gNAEjdF5MPL
-         qQOg==
-X-Forwarded-Encrypted: i=1; AJvYcCVETsag5yphQV75PqPc2IrKnpia7U7hdxc/yXl5S7JicuZMDm0k1H+M3OuLA2Qkre4SEw+2B51CP0lJ@lists.linux.dev
-X-Gm-Message-State: AOJu0YzrE1ecnOSE0xVe8FhJBojNGcJytPkf5/wErW4bN8cn5h3kk9B1
-	735xWhr7kFNAk4ycoZ2n5EDiAt5DGCMsdQCdBbIH0CtDercUBMxisQ7MQdTEuJ9krkiUWz4olCq
-	eZg42fA==
-X-Received: from pfbly4.prod.google.com ([2002:a05:6a00:7584:b0:829:80c3:3c94])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:ac0c:b0:82c:dc17:2918
- with SMTP id d2e1a72fcca58-82d0da82ec4mr16087412b3a.13.1775568024017; Tue, 07
- Apr 2026 06:20:24 -0700 (PDT)
-Date: Tue, 7 Apr 2026 06:20:21 -0700
-In-Reply-To: <CABgObfaFqrSENS=_eNgkyxebqL1vFauNqG3XAgZm0EHfkbQ_gw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BJK//qab"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775577223; x=1807113223;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=gBboB7jILXBFr9ffJFnBzf1ojSwiF96vUM3rbWEfdwQ=;
+  b=BJK//qab0xeGZ1C8LIjT/PiSkB6fcNtvzCql3gHYTKZxMOyFujiBK/UO
+   CKa4/x7u1M3ggEmGlDryJwtu3z+hgWrDCZf/A2NCDYeDlxM5TFkeQwbvq
+   B9hL3XGwCKMepKy1GGoVzY8qPIJ2KU91e2X/2Cv/TExF/WZsYOpfeF91b
+   2owyc8/phQ4UdpoDwOtkTj+6ruDzhr7WeRyvV2bML/jFg9Mxj1Py8uLDO
+   Yte/zzD3pRFcL+CfTivLQRPreYZ5gMYOlkMeThlSz61VoH6F1JBIqi5yf
+   2Z+Peq97atG3WQuyoBSfitAtGx2oDTN/Rq/PEUSkfrcYv9OvqjzQuCO0R
+   g==;
+X-CSE-ConnectionGUID: NSnvs5AJTamQpawVpx40DQ==
+X-CSE-MsgGUID: JtDJUoKPRUuyTvE82JyTig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="64087875"
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
+   d="scan'208";a="64087875"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 08:53:38 -0700
+X-CSE-ConnectionGUID: 2VkMVn+MQzaJOjLPxhUNcg==
+X-CSE-MsgGUID: pLjvmznoSbWWzixy269y6Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
+   d="scan'208";a="232601295"
+Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.118]) ([10.125.108.118])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 08:53:36 -0700
+Message-ID: <8b9d7fa7-6534-48e7-a4fa-c21260b1c762@intel.com>
+Date: Tue, 7 Apr 2026 08:53:47 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260311003346.2626238-1-seanjc@google.com> <7ec084f8-812e-42f2-8470-e416fa7ee848@redhat.com>
- <ac75iuf9gHIhvm9u@google.com> <88e9d7f0-35b8-4559-9f4d-c7daf1af6012@redhat.com>
- <aea176c8-35de-4042-bf98-e42ce05f93fb@intel.com> <CABgObfY05NU8DS82jkwpF89_p1nR7VJ30HBq_xaMg_u+-j=0Cw@mail.gmail.com>
- <adPRA4ZhnvbaXSn0@google.com> <CABgObfbLm3FR4f_nv5EyYJx4jwfeBaVgTLhr7P++hmhCP98e3Q@mail.gmail.com>
- <adQs4LQgy3mS2t89@google.com> <CABgObfaFqrSENS=_eNgkyxebqL1vFauNqG3XAgZm0EHfkbQ_gw@mail.gmail.com>
-Message-ID: <adUElWItuaghWj89@google.com>
-Subject: Re: [PATCH 0/7] KVM: x86: APX reg prep work
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, Kiryl Shutsemau <kas@kernel.org>, kvm <kvm@vger.kernel.org>, 
-	"the arch/x86 maintainers" <x86@kernel.org>, linux-coco@lists.linux.dev, 
-	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, Andrew Cooper <andrew.cooper3@citrix.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 16/22] x86/virt/tdx: Update tdx_sysinfo and check
+ features post-update
+To: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org
+Cc: binbin.wu@linux.intel.com, dan.j.williams@intel.com,
+ dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com,
+ kas@kernel.org, nik.borisov@suse.com, paulmck@kernel.org,
+ pbonzini@redhat.com, reinette.chatre@intel.com, rick.p.edgecombe@intel.com,
+ sagis@google.com, seanjc@google.com, tony.lindgren@linux.intel.com,
+ vannapurve@google.com, vishal.l.verma@intel.com, yilun.xu@linux.intel.com,
+ xiaoyao.li@intel.com, yan.y.zhao@intel.com, Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>
+References: <20260331124214.117808-1-chao.gao@intel.com>
+ <20260331124214.117808-17-chao.gao@intel.com> <adT1Tkz+/ysSZ1Ua@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <adT1Tkz+/ysSZ1Ua@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 07, 2026, Paolo Bonzini wrote:
-> Il mar 7 apr 2026, 00:00 Sean Christopherson <seanjc@google.com> ha scritto:
-> >
-> > > > .  So unless I'm missing something (or hardware is flawed and lets the
-> > > > guest speculative consume R16-R31, which would be sad), it's perfectly safe to
-> > > > run the guest with host state in R16-R31.
-> > > >
-> > > > That would avoid pointlessly context switching 16 registers when APX is not being
-> > > > used by the guest, and would avoid having to write XCR0 in the fastpath.
-> > >
-> > > For now yes, but once/if the kernel starts using the registers there's
-> > > no way out of writing XCR0 for APX-disabled guests in the fast path.
-> >
-> > Why's that?  So long as KVM uses vcpu->arch.regs[R16-R31] as the source of truth
-> > when emulating anything, there's no danger of taking a #UD in the host due to
-> > accessing R16-R31 with XCR0.APX=0.
+On 4/7/26 05:15, Chao Gao wrote:
+> Dave's comment on another patch applies here too: don't preemptively handle
+> errors that never occur. The custom error message is unnecessary, and
+> propagating the error isn't worth it. Will simplify it to:
 > 
-> Yes I agree with that. But the unavoidable part is the XSETBV because
-> only the assembly code can run with XCR0.APX=0. As soon as you go back
-> to C, including during the fast path, you have to ensure XCR0.APX=1
-> again if the kernel is compiled with -mapxf.
+> 	/* Shouldn't fail as the update has succeeded. */
+> 	WARN_ON_ONCE(get_tdx_sys_info(info));
 
-/facepalm
+This is nit territory, but I don't like that either.
 
-I got so focused on register state that I completely forgot about actually
-using the registers...
+Actual, important, normal-program-flow logic should stand on its own,
+separate from warnings.
+
+OK:
+	ret = foo()
+	WARN_ON(ret);
+
+Not OK:
+	WARN_ON(foo());
+
+
+
