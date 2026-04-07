@@ -1,128 +1,90 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0133CB2E6
-	for <linux-coco@lists.linux.dev>; Tue,  7 Apr 2026 15:55:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4983A5E63
+	for <linux-coco@lists.linux.dev>; Tue,  7 Apr 2026 16:24:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775577322; cv=none; b=cS7S2f/9/uQZuhz3v/jEKGEHvuYRZyA/15t5CADQjGMV8twSIGqbAb0fU6FyfCOQE+UHxBKqUPeXWLaf1tIpXCdM2S1PhYbfoarfr3Yb4Zpit5HzHAq0PwbdP1sCmxczHMQG3V6cN71s85K0NqYwU8r2TOA8pELKSUBYSUmipSs=
+	t=1775579052; cv=none; b=CvlLtB1ifWGZvoPfEFsuf3M00oxiKAaxTVHT0UkwXeck5z30JNej6Yu/heLxGnnfdIaLfjib2aKfQDaet8x+SrnJTxhKaCUGUvmBiP1Tjbg8nQ4IkBz/eCulqRv/B1M9TiYYT25O/AChqXOTOTP0e1WdoZEKjxntVecZaQ5A+Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775577322; c=relaxed/simple;
-	bh=HEyloCqmm1gPL3ztxISNEUF8ewu29tYDVHB278HK3Rs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZR7jS04aZhYkDgqe+Pkdc0vLxRt6k/YY1zjXkEKUy4JuIlZqNXkxDdTKXLYSwhKsrgRynNigHNoLo6SO8nghFqmoXPed66sGgdn4AD+cTSzhaA6f166ILXoDxm7tXnYqRYMFyhpPu9OaNM4ya2+QBCPI4r//Qr2E7Q1+ArbEWzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZRdcdNPu; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1775579052; c=relaxed/simple;
+	bh=9FeJFyp0FaZnv7lMyE8/o9uC1lGRabz7wKdgpqoqhx8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uuxyl31tu4wxU1Bo+lCBs8D48HVapK066csK3mHlit31RC05J/qGj22MAh9DUF81AqXmlOnA87u7Or29lLEfI0qiXw18nu+IrYGegIm3bU+4sru2HyFAs7WbKoDL0elNBbXyf9/kpB2+R9p8CzN9jz4A/cZbO0ofqoFAPj/bP9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EpAauxTx; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZRdcdNPu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EpAauxTx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775577316; x=1807113316;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=HEyloCqmm1gPL3ztxISNEUF8ewu29tYDVHB278HK3Rs=;
-  b=ZRdcdNPu5RIk7DuA8majH5ikdiZmrrBnkEfxN9cv/eboNhMP+RnN1y4F
-   Mw0wGLRmAq6p/i7KNq1ExdJ/rVEm69LFW/UD7yZf3tOS4Mpu6ixuZr9Iu
-   r6qzemYyYgEE3Ft/wgh5imlyba2Q2mfOnIhpi5sAfQq3HxazrHd0zupqp
-   6cLqQB9IaAZBwyQRsOYoApaKVflrRAwYhEOUblWyWg3yg1vxDGcbYY20h
-   JYe2tlpg/Yr6JGvqJzlESU/bzJUSvLkrUwXtwpM1bdtUwIo12cqUJQGL/
-   U3C04MXkf+Le6S364xAdqCL5Y+p/DRuTjF+MgbWbkLfktfepmkfW8qefm
+  t=1775579050; x=1807115050;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9FeJFyp0FaZnv7lMyE8/o9uC1lGRabz7wKdgpqoqhx8=;
+  b=EpAauxTxe+h8nRrpKDnnMzWzXIaUk005wYVQSDqpeUNHK5O/YL9tdRQw
+   G5pmQMiNl/XeVbUfGrYCLHcPCjAFiZMBlN1y3b8Q8q0/+7qTdgsac4syP
+   ubAOUvnsgAdvMwR/6uUYdtnKUNp5Q0FyOnk/ReRpeijgKDWzOiB8DkY/M
+   oKDqLMb8+UgHjPWSwV20e/BYOBYhm2Nbp9NDLTTLAItKSWSOet7DZ0f3p
+   sFnRd2BnswsPIJ7NFR2tiT3YxrKBozAQBbkdYk5OK8bDaCjUz8iMqCst8
+   yi8y42g3leIfNmOzhIUDu/FdSf4jixVT0YenvULtFtypwXfy107ePWtVL
    A==;
-X-CSE-ConnectionGUID: CWaGZnx3QPGLXUqDYPlo1A==
-X-CSE-MsgGUID: At9i3yYcQRumi3gqIraE4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="64088741"
+X-CSE-ConnectionGUID: EXCMK+3uR3SjEIXH2zXv+g==
+X-CSE-MsgGUID: sZwzBjn0RnqUm3CtJGouEw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="79137093"
 X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
-   d="scan'208";a="64088741"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 08:55:11 -0700
-X-CSE-ConnectionGUID: CwWv3xw+QHGm+sbXPRAJ5g==
-X-CSE-MsgGUID: GtnEdxq4QuKHtlhlQ8o6tw==
+   d="scan'208";a="79137093"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 09:24:09 -0700
+X-CSE-ConnectionGUID: +2Jwot1rQC6eUXiRWlp2yA==
+X-CSE-MsgGUID: hkMlB8cmTy6L/5Cqw9Xajw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
-   d="scan'208";a="232602605"
-Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.118]) ([10.125.108.118])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 08:55:10 -0700
-Message-ID: <5a7e7383-1963-40df-adf8-a36b81beaa1e@intel.com>
-Date: Tue, 7 Apr 2026 08:55:21 -0700
+   d="scan'208";a="223431250"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa006.fm.intel.com with ESMTP; 07 Apr 2026 09:24:07 -0700
+Date: Wed, 8 Apr 2026 00:02:37 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	gregkh@linuxfoundation.org, aik@amd.com, aneesh.kumar@kernel.org,
+	bhelgaas@google.com, alistair23@gmail.com, lukas@wunner.de,
+	jgg@nvidia.com
+Subject: Re: [PATCH v2 01/19] PCI/TSM: Report active IDE streams per host
+ bridge
+Message-ID: <adUqnUwBBtrqXcX7@yilunxu-OptiPlex-7050>
+References: <20260303000207.1836586-1-dan.j.williams@intel.com>
+ <20260303000207.1836586-2-dan.j.williams@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 09/22] x86/virt/seamldr: Introduce skeleton for TDX
- module updates
-To: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org
-Cc: binbin.wu@linux.intel.com, dan.j.williams@intel.com,
- dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com,
- kas@kernel.org, nik.borisov@suse.com, paulmck@kernel.org,
- pbonzini@redhat.com, reinette.chatre@intel.com, rick.p.edgecombe@intel.com,
- sagis@google.com, seanjc@google.com, tony.lindgren@linux.intel.com,
- vannapurve@google.com, vishal.l.verma@intel.com, yilun.xu@linux.intel.com,
- xiaoyao.li@intel.com, yan.y.zhao@intel.com, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>
-References: <20260331124214.117808-1-chao.gao@intel.com>
- <20260331124214.117808-10-chao.gao@intel.com> <adTvNKVRxsp9Vz10@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <adTvNKVRxsp9Vz10@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260303000207.1836586-2-dan.j.williams@intel.com>
 
-On 4/7/26 04:49, Chao Gao wrote:
-> Applying Dave's feedback to simplify comments across the series. I will change
-> this to:
+On Mon, Mar 02, 2026 at 04:01:49PM -0800, Dan Williams wrote:
+> The first attempt at an ABI for this failed to account for naming
+> collisions across host bridges:
 > 
-> /* The lockstep update needs a stable set of online CPUs. */
+> Commit a4438f06b1db ("PCI/TSM: Report active IDE streams")
+> 
+> Revive this ABI with a per host bridge link that appears at first stream
+> creation for a given host bridge and disappears after the last stream is
+> removed.
+> 
+> For systems with many host bridge objects it allows:
+> 
+>     ls /sys/class/tsm/tsmN/pci*/stream*
+> 
+> ...to find all the host bridges with active streams without first iterating
+> over all host bridges. Yilun notes that is handy to have this short cut [1]
+> and from an administrator perspective it helps with inventory for
+> constrained stream resources.
+> 
+> Link: http://lore.kernel.org/aXLtILY85oMU5qlb@yilunxu-OptiPlex-7050 [1]
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-Try to speak in imperative voice, please:
-
-	/* Ensure a stable set of online CPUs for ...
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
