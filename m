@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEED9386541
-	for <linux-coco@lists.linux.dev>; Wed,  8 Apr 2026 07:43:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C651285050
+	for <linux-coco@lists.linux.dev>; Wed,  8 Apr 2026 07:49:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775634187; cv=none; b=leQEULdJb2LLBal8L6ikpYJQIcNCTJK8bVRT4vrY710jl+G4mBIOe5o8WoPOv8fn3n6kBaHKJnbsu82xtnZ+AimD97HYWNP2T6TDIKc7vW2zz3TwgIlALm3f5Ip1Iq8x4xuK9wKaqKH+7Lirc4H71+m3ibeJ++R2h9or2S/2jwE=
+	t=1775634589; cv=none; b=IOPS+cJxoSnAe4WtAzQCBVr/XBV44Sw4O5VpIx5E1keuc/9rtTklbqrG10iKZ38mFk5lQXZxgmY6fgRvMvbP+3u26fIvoKwBzTEt91gGuSlRSda/9cE+ky1L1uA+/juk3pjfklCoD/Xty0/A+HdOeJDnSU6H7AP97wvTRHYpeRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775634187; c=relaxed/simple;
-	bh=92apjKIq3V/Vil+v0781AdMkOLBeV57GYGIb7EwOhDI=;
+	s=arc-20240116; t=1775634589; c=relaxed/simple;
+	bh=TZ8vAjBEh8SJSxBZo9/DJgG2nIYFLp8l9WUkHVDXk2E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NKSc3pkGNGKkam3uLk/m8eM/Z+tLf5fWkuqcurqmSUJBMN618EGjU2wTcg71lxKcZ4BuR4fXPRjJuclL2ltUEyKCoE3L7ZViyr5NUT8OiqKMRRgYbW6v4OecoqLYnc0d84V3bvwh12meVFqKitgcHx8KBa0QF6JVK/dLgzguoFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TJdYkMhs; arc=none smtp.client-ip=192.198.163.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=gmlImr+Xx7DFdkJrIe2fFIb4x0tdDgDw/dLZxZrFSRkKxR7dqO0uk/4rkOS7MIHayzXGaZurXbiTh/yBcAZN9+fHny4/eYQqu1FuH4zfLfR/1NfRUJW/COUsyJQDYioaQHVoOlLrvD/1adzA9/FrRPAtWdcJa2x4efaIEWj2J+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SylTvEXa; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TJdYkMhs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SylTvEXa"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775634186; x=1807170186;
+  t=1775634587; x=1807170587;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=92apjKIq3V/Vil+v0781AdMkOLBeV57GYGIb7EwOhDI=;
-  b=TJdYkMhsWNIaUq9jyWeitazqsgGUmdf8uLqoTiPw+iePO5kYlXfT5NKg
-   kYbYxSxFYprV+tXWnqb2weIfMgVM6OIIF0zqexh/kaok1TYng7CHbrhuN
-   LNm/8YcpTZTZgREc0l/0vbXKrl3O0zblg2vZJ/d7e4rVSTH0aNElSSpJE
-   ggISNi3G5PGL+IIUDl8AY2B5PsMc00AvtV9k6KE0FIV2bvLuWc5fiVtxc
-   K4OAyS01ZzGD86XYI8FlKYf1oYHbK5z8WWq4xQdokBmvHzpE54AvbCiKW
-   zvk16fsw5ykmi/CdCEsEizDj/UWgEcz/ZBRYzY+HqM2vKRRst5RrGx5qc
+   mime-version:in-reply-to;
+  bh=TZ8vAjBEh8SJSxBZo9/DJgG2nIYFLp8l9WUkHVDXk2E=;
+  b=SylTvEXarqXeISKlnlxzQGog4L7jM04gWBNq6Y0TRSfJgOeTZVqwck8C
+   N8SYFmpd6w6wHLUt+CLHLXlZ9Kdr3pdCtKIRiVU9itHJlswEzqhHsZRWR
+   ZfpnpuGKwTKJxpkI9x4KSB0xXSNtQe68NqjvVEq80BwP/BrRbMEWWhGSN
+   OqJD/nLvoabt9GQ4HqKAaQAbucF4V87yNaEqRT2uaA29J+sSJTObNZx9r
+   BZEHbqwg08KojSLnY+fbfN+vS8VBeV8ooUgDhH9WWS6dYmMHdOUqikdm2
+   FgGyH6ooOkP5wJchA0shzZ0MEZfHjj3WEPGx6QL/Om1x1z78NVh27S4LN
    g==;
-X-CSE-ConnectionGUID: sQrBUnvISB2eoAZTukBcKg==
-X-CSE-MsgGUID: 5PVTvc5DQ/OmLUsMrSgITg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="79200899"
+X-CSE-ConnectionGUID: q0pvqc3qTuKmKfxuw5VGMg==
+X-CSE-MsgGUID: pfy51dk+SG2NjW5XUmIKEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="86901696"
 X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; 
-   d="scan'208";a="79200899"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 00:43:05 -0700
-X-CSE-ConnectionGUID: t56srLlWRsyl48wK69TAzA==
-X-CSE-MsgGUID: uIDSKUdzTwKU5axE5pb8wg==
+   d="scan'208";a="86901696"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 00:49:46 -0700
+X-CSE-ConnectionGUID: LQFNHdM2S+icJZVek/TuOQ==
+X-CSE-MsgGUID: iPTdPX9gSOeIsZFEVM9X2A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; 
-   d="scan'208";a="228290155"
+   d="scan'208";a="251725022"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa009.jf.intel.com with ESMTP; 08 Apr 2026 00:43:01 -0700
-Date: Wed, 8 Apr 2026 15:21:29 +0800
+  by fmviesa001.fm.intel.com with ESMTP; 08 Apr 2026 00:49:43 -0700
+Date: Wed, 8 Apr 2026 15:28:11 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: Nikolay Borisov <nik.borisov@suse.com>
 Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
@@ -53,74 +53,51 @@ Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
 	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
 	kas@kernel.org, xiaoyao.li@intel.com, vishal.l.verma@intel.com,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 08/31] x86/virt/tdx: Configure TDX Module with
- optional TDX Connect feature
-Message-ID: <adYB+fEvEIE59z9A@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH v2 10/31] x86/virt/tdx: Add extra memory to TDX Module
+ for Extensions
+Message-ID: <adYDiw2BkdzajBHD@yilunxu-OptiPlex-7050>
 References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-9-yilun.xu@linux.intel.com>
- <730feb0b-7022-4d22-9ead-3efc4b4ab4ab@suse.com>
+ <20260327160132.2946114-11-yilun.xu@linux.intel.com>
+ <d9f09a41-9d10-4778-b49a-d54504020636@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <730feb0b-7022-4d22-9ead-3efc4b4ab4ab@suse.com>
+In-Reply-To: <d9f09a41-9d10-4778-b49a-d54504020636@suse.com>
 
-On Tue, Mar 31, 2026 at 01:38:16PM +0300, Nikolay Borisov wrote:
+> > @@ -643,7 +643,7 @@ EXPORT_SYMBOL_GPL(tdx_page_array_create_iommu_mt);
+> >   #define HPA_LIST_INFO_PFN		GENMASK_U64(51, 12)
+> >   #define HPA_LIST_INFO_LAST_ENTRY	GENMASK_U64(63, 55)
+> > -static u64 __maybe_unused hpa_list_info_assign_raw(struct tdx_page_array *array)
+> > +static u64 hpa_list_info_assign_raw(struct tdx_page_array *array)
+> >   {
+> >   	return FIELD_PREP(HPA_LIST_INFO_FIRST_ENTRY, 0) |
+> >   	       FIELD_PREP(HPA_LIST_INFO_PFN,
+> > @@ -1513,6 +1513,94 @@ static void tdx_clflush_page(struct page *page)
+> >   	clflush_cache_range(page_to_virt(page), PAGE_SIZE);
+> >   }
+> > +static void tdx_clflush_page_array(struct tdx_page_array *array)
+> > +{
+> > +	for (int i = 0; i < array->nents; i++)
 > 
-> 
-> On 27.03.26 г. 18:01 ч., Xu Yilun wrote:
-> > TDX Module supports optional TDX features (e.g. TDX Connect & TDX Module
-> > Extensions) that won't be enabled by default. It extends TDH.SYS.CONFIG
-> > for host to choose to enable them on bootup.
-> > 
-> > Call TDH.SYS.CONFIG with a new bitmap input parameter to specify which
-> > features to enable. The bitmap uses the same definitions as
-> > TDX_FEATURES0. But note not all bits in TDX_FEATURES0 are valid for
-> > configuration, e.g. TDX Module Extensions is a service that supports TDX
-> > Connect, it is implicitly enabled when TDX Connect is enabled. Setting
-> > TDX_FEATURES0_EXT in the bitmap has no effect.
-> > 
-> > TDX Module advances the version of TDH.SYS.CONFIG for the change, so
-> > use the latest version (v1) for optional feature enabling. But
-> > supporting existing Modules which only support v0 is still necessary
-> > until they are deprecated, enumerate via TDX_FEATURES0 to decide which
-> > version to use.
-> > 
-> > TDX Module updates global metadata when optional features are enabled.
-> > Host should update the cached tdx_sysinfo to reflect these changes.
-> > 
-> > Co-developed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> > ---
-> >   arch/x86/virt/vmx/tdx/tdx.h |  3 ++-
-> >   arch/x86/virt/vmx/tdx/tdx.c | 16 +++++++++++++++-
-> >   2 files changed, 17 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-> > index e5a9331df451..870bb75da3ba 100644
-> > --- a/arch/x86/virt/vmx/tdx/tdx.h
-> > +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> > @@ -58,7 +58,8 @@
-> >   #define TDH_PHYMEM_CACHE_WB		40
-> >   #define TDH_PHYMEM_PAGE_WBINVD		41
-> >   #define TDH_VP_WR			43
-> > -#define TDH_SYS_CONFIG			45
-> > +#define TDH_SYS_CONFIG_V0		45
-> > +#define TDH_SYS_CONFIG			SEAMCALL_LEAF_VER(TDH_SYS_CONFIG_V0, 1)
-> 
-> Since newer versions of tdx module apis are backwards compatible with older
-> ones, and v0 are actually deprecated why have both definitions?
+> shouldn't the actual number of entries be adjusted as per offset, similarly
+> to how 'nents' in tdx_page_array_validate_release is calculated?
 
-No, for this TDH_SYS_CONFIG SEAMCALL, the situation is different. There
-is no public TDX Module release yet to support TDH_SYS_CONFIG_V1. So I
-can't say v0 is deprecated.
+Actually array->nents is calculated the same way:
 
-> 
-> 
-> <snip>
+  static int tdx_page_array_populate(struct tdx_page_array *array,
+				   unsigned int offset)
+  {
+	...
+
+	array->offset = offset;
+	array->nents = umin(array->nr_pages - offset,
+			    TDX_PAGE_ARRAY_MAX_NENTS);
+	...
+  }
+
+so IIUC we are good here.
