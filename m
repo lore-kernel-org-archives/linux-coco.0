@@ -1,56 +1,56 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBD539891D
-	for <linux-coco@lists.linux.dev>; Thu,  9 Apr 2026 22:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5634D399368
+	for <linux-coco@lists.linux.dev>; Thu,  9 Apr 2026 22:42:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775774576; cv=none; b=AGN52oLnzsRrUToQwf7pL82vJfgMy1HghmVHdPddXyA4mlvUsHiF/q/EEqSVauI7DiEH02Q20WAuRGsETicowdFPD2WnhVDNHLIs1O5WNmR47u/ixTXfYBgyIHpH5Dy8cKmwcfS3YhUtmjlQTtkXDQeChHC1PBtXnySXxY0Llvc=
+	t=1775774578; cv=none; b=ogbu5RkzxSQXhKGgIIw3iyWj80Shus4Hu26JDnqWw63YA7+j4Q5hha/+/86L3anTKGx+qPcS/2sRgWlm5HubiEs8V0wKTNixYSkrjjXum/c2LBlbzkVneoWOXW6aM9UENzBLXxXbAiU2WCsNue1GRux/dr1UDtX8u82FHZBzofY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775774576; c=relaxed/simple;
-	bh=Bdr/VKS2Xm+/pYaSrVzYfwfoth1+7klUYzIyzSDdgrQ=;
+	s=arc-20240116; t=1775774578; c=relaxed/simple;
+	bh=60Q/zHtyyGDIBP/ak7485shWUHxtFzoB9QyfDmyCpMc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=uc0zPkg4yYwvA1KJ/DVSgiWdCPEpI62hsuxOUtR0K9SNii2gZPBXWjDmU0V2gtFVEeV4VfmB1nqGmK1+0SBqZDTg56nlIRcBTVI0KqDjtIt8gI0Anx+79ZDYA5aSwo/L8oAt86ubUWYzC60gmg3CTROYnf5plX7kIY7SEGzomvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kSwZUiBQ; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=fm00oV1q+SUayGJj9ohEVLHAxNu+fFWP9kQx0DB0Ypvr4RQ+zRbmeWzex/iwH9ssvSUoDUz9b7ch7sX54XEa3+cTg8L5vTS1Iow1HGgdmWcQ7fAeFPJcRP0bJVHKz3jzL1AEVDx2Z/kh245PrUM8d7xyOyd0tDGViDEomNyLFTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E7ztpDQi; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kSwZUiBQ"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82d40278103so1116461b3a.2
-        for <linux-coco@lists.linux.dev>; Thu, 09 Apr 2026 15:42:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E7ztpDQi"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c76fe944e6fso1680019a12.3
+        for <linux-coco@lists.linux.dev>; Thu, 09 Apr 2026 15:42:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775774575; x=1776379375; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1775774577; x=1776379377; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=b6+4lUswVTvjDCVcs/ZLq4/1sWKR4eUi2Zroo4Ie2qI=;
-        b=kSwZUiBQVFZO3TprK9UQMOEFgB966Go6zNhOktnTZW8136GyHr6y5MdfuA1oVMgeBR
-         olEmkAWhL6qv+mJLcdTxT+CuXC+8dQZkaGSy7Hsj2er8slhbq2RWa3MyTfS7otnOTiLl
-         aoEMGTJgvHGm/dGhYZa/IydSpQU72ITVndSmdxUK+cGMft/6ogdx9UQLn4huJeclPRKm
-         WCXqZcLetRhREcwa8yIbz1xT7CMMmH6Zeus8xhgUFCfQc1NGWvsxqA54xLSGw2LRe9Z6
-         Jlm/bKzT8Ijs/d2mrGdqfXdJUcXQxp51EKdRD0vNSXJ9v1lpKCzQUbIDHhbC/QnEe6rD
-         vvkA==
+        bh=7rpQhjNm3mTGjbc05HVtkw07FHdO4o+YZx1lMSvn+bc=;
+        b=E7ztpDQimIWE3IWuf+WFFIUQ6u1MsXEQf/tHidz8TZxH23sLAPgg0+O3Q0WBO3rBwT
+         3AtGVciqSu64ZRJDjzrYAIuiublsuD4nfCcLsStn7N6YkdbsWF3tOZlx5NAMEaCNK3Gl
+         tp0h9w+GRQIEvvRO6e4TNooFfBn8VmhcpFdxM3bsU2Is5rx4uQG2rLbVNRH1IcbFqqVN
+         K1vHjs1cXwsIjOhu1+eDRdiZleRC8TvW4vUMMT2fZ5fF6pELrrhpob+8agh0yKmnLHJO
+         euX+HLwmo89YYf48bbFMgbOXbZiAtm0Ru3KAPMlpwYeZS1P3S5Hqsx1T1p8DT9uIViBU
+         U1Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775774575; x=1776379375;
+        d=1e100.net; s=20251104; t=1775774577; x=1776379377;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=b6+4lUswVTvjDCVcs/ZLq4/1sWKR4eUi2Zroo4Ie2qI=;
-        b=Ip8K+Ym23HQAsvt1/YtyVQ8zsn1qgcdlJGdkaYw/Y+dyfbVZLbMQmf/3X+zUCY2iEh
-         7gkzpyYFV2BkweOP2RXxFZktwUo4Exg3AgkB2p1lV4hPqR157rIEWrIUnIzHNjZWbx7K
-         IuTKDQewgd1KYqCYYrExzZKM5VDy9hfqNTKzlKFV/qpKJ71amGJrJn6WvtZFV9V/o5E/
-         lo3eRUuBeUSHoWEFRAvKgkxLU9uFJj0nNUpqHTOMVoPCoO4TG0Sf7DBXpESa8T3Rb1/C
-         TrMjXz9/C3HC/5z74tP4m38O4W2lzLBescqPn8kepF4uyENETbwPEUFvuSdjTWOyxX2E
-         4rXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXQNhRcZqXwADqoCsria8Z1Dyba6TsGn3fhTdFpcmgNAZj2nUdXIbXuOtrI573avZRFE70ZdvGsXwS3@lists.linux.dev
-X-Gm-Message-State: AOJu0YwR8sYxIk3KqSLOO1apMMsXPC0p8c269/fLXcfnthnW6eobHnsz
-	0fgQOwI9uOfW2hCF6yl0Pjw0FZ5zIrouxZ/ypg3TUEwM7Qt5q9Oz5IY/fJ3Kl7A/7g+XB98l5AA
-	zE9nvng==
-X-Received: from pfwz16.prod.google.com ([2002:a05:6a00:1d90:b0:824:a65c:adf])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:12cc:b0:82c:eafa:8875
- with SMTP id d2e1a72fcca58-82f0c26b33bmr964653b3a.2.1775774574526; Thu, 09
- Apr 2026 15:42:54 -0700 (PDT)
+        bh=7rpQhjNm3mTGjbc05HVtkw07FHdO4o+YZx1lMSvn+bc=;
+        b=Ffmin07jfAM1BOX2eJ4JFMmM/JuN7aU5KxYfYARzzUoKTZjWx9y15GED494f2taTkp
+         1rRFEv6ggTTxJCj3F0PX8VHcUZ3sGrM7JXgeUH3OuPaY4lUjoA97U4yuw6nVXU6YPqwf
+         CPnOeluCAD8R8toRHkFGduXbX2iwfGFdNwWRFz0kyxmvNV04I0nfLXdIKJwWUVCxFzT/
+         rhKYeNeBw/lOYUPJ3IHYCdxpbZtK2xC4y6EpHEXLz9uy8gRUJc0cwpwTsCeQux9rnWA/
+         u3CyjaaNuPjf1eskU/Flcp7fGa3LqvMv7tCyFTGoSh/Xo/HhGm3BNwmTX+9AjV1SBy9N
+         NfoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV5bJ8n+SlfwP9DswQT2hWf19wSFp2Yofh0KcuvVqh14/egca9DfrpRXJiQ3uZMi/t0vwIyt8tt3oco@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywbgr8ezbtJvoUw7cSVoe+IcN0PF6Ob0OMdbyQ+EqvncxjpI8PS
+	RKdxj1cga7g0xjwLcwVQRcBpIafcXcsbZTsK1KuTO1vaw4zVVcIXIIMsBYouqqAKry85rfE4Nik
+	INJdMBw==
+X-Received: from pfbdh4.prod.google.com ([2002:a05:6a00:4784:b0:829:94bc:6c15])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4c98:b0:82c:ec1b:9e15
+ with SMTP id d2e1a72fcca58-82f0c1e99bbmr915561b3a.1.1775774576585; Thu, 09
+ Apr 2026 15:42:56 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  9 Apr 2026 15:42:33 -0700
+Date: Thu,  9 Apr 2026 15:42:34 -0700
 In-Reply-To: <20260409224236.2021562-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260409224236.2021562-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <20260409224236.2021562-5-seanjc@google.com>
-Subject: [PATCH v2 4/6] KVM: x86: Add wrapper APIs to reset dirty/available
- register masks
+Message-ID: <20260409224236.2021562-6-seanjc@google.com>
+Subject: [PATCH v2 5/6] KVM: x86: Track available/dirty register masks as
+ "unsigned long" values
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Kiryl Shutsemau <kas@kernel.org>
@@ -70,131 +70,151 @@ Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org, "Chang S . Bae" <chang.seok.bae@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add wrappers for setting regs_{avail,dirty} in anticipation of turning the
-fields into proper bitmaps, at which point direct writes won't work so
-well.
+Convert regs_{avail,dirty} and all related masks to "unsigned long" values
+as an intermediate step towards declaring the fields as actual bitmaps, and
+as a step toward support APX, which will push the total number of registers
+beyond 32 on 64-bit kernels.
 
-Deliberately leave the initialization in kvm_arch_vcpu_create() as-is,
-because the regs_avail logic in particular is special in that it's the one
-and only place where KVM marks eagerly synchronized registers as available.
+Opportunistically convert TDX's ULL bitmask to a UL to match everything
+else (TDX is 64-bit only, so it's a nop in the end).
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/kvm_cache_regs.h | 18 ++++++++++++++++++
- arch/x86/kvm/svm/svm.c        |  4 ++--
- arch/x86/kvm/vmx/nested.c     |  4 ++--
- arch/x86/kvm/vmx/tdx.c        |  2 +-
- arch/x86/kvm/vmx/vmx.c        |  4 ++--
- 5 files changed, 25 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  4 ++--
+ arch/x86/kvm/kvm_cache_regs.h   |  2 +-
+ arch/x86/kvm/svm/svm.h          |  2 +-
+ arch/x86/kvm/vmx/tdx.c          | 36 ++++++++++++++++-----------------
+ arch/x86/kvm/vmx/vmx.h          | 20 +++++++++---------
+ 5 files changed, 32 insertions(+), 32 deletions(-)
 
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index b1eae1e7b04f..c47eb294c066 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -802,8 +802,8 @@ struct kvm_vcpu_arch {
+ 	 */
+ 	unsigned long regs[NR_VCPU_GENERAL_PURPOSE_REGS];
+ 	unsigned long rip;
+-	u32 regs_avail;
+-	u32 regs_dirty;
++	unsigned long regs_avail;
++	unsigned long regs_dirty;
+ 
+ 	unsigned long cr0;
+ 	unsigned long cr0_guest_owned_bits;
 diff --git a/arch/x86/kvm/kvm_cache_regs.h b/arch/x86/kvm/kvm_cache_regs.h
-index ac1f9867a234..7f71d468178c 100644
+index 7f71d468178c..171e6bc2e169 100644
 --- a/arch/x86/kvm/kvm_cache_regs.h
 +++ b/arch/x86/kvm/kvm_cache_regs.h
-@@ -105,6 +105,24 @@ static __always_inline bool kvm_register_test_and_mark_available(struct kvm_vcpu
- 	return arch___test_and_set_bit(reg, (unsigned long *)&vcpu->arch.regs_avail);
+@@ -106,7 +106,7 @@ static __always_inline bool kvm_register_test_and_mark_available(struct kvm_vcpu
  }
  
-+static __always_inline void kvm_clear_available_registers(struct kvm_vcpu *vcpu,
-+							  u32 clear_mask)
-+{
-+	/*
-+	 * Note the bitwise-AND!  In practice, a straight write would also work
-+	 * as KVM initializes the mask to all ones and never clears registers
-+	 * that are eagerly synchronized.  Using a bitwise-AND adds a bit of
-+	 * sanity checking as incorrectly marking an eagerly sync'd register
-+	 * unavailable will generate a WARN due to an unexpected cache request.
-+	 */
-+	vcpu->arch.regs_avail &= ~clear_mask;
-+}
-+
-+static __always_inline void kvm_reset_dirty_registers(struct kvm_vcpu *vcpu)
-+{
-+	vcpu->arch.regs_dirty = 0;
-+}
-+
- /*
-  * The "raw" register helpers are only for cases where the full 64 bits of a
-  * register are read/written irrespective of current vCPU mode.  In other words,
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index ee5749d8b3e8..2b73d2650155 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4508,7 +4508,7 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 		vcpu->arch.regs[VCPU_REGS_RSP] = svm->vmcb->save.rsp;
- 		vcpu->arch.rip = svm->vmcb->save.rip;
- 	}
--	vcpu->arch.regs_dirty = 0;
-+	kvm_reset_dirty_registers(vcpu);
- 
- 	if (unlikely(svm->vmcb->control.exit_code == SVM_EXIT_NMI))
- 		kvm_before_interrupt(vcpu, KVM_HANDLING_NMI);
-@@ -4554,7 +4554,7 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 		vcpu->arch.apf.host_apf_flags =
- 			kvm_read_and_reset_apf_flags();
- 
--	vcpu->arch.regs_avail &= ~SVM_REGS_LAZY_LOAD_SET;
-+	kvm_clear_available_registers(vcpu, SVM_REGS_LAZY_LOAD_SET);
- 
- 	if (!msr_write_intercepted(vcpu, MSR_AMD64_PERF_CNTR_GLOBAL_CTL))
- 		rdmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_CTL, vcpu_to_pmu(vcpu)->global_ctrl);
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 63c4ca8c97d5..c4d2bc080add 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -310,13 +310,13 @@ static void vmx_switch_vmcs(struct kvm_vcpu *vcpu, struct loaded_vmcs *vmcs)
- 	vmx_sync_vmcs_host_state(vmx, prev);
- 	put_cpu();
- 
--	vcpu->arch.regs_avail &= ~VMX_REGS_LAZY_LOAD_SET;
-+	kvm_clear_available_registers(vcpu, VMX_REGS_LAZY_LOAD_SET);
- 
+ static __always_inline void kvm_clear_available_registers(struct kvm_vcpu *vcpu,
+-							  u32 clear_mask)
++							  unsigned long clear_mask)
+ {
  	/*
- 	 * All lazily updated registers will be reloaded from VMCS12 on both
- 	 * vmentry and vmexit.
- 	 */
--	vcpu->arch.regs_dirty = 0;
-+	kvm_reset_dirty_registers(vcpu);
- }
+ 	 * Note the bitwise-AND!  In practice, a straight write would also work
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 677d268ae9c7..7b46a3f13de1 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -474,7 +474,7 @@ static inline bool svm_is_vmrun_failure(u64 exit_code)
+  * KVM_REQ_LOAD_MMU_PGD is always requested when the cached vcpu->arch.cr3
+  * is changed.  svm_load_mmu_pgd() then syncs the new CR3 value into the VMCB.
+  */
+-#define SVM_REGS_LAZY_LOAD_SET	(1 << VCPU_REG_PDPTR)
++#define SVM_REGS_LAZY_LOAD_SET	(BIT(VCPU_REG_PDPTR))
  
- static void nested_put_vmcs12_pages(struct kvm_vcpu *vcpu)
+ static inline void __vmcb_set_intercept(unsigned long *intercepts, u32 bit)
+ {
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index c23ec4ac8bc8..c9ab7902151f 100644
+index c9ab7902151f..85f28363e4cc 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
+@@ -1013,23 +1013,23 @@ static fastpath_t tdx_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
+ 	return EXIT_FASTPATH_NONE;
+ }
+ 
+-#define TDX_REGS_AVAIL_SET	(BIT_ULL(VCPU_REG_EXIT_INFO_1) | \
+-				 BIT_ULL(VCPU_REG_EXIT_INFO_2) | \
+-				 BIT_ULL(VCPU_REGS_RAX) | \
+-				 BIT_ULL(VCPU_REGS_RBX) | \
+-				 BIT_ULL(VCPU_REGS_RCX) | \
+-				 BIT_ULL(VCPU_REGS_RDX) | \
+-				 BIT_ULL(VCPU_REGS_RBP) | \
+-				 BIT_ULL(VCPU_REGS_RSI) | \
+-				 BIT_ULL(VCPU_REGS_RDI) | \
+-				 BIT_ULL(VCPU_REGS_R8) | \
+-				 BIT_ULL(VCPU_REGS_R9) | \
+-				 BIT_ULL(VCPU_REGS_R10) | \
+-				 BIT_ULL(VCPU_REGS_R11) | \
+-				 BIT_ULL(VCPU_REGS_R12) | \
+-				 BIT_ULL(VCPU_REGS_R13) | \
+-				 BIT_ULL(VCPU_REGS_R14) | \
+-				 BIT_ULL(VCPU_REGS_R15))
++#define TDX_REGS_AVAIL_SET	(BIT(VCPU_REG_EXIT_INFO_1) | \
++				 BIT(VCPU_REG_EXIT_INFO_2) | \
++				 BIT(VCPU_REGS_RAX) | \
++				 BIT(VCPU_REGS_RBX) | \
++				 BIT(VCPU_REGS_RCX) | \
++				 BIT(VCPU_REGS_RDX) | \
++				 BIT(VCPU_REGS_RBP) | \
++				 BIT(VCPU_REGS_RSI) | \
++				 BIT(VCPU_REGS_RDI) | \
++				 BIT(VCPU_REGS_R8) | \
++				 BIT(VCPU_REGS_R9) | \
++				 BIT(VCPU_REGS_R10) | \
++				 BIT(VCPU_REGS_R11) | \
++				 BIT(VCPU_REGS_R12) | \
++				 BIT(VCPU_REGS_R13) | \
++				 BIT(VCPU_REGS_R14) | \
++				 BIT(VCPU_REGS_R15))
+ 
+ static void tdx_load_host_xsave_state(struct kvm_vcpu *vcpu)
+ {
 @@ -1098,7 +1098,7 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
  
  	tdx_load_host_xsave_state(vcpu);
  
--	vcpu->arch.regs_avail &= TDX_REGS_AVAIL_SET;
-+	kvm_clear_available_registers(vcpu, ~(u32)TDX_REGS_AVAIL_SET);
+-	kvm_clear_available_registers(vcpu, ~(u32)TDX_REGS_AVAIL_SET);
++	kvm_clear_available_registers(vcpu, ~TDX_REGS_AVAIL_SET);
  
  	if (unlikely(tdx->vp_enter_ret == EXIT_REASON_EPT_MISCONFIG))
  		return EXIT_FASTPATH_NONE;
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index aa1c26018439..61eeafcd70f1 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7472,7 +7472,7 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- 				   flags);
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index 9fb76ea48caf..48447fa983f4 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -620,16 +620,16 @@ BUILD_CONTROLS_SHADOW(tertiary_exec, TERTIARY_VM_EXEC_CONTROL, 64)
+  * cache on demand.  Other registers not listed here are synced to
+  * the cache immediately after VM-Exit.
+  */
+-#define VMX_REGS_LAZY_LOAD_SET	((1 << VCPU_REG_RIP) |         \
+-				(1 << VCPU_REGS_RSP) |          \
+-				(1 << VCPU_REG_RFLAGS) |      \
+-				(1 << VCPU_REG_PDPTR) |       \
+-				(1 << VCPU_REG_SEGMENTS) |    \
+-				(1 << VCPU_REG_CR0) |         \
+-				(1 << VCPU_REG_CR3) |         \
+-				(1 << VCPU_REG_CR4) |         \
+-				(1 << VCPU_REG_EXIT_INFO_1) | \
+-				(1 << VCPU_REG_EXIT_INFO_2))
++#define VMX_REGS_LAZY_LOAD_SET	(BIT(VCPU_REGS_RSP) |		\
++				 BIT(VCPU_REG_RIP) |		\
++				 BIT(VCPU_REG_RFLAGS) |		\
++				 BIT(VCPU_REG_PDPTR) |		\
++				 BIT(VCPU_REG_SEGMENTS) |	\
++				 BIT(VCPU_REG_CR0) |		\
++				 BIT(VCPU_REG_CR3) |		\
++				 BIT(VCPU_REG_CR4) |		\
++				 BIT(VCPU_REG_EXIT_INFO_1) |	\
++				 BIT(VCPU_REG_EXIT_INFO_2))
  
- 	vcpu->arch.cr2 = native_read_cr2();
--	vcpu->arch.regs_avail &= ~VMX_REGS_LAZY_LOAD_SET;
-+	kvm_clear_available_registers(vcpu, VMX_REGS_LAZY_LOAD_SET);
- 
- 	vmx->idt_vectoring_info = 0;
- 
-@@ -7538,7 +7538,7 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 		vmcs_writel(GUEST_RSP, vcpu->arch.regs[VCPU_REGS_RSP]);
- 	if (kvm_register_is_dirty(vcpu, VCPU_REG_RIP))
- 		vmcs_writel(GUEST_RIP, vcpu->arch.rip);
--	vcpu->arch.regs_dirty = 0;
-+	kvm_reset_dirty_registers(vcpu);
- 
- 	if (run_flags & KVM_RUN_LOAD_GUEST_DR6)
- 		set_debugreg(vcpu->arch.dr6, 6);
+ static inline unsigned long vmx_l1_guest_owned_cr0_bits(void)
+ {
 -- 
 2.53.0.1213.gd9a14994de-goog
 
