@@ -1,168 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CEA21D5B0
-	for <linux-coco@lists.linux.dev>; Sun, 12 Apr 2026 02:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E58223DEA
+	for <linux-coco@lists.linux.dev>; Mon, 13 Apr 2026 02:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775962394; cv=none; b=C2p1+dVnz8PDPA9FLkTJx57BQZRUX0V4aFz1Dbewgji6vbjaGoo6Rv8nmsvD3Ad8Vnwoyc37FWsSqwbCfnnTQunPBa4AE1uJIoMfdSP5S7Lcve6Mb5U2yRXgce3AuramOi874qfresxnuYHcv0g1eJ1vMMavliKQb9AX3O0HfZk=
+	t=1776046390; cv=none; b=jnMTAwEWpkWKh/iGfu0dS61FzTCHTNcYzyNX2+LYaeGPDJ8Y3SCFFt16hS5gMzekQvK/DVF/gmfzMs3UsZMjvElyviixkw3BvtcXfx3gDeN5izbtqUxrANLVbNzCZkEQOiN+oVO009cRMj7U7KrepR6MYGAql0NcblZht4qVNeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775962394; c=relaxed/simple;
-	bh=WfZlJUGaAmXReI7P2TaFOL144/OK4O4FjezT9pjQ/fE=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=rwLq+athefOq/pZmTCMI9RhSdZTKFos0+TQcVx5ZHaHFXo0Dl77t4U/iuzvQydOx7eXqqmRsfVvGxv/pDqSJJw2SYGMep/V2Zx81u5i6mhdt7TUOiZ361bKC4SIsKhrPTyuN+xM2jSWWe7edMHyyIvS7iFxZRCYAgxEzLTIj2Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H8MvdRwd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776046390; c=relaxed/simple;
+	bh=er6MCQomEGTUvijVJbiOjpZfculnqBmMYI/3gcoJr3w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=D1H85FpaOfrURXwzhZCKnQG6JF/z5VbYWfzozDNahKAKH4lVhU/WcRRnsbDK3FjhcSou17yEI8x3/eYXwnDaDXo7SVkoy6zMOZeGrYlUZib1bNJuL+ZiZ7+O1QfQ+bL9TnNWmF4LVpXn1NiYJoVO7wIJQEM101luR2LG8PxehJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d6KUZGO5; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H8MvdRwd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1B1C4AF09;
-	Sun, 12 Apr 2026 02:53:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775962394;
-	bh=WfZlJUGaAmXReI7P2TaFOL144/OK4O4FjezT9pjQ/fE=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=H8MvdRwdv6GuGrLLDfJHS6EXIoPFlqoCQ3NTutIxC5wKkAsrqLilqLvo/XrRyCJt4
-	 JC9CD63DZH6GZ4kpEs9A9rw79I2RO7LUnqlEqb341FmGtYLBB4zkNTNi+8lxHjXcNI
-	 kAThV2am9AnWS7zYZzKuwB5cIrzUSHDskzjGYTt0HFi7fvkwUraG1H2+/WzJenjTmN
-	 QP+jF33SSumVvui2YNxai2ZHUi5wg+AGfK5pHKk/vUDczZdGnSK46PaovRxOCKD/2x
-	 ZKlm+1geo+vb9MKTGlgBx4RYM1az10o3LahWzCEMj8W0NjpWzNV7nunCYp84fD6HgO
-	 z4dQj3AhgY+XQ==
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8C0B6F40096;
-	Sat, 11 Apr 2026 22:53:12 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Sat, 11 Apr 2026 22:53:12 -0400
-X-ME-Sender: <xms:GAnbabI-Ww3PpebiWP9h2kOehq9ljFScZLmHrfsEjjBtPhY-oJY5IA>
-    <xme:GAnbaTFd_G3AL80r7opbq7Vi3wyGAsmGvNdgq0rP4QauNJyACl-vh4qDK_5eqmlAe
-    l9xNLfEl2bPKN7f6yfTzijTnYz3KGLCs8of-42Ufs_FdkZqtQuY1CU>
-X-ME-Received: <xmr:GAnbaYRqUPvT_lHF9i3DhZ839LBkEmLAn7koqWMWsO-Fuu15EVD7wUg-TRRfewatfUFp6mPdgdG4hUzZNKg35N5pfxSp5eY09HM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefgedufecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefkjghfufggtgfgsehtjeertddttdejnecuhfhrohhmpeffrghnucghihhl
-    lhhirghmshcuoegujhgsfieskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    elhfeiudfgvdeijedtleeltdduueekffejjedvjefhgeevjeefueejledtleetjeenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegujhgsfidomh
-    gvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudejjedvfedtgeehhedqfeeffeel
-    gedtgeejqdgujhgsfieppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrihhlrdgtohhmpd
-    hnsggprhgtphhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohephihi
-    lhhunhdrgihusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugi
-    dqtghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidq
-    phgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopegthhgrohdrghgrohesihhnthgvlhdrtghomhdprhgt
-    phhtthhopegurghvvgdrjhhirghnghesihhnthgvlhdrtghomhdprhgtphhtthhopegsrg
-    holhhurdhluheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopeihihhluhhn
-    rdiguhesihhnthgvlhdrtghomhdprhgtphhtthhopeiihhgvnhiihhhonhhgrdguuhgrnh
-    esihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:GAnbacX7RQDdxNNKddD7SUgiN8Xved0R4Nnf0T9lZZWTpc6m_8akuw>
-    <xmx:GAnbaXiOfgIXeHr7uRWfTo7yZN8BZWpII60lPRAbeSoEHus9zcA6lw>
-    <xmx:GAnbaVfLcdxdg1UptpyYd52vhxJGcxL8Rzy6C1jYaCYAye_Fx7y1hg>
-    <xmx:GAnbaSf2DSQ9PlrbhIBgw78ykzVvsFD164drIjpdFPIZZMnu_5K5hw>
-    <xmx:GAnbaRXNa73aNWIMQcN4qv3wB3qi_otlzPywXq6xBPQ2mbVwmm1aC8y0>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 11 Apr 2026 22:53:11 -0400 (EDT)
-Date: Sat, 11 Apr 2026 19:53:10 -0700
-From: Dan Williams <djbw@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>, 
- linux-coco@lists.linux.dev, 
- linux-pci@vger.kernel.org, 
- x86@kernel.org
-Cc: chao.gao@intel.com, 
- dave.jiang@intel.com, 
- baolu.lu@linux.intel.com, 
- yilun.xu@linux.intel.com, 
- yilun.xu@intel.com, 
- zhenzhong.duan@intel.com, 
- kvm@vger.kernel.org, 
- rick.p.edgecombe@intel.com, 
- dave.hansen@linux.intel.com, 
- kas@kernel.org, 
- xiaoyao.li@intel.com, 
- vishal.l.verma@intel.com, 
- linux-kernel@vger.kernel.org
-Message-ID: <69db0916ba63c_fe08310034@djbw-dev.notmuch>
-In-Reply-To: <20260327160132.2946114-4-yilun.xu@linux.intel.com>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-4-yilun.xu@linux.intel.com>
-Subject: Re: [PATCH v2 03/31] x86/virt/tdx: Add tdx_page_array helpers for new
- TDX Module objects
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d6KUZGO5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776046389; x=1807582389;
+  h=message-id:date:mime-version:subject:to:references:cc:
+   from:in-reply-to:content-transfer-encoding;
+  bh=er6MCQomEGTUvijVJbiOjpZfculnqBmMYI/3gcoJr3w=;
+  b=d6KUZGO5WjBNFycm0rbqoZvW65mWzFdaJ1XSQCKdfKukMCMozzYq+d9t
+   mogoxHb9/B4iQOWs3jqma3HvH3cTboo04FSd8B5g6DDJo706LsYawKelI
+   yYhHY7+pXb6+8TauU7yQ7s235gmo4Lh9g3uORjBykJ8zP6dIrMb3XXxGz
+   SOll5vcdjNVbdQr7RGuOLn/zQyTvAnq4OZoTSDbh1j/Cz9wGaUa6N1Rpy
+   MmuZovVdN87Zo5p7CU+t0EN7rOutdPIRh6jLIjX6E+wQc1UEJV+Sao2Aw
+   BrqN9uMzL/j+SAMZwP1cgOGMDaQ6guXnIXvqZ51b8doN2cy5OY+UnPxz/
+   A==;
+X-CSE-ConnectionGUID: 2YNe2oGOTSuEjVEiamUlIA==
+X-CSE-MsgGUID: /41AYP6AQ4OmajEBjC3+uQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="94368126"
+X-IronPort-AV: E=Sophos;i="6.23,176,1770624000"; 
+   d="scan'208";a="94368126"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 19:13:09 -0700
+X-CSE-ConnectionGUID: gGh8P2VkTJWN0/AMeoUvog==
+X-CSE-MsgGUID: J2PtEXbfTPuTFwcpq3vgTw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,176,1770624000"; 
+   d="scan'208";a="226952508"
+Received: from unknown (HELO [10.238.1.89]) ([10.238.1.89])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 19:13:06 -0700
+Message-ID: <0e7a02c6-3d54-468e-92f4-4954d4644d4b@linux.intel.com>
+Date: Mon, 13 Apr 2026 10:13:04 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] KVM: TDX: Fix x2APIC MSR handling in
+ tdx_has_emulated_msr()
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+References: <20260410232654.3864196-1-rick.p.edgecombe@intel.com>
+Content-Language: en-US
+Cc: kas@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, pbonzini@redhat.com, seanjc@google.com,
+ dmaluka@chromium.org
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260410232654.3864196-1-rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Xu Yilun wrote:
-> Add struct tdx_page_array definition for new TDX Module object
-> types - HPA_ARRAY_T and HPA_LIST_INFO. They are used as input/output
-> parameters in newly defined SEAMCALLs. Also define some helpers to
-> allocate, setup and free tdx_page_array.
-> 
-> HPA_ARRAY_T and HPA_LIST_INFO are similar in most aspects. They both
-> represent a list of pages for TDX Module accessing. There are several
-> use cases for these 2 structures:
-> 
->  - As SEAMCALL inputs. They are claimed by TDX Module as control pages.
->    Control pages are private pages for TDX Module to hold its internal
->    control structures or private data. TDR, TDCS, TDVPR... are existing
->    control pages, just not added via tdx_page_array.
->  - As SEAMCALL outputs. They were TDX Module control pages and now are
->    released.
->  - As SEAMCALL inputs. They are just temporary buffers for exchanging
->    data blobs in one SEAMCALL. TDX Module will not hold them for long
->    time.
-> 
-> The 2 structures both need a 'root page' which contains a list of HPAs.
-> They collapse the HPA of the root page and the number of valid HPAs
-> into a 64 bit raw value for SEAMCALL parameters. The root page is
-> always a medium for passing data pages, TDX Module never keeps the
-> root page.
-> 
-> A main difference is HPA_ARRAY_T requires singleton mode when
-> containing just 1 functional page (page0). In this mode the root page is
-> not needed and the HPA field of the raw value directly points to the
-> page0. But in this patch, root page is always allocated for user
-> friendly kAPIs.
 
-I think this undersells the fact that "singleton mode" is a premature
-optimization that requires complication to take advantage of the benefit
-(sometimes save a single page allocation). The Linux implementation
-forfeits that small benefit for the larger gain of cleaner kAPIs.
 
-> Another small difference is HPA_LIST_INFO contains a 'first entry' field
-> which could be filled by TDX Module. This simplifies host by providing
-> the same structure when re-invoke the interrupted SEAMCALL. No need for
-> host to touch this field.
+On 4/11/2026 7:26 AM, Rick Edgecombe wrote:
+> Rework tdx_has_emulated_msr() to explicitly enumerate the x2APIC MSRs
+> that KVM can emulate, instead of trying to enumerate the MSRs that KVM
+> cannot emulate. Drop the inner switch and list the emulatable x2APIC
+> registers directly in the outer switch's "return true" block.
 > 
-> Typical usages of the tdx_page_array:
+> The old code had multiple bugs in the x2APIC range handling.
+> X2APIC_MSR(APIC_ISR + APIC_ISR_NR) was incorrect because APIC_ISR_NR is
+> 0x8, not 0x80, so the X2APIC_MSR() shift lost the lower bits, collapsing
+> each range to a single MSR. IA32_X2APIC_SELF_IPI was also missing from
+> the non-emulatable list.
+
+Is it better to describe that the bug is benign for a sane guest?
+
 > 
-> 1. Add control pages:
->  - struct tdx_page_array *array = tdx_page_array_create(nr_pages);
->  - seamcall(TDH_XXX_CREATE, array, ...);
+> KVM has no visibility into whether or not a guest has enabled #VE 
+> reduction, which changes which MSRs the TDX-Module handles itself versus 
+> triggering a #VE for the guest to make a TDVMCALL. So maintaining a list 
+> of non-emulatable MSRs is fragile. Listing only the MSRs KVM can always 
+> emulate sidesteps the problem.
 > 
-> 2. Release control pages:
->  - seamcall(TDX_XXX_DELETE, array, &nr_released, &released_hpa);
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Reported-by: Dmytro Maluka <dmaluka@chromium.org>
+> Fixes: dd50294f3e3c ("KVM: TDX: Implement callbacks for MSR operations")
+> Assisted-by: Claude:claude-opus-4-6
+> [based on a diff from Sean, but added missed LVTCMCI case, log]
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-It is simply a bug if TDH_XXX_DELETE does not return every resource
-passed to TDH_XXX_CREATE. The only "leak" case to worry about is that
-TDH_XXX_DELETE fails. In that case it should be "fatal" (TDX_BUG_ON,
-system can keep hobbling along, but panic_on_warn() would not be
-unreasonable). If TDH_XXX_DELETE fails it indicates some catastrophic
-misunderstanding between Linux and the TDX Module.
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-So the seamcall in this case has no need for @nr_released or
-@released_hpa, those should already be known to the kernel.
+One nit below.
 
-What is missing is an architectural guarantee that TDH_XXX_DELETE
-success == "all resources you arranged at TDH_XXX_CREATE time are free".
-I would hope that is already the case and AUX_PAGE_PA is only an
-unfortunate distraction. If it can ever be the case that CREATE and
-DELETE are asymmetric on success then that needs to be corrected and
-Linux will wait for a future module that can make that guarantee.
+> ---
+> 
+> Thanks to Dmytro for finding this. They said to feel free to take this 
+> over, so here is another version with Sean's suggestions. Tested in the 
+> TDX CI.
+> 
+> In Sean's suggestion LVTCMCI was missed, so it's added here.
+> 
+>  arch/x86/kvm/vmx/tdx.c | 36 ++++++++++++++++++++----------------
+>  1 file changed, 20 insertions(+), 16 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 1e47c194af53..76ab6805ab29 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -2116,23 +2116,27 @@ bool tdx_has_emulated_msr(u32 index)
+>  	case MSR_IA32_MC0_CTL2 ... MSR_IA32_MCx_CTL2(KVM_MAX_MCE_BANKS) - 1:
+>  		/* MSR_IA32_MCx_{CTL, STATUS, ADDR, MISC, CTL2} */
+>  	case MSR_KVM_POLL_CONTROL:
+> +	/*
+> +	 * x2APIC registers that are virtualized by the CPU can't be
+> +	 * emulated, KVM doesn't have access to the virtual APIC page.
+> +	 */
 
-I think that cleans up a bulk of the logic here to abandon caring that
-the module tries to remind us what we are releasing.
+Nit:
+The original comment explains why certain MSRs are not emulated due to
+its implementation. After the change, it lists the allowed emulated MSRs,
+a quick read might give the false impression that the listed MSRs are the
+ones that cannot be emulated. Maybe slightly tweak the comment to clarify
+that the cases listed below are the MSRs that KVM is responsible for
+emulating.
+
+
+> +	case X2APIC_MSR(APIC_ID):
+> +	case X2APIC_MSR(APIC_LVR):
+> +	case X2APIC_MSR(APIC_LDR):
+> +	case X2APIC_MSR(APIC_SPIV):
+> +	case X2APIC_MSR(APIC_ESR):
+> +	case X2APIC_MSR(APIC_LVTCMCI):
+> +	case X2APIC_MSR(APIC_ICR):
+> +	case X2APIC_MSR(APIC_LVTT):
+> +	case X2APIC_MSR(APIC_LVTTHMR):
+> +	case X2APIC_MSR(APIC_LVTPC):
+> +	case X2APIC_MSR(APIC_LVT0):
+> +	case X2APIC_MSR(APIC_LVT1):
+> +	case X2APIC_MSR(APIC_LVTERR):
+> +	case X2APIC_MSR(APIC_TMICT):
+> +	case X2APIC_MSR(APIC_TMCCT):
+> +	case X2APIC_MSR(APIC_TDCR):
+>  		return true;
+> -	case APIC_BASE_MSR ... APIC_BASE_MSR + 0xff:
+> -		/*
+> -		 * x2APIC registers that are virtualized by the CPU can't be
+> -		 * emulated, KVM doesn't have access to the virtual APIC page.
+> -		 */
+> -		switch (index) {
+> -		case X2APIC_MSR(APIC_TASKPRI):
+> -		case X2APIC_MSR(APIC_PROCPRI):
+> -		case X2APIC_MSR(APIC_EOI):
+> -		case X2APIC_MSR(APIC_ISR) ... X2APIC_MSR(APIC_ISR + APIC_ISR_NR):
+> -		case X2APIC_MSR(APIC_TMR) ... X2APIC_MSR(APIC_TMR + APIC_ISR_NR):
+> -		case X2APIC_MSR(APIC_IRR) ... X2APIC_MSR(APIC_IRR + APIC_ISR_NR):
+> -			return false;
+> -		default:
+> -			return true;
+> -		}
+>  	default:
+>  		return false;
+>  	}
+
