@@ -1,114 +1,103 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABE62798F8
-	for <linux-coco@lists.linux.dev>; Tue, 14 Apr 2026 12:29:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2EE20DE3
+	for <linux-coco@lists.linux.dev>; Tue, 14 Apr 2026 12:31:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776169794; cv=none; b=GXQ/iYBGBwvnDxyg/QZWgo5SdAUnSGRmn4YtVWad/u9cKuZTXg0uYhUumeKeSk1ro+fxGT1PiS3K6NR5hQ+lwbPKgGr612prLCyKIeIZ3G36YuJkpjrJAd1R7yPOvDgeazKvS3qOPJnGD9M8t0KiK/g1VE5Asx/E2JDRNfSe7v4=
+	t=1776169902; cv=none; b=KCCiyio7yIUd2NOyDYWvhOLo8/pnMzLI4kQGI+ywClbGPAGRT9jR7VW+ECjGw+A/E8S7Pv5JEebew0i1lQAGvhrDjh7gqDWYWa4fMix1j4HYxymwjLWWXGyTFbLp741aY9iT7wLMYqVGZ83rraH/jnxfzCDJIDKNcJnJmZkI4IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776169794; c=relaxed/simple;
-	bh=hQa0XybnuyPx7t6yGGg9fVWkSsuFAZQnGq1aB05OPoY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=emEl+zU84Oykd9C9sh8pJ87snm3GNjGpahwibmFNzcfVtyfhHAgt+/UjWSG+YXJK3eFWYA8ys1HBR45PR4KWzCXI73e0fsPmOWMfQzplBGdYyqvI8l5u0d2Am+To2fuh19GJbopT2chC1ugvpq01jc3Rj30V/ff+YYV9N33zHQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=R3h63404; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1776169902; c=relaxed/simple;
+	bh=maAz6YD2RveDtZoOs3JmvpnPgk8zxD2BJkLVudhTDzs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fxs7i+Yt6QXzqKDigbUdiFOsCfZQ/FNj9qvOrxJgw33BUE3t+ILNtC7OTSMJ0N3dY+rgVxm90bfkgYOEOUHxEWZUCRAK8jrDWkt5vxX71QI470RlaraeLmip2XWkL0VfSWdFFio8tYM1JF0ULT7QsArNWezVBw86g2GiMDATjmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nYpuar0b; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="R3h63404"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8d933da14f0so603633985a.2
-        for <linux-coco@lists.linux.dev>; Tue, 14 Apr 2026 05:29:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1776169792; x=1776774592; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dJMqO/MtamYrx+eD9k7vgpIEFfxi+YyFS8+euIM3MYs=;
-        b=R3h634041w9zZz7Rkrj0RokdUSRfjGv62KWB3Fr86iMleK0sD1w8CcTDwLunK+mrco
-         gQ2vcB3Cat4FxKj5Vo41Hk255yTGui0pAmsJVBcNwHcWeD5H6mlp7PTRq7uIimfO8GXU
-         qJLcTJJaBYv6Hds0tdAKBE1tDQ/OsNP6hA1xi0S0ILtV0lmP2uEbbWhruoya2bbLdwkD
-         W2zViRyZenpN5U9bNQOPANXu2Ini5viV2DNOqrh5t0Fo+5s14q6gc3jWr+KgGIo9q91t
-         OJ8pRbkb8SZQz/KYO2ItZ0E5QuA8bRdQrroqSjpj6V+Q+rbi4IOgASsP8v+KEJYwsPsS
-         Irwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776169792; x=1776774592;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dJMqO/MtamYrx+eD9k7vgpIEFfxi+YyFS8+euIM3MYs=;
-        b=CG0s68pozoAgIqYGbwkSkXEwCMvzB6Dm+ISD+TYuxbr2TcnWX1+yYLpiYAt4BiZLFf
-         dh3adn/CkS0ZQ3TpC+PbGaiWaioIhvmK3uxUkzTA3dB99QXRD3ECt2vzfxeCq9KtCVfX
-         HQ9PbDo0sshWebdt1wlOjt8WWRzEFTHtiBkmKHaPz/L3sTFun1P72lMhBliVlwPi+Q+O
-         X3pVtqQxEfCpPPB5rXeK9q4gTfqh8+LvkDfT/uDFc0QWRiGDgl7aEUo6nI7dAFYhCLrN
-         8q9vN7jKQhoTrT7wyrKctNeEQJ5z6WujunKWy4hfM5/SA2AxpNCUgNpc3QhTRCSnAjJV
-         ML1g==
-X-Forwarded-Encrypted: i=1; AFNElJ+2uvV2fQ1tqnL0q1xw6fRnhFnTwXta2k6RHogqzK6Wjf6UmFG8jZLtrA55LzKIEE67pi5jSyYgDGbh@lists.linux.dev
-X-Gm-Message-State: AOJu0YxjX/X6hVg8/guBwbLqa1NeiDj86HSLAlmT+S8fpJ4gB+qcjec2
-	iyMZm1UJopTSrZJQ/w19TTquUrzgBCeeSJz4obb08t88SW8ah056MnnL5wO68iH2ym7OVaS6jnx
-	QEVEK
-X-Gm-Gg: AeBDieslQkHQ0kWRupPdpVJKzeYjkEd6xc0nom2gcyb0gPOOMWN5B5nBy8taLMqXIzx
-	/uV97TnRvqO2jr82jJr6hQ/tX74DKs7nz/m/bSeUiPRYGXQ69ue0jQSJyLLcq48GCY3URBrsBlV
-	SB4CtD+0yCn1LpM7FCW0FbyEqY0s+p2Ov/4YxTzIKGyNR+eMkyVD3dfyddb/ir2KOTFcxPlI3iz
-	9R9d2sx5TmtU1NsJ21Si3yOu6Gqix3Dc6efP2yrDsyj8OWwS/PGwiKl+VoLwn2PHQ+mX/sZ/mWR
-	kYqt1njaGHlDdcwPV7Q3x4wyGqZxHgA6hU4lnTPEnUdCDKnt1QNmaxhsBnL7sbjagZEjcPPZ1Lp
-	Y86hLS0Y3kSkGXcbDCXRRoNXCE6YrDYum3i3HXm7gWvXLI7jXAKok0gzLbuh8NPWdOhdFuNTbmb
-	2FaoW/UEWaR1B+DdFMm16kwajdTtgYYTmYskREqLoplRjEjKyWdQI7oTTtuQ0PZGTjtQwkIc4vh
-	h2jXXA5jepokyKl
-X-Received: by 2002:a05:6214:5504:b0:8ac:b46d:8543 with SMTP id 6a1803df08f44-8acb46d8cccmr95904756d6.9.1776169791555;
-        Tue, 14 Apr 2026 05:29:51 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ac84cb0474sm121526396d6.40.2026.04.14.05.29.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 05:29:51 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wCctq-0000000Afc7-2XTs;
-	Tue, 14 Apr 2026 09:29:50 -0300
-Date: Tue, 14 Apr 2026 09:29:50 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Sami Mujawar <sami.mujawar@arm.com>, Dan Williams <djbw@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	catalin.marinas@arm.com, will@kernel.org, thuth@redhat.com,
-	steven.price@arm.com, gshan@redhat.com, YeoReum.Yun@arm.com,
-	cedric.xing@intel.com, Dan Williams <dan.j.williams@intel.com>,
-	Dionna Glaze <dionnaglaze@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Subject: Re: [PATCH 0/3] arm64/virt: Add Arm CCA measurement register support
-Message-ID: <20260414122950.GW3694781@ziepe.ca>
-References: <20260413084957.327661-1-sami.mujawar@arm.com>
- <20260413125925.GK3694781@ziepe.ca>
- <514ddb27-137b-4223-84fe-2152737db3a6@arm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nYpuar0b"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776169900; x=1807705900;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=maAz6YD2RveDtZoOs3JmvpnPgk8zxD2BJkLVudhTDzs=;
+  b=nYpuar0bDNniBrmyMEuZPT9ClDpjB0Ztu9Xo/bVU5OoEYIOcp0qTb2c6
+   UOCGCf+kUSZrjrbneZfLQEyewy2DLhu3uo33n5rSBdUUSmy06rr8c0TC1
+   ALpGGGo3hLrMNVW/1pVj5kZ//lw10qrx7rAbBMv/jOmbLIr09YDgzx0e8
+   EcDBcmohFCzgwe4jFcAHDGaycuAnHamfGZALvhKbNR9Y16O6iiCvBig0w
+   1s5RtwHjhRBPJRNSrht0MP8gUy5NvCWRmcy5/1kZcpfMKP2FsQeJbccAT
+   zY/TxXv0m7gMbghvv8k1g/kSrYJwFvnF5+xSNT2hV15Q+6MfG8liWN0s+
+   g==;
+X-CSE-ConnectionGUID: 7yXihp8ITS60WJXTKQnqhQ==
+X-CSE-MsgGUID: SI4nRNQ5QJK05etOvKiCpg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="80988227"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="80988227"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 05:31:40 -0700
+X-CSE-ConnectionGUID: unRBgi01REyrFCJfai/f9Q==
+X-CSE-MsgGUID: 0sYBY79zQ0+bkqOmqKgorw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="225776739"
+Received: from unknown (HELO [10.239.158.42]) ([10.239.158.42])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 05:31:37 -0700
+Message-ID: <20b82b65-b156-4a2c-8094-b86dccfb3025@intel.com>
+Date: Tue, 14 Apr 2026 20:31:35 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <514ddb27-137b-4223-84fe-2152737db3a6@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] KVM: x86: Add dedicated storage for guest RIP
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>
+Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, "Chang S . Bae" <chang.seok.bae@intel.com>
+References: <20260409224236.2021562-1-seanjc@google.com>
+ <20260409224236.2021562-2-seanjc@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260409224236.2021562-2-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 14, 2026 at 11:10:51AM +0100, Suzuki K Poulose wrote:
+On 4/10/2026 6:42 AM, Sean Christopherson wrote:
+> Add kvm_vcpu_arch.rip to track guest RIP instead of including it in the
+> generic regs[] array.  Decoupling RIP from regs[] will allow using a
+> *completely* arbitrary index for RIP, as opposed to the mostly-arbitrary
+> index that is currently used.  That in turn will allow using indices
+> 16-31 to track R16-R31 that are coming with APX.
 
-> > Isn't this also sort of incomplete?  Doesn't anything serious need
-> > signed measurements? Isnt't there alot more data that comes out of RMM
-> > than just a few measurement registers?
-> As mentioned above, this series adds the support for Runtime Extendible
-> Measurements (REM in CCA, RTMR on TDX). The RIM+Platform Attestation is
-> already provided via the TSM_REPORT
+Even leave RIP in regs[], what is the problem by just allocating the 
+index 16-31 to R16-R31 and making RIP the index 32? (I think I need go 
+read the APX discussion to better understand the reason)
 
-Okay, but what actual use is this?
+> Note, although RIP can used for addressing, it does NOT have an
+                          ^
+missing a 'be'
 
-Extendable measrements with no log
-Measurement read back without signature
+> architecturally defined index, and so can't be reached via flows like
+> get_vmx_mem_address() where KVM "blindly" reads a general purpose register
+> given the SIB information reported by hardware.  For RIP-relative
+> addressing, hardware reports the full "offset" in vmcs.EXIT_QUALIFICATION.
+> 
+> Note #2, keep the available/dirty tracking as RSP is context switched
 
-What is the use case? What do you imagine any userspace will do with
-this? Put it in the cover letter.
+s/RSP/RIP
 
-I don't think the raw rmm calls are sufficiently developed to be
-usable directly by userspace. They are less capable than TPM and even
-TPM has a lot of software around it to make it useful.
+> through the VMCS, i.e. needs to be cached for VMX.
+> 
+> Opportunistically rename NR_VCPU_REGS to NR_VCPU_GENERAL_PURPOSE_REGS to
+> better capture what it tracks, and so that KVM can slot in R16-R13 without
 
-Jason
+s/R16-R13/R16-R31
+
+> running into weirdness where KVM's definition of "EXREG" doesn't line up
+> with APX's definition of "extended reg".
+> 
+> No functional change intended.
+> 
