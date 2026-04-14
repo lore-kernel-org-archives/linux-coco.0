@@ -1,300 +1,433 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005AE302CDE
-	for <linux-coco@lists.linux.dev>; Tue, 14 Apr 2026 02:12:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776132766; cv=none; b=ihRsV3d0btICJgrfMh6HigSg5DijV3jQ1BADd0gFu67I8FDOJW7MtJPrYycsnAU2zJNyjZDnZ+lqfz7RbGoI26Z3YV3biVCSLKZhrR5GYQmBUg/E/F+AASTWj0l4DYPxL5RQNjUzUG9gKo96IdTLi0GIf+8x4igK+tB+h1zSYJg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776132766; c=relaxed/simple;
-	bh=KJbDkychRdVGmMyBO+zTH0ERqsjf79i8oIFYa/qax/Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=evBf8YJzrVS3iRSHfbcpFSBkeniXt7aWQe8ubgzRA38/U1H7Fh2aUGjg5IvGfZVh7mfn7zKT2+NEsyQO2+VWHQuEB0keMjmrlRiG+5gZm9yoR4BxIcbwQdL94lKkKktFSEaeJU+LqEKNzxskTdeHbTuiCsGnUtOBD30c017NhzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C5GoTQ2m; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17563C344F
+	for <linux-coco@lists.linux.dev>; Tue, 14 Apr 2026 09:44:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776159857; cv=fail; b=T1JVeLFbAZpaJ2RokyPz4NxQ8ODMRLtpYOSnqGYBBRW/PB31P0pQqrTQ9Pr12INMLF+cbl0CoOPpLIfJBYDNKWMS6NgEx3Dv/RjCgOPDi8mBDayEkkh4dfhKf2SkZLKDt+LmMi4yPPzVMCmszMx5+0gmmFLbF+vHyklz1b7DQnE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776159857; c=relaxed/simple;
+	bh=o5Zna4B3mA/QhiDDgUsl779vSwHhvSfXsQ+mrvgxKak=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=VPwgqPU5HNL0GChdwb5mO2fsrnGDl6Wp7tfXj8x85Rw08LKGrclNHG2rwbv6HLJH3sKtfszpTue+O1o1WDEus+BZUpl/+cPeGoYVcDUVZT56KT/Ch9fc6e1hGPxJvMjFO2hgH4JDQgZIniuabD15KvqJqyBgYflxg+RmF9zMAO4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XRaEa83D; arc=fail smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C5GoTQ2m"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XRaEa83D"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776132763; x=1807668763;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=KJbDkychRdVGmMyBO+zTH0ERqsjf79i8oIFYa/qax/Y=;
-  b=C5GoTQ2mwVU9r62QxxUEGtoiMefflxKU40XSARyCJsC7IpNoXzTxt7Bw
-   FQw8Ep/zFgywDb+OCy3HLpmlx6EYdG1PI5TJ6gLsF+5i2yP6bFlon7DVg
-   BlliOpy8dmwp7RupdBrCLHuVrtxXMTtMtE3JPGlb+9fTX0rKCtC1s7AsP
-   Af/+7Tf52eWcQn8K/kJ4JTcY41mnUGXRRVoiZ7JirFNw5W59ZHJ2jSSPS
-   DdGj++WuABSQi+Sua+1SF4lN+Klk4c7AZIQzNSqi+7l1HnregJ8yfnQBK
-   873nfimXk8AztEkx0ShIBk4nk5cWtSVzCnKJ7r+JJXRj+eetAwhSIPqym
-   A==;
-X-CSE-ConnectionGUID: v7tqUVNQQ/O2y5Nfy7dl7w==
-X-CSE-MsgGUID: BHeB3wmySF6lt2LDeV2XoA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="76244469"
-X-IronPort-AV: E=Sophos;i="6.23,178,1770624000"; 
-   d="scan'208";a="76244469"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2026 19:12:42 -0700
-X-CSE-ConnectionGUID: uUD4u3e2RU+pZHihsWHRBQ==
-X-CSE-MsgGUID: e75EzWiyRhqQHgIXxSmDKQ==
+  t=1776159855; x=1807695855;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=o5Zna4B3mA/QhiDDgUsl779vSwHhvSfXsQ+mrvgxKak=;
+  b=XRaEa83DOgNMuNWTBD32hO8CKn0nHrVyI2zUQ14vPmahWRlGz8aN94oR
+   u4NGf7GrAfdVWKSBJ8R7l0aVp8PURMmucJtzMXIvGQJtTPbEtY9oUVkas
+   IkqQC9CAwBPHdsdSJAIbOE9kHHS2ODB+pHY5vgaEepf5A9oSkS/m6IeUv
+   gW2HesTwCTRg0tyi/2wWfTLk82XmXUTjrvWJiuEdiZR9f8vlU54O9hMZR
+   bEFxRf+zqelwwoR6FZ5kxBZLc79x2QybjcRBVgh7QtbUnkEBsEWTSh2ch
+   a5VGpnGsEJw4XOpDJvSUcS0bxHHWw01NxD8FY037lzMiwUdX9n/YciS56
+   Q==;
+X-CSE-ConnectionGUID: z5lD7TGxRl2sL6WTll0cFg==
+X-CSE-MsgGUID: 7oTyU29oT8eI2j7Chya9JQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="87415979"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="87415979"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 02:44:15 -0700
+X-CSE-ConnectionGUID: cBgHb0UPR0ueMDmzjo2rdA==
+X-CSE-MsgGUID: sMjvF7e1Sq2/M/zS+R+v7A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,178,1770624000"; 
-   d="scan'208";a="229891733"
-Received: from unknown (HELO [10.239.158.42]) ([10.239.158.42])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2026 19:12:40 -0700
-Message-ID: <95a931f8-42cc-4834-953c-30c9167bfdc1@intel.com>
-Date: Tue, 14 Apr 2026 10:12:37 +0800
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="229921540"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 02:44:15 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 14 Apr 2026 02:44:14 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 14 Apr 2026 02:44:14 -0700
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.32) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 14 Apr 2026 02:44:13 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cr0u7T/80ZgsOjIvkw7t7Dhiyr/9mInVJ9Mw/7uty7Wp7b/i7GN2ZGrxQOdx5q9WEVZnuNHO8GofXVRw15F3LL+9dVHoZ9vKvxXF8BWneLAmAJDhFRVjEVvJv86D5t4ozgaBsWiUempW8iXYnglOSUYCFtoUtmAxnxI6mU210pNTZORGypprOPYip5XdractfTnQH3t2mYb172f9O0e4rneuwP5wUOjY5zh1wRC/AteM9fBUxXGIq0HqidJH35SpjW/06/Y7r2RyvQu6FWKbBfT+kMB8lX/Wm3mSg2Dlx6GqO406Gh+9wQ+PbYINhKparlkZ+Pv6ow1gJkWneIyuKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EwN9VqbSCDodoIVu+Gt2z8w+0IWoGSWgqOzyCtjI8sE=;
+ b=JN0JgRcOs0nJ49+UR1SobHnABmEvlQRdwuj785+j4shQU8DCrUndgQUE51Qfw0gmdoT2+RXNptkpWH5FmOh8L5Ql3lhbMk0ZPFngfCdndHLKcM3dyaIElLnGHtsOborYZKFuZk8EUsw1/bi2pH416Z3hG3zwAqQpbXLWjKiqgoprTiA0dcNjRYcJAqWVfj2fVZskSToNXp6ep0l3WPWo9srm59by1PkmVNsaRB5rOfXHVOoBRKgsKaXIy7PJI09cF/7CtVFc+3Bl7yE602vr4nttg1d+uD0tYE3ySyZyXxZXFFX9RqmVRtXzNSbOpGj8iCrPcn28meN6Sww+CbcHSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ by CO1PR11MB5154.namprd11.prod.outlook.com (2603:10b6:303:99::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Tue, 14 Apr
+ 2026 09:44:08 +0000
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf%3]) with mapi id 15.20.9769.046; Tue, 14 Apr 2026
+ 09:44:08 +0000
+Date: Tue, 14 Apr 2026 17:43:53 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Huang,
+ Kai" <kai.huang@intel.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org"
+	<kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "Chatre, Reinette"
+	<reinette.chatre@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"nik.borisov@suse.com" <nik.borisov@suse.com>, "mingo@redhat.com"
+	<mingo@redhat.com>, "Weiny, Ira" <ira.weiny@intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>, "Annapurve,
+ Vishal" <vannapurve@google.com>, "sagis@google.com" <sagis@google.com>,
+	"hpa@zytor.com" <hpa@zytor.com>, "tglx@kernel.org" <tglx@kernel.org>,
+	"paulmck@kernel.org" <paulmck@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>, "x86@kernel.org"
+	<x86@kernel.org>
+Subject: Re: [PATCH v7 08/22] x86/virt/seamldr: Allocate and populate a
+ module update request
+Message-ID: <ad4MWR0DyOaI0C50@intel.com>
+References: <20260331124214.117808-1-chao.gao@intel.com>
+ <20260331124214.117808-9-chao.gao@intel.com>
+ <a6a3426ba9b84ea25f3653e33a181dab0096b35f.camel@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <a6a3426ba9b84ea25f3653e33a181dab0096b35f.camel@intel.com>
+X-ClientProxiedBy: SG2PR02CA0025.apcprd02.prod.outlook.com
+ (2603:1096:3:18::13) To CH3PR11MB8660.namprd11.prod.outlook.com
+ (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] KVM: x86: Track available/dirty register masks as
- "unsigned long" values
-To: "Huang, Kai" <kai.huang@intel.com>, "seanjc@google.com"
- <seanjc@google.com>
-Cc: "Bae, Chang Seok" <chang.seok.bae@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "kas@kernel.org"
- <kas@kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "x86@kernel.org" <x86@kernel.org>
-References: <20260409224236.2021562-1-seanjc@google.com>
- <20260409224236.2021562-6-seanjc@google.com>
- <e6e82905e6b9b1637ccb640097e67d21793f5895.camel@intel.com>
- <ad0DrDUsUKTMfrDW@google.com>
- <d6f05e5fa781ccb465d27a4fb1c7c1ac1e9e95ff.camel@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <d6f05e5fa781ccb465d27a4fb1c7c1ac1e9e95ff.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|CO1PR11MB5154:EE_
+X-MS-Office365-Filtering-Correlation-Id: f3a4721a-7561-40d4-83f4-08de9a0a5fc5
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|7416014|1800799024|22082099003|56012099003|18002099003|20046099003;
+X-Microsoft-Antispam-Message-Info: KXlK+MlQAqqrtH5gtlKSGjRO6swj/UgT7ZzQAPSPJ6RYk8gAVKsyN3CwJ5IuWpuHA44mmIhiK1xreXfyn0vcVTL/VlGnt6g1yVuIFge4L84pIz0lwXPYcGLgwCQ8EdgHyNIYxSZqGl30gHNGU+/ZyDzFPMSFM72D20luQH+XqQ11VIo+CsChin3fjYNMLqw37EoP61loVuSXV6J6DbCQ473lqaG6VmHrNdzp8tJSaodt8zFUohkuIQCCUvitaB3tbkSE1J24k+1fJhkd0dgDOo2+p0DbbXjURdaLUtDFfgE+Q/42zlxDmqCrXGNEADNcrkfwLEBSZHAULGiC3ZjzPJSW9DbWd4SipvhfHtbx7cu5YphKaa1H9klwTUD5W0sAhIxZTRzsMZyE3So9FEU9WbCuGBpkRoaRluy5V0Cyu9g7XkSzaWRkLibtjxS7FhjKoeKg+Wun6sjGOboI3qnWNkcxsbeCCo7jI4L6nMWDuXEsnlIIK9i+NbtOmf/+EPxebpsxBzBLIA553ovUfozpCIYQVjThwOy8WBYHpEHqeyubKbjOOfITt1Jzu/l065M1YDZARzJV2y/jXGhf389VR+cnhqdRMHgv/JHSB35TbsoRuXVxa26iucpfkd+qzNm9MOXC5T0BDMYKbQSjND7hz/x2Jg6xgBj+GCLUKLnndoXXmVooeH/n6MW0ZW21SUymO9JzArcE2Ljcrn6jFi3EIWP4gY7YBSWT3hG41lcbrME=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(22082099003)(56012099003)(18002099003)(20046099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?xi55wjSKoTniPVek/sqMxMMh63yjVdFUclehFE/863TzHfTs8orq4/htQtgz?=
+ =?us-ascii?Q?j2L125USTjKX+VXJbDu0sGe8izpa7pFUCgGKnDuG5gnqWN9UtwmLy5omanlx?=
+ =?us-ascii?Q?nDUbFzMekKJtAvLsvR/ReXWW95Q1QPA/s23dMtywsjCUIJ4jIKHEIItUkUbK?=
+ =?us-ascii?Q?55wsgxl4LE+GNDyuvwnxu1ZoA2v1PVF2dlwebqt7LRnNhPvf0KfhduPkazv6?=
+ =?us-ascii?Q?GlH/i+SKTeMZyREQfvGsPj9AVXL5pmoO8G4Qk6/ZCWZCOZFNZ33jPO8lS8f+?=
+ =?us-ascii?Q?L6YQ1IALVAIB+n40e5EIo3pRkNZGGBU12/CODmEHwN5xj08MNgkZk4t3BiW6?=
+ =?us-ascii?Q?fqrH/YXGTDtBEsZ8dtTfeay108hsX2BQzvVr8RRpAmtUNFnO+2NcUW/zg31h?=
+ =?us-ascii?Q?P+MemyF3nAgc5cw2lgMhdRLJTT5oqrtDsglpJ7C9iOtPX1+xytv7LpBTnQbe?=
+ =?us-ascii?Q?Oq2gm7QoJMlrEZ0hu47+haf/0hEtFUWpWvsOmGgcfjrX3iJgOlJl1oFbsdf4?=
+ =?us-ascii?Q?+QODHhm9JPjVAYr7AmIJw/1x3TJbu4TEHYi30kG8IlGakqAncod+Qu7z0h8M?=
+ =?us-ascii?Q?DAYmt3UIL40lmHqEH0K2Z+6PILMiIpfDBC1DFtN3x90KpHSZoVzWohuiiWDW?=
+ =?us-ascii?Q?Q353jc2zFGQ2KH0uabXZpgcB8PDGnIoJa1wvq19Lry8V9VTBiYL5LbRrs9GS?=
+ =?us-ascii?Q?cksPlOJVxhXncleAQ9etpKu7io1an3hTooD3gQEmonhxgCd/AwzOMd4BgCMq?=
+ =?us-ascii?Q?dl/wZry83BC6KGyshit9yI24nfyRhWWjcg9WNPe9SoVRmHQWSKw4LDYyxJAM?=
+ =?us-ascii?Q?6Jq7BXxTMB63qk0M3XnL23NeJQbGl1nvy92kBQGMIBbeyslbZLPpdnSrnVES?=
+ =?us-ascii?Q?9DGkoc63PJeXkmZSQkmVEQsXIjnjRC+6f3a9htTz1rRu9yES/y4abQnzu+D0?=
+ =?us-ascii?Q?ZLhdHC71/AIgYRC33EqMit3FvnPHzONKSzYlIdxJL02vQ7hsHBj73kOG86oW?=
+ =?us-ascii?Q?iqzREsrWT8qVTUlxWMUQIRFb+z1eK8a5v4LxAieQqlpKMMUlgAFh05h8fl2j?=
+ =?us-ascii?Q?ZDszrIPpDPReLPIWuZ4pzOnoIbF0BOPHxzV3FYpQlJ6+Q88DuqLinLuJyQmm?=
+ =?us-ascii?Q?0HDN6qmgq/l2uAHrQd04mpXz37JB5QXAnr1uhYiabulCRV2AirEUwp8VbCz6?=
+ =?us-ascii?Q?1f9fJDeahUtC2kH6QBjEnufGlTt0NssY+vAVxpHLcPoyy5qiLVXAwfO90fGq?=
+ =?us-ascii?Q?i8gu+WcuoNW4sw7RS6mHmIMaAR2x/37ko6Y3GhMMd85vNZISTyAyDF9JvCm/?=
+ =?us-ascii?Q?ZhC2VjVzrsfA8qHkX1cll8rDJGC5B42vXQKo5sYjYOpZ+UayiGvyQMGUVusF?=
+ =?us-ascii?Q?n953UWFr2Co9jf/iNXjhM8e6laU0pZlfzsjAdUMDlRsFYhF8oHFXmS9MAowi?=
+ =?us-ascii?Q?+3RRfptHN9+41dH4ONW3rCcDzAnP3IJyCINgcbr3Ko5jYP3HZMciyljY9058?=
+ =?us-ascii?Q?8NbUpY7yTwSLtL28PVJPX7nibCJq6rVZBGExYKqEx//uZjFjVNEVsxz05o+Z?=
+ =?us-ascii?Q?9oU3/VxW9+bbfDXa1kU2gp4tdU//XQcI+vzmZ0iY73AAXfm3iYioTt/4YlYC?=
+ =?us-ascii?Q?4O6ePRWrbbHJGqBu9LsPfSgy/jBw16vq8uPc6qQbBkloEBM+607hTzqnKg5/?=
+ =?us-ascii?Q?GN9xDtwI/OyygEN1n0/qJA52xKTDY5N+ytTHoEd/io7o3EA0bacFLnthP8ND?=
+ =?us-ascii?Q?LPG85cTjTA=3D=3D?=
+X-Exchange-RoutingPolicyChecked: GIiXxI9EJPopdqJdK6IqZzP48DJwaVoCRJZM3BWSKmTMw3/jtAFqoxbBMqMG4bZvKZaSEqFdkdAiTXUQYdnUQKfkfsBLOLdLCKQG1XArPLeEZuhhFi3AypCjC7pYHxJLtuTaOXsNYBgyZ7hTWu3XpTcpeYSQIkIE25LgLJncU6SZHycP1u+CW1q217tzwWpg+VR/Q31aVTDEnCs9XWWxJ0E0y5DeqUiu+axJagw+jTPUFhSzNAwrlxPY8eOn+S5NOAhCZbC7lsxEXFaS3Uvk4fW76nIC2mqfpsntSlXcrVS3+l8UEpGaP3VBJUVZLakuoBeP4Hzqd/yoH9e9wTMsDQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3a4721a-7561-40d4-83f4-08de9a0a5fc5
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2026 09:44:08.2089
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KkqpkY8qO33GhZpLpagtUPq3ZtmY1W93sDNM/XpZEz+tPzJLLti9lJ9xmeXifvmnzjLtpOEiajkVSR+jtmAKJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5154
+X-OriginatorOrg: intel.com
 
-On 4/14/2026 7:03 AM, Huang, Kai wrote:
->> Because VMX and SVM make all GRPs available immediately, except
->> for RSP, KVM ignores avail/dirty for GPRs.  I.e. "fixing" TDX will just shift the
->> "bugs" elsewhere.
-> Just want to understand:
-> 
-> I thought the fix could be we simply remove the wrong GPRs from the list.
-> Not sure how fixing TDX will shift bugs elsewhere?
+On Sat, Apr 11, 2026 at 09:14:36AM +0800, Edgecombe, Rick P wrote:
+>On Tue, 2026-03-31 at 05:41 -0700, Chao Gao wrote:
+>> P-SEAMLDR uses the SEAMLDR_PARAMS structure to describe TDX module
+>> update requests. This structure contains physical addresses pointing to
+>> the module binary and its signature file (or sigstruct), along with an
+>> update scenario field.
+>> 
+>> TDX modules are distributed in the tdx_blob format defined in
+>> blob_structure.txt from the "Intel TDX module Binaries Repository". A
+>> tdx_blob contains a header, sigstruct, and module binary. This is also the
+>> format supplied by the userspace to the kernel.
+>> 
+>> Parse the tdx_blob format and populate a SEAMLDR_PARAMS structure
+>> accordingly. This structure will be passed to P-SEAMLDR to initiate the
+>> update.
+>
+>The thing that confused me about this earlier was the exact reason why we are
+>checking all the fields. We discussed that we need to check the fields that
+>kernel processes, but we don't need to double check data that the TDX module
+>processes.
+>
+>Should we explain it?
 
-I'm curious too.
+Yes. how about adding the following in the changelog:
 
->> More importantly, because the TDX-Module*requires* RCX (the GPR that holds the
->> mask of registers to expose to the VMM) to be hidden on TDVMCALL, KVM*can't*
->> do any kind of meaningful "available" tracking.
->>
-> Hmm I think RCX conveys the shared GPRs and VMM can read.  Per "Table 5.323:
-> TDH.VP.ENTER Output Operands Format #5 Definition: On TDCALL(TDG.VP.VMCALL)
-> Following a TD Entry":
-> 
->    RCX   ...
-> 	Bit(s) Name         Description
-> 
-> 	31:0   PARAMS_MASK  Value as passed into TDCALL(TDG.VP.VMCALL) by
-> 			    the guest TD: indicates which part of the guest
-> 			    TD GPR and XMM state is passed as-is to the
-> VMM
-> 			    and back. For details, see the description of
-> 			    TDG.VP.VMCALL in 5.5.26.
-> 
-> I think the problem is, as said previously, currently KVM TDX code uses
-> KVM's existing infrastructure to emulate MSR, KVM hypercall etc,  but
-> TDVMCALL has a different ABI, thus there's a mismatch here.
+Parse the tdx_blob format and populate a SEAMLDR_PARAMS structure. The
+header is consumed solely by the kernel to extract the sigstruct and
+module, so validate it before processing. The sigstruct and module are
+passed to and validated by P-SEAMLDR, so don't duplicate any validation
+in the kernel.
 
-I once had patch for it internally.
+>And how it explains the checks below?
 
-It adds back the available check for GPRs when accessing instead of 
-assuming they are always available. For normal VMX and SVM, all the GPRs 
-are still always available. But for TDX, only EXIT_INFO_1 and 
-EXIT_INFO_2 are always marked available, while others need to be 
-explicitly set case by case.
 
-The good thing is it makes TDX safer that KVM won't consume invalid data 
-silently for TDX. But it adds additional overhead of checking the 
-unnecessary register availability for VMX and SVM case.
+>> +static void free_seamldr_params(struct seamldr_params *params)
+>> +{
+>> +	free_page((unsigned long)params);
+>> +}
+>
+>Do we really need this helper? This doesn't work?
 
------------------------------&<-------------------------------------
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-Date: Tue, 11 Mar 2025 07:13:29 -0400
-Subject: [PATCH] KVM: x86: Add available check for GPRs
+No. This works. Will do.
 
-Since commit de3cd117ed2f ("KVM: x86: Omit caching logic for
-always-available GPRs"), KVM doesn't check the availability of GPRs
-except RSP and RIP when accessing them, because they are always
-available.
+>
+>DEFINE_FREE(free_seamldr_params, struct seamldr_params *,
+>	    if (!IS_ERR_OR_NULL(_T)) free_page((unsigned long)_T))
+>
+>
+>> +
+>> +static struct seamldr_params *alloc_seamldr_params(const void *module, unsigned int module_size,
+>> +						   const void *sig, unsigned int sig_size)
+>> +{
+>> +	struct seamldr_params *params;
+>> +	const u8 *ptr;
+>> +	int i;
+>> +
+>> +	if (module_size > SEAMLDR_MAX_NR_MODULE_4KB_PAGES * SZ_4K)
+>> +		return ERR_PTR(-EINVAL);
+>> +
+>> +	if (sig_size > SEAMLDR_MAX_NR_SIG_4KB_PAGES * SZ_4K)
+>> +		return ERR_PTR(-EINVAL);
+>
+>I don't know if it's worth that much, but we could do a MIN thing here to
+>protect the loop, and lose the conditionals. If userspace passes a blob that is
+>out of spec they can deal with the module error, no?
 
-However, it's not true when it comes to TDX. The GPRs are not available
-after TD vcpu exits actually. And it relies on KVM manually sets the
-GPRs value when needed, e.g.
+I think we all agree: we need to do something to protect the loop. So, the
+question is just how.
 
-  - setting rax, rbx, rcx, rdx, rsi, for hypercall emulation in
-    tdx_emulate_tdvmall();
+looks like you prefer:
 
-  - setting rax, rcx and rdx before MSR write emulation;
+	module_size = MIN(module_size, SEAMLDR_MAX_NR_MODULE_4KB_PAGES * SZ_4K);
+	sig_size = MIN(sig_size, SEAMLDR_MAX_NR_SIG_4KB_PAGES * SZ_4K);
 
-Add the available check of GPRs read, and WARN_ON_ONCE() when unavailable.
-It can help capture the cases of undesired GPRs consumption by TDX.
+But I think the MIN approach actually requires more justification than a plain
+bounds check.
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
----
-  arch/x86/kvm/kvm_cache_regs.h | 60 +++++++++++++++++++----------------
-  arch/x86/kvm/vmx/tdx.c        | 25 +++------------
-  2 files changed, 37 insertions(+), 48 deletions(-)
+With MIN, the reasoning chain is: we don't want conditionals -> userspace
+can deal with the module error -> and that error won't be fatal to the
+system (or even if it is, it's admin-initiated). That's a lot of assumptions
+to validate.
 
-diff --git a/arch/x86/kvm/kvm_cache_regs.h b/arch/x86/kvm/kvm_cache_regs.h
-index 8ddb01191d6f..b2fa01ee2b4b 100644
---- a/arch/x86/kvm/kvm_cache_regs.h
-+++ b/arch/x86/kvm/kvm_cache_regs.h
-@@ -16,34 +16,6 @@
+With a bounds check and early return, the reasoning is simply: the input is out
+of range -> reject it as invalid.
 
-  static_assert(!(KVM_POSSIBLE_CR0_GUEST_BITS & X86_CR0_PDPTR_BITS));
+>
+>> +
+>> +	/*
+>> +	 * Check that input buffers satisfy P-SEAMLDR's size and alignment
+>> +	 * constraints so they can be passed directly to P-SEAMLDR without
+>> +	 * relocation or copy.
+>> +	 */
+>> +	if (!IS_ALIGNED(module_size, SZ_4K) || !IS_ALIGNED(sig_size, SZ_4K) ||
+>> +	    !IS_ALIGNED((unsigned long)module, SZ_4K) ||
+>> +	    !IS_ALIGNED((unsigned long)sig, SZ_4K))
+>> +		return ERR_PTR(-EINVAL);
+>
+>I thought you are going to reduce this checking to just to reject invalid input
+>that the kernel processes.
+>
+>What happens if we don't check this?
 
--#define BUILD_KVM_GPR_ACCESSORS(lname, uname)				      \
--static __always_inline unsigned long kvm_##lname##_read(struct kvm_vcpu 
-*vcpu)\
--{									      \
--	return vcpu->arch.regs[VCPU_REGS_##uname];			      \
--}									      \
--static __always_inline void kvm_##lname##_write(struct kvm_vcpu *vcpu,	 
-      \
--						unsigned long val)	      \
--{									      \
--	vcpu->arch.regs[VCPU_REGS_##uname] = val;			      \
--}
--BUILD_KVM_GPR_ACCESSORS(rax, RAX)
--BUILD_KVM_GPR_ACCESSORS(rbx, RBX)
--BUILD_KVM_GPR_ACCESSORS(rcx, RCX)
--BUILD_KVM_GPR_ACCESSORS(rdx, RDX)
--BUILD_KVM_GPR_ACCESSORS(rbp, RBP)
--BUILD_KVM_GPR_ACCESSORS(rsi, RSI)
--BUILD_KVM_GPR_ACCESSORS(rdi, RDI)
--#ifdef CONFIG_X86_64
--BUILD_KVM_GPR_ACCESSORS(r8,  R8)
--BUILD_KVM_GPR_ACCESSORS(r9,  R9)
--BUILD_KVM_GPR_ACCESSORS(r10, R10)
--BUILD_KVM_GPR_ACCESSORS(r11, R11)
--BUILD_KVM_GPR_ACCESSORS(r12, R12)
--BUILD_KVM_GPR_ACCESSORS(r13, R13)
--BUILD_KVM_GPR_ACCESSORS(r14, R14)
--BUILD_KVM_GPR_ACCESSORS(r15, R15)
--#endif
--
-  /*
-   * Using the register cache from interrupt context is generally not 
-allowed, as
-   * caching a register and marking it available/dirty can't be done 
-atomically,
-@@ -92,6 +64,38 @@ static inline void kvm_register_mark_dirty(struct 
-kvm_vcpu *vcpu,
-  	__set_bit(reg, (unsigned long *)&vcpu->arch.regs_dirty);
-  }
+If the blob->offset_of_module or blob->size is misaligned, the loops
+silently drop the unaligned portion. P-SEAMLDR will then reject the update
+after module shutdown and TDs will be killed. Since this is admin-initiated
+with an intentionally invalid blob, the consequence is acceptable.
 
-+#define BUILD_KVM_GPR_ACCESSORS(lname, uname)				      \
-+static __always_inline unsigned long kvm_##lname##_read(struct kvm_vcpu 
-*vcpu)\
-+{									      \
-+	if (WARN_ON_ONCE(!kvm_register_is_available(vcpu, VCPU_REGS_##uname)))\
-+		return 0;						      \
-+									      \
-+	return vcpu->arch.regs[VCPU_REGS_##uname];			      \
-+}									      \
-+static __always_inline void kvm_##lname##_write(struct kvm_vcpu *vcpu,	 
-      \
-+						unsigned long val)	      \
-+{									      \
-+	vcpu->arch.regs[VCPU_REGS_##uname] = val;			      \
-+	kvm_register_mark_available(vcpu, VCPU_REGS_##uname);	      	      \
-+}
-+BUILD_KVM_GPR_ACCESSORS(rax, RAX)
-+BUILD_KVM_GPR_ACCESSORS(rbx, RBX)
-+BUILD_KVM_GPR_ACCESSORS(rcx, RCX)
-+BUILD_KVM_GPR_ACCESSORS(rdx, RDX)
-+BUILD_KVM_GPR_ACCESSORS(rbp, RBP)
-+BUILD_KVM_GPR_ACCESSORS(rsi, RSI)
-+BUILD_KVM_GPR_ACCESSORS(rdi, RDI)
-+#ifdef CONFIG_X86_64
-+BUILD_KVM_GPR_ACCESSORS(r8,  R8)
-+BUILD_KVM_GPR_ACCESSORS(r9,  R9)
-+BUILD_KVM_GPR_ACCESSORS(r10, R10)
-+BUILD_KVM_GPR_ACCESSORS(r11, R11)
-+BUILD_KVM_GPR_ACCESSORS(r12, R12)
-+BUILD_KVM_GPR_ACCESSORS(r13, R13)
-+BUILD_KVM_GPR_ACCESSORS(r14, R14)
-+BUILD_KVM_GPR_ACCESSORS(r15, R15)
-+#endif
-+
-  /*
-   * kvm_register_test_and_mark_available() is a special snowflake that 
-uses an
-   * arch bitop directly to avoid the explicit instrumentation that 
-comes with
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index cefe6cdd60a9..2b90a60e6f64 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -969,6 +969,9 @@ static __always_inline u32 
-tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
-  	return exit_reason;
-  }
+>The vmallocs are all going to be page
+>aligned anyway. But even still, does it mess up the below loops somehow in a way
+>that hurts anything?
 
-+#define TDX_REGS_AVAIL_SET	(BIT_ULL(VCPU_EXREG_EXIT_INFO_1) | \
-+				 BIT_ULL(VCPU_EXREG_EXIT_INFO_2))
-+
-  static noinstr void tdx_vcpu_enter_exit(struct kvm_vcpu *vcpu)
-  {
-  	struct vcpu_tdx *tdx = to_tdx(vcpu);
-@@ -985,6 +988,8 @@ static noinstr void tdx_vcpu_enter_exit(struct 
-kvm_vcpu *vcpu)
-  	tdx->exit_gpa = tdx->vp_enter_args.r8;
-  	vt->exit_intr_info = tdx->vp_enter_args.r9;
+I agree addresses/sizes are page-aligned for valid blobs, but they are not
+guaranteed (e.g., if offset_of_module is misaligned) for all inputs. I
+removed the check once in v6 and Sashiko questioned it, so I thought the
+assumption isn't obviously correct to everyone.
 
-+	vcpu->arch.regs_avail &= TDX_REGS_AVAIL_SET;
-+
-  	vmx_handle_nmi(vcpu);
+Without the check, we'd need something like:
 
-  	guest_state_exit_irqoff();
-@@ -1017,24 +1022,6 @@ static fastpath_t 
-tdx_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
-  	return EXIT_FASTPATH_NONE;
-  }
+	/*
+	 * Assume sig/module base addresses and sizes are page-aligned.
+	 * If violated, P-SEAMLDR will reject the update.
+	 */
 
--#define TDX_REGS_AVAIL_SET	(BIT_ULL(VCPU_EXREG_EXIT_INFO_1) | \
--				 BIT_ULL(VCPU_EXREG_EXIT_INFO_2) | \
--				 BIT_ULL(VCPU_REGS_RAX) | \
--				 BIT_ULL(VCPU_REGS_RBX) | \
--				 BIT_ULL(VCPU_REGS_RCX) | \
--				 BIT_ULL(VCPU_REGS_RDX) | \
--				 BIT_ULL(VCPU_REGS_RBP) | \
--				 BIT_ULL(VCPU_REGS_RSI) | \
--				 BIT_ULL(VCPU_REGS_RDI) | \
--				 BIT_ULL(VCPU_REGS_R8) | \
--				 BIT_ULL(VCPU_REGS_R9) | \
--				 BIT_ULL(VCPU_REGS_R10) | \
--				 BIT_ULL(VCPU_REGS_R11) | \
--				 BIT_ULL(VCPU_REGS_R12) | \
--				 BIT_ULL(VCPU_REGS_R13) | \
--				 BIT_ULL(VCPU_REGS_R14) | \
--				 BIT_ULL(VCPU_REGS_R15))
--
-  static void tdx_load_host_xsave_state(struct kvm_vcpu *vcpu)
-  {
-  	struct kvm_tdx *kvm_tdx = to_kvm_tdx(vcpu->kvm);
-@@ -1108,8 +1095,6 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 
-run_flags)
+It's a few lines of straightforward validation vs. a comment that requires
+readers to verify the assumption chain (vmalloc internals, userspace
+contract, P-SEAMLDR behavior). Not sure the trade is worth it.
 
-  	tdx_load_host_xsave_state(vcpu);
+If you think the comment is sufficient, I'm fine dropping the checks.
 
--	vcpu->arch.regs_avail &= TDX_REGS_AVAIL_SET;
--
-  	if (unlikely(tdx->vp_enter_ret == EXIT_REASON_EPT_MISCONFIG))
-  		return EXIT_FASTPATH_NONE;
+>
+>I might be confused, but it seems different then we discussed.
+>
+>> +
+>> +	params = (struct seamldr_params *)get_zeroed_page(GFP_KERNEL);
+>> +	if (!params)
+>> +		return ERR_PTR(-ENOMEM);
+>> +
+>> +	/*
+>> +	 * Only use version 1 when required (sigstruct > 4KB) for backward
+>> +	 * compatibility with P-SEAMLDR that lacks version 1 support.
+>> +	 */
+>> +	if (sig_size > SZ_4K)
+>> +		params->version = 1;
+>> +	else
+>> +		params->version = 0;
+>
+>I'm a bit confused by this part. What does it mean to support old P-SEAMLDRs?
 
--- 
-2.43.0
+All current P-SEAMLDRs only support version 0. Version 1 is a planned
+extension but not yet implemented by any P-SEAMLDR. Always requiring
+version 1 just saves us a conditional but disables updates for all existing
+P-SEAMLDRs for no reason. I think it is not worthwhile.
 
+>But also could it be:
+>
+>params->version = sig_size > SZ_4K;
+
+ok with me. I just wanted to make it match with "version 1" in the
+comment right above.
+
+>> +static struct seamldr_params *init_seamldr_params(const u8 *data, u32 size)
+>> +{
+>> +	const struct tdx_blob *blob = (const void *)data;
+>> +	int module_size, sig_size;
+>> +	const void *sig, *module;
+>> +
+>> +	/*
+>> +	 * Ensure the size is valid otherwise reading any field from the
+>> +	 * blob may overflow.
+>> +	 */
+>> +	if (size <= sizeof(struct tdx_blob) || size <= blob->offset_of_module)
+>> +		return ERR_PTR(-EINVAL);
+>> +
+>> +	if (blob->version != TDX_BLOB_VERSION_1)
+>> +		return ERR_PTR(-EINVAL);
+>> +
+>> +	if (blob->reserved0 || memchr_inv(blob->reserved1, 0, sizeof(blob->reserved1)))
+>> +		return ERR_PTR(-EINVAL);
+>> +
+>> +	/* Split the blob into a sigstruct and a module. */
+>> +	sig		= blob->data;
+>> +	sig_size	= blob->offset_of_module - sizeof(struct tdx_blob);
+>> +	module		= data + blob->offset_of_module;
+>> +	module_size	= size - blob->offset_of_module;
+>
+>Did you consider just passing the tdx_blob into alloc_seamldr_params()?
+>Basically, this function checks the blob fields, then alloc_seamldr_params()
+>turns blob into  struct seamldr_params without checks. The way it is, the work
+>seems kind of spread around two functions with various checks.
+
+Fine with merging them. How about:
+
+static struct seamldr_params *alloc_seamldr_params(const u8 *data, u32 size)
+{
+	const struct tdx_blob *blob = (const void *)data;
+	struct seamldr_params *params;
+	int module_size, sig_size;
+	const void *sig, *module;
+	const u8 *ptr;
+	int i;
+
+	/*
+	 * Ensure the size is valid otherwise reading any field from the
+	 * blob may overflow.
+	 */
+	if (size <= sizeof(struct tdx_blob))
+		return ERR_PTR(-EINVAL);
+
+	if (blob->version != TDX_BLOB_VERSION_1)
+		return ERR_PTR(-EINVAL);
+	
+	if (blob->length != size)
+		return ERR_PTR(-EINVAL);
+
+	if (memcmp(blob->signature, "TDX-BLOB", 8))
+		return ERR_PTR(-EINVAL);
+
+	if (blob->reserved0 || memchr_inv(blob->reserved1, 0, sizeof(blob->reserved1)))
+		return ERR_PTR(-EINVAL);
+
+	/* Split the blob into a sigstruct and a module. */
+	sig		= blob->data;
+	sig_size	= blob->offset_of_module - sizeof(struct tdx_blob);
+	module		= data + blob->offset_of_module;
+	module_size	= size - blob->offset_of_module;
+
+	if (module_size > SEAMLDR_MAX_NR_MODULE_4KB_PAGES * SZ_4K || module_size <= 0)
+		return ERR_PTR(-EINVAL);
+
+	if (sig_size > SEAMLDR_MAX_NR_SIG_4KB_PAGES * SZ_4K || sig_size <= 0)
+		return ERR_PTR(-EINVAL);
+
+	params = (struct seamldr_params *)get_zeroed_page(GFP_KERNEL);
+	if (!params)
+		return ERR_PTR(-ENOMEM);
+
+	/*
+	 * Only use version 1 when required (sigstruct > 4KB) for backward
+	 * compatibility with P-SEAMLDR that lacks version 1 support.
+	 */
+	params->version = sig_size > SZ_4K;
+	params->scenario = SEAMLDR_SCENARIO_UPDATE;
+
+	ptr = sig;
+	/*
+	 * Assume sig/module base addresses and sizes are page-aligned.
+	 * If violated, P-SEAMLDR will reject the update.
+	 */
+	for (i = 0; i < sig_size / SZ_4K; i++) {
+		params->sigstruct_pa[i] = vmalloc_to_pfn(ptr) << PAGE_SHIFT;
+		ptr += SZ_4K;
+	}
+
+	params->num_module_pages = module_size / SZ_4K;
+
+	ptr = module;
+	for (i = 0; i < params->num_module_pages; i++) {
+		params->mod_pages_pa_list[i] = vmalloc_to_pfn(ptr) << PAGE_SHIFT;
+		ptr += SZ_4K;
+	}
+
+	return params;
+}
