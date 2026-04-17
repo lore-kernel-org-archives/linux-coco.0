@@ -1,322 +1,105 @@
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6702932AAB3
-	for <linux-coco@lists.linux.dev>; Thu, 16 Apr 2026 17:45:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776361515; cv=pass; b=My8SeD+Hh6+bzNhWtj/ANt4eo81Ay+BcFyNtaOc4MUJ0q55gQRT0hjjBtJjkJP9BKzcv/8PseONtFNvPsv3H5xJ1EaRz94JgjyYmFFragANAz9Oyc0Fl+jRbzZrnRjEXsdJ3laZAVKJ3oZ8JR+9t70aMAMADHrz2C3lJ14uBTeM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776361515; c=relaxed/simple;
-	bh=jzm6W1Z6bNw1R7/BddIGRoaarTGeMoKKc61rcr/dEKQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=deSDp/yJH9i0itylO5faprOZDIIWUS4UeoOOf8GyGgFb59hQdZT2AROO2S+TB2xgQiNkSAgbL3tCB6l1PrifUoLYv8aoqYnd7dqgKDBBf+i7g0wyc37+Su7qbyJjzX5VIYaTjtWmsrWPY8NQijdnCFNKpODFVYfNx/gmMSWMI9Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rBL4NAH3; arc=pass smtp.client-ip=209.85.219.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EC9346E63
+	for <linux-coco@lists.linux.dev>; Fri, 17 Apr 2026 16:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776445188; cv=none; b=Gj1JeAg1kbMKn/gUadCpsocwmmdZErQVTDgXTfgiQT34yEFu8iKpKp5VpBJiVezU1CmXs6Zu/UqGGiYD9IBuLiCNfm5WMBz465F/r0lgUNWvRdrcmYAq3NtsIk6Vgkll1tnwKjtz9RSgMqTF8EbXoYTnfG3MYBdQf4lmwzmAkUQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776445188; c=relaxed/simple;
+	bh=fMsQaBkPIWlFvTddq3pkA/GSUQ4jKl6XtjEyjYg9b7w=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tY742Df/28BwArQOppo07lRrZSekVosicFcqR0ZaFZ82aUSb+7g+xMXBRNL4rogy9WYsKGod7luUQKfRdEelvmeoEZxO2rhZ19m79utW1PtGW11c4f08ywDTsoRxkAg7FTH/fHlXYRb7ExqparvJ6I0m3HAGhOTzPYO6DF+7Iz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WGALQAep; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rBL4NAH3"
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8a210c813f8so53546126d6.0
-        for <linux-coco@lists.linux.dev>; Thu, 16 Apr 2026 10:45:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776361512; cv=none;
-        d=google.com; s=arc-20240605;
-        b=H3WxQjgGCkyfKDPXXEhmigIkmfVk9yvB4kE1EzXiEx8vRwDOtBKfvzRk5FM7aPPsRL
-         C5+ovXTQDGJm6//vKrgw4+mzG8Ie6U4dWFWMjSEVTNWlUugQMETddr9TjXju92EamJ6x
-         QzEOFMsd+fk1ZLO2VOqDh4yZ7vsczXUBgBuTvZJjI252XTeU0hwQ2QyL486sxgfZ9Wz3
-         zW4n11Vn3n6BrRtHIukJ2i++LZwU5puUrfaGszsLC1kSIzeGZ7+KGYvEFXjT0QknALmi
-         jnMT0ARbvOWW8hINlNLU7WlIObpPcV16sYfsA4IXSGU4Ns2J8mvdKximRB5JI1Brey8i
-         HkoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jzm6W1Z6bNw1R7/BddIGRoaarTGeMoKKc61rcr/dEKQ=;
-        fh=HDus0bCI46l8RlLJ3OSQjyUqQhnCOb8tm5hZ4rXWAFo=;
-        b=MxR160zv5qh75a8FH+ra6uDqQH7/2ZbPuRwrytb+2ksNiDafx1KQNqUmRoOgx9QHbG
-         gzqdSkAvE1+0onBDzxlyg5RJu3DcmmZtiSXf1KGBoS26atznPtXrpapiDfgXQPM/Rg6o
-         uj2cBirlZduuIahcXmiWJDvTDc6g7wZgjNr/q6KKXEBC8nj0JMcWt6x6A2TYtzjfOm4m
-         0QRr1e2dWSGCw8NKXNo6p6cMxIqW9337BdQ7RpA6pcH1z3GWhgn9Tj9TTyIRP8TpgNGw
-         lL9JQma5EL58oSrckFXUNerIiuR6LQ/o+KO4Zd0GxzzYjoCx52tmlTI+G5QZ45ij5c3c
-         rl0w==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WGALQAep"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c70dd30025fso1173437a12.2
+        for <linux-coco@lists.linux.dev>; Fri, 17 Apr 2026 09:59:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776361512; x=1776966312; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jzm6W1Z6bNw1R7/BddIGRoaarTGeMoKKc61rcr/dEKQ=;
-        b=rBL4NAH3mxcczWVnsHfQuUhrJ4XedsG6xmXY4mj+3G3BYz4YSQFFvtyuEz7oVnWb0N
-         tTimDW0t9dsTbJhuYZqn5SnWN2nbAlnhPBLfQ0nnmvMirEUbT87LyMM45PCRVEXYB1GZ
-         5xCFdB7+Uglvk47PrTQ7kp+y1bEfzVBtDfR3Mh6xb356kjQL5ZZbSwgrwuzXMdZi8Zvq
-         uYU+cw2G0QtWAckDP1+r7216EYbYr5ygT0jMVg7UTfqxc2oykf+/OThz+cFDwG805NfQ
-         atdyUwNI2KVcJWjz1pZUrR9zTQUUMQZB2Lm8QEJ0Td/SbUCQE2IX/k8AEaNmxDoog+G9
-         KQ+g==
+        d=google.com; s=20251104; t=1776445187; x=1777049987; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8xpUE/ibC3YyCoGenWCVFz5lepygm50eO7SK+GhPCXc=;
+        b=WGALQAepjsYmncW47LJiF8hvr7578XtVQDYVWaUCIoWlS22RVMMMMu8f2/+XF1YpGF
+         v8lGxe7vEVvmnc3VrQ1JIfzrCY3qIgfXa1f1qfqx4BnGkkXodZOwIeTJ8Co9e0ByWy5n
+         pCftjIaPjg9NHFZeHgZqkoPRDOCAkBwapFubc49BCQTBe3V6PAWouUrUzi7VBHJ8ZPah
+         XayjfZ8qOuiEFY/g3U8U9hxxyS3jQR7yg4fM+dEjv7skqzOyzmopF3zzNLhNHEiBSWdq
+         iIy3VgfHA4soYocwpljIDWlgANFszeJvUpPVEdgFybe/lnaPNG5ZwwvYDMoApCYUGLnC
+         qSyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776361512; x=1776966312;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jzm6W1Z6bNw1R7/BddIGRoaarTGeMoKKc61rcr/dEKQ=;
-        b=WsSINPuIy0VwYCqaUwWsT75fYcbKI3uzvBEGEPRFmuTFdOuGye6Dbd4EWRddPyCtvR
-         HV/nQMPc9H6dJXxZ+jMIlBb/nBwAKe1of7L65N3D2azb4JyU0270fO3RjwG/BlX7a/Wj
-         ZiaE3cpj0Y9ewxeBCwBkn0g9s/XOyWmCZO8cTlFnhpUVLUuRHL9sp+T5ra401BER3fIm
-         q0WfQ4viKZ1ZMI9lWFgliTKk3EXmngug3AIRFqyOLBdaQmmxI+3vhN5Hq8w3/Ckg0FHQ
-         QEcIKi7E1jJRJuE8nZrh8yjSthhB5uvPjPkh9hkqLu1JktAysnijbJhpvIrMVpZR9qX4
-         M1+A==
-X-Forwarded-Encrypted: i=1; AFNElJ+FZiY9bW4TDNv/lKbYa4vIsMC71is+FAZBtLMEKtssQPLJAZWoU2gj9h0VQBgf804CgGbeQXSknIca@lists.linux.dev
-X-Gm-Message-State: AOJu0YwP5CGr5aXGD5kt88fIprIivtLOX4zkanQjowFGTaazhUPAUnRt
-	m0zfoJzWbnEHe/yRM2mUUnnbHX6aU24oF5U/vFKcTMHvx/HsFE4w9Im5DmMp4kigu36oY13iEt+
-	of0NVMkZcgGepV/XK5cBQ6z3mhSEg3NkDNa2UW+8Z
-X-Gm-Gg: AeBDieuNfk+ot2u/fnOVBqwOBxTMIE780dSHTfArBCxInfQBcYEbpwPcN2CbGb00BJX
-	QJ1x77oBmZN+MEKyQkSIpfRvOCPDKNc6eufXwQyJzBAzg3ikolilUT/ZPQd17QSsB9OFzHohfWe
-	Fl8QGRJpKp60oAjHLzDM276m8hYc9rjucAcfXNb0jZEC2hwpnNjju7xDzIsXTyJ7UKms+kv72dK
-	7vLdo29F/ng1UePQUk2JBQWsMv0MaCZkvzatPe6u4RTByargs32H9FVzHXIEWH2g6eYeUnoGgj7
-	f0dUJgZAMXvZJf9JuXwbImq9K4KKO/Fx7Cci/MNcYabZrxfAaHGjfJ+2QZ8=
-X-Received: by 2002:a05:6214:4b0c:b0:8ac:a0b0:64d5 with SMTP id
- 6a1803df08f44-8b025ec904dmr2618146d6.37.1776361511320; Thu, 16 Apr 2026
- 10:45:11 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776445187; x=1777049987;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8xpUE/ibC3YyCoGenWCVFz5lepygm50eO7SK+GhPCXc=;
+        b=ID7T5vpiDB+mjvauF9/VUL+a6VxqHvuJXNmsUqOmrPvfcqiA8qfZ27sJ8K+WgGe4Jm
+         3sIZnHy+mwktP8y9BCaPZIxaYohVhzLF2BrZn+H2MBtsCaXMuAXQlnsUx2CEo6U94kNx
+         bknJNwf5Mqy8Q9RRJFThotz0CNKh9mNfaQe1o5+s2IIB6xfQmXqBpIiJ6m4c6ghKaZoU
+         7CroGwhNh4GqximJisOsXlJW1/uE/7eHcXkrW87cMZ3fk/atTLpmiPIOhsvEAIaZct7u
+         JumuNfde2r6qqjTPRhcuTpaTr3W2Ke9p+Sy2rIhSn3n5HYtiwkoLyHBTmXjBcRxr+INM
+         PYlg==
+X-Forwarded-Encrypted: i=1; AFNElJ83jxSlg1e+iTy/Ep8nWPffZXCpopoZisw1YXA0gOOVn2dc5y7GKLO5X4fh7I7sYQ4J4uS3RO2krxqh@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx5ZbchMx0uZgmgl2o9WyNYST/VgeZB9dMxTwCNqRX0qRGYkPBq
+	NZQqEPFLUNE5GitQwc9NAP+yNWzhlV/mxkNuna9xtJSe/jYqJkydd37muGZaF9QeuKOfVOcA5/7
+	el876bQ==
+X-Received: from pfbic16.prod.google.com ([2002:a05:6a00:8a10:b0:82f:8a3b:87f0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3e26:b0:82a:7aa3:a2fb
+ with SMTP id d2e1a72fcca58-82f8c8f07d2mr3805935b3a.37.1776445186761; Fri, 17
+ Apr 2026 09:59:46 -0700 (PDT)
+Date: Fri, 17 Apr 2026 09:59:45 -0700
+In-Reply-To: <0f25c1c247c08f19d36ca774608bc8162d2454a4.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20260318155413.793430-1-steven.price@arm.com> <CABpDEukEO4Y_fg8fv5Nr1_Pw_qOK=2UmioXk=WyPEzoEprPcGA@mail.gmail.com>
- <d661a24c-6619-4734-96bd-075d3416e809@arm.com> <CABpDEumAVf02uOS5Bj07EDyuU=z9FV-iocQU1j7gFM5z0BeV_w@mail.gmail.com>
- <97d26e6e-b565-447f-95eb-2ece0755fe57@arm.com>
-In-Reply-To: <97d26e6e-b565-447f-95eb-2ece0755fe57@arm.com>
-From: Alper Gun <alpergun@google.com>
-Date: Thu, 16 Apr 2026 10:44:59 -0700
-X-Gm-Features: AQROBzAsj7mxI_HflVua65l9TneHSVQXwlFi8oSRcQgYzKeZgfQilvBV9R8pGsg
-Message-ID: <CABpDEu=vbo9cDL1PKh2h9JjWCHPP3M9-ueogkPc571c1OQPuhA@mail.gmail.com>
-Subject: Re: [PATCH v13 00/48] arm64: Support for Arm CCA in KVM
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, 
-	Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve <vannapurve@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260129011517.3545883-1-seanjc@google.com> <0f25c1c247c08f19d36ca774608bc8162d2454a4.camel@intel.com>
+Message-ID: <aeJnAfIryxf5Bzpe@google.com>
+Subject: Re: [RFC PATCH v5 00/45] TDX: Dynamic PAMT + S-EPT Hugepage
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "x86@kernel.org" <x86@kernel.org>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"bp@alien8.de" <bp@alien8.de>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "tglx@kernel.org" <tglx@kernel.org>, Kai Huang <kai.huang@intel.com>, 
+	Ackerley Tng <ackerleytng@google.com>, Sagi Shahar <sagis@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Yan Y Zhao <yan.y.zhao@intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Apr 16, 2026 at 4:05=E2=80=AFAM Suzuki K Poulose <suzuki.poulose@ar=
-m.com> wrote:
->
-> On 16/04/2026 00:27, Alper Gun wrote:
-> > On Wed, Apr 15, 2026 at 4:01=E2=80=AFAM Steven Price <steven.price@arm.=
-com> wrote:
-> >>
-> >> On 14/04/2026 22:40, Alper Gun wrote:
-> >>> On Wed, Mar 18, 2026 at 8:54=E2=80=AFAM Steven Price <steven.price@ar=
-m.com> wrote:
-> >>>>
-> >>>> This series adds support for running protected VMs using KVM under t=
-he
-> >>>> Arm Confidential Compute Architecture (CCA).
-> >>>>
-> >>>> New major version number! This now targets RMM v2.0-bet0[1]. And unl=
-ike
-> >>>> for Linux this represents a significant change.
-> >>>>
-> >>>> RMM v2.0 brings with it the ability to configure the RMM to have the
-> >>>> same page size as the host (so no more RMM_PAGE_SIZE and dealing wit=
-h
-> >>>> granules being different from host pages). It also introduces range
-> >>>> based APIs for many operations which should be more efficient and
-> >>>> simplifies the code in places.
-> >>>>
-> >>>> The handling of the GIC has changed, so the system registers are use=
-d to
-> >>>> pass the GIC state rather than memory. This means fewer changes to t=
-he
-> >>>> KVM code as it looks much like a normal VM in this respect.
-> >>>>
-> >>>> And of course the new uAPI introduced in the previous v12 posting is
-> >>>> retained so that also remains simplified compared to earlier posting=
-s.
-> >>>>
-> >>>> The RMM support for v2.0 is still early and so this series includes =
-a
-> >>>> few hacks to ease the integration. Of note are that there are some R=
-MM
-> >>>> v1.0 SMCs added to paper over areas where the RMM implementation isn=
-'t
-> >>>> quite ready for v2.0, and "SROs" (see below) are deferred to the fin=
-al
-> >>>> patch in the series.
-> >>>>
-> >>>> The PMU in RMM v2.0 requires more handling on the RMM-side (and
-> >>>> therefore simplifies the implementation on Linux), but this isn't qu=
-ite
-> >>>> ready yet. The Linux side is implemented (but untested).
-> >>>>
-> >>>> PSCI still requires the VMM to provide the "target" REC for operatio=
-ns
-> >>>> that affect another vCPU. This is likely to change in a future versi=
-on
-> >>>> of the specification. There's also a desire to force PSCI to be hand=
-led
-> >>>> in the VMM for realm guests - this isn't implemented yet as I'm wait=
-ing
-> >>>> for the dust to settle on the RMM interface first.
-> >>>>
-> >>>> Stateful RMI Operations
-> >>>> -----------------------
-> >>>>
-> >>>> The RMM v2.0 spec brings a new concept of Stateful RMI Operations (S=
-ROs)
-> >>>> which allow the RMM to complete an operation over several SMC calls =
-and
-> >>>> requesting/returning memory to the host. This has the benefit of
-> >>>> allowing interrupts to be handled in the middle of an operation (by
-> >>>> returning to the host to handle the interrupt without completing the
-> >>>> operation) and enables the RMM to dynamically allocate memory for
-> >>>> internal tracking purposes. One example of this is RMI_REC_CREATE no
-> >>>> longer needs "auxiliary granules" provided upfront but can request t=
-he
-> >>>> memory needed during the RMI_REC_CREATE operation.
-> >>>>
-> >>>> There are a fairly large number of operations that are defined as SR=
-Os
-> >>>> in the specification, but current both Linux and RMM only have suppo=
-rt
-> >>>> for RMI_REC_CREATE and RMI_REC_DESTROY. There a number of TODOs/FIXM=
-Es
-> >>>> in the code where support is missing.
-> >>>>
-> >>>> Given the early stage support for this, the SRO handling is all conf=
-ined
-> >>>> to the final patch. This patch can be dropped to return to a pre-SRO
-> >>>> state (albeit a mixture of RMM v1.0 and v2.0 APIs) for testing purpo=
-ses.
-> >>>>
-> >>>> A future posting will reorder the series to move the generic SRO sup=
-port
-> >>>> to an early patch and will implement the proper support for this in =
-all
-> >>>> RMI SMCs.
-> >>>>
-> >>>> One aspect of SROs which is not yet well captured is that in some
-> >>>> circumstances the Linux kernel will need to call an SRO call in a
-> >>>> context where memory allocation is restricted (e.g. because a spinlo=
-ck
-> >>>> is held). In this case the intention is that the SRO will be cancell=
-ed,
-> >>>> the spinlock dropped so the memory allocation can be completed, and =
-then
-> >>>> the SRO restarted (obviously after rechecking the state that the
-> >>>> spinlock was protecting). For this reason the code stores the memory
-> >>>> allocations within a struct rmi_sro_state object - see the final pat=
-ch
-> >>>> for more details.
-> >>>>
-> >>>> This series is based on v7.0-rc1. It is also available as a git
-> >>>> repository:
-> >>>>
-> >>>> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v13
-> >>>>
-> >>>>
-> >>>
-> >>> Hi Steven,
-> >>>
-> >>> I have a question regarding host kexec and kdump scenarios, and
-> >>> whether there is any plan to make them work in this initial series.
-> >>>
-> >>> Intel TDX and AMD SEV-SNP both have a firmware shutdown command that
-> >>> is invoked during the kexec or panic code paths to safely bypass
-> >>> hardware memory protections and boot into the new kernel. As far as
-> >>> I know, there is no similar global teardown command available for
-> >>> the RMM.
-> >>
-> >> Correct, the RMM specification as it stands doesn't provide a mechanis=
-m
-> >> for the host to do this. The host would have to identify all the realm
-> >> guests in the system: specifically the address of the RDs (Realm
-> >> Descriptors) and RECs (Realm Execution Contexts). It needs this to tea=
-r
-> >> down the guests and be able to undelegate the memory.
-> >>
-> >> It's an interesting point and I'll raise the idea of a "firmware
-> >> shutdown command" to make this more possible.
-> >>
-> >>> What is the roadmap for supporting both general kexec and
-> >>> more specifically kdump (panic) scenarios with CCA?
-> >>
-> >> I don't have a roadmap I'm afraid for these. kexec in theory would be
-> >> possible with KVM gracefully terminating all realms. For kdump/panic
-> >> that sort of graceful shutdown isn't really appropriate (or likely to
-> >> succeed).
-> >>
-> >
-> > Thanks Steven for the clarification.
-> >
-> > For us, kdump is highly critical as it is our primary diagnostic tool
-> > for host crashes. Without it, monitoring and debugging at fleet scale
-> > would become unmanageable.
-> >
-> > To confirm my understanding of the current architecture: if a host
-> > panics while no Realms are actively running (and therefore no pages
-> > are currently in the delegated state), the standard kdump extraction
-> > should work perfectly fine without any modifications, correct?
->
-> This may not be true. We could have pages donated to RMM for GPT,
-> Tracking etc. So, unless Linux keeps track of them, it may be
-> unsafe for a crash kernel to access them.
->
-> >
-> > Regarding the KVM tracking structures (RDs, RECs, RTTs, etc.) when VMs
-> > are running, perhaps we could use `vmcoreinfo` to export the physical
-> > addresses of these delegated pages. This would allow tools like
->
-> Thinking of this, do we really need to ? We could access the pages from
-> "vmcore" read and handle the GPFs for such accesses and give out 0s
-> for the Granules. Anyways, we can't get access to the data on those
-> pages that are still in Realm PAS.
->
+On Wed, Apr 15, 2026, Rick P Edgecombe wrote:
+> On Wed, 2026-01-28 at 17:14 -0800, Sean Christopherson wrote:
+> > As for landing these series, I think the fastest overall approach would be
+> > to land patches 1-4 asap (tangentially related cleanups and fixes), agree
+> > on a design (hopefully), and then hand control back to Rick and Yan to polish
+> > their respective series for merge.
+> 
+> Sean, were you still planning to do this? I see you're, I think, asking for Dave
+> to pull patch 1 here:
+> https://lore.kernel.org/kvm/ac_bMKD7YGhMwUCf@google.com/
+> 
+> But actually he acked the version in this series,
 
-I like the idea of handling the GPFs directly during vmcore reads for
-kdump case. That's much simpler\cleaner solution.
+Oh, right.  I forgot about that.
 
-> > `makedumpfile` to explicitly filter them out. I assume these pages must
-> > remain hardware-locked while the VMs are active.
->
->
->
-> >
-> > Long-term, having an architectural shutdown command - similar to the
-> > TDH.SYS.DISABLE command in Intel TDX - would be incredibly useful. It
-> > would allow the kdump kernel to safely bypass these hardware security
-> > checks, especially when extracting host-side KVM state.
->
+> so another option is you could just take patches 1-4?
 
-> For kexec, may be we could do this. Alternatively we could try to
-> reclaim everything back, (GPTs, Tracking) before kexec-reboot.
->
+Yeah, I think that makes the most sense.
 
-Agreed. Reclaiming all delegated memory prior to the kexec reboot
-makes perfect sense.
+> Please let me know if you are ok with that plan. We are growing stacks ahead of
+> DPAMT and the other splintered pre-req work and looking to reduce it. It could
+> be nice if we could take all the pre-req work through the same tree for that
+> reason, and most of it is on the KVM side. Is it reasonable?
 
-> >
-> > As for the protected realm memory, I assume that is an easier problem.
-> > We naturally want to exclude guest pages from a host dump regardless
-> > of whether they are Realm pages or not. However, accidental touches
-> > are still fatal.
-> >
-> >> There is also some RMM configuration which cannot be repeated (see
-> >> RMI_RMM_CONFIG_SET) - which implies that the kexec kernel must be
-> >> similar to the first kernel (i.e. same page size).
->
-> That is true, the page sizes must match. RMM spec is updated to probe
-> the state of the RMM and detect if it can do the CONFIG_SET
->
-> Suzuki
->
-> >>
-> >> Thanks,
-> >> Steve
->
+Ya.  I'll apply 1-4 and create a stable tag for patch 1's commit for 7.2.  If
+it won't throw a wrench in things for you, I'll wait until 7.1-rc2 to get 'em
+applied.  I've been burned more than a few times when using rc1 as the base for
+topic branches.
+
+Dave, holler if this doesn't work for you. 
