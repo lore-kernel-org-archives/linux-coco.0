@@ -1,130 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD6F40DFAB;
-	Sat, 18 Apr 2026 00:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AECA02EF67A
+	for <linux-coco@lists.linux.dev>; Sun, 19 Apr 2026 08:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776470761; cv=none; b=iRU61HGC9WLwYCLpZv8igDaG+aiu82YzP1g6IR3SQQcTC9FfbiLgoum0ZTY0FRnd9m/LywsHlp+hTeFzgxk12ayv7z2Fr6tvssG3SKci9NoX28QfcT3eAg8sj8IZxD+dI/6GR58t9ZObJgSHDvrPs+HG+vXsuZQbOosrdziXU8Y=
+	t=1776588914; cv=none; b=nVjvs18xcM7sS61FcqyDzccjOI5Sq3gyJ873FBqPhP9eWFvDKjthf/acgaU61lUohnp4BrIqRI5FCXK+C5A7ld5whND3IRqFql4LE2mCDILDctwalCgzqp/8pGtp/wTFfSLpu9F/5Ohy1aS1ehHGXDnTzzXsZODGcIo5CN7ry1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776470761; c=relaxed/simple;
-	bh=QGdfCQ84T4CRb1lUGI9SJPtbILd4AIxNSPRzeNf7H3M=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=uBvysUf70U/x57A7Hha7USuxlf8GkhCYseFaLlQxmfP9v1UDIdGFFQVa6hIXEW7lndvzU36E9uCa8IOF42CErA1V9sk+zogQEgegFP5998+ShrSaOcmbMJlSZHNiX8MKCVHWEhn7cgx25nYFOBUNK1Jcfg2j2vdbc/fQxtob7hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=khG0J03U; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776588914; c=relaxed/simple;
+	bh=121WulaiexZUSOEjuR3IvFl9EjOP9ZwsmkO+X9s4ZWE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QTEE9uTZL+6S9vWiVSgjfvquZcR/ENlaHCc7abdhj4K2SVl92OqGQN+DktqeMOKoWmjL16kN6u60fASZNz8j1FtyOonglCgHL/o0WQHreeFxLN3EzgRoJOEbuAT+1xaniXMjuHxr9vuuWWhyfNnaLctwiedw+CG2hy2P4dY3+VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SPtFwyIt; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="khG0J03U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82360C2BCB3;
-	Sat, 18 Apr 2026 00:06:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776470761;
-	bh=QGdfCQ84T4CRb1lUGI9SJPtbILd4AIxNSPRzeNf7H3M=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=khG0J03Uh9+m0+o/DvP8/tF4SLcHidUOl4W72LdxmHu69qkmCenLmTdI8r0jibCq2
-	 tR8mTf0qdLrLOQuMbkl+uOJH6cpMhVTmi4OxxyrS0NM+wfGHBW65A3DYxDT4M9Iwp/
-	 9TALxtL/Wbz/Yo1Bn3aMrZYhie5EHoA9Tbt+FkZn+OwdutYAHNwqX5FQAndnUgknz0
-	 HpUGF7Zwl9Qv3Qx64UckBcHD/dSLrQZz9IkIddMczwjNFZ/qRaarygCKVW9OciUM7m
-	 +5XGC7cx71Li/7QHny30OclsB4fc23T0HULOjKbHJE60yLvxDWeHJJoWm64YmB4hs4
-	 /5iXkb2EhCK7A==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4CD34F40069;
-	Fri, 17 Apr 2026 20:05:59 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Fri, 17 Apr 2026 20:05:59 -0400
-X-ME-Sender: <xms:58riaT96P48jQQL2LiyZiDHijo1h99w_G2O8RnastQ_zzE4fvTnJgg>
-    <xme:58riae_epX6EiclWmE0fOY5ejO665fCp_mu8bG7GFSqcY007EI4kp9laxX6EBYx6X
-    jL5-5PhJsGN-cFXwgMgfaedmF8BM1WE3YeIxAdNivPmlOohBGeIuKA>
-X-ME-Received: <xmr:58riaT2andN52XhF-85gcw_TOPQnVNvSwLGzSfScgAALTkfiv0dqHnpjSMIVw7YM4Un4q4A0iNqVSRqoqQujkVTE4eDMPmq2J70>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdehuddvkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefkjghfufggtgfgsehtjeertddttdejnecuhfhrohhmpeffrghnucghihhl
-    lhhirghmshcuoegujhgsfieskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    elhfeiudfgvdeijedtleeltdduueekffejjedvjefhgeevjeefueejledtleetjeenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegujhgsfidomh
-    gvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudejjedvfedtgeehhedqfeeffeel
-    gedtgeejqdgujhgsfieppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrihhlrdgtohhmpd
-    hnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohephihi
-    lhhunhdrgihusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugi
-    dqtghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidq
-    phgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnrdhjrdifih
-    hllhhirghmshesihhnthgvlhdrtghomhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopegthhgrohdrghgrohesihhnthgvlhdrtghomhdprhgtphhtth
-    hopegurghvvgdrjhhirghnghesihhnthgvlhdrtghomhdprhgtphhtthhopegsrgholhhu
-    rdhluheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopeihihhluhhnrdiguh
-    esihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:58riaW9Ru0Vcsn6vN93WDslULGPFHk_Bko8btQSstOAzhaQ1FCNmAg>
-    <xmx:58riaceui4Mm0Y9H-4Qe-r_xZKfqPb0B8ScRI498znSAgK9vR3Akyg>
-    <xmx:58riaaGD9w7LbZQ1OynWIiHToINuK6hD8xmJ18ZfX9EtnO_tta4xOw>
-    <xmx:58riaZCYJb8103e-nh0dqt4mZzERqxORbmUMfe6cFfMMPU6n7OZRCg>
-    <xmx:58riaV4_RgIQ7mK3v7Qi14LMbf7ragtY-OxmL-bcOiwOQdn4ObkU-hB7>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 17 Apr 2026 20:05:58 -0400 (EDT)
-Date: Fri, 17 Apr 2026 17:05:57 -0700
-From: Dan Williams <djbw@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>, 
- linux-coco@lists.linux.dev, 
- linux-pci@vger.kernel.org, 
- dan.j.williams@intel.com, 
- x86@kernel.org
-Cc: chao.gao@intel.com, 
- dave.jiang@intel.com, 
- baolu.lu@linux.intel.com, 
- yilun.xu@linux.intel.com, 
- yilun.xu@intel.com, 
- zhenzhong.duan@intel.com, 
- kvm@vger.kernel.org, 
- rick.p.edgecombe@intel.com, 
- dave.hansen@linux.intel.com, 
- kas@kernel.org, 
- xiaoyao.li@intel.com, 
- vishal.l.verma@intel.com, 
- linux-kernel@vger.kernel.org
-Message-ID: <69e2cae5aeb69_fe08310079@djbw-dev.notmuch>
-In-Reply-To: <20260327160132.2946114-5-yilun.xu@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SPtFwyIt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776588911; x=1808124911;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=121WulaiexZUSOEjuR3IvFl9EjOP9ZwsmkO+X9s4ZWE=;
+  b=SPtFwyItXO7OLOp7E7LgTnyS+Xf/ll/+IJUQWd+kP4o+iKLkSbvjyOj+
+   Sgmcejxwjn6nxiU3yKBEpR3wLbvAJSdIplGIEjmXJIGgYkLdCQIXTA4fW
+   baWWX+qXZUJUY8w4E/9NHMyv3HrrxRiIE6X8umh/scRCwqiOrhJk+zJJG
+   kdVcJoxnl4bskWmOOBsvgIn9TLLIBeg5yukFSFw+0FMZWOzCArtgT3Vdh
+   GKutHV4h1yOUnybU6M/lh7Od/3muuFQ9tXqYJF/e8LUGbAMVCS8vM24YU
+   Z9ntJff2+wVHr7b8QjgnSLqSUwpEqZqrzOb/HgcFTwQk2OF3BZtJgL73g
+   Q==;
+X-CSE-ConnectionGUID: FfkeH9gnSX6cS0lhbrzM4Q==
+X-CSE-MsgGUID: LJul7Lx4R1OI5JfN2eZxgQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="77610483"
+X-IronPort-AV: E=Sophos;i="6.23,188,1770624000"; 
+   d="scan'208";a="77610483"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2026 01:55:11 -0700
+X-CSE-ConnectionGUID: RYJHa410SXiF8FqSiq+YJg==
+X-CSE-MsgGUID: o1RkABj5SsyeiNE3W2xrDg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,188,1770624000"; 
+   d="scan'208";a="254923836"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa001.fm.intel.com with ESMTP; 19 Apr 2026 01:55:07 -0700
+Date: Sun, 19 Apr 2026 16:33:02 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Dan Williams <djbw@kernel.org>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"Gao, Chao" <chao.gao@intel.com>, "Xu, Yilun" <yilun.xu@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Williams, Dan J" <dan.j.williams@intel.com>,
+	"Jiang, Dave" <dave.jiang@intel.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [PATCH v2 05/31] x86/virt/tdx: Extend tdx_page_array to support
+ IOMMU_MT
+Message-ID: <aeSTPuR9cuga+I69@yilunxu-OptiPlex-7050>
 References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-5-yilun.xu@linux.intel.com>
-Subject: Re: [PATCH v2 04/31] x86/virt/tdx: Support allocating contiguous
- pages for tdx_page_array
+ <20260327160132.2946114-6-yilun.xu@linux.intel.com>
+ <828f174d49a1ecaec65ba1179e08c6b22e249297.camel@intel.com>
+ <acvX1x5nDdGtZWyI@yilunxu-OptiPlex-7050>
+ <f38d0a080aee052937cb6721683d55155c657717.camel@intel.com>
+ <ad4Pj0cqlprvNUSj@yilunxu-OptiPlex-7050>
+ <aeBufjwO3t7XzVle@yilunxu-OptiPlex-7050>
+ <69e2c9334cbf7_147c8010040@djbw-dev.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <69e2c9334cbf7_147c8010040@djbw-dev.notmuch>
 
-Xu Yilun wrote:
-> The current tdx_page_array implementation allocates scattered order-0
-> pages. However, some TDX Module operations benefit from contiguous
-> physical memory. E.g. Enabling TDX Module Extensions (an optional TDX
-> feature) requires ~50MB memory and never returns. Such allocation
-> would at worst cause ~25GB permanently fragmented memory if each
-> allocated page is from a different 2M region.
+On Fri, Apr 17, 2026 at 04:58:43PM -0700, Dan Williams wrote:
+> Xu Yilun wrote:
+> [..]
+> > > 
+> > > I'm drafting some changes and make the tdx_page_array look like:
+> > > 
+> > >   struct tdx_page_array {
+> > > 	/* public: */
+> > > 	unsigned int nr_pages;
+> > > 	struct page **pages;
+> > > 
+> > > 	/* private: */
+> > > 	u64 *root;
+> > > 	bool flush_on_free;
 > 
-> Support allocating contiguous pages for tdx_page_array by making the
-> allocation method configurable. Change the tdx_page_array_alloc() to
-> accept a custom allocation function pointer and a context parameter.
-> Wrap the specific allocation into a tdx_page_array_alloc_contig()
-> helper.
-> 
-> The foreseeable caller will allocate ~50MB memory with this helper,
-> exceeding the maximum HPAs (512) a root page can hold, the typical usage
-> will be:
-> 
->  - struct tdx_page_array *array = tdx_page_array_alloc_contig(nr_pages);
->  - for each 512-page bulk
->    - tdx_page_array_populate(array, offset);
->    - seamcall(TDH_XXX_ADD, array, ...);
-> 
-> The configurable allocation method would also benefit more
-> tdx_page_array usages. TDX Module may require more specific memory
-> layouts encoded in the root page. Will introduce them in following
-> patches.
+> How about "need_phymem_page_wbinvd"?
 
-Will skip this one as I see it gets massively reworked in your
-incremental update. The change to make the caller responsible for
-creating the page array is great.
+Yes.
+
+> 
+> That makes it a bit more greppable and not to be confused with other
+> flushing.
+> 
+> [..]
+> > Hi, I end up made the following changes on top of this series:
+> > 
+> > -------8<--------
+> > 
+> >  arch/x86/include/asm/tdx.h            |  32 +-
+> >  arch/x86/virt/vmx/tdx/tdx.c           | 561 ++++++++------------------
+> >  drivers/virt/coco/tdx-host/tdx-host.c | 179 ++++++--
+> >  3 files changed, 316 insertions(+), 456 deletions(-)
+> > 
+> > +		ret = tdx_ext_mem_setup(nr_pages, &ext_mem);
+> >  		if (ret)
+> > +			return ret;
+> >  	}
+> >  
+> > +	ret = tdx_ext_init();
+> > +	if (ret)
+> > +		goto out_remove_ext_mem;
+> > +
+> >  	/*
+> > +	 * Extensions memory is never reclaimed once assigned, stop tracking it
+> > +	 * and free the tracking structures.
+> >  	 */
+> > +	tdx_page_array_free(ext_mem.chunk);
+> 
+> Wait, these pages belong to the module now, they can't be freed, or I am
+> missing something?
+
+With this new solution, tdx_page_array is downgraded to a descriptor,
+doesn't manage the actual data pages/memory any more. So
+tdx_page_array_free() will not free data pages, only frees the
+tdx_page_array descriptor.
+
+> 
+> > +	kfree(ext_mem.pages);
+> 
+> Releasing this makes sense.
+> 
+> >  
+> >  	pr_info("%lu KB allocated for TDX Module Extensions\n",
+> >  		nr_pages * PAGE_SIZE / 1024);
+> >  
+> >  	return 0;
+> >  
+> > -out_flush:
+> > -	if (ext_mem)
+> > +out_remove_ext_mem:
+> > +	if (nr_pages) {
+> > +		/*
+> > +		 * TDH.EXT.MEM.ADD only collects required memory. TDX.EXT.INIT
+> > +		 * does the actual initialization so if it fails some pages may
+> > +		 * have been touched by the TDX module, flush cache before
+> > +		 * returning these pages to kernel.
+> > +		 */
+> >  		wbinvd_on_all_cpus();
+> > +		tdx_ext_mem_remove(&ext_mem);
+> 
+> This only releases the last populated chunk, not all previous chunks,
+> right?
+
+Not true. ext_mem stores all the data pages and the reusable descriptor
+'chunk' for SEAMCALL. tdx_ext_mem_remove() removes all the data pages
+and the 'chunk'.
