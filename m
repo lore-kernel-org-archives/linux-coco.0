@@ -1,151 +1,176 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB3431F9BF
-	for <linux-coco@lists.linux.dev>; Sun, 19 Apr 2026 09:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3319F15746F;
+	Mon, 20 Apr 2026 06:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776591732; cv=none; b=BTACNTONS8eGJv+wGOkYF3gBpcA+jW1XIYKQZJXrGIRasfDmIbDV+A8kebv+MD2doTRfYNdfnLY2ln/f4m35zXnM3nwWbfT5KdeeFjS6Ko8KENMoH5p8vdPT42/4rwCBd6dtuItDQz8vZ5wxd5GkNDaSceQIX6JNQM7f3jsm2w4=
+	t=1776666857; cv=none; b=GqWGqxKAbQbqB3YTji2ZoeDRjBtNjayjv19ADMwmxZUnuCkOFCdyA0A9JypBPvJCiAJkG13cRiJNZPtc520MGcedIjSKdK0Odd5Ud8L70r1kKihfcTQrWJsIZMaCFaD1PMThTN/rAAG+OGNsyoTyfRbZwXCjc2Vgm9Sic17aKBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776591732; c=relaxed/simple;
-	bh=xMnHtfngJm6ut0vOrrQvYCGnauOaX3RScn4ALDcNWRw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C0K0bI9obMNB4P11Le5LC/JJQejUPSJOzqSuZzGnIDeHZ2ZrLsKVVHesFFSS7V5XVV1l4Iirrbo0BMjlMOpR55ancD+nBPmfA6FZzcag3MLf9fzACYXrEAkX8Az1ULAno3iLPYYenOdRtcu3Y58SbYyPEwPQfGNx9KJRujlmjro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XYvTe7U9; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1776666857; c=relaxed/simple;
+	bh=SIQzikZxZrp71GghANcUxQ34/VjF6aP3rRJUnE4qCP0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=dNCmBYjDonjV8lZYWJfq9C+2/Y9rlN3o7n7n3/QnsvBrPJ5ZL9A8806lEOFh0g107wNddMd1WQPOwUWFAmfBslIYvBdWDfAMInwiQpKyGTLC1BbzLjqNoWZ9derbbScXr3VWCnaKtkB8kZhsUbCTbsp9Mrx2zHzLP/Uyx+MsH1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ferli2cG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XYvTe7U9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776591731; x=1808127731;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xMnHtfngJm6ut0vOrrQvYCGnauOaX3RScn4ALDcNWRw=;
-  b=XYvTe7U9VlRyMvyiCBKKskbMoW8vA/1w3mmBJFZsXB0B4mZVVFzeoeLf
-   X/+GGepkSrN6gNvNkPgpgYrPa7SuOL8SJx3xqunMDsCCsNouk7k2QDDOM
-   iq/KOplhypBFC1617RC6ThhbJqX57MZ6F8UgfisUpXK9WCBFCcIYOLzmx
-   YPfjvyAqWQFU1viUmhUso8uHnlGmLuBH7QZI4MaT4Ut+aJsB5GkMFdjE+
-   ifbHpGVqGNy/f7CmL3fu/aOeMn4fLp+ksL7dveH0FZiwtqfKroTZTnVSL
-   S6h34jAYl378BBkU4P8jJaLqp6xilxaSz1Da2jEh8CgXJIwoQMR2uD9It
-   Q==;
-X-CSE-ConnectionGUID: UMtO6igfRpmEKshlj89bVQ==
-X-CSE-MsgGUID: apsfdkPvQNeijA3syMVqJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="77612122"
-X-IronPort-AV: E=Sophos;i="6.23,188,1770624000"; 
-   d="scan'208";a="77612122"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2026 02:42:11 -0700
-X-CSE-ConnectionGUID: fypQKHHKQVWpNn0LFa1Z6Q==
-X-CSE-MsgGUID: /tCSLB2ATCqYBra+CzaP4Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,188,1770624000"; 
-   d="scan'208";a="233204225"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa004.fm.intel.com with ESMTP; 19 Apr 2026 02:42:07 -0700
-Date: Sun, 19 Apr 2026 17:20:02 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dan Williams <djbw@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	dan.j.williams@intel.com, x86@kernel.org, chao.gao@intel.com,
-	dave.jiang@intel.com, baolu.lu@linux.intel.com, yilun.xu@intel.com,
-	zhenzhong.duan@intel.com, kvm@vger.kernel.org,
-	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
-	kas@kernel.org, xiaoyao.li@intel.com, vishal.l.verma@intel.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 03/31] x86/virt/tdx: Add tdx_page_array helpers for
- new TDX Module objects
-Message-ID: <aeSeQrzaFRi4F0TT@yilunxu-OptiPlex-7050>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-4-yilun.xu@linux.intel.com>
- <69e2c4134f1ef_147c801001a@djbw-dev.notmuch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ferli2cG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DDE9C19425;
+	Mon, 20 Apr 2026 06:34:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776666856;
+	bh=SIQzikZxZrp71GghANcUxQ34/VjF6aP3rRJUnE4qCP0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ferli2cGr0NulEsabkChnw3zEB6FRv162hX/dUU+qBVnao9EBzZ/UbCTXcYJK95YT
+	 9hHCCNaUTp6TYIwUtfw/AsX3bZXymXbQR7MQMQ44aDjdx1ZlMpV8hUYMcujSEcR454
+	 J7ZWrp0TNt7d6tHYs9bZOu7qoXctDQuHXGZALhr+0sP5+ub98rzuAQeJj81AnLLNVG
+	 Pc0lHdaXgajlQCpnSTIWFrooAeIiupbYNMujX8uW6ZvCMUJmP5zJid9v2rvFE6KPgt
+	 fzL/CDnGdhfmxbLG3WsxnBM8SvFhNhAiyU4nC6/JtJF79tkLrIcNrSnSPqLXO9sbrv
+	 72pq1x20ubACQ==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jiri Pirko <jiri@resnulli.us>, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev,
+	linux-media@vger.kernel.org
+Cc: sumit.semwal@linaro.org, benjamin.gaignard@collabora.com,
+	Brian.Starkey@arm.com, jstultz@google.com, tjmercier@google.com,
+	christian.koenig@amd.com, m.szyprowski@samsung.com,
+	robin.murphy@arm.com, jgg@ziepe.ca, leon@kernel.org,
+	sean.anderson@linux.dev, ptesarik@suse.com,
+	catalin.marinas@arm.com, suzuki.poulose@arm.com,
+	steven.price@arm.com, thomas.lendacky@amd.com,
+	john.allen@amd.com, ashish.kalra@amd.com,
+	suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v5 1/2] dma-mapping: introduce DMA_ATTR_CC_SHARED for
+ shared memory
+In-Reply-To: <20260325192352.437608-2-jiri@resnulli.us>
+References: <20260325192352.437608-1-jiri@resnulli.us>
+ <20260325192352.437608-2-jiri@resnulli.us>
+Date: Mon, 20 Apr 2026 12:04:06 +0530
+Message-ID: <yq5atst6ywbl.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <69e2c4134f1ef_147c801001a@djbw-dev.notmuch>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> > +#define HPA_LIST_INFO_FIRST_ENTRY	GENMASK_U64(11, 3)
-> > +#define HPA_LIST_INFO_PFN		GENMASK_U64(51, 12)
-> > +#define HPA_LIST_INFO_LAST_ENTRY	GENMASK_U64(63, 55)
-> > +
-> > +static u64 __maybe_unused hpa_list_info_assign_raw(struct tdx_page_array *array)
-> 
-> 2 quick comments:
-> 
-> * I do not understand shipping a __maybe_unused helper in patch 3 that
->   does not get used until patch10.
+Jiri Pirko <jiri@resnulli.us> writes:
 
-You once had a comment wanting to see how a tdx_page_array collapses to
-a 64-bit raw value for SEAMCALLs in the same patch. So I move the
-helpers earlier. Do you want to change them back?
+> From: Jiri Pirko <jiri@nvidia.com>
+>
+> Current CC designs don't place a vIOMMU in front of untrusted devices.
+> Instead, the DMA API forces all untrusted device DMA through swiotlb
+> bounce buffers (is_swiotlb_force_bounce()) which copies data into
+> shared memory on behalf of the device.
+>
+> When a caller has already arranged for the memory to be shared
+> via set_memory_decrypted(), the DMA API needs to know so it can map
+> directly using the unencrypted physical address rather than bounce
+> buffering. Following the pattern of DMA_ATTR_MMIO, add
+> DMA_ATTR_CC_SHARED for this purpose. Like the MMIO case, only the
+> caller knows what kind of memory it has and must inform the DMA API
+> for it to work correctly.
+>
+> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+> ---
+> v4->v5:
+> - rebased on top od dma-mapping-for-next
+> - s/decrypted/shared/
+> v3->v4:
+> - added some sanity checks to dma_map_phys and dma_unmap_phys
+> - enhanced documentation of DMA_ATTR_CC_DECRYPTED attr
+> v1->v2:
+> - rebased on top of recent dma-mapping-fixes
+> ---
+>  include/linux/dma-mapping.h | 10 ++++++++++
+>  include/trace/events/dma.h  |  3 ++-
+>  kernel/dma/direct.h         | 14 +++++++++++---
+>  kernel/dma/mapping.c        | 13 +++++++++++--
+>  4 files changed, 34 insertions(+), 6 deletions(-)
+>
+> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+> index 677c51ab7510..db8ab24a54f4 100644
+> --- a/include/linux/dma-mapping.h
+> +++ b/include/linux/dma-mapping.h
+> @@ -92,6 +92,16 @@
+>   * flushing.
+>   */
+>  #define DMA_ATTR_REQUIRE_COHERENT	(1UL << 12)
+> +/*
+> + * DMA_ATTR_CC_SHARED: Indicates the DMA mapping is shared (decrypted) f=
+or
+> + * confidential computing guests. For normal system memory the caller mu=
+st have
+> + * called set_memory_decrypted(), and pgprot_decrypted must be used when
+> + * creating CPU PTEs for the mapping. The same shared semantic may be pa=
+ssed
+> + * to the vIOMMU when it sets up the IOPTE. For MMIO use together with
+> + * DMA_ATTR_MMIO to indicate shared MMIO. Unless DMA_ATTR_MMIO is provid=
+ed
+> + * a struct page is required.
+> + */
+> +#define DMA_ATTR_CC_SHARED	(1UL << 13)
+>=20=20
+>  /*
+>   * A dma_addr_t can hold any valid DMA or bus address for the platform. =
+ It can
+> diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
+> index 63597b004424..31c9ddf72c9d 100644
+> --- a/include/trace/events/dma.h
+> +++ b/include/trace/events/dma.h
+> @@ -34,7 +34,8 @@ TRACE_DEFINE_ENUM(DMA_NONE);
+>  		{ DMA_ATTR_PRIVILEGED, "PRIVILEGED" }, \
+>  		{ DMA_ATTR_MMIO, "MMIO" }, \
+>  		{ DMA_ATTR_DEBUGGING_IGNORE_CACHELINES, "CACHELINES_OVERLAP" }, \
+> -		{ DMA_ATTR_REQUIRE_COHERENT, "REQUIRE_COHERENT" })
+> +		{ DMA_ATTR_REQUIRE_COHERENT, "REQUIRE_COHERENT" }, \
+> +		{ DMA_ATTR_CC_SHARED, "CC_SHARED" })
+>=20=20
+>  DECLARE_EVENT_CLASS(dma_map,
+>  	TP_PROTO(struct device *dev, phys_addr_t phys_addr, dma_addr_t dma_addr,
+> diff --git a/kernel/dma/direct.h b/kernel/dma/direct.h
+> index b86ff65496fc..7140c208c123 100644
+> --- a/kernel/dma/direct.h
+> +++ b/kernel/dma/direct.h
+> @@ -89,16 +89,24 @@ static inline dma_addr_t dma_direct_map_phys(struct d=
+evice *dev,
+>  	dma_addr_t dma_addr;
+>=20=20
+>  	if (is_swiotlb_force_bounce(dev)) {
+> -		if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
+> -			return DMA_MAPPING_ERROR;
+> +		if (!(attrs & DMA_ATTR_CC_SHARED)) {
+> +			if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
+> +				return DMA_MAPPING_ERROR;
+>=20=20
+> -		return swiotlb_map(dev, phys, size, dir, attrs);
+> +			return swiotlb_map(dev, phys, size, dir, attrs);
+> +		}
+> +	} else if (attrs & DMA_ATTR_CC_SHARED) {
+> +		return DMA_MAPPING_ERROR;
+>  	}
+>
 
-Personally, I'd like to keep them here, to better align with the
-illustration in commit log about why we need the tdx_page_array.
+What is this check for? If we are requesting a DMA mapping with
+DMA_ATTR_CC_SHARED, shouldn=E2=80=99t it be allowed? If not, how would we r=
+each
+the conditional below where we convert the physical address to a DMA
+address using phys_to_dma_unencrypted()?. Also, how is this supposed to
+interact with is_swiotlb_force_bounce()?=E2=80=9D
 
-> 
-> * The "assign_raw" verb feels strange. I think this probably just want
->   to be called: to_hpa_list_info(struct tdx_page_array *)
+>=20=20
+>  	if (attrs & DMA_ATTR_MMIO) {
+>  		dma_addr =3D phys;
+>  		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
+>  			goto err_overflow;
+> +	} else if (attrs & DMA_ATTR_CC_SHARED) {
+> +		dma_addr =3D phys_to_dma_unencrypted(dev, phys);
+> +		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
+> +			goto err_overflow;
+>  	} else {
+>  		dma_addr =3D phys_to_dma(dev, phys);
+>  		if (unlikely(!dma_capable(dev, dma_addr, size, true)) ||
 
-It's a better name, thanks.
-
-[...]
-
-> > +{
-> > +	unsigned long pfn;
-> > +
-> > +	if (array->nents == 1)
-> > +		pfn = page_to_pfn(array->pages[array->offset]);
-> > +	else
-> > +		pfn = PFN_DOWN(virt_to_phys(array->root));
-> > +
-> > +	return FIELD_PREP(HPA_ARRAY_T_PFN, pfn) |
-> > +	       FIELD_PREP(HPA_ARRAY_T_SIZE, array->nents - 1);
-> > +}
-> > +
-> > +static u64 __maybe_unused hpa_array_t_release_raw(struct tdx_page_array *array)
-> 
-> It seems too subtle that this function sometimes returns zero and
-> sometimes returns a page that the TDX module will clobber with data that
-> we do not care about.
-> 
-> It is also not clear that "0" is what the module considers a valid value
-> that meets "checks its validity for forward compatibility". I guess we
-
-It is the TDX Module's requirement, which is 'too subtle'. TDX Module
-tries to keep align with the singleton definition for its output
-hpa_array_t. If TDX Module wants to output multiple released pages, it
-requires VMM to provide a root page HPA (in input register) so it can
-write HPA list on the root page. But if it outputs one released page, it
-directly writes page0 HPA in output register, and doesn't need a root
-page HPA in input register and enforce its value 0.
-
-That's why we return 0 on singleton mode, otherwise a root page HPA.
-
-> get lucky because all of the calls that need this presently are
-> multi-page cases?
-
-Let me experiment, see if we have chance to simplify things.
-
-> 
-> I would feel better if this always returned the root HPA and was called
-
-No, we can't. We must provide 0 for singleton mode. So I think maybe
-
-      to_hpa_array_t_released()
-
-
-Anyway, Linux doesn't need the output hpa_array_t. I've already raised
-to Module team that don't enforce the medium page input. If VMM doesn't
-provide the page, don't bother fill it.
-
-> something like:
-> 
->     to_output_clobber(), or to_aux_clobber()
-> 
-> ...to make it clear that whatever was there before gets destroyed.
-> 
+-aneesh
