@@ -1,52 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3319F15746F;
-	Mon, 20 Apr 2026 06:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FD938F25F
+	for <linux-coco@lists.linux.dev>; Mon, 20 Apr 2026 09:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776666857; cv=none; b=GqWGqxKAbQbqB3YTji2ZoeDRjBtNjayjv19ADMwmxZUnuCkOFCdyA0A9JypBPvJCiAJkG13cRiJNZPtc520MGcedIjSKdK0Odd5Ud8L70r1kKihfcTQrWJsIZMaCFaD1PMThTN/rAAG+OGNsyoTyfRbZwXCjc2Vgm9Sic17aKBs=
+	t=1776677367; cv=none; b=fTTgxr8CTqUXTbC72TY0vfx0vNsrEWzwUZiI+WLkAw0K1yNhaW8D3cLkphIVk6SDNtLdeAUQ1QjIK6wbiFiNaCeqXptFp1gCisnY5IiY70E6bjw+cmZrbPf5Y+52+2qtfHg1TVixihldfnVVHGkqRVzFuipbdAqYPmPBiuczbIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776666857; c=relaxed/simple;
-	bh=SIQzikZxZrp71GghANcUxQ34/VjF6aP3rRJUnE4qCP0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=dNCmBYjDonjV8lZYWJfq9C+2/Y9rlN3o7n7n3/QnsvBrPJ5ZL9A8806lEOFh0g107wNddMd1WQPOwUWFAmfBslIYvBdWDfAMInwiQpKyGTLC1BbzLjqNoWZ9derbbScXr3VWCnaKtkB8kZhsUbCTbsp9Mrx2zHzLP/Uyx+MsH1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ferli2cG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776677367; c=relaxed/simple;
+	bh=t68PnAuUVdCxSz0hVbJNZkIzL4xxh55AMqx0Abl5XQo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bVwCwYU3VNtgPM86lfjp2Za+vkDfril4HeUBMZ5VDrW6q34MDkMKxy4MC5E2fqJsoibu8UWlsNDPzYX2efe70lWCiC56HZfZNMITRJwtGM/LbFaR4LIccZfii9dvj70MtenSRWJz8P2I19aNhNQGx4Hz9cOpTid5f8gxx+UdGBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=sHdA+Yfd; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ferli2cG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DDE9C19425;
-	Mon, 20 Apr 2026 06:34:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776666856;
-	bh=SIQzikZxZrp71GghANcUxQ34/VjF6aP3rRJUnE4qCP0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ferli2cGr0NulEsabkChnw3zEB6FRv162hX/dUU+qBVnao9EBzZ/UbCTXcYJK95YT
-	 9hHCCNaUTp6TYIwUtfw/AsX3bZXymXbQR7MQMQ44aDjdx1ZlMpV8hUYMcujSEcR454
-	 J7ZWrp0TNt7d6tHYs9bZOu7qoXctDQuHXGZALhr+0sP5+ub98rzuAQeJj81AnLLNVG
-	 Pc0lHdaXgajlQCpnSTIWFrooAeIiupbYNMujX8uW6ZvCMUJmP5zJid9v2rvFE6KPgt
-	 fzL/CDnGdhfmxbLG3WsxnBM8SvFhNhAiyU4nC6/JtJF79tkLrIcNrSnSPqLXO9sbrv
-	 72pq1x20ubACQ==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jiri Pirko <jiri@resnulli.us>, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev,
-	linux-media@vger.kernel.org
-Cc: sumit.semwal@linaro.org, benjamin.gaignard@collabora.com,
-	Brian.Starkey@arm.com, jstultz@google.com, tjmercier@google.com,
-	christian.koenig@amd.com, m.szyprowski@samsung.com,
-	robin.murphy@arm.com, jgg@ziepe.ca, leon@kernel.org,
-	sean.anderson@linux.dev, ptesarik@suse.com,
-	catalin.marinas@arm.com, suzuki.poulose@arm.com,
-	steven.price@arm.com, thomas.lendacky@amd.com,
-	john.allen@amd.com, ashish.kalra@amd.com,
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="sHdA+Yfd"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-488ad135063so22010755e9.0
+        for <linux-coco@lists.linux.dev>; Mon, 20 Apr 2026 02:29:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1776677362; x=1777282162; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=IEZHN3EejXoq9qbRm7mjl8x1VVtWAaecGDOSe23Ifhk=;
+        b=sHdA+YfdJGrLobqeI+Za0lOiuGdLYt+/r6DfZdZG8CNfAYNGWuA6fY9EU9po0fYRQC
+         8drZ9z1ETQOYMb9ZrqYHbJLis/u+wgJELJyi6iF+Q8iZVcJti9jfmlZB+/ORZIVnmETg
+         qXNhe6NSdo+yLyFXispW3eFKo+zufq2Kxxq+xcB1Jz9FRtQWhg62K0O0BTHZhFliDB6+
+         qi0ra9iVQ24Ks/RCQXQSo1t0HZNaoQkt4ciXo8aEJ6VxKFr+BoIJZvXxtm2guePfTb1B
+         544D+BH/5+3jzyPlpPB4Pl3z0olygz9Hg2vmA9ROOyIlHsadGNZfyPb7/zpdsjjPBs0n
+         A8yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776677362; x=1777282162;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IEZHN3EejXoq9qbRm7mjl8x1VVtWAaecGDOSe23Ifhk=;
+        b=RGc10SHASXQHLIM2FYj9jJiPJsDTYJ8rhqOKRYC+xa4as54vw2JIElkPes/0jSDwwQ
+         ofP0x3VGB+DUlFrVBcknafb5x9S92N3xcPoLrjxZZqfhX7O7mkDuEnb8nZD9V0MyRD91
+         4eSgycXMs6o/1ql+xAcVLDu/t1l2jU3AzLk2DZwffHmxq2XTIcOnQeaZQAb/wytVSWpE
+         muSqykpMDjwcTTwgjxavm2vBSGUtTGkDZo8hcBicJYGtaAio4XRCfmEmS2D1yQKzFf5H
+         EDG0b4iWFzcBucC4i+aslXT57/MdyXpMtLy1IQdYMODYAHcze2KAs/+ZKLYbE7NjhO/W
+         sx1w==
+X-Forwarded-Encrypted: i=1; AFNElJ8XpmJRpewNvcJm8IO0gxHMS6T9An+5FbNbNch4qGZD4FrMsGXeoNHUUPY3nc/Nc0VHkwn6tKWHsPrY@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx7d87YMDiQGrLJGpIuQJkVwVtNDux7ge4M59xSbJKGY5E3BGP7
+	YPiaY2yQaX3ZX3D+TpO0IAFRMYc5CeT08aepNVeekqnxomXXrBuGj5TBso9GHSu60kQ=
+X-Gm-Gg: AeBDievhzgDQPs6o7DdKhs1vYHHh0+c35O/lsR7NxdFLOXLwXsT5U9M+EJOIsAGB3WN
+	W7Vx5XR/hl3dRRCvn/p/BUUugb4hgGuIPde9Wls3hMqYImuLUESdlyAlnKmW9RFm+WYYQRHmo0Q
+	A1RrzEogML9TyxZOmqZ0rHg7j0Nd35C1IjRQiKUyXZMkvkaDHcOnlbHRy6PTZaopdfkizeMXKef
+	nfoqhxMg52JYmQeHDPS1Iofjm3cp0b17yWKyRQlHCyTORjHgq07BAOdJ0na5FxIQUau/R3i7pme
+	Cwb79G/w4z0dKjQDkYeFHhazjTphm02i6uqYSaWAHmI+KFlQy1EwgUa+C7pGoCREwt59ssfDLv1
+	T4g6fdNCiEiw3PsY0iDa0zOpuQCqUdXu8aDq23/HamJZmm18IQ+pFGS1Dc78NP9ffSnh/FM6qfs
+	4UF5FrUzvsKCypmDIarGO2NB5ge1HZ6YlVdsJXdo4cGv+Xdw==
+X-Received: by 2002:a05:600c:a102:b0:488:ba19:da25 with SMTP id 5b1f17b1804b1-488fb759f0fmr143513465e9.12.1776677361344;
+        Mon, 20 Apr 2026 02:29:21 -0700 (PDT)
+Received: from FV6GYCPJ69 ([140.209.217.211])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fb75af76sm85639205e9.13.2026.04.20.02.29.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2026 02:29:20 -0700 (PDT)
+Date: Mon, 20 Apr 2026 11:29:17 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	iommu@lists.linux.dev, linux-media@vger.kernel.org, sumit.semwal@linaro.org, 
+	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, jstultz@google.com, tjmercier@google.com, 
+	christian.koenig@amd.com, m.szyprowski@samsung.com, robin.murphy@arm.com, jgg@ziepe.ca, 
+	leon@kernel.org, sean.anderson@linux.dev, ptesarik@suse.com, 
+	catalin.marinas@arm.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	thomas.lendacky@amd.com, john.allen@amd.com, ashish.kalra@amd.com, 
 	suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
 Subject: Re: [PATCH v5 1/2] dma-mapping: introduce DMA_ATTR_CC_SHARED for
  shared memory
-In-Reply-To: <20260325192352.437608-2-jiri@resnulli.us>
+Message-ID: <4qdizkkoeke3cvkcf35upa7p7ick6s654eqlrizmi7ozkw5eze@tnpk2e34xgwl>
 References: <20260325192352.437608-1-jiri@resnulli.us>
  <20260325192352.437608-2-jiri@resnulli.us>
-Date: Mon, 20 Apr 2026 12:04:06 +0530
-Message-ID: <yq5atst6ywbl.fsf@kernel.org>
+ <yq5atst6ywbl.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -54,123 +82,131 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <yq5atst6ywbl.fsf@kernel.org>
 
-Jiri Pirko <jiri@resnulli.us> writes:
+Mon, Apr 20, 2026 at 08:34:06AM +0200, aneesh.kumar@kernel.org wrote:
+>Jiri Pirko <jiri@resnulli.us> writes:
+>
+>> From: Jiri Pirko <jiri@nvidia.com>
+>>
+>> Current CC designs don't place a vIOMMU in front of untrusted devices.
+>> Instead, the DMA API forces all untrusted device DMA through swiotlb
+>> bounce buffers (is_swiotlb_force_bounce()) which copies data into
+>> shared memory on behalf of the device.
+>>
+>> When a caller has already arranged for the memory to be shared
+>> via set_memory_decrypted(), the DMA API needs to know so it can map
+>> directly using the unencrypted physical address rather than bounce
+>> buffering. Following the pattern of DMA_ATTR_MMIO, add
+>> DMA_ATTR_CC_SHARED for this purpose. Like the MMIO case, only the
+>> caller knows what kind of memory it has and must inform the DMA API
+>> for it to work correctly.
+>>
+>> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+>> ---
+>> v4->v5:
+>> - rebased on top od dma-mapping-for-next
+>> - s/decrypted/shared/
+>> v3->v4:
+>> - added some sanity checks to dma_map_phys and dma_unmap_phys
+>> - enhanced documentation of DMA_ATTR_CC_DECRYPTED attr
+>> v1->v2:
+>> - rebased on top of recent dma-mapping-fixes
+>> ---
+>>  include/linux/dma-mapping.h | 10 ++++++++++
+>>  include/trace/events/dma.h  |  3 ++-
+>>  kernel/dma/direct.h         | 14 +++++++++++---
+>>  kernel/dma/mapping.c        | 13 +++++++++++--
+>>  4 files changed, 34 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+>> index 677c51ab7510..db8ab24a54f4 100644
+>> --- a/include/linux/dma-mapping.h
+>> +++ b/include/linux/dma-mapping.h
+>> @@ -92,6 +92,16 @@
+>>   * flushing.
+>>   */
+>>  #define DMA_ATTR_REQUIRE_COHERENT	(1UL << 12)
+>> +/*
+>> + * DMA_ATTR_CC_SHARED: Indicates the DMA mapping is shared (decrypted) for
+>> + * confidential computing guests. For normal system memory the caller must have
+>> + * called set_memory_decrypted(), and pgprot_decrypted must be used when
+>> + * creating CPU PTEs for the mapping. The same shared semantic may be passed
+>> + * to the vIOMMU when it sets up the IOPTE. For MMIO use together with
+>> + * DMA_ATTR_MMIO to indicate shared MMIO. Unless DMA_ATTR_MMIO is provided
+>> + * a struct page is required.
+>> + */
+>> +#define DMA_ATTR_CC_SHARED	(1UL << 13)
+>>  
+>>  /*
+>>   * A dma_addr_t can hold any valid DMA or bus address for the platform.  It can
+>> diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
+>> index 63597b004424..31c9ddf72c9d 100644
+>> --- a/include/trace/events/dma.h
+>> +++ b/include/trace/events/dma.h
+>> @@ -34,7 +34,8 @@ TRACE_DEFINE_ENUM(DMA_NONE);
+>>  		{ DMA_ATTR_PRIVILEGED, "PRIVILEGED" }, \
+>>  		{ DMA_ATTR_MMIO, "MMIO" }, \
+>>  		{ DMA_ATTR_DEBUGGING_IGNORE_CACHELINES, "CACHELINES_OVERLAP" }, \
+>> -		{ DMA_ATTR_REQUIRE_COHERENT, "REQUIRE_COHERENT" })
+>> +		{ DMA_ATTR_REQUIRE_COHERENT, "REQUIRE_COHERENT" }, \
+>> +		{ DMA_ATTR_CC_SHARED, "CC_SHARED" })
+>>  
+>>  DECLARE_EVENT_CLASS(dma_map,
+>>  	TP_PROTO(struct device *dev, phys_addr_t phys_addr, dma_addr_t dma_addr,
+>> diff --git a/kernel/dma/direct.h b/kernel/dma/direct.h
+>> index b86ff65496fc..7140c208c123 100644
+>> --- a/kernel/dma/direct.h
+>> +++ b/kernel/dma/direct.h
+>> @@ -89,16 +89,24 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
+>>  	dma_addr_t dma_addr;
+>>  
+>>  	if (is_swiotlb_force_bounce(dev)) {
+>> -		if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
+>> -			return DMA_MAPPING_ERROR;
+>> +		if (!(attrs & DMA_ATTR_CC_SHARED)) {
+>> +			if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
+>> +				return DMA_MAPPING_ERROR;
+>>  
+>> -		return swiotlb_map(dev, phys, size, dir, attrs);
+>> +			return swiotlb_map(dev, phys, size, dir, attrs);
+>> +		}
+>> +	} else if (attrs & DMA_ATTR_CC_SHARED) {
+>> +		return DMA_MAPPING_ERROR;
+>>  	}
+>>
+>
+>What is this check for? If we are requesting a DMA mapping with
+>DMA_ATTR_CC_SHARED, shouldn’t it be allowed? If not, how would we reach
 
-> From: Jiri Pirko <jiri@nvidia.com>
->
-> Current CC designs don't place a vIOMMU in front of untrusted devices.
-> Instead, the DMA API forces all untrusted device DMA through swiotlb
-> bounce buffers (is_swiotlb_force_bounce()) which copies data into
-> shared memory on behalf of the device.
->
-> When a caller has already arranged for the memory to be shared
-> via set_memory_decrypted(), the DMA API needs to know so it can map
-> directly using the unencrypted physical address rather than bounce
-> buffering. Following the pattern of DMA_ATTR_MMIO, add
-> DMA_ATTR_CC_SHARED for this purpose. Like the MMIO case, only the
-> caller knows what kind of memory it has and must inform the DMA API
-> for it to work correctly.
->
-> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-> ---
-> v4->v5:
-> - rebased on top od dma-mapping-for-next
-> - s/decrypted/shared/
-> v3->v4:
-> - added some sanity checks to dma_map_phys and dma_unmap_phys
-> - enhanced documentation of DMA_ATTR_CC_DECRYPTED attr
-> v1->v2:
-> - rebased on top of recent dma-mapping-fixes
-> ---
->  include/linux/dma-mapping.h | 10 ++++++++++
->  include/trace/events/dma.h  |  3 ++-
->  kernel/dma/direct.h         | 14 +++++++++++---
->  kernel/dma/mapping.c        | 13 +++++++++++--
->  4 files changed, 34 insertions(+), 6 deletions(-)
->
-> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-> index 677c51ab7510..db8ab24a54f4 100644
-> --- a/include/linux/dma-mapping.h
-> +++ b/include/linux/dma-mapping.h
-> @@ -92,6 +92,16 @@
->   * flushing.
->   */
->  #define DMA_ATTR_REQUIRE_COHERENT	(1UL << 12)
-> +/*
-> + * DMA_ATTR_CC_SHARED: Indicates the DMA mapping is shared (decrypted) f=
-or
-> + * confidential computing guests. For normal system memory the caller mu=
-st have
-> + * called set_memory_decrypted(), and pgprot_decrypted must be used when
-> + * creating CPU PTEs for the mapping. The same shared semantic may be pa=
-ssed
-> + * to the vIOMMU when it sets up the IOPTE. For MMIO use together with
-> + * DMA_ATTR_MMIO to indicate shared MMIO. Unless DMA_ATTR_MMIO is provid=
-ed
-> + * a struct page is required.
-> + */
-> +#define DMA_ATTR_CC_SHARED	(1UL << 13)
->=20=20
->  /*
->   * A dma_addr_t can hold any valid DMA or bus address for the platform. =
- It can
-> diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
-> index 63597b004424..31c9ddf72c9d 100644
-> --- a/include/trace/events/dma.h
-> +++ b/include/trace/events/dma.h
-> @@ -34,7 +34,8 @@ TRACE_DEFINE_ENUM(DMA_NONE);
->  		{ DMA_ATTR_PRIVILEGED, "PRIVILEGED" }, \
->  		{ DMA_ATTR_MMIO, "MMIO" }, \
->  		{ DMA_ATTR_DEBUGGING_IGNORE_CACHELINES, "CACHELINES_OVERLAP" }, \
-> -		{ DMA_ATTR_REQUIRE_COHERENT, "REQUIRE_COHERENT" })
-> +		{ DMA_ATTR_REQUIRE_COHERENT, "REQUIRE_COHERENT" }, \
-> +		{ DMA_ATTR_CC_SHARED, "CC_SHARED" })
->=20=20
->  DECLARE_EVENT_CLASS(dma_map,
->  	TP_PROTO(struct device *dev, phys_addr_t phys_addr, dma_addr_t dma_addr,
-> diff --git a/kernel/dma/direct.h b/kernel/dma/direct.h
-> index b86ff65496fc..7140c208c123 100644
-> --- a/kernel/dma/direct.h
-> +++ b/kernel/dma/direct.h
-> @@ -89,16 +89,24 @@ static inline dma_addr_t dma_direct_map_phys(struct d=
-evice *dev,
->  	dma_addr_t dma_addr;
->=20=20
->  	if (is_swiotlb_force_bounce(dev)) {
-> -		if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
-> -			return DMA_MAPPING_ERROR;
-> +		if (!(attrs & DMA_ATTR_CC_SHARED)) {
-> +			if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
-> +				return DMA_MAPPING_ERROR;
->=20=20
-> -		return swiotlb_map(dev, phys, size, dir, attrs);
-> +			return swiotlb_map(dev, phys, size, dir, attrs);
-> +		}
-> +	} else if (attrs & DMA_ATTR_CC_SHARED) {
-> +		return DMA_MAPPING_ERROR;
->  	}
->
+This is defensive. Only allows to map with DMA_ATTR_CC_SHARED set to
+dev dev that does not support CC natively. This can be of course lifted,
+if you have a case.
 
-What is this check for? If we are requesting a DMA mapping with
-DMA_ATTR_CC_SHARED, shouldn=E2=80=99t it be allowed? If not, how would we r=
-each
-the conditional below where we convert the physical address to a DMA
-address using phys_to_dma_unencrypted()?. Also, how is this supposed to
-interact with is_swiotlb_force_bounce()?=E2=80=9D
 
->=20=20
->  	if (attrs & DMA_ATTR_MMIO) {
->  		dma_addr =3D phys;
->  		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
->  			goto err_overflow;
-> +	} else if (attrs & DMA_ATTR_CC_SHARED) {
-> +		dma_addr =3D phys_to_dma_unencrypted(dev, phys);
-> +		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
-> +			goto err_overflow;
->  	} else {
->  		dma_addr =3D phys_to_dma(dev, phys);
->  		if (unlikely(!dma_capable(dev, dma_addr, size, true)) ||
+>the conditional below where we convert the physical address to a DMA
+>address using phys_to_dma_unencrypted()?. Also, how is this supposed to
+>interact with is_swiotlb_force_bounce()?”
 
--aneesh
+You reach there when is_swiotlb_force_bounce(dev) is true and
+DMA_ATTR_CC_SHARED is set. What am I missing?
+
+
+
+>
+>>  
+>>  	if (attrs & DMA_ATTR_MMIO) {
+>>  		dma_addr = phys;
+>>  		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
+>>  			goto err_overflow;
+>> +	} else if (attrs & DMA_ATTR_CC_SHARED) {
+>> +		dma_addr = phys_to_dma_unencrypted(dev, phys);
+>> +		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
+>> +			goto err_overflow;
+>>  	} else {
+>>  		dma_addr = phys_to_dma(dev, phys);
+>>  		if (unlikely(!dma_capable(dev, dma_addr, size, true)) ||
+>
+>-aneesh
