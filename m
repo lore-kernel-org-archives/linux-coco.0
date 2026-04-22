@@ -1,72 +1,63 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A191B35B62A
-	for <linux-coco@lists.linux.dev>; Wed, 22 Apr 2026 10:08:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1F84A23
+	for <linux-coco@lists.linux.dev>; Wed, 22 Apr 2026 10:15:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776852520; cv=none; b=rwcKuQPbhldQQ++6oMUBlGC3U4W7IkQbX92QX1Ch+sILx94dKQVktWvoLo9f+ui/E2Y3WFw+5aPay+dNEmWok9tZUWFeyi/+BNytMKQCs+dZmSunNEeSl6Be7NHdWydHiJ8ev1Sj8QthmylhSVaEqduG+QcBoV9xOXzH4Mif+Nc=
+	t=1776852952; cv=none; b=Scv0TtLawHGUl9gn/x1Nj+Td6t5BX5cmXBhR1m7Ls7aElBcfo9lKwpr0pbPpA1Yhk6HW4T8VbTvNtlWNddoVZfgfBUprS7+IFbNZoVC12juaWPSE4NKPFbINQrXvvmK9l5hNG4d4KICSBgBJDkNOVjY1UkPzNW2wazsjoTjlLD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776852520; c=relaxed/simple;
-	bh=r2Ab2e3TX1xz+0fxRvMDzUsnz1vWyQWs6ma8wdCDmNU=;
+	s=arc-20240116; t=1776852952; c=relaxed/simple;
+	bh=4pm3cuE4YtiBWgDifB2kYoUnXjTiXLk2G7f65ddr4uo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vDxcc9HEbK7hUw5KnDCJawcsvjhbZm/WS931CArFGGTKpdPD5iMP10KxBLLBwF1hNWZ+vQ5R2TNc8/gEQ3DszVPOdqPRhe8cu8vTY51NwTCqc6pMaQY36EXjoiXk6uDiWvVnba7Pcc/TsN3Oynhv6cM7YeiGw/07LdTUWA/8Sss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n+vs50NO; arc=none smtp.client-ip=192.198.163.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=LJR0EUiuY52RzYKaVr74vofYhwOCLjCMPD/2g7FKx8v+xe7KDUdl1SrEG+sMIkkzUCNYaj8Zw26HDy6vuMdo67ziNLHhVAwJ6BP3jYGvUbXeZh5OJTU4v0rsw0F+RZNyui1yM//edqO3Qay6w9XjKs3sM4fYn8P1HhkvOdGAXew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QTL1YhdE; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n+vs50NO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QTL1YhdE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776852520; x=1808388520;
+  t=1776852951; x=1808388951;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=r2Ab2e3TX1xz+0fxRvMDzUsnz1vWyQWs6ma8wdCDmNU=;
-  b=n+vs50NOkTk//gZgEMbLccTAwXytEfeq+kWp4H/Qr31fmpyDpz4TbVjX
-   DFE0Elhv+9YrX856PfmRVQqG3s/+ZTOS0ElIkXMbPAXAFMBqOTolTa8X1
-   8ZGHvHlXq/NGGE6ZIku+2yQA+i3VEUkrGhCzKNf3SIkm2eRsnUnxJZBfC
-   FozGxH02bckQRkO7c/vgygRps29AdLzjLCEo6/3uioB/psirat3O86kgk
-   b+lWChoVucVyO+8Gc/WYlbrHH2+oB5LbZmPvuqxSnBCFxjE2boWCg+vlp
-   zTr/Vqqz8c4psTYylG77MLLX4o9/Ai31O+fIwe1AbRSllAU600DQBOvBg
+  bh=4pm3cuE4YtiBWgDifB2kYoUnXjTiXLk2G7f65ddr4uo=;
+  b=QTL1YhdENDSgf5RO/FOTVZJeGoB0XHXlhnuoJj4vH5F0/kOhe0PjkB5a
+   TkGSihDWX+QRZwR9AptTDLkJQtXMwwnDocG5MveKXuCPELxfBY2BF/8CY
+   0+PrK9kT9ITLUEJGXJi2PiChH2abY8oJVP/rkZvov+/XbI0cQb+CvgDVn
+   0KksItacFmnwVT38T9uDOq5QjWJKn2QrmTrBvdoKHiygt9DMyoefLUash
+   OiqlRtaKCoaLnY/uMrq8d3RgHwv7eJDcJFcroVNykdfSN/wZ9qSuEcQj2
+   PjtywTCAMxE0Lr5lH+T/bs9R3O4W/iHrb/vJoWOW55V+MAz8gUrzGbkcw
    A==;
-X-CSE-ConnectionGUID: IYY+CIa4TTSzTZzM0fdQHQ==
-X-CSE-MsgGUID: bBZAmHo/RA6bYJWbUZdlkQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="76834861"
+X-CSE-ConnectionGUID: vLPVTTobQIqky1a1Eb5N6Q==
+X-CSE-MsgGUID: viAot7nVQKuUk2D+HKW11g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="88103573"
 X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="76834861"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 03:08:39 -0700
-X-CSE-ConnectionGUID: hGtqkofsRbeKSHqa/MlHKA==
-X-CSE-MsgGUID: ZmiFbkyfQgqS5fWLrcqgvA==
+   d="scan'208";a="88103573"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 03:15:51 -0700
+X-CSE-ConnectionGUID: clzp6i49Tqy7fKYj7FwyrQ==
+X-CSE-MsgGUID: 2wvphU5qQKabKVkwrdVVEQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="225818160"
+   d="scan'208";a="227983651"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa009.fm.intel.com with ESMTP; 22 Apr 2026 03:08:35 -0700
-Date: Wed, 22 Apr 2026 17:46:22 +0800
+  by fmviesa010.fm.intel.com with ESMTP; 22 Apr 2026 03:15:47 -0700
+Date: Wed, 22 Apr 2026 17:53:34 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"Williams, Dan J" <dan.j.williams@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
-	"Jiang, Dave" <dave.jiang@intel.com>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Xu, Yilun" <yilun.xu@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Verma, Vishal L" <vishal.l.verma@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 25/31] x86/virt/tdx: Add SEAMCALL wrappers for SPDM
- management
-Message-ID: <aeiY7qsBgVIbG5F0@yilunxu-OptiPlex-7050>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	dan.j.williams@intel.com, x86@kernel.org, chao.gao@intel.com,
+	dave.jiang@intel.com, baolu.lu@linux.intel.com, yilun.xu@intel.com,
+	zhenzhong.duan@intel.com, kvm@vger.kernel.org,
+	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
+	kas@kernel.org, xiaoyao.li@intel.com, vishal.l.verma@intel.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 27/31] coco/tdx-host: Implement SPDM session setup
+Message-ID: <aeianoT0LZFC2DNt@yilunxu-OptiPlex-7050>
 References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-26-yilun.xu@linux.intel.com>
- <BN9PR11MB5276DE573BCA90782AE5BA608C582@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <20260327160132.2946114-28-yilun.xu@linux.intel.com>
+ <51f2be5a-47d2-4a06-92bb-368aaed73530@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -75,54 +66,91 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <BN9PR11MB5276DE573BCA90782AE5BA608C582@BN9PR11MB5276.namprd11.prod.outlook.com>
+In-Reply-To: <51f2be5a-47d2-4a06-92bb-368aaed73530@suse.com>
 
-On Thu, Apr 09, 2026 at 07:59:33AM +0000, Tian, Kevin wrote:
-> > From: Xu Yilun <yilun.xu@linux.intel.com>
-> > Sent: Saturday, March 28, 2026 12:01 AM
-> > 
+> > +#define TDISP_FUNC_ID		GENMASK(15, 0)
+> > +#define TDISP_FUNC_ID_SEGMENT		GENMASK(23, 16)
+> > +#define TDISP_FUNC_ID_SEG_VALID		BIT(24)
+> > +
+> > +static inline u32 tdisp_func_id(struct pci_dev *pdev)
+> > +{
+> > +	u32 func_id;
+> > +
+> > +	func_id = FIELD_PREP(TDISP_FUNC_ID_SEGMENT, pci_domain_nr(pdev->bus));
+> > +	if (func_id)
+> > +		func_id |= TDISP_FUNC_ID_SEG_VALID;
 > 
-> here ...
+> This check implies pci_domain_nr returning 0 is considered invalid. Other
+> callers in the kernel seem to not care, they just use the domain nr, so is
+> this check spurious or intentional ?
+
+This is the func_id format defined in TDISP SPEC, bit 24 is a must. It
+is not the linux defined SBDF format.
+
 > 
-> > - TDH.SPDM.MNG supports three SPDM runtime operations: HEARTBEAT,
-> >   KEY_UPDATE and DEV_INFO_RECOLLECTION.
+> > +	func_id |= FIELD_PREP(TDISP_FUNC_ID,
+> > +			      PCI_DEVID(pdev->bus->number, pdev->devfn));
+> > +
+> > +	return func_id;
+> > +}
+> > +
+> > +struct spdm_config_info_t {
+> > +	u32 vmm_spdm_cap;
+> > +#define SPDM_CAP_HBEAT          BIT(13)
+> > +#define SPDM_CAP_KEY_UPD        BIT(14)
 > 
-> ... but the actual helper just pass whatever ops to TDX module
+> nit: move those defines above the struct definition, they just break the
+> reading flow as it is.
 
-Ah, yes. But only tdx-host driver which implements link encryption cares
-about these operation code. My preference is only define general the
-SEAMCALL wrapper format in TDX core as other SEAMCALL do. And leave the
-specific op code definition in tdx-host driver.
+Yes.
 
-I can revise the commit log as:
+...
 
-   - TDH.SPDM.MNG supports various SPDM runtime operations: HEARTBEAT,
-     KEY_UPDATE, DEV_INFO_RECOLLECTION... These operation codes are defined
-     in tdx-host driver.
- 
+> > +static void *tdx_dup_array_data(struct tdx_page_array *array,
+> > +				unsigned int data_size)
+> > +{
+> > +	unsigned int npages = (data_size + PAGE_SIZE - 1) / PAGE_SIZE;
+> 
+> nit: There's DIV_ROUND_UP
+
+Yes.
+
+...
+
+> > +DEFINE_FREE(tdx_spdm_session_teardown, struct tdx_tsm_link *,
+> > +	    if (!IS_ERR_OR_NULL(_T)) tdx_spdm_session_teardown(_T))
+> > +
+> >   static int tdx_tsm_link_connect(struct pci_dev *pdev)
+> >   {
+> > -	return -ENXIO;
+> > +	struct tdx_tsm_link *tlink = to_tdx_tsm_link(pdev->tsm);
+> > +
+> > +	struct tdx_tsm_link *tlink_spdm __free(tdx_spdm_session_teardown) =
+> > +		tdx_spdm_session_setup(tlink);
+> 
+> Is the free() really needed here, either the session is correctly setup and
+> tlink_spdm is returned. But if session_setup() files then what about calling
+> spdm_session_disconnect() on an unestablished session?
+
+Ah, we have more steps to add, the __free() will take function when the
+following steps fail.
+
+We may add __free() when we add more steps, but I think that makes the
+diff harder to read, so I want to keep this style.
+
 Thanks.
 
 > 
-> > +u64 tdh_exec_spdm_mng(u64 spdm_id, u64 spdm_op, struct page
-> > *spdm_param,
-> > +		      struct page *spdm_rsp, struct page *spdm_req,
-> > +		      struct tdx_page_array *spdm_out,
-> > +		      u64 *spdm_req_or_out_len)
-> > +{
-> > +	struct tdx_module_args args = {
-> > +		.rcx = spdm_id,
-> > +		.rdx = spdm_op,
-> > +		.r8 = spdm_param ? page_to_phys(spdm_param) : -1,
-> > +		.r9 = page_to_phys(spdm_rsp),
-> > +		.r10 = page_to_phys(spdm_req),
-> > +		.r11 = spdm_out ? hpa_array_t_assign_raw(spdm_out) : -1,
-> > +	};
-> > +	u64 r;
+> 
+> > +	if (IS_ERR(tlink_spdm)) {
+> > +		pci_err(pdev, "fail to setup spdm session\n");
+> > +		return PTR_ERR(tlink_spdm);
+> > +	}
 > > +
-> > +	r = seamcall_ret_ir_exec(TDH_SPDM_MNG, &args);
+> > +	retain_and_null_ptr(tlink_spdm);
 > > +
-> > +	*spdm_req_or_out_len = args.rcx;
-> > +
-> > +	return r;
-> > +}
-> > +EXPORT_SYMBOL_FOR_MODULES(tdh_exec_spdm_mng, "tdx-host");
+> > +	return 0;
+> >   }
+> 
+> <snip>
+> 
