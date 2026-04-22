@@ -1,151 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D33F1DF256;
-	Wed, 22 Apr 2026 09:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C63A3C1404
+	for <linux-coco@lists.linux.dev>; Wed, 22 Apr 2026 09:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776849529; cv=none; b=FoSj3Nv0cQKCSPfP6/5+guIJfDbg5R0V1CFAHRoltVk4DEPFjeds/D4DQOAXv8ZPjsBwWCNBxDaRsQ6Do8uB8gn31knUOZ8h6qye4P5nBMF1esS6Pk1Np6A4fGviNp3axHK8JYWdmXaf8quxB0M7uQuqFoIze9Xgrq6N73m+hGA=
+	t=1776851364; cv=none; b=mNOLqcjjoec4zGy+9W3Mz8ik9WMtWn0NTO/MjXfffajPYE7b1I2WIAcMuwrDhxMcX6v/69yHbjc82Uny3Q0lli0sHSD81JElNWHDBqai8YkORMrSXZfn2Zk3sgVBhvoB8oY8OlGQh7PljRWtqSV9x/bTyQdcdXAHjhFVdxQ7aE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776849529; c=relaxed/simple;
-	bh=K8pcoY2WgjFw92Yz0dOk8n5L/ZPIsmzw+Zb1EkmEH/o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=nBPvIP8xYYvHn6Gi3atrvlD+WleH6SRpfMdCYmDqH13ULnWi2L2fMCDu5OUFQZSuXXQQHnZLf7Y615hoElaSZXblc1OxUZzeV5ft8OTpvbQfauuRHgwhr3ozmxh1ZuGBrINLjVmPs2jsihp2p3feR+ZGhE2ybs7xZ82P5Gy/Vgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LLQZJ+1k; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776851364; c=relaxed/simple;
+	bh=ultWxa7WdCoSQYIpbTwwdH0/chhusx4Nxhnep0Jmpzk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CV8YYi6R7rO2CjOFI4TxZS+Yqnr4LctnBhDU0WR7ZBGXGeGsgcFGmdlZqoNLH4vI6DSYIDIUsh9MloQKYGgGMwmlVU5k3EEhga9+oBNfOlPFCEbZ8j0spSguoLd35oxUfL8pN7ZFYigk60nN9DTV24huK8N6E5pgeeJJLKj3/ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hwgCn3zA; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LLQZJ+1k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7191C19425;
-	Wed, 22 Apr 2026 09:18:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776849528;
-	bh=K8pcoY2WgjFw92Yz0dOk8n5L/ZPIsmzw+Zb1EkmEH/o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=LLQZJ+1kSY/o60d6TTX7DKYBkuuD8VNc4XiuneZZhwI/K3F3/KYPHPlKbb/7y41F0
-	 gW1geJvdRNu0QQF2ij+TdA1Ko6jujZCK/cQOjIaqyw1+Do9f0iniyArT4lNax/LEZV
-	 hM6b/dNMUWVUMQmA71kXlXPG59YnQYZW9oqBVyfSD41/HPP2mLSWqE4thBh30kYWAe
-	 ++lrrvZfP3q9VR1MrQ0mrIYbQIm5mwvKy5DbT3+ooWNPnWVuklVR8qXC5xAHiG3bju
-	 uV+jNi6tXJJiBLTXufIj9S5p9mECdkVaQQ3Uo/5V7pf2LGjpD8hv6xWI7SxI3bKhVG
-	 N/ctHrkaSbPjA==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>, Jiri Pirko <jiri@resnulli.us>
-Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	iommu@lists.linux.dev, linux-media@vger.kernel.org,
-	sumit.semwal@linaro.org, benjamin.gaignard@collabora.com,
-	Brian.Starkey@arm.com, jstultz@google.com, tjmercier@google.com,
-	christian.koenig@amd.com, m.szyprowski@samsung.com,
-	robin.murphy@arm.com, leon@kernel.org, sean.anderson@linux.dev,
-	ptesarik@suse.com, catalin.marinas@arm.com,
-	suzuki.poulose@arm.com, steven.price@arm.com,
-	thomas.lendacky@amd.com, john.allen@amd.com,
-	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v5 1/2] dma-mapping: introduce DMA_ATTR_CC_SHARED for
- shared memory
-In-Reply-To: <20260421121004.GA3611611@ziepe.ca>
-References: <20260325192352.437608-1-jiri@resnulli.us>
- <20260325192352.437608-2-jiri@resnulli.us> <yq5atst6ywbl.fsf@kernel.org>
- <4qdizkkoeke3cvkcf35upa7p7ick6s654eqlrizmi7ozkw5eze@tnpk2e34xgwl>
- <yq5awly0d504.fsf@kernel.org>
- <tteiecxfqy4k24wnzvp6ocxnuopyhmqtne2xwh5htwldlbzjnp@o6cbzdlurxld>
- <20260421121004.GA3611611@ziepe.ca>
-Date: Wed, 22 Apr 2026 14:48:37 +0530
-Message-ID: <yq5aik9jcpzm.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hwgCn3zA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776851363; x=1808387363;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ultWxa7WdCoSQYIpbTwwdH0/chhusx4Nxhnep0Jmpzk=;
+  b=hwgCn3zAluu8LH+/9+sFEwJ+JSHEtHNAkiVPE4mbP0T9foJuzKpwhPdl
+   7rc4gZYoCdwSwLcVG21C370M8e4R6x8WaM7gx00Bl6+ZfdKmT87k6sMQz
+   Lj4lapnRatQjkq8c1QFIyiY/c1lLa5IuIP7toIQO5r8+XVo+MgUupk4Md
+   ftIg8nJLjOsv4nZqlK6pX5NMWckACTgHMzExm2nN5HJSJInYNNZ1cAcqx
+   RYznsofp8lh2gw7HGCzOHW7UF7LYF0JptfTTl79yQt/3QePBnT0lMPc2g
+   PEgaBBZFWNb0ndAMOF/N2VGJ3ZImnGg2jN6Zv9mLn+006EFq4w94h1g6z
+   A==;
+X-CSE-ConnectionGUID: xoev9XiOQC+fWbkQHZBkOg==
+X-CSE-MsgGUID: mW9f3GuISD+02Ng13Dkfdw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="89187230"
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="89187230"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 02:49:23 -0700
+X-CSE-ConnectionGUID: 93l4kKytRFe9TaVrAF2kSA==
+X-CSE-MsgGUID: f/uyBA9kRxqBr2DnPA5UUg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="255569002"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa002.fm.intel.com with ESMTP; 22 Apr 2026 02:49:19 -0700
+Date: Wed, 22 Apr 2026 17:27:06 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Tian, Kevin" <kevin.tian@intel.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"Williams, Dan J" <dan.j.williams@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"Jiang, Dave" <dave.jiang@intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 23/31] coco/tdx-host: Setup all trusted IOMMUs on TDX
+ Connect init
+Message-ID: <aeiUartvxzsvq2Ye@yilunxu-OptiPlex-7050>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-24-yilun.xu@linux.intel.com>
+ <BN9PR11MB527640A3D76B66DCE5FFA58C8C582@BN9PR11MB5276.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BN9PR11MB527640A3D76B66DCE5FFA58C8C582@BN9PR11MB5276.namprd11.prod.outlook.com>
 
-Jason Gunthorpe <jgg@ziepe.ca> writes:
+On Thu, Apr 09, 2026 at 07:51:56AM +0000, Tian, Kevin wrote:
+> > From: Xu Yilun <yilun.xu@linux.intel.com>
+> > Sent: Saturday, March 28, 2026 12:01 AM
+> > 
+> > Setup all trusted IOMMUs on TDX Connect initialization and clear all on
+> > TDX Connect removal.
+> > 
+> > Trusted IOMMU setup is the pre-condition for all following TDX Connect
+> > operations such as SPDM/IDE setup. It is more of a platform
+> > configuration than a standalone IOMMU configuration, so put the
+> > implementation in tdx-host driver.
+> > 
+> 
+> not sure what above tries to tell. why is it a platform configuration
+> when you have seamcalls on each IOMMU?
 
-> On Tue, Apr 21, 2026 at 01:53:31PM +0200, Jiri Pirko wrote:
->> >> You reach there when is_swiotlb_force_bounce(dev) is true and
->> >> DMA_ATTR_CC_SHARED is set. What am I missing?
->> >>
->> >
->> >So a swiotlb_force_bounce will not use swiotlb bouncing if
->> >DMA_ATTR_CC_SHARED is set ? 
->> 
->> Correct. Bouncing does not make sense in this case, as shared memory is
->> already being mapped.
->
-> It is a little bit mangled, there are many reasons force_swiotlb can
-> be set, but we loose them as it flows through - swiotlb_init()
-> just has a simple SWIOTLB_FORCE
->
-> Ideally DMA_ATTR_CC_SHARED would skip swiotlb only if it is being
-> selected for CC reasons. For instance if you have the swiotlb force
-> command line parameter I would still expect it bounce shared memory.
->
-> Arguably I think this arch flow is misdesigned, the
-> is_swiotlb_force_bounce() should not be used for CC. dma_capable() is
-> the correct API to check if the device can DMA to the presented
-> address, and it will trigger swiotlb_map() just the same without
-> creating this gap.
->
-> Jason
+This is to say the TDH.IOMMU.SETUP relates to PCIe SPDM/IDE, it is not
+just about IOMMU. By identifying the
 
-Something like this?
+  for_each_iommu(iommu)
+	tdh.iommu.setup(iommu)
 
-static inline dma_addr_t dma_direct_map_phys(struct device *dev,
-		phys_addr_t phys, size_t size, enum dma_data_direction dir,
-		unsigned long attrs, bool flush)
-{
-	dma_addr_t dma_addr;
-
-	if (is_swiotlb_force_bounce(dev)) {
-		if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
-			return DMA_MAPPING_ERROR;
-
-		return swiotlb_map(dev, phys, size, dir, attrs);
-	}
-
-	if (attrs & DMA_ATTR_MMIO) {
-		dma_addr = phys;
-		if (unlikely(!dma_capable(dev, dma_addr, size, false, attrs)))
-			goto err_overflow;
-		goto dma_mapped;
-	} else if (attrs & DMA_ATTR_CC_SHARED) {
-		dma_addr = phys_to_dma_unencrypted(dev, phys);
-	} else {
-		dma_addr = phys_to_dma_encrypted(dev, phys);
-	}
-
-	if (unlikely(!dma_capable(dev, dma_addr, size, true, attrs)) ||
-	    dma_kmalloc_needs_bounce(dev, size, dir)) {
-		if (is_swiotlb_active(dev) &&
-		    !(attrs & DMA_ATTR_REQUIRE_COHERENT))
-			return swiotlb_map(dev, phys, size, dir, attrs);
-		goto err_overflow;
-	}
-
-dma_mapped:
-	if (!dev_is_dma_coherent(dev) &&
-	    !(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_MMIO))) {
-		arch_sync_dma_for_device(phys, size, dir);
-		if (flush)
-			arch_sync_dma_flush();
-	}
-	return dma_addr;
-
-and dma_capable() now does
-static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size,
-		bool is_ram, unsigned long attrs)
-{
-....
-
-	/*
-	 * if phys addr attribute is encrypted but the
-	 * device is forcing an encrypted dma addr
-	 */
-	if (!(attrs & DMA_ATTR_CC_SHARED) && force_dma_unencrypted(dev))
-		return false;
-...
-
-}
-
-
--aneesh
+as a platform configuration, it justifies why we trigger this
+configuration at tdx-host driver probe, rather than in some
+IOMMU/IOMMUFD API.
