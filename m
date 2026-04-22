@@ -1,70 +1,94 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEB43CB2F8
-	for <linux-coco@lists.linux.dev>; Wed, 22 Apr 2026 10:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2207339B41
+	for <linux-coco@lists.linux.dev>; Wed, 22 Apr 2026 12:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776853192; cv=none; b=ri/TvRAzj4XcckBNi/Grb97DUKwbIFV8gXo1HTyWjdJ9nzkQm9XIx8ACITs/6QwdklKC5C1dGQW94b/mdXN+V3LWpXeQaTwN/n+wC5rG7yJWm7VmO8yPnY3LLYIq4bKA8werrAjiH+uAnDx4sTrdUbamY71i8boMiyVeifHLj2A=
+	t=1776861648; cv=none; b=qz6Z1mMtk4xV/Xcfkb+8CuAudcpvUI2pb8EYhitBfdMett7S2NVJfXAV2LNf9W6m7Z35Eumey0gj3rNyZsfKQON3+CeqhoTifstfJXEbO7fQR8VB9HoI5TbiAB7FrBVAwwufYPR/Dw4Lddu2R8ynku2N0JA7zyYyMCoW4eugFyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776853192; c=relaxed/simple;
-	bh=RYQDqtGxjhv7K4s8pHKgwi4zGSUkmTBG3WhMUrxGSa8=;
+	s=arc-20240116; t=1776861648; c=relaxed/simple;
+	bh=a9axqCXKHPblm4gbverCkRFAKbFQBKqie9Vz8rXYU1A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BVOqFQ0c8J0E7x6/fSKbE/SeVylNjWAsczuA/SwsZ26sqeLVgpry5o2JR0C272s8Dz9HJy7bMqM0+Mw6zXEbHIdhzPbK63Tmtx1oA8CL7tgmLZMLNxSUkWeCByewjEjOWfT2pZbAC2MOV4kZS+qKxTa3j6JWUgQgy6VC4/ZnPoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=chJVT3Iy; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=tBY28n21ZbJDAt/DtDC9Vk6VifEkercvWFHIsL7gsm0o5i/IInQ+qoEG0As/mnT89qGLGDiQQbFwPxtzruyLN2IEzOKJyrmRKZat7zPA8lL1u0aC+8POvwLga39DbVaPfZhBaY0cjCo4iFVUVXyYrOSmZIPhPTnfYK42kBeHej0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=WAbY2Zke; arc=none smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="chJVT3Iy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776853191; x=1808389191;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RYQDqtGxjhv7K4s8pHKgwi4zGSUkmTBG3WhMUrxGSa8=;
-  b=chJVT3IyG+3DRHJ86bz4iA88rsRIlQfecJh9/M5GSg3eR4Av4zvnYZW1
-   g/dDIs1TqEMWnTPxXEwkuARs7LgTbrBgBtxEYNWzQvYuBS0ZHth3p0Rt5
-   dJUG8/ohOHftoRO5bAFMnnMpxAZZA8opPNlxbGzS9HUqxj/9WGjTuOaEN
-   KZ79UczntJjtQITpX9K+d1dsBzYnFW0NqepL/nJcfSuISP1zocgBqc4H7
-   EuwRj/TRizMXzbF78gAOlKlQ5kOWjQnT8fQZBKItNr/iDCMmfNNeHKF67
-   vTvvMgdXhdNp78K3rI0CD9CDevXdGFKMrcTkqKkksfzBJrnvCv2R8q4fh
-   g==;
-X-CSE-ConnectionGUID: 2/tTXQ99RU2S6ktmK44Vuw==
-X-CSE-MsgGUID: zkgE/SiOSkeEBb2TeVlnLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="77679227"
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="77679227"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 03:19:49 -0700
-X-CSE-ConnectionGUID: P2gYsQRtQVSoKuvREvJWeA==
-X-CSE-MsgGUID: 0ySYhr/kTnyRrOzI8GGvHQ==
-X-ExtLoop1: 1
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa003.fm.intel.com with ESMTP; 22 Apr 2026 03:19:44 -0700
-Date: Wed, 22 Apr 2026 17:57:31 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"Williams, Dan J" <dan.j.williams@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
-	"Jiang, Dave" <dave.jiang@intel.com>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Xu, Yilun" <yilun.xu@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Verma, Vishal L" <vishal.l.verma@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 30/31] coco/tdx-host: Implement IDE stream
- setup/teardown
-Message-ID: <aeibi7JzfZ2Kx0NU@yilunxu-OptiPlex-7050>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-31-yilun.xu@linux.intel.com>
- <BN9PR11MB5276BB48433E1AF97E5D27298C582@BN9PR11MB5276.namprd11.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="WAbY2Zke"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8ee7ffd738dso172916885a.1
+        for <linux-coco@lists.linux.dev>; Wed, 22 Apr 2026 05:40:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1776861643; x=1777466443; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gALF8C80EJ2lCyyRbSwPhK0hTNS8uppnnB2sBTEGTHs=;
+        b=WAbY2ZkewP07u+m3eVh5dgoK8SkIz0A0mbehya9kAgQUKliQk+RZxsbzVlfpUrj29e
+         YN08fVcH3dSYbjfnfuNrOGpdBR9+0rENs4+2YdtCsGUYD6eR1/QAC23cz3V7GNJwko2N
+         NNSQNQaKkflsE4Bhupndb6mWNzvaITU3Xwr5btyDMsue7t0Dun8WD+NhlgrDZRbYxxzY
+         DKmqXCT7lQgBkgjgv+9OE/F5ude247ZXc4K7vi3zTfp46/+v6QOtCqZHRqOEdQpqcx5j
+         KOur6MwkDjVwKw2KUYf4Jfx8ZGo+6gSJVmnxFXmhemSEgpQYFVGobuDsD3D0UpPpc+OI
+         gbnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776861643; x=1777466443;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gALF8C80EJ2lCyyRbSwPhK0hTNS8uppnnB2sBTEGTHs=;
+        b=qsk3ZZ72zHrvqVKZEsLIqOIInWcSFfXzdutC0fLeR2+SqIPwTpwkiImwwJv3vXmlqG
+         JGFBjPXXIGPhnbbYaOTWq2nqMlsHRwZ7AmN3P9ivhmAKsmtMNZLxCcjCZ4gRf82n0dGl
+         XepsAJbjp/1Zo5bNtVdg69wqsy0KaodRE702bYCNvXOnN2FQWuRu+1IucTRg+kpd9i4k
+         44gF9hC3DU+OUiI6Cg6u7YGYhEtg5RN7YUVHglrXbpGpMEqhprseRNfeJgsFMDcWOZS4
+         PysN3/1WKLfhiGt2ubpermtzjLyCFpjHhnR2BlURWg59wkMQ60Tj3O/0uDaP1kdU469r
+         Bv7A==
+X-Forwarded-Encrypted: i=1; AFNElJ9JeXSiXgyQib0CUPeZfwl5ZtPhztxC1chtx0Jx/9uPBH09sD7kpOvR/vV44JZaXKVBITFlcvol+uON@lists.linux.dev
+X-Gm-Message-State: AOJu0YyxTY3SYSPBG459aV6xU4CjW59BiiNfZ7Q8ecbRv4MwRmvvBh5n
+	uI/RWUNy+bkqRoysHSawgepPB0WbfYcUY1AchbfEsiA1fmz4Rqq8LJn0wvN2gz/xZMU=
+X-Gm-Gg: AeBDieuuB9mv6ZYxrKeS8/K6aDIzCvhP1hs1C9gnB/PlVzmZlyU3yWfsP7uDmmjU74k
+	BjHzwDr7oyt31hOKsNwUCJc8LLjr8fdvHq60NSHgleqrvVU9B4nLwXQu0Onky/lJmYy6XHRLU05
+	AbUrH1LmeJhtDWLr8V+KJawEnbKa2krn1b/aoZhPTV4c4b92ve1wvzdY10UpaInD2ZM8xKYSnPq
+	frhLd/W3Bjxk9ejPAke55IkS0NbOA5pIvHNqsXg7fCZZFkHmHTFMSPpcgVnpoiIiXl9v3ej4Q5R
+	pgmHv3O1cpsiAnmzZpykRuQ+3ApkRH0OKyu5APF6oz8CYOAfrgrHpT97pA7vSPs0tZEy1TyMz5j
+	snRtwKrdVEBr66tLWXflONGkIR06ybO4cCY/TP9Yy5S+LsyjL+IuBVc2Q4GTxUic/y8UKMuBBcF
+	oyuj1nOCsNlrTmW6q0Ta3sa19XBPEhL60exBds4qlENMvfWASiktIsqwDV4NG1igkqse7exRqwp
+	AcmDOeLHXAYhPoz
+X-Received: by 2002:ad4:5f0d:0:b0:8ac:adca:2325 with SMTP id 6a1803df08f44-8b028693febmr312429496d6.15.1776861643374;
+        Wed, 22 Apr 2026 05:40:43 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02e035b0asm120411376d6.22.2026.04.22.05.40.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Apr 2026 05:40:42 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wFWsj-00000007c2r-46xO;
+	Wed, 22 Apr 2026 09:40:41 -0300
+Date: Wed, 22 Apr 2026 09:40:41 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Sami Mujawar <Sami.Mujawar@arm.com>
+Cc: Suzuki Poulose <Suzuki.Poulose@arm.com>, Dan Williams <djbw@kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Catalin Marinas <Catalin.Marinas@arm.com>,
+	"will@kernel.org" <will@kernel.org>,
+	"thuth@redhat.com" <thuth@redhat.com>,
+	Steven Price <Steven.Price@arm.com>,
+	"gshan@redhat.com" <gshan@redhat.com>,
+	Yeoreum Yun <YeoReum.Yun@arm.com>,
+	"cedric.xing@intel.com" <cedric.xing@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dionna Glaze <dionnaglaze@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH 0/3] arm64/virt: Add Arm CCA measurement register support
+Message-ID: <20260422124041.GJ3611611@ziepe.ca>
+References: <20260413084957.327661-1-sami.mujawar@arm.com>
+ <20260413125925.GK3694781@ziepe.ca>
+ <514ddb27-137b-4223-84fe-2152737db3a6@arm.com>
+ <20260414122950.GW3694781@ziepe.ca>
+ <a1831d3d-af31-4fa7-b107-f4001841f051@arm.com>
+ <20260414133525.GA2577880@ziepe.ca>
+ <AS8PR08MB680669CBFA9654BC12179D5E842F2@AS8PR08MB6806.eurprd08.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,18 +97,29 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <BN9PR11MB5276BB48433E1AF97E5D27298C582@BN9PR11MB5276.namprd11.prod.outlook.com>
+In-Reply-To: <AS8PR08MB680669CBFA9654BC12179D5E842F2@AS8PR08MB6806.eurprd08.prod.outlook.com>
 
-On Thu, Apr 09, 2026 at 08:02:33AM +0000, Tian, Kevin wrote:
-> > From: Xu Yilun <yilun.xu@linux.intel.com>
-> > Sent: Saturday, March 28, 2026 12:02 AM
+On Wed, Apr 22, 2026 at 08:57:00AM +0000, Sami Mujawar wrote:
+
+> > So this is tying it to the same FW event log that TPM uses.
 > > 
-> > Implementation for a most straightforward Selective IDE stream setup.
-> > Hard code all parameters for Stream Control Register. And no IDE Key
-> > Refresh support.
+> > I think that strengthens my point this should all be uninform. TPM
+> > drivers are directly exposing the event log today, but I guess that
+> > needs generalization if non-TPM drivers are going to present it as
+> > well.
 > > 
-> 
-> 'more straightforward', compared to what?
+> > How do you imagine getting and manipulating the EFI event log to use
+> > with this?
+>
+> The event logs from UEFI will be handed off to the OS using CCEL
+> ACPI table. The CCEL table spec update can be seen at
+> https://github.com/tianocore/edk2/issues/11384
 
-Actually it is " *most* straightforward", I just mean "very".
+I ment from linux userspace. event log is well establihsed in the aCPI
+side for TPM and in Linux today it is only exposed to userspace
+through TPM.
 
+This is not TPM, so how do you intend to give the event log to
+userspace?
+
+Jason
