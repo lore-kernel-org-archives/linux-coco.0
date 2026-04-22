@@ -1,67 +1,119 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60AC52BEC43;
-	Wed, 22 Apr 2026 06:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776838374; cv=none; b=dWmZvHunz1gMYw+LVe5uQyRJ7hBOWT8Rfi9N3hy0ei/yU8w9hKHLeShVD/cMhuSONJ/nhEBIpz6Fejy/1AnZhoLkdqHqBhTQL+7sE45eZZiUoogrZV5igxxVzAHeerPxacEXiB1waabjYY8llHo46ZfX3a11VgVRYGZ7gIeuwss=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776838374; c=relaxed/simple;
-	bh=aTy8W7SgWTy9MJdjHu3wk/HtiWHlpjo1ZfaA7EhmecI=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=VYvuJ6hQ8AdHEVt5i8nejZ/7lev0L5pK+j46xzkstvA1RmN00+wffI79X5wBnnZwunCRena51Mhw3Ny2fLl7mwviCWWIMkyqDDqCd4G7wamfkYNc/EPGb57DGbI+5l7rfGSIZcHjXYz53d3f0DaOnEHxCCS7MgI17Akd9bK4c2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=ikxH1ohJ; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="ikxH1ohJ"
-Received: from 8bytes.org (p4ffe051a.dip0.t-ipconnect.de [79.254.5.26])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 012941C2E8C;
-	Wed, 22 Apr 2026 08:12:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1776838366;
-	bh=aTy8W7SgWTy9MJdjHu3wk/HtiWHlpjo1ZfaA7EhmecI=;
-	h=Date:From:To:Subject:From;
-	b=ikxH1ohJ2KfzLzW2hrE9PZacv1QFbnQli0erNkV9ZOB8GnNN2q6G1BxbCejmE9apn
-	 r7bDR1ncs51imfMar8oyc+jDw6a1BQQWcGaRpAPKM/dvDg41J8Y3MUFBCCX2aoO8qT
-	 9Scxo9K/hhFx1m8gM8O3RMJCA0l1PZmgHPip7gyllK4dMxyZmoi3GxXhzCnWe/w4RL
-	 FI3CPUKJGIKmONL8cr2Sk/LeBy6KJ8thVpJsuwLA2l4T6OpbzCxun/9T5PCyYR/kEO
-	 nc4t8Urb4UxhyLNkqxs2xyeYvJACIKFCTC9OB4CYnNXkaqnc9jBHKaPFqF+eBo5br/
-	 7/fOnZB6RkqoQ==
-Date: Wed, 22 Apr 2026 08:12:44 +0200
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Subject: SVSM Development Call April 22, 2026
-Message-ID: <ymracc35f44xtep4zvexdvqxbh2sfudsnnvz6nrgj56wyxaekv@xrxkyzbpdohk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FF42DF13B
+	for <linux-coco@lists.linux.dev>; Wed, 22 Apr 2026 06:23:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776838992; cv=none; b=QcaX26Vib/qWwkvVzWlvwFgcEbRvJA6CEz7mmX/KYDNYp9j06d89XN/UdOrDOYI4FDlgsgirPqhYohmutcsKWnozlRqlXZcMEyGyA5LXc3MZO11HJvyJ3wUw66f1mhZoGqhKAQpaFgW4mXdsT9dv6ZMgQKXK2462ZenEkDJ+lhA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776838992; c=relaxed/simple;
+	bh=lVqWwEzBD5uWHoWpJG0AYHVuBpkn80HziIfAaRo+x3M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cY1uzjAhO51n8RrGT+/keb7ggKZLbD4H1U7B1gXXWdr55f0mN+KhA1+ZAaUvaZo3inVrlX0PWJBitLbjYnyTJ8xHHFxy73np45FB0rUxr+2DQsZa09W05IeMZOe5r69PZ6Yz9nobHq/TExVVqRqsWh3x17oFGVibskDgOcIbzAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N9IJLGMj; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N9IJLGMj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776838991; x=1808374991;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lVqWwEzBD5uWHoWpJG0AYHVuBpkn80HziIfAaRo+x3M=;
+  b=N9IJLGMjh9vwC7BcyycxkjMrUNH3XR2SXpKceKmozmuJiHTvufXCad1Z
+   qiRVrlFN5rKMHtgb5A8gstk1VXUPqpqYCvtKuvUQS0Oiv2TmhNCcvOA4b
+   O7SAp/ZFmbQv2yvLLZNJ9vbdHNBiQtMV3feqSKXiQOopuza8zxpg9X51K
+   mpD5knq3UCeo1mPVaAwO8K+lv7vkARTqRwPJZIju7dstdM9yHPcQHcyhp
+   O9r9jaMvS1Z0LDdYRD3jnu1s0jnc94R7fJXJPITf18Hl8D7gcAKw0ggKX
+   xQyiqvwv5qY2iRgdSF+1w5pTjtvx/ZEISXTZfoIG3Zoqq8wvgHy0Cjli4
+   Q==;
+X-CSE-ConnectionGUID: RGB3HLkDRfy2ttpEaj73Ew==
+X-CSE-MsgGUID: D8ydW+8JTnyZsVpxkwrPmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="88860356"
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="88860356"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 23:23:11 -0700
+X-CSE-ConnectionGUID: Idh6YeTtSxO0s4azohgAFA==
+X-CSE-MsgGUID: C0/3bwQBRsClVvZZ/9DyhA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="236627526"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa004.jf.intel.com with ESMTP; 21 Apr 2026 23:23:07 -0700
+Date: Wed, 22 Apr 2026 14:00:54 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Tian, Kevin" <kevin.tian@intel.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"Williams, Dan J" <dan.j.williams@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"Jiang, Dave" <dave.jiang@intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 19/31] iommu/vt-d: Reserve the MSB domain ID bit for
+ the TDX module
+Message-ID: <aehkFicutMwa2LP+@yilunxu-OptiPlex-7050>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-20-yilun.xu@linux.intel.com>
+ <BN9PR11MB52767F28E9FF692ACE69F3D78C582@BN9PR11MB5276.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <BN9PR11MB52767F28E9FF692ACE69F3D78C582@BN9PR11MB5276.namprd11.prod.outlook.com>
 
-Hi,
+> Here we need more words to explain the strategy here.
+> 
+> The comment says "When IOMMU is *enabled*...", but the code here
+> just checks the static capability. It's probably a design choice that you
+> don't want to add complexity on recycling DIDs when TDX connect
+> is actually enabled, but it's worth a note here.
 
-Here is the call for agenda items for this weeks SVSM development call.  Please
-send any agenda items you have in mind as a reply to this email or raise them
-in the meeting.
+Yes, that's the rationale. I'll add it to comments.
 
-We will use the LF Zoom instance. Details of the meeting  can be found in our
-governance repository at:
+> 
+> btw in patch23 commit msg:
+> 
+> "
+> There is no dedicated way to enumerate which IOMMU devices support
+> trusted operations. The host has to call TDH.IOMMU.SETUP on all IOMMU
+> devices and tell their trusted capability by the return value.
+> "
+> 
+> which implies that ecap_tdxc() alone doesn't really report the capability?
 
-	https://github.com/coconut-svsm/governance
+Ah, good catch. Let me explain:
 
-The link to the COCONUT-SVSM calendar is:
+ecap_tdxc does report the capability. This bit is special cause both
+trusted part & untrusted part access it.
 
-	https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
+For IOMMU driver (which now handles the untrusted part), it can directly
+query to this bit and decide what to do.
 
-The meeting will be recorded and the recording eventually published.
+But for tdx-host driver which handles the trusted part, it shouldn't
+speculate into the IOMMU for capability enumeration. TDX Module has more
+concerns about trusted capability, including the related I/O stack
+capabilities e.g. SPDM/IDE cap...  So in patch23 I actually mean we
+don't have an enumeration SEAMCALL for trusted capability, I will
+refactor that message:
 
-Regards,
+    There is no dedicated *SEAMCALL* to enumerate which IOMMU devices support
+    trusted operations...
 
-	Jörg
+> 
+> anyway all of those need a better explanation here...
