@@ -1,63 +1,64 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4657A3BD25D
-	for <linux-coco@lists.linux.dev>; Thu, 23 Apr 2026 12:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AF13B38AD
+	for <linux-coco@lists.linux.dev>; Thu, 23 Apr 2026 16:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776946865; cv=none; b=syAnH4zxphu2NDceTWFLUnSsM8lRShF9hMMuYP/e7zyzUfSrwMxJUdkPYYQWoKcGglXVuVx15tFYpqzNY6xieoSmB+lSK1SQMaVXgRNC0wqPpZz1htzBp+UmDduEtp0eo/7ug7L3TWe3iyyZOR9DnIh8joEXeXAupyQ4dDga04A=
+	t=1776960705; cv=none; b=YJ0X6ddFoVNJZQKDvPrHPsZPrYwPlTamZjNpMZD7zMnpzkpCjWOHJ3hXtwbAPJzs+/Q0SErvvn6uEhOFJhkyPHi6su+uDrtIZBxx6dvbgLSMj+skSPrfLGTHUGgXqcr5IJKbVkNgK6mwDAmTRx9QYcfguGlDNgnYQSGA2J/AcKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776946865; c=relaxed/simple;
-	bh=9vX8M4xMjcTWYrCOwYDAFRogS36VuvNkR+NBI9imW6Q=;
+	s=arc-20240116; t=1776960705; c=relaxed/simple;
+	bh=NwSQ5W3OkXSYKvZWQ1PKtWmGWeMIrSt8dgUnFNUEk9c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DRxfCtkFVoMHbmF9WFu3FRZ6X7///iKlAd2hbmSLIAx1mLcIzynKnDWDNDtjqEeSZR1e9OskpQJk9agX1fnEdVQzQm2hHNgYEH+WsW5Ai9BkRSWRZTKmL/6Qu9te59GiPYtg19e1/D6o1RU9PMbBZYHJ81oD6+mfl7lUP0J4P+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aBIwqBOQ; arc=none smtp.client-ip=192.198.163.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=kZcjOU4uJRsAN4kvy1gdjcOW/vgiePLTWRpD77H2aHYjp0TTe5TrMbGc+Hg6m0vqUE7hiylAotRCPjtM0WhqQ5amWi2fZ2rdxA+SD+QvflEkVZf3h+rbpQNoLKues6bn1+Ut9IyvvAgHyUDDvjg2B+gK6YnVrezhB6MOo1Bi548=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OJ5roPcp; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aBIwqBOQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OJ5roPcp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776946864; x=1808482864;
+  t=1776960702; x=1808496702;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=9vX8M4xMjcTWYrCOwYDAFRogS36VuvNkR+NBI9imW6Q=;
-  b=aBIwqBOQQD1BhnIWzd/JnBjzYrni9ZnEG7+y1aQ1db7UtZnZ+Y+bFChQ
-   BMhJp/5sQu/JbSJXFk1zn9jRPojxMz54W7p2N8D1/cypKJ+3zwCktpsYg
-   wjC6XitWHo6Be6Nkvo4T358JYzexJyQM1uKZLIbo+5BK+3IUSn4A1Cpdc
-   LJuiKux1llNnE9KIoysnO1Yyr7AYleyJz7sMqWNoAOLtjRWeqevaMgO/1
-   pj7sUaFzHUyqWzghR+DcE2An1Yn2A+MULB5yppW8+xIiXYnhJ/GARaU+5
-   xFtOnd3v1/jdrEf1OqE9NYJXHyiJEPvd6Ksn5diIlGzYMwCy4o1HCfNkn
-   g==;
-X-CSE-ConnectionGUID: CUGCOgtLSNiTbEsYvlU/rg==
-X-CSE-MsgGUID: O/nbxeYTTGmfkZ5JNV75HA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="77975638"
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; 
-   d="scan'208";a="77975638"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 05:21:03 -0700
-X-CSE-ConnectionGUID: OP7QmNhNQvS8srQRLkMADg==
-X-CSE-MsgGUID: pj/gSRnBQMusJYYNDDiCKg==
+  bh=NwSQ5W3OkXSYKvZWQ1PKtWmGWeMIrSt8dgUnFNUEk9c=;
+  b=OJ5roPcp/oK41GyzL/HnZSz+aulrZVG8epy0E0kuRTCkfdNiEKdHay6x
+   SbFBnwjQ+qw0xnSonQAGwQvwp8wEGkPuHiF8ATs3h4EhM+/H+lZ63z+a9
+   f90n9ZssS7ywXtPS56mtrhp/V+xcPVV16uAH7O+d+n966UP/ZVgu8uqiN
+   jm9bsAouCfnZlUwu3FuW42b8NSgNGmurRfM20CB2S4eMAuEZU7QGw1PKe
+   ajckppwCYekKgZiKNidmo12C05h36DBQT2V38Ef1QOPcx0GKjY8AS/ZPi
+   ldrCJlZQbX4ZbMEaB8Z7Pbyy20bwrcDtNJs+4EvNRhjaaJ0DeKPtdHw/+
+   A==;
+X-CSE-ConnectionGUID: KNgnHK/FRmW+253955DFPA==
+X-CSE-MsgGUID: 70DR83ciTB+pCR1fPynp3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11765"; a="77100787"
+X-IronPort-AV: E=Sophos;i="6.23,195,1770624000"; 
+   d="scan'208";a="77100787"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 09:11:42 -0700
+X-CSE-ConnectionGUID: xhjZTAs0QHGErBnFKdPmyQ==
+X-CSE-MsgGUID: jSKRxRWHQMWaqvQ3FNHC5Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; 
-   d="scan'208";a="231613964"
+X-IronPort-AV: E=Sophos;i="6.23,195,1770624000"; 
+   d="scan'208";a="236689740"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa006.jf.intel.com with ESMTP; 23 Apr 2026 05:21:00 -0700
-Date: Thu, 23 Apr 2026 19:58:43 +0800
+  by orviesa003.jf.intel.com with ESMTP; 23 Apr 2026 09:11:37 -0700
+Date: Thu, 23 Apr 2026 23:49:20 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: Dan Williams <djbw@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org, x86@kernel.org,
-	chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
-	yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	dan.j.williams@intel.com, x86@kernel.org, chao.gao@intel.com,
+	dave.jiang@intel.com, baolu.lu@linux.intel.com, yilun.xu@intel.com,
+	zhenzhong.duan@intel.com, kvm@vger.kernel.org,
 	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
 	kas@kernel.org, xiaoyao.li@intel.com, vishal.l.verma@intel.com,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 06/31] x86/virt/tdx: Read global metadata for TDX
- Module Extensions/Connect
-Message-ID: <aeoJczEza936bLO3@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH v2 08/31] x86/virt/tdx: Configure TDX Module with
+ optional TDX Connect feature
+Message-ID: <aeo/gOWbGy89nWDN@yilunxu-OptiPlex-7050>
 References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-7-yilun.xu@linux.intel.com>
- <69e7f808e9aa5_fe0831004@djbw-dev.notmuch>
+ <20260327160132.2946114-9-yilun.xu@linux.intel.com>
+ <69e8223f4c8e6_fe08310058@djbw-dev.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -66,36 +67,125 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <69e7f808e9aa5_fe0831004@djbw-dev.notmuch>
+In-Reply-To: <69e8223f4c8e6_fe08310058@djbw-dev.notmuch>
 
-On Tue, Apr 21, 2026 at 03:19:52PM -0700, Dan Williams wrote:
+On Tue, Apr 21, 2026 at 06:19:59PM -0700, Dan Williams wrote:
 > Xu Yilun wrote:
-> > Add reading of the global metadata for TDX Module Extensions & TDX
-> > Connect. Add them in a batch as TDX Connect is currently the only user
-> > of TDX Module Extensions and no way to initialize TDX Module Extensions
-> > without firstly enabling TDX Connect.
+> > TDX Module supports optional TDX features (e.g. TDX Connect & TDX Module
+> > Extensions) that won't be enabled by default.
+> 
+> So this is another place where "optional" is misleading. For simplicity
+> there is no mechanism to fallback from TDX Connect operation if present,
+> at least in the core. The only optional aspects would be the mechanism
+> that could be unloaded through the tdx_host driver.
+
+I see. I think I should use 'extra' instead of 'optional' in all places.
+I'll rephase the comments.
+
+> 
+> .../me notices that other comments on this patch say the same, but do
+> read on, another important detail about ktime_get_real_seconds() below.
+> 
+> > It extends TDH.SYS.CONFIG for host to choose to enable them on bootup.
 > > 
-> > TDX Module Extensions & TDX Connect are optional features enumerated by
-> > TDX_FEATURES0. Check the TDX_FEATURES0 before reading these metadata to
-> > avoid failing the whole TDX initialization.
+> > Call TDH.SYS.CONFIG with a new bitmap input parameter to specify which
+> > features to enable. The bitmap uses the same definitions as
+> > TDX_FEATURES0. But note not all bits in TDX_FEATURES0 are valid for
+> > configuration, e.g. TDX Module Extensions is a service that supports TDX
+> > Connect, it is implicitly enabled when TDX Connect is enabled. Setting
+> > TDX_FEATURES0_EXT in the bitmap has no effect.
+> > 
+> > TDX Module advances the version of TDH.SYS.CONFIG for the change, so
+> > use the latest version (v1) for optional feature enabling. But
+> > supporting existing Modules which only support v0 is still necessary
+> > until they are deprecated, enumerate via TDX_FEATURES0 to decide which
+> > version to use.
 > 
-> I think it is important to distinguish "optional" module features vs
-> required Linux features. Linux requires all features that a module
-> advertises to succeed at core TDX init time.
+> I would say this differently, it will always be the case that new
+> kernels are needed to enable new features, but it is unlikely that
+> TDH.SYS.CONFIG ever needs to change again. The v0 -> v1 transition means
+> that feature bits are to be used here on out. So there is little value
+> in worrying about deprecating v0 to save a couple lines of code in 5-7
+> years when these original TDX platforms sunset.
 
-Agree. But I want to reduce the scope to only about metadata reading in
-this patch. So:
-
-    TDX Module Extensions is an optional features enumerated by
-    TDX_FEATURES0. But in the implementation, Linux requires that all
-    features that a Module advertises must have a complete, valid set of
-    metadata, and the check must succeed at core TDX initialization time.
-
-    Check TDX_FEATURES0 before reading these metadata. If a feature is
-    advertised, a failure in reading associated metadata causes the whole
-    TDX initialization to fail, otherwise skip.
+OK. I'll use your rationale.
 
 > 
-> Otherwise, this looks ok / consistent with other metadata reading. It 
-> sets the precedent that if TDX Connect is advertised it must succeed all
-> core initialization.
+> > TDX Module updates global metadata when optional features are enabled.
+> > Host should update the cached tdx_sysinfo to reflect these changes.
+> > 
+> > Co-developed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> > ---
+> >  arch/x86/virt/vmx/tdx/tdx.h |  3 ++-
+> >  arch/x86/virt/vmx/tdx/tdx.c | 16 +++++++++++++++-
+> >  2 files changed, 17 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+> > index e5a9331df451..870bb75da3ba 100644
+> > --- a/arch/x86/virt/vmx/tdx/tdx.h
+> > +++ b/arch/x86/virt/vmx/tdx/tdx.h
+> > @@ -58,7 +58,8 @@
+> >  #define TDH_PHYMEM_CACHE_WB		40
+> >  #define TDH_PHYMEM_PAGE_WBINVD		41
+> >  #define TDH_VP_WR			43
+> > -#define TDH_SYS_CONFIG			45
+> > +#define TDH_SYS_CONFIG_V0		45
+> > +#define TDH_SYS_CONFIG			SEAMCALL_LEAF_VER(TDH_SYS_CONFIG_V0, 1)
+> >  
+> >  /* TDX page types */
+> >  #define	PT_NDA		0x0
+> > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> > index 130214933c2f..0c5d6bdd810f 100644
+> > --- a/arch/x86/virt/vmx/tdx/tdx.c
+> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> > @@ -1353,6 +1353,7 @@ static int construct_tdmrs(struct list_head *tmb_list,
+> >  static int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
+> >  {
+> >  	struct tdx_module_args args = {};
+> > +	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
+> >  	u64 *tdmr_pa_array;
+> >  	size_t array_sz;
+> >  	int i, ret;
+> > @@ -1377,7 +1378,15 @@ static int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
+> >  	args.rcx = __pa(tdmr_pa_array);
+> >  	args.rdx = tdmr_list->nr_consumed_tdmrs;
+> >  	args.r8 = global_keyid;
+> > -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
+> > +
+> > +	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_TDXCONNECT) {
+> > +		args.r9 |= TDX_FEATURES0_TDXCONNECT;
+> > +		args.r11 = ktime_get_real_seconds();
+> 
+> Mainline has reason to not entertain this module requirement. The fact
+> that passing zero is an error is useful to detect unsupported modules.
+
+Ah, it is "useful"...  :)
+
+> An updated module would accept zero as indicating "VMM requests module
+> disable all policy and mechanisms related to untrusted wall clock time".
+> Specifically, there are several problems with this:
+> 
+> 1/ No other TSM implementation requires the VMM to pass in an untrusted time
+> 2/ The wall time may change and may require hooks to keep the module time
+>    up to date, but see point 1/, this would be a TDX special flower hook.
+> 3/ Presumably this allows the module or the guest to do certificate expiration
+>    checks, but that is the responsibility of the relying party. The
+>    relying party may have reason to accept an "expired" cert as determined
+>    by VMM wall clock, and the guest presumably already has mechanisms to
+>    determine untrusted wall clock time from the VMM if it wants. Guests
+>    do not need TDX ABI for that.
+> 
+> So I think Linux wants to pass 0 here and wait for modules that accept
+> that as the start of TDX Connect support. As you said, given there are
+> no released modules with TDX Connect there is time to make that first
+> release drop this requirement.
+
+I see. Actually the Module is about to remove the r11 RTC.
+
+https://cdrdv2.intel.com/v1/dl/getContent/871617
+
+I'll remove this r11.
+
+
