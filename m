@@ -1,64 +1,72 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AF13B38AD
-	for <linux-coco@lists.linux.dev>; Thu, 23 Apr 2026 16:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248F838C41E
+	for <linux-coco@lists.linux.dev>; Thu, 23 Apr 2026 17:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776960705; cv=none; b=YJ0X6ddFoVNJZQKDvPrHPsZPrYwPlTamZjNpMZD7zMnpzkpCjWOHJ3hXtwbAPJzs+/Q0SErvvn6uEhOFJhkyPHi6su+uDrtIZBxx6dvbgLSMj+skSPrfLGTHUGgXqcr5IJKbVkNgK6mwDAmTRx9QYcfguGlDNgnYQSGA2J/AcKc=
+	t=1776963826; cv=none; b=j1yeA2dRUg7ccjVBuKBg7+S+Ib3QTrK8ZBYt+FIDIKO9aAX+plTtFeR9KxIt4tYF1l4s7IO97ONVjpZQzUwDREOv7zM9tIKYDI0d6y/QDxJblwQwPpU64GB+6+Vb1ItK5hyxMAHnuuwYW8PU2/SL8K9KC9PGiaPOoWxyhK9rWjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776960705; c=relaxed/simple;
-	bh=NwSQ5W3OkXSYKvZWQ1PKtWmGWeMIrSt8dgUnFNUEk9c=;
+	s=arc-20240116; t=1776963826; c=relaxed/simple;
+	bh=JQVWx7RaIDbESE9oPeqlS8yppidlsNm3EhrW2QSV4FU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kZcjOU4uJRsAN4kvy1gdjcOW/vgiePLTWRpD77H2aHYjp0TTe5TrMbGc+Hg6m0vqUE7hiylAotRCPjtM0WhqQ5amWi2fZ2rdxA+SD+QvflEkVZf3h+rbpQNoLKues6bn1+Ut9IyvvAgHyUDDvjg2B+gK6YnVrezhB6MOo1Bi548=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OJ5roPcp; arc=none smtp.client-ip=192.198.163.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=HyzUT2tnNdkP1Q2OwFWMJZzYjXtwVYMuo4nGkglUPWdGrqrppcYWqhii5o/OJmVrrt5DahzZuGkH3+Y5VJlBSXk+H19fdMB3LKZTTlCzGoZIiB+stXRsfC58dejcduopdBPyCmI3BPwTVicybH7owVzjDbgKMz9YUS/ConigYkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U01BanXf; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OJ5roPcp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U01BanXf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776960702; x=1808496702;
+  t=1776963824; x=1808499824;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=NwSQ5W3OkXSYKvZWQ1PKtWmGWeMIrSt8dgUnFNUEk9c=;
-  b=OJ5roPcp/oK41GyzL/HnZSz+aulrZVG8epy0E0kuRTCkfdNiEKdHay6x
-   SbFBnwjQ+qw0xnSonQAGwQvwp8wEGkPuHiF8ATs3h4EhM+/H+lZ63z+a9
-   f90n9ZssS7ywXtPS56mtrhp/V+xcPVV16uAH7O+d+n966UP/ZVgu8uqiN
-   jm9bsAouCfnZlUwu3FuW42b8NSgNGmurRfM20CB2S4eMAuEZU7QGw1PKe
-   ajckppwCYekKgZiKNidmo12C05h36DBQT2V38Ef1QOPcx0GKjY8AS/ZPi
-   ldrCJlZQbX4ZbMEaB8Z7Pbyy20bwrcDtNJs+4EvNRhjaaJ0DeKPtdHw/+
-   A==;
-X-CSE-ConnectionGUID: KNgnHK/FRmW+253955DFPA==
-X-CSE-MsgGUID: 70DR83ciTB+pCR1fPynp3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11765"; a="77100787"
+  bh=JQVWx7RaIDbESE9oPeqlS8yppidlsNm3EhrW2QSV4FU=;
+  b=U01BanXf80hkdzWZ1KTty5SW5ZXTa3wO8hhQyi7fUWi0KwtQv3koEi6x
+   JSjdOvGs5Y4PU3J0nvrU9CYodlugUMgYonuKZH8nakDtUE+WqNxKqwx49
+   0SajcwCIWGyiJUAcAyJ3dIB6RZUUH5LsmhFymunjvysH1WLewHZBgrjK4
+   54IAhcsNYfwXClGzzxMSPMFRMOuIX3bkGFRtuhK1qx26imFwULvMeavXB
+   sez59r0NIAElJeW2xlc1dZRyHN3OfhcK5NXrH1cFecTGqeqWWzDC7/clW
+   Cvkza17u0AgCVhS/Z0Ty/1OsXjrr/SXp4J9Vr4Gjj0VlBIkbPADX2d0+E
+   w==;
+X-CSE-ConnectionGUID: WaXmbjVOQvK9QB8H6XWBZQ==
+X-CSE-MsgGUID: vQtWsyBGQYGJfwQVsRlc7g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11765"; a="88634139"
 X-IronPort-AV: E=Sophos;i="6.23,195,1770624000"; 
-   d="scan'208";a="77100787"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 09:11:42 -0700
-X-CSE-ConnectionGUID: xhjZTAs0QHGErBnFKdPmyQ==
-X-CSE-MsgGUID: jSKRxRWHQMWaqvQ3FNHC5Q==
+   d="scan'208";a="88634139"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 10:03:43 -0700
+X-CSE-ConnectionGUID: ithzOzeGTPu1MKhvwWn4pQ==
+X-CSE-MsgGUID: yNROL9LKSGe+PXzQHmaUTg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,195,1770624000"; 
-   d="scan'208";a="236689740"
+   d="scan'208";a="256216467"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa003.jf.intel.com with ESMTP; 23 Apr 2026 09:11:37 -0700
-Date: Thu, 23 Apr 2026 23:49:20 +0800
+  by fmviesa001.fm.intel.com with ESMTP; 23 Apr 2026 10:03:39 -0700
+Date: Fri, 24 Apr 2026 00:41:22 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dan Williams <djbw@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	dan.j.williams@intel.com, x86@kernel.org, chao.gao@intel.com,
-	dave.jiang@intel.com, baolu.lu@linux.intel.com, yilun.xu@intel.com,
-	zhenzhong.duan@intel.com, kvm@vger.kernel.org,
-	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
-	kas@kernel.org, xiaoyao.li@intel.com, vishal.l.verma@intel.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 08/31] x86/virt/tdx: Configure TDX Module with
- optional TDX Connect feature
-Message-ID: <aeo/gOWbGy89nWDN@yilunxu-OptiPlex-7050>
+To: "Huang, Kai" <kai.huang@intel.com>
+Cc: "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"Jiang, Dave" <dave.jiang@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 10/31] x86/virt/tdx: Add extra memory to TDX Module
+ for Extensions
+Message-ID: <aepLsi/cHnw3Cfgs@yilunxu-OptiPlex-7050>
 References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-9-yilun.xu@linux.intel.com>
- <69e8223f4c8e6_fe08310058@djbw-dev.notmuch>
+ <20260327160132.2946114-11-yilun.xu@linux.intel.com>
+ <89bccca9a409e02667278fd83f0b7b9064557dab.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,125 +75,111 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <69e8223f4c8e6_fe08310058@djbw-dev.notmuch>
+In-Reply-To: <89bccca9a409e02667278fd83f0b7b9064557dab.camel@intel.com>
 
-On Tue, Apr 21, 2026 at 06:19:59PM -0700, Dan Williams wrote:
-> Xu Yilun wrote:
-> > TDX Module supports optional TDX features (e.g. TDX Connect & TDX Module
-> > Extensions) that won't be enabled by default.
-> 
-> So this is another place where "optional" is misleading. For simplicity
-> there is no mechanism to fallback from TDX Connect operation if present,
-> at least in the core. The only optional aspects would be the mechanism
-> that could be unloaded through the tdx_host driver.
-
-I see. I think I should use 'extra' instead of 'optional' in all places.
-I'll rephase the comments.
-
-> 
-> .../me notices that other comments on this patch say the same, but do
-> read on, another important detail about ktime_get_real_seconds() below.
-> 
-> > It extends TDH.SYS.CONFIG for host to choose to enable them on bootup.
-> > 
-> > Call TDH.SYS.CONFIG with a new bitmap input parameter to specify which
-> > features to enable. The bitmap uses the same definitions as
-> > TDX_FEATURES0. But note not all bits in TDX_FEATURES0 are valid for
-> > configuration, e.g. TDX Module Extensions is a service that supports TDX
-> > Connect, it is implicitly enabled when TDX Connect is enabled. Setting
-> > TDX_FEATURES0_EXT in the bitmap has no effect.
-> > 
-> > TDX Module advances the version of TDH.SYS.CONFIG for the change, so
-> > use the latest version (v1) for optional feature enabling. But
-> > supporting existing Modules which only support v0 is still necessary
-> > until they are deprecated, enumerate via TDX_FEATURES0 to decide which
-> > version to use.
-> 
-> I would say this differently, it will always be the case that new
-> kernels are needed to enable new features, but it is unlikely that
-> TDH.SYS.CONFIG ever needs to change again. The v0 -> v1 transition means
-> that feature bits are to be used here on out. So there is little value
-> in worrying about deprecating v0 to save a couple lines of code in 5-7
-> years when these original TDX platforms sunset.
-
-OK. I'll use your rationale.
-
-> 
-> > TDX Module updates global metadata when optional features are enabled.
-> > Host should update the cached tdx_sysinfo to reflect these changes.
-> > 
-> > Co-developed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> > ---
-> >  arch/x86/virt/vmx/tdx/tdx.h |  3 ++-
-> >  arch/x86/virt/vmx/tdx/tdx.c | 16 +++++++++++++++-
-> >  2 files changed, 17 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-> > index e5a9331df451..870bb75da3ba 100644
-> > --- a/arch/x86/virt/vmx/tdx/tdx.h
-> > +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> > @@ -58,7 +58,8 @@
-> >  #define TDH_PHYMEM_CACHE_WB		40
-> >  #define TDH_PHYMEM_PAGE_WBINVD		41
-> >  #define TDH_VP_WR			43
-> > -#define TDH_SYS_CONFIG			45
-> > +#define TDH_SYS_CONFIG_V0		45
-> > +#define TDH_SYS_CONFIG			SEAMCALL_LEAF_VER(TDH_SYS_CONFIG_V0, 1)
-> >  
-> >  /* TDX page types */
-> >  #define	PT_NDA		0x0
-> > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> > index 130214933c2f..0c5d6bdd810f 100644
-> > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> > @@ -1353,6 +1353,7 @@ static int construct_tdmrs(struct list_head *tmb_list,
-> >  static int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
-> >  {
-> >  	struct tdx_module_args args = {};
-> > +	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
-> >  	u64 *tdmr_pa_array;
-> >  	size_t array_sz;
-> >  	int i, ret;
-> > @@ -1377,7 +1378,15 @@ static int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
-> >  	args.rcx = __pa(tdmr_pa_array);
-> >  	args.rdx = tdmr_list->nr_consumed_tdmrs;
-> >  	args.r8 = global_keyid;
-> > -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
+On Thu, Apr 23, 2026 at 12:59:55AM +0000, Huang, Kai wrote:
+> On Sat, 2026-03-28 at 00:01 +0800, Xu Yilun wrote:
+> > +static int tdx_ext_mem_add(struct tdx_page_array *ext_mem)
+> > +{
+> > +	struct tdx_module_args args = {
+> > +		.rcx = hpa_list_info_assign_raw(ext_mem),
+> > +	};
+> > +	u64 r;
 > > +
-> > +	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_TDXCONNECT) {
-> > +		args.r9 |= TDX_FEATURES0_TDXCONNECT;
-> > +		args.r11 = ktime_get_real_seconds();
+> > +	tdx_clflush_page_array(ext_mem);
+> > +
+> > +	do {
+> > +		r = seamcall_ret(TDH_EXT_MEM_ADD, &args);
+> > +		cond_resched();
+> > +	} while (r == TDX_INTERRUPTED_RESUMABLE);
 > 
-> Mainline has reason to not entertain this module requirement. The fact
-> that passing zero is an error is useful to detect unsupported modules.
-
-Ah, it is "useful"...  :)
-
-> An updated module would accept zero as indicating "VMM requests module
-> disable all policy and mechanisms related to untrusted wall clock time".
-> Specifically, there are several problems with this:
 > 
-> 1/ No other TSM implementation requires the VMM to pass in an untrusted time
-> 2/ The wall time may change and may require hooks to keep the module time
->    up to date, but see point 1/, this would be a TDX special flower hook.
-> 3/ Presumably this allows the module or the guest to do certificate expiration
->    checks, but that is the responsibility of the relying party. The
->    relying party may have reason to accept an "expired" cert as determined
->    by VMM wall clock, and the guest presumably already has mechanisms to
->    determine untrusted wall clock time from the VMM if it wants. Guests
->    do not need TDX ABI for that.
+> Ditto here.  I don't think we should introduce any more cond_resched().
+
+Good to me.
+
 > 
-> So I think Linux wants to pass 0 here and wait for modules that accept
-> that as the start of TDX Connect support. As you said, given there are
-> no released modules with TDX Connect there is time to make that first
-> release drop this requirement.
+> Btw, I think technically we can reuse the seamcall_ir_resched() you introduced
+> later, albeit in which a local '_args' is used as a copy of the original 'args',
+> but that has no harm for the case where we can just use the 'args' to loop.
 
-I see. Actually the Module is about to remove the r11 RTC.
+No we can't. TDH_EXT_MEM_ADD is designed to use output parameter RCX
+to override/update input parameter RCX, so the caller doesn't have to
+do manual parameter update on retry call. Using seamcall_ir_resched()
+makes each retry use the original RCX, not the updated one.
 
-https://cdrdv2.intel.com/v1/dl/getContent/871617
+> 
+> I am wondering whether we can just use that here, or we just get rid of that
+> helper (then open retry by the callers of these SEAMCALL wrappers), since there
+> will be more cases where we need to manually set 'resume=1' in the SEAMCALL
+> input 'args' when retrying TDX_INTERRUPTED_RESUMABLE.
 
-I'll remove this r11.
+I'd like to know why some SEAMCALLs needs resume flag but others don't.
+If there is chance we don't introduce too much variants for the same thing,
+that's most friendly to OS. And "no resume flag" is my best preference.
 
+For now, I can see only one SEAMCALL with resume flag in mainline,
+tdh_phymem_cache_wb(). I'd rather we treat it as an exception and no
+resume flag any more if possible.
 
+Then we don't have to make all following efforts, they are complex...
+
+> 
+> Unless you have good idea to unify them all?
+> 
+> E.g., we have something like below in our internal KVM code, using macros to do
+> 'resume=1' and retry as the caller wishes.  But my understanding is Dave
+> probably won't like macros.  :-)
+> 
+> (you may see broken indent/text due to text wrapper and sorry for that.) 
+> 
+> /*
+>  * ...
+>  *
+>  * The retry_func and update_args allow the SEAMCALL to be retried in a loop if
+>  * it can still return other error code when there's no race from both KVM and 
+>  * vCPUs and can be "retried" until it succeeds.                               
+>  */
+> #define tdh_do_no_vcpus_retry(tdh_func, kvm, retry_func, update_args, args...)\
+> ({                                                                            \
+>         struct kvm_tdx *__kvm_tdx = to_kvm_tdx(kvm);                          \
+>         u64 __err;                                                            \
+>                                                                               \
+>         lockdep_assert_held_write(&kvm->mmu_lock);                            \
+>                                                                               \
+>         __err = retry_func(tdh_func, update_args, args);                      \
+>         if (unlikely(tdx_operand_busy(__err))) {                              \
+>                 WRITE_ONCE(__kvm_tdx->wait_for_sept_zap, true);               \
+>                 kvm_make_all_cpus_request(kvm, KVM_REQ_OUTSIDE_GUEST_MODE);   \
+>                                                                               \
+>                 __err = retry_func(tdh_func, update_args, args);              \
+>                                                                               \
+>                 WRITE_ONCE(__kvm_tdx->wait_for_sept_zap, false);              \
+>         }                                                                     \
+>         __err;                                                                \
+> })                                                                             
+> 
+> #define tdh_intr_retry(tdh_func, update_args, args...)                        \
+> ({                                                                            \
+>         u64 ____err;                                                          \
+>                                                                               \
+>         do {                                                                  \
+>                 ____err = tdh_func(args);                                     \
+>                                                                               \
+>                 if ((____err & TDX_SEAMCALL_STATUS_MASK) !=		      \
+> 				TDX_INTERRUPTED_RESUMABLE)                   
+> \	                       
+>                         break;                                                \
+>                                                                               \
+>                 update_args;                                                  \
+>         } while (1);                                                          \
+>         ____err;                                                              \
+> })
+> 
+> #define tdh_no_retry(tdh_func, update_args, args...)    tdh_func(args)
+> 
+> #define tdh_do_no_vcpus(tdh_func, kvm, args...) \
+>         tdh_do_no_vcpus_retry(tdh_func, kvm, tdh_no_retry, ;, args)
+> 
+> #define tdh_do_no_vcpus_intr_retry(tdh_func, kvm, update_args, args...) \
+>         tdh_do_no_vcpus_retry(tdh_func, kvm, tdh_intr_retry, update_args, args)
