@@ -1,226 +1,195 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30097394493
-	for <linux-coco@lists.linux.dev>; Fri, 24 Apr 2026 11:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69191A681D
+	for <linux-coco@lists.linux.dev>; Fri, 24 Apr 2026 22:55:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777028610; cv=none; b=XvbEdUqh0CpD8i/oa8NgEFAPptxLyMBAGFS+tya5juzwEUblS9jl5luNgwR357a4IMZvGgp2KO0kEMPrI//tFyqDlG2+MBBHcqQkgfbjTB+XPHcqSaMgJZF4gCqZn/x2tbXu3PbTzgUGrQvbqCFaZKxzdLNpOzSi1iTbj/BLqok=
+	t=1777071318; cv=none; b=FcahQ99TWrAwZRpmNXk7oX7e+BU0wcq7iuuw7txo9ncDHhqJH/LAChKmCjX/5Mq3FFk4A/DNHJJ6YFpcOEaX9igDSlH6EPq0rFNqOuEdVgi+bjpduWbXCEmqKGqCqR9tkDkC6i3c/Hqw1/YrIcM0BlK4Oa7hJUo64cbGBX2kLto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777028610; c=relaxed/simple;
-	bh=rJLV3fVgTLnezbgFSlQTOQiusLepMs4uvxOr7+FZuqk=;
+	s=arc-20240116; t=1777071318; c=relaxed/simple;
+	bh=cV0Gxz7W/U+/DxuSBdghEEEy6w6inDWrgGPifnEQWHc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JVBc2rWnZsHqOngTcoUJ79vkKWaJ+/YGrS3LwaGW8ryhDIC1SoKu6XfusFFhg1IdGvM01ThFpJlXqcaWAfqLN5pFth9ol9PCzAKlCzDq1YQf1+gq+ubdIuaoWkHCGr3M++bf4ElcSc75b0/r3jqzHOw0TbRyr1BrEs0HRIvBq40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d7dQkT6q; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=cfys4mLP6MndIKXNenf3BeMtZM/li6++xfzML9kHkVM+HS4cfZP4inmYbeY8AWWgOTUPkRs5YAkwZlptuYZ3iJVJi3vGRsfXDqF4AdneBVNNUPkvB/Vh+X5TvzyEMrgRcvOuU1jghV7hZO7/jGKTNcbp5tGxbDY92+Ppxw2Ii3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=j2s6gtMi; arc=none smtp.client-ip=209.85.219.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d7dQkT6q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777028609; x=1808564609;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=rJLV3fVgTLnezbgFSlQTOQiusLepMs4uvxOr7+FZuqk=;
-  b=d7dQkT6qrGe8iXZT/fZOUR6ZlU0TMukX2oVWClSfJrBx7vyVJECsUpVz
-   EE88XfKh86pIaD3RiwVevBLDG8IS+VM7nS6xY1etT4ccZxHdg66BS4tU+
-   mLAhUQJbFbxodA7UAs0Noadlez+4hB7I9QJT0H4RpnaiQN2J2H90Qualk
-   dXO8xq5Bm/mW8FZvG+wIAsWAhsTiU4Ofm0QdGh4nRvJ3C/A9Kq6oavHHM
-   tX7VFrR8Ehc6vUB2WcksBzNGR0KDCnSJMOAPVgsCwUAni699+/W3AM0Tp
-   /wlUNHt1bmt9XWRYZ66/W+4i2cf+4Dtwf7YXTUGrurjqFU6EKs7Aidjmx
-   w==;
-X-CSE-ConnectionGUID: WAOejIwETD2a52a9OHND4w==
-X-CSE-MsgGUID: QlHloblHQ5qNQykoaUuB+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11765"; a="65539109"
-X-IronPort-AV: E=Sophos;i="6.23,196,1770624000"; 
-   d="scan'208";a="65539109"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2026 04:03:29 -0700
-X-CSE-ConnectionGUID: z6D1ip/cR9iKaTYg3Vz7dw==
-X-CSE-MsgGUID: pJbpNqkWRv+39a7ePtHCjw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,196,1770624000"; 
-   d="scan'208";a="237981384"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa005.jf.intel.com with ESMTP; 24 Apr 2026 04:03:25 -0700
-Date: Fri, 24 Apr 2026 18:41:05 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Huang, Kai" <kai.huang@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kas@kernel.org" <kas@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
-	"Verma, Vishal L" <vishal.l.verma@intel.com>,
-	"Jiang, Dave" <dave.jiang@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"Gao, Chao" <chao.gao@intel.com>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>
-Subject: Re: [PATCH v2 10/31] x86/virt/tdx: Add extra memory to TDX Module
- for Extensions
-Message-ID: <aetIwTS4V95qIGku@yilunxu-OptiPlex-7050>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-11-yilun.xu@linux.intel.com>
- <89bccca9a409e02667278fd83f0b7b9064557dab.camel@intel.com>
- <3b0bc0dea544b10bd2fb0304a96d2671f263829b.camel@intel.com>
- <48171f4ab772da546beccec3c7a95fe442524b42.camel@intel.com>
- <aereVy8zVb2be2hh@yilunxu-OptiPlex-7050>
- <668a903ba2dccff2d641ac15b74deacc95ef19a6.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="j2s6gtMi"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-899a5db525cso65839386d6.3
+        for <linux-coco@lists.linux.dev>; Fri, 24 Apr 2026 15:55:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1777071316; x=1777676116; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Dw33gELuGUNq59I/OY2f7G4Yqpl4DyjVQaY1TU/E47I=;
+        b=j2s6gtMidN7T236PMkGx+W4FXYwRa6eIECKjvlTJY82WwyHmZRaKuNaSDUmc+WNFsV
+         cekEdt/9KprVLPLDQCiMzVnHKVWKWH4HsUXvHrQb7pkVSv4VbhVNR6p7tPI+Z8v1zLbZ
+         jolb9ZsQ5nODJc6zqd0LgQvEAyWxZ8LB79i8M/UPA1VDFpMJDkzr8fsDayLx4sl+iI2i
+         YSNU/eAQhCfGU9CEGyvJLDpOjn2t3NjXsX/PCdJKy5Z1xwmULACsg/Zs/q+meNJcYcfw
+         Ic3RKOmv+Ho+7op0txrn/ntUQvTXqgdw6cwXfVzE8Y8v4vBpebI+RE9J6+1fF+yrYVj+
+         eL8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777071316; x=1777676116;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Dw33gELuGUNq59I/OY2f7G4Yqpl4DyjVQaY1TU/E47I=;
+        b=liuypKvsNhFaANE1eXqq+65yGnEp9RBHBLS8whdmhZVrBXN5tdesnaqKVFggCSCwOC
+         EKL3hEm0tUTfXqtB/i8CSCQT/j4Jow2fj3i5HNz6b/Wcgq4VlTlcgKAOe85Uc2tnX6qb
+         NMw4jXJuGuzmqjoZ76BQ7XQXn2un6jXeTC8nVV1k3XVkq3BfJbmkjvJYp0gvkHnFS9ta
+         cZGcdSzhz2VLOX4HGp5V7I+l3GGnuaItzblKWfY68lCz5FVruEjGE9lkY+MVVvldReXu
+         kSTCSH3zhBarQxGrkdISY8BLprG5q2+E67xqTZojKHkFyYCw+lNHB6/JT2ZlV/guk9ai
+         1HKg==
+X-Forwarded-Encrypted: i=1; AFNElJ/FiJ/IUhPzXCPxZ82V+IKlCwWI9gb8/cSLxJF3UwmpLLmxPFwxqbJhskeBFb3prixBusy3wwqqX+qe@lists.linux.dev
+X-Gm-Message-State: AOJu0YxWfyvaBjVnZUJba91YzeMOnPZm+bTP9zljvHRFVYRvAWo23MHA
+	btYNuH/IxYgAS8TD2OqOtbgwbaPBvG+9xgR0m5iv8ag4W+OoEzPZh4GcljjSeCgD2nU=
+X-Gm-Gg: AeBDietCsmdMeQAvY5Zc8lLXL7WE3Z3dqrjwR9EnsBh0TZSpWRmH3Qzq5fCgnRyYbBH
+	sGVH5V2rZVYivv8iuYqc8mBoRdeOJhGsu3BUZ3KrVlTYJI2Fg4uGd5pdbODdw6Dvq5+DZu/ZYD9
+	6KQ8JORwtF4k1YFS8daT0YZa18DagpwVI8xG/0Vb6OraMlpv2nJCBsxzfhOLqdBz0UqNU/yR9Em
+	08ebwaUDC0cyS5IUnnyRParyrMU44njBdMFki9IwcO4hiwS8OK584WKqq9/6PlxdrPvUhJNXotB
+	zudHyRkQixAqTd6cbZnIb1r1/RJ3SvMAxRy/TnhxfQjlzfr25Zk1S9S8Kg1HqDrHbTMpCXDOVFX
+	pxsA1wvtnzZeZEmxby+SANBJptartAMW+3Sl3E6AGQ6Vru8+NntvvgGiz9vOqgrADwL1lk1PllP
+	Co1qJg4Yu4uuzqBrN06Pl8jhEn7aLMybKDja0VoQ37gzLcY6BM+6oCKW154lONUc3cRsx2hbKWs
+	izKI1Owz3xTKLxG
+X-Received: by 2002:ad4:5f0e:0:b0:8b2:2474:8f3a with SMTP id 6a1803df08f44-8b224749034mr37604816d6.25.1777071315667;
+        Fri, 24 Apr 2026 15:55:15 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ac78513sm198480506d6.19.2026.04.24.15.55.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Apr 2026 15:55:15 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wGPQY-00000004wIG-2XfJ;
+	Fri, 24 Apr 2026 19:55:14 -0300
+Date: Fri, 24 Apr 2026 19:55:14 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Jiri Pirko <jiri@resnulli.us>, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev,
+	linux-media@vger.kernel.org, sumit.semwal@linaro.org,
+	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com,
+	jstultz@google.com, tjmercier@google.com, christian.koenig@amd.com,
+	m.szyprowski@samsung.com, robin.murphy@arm.com, leon@kernel.org,
+	sean.anderson@linux.dev, ptesarik@suse.com, catalin.marinas@arm.com,
+	suzuki.poulose@arm.com, steven.price@arm.com,
+	thomas.lendacky@amd.com, john.allen@amd.com, ashish.kalra@amd.com,
+	suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v5 1/2] dma-mapping: introduce DMA_ATTR_CC_SHARED for
+ shared memory
+Message-ID: <20260424225514.GE804026@ziepe.ca>
+References: <20260325192352.437608-1-jiri@resnulli.us>
+ <20260325192352.437608-2-jiri@resnulli.us>
+ <yq5atst6ywbl.fsf@kernel.org>
+ <4qdizkkoeke3cvkcf35upa7p7ick6s654eqlrizmi7ozkw5eze@tnpk2e34xgwl>
+ <yq5awly0d504.fsf@kernel.org>
+ <tteiecxfqy4k24wnzvp6ocxnuopyhmqtne2xwh5htwldlbzjnp@o6cbzdlurxld>
+ <20260421121004.GA3611611@ziepe.ca>
+ <yq5aik9jcpzm.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <668a903ba2dccff2d641ac15b74deacc95ef19a6.camel@intel.com>
+In-Reply-To: <yq5aik9jcpzm.fsf@kernel.org>
 
-On Fri, Apr 24, 2026 at 08:09:16AM +0000, Huang, Kai wrote:
-> On Fri, 2026-04-24 at 11:07 +0800, Xu Yilun wrote:
-> > On Thu, Apr 23, 2026 at 10:29:31PM +0000, Huang, Kai wrote:
-> > > On Thu, 2026-04-23 at 17:05 +0000, Edgecombe, Rick P wrote:
-> > > > On Thu, 2026-04-23 at 00:59 +0000, Huang, Kai wrote:
-> > > > > Ditto here.  I don't think we should introduce any more cond_resched().
-> > > > > 
-> > > > > Btw, I think technically we can reuse the seamcall_ir_resched() you introduced
-> > > > > later, albeit in which a local '_args' is used as a copy of the original 'args',
-> > > > > but that has no harm for the case where we can just use the 'args' to loop.
-> > > > > 
-> > > > > I am wondering whether we can just use that here, or we just get rid of that
-> > > > > helper (then open retry by the callers of these SEAMCALL wrappers), since there
-> > > > > will be more cases where we need to manually set 'resume=1' in the SEAMCALL
-> > > > > input 'args' when retrying TDX_INTERRUPTED_RESUMABLE.
-> > > > 
-> > > > I kind of like the latter option to open code more of this stuff. The stacks of
-> > > > seamcall wrapper macros is already too much. 
-> > > 
-> > > Agreed.
-> > > 
-> > > And SEAMCALL *users* can actually come up with their own version of wrapper(s)
-> > > to do the retry.  E.g., currently seamcall_ir_resched() is only used for IOMMU
-> > > SEAMCALLs, and we can put this wrapper in the IOMMU code or coco/tdx-host.
-> > 
-> > After we have introduced TDX Module Extension, irq preemptable
-> > EXT-SEAMCALLs become a common concept. 
-> > 
+On Wed, Apr 22, 2026 at 02:48:37PM +0530, Aneesh Kumar K.V wrote:
+> Jason Gunthorpe <jgg@ziepe.ca> writes:
 > 
-> It has been a concept since before the EXT-SEAMCALLs actually.  For instance,
+> > On Tue, Apr 21, 2026 at 01:53:31PM +0200, Jiri Pirko wrote:
+> >> >> You reach there when is_swiotlb_force_bounce(dev) is true and
+> >> >> DMA_ATTR_CC_SHARED is set. What am I missing?
+> >> >>
+> >> >
+> >> >So a swiotlb_force_bounce will not use swiotlb bouncing if
+> >> >DMA_ATTR_CC_SHARED is set ? 
+> >> 
+> >> Correct. Bouncing does not make sense in this case, as shared memory is
+> >> already being mapped.
+> >
+> > It is a little bit mangled, there are many reasons force_swiotlb can
+> > be set, but we loose them as it flows through - swiotlb_init()
+> > just has a simple SWIOTLB_FORCE
+> >
+> > Ideally DMA_ATTR_CC_SHARED would skip swiotlb only if it is being
+> > selected for CC reasons. For instance if you have the swiotlb force
+> > command line parameter I would still expect it bounce shared memory.
+> >
+> > Arguably I think this arch flow is misdesigned, the
+> > is_swiotlb_force_bounce() should not be used for CC. dma_capable() is
+> > the correct API to check if the device can DMA to the presented
+> > address, and it will trigger swiotlb_map() just the same without
+> > creating this gap.
+> >
+> > Jason
+> 
+> Something like this?
 
-No, they look similar but different. EXT-SEAMCALLs are truly irq
-preemptable and resumable to its context. Other SEAMCALLs just
-periodically yield and don't have a generic way to save/resume their
-context. Sometime you need to pass in resume flag on 2nd time, which
-means the secure world forget where they were and can't really resume
-all by itself.
+Yeah that reads pretty sanely.
 
-What I mean is, EXT-SEAMCALLs should never need to play tricks on
-input parameters. Just input what is originally inputted, the secure
-world doesn't need hint to resume itself. So the int-retry process
-should be common.
+> static inline dma_addr_t dma_direct_map_phys(struct device *dev,
+> 		phys_addr_t phys, size_t size, enum dma_data_direction dir,
+> 		unsigned long attrs, bool flush)
+> {
+> 	dma_addr_t dma_addr;
+> 
+> 	if (is_swiotlb_force_bounce(dev)) {
+> 		if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
+> 			return DMA_MAPPING_ERROR;
+> 
+> 		return swiotlb_map(dev, phys, size, dir, attrs);
+> 	}
+> 
+> 	if (attrs & DMA_ATTR_MMIO) {
+> 		dma_addr = phys;
+> 		if (unlikely(!dma_capable(dev, dma_addr, size, false, attrs)))
+> 			goto err_overflow;
+> 		goto dma_mapped;
 
-> TDX live migration using blocking export doesn't need any opt-in via module
-> extension (only the non-blocking way needs), but the SEAMCALLs to export/import
-> TD/vCPU/memory are all interruptible.
-> 
-> In fact, they had the "latency requirement" behind the INTERRUPT_RESUMABLE in
-> mind at the very beginning.  It's just at that point all SEAMCALLs were not that
-> heavy.
-> 
-> > It is irq preemptable so that the
-> > secure world remembers and resumes the context, no need for host to
-> > remind via resume lag.
-> 
-> The fact is the aforementioned live migration related export/import SEAMCALLs 
-> (there are 8 at least, but maybe more) all requires the explicit setting of
-> 'resume=1' (plus using the SEAMCALL output as input for retry).  I don't know
+I suspect P2P is probably broken on CC because this doesn't make
+sense..
 
-Yes, so they are not truly interrupt resumable and should be specially
-treated.
+This should flow into the
+phys_to_dma_unencrypted/phys_to_dma_encrypted block as well AFAICT, it
+shouldn't just assign phys. Assigning phys to dma on a CC system is
+always wrong, right?
 
-> the story behind this, though.  There might be some tricky thing here for the
-> module to remember and manage (e.g., migration has a concept of "migration
-> stream", and the resume is per-stream).
-> 
-> > 
-> > Today there are 3 EXT-SEAMCALLs, TDH_SPDM_CONNECT/DISCONNECT/MNG,
-> > irq preemption handling is a general requirement for them, and I think
-> > it is still true for any further EXT-SEAMCALLs.
-> > 
-> > So I think a general helper for EXT-SEAMCALLs makes sense.
-> 
-> Yes conceptually I agree, but not need to distinguish EXT-SEAMCALLs or not IMHO.
-> 
-> The problem is there isn't a common rule to follow.
-> 
-> E.g., let's say "the module can remember thus no resume flag is needed", how
-> about the SEAMCALL inputs?  Can the "output" args be directly used as input for
-> retry, or the original input should always be used?
+It is is more like
 
-Since EXT-SEAMCALLs don't depend on input tricks to resume, there could
-be a common rule, now it is defined as "the original input should always
-be used".
+        /* To be updated, callers should specify MMIO | CC_SHARED instead of
+	 * implying it. */
+        if (attrs & DMA_ATTR_MMIO)
+	   attrs |= DMA_ATTR_CC_SHARED;
 
+        if (attrs & DMA_ATTR_CC_SHARED) {
+ 		dma_addr = phys_to_dma_unencrypted(dev, phys);
+ 	} else {
+ 		dma_addr = phys_to_dma_encrypted(dev, phys);
+ 	}
+
+        if (!dma_capable()) {
+            if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT)
+	       fail
+        }
+
+> and dma_capable() now does
+> static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size,
+> 		bool is_ram, unsigned long attrs)
+> {
+> ....
 > 
-> Not to mention there's existing SEAMCALLs which require explicitly setting
-> 'resume=1'.
-> 
-> I believe we can use some smart hack to implement a common one to cover all
-> cases above, but I am not sure whether it's worth to do (maybe we can have a try
-> to see how does it look like, though, I think).
-> 
-> Given the SEAMCALLs for TDX Connect seem to follow one rule to retry, and live
-> migration SEAMCALLs follow another rule, it seems for now the simplest way is to
-> introduce the needed retry helper in the layer of SEAMCALL *user* (TDX Connect
-> and migration).
-> 
-> > TDH.IOMMU.SETUP, however, is another case. It is not a EXT-SEAMCALL but
-> > happened to follow the same irq-retry handling process. To avoid code
-> > duplication we have:
-> > 
-> >  /*
-> >   * seamcall_ret_ir_exec() aliases seamcall_ret_ir_resched() for
-> >   * documentation purposes. It documents the TDX Module extension
-> >   * seamcalls that are long running / hard-irq preemptible flows that
-> >   * generate events. The calls using seamcall_ret_ir_resched() are long
-> >   * running flows, that periodically yield.
-> >   */
-> >  #define seamcall_ret_ir_exec seamcall_ret_ir_resched
-> > 
-> > TDH.IOMMU.SETUP uses seamcall_ret_ir_resched(), and EXT-SEAMCALLs use
-> > seamcall_ret_ir_exec().
-> > 
-> > How do you think?
-> 
-> Sorry I don't quite get.  What does "exec" postfix mean?
+> 	/*
+> 	 * if phys addr attribute is encrypted but the
+> 	 * device is forcing an encrypted dma addr
+> 	 */
+> 	if (!(attrs & DMA_ATTR_CC_SHARED) && force_dma_unencrypted(dev))
+> 		return false;
 
-It is 'execution', means EXT-SEAMCALLs can resume their execution. But
-since you have concern, maybe some better name?
+Yeah
 
-> 
-> From patch 25, they are all in TDX core, so I don't quite get why we need to
-> distinguish EXT-SEAMCALLs vs normal ones.  IMHO it's an additional layer which
+And with the above little edits it works for MMIO now too.
 
-EXT-SEAMCALLs have generic way to resume, while others don't. So we need
-a helper for EXT-SEAMCALLs. For other SEAMCALLs that happens to process
-the same way, we are avoiding code duplication, but should clearly
-distinguish the purpose so make another name as documentation.
-
-But if any concern, we could delete the int-retry support for normal
-SEAMCALLs, they are not generic as you said.
-
-> doesn't actually help address any problem.
-> 
-> Btw, we should really get rid of the "resched()" postfix from the function name
-> since cond_resched() is no longer needed and possibility of rescheduling is
-> implied pretty much all places in the kernel code now (except some special code
-> such as code in IRQ context).
-
-Yes, thanks to remind me again.
-
+Jason
