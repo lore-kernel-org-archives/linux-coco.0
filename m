@@ -1,117 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BF4171AF
-	for <linux-coco@lists.linux.dev>; Sun, 26 Apr 2026 16:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635CE279355
+	for <linux-coco@lists.linux.dev>; Sun, 26 Apr 2026 16:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777219875; cv=none; b=GxS45Y/aDqPTiapgM+XE/RYZGVU61zrCOz9vaeH7phPrfWaPu9k9xk0g4CQqqL3pXWp61ByhUq6U72ibVByNWy+I5l42J6qzC6N1Lpi06x4PHbVuQlM5JePGqKcHmZ00X5VvmOuDaL53dbsAigNztirLzdoOFAgnS/SaHMwSvhM=
+	t=1777222737; cv=none; b=sQkkTXM3+0jM0EFw1KewVQ+XHR0Z1JVis6dIwohp3O/BeGgfC8R6wjb502iiTxr3btwReFRzvFu5eszyWkr6OnbWqSJ7HcuXRH9uzQyEyuz1d0/U7uU59YQLWeiB1UqwAW/kdMMtVHeWcSGlghPAgn5BT+3I0NB9M7ZMIG4S2Gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777219875; c=relaxed/simple;
-	bh=rPe2iEWwu8TufVqs1vToRHB8DPLT+nP9Myl4+LYf/W4=;
-	h=Date:From:To:Cc:Message-ID:Subject:Mime-Version:Content-Type; b=aF/zp2S+axomh2jSolabuDNs6KJ0TR2riJHERVngf+l7PIZwQBq+SzHH7mjXXFyQ3YmALbhW8yXwV6BpsjvFD960P+ZWk+kXy8Ry+nxYxO6kVoyspipQBimCqhxvVud0dLN+VvBoHCZ8v4QwyByh1YTW2A7B1AQzPYugxlKjPRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aUFp35U7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777222737; c=relaxed/simple;
+	bh=tm5fy1ToKvC5f3S/E/N4FlxHwS6bJwrzcUbcG0pYm/w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KGST5ZiiN1ayAqeVGkYujne7SweyrYhhmUvCVFr5QS6WPGFiQXHG1n+U9hbM8Da3TxeixhBXcb9pYiuaBJpnN63itMPRamgsd9OeKOyzBdnsDLkbjEt/Bf72fVTDIQApJ/+wckF2fS7fXgGjpz8Kd6vNoPQhPhwZPvvnv0pXHJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WDoG0+iF; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aUFp35U7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCC9C2BCB3
-	for <linux-coco@lists.linux.dev>; Sun, 26 Apr 2026 16:11:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777219875;
-	bh=rPe2iEWwu8TufVqs1vToRHB8DPLT+nP9Myl4+LYf/W4=;
-	h=Date:From:To:Cc:Subject:From;
-	b=aUFp35U7RDY9YlzehHpMorxFTmFd5jeeULEt2/EWY9EbVJQsYRBfgt+4UH++Q7nXr
-	 8KGrDjjitHycf+Ku/AbVj/Zu9FgBibeoqnc/1HAiddIJ/ypSQJVofWW88kMtehUICc
-	 qV1ifNWvuFGqnRn6OG1DcXIVUsdT7f+1IChC+KVf4H14hnCbhsNnE4QmCAkgfv0fvS
-	 DiEPq5ybK2iCghIxkcpKP+I/n4M0YwFruFTOw3bvDU+pnBbxni1vnzzNvnmjtKq/gK
-	 /Ygc44cDWJv6RNKTgejk+JrA4fE0wbIyCpDy9wzrl9OBnnW7v8LU9TfGwfzXZptw3B
-	 jGrGfg6HsrRzw==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 7513AF40086;
-	Sun, 26 Apr 2026 12:11:14 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Sun, 26 Apr 2026 12:11:14 -0400
-X-ME-Sender: <xms:IjnuaeSGLYMngJlHn9rJ59UCJkP0ILkTdVZQjc1lATCsWc9zYxuBEA>
-    <xme:IjnuabjKjbxMJVnrRJEc0eHt8dydHROwSk63Ngx56_gqDDoZAV-5s6sKsV5HALo5f
-    NY_mqTA8-FEKaBhCb-VsjuCzHR6tnVDO4capAz9QLtelaCwXiVXWyA>
-X-ME-Received: <xmr:Ijnuae4bgojbHyPnabqPXB2TS1obf0bUY-iB7xQK8GRQp1rowXAL7dbwgni46yFLtE8wLTr4yJaNBw1SnAxAnpH88068kE4GWXU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdejiedvgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefkufggtgfgsehtjeertddttdejnecuhfhrohhmpeffrghnucghihhllhhi
-    rghmshcuoegujhgsfieskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpedthf
-    ethfehkeffkeeuteekueetleeiffetteeigeejveeuveevfeeludfgfefhfeenucffohhm
-    rghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepughjsgifodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
-    thihqddujeejvdeftdegheehqdeffeefleegtdegjedqughjsgifpeepkhgvrhhnvghlrd
-    horhhgsehfrghsthhmrghilhdrtghomhdpnhgspghrtghpthhtohepfedpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtohepthhorhhvrghlughssehlihhnuhigqdhfohhunhgurg
-    htihhonhdrohhrghdprhgtphhtthhopehlihhnuhigqdgtohgtoheslhhishhtshdrlhhi
-    nhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvg
-    hrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:IjnuaYA5dzIom_nTG5dHG11-2l-umwIBeQkzJglqpwX-s5Ah42VUzQ>
-    <xmx:IjnuaVaFPwpLnoAahbQ8LY50NESEn5EjDJplIG2WRPiUMjLFpi3cGA>
-    <xmx:IjnuaTbKTVF2R0TDUw26OeWM-klDmmHnKtMjoYiZ9dQS8USeQ2T2zw>
-    <xmx:Ijnuac-qfS0lu47Af-s0H_hL70iiMloa0_foxbwmM9sAGRxZ14wMMg>
-    <xmx:IjnuaSjC6xcz_vlOXJJcZA_ma_0NjWd1GBCXuOOYmcy6KLg_tXGkgDPM>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 26 Apr 2026 12:11:13 -0400 (EDT)
-Date: Sun, 26 Apr 2026 09:11:12 -0700
-From: Dan Williams <djbw@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-coco@lists.linux.dev, 
- linux-kernel@vger.kernel.org
-Message-ID: <69ee3920ef32e_fe08310024@djbw-dev.notmuch>
-Subject: [GIT PULL] Trusted Security Manager (PCIe TSM) Update for 7.1
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WDoG0+iF"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-67893fba9c3so6356165a12.2
+        for <linux-coco@lists.linux.dev>; Sun, 26 Apr 2026 09:58:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1777222735; x=1777827535; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=LTjMHFt5SpHHHtmrX90tkNkzhKqrNiTI1ZSrIW/c/fQ=;
+        b=WDoG0+iFGKgVk8Y8tJU+vM+XOrQJPAuIIqmTZYrHe8KuZmMn0ms5owgq/feQxp4W7v
+         kMlxCkt3CrEbesWDS1XzWf1lTvtvFiWfizQ81wHSWxs4v3LLyE6Qg1s464h6BSDrmZT1
+         Igh+5ofAVAjoWQyzsskY/htL2q4kmCDVMIV3c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777222735; x=1777827535;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LTjMHFt5SpHHHtmrX90tkNkzhKqrNiTI1ZSrIW/c/fQ=;
+        b=WwaEVQz48F5TCGGNDknGHnNdopv5Nj16RLUOQxB5q8YHUt9WY6f7F/LK4MH8nNgjBO
+         j5bJ3PpPIEdtbS88RJEc9qPiKAf8aPKqgrEKr44ZacrECzRACSVHlCozgOJ+M9q7aUv1
+         4+NMunyb61IGr7I5vnUstZVH3aMF5IFUq6g0qYk0KeLFtCDPNQVpf3ZI28dSfteE/EaR
+         ZYFJxhEHTUZtEQTu5G39KA/CaE4Mm01/J9QQkFyjPKLZyc2pZXdccAQoHlCcCx4JZ3bo
+         7NMOnbGEssXUSlJ7EQi1QY1caz1zSi+4AkatvCieofvwBK/pX7lkSk5Qx6D2aaEiR7YM
+         /bKQ==
+X-Gm-Message-State: AOJu0Yx2at3S0QHAG0UqW8436W7D3+DCe4xXLLmjzvZR5BAzwSHQnnH4
+	LtMBJbynW3RV4G3ZxlB263pkWo7jXZgnzVjPANDF0omHaXwgLaj2j10ygM60IiqTB5kBIB/YgJo
+	9IOV65jE=
+X-Gm-Gg: AeBDieufb3L7tslnLO+u/xRIARh3e5/h4a0DHKMJwMtFV4VQbBPH+qC/HprBlEEM/Hv
+	+WoKTrtLr6iTScZW44ljvsUVc/4Fk3a+9YSdjU5V2s8BoHYMINEIQUE1jxOpeI/IhUJaeCbQfRz
+	yvLDpFu5yzCjTeUte5x1SiB5w0Smcq+/5Kaiq+Ii8zw9nbwbYG+O0a4Ych/oKGEipUgnOath0oC
+	7diqtshsMrGpiM6UqojJOx94V41rME6zHLl5yigPH1AdWqddBV8ZjjemBLlmB5DoxLqrzGiFj3V
+	BJJhIpCPSBUiU+0QIJ2WTL+D/Tx4/0ngArCk89EWe6qZektmQSSA70UbLaD3ZL6/ThslQBfBeJa
+	L8XD85kpzNO9jomn8SrAkwnfIWJpNIo3ltTgFhRzMA875vg5QjEFQHywQJHEX0GtB6G8muP1lWc
+	dRCeBWaAqd0XSeuXy68oSywOiUZvEDOL9hmLx2MgPHaw/yY/O6VAwARYL5tPvFpakcpjrEOE93W
+	fU0wyRoum94/l++siwwrg==
+X-Received: by 2002:a05:6402:3225:b0:678:91c7:6723 with SMTP id 4fb4d7f45d1cf-67891c76ad7mr6103318a12.27.1777222734612;
+        Sun, 26 Apr 2026 09:58:54 -0700 (PDT)
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com. [209.85.208.47])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-672c480e18esm6259933a12.10.2026.04.26.09.58.53
+        for <linux-coco@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 26 Apr 2026 09:58:53 -0700 (PDT)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-66b2d49ffb0so12021276a12.3
+        for <linux-coco@lists.linux.dev>; Sun, 26 Apr 2026 09:58:53 -0700 (PDT)
+X-Received: by 2002:a05:6402:c46:b0:670:d548:da79 with SMTP id
+ 4fb4d7f45d1cf-672bfd87175mr17291351a12.3.1777222733582; Sun, 26 Apr 2026
+ 09:58:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <69ee3920ef32e_fe08310024@djbw-dev.notmuch>
+In-Reply-To: <69ee3920ef32e_fe08310024@djbw-dev.notmuch>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sun, 26 Apr 2026 09:58:36 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whJSiwNBNts_XSrYosCR1SShEF8xS8sqh-qWK4zLBz4zA@mail.gmail.com>
+X-Gm-Features: AVHnY4J2kLwabfDUNCNiY9ERSaecxwCFnVdEqHOZLr1yO7hdrOdftwBUpI9250Q
+Message-ID: <CAHk-=whJSiwNBNts_XSrYosCR1SShEF8xS8sqh-qWK4zLBz4zA@mail.gmail.com>
+Subject: Re: [GIT PULL] Trusted Security Manager (PCIe TSM) Update for 7.1
+To: Dan Williams <djbw@kernel.org>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Linus, please pull from:
+On Sun, 26 Apr 2026 at 09:11, Dan Williams <djbw@kernel.org> wrote:
+>
+> The other motivation for sending this one-patch pull request is to test
+> that you have my key with updated email.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm tags/tsm-for-7.1
+I didn't, but honestly, I don't match key issuer ID's or the email
+address the pull is sent from anyway.
 
-...to receive a small update for the TSM core. It is arguably a fix and
-coming in late as I have been offline the past few weeks.
+So I just want the signature to be valid, and from a key I know.
 
-Recall that you asked for searchable help with the TLA disease last time
-[1]. "PCIe TSM" turns up useful results.
+And it all verified with the old key, just with a
 
-The other motivation for sending this one-patch pull request is to test
-that you have my key with updated email.
+  issuer "djbw@kernel.org" does not match any User ID
 
-This has been in linux-next for a while with no reported issues.
+warning.
 
-[1]: http://lore.kernel.org/CAHk-=whjvmBiZ=oMnR-R9rqzEPnGCaU7dNLkY1RHXwjRCAR5YQ@mail.gmail.com
+I wouldn't have cared - or noticed - had you not mentioned it.
 
---
+But I did update the key so the issuer warning is gone too.
 
-The following changes since commit f338e77383789c0cae23ca3d48adcc5e9e137e3c:
-
-  Linux 7.0-rc4 (2026-03-15 13:52:05 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm tags/tsm-for-7.1
-
-for you to fetch changes up to 3177779ae17db4c66c851f799505fb95c7530c03:
-
-  virt: coco: change tsm_class to a const struct (2026-04-02 15:45:18 -0700)
-
-----------------------------------------------------------------
-tsm for 7.1
-
-- Drop class_create() for the "tsm" class
-
-----------------------------------------------------------------
-Jori Koolstra (1):
-      virt: coco: change tsm_class to a const struct
-
- drivers/virt/coco/tsm-core.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+         Linus
