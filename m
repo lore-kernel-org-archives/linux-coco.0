@@ -1,68 +1,68 @@
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69191A681D
-	for <linux-coco@lists.linux.dev>; Fri, 24 Apr 2026 22:55:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910E3EEBB
+	for <linux-coco@lists.linux.dev>; Sun, 26 Apr 2026 13:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777071318; cv=none; b=FcahQ99TWrAwZRpmNXk7oX7e+BU0wcq7iuuw7txo9ncDHhqJH/LAChKmCjX/5Mq3FFk4A/DNHJJ6YFpcOEaX9igDSlH6EPq0rFNqOuEdVgi+bjpduWbXCEmqKGqCqR9tkDkC6i3c/Hqw1/YrIcM0BlK4Oa7hJUo64cbGBX2kLto=
+	t=1777208735; cv=none; b=W3rgA4s6sCvzp58CCYo0ds7IMiLaXzj6sY0EiOJi6Hf22AJ63ODQzqCvjd/ZDTG07BVpcd+Isd3DYV/WAM4tNiV4Tny9LrKBubsgq7D8JS4BUy4pm/petf6ccZDogxttg5kF5Suqb9O/c710bVN4A20Z0fH6wQ8OkOiBfPyvzCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777071318; c=relaxed/simple;
-	bh=cV0Gxz7W/U+/DxuSBdghEEEy6w6inDWrgGPifnEQWHc=;
+	s=arc-20240116; t=1777208735; c=relaxed/simple;
+	bh=p372NUN8mpdPi0B1Wv7deQ9himnMrrfonWh6E7CqgbQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cfys4mLP6MndIKXNenf3BeMtZM/li6++xfzML9kHkVM+HS4cfZP4inmYbeY8AWWgOTUPkRs5YAkwZlptuYZ3iJVJi3vGRsfXDqF4AdneBVNNUPkvB/Vh+X5TvzyEMrgRcvOuU1jghV7hZO7/jGKTNcbp5tGxbDY92+Ppxw2Ii3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=j2s6gtMi; arc=none smtp.client-ip=209.85.219.48
+	 Content-Type:Content-Disposition:In-Reply-To; b=QkWRLUEu+JXUXjN6riVkuvylzLUfXr340H6CXPNMUbC4xPfos3GvNQLxltciE0x62EGUnQp/gIlkqqhjVKYp1WmjvO3LxAtGvHl+XEUN5Dhyo4qXJgmZiSsnFAPpXqtAnUwdNIo85dpOk1MEXDi70mvzF8BQKEqOVzaICK+PNVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=TIe5eIvG; arc=none smtp.client-ip=209.85.217.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="j2s6gtMi"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-899a5db525cso65839386d6.3
-        for <linux-coco@lists.linux.dev>; Fri, 24 Apr 2026 15:55:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="TIe5eIvG"
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-612d8a59cc0so2935881137.3
+        for <linux-coco@lists.linux.dev>; Sun, 26 Apr 2026 06:05:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1777071316; x=1777676116; darn=lists.linux.dev;
+        d=ziepe.ca; s=google; t=1777208732; x=1777813532; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dw33gELuGUNq59I/OY2f7G4Yqpl4DyjVQaY1TU/E47I=;
-        b=j2s6gtMidN7T236PMkGx+W4FXYwRa6eIECKjvlTJY82WwyHmZRaKuNaSDUmc+WNFsV
-         cekEdt/9KprVLPLDQCiMzVnHKVWKWH4HsUXvHrQb7pkVSv4VbhVNR6p7tPI+Z8v1zLbZ
-         jolb9ZsQ5nODJc6zqd0LgQvEAyWxZ8LB79i8M/UPA1VDFpMJDkzr8fsDayLx4sl+iI2i
-         YSNU/eAQhCfGU9CEGyvJLDpOjn2t3NjXsX/PCdJKy5Z1xwmULACsg/Zs/q+meNJcYcfw
-         Ic3RKOmv+Ho+7op0txrn/ntUQvTXqgdw6cwXfVzE8Y8v4vBpebI+RE9J6+1fF+yrYVj+
-         eL8Q==
+        bh=mZgLj8cyLE1pTCqai3ecepNuqq+WdEKm5C7L8MuPHFc=;
+        b=TIe5eIvG4A/C00wWfFxYKnk9q1afjlNem9itLYxjx7QdMXHdmyzmfqRIzaE9v3JvB2
+         E7XwzbsB/IoISgD1f51siuNH45MdtPFWfJjfCc/4sM8j8BP3/ppMAUa/A5uMuRRF1yUe
+         ixTluRyVjv9thcuTItAeIOGlaDhr4sVQ2Mzw4FnAAj6XqimGm0N5HxD5aD1y2BVhBtNM
+         Iju9MNhrFDuhCzu2VJDnvJqwDpZt88hnkL9o6TzE2isM3yGskCM4tGTRyj0HmJ7Ydtz5
+         h2WQjWaR0e+m5zdIMQS2YGoVEYWiipn6gXGakszjyaBoido1T3aVe7hWymnO7GMmNTsC
+         pAHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777071316; x=1777676116;
+        d=1e100.net; s=20251104; t=1777208732; x=1777813532;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Dw33gELuGUNq59I/OY2f7G4Yqpl4DyjVQaY1TU/E47I=;
-        b=liuypKvsNhFaANE1eXqq+65yGnEp9RBHBLS8whdmhZVrBXN5tdesnaqKVFggCSCwOC
-         EKL3hEm0tUTfXqtB/i8CSCQT/j4Jow2fj3i5HNz6b/Wcgq4VlTlcgKAOe85Uc2tnX6qb
-         NMw4jXJuGuzmqjoZ76BQ7XQXn2un6jXeTC8nVV1k3XVkq3BfJbmkjvJYp0gvkHnFS9ta
-         cZGcdSzhz2VLOX4HGp5V7I+l3GGnuaItzblKWfY68lCz5FVruEjGE9lkY+MVVvldReXu
-         kSTCSH3zhBarQxGrkdISY8BLprG5q2+E67xqTZojKHkFyYCw+lNHB6/JT2ZlV/guk9ai
-         1HKg==
-X-Forwarded-Encrypted: i=1; AFNElJ/FiJ/IUhPzXCPxZ82V+IKlCwWI9gb8/cSLxJF3UwmpLLmxPFwxqbJhskeBFb3prixBusy3wwqqX+qe@lists.linux.dev
-X-Gm-Message-State: AOJu0YxWfyvaBjVnZUJba91YzeMOnPZm+bTP9zljvHRFVYRvAWo23MHA
-	btYNuH/IxYgAS8TD2OqOtbgwbaPBvG+9xgR0m5iv8ag4W+OoEzPZh4GcljjSeCgD2nU=
-X-Gm-Gg: AeBDietCsmdMeQAvY5Zc8lLXL7WE3Z3dqrjwR9EnsBh0TZSpWRmH3Qzq5fCgnRyYbBH
-	sGVH5V2rZVYivv8iuYqc8mBoRdeOJhGsu3BUZ3KrVlTYJI2Fg4uGd5pdbODdw6Dvq5+DZu/ZYD9
-	6KQ8JORwtF4k1YFS8daT0YZa18DagpwVI8xG/0Vb6OraMlpv2nJCBsxzfhOLqdBz0UqNU/yR9Em
-	08ebwaUDC0cyS5IUnnyRParyrMU44njBdMFki9IwcO4hiwS8OK584WKqq9/6PlxdrPvUhJNXotB
-	zudHyRkQixAqTd6cbZnIb1r1/RJ3SvMAxRy/TnhxfQjlzfr25Zk1S9S8Kg1HqDrHbTMpCXDOVFX
-	pxsA1wvtnzZeZEmxby+SANBJptartAMW+3Sl3E6AGQ6Vru8+NntvvgGiz9vOqgrADwL1lk1PllP
-	Co1qJg4Yu4uuzqBrN06Pl8jhEn7aLMybKDja0VoQ37gzLcY6BM+6oCKW154lONUc3cRsx2hbKWs
-	izKI1Owz3xTKLxG
-X-Received: by 2002:ad4:5f0e:0:b0:8b2:2474:8f3a with SMTP id 6a1803df08f44-8b224749034mr37604816d6.25.1777071315667;
-        Fri, 24 Apr 2026 15:55:15 -0700 (PDT)
+        bh=mZgLj8cyLE1pTCqai3ecepNuqq+WdEKm5C7L8MuPHFc=;
+        b=SvhAsLdCTH8vIQmKzqniPBoW6IYAt3zAG7/Yc1Urrpur4WLvD2x64A1Qtv7CCF0n/C
+         Ii0krD+bBV0LT4jQqox6QUO8SxY0CevkV0HusQ7b/u0QhZxNdVd8VpEQzy2IO0bx6Tf3
+         coihv4OH+L1T3VHtkYakzaJ9hsqO6iDQvqnXllOMnbbqxM6RSe/SRd+BHq1563kxELxS
+         VqlkPuXS/IqvvCOc+Ikkde+xsbgOT+r5BhOTkGd0NDUycb6l92CH6naMoS/iTRDH/u48
+         c5OVzj/5AC9MM1xwbMwpjbP7w9tDOygUGjGWmvjVcNY8e7rgOhxPlCQPTkLO3sPnEbRZ
+         6lJg==
+X-Forwarded-Encrypted: i=1; AFNElJ+nh3ZtdpruoB1Ig8hlmvD5FLYzkx18WTYB0b0wLWVyD/oYGxwGDwpY8Y9a8QishKk0w1SL/yCWWj8q@lists.linux.dev
+X-Gm-Message-State: AOJu0YwQHcxpbt34CGBM+XiRfTRyb8oSFPJt0L7uU0QZKvRbPVkXD8A9
+	3PUxhjRZg4avDj5Md8QEcNfID4ptLHkGJfp889TWGFGn/1wnR82JFnd39GSCCvqbFqw=
+X-Gm-Gg: AeBDieubab+GY6TXE58bv7UQEeAEwN0RZ2ThsXTUddbJW8vV9EH8nRlQmhPmXgGTklL
+	RvmKzVniZP2hQ270OX9v26IayxNcyr6SrIIfoPFwWVWjBeSmCFzrn+5lwUWzknixC9ICJoxAC47
+	VVGMOz16tb6F+wRHyUZ0mu95/EQHMmP/QFGecU7NvEcae0slvpIRW9o95Ho5DIoBv9m4jDKzHOn
+	bJ4z/TvH8/TAEi0y1/eV2ynQ/uR2TDXWSwQB8QWmT0gFVh0/jbCJQxe0lg9HoCLf2IkDfkFbKWi
+	M5H3sv2vuW+SinriWYEyKo/wDpYg9TfJ3vWgz54wYJxd6MyQNcacUJ7y9fPBVyJ37alHQjhEgdu
+	40QDCFt5ozFz9xudc/mIjJNmRJiDG8CuTdixp9ZE9fgsyqLi2FCbjOT7vIzXycfwROD1y0CPzf9
+	R5EO989GhLInPPyLQjtXyFTVCYKVbhsDKKOr3xpMgbyyb5rALmN5k8QDNrI2EMLsAJsaRrOW3f9
+	Jb3i4Fnp/8HqQ95Zr/S/IvOdFw=
+X-Received: by 2002:a05:6102:5e94:b0:610:1239:f6d7 with SMTP id ada2fe7eead31-616f772efecmr18253527137.18.1777208732488;
+        Sun, 26 Apr 2026 06:05:32 -0700 (PDT)
 Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ac78513sm198480506d6.19.2026.04.24.15.55.15
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ae7df88sm249063966d6.35.2026.04.26.06.05.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 15:55:15 -0700 (PDT)
+        Sun, 26 Apr 2026 06:05:31 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1wGPQY-00000004wIG-2XfJ;
-	Fri, 24 Apr 2026 19:55:14 -0300
-Date: Fri, 24 Apr 2026 19:55:14 -0300
+	id 1wGzAx-0000000Egs5-0CBA;
+	Sun, 26 Apr 2026 10:05:31 -0300
+Date: Sun, 26 Apr 2026 10:05:31 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
 Cc: Jiri Pirko <jiri@resnulli.us>, dri-devel@lists.freedesktop.org,
@@ -77,7 +77,7 @@ Cc: Jiri Pirko <jiri@resnulli.us>, dri-devel@lists.freedesktop.org,
 	suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
 Subject: Re: [PATCH v5 1/2] dma-mapping: introduce DMA_ATTR_CC_SHARED for
  shared memory
-Message-ID: <20260424225514.GE804026@ziepe.ca>
+Message-ID: <20260426130531.GF804026@ziepe.ca>
 References: <20260325192352.437608-1-jiri@resnulli.us>
  <20260325192352.437608-2-jiri@resnulli.us>
  <yq5atst6ywbl.fsf@kernel.org>
@@ -86,6 +86,7 @@ References: <20260325192352.437608-1-jiri@resnulli.us>
  <tteiecxfqy4k24wnzvp6ocxnuopyhmqtne2xwh5htwldlbzjnp@o6cbzdlurxld>
  <20260421121004.GA3611611@ziepe.ca>
  <yq5aik9jcpzm.fsf@kernel.org>
+ <20260424225514.GE804026@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -94,102 +95,52 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <yq5aik9jcpzm.fsf@kernel.org>
+In-Reply-To: <20260424225514.GE804026@ziepe.ca>
 
-On Wed, Apr 22, 2026 at 02:48:37PM +0530, Aneesh Kumar K.V wrote:
-> Jason Gunthorpe <jgg@ziepe.ca> writes:
+> > static inline dma_addr_t dma_direct_map_phys(struct device *dev,
+> > 		phys_addr_t phys, size_t size, enum dma_data_direction dir,
+> > 		unsigned long attrs, bool flush)
+> > {
+> > 	dma_addr_t dma_addr;
+> > 
+> > 	if (is_swiotlb_force_bounce(dev)) {
+> > 		if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
+> > 			return DMA_MAPPING_ERROR;
+> > 
+> > 		return swiotlb_map(dev, phys, size, dir, attrs);
+> > 	}
+> > 
+> > 	if (attrs & DMA_ATTR_MMIO) {
+> > 		dma_addr = phys;
+> > 		if (unlikely(!dma_capable(dev, dma_addr, size, false, attrs)))
+> > 			goto err_overflow;
+> > 		goto dma_mapped;
 > 
-> > On Tue, Apr 21, 2026 at 01:53:31PM +0200, Jiri Pirko wrote:
-> >> >> You reach there when is_swiotlb_force_bounce(dev) is true and
-> >> >> DMA_ATTR_CC_SHARED is set. What am I missing?
-> >> >>
-> >> >
-> >> >So a swiotlb_force_bounce will not use swiotlb bouncing if
-> >> >DMA_ATTR_CC_SHARED is set ? 
-> >> 
-> >> Correct. Bouncing does not make sense in this case, as shared memory is
-> >> already being mapped.
-> >
-> > It is a little bit mangled, there are many reasons force_swiotlb can
-> > be set, but we loose them as it flows through - swiotlb_init()
-> > just has a simple SWIOTLB_FORCE
-> >
-> > Ideally DMA_ATTR_CC_SHARED would skip swiotlb only if it is being
-> > selected for CC reasons. For instance if you have the swiotlb force
-> > command line parameter I would still expect it bounce shared memory.
-> >
-> > Arguably I think this arch flow is misdesigned, the
-> > is_swiotlb_force_bounce() should not be used for CC. dma_capable() is
-> > the correct API to check if the device can DMA to the presented
-> > address, and it will trigger swiotlb_map() just the same without
-> > creating this gap.
-> >
-> > Jason
+> I suspect P2P is probably broken on CC because this doesn't make
+> sense..
+
+Actually, I suppose it is fully broken because it will jump to swiotlb
+and then should fail.
+
+> This should flow into the
+> phys_to_dma_unencrypted/phys_to_dma_encrypted block as well AFAICT, it
+> shouldn't just assign phys. Assigning phys to dma on a CC system is
+> always wrong, right?
 > 
-> Something like this?
-
-Yeah that reads pretty sanely.
-
-> static inline dma_addr_t dma_direct_map_phys(struct device *dev,
-> 		phys_addr_t phys, size_t size, enum dma_data_direction dir,
-> 		unsigned long attrs, bool flush)
-> {
-> 	dma_addr_t dma_addr;
+> It is is more like
 > 
-> 	if (is_swiotlb_force_bounce(dev)) {
-> 		if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
-> 			return DMA_MAPPING_ERROR;
-> 
-> 		return swiotlb_map(dev, phys, size, dir, attrs);
-> 	}
-> 
-> 	if (attrs & DMA_ATTR_MMIO) {
-> 		dma_addr = phys;
-> 		if (unlikely(!dma_capable(dev, dma_addr, size, false, attrs)))
-> 			goto err_overflow;
-> 		goto dma_mapped;
+>         /* To be updated, callers should specify MMIO | CC_SHARED instead of
+> 	   * implying it. */
+>         if (attrs & DMA_ATTR_MMIO)
+> 	   attrs |= DMA_ATTR_CC_SHARED;
 
-I suspect P2P is probably broken on CC because this doesn't make
-sense..
+So no need for this if, we can go directly to marking the MMIO callers
+with DMA_ATTR_CC_SHARED once this is fixed for mmio:
 
-This should flow into the
-phys_to_dma_unencrypted/phys_to_dma_encrypted block as well AFAICT, it
-shouldn't just assign phys. Assigning phys to dma on a CC system is
-always wrong, right?
+>         if (attrs & DMA_ATTR_CC_SHARED) {
+>  		dma_addr = phys_to_dma_unencrypted(dev, phys);
+>  	} else {
+>  		dma_addr = phys_to_dma_encrypted(dev, phys);
+>  	}
 
-It is is more like
-
-        /* To be updated, callers should specify MMIO | CC_SHARED instead of
-	 * implying it. */
-        if (attrs & DMA_ATTR_MMIO)
-	   attrs |= DMA_ATTR_CC_SHARED;
-
-        if (attrs & DMA_ATTR_CC_SHARED) {
- 		dma_addr = phys_to_dma_unencrypted(dev, phys);
- 	} else {
- 		dma_addr = phys_to_dma_encrypted(dev, phys);
- 	}
-
-        if (!dma_capable()) {
-            if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT)
-	       fail
-        }
-
-> and dma_capable() now does
-> static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size,
-> 		bool is_ram, unsigned long attrs)
-> {
-> ....
-> 
-> 	/*
-> 	 * if phys addr attribute is encrypted but the
-> 	 * device is forcing an encrypted dma addr
-> 	 */
-> 	if (!(attrs & DMA_ATTR_CC_SHARED) && force_dma_unencrypted(dev))
-> 		return false;
-
-Yeah
-
-And with the above little edits it works for MMIO now too.
-
-Jason
+Jasn
