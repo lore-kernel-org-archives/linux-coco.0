@@ -1,102 +1,63 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635CE279355
-	for <linux-coco@lists.linux.dev>; Sun, 26 Apr 2026 16:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B55A264617;
+	Sun, 26 Apr 2026 19:36:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777222737; cv=none; b=sQkkTXM3+0jM0EFw1KewVQ+XHR0Z1JVis6dIwohp3O/BeGgfC8R6wjb502iiTxr3btwReFRzvFu5eszyWkr6OnbWqSJ7HcuXRH9uzQyEyuz1d0/U7uU59YQLWeiB1UqwAW/kdMMtVHeWcSGlghPAgn5BT+3I0NB9M7ZMIG4S2Gs=
+	t=1777232171; cv=none; b=DNJVBgAEm3fpvpH9NfC34OBX37czvAb/xMw7zbEX1dFn0RWgLKNLhEYdV8ipShkJ5hM4nKuctf6eVWZiEu51MrTQCC2h2ddObOiwdz/x14YZW2OOftofOKZPvlDe0I+uBvtCSBsaJ17AfDp1BCtbiETetFIuy7MrMCMytUxnuDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777222737; c=relaxed/simple;
-	bh=tm5fy1ToKvC5f3S/E/N4FlxHwS6bJwrzcUbcG0pYm/w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KGST5ZiiN1ayAqeVGkYujne7SweyrYhhmUvCVFr5QS6WPGFiQXHG1n+U9hbM8Da3TxeixhBXcb9pYiuaBJpnN63itMPRamgsd9OeKOyzBdnsDLkbjEt/Bf72fVTDIQApJ/+wckF2fS7fXgGjpz8Kd6vNoPQhPhwZPvvnv0pXHJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WDoG0+iF; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1777232171; c=relaxed/simple;
+	bh=OqzuopLSpA/od8TaeB+fGKfIXkyDuaxc89gbRmDBOPc=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=VigD5QCAxqzdNK0MzC5ZhsGkPhEeAGdp+xRV/5a2Xjx2w3A15tOef2h+0hxoPIdc4g5+FcAlbEg+JGT+3Tgj+aY3qzgZBgjrCXqQMCqj0TrdBQ/riqQdvNzqnb9X6UrQuOPy9sDZxmmnf3T88uc5558v7DwUkJiqZRKDikymzpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=arseTNZD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WDoG0+iF"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-67893fba9c3so6356165a12.2
-        for <linux-coco@lists.linux.dev>; Sun, 26 Apr 2026 09:58:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1777222735; x=1777827535; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=LTjMHFt5SpHHHtmrX90tkNkzhKqrNiTI1ZSrIW/c/fQ=;
-        b=WDoG0+iFGKgVk8Y8tJU+vM+XOrQJPAuIIqmTZYrHe8KuZmMn0ms5owgq/feQxp4W7v
-         kMlxCkt3CrEbesWDS1XzWf1lTvtvFiWfizQ81wHSWxs4v3LLyE6Qg1s464h6BSDrmZT1
-         Igh+5ofAVAjoWQyzsskY/htL2q4kmCDVMIV3c=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777222735; x=1777827535;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LTjMHFt5SpHHHtmrX90tkNkzhKqrNiTI1ZSrIW/c/fQ=;
-        b=WwaEVQz48F5TCGGNDknGHnNdopv5Nj16RLUOQxB5q8YHUt9WY6f7F/LK4MH8nNgjBO
-         j5bJ3PpPIEdtbS88RJEc9qPiKAf8aPKqgrEKr44ZacrECzRACSVHlCozgOJ+M9q7aUv1
-         4+NMunyb61IGr7I5vnUstZVH3aMF5IFUq6g0qYk0KeLFtCDPNQVpf3ZI28dSfteE/EaR
-         ZYFJxhEHTUZtEQTu5G39KA/CaE4Mm01/J9QQkFyjPKLZyc2pZXdccAQoHlCcCx4JZ3bo
-         7NMOnbGEssXUSlJ7EQi1QY1caz1zSi+4AkatvCieofvwBK/pX7lkSk5Qx6D2aaEiR7YM
-         /bKQ==
-X-Gm-Message-State: AOJu0Yx2at3S0QHAG0UqW8436W7D3+DCe4xXLLmjzvZR5BAzwSHQnnH4
-	LtMBJbynW3RV4G3ZxlB263pkWo7jXZgnzVjPANDF0omHaXwgLaj2j10ygM60IiqTB5kBIB/YgJo
-	9IOV65jE=
-X-Gm-Gg: AeBDieufb3L7tslnLO+u/xRIARh3e5/h4a0DHKMJwMtFV4VQbBPH+qC/HprBlEEM/Hv
-	+WoKTrtLr6iTScZW44ljvsUVc/4Fk3a+9YSdjU5V2s8BoHYMINEIQUE1jxOpeI/IhUJaeCbQfRz
-	yvLDpFu5yzCjTeUte5x1SiB5w0Smcq+/5Kaiq+Ii8zw9nbwbYG+O0a4Ych/oKGEipUgnOath0oC
-	7diqtshsMrGpiM6UqojJOx94V41rME6zHLl5yigPH1AdWqddBV8ZjjemBLlmB5DoxLqrzGiFj3V
-	BJJhIpCPSBUiU+0QIJ2WTL+D/Tx4/0ngArCk89EWe6qZektmQSSA70UbLaD3ZL6/ThslQBfBeJa
-	L8XD85kpzNO9jomn8SrAkwnfIWJpNIo3ltTgFhRzMA875vg5QjEFQHywQJHEX0GtB6G8muP1lWc
-	dRCeBWaAqd0XSeuXy68oSywOiUZvEDOL9hmLx2MgPHaw/yY/O6VAwARYL5tPvFpakcpjrEOE93W
-	fU0wyRoum94/l++siwwrg==
-X-Received: by 2002:a05:6402:3225:b0:678:91c7:6723 with SMTP id 4fb4d7f45d1cf-67891c76ad7mr6103318a12.27.1777222734612;
-        Sun, 26 Apr 2026 09:58:54 -0700 (PDT)
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com. [209.85.208.47])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-672c480e18esm6259933a12.10.2026.04.26.09.58.53
-        for <linux-coco@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Apr 2026 09:58:53 -0700 (PDT)
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-66b2d49ffb0so12021276a12.3
-        for <linux-coco@lists.linux.dev>; Sun, 26 Apr 2026 09:58:53 -0700 (PDT)
-X-Received: by 2002:a05:6402:c46:b0:670:d548:da79 with SMTP id
- 4fb4d7f45d1cf-672bfd87175mr17291351a12.3.1777222733582; Sun, 26 Apr 2026
- 09:58:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="arseTNZD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109C5C2BCAF;
+	Sun, 26 Apr 2026 19:36:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777232171;
+	bh=OqzuopLSpA/od8TaeB+fGKfIXkyDuaxc89gbRmDBOPc=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=arseTNZDM4K2RWScFmB15VUI6ZxculqydkCMKqXw7t7F2/QehtIwBdUza0Vr8IUb4
+	 Ko8zqWomm50QA+GnTvc7R6JqSwu2DXLwJKBbO2epsVWaob055/MoCFG7U/aDWJ5cEN
+	 icUKxl0eng+XjhYVVzMUmQ86a4zRFDubsN8toV5WFgJfVaojwbe5Jns9vdSU35dfh7
+	 W+NvMkqotg8cqgfDUdclfuIGR0dSrC43vjght86NMnvLnQSxJO/zBBmMOJnyyQD1GH
+	 dYquXzcONkm5JcbtxtceAGqlt/L/Gi01QJAwO2WhYIyLx0pMRum8vhf1fGdQiL+k7b
+	 Uv5eJYuMze4rA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA29D38119E5;
+	Sun, 26 Apr 2026 19:35:30 +0000 (UTC)
+Subject: Re: [GIT PULL] Trusted Security Manager (PCIe TSM) Update for 7.1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <69ee3920ef32e_fe08310024@djbw-dev.notmuch>
+References: <69ee3920ef32e_fe08310024@djbw-dev.notmuch>
+X-PR-Tracked-List-Id: <linux-coco.lists.linux.dev>
+X-PR-Tracked-Message-Id: <69ee3920ef32e_fe08310024@djbw-dev.notmuch>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm tags/tsm-for-7.1
+X-PR-Tracked-Commit-Id: 3177779ae17db4c66c851f799505fb95c7530c03
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 20b64cf8705a0f6268bb9a320eb6b4c425f3ec6c
+Message-Id: <177723212947.2364874.4524490467055824136.pr-tracker-bot@kernel.org>
+Date: Sun, 26 Apr 2026 19:35:29 +0000
+To: Dan Williams <djbw@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <69ee3920ef32e_fe08310024@djbw-dev.notmuch>
-In-Reply-To: <69ee3920ef32e_fe08310024@djbw-dev.notmuch>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sun, 26 Apr 2026 09:58:36 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whJSiwNBNts_XSrYosCR1SShEF8xS8sqh-qWK4zLBz4zA@mail.gmail.com>
-X-Gm-Features: AVHnY4J2kLwabfDUNCNiY9ERSaecxwCFnVdEqHOZLr1yO7hdrOdftwBUpI9250Q
-Message-ID: <CAHk-=whJSiwNBNts_XSrYosCR1SShEF8xS8sqh-qWK4zLBz4zA@mail.gmail.com>
-Subject: Re: [GIT PULL] Trusted Security Manager (PCIe TSM) Update for 7.1
-To: Dan Williams <djbw@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 26 Apr 2026 at 09:11, Dan Williams <djbw@kernel.org> wrote:
->
-> The other motivation for sending this one-patch pull request is to test
-> that you have my key with updated email.
+The pull request you sent on Sun, 26 Apr 2026 09:11:12 -0700:
 
-I didn't, but honestly, I don't match key issuer ID's or the email
-address the pull is sent from anyway.
+> git://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm tags/tsm-for-7.1
 
-So I just want the signature to be valid, and from a key I know.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/20b64cf8705a0f6268bb9a320eb6b4c425f3ec6c
 
-And it all verified with the old key, just with a
+Thank you!
 
-  issuer "djbw@kernel.org" does not match any User ID
-
-warning.
-
-I wouldn't have cared - or noticed - had you not mentioned it.
-
-But I did update the key so the issuer warning is gone too.
-
-         Linus
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
