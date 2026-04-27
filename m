@@ -1,63 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B55A264617;
-	Sun, 26 Apr 2026 19:36:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D0B33B6C4
+	for <linux-coco@lists.linux.dev>; Mon, 27 Apr 2026 03:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777232171; cv=none; b=DNJVBgAEm3fpvpH9NfC34OBX37czvAb/xMw7zbEX1dFn0RWgLKNLhEYdV8ipShkJ5hM4nKuctf6eVWZiEu51MrTQCC2h2ddObOiwdz/x14YZW2OOftofOKZPvlDe0I+uBvtCSBsaJ17AfDp1BCtbiETetFIuy7MrMCMytUxnuDM=
+	t=1777259611; cv=none; b=GqE4Baa7totea4gQhcqSTt0c+nnWjTjG8s2fIBdC8RjmdTY7bAOKzPnBI8B5nEOhrB+paN1tvvD/x5TLu+x1MF6c7IQ80+giTeGfrZv+E0OjtCAXm5KqbVbgdRVLJTsZXr37Gmfkr0uvvJdKy55v3DOEMNO2RCuqZLdgpJ7tXPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777232171; c=relaxed/simple;
-	bh=OqzuopLSpA/od8TaeB+fGKfIXkyDuaxc89gbRmDBOPc=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=VigD5QCAxqzdNK0MzC5ZhsGkPhEeAGdp+xRV/5a2Xjx2w3A15tOef2h+0hxoPIdc4g5+FcAlbEg+JGT+3Tgj+aY3qzgZBgjrCXqQMCqj0TrdBQ/riqQdvNzqnb9X6UrQuOPy9sDZxmmnf3T88uc5558v7DwUkJiqZRKDikymzpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=arseTNZD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777259611; c=relaxed/simple;
+	bh=V80SL+lhwvJTQ0cXw8bvUx5mV2JJH1vu6VApetJqC/w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pdmcqImvR+sh5SfuG/D8bq5wDIUPzx4K0NbF1lD7iVxHeYsyCNu9kdgw+FIHdUs/JwyHwvN0hdYU3t29BKSbvk0pTC0cH31eA6Gb+RTbnbzEAypoTNEvIJcrPX1bx8dQ+2VEmccl+6Gg/uZT4jLcZlCFoldQT9JeFPlf1mlltdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oCUK8wwc; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="arseTNZD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109C5C2BCAF;
-	Sun, 26 Apr 2026 19:36:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777232171;
-	bh=OqzuopLSpA/od8TaeB+fGKfIXkyDuaxc89gbRmDBOPc=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=arseTNZDM4K2RWScFmB15VUI6ZxculqydkCMKqXw7t7F2/QehtIwBdUza0Vr8IUb4
-	 Ko8zqWomm50QA+GnTvc7R6JqSwu2DXLwJKBbO2epsVWaob055/MoCFG7U/aDWJ5cEN
-	 icUKxl0eng+XjhYVVzMUmQ86a4zRFDubsN8toV5WFgJfVaojwbe5Jns9vdSU35dfh7
-	 W+NvMkqotg8cqgfDUdclfuIGR0dSrC43vjght86NMnvLnQSxJO/zBBmMOJnyyQD1GH
-	 dYquXzcONkm5JcbtxtceAGqlt/L/Gi01QJAwO2WhYIyLx0pMRum8vhf1fGdQiL+k7b
-	 Uv5eJYuMze4rA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA29D38119E5;
-	Sun, 26 Apr 2026 19:35:30 +0000 (UTC)
-Subject: Re: [GIT PULL] Trusted Security Manager (PCIe TSM) Update for 7.1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <69ee3920ef32e_fe08310024@djbw-dev.notmuch>
-References: <69ee3920ef32e_fe08310024@djbw-dev.notmuch>
-X-PR-Tracked-List-Id: <linux-coco.lists.linux.dev>
-X-PR-Tracked-Message-Id: <69ee3920ef32e_fe08310024@djbw-dev.notmuch>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm tags/tsm-for-7.1
-X-PR-Tracked-Commit-Id: 3177779ae17db4c66c851f799505fb95c7530c03
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 20b64cf8705a0f6268bb9a320eb6b4c425f3ec6c
-Message-Id: <177723212947.2364874.4524490467055824136.pr-tracker-bot@kernel.org>
-Date: Sun, 26 Apr 2026 19:35:29 +0000
-To: Dan Williams <djbw@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oCUK8wwc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777259609; x=1808795609;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=V80SL+lhwvJTQ0cXw8bvUx5mV2JJH1vu6VApetJqC/w=;
+  b=oCUK8wwcgC3UUWD6Np185HkE/+Vp2dbLbOFCPkD27l9mtVKrXQCCKuzi
+   cZguS/XPgSoHJk/cACHzo95zfRVGqA6nhg7LvXsm4MlC3tUm2X3kVitYP
+   K1ZOaJ+B9vzffoSAp7zEk5wgd20885b2qR7HKeBKb9YtFnCpIpHzWl/hh
+   jqB0OsztJuEc7eMNG8pAHihNcFwJmuNOB4Cg+hWkdk/mwvaefe2KzzgbI
+   6GE4M0/PN+z9U2ui7y0+pcyJjMs3JGUAKTkfraNvqWTsZW0WB0B0pM+GG
+   uHk3u0mv8FFTPFbaYg0TmhoMhgFHQ+Qx0yQ5nK2me08Heftz7ZEwXAEp4
+   w==;
+X-CSE-ConnectionGUID: WsjtU4S/QbSf/HKe1ppyzg==
+X-CSE-MsgGUID: k30LpjP9SKmue6vJNIVH3w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="89606069"
+X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; 
+   d="scan'208";a="89606069"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2026 20:13:28 -0700
+X-CSE-ConnectionGUID: T+Q4B9PtSeaiD0zyK+WjNA==
+X-CSE-MsgGUID: sqRr1n3dQ7C5lSSVJ1g95A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; 
+   d="scan'208";a="238504442"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa005.fm.intel.com with ESMTP; 26 Apr 2026 20:13:25 -0700
+Date: Mon, 27 Apr 2026 10:50:58 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Tian, Kevin" <kevin.tian@intel.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"Williams, Dan J" <dan.j.williams@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"Jiang, Dave" <dave.jiang@intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 19/31] iommu/vt-d: Reserve the MSB domain ID bit for
+ the TDX module
+Message-ID: <ae7PErLELqLHE4JA@yilunxu-OptiPlex-7050>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-20-yilun.xu@linux.intel.com>
+ <BN9PR11MB52767F28E9FF692ACE69F3D78C582@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <aehkFicutMwa2LP+@yilunxu-OptiPlex-7050>
+ <BN9PR11MB52763F59424C6E4AFD7F63988C2B2@BN9PR11MB5276.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BN9PR11MB52763F59424C6E4AFD7F63988C2B2@BN9PR11MB5276.namprd11.prod.outlook.com>
 
-The pull request you sent on Sun, 26 Apr 2026 09:11:12 -0700:
+> > > btw in patch23 commit msg:
+> > >
+> > > "
+> > > There is no dedicated way to enumerate which IOMMU devices support
+> > > trusted operations. The host has to call TDH.IOMMU.SETUP on all IOMMU
+> > > devices and tell their trusted capability by the return value.
+> > > "
+> > >
+> > > which implies that ecap_tdxc() alone doesn't really report the capability?
+> > 
+> > Ah, good catch. Let me explain:
+> > 
+> > ecap_tdxc does report the capability. This bit is special cause both
+> > trusted part & untrusted part access it.
+> > 
+> > For IOMMU driver (which now handles the untrusted part), it can directly
+> > query to this bit and decide what to do.
+> > 
+> > But for tdx-host driver which handles the trusted part, it shouldn't
+> > speculate into the IOMMU for capability enumeration. TDX Module has more
+> > concerns about trusted capability, including the related I/O stack
+> 
+> I guess "more concerns" means that there are more conditions for
+> TDX module to look at beyond ecap_tdxc(), so it's not appropriate
+> for tdx-host driver to check ecap alone.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm tags/tsm-for-7.1
+Exactly. 
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/20b64cf8705a0f6268bb9a320eb6b4c425f3ec6c
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+> 
+> > capabilities e.g. SPDM/IDE cap...  So in patch23 I actually mean we
+> > don't have an enumeration SEAMCALL for trusted capability, I will
+> > refactor that message:
+> > 
+> >     There is no dedicated *SEAMCALL* to enumerate which IOMMU devices
+> > support
+> >     trusted operations...
