@@ -1,117 +1,137 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B2424676D
-	for <linux-coco@lists.linux.dev>; Mon, 27 Apr 2026 04:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A0F2773E5;
+	Mon, 27 Apr 2026 06:31:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777263447; cv=none; b=YP16TtoPeGe2Yf+dx00NVFlD0wOG3dSgKfUF62fIRwCaHk8I149p7abdr0q/laDuhQaChkq6oc+1jigjnEaAoQHtYjyPF2zStdlfbw9PGcE9ZOqsVE3y9goOYpm4lmda1VQxIFTs2U+OZWO2e2AxF4jxEvdWqHNyKZmB/BrvQVY=
+	t=1777271477; cv=none; b=XiE1v4jQG22bow2Yx4MWzZ66TdKjHccPuis7ZyP+Ykw1+/YyJ/3RTvK/m2gyLsvByBYJyITry4BlCYNHXp6JtBuJ7kEXiRjHnNT9PN/Ca4sneVj3rgT4Kmxw81BSgFFy3fIZ2QI51LPxAJ69XWbDGiCfJOxxwlxQeAWcSI+toN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777263447; c=relaxed/simple;
-	bh=cO6WJvmGQL4rJFN4/VYn6S1ENlMx+AdqGU8pNE9VnPY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L4QgH0vIdnBLoQkuj9lVRyGMWdn92hTIV+qP+4T0PTrNZWkG/Hn/R++/D5tjz2vd2RarIl4RBfjynv+LCyZaTVO2Q1JWmT8BlwyVw+BjU/vbBb6nVb12DWEXo5RUjYHnwgyzsVpTH9WBi7TXp/0CoJAYSnuZ8WqwyVPXcvHAXN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iQoJVHT8; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1777271477; c=relaxed/simple;
+	bh=TT3ZABo3gdbLCPLVCA/3gAb1IpW94r3+NRwJmZ4Vdas=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fPUJpCPo1o2Wtic4hKBBqXisH/4uJMXVm+xiPKYYvla/liWWSa4cCExUDtumv3IBlNw0FXLI+KMxEJ9xuxMVjDTJi+vtL8ZdBq1sPcLoGUeTewwC84cJvo2oJC6ok6szFRgPiDYOyBJ6CiO53m0vE/tiEmW7AztggQ9ytEI56+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r44Pt2ZR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iQoJVHT8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777263446; x=1808799446;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cO6WJvmGQL4rJFN4/VYn6S1ENlMx+AdqGU8pNE9VnPY=;
-  b=iQoJVHT8AoVVwa472bSfPc8WH0PDn7Y9yxCdBLkt9gCoj6UUN0tNXcNJ
-   rCajNmco1l8UauiqD2ZhFpo5GfdKOvuriJVpCteRfEJlYA3YB4zlHb9qv
-   8nJlh1M1UgIBYe3QLczjwQEreje1+oEBOznPiuQ7PdvEjaSUX1gsTLf9w
-   RnqvrEKzIkM3j9Fszp7sBmJKD1NvJmS7fqShelOEhQNpT0hdS9SAjQedc
-   vugY21yGQ1kMXJPlBX7RGcuH1mqFe1NPWayRX9xGzmub2FLP6CvZxxg3G
-   xJAwRYc91S+ZRDIRTCYN/swckHyZlP4WZae3PJXkjJ7xn3uwHAHvUY+xw
-   g==;
-X-CSE-ConnectionGUID: QRojtWVCRjKl5PVlvh0nkA==
-X-CSE-MsgGUID: uxDnWDHJQ+y02QLUKjHctg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="88745801"
-X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; 
-   d="scan'208";a="88745801"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2026 21:17:25 -0700
-X-CSE-ConnectionGUID: IRNH05ULQU+ZqmAHqv06gw==
-X-CSE-MsgGUID: oZRZfy9ZRpe79cRakMiFdw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; 
-   d="scan'208";a="226987610"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa009.fm.intel.com with ESMTP; 26 Apr 2026 21:17:22 -0700
-Date: Mon, 27 Apr 2026 11:54:54 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"Williams, Dan J" <dan.j.williams@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
-	"Jiang, Dave" <dave.jiang@intel.com>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Xu, Yilun" <yilun.xu@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Verma, Vishal L" <vishal.l.verma@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 30/31] coco/tdx-host: Implement IDE stream
- setup/teardown
-Message-ID: <ae7eDgujuIEF6G08@yilunxu-OptiPlex-7050>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-31-yilun.xu@linux.intel.com>
- <BN9PR11MB5276BB48433E1AF97E5D27298C582@BN9PR11MB5276.namprd11.prod.outlook.com>
- <aeibi7JzfZ2Kx0NU@yilunxu-OptiPlex-7050>
- <BN9PR11MB5276DBD859A8122620EB86CE8C2B2@BN9PR11MB5276.namprd11.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r44Pt2ZR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9294DC19425;
+	Mon, 27 Apr 2026 06:31:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777271476;
+	bh=TT3ZABo3gdbLCPLVCA/3gAb1IpW94r3+NRwJmZ4Vdas=;
+	h=From:To:Cc:Subject:Date:From;
+	b=r44Pt2ZR8rT+xlusdriUwtEEiy0YDkqD78pNWIlbVj1zLLqmVZqNduCbhvByi5Gj1
+	 EY0vxn4WO9IibbXFwfukUBlRyxBywJQDBgAsApZqir9RmRIX4wWwnCKMPhd8rFvkW9
+	 rM+wvm9fdz+dI/adkMdR5TWdwGljh/eQxGjfEOCHvOC/iq7w1U9A9mVM3beYdOqvFY
+	 IeuXC0ThOAbGcl9mBXzDBj9DzSRRtv6lshW7bFFILIha/gOM3qsAL9O7TiP42nXf04
+	 x+kpAWvF/LB0JbnIZ1fqUqkSZ/YSEm8UajaIMvm3/AhI4Ps4rMbwvyp7YkLJyAIMi9
+	 igb4TCgupRd1A==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev,
+	linux-coco@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Marc Zyngier <maz@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH v4 0/3] Enforce host page-size alignment for shared buffers
+Date: Mon, 27 Apr 2026 12:01:05 +0530
+Message-ID: <20260427063108.909019-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BN9PR11MB5276DBD859A8122620EB86CE8C2B2@BN9PR11MB5276.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 24, 2026 at 07:05:32AM +0000, Tian, Kevin wrote:
-> > From: Xu Yilun <yilun.xu@linux.intel.com>
-> > Sent: Wednesday, April 22, 2026 5:58 PM
-> > 
-> > On Thu, Apr 09, 2026 at 08:02:33AM +0000, Tian, Kevin wrote:
-> > > > From: Xu Yilun <yilun.xu@linux.intel.com>
-> > > > Sent: Saturday, March 28, 2026 12:02 AM
-> > > >
-> > > > Implementation for a most straightforward Selective IDE stream setup.
-> > > > Hard code all parameters for Stream Control Register. And no IDE Key
-> > > > Refresh support.
-> > > >
-> > >
-> > > 'more straightforward', compared to what?
-> 
-> a typo.
-> 
-> > 
-> > Actually it is " *most* straightforward", I just mean "very".
-> 
-> When you say "most straightforward", then I want to know what are
-> other options to compare. If you think that the thought practice
+Hi all,
 
-OK, I think the use of "a most" is somewhat misleading. I don't want to
-emphasize on comparison.  I just want to give a summary about the
-implementation: hard code all parameters, give no option for
-configurations, no optional features supported e.g. KEY Refresh.
+This patch series addresses alignment requirements for buffers shared between
+private-memory guests and the host.
 
-So is it better I just s/most/very:
+When running private-memory guests, the guest kernel must apply additional
+constraints when allocating buffers that are shared with the hypervisor. These
+shared buffers are also accessed by the host kernel and therefore must be
+aligned to the host’s page size.
 
- Implementation for a very straightforward Selective IDE stream setup...
+Architectures such as Arm can tolerate realm physical address space PFNs being
+mapped as shared memory, as incorrect accesses are detected and reported as GPC
+faults. However, relying on this mechanism alone is unsafe and can still lead to
+kernel crashes.
 
-> leading to the 'most' definition is important, then please elaborate.
-> 
-> otherwise I'd just remove that sentence.
-> 
+This is particularly likely when guest_memfd allocations are mmapped and
+accessed from userspace. Once exposed to userspace, it is not possible to
+guarantee that applications will only access the intended 4K shared region
+rather than the full 64K page mapped into their address space. Such userspace
+addresses may also be passed back into the kernel and accessed via the linear
+map, potentially resulting in a GPC fault and a kernel crash.
+
+To address this, the series introduces a new helpers,
+mem_decrypt_granule_size() and mem_decrypt_align(), which allows callers to
+enforce the required alignment for shared buffers.
+
+Changes from v3:
+https://lore.kernel.org/all/20260309102625.2315725-1-aneesh.kumar@kernel.org
+* Fix build error reported by kernel test robot <lkp@intel.com>
+
+Changes from v2:
+https://lore.kernel.org/all/20251221160920.297689-1-aneesh.kumar@kernel.org
+* Rebase to latest kernel
+* Consider swiotlb always decrypted and don't align when allocating from swiotlb.
+
+Changes from v1:
+* Rename the helper to mem_encrypt_align
+* Improve the commit message
+* Handle DMA allocations from contiguous memory
+* Handle DMA allocations from the pool
+* swiotlb is still considered unencrypted. Support for an encrypted swiotlb pool
+  is left as TODO and is independent of this series.
+
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Thomas Gleixner <tglx@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+
+Aneesh Kumar K.V (Arm) (3):
+  dma-direct: swiotlb: handle swiotlb alloc/free outside
+    __dma_direct_alloc_pages
+  swiotlb: dma: its: Enforce host page-size alignment for shared buffers
+  coco: guest: arm64: Query host IPA-change alignment via RHI
+
+ arch/arm64/include/asm/mem_encrypt.h |  3 ++
+ arch/arm64/include/asm/rhi.h         | 24 ++++++++++++
+ arch/arm64/include/asm/rsi.h         |  2 +
+ arch/arm64/include/asm/rsi_cmds.h    | 10 +++++
+ arch/arm64/include/asm/rsi_smc.h     |  7 ++++
+ arch/arm64/kernel/Makefile           |  2 +-
+ arch/arm64/kernel/rhi.c              | 54 ++++++++++++++++++++++++++
+ arch/arm64/kernel/rsi.c              | 13 +++++++
+ arch/arm64/mm/mem_encrypt.c          | 27 +++++++++++--
+ drivers/irqchip/irq-gic-v3-its.c     | 20 ++++++----
+ include/linux/mem_encrypt.h          | 14 +++++++
+ kernel/dma/contiguous.c              | 10 +++++
+ kernel/dma/direct.c                  | 58 ++++++++++++++++++++++++----
+ kernel/dma/pool.c                    |  4 +-
+ kernel/dma/swiotlb.c                 | 21 ++++++----
+ 15 files changed, 240 insertions(+), 29 deletions(-)
+ create mode 100644 arch/arm64/include/asm/rhi.h
+ create mode 100644 arch/arm64/kernel/rhi.c
+
+-- 
+2.43.0
+
