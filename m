@@ -1,157 +1,145 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683CA3D88E5
-	for <linux-coco@lists.linux.dev>; Mon, 27 Apr 2026 15:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777303817; cv=none; b=cRFFM72sNi+RHZXS9pskN5Q0yVAJp5LmosfIIjTzL8cvaOoY+U0SJ8iCvHqaCk37MdI+wpqEdx7RHYTsRRCBZanq7FKBG18LWfdOW4GKYC+QJOjGbnIfIgWjBVH47MRB+74dMCATKGKvvYd5bnoU5ybuobAOrPsjcSCDwGhPla0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777303817; c=relaxed/simple;
-	bh=E8KAfqiMC7/zX0TEeflmgG68M7YynVogr3OGqQ241C8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p8oekxH9GSb2MmD8t53/Hg7faGVJt2ypubjyPQkPQFADsaJpYY1sP4WstzijnqZogKk0dpyl7PLp1KjrQN8C8W/ylgUtXPcfFz39uTglMxHnzNpQO+znI9+2O/oiDu5TBxHOdb8eEEZotRZjkuQtpo9kgUbUx1RCLX7mOSlWpfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EGGRfeIY; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FEA3E866B
+	for <linux-coco@lists.linux.dev>; Mon, 27 Apr 2026 18:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777313548; cv=pass; b=Yja58UBbnCd+mMFpgCHxaeyGvCg3OhiV8BjY+V7Z/Ipg4yruRsb/sEDhXfOehlLK+3oQjOrJbjATrnSkQpRxAyW3jENezw6MLEW2+JZCqe0kGHiSVElTVPzgpHhVrKQ37PKBWjH3ReiJVGXH4AnBYyKRsgPIaK+g9coNXvroyK8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777313548; c=relaxed/simple;
+	bh=Bv6BTNFx8eotL6sCX8FOszmjIvqGdco6s4FUj3kQRLs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hDPtHSx/YnBeuhfvavMjhnX1uiFiVzZKEySSOeuaZwRooIFkF3PW42AN6DpVdRs0ouoYHgctnUARN57mbAFLP4UGrwKPia+RXuUCDCD0GwRwBMxrUmgyB6VMtCWLjNlmdyYpZWKmeir9dc0acNhnhLDG3QUj+6JF9KUPufkw43Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jdKaWxa4; arc=pass smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EGGRfeIY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777303815; x=1808839815;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=E8KAfqiMC7/zX0TEeflmgG68M7YynVogr3OGqQ241C8=;
-  b=EGGRfeIYYILs6iZjAc95NHqITuDcNZShpgnxlqWakNJmjJQJtfEcJxNu
-   GP+OvI3fDU1nEPckYqWjRMtwu0KWD413KIOoK0kuHO1rqJFq4tFpf+JWX
-   W3N/Ev+xoaR41gnxFW74qB8sOpCssPjQ+3EfO/L/jg5/hGImJXqsBUSbS
-   GxtIZzHUZHeNpewzvJziDLOxof9WOLk4sMB+FQwBPk1aE+n/p1RoecG/l
-   WkXYZwuF06IO1LFKvQlqTMelfA0OWzqngWcxr+kX5mTSI7iXH3tLVFwMw
-   /LVxXs5WO9KVTh5oJ5HWXUlXXY3oERMVZAq9Lsvk+CNBvgevMPm1FpDkp
-   g==;
-X-CSE-ConnectionGUID: JeIp3bONTtKsruKMgfCOgQ==
-X-CSE-MsgGUID: e8w6PkSnTf2T0+RL/EDosA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="77900834"
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
-   d="scan'208";a="77900834"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:30:07 -0700
-X-CSE-ConnectionGUID: HAJsZFOaQqKdLr5QYl+zng==
-X-CSE-MsgGUID: SjFJyL8qRCOnJ40kJRNoqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
-   d="scan'208";a="232673369"
-Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:30:07 -0700
-From: Chao Gao <chao.gao@intel.com>
-To: kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	linux-doc@vger.kernel.org
-Cc: binbin.wu@linux.intel.com,
-	dave.hansen@linux.intel.com,
-	djbw@kernel.org,
-	ira.weiny@intel.com,
-	kai.huang@intel.com,
-	kas@kernel.org,
-	nik.borisov@suse.com,
-	paulmck@kernel.org,
-	pbonzini@redhat.com,
-	reinette.chatre@intel.com,
-	rick.p.edgecombe@intel.com,
-	sagis@google.com,
-	seanjc@google.com,
-	tony.lindgren@linux.intel.com,
-	vannapurve@google.com,
-	vishal.l.verma@intel.com,
-	yilun.xu@linux.intel.com,
-	xiaoyao.li@intel.com,
-	yan.y.zhao@intel.com,
-	Chao Gao <chao.gao@intel.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH v8 21/21] x86/virt/tdx: Document TDX module update
-Date: Mon, 27 Apr 2026 08:28:15 -0700
-Message-ID: <20260427152854.101171-22-chao.gao@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260427152854.101171-1-chao.gao@intel.com>
-References: <20260427152854.101171-1-chao.gao@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jdKaWxa4"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-50d864c23bdso81151cf.1
+        for <linux-coco@lists.linux.dev>; Mon, 27 Apr 2026 11:12:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777313545; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UZoWBRrCqfHfomNeN7Lzo1Dieidbec2SiNfbHztohinuXJnnrinAFZ6nmcz3ydxQYV
+         LX77U0FjG88n5gD8tC1K/1jVP8nQFJVp2TUCQMUSZU2syrQir/dB/E/7KutrGc9cJbGD
+         qO6lH/TWrttn+76bTScU+ZXH6i8Z1gqp3yJjF7bh6+0NMW8Ad0LgRypOxMlaq6LcWxGw
+         h8hDE9l/tKJYGbFp60+jd/rMNeuZyvZJbEZpZO5UviiwL3JDPJsA+/p39q6nbV/zhuBd
+         /fAQc25In0zI+Dj0LKVsjH/q7WtPgJ2w/Ql+tzBiquvClxNj1kpJH2ra+ewR0lEuu9Ul
+         PE4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=462X41kdBtO/lLaDMT5cvpDfu7D1CiZVzDMruqarSW0=;
+        fh=YSk0cUpqHqW2v+APEDx+kvdnVJuaAWpKpTnUDkaln50=;
+        b=itU3gpXgOr+410IgvNB17J1BpPEx3yNtNH2odHE5Xz6P0r965XOxkv0LSX6ilSO/FV
+         3N1ZDAkCBq/4s8UQ3oUDbfIaKsrUFzAr3zVl2ZawBTUuy0JxM46N+FkAo0y6bPZncNFk
+         /2646l2sIIeeuOS/w8KpyQtKVw2IVGTov7onAMmOwd5WyJNB5pqqFw2FO4eq5CXiGSo5
+         qP2X1FwLIGNtE4NuBzc3HvPm8x/tzP3FtZxeBjW0RdgEsZMZtHEjgGa8OYYHllzKb5XK
+         dRbcqLowqC3LlAmEUziNNhxEdytksBT/Ivd2Ics2INpl/EdaZ+ykpKPevxx4tPEtN9BU
+         asHg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777313545; x=1777918345; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=462X41kdBtO/lLaDMT5cvpDfu7D1CiZVzDMruqarSW0=;
+        b=jdKaWxa4gJv1ou5r4OljeGrYeXJwHeGR7LVoa2hZZHtDGI2kWJQ/azLMuDLCEi5KUm
+         0FNO5qXEbJx4pQPFgjBVvVzbQsR4t7grB1YjFk07xj40oTewv5wtOqMgUEx1N4TxfhxO
+         1QVc+6JxIqQU84aQmfMNf/Jfsw8B4U6qcaymOkwbZeOqEqm539E7X9vKv1Yz6iE6e7Bk
+         RDrg2VLBlN8Ly+HLzCzf82Fy15l4iXjA6NITxzoYbB/V6RW6Y56X5heCikpmtbSCX9Mi
+         peaoMGGRVarTHQQIVaXO604FWW7udmdq//yOtKCDb3ISy+XDxiOLoSNmXlBKe9ultLPn
+         Y7pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777313545; x=1777918345;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=462X41kdBtO/lLaDMT5cvpDfu7D1CiZVzDMruqarSW0=;
+        b=lLR0EdmwjHh7rrap+IignJ/yz1wOgJBeVoUTJHRB/Jx6iccr0pmVFpBSNUQDcJ28Cz
+         tdhFbncZ/Zo8BzkPFkB8Zj6V0BFEA5IJvTLTh9O9ygWGhqllKbMr1ykDmX1hIOyWfUGh
+         ZCdQXY+b5k/NRkNLmxDWbptB1VqfZy5mYQQP5w8QpkQkwgiqaCVynJDHTETmF+2pOuKj
+         VEfSVvUW/2Pnd5X4rfNJXQtHKrIR3WYhDqMzwLxrq70cJGqtsvkFXsFegxMecRdzo18+
+         cX1iAW4bo4pglsX2WCfGq7CHn7R3Y33ZiEbfczTc2xSucU0hj/BbAOtIassA8v3YdxwB
+         yHcg==
+X-Forwarded-Encrypted: i=1; AFNElJ9Hx1V1TR3AYv1+tqWP7qFF21wBZoVAM1wGVqbEaca8LKQTq7tbGnD5LRNaSFwPOYexnCuws2KTU91W@lists.linux.dev
+X-Gm-Message-State: AOJu0YwnsHr9wZ3StSO8Icvt19OyyADIiQk5tBYpFV5g8IuT3maj/TzL
+	n8xjM31EDTC+jGwkL8IjA59yio+IJ3zACODc0cJs/X0SvLp6QWVEFzB3Lcl7DP5BKV4Z8fDRFwB
+	E3RRJQeSSO5unTpEbWbJigW51jglhJx0M8pNSgtet
+X-Gm-Gg: AeBDietct6uLgzbPuBIRGBrLFtjnStZyAz7Vxq0TD6ZwvkkD3b+H9gNzExHyF7mycuo
+	8IEzkHLWMsMukB1t4eJZEiGOYVGzmc4gB+5ijLRNQkGjU9KqPT0nLeeahzlfqdFXm5yn1M8HTk7
+	LHcbsOR/nuAUL7C0O5VvIrpxLHMbSKpRg4VpDMXh1ESK15O0Cd0zf8EoNJobeApYn0z20IiTrQZ
+	1kxPT0spCxLAZwPYGJVFJepmuELXGAonWHSF3XloOnw/ksV4gnJ/NTNMdZo9tUpmNdz9xgylXZD
+	nMgWFs5wrkPLKvM27JCEYggLjG6+xree9nd2IJ2f96QMnAHjfhZKB4LRfiejY9EvTb4HyI+A
+X-Received: by 2002:a05:622a:5e17:b0:50f:bea3:9475 with SMTP id
+ d75a77b69052e-5100cbe3608mr1392371cf.14.1777313544554; Mon, 27 Apr 2026
+ 11:12:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260427152854.101171-1-chao.gao@intel.com> <20260427152854.101171-2-chao.gao@intel.com>
+In-Reply-To: <20260427152854.101171-2-chao.gao@intel.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Mon, 27 Apr 2026 11:12:12 -0700
+X-Gm-Features: AVHnY4L5q1UHrVRtKqKnRAb0L10M9ZeW4_EVR8OMjdp9PtmE7Gxn7pe3CDO74Ws
+Message-ID: <CAGtprH8mcz4HTBQvnSfWuZ_yErDUKq9PX3Mr55KAfw2VK_o9Mg@mail.gmail.com>
+Subject: Re: [PATCH v8 01/21] x86/virt/tdx: Move low level SEAMCALL helpers
+ out of <asm/tdx.h>
+To: Chao Gao <chao.gao@intel.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, binbin.wu@linux.intel.com, 
+	dave.hansen@linux.intel.com, djbw@kernel.org, ira.weiny@intel.com, 
+	kai.huang@intel.com, kas@kernel.org, nik.borisov@suse.com, paulmck@kernel.org, 
+	pbonzini@redhat.com, reinette.chatre@intel.com, rick.p.edgecombe@intel.com, 
+	sagis@google.com, seanjc@google.com, tony.lindgren@linux.intel.com, 
+	vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com, 
+	yan.y.zhao@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	"H. Peter Anvin" <hpa@zytor.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Document TDX module update as a subsection of "TDX Host Kernel Support" to
-provide background information and cover key points that developers and
-users may need to know, for example:
+On Mon, Apr 27, 2026 at 8:30=E2=80=AFAM Chao Gao <chao.gao@intel.com> wrote=
+:
+>
+> From: Kai Huang <kai.huang@intel.com>
+>
+> TDX host core code implements three seamcall*() helpers to make SEAMCALLs
+> to the TDX module.  Currently, they are implemented in <asm/tdx.h> and
+> are exposed to other kernel code which includes <asm/tdx.h>.
+>
+> However, other than the TDX host core, seamcall*() are not expected to
+> be used by other kernel code directly.  For instance, for all SEAMCALLs
+> that are used by KVM, the TDX host core exports a wrapper function for
+> each of them.
+>
+> Move seamcall*() and related code out of <asm/tdx.h> and make them only
+> visible to TDX host core.
+>
+> Since TDX host core tdx.c is already very heavy, don't put low level
+> seamcall*() code there but to a new dedicated "seamcall_internal.h".  Als=
+o,
+> currently tdx.c has seamcall_prerr*() helpers which additionally print
+> error message when calling seamcall*() fails.  Move them to
+> "seamcall_internal.h" as well. In such way all low level SEAMCALL helpers
+> are in a dedicated place, which is much more readable.
+>
+> Copy the copyright notice from the original files and consolidate the
+> date ranges to:
+>
+>         Copyright (C) 2021-2023 Intel Corporation
+>
+> Signed-off-by: Kai Huang <kai.huang@intel.com>
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 
- - update is done in stop_machine() context
- - update instructions and results
- - update policy and tooling
-
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
----
- Documentation/arch/x86/tdx.rst | 36 ++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
-
-diff --git a/Documentation/arch/x86/tdx.rst b/Documentation/arch/x86/tdx.rst
-index ff6b110291bc..de6b99d9afa7 100644
---- a/Documentation/arch/x86/tdx.rst
-+++ b/Documentation/arch/x86/tdx.rst
-@@ -73,6 +73,42 @@ initialize::
- 
-   [..] virt/tdx: TDX-Module initialization failed ...
- 
-+TDX module Runtime Update
-+-------------------------
-+
-+The TDX architecture includes a persistent SEAM loader (P-SEAMLDR) that
-+runs in SEAM mode separately from the TDX module. The kernel can
-+communicate with P-SEAMLDR to perform runtime updates of the TDX module.
-+
-+During update, the TDX module becomes unresponsive to other TDX operations.
-+To prevent components using TDX (such as KVM) from experiencing unexpected
-+errors during updates, updates are performed in stop_machine() context.
-+
-+TDX module update has complex compatibility requirements; the new module
-+must be compatible with the current CPU, P-SEAMLDR, and running TDX module.
-+Rather than implementing complex module selection and policy enforcement
-+logic in the kernel, userspace is responsible for auditing and selecting
-+appropriate updates.
-+
-+Updates use the standard firmware upload interface. See
-+Documentation/driver-api/firmware/fw_upload.rst for detailed instructions.
-+
-+Successful updates are logged in dmesg:
-+  [..] virt/tdx: version 1.5.20 -> 1.5.24
-+
-+If updates failed, running TDs may be killed and further TDX operations may
-+not be possible until reboot. For detailed error information, see
-+Documentation/ABI/testing/sysfs-devices-faux-tdx-host.
-+
-+Given the risk of losing existing TDs, userspace should verify that the
-+update is compatible with the current system and properly validated before
-+applying it.
-+
-+A reference userspace tool that implements necessary checks is available
-+at:
-+
-+  https://github.com/intel/tdx-module-binaries
-+
- TDX Interaction to Other Kernel Components
- ------------------------------------------
- 
--- 
-2.47.1
-
+Reviewed-by: Vishal Annapurve <vannapurve@google.com>
