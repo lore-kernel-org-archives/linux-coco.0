@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D9D3491D0
-	for <linux-coco@lists.linux.dev>; Mon, 27 Apr 2026 15:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628ED33859A
+	for <linux-coco@lists.linux.dev>; Mon, 27 Apr 2026 15:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777303805; cv=none; b=pBuN2eh6okox2KzeNg7AqHn2QC33tNtgdgdHI58i2PgE4Iy3egFhnISGMOyTevUf+LPgTMD29adtEc5rTlbmNB3TOrxydWtnBZiWzX+swIz4sc6mkOdH82mVKW/+y3jz+0REOMqy70TTvK4GffeJOdEV/vGjHTwg5GwLLyZoQrU=
+	t=1777303806; cv=none; b=r5QQ04VM7iTYbLu0XZjS4VgRWNgZ7RTH9aLaA3/sRFzoy8RhJV+1izxabOHN0dAuCalFPcTHw75GNOyGlO7qQ4l5btQ4mrs+E+jIsK56EkG5fh5YNVcwT4/QXyrCiw16zUGRc2jYtOOn7altR/8N01hosMW6rDBBSw8BtQfNS0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777303805; c=relaxed/simple;
-	bh=wEwibR+gTdBFd4dJUSNRJHiWPMrn1nUW4D5LVd9Dmt0=;
+	s=arc-20240116; t=1777303806; c=relaxed/simple;
+	bh=m7AVvJRaxqKCLBJJMlHcgctO9YivIqh3maXP2UqICDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RHIMiCD78N5WISmC4XXM0nfLiqa3MVgQv2vQmD6hJUbdAueKUCbxg7uuPqPpZGtREYTJZ2A552a3iiZ3GhV3IIpDiyvi/7aozp+aXbrmKK621kKpp1/2p8HC64HabN1w6BnQi8EX1qRlVPBeZt+BzNs+kPao5JTyic0wsuCTSsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LxXzpat2; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=aKe6MSw6RTQmU4Yy9I0AJZdKG4/cE5vdHfZyrNJwp4l3Vsw9julxeW9uy/aV57rPaYC1SCIFlO/CaeONpGA3xCpRv931GdeRlZytUxGbsVbUpyJyI6yagmMlV1l56BHk89m6wAQ58h6HSQ0fjGU0wLP1mtmXbp8hxuuUhpmK9A4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e1vORoOL; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LxXzpat2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e1vORoOL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777303803; x=1808839803;
+  t=1777303804; x=1808839804;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=wEwibR+gTdBFd4dJUSNRJHiWPMrn1nUW4D5LVd9Dmt0=;
-  b=LxXzpat2dAUfDszj7OvIWREcWAY/sc1A8Eq2BZiPpzkBrphYysPzW8GP
-   xNzIffdR5ZiB7dQXZAsuTseuS/Iufjg4WOGFpvIqZ9nXhW6/8sOmDHZAx
-   vUhXjSzHQGH+vQJaAeUHmE5iWNixwO80/k+lsSqtL/EyGXgeo+KaDG4C6
-   0wqb11xNf+5lczteto71AgLxkLQtWzyXuu/klWmP+xq/L0JqkLOg04Lz4
-   xA3VZCRVD3eBFYKRwmVBZkel3+iCXhGVyz5AvpVDa7OvtlPNAxYIxdr9Y
-   h3cm0TkIsHkaT7smA/gncSNAvhXVivd4MqrbvSGsg2elu6ZTBq5C5iurv
-   Q==;
-X-CSE-ConnectionGUID: tt3Dc5MsR6Ggzql1mVqSIw==
-X-CSE-MsgGUID: Pwuxft74Ro2Nz15HOwFvqQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="77900716"
+  bh=m7AVvJRaxqKCLBJJMlHcgctO9YivIqh3maXP2UqICDE=;
+  b=e1vORoOLTgx6xDP5ldqFQowz15olW31SQcVDomPmRXrNYx58sC2GknXL
+   LLZnuscm/LeDaaGfKlKkYMBRBz5z8lq6d9xaX/5wlXJq0ZNcRvV4SfsSC
+   e1YjSW7zU4LHMW4JPNZ74C1aKaLwl2O3K1iTlYh654qtutMeB6Y8LbfYL
+   xwZmdG7AHo6y1zkTQ7rpXWxz1OLLcVRIfxgF5qIL3fU/nr7N12DXvcDfu
+   UcGh/hHoEQ4g9oGvoQpEiMUidnbI5MqQk4vPiYGmH4hXtMvZlRczbIZIo
+   MvSfcMpUbb1AUtuNRq/uYtO25cKt3BGOGV1l28nhsDpI0Y0zPRCTY/xPw
+   A==;
+X-CSE-ConnectionGUID: JE0uHp2nTsuXh+muMqPFHA==
+X-CSE-MsgGUID: rwhABrV5T8Gk2sJxvulYvQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="77900735"
 X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
-   d="scan'208";a="77900716"
+   d="scan'208";a="77900735"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:30:00 -0700
-X-CSE-ConnectionGUID: LRBEnch9QjyCYa4WFGi3sQ==
-X-CSE-MsgGUID: Tb7XvmEkRuGY2vYoJ0Jn5w==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:30:01 -0700
+X-CSE-ConnectionGUID: XKB/eandQ+SnX38venfP5g==
+X-CSE-MsgGUID: eEpcX28PTiaz9HacQj9DPA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
-   d="scan'208";a="232673248"
+   d="scan'208";a="232673272"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:30:00 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:30:01 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -72,9 +72,9 @@ Cc: binbin.wu@linux.intel.com,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v8 09/21] x86/virt/seamldr: Introduce skeleton for TDX module updates
-Date: Mon, 27 Apr 2026 08:28:03 -0700
-Message-ID: <20260427152854.101171-10-chao.gao@intel.com>
+Subject: [PATCH v8 11/21] x86/virt/tdx: Reset software states during TDX module shutdown
+Date: Mon, 27 Apr 2026 08:28:05 -0700
+Message-ID: <20260427152854.101171-12-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260427152854.101171-1-chao.gao@intel.com>
 References: <20260427152854.101171-1-chao.gao@intel.com>
@@ -84,171 +84,95 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-TDX module updates require careful synchronization with other TDX
-operations. The requirements are (#1/#2 reflect current behavior that
-must be preserved):
+The TDX module requires a one-time global initialization (TDH.SYS.INIT) and
+per-CPU initialization (TDH.SYS.LP.INIT) before use. These initializations
+are guarded by software flags to prevent repetition.
 
-1. SEAMCALLs need to be callable from both process and IRQ contexts.
-2. SEAMCALLs need to be able to run concurrently across CPUs
-3. During updates, only update-related SEAMCALLs are permitted; all
-   other SEAMCALLs shouldn't be called.
-4. During updates, all online CPUs must participate in the update work.
+After TDX module updates, the new TDX module requires the same global and
+per-CPU initializations, but the existing software flags prevent
+re-initialization.
 
-No single lock primitive satisfies all requirements. For instance,
-rwlock_t handles #1/#2 but fails #4: CPUs spinning with IRQs disabled
-cannot be directed to perform update work.
+Reset all software flags guarding the initialization flows to allow the
+global and per-CPU initializations to be triggered again after updates.
 
-Use stop_machine() as it is the only well-understood mechanism that can
-meet all requirements.
-
-And TDX module updates consist of several steps (See Intel® Trust Domain
-Extensions (Intel® TDX) Module Base Architecture Specification, Chapter
-"TD-Preserving TDX module Update"). Ordering requirements between steps
-mandate lockstep synchronization across all CPUs.
-
-multi_cpu_stop() is a good example of performing a multi-step task in
-lockstep. But it doesn't synchronize steps within the callback function
-it takes. So, implement one based on its pattern to establish the
-skeleton for TDX module updates. Specifically, add a global state
-machine where each state represents a step in the update flow. The state
-advances only after all CPUs acknowledge completing their work in the
-current state. This acknowledgment mechanism is what ensures lockstep
-execution.
-
-Potential alternative to stop_machine()
-=======================================
-An alternative approach is to lock all KVM entry points and kick all
-vCPUs. Here, KVM entry points refer to KVM VM/vCPU ioctl entry points,
-implemented in KVM common code (virt/kvm). Adding a locking mechanism
-there would affect all architectures KVM supports. And to lock only TDX
-vCPUs, new logic would be needed to identify TDX vCPUs, which the KVM
-common code currently lacks. This would add significant complexity and
-maintenance overhead to KVM for this TDX-specific use case, so don't take
-this approach.
+As tdx_module_initialized is changed at runtime, drop its "__ro_after_init"
+tag.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
 Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
 v8:
- - Add a "so don't take this approach" after alternative solution
- discussion in the changelog [Rick]
- - Use imperative mood for a comment [Dave]
+ - drop "__ro_after_init" from tdx_module_initialized.
 ---
- arch/x86/virt/vmx/tdx/seamldr.c | 79 ++++++++++++++++++++++++++++++++-
- 1 file changed, 77 insertions(+), 2 deletions(-)
+ arch/x86/virt/vmx/tdx/tdx.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index f70be8e2a07b..aa839aaeb79d 100644
---- a/arch/x86/virt/vmx/tdx/seamldr.c
-+++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -7,8 +7,10 @@
- #define pr_fmt(fmt)	"seamldr: " fmt
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index d28421ac4180..ff5644f5daa4 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -55,11 +55,14 @@ static DEFINE_PER_CPU(bool, tdx_lp_initialized);
  
- #include <linux/mm.h>
-+#include <linux/nmi.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-+#include <linux/stop_machine.h>
+ static struct tdmr_info_list tdx_tdmr_list;
  
- #include <asm/seamldr.h>
- 
-@@ -190,6 +192,77 @@ static struct seamldr_params *init_seamldr_params(const u8 *data, u32 size)
- 	return alloc_seamldr_params(blob, size);
- }
- 
-+/*
-+ * During a TDX module update, all CPUs start from MODULE_UPDATE_START and
-+ * progress to MODULE_UPDATE_DONE. Each state is associated with certain
-+ * work. For some states, just one CPU needs to perform the work, while
-+ * other CPUs just wait during those states.
-+ */
-+enum module_update_state {
-+	MODULE_UPDATE_START,
-+	MODULE_UPDATE_DONE,
-+};
++static bool sysinit_done;
++static int sysinit_ret;
 +
-+static struct {
-+	enum module_update_state state;
-+	int thread_ack;
+ /* All TDX-usable memory regions.  Protected by mem_hotplug_lock. */
+ static LIST_HEAD(tdx_memlist);
+ 
+ static struct tdx_sys_info tdx_sysinfo __ro_after_init;
+-static bool tdx_module_initialized __ro_after_init;
++static bool tdx_module_initialized;
+ 
+ /*
+  * Do the module global initialization once and return its result.
+@@ -69,8 +72,6 @@ static int try_init_module_global(void)
+ {
+ 	struct tdx_module_args args = {};
+ 	static DEFINE_RAW_SPINLOCK(sysinit_lock);
+-	static bool sysinit_done;
+-	static int sysinit_ret;
+ 
+ 	raw_spin_lock(&sysinit_lock);
+ 
+@@ -1237,7 +1238,7 @@ int tdx_module_shutdown(void)
+ {
+ 	struct tdx_sys_info_handoff handoff = {};
+ 	struct tdx_module_args args = {};
+-	int ret;
++	int ret, cpu;
+ 
+ 	ret = get_tdx_sys_info_handoff(&handoff);
+ 	WARN_ON_ONCE(ret);
+@@ -1247,7 +1248,22 @@ int tdx_module_shutdown(void)
+ 	 * module can produce and most likely supported by newer modules.
+ 	 */
+ 	args.rcx = handoff.module_hv;
+-	return seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
++	ret = seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
++	if (ret)
++		return ret;
++
 +	/*
-+	 * Protect update_data. Raw spinlock as it will be acquired from
-+	 * interrupt-disabled contexts.
++	 * Clear global and per-CPU initialization flags so the new module
++	 * can be fully re-initialized after a successful update.
++	 *
++	 * No locks needed as no concurrent accesses can occur here.
 +	 */
-+	raw_spinlock_t lock;
-+} update_data = {
-+	.lock = __RAW_SPIN_LOCK_UNLOCKED(update_data.lock)
-+};
-+
-+static void set_target_state(enum module_update_state state)
-+{
-+	/* Reset ack counter. */
-+	update_data.thread_ack = num_online_cpus();
-+	update_data.state = state;
-+}
-+
-+/* Last one to ack a state moves to the next state. */
-+static void ack_state(void)
-+{
-+	guard(raw_spinlock)(&update_data.lock);
-+	update_data.thread_ack--;
-+	if (!update_data.thread_ack)
-+		set_target_state(update_data.state + 1);
-+}
-+
-+/*
-+ * See multi_cpu_stop() from where this multi-cpu state-machine was
-+ * adopted, and the rationale for touch_nmi_watchdog().
-+ */
-+static int do_seamldr_install_module(void *seamldr_params)
-+{
-+	enum module_update_state newstate, curstate = MODULE_UPDATE_START;
-+	int ret = 0;
-+
-+	do {
-+		/* Chill out and re-read update_data. */
-+		cpu_relax();
-+		newstate = READ_ONCE(update_data.state);
-+
-+		if (newstate != curstate) {
-+			curstate = newstate;
-+			switch (curstate) {
-+			/* TODO: add the update steps. */
-+			default:
-+				break;
-+			}
-+
-+			ack_state();
-+		} else {
-+			touch_nmi_watchdog();
-+			rcu_momentary_eqs();
-+		}
-+	} while (curstate != MODULE_UPDATE_DONE);
-+
-+	return ret;
-+}
-+
- DEFINE_FREE(free_seamldr_params, struct seamldr_params *,
- 	    if (!IS_ERR_OR_NULL(_T)) free_page((unsigned long)_T))
- 
-@@ -207,7 +280,9 @@ int seamldr_install_module(const u8 *data, u32 size)
- 	if (IS_ERR(params))
- 		return PTR_ERR(params);
- 
--	/* TODO: Update TDX module here */
--	return 0;
-+	/* Ensure a stable set of online CPUs for the update process. */
-+	guard(cpus_read_lock)();
-+	set_target_state(MODULE_UPDATE_START + 1);
-+	return stop_machine_cpuslocked(do_seamldr_install_module, params, cpu_online_mask);
++	tdx_module_initialized = false;
++	sysinit_done = false;
++	sysinit_ret = 0;
++	for_each_possible_cpu(cpu)
++		per_cpu(tdx_lp_initialized, cpu) = false;
++	return 0;
  }
- EXPORT_SYMBOL_FOR_MODULES(seamldr_install_module, "tdx-host");
+ 
+ static bool is_pamt_page(unsigned long phys)
 -- 
 2.47.1
 
