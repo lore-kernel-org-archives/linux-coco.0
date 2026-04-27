@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC712236EE
-	for <linux-coco@lists.linux.dev>; Mon, 27 Apr 2026 03:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149043644CF
+	for <linux-coco@lists.linux.dev>; Mon, 27 Apr 2026 03:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777260773; cv=none; b=kB+kXzBqEE8Nds4PyD2cbYCiccsWTtT6mhCAu1MNZEQy83L+/kdsNShgth2ioDT2hVYFRgMeQbT6/Rvk1Z1NKvgMe1Yd18XXNhx/mc1bk09SiEYQda0PGx0BAoIC/MkSHfHzcYQ19ffG+5HSk2WVumr2S3OCtp6Q7JziHgnrG9w=
+	t=1777262194; cv=none; b=l92mZCwPqZMKOUgJiHLNOuGxaBUCZWoDb3qPxDeaE26hZfPqih3ZJAbFEyPKgmhWmX3WP5CJ8ZvhGN9QmWD9RJ2UDLHgDOS/7vyDX1VZG0dy7HL/wOqO6sy6iT4RTJ2tIS3tSWI5aUzeNIghXspkiHs1KPukHIA9Gp9AyGB6jF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777260773; c=relaxed/simple;
-	bh=424HvNddsDICO2hthptABkQmQxChYu0/EeJULWRIXNA=;
+	s=arc-20240116; t=1777262194; c=relaxed/simple;
+	bh=U5eB27EPhFnEq25cMqaEKtuW8hppFXLa4DWUWniTY3c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FQHkJbl6EEwhVo4HEeVC9GMsGvalAZk0KNeS/VUAKEHW72EhGEreyXRHJcAFidEFYa9t08N6m3ybYVZ0A89vws5M7CzbvZMoIeynVR45kXjEvVFrqdSdS2QPCVS7XVUoSBOBhi/jxpZdu+uk30q1VJRWt5cGZqaAULDhet5//tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AR03Xixn; arc=none smtp.client-ip=192.198.163.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=s7G9JVNvx5mB/pOfTlODpgacSrk6juqsxMoX5ft3Q2itJCRELGlFbcFyFYyOBKGnP/jpP5FbtAfIhQEf8XgS4MvMTZSMDZuIF4/Qaujpz8PGcGvqRnZM9poDO0Ul5GeTUWyvjTXRMIl8nMeD6Wy9jTdXedLLC9RMlu98DoaodjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EIQvFcRm; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AR03Xixn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EIQvFcRm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777260772; x=1808796772;
+  t=1777262193; x=1808798193;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=424HvNddsDICO2hthptABkQmQxChYu0/EeJULWRIXNA=;
-  b=AR03XixnhDX84M5qdxaP4vFfBVdHhm0bPF5sk56zPPPhDrbG4lnnRhqS
-   +LHN/fokiJ9R8ooI/NVj0ZW/RyvEQHp4/JMUGBDFmewdUy248+/LafGMZ
-   NU7oEoIgPQggMiahr/efJ+SG50phAXDsDVrPRxfRdgHqKSPBn9iU2z46O
-   +kLkel+NlU1doLDl8X4Hkucz6L+omkkN9CeRdHqqJ53nHJRYVl0JFfN8Z
-   NkWp8aZtufRjqH6ItAJ6PJwY+fvytIy6FcQnTwMq8y3fVaJsoszGkE7oR
-   XTgVxZ+nPB1zkQd0Y/WVOMVVgVBjnMrIf4DraUCnLUIX3UzbVGHvRcXp8
-   g==;
-X-CSE-ConnectionGUID: 5vQhlHhnQJGLOYqwSo49qg==
-X-CSE-MsgGUID: yVx+NXW1SPK+iAQ9l+hONw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="77301633"
+  bh=U5eB27EPhFnEq25cMqaEKtuW8hppFXLa4DWUWniTY3c=;
+  b=EIQvFcRmWRVVuc9BI7pUnDOdz2Uk1umr1wmXexlGM2JPj5JjJ9iz4WYe
+   PXM4odkHQSjehTqXCQ4bNINMQ7PYnvYvqtfmQ1rde4ri8lG75rGD7rFY/
+   K8LudotQMtpwZ73JyWqEl89Nd+WDgINkeQOdXkgbXCLZQ2kJA5Op47Yum
+   EX06s5+ZMerMh2O5UUVhJQ4RsrLlpmu96MJgtSu/7YLFSOHLOtaBtuYKv
+   rF40744stUXVYo6njGxqQItXoEX6Z8FZIme/ol5S+t+SfobO12h+3LxLu
+   MwaaDTW8T9qI41pEV9cRvxecAOEM+Loyv7Soz/OND1ZeGw0/pgJkcnk5T
+   w==;
+X-CSE-ConnectionGUID: llg8tYygTemXwpUTMsd9Rw==
+X-CSE-MsgGUID: RcWmUIprQAOdjK3zhF9XmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="100798227"
 X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; 
-   d="scan'208";a="77301633"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2026 20:32:51 -0700
-X-CSE-ConnectionGUID: NDmLYr/pQBGaE7Dnu5nedA==
-X-CSE-MsgGUID: ofb5gXFLRPyGsuxQarzkyw==
+   d="scan'208";a="100798227"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2026 20:56:33 -0700
+X-CSE-ConnectionGUID: mYmK07pcQ6OWdus7p0Sfag==
+X-CSE-MsgGUID: tO9C6WKTTdKqQrv4zzRAzw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; 
-   d="scan'208";a="235292336"
+   d="scan'208";a="226984187"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa004.fm.intel.com with ESMTP; 26 Apr 2026 20:32:48 -0700
-Date: Mon, 27 Apr 2026 11:10:20 +0800
+  by fmviesa009.fm.intel.com with ESMTP; 26 Apr 2026 20:56:28 -0700
+Date: Mon, 27 Apr 2026 11:34:01 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: "Tian, Kevin" <kevin.tian@intel.com>
 Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
@@ -61,14 +61,14 @@ Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
 	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
 	"Verma, Vishal L" <vishal.l.verma@intel.com>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 23/31] coco/tdx-host: Setup all trusted IOMMUs on TDX
- Connect init
-Message-ID: <ae7TnI4xGDEWY1Cd@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH v2 24/31] coco/tdx-host: Add a helper to exchange SPDM
+ messages through DOE
+Message-ID: <ae7ZKa5AQ3lQunfq@yilunxu-OptiPlex-7050>
 References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-24-yilun.xu@linux.intel.com>
- <BN9PR11MB527640A3D76B66DCE5FFA58C8C582@BN9PR11MB5276.namprd11.prod.outlook.com>
- <aeiUartvxzsvq2Ye@yilunxu-OptiPlex-7050>
- <BN9PR11MB5276916B241153121738EB208C2B2@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <20260327160132.2946114-25-yilun.xu@linux.intel.com>
+ <BN9PR11MB5276E1C73BFF4EF6A806F69D8C582@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <aeiXuludvkZedOg5@yilunxu-OptiPlex-7050>
+ <BN9PR11MB52767B17432AF4A2622091608C2B2@BN9PR11MB5276.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -77,46 +77,61 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <BN9PR11MB5276916B241153121738EB208C2B2@BN9PR11MB5276.namprd11.prod.outlook.com>
+In-Reply-To: <BN9PR11MB52767B17432AF4A2622091608C2B2@BN9PR11MB5276.namprd11.prod.outlook.com>
 
-On Fri, Apr 24, 2026 at 06:54:54AM +0000, Tian, Kevin wrote:
+On Fri, Apr 24, 2026 at 07:01:32AM +0000, Tian, Kevin wrote:
 > > From: Xu Yilun <yilun.xu@linux.intel.com>
-> > Sent: Wednesday, April 22, 2026 5:27 PM
+> > Sent: Wednesday, April 22, 2026 5:41 PM
 > > 
-> > On Thu, Apr 09, 2026 at 07:51:56AM +0000, Tian, Kevin wrote:
+> > On Thu, Apr 09, 2026 at 07:56:06AM +0000, Tian, Kevin wrote:
 > > > > From: Xu Yilun <yilun.xu@linux.intel.com>
 > > > > Sent: Saturday, March 28, 2026 12:01 AM
-> > > >
-> > > > Setup all trusted IOMMUs on TDX Connect initialization and clear all on
-> > > > TDX Connect removal.
-> > > >
-> > > > Trusted IOMMU setup is the pre-condition for all following TDX Connect
-> > > > operations such as SPDM/IDE setup. It is more of a platform
-> > > > configuration than a standalone IOMMU configuration, so put the
-> > > > implementation in tdx-host driver.
-> > > >
+> > > > +
+> > > > +static int __maybe_unused tdx_spdm_msg_exchange(struct
+> > tdx_tsm_link
+> > > > *tlink,
+> > > > +						void *request, size_t
+> > > > request_sz,
+> > > > +						void *response, size_t
+> > > > response_sz)
+> > > > +{
+> > > > +	struct pci_dev *pdev = tlink->pci.base_tsm.pdev;
 > > >
-> > > not sure what above tries to tell. why is it a platform configuration
-> > > when you have seamcalls on each IOMMU?
+> > > call it pci_spdm_msg_exchange() and pass in struct pci_dev directly.
 > > 
-> > This is to say the TDH.IOMMU.SETUP relates to PCIe SPDM/IDE, it is not
-> > just about IOMMU. By identifying the
-> > 
-> >   for_each_iommu(iommu)
-> > 	tdh.iommu.setup(iommu)
-> > 
-> > as a platform configuration, it justifies why we trigger this
-> > configuration at tdx-host driver probe, rather than in some
-> > IOMMU/IOMMUFD API.
+> > I don't think so. There is kernel managed spdm transfer support WIP,
+> > which is another topic.  We don't want to mix the namespace with that
+> > one.
 > 
-> iommu drivers also involve PCI, e.g. call pci_enable_ats(), etc.
+> pci_spdm_raw_msg_exchange() then, since you said currently only
+> one user i.e. tdx?
 > 
-> so having relation to PCIe SPDM/IDE is not an argument of
-> platform vs. IOMMU.
+> If the kernel managed spdm doesn't support the raw format, then there
+> won't be conflict.
 
-OK, I think I could delete the platform vs. IOMMU thing in commit log.
+I think kernel managed spdm APIs should not support the raw format (with
+DOE header). SPDM protocol could be run on various transit so make no
+sense to have special care for DOE.
+
+So this "raw_msg_exchange" is dedicated for PCI/TSM. Yes there won't be
+conflict, but it's important "pci_spdm_" prefix only serve kernel
+managed spdm. PCI_TSM managed SPDM has fundamental logical differences
+with the kernel managed one.
 
 > 
-> Actually I'm OK to put that logic in tdx-host. Just the explanation
-> here doesn't make much sense...
+> if it supports (i.e. the 2nd user), then this should be moved to pci core.
 > 
+> > 
+> > And we also don't name it tsm_spdm_msg_exchange, cause TSM firmwares
+> > output different blobs for vendor TSM drivers to transfer. E.g. TDX
+> > Module outputs buffers with DOE header & SPDM header, other vendors
+> > (AMD IIRC) outputs buffers with only SPDM header. So this function is
+> > TDX specific.
+> > 
+> 
+> TDX is just an user of that. All the logic here is about handling the
+> raw format, nothing specific to tdx.
+
+It is special, kernel managed spdm won't expect an all-in-one format,
+other vendors either. It is TDX's decision to output this all-in-one
+format for OS to transfer.
