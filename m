@@ -1,54 +1,54 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D273B2FDF
-	for <linux-coco@lists.linux.dev>; Tue, 28 Apr 2026 23:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569A23CC9EA
+	for <linux-coco@lists.linux.dev>; Tue, 28 Apr 2026 23:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777419217; cv=none; b=mGRrbV5sF3OjbaMK/Fj70LPQ6TAw9xk29JioECB27MeeC1LLeJTFdCSzVGHeVGsrS+2/Xur9TUh90NMhIQmqSfrtGK9XJqfzrR07okScYozstuDNtKyiWigeaPMtgPN+vGgnItQrNyIfxADSXc991JklO2w+XROhb5tUql4r/BI=
+	t=1777419217; cv=none; b=A8eRqhdwycyhxLB2L7Eh8dq9lLa+FwkUf+p+ykm+5NTk+hGNeYH/dcp5fVfRF138y6QiVdCna9lTigSsQzYwBg/MauonNdD96fVM+tS7OhqSsLYg1Ovkt314OT3Vt/KeavzApEqCPkUPugHF6RIoZ4GcSY7nwvWLehgPJQ9Wkjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777419217; c=relaxed/simple;
-	bh=bSl0Ml6IHrW3qDTTj/PbwouszbUAxe7p9oC9LS2cUxY=;
+	bh=7UHYRpw7yO05KvlcB/cjpEvd2t/jycN0nMqBTEpDnEg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kSKICTF4yXDNHWADiTKb7gBwARgiaSE+Lju7NvFujUbG8JE+DOk9gEFeu0OrDkNitiO87xxU+yIfJTpG5m8KKB0RpP6Y2ZnVko4UX8XhI6iva9Tn3S3UbRbF7x0QnaBpsWYjjejjngKc9QEXkH+90w8ozo4k514+rhRvuiubcgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Rs9+Ydoo; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=Zi8JwxjTvlXi74kEZ9CY0BP3llJe4U3I2hYg4I0ANnYcpdVCQpJ9ZZPuX5tbReJZ1VTTgyTah9AaJOOLEfPsmk08T+zfys9KrQ3W5Y4r3lqKZ9T9/OX8DFoeDyAbx3K813AzpC8OK2rmZ54eE9x+grKI8xndjUC7CO7TvL2Lv5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=at1V09u/; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Rs9+Ydoo"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f8bbb4045so6990612b3a.2
-        for <linux-coco@lists.linux.dev>; Tue, 28 Apr 2026 16:33:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="at1V09u/"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b2ecc96a9aso105461375ad.1
+        for <linux-coco@lists.linux.dev>; Tue, 28 Apr 2026 16:33:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777419213; x=1778024013; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1777419214; x=1778024014; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MEO36girPr+drwE77RQ8xryHhyT8L0VbpSDbMsS1X7s=;
-        b=Rs9+Ydool5bxlaB0s0AWouWhDN2J7JrtFPhWiroz113s4i9up3vQOsR8helEd01gS5
-         A+f7c/XqMw8BkJYhTP7d7AdAGnYWE9QVEm7kjqYVQvtiNdbEtV3p1ZE5FRr4SSc/XjCl
-         4zWQOLxbIT9aOtVbupkfG7RL8oWZIBVOzWJ/4DxxEEfMs4y/PyWlXi1lGGEYJI97vkXn
-         VHGdND7e20vZ069j7u6sHKSL0hYlRg/xQ12GIKqLG1NB6vcwLqvigJcN7TfxGqJTpSIj
-         WrT1wTcqKAhS9pmIhzW0rjLpC8JfkDFlOYc1hrv2ZcKsyp1akfUx/v3nj1p4JbXBndEZ
-         tVFg==
+        bh=k0syyhb9YeGFgBqpqjZEPjnNFKpLHyAFVq8K7QF7sEE=;
+        b=at1V09u/E+h1Jl1p7qTMZ2o3cvst14Ldw/TinK7spe5349Og3nqSurR3MoeLYX50tB
+         53Ix+nuQ7FRG99UoXyxfjkvy1rD/gpsvibnFnU93ArNJ3lO3MRGREXg3RvA5vF8CmRdA
+         3usItoDBTjvvWeNmDTtfCs8t5gbA8jxRaFnvcfeCnu0/y/tICAWNY+WVXDYEweAlYvUj
+         nBDhUZJ93CjUSANZO0V9tTTGqRJ353+HOfV/HV72vJMXmpIhT7DyCAao3hbpHviXIqR+
+         cnB2vkOkH/NNtciRSARf2UPpNTrBgl8MVaYpYCrPLeijlEcuHqW5yPrLYGJtScpp10ZE
+         6WcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777419213; x=1778024013;
+        d=1e100.net; s=20251104; t=1777419214; x=1778024014;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MEO36girPr+drwE77RQ8xryHhyT8L0VbpSDbMsS1X7s=;
-        b=bfCT7Mep7S/2foX2XkGxRdZUdgWG+MAdvn5YaiFPfE14Z6DVNj9H42fIswr8O8xJeY
-         m7HZIiyH3HkSgiWQdVzyLXt63X89CKyEOD8NsnjRFOsNgA9gv/7MZeUo7He/6IJjANih
-         jyWNfn9JSlxnau5N/KR1W0pOWTpmhmbdfoohOXB8hrS/UgqefqOSjSyt7VSVfsaovb88
-         RSKlgAAU3zr2CqUbUiU5Lvwddkeh9HYscxckkokStxP8RcN5lnfVXGQr/R2M0NcAm4fe
-         RrOKKvCkrtOnsfbez6F8Ho5IVqg0COiDeiq9bfirrehM9zn4dlJY2M7v4pn3nwFSkHJV
-         gE5Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+kcNwtJZeXVC6kbsNfrnlaPUcEYoYJRGBpO7/Lqriy5UUA5ABLhdMmHpDrLdEqj8ygxB3c8ghZxjT8@lists.linux.dev
-X-Gm-Message-State: AOJu0YzlyOvEb7bB5HvMHVV0KBY9PCtx2AKLUSjhlOy7bDXRquxPP40o
-	DsfHOF14BvFNFL8Nccm1Udhj/cWC+jc5IamtforFlk9uOMn9oMBnJK26TBP3T0fEWUbjFzOWj+L
-	4PGd29SJwJgcpnikJxMkuyf3mKQ==
-X-Received: from pfoo12.prod.google.com ([2002:a05:6a00:1a0c:b0:82f:bc93:4ae2])
+        bh=k0syyhb9YeGFgBqpqjZEPjnNFKpLHyAFVq8K7QF7sEE=;
+        b=N/PEYoniXjXOyUMHfgrNxZHWZRxmST/TmxaryVKZ+Xhp7f9WqoNmoKS0XyNmioV7RR
+         qJHvYydV6dNmdBEnuT6mb66lIOtWxuOeM4F25Hs3fSz91IddUQbaGf3WmsS+znDfP/oW
+         PVe1gUy/b/uRj8JlRloF8Psus7sWNCY3YgLQjoSXi0qi1Z7cx2vEbB8pwqoB8+i/nbm1
+         LNWhXBwlxEXbCQWTcZhv1U6yFrGv+/VA9Cl92qhZzQmBIFdpi4pu3dGuFs1nW73FrrCE
+         a0pNOg1QQzAKltHlrvAjdzYRVhTvPndO4I6knH6UcGhc8BCc5VWjrbF5tNM3KkHTqm6j
+         ZZMw==
+X-Forwarded-Encrypted: i=1; AFNElJ96c0uaFiu5v2seGHPVBUquI6HYi5k5XUTRLQ2TWA82QnHss7MG4+P79H3NBZjI30hThEeQMLANUU32@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx2zgGTXqYEDdfwE/r4NI98I8XEpd0akPq+zXxln0d4d0BK2iEH
+	7qBFpulNFomnp3r6UgJXTYkot5+KCUl1rTLrBPSEbhf/XHpHN6XRiXM0qyLLmdNB2DkZX5f4BWg
+	J/y5kyrnjm3aXpq09Y60bSDA9Rw==
+X-Received: from plxd18.prod.google.com ([2002:a17:902:ef12:b0:2ae:c8e0:1f12])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:1993:b0:82f:120:fd6f with SMTP id d2e1a72fcca58-834dd919817mr4905304b3a.0.1777419212551;
- Tue, 28 Apr 2026 16:33:32 -0700 (PDT)
-Date: Tue, 28 Apr 2026 16:33:23 -0700
+ 2002:a17:903:189:b0:2b7:8a56:7cda with SMTP id d9443c01a7336-2b97c3cb634mr50128145ad.4.1777419214303;
+ Tue, 28 Apr 2026 16:33:34 -0700 (PDT)
+Date: Tue, 28 Apr 2026 16:33:25 -0700
 In-Reply-To: <cover.1777418884.git.ackerleytng@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com> <cover.1777418884.git.ackerleytng@google.com>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <8c0dc96e0776bdcffc4d2e1a9d7336f106289a48.1777418884.git.ackerleytng@google.com>
-Subject: [POC PATCH 3/6] KVM: selftests: Make guest_code_xsave more friendly
+Message-ID: <d7a6c561a22a77f9e1dc4f9f8957b23089f8112b.1777418884.git.ackerleytng@google.com>
+Subject: [POC PATCH 5/6] KVM: selftests: Test conversions for SNP
 From: Ackerley Tng <ackerleytng@google.com>
 To: devnull+ackerleytng.google.com@kernel.org
 Cc: ackerleytng@google.com, aik@amd.com, akpm@linux-foundation.org, 
@@ -85,58 +85,218 @@ Cc: ackerleytng@google.com, aik@amd.com, akpm@linux-foundation.org,
 	yan.y.zhao@intel.com, youngjun.park@lge.com, yuanchu@google.com
 Content-Type: text/plain; charset="UTF-8"
 
-The original implementation of guest_code_xsave makes a jmp to
-guest_sev_es_code in inline assembly. When code that uses guest_sev_es_code
-is removed, guest_sev_es_code will be optimized out, leading to a linking
-error since guest_code_xsave still tries to jmp to guest_sev_es_code.
-
-Rewrite guest_code_xsave() to instead make a call, in C, to
-guest_sev_es_code(), so that usage of guest_sev_es_code() is made known to
-the compiler.
-
-This rewriting also gives a name to the xsave inline assembly, improving
-readability.
-
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- .../selftests/kvm/x86/sev_smoke_test.c        | 24 +++++++++++++------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ .../selftests/kvm/x86/sev_smoke_test.c        | 190 +++++++++++++++++-
+ 1 file changed, 185 insertions(+), 5 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-index 1a49ee3915864..8b859adf4cf6f 100644
+index 8b859adf4cf6f..86f17e59e9392 100644
 --- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
 +++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-@@ -80,13 +80,23 @@ static void guest_sev_code(void)
- 	GUEST_DONE();
+@@ -253,17 +253,197 @@ static void test_sev_smoke(void *guest, u32 type, u64 policy)
+ 	}
  }
  
--/* Stash state passed via VMSA before any compiled code runs.  */
--extern void guest_code_xsave(void);
--asm("guest_code_xsave:\n"
--    "mov $" __stringify(XFEATURE_MASK_X87_AVX) ", %eax\n"
--    "xor %edx, %edx\n"
--    "xsave (%rdi)\n"
--    "jmp guest_sev_es_code");
-+static void xsave_all_registers(void *addr)
++#define GHCB_MSR_REG_GPA_REQ		0x012
++#define GHCB_MSR_REG_GPA_REQ_VAL(v)                \
++	/* GHCBData[63:12] */                      \
++	(((u64)((v) & GENMASK_ULL(51, 0)) << 12) | \
++	 /* GHCBData[11:0] */			   \
++	 GHCB_MSR_REG_GPA_REQ)
++
++#define GHCB_MSR_REG_GPA_RESP		0x013
++#define GHCB_MSR_REG_GPA_RESP_VAL(v)			\
++	/* GHCBData[63:12] */				\
++	(((u64)(v) & GENMASK_ULL(63, 12)) >> 12)
++
++#define GHCB_DATA_LOW			12
++#define GHCB_MSR_INFO_MASK		(BIT_ULL(GHCB_DATA_LOW) - 1)
++#define GHCB_RESP_CODE(v) ((v) & GHCB_MSR_INFO_MASK)
++
++/*
++ * SNP Page State Change Operation
++ *
++ * GHCBData[55:52] - Page operation:
++ *   0x0001	Page assignment, Private
++ *   0x0002	Page assignment, Shared
++ */
++enum psc_op {
++	SNP_PAGE_STATE_PRIVATE = 1,
++	SNP_PAGE_STATE_SHARED,
++};
++
++#define GHCB_MSR_PSC_REQ		0x014
++#define GHCB_MSR_PSC_REQ_GFN(gfn, op)			\
++	/* GHCBData[55:52] */				\
++	(((u64)((op) & 0xf) << 52) |			\
++	/* GHCBData[51:12] */				\
++	((u64)((gfn) & GENMASK_ULL(39, 0)) << 12) |	\
++	/* GHCBData[11:0] */				\
++	GHCB_MSR_PSC_REQ)
++
++#define GHCB_MSR_PSC_RESP		0x015
++#define GHCB_MSR_PSC_RESP_VAL(val)			\
++	/* GHCBData[63:32] */				\
++	(((u64)(val) & GENMASK_ULL(63, 32)) >> 32)
++
++static u64 ghcb_gpa;
++static void snp_register_ghcb(void)
 +{
-+	__asm__ __volatile__(
-+		"mov $" __stringify(XFEATURE_MASK_X87_AVX) ", %eax\n"
-+		"xor %edx, %edx\n"
-+		"xsave (%0)"
-+		:
-+		: "r"(addr)
-+		: "eax", "edx", "memory"
-+	 );
++	u64 ghcb_pfn = ghcb_gpa >> PAGE_SHIFT;
++	u64 val;
++
++	GUEST_ASSERT(ghcb_gpa);
++
++	wrmsr(MSR_AMD64_SEV_ES_GHCB, GHCB_MSR_REG_GPA_REQ_VAL(ghcb_gpa >> PAGE_SHIFT));
++	vmgexit();
++
++	val = rdmsr(MSR_AMD64_SEV_ES_GHCB);
++	GUEST_ASSERT_EQ(GHCB_RESP_CODE(val), GHCB_MSR_REG_GPA_RESP);
++	GUEST_ASSERT_EQ(GHCB_MSR_REG_GPA_RESP_VAL(val), ghcb_pfn);
 +}
 +
-+static void guest_code_xsave(void *vmsa_gva)
++static void snp_page_state_change(u64 gpa, enum psc_op op)
 +{
-+	xsave_all_registers(vmsa_gva);
-+	guest_sev_es_code();
++	u64 val;
++
++	wrmsr(MSR_AMD64_SEV_ES_GHCB, GHCB_MSR_PSC_REQ_GFN(gpa >> PAGE_SHIFT, op));
++	vmgexit();
++
++	val = rdmsr(MSR_AMD64_SEV_ES_GHCB);
++	GUEST_ASSERT_EQ(GHCB_RESP_CODE(val), GHCB_MSR_PSC_RESP);
++	GUEST_ASSERT_EQ(GHCB_MSR_PSC_RESP_VAL(val), 0);
 +}
- 
- static void compare_xsave(u8 *from_host, u8 *from_guest)
++
++#define RMP_PG_SIZE_4K			0
++static inline void pvalidate(void *vaddr, bool validate)
++{
++	bool no_rmpupdate;
++	int rc;
++
++	/* "pvalidate" mnemonic support in binutils 2.36 and newer */
++	asm volatile(".byte 0xF2, 0x0F, 0x01, 0xFF\n\t"
++		     : "=@ccc"(no_rmpupdate), "=a"(rc)
++		     : "a"(vaddr), "c"(RMP_PG_SIZE_4K), "d"(validate)
++		     : "memory", "cc");
++
++	GUEST_ASSERT(!no_rmpupdate);
++	GUEST_ASSERT_EQ(rc, 0);
++}
++
++#define CONVERSION_TEST_VALUE_SHARED_1 0xab
++#define CONVERSION_TEST_VALUE_SHARED_2 0xcd
++#define CONVERSION_TEST_VALUE_PRIVATE 0xef
++#define CONVERSION_TEST_VALUE_SHARED_3 0xbc
++static void guest_code_conversion(u8 *test_shared_gva, u8 *test_private_gva, u64 test_gpa)
++{
++	snp_register_ghcb();
++
++	GUEST_ASSERT_EQ(READ_ONCE(*test_shared_gva), CONVERSION_TEST_VALUE_SHARED_1);
++	WRITE_ONCE(*test_shared_gva, CONVERSION_TEST_VALUE_SHARED_2);
++
++	snp_page_state_change(test_gpa, SNP_PAGE_STATE_PRIVATE);
++	pvalidate(test_private_gva, true);
++
++	WRITE_ONCE(*test_private_gva, CONVERSION_TEST_VALUE_PRIVATE);
++	GUEST_ASSERT_EQ(READ_ONCE(*test_private_gva), CONVERSION_TEST_VALUE_PRIVATE);
++
++	pvalidate(test_private_gva, false);
++	snp_page_state_change(test_gpa, SNP_PAGE_STATE_SHARED);
++
++	WRITE_ONCE(*test_shared_gva, CONVERSION_TEST_VALUE_SHARED_3);
++
++	wrmsr(MSR_AMD64_SEV_ES_GHCB, GHCB_MSR_TERM_REQ);
++	vmgexit();
++}
++
++static void test_conversion(u64 policy)
++{
++	gva_t test_private_gva;
++	gva_t test_shared_gva;
++	struct kvm_vcpu *vcpu;
++	gva_t ghcb_gva;
++	gpa_t test_gpa;
++	struct kvm_vm *vm;
++	void *ghcb_hva;
++	void *test_hva;
++
++	vm = vm_sev_create_with_one_vcpu(KVM_X86_SNP_VM, guest_code_conversion, &vcpu);
++
++	ghcb_gva = vm_alloc_shared(vm, PAGE_SIZE, KVM_UTIL_MIN_VADDR,
++				   MEM_REGION_TEST_DATA);
++	ghcb_hva = addr_gva2hva(vm, ghcb_gva);
++	ghcb_gpa = addr_gva2gpa(vm, ghcb_gva);
++	sync_global_to_guest(vm, ghcb_gpa);
++
++	test_shared_gva = vm_alloc_shared(vm, PAGE_SIZE, KVM_UTIL_MIN_VADDR,
++					  MEM_REGION_TEST_DATA);
++	test_hva = addr_gva2hva(vm, test_shared_gva);
++	test_gpa = addr_gva2gpa(vm, test_shared_gva);
++
++	test_private_gva = vm_unused_gva_gap(vm, PAGE_SIZE, KVM_UTIL_MIN_VADDR);
++	___virt_pg_map(vm, &vm->mmu, test_private_gva, test_gpa, PG_SIZE_4K, true);
++
++	vcpu_args_set(vcpu, 3, test_shared_gva, test_private_gva, test_gpa);
++
++	vm_sev_launch(vm, policy, NULL);
++
++	WRITE_ONCE(*(u8 *)test_hva, CONVERSION_TEST_VALUE_SHARED_1);
++
++	fprintf(stderr, "ghcb_hva=%p ghcb_gpa=%lx ghcb_gva=%lx\n", ghcb_hva, ghcb_gpa, ghcb_gva);
++	fprintf(stderr, "test_hva=%p test_gpa=%lx test_private_gva=%lx test_shared_gva=%lx\n", test_hva, test_gpa, test_private_gva, test_shared_gva);
++
++	vcpu_run(vcpu);
++
++	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_HYPERCALL);
++	TEST_ASSERT_EQ(vcpu->run->hypercall.nr, KVM_HC_MAP_GPA_RANGE);
++	TEST_ASSERT_EQ(vcpu->run->hypercall.args[0], test_gpa);
++	TEST_ASSERT_EQ(vcpu->run->hypercall.args[1], 1);
++	TEST_ASSERT_EQ(vcpu->run->hypercall.args[2], KVM_MAP_GPA_RANGE_ENCRYPTED | KVM_MAP_GPA_RANGE_PAGE_SZ_4K);
++
++	vm_mem_set_private(vm, test_gpa, PAGE_SIZE, KVM_SET_MEMORY_ATTRIBUTES2_MODE_UNSPECIFIED);
++
++	vcpu_run(vcpu);
++
++	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_HYPERCALL);
++	TEST_ASSERT_EQ(vcpu->run->hypercall.nr, KVM_HC_MAP_GPA_RANGE);
++	TEST_ASSERT_EQ(vcpu->run->hypercall.args[0], test_gpa);
++	TEST_ASSERT_EQ(vcpu->run->hypercall.args[1], 1);
++	TEST_ASSERT_EQ(vcpu->run->hypercall.args[2], KVM_MAP_GPA_RANGE_DECRYPTED | KVM_MAP_GPA_RANGE_PAGE_SZ_4K);
++
++	vm_mem_set_shared(vm, test_gpa, PAGE_SIZE, KVM_SET_MEMORY_ATTRIBUTES2_MODE_UNSPECIFIED);
++
++	vcpu_run(vcpu);
++
++	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_SYSTEM_EVENT);
++	TEST_ASSERT_EQ(vcpu->run->system_event.type, KVM_SYSTEM_EVENT_SEV_TERM);
++	TEST_ASSERT_EQ(vcpu->run->system_event.ndata, 1);
++	TEST_ASSERT_EQ(vcpu->run->system_event.data[0], GHCB_MSR_TERM_REQ);
++
++	TEST_ASSERT_EQ(*(u8 *)test_hva, CONVERSION_TEST_VALUE_SHARED_3);
++}
++
+ int main(int argc, char *argv[])
  {
+ 	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SEV));
+ 
+-	test_sev_smoke(guest_sev_code, KVM_X86_SEV_VM, 0);
++	// test_sev_smoke(guest_sev_code, KVM_X86_SEV_VM, 0);
+ 
+-	if (kvm_cpu_has(X86_FEATURE_SEV_ES))
+-		test_sev_smoke(guest_sev_es_code, KVM_X86_SEV_ES_VM, SEV_POLICY_ES);
++	// if (kvm_cpu_has(X86_FEATURE_SEV_ES))
++	// 	test_sev_smoke(guest_sev_es_code, KVM_X86_SEV_ES_VM, SEV_POLICY_ES);
+ 
+-	if (kvm_cpu_has(X86_FEATURE_SEV_SNP))
+-		test_sev_smoke(guest_snp_code, KVM_X86_SNP_VM, snp_default_policy());
++	if (kvm_cpu_has(X86_FEATURE_SEV_SNP)) {
++		test_conversion(snp_default_policy());
++		// test_sev_smoke(guest_snp_code, KVM_X86_SNP_VM, snp_default_policy());
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.54.0.545.g6539524ca2-goog
 
