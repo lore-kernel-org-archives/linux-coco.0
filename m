@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEEF3D905F;
-	Tue, 28 Apr 2026 23:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEDD3A5E87;
+	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777418721; cv=none; b=JLk92IkbbY0Ok73BvrD9ipk8AAbLwjHnOjWxz/aWDUEjKkXclgharoC3GkNmSUXWR3APgcM0rL0FRGVsuHA94OYNe9qaOLHEGRCoUkWi45qXMvy/ZMPwq+KRLZjls5JHuV4nWfQg6WY2VkItKPm35HGqmTKq7DZY2yr4vIIHeB0=
+	t=1777418720; cv=none; b=NzTKe8obY3f+LUgDl846YmbGXCnmDPMGnB4fz6V3/5PLiDALSLe2ebdj0Z0CKvfdW0zeUXc5k7w8Bvq7cLeAWX3rdmv9IiCmSyqIXRuOcfNoN3eHlXi1MEBSmn4h3WTGVhVddgIzvuOqtp9Rvi8ljWbIxRwf8M0Vff1/DL3kDF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777418721; c=relaxed/simple;
-	bh=SAmPYY8ikK4ezlQwpFa0qJSjGj7Hehm7adP1PCdg64M=;
+	s=arc-20240116; t=1777418720; c=relaxed/simple;
+	bh=EiXf6DqQD5zsnxzrND8waxhcXvPTpKL8zj2zCcRqJ6Q=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=IosZk5zxfU2ikZ/01CmSnOSMIWU4xJ7+RfTH9n5DnjcpJUxCCozu7adaMVmzM9sSbqRgsdk8j5YVxvd6LBP9TFeCsHjkZy+XoVMRnqkZ2ktzmzRu1+KU+lsTqBPB5Koh2W4NUMDNCwc2h9C4aTbvEOtty8pKlLNkkF/2kajv1w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sbiu4tt9; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=mrq2WhrI+9rLY7Xp3Qmsjx35X+tEOh8Shyiac3vWK4YpnEnlTjsu4J/KD0LIcHYktQFoQyaWrEhZDGF8yoqYRnYwj71n07++MLckHKVgUGLv7lLg4ZgwLyJsm528mBV+P8Vv9npZnrsHNlQ7QGzuhl32GCvGcalYuY6ohknhNyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e1Qu+t0r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sbiu4tt9"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 538FFC2BCB8;
-	Tue, 28 Apr 2026 23:25:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e1Qu+t0r"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E11CEC2BCC4;
+	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777418721;
-	bh=SAmPYY8ikK4ezlQwpFa0qJSjGj7Hehm7adP1PCdg64M=;
+	s=k20201202; t=1777418719;
+	bh=EiXf6DqQD5zsnxzrND8waxhcXvPTpKL8zj2zCcRqJ6Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=sbiu4tt9r3333B2m0VI4lNS1EPVTgi1gSvQG257nZ0yeOBC04OLCI7S8P1OKje+KO
-	 OOI8LK2gNImg+0V2pPVZsRqr614T7l8D64kUrbZ164sgfOCdjhdLJdzlLJ0zhlfgLt
-	 L9+yfg86gwoyUrUXj+spY2zQNgjD7y7+IVm5gfJ7vKOpnO+Fx4m7wJzln6xfV81pd7
-	 ff7ZZczkzB45dnDbShWr28sTNyJtDAwBxaOfswmWlD+0lWWgY/nY5ya9rokXj5AEle
-	 zR34Acdgw1V7LCYve3zsXffG+mqNYAVkUWoxQ1W/7GEZzluPLgfAYuWMuajrl6Ehnw
-	 yVraDDJW9ePEg==
+	b=e1Qu+t0rxOnyjsoLzMwmuc1U23Z79gWVlswpayaHSxpoy0E2P0zeiLDNV9NQ2aWrP
+	 sEVJb1B0ChuFBuwlJ3f5OX7kEFJaTp4YkAzlsqrtsev/Pu35+J5shB5NwfIZJsLqAN
+	 nYUCpaqCoaPQJwxGGOJq2YE3tDwtscaCMF9TEQA8s5qMguqMPEU0heWJHuCgBjiShc
+	 wXSU826b2i7qp+Em8CXfP9rAqOHaw8F8ZdPA2YpynHaLEyyS3vK0pZ0MuQE/yYYFef
+	 FVRZrcRago49cj4KhqEPG/bLbH1jQPKTI3nYy24fUg3Ve6mSwouvtsOYUAhlxGCco4
+	 9EOHQ92/r2V+A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AA54FF8877;
-	Tue, 28 Apr 2026 23:25:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8725FF8877;
+	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Apr 2026 16:25:43 -0700
-Subject: [PATCH RFC v5 48/53] KVM: selftests: Check fd/flags provided to
- mmap() when setting up memslot
+Date: Tue, 28 Apr 2026 16:25:27 -0700
+Subject: [PATCH RFC v5 32/53] KVM: selftests: Add selftests global for
+ guest memory attributes capability
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-gmem-inplace-conversion-v5-48-d8608ccfca22@google.com>
+Message-Id: <20260428-gmem-inplace-conversion-v5-32-d8608ccfca22@google.com>
 References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -74,11 +74,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=1296;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=2393;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=IxI4eTFElDaAEgNuCkIQkVDl6ebpJJNnDFRZJGqwXQw=;
- b=WwmI5IeOHhkqMGZ/qG56oUC8AyqB97cuGsLr6zsOzEnvokGwUPESMchcaDt2kB3vL7wLTuZ9f
- DlnHwXKVjgEANKol0SPOqnV8OKYSDjJDIZc+57uveI/Ja+R6yt668Wm
+ bh=2uZTwd9pQETPqyenjKlFdMpmnrOuCmY+atU10nYWJ9E=;
+ b=CMaZi1qcTo34olAF8ct+1XgvZcaQuemV2QFt9hlP3ghfeKhnQ//+kuPM3BpNu42zCM4/LlqwF
+ dkfI+RbwmAPBA3KVsmD38J7HNp21dzxElcdQd2x9IXroc7aoac8NxaE
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -88,35 +88,65 @@ Reply-To: ackerleytng@google.com
 
 From: Sean Christopherson <seanjc@google.com>
 
-Check that a valid fd provided to mmap() must be accompanied by MAP_SHARED.
+Add a global variable, kvm_has_gmem_attributes, to make the result of
+checking for KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES available to all tests.
 
-With an invalid fd (usually used for anonymous mappings), there are no
-constraints on mmap() flags.
+kvm_has_gmem_attributes is true if guest_memfd tracks memory attributes, as
+opposed to VM-level tracking.
 
-Add this check to make sure that when a guest_memfd is used as region->fd,
-the flag provided to mmap() will include MAP_SHARED.
+This global variable is synced to the guest for testing convenience, to
+avoid introducing subtle bugs when host/guest state is desynced.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-[Rephrase assertion message.]
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/lib/kvm_util.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/kvm/include/test_util.h | 2 ++
+ tools/testing/selftests/kvm/lib/kvm_util.c      | 5 +++++
+ 2 files changed, 7 insertions(+)
 
+diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
+index d9b433b834f1b..c280c3233f502 100644
+--- a/tools/testing/selftests/kvm/include/test_util.h
++++ b/tools/testing/selftests/kvm/include/test_util.h
+@@ -115,6 +115,8 @@ struct guest_random_state {
+ extern u32 guest_random_seed;
+ extern struct guest_random_state guest_rng;
+ 
++extern bool kvm_has_gmem_attributes;
++
+ struct guest_random_state new_guest_random_state(u32 seed);
+ u32 guest_random_u32(struct guest_random_state *state);
+ 
 diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 12e031a8fc20d..29b3f4e9fb4a7 100644
+index ff301e7c22b2f..5e34593ad79c4 100644
 --- a/tools/testing/selftests/kvm/lib/kvm_util.c
 +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -1088,6 +1088,9 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
- 					     src_type == VM_MEM_SRC_SHARED_HUGETLB);
- 	}
+@@ -24,6 +24,8 @@ u32 guest_random_seed;
+ struct guest_random_state guest_rng;
+ static u32 last_guest_seed;
  
-+	TEST_ASSERT(region->fd == -1 || backing_src_is_shared(src_type),
-+		    "A valid fd provided to mmap() must be accompanied by MAP_SHARED.");
++bool kvm_has_gmem_attributes;
 +
- 	region->mmap_start = __kvm_mmap(region->mmap_size, PROT_READ | PROT_WRITE,
- 					vm_mem_backing_src_alias(src_type)->flag,
- 					region->fd, mmap_offset);
+ static size_t vcpu_mmap_sz(void);
+ 
+ int __open_path_or_exit(const char *path, int flags, const char *enoent_help)
+@@ -521,6 +523,7 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+ 	}
+ 	guest_rng = new_guest_random_state(guest_random_seed);
+ 	sync_global_to_guest(vm, guest_rng);
++	sync_global_to_guest(vm, kvm_has_gmem_attributes);
+ 
+ 	kvm_arch_vm_post_create(vm, nr_runnable_vcpus);
+ 
+@@ -2287,6 +2290,8 @@ void __attribute((constructor)) kvm_selftest_init(void)
+ 	guest_random_seed = last_guest_seed = random();
+ 	pr_info("Random seed: 0x%x\n", guest_random_seed);
+ 
++	kvm_has_gmem_attributes = kvm_has_cap(KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES);
++
+ 	kvm_selftest_arch_init();
+ }
+ 
 
 -- 
 2.54.0.545.g6539524ca2-goog
