@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8724F3C060B;
-	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70423A4F5A;
+	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777418720; cv=none; b=MYHKwgMFrBgIN+y+T0lLeo12EgEvKQCM+SA0Rk9COzVl+lfRkZe+SfrXD4qCRRvQrgrGD/l4z9LdCqGeAmWjZviK3dgEMOgsEQOsfN5bSPZqMjnZWZTbfw72Kq33/j7iF8cCK9dz38NPWoUL7LNfbjf9sfJ9y2msRFvZ8GeJecE=
+	t=1777418719; cv=none; b=MxmHOoy7e29J6Za88aoOYOxh81AmqcQsmRcI11EPHAqQ6DG/sLfU0nbjiB70XB3Sv86KJ0EwVLcwZzo/KVlx3KKtknypZ02mN6hcoeo+rrQdXCITh6SmkPrCSadMXZGrthaP//rEBJZBj1g/ux3RcXROdah9qhAFc6gsrIzb9qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777418720; c=relaxed/simple;
-	bh=9d08KMUaeq0JwnPQVzadWhlNCrfVvqp26fVJSl//L24=;
+	s=arc-20240116; t=1777418719; c=relaxed/simple;
+	bh=h0E8/6sqDBUjmrJANiVtGnaPjc3NqIh4YoXQcBBDZCs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NTCwNNjh+BHQUsLEKEhTfxEQ0cL47UgrQXvGpcu4IEso+mTAs4jwvfAiWydi4DMf3YZRUWmwc8f2yveTxPLip97FXDTx1RS2CfQPDZ2mxM5yeoyXTk+sxR4KRiGWRQrJG9rcTMZr2b0iEanynZgCaL0/d6uedGz1uSOBj1iomtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nk0SOiwP; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ksRD5ITPlixljlVWw6P/bTRtcHaExIyZNKeMY7ITJSmjoHGCNI0p86WhwuOVqHllvDLxJEnyQmvkaR0NpbddbpexyIrhLb6RYrRsrYsxlyIiUJ1irc/mhP5dGe3x4uUKtLvs3v3S7d4zZRI5l8rEj6+QtiRMLklI4whDX4mn24w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uIjiu9AO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nk0SOiwP"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 681A4C2BCB7;
-	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uIjiu9AO"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A9692C2BCC6;
+	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777418720;
-	bh=9d08KMUaeq0JwnPQVzadWhlNCrfVvqp26fVJSl//L24=;
+	s=k20201202; t=1777418719;
+	bh=h0E8/6sqDBUjmrJANiVtGnaPjc3NqIh4YoXQcBBDZCs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Nk0SOiwP8dVt93Vx7geCUuDFtG/Ot6FF9mRvq15Ufcm+AqdkyfXe8VaXQmYrILxZe
-	 npvr2Vml3+8rLlo0+v+FT6JTeti31hB53c/EeixK13kXfFXDJPgUhtbjbcNrqvItWs
-	 xr8eCkmTs+qjUt71lxfULBhR0qotU0zklUgaXORvG8GpAp8vh3O7qGM0WLpyMozmDR
-	 cdmS5DFr+Fts/vvPTVWgplRy1hJcAn2DWsu4uHq40I/jPCMiiwZ4d9RnbyZ37xV6Ja
-	 Nu9xsUAI/pA9v4oxlPLgaupIxvq//TLB4oc7LJRwtE2JUX1uU0RUGleq489OjsfIX6
-	 +npw8SHJRrP1Q==
+	b=uIjiu9AO2n+mlQXWf2gw8OqrACXNjfOEaBEpNgzz2AfJY/Ri/0V5QqIKx5Sm0HIHx
+	 2rH+cAXJYjtxFT3VJFWkYdnePPg4U/sbXO0O/YI8xkfiCSYRzCDR+txOf27iOTZxlL
+	 kRFx73QCeQd8frJF/qhIKV+yLHMTD9+wqiX97Frp3hNJ28Rixfjsl4N6VAARpHtf1q
+	 Mxdb2eM7aHAWc+9oomi2DHOAYpiqRUM1OgO3DZRdc7XJpYRkkhvnNhr4eIXimfAzTR
+	 SVSJ56X+ixQm0S7s+QCDdmNRkjfBTu4paI9tTQlwwLub5YUawwsKsmCvnhw0aVRIL8
+	 k1lp/kTtuUSCQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D8B9FF887E;
-	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DAF7CCF9E3;
+	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Apr 2026 16:25:33 -0700
-Subject: [PATCH RFC v5 38/53] KVM: selftests: Convert with allocated folios
- in different layouts
+Date: Tue, 28 Apr 2026 16:25:24 -0700
+Subject: [PATCH RFC v5 29/53] KVM: selftests: Create gmem fd before
+ "regular" fd when adding memslot
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-gmem-inplace-conversion-v5-38-d8608ccfca22@google.com>
+Message-Id: <20260428-gmem-inplace-conversion-v5-29-d8608ccfca22@google.com>
 References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -74,11 +74,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=2272;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=2823;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=pf9NAC8k9OqEq5nwWVMZcJrfB1uS9zn83YJxtzZTu78=;
- b=CUCvrnQOlfUsZcPml9jjAvIchu4UtLbbdCH6GMthqWb/FfPeIaOgkJQhZfmyUQk33deZAT0/w
- ka64QhgQOAtB8HaovxxkYYVEWHifg8tBH6pTrCJoZ7rhmY1o7fesM4Y
+ bh=xIGL1xcJD27ice4aJgoH91ewbUcnazqU1ilqG8uRRXI=;
+ b=KLdpylxs7EMDFFjrINTIXIZrFpXw4Ph7VX2ZjGBd63YJibo+NhqXvS32V8elMg2pLudMsgawf
+ qO+LRqj10LJAlOQU6/3WvHtyA6qVnGYE4bNRtRE7lGHCjeSiqhsT5zA
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -86,64 +86,82 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Ackerley Tng <ackerleytng@google.com>
+From: Sean Christopherson <seanjc@google.com>
 
-Add a guest_memfd selftest to verify that memory conversions work
-correctly with allocated folios in different layouts.
+When adding a memslot associated a guest_memfd instance, create/dup the
+guest_memfd before creating the "normal" backing file.  This will allow
+dup'ing the gmem fd as the normal fd when guest_memfd supports mmap(),
+i.e. to make guest_memfd the _only_ backing source for the memslot.
 
-By iterating through which pages are initially faulted, the test covers
-various layouts of contiguous allocated and unallocated regions, exercising
-conversion with different range layouts.
-
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- .../kvm/x86/guest_memfd_conversions_test.c         | 31 ++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ tools/testing/selftests/kvm/lib/kvm_util.c | 45 +++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-index 92b18373a17f1..2312592c4076b 100644
---- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-+++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-@@ -289,6 +289,37 @@ GMEM_CONVERSION_TEST_INIT_PRIVATE(before_allocation_private)
- 	test_convert_to_shared(t, 0, 0, 'A', 'B');
- }
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index 2a76eca7029d3..df73b23a4c66a 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -1054,6 +1054,29 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 	if (alignment > 1)
+ 		region->mmap_size += alignment;
  
-+/*
-+ * Test that when some of the folios in the conversion range are allocated,
-+ * conversion requests are handled correctly in guest_memfd.  Vary the ranges
-+ * allocated before conversion, using test_page, to cover various layouts of
-+ * contiguous allocated and unallocated regions.
-+ */
-+GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(unallocated_folios, 8)
-+{
-+	const int second_page_to_fault = 4;
-+	int i;
++	if (flags & KVM_MEM_GUEST_MEMFD) {
++		if (guest_memfd < 0) {
++			u32 guest_memfd_flags = 0;
 +
-+	/*
-+	 * Fault 2 of the pages to test filemap range operations except when
-+	 * test_page == second_page_to_fault.
-+	 */
-+	host_do_rmw(t->mem, test_page, 0, 'A');
-+	if (test_page != second_page_to_fault)
-+		host_do_rmw(t->mem, second_page_to_fault, 0, 'A');
++			TEST_ASSERT(!guest_memfd_offset,
++				    "Offset must be zero when creating new guest_memfd");
++			guest_memfd = vm_create_guest_memfd(vm, mem_size, guest_memfd_flags);
++		} else {
++			/*
++			 * Install a unique fd for each memslot so that the fd
++			 * can be closed when the region is deleted without
++			 * needing to track if the fd is owned by the framework
++			 * or by the caller.
++			 */
++			guest_memfd = kvm_dup(guest_memfd);
++		}
 +
-+	gmem_set_private(t->gmem_fd, 0, nr_pages * page_size,
-+			 KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE);
-+	for (i = 0; i < nr_pages; ++i) {
-+		char expected = (i == test_page || i == second_page_to_fault) ? 'A' : 0;
-+
-+		test_private(t, i, expected, 'B');
++		region->region.guest_memfd = guest_memfd;
++		region->region.guest_memfd_offset = guest_memfd_offset;
++	} else {
++		region->region.guest_memfd = -1;
 +	}
 +
-+	for (i = 0; i < nr_pages; ++i)
-+		test_convert_to_shared(t, i, 'B', 'C', 'D');
-+}
-+
- int main(int argc, char *argv[])
- {
- 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
+ 	region->fd = -1;
+ 	if (backing_src_is_shared(src_type))
+ 		region->fd = kvm_memfd_alloc(region->mmap_size,
+@@ -1083,28 +1106,6 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 
+ 	region->backing_src_type = src_type;
+ 
+-	if (flags & KVM_MEM_GUEST_MEMFD) {
+-		if (guest_memfd < 0) {
+-			u32 guest_memfd_flags = 0;
+-			TEST_ASSERT(!guest_memfd_offset,
+-				    "Offset must be zero when creating new guest_memfd");
+-			guest_memfd = vm_create_guest_memfd(vm, mem_size, guest_memfd_flags);
+-		} else {
+-			/*
+-			 * Install a unique fd for each memslot so that the fd
+-			 * can be closed when the region is deleted without
+-			 * needing to track if the fd is owned by the framework
+-			 * or by the caller.
+-			 */
+-			guest_memfd = kvm_dup(guest_memfd);
+-		}
+-
+-		region->region.guest_memfd = guest_memfd;
+-		region->region.guest_memfd_offset = guest_memfd_offset;
+-	} else {
+-		region->region.guest_memfd = -1;
+-	}
+-
+ 	region->unused_phy_pages = sparsebit_alloc();
+ 	if (vm_arch_has_protected_memory(vm))
+ 		region->protected_phy_pages = sparsebit_alloc();
 
 -- 
 2.54.0.545.g6539524ca2-goog
