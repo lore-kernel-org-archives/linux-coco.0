@@ -1,145 +1,250 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FEA3E866B
-	for <linux-coco@lists.linux.dev>; Mon, 27 Apr 2026 18:12:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777313548; cv=pass; b=Yja58UBbnCd+mMFpgCHxaeyGvCg3OhiV8BjY+V7Z/Ipg4yruRsb/sEDhXfOehlLK+3oQjOrJbjATrnSkQpRxAyW3jENezw6MLEW2+JZCqe0kGHiSVElTVPzgpHhVrKQ37PKBWjH3ReiJVGXH4AnBYyKRsgPIaK+g9coNXvroyK8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777313548; c=relaxed/simple;
-	bh=Bv6BTNFx8eotL6sCX8FOszmjIvqGdco6s4FUj3kQRLs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hDPtHSx/YnBeuhfvavMjhnX1uiFiVzZKEySSOeuaZwRooIFkF3PW42AN6DpVdRs0ouoYHgctnUARN57mbAFLP4UGrwKPia+RXuUCDCD0GwRwBMxrUmgyB6VMtCWLjNlmdyYpZWKmeir9dc0acNhnhLDG3QUj+6JF9KUPufkw43Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jdKaWxa4; arc=pass smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13AB421F12;
+	Tue, 28 Apr 2026 12:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777378861; cv=none; b=R8JaJv4c6FFrM3raqIKRUAwUZMzRPT43btJgqsLPLgKL+N/MvLKnHCn0kByT4zTKeYLmD6KsG4ulWhBOfZAXfdXuwo8J8itv0kfmhexrG+DzJM9udxRohP0E3y4kNgCe9Q/Tr1IBhVvMkc/MEHoZn2M3WyFf17p3i1gRCBzuv8U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777378861; c=relaxed/simple;
+	bh=ozDwDKFBNLeKOoHjc5hWY9l162eEyHdYA7CmB9NiJYg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=QBKXkvQl2AxfUtsZQrIrtYzIae1mdf9LQpLLn2yw1Erimv+5aiLQS4m2/3vfiAQUxCHC6q7YHFDtGrViGz0DpfgSuLOzOpUJaDf78HPVktTkLjanSJqKFOEhYiULqiER4/aJBwEHPJNAnbfxsf5OLzRbCQ6u1MwKnrAB0eiLFwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NKVlW/RZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jdKaWxa4"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-50d864c23bdso81151cf.1
-        for <linux-coco@lists.linux.dev>; Mon, 27 Apr 2026 11:12:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777313545; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UZoWBRrCqfHfomNeN7Lzo1Dieidbec2SiNfbHztohinuXJnnrinAFZ6nmcz3ydxQYV
-         LX77U0FjG88n5gD8tC1K/1jVP8nQFJVp2TUCQMUSZU2syrQir/dB/E/7KutrGc9cJbGD
-         qO6lH/TWrttn+76bTScU+ZXH6i8Z1gqp3yJjF7bh6+0NMW8Ad0LgRypOxMlaq6LcWxGw
-         h8hDE9l/tKJYGbFp60+jd/rMNeuZyvZJbEZpZO5UviiwL3JDPJsA+/p39q6nbV/zhuBd
-         /fAQc25In0zI+Dj0LKVsjH/q7WtPgJ2w/Ql+tzBiquvClxNj1kpJH2ra+ewR0lEuu9Ul
-         PE4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=462X41kdBtO/lLaDMT5cvpDfu7D1CiZVzDMruqarSW0=;
-        fh=YSk0cUpqHqW2v+APEDx+kvdnVJuaAWpKpTnUDkaln50=;
-        b=itU3gpXgOr+410IgvNB17J1BpPEx3yNtNH2odHE5Xz6P0r965XOxkv0LSX6ilSO/FV
-         3N1ZDAkCBq/4s8UQ3oUDbfIaKsrUFzAr3zVl2ZawBTUuy0JxM46N+FkAo0y6bPZncNFk
-         /2646l2sIIeeuOS/w8KpyQtKVw2IVGTov7onAMmOwd5WyJNB5pqqFw2FO4eq5CXiGSo5
-         qP2X1FwLIGNtE4NuBzc3HvPm8x/tzP3FtZxeBjW0RdgEsZMZtHEjgGa8OYYHllzKb5XK
-         dRbcqLowqC3LlAmEUziNNhxEdytksBT/Ivd2Ics2INpl/EdaZ+ykpKPevxx4tPEtN9BU
-         asHg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777313545; x=1777918345; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=462X41kdBtO/lLaDMT5cvpDfu7D1CiZVzDMruqarSW0=;
-        b=jdKaWxa4gJv1ou5r4OljeGrYeXJwHeGR7LVoa2hZZHtDGI2kWJQ/azLMuDLCEi5KUm
-         0FNO5qXEbJx4pQPFgjBVvVzbQsR4t7grB1YjFk07xj40oTewv5wtOqMgUEx1N4TxfhxO
-         1QVc+6JxIqQU84aQmfMNf/Jfsw8B4U6qcaymOkwbZeOqEqm539E7X9vKv1Yz6iE6e7Bk
-         RDrg2VLBlN8Ly+HLzCzf82Fy15l4iXjA6NITxzoYbB/V6RW6Y56X5heCikpmtbSCX9Mi
-         peaoMGGRVarTHQQIVaXO604FWW7udmdq//yOtKCDb3ISy+XDxiOLoSNmXlBKe9ultLPn
-         Y7pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777313545; x=1777918345;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=462X41kdBtO/lLaDMT5cvpDfu7D1CiZVzDMruqarSW0=;
-        b=lLR0EdmwjHh7rrap+IignJ/yz1wOgJBeVoUTJHRB/Jx6iccr0pmVFpBSNUQDcJ28Cz
-         tdhFbncZ/Zo8BzkPFkB8Zj6V0BFEA5IJvTLTh9O9ygWGhqllKbMr1ykDmX1hIOyWfUGh
-         ZCdQXY+b5k/NRkNLmxDWbptB1VqfZy5mYQQP5w8QpkQkwgiqaCVynJDHTETmF+2pOuKj
-         VEfSVvUW/2Pnd5X4rfNJXQtHKrIR3WYhDqMzwLxrq70cJGqtsvkFXsFegxMecRdzo18+
-         cX1iAW4bo4pglsX2WCfGq7CHn7R3Y33ZiEbfczTc2xSucU0hj/BbAOtIassA8v3YdxwB
-         yHcg==
-X-Forwarded-Encrypted: i=1; AFNElJ9Hx1V1TR3AYv1+tqWP7qFF21wBZoVAM1wGVqbEaca8LKQTq7tbGnD5LRNaSFwPOYexnCuws2KTU91W@lists.linux.dev
-X-Gm-Message-State: AOJu0YwnsHr9wZ3StSO8Icvt19OyyADIiQk5tBYpFV5g8IuT3maj/TzL
-	n8xjM31EDTC+jGwkL8IjA59yio+IJ3zACODc0cJs/X0SvLp6QWVEFzB3Lcl7DP5BKV4Z8fDRFwB
-	E3RRJQeSSO5unTpEbWbJigW51jglhJx0M8pNSgtet
-X-Gm-Gg: AeBDietct6uLgzbPuBIRGBrLFtjnStZyAz7Vxq0TD6ZwvkkD3b+H9gNzExHyF7mycuo
-	8IEzkHLWMsMukB1t4eJZEiGOYVGzmc4gB+5ijLRNQkGjU9KqPT0nLeeahzlfqdFXm5yn1M8HTk7
-	LHcbsOR/nuAUL7C0O5VvIrpxLHMbSKpRg4VpDMXh1ESK15O0Cd0zf8EoNJobeApYn0z20IiTrQZ
-	1kxPT0spCxLAZwPYGJVFJepmuELXGAonWHSF3XloOnw/ksV4gnJ/NTNMdZo9tUpmNdz9xgylXZD
-	nMgWFs5wrkPLKvM27JCEYggLjG6+xree9nd2IJ2f96QMnAHjfhZKB4LRfiejY9EvTb4HyI+A
-X-Received: by 2002:a05:622a:5e17:b0:50f:bea3:9475 with SMTP id
- d75a77b69052e-5100cbe3608mr1392371cf.14.1777313544554; Mon, 27 Apr 2026
- 11:12:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NKVlW/RZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA51BC2BCAF;
+	Tue, 28 Apr 2026 12:20:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777378861;
+	bh=ozDwDKFBNLeKOoHjc5hWY9l162eEyHdYA7CmB9NiJYg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=NKVlW/RZIJXZ/+Lqz4nVTwZJlREV2Us6G1yThG8jvCQ68JOyZpUe/xDmG1iGsW641
+	 0ahsYHTAKNXkSIqO6Chnh5M31aymxlcUp7nvO5lf6K4ztvjBJkUqyJxbTPcMFhBVCf
+	 8IuB1kRVOCBYwQhIhCCtbI1cyNnpvu8SdTp0voxT5cXrflwjvt6ZiGKdx0YPwAcnoS
+	 IwLA3z7iOcYcY8VieSrOPYbGQftxj4WxM0xI+hxhtOjTzt8Zox82N17htviU3gAQze
+	 eNpxGxD0p4DlG/48ckOGHyzJl0CM/zrj8DEtaia0JHX35B42hu/Q6i7tLVsl6TkmBd
+	 AzCAwGKKwGgIg==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Marc Zyngier <maz@kernel.org>
+Cc: linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+	linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v4 2/3] swiotlb: dma: its: Enforce host page-size
+ alignment for shared buffers
+In-Reply-To: <86zf2ozrb8.wl-maz@kernel.org>
+References: <20260427063108.909019-1-aneesh.kumar@kernel.org>
+ <20260427063108.909019-3-aneesh.kumar@kernel.org>
+ <86zf2ozrb8.wl-maz@kernel.org>
+Date: Tue, 28 Apr 2026 17:50:53 +0530
+Message-ID: <yq5aa4un1dju.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260427152854.101171-1-chao.gao@intel.com> <20260427152854.101171-2-chao.gao@intel.com>
-In-Reply-To: <20260427152854.101171-2-chao.gao@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Mon, 27 Apr 2026 11:12:12 -0700
-X-Gm-Features: AVHnY4L5q1UHrVRtKqKnRAb0L10M9ZeW4_EVR8OMjdp9PtmE7Gxn7pe3CDO74Ws
-Message-ID: <CAGtprH8mcz4HTBQvnSfWuZ_yErDUKq9PX3Mr55KAfw2VK_o9Mg@mail.gmail.com>
-Subject: Re: [PATCH v8 01/21] x86/virt/tdx: Move low level SEAMCALL helpers
- out of <asm/tdx.h>
-To: Chao Gao <chao.gao@intel.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, binbin.wu@linux.intel.com, 
-	dave.hansen@linux.intel.com, djbw@kernel.org, ira.weiny@intel.com, 
-	kai.huang@intel.com, kas@kernel.org, nik.borisov@suse.com, paulmck@kernel.org, 
-	pbonzini@redhat.com, reinette.chatre@intel.com, rick.p.edgecombe@intel.com, 
-	sagis@google.com, seanjc@google.com, tony.lindgren@linux.intel.com, 
-	vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com, 
-	yan.y.zhao@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	"H. Peter Anvin" <hpa@zytor.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 27, 2026 at 8:30=E2=80=AFAM Chao Gao <chao.gao@intel.com> wrote=
-:
->
-> From: Kai Huang <kai.huang@intel.com>
->
-> TDX host core code implements three seamcall*() helpers to make SEAMCALLs
-> to the TDX module.  Currently, they are implemented in <asm/tdx.h> and
-> are exposed to other kernel code which includes <asm/tdx.h>.
->
-> However, other than the TDX host core, seamcall*() are not expected to
-> be used by other kernel code directly.  For instance, for all SEAMCALLs
-> that are used by KVM, the TDX host core exports a wrapper function for
-> each of them.
->
-> Move seamcall*() and related code out of <asm/tdx.h> and make them only
-> visible to TDX host core.
->
-> Since TDX host core tdx.c is already very heavy, don't put low level
-> seamcall*() code there but to a new dedicated "seamcall_internal.h".  Als=
-o,
-> currently tdx.c has seamcall_prerr*() helpers which additionally print
-> error message when calling seamcall*() fails.  Move them to
-> "seamcall_internal.h" as well. In such way all low level SEAMCALL helpers
-> are in a dedicated place, which is much more readable.
->
-> Copy the copyright notice from the original files and consolidate the
-> date ranges to:
->
->         Copyright (C) 2021-2023 Intel Corporation
->
-> Signed-off-by: Kai Huang <kai.huang@intel.com>
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Marc Zyngier <maz@kernel.org> writes:
 
-Reviewed-by: Vishal Annapurve <vannapurve@google.com>
+> On Mon, 27 Apr 2026 07:31:07 +0100,
+> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
+>>=20
+>> When running private-memory guests, the guest kernel must apply addition=
+al
+>> constraints when allocating buffers that are shared with the hypervisor.
+>>=20
+>> These shared buffers are also accessed by the host kernel and therefore
+>> must be aligned to the host=E2=80=99s page size, and have a size that is=
+ a multiple
+>> of the host page size.
+>>=20
+>> On non-secure hosts, set_guest_memory_attributes() tracks memory at the
+>> host PAGE_SIZE granularity. This creates a mismatch when the guest appli=
+es
+>> attributes at 4K boundaries while the host uses 64K pages. In such cases,
+>> set_guest_memory_attributes() call returns -EINVAL, preventing the
+>> conversion of memory regions from private to shared.
+>>=20
+>> Architectures such as Arm can tolerate realm physical address space
+>> (protected memory) PFNs being mapped as shared memory, as incorrect
+>> accesses are detected and reported as GPC faults. However, relying on th=
+is
+>> mechanism is unsafe and can still lead to kernel crashes.
+>>=20
+>> This is particularly likely when guest_memfd allocations are mmapped and
+>> accessed from userspace. Once exposed to userspace, we cannot guarantee
+>> that applications will only access the intended 4K shared region rather
+>> than the full 64K page mapped into their address space. Such userspace
+>> addresses may also be passed back into the kernel and accessed via the
+>> linear map, resulting in a GPC fault and a kernel crash.
+>>=20
+>> With CCA, although Stage-2 mappings managed by the RMM still operate at a
+>> 4K granularity, shared pages must nonetheless be aligned to the
+>> host-managed page size and sized as whole host pages to avoid the issues
+>> described above.
+>
+> I thought that was being fixed, and that there was now a strong
+> guarantee that RMM and host are aligned on the page size. Even more,
+> S2 is totally irrelevant here. The only thing that matters is the host
+> page size vs the guest page size. Nothing else.
+>
+
+Yes, the latest RMM update includes the ability to change the granule
+size.
+
+The section above in the commit message was intended to explain that the
+S2 mapping size is irrelevant. I agree it is not clear as written, so I
+will reword it to improve clarity.
+
+>
+>>=20
+>> Introduce a new helper, mem_decrypt_align(), to allow callers to enforce
+>> the required alignment and size constraints for shared buffers.
+>>=20
+>> The architecture-specific implementation of mem_decrypt_align() will be
+>> provided in a follow-up patch.
+>>=20
+>> Note on restricted-dma-pool:
+>> rmem_swiotlb_device_init() uses reserved-memory regions described by
+>> firmware. Those regions are not changed in-kernel to satisfy host granule
+>> alignment. This is intentional: we do not expect restricted-dma-pool
+>> allocations to be used with CCA. If restricted-dma-pool is intended for =
+CCA
+>> shared use, firmware must provide base/size aligned to the host IPA-chan=
+ge
+>> granule.
+>>=20
+>> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+>> ---
+>>  arch/arm64/mm/mem_encrypt.c      | 19 +++++++++++++++----
+>>  drivers/irqchip/irq-gic-v3-its.c | 20 +++++++++++++-------
+>>  include/linux/mem_encrypt.h      | 14 ++++++++++++++
+>>  kernel/dma/contiguous.c          | 10 ++++++++++
+>>  kernel/dma/direct.c              | 16 ++++++++++++++--
+>>  kernel/dma/pool.c                |  4 +++-
+>>  kernel/dma/swiotlb.c             | 21 +++++++++++++--------
+>>  7 files changed, 82 insertions(+), 22 deletions(-)
+>>=20
+>
+> [...]
+>
+>> diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-=
+v3-its.c
+>> index 291d7668cc8d..239d7e3bc16f 100644
+>> --- a/drivers/irqchip/irq-gic-v3-its.c
+>> +++ b/drivers/irqchip/irq-gic-v3-its.c
+>> @@ -213,16 +213,17 @@ static gfp_t gfp_flags_quirk;
+>>  static struct page *its_alloc_pages_node(int node, gfp_t gfp,
+>>  					 unsigned int order)
+>>  {
+>> +	unsigned int new_order;
+>>  	struct page *page;
+>>  	int ret =3D 0;
+>>=20=20
+>> -	page =3D alloc_pages_node(node, gfp | gfp_flags_quirk, order);
+>> -
+>> +	new_order =3D get_order(mem_decrypt_align((PAGE_SIZE << order)));
+>> +	page =3D alloc_pages_node(node, gfp | gfp_flags_quirk, new_order);
+>>  	if (!page)
+>>  		return NULL;
+>>=20=20
+>>  	ret =3D set_memory_decrypted((unsigned long)page_address(page),
+>> -				   1 << order);
+>> +				   1 << new_order);
+>>  	/*
+>>  	 * If set_memory_decrypted() fails then we don't know what state the
+>>  	 * page is in, so we can't free it. Instead we leak it.
+>> @@ -241,13 +242,16 @@ static struct page *its_alloc_pages(gfp_t gfp, uns=
+igned int order)
+>>=20=20
+>>  static void its_free_pages(void *addr, unsigned int order)
+>>  {
+>> +	int new_order;
+>> +
+>> +	new_order =3D get_order(mem_decrypt_align((PAGE_SIZE << order)));
+>>  	/*
+>>  	 * If the memory cannot be encrypted again then we must leak the pages.
+>>  	 * set_memory_encrypted() will already have WARNed.
+>>  	 */
+>> -	if (set_memory_encrypted((unsigned long)addr, 1 << order))
+>> +	if (set_memory_encrypted((unsigned long)addr, 1 << new_order))
+>>  		return;
+>> -	free_pages((unsigned long)addr, order);
+>> +	free_pages((unsigned long)addr, new_order);
+>>  }
+>>
+>
+> Here's the non-obfuscated version of the two hunks above (and let it
+> be on the record that New Order is a terrible, overrated band):
+>
+> diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v=
+3-its.c
+> index 291d7668cc8da..a4d555aaee241 100644
+> --- a/drivers/irqchip/irq-gic-v3-its.c
+> +++ b/drivers/irqchip/irq-gic-v3-its.c
+> @@ -216,6 +216,7 @@ static struct page *its_alloc_pages_node(int node, gf=
+p_t gfp,
+>  	struct page *page;
+>  	int ret =3D 0;
+>=20=20
+> +	order =3D get_order(mem_decrypt_align(PAGE_SIZE << order));
+>  	page =3D alloc_pages_node(node, gfp | gfp_flags_quirk, order);
+>=20=20
+>  	if (!page)
+> @@ -245,6 +246,7 @@ static void its_free_pages(void *addr, unsigned int o=
+rder)
+>  	 * If the memory cannot be encrypted again then we must leak the pages.
+>  	 * set_memory_encrypted() will already have WARNed.
+>  	 */
+> +	order =3D get_order(mem_decrypt_align(PAGE_SIZE << order));
+>  	if (set_memory_encrypted((unsigned long)addr, 1 << order))
+>  		return;
+>  	free_pages((unsigned long)addr, order);
+>
+
+I will include this in the next revision.
+
+
+>>  static struct gen_pool *itt_pool;
+>> @@ -268,11 +272,13 @@ static void *itt_alloc_pool(int node, int size)
+>>  		if (addr)
+>>  			break;
+>>=20=20
+>> -		page =3D its_alloc_pages_node(node, GFP_KERNEL | __GFP_ZERO, 0);
+>> +		page =3D its_alloc_pages_node(node, GFP_KERNEL | __GFP_ZERO,
+>> +					    get_order(mem_decrypt_granule_size()));
+>
+> You already taught its_alloc_pages_node() about the decrypt granule
+> size stuff. I don't think we need to see more of it (and you don't
+> mess with the call that is just above it).
+>
+>>  		if (!page)
+>>  			break;
+>>=20=20
+>> -		gen_pool_add(itt_pool, (unsigned long)page_address(page), PAGE_SIZE, =
+node);
+>> +		gen_pool_add(itt_pool, (unsigned long)page_address(page),
+>> +			     mem_decrypt_granule_size(), node);
+>
+> I'd rather see something like mem_decrypt_align(PAGE_SIZE), which
+> keeps the intent clear.
+>
+
+The helper was added based on feedback from a previous version. I assume
+you are suggesting that only this caller should switch?
+
+
+-aneesh
