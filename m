@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA433B2FDF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3823CD8C2;
 	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777418720; cv=none; b=GnMzpEYg4a0CEanoCZzJGKgrR9wFHfhY83aqHywJgG/C3naG2xTpDWIpPaya67N76i3VJPI1ztNdzgMkFa7+HdB0Co0/yn7kv6pzmkXwhmWFXk7MNH3ke7UE97LmsSeAtXHmGPo9EETBWl2+nsYih0u46+frE9XlFWuN4JCPQsg=
+	t=1777418720; cv=none; b=NKfqBago1siHjv4MZneEqbC0t4wSRgRhD+4ID99EHQffgrGT3eXP6mZnb4cU8K1vMaWKj4L6a/FvJBQsI05tYvHVwbbtNdN/KbthpO91fGc5Vn0ZNLMUQXHZBqQ9WvLmKCQaB1UX4Sxcqm3gR7ZuIBm2jyGZgK+oM+i1bhZrnh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777418720; c=relaxed/simple;
-	bh=Nf2uujmY9VcGyGCk6p4BfNja9Ll9DL7iKX2wZF1qGok=;
+	bh=ss+F6HkF7cTK/9DopAjbmtDjE1NKfuiz72DZgsQjSIg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=deCY1f/n6va331WYAjC8u2OX6nedPLgt5Jfn0LhltNHUJd+XgRzoiAVyDE27rlC7hfhvw2u+pEPiOmyOuxtgKyoKy8tvkVBbIuIlFIrKM005sQAv3ecTYrtLQzr+vIku2Dll8Y96HGwXIf9aBEJI8d5uGCOxeTwCgko5p+fOkwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WrF+40OJ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=t0OkjqCFDOWVwbqg3c6nmFblQ8gRY/HJMWQtG1C9FdF4P+f3ul5ItlzD+M5guN7kyZ1BFYkpy/nM3YpqkLa9o9MRfUnJB8N8B4bCvS2JWs3iE+wyd/38eOMzUNL1UBqstdLt7nQPt/XGE7tHT3q2wpJ2ivpa62FU56BrL0P20gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lp/+cg/W; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WrF+40OJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2FA8BC4AF18;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lp/+cg/W"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A4ADFC2BCFF;
 	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777418720;
-	bh=Nf2uujmY9VcGyGCk6p4BfNja9Ll9DL7iKX2wZF1qGok=;
+	bh=ss+F6HkF7cTK/9DopAjbmtDjE1NKfuiz72DZgsQjSIg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=WrF+40OJeQqWWnSmUHqpMz3NFp9zHeX5q9ij7o6oAPIS4XEJZOG8keQzgMpuXb5zj
-	 Wqkg/urSXGlB/2vGQJqwSMbBsCMmLrGYAs2zSkEXEcsdP4wLy+cbLgTCSCpV8MwpkV
-	 icSfPBUIFSYL+6v8mCnnVbWQvXwmsR1ND6XgJuhwVd/C6wnQ/3N89jgObvctEekx5l
-	 NwnnnitD+95TGli4j2lvygH7r9OAKloP76A+uWf53wEbt8cmGkZfiQDTbeFoWpZsg2
-	 cH6yGyhj8zkLefU3HwA4/Fe24NXDjkLWkhdSHRILrMZBoszWR8ST3AaUMhelWF3Hxd
-	 xzBeQ8NielxTA==
+	b=lp/+cg/Wy+tb64EDULPzJO6K1JR9dDvh3pBnCpW8Jrt3gO3LUt9CqgP99lbhVKzea
+	 LK5EEFcFEp4HEuobUYBOGhc4+sujDTSy0D/kivPtSfIRVam3fG40BG9/whNLdNbcjO
+	 nL1hbvhqPklXteycKpud7RPAvXwKErf4Wz7VO750HNlAxTAidS8H2au1n79+nrnVte
+	 Drd/dPETRdFerWJgZdUD8hp0+e83ZWYh3QRVI0IIpPDAqqsIFqGHUJohEgLqhvmlEt
+	 gf31cm2hv6aNoincOMEVcrfMR4fHLoEP6Ii0XGQoN2T2MC9NfPwS7onsbHCICq3KZo
+	 /j5E69Q8xGEQQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22A65FF8875;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9AE35CCF9E3;
 	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Apr 2026 16:25:30 -0700
-Subject: [PATCH RFC v5 35/53] KVM: selftests: Test conversion flow when
- INIT_SHARED
+Date: Tue, 28 Apr 2026 16:25:36 -0700
+Subject: [PATCH RFC v5 41/53] KVM: selftests: Test conversion with elevated
+ page refcount
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-gmem-inplace-conversion-v5-35-d8608ccfca22@google.com>
+Message-Id: <20260428-gmem-inplace-conversion-v5-41-d8608ccfca22@google.com>
 References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -74,11 +74,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=1651;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=3828;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=d3diFsGfXmDo2adM4qAr4NDT6FCtct/he0WqILialfA=;
- b=F2ouDv5e83vQrUQe+V+yDI0Ntg/VBAboJtH84k8Y287idIlHcPCLvX47Bctui/LXKS9D7iBMn
- 7LsbwypaN9wBM0XghTDCutRLzAiGYO5GECLGthQFpEKChNvrFoy+hi4
+ bh=/d2k8NxefQGN/ufZ9LnHGnYMKu34ADHcjvHKBhIXD7M=;
+ b=1ULjpSvvqj0ZTKtSpsiMXgqtnYm7Snt35jmtyNxH17oWl3wy/V4Zf+IcNqc9/2lh+FZYBo3Rq
+ O2h2lMIWdAOD1Tm3Ek0K9e45/q64b7b1AAg3Q7GDSAgbTfaw74Lzcqm
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -88,46 +88,121 @@ Reply-To: ackerleytng@google.com
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add a test case to verify that conversions between private and shared
-memory work correctly when the memory is initially created as shared.
+Add a selftest to verify that converting a shared guest_memfd page to a
+private page fails if the page has an elevated reference count.
+
+When KVM converts a shared page to a private one, it expects the page to
+have a reference count equal to the reference counts taken by the
+filemap. If another kernel subsystem holds a reference to the page, for
+example via pin_user_pages(), the conversion must be aborted.
+
+This test uses vmsplice to increment the refcount of a specific page. The
+reference is kept on the page by not reading data out from vmsplice's
+destination pipe. It then attempts to convert a range of pages, including
+the page with elevated refcount, from shared to private.
+
+The test asserts that both bulk and single-page conversion attempts
+correctly fail with EAGAIN for the pinned page. After the page is unpinned,
+the test verifies that subsequent conversions succeed.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../testing/selftests/kvm/x86/guest_memfd_conversions_test.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ .../kvm/x86/guest_memfd_conversions_test.c         | 80 ++++++++++++++++++++++
+ 1 file changed, 80 insertions(+)
 
 diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-index 1299935689e5b..40ac1b3769af1 100644
+index 21918b83d3792..13bbc361eaeda 100644
 --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
 +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-@@ -99,6 +99,12 @@ static void __gmem_conversions_##test(test_data_t *t, int nr_pages)		\
- #define GMEM_CONVERSION_TEST_INIT_PRIVATE(test)					\
- 	__GMEM_CONVERSION_TEST_INIT_PRIVATE(test, 1)
- 
-+#define __GMEM_CONVERSION_TEST_INIT_SHARED(test, __nr_pages)			\
-+	GMEM_CONVERSION_TEST(test, __nr_pages, GUEST_MEMFD_FLAG_INIT_SHARED)
-+
-+#define GMEM_CONVERSION_TEST_INIT_SHARED(test)					\
-+	__GMEM_CONVERSION_TEST_INIT_SHARED(test, 1)
-+
- struct guest_check_data {
- 	void *mem;
- 	char expected_val;
-@@ -192,6 +198,12 @@ GMEM_CONVERSION_TEST_INIT_PRIVATE(init_private)
- 	test_convert_to_private(t, 0, 'C', 'E');
+@@ -408,6 +408,86 @@ GMEM_CONVERSION_TEST_INIT_SHARED(forked_accesses)
+ 	kvm_munmap(test_state, sizeof(*test_state));
  }
  
-+GMEM_CONVERSION_TEST_INIT_SHARED(init_shared)
++static int pin_pipe[2] = { -1, -1 };
++
++static void pin_pages(void *vaddr, size_t size)
 +{
-+	test_shared(t, 0, 0, 'A', 'B');
-+	test_convert_to_private(t, 0, 'B', 'C');
-+	test_convert_to_shared(t, 0, 'C', 'D', 'E');
++	struct iovec iov = {
++		.iov_base = vaddr,
++		.iov_len = size,
++	};
++
++	if (pin_pipe[1] < 0)
++		TEST_ASSERT_EQ(pipe(pin_pipe), 0);
++
++	TEST_ASSERT_EQ(vmsplice(pin_pipe[1], &iov, 1, 0), size);
 +}
- 
++
++static void unpin_pages(void)
++{
++	close(pin_pipe[1]);
++	pin_pipe[1] = -1;
++	close(pin_pipe[0]);
++	pin_pipe[0] = -1;
++}
++
++static void test_convert_to_private_fails(test_data_t *t, loff_t pgoff,
++					  size_t nr_pages,
++					  loff_t expected_error_offset)
++{
++	loff_t offset = pgoff * page_size;
++	loff_t error_offset = 0;
++	int ret;
++
++	do {
++		ret = __gmem_set_private(t->gmem_fd, offset,
++					 nr_pages * page_size, &error_offset,
++					 KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE);
++	} while (ret == -1 && errno == EINTR);
++	TEST_ASSERT(ret == -1 && errno == EAGAIN,
++		    "Wanted EAGAIN on page %lu, got %d (ret = %d)", pgoff,
++		    errno, ret);
++	TEST_ASSERT_EQ(error_offset, expected_error_offset);
++}
++
++GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(elevated_refcount, 4)
++{
++	int i;
++
++	pin_pages(t->mem + test_page * page_size, page_size);
++
++	for (i = 0; i < nr_pages; i++)
++		test_shared(t, i, 0, 'A', 'B');
++
++	/*
++	 * Converting in bulk should fail as long any page in the range has
++	 * unexpected refcounts.
++	 */
++	test_convert_to_private_fails(t, 0, nr_pages, test_page * page_size);
++
++	for (i = 0; i < nr_pages; i++) {
++		/*
++		 * Converting page-wise should also fail as long any page in the
++		 * range has unexpected refcounts.
++		 */
++		if (i == test_page)
++			test_convert_to_private_fails(t, i, 1, test_page * page_size);
++		else
++			test_convert_to_private(t, i, 'B', 'C');
++	}
++
++	unpin_pages();
++
++	gmem_set_private(t->gmem_fd, 0, nr_pages * page_size,
++			 KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE);
++
++	for (i = 0; i < nr_pages; i++) {
++		char expected = i == test_page ? 'B' : 'C';
++
++		test_private(t, i, expected, 'D');
++	}
++}
++
  int main(int argc, char *argv[])
  {
+ 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
 
 -- 
 2.54.0.545.g6539524ca2-goog
