@@ -1,140 +1,179 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C72B451047
-	for <linux-coco@lists.linux.dev>; Tue, 28 Apr 2026 12:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E69846AF21;
+	Tue, 28 Apr 2026 13:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777381017; cv=none; b=eKGc3P6VhdhJyBoy4KGWVlADOoqjr3rqEQwr/rcvSy4+wLuZud2aiQkN6b56/Nryr4C/qygJavg0+OEsZF6SaOXGf4BxOZGfdBfyhGzG/W//RN7unacQB7Cm1lEoMZw2qEV+xa7mtbiXmm3JO92RvIcNSexXrGgbbcbRH3nMTqg=
+	t=1777383077; cv=none; b=K8rpSq/kJMppmYIG5oKdtmZo4H30uUKZklDpUYQOxI63ADtJT0znVq/nv51WsJgHm+bby4JKYn+fjGkNVgDpiMwX7f7a5DHihr/tixLAVUnv/G4LwNi33uIvpMnNLeIjwXoCKRlqDieCjHIx0htBJqxNobQ+B3Dmsi2i71DGncg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777381017; c=relaxed/simple;
-	bh=2RKSmrXDGmbJ+ILGomCmvqR5VHp9ZnHV9m4WyCI4c1w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pLsvI0J2HRM6PIxGSugNAXD/m87Rth6HlxS+tA+YorpaHrYTYIAQmMVStWNC89qs1WrK/8pZ/U3rJs4ixsdPTueGry7zbtXriJaP0hvQ+dkXI0iZxgZBhxglykYZBBZ2RB2+es3CsHOXbAr1E0uxoJBaYm/gHfCx2FkAyHyyOH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fQljEomZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777383077; c=relaxed/simple;
+	bh=Fqnn2hEQAqa2HmSkh6q7L5idMdiVy1lhIhJc0byAbe4=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eUPuHcPTS23PwS42QzuElHYhILbxX6LHcnv88zdCJWQqwyVCE5BXkTom8a9RmsAL0zTUDcKeZdhAEKXStwcJy3xZv9KsFAVi2xZDomP39UI16CdKOQBHJAm8kAsr14sbHt+UJuyKANinik0ItaxF37rwbhwaiFOk0yvTP1hkVYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mvgWZk/x; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fQljEomZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCDEC2BCB5;
-	Tue, 28 Apr 2026 12:56:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mvgWZk/x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AAD3C2BCAF;
+	Tue, 28 Apr 2026 13:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777381016;
-	bh=2RKSmrXDGmbJ+ILGomCmvqR5VHp9ZnHV9m4WyCI4c1w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQljEomZS5ZxUCq5PeFr2rJNcvjyI+alsvwnO+69CsFwF5XmCJLvLTtDodCTjYyKk
-	 7GLC0lrbGR1c779dgqJd0LahUe17wHkEFEJhxFDwfR5qqSOYvxyTgYh3yp+kdcdbk1
-	 Bc7dpgWTKpKNroZTO+O2vst3iTmtn60a26EijlMZluEu0GHEJ21yeWRAjjrSr7dQ4n
-	 g9/pHUTe3/yPcEZEPQf3QUV2i+RSx29NNkSvCjMY4fboXnK2oZvmgyypX83gH/dPKq
-	 bmvgojPF7A6HmsnvEKlS6TZpzNRGl3n85Xj7kEd9EZxnJIbNGJenJ2hu5c008MJ+VD
-	 kvme8f4htCtiA==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6BE9DF40079;
-	Tue, 28 Apr 2026 08:56:55 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Tue, 28 Apr 2026 08:56:55 -0400
-X-ME-Sender: <xms:l67wadjtyyNijhm0BVs7qedWOc1AjPmbNZ0S76qYiNHqWVd8yHZxzw>
-    <xme:l67waXm0V7ynTldqI_ONKYSLTwmMS6JLhXLagwQdWr1C9-j6W9ic0R6VFEojcB5P6
-    Ouq-di276hM5qAEdmEJq7td_l61tCMhC9ipLrMpu8vxPP4N6yr0bOo>
-X-ME-Received: <xmr:l67waWoVWl9yXDSgXT0dJN9DR2-d6zfj0qT68PGiiMn1EmlCRxoX2dWYgVvOIw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekudeivdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpedfmfhirhihlhcu
-    ufhhuhhtshgvmhgruhculdfovghtrgdmfdcuoehkrghssehkvghrnhgvlhdrohhrgheqne
-    cuggftrfgrthhtvghrnhepjeeliefgueefleduieejuefhffdttdehfefguddtffekteeg
-    ueeujedvffelleehnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvg
-    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhm
-    thhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvd
-    ekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggp
-    rhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepthhglhigse
-    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtghomhdp
-    rhgtphhtthhopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopegurghvvgdrhhgrnh
-    hsvghnsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepgiekieeskhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtohephhhprgesiiihthhorhdrtghomhdprhgtphhtthhope
-    hrihgtkhdrphdrvggughgvtghomhgsvgesihhnthgvlhdrtghomhdprhgtphhtthhopehs
-    rghthhihrghnrghrrgihrghnrghnrdhkuhhpphhushifrghmhieslhhinhhugidrihhnth
-    gvlhdrtghomhdprhgtphhtthhopehkrghirdhhuhgrnhhgsehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:l67waTKY1hGMJDex_PyLIXZB4fpbyrE9RlMbEoyZrjfTD_YRrKTHvg>
-    <xmx:l67waSDVL4W5m5Ewj48nETFIzio4-P56QlRWFRpd6kLMWNCN1iSiDQ>
-    <xmx:l67waV7KvrkSq9bPSfsC0XueSTlv2tif69aModRDf5KwS87W3JLo8w>
-    <xmx:l67waeHbs2L8iZhPnaTbPKwfZ5ssPqoe_Ca3EmkljaPv3k8T20PQag>
-    <xmx:l67waQRDxavlZWTX7GuXZ7K97fnK3A6lmtghHOmd0ddga7R3ZZCpupLX>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 28 Apr 2026 08:56:53 -0400 (EDT)
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org
-Cc: "H . Peter Anvin" <hpa@zytor.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
-	linux-kernel@vger.kernel.org,
+	s=k20201202; t=1777383077;
+	bh=Fqnn2hEQAqa2HmSkh6q7L5idMdiVy1lhIhJc0byAbe4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=mvgWZk/x3TCAQl1Prytst/0qUjN8xheWdIG0ydFt+g5hrZwF3pKK6x8vq0yyBWV3q
+	 5YHgiZGGYM/6NbkIBoHIhiTOOby2INGEMp3R1v/EGWZjubpfocvJ9rB3DfTP+K5PBp
+	 EU2E96R4Bo8m6cHs9XmYxUvaKFaCTYTivetZrp9ZixJkB209kU3Iz19jM2m8YnBlVm
+	 bFH+Dt9xtUJ/VpHo57zj4RhDCHJ2wZFevPDCV8xyqIPl4R2Y2NaoJqLh8oM0HVBAMW
+	 joPDjPCE7LTeB+H3NJrIoKiGjIOXxCQTqeDb5fTCnVHC1l0K9RoTe7I0xkSyPlWvoE
+	 92rXaJC6CGFbg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wHiWw-0000000FW07-3pws;
+	Tue, 28 Apr 2026 13:31:15 +0000
+Date: Tue, 28 Apr 2026 14:31:14 +0100
+Message-ID: <86v7dbyzx9.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev,
 	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org,
-	stable@vger.kernel.org,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH v2 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
-Date: Tue, 28 Apr 2026 13:56:32 +0100
-Message-ID: <20260428125632.129770-3-kas@kernel.org>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260428125632.129770-1-kas@kernel.org>
-References: <20260428125632.129770-1-kas@kernel.org>
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v4 2/3] swiotlb: dma: its: Enforce host page-size alignment for shared buffers
+In-Reply-To: <yq5aa4un1dju.fsf@kernel.org>
+References: <20260427063108.909019-1-aneesh.kumar@kernel.org>
+	<20260427063108.909019-3-aneesh.kumar@kernel.org>
+	<86zf2ozrb8.wl-maz@kernel.org>
+	<yq5aa4un1dju.fsf@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: aneesh.kumar@kernel.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, jgg@ziepe.ca, m.szyprowski@samsung.com, robin.murphy@arm.com, steven.price@arm.com, suzuki.poulose@arm.com, tglx@kernel.org, will@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-According to x86 architecture rules, 32-bit operations zero-extend the
-result to 64 bits. The current implementation of handle_in() only masks
-the lower 32 bits, which preserves the upper 32 bits of RAX when a
-32-bit port IN instruction is emulated.
+On Tue, 28 Apr 2026 13:20:53 +0100,
+Aneesh Kumar K.V <aneesh.kumar@kernel.org> wrote:
+>=20
+> Marc Zyngier <maz@kernel.org> writes:
+>=20
+> > On Mon, 27 Apr 2026 07:31:07 +0100,
+> > "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
+> >>=20
+> >> When running private-memory guests, the guest kernel must apply additi=
+onal
+> >> constraints when allocating buffers that are shared with the hyperviso=
+r.
+> >>=20
+> >> These shared buffers are also accessed by the host kernel and therefore
+> >> must be aligned to the host=E2=80=99s page size, and have a size that =
+is a multiple
+> >> of the host page size.
+> >>=20
+> >> On non-secure hosts, set_guest_memory_attributes() tracks memory at the
+> >> host PAGE_SIZE granularity. This creates a mismatch when the guest app=
+lies
+> >> attributes at 4K boundaries while the host uses 64K pages. In such cas=
+es,
+> >> set_guest_memory_attributes() call returns -EINVAL, preventing the
+> >> conversion of memory regions from private to shared.
+> >>=20
+> >> Architectures such as Arm can tolerate realm physical address space
+> >> (protected memory) PFNs being mapped as shared memory, as incorrect
+> >> accesses are detected and reported as GPC faults. However, relying on =
+this
+> >> mechanism is unsafe and can still lead to kernel crashes.
+> >>=20
+> >> This is particularly likely when guest_memfd allocations are mmapped a=
+nd
+> >> accessed from userspace. Once exposed to userspace, we cannot guarantee
+> >> that applications will only access the intended 4K shared region rather
+> >> than the full 64K page mapped into their address space. Such userspace
+> >> addresses may also be passed back into the kernel and accessed via the
+> >> linear map, resulting in a GPC fault and a kernel crash.
+> >>=20
+> >> With CCA, although Stage-2 mappings managed by the RMM still operate a=
+t a
+> >> 4K granularity, shared pages must nonetheless be aligned to the
+> >> host-managed page size and sized as whole host pages to avoid the issu=
+es
+> >> described above.
+> >
+> > I thought that was being fixed, and that there was now a strong
+> > guarantee that RMM and host are aligned on the page size. Even more,
+> > S2 is totally irrelevant here. The only thing that matters is the host
+> > page size vs the guest page size. Nothing else.
+> >
+>=20
+> Yes, the latest RMM update includes the ability to change the granule
+> size.
+>=20
+> The section above in the commit message was intended to explain that the
+> S2 mapping size is irrelevant. I agree it is not clear as written, so I
+> will reword it to improve clarity.
 
-Update handle_in() to zero out the entire RAX register when the I/O size
-is 4 bytes to ensure correct zero-extension. For smaller sizes (1 or 2
-bytes), continue to preserve the unaffected upper bits.
+Even better, remove it. Nothing CCA-specific should be in this patch.
 
-Fixes: 03149948832a ("x86/tdx: Port I/O: Add runtime hypercalls")
-Reported-by: Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>
-Link: https://lore.kernel.org/all/CAKw_Dz96rfSQc6Rn+9QBcUFHhmkK+9zu+P=bxowfZwxrATCBRg@mail.gmail.com/
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: stable@vger.kernel.org
----
- arch/x86/coco/tdx/tdx.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+[...]
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 65119362f9a2..e09636564237 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -703,8 +703,17 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
- 	 */
- 	success = !__tdx_hypercall(&args);
- 
--	/* Update part of the register affected by the emulated instruction */
--	regs->ax &= ~mask;
-+	/*
-+	 * Update part of the register affected by the emulated instruction.
-+	 *
-+	 * 32-bit operands generate a 32-bit result, zero-extended to a 64-bit
-+	 * result.
-+	 */
-+	if (size == 4)
-+		regs->ax = 0;
-+	else
-+		regs->ax &= ~mask;
-+
- 	if (success)
- 		regs->ax |= args.r11 & mask;
- 
--- 
-2.51.2
+> >>  static struct gen_pool *itt_pool;
+> >> @@ -268,11 +272,13 @@ static void *itt_alloc_pool(int node, int size)
+> >>  		if (addr)
+> >>  			break;
+> >> =20
+> >> -		page =3D its_alloc_pages_node(node, GFP_KERNEL | __GFP_ZERO, 0);
+> >> +		page =3D its_alloc_pages_node(node, GFP_KERNEL | __GFP_ZERO,
+> >> +					    get_order(mem_decrypt_granule_size()));
+> >
+> > You already taught its_alloc_pages_node() about the decrypt granule
+> > size stuff. I don't think we need to see more of it (and you don't
+> > mess with the call that is just above it).
+> >
+> >>  		if (!page)
+> >>  			break;
+> >> =20
+> >> -		gen_pool_add(itt_pool, (unsigned long)page_address(page), PAGE_SIZE=
+, node);
+> >> +		gen_pool_add(itt_pool, (unsigned long)page_address(page),
+> >> +			     mem_decrypt_granule_size(), node);
+> >
+> > I'd rather see something like mem_decrypt_align(PAGE_SIZE), which
+> > keeps the intent clear.
+> >
+>=20
+> The helper was added based on feedback from a previous version. I assume
+> you are suggesting that only this caller should switch?
 
+I don't know what you mean by 'this'. What I'd like to see is this
+last hunk be changed to:
+
+	gen_pool_add(itt_pool, (unsigned long)page_address(page),
+		     mem_decrypt_align(PAGE_SIZE), node);
+
+and the previous hunk simply dropped.
+
+Thanks,
+
+	M.
+
+--=20
+Without deviation from the norm, progress is not possible.
