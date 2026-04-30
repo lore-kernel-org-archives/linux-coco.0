@@ -1,149 +1,305 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311C4287257
-	for <linux-coco@lists.linux.dev>; Thu, 30 Apr 2026 22:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777588170; cv=none; b=e8tST7djDQ3D4eR+X7cN0O6ABAo4Mbz3feSCNdKKQecW2yPTfV+WZx47wFeoFVxlcHxyNwge9AisH1jZJoK5nrxS1xmpXY01xGEcgxkWmpMfIRKZC2GgccSKLiyXoDpl/oGIfrMlfnMyEO4Ls8oZ+K7omvOknpBmht2dG4NRhIs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777588170; c=relaxed/simple;
-	bh=Lbh8e85BlUhcMdTo1wuURP2+FR9UF6cQO0tPsy8wB60=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ijEdVdWKgB40sHzC2mZ7lSmhHtHbOIyyp6AYRkc9qF/B8MusKnAZUCi6vaGyVcP8DCi1YcnLnTEWMtEd/pdVlHKXL728HJ8dNlQTG34nZ5YctMrGZEBibRqfB2GKFfaXBNmwyRz4CsborAyB0+bBRLfxISZFDZXzfgxJxjSSmgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lacq+qxC; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DF53D9DC7
+	for <linux-coco@lists.linux.dev>; Thu, 30 Apr 2026 23:51:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777593117; cv=pass; b=k2bRIS2WKYBU8Fsb4KEwDZc7CCVqXbWP2aHnN3Vn/UfwwUbonRucz1zU0oPhGuL6cddwqPnUljmVFQR74bnznn4w61iF3OgbCCgNOlAmlzXeqrs+qqh2sCHGcMof4oqHRDQW/uDu4L89qTQioJA+4mRl4WBK021tuA7dwQlHSag=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777593117; c=relaxed/simple;
+	bh=UxyyQr0iDJsnmrDySmyYHIs/8DyWV1oc/NXfPvCT6kQ=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RKpMJSHbycim7gZP9aq2vRhp+VkTSpSPqjqqfgCW9wLOtlt6hcAb1HgyiJz8IvGA6GLOVV8fqGB91ZjljEJhSA8IHaQmMLhCazaby+TKXwxhtcQF46AOE53L07YLKeK/8w9rRNbQzhJJyHdDBP0evDx6oSYpc9XXzvVpFUslgu8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hRwbateZ; arc=pass smtp.client-ip=209.85.221.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lacq+qxC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777588168; x=1809124168;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Lbh8e85BlUhcMdTo1wuURP2+FR9UF6cQO0tPsy8wB60=;
-  b=lacq+qxCvyQAi0SS4pKLLeHZbtTTxI0IW36nrezp8c8qLBZdcA57Y6JG
-   Ga5GdXirjQL5dBmnSzaenZiPKa5jLRaTgLCu5XXjTTbDIv5ySKhLsQrCB
-   D8Cd7DgYa2zFX6vaiFbkjeA97wcXMClZa0/8eUnPepM5yHyDs3YyYW1wX
-   vdZD+BYnCwR/4jZZigKMEYHvLVdfnecDe2BxmaMmMwPsZbizJtI8L9M5a
-   8hg6fAoC9r1FqAE9BR5sKgtd3+rwwvMNamal1ET7TNfeYtgkAjb2vZJPa
-   56dqFVd6SbVt3EpqAFIjk6/axxJ9iDHgGXojjtbtmlQJCJ4xx7QpfaKgo
-   Q==;
-X-CSE-ConnectionGUID: zhjcn1qVR/+a+7Kns2oN4A==
-X-CSE-MsgGUID: sgrHgFINRPCUP68kS2+1XA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="89652893"
-X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="89652893"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 15:29:27 -0700
-X-CSE-ConnectionGUID: WFuu1Cp6QfuioQJor+m93Q==
-X-CSE-MsgGUID: 59kUvwH/Qtm7zBIMh3TMVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="230106901"
-Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.109.74]) ([10.125.109.74])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 15:29:26 -0700
-Message-ID: <a2d03c1f-9b8b-4444-b93e-a01c7c7a2c5f@intel.com>
-Date: Thu, 30 Apr 2026 15:29:27 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hRwbateZ"
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-56d958880ecso500970e0c.2
+        for <linux-coco@lists.linux.dev>; Thu, 30 Apr 2026 16:51:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777593114; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gNvQev9ANQYV3C5dE4Iah9uXkn33I/CVopO+ZA5iQ0TUYMvnI0gw8ZeFWvJhqVenoA
+         EpXLyCoT7IB7aZer4q0sDSM3bZToDebggTJI8vkKWac3s+a1FCqkL/+RPcvDJDrEVTqU
+         CJOL9xi1lHBks9xLRKhG1oI8dsbuqt3vrbXC7Db64+C0Asr6Hqmjq8PvZ1QUW/ZbuoRl
+         JnJLjJJynRzhSeG+q9ONYzew5hx8pT2gJpkIFSTo8fcoZTJ0eXR97LC6+fA4Qp/LeNS+
+         Usa/eCAvpDgy23n6ON9TUT5DTPYe0UCfQpCQevWj+827Cjzz8YjCsm5+9+EHz2kwWhmj
+         LydA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=BpU7aJAXyZDKrOT/BsTxtUzbjAh38uTL3HfdWXDy/eU=;
+        fh=kEdyX9pxQ3TS+VWW9avjfqmLUsMUZxKiDUQnjg/L420=;
+        b=L8PILPJjqGeQOT4+zb7Mnid2fc+GYOFA3/+PhAw4RxNtLzdGzTzWZW4yDadXmaE6Gy
+         tVPzzokV9SWgjyPhtVOUW5YSD99Tpsk8oHcQ6lwlDHuVmh5SRhJVHdlb7shTIdMJEVQa
+         J7rYA+j83zOme5d2quJcwgE5Foz7/YABtdHAvXcEioeSv7u12JD6BFOWBX9pLPn4BzWj
+         hObvp4H6aGGKI2KhjtEMiOO0Rpg0wuMC/wpU1UXODr2qQbvbUTP78xTAB62OkvWbEPpw
+         2M8nO2JJZvjOY19TnSZsETcOIiDlT5YphiNgk+o154qf5xVwJxyRLFENtRjcAV9BRn22
+         w1fw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777593114; x=1778197914; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BpU7aJAXyZDKrOT/BsTxtUzbjAh38uTL3HfdWXDy/eU=;
+        b=hRwbateZeiltap75zd6TrdI57V7nU7WcJjtHJNkCKU4WY7QHp4ejGzsDft6VJ734YD
+         SLQoxlehSbgxzSI6LgDGbBHSlpOjmo3DYgyNt6o6vHNVASDB3GShRH5tGno6p+b9m5JR
+         R0UfcR9MKM0RifoReb+DCPjqvxwZAtv2Pz+pmJE0468MFzn+SlwvDpapxEigOAT3607K
+         eM4GUoPBiHRiLGy40/mFArEW0hrgLqjxFJeMm37IYotvpxW8WE/kQr6P/NOcMpsKrG2r
+         hV+LN1IEsztxQKAWddlAqpn5CA13WrLCjTDWm6hArUShNcG5CCKmpgkBPr1GyDQO0bS8
+         d91g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777593114; x=1778197914;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BpU7aJAXyZDKrOT/BsTxtUzbjAh38uTL3HfdWXDy/eU=;
+        b=hRJG/olU1w7tNWguLPaSi1tfhEhFARukbwuVm4enqwB6G5bHcUvg9pkG8BUpDK9YJ5
+         RVNa+T6RwgZZ/cujofo3w6HVPUy2FTOMGMpodQGSKcNnGjR96Pr6Ff+UqzFUBIhAIOmz
+         KTTgdBmB35OcHRR/RUFF1HmNDC+mBKTYNmypdz2NRWLGEtlEPX5u8EG+QXyOplXqbX9k
+         wAdCZLNmSkIYJyE+MN4AOipeGZYqjZkU2oKOETUI9+KiV2x/y79yfweGvSuHe64ZZeNz
+         1uRkUXWlNzTXUFa8cCVrTwZLCfTqvCO6TYksKvOnghwMWoDY54fTehrAK6Sf/qizaZ43
+         C83w==
+X-Forwarded-Encrypted: i=1; AFNElJ/Lv34MnIUKpZUra/xtpbBg9e9l3SyAl85nwwyTrc+F1ab3gSoGjmOVaVmY+h71u37EwYpkzqHTByFi@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy3nXxCgMDOisUBtxsS5v376Cix+q0cEZiohlqR7dhnZHobd6N9
+	9cq4JLCImFiwcSiOuJEwdSI8EBfYJEBmRVrUkCZ7ijkpHoRY9hLajfkbEg2qbIy2e7ETfhRjie4
+	Lp/ceJE+SJORNLFBsQ9kR8Qlg24yklxd6CfTylKDh
+X-Gm-Gg: AeBDiev+/HvWxQTSC7ZCacRGPWQL8sQE9JOr+7SnWLwfU74ufmjF1JwVkR5SptrNUMe
+	V8boiCChYX4+A5+qNVgldM+6D9XntXuseXImR/EoGK8byIhx7av6ltOeiQYDHDyNXbt/6Vqy78z
+	qI66aTt8P71CfkF3M8JomwSTkxzJxgbPcn/jGFudnmYZK31U5aHfMFI9Fulvb3OvpQkYHl6+yE/
+	VhJqXaP8XEx5EWrObtdD9M5k8ha6uiu8cN37SVxUXGzWBIAAagMbFTTMBI13oJnTo6Uuc5KP2Rt
+	/MgW6uQBiYQ1KdRHAFK+ZiDy9AAtBFKAk3QtgaGl+D3EKYVHykVRydUySVFFlXoCjAwYdOzsrHU
+	5o5NFy3dD0QBoGDY=
+X-Received: by 2002:a05:6122:8b14:b0:56c:d66b:7516 with SMTP id
+ 71dfb90a1353d-574beb44409mr376458e0c.13.1777593113169; Thu, 30 Apr 2026
+ 16:51:53 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 30 Apr 2026 16:51:52 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 30 Apr 2026 16:51:52 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <x7n77snnvvukofo3slopl74c5tmlb2t2un5qy5fq6eb3d2xt7e@6a6tixg5mdfc>
+References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com> <x7n77snnvvukofo3slopl74c5tmlb2t2un5qy5fq6eb3d2xt7e@6a6tixg5mdfc>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 12/21] x86/virt/seamldr: Install a new TDX module
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Gao, Chao" <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>
-Cc: "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Huang, Kai" <kai.huang@intel.com>,
- "Zhao, Yan Y" <yan.y.zhao@intel.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "kas@kernel.org" <kas@kernel.org>,
- "Chatre, Reinette" <reinette.chatre@intel.com>,
- "seanjc@google.com" <seanjc@google.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
- "Verma, Vishal L" <vishal.l.verma@intel.com>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>,
- "mingo@redhat.com" <mingo@redhat.com>, "Weiny, Ira" <ira.weiny@intel.com>,
- "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
- "Annapurve, Vishal" <vannapurve@google.com>, "Shahar, Sagi"
- <sagis@google.com>, "djbw@kernel.org" <djbw@kernel.org>,
- "tglx@kernel.org" <tglx@kernel.org>, "paulmck@kernel.org"
- <paulmck@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "bp@alien8.de" <bp@alien8.de>,
- "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>
-References: <20260427152854.101171-1-chao.gao@intel.com>
- <20260427152854.101171-13-chao.gao@intel.com>
- <f92d114c-c0f1-4eaa-a828-a4d9ac4054d4@intel.com>
- <ab11b3c922c93db045c4c0dfa8f191eb6fdb0b9f.camel@intel.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <ab11b3c922c93db045c4c0dfa8f191eb6fdb0b9f.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Thu, 30 Apr 2026 16:51:52 -0700
+X-Gm-Features: AVHnY4KlBX901bcbV2QvS7GwShwnTIsgZQP6_kTRQYnSwTTeAKUt2VFX-7vfC-o
+Message-ID: <CAEvNRgHRpvsEjtr1A_Qz3d4oMEaffTxESavrZ73Jtt6OobCwhA@mail.gmail.com>
+Subject: Re: [PATCH RFC v5 00/53] guest_memfd: In-place conversion support
+To: Michael Roth <michael.roth@amd.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 4/30/26 14:48, Edgecombe, Rick P wrote:
-> On Thu, 2026-04-30 at 12:00 -0700, Dave Hansen wrote:
->> On 4/27/26 08:28, Chao Gao wrote:
->>> +			case MODULE_UPDATE_CPU_INSTALL:
->>> +				ret = seamldr_install(seamldr_params);
->>> +				break;
->> I really despise this naming. Could you please clarify with comments?
+Michael Roth <michael.roth@amd.com> writes:
+
+>
+> [...snip...]
+>
+> I made a super-long-winded reply to that thread, but to summarize:
+>
+> PRESERVE flag has different enumeration/behavior/enforcement for pre-launch
+> vs. post-launch, and similar considerations might come into play for
+> other flags, so to make it easier to enumerate what flags are available
+> for pre-launch/post-launch, maybe we could have 2 capabilities instead
+> of 1:
+>
+>   KVM_CAP_MEMORY_ATTRIBUTES2_PRE_LAUNCH_FLAGS
+>   KVM_CAP_MEMORY_ATTRIBUTES2_FLAGS
+>
+> where SNP/TDX would only advertise PRESERVE for PRE_LAUNCH, and pKVM I
+> guess would enumerate it for both (or maybe just POST_LAUNCH?)
+>
+> That lets us keep the flags definitions more straightforward but still
+> allows userspace to easily enumerate what exactly should be available at
+> pre vs. post launch time, and give us some flexibility to detail
+> variations in behavior between the 2 phases without documenting
+> edge-cases in terms of VM types.
+>
+
+Oops Michael I only read this after the meeting today.
+
+Sean, today at guest_memfd biweekly we also discussed this topic. I
+brought up this topic because IMO the interface is starting to get
+a little awkward, I'm struggling to put the awkwardness into words.
+
+Here are some awkward points:
+
+For PRESERVE, even though it is defined (now) as that what the host
+writes will be readable in the guest, it only works for both to-private
+and to-shared conversions for KVM_X86_SW_PROTECTED_VMs and pKVM. That's
+because guest_memfd doesn't actually invoke encryption during the
+conversion. For TDX and SNP, the encryption can only be done before the
+VM is finalized, through vendor-specific ioctls that go through
+kvm_gmem_populate() to load memory into the guest.
+
+For ZERO, it is defined in api.rst that ZERO is not supported for
+to-private conversions, and the rationale there was that when ZEROing,
+guest_memfd/KVM can zero, but it's really the contract between the guest
+and the vendor trusted firmware whether the guest sees zeros later.
+
+Another awkward point is that ZERO was meant to enable an optimization
+for TDX since the firmware zeroes memory, but it actually only zeroes
+memory when the page is unmapped from Secure EPTs. guest_memfd (for now)
+doesn't track whether the page was unmapped from Secure EPTs as part of
+the conversion, so guest_memfd can't assume it was mapped before the
+conversion request. To uphold the ZERO contract with userspace,
+guest_memfd applies zeroing for TDX anyway.
+
+Summarizing from guest_memfd biweekly today:
+
+David suggested enumerating the combinations, something like
+`SHARED_ZERO` and friends (since to-private and ZERO is not supported)
+and Michael then brought up the other axis of pre/post launch. IIRC
+there might be another axis since pKVM would need to determine
+dynamically if a to_shared conversion can be permitted for the range
+being converted, based on whether the guest had requested a to_shared
+conversion.
+
+I think this might just result in too many flags, and could paint us
+into a corner if more options get supported later.
+
+
+I spent even more time thinking about this today. I get that we want a
+consistent contract to userspace, can we scope the contract differently?
+
+What if we scope as "what KVM guarantees the content will look like
+after guest_memfd updates attributes"? This is a smaller contract, since
+it doesn't promise anything about what the guest sees. Running this
+through a few examples:
+
++ Pre-finalize, SNP, to-private, PRESERVE: guest_memfd guarantees that
+  after setting memory attributes, the contents of the pages will not
+  change. The contents are then ready for populate. What populate does
+  to the memory is another contract between SNP and the guest that is
+  out of scope of guest_memfd's contract.
+
++ Post-finalize, SNP, to-private, PRESERVE: guest_memfd guarantees that
+  after setting memory attributes, the contents of the pages will not
+  change. SNP's contract with the guest does not, though. After the page
+  gets faulted in, the guest sees scrambled data. This may be a
+  meaningless operation now, but it leaves the door open so perhaps we
+  could have an SNP-specific ioctl in future where step 1 is to set
+  memory attributes within guest_memfd to private and step 2 is to
+  encrypt in place.
+
++ pKVM, to-private, PRESERVE: guest_memfd guarantees that after setting
+  memory attributes, the contents of the pages don't change. Separately,
+  pKVM doesn't do encryption, so the pKVM guest reads the same contents
+  the host wrote. The distinction here from the current state is that
+  guest_memfd didn't guarantee that the pKVM guest will see the same
+  content the host wrote since that's a separate contract between the
+  pKVM guest and pKVM.
+
++ Post-finalize, TDX, to-shared, ZERO: guest_memfd guarantees that
+  contents of the pages will be zeroed in the process of updating
+  guest_memfd attributes. Host userspace reads zeros after faulting it
+  in, which is because guest_memfd did zero the pages after conversion
+  to shared. A future optimization is possible, where guest_memfd only
+  zeroes the pages that were unmapped from Secure EPTs, since (this
+  version of) TDX zeros memory when unmapping from Secure EPTs.
+
++ Post-finalize, TDX, to-shared, PRESERVE: -EOPNOTSUPP. guest_memfd is
+  unable to guarantee that the process of setting memory attributes will
+  not change memory contents. The process of setting memory attributes
+  requires unmapping from Secure EPTs, which will zero the memory. (In
+  future, if we want to relax this, we could permit this if nothing in
+  the requested range was mapped in Secure EPTs)
+
++ Post-finalize, SNP, to-shared, PRESERVE: guest_memfd guarantees that
+  after setting memory attributes, the contents of the pages will not
+  change. For SNP, unmapping doesn't change memory contents? The guest
+  reads garbage, and that's a separate contract between SNP and the
+  guest. In the guest_memfd contract, guest_memfd PRESERVEs the memory
+  contents in the process of setting memory attributes, and can fulfil
+  that.
+
++ Post-finalize, TDX, to-private, ZERO: guest_memfd zeroes the shared
+  memory before updating the attributes to be private, because it
+  promised to. If this memory gets faulted in to Secure EPTs, TDX
+  firmware zeros it again, because that's TDX's contract with the
+  guest. I can't see any benefit to userspace in using this combination,
+  but the guest_memfd contract and implementation are simple.
+
+TLDR:
+
++ PRESERVE == guarantee that the process of setting memory attributes
+  doesn't change memory contents.
+    + implementation == do nothing in most cases, except -EOPNOTSUPP for
+      to-shared on TDX, since unmapping is a required part of setting
+      memory attributes to private, and a TDX side effect of unmapping
+      is zeroing memory,
++ ZERO == guarantee that the process of setting memory attributes zeroes
+  memory contents.
+    + implementation == memset(zero) in most cases. For TDX, a future
+      optimization exists, where memset() can be skipped for pages that
+      were mapped in Secure EPTs before conversion
++ UNSPECIFIED == no guarantees
+    + implementation == guest_memfd does nothing explicitly about memory
+      contents. The implementation is pretty much the same as PRESERVE
+      except guest_memfd won't take into account vendor-specific side
+      effects of the process of conversion. Except for the test vehicle
+      KVM_X86_SW_PROTECTED_VMS, where memory is scrambled.
+
 >>
->> This reads like it is installing a seamldr, not telling a seamldr to
->> perform an install.
-> Yea it does read that way. We kind of have a convention around the seamcall
-> wrappers matching the tdx docs name. tdh_foo_bar() is pretty clear.
-> Unfortunately the seamldr calls are defined like SEAMLDR.INSTALL.
+>> [...snip...]
+>>
+>
+> Looking at the example you have there:
+>
+>   + Note: These content modes apply to the entire requested range, not
+>   + just the parts of the range that underwent conversion. For example, if
+>   + this was the initial state:
+>   +
+>   +   * [0x0000, 0x1000): shared
+>   +   * [0x1000, 0x2000): private
+>   +   * [0x2000, 0x3000): shared
+>   + and range [0x0000, 0x3000) was set to shared, the content mode would
+>   + apply to all memory in [0x0000, 0x3000), not just the range that
+>   + underwent conversion [0x1000, 0x2000).
+>
+> Userspace would be aware of whether the range contains pages that were
+> already set to private, so if it really wants to set the just the
+> [0x1000, 0x2000) range to shared with appropriate content mode, it is
+> fully able to do so by just issuing the ioctl for that specific range.
+> If it attempts to issue it for the entire range, it only seems like it
+> would defy normal expectations and cause confusion to skip ranges, and
+> I'm not sure it gains us anything useful in exchange for that potential
+> confusion.
+>
 
-The naming convention is fine, really. It does make thing easier to look
-up in the documentation.
+Great that we're aligned here :) No complaints from guest_memfd biweekly
+today as well :)
 
-In this case, just comment it, please. It's only a single site.
+>>
+>> [...snip...]
+>>
