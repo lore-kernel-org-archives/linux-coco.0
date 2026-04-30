@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C871F472795
-	for <linux-coco@lists.linux.dev>; Thu, 30 Apr 2026 19:00:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF7947D955
+	for <linux-coco@lists.linux.dev>; Thu, 30 Apr 2026 19:14:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777575602; cv=none; b=e6oCaUx42WG1d9ZJszhkWbp06V/DCuJ62pz3UvJFH6DgsBasKzjis7RVdP9X6snypjeaWmHsG13EyDsU8cRx+MpYxnL9i6wQ6/eDXkHeHEyStH/LoSGIEL3Sayx8o19hUQjBGVK01iEBNd93M0pUJZ/gQMPeYcSQ7cMHpE/ezTw=
+	t=1777576477; cv=none; b=OGPKhHZo4UaEKjbmR/rTMQLG2p+genqDA0xCC5Ezup2oh0Y8dL1qWw9crQl2j5diX4LhoIH24857+Kw9ocw4XTks86or/coBQALSgG8a9RHRXPG8YPMYkvkQd/yfHtad52IZImYuuetIdhE3ENjW/bPZS+v6nJgeRDFeb6LTYvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777575602; c=relaxed/simple;
-	bh=MjHEfUId+0e8UDN1Tx5Rw73alOm5tdqOOm8jIkMc4AM=;
+	s=arc-20240116; t=1777576477; c=relaxed/simple;
+	bh=U48yuVtxSb+ILG/ACII/o5SnLtDeduTQRmOxSeBlkqQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ERG7P2LxSmAUNGxTP1D7IXDGg0XLxwoP17UXI7s1ZFnWQiSHb8cKQCsBjZOiuDVWG/6ZZq3t+Mw+bf+ZM1ysv26iyzXd7IZRwnljExlnzyfUBZlOtHDRuFf2/L8NUJGxQMHATh9h8qWISMlLyH2rVFj4nSFgVu//EI3QRFFANoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IQZmg61Y; arc=none smtp.client-ip=192.198.163.15
+	 In-Reply-To:Content-Type; b=KvM2VgZ5XKy3faQk8M18L27pqEVC1gKi62Cwp7LGE3aUih35nfX2f8/ggBzI0EkvWFQlJURsKHp+plFE6MB09ZiNj0hcVSUSkpbJkIDMvQBqwqqrfu9wRHy1YadSknHInRqvh0r8BQgXTeKNNlGz3l7AjV75+7UnPJoiAajM5IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=clBTfCBX; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IQZmg61Y"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="clBTfCBX"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777575601; x=1809111601;
+  t=1777576473; x=1809112473;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=MjHEfUId+0e8UDN1Tx5Rw73alOm5tdqOOm8jIkMc4AM=;
-  b=IQZmg61YJ4MxTUBwJNDiuquv5HKVpGmPeZxgJ3vmmo6X9kT51W75IJPM
-   FdQMJXa9wVW4roUzKPPSlgEcVdD1uvzfZy4MysN40Z8J1ZZ7W8S43qRBw
-   SQlqmEvSgPDzjrT3ej1MnbXmQlObjv3vpZrdbYcfBJUnpTA+kfBsdxXWx
-   fztu0/HD5vU6cbTPRAJxcCb63KUzE8OOyC37UIzex+a0RO96j+1Ht+jJ6
-   hGcWL3Mzbi2vc4zxKkUq5Z7mXAJyiCAcqALDT9MTBh6XrLFjft7Ro3sUs
-   5Ml4nPg38bYBEr61qkJsqFQjGNFSb1hbYGzdjcIVNSfgipEqIKQafW7Zy
-   A==;
-X-CSE-ConnectionGUID: bnqwABoXRz63wXiiFU+rLg==
-X-CSE-MsgGUID: v+cgajJ/RNqLBbM1b8k+5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="78642709"
+  bh=U48yuVtxSb+ILG/ACII/o5SnLtDeduTQRmOxSeBlkqQ=;
+  b=clBTfCBXt6RHKLyuJ77oZKv4H5KLA2lxULAUPU3ieicwVyCUylBaEskn
+   x+wmj3jBHCR+V+7DJaDkXZRgRD38zG2qra1V2K3C9F7ayFT/3dOD1OiSO
+   /BJ6D1Fx+kPzAspfss6/rEeR12hBlU4mroj6w+WArX1iVpq+CybM0JV0o
+   iBe3GaRw1x/LrKZtpX5A81sYD5vyN1DKBdLKB/Yksabzv8rLw52IPWXNz
+   wucbqUTvuJOzjmVLxc0dJ5hu6+QbM1im2b1SADUhhnG9vsE0aRauqkpEi
+   m5S0BhxA05PzQifKiayCrG+t3mh5GqpMUA4jm+6Qg8FcNpHnMd5Vn4Y/7
+   Q==;
+X-CSE-ConnectionGUID: LyjrEpNWTTq2UJv5d7lXIQ==
+X-CSE-MsgGUID: sL+TnZnKQw+orE5Xz/6Yjg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="78733467"
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="78642709"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 12:00:00 -0700
-X-CSE-ConnectionGUID: FUTCQpaWSAW5qYo90wgubA==
-X-CSE-MsgGUID: 68o6ca4kT0WRmGiUdJxuZg==
+   d="scan'208";a="78733467"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 12:14:33 -0700
+X-CSE-ConnectionGUID: O6YmuHlPRMOGD8RQybRNSg==
+X-CSE-MsgGUID: O65fyP5cRVG/1T8t2ORpaQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="239679019"
+   d="scan'208";a="234729269"
 Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.109.74]) ([10.125.109.74])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 12:00:00 -0700
-Message-ID: <f92d114c-c0f1-4eaa-a828-a4d9ac4054d4@intel.com>
-Date: Thu, 30 Apr 2026 12:00:00 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 12:14:33 -0700
+Message-ID: <28be5180-ff74-4e4d-b392-7ba7a9b4c1c0@intel.com>
+Date: Thu, 30 Apr 2026 12:14:32 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,7 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 12/21] x86/virt/seamldr: Install a new TDX module
+Subject: Re: [PATCH v8 15/21] x86/virt/tdx: Refresh TDX module version after
+ update
 To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
 Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
@@ -65,7 +66,7 @@ Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  "H. Peter Anvin" <hpa@zytor.com>
 References: <20260427152854.101171-1-chao.gao@intel.com>
- <20260427152854.101171-13-chao.gao@intel.com>
+ <20260427152854.101171-16-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -111,16 +112,111 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260427152854.101171-13-chao.gao@intel.com>
+In-Reply-To: <20260427152854.101171-16-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 4/27/26 08:28, Chao Gao wrote:
-> +			case MODULE_UPDATE_CPU_INSTALL:
-> +				ret = seamldr_install(seamldr_params);
-> +				break;
+> The kernel exposes the TDX module version through sysfs so userspace can
+> check update compatibility. That information needs to remain accurate
+> across runtime updates.
+> 
+> A runtime update may change the module's update_version, so refresh the
+> cached version after a successful update and emit a log message to show
+> the version change.
+> 
+> Drop __ro_after_init from tdx_sysinfo because it is now updated at runtime.
+> 
+> Perform the refresh outside of stop_machine() since printk() within
+> stop_machine() would add significant latency.
+> 
+> Do not refresh the rest of tdx_sysinfo. Refreshing them at runtime could
+> disrupt running software that relies on the previously reported values.
 
-I really despise this naming. Could you please clarify with comments?
+This needs more explanation. I think the reasoning is quite nuanced.
 
-This reads like it is installing a seamldr, not telling a seamldr to
-perform an install.
+tdx_sysinfo is just a cache of what the TDX module is and can do. If
+that changes, it means the TDX module changed. So you somehow need to
+argue why it's OK to hide those changes from the tdx_sysinfo users.
+
+Why would they be confused by tdx_sysinfo changes but not by the TDX
+module *itself* changing?
+
+> Note that major and minor versions are not refreshed because runtime updates
+> are supported only between releases with identical major and minor versions.
+
+I'd rather have this in code than a changelog comment.
+
+If they can't change then warn if they do.
+
+> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+> index 98a8d9d3ae25..c81b26c4bac1 100644
+> --- a/arch/x86/virt/vmx/tdx/seamldr.c
+> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
+> @@ -306,6 +306,8 @@ DEFINE_FREE(free_seamldr_params, struct seamldr_params *,
+>   */
+>  int seamldr_install_module(const u8 *data, u32 size)
+>  {
+> +	int ret;
+> +
+>  	struct seamldr_params *params __free(free_seamldr_params) =
+>  						init_seamldr_params(data, size);
+>  	if (IS_ERR(params))
+> @@ -314,6 +316,10 @@ int seamldr_install_module(const u8 *data, u32 size)
+>  	/* Ensure a stable set of online CPUs for the update process. */
+>  	guard(cpus_read_lock)();
+>  	set_target_state(MODULE_UPDATE_START + 1);
+> -	return stop_machine_cpuslocked(do_seamldr_install_module, params, cpu_online_mask);
+> +	ret = stop_machine_cpuslocked(do_seamldr_install_module, params, cpu_online_mask);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return tdx_module_refresh_version();
+>  }
+
+This is one reason I rather dislike guard().
+
+Does tdx_module_refresh_version() need to be guarded by 'cpus_read_lock'?
+
+> +int tdx_module_refresh_version(void)
+> +{
+> +	struct tdx_sys_info_version *old, new;
+
+Two variable definitions, please. IMNHO pointers and plain variables are
+different types. Even if you can, they should not be defined together.
+
+> +	int ret;
+> +
+> +	/* Shouldn't fail as the update has succeeded. */
+> +	ret = get_tdx_sys_info_version(&new);
+> +	WARN_ON_ONCE(ret);
+> +
+> +	old = &tdx_sysinfo.version;
+> +	pr_info("version " TDX_VERSION_FMT " -> " TDX_VERSION_FMT "\n",
+> +		old->major_version, old->minor_version, old->update_version,
+> +		new.major_version, new.minor_version, new.update_version);
+
+Having 'new' and 'old' be different types is really wonky. What's wrong
+with:
+
+	struct tdx_sys_info_version old = tdx_sysinfo.version;
+
+?
+
+
+> +	/* Major/minor versions should not change across updates. */
+> +	tdx_sysinfo.version.update_version	= new.update_version;
+
+					   ^ very odd tab
+
+Also, how much of this do you *NEED*? You don't need to print the old
+version. You don't really need to _print_ the new version either.
+
+Isn't this arguably all fluff?
+
+If the fluff went away would we even be talking about the funky pointer
+versus plain type gunk?
+
+Second, this is all open-coded and completely discrete from the code
+that originally sets 'tdx_sysinfo.version'. Can it be unified?
+
