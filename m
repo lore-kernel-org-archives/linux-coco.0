@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6991A08AF
-	for <linux-coco@lists.linux.dev>; Thu, 30 Apr 2026 18:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284FF4014BF
+	for <linux-coco@lists.linux.dev>; Thu, 30 Apr 2026 18:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777575172; cv=none; b=oEVzWXegbuLoZz9lifSdrD6FgXAOxzl574h12YbulRl26yHrEwz74qDbxL8AUjFO43LtQcoweoXtmjzr7KcU1ewxPzWlJQ4fePtoc/2pJZdw/R4MCpCsVxnCR4EA4gz0xBzVoRRGt5axDC+GYx8lHNgMl5XVw8/cquvBLFe/y58=
+	t=1777575493; cv=none; b=lJ2HAGv5snqz6KyvjQnPO9thwmn97O9+YmScIbsMWz/5TEPrqihMR5ryxPQNM9nPZYnoBtHbo50HRwm9/+nOz5qgTjk1hS+o8ewrcfNZnlNP3laxi2jSUlgpeJcoT93hSJKQbXE5fnmn/DjvrTxPV/W4ynXSZNVqfDvvwt2FZEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777575172; c=relaxed/simple;
-	bh=IvqAvtt/tObbqKLBPHphXnGVb+RPvRE5DIT3HOKap4w=;
+	s=arc-20240116; t=1777575493; c=relaxed/simple;
+	bh=4u/CUwOeMlo4FcMqUB8DQiUovW0O+V8Xd9Du36Lhpx8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S8OLv0y4KNMZ+PbMui4bt1ME5rqw9xe6t9et7YmB1u1OM49dTXHQAhqCm1q4uDXZuQXcHi4M2q/otTbv8d8V84JkfmHOo2a/8/H3d8L2Vg4XSm2DD/dSiSLOxsLxxm8x3KDpdwUMjWV0UfsmdTxUM6lDzg6xlUS6k9ktsCh2rq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aaRW1O+4; arc=none smtp.client-ip=198.175.65.16
+	 In-Reply-To:Content-Type; b=k8DkgpjjAyCMkG8qJ2xK1GJzvp+lz1PfWBiu9BjLog6iA1kr730yruQn4WqNpMCaXIrtDka3qKs6xVeksqb/d+FAYObNPGjS3PALGiscfHwuwEcHPfxJMfR5v7XxYVj3l6Tu9uPhCKcwozNjwBqhBpdt+RDVftv3B0jbgbnOuW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jIkQe9cu; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aaRW1O+4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jIkQe9cu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777575171; x=1809111171;
+  t=1777575492; x=1809111492;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=IvqAvtt/tObbqKLBPHphXnGVb+RPvRE5DIT3HOKap4w=;
-  b=aaRW1O+4JwvE/JBkQEhteyMFpOZEc943xWp+8MuPzub/Dk47mT9BubOe
-   uK/jM0MzRS7vDrDE/kJ5kzqBVnPGzcxajYSdugCd3bR4aPf1s/JWMIdXi
-   Z70tf1EaOYPNZWw80ii7rCdU/7iEXYXiaLBwDy8Mv5alm6/IeUihXlAG+
-   Z/brEjAlc5b46Tk0v5H5oRNiLO6JU4ffqIUJW/k0cz76su8kM6PZ0+zxx
-   WL0zRGrcBI6g8LPcgky+QC6nNYY7iz02qPF+TseK8KqxMjVgrPoRIHTa4
-   sHTx7C28ojaFRr6dSrYyM3Aj9AKSiKoAZKQMINLISgsYTKw1EipfzZk0j
-   g==;
-X-CSE-ConnectionGUID: 1ME4Ri3WRtODnBM+/5wiig==
-X-CSE-MsgGUID: VOZBCYg6RHeX6OqdvGpHIQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="78730808"
+  bh=4u/CUwOeMlo4FcMqUB8DQiUovW0O+V8Xd9Du36Lhpx8=;
+  b=jIkQe9cu3qrVHF4jU7wfa8HFmaZj2ZEq46ZA1MoirO9mDq9akASiUPuj
+   HcBYPn6rvchlYUWl2bag9yFSUlIChohNSlfKUAJh7l3cWTXXbfK2saaf+
+   JZd5rbpS4xyn+rN8rn4OxRMerQmPgOy4GiWoIzZwzt0g0quL2x5+7xI5Q
+   qNBH7wgmZAcnOoMHfqyjMaOro/MgjeZnVaxRgSo5mgbdwQXOGGkD3h5uv
+   g00Z/BvxinUiKdMiDr8KGFKleuCD/SXuOQPp3GO4Y/aOPyy5CyyeliRhn
+   GUYwIT2XtqpYa1SPB6SmlKZrOvletiIfKNUJQszX8ovcD42/vUecyQiqx
+   w==;
+X-CSE-ConnectionGUID: 4h6J1sKZQxm8cNl1a5zqBA==
+X-CSE-MsgGUID: 7eQJU2osRDS+Q+Tu0+T3LA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="78642523"
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="78730808"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 11:52:51 -0700
-X-CSE-ConnectionGUID: +GvrX0AxTKubnN5Zyw7x7A==
-X-CSE-MsgGUID: BT6ZgKgwRta2aBMGFVd5MA==
+   d="scan'208";a="78642523"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 11:58:12 -0700
+X-CSE-ConnectionGUID: aTwTouc1QkKWbzrpk68Nnw==
+X-CSE-MsgGUID: DMIFMtfwTjeUNSJqMnDwdA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="234724833"
+   d="scan'208";a="239678668"
 Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.109.74]) ([10.125.109.74])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 11:52:50 -0700
-Message-ID: <0523b07b-2df2-4cf4-bf98-6efe01780698@intel.com>
-Date: Thu, 30 Apr 2026 11:52:50 -0700
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 11:58:11 -0700
+Message-ID: <20f2d821-bfa6-4db2-a968-b5455c7b5007@intel.com>
+Date: Thu, 30 Apr 2026 11:58:12 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 10/21] x86/virt/seamldr: Shut down the current TDX
- module
+Subject: Re: [PATCH v8 11/21] x86/virt/tdx: Reset software states during TDX
+ module shutdown
 To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
 Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
@@ -66,7 +66,7 @@ Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  "H. Peter Anvin" <hpa@zytor.com>
 References: <20260427152854.101171-1-chao.gao@intel.com>
- <20260427152854.101171-11-chao.gao@intel.com>
+ <20260427152854.101171-12-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -112,19 +112,43 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260427152854.101171-11-chao.gao@intel.com>
+In-Reply-To: <20260427152854.101171-12-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 4/27/26 08:28, Chao Gao wrote:
->  static int do_seamldr_install_module(void *seamldr_params)
->  {
->  	enum module_update_state newstate, curstate = MODULE_UPDATE_START;
-> +	int cpu = smp_processor_id();
-> +	bool primary;
->  	int ret = 0;
->  
-> +	primary = cpumask_first(cpu_online_mask) == cpu;
+> +	/*
+> +	 * Clear global and per-CPU initialization flags so the new module
+> +	 * can be fully re-initialized after a successful update.
+> +	 *
+> +	 * No locks needed as no concurrent accesses can occur here.
+> +	 */
+> +	tdx_module_initialized = false;
+> +	sysinit_done = false;
+> +	sysinit_ret = 0;
+> +	for_each_possible_cpu(cpu)
+> +		per_cpu(tdx_lp_initialized, cpu) = false;
 
-Isn't cpumask_first(cpu_online_mask)==0, always? I thought CPU 0 could
-never be offlined.
+This speaks to needing refactoring.
+
+If there's global TDX state, it needs to be in a global TDX state
+structure, not scattered across random global variables.
+
+Imagine the structure is:
+
+struct tdx_module_config foo;
+
+That's 0's at boot. You have to init the TDX module to bring it out of
+0's to valid state. It actually means something if you do:
+
+	memset(&foo, 0, sizeof(foo));
+
+Because it takes it right back to its bss state. That ^ is also handy
+because it naturally just works if new state gets added.
+
+Guess what will happen the next time someone adds:
+
+	int sysinit_new_fancy_thing;
+
+Someone will forget to add it to this code. Then the module gets updated
+and breaks things in fun ways.
