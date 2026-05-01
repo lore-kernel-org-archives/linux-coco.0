@@ -1,98 +1,97 @@
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DEA3DCDA0
-	for <linux-coco@lists.linux.dev>; Fri,  1 May 2026 16:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3393FB7EB
+	for <linux-coco@lists.linux.dev>; Fri,  1 May 2026 18:12:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777653447; cv=pass; b=QYRQuirAdapC4i/1bIvQb4Kjt4ZzKeL6ow8Vpdjd6xYEhhKrqrsRwN8OePDFZy0CFZQRuF1sPNlbfut6RqfIGGaFCVS2GgXYt9AUVtFOA9Ks9FTM74mpiDGrZDbnjnxl5tswlF0H6nipy7mwXzqei2lftAL0Pw9Y/3OKwVrGnhk=
+	t=1777659166; cv=pass; b=Jb+n7iojvNiUWD7q+43vPcACS48hGWcCMrqfNl0SA5iSs/O00vkeLFeyuld5OILS3x0EGVw9nEPe4ZenWw1iayyrKC9hcagPp7yx/jACVSOWLJ7collfV1mi+bH1q02LRH2W0RO901CsbkKGVM2lzWOPK46XqXPdHgttQo3OHL4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777653447; c=relaxed/simple;
-	bh=w9ooVH2aWTdqsPWomPiWr/2emsHoCr0nSyf2HqpKRiA=;
+	s=arc-20240116; t=1777659166; c=relaxed/simple;
+	bh=Evb7pUiFabj+kz7Z4hmGLA3FozrlLW7MTuvahXfdXYw=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OB7UHR18DzsHcHrFK9bnbP8deV8WG7LQE/bPXgagDiRcO7FF3jkT/uZjni87HIFtMjm9vYv7i3M1FTQFBU0W0fFYhVtlE9rUZ18PuMLgAiEaU1aiBL4fjsm4M1cSdAeRq3b6Rbsg4a1wOYPCeFpXLsaTWhVz1WvjUMSwNpq42A8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Md0XH04y; arc=pass smtp.client-ip=209.85.222.51
+	 To:Cc:Content-Type; b=bePyr3HPOveDfbYtDiFuyJMxP1/c24h8ZV8csmlpv7NVYhz5+UxN8P7Ua8Vk8l3bDctqxgKEFibNjfNIQhR4QO2y0ROSQ1eqGfReB0gkBpmsfCHm2rn9/G1frsgqOUFrnU4ERbrSr+9/NfFXFB6B4IltbBxchmsd5cP/evKjIbA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=siIPRkAG; arc=pass smtp.client-ip=209.85.222.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Md0XH04y"
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-94aaa5d3bfcso1209069241.3
-        for <linux-coco@lists.linux.dev>; Fri, 01 May 2026 09:37:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777653431; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="siIPRkAG"
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-95cc3522c40so1377417241.2
+        for <linux-coco@lists.linux.dev>; Fri, 01 May 2026 11:12:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777659162; cv=none;
         d=google.com; s=arc-20240605;
-        b=KXwQchg0s/KrhC9PjOQs4o1V/G9zz8EAqXrj7ntAQcQ0uNoFL0xi2W/pXEO+psKjVI
-         SLC6+r91ju9HuRaC7hxjI1NnPtUqwAVQAzYtcG7r8ikbuUzHBgqLTQKZ4TpHm/qQ8GhP
-         i7VwXwgeenntO8AOD+GPjw5z7WD/ihMgVbLVMklpNzxfjbXlyWejO5nF9LdKnb9Oez4f
-         WlK4tpbXjPBW25ojX+Wje32B5sU9x30siMNqDJyvIe8EI1txRQSNC80Oi9IrgE2fQ2em
-         guhmmYS5bhZA9RModcFTTRf2gJnAgSSpejAwtGs6aIUdZhbp/lbNX+0E9EZKuT11v90k
-         6Drg==
+        b=C/6e+pYv2N/iaxFjZwMRedEgbEMo3ST/Z+chZV96NzL3CCC27NjsTGb0jIe+GHbzWQ
+         TLD5RtZHIzUuQiicDWLaYFWPnN/+1vnP5/+WcQpG257W3Za9hQGGBOV0PgIkKRWh1KLi
+         Dj3HXvwFAGE4q4YjYvWDjIVaGvzL06ciuWHihtndw6eBEbYX6Qki4ooDzhQudwyot52g
+         IfoQLYrRwLbUHl0UTY6CtlWn6MsJIRgMj2p6K4esQDOc6mdO/BeZ2nsRkiJP2kll3UHl
+         aRJXK8y5A92WAUOnc63fCmYz7lPBI45+lkMLY5tjQ0CCLT/7DQ9CrTHRyNIyeYcGck0a
+         OgGg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=nLFs9eB4QSuzMXlNmTajx3twQGrJqXq6Mmw1sgch1Dc=;
-        fh=dgZGgNWiN8hPD+0TcCPURgUtcM9APWJGRwSmPXltg3M=;
-        b=KmWW95W5R4QFhGStyEgxv8brqnR6iksOJiF/7gONJo52ddpZHlidoNxtTq6uiQVWVA
-         oAHxR6l7s0Ng8Z6qQHG8lleneHn2A/0fEZfN5rmfoDkVCoIZxFfM9Qcr+k6RTEZDJVX5
-         yqcz9DqWYLTKCj7TgN4gqlzfx0EfstLqBrTQh35HUZgZ7sWo1e88k5+aLGh+ZeomX4uT
-         IExGqpQSl8TpCX3GMSnvWkRvPExapxFtNCzVvnKfLh62XI/DAJJ506yRGd5rMjkM14rJ
-         VboZxmr049UJtf/2iKjn+zzdJga5vse4FcfGV2t4NO4ne5tDZlaZJGCunrCxjslv/mAc
-         KPHw==;
+        bh=A/Y83NyQH5pjjwFsH83zSujxJ4pp2R0dNDGRnTykyOk=;
+        fh=ZLroCssy70Ee4ZG4lXu2Zfq4T4o+ZjI1BOOt16ig6sE=;
+        b=K79s0/IdtMh1O7UaBULqbO3grOl5ngsFG6MeFDMODuanXoCr4jxygbCSq8tyjgqOyn
+         XbEbcWCs5D0Rlfo4e9ap6KrWSWsiV4BL1sy0cVinposQfNgrAc18xgGQUlS9MLA+YF1m
+         sRWXe14HpV+IbNHHzz5o/28QFKjeQhhtP4M2jnnUIH6SkmXoJvPRn1p5irpSxnlRm7zf
+         k1yOd/ObTr6JTK75VGtGUTWsyIiWOrM3OQoH2NzAml72ERo9gEsGAlWloKM/ctuWXWrv
+         fGMQJhGzRf2Ceofsu+kXq0HmNppdTf5MJTk68QfPs4iTGJ/g0ZVglOmVI+JMBLI6Cf2y
+         R8HQ==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777653431; x=1778258231; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1777659162; x=1778263962; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nLFs9eB4QSuzMXlNmTajx3twQGrJqXq6Mmw1sgch1Dc=;
-        b=Md0XH04yNkYi1njj3JXeTg51rESyXJN9RMG3ZqByj3Pa2gMpJLoJGt09aRkmD+eCdt
-         QGCjJBGJFRuOXShAmQfFJvhRjHQC3dO7BuxgVtCbHCe54EtGhSAZLTLNUSlIhMGWEMr+
-         3WEgzU3F5dqzGI1O8AsepsaoNvOhz1vRNSpQXZLxSbkNVITxo4AB6k4DQjHuqZqHPLt2
-         IUa7ekKaZHU/YxySrbgUFnSeZ4YA06rcn3/gXXluO/JAIaWGTsiQQfradDjPScDqo+K/
-         +14nPqQYeZy/1OmDNeTv/Qf4FsMQjpIzq8y9Nta4H5fgwBI25xDEaG++SYFFICHoqpBT
-         KXXQ==
+        bh=A/Y83NyQH5pjjwFsH83zSujxJ4pp2R0dNDGRnTykyOk=;
+        b=siIPRkAG3oI9xQjwaOYxTxd88KgA3mYM0jJHZqm6PXuPjGFJicdVco5fLdg7BKHWoY
+         /YVEZlO80WmmWdVmu+NM7mIgsObto5p+UQa5lOQtY9cIByuns7R1eDkTbW/b1HN3yR0l
+         HoA/vl8Le5w98bE/XKtq6PPPczpUDVsT6/NfKd5E1jQsZLZQ1i7soORljEJl/FAHXPV0
+         uaqC2tYvfbkrhEJLsVaN5LbZqOYYq3L31A32tEsCQN/GEfCiXKbHQJZiLj4J3Iy2oJjl
+         D0jDXAQt594TEEo01+/ClzRY1sB7mU6REHcr/mPylNQeP8DlxsvkTd+d7gHvS2DkCB64
+         vG8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777653431; x=1778258231;
+        d=1e100.net; s=20251104; t=1777659162; x=1778263962;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=nLFs9eB4QSuzMXlNmTajx3twQGrJqXq6Mmw1sgch1Dc=;
-        b=C+apFw7GtpLx6eZiZTAuY4bmZHVfABQ+Y74g80LfqCpt12Z6iZe5mPU7kYaVxa70Tq
-         v7l8inT69u5c+xDKc+TJ8xRW9/nMHGGxC0kXvJZT9FDnhEcUp4Sa/80BRTTB7wFH7Wa6
-         UBZF7bybYElNKq/G0twQRRGhqiDCDhjlSXm+2kvNo1l8jgN2DO6pYquIfDCKRfU3O9jU
-         I/C6teZsbsJyfODw9kUHeqC9IkwoNqpTKppP43gVr74JoVChsJAeJWM4QAblXjbFeenq
-         LF4vSX1F3WSIJzLsRFxS00s4ted3uBPnSaICifnIK8agwQ5xnXGZ+LCm//7/VBLw1p17
-         3hPg==
-X-Forwarded-Encrypted: i=1; AFNElJ9kxuWFLi/ZsG/Wi2RpHueH2FgiLwlEvf1QgyTbkyVBWP4u3QJTgmB2F4Ye5T3tsrNjW7OiW74b1oZE@lists.linux.dev
-X-Gm-Message-State: AOJu0YyMQ58LqhOtR0tuScEow0K7i+f5+XOj3ZYxPSH+tC/M9vJr69yL
-	6ocH2/PxRCYtqaJRx5GFlS35YjmVmLrp/PvwVCXmfPuXuDQY1MVILDxNnkdLxxMZaf8r7+tdTqa
-	h2ksS7Znx5+FUGhHoiZarGoiRb+aUx/MD3SuV7aQ2
-X-Gm-Gg: AeBDietp7/kjj0oMCFYK3N4DiR2r7bWAUeE9RD+EFlq+wIJyQfB2m7xLgIKpRzc2gSj
-	NTiAIJPEh/aGqMSNMEth5dJ3eiaDfwpqoNujzPigoryrZzoUutkTl3yUkZ33ZmVqi5z/RWtRfBS
-	lunq1BHS8RGBg1qBR9zfkQkqNfT8tszf/o67Ag+4az5zTyeCTze8rRai0tT1vxy7e40gPMSfvJE
-	f4TMFszXKaxb6ZFudjR2nfu4yzH1AUV0qpydb2U0SBSzdeBiGcMMBAumC/gg8cQ6/6yPgGq6kus
-	8TgtXp5vFumHQXwdqoZ3gC2O3pZFmxantTd6N747KBr3R6TTjeO68dW+Zro1xcGQpImH4Jz7AE6
-	kRbSv3+6I4Vkeepg=
-X-Received: by 2002:a05:6102:598d:b0:608:ad9c:4c36 with SMTP id
- ada2fe7eead31-62ad2b40002mr5011640137.11.1777653431060; Fri, 01 May 2026
- 09:37:11 -0700 (PDT)
+        bh=A/Y83NyQH5pjjwFsH83zSujxJ4pp2R0dNDGRnTykyOk=;
+        b=s1sCdAsf9zWHscomc2YA7rZVJCri/YMJVZ2BWwRu7JTTXhy6eRKVXgjv0/33T9UwD8
+         uxd9LOANod9nuYHNFbIyld7qrnlZm+pWMl4ADb1td78etL2EEWLme2eq+gtqNd2UoKxs
+         DzfSX0tWJQYthLCemjw6I+u07BVpQfxW4Jn6yekPe7JhyqKfAmxm3Zw6vThXy210Mwob
+         6H8Yz/RcwHZbwDkAjKb9oPnyARG+8XkENCI/Hil+A6PZ/ValSjmC0ghEugkbDLnHOVLm
+         8R2x55NsyiDctLYHwGoQpVEa+aHOHW73pXBwuUOaGei5NKmURqrQIn3Sow3JURtn14mX
+         LJ1A==
+X-Forwarded-Encrypted: i=1; AFNElJ+eYwAmfZggf9eQF45lcKZZkLxjnvaXf671VOiTP3h3oTXP0s+ldmeTCWVcvx0jhz304THRKc0kZUsn@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw3sQIJ2/A7/6HeWJIoR0/Okskr73BjB3TOhTWYRgstVGfOoP3L
+	hXbv7zZkXyUvXyPhBS3fTAA47fUcj0hnjsFc0Faam5ygeF19BfPgLcPEf3UVmmtv7XeI2bvFM5Q
+	nLgsXMKeLvi5Zk0bzmAuOZZEuf0v2KoI4otVvcf4d
+X-Gm-Gg: AeBDiesjGiAnnX3kbzX1K6dbvKiO74iqqhtayXZH+JiJJ52funuqQir+zZVds5m0yFM
+	sHDXzfKuqlQHmocI8801UPusytsoiL12oscPBj3FtXLxSJctDJYmTIHJjhklwF1GD29Ewl2he8i
+	DWadQeFHe+EErDFZelya19+03dk7bo87iGGRCOqxpnOtLQTvIfCNrKXqQMCLT/NTaeywPOrUNLL
+	DiT2fLnLQOS3yuNuFG/uW7QyD7vI7xfhuCqcuy/W6CI5gtRZZMvdKxbjAbZHZkL6eD4AIM7Us7f
+	BsD+fU8nSKhnvvazAgY8VVLxwLf+qxeDNcERe2xGyOUR5WdsaUKKmLzE+ifKIIa5xXGJVCcep7w
+	39g1rvw6Z72huJOg=
+X-Received: by 2002:a67:e116:0:b0:605:5d09:8631 with SMTP id
+ ada2fe7eead31-62d87c925d5mr189727137.29.1777659161523; Fri, 01 May 2026
+ 11:12:41 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 1 May 2026 09:37:10 -0700
+ HTTPREST; Fri, 1 May 2026 11:12:40 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 1 May 2026 09:37:10 -0700
+ HTTPREST; Fri, 1 May 2026 11:12:40 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <77153c889934972efcfc3d210251564f29abcf51.1775874970.git.ashish.kalra@amd.com>
-References: <cover.1775874970.git.ashish.kalra@amd.com> <77153c889934972efcfc3d210251564f29abcf51.1775874970.git.ashish.kalra@amd.com>
+In-Reply-To: <846263383f9b6a08fc87ce6edb931c912f68c60d.1775874970.git.ashish.kalra@amd.com>
+References: <cover.1775874970.git.ashish.kalra@amd.com> <846263383f9b6a08fc87ce6edb931c912f68c60d.1775874970.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Fri, 1 May 2026 09:37:10 -0700
-X-Gm-Features: AVHnY4IpT6Ecp0MRFZmqXjB5U2fV7hCMXRHDBLJWh2_PysSn9Xai8a1NAPY71Vw
-Message-ID: <CAEvNRgGrdA8opRuvBncgmsyzZTo6JaP+gSKuK4ioFvnZBSKjiA@mail.gmail.com>
-Subject: Re: [PATCH v4 1/7] x86/cpufeatures: Add X86_FEATURE_AMD_RMPOPT
- feature flag
+Date: Fri, 1 May 2026 11:12:40 -0700
+X-Gm-Features: AVHnY4JCk1U3ofCsegg3s5i-0XLTqrNFTyFRrFp-Tgnyf0yeEIzSs60Geh1Ze08
+Message-ID: <CAEvNRgEC2NSROZWz8uxnOSD6t8s1KmmFrr92=e8s30PJzYhQ1g@mail.gmail.com>
+Subject: Re: [PATCH v4 3/7] x86/sev: Initialize RMPOPT configuration MSRs
 To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
 	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, seanjc@google.com, 
 	peterz@infradead.org, thomas.lendacky@amd.com, herbert@gondor.apana.org.au, 
@@ -111,30 +110,51 @@ Ashish Kalra <Ashish.Kalra@amd.com> writes:
 >
 > [...snip...]
 >
-> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-> index dbe104df339b..bce1b2e2a35c 100644
-> --- a/arch/x86/include/asm/cpufeatures.h
-> +++ b/arch/x86/include/asm/cpufeatures.h
-> @@ -76,7 +76,7 @@
->  #define X86_FEATURE_K8			( 3*32+ 4) /* Opteron, Athlon64 */
->  #define X86_FEATURE_ZEN5		( 3*32+ 5) /* CPU based on Zen5 microarchitecture */
->  #define X86_FEATURE_ZEN6		( 3*32+ 6) /* CPU based on Zen6 microarchitecture */
-> -/* Free                                 ( 3*32+ 7) */
-> +#define X86_FEATURE_RMPOPT		( 3*32+ 7) /* Support for AMD RMPOPT instruction */
->  #define X86_FEATURE_CONSTANT_TSC	( 3*32+ 8) /* "constant_tsc" TSC ticks at a constant rate */
->  #define X86_FEATURE_UP			( 3*32+ 9) /* "up" SMP kernel running on UP */
->  #define X86_FEATURE_ART			( 3*32+10) /* "art" Always running timer (ART) */
-> diff --git a/arch/x86/kernel/cpu/scattered.c b/arch/x86/kernel/cpu/scattered.c
-> index 42c7eac0c387..7ac3818c4502 100644
-> --- a/arch/x86/kernel/cpu/scattered.c
-> +++ b/arch/x86/kernel/cpu/scattered.c
-> @@ -65,6 +65,7 @@ static const struct cpuid_bit cpuid_bits[] = {
->  	{ X86_FEATURE_PERFMON_V2,		CPUID_EAX,  0, 0x80000022, 0 },
->  	{ X86_FEATURE_AMD_LBR_V2,		CPUID_EAX,  1, 0x80000022, 0 },
->  	{ X86_FEATURE_AMD_LBR_PMC_FREEZE,	CPUID_EAX,  2, 0x80000022, 0 },
-> +	{ X86_FEATURE_RMPOPT,			CPUID_EDX,  0, 0x80000025, 0 },
->  	{ X86_FEATURE_AMD_HTR_CORES,		CPUID_EAX, 30, 0x80000026, 0 },
->  	{ 0, 0, 0, 0, 0 }
->  };
+> +void snp_setup_rmpopt(void)
+> +{
+> +	u64 rmpopt_base;
+> +	int cpu;
+> +
+> +	if (!cpu_feature_enabled(X86_FEATURE_RMPOPT))
+> +		return;
+> +
+> +	/*
+> +	 * RMPOPT_BASE MSR is per-core, so only one thread per core needs to
+> +	 * setup RMPOPT_BASE MSR.
+> +	 */
+> +
+> +	for_each_online_cpu(cpu) {
 
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+Dave mentioned hotplug in v3 [1], which led me to check. From this
+series, it looks like RMPOPT won't ever be performed for newly-plugged
+cpus, is that okay?
+
+> +		if (!topology_is_primary_thread(cpu))
+> +			continue;
+> +
+> +		cpumask_set_cpu(cpu, &rmpopt_cpumask);
+
+nit: perhaps flipping the condition is easier to read:
+
+    if (topology_is_primary_thread(cpu))
+    	cpumask_set_cpu()
+
+> +	}
+> +
+> +	rmpopt_pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
+> +	rmpopt_base = rmpopt_pa_start | MSR_AMD64_RMPOPT_ENABLE;
+> +
+> +	/*
+> +	 * Per-CPU RMPOPT tables support at most 2 TB of addressable memory
+> +	 * for RMP optimizations. Initialize the per-CPU RMPOPT table base
+> +	 * to the starting physical address to enable RMP optimizations for
+> +	 * up to 2 TB of system RAM on all CPUs.
+> +	 */
+> +	wrmsrq_on_cpus(&rmpopt_cpumask, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
+> +}
+
+[1] https://lore.kernel.org/all/ab41b1d8-e464-4ad6-ac07-7318686db10e@intel.com/
+
+>
+> [...snip...]
+>
