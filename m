@@ -1,189 +1,140 @@
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826D0267B07
-	for <linux-coco@lists.linux.dev>; Fri,  1 May 2026 00:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DEA3DCDA0
+	for <linux-coco@lists.linux.dev>; Fri,  1 May 2026 16:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777597109; cv=pass; b=uuFQjwkFo6woSNvlsV6KcOAKmsk/hC6CqYMZujyXXNxDkHNnASI3uYWP+ICsVHVflpAlWDiWhs8sG9cBGV0hSozSGJwXVvIPC0XpGEAa0E697JFvuPqEf4vUY/lQ/sRsula5au7YsWQJPvf/mYEtx25KWpoKhKJJozpYz2V8VtA=
+	t=1777653447; cv=pass; b=QYRQuirAdapC4i/1bIvQb4Kjt4ZzKeL6ow8Vpdjd6xYEhhKrqrsRwN8OePDFZy0CFZQRuF1sPNlbfut6RqfIGGaFCVS2GgXYt9AUVtFOA9Ks9FTM74mpiDGrZDbnjnxl5tswlF0H6nipy7mwXzqei2lftAL0Pw9Y/3OKwVrGnhk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777597109; c=relaxed/simple;
-	bh=fqYlQShHSMRctvGEIU2QmFWw1GV/FMGu+gThhwXZyvQ=;
+	s=arc-20240116; t=1777653447; c=relaxed/simple;
+	bh=w9ooVH2aWTdqsPWomPiWr/2emsHoCr0nSyf2HqpKRiA=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=beP6ZDZsyN4MufwnQUY2V2xeAkMipKjmugKH9QQFzSL4q4xhj+PJjrZdqmj9+541P1yyDjR+V6AWYyKSUXpMp3Y2XqcXOzXsdqw7LvNKp7ka89KvWNTUT1j+orFl86ls81eBPK3piUGCEfSo6+SO0rQg6apEab76KU8n3+/NQUw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UqTVZ/23; arc=pass smtp.client-ip=209.85.221.173
+	 To:Cc:Content-Type; b=OB7UHR18DzsHcHrFK9bnbP8deV8WG7LQE/bPXgagDiRcO7FF3jkT/uZjni87HIFtMjm9vYv7i3M1FTQFBU0W0fFYhVtlE9rUZ18PuMLgAiEaU1aiBL4fjsm4M1cSdAeRq3b6Rbsg4a1wOYPCeFpXLsaTWhVz1WvjUMSwNpq42A8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Md0XH04y; arc=pass smtp.client-ip=209.85.222.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UqTVZ/23"
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-56dfd007d31so907644e0c.3
-        for <linux-coco@lists.linux.dev>; Thu, 30 Apr 2026 17:58:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777597107; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Md0XH04y"
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-94aaa5d3bfcso1209069241.3
+        for <linux-coco@lists.linux.dev>; Fri, 01 May 2026 09:37:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777653431; cv=none;
         d=google.com; s=arc-20240605;
-        b=lpFYHL+nSSGZD70j1oJsDI8z+rbSFqNh4vRO0p90AQo9oFkBK5J1BehKYxPWNLSm+i
-         +btXtM1dJu0Bo06FKY1l7LU8imQwvWusvErRBEc1uSYwCACxyZNDumwqnC3evy5WRzD0
-         59TSRNwzv0ywyldDwwEV7CfB03o74xgzmSPMG+Eu6kZTvhKrw5gxZrsmx9xO9BOxoNlF
-         nXVhG5qghrtox4gPg0TXuS4pqMhEEXEG2ODTiKYH8jYMPoJo/O+N62WDC2WnN6lli1CN
-         0nqCGij1njfbKHyQEwziGxT6jIMQzt5PuqULN3Iqe/cuuOy8wzM3auWryCetU+7qfyw0
-         x1vA==
+        b=KXwQchg0s/KrhC9PjOQs4o1V/G9zz8EAqXrj7ntAQcQ0uNoFL0xi2W/pXEO+psKjVI
+         SLC6+r91ju9HuRaC7hxjI1NnPtUqwAVQAzYtcG7r8ikbuUzHBgqLTQKZ4TpHm/qQ8GhP
+         i7VwXwgeenntO8AOD+GPjw5z7WD/ihMgVbLVMklpNzxfjbXlyWejO5nF9LdKnb9Oez4f
+         WlK4tpbXjPBW25ojX+Wje32B5sU9x30siMNqDJyvIe8EI1txRQSNC80Oi9IrgE2fQ2em
+         guhmmYS5bhZA9RModcFTTRf2gJnAgSSpejAwtGs6aIUdZhbp/lbNX+0E9EZKuT11v90k
+         6Drg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:dkim-signature;
-        bh=sH/8kc6iI1JLK2/3TZ78o+aqGZdALyItajE7z4O66hQ=;
-        fh=zVzrN9vuUhOmIKyb2OHpRqpeuOdnK9Gbh3QhAThaX0U=;
-        b=Wl06I1pefuiAaDuwYnDLJyKyazxVmi2T+kbo/swnpYBp6dQEeVAyzajai7jopXEIU+
-         8OwxBZvQ7KOvjQhtkLPm/g5rD1Qr7QQ21sxUq9MdZhMfcZztop52eqgcmPK9kwdNvTj1
-         I9qXDe3A/jKJAmUI87GR2yFAgIC24ZaiOP4wMpO+RF4tqyGJe4xdI3bFg87UU4//zXrT
-         zRu5wE2zdCEHtRSNRhNCACzxffoRvn6A4t1iQe1vxbHnR6qz2XlOzd+4A4kX+bHPAIGG
-         SvZX1mEas4RrCgMYh5KXeMTVl0bwrSwibaNdgBbWdmBhQC6TFL4LjlXgRyAQWXCUxuMI
-         gg/A==;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=nLFs9eB4QSuzMXlNmTajx3twQGrJqXq6Mmw1sgch1Dc=;
+        fh=dgZGgNWiN8hPD+0TcCPURgUtcM9APWJGRwSmPXltg3M=;
+        b=KmWW95W5R4QFhGStyEgxv8brqnR6iksOJiF/7gONJo52ddpZHlidoNxtTq6uiQVWVA
+         oAHxR6l7s0Ng8Z6qQHG8lleneHn2A/0fEZfN5rmfoDkVCoIZxFfM9Qcr+k6RTEZDJVX5
+         yqcz9DqWYLTKCj7TgN4gqlzfx0EfstLqBrTQh35HUZgZ7sWo1e88k5+aLGh+ZeomX4uT
+         IExGqpQSl8TpCX3GMSnvWkRvPExapxFtNCzVvnKfLh62XI/DAJJ506yRGd5rMjkM14rJ
+         VboZxmr049UJtf/2iKjn+zzdJga5vse4FcfGV2t4NO4ne5tDZlaZJGCunrCxjslv/mAc
+         KPHw==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777597107; x=1778201907; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sH/8kc6iI1JLK2/3TZ78o+aqGZdALyItajE7z4O66hQ=;
-        b=UqTVZ/23phIZ0IpcxnK585ca7caf9YvxEetmKahDzZPHlWguQf2W6R1t8lFcZEbNnN
-         xfabPYjeOhMc/RPihAdSOi08m2y1yEuc94juobsjnUT0tU5AFvKQ3tZ/TXG9XhwSHo8C
-         ro6RNMKjgku4kSxAAJ+A5HJd5Qd8xSFr1Jwq4lVrkk7bS2xvsN9iTXeTDBDLakNzNtKp
-         rSa1z0qKLY2GbuiU0+HGMmua8ijwCKb86YXArIZVEeBaKXhjJh3TYqXhHXBjyDVrjgi5
-         xSLO7Qbjln4iahsmtsCZV06g/PDx1smGEZxZMXJxPa/72bpiz/MtuA5EhA1nUhGlr2c6
-         H3sQ==
+        d=google.com; s=20251104; t=1777653431; x=1778258231; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nLFs9eB4QSuzMXlNmTajx3twQGrJqXq6Mmw1sgch1Dc=;
+        b=Md0XH04yNkYi1njj3JXeTg51rESyXJN9RMG3ZqByj3Pa2gMpJLoJGt09aRkmD+eCdt
+         QGCjJBGJFRuOXShAmQfFJvhRjHQC3dO7BuxgVtCbHCe54EtGhSAZLTLNUSlIhMGWEMr+
+         3WEgzU3F5dqzGI1O8AsepsaoNvOhz1vRNSpQXZLxSbkNVITxo4AB6k4DQjHuqZqHPLt2
+         IUa7ekKaZHU/YxySrbgUFnSeZ4YA06rcn3/gXXluO/JAIaWGTsiQQfradDjPScDqo+K/
+         +14nPqQYeZy/1OmDNeTv/Qf4FsMQjpIzq8y9Nta4H5fgwBI25xDEaG++SYFFICHoqpBT
+         KXXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777597107; x=1778201907;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sH/8kc6iI1JLK2/3TZ78o+aqGZdALyItajE7z4O66hQ=;
-        b=aUi6mTAP+rYAj20wtzxP2VEE0Cr4t4XB389/kIDyh+fTTHTA46mym3+iXT6zuCJd2T
-         WCLNcWzACwpk7uTzkMEzjzoXZIiEBBbysCK1kD4NvbEdQQ9QVah5H2UM/zvFcyc1N2/+
-         01zaMHIErp4iSKRc4ZmTDGlWAkALSayRRbmnDAlo84ErssP2wnMX3kXTwduFGTVDR5HX
-         5jz7CHEZ+gs3I5KaI5Jcn81rkjYNa3yKHpKoduE/KI5T0z3Iirf2zBAORLY8jzDjDkQm
-         cIFqK7+30OGDjEW7QhAesKkff0ExGbspCaIx2sWPTyhucnI6Rr2MWiwCdq+MTTDNPc3J
-         4Eug==
-X-Forwarded-Encrypted: i=1; AFNElJ8lZCZ8mHTVREmzWznRoKDvoJddMQabuKkW7YobRukF4/A6A8tA0wUHD3jUQgy6fZH7dIjNJtoAwfaX@lists.linux.dev
-X-Gm-Message-State: AOJu0YwnkI6woXV7URVsjzXL7vax93KpiAdTGER4XwTOx4CPE0VsH/fW
-	kpX+VyN+5EYoonUC9e8In9sEnL6RyMVTWmvqIlqSQP0pBiuV37g5P7A8FCwrJ6af69l8jjYaz2E
-	wxKE29pFuM6YaHUWkv4SjTSf2/pRiMhjVdWBB7HOb
-X-Gm-Gg: AeBDieuy2xSd1oAe1P+5aWqWi940sD5kJz7/bo0aQTPbxWlAz53sQnBsivcGryxbm3G
-	seb0E1gwlur2IAwUGkuIhLxAoZ4yGdwItt68lFVrxC20Mim41jgFvOqTPqPNd1cb0vrHzhYUtfz
-	rtZtkSMAvmqd8Yvr6ex0DR+hRnxTiEfIdGnT7IR+ONisBDEJeZFJyDqk/fEPsF69onGIjTB4D/p
-	pyJnbHo/EpERUJ2iby7DMxZepfNjdpeMNvhSUXwzSgAeBXMLpRnxfkW5jb9VE6mm68i3pAuqUMa
-	CM05aPhcCuKKv9nokTeCEhfPvPDsRZIKtoxzbza92sTpHCjiJsdqrBz0gtpJ
-X-Received: by 2002:a05:6122:2a56:b0:567:4e8a:fb13 with SMTP id
- 71dfb90a1353d-574bea2b1eamr480295e0c.8.1777597106942; Thu, 30 Apr 2026
- 17:58:26 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777653431; x=1778258231;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nLFs9eB4QSuzMXlNmTajx3twQGrJqXq6Mmw1sgch1Dc=;
+        b=C+apFw7GtpLx6eZiZTAuY4bmZHVfABQ+Y74g80LfqCpt12Z6iZe5mPU7kYaVxa70Tq
+         v7l8inT69u5c+xDKc+TJ8xRW9/nMHGGxC0kXvJZT9FDnhEcUp4Sa/80BRTTB7wFH7Wa6
+         UBZF7bybYElNKq/G0twQRRGhqiDCDhjlSXm+2kvNo1l8jgN2DO6pYquIfDCKRfU3O9jU
+         I/C6teZsbsJyfODw9kUHeqC9IkwoNqpTKppP43gVr74JoVChsJAeJWM4QAblXjbFeenq
+         LF4vSX1F3WSIJzLsRFxS00s4ted3uBPnSaICifnIK8agwQ5xnXGZ+LCm//7/VBLw1p17
+         3hPg==
+X-Forwarded-Encrypted: i=1; AFNElJ9kxuWFLi/ZsG/Wi2RpHueH2FgiLwlEvf1QgyTbkyVBWP4u3QJTgmB2F4Ye5T3tsrNjW7OiW74b1oZE@lists.linux.dev
+X-Gm-Message-State: AOJu0YyMQ58LqhOtR0tuScEow0K7i+f5+XOj3ZYxPSH+tC/M9vJr69yL
+	6ocH2/PxRCYtqaJRx5GFlS35YjmVmLrp/PvwVCXmfPuXuDQY1MVILDxNnkdLxxMZaf8r7+tdTqa
+	h2ksS7Znx5+FUGhHoiZarGoiRb+aUx/MD3SuV7aQ2
+X-Gm-Gg: AeBDietp7/kjj0oMCFYK3N4DiR2r7bWAUeE9RD+EFlq+wIJyQfB2m7xLgIKpRzc2gSj
+	NTiAIJPEh/aGqMSNMEth5dJ3eiaDfwpqoNujzPigoryrZzoUutkTl3yUkZ33ZmVqi5z/RWtRfBS
+	lunq1BHS8RGBg1qBR9zfkQkqNfT8tszf/o67Ag+4az5zTyeCTze8rRai0tT1vxy7e40gPMSfvJE
+	f4TMFszXKaxb6ZFudjR2nfu4yzH1AUV0qpydb2U0SBSzdeBiGcMMBAumC/gg8cQ6/6yPgGq6kus
+	8TgtXp5vFumHQXwdqoZ3gC2O3pZFmxantTd6N747KBr3R6TTjeO68dW+Zro1xcGQpImH4Jz7AE6
+	kRbSv3+6I4Vkeepg=
+X-Received: by 2002:a05:6102:598d:b0:608:ad9c:4c36 with SMTP id
+ ada2fe7eead31-62ad2b40002mr5011640137.11.1777653431060; Fri, 01 May 2026
+ 09:37:11 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Apr 2026 17:58:26 -0700
+ HTTPREST; Fri, 1 May 2026 09:37:10 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Apr 2026 17:58:26 -0700
+ HTTPREST; Fri, 1 May 2026 09:37:10 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <231efd4e9267d3dbb8c63e57b3a43567c965e24a.camel@intel.com>
-References: <20260430014852.24183-1-yan.y.zhao@intel.com> <20260430014948.24226-1-yan.y.zhao@intel.com>
- <CAEvNRgGsMaioFvTWaLhnDiLbdx3tunZpo3Qzxdm1xeb4ef0J9Q@mail.gmail.com> <231efd4e9267d3dbb8c63e57b3a43567c965e24a.camel@intel.com>
+In-Reply-To: <77153c889934972efcfc3d210251564f29abcf51.1775874970.git.ashish.kalra@amd.com>
+References: <cover.1775874970.git.ashish.kalra@amd.com> <77153c889934972efcfc3d210251564f29abcf51.1775874970.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Thu, 30 Apr 2026 17:58:26 -0700
-X-Gm-Features: AVHnY4L-ucZ5s1_gFXeDk_hy8TeRQ49rUaAznyPNkwU0xPAMQzcyCgeetMPMl68
-Message-ID: <CAEvNRgHuaztV3_FoRf1UVRDNP-JJ3PJPJgQKANoYOVvg8SjPJw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] x86/tdx: Use PFN directly for unmapping guest
- private memory
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"seanjc@google.com" <seanjc@google.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
-Cc: "Shahar, Sagi" <sagis@google.com>, "Yamahata, Isaku" <isaku.yamahata@intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, 
-	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"mingo@redhat.com" <mingo@redhat.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Huang, Kai" <kai.huang@intel.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Li, Xiaoyao" <xiaoyao.li@intel.com>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"Annapurve, Vishal" <vannapurve@google.com>
+Date: Fri, 1 May 2026 09:37:10 -0700
+X-Gm-Features: AVHnY4IpT6Ecp0MRFZmqXjB5U2fV7hCMXRHDBLJWh2_PysSn9Xai8a1NAPY71Vw
+Message-ID: <CAEvNRgGrdA8opRuvBncgmsyzZTo6JaP+gSKuK4ioFvnZBSKjiA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/7] x86/cpufeatures: Add X86_FEATURE_AMD_RMPOPT
+ feature flag
+To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, seanjc@google.com, 
+	peterz@infradead.org, thomas.lendacky@amd.com, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com, 
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com, 
+	jackyli@google.com, pgonda@google.com, rientjes@google.com, 
+	jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com, 
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com, 
+	darwi@linutronix.de, linux-kernel@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-"Edgecombe, Rick P" <rick.p.edgecombe@intel.com> writes:
+Ashish Kalra <Ashish.Kalra@amd.com> writes:
 
-> On Thu, 2026-04-30 at 11:17 -0700, Ackerley Tng wrote:
->> Yan Zhao <yan.y.zhao@intel.com> writes:
->>
->> >
->> > [...snip...]
->> >
->> > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
->> > index b24b81cea5ea..e5a37ea2d4a0 100644
->> > --- a/arch/x86/virt/vmx/tdx/tdx.c
->> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
->> > @@ -710,7 +710,7 @@ static __init int tdmrs_set_up_pamt_all(struct tdm=
-r_info_list *tdmr_list,
->> > =C2=A0=C2=A0 * to normal kernel memory. Systems with the X86_BUG_TDX_P=
-W_MCE erratum need to
->> > =C2=A0=C2=A0 * do the conversion explicitly via MOVDIR64B.
->> > =C2=A0=C2=A0 */
->> > -static void tdx_quirk_reset_paddr(unsigned long base, unsigned long s=
-ize)
->> > +void tdx_quirk_reset_paddr(unsigned long base, unsigned long size)
->>
->> Could this be updated to use phys_addr_t base and size_t size instead of
->> generic unsigned long?
 >
-> A type is a really good idea. It could look like a virtual address, despi=
-te the
-> paddr in the name.
+> [...snip...]
 >
-> I added it to the cleanup list. But I would prefer to keep this series fo=
-cused
-> on resolving the critical controversy around the struct page/pfn type, ra=
-ther
-> than adding in more things to debate. If you don't mind.
->
+> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+> index dbe104df339b..bce1b2e2a35c 100644
+> --- a/arch/x86/include/asm/cpufeatures.h
+> +++ b/arch/x86/include/asm/cpufeatures.h
+> @@ -76,7 +76,7 @@
+>  #define X86_FEATURE_K8			( 3*32+ 4) /* Opteron, Athlon64 */
+>  #define X86_FEATURE_ZEN5		( 3*32+ 5) /* CPU based on Zen5 microarchitecture */
+>  #define X86_FEATURE_ZEN6		( 3*32+ 6) /* CPU based on Zen6 microarchitecture */
+> -/* Free                                 ( 3*32+ 7) */
+> +#define X86_FEATURE_RMPOPT		( 3*32+ 7) /* Support for AMD RMPOPT instruction */
+>  #define X86_FEATURE_CONSTANT_TSC	( 3*32+ 8) /* "constant_tsc" TSC ticks at a constant rate */
+>  #define X86_FEATURE_UP			( 3*32+ 9) /* "up" SMP kernel running on UP */
+>  #define X86_FEATURE_ART			( 3*32+10) /* "art" Always running timer (ART) */
+> diff --git a/arch/x86/kernel/cpu/scattered.c b/arch/x86/kernel/cpu/scattered.c
+> index 42c7eac0c387..7ac3818c4502 100644
+> --- a/arch/x86/kernel/cpu/scattered.c
+> +++ b/arch/x86/kernel/cpu/scattered.c
+> @@ -65,6 +65,7 @@ static const struct cpuid_bit cpuid_bits[] = {
+>  	{ X86_FEATURE_PERFMON_V2,		CPUID_EAX,  0, 0x80000022, 0 },
+>  	{ X86_FEATURE_AMD_LBR_V2,		CPUID_EAX,  1, 0x80000022, 0 },
+>  	{ X86_FEATURE_AMD_LBR_PMC_FREEZE,	CPUID_EAX,  2, 0x80000022, 0 },
+> +	{ X86_FEATURE_RMPOPT,			CPUID_EDX,  0, 0x80000025, 0 },
+>  	{ X86_FEATURE_AMD_HTR_CORES,		CPUID_EAX, 30, 0x80000026, 0 },
+>  	{ 0, 0, 0, 0, 0 }
+>  };
 
-No worries, please go ahead :)
-
->>
->> > =C2=A0 {
->> > =C2=A0=C2=A0	const void *zero_page =3D (const void *)page_address(ZERO=
-_PAGE(0));
->> > =C2=A0=C2=A0	unsigned long phys, end;
->> > @@ -729,6 +729,7 @@ static void tdx_quirk_reset_paddr(unsigned long ba=
-se, unsigned long size)
->> > =C2=A0=C2=A0	 */
->> > =C2=A0=C2=A0	mb();
->> > =C2=A0 }
->> > +EXPORT_SYMBOL_FOR_KVM(tdx_quirk_reset_paddr);
->> >
->> > =C2=A0 void tdx_quirk_reset_page(struct page *page)
->> > =C2=A0 {
->> > @@ -1920,17 +1921,17 @@ u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *=
-td)
->> > =C2=A0 {
->> > =C2=A0=C2=A0	struct tdx_module_args args =3D {};
->> >
->> > -	args.rcx =3D mk_keyed_paddr(tdx_global_keyid, td->tdr_page);
->> > +	args.rcx =3D mk_keyed_paddr(tdx_global_keyid, page_to_pfn(td->tdr_pa=
-ge));
->>
->> Should mk_keyed_paddr() be updated to have a return type of phys_addr_t?
->> I guess in this case since mk_keyed_paddr() is pretty much an internal
->> function, returning u64 also makes sense to indicate that it should only
->> be used to set 64 bit registers.
->
-> Yea, this is used to construct u64 inputs for seamcall args. So I think i=
-t
-> should keep returning u64s. Maybe instead it would be better to have a fu=
-nction
-> name pattern that denotes that purpose. We have some more helpers like th=
-is
-> coming.
->
-> But similarly, I'd like to not grow a snowballing cleanup series for this=
- one.
-
-Makes sense, let's go :)
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
