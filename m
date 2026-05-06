@@ -1,82 +1,82 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E60642849F
-	for <linux-coco@lists.linux.dev>; Wed,  6 May 2026 12:52:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82093EBF18
+	for <linux-coco@lists.linux.dev>; Wed,  6 May 2026 13:00:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778071964; cv=fail; b=kr/RIaIh9d9hLKm/+u9kro6f6dLlgHQjsyjszZtVtI+v3HbZphlbqzTF1HnuzwONBssCk0zZXHxDsLIFF3EGtHiMMEjYMulnYV2Ahy+arHCJ6XE20nBmqtJIBVmY21Pn5BuqmoT6ymO000Va+tNF4uL9bCRUloU19DergD1QhK8=
+	t=1778072433; cv=fail; b=p/xQ0BfYnlDxCE+x+eyO127SYb+D/3nDVXZ/B2FmMK5r20PiUyl+TJZMdEzAwYQskwJqPJgfbVfqGo2lnp7xoYcvyxKrOGKopn0OI7iR94Fjx5PuLJTT6fWHyLo1HbvKLAr6ZJlfgbrAK43wXlN0Y2IzVWZlUFc0nC98Djpt9lo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778071964; c=relaxed/simple;
-	bh=M1h74Xmrav3JolnVIfhJBPYQOOTb3j/vc8arRgHYJC8=;
+	s=arc-20240116; t=1778072433; c=relaxed/simple;
+	bh=EzxzTEGRN90mphg9kQLgcqi+EoIEszo4eYgdg6l8/F4=;
 	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=tQjbAcq0kBfqG4mDakOZySojcJG6ILYr6tN9eNfMwOhvYTqNfQm7D3qdaC+CVeF/0bURk1OxLCuFCn/cS9rpfdmTO7c5BULqBOIwvEgnJ29keCZhytKOVQquZn4JHltW/YZI2/TERcfR5zLmMTbkuQzlgZpCacIMNKnr84RcHKc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bHUiodL3; arc=fail smtp.client-ip=198.175.65.12
+	 Content-Disposition:In-Reply-To:MIME-Version; b=rkik/jygx9Bi2ckYa7RC5baR3p+cDlzS4JDfs6EttVi2efZbxAnE3CYd3bCym1qhHpxveBSSW8URGFcnm7dArF0CrKcTA4LSu0A186SIpEyytmspq85eCMPzVOHEtvbP8seQEeK2f1PLgXkpKSR/+k7MrQZlRkDS0jjjZ6gEULI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UtdKLLQ8; arc=fail smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bHUiodL3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UtdKLLQ8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778071963; x=1809607963;
+  t=1778072427; x=1809608427;
   h=date:from:to:cc:subject:message-id:references:
    in-reply-to:mime-version;
-  bh=M1h74Xmrav3JolnVIfhJBPYQOOTb3j/vc8arRgHYJC8=;
-  b=bHUiodL3uuI3n1t7++mKazhAkkshjvooRdyyToOnpqWlCd9/StD9i+Ot
-   TC7toMDH6wzBnt3w8qUv5YNE4C2PuEy2xrtbji/kWpIauNo4LNSMw2p5k
-   n7/ZBG85OjRe2xBzdkzA5rMMScY8QJ9zQ4U/2zEJ5scfTtcQyov6v6E1K
-   awW3rV2F0HkDhidTY2sJRavmjyNvtPjBL78oA6OjT0qKDw/f0s0cFNmTc
-   cnO8Jj2rnEwmppcF7qaA4g4gbG+SyVo1eF7xJtQ7LJj91+ekSGdL0lGBF
-   XqyS2ohLh6/4BemO91pPrOaOYFM+HmPO8PcnpttRvsvvmsXQgq2QpyArP
-   A==;
-X-CSE-ConnectionGUID: wCQOt6csT0uu6rYXHgrraQ==
-X-CSE-MsgGUID: sUWFH21mQD2HT35C1+DDBQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="90456423"
+  bh=EzxzTEGRN90mphg9kQLgcqi+EoIEszo4eYgdg6l8/F4=;
+  b=UtdKLLQ8Tizn7SVGvNLQTv5VKun3pJFbgYNjBINVw+FseuDVTqTGmsG3
+   vICBDZ209Z0HYIYt+V0JxQIReCtJvtvfZcC25gLwxa0Ap18a8VKAhJEBf
+   PQwtYgckG0iglLXI431SgZgBAcd39edikKupZnvQxfe01OFL2C2zvhBWu
+   Eg90qAtrLr8EKLZNl64MEmpmc6BRCjGI1qjjoOYlqVeYZwik6LUJUjgRG
+   118BNHuZaubP4RvTnsrC/OGu+q9WcJlgNfhMILIPVLsskqE6I5ZV8wlkP
+   BMtctd8YX39tc31TWn6gzriKI6yQG+icbyw844dEw3m5QdXngp2TMkCs1
+   g==;
+X-CSE-ConnectionGUID: Stx9nsfQTnCEuQHskgaSSQ==
+X-CSE-MsgGUID: vY7uhtuaSXeuAisvpp79kA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="81567352"
 X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; 
-   d="scan'208";a="90456423"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 05:52:43 -0700
-X-CSE-ConnectionGUID: jRQcosU5RYSjBULFkrc1IQ==
-X-CSE-MsgGUID: x0zu1bxzSLyO16jzq3UEIg==
+   d="scan'208";a="81567352"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 06:00:21 -0700
+X-CSE-ConnectionGUID: FYmX+YDeRTaEfMUGSr+Vqg==
+X-CSE-MsgGUID: XNnz4x5wTwa//oVTTFleww==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; 
-   d="scan'208";a="241109957"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 05:52:41 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+   d="scan'208";a="233484522"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 06:00:21 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 6 May 2026 05:52:41 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ 15.2.2562.37; Wed, 6 May 2026 06:00:20 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 6 May 2026 05:52:41 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.2) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Wed, 6 May 2026 06:00:20 -0700
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.42) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 6 May 2026 05:52:39 -0700
+ 15.2.2562.37; Wed, 6 May 2026 06:00:19 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Fqjzh9gLi+BGKtvksfQEsFVMU3CJF6hnYWK0XzqzcpkYxAheQa2TQQN8iAxgDLI9V2NWOvKah5lG6LtmggJyexDfcfhVcG5ZPqBJXSvHfO4ZUjsHTONxrV+x/EGbgbGUhCDoM0DDqlBDmFg1TW0kDA07sha32258R2eWILyIWykwoIGah6bS2g04WWmjtaITmalXHeL0XrtBLrpMdHW8QpJCZp3dStFObQQIVNkQ9VMYockCY0LOBgRrOObfKSeSTDD6g4PAOaJ3uqBGbVHIBRTh4BNuVPS8WMCz3svWub3OUrhcijzi4AsSV9xpaqezaXijc2rj8PiXuQgxyzWwHA==
+ b=JMJFDFXIJmaKSPKLDKQYmK+qM5H2mrRvrwhnnAxhD6NhEwIJqEXaTcI5BwvweOvR5jRGZz90+23IM3SGloNdX6EBtx2E+yJClz8rzjDnFkzfWfWEyH5HnPJ7aoEunBou+ZHCkBBMIVzK/MDpHmlv7kXRZLtri6C4lCGFYt0A/8+atPLPrlobdOWug2esStCttwKcrhM7v4axGLGZZ4ajanbhfXH8SJrRLrd+hkB+ITYGRhkbiOHHk0NwaxEoLGYPe+F1VlVx/tdWQVI6O2zxm/AJy4VhLtELgvDnj+7P2hVcvxBxkCi4yTSY7WEB53Qu7k0yOi0BdN6Jp/sNZ18D9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CSEa/xUCwKJzjq3ggZDR+kqG2UByazbIUMnmTnJtC04=;
- b=BknqqcoZYStkCqqxeFTNkgd0qcZJQa3IHXPLJstTMYwy+pB8GzBK1AfIYy4r/wtijtLW03kYqoAG1mXckdlnrKxoXoUmSmjAejr5qeq5kyes5u9aCqDBuEsLHnZW9rOw7MLgu4lHX1MuLos9b6xhcfq7zozKD81zM6WXd6MGVlhQOwcXInZM+NHn6+jBE0IypZbCw/eqHjMb+0aB/28C75kEmagYDqIEqZGFdZXVqU6cfXQGl/FOqOgwsCzfv+AjYHRUcyUakJnwxK+D+FSBhPsfeEvB2qWGeee92Ou3fIfImq50LjrDhsFw+l8BFhKnwC5l+BwhwZvqC1JwggbsSQ==
+ bh=N7LROmlZMRtgtz01VI6tEX14OP0+Yqc68eGucHKXKn0=;
+ b=YKdghSXO7fVKSQ0O2gwhrzq7A8e+bQy1YZRlc80o+tbRAy/H1IngS/InvsNoPyvEyGDJryuRhpPJQbtUwBV480Bp7+gdlsadfhC0bgztCEze4kFy2zp3pPE14CmY5OsP4kA/t5xEvopSlimX9oeVTCPJVBuNDkEu7wjuhB+MLiMHdk1A5WcEmL9Fny3nq00smPhL7gGj1eF6yjCNiHcZwbTYqQlH+cr/g+MJL5D9kyZU06w8ed9ks4m0vGz2QEeBJhHxLCZcFg+4ifTTnU8+hp/WKdKGcbFk7xOPoiOQlauR6/MaTonmmOMrJFE1uZKhSSYRLdfXjXP2rruSQhsA3w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
- by SA2PR11MB4953.namprd11.prod.outlook.com (2603:10b6:806:117::15) with
+ by DM4PR11MB6429.namprd11.prod.outlook.com (2603:10b6:8:b5::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Wed, 6 May
- 2026 12:52:30 +0000
+ 2026 13:00:14 +0000
 Received: from CH3PR11MB8660.namprd11.prod.outlook.com
  ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
  ([fe80::fdc2:40ba:101d:40bf%3]) with mapi id 15.20.9891.008; Wed, 6 May 2026
- 12:52:29 +0000
-Date: Wed, 6 May 2026 20:51:51 +0800
+ 13:00:13 +0000
+Date: Wed, 6 May 2026 21:00:00 +0800
 From: Chao Gao <chao.gao@intel.com>
 To: Dave Hansen <dave.hansen@intel.com>
 CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
@@ -91,17 +91,17 @@ CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
 	<xiaoyao.li@intel.com>, <yan.y.zhao@intel.com>, Thomas Gleixner
 	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
 	<bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v8 15/21] x86/virt/tdx: Refresh TDX module version after
- update
-Message-ID: <afs5Z4746bZhS+Tp@intel.com>
+Subject: Re: [PATCH v8 09/21] x86/virt/seamldr: Introduce skeleton for TDX
+ module updates
+Message-ID: <afs7UATlAuDehCCB@intel.com>
 References: <20260427152854.101171-1-chao.gao@intel.com>
- <20260427152854.101171-16-chao.gao@intel.com>
- <28be5180-ff74-4e4d-b392-7ba7a9b4c1c0@intel.com>
+ <20260427152854.101171-10-chao.gao@intel.com>
+ <5dc70847-332d-496f-b0ab-03323eff7118@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <28be5180-ff74-4e4d-b392-7ba7a9b4c1c0@intel.com>
-X-ClientProxiedBy: KUZPR02CA0010.apcprd02.prod.outlook.com
- (2603:1096:d10:33::8) To CH3PR11MB8660.namprd11.prod.outlook.com
+In-Reply-To: <5dc70847-332d-496f-b0ab-03323eff7118@intel.com>
+X-ClientProxiedBy: TPYP295CA0012.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:7d0:9::17) To CH3PR11MB8660.namprd11.prod.outlook.com
  (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -110,226 +110,72 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|SA2PR11MB4953:EE_
-X-MS-Office365-Filtering-Correlation-Id: d4e986ac-8904-4fe5-0508-08deab6e546d
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|DM4PR11MB6429:EE_
+X-MS-Office365-Filtering-Correlation-Id: 56ca560e-75ef-4cdc-91c6-08deab6f691d
 X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info: rg4lDEdEKctZTaVVjNfDAj8D7jDwnRu7Kk0DlakQg8a1Vmc0uk78RhH/h5Gtn+cLy4VehgefOAW3qJTBK7LsDltUKtRzHsr8dPRvmNXkTZhVRCCmpeDbWlvhDzVS/Mx/JJIY7Ic72kXMNBmfDq2MLXNQYbyw6UV0r0JHIlYkkZup+S53LGTCXiqHIHSezVHyH24MsAOSQNraD2gehLbC02LCH5OMDXukmb+x1XH7xsXMviEIQMjM8Spp3WrymnvwafouG0tshoboSuqJHO4ThyYzdeFZoMqi/N6RfDyR4fS5UWXw7KYCz2cRj/dH9PgEglspDRuumuQpHRuU+Q4qxroaFhXaMrPGvvoI1mqLrHhU8Pcat9ChpGisHlOOsVSwbL9pqIp5YSEnAtjptxDWcuNrZ32TIcd2+4YWDjvwtdu5bPCWF4xOSD0s3XOk4DI8okmeOG4xJXtVob7oI8wg2EAkMsYUWL0guYtDySoEgaCOWUxyBT/VLQIOSzHzzlrKB8J3j0Iu9Hmuz0cZdBYjkprruz7A5pte1E7NqI/qqRY+2j/RGJL4lNd/rSqHVZiOPKeOiUnWJ3U1PPyjV7t1e82IAiiROe1P8042ajuqk3rl/ybSGDV0FlUGjIgbw3ap+x7e6hUaYuTgzOyOn10kiLb1i0ybHjSeXLdoHQOFKrRQOQ4dVDkxaCqOb1PIikCS
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: /B7CpyUf8fiVhKOZ043WvwLg/Kz0nxw/BFxklrPavi8chfokHgSJYkaVXpaHu8tGAts/KJnBR9sWPceWYuf9Xb9eIiJBIBzhB+XGjPMMDNuw3JF4OarEZMWJgNG4LuJQnunqP2NZ+0U4fzA/WbtefR9y5/Y15hKmduTEx/0jxzcbPAItYFeNvx4QG9dgiEtfM5IysitJHckAxJxRuUi7JSdp71T7sfaLFjxWogRsKkRAWDL6dJfvwJtaPaAv/aoeYMeFj7TmKts4frnLqVrD4ZKRlKvF/qQXWfHHZYqv/qh/N7MwX9d4iIz7qTDzu1jzL+wKHQ4tCWXUmaqS130MPkix22Os8QX5rQvhT3WqEf92G0wSAe+A13VSwJPdYxFL8XZ2ddAEURUHcc+Q47QGP/Xb7LSdwrafitHNIy41UC3HQy7+bYTNMfzC9+9fZIEeY+wTNygwBsXDrDnAq7jB51d86dPNqIMWg/NbUWLqNSpG5GMryq3eLG+4Efswr85FwgaTwuPpZoQLGz1xCFUyhl5PRJc07VmGUkFz3cJtIOBARGXQv3xDfLZYULoHN1PgQRAG7CJjTSoKCp6mQSOf+tdUlce+67phT3Eemb3oM9QcuFExsSndpree/Rj0t5vpZLJHCTKUSdPsV0D6ir2QNaePWmdUDdRUMAQ80yx9OTyu8hXIwLVcIpnpduHaWdrBr/epFbI8KiqcMeUrVSPRHA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?2oaCxjiaPLwtG4hvdRMffPyAAVJSbhBaijJZzITtjmAO0cG8zMIDkEINIC0P?=
- =?us-ascii?Q?YNd6QASeM4t9bahCWCprYMd/IqrGc6upwci6xOZ40cBQXNJea5bfRp4QU991?=
- =?us-ascii?Q?YC7dhm10c7QSnDMW7/qrCk7cLsjJqAJ+mDq+XiEkzKzFVpq0A8dYvzkd+WOU?=
- =?us-ascii?Q?ZNhIyzPhdJPnvD0CmsY8ESWG+NuKAAe4IatWy8OonJbHXkbHAWqoFsM2MfrE?=
- =?us-ascii?Q?9HpJfX+FFUyYgEFRsjyKEIxr+anUnMX6uU6rsobqDUJsFfRUf5NpO+vUv2Nr?=
- =?us-ascii?Q?1KWmNVjaapWOQigSzwe6s5Us698sOH9uxwmbsbxBb7V9/cBl5b5asVd6E3Y7?=
- =?us-ascii?Q?nizQpAlaNAdoPIcBIaDyInEWudwQFTqp2C8YasoUm2UxwHYW5QTRM5D+Bsr9?=
- =?us-ascii?Q?prK6mwAy2mwohazF+jfk+26W0GeGEckAs2LB7TbnZ46JhqthebwSHIgYD1X/?=
- =?us-ascii?Q?tLPc4DC5N72kncgFLZmgnMoLaDEAtGrevE9gtD7ch9pRNYzwua/Igu473izJ?=
- =?us-ascii?Q?QjRvNFAjP59Gx0Xy9Fc/7t3EGZFWWIlx81DFVNwEvKeYrhq9t0uTVoAfBlxI?=
- =?us-ascii?Q?C3uPuk/lVD2W+H6VnRpzqhczcR1StCp/Vfz1Gcfnt9CfbR/vQzZ6qAM/eIjM?=
- =?us-ascii?Q?1xkwF5/8ScAUmhwkaNz6PXk88HkBdqPiWC8Joc10vHJzK0q+suyyIxABAJwT?=
- =?us-ascii?Q?5rP4EP6hGaCwZMUKEbFR3CfK9tFsqy2e2JlJaEyMg/UfPNrbR8pTSTNntChr?=
- =?us-ascii?Q?TpP2nBiKCadVFlewv/aYhdeZxBIm/p5hszVFmHbURntp5RBp92/0FzbSTuPJ?=
- =?us-ascii?Q?mR5RZ71bh1HPjlYOpHv7CU9i1Iws+APxgwmFhUEjfuslz75CjWGDnzByF+xq?=
- =?us-ascii?Q?T6hrgwW9IPKlUw2xY42M67+YnCZlZt2bRfdYwixoSZ4Ge53C5fzTDeanCk4s?=
- =?us-ascii?Q?5xfkqXgGIiila81IewRiUB7jIHI7FT7+cOD4rATmHjr5bxwz1j1dfV/MdL/w?=
- =?us-ascii?Q?ki7dItAkRHXy/laXmvryhpaIMK1phsoEQeTfRahjwzAg2IjqdnS+QbCReS7m?=
- =?us-ascii?Q?yBhD2AWIASKAKpsWyEOXAkDYi6e6aq1YUc/7WoxHwLU5xyp1aqzit803yq3y?=
- =?us-ascii?Q?tWNsqw1axnM/GjijSxl3P1BrI19ufDgKEFXjK8ynXehUvUQiWv6Z0bo6ZTIs?=
- =?us-ascii?Q?27wy1/8Ye2IA2in+7R/HkgVhIUidA1bON9/XdO5c92xvImHs64DTBh+h9lz0?=
- =?us-ascii?Q?6DX6vGXL2pXGDsUfnDqf6NmeH1OJCSM30tiL6Q9ok2tf7tGAKlEJfK57MgH5?=
- =?us-ascii?Q?7zPohlkF3RR942bCCCaNF28Lc8m82eQ0dWxMQxj846FipjQs8wUxMRif5e+g?=
- =?us-ascii?Q?MEIIUJF/azmlHiufCefiBUVdP5I4YnMOAkG629WgoZ1IBLgNCi6CVUpBb66/?=
- =?us-ascii?Q?dB+U+uExoXJeKPmspwI3lrtBSenK1TjwqSWa76HvCPrNe3V2nHHHcKKidomg?=
- =?us-ascii?Q?fZKSE6WsUgSfBiAIx92vPiDGdWB+2JMdBqqp6iNnQDrRw2kLD80FCuGVwXRT?=
- =?us-ascii?Q?wCv3y5rJ9Zl7clwWYfVhDnOX0I8u1B/TPd/L9uQs9FVgknHyY/oali9wwmXL?=
- =?us-ascii?Q?fvVdfSk3RhfVIwzbYAlNc+FSUryA1bpH763IaH+QTyorkvRjaD3sBcB2LM0X?=
- =?us-ascii?Q?SQR/QeyhWB03jgN/jKdXi2dAoI9mhLbBYmpMXTY858QqDRMUAgc8MasFm3KD?=
- =?us-ascii?Q?zYS1LnZuVA=3D=3D?=
-X-Exchange-RoutingPolicyChecked: b5+tY5D/6j6yCXJQ/Y68PYX2Byd7ixtQcg4QxawR2VUuUO899mw4lZtBt+/tVoGkx5wEtGE5Spnacfji+zIWEqp27bNO8XdIt+/hPnpcMXyQV9PBIKHxQPGrJoTtNgN0GZQ9Ou6UiTR9k9IhGpj5mU7I8gZUiKXiSNHKYONBn8yNvP0ZD9WgtbqJg4ZWMfafY9gaVKmwOjs3Hp08kNSqztZpj/QAoapEKxB8WSgLydQKKZcAiMB7oR2Dzj6/SyVElb5TebxTY61jSUOcP8vQkldTFu68iRZTUeBuHa6GZCIEl/LoO4BDjhkB1SnxJQcxxEz37N14sf5vIzcSXuCh2g==
-X-MS-Exchange-CrossTenant-Network-Message-Id: d4e986ac-8904-4fe5-0508-08deab6e546d
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?695m5RIhQ3cWnUEZCjO/f3Ggms2bfuN5yitrD+NbnlUjzS+/7e/hjIG8eJZ+?=
+ =?us-ascii?Q?J3S/d9t8fRBkB1/jM6Uo5WDCAzTfTqVbZvB0iOK4I1TayoGGTLuX1kN0SJ/O?=
+ =?us-ascii?Q?MgSBAYmskPbpPP9tr4BPYD40Yt32f1IQOrhSEGvZd4ah+7BZW/ur2aMMNTaY?=
+ =?us-ascii?Q?VSnVRed78Qr1KlToiVIw2PLx3xdUDqSitfeuj9MCqW7rkit3sh819948bR8u?=
+ =?us-ascii?Q?naUgH/uZ/riG1wQuCMFACTG/1v8SQnF3j61V83mk3PflNh6Yg0o3TXszulpm?=
+ =?us-ascii?Q?JcnYvYw30nOvViZbUgYL9jje9PMhQ06APiywqdfh0BP1S/dkd9AfQwa/T8K4?=
+ =?us-ascii?Q?C/oP1YEym3yVGI6iRZRaAMp1GDhl9hqvEV2pA1KPpH1TwOsubf0UMJWhIULK?=
+ =?us-ascii?Q?d333CZKWmKZZtPLAE5kqzys4GDA1PW9DD79xk0p1gVUBzcoMK/5wPIJ+fvGs?=
+ =?us-ascii?Q?vE+J588cL2r19gwyOnaknVdzTaneSH5pgs8W3ytmOpGOQF2bnzfNTPGuceeN?=
+ =?us-ascii?Q?JpCEuLTkFQYgz8bICpyAWW+b1i8oC6CibQsecZEzyQsQ406+nhu5kw0LshlN?=
+ =?us-ascii?Q?SJdVx/+cO//3LTcoLx5e2Ud5eh5vMGT+kOQATZTKIqVOg+ykHd+Pqp1FQ8mb?=
+ =?us-ascii?Q?RsnN/WkOhJULl3i9enLyBvWbrCvyCU/c2DrSPMcHMjhUIhbFBx6vEHVrx8Pb?=
+ =?us-ascii?Q?4Yrswso0e010fVAa7JgYnkms1dWQPdtv3JkrUXsTPidmMBKRzk1Sue10R3nC?=
+ =?us-ascii?Q?KGdzDx/P/4svYbFIq++0bTp7zUGASWKg1W4H9Vga1a81DnnoFQZeQLJ2Gm3e?=
+ =?us-ascii?Q?QDsswYeiT9twz8gKfykMxJFgSwkzIM8NqsJlB4/mJdgxyz4K4TSldcvFbe+9?=
+ =?us-ascii?Q?7YgvDPXd/S6gDET4c1PyEEatlnph0ExaTTvyNaBhLIDYwIBVF3OXAqoG28cP?=
+ =?us-ascii?Q?jcrIE+IuSQI+VPa2nNY/ilFJXmdSTnB664JmkrJorAXsDdsjrw7TYkzLgy8a?=
+ =?us-ascii?Q?wXH8DrmUI7dwmDWQ4cVqf8Xc9jRAlLWpH/N5q71WJmP5UWd04PLtjR5pJiR6?=
+ =?us-ascii?Q?wSdnY0FNse5WU11nUHOfjz/maHbd8+SOr/tuG55EYnKblP866hyDTAw2J1zq?=
+ =?us-ascii?Q?Ju3lhWdiaroypABjRpZki8BZlC/D905jN5YayqvPeFMTPZirNMCy2c0gDGzT?=
+ =?us-ascii?Q?yeoNTORvP1fBN7DkMv7cELmTMLimRi3miQkGmEGzZOgziWagAbieL85hT47L?=
+ =?us-ascii?Q?WS9hyEh4My94ngfTcIhsiKzqGtouA22Aqnqx+CyiXGIhybXJkc67/zS2D3WB?=
+ =?us-ascii?Q?yjjR1oypKi6ng27uptjDEfDBrUxbRo+NQU+3+WsC5hcs98uAQ/WkEsIueN9I?=
+ =?us-ascii?Q?dh3/pq1JCkw6oK6EE7/b7xmgpEeZoJkK/B0mGBljwC4hRIQYv9O2k1Yaj/Gg?=
+ =?us-ascii?Q?VJT6niHZt19K79DuTgw/fG3T2O6aTzMsSoX8A66FCNa49XwOzS3R9jopBQbz?=
+ =?us-ascii?Q?9TtH+C6PPyNJMuEjHcmFqUod0MxUMhp8ymUokCGt6VdOVNcKLZEaPCr3L//s?=
+ =?us-ascii?Q?r2qO50W/IbQnIMAp28KjAu6bvJHHjJ2gTU2D5TASQABEGew+KGQddhOJBzKs?=
+ =?us-ascii?Q?VuOIEQQGc5yP1v4E8oWvf2INmrQ1Iyq+RLhjcf7Pakm4P1x3EFrEqxTUA7vH?=
+ =?us-ascii?Q?ZRwpp5HGTkQkg1FD2Z7n49Yiqn07QNd3byRRHGQV0qjma9HtV9sYafmOT/vP?=
+ =?us-ascii?Q?JjCYeR7mpw=3D=3D?=
+X-Exchange-RoutingPolicyChecked: c+wRO+oTomtXU2dyS/eqT7U81HwX7RvPxEzh+z6UCFPSDEPc5mz0ekwO14ccD2/9c2g0fpycTq05iiJE5TvB4knxthoCbe5ikKc3QOX21ACWatV8K3tP0C4qwzhDAixEGqwHoR1Vbww3WpnJw02hAM01NrAXp/F9B49JWXVggxbN4khQYVjQiTFpyhU+ipwTqlaceEZGT12GdUN0wA4pAffnDYYgfMpVTJ9qOIJSP9lmtfJZAxhs5WwqdsLVT35lO0oKGXhRwiiLJ00+cBPDwKmc21UjJvJMaPuS+uDLXwD/LXEbN9lNS7rcNO7sFxy3C0aKcEpqHeN2GHEeoF6/cw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56ca560e-75ef-4cdc-91c6-08deab6f691d
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2026 12:52:29.2273
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2026 13:00:12.9970
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NMYXsX53FfFsKpf+nmZUSsKbg7br8H2H90iKZUj5ek/1N6BNqdNp34b+WeVNSldqjZ8h0ld2n1g+zbPtK+puOw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4953
+X-MS-Exchange-CrossTenant-UserPrincipalName: prWuhseGzAkyOeSn0zIEQCz42ZUqy223wXVlpbl/fr3Bx7F2+AgelUWuMY4pxWQmgG80WPpF2Ws+yJi6FabLOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6429
 X-OriginatorOrg: intel.com
 
-On Thu, Apr 30, 2026 at 12:14:32PM -0700, Dave Hansen wrote:
+On Thu, Apr 30, 2026 at 01:03:53PM -0700, Dave Hansen wrote:
 >On 4/27/26 08:28, Chao Gao wrote:
->> The kernel exposes the TDX module version through sysfs so userspace can
->> check update compatibility. That information needs to remain accurate
->> across runtime updates.
->> 
->> A runtime update may change the module's update_version, so refresh the
->> cached version after a successful update and emit a log message to show
->> the version change.
->> 
->> Drop __ro_after_init from tdx_sysinfo because it is now updated at runtime.
->> 
->> Perform the refresh outside of stop_machine() since printk() within
->> stop_machine() would add significant latency.
->> 
->> Do not refresh the rest of tdx_sysinfo. Refreshing them at runtime could
->> disrupt running software that relies on the previously reported values.
+>> +static struct {
+>> +	enum module_update_state state;
+>> +	int thread_ack;
 >
->This needs more explanation. I think the reasoning is quite nuanced.
+>multi_stop_data has an atomic_t for this.
 >
->tdx_sysinfo is just a cache of what the TDX module is and can do. If
->that changes, it means the TDX module changed. So you somehow need to
->argue why it's OK to hide those changes from the tdx_sysinfo users.
+>You have an int.
 >
->Why would they be confused by tdx_sysinfo changes but not by the TDX
->module *itself* changing?
+>Which one is right?
 
-Good point. The key assumption here is that module updates are fully backward
-compatible, so running software can continue to work without seeing the new
-tdx_sysinfo. I will revise the changelog. See below.
+You pointed out that using atomic_t and memory barriers for synchronization was
+overly complicated. So, I switched to use a spinlock, and thread_ack can now be
+a plain int.
 
->
->> Note that major and minor versions are not refreshed because runtime updates
->> are supported only between releases with identical major and minor versions.
->
->I'd rather have this in code than a changelog comment.
->
->If they can't change then warn if they do.
-
-Maybe I can just drop the note as I don't want to add code to preemptively
-catch theoretical module bugs.
-
-I added it because Sashiko pointed out that assigning the whole version struct
-outside stop_machine() could allow sysfs readers to observe a partially updated
-version. As we don't need to print new module version, I will move that
-assignment into stop_machine(), which addresses that issue. After that, there
-is no need to mention that major/minor versions are identical across updates.
-
->
->> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
->> index 98a8d9d3ae25..c81b26c4bac1 100644
->> --- a/arch/x86/virt/vmx/tdx/seamldr.c
->> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
->> @@ -306,6 +306,8 @@ DEFINE_FREE(free_seamldr_params, struct seamldr_params *,
->>   */
->>  int seamldr_install_module(const u8 *data, u32 size)
->>  {
->> +	int ret;
->> +
->>  	struct seamldr_params *params __free(free_seamldr_params) =
->>  						init_seamldr_params(data, size);
->>  	if (IS_ERR(params))
->> @@ -314,6 +316,10 @@ int seamldr_install_module(const u8 *data, u32 size)
->>  	/* Ensure a stable set of online CPUs for the update process. */
->>  	guard(cpus_read_lock)();
->>  	set_target_state(MODULE_UPDATE_START + 1);
->> -	return stop_machine_cpuslocked(do_seamldr_install_module, params, cpu_online_mask);
->> +	ret = stop_machine_cpuslocked(do_seamldr_install_module, params, cpu_online_mask);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return tdx_module_refresh_version();
->>  }
->
->This is one reason I rather dislike guard().
->
->Does tdx_module_refresh_version() need to be guarded by 'cpus_read_lock'?
-
-No. It can be moved out of 'cpus_read_lock'.
-
->
->?
->
->
->> +	/* Major/minor versions should not change across updates. */
->> +	tdx_sysinfo.version.update_version	= new.update_version;
->
->					   ^ very odd tab
->
->Also, how much of this do you *NEED*? You don't need to print the old
->version. You don't really need to _print_ the new version either.
->
->Isn't this arguably all fluff?
-
-I initially kept tdx module update similar to the microcode update. But yes,
-printing the new version is not strictly needed. Once the unnecessary
-complexity is dropped, the patch becomes quite small:
-
-commit 90e5a66b3f54af96d5895f6707ecdeef4bc4a3ed
-Author: Chao Gao <chao.gao@intel.com>
-Date:   Tue Mar 31 05:41:29 2026 -0700
-
-    x86/virt/tdx: Refresh TDX module version after update
-    
-    The kernel exposes the TDX module version through sysfs so userspace can
-    check update compatibility. That information needs to remain accurate
-    across runtime updates.
-    
-    A runtime update may change the module's update_version, so refresh the
-    cached version after a successful update.
-    
-    Drop __ro_after_init from tdx_sysinfo because it is now updated at runtime.
-    
-    Do not refresh the rest of tdx_sysinfo even if those values change. Current
-    tdx_sysinfo users (e.g., KVM) can continue to work across module updates
-    without seeing the new values because module updates are required to be
-    backward compatible. And those users are not written to re-validate
-    tdx_sysinfo values after an update, so refreshing them could be risky.
-    
-    For example, a user may decide both setup and teardown behavior purely
-    based on the reported capabilities. If refreshed tdx_sysinfo starts
-    reporting a newly gained capability, later code may assume the
-    corresponding setup exists and try to use or tear it down, even though no
-    such setup was done before the update.
-    
-    Signed-off-by: Chao Gao <chao.gao@intel.com>
-    ---
-    v9:
-    - don't print old and new version [Dave]
-    - explain why it's OK to hide changes from the tdx_sysinfo users [Dave]
-    - update versions in stop_machine context
-    - don't mention major/minor versions are idential across updates. That fact is
-      not relevant here.
-
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index deb1470185ce..ab350b705910 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -66,7 +66,7 @@ static struct tdmr_info_list tdx_tdmr_list;
- /* All TDX-usable memory regions.  Protected by mem_hotplug_lock. */
- static LIST_HEAD(tdx_memlist);
- 
--static struct tdx_sys_info tdx_sysinfo __ro_after_init;
-+static struct tdx_sys_info tdx_sysinfo;
- 
- /*
-  * Do the module global initialization once and return its result.
-@@ -1305,6 +1305,10 @@ int tdx_module_run_update(void)
-	if (ret)
-		return ret;
- 
-+	/* Shouldn't fail as the update has succeeded. */
-+	ret = get_tdx_sys_info_version(&tdx_sysinfo.version);
-+	WARN_ON_ONCE(ret);
-+
-	tdx_module_state.initialized = true;
-	return 0;
- }
-diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-index e793dec688ab..e49c300f23d4 100644
---- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-+++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-@@ -7,7 +7,7 @@
-  * Include this file to other C file instead.
-  */
- 
--static __init int get_tdx_sys_info_version(struct tdx_sys_info_version *sysinfo_version)
-+static int get_tdx_sys_info_version(struct tdx_sys_info_version *sysinfo_version)
- {
-	int ret = 0;
-	u64 val;
+See https://lore.kernel.org/kvm/31936a20-929f-489a-9dc6-0f8fcb9307f1@intel.com/
