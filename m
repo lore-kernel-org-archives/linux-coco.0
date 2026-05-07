@@ -1,182 +1,112 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011043.outbound.protection.outlook.com [52.101.57.43])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48602D739B
-	for <linux-coco@lists.linux.dev>; Thu,  7 May 2026 07:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778138252; cv=fail; b=O0rMdI1qtSxk55QTPjZ9QwM//171BSUTp57n3548v6/9QbubfFirJnN6NpWEJ0/RiDH6Ic1p+t2/3m40HD71U0C1cAXLwd/aQeKPsxE2ifrvGzHzaSxnlngLH0j3iC1p8c46nNbaStNHJO88LaP9AmD3xoBjuU9cxOmmKr6uldk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778138252; c=relaxed/simple;
-	bh=0PZAWAlTNPKHJ9E1BBdADbXfuzBZSA4/u4w6UIdvR8Q=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=n17AVJo147RalZT75SWZmRkpIldgOFZ1zTK6nltEbqOGWwFX1jStj69Gl82EhL58EJ9yrWVitUOJYXR+5Or7S5iPXbqz4LTiVpBf0JuDcGL53G/sq05m5P69BdBRlxb2C9sEN1HjPGoWiTLsE+Spu7+LmXE4sTS7qD1TkRlkaPw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=tDf8Eyp3; arc=fail smtp.client-ip=52.101.57.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7157F19992C
+	for <linux-coco@lists.linux.dev>; Thu,  7 May 2026 07:49:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778140163; cv=none; b=WM0d+cky6P1bnWh5q7K3i0JD3rpOrKt5cGA+JAvBQ8r27El3Z3KEUY05qU7lwjWqvGYVwu+n+S/iCIveU6jRSXkdec6NaF6gga7r1jLRrBhjq1Ac/bUBRJQhtfeRtz2tzYMpczoDlZ2gFXy919fk8VJShIrpMNIHUdFW1AxgVVg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778140163; c=relaxed/simple;
+	bh=jd6Cjpz32XIiuxDttxv5ZBmw9JX+EJaF6ywBf7XoMKc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lRm0MjRsMg0cryZXXKyGFy0xZMlLlLp7dGdQijipG896Ad0Na40tBkouKjUjDXv7llvvyed05r2JMN0AXaXm5oBnDreobAYNsnRhYkrJ+JLFZWe98ADicyXTIi2XCGzrWpzJU0c1zdx/1QfFb0LoMl+rvh/Ntk3+QKveHxHId+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JheGDpsT; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="tDf8Eyp3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TGsid/N0YYHnmTcopbVvVfTYGN2dAbHpXUHnpH+g2l5Hhy5S/Sgcrv4nnznco0cnOE6JC9OriEnMBiIGtHS+lv+m9JFHEXbzKUBCsYVNWALO5zdV2uUN8byMFvJvAYl2TIstG/ueT2sQVPqTh9IIfajtqbZ2+vgqaRizKtIXqsXshaN9ehLEffWdSWkOvke8nrYn3VuSODXv9pph7ji/lAFZ+Tt4rx8V0NWxeiwuv/6tVRwyANkZ1j0vHMBN/QBQwFZYxZDu0TD2E5uu1798cKZkTQXO3MSbzv8H/1zdG1AXgTaIhU/AUnpZqywr7+LohA83xsFFgEi7UI9hkpKKYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v6dUpy5OzDYhykHzzE4FCOFg70D7+73JxMIRyntjTMg=;
- b=NPLIxWTMiT99BbMbmLWFnWpWoTFHEv82jCYXyuHq8cnr5ThI2ihwxIULfhGjbNs3KtGrV8qMeyyiJyJ87lX93SnersFeoAiMSVYDghizDv9pHE6EFcZUecyTdmpf211VBpn7AUr8e2blwTvMEPzA17r8iDfuuBeNEZoci/LyRfrt6gQFdbhhxBiFVoHxgPXG1Q3G6FhQcj/yMgpuC2UymSUIhcZykq+ODRElp302AEO5n6dhW00/mEHBsfVy9T1jOl/dpjgSIMuHHGZRnwmKlv+cR2FAP4oJmUpjAJgCfdTo5cTTJXAxV23byK+dJzJyai8zT8O3Ph4Nrjeq8L88OQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=v6dUpy5OzDYhykHzzE4FCOFg70D7+73JxMIRyntjTMg=;
- b=tDf8Eyp3bYtkTfq6t115rwGvi3bkmuCqJtVSoMBL8yjQUgTQ0MtpgbRYvVPYvI/iRcSyUhvBg9UyuT2R1wTD7KUcz0zoVTOJIphKT7Nt3y9kcnicFS572Ul1yrO6KET/4QTo/xzofSDWI5gKJL3Ey4KmuRRzBgpDLvwtYrCZH5M=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by IA1PR12MB9532.namprd12.prod.outlook.com (2603:10b6:208:595::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Thu, 7 May
- 2026 07:17:27 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::1e6b:ca8b:7715:6fee]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::1e6b:ca8b:7715:6fee%6]) with mapi id 15.20.9891.008; Thu, 7 May 2026
- 07:17:27 +0000
-Message-ID: <3128deea-95a3-4c36-902b-37f280913f2b@amd.com>
-Date: Thu, 7 May 2026 17:16:56 +1000
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [RFC PATCH 04/12] vfio/pci: Allow MMIO regions to be exported
- through dma-buf
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
- christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com,
- alex.williamson@redhat.com, vivek.kasireddy@intel.com,
- dan.j.williams@intel.com, yilun.xu@intel.com, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
- daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
- zhenzhong.duan@intel.com, tao1.su@intel.com
-References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
- <20250107142719.179636-5-yilun.xu@linux.intel.com>
- <c0b160f8-2930-4158-9e50-b4cc4209e2ca@amd.com> <afs/Jamxnj6GGFfM@nvidia.com>
-From: Alexey Kardashevskiy <aik@amd.com>
-Content-Language: en-US
-In-Reply-To: <afs/Jamxnj6GGFfM@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY0PR01CA0016.ausprd01.prod.outlook.com
- (2603:10c6:10:1bb::19) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JheGDpsT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778140161; x=1809676161;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=jd6Cjpz32XIiuxDttxv5ZBmw9JX+EJaF6ywBf7XoMKc=;
+  b=JheGDpsTvijtcHoMUdrlY1gtjn1aYAI2tC7pxLjrHQdDPOWSIvs2fzo+
+   8pnnj6Rrgw8vn0xF/xdqhVmyiZPzxn+uTABGcFZRWZd25PF3pP2qAkLqF
+   aAYF+8DlAp3ezWA/PToYUroqHxS24NtzN8KD0G9pH7P0SfYNK+mO530dE
+   QW6CXKH4Q19UPP0p9MBn758E+i+rvqv1Ya+okhgzLF5gKhYe06cmIW1QH
+   tyMLDqvdLP3iYsk0oaYOc+FYuJo5ws0cOS/51dMl1u2VkcLTveiVi1Kf0
+   JWI7b0dzV5wbPOpA+GZqldzhx5EpoDeFoa9hDUD4rAp1908CKp/oTwZxp
+   Q==;
+X-CSE-ConnectionGUID: te0kL2FYTYqvo/QKu7vCOw==
+X-CSE-MsgGUID: 2BUowN6YRFiS8O7YNyBm5w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="82928361"
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
+   d="scan'208";a="82928361"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 00:49:20 -0700
+X-CSE-ConnectionGUID: z5JOOq6QT6SwnT6PM4pOMw==
+X-CSE-MsgGUID: xQ75mUKOSOelHPqLgdxWaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
+   d="scan'208";a="241371271"
+Received: from unknown (HELO [10.239.158.42]) ([10.239.158.42])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 00:49:11 -0700
+Message-ID: <28c8d380-d2e5-4f70-96b0-00225e0ea86d@intel.com>
+Date: Thu, 7 May 2026 15:49:09 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|IA1PR12MB9532:EE_
-X-MS-Office365-Filtering-Correlation-Id: b97efd35-1eb8-4714-ca97-08deac08b178
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	HxbieoliFjwlewnxEljCnOrXG541PQFgbZsyZtgN5PHxWQUtpYpTvFZvAI14CMgc7ycnd8KVPDoVfu6NzOIeK8k0hCt0m8X/hOlKcPC4jydA8kF8cZIFlzv8VHdBPdtU+qwHFSFHylM012SJld81KcaTm0Ov+jvJHWSUlzgXBkQXmb97O6/FjxfeKzseZ7FZQ2AA3HWCo2KXPfrxM+skOA+4nxu1sa930acdofOlZSftkM6mkebZ6sZtzSRiEnrm9FqJdG07B9lOxzbwEwVCD4rXU7RdzTD4m5YLSr5V+A8D+Dl3hJXVGcVmydn/v7TtdNgDi3XI0rS2nenf231WzxeZ/6g0XPWBI4cMavDxET1SKkqEnpDJqSv6FG34ndktCLRLaHBhhKNwIpmi4WQsK+HqnyettYy6pW6PttRFYIQds57cUOfdnpXW3dDwtRgj8pD+U7G0dJWHDXm4BZ/udVEcP1tz20G/lunEliXRjokz22kDbFYGufaThd/075lgn0OvRvJo2JeMquBcXRre9ZHUfhdl3AlwSrsI6N5Ps1ywFQHnaEaXan0+ROQN074M2CNkym8vRiGfB7yltxIwjab3+eiBOALf1I4GZBaMU9O110JCRtHCnfJFfy1GFW4+i58aYiOyIsZUCU0Pjq76cIyHA/wTEC19j7GuMHKjfZrPNkmCHgboeoLsyhFBWhAk
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aUVCWWJsTXV4Nm5Cd0UwL1Y4djkwZU5nQlMyZkJVL1dRTUJtcldEQlpnM3dJ?=
- =?utf-8?B?bDhrN2lGdlc0SlhySHBVYUE2aEVEMnJtd2ZLUHNuUDVKVTk5L3FoVGtoOTMy?=
- =?utf-8?B?VWhBbzE3M2lSb0R4c2U0K0N4amYxdEVPRVQ4TmxVT3JueXVLR0xYSXoxd3Ry?=
- =?utf-8?B?VDB5VnJhLzRpWlJaZnZteFg2bFljVTR1MFFZS0QwaEJodHpOVnR3K0dzOVM5?=
- =?utf-8?B?UDBxODdWazdVcXJySHdjKzN3a2pmZ3d3OE1ybTNjM2tLNUFsR2xtRWo5eHEr?=
- =?utf-8?B?dnpERzlFWFZBOHo4ZTVtRWxsYTBQc05xUzZldVpwbTN2SXF0eVcrWjlTVVV5?=
- =?utf-8?B?UGdXOHozYUJjOU1ob2dWcytwOFVzR3BOZVVyMXNJeUl0d2NBZ3FsWjY4SWtO?=
- =?utf-8?B?bUdLZjhENzIrU2JFRnZqQTlGeUVpeG5XVllQQ0syNXZRZDZHUStsS3J3N2lR?=
- =?utf-8?B?bk9ra01YSjgrUVRyRHhodDVvaEpPZi9wTng3MW1MRG5tT1NTZXhOaTB3bThm?=
- =?utf-8?B?ZU1SS0NXbXoyZUhwRWhqR0pTekdLMy9wdHFpUWZxZjdvajZsZjYwV0lMZG9Z?=
- =?utf-8?B?cjZQT3ZVbDhlNEQ0ZVlMaXhqSkt3cnh6bEdQMU8weDhmZ2l2THVxbll0djBH?=
- =?utf-8?B?OXpEOWZzQy94QksxbjIrVFlYb2JlWEZTeFVxUjRVSUJGd1M3VCtvMGlvNFRX?=
- =?utf-8?B?d003TEoxMmFIVVRQRHlXSWRLLzNVb1d3NFpkYXFvSjJPbHIxNkZoL3FmZ0Ir?=
- =?utf-8?B?Q3JHckdvR1FHOUZUOC9heC9Oa25lcURqOFVMWnl6R0cwTmt6bjNNU1RMOEN1?=
- =?utf-8?B?WWI5YitDZmZCWGZabXlnYy93dmtnZzY2dk1YK0VDbnllNVNaZkhNcHhTdWIr?=
- =?utf-8?B?dkN5TlV1cEN2amtHY1NBdUMvaURzTVI1MFplMUpOUmpwNWxuRVloVjcwV1or?=
- =?utf-8?B?Wms2RGVqR29xaTFLa0pQREgyK1BxdGFnZDdlMVpLQno4azZXZnpONFlJdDFN?=
- =?utf-8?B?Nnc4ZDdJUWpVKzhKcTdWNjY4U21xYWQ4NmhtNm03WU50TFppMUY2MlZJbjg3?=
- =?utf-8?B?SldPNnI0ZGxHRW80cUplQUlYMHdkZkVTbENqRHR2UW5tOUNDdTVBZ1U1K3M3?=
- =?utf-8?B?NmRSaVQwTElWcHBkVXJuZmdFZ0dmcFRETWUyaThQR3QrNlFXMDlYUWhqUDAv?=
- =?utf-8?B?RFVpL0ptTzZFTG9PRDQ5bEJ4bHVKZmxoUlpnU212Vkk0TjNWVjR0V01MdG1o?=
- =?utf-8?B?a1NxTDRpUkF1QzFoOE5laVpmcnVrY005bnlFVXl3bWV2d09RT1RURTFZVHlx?=
- =?utf-8?B?OVpkeVpGejk2b2NRemZBdEZHOXZCV3NrbU9Yd0FpMklPZkRTL3RFdFRKbFdz?=
- =?utf-8?B?VXpkaVB4SUdQM01YenRWZWNzZVZKQVAveUpxTjN4d2M0c3drQ2pKMDRHRGNQ?=
- =?utf-8?B?Z1d2RVFSTjc3ZkJwSzFLVXpMZW1FQjluOGJmZGU5VjNERHBwZGNvTmo5eHlu?=
- =?utf-8?B?Sm55eC9rWWpIbndRUlRNQzlrV0dnUkJkSzdFbFhiNnJjM2toNE16NmVOSTlN?=
- =?utf-8?B?VkFFQnZFblVVTDg2YjJpcjR5bE9VK05CYXBxQ3gxQm5JL0pTOVEwZUl0UTZF?=
- =?utf-8?B?RmVLWFFodGVPWTNnTll5TVFkQjlmdzlMZk9SRW5QenM5VmZET3ZVK3UwNTNv?=
- =?utf-8?B?NzNKbzVVMFEyd3NuMmd6dkhtVFJZdXVrWXIwRFd2ZytTaEsxYVl1TVdEMVdy?=
- =?utf-8?B?VlpnMHkrblZPT3BHWVJEdFFPOEVPLyszUTdpcERTb2lKVmpHajJjKzhPeVhV?=
- =?utf-8?B?RU5CSG9sNlF0QzBEVUlickx6QnVVWmVET25iYnVrL0VkbU82blJiYWt4ekI1?=
- =?utf-8?B?eTFDdEVRMTVJTGlBTWhDSTZWbDFaOWRoTHcrVnc0dmlqbEFWRmp6QVlFQ0xz?=
- =?utf-8?B?VjBROTNJVktsTWpJN1J3YjRPcFZJaW1uQzhXbEFUQUJyeUdmNndLQlNFUU00?=
- =?utf-8?B?VzdxaE1yUi9aSExrV0d4aVFUcDYrR0ZuenVyN0NSNnJuVWd6NTQwYjZSTDZk?=
- =?utf-8?B?UTlGeTQzUlZpNXRyVDhuV2ZTblBsY3QyRUorUE1VVFlEU3hIRDNtRDhpczZz?=
- =?utf-8?B?Y0JQYUkxYUJXR1RDNkVUVmJOZnVsaGFZSVBOMGc0R0d4eUxFZjdJL3Q1K3c4?=
- =?utf-8?B?U0VCMW9ZZ2d3OEdQZHAzMWZ4MkgyZDFkTGpZMkZLdVNqMkxocWxXUzBuTGhO?=
- =?utf-8?B?QkxoRDIvMWlyVzBodHB2MkhieE5KTlhXUEJBNWJoSkVxK2JiY1RycGFPNFpM?=
- =?utf-8?B?d1ZtTzlsTWVqbnZhVnZ1RXk0Vm91eW9yOUhTbkFhWTc5QzJUY291dz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b97efd35-1eb8-4714-ca97-08deac08b178
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 07:17:27.2392
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ctpg1MVf4Mcg+Vu8EBUrQeU8PQwqwkmZZW0gpBFPcla5UyP5cfuurVqsQJ8O6hdkfbsRm11Xp+2m8aUbELe0rA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9532
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] x86/tdx: Use PFN directly for mapping guest
+ private memory
+To: Yan Zhao <yan.y.zhao@intel.com>, dave.hansen@linux.intel.com,
+ pbonzini@redhat.com, seanjc@google.com
+Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, kas@kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, kai.huang@intel.com, rick.p.edgecombe@intel.com,
+ yilun.xu@linux.intel.com, vannapurve@google.com, ackerleytng@google.com,
+ sagis@google.com, binbin.wu@linux.intel.com, isaku.yamahata@intel.com
+References: <20260430014852.24183-1-yan.y.zhao@intel.com>
+ <20260430014929.24210-1-yan.y.zhao@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260430014929.24210-1-yan.y.zhao@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 6/5/26 23:16, Jason Gunthorpe wrote:
-> On Wed, May 06, 2026 at 12:35:42PM +1000, Alexey Kardashevskiy wrote:
->> Hi!
->>
->> Let's reignite this topic.
->>
->> I've been using these patches + QEMU side hacks for 6+ months. And it's been fine until I got a device where MSIX BAR is in a middle of another BAR marked as TEE in the TDISP interface report. And no trusted MSIX yet.
->>
->> Every time QEMU mmaps a BAR - I request a dmabuf fd from VFIO in QEMU. Since mapping of an entire MSIX BAR is allowed by default, VFIORegion::nr_mmaps==1 and it is an entire BAR.
->>
->> Problem: KVM memslot mismatches the dmabuf fd size
+On 4/30/2026 9:49 AM, Yan Zhao wrote:
+> From: Sean Christopherson <seanjc@google.com>
 > 
-> Huh? kvm does not care about dmabuf at all? Are you running other
-> patches to hook kvm and dmabuf?
-
-yup, 06/12 of this patchset.
-
-> Putting a slice in a dmabuf is a well understood need for MSI, so I
-> expect whatever kvm dmabuf interface that gets merged to accomodate
-> this?
-
-good to know.
-
->> Solution2: modify logic in VFIO dmabuf to allow multiple KVM memory
->> slots per dmabuf. Now it is kvm_memory_slot::dmabuf_attach with no
->> offset into the dmabuf and one kvm_vfio_dmabuf per dma_buf.
+> Remove struct page assumptions/constraints in the SEAMCALL wrapper APIs for
+> mapping guest private memory and have them take PFN directly.
 > 
-> Yes, when kvm learns to take in a dmabuf it needs to take in a slice,
-> not the whole buf. Or you need to create multiple dmabufs with the
-> necessary slices from the VFIO. The upstream vfio dmabuf creation
-> allows creating it with a slice.
-
-true but either way dmabuf slicing will be directed by QEMU's msix-table emulation MR and this slicing needs to match the TDISP report so I'll have to teach QEMU these reports, right? I am worried if I miss something obvious, again. Thanks,
-
-
-ps. I like nntp.lore.kernel.org very much for ability to dig out old stuff and then just reply to it :)
-
+> Having core TDX make assumptions that guest private memory must be backed
+> by struct page (and/or folio) will create subtle dependencies on how
+> KVM/guest_memfd allocates/manages memory (e.g., whether it uses memory
+> allocated from core MM, if the memory is refcounted, or if the folio is
+> split) that are easily avoided. [1].
 > 
-> Jason
+> KVM's MMUs work with PFNs. This is very much an intentional design choice.
+> It ensures that the KVM MMUs remain flexible and are not too tied to the
+> regular CPU MMUs and the kernel code around them. Using 'struct page' for
+> TDX guest memory is not a good fit anywhere near the KVM MMU code [2].
+> 
+> Use "kvm_pfn_t pfn" for type safety. Using this KVM type is appropriate
+> since APIs tdh_mem_page_add() and tdh_mem_page_aug() are exported to KVM
+> only.
+> 
+> [ Yan: Replace "u64 pfn" with "kvm_pfn_t pfn" ]
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+> Link: https://lore.kernel.org/all/aWgyhmTJphGQqO0Y@google.com [1]
+> Link: https://lore.kernel.org/all/ac7V0g2q2hN3dU5u@google.com [2]
 
--- 
-Alexey
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
+...
+> +static void tdx_clflush_pfn(kvm_pfn_t pfn)
+> +{
+> +	clflush_cache_range(__va(PFN_PHYS(pfn)), PAGE_SIZE);
+
+If the pfn is not in the kernel direct map, we will get #PF, right?
+
+There is on-going attempt to remove the direct map for guest_memfd. The 
+good news is TDX is excluded. [1]
+
+[1] https://lore.kernel.org/all/20260410151746.61150-9-kalyazin@amazon.com/
