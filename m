@@ -1,65 +1,65 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A923175A7D
-	for <linux-coco@lists.linux.dev>; Thu,  7 May 2026 20:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706DF200110
+	for <linux-coco@lists.linux.dev>; Thu,  7 May 2026 20:34:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778186077; cv=none; b=NJoNlCLyfIyda55ywc2gof4E33eJHB9aHtSFURdyp1v3dL8cQ4uwF6P5ioOEZGOXejh/Nf+5fg6XdgWNzrtmqVUsTd3GTua1eu1r6IkEj35I0U+9RqmLpoG4A0Z3ZoXzwS5CWhaoEbrZIM0bEAj4arBZJrgXDfI3+xgmXZgMv8c=
+	t=1778186078; cv=none; b=LF99k10HpgYNDthpxYtP0AN5PMBqg0Dar0soCGilZj9cwor7hGKpxxWRE1CNvf/1kD66H2DmKMo8sNTSEVPkWlBjZT3mEPLeWcUrXmbZTsrgPLThtTaX7XVS2RCL598/mz+LSgmn+nUzA7kwH9tANENe1mKwff3UFV9y1Umvgyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778186077; c=relaxed/simple;
-	bh=EmaFnaJMd6RXOTK/VecAQDt9Nc0voXI5PxK5gicU1M0=;
+	s=arc-20240116; t=1778186078; c=relaxed/simple;
+	bh=XICUZV4Q3vo1bwz1aYHmgOLx20RYd7LOuzutPezZwNU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NmCbJ0BRCzI+os1UYSqIeqAq+e2s115V3v2p3J0a0Tvo0VO+XkIepx2d0KYNTDjHYdkeS/dVHEnNy//cgxLJTaLyZddDkhj2y47W4299+Ix4KPw6zVUZyEWgOM7JufH/Qh/jVLM6HpiFhNw+aNGYDLjdlpJHOzuQcQdpbSPKL4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nBtm5sMg; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=oDKr970rSHXYoAaxxZO0DvXdU9mY5OuwZ4yxTisRkKkhOAy+gQeJNCcxPV/mDh3X//PLgoaFdxZk0ZFRPWAo63mO81us9QirjsoKe8ejQo7leQiw5Zzi/fMp2Irq/XOtF6Sd7wn/SEZDDcrA6N9sEe5M4a8VQLxIqSupLh1d3rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ejdk87p2; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nBtm5sMg"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-364c0e269e5so1502994a91.2
-        for <linux-coco@lists.linux.dev>; Thu, 07 May 2026 13:34:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ejdk87p2"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c70f19f0f37so764669a12.0
+        for <linux-coco@lists.linux.dev>; Thu, 07 May 2026 13:34:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778186075; x=1778790875; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1778186076; x=1778790876; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wMq4ZGb8sxP9J+x/Ocr+9N7VOn891ReIc+MoQxb2Bzc=;
-        b=nBtm5sMgAgTOp4LrXwP0PIdxcZKc+G/k17tJENWYENctdzc8Y7c6iXQPrN2RW1rVTB
-         6dd5107qAr9ZhxHjkp+mOeON7EFMf3WgVx+aUm9xyEBbnI73JRa+NzgGZfvJBkjl6VC+
-         rcO/cytalWiiPeAa+GvCwboEVIpjdNT4KZiFG0/fEQOiRphzwJqOvd3bQ/4zsOgPJnVt
-         M+Qf37FJuJ8C2wglk/rwviLYBwr9JPSplsBt3JVYsYEkP8XncFt29sMqD5LTQGCShlDz
-         BhZDFiJnVeVu9YhX9LHNVW8vSBiYkHqxDdPDjTiJna5MJjR4808lB5qafV59CWaRR1TA
-         +hhA==
+        bh=3rSsfG+RQhLqlg/UzpmHhS2dOMMTtnfzAhKgDM/p2is=;
+        b=Ejdk87p2msQ9b7mtQhPbIkrbMRc/MIgEAPijrGt4SL0J3nfrEPTXhi8UcGBq7aCFtM
+         UFGZ9kh91dQVa9MbJCcbxh2b5xkGYFxYGuzFYYB+LDsLXOX5Rf1dRKEekCB8jZ7lOqqb
+         a+rYSlQQRDf5z/2AvlWmljNj+9s2DPa63COeN+1zRbZG/w4Yxn4Vmw/lHQjPw0mtgRn0
+         px1M6jaDeDqtjpyof9x3T5sVoZNFGMgtWonaG+LgPcwuHCri9/P/Nwoc5V8V6QnZCfAk
+         tjh1xZYZnjGLZxCMsePchHSMkiRavK3MIvxr/TRIJBzTxsgdGfKUtbHpvHDReXMpLNlE
+         9W4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778186075; x=1778790875;
+        d=1e100.net; s=20251104; t=1778186076; x=1778790876;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wMq4ZGb8sxP9J+x/Ocr+9N7VOn891ReIc+MoQxb2Bzc=;
-        b=LVPNAT0af1sG4Y7y71Q3Gx+DVMVqNTgcHlAzyEtfyGPWcAc9cADO61j/ezstpFmyou
-         1ob625QsZB79a1iw9LdGDcTbURaRdpNm2DQgg6k+OBGkozwuB/7USUQaZ6ydmYjcKc9w
-         5rRMKi1K6qmCcpYiDj5mRMOtfFWsnAjzb1ocSUx6QF/zC2HiOmNZNSMRZ1RMP/6NxTSv
-         Xvlx3LF97bwsPvJpAcfaKbBi4kecrSqd05unfRnCcRdo0XYIehW4x0yhPthsXevOSjm6
-         OXcMq0TF7pl56jCYWpW76u528iRFZfp50G+E+oyUzOtXQg9bqDv8srCDQ0x3nxfloovk
-         4qNw==
-X-Forwarded-Encrypted: i=1; AFNElJ/8pVQtnKHh8s+fu/xooxyorJg5aOt9+TB/S58zeMi4faGJaNMDiQzt031EeQeXj07c2CrLl0jepBHT@lists.linux.dev
-X-Gm-Message-State: AOJu0YyxnwwApPYjVzkgusUlQXldHzZZTNWuywbVKhM4pgUZNP7UB6Kv
-	EqYOAXIAHyJZHC0I9uiUQnjR79RUnJCLe0zCh+I47ayC1xvsBb01Q7gTMCj7PhcZM+ZTkGNC4EV
-	x39Uyq8LA2J6UO5tifWXDl2UY/g==
-X-Received: from pgbcs6.prod.google.com ([2002:a05:6a02:4186:b0:c7e:68a1:910c])
+        bh=3rSsfG+RQhLqlg/UzpmHhS2dOMMTtnfzAhKgDM/p2is=;
+        b=jVuJfbcVtP5b4iyjsIrGYq4iyQvoHLffgCLthMwThEHT8iP0rae0f/ZBIkNLPQ6VtL
+         aeeIbkO/m9v8oFoNYbvuneq789AGsTx95v4b4GCuV5jX/NHiKcz8RkNj4XZ5DVNx2S+H
+         Bq4glyS70nhhRrjJ1+J1Yo/dFjvzLww1x7RQjEZj2uRA8Z22ByJfXGBvKXmaV+J3prWb
+         OKt1gxYLxaZl8ToMbhNE/XO26qYrmKsrDyoovTu9YEs8gKaptLIYBIrK7yNP6fWEIJ6R
+         8lRcJYVRtmZE3OIJq+IBTLKzz/CAAzQna1lDrWu0wVo0rWiERYL89YzJfaZDdk3Mh2bM
+         F8AA==
+X-Forwarded-Encrypted: i=1; AFNElJ//syWqGfAu9Ny6rz9Cw8UPzYnXlih7aAUMWnUW68doarXtjCf1JoJpdhVK1FpEcd33nMqrlmzNtGu4@lists.linux.dev
+X-Gm-Message-State: AOJu0YwvUV/OFIaQL5v4RnKG1uGMnrcWZmQyVVr2rvP8EGCmtbNwcejH
+	DtLoLvQ4XS7BOg1XqWQJ2qkOGfzcD9ZxnKZLikOhDSr0yU5QiYacOOGVmtqK5UT6SIjCeoufPZ8
+	IC8tCCAlL7NiIECXmwuKz8/aDfg==
+X-Received: from pgbdp8.prod.google.com ([2002:a05:6a02:f08:b0:c76:8ec1:5090])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:1584:b0:39c:c07:1450 with SMTP id adf61e73a8af0-3aa5a9da657mr10646690637.42.1778186074357;
- Thu, 07 May 2026 13:34:34 -0700 (PDT)
-Date: Thu,  7 May 2026 13:34:21 -0700
-In-Reply-To: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+ 2002:a05:6a20:a108:b0:3a2:f05a:795e with SMTP id adf61e73a8af0-3aa8be52328mr4117250637.3.1778186075304;
+ Thu, 07 May 2026 13:34:35 -0700 (PDT)
+Date: Thu,  7 May 2026 13:34:22 -0700
+In-Reply-To: <cover.1778185936.git.ackerleytng@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <cover.1778185936.git.ackerleytng@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <cover.1778185936.git.ackerleytng@google.com>
-Subject: [POC PATCH 0/5] guest_memfd in-place conversion selftests for SNP
+Message-ID: <47758a2b79c4bc570a17c9216929693953bdf5a0.1778185936.git.ackerleytng@google.com>
+Subject: [POC PATCH 1/5] KVM: selftests: Initialize guest_memfd with INIT_SHARED
 From: Ackerley Tng <ackerleytng@google.com>
 To: devnull+ackerleytng.google.com@kernel.org
 Cc: ackerleytng@google.com, aik@amd.com, akpm@linux-foundation.org, 
@@ -82,29 +82,61 @@ Cc: ackerleytng@google.com, aik@amd.com, akpm@linux-foundation.org,
 	skhan@linuxfoundation.org, steven.price@arm.com, suzuki.poulose@arm.com, 
 	tabba@google.com, tglx@kernel.org, vannapurve@google.com, vbabka@kernel.org, 
 	weixugc@google.com, willy@infradead.org, wyihan@google.com, x86@kernel.org, 
-	yan.y.zhao@intel.com, youngjun.park@lge.com, yuanchu@google.com
+	yan.y.zhao@intel.com, youngjun.park@lge.com, yuanchu@google.com, 
+	Sagi Shahar <sagis@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-With these POC patches, I was able to test the set memory
-attributes/conversion ioctls with SNP.
+Initialize guest_memfd with INIT_SHARED for VM types that require
+guest_memfd.
 
-After allowing src_addr to be NULL, SNP_LAUNCH_UPDATE can accept NULL
-for source address and the SNP VM runs fine. :)
+Memory in the first memslot is used by the selftest framework to load
+code, page tables, interrupt descriptor tables, and basically everything
+the selftest needs to run. The selftest framework sets all of these up
+assuming that the memory in the memslot can be written to from the
+host. Align with that behavior by initializing guest_memfd as shared so
+that all the writes from the host are permitted.
 
-Ackerley Tng (5):
-  KVM: selftests: Initialize guest_memfd with INIT_SHARED
-  KVM: selftests: Use guest_memfd memory contents in-place for SNP
-    launch update
-  KVM: selftests: Make guest_code_xsave more friendly
-  KVM: selftests: Allow specifying CoCo-privateness while mapping a page
-  KVM: selftests: Test conversions for SNP
+guest_memfd memory can later be marked private if necessary by CoCo
+platform-specific initialization functions.
 
- .../selftests/kvm/include/x86/processor.h     |   2 +
- tools/testing/selftests/kvm/lib/kvm_util.c    |  12 +-
- .../testing/selftests/kvm/lib/x86/processor.c |  13 +-
- tools/testing/selftests/kvm/lib/x86/sev.c     |   3 +-
- .../selftests/kvm/x86/sev_smoke_test.c        | 222 +++++++++++++++++-
- 5 files changed, 234 insertions(+), 18 deletions(-)
+Suggested-by: Sagi Shahar <sagis@google.com>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+ tools/testing/selftests/kvm/lib/kvm_util.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index d1befa3f4b305..a377e5f333116 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -483,8 +483,10 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+ {
+ 	u64 nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
+ 						 nr_extra_pages);
++	enum vm_mem_backing_src_type src_type;
+ 	struct userspace_mem_region *slot0;
+ 	struct kvm_vm *vm;
++	u64 gmem_flags;
+ 	int i, flags;
+ 
+ 	kvm_set_files_rlimit(nr_runnable_vcpus);
+@@ -502,7 +504,15 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+ 	if (is_guest_memfd_required(shape))
+ 		flags |= KVM_MEM_GUEST_MEMFD;
+ 
+-	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags);
++	gmem_flags = 0;
++	src_type = VM_MEM_SRC_ANONYMOUS;
++	if (is_guest_memfd_required(shape) && kvm_has_gmem_attributes) {
++		src_type = VM_MEM_SRC_SHMEM;
++		gmem_flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
++	}
++
++	vm_mem_add(vm, src_type, 0, 0, nr_pages, flags, -1, 0, gmem_flags);
++
+ 	for (i = 0; i < NR_MEM_REGIONS; i++)
+ 		vm->memslots[i] = 0;
+ 
+-- 
 2.54.0.563.g4f69b47b94-goog
+
