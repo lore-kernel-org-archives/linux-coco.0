@@ -1,98 +1,99 @@
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307153F1679
-	for <linux-coco@lists.linux.dev>; Thu,  7 May 2026 16:56:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412BE312834
+	for <linux-coco@lists.linux.dev>; Thu,  7 May 2026 18:31:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778172976; cv=pass; b=L/4mlSbLTRlcRFTOKSQYphQkATTR1X0Fs79UPggjRIlnY+I8pVnSCOXSPIUnfCiUJo9xmaCmGUHjkzbGFiMQRtBqsDAZfski/3eQZXE5t8Y/+OsEcpmNJBrHfjixwZZJHgt1mGSK4FkSMbIgpGONacMczXPemkAVE2VjqKMVqn4=
+	t=1778178718; cv=pass; b=VELKeWPhaoc9r9NU2AQvdxikuvYFOm2FV/GiogAGrdFRWTiy73z236iub+M9qkQbla/PXlHwdWSSysG8uZDYWd4uZ9oxhXnihzeokyj8pHzA3akPDCNl77qrZaEVTbgMw8dcLYATOJ2eUB7arhMeHGS30KmqcaaFJfyTovC1WrE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778172976; c=relaxed/simple;
-	bh=yU58Xq2jlsKwRvWVzMF/35DqD9SuerVG6YnTfgrQsdg=;
+	s=arc-20240116; t=1778178718; c=relaxed/simple;
+	bh=9Gtd+5W8SMTR25ZmPIeA+8FPrVOqTlN7XkJgDdQpNlk=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UMYkESBYgFBafI1ivfFRiYWEI9356qfoWS61LXUXkEuBoIRAy4YOKFqD4cOMhi+/Db1hJ2dbS0JteRXvQVJgM3LfGrDliny43kQz9dKl54ALMLmGHkMnKIhD2g2Db9/bFBxfAlzrUCRSxUOd4i1PbstD1TRdwoffKSEWLOWQy/8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bhnFNNIH; arc=pass smtp.client-ip=209.85.222.53
+	 To:Cc:Content-Type; b=tIqW1t6ZaQme5wOUnaBm8XMglKb1JQSxQ1fA34Zx8PAC514V3PD/abk1sdBPYRuokoeCgfiZtcXK67XDR4pgdj8V101zklYGIhz3uWeiqvu2Tmtu/eG4JYuP9gSWKcOYC5ap3Emie1aaaufLOoxW2NPHm3E1a8crSAcWNllmaxw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jil10XIW; arc=pass smtp.client-ip=209.85.222.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bhnFNNIH"
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-9568159ee07so631864241.1
-        for <linux-coco@lists.linux.dev>; Thu, 07 May 2026 09:56:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778172973; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jil10XIW"
+Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-95d18b33f93so658210241.1
+        for <linux-coco@lists.linux.dev>; Thu, 07 May 2026 11:31:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778178716; cv=none;
         d=google.com; s=arc-20240605;
-        b=ZFn190LPpZLEhO+M+d9ixKOEcyk7TU++kVoDkDnyYavmYwFX34Kvtj32oCyScgStRW
-         wBtCYY+WlwyVIQuQ+/N66TSst0xLL01n3WF/SNzOinq6NnuZHwhE/iBvYlTPM6n1eiEG
-         4hv06SwCf8U+NVUZQfrKjDbN+slDs8kip6LdV4uBLrxMTrnWxqYgj4wEcerNL4gHMpv2
-         edCmv9Tz3aPzIX8YRs0au7zo4NjK/hXbM7r6dXimaSN1HhII5LWkCCtNFsnK4R4QwuBY
-         hLUAYY14x9gsBrW9N7G9U+O8xLYdzHA/SaOfbVErl81Tu36anVg+rjei6ottZOMu3vrR
-         gYtQ==
+        b=c1gghk3IaxIcIV/ErKJONPwi0RWWxzdJ+hw4LyTGyjeIedMu2U1QEMHtvuVwfGuwX4
+         W7PCs7Rv7ftcgfpaU//AmxIqsg4hUPtGdNix5N/i7sTCkJoiRGMUBBeaYvmW/v95gu1U
+         rsJ9WiJ7WQShdpdbMEqg2/fsUloFD9aMER01mbu9CSQaPO82BnueDqQRUHVLOWbQfJEz
+         QxbRXi2mcv3FqV+RUJpYSt1dkU8JQz6x+X/Boe0urZZ2RUAga+IUlwwLuR9uXmTg+W8B
+         ZpJ/KUn9Dh7/5HYqC72+jgMGFy40Qjqao+wkEqDr1cH8mPqivO4JzVLBgqIGJ04KBVCC
+         DnZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=fxKJNK3JYOXtq/6RpdHSxauIPnnYNnrQjQPiGKEVycA=;
-        fh=jMaDLux9kqo07OZyJzQGTbBFJ+KKE2tn0LSDZeghiBU=;
-        b=MbLEj4zEICxAROzFp7qV6RISJ0jSdwYTOuWcLcHwKbZeN2kpQBgd2BI854zOyTU2Qf
-         nxpk3Ns5rXzn8eT3Fp4DjmaetCsbbufZjmpzbCibUhDg1o0ivSbsgWEmYMH5oM9RDXEu
-         qwUTIBrvEVodBweMUL6iWzZWqY4H+WtEjXhdKFDfMqe5W+f202nspGI+ehphNu2hFgXE
-         6mSl8qfgpE0zO3uRLc1KDC+/fcg4TVxPqUx/qb8/XFiOipeK4QO+V4SiGPV+7pqEZeRL
-         0HwHDww9dOp5DJeqgGjwVNKbYlsEK9srXRRGMvp51qu1eeIWP77mAi0zjuFF8YRsI9dC
-         wj3A==;
+        bh=goCC1MXS8+Hmwnd2WWRAT4Rp01B0ycJCM1C1lBpTnIs=;
+        fh=GUTQQT/3sK7/KONuGHhSOlRr8BzJavCnffFuXzdTsxM=;
+        b=CX1phIl4ui2HJgjbrh5KDQRKHYoErvYcksFg3GY+oX83n77Ixv63N3JqpwcEegqTw+
+         qtHRdbJvqfCGCNOrRdSyt+IQP22eNDHrs7wb++zGcdw9YWKl0kKvBtCkjDLnb6lTG5xy
+         6FmSJur61JFiKacIsvPyN1q69KicGjeTnfHW0N7wZEF7PZSdRrln0Z7grF17H4VwjAC/
+         VA0YE9s0Ci1xy0hAttPVvqnslpmrJx3CvrAa9wd5dmPMmWHi91YlvkO7ccPCfhKkHZGx
+         xZjqo4BSOcmV3tF/F+odGRgb+ITXyUJQZZZi4XDun79BHzIpv5AftcRCywuOPAYaOWzb
+         jrOQ==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778172973; x=1778777773; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1778178716; x=1778783516; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fxKJNK3JYOXtq/6RpdHSxauIPnnYNnrQjQPiGKEVycA=;
-        b=bhnFNNIHQByf65/5PiFAOKyNuNpTqUxylQjLtJMYP7e7rNCMexNR322ZBgxEefdAR3
-         nr0+Un+32ZHXByiu1LoG1WvjJRq4OC0lCnqR1bfIY3+SLLWuwD/yXPM/JHjWBnUlhtwD
-         9UjSFM8wqyL0vU4nvewF7WbLpyVdRtFQWUAoXA8huofuzbqHC/e7ECRA+DRpD3KcCcgV
-         tuYluARO8oTnF41Xow1KQzVTKDfUWM/FKNaHbpPyLr7oQYMf1KWr+vJGSEFq4HDvwzIe
-         eRxqlTpUxifv9pz5BlbOjw6JQg4H9Zsz6RW1kXUmaEkdMKSkEEfVvBS1UDj37Ok6TU8M
-         6DPA==
+        bh=goCC1MXS8+Hmwnd2WWRAT4Rp01B0ycJCM1C1lBpTnIs=;
+        b=jil10XIWAdTDjkZ3BNB8lK0NBCGYwcy9rs+abvRyn9nT4r4xqENUDnGZOom+dkImOf
+         jp9LItmqLu68NXwyN1kJra0Tp62RmIH7ydJVy/T7mp3nZ1BzbH2MgCKNACJ0tLZwUK+H
+         FnZOQ2bolwu6OKlVJoJwBlrTpd7PmbCiRGy74RQbFIlfXLz1mL3cfXyCwDeHyp+LTXXh
+         G5Ntoz9ukjJR+0hi31xHcrxgW18VYVHoUtvtnoeu1sF+HqIB2IEDbD40O+5FYk7bZcoI
+         REYmBkWCMeDCF8RFL2ago2mKsct8XwH1YUpZwhDIn2ExfmZ5po2ivgpF1dHGZU46SArM
+         m2ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778172973; x=1778777773;
+        d=1e100.net; s=20251104; t=1778178716; x=1778783516;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fxKJNK3JYOXtq/6RpdHSxauIPnnYNnrQjQPiGKEVycA=;
-        b=oGSePuJvAvRE6wwHkax0C/cVfT+zzAPZkz8XfCqwhPX8fR4C9kCU2qtykx2ir4QsR0
-         as4OCLYilRZfxGsMw9GNUUGhuRa1wTjP/DqXsrVBgS9qY/QSb+q8pOkqNNTBGNBbbawa
-         49ue742rYo1lOm3/WMGur4KWfxNxz9fUnIHTG6TYHNYPOQeCv4WHWXQOX8nEoZ+Pv7YW
-         BW9L9VDLUGSLQWxDiJ+NX1mH98EgtQsSuSGXnJGiC5z9Ygg/WNEXYKJyDIn9D5xMOrNX
-         E72yA9QzVscJ8e0hkDadNP3T+8AdSqgJ5kUCOLe8j8kv9NdWwmzO3M1CWPlIW861Pl38
-         LB/Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/qjsZ9nt68Jz4kQ8DDDflv8Bg07MA0Ct11QzVjnwpa3bueatGDkGEVzRg0rYNLzMgLbaTmhkRuZmPi@lists.linux.dev
-X-Gm-Message-State: AOJu0YyQ3DB6zYXCn9FYFxMjfZFdSKLYqCtDpwJn1i+F+YFaUDuKv4tq
-	8bBPLtqTJ3bsBpFJAGoW5iO3042giIvetJgPweU4royO5EuhDfllgqyLswNYNIm1cL5ZC9XhJAK
-	GZpMk43aq8louH7YTZna0vRfjU8ub9/5p5kjvYjiZ
-X-Gm-Gg: AeBDiev5fipk5ptv4zYF2dvvGg7C85kRVYo3MNUAdmVYUPrikvqDsZQrm9ozg+5zGco
-	gkEgEpoh96zOA2ZIFp9tTf5YFegl3jBTQ05yPyx7N/j1gwfrEIWAk3i0WquBb6x6pidXaFvI/U0
-	hziT3x/0gvSbyVqlnhAMLSalMj1nwF8zXh2QXRXWvEg1xoDCXUQHSNR/aCs2ueEKM6nuQhPf/or
-	UFBGSy29xgpGLU47Bg5Q7heA2qY5AIpiv8b9oqEUY0/Nv0gkVd9TfW7FXrCToxe4W+YFW1GZr/y
-	WFiCqWN1uNl/2Zudvlb601pC6RT3hC3U8p65hIpPs0pKXV3dPW2SK6g4vrUHv/G9d/KzA3HwDAx
-	uUcZq
-X-Received: by 2002:a05:6102:3f52:b0:604:f29d:84be with SMTP id
- ada2fe7eead31-630f8e78530mr5085650137.3.1778172972306; Thu, 07 May 2026
- 09:56:12 -0700 (PDT)
+        bh=goCC1MXS8+Hmwnd2WWRAT4Rp01B0ycJCM1C1lBpTnIs=;
+        b=ZSvk4odpT7YDnf7qWwhrEbJpn5uoe0o1dfZbc7o4RdA/lvVXshNMkxxEbTEUBFb6aq
+         h+S5z+qugU/g0idNMCANnL08FaQ2tqPma7HDrvtZbDIKJhXb4toTtpr8F6fj+KH8wDjg
+         BggaJ0A+Dl+H5aP4bUGrc62cPD9HZVLlUAEX4+K8p/wHYEhKPIHgU6u4P143b9wxekMc
+         enfnOZvk1FYLCIPz5ca5dKYfkwIBhfgtyACBuVraNHGBhg14KE0FvGukJCHce5xhlEQC
+         cbZ8rYgAmdlGdYUYestbnu9V94dR28wcDJ2EKQ66c87RqLBKpSvdJeHh7FMjaBkKc4Ej
+         lqgQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/GUSKrvATFxA0/ONxMcKXXdTLCKMgZ85mjAIRNity6pNNCehSKtn8vFE7+vyf0coWa6WDA2Q9uu6i3@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyge35+a7QM5pqA5p0ZZdal2WPe0qANNnjxlmVxsDgiArjK9Fyf
+	ZDHy1aZqHkVRvIrmCKRVxj1J9srvNuQrceHqucsg3Ua28C/d9h3uPxi7nrNkqiOzSlDDRGrbVLj
+	MOtabKMEetxQSDvgpmXp0BTGtIzMU+cAxYcQUQmnq
+X-Gm-Gg: AeBDietzfNzq7GhvfnRNbYZWLSAjx5WM1iuw4J2nUQalgjS3iR14ux6t8KXGhDeT2GP
+	9ECWWWdZCZb6R4NK/ptVaG5dZ6FdD8huvk4Dwnu9At2BpUrSILFFtFCAUBDgae8vXFSc/8fivir
+	43hCAAT03vhc+dwuCFweiPrEqlDCM1VJb0Shn4SFARdx7hnGDCCzwkSgZhW81qrSjmSk60jaFKl
+	39weWQ7djCrZmJOMGm+ZhM1Y+KqNdbcnLIs10JfsjLLkNZIWWLHKzqDVMraW1eC1PxLD/6TmPYG
+	U+Qm/ASanP9flSzJyXFurNV8yGX8t94m3RNDebyUEHmRTAfOV9fgFhsTQkx960eco/09jxyGLxa
+	4/yc1
+X-Received: by 2002:a05:6122:6304:b0:56b:a7de:7129 with SMTP id
+ 71dfb90a1353d-575702cc825mr1528185e0c.7.1778178715530; Thu, 07 May 2026
+ 11:31:55 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 7 May 2026 09:56:11 -0700
+ HTTPREST; Thu, 7 May 2026 11:31:54 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 7 May 2026 09:56:11 -0700
+ HTTPREST; Thu, 7 May 2026 11:31:54 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <n5ce32wumzeiqqyqutom4apy2kqfetbvusc6j4k2xarsska5mw@klp5bmy7qhfm>
+In-Reply-To: <byywwfin2aenobdwuesqihm6nzxyx6ecedwgbt7f5tvaaul6fi@u7bmexpavwdn>
 References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
- <20260428-gmem-inplace-conversion-v5-10-d8608ccfca22@google.com> <n5ce32wumzeiqqyqutom4apy2kqfetbvusc6j4k2xarsska5mw@klp5bmy7qhfm>
+ <20260428-gmem-inplace-conversion-v5-1-d8608ccfca22@google.com> <byywwfin2aenobdwuesqihm6nzxyx6ecedwgbt7f5tvaaul6fi@u7bmexpavwdn>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Thu, 7 May 2026 09:56:11 -0700
-X-Gm-Features: AVHnY4IiEmQejwyUzKbSGtsBzFH7WMpl699YC0dogi8imsP9-pFhPzVdvXeVDZc
-Message-ID: <CAEvNRgF9+Gr7UVEq-E2SQEb_XOQQMOXy9F_A2tA=DbNV_fJ0EQ@mail.gmail.com>
-Subject: Re: [PATCH RFC v5 10/53] KVM: guest_memfd: Add basic support for KVM_SET_MEMORY_ATTRIBUTES2
+Date: Thu, 7 May 2026 11:31:54 -0700
+X-Gm-Features: AVHnY4IrLeBlt83AneVyVg35mAkmDcan1kch_gmoyAe0Nsgg7IVb__9uDe3mtms
+Message-ID: <CAEvNRgFGc7SRy_hkfSH3X=Cu00CP6wMHBJO0+55uebKTezWVnw@mail.gmail.com>
+Subject: Re: [PATCH RFC v5 01/53] KVM: guest_memfd: Introduce per-gmem
+ attributes, use to guard user mappings
 To: "Liam R. Howlett" <liam@infradead.org>
 Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -123,74 +124,42 @@ Content-Type: text/plain; charset="UTF-8"
 
 "Liam R. Howlett" <liam@infradead.org> writes:
 
-> On 26/04/28 04:25PM, Ackerley Tng via B4 Relay wrote:
->>
->> [...snip...]
->>
->> +/*
->> + * Preallocate memory for attributes to be stored on a maple tree, pointed to
->> + * by mas.  Adjacent ranges with attributes identical to the new attributes
->> + * will be merged.  Also sets mas's bounds up for storing attributes.
->> + *
->> + * This maintains the invariant that ranges with the same attributes will
->> + * always be merged.
->> + */
->> +static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
->> +				    pgoff_t start, size_t nr_pages)
+>
+> [...snip...]
+>
+>> +static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
 >> +{
->> +	pgoff_t end = start + nr_pages;
->> +	pgoff_t last = end - 1;
->> +	void *entry;
+>> +	struct maple_tree *mt = &GMEM_I(inode)->attributes;
+>> +	void *entry = mtree_load(mt, index);
 >> +
->> +	/* Try extending range. entry is NULL on overflow/wrap-around. */
->> +	mas_set_range(mas, end, end);
->> +	entry = mas_find(mas, end);
-
-Thank you for your reviews!
-
+>> +	/*
+>> +	 * The lock _must_ be held for lookups, as some maple tree operations,
+>> +	 * e.g. append, are unsafe (return inaccurate information) with respect
+>> +	 * to concurrent RCU-protected lookups.
+>> +	 */
 >
-> Please read the documentation as I believe you have a bug here.  What
-> happens if there is another range stored higher than end + 1?
+> Can you please elaborate how you see inaccurate information and which
+> information is inaccurate?
 >
-
-The invariant in this maple tree is that contiguous ranges with the same
-attribute are stored as a single range.
-
-The goal of this first part is to get the entry at the index just after
-the requested range, and see what the attribute there is. If that
-attribute is what we're about to set, extend the requested range for
-storing to the end of that range.
-
-If there is another range higher than end + 1, with the invariant
-maintained, that attribute has to be different than the attribute stored
-at end. Hence, we only want to extend this requested range up till end.
-
-> Do you have testing of these functions somewhere?
+> Your comment is incorrect and misleading as append will not be used in
+> rcu mode.  Note that you have not set this tree up in rcu mode.
 >
 
-GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(indexing, 4) tests setting
-attributes in ranges. If test_page is 2,
+My bad. Thanks for clarifying about usage of rcu mode.
 
-1. [0, 4) starts off shared (4 is the number of pages in the guest_memfd)
-2. [2, 3) is converted to private
-    => so the ranges should now be [0, 2), [2, 3), [3, 4)
-3. [2, 3) is converted back to shared
-    => so the ranges should now be [0, 4)
-
-I verified this by inserting some trace_printk()s and inspecting manually.
-
->> +	if (entry && xa_to_value(entry) == attributes)
->> +		last = mas->last;
+>> +	lockdep_assert(mt_lock_is_held(mt));
 >> +
->> +	if (start > 0) {
->> +		mas_set_range(mas, start - 1, start - 1);
->> +		entry = mas_find(mas, start - 1);
->> +		if (entry && xa_to_value(entry) == attributes)
->> +			start = mas->index;
->> +	}
->> +
->> +	mas_set_range(mas, start, last);
->> +	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
+
+In the next revision I'll remove this lockdep and use RCU mode, and
+kvm_gmem_get_memory_attributes() should get a stable result.
+
+The other lookups using mt_for_each() in kvm_gmem_range_has_attributes()
+and kvm_gmem_get_invalidate_filter() retain the lockdep since those
+operate over multiple ranges. Those are called from paths that require
+holding the lock to exclude other operations anyway, so the lockdep
+requirement does not cost anything more.
+
+>> +	return WARN_ON_ONCE(!entry) ? 0 : xa_to_value(entry);
 >> +}
 >> +
 >>
