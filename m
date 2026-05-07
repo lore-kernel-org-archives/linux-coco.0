@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7157F19992C
-	for <linux-coco@lists.linux.dev>; Thu,  7 May 2026 07:49:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A5E3537F7
+	for <linux-coco@lists.linux.dev>; Thu,  7 May 2026 07:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778140163; cv=none; b=WM0d+cky6P1bnWh5q7K3i0JD3rpOrKt5cGA+JAvBQ8r27El3Z3KEUY05qU7lwjWqvGYVwu+n+S/iCIveU6jRSXkdec6NaF6gga7r1jLRrBhjq1Ac/bUBRJQhtfeRtz2tzYMpczoDlZ2gFXy919fk8VJShIrpMNIHUdFW1AxgVVg=
+	t=1778140469; cv=none; b=kJB/KkNpUQ5k/fd8QWb6xbVsNOjRggIsyOBRFJedf8cNMcremD9TQuGm2yHEVziKNh2LSWnR6rWFr9ys2ublu/EBUTiFHfTaBX+gB7xAa0eqQOSdr4bMTNaeEYzRwCeX3ZvKfIj5my0JgIaggELxS040xxrSWFqOP30NFsAW2Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778140163; c=relaxed/simple;
-	bh=jd6Cjpz32XIiuxDttxv5ZBmw9JX+EJaF6ywBf7XoMKc=;
+	s=arc-20240116; t=1778140469; c=relaxed/simple;
+	bh=/udflDc8cothw4i2dsB61q4+3RTwijgBESwA8j1pUNA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lRm0MjRsMg0cryZXXKyGFy0xZMlLlLp7dGdQijipG896Ad0Na40tBkouKjUjDXv7llvvyed05r2JMN0AXaXm5oBnDreobAYNsnRhYkrJ+JLFZWe98ADicyXTIi2XCGzrWpzJU0c1zdx/1QfFb0LoMl+rvh/Ntk3+QKveHxHId+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JheGDpsT; arc=none smtp.client-ip=192.198.163.12
+	 In-Reply-To:Content-Type; b=Q3+QMz2kuZYIixJq8A46/yAivlQFuk+PTflX/XG/FyuBqFNCseJPO3zEU9XzOhLTfMIa+XkV3pCGDSWXICK0RlmS79D/V6E9SBDU+FM4SU9yBkJACJUFQdddwvH4SsOO3OoGb6/l7XesdSYmhjPhgXx7+wlLSljNh/SpWx6myF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HCNT17w+; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JheGDpsT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HCNT17w+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778140161; x=1809676161;
+  t=1778140468; x=1809676468;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=jd6Cjpz32XIiuxDttxv5ZBmw9JX+EJaF6ywBf7XoMKc=;
-  b=JheGDpsTvijtcHoMUdrlY1gtjn1aYAI2tC7pxLjrHQdDPOWSIvs2fzo+
-   8pnnj6Rrgw8vn0xF/xdqhVmyiZPzxn+uTABGcFZRWZd25PF3pP2qAkLqF
-   aAYF+8DlAp3ezWA/PToYUroqHxS24NtzN8KD0G9pH7P0SfYNK+mO530dE
-   QW6CXKH4Q19UPP0p9MBn758E+i+rvqv1Ya+okhgzLF5gKhYe06cmIW1QH
-   tyMLDqvdLP3iYsk0oaYOc+FYuJo5ws0cOS/51dMl1u2VkcLTveiVi1Kf0
-   JWI7b0dzV5wbPOpA+GZqldzhx5EpoDeFoa9hDUD4rAp1908CKp/oTwZxp
-   Q==;
-X-CSE-ConnectionGUID: te0kL2FYTYqvo/QKu7vCOw==
-X-CSE-MsgGUID: 2BUowN6YRFiS8O7YNyBm5w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="82928361"
+  bh=/udflDc8cothw4i2dsB61q4+3RTwijgBESwA8j1pUNA=;
+  b=HCNT17w++UtZWduCRuCLC1ZxTj9gdrVhCkE/zevBuB3a6IbLtPccWctT
+   2C39lx3acKYX/rdgx2SfhOyK5B4xyAxbva+nXD+4BHaapwwMCsSPRqJRU
+   MSevCeLnRLDsj/SlsMmHlATVxpal5r3s9wb9+xUMj1RyXDBgZb5N6kJl0
+   yHS0uNXhT1Aup94Rz/HJ89hH0RyliP7iKDV7gDY6wGnRjt/JivlZVfUie
+   eN0/2Mmqf2VWmHIEW8YH/MXjj8PelT3uiUJqZmQGqj5VVLk+A6x68LJv+
+   vbHJP39S3Q4HT7ketT7O484gL6x41Q7HYwg4yruQDZ6rre+xQvG9Bmeb0
+   A==;
+X-CSE-ConnectionGUID: WSp+7D6ARaW5m1JMv38RkQ==
+X-CSE-MsgGUID: 7nZycwbFR9iSRlFk2TdOmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="79192804"
 X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
-   d="scan'208";a="82928361"
+   d="scan'208";a="79192804"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 00:49:20 -0700
-X-CSE-ConnectionGUID: z5JOOq6QT6SwnT6PM4pOMw==
-X-CSE-MsgGUID: xQ75mUKOSOelHPqLgdxWaQ==
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 00:54:27 -0700
+X-CSE-ConnectionGUID: Hwba+87XSxWKjyA1Pg3xPg==
+X-CSE-MsgGUID: eiAgj3DXRjuMJgPiNCGbIA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
-   d="scan'208";a="241371271"
+   d="scan'208";a="241372691"
 Received: from unknown (HELO [10.239.158.42]) ([10.239.158.42])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 00:49:11 -0700
-Message-ID: <28c8d380-d2e5-4f70-96b0-00225e0ea86d@intel.com>
-Date: Thu, 7 May 2026 15:49:09 +0800
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 00:54:22 -0700
+Message-ID: <90e91a3c-3f5d-454c-878f-335b19af71c3@intel.com>
+Date: Thu, 7 May 2026 15:54:20 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,7 +52,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] x86/tdx: Use PFN directly for mapping guest
+Subject: Re: [PATCH v2 2/4] x86/tdx: Use PFN directly for unmapping guest
  private memory
 To: Yan Zhao <yan.y.zhao@intel.com>, dave.hansen@linux.intel.com,
  pbonzini@redhat.com, seanjc@google.com
@@ -62,18 +62,18 @@ Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, kas@kernel.org,
  yilun.xu@linux.intel.com, vannapurve@google.com, ackerleytng@google.com,
  sagis@google.com, binbin.wu@linux.intel.com, isaku.yamahata@intel.com
 References: <20260430014852.24183-1-yan.y.zhao@intel.com>
- <20260430014929.24210-1-yan.y.zhao@intel.com>
+ <20260430014948.24226-1-yan.y.zhao@intel.com>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260430014929.24210-1-yan.y.zhao@intel.com>
+In-Reply-To: <20260430014948.24226-1-yan.y.zhao@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 4/30/2026 9:49 AM, Yan Zhao wrote:
-> From: Sean Christopherson <seanjc@google.com>
+> From: Sean Christopherson<seanjc@google.com>
 > 
-> Remove struct page assumptions/constraints in the SEAMCALL wrapper APIs for
-> mapping guest private memory and have them take PFN directly.
+> Remove struct page assumptions/constraints in APIs for unmapping guest
+> private memory and have them take physical address directly.
 > 
 > Having core TDX make assumptions that guest private memory must be backed
 > by struct page (and/or folio) will create subtle dependencies on how
@@ -82,31 +82,33 @@ On 4/30/2026 9:49 AM, Yan Zhao wrote:
 > split) that are easily avoided. [1].
 > 
 > KVM's MMUs work with PFNs. This is very much an intentional design choice.
-> It ensures that the KVM MMUs remain flexible and are not too tied to the
-> regular CPU MMUs and the kernel code around them. Using 'struct page' for
-> TDX guest memory is not a good fit anywhere near the KVM MMU code [2].
+> It ensures that the KVM MMUs remain flexible and are not too tightly tied
+> to the regular CPU MMUs and the kernel code around them. Using
+> "struct page" for TDX guest memory is not a good fit anywhere near the KVM
+> MMU code [2].
+> 
+> Therefore, for unmapping guest private memory: export
+> tdx_quirk_reset_paddr() for direct KVM invocation, and convert the SEAMCALL
+> wrapper API tdh_phymem_page_wbinvd_hkid() to take PFN as input (thus
+> updating mk_keyed_paddr() and tdh_phymem_page_wbinvd_tdr()).
+> 
+> Intentionally have KVM pass PAGE_SIZE (rather than KVM_HPAGE_SIZE(level))
+> to tdx_quirk_reset_paddr() in tdx_sept_remove_private_spte() to avoid
+> mixing in huge page changes. The KVM_BUG_ON() check for !PG_LEVEL_4K in
+> tdx_sept_remove_private_spte() justifies using PAGE_SIZE.
+> 
+> Do not convert tdx_reclaim_page() to use PFN as input since it currently
+> does not remove guest private memory.
 > 
 > Use "kvm_pfn_t pfn" for type safety. Using this KVM type is appropriate
-> since APIs tdh_mem_page_add() and tdh_mem_page_aug() are exported to KVM
-> only.
+> since APIs tdh_phymem_page_wbinvd_hkid() and tdx_quirk_reset_paddr() are
+> exported to KVM only.
 > 
-> [ Yan: Replace "u64 pfn" with "kvm_pfn_t pfn" ]
+> [Yan: Use kvm_pfn_t,exclude tdx_reclaim_page(),use tdx_quirk_reset_paddr()]
 > 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-> Link: https://lore.kernel.org/all/aWgyhmTJphGQqO0Y@google.com [1]
-> Link: https://lore.kernel.org/all/ac7V0g2q2hN3dU5u@google.com [2]
+> Signed-off-by: Sean Christopherson<seanjc@google.com>
+> Signed-off-by: Yan Zhao<yan.y.zhao@intel.com>
+> Link:https://lore.kernel.org/all/aWgyhmTJphGQqO0Y@google.com [1]
+> Link:https://lore.kernel.org/all/ac7V0g2q2hN3dU5u@google.com [2]
 
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-
-...
-> +static void tdx_clflush_pfn(kvm_pfn_t pfn)
-> +{
-> +	clflush_cache_range(__va(PFN_PHYS(pfn)), PAGE_SIZE);
-
-If the pfn is not in the kernel direct map, we will get #PF, right?
-
-There is on-going attempt to remove the direct map for guest_memfd. The 
-good news is TDX is excluded. [1]
-
-[1] https://lore.kernel.org/all/20260410151746.61150-9-kalyazin@amazon.com/
