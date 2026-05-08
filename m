@@ -1,310 +1,263 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EB332F742
-	for <linux-coco@lists.linux.dev>; Thu,  7 May 2026 20:34:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778186083; cv=none; b=BOctWFimCBndgk0w4q/xE/ToDYoGAbvwoOqUkY01ATgIR1E4cQ2rEzwpxo1spC70MHgSV2jm0C1CJOzbEJTKvYNc2V/jrd/fzdJniUIB+YVI/k1A0Yu0QUHwFjOTKmXgr0xMw3l2opSAwOMYonWo/J0eLctGF6tcRp32+zhtbGA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778186083; c=relaxed/simple;
-	bh=jZG/0FBlpQu4GQm6uEGJ6DPNXY8HyxzLrxN+MqpPshU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=L+bMmYCLs5tdQoL9NWwJr0EsmqxVXLDuLyr4IQlrmj98fX3uw+93/9mWXrAM6NfL1G5Z1kLGir2tBTpOK1kkfMCX9yAeq3B/U8rYeNoyZ30i2tJv6z8HQMdf/gl5GfPiDNu1edWnLmblJK7jpzveFFmubyrAYjuUPlfInnJIhvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qLPJJ/8m; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C158635CB87
+	for <linux-coco@lists.linux.dev>; Fri,  8 May 2026 09:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778231840; cv=fail; b=rwDkrVBRlevDhjv40OBOKXLRjJiphb3uOa7HeOE7qPREPBgnkRgnpzPXNBP2UrOqOhxExJOHcQvL0yz1WuETAiimaYe47VclQLuDXvbRa/vN8ajR9dMSXuigG3ECzR2D5frXnmW62qmBmaQcnTHc3q/oHYUYuJ7hvy6JgjrF4kw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778231840; c=relaxed/simple;
+	bh=OBbBXPX0clnszuMadIEyNe4arI9IpBiq+1Yh9qUYUk4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=C8u4XjLwXpGMZZqS/Lyy3KeKRBj4WPtR01aw2vbMlX/atgRzj3FkL3lnd2E6PuzX24qTnpFD6LKBL1xIUyoROQ7ROrm8UBNA7/M0cG1aSB+9/WkQU/bbEnVv3iWu8s2N4HbjObQzZBAj1rwBTyVZNLkCy0SarP0NVY6e1GpzlSg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gcfK1Ao1; arc=fail smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qLPJJ/8m"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c70f19f0f37so764712a12.0
-        for <linux-coco@lists.linux.dev>; Thu, 07 May 2026 13:34:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778186079; x=1778790879; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dvz8VPqH3W+uwpeYUY0LX4HhcQuQ485hz2JT5vwb8Uc=;
-        b=qLPJJ/8mEtvPI57+5f5SV3EEmfmKcQRTz8oov0MgseqlW8yLooUCrCfxTLpP5FXCJB
-         8liG+KdZogIAiOYrlADyRCQDq5RQgASbB9Jm5dzL1BF2lQJ08YVdESIi07W0hPovGYZt
-         nbA7y63KNRPIbLF1Squ5HcufHYAAoT7y/AbaZzemE68+Q8tU0slrwWuwE9LC0iLXRUD/
-         974U+yZjpwvuQpjSJryiqxVgeKOXDlKA0iqxV0PH5Z5dqSYERU8U24aeViymhcIqOtqp
-         tVGyC46nPujqf+ulfyBGfFXrjKy6o4Hs2Z0b6XW/U3v2U9pn3e6McCKWPsIuKj/thwf3
-         aVeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778186079; x=1778790879;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dvz8VPqH3W+uwpeYUY0LX4HhcQuQ485hz2JT5vwb8Uc=;
-        b=fYI1hqO8ZCuDYCmoNyXFa8BM7E+Oij6mDzWe6eH2UfaUKlR3ZsWwnbEavqxDBSMCB7
-         Jq4UCBuYBQ+lGNFCJR/sbXzFhCXGqP/R6KIZk+zTtaaA1h3O14hDLkzKmJpJkAxEE8bp
-         SO3Zhk9TGBTZ8OKd6Mt6drRsIGNhR2cnaNqLpeSJwmiZKL2lj9uHb5JlBmNIGU+W+vPl
-         Ue+pCP8NRVocvtgP+a/ELNoNLtfxx4J4oy3R9zsoPaMHyLwZ1r2u1iLqRsSDseC7ehvG
-         ZO4NdLQzpyrOYBzVNQsOpCyrWiqTRfLTL/s0AWfq7zK1ec/uEngYXB0sQx/LyU4xemHB
-         eNxw==
-X-Forwarded-Encrypted: i=1; AFNElJ9Lu+JQ7rPs38s3FTA/3ddv+SyO9YNl+pqC7Yw1AGM4HLO+zaHE/aDmdLthaMm2Eqw/7ODCYUKuJIQG@lists.linux.dev
-X-Gm-Message-State: AOJu0YzeqXrElKJnCZpFnqrde0hBb93vSJGXdnblue272CvoH0pifrER
-	74bOhZNdiCxJdjPjOmhPIZ23ntWxOD7rH6i3fDHeBezVqqUAx53l7xaeuPQc5UBrhRogheBiqZF
-	bFYoeJxKwbH6e7/sT8un4S7lhyg==
-X-Received: from pgam24.prod.google.com ([2002:a05:6a02:2b58:b0:c74:42:8984])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:6a08:b0:3a0:9052:c005 with SMTP id adf61e73a8af0-3aa8be1f13cmr3709197637.3.1778186078908;
- Thu, 07 May 2026 13:34:38 -0700 (PDT)
-Date: Thu,  7 May 2026 13:34:26 -0700
-In-Reply-To: <cover.1778185936.git.ackerleytng@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gcfK1Ao1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778231839; x=1809767839;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=OBbBXPX0clnszuMadIEyNe4arI9IpBiq+1Yh9qUYUk4=;
+  b=gcfK1Ao1yzzv5uWbT5qk27kH8j3bk8+N699qyE45t9DRrgKAtDJaXkvz
+   kD3DLB/yBBBjXdXBNh0LS9xnGye9lixhxpN3/a2kREOuDISG2Ze18Gbuu
+   Fteov/STfS1cc46Z/4vqOm2sdIsBU0bplHhxSRfPXEkl+k+GOtYu7jpLy
+   PhdlFAdz3FoH9WkAyUkwF5Cu8IfHByWIZy2KOeDeDR7cKPI6lbREh/BNj
+   UiQmY8s7lTr5dDXG26LXv6RTchKFHJNR85ysySMTkFk9B8q2y0SGguhvu
+   AbvjBlv9ZZi/qaiCoIpPZN5EQwryMnjIK/Dy2iY9OtjZvKNaiLWgFOa1j
+   g==;
+X-CSE-ConnectionGUID: E9asK+KkQLCFN9DoI3I47A==
+X-CSE-MsgGUID: dHpfbkt7RPeYIr3Stc0FMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="89505542"
+X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
+   d="scan'208";a="89505542"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 02:17:18 -0700
+X-CSE-ConnectionGUID: SA97YkFtQsWLyYGetecUjg==
+X-CSE-MsgGUID: 5V2O9tBpSbuJ25bwFSm+2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
+   d="scan'208";a="230323557"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 02:17:18 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 8 May 2026 02:17:17 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Fri, 8 May 2026 02:17:17 -0700
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.16) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 8 May 2026 02:17:17 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mxLeiYfzrNXog9q2z/Mb0Pfyqu82yP1P7jbbYPxy2+3LLxSBhQ1pNCyB7R5eSINS2uhy9CpnBUHu+2VMFtoZnFY0ZisD3fbIxq0jkdKdckOHKplcQolFk57jCchdJHlwP3lh07RuSMuVdaBE6OILybpUgy8jJUpbrhnI+65F5e0B+98b4+D+2qeeliPf5yz120Af7WiU2IJfGN4NZ0cqte4Jzpyk2NFWorO8QoHuxQCKUKZEJFaPbE+PB3/ixVZ/F6eX4B5e6jetT7eqdjZ6OI4u0QQijejGlaA95wZn6Fk9fwNReMPD9ruDcOTGB3WWAbJxaREliuB83PON4GO34Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sqM6x2u/DTM8vnRYiFETaXQ8ED1YBYjPHIg1k3RJG/s=;
+ b=kqkj6acXyvd0DDee6djOlBKAKM3FakWXg79Vp7qT2KkBFqYm5PK+cAEpcs0SOEfk7+Vusfw0rfCVsIWfAT5hR9tv4BGaD4oaLageHCTgscxlVnFJINswF2/Vod1t+6qTkfYx+fPUuwXAlSuJVWUqRT5kQ7ksZaoG5woKp6D0ssZsty9EGvf+mqtRstKdQPvQpxKMCwarSkPhl4ViIf+KZdMqWcFDkRZCNwiaN9/RCClOFq2nYV1Rauwqc1rzA4GYIhgSP5oxh4WImO2hbszhZn3NVc4YRP4AjnzaVyfMz6dTXtBYc2hm8+utzOgLuuqxIYPguuKuX4RPh5xb6KD0TA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ by IA4PR11MB9347.namprd11.prod.outlook.com (2603:10b6:208:565::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.17; Fri, 8 May
+ 2026 09:17:10 +0000
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf%3]) with mapi id 15.20.9891.019; Fri, 8 May 2026
+ 09:17:09 +0000
+Date: Fri, 8 May 2026 17:16:57 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+	<binbin.wu@linux.intel.com>, <dave.hansen@linux.intel.com>,
+	<djbw@kernel.org>, <ira.weiny@intel.com>, <kai.huang@intel.com>,
+	<kas@kernel.org>, <nik.borisov@suse.com>, <paulmck@kernel.org>,
+	<pbonzini@redhat.com>, <reinette.chatre@intel.com>,
+	<rick.p.edgecombe@intel.com>, <sagis@google.com>, <seanjc@google.com>,
+	<tony.lindgren@linux.intel.com>, <vannapurve@google.com>,
+	<vishal.l.verma@intel.com>, <yilun.xu@linux.intel.com>,
+	<xiaoyao.li@intel.com>, <yan.y.zhao@intel.com>, Thomas Gleixner
+	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v8 17/21] x86/virt/seamldr: Abort updates on failure
+Message-ID: <af2qCU4mH5BV188O@intel.com>
+References: <20260427152854.101171-1-chao.gao@intel.com>
+ <20260427152854.101171-18-chao.gao@intel.com>
+ <fc27ad0e-fceb-4eed-bb1c-dbfb5b913bf6@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <fc27ad0e-fceb-4eed-bb1c-dbfb5b913bf6@intel.com>
+X-ClientProxiedBy: TPYP295CA0028.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:7d0:a::17) To CH3PR11MB8660.namprd11.prod.outlook.com
+ (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <cover.1778185936.git.ackerleytng@google.com>
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <1edc2c94bf776c8ceee3b92208e6280ef5a50a23.1778185936.git.ackerleytng@google.com>
-Subject: [POC PATCH 5/5] KVM: selftests: Test conversions for SNP
-From: Ackerley Tng <ackerleytng@google.com>
-To: devnull+ackerleytng.google.com@kernel.org
-Cc: ackerleytng@google.com, aik@amd.com, akpm@linux-foundation.org, 
-	andrew.jones@linux.dev, aneesh.kumar@kernel.org, axelrasmussen@google.com, 
-	baohua@kernel.org, bhe@redhat.com, binbin.wu@linux.intel.com, bp@alien8.de, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, chrisl@kernel.org, 
-	corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, 
-	forkloop@google.com, hpa@zytor.com, ira.weiny@intel.com, jgg@ziepe.ca, 
-	jmattson@google.com, jthoughton@google.com, kas@kernel.org, 
-	kasong@tencent.com, kvm@vger.kernel.org, liam@infradead.org, 
-	linux-coco@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	mathieu.desnoyers@efficios.com, mhiramat@kernel.org, michael.roth@amd.com, 
-	mingo@redhat.com, nphamcs@gmail.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	pbonzini@redhat.com, pratyush@kernel.org, qi.zheng@linux.dev, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	rostedt@goodmis.org, seanjc@google.com, shakeel.butt@linux.dev, 
-	shikemeng@huaweicloud.com, shivankg@amd.com, shuah@kernel.org, 
-	skhan@linuxfoundation.org, steven.price@arm.com, suzuki.poulose@arm.com, 
-	tabba@google.com, tglx@kernel.org, vannapurve@google.com, vbabka@kernel.org, 
-	weixugc@google.com, willy@infradead.org, wyihan@google.com, x86@kernel.org, 
-	yan.y.zhao@intel.com, youngjun.park@lge.com, yuanchu@google.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|IA4PR11MB9347:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1b11cc5c-97ed-4406-f90f-08deace294fa
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: BKtsMTfzYZ8Ef+QFF/bd9jTfVqeTSc6qE2I0FexylWMXYaYedtOR5aEWbUjHtfPtyNCh3Iv1LDfheUhWsXk94Wk0QBn80P1xaUDuCNn8MIgPvGW+8u3p1bCEK9u67SRNVfb7KVJYHyTMknOu9LzxpLmc2GB3JG+dyXSs8GdYB/gtqOQOITTiuoDzjZQUBGcbHhZNqlXttwXrI/5BzfPgqE9RANSHFTTi6nPrQNBc11ecUSvR38i9uceZa2+EGM35wdVEnIWeWypc38iUrivsA4Ke8Tu9y2Ee1Ok5mhrY32bQYikHMzEXE1eK9YJv9WziXDzbWLJ4N3lXRdGaKV5jPrnwZcqRmYiKkiGzGxAVX8zSgDDI6lz4HURPm3tPe3CqaPNeHJBvQSXCcBAfRFpfAoq5YMHWZA6A6ZEc2q+8oehn63w/BV+XXJVwLhU8VMWI6PHC0iQ4ScQJf96GtuoZwdWdflrTW8M/f5WOW2OMuzue1ZnswwU2boxDVv4LFks3VaJnGKoSavIbmjAxJ38O7zwaU8apJBsBe2j5CnJuJ2lylKqwjo7NRUGfr8IvEPmIuSDK2s+CvNffvTYg/fIaoGsODKTHtB8v+lbAai2S4ZUmfjT5ifRHlAdIPfQjtEwcD1FTDIOikoiHqt37+g2QScRish2/IZGyb9tBfKfVxIdH/W7hfHKojCbsHKPDSuha
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?++by02p6GdyoLv8rF/bOxjgfTFpRaIBFuylmc13kWzFoPy5nPz50bZMPJExi?=
+ =?us-ascii?Q?a2T++kuWaNRDYC3P7mY8kOGqkBQd86RhI6ldyAa29xOn9TQeX8oWaMEB00et?=
+ =?us-ascii?Q?5XcBKy44nK/QXkqyLmIfP3jbxygyo2JUhVLQ7522CPblAXQ2ae0ywShgiRzo?=
+ =?us-ascii?Q?bz/nTljQ8iCMM82WYHPA/EWybblj7XIXTbu+VzQq4pwBVdM0+sadEZRyv8mN?=
+ =?us-ascii?Q?PkBeUh3fUBDcbEZCGH12a7hyWgRIhcopWNJjZqOQAXzOvlQHh0k0Othec7Wn?=
+ =?us-ascii?Q?v4Umdy09OnXYeoSSDbpvBNTEWum5qGHX5/1tq2f1IGaSUIRI3dGX5mKSIgu4?=
+ =?us-ascii?Q?+c7K13os5m3eQrE7P/uQBXoWUb1e5SaI3z/i7C23IighcOtJSCITEiOtRMuc?=
+ =?us-ascii?Q?vZihzK+GLUMoAzUvQ1XCJh03yai0A9G738BTiKnih1U9lagdp11OVjRs8oGr?=
+ =?us-ascii?Q?GiDN4WVnQuJJ8gb33DIsp/TEKqLKJX2hLIVvIXwhIG19qRRgu4Hy/mwM3XNF?=
+ =?us-ascii?Q?QlU9x0lDufmy8v/BoQ08vqiZE2V5EshjKba7yO6UQpTwFYEaLrSt31WF+Twk?=
+ =?us-ascii?Q?YQZNKGJ0NnGMLvJe3JA2DZ4u8xdjHJjfb0Tn09OqBPiYPiHHYV9sNIEZnyyx?=
+ =?us-ascii?Q?6TZfM1CykRGZ1JT1AkvsNVBEq/XKJYJOCnVROqwoKKCZx6u6vR9OJQArkSd8?=
+ =?us-ascii?Q?OClW8PmnEhkMQTp4wul9nV9beLReVfqWu67burYwvP7N8KfBfqsBQw75/SmX?=
+ =?us-ascii?Q?VskGvsKtRilD3WQ7fB39dWtQSf05pI92ETaxLbTYsRG2WskjNzweQYBsPoVL?=
+ =?us-ascii?Q?zQ4PdR3KXpupTpqcQ2xmeN6Gq7UFgdrlkPAKLzUhXBoYrOKLW1kTTVpjhm/f?=
+ =?us-ascii?Q?DJmeD+IyIpAJjF9GUqAQTZ6cuYDZMgpXlD63M+CbXkorvT42MaDDoFrybMEp?=
+ =?us-ascii?Q?KN8ba2Y2zkL1Et/gFhKR9f3PVQ4nA/Oo1deokWbu830O2Gr4tXsB+h37MBLY?=
+ =?us-ascii?Q?R2cyLLC0XtR9LO18+3k929n18wDcZvZH+06y6pFc1Sb0Da6i2w4rCF6MZmgi?=
+ =?us-ascii?Q?0ba4RuZ06m3RQItoIr273B8AqS19S12TEPfJWCSSz6qKR/ta669yrBbSXtUh?=
+ =?us-ascii?Q?iVuEm85yRaUgrx5iWUWKgPxa4knCg92DSUQR6kGrjXxCNw7S9hfay7F/+ai1?=
+ =?us-ascii?Q?PWHSuI8foX/vqRr0jdp3JvHhmWaSWPf7uq3lgtNLmsYORJzvzUi50PG7SMXR?=
+ =?us-ascii?Q?+ZN69kt86R2AEprsAsm5ywlDXTeBskDjM+gmkk39BPwfmHuFJHbpyRE3Wwfj?=
+ =?us-ascii?Q?LconT3SZjrjFjShvYDoXSZhy0rsOTvlatGRL8J2vtArnWFHYIvVEldfqB07O?=
+ =?us-ascii?Q?Om+YmBYi2RlGRFrqYEpR6boQgBtopDDY/Ve2qvTu7C040wfGJI0KO+/iRxbj?=
+ =?us-ascii?Q?TzNWbMIoOrZYfmN/YSgHiWdhczeM3maSMDkRLVdNd1I8/vYn2FI19DS6DIKT?=
+ =?us-ascii?Q?waXuWNkqHDpzrm46GLDUSeoNGJuJnCQYu6zVWve81LeCSPFdneCkYKMuIIIi?=
+ =?us-ascii?Q?WfEdDUSS1T7RVSQ8/tGvi2KjxoFBBxuKJ3jnWHMzW61LkSAYO0yLKttH40yX?=
+ =?us-ascii?Q?TtYzuZ/wVjzA+pRVFeRAKKcCD1fuA6Mra6/rb8bFXUA7+WHF2XOa3R/wJmFB?=
+ =?us-ascii?Q?DSJDyAPGtV9HUlKQt3OJznaiWV5pNJUkFjqV8rD/6br7v2+eixFD5/DznpoA?=
+ =?us-ascii?Q?n4mwYyVd7A=3D=3D?=
+X-Exchange-RoutingPolicyChecked: jpFDe1+XZuT4Ul9yO0ec39mHd799H6YUVVa+oHAvAWjXhbDXiP1Ic0/FWBTZNP+hwt2qEjaDWm1ukobFiEpolHmF5xSNPtR7duCX0BBSmh+W+FHyeoWUbBQIRWzl/yKEV7PAtCbulxG/Z3BpJ/8Q+OoFlQIE2tS3prkcEokUYHhbnu9AgcGMzmJfvnleLNeC8BhGsQ+IX5JsHNEACq5emm/X+HLTtyQXSuqPVcGvUHUdfKBlSPOKZIDC6brq4oDAVtWLN1AtWZKt8t19Tu+kjQWdMaEZlGP2Xxo/WA5Jru9psdyi207E/s7mGaGsZBGMgEqHeFt7c4P5RCOSACLkng==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b11cc5c-97ed-4406-f90f-08deace294fa
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2026 09:17:09.7973
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pw7y9OVPHUxUBw/If15tH3sL6Fm9fKhUQnUoYG01EnazM2w5X68S6kLfiWwdoc8nqpzDKqJIycPfVUeUCgkZjg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB9347
+X-OriginatorOrg: intel.com
 
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- .../selftests/kvm/x86/sev_smoke_test.c        | 198 +++++++++++++++++-
- 1 file changed, 193 insertions(+), 5 deletions(-)
+On Thu, Apr 30, 2026 at 01:06:38PM -0700, Dave Hansen wrote:
+>I don't like how this is being done.
+>
+> 1. Introduce this do{}while() loop
+> 2. Do 20 other patches
+> 3. Introduce a thing that can make it change
+> 4. Change the fundamental flow of the loop, to fix #3
+>
+>I'd much rather have:
+>
+> 1. Introduce this do{}while() loop
+> 2. Tweak fundamental flow of the loop from the last patch when I can
+>    remember it. Allude to future failures.
+> 3. Do 20 other patches
+> 4. Introduce a thing that uses #2
 
-diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-index 8b859adf4cf6f..8869cca748879 100644
---- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-+++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-@@ -253,17 +253,205 @@ static void test_sev_smoke(void *guest, u32 type, u64 policy)
- 	}
- }
- 
-+#define GHCB_MSR_REG_GPA_REQ		0x012
-+#define GHCB_MSR_REG_GPA_REQ_VAL(v)                \
-+	/* GHCBData[63:12] */                      \
-+	(((u64)((v) & GENMASK_ULL(51, 0)) << 12) | \
-+	 /* GHCBData[11:0] */			   \
-+	 GHCB_MSR_REG_GPA_REQ)
-+
-+#define GHCB_MSR_REG_GPA_RESP		0x013
-+#define GHCB_MSR_REG_GPA_RESP_VAL(v)			\
-+	/* GHCBData[63:12] */				\
-+	(((u64)(v) & GENMASK_ULL(63, 12)) >> 12)
-+
-+#define GHCB_DATA_LOW			12
-+#define GHCB_MSR_INFO_MASK		(BIT_ULL(GHCB_DATA_LOW) - 1)
-+#define GHCB_RESP_CODE(v) ((v) & GHCB_MSR_INFO_MASK)
-+
-+/*
-+ * SNP Page State Change Operation
-+ *
-+ * GHCBData[55:52] - Page operation:
-+ *   0x0001	Page assignment, Private
-+ *   0x0002	Page assignment, Shared
-+ */
-+enum psc_op {
-+	SNP_PAGE_STATE_PRIVATE = 1,
-+	SNP_PAGE_STATE_SHARED,
-+};
-+
-+#define GHCB_MSR_PSC_REQ		0x014
-+#define GHCB_MSR_PSC_REQ_GFN(gfn, op)			\
-+	/* GHCBData[55:52] */				\
-+	(((u64)((op) & 0xf) << 52) |			\
-+	/* GHCBData[51:12] */				\
-+	((u64)((gfn) & GENMASK_ULL(39, 0)) << 12) |	\
-+	/* GHCBData[11:0] */				\
-+	GHCB_MSR_PSC_REQ)
-+
-+#define GHCB_MSR_PSC_RESP		0x015
-+#define GHCB_MSR_PSC_RESP_VAL(val)			\
-+	/* GHCBData[63:32] */				\
-+	(((u64)(val) & GENMASK_ULL(63, 32)) >> 32)
-+
-+static u64 ghcb_gpa;
-+static void snp_register_ghcb(void)
-+{
-+	u64 ghcb_pfn = ghcb_gpa >> PAGE_SHIFT;
-+	u64 val;
-+
-+	GUEST_ASSERT(ghcb_gpa);
-+
-+	wrmsr(MSR_AMD64_SEV_ES_GHCB, GHCB_MSR_REG_GPA_REQ_VAL(ghcb_gpa >> PAGE_SHIFT));
-+	vmgexit();
-+
-+	val = rdmsr(MSR_AMD64_SEV_ES_GHCB);
-+	GUEST_ASSERT_EQ(GHCB_RESP_CODE(val), GHCB_MSR_REG_GPA_RESP);
-+	GUEST_ASSERT_EQ(GHCB_MSR_REG_GPA_RESP_VAL(val), ghcb_pfn);
-+}
-+
-+static void snp_page_state_change(u64 gpa, enum psc_op op)
-+{
-+	u64 val;
-+
-+	wrmsr(MSR_AMD64_SEV_ES_GHCB, GHCB_MSR_PSC_REQ_GFN(gpa >> PAGE_SHIFT, op));
-+	vmgexit();
-+
-+	val = rdmsr(MSR_AMD64_SEV_ES_GHCB);
-+	GUEST_ASSERT_EQ(GHCB_RESP_CODE(val), GHCB_MSR_PSC_RESP);
-+	GUEST_ASSERT_EQ(GHCB_MSR_PSC_RESP_VAL(val), 0);
-+}
-+
-+#define RMP_PG_SIZE_4K			0
-+static inline void pvalidate(void *vaddr, bool validate)
-+{
-+	bool no_rmpupdate;
-+	int rc;
-+
-+	/* "pvalidate" mnemonic support in binutils 2.36 and newer */
-+	asm volatile(".byte 0xF2, 0x0F, 0x01, 0xFF\n\t"
-+		     : "=@ccc"(no_rmpupdate), "=a"(rc)
-+		     : "a"(vaddr), "c"(RMP_PG_SIZE_4K), "d"(validate)
-+		     : "memory", "cc");
-+
-+	GUEST_ASSERT(!no_rmpupdate);
-+	GUEST_ASSERT_EQ(rc, 0);
-+}
-+
-+#define CONVERSION_TEST_VALUE_SHARED_1 0xab
-+#define CONVERSION_TEST_VALUE_SHARED_2 0xcd
-+#define CONVERSION_TEST_VALUE_PRIVATE 0xef
-+#define CONVERSION_TEST_VALUE_SHARED_3 0xbc
-+#define CONVERSION_TEST_VALUE_SHARED_4 0xde
-+static void guest_code_conversion(u8 *test_shared_gva, u8 *test_private_gva, u64 test_gpa)
-+{
-+	snp_register_ghcb();
-+
-+	GUEST_ASSERT_EQ(READ_ONCE(*test_shared_gva), CONVERSION_TEST_VALUE_SHARED_1);
-+	WRITE_ONCE(*test_shared_gva, CONVERSION_TEST_VALUE_SHARED_2);
-+
-+	snp_page_state_change(test_gpa, SNP_PAGE_STATE_PRIVATE);
-+	pvalidate(test_private_gva, true);
-+
-+	WRITE_ONCE(*test_private_gva, CONVERSION_TEST_VALUE_PRIVATE);
-+	GUEST_ASSERT_EQ(READ_ONCE(*test_private_gva), CONVERSION_TEST_VALUE_PRIVATE);
-+
-+	pvalidate(test_private_gva, false);
-+	snp_page_state_change(test_gpa, SNP_PAGE_STATE_SHARED);
-+
-+	GUEST_ASSERT_EQ(READ_ONCE(*test_shared_gva), CONVERSION_TEST_VALUE_SHARED_3);
-+	WRITE_ONCE(*test_shared_gva, CONVERSION_TEST_VALUE_SHARED_4);
-+
-+	wrmsr(MSR_AMD64_SEV_ES_GHCB, GHCB_MSR_TERM_REQ);
-+	vmgexit();
-+}
-+
-+static void test_conversion(u64 policy)
-+{
-+	gva_t test_private_gva;
-+	gva_t test_shared_gva;
-+	struct kvm_vcpu *vcpu;
-+	gva_t ghcb_gva;
-+	gpa_t test_gpa;
-+	struct kvm_vm *vm;
-+	void *ghcb_hva;
-+	void *test_hva;
-+
-+	vm = vm_sev_create_with_one_vcpu(KVM_X86_SNP_VM, guest_code_conversion, &vcpu);
-+
-+	ghcb_gva = vm_alloc_shared(vm, PAGE_SIZE, KVM_UTIL_MIN_VADDR,
-+				   MEM_REGION_TEST_DATA);
-+	ghcb_hva = addr_gva2hva(vm, ghcb_gva);
-+	ghcb_gpa = addr_gva2gpa(vm, ghcb_gva);
-+	sync_global_to_guest(vm, ghcb_gpa);
-+
-+	test_shared_gva = vm_alloc_shared(vm, PAGE_SIZE, KVM_UTIL_MIN_VADDR,
-+					  MEM_REGION_TEST_DATA);
-+	test_hva = addr_gva2hva(vm, test_shared_gva);
-+	test_gpa = addr_gva2gpa(vm, test_shared_gva);
-+
-+	test_private_gva = vm_unused_gva_gap(vm, PAGE_SIZE, KVM_UTIL_MIN_VADDR);
-+	___virt_pg_map(vm, &vm->mmu, test_private_gva, test_gpa, PG_SIZE_4K, true);
-+
-+	vcpu_args_set(vcpu, 3, test_shared_gva, test_private_gva, test_gpa);
-+
-+	vm_sev_launch(vm, policy, NULL);
-+
-+	WRITE_ONCE(*(u8 *)test_hva, CONVERSION_TEST_VALUE_SHARED_1);
-+
-+	fprintf(stderr, "ghcb_hva=%p ghcb_gpa=%lx ghcb_gva=%lx\n", ghcb_hva, ghcb_gpa, ghcb_gva);
-+	fprintf(stderr, "test_hva=%p test_gpa=%lx test_private_gva=%lx test_shared_gva=%lx\n", test_hva, test_gpa, test_private_gva, test_shared_gva);
-+
-+	vcpu_run(vcpu);
-+
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_HYPERCALL);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.nr, KVM_HC_MAP_GPA_RANGE);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.args[0], test_gpa);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.args[1], 1);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.args[2], KVM_MAP_GPA_RANGE_ENCRYPTED | KVM_MAP_GPA_RANGE_PAGE_SZ_4K);
-+
-+	vm_mem_set_private(vm, test_gpa, PAGE_SIZE);
-+
-+	vcpu_run(vcpu);
-+
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_HYPERCALL);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.nr, KVM_HC_MAP_GPA_RANGE);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.args[0], test_gpa);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.args[1], 1);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.args[2], KVM_MAP_GPA_RANGE_DECRYPTED | KVM_MAP_GPA_RANGE_PAGE_SZ_4K);
-+
-+	vm_mem_set_shared(vm, test_gpa, PAGE_SIZE);
-+
-+	fprintf(stderr, "test_hva contents = %x\n", READ_ONCE(*(u8 *)test_hva));
-+
-+	WRITE_ONCE(*(u8 *)test_hva, CONVERSION_TEST_VALUE_SHARED_3);
-+	TEST_ASSERT_EQ(*(u8 *)test_hva, CONVERSION_TEST_VALUE_SHARED_3);
-+
-+	vcpu_run(vcpu);
-+
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_SYSTEM_EVENT);
-+	TEST_ASSERT_EQ(vcpu->run->system_event.type, KVM_SYSTEM_EVENT_SEV_TERM);
-+	TEST_ASSERT_EQ(vcpu->run->system_event.ndata, 1);
-+	TEST_ASSERT_EQ(vcpu->run->system_event.data[0], GHCB_MSR_TERM_REQ);
-+
-+	TEST_ASSERT_EQ(*(u8 *)test_hva, CONVERSION_TEST_VALUE_SHARED_4);
-+}
-+
- int main(int argc, char *argv[])
- {
- 	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SEV));
- 
--	test_sev_smoke(guest_sev_code, KVM_X86_SEV_VM, 0);
-+	// test_sev_smoke(guest_sev_code, KVM_X86_SEV_VM, 0);
-+
-+	// if (kvm_cpu_has(X86_FEATURE_SEV_ES))
-+	// 	test_sev_smoke(guest_sev_es_code, KVM_X86_SEV_ES_VM, SEV_POLICY_ES);
- 
--	if (kvm_cpu_has(X86_FEATURE_SEV_ES))
--		test_sev_smoke(guest_sev_es_code, KVM_X86_SEV_ES_VM, SEV_POLICY_ES);
-+	if (kvm_cpu_has(X86_FEATURE_SEV_SNP)) {
-+		test_conversion(snp_default_policy());
- 
--	if (kvm_cpu_has(X86_FEATURE_SEV_SNP))
--		test_sev_smoke(guest_snp_code, KVM_X86_SNP_VM, snp_default_policy());
-+		// test_sev_smoke(guest_snp_code, KVM_X86_SNP_VM, snp_default_policy());
-+	}
- 
- 	return 0;
- }
--- 
-2.54.0.563.g4f69b47b94-goog
+OK, that makes sense. I'll reorder the series so this patch comes immediately
+after the skeleton patch.
 
+>
+>
+>> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+>> index c81b26c4bac1..9b8f571eb03f 100644
+>> --- a/arch/x86/virt/vmx/tdx/seamldr.c
+>> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
+>> @@ -220,6 +220,7 @@ enum module_update_state {
+>>  static struct {
+>>  	enum module_update_state state;
+>>  	int thread_ack;
+>> +	bool failed;
+>>  	/*
+>>  	 * Protect update_data. Raw spinlock as it will be acquired from
+>>  	 * interrupt-disabled contexts.
+>> @@ -284,12 +285,15 @@ static int do_seamldr_install_module(void *seamldr_params)
+>>  				break;
+>>  			}
+>>  
+>> -			ack_state();
+>> +			if (ret)
+>> +				WRITE_ONCE(update_data.failed, true);
+>> +			else
+>> +				ack_state();
+>>  		} else {
+>>  			touch_nmi_watchdog();
+>>  			rcu_momentary_eqs();
+>>  		}
+>
+>I don't like how this is turning out either. I don't like all the nested
+>conditions or ack_state() that hides its mucking with update data while
+>its caller mucks with it directly. It's just all hacked together.
+>
+>Defer all of the acking, and *failed* acking to the ack_state() helper.
+
+OK. I'll fold both normal and failed acking into ack_state().
+
+
+>
+>Also, I'm kinda peeved that you copied and pasted the  		
+>touch_nmi_watchdog()/rcu_momentary_eqs() bits and none of the comments.
+>This is a rather subtle use of both. If you want this to be a normal
+>"spinning in stop machine" idiom, then create a helper and put the
+>comments there.
+
+Those two calls were added in stop_machine() to improve debuggability.
+
+The issue they address is that a stop_machine() callback can hang on one
+CPU. Without touch_nmi_watchdog() and rcu_momentary_eqs(), the other CPUs
+that are merely spinning in the wait loop can also report hard lockup and
+RCU stall warnings, which obscures the actual stuck CPU.
+
+I agree that this behavior makes sense in stop_machine() as common
+infrastructure. But this update path does not take an arbitrary callback
+function, so that that debuggability is not strictly necessary here. I'll
+drop those calls from this path unless there is an objection.
+
+>
+>Also, this is a case where:
+>
+>	do {
+>		cpu_relax();
+>		newstate = READ_ONCE(update_data.state);
+>
+>		if (newstate == curstate) {
+>			// can cpu_relax() just go in here??
+>			touch_nmi_watchdog();
+>			rcu_momentary_eqs();
+>			continue;
+>		}
+>	
+>		switch() {
+>			// state changing here
+>		}
+>	} while (...);
+>
+>is a much more sane setup. You're not paying the if() indentation cost
+>for the entire state transition block. You're also putting the "shut up
+>the warnings" code out of the way where you can forget about it.
+>
+
+Agreed. Will do.
