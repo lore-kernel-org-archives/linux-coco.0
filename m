@@ -1,125 +1,170 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B66439D6DB
-	for <linux-coco@lists.linux.dev>; Fri,  8 May 2026 22:53:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778280822; cv=none; b=MYBOnN8hnJHB7hPQf3RYa5wESVvkD5hCcgEhvkzircJvmOSk7Sldg7kUTJFCfCfNQ6FHps055rWWDkGlf46Le1k+sdNmgZLh7Uv+QD5mfmX4izHoMutftq7JNNK6B+hMs7VbMIfPd/3McRUu7CgoTo5ZIe3Nrz+NlIUFiM3gdvk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778280822; c=relaxed/simple;
-	bh=uAPw3L7lLtpXul9mWvAzywjOCxgmQ5Qdhfy9p+xdPsQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TpzPwp0KE1PUCWLKaBDxMp2CqR0qP/flYUNutb9QiiehwoK5KVGUcAz2UUWmKpwT8uLFr7OuJJ8ZvUYEh9CQbZuxZJLszn+1sOI44dgKUyksHY7i37HVcTw1dsRuKyDEHaz2VF+8YBxdnuJnwUPkmtTckNaSp76AfXMdMu33E0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=St4HNRwD; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE40A3644A3
+	for <linux-coco@lists.linux.dev>; Fri,  8 May 2026 23:36:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778283406; cv=pass; b=GtiRjjhvsP+HZgwcssEe9VcuucCBm3oXN6bl/6n/+hUS8/w2KOM0dqjYk2nvpcTLowMra64ncJWRWUgaZmDSzkGZ881vL8knRYtgb7hsT9HslsQw45cxrOHkJaFvnprQbWcWpNHpyLN7JiocH4sis6F6RobfM5xItcvRmV/zMmo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778283406; c=relaxed/simple;
+	bh=qugc+0Ib7z8RHG2l2I3zLFMp2jsqIX/yclDbZ06fydk=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SIWN7o0LrOR4GZoALhSYirKBojD/kFY91beLc7dmxIcbiG22xrZBytHpl7nCg8MjrpgNtsHDwIgbVksFYw7Vd69ZGsLkg0F81jWK7dlgXt5yUlGIuY8VRtiCunaEPyutWDZ+yibJ/s7/q9DThdaEDUv2Z+1MbVVFZsLAYdC1wNQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GaCyKO1b; arc=pass smtp.client-ip=209.85.222.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="St4HNRwD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778280820; x=1809816820;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=uAPw3L7lLtpXul9mWvAzywjOCxgmQ5Qdhfy9p+xdPsQ=;
-  b=St4HNRwDUkZAZObfk6SOuHp7ANhD+kT72Soit1O/TY9saPCuG1nLrAyD
-   eYfu1iuIQyT55LSj3lP9EwetXTN7Uj1rUHtSQvcQOVzzStND/HLd/Qdxm
-   AcfxAGBj6liBAUnpFF6yxnX0HHyejf3ggpdiWFvXn0EoMp7LNwTAM4lqa
-   flmAJa0y4TAJXCzk2JzXaFJjdVJ9EoR2Hqrz0tGw3CRIr6kDzCueVFd97
-   1/ML4s3FFkuegb5NpkzB8ysltin3feQl0WQ+zSWxsd1ejFCNW7lzxh3r7
-   qd9BonSLA2oq4Zti26TPID+tJsD2VbDzVQ3FhHFfzi+G9snHIY88pdYET
-   Q==;
-X-CSE-ConnectionGUID: aIKdIZN9Q7ecto1QdDYeag==
-X-CSE-MsgGUID: RHH0fQ0uRmWGmYdF0Ql5DQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11780"; a="96829216"
-X-IronPort-AV: E=Sophos;i="6.23,224,1770624000"; 
-   d="scan'208";a="96829216"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 15:53:40 -0700
-X-CSE-ConnectionGUID: v0xQEJwPRdufpyZ5Tn6yPQ==
-X-CSE-MsgGUID: kuzkWgHpRK+6XqtSMHjtFg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,224,1770624000"; 
-   d="scan'208";a="275002445"
-Received: from mvcheng-desk2.amr.corp.intel.com (HELO [10.125.111.73]) ([10.125.111.73])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 15:53:39 -0700
-Message-ID: <17ecd22b-4bdc-45fe-b7b0-f3dee4c08e66@intel.com>
-Date: Fri, 8 May 2026 15:53:45 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GaCyKO1b"
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-95d04f205beso1522116241.3
+        for <linux-coco@lists.linux.dev>; Fri, 08 May 2026 16:36:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778283403; cv=none;
+        d=google.com; s=arc-20240605;
+        b=aH24QNnCi8KVvtNqzjgsFumbQqkGuCaTpWSHCM/ElPph2aPbcGtpcVlsOmYw+F6LdI
+         lQ3bL+f4v345CpFrE9NOneFc4vP4SkvuFmo7vl/OJecDTqoaaKEFhIhdevvzjqu7fEkv
+         LQ0SCpeh0TEB4Ep9+Q5K6k8wQ81idFOkx9zNsmef8K4TvxifH3wj+1P072ubGgX4U6LO
+         BcyUDjkNAaY6LSEr1+Oo6tkAvBtAONo3EChHybBySIpKat+1EH9S5Gtfq/xaqqLIaCjz
+         4bpwbCNdK/Xgl1P+WY+22ek/wEk4ChO9VyIeIWeqZaZNiV3+kwVoCD0iCl3Kh0Q7lU44
+         x/LA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=10imNO/dPWbMThTpLIZ3BPvS8U4RD3Gbc9CIOJSztJQ=;
+        fh=fQmMirFY788XCvbWEOvE4iufafbgcjzMoYX7nD3EHw0=;
+        b=JP7bEhTGbWysuRJhqcosG5EmG/nguOK+htHL5k0wWMV7P3bHXc65rDLMNZLA49y8F/
+         gAOLqjfXex0iWaUR1uvVYkp0LY/G13aYLnAJXsTdGOeQfv+NaUDmdbZn2jtBBxR2y5gs
+         gI15cYFJnnqUEK4/13iXZ4VtSNDF/JERs2rB3ccRZsC+yybh5Dq7EaLtoSaLEZr3gy7m
+         fFSV1CvI5qy6k87FU1/Ey8dIdUqTykMIb8WCPxldC9p5cNpT3igpm9vAYAe0DfkoaWOJ
+         raLEKKzEpIQvGzHtt+F6NoQ3LC0He9R57D9UlTnaiRNTJVjMRXYa8kBqH4R4qV9q4OL1
+         tvlw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778283403; x=1778888203; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=10imNO/dPWbMThTpLIZ3BPvS8U4RD3Gbc9CIOJSztJQ=;
+        b=GaCyKO1bQSVXOJ6wfyDkglrkRdAz4BVByxzhdJfcyj1QqkwKoNgzqyN0AkNXu0ZxLS
+         do6df9CwiRF+1pmO7qu1yekDqhRfGsw9FHEd/E+0x07R0sWQUWUndtg4RQSASITU7NkM
+         pQidEyA3PXqr9Xt38QttQTXuEefVsLNpJ8WRGMXjEPVw72v1GVqHVVGQBNxMF4qxv1xa
+         TY+WBUh1x2umEWOwVrVZzd1f1Cullj/8aUKYBxDZZ3af7DGIojSDp9g5hrCQ3+kTYQn2
+         pUGllgFg2Cho6G/oyVtrHw7tCeNHu2lp/kgBRpsWqs33cMuW4cbiqOwWeL0DNk+jE9xT
+         lo6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778283403; x=1778888203;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=10imNO/dPWbMThTpLIZ3BPvS8U4RD3Gbc9CIOJSztJQ=;
+        b=ODbmSwii7sqrCjAcVqoWWizuids3h+GqYEDzrpwUVOZkfNG7nfRFBgHjWNB59T8L1k
+         caLH4BYIDmMZWsEWHEzGQBPsZEcmyBxpV90wjcY4ERmBUmWYeAmvLxVjD6k3hXrVIUfc
+         asB/MDKUlg5zo8tvWeH6xjKjAp6RGzhq1qV5OfeaRF0s3yrvP+kWXCi5XAtxWESzktxy
+         HQf0MYsSy3acGLEdK52C/MLZ4i2jNDOzPgCzNmcauraQrvp8t24HOareYvEjHqA0NmI3
+         5qOs8bqBHhyA5Gx9kcNDpzWuMO0DKADOFJwoTVKK+8OBGLbLKa9jf2K0HpQcslmRl2PS
+         jR2g==
+X-Forwarded-Encrypted: i=1; AFNElJ/aLy8uMlvj3JsWT6t6f/T6jJv0UgK9tHuzJHZHEUL1swZH6N4NFOuQxSZdTXBhoFJJi8wpc2CGvdJL@lists.linux.dev
+X-Gm-Message-State: AOJu0YzCcTCWvzXD4yjtFBpAw+FMGwLQdWUA1PMm8EWmrsCZi91+7HDW
+	X9XNAB/NVlvZF/tIAr6X6zHhSLQg2QXXjogx+jWu2VAUUgJtQg6wBVyD1sBNA8UsVDnxxYi34YR
+	JHSBCUrtXlUqqAgjxVOnJElrX/wWKm558bDqQJRg2
+X-Gm-Gg: Acq92OFfjNCo2TagUq+8Ji7Ko9cL+f3ASdLB9xNx3EOVRCGCCkWBDVoj7MuxaVNyIEL
+	kfniTDf7KCgKGvrOFtrzB6NSsGFF5rnLVIo/FD84Kk/LnLB5jT2bIgRHWF6MfDWUTZA5iI4zanN
+	HEovp63qsXT+9MdNMtYbQl9cXQSUZcqYv7EUX+9QlbsRDEy/l7fSMWWI/en2/FL2VcL9Nl7rQmd
+	WxMzHov1I6kAQPxYbkUiZKUPUYhWeAFSa9f7MM8rUCkRn42d4mSdoMwhmDF7r/ghsxb/grATj8n
+	iWFrr618VB3BTdj7izEetjaiRPXIcQKJvU3fCkbmHMbLSyNiMUWU5U2KYulcmCfY8twqxpqjTUk
+	WsVJNozNyDF2fN8Y=
+X-Received: by 2002:a05:6122:3208:b0:56e:e80c:bb25 with SMTP id
+ 71dfb90a1353d-5755963576bmr9165277e0c.13.1778283402011; Fri, 08 May 2026
+ 16:36:42 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 8 May 2026 16:36:41 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 8 May 2026 16:36:41 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260507-gmem-inplace-conversion-v6-1-91ab5a8b19a4@google.com>
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <20260507-gmem-inplace-conversion-v6-1-91ab5a8b19a4@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] x86/tdx: Port I/O emulation fixes
-To: Kiryl Shutsemau <kas@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Kai Huang <kai.huang@intel.com>,
- Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, stable@vger.kernel.org
-References: <20260428125632.129770-1-kas@kernel.org>
- <af5orHTGMRfD5TxP@thinkstation>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <af5orHTGMRfD5TxP@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Fri, 8 May 2026 16:36:41 -0700
+X-Gm-Features: AVHnY4LvPjVICPzN5-_CJPHTIx7ocT885vUY-RO5A-DcMZDUx5r_5g4UegbM0fM
+Message-ID: <CAEvNRgGF-n5gmTR5G7wZqH5gBZsOp6WMR-RSws+=g9tcCkfSiA@mail.gmail.com>
+Subject: Re: [PATCH v6 01/43] KVM: guest_memfd: Introduce per-gmem attributes,
+ use to guard user mappings
+To: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>, aik@amd.com, 
+	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
+	chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 5/8/26 15:52, Kiryl Shutsemau wrote:
-> On Tue, Apr 28, 2026 at 01:56:30PM +0100, Kiryl Shutsemau (Meta) wrote:
->> Kiryl Shutsemau (Meta) (2):
->>   x86/tdx: Fix off-by-one in port I/O handling
->>   x86/tdx: Fix zero-extension for 32-bit port I/O
-> Dave, could get them applied?
+Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+writes:
 
-I'll look on Monday. Thanks for the reminder.
+>
+> [...snip...]
+>
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 69c9d6d546b28..5011d38820d0d 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -4,6 +4,7 @@
+>  #include <linux/falloc.h>
+>  #include <linux/fs.h>
+>  #include <linux/kvm_host.h>
+> +#include <linux/maple_tree.h>
+>  #include <linux/mempolicy.h>
+>  #include <linux/pseudo_fs.h>
+>  #include <linux/pagemap.h>
+> @@ -33,6 +34,13 @@ struct gmem_inode {
+>  	struct list_head gmem_file_list;
+>
+>  	u64 flags;
+> +	/*
+> +	 * Every index in this inode, whether memory is populated or
+> +	 * not, is tracked in attributes. The entire range of indices,
+> +	 * corresponding to the size of this inode, is represented in
+> +	 * this maple tree.
+
+Concretely, if the entire guest_memfd is 2M in size, indices [0, 511] is
+represented with some value, either 0 (SHARED) or
+KVM_MEMORY_ATTRIBUTE_PRIVATE. [512, ULONG_MAX] is also defined in the
+tree, as NULL.
+
+Since guest_memfd uses xa_mk_value(0) to store the value 0 ("SHARED"),
+that makes 0 distinct from NULL, which works for guest_memfd.
+
+
+(Liam and I discussed this off-list due to a email configuration issue)
+
+> +	 */
+> +	struct maple_tree attributes;
+>  };
+>
+>
+> [...snip...]
+>
