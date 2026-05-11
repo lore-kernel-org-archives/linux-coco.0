@@ -1,195 +1,147 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013023.outbound.protection.outlook.com [40.93.201.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10DB038F654;
-	Sun, 10 May 2026 13:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778420646; cv=none; b=WzAa1rwAeBimWeJftEizSZ7XordVrtkYZfwoQTKa9uQpXzENcwF32m7nmVvqoANnI07b7NUiM0EjmBqi7Y3+JZVT9KXZnjVKqXkyFwew/W+ZMuE1hkhov4GBKT+U3aDqlk/y/4Zur+4X3e5lvn5gxPkc39NE7sP2S51XXh2MNMg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778420646; c=relaxed/simple;
-	bh=63nl2SFh9sKVLKwnXXfbkQrugbw3c6qi+SZ9W3m1Dag=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=FlFh5ph0U19knCUqRFGTkAEM44a/ypj8qsd+BewHC0o+MWU9M24UyQvFFNd0sJj3HXWU0+8WvLcV9w63jLT1w+DhA4VIm5NUT6MB/tE6mca/rG0w5V1PAu77Ys6sLnowi7Tg3RzPfBkPoOukk15/RZMvNgQNzzkl9ZI4BWGg1so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=DbqDM/Y2; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B2D378839
+	for <linux-coco@lists.linux.dev>; Mon, 11 May 2026 12:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778500907; cv=fail; b=MypES9ELDIbQiLLipi/V5STvx0+YxyHVhHb9FsApOVoVB1eiDaPomfvmU1zhUu9zov5JdSj9ZXxw5JJJ56sJjs1gWKydGSX5cg6dVmLnLXujCS+BHzVJTcqpUm6xUUCGBQxHnAO3U9+8gKh0deVng5UhAKKBEDB0s1n+RTUC6cU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778500907; c=relaxed/simple;
+	bh=7VngcJ1KaBxbHvvhgmbXL3Y1zpgylr75oM0HB1ZyJS8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=uogW0MJBtcG/wyCcfaniCOuSTN93ioQFTLy/8GgggdCeoHSVVbQ5rujtsrF4ggqkV+48KwmvDsB3469F5zHRHx+qakHs1p1vzIGAlxjrHmPfhKr1OqSnaWHWd3fNnf6rvRZO3C6jH7t3V7suFi2CO+ddTFdr9QJVaGjqcu761ag=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bLV/0THz; arc=fail smtp.client-ip=40.93.201.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="DbqDM/Y2"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:
-	From:Date:Sender:Reply-To:Content-ID:Content-Description;
-	bh=qOD7QxDKk3RTKnTDgKCKX5Mj4tjif9QPuV1x23Y+qME=; b=DbqDM/Y2NO6hs4kz0Y3MeDoyBa
-	RSWqPDNFSCwDZPKmBnCM0Sk0LtTSOYvtX1pGE7pAqKTzP/+bhJ1ZbzOORXjS5TN1tEZQIISZ/G/uv
-	VTpiTcl4OvDMUgSnKV892USVGtpTpoLUuURW82/UyphNjFe7lMvTDRDZnj7h9WgD7knqnFC+Zyz4+
-	rF4k/UaGF9Uc2rQ4oYFGcBNsUpOZkl9egs5sj/UMoiy2SiMJ2afO1t2v+mc9V4mj4bO6I47trVbES
-	R9hzfaaYRipyM9f09YTVGrLCMy/2oVBxbjmupoL49saso54NbueZks0urkiVkkSBw3xZAGJZcVCcH
-	1uryzAGA==;
-Received: from [38.23.173.23] (helo=ehlo.thunderbird.net)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wM4RG-0000000AryI-1hB3;
-	Sun, 10 May 2026 13:43:22 +0000
-Date: Sun, 10 May 2026 09:43:49 -0400
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Ackerley Tng <ackerleytng@google.com>
-CC: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
- brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org,
- ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_RFC_v5_10/53=5D_KVM=3A_guest=5Fmemfd=3A_Ad?=
- =?US-ASCII?Q?d_basic_support_for_KVM=5FSET=5FMEMORY=5FATTRIBUTES2?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAEvNRgF9+Gr7UVEq-E2SQEb_XOQQMOXy9F_A2tA=DbNV_fJ0EQ@mail.gmail.com>
-References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com> <20260428-gmem-inplace-conversion-v5-10-d8608ccfca22@google.com> <n5ce32wumzeiqqyqutom4apy2kqfetbvusc6j4k2xarsska5mw@klp5bmy7qhfm> <CAEvNRgF9+Gr7UVEq-E2SQEb_XOQQMOXy9F_A2tA=DbNV_fJ0EQ@mail.gmail.com>
-Message-ID: <1DAB05E2-7F30-45D7-B155-B66C59D31AFF@infradead.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bLV/0THz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=genZmT1pmjBq32Dybc1/rImfJSoOb6UMsobcYr+/kLly4/fuY6zaOen1X3Dc6Y8Y6MGIpDBE71UipK7qH3V25A0SvAa4ufFYmK6G4ujGKia8kzQKBBb3MXopMZkmEOMyOJnaq2IHjX4hRHoGjoBMNhjbOknIQKVtEftxf8YmfKir6vISSsTIm+FYvIgmOwZFaUtzxIlsXwfo4/+sFv2mfhuY0cE5ccyXq/b9IiVFiKW5DtWV2g0vfHCet9eebeVc9mY5avLG5AI4jF/522EA51nGvsnG+NE8qDCL3grpaDcar1ddMFf7AEoZQegre5VSC8NmeTCoiX3OTjPcMxKOdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7VngcJ1KaBxbHvvhgmbXL3Y1zpgylr75oM0HB1ZyJS8=;
+ b=u8lEu3GvCxXTKhxvggctS4AQ2IyNep6mHCzQufhv0e1FDuB8jL9K1hM6P/92AMNm8BztUN0sZgf6CR8aQw4Zr7QcGCBCc5lhZFJriJD86z/Awl8fX9T20a0C04i06/iMFOWWSc2YnoeKrlt9HlFy8N5mp8HB0LG1ptij3mG2FyTTG8/n2/ZhLgbqGbw2WoAZUL0US87/kLBusxp9w9YhBPn/HikN2S7UuSLp91aXw2XNUlWt1dLzWGc56Et+2W+jxUAtS6K2oTBC1ra2L57lKmw1EOAv43W249A2R854bSI/B/fD4FmLMi3vnJUJ8J7CbsaHxQcpFHgjMlGWGfum5w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7VngcJ1KaBxbHvvhgmbXL3Y1zpgylr75oM0HB1ZyJS8=;
+ b=bLV/0THzlz/nxswzqQe1XxfUZV5ZfG4eyKIBCIM+QTJiedjutKkmTqYkl1o5gYkyYXJyKxwry8efAbEE/9KHZTX0AUgp0HS51aYU78L/JNC4/r+hD8nR3JcJV7LNy8RXOUwDUaUjscnOcwxGJrrRgcwbnzYkNt/iH80b/8SMePDCmhKo6aQsvBij48uUR8tYtcx6YVxAstmvRI5vjzWJXYn6R8fE45nubrS1KGM7/99Vm/cVJPWHgXmw180eRMjI2hzGij3bx4ssbD3B7sC0NbdVZHQpbMZLQVWE2+Lt1rjgye23PIPkd5MjXINXY67CZR+dOUEACfzLk3+DtcYBXA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by CY8PR12MB7610.namprd12.prod.outlook.com (2603:10b6:930:9a::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Mon, 11 May
+ 2026 12:01:39 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9891.021; Mon, 11 May 2026
+ 12:01:39 +0000
+Date: Mon, 11 May 2026 09:01:38 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
+	christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com,
+	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
+	dan.j.williams@intel.com, yilun.xu@intel.com,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	lukas@wunner.de, yan.y.zhao@intel.com, daniel.vetter@ffwll.ch,
+	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	tao1.su@intel.com
+Subject: Re: [RFC PATCH 04/12] vfio/pci: Allow MMIO regions to be exported
+ through dma-buf
+Message-ID: <20260511120138.GB1116784@nvidia.com>
+References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
+ <20250107142719.179636-5-yilun.xu@linux.intel.com>
+ <c0b160f8-2930-4158-9e50-b4cc4209e2ca@amd.com>
+ <afs/Jamxnj6GGFfM@nvidia.com>
+ <3128deea-95a3-4c36-902b-37f280913f2b@amd.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3128deea-95a3-4c36-902b-37f280913f2b@amd.com>
+X-ClientProxiedBy: BN9PR03CA0275.namprd03.prod.outlook.com
+ (2603:10b6:408:f5::10) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|CY8PR12MB7610:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c8f060f-4242-476c-e604-08deaf550ec6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|22082099003|11063799003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	PXvgFp92o9GkMRuEMEEj9nrC/7bDARxqOe+GIJmi1R4IFtttYiDbAoKB5nu/F97eMJ5xMbdECpH0QEBYQm9mkqctOGOwp0NgMwFhOmfPbugIcuBjTP73dyJgEZ+1R3g6oKgYTkT7ZAyg6PcaxDqoCjKYwqMoWrLb8migaYXK6S8IBb7CBIxxB484cWbZHDDjAHzAjHcEIT4vMMW7Y4zERw6LwsDLxCVKH5BxT3SYRYsdeUiJExzzJRfPhNg74Q0nBVtiGBRnOQ9SEpqRD8Fx8NBagExT+inlvo4I889l1QrF4OuHWGIGfxX7rtQfnkNfL87lHCtlZ1q0taJem/saF+v0g6xt05YAMViQCz7tzSvNyf6stj4G9b2e/rowRJRiEigO+p//9p2wNvrspLtSlaiYsv/MkZEpscdtDhG8Q2sll1zfQZvc5U1dh9TWvfyMln2OPU46RDtKv6ikm18vz/F1HHhwiOPlsgMUccS7p74esXadlq2J8qZLR5iGa86Nkm17Lix+8EMmGf6CcGgzJJTfZ/+mTUjp2nN7BV7t/Ug8903NUSz8J1ZnW9VpJ2iVe/K5Z/LTUUEDyzPFDP3aE6wJGxQi+z4wW8HeQwXggl2S5bQumFLdPV0EA9OwtTixodIWHdw9xm3m4g0R5UZ8gGQrcauJkOvBjVxYTEBcpmDyY6M1OVQzKC1NGRAGVOeP
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(22082099003)(11063799003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?TmuAV5vO40qGitztGS40u48XkVEeq4U6rJp8iAqevWjb7Q5dmbLPXSk7aunk?=
+ =?us-ascii?Q?fXNYChm328xg3wuOPMMS7VmLebChEdpD8TGwA1IWbj2zIcNVAtg84crMjR1E?=
+ =?us-ascii?Q?RqoRl/JTCv8UJEVNEEw3ggIGd3U0WukSfcDQTw9yauaRPKvJiHvE2bY2vLLf?=
+ =?us-ascii?Q?C2c1fUSZLiJvyRVMB8VaqhES4yKxQiswXSglnpPI8LbJkjmb3s7gTc+M6qF0?=
+ =?us-ascii?Q?wyjVLZtfnt2botGeNdNqmyEXUanib8tpJ3Y2gQDs72ew5bgI1VgAJYayCpOs?=
+ =?us-ascii?Q?fgGsfU6W+0pBa1CUGoR55DUbMrNVk9A+5DrPo6IuYXjUn/vy2dY5F+gVV9f4?=
+ =?us-ascii?Q?d57tYTuSuQdtSinthH7heSP8krEcFpO/21Pp++6zjqZT0a+CIiewADA75ZK5?=
+ =?us-ascii?Q?AhPMG2OQbJSGQzl+9V2NtgYiWDTYQd7Vgp1jZWKhO2fhS3ATdn0GVsJU29dO?=
+ =?us-ascii?Q?9himdjuzSSFow/6Yhwlej+sMrIn7S/jxwxFjRBVP5VRtqebRuYKU7uOKnsS6?=
+ =?us-ascii?Q?ldTmWSIL7+mWD/M5LZtDIZsBBej80s0eHiCVo8bZQoWInqt69IGyr28ICZc8?=
+ =?us-ascii?Q?5wC2b9vz8Bite3bPRg15t5phH15LZmdoMHqtiUWc3wMGmzuPM1e/DpVYsyZQ?=
+ =?us-ascii?Q?Gt1+burTXjUXC4xZBq85uP5DxmniguQplE/eODVOjqv5s/ZEL/+QhAVe/7uY?=
+ =?us-ascii?Q?Nj/zXfvsi6nii9BJ58xVcZEGALZpBVlTfboWmNoQppJBqPCNyfbPnU/SFRw8?=
+ =?us-ascii?Q?5E/Njq3B3xvFUOSqPQg3OB0amLt8lpr83e31VKBZn3TCKdXtgiy00UCm7Rmr?=
+ =?us-ascii?Q?JhkDDgfEbaGw+wCrCmlWFatigZgfMBX9m9RCB38HCKonzkSSWBt8gZsYvoEf?=
+ =?us-ascii?Q?AQwqhEpumb0R11awzKIGMQ42kWFfzwznyXf+RDeVa5+uVgjYaKq7euNaRNsK?=
+ =?us-ascii?Q?i1DYoaLr9I9WM6WvkDYCNzOTa6j8waAj+Y+2mNGt5U7+fMAX8FAkLUbECrXQ?=
+ =?us-ascii?Q?GoQ3u8lDV+qemlH7BvTRawvk1PjYhh5XDJfNfunBU479flXPNKVCzvJUXfBr?=
+ =?us-ascii?Q?rQ2aWiVSU+XY6bWgxnUnqdx/yA4VPSJOKVJfMyKeZoTQwzvGhvSRzZVPqGQz?=
+ =?us-ascii?Q?PC5kwON+M0KjXZOkv0eUrggal22vKr7lsNINUIA1yGPIvyt2fXUhxrPZMBBL?=
+ =?us-ascii?Q?DYuaaRSCus/sMNoUtDWMM9lexxBYZZomGn+w4ajr4YagV9AUfQzla5OqOcEY?=
+ =?us-ascii?Q?HbExBddbZzVkb9zT+0l04Ry3TNsgztqU09JI963eEEOmRcmJbJjVFRarO3Re?=
+ =?us-ascii?Q?LnsKRMeNoRntlNxaGmF83JpqWS45jERMqYUiPXJCEPO2fEGYvVGW1GWet+L/?=
+ =?us-ascii?Q?TEoMH1kaCNp2MQb00r17DcEd+GcRf08Guz4NzlZXJrptgx+xwYB7s+CQt2Ab?=
+ =?us-ascii?Q?bUsjANHvWzay96S5YbDxTnPnwVO0ASaxcw2Ju2L0SsAUvwucHTJI3Bv+NqsR?=
+ =?us-ascii?Q?MDc/zOs+52iFgVRAzVLynO1SPEWN067KQbIj+Ou3o2gtqDA4k9v0CZMUc+Wk?=
+ =?us-ascii?Q?jep5TRtrUKEBLybu7j3rqQlQd+Jpxq2ysGVY02L1P9CDfAnP4EcZ3UkOEG2l?=
+ =?us-ascii?Q?u8CBTarfanunygJfmeDpTQdeMSjQQUZcyqU2jktxB/qlVKz5Fb+vZxCASstM?=
+ =?us-ascii?Q?spufow89KD9+X50z79b+TYAMdKc2ctioNr7CVJ8hlebvEtD8?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c8f060f-4242-476c-e604-08deaf550ec6
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 12:01:39.1862
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: q2w/iPp1iPlmyq0R+dsUor5dvXDGQSLnx1SwKgqbEzQ/RFYLNl/tJ0mXFTMQjTp2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7610
 
-On 7 May 2026 12:56:11 GMT-04:00, Ackerley Tng <ackerleytng@google=2Ecom> w=
-rote:
->"Liam R=2E Howlett" <liam@infradead=2Eorg> writes:
->
->> On 26/04/28 04:25PM, Ackerley Tng via B4 Relay wrote:
->>>
->>> [=2E=2E=2Esnip=2E=2E=2E]
->>>
->>> +/*
->>> + * Preallocate memory for attributes to be stored on a maple tree, po=
-inted to
->>> + * by mas=2E  Adjacent ranges with attributes identical to the new at=
-tributes
->>> + * will be merged=2E  Also sets mas's bounds up for storing attribute=
-s=2E
->>> + *
->>> + * This maintains the invariant that ranges with the same attributes =
-will
->>> + * always be merged=2E
->>> + */
->>> +static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attribu=
-tes,
->>> +				    pgoff_t start, size_t nr_pages)
->>> +{
->>> +	pgoff_t end =3D start + nr_pages;
->>> +	pgoff_t last =3D end - 1;
->>> +	void *entry;
->>> +
->>> +	/* Try extending range=2E entry is NULL on overflow/wrap-around=2E *=
-/
->>> +	mas_set_range(mas, end, end);
->>> +	entry =3D mas_find(mas, end);
->
->Thank you for your reviews!
->
->>
->> Please read the documentation as I believe you have a bug here=2E  What
->> happens if there is another range stored higher than end + 1?
->>
->
->The invariant in this maple tree is that contiguous ranges with the same
->attribute are stored as a single range=2E
->
->The goal of this first part is to get the entry at the index just after
->the requested range, and see what the attribute there is=2E If that
->attribute is what we're about to set, extend the requested range for
->storing to the end of that range=2E
->
->If there is another range higher than end + 1, with the invariant
->maintained, that attribute has to be different than the attribute stored
->at end=2E Hence, we only want to extend this requested range up till end=
-=2E
->
+On Thu, May 07, 2026 at 05:16:56PM +1000, Alexey Kardashevskiy wrote:
 
-mas_find() will look for an entry at the given address for the first searc=
-h, and if it is not found it will continue to search upwards=2E  Since you =
-limit the search to end, it will work as you want and there isn't a bug as =
-I was thinking in my sleep deprived state=2E
+> true but either way dmabuf slicing will be directed by QEMU's
+> msix-table emulation MR and this slicing needs to match the TDISP
+> report so I'll have to teach QEMU these reports, right? I am worried
+> if I miss something obvious, again. Thanks,
 
-Since you are searching for exactly one address (end), it might serve you =
-better to walk there=2E  Maybe walking is a better API for what you are doi=
-ng here?
+I don't think so.. It just needs to slice it into the MSI page
+blindly. When the VM goes to validate the TDISP report against the
+mappings it will fail to accept the device if there is a mismatch.
 
+The only thing qemu could do is fail sooner, but I don't know that is
+worth the complexity as we do expect all devices to have their MSI
+range unprotected.
 
->> Do you have testing of these functions somewhere?
->>
->
->GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(indexing, 4) tests setting
->attributes in ranges=2E If test_page is 2,
->
->1=2E [0, 4) starts off shared (4 is the number of pages in the guest_memf=
-d)
->2=2E [2, 3) is converted to private
->    =3D> so the ranges should now be [0, 2), [2, 3), [3, 4)
->3=2E [2, 3) is converted back to shared
->    =3D> so the ranges should now be [0, 4)
->
->I verified this by inserting some trace_printk()s and inspecting manually=
-=2E
->
-
-Thanks=2E  I find the exclusive ranges a bit odd to think about in the map=
-le tree context, but this test case makes sense=2E  This is especially odd =
-to look at a single index entry, at least for me=2E
-
-I generally have a set of test cases and append any bug reproduces to that=
- list so they are unlikely to reoccur=2E  My testing is certainly different=
- from what you'll be doing, but this method has done well with the quality =
-of code improving over time, and limited (if any) regressions=2E
-
-I actually insist that any fix has a test before I accept them=2E  There a=
-re two reasons for this: 1=2E Avoiding the regression=2E 2=2E People really=
- understand the bug if they can create a reproducer=2E
-
-I hope this helps=2E
-
-
->>> +	if (entry && xa_to_value(entry) =3D=3D attributes)
->>> +		last =3D mas->last;
->>> +
->>> +	if (start > 0) {
->>> +		mas_set_range(mas, start - 1, start - 1);
->>> +		entry =3D mas_find(mas, start - 1);
->>> +		if (entry && xa_to_value(entry) =3D=3D attributes)
->>> +			start =3D mas->index;
->>> +	}
->>> +
->>> +	mas_set_range(mas, start, last);
->>> +	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
->>> +}
->>> +
->>>
->>> [=2E=2E=2Esnip=2E=2E=2E]
->>>
-
+Jason
