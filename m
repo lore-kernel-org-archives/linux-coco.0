@@ -1,167 +1,199 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E058337DEA4
-	for <linux-coco@lists.linux.dev>; Tue, 12 May 2026 21:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778621858; cv=none; b=OSRwaBuvJSc7uRTSzzzvy+HCoQlWRwPF6eF3uwlThP8Fbu7TXX8sqYUQ909uLbNQU/UOsW2mqsz+kRdw9bAgdBZxLL3d+VJ36xiWyEBI8wAAwhSo+vvhBc+G1bYccDehyrNJ9FFIBe1r6/tQjigYeYxXAVJ8vS35dlf1hSFYjCM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778621858; c=relaxed/simple;
-	bh=qGhetvw8/qiNI22y8XLXztl/MOWRXxK7B8fh7ij6z9Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oqQaHLMMeFkcHb5U79VE7V3WCsy8f4k/tZQhHGeZxf3t04H2IuCsCMSry3eVQFMLJHCja2pV7LSY7od8auwZLE+D0ltpuRC3B0Vl9+FQJ2sQj8A90E6E9Rj2FZX/cv64gSN19jixygs5Sc89Pg7TTAfrrh4ar7drczHYv4z9ohY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=k/JrJtlD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oCegvFLV; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=DwWCaDSd; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/oXPBfFy; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05399386425
+	for <linux-coco@lists.linux.dev>; Tue, 12 May 2026 21:49:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778622542; cv=fail; b=eYhcm0l6zMz+X6b7Cihrn1eCWJqDTSPaliYnRekI0+8Itnguq4j4lznJv13vp/p375H2SoJmvI9FHGN8z4Pp1VucVLKqiwkvmKoyTUrjEjcD/CU4AwKfRUV7I4rZ59i0yCtXdpF5RZV7Ei0YVteBvWECx7J3drapAXc6oDJ9HNI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778622542; c=relaxed/simple;
+	bh=zkDVys3o97yO6sPo5sBTZLv6WfZqMpIff2dzYmXAg8Y=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=DGsrqrvtb/RprbEuXnmxv1Uv3z30MqxxqI0utEq83wYQQgZRVfz16NbopFKuR8UjX1evX1y0io+hvA52K/qpOTLoLBhzCKnnx3rYkX6LVCVg6Vg1rfw7UeX7WM80mDDXuPJwxttGfwL4jLoElKjYggtCDTaMjN3MCFHZZD7xfCs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W/9vyKey; arc=fail smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="k/JrJtlD";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oCegvFLV";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DwWCaDSd";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/oXPBfFy"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7BCF66AAF8;
-	Tue, 12 May 2026 21:37:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778621855; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
-	b=k/JrJtlD/NsIePuwTQzI4rEy1mBYisPW4AZOqyt1UoORyg/S2l2Lm4bK6PWM9pH6LcEh4d
-	ev7qvSUy3Yay/FWdSUGAlp7iKJJFnUmUcxi7Mcd3dmBXEcNXf6QKJ1yPMf2HCt789ei1zt
-	5hf6Fbed6Li9KxpRy4yUU37znJS9YTw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778621855;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
-	b=oCegvFLVRawbDU3Bg7vneUP0SR3TBJsgo4QGYcuqvzQyNQ9iNHSnHvl+m1ZLjnSslepg3p
-	OexTajrtOffS95AA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DwWCaDSd;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/oXPBfFy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778621854; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
-	b=DwWCaDSdZWWxp+ygnkSg0WlLNYgtRV12MqurvwNSF6zacncgQDwhAO1Z8Zy1ol7dJVaPrK
-	/G+QbMdKnupG7je2BeBANAqYaClYXPp2SezorOPoOLiUE3AijjixUGW9sJx7V4tUNI+B4W
-	pDtl3vYtTpHqHUr7WJEg+XjHOrOK3N4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778621854;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
-	b=/oXPBfFy4y2IOUmLsKnMctUnnRGalFPQHrzbGs7fNVcLOKtzP3WhmuUANMmukySaMAOQCJ
-	30/uXm/oKCCwNFBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ABB38593A9;
-	Tue, 12 May 2026 21:37:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id bYI2J52dA2p6OQAAD6G6ig
-	(envelope-from <clopez@suse.de>); Tue, 12 May 2026 21:37:33 +0000
-From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
-To: kas@kernel.org,
-	rick.p.edgecombe@intel.com,
-	x86@kernel.org,
-	linux-coco@lists.linux.dev
-Cc: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
-	stable@vger.kernel.org,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	kvm@vger.kernel.org (open list:X86 TRUST DOMAIN EXTENSIONS (TDX))
-Subject: [PATCH] x86/tdx: Fix zero-extension for CPUID emulation
-Date: Tue, 12 May 2026 23:37:19 +0200
-Message-ID: <20260512213719.20974-1-clopez@suse.de>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W/9vyKey"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778622541; x=1810158541;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=zkDVys3o97yO6sPo5sBTZLv6WfZqMpIff2dzYmXAg8Y=;
+  b=W/9vyKeyR6lxWdWEaC40cknIgrZaVPsDKC2wCThmsk444p0XSrPQcbRm
+   ltRO1kStgoUlSnrJu3Y/E290qGLZqZLoQQj0dZKT0hTU/uqRkljKr0xyU
+   35x2emaVzGp7jsYj/SIjENd6iEWQ7jW84Llk2PKtAzq6DI3vCM1R878pq
+   F15ul1QFLar2i8tUz7IThyOX4kt1E++PlmBWeJ/govVHjexFMebIbNGpt
+   dkbB9K/tvhI8SlOTeweBQQkxlCB6c7/d2bA92klurKhYAQXlH4V/feUgL
+   2C8emKTjTNtASKg6TCGAukgCjzX0kjLoGkL31a0BjIrC+NThVZFMo1ugO
+   g==;
+X-CSE-ConnectionGUID: +VrbiGHuS9avDlkgYn3lIA==
+X-CSE-MsgGUID: TvfihdVESBut9c1bR5WVHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79652597"
+X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; 
+   d="scan'208";a="79652597"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 14:49:00 -0700
+X-CSE-ConnectionGUID: kSrmjGd+S2OEyTFiw4VNNA==
+X-CSE-MsgGUID: WenS8ICxSnKLkEFlSj9UdQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; 
+   d="scan'208";a="261386766"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 14:48:59 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 12 May 2026 14:48:59 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 12 May 2026 14:48:59 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.49) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 12 May 2026 14:48:58 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jybJoPMbszZp+qCvX2SzBfKbFSoiS5g0OfIGuEz7UnGok0adBg3+vCsSUu4FtBkmintLPPe2VDqTizuklkXHQdbvflan+xs3Le0qwAVkVcB+qZUgZ2SHo9MMoooFhSnL/wxMTN4IJ0wZXz3cujKalHb5FyUOy8NeUk8vgK3MlGwiRZ2QgggTCCA2sj5wACRb97IB6wE6uJwIEcwXqOqwpXqj0On13FZ+5T1w5U/YO1TIi6oiHgKuWNQZ9Cqpn4jaz1+z8gAgs3r2FlWFYnEnnLl7swpVYZhCz7tH40kBTz7ovR4E47tac/78KX0IYmJMw5llLGHpsFBHMj+XWBQnhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zkDVys3o97yO6sPo5sBTZLv6WfZqMpIff2dzYmXAg8Y=;
+ b=B0i1X9jMAXnDwnK/TBChLWFEnHtrt24hPyvZMxbdnHc12N5Lgtu3Rk6TfU+CiXgR/XTMInsptTpCyG+JLNKvBD115zC5ddjGZzF7F375lOTenUoneyGpauLZr2sGONZuzzgQnhLKOusI/loVFEA7IQSOmRj1UJUu1DPrslnGmWReN4fzUbpNuBZExX1wOEOMdKfqLK6fLll5Uu4zb4QjXn50M9FXAB8ejqn+qw1mwKazSyqP2ElrJ87EZ22uIs1/clCIhn5h6BwM7TGWsTdEztnIO6/FLHeV9pmxc6gsdWUPgrrFjESSm/2ctiITFP3Etz/11IwjWwmhqpgSd8Jt4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM6PR11MB3018.namprd11.prod.outlook.com (2603:10b6:5:68::11) by
+ SN7PR11MB7492.namprd11.prod.outlook.com (2603:10b6:806:347::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.20; Tue, 12 May
+ 2026 21:48:55 +0000
+Received: from DM6PR11MB3018.namprd11.prod.outlook.com
+ ([fe80::d5a2:c5ee:1227:9d1f]) by DM6PR11MB3018.namprd11.prod.outlook.com
+ ([fe80::d5a2:c5ee:1227:9d1f%6]) with mapi id 15.20.9891.021; Tue, 12 May 2026
+ 21:48:55 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"clopez@suse.de" <clopez@suse.de>, "kas@kernel.org" <kas@kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>
+CC: "ak@linux.intel.com" <ak@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "hpa@zytor.com"
+	<hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Luck, Tony"
+	<tony.luck@intel.com>, "tglx@kernel.org" <tglx@kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>
+Subject: Re: [PATCH] x86/tdx: Fix zero-extension for CPUID emulation
+Thread-Topic: [PATCH] x86/tdx: Fix zero-extension for CPUID emulation
+Thread-Index: AQHc4leZtVFzGNxN3EuH83/xEfDKtLYK7ZEA
+Date: Tue, 12 May 2026 21:48:55 +0000
+Message-ID: <81343db56b8df8f70a2e13a17e62c620bee36897.camel@intel.com>
+References: <20260512213719.20974-1-clopez@suse.de>
+In-Reply-To: <20260512213719.20974-1-clopez@suse.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.44.4-0ubuntu2.1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM6PR11MB3018:EE_|SN7PR11MB7492:EE_
+x-ms-office365-filtering-correlation-id: b204da34-c302-4164-ef9a-08deb07043e5
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700021|11063799003|22082099003|56012099003|18002099003|3023799003;
+x-microsoft-antispam-message-info: 0LHZrPxBgoo+tTK6rz10kSwuNRKx0yr8hu5Ta1lb+2Aqy9v1oSNQE0ehf1LHLXmcNZi7IpKOj4OYTJKmwpHpAn01mb2wZazq4GB0bJWoq5pM6n5oA6aHw4ZDCKCp+fEsou6HXO3G3wWQOAlWeKzKE2wTbTMXUoCiKucy5sHEAl8eGy5GESFo+36Gndtv6FurR5oQHi+CNU2MttdGHLWT5KChqgZcpzZbO2yJW2H2iZ09rdp8LqFL4rJekryqXzQJHq+A/wIq4tc9Asv2cTvM9O6WwZeHrwp2PJf1UV7c+1retb9UISDQgBdH8OARIW/wk9SdOXp4NndBR9TtH0LvbPVaardtUud2K618+f/Lh+HmUJiiPzl5m4SmSRJXCqeFolMV7o3QwFe8dpHo4jIYkNKFO1f5VebwqF5A086AwA1iWQ8PGDE4Gvjz827E4YdDsxN3lurboEoC6nujK2sl2LU5UeJO4ND6ZcKads0BAUNWGVqC4GshZfsNge7mkQp71iEC0nUQJ5Y7pRB4iQnlbBbQeLrX20aWzZSQeyE/HiF7593o85qkjbS5PfviThPWwCMdm4p70Nde8/X/fWpJZgTc1Fkftf+IBiPUW0VJ1hadCXJKX6gKEawcz5xrehuT/VJDiJwpW93GiKNG5FnGXIOyA0yGp6B4th6c31Q7qsMUc4ghWyEGMDY7izNKnY1jRfXvLN+bZEbZjMnAPsTMnivXa0PgnMC7VphqvMGZg4/J7kMbjyL1vJlGo4VMXTeD
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3018.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700021)(11063799003)(22082099003)(56012099003)(18002099003)(3023799003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?R08wSk15Smp1RDBKU09xR3FvZm42T1A0elZDUmx1VmR0cDV6aDhXVDdHMmtm?=
+ =?utf-8?B?bUZ3alR5dEdycjg4aWJITVZNbExlQTBDZUVRd3l2b1pGV2svU3JmR0tsanFj?=
+ =?utf-8?B?b1lmM0FvRVNod085NmgwMDR0aVpkeUNHM2tEOGp6NnN3NEo3N0dtcGpKeEU1?=
+ =?utf-8?B?dDA0dHh6TWZMQjlybVduS2gxMUNiQk5wR1MySXlGd1VyOEE1bkdwNE9Zd0RM?=
+ =?utf-8?B?UFdSampZN2ltRHZTMzdmdFBsMlVyZDdCdC85WHMxOEpBdkgycTdMdk9xTi9O?=
+ =?utf-8?B?a3BIcjlGMDQxSzBPcjZQZ3ZPME5vVlhBSjl0ZXdjeGxuUDRpTEpDMEU3NG5E?=
+ =?utf-8?B?OW9yRW0vbXpCL0p0UXl4clNCdmtiZHcxRWUvTDhPc2JBNVJ2RGpMUDh6UHNR?=
+ =?utf-8?B?MlBzcVJ2QW42bzhjeHliNHJRL1lUY2hzelBSeGsvMVU2Umo0VG1hYnplanVt?=
+ =?utf-8?B?SW43elhqQkZOT0hWVVVFT3BNeW9JcGY3TTBFQnNKdEx3dUFzVFhKKy9yd0pB?=
+ =?utf-8?B?SnZHdFJtNS91dmU2K21ZbzZFcVNiZWNva0dicXVLeWxBdjIyT2RLZW11Slc0?=
+ =?utf-8?B?OUE2aDZsM2plL1dlRlRrUWx4TmNTT3BGRStXRmVqVCtVWWpGeDFjMzcrT0Nu?=
+ =?utf-8?B?dDk1dGFiOFlGN2c2TldIcE05VnlXNnBjQXJsdlZKOWs1NHowMHZoc251b1Ir?=
+ =?utf-8?B?YWN2czVCUGNkbzBqeFBYZWZKUzQyaUtiRnIzSmhaVThRcGlLRkd4TDcxNkJH?=
+ =?utf-8?B?VVlKTnZHZnhhUE9ra3VDT1BzSTh1QzdRS0FEL210WjA2S3R3VWN2TzBmNlo3?=
+ =?utf-8?B?R0k4akYxdTRSM3pVaTNIM0JKQ0JJNUhPSmtEZW9NQXg3dXZTM1hHRUFldEZS?=
+ =?utf-8?B?V28veWtNaTFxeEo5Mlo0Z05DNmhzTjZLc3RjS3VoaTNnKzlVRzYvTWZtZHBC?=
+ =?utf-8?B?NG5MRTVRZnk2WEhzNi9tVm9FdXpZSlpoQm9Sa0NRUkdCdEg1ZEZNcEtib09W?=
+ =?utf-8?B?V2RTL0p2WGl3MUlOaDNURGpuYXc3Q1VpejZ3aWV6SXlhVi9LMXZxUms0OUJP?=
+ =?utf-8?B?R2E5WnM3SXVJNk01ZkJoYnhCSk9CS0x2R3ZEUGxXRitZMnFOTFowZzEwZWRv?=
+ =?utf-8?B?M015MUxtSVdoRHZWVk1pbnczejRRTWxEem9BaXZQem5VT242MURSQjZuUVp5?=
+ =?utf-8?B?ZjUxV3JPblNFSWtSZzcxNW0yRUFQVmhldEpvb2ljTVNMT1gxTkdDTE9uSTFv?=
+ =?utf-8?B?Rzl5WHhYcXVnRFdIcHIvTWdwWTRaY2FLVzZIQ2hERlNpY040ZDUyZ0RIZk14?=
+ =?utf-8?B?U0ZNTCsxQTdVaDJabmxLTDB6bGRydEtpMElqaksyZEhLeWZuOVhvRFIzc0RV?=
+ =?utf-8?B?ZmdOY05vVjBHclJxczlxQ3JIV1NOek51NEdsZTRpZHJldnBvaXZjYXFIRDN0?=
+ =?utf-8?B?ZWQ5RTFHY2RjYy9BaWlUd2MyRzdDY09KeXJIcXZ0SEh0WE9IcDFVSkdXY21O?=
+ =?utf-8?B?RE1WWFVhNWtYTkpJdjU4SWVEc3phb3pPcS9RdU9xNk9kSjlEWk9CT3FXWk1Y?=
+ =?utf-8?B?WHl5RlEzei9TWUN3cUxhbW55Q0VvcjRla0tGNG96T00reEVNd2VXMDRvcytq?=
+ =?utf-8?B?UzlHM25LdTBOR0Z1TVZ0dHdtWmdRRDNER3gyWE91UUhJK1QrU3dWZG5xb01m?=
+ =?utf-8?B?UlNHMm5oU2NmODRCZkdBbVI1UnBDY3RoYzFSd0FkSnBUN1dLd2dEVnRQWHc3?=
+ =?utf-8?B?aWlOMS8xbksxQjFzNWVKSFN1UCs4d1lCZVNJc2UvbFJlRGp6TXgzbEZTV3hu?=
+ =?utf-8?B?U3I5MUlLNng2Y0lBc3BEUGkrNWJ0QkZZc05DWC9xLzVLWWlrRVh3djN1TkxF?=
+ =?utf-8?B?OXJYYnBVWUljVzMvUVczMVIxQWQ0a1NZU2llaWdodFB0czQ4MU5ZWDFiRU1y?=
+ =?utf-8?B?Y2h5ZTdoL0pOWmFldmhTemYvY3REYSt4aEU4WXh1RytuZ1FQODh6Rnk0Y0pP?=
+ =?utf-8?B?WndPSXNGMXdpUkdXNmF1empsS2hVYW9EVmt4UFBTUitsZTNjTjN0cHlFeWJM?=
+ =?utf-8?B?M04wZVp2SllrR1o1ZnFiVCtjU1lIdEcyK1ErQjl1eTRtb1hwVUQ0dzZQTDNP?=
+ =?utf-8?B?RGIvd05tOVNxcXZPN0VYc0hDdEllbThqWFFmd3FXaUNwb0ZkRzEySEdpTGVo?=
+ =?utf-8?B?eXBBMUcrTDZyK2c5WW5sSmxoU25wSmFCREJHODJONmVIMnZoTEtsWG1DNEVH?=
+ =?utf-8?B?dlErREMxa2VQMTVzN1dpSTRMY1kzVkRReHNJN0owb3E1MHE1dzNuQU4xVHBs?=
+ =?utf-8?B?eGVpSzI4ckRodVJUSzQvRE84QVIzTEZtVjVnK2FCZHR5T2JGM0FOUmVkUksy?=
+ =?utf-8?Q?a2BoytN96ltzFUT4=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <00E500F6343B9F418321C805F9949039@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:email,suse.de:mid];
-	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:email,suse.de:mid];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Queue-Id: 7BCF66AAF8
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
+X-Exchange-RoutingPolicyChecked: ZlPblXBzoVgXiQh9b4R0KCIqqOsQDXkEkMWkEkoIJZYAas/3rmNTQ1MBg5k8X10TUVRkJKdHMYhf9er4czcWYwUbK0/54u5lWKICWHhw2vCi8x+Y8xNjTqm2A5X49cvxSfxAv63dITD2gA0cNKMePsf9KSMq+q9I2oj2u3I+ZqLQREVHUk6V0aEikcYzDQ5MiklaUqx+Xm8PzCHEfwMCxFYI9UFNK4ln6oIvgb3esUPi58laGPVIOD0QunwDzmdKd6RvFgDGScTftIK+dC1Fkn5O1vpqtQzFccoyVpPZWLLPFv1WwOY4t8gCvx8IDV0KAfDPj24S4EJK/kwjY/N+cA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3018.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b204da34-c302-4164-ef9a-08deb07043e5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 May 2026 21:48:55.5065
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: neiOCVKPPvy50+0jWI0D6PdxQgmAvMpbtuMHINTzZ9c3ONlFI9HBnhqlbPmtPhBonMdn7IQTyGz7guBCXq3tOAIUdwnRCzPgZPHrtoAYlLc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7492
+X-OriginatorOrg: intel.com
 
-In the x86 architecture, 32-bit operations zero-extend the result in the
-destination register to 64 bits. This includes the CPUID instruction,
-which writes 32-bit values EAX/EBX/ECX/EDX.
-
-When handling the CPUID instruction via #VE, copy only the lower 32-bits
-provided by the hypervisor for the output registers, and zero out the
-upper half.
-
-Fixes: c141fa2c2bba ("x86/tdx: Handle CPUID via #VE")
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos López <clopez@suse.de>
----
- arch/x86/coco/tdx/tdx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index c8b9e86d0488..a2fe1ae019bd 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -543,10 +543,10 @@ static int handle_cpuid(struct pt_regs *regs, struct ve_info *ve)
- 	 * EAX, EBX, ECX, EDX registers after the CPUID instruction execution.
- 	 * So copy the register contents back to pt_regs.
- 	 */
--	regs->ax = args.r12;
--	regs->bx = args.r13;
--	regs->cx = args.r14;
--	regs->dx = args.r15;
-+	regs->ax = lower_32_bits(args.r12);
-+	regs->bx = lower_32_bits(args.r13);
-+	regs->cx = lower_32_bits(args.r14);
-+	regs->dx = lower_32_bits(args.r15);
- 
- 	return ve_instr_len(ve);
- }
--- 
-2.51.0
-
+T24gVHVlLCAyMDI2LTA1LTEyIGF0IDIzOjM3ICswMjAwLCBDYXJsb3MgTMOzcGV6IHdyb3RlOg0K
+PiBJbiB0aGUgeDg2IGFyY2hpdGVjdHVyZSwgMzItYml0IG9wZXJhdGlvbnMgemVyby1leHRlbmQg
+dGhlIHJlc3VsdCBpbiB0aGUNCj4gZGVzdGluYXRpb24gcmVnaXN0ZXIgdG8gNjQgYml0cy4gVGhp
+cyBpbmNsdWRlcyB0aGUgQ1BVSUQgaW5zdHJ1Y3Rpb24sDQo+IHdoaWNoIHdyaXRlcyAzMi1iaXQg
+dmFsdWVzIEVBWC9FQlgvRUNYL0VEWC4NCj4gDQo+IFdoZW4gaGFuZGxpbmcgdGhlIENQVUlEIGlu
+c3RydWN0aW9uIHZpYSAjVkUsIGNvcHkgb25seSB0aGUgbG93ZXIgMzItYml0cw0KPiBwcm92aWRl
+ZCBieSB0aGUgaHlwZXJ2aXNvciBmb3IgdGhlIG91dHB1dCByZWdpc3RlcnMsIGFuZCB6ZXJvIG91
+dCB0aGUNCj4gdXBwZXIgaGFsZi4NCj4gDQo+IEZpeGVzOiBjMTQxZmEyYzJiYmEgKCJ4ODYvdGR4
+OiBIYW5kbGUgQ1BVSUQgdmlhICNWRSIpDQo+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+
+IFNpZ25lZC1vZmYtYnk6IENhcmxvcyBMw7NwZXogPGNsb3BlekBzdXNlLmRlPg0KPiAtLS0NCj4g
+wqBhcmNoL3g4Ni9jb2NvL3RkeC90ZHguYyB8IDggKysrKy0tLS0NCj4gwqAxIGZpbGUgY2hhbmdl
+ZCwgNCBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2Fy
+Y2gveDg2L2NvY28vdGR4L3RkeC5jIGIvYXJjaC94ODYvY29jby90ZHgvdGR4LmMNCj4gaW5kZXgg
+YzhiOWU4NmQwNDg4Li5hMmZlMWFlMDE5YmQgMTAwNjQ0DQo+IC0tLSBhL2FyY2gveDg2L2NvY28v
+dGR4L3RkeC5jDQo+ICsrKyBiL2FyY2gveDg2L2NvY28vdGR4L3RkeC5jDQo+IEBAIC01NDMsMTAg
+KzU0MywxMCBAQCBzdGF0aWMgaW50IGhhbmRsZV9jcHVpZChzdHJ1Y3QgcHRfcmVncyAqcmVncywg
+c3RydWN0IHZlX2luZm8gKnZlKQ0KPiDCoAkgKiBFQVgsIEVCWCwgRUNYLCBFRFggcmVnaXN0ZXJz
+IGFmdGVyIHRoZSBDUFVJRCBpbnN0cnVjdGlvbiBleGVjdXRpb24uDQo+IMKgCSAqIFNvIGNvcHkg
+dGhlIHJlZ2lzdGVyIGNvbnRlbnRzIGJhY2sgdG8gcHRfcmVncy4NCj4gwqAJICovDQo+IC0JcmVn
+cy0+YXggPSBhcmdzLnIxMjsNCj4gLQlyZWdzLT5ieCA9IGFyZ3MucjEzOw0KPiAtCXJlZ3MtPmN4
+ID0gYXJncy5yMTQ7DQo+IC0JcmVncy0+ZHggPSBhcmdzLnIxNTsNCj4gKwlyZWdzLT5heCA9IGxv
+d2VyXzMyX2JpdHMoYXJncy5yMTIpOw0KPiArCXJlZ3MtPmJ4ID0gbG93ZXJfMzJfYml0cyhhcmdz
+LnIxMyk7DQo+ICsJcmVncy0+Y3ggPSBsb3dlcl8zMl9iaXRzKGFyZ3MucjE0KTsNCj4gKwlyZWdz
+LT5keCA9IGxvd2VyXzMyX2JpdHMoYXJncy5yMTUpOw0KPiDCoA0KDQpDYW4geW91IGV4cGxhaW4g
+dGhlIGltcGFjdCBoZXJlPyBXaHkgc2hvdWxkIHRoZSBndWVzdCBmaXh1cCB3aGF0IHRoZSBWTU0N
+CmVtdWxhdGVzPw0K
