@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB69496903
-	for <linux-coco@lists.linux.dev>; Wed, 13 May 2026 15:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3224A2E0B
+	for <linux-coco@lists.linux.dev>; Wed, 13 May 2026 15:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778685108; cv=none; b=EWCIW8DBuFcTOK8QvttEeRJu8ILz9rGnVx8e7DWp8YkmVhbj/ooxHgE209MqJW82qBrCNsTGDed7k78HKx3RNIm8geVz4+gnreTtHGa74dTzzVPHKSwnWtXL3Ta3PDHyehKmlDq596dW6BUSZjeuJwWWFJvE/ZmAn0CkWsxmC90=
+	t=1778685110; cv=none; b=msw5dkgovZaDANDtLDRCqj5BQmQfGFx6gRvWHyo3AaNvxYR5zoCSHZYtiSDL8eO9x44ltHkQEpDyqkzK0qZzFi1PZ2/A6yrRgKs1ncb1IoRqG2385EIXTSxyynOUZ4+raDm4FoFfG+OUoG1JlVfwxxFEI7RsoHlgHKxKeoBupmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778685108; c=relaxed/simple;
-	bh=7Vlp2XDtMoqkUwxL5/QuIk6s5vFKWwuAnnEzUQ72jSs=;
+	s=arc-20240116; t=1778685110; c=relaxed/simple;
+	bh=beV9EOdjFCy/ljpfkkUCekXBiTBe08yzb9VkAqkB1v4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hVpi1jiycX61I36UpN43mmV9lS7apmU6u0ysTcWiZy1PJ7bGraelfDBMWf3s7xplnPpr1BdAzst+OoOE7QfKi/UXmVnRUrxK7D3ve9eGBNba+knh/SYmJgicrTmgSs5QvecDCiHNPYigj733h0UASyjP1jV19ERTQUz2Bm5FNhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iyhFMl9v; arc=none smtp.client-ip=198.175.65.11
+	 MIME-Version; b=qBz72vQIIosc/IC5kxP7t3EtxB+WeTQhmZ9TBLVkR/PknlcDW0eJfhuO2HaNX4+TETow3/jXvSVDhsaYjnIooLVfaZG0TsFkaAfhbhHGYFmgaVw/UIz4zt3/gRXoJZQH4TnRvVJbSlGXMHFttfqkaKDLq76FIKwgZwA6yZypZDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A5wMqOZV; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iyhFMl9v"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A5wMqOZV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778685107; x=1810221107;
+  t=1778685108; x=1810221108;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=7Vlp2XDtMoqkUwxL5/QuIk6s5vFKWwuAnnEzUQ72jSs=;
-  b=iyhFMl9v8mddUuHqJie9JwFlxlMaUJKxd2+jj44sdCDtnc2WteL+V87Y
-   jSdx3JTAmCavxA5U2HDCdO8d/ys1D3H9Pc8jmdYF7Lvj3enILdrurbtFt
-   rpRvQ3dMH3VP8LvK9wvJFiVLU8isaArrYX72K4FsTG4r5+bim5Llsjh9P
-   /xnclNdLbyT996Nfb551c8HFq5ufInJBuKJjaAYpHskQFTc+5xnosIxlW
-   uLkpKBS51mT/PSxIiAgHqUhirY/cDq/6GA9/2pOgqmvXjasPes2lMX9Hs
-   MyNxO3dNYqHudMLF6FpdO+HGSynnQzUNzM+k4fBTfyeTuEqED9+y/t4Ct
-   g==;
-X-CSE-ConnectionGUID: 7+HgLgO/QH6UbJw9W4T/hg==
-X-CSE-MsgGUID: PMFGeS+nTDavSjCbuOhmXA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="89921676"
+  bh=beV9EOdjFCy/ljpfkkUCekXBiTBe08yzb9VkAqkB1v4=;
+  b=A5wMqOZVSd9ZSZbCczwQBs2v44dDARPM9FfpMxiSJBwn0agJg7ZPyzjF
+   PpWhRbrTYBxT8ai5aiUzWe1w6RaTD7lbHNiitDlcG7hJBJZ+3eo8pYHqX
+   YlD8Awb1AHjxrhcuFGcj/j0hLN/NxWRRb0iqnsugF7lTJuQu5fOrXKGU/
+   4S5e3nga/XkKxtt4CkUr3TiZ/Hv4N/Vy1QzHK1IpQpbsY4j3Gmv2zBuj8
+   wzH4sfzd7HYETrP6akrrEkb1klrOhBEATlsaGmmdvN1R9BdZDzxDmhU8C
+   ihbKilntlFAMJTtpqZIVHz7j+fAv/M+1B95vQpVZdYJf5X03gLn2quQ+F
+   Q==;
+X-CSE-ConnectionGUID: qumsKxzAQ1qA6BJm/5Vw7A==
+X-CSE-MsgGUID: KFkdweu8TCKpYoBeVoPGdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="89921688"
 X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="89921676"
+   d="scan'208";a="89921688"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:11:46 -0700
-X-CSE-ConnectionGUID: H/rXTBBVSv+PCPqLMTprBQ==
-X-CSE-MsgGUID: mzLpvv8oRvqZOvJKiwbgZw==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:11:48 -0700
+X-CSE-ConnectionGUID: AwjR5SDaRm28LCE+vHlnLA==
+X-CSE-MsgGUID: jHch+/iqTRyq9OpUqdtXwQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="231716811"
+   d="scan'208";a="231716818"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:11:46 -0700
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:11:47 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -72,9 +72,9 @@ Cc: binbin.wu@linux.intel.com,
 	Borislav Petkov <bp@alien8.de>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v9 09/23] coco/tdx-host: Don't expose P-SEAMLDR information on CPUs with erratum
-Date: Wed, 13 May 2026 08:09:52 -0700
-Message-ID: <20260513151045.1420990-10-chao.gao@intel.com>
+Subject: [PATCH v9 10/23] coco/tdx-host: Implement firmware upload sysfs ABI for TDX module updates
+Date: Wed, 13 May 2026 08:09:53 -0700
+Message-ID: <20260513151045.1420990-11-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260513151045.1420990-1-chao.gao@intel.com>
 References: <20260513151045.1420990-1-chao.gao@intel.com>
@@ -84,132 +84,256 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Some TDX-capable CPUs have an erratum, as documented in Intel® Trust
-Domain CPU Architectural Extensions (May 2021 edition) Chapter 2.3:
+tl;dr: Select fw_upload for doing TDX module updates. The process of
+selecting among available update images is complicated and nuanced. Punt
+the selection policy out to userspace.
 
-  SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed
-  to by the current-VMCS pointer. A VMM that invokes the P-SEAMLDR using
-  SEAMCALL must reload the current-VMCS, if required, using the VMPTRLD
-  instruction.
+Long Version:
 
-Clearing the current VMCS behind KVM's back will break KVM.
+Linux kernel supports two primary firmware update mechanisms:
+  - request_firmware()
+  - firmware upload (or fw_upload)
 
-This erratum is not present when IA32_VMX_BASIC[60] is set. Add a CPU
-bug bit for this erratum and refuse to expose P-SEAMLDR information
-on affected CPUs, because even reading the P-SEAMLDR sysfs knobs would
-enter and exit P-SEAMLDR.
+The former is used by microcode updates, SEV firmware updates, etc. The
+latter is used by CXL and FPGA firmware updates.
 
-Use a CPU bug bit to stay consistent with X86_BUG_TDX_PW_MCE. As a bonus,
-the bug bit is visible to userspace, which allows userspace to determine
-why these sysfs files are not exposed, and it can also be checked by other
-kernel components in the future if needed.
+One key difference between them is: request_firmware() loads a named
+file from the filesystem where the filename is kernel-controlled, while
+fw_upload accepts firmware data directly from userspace.
 
-== Alternatives ==
-Two workarounds were considered but both were rejected:
+Use fw_upload for TDX module updates as loading a named file isn't
+suitable for TDX (see below for more reasons). Specifically, register
+TDX faux device with fw_upload framework to expose sysfs interfaces
+and implement operations to process data blobs supplied by userspace.
 
-1. Save/restore the current VMCS around P-SEAMLDR calls. This produces ugly
-   assembly code [1] and doesn't play well with #MCE or #NMI if they
-   need to use the current VMCS.
+Why fw_upload instead of request_firmware()?
+============================================
+The explicit file selection capabilities of fw_upload is preferred over
+the implicit file selection of request_firmware() for the following
+reasons:
 
-2. Move KVM's VMCS tracking logic to the TDX core code, which would break
-   the boundary between KVM and the TDX core code [2].
+a. Intel distributes all versions of the TDX module, allowing admins to
+load any version rather than always defaulting to the latest. This
+flexibility is necessary because future extensions may require reverting to
+a previous version to clear fatal errors.
+
+b. Some module version series are platform-specific. For example, the 1.5.x
+series is for certain platform generations, while the 2.0.x series is
+intended for others.
+
+c. The update policy for TDX module updates is non-linear at times. The
+latest TDX module may not be compatible. For example, TDX module 1.5.x
+may be updated to 1.5.y but not to 1.5.y+1. This policy is documented
+separately in a file released along with each TDX module release.
+
+So, the default policy of "request_firmware()" of "always load latest", is
+not suitable for TDX. Userspace needs to deploy a more sophisticated policy
+check (e.g., latest may not be compatible), and there is potential
+operator choice to consider.
+
+Just have userspace pick rather than add kernel mechanism to change the
+default policy of request_firmware().
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 Reviewed-by: Kai Huang <kai.huang@intel.com>
 Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Link: https://lore.kernel.org/kvm/fedb3192-e68c-423c-93b2-a4dc2f964148@intel.com/ # [1]
-Link: https://lore.kernel.org/kvm/aYIXFmT-676oN6j0@google.com/ # [2]
+Link: https://lore.kernel.org/kvm/01fc8946-eb84-46fa-9458-f345dd3f6033@intel.com/
 ---
-This is split into a separate patch rather than folded into the previous one,
-because the erratum handling warrants a longer changelog and discussion of
-the alternatives.
----
- arch/x86/include/asm/cpufeatures.h    |  1 +
- arch/x86/include/asm/vmx.h            |  1 +
- arch/x86/virt/vmx/tdx/tdx.c           | 11 +++++++++++
- drivers/virt/coco/tdx-host/tdx-host.c |  8 ++++++++
- 4 files changed, 21 insertions(+)
+Dave also suggested making .poll_complete() optional in fw_upload_ops.
+That will be handled in a separate series.
 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 1d506e5d6f46..7b572bc24265 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -573,4 +573,5 @@
- #define X86_BUG_ITS_NATIVE_ONLY		X86_BUG( 1*32+ 8) /* "its_native_only" CPU is affected by ITS, VMX is not affected */
- #define X86_BUG_TSA			X86_BUG( 1*32+ 9) /* "tsa" CPU is affected by Transient Scheduler Attacks */
- #define X86_BUG_VMSCAPE			X86_BUG( 1*32+10) /* "vmscape" CPU is affected by VMSCAPE attacks from guests */
-+#define X86_BUG_SEAMRET_INVD_VMCS	X86_BUG( 1*32+11) /* "seamret_invd_vmcs" SEAMRET from P-SEAMLDR clears the current VMCS */
- #endif /* _ASM_X86_CPUFEATURES_H */
-diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index 37080382df54..49d8551d285d 100644
---- a/arch/x86/include/asm/vmx.h
-+++ b/arch/x86/include/asm/vmx.h
-@@ -147,6 +147,7 @@ struct vmcs {
- #define VMX_BASIC_INOUT				BIT_ULL(54)
- #define VMX_BASIC_TRUE_CTLS			BIT_ULL(55)
- #define VMX_BASIC_NO_HW_ERROR_CODE_CC		BIT_ULL(56)
-+#define VMX_BASIC_NO_SEAMRET_INVD_VMCS		BIT_ULL(60)
+v9:
+ - add a TL;DR to state the implementation choice up front [Dave]
+ - s/can_expose_seamldr()/supports_runtime_update()/ [Dave]
+---
+ arch/x86/include/asm/seamldr.h        |  1 +
+ arch/x86/virt/vmx/tdx/seamldr.c       | 15 +++++
+ drivers/virt/coco/tdx-host/Kconfig    |  2 +
+ drivers/virt/coco/tdx-host/tdx-host.c | 87 ++++++++++++++++++++++++++-
+ 4 files changed, 102 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/include/asm/seamldr.h b/arch/x86/include/asm/seamldr.h
+index c67e5bc910a9..ac6f80f7208b 100644
+--- a/arch/x86/include/asm/seamldr.h
++++ b/arch/x86/include/asm/seamldr.h
+@@ -32,5 +32,6 @@ struct seamldr_info {
+ static_assert(sizeof(struct seamldr_info) == 256);
  
- static inline u32 vmx_basic_vmcs_revision_id(u64 vmx_basic)
- {
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 837e9b36e1ea..1621695d7561 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -42,6 +42,7 @@
- #include <asm/processor.h>
- #include <asm/mce.h>
- #include <asm/virt.h>
-+#include <asm/vmx.h>
+ int seamldr_get_info(struct seamldr_info *seamldr_info);
++int seamldr_install_module(const u8 *data, u32 size);
  
- #include "seamcall_internal.h"
- #include "tdx.h"
-@@ -1443,6 +1444,8 @@ static struct notifier_block tdx_memory_nb = {
+ #endif /* _ASM_X86_SEAMLDR_H */
+diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+index 7269a239bc22..7b345000d7c3 100644
+--- a/arch/x86/virt/vmx/tdx/seamldr.c
++++ b/arch/x86/virt/vmx/tdx/seamldr.c
+@@ -6,6 +6,7 @@
+  */
+ #define pr_fmt(fmt)	"seamldr: " fmt
  
- static void __init check_tdx_erratum(void)
- {
-+	u64 basic_msr;
-+
- 	/*
- 	 * These CPUs have an erratum.  A partial write from non-TD
- 	 * software (e.g. via MOVNTI variants or UC/WC mapping) to TDX
-@@ -1454,6 +1457,14 @@ static void __init check_tdx_erratum(void)
- 	case INTEL_EMERALDRAPIDS_X:
- 		setup_force_cpu_bug(X86_BUG_TDX_PW_MCE);
- 	}
-+
-+	/*
-+	 * Some TDX-capable CPUs have an erratum where the current VMCS is
-+	 * cleared after calling into P-SEAMLDR.
-+	 */
-+	rdmsrq(MSR_IA32_VMX_BASIC, basic_msr);
-+	if (!(basic_msr & VMX_BASIC_NO_SEAMRET_INVD_VMCS))
-+		setup_force_cpu_bug(X86_BUG_SEAMRET_INVD_VMCS);
++#include <linux/mm.h>
+ #include <linux/spinlock.h>
+ 
+ #include <asm/seamldr.h>
+@@ -41,3 +42,17 @@ int seamldr_get_info(struct seamldr_info *seamldr_info)
+ 	return seamldr_call(P_SEAMLDR_INFO, &args);
  }
- 
- void __init tdx_init(void)
+ EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
++
++/**
++ * seamldr_install_module - Install a new TDX module.
++ * @data: Pointer to the TDX module image.
++ * @size: Size of the TDX module image.
++ *
++ * Returns 0 on success, negative error code on failure.
++ */
++int seamldr_install_module(const u8 *data, u32 size)
++{
++	/* TODO: Update TDX module here */
++	return 0;
++}
++EXPORT_SYMBOL_FOR_MODULES(seamldr_install_module, "tdx-host");
+diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+index d35d85ef91c0..ca600a39d97b 100644
+--- a/drivers/virt/coco/tdx-host/Kconfig
++++ b/drivers/virt/coco/tdx-host/Kconfig
+@@ -1,6 +1,8 @@
+ config TDX_HOST_SERVICES
+ 	tristate "TDX Host Services Driver"
+ 	depends on INTEL_TDX_HOST
++	select FW_LOADER
++	select FW_UPLOAD
+ 	default m
+ 	help
+ 	  Enable access to TDX host services like module update and
 diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-index 079913dcc888..a540d658757b 100644
+index a540d658757b..c4c099cf3de1 100644
 --- a/drivers/virt/coco/tdx-host/tdx-host.c
 +++ b/drivers/virt/coco/tdx-host/tdx-host.c
-@@ -91,6 +91,14 @@ static umode_t seamldr_group_visible(struct kobject *kobj, struct attribute *att
- 	if (!sysinfo)
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <linux/device/faux.h>
++#include <linux/firmware.h>
+ #include <linux/module.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/sysfs.h>
+@@ -84,7 +85,7 @@ static struct attribute *seamldr_attrs[] = {
+ 	NULL,
+ };
+ 
+-static umode_t seamldr_group_visible(struct kobject *kobj, struct attribute *attr, int idx)
++static bool supports_runtime_update(void)
+ {
+ 	const struct tdx_sys_info *sysinfo = tdx_get_sysinfo();
+ 
+@@ -99,7 +100,12 @@ static umode_t seamldr_group_visible(struct kobject *kobj, struct attribute *att
+ 	if (boot_cpu_has_bug(X86_BUG_SEAMRET_INVD_VMCS))
  		return 0;
  
+-	return tdx_supports_runtime_update(sysinfo) ? attr->mode : 0;
++	return tdx_supports_runtime_update(sysinfo);
++}
++
++static umode_t seamldr_group_visible(struct kobject *kobj, struct attribute *attr, int idx)
++{
++	return supports_runtime_update() ? attr->mode : 0;
+ }
+ 
+ static const struct attribute_group seamldr_group = {
+@@ -113,6 +119,81 @@ static const struct attribute_group *tdx_host_groups[] = {
+ 	NULL,
+ };
+ 
++static enum fw_upload_err tdx_fw_prepare(struct fw_upload *fwl,
++					 const u8 *data, u32 size)
++{
++	return FW_UPLOAD_ERR_NONE;
++}
++
++static enum fw_upload_err tdx_fw_write(struct fw_upload *fwl, const u8 *data,
++				       u32 offset, u32 size, u32 *written)
++{
++	int ret;
++
++	ret = seamldr_install_module(data, size);
++	switch (ret) {
++	case 0:
++		*written = size;
++		return FW_UPLOAD_ERR_NONE;
++	default:
++		return FW_UPLOAD_ERR_FW_INVALID;
++	}
++}
++
++static enum fw_upload_err tdx_fw_poll_complete(struct fw_upload *fwl)
++{
 +	/*
-+	 * Calling P-SEAMLDR on CPUs with the seamret_invd_vmcs bug clears
-+	 * the current VMCS, which breaks KVM. Verify the erratum is not
-+	 * present before exposing P-SEAMLDR features.
++	 * The upload completed during tdx_fw_write().
++	 * Never poll for completion.
 +	 */
-+	if (boot_cpu_has_bug(X86_BUG_SEAMRET_INVD_VMCS))
++	return FW_UPLOAD_ERR_NONE;
++}
++
++
++static void tdx_fw_cancel(struct fw_upload *fwl)
++{
++	/*
++	 * TDX module updates are not cancellable.
++	 * Provide a no-op callback to satisfy fw_upload_ops.
++	 */
++}
++
++static const struct fw_upload_ops tdx_fw_ops = {
++	.prepare	= tdx_fw_prepare,
++	.write		= tdx_fw_write,
++	.poll_complete	= tdx_fw_poll_complete,
++	.cancel		= tdx_fw_cancel,
++};
++
++static void seamldr_deinit(void *tdx_fwl)
++{
++	firmware_upload_unregister(tdx_fwl);
++}
++
++static int seamldr_init(struct device *dev)
++{
++	struct fw_upload *tdx_fwl;
++
++	if (!supports_runtime_update())
 +		return 0;
 +
- 	return tdx_supports_runtime_update(sysinfo) ? attr->mode : 0;
- }
++	tdx_fwl = firmware_upload_register(THIS_MODULE, dev, "tdx_module",
++					   &tdx_fw_ops, NULL);
++	if (IS_ERR(tdx_fwl))
++		return PTR_ERR(tdx_fwl);
++
++	return devm_add_action_or_reset(dev, seamldr_deinit, tdx_fwl);
++}
++
++static int tdx_host_probe(struct faux_device *fdev)
++{
++	return seamldr_init(&fdev->dev);
++}
++
++static const struct faux_device_ops tdx_host_ops = {
++	.probe		= tdx_host_probe,
++};
++
+ static struct faux_device *fdev;
+ 
+ static int __init tdx_host_init(void)
+@@ -120,7 +201,7 @@ static int __init tdx_host_init(void)
+ 	if (!x86_match_cpu(tdx_host_ids) || !tdx_get_sysinfo())
+ 		return -ENODEV;
+ 
+-	fdev = faux_device_create_with_groups(KBUILD_MODNAME, NULL, NULL, tdx_host_groups);
++	fdev = faux_device_create_with_groups(KBUILD_MODNAME, NULL, &tdx_host_ops, tdx_host_groups);
+ 	if (!fdev)
+ 		return -ENODEV;
  
 -- 
 2.52.0
