@@ -1,142 +1,173 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9185C4D9918
-	for <linux-coco@lists.linux.dev>; Wed, 13 May 2026 16:50:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3586D4DB572
+	for <linux-coco@lists.linux.dev>; Wed, 13 May 2026 17:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778691030; cv=none; b=XbaGM0VEdI9GZ+D00oOF7vYYYWiKBmvUIsawRyMbj+5mN2CfPu2FBppuPEYe0dzpZxIkJKKsu2iXj2LZ7KpNWpaFDkbKCorgkMt2oQThPIDbSYB+x6Vax9y9/BDpzvogdc3ZrNVfj46nmd+1zB34slVaMkBysGaaFobe5321SuU=
+	t=1778693106; cv=none; b=KffRhtG13AumYu4DopFrQIVCMQSzch25HrJWr5fq/nnh+uiC0mJfEYYHWZJYfU3ZQjX3WzzDJaq1txTwYOokjHcNj9gUI4Ggd8WL7NI51Hk+VvP3ClXNTrGOLVBphUHdE54QLTr+dyiqWQiZGs15ZtT6sA0k+gAVdiIItKjFLbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778691030; c=relaxed/simple;
-	bh=mAqXdAIc20xRf2HYo20wY67GaSQLpUrRWs0gdd6mTP4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ecZVt76e8DWNVBajpWeOG2nEaP4ozcODIFfTihqTFufAZP3KqSCoXkRZSmglH2YSKk93M6urjZ8bfDN8em9NUiaE3m6TYQfZiPgRM8LH9neJMwXEQBsGZ0cHlBXcQUc5z3i92+CCP6534Zye3hmt1O3Riznan/FS/TpxhVhwamY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LHzNjPnk; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778693106; c=relaxed/simple;
+	bh=BfC504n+kThMXbLodptWdwF+5sTWwaf4D5wXQNX5RnE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kla3V/ViDrdf2f/H6MpxvplCittP9eHxIDqKZ13Im+TciH0Kxwo9B2c1g/gXM396lUoLem1Zo2jU2nPkRx8DItFO1PJr6xPas5PEs5ti0y/ykko44Fp6X6WkQLKQcFvErnL9XOrpJkFJB9M7+dSSkQ3Y1XBcWtXhgeiR6MABPuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=diTLTNGm; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LHzNjPnk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778691020;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YBT/cM1Lhi5LNZxdC5877fXBZx25Zuaoi+bmVCZ7rVk=;
-	b=LHzNjPnknw5ozyB5nzbD0UZmYR/vG3V1YsqdEGD1Fm4AhboV9sOQZH2rZo0yLn2YCpb7hQ
-	Q9UEbLP9yrfqRNK3e9kKi+ZOc/fV5BEJfRyK2L43PbYCao+upMLThDCkib/73YdfxImm0f
-	PsFk/PN+dawxbuEgougxmb6H5WhGBz0=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-3TJJpZwyMa2daLEVVLDe3g-1; Wed,
- 13 May 2026 12:50:16 -0400
-X-MC-Unique: 3TJJpZwyMa2daLEVVLDe3g-1
-X-Mimecast-MFC-AGG-ID: 3TJJpZwyMa2daLEVVLDe3g_1778691015
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3A8CC195608B;
-	Wed, 13 May 2026 16:50:15 +0000 (UTC)
-Received: from [10.44.50.86] (unknown [10.44.50.86])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8C2CC30001BB;
-	Wed, 13 May 2026 16:50:12 +0000 (UTC)
-Message-ID: <2a655332-4ccb-4f24-a229-3a520047991b@redhat.com>
-Date: Wed, 13 May 2026 18:50:10 +0200
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="diTLTNGm"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-9103019f8c4so73483285a.3
+        for <linux-coco@lists.linux.dev>; Wed, 13 May 2026 10:24:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1778693092; x=1779297892; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=fQtwNmxswhQih8gmC6FPDl+zfVKzr3i0rq4YmglfcBk=;
+        b=diTLTNGmhCzdtJ+NRsujqK+1p/V4K8syBN7koLP8469L3r5vDF8JmO9dVYvGRYQ0JO
+         GQ4+v62TgIC5yZ1XXI+khnEcjBWf/vMziwrSTq5V2Zif5/iDDg4yqURpG3pgf5FSAxqy
+         NkAeHJN4Ur8P53UGvYapAHzmCTTP3l7radxOY0U5LkTOxRHhuQBzKAOmFzf6MPFqgF/g
+         y7JU21ZOfCTiroh9dQkDRAfVqKQ3+IAih6J//pbBVvr2OYjGhBBDmUdlMy5SgVaWVIzR
+         olnPTOMuYD0xzd6t/cQaassSeCkY5IGJZKhVn9/mzDDbj8tnnsjsOo8gSa4r3MfB81Ho
+         HJPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778693092; x=1779297892;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fQtwNmxswhQih8gmC6FPDl+zfVKzr3i0rq4YmglfcBk=;
+        b=Xd5KMSCoMGekaYCqciBqtwB+otQdjXxucmB8283vo8H9RumE2CvdMggHynaMqyonbf
+         B2sbzZ/Sy/tYXqWriUotgd2yKT5w8y7bMgksTzXFmPto2Zmgn2nztijKYzDQG6wAuyEY
+         6Vf4QPu1CK7CWLePWFJKzCIPX7OKDzT918pwdn6R/yfD8Wrcy9PD2mgYaRGgl81rdHHr
+         nDJZewMTooa/NU8qSukOynM0bZkJ7mjbnV3wiBCWQZLZPIBv76CXdBE9mACLM88YVQ4f
+         ZFRsUzLcf8PwY0FZiusaf4Kk/s9QdDvN8lciJqeTwFVBHWUaYEdL46NYbLXwE2wLMdza
+         IMmA==
+X-Forwarded-Encrypted: i=1; AFNElJ+SWj3JLai9l0u3qDsDB35zJjq8eU9/yjaVeWom9HTuiCE1ygdXMvOkPjNJt5WLoth61V6vpQ9BGonS@lists.linux.dev
+X-Gm-Message-State: AOJu0YzDYA82t7NYRuIVjqZJYYKCYRWmFLpUR8MJxB1eVVNNzMB3Oz1R
+	AwIzGpkRjqootaCC3HXVWjd1b4+YKR2XofGmT5Y+gegS9JEbRF9LKWnQvuVacDMAW693yYlU6a8
+	8lnRCWmc=
+X-Gm-Gg: Acq92OE9ETLhb2JD0Y/3Kvs0DRYPdwKEVpYogQzLPY+kYKMJKQQ4T8qretvDg2eINBT
+	5byATwfsZ34GYOW2P+tN3NpRVkpGLPIhR8snerBLWoQJT3LL4FiLm9jR4oqbu+hYwiFck6XFuSC
+	/7+eGjN8Z0f1t0bAQ5e/zyPNDUXsxSlNqdXG4WS8YNIzUKK+nwOdCx6m4YOk0Y9dhBj6Z/ON8wZ
+	yXEF6DoKlkvffZUCW7fSlpGK9nC2gExYTybawnz//g2q9A2JChOp6908FYZDF9pKhTeJV4Pg1Of
+	acTDyBWmY/PdtsTvDc7KsY1IcbR8HSFocng23KDnqPOfr/hBko+sJWfA+cIOoRX9DMWfLGKQByb
+	ZndCy53E3Md/nmKS7nzx0r6Me3I+o1TM8NXRy4LZ2KWFjU6Hut4h9KtezW1ztURg5qNIvIErcWP
+	glPQ55Wlan4sKC+IyutqfR3M2zak7WYEBAlgilqH1cFzrdOp/ImN29N6VAMShm84RALnNWrj0wH
+	5RY0w==
+X-Received: by 2002:a05:620a:19a3:b0:8ee:42cc:4d9c with SMTP id af79cd13be357-90f8ac08735mr658592985a.39.1778693092335;
+        Wed, 13 May 2026 10:24:52 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-910bc83bbf5sm13598685a.28.2026.05.13.10.24.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 May 2026 10:24:50 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wNDKE-00000003dZu-0jxL;
+	Wed, 13 May 2026 14:24:50 -0300
+Date: Wed, 13 May 2026 14:24:50 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Mostafa Saleh <smostafa@google.com>
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>, Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
+Subject: Re: [PATCH v4 04/13] dma: swiotlb: track pool encryption state and
+ honor DMA_ATTR_CC_SHARED
+Message-ID: <20260513172450.GR7702@ziepe.ca>
+References: <20260512090408.794195-1-aneesh.kumar@kernel.org>
+ <20260512090408.794195-5-aneesh.kumar@kernel.org>
+ <agSKQrSIhizCXKwx@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/6] KVM: x86: Reg cleanups / prep work for APX
-To: Sean Christopherson <seanjc@google.com>, Kiryl Shutsemau <kas@kernel.org>
-Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, "Chang S . Bae" <chang.seok.bae@intel.com>
-References: <20260409224236.2021562-1-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20260409224236.2021562-1-seanjc@google.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: v-f74Ccl3zQgr_JMtCtziHXNv6-88B4dzygGVtIULX8_1778691015
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <agSKQrSIhizCXKwx@google.com>
 
-On 4/10/26 00:42, Sean Christopherson wrote:
-> Clean up KVM's register tracking and storage, primarily to prepare for landing
-> APX, which expands the maximum number of GPRs from 16 to 32.
+On Wed, May 13, 2026 at 02:27:14PM +0000, Mostafa Saleh wrote:
 
-Applied to kvm/next, thanks.  Upon rereading the thread I honestly 
-didn't see anything worth changing in the commit message of patch 1.
+> > +		/*
+> > +		 * if platform supports memory encryption,
+> > +		 * restricted mem pool is decrypted by default
+> > +		 */
+> > +		if (cc_platform_has(CC_ATTR_MEM_ENCRYPT)) {
+> > +			mem->unencrypted = true;
+> > +			set_memory_decrypted((unsigned long)phys_to_virt(rmem->base),
+> > +					     rmem->size >> PAGE_SHIFT);
+> > +		} else {
+> > +			mem->unencrypted = false;
+> > +		}
+>
+> This breaks pKVM as it doesn’t set CC_ATTR_MEM_ENCRYPT, so all virtio
+> traffic now fails.
 
-Paolo
+How will pKVM signal what kind of memory the DMA needs then?
 
-> v2:
->   - Call out the RIP is effectively an "EX" reg too (in patch 2). [Paolo]
->   - Rework the available/dirty APIs to have an explicit "clear" operation
->     for available, and only a full "reset" for dirty. [Yosry, Paolo]
-> 
-> v1: https://lore.kernel.org/all/20260311003346.2626238-1-seanjc@google.com
-> 
-> Sean Christopherson (6):
->    KVM: x86: Add dedicated storage for guest RIP
->    KVM: x86: Drop the "EX" part of "EXREG" to avoid collision with APX
->    KVM: nVMX: Do a bitwise-AND of regs_avail when switching active VMCS
->    KVM: x86: Add wrapper APIs to reset dirty/available register masks
->    KVM: x86: Track available/dirty register masks as "unsigned long"
->      values
->    KVM: x86: Use a proper bitmap for tracking available/dirty registers
-> 
->   arch/x86/include/asm/kvm_host.h | 32 +++++++++--------
->   arch/x86/kvm/kvm_cache_regs.h   | 62 +++++++++++++++++++++++----------
->   arch/x86/kvm/svm/sev.c          |  2 +-
->   arch/x86/kvm/svm/svm.c          | 16 ++++-----
->   arch/x86/kvm/svm/svm.h          |  2 +-
->   arch/x86/kvm/vmx/nested.c       | 10 +++---
->   arch/x86/kvm/vmx/tdx.c          | 36 +++++++++----------
->   arch/x86/kvm/vmx/vmx.c          | 52 +++++++++++++--------------
->   arch/x86/kvm/vmx/vmx.h          | 24 ++++++-------
->   arch/x86/kvm/x86.c              | 20 +++++------
->   10 files changed, 143 insertions(+), 113 deletions(-)
-> 
-> 
-> base-commit: b89df297a47e641581ee67793592e5c6ae0428f4
+Does it use set_memory_decrypted()? How can it use
+set_memory_decrypted() without offering CC_ATTR_MEM_ENCRYPT ?
 
+> Also, by design, some drivers are clueless about bouncing, so
+
+Oh? What does this mean? We take quite a dim view of drivers mis-using
+the DMA API..
+
+> I believe that the pool should have a way to control it’s property
+> (encrypted or decrypted) and that takes priority over whatever
+> attributes comes from allocation.
+
+We should get here because dma_capable() fails, and then swiotlb needs
+to return something that makes dma_capable() succeed. Yes, it should
+return details about the thing it decided, but it shouldn't have been
+pre-created with some idea how to make dma_capable() work.
+
+If dma_capable() can fail, then swiotlb should know exactly what to do
+to fix it.
+
+If pkvm wants to use the hacky scheme where you force a swiotlb pool
+configuration during arch init with force swiotlb that's a somewhat
+different flow and, sure the forced pool should force do whatever it
+is forced to.
+
+But lets try to keep them seperated in the discussion..
+
+> And that brings us to the same point whether it’s better to return
+> the memory along with it’s state or we pass the requested state.
+> I think for other cases it’s fine for the device/DMA-API to dictate
+> the attrs, but not in restricted-dma case, the firmware just knows better.
+
+The memory type must be returned back at some level so downstream
+things can do the right transformation of the phys_addr_t.
+
+One of the aspirational CC things that should work is a T=1 device
+tries to DMA from a decrypted page, finds the address is above the dma
+limit of the device, so it bounces it with SWIOTLB to an encrypted low
+address page and then the DMA API internal flow switiches from working
+with decrypted to encrypted phys_addr_t.
+
+If we can make that work then maybe the flows are designed correctly.
+
+Jason
