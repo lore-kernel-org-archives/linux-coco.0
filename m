@@ -1,129 +1,99 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D42F3E5560
-	for <linux-coco@lists.linux.dev>; Thu, 14 May 2026 14:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFDF4279E6;
+	Thu, 14 May 2026 14:38:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778769457; cv=none; b=oo0/jw84cT/BN/iXdjdEt6scv49zoJYVEoXPSjsw22pdW3CDtSofnxV6yUnIm66QeIp4fLWnaIU9CRiLAQmFVWHAAbEEsoAlzJ5JAkhqRISs/wozbykrWO4sddd574t+8oTYeOIXfctLW4QDrY4PNHqeIwUd/mThNtrxnJ8wALY=
+	t=1778769490; cv=none; b=EmL0hjBMHGgJpOeNGONYu5Jp7PdcU7e44dniBUYzktDPLQciTt6gkSfygeu3MGurhrl6k8yIysd6RHK6VQGsaRLf9b1C3ADHkbOUzxBboRobDZ6RkNzecob8ba7mL+ThFlsARGRsXWecHaZ6ZME0vFPupB42cIGjUfIZlbDgJuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778769457; c=relaxed/simple;
-	bh=1R/nhGX8X+QrR70RUCgUXl+c5YpTnUwInBBh5eq6G2A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GU359j/YZHX0M8aP7qnIDuRgI/oJWVmbiyMdpdEAoXivUJjVs9e+PWLPntwKrDch82+VOl7xh3TXE4Prsvha6/z4EVBu00Pme+NzBKzfSU8C5ZX61DL50wodlJEEULxqAyPk6pBGBXF5Pgd5opBy8R8+EUajBjtAQ5O5kuwdjXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=IvL/0DLn; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1778769490; c=relaxed/simple;
+	bh=giklq2u3G/coCjwWJANCaOkNdgcmN7tUkMYzKD51xjA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ASykr0L9kCJdH/YLaVUmtVmLtVIPVAYXZvxGMka31d/ASS2GmnPbJ5e9Lgs1Qe+ljse/Y/GNNjWrG9IO997qU1SRO+fhynKmfkRECYDrc5wjkYMyDjLPk3XGFl8paPwiIOaNQ+Hn9knnzuDLKV346RunlsNQPie1GC5w2Mg0vp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HLgFu0eX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="IvL/0DLn"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8be236ce888so63931496d6.3
-        for <linux-coco@lists.linux.dev>; Thu, 14 May 2026 07:37:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1778769455; x=1779374255; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TKVmCu+Gb/QJi05GS/MUngbhCp2nJ8/F0kCLFA01DR8=;
-        b=IvL/0DLn7SKrOp1rX/wGl8AWaRCYkdp8OfEW3zxxAqhcyyOqqB49/4eG4o8P/iM6l0
-         kgYIc93bT/eVcZMjL+eAe7hfOP1DF1Z2TTDQj2RmGqqfqowCUvyNzjMLyPSb/+et/GGP
-         IkjyWdcE7BG0JcKM435yh8HvCWVf9hSVPybTykFF85RBUTHzIYmUD87gPvI8M+okpaZR
-         MaO3sMK1qrj4earksYrXN0aCY9tbrBPJXvo2AyEdzmsnuKKUql+ejWJHt0mKSE26Dzz2
-         2aP5rlVJRVLfqE4OQT3M5vsqzD1oZ7PEZG0xxO2C53GD1ryvDXrI7Jen9nlpxwwaqHNG
-         ackQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778769455; x=1779374255;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TKVmCu+Gb/QJi05GS/MUngbhCp2nJ8/F0kCLFA01DR8=;
-        b=eTTArdgmqQKk3V+e/FHCQbfBhEIJ33llOqNYUU/oLNb9fuwdUqV1ZQ7RhNyzIKhAXj
-         a/FXBIj3OnwYQfa2InwjFdVPJlBIfJjEOnczfOWobvuIh/VRxSdWLX2dxibhv91JSlF6
-         LPqIUAlQllSqFjw+Vih6aaBKzRQzvCGV1ovJJ7Ov7bO1Xhk6zSUGrNTEoGNGCBToOfQD
-         udJJxCDWs3RDLGNKoELlBsfw+xhDhD4v9HsS5KJeKKUAE9zUAH3WPWJ7RwqgVq0oGD2U
-         Zw+LbmvcJ7QU8Qr3E8A1j4ojaPEKQrGEBt4LiQFGoT/7PNVc/sDQC9oAlPndqyVyK9C5
-         8nMQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8wXD0veI05rDEs1aTIgzhwgjeo55ZmxPV0UV3gdg6OzUAPxpcbfkYHg+T1Mb7PfdWfDN9wwGfYtKCj@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxar0icwgrCi7voNnBOnTp6ndZZx8o8TDLfqS0B55rBdveu51cH
-	dkkxTGUXoAP6htk+RUJBBaVtRVlOJrSTKwypKxA0y4yOsn3oJRpZS/x1VU/aF/gEMeY=
-X-Gm-Gg: Acq92OGE2oRpNpv8sH41MxsCSA0PNXD6RykKObB+MZfN8u+CiVhk+82pWE8UPcaQ117
-	7iI7z1dz9ijXuyK+9HuV/IEME5Ue6BkE2yWT0sH5mYQ94B3D8tmTT4dG2nd75OIkMpEj9tNpxSL
-	EgurUIzjWvSKogedVMiSzb8Tb5yak0iK3DBSNs0+TvcR3cACV7ysGxAG5MTqq7meIW1Nbp47rhk
-	RRvwRQCBEtJPyR3tDzUWnfZM27paaoj0jiMNoXTI4ywu+sirkc0mcNZKSsYGS+2zlI7shwRiNMa
-	+Xw4OaCZISGKddv7V28t+i/VG9SjxPvVH+EyEJu1Y3QnZH7w9rbPEwMm5MN8IY89T8tUvsEKfnk
-	gyMSC2kHGj70QE9n8AObjGbvw5UNShzgTPKf9r+IlpTwGRvSbS9cYNImvxZdL9a7ABMJh6yiuWa
-	/ytsF8yYzUsO9dJ7xliNceq4K70OIp3qOkpR6BzwiXWxidnXSgHHlSI/4Zc5V075EnaGhlDRHXo
-	ncY8A==
-X-Received: by 2002:a05:6214:55c6:b0:8ca:ee3:6e99 with SMTP id 6a1803df08f44-8ca0ee376b1mr2894306d6.44.1778769454659;
-        Thu, 14 May 2026 07:37:34 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8c908e11929sm25017416d6.14.2026.05.14.07.37.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 07:37:33 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wNXBt-00000005Lti-0CPB;
-	Thu, 14 May 2026 11:37:33 -0300
-Date: Thu, 14 May 2026 11:37:33 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Mostafa Saleh <smostafa@google.com>, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [PATCH v4 04/13] dma: swiotlb: track pool encryption state and
- honor DMA_ATTR_CC_SHARED
-Message-ID: <20260514143733.GB7702@ziepe.ca>
-References: <20260512090408.794195-1-aneesh.kumar@kernel.org>
- <20260512090408.794195-5-aneesh.kumar@kernel.org>
- <agSKQrSIhizCXKwx@google.com>
- <yq5ah5oaa63h.fsf@kernel.org>
- <agW5rhE9n2gDQ0w5@google.com>
- <yq5apl2y5f96.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HLgFu0eX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF01C2BCC7;
+	Thu, 14 May 2026 14:38:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778769489;
+	bh=giklq2u3G/coCjwWJANCaOkNdgcmN7tUkMYzKD51xjA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=HLgFu0eXNAR4VlrKviHPiWfQ2GDi2CP/VDJPi0+x7WYNnpewyq7YcpR+opdnSnVV0
+	 78NMFICDvV9OIFbAKCTJUTA5nYtzug72zZGCTlY+t/ha1EyIZZ0uF+fNimWpfokpYw
+	 eLHcnJrQbEbkpIYkelEAmWuccP9Yb+gqcNKt8Kf+3jAB25ai3sHVvTboNb6S24gW32
+	 wRjgDaBcyLWuczmEQiwzW/fyQKlz9M2XeNKDngiDGVKNyXPvN2P6s+tXvpm58XRTNn
+	 vlPBlfoAMpQErC5xcuyLODoM06RUdBEZcm+Q1WzAraTiwrM/6PUU0+OQ8F5qJNs83t
+	 AqqBjeezB5zSQ==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Greg KH <gregkh@linuxfoundation.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>
+Subject: Re: [PATCH v5 1/3] firmware: smccc: coco: Manage arm-smccc platform
+ device and CCA auxiliary drivers
+In-Reply-To: <agXL12bNh4gGyK1K@arm.com>
+References: <20260514094030.42495-1-aneesh.kumar@kernel.org>
+ <20260514094030.42495-2-aneesh.kumar@kernel.org>
+ <0c88bcee-65b5-4328-87e6-e1c714c3d1ca@arm.com>
+ <2026051420-amusement-drove-73e6@gregkh> <agXL12bNh4gGyK1K@arm.com>
+Date: Thu, 14 May 2026 20:08:01 +0530
+Message-ID: <yq5ajyt65a5y.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5apl2y5f96.fsf@kernel.org>
+Content-Type: text/plain
 
-On Thu, May 14, 2026 at 06:18:05PM +0530, Aneesh Kumar K.V wrote:
-> > There is no problem with non-protected guests as they don't use memory
-> > encryption, my initial thought was that th encrpyted/decrypted is
-> > per-pool property which is decided by FW (device-tree).
-> 
-> What I meant was that we need a generic way to identify a pKVM guest, so
-> that we can use it in the conditional above.
+Catalin Marinas <catalin.marinas@arm.com> writes:
 
-If I understood Mostafa's remarks I think different devices in the
-guest need shared/decrypted and some don't? Ie a virtio hypervisor
-device needs shared while a real PCI device doesn't? Is that right?
+> On Thu, May 14, 2026 at 02:55:48PM +0200, Greg Kroah-Hartman wrote:
+>> On Thu, May 14, 2026 at 12:04:13PM +0100, Suzuki K Poulose wrote:
+>> > On 14/05/2026 10:40, Aneesh Kumar K.V (Arm) wrote:
+>> > > Make the SMCCC driver responsible for registering the arm-smccc platform
+>> > > device and after confirming the relevant SMCCC function IDs, create
+>> > > the arm_cca_guest auxiliary device.
+>> > > 
+>> > 
+>> > There are a few changes squashed in to this patch. Please could we
+>> > split the patch in the following order ?
+>> > 
+>> > 1. Add platform device for arm-smccc
+>> 
+>> Do not make any more "fake" platform devices please.
+>> 
+>> > 2. Move TRNG to Auxilliary Device - (Even though it is a later patch, move
+>> > it before the RSI changes)
+>> 
+>> No, move it to the faux api please.
+>
+> So should we end up with:
+>
+>   /sys/devices/faux/arm-smccc/
+>     smccc_trng/
+>     arm-rsi-dev/
+>       tsm/tsm0
+>
+>   /sys/class/tsm/tsm0
+>     -> ../../devices/faux/arm-smccc/arm-rsi-dev/tsm/tsm0
+>
+>   /sys/firmware/cca/
+>     realm_guest
 
-In CC terms that would be a mixture of T=0 and T=1 devices hardwired
-and signaled by firwmare..
+But we need the ability to autoload different TSM backend drivers based
+on the support/availability of these SMCCC function-id ranges. faux
+device don't support that.
 
-Ideally we'd have a flow where if the arch precreates a swiotlb pool
-with special parameters this overrides all other decision making. Then
-this series is about making CC NOT use that flow... ??
-
-Jason
+-aneesh
