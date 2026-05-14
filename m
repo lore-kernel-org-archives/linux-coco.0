@@ -1,56 +1,56 @@
 Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A083D171E
-	for <linux-coco@lists.linux.dev>; Thu, 14 May 2026 21:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613263D1702
+	for <linux-coco@lists.linux.dev>; Thu, 14 May 2026 21:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778795642; cv=none; b=TknGO/ykbDlWu1QFM3123N2gdR/yK+woC6VXfWl7YNqFMHBcs95p8V0eDqfqh+2dWrLth6fkWJt6MQj+Bg1tQ7wUEEGSCYuEicF+W7wUj/b1z833GS2Pr7Zq5s9vA67+/anAwbaYstyyNLA/ARECa7kVyektzztvTBGk9LRv9G8=
+	t=1778795644; cv=none; b=V41quDwIB4F5lh7DC3GWvlA98rYpBTUHuQT+Wnib2Azty+RfnajFH/xNfYG07RhHFsDsHbiWYYGJWdpYbrmBxQ/MPiQD6wPEP6ru2X2sTfKI4/t6F5VH77sAGKGOlgsp8RQPuM1Y+YDFRxe03YBgGKH5WG1DXD57LAIuYE0LQc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778795642; c=relaxed/simple;
-	bh=alOj0ulkorrTMebS435FX8VSWcJfgxZS2VP50saGg/c=;
+	s=arc-20240116; t=1778795644; c=relaxed/simple;
+	bh=LgzQvsxxX3nzX18piIgpsaez26+Gbcq9HNZDoLa+NpM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Cu3vkJsXP5hTJ4C+AVJP0zydgr8+mvF7Uclk91PBKdYStzUDznHdxVnRTXw9vFmMwYO7LLVBAh5c7D9vJVGRT7GNwIw647rGfmzRW+Cw26+84wdV0UIUCk6rrolKlRJoLEKMANq866Dn5acoXv5jofulkOyJH9GJyBPuShP0vqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZQ2c8bdN; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=pwtnbKZlqGDpDtGrn2hEKty85lLLdzFrAOjWtEHYokNm+7EPfip/ICYPWc/sBwr88thwzZQ5bsTAtpxzlD+gGSUC4LKkdctQSiT3dPslAT4Y4efd7ujRt9y+hS0SjAKx+/xbUANXkFVIxb505gmuCJFbHtmdFpmM9I836Hzdizo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nmO/AvKk; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZQ2c8bdN"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c709551ec08so10298118a12.3
-        for <linux-coco@lists.linux.dev>; Thu, 14 May 2026 14:54:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nmO/AvKk"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c82751074c8so7451791a12.0
+        for <linux-coco@lists.linux.dev>; Thu, 14 May 2026 14:54:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778795640; x=1779400440; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1778795642; x=1779400442; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=OSIIeDvi5cUuvLPtbPSIJ0wDOFHmUc0VllK+0XWeleY=;
-        b=ZQ2c8bdN3RIsa/BBGRbKLWBHY+e4pIXCWHz0DipD6hRL1ClKUQ2nUe3AHlYmykxjuH
-         Nv1RoIL7A8hYG6EYgYpULe20wJgjGZAVy8sghizsyJEMVOaOoDdl+R0cx2+l9TJF2Ng0
-         asCaNngedfe3eyd/QJ3A6fNLU27SXUEi5dh7TfGnuOBvcr3xaccxAQ598YkGef7jZSdu
-         svYx9/2OWntu7DP1g3FYnrYxVC7uTHrbRamsEtPUFWNLmf0QzKfb5GVWxMxAWsQLY0jh
-         Sq580QzxIAbI4Raqbx5ZEzd8UyB5fEyq/a+XeW8qw/JUsqLmoXeelkko+MqVrAAZTZPD
-         3FCQ==
+        bh=AuBt9TLpeBgSZbTV0sAjcKLbSpi+4/r6Mj25KjhoAAo=;
+        b=nmO/AvKkI7WvbybBB5ArbXPhZQ9SdE2sBOsmFj0EAP11jrQcF8hQ2QuYFbp05FmVc2
+         YW4p0vK/UbX21CFD3XrUryjW87GzWneC5EMMST+yYiAFU4BQryXEAkEhkFckm3MshPYn
+         wPgfAdPE2SZtF6Gnuup0c6LO7yov4N5j6AXNXaY5U5EERb9zANXRO1AypdbS4qLT7MiS
+         jUlBxWvjY5X732BXlpvn9CFpzruBBa0vECTGSMqa6zznGq9HAAB9sTLfXcMGiXjyVeI9
+         cCv1u14VgbDhemVxqmUcSAa4027A5zKoAmbDrf81jS9w7P2cj/IHQW5aCgYYmOkcjy9X
+         wB3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778795640; x=1779400440;
+        d=1e100.net; s=20251104; t=1778795642; x=1779400442;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=OSIIeDvi5cUuvLPtbPSIJ0wDOFHmUc0VllK+0XWeleY=;
-        b=TjkTpHD1PQx3e+1/BLZDeqlOWVgqHwCL5hxTzMz2lK+n63vj1lI4JvuFUETwAup/XE
-         Krk3kfLYmN17RHFLtA7pBjf18ejlUzA3nNqhIceuzxDWiaHIFlBJT5mnANJU1+bBx9Xx
-         ZzsXtIKWg2SkNi1E8d+KRWiLcGWPbMwMu00thuqJK8KKSHfu/1m5evx8r7hPLlhnVd+9
-         ZzGpwnofOyicRSlQMxt7WX/Vw8p6dYrx8cSDWf/bsezOkDE7bd2ev0nGXpTpdlBFQQ6J
-         HkCDuzV6s02Cc9xohAE5dh9uCFDLEQ65lxKPyElFg1MooSqt37yLbeTzLBS+U43ozgY3
-         tFfQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/dQ6gvjTbuxKnxoOK/ykHOyBK7nThuNwdqocn8FJJVVI5+yqgQdvhzhVfYucglLi5cRWy/ESAAASpG@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy70Ea7NC+Kr2cf/vJnsKxmpORKnFNKeZOc53Xy6zMNwlI2z+7N
-	2R/47qKXLIP1JqFdkQesXvhjz8372xjexDBNH1i57/7FxtUG5rjTqAimW0A/mJftUeJLP/yLUVL
-	XYNXShQ==
-X-Received: from pflb19.prod.google.com ([2002:a05:6a00:a93:b0:835:4315:3453])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3e22:b0:823:d2c:b156
- with SMTP id d2e1a72fcca58-83f33c4f71cmr1244822b3a.5.1778795640146; Thu, 14
- May 2026 14:54:00 -0700 (PDT)
+        bh=AuBt9TLpeBgSZbTV0sAjcKLbSpi+4/r6Mj25KjhoAAo=;
+        b=tXtMaLL/aLIKhP4o+oCZxbjt4DdJQN2fb+Mj0oKD2duUi9WGNHlRr5YB7XSGemEv84
+         maWbSTf5RQmsKJ9AGZyrEa9AluDRUzCmGk+K3criHwggowEOsd7KkMHajbhwY/i3JBmt
+         LoS1ikhNpAIOzfBXpB0jHSemTiBEO9RF5rm/yPqgRa9CVOg8WxQJtM2h0EhpTm1b2ix9
+         5wzxMePCmYjlgS/oC4hW9XyXbaHGOoCUAdjprlHt1F+CkliTMCqgbDYqmoD+1dzbXhPo
+         4/5jx49x9HwjlXsyWNfdtSfvOEzV6lVuaMMWzwS9ysPcUd6tCdlj+koTqSufIlC+EJf9
+         JCbw==
+X-Forwarded-Encrypted: i=1; AFNElJ8b/AYsmHGOlcCdn9K5XsJ/HQX9j/MPsiwGGs0RMC4WRASCsCYvdrZmSctFIqlThHDdWM0Vv6j4ZlDq@lists.linux.dev
+X-Gm-Message-State: AOJu0YyU38MsWCN5DnFH99potzXzBYbYBIoM0UPt7Nzz3be3Fq/h7YVg
+	E/876ZKUb04KOgls+7GLHn5CHjREp9htq+mhfe/QsaEBTFvAyLcykyXUNReQsZAXeZqSR885qBq
+	hYFdI6g==
+X-Received: from pfhh12.prod.google.com ([2002:a05:6a00:230c:b0:838:1469:2431])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:198f:b0:82c:20ba:1570
+ with SMTP id d2e1a72fcca58-83f33d9828dmr1291294b3a.29.1778795641340; Thu, 14
+ May 2026 14:54:01 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 14 May 2026 14:53:43 -0700
+Date: Thu, 14 May 2026 14:53:44 -0700
 In-Reply-To: <20260514215355.1648463-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260514215355.1648463-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260514215355.1648463-4-seanjc@google.com>
-Subject: [PATCH v2 03/15] KVM: x86/xen: Don't truncate RAX when handling
- hypercall from protected guest
+Message-ID: <20260514215355.1648463-5-seanjc@google.com>
+Subject: [PATCH v2 04/15] KVM: VMX: Read 32-bit GPR values for ENCLS
+ instructions outside of 64-bit mode
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
@@ -74,47 +74,50 @@ Cc: Dave Hansen <dave.hansen@linux.intel.com>,
 	Binbin Wu <binbin.wu@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Don't truncate RAX when handling a Xen hypercall for a guest with protected
-state, as KVM's ABI is to assume the guest is in 64-bit for such cases
-(the guest leaving garbage in 63:32 after a transition to 32-bit mode is
-far less likely than 63:32 being necessary to complete the hypercall).
+When getting register values for ENCLS emulation, use kvm_register_read()
+instead of kvm_<reg>_read() so that bits 63:32 of the register are dropped
+if the guest is in 32-bit mode.
 
-Fixes: b5aead0064f3 ("KVM: x86: Assume a 64-bit hypercall for guests with protected state")
+Note, the misleading/surprising behavior of kvm_<reg>_read() being "raw"
+variants under the hood will be addressed once all non-benign bugs are
+fixed.
+
+Fixes: 70210c044b4e ("KVM: VMX: Add SGX ENCLS[ECREATE] handler to enforce CPUID restrictions")
+Fixes: b6f084ca5538 ("KVM: VMX: Add ENCLS[EINIT] handler to support SGX Launch Control (LC)")
+Acked-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/xen.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kvm/vmx/sgx.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 6d9be74bb673..895095dc684e 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -1678,15 +1678,14 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
- 	bool handled = false;
- 	u8 cpl;
+diff --git a/arch/x86/kvm/vmx/sgx.c b/arch/x86/kvm/vmx/sgx.c
+index df1d0cf76947..4c61fc33f764 100644
+--- a/arch/x86/kvm/vmx/sgx.c
++++ b/arch/x86/kvm/vmx/sgx.c
+@@ -225,8 +225,8 @@ static int handle_encls_ecreate(struct kvm_vcpu *vcpu)
+ 	struct x86_exception ex;
+ 	int r;
  
--	input = (u64)kvm_register_read(vcpu, VCPU_REGS_RAX);
--
- 	/* Hyper-V hypercalls get bit 31 set in EAX */
--	if ((input & 0x80000000) &&
-+	if ((kvm_rax_read(vcpu) & 0x80000000) &&
- 	    kvm_hv_hypercall_enabled(vcpu))
- 		return kvm_hv_hypercall(vcpu);
+-	if (sgx_get_encls_gva(vcpu, kvm_rbx_read(vcpu), 32, 32, &pageinfo_gva) ||
+-	    sgx_get_encls_gva(vcpu, kvm_rcx_read(vcpu), 4096, 4096, &secs_gva))
++	if (sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RBX), 32, 32, &pageinfo_gva) ||
++	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RCX), 4096, 4096, &secs_gva))
+ 		return 1;
  
- 	longmode = is_64_bit_hypercall(vcpu);
- 	if (!longmode) {
-+		input = (u32)kvm_rax_read(vcpu);
- 		params[0] = (u32)kvm_rbx_read(vcpu);
- 		params[1] = (u32)kvm_rcx_read(vcpu);
- 		params[2] = (u32)kvm_rdx_read(vcpu);
-@@ -1696,6 +1695,7 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
- 	}
- 	else {
- #ifdef CONFIG_X86_64
-+		input = (u64)kvm_rax_read(vcpu);
- 		params[0] = (u64)kvm_rdi_read(vcpu);
- 		params[1] = (u64)kvm_rsi_read(vcpu);
- 		params[2] = (u64)kvm_rdx_read(vcpu);
+ 	/*
+@@ -302,9 +302,9 @@ static int handle_encls_einit(struct kvm_vcpu *vcpu)
+ 	gpa_t sig_gpa, secs_gpa, token_gpa;
+ 	int ret, trapnr;
+ 
+-	if (sgx_get_encls_gva(vcpu, kvm_rbx_read(vcpu), 1808, 4096, &sig_gva) ||
+-	    sgx_get_encls_gva(vcpu, kvm_rcx_read(vcpu), 4096, 4096, &secs_gva) ||
+-	    sgx_get_encls_gva(vcpu, kvm_rdx_read(vcpu), 304, 512, &token_gva))
++	if (sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RBX), 1808, 4096, &sig_gva) ||
++	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RCX), 4096, 4096, &secs_gva) ||
++	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RDX), 304, 512, &token_gva))
+ 		return 1;
+ 
+ 	/*
 -- 
 2.54.0.563.g4f69b47b94-goog
 
