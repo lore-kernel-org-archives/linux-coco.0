@@ -1,117 +1,147 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441703F4110;
-	Thu, 14 May 2026 07:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC203F413B;
+	Thu, 14 May 2026 08:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778742069; cv=none; b=c9wQSeNOHUYQeSJikEe7BqdIKtiicnPLb77zcOGtqL03sshuv3qqbDeDYBOfj+j9yPm7U/YpHwXbK0xCSZVlyiMC8WIK6chXOdMQFBGEDQZawNkVxNXXYPYoEN+NUGs/+l7IQW7swUKU878Zv20vWIoNK07ROd5Quqrcp6v7qzY=
+	t=1778745681; cv=none; b=WLKeQ26SJTxd2+ULFtszQcrLbFpAeeI23chM5ZMuE/V7cvAVfn+NEWL9z5bbXki21gu0n+JmRQklI17NLUrrDzwdpFw98BhoVmKXT6WzItAAhq67Ax8srXPfZ+BQNi252K1e+Q2X09z4s/lgbZeqA+525EbP7TiVPlWN/pVPT2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778742069; c=relaxed/simple;
-	bh=f66lgQPtTtd9CODAjOd3YiCN6f2o8c7PL46CffwEH+U=;
+	s=arc-20240116; t=1778745681; c=relaxed/simple;
+	bh=YTT3wpiFKK2siKn7VB9xMRxwfCKefIy+RDPtffN3pIg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=UsFUJrHxt9F7En3luKCimaLSOXne10bFfcEXs9uO9yEzxm2f3KXYjnUK/gKMb5gDFzetMOMxi0KdvhLBLl4JHtqWkBluzniCAbchODYx8JOfZW0gS1gPICjsN6jI/3RUSl58xCDUQK0CVNH/+1tdFwP4y9+pEOmbVE83dsCLZZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HNCUigYp; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=YEcl9IqaP6SNrScq0r7RQLfWHAkb+V0PT9f2mWjDj+4m3GiOjH6aSD1FYkPK+GwBRJcG7wAX1tvoXDS1cxUyzRKTML1zk+O63p7jQnyiSreiWFPZgxvwRB7XdHpCzMKDFZlm5xgh5abo/wq5Z1859jqaBQ2Qwj/IRKATHgYiWSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KfuT90G2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HNCUigYp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96842C2BCB7;
-	Thu, 14 May 2026 07:00:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KfuT90G2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 873E2C2BCC7;
+	Thu, 14 May 2026 08:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778742068;
-	bh=f66lgQPtTtd9CODAjOd3YiCN6f2o8c7PL46CffwEH+U=;
+	s=k20201202; t=1778745681;
+	bh=YTT3wpiFKK2siKn7VB9xMRxwfCKefIy+RDPtffN3pIg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=HNCUigYpQNIMO+LxVL5xbaa1ZBiZuV2vfRVdsc+y1HHuPEq+l5D5j/DC+iPE2kiIq
-	 NpDsRHaoFXm34+ZqBocK830wWh70Kw2uZ7kNeJCIkV7COgnNUBdPHRKGHc1Irr6eqT
-	 RzIdbuXwoG5RlINNMckfHkUIlsEBm8Q+6X6fbrNS2E7E458DcXOOWvUh3a7kWJKjHX
-	 3EMGurhVhG6iArtsZj1jNDGSW6qS4EdUJUwdCenJ/uVYvP608IEFPORinOqSL2kojN
-	 dZmmuskcWBS0eH8pFr7ZoMjQsMpu0LZsmkHF6dDbrjpt0d1kopfEpVNDU3hdnSFdSi
-	 Ck4CbLAhd2How==
+	b=KfuT90G2ESMWQbmWA7EwQ+PxsLgj/Ta0NabGR6iGez+3gbJJ8F6mlQ13yKjbvA+WJ
+	 uw3uv6k+KUBUmNSACOZ8BgnFzfKaXoiFX+o49MPEZfegdjPqJv75rmMTA+cpMTx9Rr
+	 pZmrEw2U1EAGmfEUbuI/CpEk1QfZQzJjBDVsSDyACzpFmbD6gDQlr4xuItiqqmzvqW
+	 xQwDijnGx6/3fan8w5F5COM3fI58wYFJwSKVjPIabnbKGbyzMkDoCZPvUgYGjwoiWn
+	 ziTb4MKhIuBt19SCK/WqPQJxBRasw9psTnM9Ruj9zAE4E2HDyH9VR/dZvKMxRmDZ0M
+	 2kjUJ85XtKh9Q==
 X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
 From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Mostafa Saleh <smostafa@google.com>
-Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [PATCH v4 03/13] dma-pool: track decrypted atomic pools and
- select them via attrs
-In-Reply-To: <agSED6BdSXBhbDYI@google.com>
-References: <20260512090408.794195-1-aneesh.kumar@kernel.org>
- <20260512090408.794195-4-aneesh.kumar@kernel.org>
- <agSED6BdSXBhbDYI@google.com>
-Date: Thu, 14 May 2026 12:30:54 +0530
-Message-ID: <yq5abjeia315.fsf@kernel.org>
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+	Lorenzo.Pieralisi2@arm.com
+Subject: Re: [PATCH v14 10/44] arm64: RMI: Add support for SRO
+In-Reply-To: <20260513131757.116630-11-steven.price@arm.com>
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-11-steven.price@arm.com>
+Date: Thu, 14 May 2026 13:31:08 +0530
+Message-ID: <yq5a8q9ma08r.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-Mostafa Saleh <smostafa@google.com> writes:
+Steven Price <steven.price@arm.com> writes:
 
-...
+> +unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t gfp)
+> +{
+> +	unsigned long sro_handle;
+> +	struct arm_smccc_1_2_regs regs;
+> +	struct arm_smccc_1_2_regs *regs_in = &sro->regs;
+> +
+> +	rmi_smccc_invoke(regs_in, &regs);
+> +
+> +	sro_handle = regs.a1;
+> +
+> +	while (RMI_RETURN_STATUS(regs.a0) == RMI_INCOMPLETE) {
+> +		bool can_cancel = RMI_RETURN_CAN_CANCEL(regs.a0);
+> +		int ret;
+> +
+> +		switch (RMI_RETURN_MEMREQ(regs.a0)) {
+> +		case RMI_OP_MEM_REQ_NONE:
+> +			regs = (struct arm_smccc_1_2_regs){
+> +				SMC_RMI_OP_CONTINUE, sro_handle, 0
+> +			};
+> +			rmi_smccc_invoke(&regs, &regs);
+> +			break;
+> +		case RMI_OP_MEM_REQ_DONATE:
+> +			ret = rmi_sro_donate(sro, sro_handle, regs.a2, &regs,
+> +					     gfp);
+> +			break;
+> +		case RMI_OP_MEM_REQ_RECLAIM:
+> +			ret = rmi_sro_reclaim(sro, sro_handle, &regs);
+> +			break;
+> +		default:
+> +			ret = WARN_ON(1);
+> +			break;
+> +		}
+> +
+> +		if (ret) {
+> +			if (can_cancel) {
+> +				/*
+> +				 * FIXME: Handle cancelling properly!
+> +				 *
+> +				 * If the operation has failed due to memory
+> +				 * allocation failure then the information on
+> +				 * the memory allocation should be saved, so
+> +				 * that the allocation can be repeated outside
+> +				 * of any context which prevented the
+> +				 * allocation.
+> +				 */
+> +			}
+> +			if (WARN_ON(ret))
+> +				return ret;
+> +		}
+> +	}
+> +
+> +	return regs.a0;
+> +}
 
->>  struct page *dma_alloc_from_pool(struct device *dev, size_t size,
->> -		void **cpu_addr, gfp_t gfp,
->> +		void **cpu_addr, gfp_t gfp, unsigned long attrs,
->>  		bool (*phys_addr_ok)(struct device *, phys_addr_t, size_t))
->>  {
->> -	struct gen_pool *pool =3D NULL;
->> +	struct dma_gen_pool *dma_pool =3D NULL;
->>  	struct page *page;
->>  	bool pool_found =3D false;
->>=20=20
->> -	while ((pool =3D dma_guess_pool(pool, gfp))) {
->> +	while ((dma_pool =3D dma_guess_pool(dma_pool, gfp))) {
->> +
->> +		if (dma_pool->unencrypted !=3D !!(attrs & DMA_ATTR_CC_SHARED))
->> +			continue;
->> +
->
-> nit: If we fail to find a matching pool, a slightly misleading message
-> is printed as pool_found =3D false
->
+Can you also add support to return x1,x2 etc
 
-The message printed is
+This would help things like
 
-	WARN(1, "Failed to get suitable pool for %s\n", dev_name(dev));
+static int rmi_rtt_dev_unmap(unsigned long rd_phys,
+		unsigned long base, unsigned long top,
+		unsigned long *out_ipa, unsigned long *out_desc,
+		unsigned long *rmi_ret)
+{
+	unsigned long flags = RMI_ADDR_TYPE_SINGLE;
+	struct rmi_sro_state *sro __free(sro) =
+		rmi_sro_init(SMC_RMI_RTT_DEV_UNMAP, rd_phys, base, top, flags, NULL);
+	if (!sro)
+		return -ENOMEM;
 
-That is correct, isn=E2=80=99t it? The kernel failed to find a pool with the
-correct encryption attribute. For example, the request was for an
-encrypted allocation from the pool, but no encrypted pool was available.
+	*rmi_ret = rmi_sro_execute(sro);
+	if (*rmi_ret)
+		return 0;
 
->
->>  		pool_found =3D true;
->> -		page =3D __dma_alloc_from_pool(dev, size, pool, cpu_addr,
->> +		page =3D __dma_alloc_from_pool(dev, size, dma_pool->pool, cpu_addr,
->>  					     phys_addr_ok);
->>  		if (page)
->>  			return page;
->> @@ -296,12 +345,14 @@ struct page *dma_alloc_from_pool(struct device *de=
-v, size_t size,
+	*out_ipa = sro->regs.a1;
+	*out_desc = sro->regs.a2;
+
+	return 0;
+}
 
 -aneesh
