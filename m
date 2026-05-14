@@ -1,56 +1,56 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231173D348E
-	for <linux-coco@lists.linux.dev>; Thu, 14 May 2026 21:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4D93D1711
+	for <linux-coco@lists.linux.dev>; Thu, 14 May 2026 21:54:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778795651; cv=none; b=BU5aVz8b3l2QW077fVsmVC8CQweVxDoKFSMj8tuc7goKu3snOpg7I+uUp3UBV7m2K+WdyUxR2AInb+gI0oPAQ7+8sLkxHgM1MzXnbiPJc2aafGfDwtKYTuQN0sVhyhPT+PJfjIRqAQYGt1HWCeu6/+6xgyJ54kFsIQ1Fj2+p1gA=
+	t=1778795652; cv=none; b=hrA3BqjD0C4Tjcsx3F+yIfFDmkjmCx06eHHffDLeThgmH7khSl8vG08/v79DviFe3lvgPo/S46WwT7CKWxnh4a6LRS9T6LpBKSQb7jLRtfYJt5dpmSIQ4sG9mVB+BSpwY96Z6klbtuN166XNBqOIWB/ko4DYqK4/3VvkKdlhEy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778795651; c=relaxed/simple;
-	bh=FsAq7KEuatX1Pn52xDkKa5S9Ii59O/tYrQdckY5bUaw=;
+	s=arc-20240116; t=1778795652; c=relaxed/simple;
+	bh=kPzayqgTX4AYKj05HSSQLjERNpIEzXUE+TYLElLBau0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=l0aT06RbKsPk8BBGycc3uI4irN2DgA8vBAAYWwbaQptY/S6l0RUZr8WG1RMMgia9AgkztRnPAISjXIYRCI+9W0ywmdk+IKbPlY4is102mvIzvWIFgwbimm/479ku2z9Ee2dJxLWNCGpGQuNLxvp/9McNx1VehZK694OLx13LfvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kJGmWwXx; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=s8L10ToJzO4lm49mtPzRMUvFIWN0C8swKSg8JdoHH3hKlEvCV40tEVkYQpXaoHoEyEPId5MCTy4jT4pQrQCI0hEmTmMaG79A6CukknPh7RbkmH/Xldt0dvAHkaeTZ7SeUVzogA6PIvzbNAdwz6ElONIo3oUHaEI384oaxBv4Oh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=plHH/Or4; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kJGmWwXx"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c82894155ceso6518702a12.1
-        for <linux-coco@lists.linux.dev>; Thu, 14 May 2026 14:54:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="plHH/Or4"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c82c84be9c3so341476a12.0
+        for <linux-coco@lists.linux.dev>; Thu, 14 May 2026 14:54:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778795648; x=1779400448; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1778795650; x=1779400450; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=g9vonHXs6r1LN2kGlbzZfFmfFgWCjNXLKuYTABKAIiY=;
-        b=kJGmWwXxPeJL2lCETIlxaLmvKvX1bQ9tvTEl82MTJddBvcbXIW8yslup7Oj4UpeC/g
-         iE8HFgcNq8kQt7ilIl3Z+ADeL/i8fZ+PNVAzPGiQWnxKZ+npYpvht4cLrfLsaYB1rvyc
-         5eEQwvAyutFcI5g3zw1vphDuCmnJn92nYITjyGD65hKnjFSiKH2GPP0rlljJZ60xBBMO
-         arSKys8gGuBW5BI599WE92BnfUUk93iNUo55O+iZZ3Sc6Wz7GSiu7fQhV9oALhA+pEdB
-         eKaMiYG6YwQJVr4f9wzDpA01/BdblWwaCAMbM1OsrV5Tg/xS2kminAamkaaJw36gNvxB
-         ecxg==
+        bh=LhpTli2hbTyfQzA9vyBgyGyJFOk8w+Rac8Zy54UhAOk=;
+        b=plHH/Or4oolcvoMcYO0aqqG2WyyTBrfFJUChtA8CcqGZc7OUXixU6ZLI4YWQkxQ2hl
+         eJsO7C3eKsMPaXzgH9uy0pa6mimRBvbtGYv0fMePYZ11HJexn9iws/fDl+7TyG+idhN5
+         XmMTpg5Xx5azxdwWoxrdrm18/jDYuyfyDH71/zKqKqST9on/wRvKvbrpwIn6u+m7c9oE
+         Rb1g3/A8q3T4ek7Rp84rTikc1ah46TD8Yf07qvu/QSY5FAT9DIUJ0J2wJdRQHfcmCi3M
+         xo6vQRONQPZtK85MQGdNTIryQNUXyO+e+4wqhMnqywnRpZk0HPB3+itWVbdodx3zUSsN
+         EIGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778795648; x=1779400448;
+        d=1e100.net; s=20251104; t=1778795650; x=1779400450;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=g9vonHXs6r1LN2kGlbzZfFmfFgWCjNXLKuYTABKAIiY=;
-        b=OPhujQo1hsbJ0p8l9x2/n6S5InWnCf/5G4tSzh64TyKqPXMFOoBgO3O+awHcjcIyAM
-         p+5LOd46imj2/yn88JmDAiuvu7s+XfIBcMArxTkL8d9bot/zlP9B1xtfEP98FOevxyvt
-         jQeQVi2PBpGeuhy3/erOnQmtCyIZZboKmKza64WcOP6N87FiNh7WK4c3ovMxWXfWa1BO
-         rHQ4C372Jahbvti8okmmi/aqzINzp3vsVFu9V41wS/hf+aD+pugXazJnSa+0J35ma25U
-         8oeC9Pnk5RUyRG0qc+rB0nw9J5eT7IHkDYmdOpHmXtAi9A5TKCHNWEWDnqaOTFSJaU+y
-         KWyQ==
-X-Forwarded-Encrypted: i=1; AFNElJ94n1RyvZXKef4rjFD7edgfiZTD/w+N2JnrEdpNWDmU0TzpDJiluKMXD2oucrx5sg3r8zE5GBmydMJc@lists.linux.dev
-X-Gm-Message-State: AOJu0YyBl+s+vxdDQwY6ROkCPkkIZXlx9upLIjz1wWDj+uLPeebe3Itq
-	BUGnWli4PnXi8B9s6pacmLpDs8l8UhcjZENUnTUbr1srfbLEpnhpjxtd1thxGm7Ib8mjZ6vFLSw
-	axhFulQ==
-X-Received: from pfbem25.prod.google.com ([2002:a05:6a00:3759:b0:835:2a09:221c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3a25:b0:82f:1b42:11d0
- with SMTP id d2e1a72fcca58-83f33c9bdc4mr1362504b3a.15.1778795648217; Thu, 14
- May 2026 14:54:08 -0700 (PDT)
+        bh=LhpTli2hbTyfQzA9vyBgyGyJFOk8w+Rac8Zy54UhAOk=;
+        b=K4wDBazhennIzat/IdM/DvGLUyYuck4L+sZAdyGr+VXSuy3ubuJoKUqRUEKjGXsdRJ
+         AXdsZO7nrPKXm0dUu+4uwJIrm6r1Vg0WBE3enRG/fkJnPNEbossvTGfQuMFGjlYBtQd4
+         GZOGOPcIa21cFU4t9Ae2wwvmldFODpGEMNiNhfkuQBkuS4Z6zW16WEz0l1ib6VRmHWBa
+         tqZIjAHxvFXy0yV2F1HKfm/2+xZScrJRYm5YlG2MPiNcqkyKmNtu+vCCEC1eNDmOIYMB
+         M/t1iuFeipjEKbUpW5YT2jy4a7nX8wIOqq8O/5jCG0K7PXpjtf19n6RROV7CNjH8ceTB
+         mmWw==
+X-Forwarded-Encrypted: i=1; AFNElJ+xsh9pxlU2gz5BRja1Pd0VEAC1GHl5usTJwaXt4pI51hLLklsgKIaZBFh7PmyiOeXJCyxFWE9vuLaR@lists.linux.dev
+X-Gm-Message-State: AOJu0YwgneuTgNPRKHAWisqNrcBfh1wsTb5xsHvN0A4OQ9S8r+IngT3S
+	lnNR3KKGdhbgr8sdg8OvrYRIKZGQ91neX9Cpl/XLnexawjIzM81tLWvEykw9fyBIoXq10TlAoc+
+	eB1JOgQ==
+X-Received: from pfmy21.prod.google.com ([2002:aa7:8055:0:b0:83f:2ce7:48ce])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1954:b0:835:366f:5da2
+ with SMTP id d2e1a72fcca58-83f33d80937mr1240198b3a.37.1778795649298; Thu, 14
+ May 2026 14:54:09 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 14 May 2026 14:53:50 -0700
+Date: Thu, 14 May 2026 14:53:51 -0700
 In-Reply-To: <20260514215355.1648463-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260514215355.1648463-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260514215355.1648463-11-seanjc@google.com>
-Subject: [PATCH v2 10/15] KVM: nSVM: Use kvm_rax_read() now that it's mode-aware
+Message-ID: <20260514215355.1648463-12-seanjc@google.com>
+Subject: [PATCH v2 11/15] Revert "KVM: VMX: Read 32-bit GPR values for ENCLS
+ instructions outside of 64-bit mode"
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
@@ -73,62 +74,47 @@ Cc: Dave Hansen <dave.hansen@linux.intel.com>,
 	Binbin Wu <binbin.wu@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that kvm_rax_read() truncates the output value to 32 bits if the
-vCPU isn't in 64-bit mode, use it instead of the more verbose (and very
-technically slower) kvm_register_read().
-
-Note!  VMLOAD, VMSAVE, and VMRUN emulation are still technically buggy,
-as they can use EAX (versus RAX) in 64-bit mode via an operand size
-prefix.  Don't bother trying to handle that case, as it would require
-decoding the code stream, which would open an entirely different can of
-worms, and in practice no sane guest would shove garbage into RAX[63:32]
-and then execute VMLOAD/VMSAVE/VMRUN with just EAX.
+Now that kvm_<reg>_read() are mode aware, i.e. are functionally equivalent
+to kvm_register_read(), revert aback to the less verbose versions.
 
 No functional change intended.
 
-Cc: Yosry Ahmed <yosry@kernel.org>
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+This reverts commit 60919eccf6764c71cef31a1afeaa1a36b8e5ab85.
+
+Acked-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/svm/nested.c | 2 +-
- arch/x86/kvm/svm/svm.c    | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kvm/vmx/sgx.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 7b2d804ef2b0..4b1259eecec5 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1119,7 +1119,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
- 	if (WARN_ON_ONCE(!svm->nested.initialized))
- 		return -EINVAL;
+diff --git a/arch/x86/kvm/vmx/sgx.c b/arch/x86/kvm/vmx/sgx.c
+index 2f5a1c58f3c5..876dc2814108 100644
+--- a/arch/x86/kvm/vmx/sgx.c
++++ b/arch/x86/kvm/vmx/sgx.c
+@@ -225,8 +225,8 @@ static int handle_encls_ecreate(struct kvm_vcpu *vcpu)
+ 	struct x86_exception ex;
+ 	int r;
  
--	vmcb12_gpa = kvm_register_read(vcpu, VCPU_REGS_RAX);
-+	vmcb12_gpa = kvm_rax_read(vcpu);
- 	if (!page_address_valid(vcpu, vmcb12_gpa)) {
- 		kvm_inject_gp(vcpu, 0);
+-	if (sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RBX), 32, 32, &pageinfo_gva) ||
+-	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RCX), 4096, 4096, &secs_gva))
++	if (sgx_get_encls_gva(vcpu, kvm_rbx_read(vcpu), 32, 32, &pageinfo_gva) ||
++	    sgx_get_encls_gva(vcpu, kvm_rcx_read(vcpu), 4096, 4096, &secs_gva))
  		return 1;
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 02fb9560c26e..6379c389d811 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2217,7 +2217,7 @@ static int intr_interception(struct kvm_vcpu *vcpu)
  
- static int vmload_vmsave_interception(struct kvm_vcpu *vcpu, bool vmload)
- {
--	u64 vmcb12_gpa = kvm_register_read(vcpu, VCPU_REGS_RAX);
-+	u64 vmcb12_gpa = kvm_rax_read(vcpu);
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	struct vmcb *vmcb12;
- 	struct kvm_host_map map;
-@@ -2325,7 +2325,7 @@ static int gp_interception(struct kvm_vcpu *vcpu)
- 		if (nested_svm_check_permissions(vcpu))
- 			return 1;
+ 	/*
+@@ -302,9 +302,9 @@ static int handle_encls_einit(struct kvm_vcpu *vcpu)
+ 	gpa_t sig_gpa, secs_gpa, token_gpa;
+ 	int ret, trapnr;
  
--		if (!page_address_valid(vcpu, kvm_register_read(vcpu, VCPU_REGS_RAX)))
-+		if (!page_address_valid(vcpu, kvm_rax_read(vcpu)))
- 			goto reinject;
+-	if (sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RBX), 1808, 4096, &sig_gva) ||
+-	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RCX), 4096, 4096, &secs_gva) ||
+-	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RDX), 304, 512, &token_gva))
++	if (sgx_get_encls_gva(vcpu, kvm_rbx_read(vcpu), 1808, 4096, &sig_gva) ||
++	    sgx_get_encls_gva(vcpu, kvm_rcx_read(vcpu), 4096, 4096, &secs_gva) ||
++	    sgx_get_encls_gva(vcpu, kvm_rdx_read(vcpu), 304, 512, &token_gva))
+ 		return 1;
  
- 		/*
+ 	/*
 -- 
 2.54.0.563.g4f69b47b94-goog
 
