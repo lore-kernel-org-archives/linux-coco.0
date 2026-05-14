@@ -1,175 +1,185 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5B63D8108
-	for <linux-coco@lists.linux.dev>; Thu, 14 May 2026 08:06:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778745995; cv=pass; b=o9u8EFkqKl01x7Fbc57dyDu4FKdkAiLdxHgZ04xkTglYK3c2gNdsVU80HZy4syK+4vaPHK7JeGIE1XK9wJF25PavFZ7h6VzcN2Cv/eFZu7TcASjPf6lx506diVPd2wAW0JStY/0ZTTib9M5boWmEGKAXng7xKpVpt5kIYDs8HU0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778745995; c=relaxed/simple;
-	bh=kULtJx0tmeW4GuTbqeswULlbN9hTWpiDyjj2wWWYuV8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c4T2/hjhnDe/XxQRi503QB8/bYg5C4msrmVdN7GzeGpJdgCo40YYeF1p/P4hlW+qEpJLrNU8dMPGtZAKpj1B4LUAq6bzkLDL3r6ybFGeGUDcxJOA6snHp1ic6q13OPz2oYiKhl2lph6GHj5Ze4RxvyW3HeiS8UuWZFZ3HNlgLXU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qavM5TvW; arc=pass smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BC43A383B;
+	Thu, 14 May 2026 09:33:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778751224; cv=none; b=Xkw1ZkmHa4aOJULaGnWR/gZ9IA7yMBjh61T3PtJwfuH3wFyqu6a1X0DuEoQhCVeuUDkXfkg79vm4v470HyfzvSNstIvv5Pu33kzH06N/5JKNTmkEei4CyajXwsjDHNcZ6/i16uUHHifm8AEc6xoEkqjrSfCODp8GgCGlgOA0pKo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778751224; c=relaxed/simple;
+	bh=15IYn3iLfZXckiqY4v2WG/U+nBEKAauifaebzvl2v8U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aKIvAjDPlg5CCjSaV43EK4WkFVkvbtfU2jlO0F1T6c/GqqYb2Tnj26Oqh29gCCD6eDkaravqeQfxQOoQc5/wDI4YmsmEkhcYQTHvhtjpIAxg+LLWVlFsR+djMFpsyulp/Oewhj66mvtJ1G1cb6chbYTUgwRMsAAY3/+dVtTINuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=TrJFW2FE; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qavM5TvW"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-50d6b393d60so378981cf.0
-        for <linux-coco@lists.linux.dev>; Thu, 14 May 2026 01:06:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778745993; cv=none;
-        d=google.com; s=arc-20240605;
-        b=eK97RIAO4Qz/xHsr0WUA6k76U9Y49Ho8VCWZPYoUFFWBwTiHj+pZFEkSOkpmUC/myT
-         F8WWDj0aeB+gqvzhJ8QSzqmxLgyZSHCOfwkdk8p0/FNvNDqd3EuGqabua33N3MgwI26K
-         pajkqY1w3YyeGXDOyglwGcGqYJLocSp/8kFlw3Yg1Oob6VOmYbrNnscoZEm+0+Xse0zi
-         uwbLAQqnIMtVqp2reDLvK1lrHF9WC/2gjNP3hQ7gKvmdSRVchpt2CrNc+97WgV2ddPO5
-         eequKWZIMlXdjIxKLFy5xAR9ozlY4wuZRx7Jr8HeqZBVmSAewR0/XueGQneKfVh9TCd9
-         6CfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QXdd7FnOAYRaLS7B63YJ6ysgGCzM3+RdD/s5lYMWf1I=;
-        fh=1qjppnGycuIKlV+xE8uPFUkEbftS/+oVoYlGZZ1PCCk=;
-        b=gUA+tzdfvdmt4HPOKrkpKIm3WTrFLtcQqeO+3ptNOY3ypk4XMXiu0irYHIgKhCqE4z
-         +meFyZ/XmhoDP7omZCJYj70oohgz4BZrxDWC/k014DPni6YZJRtBFpKgQekhRrH5841o
-         ZJK9H4ZSdeNowA7Jdi5LDdad7P8AnTeiUwdXTCR3AWH/jNhVswPvwc8xKPHZGb1+WNqt
-         aeURA9pIiets+ThoxoxZJB1QDD7iiPRndUieQ5Cb+/6+17NxunbZdOye0CfoPlqvCV1w
-         doKChUvcU0wWifI2Y7E0KJbvb3N+GiEy/a7FKeW+hnQO7RRq1jZ1tzHvjSklo9Qs5MJY
-         Tt2Q==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778745993; x=1779350793; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QXdd7FnOAYRaLS7B63YJ6ysgGCzM3+RdD/s5lYMWf1I=;
-        b=qavM5TvWvaWdy7WubL1SCeyXCQPOwoHZIGQY6toa+71z/VqPwopBO/0YITyCam1hXb
-         ua18FY5fRrK6rCPtQBzSTLVobAr+VoDpKpJnwX+u/pJ16IdZtGcXKb1Q7HxCL78HO28R
-         C//md1vJg8qOt42Us0SQZAFInDd5WMSnOfnnBM2vVlrhXpYJ6qUNWhfPxq5GOpqgmCI6
-         HQ9N5k2uy2xxsDvujGCexyeS7ksSk126E0kj5SVLAHkYDNmTxpdRSdQO5K5iPWkqzrA/
-         TG+Ssf0gcndprHybuc0LXHhuPZL2K9TyUhiLPPVhSCrtzmUMkvqQfdLSSfGAsBeMvmM5
-         NO1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778745993; x=1779350793;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QXdd7FnOAYRaLS7B63YJ6ysgGCzM3+RdD/s5lYMWf1I=;
-        b=Kgk3eItyyNwN+GlK0zGaOZDhz6JM5F6e8/9LVBzVfQypKcESGMrv1+bDPKUjaE0Icq
-         x9WBWHpWsC/7/dLVyY7Zn49YZYPo8NagXsN8DWll1rlP4e0onbzFKCIBLOE710FNpfnb
-         uwJ4RriWphIu57ph5f7Kw8mSdeEEdzG8HNMjjVAz0HbmU/FEGDOkg8kSKsUtinhsDNbW
-         SaBRLeH8OPGN6CdPqJUyXvP0xX1szV2s3/O2aS+okYFXN4b2CxMxU3s8QKOJASKyW+3T
-         s6ObOIH/Z8YJ4Q5sR3nmHoLJjQEiilxdsh17SVPqx4KaxAGIKEVP5V4RLdhIv/aSkBiG
-         Oi2Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+/Y1YIRV7e/IBwQG3LJPgx5Fi64fAxLhbKS8UdM7TO8qzJZC37T1z10VKUJZNToivtxJUH2hWXwtTL@lists.linux.dev
-X-Gm-Message-State: AOJu0YyxCI2tBNiJemQxZfK51yKh7upCXucuUJCCVAd5vcU9k3gONeFO
-	re7Kl+6olrCD0yML6uJovvQy1um96NulN9+7XH9F1Zxe09jLnArkT2hRHCiex66WP810G8JXBhO
-	1nQYyatdJKUotOEOv/oiEvL3nHVtkbCRKEjTcl5Yo
-X-Gm-Gg: Acq92OFDf8qT7Cf9zY8PyN+4crPkjC4OeYRuSB6dzhXBU6VhnRbP3YAviqUpjKYhNLO
-	qwyXS4SR/tWB00q+qxcwCUX0shZ5W1d7OKX0TrPCzzshRAoKRomikS4y7IPIz/ETRL9wzSWE50Q
-	vz7lD2BdHUJRVF6e7p0xai2aO/0ybAYWKrP5fTnSmWrjaItuBa0r87qTHnjQMLhdEXikpr7cI2u
-	mmtIcZJiDuJ8lRTSXR38mJPxUzzdmvd7FGk/jEbkBp/zFBrUNns7A1PefmfoIhwa818/Y9CGeN9
-	XU4h8sHS+DSkw6Ir9pcjnwwxF2AJ51im3Zg7q1L4aDwKfZWx
-X-Received: by 2002:a05:622a:9007:b0:50e:6360:96e with SMTP id
- d75a77b69052e-516420a4ecdmr12032231cf.0.1778745992401; Thu, 14 May 2026
- 01:06:32 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="TrJFW2FE"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6A7C03502;
+	Thu, 14 May 2026 02:33:37 -0700 (PDT)
+Received: from [10.1.37.28] (e122027.cambridge.arm.com [10.1.37.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C0D2F3F85F;
+	Thu, 14 May 2026 02:33:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778751222; bh=15IYn3iLfZXckiqY4v2WG/U+nBEKAauifaebzvl2v8U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TrJFW2FE7DK1dKESIWBDe4IoPEqOi52Xs5k+YIeEW8bac5xeRkCBiGICFhWFFd8uv
+	 vCK4kCAoGx/O73KOo79kmau7br4yf19Ge4m7WFcUWYEVgAwX6liLi0xrV3L5aDHlrk
+	 MQ8oFeuLm/txVMFOmUezID+d4euoxwT3zcB89z54=
+Message-ID: <cc21ea56-827f-4077-b6f7-3ef00c0b9408@arm.com>
+Date: Thu, 14 May 2026 10:33:35 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260512090408.794195-1-aneesh.kumar@kernel.org>
- <20260512090408.794195-4-aneesh.kumar@kernel.org> <agSED6BdSXBhbDYI@google.com>
- <yq5abjeia315.fsf@kernel.org>
-In-Reply-To: <yq5abjeia315.fsf@kernel.org>
-From: Mostafa Saleh <smostafa@google.com>
-Date: Thu, 14 May 2026 09:06:19 +0100
-X-Gm-Features: AVHnY4KFUT_Q3ProEjcPRlzXFAyPmNH0RBADajCyGfb0sF72QbGsmq65dFwn1XU
-Message-ID: <CAFgf54qB0msUdKakDvh7hp0r5kokPV0vohBxUjkOz7sR1FZNuw@mail.gmail.com>
-Subject: Re: [PATCH v4 03/13] dma-pool: track decrypted atomic pools and
- select them via attrs
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Steven Price <steven.price@arm.com>, 
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Jiri Pirko <jiri@resnulli.us>, Jason Gunthorpe <jgg@ziepe.ca>, Petr Tesarik <ptesarik@suse.com>, 
-	Alexey Kardashevskiy <aik@amd.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org, 
-	linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 10/44] arm64: RMI: Add support for SRO
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo.Pieralisi2@arm.com
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-11-steven.price@arm.com> <yq5a8q9ma08r.fsf@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <yq5a8q9ma08r.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, May 14, 2026 at 8:01=E2=80=AFAM Aneesh Kumar K.V
-<aneesh.kumar@kernel.org> wrote:
->
-> Mostafa Saleh <smostafa@google.com> writes:
->
-> ...
->
-> >>  struct page *dma_alloc_from_pool(struct device *dev, size_t size,
-> >> -            void **cpu_addr, gfp_t gfp,
-> >> +            void **cpu_addr, gfp_t gfp, unsigned long attrs,
-> >>              bool (*phys_addr_ok)(struct device *, phys_addr_t, size_t=
-))
-> >>  {
-> >> -    struct gen_pool *pool =3D NULL;
-> >> +    struct dma_gen_pool *dma_pool =3D NULL;
-> >>      struct page *page;
-> >>      bool pool_found =3D false;
-> >>
-> >> -    while ((pool =3D dma_guess_pool(pool, gfp))) {
-> >> +    while ((dma_pool =3D dma_guess_pool(dma_pool, gfp))) {
-> >> +
-> >> +            if (dma_pool->unencrypted !=3D !!(attrs & DMA_ATTR_CC_SHA=
-RED))
-> >> +                    continue;
-> >> +
-> >
-> > nit: If we fail to find a matching pool, a slightly misleading message
-> > is printed as pool_found =3D false
-> >
->
-> The message printed is
->
->         WARN(1, "Failed to get suitable pool for %s\n", dev_name(dev));
->
-> That is correct, isn=E2=80=99t it? The kernel failed to find a pool with =
-the
-> correct encryption attribute. For example, the request was for an
-> encrypted allocation from the pool, but no encrypted pool was available.
->
+On 14/05/2026 09:01, Aneesh Kumar K.V wrote:
+> Steven Price <steven.price@arm.com> writes:
+> 
+>> +unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t gfp)
+>> +{
+>> +	unsigned long sro_handle;
+>> +	struct arm_smccc_1_2_regs regs;
+>> +	struct arm_smccc_1_2_regs *regs_in = &sro->regs;
+>> +
+>> +	rmi_smccc_invoke(regs_in, &regs);
+>> +
+>> +	sro_handle = regs.a1;
+>> +
+>> +	while (RMI_RETURN_STATUS(regs.a0) == RMI_INCOMPLETE) {
+>> +		bool can_cancel = RMI_RETURN_CAN_CANCEL(regs.a0);
+>> +		int ret;
+>> +
+>> +		switch (RMI_RETURN_MEMREQ(regs.a0)) {
+>> +		case RMI_OP_MEM_REQ_NONE:
+>> +			regs = (struct arm_smccc_1_2_regs){
+>> +				SMC_RMI_OP_CONTINUE, sro_handle, 0
+>> +			};
+>> +			rmi_smccc_invoke(&regs, &regs);
+>> +			break;
+>> +		case RMI_OP_MEM_REQ_DONATE:
+>> +			ret = rmi_sro_donate(sro, sro_handle, regs.a2, &regs,
+>> +					     gfp);
+>> +			break;
+>> +		case RMI_OP_MEM_REQ_RECLAIM:
+>> +			ret = rmi_sro_reclaim(sro, sro_handle, &regs);
+>> +			break;
+>> +		default:
+>> +			ret = WARN_ON(1);
+>> +			break;
+>> +		}
+>> +
+>> +		if (ret) {
+>> +			if (can_cancel) {
+>> +				/*
+>> +				 * FIXME: Handle cancelling properly!
+>> +				 *
+>> +				 * If the operation has failed due to memory
+>> +				 * allocation failure then the information on
+>> +				 * the memory allocation should be saved, so
+>> +				 * that the allocation can be repeated outside
+>> +				 * of any context which prevented the
+>> +				 * allocation.
+>> +				 */
+>> +			}
+>> +			if (WARN_ON(ret))
+>> +				return ret;
+>> +		}
+>> +	}
+>> +
+>> +	return regs.a0;
+>> +}
+> 
+> Can you also add support to return x1,x2 etc
 
-Sure, I=E2=80=99d prefer a clearer print in that case, especially since tha=
-t=E2=80=99s new code:
-=E2=80=9COnly {encrypted/decrypted} pool found for a {encrypted/decrypted} =
-alloction=E2=80=9D
-
-But no strong opinion.
+Indeed that's going to be needed. Looking at this function again I don't 
+think we actually need the on-stack 'regs' any more. So the below (very 
+lightly tested) diff would use the regs from sro which also means they 
+will be there for the caller if it needs them.
 
 Thanks,
-Mostafa
+Steve
 
+---8<---
+diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
+index a8107ca9bb6d..58a0216be409 100644
+--- a/arch/arm64/kernel/rmi.c
++++ b/arch/arm64/kernel/rmi.c
+@@ -356,30 +356,29 @@ void rmi_sro_free(struct rmi_sro_state *sro)
+ unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t gfp)
+ {
+ 	unsigned long sro_handle;
+-	struct arm_smccc_1_2_regs regs;
+-	struct arm_smccc_1_2_regs *regs_in = &sro->regs;
++	struct arm_smccc_1_2_regs *regs = &sro->regs;
+ 
+-	rmi_smccc_invoke(regs_in, &regs);
++	rmi_smccc_invoke(regs, regs);
+ 
+-	sro_handle = regs.a1;
++	sro_handle = regs->a1;
+ 
+-	while (RMI_RETURN_STATUS(regs.a0) == RMI_INCOMPLETE) {
+-		bool can_cancel = RMI_RETURN_CAN_CANCEL(regs.a0);
++	while (RMI_RETURN_STATUS(regs->a0) == RMI_INCOMPLETE) {
++		bool can_cancel = RMI_RETURN_CAN_CANCEL(regs->a0);
+ 		int ret;
+ 
+-		switch (RMI_RETURN_MEMREQ(regs.a0)) {
++		switch (RMI_RETURN_MEMREQ(regs->a0)) {
+ 		case RMI_OP_MEM_REQ_NONE:
+-			regs = (struct arm_smccc_1_2_regs){
++			*regs = (struct arm_smccc_1_2_regs){
+ 				SMC_RMI_OP_CONTINUE, sro_handle, 0
+ 			};
+-			rmi_smccc_invoke(&regs, &regs);
++			rmi_smccc_invoke(regs, regs);
+ 			break;
+ 		case RMI_OP_MEM_REQ_DONATE:
+-			ret = rmi_sro_donate(sro, sro_handle, regs.a2, &regs,
++			ret = rmi_sro_donate(sro, sro_handle, regs->a2, regs,
+ 					     gfp);
+ 			break;
+ 		case RMI_OP_MEM_REQ_RECLAIM:
+-			ret = rmi_sro_reclaim(sro, sro_handle, &regs);
++			ret = rmi_sro_reclaim(sro, sro_handle, regs);
+ 			break;
+ 		default:
+ 			ret = WARN_ON(1);
+@@ -404,7 +403,7 @@ unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t gfp)
+ 		}
+ 	}
+ 
+-	return regs.a0;
++	return regs->a0;
+ }
+ 
+ static int rmi_check_version(void)
 
-
-> >
-> >>              pool_found =3D true;
-> >> -            page =3D __dma_alloc_from_pool(dev, size, pool, cpu_addr,
-> >> +            page =3D __dma_alloc_from_pool(dev, size, dma_pool->pool,=
- cpu_addr,
-> >>                                           phys_addr_ok);
-> >>              if (page)
-> >>                      return page;
-> >> @@ -296,12 +345,14 @@ struct page *dma_alloc_from_pool(struct device *=
-dev, size_t size,
->
-> -aneesh
