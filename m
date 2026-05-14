@@ -1,48 +1,48 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A687CA5A
-	for <linux-coco@lists.linux.dev>; Thu, 14 May 2026 13:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F45822068D;
+	Thu, 14 May 2026 13:25:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778764992; cv=none; b=psffXR5bVX8DUBwGjasLNouRH57utP0Vb6wyrV0sUTz+OcqUuxloLrceVZ6/YECGk7miyUmEfeppb2CnmYx6uPzKUHuzEjfgcS3Ym2lABzOZ1y6MewNzNG/86ShL/TYvuwLrNGHbalviqswYMj8JAgsGf6AxLYGyg9/ITYiiE1E=
+	t=1778765130; cv=none; b=ERRKlh7XP61gjAJP4N+Gn62R1RhY99Ygg8nF+KSv/hFl/TADOYYv40+xElGfUyIGmBjd4M0i1iOxuAyfvRWeIZXzPINTd61k2BM2hy7IM0R6FM59Mmro4lVn7DYne0hR6bIeRa8+CurVXXOR2EvrPYBi/GjZtO1rA/ZjQWEVTIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778764992; c=relaxed/simple;
-	bh=52lWMczGKHZvEJn7oAy5U2Gjb81vsaAdQyKAug/jxIg=;
+	s=arc-20240116; t=1778765130; c=relaxed/simple;
+	bh=ulvgFg4I9zSaMwz7wledEYXjpK13Lp8Du0yVblLwaFs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LELDoyNTklQK6jArgciBmZTy7W++rjeg13//HcVxRa+C+ECvsSIrrzrGKeM+xAB9eOVm5X1/TIe6bnW/uDyu+zr3qAX/KwfkGXdczPIe9/GwhZz4sMEjlmtAp+0WNrWjErvPesj/nhIZY4WMqZtMRRjL6ogSV7JXwx8dM5+9nwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=qcQTSWwm; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kl89KeO8BqMPnkLIw2F9zsHfXKkCANqNmC6mCJsxzo8YixL3P9lUAd1ZV2OP9bvYlItebQg0hdWfBsLXVAw+XY9oV6BNnZiKnIGHQJwXfB63kq7sRsmEGP/7HpN+yXyIUGDCYSWNMVKvmhz2is7fcCjfXDbtuo1YH4ytCA/FjVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUDZdsT4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="qcQTSWwm"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 333281762;
-	Thu, 14 May 2026 06:23:05 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7BDAA3F836;
-	Thu, 14 May 2026 06:23:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778764990; bh=52lWMczGKHZvEJn7oAy5U2Gjb81vsaAdQyKAug/jxIg=;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUDZdsT4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5C9C2BCB3;
+	Thu, 14 May 2026 13:25:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778765129;
+	bh=ulvgFg4I9zSaMwz7wledEYXjpK13Lp8Du0yVblLwaFs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qcQTSWwmow5qyPzQbZ75EveQmTxgqPM2UdSpBqi7eQnlwFLAGQ/YXnmnH1rg/pkfg
-	 OYimjJRdH5gb4e+D/Xu6TEaYnxSUtEA4ky2sS6g+efEhXcciz/318ClKBtWQx5IzTR
-	 wrALKYw4YlhnPiMuHinwCzEzy/0prDOnHzVuM6HY=
-Date: Thu, 14 May 2026 14:23:05 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
+	b=sUDZdsT49F3H4o4qXneQukxv8TbyR0l2UU/Q12k2y3GXhcoX/xAy2MFgs0+wzmGaR
+	 mwlITCJKMQFiuYiD7iq0yxCP7FyB40/uOHZnVQnBmEQi4CGDl8btVLja6XtI1zF/4j
+	 fwEnt/y7j7cTfQth12a7q3sK6vK0tHDwLFGLNhfk=
+Date: Thu, 14 May 2026 15:25:34 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Jeremy Linton <jeremy.linton@arm.com>,
 	Jonathan Cameron <jic23@kernel.org>,
 	Lorenzo Pieralisi <lpieralisi@kernel.org>,
 	Mark Rutland <mark.rutland@arm.com>,
 	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>
+	Steven Price <steven.price@arm.com>
 Subject: Re: [PATCH v5 1/3] firmware: smccc: coco: Manage arm-smccc platform
  device and CCA auxiliary drivers
-Message-ID: <agXMuSIGAEXz88xY@arm.com>
+Message-ID: <2026051445-magician-coffee-962f@gregkh>
 References: <20260514094030.42495-1-aneesh.kumar@kernel.org>
  <20260514094030.42495-2-aneesh.kumar@kernel.org>
+ <0c88bcee-65b5-4328-87e6-e1c714c3d1ca@arm.com>
+ <2026051420-amusement-drove-73e6@gregkh>
+ <agXL12bNh4gGyK1K@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -51,39 +51,39 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260514094030.42495-2-aneesh.kumar@kernel.org>
+In-Reply-To: <agXL12bNh4gGyK1K@arm.com>
 
-On Thu, May 14, 2026 at 03:10:28PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> diff --git a/drivers/firmware/smccc/rmm.h b/drivers/firmware/smccc/rmm.h
-> new file mode 100644
-> index 000000000000..a47a650d4f51
-> --- /dev/null
-> +++ b/drivers/firmware/smccc/rmm.h
-> @@ -0,0 +1,17 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _SMCCC_RMM_H
-> +#define _SMCCC_RMM_H
-> +
-> +#include <linux/platform_device.h>
-> +
-> +#ifdef CONFIG_ARM64
-> +#include <asm/rsi_cmds.h>
-> +void __init register_rsi_device(struct platform_device *pdev);
-> +#else
-> +
-> +static void __init register_rsi_device(struct platform_device *pdev)
+On Thu, May 14, 2026 at 02:19:19PM +0100, Catalin Marinas wrote:
+> On Thu, May 14, 2026 at 02:55:48PM +0200, Greg Kroah-Hartman wrote:
+> > On Thu, May 14, 2026 at 12:04:13PM +0100, Suzuki K Poulose wrote:
+> > > On 14/05/2026 10:40, Aneesh Kumar K.V (Arm) wrote:
+> > > > Make the SMCCC driver responsible for registering the arm-smccc platform
+> > > > device and after confirming the relevant SMCCC function IDs, create
+> > > > the arm_cca_guest auxiliary device.
+> > > > 
+> > > 
+> > > There are a few changes squashed in to this patch. Please could we
+> > > split the patch in the following order ?
+> > > 
+> > > 1. Add platform device for arm-smccc
+> > 
+> > Do not make any more "fake" platform devices please.
+> > 
+> > > 2. Move TRNG to Auxilliary Device - (Even though it is a later patch, move
+> > > it before the RSI changes)
+> > 
+> > No, move it to the faux api please.
+> 
+> So should we end up with:
+> 
+>   /sys/devices/faux/arm-smccc/
+>     smccc_trng/
+>     arm-rsi-dev/
 
-Nit: static inline here (I think Sashiko mentioned it on a previous
-version.
+What types are these child devices?  Also faux ones?
 
-> +{
-> +
-> +}
+If so, great.
 
-And unnecessary empty line between curly braces.
+thanks,
 
-Just these notpicks for now. Suzuki and Sudeep already covered the
-splitting of this patch and we need to agree on the sysfs hierarchy.
-
--- 
-Catalin
+greg k-h
