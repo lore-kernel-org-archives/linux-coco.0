@@ -1,211 +1,90 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52768368D51
-	for <linux-coco@lists.linux.dev>; Thu, 14 May 2026 12:35:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054B2214812;
+	Thu, 14 May 2026 12:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778762134; cv=none; b=kZnLp/+ionHwWaZa/TsAk8cxDXE1tYxn7xMN2vpm4VcTXHQa8MkR6QwmnOXKFaFwjMnNbFvgk2nZqpPV1kJtt25A582DkvAPa3WRwAmySCNjmPpmbkDeaPF9BurTVRT1FonvL7usDQSrcgwmdYkLt6OHBEAG6R8uc2L53po658o=
+	t=1778762748; cv=none; b=o6OjFNC+bjpvi6d4MnxIPyzUnsU5hyXtCCMgVdpSNXO7qZcwCQRhbJfwDlgoZ4yvXCp6j7RYq755DSicXc1fGb5m/HOxSQtb6iiOZsZoY/Z+hNnLxixEMAuNTtn0An9hNfcTOiuL36g7DhPUEoRClQ6Er6CcPF2CHgf/SRc4SRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778762134; c=relaxed/simple;
-	bh=DlRTtK+pet5LFFKBQ/8FceU5SmBcugQNcR+otGWnOYU=;
+	s=arc-20240116; t=1778762748; c=relaxed/simple;
+	bh=uzxXH31tSj4V03e2tHyrBCneawBM4/arZJhlthRiRYI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n2sGJHe2dz8ZPM2oYZCupgvbkNtJrq2R8yF9wQnIyqgMYqFg1gTbQhWALz6W3xoC7qtfXni0aF50Mj8fFUkXKLswRbj+TvTcb7EvXYsCxvASvqw/LSNVqxJCJz9GJfulWZkddVX//zeeZ+oGXKlAZTwGybm4Ntl9p9OJlTF5BZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=nS7U2/95; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=S+O0RxH6yQXgm9TT4zKCYc3yN/4v4h6/zpMZfrWVsaMsJsOYs2rNpSE7eapATBtm0ZOHhkRDNhqlXf2nYGqlRTxmJ6jUQpXxHvIfcbmi2ZCO9HjDe0DqhjbWv9TJHbZksbPV80hRQqjoy5jkOyItwrUF1DyAWJaDB86H1vAsmSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kq8O/dxE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="nS7U2/95"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-91080895355so142676785a.3
-        for <linux-coco@lists.linux.dev>; Thu, 14 May 2026 05:35:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1778762131; x=1779366931; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=x0syXDbvsxMHU2qFtHkGrYSSCi/zfIXRFYXzTsoQZCg=;
-        b=nS7U2/95lt3cY1+yNjv1ppKmZwxfDMR6isknSJVDNRt9GhfT9G1ZSVXivg3nawOqKE
-         jckqjx1NVHP/6TVmyLyLNwukpJJdXmPu5XXFaUBLCxsYHfGTsg6IuE2fCpu4mjH2ny+U
-         +44Q1fWAUaPaAkI9Iq7z/8GmnZ3ei1UgtS9qtXdyMdeRas4Fu7QiJaTjWKX/LDXH3qyv
-         poWikQbJpc8Rfslh7YwZpxO5akKwsVaFwSDkNDzak73VoEvkvFeeNYBNcsskTovOl7D0
-         KEn1zfbM8R7Fz2MKkCpdFCZ3cY4kxzAtKlMNNnqdk7XzVqudUb5Z8CAwEBaDXLAhFizW
-         KnqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778762131; x=1779366931;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x0syXDbvsxMHU2qFtHkGrYSSCi/zfIXRFYXzTsoQZCg=;
-        b=Qm0HeuGp8G7NhriM0tKGI83SJ9Xy/cIJoY7WxYT7qzwjO0k+kashEuXevn9rPZPTwH
-         Der5St+JxrzZti5ZBkLDpM5tMxje/W9I6TRFkBGRkPdda0nK+RivtDL8UU8HXVfF2/t/
-         v/OmLWyniWNFsIdfG0hKdnVyLUO3wd+vH9JhvopY4OXCZQfayiAVvDqUiXlR8Buzs5X1
-         eop0DiWamkJwNF4LbbhGhrpcPYAh+U4ga8WXHZLALIfQeJfdKb8CdGh0RhD0rrSP+M6J
-         lbttaFu3hOYILp2nzutFkheGSGZ9ZiuROcNF7NP6j8wgEq8bfxtdD0ce9cqIG+3MDmHw
-         D+4A==
-X-Forwarded-Encrypted: i=1; AFNElJ9jRCzxePUr07P7sI9LCBJ61XKnB6qMiruCnl9QtF60aFBN3EQ8gHdlUhcgLX38aZXBj9tE5qW81EmJ@lists.linux.dev
-X-Gm-Message-State: AOJu0YylnpmJSrqowt/FtNGfgH5VQzx+ZaAPs8ZtdyGMRQwujX1EitpG
-	P2GCZelVJ2gE/rEfAIO+zl8zEeXqfdTJfGpSYkXW4kOOe5bgllzz9kF2Vqng305z/Mo=
-X-Gm-Gg: Acq92OGkvdEH2/9vHZ+B4CKUM/XDKCruIFHZkOHhQrsJ1rVm+IYAq1k9xE3m99V0OwE
-	AHwdAIiDg6MBcHy2lVHFVKXOY9cqk0ZQsnr/TAK6TKjgomqdh0y2C2qmOF/LAzeb2Y7FWawgLtO
-	5eyv0qijTHdZPOqs2GzZeKDyuvTGSGh6+W5UPzZkS3nQADN9ELSTmLzsO19YRhUaUcvQ5tJsDP0
-	Wl8fuXlgCo7bGYxMzFvtwxehVSpcCSF61KYTaGqzcK/rGypw07QbvwjEZqxB+P4UQkDcTnAdfNN
-	zUZluR6mO2nWKpLFHCtr+G/FipzKma034b0dtuqVhRQPziY59lAnrkreG1Qb2GFkisjX4khTHGF
-	i3TSB+L34bPOVYgWFIKk6+gGzVSRsoDmitNYeo4KkL5qJu/8ySdMw2mjreuh57/sU5xOUZNOLQq
-	kGyflmWp7j8EjJwtR/goMnB87b1RbKT5K6nEUp1TEdHXwu+skvCrMxLLGPqjkndtIkiz7AJ/DOi
-	vlZXQ==
-X-Received: by 2002:a05:620a:4114:b0:8ef:c472:cd71 with SMTP id af79cd13be357-90facfa13d8mr999953285a.31.1778762131005;
-        Thu, 14 May 2026 05:35:31 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-910ba182540sm234520585a.4.2026.05.14.05.35.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 05:35:30 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wNVHl-00000005B3F-3Oru;
-	Thu, 14 May 2026 09:35:29 -0300
-Date: Thu, 14 May 2026 09:35:29 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Mostafa Saleh <smostafa@google.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kq8O/dxE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA80C2BCB8;
+	Thu, 14 May 2026 12:45:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778762747;
+	bh=uzxXH31tSj4V03e2tHyrBCneawBM4/arZJhlthRiRYI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Kq8O/dxE1+71TBvjywPOqVDLIbXE4IJFQdg8x5tDelx2tpCYRMyYlo8lumZYHjVjo
+	 KjL98x8TbAqLzoIgLbIxH6ZZEZp8jsjxuGHjBY/TZ6n15Hzr1b+nrwii87ACxwb5KU
+	 Vx4hjQUndhL6IjLRM9AJ0+z7cLTD1fLTuONURu5w=
+Date: Thu, 14 May 2026 14:45:52 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
 	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [PATCH v4 04/13] dma: swiotlb: track pool encryption state and
- honor DMA_ATTR_CC_SHARED
-Message-ID: <20260514123529.GZ7702@ziepe.ca>
-References: <20260512090408.794195-1-aneesh.kumar@kernel.org>
- <20260512090408.794195-5-aneesh.kumar@kernel.org>
- <agSKQrSIhizCXKwx@google.com>
- <20260513172450.GR7702@ziepe.ca>
- <agW2lzJI-20DyJVe@google.com>
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Subject: Re: [PATCH v5 0/3] Switch Arm CCA to use an auxiliary device instead
+ of a platform device
+Message-ID: <2026051428-untaxed-slacking-d029@gregkh>
+References: <20260514094030.42495-1-aneesh.kumar@kernel.org>
+ <2026051453-batting-delighted-0a57@gregkh>
+ <yq5ase7u5kmz.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <agW2lzJI-20DyJVe@google.com>
+In-Reply-To: <yq5ase7u5kmz.fsf@kernel.org>
 
-> > How will pKVM signal what kind of memory the DMA needs then?
-> > 
-> > Does it use set_memory_decrypted()? How can it use
-> > set_memory_decrypted() without offering CC_ATTR_MEM_ENCRYPT ?
+On Thu, May 14, 2026 at 04:21:48PM +0530, Aneesh Kumar K.V wrote:
+> Greg KH <gregkh@linuxfoundation.org> writes:
 > 
-> pKVM (hypervisor) doesn’t signal anything.
-> The VMM when running protected guests will use restricted dma-pools
-> for emulated vritio devices in the guest, which gets decrypted by
-> the guest kernel and hence shared with the host kernel, and then
-> traffic is bounced via the pool.
-
-That really does sound like CC and set_memory_decrypted() to me..
-
-> It’s also worth noting that bouncing here isn't just about visibility.
-> Because memory sharing operates at page granularity, bouncing sub-page
-> allocations through the restricted pool prevents adjacent, sensitive
-> guest data from being exposed to the untrusted host.
-
-That's a somewhat different problem, we have the dev->trusted stuff
-that is supposed to deal with this kind of security. We need it for
-IOMMU based systems too, eg hot plug thunderbolt should have it.
-
-Then CC issue is more that the DMA API can't decrypt random passed in
-memory because doing so often requires changing the PTEs pointing at
-the page so it would break everything if done transparently.
-
-> > > I believe that the pool should have a way to control it’s property
-> > > (encrypted or decrypted) and that takes priority over whatever
-> > > attributes comes from allocation.
-> > 
-> > We should get here because dma_capable() fails, and then swiotlb needs
-> > to return something that makes dma_capable() succeed. Yes, it should
-> > return details about the thing it decided, but it shouldn't have been
-> > pre-created with some idea how to make dma_capable() work.
+> > On Thu, May 14, 2026 at 03:10:27PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> >> As discussed here:
+> >> https://lore.kernel.org/all/20250728135216.48084-12-aneesh.kumar@kernel.org
+> >> 
+> >> The general feedback was that a platform device should not be used when
+> >> there is no underlying platform resource to represent. The existing CCA
+> >> support uses a platform device solely to anchor the TSM interface in the
+> >> device hierarchy, which is not an appropriate use of a platform device.
+> >> Use an auxiliary device instead to track CCA support.
+> >
+> > Why an aux device?  If this has no platform resources, please use the
+> > faux bus support instead, that is what it is there for.  aux devices are
+> > used when you are sharing a real resource among different "child"
+> > drivers, and need some way to coordinate that sharing.  If you have no
+> > resources, there's nothing to share, so no need for the complexity that
+> > aux gives you, just use faux instead.
+> >
 > 
-> That sounds neat, but at the end we have force_dma_unencrypted() in
-> dma_capable() which is just hardcoded to true/false by the platform.
-
-For now, the next step is it becomes per-device and dynamic during the
-device lifecycle.
-
-> How is that different from having the state static by the pool?
-
-statically attached pools to the device are not so flexible when
-devices have dynamically changing capabilities..
-
-> > If dma_capable() can fail, then swiotlb should know exactly what to do
-> > to fix it.
+> We did discuss between faux an auxiliary devices early here
+> https://lore.kernel.org/all/20251010135922.GC3833649@ziepe.ca
 > 
-> dma_capable() returns a bool, I don’t think it can know what exactly
-> went wrong (based on address, size, attrs, dev...)
+> To summarize auxiliary device was choosen so that we can do module
+> autoloading.
 
-Yes, but I think the design is swiotlb is supposed to re-inspect what
-is going on against the limits dma_capable checks and then select the
-correct remedy..
+That's not a valid reason to use the aux driver, sorry.  If you have
+hardware that triggers an auto-module-load, then this is really a
+hardware driver.  If it is a "virtual" driver like this, then you need
+to explicitly load it on your own.  Don't abuse apis for reasons that
+they are not designed for.
 
-> While we can debate the aesthetics of the setup , this is
-> the exisitng behaviour for Linux, which existed for years
-> and pKVM relies on and is used extensively.
-> And, this patch alters that long-standing logic and introduces
-> a functional regression.
+thanks,
 
-Yeah, Aneesh needs to do something here, I'm pointing out it is
-entirely seperate thing from the CC path we are working on which is
-decoupling CC from reylying on force swiotlb.
-
-> We can address this by either adjusting this patch or by changing
-> pKVM guests to be more aligned with other CCA guests which is
-> something I have been wondering about if it would help reduce
-> bouncing.
-
-Every time I look at pkvm I think it is just ARM CCA with a different
-design and no access to the unique HW features..
-
-> > If we can make that work then maybe the flows are designed correctly.
-> 
-> Mmm, I am not sure I understand this one, shouldn’t the device also be
-> notified about the switch in memory state, if it expects to read/write
-> decrypted memory, how would that work if the kernel changes it to an
-> encrypted one?
-
-Nothing on the device changes. In a CC world we put the device in a
-T=0 or T=1 state before the driver loads and the expectation from the
-DMA API is that the device will only use that T=x DMA type during
-operation.
-
-A T=1 state device can access all of memory, private or shared. Any
-information the platform may need is encoded in the dma_addr_t or in
-the S1 IOPTEs.
-
-So we never need to tell the device driver what kind of memory the DMA
-is targetting, and we NEVER expect a device in T=1 mode to have to
-issue a T=0 DMA to use the DMA API.
-
-In a pkvm world it should be the same, the S2 table for the SMMU will
-control what the device can access, and if the SMMU points to a
-"private" or "shared" page is not something the device needs to know
-or care about.
-
-Jason
+greg k-h
