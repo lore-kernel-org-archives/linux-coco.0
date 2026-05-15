@@ -1,56 +1,56 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2B13D6CC2
-	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 19:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481AE4033E7
+	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 19:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778872886; cv=none; b=eFMn2qG0/N1Cx+LEUB56DFQsJKIuPGJXjdgBjuYw2HuvWjoM0B1tjHVzCwZGPSwMfEqt1/EULFFl7Bz07T6VVudglE5XJJXDnGosXu5ltyiQmnWgKShTBvXxvdIM1pe33zNjj18SVIn4b+qC1lUnBOEJk2q6UtT9ot6jtj1nFVc=
+	t=1778872887; cv=none; b=eWFrB/NH2jL7BbeNuSHQA3oqENwv+vh08JYPqzxiuludQZkDfD55u3zfH+EhqLl5k1qu+5LM6OdkjT7TU+B+WQZ6Ef10OfcA8qXCy7Yh8Oj2IiTO5I1Q8RtibxN7gbmBzx+MhisF9f/edsLLeV3pzX7AqSxUyxy7/B6AiJbcFag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778872886; c=relaxed/simple;
-	bh=iobt3mMcxUgFyEoOEmLnGtiXka6utk5+xSHE3bisqLw=;
+	s=arc-20240116; t=1778872887; c=relaxed/simple;
+	bh=FAuTHtAqfIjKZiW/8ebxRcA6f3m9NrH7uZUAhFreD6g=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RoiYNu60oYy99y+N+W9b2KIjw6IOL1hpVHM4uN4et4q4Aiwf/ZHC0fGTcPE1Kcq2iC1Iph92Bm2ZYwBRKvF0SYU2uqT8GAS2UnPoSxhzKwFLhNju3q31zbvPIMH+oglZbRnw1CseIdYFpQlbNNiRQQteybbEAlA9yOpOtttgpGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jqXGO/rL; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=PuIlwVv6hX/oQi6WJyvBrADZG+FXcqlLlyXmubstuCGds5v8Wjsr5GHF/ny9IOk3XnWkXnRqHgZC5kac5cfJrH4N8jCcjYRFK+ruRH5+NB97drO2cupXqtWF7URlypEz6+NXWF3YZKrv/hlSbPlvdEvfn/2AJZEm08LG9Q5Mzls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OWqnYwUS; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jqXGO/rL"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f6a5b4f88so296409b3a.2
-        for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 12:21:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OWqnYwUS"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f6e6a3a76so260929b3a.0
+        for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 12:21:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778872882; x=1779477682; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1778872883; x=1779477683; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=CJ9Kqslov6eJXg3tHpdlTt5rxLZvQw1ej96frcIls5c=;
-        b=jqXGO/rLEXAelv6C/IHxsZd1pefbHIXfpqQ15RDg2/nAy82ftzO9MfZ06noHZK35YU
-         /GSbTesEjwllOwxHRqaeJYJUG07nMS1OJQdbVqatZUxo36jAIECgRYKi2e0L/Ai965r1
-         z35/7D8KlIBh+j9gUzBp93sdD2RMBzImzNxirPgHqG4qjShjI+GhQc4lM4vMFk+CYG52
-         1DUpApV5Lom3nNgON2gwsmRB4+Sv+TzXkywY49KsKAsAFzTFw56P/FPt/teiisdkmbUC
-         YS2kNHLP64A+ftNku2k5DlhoqCDotHfM5RfrEWcmuHPTJjij6sI0ulzecGC8Dqp/sbIE
-         NAag==
+        bh=cGLSRPI8RMv865ATBw7wYYFL1PB8rGFTI0lK6a8u9vM=;
+        b=OWqnYwUSIPkDidgdpKtbsb8QdVXf7a43pggK0aaFiMU6I+C4cERPOrvpFY7+1NpAVD
+         A+DmYkqxZX/uKpNBWL+jYgkLE7VRPnElDdDRZDVMgTZRAzEun6IKirXqK6VRwgIPKmNf
+         HhoSshFo1Ies7BmLlCoiVE02/0vtv7DMtUlQb9rjSIzvTkMlXf+OJXwr9CYABv6L4Zyc
+         hhHrCDL6KwNn6/krLkf0If8ahOO8nbItW3CfMf7NbbIMbdwnsGlpQE8CROTpBouuul2N
+         J9BFatk9tZEYV8mPAcviXUCEnaVCevwBJBBZOJGat96eG0hGl7f8VYMuno+0M6T007ve
+         g1YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778872882; x=1779477682;
+        d=1e100.net; s=20251104; t=1778872883; x=1779477683;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=CJ9Kqslov6eJXg3tHpdlTt5rxLZvQw1ej96frcIls5c=;
-        b=cSMXzlQv6wcuhNjxMhVfNNDAlqlANXObhggv9uWJSUry07zRfvQp6YTs/y+CYLqllu
-         ArXy+v7akJltYawuOuwDEXvun6FSCYMViaOhOMnHvfJDWdCCC2Q0com2pgBB2iiMG0mP
-         niqaAMTFcPEGhqHHfQgcGCUqvvCm5sixg5iLE+hS25EDvzxqOngZOwNpgjRES06zbAK3
-         NKXC+vAjExdDLUScRc0fwZ8lmBQCnIgJ0lRDmMvUT6V1kZFovjYnvg/FSQ3Ab0OKW/Xg
-         FLkY7AJSUZhtky/tKgrd66pA/ikBhJKl2A3SiDu3+aCrSm7G6/RZo2U1IFcZEfmtkJU6
-         fwMQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9G2W33wMtrsBLaTudASfCkejZrhTWK5YqsF+vZqQ2LCuYg1lhmA4p4ibR0XlE6FwNxbNe1Sa6ldEYL@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx8bdPBPuCna96+ES//Icgvx6KzXr7kcbGSldBjYXt4dIbSUfFO
-	nrvYj9jLRNYe6aO2cZ0p64RCkLP9a3zBOOtAN1dKQ6ca1uUBCIe1vMUSo/DObIX0UQsIfKqGEHJ
-	0PZaj5Q==
-X-Received: from pfmm20.prod.google.com ([2002:a05:6a00:2494:b0:835:43a4:4aaa])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d19:b0:82f:a89e:e16f
- with SMTP id d2e1a72fcca58-83f33b2f58fmr5940174b3a.14.1778872881979; Fri, 15
- May 2026 12:21:21 -0700 (PDT)
+        bh=cGLSRPI8RMv865ATBw7wYYFL1PB8rGFTI0lK6a8u9vM=;
+        b=ELTP0ygxkgmgcTBXDfy6sohK5fLxv1MNDezxSHCyi0PgidgNzWGXoGiIRCOz8FpE1h
+         71WHMjMEdAu2650vvrLFy0m2KVuOAjeAivHYEWu5WKpmiLJcw2L0qy3bH5l/iPhvMOQp
+         lSo4X2RFMCTLLyM1ZEFRexLqn9F7suujyTulp23ix34QbPjYeMgPFl8N99p8MKBMz8Jm
+         COPsa2ZV4W9jcztzGAFYs8RykfTPqM8NbF8FbFskdCsNGjn2jYxV5zvY4NAxsP37LMMC
+         /tdyseCZF+L/tdcuMLCtjZ7TFSLl5KGXXlrdigT/G/oSb2ZBIoUgLLuFngBoa4OFDwfq
+         0Vzw==
+X-Forwarded-Encrypted: i=1; AFNElJ9vIDra4Yv5Sc8xyngPIg4MfJENxX0n3zFjsrLyfCmtciQb6x04y8G2x3Z+2FxdD5I3SipNEtWBRrnc@lists.linux.dev
+X-Gm-Message-State: AOJu0YwUuabjEtavuq7mgrAglSw9tSwgg3xB1hJgufA8AYvwfwx+u02Q
+	24tGfjfCjOEcxMHffvp9iLBRxEVMEURRLXiPXWCZNDVuI7IFfx/htmuFBQLNqXqCBZ/RtYDXyw2
+	Bfpu9VQ==
+X-Received: from pfdc18.prod.google.com ([2002:aa7:8c12:0:b0:834:df9e:8e02])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:194f:b0:82f:355a:857e
+ with SMTP id d2e1a72fcca58-83f33d0398emr5462972b3a.47.1778872883144; Fri, 15
+ May 2026 12:21:23 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 15 May 2026 12:19:40 -0700
+Date: Fri, 15 May 2026 12:19:41 -0700
 In-Reply-To: <20260515191942.1892718-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260515191942.1892718-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260515191942.1892718-40-seanjc@google.com>
-Subject: [PATCH v3 39/41] x86/paravirt: Move using_native_sched_clock() stub
- into timer.h
+Message-ID: <20260515191942.1892718-41-seanjc@google.com>
+Subject: [PATCH v3 40/41] x86/tsc: Add standalone helper for getting CPU
+ frequency from CPUID
 From: Sean Christopherson <seanjc@google.com>
 To: Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Sean Christopherson <seanjc@google.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
@@ -83,55 +83,99 @@ Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, Vitaly Kuznetsov <vkuznets@redh
 	Thomas Gleixner <tglx@linutronix.de>, David Woodhouse <dwmw@amazon.co.uk>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that timer.h ended up with CONFIG_PARAVIRT #ifdeffery anyways, move the
-PARAVIRT=n using_native_sched_clock() stub into timer.h as a "free"
-optimization.
+Extract the guts of cpu_khz_from_cpuid() to a standalone helper that
+doesn't restrict the usage to Intel CPUs.  This will allow sharing the
+core logic with kvmclock, as (a) CPUID.0x16 may be enumerated alongside
+kvmclock, and (b) KVM generally doesn't restrict CPUID based on vendor.
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/timer.h | 5 +++--
- arch/x86/kernel/tsc.c        | 2 --
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/tsc.h |  1 +
+ arch/x86/kernel/tsc.c      | 37 +++++++++++++++++++++++--------------
+ 2 files changed, 24 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/include/asm/timer.h b/arch/x86/include/asm/timer.h
-index ab1271bd9c3b..d8cb9c84f2c7 100644
---- a/arch/x86/include/asm/timer.h
-+++ b/arch/x86/include/asm/timer.h
-@@ -11,9 +11,9 @@ extern void recalibrate_cpu_khz(void);
+diff --git a/arch/x86/include/asm/tsc.h b/arch/x86/include/asm/tsc.h
+index f458be688512..c145f5707b52 100644
+--- a/arch/x86/include/asm/tsc.h
++++ b/arch/x86/include/asm/tsc.h
+@@ -91,6 +91,7 @@ struct cpuid_tsc_info {
+ };
+ extern int cpuid_get_tsc_info(struct cpuid_tsc_info *info);
+ extern int cpuid_get_tsc_freq(struct cpuid_tsc_info *info);
++extern int cpuid_get_cpu_freq(unsigned int *cpu_khz);
  
- extern int no_timer_check;
- 
--extern bool using_native_sched_clock(void);
--
- #ifdef CONFIG_PARAVIRT
-+extern bool using_native_sched_clock(void);
-+
- int __init __paravirt_set_sched_clock(u64 (*func)(void), bool stable,
- 				      void (*save)(void), void (*restore)(void),
- 				      void (*start_secondary));
-@@ -27,6 +27,7 @@ static __always_inline void paravirt_set_sched_clock(u64 (*func)(void),
- void paravirt_sched_clock_start_secondary(void);
- #else
- static inline void paravirt_sched_clock_start_secondary(void) { }
-+static inline bool using_native_sched_clock(void) { return true; }
- #endif
- 
- /*
+ extern void tsc_early_init(void);
+ extern void tsc_init(void);
 diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-index f78e86494dec..1b569954ae5e 100644
+index 1b569954ae5e..745fa2052c74 100644
 --- a/arch/x86/kernel/tsc.c
 +++ b/arch/x86/kernel/tsc.c
-@@ -316,8 +316,6 @@ int __init __paravirt_set_sched_clock(u64 (*func)(void), bool stable,
+@@ -719,6 +719,24 @@ int cpuid_get_tsc_freq(struct cpuid_tsc_info *info)
+ 	return 0;
  }
- #else
- u64 sched_clock_noinstr(void) __attribute__((alias("native_sched_clock")));
--
--bool using_native_sched_clock(void) { return true; }
- #endif
  
- notrace u64 sched_clock(void)
++int cpuid_get_cpu_freq(unsigned int *cpu_khz)
++{
++	unsigned int eax_base_mhz, ebx, ecx, edx;
++
++	*cpu_khz = 0;
++
++	if (boot_cpu_data.cpuid_level < CPUID_LEAF_FREQ)
++		return -ENOENT;
++
++	cpuid(CPUID_LEAF_FREQ, &eax_base_mhz, &ebx, &ecx, &edx);
++
++	if (!eax_base_mhz)
++		return -ENOENT;
++
++	*cpu_khz = eax_base_mhz * 1000;
++	return 0;
++}
++
+ /**
+  * native_calibrate_tsc - determine TSC frequency
+  * Determine TSC frequency via CPUID, else return 0.
+@@ -754,13 +772,8 @@ unsigned long native_calibrate_tsc(void)
+ 	 * clock, but we can easily calculate it to a high degree of accuracy
+ 	 * by considering the crystal ratio and the CPU speed.
+ 	 */
+-	if (!info.crystal_khz && boot_cpu_data.cpuid_level >= CPUID_LEAF_FREQ) {
+-		unsigned int eax_base_mhz, ebx, ecx, edx;
+-
+-		cpuid(CPUID_LEAF_FREQ, &eax_base_mhz, &ebx, &ecx, &edx);
+-		info.crystal_khz = eax_base_mhz * 1000 *
+-			info.denominator / info.numerator;
+-	}
++	if (!info.crystal_khz && !cpuid_get_cpu_freq(&cpu_khz))
++		info.crystal_khz = cpu_khz * info.denominator / info.numerator;
+ 
+ 	if (!info.crystal_khz)
+ 		return 0;
+@@ -787,19 +800,15 @@ unsigned long native_calibrate_tsc(void)
+ 
+ static unsigned long cpu_khz_from_cpuid(void)
+ {
+-	unsigned int eax_base_mhz, ebx_max_mhz, ecx_bus_mhz, edx;
++	unsigned int cpu_khz;
+ 
+ 	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
+ 		return 0;
+ 
+-	if (boot_cpu_data.cpuid_level < CPUID_LEAF_FREQ)
++	if (cpuid_get_cpu_freq(&cpu_khz))
+ 		return 0;
+ 
+-	eax_base_mhz = ebx_max_mhz = ecx_bus_mhz = edx = 0;
+-
+-	cpuid(CPUID_LEAF_FREQ, &eax_base_mhz, &ebx_max_mhz, &ecx_bus_mhz, &edx);
+-
+-	return eax_base_mhz * 1000;
++	return cpu_khz;
+ }
+ 
+ /*
 -- 
 2.54.0.563.g4f69b47b94-goog
 
