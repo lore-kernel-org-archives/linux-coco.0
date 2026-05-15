@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BB12F7EE5
-	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 18:05:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639A33F39CE
+	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 18:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778868304; cv=none; b=pbdDLwVyv2EoBzJFXiuGfFMKFHCPusGKuJ16jIsBbcA3hM++CoKRVHNdtQ7YsSuK5AzhUkCo3fYk1aWQBot/09ht75D66pwtNoaNmI4cDaERPqCbQz9ofVJZFjcY3YsxVSuFcJOBp1MLcd2DW1mgN5k+0rmtz6Fa5V7bQMzZIgI=
+	t=1778869472; cv=none; b=srLWg60XxsQX4BVYZjSCVdw9RhjOIgRtUButHTCXL/x4TzX48D7NTmMpSLCtZa4auNZZnsuom+oJoqm0pCpZ2S6VIGEUXWukZcjo+eWpCF+r01Bo8+CCBWMBAFqFrCiJMf+BF4Ri6KSg0mJWAs9ajIQ/NtWhjtZh+eIVcm42QME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778868304; c=relaxed/simple;
-	bh=RySQYzYacLmpeYFV06iDn+xmvj8Z/+XqaqR8tuQD6PM=;
+	s=arc-20240116; t=1778869472; c=relaxed/simple;
+	bh=prQUBjYy/BhAWzN3VOtKmppkEn375RB3hvwEao2A92g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Oe3qxtd+e7JSz5vpC27N68wqD2jb2PzJyN3wO8P265jHbevyHaHnOZADE0wDAbqJxx+/Un9Z8hnDmNn7gf18ZQ9Hu27uoX11kMHMsqLe7v7ULyff39Kh4jYFXBBKQ79j+prpvgGaUJ2JbzNLBXFx8Kxy8G4/O8qMGM175WP0rc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ar8vzv0x; arc=none smtp.client-ip=192.198.163.16
+	 In-Reply-To:Content-Type; b=F7EI/rMD1rjrT7gjVCtgdUuCW6IyYWE/FChjwqVOvbVbnqILye4OB7VkpVoSC1nwEn7PAkmSX7CxZZIGGTIhwleDuE0i5unXZfxqudUd/aTfhkeV0t09sffFcfaXs6pMwqYkHNuOKPFJ7KFP5PGJ7hsqTgg66zpsGmI9/im1SAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mkJHAu0m; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ar8vzv0x"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mkJHAu0m"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778868302; x=1810404302;
+  t=1778869470; x=1810405470;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=RySQYzYacLmpeYFV06iDn+xmvj8Z/+XqaqR8tuQD6PM=;
-  b=ar8vzv0xUct8JexeLHbSztx+Vrg8YEuJxR9lFBunxy3hkGK32ai5b6cN
-   89iNiAwSiKmMMerAkGefLFVcNmjVUHvTLLS0hBly47N2LbH94jh8HWGa/
-   eqI9ZuTDfETpQ35f4yMCrNeggJiSMDRJQdwEhi8AM8yV4J2rvhvZ7HDvb
-   t+J4Cz4Qq9Vu7T58aIFczUBEuBw8UT7k7lYUhDSxkJtbuHXNEn+Hl8Ehz
-   /YNa2QgVGnGAFMJmYb5u/Zmh2D5P58xOMP20uQRs4W+CPC+o4wDxzLd5k
-   FjdjY1K2ub70CtR+VfnTCk5eHMu5T+tSA8OKnZGahUBQzyWUpomvnc5nf
-   Q==;
-X-CSE-ConnectionGUID: qpBkc3POS/iN9pd4Ki+Prg==
-X-CSE-MsgGUID: ixBDjWI6Q1K6iLchOo8JMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="67358395"
+  bh=prQUBjYy/BhAWzN3VOtKmppkEn375RB3hvwEao2A92g=;
+  b=mkJHAu0mrAqW0DxchhU9534JZPeWKRrA5IbnLnKQRbXNK3g600I0IInZ
+   6gyZwM1b1PuGs8Hq8b0hc6Md/RTSAMydNtxOOTWncXVsoc0lLjsP9TP39
+   +s4RNH6r0b31LTpD4YSGmWQ6o/ennTm4lzHbE4evVwA9g0fOiZSwSwlX1
+   Kn+dbtUxJBPkgaAJc6/BPy/qSz99l4rH71HuWb9bDvm+OhkVP/vP+T1nR
+   TV0iRwJ7RK9DkMaU5Z/I3IUk6ogkKmqP53I0LFJqwc+f/rjhstVo3l84M
+   CQa84pXVZ8C/PRlhHBowvUc1yUqJ0qRgX+w+ekZJ7cszB44GU9V2fqsrb
+   g==;
+X-CSE-ConnectionGUID: ecviO1LWRNaxM5VBGhdRuw==
+X-CSE-MsgGUID: YI/zYv/tQYGWfkzLWpRe8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="97258648"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="67358395"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 11:05:01 -0700
-X-CSE-ConnectionGUID: essnyoI0Ta2NE9yjVnlRaw==
-X-CSE-MsgGUID: tcEQ61OsTrujjdAThEkfZA==
+   d="scan'208";a="97258648"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 11:24:30 -0700
+X-CSE-ConnectionGUID: mqTE1wwnROOw6v1ugVygsQ==
+X-CSE-MsgGUID: pZGdrSamTL+caX9DARv0QQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="235712224"
+   d="scan'208";a="236118573"
 Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.201]) ([10.125.108.201])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 11:05:01 -0700
-Message-ID: <5639b59e-8167-4e27-b7de-9e4be7f299f3@intel.com>
-Date: Fri, 15 May 2026 11:05:01 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 11:24:28 -0700
+Message-ID: <7d7fff5a-53a5-439e-9ff8-dcbd97f473cd@intel.com>
+Date: Fri, 15 May 2026 11:24:28 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 10/23] coco/tdx-host: Implement firmware upload sysfs
- ABI for TDX module updates
+Subject: Re: [PATCH v9 11/23] x86/virt/seamldr: Allocate and populate a module
+ update request
 To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
@@ -66,7 +66,7 @@ Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
 References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-11-chao.gao@intel.com>
+ <20260513151045.1420990-12-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -112,204 +112,209 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260513151045.1420990-11-chao.gao@intel.com>
+In-Reply-To: <20260513151045.1420990-12-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 5/13/26 08:09, Chao Gao wrote:
-> tl;dr: Select fw_upload for doing TDX module updates. The process of
-> selecting among available update images is complicated and nuanced. Punt
-> the selection policy out to userspace.
-
-Shouldn't we also say that there is userspace out there to do this
-today? Like it's not vaporware. Can we point to it?
-
-> Long Version:
+> There are two important ABIs here:
 > 
-> Linux kernel supports two primary firmware update mechanisms:
->   - request_firmware()
->   - firmware upload (or fw_upload)
+> 'struct tdx_image'	- The on-disk and in-memory format for a TDX
+> 			  module update image.
+> 'struct seamldr_params'	- The in-memory ABI passed to the TDX module
+> 			  loader. Points to a single 'struct tdx_image'
+
+	... broken up into 4k pages
+
+> Userspace supplies the update image in struct tdx_image format. The image
+> consists of a header followed by a sigstruct and the module binary.
 > 
-> The former is used by microcode updates, SEV firmware updates, etc. The
-> latter is used by CXL and FPGA firmware updates.
+> P-SEAMLDR, however, consumes struct seamldr_params rather than the image
+> directly. Parse the struct tdx_image provided by userspace and populate a
+> matching struct seamldr_params.
 
-Gah, another former/latter. Format it like this:
+This is doing it again. It's taking the key imperative and burying it.
+It should be:
 
-The kernel supports two primary firmware update mechanisms:
- 1. request_firmware() - used by microcode, SEV firmware, hundreds of
-			 other drivers
- 2. 'struct fw_upload' - used by CXL, FPGA updates, dozens of others
+=>
+Userspace supplies the update image in struct tdx_image format. The
+image consists of a header followed by a sigstruct and the module
+binary. P-SEAMLDR, however, consumes struct seamldr_params rather than
+the image directly.
 
-Isn't that a billion times easier to parse?
+Parse the struct tdx_image provided by userspace and populate a matching
+struct seamldr_params.
+<=
 
-> One key difference between them is: request_firmware() loads a named
-> file from the filesystem where the filename is kernel-controlled, while
-> fw_upload accepts firmware data directly from userspace.
+> Validate the struct tdx_image header before using it, because the header is
+> consumed solely by the kernel to locate the sigstruct and module within
+> the image. Do not validate the payload itself. The sigstruct and module
+> pages are passed through to P-SEAMLDR, which validates them as part of the
+> update flow.
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> ---
+> sigstruct_pages_pa_list currently has only one entry, but it will grow to
+> four pages in the future. Keep it as an array for symmetry with
+> module_pages_pa_list and for extensibility.
 
-One more thing to remove from your changelogs: this "is: " construct.
-It's horribly awkward for a reader.
+That's a good note. It can go above the ---.
 
-This, please:
-
-	The key difference between is that request_firmware() loads a
-	named file from the filesystem where the filename is kernel-
-	controlled, while fw_upload accepts firmware data directly from
-	userspace.
-
-> Use fw_upload for TDX module updates as loading a named file isn't
-> suitable for TDX (see below for more reasons). Specifically, register
-> TDX faux device with fw_upload framework to expose sysfs interfaces
-> and implement operations to process data blobs supplied by userspace.
-
-This is just noise for the justification. We can't do it because it's
-not suitable? That's not a reason.
-
-Isn't this better?
-
-	TDX module firmware update selection policy is too complex for
-	the kernel. Leave it to userspace and use fw_upload.
-
-> Why fw_upload instead of request_firmware()?
-> ============================================
-> The explicit file selection capabilities of fw_upload is preferred over
-> the implicit file selection of request_firmware() for the following
-> reasons:
-
-
-
-> a. Intel distributes all versions of the TDX module, allowing admins to
-> load any version rather than always defaulting to the latest. This
-> flexibility is necessary because future extensions may require reverting to
-> a previous version to clear fatal errors.
-
-How about just: The fw_upload cleanly supports both upgrades and
-reversions to earlier module versions. TDX users are expected to need to
-do both.
-
-> b. Some module version series are platform-specific. For example, the 1.5.x
-> series is for certain platform generations, while the 2.0.x series is
-> intended for others.
-
-Not "Some".
-
-
-x. A given module image can be compatible with several platforms. 1.5.2
-   runs on <example 1> and <example 2>
-y. Not all modules images are compatible with all platforms. 2.0.x runs
-   <example 3> but not <example 1>.
-z. A filesystem will have TDX module images for many platforms, the same
-   as how /lib/firmware/intel-ucode/ has ucode for many processor
-   models.
-
-> c. The update policy for TDX module updates is non-linear at times. The
-> latest TDX module may not be compatible. For example, TDX module 1.5.x
-> may be updated to 1.5.y but not to 1.5.y+1. This policy is documented
-> separately in a file released along with each TDX module release.
-
-Again, I'd just give an actual example.
-
-> So, the default policy of "request_firmware()" of "always load latest", is
-> not suitable for TDX. Userspace needs to deploy a more sophisticated policy
-> check (e.g., latest may not be compatible), and there is potential
-> operator choice to consider.
-
-Here's a flow in userspace that I can imagine:
-
- 1. Find all the available modules
- 2. Filter out modules which are incompatible with this system
- 3. Find the current running module version
- 4. Decide which direction: upgrade or downgrade. Filter out modules
-    which are not in the right direction
- 5. Filter out modules which have a functionally too distant version
-    (1.2.3=>1.2.4 is OK, but going to 1.2.999 is not)
- 6. Optimize for fewest updates, or smallest updates. If allowed, go:
-    1.2.3=>1.2.5, or 1.2.3=>1.2.4=>1.2.5?
-
-Steps 4 and 6 are _pure_ policy.
-
-> diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
-> index d35d85ef91c0..ca600a39d97b 100644
-> --- a/drivers/virt/coco/tdx-host/Kconfig
-> +++ b/drivers/virt/coco/tdx-host/Kconfig
-> @@ -1,6 +1,8 @@
->  config TDX_HOST_SERVICES
->  	tristate "TDX Host Services Driver"
->  	depends on INTEL_TDX_HOST
-> +	select FW_LOADER
-> +	select FW_UPLOAD
->  	default m
->  	help
->  	  Enable access to TDX host services like module update and
-
-Doesn't this break the compile if FW_LOADER can't be selected? Or does
-it error out at Kconfig time. I always forget.
-
-> diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-> index a540d658757b..c4c099cf3de1 100644
-> --- a/drivers/virt/coco/tdx-host/tdx-host.c
-> +++ b/drivers/virt/coco/tdx-host/tdx-host.c
-> @@ -6,6 +6,7 @@
->   */
->  
->  #include <linux/device/faux.h>
-> +#include <linux/firmware.h>
->  #include <linux/module.h>
->  #include <linux/mod_devicetable.h>
->  #include <linux/sysfs.h>
-> @@ -84,7 +85,7 @@ static struct attribute *seamldr_attrs[] = {
->  	NULL,
->  };
->  
-> -static umode_t seamldr_group_visible(struct kobject *kobj, struct attribute *attr, int idx)
-> +static bool supports_runtime_update(void)
->  {
->  	const struct tdx_sys_info *sysinfo = tdx_get_sysinfo();
->  
-> @@ -99,7 +100,12 @@ static umode_t seamldr_group_visible(struct kobject *kobj, struct attribute *att
->  	if (boot_cpu_has_bug(X86_BUG_SEAMRET_INVD_VMCS))
->  		return 0;
->  
-> -	return tdx_supports_runtime_update(sysinfo) ? attr->mode : 0;
-> +	return tdx_supports_runtime_update(sysinfo);
-> +}
+> + * The seamldr_params "scenario" field specifies the operation mode:
+> + * 0: Install TDX module from scratch (not used by kernel)
+> + * 1: Update existing TDX module to a compatible version
+> + */
+> +#define SEAMLDR_SCENARIO_UPDATE		1
 > +
-> +static umode_t seamldr_group_visible(struct kobject *kobj, struct attribute *attr, int idx)
-> +{
-> +	return supports_runtime_update() ? attr->mode : 0;
+> +/*
+> + * This is called the "SEAMLDR_PARAMS" data structure and is defined
+> + * in "SEAM Loader (SEAMLDR) Interface Specification".
+> + *
+> + * It describes the TDX module that will be installed.
+
+Yeah, but that's not super useful.
+
+	This is the in-memory ABI that the kernel passes to the P-
+	SEAMLDR to update the TDX module. It breaks the TDX module image
+	up in page-size pieces.
+
+Better?
+
+> + */
+> +struct seamldr_params {
+> +	u32	version;
+> +	u32	scenario;
+> +	u64	sigstruct_pages_pa_list[SEAMLDR_MAX_NR_SIG_PAGES];
+> +	u8	reserved[104];
+> +	u64	module_nr_pages;
+> +	u64	module_pages_pa_list[SEAMLDR_MAX_NR_MODULE_PAGES];
+> +} __packed;
+> +
+> +static_assert(sizeof(struct seamldr_params) == 4096);
+> +
+>  /*
+>   * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
+>   * interact with P-SEAMLDR simultaneously. Use raw version as the calls can
+> @@ -43,6 +71,89 @@ int seamldr_get_info(struct seamldr_info *seamldr_info)
 >  }
+>  EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
 >  
->  static const struct attribute_group seamldr_group = {
-> @@ -113,6 +119,81 @@ static const struct attribute_group *tdx_host_groups[] = {
->  	NULL,
->  };
->  
-> +static enum fw_upload_err tdx_fw_prepare(struct fw_upload *fwl,
-> +					 const u8 *data, u32 size)
-> +{
-> +	return FW_UPLOAD_ERR_NONE;
-> +}
+> +#define TDX_IMAGE_VERSION_2		0x200
 > +
-> +static enum fw_upload_err tdx_fw_write(struct fw_upload *fwl, const u8 *data,
-> +				       u32 offset, u32 size, u32 *written)
-> +{
-> +	int ret;
+> +struct tdx_image_header {
+> +	u16	version; // This ABI is always 0x200
+
+That comment reads strangely in here. Did I ask you to write that?
+
+> +	u16	checksum;
+> +	u8	signature[8];
+> +	u32	sigstruct_nr_pages;
+> +	u32	module_nr_pages;
+> +	u8	reserved[4076];
+> +} __packed;
 > +
-> +	ret = seamldr_install_module(data, size);
-> +	switch (ret) {
-> +	case 0:
-> +		*written = size;
-> +		return FW_UPLOAD_ERR_NONE;
-> +	default:
-> +		return FW_UPLOAD_ERR_FW_INVALID;
+> +#define HEADER_SIZE sizeof(struct tdx_image_header)
+> +static_assert(HEADER_SIZE == 4096);
+> +
+> +/* Intel TDX module update ABI structure. aka. "TDX module blob". */
+> +struct tdx_image {
+> +	struct tdx_image_header header;
+> +	u8 payload[]; // Contains sigstruct pages followed by module pages
+> +};
+> +
+> +static void populate_pa_list(u64 *pa_list, u32 max_entries, const u8 *start, u32 nr_pages)
+
+The naming in there is painful. How about:
+
+populate_pa_list(u64 *pa_list, u32 pa_list_len,
+		 const u8 *vmalloc_addr, u32 vmalloc_len_pages)
+
+> +{
+> +	int i;
+> +
+> +	nr_pages = MIN(nr_pages, max_entries);
+
+This seems wonky. Should it really be silently suppressing things if
+either the allocation or source is too small? I get not wanting to
+overflow, but this seems strange.
+
+> +	for (i = 0; i < nr_pages; i++) {
+> +		pa_list[i] = vmalloc_to_pfn(start) << PAGE_SHIFT;
+> +		start += PAGE_SIZE;
 > +	}
+
+At the point that you modify 'start', it's not 'start' any more. Use
+another variable. This would do, for instance:
+
+	for (i = 0; i < nr_pages; i++) {
+		unsigned long offset = i * PAGE_SIZE;
+
+		pa_list[i] = vmalloc_to_pfn(&start[offset]);
+	}
+
+
+> +static void populate_seamldr_params(struct seamldr_params *params,
+> +				    const u8 *sig, u32 sig_nr_pages,
+> +				    const u8 *mod, u32 mod_nr_pages)
+> +{
+> +	params->version			= 0;
+> +	params->scenario		= SEAMLDR_SCENARIO_UPDATE;
+> +	params->module_nr_pages		= mod_nr_pages;
+> +
+> +	populate_pa_list(params->sigstruct_pages_pa_list, SEAMLDR_MAX_NR_SIG_PAGES,
+> +			 sig, sig_nr_pages);
+> +	populate_pa_list(params->module_pages_pa_list, SEAMLDR_MAX_NR_MODULE_PAGES,
+> +			 mod, mod_nr_pages);
 > +}
 
-This is rather ugly for a single condition. Plus, it puts the error path
-and the success path on the same footing. That's not great. How about:
+Yes, this is starting to look OK. Nit: vertically align the "*_PAGES" args:
 
-	if (ret)
-		return FW_UPLOAD_ERR_FW_INVALID;
 
-	*written = size;
-	return FW_UPLOAD_ERR_NONE;
+	populate_pa_list(params->sigstruct_pages_pa_list, SEAMLDR_...,
+			 sig, sig_nr_pages);
+	populate_pa_list(params->module_pages_pa_list,    SEAMLDR_...,
+			 mod, mod_nr_pages);
 
+
+> +static int init_seamldr_params(struct seamldr_params *params, const u8 *data, u32 size)
+> +{
+> +	const struct tdx_image *image		= (const void *)data;
+> +	const struct tdx_image_header *header	= &image->header;
+> +
+> +	u32 sigstruct_len	= header->sigstruct_nr_pages * PAGE_SIZE;
+> +	u32 module_len		= header->module_nr_pages * PAGE_SIZE;
+> +
+> +	u8 *header_start	= (u8 *)header;
+> +	u8 *header_end		= header_start + HEADER_SIZE;
+> +
+> +	u8 *sigstruct_start	= header_end;
+> +	u8 *sigstruct_end	= sigstruct_start + sigstruct_len;
+> +
+> +	u8 *module_start	= sigstruct_end;
+> +
+> +	/* Check the calculated payload size against the data size. */
+> +	if (HEADER_SIZE + sigstruct_len + module_len != size)
+> +		return -EINVAL;
+> +
+> +	/*
+> +	 * Don't care about user passing the wrong file, but protect
+> +	 * kernel ABI by preventing accepting garbage.
+> +	 */
+
+How does this "protect kernel ABI"?
+
+> +	if (header->version != TDX_IMAGE_VERSION_2)
+> +		return -EINVAL;
+> +
+> +	if (memcmp(header->signature, "TDX-BLOB", sizeof(header->signature)))
+> +		return -EINVAL;
+> +
+> +	if (memchr_inv(header->reserved, 0, sizeof(header->reserved)))
+> +		return -EINVAL;
+> +
+> +	populate_seamldr_params(params, sigstruct_start, header->sigstruct_nr_pages,
+> +				module_start, header->module_nr_pages);
+
+Please work on the vertical alignment if there's a pattern. For
+instance, it makes things pop if the two "header->"'s are vertically
+aligned.
