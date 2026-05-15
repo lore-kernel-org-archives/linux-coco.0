@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0391D380FFD
-	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 17:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6F53DA5D0
+	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 17:23:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778865508; cv=none; b=poar5L96McUlGN0pg7QpLstBJkVW3BV0FKjDTHYqQ4b8UfmuS7VJX83h9kBGV79D71OVd210uCkTAtpNTtFlwUYQrBJ5wNb1coQThIMugk0dk4+DmXFd9+q3HV/42uXOy7slYyi0sXImuiM5p0NJN17GjQxxQhDUm7nsii5WHQ0=
+	t=1778865812; cv=none; b=S593takUReQxFutwYCsUztOWjWKa6jf0eaErWnIBaw0zXIiovOwoY5O20TplYAMsRJHlWvDaGVo5GrE6s4sudQrinjgXG+LSvbr6XI40stxtEUKDB2GZ0602xP7u3UF88nb4BVERWah2jXs3XAktFF762R0lWoWNlMZIwYTiZs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778865508; c=relaxed/simple;
-	bh=7aV60BVH0C4EFUOcXtBRLrL0Rle+HYVsJvsv4Vl/noI=;
+	s=arc-20240116; t=1778865812; c=relaxed/simple;
+	bh=BErLgv0DALh1qRbYJCzQUrD5/I8a9/gkIJGFZMCtcWI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C6F77XGtAdMh2WBcHFyddBKObnbt+v2507y70tkXvQt2XP3JV4up3VGBxoX+dVQdQLToeADfJOCeDPXiORf1qBzy+My6rD+MdUM/6C6TS3OFEAChDOUNtDtribUs2r02He7qom7qXbRnMfi7gpBoQYRvrv6M7pdFgi3Cd8Vn/zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gj/bE4Xi; arc=none smtp.client-ip=192.198.163.9
+	 In-Reply-To:Content-Type; b=ImQqF3W3GLSO1o+Jmu1mki/1chQjX80yInU3A/oIiP6/hA2l4+FIjqwpCPo4M8XJATZSYGe6Bz2J1u5FvRjz+3bQS6uU3ECAoBZbPyObAKwk5XkmwT8U1FhhYTbA8/tyGiXgTsZCxW5hfrKk81ALAbIIOHtNOzMnPbaQnr5g/lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FwT0PnEZ; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gj/bE4Xi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FwT0PnEZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778865507; x=1810401507;
+  t=1778865810; x=1810401810;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=7aV60BVH0C4EFUOcXtBRLrL0Rle+HYVsJvsv4Vl/noI=;
-  b=Gj/bE4Xiu0Bo9MESEllsCLeYbfZY3so2AYY8kpls+SK9CVsc+9sV+jJv
-   OIPByP1c7EUNbww53kP1J+h1jeZQXqx4mg8FEWFtYebL3qA22pecQRDhm
-   VNDhVee07iv0+dBhxaUcvei0KJDvUYAnbF0GgTmS1GGats6Ym+M2SKcdO
-   SJhEh+F0nZVZhzVc42NkO5jd3i2sHE8rkDEno0FLjxCVBBUKc9vnPRL+w
-   T/FXnMtP5GRsHROIjVMTlUfbV8nZB2cgdPcLIxq32zA0VJfeRNQ4GMsyK
-   qpRQ+xpoNu9wcLhtVj/DgBV1F1xDBuXHdVavHqULkJYsyEMpM5hmKvXdn
-   g==;
-X-CSE-ConnectionGUID: fbvTG6d/TQiZORCQX42VhQ==
-X-CSE-MsgGUID: z+J7Yo4VSfGA/l2rWvqQBw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="90519794"
+  bh=BErLgv0DALh1qRbYJCzQUrD5/I8a9/gkIJGFZMCtcWI=;
+  b=FwT0PnEZ5Y/FYGH22VSSKSTdSnvBVxrW8lZz22ie3+O+dPcr/dbekBNV
+   zplKwZzkWhKAjMtSlgUBdD1sF05V7j7nwcf2tbtMAc5DMMI9vXyBUmITZ
+   2/quiFgemnOTYM31fphegV4slIEKoPVE1yCxrkZY3hNd3cd2nU4RwIT1K
+   N9bb2ph3A9dzl1YbuqmsQlZb1OXIB+Jo8VeWCwqjFC52IjVO3JWNRYIgf
+   TKE4P4R9sFZ+gU8u9w9iTh9vBWVnsyK2/3tY4cyPU/tE7ak5XKr4W/NE6
+   DW6mKmLyl7//+dncliuQxHpiHlW/+E6gPMbsYlXaqIlXa+TzBMkY24bb8
+   w==;
+X-CSE-ConnectionGUID: aLOKfVkdSGGFhCqPD3LRbg==
+X-CSE-MsgGUID: oA203EsLSTqoP/g6GZExlQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79542195"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="90519794"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:18:26 -0700
-X-CSE-ConnectionGUID: cuJh/grWQ32AdKRRLEntxg==
-X-CSE-MsgGUID: NzO0YrqVTuOxR4Vluej4YA==
+   d="scan'208";a="79542195"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:23:30 -0700
+X-CSE-ConnectionGUID: TGDTg4RlSaWBezP+kLEh7Q==
+X-CSE-MsgGUID: Nzy6BpG5RUu0ZK7yZemxsQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="234490973"
+   d="scan'208";a="276842976"
 Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.201]) ([10.125.108.201])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:18:25 -0700
-Message-ID: <e54e9647-18ec-4691-a979-c67798a7d85f@intel.com>
-Date: Fri, 15 May 2026 10:18:25 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:23:30 -0700
+Message-ID: <e2ec0efe-2248-4823-ab3f-5d87835db3c5@intel.com>
+Date: Fri, 15 May 2026 10:23:29 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 07/23] x86/virt/seamldr: Add a helper to retrieve
- P-SEAMLDR information
+Subject: Re: [PATCH v9 08/23] coco/tdx-host: Expose P-SEAMLDR information via
+ sysfs
 To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
@@ -66,7 +66,7 @@ Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
 References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-8-chao.gao@intel.com>
+ <20260513151045.1420990-9-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -112,85 +112,64 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260513151045.1420990-8-chao.gao@intel.com>
+In-Reply-To: <20260513151045.1420990-9-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 5/13/26 08:09, Chao Gao wrote:
-> P-SEAMLDR reports its state via SEAMLDR.INFO, including its version and
-> the number of remaining runtime updates.
-> 
-> This information is useful for userspace. For example, the admin can use
-> the P-SEAMLDR version to determine whether a candidate TDX module is
-> compatible with the running loader, and can use the remaining update count
-> to determine whether another runtime update is still possible.
-> 
-> Add a helper to retrieve P-SEAMLDR information in preparation for
-> exposing P-SEAMLDR version and other necessary information to userspace.
-> Export the new kAPI for use by tdx-host.ko.
+> +What:		/sys/devices/faux/tdx_host/seamldr_version
+> +Contact:	linux-coco@lists.linux.dev
+> +Description:	(RO) Report the version of the loaded P-SEAMLDR. The P-SEAMLDR
+> +		version is formatted as x.y.z, where "x" is the major version,
+> +		"y" is the minor version and "z" is the update version. Versions
+> +		are used for bug reporting and compatibility checks.
 
-What is "tdx-host.ko"? My kernel doesn't have that. Remember a few
-patches ago, the "tristate" in Kconfig? ;)
+Rather than a copy/paste, I'd just say the format is the same as the
+main module version.
 
-You also called in the "tdx_host" device. Please be consistent with the
-naming.
-
-> Note that there are two distinct P-SEAMLDR APIs with similar names:
-> 
->   SEAMLDR.INFO: Returns a SEAMLDR_INFO structure containing SEAMLDR
->                 information such as version and remaining updates.
-> 
->   SEAMLDR.SEAMINFO: Returns a SEAMLDR_SEAMINFO structure containing SEAM
->                     and system information such as Convertible Memory
-> 		    Regions (CMRs) and number of CPUs and sockets.
-> 
-> The former is used here.
-This doesn't help.
-
-"SEAMLDR.INFO" is metadata about the loader. It's metadata for the
-update process.
-
-"SEAMLDR.SEAMINFO" is metadata about the module. It is for the module
-init process, not for the update process.
-
-Right? Isn't that a billion times more useful and actually helps
-differentiate them?
-
-Also, more nits: I hate former/latter too. It makes me stop reading and
-have to go back *EVER* *TIME*. I hate that particular english construct.
-It's horrid.
-
-Just say:
-
-	Use SEAMLDR.INFO here.
-
-It's even shorter than the passive "is used" and doesn't require me
-going back and re-read the text.
-
-> +++ b/arch/x86/include/asm/seamldr.h
-> @@ -0,0 +1,36 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _ASM_X86_SEAMLDR_H
-> +#define _ASM_X86_SEAMLDR_H
+...
+> +static ssize_t num_remaining_updates_show(struct device *dev,
+> +					  struct device_attribute *attr,
+> +					  char *buf)
+> +{
+> +	struct seamldr_info info;
+> +	int ret;
 > +
-> +#include <linux/types.h>
+> +	ret = seamldr_get_info(&info);
+> +	if (ret)
+> +		return ret;
 > +
-> +/*
-> + * This is called the "SEAMLDR_INFO" data structure and is defined
-> + * in "SEAM Loader (SEAMLDR) Interface Specification".
+> +	return sysfs_emit(buf, "%u\n", info.num_remaining_updates);
+> +}
+> +
+> +static DEVICE_ATTR_ADMIN_RO(seamldr_version);
+> +static DEVICE_ATTR_ADMIN_RO(num_remaining_updates);
+> +
+> +static struct attribute *seamldr_attrs[] = {
+> +	&dev_attr_seamldr_version.attr,
+> +	&dev_attr_num_remaining_updates.attr,
+> +	NULL,
+> +};
+> +
+> +static umode_t seamldr_group_visible(struct kobject *kobj, struct attribute *attr, int idx)
+> +{
+> +	const struct tdx_sys_info *sysinfo = tdx_get_sysinfo();
+> +
+> +	if (!sysinfo)
+> +		return 0;
+> +
+> +	return tdx_supports_runtime_update(sysinfo) ? attr->mode : 0;
+> +}
+> +
+> +static const struct attribute_group seamldr_group = {
+> +	.attrs = seamldr_attrs,
+> +	.is_visible = seamldr_group_visible,
+> +};
 
-More succinct:
+I feel like we need to mention *somewhere* that these are kinda nasty.
+tdx_get_sysinfo() is slow and single-threaded. These very much are and
+need to stay 0400 for good reason.
 
-    * This is the "SEAMLDR_INFO" data structure defined in the
-      "SEAM Loader (SEAMLDR) Interface Specification".
-
-> + * The SEAMLDR.INFO documentation requires this to be aligned to a
-> + * 256-byte boundary.
-> + */
-
-Just say:
-
- * Must be aligned to a 256-byte boundary.
+Talk about the DEVICE_ATTR_ADMIN_RO() choice _somewhere_, please.
 
 With those fixed:
 
