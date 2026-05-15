@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D575D305E1F
-	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 08:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946F443C07E
+	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 09:11:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778834807; cv=none; b=lCrhayrHdWs1Ivw7y1NLKtv3SQZ9tlHhwwXFOwxqZuqThuQifCezdy6vN4ZnymLNeb/mlhBz2z4nQXMmsAKT02rcmYyyam0sf9uSv2azwH+yvivTC9S2HSerMjy022qaI3ydrlnooWEwcjlXwaEB5tEN7773/VprXBwgVEIWKhA=
+	t=1778836286; cv=none; b=EAp62KlDpImnTGSmHJzwpVBMO/Hktd309+3R7aYQAjYJJLyCpmupFtprqDpk5uit20HpKyfs5Rd5jhZ0wFU00SCZ4j9Va4v0nPFB9m8iETThzlgWF8zsozF7bPYpxE/CJOHgwPHKEtFemM9joRwYRgXaupAj8uUX/0h/MPNzTrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778834807; c=relaxed/simple;
-	bh=6aPpmRKzkXyr87w23PMzNSnTcCf7Wa4ntAEH93nKHn8=;
+	s=arc-20240116; t=1778836286; c=relaxed/simple;
+	bh=zGKaKQ6dtA7Hhr9fOKQeqiBMAzV9iwchLhWskzXRt9s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P3HK+PUrDCPWPT6+p1Jnd6XlRhFAANReE3a07R1ALijI9odLhoWccf27MQqRwWBT/DsSDk6M97VBLzeyGjtvNfqn9sT4eDv7Qz0411UweXkVD2oDV8XH4piUwDpcYGJL1ayvknvrdHsmliXmWIyf1RE0qbcYOBeJH5oeDvZMM7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O89fvzX8; arc=none smtp.client-ip=198.175.65.10
+	 In-Reply-To:Content-Type; b=TzyZxTdTNNR2wjI/fmxw8EYl4bF1GiJHpaH+iR7XdjzjwnHjg/UcElUc1unNOBBdgHvyRQ8Zk00TC66fR6RLeIP5uTGFH3w2bn4l7uEcPqK/QGf2HmoQiem914BRpttSng4FYL3kMKif8nTZnjF1h4wXmuGM13yV+VwCmrhnCBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EvobcRCC; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O89fvzX8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EvobcRCC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778834806; x=1810370806;
+  t=1778836284; x=1810372284;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=6aPpmRKzkXyr87w23PMzNSnTcCf7Wa4ntAEH93nKHn8=;
-  b=O89fvzX8zFU8J39kFk8mZjYuJ+c9KfJFhXphdDWZ21YNdpcZPMtdPvk4
-   ZQp5eur7XKguDP0rmNADWCx8hvzFQRSWnSkA+RuDBXDIcKndfW9pFj6Hq
-   s8bgx/L4LHou9ZSh9kXoHk2fgom9gNV0+YPYc1zHhWn1+AGz3zWhj7n8E
-   rp2kAORCNarQCIFfgLjNzvbD+iA4taIq7kEPyPzQ+jom5M00iZIwfQSfl
-   n4aE/Rc3st6hjHy2WkS6lTw4hkH7c2jwoK2ej2LO1p+Q7hXnOT1f8E+a5
-   lLmKffbH9Er5mBY/z7TgWXSfxmDgxu3rHMmviGA4+8/jMnaRk/y6alznK
-   w==;
-X-CSE-ConnectionGUID: 56o3jh05T3GS3/RsSfPHyA==
-X-CSE-MsgGUID: TEN1EMe/Td2SaaVoOPSE5A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="97217667"
+  bh=zGKaKQ6dtA7Hhr9fOKQeqiBMAzV9iwchLhWskzXRt9s=;
+  b=EvobcRCCSvaUXyXd6Nioupdcqa+pdNRoXgzSyVNinJ2omgKPPafNrCKC
+   GsVk4GxVAVMLZjjoPQxrZw4ZTSl4YOUzfkkSEQsOLm48LZtAr7Y1yHHYj
+   qdPVAK8k4dZ97zJm0jEMOKVQyjUOup1hvFTOOu8XSEy4tUZaJVlXoXAYc
+   D6qdLftcB/GFGkIl5RV1IJ+ydfE3cwU1ADqMGXA3kkq34gVtNohi7GLFq
+   faa4H3ZSvlurZmzNp51DdCVBITUcpdQoRKTgkIaSazIdJLeP4nKOM+hT2
+   wt8Qk62KT8W1C5rmQtZkIYgDLu7Ecb7Qlol8QrrGC//SmCAKVPQfCDQgR
+   g==;
+X-CSE-ConnectionGUID: ljAsc9iyROOkfZjEdh57Hw==
+X-CSE-MsgGUID: r3SItt28R0KuqqLXrw68rw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="79910577"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="97217667"
+   d="scan'208";a="79910577"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 01:46:46 -0700
-X-CSE-ConnectionGUID: REnkdQa0Q5yxSwoLt8b2EA==
-X-CSE-MsgGUID: Zzgr2jZpRCaixK65jFGKUg==
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:11:21 -0700
+X-CSE-ConnectionGUID: RPS6GyU/RveP8/xcWkHClA==
+X-CSE-MsgGUID: Xb5nik7jSP+wqEbR6HBnZQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="237776254"
+   d="scan'208";a="237782088"
 Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.240.207]) ([10.124.240.207])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 01:46:41 -0700
-Message-ID: <1e176571-17d4-480e-83a5-40b81519627c@linux.intel.com>
-Date: Fri, 15 May 2026 16:46:39 +0800
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:11:18 -0700
+Message-ID: <2050c851-37d0-4b26-b34b-f8c8a7c2b200@linux.intel.com>
+Date: Fri, 15 May 2026 17:11:15 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/15] KVM: x86: Add mode-aware versions of
- kvm_<reg>_{read,write}() helpers
+Subject: Re: [PATCH v2 09/15] KVM: x86: Drop non-raw kvm_<reg>_write() helpers
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
@@ -63,31 +62,52 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
  Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
 References: <20260514215355.1648463-1-seanjc@google.com>
- <20260514215355.1648463-9-seanjc@google.com>
+ <20260514215355.1648463-10-seanjc@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260514215355.1648463-9-seanjc@google.com>
+In-Reply-To: <20260514215355.1648463-10-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
 On 5/15/2026 5:53 AM, Sean Christopherson wrote:
-> Make kvm_<reg>_{read,write}() mode-aware (where the value is truncated to
-> 32 bits if the vCPU isn't in 64-bit mode), and convert all the intentional
-> "raw" accesses to kvm_<reg>_{read,write}_raw() versions.  To avoid
-> confusion and bikeshedding over whether or not explicit 32-bit accesses
-> should use the "raw" or mode-aware variants, add and use "e" versions, e.g.
-> for things like RDMSR, WRMSR, and CPUID, where the instruction uses only
-> only bits 31:0, regardless of mode.
-   ^
-  double "only"
-
+> Drop the non-raw, mode-aware kvm_<reg>_write() helpers as there is no
+> usage in KVM, and in all likelihood there will never be usage in KVM as
+> use of hardcoded registers in instructions is uncommon, and *modifying*
+> hardcoded registers is practically unheard of.  While there are a few
+> instructions that modify registers in mode-aware ways, e.g. REP string
+> and some ENCLS varieties, the odds of KVM needing to emulate such
+> instructions (outside of the fully emulator) are vanishingly small.
 > 
-> No functional change intended (all use of "e" versions is for cases where
-> the value is already truncated due to bouncing through a u32).
+> Drop kvm_<reg>_write() to prevent incorrect usage; _if_ a new instruction
+> comes along that needs to modify a hardcoded register, this can be
+> reverted.
 > 
-> Cc: Binbin Wu <binbin.wu@linux.intel.com>
-> Cc: Kai Huang <kai.huang@intel.com>
+> No functional change intended.
+> 
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
+
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+
+> ---
+>  arch/x86/kvm/regs.h | 5 -----
+>  1 file changed, 5 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
+> index b28e71caed25..52bed14f43e3 100644
+> --- a/arch/x86/kvm/regs.h
+> +++ b/arch/x86/kvm/regs.h
+> @@ -61,11 +61,6 @@ static __always_inline unsigned long kvm_##lname##_read(struct kvm_vcpu *vcpu)
+>  {											\
+>  	return vcpu->arch.regs[VCPU_REGS_##uname] & kvm_reg_mode_mask(vcpu);		\
+>  }											\
+> -static __always_inline void kvm_##lname##_write(struct kvm_vcpu *vcpu,			\
+> -						unsigned long val)			\
+> -{											\
+> -	vcpu->arch.regs[VCPU_REGS_##uname] = val & kvm_reg_mode_mask(vcpu);		\
+> -}											\
+>  static __always_inline unsigned long kvm_##lname##_read_raw(struct kvm_vcpu *vcpu)	\
+>  {											\
+>  	return vcpu->arch.regs[VCPU_REGS_##uname];					\
+
