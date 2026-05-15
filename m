@@ -1,57 +1,56 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE3940EBC5
-	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 19:21:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDC440EBB0
+	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 19:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778872877; cv=none; b=cpx2iYaOmgjbpBCSM9I+YID41VPjh6xjSjaSbddppyJB6EEWbcJzjh63v7+HbequrZU9M4WkjR+GBXeuop+Na/ItQyARGVS2jvVfUSkrv9E2dTiSCS+LhHyIszb7d0NVt9GlPXc+T5C0q4veH88shMyR1KX3Ea344f8rxLiy5OI=
+	t=1778872878; cv=none; b=LnuDy77KRganOVIzfdGVhDdg7mDPhrqQt1Sar27ryCWLdFiSvUA2frVDpv+dJFIWb/lL1/q4osc1FrkTEdcOFriGCLo0tH3t2aJiE6ufTuLIP058QbA2/wzHcO1iGmtEmJWrd5StvnCZ2GJlLZeMxsgZZ/ijVtry+LQFaJUgFbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778872877; c=relaxed/simple;
-	bh=GcjjOomxWCHwXqJ+DzUBCv/BxVAVHsSL2Hl0ee8rM2Y=;
+	s=arc-20240116; t=1778872878; c=relaxed/simple;
+	bh=B/Nd88zreMJtUwVM+EKuE0OYb6EhoS4ohLt5CAFmh34=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gbGKaUQCL25+3IzFotPOcqBDUPMl7LpBpNi0cRFV4+GR6UcurNTc+0smty7WV80JU/idJgsnfiDqF721mMcUKz6N9Ore6ys7jVCebeDu2u8lHlJ26Ciy6SlIXTUNH2qVwNxV61pkYYZdZCrHNQUGf79+tqgoNV32iELemFce1ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AWFWkQOd; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=NntGZQ0Hk5q6CVKGfRu7z1KPn8ZPg+evrQ030DiJeHTHx6Ur7V3M8mcZEjMKuj2Bt9Awv491beJmwC7OppCJjUDHyV29k74MOz0NfOiSC0klE1ScZW/YqcwC/ITADvwLmT3msIMM6tAusFeCBhyHfpF6v4mnEXxXAFgO9eUqsXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jEujuRgz; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AWFWkQOd"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c799ee56bd6so145583a12.2
-        for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 12:21:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jEujuRgz"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c82ba4715b6so177521a12.2
+        for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 12:21:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778872875; x=1779477675; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:reply-to:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Zm1yasCgCkYBCfOrXX2peIQ68HcxfozY1zg+bDbrsDM=;
-        b=AWFWkQOdO6jMhnJEHkYHXH/VpuvbmO+Ws2T2vemH0/sLInfpA8r6Zix7R+J02M26Z3
-         pnstPPK6/jEQjqv1V+TVL+41slSSEgi7b9NE1ZpSbUyvDj5Xea13PKOR/BJL/SVhwfYq
-         bzTijNgr6lvH4rMQKqGcujZkiYNrQb/sMTA8LfusXHZkRLDhbAPIQZQINjU3UV+OY3Ua
-         /l6cPFxbzkuh6TvLCfteYWnbBCuwes2nUywepr+pWKLtV3Jhne4PHbqSHxssR1OU1nO3
-         nUMmyI+ZfwjJxj8L87dTfA4bjMdzRDv1bqX2nfFqsYVYK6nbM4Y+hfPMJokGr2DrKHtZ
-         RIsw==
+        d=google.com; s=20251104; t=1778872874; x=1779477674; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=vVLX5t3yX9DiZyDHfD7io13ZG0m6EjUCrIAXjsJko2U=;
+        b=jEujuRgz9/2h3q4u/KrUBjHquT0pazIMxt4L0RnnftUKL00nhOmaQ7VP/URJQdZVjc
+         0cZIaYjqiVuwJ8j8MwWk7FfqwpUWPirAQvAykx5UfqbV3554Fek8fjjHsBwB67XqeyTr
+         uSxpn1Y9tP4ql1BwFteVy7WOiZgtcs2H1wJL25xyeJNAvokIJc7G9uQwHR85Ub/nd380
+         aKOZ0la7E0B8H8byRhlNjeFziTAW4shqdDyyHgjB1ruznvEQTM1F4Me5Ir1BnzNdoyti
+         YIQAxpsawZGpsYPVaO4xxCI+vN4gXHisbuhm0+bSmb7lWqteSjdH77IFajnaEwYG/8ex
+         kq2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778872875; x=1779477675;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:reply-to:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Zm1yasCgCkYBCfOrXX2peIQ68HcxfozY1zg+bDbrsDM=;
-        b=gj3wioLiwG1i33Z+mpU38BK+x029U9bM1V0LRDuOGqDBxo4opWbVftmHaKQfm0cq5e
-         wSKsUq9LvM2h4cWTv3eaqLZnPhw+1QjgeWt9zCyVo71lgi5WkSQvDUz44OGUDdktyZk4
-         vtuaZdqihGl7JL6M5KTi0RwnbVpBsfoCYRECnA5dFi//qorqJwJCc5zQQnnCOdpb0Cq5
-         C78hkZIl2iDK5ajhLXQisqo7UJNkTOLp8deTWx6oGbmxojXQemZVOpIeVUXCI6x3Z/rk
-         aeH5tCHDmoENk23Zq+NBKF3PTaXV+ST8a1AC/mNW0+8OAPp5U/39Gal6h8SUW58wqeBF
-         436w==
-X-Forwarded-Encrypted: i=1; AFNElJ90KxgXb1JH1N8i2rkoegzLvjWfry9/5MFL1hW+4bIc7Ly/8hATVN5cUpC7J2lmzmeqSmdlKx/wMUgR@lists.linux.dev
-X-Gm-Message-State: AOJu0YzNJQs/hou2wMssYXFa041+C+C1gFXvQTd+u17Jioktrmdgo+eJ
-	CYk9WiHqvkaHxpY/a8IclndJ5zA77dAQDgoSWitYG6RrGXNfjSkhdQjhqgOb4xqfMrcqi2Y5tD9
-	OEopCAA==
-X-Received: from pfvo27.prod.google.com ([2002:a05:6a00:1b5b:b0:837:e90f:8cd9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:338b:b0:838:9e25:f128
- with SMTP id d2e1a72fcca58-83f33cf0bf3mr5811988b3a.26.1778872874478; Fri, 15
- May 2026 12:21:14 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778872874; x=1779477674;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vVLX5t3yX9DiZyDHfD7io13ZG0m6EjUCrIAXjsJko2U=;
+        b=GjFEaiKkZ/eZv+dv92hb4p2ajzH7C17T3n0Capz6ozebqxwOQIdZrCupSseB9rM+Mi
+         deFfLlbX/wtWUPH27BkPN8y6jvsDHMpjbmcu1salTW2onQdTq8GzeOclZ+YdP2Fv5Isx
+         dtgwINUMw4eEQp5IuHp+XjQbaZmgniTEP+AhIvTGwi+xUjsMrav/zsy3/cAbgxRh6+ZD
+         oWpkQFTgSRYNISlBATz4Xqpi2U8f3r5K+8jpEHpm2WOEy20NATIXjWPZ9H8cdMb5pCwq
+         aRT8ekCBkMnP91pkMSR8d0qQQ+IJqdcLdWDLeB5h/VDwmPj1XrSGw2iun2fninoaZAuQ
+         7/eg==
+X-Forwarded-Encrypted: i=1; AFNElJ9tQ3bFOuPe10sNHO2kxCaI9C7ypZ8hfv4sjgrrSsQxPGro+9+lAmg2bJAqpLLGszjcqeYhaxc7CqHW@lists.linux.dev
+X-Gm-Message-State: AOJu0YzF7VK6KBV0fmWvDV0ahT7v8r+w2Wm0xFggnm2zNdUDyrmt04pc
+	6L33wGcZDgyRwhDxw2iUcz/eTc6ztjDoW1+F8w29/4uYs2E6Yy03MnatLyzTnnkPgKWNDhWYmAD
+	Bf1iYGA==
+X-Received: from pfoo22.prod.google.com ([2002:a05:6a00:1a16:b0:836:d115:1e44])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:299a:b0:83b:c487:43d2
+ with SMTP id d2e1a72fcca58-83f33df451fmr5925936b3a.36.1778872873374; Fri, 15
+ May 2026 12:21:13 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 15 May 2026 12:19:36 -0700
+Date: Fri, 15 May 2026 12:19:35 -0700
 In-Reply-To: <20260515191942.1892718-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -61,8 +60,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260515191942.1892718-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260515191942.1892718-36-seanjc@google.com>
-Subject: [PATCH v3 35/41] x86/kvmclock: Obtain TSC frequency from CPUID if present
+Message-ID: <20260515191942.1892718-35-seanjc@google.com>
+Subject: [PATCH v3 34/41] KVM: x86: Officially define CPUID 0x40000010 as PV
+ Timing Info (TSC and Bus)
 From: Sean Christopherson <seanjc@google.com>
 To: Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Sean Christopherson <seanjc@google.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
@@ -82,99 +82,94 @@ Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, Vitaly Kuznetsov <vkuznets@redh
 	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
 	Thomas Gleixner <tglx@linutronix.de>, David Woodhouse <dwmw@amazon.co.uk>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-In https://lkml.org/lkml/2008/10/1/246 a proposal was made for generic
-CPUID conventions across hypervisors. It was mostly shot down in flames,
-but the leaf at 0x40000010 containing timing information didn't die.
+Formally define and document CPUID 0x40000010 as providing TSC and local
+APIC bus frequency information for KVM's PV CPUID range.  Way back in
+2008, VMware proposed (https://lkml.org/lkml/2008/10/1/246) carving out a
+range of CPUID leaves for use by hypervisors.  While the broader proposal
+from VMware was mostly shot down in flames, use of CPUID 0x40000010 to
+provide TSC and local APIC bus frequency information survived and made it's
+way into multiple guest operating systems.
 
-It's used by XNU and FreeBSD guests under all hypervisors=C2=B9=C2=B2 to de=
-termine
-the TSC frequency, and also exposed by the EC2 Nitro hypervisor (as
-well as, presumably, VMware). FreeBSD's Bhyve is probably just about
-to start exposing it too.
+XNU unconditionally assumes CPUID 0x40000010 contains the frequency
+information, if it's present on any hypervisor:
 
-Use it under KVM to obtain the TSC frequency more accurately, instead
-of reverse-calculating the frequency from the mul/shift values in the
-KVM clock.
+  https://github.com/apple/darwin-xnu/blob/main/osfmk/i386/cpuid.c
 
-Before:
-[    0.000020] tsc: Detected 2900.014 MHz processor
+As does FreeBSD:
 
-After:
-[    0.000020] tsc: Detected 2900.015 MHz processor
+  https://github.com/freebsd/freebsd-src/commit/4a432614f68
 
-$ cpuid -1 -l 0x40000010
-CPU:
-   hypervisor generic timing information (0x40000010):
-      TSC frequency (Hz) =3D 2900015
-      bus frequency (Hz) =3D 1000000
+More importantly, QEMU (the de facto "reference" VMM for KVM) has
+conditionally provided timing information in CPUID 0x40000010 for almost
+9 years, since commit 9954a1582e ("x86-KVM: Supply TSC and APIC clock
+rates to guest like VMWare").
 
-=C2=B9 https://github.com/apple/darwin-xnu/blob/main/osfmk/i386/cpuid.c
-=C2=B2 https://github.com/freebsd/freebsd-src/commit/4a432614f68
+So at this point it would be daft for KVM (or any hypervisor) to expose
+0x40000010 for any *other* content.  Officially carve out and define the
+CPUID leaf so that Linux-as-a-guest can follow suit and pull TSC and Local
+APIC Bus frequency information from CPUID.
 
+Defer providing userspace with the necessary information needed to
+precisely and accurately enumerate the _actual_ configured TSC frequency
+to the guest (that exact information, along with the scaled ratio, isn't
+exposed to userspace).  As evidenced by QEMU, providing CPUID 0x40000010
+without help from KVM is entirely possible, just not ideal.
+
+Link: https://lore.kernel.org/all/ea0d7f43d910cee9600b254e303f468722fa355b.camel@infradead.org
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+[sean: drop KVM filling of CPUID, add documentation, massage changelog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm_para.h |  1 +
- arch/x86/kernel/kvm.c           | 10 ++++++++++
- arch/x86/kernel/kvmclock.c      |  6 +++++-
- 3 files changed, 16 insertions(+), 1 deletion(-)
+ Documentation/virt/kvm/x86/cpuid.rst | 12 ++++++++++++
+ arch/x86/include/uapi/asm/kvm_para.h | 11 +++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/arch/x86/include/asm/kvm_para.h b/arch/x86/include/asm/kvm_par=
-a.h
-index 17053d2bf270..3f7f558b5b24 100644
---- a/arch/x86/include/asm/kvm_para.h
-+++ b/arch/x86/include/asm/kvm_para.h
-@@ -129,6 +129,7 @@ enum kvm_guest_cpu_action {
- void kvmclock_init(void);
- void kvmclock_cpu_action(enum kvm_guest_cpu_action action);
- bool kvm_para_available(void);
-+unsigned int kvm_para_tsc_khz(void);
- unsigned int kvm_arch_para_features(void);
- unsigned int kvm_arch_para_hints(void);
- void kvm_async_pf_task_wait_schedule(u32 token);
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index 65c787b1ea03..5cd92a0b156a 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -918,6 +918,16 @@ bool kvm_para_available(void)
- }
- EXPORT_SYMBOL_GPL(kvm_para_available);
-=20
-+unsigned int kvm_para_tsc_khz(void)
-+{
-+	u32 base =3D kvm_cpuid_base();
+diff --git a/Documentation/virt/kvm/x86/cpuid.rst b/Documentation/virt/kvm/x86/cpuid.rst
+index bda3e3e737d7..f02e395cfa9b 100644
+--- a/Documentation/virt/kvm/x86/cpuid.rst
++++ b/Documentation/virt/kvm/x86/cpuid.rst
+@@ -122,3 +122,15 @@ KVM_HINTS_REALTIME 0            guest checks this feature bit to
+                                 preempted for an unlimited time
+                                 allowing optimizations
+ ================== ============ =================================
 +
-+	if (cpuid_eax(base) >=3D (base | KVM_CPUID_TIMING_INFO))
-+		return cpuid_eax(base | KVM_CPUID_TIMING_INFO);
++function: KVM_CPUID_TIMING_INFO (0x40000010)
 +
-+	return 0;
-+}
++returns::
 +
- unsigned int kvm_arch_para_features(void)
- {
- 	return cpuid_eax(kvm_cpuid_base() | KVM_CPUID_FEATURES);
-diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-index 47f7df1e81a0..5ceba4f3836c 100644
---- a/arch/x86/kernel/kvmclock.c
-+++ b/arch/x86/kernel/kvmclock.c
-@@ -200,7 +200,11 @@ void kvmclock_cpu_action(enum kvm_guest_cpu_action act=
-ion)
++   eax = (Virtual) TSC frequency in kHz
++   ebx = (Virtual) Bus (local APIC timer) frequency in kHz
++   ecx = 0 (Reserved)
++   edx = 0 (Reserved)
++
++Note, KVM only defines the semantics of KVM_CPUID_TIMING_INFO; KVM does NOT
++advertise support via KVM_GET_SUPPORTED_CPUID.
+\ No newline at end of file
+diff --git a/arch/x86/include/uapi/asm/kvm_para.h b/arch/x86/include/uapi/asm/kvm_para.h
+index a1efa7907a0b..c3a384711f3a 100644
+--- a/arch/x86/include/uapi/asm/kvm_para.h
++++ b/arch/x86/include/uapi/asm/kvm_para.h
+@@ -44,6 +44,17 @@
   */
- static unsigned long kvm_get_tsc_khz(void)
- {
--	return pvclock_tsc_khz(this_cpu_pvti());
-+	/*
-+	 * If KVM advertises the frequency directly in CPUID, use that
-+	 * instead of reverse-calculating it from the KVM clock data.
-+	 */
-+	return kvm_para_tsc_khz() ? : pvclock_tsc_khz(this_cpu_pvti());
- }
-=20
- static void __init kvm_get_preset_lpj(void)
---=20
+ #define KVM_FEATURE_CLOCKSOURCE_STABLE_BIT	24
+ 
++/*
++ * The timing information leaf provides TSC and local APIC timer frequency
++ * information to the guest.  Note, userspace is responsible for filling the
++ * leaf with the correct information.
++ *
++ *  # EAX: (Virtual) TSC frequency in kHz.
++ *  # EBX: (Virtual) Bus (local APIC timer) frequency in kHz.
++ *  # ECX, EDX: Reserved (must be zero).
++ */
++#define KVM_CPUID_TIMING_INFO	0x40000010
++
+ #define MSR_KVM_WALL_CLOCK  0x11
+ #define MSR_KVM_SYSTEM_TIME 0x12
+ 
+-- 
 2.54.0.563.g4f69b47b94-goog
 
