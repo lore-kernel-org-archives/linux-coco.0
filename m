@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F214C6F04
-	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 16:53:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC804380FDD;
+	Fri, 15 May 2026 17:02:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778864040; cv=none; b=cRz7VgL3AZT6rIippf/m9MEwUlIBh8ZqWaZpXER0YypdK8pQ6qYOjhqsWxdaY3Y18v9/g948ZJKt8g6lC4L/NPrRwXet6mgO+bL/7795vp87/vjb37s2JKnAkwjIzdVrlm8o7aU8crBBLbVC3cLgfG2rqWzMO2TpOZeVYxXl/Qw=
+	t=1778864575; cv=none; b=mSLRn4gUKwC0W0Ysjhx/gcsebiVP3RaJ9lNUqSSTY94jz4L9UktvFmOHaBaeFLuUqVF2d38fMtXcGUKNS3MqdlC/Ie6SUIsaW2wcRSNuXiHGHo23hWQlPoyKF/n2OzrT5inL66L/xyl6D6cu7gfuYcQPby+LUrBn3NIqouUod6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778864040; c=relaxed/simple;
-	bh=2fBKy8JoQa1+SzE35xDVCNt1VHL4lcANHN+S75ugGHM=;
+	s=arc-20240116; t=1778864575; c=relaxed/simple;
+	bh=1PUGpcqr90Tau2dDScPpT3RaVPBw5XincH3BMhRm5aQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NQUcQhJYHZsCeERbcPldj0ijnqmJuaXLP364tuqF5hAbiS0eKgCbTgk/4LhuhOrxZz+OUio25ci7SAAOEi01NYLI/rCJKycGIdNe4xbSGfFaS4IWpANn8zeeKL4WK7/N3Ssw6yGTTHKgcCdSS9i2Z9L3BWdo5FXWY/GLCFbUeww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EjaL+ClC; arc=none smtp.client-ip=198.175.65.9
+	 In-Reply-To:Content-Type; b=mTxGroElJED4yChC/5o6TGZ36oF4xmOg3f+TBJ1/bTfM4E5Z4CB+qxXh5doFtFAtJBmRfo431cYejELs8RU4PYaYTpdX5DAGKHifE5IWnt+qojwtfgkQ1lkwppyyhgowpM1mRzWJKGB+S9/gRi9wIVKVD9z7YqKAb8dq4Lhl9YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RDUx/bW9; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EjaL+ClC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RDUx/bW9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778864040; x=1810400040;
+  t=1778864574; x=1810400574;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=2fBKy8JoQa1+SzE35xDVCNt1VHL4lcANHN+S75ugGHM=;
-  b=EjaL+ClCGap2AeksdYkqJ58TbvZOvsr7/4VqLTA9M1KxSnoMdwaCyK1D
-   2KFQoTSrwoyTUQ5TZsplw+MQFusIfTupxS+zA9P5uwYACkr9M82FUjUS3
-   5b5G/p13S408WLmcSujEUX1O7vXl8Wz7pRWNQqoDVW4W5/6fiBXlG1C8g
-   8a4/4MN71e4/cNpQcoxdwNYpdb5rKr6G43FMaWBpAMaw2XRWVM/pwWQw0
-   I1Rk7KRRmeTEENR01dSyW+vUnNmvbY54Te2ofYfyxK7kUXHKY8yKOZ60j
-   DC17E0Aq7efoKsKNNgOg62dA8N4WefNUhrt5rEWKCcoSBQbkC9sCrQ1/v
-   w==;
-X-CSE-ConnectionGUID: VTa3gzLDQ6uyf94+sx3Kkw==
-X-CSE-MsgGUID: WDKY3v1HSPqjseEdDFIp+g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="102496613"
+  bh=1PUGpcqr90Tau2dDScPpT3RaVPBw5XincH3BMhRm5aQ=;
+  b=RDUx/bW9Adyi/YtuIdTIdqBaop8Zyxfu7Iic29JZt5ssHCliKf+45+oC
+   DknD6rbSN3sPqBeHlCL4mhzo5qQEY3ltEAqTom/h2SgNa278M71+XSSg0
+   2Dt+PoEbzH3wQU5VZoeHBwvo44cG9EL2IfrLUEyf8Vg6NClZCvf8WCfAN
+   vNyLfuN9JtWap91+FZbGtoktk4HpvpORVDNfwJ23mogFKpLnmQhp9L+ZQ
+   Ode6U7gm8lwk6JBTGaI9sXE24FuuOvO/g4pODDL2XSsvYVPjf0LlePXG4
+   5FTKKUiDwpNJXSqHMKx/Ja23YtfxKEoaFq3eweynvAkgb9NYx0yWaF/td
+   A==;
+X-CSE-ConnectionGUID: svGU86tBRoeSFgZi9J1XdA==
+X-CSE-MsgGUID: HbLFc7PZQ42C5GTx3flj4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79993853"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="102496613"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:53:59 -0700
-X-CSE-ConnectionGUID: OJoC6tu+TDOqr3hiWhzkUQ==
-X-CSE-MsgGUID: 2aw9FUGcTZ+LYB2TOEzRfw==
+   d="scan'208";a="79993853"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:02:54 -0700
+X-CSE-ConnectionGUID: dArOUIN0RMCjC0OvVChRwQ==
+X-CSE-MsgGUID: L0E2SZ7fQT2EnOSvjwQAMg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="238988217"
+   d="scan'208";a="242739254"
 Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.201]) ([10.125.108.201])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:53:59 -0700
-Message-ID: <5e097cb0-362a-4dee-af68-9ce583312c97@intel.com>
-Date: Fri, 15 May 2026 09:53:59 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:02:52 -0700
+Message-ID: <1715ba67-2e51-4deb-aa2c-58952914adc9@intel.com>
+Date: Fri, 15 May 2026 10:02:53 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,9 +52,11 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 05/23] coco/tdx-host: Expose TDX module version
+Subject: Re: [PATCH v9 06/23] x86/virt/seamldr: Introduce a wrapper for
+ P-SEAMLDR SEAMCALLs
 To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
 Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
  ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
  nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
@@ -63,9 +65,11 @@ Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
  vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
  yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
 References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-6-chao.gao@intel.com>
+ <20260513151045.1420990-7-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -111,85 +115,22 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260513151045.1420990-6-chao.gao@intel.com>
+In-Reply-To: <20260513151045.1420990-7-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 5/13/26 08:09, Chao Gao wrote:
-> For TDX module updates, userspace needs to select compatible update
-> versions based on the current module version. This design delegates
-> module selection complexity to userspace because TDX module update
-> policies are complex and version series are platform-specific.
+> Note that unlike P-SEAMLDR, there is also a non-persistent SEAM loader
+> ("NP-SEAMLDR"). This is an authenticated code module (ACM) that is not
+> callable at runtime. Only BIOS launches it to load P-SEAMLDR at boot;
+> the kernel does not need to interact with it for runtime update.
 
-I'm not sure exactly what a "version series" is. Do you need to say more
-than that the policy is complex?
+The "unlike" is the wrong word to use here.
 
-> For example, the 1.5.x series is for certain platform generations, while
-> the 2.0.x series is intended for others. And TDX module 1.5.x may be
-> updated to 1.5.y but not to 1.5.y+1.
+Here's a rewrite, with some Claude help:
 
-That's not much of an example, IMNHO. How about:
-
-	For example, the 1.5.x series runs on Sapphire Rapids but not
-	Granite Rapids, which needs 2.0.x. Updates are also constrained
-	by version distance, so a 1.5.6 module might permit updates to
-	1.5.7 but not to 1.5.20.
-
-> Expose the TDX module version to userspace via sysfs to aid module
-> selection. Since the TDX faux device will drive module updates, expose
-> the version as its attribute.
-> 
-> One bonus of exposing TDX module version via sysfs is: TDX module
-> version information remains available even after dmesg logs are cleared.
-
-I honestly wouldn't even mention this bit. You don't need a bonus.
-
-> +++ b/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
-> @@ -0,0 +1,6 @@
-> +What:		/sys/devices/faux/tdx_host/version
-> +Contact:	linux-coco@lists.linux.dev
-> +Description:	(RO) Report the version of the loaded TDX module. The TDX module
-> +		version is formatted as x.y.z, where "x" is the major version,
-> +		"y" is the minor version and "z" is the update version. Versions
-> +		are used for bug reporting, TDX module updates etc.
-
-The "etc." is silly. Just zap it.
-
-Description:	(RO) Report the version of the loaded TDX module.
-		Formatted as "major.minor.update". Used by TDX module
-		update tooling. Example: "1.2.03"
-
-That's at least a wee bit of warning to folks about the leading 0 so if
-they are parsing it they are a wee bit careful with it.
-
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index 8b739ac01479..b7f4396b5cc5 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -41,6 +41,12 @@
->  #include <asm/tdx_global_metadata.h>
->  #include <linux/pgtable.h>
->  
-> +/*
-> + * TDX module and P-SEAMLDR version convention: "major.minor.update"
-> + * (e.g., "1.5.08") with zero-padded two-digit update field.
-> + */
-> +#define TDX_VERSION_FMT "%u.%u.%02u"
-
-I hate "e.g.". I'm not sure why, but maybe it it often misused, or that
-it isn't allowed by the style guide I had to use in high school. Either
-way, please stop using it.
-
-You don't have to modify this patch for it, but please stop.
-
-Second, this was an opportunity to peel out the creation of
-"TDX_VERSION_FMT". It would have shrunk your series by ~10 lines and
-made this patch more obvious.
-
-Again, you don't have to go do it, but it was a missed opportunity.
-
-
-With those updates:
-
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-
+Note: Despite the similar name, the NP-SEAMLDR ("Non-Persistent")
+differs sharply from the P-SEAMLDR. It is an authenticated code module
+(ACM) invoked exclusively by the BIOS at boot rather than a component
+running in SEAM mode. The kernel cannot call it at runtime. It exposes
+no SEAMCALL interface.
