@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9F13DA7CF
-	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 17:28:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BB12F7EE5
+	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 18:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778866112; cv=none; b=uNmohXHuqw0K9ZzFTwcrx4eb2a23HuvhjGKIDqJkwBnTeKsBDsCnjJzfnDdL3CWtA566yAhg8GrjCnu1qa3lxWCsIONZndP+8iW+bScfAxQOybILFH4YA/+WmlB5bBoDTDOsnpNxhxkTeDXjIsYkRfmCfndyTwIzFjCRHKNaMFA=
+	t=1778868304; cv=none; b=pbdDLwVyv2EoBzJFXiuGfFMKFHCPusGKuJ16jIsBbcA3hM++CoKRVHNdtQ7YsSuK5AzhUkCo3fYk1aWQBot/09ht75D66pwtNoaNmI4cDaERPqCbQz9ofVJZFjcY3YsxVSuFcJOBp1MLcd2DW1mgN5k+0rmtz6Fa5V7bQMzZIgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778866112; c=relaxed/simple;
-	bh=Tu/0PNeZ/lZPg+ibgQkVBEPfaWjBc+OP67BCAFyOA0o=;
+	s=arc-20240116; t=1778868304; c=relaxed/simple;
+	bh=RySQYzYacLmpeYFV06iDn+xmvj8Z/+XqaqR8tuQD6PM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N7+ZBcrzQ1uTdv5jOwZR/PDBm0GO66HKLnjWqJ9Q1aBPZsWFWzS+6fNiTBneFbNQI0rxGxHUVzdUxNHCRNxXsl5qQcimXOzpICp/NSMs4qE5jBNt/qHQy+mT/VDu241KLp811orMKiAop094sxM4S7ye0h7QByjWFJni8JdICdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ybr1w+IB; arc=none smtp.client-ip=198.175.65.21
+	 In-Reply-To:Content-Type; b=Oe3qxtd+e7JSz5vpC27N68wqD2jb2PzJyN3wO8P265jHbevyHaHnOZADE0wDAbqJxx+/Un9Z8hnDmNn7gf18ZQ9Hu27uoX11kMHMsqLe7v7ULyff39Kh4jYFXBBKQ79j+prpvgGaUJ2JbzNLBXFx8Kxy8G4/O8qMGM175WP0rc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ar8vzv0x; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ybr1w+IB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ar8vzv0x"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778866112; x=1810402112;
+  t=1778868302; x=1810404302;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=Tu/0PNeZ/lZPg+ibgQkVBEPfaWjBc+OP67BCAFyOA0o=;
-  b=Ybr1w+IBZvK5RnuWcAO54xOotezN7ZJwPE4SrnQ6D1jblrmgjUL96MX1
-   VkxB6zfDn2vadj+cc+sL66pKT3vdEwx5izeUxKp14QHUcNiX06OksbI59
-   ij3SXA+iHpgH+8Gk7uweIc8H45Wl94YK/lZ6lruz+tCWZmv7P1sOyuGwx
-   MOGRWtfItf2Bk1yJYNOZKyZfkMUFw4k4OMhi2QnpCvjLlqjOd2cAKpwja
-   hVrfQ8YbKLpkRRCf3tXn4wyGc7Vsq2bXbitdLpIeXlkiR4zfybaF63ipx
-   uLIYiYvgN/VhChhwwkZeic0yGzXCy4KrsetilHMphqXIl6V3HkFnF0nKS
-   g==;
-X-CSE-ConnectionGUID: TmqkKgftSquyXwn4oubXmw==
-X-CSE-MsgGUID: LqbTgrnMRpqmA80jlWu9xQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79717991"
+  bh=RySQYzYacLmpeYFV06iDn+xmvj8Z/+XqaqR8tuQD6PM=;
+  b=ar8vzv0xUct8JexeLHbSztx+Vrg8YEuJxR9lFBunxy3hkGK32ai5b6cN
+   89iNiAwSiKmMMerAkGefLFVcNmjVUHvTLLS0hBly47N2LbH94jh8HWGa/
+   eqI9ZuTDfETpQ35f4yMCrNeggJiSMDRJQdwEhi8AM8yV4J2rvhvZ7HDvb
+   t+J4Cz4Qq9Vu7T58aIFczUBEuBw8UT7k7lYUhDSxkJtbuHXNEn+Hl8Ehz
+   /YNa2QgVGnGAFMJmYb5u/Zmh2D5P58xOMP20uQRs4W+CPC+o4wDxzLd5k
+   FjdjY1K2ub70CtR+VfnTCk5eHMu5T+tSA8OKnZGahUBQzyWUpomvnc5nf
+   Q==;
+X-CSE-ConnectionGUID: qpBkc3POS/iN9pd4Ki+Prg==
+X-CSE-MsgGUID: ixBDjWI6Q1K6iLchOo8JMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="67358395"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="79717991"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:28:31 -0700
-X-CSE-ConnectionGUID: xVQ6bImuT+i/PT5bOSARhQ==
-X-CSE-MsgGUID: ha+4Vn59TSytuuQ+Vk2egQ==
+   d="scan'208";a="67358395"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 11:05:01 -0700
+X-CSE-ConnectionGUID: essnyoI0Ta2NE9yjVnlRaw==
+X-CSE-MsgGUID: tcEQ61OsTrujjdAThEkfZA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="240571270"
+   d="scan'208";a="235712224"
 Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.201]) ([10.125.108.201])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:28:29 -0700
-Message-ID: <ee30b5f4-b295-427d-9c86-a8534916c910@intel.com>
-Date: Fri, 15 May 2026 10:28:30 -0700
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 11:05:01 -0700
+Message-ID: <5639b59e-8167-4e27-b7de-9e4be7f299f3@intel.com>
+Date: Fri, 15 May 2026 11:05:01 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 08/23] coco/tdx-host: Expose P-SEAMLDR information via
- sysfs
+Subject: Re: [PATCH v9 10/23] coco/tdx-host: Implement firmware upload sysfs
+ ABI for TDX module updates
 To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
@@ -66,7 +66,7 @@ Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
 References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-9-chao.gao@intel.com>
+ <20260513151045.1420990-11-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -112,26 +112,204 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260513151045.1420990-9-chao.gao@intel.com>
+In-Reply-To: <20260513151045.1420990-11-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 5/13/26 08:09, Chao Gao wrote:
+> tl;dr: Select fw_upload for doing TDX module updates. The process of
+> selecting among available update images is complicated and nuanced. Punt
+> the selection policy out to userspace.
+
+Shouldn't we also say that there is userspace out there to do this
+today? Like it's not vaporware. Can we point to it?
+
+> Long Version:
+> 
+> Linux kernel supports two primary firmware update mechanisms:
+>   - request_firmware()
+>   - firmware upload (or fw_upload)
+> 
+> The former is used by microcode updates, SEV firmware updates, etc. The
+> latter is used by CXL and FPGA firmware updates.
+
+Gah, another former/latter. Format it like this:
+
+The kernel supports two primary firmware update mechanisms:
+ 1. request_firmware() - used by microcode, SEV firmware, hundreds of
+			 other drivers
+ 2. 'struct fw_upload' - used by CXL, FPGA updates, dozens of others
+
+Isn't that a billion times easier to parse?
+
+> One key difference between them is: request_firmware() loads a named
+> file from the filesystem where the filename is kernel-controlled, while
+> fw_upload accepts firmware data directly from userspace.
+
+One more thing to remove from your changelogs: this "is: " construct.
+It's horribly awkward for a reader.
+
+This, please:
+
+	The key difference between is that request_firmware() loads a
+	named file from the filesystem where the filename is kernel-
+	controlled, while fw_upload accepts firmware data directly from
+	userspace.
+
+> Use fw_upload for TDX module updates as loading a named file isn't
+> suitable for TDX (see below for more reasons). Specifically, register
+> TDX faux device with fw_upload framework to expose sysfs interfaces
+> and implement operations to process data blobs supplied by userspace.
+
+This is just noise for the justification. We can't do it because it's
+not suitable? That's not a reason.
+
+Isn't this better?
+
+	TDX module firmware update selection policy is too complex for
+	the kernel. Leave it to userspace and use fw_upload.
+
+> Why fw_upload instead of request_firmware()?
+> ============================================
+> The explicit file selection capabilities of fw_upload is preferred over
+> the implicit file selection of request_firmware() for the following
+> reasons:
+
+
+
+> a. Intel distributes all versions of the TDX module, allowing admins to
+> load any version rather than always defaulting to the latest. This
+> flexibility is necessary because future extensions may require reverting to
+> a previous version to clear fatal errors.
+
+How about just: The fw_upload cleanly supports both upgrades and
+reversions to earlier module versions. TDX users are expected to need to
+do both.
+
+> b. Some module version series are platform-specific. For example, the 1.5.x
+> series is for certain platform generations, while the 2.0.x series is
+> intended for others.
+
+Not "Some".
+
+
+x. A given module image can be compatible with several platforms. 1.5.2
+   runs on <example 1> and <example 2>
+y. Not all modules images are compatible with all platforms. 2.0.x runs
+   <example 3> but not <example 1>.
+z. A filesystem will have TDX module images for many platforms, the same
+   as how /lib/firmware/intel-ucode/ has ucode for many processor
+   models.
+
+> c. The update policy for TDX module updates is non-linear at times. The
+> latest TDX module may not be compatible. For example, TDX module 1.5.x
+> may be updated to 1.5.y but not to 1.5.y+1. This policy is documented
+> separately in a file released along with each TDX module release.
+
+Again, I'd just give an actual example.
+
+> So, the default policy of "request_firmware()" of "always load latest", is
+> not suitable for TDX. Userspace needs to deploy a more sophisticated policy
+> check (e.g., latest may not be compatible), and there is potential
+> operator choice to consider.
+
+Here's a flow in userspace that I can imagine:
+
+ 1. Find all the available modules
+ 2. Filter out modules which are incompatible with this system
+ 3. Find the current running module version
+ 4. Decide which direction: upgrade or downgrade. Filter out modules
+    which are not in the right direction
+ 5. Filter out modules which have a functionally too distant version
+    (1.2.3=>1.2.4 is OK, but going to 1.2.999 is not)
+ 6. Optimize for fewest updates, or smallest updates. If allowed, go:
+    1.2.3=>1.2.5, or 1.2.3=>1.2.4=>1.2.5?
+
+Steps 4 and 6 are _pure_ policy.
+
+> diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+> index d35d85ef91c0..ca600a39d97b 100644
+> --- a/drivers/virt/coco/tdx-host/Kconfig
+> +++ b/drivers/virt/coco/tdx-host/Kconfig
+> @@ -1,6 +1,8 @@
+>  config TDX_HOST_SERVICES
+>  	tristate "TDX Host Services Driver"
+>  	depends on INTEL_TDX_HOST
+> +	select FW_LOADER
+> +	select FW_UPLOAD
+>  	default m
+>  	help
+>  	  Enable access to TDX host services like module update and
+
+Doesn't this break the compile if FW_LOADER can't be selected? Or does
+it error out at Kconfig time. I always forget.
+
+> diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
+> index a540d658757b..c4c099cf3de1 100644
+> --- a/drivers/virt/coco/tdx-host/tdx-host.c
+> +++ b/drivers/virt/coco/tdx-host/tdx-host.c
+> @@ -6,6 +6,7 @@
+>   */
+>  
+>  #include <linux/device/faux.h>
+> +#include <linux/firmware.h>
+>  #include <linux/module.h>
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/sysfs.h>
+> @@ -84,7 +85,7 @@ static struct attribute *seamldr_attrs[] = {
+>  	NULL,
+>  };
+>  
+> -static umode_t seamldr_group_visible(struct kobject *kobj, struct attribute *attr, int idx)
+> +static bool supports_runtime_update(void)
+>  {
+>  	const struct tdx_sys_info *sysinfo = tdx_get_sysinfo();
+>  
+> @@ -99,7 +100,12 @@ static umode_t seamldr_group_visible(struct kobject *kobj, struct attribute *att
+>  	if (boot_cpu_has_bug(X86_BUG_SEAMRET_INVD_VMCS))
+>  		return 0;
+>  
+> -	return tdx_supports_runtime_update(sysinfo) ? attr->mode : 0;
+> +	return tdx_supports_runtime_update(sysinfo);
+> +}
+> +
 > +static umode_t seamldr_group_visible(struct kobject *kobj, struct attribute *attr, int idx)
 > +{
-> +	const struct tdx_sys_info *sysinfo = tdx_get_sysinfo();
+> +	return supports_runtime_update() ? attr->mode : 0;
+>  }
+>  
+>  static const struct attribute_group seamldr_group = {
+> @@ -113,6 +119,81 @@ static const struct attribute_group *tdx_host_groups[] = {
+>  	NULL,
+>  };
+>  
+> +static enum fw_upload_err tdx_fw_prepare(struct fw_upload *fwl,
+> +					 const u8 *data, u32 size)
+> +{
+> +	return FW_UPLOAD_ERR_NONE;
+> +}
 > +
-> +	if (!sysinfo)
-> +		return 0;
+> +static enum fw_upload_err tdx_fw_write(struct fw_upload *fwl, const u8 *data,
+> +				       u32 offset, u32 size, u32 *written)
+> +{
+> +	int ret;
 > +
-> +	return tdx_supports_runtime_update(sysinfo) ? attr->mode : 0;
+> +	ret = seamldr_install_module(data, size);
+> +	switch (ret) {
+> +	case 0:
+> +		*written = size;
+> +		return FW_UPLOAD_ERR_NONE;
+> +	default:
+> +		return FW_UPLOAD_ERR_FW_INVALID;
+> +	}
 > +}
 
-Axe the tertiary form.
+This is rather ugly for a single condition. Plus, it puts the error path
+and the success path on the same footing. That's not great. How about:
 
-	if (!tdx_supports_runtime_update(sysinfo))
-		return 0;
+	if (ret)
+		return FW_UPLOAD_ERR_FW_INVALID;
 
-	return attr->mode;
+	*written = size;
+	return FW_UPLOAD_ERR_NONE;
 
-Please.
