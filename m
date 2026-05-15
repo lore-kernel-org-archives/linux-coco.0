@@ -1,166 +1,181 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CAC2D0C79
-	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 19:43:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C3435E1DF
+	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 22:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778874197; cv=none; b=kpc1xTx1n4Rsk08aSeurHWVY6+zzVt9imv2tY/4ZRlqu2FQQzG4Ev6gfYEgacqze5V8u9jVwdtkN5KHiJWnNipzC4j0xmQKXDPtsXSdkSMdp4W1QA0iTJ5Z3aUiVc5jaY+IylL8k8XYKFyqUAmR62mqB+8NfVcGoP6ydPbJ1gkw=
+	t=1778885477; cv=none; b=jVehD2VSRo84JDmITMYf4Kr1oI1BHsBN8++1t2vEJC/848AJdlt0bM42yVUSSJn8WOjorLAuhGUDYEDcb6p3FS0hxE1uWiGnLHEHAn8zjlIhKog35cdctM4ucNo+dxunvLX4mjsKjSDl9maiD1O1OpXS6TrAKbWW1RAL+aNfV38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778874197; c=relaxed/simple;
-	bh=fdIdDQDiHbbnW9hr54FGS+oiU8DVIb25pMlzmlFsHgk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oOeP7dbvN5q+mWVowSVIWYyayYqVY+B14Go9ha3xwGp+2Ow+eIh3Gn4peZPq4i1Z9vmjo2uPVDKODaCZ6Z8OKbSqNh7EfEyW02wSRMx6YzL/k4apXaHIQyfgH4d2q22UB+Ewjmhz2ENgC0vssxVTrVARicT2HnSlYQg/+mus8/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QgH6kb5u; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1778885477; c=relaxed/simple;
+	bh=r4o8kNBsfNITnPuziuAzBiGGbEdWSyP9HN1hm0J0N4c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l4GysLD0u8iUGNfKvLKBbC/4u0yKLMwLwfMHN9gOMS226Lj+0MBq0pD+tHJ10/5e06atWnHtCIlqznEm3SXq5faouGIdv8z9ZaXNqp2Uj27xXadTaydqLZhcVuDNhUOyX8ANlpuVBkg6p6dAzogv78+QjVHEH+WG1FS7HGqJXxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=i9Y8dfdF; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QgH6kb5u"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778874197; x=1810410197;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=fdIdDQDiHbbnW9hr54FGS+oiU8DVIb25pMlzmlFsHgk=;
-  b=QgH6kb5uBfOk8hlZw6FCjpbuu9A2s8OFrI103n2/A7rWrY+Lk9FBeQFN
-   vwSDu6hYWf2QAt4Qg5pAaoG5e4gkSygrauoFDeC5cJmLwiDr8lu3XQQB9
-   3QaGMBL4wdnXmtd4FBsaZZ2s+Md+ftw924qsF4IgPy7hZhe4lmlIyxslI
-   PpeBJRASEyAmZj0SGaafDB7eKZCVXacY7Yygvzw7iO0rfH1crr6KU9Qjl
-   TUkOcuRIkyExHUuDo7ZIvlwrhToNJYKbOKykaPpOlSoJ8UwD125CCcGKh
-   MEnLMly+7scrzMuRnQwuLPI5lXFszw6Y4++2TLthr4WXFC+2YKyYIwUQv
-   A==;
-X-CSE-ConnectionGUID: /aXT3NqoQzKQHKgfCP876Q==
-X-CSE-MsgGUID: oxwHi8vyR0GVr6bViFyCLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="90144938"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="90144938"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 12:43:16 -0700
-X-CSE-ConnectionGUID: Pjb+8/1RRDit6jDnaM5+6A==
-X-CSE-MsgGUID: g7ttQe65SuGAX6g6J5eimQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="243115885"
-Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.201]) ([10.125.108.201])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 12:43:15 -0700
-Message-ID: <488eeba6-5a08-4772-881f-7cf863f4a3f2@intel.com>
-Date: Fri, 15 May 2026 12:43:15 -0700
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="i9Y8dfdF"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-512f750d4b2so5858611cf.1
+        for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 15:51:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1778885475; x=1779490275; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=immH+g/3RYXTN+iTjjy3LaccswRoDpZE21Qsh/sCfkE=;
+        b=i9Y8dfdFcD0DWVcinin8twxPsRWZgwN7utfK+wXGn2fGIYvRcspHlS1OPBU9R9BStO
+         jIq1hwJEmqumFg4vy5X1itHkOGDMbL27d3r77je3u5qTaQM4BHf74/Xh3NSzkwdA3yMc
+         hSwTHT9qfBpcOUeWx8q0f8kcMFsr+WAxGdv4yi/cYZD6r8MWoTNhAxTFoqReu55gW7An
+         WMYqkINig6sOrHqR0UF6P9tfymClQysbAWBLzICdZ4OpfWjPXucdUicnMkvgVXQYlHR8
+         sErLAv53/j0rRRzACJuVhFjcfbZkzOF/frjFwfGwxypYQoIy6Er33Qz1uxxPYBSkgsvK
+         resg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778885475; x=1779490275;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=immH+g/3RYXTN+iTjjy3LaccswRoDpZE21Qsh/sCfkE=;
+        b=aY5odUfN63LarLzeH1CcbhGJN1bH7ACbMtf/2IMQFaVR8mQ/fwBdozfIdlHZ5SfDlX
+         pB/z+UrlAa2W04NfbgBcQOW/8G4bteyWr2x3okvtc2OzDvieeiIiWl8BdnJt39cCPY4/
+         r1UZMIdQ0AIq33K2/OEN96TRiLpAQ22kvMOfDpAO4P2dDgpefw5hTPA3Kf5bFiKoFXVb
+         udmwkZaNda9NKc4M3vBE8fmcJtJK/pe5BJP2Ndw7N7Kw+B24h++IJik5It4G9gF2r9h/
+         rXqu2dJTPIyhrjqnH4MJHI6WtqyrR5Hn4ArPlqRY5DzgRw0PILCYEZZQTuiaq8cyzhx+
+         J6pg==
+X-Forwarded-Encrypted: i=1; AFNElJ8AZvnW8wzyHZHUGe0bzK3vVwYYvH6eNmB+9B1Lcl18RH6vBxi+ZU/0yzjijx3vKIaJq7kzH35W9blP@lists.linux.dev
+X-Gm-Message-State: AOJu0YzzQ7Lfo5oSsfoTxw3GdYcwWMNFYyEJ49fHp0cGhXAXNTPmD//E
+	2WQQ6ZIyjzAEypUH21hoI88hAXXWq9X/Ji6AYfcPN010e+flIvVlUWSfIUJw6cwwmlM=
+X-Gm-Gg: Acq92OFcDE8oHTTs08b9srIQOgRT+Ti3BAqgcQ75BndUh7THksOyxBYgMfYX0zQOPHl
+	xalkLOLJsBTL3xYCikdw5P2dL6kKj0kgC68zhSOrdELQo54F60+ZnBtbBPx+EeVVHaTI9GDtcTq
+	NYvOgIjmGCBTfLxkoCzJrWZ1A4/2h8u1vhTatwuGxCuS2glNAExyWZvhvGJEkJOMUybgydaFVL8
+	DhgbmplD6VJqAzFccUCDx0hqBpj2zOh46EL79pDmKxkllKQWLiwzXgD2/wFGgZQYUrLkgT0eOZl
+	X2LYF+aXb0cA2YgI6IeFH/9/zYC4ryPA4WJpUfe+/AFiKQz35gbEJg+1dCj6p/RjfrTwpw8q0Mo
+	ceRpko9HXluU1obrcZtYgICikat6E40hr7pnhJbC4VrcamGiIKVtvLtL6rqh9Uq+nFqHqveA3yu
+	qxynxQiiw9lKtjdbQYLQ6xawMcaiNDWkzg7o/eqhcVkogjXP5l+/NFPOjo3MuZomywOWBQ1Y0LX
+	HcO7Q==
+X-Received: by 2002:a05:622a:590c:b0:50e:fcbc:6b7e with SMTP id d75a77b69052e-5165a275f74mr79497231cf.29.1778885475017;
+        Fri, 15 May 2026 15:51:15 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5164585c5e0sm56735501cf.29.2026.05.15.15.51.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 May 2026 15:51:14 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wO1NC-00000008Fgc-00Mh;
+	Fri, 15 May 2026 19:51:14 -0300
+Date: Fri, 15 May 2026 19:51:13 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Mostafa Saleh <smostafa@google.com>
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>, Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
+Subject: Re: [PATCH v4 04/13] dma: swiotlb: track pool encryption state and
+ honor DMA_ATTR_CC_SHARED
+Message-ID: <20260515225113.GN7702@ziepe.ca>
+References: <20260512090408.794195-1-aneesh.kumar@kernel.org>
+ <20260512090408.794195-5-aneesh.kumar@kernel.org>
+ <agSKQrSIhizCXKwx@google.com>
+ <20260513172450.GR7702@ziepe.ca>
+ <agW2lzJI-20DyJVe@google.com>
+ <20260514123529.GZ7702@ziepe.ca>
+ <agXfm3mS_M3fvRrN@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 11/23] x86/virt/seamldr: Allocate and populate a module
- update request
-To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
- ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
- nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
- reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
- seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
- vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
- yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-12-chao.gao@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260513151045.1420990-12-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <agXfm3mS_M3fvRrN@google.com>
 
-On 5/13/26 08:09, Chao Gao wrote:
->  int seamldr_install_module(const u8 *data, u32 size)
->  {
+On Thu, May 14, 2026 at 02:43:39PM +0000, Mostafa Saleh wrote:
+> > That's a somewhat different problem, we have the dev->trusted stuff
+> > that is supposed to deal with this kind of security. We need it for
+> > IOMMU based systems too, eg hot plug thunderbolt should have it.
+> 
+> I see that it is used only for dma-iommu and for PCI devices.
+> However, I think that should be a problem with other CCA solutions
+> with emulated devices as they are untrusted. As I'd expect they
+> would have virtio devices.
 
-Can we please do better than 'data' and 'size'? Even s/size/data_len/ is
-better. This goes for the *entire* series.
+Yes, any security solution with an out of TCB device should be using either
+memory encryption so the kernel already bounces or this trusted stuff
+and a force strict dma-iommu so the dma layer is careful.
 
-Why not call it 'tdx_image' or '_tdx_image' or '_module_image'?
+This is more policy from userspace what devices they want in or out of
+their TCB. Like you make accept the device into T=1 but then still
+want to keep it out of your TCB with the vIOMMU, I can see good
+arguments for something like that.
 
-Second, I'm losing track of where these are in the process. Comments on
-functions help. Here's how...
+> > > While we can debate the aesthetics of the setup , this is
+> > > the exisitng behaviour for Linux, which existed for years
+> > > and pKVM relies on and is used extensively.
+> > > And, this patch alters that long-standing logic and introduces
+> > > a functional regression.
+> > 
+> > Yeah, Aneesh needs to do something here, I'm pointing out it is
+> > entirely seperate thing from the CC path we are working on which is
+> > decoupling CC from reylying on force swiotlb.
+> 
+> I am looking into converting pKVM to use the CC stuff, I replied with
+> a patch to Aneesh in this thread. However, I need to do more testing
+> and make sure there are not any unwanted consequences.
 
-> +	struct seamldr_params *params;
-> +	int ret;
-> +
-> +	params = kzalloc_obj(*params);
-> +	if (!params)
-> +		return -ENOMEM;
+Yeah, it is a nice patch and I think it will help reduce the
+complexity if it aligns to CCA type stuff.
 
-init_seamldr_params() should have a comment like this:
+> > In a pkvm world it should be the same, the S2 table for the SMMU will
+> > control what the device can access, and if the SMMU points to a
+> > "private" or "shared" page is not something the device needs to know
+> > or care about.
+> 
+> I see that's because dma-iommu chooses the attrs for iommu_map().
 
-	/*
-	 * @data points to a vmalloc()'d 'struct tdx_image'. Transform
-	 * it into @params which is the P-SEAMLDR ABI format.
-	 */
+Long term the DMA API path through the dma-iommu will pass the
+ATTR_CC_SHARED through to iommu_map so when the arch requires a
+different IOPTE it can construct it.
 
-Then this site can say:
+> In pKVM, dma_addr_t and IOPTE are the same for private and shared,
+> so nothing differs in that case.
 
-	/* Populate 'params' from 'data' */
+Yes, so you don't have to worry.
 
-To at least show the flow of the code. Gunk flows from data=>params.
-It's *NOT* otherwise obvious what's goign on here.
+> We don’t expect pass-through devices to interact with shared
+> memory (T=0) at the moment.
+> However, I can see use cases for that, where the host and the guest
+> collaborate with device passthrough and require zero copy.
 
-Please go through the whole series and make sure you're doing stuff like
-this. Comment functions. Say what they are doing at a high level.
-Comment their call sites when what they are doing is not clear.
+Once you add the CC patch it becomes immediately possible though
+because the user can allocate a CC shared DMA HEAP and feed that all
+over the place.
 
-> +	ret = init_seamldr_params(params, data, size);
-> +	if (ret)
-> +		goto out;
-> +
->  	/* TODO: Update TDX module here */
-> -	return 0;
-> +out:
-> +	kfree(params);
-> +	return ret;
->  }
+> One other interesting case for device-passthrough is non-coherent
+> devices which then require private pools for bouncing.
 
+Why does shared/private matter for bouncing? Why do you need to bounce
+at all? Do cmo's not work in pkvm guests?
+
+Jason
