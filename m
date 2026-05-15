@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43A035BDA8
-	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 06:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E990839A06F
+	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 07:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778827585; cv=none; b=bcfnmvDTFUMspQVmPNlHOd/WWVW+OyW094uStE5hSC5Nh12819+LthPVsKJWYWOttAzQkPFhTdscUTAGDq8ZyXKUMDKWvG3MouPorh7Rc46uFGY0sQzhFyQOyb30X+Q7XvNMYrP/V0KVjl9nG8snG3uwkleIg6l6xhGwGBC+g3A=
+	t=1778829698; cv=none; b=hUfLPp4oQRltEFJ4h36brvLFrNYF5HsOyY11Q0Ud+OrdVGuc5+M1CKXIAPhAzal2EekHZhprvSvtBYzARfK2+FeeGwHJlhHl9wDLdm4umfGCH+alduYfbZchwxM3IyMEmBvzYr6umIINGpYYQbU6vCaG8lfupp8j+FjHuvltytI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778827585; c=relaxed/simple;
-	bh=EDy7WM2EPZMdkVajN/C+7NtSFN1OXHBuRnNXGvFYtfg=;
+	s=arc-20240116; t=1778829698; c=relaxed/simple;
+	bh=mgpcXY8MpZsAqdbg6wVmZI9RBOOoisAdBW+jsjLBSvk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cPftFE8f8jd1Fe5J7cba/bjO4ztMr8JGymGlvGVLvMafyz3u+TIiOVkqB+7NnWbQZWp7dOpB1jrQhXld3gNnVWuct1bkRWoH/eVp/w2eCr8spdHj83OQ0PdNFP8rzOEwLtCD5F6kNE/uPffkaXxIHPAsryAX0t0kF5Hhupz2fLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gfJzE7cC; arc=none smtp.client-ip=198.175.65.21
+	 In-Reply-To:Content-Type; b=hJsEbBD0jIVNjA+5W9vijH4ibkpcN+j2gz6dxT0BkOX3omutmFEGy5vThgHHjjPL5hS453dHuhH+1Zvkz/rl543GEJSdiyqGTM6G/x33G52RxH3Fy4a2sS8qy9ITHd7tPJaCUOe2JY44HtMxcwF7EhrhUgTyldsdWI8psAyUHuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kCT7nDPL; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gfJzE7cC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kCT7nDPL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778827583; x=1810363583;
+  t=1778829697; x=1810365697;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=EDy7WM2EPZMdkVajN/C+7NtSFN1OXHBuRnNXGvFYtfg=;
-  b=gfJzE7cCzcPaEB7bhBD9lUAaXBFa7WcNmmwTi4rW/iHtjKbXaNp3MNTX
-   c5leWdmXB/krgG/delfg8cv0U5OMSxlY4cRrbRxqdPkhhVYWurKM9fpmS
-   Fc8iREqh+X+n+hcoYcnsLcc+GGjfkWe2U0bLB0tF+HvElDzLdAdT8UT6L
-   /sO6Ju+2g1vqgzd+3w4RIsUe4tazbA4Hh4VK5m2lpEH5tpkJgviYAGQLa
-   VJWmSVwpLpqrYh5fpjFG5qm3V1DmxjYoIsUP9ISG+xinb1TzMWkYsAfw/
-   y9uW8SEZsSyaw3duk6DyYzlQYxcZS/cV3cKBlKCHxmvN/5ihQ5+8X+gmf
-   A==;
-X-CSE-ConnectionGUID: ErSJxBeTQK2s89D7ysc3JQ==
-X-CSE-MsgGUID: 8TuBeqMrT6GaWO4rKaNAqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="79674106"
+  bh=mgpcXY8MpZsAqdbg6wVmZI9RBOOoisAdBW+jsjLBSvk=;
+  b=kCT7nDPL6XZCcK+8T1f2zR6Vy6uad9ORXpnOtLbvIG0J7rSPzZHHDuN8
+   b9VMtr/gaAQDn/fawtEMbVdy0/YtWXGwo1Co5g6N0sGRvZJtz4G6FgjJB
+   UhY5OYcZ3b2fGfvhLXhgx6AgnRNgwcyS/Rl4rI3N4/tX0cJ4B1n9ics+T
+   CeOJQoSWmGjNBfatuPLH0XOUhUk4Zgq7Dgbr7YB41NRoj96BEKy9XTXIk
+   dARsc+b+UFu6rRp5MRnDKntV8y5whuyQ5j4zvKp85VdO0mshaqpzOB3yt
+   o7B06FLbsV+4fjgSPUF83C8kTZXQz/U6VYfVFIzhsvZyb/E/qBkz4mQ5U
+   Q==;
+X-CSE-ConnectionGUID: jY/yQ0seSN+/8PtDKiGe8A==
+X-CSE-MsgGUID: o0Et8+DgRnOOvG+t6dtUIQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="83638798"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="79674106"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 23:46:23 -0700
-X-CSE-ConnectionGUID: 234uUvIkTV+YfgBeTmh5FQ==
-X-CSE-MsgGUID: e/SZAEWjRwmj6Pi0YKa5PA==
+   d="scan'208";a="83638798"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 00:21:35 -0700
+X-CSE-ConnectionGUID: T6uPfZ90Re23hn4r9NbY1Q==
+X-CSE-MsgGUID: sVfu8f8lQdqQcXAfj4Wc5g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="232219352"
+   d="scan'208";a="238501880"
 Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.240.207]) ([10.124.240.207])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 23:46:20 -0700
-Message-ID: <90011488-83ba-4aa5-a753-28fa5fd4024d@linux.intel.com>
-Date: Fri, 15 May 2026 14:46:17 +0800
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 00:21:32 -0700
+Message-ID: <27ba35fd-5563-4bbd-8f95-2285b50efa7a@linux.intel.com>
+Date: Fri, 15 May 2026 15:21:29 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/15] KVM: x86/xen: Bug the VM if 32-bit KVM observes
- a 64-bit mode hypercall
+Subject: Re: [PATCH v2 03/15] KVM: x86/xen: Don't truncate RAX when handling
+ hypercall from protected guest
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
@@ -63,71 +63,63 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
  Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
 References: <20260514215355.1648463-1-seanjc@google.com>
- <20260514215355.1648463-3-seanjc@google.com>
+ <20260514215355.1648463-4-seanjc@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260514215355.1648463-3-seanjc@google.com>
+In-Reply-To: <20260514215355.1648463-4-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
 On 5/15/2026 5:53 AM, Sean Christopherson wrote:
-> Bug the VM if 32-bit KVM attempts to handle a 64-bit hypercall, primarily
-> so that a future change to set "input" in mode-specific code doesn't
-> trigger a false positive warn=>error:
+> Don't truncate RAX when handling a Xen hypercall for a guest with protected
+> state, as KVM's ABI is to assume the guest is in 64-bit for such cases
+> (the guest leaving garbage in 63:32 after a transition to 32-bit mode is
+> far less likely than 63:32 being necessary to complete the hypercall).
 > 
->   arch/x86/kvm/xen.c:1687:6: error: variable 'input' is used uninitialized
->                                     whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
->    1687 |         if (!longmode) {
->         |             ^~~~~~~~~
->   arch/x86/kvm/xen.c:1708:31: note: uninitialized use occurs here
->    1708 |         trace_kvm_xen_hypercall(cpl, input, params[0], params[1], params[2],
->         |                                      ^~~~~
->   x86/kvm/xen.c:1687:2: note: remove the 'if' if its condition is always true
->    1687 |         if (!longmode) {
->         |         ^~~~~~~~~~~~~~
->   arch/x86/kvm/xen.c:1677:11: note: initialize the variable 'input' to silence this warning
->    1677 |         u64 input, params[6], r = -ENOSYS;
->         |                  ^
->   1 error generated.
-> 
-> Note, params[] also has the same flaw, but -Wsometimes-uninitialized
-> doesn't seem to be enforced for arrays, presumably because it's difficult
-> to avoid false positives on specific entries.
-> 
+> Fixes: b5aead0064f3 ("KVM: x86: Assume a 64-bit hypercall for guests with protected state")
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+The patch looks good to me, but one question below.
 
 > ---
->  arch/x86/kvm/xen.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+>  arch/x86/kvm/xen.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
 > diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-> index 91fd3673c09a..6d9be74bb673 100644
+> index 6d9be74bb673..895095dc684e 100644
 > --- a/arch/x86/kvm/xen.c
 > +++ b/arch/x86/kvm/xen.c
-> @@ -1694,16 +1694,19 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
->  		params[4] = (u32)kvm_rdi_read(vcpu);
->  		params[5] = (u32)kvm_rbp_read(vcpu);
+> @@ -1678,15 +1678,14 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
+>  	bool handled = false;
+>  	u8 cpl;
+>  
+> -	input = (u64)kvm_register_read(vcpu, VCPU_REGS_RAX);
+> -
+>  	/* Hyper-V hypercalls get bit 31 set in EAX */
+> -	if ((input & 0x80000000) &&
+> +	if ((kvm_rax_read(vcpu) & 0x80000000) &&
+>  	    kvm_hv_hypercall_enabled(vcpu))
+>  		return kvm_hv_hypercall(vcpu);
+>  
+>  	longmode = is_64_bit_hypercall(vcpu);
+
+Is the variable name misleading?
+If the vcpu is in compatible mode (when guest state is not protected),
+it's in long mode, but the code goes to !longmode path.
+
+>  	if (!longmode) {
+> +		input = (u32)kvm_rax_read(vcpu);
+>  		params[0] = (u32)kvm_rbx_read(vcpu);
+>  		params[1] = (u32)kvm_rcx_read(vcpu);
+>  		params[2] = (u32)kvm_rdx_read(vcpu);
+> @@ -1696,6 +1695,7 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
 >  	}
-> -#ifdef CONFIG_X86_64
 >  	else {
-> +#ifdef CONFIG_X86_64
+>  #ifdef CONFIG_X86_64
+> +		input = (u64)kvm_rax_read(vcpu);
 >  		params[0] = (u64)kvm_rdi_read(vcpu);
 >  		params[1] = (u64)kvm_rsi_read(vcpu);
 >  		params[2] = (u64)kvm_rdx_read(vcpu);
->  		params[3] = (u64)kvm_r10_read(vcpu);
->  		params[4] = (u64)kvm_r8_read(vcpu);
->  		params[5] = (u64)kvm_r9_read(vcpu);
-> -	}
-> +#else
-> +		KVM_BUG_ON(1, vcpu->kvm);
-> +		return -EIO;
->  #endif
-> +	}
->  	cpl = kvm_x86_call(get_cpl)(vcpu);
->  	trace_kvm_xen_hypercall(cpl, input, params[0], params[1], params[2],
->  				params[3], params[4], params[5]);
 
