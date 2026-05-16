@@ -1,181 +1,231 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C3435E1DF
-	for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 22:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B76380FC5
+	for <linux-coco@lists.linux.dev>; Sat, 16 May 2026 07:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778885477; cv=none; b=jVehD2VSRo84JDmITMYf4Kr1oI1BHsBN8++1t2vEJC/848AJdlt0bM42yVUSSJn8WOjorLAuhGUDYEDcb6p3FS0hxE1uWiGnLHEHAn8zjlIhKog35cdctM4ucNo+dxunvLX4mjsKjSDl9maiD1O1OpXS6TrAKbWW1RAL+aNfV38=
+	t=1778917366; cv=none; b=mqhO/g4FMG/FT82+ZocsvgpCW3Ta3KybSHefa0EtmguWFCyTwcpb3bz5W4F0MbtBDDKkVWQd6leCZJi70LQeEaA9SojmAa1y4iTod3ZI4rLB/5vG7a/VLE+SgpH2Vy3nSPBblG0IvaAo8oQIAS7aoK18uqn3NpxbzhUVz9VAHew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778885477; c=relaxed/simple;
-	bh=r4o8kNBsfNITnPuziuAzBiGGbEdWSyP9HN1hm0J0N4c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l4GysLD0u8iUGNfKvLKBbC/4u0yKLMwLwfMHN9gOMS226Lj+0MBq0pD+tHJ10/5e06atWnHtCIlqznEm3SXq5faouGIdv8z9ZaXNqp2Uj27xXadTaydqLZhcVuDNhUOyX8ANlpuVBkg6p6dAzogv78+QjVHEH+WG1FS7HGqJXxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=i9Y8dfdF; arc=none smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1778917366; c=relaxed/simple;
+	bh=fjfgd+v14zGBl7L8xu1eqInSO4/HBRf2Tumh7X99mpM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aCX/gd+jUNRlN9mAwgsvUuq9KhZ23H7BBA24sczFJs9lOYq0RR/T/mmo5hUfcJMKPy8Reps+F7l0DBkwvoxiFq7SSsZrhkBbazC6mrEZygU8JF4IeaF4Un8vrz06rR48Z+pS3fhB2N4X6ndqabqLZaXRBeJmZHv8qLVjgEp3VBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XMkEzLfk; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="i9Y8dfdF"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-512f750d4b2so5858611cf.1
-        for <linux-coco@lists.linux.dev>; Fri, 15 May 2026 15:51:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1778885475; x=1779490275; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=immH+g/3RYXTN+iTjjy3LaccswRoDpZE21Qsh/sCfkE=;
-        b=i9Y8dfdFcD0DWVcinin8twxPsRWZgwN7utfK+wXGn2fGIYvRcspHlS1OPBU9R9BStO
-         jIq1hwJEmqumFg4vy5X1itHkOGDMbL27d3r77je3u5qTaQM4BHf74/Xh3NSzkwdA3yMc
-         hSwTHT9qfBpcOUeWx8q0f8kcMFsr+WAxGdv4yi/cYZD6r8MWoTNhAxTFoqReu55gW7An
-         WMYqkINig6sOrHqR0UF6P9tfymClQysbAWBLzICdZ4OpfWjPXucdUicnMkvgVXQYlHR8
-         sErLAv53/j0rRRzACJuVhFjcfbZkzOF/frjFwfGwxypYQoIy6Er33Qz1uxxPYBSkgsvK
-         resg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778885475; x=1779490275;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=immH+g/3RYXTN+iTjjy3LaccswRoDpZE21Qsh/sCfkE=;
-        b=aY5odUfN63LarLzeH1CcbhGJN1bH7ACbMtf/2IMQFaVR8mQ/fwBdozfIdlHZ5SfDlX
-         pB/z+UrlAa2W04NfbgBcQOW/8G4bteyWr2x3okvtc2OzDvieeiIiWl8BdnJt39cCPY4/
-         r1UZMIdQ0AIq33K2/OEN96TRiLpAQ22kvMOfDpAO4P2dDgpefw5hTPA3Kf5bFiKoFXVb
-         udmwkZaNda9NKc4M3vBE8fmcJtJK/pe5BJP2Ndw7N7Kw+B24h++IJik5It4G9gF2r9h/
-         rXqu2dJTPIyhrjqnH4MJHI6WtqyrR5Hn4ArPlqRY5DzgRw0PILCYEZZQTuiaq8cyzhx+
-         J6pg==
-X-Forwarded-Encrypted: i=1; AFNElJ8AZvnW8wzyHZHUGe0bzK3vVwYYvH6eNmB+9B1Lcl18RH6vBxi+ZU/0yzjijx3vKIaJq7kzH35W9blP@lists.linux.dev
-X-Gm-Message-State: AOJu0YzzQ7Lfo5oSsfoTxw3GdYcwWMNFYyEJ49fHp0cGhXAXNTPmD//E
-	2WQQ6ZIyjzAEypUH21hoI88hAXXWq9X/Ji6AYfcPN010e+flIvVlUWSfIUJw6cwwmlM=
-X-Gm-Gg: Acq92OFcDE8oHTTs08b9srIQOgRT+Ti3BAqgcQ75BndUh7THksOyxBYgMfYX0zQOPHl
-	xalkLOLJsBTL3xYCikdw5P2dL6kKj0kgC68zhSOrdELQo54F60+ZnBtbBPx+EeVVHaTI9GDtcTq
-	NYvOgIjmGCBTfLxkoCzJrWZ1A4/2h8u1vhTatwuGxCuS2glNAExyWZvhvGJEkJOMUybgydaFVL8
-	DhgbmplD6VJqAzFccUCDx0hqBpj2zOh46EL79pDmKxkllKQWLiwzXgD2/wFGgZQYUrLkgT0eOZl
-	X2LYF+aXb0cA2YgI6IeFH/9/zYC4ryPA4WJpUfe+/AFiKQz35gbEJg+1dCj6p/RjfrTwpw8q0Mo
-	ceRpko9HXluU1obrcZtYgICikat6E40hr7pnhJbC4VrcamGiIKVtvLtL6rqh9Uq+nFqHqveA3yu
-	qxynxQiiw9lKtjdbQYLQ6xawMcaiNDWkzg7o/eqhcVkogjXP5l+/NFPOjo3MuZomywOWBQ1Y0LX
-	HcO7Q==
-X-Received: by 2002:a05:622a:590c:b0:50e:fcbc:6b7e with SMTP id d75a77b69052e-5165a275f74mr79497231cf.29.1778885475017;
-        Fri, 15 May 2026 15:51:15 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5164585c5e0sm56735501cf.29.2026.05.15.15.51.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 15:51:14 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wO1NC-00000008Fgc-00Mh;
-	Fri, 15 May 2026 19:51:14 -0300
-Date: Fri, 15 May 2026 19:51:13 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Mostafa Saleh <smostafa@google.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [PATCH v4 04/13] dma: swiotlb: track pool encryption state and
- honor DMA_ATTR_CC_SHARED
-Message-ID: <20260515225113.GN7702@ziepe.ca>
-References: <20260512090408.794195-1-aneesh.kumar@kernel.org>
- <20260512090408.794195-5-aneesh.kumar@kernel.org>
- <agSKQrSIhizCXKwx@google.com>
- <20260513172450.GR7702@ziepe.ca>
- <agW2lzJI-20DyJVe@google.com>
- <20260514123529.GZ7702@ziepe.ca>
- <agXfm3mS_M3fvRrN@google.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XMkEzLfk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778917364;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ZuYuwk7J/15Ge1PYKnSZO6EKNDeWPqqx6skfRaS0DUA=;
+	b=XMkEzLfkNCt/fjt4YrhIdzEgioCcz5eQ/GYTHKGO4fy/QGLbcXNe/IhbaqKlXjm38/1DHH
+	rrrJKUsk59gAZTeukqXOt69AaONRtcScQBVoFPHAONN94XmUJWgjEgB7pBG+4mMf3gxcaH
+	IAKCWRHgAtnESWrt9fsrsl3q8MMHejs=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-111-C2qozkjxOF6c4Hglw-NMVQ-1; Sat,
+ 16 May 2026 03:42:38 -0400
+X-MC-Unique: C2qozkjxOF6c4Hglw-NMVQ-1
+X-Mimecast-MFC-AGG-ID: C2qozkjxOF6c4Hglw-NMVQ_1778917355
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 39F2518005B2;
+	Sat, 16 May 2026 07:42:34 +0000 (UTC)
+Received: from [10.44.32.24] (unknown [10.44.32.24])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0353F180034E;
+	Sat, 16 May 2026 07:42:22 +0000 (UTC)
+Message-ID: <3cb683b4-973a-4b3e-a5d5-a8baa8a70eb0@redhat.com>
+Date: Sat, 16 May 2026 09:42:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <agXfm3mS_M3fvRrN@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 40/41] x86/tsc: Add standalone helper for getting CPU
+ frequency from CPUID
+To: Sean Christopherson <seanjc@google.com>, Kiryl Shutsemau
+ <kas@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+ Ajay Kaher <ajay.kaher@broadcom.com>,
+ Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Jan Kiszka <jan.kiszka@siemens.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
+ <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Juergen Gross <jgross@suse.com>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, John Stultz <jstultz@google.com>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd
+ <sboyd@kernel.org>, x86@kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+ xen-devel@lists.xenproject.org, Michael Kelley <mhklinux@outlook.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
+ Thomas Gleixner <tglx@linutronix.de>, David Woodhouse <dwmw@amazon.co.uk>
+References: <20260515191942.1892718-1-seanjc@google.com>
+ <20260515191942.1892718-41-seanjc@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20260515191942.1892718-41-seanjc@google.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: fCeyMSUcJ5tdBRWMtMe7Z62xb5fSM5pfOVHbDUpU8z4_1778917355
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, May 14, 2026 at 02:43:39PM +0000, Mostafa Saleh wrote:
-> > That's a somewhat different problem, we have the dev->trusted stuff
-> > that is supposed to deal with this kind of security. We need it for
-> > IOMMU based systems too, eg hot plug thunderbolt should have it.
+On 5/15/26 21:19, Sean Christopherson wrote:
+> Extract the guts of cpu_khz_from_cpuid() to a standalone helper that
+> doesn't restrict the usage to Intel CPUs.  This will allow sharing the
+> core logic with kvmclock, as (a) CPUID.0x16 may be enumerated alongside
+> kvmclock, and (b) KVM generally doesn't restrict CPUID based on vendor.
+
+Even for native there's no real reason to restrict to Intel, I think. 
+native_calibrate_tsc() only limits itself because historically (prior to 
+commit 604dc9170f24, "x86/tsc: Use CPUID.0x16 to calculate missing 
+crystal frequency", 2019-05-09) it used a hardcoded table of crystal 
+frequencies.
+
+Of course paranoia applies, but for virtualization, if the leaf exists 
+there is no reason not to trust it.
+
+Thanks,
+
+Paolo
+
+> No functional change intended.
 > 
-> I see that it is used only for dma-iommu and for PCI devices.
-> However, I think that should be a problem with other CCA solutions
-> with emulated devices as they are untrusted. As I'd expect they
-> would have virtio devices.
-
-Yes, any security solution with an out of TCB device should be using either
-memory encryption so the kernel already bounces or this trusted stuff
-and a force strict dma-iommu so the dma layer is careful.
-
-This is more policy from userspace what devices they want in or out of
-their TCB. Like you make accept the device into T=1 but then still
-want to keep it out of your TCB with the vIOMMU, I can see good
-arguments for something like that.
-
-> > > While we can debate the aesthetics of the setup , this is
-> > > the exisitng behaviour for Linux, which existed for years
-> > > and pKVM relies on and is used extensively.
-> > > And, this patch alters that long-standing logic and introduces
-> > > a functional regression.
-> > 
-> > Yeah, Aneesh needs to do something here, I'm pointing out it is
-> > entirely seperate thing from the CC path we are working on which is
-> > decoupling CC from reylying on force swiotlb.
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>   arch/x86/include/asm/tsc.h |  1 +
+>   arch/x86/kernel/tsc.c      | 37 +++++++++++++++++++++++--------------
+>   2 files changed, 24 insertions(+), 14 deletions(-)
 > 
-> I am looking into converting pKVM to use the CC stuff, I replied with
-> a patch to Aneesh in this thread. However, I need to do more testing
-> and make sure there are not any unwanted consequences.
+> diff --git a/arch/x86/include/asm/tsc.h b/arch/x86/include/asm/tsc.h
+> index f458be688512..c145f5707b52 100644
+> --- a/arch/x86/include/asm/tsc.h
+> +++ b/arch/x86/include/asm/tsc.h
+> @@ -91,6 +91,7 @@ struct cpuid_tsc_info {
+>   };
+>   extern int cpuid_get_tsc_info(struct cpuid_tsc_info *info);
+>   extern int cpuid_get_tsc_freq(struct cpuid_tsc_info *info);
+> +extern int cpuid_get_cpu_freq(unsigned int *cpu_khz);
+>   
+>   extern void tsc_early_init(void);
+>   extern void tsc_init(void);
+> diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+> index 1b569954ae5e..745fa2052c74 100644
+> --- a/arch/x86/kernel/tsc.c
+> +++ b/arch/x86/kernel/tsc.c
+> @@ -719,6 +719,24 @@ int cpuid_get_tsc_freq(struct cpuid_tsc_info *info)
+>   	return 0;
+>   }
+>   
+> +int cpuid_get_cpu_freq(unsigned int *cpu_khz)
+> +{
+> +	unsigned int eax_base_mhz, ebx, ecx, edx;
+> +
+> +	*cpu_khz = 0;
+> +
+> +	if (boot_cpu_data.cpuid_level < CPUID_LEAF_FREQ)
+> +		return -ENOENT;
+> +
+> +	cpuid(CPUID_LEAF_FREQ, &eax_base_mhz, &ebx, &ecx, &edx);
+> +
+> +	if (!eax_base_mhz)
+> +		return -ENOENT;
+> +
+> +	*cpu_khz = eax_base_mhz * 1000;
+> +	return 0;
+> +}
+> +
+>   /**
+>    * native_calibrate_tsc - determine TSC frequency
+>    * Determine TSC frequency via CPUID, else return 0.
+> @@ -754,13 +772,8 @@ unsigned long native_calibrate_tsc(void)
+>   	 * clock, but we can easily calculate it to a high degree of accuracy
+>   	 * by considering the crystal ratio and the CPU speed.
+>   	 */
+> -	if (!info.crystal_khz && boot_cpu_data.cpuid_level >= CPUID_LEAF_FREQ) {
+> -		unsigned int eax_base_mhz, ebx, ecx, edx;
+> -
+> -		cpuid(CPUID_LEAF_FREQ, &eax_base_mhz, &ebx, &ecx, &edx);
+> -		info.crystal_khz = eax_base_mhz * 1000 *
+> -			info.denominator / info.numerator;
+> -	}
+> +	if (!info.crystal_khz && !cpuid_get_cpu_freq(&cpu_khz))
+> +		info.crystal_khz = cpu_khz * info.denominator / info.numerator;
+>   
+>   	if (!info.crystal_khz)
+>   		return 0;
+> @@ -787,19 +800,15 @@ unsigned long native_calibrate_tsc(void)
+>   
+>   static unsigned long cpu_khz_from_cpuid(void)
+>   {
+> -	unsigned int eax_base_mhz, ebx_max_mhz, ecx_bus_mhz, edx;
+> +	unsigned int cpu_khz;
+>   
+>   	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
+>   		return 0;
+>   
+> -	if (boot_cpu_data.cpuid_level < CPUID_LEAF_FREQ)
+> +	if (cpuid_get_cpu_freq(&cpu_khz))
+>   		return 0;
+>   
+> -	eax_base_mhz = ebx_max_mhz = ecx_bus_mhz = edx = 0;
+> -
+> -	cpuid(CPUID_LEAF_FREQ, &eax_base_mhz, &ebx_max_mhz, &ecx_bus_mhz, &edx);
+> -
+> -	return eax_base_mhz * 1000;
+> +	return cpu_khz;
+>   }
+>   
+>   /*
 
-Yeah, it is a nice patch and I think it will help reduce the
-complexity if it aligns to CCA type stuff.
-
-> > In a pkvm world it should be the same, the S2 table for the SMMU will
-> > control what the device can access, and if the SMMU points to a
-> > "private" or "shared" page is not something the device needs to know
-> > or care about.
-> 
-> I see that's because dma-iommu chooses the attrs for iommu_map().
-
-Long term the DMA API path through the dma-iommu will pass the
-ATTR_CC_SHARED through to iommu_map so when the arch requires a
-different IOPTE it can construct it.
-
-> In pKVM, dma_addr_t and IOPTE are the same for private and shared,
-> so nothing differs in that case.
-
-Yes, so you don't have to worry.
-
-> We don’t expect pass-through devices to interact with shared
-> memory (T=0) at the moment.
-> However, I can see use cases for that, where the host and the guest
-> collaborate with device passthrough and require zero copy.
-
-Once you add the CC patch it becomes immediately possible though
-because the user can allocate a CC shared DMA HEAP and feed that all
-over the place.
-
-> One other interesting case for device-passthrough is non-coherent
-> devices which then require private pools for bouncing.
-
-Why does shared/private matter for bouncing? Why do you need to bounce
-at all? Do cmo's not work in pkvm guests?
-
-Jason
