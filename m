@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FCEA381AF
-	for <linux-coco@lists.linux.dev>; Mon, 18 May 2026 15:12:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8293B3C0A
+	for <linux-coco@lists.linux.dev>; Mon, 18 May 2026 15:29:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779117158; cv=none; b=dPEBj6O+QcR9Go/oOtA19po1U/We1THcfmJdLcOlcabcHKx7ct1/VaLebg/9xLAszz1GRJBNHj4iLqTMYiRjmbc+H31U3AI0m4dzRvA5didbg4nLFFdysvyJJyUKNTOfktogUp4Rpc9ig9RREV/vBmw505538mGSi4j8kNMWl14=
+	t=1779118163; cv=none; b=lvVNlUBLL8lN597VJqvcfohmUjX3z/zkwCMS1l9EXZzYNV7OAVtUbViivTVhfzxt+xnF38p/yBJ1o0kl+evUcWDDVwazhXhW8WGY/UNPY9dNuYhS65BsvgvXMLE3G89InyxsWgHdvk0TyGU8rCztLXuKmov30TlLP9Go0PAKpHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779117158; c=relaxed/simple;
-	bh=usaP7VTdT3T6hQ117xP8THBXVVnr1QGxlZ+HgD3YzJk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z6Qdy1/B/bYn44NRgSNTTP45+vHJc5+DvYGAQtsk0GGXrrKudVsy5RD5buRolRpG1fRmh2oAQhesZHXQy7Cp2i+AK4olLog/AMzlxnA2RNv7NLH3D0N3JvdPhgCT6Ref9Qh+Asx12fZmkodXC4UUuPVw7wsvLSxTJCk5R4E7jjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jg6Z1VtE; arc=none smtp.client-ip=198.175.65.20
+	s=arc-20240116; t=1779118163; c=relaxed/simple;
+	bh=g3BIq2mZ/ualzPnUMc8iMBsh+jPT9ywhIC4nHWO0C3Y=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=hrXGjU0PNAuuSwqv714GzmjQoXfPS4Fubsu5YSBbCCiwJie/iPzd10UtHH5KhZHn/n96dLgGt54DKJAvOLQ/x1rfyAmczStGBy6X4UTBw+kmKbGn3nJeM7RuFVzGg1/SMDMgr7d1bQu6XhApQFTJhDcvnkUo/9+AIv+Oxi7UN8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GSy/2hwS; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jg6Z1VtE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GSy/2hwS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779117156; x=1810653156;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=usaP7VTdT3T6hQ117xP8THBXVVnr1QGxlZ+HgD3YzJk=;
-  b=Jg6Z1VtEEm37bHsAasxGSqJSe9u7sRQgrSYwKrekyfTvdIwmZbBzf95g
-   dMrmsw9uQSTOAf0VmrUI9cb/16IiSLwsQSbXZ1Smg+UBkQ6ogoyJE31hr
-   y5Qbx3W2F3S2O/moSA104DjtW4/xPTX3L+pewZknA/I/es+bQTwqzweYk
-   CIhheQln0yKJsemv+wzzxqKZP3bC5EjICvGefx4Dq3fn2qxLNCpSX8LcQ
-   k8u0oiCKFip/LFfp6+pvZZRgSBE964FWC3NAPlcWnklh8fR/qbGMOS1JR
-   CM2lsuR64l1zRjZjUKRlYg9K5YBfsfS/cTQf4JlHUClHU30/694m+bGIv
-   Q==;
-X-CSE-ConnectionGUID: sRrf9iSoTNG7j3sADsIZhw==
-X-CSE-MsgGUID: y3YP/UuWSHOXdXsSIMWr4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="79687994"
+  t=1779118159; x=1810654159;
+  h=message-id:date:mime-version:from:subject:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=g3BIq2mZ/ualzPnUMc8iMBsh+jPT9ywhIC4nHWO0C3Y=;
+  b=GSy/2hwSzi2H5iow4b/frMSMlTZQiqar2sUjET4k0XqZnleXA4AimbnX
+   GCdceqmxJ6+/nTG1VxThIkPVAkIrKI47D5nrD7kzGcID1dTRm9KXCEUrR
+   CnncXuVXoNFBpMHYndOCQxsJJVIr1tV6MgWflROQns58Bf860hs3RLQ27
+   N8L2UNE0nMWSEo9r/4vToRpJPeATEOQDgjuLe9ayql64gvyrpIHvluIP5
+   fNY57JYFgn+ULm+HxWsF3ImWTsAOomBrp0hqfA6wtmx2owWbToUNYovp4
+   x3vpSlisfv4id88soal5al36tKWheDTLjlqGCMxAraRy960hhM4vXLDcz
+   w==;
+X-CSE-ConnectionGUID: 6Pc24DnLSGm30wNlQ3zPZg==
+X-CSE-MsgGUID: daU91i5JSK+qXH+NXdOFjg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="78995093"
 X-IronPort-AV: E=Sophos;i="6.23,242,1770624000"; 
-   d="scan'208";a="79687994"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 08:12:35 -0700
-X-CSE-ConnectionGUID: akdb7uMNSf6p7VqwITabcQ==
-X-CSE-MsgGUID: ACN5/8WXQfm9zO1DhUmmbQ==
+   d="scan'208";a="78995093"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 08:29:15 -0700
+X-CSE-ConnectionGUID: n4SzjvI9R62yQlS9BC4JDw==
+X-CSE-MsgGUID: nBc+FBxUQ0SyegMrbRVsUA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,242,1770624000"; 
-   d="scan'208";a="235205109"
+   d="scan'208";a="241278744"
 Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.109.43]) ([10.125.109.43])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 08:12:34 -0700
-Message-ID: <977c1cf8-45cf-4902-9c50-ffc2b45391e6@intel.com>
-Date: Mon, 18 May 2026 08:12:37 -0700
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 08:29:14 -0700
+Message-ID: <2e082f23-1383-4dba-8cdf-0df612f64ace@intel.com>
+Date: Mon, 18 May 2026 08:29:17 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,9 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 11/23] x86/virt/seamldr: Allocate and populate a module
- update request
+From: Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [PATCH v9 09/23] coco/tdx-host: Don't expose P-SEAMLDR
+ information on CPUs with erratum
 To: Chao Gao <chao.gao@intel.com>
 Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev,
  linux-kernel@vger.kernel.org, binbin.wu@linux.intel.com,
@@ -67,9 +68,8 @@ Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
 References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-12-chao.gao@intel.com>
- <7d7fff5a-53a5-439e-9ff8-dcbd97f473cd@intel.com> <agsfCsvcILh3Vg7a@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
+ <20260513151045.1420990-10-chao.gao@intel.com>
+ <f1057429-4918-4b02-ae17-9bd6cc38a3c1@intel.com> <agsJpjZU0kbsY3oy@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -114,86 +114,35 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <agsfCsvcILh3Vg7a@intel.com>
+In-Reply-To: <agsJpjZU0kbsY3oy@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 5/18/26 07:15, Chao Gao wrote:
->>> +#define TDX_IMAGE_VERSION_2		0x200
->>> +
->>> +struct tdx_image_header {
->>> +	u16	version; // This ABI is always 0x200
->>
->> That comment reads strangely in here. Did I ask you to write that?
+On 5/18/26 05:44, Chao Gao wrote:
+> On Fri, May 15, 2026 at 10:26:19AM -0700, Dave Hansen wrote:
+>> On 5/13/26 08:09, Chao Gao wrote:
+>>> Some TDX-capable CPUs have an erratum, as documented in Intel® Trust
+>>> Domain CPU Architectural Extensions (May 2021 edition) Chapter 2.3:
+>> 2021, eh?
+> The TDX ISA document has not been updated since then; the May 2021
+> edition is still the latest revision. See:
 > 
-> I copied that from the example you suggested for this structure in v8. But
-> yes, it does read awkwardly here, so I will drop it.
+> https://www.intel.com/content/www/us/en/developer/tools/trust-domain-
+> extensions/documentation.html
 
-The point is that the code or comments needs to mention *somewhere* that
-"This (header->version) ABI is always 0x200". I didn't mean for you to
-literally put that ^ in there.
+I think you are saying that the CPUs have an erratum.
 
-It's fine if it is in the code to. Just mention it somewhere.
+That erratum diverges their implementation from the spec: "Intel® Trust
+Domain CPU Architectural Extensions (May 2021 edition) Chapter 2.3".
 
->>> +static int init_seamldr_params(struct seamldr_params *params, const u8 *data, u32 size)
->>> +{
->>> +	const struct tdx_image *image		= (const void *)data;
->>> +	const struct tdx_image_header *header	= &image->header;
->>> +
->>> +	u32 sigstruct_len	= header->sigstruct_nr_pages * PAGE_SIZE;
->>> +	u32 module_len		= header->module_nr_pages * PAGE_SIZE;
->>> +
->>> +	u8 *header_start	= (u8 *)header;
->>> +	u8 *header_end		= header_start + HEADER_SIZE;
->>> +
->>> +	u8 *sigstruct_start	= header_end;
->>> +	u8 *sigstruct_end	= sigstruct_start + sigstruct_len;
->>> +
->>> +	u8 *module_start	= sigstruct_end;
->>> +
->>> +	/* Check the calculated payload size against the data size. */
->>> +	if (HEADER_SIZE + sigstruct_len + module_len != size)
->>> +		return -EINVAL;
->>> +
->>> +	/*
->>> +	 * Don't care about user passing the wrong file, but protect
->>> +	 * kernel ABI by preventing accepting garbage.
->>> +	 */
->>
->> How does this "protect kernel ABI"?
-> 
-> "Protect kernel ABI" was imprecise here. The intent is to reject
-> obviously malformed headers.
-> 
-> If the kernel accepts garbage in header fields today, userspace can come
-> to rely on that behavior. Later, the kernel may start validating those
-> fields more strictly or assign meaning to fields that were previously
-> reserved. Rejecting the same image then could be seen as a kernel
-> regression.
-> 
-> I'll simplify the comment to:
-> 
-> 	/* Reject obviously malformed image headers. */
+But when you combine those two things in one sentence, it's incredibly
+confusing.
 
-I'm still not following this at all.
+The erratum you are talking about is brand new. I just asked for it to
+be created in the last month or two. Thus, my confusion when you say
+there: "an erratum, as documented in ... May 2021".
 
-I suspect that someone along the way said something in reviewing this
-about ensuring that fields that are "reserved" are treated as "reserved
-+ must be zero".
+Thus, I'm questioning the 2021 date. You probably also want to mention
+that the erratum is, as of today, not publicly documented.
 
-Somehow that recommendation got conflated with the version checking.
-
-But the deeper point is that neither this patch nor its contributor is
-quite able to articulate the reason for this line of code being here.
-
-Let me try.
-
-	The "tdx_image" ABI is versioned. However, there has only ever
-	been one public versions of the structure: ->version==0x200. The
-	kernel can only parse that version. Future versions of the
-	module might be able to use the same ABIs (user/kernel and
-	kernel/SEAMLDR) but they will not be able to use this kernel
-	code.
-
-	Reject module images without that specific version. This ensures
-	that the kernel is able to understand the passed-in format.
+Can you rephrase this all and make it clearer, please?
