@@ -1,441 +1,204 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DCD3AFCE1
-	for <linux-coco@lists.linux.dev>; Tue, 19 May 2026 15:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DF83AFCF7;
+	Tue, 19 May 2026 15:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779203056; cv=none; b=a7FudMnnSaqES4iycPpFgSAC41SYaFk6GrmI7BLgfBH4NU2yTtoLka9pcm2k8v3x+ElGstVFWMFz7tHPqbhS336nyyCwwnCrC+1SXjQ0FzQyDzxHsG91fty3it8jOacknpVMdklPmxKWVxCm2A/iDYrClopCAkxmQ+pmqfhjz/Q=
+	t=1779203286; cv=none; b=eGcxswgc9qa/8bc1rHtxVfDdPeHEf9H65NaRxb5LFKfUbMLYls79T9wIbW/587p3fyZCfVWKZnbfq+qr/EZUET139qj3gsHPT3kdlnGoHMLmgTNUWuJ4N1fqbD6jYV7PwGHxxLk697GytIKoODNtgTynlxqYFh2l1emVDpqVZDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779203056; c=relaxed/simple;
-	bh=SZ/JR9ZvyrcsknBQqh4FpTporMKvookpSd7KUkT9UHM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OhjuloAesR0fh5JIQAzNm2aCWEuH5domcgzPyXJLT7uGotRhc8gvGUEJjm0SHcKxU2D89nBGfto5+/bSUual9hqaQHPRMyVjr6BZcfQ8RiFe+mSLr1KA//7k2a82RH8/H6HfOBKGckF/wylPXXTY1Ol4b4qKFzckNycMo4hHlUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uFJPmHOM; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779203286; c=relaxed/simple;
+	bh=KyaOKUufk660jyAnyO4dwLztr2A/5z8gocMgG2ZXcQM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FS+MecAv+8QO5NaNvz3YIVOik63U0a5pmGVYFtrjYLpesLzPGXzy2lvw+rEITaeEaYFZsTb9QO7WwQI4NluCOnZEYAi7pLUUp8dsSQRUwewnOU1XIX3BOm8inc3nptkQu3p6mHVUr1IW5AMG1hnPozSEiwP9SSoE6WclgEgvybg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gfCVmqRQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uFJPmHOM"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b9fe2d6793so90109955ad.0
-        for <linux-coco@lists.linux.dev>; Tue, 19 May 2026 08:04:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779203054; x=1779807854; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T/3nnkW0lqpwejGPgvTbPUbQiNECuGmWVi5RjTbDbAQ=;
-        b=uFJPmHOM7GUUvSX5A1ftABknt/yTGXx0XMdRknZ2te93u4PsoB4IjP7CxrWfMlQvWq
-         OlSk5XG/xCrN3OkMyLwMv4fVeNwX+fFbJd6PE4pgMv4Qt4MdpxFsqnSOmDkmtITFmwnI
-         gvsCHp5Ra6EsyVRYb/yO2D3361kxRiJmupFvRQ3kxZ6DKdNOibxeeU3nXD/WSC4Dvpma
-         EGZr7+NkPGtD/3UYbMtzm0/EH30rKLo8hBZV2LFIArChu0l3IaESeOZqjjCiXovewpaP
-         4ye7d+77JSm/JQ5ycYUu9U7t1FzUgMmr/dPdGx82Q3zlkLc+PKoP3/sSpmGLNG3IaMP/
-         cPNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779203054; x=1779807854;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T/3nnkW0lqpwejGPgvTbPUbQiNECuGmWVi5RjTbDbAQ=;
-        b=O+dm2iXYZs/3Ck4sYDuB47h42DHh2vsANXfkSA/XAYK86Gpj0rb/feWCskW2bsPHkT
-         AUHBaUntO0VtkIDXEqXW0T9kROM7TqdrCLScE11rpqgsnqI6QsYA7zQJiZOiPFSF19nK
-         oErJLbFbl5JvxnvR1Dsf4m1SS7CavGDB/ir986WFep5ahAuKF4mcwwfZo0DW6XBtuQKQ
-         kNZXSeeCMkDfODoI6jVBGCqB+XjNVSwAqmtqhm8DE3Jeq7Y2UOSAUtSdo4/nS0t/qlGy
-         8q6SXGVmV6ffP32CTTAiBUwz+AtX9TsJNQRDQCXKzw7NBzuT16D/wr9fmvX35TLEoIuN
-         hmvw==
-X-Forwarded-Encrypted: i=1; AFNElJ+EAnn1xkWP/WTdDb5C/hp789ZkU0Zjutn66cKZCaMdF903c6MbHLybnylFoLE1VPfB5VVn5J6OIfCb@lists.linux.dev
-X-Gm-Message-State: AOJu0YwcjCssVzQvi1Ju272WXOddZgB3C3v5TCrckKFJ/GXCzpubRwHh
-	T9NOx1FWL+WKWj1aki9dXRLsTXNWGnSxGAiiTxQjMEy0AAll/N/hfYHikH/e0SiTGw3Q3yfi8c7
-	yFKEc3w==
-X-Received: from plsa8.prod.google.com ([2002:a17:902:b588:b0:2b0:4f86:510])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:11cf:b0:2bd:bd27:e234
- with SMTP id d9443c01a7336-2bdbd27e463mr135663905ad.21.1779203054065; Tue, 19
- May 2026 08:04:14 -0700 (PDT)
-Date: Tue, 19 May 2026 08:04:13 -0700
-In-Reply-To: <074e209fe4c78a735868099f13d76b9dde2c88e3.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gfCVmqRQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CB7C2BCB3;
+	Tue, 19 May 2026 15:07:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779203285;
+	bh=KyaOKUufk660jyAnyO4dwLztr2A/5z8gocMgG2ZXcQM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=gfCVmqRQQdy8M8HA+XstwwoOpKN65jH/uDBv2iWJ6wdryzFjV5aqQ5J5zLKpnXd1R
+	 MFePXRwJdlj0GE7vzB9h3mSdyYx+ToaECrqs8QXecIfN1ZsN3uSEg/aPjk5q3dnHDd
+	 6x79LO3IArWLhr/nYRTv/X7YOfD7PNsBnNqxTreMAIV0LA5SmVfv87HgZUtCD/QPrU
+	 ZbPRwVbbTLSoiNY4KtbyRJLSxc77SM+MLRmeWIXpFli++we4iwZ1y+H0UFcDRjYdiy
+	 f3BUle31jswVsGu+sQx5NS55VsHZxmeQelzm2Y/aOpkLXTQLxhx9k+011Cn+nvKBVz
+	 CMNlOzS75r7pw==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Mostafa Saleh <smostafa@google.com>
+Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
+Subject: Re: [PATCH v4 04/13] dma: swiotlb: track pool encryption state and
+ honor DMA_ATTR_CC_SHARED
+In-Reply-To: <yq5amrxvshxg.fsf@kernel.org>
+References: <20260512090408.794195-1-aneesh.kumar@kernel.org>
+ <20260512090408.794195-5-aneesh.kumar@kernel.org>
+ <agSKQrSIhizCXKwx@google.com> <yq5ah5oaa63h.fsf@kernel.org>
+ <agW5rhE9n2gDQ0w5@google.com> <yq5apl2y5f96.fsf@kernel.org>
+ <agXaby-7L7yS3Vva@google.com> <yq5ah5oa59wy.fsf@kernel.org>
+ <agxDxdxynp4KEovA@google.com> <yq5amrxvshxg.fsf@kernel.org>
+Date: Tue, 19 May 2026 20:37:54 +0530
+Message-ID: <yq5abjebsaid.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260514215355.1648463-1-seanjc@google.com> <20260514215355.1648463-16-seanjc@google.com>
- <074e209fe4c78a735868099f13d76b9dde2c88e3.camel@intel.com>
-Message-ID: <agx77QB3UVmJr5xP@google.com>
-Subject: Re: [PATCH v2 15/15] KVM: x86: Move the bulk of register specific
- code from x86.c to regs.c
-From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"vkuznets@redhat.com" <vkuznets@redhat.com>, "dwmw2@infradead.org" <dwmw2@infradead.org>, "paul@xen.org" <paul@xen.org>, 
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "yosry@kernel.org" <yosry@kernel.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 19, 2026, Kai Huang wrote:
-> > @@ -12712,19 +11913,8 @@ static void store_regs(struct kvm_vcpu *vcpu)
-> >  
-> >  static int sync_regs(struct kvm_vcpu *vcpu)
-> >  {
-> > -	if (vcpu->run->kvm_dirty_regs & KVM_SYNC_X86_REGS) {
-> > -		__set_regs(vcpu, &vcpu->run->s.regs.regs);
-> > -		vcpu->run->kvm_dirty_regs &= ~KVM_SYNC_X86_REGS;
-> > -	}
-> > -
-> > -	if (vcpu->run->kvm_dirty_regs & KVM_SYNC_X86_SREGS) {
-> > -		struct kvm_sregs sregs = vcpu->run->s.regs.sregs;
-> > -
-> > -		if (__set_sregs(vcpu, &sregs))
-> > -			return -EINVAL;
-> > -
-> > -		vcpu->run->kvm_dirty_regs &= ~KVM_SYNC_X86_SREGS;
-> > -	}
-> > +	if (kvm_run_set_regs(vcpu))
-> > +		return -EINVAL;
-> 
-> Nit:
-> 
-> Do you think 'kvm_run_sync_regs()' is better than 'kvm_run_set_regs()'?
-> 
-> Because I think "sync" reflects better that vcpu->run->kvm_dirty_regs is cleared
-> after the "set" operation.
+Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
 
-The problem I have with "sync" is that it doesn't communicate the direction of
-the sync.  What about kvm_run_sync_regs_{to,from}_user()?
+> Mostafa Saleh <smostafa@google.com> writes:
+>
+>> On Thu, May 14, 2026 at 08:13:25PM +0530, Aneesh Kumar K.V wrote:
+>>> >>=20
+>>> >> What I meant was that we need a generic way to identify a pKVM guest=
+, so
+>>> >> that we can use it in the conditional above.
+>>> >
+>>> > I have this patch, with that I can boot with your series unmodified,
+>>> > but I will need to do more testing.
+>>> >
+>>>=20
+>>> Thanks, I can add this to the series once you complete the required tes=
+ting.
+>>>=20
+>>
+>> I am still running more tests, but looking more into it. Setting
+>> force_dma_unencrypted() to true for pKVM guests is wrong, as the
+>> guest shouldn=E2=80=99t try to decrypt arbitrary memory as it can include
+>> sensitive information (for example in case of virtio sub-page
+>> allocation) and should strictly rely on the restricted-dma-pool
+>> for that.
+>>
+>> However, with my patch and setting force_dma_unencrypted() to false
+>> on top of this series, it fails on pKVM due to a missing shared
+>> attribute as Alexey mentioned, as now SWIOTLB rejects non shared
+>> attrs, so, the DMA-API has to pass it. With that, I can boot again:
+>>
+>> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+>> index 5103a04df99f..b19aeec03f27 100644
+>> --- a/kernel/dma/direct.c
+>> +++ b/kernel/dma/direct.c
+>> @@ -286,6 +286,8 @@ void *dma_direct_alloc(struct device *dev, size_t si=
+ze,
+>>  	}
+>>=20=20
+>>  	if (is_swiotlb_for_alloc(dev)) {
+>> +		attrs |=3D DMA_ATTR_CC_SHARED;
+>> +
+>>  		page =3D dma_direct_alloc_swiotlb(dev, size, attrs);
+>>  		if (page) {
+>>  			/*
+>> @@ -449,6 +451,8 @@ struct page *dma_direct_alloc_pages(struct device *d=
+ev, size_t size,
+>>  						  &cpu_addr, gfp, attrs);
+>>=20=20
+>>  	if (is_swiotlb_for_alloc(dev)) {
+>> +		attrs |=3D DMA_ATTR_CC_SHARED;
+>> +
+>>  		page =3D dma_direct_alloc_swiotlb(dev, size, attrs);
+>>  		if (!page)
+>>  			return NULL;
+>> diff --git a/kernel/dma/direct.h b/kernel/dma/direct.h
+>> index 4e35264ab6f8..8ee5bbf78cfb 100644
+>> --- a/kernel/dma/direct.h
+>> +++ b/kernel/dma/direct.h
+>> @@ -92,6 +92,7 @@ static inline dma_addr_t dma_direct_map_phys(struct de=
+vice *dev,
+>>  		if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
+>>  			return DMA_MAPPING_ERROR;
+>>=20=20
+>> +		attrs |=3D DMA_ATTR_CC_SHARED;
+>>  		return swiotlb_map(dev, phys, size, dir, attrs);
+>>  	}
+>>=20=20
+>> --
+>>
+>
+> How about the below?
+>
+> modified   kernel/dma/direct.c
+> @@ -278,6 +278,10 @@ void *dma_direct_alloc(struct device *dev, size_t si=
+ze,
+>  	}
+>=20=20
+>  	if (is_swiotlb_for_alloc(dev)) {
+> +
+> +		if (dev->dma_io_tlb_mem->unencrypted)
+> +			attrs |=3D DMA_ATTR_CC_SHARED;
+> +
+>  		page =3D dma_direct_alloc_swiotlb(dev, size, attrs);
+>  		if (page) {
+>  			/*
+> @@ -451,6 +455,10 @@ struct page *dma_direct_alloc_pages(struct device *d=
+ev, size_t size,
+>  						  &cpu_addr, gfp, attrs);
+>=20=20
+>  	if (is_swiotlb_for_alloc(dev)) {
+> +
+> +		if (dev->dma_io_tlb_mem->unencrypted)
+> +			attrs |=3D DMA_ATTR_CC_SHARED;
+> +
+>  		page =3D dma_direct_alloc_swiotlb(dev, size, attrs);
+>  		if (!page)
+>  			return NULL;
+> modified   kernel/dma/direct.h
+> @@ -92,6 +92,9 @@ static inline dma_addr_t dma_direct_map_phys(struct dev=
+ice *dev,
+>  		if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
+>  			return DMA_MAPPING_ERROR;
+>=20=20
+> +		if (dev->dma_io_tlb_mem->unencrypted)
+> +			attrs |=3D DMA_ATTR_CC_SHARED;
+> +
+>  		return swiotlb_map(dev, phys, size, dir, attrs);
+>  	}
+>=20=20
+>
+>
 
-> >  
-> >  	if (vcpu->run->kvm_dirty_regs & KVM_SYNC_X86_EVENTS) {
-> >  		struct kvm_vcpu_events events = vcpu->run->s.regs.events;
-> 
-> Also, I wonder whether it's better to add a helper for events so sync_regs() and
-> store_regs() can be simplified to:
-> 
-> static int sync_regs(struct kvm_vcpu *vcpu)
-> {
-> 	if (kvm_run_sync_regs(vcpu))
-> 		return -EINVAL;
-> 	return kvm_run_sync_events(vcpu);
-> }
-> 
-> static void store_regs(struct kvm_vcpu *vcpu)
-> {
-> 	kvm_run_get_regs(vcpu);
-> 	kvm_run_get_events(vcpu);
-> }
-> 
-> And maybe 'kvm_run_get_regs()' could be 'kvm_run_store_regs()' too , so that the
-> store_regs() could be:
-> 
-> static void store_regs(struct kvm_vcpu *vcpu)
-> {
-> 	kvm_run_store_regs(vcpu);
-> 	kvm_run_store_events(vcpu);
-> }
+if we get force_dma_unencrypted(dev) correct, we won't need the above.
 
-{store,sync}_regs() look pretty, but IMO the overall code is uglier because we
-end up with super small helpers that have one caller, e.g.
+for dma_direct_alloc and dma_direct_alloc_pages() we have
 
-  static void kvm_run_sync_events_to_user(struct kvm_vcpu *vcpu)
-  {
-	if (vcpu->run->kvm_valid_regs & KVM_SYNC_X86_EVENTS)
-		kvm_vcpu_ioctl_x86_get_vcpu_events(vcpu, &vcpu->run->s.regs.events);
-  }
+	if (force_dma_unencrypted(dev))
+		attrs |=3D DMA_ATTR_CC_SHARED;
 
-  static void store_regs(struct kvm_vcpu *vcpu)
-  {
-	BUILD_BUG_ON(sizeof(struct kvm_sync_regs) > SYNC_REGS_SIZE_BYTES);
 
-	kvm_run_sync_regs_to_user(vcpu);
-	kvm_run_sync_events_to_user(vcpu);
-  }
+for dma_direct_map_phys(), if we have swiotlb bouncing forced,
 
-For me, the extra "jump" is undesirable, but it allows burying __{g,s}et_{s,}regs()
-in regs.c, and so is a net positive for registers.  But for events, it's pure
-overhead.
+swiotlb_tbl_map_single():
 
-> > diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-> > index 185062a26924..fd55cd031b1c 100644
-> > --- a/arch/x86/kvm/x86.h
-> > +++ b/arch/x86/kvm/x86.h
-> > @@ -414,6 +414,7 @@ int handle_ud(struct kvm_vcpu *vcpu);
-> >  
-> >  void kvm_deliver_exception_payload(struct kvm_vcpu *vcpu,
-> >  				   struct kvm_queued_exception *ex);
-> > +void kvm_handle_exception_payload_quirk(struct kvm_vcpu *vcpu);
-> >  
-> >  int kvm_mtrr_set_msr(struct kvm_vcpu *vcpu, u32 msr, u64 data);
-> >  int kvm_mtrr_get_msr(struct kvm_vcpu *vcpu, u32 msr, u64 *pdata);
-> > @@ -604,6 +605,7 @@ static inline void kvm_machine_check(void)
-> >  int kvm_spec_ctrl_test_value(u64 value);
-> >  int kvm_handle_memory_failure(struct kvm_vcpu *vcpu, int r,
-> >  			      struct x86_exception *e);
-> > +void kvm_invalidate_pcid(struct kvm_vcpu *vcpu, unsigned long pcid);
-> > 
-> 
-> If I read correct, this is because "regs.c" calls kvm_invalidate_pcid() but you
-> want to keep it in x86.c.  But it seems the "x86.h" isn't included by "regs.c"
-> directly but via other headers ("mmu.h" does include "x86.h").
-> 
-> Should the "regs.c" include "x86.h" directly?
+	if ((attrs & DMA_ATTR_CC_SHARED) || force_dma_unencrypted(dev))
+		require_decrypted =3D true;
 
-Oh, yeah, I just goofed that.
-
-> Btw, I am a bit confused the relationship between "x86.h" and other headers like
-> "mmu.h" and the new "regs.h".  That is, headers like "mmu.h" include "x86.h",
-> but headers like "regs.h" do not (instead, "x86.h" includes them).
-
-Heh, don't look for a theme/plan, because there isn't one.  Over the years, x86.h
-and x86.c became dumping grounds for everything that didn't have an obvious home,
-and so there aren't real "rules".
-
-Hmm, though looking at all of this again, I think we're actually quite close to
-having somewhat sane rules.  Over the past few years, I've tried multiple times
-to move what I felt should be KVM-internal structures from asm/kvm_host.h to x86.h,
-and I've failed miserably every time because inevitably even the most innocuous
-struct manages to have usage that leads to cyclical header dependencies and/or is
-used by arch-neutral KVM code.
-
-I think it's probably time to admit I've been looking at the asm/kvm_host.h vs.
-x86.h split all wrong, i.e. finally give up on moving structures out of kvm_host.h,
-and do the exact opposite: commit to using kvm_host.h to define and declare widely
-used structures.
-
-Because literally the only reason that x86.h doesn't include mmu.h is that mmu.h
-references struct kvm_host, which is currently defined in x86.h.  If we "fix"
-that, then (a) we can make x86.h the "central" include everyone expects it to be,
-and (b) it can be the start of a cleanup of asm/kvm_host.h and a big step towards
-defining maintainable "rules" for what goes where.  E.g. there are a pile of
-functional declarations in asm/kvm_host.h that can live elsewhere; if we trim
-those down, then the rules become:
-
-  - asm/kvm_host.h holds "common" structure definitions and associated key global
-    variables, and things that are referenced by arch-neutral KVM.
-  - <area>.{c,h} holds relevant declarations and definitions.
-  - x86.{c,h} is the kitchen sink for everything else.
-
-E.g. this compiles for at least one config:
-
----
- arch/x86/include/asm/kvm_host.h | 50 ++++++++++++++++++++++++----
- arch/x86/kvm/mmu.h              | 20 +++++++----
- arch/x86/kvm/x86.h              | 59 ++++-----------------------------
- 3 files changed, 64 insertions(+), 65 deletions(-)
-
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 5e24987b2a94..67ba8bf22469 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -313,6 +313,50 @@ enum x86_intercept_stage;
- struct kvm_kernel_irqfd;
- struct kvm_kernel_irq_routing_entry;
- 
-+struct kvm_caps {
-+	/* control of guest tsc rate supported? */
-+	bool has_tsc_control;
-+	/* maximum supported tsc_khz for guests */
-+	u32  max_guest_tsc_khz;
-+	/* number of bits of the fractional part of the TSC scaling ratio */
-+	u8   tsc_scaling_ratio_frac_bits;
-+	/* maximum allowed value of TSC scaling ratio */
-+	u64  max_tsc_scaling_ratio;
-+	/* 1ull << kvm_caps.tsc_scaling_ratio_frac_bits */
-+	u64  default_tsc_scaling_ratio;
-+	/* bus lock detection supported? */
-+	bool has_bus_lock_exit;
-+	/* notify VM exit supported? */
-+	bool has_notify_vmexit;
-+	/* bit mask of VM types */
-+	u32 supported_vm_types;
-+
-+	u64 supported_mce_cap;
-+	u64 supported_xcr0;
-+	u64 supported_xss;
-+	u64 supported_perf_cap;
-+
-+	u64 supported_quirks;
-+	u64 inapplicable_quirks;
-+};
-+extern struct kvm_caps kvm_caps;
-+
-+struct kvm_host_values {
-+	/*
-+	 * The host's raw MAXPHYADDR, i.e. the number of non-reserved physical
-+	 * address bits irrespective of features that repurpose legal bits,
-+	 * e.g. MKTME.
-+	 */
-+	u8 maxphyaddr;
-+
-+	u64 efer;
-+	u64 xcr0;
-+	u64 xss;
-+	u64 s_cet;
-+	u64 arch_capabilities;
-+};
-+extern struct kvm_host_values kvm_host;
-+
- /*
-  * kvm_mmu_page_role tracks the properties of a shadow page (where shadow page
-  * also includes TDP pages) to determine whether or not a page can be used in
-@@ -2056,10 +2100,6 @@ struct kvm_arch_async_pf {
- 	u64 error_code;
- };
- 
--extern u32 __read_mostly kvm_nr_uret_msrs;
--extern bool __read_mostly allow_smaller_maxphyaddr;
--extern bool __read_mostly enable_apicv;
--extern bool __read_mostly enable_ipiv;
- extern bool __read_mostly enable_device_posted_irqs;
- extern struct kvm_x86_ops kvm_x86_ops;
- 
-@@ -2151,8 +2191,6 @@ void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end);
- 
- int load_pdptrs(struct kvm_vcpu *vcpu, unsigned long cr3);
- 
--extern bool tdp_enabled;
--
- u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
- 
- /*
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index e1bb663ebbd5..d841a4f486d1 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -4,9 +4,14 @@
- 
- #include <linux/kvm_host.h>
- #include "regs.h"
--#include "x86.h"
- #include "cpuid.h"
- 
-+extern bool tdp_enabled;
-+#ifdef CONFIG_X86_64
-+extern bool tdp_mmu_enabled;
-+#else
-+#define tdp_mmu_enabled false
-+#endif
- extern bool __read_mostly enable_mmio_caching;
- 
- #define PT_WRITABLE_SHIFT 1
-@@ -261,14 +266,10 @@ static inline bool kvm_shadow_root_allocated(struct kvm *kvm)
- 	return smp_load_acquire(&kvm->arch.shadow_root_allocated);
- }
- 
--#ifdef CONFIG_X86_64
--extern bool tdp_mmu_enabled;
--#else
--#define tdp_mmu_enabled false
--#endif
--
- int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn);
- 
-+bool kvm_mmu_is_mappable_memslot(const struct kvm_memory_slot *slot);
-+
- static inline bool kvm_memslots_have_rmaps(struct kvm *kvm)
- {
- 	return !tdp_mmu_enabled || kvm_shadow_root_allocated(kvm);
-@@ -300,6 +301,11 @@ static inline void kvm_update_page_stats(struct kvm *kvm, int level, int count)
- 	atomic64_add(count, &kvm->stat.pages[level - 1]);
- }
- 
-+static inline bool mmu_is_nested(struct kvm_vcpu *vcpu)
-+{
-+	return vcpu->arch.walk_mmu == &vcpu->arch.nested_mmu;
-+}
-+
- static inline gpa_t kvm_translate_gpa(struct kvm_vcpu *vcpu,
- 				      struct kvm_mmu *mmu,
- 				      gpa_t gpa, u64 access,
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index fd55cd031b1c..40c6f4c54f8e 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -6,53 +6,19 @@
- #include <asm/fpu/xstate.h>
- #include <asm/mce.h>
- #include <asm/pvclock.h>
-+#include "mmu.h"
- #include "regs.h"
- #include "kvm_emulate.h"
- #include "cpuid.h"
- 
- #define KVM_MAX_MCE_BANKS 32
- 
--struct kvm_caps {
--	/* control of guest tsc rate supported? */
--	bool has_tsc_control;
--	/* maximum supported tsc_khz for guests */
--	u32  max_guest_tsc_khz;
--	/* number of bits of the fractional part of the TSC scaling ratio */
--	u8   tsc_scaling_ratio_frac_bits;
--	/* maximum allowed value of TSC scaling ratio */
--	u64  max_tsc_scaling_ratio;
--	/* 1ull << kvm_caps.tsc_scaling_ratio_frac_bits */
--	u64  default_tsc_scaling_ratio;
--	/* bus lock detection supported? */
--	bool has_bus_lock_exit;
--	/* notify VM exit supported? */
--	bool has_notify_vmexit;
--	/* bit mask of VM types */
--	u32 supported_vm_types;
--
--	u64 supported_mce_cap;
--	u64 supported_xcr0;
--	u64 supported_xss;
--	u64 supported_perf_cap;
--
--	u64 supported_quirks;
--	u64 inapplicable_quirks;
--};
--
--struct kvm_host_values {
--	/*
--	 * The host's raw MAXPHYADDR, i.e. the number of non-reserved physical
--	 * address bits irrespective of features that repurpose legal bits,
--	 * e.g. MKTME.
--	 */
--	u8 maxphyaddr;
--
--	u64 efer;
--	u64 xcr0;
--	u64 xss;
--	u64 s_cet;
--	u64 arch_capabilities;
--};
-+extern u32 __read_mostly kvm_nr_uret_msrs;
-+extern bool __read_mostly allow_smaller_maxphyaddr;
-+extern bool __read_mostly enable_apicv;
-+extern bool __read_mostly enable_ipiv;
-+extern bool enable_pmu;
-+extern bool enable_mediated_pmu;
- 
- void kvm_spurious_fault(void);
- 
-@@ -252,11 +218,6 @@ static inline bool x86_exception_has_error_code(unsigned int vector)
- 	return (1U << vector) & exception_has_error_code;
- }
- 
--static inline bool mmu_is_nested(struct kvm_vcpu *vcpu)
--{
--	return vcpu->arch.walk_mmu == &vcpu->arch.nested_mmu;
--}
--
- static inline u8 vcpu_virt_addr_bits(struct kvm_vcpu *vcpu)
- {
- 	return kvm_is_cr4_bit_set(vcpu, X86_CR4_LA57) ? 57 : 48;
-@@ -428,12 +389,6 @@ fastpath_t handle_fastpath_wrmsr_imm(struct kvm_vcpu *vcpu, u32 msr, int reg);
- fastpath_t handle_fastpath_hlt(struct kvm_vcpu *vcpu);
- fastpath_t handle_fastpath_invd(struct kvm_vcpu *vcpu);
- 
--extern struct kvm_caps kvm_caps;
--extern struct kvm_host_values kvm_host;
--
--extern bool enable_pmu;
--extern bool enable_mediated_pmu;
--
- void kvm_setup_xss_caps(void);
- 
- /*
-
-base-commit: b99808a11a42edc2cecced7adf57c2ac231bdb68
--- 
+-aneesh
