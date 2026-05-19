@@ -1,101 +1,90 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65A4229B12
-	for <linux-coco@lists.linux.dev>; Tue, 19 May 2026 00:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65B121D3D2
+	for <linux-coco@lists.linux.dev>; Tue, 19 May 2026 00:45:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779151360; cv=none; b=uBJzxUVbvG/knBOZ+DlqpAame7eEfXNj1rI+q8uPdmpsr/zLiFEPAQwcY/LOwe3tsX6dcIzg0HHMsnxmootKXZnoXodqKfburZ03feDZGIABDJ0aHrfgyxK61RFR/YYJAk0caCls/4Tz4yMyBi3sveSVVRABdzZSbSQ0Kqk7E/4=
+	t=1779151507; cv=none; b=koBaMokWU7x82VoehobAbY1F8MJwmaN9vSTsRsppAQbWjN7Wl0GxtdMCmiWZQmugFoKzeX2O8pPOg6nkyhU9KnW3nNrjaqybhceEgcjPmC5jNisjIVquXddyLmDgTU1a9xSv8NL7KdFeGYpXc6x93bsKRCyMKqOCv5tiewyIH6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779151360; c=relaxed/simple;
-	bh=GiB4NgaSW9wzhpzOctOgrRLGNPibIqPgLRcvSh4cIB8=;
+	s=arc-20240116; t=1779151507; c=relaxed/simple;
+	bh=DJa6+wvn4O2+sL1BsqY1Pc9sjHLtoYI7jtnoQWs1KEo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=cGZtm9CQEno1brhcR9CQk3L6HbnyfQCEJkRpF6s5Ppo9w9qgKdyWI+TRV5WdjhUQ+c6uKJV6YzliXgy8v9qxrJugLDyR1dRdY/FhLW8gn6nAEHqs3ER5hnuK1/v2+cb7uxzt0YcR/XKSb0i3JG+pE7PobzF8GTbTmWPFC6Lnbco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oBI+Mjh1; arc=none smtp.client-ip=209.85.214.202
+	 To:Content-Type; b=m7+X3qnL4TWricL7gGqVPiVOxXmsSkM9bd9hTH5z0g/4m96mrJfwjwJ1Ww5o9a/DzBv7iMbu3rxAzzG49wIeoUouMfmudIXMKEoWDS+zwtOjExITEAWzUM87j0VIDOMCFpLjOxoj4+VinBjSAK46iejCnqS7X1slBfsY9wsr6K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JCZEe//n; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oBI+Mjh1"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b2ecc96a9aso33999305ad.1
-        for <linux-coco@lists.linux.dev>; Mon, 18 May 2026 17:42:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JCZEe//n"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f756ebd0dso1774441b3a.1
+        for <linux-coco@lists.linux.dev>; Mon, 18 May 2026 17:45:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779151359; x=1779756159; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T8bS1JIyLf3L74nyvyziIuw+0b9p5Mm/yLMtr7KTpLA=;
-        b=oBI+Mjh1EsZV5NPoUJSIpdy7Tosf8FKenFW5f6pC4Uvlbcl+fmV4J2hToqqoILwuAH
-         QrXRQN2SMN7RLuPEzO82PrYlJ8mB9Ng0X0qnADk//TriysvTa+wgT21d61R8qOLYX+bL
-         SkOLoej72BHSAr//gc1gYBq4HbhcUgOe3S30Dv/Cksij+gI4sSgDoPtYB7VELLVEndzD
-         9uNNFoLFpW//y28jmaqTPcf8Dh1v2ePvBqm6fiaoWD5DnNQGa+ebojoXJUxfv9Oskl7q
-         LjhV/1UToxGMjWDil17oNSXA6lmnWTDGkQwD9Wh8bSJ6URtiMfeX8q2UXpPE7tOGIqHn
-         6Z0w==
+        d=google.com; s=20251104; t=1779151505; x=1779756305; darn=lists.linux.dev;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ggd5csVykghtggMe8pbnnA/QKuDIv0Rv4A5DdUcY2V0=;
+        b=JCZEe//ncj3scs3zLoPVVBNgy95m5xarAuwG8lggYJ+axH0mJgQl5hZ8YPbyQlHjPe
+         Mk3DJGgwM+rJ2nER7QeZ/P6k4DZR5KhEcKrY8RBh2RT/Yx0qqsn1/XzHpcse9CSdM0Ki
+         GnmyeEnBVICGb3SqPutCopef6ex3F83dhAv/aodeHgHPIKJXanDSIn40KhK7oXQIr1hd
+         xlOf2f7koMGm6fxbyRXosAeolqaTHSIkF2ssnk9GAVwDALcMCTeg2hr1ik4rwrTr0TR2
+         +O4fsvhYoz4shSQcZf4D/PlVxCYiuiyYBhFbCA4ov9omRc4leoIfEi7PJWmgo7Pa6BMn
+         EsSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779151359; x=1779756159;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T8bS1JIyLf3L74nyvyziIuw+0b9p5Mm/yLMtr7KTpLA=;
-        b=qwFcyzH1c443YmYU2c+eQPYO7y/M/WlFZXgUdxvF4KLBctquItQmZ9zekQgnV1HUGF
-         wgp4bUsZbWSq0L9tfZyIqHS1zQm9aifdaA90MvT195AHVA7nAu0WhUCeD7JTAz7XYPyK
-         8KHALLCkg2SAu/4ieXmJgekz/nhbh0m0G0Gcgdn2IGsv/4vi1MmGthAkEDJcJ+zWcxMp
-         04Lb4nlVjwYfA16jkhMbFTETDni9Rhgm/hXhv4tka4BblqJsxD9oL3QLE51wbwK8amEK
-         Js/gRZEOLP7FWwtbD5vPhzR8DftawyejOtxsKON/dPN1eB+hwJm91TyIc+KqLHdJ5Ijb
-         t70w==
-X-Forwarded-Encrypted: i=1; AFNElJ88yUaep9MaR2MYMJrEy/LUaF/06jHcEdqBlDm2DxG0oAp+NOI361IAr3PlAmmhHzxdDnT3nx8eXFbs@lists.linux.dev
-X-Gm-Message-State: AOJu0YyGyPPjkccoDWlvsaLTgqqTOCovvxp5uj0SBIMfsAGadofSIanM
-	gRiNBw+FkCOYgaHtC8eJDB8HE1P7Y8/IQUjWkm3JiHt+b28hrb9HSQ7/JUagMGMHhmfRsTU1H72
-	PY5KleQ==
-X-Received: from plbmc15.prod.google.com ([2002:a17:903:2b0f:b0:2b0:af76:bcc2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2c06:b0:2ba:73c4:4a77
- with SMTP id d9443c01a7336-2bd7e8fcbe3mr181361435ad.9.1779151358945; Mon, 18
- May 2026 17:42:38 -0700 (PDT)
-Date: Mon, 18 May 2026 17:40:44 -0700
-In-Reply-To: <20260129011517.3545883-1-seanjc@google.com>
+        d=1e100.net; s=20251104; t=1779151505; x=1779756305;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ggd5csVykghtggMe8pbnnA/QKuDIv0Rv4A5DdUcY2V0=;
+        b=A1lY424bvxy1fEAPvUTEbLw4UTvJ6lqW3P8YgbXgvoJZvb2lLOpQoGfZi1L8xRYY06
+         hnLGDBDIaSnYCjU6rzWyYFKzqJB+kknedWJqKs3hfhshVqLt6NzAV5stnFyXVCYpc1Y4
+         GRJ2iOgCSO88Bmx961RNGv9KSUxWjYVljwpI4gx/SekHfuG3/OKbTDaRO/HTtFoSLNRG
+         5mzwZIqNyAxPf47BUW11fZXtngAhtzaHJzFWGJ4BUuv3hdzNK55QFU1QkmmSy3rqY65x
+         JR4Mn5Ev/M5CSwDEkv0JXTVWDMhiQOwM7ojBKTytoTzO7EeRoFpolVZLfVc8erOk/lxY
+         MvKQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9OHeX/ePUxdNVVvGcmNahBa6u5MWl9unPzSBYohf5d41SGMNSXoJXjfr9rNEi08HFRnD8MtVACxHks@lists.linux.dev
+X-Gm-Message-State: AOJu0YwNi3EOzfPJPP+onSE506Xpsyj2oYEakgLv8OsPYmdj9S/F17gu
+	aGy5ge23sduWdogGQfBeAJrdNFdRCvuQVx/W1NSUjfC34tRbgKnx25X/Bc+lcBiE+QM1hGTC6iG
+	hjHJ2JQ==
+X-Received: from pfmm23.prod.google.com ([2002:a05:6a00:2497:b0:82f:6a88:310b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1ca4:b0:82a:5ef0:210b
+ with SMTP id d2e1a72fcca58-83f33c255c5mr15421546b3a.15.1779151504718; Mon, 18
+ May 2026 17:45:04 -0700 (PDT)
+Date: Mon, 18 May 2026 17:41:11 -0700
+In-Reply-To: <20260410232654.3864196-1-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260129011517.3545883-1-seanjc@google.com>
+References: <20260410232654.3864196-1-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <177915048117.2225067.12213687050498218442.b4-ty@google.com>
-Subject: Re: [RFC PATCH v5 00/45] TDX: Dynamic PAMT + S-EPT Hugepage
+Message-ID: <177915046516.2224783.65133220965322974.b4-ty@google.com>
+Subject: Re: [PATCH v2] KVM: TDX: Fix x2APIC MSR handling in tdx_has_emulated_msr()
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, Kai Huang <kai.huang@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Sagi Shahar <sagis@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
+To: Sean Christopherson <seanjc@google.com>, kas@kernel.org, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	binbin.wu@linux.intel.com, dmaluka@chromium.org, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, 28 Jan 2026 17:14:32 -0800, Sean Christopherson wrote:
-> This is a combined series of Dynamic PAMT (from Rick), and S-EPT hugepage
-> support (from Yan).  Except for some last minute tweaks to the DPAMT array
-> args stuff, a version of this based on a Google-internal kernel has been
-> moderately well tested (thanks Vishal!).  But overall it's still firmly RFC
-> as I have deliberately NOT addressed others feedback from v4 of DPAMT and v3
-> of S-EPT hugepage (mostly lack of cycles), and there's at least one patch in
-> here that shouldn't be merged as-is (the quick-and-dirty switch from struct
-> page to raw pfns).
+On Fri, 10 Apr 2026 16:26:54 -0700, Rick Edgecombe wrote:
+> Rework tdx_has_emulated_msr() to explicitly enumerate the x2APIC MSRs
+> that KVM can emulate, instead of trying to enumerate the MSRs that KVM
+> cannot emulate. Drop the inner switch and list the emulatable x2APIC
+> registers directly in the outer switch's "return true" block.
+> 
+> The old code had multiple bugs in the x2APIC range handling.
+> X2APIC_MSR(APIC_ISR + APIC_ISR_NR) was incorrect because APIC_ISR_NR is
+> 0x8, not 0x80, so the X2APIC_MSR() shift lost the lower bits, collapsing
+> each range to a single MSR. IA32_X2APIC_SELF_IPI was also missing from
+> the non-emulatable list.
 > 
 > [...]
 
-Applied 1-4 to kvm-x86 mmu.  Please yell if this was unexpected in any way.
-I'm pretty sure this is what we agreed on, but the last few week have been a
-bit chaotic...
+Applied to kvm-x86 vmx, with a massaged comment as suggested by Binbin.  Thanks!
 
-[01/45] x86/tdx: Use pg_level in TDX APIs, not the TDX-Module's 0-based level
-        https://github.com/kvm-x86/linux/commit/4487492b92a4
-[02/45] KVM: x86/mmu: Update iter->old_spte if cmpxchg64 on mirror SPTE "fails"
-        https://github.com/kvm-x86/linux/commit/02eaaffdd865
-[03/45] KVM: TDX: Account all non-transient page allocations for per-TD structures
-        https://github.com/kvm-x86/linux/commit/a8b2924676ec
-[04/45] KVM: x86: Make "external SPTE" ops that can fail RET0 static calls
-        https://github.com/kvm-x86/linux/commit/e1a31ca28c9d
+[1/1] KVM: TDX: Fix x2APIC MSR handling in tdx_has_emulated_msr()
+      https://github.com/kvm-x86/linux/commit/1f3e69af5f93
 
 --
 https://github.com/kvm-x86/linux/tree/next
