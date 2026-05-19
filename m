@@ -1,190 +1,344 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B065D369D57
-	for <linux-coco@lists.linux.dev>; Tue, 19 May 2026 11:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779188820; cv=none; b=LlxKS3wLX5LLQXZePO7zoMT3Ebz0a4e/BxVG524DIqAryq0R2IUIK247sRwcYP3gzlSQaLqGtq4VwJsW7gfM3YYRZRnXDlvL26OD/CthBSMrd+Ryj1JEg7x9IXgJkeFmPYVsGKBc8Mc0LpBTIvJz1tFqLTjomO0G2LpSS+AGDlA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779188820; c=relaxed/simple;
-	bh=bLHvC6K9JqJ0RlgA15nPRG2hHu4cpHRoKhj+9AVrCoU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Frv8vtBM7PTUIo2G6mYXNfYx5aU1ByCkR1rrz4oumCJktICJcz+aGBHkFY1g0Myku+Y8hJlhb/FRW8G5pSvLuY2GgW3mbD/MzbPmMrc0dEV8UznnsqoIssQ4PBYgji/+bSZ3MnAEkNdaG53UT6t/a1oWrrh9h6ryBaggZubhGio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TslOQH34; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2631A4C9004
+	for <linux-coco@lists.linux.dev>; Tue, 19 May 2026 12:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779192346; cv=fail; b=bL+iXoPJFOuGbhXW5GfAz/9y0HnSnJ41FIB0GBPecC6WFntm2Tqnr25/2yrFFm+NBhVaZNZivx1SYg5LDH17Sbfv5y+umtIGMy4oAurmCtAb20XanSqLMQOc7/I6lHVFNQltZ5WvV0w8Y1t0BeM3AIW0G6XI/b79wsluFFECfz0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779192346; c=relaxed/simple;
+	bh=EMXf3F7Dm4shnz7tG9sTCBOX0DSnW19Bh1mqpjiruFE=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=I9yJzFjp4q1OrV7R37VfPM8oJ12fm5+0HqdwVHpL8vTpgt14wtXr2UFTG9h+RN4s8rzDXo8AHPDMLX2cAv5tZWEDjph62PfVSjbocjrFKRR7rIi8DcjKeSu526USddmstPZgbWN83ny+OXitU2bKJv/1cvjl2y2MDjKw5MfomC0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OYdII4dD; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TslOQH34"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488940ccfa6so255e9.1
-        for <linux-coco@lists.linux.dev>; Tue, 19 May 2026 04:06:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779188817; x=1779793617; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=gqrcVfnO7KvHz04L9yl4e6Ci0L4LjlQK4/aWUr5steg=;
-        b=TslOQH3462506C3lEf4WNnePiB773er43vyeWVfS7cRL7P/hXO60gf2R3VHQra+hHS
-         ie/DcGutSWVdL5fg2F3AHzcmm6GAYfoCoq00We+mOptO89I8F01mwR3mb0ZmSk8MN3t4
-         KFPYjMQLoKk+uJFdaRkQsDJovNWNijL0dHNL1oJVn/9CqMkKy7TdwH0eBHdI/MO01S+K
-         0gNMC9bOvHWenT9j+HfantcPQsi8ck9azCP0LvfGR6IzFIUMjy/QK1ZH38Q/FjLoywSV
-         f5b0cAXY18QrFpn4N38R898XvhU2Ah0ThT28PZ7PoAB7oePGhkjTjbgRSPS7KYdUuZ48
-         z6Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779188817; x=1779793617;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gqrcVfnO7KvHz04L9yl4e6Ci0L4LjlQK4/aWUr5steg=;
-        b=maQyQa1ymDMMWlBUrMxQwINBMQog6Kc+X1aoJ+7ipT6pbJ7SevGdNYDcfpW38Ex1HS
-         Cx0/D7cUBdPoprXZKHd6X8nKKqKASqaLbKEpUR2obZ3LjkRspTaR374XUsOATdDKkl2f
-         5+D0OkixN8HsQkJbSXfvmudQg2pu3VXb7LABJ8ObdWbGu7EGxVRYPQpRkWpS73+acWsE
-         LoSSpKGfchMmBrdd4dH6oaZb+CUD2XzXr5EfY0C5G5xOd5iM+F9OFaUKzfNWy8z0Hvo3
-         EwkGn2vt8Efx20fwDfezJXOVrt1WERCz8rAT2gWRWH4jw3UiFuRo2SNSPf6eeTJNRpAp
-         lDqg==
-X-Forwarded-Encrypted: i=1; AFNElJ+4m7kwGBHyHsMIDNki+NLrG6b+4NHMltiGShXvRHV3jT+cNvQO4LcoZ5nHBvLmcuheGnIIHihleFl9@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy+HAFnsYSSsvdWyFStmQ3P00xzlXpHod763cCkvM7UH99/yCOa
-	U1r7Zd253kTeqHcxRO3AtXZzb4s1033dK5Ookyof3Cn4tkBHMya2CjTJhoG5NSYPmA==
-X-Gm-Gg: Acq92OEHLBnjvLmirw617Wfqtt1mTuXystG+1XhkLJW7MS8ifZjTjzjyx3XWKcr0dIO
-	zYIwR556DV8RHV50ZsshFPmlCHBVwlQUVWfmUiZZjoUZHJvMCwtUNXLH5wlL2gnU/0eBqljJ4Ut
-	qRe5EuyhrlQzS2FlMA0P+iZsZx3Re/TF3F+mb+aDMqJ7hcMAcEuD1daYR9I/ARB4aXZmfbNkQ/7
-	9ufPdll7kXf85JqZ74YoCc0mgED0dMGpXJRodRbqdhh5dJEx8n2AnmO/B2g4QZ8nDigAjgO9nhM
-	pS8gXhSFDztxYxFImVbutU9ibNWAKgEdv92/Q9v/TcSloNylqUVJ9swu4cJHijutcqALVbKQrCX
-	8wEmJez9HEfeKUG3hm5NUHBaAxmOpbSqJJ+OYSKwc6QaCgXX1eQuIKk2YXRHiuTLSkZAxko6e21
-	37r4JEUSDg+9vO/V1Fig9+q0tkfglYNP1UnqCbJrx9yqX4vvOcNtfy/MGSYzmUP9upyzmA4H6ou
-	Ynjdr2pTBSl1Q==
-X-Received: by 2002:a05:600c:418b:b0:488:960f:60b8 with SMTP id 5b1f17b1804b1-48ffa5e1272mr2275185e9.6.1779188816592;
-        Tue, 19 May 2026 04:06:56 -0700 (PDT)
-Received: from google.com (136.41.155.104.bc.googleusercontent.com. [104.155.41.136])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe53767ecsm288995945e9.10.2026.05.19.04.06.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 04:06:55 -0700 (PDT)
-Date: Tue, 19 May 2026 11:06:52 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [PATCH v4 04/13] dma: swiotlb: track pool encryption state and
- honor DMA_ATTR_CC_SHARED
-Message-ID: <agxETC1rXBUSkWYg@google.com>
-References: <20260512090408.794195-1-aneesh.kumar@kernel.org>
- <20260512090408.794195-5-aneesh.kumar@kernel.org>
- <agSKQrSIhizCXKwx@google.com>
- <20260513172450.GR7702@ziepe.ca>
- <agW2lzJI-20DyJVe@google.com>
- <20260514123529.GZ7702@ziepe.ca>
- <agXfm3mS_M3fvRrN@google.com>
- <20260515225113.GN7702@ziepe.ca>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OYdII4dD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779192345; x=1810728345;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=EMXf3F7Dm4shnz7tG9sTCBOX0DSnW19Bh1mqpjiruFE=;
+  b=OYdII4dDJoQ8lWb+m97PCXnQEB0OVIepiZU89WWE8DBqcIQX0SpgsOBg
+   Pj96hCeRDBeFYKBRcIJZ4kHYu6sv6jYnA+CfFjlqE9X1VaeKom7U22RFj
+   gzQZMevK/khOfXqyFFy3+jSMRMZkbiK9Xw5/gjzaEw1rPUDe0Sa3E/kwl
+   aB+ZfhUxN2py8WUhl2+Hf4wzhCDG2Z5j2HWD59qArMPZLNVJL7dAd5QjN
+   PsNWu94eYcfz7dNcAdu8efl+HfB7souBQ+WbSeMEwPCytjMVQBzXTr8BP
+   boQ3NiscgVaKUWiTujUaJJghhCtIymmjJE8Jn88Qys2Pnmgol8UFUsrFP
+   w==;
+X-CSE-ConnectionGUID: e3u81QZISRqEWx0C8KYzow==
+X-CSE-MsgGUID: B47m93XtQbSq7YQzhweLVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="80046968"
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="80046968"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 05:05:44 -0700
+X-CSE-ConnectionGUID: RJBe5A5yR8mlnerasx0Dog==
+X-CSE-MsgGUID: ZL5VUbpLTJOfZLqsxmLmDA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="263531785"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 05:05:43 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 19 May 2026 05:05:42 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 19 May 2026 05:05:42 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.41) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 19 May 2026 05:05:41 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JxXSpb0ea2/SWmolKi+UnXOCbK9S2RaKBDXFhyOdptGdxtbvde9SIiCopfSq5hfzGFAv2GSjtLSG3P4FwHRB+P7eClHqo/RoSIQmYocvrlOFgiRwQ6UPmCVHZXU49BzHn/dWNbnr6AGOr2jOHbKmraf8G6uyBKAuWI//CSaYwzIB7i1+9qkf2AYrUz7G5zD2P/CZIvqRG7uJwZlfqEtr7SPRKOzVKXUcU+an4qOclkMMTMga0B+FreMeQgGBJE4/IvFRGplfREnKnScP4D/VOhMBUETbBmjIbfkFkfoTVJ764P/xuUK2mxuaUVMuYioMvwvPSY88bbT2NqutoXp7Kw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MCgFikBPE9wk/1S0KbJsHwlgwsSayiqPtZRTpn+nLqU=;
+ b=d40f5SV6gCeioO1LWdivbK3OA46h3+iJ/D/apcFZBXal8GBTqOhEL8UiPX7DfG741dW9Pe1uzqOZAv0Wl2hVH3/8O7vA6bcfVzg1vvke6vrH2OZlbivpCYkOB9+R+gakjYJT2mpLznD0NDwoPYBAKRb3MqKYfkz6kJze3d7dGGbTHXlrJ2jsXmzSfsX+CJBeF0UxC9QxqwfHXxQHO8ORq94gaA8qqLIw8uOmGl1sfHtvpLDV7jM9PpUP+bE/uagzhvLIyYkajaQhTX1kf38a0NS53jaf44ki6cqRSPF2hA4+sPQZtE8XfhTYPsFCkviOwUPSGFvmmTDVK+2wHMP5Ug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com (2603:10b6:406:ad::26)
+ by DM3PPF607052E81.namprd11.prod.outlook.com (2603:10b6:f:fc00::f26) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Tue, 19 May
+ 2026 12:05:35 +0000
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b]) by BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b%6]) with mapi id 15.20.9913.009; Tue, 19 May 2026
+ 12:05:35 +0000
+Date: Tue, 19 May 2026 20:05:22 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Huang,
+ Kai" <kai.huang@intel.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org"
+	<kas@kernel.org>, "Chatre, Reinette" <reinette.chatre@intel.com>,
+	"seanjc@google.com" <seanjc@google.com>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "binbin.wu@linux.intel.com"
+	<binbin.wu@linux.intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"nik.borisov@suse.com" <nik.borisov@suse.com>, "mingo@redhat.com"
+	<mingo@redhat.com>, "Weiny, Ira" <ira.weiny@intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>, "Annapurve,
+ Vishal" <vannapurve@google.com>, "Shahar, Sagi" <sagis@google.com>,
+	"djbw@kernel.org" <djbw@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>,
+	"paulmck@kernel.org" <paulmck@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"bp@alien8.de" <bp@alien8.de>, "yilun.xu@linux.intel.com"
+	<yilun.xu@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v9 14/23] x86/virt/seamldr: Shut down the current TDX
+ module
+Message-ID: <agxSAsUvgcHj/Ywl@intel.com>
+References: <20260513151045.1420990-1-chao.gao@intel.com>
+ <20260513151045.1420990-15-chao.gao@intel.com>
+ <329d3811e8acbfc2ecdb1c7ba443f23161329e2a.camel@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <329d3811e8acbfc2ecdb1c7ba443f23161329e2a.camel@intel.com>
+X-ClientProxiedBy: TPYP295CA0035.TWNP295.PROD.OUTLOOK.COM (2603:1096:7d0:7::7)
+ To BN7PR11MB2836.namprd11.prod.outlook.com (2603:10b6:406:ad::26)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260515225113.GN7702@ziepe.ca>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN7PR11MB2836:EE_|DM3PPF607052E81:EE_
+X-MS-Office365-Filtering-Correlation-Id: 039ecc48-6277-46a5-0428-08deb59eef04
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016|3023799003|4143699003|11063799006|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info: 9bAOJ3/M57M+ey4dBz91zwPh5Xoh4qt7wNkt/SD/bIJf5GPiOjehEvB6xVZv9V68wAkQdCqKA9t8+5RrY9nyYv92sAskRMuZfgsatt+SAuY+b3xUgTpE3dcpbkayf6m8iThp0FnGTi9bb8p5jvuY19ig89TSnjXOCPobTAixaa3heKiBHZS7pp8Oa5oJ7bIkp0jpVOrJkzajtS5pH2fvbsu8Vq+s0FHaDKUC4bYgLDex7K2KFbqSaWjY2uxp17Je8Djgo++RT8ktlEYV/FxFT7JcTseRbVIVPpn6ls83Nd1bjYO9NpTp9KSiTRaw682xZ1h4lwlqqEoViBSVGDlxOaPectJwxsUVaU3/mfzA4iGTzSRQOLRiRnovntOQ40bASTCB29dNJlzRv+ySMpWrFau2ouGF/zIqMsPj39yXUeIzqkC5aFHAmoDO2JTznKpCbdNWbDTE+SWxfrty5yt77bPC07VpByP3Sc/kPpAlEvyU7aONg3F7S/9itjSofUMtXESeFnFra9MExwSlAKjfZZN2iOq34Zr+cFFlXdy0s1b5EhSk7ktf9Ndt+5owBGIhLhV/32+AG8bCJQd+Glvp/ZpnGzmH1MIlvzO4RM9L50PnN/2/NQVQ0oZ9yhWS/iBoSawb49a7G2khFpyq05joYnB/ntJ3SeAwwNIxanxyKtN9+OWs2cLDQ0JUKcrQA2Lgt2XLSbgOfTztSCg5qazz1Q==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR11MB2836.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(3023799003)(4143699003)(11063799006)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?RnNb35HKt6Kn/epZLQbMpYWnsu1oJU5MEbYLBnUDknf8ATjTER0+9e7fgn?=
+ =?iso-8859-1?Q?mBonpBjfBKn9h3+0HQL/naoiDAFVBAdGdTS6NccVbErNIkFdaG/Y2Lc+so?=
+ =?iso-8859-1?Q?8k+w5Tb0jYGP2nEKpUSxZtLq4pW6wZ9WCG6nYTNFjHEp23HocQrOfxsOao?=
+ =?iso-8859-1?Q?uGv8gICPaq8SsDhf0DIoNBxD+qe4Cv4sfwO6Ym8HoJTA6SUJRgFglnOcgt?=
+ =?iso-8859-1?Q?o0T4eobGT5yBfTYMCm87iGn+peOES+crYQwJ2dxILsTzZpQa9/wVJSMfw6?=
+ =?iso-8859-1?Q?JauOQ/gpc22ZWJb7D9SnIADZIqdZelaB+r3I3wjui8KVE+ryNlEWmGzlwW?=
+ =?iso-8859-1?Q?RGiGLx1Cf19R8fy9t59WgcdsOSR8x92Ew5scPobPDrthu6MJsfyUyiGFCW?=
+ =?iso-8859-1?Q?1VlhX311195DMWhf+v5haB4bgkllMOD4UzfBKwH/3nUW56Xn3tt7Wt28/I?=
+ =?iso-8859-1?Q?+lhMrfSNbcGrsekbnNxKN2DyfgpQAD9eKaa0pjYU1WhWtLnEZ932a2UUsT?=
+ =?iso-8859-1?Q?Y9pvlJXAjNqp8MacviAPKMl8tW0nnxTBRLOh9JCA1DUY5Dv3KKsc+bpWjf?=
+ =?iso-8859-1?Q?n2lnTa1I2iRE8N/fvEhvpT//cg/Zc9P59MjfDrkZ6WzEsgj0reCIwi8N9Q?=
+ =?iso-8859-1?Q?yKnnFRZWCVdAuZjXTpqUn9ZBvFU0yqfY79u7a+u+0BdQR2hRyXw49QyWOH?=
+ =?iso-8859-1?Q?/xWUEqgzws4CJb9BRNLfW/MzpMDuqa8DLGp7wAgrg1On25PtslUSQ6i7yq?=
+ =?iso-8859-1?Q?rOkBsAQuhJDu2z9sKfXlLcbc2HPvpSxq/9ZTpAPzJ4mSrk9CRFy0aWiDMM?=
+ =?iso-8859-1?Q?qeq7cmhepHI9vMgApVmpJTHsEL97fRhYJWxRl18UP71LcATpZi+IQ+REvx?=
+ =?iso-8859-1?Q?npE4kc17mPoiur3vaLLjmqiD7Sv+pOLr+hZz5JoXH9IU4CMsTs1m2BkPIg?=
+ =?iso-8859-1?Q?kHl3sjJlG4joad1cxjWctPdlXH8MU+1Q6X2PzRq0fGRNeomr+jsU/wDCK8?=
+ =?iso-8859-1?Q?ZdW+jB0v2iZjiTlVR6y+6p+tO4C/Iemn/WjS7C4M/fvGhgu475tYp+soLu?=
+ =?iso-8859-1?Q?pHagbpKe1fIZYN9LFMvoBFLv51kk3AkBkJlCb17PyXN9KG9h8spzY/WnIp?=
+ =?iso-8859-1?Q?rKHBSBZerxhQXVwLOK7GUwRl6S17cc990oy6Zql9LOEh0gnQw3ahEtVR3+?=
+ =?iso-8859-1?Q?RTSADZVCQXTzT6V0C/KxerFahlivCc123b+hz4d3pgllOHnS5HhZrvq512?=
+ =?iso-8859-1?Q?gAHVg84hsxe8PO/xFkl4hTYuMXp10gFb2kLbwVDCVXlFSa+4LlQfkJ0/xF?=
+ =?iso-8859-1?Q?ZZZuvp7WqO+jflNxfAg9x71SB7g5oGnCtqjWknLGP2O0puDSusZ8W52e90?=
+ =?iso-8859-1?Q?WFqhMqZPrWZ/n4CwVF3ksQljIWrjxTgybp36lMV2uXCb/25RQFdaZy1zeg?=
+ =?iso-8859-1?Q?5f5Gdrz34jOHN81IaFPp9FBStiYOUqPhFXLKZuhVtbiEUq61n3Q2nuNNMe?=
+ =?iso-8859-1?Q?rL57yVcMO9cnKNHmzKMXaVT+hJzsFUF6TaDxPc5xGnVEG5uoaKLE73Ua7E?=
+ =?iso-8859-1?Q?rizQcAme0KDf7t7MgHSZ/DTAndOl7Qw++aiUGGP5sfqrk0Fp2EvvMRAxkL?=
+ =?iso-8859-1?Q?G0xGF/ecuU4q7t+dLtq8SeWafNo1cHBx0YVkCFCHYcZxYAOK1CkNqRPadI?=
+ =?iso-8859-1?Q?cjS+ZS/Cvz5yz0ktLPbInV1OO4ZHyEbTBb0kvBg/o7sJ5YKVsqWxx39u3b?=
+ =?iso-8859-1?Q?Y/HDh2tzSZ5HA7YlO7/VDMEKTIhoUWKC6mA217hwvW6AUGcQL9wR2PqS4L?=
+ =?iso-8859-1?Q?RHQkka98LQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked: N+uoLEimeVoA9evCB4kVBqlVzmV93Q4zCuMgSHqVdD1bpKqXgmowoUQ0e09HOcuwBlNip7EGNvg4MV2oCRS2+c/h0hBAlTgziDQUGVLls+Vvt6froEH1eVVI6A99bdBCOmPt5Bu5vjgaIpfxR5Sw9MnIl59s/jR98eVyyLw8L0S5BcPLu4WRQYZ0SElcaxKb/GOcFT9xr2R/SrmO+Hk8NzdyfoiQm6G9aI0Z+0wVkC3NveK3r7vajjeyl80xh6CHCDleN2WOf7DtbCCVHlPXTHbYGByN0QllsHWOjjcelSVKUxfX0lLotcdYAl3ouTg3Hf5j5muhlKirCUCl1QvFGQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 039ecc48-6277-46a5-0428-08deb59eef04
+X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2836.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 12:05:35.4729
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KmxLeVjmgX2QSiYdBvadvdKqMc5N1lwxbWypZkzBTlZZJsZ52vMtLd1TGvQ5Q8kxyoNEsulqYBto6nRSLsXh5Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF607052E81
+X-OriginatorOrg: intel.com
 
-On Fri, May 15, 2026 at 07:51:13PM -0300, Jason Gunthorpe wrote:
-> On Thu, May 14, 2026 at 02:43:39PM +0000, Mostafa Saleh wrote:
-> > > That's a somewhat different problem, we have the dev->trusted stuff
-> > > that is supposed to deal with this kind of security. We need it for
-> > > IOMMU based systems too, eg hot plug thunderbolt should have it.
-> > 
-> > I see that it is used only for dma-iommu and for PCI devices.
-> > However, I think that should be a problem with other CCA solutions
-> > with emulated devices as they are untrusted. As I'd expect they
-> > would have virtio devices.
-> 
-> Yes, any security solution with an out of TCB device should be using either
-> memory encryption so the kernel already bounces or this trusted stuff
-> and a force strict dma-iommu so the dma layer is careful.
-> 
-> This is more policy from userspace what devices they want in or out of
-> their TCB. Like you make accept the device into T=1 but then still
-> want to keep it out of your TCB with the vIOMMU, I can see good
-> arguments for something like that.
-> 
-> > > > While we can debate the aesthetics of the setup , this is
-> > > > the exisitng behaviour for Linux, which existed for years
-> > > > and pKVM relies on and is used extensively.
-> > > > And, this patch alters that long-standing logic and introduces
-> > > > a functional regression.
-> > > 
-> > > Yeah, Aneesh needs to do something here, I'm pointing out it is
-> > > entirely seperate thing from the CC path we are working on which is
-> > > decoupling CC from reylying on force swiotlb.
-> > 
-> > I am looking into converting pKVM to use the CC stuff, I replied with
-> > a patch to Aneesh in this thread. However, I need to do more testing
-> > and make sure there are not any unwanted consequences.
-> 
-> Yeah, it is a nice patch and I think it will help reduce the
-> complexity if it aligns to CCA type stuff.
-> 
-> > > In a pkvm world it should be the same, the S2 table for the SMMU will
-> > > control what the device can access, and if the SMMU points to a
-> > > "private" or "shared" page is not something the device needs to know
-> > > or care about.
-> > 
-> > I see that's because dma-iommu chooses the attrs for iommu_map().
-> 
-> Long term the DMA API path through the dma-iommu will pass the
-> ATTR_CC_SHARED through to iommu_map so when the arch requires a
-> different IOPTE it can construct it.
-> 
-> > In pKVM, dma_addr_t and IOPTE are the same for private and shared,
-> > so nothing differs in that case.
-> 
-> Yes, so you don't have to worry.
-> 
-> > We donâ€™t expect pass-through devices to interact with shared
-> > memory (T=0) at the moment.
-> > However, I can see use cases for that, where the host and the guest
-> > collaborate with device passthrough and require zero copy.
-> 
-> Once you add the CC patch it becomes immediately possible though
-> because the user can allocate a CC shared DMA HEAP and feed that all
-> over the place.
-> 
-> > One other interesting case for device-passthrough is non-coherent
-> > devices which then require private pools for bouncing.
-> 
-> Why does shared/private matter for bouncing? Why do you need to bounce
-> at all? Do cmo's not work in pkvm guests?
+On Tue, May 19, 2026 at 11:00:54AM +0800, Edgecombe, Rick P wrote:
+>On Wed, 2026-05-13 at 08:09 -0700, Chao Gao wrote:
+>> The first step of TDX module updates is shutting down the current TDX
+>> module. This step also packs state information that needs to be
+>> preserved across updates as handoff data, 
+>> 
+>
+>kinda reads like handoff data is an existing term, but its the first reference
+>in this series.
+>
+>Maybe packs state information that needs to be preserved across updates, called
+>"handoff data". This handoff data is consumed...
 
-At the moment, in iommu_dma_map_phys(), if a non coherent device
-tries to map an unaligned address or size it will be bounced.
-In pKVM, dma-iommu is used for assigned devices which operate on
-private memory, so bouncing that through the SWIOTLB would leak
-information from the guest as the SWIOTLB is decrypted.
-In that case, the device needs a pool which remains private.
+Sure. Will do.
 
-Thanks,
-Mostafa
+>
+>> which will be consumed by the
+>> updated module. The handoff data is stored internally in the SEAM range
+>> and is hidden from the kernel.
+>> 
+>> To ensure a successful update, the new module must be able to consume
+>> the handoff data generated by the old module.
+>> 
+>
+>Is it too obvious thing to state? Above you already say it's needed.
 
-> 
-> Jason
+Ok. Let me drop it.
+
+>
+>>  Since handoff data layout
+>> may change between modules, the handoff data is versioned. Each module
+>> has a native handoff version and provides backward support for several
+>> older versions.
+>> 
+>> The complete handoff versioning protocol is complex as it supports both
+>> module upgrades and downgrades. See details in Intel® Trust Domain
+>> Extensions (Intel® TDX) Module Base Architecture Specification, Chapter
+>> "Handoff Versioning".
+>> 
+>> Ideally, the kernel needs to retrieve the handoff versions supported by
+>> the current module and the new module and select a version supported by
+>> both. But, since this implementation chooses to only support module
+>> upgrades, simply request the current module to generate handoff data
+>> using its highest supported version, expecting that the new module will
+>> likely support it.
+>
+>Hmm, "likely"? Is this trying to justify the kernel's policy? Dunno, stands out
+>as weird to me. Like "this will mostly work". Sounds incomplete, rather than a
+>reason of "this policy is the optimal initial implementation" or something like
+>that.
+
+how about:
+
+... But since this implementation only supports module upgrades, simply request
+handoff data from the current module using its highest supported version.
+That is sufficient for this upgrade-only implementation.
+
+>
+>> 
+>> Retrieve the module's handoff version from TDX global metadata and add an
+>> update step to shut down the module.
+>> 
+>
+>This is small patch with both things, but it's almost two changes.
+>
+>>  Module shutdown has global effect, so
+>> it only needs to run on one CPU.
+>
+>I wouldn't think having some global effect would necessarily exclude having to
+>run on multiple CPUs. Or at least I don't follow. Is it a TDX arch thing? I
+>guess it's ok.
+
+Yes. This comes from the TDX architecture. I will just say in the changelog
+that module shutdown only needs to run on one CPU.
+
+>
+>> 
+>> Note that the handoff information isn't cached in tdx_sysinfo. It is used
+>> only for module shutdown, and is present only when the TDX module supports
+>> updates. Caching it in get_tdx_sys_info() would require extra update-support
+>> guards and refreshing the cached value across module updates.
+>
+>Instead of being a "note", could this be just an imperative: Don't cache the
+>handoff information in tdx_sysinfo...
+
+Sure. Will do.
+
+>
+>> @@ -214,8 +216,16 @@ static void init_state(struct update_ctrl *ctrl)
+>>  static int do_seamldr_install_module(void *seamldr_params)
+>>  {
+>>  	enum module_update_state newstate, curstate = MODULE_UPDATE_START;
+>> +	int cpu = smp_processor_id();
+>> +	bool primary;
+>>  	int ret = 0;
+>>  
+>> +	/*
+>> +	 * Use CPU 0 to execute update steps that must run exactly once.
+>> +	 * Note CPU 0 is always online.
+>> +	 */
+>> +	primary = cpu == 0;
+>> +
+>
+>Where does the term 'primary' come from?
+>I'm guessing that the global steps must
+>each be run on the same CPU? Is that right? And we just pick the cpu that we
+>know much be online? Or can the global steps be run on different CPUs? Or they
+>*have* to be run on cpu 0? It might be worth some comments explaining, depending
+>on the answers to those questions.
+
+"primary" is just my name for the CPU that runs the global steps. There is
+nothing special about CPU 0 beyond the fact that it is guaranteed to be
+online, so it is a convenient choice.
+
+I can rename it to something like 'is_primary_cpu' or 'is_global_step_cpu'
+for clarity.
+
+how about:
+
+/*
+ * Some steps must be run on exactly one CPU. Pick CPU 0 to execute those
+ * steps because CPU 0 is always online.
+ */
+
+>
+>>  	do {
+>>  		newstate = READ_ONCE(update_ctrl.state);
+>>  
+>> @@ -226,7 +236,10 @@ static int do_seamldr_install_module(void *seamldr_params)
+>>  
+>>  		curstate = newstate;
+>>  		switch (curstate) {
+>> -		/* TODO: add the update steps. */
+>> +		case MODULE_UPDATE_SHUTDOWN:
+>> +			if (primary)
+>> +				ret = tdx_module_shutdown();
+>> +			break;
+>>  		default:
+>>  			break;
+>>  		}
+>> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+>> index 1621695d7561..da3c1e857b26 100644
+>> --- a/arch/x86/virt/vmx/tdx/tdx.c
+>> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+>> @@ -321,7 +321,7 @@ static __init int build_tdx_memlist(struct list_head *tmb_list)
+>>  	return ret;
+>>  }
+>>  
+>> -static __init int read_sys_metadata_field(u64 field_id, u64 *data)
+>> +static int read_sys_metadata_field(u64 field_id, u64 *data)
+>>  {
+>>  	struct tdx_module_args args = {};
+>>  	int ret;
+>> @@ -1267,6 +1267,23 @@ static __init int tdx_enable(void)
+>>  }
+>>  subsys_initcall(tdx_enable);
+>>  
+>> +int tdx_module_shutdown(void)
+>> +{
+>> +	struct tdx_sys_info_handoff handoff = {};
+>> +	struct tdx_module_args args = {};
+>> +	int ret;
+>> +
+>> +	ret = get_tdx_sys_info_handoff(&handoff);
+>> +	WARN_ON_ONCE(ret);
+>
+>Take or leave it:
+>
+>  Why not just WARN_ON_ONCE(get_tdx_sys_info_handoff(&handoff));
+>  And we can drop the ret var. Save 2 LOC.
+
+Dave had a different preference here:
+
+https://lore.kernel.org/kvm/8b9d7fa7-6534-48e7-a4fa-c21260b1c762@intel.com/
