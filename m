@@ -1,123 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAD8320A00;
-	Wed, 20 May 2026 03:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E5931328C
+	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 05:02:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779249461; cv=none; b=GhZFCYNf/ju9CnFyWl9tHabdYQn5XliP8p6EGFst6xboiHqYoVJ/9Kr+z7XV447Xlyf47YjDDTTIP56bH+0SiqKYz17ytxCHhOCRw/fd28cO5tDN00b1pHN3i7AIzoLTXYvw/nZV7OjVA8B7c7gth5yf4OLW4TCkoqUJdsKMdWM=
+	t=1779253363; cv=none; b=srkSNvECTukEO3n5HotT2IP85cmzDvNNfwcHL1OP2nKyo0BBnzAxT7ejvr8yR/jyQOmSNVbN09dMe275IXSX9fSmffsL8vP6FvBfaIOLe62JC5LX9/KUbvaC0pE1b26PUHvZMM8MIQf3kzHcNUXVy/tN13uGf+Ty09MkbEVS1aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779249461; c=relaxed/simple;
-	bh=u42KdqdBlbzemA/eXphy076aQATROAX8mgIesYzE0D8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jIpSGR4esW1tcsbVuS1gdtXCc6V5vycfu/15qe/Iqt18MxVAUJX9W0eT1tqBXcJeP0NXgqhNpJ+Qv2rysXfb//eQ7cRLA55g3RiqL0lMh6fBFHVWTxT7cX6cQtCBkdYIsI6URoitztXjTtSVXW8hVs8QHyq524jqbQ4jwYTgn1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=InlsMQlE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779253363; c=relaxed/simple;
+	bh=vk+Y4qqXFyg/b/b5BuR0NkVyVGyXn6ECSZWi7zrenqs=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=HWk87AWGV6nJKSwTvF7B0hPbL15FVmI+TPbwNeQVqSGAF7QKts0z6N0UHtaypAAsEkT9HA40p6il6X3d8GNhYGLTanKDvQKLxZw/TOXf+yR3QwW/CA9RH7aP4pPzXNc6M4nfLk21qV0M0DQKn4Y1BmMCZB/CXnwXAzyhReSrTGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XLgGqTVP; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="InlsMQlE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679B51F000E9;
-	Wed, 20 May 2026 03:57:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779249458;
-	bh=2/10KWZth3f3oJZ9cVmYGyrspKBWGW0LeGuuNx46MWQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=InlsMQlEZWNdtUwAJ/WfdVY8k13HPRMssotBX7SBIuNa54Jg5vv0DFKV/w2mGAhTl
-	 Tzussp1c8bM+KGnneYMWBdGbE4oZul6IPm60d103sHqARcIHtvuJIiVgW9S3QWUNxe
-	 GjNuOmh9trmY3E8I6iNu0UCo/Ee4tbvNHH+iz36pcjOMPgbKC1DF7Zdic5DUxAP/5r
-	 qFDNlC2UfvXa6u5GW5TK6+7EPafA/L3aUULUJfYDKazwkubhgxm0YcqdzN4vollRka
-	 RL31G/X3pgTFzHPzIAgWwh2bzokWqpVVU6U6B2r+w0u77cJDi7s4qVbg0kWegirLl0
-	 +27eesvv2tbCg==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Mostafa Saleh <smostafa@google.com>, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [PATCH v4 04/13] dma: swiotlb: track pool encryption state and
- honor DMA_ATTR_CC_SHARED
-In-Reply-To: <20260519161120.GO7702@ziepe.ca>
-References: <yq5ah5oaa63h.fsf@kernel.org> <agW5rhE9n2gDQ0w5@google.com>
- <yq5apl2y5f96.fsf@kernel.org> <agXaby-7L7yS3Vva@google.com>
- <yq5ah5oa59wy.fsf@kernel.org> <agxDxdxynp4KEovA@google.com>
- <yq5amrxvshxg.fsf@kernel.org> <yq5abjebsaid.fsf@kernel.org>
- <20260519152741.GM7702@ziepe.ca> <yq5a8q9fs7ud.fsf@kernel.org>
- <20260519161120.GO7702@ziepe.ca>
-Date: Wed, 20 May 2026 09:27:27 +0530
-Message-ID: <yq5a5x4ispg8.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XLgGqTVP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779253362; x=1810789362;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=vk+Y4qqXFyg/b/b5BuR0NkVyVGyXn6ECSZWi7zrenqs=;
+  b=XLgGqTVPsHEnBhKgtFp+toCQBnOJgta3fr9qUmAwuricLrguLARN5J/z
+   08gzw7fXJu+sMfeOferKLUZGEW+4rUML+WKN7chUuFkiI+52zfzRL4ydf
+   vUeauDcY9EWMW21cRuN9N+hxjwcNGDxu+TMsSuDGIhPo/isL1NK0kznwA
+   e4iqWTysEemP47L+nSTY8t6bm95TV12H1+P7pa/MGjaQrVcGca16TiiHB
+   g4uoiBhy9CiRijoLC0B5ps+LsbpgEDWGrgAdeCeRgXCY4M3ojTmoZLx80
+   45hppgiSRI9v9tOtgdHmUqHaOxObb4RiOBcZ/GisB2EZ4nu9qYjkWvhmc
+   g==;
+X-CSE-ConnectionGUID: ik7+G0NqQuC1gVxOngO6HA==
+X-CSE-MsgGUID: HiSxCe5xTkerGfTfuaSfHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="91537431"
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="91537431"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 22:02:41 -0700
+X-CSE-ConnectionGUID: olqJTcuFQkmbuOfEsizLUw==
+X-CSE-MsgGUID: 6dI39uEPQcmIpfMX/t+Ibg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="240282415"
+Received: from fanlilin-mobl.ccr.corp.intel.com (HELO [10.238.1.228]) ([10.238.1.228])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 22:02:38 -0700
+Message-ID: <3beeaf04-e4f9-44cf-a3a3-04fa12912848@linux.intel.com>
+Date: Wed, 20 May 2026 13:02:35 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 03/15] KVM: x86/xen: Don't truncate RAX when handling
+ hypercall from protected guest
+From: Binbin Wu <binbin.wu@linux.intel.com>
+To: David Woodhouse <dwmw2@infradead.org>,
+ Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Paul Durrant <paul@xen.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org,
+ x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
+References: <20260514215355.1648463-1-seanjc@google.com>
+ <20260514215355.1648463-4-seanjc@google.com>
+ <27ba35fd-5563-4bbd-8f95-2285b50efa7a@linux.intel.com>
+ <agcXr2FP4C3I_jbQ@google.com>
+ <52fdc61a-60e8-4547-8ff7-f249b4d667b9@linux.intel.com>
+ <ad4934f4a663c448924aeabe6418e68ae3ef9813.camel@infradead.org>
+ <868898e6-1c57-498d-848d-1df9cbeac23c@linux.intel.com>
+ <d7af5a04a11432ea1878431e8b51061f19c16061.camel@infradead.org>
+ <dc62e58e-b6ee-41e1-84a5-0716822fefc8@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <dc62e58e-b6ee-41e1-84a5-0716822fefc8@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Jason Gunthorpe <jgg@ziepe.ca> writes:
 
-> On Tue, May 19, 2026 at 09:35:30PM +0530, Aneesh Kumar K.V wrote:
->> Yes, that also resulted in simpler and cleaner code.
->> 
->> swiotlb_tbl_map_single
->> 	/*
->> 	 * If the physical address is encrypted but the device requires
->> 	 * decrypted DMA, use a decrypted io_tlb_mem and update the
->> 	 * attributes so the caller knows that a decrypted io_tlb_mem
->> 	 * was used.
->> 	 */
->> 	if (!(*attrs & DMA_ATTR_CC_SHARED) && force_dma_unencrypted(dev))
->> 		*attrs |= DMA_ATTR_CC_SHARED;
->> 
->> 	if (mem->unencrypted != !!(*attrs & DMA_ATTR_CC_SHARED))
->> 		return (phys_addr_t)DMA_MAPPING_ERROR;
->
-> Yeah, exactly that is so much clearer now that the mem->unecrypted is
-> tied directly.
->
-> That logic is reversed though, the incoming ATTR_CC doesn't matter for
-> swiotlb, that is just the source of the memcpy.
->
-> /* swiotlb pool is incorrect for this device */
-> if (mem->unencrypted != force_dma_unencrypted(dev))
->     return (phys_addr_t)DMA_MAPPING_ERROR;
->
-> /* Force attrs to match the kind of memory in the pool */
-> if (mem->unencrypted)
->      *attrs |= DMA_ATTR_CC_SHARED;
-> else
->      *attrs &= ~DMA_ATTR_CC_SHARED;
->
->
-> Attrs should be forced to whatever memory swiotlb selected.
->
 
-But that will not handle a T=1 device that wants to use swiotlb to
-bounce unencrypted memory. That is:
+On 5/18/2026 5:55 PM, Binbin Wu wrote:
+> 
+> 
+> On 5/18/2026 5:50 PM, David Woodhouse wrote:
+>> On Mon, 2026-05-18 at 17:43 +0800, Binbin Wu wrote:
+>>>
+>>>
+>>> On 5/18/2026 3:15 PM, David Woodhouse wrote:
+>>>> On Mon, 2026-05-18 at 10:19 +0800, Binbin Wu wrote:
+>>>>>  
+>>>>>>>>   	longmode = is_64_bit_hypercall(vcpu);
+>>>>>>>
+>>>>>>> Is the variable name misleading?
+>>>>>>
+>>>>>> It most definitely is.  However, @longmode is passed around quite a few locations
+>>>>>> in xen.c, and so I don't want to opportunistically fix this one variable.  Though
+>>>>>> I'm definitely not opposed to a separate patch to rename them all to is_64bit or
+>>>>>> something.
+>>>>>
+>>>>> OK, I can do it.
+>>>>
+>>>> This one (as shown above) is clearly indicating whether this particular
+>>>> vCPU is in 64-bit mode for this particular hypercall. Changing that to
+>>>> is_64bit makes sense.
+>>>>
+>>>> However, there is a separate overall mode for the VM, which is stored
+>>>> in 'kvm->arch.xen.long_mode' and accessed by userspace using the
+>>>> KVM_XEN_ATTR_TYPE_LONG_MODE attribute. It affects the datatypes used by
+>>>> shared memory data structures, and is also latched by the kernel when
+>>>> the guest writes the MSR for the hypercall page. That one should
+>>>> probably keep its name.
+>>>
+>>> For this one, I think the current KVM code is consistent.
+>>> The format is determined by EFER.LMA, whether the guest is running in 64 bit or
+>>> compatible mode doesn't change the ABI.
 
-force_dma_unencrypted(dev) == 0  /* T=1 device */
-attrs = DMA_ATTR_CC_SHARED;
+I still have a point of confusion.
 
-In that case, it should use an unencrypted io_tlb_mem:
-mem->unencrypted == 1
+I noticed a behavioral mismatch between KVM and Xen regarding when they switch
+to the standard/compat shared info.
+- In Xen: The 32-bit shared info structure is latched if the current vCPU is
+  not in 64-bit mode:
+  hvm_latch_shinfo_size
+      d->arch.has_32bit_shinfo = hvm_guest_x86_mode(current) != X86_MODE_64BIT
 
--aneesh
+- In KVM: It evaluates is_long_mode(vcpu) instead. E.g.,
+  kvm_xen_write_hypercall_page
+      bool lm = is_long_mode(vcpu);
+      ...
+      kvm->arch.xen.long_mode = lm;
+
+In theory, these two checks could differ when the guest kernel is running in
+a 32-bit compatibility mode. However, I believe this mismatch is fine in
+practice for two reasons:
+- Mainstream 64-bit OSes don't run in compatibility mode for kernel code after
+  the early init.
+- By default, HVM guests cannot issue hypercalls from userspace. The only one
+  exception HVMOP_guest_request_vm_event is not related to the share info.
+
+So the vCPU will never be in compatibility mode when a related hypercall occurs.
+In this specific operational context, evaluating is_long_mode() yields the
+exact same functional outcome as checking for 64-bit execution mode. Am I
+missing anything here?
+
+
+>>
+>> Agreed. For the hypercall case you're looking at, switching the name to
+>> is_64bit makes sense.
+>>
+>>> struct compat_shared_info is used only when the guest is running natively in a
+>>> 32-bit build.
+>>
+>> The struct compat_shared_info is also used in !kvm->arch.xen.long_mode
+>> on a 64-bit host, as that's what means the guest is considered to be a
+>> 32-bit guest.
+>>
+>> It's somewhat orthogonal from whether any given vCPU is making any
+>> given hypercall while in 64-bit mode. The 'long_mode' is *latched* at
+>> certain specific times which are defined by Xen's historical behaviour.
+>>
+>> I'm suggesting that you clean up longmode→is_64bit for the *hypercalls*
+>> but leave 'long_mode' as is.
+>>
+> 
+> Yes, will only do it for is_64_bit_hypercall().
+> 
+>>
+> 
+
