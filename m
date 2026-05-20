@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4DF241665
-	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 13:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1503DBD4F
+	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 13:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779284407; cv=none; b=Js3muw+gohXlGpBgbWev4NbQT0q575gHdDclnDBq8l9LUA/AbCpUUeOLsP958W9yRd5pT3q9RdBrB6lJkFctUYwNgz3oFx4n60zKcZWGbseFyDR7Sty3ZdbznQ1bPnG66R4Y3xlMujKeCDyN5pi0XnIQrdc6B5sj7ZMnM4T7zuc=
+	t=1779284408; cv=none; b=FOlFHlY3u712iJj77jwICbj5FYOjKOMaUxPMwIUVHmS1dZL9ce4wZhrciuHXKF2skLnj3RhrUv6gV2Hx6z5TtAPOzOxHo7ztIpTv2PyPt1dIlVIFgsMcO8IcMlFM33m+3ylwv9F0+ECd79Sqmml8PverkukwvaDwINNj0WuN/cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779284407; c=relaxed/simple;
-	bh=pYwWR633SCu4170yEG3u38P71vF4aiFiBV8uRgld4Bk=;
+	s=arc-20240116; t=1779284408; c=relaxed/simple;
+	bh=vsVXOzX+eZdIz/SpvJEyplhhhAPnPHgd18pUAlvF5Rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNZBwlq1/d4uxaZuLkyBW+RcRwkjMsqdRQBHjQKCuYJiyxi0nPz6mqru50TwPsZhamTo3NcC7htUyHC3TUZb76+hUr1iVwHfQguW41rqLBUbmH7bosL5EV867JN5xHNOGql1Uvw193jPqNPXXchS25nlRW1dB50a2ovZ+r6Osdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HhK7NxaE; arc=none smtp.client-ip=198.175.65.19
+	 MIME-Version; b=eI9jHdjZv2pKl1a8fWBoxUTsif/Bj07SC4daKtPoPSuXXL1SEprWRNkc8/J2a5MXKn2afSgyaf7fFcfiyFoJGn67XnOFW4v2Ie92ZS7TVgtS989J/Ld+y/YhSpiAzQ2878YuxC58jGYve3VpiT1b5DH6VrDDg9k6Kt/y9nOTNbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OJi2Xsif; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HhK7NxaE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OJi2Xsif"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779284405; x=1810820405;
+  t=1779284406; x=1810820406;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=pYwWR633SCu4170yEG3u38P71vF4aiFiBV8uRgld4Bk=;
-  b=HhK7NxaEO6kFu145o9vajYDaUIf5ivKJiCqPFALSAuQJ7d7d4ThBK0GJ
-   rCARWESi/pSp4f6BYtfY6Q6TA4HbhkrVx5NCxbOQVCTgIHajzgN6NmDGb
-   0GT5J1GbHrqjX6Jf57xjfJFyQipOj1+27ZUrPQEARW9MfqIuoSh/9bH34
-   5qYEVxCJ//EwgrJRwJiFss5rHJzoA9Zv+q7zUE2QD5xjRdIvVDcLd1hrn
-   dqN61+APrrqOE94dZriLFAPCQuI1uAcO33gGxu9f8WKghkuamROATQfFn
-   hrVw/zoOdAo7Dk4v0qZLlhNSUXNou9isGWyj01tYzRXt+MlDOcaNI66Us
-   Q==;
-X-CSE-ConnectionGUID: gAS7bTrkTkSWNLv2mg5p1w==
-X-CSE-MsgGUID: uIU4wCfjSz28cc8cO1sG3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80146413"
+  bh=vsVXOzX+eZdIz/SpvJEyplhhhAPnPHgd18pUAlvF5Rk=;
+  b=OJi2XsifYKEx5I/inc5HA9ptFnIZKzhokV+2tPAbq/YMj3YF1FhvFCqW
+   qBUyllFnv0KqRCzvNgCNNblPXUk93Ls4soJj+KCRcPNjpX4/gCfke7sQo
+   gp27uPBAocYW/1zinbNMKl2hLk/lU8CK/l4532rclqdYSlxvkIZaYzys8
+   FHeO6DFNHFY6mzS+Q+s2p+WNmUlJIaVImV9FYCbJKS7J3fD7J366dvSS0
+   pUFtuTprB3LykLc5fO8B3Qgxte5xQZCSOGUAtxUzWlqt56uhcy9CmuDbK
+   q3Jhg4O0eWg75nlohA8Di192xsAcJoZuo1A4tpY38UFS0tBDnTR181bIZ
+   w==;
+X-CSE-ConnectionGUID: kLVOjv8XQGmgbVIW5xv/Zw==
+X-CSE-MsgGUID: gLtZRaVnStSe0ymSsbDZZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80146423"
 X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="80146413"
+   d="scan'208";a="80146423"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:03 -0700
-X-CSE-ConnectionGUID: N0cyFpTcQbSqoKy6pv3TTg==
-X-CSE-MsgGUID: GsjXY3yJSP6voBnVDe6X6w==
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:05 -0700
+X-CSE-ConnectionGUID: 6acRzcItSce0dn3NDOrwIg==
+X-CSE-MsgGUID: z72y8QSlT2yRZTdichrdTA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="235923641"
+   d="scan'208";a="235923680"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:01 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:02 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -72,9 +72,9 @@ Cc: binbin.wu@linux.intel.com,
 	Borislav Petkov <bp@alien8.de>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v10 03/25] x86/virt/tdx: Consolidate TDX global initialization states
-Date: Wed, 20 May 2026 06:38:06 -0700
-Message-ID: <20260520133909.409394-4-chao.gao@intel.com>
+Subject: [PATCH v10 04/25] x86/virt/tdx: Move TDX_FEATURES0 bits to asm/tdx.h
+Date: Wed, 20 May 2026 06:38:07 -0700
+Message-ID: <20260520133909.409394-5-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260520133909.409394-1-chao.gao@intel.com>
 References: <20260520133909.409394-1-chao.gao@intel.com>
@@ -86,101 +86,53 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The kernel uses several global flags to guard one-time TDX initialization
-flows and prevent them from being repeated.
+Future changes will add support for new TDX features exposed as
+TDX_FEATURES0 bits. The presence of these features will need to be checked
+outside of arch/x86/virt. So the feature query helpers, and the
+TDX_FEATURES0 defines they reference, will need to live in the widely
+accessible asm/tdx.h header. Move the existing TDX_FEATURES0 to asm/tdx.h
+so that they can all be kept together.
 
-When the TDX module is updated, all of those states must be reset so that
-the module can be initialized again. Today those states are kept as
-separate global variables, which makes the reset path awkward and easy to
-miss when a new state is added.
+Opportunistically switch to BIT_ULL() since TDX_FEATURES0 is 64-bit.
 
-Group the states into a single structure so they can be reset together, for
-example with memset(), and so a newly added state won't be missed.
-
-Drop the __ro_after_init annotation from tdx_module_initialized because
-the other two states do not have it. And with TDX module update support,
-all the states need to be writable at runtime.
+No functional change intended.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
+Link: https://lore.kernel.org/kvm/20260427152854.101171-17-chao.gao@intel.com/ # [1]
+Link: https://lore.kernel.org/kvm/20251121005125.417831-16-rick.p.edgecombe@intel.com/ # [2]
 ---
- arch/x86/virt/vmx/tdx/tdx.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ arch/x86/include/asm/tdx.h  | 3 +++
+ arch/x86/virt/vmx/tdx/tdx.h | 3 ---
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 40444a3c5cdd..71d39a79ef3f 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -44,6 +44,13 @@
- #include <asm/virt.h>
- #include "tdx.h"
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 15eac89b0afb..e2430dd0e4d5 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -32,6 +32,9 @@
+ #define TDX_SUCCESS		0ULL
+ #define TDX_RND_NO_ENTROPY	0x8000020300000000ULL
  
-+struct tdx_module_state {
-+	bool initialized;
-+	bool sysinit_done;
-+	int sysinit_ret;
-+};
++/* Bit definitions of TDX_FEATURES0 metadata field */
++#define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
 +
-+static struct tdx_module_state tdx_module_state;
- static u32 tdx_global_keyid __ro_after_init;
- static u32 tdx_guest_keyid_start __ro_after_init;
- static u32 tdx_nr_guest_keyids __ro_after_init;
-@@ -58,7 +65,6 @@ static struct tdmr_info_list tdx_tdmr_list;
- static LIST_HEAD(tdx_memlist);
+ #ifndef __ASSEMBLER__
  
- static struct tdx_sys_info tdx_sysinfo __ro_after_init;
--static bool tdx_module_initialized __ro_after_init;
+ #include <uapi/asm/mce.h>
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index e2cf2dd48755..76c5fb1e1ffe 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -85,9 +85,6 @@ struct tdmr_info {
+ 	DECLARE_FLEX_ARRAY(struct tdmr_reserved_area, reserved_areas);
+ } __packed __aligned(TDMR_INFO_ALIGNMENT);
  
- typedef void (*sc_err_func_t)(u64 fn, u64 err, struct tdx_module_args *args);
- 
-@@ -106,8 +112,6 @@ static __always_inline int sc_retry_prerr(sc_func_t func,
- 	sc_retry_prerr(__seamcall_ret, seamcall_err_ret, (__fn), (__args))
- 
- static DEFINE_RAW_SPINLOCK(sysinit_lock);
--static bool sysinit_done;
--static int sysinit_ret;
- 
+-/* Bit definitions of TDX_FEATURES0 metadata field */
+-#define TDX_FEATURES0_NO_RBP_MOD	BIT(18)
+-
  /*
-  * Do the module global initialization once and return its result.
-@@ -121,8 +125,8 @@ static int try_init_module_global(void)
- 	raw_spin_lock(&sysinit_lock);
- 
- 	/* Return the "cached" return code. */
--	if (sysinit_done) {
--		ret = sysinit_ret;
-+	if (tdx_module_state.sysinit_done) {
-+		ret = tdx_module_state.sysinit_ret;
- 		goto out;
- 	}
- 
-@@ -139,8 +143,8 @@ static int try_init_module_global(void)
- 		pr_err("module not loaded\n");
- 
- 	/* Save the return code for later callers. */
--	sysinit_done = true;
--	sysinit_ret = ret;
-+	tdx_module_state.sysinit_done = true;
-+	tdx_module_state.sysinit_ret = ret;
- out:
- 	raw_spin_unlock(&sysinit_lock);
- 	return ret;
-@@ -1306,7 +1310,7 @@ static __init int tdx_enable(void)
- 
- 	register_syscore(&tdx_syscore);
- 
--	tdx_module_initialized = true;
-+	tdx_module_state.initialized = true;
- 	pr_info("TDX-Module initialized\n");
- 	return 0;
- }
-@@ -1561,7 +1565,7 @@ void __init tdx_init(void)
- 
- const struct tdx_sys_info *tdx_get_sysinfo(void)
- {
--	if (!tdx_module_initialized)
-+	if (!tdx_module_state.initialized)
- 		return NULL;
- 
- 	return (const struct tdx_sys_info *)&tdx_sysinfo;
+  * Do not put any hardware-defined TDX structure representations below
+  * this comment!
 -- 
 2.52.0
 
