@@ -1,213 +1,185 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AC8369D7E;
-	Wed, 20 May 2026 18:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAC8369D7E
+	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 18:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779303143; cv=none; b=mo+BWdLkJisEX0K6wQieIcmz7c6yThtVWlS+BdBkuWghls0bxECq34f0Ir3ctsLoQcpkQYia4VeNeIIwSu3R4i8/kk7zPeaY3yIKMA8DO7+xH8D3kdKMfeylrA3lMXxP4Tj+80fn9qV5AUpwwiu++GwgPaeKkbYWXLp+CY2ppYo=
+	t=1779303547; cv=none; b=f7o0OecpMUUQIhLT36UBcrpqKNJEY9m93DUmZoNTTbGYdpcME7Qx5kPnBaM0ITxzW83A91uPPi/IrOJewx4Lqn1Ulm2jkbZw8Oy6to/LWe4nSMGmF+v0r7tFNk9okJC/oO7iMPbKWao1egg5ksHrpwIh3PBuq8gnCwGrFGzjC+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779303143; c=relaxed/simple;
-	bh=QjAnceuew11RIwWs2DQFFNl23Bhtsg/GKQH/i+NDfAM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NH802Dirjl/+lVhsmbe2NuvsAZE4bNk+k80Gs1QR9s3qbuqHl0Eiub/pNhesVCqZKImfyswyEgq8x+ihXkmijf1I65fSuCG+W0ULhmC7+UOzN8BnR9BEXK1VXrJZPVHKpzG1bVBNsQHeaWA0dTez3rLb2CiWMJ9Re6gSCrVwlJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=lgUr7i8E; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1779303547; c=relaxed/simple;
+	bh=CAg8fHi2CXutX4k3jIaYo/3dkMGuQ6K17aloqCRhD8Q=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ltM9YC73uY51VlJ+YY3aBzeiG9Cs60T1wmsveLdjiThl8oAOwSmYe4XEpr9c9icQ9XjiqYVexcwkb0NtuEypH/fqKMVJZprKrUX5xHAgOmciALy/NI7XKBXmenKJsX79wKL6lV0jn/j3Qcl+ud5TZIdn4GIvBYj0r6Jhbce1Bak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FwfsuD4s; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="lgUr7i8E"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=eRikeJAaevbA4NP2g19rUNwI2NZyhVnTYBWtQ7dcaAU=; b=lgUr7i8EL2F8QaWtzohapoINjb
-	dAnsORiobdYMPtmsSDZ/QRiN7s1rJUCLo9RKbLoIg7hISvL/AVEQZV+KPYSUfrPlPLBx6WxW38sGS
-	StE/N1VLLOq2EXBHiHp5tpuj4XnsA94KqqySKjvCZH1818yr33rWd2lt3i8Z7+V5eDgAVvzdgankH
-	o6qQUd23ZxwUk68fsqyexc2ORewi6gkpiiPpEOsilLASL6yk5nr0Xj2C2toi+f9IuAfZLfUPegn0l
-	dMC3Fcyo7XJFJ3v8+0OXg/iwVZLcN5GdGUs4G5fr4w3PaILbl4vVz1q0UuQpfAUDYMnvOFqzrUtKR
-	sQuhKA1A==;
-Received: from 54-240-197-227.amazon.com ([54.240.197.227] helo=freeip.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPm1d-00000007UNm-3bew;
-	Wed, 20 May 2026 18:52:14 +0000
-Message-ID: <0a3aa07a1d3c4bec2b89f8026093969155b73caa.camel@infradead.org>
-Subject: Re: [PATCH v3 41/41] x86/kvmclock: Get CPU base frequency from
- CPUID when it's available
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>, Kiryl Shutsemau
- <kas@kernel.org>,  Paolo Bonzini <pbonzini@redhat.com>, "K. Y. Srinivasan"
- <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
- <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
- <longli@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, Alexey
- Makhalov <alexey.makhalov@broadcom.com>,  Jan Kiszka
- <jan.kiszka@siemens.com>, Dave Hansen <dave.hansen@linux.intel.com>, Andy
- Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Juergen Gross <jgross@suse.com>, Daniel Lezcano
- <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, John Stultz
- <jstultz@google.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, Vitaly Kuznetsov
- <vkuznets@redhat.com>, Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
- <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
- x86@kernel.org,  linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- linux-hyperv@vger.kernel.org,  virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org,  xen-devel@lists.xenproject.org, Michael
- Kelley <mhklinux@outlook.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Nikunj A Dadhania <nikunj@amd.com>, Thomas Gleixner <tglx@linutronix.de>
-Date: Wed, 20 May 2026 19:52:12 +0100
-In-Reply-To: <20260515191942.1892718-42-seanjc@google.com>
-References: <20260515191942.1892718-1-seanjc@google.com>
-	 <20260515191942.1892718-42-seanjc@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-iph/FD/9Oere6U4F6y6S"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FwfsuD4s"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8279604464so7892814a12.1
+        for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 11:59:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779303546; x=1779908346; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xc+eqLu2deOuDSSfxTvMnxL/tYv4gr65bHOPW09jR0U=;
+        b=FwfsuD4sUgcGuZxGDnmmyFQ0AjkEDWjFKCRmMNiL9uBd+vUIeoeQ8Lr+gWyKskGXWK
+         ch3BhGPmeL9R1lxTAK+CRBVMjVWNNyGJiGvWrHC1tVRlrldbczqOAyvov4LS5ogmPyPF
+         YK1MlQ8iweunCWtvKAtIHUm1soaa8pmqr80zWkmWUiNppDB1IphGH6T3dnrAgpGx6vM8
+         C+seDOHHuDsN6qPmVKSz6m7r83KZ9bFtGaZqGZz3abn9cjJ4WU9ffYD3hWaueSk8o17F
+         1PFOzT83dFMaaTnRe6y9MHvgHZDRfBFzljW2M4UQSSC/mKv9ARp7YBWNDINn+6+vNua9
+         pTDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779303546; x=1779908346;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xc+eqLu2deOuDSSfxTvMnxL/tYv4gr65bHOPW09jR0U=;
+        b=G8e8/ORMkz6wCfUZGFNCqMY650aRZE/KB5TfGjZoU95YSIdpkR56/RArm7wKW+r+p8
+         E3CwA4zUvc0VDUt6VlLztB4VFIQw0rmEeghH7TgGGqrEu/DtwA2GVFe2sLoisVI7Fk6J
+         D4X3T9/B/l8NQL/6ifvEIgcTXF/Euz/jWTaPVfybPmZE8V3JtC2aeUJqOJq9hzUwQyBL
+         RikY4QXeKGBcSP0xwi57HwIRy0mKOBIkGfCT6TCwTTqTpjRLTeiZPmwSlb8w4wvKqUpm
+         AiMK+NrOjpJA0i3HYgUP1tm2ZJphBFdk6pe5vk8gie4LTeXOJ2SrzH8Theazda+gTTa9
+         nN3g==
+X-Forwarded-Encrypted: i=1; AFNElJ/znu7JJFZTO1xEtHqHaYXxrGZEe560wgqKxXGc/vfgURgmwcLZICniHAZa2yifG3iEW9QKG+6RmfTT@lists.linux.dev
+X-Gm-Message-State: AOJu0YwbmY4QDFq6sdQonZ38Uu16WWArWdVIE53ImIaDSJKUUDO9HboK
+	6QbDTtuWeLGDi3gnsYAlZHw36lXPfUW6uuZrvOsLLqnTAGWkt8w6OpkZkxqfNRhbk5c3GVJkRfB
+	/8X15NQ==
+X-Received: from pgbcz6.prod.google.com ([2002:a05:6a02:2306:b0:c79:8756:1a98])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:734a:b0:3aa:f9cb:d43a
+ with SMTP id adf61e73a8af0-3b22e67fe5emr29278600637.5.1779303545036; Wed, 20
+ May 2026 11:59:05 -0700 (PDT)
+Date: Wed, 20 May 2026 11:59:04 -0700
+In-Reply-To: <CA+EHjTw-cUM=FrJevtSDtR7K6MwUfGfOx21LMFDn7DAy5bFzYw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Mime-Version: 1.0
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+ <20260507-gmem-inplace-conversion-v6-5-91ab5a8b19a4@google.com> <CA+EHjTw-cUM=FrJevtSDtR7K6MwUfGfOx21LMFDn7DAy5bFzYw@mail.gmail.com>
+Message-ID: <ag4EeByDV-OtGhlk@google.com>
+Subject: Re: [PATCH v6 05/43] KVM: guest_memfd: Wire up kvm_get_memory_attributes()
+ to per-gmem attributes
+From: Sean Christopherson <seanjc@google.com>
+To: Fuad Tabba <tabba@google.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, ira.weiny@intel.com, jmattson@google.com, 
+	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
+	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
+	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, 
+	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
+	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
+	aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
+On Wed, May 20, 2026, Fuad Tabba wrote:
+> On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
+> <devnull+ackerleytng.google.com@kernel.org> wrote:
+> >
+> > From: Sean Christopherson <seanjc@google.com>
+> >
+> > Implement kvm_gmem_get_memory_attributes() for guest_memfd to allow the KVM
+> > core and architecture code to query per-GFN memory attributes.
+> >
+> > kvm_gmem_get_memory_attributes() finds the memory slot for a given GFN and
+> > queries the guest_memfd file's to determine if the page is marked as
+> > private.
+> >
+> > If vm_memory_attributes is not enabled, there is no shared/private tracking
+> > at the VM level. Install the guest_memfd implementation as long as
+> > guest_memfd is enabled to give guest_memfd a chance to respond on
+> > attributes.
+> >
+> > guest_memfd should look up attributes regardless of whether this memslot is
+> > gmem-only since attributes are now tracked by gmem regardless of whether
+> > mmap() is enabled.
+> >
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> > ---
+> >  include/linux/kvm_host.h |  2 ++
+> >  virt/kvm/guest_memfd.c   | 31 +++++++++++++++++++++++++++++++
+> >  virt/kvm/kvm_main.c      |  3 +++
+> >  3 files changed, 36 insertions(+)
+> >
+> > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> > index c5ba2cb34e45c..28a54298d27db 100644
+> > --- a/include/linux/kvm_host.h
+> > +++ b/include/linux/kvm_host.h
+> > @@ -2557,6 +2557,8 @@ bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
+> >                                          struct kvm_gfn_range *range);
+> >  #endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
+> >
+> > +unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn);
+> > +
+> >  #ifdef CONFIG_KVM_GUEST_MEMFD
+> >  int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >                      gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index 5011d38820d0d..f055e058a3f28 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -509,6 +509,37 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+> >         return 0;
+> >  }
+> >
+> > +unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
+> > +{
+> > +       struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
+> > +       struct inode *inode;
+> > +
+> > +       /*
+> > +        * If this gfn has no associated memslot, there's no chance of the gfn
+> > +        * being backed by private memory, since guest_memfd must be used for
+> > +        * private memory, and guest_memfd must be associated with some memslot.
+> > +        */
+> > +       if (!slot)
+> > +               return 0;
+> > +
+> > +       CLASS(gmem_get_file, file)(slot);
+> > +       if (!file)
+> > +               return 0;
+> > +
+> > +       inode = file_inode(file);
+> > +
+> > +       /*
+> > +        * Rely on the maple tree's internal RCU lock to ensure a
+> > +        * stable result. This result can become stale as soon as the
+> > +        * lock is dropped, so the caller _must_ still protect
+> > +        * consumption of private vs. shared by checking
+> > +        * mmu_invalidate_retry_gfn() under mmu_lock to serialize
+> > +        * against ongoing attribute updates.
+> > +        */
+> > +       return kvm_gmem_get_attributes(inode, kvm_gmem_get_index(slot, gfn));
+> > +}
+> 
+> Doesn't this imply that all consumers of kvm_mem_is_private() should
+> validate the result using mmu_lock and the invalidation sequence?
+> sev_handle_rmp_fault() calls kvm_mem_is_private() without holding
+> mmu_lock and without any retry mechanism. Is that a problem?
 
---=-iph/FD/9Oere6U4F6y6S
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Yes, but my understanding is that sev_handle_rmp_fault() can tolerate false
+positives and false negatives.  It's not optimal, but it's "fine", and already
+KVM's existing behavior, e.g. KVM gets the PFN and then smashes the RMP, without
+ensuring the PFN is fresh.
 
-On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
-> If CPUID.0x16 is present and valid, use the CPU frequency provided by
-> CPUID instead of assuming that the virtual CPU runs at the same
-> frequency as TSC and/or kvmclock.=C2=A0 Back before constant TSCs were a
-> thing, treating the TSC and CPU frequencies as one and the same was
-> somewhat reasonable, but now it's nonsensical, especially if the
-> hypervisor explicitly enumerates the CPU frequency.
->=20
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
-> =C2=A0arch/x86/kernel/kvmclock.c | 16 +++++++++++++++-
-> =C2=A01 file changed, 15 insertions(+), 1 deletion(-)
->=20
-> diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-> index 62c8ea2e6769..7607920ae386 100644
-> --- a/arch/x86/kernel/kvmclock.c
-> +++ b/arch/x86/kernel/kvmclock.c
-> @@ -190,6 +190,20 @@ void kvmclock_cpu_action(enum kvm_guest_cpu_action a=
-ction)
-> =C2=A0	}
-> =C2=A0}
-> =C2=A0
-> +static unsigned long kvm_get_cpu_khz(void)
-> +{
-> +	unsigned int cpu_khz;
-> +
-> +	/*
-> +	 * Prefer CPUID over kvmclock when possible, as the base CPU frequency
-> +	 * isn't necessarily the same as the kvmlock "TSC" frequency.
-> +	 */
-> +	if (!cpuid_get_cpu_freq(&cpu_khz))
-> +		return cpu_khz;
-> +
-> +	return pvclock_tsc_khz(this_cpu_pvti());
-
-I'm fine with this in principle but shouldn't the fallback be calling
-kvm_get_tsc_khz() instead of directly calling pvclock_tsc_khz()?
-
-
-
---=-iph/FD/9Oere6U4F6y6S
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUyMDE4NTIx
-MlowLwYJKoZIhvcNAQkEMSIEICQ+S9WKGu2dd+J62OoYQxFX0FPKGyzSXOKV7vozFMv6MGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAa2emjoU+APF4
-kqv55ASwWrq71cxMkBfS9xPkjVAzSLFvp/J4aOalhMIe0At74TZpPZOfjacFhDJjCJ8y2dD5z7dH
-U+ec/b+Kj+YYv+68UaP4DlpI5Ue8Pw+u/yyxTljlf3x3D7aXf1o5Q8apZ23EW7MVoAjrGqy+xFu9
-hBrLPI+8LGi9+2KfAOLznoDqAFbEP7Nl2l9qYuQ2IZNB9AeQCJ4E15Ne7bMJHFuWIhlAfoJpCBQ7
-viQe7gzQHorNsiIxdaQCdk5QtIpIiR3fUHpBRrZxQyoQ5VjyAYh86ioMxITc8Ln6gVLtpZGHcivm
-Tp5g2Y87Da03qaHslfYEXdNg6RGFfP5zCcnYB6hNUztCMT44/n3c1L1F64iKQDwrFIEJB4v3ig5n
-qogjVcniGBOkncAOUTgIhRnR1FWLQRNHOygoZybtO8xGFJ/aYFRhhKi3v/7j+TvWVjh8qfERWbK1
-5VmgOpSLx/0AARHDek54pklqDlmLxpFkx4FHQZ9pU2SquzjqPioSKRJuOcYbD5byMjS/fjxi4OR0
-EL0ZZ4/QJsxhAlQT/Y2hJTcV8p4frvAJ93Dnk26OoFaLjQaOHeFoknHRHNvoco3z76l8/tBBcx4M
-mZour2PV9c459u9CS11Q7LJ3XIqvsRpsfo2Okg8ZUrQTJhAvDaJQHa/zRgvQR6kAAAAAAAA=
-
-
---=-iph/FD/9Oere6U4F6y6S--
+Mike, is that all correct?
