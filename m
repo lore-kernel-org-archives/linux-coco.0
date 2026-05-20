@@ -1,180 +1,309 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DBC32D97B8
-	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 13:34:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779284075; cv=pass; b=GV2mClkvbxygdcdR4rCFs7+X2vuwZdDLawtkDQRdpzgQss2oPUtiQUKRjEoQTFsFHkZqxLeRTzKq3FflEvUqiDz08jTJk7tjrNDXbg4Fb9j86GVkpJDzRMb4WqT8ABugbMjUsz8KjruMaX4nrrvxyqUyinDnX+fNzME4T76qgB0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779284075; c=relaxed/simple;
-	bh=qQiJNamxvq/HKg+2DcbBfJZDz4xq8G4yBXbE6YWO298=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qy0LI1/9I2xZUt3y6xpyxWfN1S0zksQNm7aGw/28C4829ndILJ6HEwHuPBdnWdRb28J0mwbziKnF9LvvWH48V/YZQEOeuNzLzg7FthodhiWe0zmWSLEXKwrDgSOHJe7jnCyQvQl71+cyCFOoDMvw0UILsee7uoIFxngM3ipUKB4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JdbDHXMm; arc=pass smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9DC2DAFD7;
+	Wed, 20 May 2026 13:39:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779284403; cv=none; b=acV1Hcmpv+vehEZvW+cpOnKXQZA+ggCUWoWDtyrzDA8u0akbWnK6/PzxPq4P6jSNXGO7lGJzkCBkF7np/PKo3NBOn5iZmWu9000cguf9lRbg3onoFLm0y9OlVjoC/YGueS0WyNODZdXqwm35A/b3Gd69c4FIR5f9rI234MHB+/k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779284403; c=relaxed/simple;
+	bh=dXVJCYiRNSrIl+CsMGlCg6SEHWTv7WIhbFUV55zOKis=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tRsDxY5TGQ/Zj7ywgS4/IGwwh/w+wlT5sei/l2f59fx5XYQd5AoUiE9b5eMaAnMuosoxKSQIj7TocQUN25mxjPjJ2pk6HUEK0P2IkgQqmA1yByvKS+rC8XtMU7qRYoy1KzsB/82aF0b0C3P9clySCUtbI/fLNs8XOqGugxA6Jqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a0Jw6YNa; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JdbDHXMm"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-50e61648f10so10331cf.1
-        for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 06:34:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779284072; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YWJTA9Uq7zJKFi2FVDy7NZQe1rqTRY86JOH8Z1mjixbsnfrYULGhL5DQJFH/+bJUeV
-         GYXRq4OAFjTa0r86sf0GH0b/N9XdhoeTTjWv2cs33vGxDnrf43+Ri+UTit2Ot2kpE0cm
-         TA1efdGaKZ5hn8TtBw2/uJGWB3gU2+OJz/feNFu8u38o134m3JySN4cqEhBXTWTsBJzz
-         gvcS2LJVPDJuxX92fptjHWmLbk2VnVUcv2nPcWYDjXtJY5cpQy90lbq50KT/FYHBaJ3g
-         M6S44Yc2opfdJYfrNt7x7q0WPpihgjTGtdB+jMapF8X4OAvA8iuabErRpBk8Ze/vMFl9
-         Fqgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=gg6EIejukVN1UskEcFFGr4CnqhwTYz/FF3EfBDzQQN0=;
-        fh=A5OWI3lajflOlo2OyTjrEpL5TBmYB5p6MpxgpcCPX/o=;
-        b=DlGKhvM9L0UVdgjzeMAy3515YhlluswYk7eIAMpBzjV81RLchw/CHo8zvMesjxS79k
-         rNm0dQPLCWyk4PgxsZPy51/9AfClC3m8ctWv95VMX8ow/xGN3Sqf7nvMs9YmkULONksG
-         J09AlwFAxke7zBwCbvzINfhLW82wfkIGcELZ7s2BC7p+Z/+gpG0QzMgkQiyx7oa4j9qx
-         zbNCDgWfU/rOXIjIngDxPO79izmQdjZjZ0Z9rreTDhb56LpmlZFUM1fbDGgLIEzzFym0
-         IF/tjX+kLADXc+iX/iYWY758Ax0HeHSeNdEGG6dofT9e7wttbl4crkyXgI8XSzPY/ROp
-         e4WA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779284072; x=1779888872; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gg6EIejukVN1UskEcFFGr4CnqhwTYz/FF3EfBDzQQN0=;
-        b=JdbDHXMmVHrNLyYQiKOxDQLmgCdD3tr5HeGhCXRRrcVrBkI9P2MCEjKOmva7fMEhVZ
-         ggo3ikPnxEo2pQwvwlFrk/rV8wUhLodOP5dnedW9NM8OAvOMD3XKFxbxe4Hbl8Dy/rx2
-         +W076M5K5+Y/nfU0DYL6AQvD52KyIc5EQTTqr/NBnAorOTkGhu428DZh9sWQPU0yERk0
-         9NCrUR5O+ChUkyGQNlgmEcr//GYcDAh+hliA/70Rs0G6YmMTfpinWkWJjd1q03VlVgUK
-         xqADtelxb2TSwx+KmTVkRb7VmIKCp+A1PgWCi3QiSSagRsk9MmqLsKBHbq7Ea3Fn8AER
-         zE5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779284072; x=1779888872;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gg6EIejukVN1UskEcFFGr4CnqhwTYz/FF3EfBDzQQN0=;
-        b=pjXjYXQB9RAfpnS1Gq7+9NSsUB6JR5Qt1IOZlcvIysOrLmz9tQBRS1VXi9BS+wZ7dj
-         ONVXGBCKamqMEUa1s0mv0Tf1OraShrOEuNbieHWbJ3Bd6OfIbwgJtU32NEFAwmqzP3rq
-         aKjiDOV6c67MpTdjxy2mrEMoYHc0B4EODDEQAeGaXEB8snnFLcRI4sFgUfLCrs+xSDbn
-         NcyDP/HghQmBQI4//8P0xiwgVhqiQQSeC1AW6LNat2VxnAoMKokJb9sFso4u7CS9Znt0
-         RBqKhrgmEffD4UHdeD2MrNgSbyKC0jQMzVSx3xB026QcJEnBSvdO2Y8BnZRd7JMdJSbN
-         eZvw==
-X-Forwarded-Encrypted: i=1; AFNElJ/IrYeqrLsOLsyvSlyM9ONdJQcB40f4sLBfnPyOkgjUOPg+6THI6Q0M7cEBqiOuFp5s7DBJisJmXVJj@lists.linux.dev
-X-Gm-Message-State: AOJu0YzFt4yo5MgA6GTT57PPERlXrUfN5kwqEwRQ1Z73zf5y0+f61OQk
-	0dwpxkHEL2QQBDh8ZqR0rcn/SL2xSFq4u3KkkTYmaduz2JyX83bIc2OI3hpRz9C+XYqxAxfFLnC
-	/XR58c+++1qswEoZ0vGKFo3kIYsqOJyJNPX78O3C3
-X-Gm-Gg: Acq92OFZF1KGb9hKWJ+UuWhUyBhJRvhS3TZb3x9PPzhALS6uKCP5LChc98WqAu864gB
-	WfN2Y1g9QS+UC646n08XrYLhbEV81cZWztQL5em0OSlfeetPoHMY1tn7gIP9WWLtXIH5srBIN8F
-	NyXG/+Lj+i/x9kFDlU5+/BFuoF5FB3DANEDiwYcJjsHqdntD7dV7/XaiIi3TCHZvfkl+SHwm34U
-	mLn9ivKsvgqiuzvFxHmh66ou+hOOJnxIdcFoFcAl0D2Uhr959P5pZkVItkvTnRk4Cc61Tm9LbIG
-	L9rUBrKMsIz/UIhJ3gM=
-X-Received: by 2002:a05:622a:1f18:b0:516:5709:45e5 with SMTP id
- d75a77b69052e-516794404famr42713051cf.14.1779284071144; Wed, 20 May 2026
- 06:34:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a0Jw6YNa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779284400; x=1810820400;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=dXVJCYiRNSrIl+CsMGlCg6SEHWTv7WIhbFUV55zOKis=;
+  b=a0Jw6YNaof2unUGBnXrT1Wm8xhPHGX+KCyuLIEo5LxRymSyIFvBVKfr5
+   01ppD0z0qrAXoyl6/9crp6+KhOwTKHUttLl0cGmAlgFq1LiLhWfpj9S5q
+   kIJxtm0xHOwhitf1T8AiJK69GCvuQW5jb9d0HVXb1YPHWbUSOlCB2chMl
+   kj0Og0pRUeJ27d/0wnywg+oNsd7at0J6rvXDJXM+Fc69ZHGN03RF6+kIf
+   F0wun/JJqI/98iZVDT+EbnILmHlOoFzq2CZpbBUKM/BOkVjAv2WiS82Sy
+   egzzR2jww+iIunmSc3Fk/9/p9vkiU0/nz8Q+TUEB3N3u8mL822htIU33z
+   A==;
+X-CSE-ConnectionGUID: jFqWcPHEQKiBRRUd4hWdVg==
+X-CSE-MsgGUID: PL2cg4V9RNqU5bBlL/s57g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80146379"
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="80146379"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:39:59 -0700
+X-CSE-ConnectionGUID: BYUlZQlfTQSZSmgpFMvQbQ==
+X-CSE-MsgGUID: hi9162oxTLC+b7cpBarEEg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="235923592"
+Received: from 984fee019967.jf.intel.com ([10.23.153.244])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:39:58 -0700
+From: Chao Gao <chao.gao@intel.com>
+To: kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	x86@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	linux-doc@vger.kernel.org
+Cc: binbin.wu@linux.intel.com,
+	dave.hansen@linux.intel.com,
+	djbw@kernel.org,
+	ira.weiny@intel.com,
+	kai.huang@intel.com,
+	kas@kernel.org,
+	nik.borisov@suse.com,
+	paulmck@kernel.org,
+	pbonzini@redhat.com,
+	reinette.chatre@intel.com,
+	rick.p.edgecombe@intel.com,
+	sagis@google.com,
+	seanjc@google.com,
+	tony.lindgren@linux.intel.com,
+	vannapurve@google.com,
+	vishal.l.verma@intel.com,
+	yilun.xu@linux.intel.com,
+	xiaoyao.li@intel.com,
+	yan.y.zhao@intel.com,
+	Chao Gao <chao.gao@intel.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH v10 00/25] Runtime TDX module update support
+Date: Wed, 20 May 2026 06:38:03 -0700
+Message-ID: <20260520133909.409394-1-chao.gao@intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <20260507-gmem-inplace-conversion-v6-6-91ab5a8b19a4@google.com>
-In-Reply-To: <20260507-gmem-inplace-conversion-v6-6-91ab5a8b19a4@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Wed, 20 May 2026 14:33:54 +0100
-X-Gm-Features: AVHnY4LNSFj0RfEZst7XJ-H9igWv5oxnJFnr1A0Uux_hrTg7SmxNRLrzDdjcxpU
-Message-ID: <CA+EHjTxvLU4XDPXDXYXXWJES1OFQgN8VTRLMgCCNMwBE6Hk8tQ@mail.gmail.com>
-Subject: Re: [PATCH v6 06/43] KVM: x86/mmu: Bug the VM if gmem attributes are
- queried to determine max mapping level
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Ackerley Tng <ackerleytng@google.com>
->
-> When the maximum mapping level is queried, KVM's MMU lock is held, and
-> while the MMU lock is held, guest_memfd cannot take the
-> filemap_invalidate_lock() to look up the current shared/private state of
-> the gfn, for these reasons:
->
-> + The MMU lock is a spinlock or rwlock and cannot be held while taking a
->   lock that can sleep.
-> + In guest_memfd's code paths (such as truncate), the
->   filemap_invalidate_lock() is held while taking the MMU lock, and taking
->   the locks in reverse order would introduce a AB-BA deadlock.
->
-> Currently, the maximum mapping level is only queried from guest_memfd in
-> the process of recovering huge pages, if dirty logging is disabled on a
-> memslot. Dirty logging is not currently supported for guest_memfd, and
-> guest_memfd memslots also cannot be updated.
->
-> For now, bug the VM if guest_memfd needs to be queried to determine the
-> maximum mapping level. This guard can be removed if/when support is added.
->
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->  arch/x86/kvm/mmu/mmu.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
->
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index a80a876ab4ad6..153bcc5369985 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -3357,6 +3357,15 @@ int kvm_mmu_max_mapping_level(struct kvm *kvm, struct kvm_page_fault *fault,
->                 max_level = fault->max_level;
->                 is_private = fault->is_private;
->         } else {
-> +               /*
-> +                * Memory attributes cannot be obtained from guest_memfd while
-> +                * the MMU lock is held.
-> +                */
-> +               if (KVM_BUG_ON(static_call_query(__kvm_get_memory_attributes) ==
-> +                              kvm_gmem_get_memory_attributes, kvm)) {
-> +                       return 0;
-> +               }
-> +
+Hi Dave & Rick,
 
-This directly takes the address of kvm_gmem_get_memory_attributes,
-which is only compiled if CONFIG_KVM_GUEST_MEMFD=y. This breaks
-ARCH=i386.
+Thanks for your thorough review of v9. This v10 addresses the issues you
+pointed out. The main changes in this version are polishing changelogs
+and variable renames to improve readability. Specifically:
+ 
+   - Patches 1-2 (new): Split the original "Consolidate TDX global
+     initialization states" into two steps — first move the statics to
+     file scope, then clarify the result-caching logic in
+     try_init_module_global().
+   - Patch 6: Removed user-facing Kconfig help text for TDX_HOST_SERVICES
+     (now a silent tristate auto-selected by INTEL_TDX_HOST).
+   - Patch 13: Renamed "size" to "data_len" in seamldr_install_module()
+     and init_seamldr_params(); renamed "HEADER_SIZE" to
+     "TDX_IMAGE_HEADER_SIZE"; renamed "primary" to "is_lead_cpu" in the
+     update state machine.
+   - Patch 13: Added early data_len validation and explicit bounds checks
+     on sigstruct_nr_pages/module_nr_pages against SEAMLDR_MAX_NR_*
+     limits, removing the implicit clamping in populate_pa_list().
+   - Patch 22: Fixed BIT(16) -> BIT_ULL(16) for
+     TDX_SYS_SHUTDOWN_AVOID_COMPAT_SENSITIVE.
+   - Patch 22: Removed unused TDX_FEATURES0_UPDATE_COMPAT definition.
+   - Various patches: Shortened sysfs ABI descriptions, tightened
+     comments across seamldr.h and seamldr.c, and minor style fixes
+     (return 0 -> return false, unfolded conditionals)
 
-Cheers,
-/fuad
+Please take a look at this new version. I hope it can still be merged
+for 7.2.
+---
 
->                 max_level = PG_LEVEL_NUM;
->                 is_private = kvm_mem_is_private(kvm, gfn);
->         }
->
-> --
-> 2.54.0.563.g4f69b47b94-goog
->
->
+(For transparency, note that I used AI tools to help proofread this
+cover-letter and commit messages)
+
+This series adds support for runtime TDX module updates that preserve
+running TDX guests. It is also available at:
+
+  https://github.com/gaochaointel/linux-dev/commits/tdx-module-updates-v10/
+
+== Background ==
+
+Intel TDX isolates Trusted Domains (TDs), or confidential guests, from the
+host. A key component of Intel TDX is the TDX module, which enforces
+security policies to protect the memory and CPU states of TDs from the
+host. However, the TDX module is software that requires updates.
+
+== Problems ==
+
+Currently, the TDX module is loaded by the BIOS at boot time, and the only
+way to update it is through a reboot, which results in significant system
+downtime. Users expect the TDX module to be updatable at runtime without
+disrupting TDX guests.
+
+== Solution ==
+
+On TDX platforms, P-SEAMLDR[1] is a component within the protected SEAM
+range. It is loaded by the BIOS and provides the host with functions to
+install a TDX module at runtime.
+
+This series implements runtime TDX module updates through the fw_upload
+mechanism. That interface is a good fit because TDX module selection is not
+a simple "load a known file from disk" problem. The update image to load
+depends on module versioning, compatibility rules. fw_upload lets userspace
+choose the module explicitly while the kernel provides the update
+mechanism.
+
+This design intentionally keeps most update validation/policy in userspace.
+The kernel exposes the information userspace needs, such as TDX module
+version and P-SEAMLDR information, but userspace is responsible for
+understanding TDX module's versioning and compatibility rules and for
+choosing an appropriate update image (see "TDX module versioning" below).
+
+The kernel still enforces the pieces that must be handled in-kernel:
+
+1. Validate the tdx_blob header fields that are not passed through tothe
+TDX module. Just the standard overflow and reserved bits defensive ABI stuff.
+
+2. Make sure no non-update SEAMCALLs are called during the update.
+
+3. Make sure SEAMCALLs are on the right CPU, for any the user has made
+available to the kernel.
+
+4. Handle the race between updates and concurrent TD builds by
+returning -EBUSY to userspace.
+
+Everything else remains a userspace responsibility.
+
+In the unlikely event the update fails, for example userspace picks an
+incompatible update image, or the image is otherwise corrupted, all TDs
+will experience SEAMCALL failures and be killed. The recovery of TD
+operation from that event requires a reboot.
+
+Given there is no mechanism to quiesce SEAMCALLs, the TDs themselves must
+pause execution over an update. The most straightforward way to meet the
+'pause TDs while update executes' constraint is to run the update in
+stop_machine() context. All other evaluated solutions export more
+complexity to KVM, or exports more fragility to userspace.
+
+== How to test this series ==
+
+NOTE: This v10 uses a new tdx_blob format. The scripts and module blobs in
+https://github.com/intel/tdx-module-binaries have not yet been updated
+to match this version. Those updates will be done separately later.
+
+== Other information relevant to Runtime TDX module updates ==
+
+=== TDX module versioning ===
+
+Each TDX module is assigned a version number x.y.z, where x represents the
+"major" version, y the "minor" version, and z the "update" version.
+
+Runtime TDX module updates are restricted to Z-stream releases.
+
+Note that Z-stream releases do not necessarily guarantee compatibility. A
+new release may not be compatible with all previous versions. To address this,
+Intel provides a separate file containing compatibility information, which
+specifies the minimum module version required for a particular update. This
+information is referenced by the tool to determine if two modules are
+compatible.
+
+=== TCB Stability ===
+
+Updates change the TCB as viewed by attestation reports. In TDX there is
+a distinction between "launch-time" version and "current" version where
+runtime TDX module updates cause that "current" version number to change,
+subject to Z-stream constraints.
+
+The concern that a malicious host may attack confidential VMs by loading
+insecure updates was addressed by Alex in [3]. Similarly, the scenario
+where some "theoretical paranoid tenant" in the cloud wants to audit
+updates and stop trusting the host after updates until audit completion
+was also addressed in [4]. Users not in the cloud control the host machine
+and can manage updates themselves, so they don't have these concerns.
+
+See more about the implications of current TCB version changes in
+attestation as summarized by Dave in [5].
+
+=== TDX module Distribution Model ===
+
+At a high level, Intel publishes all TDX modules on the github [2], along
+with a mapping_file.json which documents the compatibility information
+about each TDX module and a userspace tool to install the TDX module. OS
+vendors can package these modules and distribute them. Administrators
+install the package and use the tool to select the appropriate TDX module
+and install it via the interfaces exposed by this series.
+
+[1]: https://cdrdv2.intel.com/v1/dl/getContent/733584
+[2]: https://github.com/intel/tdx-module-binaries
+[3]: https://lore.kernel.org/all/665c5ae0-4b7c-4852-8995-255adf7b3a2f@amazon.com/
+[4]: https://lore.kernel.org/all/5d1da767-491b-4077-b472-2cc3d73246d6@amazon.com/
+[5]: https://lore.kernel.org/all/94d6047e-3b7c-4bc1-819c-85c16ff85abf@intel.com/
+
+
+
+Chao Gao (24):
+  x86/virt/tdx: Clarify try_init_module_global() result caching
+  x86/virt/tdx: Move TDX global initialization states to file scope
+  x86/virt/tdx: Consolidate TDX global initialization states
+  x86/virt/tdx: Move TDX_FEATURES0 bits to asm/tdx.h
+  coco/tdx-host: Introduce a "tdx_host" device
+  coco/tdx-host: Expose TDX module version
+  x86/virt/seamldr: Introduce a wrapper for P-SEAMLDR SEAMCALLs
+  x86/virt/seamldr: Add a helper to retrieve P-SEAMLDR information
+  coco/tdx-host: Expose P-SEAMLDR information via sysfs
+  coco/tdx-host: Don't expose P-SEAMLDR information on CPUs with erratum
+  coco/tdx-host: Implement firmware upload sysfs ABI for TDX module
+    updates
+  x86/virt/seamldr: Allocate and populate a module update request
+  x86/virt/seamldr: Introduce skeleton for TDX module updates
+  x86/virt/seamldr: Abort updates after a failed step
+  x86/virt/seamldr: Shut down the current TDX module
+  x86/virt/tdx: Reset software states during TDX module shutdown
+  x86/virt/seamldr: Install a new TDX module
+  x86/virt/seamldr: Do TDX global and per-CPU init after module
+    installation
+  x86/virt/tdx: Restore TDX module state
+  x86/virt/tdx: Refresh TDX module version after update
+  x86/virt/tdx: Reject updates during compatibility-sensitive operations
+  x86/virt/tdx: Enable TDX module runtime updates
+  coco/tdx-host: Document TDX module update compatibility criteria
+  x86/virt/tdx: Document TDX module update
+
+Kai Huang (1):
+  x86/virt/tdx: Move low level SEAMCALL helpers out of <asm/tdx.h>
+
+ .../ABI/testing/sysfs-devices-faux-tdx-host   |  66 ++++
+ Documentation/arch/x86/tdx.rst                |  34 ++
+ arch/x86/include/asm/cpufeatures.h            |   1 +
+ arch/x86/include/asm/seamldr.h                |  36 ++
+ arch/x86/include/asm/tdx.h                    |  66 +---
+ arch/x86/include/asm/tdx_global_metadata.h    |   4 +
+ arch/x86/include/asm/vmx.h                    |   1 +
+ arch/x86/virt/vmx/tdx/Makefile                |   2 +-
+ arch/x86/virt/vmx/tdx/seamcall_internal.h     | 109 ++++++
+ arch/x86/virt/vmx/tdx/seamldr.c               | 324 ++++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.c                   | 169 +++++----
+ arch/x86/virt/vmx/tdx/tdx.h                   |   8 +-
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c   |  17 +-
+ drivers/virt/coco/Kconfig                     |   2 +
+ drivers/virt/coco/Makefile                    |   1 +
+ drivers/virt/coco/tdx-host/Kconfig            |   6 +
+ drivers/virt/coco/tdx-host/Makefile           |   1 +
+ drivers/virt/coco/tdx-host/tdx-host.c         | 231 +++++++++++++
+ 18 files changed, 965 insertions(+), 113 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-devices-faux-tdx-host
+ create mode 100644 arch/x86/include/asm/seamldr.h
+ create mode 100644 arch/x86/virt/vmx/tdx/seamcall_internal.h
+ create mode 100644 arch/x86/virt/vmx/tdx/seamldr.c
+ create mode 100644 drivers/virt/coco/tdx-host/Kconfig
+ create mode 100644 drivers/virt/coco/tdx-host/Makefile
+ create mode 100644 drivers/virt/coco/tdx-host/tdx-host.c
+
+
+base-commit: 5209e5bfe5cab593476c3e7754e42c5e47ce36de
+-- 
+2.52.0
+
