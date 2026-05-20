@@ -1,151 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E16C3EDACC
-	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 17:38:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81521684BE
+	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 17:56:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298723; cv=none; b=b8U8u83AwiwWUYQ5ySuzpx53aGlyMHvZ8N4yBfbR8JkOMXl4fkcXDf9eTfAj1+wWmdj4amxXYjxHYfDq6a5PT0wgkQbbdM07YQ9DWTOllc0iSl+27cGEFdkjrI9xmoHIQBTzfh2WBQ9hJGOLRQuwaoQA6/aO6Yd4CR2jdalIGhc=
+	t=1779299801; cv=none; b=cYkX+SgPjv3Wwpi1X7rlkGDzMxXARnJZtuN7gVYiEgaXhUEcJQ7zjkESct4IdTJNW0TDmfjfEN4cNlCLeyJzRFOBq4HL1TiuudP6WnTxsf7ZBDlUmdlSj9w2AEeVyKl8Kub4BLgzmDy/fcklf+a3nrosX0ZqytVgoMeQNFET1Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298723; c=relaxed/simple;
-	bh=vyFbmDoVPWkmerrHBrMGWkfgzBdsP+tG7jDlcj5Sg2k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=umhJ9cTF0bg02J85Bb3y/cMP+z8yjP6T4Vnp44U1RjkhSRFhCf+/s94Y7d/PyZAQK9CvMk7FUZm4AgjXWaz3+j5Ub4IhMVY6iGmAJE6gO1tDu8ODYf1ZhWyE2JFRyJqaQUO13jU8Ox5tGVG+saiCOL6kVGom+EMyYUw5sYo7FI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mxisXGDK; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779299801; c=relaxed/simple;
+	bh=Dublram4OvvOps1rJjL7126QT2HdDhXkpgA6+9a2oHg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qqLAEEqRKaSdy/yTfUehBScPAyPx9FvR8VImKCEgJ4W7HP6mAEfm1Twkt1g+k6aeR/8L8KYJSmTwerJQh8OxcHgSnCQjivF8fOc9WAhg0nxwyuQvJmBiyjgZ23oEMRtSGhq3f76LHZiq3LsbFM/eGYXxaAAJg3MnotWKvQZDZRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UZPhEj3G; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mxisXGDK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779298722; x=1810834722;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=vyFbmDoVPWkmerrHBrMGWkfgzBdsP+tG7jDlcj5Sg2k=;
-  b=mxisXGDK4xBEt1JXcF/+BbQXYSYef885KGsoTn3FBf7kzBTwbln9y4w/
-   Z9D5qGjWZZC34L53UH+NXB6qTLsmWfcjlI2L2F4V+wnDQUxZe5rn3YOqb
-   pGRRA/Cgr9YpTDpi0vqFLnzOsukNmmYEqSAh5xlGL8oE8qnpIZz6BHxDQ
-   5qp7D4PxcsSbJzLPwGl4dJ3Sj9dhOanLksQ683xZ12AWdhE3yb74xZm+7
-   hvvJ9KZFClbRFwvzMc8VAkHG2Wi4zWGyS7KuKLUS9cuMrKtbSZ2oxqR/1
-   fcMN+YEqjcScFhVWNqK6eQRJZ99ORxMhzlaOjVDI1u9Ni3hk47Ty0UD+L
-   Q==;
-X-CSE-ConnectionGUID: HXAiITVlS1m6RxxRl89wew==
-X-CSE-MsgGUID: AkbdBYU3Tu63ABMbtcdlUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="82785840"
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="82785840"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 10:38:42 -0700
-X-CSE-ConnectionGUID: BzcvtHkGQj2Xe11/ywkNSQ==
-X-CSE-MsgGUID: G5QdqfqrQ6akAcjjynBOow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="244250611"
-Received: from spandruv-mobl5.amr.corp.intel.com (HELO [10.125.109.190]) ([10.125.109.190])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 10:38:41 -0700
-Message-ID: <509e8669-b052-437a-8896-69ac71dafde5@intel.com>
-Date: Wed, 20 May 2026 10:38:46 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UZPhEj3G"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-83836443305so2638776b3a.1
+        for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 10:56:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779299799; x=1779904599; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=s6+hlvnmwj5Awnxfo2Fw5NZ8DPJZlHGIf0en9UEe6nA=;
+        b=UZPhEj3GVHSTo5F067/5S01sX3yfbN/HkaJQJjIrzOUQQiNANv6kjdOUbXEhiBAX9j
+         mKBlaoOh+UhUwlu+CpCRtFnVjo9Y/M3FE0ZMQ1XJ3ti/jU/S3Ts2/S++xExMl/KHQsDP
+         mf/t79BS3t3PaepXLa7mifOdk0DXdG5OxHqxmJjbb2bvP7KI18uYE3N7HpgAt4JVDfYE
+         wVaRkbZemyQs+gwUKSXs8bwZ9x4wW52j2DWai3P2Mjhc7zvetsDyY7aFjS6Co6SZncEA
+         NfMnFJhLLe+J2g56S90wqLeY/1h42i4I2rwcVu5SvfF258D9Kkde62T6C4PyM4AZqS27
+         RbHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779299799; x=1779904599;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=s6+hlvnmwj5Awnxfo2Fw5NZ8DPJZlHGIf0en9UEe6nA=;
+        b=plS1rwnJYPSZwL+RJatW+mY9F+ZgooH27dyyX8FaVvh9YYdWQ41kyXr4eOFDvMJz9s
+         IhBSF1Hi21pQZXcNHxRyeBUeJEboYVbKiclzB1DFb0UlMAGQ2w3vOKYpR4KsWNY4SlOp
+         Fk4s2cL7wx4bws4GLvV1r8m1tdQ7XPy2hfLfqTt2BWEWzRYR/1smQIFc1ZhixrY+K3ee
+         rlh+NJzQ30aW1sZEwW/MbZegMizcqUCet6dp85h3sOUewQ7zpD7noN/RS2iaKqUTpzuh
+         9zt7OylxN26ve1Q2fnP4GMChQ0DjWApQF8dX7RFdD3zNPL2DuFEhEw93SIZNU2r/cuDj
+         szdw==
+X-Forwarded-Encrypted: i=1; AFNElJ/cfGHBCsYbpIQterGYyusTaoZKwgPyT9vV/ideTkgdlzW1yf+lhSBSsVTzeCRQSWGwOkx2mIO1iSPX@lists.linux.dev
+X-Gm-Message-State: AOJu0YwKu/NePsxqSssBOHOnjMPCL+DZJq669hK9BFEwgOG6DFa46UVr
+	hnOVgiKNSwpHhyphzxnLN139gSNYIyZYrQ+ZAJp3vkrOwKBdbUPF/HHHy1/fCVwmH3uqLrA5GVh
+	TlRWZMQ==
+X-Received: from pfdc18.prod.google.com ([2002:aa7:8c12:0:b0:834:df9e:8e02])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3028:b0:837:8c8f:8f51
+ with SMTP id d2e1a72fcca58-83f33db3f0dmr25728027b3a.47.1779299798653; Wed, 20
+ May 2026 10:56:38 -0700 (PDT)
+Date: Wed, 20 May 2026 10:56:38 -0700
+In-Reply-To: <949e39aec749f019b18fa41c2a42bcc9231288b9.camel@amazon.co.uk>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 15/25] x86/virt/seamldr: Abort updates after a failed
- step
-To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
- ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
- nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
- reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
- seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
- vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
- yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-References: <20260520133909.409394-1-chao.gao@intel.com>
- <20260520133909.409394-16-chao.gao@intel.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260520133909.409394-16-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260515191942.1892718-1-seanjc@google.com> <20260515191942.1892718-3-seanjc@google.com>
+ <949e39aec749f019b18fa41c2a42bcc9231288b9.camel@amazon.co.uk>
+Message-ID: <ag311hHnqrCGR9Jc@google.com>
+Subject: Re: [PATCH v3 02/41] x86/tsc: Add helper to register CPU and TSC freq
+ calibration routines
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw@amazon.co.uk>
+Cc: "tglx@kernel.org" <tglx@kernel.org>, "longli@microsoft.com" <longli@microsoft.com>, 
+	"luto@kernel.org" <luto@kernel.org>, 
+	"alexey.makhalov@broadcom.com" <alexey.makhalov@broadcom.com>, "jstultz@google.com" <jstultz@google.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"ajay.kaher@broadcom.com" <ajay.kaher@broadcom.com>, "jan.kiszka@siemens.com" <jan.kiszka@siemens.com>, 
+	"haiyangz@microsoft.com" <haiyangz@microsoft.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "kys@microsoft.com" <kys@microsoft.com>, 
+	"decui@microsoft.com" <decui@microsoft.com>, 
+	"daniel.lezcano@kernel.org" <daniel.lezcano@kernel.org>, "wei.liu@kernel.org" <wei.liu@kernel.org>, 
+	"peterz@infradead.org" <peterz@infradead.org>, "jgross@suse.com" <jgross@suse.com>, 
+	"boris.ostrovsky@oracle.com" <boris.ostrovsky@oracle.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"mhklinux@outlook.com" <mhklinux@outlook.com>, "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"bcm-kernel-feedback-list@broadcom.com" <bcm-kernel-feedback-list@broadcom.com>, 
+	"tglx@linutronix.de" <tglx@linutronix.de>, "nikunj@amd.com" <nikunj@amd.com>, 
+	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, 
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
+	"rick.p.edgecombe@intel.com" <rick.p.edgecombe@intel.com>, 
+	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>, "sboyd@kernel.org" <sboyd@kernel.org>, 
+	"x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/20/26 06:38, Chao Gao wrote:
-> +static void ack_state(struct update_ctrl *ctrl, int result)
->  {
->  	raw_spin_lock(&ctrl->lock);
->  
-> +	ctrl->num_failed += !!result;
->  	ctrl->num_ack++;...> @@ -239,8 +242,8 @@ static int do_seamldr_install_module(void
-*seamldr_params)
->  			break;
->  		}
->  
-> -		ack_state(&update_ctrl);
-> -	} while (curstate != MODULE_UPDATE_DONE);
-> +		ack_state(&update_ctrl, ret);
-> +	} while (curstate != MODULE_UPDATE_DONE && !READ_ONCE(update_ctrl.num_failed));
+On Mon, May 18, 2026, David Woodhouse wrote:
+> On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
+> >=20
+> > --- a/arch/x86/xen/time.c
+> > +++ b/arch/x86/xen/time.c
+> > @@ -569,7 +569,7 @@ static void __init xen_init_time_common(void)
+> > =C2=A0	static_call_update(pv_steal_clock, xen_steal_clock);
+> > =C2=A0	paravirt_set_sched_clock(xen_sched_clock);
+> > =C2=A0
+> > -	x86_platform.calibrate_tsc =3D xen_tsc_khz;
+> > +	tsc_register_calibration_routines(xen_tsc_khz, NULL);
+> > =C2=A0	x86_platform.get_wallclock =3D xen_get_wallclock;
+> > =C2=A0}
+> > =C2=A0
+>=20
+> xen_tsc_khz() doesn't use CPUID but really *should*.
+>=20
+> Care to pull in
+> https://lore.kernel.org/all/20260509224824.3264567-31-dwmw2@infradead.org=
+/
+> to your next round please?
+>=20
+> (Without the misplaced changes in kvm/x86.c that should have been in
+> two different prior commits, and are now folded into those correctly in
+> my kvmclock5 branch ready for the next posting of that).
 
-The READ_ONCE() is cute. But it's not really effective. It's also
-overly-complicated.
-
-update_ctrl.num_failed is just a single. Nothing cares if it is 1 or 2
-or 999. So why have a count?
-
-Any reason this won't work?
-
-	if (result)
-		set_bit(0, ctrl->failed);
-
-... and on the read side:
-
-	test_bit(0, &update_ctrl.failed)
-
-That's 100% non-ambiguous. It doesn't have a counter where one isn't
-needed. It also can't even theoretically be messed up by the compiler.
+Ya, will do.  What's one more patch...
