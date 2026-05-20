@@ -1,185 +1,195 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BDD3F44D9
-	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 17:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DF53F54D1
+	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 18:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299998; cv=none; b=HfwjkbKAJqQhTxyc6HAcEQ2668HZv/bdt0kQktu5CpkIl4Dv/6c3fqGNChaVqWeHcd8bMU3zUV6VYsZISEMPn44EnCe0bXPIT/PH44IEc0ne5eFMkFZgyCSlnP3wPizKHX04H9VXpkC94qYpuhRPZOlbqLs4oUx/JE6YE1QAfKc=
+	t=1779300681; cv=none; b=LGOkCjoLoPCUlc+51RvW5Luo+OlP6o2NJclJt65hDK0Sxz13QN8iruY5//NHTLqmeHxbVkoCSfvGxX1R/fe/CzNGZS444zfafaIwjf/wxUUuYAeZoaaQvNEUInFqnHxez4WCZDGKfzuAWokhow9ZXm9Xk0FQr38xOr/0ROdTEcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299998; c=relaxed/simple;
-	bh=dO19ZIhQCWsYMmrxTaUpUGG1PvauafKv/vB6jcGBVQM=;
+	s=arc-20240116; t=1779300681; c=relaxed/simple;
+	bh=F9EAa2fqZKdVWRREy2SptPZ4rR4Fj77slKy/QCP2Jng=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=cpCRRWL+duYyFQtHcqeIT/gZDIOUpq3D7YA4JUYlJ1XC+ANURFSDc9pTdkZVfJgAqIWVnJTr+kr27sw30rbZ3ZyyZzEi1Dqyr9N1XI9ogVdUJC0rczuf8aUaFfZB+7iKMStaFm5rBCXvZCunVTfToj4+BxYoesCZ/J1ra40uyn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ObNFkJKz; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=GEmBJckvh9JVyuHWnmzs1XAurWmkkwiv9ZcxQAyOJdHXNIsglNFHYfgXK1y0gwaFk9cCVFurATbZvCM3SPmxnNW5ugV/W90ZAuVYh5203vGMz8wveZxK4knkEhpDaKtywlKFBM11J/nTdf+DKBEH8lyonMEKwpjipWBOeebkXfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QI1dT47o; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ObNFkJKz"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82fa2165c3eso3261401b3a.0
-        for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 10:59:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QI1dT47o"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c827bda3052so8173536a12.1
+        for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 11:11:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779299996; x=1779904796; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1779300680; x=1779905480; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=CN4Zn2M2jJcMvhiuUJl3O5eQtI7RDh/+btUc2M7YWms=;
-        b=ObNFkJKzxl+p5w8JjfAma11RRfPiGSl73tirNenjEWR9H1N2fH6qkCIsS/MX62CAEG
-         A6qtDeNF8dQUzyquCDnTrYnHfEGjSx9tPAyIo+qJTVoR0kyHoVjN/imMmYx0fEfMJbzd
-         TlVN4JxUGXgjalzvlWFOywrR5mj/g2mz15+UN7seq2QwrLPgL8E6XFp/LigqOnt6bH7o
-         roABKuFBao91c0QQQu+JiWUExjZ07248uBu9F49iPhYvDFQBFAkuxAR71y+g9fTFVbq7
-         RjMcNo74b6RUdm9acHs1jLHxwMn4sUFn/3fkemH5OVfUzswHbsL8VzhVWqwOTY/ukm2o
-         TljA==
+        bh=Ral3wdnykP2fUONSZPffUp/laMD2JLc4A4V5t1qiuyw=;
+        b=QI1dT47oMF/LBbRZseevEcjaILwLDfPerqU+XmuZV3XIslz3owkhGbgJ1Bb57k1zqJ
+         /qT0AeccAVWrJoveqD+3ibDGMtLyo6/vkxL+aBe2BysBJ8dGi21yi2DezegKiOryGt1q
+         hskRq/1I2gEXmcVuxPLp1tI9R8H9+Wwlsr1ZavOBPo786TPNsRJQ3lNyGUt2TWjpVYlt
+         vbYLMVdI4S2Fw79+dnabPVxnWdaBNx00Eb/QxWm0MB0nMajn7B6eq7yI0G0nl8zlg0D9
+         5mY3M8zyxBH3mK8uKIq6GnljLM1qsfK6fgLpB88dd08tMubcIjimlf4JGjqNB/jJUyWd
+         GkPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779299996; x=1779904796;
+        d=1e100.net; s=20251104; t=1779300680; x=1779905480;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=CN4Zn2M2jJcMvhiuUJl3O5eQtI7RDh/+btUc2M7YWms=;
-        b=HnvlUWmXozi7A/VEtJ6i5m6tQ1vghT6lGpowYDK1agBNODZpLHAxYxkBObFeAv+WSt
-         hcOuH++lEIvB4TOYofhD/uvmdUYDpavqvgPgJYouIee/idpnZrIKfzbIKcW8aseB0Kup
-         iiqOMRHFg0QO3jXCbBR4OIfeCF/Aa1sCiltjWYMprqpSLyNo/dg41qzsswZlMvWvuyrK
-         fD6OBYB3B+8ECd6voXzORtimF5fz3U4W8cqgvdMiksCdGRI/nUWQ0xoqB1PsAvCPX7wf
-         bA1OBWieoXoB4C2oVPD4Zm9ZioweAR8Rr6vtUkHbgls8ba21ppRJka3R+wwtXowYZexE
-         J0bg==
-X-Forwarded-Encrypted: i=1; AFNElJ9kIBAUgQGjeypCarjB1f/oONJjUy3WCv6A+9xSM92iODTpRJyN71IHdRqtpm/pWZ4YQEpbcpGwnAUM@lists.linux.dev
-X-Gm-Message-State: AOJu0YzWdr/2Y5NvT8ctzB7LXe4inBxRweHrx8YjYKI2q1mygG2UtKs4
-	xebipBaiBHE2sfvUmtogzpOeKiCV/vjLjheh1U4VU/ee52UaC7fFgPV3sdw+W/dM61Ct/0tPfLg
-	D9hV0ow==
-X-Received: from pfblu4.prod.google.com ([2002:a05:6a00:7484:b0:83a:58c1:f5e2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2449:b0:835:405a:7e72
- with SMTP id d2e1a72fcca58-83f33c24d1cmr24352155b3a.11.1779299995865; Wed, 20
- May 2026 10:59:55 -0700 (PDT)
-Date: Wed, 20 May 2026 10:59:55 -0700
-In-Reply-To: <7260682b21c28d1299e58400b9a2f4b8d23bd434.camel@infradead.org>
+        bh=Ral3wdnykP2fUONSZPffUp/laMD2JLc4A4V5t1qiuyw=;
+        b=R+JzATBnARjAHY+LOqoeSxr1SHS5ZGHFwOOfhW7+EOEAhXkGMFnajfv1Z0pHLtDSJR
+         mcyM01kjOZVBUsg9mTkhpB4u9AxOnROT2ZLifthjP0ZLePTTuh0eaKLXMlHFEWCpjpDv
+         z8dFObVkwI5QPFqloQewqb48o7hWUz5Z+C2sHQmbbTMkQ4oZ8XY3l7vkTgQzwW5IGv2f
+         Vs4wzqBaIG3zZzXcaz1R8oXl4l8I1r+xARmaFkk8c0GjSfIv/4990mcFjjSIRoBL6eCr
+         GLZvcCyLZ2Ye+OKcRHLnXqg0y74m4EzJ4mNaDbZ3LUG91ZK8UGaXUoskdtv6aptBCah1
+         k9SQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9tLwBnQ+/PUucwOj5JYPwa5nAs6OIAHY/D59zbuUkn8eN+U8heMPFKM/bPM63JZTV/Kgj1EJVJNNiZ@lists.linux.dev
+X-Gm-Message-State: AOJu0YxDpGEBENKSbYkj6IXgdk33eHOqxObZv+88mVbJAKMUNu2ESR6G
+	dsphW9RjtTRe76mnEdhOy0wR+jsMDgi+a1j3hW0kccKDtLGNQFNEKdDwQ1w00oWk+URHQD1rfjE
+	kp3dJQg==
+X-Received: from pfbby10.prod.google.com ([2002:a05:6a00:400a:b0:837:b0a7:c3ac])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1ca4:b0:838:127d:a161
+ with SMTP id d2e1a72fcca58-83f33b328femr23678520b3a.18.1779300679491; Wed, 20
+ May 2026 11:11:19 -0700 (PDT)
+Date: Wed, 20 May 2026 11:11:18 -0700
+In-Reply-To: <4a918cb38dccd4ef7a2d84d16f5044472d069f7c.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260515191942.1892718-1-seanjc@google.com> <7260682b21c28d1299e58400b9a2f4b8d23bd434.camel@infradead.org>
-Message-ID: <ag32mwLvHpWn2vCt@google.com>
-Subject: Re: [PATCH v3 00/41] x86: Try to wrangle PV clocks vs. TSC
+References: <20260514215355.1648463-1-seanjc@google.com> <20260514215355.1648463-16-seanjc@google.com>
+ <074e209fe4c78a735868099f13d76b9dde2c88e3.camel@intel.com>
+ <agx77QB3UVmJr5xP@google.com> <729c4191d16e4c768c231ffb9bb8420306039210.camel@intel.com>
+ <ag0NlJ2FEIL7GJIj@google.com> <4a918cb38dccd4ef7a2d84d16f5044472d069f7c.camel@intel.com>
+Message-ID: <ag35RgwowvR9Q4hA@google.com>
+Subject: Re: [PATCH v2 15/15] KVM: x86: Move the bulk of register specific
+ code from x86.c to regs.c
 From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
-	Daniel Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	John Stultz <jstultz@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, x86@kernel.org, 
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, Michael Kelley <mhklinux@outlook.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
-	Thomas Gleixner <tglx@linutronix.de>
+To: Kai Huang <kai.huang@intel.com>
+Cc: "dwmw2@infradead.org" <dwmw2@infradead.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, "paul@xen.org" <paul@xen.org>, 
+	"yosry@kernel.org" <yosry@kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 19, 2026, David Woodhouse wrote:
-> On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
-> > Dave/Thomas/Peter/Boris, what's the going rate for bribes to take somet=
-hing
-> > like this through the tip tree?
+On Wed, May 20, 2026, Kai Huang wrote:
+> On Tue, 2026-05-19 at 18:25 -0700, Sean Christopherson wrote:
+> > On Wed, May 20, 2026, Kai Huang wrote:
+> > > I am not sure whether there's a mandatory requirement that "struct kv=
+m_arch" and
+> > > "struct kvm_vcpu_arch" must be fully embedded, and it would be kinda =
+painful to
+> > > covert to a pointer (e.g., there's kvm_x86_ops::vm_size), but perhaps=
+ that is
+> > > also an option to consider?
 > >=20
-> > The bulk of the changes are in kvmclock and TSC, but pretty much every
-> > hypervisor's guest-side code gets touched at some point.=C2=A0 I am rea=
-onsably
-> > confident in the correctness of the KVM changes.=C2=A0 Michael tested H=
-yper-V in
-> > v2, and while there were conflicts when rebasing, they were largely
-> > superficial (and I've just jinxed myself).=C2=A0 For all other hypervis=
-ors, assume
-> > the code is compile-tested only, but those changes are all quite small =
-and
-> > straightforward.
+> > The idea I had in the past, and where I was going with things before s3=
+90's love
+> > for arm64 came along, was to add a kvm_arch.h in arch/<arch>/kvm, and h=
+ave virt/kvm
+> > include _that_ instead of kvm_host.h. =C2=A0
 > >=20
-> > The only changes that are questionable/contentious are the last two pat=
-ches,
-> > which have KVM-as-a-guest use CPUID 0x16 to get the CPU frequency, even=
- on
-> > AMD (that's the dubious part).=C2=A0 I very deliberately put them last,=
- so that
-> > they can be dropped at will (I don't care terribly if those patches lan=
-d).
-> > To merge them, I would want explicit Acks from Paolo and David W.
-> >=20
-> > So, except for the last two patches, to get the stuff I really care abo=
-ut
-> > landed, I think/hope it's just the TSC and guest-side CoCo changes that=
- need
-> > reviews/acks?
-> >=20
-> > The primary goal of this series is (or at least was, when I started) to
-> > fix flaws with SNP and TDX guests where a PV clock provided by the untr=
-usted
-> > hypervisor is used instead of the secure/trusted TSC that is controlled=
- by
-> > trusted firmware.
-> >=20
-> > The secondary goal is to draft off of the SNP and TDX changes to slight=
-ly
-> > modernize running under KVM.=C2=A0 Currently, KVM guests will use TSC f=
-or
-> > clocksource, but not sched_clock.=C2=A0 And they ignore Intel's CPUID-b=
-ased TSC
-> > and CPU frequency enumeration, even when using the TSC instead of kvmcl=
-ock.
-> > And if the host provides the core crystal frequency in CPUID.0x15, then=
- KVM
-> > guests can use that for the APIC timer period instead of manually calib=
-rating
-> > the frequency.
-> >=20
-> > The tertiary goal is to clean up all of the PV clock code to deduplicat=
-e logic
-> > across hypervisors, and to hopefully make it all easier to maintain goi=
-ng
-> > forward.
 >=20
-> I booted this in qemu with -cpu host,+invtsc,+vmware-cpuid-freq
+> Not sure whether there's other code doing so? :-)
 >=20
-> I was expecting to see it eschew the kvmclock and use *only* the TSC.
-> Is there even any need for 'tsc-early' given that it's *told* the TSC
-> frequency in CPUID? Shouldn't it have detected that the TSC is known
-> before init_tsc_clocksource() runs?
->
-> And then it even spent some time at boot actually using the kvmclock as
-> clocksource... when ideally I don't think it would even have *enabled*
-> it at all?
-
-Yeah, that's definitely the ideal state.  And I had all the same expectatio=
-ns and
-observations as you when digging in and testing this.  But unless this seri=
-es
-makes things worse, I want punt on achieving the ideal state for the moment=
-, as
-it's proving to be a big lift just to get to a not-awful state.
-
-> [    0.000000] clocksource: kvm-clock: mask: 0xffffffffffffffff max_cycle=
-s: 0x1cd42e4dffb, max_idle_ns: 881590591483 ns
-> [    0.000000] tsc: Detected 2400.000 MHz processor
-> [    0.008205] TSC deadline timer available
-> [    0.008270] clocksource: refined-jiffies: mask: 0xffffffff max_cycles:=
- 0xffffffff, max_idle_ns: 1910969940391419 ns
-> [    0.159085] clocksource: hpet: mask: 0xffffffff max_cycles: 0xffffffff=
-, max_idle_ns: 19112604467 ns
-> [    0.164074] clocksource: tsc-early: mask: 0xffffffffffffffff max_cycle=
-s: 0x22983777dd9, max_idle_ns: 440795300422 ns
-> [    0.229087] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xfffff=
-fff, max_idle_ns: 1911260446275000 ns
-> [    0.337095] clocksource: Switched to clocksource kvm-clock
-> [    0.345246] clocksource: acpi_pm: mask: 0xffffff max_cycles: 0xffffff,=
- max_idle_ns: 2085701024 ns
-> [    0.356201] clocksource: tsc: mask: 0xffffffffffffffff max_cycles: 0x2=
-2983777dd9, max_idle_ns: 440795300422 ns
-> [    0.360560] clocksource: Switched to clocksource tsc
+> > That way we don't need to make any fundamental
+> > changes to structures, but we can still significantly cut down on what'=
+s exposed
+> > via kvm_host.h. =C2=A0
+> >=20
 >=20
+> Yeah.
+>=20
+> I saw below from you in [1]:
+>=20
+>   --
+>   We've explore several alternatives to the #ifdef __KVM__ approach, and
+>   they all sucked, hard.  What I really wanted (and still want) to do, is=
+ to
+>   bury the bulk of kvm_host.h (and other KVM headers) in virt/kvm, but ev=
+ery
+>   attempt to do that ended in flames.  Even with the __KVM__ guards in pl=
+ace,
+>   each architecture's kvm_host.h is too intertwined with the common kvm_h=
+ost.h,
+>   and trying to extract small-ish pieces just doesn't work (each patch
+>   inevitably snowballed into a gigantic beast).
+>=20
+>   The other idea we considered (which I thought of, and feel dirty for ev=
+en
+>   proposing it internally), is to move all headers under virt/kvm, add
+>   virt/kvm/include to the global header path, and then have KVM x86 omit
+>   virt/kvm/include when configured to hide KVM internals.  I hate this id=
+ea
+>   because it sets a bad precedent, and requires a lot of file movement
+>   without providing any benefit to other architectures.  E.g. I hope that
+>   guarding KVM internals with #ifdef __KVM__ will allow us to slowly clea=
+n
+>   things up so that some day KVM only exposes a handful of APIs to the re=
+st
+>   of the kernel (probably a pipe dream).
+>   --
+>=20
+> I haven't looked into details of your #ifdef __KVM__ approach yet, but se=
+ems you
+> don't quite like moving KVM internal staff to virt/kvm/include/ ?
 
+Not for arch code, which is the trickiest bit to handle.
 
+> But if we want to hide KVM internal structures, I don't see any other opt=
+ions
+> except virt/kvm/include/ is the place to go?
+
+arch/$(ARCH)/kvm/kvm_arch.h is the obvious approach.  Code in virt/kvm can =
+reach
+arch/$(ARCH)/kvm, we just need to add it to the include path.  That's why I=
+ was
+working on unifying the include definitions.
+
+> Btw, have you considered reverting the inclusion of "strut kvm" and "stru=
+ct
+> kvm_arch" (and the vcpu structure), i.e., to make "struct kvm_arch" inclu=
+de
+> "struct kvm"?  I don't have any clue of whether it is feasible or how muc=
+h
+> effort it needs, though -- it's just something came to mind when replying=
+.
+>=20
+> [1]: https://lore.kernel.org/all/20230916003118.2540661-1-seanjc@google.c=
+om/
+>=20
+> > At some point I'll try to take another look; it's really the
+> > s390+arm64 combo that's problematic :-/
+>=20
+> If you want, I can take a look.  I think I'll have bandwidth in near feat=
+ure.
+>=20
+> Given you have tried multiple times so I am not sure what I can achieve, =
+though.
+
+Consolidating includes and creating arch/$(ARCH)/kvm/kvm_arch.h should be m=
+ore
+doable, what has failed spectacularly over and over is effectively trying t=
+o hide
+most of asm/kvm_host.h, which sounds *really* stupid when I phrase it that =
+way :-)
+
+> Anyway, seems "allow loading a new (or old) KVM module without needing to
+> rebuild and reboot the entire kernel" is a good reason to do this.
+
+Note, we've scrapped upstreaming multi-KVM, and I don't see it ever getting=
+ accepted
+upstream, as live update is far superior, e.g. isn't limited to just KVM, d=
+oesn't
+have the same orchestration or testing problems, etc.
+
+And FWIW, today, you _can_ reload a new (or old) KVM module without rebuild=
+ing
+the kernel or rebooting the host, it's just that you can't modify certain s=
+tructures.
