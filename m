@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540CD3A0E8B
-	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 13:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8593E2AB1
+	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 13:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779284414; cv=none; b=SGeay+EP4rWZBWh17bqxgle/XKH52mhP70yydN4mmqDFkgDXsJVYXw2qMQdJVk3Zfvg3dhJ9hmt7GBgtWpJQs0z19N7QtXf34b1kEu8eE6fQGwiYQ3RsZ5waAlKUBcWp3h4wFbTP3vfCvsAVjyciI2Xr17eusN1yym6XW1FiKWQ=
+	t=1779284413; cv=none; b=vFib8R9OpRkQa6X1hSeJ4IAhEywQAl/Ob+4wec3SKvMwAYIIcuOwQEHkulf7N6N3CiDYO8TCLnxX1yLqPAgCSELG/VYFx/pb6+AVbbyQb1eigw84qInpurZ510Fzc8Ixt3pQRtBrnEoUk6qJ6zprzLC6m2eLu9jlxNQOrpQYRRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779284414; c=relaxed/simple;
-	bh=A3yJHdoCDPK1tBuaRjsUHFUHq6wyZnUlvrnhjVUqUeI=;
+	s=arc-20240116; t=1779284413; c=relaxed/simple;
+	bh=OB5KK7/DzK4PibNM8rdSPzLUWiGXEh1JtVXCtjv2v8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=grHY50gpcVgM5ElxmutYltp/9mJNQxiM3pJ1n9jTj876ev38POtxZildege5zsi/vOqR97X4jRvKsSexMWJRSX/ZPZuJciifyvDm82yvk8lllJfPJeM+Qd6z9l88/ocwk6Q32H9X0Z5OGZXacsy3+MSsA/Ooy8uNMl58jgGmIA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GcdEmZKO; arc=none smtp.client-ip=198.175.65.19
+	 MIME-Version; b=sZ9Uwd4dYpg1vimCaBBiaTFNgKhYxgaoJVyEsQYrr/JgQU+yCV+xK9K+ADLE1rr0HFjChLtS70+gU5935DuigHn1/5bStWk0JB1Q87GUiyF21gwEf3zN9FVWYZf4FM70vRQYyhBPehfCxCgCkyRrk+IzsTCtplX3kWBzhv69euo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nn4J1MT6; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GcdEmZKO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nn4J1MT6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779284410; x=1810820410;
+  t=1779284412; x=1810820412;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=A3yJHdoCDPK1tBuaRjsUHFUHq6wyZnUlvrnhjVUqUeI=;
-  b=GcdEmZKOqUdMhJH1PCnzX4t+7QdP7eW0TsgWwyl3vRiUgarFsJPAQbYx
-   0huVdupMIJ2FxzvGfK7cnldua1mMMW691rGIYE7DrQ7l42ti9xu6avR2w
-   hFT7ujOfF/cTPLpog5NigrWr1UQgGvO6BiXH4TS4kMeOW63JbYE4v9acv
-   oP+Sv8VPr3mucMvcUEM4nvTkMrPo35rfxD9QXXPvhBDV2KhK1sVqP37qJ
-   IFoJTc79AgRMl8rTxsUGVA9M69YXpdPbKSYbFhQxy45s5nhXNlNx6et/v
-   D1UMIf+i3QwsshGxTclyUWDJ6hnS/wdZ7MVqxsYYvmTy50Ts+5xogSXKc
+  bh=OB5KK7/DzK4PibNM8rdSPzLUWiGXEh1JtVXCtjv2v8o=;
+  b=Nn4J1MT6MqJsNycFPayS6SqjxS6//OPx7EEyA9qjLOxAKdp3ZeY4E0Bc
+   3AXzA3JUwh5xHq6xhl92OZnWINLfuY0kcaL4E7gIhu4rLN+o0bpkfwryQ
+   GlMOl9TLota7Hk4q7Zb5CHGxY+V1zQM1lSoCO91Ff6ED/JMrS2c4SzBaa
+   dxjdeCRAdxon7z3K/VWqeVZerzyD8ZbH353x/RYHMAsbNuUi0ZebGGP1z
+   Wz9N+/TRmil5KwoiFEJumIq7CttENe9rdH16pmDjlwjWmLzeviSDTa42Z
+   6NsS+q1GjQI3vsjx7ocV22B75mtGXeiH2fy6uZy90eOCG1Q2MBmpNULaM
    g==;
-X-CSE-ConnectionGUID: wxKc8ACiQKqdT6I48yccTg==
-X-CSE-MsgGUID: 4/N/qv/0RwOrdwjHYUxUIQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80146434"
+X-CSE-ConnectionGUID: 7yV5LapWRMyaYpFtZxQt5w==
+X-CSE-MsgGUID: E9tYKXDzRsmb6iGGl5GaNQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80146444"
 X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="80146434"
+   d="scan'208";a="80146444"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:09 -0700
-X-CSE-ConnectionGUID: uu6N6Z4URACRSydUXP7cOg==
-X-CSE-MsgGUID: VERWiynOQOODjK4fWwe/NQ==
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:10 -0700
+X-CSE-ConnectionGUID: W5mijFsHRGKXZCU+ilAHDQ==
+X-CSE-MsgGUID: WPonONw7TBiUFfQOGGT58w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="235923728"
+   d="scan'208";a="235923756"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:04 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:06 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -67,15 +67,15 @@ Cc: binbin.wu@linux.intel.com,
 	xiaoyao.li@intel.com,
 	yan.y.zhao@intel.com,
 	Chao Gao <chao.gao@intel.com>,
-	Zhenzhong Duan <zhenzhong.duan@intel.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
 	Thomas Gleixner <tglx@kernel.org>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v10 05/25] x86/virt/tdx: Move low level SEAMCALL helpers out of <asm/tdx.h>
-Date: Wed, 20 May 2026 06:38:08 -0700
-Message-ID: <20260520133909.409394-6-chao.gao@intel.com>
+Subject: [PATCH v10 06/25] coco/tdx-host: Introduce a "tdx_host" device
+Date: Wed, 20 May 2026 06:38:09 -0700
+Message-ID: <20260520133909.409394-7-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260520133909.409394-1-chao.gao@intel.com>
 References: <20260520133909.409394-1-chao.gao@intel.com>
@@ -87,287 +87,167 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Kai Huang <kai.huang@intel.com>
+TDX depends on a platform firmware module that is invoked via instructions
+similar to vmenter (i.e. enter into a new privileged "root-mode" context to
+manage private memory and private device mechanisms). It is a software
+construct that depends on the CPU vmxon state to enable invocation of
+TDX module ABIs. Unlike other Trusted Execution Environment (TEE) platform
+implementations that employ a firmware module running on a PCI device with
+an MMIO mailbox for communication, TDX has no hardware device to point to
+as the TEE Secure Manager (TSM).
 
-TDX host core code implements three seamcall*() helpers to make SEAMCALLs
-to the TDX module.  Currently, they are implemented in <asm/tdx.h> and
-are exposed to other kernel code which includes <asm/tdx.h>.
+Create a virtual device not only to align with other implementations but
+also to make it easier to
 
-However, other than the TDX host core, seamcall*() are not expected to
-be used by other kernel code directly.  For instance, for all SEAMCALLs
-that are used by KVM, the TDX host core exports a wrapper function for
-each of them.
+ - expose metadata (e.g., TDX module version, seamldr version etc) to
+   the userspace as device attributes
 
-Move seamcall*() and related code out of <asm/tdx.h> and make them only
-visible to TDX host core.
+ - implement firmware uploader APIs which are tied to a device. This is
+   needed to support TDX module runtime updates
 
-Since TDX host core tdx.c is already very heavy, don't put low level
-seamcall*() code there but to a new dedicated "seamcall_internal.h".  Also,
-currently tdx.c has seamcall_prerr*() helpers which additionally print
-error message when calling seamcall*() fails.  Move them to
-"seamcall_internal.h" as well. In such way all low level SEAMCALL helpers
-are in a dedicated place, which is much more readable.
+ - enable TDX Connect which will share a common infrastructure with other
+   platform implementations. In the TDX Connect context, every
+   architecture has a TSM, represented by a PCIe or virtual device. The
+   new "tdx_host" device will serve the TSM role.
 
-Copy the copyright notice from the original files and consolidate the
-date ranges to:
+A faux device is used for TDX because the TDX module is singular within
+the system and lacks associated platform resources. Using a faux device
+eliminates the need to create a stub bus.
 
-	Copyright (C) 2021-2023 Intel Corporation
+The call to tdx_get_sysinfo() ensures that the TDX module is ready to
+provide services.
 
-Signed-off-by: Kai Huang <kai.huang@intel.com>
+Note that AMD has a PCI device for the PSP for SEV and ARM CCA will
+likely have a faux device [1].
+
+Thanks to Dan and Yilun for all the help on this one.
+
 Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
 Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Vishal Annapurve <vannapurve@google.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/2025073035-bulginess-rematch-b92e@gregkh/ # [1]
 ---
- arch/x86/include/asm/tdx.h                |  47 ----------
- arch/x86/virt/vmx/tdx/seamcall_internal.h | 109 ++++++++++++++++++++++
- arch/x86/virt/vmx/tdx/tdx.c               |  47 +---------
- 3 files changed, 111 insertions(+), 92 deletions(-)
- create mode 100644 arch/x86/virt/vmx/tdx/seamcall_internal.h
+v10:
+ - Drop Kconfig prompt [Dave]
+---
+ arch/x86/virt/vmx/tdx/tdx.c           |  2 +-
+ drivers/virt/coco/Kconfig             |  2 ++
+ drivers/virt/coco/Makefile            |  1 +
+ drivers/virt/coco/tdx-host/Kconfig    |  4 +++
+ drivers/virt/coco/tdx-host/Makefile   |  1 +
+ drivers/virt/coco/tdx-host/tdx-host.c | 43 +++++++++++++++++++++++++++
+ 6 files changed, 52 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/virt/coco/tdx-host/Kconfig
+ create mode 100644 drivers/virt/coco/tdx-host/Makefile
+ create mode 100644 drivers/virt/coco/tdx-host/tdx-host.c
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index e2430dd0e4d5..8b739ac01479 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -100,54 +100,7 @@ static inline long tdx_kvm_hypercall(unsigned int nr, unsigned long p1,
- #endif /* CONFIG_INTEL_TDX_GUEST && CONFIG_KVM_GUEST */
- 
- #ifdef CONFIG_INTEL_TDX_HOST
--u64 __seamcall(u64 fn, struct tdx_module_args *args);
--u64 __seamcall_ret(u64 fn, struct tdx_module_args *args);
--u64 __seamcall_saved_ret(u64 fn, struct tdx_module_args *args);
- void tdx_init(void);
--
--#include <linux/preempt.h>
--#include <asm/archrandom.h>
--#include <asm/processor.h>
--
--typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
--
--static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
--						  struct tdx_module_args *args)
--{
--	lockdep_assert_preemption_disabled();
--
--	/*
--	 * SEAMCALLs are made to the TDX module and can generate dirty
--	 * cachelines of TDX private memory.  Mark cache state incoherent
--	 * so that the cache can be flushed during kexec.
--	 *
--	 * This needs to be done before actually making the SEAMCALL,
--	 * because kexec-ing CPU could send NMI to stop remote CPUs,
--	 * in which case even disabling IRQ won't help here.
--	 */
--	this_cpu_write(cache_state_incoherent, true);
--
--	return func(fn, args);
--}
--
--static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
--			   struct tdx_module_args *args)
--{
--	int retry = RDRAND_RETRY_LOOPS;
--	u64 ret;
--
--	do {
--		preempt_disable();
--		ret = __seamcall_dirty_cache(func, fn, args);
--		preempt_enable();
--	} while (ret == TDX_RND_NO_ENTROPY && --retry);
--
--	return ret;
--}
--
--#define seamcall(_fn, _args)		sc_retry(__seamcall, (_fn), (_args))
--#define seamcall_ret(_fn, _args)	sc_retry(__seamcall_ret, (_fn), (_args))
--#define seamcall_saved_ret(_fn, _args)	sc_retry(__seamcall_saved_ret, (_fn), (_args))
- const char *tdx_dump_mce_info(struct mce *m);
- const struct tdx_sys_info *tdx_get_sysinfo(void);
- 
-diff --git a/arch/x86/virt/vmx/tdx/seamcall_internal.h b/arch/x86/virt/vmx/tdx/seamcall_internal.h
-new file mode 100644
-index 000000000000..be5f446467df
---- /dev/null
-+++ b/arch/x86/virt/vmx/tdx/seamcall_internal.h
-@@ -0,0 +1,109 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * SEAMCALL utilities for TDX host-side operations.
-+ *
-+ * Provides convenient wrappers around SEAMCALL assembly with retry logic,
-+ * error reporting and cache coherency tracking.
-+ *
-+ * Copyright (C) 2021-2023 Intel Corporation
-+ */
-+
-+#ifndef _X86_VIRT_SEAMCALL_INTERNAL_H
-+#define _X86_VIRT_SEAMCALL_INTERNAL_H
-+
-+#include <linux/printk.h>
-+#include <linux/types.h>
-+#include <asm/archrandom.h>
-+#include <asm/processor.h>
-+#include <asm/tdx.h>
-+
-+u64 __seamcall(u64 fn, struct tdx_module_args *args);
-+u64 __seamcall_ret(u64 fn, struct tdx_module_args *args);
-+u64 __seamcall_saved_ret(u64 fn, struct tdx_module_args *args);
-+
-+typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
-+
-+static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
-+						  struct tdx_module_args *args)
-+{
-+	lockdep_assert_preemption_disabled();
-+
-+	/*
-+	 * SEAMCALLs are made to the TDX module and can generate dirty
-+	 * cachelines of TDX private memory.  Mark cache state incoherent
-+	 * so that the cache can be flushed during kexec.
-+	 *
-+	 * This needs to be done before actually making the SEAMCALL,
-+	 * because kexec-ing CPU could send NMI to stop remote CPUs,
-+	 * in which case even disabling IRQ won't help here.
-+	 */
-+	this_cpu_write(cache_state_incoherent, true);
-+
-+	return func(fn, args);
-+}
-+
-+static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
-+			   struct tdx_module_args *args)
-+{
-+	int retry = RDRAND_RETRY_LOOPS;
-+	u64 ret;
-+
-+	do {
-+		preempt_disable();
-+		ret = __seamcall_dirty_cache(func, fn, args);
-+		preempt_enable();
-+	} while (ret == TDX_RND_NO_ENTROPY && --retry);
-+
-+	return ret;
-+}
-+
-+#define seamcall(_fn, _args)		sc_retry(__seamcall, (_fn), (_args))
-+#define seamcall_ret(_fn, _args)	sc_retry(__seamcall_ret, (_fn), (_args))
-+#define seamcall_saved_ret(_fn, _args)	sc_retry(__seamcall_saved_ret, (_fn), (_args))
-+
-+typedef void (*sc_err_func_t)(u64 fn, u64 err, struct tdx_module_args *args);
-+
-+static inline void seamcall_err(u64 fn, u64 err, struct tdx_module_args *args)
-+{
-+	pr_err("SEAMCALL (0x%016llx) failed: 0x%016llx\n", fn, err);
-+}
-+
-+static inline void seamcall_err_ret(u64 fn, u64 err,
-+				    struct tdx_module_args *args)
-+{
-+	seamcall_err(fn, err, args);
-+	pr_err("RCX 0x%016llx RDX 0x%016llx R08 0x%016llx\n",
-+			args->rcx, args->rdx, args->r8);
-+	pr_err("R09 0x%016llx R10 0x%016llx R11 0x%016llx\n",
-+			args->r9, args->r10, args->r11);
-+}
-+
-+static __always_inline int sc_retry_prerr(sc_func_t func,
-+					  sc_err_func_t err_func,
-+					  u64 fn, struct tdx_module_args *args)
-+{
-+	u64 sret = sc_retry(func, fn, args);
-+
-+	if (sret == TDX_SUCCESS)
-+		return 0;
-+
-+	if (sret == TDX_SEAMCALL_VMFAILINVALID)
-+		return -ENODEV;
-+
-+	if (sret == TDX_SEAMCALL_GP)
-+		return -EOPNOTSUPP;
-+
-+	if (sret == TDX_SEAMCALL_UD)
-+		return -EACCES;
-+
-+	err_func(fn, sret, args);
-+	return -EIO;
-+}
-+
-+#define seamcall_prerr(__fn, __args)						\
-+	sc_retry_prerr(__seamcall, seamcall_err, (__fn), (__args))
-+
-+#define seamcall_prerr_ret(__fn, __args)					\
-+	sc_retry_prerr(__seamcall_ret, seamcall_err_ret, (__fn), (__args))
-+
-+#endif /* _X86_VIRT_SEAMCALL_INTERNAL_H */
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 71d39a79ef3f..b329791db9c2 100644
+index b329791db9c2..5fb0441a9ac6 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -42,6 +42,8 @@
- #include <asm/processor.h>
- #include <asm/mce.h>
- #include <asm/virt.h>
+@@ -1527,7 +1527,7 @@ const struct tdx_sys_info *tdx_get_sysinfo(void)
+ 
+ 	return (const struct tdx_sys_info *)&tdx_sysinfo;
+ }
+-EXPORT_SYMBOL_FOR_KVM(tdx_get_sysinfo);
++EXPORT_SYMBOL_FOR_MODULES(tdx_get_sysinfo, "kvm-intel,tdx-host");
+ 
+ u32 tdx_get_nr_guest_keyids(void)
+ {
+diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
+index df1cfaf26c65..f7691f64fbe3 100644
+--- a/drivers/virt/coco/Kconfig
++++ b/drivers/virt/coco/Kconfig
+@@ -17,5 +17,7 @@ source "drivers/virt/coco/arm-cca-guest/Kconfig"
+ source "drivers/virt/coco/guest/Kconfig"
+ endif
+ 
++source "drivers/virt/coco/tdx-host/Kconfig"
 +
-+#include "seamcall_internal.h"
- #include "tdx.h"
- 
- struct tdx_module_state {
-@@ -66,51 +68,6 @@ static LIST_HEAD(tdx_memlist);
- 
- static struct tdx_sys_info tdx_sysinfo __ro_after_init;
- 
--typedef void (*sc_err_func_t)(u64 fn, u64 err, struct tdx_module_args *args);
--
--static inline void seamcall_err(u64 fn, u64 err, struct tdx_module_args *args)
--{
--	pr_err("SEAMCALL (0x%016llx) failed: 0x%016llx\n", fn, err);
--}
--
--static inline void seamcall_err_ret(u64 fn, u64 err,
--				    struct tdx_module_args *args)
--{
--	seamcall_err(fn, err, args);
--	pr_err("RCX 0x%016llx RDX 0x%016llx R08 0x%016llx\n",
--			args->rcx, args->rdx, args->r8);
--	pr_err("R09 0x%016llx R10 0x%016llx R11 0x%016llx\n",
--			args->r9, args->r10, args->r11);
--}
--
--static __always_inline int sc_retry_prerr(sc_func_t func,
--					  sc_err_func_t err_func,
--					  u64 fn, struct tdx_module_args *args)
--{
--	u64 sret = sc_retry(func, fn, args);
--
--	if (sret == TDX_SUCCESS)
--		return 0;
--
--	if (sret == TDX_SEAMCALL_VMFAILINVALID)
--		return -ENODEV;
--
--	if (sret == TDX_SEAMCALL_GP)
--		return -EOPNOTSUPP;
--
--	if (sret == TDX_SEAMCALL_UD)
--		return -EACCES;
--
--	err_func(fn, sret, args);
--	return -EIO;
--}
--
--#define seamcall_prerr(__fn, __args)						\
--	sc_retry_prerr(__seamcall, seamcall_err, (__fn), (__args))
--
--#define seamcall_prerr_ret(__fn, __args)					\
--	sc_retry_prerr(__seamcall_ret, seamcall_err_ret, (__fn), (__args))
--
- static DEFINE_RAW_SPINLOCK(sysinit_lock);
- 
- /*
+ config TSM
+ 	bool
+diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
+index cb52021912b3..b323b0ae4f82 100644
+--- a/drivers/virt/coco/Makefile
++++ b/drivers/virt/coco/Makefile
+@@ -6,6 +6,7 @@ obj-$(CONFIG_EFI_SECRET)	+= efi_secret/
+ obj-$(CONFIG_ARM_PKVM_GUEST)	+= pkvm-guest/
+ obj-$(CONFIG_SEV_GUEST)		+= sev-guest/
+ obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx-guest/
++obj-$(CONFIG_INTEL_TDX_HOST)	+= tdx-host/
+ obj-$(CONFIG_ARM_CCA_GUEST)	+= arm-cca-guest/
+ obj-$(CONFIG_TSM) 		+= tsm-core.o
+ obj-$(CONFIG_TSM_GUEST)		+= guest/
+diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+new file mode 100644
+index 000000000000..cfe81b9c0364
+--- /dev/null
++++ b/drivers/virt/coco/tdx-host/Kconfig
+@@ -0,0 +1,4 @@
++config TDX_HOST_SERVICES
++	tristate
++	depends on INTEL_TDX_HOST
++	default m
+diff --git a/drivers/virt/coco/tdx-host/Makefile b/drivers/virt/coco/tdx-host/Makefile
+new file mode 100644
+index 000000000000..e61e749a8dff
+--- /dev/null
++++ b/drivers/virt/coco/tdx-host/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_TDX_HOST_SERVICES) += tdx-host.o
+diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
+new file mode 100644
+index 000000000000..c77885392b09
+--- /dev/null
++++ b/drivers/virt/coco/tdx-host/tdx-host.c
+@@ -0,0 +1,43 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * TDX host user interface driver
++ *
++ * Copyright (C) 2025 Intel Corporation
++ */
++
++#include <linux/device/faux.h>
++#include <linux/module.h>
++#include <linux/mod_devicetable.h>
++
++#include <asm/cpu_device_id.h>
++#include <asm/tdx.h>
++
++static const struct x86_cpu_id tdx_host_ids[] = {
++	X86_MATCH_FEATURE(X86_FEATURE_TDX_HOST_PLATFORM, NULL),
++	{}
++};
++MODULE_DEVICE_TABLE(x86cpu, tdx_host_ids);
++
++static struct faux_device *fdev;
++
++static int __init tdx_host_init(void)
++{
++	if (!x86_match_cpu(tdx_host_ids) || !tdx_get_sysinfo())
++		return -ENODEV;
++
++	fdev = faux_device_create(KBUILD_MODNAME, NULL, NULL);
++	if (!fdev)
++		return -ENODEV;
++
++	return 0;
++}
++module_init(tdx_host_init);
++
++static void __exit tdx_host_exit(void)
++{
++	faux_device_destroy(fdev);
++}
++module_exit(tdx_host_exit);
++
++MODULE_DESCRIPTION("TDX Host Services");
++MODULE_LICENSE("GPL");
 -- 
 2.52.0
 
