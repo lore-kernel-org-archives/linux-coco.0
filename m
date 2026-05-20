@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33C239BFE6
-	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 13:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EA22D0C7B
+	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 13:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779284404; cv=none; b=i5uMnJ2kLsGyFSG4x1KhTGZ3f6OQXRbrIw4tmQFHNCeQMKQA9H8qZTe/yvjNRIQRSciaINbcjD5ikJzucUyghgrMRRbZS0TDhTSJMK2a0q+hUnP9C0BKfR/vjOVcEfuY/eMKAj5NmcgQXq7h+syp7hfH8sRWP8TxGzLid3/mJOs=
+	t=1779284406; cv=none; b=l9YU5pskfYsY0eiCVXVmOa/9smEDHJl8fhqBe6KQtH/naUlsPmqb8CREJAj2YWKs+QGlleyEJ9k0M2ZKP1XiYQag1jxfLEBom2tVTg1tCiYWdTSstODlFdcNo5TiU+vtKqhPn0hEnMjtGwa3SDRmoBS1DC+CVMuZSSGF2hKUsEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779284404; c=relaxed/simple;
-	bh=Dnc6vYjOgJ7kPnjh+chu/5a8ACZuGGWSZJFZC4cfU6M=;
+	s=arc-20240116; t=1779284406; c=relaxed/simple;
+	bh=8rfjTJTMMNoR4Sspo8JUOf6q9kOwUDez03bzPGnIrnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GG8IfVKstAT68dHjTjw4gfu1S60bd8jqevfGBXgPLCGSPyCqBliHuq/PaeOxFjpiS+2esQdQVbRHrNGuNZaEZNzE8EuxEFaWhPfPrCb6hAsmXcTIgWBXV3U2lWSo2umEA51CHfyctR2tOen3RXF3tGxgH25sxkmWqvkheMqRs0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VnFLUECt; arc=none smtp.client-ip=198.175.65.19
+	 MIME-Version; b=QntKtOWrGONxRNObwH0doSddYGjRHGoRxdPwT2M+pHZMTsoTkRKWuWw5EM6wX+77t1YcKSP39AADVSVoen1l/fHGT+kC72wpT0XcKe5NvfzwKLi0PU3oT7oWxPiKH8ckqwTxJqe9i7yTemTSSKcsEfv9LUMyumDlRx6HkSkPjpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N1/qMy2x; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VnFLUECt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N1/qMy2x"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779284401; x=1810820401;
+  t=1779284404; x=1810820404;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Dnc6vYjOgJ7kPnjh+chu/5a8ACZuGGWSZJFZC4cfU6M=;
-  b=VnFLUECtkHVHBbqdk7+D4M80PNER/Bx+b07fTHyXbhkI5YS3yCmA5Eg0
-   GZUyEWknp+BH8nkGyB2Rgz+9XfXjRppBUlTslC476hpUQqIP5xnK7xZXD
-   bl0hyUA2Fp5lLmCGTT4puYOBOqYrBAFGVkST65xBQuDsl78Fyyovkz1vj
-   KvEr3ul0YfFcMU49lCfryzOKtEH6Ua8V2SmDsZ03VxalB+g3/nhhUrJZR
-   Ux1OLVkMOlClCK/bUuxOcf11cb4heTj/nZfirtjzwHatuKsgGfWWOLiws
-   NhiAw75R8YZIFdreTD72pAZzF7VPDeRfI7sxvt1ImzhgH7S/k0/ampuYW
-   w==;
-X-CSE-ConnectionGUID: pN1gIdZgRyqhpz+rDqP2UQ==
-X-CSE-MsgGUID: meYgMWPbSlCxhoazz630lQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80146391"
+  bh=8rfjTJTMMNoR4Sspo8JUOf6q9kOwUDez03bzPGnIrnk=;
+  b=N1/qMy2xcI7IrmkCJQy/QGRDph0vPNo4PkzYZW6SyVx9Pb8KHemYp7fG
+   Ziq9LA7+YGC6IPnnwjNZBtmRVzGwnzbjThG6ZkcH8goRxGAMnQX0QuHcS
+   Qqy+PtwG5oUZgJHX/NgSRZ5GsWtLBJCFosk2G7mvVItxP3z4hk7i8+rNz
+   LxBaP8vjgmZ7xIwmIWPtTq+I4g/JUZYMUB7M/EEr13OYD2v5XIuJeUqcM
+   pPbcZvXdjcfdIC4XnTYzXp7W3uIXNiX+vZD8noXs9K/UKxoEWBTWWUO76
+   s0+MhOWsdJoR3tl1bnUUo+c47BXkdE3YuxQMD42y6by3NEiBpRpgA3q6+
+   g==;
+X-CSE-ConnectionGUID: RnoiNvzAShaqlqQJPCQ3RQ==
+X-CSE-MsgGUID: rcozjylfTE2N6NuvCmRgeg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80146401"
 X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="80146391"
+   d="scan'208";a="80146401"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:00 -0700
-X-CSE-ConnectionGUID: kgJHbNTvQFCArELGFUUbYg==
-X-CSE-MsgGUID: 3Vag2oDBSAKCkuj3p+Xj8Q==
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:01 -0700
+X-CSE-ConnectionGUID: lPpUJ2FUSoW6dEo4n3TOHQ==
+X-CSE-MsgGUID: 7Amo8i5SSfWs5y6dzfuB+Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="235923599"
+   d="scan'208";a="235923613"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:39:59 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:00 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -72,9 +72,9 @@ Cc: binbin.wu@linux.intel.com,
 	Borislav Petkov <bp@alien8.de>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v10 01/25] x86/virt/tdx: Clarify try_init_module_global() result caching
-Date: Wed, 20 May 2026 06:38:04 -0700
-Message-ID: <20260520133909.409394-2-chao.gao@intel.com>
+Subject: [PATCH v10 02/25] x86/virt/tdx: Move TDX global initialization states to file scope
+Date: Wed, 20 May 2026 06:38:05 -0700
+Message-ID: <20260520133909.409394-3-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260520133909.409394-1-chao.gao@intel.com>
 References: <20260520133909.409394-1-chao.gao@intel.com>
@@ -88,64 +88,51 @@ Content-Transfer-Encoding: 8bit
 
 TDX module global initialization is executed only once. The first call
 caches both the result and the "done" state, and later callers reuse the
-saved result. A lock protects that cached state.
+saved result. A lock protects that cached states.
 
-The current code is hard to read because sysinit_done is accessed under
-the lock, while sysinit_ret is not.
+Those states and the lock are currently kept as function-local statics
+because they are used only by try_init_module_global().
 
-To improve readability, move sysinit_ret accesses within the lock.
+TDX module updates need to reset the cached states so TDX global
+initialization can be run again after an update. That will add another
+access site in the same file.
 
-Group sysinit_ret/sysinit_done updates right after initialization so
-Caching the result is separate from the initialization itself.
+Move the cached states to file scope so it is accessible outside
+try_init_module_global(), and move the lock along with the states it
+protects.
+
+No functional change intended.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 ---
- arch/x86/virt/vmx/tdx/tdx.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ arch/x86/virt/vmx/tdx/tdx.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index c0c6281b08a5..ad56f142dd0b 100644
+index ad56f142dd0b..40444a3c5cdd 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -115,28 +115,34 @@ static int try_init_module_global(void)
- 	static DEFINE_RAW_SPINLOCK(sysinit_lock);
- 	static bool sysinit_done;
- 	static int sysinit_ret;
-+	int ret;
+@@ -105,6 +105,10 @@ static __always_inline int sc_retry_prerr(sc_func_t func,
+ #define seamcall_prerr_ret(__fn, __args)					\
+ 	sc_retry_prerr(__seamcall_ret, seamcall_err_ret, (__fn), (__args))
+ 
++static DEFINE_RAW_SPINLOCK(sysinit_lock);
++static bool sysinit_done;
++static int sysinit_ret;
++
+ /*
+  * Do the module global initialization once and return its result.
+  * It can be done on any cpu, and from task or IRQ context.
+@@ -112,9 +116,6 @@ static __always_inline int sc_retry_prerr(sc_func_t func,
+ static int try_init_module_global(void)
+ {
+ 	struct tdx_module_args args = {};
+-	static DEFINE_RAW_SPINLOCK(sysinit_lock);
+-	static bool sysinit_done;
+-	static int sysinit_ret;
+ 	int ret;
  
  	raw_spin_lock(&sysinit_lock);
- 
--	if (sysinit_done)
-+	/* Return the "cached" return code. */
-+	if (sysinit_done) {
-+		ret = sysinit_ret;
- 		goto out;
-+	}
- 
- 	/* RCX is module attributes and all bits are reserved */
- 	args.rcx = 0;
--	sysinit_ret = seamcall_prerr(TDH_SYS_INIT, &args);
-+	ret = seamcall_prerr(TDH_SYS_INIT, &args);
- 
- 	/*
- 	 * The first SEAMCALL also detects the TDX module, thus
- 	 * it can fail due to the TDX module is not loaded.
- 	 * Dump message to let the user know.
- 	 */
--	if (sysinit_ret == -ENODEV)
-+	if (ret == -ENODEV)
- 		pr_err("module not loaded\n");
- 
-+	/* Save the return code for later callers. */
- 	sysinit_done = true;
-+	sysinit_ret = ret;
- out:
- 	raw_spin_unlock(&sysinit_lock);
--	return sysinit_ret;
-+	return ret;
- }
- 
- /**
 -- 
 2.52.0
 
