@@ -1,155 +1,168 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6828039B483
-	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 13:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202BA2E3397
+	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 13:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779284440; cv=none; b=J9RraHpRehh6j2d3rTwx5FeaPhwxK+b/UB06/LCdEedfFkSvJM4kJwTSs6qbBNZi2rYCsaQzTNvHHiCnayUlOOgx42IRVl12a/bsRmcX94gmTccXwmB/ehKsHgYYuu2J4poIMuHDy73VNZldISHPD9D8SEQuIiIA7LfQ6RXljYQ=
+	t=1779284448; cv=none; b=JI6uULWrBKpzjT92gA6pwrZTVJMQwdqiM5Vwj23azfIKazF9/brQDzZXEMBjF/ubMDvbs20tetldVIkGyiYwCJd9a9ak3eElS/srRa28O3bY+AojaSQQdEeaQ9STFd8n8kc0z4Z8a84cECJmafSRlUKB4dz+vZGfOtXjWNEz78o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779284440; c=relaxed/simple;
-	bh=g7DBKzISsVeAPEr5fRf6vFci06L9JPnHLfj1n6CF7wg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S8so+jMqPTdPmlYgzympk788usg5NxoACgzw0+tbXrOfJ9qM+rydXI44aHsbGiz2xRG9njXjsBCe5Wd4Vxs3bzW9iChBAuHS7/v6CGJc5CETDGiTh1AJfUMxTHJpnqT7+srzP+uWZMqOI6IrOBTXkSfjKQsQr5gApFkj2lPtInA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ksx9Av12; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779284448; c=relaxed/simple;
+	bh=gECXMGpw9B7sH8oWBrgJbLY+YztieOR6VxnjmWmVTTU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yv2sM/LfJMDFj/PXGVuDoEhwSKEYWfkvPDTPxfX5MVDBTFnsKDqNNvbyp51FX5NGq4SxgcnuSUQ64egbWbv+LZwukQinj+b1Faf6Xy/ckesGIe7fy9BMdah6e9+BnZFemzeQg22CDyi1e0pIcM6AzdND1Uf1gFQsiXpV/A2vpqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=h3IxkLwK; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ksx9Av12"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779284439; x=1810820439;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=g7DBKzISsVeAPEr5fRf6vFci06L9JPnHLfj1n6CF7wg=;
-  b=ksx9Av12hhmHsBWyU2tGzgka2PiHaadhoVhOTJwpqyYylB2LcKtMLAzy
-   1RFpGx/a7U3ABBM+RFYNOW79viyyyLRux4+47YTWlHfXN/ZUXxIVDGo8h
-   LdSJus4oExx4/dq1/H8WdguuAi+WbvCSHo5eRi38u+MThQ+54BVEPJfoR
-   2G5mDWK8jWG+aUF/cTyJf4yWoUZu3oKS81qsvADrUo2Gu2I/RO7n6e5X7
-   A0XNcKi4miJ1eiFEcFokgvuSVHaAqBXYcbECKxdFoAds9C3Pi/sGwwYWy
-   zTpWjnUQBQ9kheD8O4PJC0LcuL5Q2a2Tf7VLT2zC7ezx3Qj1D4ptZq1Sa
-   A==;
-X-CSE-ConnectionGUID: 63w9hPl4TjmU4F4K9O5LHg==
-X-CSE-MsgGUID: 63aUgzyqQd2LLZ7dab0fdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80146680"
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="80146680"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:38 -0700
-X-CSE-ConnectionGUID: Br5tsnbLSS+ReL3/FmNuyg==
-X-CSE-MsgGUID: 3m2xUakcTpifgy+YxDwPOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="235924061"
-Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:37 -0700
-From: Chao Gao <chao.gao@intel.com>
-To: kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Cc: binbin.wu@linux.intel.com,
-	dave.hansen@linux.intel.com,
-	djbw@kernel.org,
-	ira.weiny@intel.com,
-	kai.huang@intel.com,
-	kas@kernel.org,
-	nik.borisov@suse.com,
-	paulmck@kernel.org,
-	pbonzini@redhat.com,
-	reinette.chatre@intel.com,
-	rick.p.edgecombe@intel.com,
-	sagis@google.com,
-	seanjc@google.com,
-	tony.lindgren@linux.intel.com,
-	vannapurve@google.com,
-	vishal.l.verma@intel.com,
-	yilun.xu@linux.intel.com,
-	xiaoyao.li@intel.com,
-	yan.y.zhao@intel.com,
-	Chao Gao <chao.gao@intel.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH v10 25/25] x86/virt/tdx: Document TDX module update
-Date: Wed, 20 May 2026 06:38:28 -0700
-Message-ID: <20260520133909.409394-26-chao.gao@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260520133909.409394-1-chao.gao@intel.com>
-References: <20260520133909.409394-1-chao.gao@intel.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="h3IxkLwK"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8b98482b253so79711586d6.1
+        for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 06:40:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1779284441; x=1779889241; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=W+SwQbDLFG0Y+rBu9pL52xRO2ueMe5MsHi84X45A//o=;
+        b=h3IxkLwKWjyKUU7MSz9bokgAL4aEMcTyzldspbFFRqq2RbQP/VyTHFGDfvKshF+nAs
+         gOgS8tVIRngvbGnJlo6WY4/W1Iw3q/cIBonaiGXSFJmGnO296OdvjiOWy/plNc5DmQ11
+         xgP+nw0lpCqwoHiatRFik07mt5JkIhufk0A3K3O3H66mSTOK8PNM4ZVIFiF5cuaHgbUx
+         0PI77OZuWEpaRDWLp11sIf2Pl6kFwG2S/H+PTk07G9t3rNhBhGLEfAegoctR0x81UDAN
+         wfq1+5X4pRWrXGUcTHAVJJh2pzlfNA1DQUibjtrc4d90Vaf1grH/BDSjYSone8m6PwaE
+         Ii8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779284441; x=1779889241;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=W+SwQbDLFG0Y+rBu9pL52xRO2ueMe5MsHi84X45A//o=;
+        b=sq1i++3QW6s+qdmeygi5NVDcyDPv/D/Lqhw3BvtUCLXFEUYZYu9ck7ppwXoZ9sEI+d
+         dRfTrCFbfabuOYws9/+ABgFWWrbIWdF3bZSbJ+R/amQrziJiRwYrbq5VtrKFqlfjNr40
+         DHV0ueu6D9NRZ6pHOyMb9z/RZjPbX11+gSjcvx3jeXgAEraPZp3O+0DZGoetbBfGbPz/
+         mrYAOPXmohRSd0psXc+0HopaRjeO9EnypZa17lgxtCc+CTcZXI2gpOAspTGZawccyBxc
+         xFhQLbyuKTeIOgoNlG3tZVz4BJAu5PuOby2z8CbJh+fIBXDEqWbvfHyzTN6EELxVzBsa
+         E+KA==
+X-Forwarded-Encrypted: i=1; AFNElJ84V8Lsyrfj2l+yQ8RQm1IupgoSvQprax4xwbkqknF1KntLZA7bzQ1hwrHczgTWGJxhRtbm3FZg8lNj@lists.linux.dev
+X-Gm-Message-State: AOJu0YwsdkCSgg3BbFHGxSejm+1W3K0+isgDbaRjpjWVuw/cmuvwSNWN
+	CO7ukPmj7Qpwg9fJlWyh6aEjZeN0wfzbX9gZcEh/3EwxrAIohIVlX3PanFRQbKKBB1A=
+X-Gm-Gg: Acq92OEfipYXdCDqRJhl9bZTmR5fyY53rdW8w5467QXv9O+r+FyCKW0rPYYvr9fJt8H
+	MUUamtmMmtvPjXR2b5+iMnSdZZ3cJsYIIMOjCIqBbm9Te183VligpM56gAoov+8nqmrYF4Gljlr
+	oZeZdY1aYojHK/qlHg0WvFJ07PyRYwDlIVQnVh/g28vpwFNQtqImt+gC34ehgTtieE7AbzsjDHA
+	3ZUmAsdavhGDpclFvzWIwfn5qeoc1OxdF0Cm2UNyzc2YGIa3tTcd6G048idaSqsjG2GJi3oRhe1
+	c7n78wU02mtfiZpKQne8LQ32ftXLyaQW3nGucbfMoG9PsE+P1WxXrz+tRxjcCMyErEFAcY6mtKJ
+	f6/UdyW8K6aKia50Y2gC+UbaLAMxCLqUOZ5A8XVnUosANjoX9FaUDiTPTVy+ZcmiW/dc1tUw2pV
+	S8QZuBoF/eylcUiAla4FAH7YvAB+tcx3Ug4Dzjr7ue7RSVqyu1rCCcTLQ3zqmOD/EC89WifCWGv
+	0aX5z2Myho/DEmo
+X-Received: by 2002:a05:6214:5c42:b0:8ca:16fd:7297 with SMTP id 6a1803df08f44-8ca16fd752cmr347910676d6.30.1779284440966;
+        Wed, 20 May 2026 06:40:40 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ca360ac735sm122405916d6.19.2026.05.20.06.40.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 06:40:40 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wPhA7-0000000HB8S-389S;
+	Wed, 20 May 2026 10:40:39 -0300
+Date: Wed, 20 May 2026 10:40:39 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Mostafa Saleh <smostafa@google.com>, iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>, Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
+Subject: Re: [PATCH v4 04/13] dma: swiotlb: track pool encryption state and
+ honor DMA_ATTR_CC_SHARED
+Message-ID: <20260520134039.GT7702@ziepe.ca>
+References: <yq5apl2y5f96.fsf@kernel.org>
+ <agXaby-7L7yS3Vva@google.com>
+ <yq5ah5oa59wy.fsf@kernel.org>
+ <agxDxdxynp4KEovA@google.com>
+ <yq5amrxvshxg.fsf@kernel.org>
+ <yq5abjebsaid.fsf@kernel.org>
+ <20260519152741.GM7702@ziepe.ca>
+ <yq5a8q9fs7ud.fsf@kernel.org>
+ <20260519161120.GO7702@ziepe.ca>
+ <yq5a5x4ispg8.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5a5x4ispg8.fsf@kernel.org>
 
-Document TDX module update as a subsection of "TDX Host Kernel Support" to
-provide background information and cover key points that developers and
-users may need to know, for example:
+On Wed, May 20, 2026 at 09:27:27AM +0530, Aneesh Kumar K.V wrote:
+> Jason Gunthorpe <jgg@ziepe.ca> writes:
+> 
+> > On Tue, May 19, 2026 at 09:35:30PM +0530, Aneesh Kumar K.V wrote:
+> >> Yes, that also resulted in simpler and cleaner code.
+> >> 
+> >> swiotlb_tbl_map_single
+> >> 	/*
+> >> 	 * If the physical address is encrypted but the device requires
+> >> 	 * decrypted DMA, use a decrypted io_tlb_mem and update the
+> >> 	 * attributes so the caller knows that a decrypted io_tlb_mem
+> >> 	 * was used.
+> >> 	 */
+> >> 	if (!(*attrs & DMA_ATTR_CC_SHARED) && force_dma_unencrypted(dev))
+> >> 		*attrs |= DMA_ATTR_CC_SHARED;
+> >> 
+> >> 	if (mem->unencrypted != !!(*attrs & DMA_ATTR_CC_SHARED))
+> >> 		return (phys_addr_t)DMA_MAPPING_ERROR;
+> >
+> > Yeah, exactly that is so much clearer now that the mem->unecrypted is
+> > tied directly.
+> >
+> > That logic is reversed though, the incoming ATTR_CC doesn't matter for
+> > swiotlb, that is just the source of the memcpy.
+> >
+> > /* swiotlb pool is incorrect for this device */
+> > if (mem->unencrypted != force_dma_unencrypted(dev))
+> >     return (phys_addr_t)DMA_MAPPING_ERROR;
+> >
+> > /* Force attrs to match the kind of memory in the pool */
+> > if (mem->unencrypted)
+> >      *attrs |= DMA_ATTR_CC_SHARED;
+> > else
+> >      *attrs &= ~DMA_ATTR_CC_SHARED;
+> >
+> >
+> > Attrs should be forced to whatever memory swiotlb selected.
+> >
+> 
+> But that will not handle a T=1 device that wants to use swiotlb to
+> bounce unencrypted memory. That is:
+> 
+> force_dma_unencrypted(dev) == 0  /* T=1 device */
+> attrs = DMA_ATTR_CC_SHARED;
+>
+> In that case, it should use an unencrypted io_tlb_mem:
+> mem->unencrypted == 1
 
- - update is done in stop_machine() context
- - update instructions and results
- - update policy and tooling
+No! The DMA_ATTR_CC_SHARED only states the nature of the source
+memory, the DMA transfer will always happen under T=1
 
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
----
- Documentation/arch/x86/tdx.rst | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+It is perfectly fine to memcpy from shared to private and do a T=1 DMA
+from the private memory if we have to bounce.
 
-diff --git a/Documentation/arch/x86/tdx.rst b/Documentation/arch/x86/tdx.rst
-index 1a3b5bac1021..9d2b7db166b5 100644
---- a/Documentation/arch/x86/tdx.rst
-+++ b/Documentation/arch/x86/tdx.rst
-@@ -73,6 +73,40 @@ initialize::
- 
-   [..] virt/tdx: TDX-Module initialization failed ...
- 
-+TDX module Runtime Update
-+-------------------------
-+
-+The TDX architecture includes a persistent SEAM loader (P-SEAMLDR) that
-+runs in SEAM mode separately from the TDX module. The kernel can
-+communicate with P-SEAMLDR to perform runtime updates of the TDX module.
-+
-+During updates, the TDX module becomes unresponsive to other TDX
-+operations. To prevent components using TDX (such as KVM) from
-+experiencing unexpected errors during updates, updates are performed in
-+stop_machine() context.
-+
-+TDX module updates have complex compatibility requirements; the new module
-+must be compatible with the current CPU, P-SEAMLDR, and running TDX module.
-+Rather than implementing complex module selection and policy enforcement
-+logic in the kernel, userspace is responsible for auditing and selecting
-+appropriate updates.
-+
-+Updates use the standard firmware upload interface. See
-+Documentation/driver-api/firmware/fw_upload.rst for detailed instructions.
-+
-+If updates failed, running TDs may be killed and further TDX operations may
-+not be possible until reboot. For detailed error information, see
-+Documentation/ABI/testing/sysfs-devices-faux-tdx-host.
-+
-+Given the risk of losing existing TDs, userspace should verify that the
-+update is compatible with the current system and properly validated before
-+applying it.
-+
-+A reference userspace tool that implements necessary checks is available
-+at:
-+
-+  https://github.com/intel/tdx-module-binaries
-+
- TDX Interaction to Other Kernel Components
- ------------------------------------------
- 
--- 
-2.52.0
-
+Jason
