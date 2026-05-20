@@ -1,170 +1,196 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E5931328C
-	for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 05:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A64371CEC;
+	Wed, 20 May 2026 08:11:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779253363; cv=none; b=srkSNvECTukEO3n5HotT2IP85cmzDvNNfwcHL1OP2nKyo0BBnzAxT7ejvr8yR/jyQOmSNVbN09dMe275IXSX9fSmffsL8vP6FvBfaIOLe62JC5LX9/KUbvaC0pE1b26PUHvZMM8MIQf3kzHcNUXVy/tN13uGf+Ty09MkbEVS1aI=
+	t=1779264679; cv=none; b=PcshwGT/kVx+ck3TnPa8A1MqyH1+3CHU9FIGkJDLmQMGzgTstbdvHICoNCz23ZPvFRjej+hWe8F0PsnUpKO6bPTnkxklkOZXhp5oqlS0BmkbiHn0UqY7iDjkLHPLkhR+O8DpjOBQiytqHjyGl9RqJajcRP3KAXGKeoNHerTDR88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779253363; c=relaxed/simple;
-	bh=vk+Y4qqXFyg/b/b5BuR0NkVyVGyXn6ECSZWi7zrenqs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=HWk87AWGV6nJKSwTvF7B0hPbL15FVmI+TPbwNeQVqSGAF7QKts0z6N0UHtaypAAsEkT9HA40p6il6X3d8GNhYGLTanKDvQKLxZw/TOXf+yR3QwW/CA9RH7aP4pPzXNc6M4nfLk21qV0M0DQKn4Y1BmMCZB/CXnwXAzyhReSrTGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XLgGqTVP; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1779264679; c=relaxed/simple;
+	bh=ykP5j++3kEZGJufC5jMqPr5N7PrlPTIv4YtJyWjm9aE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=EyhcT1P94JmbjIj8HjHJof2ZD7e4U6fCit9OKU6XKtLNjWNLY/zuAId9jIdXmqh14Jck7wXTbM1g3FVUJ7eeOuFwzUcEVGqYTSsdBu1CnmKuLz1eWFUkwvYefHEUrFNKXSCNe/wXTCR9IaKtInT9ZzOSbs2MAOyVSzv076yOhVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mjgbrDyH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XLgGqTVP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779253362; x=1810789362;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=vk+Y4qqXFyg/b/b5BuR0NkVyVGyXn6ECSZWi7zrenqs=;
-  b=XLgGqTVPsHEnBhKgtFp+toCQBnOJgta3fr9qUmAwuricLrguLARN5J/z
-   08gzw7fXJu+sMfeOferKLUZGEW+4rUML+WKN7chUuFkiI+52zfzRL4ydf
-   vUeauDcY9EWMW21cRuN9N+hxjwcNGDxu+TMsSuDGIhPo/isL1NK0kznwA
-   e4iqWTysEemP47L+nSTY8t6bm95TV12H1+P7pa/MGjaQrVcGca16TiiHB
-   g4uoiBhy9CiRijoLC0B5ps+LsbpgEDWGrgAdeCeRgXCY4M3ojTmoZLx80
-   45hppgiSRI9v9tOtgdHmUqHaOxObb4RiOBcZ/GisB2EZ4nu9qYjkWvhmc
-   g==;
-X-CSE-ConnectionGUID: ik7+G0NqQuC1gVxOngO6HA==
-X-CSE-MsgGUID: HiSxCe5xTkerGfTfuaSfHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="91537431"
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="91537431"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 22:02:41 -0700
-X-CSE-ConnectionGUID: olqJTcuFQkmbuOfEsizLUw==
-X-CSE-MsgGUID: 6dI39uEPQcmIpfMX/t+Ibg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="240282415"
-Received: from fanlilin-mobl.ccr.corp.intel.com (HELO [10.238.1.228]) ([10.238.1.228])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 22:02:38 -0700
-Message-ID: <3beeaf04-e4f9-44cf-a3a3-04fa12912848@linux.intel.com>
-Date: Wed, 20 May 2026 13:02:35 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mjgbrDyH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C5B1F000E9;
+	Wed, 20 May 2026 08:11:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779264678;
+	bh=OKc8XxajgpbAp4oVO14ZVT8GcMgk2YyFp+iJHnnAnH0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=mjgbrDyHAwE4phsUGFHlwC6BKr4Qv3BbzjXDsShbVAPXWah5VfDWClSp+e6szyxtE
+	 KaY7dH3A4XNyUQOJ1brykGyoNe+l/1+Ps0DIgm60Mt4mm1ydENLR9tHrZAvvw6SMgf
+	 vslRBPUFWEJEadChaOawl3sdcllFEcbA3SHO+P29CgBZwP7kH4Tdvp6+0VHFa7gqBj
+	 KcCsgtsYOS14fLZHqhExO11mOLCLe4S8kLjKYyEqLwH03QnFEzz9c7osx270wNc9h3
+	 uMspfxaUPhVwR8oa0AWhTw2F7836aBYDSNsqTmctafsVQFi4s0MK91frJMkI9uPW6o
+	 6Y1/QLy25w8nA==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>
+Subject: Re: [PATCH v5 1/3] firmware: smccc: coco: Manage arm-smccc platform
+ device and CCA auxiliary drivers
+In-Reply-To: <yq5apl2txmav.fsf@kernel.org>
+References: <20260514094030.42495-1-aneesh.kumar@kernel.org>
+ <20260514094030.42495-2-aneesh.kumar@kernel.org>
+ <0c88bcee-65b5-4328-87e6-e1c714c3d1ca@arm.com>
+ <2026051420-amusement-drove-73e6@gregkh> <yq5alddm5a6w.fsf@kernel.org>
+ <2026051404-headboard-cabbage-e09a@gregkh> <yq5apl2txmav.fsf@kernel.org>
+Date: Wed, 20 May 2026 13:41:10 +0530
+Message-ID: <yq5azf1uqz4x.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/15] KVM: x86/xen: Don't truncate RAX when handling
- hypercall from protected guest
-From: Binbin Wu <binbin.wu@linux.intel.com>
-To: David Woodhouse <dwmw2@infradead.org>,
- Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
- Paul Durrant <paul@xen.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org,
- x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
-References: <20260514215355.1648463-1-seanjc@google.com>
- <20260514215355.1648463-4-seanjc@google.com>
- <27ba35fd-5563-4bbd-8f95-2285b50efa7a@linux.intel.com>
- <agcXr2FP4C3I_jbQ@google.com>
- <52fdc61a-60e8-4547-8ff7-f249b4d667b9@linux.intel.com>
- <ad4934f4a663c448924aeabe6418e68ae3ef9813.camel@infradead.org>
- <868898e6-1c57-498d-848d-1df9cbeac23c@linux.intel.com>
- <d7af5a04a11432ea1878431e8b51061f19c16061.camel@infradead.org>
- <dc62e58e-b6ee-41e1-84a5-0716822fefc8@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <dc62e58e-b6ee-41e1-84a5-0716822fefc8@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
 
+Hi Greg,
 
-On 5/18/2026 5:55 PM, Binbin Wu wrote:
-> 
-> 
-> On 5/18/2026 5:50 PM, David Woodhouse wrote:
->> On Mon, 2026-05-18 at 17:43 +0800, Binbin Wu wrote:
->>>
->>>
->>> On 5/18/2026 3:15 PM, David Woodhouse wrote:
->>>> On Mon, 2026-05-18 at 10:19 +0800, Binbin Wu wrote:
->>>>>  
->>>>>>>>   	longmode = is_64_bit_hypercall(vcpu);
->>>>>>>
->>>>>>> Is the variable name misleading?
->>>>>>
->>>>>> It most definitely is.  However, @longmode is passed around quite a few locations
->>>>>> in xen.c, and so I don't want to opportunistically fix this one variable.  Though
->>>>>> I'm definitely not opposed to a separate patch to rename them all to is_64bit or
->>>>>> something.
->>>>>
->>>>> OK, I can do it.
->>>>
->>>> This one (as shown above) is clearly indicating whether this particular
->>>> vCPU is in 64-bit mode for this particular hypercall. Changing that to
->>>> is_64bit makes sense.
->>>>
->>>> However, there is a separate overall mode for the VM, which is stored
->>>> in 'kvm->arch.xen.long_mode' and accessed by userspace using the
->>>> KVM_XEN_ATTR_TYPE_LONG_MODE attribute. It affects the datatypes used by
->>>> shared memory data structures, and is also latched by the kernel when
->>>> the guest writes the MSR for the hypercall page. That one should
->>>> probably keep its name.
->>>
->>> For this one, I think the current KVM code is consistent.
->>> The format is determined by EFER.LMA, whether the guest is running in 64 bit or
->>> compatible mode doesn't change the ABI.
+Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
 
-I still have a point of confusion.
-
-I noticed a behavioral mismatch between KVM and Xen regarding when they switch
-to the standard/compat shared info.
-- In Xen: The 32-bit shared info structure is latched if the current vCPU is
-  not in 64-bit mode:
-  hvm_latch_shinfo_size
-      d->arch.has_32bit_shinfo = hvm_guest_x86_mode(current) != X86_MODE_64BIT
-
-- In KVM: It evaluates is_long_mode(vcpu) instead. E.g.,
-  kvm_xen_write_hypercall_page
-      bool lm = is_long_mode(vcpu);
-      ...
-      kvm->arch.xen.long_mode = lm;
-
-In theory, these two checks could differ when the guest kernel is running in
-a 32-bit compatibility mode. However, I believe this mismatch is fine in
-practice for two reasons:
-- Mainstream 64-bit OSes don't run in compatibility mode for kernel code after
-  the early init.
-- By default, HVM guests cannot issue hypercalls from userspace. The only one
-  exception HVMOP_guest_request_vm_event is not related to the share info.
-
-So the vCPU will never be in compatibility mode when a related hypercall occurs.
-In this specific operational context, evaluating is_long_mode() yields the
-exact same functional outcome as checking for 64-bit execution mode. Am I
-missing anything here?
-
-
+> Greg KH <gregkh@linuxfoundation.org> writes:
+>
+>> On Thu, May 14, 2026 at 08:07:27PM +0530, Aneesh Kumar K.V wrote:
+>>> Greg KH <gregkh@linuxfoundation.org> writes:
+>>> 
+>>> > On Thu, May 14, 2026 at 12:04:13PM +0100, Suzuki K Poulose wrote:
+>>> >> Hi Aneesh
+>>> >> 
+>>> >> On 14/05/2026 10:40, Aneesh Kumar K.V (Arm) wrote:
+>>> >> > Make the SMCCC driver responsible for registering the arm-smccc platform
+>>> >> > device and after confirming the relevant SMCCC function IDs, create
+>>> >> > the arm_cca_guest auxiliary device.
+>>> >> > 
+>>> >> 
+>>> >> There are a few changes squashed in to this patch. Please could we
+>>> >> split the patch in the following order ?
+>>> >> 
+>>> >> 1. Add platform device for arm-smccc
+>>> >
+>>> > Do not make any more "fake" platform devices please.
+>>> >
+>>> >> 2. Move TRNG to Auxilliary Device - (Even though it is a later patch, move
+>>> >> it before the RSI changes)
+>>> >
+>>> > No, move it to the faux api please.
+>>> >
+>>> 
+>>> 
+>>> Maybe I was not complete in my previous reply. I did not want to repeat
+>>> the entire thread, so I quoted the lore link for more details.
+>>> 
+>>> 1. We have platform firmware-provided SMCCC interfaces. Based on the
+>>> support/availability of these function IDs, we want to load multiple
+>>> drivers.
+>>> 2. This patch series adds a platform device to represent the
+>>> firmware-provided SMCCC resource.
+>>> 3. Different SMCCC ranges are now represented as auxiliary devices.
+>>> 4. Different subsystems, such as TSM, can autoload their backend drivers
+>>> based on the availability of these SMCCC ranges, which are now
+>>> represented as auxiliary devices.
+>>> 
+>>> You had agreed to all of this in the previous discussion here:
+>>> https://lore.kernel.org/all/2025101516-handbook-hyphen-62ec@gregkh
 >>
->> Agreed. For the hypercall case you're looking at, switching the name to
->> is_64bit makes sense.
+>> Then why did someone say "this is a fake platform device with no actual
+>> resources"?  That's what I was triggering off of.
 >>
->>> struct compat_shared_info is used only when the guest is running natively in a
->>> 32-bit build.
+>> Again, if you have actual platform resources, GREAT, use a platform
+>> device and aux.  If you do not, then do NOT use a platform device.
 >>
->> The struct compat_shared_info is also used in !kvm->arch.xen.long_mode
->> on a 64-bit host, as that's what means the guest is considered to be a
->> 32-bit guest.
+>> totally confused,
 >>
->> It's somewhat orthogonal from whether any given vCPU is making any
->> given hypercall while in 64-bit mode. The 'long_mode' is *latched* at
->> certain specific times which are defined by Xen's historical behaviour.
->>
->> I'm suggesting that you clean up longmode→is_64bit for the *hypercalls*
->> but leave 'long_mode' as is.
->>
-> 
-> Yes, will only do it for is_64_bit_hypercall().
-> 
->>
-> 
+>> greg k-h
+>
+> I have now rewritten the cover letter as below. Let me know if this
+> helps.
+>
+> Switch Arm SMCCC firmware services to auxiliary devices
+>
+> As discussed here:
+> https://lore.kernel.org/all/20250728135216.48084-12-aneesh.kumar@kernel.org
+>
+> The earlier CCA guest support used an arm-cca-dev platform device as a pure
+> software anchor for the TSM class device. That platform device did not
+> correspond to a DT/ACPI described device, MMIO range, interrupt, or other
+> platform resource; it existed only to make the CCA guest driver bind and to
+> place the resulting TSM device in the driver model. The same pattern also
+> exists for smccc_trng. Creating separate platform devices for such
+> SMCCC-discovered features is misleading, because those features are not
+> independent platform devices.
+>
+> This series changes the model so that there is a single arm-smccc platform
+> device representing the SMCCC firmware interface itself. The firmware
+> interface, including its discoverable SMCCC function space, is the
+> resource: after PSCI/SMCCC conduit discovery, the kernel can query SMCCC
+> function IDs and determine whether optional firmware services are present.
+> Services such as SMCCC TRNG and Realm Services Interface (RSI) are
+> therefore represented as children of the arm-smccc device, and are created
+> only when the required SMCCC function IDs and ABI checks succeed.
+>
+> The child devices use the auxiliary bus deliberately: they are intended to
+> bind independent feature drivers, not just to provide a driverless object for
+> sysfs or other class-device anchoring. They are firmware-provided functions
+> of the parent SMCCC interface that are consumed by separate kernel drivers
+> in different subsystems, such as hwrng and virt/coco/TSM. Those drivers
+> need normal driver-core matching, probe/remove lifetime, and module
+> autoloading based on the discovered firmware feature. The auxiliary bus
+> provides a MODALIAS and id-table based binding model for that case, while
+> keeping the feature drivers off the platform bus. A faux device was
+> considered, but not used because it is suited for simple software objects
+> that do not need independent bus/driver binding. The faux bus has no
+> feature-driver id-table or MODALIAS matching, so it would not preserve the
+> module-autoload flow that the current platform-device based users rely on.
+>
+> In other words, the parent arm-smccc device represents the firmware
+> resource exposed through the SMCCC conduit, and each auxiliary child
+> represents one discovered firmware service of that parent. This removes the
+> unnecessary per-feature platform devices while retaining automatic loading
+> and independent subsystem drivers for the SMCCC services.
+>
+> The TSM framework uses the device abstraction to provide cross-architecture
+> TSM and TEE I/O functionality, including enumerating available platform TEE
+> I/O capabilities and provisioning connections between the platform TSM and
+> device DSMs.  For Arm CCA, the RSI auxiliary device continues to provide the
+> device anchor used by the CCA guest TSM provider.
+>
+> For the CCA platform, the resulting device hierarchy appears as follows.
+> Note that the auxiliary device is parented by the arm-smccc platform device,
+> so the sysfs path remains under /devices/platform/arm-smccc/:
+>
+> $ cd /sys/class/tsm/
+> $ ls -al
+> total 0
+> drwxr-xr-x    2 root     root             0 Jan  1 00:02 .
+> drwxr-xr-x   23 root     root             0 Jan  1 00:00 ..
+> lrwxrwxrwx    1 root     root             0 Jan  1 00:03 tsm0 -> ../../devices/platform/arm-smccc/arm_cca_guest.arm-rsi-dev.0/tsm/tsm0
+> $
+>
+> The series also replaces the old arm-cca-dev userspace-visible dummy device
+> with /sys/firmware/cca/realm_guest for detecting whether the kernel is
+> running in a Realm.  This keeps the guest-state ABI under /sys/firmware and
+> separates it from the internal driver-binding device used by the CCA guest
+> TSM provider.
+>
+>
+> -aneesh
 
+Gentle ping, could you let me know if the updated cover letter helps
+clarify the confusion regarding the platform-device usage here?
+
+-aneesh
