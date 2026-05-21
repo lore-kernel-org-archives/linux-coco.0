@@ -1,225 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D9B3CDBDF;
-	Thu, 21 May 2026 13:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7E33CBE84;
+	Thu, 21 May 2026 13:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779368572; cv=none; b=uwYKw/jvPzxr54tAMVGWnkV6W3haT8Tf6mHHQ8az3usujLjtpuUqQXPQLeAjEeopRfkPs+ZAvSjfyhcijX4aj5LeySAQ1oLYgDw7ElXVC6Xa7kQmlQn2AyoQBL9P2L2TthlBxM5AzpC7nvEPtFkel65idALr9MYs1C7JFNOYEec=
+	t=1779369033; cv=none; b=hmeDweIhTcoN8eaqEgNIMbZXoon3OZLCnJGNtFs2vc/8soFWxLHqhecg6BTvFNt7k5dc9Y3EuWTCDbCJfJeGUqzc4SvJiHJLxOPbGBNfsIwzBBkts3CeEPEEd108XsVdbOPnonDAR3R+zdhW4ci/UNeBSQyndmMs4k1Lu/yrHvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779368572; c=relaxed/simple;
-	bh=Vd1aeukU9SjU8pntW0fexxBds45hk8IK+hvmsFrzhP4=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OjAO1uEuCyMjanpo1dTjw9DrL2o02kj7g6TatH94NsN00yagB+5cyv90t42WpT0fwQvFtDEB3CZSefT1Sj8BquJLZ+EjBJs5/to6yZIPDIL/9ERgyez8clx578rUJFcSClI/BWlbxmI0CwMP9SbiCqPTQyu5meAjnP9OevIHjNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J89Ukpcs; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779369033; c=relaxed/simple;
+	bh=VT9dzTfGcaF6essHmn4pepZHGWKSIQvf7qlg9gzNMqY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j1OZA7elhPr9TDvZirTLks49Lv2wUJx98eYCFsIq89RPs+DzkI6tWp/1gyJ3Cr/ytvhpNR6AcPmymfvv2IO3phIjnezl4RT6VBWSdX92iESlS5sREjToUWQYtd/l+/ujzR5KUwn8NGKvThukTpSJK3t0i2gqFo/h/k0IZl4H1Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=q6twZ/qu; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J89Ukpcs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A9EC1F000E9;
-	Thu, 21 May 2026 13:02:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779368571;
-	bh=KseMWYA9Jr+H+xyRY9PEDU6eP4OJzZ07RtFA0ZPZDpM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=J89UkpcsSbAQyKPZHklpnfU67IWP/NGR3yXsGOGIu+FCamaJh8yz4S2Bozimedpmc
-	 zyt1dv0k3dQhPoAbqrQwLHakE/ADclQ02ef80H1VXz3Epznh1U7uvm0byBb0ac9cvd
-	 S1emvq/rqsuYWFR2rWBQJ1yMaSc6f2ZErIbVlT7N+nmuoR1P4cKckB/HnUpaV4gpFa
-	 157kQzM8SRXA6sCPriIupaJsss3z1StTCzjcBTm/xQCnuo7nhcR9CGGaBkCS6lctpi
-	 ollLw+6vwZQCEhGHjm119odnglTItg/0F+a7m8GqXiKn3xUSDIPm0zoRs/bPJQ9JH4
-	 PAfp/+ahVUbkQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wQ333-00000004pBR-0eto;
-	Thu, 21 May 2026 13:02:49 +0000
-Date: Thu, 21 May 2026 14:02:48 +0100
-Message-ID: <86bje8x6dj.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo.Pieralisi2@arm.com
-Subject: Re: [PATCH v14 06/44] arm64: RMI: Check for RMI support at init
-In-Reply-To: <20260513131757.116630-7-steven.price@arm.com>
-References: <20260513131757.116630-1-steven.price@arm.com>
-	<20260513131757.116630-7-steven.price@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="q6twZ/qu"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=DA7DVimM8Ck0kNzDR7awZketijLzqktg5UcM679ki4g=; b=q6twZ/quiaPkS7JYDLfYP4oxQR
+	kwL3xkWZBEpV2j7C1uN45f/dlF1ZLXrwx+jWqL7SQEvjHcy7/MS8yAxgKbQMJOBppFTgAyijrmCw+
+	qsUedKzMdKPt0VHol7Hg5iM2yiOqZHQAzBNQpo0ETgquMSq330OAMMUOL5XazrqdRvIuwmq8fCzvJ
+	8w7PV454mMuz+QtTx/4yGia1zkhOm9E43cVzP05eFWXg6UOcrEZyigPUrzrWk0OV5q9ekYN/vFQ9r
+	H8UIXCIrcHRZ6j+ZCex3x14hX/FPAOr2uRFQk4MepXZ9vQBQZkKMP2xQUakHd/KfGdD8DmUEqPEFb
+	l12Q18Ng==;
+Received: from 2001-1c00-8d85-4b00-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:4b00:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wQ3AK-00000008VrU-2GqZ;
+	Thu, 21 May 2026 13:10:20 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 111F6300446; Thu, 21 May 2026 15:10:19 +0200 (CEST)
+Date: Thu, 21 May 2026 15:10:19 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, Kiryl Shutsemau <kas@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>, Juergen Gross <jgross@suse.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, John Stultz <jstultz@google.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Stephen Boyd <sboyd@kernel.org>, x86@kernel.org,
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
+	Michael Kelley <mhklinux@outlook.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v3 27/41] x86/kvmclock: Enable kvmclock on APs during
+ onlining if kvmclock isn't sched_clock
+Message-ID: <20260521131019.GI3126523@noisy.programming.kicks-ass.net>
+References: <20260515191942.1892718-1-seanjc@google.com>
+ <20260515191942.1892718-28-seanjc@google.com>
+ <423b37f056f0d4d596d5f4cc73802fb1079ecf63.camel@infradead.org>
+ <ag8Bpc_uVNrNWqfX@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ag8Bpc_uVNrNWqfX@google.com>
 
-On Wed, 13 May 2026 14:17:14 +0100,
-Steven Price <steven.price@arm.com> wrote:
+On Thu, May 21, 2026 at 05:59:17AM -0700, Sean Christopherson wrote:
+> On Thu, May 21, 2026, David Woodhouse wrote:
+> > On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
+> > > In anticipation of making x86_cpuinit.early_percpu_clock_init(), i.e.
+> > > kvm_setup_secondary_clock(), a dedicated sched_clock hook that will be
+> > > invoked if and only if kvmclock is set as sched_clock, ensure APs enable
+> > > their kvmclock during CPU online.  While a redundant write to the MSR is
+> > > technically ok, skip the registration when kvmclock is sched_clock so that
+> > > it's somewhat obvious that kvmclock *needs* to be enabled during early
+> > > bringup when it's being used as sched_clock.
+> > > 
+> > > Plumb in the BSP's resume path purely for documentation purposes.  Both
+> > > KVM (as-a-guest) and timekeeping/clocksource hook syscore_ops, and it's
+> > > not super obvious that using KVM's hooks would be flawed.  E.g. it would
+> > > work today, because KVM's hooks happen to run after/before timekeeping's
+> > > hooks during suspend/resume, but that's sheer dumb luck as the order in
+> > > which syscore_ops are invoked depends entirely on when a subsystem is
+> > > initialized and thus registers its hooks.
+> > > 
+> > > Opportunsitically make the registration messages more precise to help
+> > > debug issues where kvmclock is enabled too late.
+> > 
+> > That's a hard word to type, isn't it?
 > 
-> Query the RMI version number and check if it is a compatible version.
-> The first two feature registers are read and exposed for future code to
-> use.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> v14:
->  * This moves the basic RMI setup into the 'kernel' directory. This is
->    because RMI will be used for some features outside of KVM so should
->    be available even if KVM isn't compiled in.
-> ---
->  arch/arm64/include/asm/rmi_cmds.h |  3 ++
->  arch/arm64/kernel/Makefile        |  2 +-
->  arch/arm64/kernel/cpufeature.c    |  1 +
->  arch/arm64/kernel/rmi.c           | 65 +++++++++++++++++++++++++++++++
->  4 files changed, 70 insertions(+), 1 deletion(-)
->  create mode 100644 arch/arm64/kernel/rmi.c
-> 
-> diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/asm/rmi_cmds.h
-> index 04f7066894e9..9179934925c5 100644
-> --- a/arch/arm64/include/asm/rmi_cmds.h
-> +++ b/arch/arm64/include/asm/rmi_cmds.h
-> @@ -10,6 +10,9 @@
->  
->  #include <asm/rmi_smc.h>
->  
-> +extern unsigned long rmm_feat_reg0;
-> +extern unsigned long rmm_feat_reg1;
-> +
->  struct rtt_entry {
->  	unsigned long walk_level;
->  	unsigned long desc;
-> diff --git a/arch/arm64/kernel/Makefile b/arch/arm64/kernel/Makefile
-> index 74b76bb70452..d68f351aae75 100644
-> --- a/arch/arm64/kernel/Makefile
-> +++ b/arch/arm64/kernel/Makefile
-> @@ -34,7 +34,7 @@ obj-y			:= debug-monitors.o entry.o irq.o fpsimd.o		\
->  			   cpufeature.o alternative.o cacheinfo.o		\
->  			   smp.o smp_spin_table.o topology.o smccc-call.o	\
->  			   syscall.o proton-pack.o idle.o patching.o pi/	\
-> -			   rsi.o jump_label.o
-> +			   rsi.o jump_label.o rmi.o
->  
->  obj-$(CONFIG_COMPAT)			+= sys32.o signal32.o			\
->  					   sys_compat.o
-> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> index 6d53bb15cf7b..8bdd95a8c2de 100644
-> --- a/arch/arm64/kernel/cpufeature.c
-> +++ b/arch/arm64/kernel/cpufeature.c
-> @@ -292,6 +292,7 @@ static const struct arm64_ftr_bits ftr_id_aa64isar3[] = {
->  static const struct arm64_ftr_bits ftr_id_aa64pfr0[] = {
->  	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_CSV3_SHIFT, 4, 0),
->  	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_CSV2_SHIFT, 4, 0),
-> +	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_RME_SHIFT, 4, 0),
->  	ARM64_FTR_BITS(FTR_VISIBLE, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_DIT_SHIFT, 4, 0),
->  	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_AMU_SHIFT, 4, 0),
->  	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_MPAM_SHIFT, 4, 0),
-> diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
-> new file mode 100644
-> index 000000000000..99c1ccc35c11
-> --- /dev/null
-> +++ b/arch/arm64/kernel/rmi.c
-> @@ -0,0 +1,65 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2023-2025 ARM Ltd.
-> + */
-> +
-> +#include <linux/memblock.h>
-> +
-> +#include <asm/rmi_cmds.h>
-> +
-> +unsigned long rmm_feat_reg0;
-> +unsigned long rmm_feat_reg1;
+> Heh, you have no idea.  I've been "this" close to creating a VIM binding for a
+> while, it is time...
 
-What is the requirement for making those globally accessible? Can't
-they be made static and use an accessor that returns them? Can the
-variables be made __ro_after_init?
+'z=' not good enough?
 
-> +
-> +static int rmi_check_version(void)
-> +{
-> +	struct arm_smccc_res res;
-> +	unsigned short version_major, version_minor;
-> +	unsigned long host_version = RMI_ABI_VERSION(RMI_ABI_MAJOR_VERSION,
-> +						     RMI_ABI_MINOR_VERSION);
-> +	unsigned long aa64pfr0 = read_sanitised_ftr_reg(SYS_ID_AA64PFR0_EL1);
-> +
-> +	/* If RME isn't supported, then RMI can't be */
-> +	if (cpuid_feature_extract_unsigned_field(aa64pfr0, ID_AA64PFR0_EL1_RME_SHIFT) == 0)
-> +		return -ENXIO;
-> +
-> +	arm_smccc_1_1_invoke(SMC_RMI_VERSION, host_version, &res);
-> +
-> +	if (res.a0 == SMCCC_RET_NOT_SUPPORTED)
-> +		return -ENXIO;
-> +
-> +	version_major = RMI_ABI_VERSION_GET_MAJOR(res.a1);
-> +	version_minor = RMI_ABI_VERSION_GET_MINOR(res.a1);
-> +
-> +	if (res.a0 != RMI_SUCCESS) {
-> +		unsigned short high_version_major, high_version_minor;
-> +
-> +		high_version_major = RMI_ABI_VERSION_GET_MAJOR(res.a2);
-> +		high_version_minor = RMI_ABI_VERSION_GET_MINOR(res.a2);
-> +
-> +		pr_err("Unsupported RMI ABI (v%d.%d - v%d.%d) we want v%d.%d\n",
-> +		       version_major, version_minor,
-> +		       high_version_major, high_version_minor,
-> +		       RMI_ABI_MAJOR_VERSION,
-> +		       RMI_ABI_MINOR_VERSION);
-> +		return -ENXIO;
-> +	}
-> +
-> +	pr_info("RMI ABI version %d.%d\n", version_major, version_minor);
-> +
-> +	return 0;
-> +}
-> +
-> +static int __init arm64_init_rmi(void)
-> +{
-> +	/* Continue without realm support if we can't agree on a version */
-> +	if (rmi_check_version())
-> +		return 0;
-> +
-> +	if (WARN_ON(rmi_features(0, &rmm_feat_reg0)))
-> +		return 0;
-> +	if (WARN_ON(rmi_features(1, &rmm_feat_reg1)))
-> +		return 0;
-> +
-> +	return 0;
-> +}
-> +subsys_initcall(arm64_init_rmi);
-
-Is there any reliance on this being executed before or after KVM's own
-initialisation? If so, this should be captured.
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
