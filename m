@@ -1,122 +1,127 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7540F37F009;
-	Thu, 21 May 2026 10:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EC135F18A;
+	Thu, 21 May 2026 11:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779359164; cv=none; b=ub/r9ZmKFU/D+naapJISjWyJchC6qMUopmd8R4IHMXh/XWfhMq73coNvGNcg6LZamrrDxVBpZ7FbEUzu2R+fCyqn1QNF7vElnFbAeE+aFh/i0rJ0t7g2TdlLgCZjM6Y7K/wBdINsdaoa8u7TtDfHcp5WcdNO/FYpWJi9MuXdGHQ=
+	t=1779364463; cv=none; b=tEZkH3hkfKHicfwF/7mkse+BI2o6fcg/Ut26iWTLTSWNxZibHfkc8JPoPb7uDARAPtHvD21sbcbOrAWjeFKWFbA/KmYI0eBRajghGxYq+YC0rkRv4CS7A1RBq+yiYg3uHg9ByWcSVUPCujtMDGCMs1ZgbH+1WO+tgMj1I5t/bwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779359164; c=relaxed/simple;
-	bh=rJTE3Myf/O4a/LtxpzVjpzB8Qoo9p7WSyNLMEPxmTg0=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ilgY9ryz4OfReD74OJvrExjP0QIvJGDZACAYhD8sbmMYzY0w406mlHWbt/yuIwQ4EpQzfmU3lP47JZgd5fA9GB9jBGHbe46bsf3oYjUvM/2sfI8XI/bHIjdkY82NxaUP36To8MK84XhpbggjRHolUmTDN01Rj+CrOVyJmZ+sMRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/s7co8G; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779364463; c=relaxed/simple;
+	bh=ZgZIWjW+VmcEbqu15znYRaEOpX+b7l5mNLvU3xhgsCk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=COVXIYdINCQmqICBtu9N4DqseiiXrI8TnMCGVyOS+8s1y88Ycrbk2OSWzn4cylKyLyIk/cZjhWipULDITU63/tE/sdD8dXXASFn/d9FlswPsIiTVyLNXclw9guy6R+/6KMeugUJm0IoLtw6VTwlvEefzYBKkkRWu9DMq7kJ7+0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VRoV8Obk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/s7co8G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A35F1F000E9;
-	Thu, 21 May 2026 10:26:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VRoV8Obk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60901F000E9;
+	Thu, 21 May 2026 11:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779359163;
-	bh=3HbjtSmSEhrB0oy9msErMnLEWNbLnEiCjT4dTyfzcqc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Y/s7co8Gxsey3Z3nyMyNKdDiYEe7Y7pUDbCLus85Ij7r/hz4UmD4JqJVSa6BunKOE
-	 2P+AvMI7fEu04f+J+boPadH4nm30saUKFclhsbY+BWeWk4GHGaVyzPHKtQVHO4VjMP
-	 A8f7HKEug3BT9cHNvlpDl8HVDOknkkjFd83x7Gbr5lcfwUgSTRoieSuGcsaXyhEx5b
-	 uec4rTQQ48ZhNrBrAUjTgfR2juMQtefdaWVBl1m2vx4SQR2CFf8MBRfpZAMLXwbSiZ
-	 6DZt02oPrD/7RQcu0L6qCHu1/ewc4ZS8LajHzmDVkbVYh6aXxcpmD7V0ogIODNgmKf
-	 vX+UHjnuwm30w==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wQ0bI-00000004ls9-3s5I;
-	Thu, 21 May 2026 10:26:01 +0000
-Date: Thu, 21 May 2026 11:26:00 +0100
-Message-ID: <86ik8hvz2f.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
+	s=k20260515; t=1779364462;
+	bh=AfaRmOFwq9PG0Q9lB7Y5h4Js0tCrSyooaZYJ9TAjF4I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=VRoV8Obk6Db2yTrA5yAdD7bmtQFvSWYfd/ZMw0E5GBL5jIdP8p2frzgVjebJ/AI8N
+	 hR/ltXnLmqYytDDOSL4NfrAm8WWL6Eapslk7nKLHkiEPTsINTDc/s/wXE5nhOEOkw0
+	 ocFPhIherbIJmWmA0TT9aOS8dxo5zor2QipnNUscdwsm508C2EjBqUXMBblgS8bTHy
+	 VTwtO3pIzg195ryyporAX+AUffxjuJV03eR50aV96prxY5h11jwtvbWjHvTe3DepXz
+	 Q2BR9ERr09ummMuYbcfqyARU4HAkb3n2S7jWp660Rin4hD/1ttPs8n0zhk15N2/FrI
+	 IAG1as/hVnwgg==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo.Pieralisi2@arm.com
-Subject: Re: [PATCH v14 02/44] kvm: arm64: Avoid including linux/kvm_host.h in kvm_pgtable.h
-In-Reply-To: <20260513131757.116630-3-steven.price@arm.com>
-References: <20260513131757.116630-1-steven.price@arm.com>
-	<20260513131757.116630-3-steven.price@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	Jiri Pirko <jiri@resnulli.us>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
+Subject: Re: [PATCH v4 13/13] x86/amd-gart: preserve the direct DMA address
+ until GART mapping succeeds
+In-Reply-To: <20260512090408.794195-14-aneesh.kumar@kernel.org>
+References: <20260512090408.794195-1-aneesh.kumar@kernel.org>
+ <20260512090408.794195-14-aneesh.kumar@kernel.org>
+Date: Thu, 21 May 2026 17:24:07 +0530
+Message-ID: <yq5a4ik16krk.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Wed, 13 May 2026 14:17:10 +0100,
-Steven Price <steven.price@arm.com> wrote:
-> 
-> To avoid future include cycles, drop the linux/kvm_host.h include in
-> kvm_pgtable.h and include two _types.h headers for the types that are
-> actually used. Additionally provide a forward declaration for struct
-> kvm_s2_mmu as it's only used as a pointer in this file.
-> 
-> Both pgtable.c and kvm_pkvm.h relied on the indirect inclusion of
-> kvm_host.h, so make that explicit.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
+"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
+
+> gart_alloc_coherent() first allocates memory through dma_direct_alloc(),
+> which returns a direct-mapped DMA address in dma_addr. When force_iommu is
+> enabled, the buffer is then remapped.
+>
+> Do not overwrite dma_addr before dma_map_area() has succeeded. Keep the
+> dma_map_area result in a temporary variable so the direct DMA address
+> remains available for dma_direct_free() on the error path.
+>
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 > ---
-> New patch in v13
-> ---
->  arch/arm64/include/asm/kvm_pgtable.h | 5 ++++-
->  arch/arm64/include/asm/kvm_pkvm.h    | 2 +-
->  arch/arm64/kvm/hyp/pgtable.c         | 1 +
->  3 files changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/kvm_pgtable.h b/arch/arm64/include/asm/kvm_pgtable.h
-> index 41a8687938eb..e4770ce2ccf6 100644
-> --- a/arch/arm64/include/asm/kvm_pgtable.h
-> +++ b/arch/arm64/include/asm/kvm_pgtable.h
-> @@ -8,9 +8,12 @@
->  #define __ARM64_KVM_PGTABLE_H__
+>  arch/x86/kernel/amd_gart_64.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/x86/kernel/amd_gart_64.c b/arch/x86/kernel/amd_gart_64.c
+> index b5f1f031d45b..a109649c5649 100644
+> --- a/arch/x86/kernel/amd_gart_64.c
+> +++ b/arch/x86/kernel/amd_gart_64.c
+> @@ -467,18 +467,20 @@ gart_alloc_coherent(struct device *dev, size_t size, dma_addr_t *dma_addr,
+>  		    gfp_t flag, unsigned long attrs)
+>  {
+>  	void *vaddr;
+> +	dma_addr_t dma_map_addr;
 >  
->  #include <linux/bits.h>
-> -#include <linux/kvm_host.h>
-> +#include <linux/kvm_types.h>
-> +#include <linux/rbtree_types.h>
+>  	vaddr = dma_direct_alloc(dev, size, dma_addr, flag, attrs);
+>  	if (!vaddr ||
+>  	    !force_iommu || dev->coherent_dma_mask <= DMA_BIT_MASK(24))
+>  		return vaddr;
+>  
+> -	*dma_addr = dma_map_area(dev, virt_to_phys(vaddr), size,
+> -				 DMA_BIDIRECTIONAL,
+> -				 (1UL << get_order(size)) - 1, attrs);
+> +	dma_map_addr = dma_map_area(dev, virt_to_phys(vaddr), size,
+> +				     DMA_BIDIRECTIONAL,
+> +				     (1UL << get_order(size)) - 1, attrs);
+>  	flush_gart();
+> -	if (unlikely(*dma_addr == DMA_MAPPING_ERROR))
+> +	if (unlikely(dma_map_addr == DMA_MAPPING_ERROR))
+>  		goto out_free;
+> +	*dma_addr = dma_map_addr;
+>  	return vaddr;
+>  out_free:
+>  	dma_direct_free(dev, size, vaddr, *dma_addr, attrs);
+> -- 
+> 2.43.0
+>
 
-I'm surprised by this. Where is the rbtree_type.h requirement coming
-from?
+This needs corresponding changes on the gart_free_coherent() side as well.
 
-Thanks,
+https://sashiko.dev/#/patchset/20260512090408.794195-1-aneesh.kumar%40kernel.org?part=13
 
-	M.
+I will avoid making that change as part of this series, since I assume
+it would require specific testing.
 
--- 
-Without deviation from the norm, progress is not possible.
+-aneesh
