@@ -1,180 +1,190 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F211D95A3;
-	Thu, 21 May 2026 13:30:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8D3274B2A
+	for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 13:31:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779370241; cv=none; b=F7sAoeT6bd03UwyCN/beRbjnmqLKOeAQQ/QnF8VY1XN1GqNcMtDs+lHykNfazYN6QEt7Hrr3FDejEYUKdjW9nnWy0hjX5fPvMP4gKby7krkMgdN5aufoV+sAO1NygEgip8IOOR/ybYNGveehorOwBRVSt4mN6UVdftw49r+Mc9M=
+	t=1779370277; cv=none; b=bOa99PBYBoukehDCC9n6gm/CFj66/rxgluBebKncTtZFg7jloBIs3CM2VApZOzszLCf6ch1r9EgUoG6+nMegig5j7+kmv60ckkrIP8pOX1cOo4kwyJEIFtZqDu2ozsUtlRsDpMgdojuBJsZIss3Po45jp6rUKn35ydaDJO04VI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779370241; c=relaxed/simple;
-	bh=FsHd2Vn3POV4hMRHHkK0+Fuoph1MfYw+UxnWomCE05c=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=chNSBvAbqy+NxdL6xotG3d+uPi0q9HpW4eoJ76XBSvqcqhFUd0TdT9rCp7GOtMrEIdQLyI8KEPyHHr58T5QZbIZJl3qkKEtaXARrZN37OfER+DibLcl6IKNPV3TPNV8ozDylN55mTnO7wyqITJZjDVNk964c4G6mSXQf22Xd1Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gk2D4M3z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779370277; c=relaxed/simple;
+	bh=t+Zvw3OJCdd7aLvPU2Y07KNUlkbBJoLjXPqHeDhHkts=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=YmIsJso/86tYiSz4yrGhGS6AMhln1jeJLiCNUOml2CTWqi4sMpVMz2uJZ1ohdWd2zcHQrCrsgVUG+4Qro6BEj84ZvrptWwWaMbNlWOe0m4Z4R4umnNbEFpyn23oUHBjrogJ9P6zuEoMoojw5qvY3SrUfVn4JAEEp3/9SCiSr0xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fAaliF31; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gk2D4M3z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DC71F000E9;
-	Thu, 21 May 2026 13:30:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779370239;
-	bh=AUsiEO8XSxSdf1ckEUAcitkd8wAftPJDNELGvlWw98Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Gk2D4M3z2ZHFpy+s2j8iwm/otZXz7Ct24tF2vfnGXYxJbCWYsyBPMtFSytNwg+olJ
-	 LPkdC9AFmotm8vh7Dws5HrsR0Y+XrfLxnZ7w89niq+UtHKtexytSzO8lehqRZcwA3v
-	 EjOUe7qW13jcnmE3RHQOV2rjQgY9am844deKBRKsEKBJP9lGZZCQzigTOIJ5aCX8i8
-	 023r33GF+pjk/A4mxpP9DrhIMAtQPR8t462EBcnG5IfMeCk3/zdRe8ikmBJOdTYNC1
-	 T8JLfehxLm5R9HshwcfRyaWAU6zSkgB0QQ9/QyS1VW2D9uWwjDPMiiQzA98iOj424L
-	 x0T6Yb28X+Yow==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wQ3Tx-00000004q63-37EP;
-	Thu, 21 May 2026 13:30:37 +0000
-Date: Thu, 21 May 2026 14:30:37 +0100
-Message-ID: <86a4tsx536.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo.Pieralisi2@arm.com
-Subject: Re: [PATCH v14 07/44] arm64: RMI: Configure the RMM with the host's page size
-In-Reply-To: <20260513131757.116630-8-steven.price@arm.com>
-References: <20260513131757.116630-1-steven.price@arm.com>
-	<20260513131757.116630-8-steven.price@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fAaliF31"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-83eefe4867eso3335135b3a.1
+        for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 06:31:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779370276; x=1779975076; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=55Qyjr301rCPWrgG1oq6BJ9BiVpqhO1a4dUCIfsketY=;
+        b=fAaliF31Jo8nO0eiT2kp0op1wb4/HyOUz7CXLMtupsZW1glCkjM284ONN95vQSwg94
+         JPzYeRC9AprDXN/dWKVfN32kDLPjv781fOgQfMP4e+26+QvMrJAonYPaHL9kuc0DLMeK
+         E/zEEAHz8JAz8M6CModNLrMQZDzHkRSXoeIyO480hY1rjig4fLZ5r7TdThrwpkGO8Qsj
+         nWIF5zExKGMMOqp+3TLHQ2jIZerkisfQgqXHL+xo6ORBl23emIh8R42mn4GjnhaX/Yrg
+         VkLVOwb2cfwvacjYyHvegi5LXOj08vOwMQSr//hPX5Llv6ft5rAQMlp7ZRyQbSQ1BgfA
+         p57w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779370276; x=1779975076;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=55Qyjr301rCPWrgG1oq6BJ9BiVpqhO1a4dUCIfsketY=;
+        b=YsXyQRJm9nLpww2QbwzZ2DE9OPE9jd6bmytYvlKqZ47sxxXxfktdI9oZWYFnzG0ic7
+         L7EM7svxE1RYSXHSfWVUjqCmGkaNj0Qj9hWZv4el+QIMm01vWQu/6jsfa9xtnOvwd0dQ
+         I4JscnrpE8U0AAwsGSuXK7M9D3ByKcsMfqgx+et37hL9u6OPiVZQe8Kbys2NhzyS8BY0
+         WfgetEpNDuXNnm4zIEMsLuOohF2Xr6dA0JVW4BIV9o8G4+3mgav7yCDxPv8lAiWpRcSv
+         4uxRRRbo2Ax8kPC7HgfWnCCF5n9yRslj5xR2wSY1+qtEPEUDuWVsanE9x30xUrSmQcgt
+         rvlA==
+X-Forwarded-Encrypted: i=1; AFNElJ9l84r5AIuVnPenx1gTWTI9VdF0EKvpHOK7T+ms+cokrpu+xigUofXuRLmWoooAgzQuvDocjxGZ273P@lists.linux.dev
+X-Gm-Message-State: AOJu0YyzIYf+hY4lVkbhsZIhdRIgHNm2SOB+ctOnmxa8hsu1lIkwHC0O
+	gmuUAm0sGtro9s6daGLxXlYSU+rKUss40GB89FSsJKs0INHQlyT1jyh7Pxfyu2DwnmBCu2ZcXQR
+	4wOyLPQ==
+X-Received: from pfblt3.prod.google.com ([2002:a05:6a00:7443:b0:839:65e2:e48f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1494:b0:83f:2568:d469
+ with SMTP id d2e1a72fcca58-8414adfae19mr3245544b3a.32.1779370274841; Thu, 21
+ May 2026 06:31:14 -0700 (PDT)
+Date: Thu, 21 May 2026 06:31:14 -0700
+In-Reply-To: <CA+EHjTzLCD-dU-euZKgzwyEr2ecPqFDNutcaHm2fCDGA+MHVXA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Mime-Version: 1.0
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+ <20260507-gmem-inplace-conversion-v6-5-91ab5a8b19a4@google.com>
+ <CA+EHjTw-cUM=FrJevtSDtR7K6MwUfGfOx21LMFDn7DAy5bFzYw@mail.gmail.com>
+ <CAEvNRgGQvMdDmVfbk42EY_PGN0ybTp-x21Zj+pg_X1mk9iCRtA@mail.gmail.com> <CA+EHjTzLCD-dU-euZKgzwyEr2ecPqFDNutcaHm2fCDGA+MHVXA@mail.gmail.com>
+Message-ID: <ag8JIlHjohAOC3-g@google.com>
+Subject: Re: [PATCH v6 05/43] KVM: guest_memfd: Wire up kvm_get_memory_attributes()
+ to per-gmem attributes
+From: Sean Christopherson <seanjc@google.com>
+To: Fuad Tabba <tabba@google.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, ira.weiny@intel.com, jmattson@google.com, 
+	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
+	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
+	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, 
+	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
+	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
+	aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, 13 May 2026 14:17:15 +0100,
-Steven Price <steven.price@arm.com> wrote:
+On Thu, May 21, 2026, Fuad Tabba wrote:
+> On Wed, 20 May 2026 at 22:44, Ackerley Tng <ackerleytng@google.com> wrote:
+> >
+> > Fuad Tabba <tabba@google.com> writes:
+> >
+> > >
+> > > [...snip...]
+> > >
+> > >> +unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
+> > >> +{
+> > >> +       struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
+> > >> +       struct inode *inode;
+> > >> +
+> > >> +       /*
+> > >> +        * If this gfn has no associated memslot, there's no chance of the gfn
+> > >> +        * being backed by private memory, since guest_memfd must be used for
+> > >> +        * private memory, and guest_memfd must be associated with some memslot.
+> > >> +        */
+> > >> +       if (!slot)
+> > >> +               return 0;
+> > >> +
+> > >> +       CLASS(gmem_get_file, file)(slot);
+> > >> +       if (!file)
+> > >> +               return 0;
+> > >> +
+> > >> +       inode = file_inode(file);
+> > >> +
+> > >> +       /*
+> > >> +        * Rely on the maple tree's internal RCU lock to ensure a
+> > >> +        * stable result. This result can become stale as soon as the
+> > >> +        * lock is dropped, so the caller _must_ still protect
+> > >> +        * consumption of private vs. shared by checking
+> > >> +        * mmu_invalidate_retry_gfn() under mmu_lock to serialize
+> > >> +        * against ongoing attribute updates.
+> > >> +        */
+> > >> +       return kvm_gmem_get_attributes(inode, kvm_gmem_get_index(slot, gfn));
+> > >> +}
+> > >
+> > > Doesn't this imply that all consumers of kvm_mem_is_private() should
+> > > validate the result using mmu_lock and the invalidation sequence?
+> >
+> > Let me know how I can improve the comment.
 > 
-> RMM v2.0 brings the ability to set the RMM's granule size. Check the
-> feature registers and configure the RMM so that it matches the host's
-> page size. This means that operations can be done with a granulatity
-> equal to PAGE_SIZE.
+> Given Sean's context, the comment is good I think. I would quibble
+> with the the "_must_ still protect" phrasing being a bit too strict.
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v13:
->  * Moved out of KVM.
-> ---
->  arch/arm64/kernel/rmi.c | 42 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 42 insertions(+)
+> Maybe just soften it slightly to acknowledge the exception? Something like:
 > 
-> diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
-> index 99c1ccc35c11..a14ead5dedda 100644
-> --- a/arch/arm64/kernel/rmi.c
-> +++ b/arch/arm64/kernel/rmi.c
-> @@ -49,6 +49,45 @@ static int rmi_check_version(void)
->  	return 0;
->  }
->  
-> +static int rmi_configure(void)
-> +{
-> +	struct rmm_config *config __free(free_page) = NULL;
-> +	unsigned long ret;
-> +
-> +	config = (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
-> +	if (!config)
-> +		return -ENOMEM;
+>   * lock is dropped, so callers that require a strict result _must_ protect
+>   * consumption of private vs. shared by checking mmu_invalidate_retry_gfn()
+>   * under mmu_lock to serialize against ongoing attribute updates. Callers
+>   * doing lockless reads must be able to tolerate a stale result.
+> 
+> That aligns the comment with how KVM is actually using it today. That
+> said, this is nitpicking. Feel free to use or ignore.
 
-This is the sort of buggy construct that is highlighted in
-include/linux/cleanup.h: initialising the object for cleanup with
-NULL, and only later assigning the expected value.
+Hmm, I wonder if we can figure out a way to consolidate some documentation,
+because this is _exactly_ the same pattern that x86's host_pfn_mapping_level()
+deals with (see its big comment below).
 
-It may not matter here, but it will catch you (or more probably me) in
-the future.
+There's also the stale comment in kvm_invalidate_memslot(), which, stating the
+obvious, speaks to the memslot+SRCU side of things.
 
-> +
-> +	switch (PAGE_SIZE) {
-> +	case SZ_4K:
-> +		config->rmi_granule_size = RMI_GRANULE_SIZE_4KB;
-> +		break;
-> +	case SZ_16K:
-> +		config->rmi_granule_size = RMI_GRANULE_SIZE_16KB;
-> +		break;
-> +	case SZ_64K:
-> +		config->rmi_granule_size = RMI_GRANULE_SIZE_64KB;
-> +		break;
-> +	default:
-> +		pr_err("Unsupported PAGE_SIZE for RMM\n");
+Maybe it makes sense to to find a central location for one giant comment about
+how how MMU notifier events and memslot+SRCU protections work?  And then refer
+to that in paths where some asset needs to be tied into MMU notifiers and/or
+memslots+SRCU?
 
-Do you really anticipate PAGE_SIZE being any other value? This is 100%
-dead code. If you want to be extra cautious, have a BUILD_BUg_ON().
+[*] https://lore.kernel.org/all/agcbWe8s9lmPuJwG@google.com
 
-> +		return -EINVAL;
-> +	}
-> +
-> +	ret = rmi_rmm_config_set(virt_to_phys(config));
-> +	if (ret) {
-> +		pr_err("RMM config set failed\n");
-> +		return -EINVAL;
-> +	}
 
-What is the live cycle of the page when the call succeeds? Is it
-switched back to the NS PAS and allowed to be freed?
-
-> +
-> +	ret = rmi_rmm_activate();
-> +	if (ret) {
-> +		pr_err("RMM activate failed\n");
-> +		return -ENXIO;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static int __init arm64_init_rmi(void)
->  {
->  	/* Continue without realm support if we can't agree on a version */
-> @@ -60,6 +99,9 @@ static int __init arm64_init_rmi(void)
->  	if (WARN_ON(rmi_features(1, &rmm_feat_reg1)))
->  		return 0;
->  
-> +	if (rmi_configure())
-> +		return 0;
-> +
->  	return 0;
->  }
->  subsys_initcall(arm64_init_rmi);
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+/*
+ * Lookup the mapping level for @gfn in the current mm.
+ *
+ * WARNING!  Use of host_pfn_mapping_level() requires the caller and the end
+ * consumer to be tied into KVM's handlers for MMU notifier events!
+ *
+ * There are several ways to safely use this helper:
+ *
+ * - Check mmu_invalidate_retry_gfn() after grabbing the mapping level, before
+ *   consuming it.  In this case, mmu_lock doesn't need to be held during the
+ *   lookup, but it does need to be held while checking the MMU notifier.
+ *
+ * - Hold mmu_lock AND ensure there is no in-progress MMU notifier invalidation
+ *   event for the hva.  This can be done by explicit checking the MMU notifier
+ *   or by ensuring that KVM already has a valid mapping that covers the hva.
+ *
+ * - Do not use the result to install new mappings, e.g. use the host mapping
+ *   level only to decide whether or not to zap an entry.  In this case, it's
+ *   not required to hold mmu_lock (though it's highly likely the caller will
+ *   want to hold mmu_lock anyways, e.g. to modify SPTEs).
+ *
+ * Note!  The lookup can still race with modifications to host page tables, but
+ * the above "rules" ensure KVM will not _consume_ the result of the walk if a
+ * race with the primary MMU occurs.
+ */
