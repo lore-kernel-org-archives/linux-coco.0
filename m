@@ -1,177 +1,243 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589AD2DEA61;
-	Thu, 21 May 2026 22:36:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49DF2C11E6
+	for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 23:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779403013; cv=none; b=sUhQ4JFtXFnlEB0pINCHA1XxsmsLv/CHzr0RWMOABWSWAK1MQ70aJVs1jxp7I/WZBxVDg+HvEA6Bz+wY1/E7TGn4GrxebvmVvDnn6ZeAbGR2r0DjGa8CL2puxveamwLCvgfdEoMW6B5Uj517cDHSq3CqvwKNgODgB4sKUI1puLQ=
+	t=1779405444; cv=none; b=M2CoSH1L2f/ZrTKb2zQmpLzTM9vitz+/qvJQ9ZYS8xC89hFNVywMgsx/GSecMpVmv7P39bUc8KJSi2qTIBCkfta0BWlQY0xOV6BTMdB46bz2yl6kLmik4Jqj1ZJX9S3If49zv20Pn4sTygDv41XEqhyMBBbH8UYV3BiMxPQH9SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779403013; c=relaxed/simple;
-	bh=iWi+rVGWRaT+t7ioXWfrl6ICbml7cqaQG7eYSudc3vY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CpwPG1tUSOoKwm4O/sqO8bn/dhKRWDaUXensquilK///zGWi1VlUT0SB0VTCzLd+rBSA20QqvL9LLmmkIK6DOWJO9rW4MpPeNggWJQAHbVqx3SheEMlMpFPZ7ALzRu5SApOb1q2hM+O8HymnSOqjICofVnUV3i2SDwzD+EULpH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=W+Ic6z9S; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1779405444; c=relaxed/simple;
+	bh=xohEyJSjao+0f4zXcTkZNxW1s1ON51E/Gofi7RSpk5A=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lT0LWHT2xYqVwcIRjjADlS2lEJKiIINaRfs32qfLWiBppNgx+pPBEUnjPEQ7zwxTBHfn6fPawTC7GqciJthJ01HDZlL7tXcI5/btGeSythdkmvZ27SsX05lOzmD8Jnd9QFvZDQT/c8lCFkVObUb/Zhd/OTSYySUCHMrsYO6Kzvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cTiKwgYq; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="W+Ic6z9S"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 28EA32A31;
-	Thu, 21 May 2026 15:36:43 -0700 (PDT)
-Received: from [10.57.22.108] (unknown [10.57.22.108])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 987C33F85F;
-	Thu, 21 May 2026 15:36:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779403008; bh=iWi+rVGWRaT+t7ioXWfrl6ICbml7cqaQG7eYSudc3vY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=W+Ic6z9S90OLpjZazd5fKEp50HHCNAKpeQz+VTrRIXEpk4ThW57c4RECTEvQzpM0L
-	 /7385wq1ns9VH98WBApu5y2aaAivObGeC6hPIhcsCe3/bkbQemX93kPACTaB1UyWRj
-	 Kzn8TtmAYaIsSEdZDnTq4ji6CZ4a9xbP1tUw8Tsc=
-Message-ID: <2f5fec66-979a-4302-aa39-03ee8d9c82da@arm.com>
-Date: Thu, 21 May 2026 23:36:38 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cTiKwgYq"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-837c4eb3bdfso4078721b3a.2
+        for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 16:17:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779405441; x=1780010241; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3bkSrIDTbT5aF0NcYWR4v4f3pXIdZzjbSf5buGjzZO0=;
+        b=cTiKwgYq46jKMX97neSrgsfmpdJSeSNzXxZuCUmBts3vHY2m6sRLLsUu4mlBpRPCOx
+         XEYhI1GW4qLqVpMkcHZ6PmDy0bGZsuv5bCpQxe+5U5vQI1m85A+V31oFsdtYwvUW8890
+         CQ3E/HEJUPKVrR+DZ8aixkMfKHB6ZOSI7/mwV+2Z+Z61ccNQSdzTTqHsJx6U472Wx4K3
+         oVDfPM4VgDqgNARpt4CHc7UUOWf4gw1CKRSC0AKaQt4AsxNZW/xdGnMmexlZVJz55jLs
+         b7p2qNWXRAeAjA3Bek/yT8RTvk3J5xEeCemXq8PpwraKQxSKjYvYPAUAT0781tOSc9d6
+         cl/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779405441; x=1780010241;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3bkSrIDTbT5aF0NcYWR4v4f3pXIdZzjbSf5buGjzZO0=;
+        b=VZ3jzmK7u9Mubwq32z5xkWqpc2gY38HbKVSFUw8+oLlyif6Tg+x6nNhXKTiJQmvqlJ
+         uRq6xm1+wH5yDRZ3NdZ1sadF8oFLYgOdYKC38WjdtDoI6i0VVyChYUzJ3RxSZ0LY4BDR
+         B+MreiZAlG74UZ0JJIuIebziWJBsSflkfReeecimMIr+BvlYjhFfzYv4Ja3mmsyMDqtp
+         VZdBjnNJe2iMTM12BD7JYPfAgCzpPcKq5ordSGQuXkgGHGIB9bNVdrzUzS8PUgS67k87
+         UbWIVdnCWptz1hqgdupT9wJtbDG010huRvn3iAGT/h0zQ4sOLUoESaw12QrlpS4mHW6a
+         Kteg==
+X-Forwarded-Encrypted: i=1; AFNElJ/lqg3MXONMk42vUNRuMwiyt27ZzC4/8NpfpDhf0s93AoxsZaTZZF7GjH6XtboGSOFpPHm7gei2gcX2@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz+qi0g59bzcg+lk1d86Aoq7qKcov+SsUfBRzk3WvJPtDleaRM+
+	1z5wB6t/JDRbB4O+caKvUvVWp5i2Txk8LinAlzE3aegMLd3BhqgzkWIDiysgRA+dpgvhrS5EwMj
+	BI3snFQ==
+X-Received: from pfblx5.prod.google.com ([2002:a05:6a00:7545:b0:82f:c34b:9799])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a0b:b0:83a:4846:90bc
+ with SMTP id d2e1a72fcca58-8415f3c291emr1146364b3a.48.1779405440728; Thu, 21
+ May 2026 16:17:20 -0700 (PDT)
+Date: Thu, 21 May 2026 23:16:41 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 07/44] arm64: RMI: Configure the RMM with the host's
- page size
-Content-Language: en-GB
-To: Gavin Shan <gshan@redhat.com>, Steven Price <steven.price@arm.com>,
- kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-8-steven.price@arm.com>
- <45a953a8-6edc-45c3-b5bd-17f14397ab89@redhat.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <45a953a8-6edc-45c3-b5bd-17f14397ab89@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAFmSD2oC/x2MQQqAMAzAviI9W6gbivgV8eC2Tguisg4RxL87P
+ CaQPKCchBWG6oHEl6gce4HG1hX4dd4XRglFgCHTUUs95nCj8hYza1a8GosuEs2BvOsjQ+nOxFH ufzoCTO/7AYd3BiJmAAAA
+X-Change-Id: 20260508-tdx-selftests-v13-bf00ad0cb8fe
+X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779405439; l=8037;
+ i=wyihan@google.com; s=20260319; h=from:subject:message-id;
+ bh=xohEyJSjao+0f4zXcTkZNxW1s1ON51E/Gofi7RSpk5A=; b=r1ctI7BkzWLkv7GY+9pssqPBHrJSjtAq0rC7HCjPLdke5+p0RpzOYvncBFAn53Bus1m7WGrA+
+ PV8NHhNW1Q6DdcIdHFXBi+DS9q8d6aAQxMAR9MiFiRh4pPrEMfdEw0f
+X-Mailer: b4 0.14.3
+Message-ID: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+Subject: [PATCH v13 00/22] TDX KVM selftests
+From: Lisa Wang <wyihan@google.com>
+To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
+	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, Lisa Wang <wyihan@google.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>
+Content-Type: text/plain; charset="utf-8"
 
-On 21/05/2026 01:51, Gavin Shan wrote:
-> Hi Steven,
-> 
-> On 5/13/26 11:17 PM, Steven Price wrote:
->> RMM v2.0 brings the ability to set the RMM's granule size. Check the
->> feature registers and configure the RMM so that it matches the host's
->> page size. This means that operations can be done with a granulatity
->> equal to PAGE_SIZE.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes since v13:
->>   * Moved out of KVM.
->> ---
->>   arch/arm64/kernel/rmi.c | 42 +++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 42 insertions(+)
->>
->> diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
->> index 99c1ccc35c11..a14ead5dedda 100644
->> --- a/arch/arm64/kernel/rmi.c
->> +++ b/arch/arm64/kernel/rmi.c
->> @@ -49,6 +49,45 @@ static int rmi_check_version(void)
->>       return 0;
->>   }
->> +static int rmi_configure(void)
->> +{
->> +    struct rmm_config *config __free(free_page) = NULL;
->> +    unsigned long ret;
->> +
->> +    config = (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
->> +    if (!config)
->> +        return -ENOMEM;
->> +
->> +    switch (PAGE_SIZE) {
->> +    case SZ_4K:
->> +        config->rmi_granule_size = RMI_GRANULE_SIZE_4KB;
->> +        break;
->> +    case SZ_16K:
->> +        config->rmi_granule_size = RMI_GRANULE_SIZE_16KB;
->> +        break;
->> +    case SZ_64K:
->> +        config->rmi_granule_size = RMI_GRANULE_SIZE_64KB;
->> +        break;
->> +    default:
->> +        pr_err("Unsupported PAGE_SIZE for RMM\n");
->> +        return -EINVAL;
->> +    }
->> +
->> +    ret = rmi_rmm_config_set(virt_to_phys(config));
->> +    if (ret) {
->> +        pr_err("RMM config set failed\n");
->> +        return -EINVAL;
->> +    }
->> +
-> 
-> Looking at branch 'topics/rmm-v2.0-poc_2' of RMM implementation, the 
-> granule size
-> is fixed to be 4KB at present. I'm not sure if I have looked into 
-> correct RMM
-> implementation, but 'topics/rmm-v2.0-poc_2' is recommended one in the cover
-> letter.
-> 
+This patch series focuses on setting up a TDX VM and adding all code
+necessary to run a basic lifecycle test.
 
-You are right. The tf-RMM only supports 4KB. The policy at the KVM host
-is to set the Linux PAGE_SIZE for the GRANULE_SIZE (at least for now).
-If the RMM doesn't support the PAGE_SIZE, we don't support the RMM.
+Unlike standard KVM selftests can set up the VM through guest registers,
+TDX module protects TDs' register state from the host. This feature of
+TDX causes problems on VM boot state initialization and the ucall
+implementation.
 
+In standard KVM selftests, the host directly initializes the guest state
+by manipulating Special Registers (SREGs) and General Purpose Registers
+(GPRs) via IOCTLs (KVM_SET_SREGS, etc.) before the first KVM_RUN.
 
-> Besides, there has checks in the handler of the RMI command to make sure 
-> that
-> struct rmm_config::tracking_region_size to be 1GB, indicated by zero. It 
-> maybe
-> worthy to set it before call to rmi_rmm_config_set().
-> 
->      config.tracking_region_size = 0; /* 1GB */
+To bypass direct register initialization by the host, we utilize the
+standard x86 reset vector as the default entry point.
 
-Thanks, this explicit initialisation is missing, though in effect the
-value is 0'd. Also, we can't really say 1GB here, because the driver 
-should work for an RMM capable of 64K. So, instead, may be we could :
+The mechanism works as follows:
+1. The host places register values into a specific memory region and
+   inserts boot code at the VM's default starting point.
+2. When the VM starts, it executes this boot code to "pull" values from
+   memory and manually set up its own SREGs and GPRs.
+3. Once the environment is ready, the boot code jumps to the guest code.
 
-	/* See the definition of RMM_GRANULE_TRACKING_SIZE */
-	config.tracking_region_size = 0;
+The standard x86 ucall() implementation uses PIO, but it does not
+actually transmit data through the 4-byte PIO data. Instead, it relies
+on the host reading the ucall address directly from the guest's RDI
+register.
 
-Suzuki
+TDX selftests cannot utilize the standard x86 ucall implementation,
+because the host is unable to access the guest's RDI register. Based on
+this restriction, we considered these potential solutions for the TDX
+ucall implementation.
 
+1. TDCALL PIO with RCX-bits Passthrough
+We first considered passing the RDI value through RCX bits to bypass the
+hardware's register protection, which could be the closest approach to
+the non-TDX implementation as per Sean's suggestion[1]. However, this
+approach is blocked by the software-side implementation: KVM_GET_REGS
+currently does not support TDX VMs and returns -EINVAL. To make this
+work, the KVM ioctl would need a test-only hack.
 
->      ret = rmi_rmm_config_set(virt_to_phys(config));
-> 
-> 
->> +    ret = rmi_rmm_activate();
->> +    if (ret) {
->> +        pr_err("RMM activate failed\n");
->> +        return -ENXIO;
->> +    }
->> +
->> +    return 0;
->> +}
->> +
->>   static int __init arm64_init_rmi(void)
->>   {
->>       /* Continue without realm support if we can't agree on a version */
->> @@ -60,6 +99,9 @@ static int __init arm64_init_rmi(void)
->>       if (WARN_ON(rmi_features(1, &rmm_feat_reg1)))
->>           return 0;
->> +    if (rmi_configure())
->> +        return 0;
->> +
->>       return 0;
->>   }
->>   subsys_initcall(arm64_init_rmi);
-> 
-> Thanks,
-> Gavin
-> 
+2. TDCALL PIO with buffer indexing
+To keep a PIO-based approach and unify the get_ucall implementation for
+both TDX and non-TDX VMs, we considered TDCALL PIO with buffer indexing.
+Since the ucall buffer is initialized prior to execution, the VM could
+just pass a buffer index rather than an 8-byte ucall address to fit
+within the 4-byte PIO data limit. The host, already knowing the ucall
+buffer's base address, could then resolve the ucall content via this
+index. We abandoned this solution because it would require changes to
+the common ucall structure and impact other non-x86 architectures.
+
+3. TDCALL MMIO (Selected solution)
+We ultimately selected TDCALL with an 8-byte MMIO data. This method only
+requires initializing an MMIO GPA and adding TDCALL MMIO implementation
+for TDX under the original x86 ucall path. While this diverges from the
+non-TDX PIO, it provides the cleanest implementation with minimal
+disruption to the overall ucall architecture.
+
+4. A note on #VE and x86 ucall simplification
+It is worth noting that the use of a Virtualization Exception (#VE)
+is orthogonal to the PIO vs. MMIO discussion; rather, it is a question
+of how much we want to simplify the x86 ucall implementation. A #VE
+handler is one option to allow VMs use PIO/MMIO identical to the
+non-TDX case. Alternatively, having an MMIO_WRITE wrapper macro, as Sean
+suggested[2], is another option. Either way, discussion for this is
+likely a premature optimization right now, since the PIO/MMIO call is
+only used under ucall_arch_do_ucall(), and standard and TDX VMs use
+different ones now. We should optimize this in the future, but for now,
+invoking TDCALL directly is more robust and concise.
+
+v13 revision for TDX KVM selftests based on kvm/next and guest_memfd:
+In-place conversion support[3]. For ease of testing, this series is also
+available at: https://github.com/googleprodkernel/linux-cc/commits/tdx-selftests-v13
+
+Changes from v12[4]:
+1. Fixed some bugs, including typo, commit order and commit messages.
+2. Inlined the TDCALL to tdx.c file.
+3. Refactored the Makefile to use pattern rules for generic source
+   compilation while ensuring build artifacts are directed to the target
+   output directory.
+
+Series is organized by:
+1. Patches 1 - 4: Initialize the TDX VM
+2. Patches 5 - 8: Add the TDX boot code
+3. Patches 9 - 13: Set up the boot region
+4. Patches 14 - 17: Set up the vCPU
+5. Patches 18 - 19: Finalize the TDX VM
+6. Patches 20 - 22: Implement the ucall and run the TDX test
+
+[1]: https://lore.kernel.org/kvm/aQTcDH9LRezI30dm@google.com/
+[2]: https://lore.kernel.org/kvm/aQTSdk3JtFu1qOMj@google.com/
+[3]: https://lore.kernel.org/all/20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com/T/
+[4]: https://lore.kernel.org/kvm/20251028212052.200523-1-sagis@google.com/
+
+Signed-off-by: Lisa Wang <wyihan@google.com>
+---
+Ackerley Tng (2):
+      KVM: selftests: Add helpers to init TDX memory and finalize VM
+      KVM: selftests: Add ucall support for TDX
+
+Erdem Aktas (2):
+      KVM: selftests: Add TDX boot code
+      KVM: selftests: Implement MMIO WRITE for the TDX VM
+
+Isaku Yamahata (2):
+      KVM: selftests: Update kvm_init_vm_address_properties() for TDX
+      KVM: selftests: TDX: Use KVM_TDX_CAPABILITIES to validate TDs' attribute configuration
+
+Lisa Wang (2):
+      KVM: selftests: Back the first memory region with guest_memfd for TDX
+      KVM: selftests: Set first memory region as shared if guest_memfd
+
+Sagi Shahar (13):
+      KVM: selftests: Initialize the TDX VM
+      KVM: selftests: Expose segment definitions to assembly files
+      tools: include: Add kbuild.h for assembly structure offsets
+      KVM: selftests: Introduce structures for TDX guest boot parameters
+      KVM: selftests: Expose functions to get default sregs values
+      KVM: selftests: Set up TDX boot code region
+      KVM: selftests: Set up TDX boot parameters region
+      KVM: selftests: Expose function to allocate vCPU stack
+      KVM: selftests: Call KVM_TDX_INIT_VCPU when creating a new TDX vcpu
+      KVM: selftests: Load per-vCPU guest stack in TDX boot parameters
+      KVM: selftests: Set entry point for TDX guest code
+      KVM: selftests: Finalize TD memory as part of kvm_arch_vm_finalize_vcpus
+      KVM: selftests: Add TDX lifecycle test
+
+Sean Christopherson (1):
+      KVM: selftests: Add macros to simplify creating VM shapes for non-default types
+
+ tools/include/linux/kbuild.h                       |  11 +
+ tools/testing/selftests/kvm/.gitignore             |   3 +-
+ tools/testing/selftests/kvm/Makefile.kvm           |  33 +-
+ tools/testing/selftests/kvm/include/kvm_util.h     |  13 +
+ .../testing/selftests/kvm/include/x86/processor.h  |  40 +++
+ .../selftests/kvm/include/x86/processor_asm.h      |  12 +
+ tools/testing/selftests/kvm/include/x86/sev.h      |   2 -
+ .../selftests/kvm/include/x86/tdx/td_boot.h        |  74 +++++
+ .../selftests/kvm/include/x86/tdx/td_boot_asm.h    |  16 +
+ tools/testing/selftests/kvm/include/x86/tdx/tdx.h  |  16 +
+ .../selftests/kvm/include/x86/tdx/tdx_util.h       |  80 +++++
+ tools/testing/selftests/kvm/include/x86/ucall.h    |   6 -
+ tools/testing/selftests/kvm/lib/kvm_util.c         |  18 +-
+ tools/testing/selftests/kvm/lib/x86/processor.c    | 107 ++++---
+ tools/testing/selftests/kvm/lib/x86/sev.c          |  16 -
+ tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S  |  60 ++++
+ .../selftests/kvm/lib/x86/tdx/td_boot_offsets.c    |  21 ++
+ tools/testing/selftests/kvm/lib/x86/tdx/tdx.c      |  30 ++
+ tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 334 +++++++++++++++++++++
+ tools/testing/selftests/kvm/lib/x86/ucall.c        |  30 ++
+ tools/testing/selftests/kvm/x86/sev_smoke_test.c   |  40 +--
+ tools/testing/selftests/kvm/x86/tdx_vm_test.c      |  33 ++
+ 22 files changed, 907 insertions(+), 88 deletions(-)
+---
+base-commit: cd1b71113e3f70f0a1a3d61550cf89f1eed379c4
+change-id: 20260508-tdx-selftests-v13-bf00ad0cb8fe
+
+Best regards,
+-- 
+Lisa Wang <wyihan@google.com>
 
