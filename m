@@ -1,123 +1,107 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD43332B128
-	for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 20:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313ED426D32
+	for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 20:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779395668; cv=none; b=QVH78Qpl3KMsF2U+0f9SquImRN91yxyiLsh27O7Y3gNBHB77d6Hpd4M0+I+ggM5fYlK7ib3sRzt7ZG6HnjkgfHV/oZwzELPW9ePx7fblyhWqmwUWvH+5dfPEfVibHsK9AjkKFQu+GibyljZ8M3fgmWLODaUbNBe4AO3fYqaOLKY=
+	t=1779395757; cv=none; b=gjpeuT1TXao6mtkWWYnyoxmNLLX2eigAbuHQnI5b1fCYN0+5pVW13p/DsruZoUnIYWl6az7YRPWD2RZ4OepihZzQ4f/EaojjC/GQSLAdeGkwZ/HXuVmGSGlBD/nkTbE4q/1ddfOToLF5Rr+viBDhfVafK2PSEKNiaJKGKm3TVMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779395668; c=relaxed/simple;
-	bh=Vidk3LDEKL2XnrVS0/5PJ+6dbEOeauOpV9iuOcmzzjI=;
+	s=arc-20240116; t=1779395757; c=relaxed/simple;
+	bh=ipWhDnS3c8Of+slJErBTF5Vqt6ODkaCbWe9MFVov0zI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qHTRBvwx57mbtYz2bZitfhR+tO/dy7rz5I/dNfr6SgHvBzyyDy714BAlI4SBbJsnHEeFJkq1IaH2KmnKoBITl3xo58zz7DHz7eh5537v6SmagOvNTCB7zXq0R/bIndXgmrq0jpIPII/QoIM7LQSAlemL/1hDyxr/nL3MnLYFqtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pgG6B3ab; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=MKI7T64V9elgeTCv0WHFjpAsucX+DH2CXNbkYpFhGz1BOeH2H9umhNjRgKxmW+Y6dT35ED3YWgK8WAUJhaNCepa6wC0fM/9Zth5H5LUdPzQ1NNATYYgxDDb5FPnRiVACcOm4EH+MImWBZwaCxblBalpOhbOKIuaEm8fe3qsOrnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lkacSS6N; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pgG6B3ab"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b2e8bba2e6so91168335ad.1
-        for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 13:34:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lkacSS6N"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c82c477290bso3442772a12.3
+        for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 13:35:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779395666; x=1780000466; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dIireasEnp8AQZjS+o0HC63+VEosuYCnO+TKDPQR05s=;
-        b=pgG6B3abg1ZdTgdD1TaZylbtnj7eudX7FgzRoFBLnv4TA7oVPzCzSQgX+dREw28kI+
-         zzhyURzjAFp9TqyEmhtVXu6ikVnDWipou3xEf1rqEgfAinHDCjHyExDAQ3pyHoy8cDRL
-         EsNlNqovVki0UVF4L3kKpIBNjOzx8wuENtlKFjJFml6nk9ON6rGImtvQ2ctNNqjWry5M
-         dPuezohJmPyis+p3jS0jdBIz3cPvyuuoDkacBZYWJ1lBjIZozpqreYxSP94kiMYpAZTm
-         00jwk2BhFN0dmu0jVWGfD+TQZfnwozdje5lJdDlgFmRNWhm6hg6VpV+cW4zmmUVsMF47
-         R75Q==
+        d=google.com; s=20251104; t=1779395754; x=1780000554; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ipWhDnS3c8Of+slJErBTF5Vqt6ODkaCbWe9MFVov0zI=;
+        b=lkacSS6NGUgZGw0MKI4O7j2c5hHkNv9Yhd806a88XULF/5eJJUDVthjR/O/u71b6GK
+         4Z1XhN/9E5VNHIRt/B0PWaDvW2Ee9UOV6k4QHt99x47UGRCSlBeWhjdUfHzOZRt1zYct
+         FxEDKf970lSr+135Ze3Kzi/Z/OzKhG4nfOGujxsO8lHtNUH03fzm6ecMTOnIEujy5nYT
+         4W7B6Osl0kJwmzTJEsduJn/PnsRhMqUancVDLW84fjk+ysdnH6p563axTyRtD2uFrhAx
+         NYsMqXG41ofrZlHN30x/AA919Fcf2zRYwjJSwj0j63b1U7xvSDqOnJgKjLIHxk+AWOTu
+         95Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779395666; x=1780000466;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dIireasEnp8AQZjS+o0HC63+VEosuYCnO+TKDPQR05s=;
-        b=LrKmZMQDnKmUgiwHK4qi/XtiG08R5CsvaTcFcmIrXQWH2H0DBntGNHvbZfJN2dQqER
-         5XCVGFKvFWNuFbqUdaLTk0iQ2SMHj4WUTGHm/Ft4/G0O8QU3iUlwYbphlRJmUTuOD4kG
-         o5AdXu6aC9hxCzkIN76ME0rMFtXdXvzpmW5IQuGPQR6KFZEm8GPEG3CVo9fSql6eH1If
-         fG+5mSXMTxNXo0Q992pb6wMsTocIc9EMu05R1bcycQqoiB1ykq1tdsW0cs/ntN4y1tts
-         z8xZto9VSMDsbHFx50gZFGkh3r5IEzc7Ty/R1xlArAbbCQhtjAV+2FfF68Dskbtc7hFq
-         rjsQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8rxcScc11fu24LBxFItpKZRi15nXTBaESALwvf38PPE9aM7QOHRKSaOqJINq39EGif1MOdGqcXgj5J@lists.linux.dev
-X-Gm-Message-State: AOJu0YzrG2BfvZ/XrzLe04IeIqeXVgOjzCDVii7rIpW9jBtYY8vbXrsB
-	dcc0Am9KKNfeT77Ht32yMJQY23tDNoQ5qiAJkDrGm5H7eJEkxL8i49wbb9i0PAlKudTEEo6i+s9
-	s2ndA+Q==
-X-Received: from plip15.prod.google.com ([2002:a17:903:38cf:b0:2bc:ae06:63be])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:4405:b0:2b9:6458:1a2c
- with SMTP id d9443c01a7336-2beb06733bemr4530925ad.13.1779395665926; Thu, 21
- May 2026 13:34:25 -0700 (PDT)
-Date: Thu, 21 May 2026 13:34:24 -0700
-In-Reply-To: <7489ff3cc1ff402bf0ade38272fc52dcbcc75fc1.camel@amazon.co.uk>
+        d=1e100.net; s=20251104; t=1779395754; x=1780000554;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ipWhDnS3c8Of+slJErBTF5Vqt6ODkaCbWe9MFVov0zI=;
+        b=CvYl6lEhznw3qJJFsQdb3ZA6EzMmQNyEQtXdY9J54KPunCWqX916nrigCFtu4wVaKc
+         T7BqdKYVkuSLiJZY9BNHViU2IImxBHp2Q2ElWVsAYtNQXaa2xs/mM1BTfuW4llxm6E3a
+         iXYYNOkqy8dBEfP5fjoT6CTKBo/hHW+wepdEURszosMJK8ox+qeFUvQsdx5xf1vEXZuB
+         44tV7opQ4WjdOLNiuphh8C7SWi7pH73hh3ojF7Z8Q0gRk2lRKRmmgf2df4VGhteIPWQ/
+         N5Jtb6IYCQGMQRKoRsFkHqJ5usL7yOHM8QFe04zCg3E4N8JPBaAJ8lv5R2HKcI4nOsJr
+         nfMw==
+X-Forwarded-Encrypted: i=1; AFNElJ9r/8l9GE27FmbwzO64t4dghKegBekocvNPsvW8CFEgfd867zmr+L0NmkbkjaXKkl51+QySPCJtFpS6@lists.linux.dev
+X-Gm-Message-State: AOJu0YxdePiaZQRcey9zS/T0RS7ccEMPnwA0eANnFcJDnoeAqvx5gnwj
+	nGIkuaNFs9Ss6y6Q4Y72L7IsS59SaGDREYfIjyxDqMaL4UsNLP5qIPe+0lksHuFTMpK07Kac+xU
+	l+lQg9Q==
+X-Received: from pglv7.prod.google.com ([2002:a63:1507:0:b0:c80:192c:51ff])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d491:b0:3b2:8677:813e
+ with SMTP id adf61e73a8af0-3b328ec5909mr476744637.42.1779395753857; Thu, 21
+ May 2026 13:35:53 -0700 (PDT)
+Date: Thu, 21 May 2026 13:35:53 -0700
+In-Reply-To: <13d79ba1e0450068c9573ccd8deb3ec007aea8d6.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260515191942.1892718-1-seanjc@google.com> <20260515191942.1892718-37-seanjc@google.com>
- <7489ff3cc1ff402bf0ade38272fc52dcbcc75fc1.camel@amazon.co.uk>
-Message-ID: <ag9sUI8pBJda0Ml5@google.com>
-Subject: Re: [PATCH v3 36/41] x86/kvmclock: Get local APIC bus frequency from
- PV CPUID Timing Info
+References: <20260515191942.1892718-1-seanjc@google.com> <20260515191942.1892718-30-seanjc@google.com>
+ <13d79ba1e0450068c9573ccd8deb3ec007aea8d6.camel@infradead.org>
+Message-ID: <ag9sqdLCAqJwaaE-@google.com>
+Subject: Re: [PATCH v3 29/41] x86/paravirt: Plumb a return code into __paravirt_set_sched_clock()
 From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw@amazon.co.uk>
-Cc: "tglx@kernel.org" <tglx@kernel.org>, "longli@microsoft.com" <longli@microsoft.com>, 
-	"luto@kernel.org" <luto@kernel.org>, 
-	"alexey.makhalov@broadcom.com" <alexey.makhalov@broadcom.com>, "jstultz@google.com" <jstultz@google.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"ajay.kaher@broadcom.com" <ajay.kaher@broadcom.com>, "jan.kiszka@siemens.com" <jan.kiszka@siemens.com>, 
-	"haiyangz@microsoft.com" <haiyangz@microsoft.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "kys@microsoft.com" <kys@microsoft.com>, 
-	"decui@microsoft.com" <decui@microsoft.com>, 
-	"daniel.lezcano@kernel.org" <daniel.lezcano@kernel.org>, "wei.liu@kernel.org" <wei.liu@kernel.org>, 
-	"peterz@infradead.org" <peterz@infradead.org>, "jgross@suse.com" <jgross@suse.com>, 
-	"boris.ostrovsky@oracle.com" <boris.ostrovsky@oracle.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"mhklinux@outlook.com" <mhklinux@outlook.com>, "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"bcm-kernel-feedback-list@broadcom.com" <bcm-kernel-feedback-list@broadcom.com>, 
-	"tglx@linutronix.de" <tglx@linutronix.de>, "nikunj@amd.com" <nikunj@amd.com>, 
-	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, 
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
-	"rick.p.edgecombe@intel.com" <rick.p.edgecombe@intel.com>, 
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>, "sboyd@kernel.org" <sboyd@kernel.org>, 
-	"x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	John Stultz <jstultz@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, x86@kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, Michael Kelley <mhklinux@outlook.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 20, 2026, David Woodhouse wrote:
+On Thu, May 21, 2026, David Woodhouse wrote:
 > On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
-> > When running as a KVM guest with kvmclock support enabled, stuff the APIC
-> > timer period/frequency with the local APIC bus frequency reported in
-> > CPUID.0x40000010.EBX instead of trying to calibrate/guess the frequency.
-> > 
-> > See Documentation/virt/kvm/x86/cpuid.rst for details.
-> > 
+> > Add a return code to __paravirt_set_sched_clock() so that the kernel ca=
+n
+> > reject attempts to use a PV sched_clock without breaking the caller.=C2=
+=A0 E.g.
+> > when running as a CoCo VM with a secure TSC, using a PV clock is genera=
+lly
+> > undesirable.
+> >=20
+> > Note, kvmclock is the only PV clock that does anything "extra" beyond
+> > simply registering itself as sched_clock, i.e. is the only caller that
+> > needs to check the new return value.
+> >=20
 > > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> 
-> I still don't much like the way this is done inside kvm_get_tsc_khz().
+>=20
+> Oooh... can we use this to reject the kvmclock when we have a stable
+> and reliable TSC even for non-CoCo guests?
 
-Yeah, I don't like it either (understatement).  Aha!  native_calibrate_tsc() is
-the oddball, all of the PV flows stuff lapic_timer_period when parsing the initial
-timing info.  I'll just do that.  Blindly writing a global is all kinds of fugly,
-but that's a future
-problem to solve.
-
-> We also probably ought to be looking for the timing leaf on other
-> hypervisors including VMware 
-
-VMware gets the frequency via hypercall.  Why, I have no idea.  I'll let the
-VMware folks deal with that.
-
-	eax = vmware_hypercall3(VMWARE_CMD_GETHZ, UINT_MAX, &ebx, &ecx);
-
-> and probably Bhyve too.  Should it be done somewhere else?
-
-I'm not opposed to that, though I don't know that it'd be a net positive. The
-"hard" part of getting the info is finding the CPUID base and checking if the
-leaf is available.  Unlike the native CPUID leaf, no math is necessary, and so
-once the leaf is obtained, getting the frequency is trivial.
-
-Regardless, I definitely don't want to take it on in this series. :-)
-
+Yes, but I would much rather "fix" kvmclock to not even attempt to register=
+ itself
+as the sched_clock (which this series does).
