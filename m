@@ -1,196 +1,151 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012022.outbound.protection.outlook.com [52.101.48.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB9537B018
-	for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 07:31:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE71939D6E2
+	for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 07:43:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.22
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779348680; cv=pass; b=LOZBtUJIJ7s1NJPSj8AaPD6L63iaiN+2+y7LV9YM/feSYHXC4ydxyXsRCVX0TzYhh+r7QDs6rNuh9aoLdgQs1Qb95oUNx4EOKLlGcVEm58DWYpFRbEBzsb4LMR2BZEDtAqEcLPeWeLy7AdprVa62gyTzADRUO/7HyhNosjMASNc=
+	t=1779349407; cv=fail; b=tvYYNwLMhxDBg0nhWQ499rH24f0fQtVWPKraInoWxdmU0cFERNhlk6rkPS/W+3PGwOev95wvaYF08PvVHIklDXdCMKOTdgpkl0HXanKCeFGg17kDQijIIkmKx8hWhX2Bk7y5TDdILc/K9qmUlVZroSpWBixcOoxL/11gHgf954g=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779348680; c=relaxed/simple;
-	bh=XHlZItdK9pHZDtShz/g2SubgxMlbGRtAoD9tOKGcWfM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dG7bYnzVYXX1UwowHRku3OyyPb4MNUUufS4qkIZXzUjOdtCm/J2m3uTCaVe5docut3qhOHZHxMm4cZBJepH3vdM3BzAox3h61cIG33vd+Zf4bkFxtTgLe045qYRNbAHOyElYwna6DhWPFZAXoqLPM2X/K2COpg6iL+gSfzwFUQs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eE6nUQ6j; arc=pass smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1779349407; c=relaxed/simple;
+	bh=2pt3o7rnn/j/FskeBkOiZtXjk8L+aiXT02zEENIlEvw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nVDCD8vq0JQItoAeoYaopNfpBYZuVk0QJgKEzVfpr8JhXXjHV5g9vj3YLiEL+ObLztOL4IYTyAoSla3wWyaw9waAd2XKMcAyjW7iM792/zFo4dMmzFozy0wUrXh2d8Y10ylEFQLhgFTolOQgSAyzaPJnWoX+SBlYCp/4GPh4vOg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=injCpeAm; arc=fail smtp.client-ip=52.101.48.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eE6nUQ6j"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-50e61648f10so6771cf.1
-        for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 00:31:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779348677; cv=none;
-        d=google.com; s=arc-20240605;
-        b=aRRQXTDgdwymZ2zSu12WRAgqLhrjiQ74HzFCJ+44mP1rrmIahHrXUVJjW2Zjh33xkz
-         AwYtss3HWRny9mewejYuBcP3cNlQvXFdxWRR/OMW5u2Xc4oX7SYIPJlDvti1xdUS4zNZ
-         ozA1RznNTmnG+wv5/+KIzF4KtViMM5aRqK3J85uMgAXhjcMqCZeTCQ/ajTnCCT05S56L
-         +278H+L0pr0J1UccHg99nAn4RDXBtGV7cxzuZDO4FxHRIglG+/UKJEy+8R/q23XE1WJg
-         njnxrfJaekba9h/gqF2kDsmuGHWNVdp/EIjaQqEt72GDTFOyCvhz8ksD0uhUESrvQOd2
-         8f+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=1nov9/2BtMfIFSe84psXHPo953z02mFT+vkGOoJChBc=;
-        fh=MhvU4x75BjkSZ8BTVBfZjMUSAJdCWKz3JUzbTRHk0bE=;
-        b=VkZc4GhbUYu56BGAX62jmI0cFhM94T/ucXfqVw7J3orRyC5C5M/u8mNt3KI/saPQ2P
-         Wn1tTbyMS0eYhyEmkmrONw+R2dyEfQc6VhI57KA/RQOdFVk6lPzu3nL4e4RfqhkjyGbL
-         5cSlI3YbCHAFVkAWYkfRW6PI5l0V3Gi/48ATZ4OWSVWNgLehVYTenhiaP40O1Litr/qG
-         Lr4oPYhCJmDlMmurUbuBHB+egvIe/ltS/ofQW0/dwtz/iy+7+9BVgtE9/i0rCC9O7qSi
-         lm7bh01dAt0NJx4LoS7le5D8Pm7Ct42id1m50BCgR4ImUC7xIMBiToHInDh6wgUl0OUO
-         7iiQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779348677; x=1779953477; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=1nov9/2BtMfIFSe84psXHPo953z02mFT+vkGOoJChBc=;
-        b=eE6nUQ6jc88xtiuiej43AvlJuTnY0N1nQHGZniGW1iHGfPMhG1mIo0N/vU6Oxq1SSB
-         JVXHzo2N7g54+vb7gbTq6X+maDs+HBWMlMjPUyzWhCDXYCu4DL7eYSO4arZgQx1fq/b8
-         ZGQiHQmA1gSczBTLaHWi7C/f9SE1g8ntdb5cTX3yndK8ar7g9hlgFpgXVd3grcFZ7fH8
-         I214R2G+/4i1TIuTaZvq8u6aYyjJRZfdMF/+6uRDfsAzImVBlf/f4e158d29FVa/oQg6
-         SIPzDehHLN19thEEfyK6YFutnhU0vAWqLGB2ZPRkqCmJaaoeB/+Zi/lfEUqkYug3F0XS
-         iInQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779348677; x=1779953477;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1nov9/2BtMfIFSe84psXHPo953z02mFT+vkGOoJChBc=;
-        b=ls7cdpAyVrad+nbCXeVl6BuguBssqF+mC6Z4R/dwbI81CxvUaxTvbOmKLy4ch/gFTz
-         e5jbLSTcZxSn4HRoUQS8j8egjRbnosba1wBxjbnMs2b6F5phywJfej1FLTuU9KuLDRQf
-         Zb4lM95SeHaLw4hxsFBVFuIbXOC7MElJGjE2XbYu4K/P9nZKvp2baqGxdlqMfYbozW7X
-         TTNbg0Jx8Z1nsfEHNZImPHhS7+O4iKEkicSeLE0CHcn8K00rYzk8BMwQEu9IjTXXHtRX
-         qv6c+manWQpc7Sl45y43w/qZR5pO+0Xl/3vNWgfC79Upt1Lge/KrPBDFDNqIeE+F0bht
-         Zmyw==
-X-Forwarded-Encrypted: i=1; AFNElJ9z2RCK6yk676YPnm9GGpbaRKCvFBFd+VEDQbJ7RdZtZYt8eC9UgyXV5iAfIWsNn2rQmGAp/10/8Qiy@lists.linux.dev
-X-Gm-Message-State: AOJu0YzgWuU11rMYDcR7herLPdGA/c/7v6sSnahF8AjXCCURLkBVI2BV
-	Udnw4dmDQdawl5VpvKWRTkLBv468eQGNiDF+K2L7qnHFIxRtTWumCMn5bdExiK8gZtyl8mRUyes
-	e2mizEUSila8Lz1i6UZOyaXaTa62+/pcnBuLlY0vz
-X-Gm-Gg: Acq92OHXsqXY2zH+n0fNwsXZALdx8Jqqx+A1rKi8CjO9w5gURTwJSr1ckCy21zxm1/L
-	i78htm0AkzzX/x74s/QUyMPAophU2zXteLSdPEGP2p/ujB1XE5wnVYa11CSGRyQYrNzOWSy71iO
-	38xSkuavrbvv8GTxZa0HUoinUR3g0LvDrUn7xKXQ5rpwg0+5Ek05t3S+ECoOgeZKJX2F4X4Oq8c
-	Dyc93EbdEvPwdV4H2iMtAvPSlRhK5ZG+/7Y2WB7OzVjlBaFJpLoFbIG7Moz+oJQFo6w0nAaZ+AL
-	+UQaWERo3bcYEF+oJ0s=
-X-Received: by 2002:a05:622a:9005:b0:516:4f62:85e6 with SMTP id
- d75a77b69052e-516c54d8a37mr5382941cf.17.1779348676536; Thu, 21 May 2026
- 00:31:16 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="injCpeAm"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RoIeaD8UkA2nmQCSDk5L00Q9ooy71xDTUDyp/dyg4ydbQO3M2SWNs4Ryt7IKr9yTojPVL1n77oxz5ZEUTYFhaqtSGBKVb2V3WdUoyQg9PqkUPqRTzeYAXpYMqGAn/gleU6VhDhPFN0RL+0120ZUdt1HACkH5t4SuV2YH6QuWxGB8D2nvVaqtDK2bFUq3OlDXZanplyVt5L/ttcslhZgWe1mBaw2aZa+KQJfqMo6GGSkigIjzZ7EQJrp5Hkxr0UqKspub3b3V6KGm8NnZHaCxzkLG9S+u+W12lqKMDlnKG5E9v7HgU1SwIx0qVX625aHUM2m+soMu6prfyWvbHa3Oaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W4e+mZGiwMdyAvG2qK6R3pjHBD0djoN9tKWfnnGva8U=;
+ b=ViyVjerNbLTfXbUeFyAusaZlp3lsloqq631I/s5L8UuM9u8M9fFcRShM+agolM+WeyTz+uAmCLOCyir91wZpPB28evBNgu6+QGeI0uySoMdSIUGuyUVkPevDOlUDv1ROGLlnBK3t6t9QM1jkosBeAIC4sKeSb4YQ7kjDiDPxPs/xYK7gPXl2AyqUaQ/UO3akg0vQyFTHvuNCZK1QeF/L+YBFGis6l6EfSr15ROkOnDUEhBY/0gnnU9eaF13C9z0nFxH9SIUdFA7bUtGlzGEuGAN4IbjAqzKL7idLwh+RBclb5NNAUSdmSVkILQSPTt7jWt/HAl4QkvlIvWG5b/HT4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W4e+mZGiwMdyAvG2qK6R3pjHBD0djoN9tKWfnnGva8U=;
+ b=injCpeAmy+up3u/1pDArAb6aCKxCs3AFNwsBYddHJw2yG1JzREIWQlwdIw/MPUGqCZS5g8Qnbmtg7kbOnLKlDTinAVZqZ6MhNtylbvBg9BXkGmk5fzTWVFMXvIVY7s/QMmzX4g/Rn0UAFpeU21Acju6LcVFT3xcP/jQPzk69IM0=
+Received: from BY5PR20CA0031.namprd20.prod.outlook.com (2603:10b6:a03:1f4::44)
+ by CY1PR12MB9603.namprd12.prod.outlook.com (2603:10b6:930:108::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Thu, 21 May
+ 2026 07:43:20 +0000
+Received: from SJ5PEPF000001F4.namprd05.prod.outlook.com
+ (2603:10b6:a03:1f4:cafe::f8) by BY5PR20CA0031.outlook.office365.com
+ (2603:10b6:a03:1f4::44) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.48.17 via Frontend Transport; Thu, 21
+ May 2026 07:43:20 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ5PEPF000001F4.mail.protection.outlook.com (10.167.242.72) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.48.11 via Frontend Transport; Thu, 21 May 2026 07:43:19 +0000
+Received: from aiemdee.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 21 May
+ 2026 02:43:12 -0500
+From: Alexey Kardashevskiy <aik@amd.com>
+To: <linux-crypto@vger.kernel.org>
+CC: <linux-kernel@vger.kernel.org>, Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller"
+	<davem@davemloft.net>, Dan Williams <djbw@kernel.org>, Alexey Kardashevskiy
+	<aik@amd.com>, <x86@kernel.org>, <linux-coco@lists.linux.dev>, "Pratik R .
+ Sampat" <prsampat@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>, "Aneesh
+ Kumar K . V" <aneesh.kumar@kernel.org>
+Subject: [PATCH kernel] crypto/ccp/tsm: Enable the root port after the endpoint
+Date: Thu, 21 May 2026 17:43:01 +1000
+Message-ID: <20260521074301.2369293-1-aik@amd.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <20260507-gmem-inplace-conversion-v6-16-91ab5a8b19a4@google.com>
-In-Reply-To: <20260507-gmem-inplace-conversion-v6-16-91ab5a8b19a4@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 21 May 2026 08:30:39 +0100
-X-Gm-Features: AVHnY4JV7zINIc5-OFXxSXoQ_2kIaSiAQNVZEIUteRP4GKUxLGDjyOPiw4qGQa8
-Message-ID: <CA+EHjTxcadguOfOo7RpJVtAzcY5JAFZTbrAT_wcN6akMi8gCUg@mail.gmail.com>
-Subject: Re: [PATCH v6 16/43] KVM: guest_memfd: Use actual size for
- invalidation in kvm_gmem_release()
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001F4:EE_|CY1PR12MB9603:EE_
+X-MS-Office365-Filtering-Correlation-Id: c09e7ec3-a2f6-433e-067c-08deb70ca0b0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|1800799024|376014|82310400026|6133799003|18002099003|56012099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	WDoqAy815OctFyB2+nNemu/A0hM48lRZp3hGL+M5V3hRRLpJGMqoXG9azDas9K+oFbQz83m4/IbkO8LGTTrWuEQWanIivIlyqi5VXI8ScLeaSyBVgse5LW0biXrDvOSVhCFUMRvzpfgf0MGdm8StipQZyQ8iVrgzw8MMX6E4i8blSBWuKSsoXJ6QWKmuao9pFTn/UIg2xg43LKkb8TX5l1oqy1gTuot8inXTTMtyPiyp+yReuXviBP3A1Lfy4hanTMALRvTo/j9WjwR9UcIXxzm/vvtth8UhfQeCTEU3dETttTSe5xaadb60gbUWn2eS6h/slGNIimgA9xsA2BPgstPB6qooOGK1/1XrrbW8tU8QA43BpwlZayB3nwzAWN2h/SM7e1H0NklMxzKaggg7cJTDCSjimPb052fbA3n81lx1+XQu7EM1bWPgUFgXwfkZU/R/PSdvcQn72jldWJqTAZeZdWPiCNQL089v+zagsinUsEI+1M9F50BoB5Gofa2dr65DKaWeftE52FEPO2M40UFrgeTv80o37YD1Z97naFaxeukBzVU25zq3CzLyPxDOJEeUcfyD6IqIBgcoBx4MWPLEis9w5ms+RFw4jymECfTgHlaQrBVvaPXfcAJN9asCi0pTWkkQrcGrCkwn0mxoCB8KzmkThtZHFi+LyBfZf2Q4kXP/skiSBBh4FYAfWjYX3bia9PNaVaDQulnV7ZeDzN2EW8KPOwaVm130pzjjQBg=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(376014)(82310400026)(6133799003)(18002099003)(56012099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	32N6BR3sFhDhiK9m8+ZXH21aGk1XYpPA5cKceE08GZVrADHQqpK2fhuc/7L3U/u6fulrSXO3G5gEONFiOzBunLVXX6ClX9Rid/IJPxdXvtRO35rScKLXB1yjIjOtuMABi0YSq2XUkQ/qvl0u9fK1lJAzLqW3D8GjFlrkvlELcsxwlxdvibV6O159C95ir06V1spR7gE3rhNhR8JNTccZtWhn3Xr+pQPGUZRLc4PiRKA31X9AUlOvrPkCnAVO9sKf+KyULW47ZGkdr6S5Yzx3WJihVTtyvcd8VxMnEUtEgbWkQ9+rdI+PaNYBjwtT8JtTzmGRK6y+Nu3ckV0ModkxPw/LBwo8fk6OebEA7nAj3pjjsiZJVlYUfgIaTA+CPmOS3pgn1G9ZyxppShxeJKf55NguxixxS8DNHWlNfN/eIDvfoxw7Az2U7WMZtjWJcXv1
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2026 07:43:19.5214
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c09e7ec3-a2f6-433e-067c-08deb70ca0b0
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001F4.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR12MB9603
 
-Hi Ackerley,
+The PCIe r7.0, chapter "6.33.8 Other IDE Rules" mandates if selective IDE
+is enabled for config requersts, a stream must be enabled on the endpoint
+before enabling it on the rootport:
 
-On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Ackerley Tng <ackerleytng@google.com>
->
-> __kvm_gmem_invalidate_begin() and __kvm_gmem_invalidate_end() actually do
-> not specially handle -1ul. -1ul is used as a huge number, which legal
-> indices do not exceed, and hence the invalidation works as expected.
->
-> Since a later patch is going to make use of the exact range, calculate the
-> size of the guest_memfd inode and use it as the end range for invalidating
-> SPTEs.
->
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+===
+For Selective IDE, the Stream must not be used until it has been enabled in
+both Partner Ports. For cases where one of the Partner Ports is a Root Port
+and Selective IDE for Configuration Requests is enabled, the other
+Partner Port must be enabled prior to the Root Port. For other scenarios,
+the mechanisms to satisfy this requirement are implementation-specific.
+===
 
-Want to look at what Sashiko has to say? Seems to be a real issue:
+Do what the spec says.
 
-https://sashiko.dev/#/patchset/20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4%40google.com?part=16
+Fixes: 4be423572da1 ("crypto/ccp: Implement SEV-TIO PCIe IDE (phase1)")
+Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+---
+ drivers/crypto/ccp/sev-dev-tsm.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-If I understand correctly, the fix should simple: use
-check_add_overflow() to validate the offset and size parameters in
-kvm_gmem_bind()
+diff --git a/drivers/crypto/ccp/sev-dev-tsm.c b/drivers/crypto/ccp/sev-dev-tsm.c
+index b07ae529b591..10549a2cc2ae 100644
+--- a/drivers/crypto/ccp/sev-dev-tsm.c
++++ b/drivers/crypto/ccp/sev-dev-tsm.c
+@@ -58,13 +58,13 @@ static int stream_enable(struct pci_ide *ide)
+ 	struct pci_dev *rp = pcie_find_root_port(ide->pdev);
+ 	int ret;
+ 
+-	ret = pci_ide_stream_enable(rp, ide);
+-	if (ret)
++	ret = pci_ide_stream_enable(ide->pdev, ide);
++	if (ret && ret != -ENXIO)
+ 		return ret;
+ 
+-	ret = pci_ide_stream_enable(ide->pdev, ide);
+-	if (ret)
+-		pci_ide_stream_disable(rp, ide);
++	ret = pci_ide_stream_enable(rp, ide);
++	if (ret && ret != -ENXIO)
++		pci_ide_stream_disable(ide->pdev, ide);
+ 
+ 	return ret;
+ }
+-- 
+2.53.0
 
-   int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
-             unsigned int fd, loff_t offset)
-   {
-       loff_t size = slot->npages << PAGE_SHIFT;
-   +    loff_t end;
-       unsigned long start, end_index;
-       struct gmem_file *f;
-...
-   -    if (offset < 0 || !PAGE_ALIGNED(offset) ||
-   -        offset + size > i_size_read(inode))
-   +    if (offset < 0 || !PAGE_ALIGNED(offset) ||
-   +        check_add_overflow(offset, size, &end) ||
-   +        end > i_size_read(inode))
-           goto err;
-
-What do you think?
-
-/fuad
-
-> ---
->  virt/kvm/guest_memfd.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 050a8c092b1a3..9f6eebfb68f6b 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -370,6 +370,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
->         struct kvm_memory_slot *slot;
->         struct kvm *kvm = f->kvm;
->         unsigned long index;
-> +       pgoff_t end;
->
->         /*
->          * Prevent concurrent attempts to *unbind* a memslot.  This is the last
-> @@ -396,9 +397,10 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
->          * Zap all SPTEs pointed at by this file.  Do not free the backing
->          * memory, as its lifetime is associated with the inode, not the file.
->          */
-> -       __kvm_gmem_invalidate_begin(f, 0, -1ul,
-> +       end = i_size_read(inode) >> PAGE_SHIFT;
-> +       __kvm_gmem_invalidate_begin(f, 0, end,
->                                     kvm_gmem_get_invalidate_filter(inode));
-> -       __kvm_gmem_invalidate_end(f, 0, -1ul);
-> +       __kvm_gmem_invalidate_end(f, 0, end);
->
->         list_del(&f->entry);
->
->
-> --
-> 2.54.0.563.g4f69b47b94-goog
->
->
