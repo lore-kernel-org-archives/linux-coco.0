@@ -1,183 +1,237 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9093D8125;
-	Thu, 21 May 2026 13:59:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604F32BE7BE;
+	Thu, 21 May 2026 14:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779371979; cv=none; b=kGSR/2iUSJigCIeLK/S3Sp1xi+ECnJoB7vKrI+q99B07VQwz5ezxOk11CELdpdPqSrrllfdJeKwoeLv+Zu66ALgs9kKQiJ7PBj9DDgkHjiNyQWnsudhEj98eLpl3atw+GHsd7ZxZrTlD8kkRQYZcMsE4oFJBpLtdlpYTQ34znlc=
+	t=1779372828; cv=none; b=OAqL7AG0XudzdByqNcKpTMKjzg8LGFQOnGwJSN1oKMcSLoDWnrlsfVa0fnoR2YYNzRMKp9SEyX06NGS71nEwJnVgvD/5a7w/BlbvuRxaf7d+EpgodM63rUzadw0aOOOONCiNv+YIidxbGHBBKIB6a0misppAz6dKK7J36M/e/w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779371979; c=relaxed/simple;
-	bh=r6L2Sn+B40uE6ysN16heCT3yiobjISIrOumWdRJOFDM=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i7Ad3YUyT7Exvf9a5ZDIuJTbCZlA2hQdCYgXAea8ip5Rz7a0J3OjStSzsMq9foNPpYHGMUz0UWnPaUin3J+4EKPzKHx4y0ugO3d+8zTOuhYFB+238tbD0vQL9gxVnzAbO3pC6RwraIPVov6reXSpD4mVYpfpG2wKinRDPpBZWpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WzSEaSui; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779372828; c=relaxed/simple;
+	bh=Ma4rUXxctxkBftmjMkUa1ZjNAzu1G4mVje5WD9fbAWQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VKEdYBxyaEJb2+7fykB1RDMh5/+PXwdw3jFa4HynZyYKWGL0iauNAicZMT8Wyu5XAQM3dW7ACjJ9jnhkpev/odZSw3+ecIemcGVLvRixdrDEceyE0BufOn2Fs59dzusO4hW7k6zTeSwle3ORFXfOMcaHuQ+dnELlhT/WEmCMUZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=CSe7eIl3; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WzSEaSui"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2141A1F000E9;
-	Thu, 21 May 2026 13:59:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779371977;
-	bh=tQmPHR8IIsKYlTunVpaYrqEdOMUQnYuy4Tn1SyW9oC4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=WzSEaSuip34hyMd7P7xa21XSm/RfjS6Pe5CnL//09oCRDLtbqd9PAzzRRO/MB+Xog
-	 ivOACqeJjhtEhasOeK279vNZ3f40idhHL/UOONb9DcMB31xmzmnpIujbHxsn9Jm8sF
-	 bHHmP3cnsgs/otnaG7kXS2N20hYUkFCxJpKZvWkMLzeLazt4SI1ovEUj8EtznIjJqp
-	 NcfjqIqnTTCYZIOMsCCHsAo+MP+gGXnWBboKizR/tpT558s+Yy51yXuSto/uFMf8jl
-	 Z6Amwr8nfZzx5Bbq4fbDhKookvbNe+LqwowPKnwUxPqKKtsTFrOD2tHzDulIgxioYo
-	 GpOasUlQ3j4zQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wQ3vz-00000004r81-0Hyn;
-	Thu, 21 May 2026 13:59:35 +0000
-Date: Thu, 21 May 2026 14:59:34 +0100
-Message-ID: <867bowx3qx.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo.Pieralisi2@arm.com
-Subject: Re: [PATCH v14 09/44] arm64: RMI: Provide functions to delegate/undelegate ranges of memory
-In-Reply-To: <20260513131757.116630-10-steven.price@arm.com>
-References: <20260513131757.116630-1-steven.price@arm.com>
-	<20260513131757.116630-10-steven.price@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="CSe7eIl3"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Ma4rUXxctxkBftmjMkUa1ZjNAzu1G4mVje5WD9fbAWQ=; b=CSe7eIl3b9aaKU3qvbReR7GGlx
+	TvFYVP+wbeuYlAI6cAn2jdlkw0yqpFub5sWNPQghqq18UMXyDmvmuuGjf2wgJ/7aUedA3wf+XZtg8
+	QuDlLJmdEedu/ZAx2g6D4kwFpgXbVAnC6lIEho0XzXjHYPWGD07pN9WW4VGTrBH3Q3jWU4pa2uUon
+	phWtYIwJitJTjVUKaZLrfVfWZlx4wmJ1oGiaY3Vrggo1gK9O5Ex50Iz6MlEhhr2ZtFM9ab8IWHn6/
+	gvrmLjB3inwVsMPCOtkjq1d2NWIb+P1kLFDGXJqHbtHBRgX3/HzVyxucukR1qdEVr0GzxxVDPBUP1
+	SVeYlqIw==;
+Received: from 54-240-197-239.amazon.com ([54.240.197.239] helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wQ49a-00000008Zoj-333x;
+	Thu, 21 May 2026 14:13:38 +0000
+Message-ID: <6d37802ec33601d6be0eb648156e985545b2364a.camel@infradead.org>
+Subject: Re: [PATCH v3 27/41] x86/kvmclock: Enable kvmclock on APs during
+ onlining if kvmclock isn't sched_clock
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>, Peter Zijlstra
+	 <peterz@infradead.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+ "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang
+ <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
+ <decui@microsoft.com>, Long Li <longli@microsoft.com>, Ajay Kaher
+ <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Jan Kiszka <jan.kiszka@siemens.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Juergen
+ Gross <jgross@suse.com>, Daniel Lezcano <daniel.lezcano@kernel.org>, Thomas
+ Gleixner <tglx@kernel.org>, John Stultz <jstultz@google.com>, Rick
+ Edgecombe <rick.p.edgecombe@intel.com>, Vitaly Kuznetsov
+ <vkuznets@redhat.com>,  Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
+ <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
+ x86@kernel.org,  linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ linux-hyperv@vger.kernel.org,  virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org,  xen-devel@lists.xenproject.org, Michael
+ Kelley <mhklinux@outlook.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Nikunj A Dadhania <nikunj@amd.com>, Thomas Gleixner <tglx@linutronix.de>
+Date: Thu, 21 May 2026 15:13:37 +0100
+In-Reply-To: <ag8K2FRGcoEa-D2Y@google.com>
+References: <20260515191942.1892718-1-seanjc@google.com>
+	 <20260515191942.1892718-28-seanjc@google.com>
+	 <423b37f056f0d4d596d5f4cc73802fb1079ecf63.camel@infradead.org>
+	 <ag8Bpc_uVNrNWqfX@google.com>
+	 <20260521131019.GI3126523@noisy.programming.kicks-ass.net>
+	 <ag8K2FRGcoEa-D2Y@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-/luWii/cRDq/zhkGKorZ"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Wed, 13 May 2026 14:17:17 +0100,
-Steven Price <steven.price@arm.com> wrote:
-> 
-> The RMM requires memory is 'delegated' to it so that it can be used
-> either for a realm guest or for various tracking purposes within the RMM
-> (e.g. for metadata or page tables). Memory that has been delegated
-> cannot be accessed by the host (it will result in a Granule Protection
-> Fault).
-> 
-> Undelegation may fail if the memory is still in use by the RMM. This
-> shouldn't happen (Linux should ensure it has destroyed the RMM objects
-> before attempting to undelegate). In the event that it does happen this
-> points to a programming bug and the only reasonable approach is for the
-> physical pages to be leaked - it is up to the caller of
-> rmi_undelegate_range() to handle this.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> v14:
->  * Split into separate patch and moved out of KVM
-> ---
->  arch/arm64/include/asm/rmi_cmds.h | 13 +++++++++++
->  arch/arm64/kernel/rmi.c           | 36 +++++++++++++++++++++++++++++++
->  2 files changed, 49 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/asm/rmi_cmds.h
-> index 9078a2920a7c..eb213c8e6f26 100644
-> --- a/arch/arm64/include/asm/rmi_cmds.h
-> +++ b/arch/arm64/include/asm/rmi_cmds.h
-> @@ -33,6 +33,19 @@ struct rmi_sro_state {
->  } while (RMI_RETURN_STATUS(res.a0) == RMI_BUSY ||			\
->  	 RMI_RETURN_STATUS(res.a0) == RMI_BLOCKED)
->  
-> +int rmi_delegate_range(phys_addr_t phys, unsigned long size);
-> +int rmi_undelegate_range(phys_addr_t phys, unsigned long size);
-> +
-> +static inline int rmi_delegate_page(phys_addr_t phys)
-> +{
-> +	return rmi_delegate_range(phys, PAGE_SIZE);
-> +}
-> +
-> +static inline int rmi_undelegate_page(phys_addr_t phys)
-> +{
-> +	return rmi_undelegate_range(phys, PAGE_SIZE);
-> +}
-> +
->  bool rmi_is_available(void);
->  
->  unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t gfp);
-> diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
-> index 52a415e99500..08cef54acadb 100644
-> --- a/arch/arm64/kernel/rmi.c
-> +++ b/arch/arm64/kernel/rmi.c
-> @@ -12,6 +12,42 @@ static bool arm64_rmi_is_available;
->  unsigned long rmm_feat_reg0;
->  unsigned long rmm_feat_reg1;
->  
-> +int rmi_delegate_range(phys_addr_t phys, unsigned long size)
-> +{
-> +	unsigned long ret = 0;
-> +	unsigned long top = phys + size;
-> +	unsigned long out_top;
-> +
-> +	while (phys < top) {
-> +		ret = rmi_granule_range_delegate(phys, top, &out_top);
-> +		if (ret == RMI_SUCCESS)
-> +			phys = out_top;
-> +		else if (ret != RMI_BUSY && ret != RMI_BLOCKED)
-> +			return ret;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +int rmi_undelegate_range(phys_addr_t phys, unsigned long size)
-> +{
-> +	unsigned long ret = 0;
-> +	unsigned long top = phys + size;
-> +	unsigned long out_top;
-> +
-> +	WARN_ON(size == 0);
 
-I find it odd to warn on size = 0. After all, free(NULL) is not an
-error. But even then, you continue feeding this to the RMM.
+--=-/luWii/cRDq/zhkGKorZ
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-You also don't seem to be bothered with that on the delegation side...
+On Thu, 2026-05-21 at 06:38 -0700, Sean Christopherson wrote:
+> On Thu, May 21, 2026, Peter Zijlstra wrote:
+> > On Thu, May 21, 2026 at 05:59:17AM -0700, Sean Christopherson wrote:
+> > > On Thu, May 21, 2026, David Woodhouse wrote:
+> > > > On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
+> > > > > In anticipation of making x86_cpuinit.early_percpu_clock_init(), =
+i.e.
+> > > > > kvm_setup_secondary_clock(), a dedicated sched_clock hook that wi=
+ll be
+> > > > > invoked if and only if kvmclock is set as sched_clock, ensure APs=
+ enable
+> > > > > their kvmclock during CPU online.=C2=A0 While a redundant write t=
+o the MSR is
+> > > > > technically ok, skip the registration when kvmclock is sched_cloc=
+k so that
+> > > > > it's somewhat obvious that kvmclock *needs* to be enabled during =
+early
+> > > > > bringup when it's being used as sched_clock.
+> > > > >=20
+> > > > > Plumb in the BSP's resume path purely for documentation purposes.=
+=C2=A0 Both
+> > > > > KVM (as-a-guest) and timekeeping/clocksource hook syscore_ops, an=
+d it's
+> > > > > not super obvious that using KVM's hooks would be flawed.=C2=A0 E=
+.g. it would
+> > > > > work today, because KVM's hooks happen to run after/before timeke=
+eping's
+> > > > > hooks during suspend/resume, but that's sheer dumb luck as the or=
+der in
+> > > > > which syscore_ops are invoked depends entirely on when a subsyste=
+m is
+> > > > > initialized and thus registers its hooks.
+> > > > >=20
+> > > > > Opportunsitically make the registration messages more precise to =
+help
+> > > > > debug issues where kvmclock is enabled too late.
+> > > >=20
+> > > > That's a hard word to type, isn't it?
+> > >=20
+> > > Heh, you have no idea.=C2=A0 I've been "this" close to creating a VIM=
+ binding for a
+> > > while, it is time...
+> >=20
+> > 'z=3D' not good enough?
+>=20
+> You people and your fancy ways.=C2=A0 I'm just happy I can get in and out=
+ of the editor :-)
 
-> +
-> +	while (phys < top) {
-> +		ret = rmi_granule_range_undelegate(phys, top, &out_top);
-> +		if (ret == RMI_SUCCESS)
-> +			phys = out_top;
+I reached the peak of my vi knowledge in about 1995 when I learned that
+I could log in on another terminal, kill it from there, and then set
+EDITOR=3Demacs.
 
-and size==0 doesn't violate any of the failure conditions listed in
-B4.5.18.2 (beta2). Will you end-up looping around forever?
+Ironically I still find myself doing that kind of thing when I'm
+composing a git-send-email cover letter and decide I don't want to send
+the series as-is at all. Maybe there's a way to put a poison pill in
+the message (or save it unchanged?) to make git *NOT* send anything...
+but I always err on the side of caution and just nuke it from orbit, or
+at least from another terminal.
 
-Same questions for the delegation, obviously.
 
-	M.
+--=-/luWii/cRDq/zhkGKorZ
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
--- 
-Without deviation from the norm, progress is not possible.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUyMTE0MTMz
+N1owLwYJKoZIhvcNAQkEMSIEIEgkkw1Zfu2OudnG8cU+MVWgyG8a1j0D52Qh8hHReT5yMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIA036HTeiItcPn
+bSvgswYeD77jdEe/2Kl5P0nyJ5bE+UOLwkXom7KRUxdoA+vd1+MqFMDWoAywMwXgm9rKNwQK/1ZG
+yNGaNy9GqbZcvleefr4PwFHO2gN5+H86tX3gkF+at+Q4gAHTGjSUR5xR1ZWMDXsTbhGsy24uw0yL
+h2lillfsgvUWUmRbUKq9CLitnxg4m+un1nD/bvfB8VEHuj+q8CTnsVgPAB6z215sMgsImO6yPDEZ
+iu7wFELTqO6S1v1wWO9omEeRhxPk4cHG+to5ukTJQKwaXEljtLIeDMn/BwHlCwUPOzzE70ayjJno
+pn/DjnCu2E3n9kbLtnYrv64OX6szqz9x1Xc9Rud0rJABnrSZvGWlRo7f0CZmNI8QQ9gh65lHaMG9
+uhi9BYdqC1mea9cAKo0j7UIY8pm4O5CKb2zdepOfxUUIqhi7zleSh0/S9UlSdZrOIvXO8uEgxZig
+izjZ4+U8vo5LVQlUD57qnry3duXa4nDpBqVv6T3mPdd5XEoKiGp62m5ka/aov2kYr3LW56PFA/Sp
+c/4CAC3140Hdf4wmHAuWheEclOgI5A6diLJ9h/E9e5J3YbDbL3kOMejlhbkEfnPMwycZ76PqIalG
+A9mD189d0OO2dtY20lQnVGKuq0UuheZji+6yoMwpRYuE0MKMIs2z0otc7Il591QAAAAAAAA=
+
+
+--=-/luWii/cRDq/zhkGKorZ--
