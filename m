@@ -1,190 +1,134 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8D3274B2A
-	for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 13:31:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6EC3EFD14
+	for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 13:38:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779370277; cv=none; b=bOa99PBYBoukehDCC9n6gm/CFj66/rxgluBebKncTtZFg7jloBIs3CM2VApZOzszLCf6ch1r9EgUoG6+nMegig5j7+kmv60ckkrIP8pOX1cOo4kwyJEIFtZqDu2ozsUtlRsDpMgdojuBJsZIss3Po45jp6rUKn35ydaDJO04VI4=
+	t=1779370716; cv=none; b=hJOv0XQh+G4IZnbl24+pu+FAxpRRl2nWMhx6p5HptXalXBjR5aUjuAGk5Cf+Ma+nBO+mK2mo7DP51UQpsK5IQ0QaLs5TdBeI5FVaA1B8mi0g0A2PYuK8UMY/MGs0+WMcbkj/72mR/cZ15Xjhj48ABPvCfNPWUYS5w6GYU9fqG78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779370277; c=relaxed/simple;
-	bh=t+Zvw3OJCdd7aLvPU2Y07KNUlkbBJoLjXPqHeDhHkts=;
+	s=arc-20240116; t=1779370716; c=relaxed/simple;
+	bh=rZ1N/KoZeh9+iAw5VzELz8I+bOlFA8dDM2e99AiyYKk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YmIsJso/86tYiSz4yrGhGS6AMhln1jeJLiCNUOml2CTWqi4sMpVMz2uJZ1ohdWd2zcHQrCrsgVUG+4Qro6BEj84ZvrptWwWaMbNlWOe0m4Z4R4umnNbEFpyn23oUHBjrogJ9P6zuEoMoojw5qvY3SrUfVn4JAEEp3/9SCiSr0xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fAaliF31; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=gg7ABZSCLZ7R8FjMuSHzn4PmQlN+bWSSxhg9EME1P73bw6Lrgmuc96xC+uU88luhw5OvcvK4R3b33uA9Rvc9yHEcX61LpH/1aToWDQw2QWNrzJYRMJJD7l/5ClNHaciMje/DOyS0JiO386k+Qf4iqOMSOpAC9mDJnoTHa6bHB8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kQJXDqD9; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fAaliF31"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-83eefe4867eso3335135b3a.1
-        for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 06:31:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kQJXDqD9"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c82ac893940so3036301a12.1
+        for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 06:38:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779370276; x=1779975076; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=55Qyjr301rCPWrgG1oq6BJ9BiVpqhO1a4dUCIfsketY=;
-        b=fAaliF31Jo8nO0eiT2kp0op1wb4/HyOUz7CXLMtupsZW1glCkjM284ONN95vQSwg94
-         JPzYeRC9AprDXN/dWKVfN32kDLPjv781fOgQfMP4e+26+QvMrJAonYPaHL9kuc0DLMeK
-         E/zEEAHz8JAz8M6CModNLrMQZDzHkRSXoeIyO480hY1rjig4fLZ5r7TdThrwpkGO8Qsj
-         nWIF5zExKGMMOqp+3TLHQ2jIZerkisfQgqXHL+xo6ORBl23emIh8R42mn4GjnhaX/Yrg
-         VkLVOwb2cfwvacjYyHvegi5LXOj08vOwMQSr//hPX5Llv6ft5rAQMlp7ZRyQbSQ1BgfA
-         p57w==
+        d=google.com; s=20251104; t=1779370714; x=1779975514; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jbJ4F8kl/6/QcBmB9dNne3NQOqe79KuT470iYfI7huM=;
+        b=kQJXDqD9YuK/zK0M0cFNFd3/kmz0GB41I/ARrqfu2s+E2zydJMBBoqrQicxgfi6KxK
+         W8UQUUV11Onoe5x2gv+aVhQWfJKDLDPsp0DakqFvS+et2Q/95zzYc4ie616MWv93Ap6G
+         wsUUpLTNeye1qT7723eoYNTXFtj3BzJUSAhZi9fHIvwXw/hWuEWcjE+HaB0ZL+LiAXWR
+         z2SRlVdf+pO6Dhs5MoA80QClp+Srk9Oe2uXtvarMEdmIHoetWfnBiDElKH/hPg+IpEa2
+         NfwH/neXfyUqoGhYhhlaOABNo7cQ5rOEYMWN0JdvWtHunMvnMC3xpeWw6D7WK4WdxYfu
+         DWcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779370276; x=1779975076;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=55Qyjr301rCPWrgG1oq6BJ9BiVpqhO1a4dUCIfsketY=;
-        b=YsXyQRJm9nLpww2QbwzZ2DE9OPE9jd6bmytYvlKqZ47sxxXxfktdI9oZWYFnzG0ic7
-         L7EM7svxE1RYSXHSfWVUjqCmGkaNj0Qj9hWZv4el+QIMm01vWQu/6jsfa9xtnOvwd0dQ
-         I4JscnrpE8U0AAwsGSuXK7M9D3ByKcsMfqgx+et37hL9u6OPiVZQe8Kbys2NhzyS8BY0
-         WfgetEpNDuXNnm4zIEMsLuOohF2Xr6dA0JVW4BIV9o8G4+3mgav7yCDxPv8lAiWpRcSv
-         4uxRRRbo2Ax8kPC7HgfWnCCF5n9yRslj5xR2wSY1+qtEPEUDuWVsanE9x30xUrSmQcgt
-         rvlA==
-X-Forwarded-Encrypted: i=1; AFNElJ9l84r5AIuVnPenx1gTWTI9VdF0EKvpHOK7T+ms+cokrpu+xigUofXuRLmWoooAgzQuvDocjxGZ273P@lists.linux.dev
-X-Gm-Message-State: AOJu0YyzIYf+hY4lVkbhsZIhdRIgHNm2SOB+ctOnmxa8hsu1lIkwHC0O
-	gmuUAm0sGtro9s6daGLxXlYSU+rKUss40GB89FSsJKs0INHQlyT1jyh7Pxfyu2DwnmBCu2ZcXQR
-	4wOyLPQ==
-X-Received: from pfblt3.prod.google.com ([2002:a05:6a00:7443:b0:839:65e2:e48f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1494:b0:83f:2568:d469
- with SMTP id d2e1a72fcca58-8414adfae19mr3245544b3a.32.1779370274841; Thu, 21
- May 2026 06:31:14 -0700 (PDT)
-Date: Thu, 21 May 2026 06:31:14 -0700
-In-Reply-To: <CA+EHjTzLCD-dU-euZKgzwyEr2ecPqFDNutcaHm2fCDGA+MHVXA@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1779370714; x=1779975514;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jbJ4F8kl/6/QcBmB9dNne3NQOqe79KuT470iYfI7huM=;
+        b=ntUOF/CL2dM7pMueN840Z4x2JPk6TxtVJcwAlgapLqLPWS8fgkLQgmlyiAokO6a8Os
+         nKWvZGLECW2ScJercRDkakjk+2FBEuvdsCHqnqpYhCoeQrSAkIAGeYePhMJqvuHm+KaG
+         mnjMgkciFSoGZvsR3qb7NLif/FpBsznAvdJ6rzMzABsvkAW4v7qLWe/tzKO1I/UdZIfF
+         hh5WK2qN0ekZBmYLvebVP60V8RPQVbbqSMUXYQElC3jVjx/VZnnTxLta8qW01qo9xs8N
+         j6/mD1saJKWihAO/451MN+hiE1LoUa7RMVaCNaYlp92qAyzDA7wSH1GQb+WVF2t5bVmI
+         ASyw==
+X-Forwarded-Encrypted: i=1; AFNElJ+ZS5bPZjBOuYMb5ZoDw3rShLC4fOVvNfI0vX1+ae9/jbX7/dEigfXYlcWp62eqltCPaitVUp2x9ykK@lists.linux.dev
+X-Gm-Message-State: AOJu0YwHNo9uYo3bTTl4UJBz2cdbdrqbbCsObUdmu+4nEh9hA75857Xb
+	GBzkVHk4jPyCjqS80durMiIN32qwFpH+LJWVPj7zQ2l8LTrDD62WAwrRO5wKSR2fDlJUHMxJCMe
+	1MvqlPA==
+X-Received: from pfbem15.prod.google.com ([2002:a05:6a00:374f:b0:83d:3c25:eb8b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4c8c:b0:827:3b1b:43e6
+ with SMTP id d2e1a72fcca58-8414acc6e8emr3123916b3a.21.1779370713612; Thu, 21
+ May 2026 06:38:33 -0700 (PDT)
+Date: Thu, 21 May 2026 06:38:32 -0700
+In-Reply-To: <20260521131019.GI3126523@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
- <20260507-gmem-inplace-conversion-v6-5-91ab5a8b19a4@google.com>
- <CA+EHjTw-cUM=FrJevtSDtR7K6MwUfGfOx21LMFDn7DAy5bFzYw@mail.gmail.com>
- <CAEvNRgGQvMdDmVfbk42EY_PGN0ybTp-x21Zj+pg_X1mk9iCRtA@mail.gmail.com> <CA+EHjTzLCD-dU-euZKgzwyEr2ecPqFDNutcaHm2fCDGA+MHVXA@mail.gmail.com>
-Message-ID: <ag8JIlHjohAOC3-g@google.com>
-Subject: Re: [PATCH v6 05/43] KVM: guest_memfd: Wire up kvm_get_memory_attributes()
- to per-gmem attributes
+References: <20260515191942.1892718-1-seanjc@google.com> <20260515191942.1892718-28-seanjc@google.com>
+ <423b37f056f0d4d596d5f4cc73802fb1079ecf63.camel@infradead.org>
+ <ag8Bpc_uVNrNWqfX@google.com> <20260521131019.GI3126523@noisy.programming.kicks-ass.net>
+Message-ID: <ag8K2FRGcoEa-D2Y@google.com>
+Subject: Re: [PATCH v3 27/41] x86/kvmclock: Enable kvmclock on APs during
+ onlining if kvmclock isn't sched_clock
 From: Sean Christopherson <seanjc@google.com>
-To: Fuad Tabba <tabba@google.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, ira.weiny@intel.com, jmattson@google.com, 
-	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
-	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, 
-	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
-	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
-	aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: David Woodhouse <dwmw2@infradead.org>, Kiryl Shutsemau <kas@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Andy Lutomirski <luto@kernel.org>, Juergen Gross <jgross@suse.com>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	John Stultz <jstultz@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, x86@kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, Michael Kelley <mhklinux@outlook.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 21, 2026, Fuad Tabba wrote:
-> On Wed, 20 May 2026 at 22:44, Ackerley Tng <ackerleytng@google.com> wrote:
-> >
-> > Fuad Tabba <tabba@google.com> writes:
-> >
-> > >
-> > > [...snip...]
-> > >
-> > >> +unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
-> > >> +{
-> > >> +       struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
-> > >> +       struct inode *inode;
-> > >> +
-> > >> +       /*
-> > >> +        * If this gfn has no associated memslot, there's no chance of the gfn
-> > >> +        * being backed by private memory, since guest_memfd must be used for
-> > >> +        * private memory, and guest_memfd must be associated with some memslot.
-> > >> +        */
-> > >> +       if (!slot)
-> > >> +               return 0;
-> > >> +
-> > >> +       CLASS(gmem_get_file, file)(slot);
-> > >> +       if (!file)
-> > >> +               return 0;
-> > >> +
-> > >> +       inode = file_inode(file);
-> > >> +
-> > >> +       /*
-> > >> +        * Rely on the maple tree's internal RCU lock to ensure a
-> > >> +        * stable result. This result can become stale as soon as the
-> > >> +        * lock is dropped, so the caller _must_ still protect
-> > >> +        * consumption of private vs. shared by checking
-> > >> +        * mmu_invalidate_retry_gfn() under mmu_lock to serialize
-> > >> +        * against ongoing attribute updates.
-> > >> +        */
-> > >> +       return kvm_gmem_get_attributes(inode, kvm_gmem_get_index(slot, gfn));
-> > >> +}
-> > >
-> > > Doesn't this imply that all consumers of kvm_mem_is_private() should
-> > > validate the result using mmu_lock and the invalidation sequence?
-> >
-> > Let me know how I can improve the comment.
-> 
-> Given Sean's context, the comment is good I think. I would quibble
-> with the the "_must_ still protect" phrasing being a bit too strict.
-> 
-> Maybe just soften it slightly to acknowledge the exception? Something like:
-> 
->   * lock is dropped, so callers that require a strict result _must_ protect
->   * consumption of private vs. shared by checking mmu_invalidate_retry_gfn()
->   * under mmu_lock to serialize against ongoing attribute updates. Callers
->   * doing lockless reads must be able to tolerate a stale result.
-> 
-> That aligns the comment with how KVM is actually using it today. That
-> said, this is nitpicking. Feel free to use or ignore.
+On Thu, May 21, 2026, Peter Zijlstra wrote:
+> On Thu, May 21, 2026 at 05:59:17AM -0700, Sean Christopherson wrote:
+> > On Thu, May 21, 2026, David Woodhouse wrote:
+> > > On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
+> > > > In anticipation of making x86_cpuinit.early_percpu_clock_init(), i.=
+e.
+> > > > kvm_setup_secondary_clock(), a dedicated sched_clock hook that will=
+ be
+> > > > invoked if and only if kvmclock is set as sched_clock, ensure APs e=
+nable
+> > > > their kvmclock during CPU online.=C2=A0 While a redundant write to =
+the MSR is
+> > > > technically ok, skip the registration when kvmclock is sched_clock =
+so that
+> > > > it's somewhat obvious that kvmclock *needs* to be enabled during ea=
+rly
+> > > > bringup when it's being used as sched_clock.
+> > > >=20
+> > > > Plumb in the BSP's resume path purely for documentation purposes.=
+=C2=A0 Both
+> > > > KVM (as-a-guest) and timekeeping/clocksource hook syscore_ops, and =
+it's
+> > > > not super obvious that using KVM's hooks would be flawed.=C2=A0 E.g=
+. it would
+> > > > work today, because KVM's hooks happen to run after/before timekeep=
+ing's
+> > > > hooks during suspend/resume, but that's sheer dumb luck as the orde=
+r in
+> > > > which syscore_ops are invoked depends entirely on when a subsystem =
+is
+> > > > initialized and thus registers its hooks.
+> > > >=20
+> > > > Opportunsitically make the registration messages more precise to he=
+lp
+> > > > debug issues where kvmclock is enabled too late.
+> > >=20
+> > > That's a hard word to type, isn't it?
+> >=20
+> > Heh, you have no idea.  I've been "this" close to creating a VIM bindin=
+g for a
+> > while, it is time...
+>=20
+> 'z=3D' not good enough?
 
-Hmm, I wonder if we can figure out a way to consolidate some documentation,
-because this is _exactly_ the same pattern that x86's host_pfn_mapping_level()
-deals with (see its big comment below).
-
-There's also the stale comment in kvm_invalidate_memslot(), which, stating the
-obvious, speaks to the memslot+SRCU side of things.
-
-Maybe it makes sense to to find a central location for one giant comment about
-how how MMU notifier events and memslot+SRCU protections work?  And then refer
-to that in paths where some asset needs to be tied into MMU notifiers and/or
-memslots+SRCU?
-
-[*] https://lore.kernel.org/all/agcbWe8s9lmPuJwG@google.com
-
-
-/*
- * Lookup the mapping level for @gfn in the current mm.
- *
- * WARNING!  Use of host_pfn_mapping_level() requires the caller and the end
- * consumer to be tied into KVM's handlers for MMU notifier events!
- *
- * There are several ways to safely use this helper:
- *
- * - Check mmu_invalidate_retry_gfn() after grabbing the mapping level, before
- *   consuming it.  In this case, mmu_lock doesn't need to be held during the
- *   lookup, but it does need to be held while checking the MMU notifier.
- *
- * - Hold mmu_lock AND ensure there is no in-progress MMU notifier invalidation
- *   event for the hva.  This can be done by explicit checking the MMU notifier
- *   or by ensuring that KVM already has a valid mapping that covers the hva.
- *
- * - Do not use the result to install new mappings, e.g. use the host mapping
- *   level only to decide whether or not to zap an entry.  In this case, it's
- *   not required to hold mmu_lock (though it's highly likely the caller will
- *   want to hold mmu_lock anyways, e.g. to modify SPTEs).
- *
- * Note!  The lookup can still race with modifications to host page tables, but
- * the above "rules" ensure KVM will not _consume_ the result of the walk if a
- * race with the primary MMU occurs.
- */
+You people and your fancy ways.  I'm just happy I can get in and out of the=
+ editor :-)
