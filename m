@@ -1,54 +1,54 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE3C365A13
-	for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 23:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2608237475C
+	for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 23:17:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779405448; cv=none; b=jg7SdnG6Zdh56yCiqZIoJtYJWqoJ3B+BMZRbvHlxnOYdtqWRYMQ0cIgvO1QypghkOWoB4GVj/b3deioUYVTa533gbX+1IrvbLyeuGOZNXOqUlJysEyJ70StjJoQuMa6fPo/xwn8n5aDwEU2ndgfaMaT3KLxAbD7f+5wYVY3MNxU=
+	t=1779405450; cv=none; b=K34cJ19/xYcrqiiTK0T+Lix71v1F2FlKrEBcoyY8uPNiha+MmFTTfu4YmuEPHAmlhxfr0n8WTE8+Ow8SzqmM5KattiHbRJZahJpKVis/wKtT4OaiA43hz2ALwcj+5/8dAUuD0FrkjdpGxNK7iJFGPljEMwIRjTefin5aFXrZJHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779405448; c=relaxed/simple;
-	bh=/ikqpmqE+DNbwk8ZasaSPnLDlqFFZVhzhj9NNBVLUKo=;
+	s=arc-20240116; t=1779405450; c=relaxed/simple;
+	bh=UoU3vO2bIrWrWLGZciBGOXIHOLrMeb/5nWjFU6hbO/Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=onTInnjTjO0dn632pr1yogzO/fXSrxFszpQEH95AA6pw0YOozob1ihun75SeV+NmmS+1rkfI3jDEhXdKOl7FtqbwxuJ5tjI5FzFws95LAY8C4pQptJ1fipqjogwJC7EeXzZ1RU7saqVyoeBnWnFUGlGlUKpwz5cT0AFoNiJULjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aFL/I+/u; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=FioyyDTmcJq/NxdW2syOMH2HUcQ0dJjphN5+5hRJ45AVIJHe2kJZIhxXabpwRxaQEQCa4PIzLrr2eUpfjvvC10NxAzbQujvYOSBl6FK0rxAJhW8Avgz06NXNHAydHxL9RAxmd9vo85pM6DBOnPsiSwK3mH7OlV85F9aG2E7i8Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KlaNKnvg; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aFL/I+/u"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ba718173d1so114726235ad.0
-        for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 16:17:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KlaNKnvg"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c82c477290bso3509834a12.3
+        for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 16:17:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779405445; x=1780010245; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1779405447; x=1780010247; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kfsTBh74zO/72fegZAfmLQ14a37FMIV7nJgHfXozZ0I=;
-        b=aFL/I+/udybkfqHkZt7c0ySiMauINQsST+ycUFZZndbx5R4dO7YINshBVVZQksi7PN
-         1swlzAmEVISYSNMZaGlP8skFqseaiWGLemtOZwcKUawrUqi1K8tVSFC++aYuIpaA0Ci4
-         gN2RoTJXYf5VvsVj9FJ9VMB1Y2Pc2Hwa57yi7UdL829j5z1HoZTwHShq/HL69uiuzv+f
-         U1iiJ27nilBMW/0SnalY0eedeFuq0PI5rMFtfDrkGXiFTN+ScUzBh/kgZ+7cidNYEqh+
-         oJ0FUIHvpCQzk52C6/k2+SgOSPbiqCFJxiNBO9PVb9gg0/Kx8gVKP7BS483QvGRrTz6M
-         8sDQ==
+        bh=9SBJUSguwXkjuFZof3MzgeP84JWJq09tcbehDxmN6+o=;
+        b=KlaNKnvgodKUR3ihIwjDFGE/Bpg557Qf9AI/m+h4/0N7LEeAAw/xU4Fnbad+XJQqpv
+         DjbJ7Tr9YVrNW+JIF+/VGln1G2m1DmCnWNQomVrNGhhJFKxhN4hZW/JKHRAdaCNqWScW
+         BSA45/P+E2INV4ADycD2dbxsLgQ6OYX3oOp51PTt6E24kCK8nmEKB+LVRzYw4pboYTEg
+         VEUTLdGqFmGD1sn3/HPMGgZKB3qG+yccfJiPzyKJKcK/374F3/Z7hPd6mXAvU5Fp95ct
+         6cwnsdJd3R3vMHf+d4dLKM9PmMEkwyOaGufevfW5/GkjVoIJi3ulIx6gN4OnaLjNTQ81
+         9hrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779405445; x=1780010245;
+        d=1e100.net; s=20251104; t=1779405447; x=1780010247;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kfsTBh74zO/72fegZAfmLQ14a37FMIV7nJgHfXozZ0I=;
-        b=glCehflmH83Ch82iIkvqr4DRriSZmgRRhWVkvwM6E40IZ/ZN3O/sC8ah0cIiGgiwkX
-         ybGOOcEmzeDi2Lp637qVHU/PST2Vjbh60hzDk+4CjMYBK6KNhUMOjc+7mx30vRPfP0Hy
-         0XwA+I/uvu7efluRBi77wfcK4MGTyZYXXBVw1hO3w8MFE+RaVjfAd9piHkMXQz2MA852
-         H/YPEt6l/mQSG3lUy+/tkiugjIXBKoYP/Pso0mgapZscq6mLDaebhVKwTqzEaUXqbGa9
-         RQZVFQnFNpQ9To+ybH6daVTFy3xnwWzQqIhyK9oNTRAqAi8k5Qp3ctt7FIfW7il8mfAj
-         gw5w==
-X-Forwarded-Encrypted: i=1; AFNElJ/yUp0zqsqU5d+OLHbyL6m3y6evhxqK5J4F7vP1QMPlqcikhhrxn/BfvNGYoeqky1kbAU5DaQCCD/OZ@lists.linux.dev
-X-Gm-Message-State: AOJu0YyFBhAJliKwIvAnyvl1u9TWN+5DYthSoE0ap5fGyrkNzgBX3i97
-	SfiDDRfBAxvHSIvdvtxaWi7OPJlFF4LcC0xbpDaUaJBJDd2sx/pscnFrzhJ/HkIuJ1ZQ3gNIZUP
-	Yigi1wQ==
-X-Received: from plfn12.prod.google.com ([2002:a17:902:e54c:b0:2bd:2711:a0d3])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3b8b:b0:2b4:63c8:ce18
- with SMTP id d9443c01a7336-2beb05a4cd9mr9918675ad.12.1779405444904; Thu, 21
- May 2026 16:17:24 -0700 (PDT)
-Date: Thu, 21 May 2026 23:16:45 +0000
+        bh=9SBJUSguwXkjuFZof3MzgeP84JWJq09tcbehDxmN6+o=;
+        b=LOvf+qAbXMStijI4R5XZRk/SAbhSbii575BTB306MGgS/3Kn6vkDhx5ZY+I1ZuGHGV
+         DuuyBQ/8W1129xQ2J8OE3WHlz1QDeb9DX87PAUWISlpSB64Chq8nYzO8FxkRR5WuTkUc
+         ZME8DfZ5r4g1iQ5s1rWJwNMCLNFSogM6T243N9MZbHZrJ4iYWKL6lR9hmTyoACzMQuQE
+         eEs3yK2nBkOFCHzN1GQRi3+CPRPjoLkyvafeGvB1CwG1XgLxSJ0puUXNXh6cpZBHn1eZ
+         hg3RZE5zrlbxXhXhJMUoTKQxDzos8ZAIgPUD11GnKTEY0Zjk+CV4CYsjbA7VFIgt+LkZ
+         iDkA==
+X-Forwarded-Encrypted: i=1; AFNElJ8YljPMHEmm7eQ5suQ+Pymg+RVtkcyHtw6dps3MlUJRL/pR37v5rWnKMsUGBxQpIj1QXl985v6L2e0e@lists.linux.dev
+X-Gm-Message-State: AOJu0YyYYFcxUqPG2IP0G2rgFtlkGtAFDkbw1kThtBiDJCcFZ0hCtOgJ
+	qUinCJ8YC7h4JfXed+tVN0j7wUcOF9+0XYmHK0xQWn1KUVgtfd2OMOu53xE6+HLj0Iqz+ecFoSd
+	2uzgeEA==
+X-Received: from pghw18.prod.google.com ([2002:a63:f512:0:b0:c79:5fb7:acae])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:12cd:b0:3a0:bc61:62e1
+ with SMTP id adf61e73a8af0-3b328e580a0mr927322637.30.1779405447202; Thu, 21
+ May 2026 16:17:27 -0700 (PDT)
+Date: Thu, 21 May 2026 23:16:47 +0000
 In-Reply-To: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -58,14 +58,14 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779405439; l=1755;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779405439; l=1502;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=/MQdgEc/h7i+uzxsvqrPX6CKbZfIx+FZ7QuCfWgiUcM=; b=zYqPKl+0PgIvqPdDBBtRymGcofvU8gAR4TrOXAPOM8BmRvbWUfMGwj0bzxV7hqNZ548vHmcsB
- dh012449LQTBUi2V/D6kMZO8+C0pOlo7VqJm5OW7mceFC2nAQeLc5VE
+ bh=gspyrFHq1LK9qs66fQWDyiAFVJSplHon4JiLLfr1Jwk=; b=q1/LQNXPgWNW8jiLdj0PNdtABbwpED3/smBdUQCgKtemvqmXSqbYb/KFV2kIHfk8qWeAG49hT
+ MO3Eh1crUamDlXg3WSBDFEAChoCqupVdeiwG2SrMIXZmb5MnKDzp6VV
 X-Mailer: b4 0.14.3
-Message-ID: <20260521-tdx-selftests-v13-v13-4-6983ae4c3a4d@google.com>
-Subject: [PATCH  v13 04/22] KVM: selftests: TDX: Use KVM_TDX_CAPABILITIES to
- validate TDs' attribute configuration
+Message-ID: <20260521-tdx-selftests-v13-v13-6-6983ae4c3a4d@google.com>
+Subject: [PATCH  v13 06/22] tools: include: Add kbuild.h for assembly
+ structure offsets
 From: Lisa Wang <wyihan@google.com>
 To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
 	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
@@ -81,56 +81,45 @@ Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lis
 	linux-kernel@vger.kernel.org, x86@kernel.org, Lisa Wang <wyihan@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+From: Sagi Shahar <sagis@google.com>
 
-Make sure that all the attributes enabled by the test are reported as
-supported by both the TDX module and KVM. KVM filters out the attributes
-not supported by itself.
+Add the Kbuild macros needed to enable the filechk_offsets mechanism to
+generate C header files containing structure member offset information.
 
-This also exercises the KVM_TDX_CAPABILITIES ioctl.
+Tools depending on assembly code that operate on structures have to
+hardcode the offsets of structure members. The Kbuild infrastructure
+can instead generate C header files with these offsets automatically,
+allowing them to be included in assembly code as symbolic constants.
 
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Co-developed-by: Sagi Shahar <sagis@google.com>
+For example, the TDX guest boot code requires access to parameters
+passed in the C structure(struct td_boot_parameters). This header
+provides the macros needed to extract these offsets from C code and
+expose them to assembly, ensuring the two remain synchronized.
+
 Signed-off-by: Sagi Shahar <sagis@google.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Lisa Wang <wyihan@google.com>
 ---
- tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ tools/include/linux/kbuild.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-index 868ff62e22f2..e5c998874a0d 100644
---- a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-+++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-@@ -110,6 +110,18 @@ static void tdx_filter_cpuid(struct kvm_vm *vm,
- 	free(tdx_cap);
- }
- 
-+static void tdx_check_attributes(struct kvm_vm *vm, u64 attributes)
-+{
-+	struct kvm_tdx_capabilities *tdx_cap;
+diff --git a/tools/include/linux/kbuild.h b/tools/include/linux/kbuild.h
+new file mode 100644
+index 000000000000..957fd55cd159
+--- /dev/null
++++ b/tools/include/linux/kbuild.h
+@@ -0,0 +1,11 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __TOOLS_LINUX_KBUILD_H
++#define __TOOLS_LINUX_KBUILD_H
 +
-+	tdx_cap = tdx_read_capabilities(vm);
++#define DEFINE(sym, val) \
++	asm volatile("\n.ascii \"->" #sym " %0 " #val "\"" : : "i" (val))
 +
-+	/* Make sure all the attributes are reported as supported */
-+	TEST_ASSERT_EQ(attributes & tdx_cap->supported_attrs, attributes);
++#define OFFSET(sym, str, mem) \
++	DEFINE(sym, __builtin_offsetof(struct str, mem))
 +
-+	free(tdx_cap);
-+}
-+
- void tdx_init_vm(struct kvm_vm *vm, u64 attributes)
- {
- 	struct kvm_tdx_init_vm *init_vm;
-@@ -129,6 +141,8 @@ void tdx_init_vm(struct kvm_vm *vm, u64 attributes)
- 	memcpy(&init_vm->cpuid, cpuid, kvm_cpuid2_size(cpuid->nent));
- 	free(cpuid);
- 
-+	tdx_check_attributes(vm, attributes);
-+
- 	init_vm->attributes = attributes;
- 
- 	tdx_vm_ioctl(vm, KVM_TDX_INIT_VM, 0, init_vm);
++#endif /* __TOOLS_LINUX_KBUILD_H */
 
 -- 
 2.54.0.746.g67dd491aae-goog
