@@ -1,72 +1,72 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34C3287268
-	for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 00:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1968E36A01A
+	for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 04:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779325146; cv=none; b=pXgmcQlWtLkX0Sguijp2MZsCknh2wLIHLk3o4WFRXN4xI6EPFoDp5NB3WclaT9DN7aCYHCMLNysC2LBooBL+27j60Hmo9VVgDKbGFHoS3R3P9G31rkfjiHUDNMyFU+MBXYQQTXaChy0WmTGQ6qOXfZgd1/2zwSJV5G3Aj3hXL4k=
+	t=1779338358; cv=none; b=GNUFB+h4TqrQ6lNbu/fOLN6pz5Rt9Gjfav8jmnyJLIpfhUPl/mqICvK6tF/hgq15CyNTWKf0wsBz8XwfZzJDz87BjiRZko4unXiEAcSFcbcryU23FOBiYcvp5jgKtA/cAUoH1D7jdrlthsS7CDV5h5LXWl9cG86Er/CKX7LO+2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779325146; c=relaxed/simple;
-	bh=jQVcEz6If3VJhslkkkaqlcEh1bxAzmMcOa3WQaKRwPI=;
+	s=arc-20240116; t=1779338358; c=relaxed/simple;
+	bh=5srjwpp6Hk4LiRfO82SCH0YRXb4BGZ0/SJ9tNjbbhOQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YM2cFMl3HYQR/drWCP1swK/w3gpCsEOst+KbDGz0nKEdlo7Egsu8BVYWMsnSJTS0qZiOv3KzAcabEpP6eT65FyVruA+FxAdFwLeFCJcqGViLTPA7ZkpiLwscvZQT8CnTcuf39ywtmuEazcxn5MLQmgYKYh4cDyiXdpnJq+0lPXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H36VDI6s; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=JyTdcB4pquct5mQ9SlDKsURmbvOnLCZWJ8APKqMrcJw2a3TgBkwdbNL05k3Nw1i9IxBL1912RMa242Vlyi8rAhRMdjDNKRgorYk6yZvNnhzI/hapvKZruObjXADDBAJCm6M8WThdNUPgtYOmHHj9WDg8KNvMMtsqS/CCK727hZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z+c0nDI/; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H36VDI6s"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z+c0nDI/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779325144;
+	s=mimecast20190719; t=1779338354;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=esITWrykl3jmF+42dffE0BRU5vQF9ekvEW6cQfDO2lo=;
-	b=H36VDI6s30dcKAamzKdEj/hDep40IXBOJfXNBgaw36e/0nlFRmO+2MIsJfdEUrpgn/jIkk
-	rRJSlRXeGA08giWg3v5N4aGmyMCUtLtdhsdtfleCqTTyEN1vTYyPMIdqAdalhnk+aLOKu5
-	VZfQ31XXuILwhYiw2/DrP3sUCyhTNHE=
+	bh=ggCKS8QEvnLR4SsIv3hBNn6nRmerd7pd3z3ZeYISTIg=;
+	b=Z+c0nDI//LowMwh2QMZH31ji/wiCNookSqywTG9gL8ILFitwntEyqhV+XVEe2jyvcl9Kni
+	eHgMQcgQsO3YhESWnYhekrgwMUI485j+R1o6O++puWRDg77M4oyEGqXMvNnmmoTtETnPkt
+	DcCJsDbqF8a6AHou7XeySd4qALvOEnA=
 Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
  [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-434-mu3ConQvNBOh497DOMbPtw-1; Wed, 20 May 2026 20:59:01 -0400
-X-MC-Unique: mu3ConQvNBOh497DOMbPtw-1
-X-Mimecast-MFC-AGG-ID: mu3ConQvNBOh497DOMbPtw_1779325140
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c823549b1fcso9555843a12.0
-        for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 17:59:01 -0700 (PDT)
+ us-mta-608-0skjvf3yNLeux-zaZu1o7g-1; Thu, 21 May 2026 00:39:12 -0400
+X-MC-Unique: 0skjvf3yNLeux-zaZu1o7g-1
+X-Mimecast-MFC-AGG-ID: 0skjvf3yNLeux-zaZu1o7g_1779338352
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c82c935e048so4007886a12.0
+        for <linux-coco@lists.linux.dev>; Wed, 20 May 2026 21:39:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779325140; x=1779929940;
+        d=1e100.net; s=20251104; t=1779338351; x=1779943151;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=esITWrykl3jmF+42dffE0BRU5vQF9ekvEW6cQfDO2lo=;
-        b=YeU7AR9+IvY19Vaary2+yGb03iB9b0JuXXftecCGlHLVUsx1OruEFbKWpM76sfepaJ
-         PcC/QEg9YQOOOW1bX1JmhEShbg6CDh8uh6k8P5rOLDNCfkt3W0lZPsooBKo2Ela6uC3D
-         PgDTcGmBAaQkNb8IQpbp7XfbneKESgkOJ8SLKtEpkEEmeZg14R+XDOkxV2Ic4jOkIdWQ
-         2ef68+VvWSfElDxA2J6v/hazcUGxwwE0NPdUP4pUGbZqWc73xbsa4HDHxvwY4aa+Eim+
-         cU0359CAZxIgSUW+YB+Kqf+q999E6dyDIo0a2qsD4ZUH3VsSFF5ZOq8FAbp68ewM8dyY
-         LjDQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8spTFCBmgLt0SDvDdLBZTO9cf+0l/QrYXg8E4s8dbQvCBYIj6fiNVNPS38wr9xcIqJhV1w1Sq/JaqX@lists.linux.dev
-X-Gm-Message-State: AOJu0YxngAjuyerUBOKO3kPseMpvflb6kPvTxfwr0SugGXYAMCei5m2a
-	33lDEhZuuxAOZtNlHoKsqUv8l8Sn0FVwK9lb5pfcrQofSTXqWflSWRxVtvCwmM+CVblnJO36ebT
-	ors+ISLv/aYPDJ+D+EtrxdX5uwV8cy4j/sZjgaTVyxbN+SqgruzBxiOShY5wzx7o=
-X-Gm-Gg: Acq92OH3hPP4E9bBHdqryCabMHoEEtHbKxmPQWbc1qNABZjRoq6hV8+ZsWW/SqUkMJU
-	XnMhZfz/19ZG0YnK/sRVo/BnyXmay/swA1aurjLYRvMBivPJtQ4/iDNeZu27Pc/7RAoqo7ixZvl
-	RGTUra6YVubi7dfEpwTRQ6IhdZOsYhLmLu0FkfgHM16zrAurTG5wX1dEremCy8F/OQOO7DuU44N
-	sj8sQoQZ7hRW2HF3Vps9jVtiwQkrMTZlMJF28WvUHHcbrlY7Qvm3aeQX3iil1wlUpWg/8MKC3r+
-	b3Y8mSuPoeYU6ENwR4ZXJEOqRsmumNRDo28rvfn+ETD4hF4+EjBJy3Rr+U7BbL8TKDAHCFU2ngA
-	GSoT2QmJ9vHbs4pmugQRP4fr9UaQnG6L7kAY47lF2oAryN1MtY8xPmj/IFoW0BF8f
-X-Received: by 2002:a05:6a20:2446:b0:3b2:846d:f388 with SMTP id adf61e73a8af0-3b308856ee0mr683744637.45.1779325140365;
-        Wed, 20 May 2026 17:59:00 -0700 (PDT)
-X-Received: by 2002:a05:6a20:2446:b0:3b2:846d:f388 with SMTP id adf61e73a8af0-3b308856ee0mr683702637.45.1779325139846;
-        Wed, 20 May 2026 17:58:59 -0700 (PDT)
+        bh=ggCKS8QEvnLR4SsIv3hBNn6nRmerd7pd3z3ZeYISTIg=;
+        b=ZuyO+TfXKBjLPVxepD/b7VNbvkCJlee1OR105VAcT3TK5uJgIdNm6M3o4pMPjAzioE
+         5X2aaAnG9fQcbtud7DWN4OGevvGS3msZGDGTO4Zmj/mXhBQwaDDi1O4L9yq/7vecNsy8
+         O/ZicKCS2X/wWv+jp8pgaKj3Timuv+AT+jAeYkEz7nFrEAPGI+ZJt7WvcbRfe+jb4vvN
+         diWrdafUIlrnOuTOeJA37myvQN91j+dOtBU4ZSd5TCFyL+9fzdqRy/QAl+YGPgXjWald
+         kShbPJ4B29Sg8EjRk5AFtcq6wXinInJCcZvNjVGp6Ou1SZPDdQLeGdo2klwSRSyP0MGC
+         hgwg==
+X-Forwarded-Encrypted: i=1; AFNElJ+7xt5HBA+dJqJe/EJsj+jmEFuJtJZStoYILXA71H3lTl/aTweguOWKJyp7hv0DWV8Shie7xIgkzw65@lists.linux.dev
+X-Gm-Message-State: AOJu0YwLW5nP1Ge+NtoAAgj5PXWFUmeKv/dtAgQDLn16QpBnLmueQfJM
+	2QNH9CBdkXbAnceohgUH26IjOObAoVaAE0KRfrL9e1z0ZfZxHizXmnt3LZxm8Marj6lP1E4Ah8s
+	hZPdnp5I7Jvo+5LIJ1OykRMY0rpuxMQ/7T7v711lHoLeGUcxck/wmCZpBjzmJwt8=
+X-Gm-Gg: Acq92OG6/LUGchnFfRh7bzq0evtiRFR+/Ey0QUlKcxOKRAexTdSMbo/L1AQrxyMwPkN
+	EAJ1RkEY3uyyM038Bv/QpLvz53KJ33o1Rn0g5YI67GjyaAjUvVmARN5TpTtGLVkEf2butmJk/yE
+	y9ykCjjmXyAC34cidlR5nq77bg8Al2ZWshUdtEWqGkJMHSDvnuemhaiNYp7AwpBQKpPAEwkzAX3
+	WG0jmPapsf3WbqqpBFOZfMQHCU+eTF287MW475vxFr/kNxwG0fsokwHaobKTK0sz1CgabQKlbg3
+	mGFY/l/yQwFEXZYOTjzARLQLx9ID1AqrxpsMdfZGFTPgdyiQvd1KImRA6Pw/mkHh+PxDcIEeuJx
+	Nr2RWx4uc+jVH2LL2AWn7J95pHt2TlJsnTGkd5wzymZImjRLdp69zYaD3j8qRrSYr
+X-Received: by 2002:a05:6a20:4305:b0:3a3:171f:6afb with SMTP id adf61e73a8af0-3b307bdf25amr1353963637.4.1779338351420;
+        Wed, 20 May 2026 21:39:11 -0700 (PDT)
+X-Received: by 2002:a05:6a20:4305:b0:3a3:171f:6afb with SMTP id adf61e73a8af0-3b307bdf25amr1353913637.4.1779338350895;
+        Wed, 20 May 2026 21:39:10 -0700 (PDT)
 Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82bb121ccasm20453467a12.29.2026.05.20.17.58.50
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82c4031662sm20535429a12.16.2026.05.20.21.39.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2026 17:58:59 -0700 (PDT)
-Message-ID: <2ad282da-88fd-49ab-8145-964ff298ca83@redhat.com>
-Date: Thu, 21 May 2026 10:58:48 +1000
+        Wed, 20 May 2026 21:39:10 -0700 (PDT)
+Message-ID: <872ce762-0a83-42a4-bbe8-b21ea6f4e1cf@redhat.com>
+Date: Thu, 21 May 2026 14:38:59 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -74,8 +74,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 08/44] arm64: RMI: Ensure that the RMM has GPT entries
- for memory
+Subject: Re: [PATCH v14 10/44] arm64: RMI: Add support for SRO
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
@@ -93,11 +92,11 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
  <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
 References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-9-steven.price@arm.com>
+ <20260513131757.116630-11-steven.price@arm.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20260513131757.116630-9-steven.price@arm.com>
+In-Reply-To: <20260513131757.116630-11-steven.price@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: YCFMQGdmBuxG5Q0Z0cslkut3s43zQjCTeTgAqUQg9XE_1779325140
+X-Mimecast-MFC-PROC-ID: QS_mBDPKlx7G4UNuTgnq6PjLmIZOMDnNIrhSFkMSylk_1779338352
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
@@ -106,186 +105,430 @@ Content-Transfer-Encoding: 7bit
 Hi Steven,
 
 On 5/13/26 11:17 PM, Steven Price wrote:
-> The RMM maintains the state of all the granules in the system to make
-> sure that the host is abiding by the rules. This state can be maintained
-> at different granularity, per page (TRACKING_FINE) or per region
-> (TRACKING_COARSE). The region size depends on the underlying
-> "RMI_GRANULE_SIZE". For a "coarse" region all pages in the region must
-> be of the same state, this implies we need to have "fine" tracking for
-> DRAM, so that we can delegated individual pages.
+> RMM v2.0 introduces the concept of "Stateful RMI Operations" (SRO). This
+> means that an SMC can return with an operation still in progress. The
+> host is excepted to continue the operation until is reaches a conclusion
+> (either success or failure). During this process the RMM can request
+> additional memory ('donate') or hand memory back to the host
+> ('reclaim'). The host can request an in progress operation is cancelled,
+> but still continue the operation until it has completed (otherwise the
+> incomplete operation may cause future RMM operations to fail).
 > 
-> For now we only support a statically carved out memory for tracking
-> granules for the "fine" regions. This can be extended in the future to
-> allow modifying the tracking granularity and remove the need for a
-> static allocation.
-> 
-> Similarly, the firmware may create L0 GPT entries describing the total
-> address space. But if we change the "PAS" (Physical Address Space) of a
-> granule then the firmware may need to create L1 tables to track the PAS
-> at a finer granularity.
-> 
-> Note: support is currently missing for SROs which means that if the RMM
-> needs memory donating this will fail (and render CCA unusable in Linux).
-> This effectively means that the L1 GPT tables must be created before
-> Linux starts.
+> The SRO is tracked using a struct rmi_sro_state object which keeps track
+> of any memory which has been allocated but not yet consumed by the RMM
+> or reclaimed from the RMM. This allows the memory to be reused in a
+> future request within the same operation. It will also permit an
+> operation to be done in a context where memory allocation may be
+> difficult (e.g. atomic context) with the option to abort the operation
+> and retry the memory allocation outside of the atomic context. The
+> memory stored in the struct rmi_sro_state object can then be reused on
+> the subsequent attempt.
 > 
 > Signed-off-by: Steven Price <steven.price@arm.com>
 > ---
-> Changes since v13:
->   * Moved out of KVM
+> v14:
+>   * SRO support has improved although is still not fully complete. The
+>     infrastructure has been moved out of KVM.
 > ---
->   arch/arm64/include/asm/rmi_cmds.h |   2 +
->   arch/arm64/kernel/rmi.c           | 103 ++++++++++++++++++++++++++++++
->   2 files changed, 105 insertions(+)
+>   arch/arm64/include/asm/rmi_cmds.h |   1 +
+>   arch/arm64/kernel/rmi.c           | 359 ++++++++++++++++++++++++++++++
+>   2 files changed, 360 insertions(+)
 > 
 > diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/asm/rmi_cmds.h
-> index 9179934925c5..9078a2920a7c 100644
+> index eb213c8e6f26..1a7b0c8f1e38 100644
 > --- a/arch/arm64/include/asm/rmi_cmds.h
 > +++ b/arch/arm64/include/asm/rmi_cmds.h
-> @@ -33,6 +33,8 @@ struct rmi_sro_state {
->   } while (RMI_RETURN_STATUS(res.a0) == RMI_BUSY ||			\
->   	 RMI_RETURN_STATUS(res.a0) == RMI_BLOCKED)
+> @@ -35,6 +35,7 @@ struct rmi_sro_state {
 >   
-> +bool rmi_is_available(void);
-> +
->   unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t gfp);
->   void rmi_sro_free(struct rmi_sro_state *sro);
+>   int rmi_delegate_range(phys_addr_t phys, unsigned long size);
+>   int rmi_undelegate_range(phys_addr_t phys, unsigned long size);
+> +int free_delegated_page(phys_addr_t phys);
 >   
+>   static inline int rmi_delegate_page(phys_addr_t phys)
+>   {
 > diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
-> index a14ead5dedda..52a415e99500 100644
+> index 08cef54acadb..a8107ca9bb6d 100644
 > --- a/arch/arm64/kernel/rmi.c
 > +++ b/arch/arm64/kernel/rmi.c
-> @@ -7,6 +7,8 @@
->   
->   #include <asm/rmi_cmds.h>
->   
-> +static bool arm64_rmi_is_available;
-> +
->   unsigned long rmm_feat_reg0;
->   unsigned long rmm_feat_reg1;
->   
-> @@ -88,6 +90,102 @@ static int rmi_configure(void)
->   	return 0;
+> @@ -48,6 +48,365 @@ int rmi_undelegate_range(phys_addr_t phys, unsigned long size)
+>   	return ret;
 >   }
 >   
-> +/*
-> + * For now we set the tracking_region_size to 0 for RMI_RMM_CONFIG_SET().
-> + * TODO: Support other tracking sizes (via Kconfig option).
-> + */
-> +#ifdef CONFIG_PAGE_SIZE_4KB
-> +#define RMM_GRANULE_TRACKING_SIZE	SZ_1G
-> +#elif defined(CONFIG_PAGE_SIZE_16KB)
-> +#define RMM_GRANULE_TRACKING_SIZE	SZ_32M
-> +#elif defined(CONFIG_PAGE_SIZE_64KB)
-> +#define RMM_GRANULE_TRACKING_SIZE	SZ_512M
-> +#endif
-> +
-
-RMM_GRANULE_TRACKING_SIZE is never used in this series.
-
-> +/*
-> + * Make sure the area is tracked by RMM at FINE granularity.
-> + * We do not support changing the tracking yet.
-> + */
-> +static int rmi_verify_memory_tracking(phys_addr_t start, phys_addr_t end)
+> +static unsigned long donate_req_to_size(unsigned long donatereq)
 > +{
-> +	while (start < end) {
-> +		unsigned long ret, category, state, next;
+> +	unsigned long unit_size = RMI_DONATE_SIZE(donatereq);
 > +
-> +		ret = rmi_granule_tracking_get(start, end, &category, &state, &next);
-> +		if (ret != RMI_SUCCESS ||
-> +		    state != RMI_TRACKING_FINE ||
-> +		    category != RMI_MEM_CATEGORY_CONVENTIONAL) {
-> +			/* TODO: Set granule tracking in this case */
-> +			pr_err("Granule tracking for region isn't fine/conventional: %llx",
-> +			       start);
-> +			return -ENODEV;
+> +	switch (unit_size) {
+> +	case 0:
+> +		return PAGE_SIZE;
+> +	case 1:
+> +		return PMD_SIZE;
+> +	case 2:
+> +		return PUD_SIZE;
+> +	case 3:
+> +		return P4D_SIZE;
+> +	}
+> +	unreachable();
+> +}
+> +
+
+It's worthy to have 'inline'. {P4D, PUD, PMD}_SIZE can be equal if there are
+no P4D and PUD, depending on CONFIG_PGTABLE_LEVELS. In this case, can the
+'unit_size' be translated to wrong value?
+
+> +static void rmi_smccc_invoke(struct arm_smccc_1_2_regs *regs_in,
+> +			     struct arm_smccc_1_2_regs *regs_out)
+> +{
+> +	struct arm_smccc_1_2_regs regs = *regs_in;
+> +	unsigned long status;
+> +
+> +	do {
+> +		arm_smccc_1_2_invoke(&regs, regs_out);
+> +		status = RMI_RETURN_STATUS(regs_out->a0);
+> +	} while (status == RMI_BUSY || status == RMI_BLOCKED);
+> +}
+> +
+> +int free_delegated_page(phys_addr_t phys)
+> +{
+> +	if (WARN_ON(rmi_undelegate_page(phys))) {
+> +		/* Undelegate failed: leak the page */
+> +		return -EBUSY;
+> +	}
+> +
+> +	free_page((unsigned long)phys_to_virt(phys));
+> +
+> +	return 0;
+> +}
+> +
+> +static int rmi_sro_ensure_capacity(struct rmi_sro_state *sro,
+> +				   unsigned long count)
+> +{
+> +	if (WARN_ON_ONCE(sro->addr_count > RMI_MAX_ADDR_LIST))
+> +		return -EOVERFLOW;
+> +
+> +	if (count > RMI_MAX_ADDR_LIST - sro->addr_count)
+> +		return -ENOSPC;
+> +
+> +	return 0;
+> +}
+> +
+> +static int rmi_sro_donate_contig(struct rmi_sro_state *sro,
+> +				 unsigned long sro_handle,
+> +				 unsigned long donatereq,
+> +				 struct arm_smccc_1_2_regs *out_regs,
+> +				 gfp_t gfp)
+> +{
+> +	unsigned long unit_size = RMI_DONATE_SIZE(donatereq);
+> +	unsigned long unit_size_bytes = donate_req_to_size(donatereq);
+> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+> +	unsigned long size = unit_size_bytes * count;
+> +	unsigned long addr_range;
+> +	int ret;
+> +	void *virt;
+> +	phys_addr_t phys;
+> +	struct arm_smccc_1_2_regs regs = {
+> +		SMC_RMI_OP_MEM_DONATE,
+> +		sro_handle
+> +	};
+> +
+> +	for (int i = 0; i < sro->addr_count; i++) {
+> +		unsigned long entry = sro->addr_list[i];
+> +
+> +		if (RMI_ADDR_RANGE_SIZE(entry) == unit_size &&
+> +		    RMI_ADDR_RANGE_COUNT(entry) == count &&
+> +		    RMI_ADDR_RANGE_STATE(entry) == state) {
+> +			sro->addr_count--;
+> +			swap(sro->addr_list[sro->addr_count],
+> +			     sro->addr_list[i]);
+> +
+> +			goto out;
 > +		}
-> +		start = next;
+> +	}
+> +
+> +	ret = rmi_sro_ensure_capacity(sro, 1);
+> +	if (ret)
+> +		return ret;
+> +
+> +	virt = alloc_pages_exact(size, gfp);
+> +	if (!virt)
+> +		return -ENOMEM;
+> +	phys = virt_to_phys(virt);
+> +
+
+alloc_pages_exact() will fail if the requested size exceeds the maximal allowed
+size (1 << MAX_PAGE_ORDER). The maximal size is usually smaller than PUD_SIZE
+but PUD_SIZE is allowed by the RMM.
+
+> +	if (state == RMI_OP_MEM_DELEGATED) {
+> +		if (rmi_delegate_range(phys, size)) {
+> +			free_pages_exact(virt, size);
+> +			return -ENXIO;
+> +		}
+> +	}
+> +
+> +	addr_range = phys & RMI_ADDR_RANGE_ADDR_MASK;
+> +	FIELD_MODIFY(RMI_ADDR_RANGE_SIZE_MASK, &addr_range, unit_size);
+> +	FIELD_MODIFY(RMI_ADDR_RANGE_COUNT_MASK, &addr_range, count);
+> +	FIELD_MODIFY(RMI_ADDR_RANGE_STATE_MASK, &addr_range, state);
+> +
+> +	sro->addr_list[sro->addr_count] = addr_range;
+> +
+> +out:
+> +	regs.a2 = virt_to_phys(&sro->addr_list[sro->addr_count]);
+> +	regs.a3 = 1;
+> +	rmi_smccc_invoke(&regs, out_regs);
+> +
+> +	unsigned long donated_granules = out_regs->a1;
+> +	unsigned long donated_size = donated_granules << PAGE_SHIFT;
+> +
+> +	if (donated_granules == 0) {
+> +		/* No pages used by the RMM */
+> +		sro->addr_count++;
+> +	} else if (donated_size < size) {
+> +		phys = sro->addr_list[sro->addr_count] & RMI_ADDR_RANGE_ADDR_MASK;
+> +
+> +		/* Not all granules used by the RMM, free the remaining pages */
+> +		for (long i = donated_size; i < size; i += PAGE_SIZE) {
+> +			if (state == RMI_OP_MEM_DELEGATED)
+> +				free_delegated_page(phys + i);
+> +			else
+> +				__free_page(phys_to_page(phys + i));
+> +		}
 > +	}
 > +
 > +	return 0;
 > +}
 > +
-> +static unsigned long rmi_l0gpt_size(void)
+> +static int rmi_sro_donate_noncontig(struct rmi_sro_state *sro,
+> +				    unsigned long sro_handle,
+> +				    unsigned long donatereq,
+> +				    struct arm_smccc_1_2_regs *out_regs,
+> +				    gfp_t gfp)
 > +{
-> +	return 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
-> +				      rmm_feat_reg1));
-> +}
+> +	unsigned long unit_size = RMI_DONATE_SIZE(donatereq);
+> +	unsigned long unit_size_bytes = donate_req_to_size(donatereq);
+> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+> +	unsigned long found = 0;
+> +	unsigned long addr_list_start = sro->addr_count;
+> +	int ret;
+> +	struct arm_smccc_1_2_regs regs = {
+> +		SMC_RMI_OP_MEM_DONATE,
+> +		sro_handle
+> +	};
 > +
-
-rmi_l0gpt_size() is only used by rmi_create_gpts(), its logic can be
-combined to that function.
-
-> +static int rmi_create_gpts(phys_addr_t start, phys_addr_t end)
-> +{
-> +	unsigned long l0gpt_sz = rmi_l0gpt_size();
+> +	for (int i = 0; i < addr_list_start && found < count; i++) {
+> +		unsigned long entry = sro->addr_list[i];
 > +
-> +	start = ALIGN_DOWN(start, l0gpt_sz);
-> +	end = ALIGN(end, l0gpt_sz);
+> +		if (RMI_ADDR_RANGE_SIZE(entry) == unit_size &&
+> +		    RMI_ADDR_RANGE_COUNT(entry) == 1 &&
+> +		    RMI_ADDR_RANGE_STATE(entry) == state) {
+> +			addr_list_start--;
+> +			swap(sro->addr_list[addr_list_start],
+> +			     sro->addr_list[i]);
+> +			found++;
+> +			i--;
+> +		}
+> +	}
 > +
-> +	while (start < end) {
-> +		int ret = rmi_gpt_l1_create(start);
+> +	ret = rmi_sro_ensure_capacity(sro, count - found);
+> +	if (ret)
+> +		return ret;
 > +
-> +		/*
-> +		 * Make sure the L1 GPT tables are created for the region.
-> +		 * RMI_ERROR_GPT indicates the L1 table already exists.
-> +		 */
-> +		if (ret && ret != RMI_ERROR_GPT) {
-> +			/*
-> +			 * FIXME: Handle SRO so that memory can be donated for
-> +			 * the tables.
-> +			 */
-> +			pr_err("GPT Level1 table missing for %llx\n", start);
+> +	while (found < count) {
+> +		unsigned long addr_range;
+> +		void *virt = alloc_pages_exact(unit_size_bytes, gfp);
+> +		phys_addr_t phys;
+> +
+> +		if (!virt)
 > +			return -ENOMEM;
+> +
+> +		phys = virt_to_phys(virt);
+> +
+> +		if (state == RMI_OP_MEM_DELEGATED) {
+> +			if (rmi_delegate_range(phys, unit_size_bytes)) {
+> +				free_pages_exact(virt, unit_size_bytes);
+> +				return -ENXIO;
+> +			}
 > +		}
-> +		start += l0gpt_sz;
+> +
+> +		addr_range = phys & RMI_ADDR_RANGE_ADDR_MASK;
+> +		FIELD_MODIFY(RMI_ADDR_RANGE_SIZE_MASK, &addr_range, unit_size);
+> +		FIELD_MODIFY(RMI_ADDR_RANGE_COUNT_MASK, &addr_range, 1);
+> +		FIELD_MODIFY(RMI_ADDR_RANGE_STATE_MASK, &addr_range, state);
+> +
+> +		sro->addr_list[sro->addr_count++] = addr_range;
+> +		found++;
 > +	}
+> +
+> +	regs.a2 = virt_to_phys(&sro->addr_list[addr_list_start]);
+> +	regs.a3 = found;
+> +	rmi_smccc_invoke(&regs, out_regs);
+> +
+> +	unsigned long donated_granules = out_regs->a1;
+> +
+> +	if (WARN_ON(donated_granules & ((unit_size_bytes >> PAGE_SHIFT) - 1))) {
+> +		/*
+> +		 * FIXME: RMM has only consumed part of a huge page, this leaks
+> +		 * the rest of the huge page
+> +		 */
+> +		donated_granules = ALIGN(donated_granules,
+> +					 (unit_size_bytes >> PAGE_SHIFT));
+> +	}
+> +	unsigned long donated_blocks = donated_granules / (unit_size_bytes >> PAGE_SHIFT);
+> +
+> +	if (WARN_ON(donated_blocks > found))
+> +		donated_blocks = found;
+> +
+> +	unsigned long undonated_blocks = found - donated_blocks;
+> +
+> +	while (donated_blocks && undonated_blocks) {
+> +		sro->addr_count--;
+> +		swap(sro->addr_list[addr_list_start],
+> +		     sro->addr_list[sro->addr_count]);
+> +		addr_list_start++;
+> +
+> +		donated_blocks--;
+> +		undonated_blocks--;
+> +	}
+> +	sro->addr_count -= donated_blocks;
 > +
 > +	return 0;
 > +}
 > +
-> +static int rmi_init_metadata(void)
+> +static int rmi_sro_donate(struct rmi_sro_state *sro,
+> +			  unsigned long sro_handle,
+> +			  unsigned long donatereq,
+> +			  struct arm_smccc_1_2_regs *regs,
+> +			  gfp_t gfp)
 > +{
-> +	phys_addr_t start, end;
-> +	const struct memblock_region *r;
+> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
 > +
-> +	for_each_mem_region(r) {
-> +		int ret;
-> +
-> +		start = memblock_region_memory_base_pfn(r) << PAGE_SHIFT;
-> +		end = memblock_region_memory_end_pfn(r) << PAGE_SHIFT;
-> +		ret = rmi_verify_memory_tracking(start, end);
-> +		if (ret)
-> +			return ret;
-> +		ret = rmi_create_gpts(start, end);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +bool rmi_is_available(void)
-> +{
-> +	return arm64_rmi_is_available;
-> +}
-> +
->   static int __init arm64_init_rmi(void)
->   {
->   	/* Continue without realm support if we can't agree on a version */
-> @@ -101,6 +199,11 @@ static int __init arm64_init_rmi(void)
->   
->   	if (rmi_configure())
->   		return 0;
-> +	if (rmi_init_metadata())
+> +	if (WARN_ON(!count))
 > +		return 0;
 > +
-> +	arm64_rmi_is_available = true;
-> +	pr_info("RMI configured");
->   
->   	return 0;
->   }
+> +	if (RMI_DONATE_CONTIG(donatereq)) {
+> +		return rmi_sro_donate_contig(sro, sro_handle, donatereq,
+> +					     regs, gfp);
+> +	} else {
+> +		return rmi_sro_donate_noncontig(sro, sro_handle, donatereq,
+> +						regs, gfp);
+> +	}
+> +}
+> +
+> +static int rmi_sro_reclaim(struct rmi_sro_state *sro,
+> +			   unsigned long sro_handle,
+> +			   struct arm_smccc_1_2_regs *out_regs)
+> +{
+> +	unsigned long capacity;
+> +	struct arm_smccc_1_2_regs regs;
+> +	int ret;
+> +
+> +	ret = rmi_sro_ensure_capacity(sro, 1);
+> +	if (ret)
+> +		rmi_sro_free(sro);
+> +
+> +	capacity = RMI_MAX_ADDR_LIST - sro->addr_count;
+> +
+> +	regs = (struct arm_smccc_1_2_regs){
+> +		SMC_RMI_OP_MEM_RECLAIM,
+> +		sro_handle,
+> +		virt_to_phys(&sro->addr_list[sro->addr_count]),
+> +		capacity
+> +	};
+> +	rmi_smccc_invoke(&regs, out_regs);
+> +
+> +	if (WARN_ON_ONCE(out_regs->a1 > capacity))
+> +		out_regs->a1 = capacity;
+> +
+> +	sro->addr_count += out_regs->a1;
+> +
+> +	return 0;
+> +}
+> +
+> +void rmi_sro_free(struct rmi_sro_state *sro)
+> +{
+> +	for (int i = 0; i < sro->addr_count; i++) {
+> +		unsigned long entry = sro->addr_list[i];
+> +		unsigned long addr = RMI_ADDR_RANGE_ADDR(entry);
+> +		unsigned long unit_size = RMI_ADDR_RANGE_SIZE(entry);
+> +		unsigned long count = RMI_ADDR_RANGE_COUNT(entry);
+> +		unsigned long state = RMI_ADDR_RANGE_STATE(entry);
+> +		unsigned long size = donate_req_to_size(unit_size) * count;
+> +
+> +		if (state == RMI_OP_MEM_DELEGATED) {
+> +			if (WARN_ON(rmi_undelegate_range(addr, size))) {
+> +				/* Leak the pages */
+> +				continue;
+> +			}
+> +		}
+> +		free_pages_exact(phys_to_virt(addr), size);
+> +	}
+> +
+> +	sro->addr_count = 0;
+> +}
+> +
+> +unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t gfp)
+> +{
+> +	unsigned long sro_handle;
+> +	struct arm_smccc_1_2_regs regs;
+> +	struct arm_smccc_1_2_regs *regs_in = &sro->regs;
+> +
+> +	rmi_smccc_invoke(regs_in, &regs);
+> +
+> +	sro_handle = regs.a1;
+> +
+> +	while (RMI_RETURN_STATUS(regs.a0) == RMI_INCOMPLETE) {
+> +		bool can_cancel = RMI_RETURN_CAN_CANCEL(regs.a0);
+> +		int ret;
+> +
+> +		switch (RMI_RETURN_MEMREQ(regs.a0)) {
+> +		case RMI_OP_MEM_REQ_NONE:
+> +			regs = (struct arm_smccc_1_2_regs){
+> +				SMC_RMI_OP_CONTINUE, sro_handle, 0
+> +			};
+> +			rmi_smccc_invoke(&regs, &regs);
+> +			break;
+
+'ret' isn't initialized for case RMI_OP_MEM_REQ_NONE.
+
+> +		case RMI_OP_MEM_REQ_DONATE:
+> +			ret = rmi_sro_donate(sro, sro_handle, regs.a2, &regs,
+> +					     gfp);
+> +			break;
+> +		case RMI_OP_MEM_REQ_RECLAIM:
+> +			ret = rmi_sro_reclaim(sro, sro_handle, &regs);
+> +			break;
+> +		default:
+> +			ret = WARN_ON(1);
+> +			break;
+> +		}
+> +
+> +		if (ret) {
+> +			if (can_cancel) {
+> +				/*
+> +				 * FIXME: Handle cancelling properly!
+> +				 *
+> +				 * If the operation has failed due to memory
+> +				 * allocation failure then the information on
+> +				 * the memory allocation should be saved, so
+> +				 * that the allocation can be repeated outside
+> +				 * of any context which prevented the
+> +				 * allocation.
+> +				 */
+> +			}
+> +			if (WARN_ON(ret))
+> +				return ret;
+> +		}
+> +	}
+> +
+> +	return regs.a0;
+> +}
+> +
+>   static int rmi_check_version(void)
+>   {
+>   	struct arm_smccc_res res;
 
 Thanks,
 Gavin
