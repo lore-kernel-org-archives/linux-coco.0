@@ -1,194 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC3C3BAD95;
-	Fri, 22 May 2026 09:59:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D94535675E
+	for <linux-coco@lists.linux.dev>; Fri, 22 May 2026 13:09:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779443953; cv=none; b=YSVLO2O7fYke0xKNUMeUOGkuAnLNxTk6eYx0B/RPhy/5kizhM9xOKbdhPfh461oc4GZIp5sTkZyBTyZ68awscoOu3RIi7zKTmCR19RNBUSN1bwiRIkFGNVu+cwRrVvUCF05Fry09YSN4quKMJrOiQOQU8RBmNYb8E1y0QBbSPyw=
+	t=1779455341; cv=none; b=rrFO++ijH7L11xz4yws9+riku/E7PXYmS4u8llKyMrXH8GXd7WoWr2vynhtNSXejHxH6mkNMbLYvSvWT2w4MThsSEKAC8O8oF0suRoigZbPba95NUkUtzyYBi6pDf2Tr2cHt5dW2CX6xWRvHpDf7W+BPgz6aXa1x0mEgKpgFDCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779443953; c=relaxed/simple;
-	bh=yEYtEb4SmbesXXVSdXZGvvGFoQd7/PfTyCL1JseMGJc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fl7OMjB3BmZaaDf1kpZnsh5Pe4DLnxkYDtY2HEGkoZ/8U4+FHpw64NphdlgrKwL3sYs9AL2Z1DuK79BKeb7JHPjcnLBR8SLrFJv+oAwn6/fw/VIjcRbMueFLNEX4TQIJ39qn6LaGbFO1a4X058gIEwkH8RiMjTcBvr5r+4rDS1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a+0BoIAN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779455341; c=relaxed/simple;
+	bh=Nnkh6cEEv9vtxmnrirlQm5frPTNIjN27Iy7obA4FAzA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=j8J8U9C5k74kwVk6bcHVmcJqB04F5WFvRqdzD933SXrLFe+2suBnqdbITzuQTlz7Izaw4mHvNq/MkMCZ+N/Qwy5jgnLOV8POQqavCw2UC7ioFo9TkXj3VXLU6kJ+uLppGvPaAQZj4dbiQ/kqY2gGNw8OxpPoX7wTeFPM8ENdEHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UAsbpnqM; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a+0BoIAN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2461F000E9;
-	Fri, 22 May 2026 09:59:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779443952;
-	bh=Lq6FzCC4KbteJ9kgvftpe86/zGobK0A72wn8P5God9Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=a+0BoIANfJoxAw5Ex6FiTjmcoAyM5OY+Tqu9spimOb+fiTeVzrfzisFmmBAZrQtBM
-	 a/xhzqo9ESOwirQxYbtIDkeGwoPZaYpSJUBDxGAGKZsC2P3wjyrTSkixc84M7AZEiG
-	 nki8LKsCzZ6iqZV4YBdzmDUH3Z3xZ9lbgv3oSCCpVjAviivm0PoYVKlAEcbCBQD/dg
-	 iYMzqyMLs1JCGdKrphV+SznVU9vSgN0d48e0fAFJJ0WdRo/3czCG5YMoFNgkD6qG5L
-	 bo3emt0Knfj1G+S7e57RVNZtzzWxj2tQXZ7uveEvtlP8DiJ1Tf1R0Ymht+2luf9RsL
-	 650k9hqWWXEBQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wQMer-00000005AhL-2LWF;
-	Fri, 22 May 2026 09:59:10 +0000
-Date: Fri, 22 May 2026 11:02:20 +0100
-Message-ID: <87ik8fahjn.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Steven Price <steven.price@arm.com>,
-	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo.Pieralisi2@arm.com
-Subject: Re: [PATCH v14 09/44] arm64: RMI: Provide functions to delegate/undelegate ranges of memory
-In-Reply-To: <a81c3688-30f1-43e4-8d57-1d08a6e563af@arm.com>
-References: <20260513131757.116630-1-steven.price@arm.com>
-	<20260513131757.116630-10-steven.price@arm.com>
-	<867bowx3qx.wl-maz@kernel.org>
-	<a81c3688-30f1-43e4-8d57-1d08a6e563af@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UAsbpnqM"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b99eb06178so173059665ad.2
+        for <linux-coco@lists.linux.dev>; Fri, 22 May 2026 06:09:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779455339; x=1780060139; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LWpFds4KLS7xuznWHwB8ePqzzdmaeh02IGD1amL7VKc=;
+        b=UAsbpnqMsCbwviCofe+I2ZVApV+Pz+6FWbbijFiaDdNm9MAM+K0lNpeAm/nh6/Z0jM
+         sU8pzeHEgxQe7DHD0C72pI3X/qPibnvb6HLSDVwmxZQ2i1ebwKCOiYKI1NlveQkL3gQf
+         7mSLzkMfWR3RGa+CX8qqGV1Oe1LjPNjT/5+8w9O8VkMpUR1XMflaxyuHvep/qJDDNBMU
+         e/uRAk8WYosAtAJ34wTRaCiF6nF7gZpxx1Yj4dn7jEyjj8OVSPJ3RkH+ZAv78G0w6Qfy
+         RDn7tmH35cqWXeaJAnlcTM2gpfd/RVW6b0RQa4jaXokWlN5ZK6I0zaJa3D4lNIEKdZa6
+         TwTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779455339; x=1780060139;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LWpFds4KLS7xuznWHwB8ePqzzdmaeh02IGD1amL7VKc=;
+        b=YzBUhBhfmwv4gXmK8VGrsjNG57HN3I9nyHe/XM+d1ASB4Djk6NonGenu2V+Kq5+7Rq
+         riI8XTOd6lxDi6+obSfGNCYklWroLej1RBzUnQruPkUV1l7Ti6qIstm7SiTfldNjTH0W
+         qNEP3YOFmcuiiOHLh0NX3plrjqTxUM7PhZTClY871T+yREvi6RC2XThLEvYXvkRVOx3d
+         4B23Tbpg0jtAhkvfl6OyD4ldJrgbrTI1G7NW7Vu8gnCyZKaDcOJyR+EPEer7y0w3oUdC
+         Onjx140KjaNSJwWUkJxME5CCyg27MnpYAZutq+gNbqGeSzOiguqC21qx0DGYc4EVSAf/
+         Rd8A==
+X-Forwarded-Encrypted: i=1; AFNElJ88hYXsqpDFGx+5O2F+ZrbaIJT2HWKNX6lnKODG8vDVkXDBlEvyWlprplT98LoFMwVuyP3c48Ps6BfZ@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy+egO2XdLqphekYRrlTZs5tcpxEFFJMZIqXVOnlXtp05BW/THH
+	g8MEkbhwod+7cZXEQXWDdGkWEVtSxwzeULr/sINpRloDREuqdo9RMR7Tw2dVoLKAe55DMcxRGqz
+	aI2RQtg==
+X-Received: from pllk9.prod.google.com ([2002:a17:902:7609:b0:2b4:5bcc:fc4a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1246:b0:2bc:90b6:3e6f
+ with SMTP id d9443c01a7336-2beb0347191mr37692105ad.4.1779455338970; Fri, 22
+ May 2026 06:08:58 -0700 (PDT)
+Date: Fri, 22 May 2026 06:08:58 -0700
+In-Reply-To: <CAEvNRgFB8ydih9JTmsH06H32j38tH-iViZqN_eZ_gQAmXpw+Dw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: suzuki.poulose@arm.com, steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Mime-Version: 1.0
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+ <20260507-gmem-inplace-conversion-v6-21-91ab5a8b19a4@google.com>
+ <CA+EHjTwrygfMrZZSw4y7-ry8fidW2x0C7iuF2Q=dnPNHUmNtUg@mail.gmail.com>
+ <ag8G7Wq5PbEdKloG@google.com> <CAEvNRgFB8ydih9JTmsH06H32j38tH-iViZqN_eZ_gQAmXpw+Dw@mail.gmail.com>
+Message-ID: <ahBVajalNaHkNYdV@google.com>
+Subject: Re: [PATCH v6 21/43] KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Fuad Tabba <tabba@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, ira.weiny@intel.com, jmattson@google.com, 
+	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
+	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
+	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, 
+	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
+	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
+	aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, 21 May 2026 17:01:37 +0100,
-Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+On Thu, May 21, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
 > 
-> On 21/05/2026 14:59, Marc Zyngier wrote:
-> > On Wed, 13 May 2026 14:17:17 +0100,
-> > Steven Price <steven.price@arm.com> wrote:
-> >> 
-> >> The RMM requires memory is 'delegated' to it so that it can be used
-> >> either for a realm guest or for various tracking purposes within the RMM
-> >> (e.g. for metadata or page tables). Memory that has been delegated
-> >> cannot be accessed by the host (it will result in a Granule Protection
-> >> Fault).
-> >> 
-> >> Undelegation may fail if the memory is still in use by the RMM. This
-> >> shouldn't happen (Linux should ensure it has destroyed the RMM objects
-> >> before attempting to undelegate). In the event that it does happen this
-> >> points to a programming bug and the only reasonable approach is for the
-> >> physical pages to be leaked - it is up to the caller of
-> >> rmi_undelegate_range() to handle this.
-> >> 
-> >> Signed-off-by: Steven Price <steven.price@arm.com>
-> >> ---
-> >> v14:
-> >>   * Split into separate patch and moved out of KVM
-> >> ---
-> >>   arch/arm64/include/asm/rmi_cmds.h | 13 +++++++++++
-> >>   arch/arm64/kernel/rmi.c           | 36 +++++++++++++++++++++++++++++++
-> >>   2 files changed, 49 insertions(+)
-> >> 
-> >> diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/asm/rmi_cmds.h
-> >> index 9078a2920a7c..eb213c8e6f26 100644
-> >> --- a/arch/arm64/include/asm/rmi_cmds.h
-> >> +++ b/arch/arm64/include/asm/rmi_cmds.h
-> >> @@ -33,6 +33,19 @@ struct rmi_sro_state {
-> >>   } while (RMI_RETURN_STATUS(res.a0) == RMI_BUSY ||			\
-> >>   	 RMI_RETURN_STATUS(res.a0) == RMI_BLOCKED)
-> >>   +int rmi_delegate_range(phys_addr_t phys, unsigned long size);
-> >> +int rmi_undelegate_range(phys_addr_t phys, unsigned long size);
-> >> +
-> >> +static inline int rmi_delegate_page(phys_addr_t phys)
-> >> +{
-> >> +	return rmi_delegate_range(phys, PAGE_SIZE);
-> >> +}
-> >> +
-> >> +static inline int rmi_undelegate_page(phys_addr_t phys)
-> >> +{
-> >> +	return rmi_undelegate_range(phys, PAGE_SIZE);
-> >> +}
-> >> +
-> >>   bool rmi_is_available(void);
-> >>     unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t
-> >> gfp);
-> >> diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
-> >> index 52a415e99500..08cef54acadb 100644
-> >> --- a/arch/arm64/kernel/rmi.c
-> >> +++ b/arch/arm64/kernel/rmi.c
-> >> @@ -12,6 +12,42 @@ static bool arm64_rmi_is_available;
-> >>   unsigned long rmm_feat_reg0;
-> >>   unsigned long rmm_feat_reg1;
-> >>   +int rmi_delegate_range(phys_addr_t phys, unsigned long size)
-> >> +{
-> >> +	unsigned long ret = 0;
-> >> +	unsigned long top = phys + size;
-> >> +	unsigned long out_top;
-> >> +
-> >> +	while (phys < top) {
-> >> +		ret = rmi_granule_range_delegate(phys, top, &out_top);
-> >> +		if (ret == RMI_SUCCESS)
-> >> +			phys = out_top;
-> >> +		else if (ret != RMI_BUSY && ret != RMI_BLOCKED)
-> >> +			return ret;
-> >> +	}
-> >> +
-> >> +	return ret;
-> >> +}
-> >> +
-> >> +int rmi_undelegate_range(phys_addr_t phys, unsigned long size)
-> >> +{
-> >> +	unsigned long ret = 0;
-> >> +	unsigned long top = phys + size;
-> >> +	unsigned long out_top;
-> >> +
-> >> +	WARN_ON(size == 0);
-> > 
-> > I find it odd to warn on size = 0. After all, free(NULL) is not an
-> > error. But even then, you continue feeding this to the RMM.
-> > 
-> > You also don't seem to be bothered with that on the delegation side...
-> > 
-> >> +
-> >> +	while (phys < top) {
-> >> +		ret = rmi_granule_range_undelegate(phys, top, &out_top);
-> >> +		if (ret == RMI_SUCCESS)
-> >> +			phys = out_top;
-> > 
-> > and size==0 doesn't violate any of the failure conditions listed in
-> > B4.5.18.2 (beta2). Will you end-up looping around forever?
+> > On Thu, May 21, 2026, Fuad Tabba wrote:
+> >> Hi,
+> >>
+> >> On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
+> > diff --git include/linux/kvm_host.h include/linux/kvm_host.h
+> > index 61a3430957f2..b83cda2870ba 100644
+> > --- include/linux/kvm_host.h
+> > +++ include/linux/kvm_host.h
+> > @@ -2596,7 +2596,8 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
+> >  typedef int (*kvm_gmem_populate_cb)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> >                                     struct page *page, void *opaque);
+> >
+> > -long kvm_gmem_populate(struct kvm *kvm, gfn_t gfn, void __user *src, long npages,
+> > +long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src,
+> > +                      long npages, bool writable,
 > 
-> That is not true ? It triggers, top_bound error condition, for both.
-> 
-> 
-> pre: UInt(top) <= UInt(base)
-> post: result.status == RMI_ERROR_INPUT
+> What do you think of need_writable_src instead of just writable for the
+> variable name?
 
-News flash, I can't read. Ignore me.
+How about "may_write_src" or "may_writeback_src"?
 
-	M.
+> >                        kvm_gmem_populate_cb post_populate, void *opaque);
+> >  #endif
+> >
+> > diff --git virt/kvm/guest_memfd.c virt/kvm/guest_memfd.c
+> > index a35a55571a2d..6553d4e032ce 100644
+> > --- virt/kvm/guest_memfd.c
+> > +++ virt/kvm/guest_memfd.c
+> > @@ -858,7 +858,8 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >         return ret;
+> >  }
+> >
+> > -long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long npages,
+> > +long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src,
+> > +                      long npages, bool writable,
+> >                        kvm_gmem_populate_cb post_populate, void *opaque)
+> >  {
+> >         struct kvm_memory_slot *slot;
+> > @@ -892,8 +893,9 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+> >
+> >                 if (src) {
+> >                         unsigned long uaddr = (unsigned long)src + i * PAGE_SIZE;
+> > +                       unsigned int flags = writable ? FOLL_WRITE : 0;
+> 
+> How about using FOLL_WRITE | FOLL_NOFAULT so if it weren't writable to
+> start with, don't CoW, just error out?
 
--- 
-Jazz isn't dead. It just smells funny.
+Eh, I don't see any value in value in erroring out if userspace is doing something
+unusual.  If breaking CoW was actually problematic somehow, then sure.  But AFAICT
+it's overall harmless.
+
+> Like you said above the CPUID page provided as src_page would have been
+> written to before, so it should have been mapped as writable.
