@@ -1,215 +1,262 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7368F3A4521
-	for <linux-coco@lists.linux.dev>; Fri, 22 May 2026 05:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779429393; cv=fail; b=RLL266ZncwSnv65mTbu43yDtpQVLz7WqkHZJ2BVPrg9dODfLVN4gvjsmM1onKv0PhOy3Dd9OqJpsuF7VnkQdJIeccUvC4kQf2YBEpuc5p5xUEsVqrNqlnVW7HXmuwzq9z2bXQUMRWDkNkMMHPhregSh+vT21DkBFud6fQb9Pejw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779429393; c=relaxed/simple;
-	bh=QxD741jcWj7IelqttWwErgbMHi71RS0bSe3e2Vo6BrU=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=HoemVPbAdgjmRQ7EmtOKk3dfgiVam4jSN6wW8UNpPYVwDO8agm8DpGKGnsvmy3xWmgjWQSMNzNSFxTnFBXaCOeMEAqf6fnMLEjrjVYsVwptGTslRZdwnDECzOlOdkR4M3bqOiGsfFsz+5oPOG84qUuy6+OddD1jRobHh5O0RNS0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fNgIsdaX; arc=fail smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AED53BB132;
+	Fri, 22 May 2026 09:55:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779443751; cv=none; b=tUQ/gq8L5saVFw5C0+p0sCMANF2FAf2Rxeiwc0MoeUj0YgGkxriPpUZSerGeD/ULQi+/VpMISnepSTJgYoDgHNnpydusWG0a7QFVQAXjnb/oKGpsx2HCgZebpUhCSdD0lf0oI3UEUpHo/DBTmI1ghuDWB3XNh5cQIwty9v+aPxk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779443751; c=relaxed/simple;
+	bh=EFHlHMm27XjekJ+YmqGifcP1bo+19jO3UmkVjAAqnWA=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=t/VKZbILmxcJWLibFCtAFq8ZdmGRMnGVTaAf5JKopyh3EYzmJYnyXh2Bbrwc7X0JEUPEZYBECnytlc27/IOmPzLZH5i92RpOkfZdi/lHJO1aRx5lt+fCT5DFxtHI3OyepfJm2H22HR3o8Uj84PpkijqxpW2ICRoLfBHAVuf1130=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vm8X/Sot; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fNgIsdaX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779429390; x=1810965390;
-  h=from:to:cc:subject:date:message-id:
-   content-transfer-encoding:mime-version;
-  bh=QxD741jcWj7IelqttWwErgbMHi71RS0bSe3e2Vo6BrU=;
-  b=fNgIsdaXLUNEUEWVNVpRJv0T/rgHutKr3+O+/pYQHr4D8pepF+wytCnx
-   kymRF1nqijnI5/UscLwlwiKg1aqE1zSCAgpHosJ5KFq0l2JpcnUa6Yk36
-   jEnFJhnC+7Ji5lTIyjTLdntbLXCP7u1jbzdQikz0XXvn9cd3Fa1RgEFSB
-   Rnewv8R4uEdlFwI6a6LUyuy00zIIMCUSvfKWiIUntXOHi8NuufgrNcooP
-   jUxo+NBmLOcqVfQr+uYG+9HJ7UjIxrzYQ5i4nYASr5JCQf6r5EdBk1p8c
-   zkWCLMIPnCNNuCOR0XQK86di0DqQXCl4H6t1BHzlL5NzuM7uz+XHd8j5C
-   Q==;
-X-CSE-ConnectionGUID: VpUAirT4RRWcBG0rHM/yMw==
-X-CSE-MsgGUID: ruw/24zTQdqKE0j16pSKcQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="105820873"
-X-IronPort-AV: E=Sophos;i="6.24,161,1774335600"; 
-   d="scan'208";a="105820873"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 22:56:30 -0700
-X-CSE-ConnectionGUID: aUD+gGE8SNaT96+FcTOPsg==
-X-CSE-MsgGUID: s75t/VTpQ/CFWr3Dl9aOWw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,161,1774335600"; 
-   d="scan'208";a="241049277"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 22:56:30 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 21 May 2026 22:56:29 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 21 May 2026 22:56:29 -0700
-Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.66) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 21 May 2026 22:56:29 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m6AGNfBrI80IV+R8SN0Cb7bGpfu0fS8VMu6f0Ys3G7yXD0Ty8WW7GOr6uUGJzT8g50IYEiJwH4iaMjKPKQOKLpnnE0aS3mQcGgzLeSJ5wHkJfr1wV0lC4p+NMPylA3X7Am4gA5gKVwKjHtX1aY+laWYgYXImy0n8epBv85rOhpzLI5UZ44Sn4E5KetAPztEBtlmZXawQ2yIWLmdKC9bZSyFJX8H6D/FTnVntmd4mMYWy4uN7je/Q0VD1B6zhUrES6huLYV//eIt/ku/EnqJ1KDIz0paSMCd5uQDqzg5xGXxQhiCvXyiJnyywLrfjcJMg0Sqdg+9LrauwT+0GHKttuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QxD741jcWj7IelqttWwErgbMHi71RS0bSe3e2Vo6BrU=;
- b=HoQeFSUvVscuDgjryJdB5E9UX65fDV/wahPvx9sD/r7bpFD4iEFq9DuQWfs8uZG1x/6ovqYWBxZwcuXHSqnjcM2ZI0pH6bzcyxSr1G/+xjF1fhVkIgoIRgqzgljZfjhKocgj+LFRtPSQV4raSGvzGQOr0d0TaWBFrSFoBbf2RbKBTWTwNtdumFPwU0X3aR2wGKfgiD4FuuHqxyhlE8AL5nn2kytyFV7ydE0z6Uroqm/amoh2cjnV/VNnJh4VROXChKER+RFTpJTmQ6vspsT8c20dVgrEyYnNq4mAr3nOfB8bVKNBLwPfRyO1GYRbtrqujwbipGcMfwmSrC4lxP+aNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA1PR11MB9495.namprd11.prod.outlook.com (2603:10b6:208:59f::17)
- by CH3PR11MB8384.namprd11.prod.outlook.com (2603:10b6:610:176::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Fri, 22 May
- 2026 05:56:25 +0000
-Received: from IA1PR11MB9495.namprd11.prod.outlook.com
- ([fe80::7e17:f6fb:7cf6:aa44]) by IA1PR11MB9495.namprd11.prod.outlook.com
- ([fe80::7e17:f6fb:7cf6:aa44%3]) with mapi id 15.21.0048.016; Fri, 22 May 2026
- 05:56:25 +0000
-From: "Reshetova, Elena" <elena.reshetova@intel.com>
-To: "linux-security-module@vger.kernel.org"
-	<linux-security-module@vger.kernel.org>
-CC: Linux Security Summit Program Committee
-	<lss-pc@lists.linuxfoundation.org>, Friend <linux-kernel@vger.kernel.org>,
-	"linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-	"lwn@lwn.net" <lwn@lwn.net>, "linux-crypto@vger.kernel.org"
-	<linux-crypto@vger.kernel.org>, "keyrings@vger.kernel.org"
-	<keyrings@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "kernel-hardening@lists.openwall.com"
-	<kernel-hardening@lists.openwall.com>
-Subject: [ANN] Linux Security Summit Europe 2026 CfP
-Thread-Topic: [ANN] Linux Security Summit Europe 2026 CfP
-Thread-Index: AdzpruMcxMQ6EdupQQuBXtRrmOF66A==
-Date: Fri, 22 May 2026 05:56:25 +0000
-Message-ID: <IA1PR11MB94953FF344D75F9634A4F7C1E70F2@IA1PR11MB9495.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR11MB9495:EE_|CH3PR11MB8384:EE_
-x-ms-office365-filtering-correlation-id: 3171fa55-c99a-4f6c-beed-08deb7c6dbeb
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|10070799003|366016|1800799024|376014|56012099003|38070700021|11063799006|18002099003|6133799003;
-x-microsoft-antispam-message-info: J14SDIjEYv2ZDW14IdABWGkMLS4tuxui6jNDWVJTP/uFew3W7mx99VCDracgRVooVMc3WEvZRFAx0G4zkalIGK2AasesSjdl1KWd9Hz3QoJelKmoTB1TQopbqpU/ajzDEu4lvoDLryn/BBSF+km31vvsAcobiUaomECg81t1jKM6INkByfds8qmyTt2yF6mWdhBALDOPwYpdrbpu+n9zwpcH4cyBMrsy8pXIFrWkphl+eTB2+elI5zNGUk7e7xgxqbjNdw3ANLIoXnoYK2AS9laZLcEHaxeSmZ1UHcRYf0WFDtkPJ0wFwA/eehd9G4fy//xqU7NaVbpWO4O4+yM6X8fWtapFMozpzt8UAwgDGfQbLszddPh+D2k9DoG5Xz0nJKmjB6vwCLOOjxaCu46ceVRbFoGf1ueGGfU58tdpGvs3MSEeUs71uapWsSxCp8vfmAZuovBAlul0Gg8nSD6/YzoiKnimWNU70e9VzXBvETWbOuW7PWlCzh+zmX6xtaaXpOQqcLVtkloyw7GXgOgR47C38doov86rqlMpW+2f5IlfoIFH12oXlctm3umxtjFHK/2vecch2SfrIkq2kPPqgcwX5HbM//jamL6pG4zpMxASmmuCYrP54u6kp4oI7zLFIxPkIRzm6P5aDJ086hMa4BMpJ/5CXUH7Ee/QGkG31I5vE651KhVN7Fdza4InvZgf
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB9495.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(376014)(56012099003)(38070700021)(11063799006)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?N0l3UW9iU0dzRGl6SlliYk5zZWJZUHQ3N3NSQld4SlNjOXBtVkN6UEtNMkdw?=
- =?utf-8?B?Ri9vLzRLWkh2dGEzSW10UDNiQnlpTE55NXRLb0RnSEZybGc3ZHJOSkJLUEw4?=
- =?utf-8?B?bkk2NFZrcFVOazNNMk5SaXFXQ3RNdlFvdFQ4RE1jai81c3JoL0hqS0NqZkFn?=
- =?utf-8?B?Z00wemowY2FwY0psWkNOdWc0a1hreGlSbUkvYi84N3FoNnFsVVlDZ3BpRE9V?=
- =?utf-8?B?T1E1TWI4VFh5bTJHeThjOW5KbmtKUEF6VGZkUUk5L0dJUFFBV212SWd1N1VM?=
- =?utf-8?B?U3o1RGx4T0xPMjJ6Tlo2NTFpSWZkNG9HUUs1bE0xaE95UWRxMXpJeDZxZTVn?=
- =?utf-8?B?U1paaXBvVUFPeTdtb2ZCSXQ4YUgxQTFUYWNKZFkvejNNSzNVRVRFTDRJSHJQ?=
- =?utf-8?B?cFpmdXViSVM1K2IwMFh4UnJKaFl2bDVLU0xFMDlERENoRmVwYzdMRERHVG5u?=
- =?utf-8?B?MGxkSWp2a0RPazl5TWJ0S215SGcrY3l0bVdNcTJZT0ZBMWhNdnRRTU9maGh1?=
- =?utf-8?B?OVFHMHAxY2Z6VjhYaGlLUzVncHpBakN0WkJnWGM3dForb24zM3gxVmRHMmdL?=
- =?utf-8?B?d0lWakVtZnpiQm81eUxuZElqQlFlUVFBMktHZG9uT2VIZmJsUXR4NEU2SXow?=
- =?utf-8?B?RkVqc2d4aEp3ZXRkUWJtYnVmRzhlNVFXTVQxTXNzMnoxNGdWMVZYQW9JSFRR?=
- =?utf-8?B?cWxBdTNzUmlCQzl1L1Z0QXlwWGxnWnBSSGFybUFBMUNGS1R2WHRjT0pvbDNr?=
- =?utf-8?B?Vmhsa0JmSTFjelRUeTRhTEU0VjdSWHhkekJCc3JhY2ZmeEhFVXFObGNIVk5y?=
- =?utf-8?B?Y1lLd3ZMVUE3TXM3dDhhOFBGd1Q2alZBbURHVjdYMlN5ZzBBb2RmcDROc1dt?=
- =?utf-8?B?TEVlbkNPV3g3aTcvbGNpRzZWTDJ5eTlDOXc0OHJUVnVYUEcyU0hQeW5sTzh1?=
- =?utf-8?B?WXBQcTE1UkY1c0FjdDZNYzZUdExwQmJhb01xcjFiZzVPWnRtN3NBVk5DZVll?=
- =?utf-8?B?bVkxaTdkcktVSkJ0MUpabGs4dXJUclBhalJjNWlaOWZzMDg3NXZMNzRqVC9B?=
- =?utf-8?B?NjJhVGJzZXdYeWx3KzFQQXJ1MWxtdEhYMGY2VlphWHlSV1ZHYVpNYzZwSU5h?=
- =?utf-8?B?NS9qclRvRGh0TlFYaDBWSVpmclJ1SlFQZGxuRHF3bkUrVTRYY0FhcTZielVt?=
- =?utf-8?B?QStMeWYvMFZET1VkQnNteVYveHhiRTBZYy85akRNUTkrUXpieHBSYlV0ZGtB?=
- =?utf-8?B?aDVDT3JVejZFZzRpRUVKcTdvSkJzVGkwa3NpR1pqVzF3eStCU1JqamxOT3pI?=
- =?utf-8?B?RlJSbFdua3RQYk95NGdGMUsrcmFvK1VzMXBOTDdLc2x5a2xxc1ArYmVsZkFK?=
- =?utf-8?B?Y1pJMDRYK2RuSzRSTzVvemoxMnB4SWhPRkE2UnpNUDVZeHFQN2NubDludUVU?=
- =?utf-8?B?WmFLdTFIamdwWFBwWDRyQ05RaHlvU29qb2N4aWVLR3dxMTZNTFdXSjZJeHZu?=
- =?utf-8?B?K0JMYm5XM3JBOWxGeXh5UVhWVG1zdnJkNktybUw4MVNVaDBBT2R2RWZicEVI?=
- =?utf-8?B?Z3c3dGpHNDBOVXN5ZWJxanNYeVlnK1FPMzNqd1BTQUFIdW5xeHZPbVhGRXpm?=
- =?utf-8?B?RkdteEFuc0IrTjE2YWwvUjdIeXRReldrelI4YTduSE9scmhtSHZJbzFVQmh6?=
- =?utf-8?B?UDViSGtQRHIxVHVLMHI0R1BRSXRRU01jbkJ5OGZjdk1aMWU0ZGM5bFUwTHdm?=
- =?utf-8?B?NEV2dFpKbVk1NTR3NlZIa0NuN3NaU1JjNTd1WEJBOEphZEg2eERVMHNuZVV1?=
- =?utf-8?B?c0QvK21nV0tBcTlvd3NIaVlUN2dEVTd6dTljdU1oc1hUT29NZUFwRFhveVZT?=
- =?utf-8?B?eVo2bTVLc0toNU5EbDVBaDdHSWszK2RqUFJLb0E0Z1BoVG1Ub0VWMWN0WnFZ?=
- =?utf-8?B?TXZMOExKUklKZEJHRFg3NWxYb3d6SEZMeDVqN242QWRYOXhPZGc5M3lHNlNx?=
- =?utf-8?B?ZFdTNkR4RHRXcFhSaW04c2o3ckxvOC9GZ1NySW1mdDI4Umg2S3BndCtjamQy?=
- =?utf-8?B?ZGVQdHBBN0NCblYyTFNiSzUwWitZaHhyZmhLYnE2eE9oVWdPd05QQjJMQ0Fs?=
- =?utf-8?B?WWc3VTV1a3FKUm5ER2Y0QjhOOFBSYkJPNnZ3Z2NVRmhjcXBMZ0NyV2FqUHB0?=
- =?utf-8?B?TlVCNm16ZVNCSFhLcWxMalM0Z0NKSHM2VVFKckVEOTQyYWFyNmNLc09uWmYv?=
- =?utf-8?B?ejl3dUQzSDRNUTRuRXZzNzN2TS9DZ1JmcmNiQXRmMmlHdjdOaUFBN0huT095?=
- =?utf-8?B?eUt0NnBEREEveXQyR0REaXdRL0NVVDVCQWxxNTZsQnEvNXNRc1VRcVFXeDNl?=
- =?utf-8?Q?HzVUrKK9OQ6ROFJ3GlDKE/vRdOWJojI/lUg53DgWvVGc+?=
-x-ms-exchange-antispam-messagedata-1: IYRXUWmXtYMFfA==
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vm8X/Sot"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B311F000E9;
+	Fri, 22 May 2026 09:55:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779443750;
+	bh=JRFSjJVMhkW1cVbO5EZHBHBVGeP4fldmDfewlQIeZHQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Vm8X/Sothl2Nn/zf0Bb0WEHP96x5dzotEE5P5IfPVfKP32zy7i+W8E27CQyufPErX
+	 UvnHByI5C/V2SpU5wFfnFkXB2vxCS/Mpw7JwI42eKTi3OT1Luad62k4ijTYLmBNaod
+	 S9izOaUpvj1e4VDRtbfgDbGfFlEuG+8lQDQZ4DMp5RiePq/OnPz/+dh0fiZWRjkGHG
+	 WFLKBYz8Sa49i4A1GZR6OqOkJx9P89uk7Iych/5dpSkvgpSZ7HOwPtRIqfM+H3tK/6
+	 JPIw5IQQf4u9OcbtrZlIiQg1LoEQNWV3eSDEHQlklsCp4ITfg+c8QflxnUAQDvwoHt
+	 IXjWf22m21x3w==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wQMba-00000005AaP-0q1s;
+	Fri, 22 May 2026 09:55:47 +0000
+Date: Fri, 22 May 2026 10:58:56 +0100
+Message-ID: <87jysvahpb.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu
+ <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	WeiLin.Chang@arm.com,
+	Lorenzo.Pieralisi2@arm.com
+Subject: Re: [PATCH v14 04/44] arm64: RMI: Add SMC definitions for calling the RMM
+In-Reply-To: <3261b04f-1a0c-451d-8981-1e2bccc8a9ca@arm.com>
+References: <20260513131757.116630-1-steven.price@arm.com>
+	<20260513131757.116630-5-steven.price@arm.com>
+	<86ecj5vsu4.wl-maz@kernel.org>
+	<3261b04f-1a0c-451d-8981-1e2bccc8a9ca@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: jCF/N3hDdCaqgIxRF9EkGT5cnAet/D3M+3CnKSGeVCJNf1qjVznefm6iW/Z1O8+6rVLLzgflKYZV+Dp5v01c05NkKxf4W9ByVg6+fAmMlF39C5rhopag8iqNEkwxUutXQ3Gu9CMvpdqXMHXjkWTs3VRtLssAaL1PKE/4uD5JxE3jfAoqWfztbbvzXr1UCaGfeDPiZ/6LmS7VPXGlFYK3UGmw8HIJ2cCGCG9kxXfT4452JtG1aIdPp3lLM2O/e94stVnLiwScDU/qtF10gZ2UzwbnqUjOwlkpsPS8qtSKEaqWXtL7ZTGiuJKAyCWddOxLDjNBZG2V/CM6bhs6bYJOXw==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB9495.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3171fa55-c99a-4f6c-beed-08deb7c6dbeb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 May 2026 05:56:25.3952
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Ekh3hNQYnkfFP8BiYZ6r+iXmnju36bM7btnx/2/iCvRNpzQ/r77uQztvnAqSgG4Z/pcoNtyK9oJyVsRyTiW+M7IM4MImX1Nd+4kTggtvLKE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8384
-X-OriginatorOrg: intel.com
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT0NCiAgICAgICAgICAgICBBTk5PVU5DRU1FTlQgQU5EIENBTEwgRk9SIFBBUlRJ
-Q0lQQVRJT04NCg0KICAgICAgICAgICAgICAgICAgIExJTlVYIFNFQ1VSSVRZIFNVTU1JVCBFVVJP
-UEUgMjAyNg0KDQogICAgICAgICAgICAgICAgICAgICAgICAgICBUaHVyc2RheSwgOCBPY3RvYmVy
-DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgIFByYWd1ZSwgQ3plY2hpYQ0KPT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT0NCg0KREVTQ1JJUFRJT04NCg0KTGludXggU2VjdXJpdHkgU3VtbWl0IEV1cm9wZSAoTFNTLUVV
-KSAyMDI2IGlzIGEgdGVjaG5pY2FsIGZvcnVtIGZvcg0KY29sbGFib3JhdGlvbiBiZXR3ZWVuIExp
-bnV4IGRldmVsb3BlcnMsIHJlc2VhcmNoZXJzLCBhbmQgZW5kLXVzZXJzLg0KDQpJdHMgcHJpbWFy
-eSBhaW0gaXMgdG8gZm9zdGVyIGNvbW11bml0eSBlZmZvcnRzIGluIGRlZXBseSBhbmFseXppbmcg
-YW5kDQpzb2x2aW5nIExpbnV4IG9wZXJhdGluZyBzeXN0ZW0gc2VjdXJpdHkgY2hhbGxlbmdlcywg
-aW5jbHVkaW5nIHRob3NlIGluIHRoZQ0KTGludXgga2VybmVsLg0KDQpUaGlzIHllYXIgTFNTLUVV
-IGlzIGEgc2luZ2xlIGRheSBldmVudCBoYXBwZW5pbmcgcmlnaHQgYWZ0ZXIgTGludXggUGx1bWJl
-cnMgMjAyNg0KaHR0cHM6Ly9scGMuZXZlbnRzLyANCg0KUHJvcG9zYWxzIHRvIExTUy1FVSBzaG91
-bGQgYmUgc3VibWl0dGVkIHZpYToNCiAgICBodHRwczovL2V2ZW50cy5saW51eGZvdW5kYXRpb24u
-b3JnL2xpbnV4LXNlY3VyaXR5LXN1bW1pdC1ldXJvcGUvcHJvZ3JhbS9jZnAvDQoNClNVR0dFU1RF
-RCBUT1BJQ1MNCg0KICAgICogQWNjZXNzIENvbnRyb2wNCiAgICAqIENhc2UgU3R1ZGllcw0KICAg
-ICogQ3J5cHRvZ3JhcGh5IGFuZCBLZXkgTWFuYWdlbWVudA0KICAgICogRW1lcmdpbmcgVGVjaG5v
-bG9naWVzLCBUaHJlYXRzICYgVGVjaG5pcXVlcw0KICAgICogSGFyZHdhcmUgU2VjdXJpdHkNCiAg
-ICAqIElvVCBhbmQgRW1iZWRkZWQgU2VjdXJpdHkNCiAgICAqIEludGVncml0eSBQb2xpY3kgYW5k
-IEVuZm9yY2VtZW50DQogICAgKiBPcGVuIFNvdXJjZSBTdXBwbHkgQ2hhaW4gZm9yIHRoZSBMaW51
-eCBPUw0KICAgICogU2VjdXJpdHkgVG9vbHMNCiAgICAqIFNlY3VyaXR5IFVYDQogICAgKiBMaW51
-eCBPUyBIYXJkZW5pbmcNCiAgICAqIFZpcnR1YWxpemF0aW9uIGFuZCBDb250YWluZXJzDQoNCkRB
-VEVTIFRPIFJFTUVNQkVSOg0KDQogICAgKiBDRlAgQ2xvc2U6IFN1bmRheSwgMjggSnVuZSBhdCAx
-MTo1OSBQTSBDRVNUIChVVEMgKzIpICAvIDI6NTkgUE0gUERUIChVVEMgLTcpDQogICAgKiBDRlAg
-Tm90aWZpY2F0aW9uczogVHVlc2RheSwgMTQgSnVseQ0KICAgICogU2NoZWR1bGUgQW5ub3VuY2Vk
-OiBXZWRuZXNkYXksIDE1IEp1bHkNCiAgICAqIEV2ZW50IERhdGU6IFRodXJzZGF5LCA4IE9jdG9i
-ZXINCg0KV0hPIFNIT1VMRCBBVFRFTkQNCg0KV2UncmUgc2Vla2luZyBhIGRpdmVyc2UgcmFuZ2Ug
-b2YgYXR0ZW5kZWVzIGFuZCB3ZWxjb21lIHBhcnRpY2lwYXRpb24gYnkNCnBlb3BsZSBpbnZvbHZl
-ZCBpbiBMaW51eCBzZWN1cml0eSBkZXZlbG9wbWVudCwgb3BlcmF0aW9ucywgYW5kIHJlc2VhcmNo
-Lg0KDQpMU1MgaXMgYSB1bmlxdWUgZ2xvYmFsIGV2ZW50IHRoYXQgcHJvdmlkZXMgdGhlIG9wcG9y
-dHVuaXR5IHRvIHByZXNlbnQgYW5kDQpkaXNjdXNzIHlvdXIgd29yayBvciByZXNlYXJjaCB3aXRo
-IGtleSBMaW51eCBzZWN1cml0eSBjb21tdW5pdHkgbWVtYmVycyBhbmQNCm1haW50YWluZXJzLiAg
-SXQncyBhbHNvIHVzZWZ1bCBmb3IgdGhvc2Ugd2hvIHdpc2ggdG8ga2VlcCB1cCB3aXRoIHRoZSBs
-YXRlc3QNCmluIExpbnV4IHNlY3VyaXR5IGRldmVsb3BtZW50IGFuZCB0byBwcm92aWRlIGlucHV0
-IHRvIHRoZSBkZXZlbG9wbWVudA0KcHJvY2Vzcy4NCg0KTUFTVE9ET04NCg0KICBGb3IgZXZlbnQg
-dXBkYXRlcyBhbmQgYW5ub3VuY2VtZW50cywgZm9sbG93Og0KDQogICAgaHR0cHM6Ly9zb2NpYWwu
-a2VybmVsLm9yZy9MaW51eFNlY1N1bW1pdA0KDQogICNsaW51eHNlY3VyaXR5c3VtbWl0DQoNClBS
-T0dSQU0gQ09NTUlUVEVFDQoNCiAgVGhlIHByb2dyYW0gY29tbWl0dGVlIGZvciBMU1MgMjAyNiBp
-czoNCg0KICAgICogSmFtZXMgTW9ycmlzLCBNaWNyb3NvZnQNCiAgICAqIFNlcmdlIEhhbGx5biwg
-R2VpY28NCiAgICAqIFBhdWwgTW9vcmUsIE1pY3Jvc29mdA0KICAgICogU3RlcGhlbiBTbWFsbGV5
-LCBOU0ENCiAgICAqIEVsZW5hIFJlc2hldG92YSwgSW50ZWwNCiAgICAqIEpvaG4gSm9oYW5zZW4s
-IENhbm9uaWNhbA0KICAgICogS2VlcyBDb29rLCBHb29nbGUNCiAgICAqIENhc2V5IFNjaGF1Zmxl
-cg0KICAgICogTWltaSBab2hhciwgSUJNDQogICAgKiBEYXZpZCBBLiBXaGVlbGVyLCBMaW51eCBG
-b3VuZGF0aW9uDQoNCiAgVGhlIHByb2dyYW0gY29tbWl0dGVlIG1heSBiZSBjb250YWN0ZWQgYXMg
-YSBncm91cCB2aWEgZW1haWw6DQogICAgbHNzLXBjICgpIGxpc3RzLmxpbnV4Zm91bmRhdGlvbi5v
-cmcNCg0KDQo=
+On Thu, 21 May 2026 16:33:09 +0100,
+Steven Price <steven.price@arm.com> wrote:
+> 
+> On 21/05/2026 13:40, Marc Zyngier wrote:
+> > On Wed, 13 May 2026 14:17:12 +0100,
+> > Steven Price <steven.price@arm.com> wrote:
+> >>
+> >> The RMM (Realm Management Monitor) provides functionality that can be
+> >> accessed by SMC calls from the host.
+> >>
+> >> The SMC definitions are based on DEN0137[1] version 2.0-bet1
+> >>
+> >> [1] https://developer.arm.com/documentation/den0137/2-0bet1/
+> >>
+> >> Signed-off-by: Steven Price <steven.price@arm.com>
+> >> ---
+> >> Changes since v13:
+> >>  * Updated to RMM spec v2.0-bet1
+> >> Changes since v12:
+> >>  * Updated to RMM spec v2.0-bet0
+> >> Changes since v9:
+> >>  * Corrected size of 'ripas_value' in struct rec_exit. The spec states
+> >>    this is an 8-bit type with padding afterwards (rather than a u64).
+> >> Changes since v8:
+> >>  * Added RMI_PERMITTED_GICV3_HCR_BITS to define which bits the RMM
+> >>    permits to be modified.
+> >> Changes since v6:
+> >>  * Renamed REC_ENTER_xxx defines to include 'FLAG' to make it obvious
+> >>    these are flag values.
+> >> Changes since v5:
+> >>  * Sorted the SMC #defines by value.
+> >>  * Renamed SMI_RxI_CALL to SMI_RMI_CALL since the macro is only used for
+> >>    RMI calls.
+> >>  * Renamed REC_GIC_NUM_LRS to REC_MAX_GIC_NUM_LRS since the actual
+> >>    number of available list registers could be lower.
+> >>  * Provided a define for the reserved fields of FeatureRegister0.
+> >>  * Fix inconsistent names for padding fields.
+> >> Changes since v4:
+> >>  * Update to point to final released RMM spec.
+> >>  * Minor rearrangements.
+> >> Changes since v3:
+> >>  * Update to match RMM spec v1.0-rel0-rc1.
+> >> Changes since v2:
+> >>  * Fix specification link.
+> >>  * Rename rec_entry->rec_enter to match spec.
+> >>  * Fix size of pmu_ovf_status to match spec.
+> >> ---
+> >>  arch/arm64/include/asm/rmi_smc.h | 448 +++++++++++++++++++++++++++++++
+> >>  1 file changed, 448 insertions(+)
+> >>  create mode 100644 arch/arm64/include/asm/rmi_smc.h
+> >>
+> >> diff --git a/arch/arm64/include/asm/rmi_smc.h b/arch/arm64/include/asm/rmi_smc.h
+> >> new file mode 100644
+> >> index 000000000000..a09b7a631fef
+> >> --- /dev/null
+> >> +++ b/arch/arm64/include/asm/rmi_smc.h
+> >> @@ -0,0 +1,448 @@
+> >> +/* SPDX-License-Identifier: GPL-2.0 */
+> >> +/*
+> >> + * Copyright (C) 2023-2026 ARM Ltd.
+> >> + *
+> >> + * The values and structures in this file are from the Realm Management Monitor
+> >> + * specification (DEN0137) version 2.0-bet1:
+> >> + * https://developer.arm.com/documentation/den0137/2-0bet1/
+> > 
+> > How long is this spec going to be available on the ARM web site, which
+> > has a tendency of being reorganised every other week? And there is
+> > already a beta2.
+> 
+> Obviously I can't predict the next reorganisation - but at least it's a
+> link that could be fed into archive.org or similar.
+
+I found that the PDF spec was less susceptible to creative nonsense,
+and people can download it for future reference, whereas ARM has
+happily *deleted* specs from the website over time (try to find PSCI
+0.1, for example...).
+
+[...]
+
+> >> +struct realm_params {
+> >> +	union { /* 0x0 */
+> >> +		struct {
+> >> +			u64 flags;
+> >> +			u64 s2sz;
+> >> +			u64 sve_vl;
+> >> +			u64 num_bps;
+> >> +			u64 num_wps;
+> >> +			u64 pmu_num_ctrs;
+> >> +			u64 hash_algo;
+> >> +			u64 num_aux_planes;
+> >> +		};
+> >> +		u8 padding0[0x400];
+> > 
+> > SZ_1K? And similarly all over the shop?
+> 
+> I'm a bit less sure that makes the code more readable - these structures
+> are a bit of a pain because they are somewhat sparse. I've left a
+> comment where the beginning of each union is, and personally I find it
+> easier to see 0x0 + 0x400 == 0x400 rather than trying to work out what
+> SZ_1K is in hex. This is particularly the case in terms of:
+> 
+> > struct rec_params {
+> > 	union { /* 0x0 */
+> > 		u64 flags;
+> > 		u8 padding0[0x100];
+> > 	};
+> > 	union { /* 0x100 */
+> > 		u64 mpidr;
+> > 		u8 padding1[0x100];
+> > 	};
+> > 	union { /* 0x200 */
+> > 		u64 pc;
+> > 		u8 padding2[0x100];
+> > 	};
+> > 	union { /* 0x300 */
+> > 		u64 gprs[REC_CREATE_NR_GPRS];
+> > 		u8 padding3[0xd00];
+> > 	};
+> > };
+> 
+> Where 0xd00 doesn't even have a correspoding SZ_ define.
+
+Indeed, but it is (SZ_4K - SZ_256 * 3). And a lot of these structures
+seem to be designed to form a 4kB blob. I'm sure we can make use of
+that information (BUILD_BUG_ON?).
+
+> 
+> The RMM deals with this with macro magic:
+> 
+> > struct rmi_rec_params {
+> >         /* Flags */
+> >         SET_MEMBER_RMI(unsigned long flags, 0, 0x100);  /* Offset 0 */
+> >         /* MPIDR of the REC */
+> >         SET_MEMBER_RMI(unsigned long mpidr, 0x100, 0x200);      /* 0x100 */
+> >         /* Program counter */
+> >         SET_MEMBER_RMI(unsigned long pc, 0x200, 0x300); /* 0x200 */
+> >         /* General-purpose registers */
+> >         SET_MEMBER_RMI(unsigned long gprs[REC_CREATE_NR_GPRS], 0x300, 0x1000); /* 0x300 */
+> > };
+> 
+> where the offsets are just directly encoded in the macro - but it's not
+> an especially robust macro and I'm not convinced it's more readable.
+
+I think this is just as horrible, but at least it seems to take the
+boundaries of the structure into account.
+
+>
+> I'm happy to hear other suggestions on how to encode this neatly.
+
+Honestly, I wouldn't mind having the structures described in a more
+abstract way and then pre-processed to generate the include files. If
+the architectural MRS wasn't so huge, I would have added it to the
+kernel and used that directly for KVM.
+
+>
+> > I haven't checked the details of the encodings (life is too short),
+> > but I wonder how much of this exists as an MRS and could be
+> > automatically generated?
+> 
+> Automatically generating this would be good - I'm not sure whether we
+> have a (public) source available to generate from at the moment. I have
+> tried to methodically work through the spec when updating this file, but
+> as Gavin has already pointed out there was at least one mistake (in
+> currently unused definitions) this time.
+
+I'm slightly baffled that even the RMM is written this way. Given the
+formalism used in the RMM spec, I was expecting that you'd have a
+bunch of JSON at hand and able to generate any output from that. Doing
+this stuff by hand is both incredibly dull work *and* extremely error
+prone.
+
+Thanks,
+
+	M.
+
+-- 
+Jazz isn't dead. It just smells funny.
