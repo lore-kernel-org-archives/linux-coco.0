@@ -1,69 +1,67 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D6837700A
-	for <linux-coco@lists.linux.dev>; Fri, 22 May 2026 04:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189605FDA7;
+	Fri, 22 May 2026 04:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779422767; cv=none; b=qRbcGs0fl6Z7g3Y+Se+Skyx89LsgxZsGg0btq9AVgp7qBDvAbsAKQg9O9hQWN6kllFyH1JPJb07O1Ea+0kBdoEfPm1ib/XmirSDKxUhV3VQM5rSqd95aeZzGHXcrUYAd73I1IkkqvfS+XVSQCRupQwmhst0zCKkTbYGlKNvDMzg=
+	t=1779424120; cv=none; b=c5IIjlUdNOWgMkXE5qem89+kPtpCHq6QUVSVlvhJ2mGwJrEUBGAWlRk7ecq9fxK9xs+KrMHaKbskxd4Zkokyx6umzF6jSGEv9/gSwAPX6D6y++oUBBFZbl0Uga88hRUvh7opNhvJ4b8jKrjm9IXTseV8hsdxHP2AhRhCvQqkYiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779422767; c=relaxed/simple;
-	bh=4Stvo2XFlVxPfHj+dM/JOUHcILSlwmXS/k3FEGF2pm8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LvtfbXNnM9BfCfCOVWvoSgI0hnS/681vLpKFyQMY6EWJXoR1GXxYST73NkKasByZN+Oq609Sqzl6oE5YKLCYAB5fomSXQCMFA9Rde9Hy5hHOqvDtBHdcZWGnMpiZWU0MwG8jLyqeNoronzw+2+9zS4BH57BaGYbmAvosXK5CcK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=guvOn5v8; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1779424120; c=relaxed/simple;
+	bh=Tc5jARP32JrlSX4LbMI8H5VpF/0nJ5U2YU2MmE4VLLw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VVxdr9wtB1DEtYnWwqhW/YIalFJOvAVtObe5M3y4oefbs3/oUWKcPY3ilCEprUNMZKyhZYA4037Ze+D9SrOEzdI603fOEsOLkWykmj3nAUw+5zA1suUNZMtpHSq0KZmgcY1DYG1J24lqfhxXK8CW10RyOytu+ozpaEGzDkMO1ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YNFMTmeY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="guvOn5v8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779422767; x=1810958767;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=4Stvo2XFlVxPfHj+dM/JOUHcILSlwmXS/k3FEGF2pm8=;
-  b=guvOn5v89sf7M6AeFjoVjFk2otvx6Wj+bXsBkOci69v3EuzZS/NDpo6u
-   StOIyAK8ZGaskELiSDe5Z/Tn3Fur7T8YeSOOEStJ0bjgv9vk47Jl58zvX
-   1SiLClevEUDBzaDp4DzfV87coguOCLjRZy4i7S3Bj17SD4/TuSvA+5HFy
-   CECZrxF5TUzkKW0/GY0JYSoRTB8oG9EdW41SzduAVRANBIPKTO3s445Yk
-   qy5Sa/E6SJEgQVHOJ/NTmPkiRMbffyVG7y9eHADaUCcx5JGY9T+kNb6wB
-   jCCVxNYyGl9KybymFfqxUeC0QhfUIk8NQQ62yU+ioO5QtGbyZQzoqOnep
-   w==;
-X-CSE-ConnectionGUID: iBvWznnTTnuDzImJBiRNqw==
-X-CSE-MsgGUID: YsghMMAgTamokSNh75J89w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="80528938"
-X-IronPort-AV: E=Sophos;i="6.24,161,1774335600"; 
-   d="scan'208";a="80528938"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 21:06:07 -0700
-X-CSE-ConnectionGUID: vdnPNLHdQyyext91gtCB5g==
-X-CSE-MsgGUID: msPiaawYRy+msVJ7kQJ89Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,161,1774335600"; 
-   d="scan'208";a="239757961"
-Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
-  by orviesa006.jf.intel.com with ESMTP; 21 May 2026 21:06:03 -0700
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: kas@kernel.org,
-	djbw@kernel.org,
-	rick.p.edgecombe@intel.com,
-	x86@kernel.org,
-	peter.fang@intel.com
-Cc: linux-coco@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YNFMTmeY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C811F000E9;
+	Fri, 22 May 2026 04:28:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779424118;
+	bh=ljCA/NXDFKTES1AXmSE7gDisUBh/0q1jcBgMHCOX1RE=;
+	h=From:To:Cc:Subject:Date;
+	b=YNFMTmeYmK+CTbMr3BS7Np59jMFPjdf9kFRHUkkhPKCcpEHUrxHezGdW+lpgleiwd
+	 EUOI1mxDIQ/c9A05SdR4DSAuVJjmIHfk6j6XX0ELA0ygVA/4zoxVgtto8AaAcjICkM
+	 xoVdScPnU+ERmASx4pIaMerDRYJ/QI4T9sTNRawV46knUsPI3v5FBT3wXIyO5LfuTw
+	 8CzxtQTipM0WZO8KKmbE0C9pT1S0XiPGaok7McNBs2BRR2BI4D4znsgrcBecYuhiMN
+	 LM+yf2wBwQ7vvvDGiPth0ffqJCi5y5h8JD7mnMMzBoNtimi4ZQ2TEKD79H72rZe7Lq
+	 TYDU33uaLt30g==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	sohil.mehta@intel.com,
-	yilun.xu@intel.com,
-	yilun.xu@linux.intel.com,
-	baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com,
-	xiaoyao.li@intel.com
-Subject: [RFC PATCH 15/15] x86/virt/tdx: Enable TDX Quoting extension
-Date: Fri, 22 May 2026 11:41:28 +0800
-Message-Id: <20260522034128.3144354-16-yilun.xu@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+	linux-coco@lists.linux.dev
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	x86@kernel.org
+Subject: [PATCH v5 00/20] dma-mapping: Use DMA_ATTR_CC_SHARED through direct, pool and swiotlb paths
+Date: Fri, 22 May 2026 09:57:55 +0530
+Message-ID: <20260522042815.370873-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -72,121 +70,154 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Peter Fang <peter.fang@intel.com>
+This series propagates DMA_ATTR_CC_SHARED through the dma-direct,
+dma-pool, and swiotlb paths so that encrypted and decrypted DMA buffers
+are handled consistently.
 
-Enable the TDX Quoting feature via TDH.SYS.CONFIG when supported by the
-TDX module.
+Today, the direct DMA path mostly relies on force_dma_unencrypted() for
+shared/decrypted buffer handling. This series consolidates the
+force_dma_unencrypted() checks in the top-level functions and ensures
+that the remaining DMA interfaces use DMA attributes to make the correct
+decisions.
 
-The TDX Quoting extension generates TDX attestation Quotes via a
-SEAMCALL, without using a discrete Quoting engine.
+The series:
+- moves swiotlb-backed allocations out of __dma_direct_alloc_pages(),
+- propagates DMA_ATTR_CC_SHARED through the dma-direct alloc/free
+  paths
+- teaches the atomic DMA pools to track encrypted versus decrypted
+  state
+- tracks swiotlb pool encryption state and enforces strict pool
+  selection
+- centralizes encrypted/decrypted pgprot handling in dma_pgprot() using
+  DMA attributes
+- passes DMA attributes down to dma_capable() so capability checks can
+  validate whether the selected DMA address encoding matches
+  DMA_ATTR_CC_SHARED
+- makes dma_direct_map_phys() choose the DMA address encoding from
+  DMA_ATTR_CC_SHARED and fall back to swiotlb when a shared DMA request
+  cannot use the direct mapping, which lets arm64 and x86 CCA guests stop
+  relying on SWIOTLB_FORCE for DMA mappings
+- use the selected swiotlb pool state to derive the returned DMA
+  address.
 
-TDX Module supports add-on TDX features (e.g. TDX Quoting & TDX Module
-Extensions) that should be manually enabled by host. It extends
-TDH.SYS.CONFIG for host to choose to enable them on bootup.
+Changes since v4:
+https://lore.kernel.org/all/20260512090408.794195-1-aneesh.kumar@kernel.org
+* Add new patches based on Sashiko review:
+  swiotlb: Preserve allocation virtual address for dynamic pools
+  dma: free atomic pool pages by physical address
+  dma: swiotlb: handle set_memory_decrypted() failures
+  dma: swiotlb: free dynamic pools from process context
+  iommu/dma: Check atomic pool allocation result directly
+* Include pKVM and s390 changes as dependent patches. These are not yet
+  ready to merge and are waiting for subsystem testing feedback.
+* Drop the AMD GART patch because it requires wider testing.
+* Update swiotlb_tbl_map_single() to take attrs by reference.
+* Switch swiotlb_free() to use rcu_work.
+* Avoid calling swiotlb_find_pool() multiple times in the free path.
+* Make DMA_ATTR_MMIO imply DMA_ATTR_CC_SHARED for devices requiring unencrypted DMA.
 
-Call TDH.SYS.CONFIG with a new bitmap input parameter to specify which
-features to enable. The bitmap uses the same definitions as
-TDX_FEATURES0. But note not all bits in TDX_FEATURES0 are valid for
-configuration, e.g. TDX Module Extensions is a service that supports TDX
-Quoting, it is implicitly enabled when TDX Quoting is enabled. Setting
-TDX_FEATURES0_EXT in the bitmap has no effect.
+Changes from v3:
+https://lore.kernel.org/all/20260427055509.898190-1-aneesh.kumar@kernel.org
+* Handle DMA_ATTR_MMIO correctly in dma_direct_map_phys()
+* Address most of sashiko review
+* Rebase to latest kernel
+* drop SWIOTLB_FORCE for s390 and powerpc secure guest.
 
-TDX Module advances the version of TDH.SYS.CONFIG for the change, so
-use the latest version (v1) for add-on feature enabling. But supporting
-existing Modules which only support v0 is still necessary until they are
-deprecated. In fact, it is unlikely that TDH.SYS.CONFIG ever needs to
-change again and the code would stay in v1. So there is little value
-in worrying about deprecating v0 to save a couple lines of code in 5-7
-years when these original TDX platforms sunset.
+Changes from v2:
+https://lore.kernel.org/all/20260420061415.3650870-1-aneesh.kumar@kernel.org
+* pass attrs to dma_capable() and update direct, swiotlb, Xen swiotlb, and
+  x86 GART paths so the capability checks see the DMA address attr value
+  DMA_ATTR_CC_SHARED.
+* rework dma_direct_map_phys() so DMA_ATTR_CC_SHARED selects
+  phys_to_dma_unencrypted() while the default path uses
+  phys_to_dma_encrypted(), with swiotlb fallback when the requested
+  shared/private state cannot be satisfied by a direct DMA address.
+* stop relying on SWIOTLB_FORCE for arm64 and x86 CC guest DMA mappings;
+  swiotlb is still enabled there, but shared mappings is now selected
+  through the generic dma_direct_map_phys()/dma_capable() decision instead
+  of a global force-bounce flag.
 
-TDX Module updates global metadata when add-on features are enabled.
-Host should update the cached tdx_sysinfo to reflect these changes.
+Changes from v1:
+https://lore.kernel.org/all/20260417085900.3062416-1-aneesh.kumar@kernel.org
+* rebased to latest kernel (change from DMA_ATTR_CC_DECRYPTED -> DMA_ATTR_CC_SHARED)
+* update the alloc path so DMA_ATTR_CC_SHARED is not a caller-visible attribute.
 
-Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Signed-off-by: Peter Fang <peter.fang@intel.com>
----
- arch/x86/virt/vmx/tdx/tdx.h |  4 +++-
- arch/x86/virt/vmx/tdx/tdx.c | 24 ++++++++++++++++++++++--
- 2 files changed, 25 insertions(+), 3 deletions(-)
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Jiri Pirko <jiri@resnulli.us>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Mostafa Saleh <smostafa@google.com>
+Cc: Petr Tesarik <ptesarik@suse.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: x86@kernel.org
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 10aff23cd01f..524a14c01aa6 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -58,7 +58,8 @@
- #define TDH_PHYMEM_CACHE_WB		40
- #define TDH_PHYMEM_PAGE_WBINVD		41
- #define TDH_VP_WR			43
--#define TDH_SYS_CONFIG			45
-+#define TDH_SYS_CONFIG_V0		45
-+#define TDH_SYS_CONFIG			SEAMCALL_LEAF_VER(TDH_SYS_CONFIG_V0, 1)
- #define TDH_EXT_INIT			60
- #define TDH_EXT_MEM_ADD			61
- #define TDH_SYS_DISABLE			69
-@@ -97,6 +98,7 @@ struct tdmr_info {
- /* Bit definitions of TDX_FEATURES0 metadata field */
- #define TDX_FEATURES0_NO_RBP_MOD	BIT(18)
- #define TDX_FEATURES0_EXT		BIT_ULL(39)
-+#define TDX_FEATURES0_QUOTE		BIT_ULL(50)
- 
- /*
-  * Do not put any hardware-defined TDX structure representations below
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index f7600f930c6e..86e5b7ad19b3 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1049,6 +1049,7 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
- static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
- 				    u64 global_keyid)
- {
-+	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
- 	struct tdx_module_args args = {};
- 	u64 *tdmr_pa_array;
- 	size_t array_sz;
-@@ -1074,8 +1075,22 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
- 	args.rcx = __pa(tdmr_pa_array);
- 	args.rdx = tdmr_list->nr_consumed_tdmrs;
- 	args.r8 = global_keyid;
--	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
- 
-+	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE) {
-+		args.r9 |= TDX_FEATURES0_QUOTE;
-+		/* These parameters require version >= 1 */
-+		seamcall_fn = TDH_SYS_CONFIG;
-+	}
-+
-+	ret = seamcall_prerr(seamcall_fn, &args);
-+	if (ret)
-+		goto free_tdmr;
-+
-+	/* enabling TDX Quoting may change tdx_sysinfo, update it */
-+	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE)
-+		ret = get_tdx_sys_info(&tdx_sysinfo);
-+
-+free_tdmr:
- 	/* Free the array as it is not required anymore. */
- 	kfree(tdmr_pa_array);
- 
-@@ -1384,12 +1399,17 @@ static void tdx_quote_init(void)
- 	unsigned int nr_quote_pages;
- 	u64 r;
- 
-+	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE))
-+		return;
-+
- 	do {
- 		r = seamcall(TDH_QUOTE_INIT, &args);
- 	} while (r == TDX_INTERRUPTED_RESUMABLE);
- 
--	if (r)
-+	if (r) {
-+		pr_err("Failed to enable quoting extension: 0x%llx\n", r);
- 		return;
-+	}
- 
- 	/* Quoting metadata is valid only after initialization */
- 	if (get_tdx_sys_info_quote(&tdx_sysinfo.quote))
+Aneesh Kumar K.V (Arm) (20):
+  [DO NOT MERGE] arm64/coco: Add pKVM as a CC platform
+  [DO NOT MERGE] s390: Expose protected virtualization through
+    cc_platform_has()
+  dma-direct: swiotlb: handle swiotlb alloc/free outside
+    __dma_direct_alloc_pages
+  dma-direct: use DMA_ATTR_CC_SHARED in alloc/free paths
+  dma-pool: track decrypted atomic pools and select them via attrs
+  dma: swiotlb: pass mapping attributes by reference
+  dma: swiotlb: track pool encryption state and honor DMA_ATTR_CC_SHARED
+  dma-mapping: make dma_pgprot() honor DMA_ATTR_CC_SHARED
+  dma-direct: pass attrs to dma_capable() for DMA_ATTR_CC_SHARED checks
+  dma-direct: make dma_direct_map_phys() honor DMA_ATTR_CC_SHARED
+  dma-direct: set decrypted flag for remapped DMA allocations
+  dma-direct: select DMA address encoding from DMA_ATTR_CC_SHARED
+  dma-pool: fix page leak in atomic_pool_expand() cleanup
+  dma-direct: rename ret to cpu_addr in alloc helpers
+  dma-direct: return struct page from dma_direct_alloc_from_pool()
+  iommu/dma: Check atomic pool allocation result directly
+  dma: swiotlb: free dynamic pools from process context
+  dma: swiotlb: handle set_memory_decrypted() failures
+  dma: free atomic pool pages by physical address
+  swiotlb: Preserve allocation virtual address for dynamic pools
+
+ arch/arm64/include/asm/hypervisor.h           |   6 +
+ arch/arm64/include/asm/mem_encrypt.h          |   3 +-
+ arch/arm64/kernel/rsi.c                       |  12 -
+ arch/arm64/mm/init.c                          |  17 +-
+ arch/powerpc/platforms/pseries/svm.c          |   2 +-
+ arch/s390/Kconfig                             |   1 +
+ arch/s390/mm/init.c                           |  16 +-
+ arch/x86/kernel/amd_gart_64.c                 |  30 +-
+ arch/x86/kernel/pci-dma.c                     |   4 +-
+ drivers/iommu/dma-iommu.c                     |  15 +-
+ drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c |   5 +
+ drivers/xen/swiotlb-xen.c                     |   8 +-
+ include/linux/dma-direct.h                    |  20 +-
+ include/linux/dma-map-ops.h                   |   3 +-
+ include/linux/swiotlb.h                       |  20 +-
+ kernel/dma/direct.c                           | 275 +++++++++++++-----
+ kernel/dma/direct.h                           |  47 +--
+ kernel/dma/mapping.c                          |  16 +-
+ kernel/dma/pool.c                             | 221 ++++++++++----
+ kernel/dma/swiotlb.c                          | 270 +++++++++++++----
+ 20 files changed, 717 insertions(+), 274 deletions(-)
+
+
+base-commit: 50897c955902c93ae71c38698abb910525ebdc89
 -- 
-2.25.1
+2.43.0
 
