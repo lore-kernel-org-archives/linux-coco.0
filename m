@@ -1,68 +1,58 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DEDB364047
-	for <linux-coco@lists.linux.dev>; Fri, 22 May 2026 23:05:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF734364047
+	for <linux-coco@lists.linux.dev>; Fri, 22 May 2026 23:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779491139; cv=none; b=dTObq4V5oeTjU4eF4IjJKa9rUPwEXMKeK2FV6IG1YzfZkpIlm4v4aaxzmdqNM+GPmEzKDWr8TGGGh78yl4AW7Fxs5Pi8d+Q+gKNHHyTEwK04HDVhvhAYN56U61o3ifgXNffAZZWPAuyOOEMWRDRqzYlz72nBlvaoCZiBFbC9GoM=
+	t=1779493822; cv=none; b=E0jvcJgzxjcx8+IorC9/dPvB4qgN0/yX42D+Kv/BF0GwUZsbuJ2j71Rh9p/MLPCBf6Rn9Ocpd4fQ9f5ipbqOAkFQ9Ehdby8hr//sG+BL8Hv80wqSyp+3fCwgE7x9KxUr/PhMgSEw1Xwwdqd1uSAb/620OXE8EtsI4oRLVY9MYf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779491139; c=relaxed/simple;
-	bh=8vLtsz7ZKDtp2UNuNvqYFVPILl8UflYPbV55sojcBjs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=r95NVp245aajIlOJ1CRow/qZzmi0nXL7+EWTyIcnZfPmaaAq3GXkuaiA0qOKVNvr4OIa2AghPUSuiIrCrTu8ND1OGMo6gCbCZeKybIroPxHUym2luTo2O+WcFSqKg7LWaB8wcAj68okrPo2d+9rFTi619FJdnswXYJAUVY6A9vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HFaqVN6o; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779493822; c=relaxed/simple;
+	bh=70juYxIUdAmmDC/kCtJdEbKBZyXEA5lwVJTQ2r2IwhU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tRvVkg+YxURUF2ozMTkaFT4D9hbO1QY0gUJrXovkxuMAi6PJS/ErZq5Q4rESLWaUAvg9COXfjg9i/1Wxc66108Do6JKY1+73GmYFsOsEFoSW9cmpTqpa5YHMvCnieXe4NRXEp5l3UDJCnzAERJGzTSnLijPBKctHc0vH3LgMUjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e4Ufb0Vb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HFaqVN6o"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b9b8137828so79311525ad.0
-        for <linux-coco@lists.linux.dev>; Fri, 22 May 2026 16:05:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779491137; x=1780095937; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=L9YbEtCfOkOpVPBvBwRE/wDUhUbdeL8GFXWIWh+htCc=;
-        b=HFaqVN6oFUU2m6rDacdORa+NBwirT2rsleaNIy4mPMI+o3pvSZj0MuivMowWJvAPk/
-         7OuwcJNtDWXOpJ+cJnRnlIca7rKUS+QuAaBex9yUhoc23lYNW7gGCVb8rFoVA4EG9NxK
-         lqLHLJztWVuCtnMauxW08fU9Tn+mpTJ3/cw64M1Rf7ma5JxYa63avJLvo0WscZz0Ahy5
-         9TGUnFxbhGFxap/CvoVVeg8s+M1AHIZtqDvfsDFs/P5Ca3Q3GkKSqlMNfMaTZFLWnKtB
-         2zBAXoTN4h4qhPa8GdoGKGGthaf2bFD9mpnoVtknU496uOYc837LCS5gKPlhceXo0bI8
-         rnJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779491137; x=1780095937;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=L9YbEtCfOkOpVPBvBwRE/wDUhUbdeL8GFXWIWh+htCc=;
-        b=fCo0xiIfRngpEuj/tQI0zdpWEIqaT9i88S+DI0N8SffceftTnaL+zce+E8yTXcEjaV
-         M22Tlb/NciBupvkJqMP7uT1H9KkIYwhxxkKQDD+V6BSndaymfQwn+esJM/9GxLe/+dBc
-         znIl5qe15frV24XYghIYKZ+jjvl9VMjhOFZ13RqbyLMWlOvgcx+w+rCD644fosFTxqrZ
-         LnCFE6jFRutjf4fRuF/oH5mq0WeBytMU6gw2/SlJ8J8WlWVmtrW7tapRYagYniFLZX0E
-         rZulzY7eWCCLRKMKZjZEXZ+E93ERe2hn+ElzBU27I/RcFw2iU/pzkIYg0v1pgMTOiRmP
-         tabg==
-X-Forwarded-Encrypted: i=1; AFNElJ8pGOziVVhbW+lE6wwk74eBL4ujxaQhFc6pk0NQaBigMnuOmOj0jds0/+Voh5bR2e4H8RZ6y1Lc87Wn@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz5qtF1+tjmg3BSGdbyp+p6sbNY2K+BkyRsAib8IMLV6PFSl5Dp
-	yKyRHEqBu0Y2Th8qs2hcz77KnQom8ZjJBh+N9IoRS67akFpQTVjkxOqRFHTrDZJYPJzwHA8kORk
-	zX+dh0Q==
-X-Received: from plbjh21.prod.google.com ([2002:a17:903:3295:b0:2be:1727:6821])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e88e:b0:2bd:9803:9308
- with SMTP id d9443c01a7336-2beb070261bmr61986275ad.36.1779491137176; Fri, 22
- May 2026 16:05:37 -0700 (PDT)
-Date: Fri, 22 May 2026 16:05:36 -0700
-In-Reply-To: <CAO9r8zMY6i+TWoZPWzj8zB+Xw3rONbK-Nee1kSFwDkT3hy66zg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e4Ufb0Vb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88521F00ADF
+	for <linux-coco@lists.linux.dev>; Fri, 22 May 2026 23:50:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779493820;
+	bh=+7/LJADrQKRf5I/52L0O6RFJgB3HraO8VhuLuOw9b6U=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=e4Ufb0VbOB50pWlk82zWq2rcyoj4m7/xri8WkpRatYCCQIi0ZcK8QB6KnxGa5we7n
+	 AIoi6Ux7IT7munRnrV9ihBf4NHf92K2mTZb4xByehV/jqVcw43nGuZALDbl/2ty7WE
+	 h02AQp+o0Q/mwZN/XP9Ea6SEflzfUYOq9V6FW3iOjRlBrJEvRev+p1u5q5haSx9Coc
+	 orveHdx0/ak/u8VPjzGdEqTlw/yqq3NJOfdTTBPOxVZR5a3kRGbJlPu32R0kOqHwK0
+	 ZNap9JE0KZP8lPVDCpBbqMUJNeZs5K83n8nEZ1lhhwsNyWb54ONPwT5RD+crHChUTf
+	 U2Al/Rmg5kS3w==
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-bd22b2abaa4so1322889966b.0
+        for <linux-coco@lists.linux.dev>; Fri, 22 May 2026 16:50:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8rwNOBCI0nvLWeiB0vx+wyw9QfgowvwpIpflKxiyWGY3LKdPv7fVImM3uimfU1AyMYplVdESKaraMX@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw9bJGh/CJvjXWK9+4ho5aXlcxzAzNLaOS9n/+YEAHPHDhCkKY8
+	vF0jVUww6CV3Fi1K0G6Il8NVOIGdIU/pzkAss9cyyLDPk7PvAH8GAH531vVDWSFoPlD7rObGfeA
+	aA1s1nzZP1yr/N9nJR7FJ1rTx1eZstNQ=
+X-Received: by 2002:a17:907:a789:b0:baf:19a8:b44b with SMTP id
+ a640c23a62f3a-bdd276ccf77mr393705466b.25.1779493819560; Fri, 22 May 2026
+ 16:50:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
 References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
- <20260521-tdx-selftests-v13-v13-7-6983ae4c3a4d@google.com> <CAO9r8zMY6i+TWoZPWzj8zB+Xw3rONbK-Nee1kSFwDkT3hy66zg@mail.gmail.com>
-Message-ID: <ahDhQJI7xBOQpnjg@google.com>
+ <20260521-tdx-selftests-v13-v13-7-6983ae4c3a4d@google.com>
+ <CAO9r8zMY6i+TWoZPWzj8zB+Xw3rONbK-Nee1kSFwDkT3hy66zg@mail.gmail.com> <ahDhQJI7xBOQpnjg@google.com>
+In-Reply-To: <ahDhQJI7xBOQpnjg@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 22 May 2026 16:50:07 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMaiGL8v=f72EAwWbwofoUHOkH8r6Se22k2TVxnUCQLOQ@mail.gmail.com>
+X-Gm-Features: AVHnY4JqeJTUpgCJK6wBsGYftwqfsgN8XZ_oucWG29bLRQoRun4zGBsAHuwrKNA
+Message-ID: <CAO9r8zMaiGL8v=f72EAwWbwofoUHOkH8r6Se22k2TVxnUCQLOQ@mail.gmail.com>
 Subject: Re: [PATCH v13 07/22] KVM: selftests: Introduce structures for TDX
  guest boot parameters
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
 Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
 	Ackerley Tng <ackerleytng@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
 	Chao Gao <chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, 
@@ -75,44 +65,28 @@ Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
 	Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, 
 	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, May 22, 2026, Yosry Ahmed wrote:
-> > +static void __attribute__((used)) common(void)
-> > +{
-> > +       OFFSET(TD_BOOT_PARAMETERS_CR0, td_boot_parameters, cr0);
-> > +       OFFSET(TD_BOOT_PARAMETERS_CR3, td_boot_parameters, cr3);
-> > +       OFFSET(TD_BOOT_PARAMETERS_CR4, td_boot_parameters, cr4);
-> > +       OFFSET(TD_BOOT_PARAMETERS_GDT, td_boot_parameters, gdtr);
-> > +       OFFSET(TD_BOOT_PARAMETERS_IDT, td_boot_parameters, idtr);
-> > +       OFFSET(TD_BOOT_PARAMETERS_PER_VCPU, td_boot_parameters, per_vcpu);
-> > +       OFFSET(TD_PER_VCPU_PARAMETERS_ESP_GVA, td_per_vcpu_parameters, esp_gva);
-> > +       OFFSET(TD_PER_VCPU_PARAMETERS_GUEST_CODE, td_per_vcpu_parameters,
-> > +              guest_code);
-> > +       DEFINE(SIZEOF_TD_PER_VCPU_PARAMETERS,
-> > +              sizeof(struct td_per_vcpu_parameters));
-> > +}
-> 
-> This is neat.
-> 
-> Sean, is this the preferred way to expose offsets to asm files (or asm
-> code blocks) -- as opposed to say using .equ [*]?
+> > Sean, is this the preferred way to expose offsets to asm files (or asm
+> > code blocks) -- as opposed to say using .equ [*]?
+>
+> For actual .S assembly, yes.  For inline asm, maybe?  If it looks prettier, go
+> for it.
+>
+> > If yes, I can rework my nVMX GPR fixes to use the same approach for
+> > register offsets. I wonder if the non-TDX part of this patch (i.e.
+> > Makefile stuff) can be split, then patch 6 and the Makefile stuff can
+> > land independently and allow development on top.
+> >
+> > I can also split them out and include them in the next version of my
+> > series, then whichever series lands first will land the offsets
+> > support.
+> >
+> > WDYT?
+>
+> Hmm, I'd say keep your series as-is for now.  The OFFSET() infrastructure really
+> shines for proper assembly.  For what you're doing, AFAICT it's only marginally
+> better.  So I don't think it's worth juggling dependencies to use it right away,
+> we can always convert if/when the TDX series lands the fancy stuff.
 
-For actual .S assembly, yes.  For inline asm, maybe?  If it looks prettier, go
-for it.  
-
-> If yes, I can rework my nVMX GPR fixes to use the same approach for
-> register offsets. I wonder if the non-TDX part of this patch (i.e.
-> Makefile stuff) can be split, then patch 6 and the Makefile stuff can
-> land independently and allow development on top.
-> 
-> I can also split them out and include them in the next version of my
-> series, then whichever series lands first will land the offsets
-> support.
-> 
-> WDYT?
-
-Hmm, I'd say keep your series as-is for now.  The OFFSET() infrastructure really
-shines for proper assembly.  For what you're doing, AFAICT it's only marginally
-better.  So I don't think it's worth juggling dependencies to use it right away,
-we can always convert if/when the TDX series lands the fancy stuff.
+Ack. We can do the switch later like you say.
