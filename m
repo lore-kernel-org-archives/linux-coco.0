@@ -1,178 +1,195 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE5A37419D
-	for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 23:17:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296B416132A
+	for <linux-coco@lists.linux.dev>; Fri, 22 May 2026 04:05:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779405466; cv=none; b=GkQDejuIQU2QaEPygIb+kri115aRY1oFqABn0I0gZhmo+Ag38u+SJJ2AaVB+mFWPFfnhu1gTBXz3clrq1QKoxzF9HVctCrcXHHej5g8aKwIbJzNu5bO5LseFs+n2PR9Zu8K92Fl0TEeoeHAFDi/4zNsGLanr8BanfNDFvwp2+Vw=
+	t=1779422720; cv=none; b=syGwEmfDFJgKcfxtGr8he3Q9EoCbZ8atV+igco5QfMfue6x6tB7pEXpN/uxBXEwsG6301/iJfyr35jWNEU7TYd5YtES3a/g8x7bZue5IIoX1ENpQdD9y3+Ctz/U2x+ANWIXDLpA92HcpdD6nJIjgluiDO6RiPQhgN8+4AMUIpWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779405466; c=relaxed/simple;
-	bh=g07zdxChitPTI9twOohppbiWhlIxXngRCSMr4LUrbCs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VsSNmM8IxMsmlqyKgHgfsWsrvClXnIHcECnmf12iJd4D+mcdxjn4Oh+NNZUFnOK9YNwlovjhLKg62BRt5rAXuXNtkPnDJYFwTuoh9HBMZVdhmoZoc8L/58j3wxut2LEp9v0TNq0nSSgq2SZsJ80mOlmfaDSSVh6wou8b+vwk7R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AcCwch8L; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
+	s=arc-20240116; t=1779422720; c=relaxed/simple;
+	bh=n4IG7a2PpHm/2z4I5gYgFbB13fkxsdCnKrUXthB/zzw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cXkcVnQJGujXzPWY2z1Tzi+QrnM34TuORW6q00apoG18J6oFbim5wFbT1Xrmm/8C0/UOPnvBswUPLcvh1Lt6dg1wU3nGgAFkbz0tfz6pAnAE639644bHkkdb6714+tTzsIMC6+4g3R2FLqR0HTZYAORv1bbxJT6zTYUMpx6QkPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UT3sPpDN; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AcCwch8L"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-367cb6de61aso12034173a91.1
-        for <linux-coco@lists.linux.dev>; Thu, 21 May 2026 16:17:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779405463; x=1780010263; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NDuVHbbe9tFqK9kSIH2YOcoslIJRCEw3L/LE+oaB3CE=;
-        b=AcCwch8LG71yaGWoh2+vR6YeNdRBTpFIhIfHXJwR6BCIlHyCAY7gd3MpVPpWgiCSY6
-         TKk7Y0vWh3AxYDgLlUcDeqNr6mrpZ/mmKZFToJoXy3vzIylaugwqFzyX6AIHfuyEIog/
-         XYSTQ8aZBPwRIzBZ0h+WbQYEuLqI7f69asRNx6xW3Iby1zRs99HwAhh2l0HBwXSXUa4B
-         9e8zr9LtGjVd6TfomvXKvWvbLcyO9Gc43FI3tdyx8nYagtI0xjQWIorrbQSfrptvOBME
-         zjuD8fb0j61ljPIx6L8gyRSK6+gQafp8Hby9mBaRgp1GVMCdm56ebG62ncDBarJffWoj
-         hFpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779405463; x=1780010263;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NDuVHbbe9tFqK9kSIH2YOcoslIJRCEw3L/LE+oaB3CE=;
-        b=jMNS39LY9JVFlAN/qk+isI3SN/WSpKleaVjQvINpaX1GDjJI53YGAFtlRrlkXuol8h
-         lXoiyYoz3gh+bGiIPNkFOb07+YpPkhxBzavePyUn/j0qO0Kz5h0E27cH6LeVdI4mciHY
-         4kCs7Q+HxQ4AD5yqu6QhROVU21Mfezd9BsM1aEqmorPcyJVCToYUiSM/J0qSwwpBqALA
-         P2/da5Sf4S1SMdkI9jY2MSPCQ/xlhS86hRBb/KsspqNKHtTSUinPrLskN9lgq9aFOPp3
-         cZEmGGzh0hmogZHCWnUPfRG9G92sFGBz7mjBe98uF1Ze2nPs9cqjan8/ZLmRBKreXet3
-         0Hbg==
-X-Forwarded-Encrypted: i=1; AFNElJ9Lm9+AcKGlWP+t3N8uC+G0RzXMtlqrTeUkyvCj9wtTTjBZjuZ68I3+6SGisDdg2yT9T5iHVXbseiRO@lists.linux.dev
-X-Gm-Message-State: AOJu0YwQD6YBWh4+O/6tPiSNFpzKEeD2CYUmXd6x8A8VAFp/VAT4T/nx
-	/7newkPVtoi1zB4SeDOfxCRD9hNW1InRsg0uc5uJQTrEtBSO0eOH4igZNA3c0QGCJKuyxh3XgLA
-	u+oTnDg==
-X-Received: from pjbii14.prod.google.com ([2002:a17:90b:488e:b0:365:f319:9427])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2e04:b0:359:1130:1047
- with SMTP id 98e67ed59e1d1-36a677c7a77mr1021731a91.17.1779405462422; Thu, 21
- May 2026 16:17:42 -0700 (PDT)
-Date: Thu, 21 May 2026 23:17:03 +0000
-In-Reply-To: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UT3sPpDN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779422719; x=1810958719;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=n4IG7a2PpHm/2z4I5gYgFbB13fkxsdCnKrUXthB/zzw=;
+  b=UT3sPpDN5VzbUqPTxyrVw84rFAMFYMJzC7vfn7HOmVXZItY0rj0V9AWd
+   0KEOBntZhG2v3aDYLgiA80yBQ525jwqcLjFWG3jPFTWuP8bY9wjZMl2zD
+   ViNjt2rWuo1wb730ODuLzQinX1X/I7WzfwAVxcM/DR0oYasApk/dolgS9
+   DgnD2bieIYv6EQCp77HLsyWB3RSX8fLnf1YcxjKUzuEt177/SV0JBFsRC
+   D866CeWh0L9UqoFQk1tdcPE44e/wgh6LxaXubefBhRkR2vCFkhDOYgzcF
+   8CAJlNBkU2E9YS+TlzgziX0c1y7CbDwaoQ52+NPiJpNK37I+HgGDzdaZy
+   g==;
+X-CSE-ConnectionGUID: rg28ihurTBCf3XPMRqTRrQ==
+X-CSE-MsgGUID: P7JxtguFSE+NZxsvSTVKHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="80528842"
+X-IronPort-AV: E=Sophos;i="6.24,161,1774335600"; 
+   d="scan'208";a="80528842"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 21:05:13 -0700
+X-CSE-ConnectionGUID: yHpRE9wzRZi5AuzyQsL90A==
+X-CSE-MsgGUID: b7rWVim0RSq8pKmOjI3SmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,161,1774335600"; 
+   d="scan'208";a="239757760"
+Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
+  by orviesa006.jf.intel.com with ESMTP; 21 May 2026 21:05:08 -0700
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: kas@kernel.org,
+	djbw@kernel.org,
+	rick.p.edgecombe@intel.com,
+	x86@kernel.org,
+	peter.fang@intel.com
+Cc: linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	sohil.mehta@intel.com,
+	yilun.xu@intel.com,
+	yilun.xu@linux.intel.com,
+	baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com,
+	xiaoyao.li@intel.com
+Subject: [PATCH 00/15] Enable TDX Module Extensions and DICE-based TDX Quoting
+Date: Fri, 22 May 2026 11:41:13 +0800
+Message-Id: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
-X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779405439; l=3221;
- i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=sRLiM6RbKoG5VddtAxKgLddQfa2cG3iSFQQYT2bdoPE=; b=LQ4+Mf9N/xXTNK6v12F5/Hub6eIZiXj/exJGFNQFy/wfFpW4Gkn2yokdKqIUWZEOB5CKda52Q
- Vl26TIS53DfA2JDT220jZpKa3XPSiQ8gKhVMwHGOs/gTm6xxUIFU6wy
-X-Mailer: b4 0.14.3
-Message-ID: <20260521-tdx-selftests-v13-v13-22-6983ae4c3a4d@google.com>
-Subject: [PATCH  v13 22/22] KVM: selftests: Add TDX lifecycle test
-From: Lisa Wang <wyihan@google.com>
-To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
-	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, Lisa Wang <wyihan@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-From: Sagi Shahar <sagis@google.com>
+This posting is just to collect initial review.
 
-Adding a test to verify TDX lifecycle by creating a simple TDX VM.
+Sean, Paolo, Dave please feel free to ignore for now. Sean, especially
+the x86 KVM stuff is only here as an example for the init code, and not
+ready for review.
 
-Signed-off-by: Sagi Shahar <sagis@google.com>
-Signed-off-by: Lisa Wang <wyihan@google.com>
----
- tools/testing/selftests/kvm/Makefile.kvm           |  1 +
- .../testing/selftests/kvm/include/x86/processor.h  |  1 +
- .../selftests/kvm/include/x86/tdx/tdx_util.h       |  5 ++++
- tools/testing/selftests/kvm/x86/tdx_vm_test.c      | 33 ++++++++++++++++++++++
- 4 files changed, 40 insertions(+)
+Kiryl and Dan, we are trying to get acks for the first 4 patches of the
+series so they can be serve as a settled base for all the other work
+that uses Extensions. Please review the first 4 patches and treat the
+later ones as an example for the Extensions initialization.
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 489324cecf83..14db8eb2bf0d 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -167,6 +167,7 @@ TEST_GEN_PROGS_x86 += rseq_test
- TEST_GEN_PROGS_x86 += steal_time
- TEST_GEN_PROGS_x86 += system_counter_offset_test
- TEST_GEN_PROGS_x86 += pre_fault_memory_test
-+TEST_GEN_PROGS_x86 += x86/tdx_vm_test
- 
- # Compiled outputs used by test targets
- TEST_GEN_PROGS_EXTENDED_x86 += x86/nx_huge_pages_test
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index ed9c031b77b8..f65755482a97 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -372,6 +372,7 @@ static inline unsigned int x86_model(unsigned int eax)
- #define VM_SHAPE_SEV		VM_TYPE(KVM_X86_SEV_VM)
- #define VM_SHAPE_SEV_ES		VM_TYPE(KVM_X86_SEV_ES_VM)
- #define VM_SHAPE_SNP		VM_TYPE(KVM_X86_SNP_VM)
-+#define VM_SHAPE_TDX		VM_TYPE(KVM_X86_TDX_VM)
- 
- #define PHYSICAL_PAGE_MASK      GENMASK_ULL(51, 12)
- 
-diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-index 8276622c50d2..56538b1286f3 100644
---- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-+++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-@@ -11,6 +11,11 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
- 	return vm->type == KVM_X86_TDX_VM;
- }
- 
-+static inline bool is_tdx_supported(void)
-+{
-+	return !!(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_TDX_VM));
-+}
-+
- /*
-  * TDX ioctls
-  * Use underscores to avoid collisions with struct member names.
-diff --git a/tools/testing/selftests/kvm/x86/tdx_vm_test.c b/tools/testing/selftests/kvm/x86/tdx_vm_test.c
-new file mode 100644
-index 000000000000..7cdcaf33b585
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/tdx_vm_test.c
-@@ -0,0 +1,33 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include "processor.h"
-+#include "kvm_util.h"
-+#include "tdx/tdx_util.h"
-+#include "ucall_common.h"
-+#include "kselftest_harness.h"
-+
-+static void guest_code_lifecycle(void)
-+{
-+	GUEST_DONE();
-+}
-+
-+TEST(verify_td_lifecycle)
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	struct ucall uc;
-+
-+	vm = vm_create_shape_with_one_vcpu(VM_SHAPE_TDX, &vcpu,
-+					   guest_code_lifecycle);
-+
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_EQ(get_ucall(vcpu, &uc), UCALL_DONE);
-+
-+	kvm_vm_free(vm);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	TEST_REQUIRE(is_tdx_supported());
-+	return test_harness_run(argc, argv);
-+}
+== Why it's being posted ==
 
+The TDX Module is introducing a new concept called "TDX Module
+Extensions", and several upcoming features depend on them. The
+Extensions need some extra setup at TDX module init time, and the code
+to do this is expected to be somewhat generic.
+
+We want to get the basics of this TDX module extensions piece sorted so
+that all of the extension-based work can build on it. This series
+includes those basics, and an example usage called DICE-based TDX
+Quoting. Only the first 4 patches are about initializing the TDX module
+Extensions. I'd like some review on them. The later DICE patches are
+just included to serve as a usage example for the TDX module extension
+code.
+
+The first 4 patches will eventually need an ack by an x86 maintainer, so
+please review with that in mind.
+
+== Overview ==
+
+TDX Module introduces the "TDX Module Extensions" to support long
+running / hard-irq preemptible flows inside. This makes TDX Module
+capable of handling complex tasks through "Extension SEAMCALLs".
+
+TDX Module allows some add-on features to use the Extension. The first
+feature to use Extensions is DICE-based TDX Quoting [1]. DICE is an
+industry-standard, certificate-backed attestation framework that layers
+evidence through a chain of certificates.
+
+This series adds infrastructure to enable the Extensions and then
+implement DICE-based TDX Quoting.
+
+The Extensions consumes relatively large amount of memory (~50MB). So it
+is designed to be off by default. It must be enabled after basic TDX
+Module initialization and when add-on features require it. To enable
+the Extensions, host first adds extra memory to TDX Module via a
+SEAMCALL (TDH.EXT.MEM.ADD), then uses another SEAMCALL (TDH.EXT.INIT) to
+initialize Extensions, and then some add-on features, e.g. DICE, could
+use Extension SEAMCALLs for work. Note that host can never get the added
+memory back.
+
+Theoretically, the Extensions doesn't need to be enabled right after
+basic TDX initialization. It could be enabled right before the first
+Extension SEAMCALL is issued. That would save or postpone memory usage.
+But it isn't worth the complexity, the needs for the Extensions are vast
+but the savings are little for a typical TDX capable system (about
+0.001% of memory). So the Linux decision is to just enable it along with
+the basic TDX.
+
+This series has 2 distinct parts:
+
+  Patches  1-4:  TDX Module Extensions enabling
+  Patches  5-15: DICE-based TDX Quoting, primarily Peter's work.
+
+== Some history ==
+
+The TDX Module Extensions part was first posted along with TDX
+Connect [2]. Now this part is remarkably smaller because we've removed
+the generic tdx_page_array abstraction for HPA_LIST_INFO. TDX Module
+Extensions is the first user of HPA_LIST_INFO, and doesn't use it in a
+typical way (HPA_LIST_INFO can only hold at most 2MB memory). There
+isn't enough justification to make the abstraction in this series. A
+possible plan is to rebuild tdx_page_array iteratively when more use
+cases arise.
+
+== Misc ==
+
+This series is based on tip/x86/tdx [3], because we need a small
+being-merged patch [4] before our work.
+
+
+Link: https://cdrdv2.intel.com/v1/dl/getContent/874303 # [1]
+Link: https://lore.kernel.org/all/20260327160132.2946114-1-yilun.xu@linux.intel.com/ # [2]
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/log/?h=x86/tdx # [3]
+Link: https://patch.msgid.link/20260402-fuller_tdx_kexec_support-v3-1-34438d7094bf@intel.com # [4]
+
+
+Peter Fang (10):
+  x86/virt/tdx: Move tdx_tdr_pa() up in the file
+  x86/virt/tdx: Initialize Quoting extension during bringup
+  x86/virt/tdx: Prepare Quote buffer during extension bringup
+  x86/virt/tdx: Add interface to check Quoting availability
+  x86/virt/tdx: Add interface to generate a Quote
+  x86/tdx: Move and rename Quote request structure
+  KVM: TDX: Factor out userspace return path from tdx_get_quote()
+  KVM: TDX: Add in-kernel Quote generation
+  KVM: TDX: Support event-notify interrupts only with userspace quoting
+  x86/virt/tdx: Enable TDX Quoting extension
+
+Xu Yilun (5):
+  x86/virt/tdx: Read global metadata for TDX Module Extensions
+  x86/virt/tdx: Add extra memory to TDX Module for Extensions
+  x86/virt/tdx: Make TDX Module initialize Extensions
+  x86/virt/tdx: Enable the Extensions right after basic TDX Module init
+  x86/virt/tdx: Embed version info in SEAMCALL leaf function definitions
+
+ Documentation/virt/kvm/api.rst              |   8 +-
+ arch/x86/include/asm/tdx.h                  |  34 ++
+ arch/x86/include/asm/tdx_global_metadata.h  |  11 +
+ arch/x86/kvm/vmx/tdx.h                      |   6 +
+ arch/x86/virt/vmx/tdx/tdx.h                 |  32 +-
+ arch/x86/kvm/vmx/tdx.c                      | 176 ++++++++-
+ arch/x86/virt/vmx/tdx/tdx.c                 | 387 +++++++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  27 ++
+ drivers/virt/coco/tdx-guest/tdx-guest.c     |  25 +-
+ virt/kvm/kvm_main.c                         |   1 +
+ 10 files changed, 655 insertions(+), 52 deletions(-)
+
+
+base-commit: 5209e5bfe5cab593476c3e7754e42c5e47ce36de
 -- 
-2.54.0.746.g67dd491aae-goog
+2.25.1
 
