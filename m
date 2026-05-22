@@ -1,135 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9475E478E49
-	for <linux-coco@lists.linux.dev>; Fri, 22 May 2026 16:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF74E30EF90
+	for <linux-coco@lists.linux.dev>; Fri, 22 May 2026 17:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779468865; cv=none; b=I3XVk43vXYbmgeGwnbhWXXBC0g3iLLv/vUUp2wn6QfBp0E/2Mk+4yaMjdJ39dvUf7t2CC8Y8HQlvop4EFnajatZVsk11W6ZjiX7LidFvJ8tuEpWaDgt+LozBjs7EZcrFL5ZlUJFNqvaxlH/InNoshYmTsHmMOw7tkRnCpgTvC80=
+	t=1779471801; cv=none; b=TE0gKWj8iojm2Km32KGXfedcmk/Sf9E9CvGdXaxcBNkpZaTxhpSBDNnzkusl56CXtTbKzdXoF7+nxA/gMYB4I+4SE0FTbyOIslXGtYEY2erHBSb0G0ImaZQA1MdgMh5S7Gpc2kRmV0M5TxYRrTTOd4BGcJquhj5UVKk1V5ku1uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779468865; c=relaxed/simple;
-	bh=BAQBkaJbwUksCFCRdnkv0H9H5clwR/tNu5q8IVW7hvk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kxT3WiAMcCyj2hI8USOX/ZZxywQc5BJjPkPI3+k7/gCaFjOnk3mZIk2ET+K5N2c21wA3oya1zkSfpkIOS3+69wYRn4fZK1+do8qpXDG7nebZLLTDdhz/NOiFa9H5gaPvMEk5FCTo5RRm+lU+Btt4X1C+xUhWITJQBBAop3eCBcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cE06t9+E; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779471801; c=relaxed/simple;
+	bh=Ekfj/I7mK5/NOrsL9YM5YnBlh5U1clx21tuHJ9aVlB0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=avEC6qdMAW1nQIBRyg7T2fBk7G+37dgF2T7vJLSewXPbz3Qx5wvbjKA44gxvp1WnAtIh1sRIa3bFspSEm7ZiBIfauzcJ5bn0C2aNKEb/RoCyLZcxoaIeo8pmBLDWdXL4whGrEw4D+4q5FbxY6jz/KyYItveh+7KoFODhOZkPy3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E+t2S9L6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cE06t9+E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C4B1F000E9;
-	Fri, 22 May 2026 16:54:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E+t2S9L6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960DE1F0155E
+	for <linux-coco@lists.linux.dev>; Fri, 22 May 2026 17:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779468863;
-	bh=XcYjFp3x3nhf41eqAUeiUl4v/jsgL5K+bXT5SclsVso=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cE06t9+EApM5cZ8hqeZBvMyquUAdwFNLwBd/pgPMD4DtDaxRpAkJ8+4KJOWVlhEN2
-	 IqiMVVaa8tfi+hT+ceLxedykCtt3UAiLaMaRc0V336gvOaIC0UMudkSgkJDTjaQhcR
-	 cThdiKLeiXLnwNzq/JFpylLzA77g0DjhsOW+Qi386QnLKbxCGXIGcOpTlSiAlJuQ7l
-	 JTt6aCYqfEU3iKMfOz6y4LTD0Ev7qHQOIZCu0ot4ORtJ06hlqihDr4r3X/zDKcavPD
-	 ruMumM8yenvRqUSqBZ2yhtkO5jTElnGp3cL4YRSvjxeVURcbgMfQw/FwtvXIntp1K/
-	 MeoV1KZrvsg7Q==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 3A52DF4008C;
-	Fri, 22 May 2026 12:54:22 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Fri, 22 May 2026 12:54:22 -0400
-X-ME-Sender: <xms:PooQaqChmNc7KEUYHqtYfJ2flPMNJEw8ziOL-9oKcxTGxqSeTzkdvw>
-    <xme:PooQam01rEltLrNzr4a0rZDRuZRAa-wefvj4AM6fwPAY7KyP2FjLgVGyW0abWDDR4
-    WWxnzxYnRW-iCazAXK2qloRE4lh9B_M8hVjJevy09z6XLYZ2fod8g>
-X-ME-Received: <xmr:PooQasQKovnx3iZAKX4kEC8rSoonw-NLeZy4urbAuMFjkmqeohAnxmEzjTcADw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduhedtjedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefmihhrhihl
-    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeeludettdeigfefhffhhfelveeludeuleduvefhgefgueeitedtleffudegfffg
-    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
-    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
-    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
-    drnhgrmhgvpdhnsggprhgtphhtthhopeeftddpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepuggrvhgvrdhhrghnshgvnhesihhnthgvlhdrtghomhdprhgtphhtthhopehrih
-    gtkhdrphdrvggughgvtghomhgsvgesihhnthgvlhdrtghomhdprhgtphhtthhopehlihhn
-    uhigqdgtohgtoheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopegtlhhoph
-    gviiesshhushgvrdguvgdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopegrkheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopegsphesrg
-    hlihgvnhekrdguvgdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhi
-    nhhtvghlrdgtohhmpdhrtghpthhtohephhhprgesiiihthhorhdrtghomh
-X-ME-Proxy: <xmx:PooQalvDhz3R6-bp69-gUlIq3JEFdi2d--mRH1dOJVdLHQ-SPWl5RA>
-    <xmx:PooQas4Mx8s2w4MG5pn1QffllfXpNmAKY0S0kE9FIC2chE0zNu5Gpg>
-    <xmx:PooQarY3-TrpvgjjNWyiMSgDpVr6XQG2dOzdXGcf7V2zqsFCbWweEQ>
-    <xmx:PooQanhSZz6LraH4gZTgzv7sQ_EwX3SDSOtbPO3iS6uXvpf5E8unWQ>
-    <xmx:PooQaubUJhtG_1kyEJp6lYxrZ3xOG7FKKd7PPHsACC67GNarb1pqsgSa>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 22 May 2026 12:54:21 -0400 (EDT)
-Date: Fri, 22 May 2026 17:54:19 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "clopez@suse.de" <clopez@suse.de>, 
-	"x86@kernel.org" <x86@kernel.org>, "ak@linux.intel.com" <ak@linux.intel.com>, 
-	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Luck, Tony" <tony.luck@intel.com>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Subject: Re: [PATCH] x86/tdx: Fix zero-extension for CPUID emulation
-Message-ID: <ahCI-vSYMe3digej@thinkstation>
-References: <20260512213719.20974-1-clopez@suse.de>
- <81343db56b8df8f70a2e13a17e62c620bee36897.camel@intel.com>
- <7f7b8bfd-f39e-417c-991f-d224d58cb52a@intel.com>
+	s=k20260515; t=1779471799;
+	bh=pTOtHctpsu0Uxn/mt7EMLg+LFXWIDLG4I8nnouzg4d8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=E+t2S9L6XBriHAdZNF/SxsPye8XVOZEtgDyQxdCdROLcxjR4aAvZu4LV+3pVTtKCH
+	 PzNfkW62iF8Ne3SgUN7rdh2Td85nJVc6MyYlSwp2YRKP6SDhvCsYj87cjZvb+xas/a
+	 vl5Q7n38d+ide/JN2XNob4w5YI9yenNBr9BJ0fyDKpToAqRTcpXWmb5Ll6313Va1WW
+	 5zI8hmIxz73nnDZw/+Xji0/2DIqWr7oYtPvNZdBW6FAuXhFSXJiGlbUG/iubYDOWRi
+	 6vJBlIQ4TvabQAkPs7XGNrYHsJw76htUmze1gRVkJOX4zxZDUQTnnksPjW8VNyfMjG
+	 AW/F3spfel0VQ==
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-68852b58d87so3449414a12.3
+        for <linux-coco@lists.linux.dev>; Fri, 22 May 2026 10:43:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9LW1+eWLpTex8blmVC6GFhZQe3mvCe0MrGZB1eHfBDX87RDcOKNIpyJS3MwyfQanxEsUQkmj/yQ6PA@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz6/GOqEXo5RGXK9neHIPq6k1i0FBlaGOV1b5zWY3hT0lFpETP/
+	O4nWZnJHB3+fLpTyIPsVgc+B+Oztp3MKMg+LmKCrm9ZG/OecMYX4nPcr7L9cpVbfM03Dd0dACst
+	5/9+vQicA5S2B/MUCp8fYjfjwLPsHvG8=
+X-Received: by 2002:a17:907:b14:b0:bd8:1c88:cfef with SMTP id
+ a640c23a62f3a-bdd2293182amr233353666b.5.1779471798445; Fri, 22 May 2026
+ 10:43:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7f7b8bfd-f39e-417c-991f-d224d58cb52a@intel.com>
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com> <20260521-tdx-selftests-v13-v13-7-6983ae4c3a4d@google.com>
+In-Reply-To: <20260521-tdx-selftests-v13-v13-7-6983ae4c3a4d@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 22 May 2026 10:43:06 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMY6i+TWoZPWzj8zB+Xw3rONbK-Nee1kSFwDkT3hy66zg@mail.gmail.com>
+X-Gm-Features: AVHnY4L9cSm1fyf3xq_QQ4cDC4QbA1ftaP-_x-d2Zge-0JYdQxdSD2nW52x38bk
+Message-ID: <CAO9r8zMY6i+TWoZPWzj8zB+Xw3rONbK-Nee1kSFwDkT3hy66zg@mail.gmail.com>
+Subject: Re: [PATCH v13 07/22] KVM: selftests: Introduce structures for TDX
+ guest boot parameters
+To: Lisa Wang <wyihan@google.com>
+Cc: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
+	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, May 12, 2026 at 03:14:54PM -0700, Dave Hansen wrote:
-> On 5/12/26 14:48, Edgecombe, Rick P wrote:
-> >> -	regs->ax = args.r12;
-> >> -	regs->bx = args.r13;
-> >> -	regs->cx = args.r14;
-> >> -	regs->dx = args.r15;
-> >> +	regs->ax = lower_32_bits(args.r12);
-> >> +	regs->bx = lower_32_bits(args.r13);
-> >> +	regs->cx = lower_32_bits(args.r14);
-> >> +	regs->dx = lower_32_bits(args.r15);
-> >>  
-> > Can you explain the impact here? Why should the guest fixup what the VMM
-> > emulates?
-> 
-> Oh boy.
-> 
-> args.r12-15 come from the VMM, right? So the VMM Can put whatever it
-> wants in there.
-> 
-> CPUID (the instruction) is defined to fill in eax/ebx/ecx/edx. Those are
-> 32-bit registers so the normal register rules apply: "32-bit operands
-> generate a 32-bit result, zero-extended to a 64-bit result in the
-> destination general-purpose register."
-> 
-> So a properly-behaving CPUID implementation will always end up with the
-> top 32 bits empty on the four CPUID registers after a CPUID is executed.
-> 
-> The VMM here obviously might be naughty and might put gunk in
-> args.r12/r13/r14/r15 that gets copied to ptregs->ax/bx/cx/dx which are
-> 'unsigned long' on 64-bit.
-> 
-> The end result is that a TDX guest can use CPUID and end up having bits
-> set in rax/rbx/rcx/rdx that are architecturally impossible. This patch
-> is effectively fixing up the VMM naughtiness before the guest CPUID
-> instance can see it.
-> 
-> Does anybody disagree with any of that?
+> +static void __attribute__((used)) common(void)
+> +{
+> +       OFFSET(TD_BOOT_PARAMETERS_CR0, td_boot_parameters, cr0);
+> +       OFFSET(TD_BOOT_PARAMETERS_CR3, td_boot_parameters, cr3);
+> +       OFFSET(TD_BOOT_PARAMETERS_CR4, td_boot_parameters, cr4);
+> +       OFFSET(TD_BOOT_PARAMETERS_GDT, td_boot_parameters, gdtr);
+> +       OFFSET(TD_BOOT_PARAMETERS_IDT, td_boot_parameters, idtr);
+> +       OFFSET(TD_BOOT_PARAMETERS_PER_VCPU, td_boot_parameters, per_vcpu);
+> +       OFFSET(TD_PER_VCPU_PARAMETERS_ESP_GVA, td_per_vcpu_parameters, esp_gva);
+> +       OFFSET(TD_PER_VCPU_PARAMETERS_GUEST_CODE, td_per_vcpu_parameters,
+> +              guest_code);
+> +       DEFINE(SIZEOF_TD_PER_VCPU_PARAMETERS,
+> +              sizeof(struct td_per_vcpu_parameters));
+> +}
 
-Not really.
+This is neat.
 
-But note that the exposure is minimal as we do not issue hypercalls to
-VMM for anything outside of hypervisor range. I am not sure stable@ is
-justified, but worth fixing.
+Sean, is this the preferred way to expose offsets to asm files (or asm
+code blocks) -- as opposed to say using .equ [*]?
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+If yes, I can rework my nVMX GPR fixes to use the same approach for
+register offsets. I wonder if the non-TDX part of this patch (i.e.
+Makefile stuff) can be split, then patch 6 and the Makefile stuff can
+land independently and allow development on top.
+
+I can also split them out and include them in the next version of my
+series, then whichever series lands first will land the offsets
+support.
+
+WDYT?
+
+[*]https://lore.kernel.org/kvm/20260518202514.2037078-2-yosry@kernel.org/
