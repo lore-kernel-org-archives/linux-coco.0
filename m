@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F8131E84A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4173254AF;
 	Sat, 23 May 2026 00:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779495487; cv=none; b=D/89VN6BJU++LBqWX3wNN5EOt1sEfIyyKsHFBWxJyKokUhXB6jZTiCgFttkXY+RCGyWuWfp1CaJMctggQgCsyDMyBWLTP45wv2PhFl35MyVBibRxka7mSMAy2rsd9gUAHpvrNf/sWgGocjEmmMrgOTz7U9yDbIlkv7/aipPuq80=
+	t=1779495487; cv=none; b=nNE63go4KC4X92g4d3zxfdN/qsXEAI9V7+0RjCVrG9vefDE+bhJOlUcKtRae2gY5pA+7fA09QjuR9/AXo8pIQr1pxXUXFa+TWDNu4KDhJt7PLMWZ16sPTmry0edbAKMxpUA1gFw2jKOoYq9TAluzBkKKhhve4VM/Y1W5A5jF3Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779495487; c=relaxed/simple;
-	bh=JIqs8C+lGjBiztTMRgcMv4CW4Nx+b+za+cxC2VySfXo=;
+	bh=Axovs8TeuO5FXTqmrfmqPxJ9R/hBIGAfGhEbQRH38to=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qIRtKxFK1lO8fjnyrVhRrCQ+3h0Fmgh7LjyKmJPY6r+gV8v/FpFYOF/sPkeSsvBUoQA11iB47PWokDMvwc5uTcQ7QAJ6QwN7pSiyhWUWDlypXTd5dKOI2Z6unrtv195V068E9chrYMYncR3Dmtiwz21woTnY52aWx+i1kbbT+M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CwmlVTsS; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=klcIhPyfk7qRS0qh4iQb9UEnkmOnzmBMqo7UaYO0pp1xPrEjkZUrfsQpv9tlN5qxoF/neUEIBNn3UsK6A0wqP3JDrzV8ZGMS5TUcAR6iT12H1AHP+pMfWjhA7GHbOdCXdvZq4x27kDNHy7OkQctJ72e5w+aOrl20Jisv0qA4rhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bQgmQOtn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CwmlVTsS"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B1B06C4AF54;
-	Sat, 23 May 2026 00:18:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQgmQOtn"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1AFEDC32786;
+	Sat, 23 May 2026 00:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779495486;
-	bh=JIqs8C+lGjBiztTMRgcMv4CW4Nx+b+za+cxC2VySfXo=;
+	s=k20201202; t=1779495487;
+	bh=Axovs8TeuO5FXTqmrfmqPxJ9R/hBIGAfGhEbQRH38to=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=CwmlVTsSqqc7Js9Tno5mvbi7eltuvebaO8ad7/GfvnAtqv12uffiCdgz8UyjekXqa
-	 uVccFrPxFNMQkahQpWemjttCmTJ68tiF812OfRz4gR6dI253MRcBDEXuEX3RsZ5tQB
-	 X5UsMBrc0RKqSALDTZ2ABAplhWXhyW0Bct5+qN9DgIHephqQzK/kWCmQ4pNHDkQZyL
-	 vcE7qf0lSNnC0b9az25DQz4mvddmsU1EFLaKl9IzePHyhe65/oRxjb/RvMmkdxaFTZ
-	 ML5PC7QKTAHtGBOmpOJMyBvdfI3TGzmjsC2eGUuILZ0CGHErZkuU/dEvic4JI8h8IU
-	 GYqVPeRHgumDA==
+	b=bQgmQOtn11lA/S/qU89X9Jy+nCBStLSt4n2kyQiY9E9uGCkvYRZLaVIzMXNgZHLxg
+	 nuXioh5/7XRvKtPde2XG7+G23GyJcI+uSa+sl9WNAD+iMLA5SicJBrwhwKCHUMDjMS
+	 0eDeLqwRykzg/sKvQqrmbvtnqUzmFEcwTifLf7nUcwZtUjfCrZbDm0vsWo5C9IcipT
+	 uftDK13mVzCVFS+wmhXo1xzmG4BG47/FxscEpQ0pL+Iv9YKXv5hwE936ZS74zYQ+bX
+	 2aP+CZV7sS+jM/xoV0sQEKiYoV8gFW7Gkuzt1DWSNvgaIsZssEWdZvSBfr8mdZcTHu
+	 RWkFu4QX5YOFg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A098BCD5BC4;
-	Sat, 23 May 2026 00:18:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0702ECD5BC4;
+	Sat, 23 May 2026 00:18:07 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 22 May 2026 17:18:20 -0700
-Subject: [PATCH v7 38/42] KVM: selftests: Check fd/flags provided to mmap()
- when setting up memslot
+Date: Fri, 22 May 2026 17:18:23 -0700
+Subject: [PATCH v7 41/42] KVM: selftests: Add script to exercise
+ private_mem_conversions_test
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260522-gmem-inplace-conversion-v7-38-2f0fae496530@google.com>
+Message-Id: <20260522-gmem-inplace-conversion-v7-41-2f0fae496530@google.com>
 References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
 In-Reply-To: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -75,11 +75,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779495481; l=1296;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779495481; l=7318;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=AM84c6gdaIW2Q1/+PUgijcHWRW0I+2VX2PAGnhsjLWQ=;
- b=DVemTg0boTEieN+phW6EGMB5JbNUtmunQz5Dngjyk3XBw3IvfPNhMND1lF0wGXxWz3WjWBV1s
- MgXAnEhBbJUAb/ZPI6gRCpok/6GAyc2ElxN8iLKsUAmf1fgCgc2gR8m
+ bh=jk7oZstbdn3sFO0k9hEIYgbfEsRxZui+neQcxlrUbE8=;
+ b=qp7eZIJqzyfSAzn2qCkTgcZZQHoQuXtudlEJWTmgSdVjUhsGcGj/rKFvlEL9KHSxSgKmkXpJy
+ nB4yiS5ToOxDM+/5M7wpxbqcUSbG8PPv6bgyi/BcFRsbClOvLrMjDmo
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -87,37 +87,217 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ackerley Tng <ackerleytng@google.com>
 
-Check that a valid fd provided to mmap() must be accompanied by MAP_SHARED.
+Add a wrapper script to simplify running the private_mem_conversions_test
+with a variety of configurations. Manually invoking the test for all
+supported memory backing source types is tedious.
 
-With an invalid fd (usually used for anonymous mappings), there are no
-constraints on mmap() flags.
+The script automatically detects the availability of 2MB and 1GB hugepages
+and builds a list of source types to test. It then iterates through the
+list, running the test for each type with both a single memslot and
+multiple memslots.
 
-Add this check to make sure that when a guest_memfd is used as region->fd,
-the flag provided to mmap() will include MAP_SHARED.
+This makes it easier to get comprehensive test coverage across different
+memory configurations.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[Rephrase assertion message.]
+Add and use a helper program in C to be able to read
+KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES as defined in header files and then
+issue the ioctl to read the KVM CAP.
+
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/lib/kvm_util.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/kvm/Makefile.kvm           |   4 +
+ .../selftests/kvm/kvm_has_gmem_attributes.c        |  17 +++
+ .../kvm/x86/private_mem_conversions_test.sh        | 128 +++++++++++++++++++++
+ 3 files changed, 149 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index f8f0cd62f2f17..21c7e52a2bdac 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -1088,6 +1088,9 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
- 					     src_type == VM_MEM_SRC_SHARED_HUGETLB);
- 	}
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 6232881be500a..e5769268936a7 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -54,6 +54,7 @@ LIBKVM_loongarch += lib/loongarch/exception.S
  
-+	TEST_ASSERT(region->fd == -1 || backing_src_is_shared(src_type),
-+		    "A valid fd provided to mmap() must be accompanied by MAP_SHARED.");
+ # Non-compiled test targets
+ TEST_PROGS_x86 += x86/nx_huge_pages_test.sh
++TEST_PROGS_x86 += x86/private_mem_conversions_test.sh
+ 
+ # Compiled test targets valid on all architectures with libkvm support
+ TEST_GEN_PROGS_COMMON = demand_paging_test
+@@ -67,6 +68,8 @@ TEST_GEN_PROGS_COMMON += set_memory_region_test
+ TEST_GEN_PROGS_COMMON += memslot_modification_stress_test
+ TEST_GEN_PROGS_COMMON += memslot_perf_test
+ 
++TEST_GEN_PROGS_EXTENDED_COMMON += kvm_has_gmem_attributes
 +
- 	region->mmap_start = __kvm_mmap(region->mmap_size, PROT_READ | PROT_WRITE,
- 					vm_mem_backing_src_alias(src_type)->flag,
- 					region->fd, mmap_offset);
+ # Compiled test targets
+ TEST_GEN_PROGS_x86 = $(TEST_GEN_PROGS_COMMON)
+ TEST_GEN_PROGS_x86 += x86/cpuid_test
+@@ -245,6 +248,7 @@ SPLIT_TESTS += get-reg-list
+ 
+ TEST_PROGS += $(TEST_PROGS_$(ARCH))
+ TEST_GEN_PROGS += $(TEST_GEN_PROGS_$(ARCH))
++TEST_GEN_PROGS_EXTENDED += $(TEST_GEN_PROGS_EXTENDED_COMMON)
+ TEST_GEN_PROGS_EXTENDED += $(TEST_GEN_PROGS_EXTENDED_$(ARCH))
+ LIBKVM += $(LIBKVM_$(ARCH))
+ 
+diff --git a/tools/testing/selftests/kvm/kvm_has_gmem_attributes.c b/tools/testing/selftests/kvm/kvm_has_gmem_attributes.c
+new file mode 100644
+index 0000000000000..4f361349412fb
+--- /dev/null
++++ b/tools/testing/selftests/kvm/kvm_has_gmem_attributes.c
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Utility to check if KVM supports guest_memfd attributes.
++ *
++ * Copyright (C) 2025, Google LLC.
++ */
++
++#include <stdio.h>
++
++#include "kvm_util.h"
++
++int main(void)
++{
++	printf("%u\n", kvm_check_cap(KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES) > 0);
++
++	return 0;
++}
+diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.sh b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.sh
+new file mode 100755
+index 0000000000000..7179a4fcdd498
+--- /dev/null
++++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.sh
+@@ -0,0 +1,128 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Wrapper script which runs different test setups of
++# private_mem_conversions_test.
++#
++# Copyright (C) 2025, Google LLC.
++
++NUM_VCPUS_TO_TEST=4
++NUM_MEMSLOTS_TO_TEST=$NUM_VCPUS_TO_TEST
++
++# Required pages are based on the test setup in the C code.
++REQUIRED_NUM_2M_HUGEPAGES=$((1024 * NUM_VCPUS_TO_TEST))
++REQUIRED_NUM_1G_HUGEPAGES=$((2 * NUM_VCPUS_TO_TEST))
++
++get_hugepage_count() {
++    local page_size_kb=$1
++    local path="/sys/kernel/mm/hugepages/hugepages-${page_size_kb}kB/nr_hugepages"
++    if [ -f "$path" ]; then
++        cat "$path"
++    else
++        echo 0
++    fi
++}
++
++get_default_hugepage_size_in_kb() {
++    local size=$(grep "Hugepagesize:" /proc/meminfo | awk '{print $2}')
++    echo "$size"
++}
++
++run_tests() {
++    local executable_path=$1
++    local src_type=$2
++    local num_memslots=$3
++    local num_vcpus=$4
++
++    echo "$executable_path -s $src_type -m $num_memslots -n $num_vcpus"
++    "$executable_path" -s "$src_type" -m "$num_memslots" -n "$num_vcpus"
++}
++
++script_dir=$(dirname "$(realpath "$0")")
++test_executable="${script_dir}/private_mem_conversions_test"
++kvm_has_gmem_attributes_tool="${script_dir}/../kvm_has_gmem_attributes"
++
++if [ ! -f "$test_executable" ]; then
++    echo "Error: Test executable not found at '$test_executable'" >&2
++    exit 1
++fi
++
++if [ ! -f "$kvm_has_gmem_attributes_tool" ]; then
++    echo "Error: kvm_has_gmem_attributes utility not found at '$kvm_has_gmem_attributes_tool'" >&2
++    exit 1
++fi
++
++kvm_has_gmem_attributes=$("$kvm_has_gmem_attributes_tool" | tail -n1)
++
++if [ "$kvm_has_gmem_attributes" -eq 1 ]; then
++    backing_src_types=("shmem")
++else
++    hugepage_2mb_count=$(get_hugepage_count 2048)
++    hugepage_2mb_enabled=$((hugepage_2mb_count >= REQUIRED_NUM_2M_HUGEPAGES))
++    hugepage_1gb_count=$(get_hugepage_count 1048576)
++    hugepage_1gb_enabled=$((hugepage_1gb_count >= REQUIRED_NUM_1G_HUGEPAGES))
++
++    default_hugepage_size_kb=$(get_default_hugepage_size_in_kb)
++    hugepage_default_enabled=0
++    if [ "$default_hugepage_size_kb" -eq 2048 ]; then
++        hugepage_default_enabled=$hugepage_2mb_enabled
++    elif [ "$default_hugepage_size_kb" -eq 1048576 ]; then
++        hugepage_default_enabled=$hugepage_1gb_enabled
++    fi
++
++    backing_src_types=("anonymous" "anonymous_thp")
++
++    if [ "$hugepage_default_enabled" -eq 1 ]; then
++        backing_src_types+=("anonymous_hugetlb")
++    else
++        echo "skipping anonymous_hugetlb backing source type"
++    fi
++
++    if [ "$hugepage_2mb_enabled" -eq 1 ]; then
++        backing_src_types+=("anonymous_hugetlb_2mb")
++    else
++        echo "skipping anonymous_hugetlb_2mb backing source type"
++    fi
++
++    if [ "$hugepage_1gb_enabled" -eq 1 ]; then
++        backing_src_types+=("anonymous_hugetlb_1gb")
++    else
++        echo "skipping anonymous_hugetlb_1gb backing source type"
++    fi
++
++    backing_src_types+=("shmem")
++
++    if [ "$hugepage_default_enabled" -eq 1 ]; then
++        backing_src_types+=("shared_hugetlb")
++    else
++        echo "skipping shared_hugetlb backing source type"
++    fi
++fi
++
++return_code=0
++for i in "${!backing_src_types[@]}"; do
++    src_type=${backing_src_types[$i]}
++    if [ "$i" -gt 0 ]; then
++        echo
++    fi
++
++    if ! run_tests "$test_executable" "$src_type" 1 1; then
++        return_code=$?
++        echo "Test failed for source type '$src_type'. Arguments: -s $src_type -m 1 -n 1" >&2
++        break
++    fi
++
++    if ! run_tests "$test_executable" "$src_type" 1 "$NUM_VCPUS_TO_TEST"; then
++        return_code=$?
++        echo "Test failed for source type '$src_type'. Arguments: -s $src_type -m 1 -n $NUM_VCPUS_TO_TEST" >&2
++        break
++    fi
++
++    if ! run_tests "$test_executable" "$src_type" "$NUM_MEMSLOTS_TO_TEST" "$NUM_VCPUS_TO_TEST"; then
++        return_code=$?
++        echo "Test failed for source type '$src_type'. Arguments: -s $src_type -m $NUM_MEMSLOTS_TO_TEST -n $NUM_VCPUS_TO_TEST" >&2
++        break
++    fi
++done
++
++exit "$return_code"
 
 -- 
 2.54.0.794.g4f17f83d09-goog
