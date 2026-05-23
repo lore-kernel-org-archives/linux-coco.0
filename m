@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20C32DC791;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA082DD60E;
 	Sat, 23 May 2026 00:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779495485; cv=none; b=m6kJfqcVnM+mLHiiKq0dZsPOd2LG62HyDZs54yqXAeQQbE2PE7sUFCHwMzI68yZBotOia+2xnjs1N/YjnMDGBi4zG59Bo9IQsWXLV5rac1bM5YEwa8iv3GV8qsR4qrLexyq9gaIgGlmP9iyw+xpSClfEIweMTKbyvIi5Zuvxpyg=
+	t=1779495485; cv=none; b=E99xEnPZhok5amCBwy2kDb2MnbCXw1YyPrcctNXber4m/aNKAQakNY8Dg4yMJs8dv+1nvqbiT1VzmrrrxwKJizS8NNGnGqSfNNqeNXSISbPcrwhODDsn8O43mQWOFtdsd349HF1PLnO+sAzSi4PiUhQ3PUfxQ4mly8MrNi0NciA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779495485; c=relaxed/simple;
-	bh=q1TvKUXLpZ7c+FJYy1fyUdapwsHbnbeLjFg7uBZUd6Q=;
+	bh=ogWoFJG1xqOVuNn5At8aLCzY3s9x+4aiDZLPoOXtj54=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KlkELu6W4mweRRC2u2sWPiwS5HQuaRYpzhP84bInk5lyLYKRMkRfKE+71zeI8Hu6cJojOyCxshpzufcguonAgjIjb2zmqn5pU4Qpyzajqor0RcgFbQ91BQh+52abVNKxum9PSZOK1A2XQtbklrWe/t8MHH607dtC5ohAKN7mbZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jBZMtnFe; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=hE2//kqffeUCPI2FF3YvUrZNug1vGfy3tIXTDs8/b25MOsICYpYRAgqj5QOjABX/FEPd843NTid9VYWQBWmY8Iv/ulNOhEyHnLh+BAKwL53Fjmm2wromRBWIdMEmipVOJKefPyP8tMyovwAxDhyBZBu/8zCgOvdjhSq+lRvFpWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V986EZEQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jBZMtnFe"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 03546C4DE15;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V986EZEQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 18048C4AF0B;
 	Sat, 23 May 2026 00:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1779495485;
-	bh=q1TvKUXLpZ7c+FJYy1fyUdapwsHbnbeLjFg7uBZUd6Q=;
+	bh=ogWoFJG1xqOVuNn5At8aLCzY3s9x+4aiDZLPoOXtj54=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=jBZMtnFerc8Tnt4uY8DmONhsmTr7E3ub9SfkRvRlucDVvHDMMM6vFfdUH/Pos/M4n
-	 ufqxNXcNLsNRgGwZIQfs/G4yBeAU2sBea0UlT6F35uJ3zDyIFPmBqjVBgLtvqXsmgQ
-	 YqEk88KcDqeQeVBMfX9JnWPruruFqS/0cjn7FniPCrOjVcqZxrn5rboQtOiJE2EJPL
-	 7CLXqRLMp3Zy3oIRL8m6BUZz9RujP7NG1HS7FIme6XN0dasghdmY09Al6Fj1Louphh
-	 i2on3LVqap7COrEYD8iH60X9nzsGRjaTN53tBAuVLF+NYiX5p3c/LY7KdozVfvVPng
-	 jNYUB2HBi4ERQ==
+	b=V986EZEQYXm3rx8tOFs0dfC7rSmpTd2pAR8MwjiyGZYa3Jlh3D9cEkI4v4SQNe21+
+	 k4nmxgS71+chx2X/iVBPR7OX67wrJ0LiAKMgDxtNcdEhcli8xKllZl//si3YeqbnOy
+	 c+a0uzSGFmoZs26tFYYGYbpcMn9xlJ0g/XCXJe5CJo+i/GMMGpL+J0/3YjwfAPqP14
+	 MHsuq+/5T2CjiiJUK7iAxsmfP7DojHFX6vHtv9eggnCryVPxbVFhm3nTm79xQ6PisA
+	 qEoRJMDyKX5SvhN4AONTl2s2OnG9QfyF3hq/JlRfVsA5Ei9aP1IdV6wrYcG9iGyZgD
+	 Ux7HJNSk2OMuw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2835CD5BBE;
-	Sat, 23 May 2026 00:18:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0349ACD5BBF;
+	Sat, 23 May 2026 00:18:05 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 22 May 2026 17:18:02 -0700
-Subject: [PATCH v7 20/42] KVM: SEV: Make 'uaddr' parameter optional for
- KVM_SEV_SNP_LAUNCH_UPDATE
+Date: Fri, 22 May 2026 17:18:03 -0700
+Subject: [PATCH v7 21/42] KVM: TDX: Make source page optional for
+ KVM_TDX_INIT_MEM_REGION
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260522-gmem-inplace-conversion-v7-20-2f0fae496530@google.com>
+Message-Id: <20260522-gmem-inplace-conversion-v7-21-2f0fae496530@google.com>
 References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
 In-Reply-To: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -75,11 +75,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779495480; l=6272;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779495480; l=2365;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=1z1e5dw0ipQOWYotUI6qJTF/Qax5RdezF1fw9/+GyHU=;
- b=D1iHhLcye2MaJRbwv277OP2Di2MuAwSNxBJzzAqyZCjkriRxg8Nmapg8uTSl7FLQpbpc55mN9
- rartzC2OisYBI5eS1TAszTDdtQ0x4QG9yPN2FUH2mrVyqi4Wggom0y3
+ bh=qEh0ecCMb3AtWBwHsBoDwlnjw7N0xSkCrtG8wLVz2oM=;
+ b=wxVMOV4LQFR6IuShk6BvYMeA+aIOjFgxfoyY1Bj9fMQrdswrooNt3z4OVuWOY1PuEjk9DhYnC
+ Eo89wKHhcY0CTMuHtS5FDVWu9cx9a+bkJKhR/bMgAEqQmn0JjLXWUfS
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -87,128 +87,66 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Michael Roth <michael.roth@amd.com>
+From: Ackerley Tng <ackerleytng@google.com>
 
-For vm_memory_attributes=1, in-place conversion/population is not
-supported, so the initial contents necessarily must need to come
-from a separate src address, which is enforced by the current
-implementation. However, for vm_memory_attributes=0, it is possible for
-guest memory to be initialized directly from userspace by mmap()'ing the
-guest_memfd and writing to it while the corresponding GPA ranges are in
-a 'shared' state before converting them to the 'private' state expected
-by KVM_SEV_SNP_LAUNCH_UPDATE.
+Update tdx_gmem_post_populate() to handle cases where a source page is
+not explicitly provided. Instead of returning -EOPNOTSUPP when src_page
+is NULL, default to using the page associated with the destination PFN.
 
-Update the handling/documentation for KVM_SEV_SNP_LAUNCH_UPDATE to allow
-for 'uaddr' to be set to NULL when vm_memory_attributes=0, which
-SNP_LAUNCH_UPDATE will then use to determine when it should/shouldn't
-copy in data from a separate memory location. Continue to enforce
-non-NULL for the original vm_memory_attributes=1 case.
+This change allows for in-place memory conversion where the data is
+already present in the target PFN, ensuring the TDX module has a valid
+source page reference for the TDH.MEM.PAGE.ADD operation.
 
-Signed-off-by: Michael Roth <michael.roth@amd.com>
-[Added src_page check in error handling path when the firmware command fails]
-[Dropped ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES]
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- Documentation/virt/kvm/x86/amd-memory-encryption.rst | 15 +++++++++++----
- arch/x86/kvm/svm/sev.c                               | 18 +++++++++++++-----
- virt/kvm/kvm_main.c                                  |  1 +
- 3 files changed, 25 insertions(+), 9 deletions(-)
+ Documentation/virt/kvm/x86/intel-tdx.rst |  4 ++++
+ arch/x86/kvm/vmx/tdx.c                   | 11 ++++++++---
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-index b2395dd4769de..43085f65b2d85 100644
---- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-+++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-@@ -503,7 +503,8 @@ secrets.
+diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/virt/kvm/x86/intel-tdx.rst
+index 6a222e9d09541..fbc0f179dc750 100644
+--- a/Documentation/virt/kvm/x86/intel-tdx.rst
++++ b/Documentation/virt/kvm/x86/intel-tdx.rst
+@@ -158,6 +158,10 @@ KVM_TDX_INIT_MEM_REGION
+ Initialize @nr_pages TDX guest private memory starting from @gpa with userspace
+ provided data from @source_addr. @source_addr must be PAGE_SIZE-aligned.
  
- It is required that the GPA ranges initialized by this command have had the
- KVM_MEMORY_ATTRIBUTE_PRIVATE attribute set in advance. See the documentation
--for KVM_SET_MEMORY_ATTRIBUTES for more details on this aspect.
-+for KVM_SET_MEMORY_ATTRIBUTES/KVM_SET_MEMORY_ATTRIBUTES2 for more details on
-+this aspect.
- 
- Upon success, this command is not guaranteed to have processed the entire
- range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
-@@ -511,9 +512,15 @@ range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
- remaining range that has yet to be processed. The caller should continue
- calling this command until those fields indicate the entire range has been
- processed, e.g. ``len`` is 0, ``gfn_start`` is equal to the last GFN in the
--range plus 1, and ``uaddr`` is the last byte of the userspace-provided source
--buffer address plus 1. In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO,
--``uaddr`` will be ignored completely.
-+range plus 1, and ``uaddr`` (if specified) is the last byte of the
-+userspace-provided source buffer address plus 1.
++If memory attributes are tracked in guest_memfd, pass NULL for
++@source_addr to initialize the memory region using memory contents
++already populated in guest_memfd memory.
 +
-+In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO, ``uaddr`` will be
-+ignored completely. Otherwise, ``uaddr`` is required if
-+kvm.vm_memory_attributes=1 and optional if kvm.vm_memory_attributes=0, since
-+in the latter case guest memory can be initialized directly from userspace
-+prior to converting it to private and passing the GPA range on to this
-+interface.
+ Note, before calling this sub command, memory attribute of the range
+ [gpa, gpa + nr_pages] needs to be private.  Userspace can use
+ KVM_SET_MEMORY_ATTRIBUTES to set the attribute.
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 00dcfcbc47f68..63c6ba30f05b2 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -3116,8 +3116,12 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ 	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+ 		return -EIO;
  
- Parameters (in): struct  kvm_sev_snp_launch_update
+-	if (!src_page)
+-		return -EOPNOTSUPP;
++	if (!src_page) {
++		if (vm_memory_attributes)
++			return -EOPNOTSUPP;
++
++		src_page = pfn_to_page(pfn);
++	}
  
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 1a361f08c7a3d..e1dbc827c2807 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2343,7 +2343,15 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 	int level;
- 	int ret;
+ 	kvm_tdx->page_add_src = src_page;
+ 	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
+@@ -3196,7 +3200,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
+ 			break;
+ 		}
  
--	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page))
-+	/*
-+	 * For vm_memory_attributes=1, in-place conversion/population is not
-+	 * supported, so the initial contents necessarily need to come from a
-+	 * separate src address. For vm_memory_attributes=0, this isn't
-+	 * necessarily the case, since the pages may have been populated
-+	 * directly from userspace before calling KVM_SEV_SNP_LAUNCH_UPDATE.
-+	 */
-+	if (vm_memory_attributes &&
-+	    sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page)
- 		return -EINVAL;
+-		region.source_addr += PAGE_SIZE;
++		if (region.source_addr)
++			region.source_addr += PAGE_SIZE;
+ 		region.gpa += PAGE_SIZE;
+ 		region.nr_pages--;
  
- 	ret = snp_lookup_rmpentry((u64)pfn, &assigned, &level);
-@@ -2390,7 +2398,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 	 */
- 	if (ret && !snp_page_reclaim(kvm, pfn) &&
- 	    sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
--	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM) {
-+	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM && src_page) {
- 		void *src_vaddr = kmap_local_page(src_page);
- 		void *dst_vaddr = kmap_local_pfn(pfn);
- 
-@@ -2423,8 +2431,8 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	if (copy_from_user(&params, u64_to_user_ptr(argp->data), sizeof(params)))
- 		return -EFAULT;
- 
--	pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d\n", __func__,
--		 params.gfn_start, params.len, params.type, params.flags);
-+	pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d src %llx\n", __func__,
-+		 params.gfn_start, params.len, params.type, params.flags, params.uaddr);
- 
- 	if (!params.len || !PAGE_ALIGNED(params.len) || params.flags ||
- 	    (params.type != KVM_SEV_SNP_PAGE_TYPE_NORMAL &&
-@@ -2481,7 +2489,7 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 
- 	params.gfn_start += count;
- 	params.len -= count * PAGE_SIZE;
--	if (params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
-+	if (src && params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
- 		params.uaddr += count * PAGE_SIZE;
- 
- 	if (copy_to_user(u64_to_user_ptr(argp->data), &params, sizeof(params)))
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index ba195bb239aaa..3bf212fd99193 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -105,6 +105,7 @@ module_param(allow_unsafe_mappings, bool, 0444);
- #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
- bool vm_memory_attributes = true;
- module_param(vm_memory_attributes, bool, 0444);
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(vm_memory_attributes);
- #endif
- DEFINE_STATIC_CALL_RET0(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_KEY(__kvm_get_memory_attributes));
 
 -- 
 2.54.0.794.g4f17f83d09-goog
