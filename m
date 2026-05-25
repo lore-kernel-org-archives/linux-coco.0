@@ -1,123 +1,121 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28829823DD
-	for <linux-coco@lists.linux.dev>; Sat, 23 May 2026 00:40:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779496842; cv=pass; b=tbW5m7xgssK6oi5O4E5E6DsVX3JR9rA8jtVmmLbYSQAVL/hHQ8xozbUF2hcAcMQeEkJw3LWQytr5Fx+TeHzSjCLlls6aNOwF1xQDLISobxLLeQn7n/ikDg/H5z2Yqtp0Z7p5FX+Yd7KCSFkqZfg+37PrnAA5dy+rBj7sz1nAKoQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779496842; c=relaxed/simple;
-	bh=DzImTxEIdLT7uoHzI85KHDAQ5RrAcxR1yc9QoxOoDBU=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=FX77ExiuuxfOZZQKfyAe/qhLPTT9nN01I/89KNtQ8XOR/v/+QCCMtrbzchJJ5H5NY4Ts3fFP9eBxGCRem5Xrh2LutvHwaYBM8+xSMURWyaUW+J7AAGrbRzeRdWJfIiU89PpxYReEz1VrpgpzXUt/G+/BT5VXHyqTtFItqKM3kyA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X+GRNA7K; arc=pass smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E4D340A4D
+	for <linux-coco@lists.linux.dev>; Mon, 25 May 2026 05:17:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779686265; cv=none; b=I+Zmkyn+SxQMSHSeVCCCNEeHCUjCD5WXk8k29mkwDQeDS2LcFonP1weCnZ2+rgVGac1PUX4i8V4bxqFIK5BJtkSMMYK2RdqanlGp/ZxcFItmSixVOrTSN0Mt16LpbV1zorH6q49tGeOSQX72VgvNnnLigtfGqQE0LVHuw0E5g2I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779686265; c=relaxed/simple;
+	bh=2JJ0cFDif1e+mCqups5FCWkp2Ud2RUi9EoKvpd6rEfg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qxclOS/4WVDcy/FS61ORaghpOD1fHf8g1OdBKg5ETKeVOjiM86e8iEnbFunSqg0ZkKr0OCBxriozyIlfIXDjwXd02Ez1EIN228871v07lvotXb27uCfbTv2ZqqDYFy8gH5WDkHRQ8e1ZJDU3a7MHGzFzQ0APjwEKfM56wzJLfhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=COLeuQur; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X+GRNA7K"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-bdbac72ac1fso493041066b.3
-        for <linux-coco@lists.linux.dev>; Fri, 22 May 2026 17:40:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779496838; cv=none;
-        d=google.com; s=arc-20240605;
-        b=J9m3fGfyrgvbzPTK/dP3lGKqDPW/2v2CGc0K8KlpXMq16BMgkHBs8l2aNy0wKDU/fR
-         fGrzD5jM4UCJwnBbBaINHUYUJ/jnhN4H3+kvWla0lW0l+hla/jRxObIa2ht67fGfEkI1
-         40bsufzZaufjFOOgM3NxeBAL3fP9B/iguXiIh/dy/0M0cH273T5f3qexA9Ec1zGO7GiJ
-         WAsJX2ce9DeA1mbg1rnUb5kAS3KNxH6QFAzCQNDl6zeEeyjfrdhRjdiU2VMx+40N2+uG
-         ljx/fEmX0s1/yAhlQpqKq7qCYU2WL2N6XiKxYZ9nGCveJ7T+on87fJ6K6/jFL1O0OVoz
-         PJNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:reply-to:mime-version
-         :dkim-signature;
-        bh=DzImTxEIdLT7uoHzI85KHDAQ5RrAcxR1yc9QoxOoDBU=;
-        fh=mnQPMiGnLqhZu1oOtRHpeLFNIuyMQ758ELbHS3+Qip4=;
-        b=CnImRVDyh30NzsmIXeI8o9vUFhWiMm4jLoP7aEcYFukQqzMZO5072jLrcJkW3UeFYB
-         dtUI0PWhKz/Bh1HXfZVpuE0iTIf8V7fCT0nq+cGBIXgfLqNXOoRLhjdlPfRmo0cHnA2Q
-         M8C7PRTmwBjngIENi7UkbLBia9tmAjX7Ul1YCP0UNaUDlIn7DGwsdnjAgU1xg1lS6kO8
-         FhXXBRd4NDAnII6aejiTJj2TLRI5U0PXMfagiNYgwtwsPCKgvkfJ5OsKnmGLGRtf90Ax
-         PJVPYCWJ8Ek9cLEgmlR8u/UslEHsS14SZL0oZjOpKiMtIf6cEAipWL4LcxE64lfjaqxv
-         YuxQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779496837; x=1780101637; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DzImTxEIdLT7uoHzI85KHDAQ5RrAcxR1yc9QoxOoDBU=;
-        b=X+GRNA7KjmEBmt6wxjffdZBgs5mYDBaQNN5vPOJNC3buVOdDUev59HqIeGhtD7keF9
-         eKpRwe4htQ1TZ0yWJZYghXKPQjgzatVcKIzFJix4tIj7wu7BoLTrjfyaT6unAE5SJANS
-         bChsX8BsniZVgWfZGOFy+4HKDp6NlSxJXf9Xc3kKdrVTvrFek8MxgXEgzUEzT3s96QGH
-         Sy96ShWy2kTMx8oUeCxpT8xEDJnTGejn5UPv4rYB/3gZoXxS82F3+VrSQVUURLWZ4J+O
-         zRLSxJ8CQBdbcv8XXHrv+pdzqVmdNkMtrZK2WQjXD1QOuJz35PSBXYk59YkHdx8EIJbE
-         dq6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779496838; x=1780101638;
-        h=cc:to:subject:message-id:date:from:reply-to:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DzImTxEIdLT7uoHzI85KHDAQ5RrAcxR1yc9QoxOoDBU=;
-        b=J7uAFZmGk8n2vT/eq2i+5M+rZLFZ73G/c7WXDr+KZ5GF5R1NfhuZaYP1sLitbctsBm
-         /HhhKhzyd3LrtyZYniqIsk0KPN5L9FsEbmMJigUL3Vw1nx6XyGqqcLf5ky0qnpgEviL1
-         WuT5NgVTos6Sr0oLviBDvOA8STzuA40Q93cM5cU4aYYlG68vavew9IPbFbb4sX26UWb1
-         diSH4yn0GTgZYxPSAsb7Jwh+sojNXpZaHswamsf5iTJ5qkCH3GOWaje31gglGHl1T06S
-         gaYBQL07fW1juoopWfstv8mk3iTgDWhu1BkNQrjxC+FWfoLEOuvBRyQh2Gvc5DZm9wUQ
-         HfQg==
-X-Forwarded-Encrypted: i=1; AFNElJ8dEjlPoJGltLtTVarTtzHJ2Pam4NJbDbSJMCpH8nRdSqn8l+C0wI59uxYF0Iy+QijwmNNEO/WAfd41@lists.linux.dev
-X-Gm-Message-State: AOJu0YwtOyROtlgqCjo7yAProhe8KUkTfPAms3lH+ickrzWsB5CfCett
-	Updwc09uDXnqsVb0NqWfmw/AjMxkhzfJfSNsmqb4dfwQPABe+7Qdz9raPqHmIdHjbHlG8yRlDMc
-	vKLqKm9pz6XKnFhLvDEYA6jExjL9+ap8=
-X-Gm-Gg: Acq92OE/BXRbSzD2SS7hDabIinR/xyvBN7ln10Zz19MK8Z4m1lCo+J3n0UA1teoLGRf
-	tbspI5xKanzYw1ft4yrE0lqTRD7NJdfQKns4JYPW80a5FJ8wFpX8gnIzvkkTMum9mnzuYMN/WL4
-	ZvT1FwFGF6egztYEhmxEq8rqjBoQDJ8X8rVjWxMnPkmIiQly8LS8MfO+5xDpNk6QPZ7OW1cLT8j
-	T/fOhOQP71iHjMohLhk4AE37Z7Uuw4zJPnLvYV9+7gZlV6azzr6zn6bAJhe/87yOblHYArC93Ah
-	BrgSd770P9JidpOY+jUFJWSOvRU0Ii9XbKnpOZSwqpGzE4Gcgg==
-X-Received: by 2002:a17:907:1dec:b0:bdc:fafe:bf66 with SMTP id
- a640c23a62f3a-bdd263c9230mr293031666b.33.1779496837246; Fri, 22 May 2026
- 17:40:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="COLeuQur"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779686263; x=1811222263;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2JJ0cFDif1e+mCqups5FCWkp2Ud2RUi9EoKvpd6rEfg=;
+  b=COLeuQurwlICn6d5YsmCrA7fhzTXflB3RhuNArh3Id6QLxaEdiRzyUOD
+   /N6Ix8fZBJfZBAS5jMQJQdylDsGwLtQQdr7NlnFtMfaRU0SS6dqGCWThA
+   +h36qGc3zwRNn1Q3aC3VjdF2frHgqAPDEZ3jj04dQHJjNRvIJDr8epcGd
+   FYIUR45CT/Muz499ynZlLmlt948pB4kOuATEJiov0dEWiLGTrZB36Q79S
+   7DEWVjNR8savwoc60Zl+KF+jQDKM5b8EOt546M78KWVC+3dGU07+V9LqT
+   wVQdW925ZFZIOssKVmRO7W6VM5A+X1ZswVL0LIbox33WRMszqWAp9frxG
+   Q==;
+X-CSE-ConnectionGUID: 6XElutgVQLKp3rxomy/j9w==
+X-CSE-MsgGUID: prLMzT56Rey6WjnuIfmgVQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11796"; a="91892747"
+X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
+   d="scan'208";a="91892747"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2026 22:17:42 -0700
+X-CSE-ConnectionGUID: 1iQ4TVDMRN25AtYbIXRFfw==
+X-CSE-MsgGUID: vQhmM6fTRI6NINMsfY3fpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
+   d="scan'208";a="265341647"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.151])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2026 22:17:38 -0700
+Date: Mon, 25 May 2026 08:17:35 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
+	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
+Subject: Re: [RFC PATCH 15/15] x86/virt/tdx: Enable TDX Quoting extension
+Message-ID: <ahPbb1Ws9hBruJ2d@tlindgre-MOBL1>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-16-yilun.xu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Reply-To: ludloff@gmail.com
-From: Christian Ludloff <ludloff@gmail.com>
-Date: Fri, 22 May 2026 17:40:25 -0700
-X-Gm-Features: AVHnY4KUuDYdbAhs4DxPRoruchoX4HF4FN4Q5Flh4ze1fOCs2dB2rccyA0BbHhQ
-Message-ID: <CAKSQd8WP4sue4Pzf3yK67iMUkPth2xG1CrpUko__JF80i39=ZQ@mail.gmail.com>
-Subject: Re: [PATCH] x86/tdx: Fix zero-extension for CPUID emulation
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Dave Hansen <dave.hansen@intel.com>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "clopez@suse.de" <clopez@suse.de>, 
-	"x86@kernel.org" <x86@kernel.org>, "ak@linux.intel.com" <ak@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"mingo@redhat.com" <mingo@redhat.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Luck, Tony" <tony.luck@intel.com>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260522034128.3144354-16-yilun.xu@linux.intel.com>
 
-On Tue, May 12, 2026 at 03:14:54PM -0700, Dave Hansen wrote:
-> CPUID (the instruction) is defined to fill in eax/ebx/ecx/edx.
+On Fri, May 22, 2026 at 11:41:28AM +0800, Xu Yilun wrote:
+> From: Peter Fang <peter.fang@intel.com>
+> 
+> TDX Module updates global metadata when add-on features are enabled.
+> Host should update the cached tdx_sysinfo to reflect these changes.
 
-In the original x64 spec CPUID inherited 32-bit op size from
-the pre-x64 days, and although established leaves might all
-have followed that definition, the ISA per se doesn't prohibit
-an implementation that allows, or defaults to, 64-bit op size.
+This should be made clearer IMO. How about mention that get_tdx_sys_info()
+needs to get called again to reload the TDX module global metadata?
+ 
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -1049,6 +1049,7 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
+>  static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+>  				    u64 global_keyid)
+>  {
+> +	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
+>  	struct tdx_module_args args = {};
+>  	u64 *tdmr_pa_array;
+>  	size_t array_sz;
+> @@ -1074,8 +1075,22 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+>  	args.rcx = __pa(tdmr_pa_array);
+>  	args.rdx = tdmr_list->nr_consumed_tdmrs;
+>  	args.r8 = global_keyid;
+> -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
+>  
+> +	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE) {
+> +		args.r9 |= TDX_FEATURES0_QUOTE;
+> +		/* These parameters require version >= 1 */
+> +		seamcall_fn = TDH_SYS_CONFIG;
+> +	}
+> +
+> +	ret = seamcall_prerr(seamcall_fn, &args);
+> +	if (ret)
+> +		goto free_tdmr;
+> +
+> +	/* enabling TDX Quoting may change tdx_sysinfo, update it */
+> +	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE)
+> +		ret = get_tdx_sys_info(&tdx_sysinfo);
 
-Having made that statement... the same does go for MSRs.
+The comment above helps, but the change in the handling will be easy to
+miss.
 
-> Those are 32-bit registers so the normal register rules apply:
-> "32-bit operands generate a 32-bit result, zero-extended to a
-> 64-bit result in the destination general-purpose register."
+> +free_tdmr:
+>  	/* Free the array as it is not required anymore. */
+>  	kfree(tdmr_pa_array);
+>  
 
-...in PM64 ...while outside PM64 and across mode switches
-the upper 32 bits are explicitly undefined. Needless to say...
-SMM and then VMX and SVM had to violate that to function.
+So I think it would be good to also add a comment to get_tdx_sys_info()
+to make it easier for folks to follow that it may get called multiple
+times.
 
-> So a properly-behaving CPUID implementation will always end
-> up with the top 32 bits empty on the four CPUID registers after
-> a CPUID is executed.
+Regards,
 
-True for a "32-bit op size" implementation. Maybe insert that.
-
---
-C.
+Tony
