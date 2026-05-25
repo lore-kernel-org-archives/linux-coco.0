@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5AD280335
-	for <linux-coco@lists.linux.dev>; Mon, 25 May 2026 08:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AED53DC4CC
+	for <linux-coco@lists.linux.dev>; Mon, 25 May 2026 09:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779699506; cv=none; b=axLiEN0WBwVP0lFEeJhzyJRN2SLZkpE9L7DrzvdwHzwQSAsks+wAOW/MUrC2EA8Ay1sPn3sZwAfnZkvmNGgdfm0Xo5yOm2XTseLPrkjU1PdnaDpweremCHK+3KLntMdU/3WtyrA80YMO9VZrfkLqrOGO8v2kuQtWWPInBPRqoN4=
+	t=1779699634; cv=none; b=Yx9jTvAPzUyNsEZj4KYovJonNckH1PrXyuf6hY0hlYWDajC98LXKLlB/2A2zYbbxrR7ZPl4TAMcM9ny8sJn0lS+oY3mTMI+oULU3+K4osvFjA5QrwkzYCFL8YJbo8ZnA1xKYDbJf4IAsf0hpwoLM5P7OcdhYWkAINPeEkhT4x5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779699506; c=relaxed/simple;
-	bh=ZmqdEN18LFX2BjdvqVD2+BC/V/zCH9QODJMMa/OyKtA=;
+	s=arc-20240116; t=1779699634; c=relaxed/simple;
+	bh=II01BgHPbuxfYfWHvbxbqtpAwhuUtdh2oATpI0odFyU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rkiRWK4mA2aht7H8mkxj9dRFast6C9tsmDYIsugk+2S5P71kaN7+5MtHJKMhZOLNY39xP3CuoZyNHMTwz3gXHthPzPJpg686hzp5+y8BilqzFlAPXyOO4itMS4ms7Ibta6C9Jtb1ZesASU+gRkbalP+5gn0WwTcENq84psXLhco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i9XVOtum; arc=none smtp.client-ip=192.198.163.9
+	 In-Reply-To:Content-Type; b=Cs2m7ELfdBW888Esy8nPXgJ5rRYFKDXRWC0ztI4GGh4km1yz6n1DiEoLXN1Cw2ve5E6/M1OKPQ9b8n1pS9viyoAZsY433oNw7gr6o4epD85b16H2quFED0SBEeELH6GWUuofNKjA4dzowmgJ4/jrxqRR359huCjFgwUjnQ52t/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OT7RcNrO; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i9XVOtum"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OT7RcNrO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779699505; x=1811235505;
+  t=1779699632; x=1811235632;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=ZmqdEN18LFX2BjdvqVD2+BC/V/zCH9QODJMMa/OyKtA=;
-  b=i9XVOtumpGEzRDDvzp89RKyqD8p9M0PXhHp8UTJ8eaoxPKQwLo+98nal
-   /ZuLfAVw6zOeNqbWHA9ZMKyhWVhef9Bb32QGDamrPXR+J4AAB3RiSofWg
-   +hXmBgTdXbgXmakT0w/0Jqkgq4wt6ZuoVhS2WVjiUxtip8H8W8Jp2HOOj
-   ++ZVcJPuPHmYpTUo8P6YI9F8Pj0M9UWwCcMHvtxh2hsmMChwMkUweJiZU
-   WZLVs0Yvze4L9HtDY0FF7jgCQWHP4cq8eWTjA6A4z28FLIjZemWcrcgu/
-   +LAtinTMgHTejE5McLdJcaEicQC4hbWkGWtBjl4zfQAIF2a7obc8rdvzY
-   A==;
-X-CSE-ConnectionGUID: WJNKIefDQyCCFjIGxlXIaA==
-X-CSE-MsgGUID: Aal+kITuTBmFeaMejr3CNg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11796"; a="91209700"
+  bh=II01BgHPbuxfYfWHvbxbqtpAwhuUtdh2oATpI0odFyU=;
+  b=OT7RcNrOvNM0K9jetQJPukAN4YEFVLNLwDgGtdGKr+ZHnwTFGIY0bJvk
+   LkWsMNYeWpVtRczz9PFzobvz0KGjC7VaUX2srgfZgQ4PMsp46bkaPJ+QP
+   OCo+wrafM6WvyB2N05dNabSkouCDzP5AEclf3TlEy1idSspj4ZCxjtSDd
+   pipElhMQ46dSfAdI6Y/SrebA6p9SIpHJkrLjEorozYQHdFfBLF1th1KPc
+   O4m1GTM7ayBHnkH4xhS+y5BkUBDPpPrTAn3bS1M9BJBUqEbNKqHwdOkby
+   BIbMMYxi1gBNDbklGd6gX8QiqW8t1g2E1FWqNPO6QQxMt+G97+mEMxsNN
+   Q==;
+X-CSE-ConnectionGUID: V1+ennMYQDmENSQ1nbCSeQ==
+X-CSE-MsgGUID: gV25l+0XRNKEiAZkMWEO2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11796"; a="105982507"
 X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="91209700"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 01:58:24 -0700
-X-CSE-ConnectionGUID: Fx0HRCeoTWeFiOLt8pdYSQ==
-X-CSE-MsgGUID: Fjf8dzmcTSmWtjla7ZunJQ==
+   d="scan'208";a="105982507"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 02:00:32 -0700
+X-CSE-ConnectionGUID: WpZFYCQIRly07nziwXiAuw==
+X-CSE-MsgGUID: qMqCx6s1QDmqfJ3ruOeCuA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="240709685"
+   d="scan'208";a="265394358"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.239.158.44]) ([10.239.158.44])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 01:58:21 -0700
-Message-ID: <7f2662fc-6d35-4e40-9913-35834394ef4f@intel.com>
-Date: Mon, 25 May 2026 16:58:18 +0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 02:00:28 -0700
+Message-ID: <90a4835f-bc11-4415-a7b6-84347f40861b@intel.com>
+Date: Mon, 25 May 2026 17:00:26 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,94 +52,121 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/15] x86/virt/tdx: Make TDX Module initialize Extensions
+Subject: Re: [RFC PATCH 14/15] x86/virt/tdx: Embed version info in SEAMCALL
+ leaf function definitions
 To: Xu Yilun <yilun.xu@linux.intel.com>, kas@kernel.org, djbw@kernel.org,
  rick.p.edgecombe@intel.com, x86@kernel.org, peter.fang@intel.com
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
  kvm@vger.kernel.org, sohil.mehta@intel.com, yilun.xu@intel.com,
  baolu.lu@linux.intel.com, zhenzhong.duan@intel.com
 References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-4-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-15-yilun.xu@linux.intel.com>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260522034128.3144354-4-yilun.xu@linux.intel.com>
+In-Reply-To: <20260522034128.3144354-15-yilun.xu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 5/22/2026 11:41 AM, Xu Yilun wrote:
-> After providing all required memory to TDX Module, initialize TDX
-> Module Extensions via TDH.EXT.INIT, so Extension-SEAMCALLs can be used.
+> Embed version information in SEAMCALL leaf function definitions rather
+> than let the caller open code them. For now, only TDH.VP.INIT is
+> involved.
 > 
-> Co-developed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Don't bother the caller to choose the SEAMCALL version if unnecessary.
+> New version SEAMCALLs are guaranteed to be backward compatible, so
+> ideally kernel doesn't need to keep version history and only uses the
+> latest version SEAMCALLs.
+> 
+> The concern is some old TDX Modules don't recognize new version
+> SEAMCALLs. Multiple SEAMCALL versions co-exist when kernel should
+> support these old Modules. As time goes by, the old Modules deprecate
+> and old version SEAMCALL definitions should disappear.
+> 
+> The old TDX Modules that only support TDH.VP.INIT v0 are all deprecated,
+> so only provide the latest (v1) definition.
+> 
 > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-
 > ---
->   arch/x86/virt/vmx/tdx/tdx.h |  1 +
->   arch/x86/virt/vmx/tdx/tdx.c | 24 +++++++++++++++++++++++-
->   2 files changed, 24 insertions(+), 1 deletion(-)
+>   arch/x86/virt/vmx/tdx/tdx.h | 23 ++++++++++++++---------
+>   arch/x86/virt/vmx/tdx/tdx.c |  4 ++--
+>   2 files changed, 16 insertions(+), 11 deletions(-)
 > 
 > diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-> index 2335f88bbb10..c5bffd118145 100644
+> index 01a7d7d8ada9..10aff23cd01f 100644
 > --- a/arch/x86/virt/vmx/tdx/tdx.h
 > +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> @@ -46,6 +46,7 @@
->   #define TDH_PHYMEM_PAGE_WBINVD		41
->   #define TDH_VP_WR			43
->   #define TDH_SYS_CONFIG			45
-> +#define TDH_EXT_INIT			60
->   #define TDH_EXT_MEM_ADD			61
->   #define TDH_SYS_DISABLE			69
+> @@ -2,6 +2,7 @@
+>   #ifndef _X86_VIRT_TDX_H
+>   #define _X86_VIRT_TDX_H
 >   
+> +#include <linux/bitfield.h>
+>   #include <linux/bits.h>
+>   
+>   /*
+> @@ -11,6 +12,18 @@
+>    * architectural definitions come first.
+>    */
+>   
+> +/*
+> + * SEAMCALL leaf:
+> + *
+> + * Bit 15:0	Leaf number
+> + * Bit 23:16	Version number
+> + */
+> +#define SEAMCALL_LEAF			GENMASK(15, 0)
+> +#define SEAMCALL_VER			GENMASK(23, 16)
+> +
+> +#define SEAMCALL_LEAF_VER(l, v)		(FIELD_PREP(SEAMCALL_LEAF, l) | \
+> +					 FIELD_PREP(SEAMCALL_VER, v))
+> +
+>   /*
+>    * TDX module SEAMCALL leaf functions
+>    */
+> @@ -31,7 +44,7 @@
+>   #define TDH_VP_CREATE			10
+>   #define TDH_MNG_KEY_FREEID		20
+>   #define TDH_MNG_INIT			21
+> -#define TDH_VP_INIT			22
+> +#define TDH_VP_INIT			SEAMCALL_LEAF_VER(22, 1)
+
+how about
+
+#define TDH_VP_INIT			22
+#define TDH_VP_INIT_V1			SEAMCALL_LEAF_VER(TDH_VP_INIT, 1)
+
+and use TDH_VP_INIT_V1 below?
+
+>   #define TDH_PHYMEM_PAGE_RDMD		24
+>   #define TDH_VP_RD			26
+>   #define TDH_PHYMEM_PAGE_RECLAIM		28
+> @@ -52,14 +65,6 @@
+>   #define TDH_QUOTE_GET			98
+>   #define TDH_QUOTE_INIT			100
+>   
+> -/*
+> - * SEAMCALL leaf:
+> - *
+> - * Bit 15:0	Leaf number
+> - * Bit 23:16	Version number
+> - */
+> -#define TDX_VERSION_SHIFT		16
+> -
+>   /* TDX page types */
+>   #define	PT_NDA		0x0
+>   #define	PT_RSVD		0x1
 > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index 622399d8da68..ff2b96c20d2b 100644
+> index 821f677e9a86..f7600f930c6e 100644
 > --- a/arch/x86/virt/vmx/tdx/tdx.c
 > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -1200,6 +1200,22 @@ static u64 to_hpa_list_info(struct page *root, unsigned int nr_pages)
->   	       FIELD_PREP(HPA_LIST_INFO_LAST_ENTRY, nr_pages - 1);
+> @@ -2217,8 +2217,8 @@ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
+>   		.r8 = x2apicid,
+>   	};
+>   
+> -	/* apicid requires version == 1. */
+> -	return seamcall(TDH_VP_INIT | (1ULL << TDX_VERSION_SHIFT), &args);
+> +	/* apicid requires version == 1. See TDH_VP_INIT definition.*/
+> +	return seamcall(TDH_VP_INIT, &args);
 >   }
+>   EXPORT_SYMBOL_FOR_KVM(tdh_vp_init);
 >   
-> +/* Initialize the TDX Module Extensions then Extension-SEAMCALLs can be used */
-> +static int tdx_ext_init(void)
-> +{
-> +	struct tdx_module_args args = {};
-> +	u64 r;
-> +
-> +	do {
-> +		r = seamcall(TDH_EXT_INIT, &args);
-> +	} while (r == TDX_INTERRUPTED_RESUMABLE);
-> +
-> +	if (r != TDX_SUCCESS)
-> +		return -EFAULT;
-> +
-> +	return 0;
-> +}
-> +
->   static int tdx_ext_mem_add(struct page *root, unsigned int nr_pages)
->   {
->   	struct tdx_module_args args = {
-> @@ -1287,6 +1303,8 @@ static int tdx_ext_mem_setup(void)
->   
->   static int __maybe_unused init_tdx_ext(void)
->   {
-> +	int ret;
-> +
->   	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
->   		return 0;
->   
-> @@ -1294,7 +1312,11 @@ static int __maybe_unused init_tdx_ext(void)
->   	if (!tdx_sysinfo.ext.ext_required)
->   		return 0;
->   
-> -	return tdx_ext_mem_setup();
-> +	ret = tdx_ext_mem_setup();
-> +	if (ret)
-> +		return ret;
-> +
-> +	return tdx_ext_init();
->   }
->   
->   static __init int init_tdx_module(void)
 
