@@ -1,72 +1,50 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283C73AB282
-	for <linux-coco@lists.linux.dev>; Mon, 25 May 2026 06:59:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEFD2392828
+	for <linux-coco@lists.linux.dev>; Mon, 25 May 2026 08:06:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779692349; cv=none; b=DcpJCNrkfBhuv48sIK1ESAoC48H0aDx0p/pM5ewKH2FPFlwblILm6EkNYQiEYa7tSR7cWXfnthhaGpUeT9nMYddyk91VPQmspQ42qu7GAN7zW3S6nrbw80no9AMqhtasI3nJhESoMreI3ZYUMBVKRT7JzyCRKp9gL6uUU2rCcRk=
+	t=1779696364; cv=none; b=tmE0sItJ9/EY/qWeONNKwPK7fRTGRmVFDjEbxCJEH8qc8jvLOY6BqFioqni7dbFFiRxsvnB/mC2WRqoXHBiivdFBmTPSy39xHnqk++5pHOLMU2KBHOmfPJxImEIy8+CBLgij6j0ooe+74kAmBQt0UgBu3Z4Yv1fecCmEFXPGp/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779692349; c=relaxed/simple;
-	bh=f3dsqInXFwi6ogPU7F9goitGLppUKRtIMT3SF9UiJXA=;
+	s=arc-20240116; t=1779696364; c=relaxed/simple;
+	bh=WuQyD1hPuF84erucIgGd6RKPm8N1Vpgg5Y/iU5DXlV0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OC3RJPgjfFoE3AluhWuSfT1fD43fWWldd9S/W1eE1kbI6N6gANE+IU9pSjzdX07QQixOYr4Y3nwuzq50gJRJDgwK0FJEFUmNDhVoYsXqj3knDGXymeAAsCAsGf/ixklT+VEmVnZaPzqwG2CxFHPcpYi7hix5jd7BzsUNIZZkUEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=co0zKW4G; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=k8DUjNAgVU3JP+ffCuscb73YtZ5BX82Vks5/BbIy8ri4ijpywgcSIz+j2EgUl0W7VhXp+JXzz6/g9odNGOvNhuTXeOLNH7MoI5KJVquU29UV2TqIV+2jiIHpix1J/eM4oHR3qdntH76onlHnxzxD+nwZCt/AYYNBbbIrjWel4UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YzO7a+4I; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="co0zKW4G"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779692343;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YKzbzsmYYSmbqPFZ4+On8kOHavD4IAbzLAjB1X3xbfQ=;
-	b=co0zKW4G24l/6wM6QAaVJUH3NzJS9lExIEP9nLKgD4JLY5CUwqs9tZQM3WT507BEdxP/rm
-	puMkEC6KzlykOk1U8mdxtAT3Bu0YuMYE/Jfs3TzwKQdMNy5TpPa49cScr/6aSKvaMF5VE0
-	HNxEFlb94iduOSRh20+UKmj4yrgHy1o=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-524-49u6gml7MOi_1fk5TsErbw-1; Mon, 25 May 2026 02:59:01 -0400
-X-MC-Unique: 49u6gml7MOi_1fk5TsErbw-1
-X-Mimecast-MFC-AGG-ID: 49u6gml7MOi_1fk5TsErbw_1779692340
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-365d4d2fa04so8561360a91.3
-        for <linux-coco@lists.linux.dev>; Sun, 24 May 2026 23:59:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779692340; x=1780297140;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YKzbzsmYYSmbqPFZ4+On8kOHavD4IAbzLAjB1X3xbfQ=;
-        b=JLEzrG9ojCo6yfvYwmd0SpYzagSc/EGDSPeZCR2aswYXo+h7PbjMxZck/uNFEgRHHW
-         sSsT/LwQ3a1SVjBxEOrDi/Wk8h8yjaO+AxpACv+b3b4LK1uYDy159a3yDDfSHaapf46P
-         WF7UG3g+YjLP/Tjdykz0X7knI9THugJkwMC5glMkEG4fXLfjobyh5xl4BRqP7TZa6FEc
-         IMG6QZJfraDpfgzI5R8nnsP0rmk3gHb/XPoUCJ19D2wIa63ku7Uioe/70f+9xCAm3Wjw
-         AN2GdVSCDvudjoLpFkP+X47NNR0CUpbz2r9nXULj6BoeOynScrVUfPXdDX4ZwwBRFw8n
-         s7Pg==
-X-Forwarded-Encrypted: i=1; AFNElJ98MrGQ8lglp5AsyGYB+axyFJ21USbIg8E8NWDwfwIfGtgkJnY5wla9YYL6q0StZgPCuY2eaRDt447q@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzi5Ilz3zqGs+EuUHWcVwEHWmAhrZR97fRjNYFxkSkL2MgS6ZNQ
-	mINmtNkhBtXyA5eZkvBbZarDmgsXVCjxzySBCerT7Mqupk1IYaWKtuLJ2CDgTiYzE6U1uxS+7ho
-	21aZdTu/YnyGFYwtuSMgWj7kmdXw+WaRymbi07ZK7PugWPPrcrL/CElrvUpdrXnE=
-X-Gm-Gg: Acq92OGuK7RKnhYYsbw8G9H1sEKUIKHEVBiIxLhjLfARtWquGutLor5/+A7kCo5ZiPZ
-	FPiB+lEZaVwVq7V9yh9xmtk5Qcf5qq4+EeqpmsY9K5oXe1nSq2JfJ27UOo3NMAyQHx/B288og19
-	k5OvNbx71//vYlDK2xmE7q49h4LW9HUTBJ73eE6x+xXXLm3G7bXPdoPpRlpdBC/FWc3HB5UGQaH
-	5Sij5d6oI2dy4tIY+qhPyCy3MYtQJWiQSXNkTJBXtyijty/Ul2hkK5IQywpFjaCJnSVyVvOzrF+
-	Y2Q8nBDdWrkXjDPXUvSS1LsVBdLfg/cYqZSBeFxdlEJb3YEWBrp7WzTt9Ji8jADOHS/F6sNqQDx
-	6t5GqFFryOR3XCanUBoct1Z7hFjVWMVnmI1pBNK8pKcYnmP6/C5J3KTdM0cuW/LFZ
-X-Received: by 2002:a17:90b:264a:b0:36a:dd29:d7f5 with SMTP id 98e67ed59e1d1-36add29da45mr2445576a91.15.1779692340147;
-        Sun, 24 May 2026 23:59:00 -0700 (PDT)
-X-Received: by 2002:a17:90b:264a:b0:36a:dd29:d7f5 with SMTP id 98e67ed59e1d1-36add29da45mr2445545a91.15.1779692339628;
-        Sun, 24 May 2026 23:58:59 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a6ec5a287sm4863571a91.0.2026.05.24.23.58.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 24 May 2026 23:58:59 -0700 (PDT)
-Message-ID: <3a0f6277-2b68-45db-a07f-16a177b0586d@redhat.com>
-Date: Mon, 25 May 2026 16:58:44 +1000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YzO7a+4I"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779696363; x=1811232363;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=WuQyD1hPuF84erucIgGd6RKPm8N1Vpgg5Y/iU5DXlV0=;
+  b=YzO7a+4I88Rra5FgsmanBweKvR1zMvRHWsODnvM7lMUO4GAH5dPxZSaX
+   ECxlC9iq7WxxZ/KMaoV4pnm0DVC5pKe3LcpMZNqnEOJy/O4F33yh8cO8O
+   v9TW3R4GxD5Fy4TFQwHPk2DOSHKuzNnAg7dMkdG2gf6JKvOPdqW8sk0xs
+   2AbYbiEmJL+wmC+7Zqhj5zScfl4xvzdi/OChkYKJHHcI7WGIKscXgQ9Ds
+   Y56yyJHNbRuMGpI6yWOSyA2XVKRPhPhRDqqGWl3vgcgOQWlV7QhlA8/8+
+   scJf6EtYi+A382Z4HwdiuLISvz/12Uwr6XLKWikFRwHK3kvlmD0y3oKVV
+   g==;
+X-CSE-ConnectionGUID: LYldP1m+TEmYRsqFKevbdw==
+X-CSE-MsgGUID: djalYrvXTjy+72Y0ZZeBUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11796"; a="79547763"
+X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
+   d="scan'208";a="79547763"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 01:06:02 -0700
+X-CSE-ConnectionGUID: YQ1sbaohS/+jh2A7czFVuQ==
+X-CSE-MsgGUID: vLddJW+4SUeV+zZyTBWEsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
+   d="scan'208";a="235179307"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.239.158.44]) ([10.239.158.44])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 01:05:59 -0700
+Message-ID: <8590964e-e6aa-4300-8ef7-7f53d1399780@intel.com>
+Date: Mon, 25 May 2026 16:05:57 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -74,164 +52,143 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 06/44] arm64: RMI: Check for RMI support at init
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-7-steven.price@arm.com>
- <ee494ecd-8979-40f2-896e-82137abbf440@redhat.com>
- <78425c0d-86c5-457f-b171-a4c8dd3acb7d@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <78425c0d-86c5-457f-b171-a4c8dd3acb7d@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: F_L_b-k-JBAbQ_daJ9dDJCa4W9oZq6o4Wij7pf4wUwA_1779692340
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH 04/15] x86/virt/tdx: Enable the Extensions right after
+ basic TDX Module init
+To: Xu Yilun <yilun.xu@linux.intel.com>, kas@kernel.org, djbw@kernel.org,
+ rick.p.edgecombe@intel.com, x86@kernel.org, peter.fang@intel.com
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, sohil.mehta@intel.com, yilun.xu@intel.com,
+ baolu.lu@linux.intel.com, zhenzhong.duan@intel.com
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-5-yilun.xu@linux.intel.com>
 Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260522034128.3144354-5-yilun.xu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hi Steve,
-
-On 5/22/26 1:49 AM, Steven Price wrote:
-> On 21/05/2026 01:39, Gavin Shan wrote:
->> On 5/13/26 11:17 PM, Steven Price wrote:
->>> Query the RMI version number and check if it is a compatible version.
->>> The first two feature registers are read and exposed for future code to
->>> use.
->>>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>> ---
->>> v14:
->>>    * This moves the basic RMI setup into the 'kernel' directory. This is
->>>      because RMI will be used for some features outside of KVM so should
->>>      be available even if KVM isn't compiled in.
->>> ---
->>>    arch/arm64/include/asm/rmi_cmds.h |  3 ++
->>>    arch/arm64/kernel/Makefile        |  2 +-
->>>    arch/arm64/kernel/cpufeature.c    |  1 +
->>>    arch/arm64/kernel/rmi.c           | 65 +++++++++++++++++++++++++++++++
->>>    4 files changed, 70 insertions(+), 1 deletion(-)
->>>    create mode 100644 arch/arm64/kernel/rmi.c
->>>
->>
->> [...]
->>
->>> diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
->>> new file mode 100644
->>> index 000000000000..99c1ccc35c11
->>> --- /dev/null
->>> +++ b/arch/arm64/kernel/rmi.c
->>> @@ -0,0 +1,65 @@
->>> +// SPDX-License-Identifier: GPL-2.0
->>> +/*
->>> + * Copyright (C) 2023-2025 ARM Ltd.
->>> + */
->>> +
->>> +#include <linux/memblock.h>
->>> +
->>> +#include <asm/rmi_cmds.h>
->>> +
->>> +unsigned long rmm_feat_reg0;
->>> +unsigned long rmm_feat_reg1;
->>> +
->>> +static int rmi_check_version(void)
->>> +{
->>> +    struct arm_smccc_res res;
->>> +    unsigned short version_major, version_minor;
->>> +    unsigned long host_version = RMI_ABI_VERSION(RMI_ABI_MAJOR_VERSION,
->>> +                             RMI_ABI_MINOR_VERSION);
->>> +    unsigned long aa64pfr0 =
->>> read_sanitised_ftr_reg(SYS_ID_AA64PFR0_EL1);
->>> +
->>> +    /* If RME isn't supported, then RMI can't be */
->>> +    if (cpuid_feature_extract_unsigned_field(aa64pfr0,
->>> ID_AA64PFR0_EL1_RME_SHIFT) == 0)
->>> +        return -ENXIO;
->>> +
->>> +    arm_smccc_1_1_invoke(SMC_RMI_VERSION, host_version, &res);
->>> +
->>> +    if (res.a0 == SMCCC_RET_NOT_SUPPORTED)
->>> +        return -ENXIO;
->>> +
->>> +    version_major = RMI_ABI_VERSION_GET_MAJOR(res.a1);
->>> +    version_minor = RMI_ABI_VERSION_GET_MINOR(res.a1);
->>> +
->>> +    if (res.a0 != RMI_SUCCESS) {
->>> +        unsigned short high_version_major, high_version_minor;
->>> +
->>> +        high_version_major = RMI_ABI_VERSION_GET_MAJOR(res.a2);
->>> +        high_version_minor = RMI_ABI_VERSION_GET_MINOR(res.a2);
->>> +
->>> +        pr_err("Unsupported RMI ABI (v%d.%d - v%d.%d) we want v%d.%d\n",
->>> +               version_major, version_minor,
->>> +               high_version_major, high_version_minor,
->>> +               RMI_ABI_MAJOR_VERSION,
->>> +               RMI_ABI_MINOR_VERSION);
->>> +        return -ENXIO;
->>> +    }
->>> +
->>> +    pr_info("RMI ABI version %d.%d\n", version_major, version_minor);
->>> +
->>> +    return 0;
->>> +}
->>> +
->>> +static int __init arm64_init_rmi(void)
->>> +{
->>> +    /* Continue without realm support if we can't agree on a version */
->>> +    if (rmi_check_version())
->>> +        return 0;
->>
->> Is this still a valid point that we have to return zero on errors returned
->> from rmi_check_version() or other other function calls like rmi_features()?
->> arm64_init_rmi() is triggered by subsys_initcall() where the return value
->> needs to indicate success or failure. It's fine to return error code from
->> arm64_init_rmi() in the path.
+On 5/22/2026 11:41 AM, Xu Yilun wrote:
+> The detailed initialization flow for TDX Module Extensions has been
+> fully implemented. Enable the flow after basic TDX Module
+> initialization.
 > 
-> Hmm, I guess now this is moved to arm64 code this indeed doesn't need
-> to. Within a module I believe an error return can fail the module loading.
+> Theoretically, the Extensions doesn't need to be enabled right after
+> basic TDX initialization. It could be enabled right before the first
+> Extension SEAMCALL is issued. That would save or postpone memory usage.
+> But it isn't worth the complexity, the needs for the Extensions are vast
+> but the savings are little for a typical TDX capable system (about
+> 0.001% of memory). So the Linux decision is to just enable it along with
+> the basic TDX.
+
+
+
+> Note that the Extensions initialization flow will still not start if no
+> add-on features require Extensions. The enabling of add-on features will
+> be in later patches. Until then, the system hasn't consumed extra memory.
+
+based on the above, how about putting this patch before patch 02 and 03? 
+so that we can eliminate the churn of add "__init" and the 
+"__maybe_unused " in patch 02.
+
+To be more safer, we can even make the code as
+
+static bool tdx_supports_extension(void)
+{
+	/* To be enabled when kernel is ready. */
+	return false;
+}
+
+static __init int init_tdx_ext(void)
+{
+	if (!tdx_supports_extension())
+		return 0;
+
+	/* No feature requires TDX Module Extensions. */
+	if (!tdx_sysinfo.ext.ext_required)
+		return 0;
+}
+
+and after all the pieces implemented, we can change 
+tdx_supports_extension() to
+
+static bool tdx_supports_extension(void)
+{
+	/* To be enabled when kernel is ready. */
+	return !!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT);
+}
+
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> ---
+>   arch/x86/virt/vmx/tdx/tdx.c | 16 ++++++++++------
+>   1 file changed, 10 insertions(+), 6 deletions(-)
 > 
-> I'm not sure it really makes much difference though - if this
-> initialisation fails then it's not really an error - it just means the
-> feature is unavailable.
-> 
-
-I think the return value would be consistent to the value of 'arm64_rmi_is_available'.
-'arm64_rmi_is_available' is true when zero is returned, otherwise, 'arm64_rmi_is_available'
-is false.
-
-With the consistency between the return value and 'arm64_rmi_is_available', users are
-able to know the value of 'arm64_rmi_is_available' through kernel parameter 'initcall_debug'.
-With the kernel parameter, the initcalls including arm64_init_rmi() are traced and its
-return value is outputted in the traced messages, seeing do_trace_initcall_start().
-
-> Thanks,
-> Steve
-> 
->>> +
->>> +    if (WARN_ON(rmi_features(0, &rmm_feat_reg0)))
->>> +        return 0;
->>> +    if (WARN_ON(rmi_features(1, &rmm_feat_reg1)))
->>> +        return 0;
->>> +
->>> +    return 0;
->>> +}
->>> +subsys_initcall(arm64_init_rmi);
->>
-
-Thanks,
-Gavin
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index ff2b96c20d2b..dad5ec642723 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -1180,7 +1180,7 @@ static __init int init_tdmrs(struct tdmr_info_list *tdmr_list)
+>   	return 0;
+>   }
+>   
+> -static void tdx_clflush_hpa_list(struct page *root, unsigned int nr_pages)
+> +static __init void tdx_clflush_hpa_list(struct page *root, unsigned int nr_pages)
+>   {
+>   	u64 *entries = page_to_virt(root);
+>   	int i;
+> @@ -1193,7 +1193,7 @@ static void tdx_clflush_hpa_list(struct page *root, unsigned int nr_pages)
+>   #define HPA_LIST_INFO_PFN		GENMASK_U64(51, 12)
+>   #define HPA_LIST_INFO_LAST_ENTRY	GENMASK_U64(63, 55)
+>   
+> -static u64 to_hpa_list_info(struct page *root, unsigned int nr_pages)
+> +static __init u64 to_hpa_list_info(struct page *root, unsigned int nr_pages)
+>   {
+>   	return FIELD_PREP(HPA_LIST_INFO_FIRST_ENTRY, 0) |
+>   	       FIELD_PREP(HPA_LIST_INFO_PFN, page_to_pfn(root)) |
+> @@ -1201,7 +1201,7 @@ static u64 to_hpa_list_info(struct page *root, unsigned int nr_pages)
+>   }
+>   
+>   /* Initialize the TDX Module Extensions then Extension-SEAMCALLs can be used */
+> -static int tdx_ext_init(void)
+> +static __init int tdx_ext_init(void)
+>   {
+>   	struct tdx_module_args args = {};
+>   	u64 r;
+> @@ -1216,7 +1216,7 @@ static int tdx_ext_init(void)
+>   	return 0;
+>   }
+>   
+> -static int tdx_ext_mem_add(struct page *root, unsigned int nr_pages)
+> +static __init int tdx_ext_mem_add(struct page *root, unsigned int nr_pages)
+>   {
+>   	struct tdx_module_args args = {
+>   		.rcx = to_hpa_list_info(root, nr_pages),
+> @@ -1240,7 +1240,7 @@ static int tdx_ext_mem_add(struct page *root, unsigned int nr_pages)
+>   	return 0;
+>   }
+>   
+> -static int tdx_ext_mem_setup(void)
+> +static __init int tdx_ext_mem_setup(void)
+>   {
+>   	unsigned int nr_pages;
+>   	struct page *page;
+> @@ -1301,7 +1301,7 @@ static int tdx_ext_mem_setup(void)
+>   	return ret;
+>   }
+>   
+> -static int __maybe_unused init_tdx_ext(void)
+> +static __init int init_tdx_ext(void)
+>   {
+>   	int ret;
+>   
+> @@ -1373,6 +1373,10 @@ static __init int init_tdx_module(void)
+>   	if (ret)
+>   		goto err_reset_pamts;
+>   
+> +	ret = init_tdx_ext();
+> +	if (ret)
+> +		goto err_reset_pamts;
+> +
+>   	pr_info("%lu KB allocated for PAMT\n", tdmrs_count_pamt_kb(&tdx_tdmr_list));
+>   
+>   out_put_tdxmem:
 
