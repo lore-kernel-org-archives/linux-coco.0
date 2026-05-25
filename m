@@ -1,140 +1,177 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34496345CBE
-	for <linux-coco@lists.linux.dev>; Mon, 25 May 2026 10:51:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DC8405E7;
+	Mon, 25 May 2026 15:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779706300; cv=none; b=Suyx7inoOeRAxrL/lEvsizABbsY7lxzAwOtfDE9PsaZqWAceo9F2MTVHhmT7UN6zfxZ7zEMFVSR6OkiyiITX4tfmBvUM+OZrWcjOv0gMHINhKeLEe3cMWyJkb/BMXSwMXwEi3YmVt0BrZdVp3mQaeb1T2cZxoB2DoU2h1OpwIBw=
+	t=1779724115; cv=none; b=UhGYoo19gOYLsLpN2HNiHBRy98dWg5iY5VXl7JnFxEsTYN/oRpCakZPTc16XyME6puhY+CQZvjz7wySMo4uSZiWu2hnpVWoOGJVu5Qrjiv/zuSVrjCluOf/UJSuB3FoMqMPZcoT8OxXuZLzAFRQzjGFav+j/hKHi1vQLZEIoa7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779706300; c=relaxed/simple;
-	bh=WHhh7BSoR9UrFiBzLJml/5squKR//6wSP8qG+SZ6DMw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TH7K6PTjY1o471EAkiOJie8kcg9KwLVClgBz5rzUqSrJ054YlDbMg0zcB5mGr1PMXefP33kDoANaHe1IzCIMKTC+yvOkihaHnknv43LU8Hl/AAiOLWd+LPS0RoSaSPm6fSxB86vlzj/IpsesqHCVfiMcgT0dwreB2VHO3CWfE/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CSjL7kR9; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779724115; c=relaxed/simple;
+	bh=f882XrKvM09N7CRjBJtApWaYaJjhkjDUely+o87lB90=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OxmPBLiI8iFElQNIc2SAOcgli9mh3yx+ItdN5ElXaFULBAy4fVN1g7rkiW/hGNCjSGKoSVDsYAkMpXsLm52dwN45plrbmXE8rLyqSTLv+/q6qNGrxgvrj7+gEc/VTHtbGk9vTL3gS9h5ggLYtGTpyN5WYmcoxTRS5CJNr8LB7Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UKmWQezL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CSjL7kR9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779706299; x=1811242299;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=WHhh7BSoR9UrFiBzLJml/5squKR//6wSP8qG+SZ6DMw=;
-  b=CSjL7kR96C8rFibyM0enIGqbQsvhTYrFPwfqHCnzCx/FJ3cJJhIEx/C6
-   2oaNj2t0b0NtOZxGRbcU1bi/26YG1tGLHIZuRtQ7dXeaJTXEiPGhaDrAq
-   8BF++ZcD/QECvGBM1FcMnKcXoYZG9z1gEA00GD9tCkDZ+Ja69i1F8v4Yw
-   dVzGxlPDpW+PmJtU3t5SL+xM5itfV8JNJmGrPc0YHg/caPLaycph8f3PA
-   DzKh9iEZCCHGDSpiDylCYeQbZbCba5o+9qOrkzULbZkr1xCEa/Chas5Nt
-   VGvfPlVqDHA9fu8LVTIIv3r6Bxjz7UbSl35R/GmiIm58ZyAYtJVq9Mz/b
-   Q==;
-X-CSE-ConnectionGUID: Jc0vnfFSRhqSoRp1yrvJ2g==
-X-CSE-MsgGUID: Uq7IHxRVReuPrFWQwAeVMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11796"; a="80711465"
-X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="80711465"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 03:51:34 -0700
-X-CSE-ConnectionGUID: w9YDZJDLR5iV3v9R0xBOuA==
-X-CSE-MsgGUID: r6P8TIL4SsiLutdusURMKQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="271897140"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.239.158.44]) ([10.239.158.44])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 03:51:30 -0700
-Message-ID: <892508b2-6c61-4db2-a12f-902f62385e71@intel.com>
-Date: Mon, 25 May 2026 18:51:27 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UKmWQezL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D031F00A3D;
+	Mon, 25 May 2026 15:48:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779724114;
+	bh=oebx5jVTWzlAdeowK/9f21mNYv0EhBbhUPOCHZE9q/c=;
+	h=From:To:Cc:Subject:Date;
+	b=UKmWQezLhzUGzskNztQQ5ffqnihBCJkW05NPbv557X+gk7bAG4zxFmwZ48ebjKlLb
+	 g5OYAAJIjG2W25ABEPdfFxjTJ1BNvcrvrrWrMsv14K8JdZXGmJO9ELveXPLt88OTgK
+	 tnNCiRj+D21kPiKV8FSnK62qzHM09RzMTKgmi0wf+Tj2D028Znxt31QPvV+pC0CJDE
+	 XFAtBqEg1uiJzZa2xuAwn75EELsO+eYFvjhwsBZC1YR/Xwd/x5f2xmNypEbCGZEotR
+	 J3TRlG+Qy7AQ/0C3737tYG1s+I5MEvl4F1ZZfhvFuzbF8tFkKfEDqD3ssNLyVlyyRc
+	 xBUFIlz3KnzMg==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev,
+	iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tony Krowiak <akrowiak@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Jason Herne <jjherne@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	linux-s390@vger.kernel.org
+Subject: [PATCH v5 0/5] Add iommufd ioctls to support TSM operations
+Date: Mon, 25 May 2026 21:18:11 +0530
+Message-ID: <20260525154816.1029642-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 15/15] x86/virt/tdx: Enable TDX Quoting extension
-To: Tony Lindgren <tony.lindgren@linux.intel.com>,
- Xu Yilun <yilun.xu@linux.intel.com>
-Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
- x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sohil.mehta@intel.com,
- yilun.xu@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-16-yilun.xu@linux.intel.com>
- <ahPbb1Ws9hBruJ2d@tlindgre-MOBL1>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <ahPbb1Ws9hBruJ2d@tlindgre-MOBL1>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 5/25/2026 1:17 PM, Tony Lindgren wrote:
-> On Fri, May 22, 2026 at 11:41:28AM +0800, Xu Yilun wrote:
->> From: Peter Fang <peter.fang@intel.com>
->>
->> TDX Module updates global metadata when add-on features are enabled.
->> Host should update the cached tdx_sysinfo to reflect these changes.
-> 
-> This should be made clearer IMO. How about mention that get_tdx_sys_info()
-> needs to get called again to reload the TDX module global metadata?
+This patch series adds iommufd ioctl support for TSM-related operations.
+These ioctls allow VMMs to perform TSM management tasks such as bind and
+unbind operations, and to handle guest requests.
 
-Ah ha! This patch answers my comment to patch 1:
-https://lore.kernel.org/all/956fa1e6-2920-4b2e-8037-d4b9d812ae53@intel.com/
+Changes from v4:
+https://lore.kernel.org/all/20260427061005.901854-1-aneesh.kumar@kernel.org
+* Switch VFIO/iommufd to use struct file *kvm_file instead of relying on
+  kvm->users_count references.
+* Define TSM request scope values globally in iommufd.
+* Rename the ioctl to IOMMU_VDEVICE_TSM_REQ.
+* Address other review feedback.
 
-sysinfo_ext->memory_pool_required_pages and sysinfo_ext->ext_required 
-will be updated after extensions are enabled by TDH.SYS.CONFIG.
+Changes from v2:
+https://lore.kernel.org/all/20260309111704.2330479-1-aneesh.kumar@kernel.org
+* Bump the series revision to v4 to keep it in sync with the dependent CCA DA
+  patchsets. There was no v3 posting.
+* Drop [PATCH v2 1/3] iommufd/viommu: Allow associating a KVM VM fd with a
+  vIOMMU
+* Add two new patches to associate a struct kvm * with iommufd objects:
+  iommufd/device: Associate a kvm pointer to iommufd_device
+  iommufd/viommu: Associate a kvm pointer to iommufd_viommu
+* Address review feedback
 
-Patch 06 in this series already reads the tdx_sys_info_quote out of 
-get_tdx_sys_info(), which mean get_tdx_sys_info() doesn't ensure all the 
-global metadata will be update again.
+Changes from v1:
+https://lore.kernel.org/all/20250728135216.48084-8-aneesh.kumar@kernel.org
+* Rebase onto the latest kernel
+* Address review feedback
+* Drop the TSM map ioctl; the KVM prefault patch will be used instead to
+  ensure that private memory is preallocated
 
-So how about move the read of memory_pool_required_pages and 
-ext_required out of get_tdx_sys_info() and put them after 
-TDH.SYS.CONFIG, so that we don't need call get_tdx_sys_info() again?
+Cc: Alexey Kardashevskiy <aik@amd.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Kevin Tian <kevin.tian@intel.com>
+Cc: Nicolin Chen <nicolinc@nvidia.com>
+Cc: Samuel Ortiz <sameo@rivosinc.com>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Tony Krowiak <akrowiak@linux.ibm.com>
+Cc: Halil Pasic <pasic@linux.ibm.com>
+Cc: Jason Herne <jjherne@linux.ibm.com>
+Cc: Harald Freudenberger <freude@linux.ibm.com>
+Cc: Holger Dengler <dengler@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Alex Williamson <alex@shazbot.org>
+Cc: Matthew Rosato <mjrosato@linux.ibm.com>
+Cc: Farhan Ali <alifm@linux.ibm.com>
+Cc: Eric Farman <farman@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org
 
->> --- a/arch/x86/virt/vmx/tdx/tdx.c
->> +++ b/arch/x86/virt/vmx/tdx/tdx.c
->> @@ -1049,6 +1049,7 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
->>   static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
->>   				    u64 global_keyid)
->>   {
->> +	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
->>   	struct tdx_module_args args = {};
->>   	u64 *tdmr_pa_array;
->>   	size_t array_sz;
->> @@ -1074,8 +1075,22 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
->>   	args.rcx = __pa(tdmr_pa_array);
->>   	args.rdx = tdmr_list->nr_consumed_tdmrs;
->>   	args.r8 = global_keyid;
->> -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
->>   
->> +	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE) {
->> +		args.r9 |= TDX_FEATURES0_QUOTE;
->> +		/* These parameters require version >= 1 */
->> +		seamcall_fn = TDH_SYS_CONFIG;
->> +	}
->> +
->> +	ret = seamcall_prerr(seamcall_fn, &args);
->> +	if (ret)
->> +		goto free_tdmr;
->> +
->> +	/* enabling TDX Quoting may change tdx_sysinfo, update it */
->> +	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE)
->> +		ret = get_tdx_sys_info(&tdx_sysinfo);
-> 
-> The comment above helps, but the change in the handling will be easy to
-> miss.
-> 
->> +free_tdmr:
->>   	/* Free the array as it is not required anymore. */
->>   	kfree(tdmr_pa_array);
->>   
-> 
-> So I think it would be good to also add a comment to get_tdx_sys_info()
-> to make it easier for folks to follow that it may get called multiple
-> times.
-> 
-> Regards,
-> 
-> Tony
+Aneesh Kumar K.V (Arm) (3):
+  vfio: cache KVM VM file references instead of raw struct kvm pointers
+  iommufd/tsm: add vdevice TSM bind/unbind ioctl
+  iommufd/vdevice: add TSM request ioctl
+
+Nicolin Chen (1):
+  iommufd/viommu: Keep a reference to the KVM file
+
+Shameer Kolothum (1):
+  iommufd/device: Associate KVM file pointer with iommufd_device
+
+ drivers/iommu/iommufd/Makefile          |   2 +
+ drivers/iommu/iommufd/device.c          |   7 +-
+ drivers/iommu/iommufd/iommufd_private.h |  16 +++
+ drivers/iommu/iommufd/main.c            |   6 ++
+ drivers/iommu/iommufd/selftest.c        |   2 +-
+ drivers/iommu/iommufd/tsm.c             | 130 ++++++++++++++++++++++++
+ drivers/iommu/iommufd/viommu.c          |   9 ++
+ drivers/s390/crypto/vfio_ap_ops.c       |   5 +-
+ drivers/vfio/device_cdev.c              |  10 +-
+ drivers/vfio/group.c                    |  14 ++-
+ drivers/vfio/iommufd.c                  |   3 +-
+ drivers/vfio/pci/vfio_pci_zdev.c        |   7 +-
+ drivers/vfio/vfio.h                     |  16 ++-
+ drivers/vfio/vfio_main.c                |  81 ++++++++-------
+ drivers/virt/coco/tsm-core.c            |  58 +++++++++++
+ include/linux/iommufd.h                 |   5 +-
+ include/linux/kvm_host.h                |   3 +
+ include/linux/pci-tsm.h                 |   9 +-
+ include/linux/tsm.h                     |  42 ++++++++
+ include/linux/vfio.h                    |  17 +++-
+ include/uapi/linux/iommufd.h            | 106 +++++++++++++++++++
+ virt/kvm/kvm_main.c                     |   2 +
+ 22 files changed, 478 insertions(+), 72 deletions(-)
+ create mode 100644 drivers/iommu/iommufd/tsm.c
+
+
+base-commit: 50897c955902c93ae71c38698abb910525ebdc89
+-- 
+2.43.0
 
