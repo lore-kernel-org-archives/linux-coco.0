@@ -1,195 +1,118 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895AE3491E1;
-	Tue, 26 May 2026 22:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779835659; cv=none; b=BIxgDHTxaIQT/1mfYdiujBx/R9Ahch9JJZyN5hu0fEDYPehnH6bVhGuMyomUsPKmuJuaVAbA+4zoOvy95yCvgO7QKd25tBTL9Xj+lTFwpsFcoVN9QZ/X+RiPzWHvEulpdEg2AdEgXBR1NYrBMKJh/MUvXChqK/QDIXiL1F1dVps=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779835659; c=relaxed/simple;
-	bh=v0TjbesxR+ewebueTeBsTzE4hgzEHetSxrCATk8rz8c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kkOpQqCtNTHK4XtWFsbxDIlUMiyeBg1JuquZcayFukGWQVLSz9EGtgDsxfWZQDWTju4kPJWNScQaSHQTP+Wpf67gZEKbuTfkXjwuwEEJvXAOo03NKjJcpvpCkCl3l8UnWGQePrTNtYjCabJJ6n3xY3+RNBojB4Mr9qEfHDBYCs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Kn24PYW0; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2B73D5236
+	for <linux-coco@lists.linux.dev>; Tue, 26 May 2026 23:49:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779839393; cv=pass; b=BInnIVNgynrKqOXsBDs7imSOOz7gjYdFvTOs8SMvetcVfmshorur7oOm2ICXgj/XyUqxA7mxrEmIg0lGDheF6xp/iKbTff7v9dIUlU98ti4dr7DLTl+jemXUL1e0Qk+pny5C1qJs3SP+6Oimwahzc3CU7VboIZ6knZjZPo3RSMw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779839393; c=relaxed/simple;
+	bh=UFTUqui+lyDEpkII00aPHz64gTpTCUqug24pFaLMXHE=;
+	h=From:MIME-Version:Date:Message-ID:Subject:To:Cc:Content-Type; b=XKJxqZSsEO0uH1hmVUpVbQGNfwg/htViamauGXbXxr5CToxoOIzfw6V0xBTw/l//JEazZVuUBZ+q6och/vCy9unAKJlkfItJ58cgH10SJPMYGWSr65lKgsjjEtJbiujYqEYlAmBKv275Zl2tWbWqmUtGXMXyWgLwsgcTNaTxOUI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VIfswH34; arc=pass smtp.client-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Kn24PYW0"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CAFD92F;
-	Tue, 26 May 2026 15:47:31 -0700 (PDT)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7184F3F7B4;
-	Tue, 26 May 2026 15:47:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779835656; bh=v0TjbesxR+ewebueTeBsTzE4hgzEHetSxrCATk8rz8c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Kn24PYW017ZV+xG4DGuE8eTax92R0+umH+xlnFse++Ka6RT2efOcQ1oseBxhV9OyK
-	 /8EVat3FnQTAImeDMytTpUCMbNIxQn/q4cAL2TN4Z9Y4Pe3x5c8k928dsuX+qzw95y
-	 1ZOvJaM3v8HdPYe4QsvGrVZu2aI/EXHBn9hDRw1c=
-Date: Tue, 26 May 2026 23:47:23 +0100
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Lorenzo.Pieralisi2@arm.com
-Subject: Re: [PATCH v14 28/44] arm64: RMI: Create the realm descriptor
-Message-ID: <wshgh4i6uqytq65rh3j2risam2y2evjnfyztoee46soemp5i4x@qhzj4lcs33yj>
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-29-steven.price@arm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VIfswH34"
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-3045c195251so4429390eec.1
+        for <linux-coco@lists.linux.dev>; Tue, 26 May 2026 16:49:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779839387; cv=none;
+        d=google.com; s=arc-20240605;
+        b=El79fqm/Fp2GTZnUU7yvFyHxT/JYMh3cJaGU+B3US4tmRLzV8NgDCt6vbworvvkiAI
+         oM7lFyZq2Jcugsxs3cGLqhnOCblAYEubo4Lm6dKBGcwWlF31HPpMc0/xuOW/z7jmMjdA
+         P+XifBlHRu6cQUJMG4EBrZV2AHp/fMrgCkhQpmOEqxLwx/eoLYx75CkOaYGbHypuMnx7
+         fs+n3cc8uID9R5nhUqcFKR6zcdXNRByQzjU6zP8fwN8dpt+qjZoxc13L6WxFoap8/gp/
+         F7wKNLiPZxsYyX/YSqcQoxMYFrQsabQtez2YrXxq60rHVf/hYwuGoeGtXly6DxPpY12t
+         N8SQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:from:dkim-signature;
+        bh=UFTUqui+lyDEpkII00aPHz64gTpTCUqug24pFaLMXHE=;
+        fh=zCWUz86wIiuWyb5WjMNrUu3Nh4N4uAWL5L7EjAFvL4M=;
+        b=CuTZuQWbmVzVPGzxvQO/o7OxdpU+dFTNVz/QlcE0RJlzUocuP2lrFI8bsvHmZbTsTV
+         Cdtz1QF87PLZxQR2gpPBsO+uy59B/G1X06qiH7DT1QMD+bb/IfYlyb92D5C9Wp4JBGfl
+         qrU+5GO8eJKzder8H2gzg61eWSMPeMiQxXsxsOvRfEtI+opmfxVbnMxLHfIChzE5ChFg
+         /l+QksfhljUPz8M6FJpsciY2/QWfGilfRDv5Hh+o80esQNg1JZNmLgqVMKtNSXjLOQkP
+         YXDIaBCEzsW0OPsNKMRM5SBSBRXywd3j0wWl+GoWz5kE8+x8Ip0xectGi2EnvDaDJvFR
+         Pe/Q==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779839387; x=1780444187; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:mime-version:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=UFTUqui+lyDEpkII00aPHz64gTpTCUqug24pFaLMXHE=;
+        b=VIfswH34DbOV/D6iAR2YdLCFfRra32xpFp09c5KXtSwprEdzfRScLCO6Q6E5kb0Jpw
+         eV6bLA2ecDbLMRc9NOhwcqKhvUSxp20txUZOOpUmNsf/X1zAJyEWTyLZ6fMgpnxmSblq
+         finNVDuWXYlGsxzRbJiUDDUH7A7hCZw+oUeufI8HovzkgvRZSoTbhF3Y/AP4BjSUIK0m
+         nRcZVcA/kZXMED2FHiBMOOpYI8ZVzX8KsF9LJyTr9pfQ7p7ekFjfrO057KDGJUIQMImM
+         oXwESLSTwJkWjGsuZJm9FShPdZ3CqURQV3EHZrBhEUFBiSbxC2xhD1q/wvVGvWysDNf4
+         3tNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779839387; x=1780444187;
+        h=cc:to:subject:message-id:date:mime-version:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UFTUqui+lyDEpkII00aPHz64gTpTCUqug24pFaLMXHE=;
+        b=U7fwFXXpa+zc85I6rmkDs5iFZUHia+g1XkzKnuKZU5Sx2wKGLzRXOklKOxQuUQSnJb
+         Kh1KYnPlchBgjIHRPHGnGTe0csqVCfS+a4E/tZeX2O307pemayn/T1jPUPno7nYh6cFQ
+         J8eDEUfzkJum7KmCpfC9cBE32eilHyvTpH6ATIG0EHwQC3AA79V1d/2aamzxVXIqStXk
+         2siN4eOZrFV9CXXvUvuiGkG4TQxGeBEM/Ephe87SEDqUyB7MbCSXtof5h/qAAGkpEokf
+         ds6xyvF0uz31HgFDDqXKTlkqb1XYrQNSLsVNiUeO8KW8R4XCC67M5dHmsMcQr5xflbEK
+         DrMQ==
+X-Gm-Message-State: AOJu0Yzt6wxmfowjmbzF63qS63b8N1Z3K+hxLxQ3Blap7xxVHHmd37Uv
+	UVSRc6gkdpX271gl2fPWH5fclrP1UndU1Jli1A4pmTe5zsDfjchMPhsxQ9GHxnt+oziUDdg0Lv8
+	6ThIVhtwbJ8NlJczKHNyAanmeRD1CWn3f+veg8h+bl2NoN6/16LIn2ic2
+X-Gm-Gg: Acq92OHwpvu/zJc9zHw5qorgwAgCGsZevVLElWTBE3/dgWpzT4i+S8i4drR3EWRSHTN
+	Wc/tXeTrDjpiRwqBdlhUTaLZmm/w6KBGh7dSEI0Q2tqIpqcU7UXG6ZLjl/EagFg6TwyjuFYg+sW
+	hbGKp51MCYI6bNWwh4N0NNjbtgfip+cKclT/UmAQT4+aFbUsn79/Ey8L4ysWrFKMFbqOHIQF49u
+	UOD19jKoC6XoQN8xTGvcdy0iWRoB9bRHhhj+XoaAMjMNPC37TFefjcuCNG7Fvm+P2MljzSkzqbb
+	KooQGILqpxw0cxInkrel0pTcfZ8zoi89sPeNeA8HEh6gqI9f5W01KcQZUCxX5y/u7OWGUo1Iz+4
+	ytiph
+X-Received: by 2002:a05:7022:ea5b:b0:136:8bdd:3f66 with SMTP id
+ a92af1059eb24-1368bdd40d4mr3880334c88.5.1779839386030; Tue, 26 May 2026
+ 16:49:46 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 26 May 2026 16:49:45 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 26 May 2026 16:49:45 -0700
+From: Ackerley Tng <ackerleytng@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513131757.116630-29-steven.price@arm.com>
+Date: Tue, 26 May 2026 16:49:45 -0700
+X-Gm-Features: AVHnY4Jg_aMxqxLmYUYtrQZjJQlu067bf5olggbfoUjTDaktgramXq6wUUS1BnQ
+Message-ID: <CAEvNRgHLVPcJenAej85Q31YrM0tCnTpibDsEBdZmaTpf9QaTBA@mail.gmail.com>
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-05-28
+To: linux-coco@lists.linux.dev, linux-mm@kvack.org, kvm@vger.kernel.org
+Cc: david@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
 Hi,
 
-On Wed, May 13, 2026 at 02:17:36PM +0100, Steven Price wrote:
-> Creating a realm involves first creating a realm descriptor (RD). This
-> involves passing the configuration information to the RMM. Do this as
-> part of realm_ensure_created() so that the realm is created when it is
-> first needed.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v13:
->  * The RMM no longer uses AUX granules, so no need to ask it how many it
->    needs.
->  * Adapted to other changes.
-> Changes since v12:
->  * Since RMM page size is now equal to the host's page size various
->    calculations are simplified.
->  * Switch to using range based APIs to delegate/undelegate.
->  * VMID handling is now handled entirely by the RMM.
-> ---
->  arch/arm64/kvm/rmi.c | 88 +++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 86 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index fb96bcaa73ed..cae29fd3353c 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-> @@ -418,6 +418,77 @@ static void realm_unmap_shared_range(struct kvm *kvm,
->  			     start, end);
->  }
->  
-> +static int realm_create_rd(struct kvm *kvm)
-> +{
-> +	struct realm *realm = &kvm->arch.realm;
-> +	struct realm_params *params = realm->params;
-> +	void *rd = NULL;
-> +	phys_addr_t rd_phys, params_phys;
-> +	size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
-> +	int r;
-> +
-> +	realm->ia_bits = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
-> +
-> +	if (WARN_ON(realm->rd || !realm->params))
-> +		return -EEXIST;
-> +
-> +	rd = (void *)__get_free_page(GFP_KERNEL_ACCOUNT);
-> +	if (!rd)
-> +		return -ENOMEM;
-> +
-> +	rd_phys = virt_to_phys(rd);
-> +	if (rmi_delegate_page(rd_phys)) {
-> +		r = -ENXIO;
-> +		goto free_rd;
-> +	}
-> +
-> +	if (rmi_delegate_range(kvm->arch.mmu.pgd_phys, pgd_size)) {
-> +		r = -ENXIO;
-> +		goto out_undelegate_tables;
-> +	}
-> +
-> +	params->s2sz = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
-> +	params->rtt_level_start = get_start_level(realm);
-> +	params->rtt_num_start = pgd_size / PAGE_SIZE;
-> +	params->rtt_base = kvm->arch.mmu.pgd_phys;
-> +
-> +	if (kvm->arch.arm_pmu) {
-> +		params->pmu_num_ctrs = kvm->arch.nr_pmu_counters;
-> +		params->flags |= RMI_REALM_PARAM_FLAG_PMU;
-> +	}
-> +
-> +	if (kvm_lpa2_is_enabled())
-> +		params->flags |= RMI_REALM_PARAM_FLAG_LPA2;
-> +
-> +	params_phys = virt_to_phys(params);
-> +
-> +	if (rmi_realm_create(rd_phys, params_phys)) {
-> +		r = -ENXIO;
-> +		goto out_undelegate_tables;
-> +	}
-> +
-> +	realm->rd = rd;
-> +	kvm_set_realm_state(kvm, REALM_STATE_NEW);
-> +	/* The realm is up, free the parameters.  */
-> +	free_page((unsigned long)realm->params);
-> +	realm->params = NULL;
-> +
-> +	return 0;
-> +
-> +out_undelegate_tables:
-> +	if (WARN_ON(rmi_undelegate_range(kvm->arch.mmu.pgd_phys, pgd_size))) {
-> +		/* Leak the pages if they cannot be returned */
-> +		kvm->arch.mmu.pgt = NULL;
-> +	}
-> +	if (WARN_ON(rmi_undelegate_page(rd_phys))) {
-> +		/* Leak the page if it isn't returned */
-> +		return r;
-> +	}
-> +free_rd:
-> +	free_page((unsigned long)rd);
-> +	return r;
-> +}
-> +
->  static void realm_unmap_private_range(struct kvm *kvm,
->  				      unsigned long start,
->  				      unsigned long end,
-> @@ -647,8 +718,21 @@ static int realm_init_ipa_state(struct kvm *kvm,
->  
->  static int realm_ensure_created(struct kvm *kvm)
->  {
-> -	/* Provided in later patch */
-> -	return -ENXIO;
-> +	int ret;
-> +
-> +	switch (kvm_realm_state(kvm)) {
-> +	case REALM_STATE_NONE:
-> +		break;
-> +	case REALM_STATE_NEW:
-> +		return 0;
-> +	case REALM_STATE_DEAD:
-> +		return -ENXIO;
-> +	default:
-> +		return -EBUSY;
-> +	}
-> +
-> +	ret = realm_create_rd(kvm);
-> +	return ret;
->  }
+Our next guest_memfd upstream call is scheduled for Thursday, 2026-05-28
+at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-I think ret can be simplified out.
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
 
-Thanks,
-Wei-Lin Chang
+In this meeting, we'll Tarun talk about guest_memfd preservation for
+LiveUpdate.
 
->  
->  static int set_ripas_of_protected_regions(struct kvm *kvm)
-> -- 
-> 2.43.0
-> 
+We also have one question regarding virtio-mem and CoCo forwarded from
+David.
+
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write
+Ackerley or David a mail.
+
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
+
+[1] https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+
+Ackerley
