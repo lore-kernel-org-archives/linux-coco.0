@@ -1,88 +1,127 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6245C3A4F47
-	for <linux-coco@lists.linux.dev>; Tue, 26 May 2026 19:37:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DD725B09C
+	for <linux-coco@lists.linux.dev>; Tue, 26 May 2026 20:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779824248; cv=none; b=OmPposRAParoyEx3FwA8tMfUsMhyPRr9i8xCEYlIfTk7q62AtmKAvPot3qME7xdGArIXTvFWJHJnHBInF5+iJKA3vAkkpk7z2RylW/YpL/rqw1pkxAtQ/bDZe0btMouzrOMOYyKP5afsV99EFvALi3pUwo5JP26ygHoOXCdEzsA=
+	t=1779825655; cv=none; b=KQgYMXWWVsXucRq1sNj2n86h8ZtlCEo0UC5boLFlCGck0VvGX/j7t5erBBATcHtfYRsbn5Te8DkESifAqxe5HFKFHbYSPwtEBWcqNI1rdS2KC+GvRksbgwfivhSx05d5QsQXwujPu/Jb1fKPmA53ehzYdBLVvORR+Na/WXg62Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779824248; c=relaxed/simple;
-	bh=iUFkuxnHj+cpqwwryHKC3vge47qQtUDj15ZV0LW+iBw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Ip1MBLMJj44zLeBcbfCq/E7vwhqV6VX6rL1rCYs4PuaY8oPFc8FkhKsUiv/6aRqoaMTI4pd8PjmH8D5Ei77HglXDGBH7A+ruK56snXUQb8ck1UdeASahA/0Mvr5vw0d9Sjh4OLWaSwkJK1faJCdeVJUvmXktEn1DJ/quROXKRsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lGJ6oMDj; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779825655; c=relaxed/simple;
+	bh=br7dydNZ01TIIzaiM5VkTbl6FdkySRFBBn48eA+DWak=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=etoi2rGr954DRCtV3xdu7wN3UqUSZ9t0zmIWw8DoDQTiC3Y3FSLC/9fAa9r2WOSngzIq3d3GgqooUX27xZYo8MtOJddi+xkzqzaXbi8cac6nfKyc4a6M4UdKodzpBId7JdKzcim94nvdM/ypTJs0DjFdprVifORf2NaAFO+HmsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fz4o/llO; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lGJ6oMDj"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82fa1c94b37so10874240b3a.0
-        for <linux-coco@lists.linux.dev>; Tue, 26 May 2026 12:37:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779824247; x=1780429047; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=R2LUH2rnlVmx0tYjHhRhFb1FVJJlzW2bbDoMOmlKuPc=;
-        b=lGJ6oMDjDkHmxmgIwuWs7dK2R8O6DF6VYSJw6fdffy+WIpdnANpWXqq1kGQLdNjWOG
-         bs5evT4V+r9OPrd+K5PjymI8ywRGf+7ducxHWmI6ijXVLXkLZErzcFwGBQZK+T/VANax
-         4QMah1onNxAIrAD/PKpS8hfFLwWsNytqtzNSVMw67OF91Q5xP6cskYTVqVEJp3YAt5kr
-         40xkSYlrla6F8XG2z7NB7ZDypk6+10aNslk7CKIQVytVSasRE0MCK12HsyMCMngkoa0j
-         lZQ+5IpXHMyOsawzZ3UFMn7u0+yzB0eSRGgMC+wJO4jEKYcjz65b/qGJXtQeH2GXTf0c
-         90zQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779824247; x=1780429047;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R2LUH2rnlVmx0tYjHhRhFb1FVJJlzW2bbDoMOmlKuPc=;
-        b=B2GJGyzp9Qg5FBshMx2pYqND9NT2uTIImPNaPOqaMJwghPcIosmu2SpiW7GsEhYp7f
-         pgHFozJx42rJfqAixAJxZjTqGzz1q6ntFJsBoOiU3x1/3HsHJYKxXIUCfPRHCBKYxcCg
-         V9KOypyBCjYTMt7zp55GKVxFOMSMtimrYLJC3jI6LAodOzaBEzudVmA6FXgEUQDcsQX1
-         ujVi4IwJ8iKYsjuuqF41RGh9+FTSvSLJzjuRdBaI6qXweMHY3mgZw5TT5N5fxnkE+wBE
-         WRUH85tbJVerdkLg3XyFdTCffBdE6iStiU4CE/oWRAB//IDw8/fK/nsN1UK3NWSk1vQO
-         Zl1Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+QIZNn0Kt+pAZ2N4CQyBClXpMz2qP3wTDr42iWiIB5oGSAL9zVujxHnXaa01wf7IJ/WXzQbzrgyRJF@lists.linux.dev
-X-Gm-Message-State: AOJu0YwD1z/xQEOCqTvSwAS7WBa0NEmelnOXp2j0ho7iMfAEdi0rE4TM
-	0hH069mRA0Zikk2ljsWLB27lu+skf0CedW8Vdjt5pqrFdA+UbUotswQACwcfBUF5wuV5xwCnPpf
-	+WCquEA==
-X-Received: from pfbgt8.prod.google.com ([2002:a05:6a00:4e08:b0:837:aa2e:b191])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:10c3:b0:835:3de0:fad5
- with SMTP id d2e1a72fcca58-841611f213bmr14436204b3a.25.1779824246309; Tue, 26
- May 2026 12:37:26 -0700 (PDT)
-Date: Tue, 26 May 2026 12:37:25 -0700
-In-Reply-To: <20260430014852.24183-1-yan.y.zhao@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fz4o/llO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779825654; x=1811361654;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=br7dydNZ01TIIzaiM5VkTbl6FdkySRFBBn48eA+DWak=;
+  b=fz4o/llOJe63eNC4SuYLHT4blmCGtmQn1+b8/9pFcnImh/Y5sxHTFU1t
+   TYUJCE7lJg8p2hdWZ77ndnQx6oY0fJ2/qcYC2yaxttcYn0u1Rab7usv0Z
+   LoiKn/Dr3xavRVqjArW6y0OvPgDbce3qgDfaB9STDdmhZ4aexT4YB9bLe
+   fUCNQEe3APjqehrKMLP/xz012ilOwgH+mWdOH59paTBW+63bJbOgmRPqY
+   WrQ8MsBK2TZFkKqPO9M8q8PYJMn478hxFoyCB4AGlb/DwT+ds8Vfa6IcM
+   1uHF5zeeTaKp9u7x3jhc+uQmcetlMyykWlazvjfNyAbg9gKQE+xQn6I+p
+   w==;
+X-CSE-ConnectionGUID: u8CdBk2PSo60oVz3/wwo+w==
+X-CSE-MsgGUID: Vx9nPGzOTfq8UeIERg/jJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="80682351"
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="80682351"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 13:00:53 -0700
+X-CSE-ConnectionGUID: lkeFsiwJSw2MyzTb86k3kg==
+X-CSE-MsgGUID: NNQWOn6JRgmrOkLI6FlbjA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="237851121"
+Received: from unknown (HELO [10.24.81.183]) ([10.24.81.183])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 13:00:52 -0700
+Message-ID: <3dea8def-28dc-4812-851d-55d6381abc6b@intel.com>
+Date: Tue, 26 May 2026 13:00:19 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260430014852.24183-1-yan.y.zhao@intel.com>
-Message-ID: <ahX2dcHAQgwuiJBC@google.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 0/4] struct page to PFN conversion for TDX guest
  private memory
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: dave.hansen@linux.intel.com, pbonzini@redhat.com, tglx@kernel.org, 
-	mingo@redhat.com, bp@alien8.de, kas@kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kai.huang@intel.com, rick.p.edgecombe@intel.com, yilun.xu@linux.intel.com, 
-	vannapurve@google.com, ackerleytng@google.com, sagis@google.com, 
-	binbin.wu@linux.intel.com, xiaoyao.li@intel.com, isaku.yamahata@intel.com
-Content-Type: text/plain; charset="us-ascii"
+To: Sean Christopherson <seanjc@google.com>, Yan Zhao <yan.y.zhao@intel.com>
+Cc: dave.hansen@linux.intel.com, pbonzini@redhat.com, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, kas@kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, kai.huang@intel.com, rick.p.edgecombe@intel.com,
+ yilun.xu@linux.intel.com, vannapurve@google.com, ackerleytng@google.com,
+ sagis@google.com, binbin.wu@linux.intel.com, xiaoyao.li@intel.com,
+ isaku.yamahata@intel.com
+References: <20260430014852.24183-1-yan.y.zhao@intel.com>
+ <ahX2dcHAQgwuiJBC@google.com>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <ahX2dcHAQgwuiJBC@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 30, 2026, Yan Zhao wrote:
-> Hi
-> 
-> This is v2 of the struct page to PFN conversion series, which converts TDX
-> guest private memory mapping/unmapping APIs from taking struct page to
-> taking PFN as input.
-> 
-> v2 is based on v7.1.0-rc1 + Sean's 4 cleanup patches (see details in
-> section "Base" below). The purpose is to get Dave's Ack, so Sean can take
-> it from the KVM x86 tree. The full stack of v2 is available at [14].
+On 5/26/26 12:37, Sean Christopherson wrote:
+>> v2 is based on v7.1.0-rc1 + Sean's 4 cleanup patches (see details in
+>> section "Base" below). The purpose is to get Dave's Ack, so Sean can take
+>> it from the KVM x86 tree. The full stack of v2 is available at [14].
+> Dave, any concerns?
 
-Dave, any concerns?
+These look fine to me. They make the code marginally cleaner and the
+changelogs are much better at describing the problem now.
 
-I'd like to get these into the KVM x86 tree sooner than later, so that we at
-least have a fighting chance of landing the S-EPT cleanup (prep work for D-PAMT)
-in 7.2.
+Going to Linus via the KVM route is fine with me:
+
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
