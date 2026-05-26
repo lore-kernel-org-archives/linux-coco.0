@@ -1,65 +1,65 @@
 Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902BD3AFB09
-	for <linux-coco@lists.linux.dev>; Tue, 26 May 2026 16:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98183C583E
+	for <linux-coco@lists.linux.dev>; Tue, 26 May 2026 16:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779812004; cv=none; b=FLnmxKkUcSBdGOlVlg0Kg3Fy63Tb6jVz8b8C13wN3Sz1nsUjshZW+vUJgPi/s7j3HPpi2c/lV8dci6Oh4yhUVN+e50ZqcQhk7h1C6MAHostX5/ucjOlZoh1B4lxtsHZVDzNnmQsLvuDu+egVrzWYzbqHCKut750hqW5EGJBmbw0=
+	t=1779813586; cv=none; b=HPue3VQRVaykQ0h7j3TmU1U7n0ZJZNmYjO+iGpZLj/CgDR7zW4bjU2vPtdb8AtCm3KlUMnPzAWAT9roCfvrTydY6+Tm1c24yG4SAEO0tQ3mW1BKUtq3qJl7Tj430UjPFtl4z39IRco7+eq13aPYZzXk3wKqyj5nsmZJHVS77g94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779812004; c=relaxed/simple;
-	bh=su9JZyL6kCCByom6RtyIOUZV/R46eYJ7VEk1jdF4Ucg=;
+	s=arc-20240116; t=1779813586; c=relaxed/simple;
+	bh=vdiS8jEUTDZVhvBUoPc9BRMQcliTq3ZdcyymjfOkB6E=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Zul/fUZcazKwSmzC7+dCYSSG/y+Ew/4VXPkSIPj/CrgA+9LLCvKH6+TsdbqB0aiEhDcydzYiRGAxQ2bDiPkisP90a28Z0dEj7ZmA7G2SttWlIuy6pUpVvh5lNeVqIO+hF96H3KvYzXbO4DSfDYEcDpGYCKahmgB0Ko1LNhC61w0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tIYyc/KM; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=bmFREM+5yqPI8ui+Kwqe5jNEc69xQN5ZtLNGTNkz6d6OeImtW7ZfhOG6yEMJYgsVjyApJ8g9X5cAkByBd0j6Gl5hTr+BwefaZ9ShlSsFEHwPHMuKUu/AGXsgk2aoTwUQ7ZvZBNMQ5LaMLSlRaFyqWjQBe2A+74eTbFYTtFyngZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NZ9fFumT; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tIYyc/KM"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-367fd7b8825so10748652a91.0
-        for <linux-coco@lists.linux.dev>; Tue, 26 May 2026 09:13:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NZ9fFumT"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3663d5e9bf4so10934566a91.1
+        for <linux-coco@lists.linux.dev>; Tue, 26 May 2026 09:39:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779812003; x=1780416803; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1779813581; x=1780418381; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EKti3bpIeaw9DUQ7b6OosKHvIytGX0/8ZwQX1bJsL8w=;
-        b=tIYyc/KM5s40iMtxFl3IOB8KTDK/VmbnbcxlDfoh34rhHuedtSpG59t78K4NXD4wvx
-         GHI04pklUtKAexrgsF1F3C5Yp8VUWMuyuz0bJ7oK9cXExSgxjOcp4x1GK8GPHqiWWZ79
-         3lsOwbmj2SyqaEml/SyNpuGMqNQ2FeZ2/MuWLXW11BblJyIndxyNfBzmTn78Yi6kQ2Ll
-         PVmjMJZWlMIp+rM9DYWo2j2XTUZsZ5qZ9/xvYWcLNTQ1z8SwOVtj4USL/NSJ5MfqUA5T
-         FSeLs7WHURq09gXC5d0AK35QX27d7o9NX/v9ewqou04WSMJb3CMBmjZXCDWZbBBuFMG+
-         kARA==
+        bh=gGCac3ndRY4cFGyojmw/sDEy33dzfMnUmsB2axatg3k=;
+        b=NZ9fFumTdrC+8H4wGO93Ta887gsF3tNmZvk4Q80KNF6dbFTd3EcbhmuuPPTCgJTDiI
+         7taazXUC4+5Q/qcSmWScirPHPa90ed4Bjhxi7op9hVuQlbJ+o6eXolwAdSYz+1v7QLx6
+         TvvzOCgzZ5vMOYvtP7eVtXvj5viiHGqtQhoBxt7UaDMj3ButrzYcupzLQxPf/LCjsq/F
+         or8aQ15vD7hoK0D9dLeEwhGsnFmlOYGTZH2yTqCvgyoLIffImgQ7yUvdT+dqHLuKZxFq
+         32JQq6h/yD4n8XQmAiqqkAgx6wrb9hT/AP3NM+LjjdBBvWK0lVkHJPNog2TowciwUOY0
+         Qulw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779812003; x=1780416803;
+        d=1e100.net; s=20251104; t=1779813581; x=1780418381;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EKti3bpIeaw9DUQ7b6OosKHvIytGX0/8ZwQX1bJsL8w=;
-        b=L3tv0NrcF6ajn7hptZhZ/kMacK+12SX4nPagCX5I1Vj1H+1BeqXQpFkPy5V8kq81oK
-         xYpm9NGVaXWtcJ+W2M6Ldv/nmfcFZEIQ6G0ZV/e/AUyd7DQd2xKarBBBUJiJcoHU8Mu5
-         uBqmZN5hge7jBMmsucmo8z+7g0TYlEAZU5QuykzOKe9DCNp7/f+Lxbg02v14DwrtYvsF
-         Foi+XTwhoKmpqu5RTXueynefI0yJ8gPUPMHKi4CoRC/HDAxD41c5oQmk2PWWQQ8hYmm/
-         RboPvd8S92D/4llqEpdx2AsRY72Mf8YWriQo2d47FVKX7OLKlJdjLuq+owzk5X8e+ZHq
-         x6/w==
-X-Forwarded-Encrypted: i=1; AFNElJ+pgpKcfQqKjjpVK1a0Z3ATNm3fwWfCsa3r/RpfLMtVkU5aa/6UK/il+ahs6ECeardBuSqInneWEFid@lists.linux.dev
-X-Gm-Message-State: AOJu0YzRvkAsmwnyw+FHGpCumFzeu6GZq/CalXeobiXosrXZgrVVgMAq
-	Q04Lio9HkaQt2KifnwU8XMDi6MvFw9xnfntFIZ8VVBaRruxr/oxbt+ObVv2kGadHpLRx4uqUIKn
-	LUXy1rA==
-X-Received: from pjbsj15.prod.google.com ([2002:a17:90b:2d8f:b0:368:45e6:af08])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:33c1:b0:368:cefe:ddd0
- with SMTP id 98e67ed59e1d1-36a6765aa6bmr17580098a91.15.1779812002650; Tue, 26
- May 2026 09:13:22 -0700 (PDT)
-Date: Tue, 26 May 2026 09:13:21 -0700
-In-Reply-To: <20260522-fix-sev-gmem-post-populate-v2-1-3f196bfad5a1@google.com>
+        bh=gGCac3ndRY4cFGyojmw/sDEy33dzfMnUmsB2axatg3k=;
+        b=QiPDf4ujHIjW2JPvh8TXazhgNLFSGCVfvyKztMokFl+eJz9goj6hgkOMD1Gmo5A3oD
+         m3eveNmlFRuBP0HeWpxtPlAk3nv8Vjk1MT3KAtK9G7/9Q5fCK5mBG848vj79of4RGJDQ
+         CO7dGHYkHHldQirXw/AX51PczXAdUdn7vM8W0Ltuyaphy+ch3zjYchiRwgBxbrrBcZXg
+         MZC4HRBHbeOMH9JibYK6QRMkWyRk+oT4prUqFFxINlwUa95FvihKyce2qJpWql9JePLs
+         7In2w9Jyt/QNg+LBWVWcUHRxxXzPXCE1ErUro8VeX+smsj3xOyxebGEoSJbC3LBcrDpx
+         qwiw==
+X-Forwarded-Encrypted: i=1; AFNElJ+cAOF1I3N5VimY42NeMeyH5xW1bwAGs5w38IdoQT8g/XMA8ZfPgVNQf3dstix/9WHvQltQiyJB9BD/@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxu57EgLnyWw0t+26uSpB/tluYFdlhQ+oe3GNBbG1hKIrOkHbB2
+	swzC3Ix8BvaXfMgi6EdTJ9g9vgEnpTps3gtHd9ojJ1TUbUAGtz3QMm3hIevKfRcxV47Y/bPBjUq
+	nzgrvoQ==
+X-Received: from pghq18.prod.google.com ([2002:a63:e212:0:b0:c6e:6f94:b489])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:270e:b0:362:e826:cefe
+ with SMTP id 98e67ed59e1d1-36a67697a77mr19184155a91.23.1779813580821; Tue, 26
+ May 2026 09:39:40 -0700 (PDT)
+Date: Tue, 26 May 2026 09:39:40 -0700
+In-Reply-To: <20260522-fix-sev-gmem-post-populate-v2-3-3f196bfad5a1@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com> <20260522-fix-sev-gmem-post-populate-v2-1-3f196bfad5a1@google.com>
-Message-ID: <ahXGoTaknK4KVuAz@google.com>
-Subject: Re: [PATCH v2 1/5] KVM: guest_memfd: Use write permissions when
- GUP-ing source pages
+References: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com> <20260522-fix-sev-gmem-post-populate-v2-3-3f196bfad5a1@google.com>
+Message-ID: <ahXMzPz1cQl6kZge@google.com>
+Subject: Re: [PATCH v2 3/5] KVM: guest_memfd: Handle errors from
+ xa_store_range() when binding
 From: Sean Christopherson <seanjc@google.com>
 To: Ackerley Tng <ackerleytng@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
@@ -73,71 +73,124 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo
 	Yu Zhang <yu.c.zhang@linux.intel.com>, Fuad Tabba <tabba@google.com>
 Content-Type: text/plain; charset="us-ascii"
 
-The shortlog is misleading, bordering on outright wrong.  I think most people
-would read it as "ALWAYS Use write permissions when GUP-ing source pages".  I
-also think it should be scoped to:
-
-  KVM: SEV:
-
-because this only affects SNP, and IMO is an SNP bug, not a guest_memfd bug.  E.g.
-
-  KVM: SEV: Pin source page for write when adding CPUID data for SNP guest
-
 On Fri, May 22, 2026, Ackerley Tng wrote:
-> From: Sean Christopherson <seanjc@google.com>
+> Unhandled errors from xa_store_range() means kvm_gmem_bind() might falsely
+> reporting success, leading to false assumptions in guest_memfd's lifecycle
+> later.
 > 
-> sev_gmem_post_populate() may write to the source page if there was an error
-
-Avoid referencing function names in changelogs when possible.  Unless the reader
-is already familiar with the code, the name is meaningless.  The purpose of the
-changelog is to complement the literal patch, not to provide a play-by-play
-description.
-
-> while performing SNP_LAUNCH_UPDATE.
+> On error, restore the unbound state and return the error to userspace.
 > 
-> Since GUP requested only reads, there is a chance sev_gmem_post_populate()
-> could be writing to some read-only page.
-> 
-> sev_gmem_post_populate() will only ever write the source page if the type
-> of page being LAUNCH_UPDATEd is a CPUID page. Hence, request a writable
-> page only when loading the CPUID page.
-> 
-> Since TDX never writes to the source page, always pass false to
-> kvm_gmem_populate().
-
-Describe changes in human-friendly, conversational language.  And in a way that
-doesn't require looking at the patch to understand the changelog: "pass false"
-is meaningless without looking at the code to see what flag was added (or exists).
-
-> With this, even if a read-only mapping or the global zero page was provided
-> as the source page, GUP will do a copy-on-write, making it writable before
-> the write happens in gvm_post_populate.
-
-Objection, speculation.  If the mapping is truly read-only, i.e. doesn't allow
-writes at all, then GUP will fail.  This is all superfluous information though;
-"read-only" is a pretty ubiquitous concept, there's no need to explain it in
-gory detail.
-
-
-I'll rewrite to this when applying:
-
----
-When populating a guest_memfd instance with the initial CPUID data for an
-SNP guest, acquire a writable pin on the source page as KVM will write back
-the "correct" CPUID information if the userspace provided data is rejected
-by trusted firmware.  Because KVM writes to the source page using a kernel
-mapping, pinning for read could result in KVM clobbering read-only memory.
-
-Note, well-behaved VMMs are unlikely to be affected, as CPUID information
-is almost always dynamically generated by userspace, i.e. it's unlikely for
-the CPUID information to be backed by a read-only mapping.
----
-
-> Fixes: 2a62345b30529 ("KVM: guest_memfd: GUP source pages prior to populating guest memory")
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-Cc: stable@vger.kernel.org
-
+> Fixes: a7800aa80ea4d ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 > ---
+>  virt/kvm/guest_memfd.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
+> 
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index d203135969d13..5b4911ffa208a 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -648,6 +648,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  	struct inode *inode;
+>  	struct file *file;
+>  	int r = -EINVAL;
+> +	void *result;
 
+I would rather go with "xr".  "result" is too generic, e.g. begs the question of
+"result of what?"
+
+Actually, I don't think we even need an intermediate variable.
+
+>  	BUILD_BUG_ON(sizeof(gfn_t) != sizeof(slot->gmem.pgoff));
+>  
+> @@ -688,7 +689,14 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  	if (kvm_gmem_supports_mmap(inode))
+>  		slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
+>  
+> -	xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
+> +	result = xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
+> +	if (xa_is_err(result)) {
+> +		r = xa_err(result);
+> +		xa_store_range(&f->bindings, start, end - 1, NULL, GFP_KERNEL);
+
+I'm not convinced this is necessary.  Sashiko "asked" the question:
+
+ : If xa_store_range() fails midway through storing a large range (for example,
+ : returning -ENOMEM), does it leave the already-processed entries in the
+ : f->bindings XArray?
+ : 
+ : When this error is propagated back, the caller __kvm_set_memory_region()
+ : will abort the operation and free the memslot without calling
+ : kvm_gmem_unbind().
+ : 
+ : Since the partial XArray updates aren't rolled back here, could this leave
+ : dangling pointers to the freed memslot in f->bindings? If so, when the file
+ : is eventually closed, kvm_gmem_release() might iterate over these dangling
+ : pointers and write to slot->gmem.file, resulting in a use-after-free.
+
+but I think Sashiko is hallicunating.
+
+If @entry is non-NULL, xa_store_range() pre-creates the entire range, before
+storing anything into the range:
+
+		if (entry) {
+			unsigned int order = BITS_PER_LONG;
+			if (last + 1)
+				order = __ffs(last + 1);
+			xas_set_order(&xas, last, order);
+			xas_create(&xas, true);
+			if (xas_error(&xas))
+				goto unlock;
+		}
+
+Yes, the API handles failure on the subsequent xas_store(), but I can't imagine
+that failure is actually, barring garbage input from KVM:
+
+		do {
+			xas_set_range(&xas, first, last);
+			xas_store(&xas, entry);
+			if (xas_error(&xas))
+				goto unlock;
+			first += xas_size(&xas);
+		} while (first <= last);
+
+Purely from a design perspective, providing an API that can fail partway through
+under normal operation, with no indication of where failure occured (AFAICT),
+would be awful.
+
+> +	} else {
+> +		r = 0;
+> +	}
+> +
+>  	filemap_invalidate_unlock(inode->i_mapping);
+>  
+>  	/*
+> @@ -696,7 +704,6 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  	 * not the other way 'round.  Active bindings are invalidated if the
+>  	 * file is closed before memslots are destroyed.
+>  	 */
+> -	r = 0;
+
+All in all, unless someone proves with a test that I'm wrong, just this?
+
+diff --git virt/kvm/guest_memfd.c virt/kvm/guest_memfd.c
+index 0c923fd603fd..c0f5b9565be2 100644
+--- virt/kvm/guest_memfd.c
++++ virt/kvm/guest_memfd.c
+@@ -688,7 +688,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+        if (kvm_gmem_supports_mmap(inode))
+                slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
+ 
+-       xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
++       r = xa_err(xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL));
+        filemap_invalidate_unlock(inode->i_mapping);
+ 
+        /*
+@@ -696,7 +696,6 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+         * not the other way 'round.  Active bindings are invalidated if the
+         * file is closed before memslots are destroyed.
+         */
+-       r = 0;
+ err:
+        fput(file);
+        return r;
