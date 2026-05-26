@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A006E30DD0A
-	for <linux-coco@lists.linux.dev>; Tue, 26 May 2026 02:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7D230EF88
+	for <linux-coco@lists.linux.dev>; Tue, 26 May 2026 02:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779762931; cv=none; b=KQOTwhjbN4XB+xzwK5XdVkoUWvQIMo+C5yosLqu/f+t7h4TcZOwuwRXhEamJJjQ6xhTvxUf1Z7I1x7MqLMFub48QY2kGQ0oFI0MYCrRbEoIVSVus+OIS3ZScGzmCEtXT/oZiCjGI3gHUa3AicB1X/oKp3efELOkyCr7xfQdQAFM=
+	t=1779762934; cv=none; b=YK/vK+qP0Qk4rRM9nb/y8xXupAojDhZ84DZB7HBDTzfXtp2FI3BE8SbbsmGx7tp18LDbOtC/Sxo+QRlpmKo/vg8vWRZxf7UZs/ABH4ePY77v4aCwxKuZWB7t1NDXlAlM8dR6DsXQMH2QUpN1x3q2zsf0boshLDrdrwFW1HY1gSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779762931; c=relaxed/simple;
-	bh=UNpc8w7zvAFucwvtcKFcJLYzSYmUAsEKDwnfDUz3AMg=;
+	s=arc-20240116; t=1779762934; c=relaxed/simple;
+	bh=6OPqLGzID/8yWm6UrSRl+4VbyudTj8S0aIJtkM1Jl78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QKQv8xNOc7m+WYwAm0HirC/UbvG0sCBUr5COHoTaFiZcBR6r8yRBAaibDRBFXO+NuP/3fpieq++wJrbEKlq29982Rmh3ihFFGDNGtMFEdDNXTxG1Rls1xIaQ/LjwLqlx2CA5NywCZRaB21nB67MrwgxquF/rRW8nQs2KCOAN8Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nxxLkhNV; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=KJCUCil5n8ujJSQ8F06e2I6FtOaGJ732Du3ETkfEbtbaa2OMOcKKAa+b5zR2EH4keb1X6lEANEZUH4O7oyC7ke5jSc/J5HQs5zJ7pRByyLctI+3H4q9auLN3m/VCtSVsP2lGAC8nFg5rPP1QsCnuUu4qmoJJbZynUoGgFZ3h+AM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Sl2S8E1m; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nxxLkhNV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Sl2S8E1m"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779762928; x=1811298928;
+  t=1779762931; x=1811298931;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=UNpc8w7zvAFucwvtcKFcJLYzSYmUAsEKDwnfDUz3AMg=;
-  b=nxxLkhNV1uiG7M9bN+EVeDNsJqFcXMaQo4Kgmt8Z1KZvxISBIuJASCHl
-   azedO4JRgnd2WcSH2KQQLPmGdo7J3m46uOLUJ16pTfir2L5dF7RO1KeBx
-   BIweO6IrzANCzzwORlKnMsSXuUXtHDbnRBYZMpn58A3hyFBEAz0CsGu3a
-   pMphnU3THqg5r2xtxKDlaqCS9Dhy2LXZ5SUN+Rqlk7yFUCv/1XbPzdKiN
-   7Zzd2kwOgffH2ifKGqqhqOLuJdt4hFrSnBpE11eqqhYf6bkg08BlF8w4q
-   krDrU9gYlwMzix3ihvO6grKqcjYGHTpO30wDvGBdm7+IaUomXybojobrc
-   Q==;
-X-CSE-ConnectionGUID: RdiBhO9eQ+W8UEM2lWqoaA==
-X-CSE-MsgGUID: 0f+KocXGRKmXPF8lpePs4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="91677793"
+  bh=6OPqLGzID/8yWm6UrSRl+4VbyudTj8S0aIJtkM1Jl78=;
+  b=Sl2S8E1m9If2LL8scq39MQmkhYJfiQDxz39wxpOHU5wx7AMLQn0UfGIc
+   WY7PadtmWDHxqLC2Wc8RitU6B5nCVzsv2dkFOcMK5gA6HCaqVi2o4xP5j
+   v51hou7o9zBftzWDiRe4PNensltgWiZuHrSw2puLudnShM+TEsj0MNzfD
+   kdl6uhvP+faqTgVj7hhxBDnl2RAeRVWbKffbwY9TAiC8xxZEUisXQc5Z9
+   Xj9wrpG03E3k6z4qepUcaGsesRRbEjP2+IJgmNSbRHjASmOndz9hG2xvb
+   5oNZ5e+ri0xbO20D0tSGQ44311Hh6p1w0vb7Ett1VoXmtlR0xLRviyGDQ
+   g==;
+X-CSE-ConnectionGUID: iLibj196SG6/pM6y6prq5g==
+X-CSE-MsgGUID: qzWU3LKdS/OPkg2XNkYfuw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="91677816"
 X-IronPort-AV: E=Sophos;i="6.24,168,1774335600"; 
-   d="scan'208";a="91677793"
+   d="scan'208";a="91677816"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 19:35:24 -0700
-X-CSE-ConnectionGUID: FzS/pyoeR7WIjAooc/5Jew==
-X-CSE-MsgGUID: pwcThJ61QCaTFzB3exMhpQ==
+X-CSE-ConnectionGUID: n2GKC6uIShyxAra1m/l7jQ==
+X-CSE-MsgGUID: oV/Ws18ZSHi1aErTacyYIA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,168,1774335600"; 
-   d="scan'208";a="279878298"
+   d="scan'208";a="279878313"
 Received: from rpedgeco-desk.jf.intel.com ([10.88.27.139])
   by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 19:35:24 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
@@ -64,9 +64,9 @@ To: bp@alien8.de,
 	kai.huang@intel.com
 Cc: rick.p.edgecombe@intel.com,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH v6 04/11] x86/virt/tdx: Allocate ref counts for Dynamic PAMT memory
-Date: Mon, 25 May 2026 19:35:08 -0700
-Message-ID: <20260526023515.288829-5-rick.p.edgecombe@intel.com>
+Subject: [PATCH v6 07/11] KVM: TDX: Allocate PAMT memory for TD and vCPU control structures
+Date: Mon, 25 May 2026 19:35:11 -0700
+Message-ID: <20260526023515.288829-8-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
 References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
@@ -80,155 +80,159 @@ Content-Transfer-Encoding: 8bit
 
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 
-The PAMT memory holds metadata for all possible TDX protected memory. Each
-physical address range is covered by PAMT entries at three levels (1GB,
-2MB, 4KB). With Dynamic PAMT, the 4KB range of PAMT is allocated on
-demand. The kernel supplies the TDX module with page pairs to store the
-4KB entries, which cover 2MB of host physical memory. The kernel must
-provide this page pair before using pages from the range for TDX. If this
-is not done, SEAMCALLs that give the pages to be protected by the TDX module
-will fail.
+Use control page helpers for allocating and freeing TD control structures,
+such these operations can work for Dynamic PAMT.
 
-Allocate reference counters for every 2MB range to track TDX memory usage.
-This can be used to handle concurrent get/put callers, in order to
-accurately determine when the dynamic 4KB level of Dynamic PAMT needs to
-be allocated and when it can be freed.
+The TDX module tracks some state for each page of physical memory that it
+might use. It calls this state the PAMT. It includes separate state for
+each page size a physical page could be utilized at within the TDX module
+(1GB, 2MB, 4KB). In Dynamic PAMT, only the 4KB page size state is
+allocated dynamically. So the kernel must install PAMT backing for each 4KB
+page before gifting it to the TDX module, and tear it down after the page
+is reclaimed.
 
-This allocation will currently consume 2 MB for every 1 TB of address
-space from 0 to max_pfn. The allocation size will depend on how the RAM is
-physically laid out. In a worst case scenario where the entire 52-bit
-address space is covered this would be 8GB. Then the DPAMT refcount
-allocations could hypothetically cause the savings from Dynamic PAMT to go
-negative on exotic platforms with sparse, small amounts of memory.
+TD-scoped control pages (TDR, TDCS) and vCPU-scoped control pages (TDVPR,
+TDCX) are all handed to the TDX module at 4KB page size and are therefore
+subject to this requirement. Replace the raw alloc_page()/__free_page()
+calls for these pages with tdx_alloc/free_control_page().
 
-Future changes could reduce this refcount overhead to be only allocating
-refcounts for physical ranges that contain memory that TDX can use.
-However, this is left for future work.
+Switching between special Dynamic PAMT operations or normal page
+alloc/free operations is handled internally in
+tdx_alloc/free_control_page(). So don't check for Dynamic PAMT around these
+calls. Just call them unconditionally. Similarly, drop the NULL checks
+before freeing, as tdx_free_control_page() handles NULL internally.
 
-Assisted-by: Sashiko:claude-opus-4-6 GitHub Copilot:claude-opus-4-6 Sashiko:claude-opus-4-6
+No functional change intended when Dynamic PAMT is not in use.
+
+Assisted-by: GitHub Copilot:claude-opus-4-6 Claude:claude-opus-4-7
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+[sean: handle alloc+free+reclaim in one patch]
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[Rick: enhance log]
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
-v6:
- - Remove confusing reference to allocating PAMT memory in
-   pamt_refcounts comment. (Yan)
- - Rename "metadata" function names that really deal with refcounts, as
-   metadata already has a different meaning in TDX.
- - Move tdx_find_pamt_refcount() to this patch to aid in reviewability
+ arch/x86/kvm/vmx/tdx.c | 35 ++++++++++++++---------------------
+ 1 file changed, 14 insertions(+), 21 deletions(-)
 
-v4:
- - Log typo (Binbin)
- - round correctly when computing PAMT refcount size (Binbin)
- - Zero refcount vmalloc allocation (Note: This got replaced in
-   optimization patch with a zero-ed allocation, but this showed up in
-   testing with the optimization patches removed. Since it's fixed
-   before this code is exercised, it's not a bisectability issue, but fix
-   it anyway.)
-
-v3:
- - Split out lazily populate optimization to next patch (Dave)
- - Add comment around pamt_refcounts (Dave)
- - Improve log
----
- arch/x86/virt/vmx/tdx/tdx.c | 54 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 53 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 9e0812d87ab06..6658a6be6697c 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -30,6 +30,7 @@
- #include <linux/suspend.h>
- #include <linux/syscore_ops.h>
- #include <linux/idr.h>
-+#include <linux/vmalloc.h>
- #include <asm/page.h>
- #include <asm/special_insns.h>
- #include <asm/msr-index.h>
-@@ -52,6 +53,14 @@ static DEFINE_PER_CPU(bool, tdx_lp_initialized);
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 2539107e0ad3d..3e67e2471ffe3 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -362,7 +362,7 @@ static void tdx_reclaim_control_page(struct page *ctrl_page)
+ 	if (tdx_reclaim_page(ctrl_page))
+ 		return;
  
- static struct tdmr_info_list tdx_tdmr_list;
- 
-+/*
-+ * On a machine with Dynamic PAMT, the kernel maintains a reference counter
-+ * for every 2M range. The counter indicates how many users there are for
-+ * the PAMT memory of the 2M range. The kernel allocates PAMT refcounts at
-+ * initialization.
-+ */
-+static atomic_t *pamt_refcounts;
-+
- /* All TDX-usable memory regions.  Protected by mem_hotplug_lock. */
- static LIST_HEAD(tdx_memlist);
- 
-@@ -254,6 +263,43 @@ static struct syscore tdx_syscore = {
- 	.ops = &tdx_syscore_ops,
- };
- 
-+/*
-+ * Allocate PAMT reference counters for all physical memory.
-+ *
-+ * It consumes 2MiB for every 1TiB of physical memory.
-+ */
-+static int init_pamt_refcounts(void)
-+{
-+	size_t size = DIV_ROUND_UP(max_pfn, PTRS_PER_PTE) * sizeof(*pamt_refcounts);
-+
-+	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
-+		return 0;
-+
-+	pamt_refcounts = __vmalloc(size, GFP_KERNEL | __GFP_ZERO);
-+	if (!pamt_refcounts)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+static void free_pamt_refcounts(void)
-+{
-+	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
-+		return;
-+
-+	vfree(pamt_refcounts);
-+	pamt_refcounts = NULL;
-+}
-+
-+/* Find PAMT refcount for a given physical address */
-+static atomic_t * __maybe_unused tdx_find_pamt_refcount(unsigned long pfn)
-+{
-+	/* Find which PMD a PFN is in. */
-+	unsigned long index = pfn >> (PMD_SHIFT - PAGE_SHIFT);
-+
-+	return &pamt_refcounts[index];
-+}
-+
- /*
-  * Add a memory region as a TDX memory block.  The caller must make sure
-  * all memory regions are added in address ascending order and don't
-@@ -1151,10 +1197,14 @@ static __init int init_tdx_module(void)
- 	 */
- 	get_online_mems();
- 
--	ret = build_tdx_memlist(&tdx_memlist);
-+	ret = init_pamt_refcounts();
- 	if (ret)
- 		goto out_put_tdxmem;
- 
-+	ret = build_tdx_memlist(&tdx_memlist);
-+	if (ret)
-+		goto err_free_pamt_refcounts;
-+
- 	/* Allocate enough space for constructing TDMRs */
- 	ret = alloc_tdmr_list(&tdx_tdmr_list, &tdx_sysinfo.tdmr);
- 	if (ret)
-@@ -1204,6 +1254,8 @@ static __init int init_tdx_module(void)
- 	free_tdmr_list(&tdx_tdmr_list);
- err_free_tdxmem:
- 	free_tdx_memlist(&tdx_memlist);
-+err_free_pamt_refcounts:
-+	free_pamt_refcounts();
- 	goto out_put_tdxmem;
+-	__free_page(ctrl_page);
++	tdx_free_control_page(ctrl_page);
  }
+ 
+ struct tdx_flush_vp_arg {
+@@ -599,7 +599,7 @@ static void tdx_reclaim_td_control_pages(struct kvm *kvm)
+ 
+ 	tdx_quirk_reset_paddr(page_to_phys(kvm_tdx->td.tdr_page), PAGE_SIZE);
+ 
+-	__free_page(kvm_tdx->td.tdr_page);
++	tdx_free_control_page(kvm_tdx->td.tdr_page);
+ 	kvm_tdx->td.tdr_page = NULL;
+ }
+ 
+@@ -2444,7 +2444,7 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+ 
+ 	ret = -ENOMEM;
+ 
+-	tdr_page = alloc_page(GFP_KERNEL_ACCOUNT);
++	tdr_page = tdx_alloc_control_page();
+ 	if (!tdr_page)
+ 		goto free_hkid;
+ 
+@@ -2458,7 +2458,7 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+ 		goto free_tdr;
+ 
+ 	for (i = 0; i < kvm_tdx->td.tdcs_nr_pages; i++) {
+-		tdcs_pages[i] = alloc_page(GFP_KERNEL_ACCOUNT);
++		tdcs_pages[i] = tdx_alloc_control_page();
+ 		if (!tdcs_pages[i])
+ 			goto free_tdcs;
+ 	}
+@@ -2576,10 +2576,8 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+ teardown:
+ 	/* Only free pages not yet added, so start at 'i' */
+ 	for (; i < kvm_tdx->td.tdcs_nr_pages; i++) {
+-		if (tdcs_pages[i]) {
+-			__free_page(tdcs_pages[i]);
+-			tdcs_pages[i] = NULL;
+-		}
++		tdx_free_control_page(tdcs_pages[i]);
++		tdcs_pages[i] = NULL;
+ 	}
+ 	if (!kvm_tdx->td.tdcs_pages)
+ 		kfree(tdcs_pages);
+@@ -2594,16 +2592,13 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+ 	free_cpumask_var(packages);
+ 
+ free_tdcs:
+-	for (i = 0; i < kvm_tdx->td.tdcs_nr_pages; i++) {
+-		if (tdcs_pages[i])
+-			__free_page(tdcs_pages[i]);
+-	}
++	for (i = 0; i < kvm_tdx->td.tdcs_nr_pages; i++)
++		tdx_free_control_page(tdcs_pages[i]);
+ 	kfree(tdcs_pages);
+ 	kvm_tdx->td.tdcs_pages = NULL;
+ 
+ free_tdr:
+-	if (tdr_page)
+-		__free_page(tdr_page);
++	tdx_free_control_page(tdr_page);
+ 	kvm_tdx->td.tdr_page = NULL;
+ 
+ free_hkid:
+@@ -2933,7 +2928,7 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
+ 	int ret, i;
+ 	u64 err;
+ 
+-	page = alloc_page(GFP_KERNEL_ACCOUNT);
++	page = tdx_alloc_control_page();
+ 	if (!page)
+ 		return -ENOMEM;
+ 	tdx->vp.tdvpr_page = page;
+@@ -2953,7 +2948,7 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
+ 	}
+ 
+ 	for (i = 0; i < kvm_tdx->td.tdcx_nr_pages; i++) {
+-		page = alloc_page(GFP_KERNEL_ACCOUNT);
++		page = tdx_alloc_control_page();
+ 		if (!page) {
+ 			ret = -ENOMEM;
+ 			goto free_tdcx;
+@@ -2975,7 +2970,7 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
+ 			 * method, but the rest are freed here.
+ 			 */
+ 			for (; i < kvm_tdx->td.tdcx_nr_pages; i++) {
+-				__free_page(tdx->vp.tdcx_pages[i]);
++				tdx_free_control_page(tdx->vp.tdcx_pages[i]);
+ 				tdx->vp.tdcx_pages[i] = NULL;
+ 			}
+ 			return -EIO;
+@@ -3003,16 +2998,14 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
+ 
+ free_tdcx:
+ 	for (i = 0; i < kvm_tdx->td.tdcx_nr_pages; i++) {
+-		if (tdx->vp.tdcx_pages[i])
+-			__free_page(tdx->vp.tdcx_pages[i]);
++		tdx_free_control_page(tdx->vp.tdcx_pages[i]);
+ 		tdx->vp.tdcx_pages[i] = NULL;
+ 	}
+ 	kfree(tdx->vp.tdcx_pages);
+ 	tdx->vp.tdcx_pages = NULL;
+ 
+ free_tdvpr:
+-	if (tdx->vp.tdvpr_page)
+-		__free_page(tdx->vp.tdvpr_page);
++	tdx_free_control_page(tdx->vp.tdvpr_page);
+ 	tdx->vp.tdvpr_page = NULL;
+ 	tdx->vp.tdvpr_pa = 0;
  
 -- 
 2.54.0
