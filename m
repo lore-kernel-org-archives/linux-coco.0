@@ -1,95 +1,131 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8785E38C412
-	for <linux-coco@lists.linux.dev>; Tue, 26 May 2026 15:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF5D38D3E4
+	for <linux-coco@lists.linux.dev>; Tue, 26 May 2026 15:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779810413; cv=none; b=DUoBjySYOfvptdWjNgyrPtIuiDt/A7qBqL4emL0+PrnFUieQ+y5cXhU/jOeUkYTO4TN5Jiz2HBTo49DjQSMN18jfQqttQIQDNPygg5Xn54q1Azuo/zbS3AYw3VXbtnHiETOUVTVhAKeOCAnmLRyVKrkoCKw03er5nGIWN7PELiQ=
+	t=1779810817; cv=none; b=bUnRrUmKG1HiIQuK6gPN4viKv2ZGCLu/N+FnmHu+FlkFbJbchXsvZ9l/fFtcAOQf5zo0ARvw/ou9R8xRkI8iZ1W1QmGYdG+/C3niNLdL+XAsOq0hufZ5Ehodq2iWuduFrpXOUF3D6MRi/kZm5R9gSdO0+9TkVJaB28Pp9fCCDuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779810413; c=relaxed/simple;
-	bh=kQ6MFm1RcBK5lthrtsS3tKwgEUgIjQSVP8M3aj6hNVQ=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=OprfJ0Oz1QMCFbukNJo9qQv5DRYBVNf4EVIBmxtJbycQcRslteWCSDcYaWD8/Zrfa+NgH2Gqn2uT6e8mgtJAPD4xzqZnQ4hs5Dvou25wwop/3zMFdqmVymZdo2FLH985yJqovubUJ/WU8Zamy2sRnlNZQjVht7Jk8OVXWQSOJaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B3NRYBW/; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779810817; c=relaxed/simple;
+	bh=mBfUP0yVPjk2NwcZtGJBC+WG51c9+q2CFtrlyo+9fNY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=YzhOV4C6RDWSXpgwqgragYiMkIg7Q4Cyy6dvDl4D7gtCuFmlg7KTqMvW4CQYNyi/9MtSIccw4Sy+s6E5JDgVNCYiApR8dtC4osPPNzn4MvX/0FfT7/Fc2yNyMmpH+WCv6scDxBa9MNT9mvh9dy58oByohIVrqW3zZ0kUI10cduk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sqTZkQkP; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B3NRYBW/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779810411;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type;
-	bh=coBt7Zb3aZ3ZG0mTYJhcJ0JzfkK/zs88iplrFlJsbyY=;
-	b=B3NRYBW/aKu7iH2hU2rsyi5PVyofLZsjMVRIpFgcLfNoS4czZs4ZkXWSF+EvRcph9Oa434
-	w5gCd/AnQ8AcySb8d7w46cgO+9QLcSXE1LHeapUNg1CG3XfZP2X1hHofG+Ny40A9LDFedM
-	qiXeuJWDCs8EAqTP6/xPNdqZcDFbaEQ=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-eXPaSvm-OmSIU2_xjR9LhQ-1; Tue, 26 May 2026 11:46:47 -0400
-X-MC-Unique: eXPaSvm-OmSIU2_xjR9LhQ-1
-X-Mimecast-MFC-AGG-ID: eXPaSvm-OmSIU2_xjR9LhQ_1779810407
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2bd6aeb3637so251861935ad.2
-        for <linux-coco@lists.linux.dev>; Tue, 26 May 2026 08:46:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sqTZkQkP"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3663d5e9bf4so10872164a91.1
+        for <linux-coco@lists.linux.dev>; Tue, 26 May 2026 08:53:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779810816; x=1780415616; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uJNCogH4Zbu4XOm/ShCIueHOInBR+JpKq+7IbtHCuDM=;
+        b=sqTZkQkPQtUuAo4riNkWm2jWpPnweKF2E4pPWYNh8HnDHPwN3zaxUkjUv1v38MrVjv
+         wYoWuXC+C8btjNUnkliyUf95Vi17wbAzolhmE4LA9iisU5sobVCf0LizGl6ldkM1fTiX
+         YIa8y9YBxZRf0I+JrEJVouY/NqqMhqG5qwxT/Z/kklATVTHg4zQJ/Z5tPQ/8mUsTHUzr
+         VT2+v8FyEkQN5b7JJZHNf2HBZ0GBB5mHw3d3V5tKiz1oV9EjoQuxlrvMyRz9hRbU5wxr
+         DddkegXISnfoWhBK2KiPewZKkThJ1EwfHNp/naXei2vpFjigYFClZc4+fnIB3n8Y+QH5
+         KjEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779810406; x=1780415206;
-        h=to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=coBt7Zb3aZ3ZG0mTYJhcJ0JzfkK/zs88iplrFlJsbyY=;
-        b=FD+M8Hn9ZOgcE7oxqEEN5Q33TjM/hghQAvZlA3/WqEb30U/Ki/j/7Crzg+zM0vKkor
-         vVWPbkA4d1OYJL0ez9pBn9+nqeGELhoV3leir+CKeIbP67WANdx2wA4M5VvpmV2y1c6+
-         uDKKEM/TqVzIEGrxx7LsMTF3lYIhYPLqcW5sOvuR1bBBLHenpYz36KFPrZ5ECYfsv3YV
-         Y4c19lkfA/4g2B6iTX4eARLU7LOZqL/DqV99PRRsWP5QFv89isOt7+kwvcCnvHofcm/m
-         bYE/6H6VPvzK2JXMB8rvvK0uDOS6oOQGiBWIqzf5WyvIe2f3ip1bZ1VfaFJ7GBpoYiC4
-         8nRQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9FoiP0TfkL8JXsdGpFgD5XpwFHxJ+jK1cQbwZRmNlkRYIwRlGAjQ+xeBlRoCwFPxGg2XrRXX5EtVBO@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxb2wx5Wx51H5QCGv3/2V7FIMvtj5g6DEiKWgZWGu41YzZOchC1
-	r6wZb4iG6bZqm9OTsSduUUTiKRw6dg8nw6fEMLLW6sKwuouf3qX0a+303mXW8JSfNkdZfAf1mWM
-	1sfqskHrfqS8WkHp4D95eM3HOQiluRnbU3193W1cGPtcSYwgiPaIM2Ap746dFlv+Z5myuXjx0Ec
-	/t1uOeybxYs5IgbKOBs9xqnJJpTL6KbroU/HB29w==
-X-Gm-Gg: Acq92OHLSYlWKxV5TisbrXRfT0h1bkq5Qu6rDd8JBldPK92UZwyiQi3S+grtweYjfsI
-	7ZhfGUgKCIlN3FeFX9poEJQb48KCPxKC02KsH9G9aIgrMG5xuuYXOXAWyd2ukpcs/Suc+fpqe0r
-	XM187GtNn7jGkEOzfNdHdvlA1BCztVWgZJ6HsAxJLOizqM0uTaAfhlHIQ7egWASTYL9Bj+2HTT1
-	NRm
-X-Received: by 2002:a17:903:390d:b0:2b9:8d39:5e87 with SMTP id d9443c01a7336-2beb0657112mr195127015ad.10.1779810406583;
-        Tue, 26 May 2026 08:46:46 -0700 (PDT)
-X-Received: by 2002:a17:903:390d:b0:2b9:8d39:5e87 with SMTP id
- d9443c01a7336-2beb0657112mr195126665ad.10.1779810405978; Tue, 26 May 2026
- 08:46:45 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779810816; x=1780415616;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uJNCogH4Zbu4XOm/ShCIueHOInBR+JpKq+7IbtHCuDM=;
+        b=dPwZmCXMOzkcKjOxh52oREHNMuNcg+zU3UNQCwQec4974xSh1pTSddlw6h4y2eeUVC
+         XiUB2xX3aXLLzWty+cVL3FTXojGmYeUUhEeEtKdJsM/TDIs5atxR3h5NA01lSylLFN7n
+         28ctd6+wnVoqXrM8eB1UglBrIvP+8d1QbDynySBYkHMvBlOpnUTrHULVJdI4+Rqqddup
+         PI/DDI39/GTeseJlxO8wFtHm3hTKwKhLKKY1zIR02U/tKdmbYU0vLZZ/q6EfoBdxjDh4
+         gCxo5tpKcKBRi4uZHEaejgi9OewOqqTD4IcwlwN9GjmgT+922HyKCOqS2YGm6W3h6+lW
+         chEQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8sKdMH1JBWO4spMXstIL32qPYXgCExFHa0GQjLXsAlnD9qTGvFgdG4JHDM3Jo5DnvGhuznNjkNmSyp@lists.linux.dev
+X-Gm-Message-State: AOJu0YwdKQE4MZTtOzP2KkyGsb6ibXGuBhVcAT2OsN2dXjExDyFyxHGS
+	cnJTWsc3h0mBdwmegTkzrvQmiFD6/nty4zQFpBCosqrcEa9G5uDXXWNijbNx0dbXAwcei/N4lf6
+	ihDajsg==
+X-Received: from pgmm13.prod.google.com ([2002:a05:6a02:550d:b0:c82:2dd8:9d48])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1a8e:b0:368:78da:803
+ with SMTP id 98e67ed59e1d1-36a674f81fbmr19324004a91.12.1779810815253; Tue, 26
+ May 2026 08:53:35 -0700 (PDT)
+Date: Tue, 26 May 2026 08:53:34 -0700
+In-Reply-To: <20260522-fix-sev-gmem-post-populate-v2-2-3f196bfad5a1@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Tue, 26 May 2026 17:46:34 +0200
-X-Gm-Features: AVHnY4L3nOjJR38ocxZeT7riD_InnfNotcXGoStd6H43t02pPyJbpziDl5UZVbs
-Message-ID: <CAGxU2F5hP=7pA1rKRvq5sgr0t2y1YoUzYCmH8hzaCS58U4+Y3A@mail.gmail.com>
-Subject: SVSM Development Call May 27th, 2026
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: pSGi-FnhUl8erNHaNwDhZj99L4F5uJRiugj7MSl1jIs_1779810407
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com> <20260522-fix-sev-gmem-post-populate-v2-2-3f196bfad5a1@google.com>
+Message-ID: <ahXB_tBWakUUjt6q@google.com>
+Subject: Re: [PATCH v2 2/5] KVM: guest_memfd: Fix possible signed integer overflow
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, Michael Roth <michael.roth@amd.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Zongyao Chen <ZongYao.Chen@linux.alibaba.com>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Yu Zhang <yu.c.zhang@linux.intel.com>, Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Hi,
+For shortlogs (and changeloges), when possible, describe the _change_ itself, not
+its impact is.	Sometimes "Fix xyz" is the best shortlog, e.g. when fixing build
+failures, but here, I would go with:
 
-Here is the call for agenda items for this weeks SVSM development
-call. Please send any agenda items you have in mind as a reply to this
-email or raise them in the meeting.
+  KVM: guest_memfd: Treat memslot binding offset+size as unsigned values
 
-We will use the LF Zoom instance. Details of the meeting can be found
-in our governance repository at:
+for two reasons.  First, it provides a lot more context for future readers, versus 
+"Fix possible signed integer overflow" which doesn't even capture what flow is
+affected, how the overflow is being fixed, etc.  Second, if the fix is wrong,
+incomplete, etc., we don't end up with a follow-up patch that start with "Really
+fix ...".
 
-        https://github.com/coconut-svsm/governance
+Oh, actually, three reasons.  This doesn't only affect the overflow check.  The
+check on a negative offset is flawed, as it means KVM would incorrectly reject
+bindings with (comically) large offsets.
 
-The link to the COCONUT-SVSM calendar is:
+LOL, four.  There is no bug.  The size of the memslot is ((1UL << 31) - 1)
+pages, i.e. 0x7FF_FFFFF000:
 
-        https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
+	if (id < KVM_USER_MEM_SLOTS &&
+	    (mem->memory_size >> PAGE_SHIFT) > KVM_MEM_MAX_NR_PAGES)
+		return -EINVAL;
 
-The meeting will be recorded and the recording eventually published.
+and so "loff_t size" can never be negative.
 
-Regards,
-Stefano
+As for the offset, the negative check is intentional, because KVM_CREATE_GUEST_MEMFD
+takes loff_t for the size, and so an offset that is negative would also be larger
+than the size of the file.
 
+I still think it's worth taking unsigned values, because teasing out all of that
+information wasn't exactly easy.
+
+On Fri, May 22, 2026, Ackerley Tng wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> The caller, kvm_set_memory_region(), checks for an overflow in an unsigned
+> u64 guest_memfd_offset. When guest_memfd_offset is passed to kvm_gmem_bind,
+> it is cast into a signed 64-bit integer.
+> 
+> Hence, a large 64-bit offset could result in a negative loff_t, which could
+> result in the overflow checks failing.
+> 
+> Make kvm_gmem_bind() take u64 instead of loff_t to consistently deal with
+> unsigned values to avoid this issue.
+> 
+> Fixes: a7800aa80ea4d ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> [Use size_t for size instead of u64]
+
+Why?  Oh, right, because kvm_memory_slot.npages is an "unsigned long".  The
+discrepancy between a u64 for the offset and a size_t for the size is confusing,
+as they are both conceptually in the same "domain".
+
+Rather than u64 and size_t, we should use pgoff_t, which is what KVM already uses
+as the storage for kvm_memory_slot.gmem.pgoff.
+
+I'll send a new version as a standalone patch.
