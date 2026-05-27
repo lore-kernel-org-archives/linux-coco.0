@@ -1,199 +1,181 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F79227A462
-	for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 17:46:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDA2453495;
+	Wed, 27 May 2026 17:49:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779903965; cv=none; b=E5zFLrEfnvcre8Bf7Y3I9P37sNSVoYYNIr/d0xSGCV0omuWleE8ii6L7COtZH1j39St0Go7B1V14L1Fg8lEtdUUU45U/nRynRaNxr9pafVM0BXeF7eJeY2oyWJ/eKeISjuJWWIzjg65+01egXfkwtywlXtXIiKmKKfPQWbF9Jx8=
+	t=1779904172; cv=none; b=eOlyilXIuBwLuZyp5s2BsKu50xi9KYDFxivjl8ddib3b6/1MnpDmQuGmXkvq3CWncyzM9t/XD3gSdGuefpClYI6uQeGhLeRJq+Y/t5qCPdXGQuGPB+zO7NeUjQrKWRnGPTTyKgpAXiF0RahzWLDmeIf0C5z5SRpc0nq1YWw32j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779903965; c=relaxed/simple;
-	bh=0ThiOYWvoBP+x61ngBsl19TSjuAMKJt5lb2/LI++YMc=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=foEM6MHJplN2KUWk4EuSk/Bk6N7MXotQb4BMSWI2yX456xFLpEYVaXfraQm3jKpaFhsN7ud+iVZXbgZiB8+Q6ESb0/sNLkXZHwEFPLUz2K/hGmLyTvsbF3MN+SlCwh8Y9yFHRD5ozOECbarNxH5U7bLXihHVaFIN5RfrrDAA9pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TsY7bihV; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779904172; c=relaxed/simple;
+	bh=QHo4vfpTo+OuuUOJhK/ykgVt9OF28GCINhc8L0+DwLY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fiyJhb5cvnenwkyAJFA6taOBPqVNkVMNmqxcTHPR5Ov+mS3Os5368YxSY8A+uF6pgBFxeP7f21FXO3NT+MZ7T40S7l8ZohPDOWm3FF5r+8v65rgEAZWdWxNc1YiM3e5NEvz7iwaDG2YMAm6u75Ki5dRs2bQ8ypPelvZktMsmK3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QmO3s03N; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TsY7bihV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779903963; x=1811439963;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to;
-  bh=0ThiOYWvoBP+x61ngBsl19TSjuAMKJt5lb2/LI++YMc=;
-  b=TsY7bihVySzTYKM/EIpePu/WywDhHHN+7XRrMidO+tirOmgaYcHOHAAp
-   G0IDHq2UcrkaWT5/YtyxNF4ov8ZEBtwXu9UhEatwl8J9XoJbpIKvvAviL
-   3E7ZfsChDoNcZypkAjvMcdPbURHSaAGrMHPHTv5baJYAJfJjgzpE+00HR
-   oJReExL4fxVeW7IUgsEIev3Ppf/ggITQqEh+CfIjJApMGpHd3LieVQC9k
-   qbsI2Wpw5utqEAddA/QOi18TFpA50Sha/0GNM02AHBrHwh9CCEE+KKx44
-   sl/cG786E/nGTxwOGJs7bcpPdmIu67i+jZbKQpStmPXWX2bRcKq3DWXnL
-   w==;
-X-CSE-ConnectionGUID: FxqzLZ6ZRSioQt3KSNo5QA==
-X-CSE-MsgGUID: 3D+ovpR/Ts2pMTr+Dm9Ydw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="79893339"
-X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
-   d="scan'208";a="79893339"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 10:46:02 -0700
-X-CSE-ConnectionGUID: JihalDBCS721iENI+MVomQ==
-X-CSE-MsgGUID: Vqbx2Z5dSy6GzF6RTTz6ew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
-   d="scan'208";a="247258093"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.111.27]) ([10.125.111.27])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 10:46:02 -0700
-Content-Type: multipart/mixed; boundary="------------qh7EUZpxDlywN8WehcLGDAQL"
-Message-ID: <5ed6121c-314e-4cf0-9a11-b0661c87c694@intel.com>
-Date: Wed, 27 May 2026 10:45:28 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QmO3s03N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D841F000E9;
+	Wed, 27 May 2026 17:49:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779904171;
+	bh=SGme9EGefoC4cL8s1RAk5wHcM5ST2icrcVT0s+6JiQc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=QmO3s03NUjN2KFqtIUNtplCgcfaiu+Zcwi+mR9p0ChcHpkFSiBa0c8XOUU77YxoRC
+	 EC+3w96HLGEGLX4iD+1lIV1YJB2h6ncGaOV1DRryGf8wiB26VaRL2WTfu258Kmv5bR
+	 9tJMY3nZ/suiqDc9/rWUBVC85sqTB51FU27hoFmjA/mIY50pjtjg2DEyP+xmAhKoWi
+	 VylILIA7GlyRI9PuJlsSklRpORIYI4TWUAWhtTUvqOy6DyFkVqoQZCTx7cDZUbtGd+
+	 D3A+64reAFfrEt8eJ7xuksT7wzZdkmXU91SPyGB6Sq1fXqjNLqLp3x9pnD417T3vMq
+	 fRws0Ks1kio+g==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: "Dan Williams (nvidia)" <djbw@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: Bjorn Helgaas <helgaas@kernel.org>,
+	Dan Williams <djbw@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tony Krowiak <akrowiak@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Jason Herne <jjherne@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v5 5/5] iommufd/vdevice: add TSM request ioctl
+In-Reply-To: <yq5apl2gsw6y.fsf@kernel.org>
+References: <20260525154816.1029642-1-aneesh.kumar@kernel.org>
+ <20260525154816.1029642-6-aneesh.kumar@kernel.org>
+ <becd865d-09a4-4ac3-b719-4a0deae2692a@amd.com>
+ <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch> <yq5apl2gsw6y.fsf@kernel.org>
+Date: Wed, 27 May 2026 23:19:15 +0530
+Message-ID: <yq5aldd4spyc.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org
-Cc: "H . Peter Anvin" <hpa@zytor.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Kai Huang <kai.huang@intel.com>, Sean Christopherson <seanjc@google.com>,
- Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, stable@vger.kernel.org
-References: <20260527120544.2903923-1-kas@kernel.org>
- <20260527120544.2903923-3-kas@kernel.org>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260527120544.2903923-3-kas@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-This is a multi-part message in MIME format.
---------------qh7EUZpxDlywN8WehcLGDAQL
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
 
-On 5/27/26 05:05, Kiryl Shutsemau (Meta) wrote:
-...
-> -	/* Update part of the register affected by the emulated instruction */
-> -	regs->ax &= ~mask;
-> +	/*
-> +	 * IN writes the result into a sub-register of RAX. Only the
-> +	 * 32-bit form zero-extends; the smaller forms leave the upper
-> +	 * bits untouched:
-> +	 *
-> +	 *   insn  dest  size  bits written     bits preserved
-> +	 *   inb   AL    1     RAX[ 7: 0]       RAX[63: 8]
-> +	 *   inw   AX    2     RAX[15: 0]       RAX[63:16]
-> +	 *   inl   EAX   4     RAX[63: 0]       (none, zero-extended)
-> +	 *
-> +	 * 'mask' only covers the low 'size' bytes, which is exactly the
-> +	 * range affected for size 1 and 2. For size 4 the write also
-> +	 * clears RAX[63:32], so widen the clear-mask.
-> +	 */
-> +	if (size == 4)
-> +		regs->ax = 0;
-> +	else
-> +		regs->ax &= ~mask;
-> +
+> "Dan Williams (nvidia)" <djbw@kernel.org> writes:
+>
+>> Alexey Kardashevskiy wrote:
+>>>
 
-Is there any way we could do this with fewer comments and more code?
+......
 
-I mean, there's only three cases. Why have;
+>>>=20
+>>> I have 3 types of requests to fit here, all go via VM -> KVM -> QEMU ->=
+ IOMMUFD -> TSM.
+>>>=20
+>>> 1) bind/unbind TDI <- moves to CONFIG_LOCKED, this is "OP";
+>>> 2) start/stop TDI <- moves to RUN, this is "GR"? Right now I route it v=
+ia "OP";
+>>> 3) enable/disable MMIO/DMA <- no TDI state change, this is "GR" but whi=
+ch scope is it here?
+>>
+>> The scope parameter was meant to enumerate a security model for classes
+>> of commands that are otherwise opaque to the kernel. However, none of
+>> the commands we are targeting are opaque (private specification with
+>> unknown effect). It now turns out there is no role for @scope for
+>> security.
+>>
+>> Now a command family that iommufd can validate seems useful. As it
+>> stands this implementation aliases command codes across TSMs. Do we
+>> proceed with creating an actual shared command uapi for the truly shared
+>> commands:
+>>
+>> TSM_REQ_TYPE_DEFAULT: Commands every arch needs
+>> TSM_REQ_READ_OBJECT
+>> TSM_REQ_REGEN_OBJECT
+>> TSM_REQ_OBJECT_INFO
+>> TSM_REQ_VALIDATE_MMIO
+>> TSM_REQ_SET_TDI_STATE
+>>
+>> TSM_REQ_TYPE_SEV: Commands only SEV needs
+>> TSM_REQ_SEV_ENABLE_DMA
+>> TSM_REQ_SEV_DISABLE_DMA
+>>
+>> ...or just observe that per CC arch commands are needed to setup the VM
+>> so per CC arch commands are needed to marshal device assignment support
+>> requests.
+>>
+>> In that case pci_tsm_req_scope becomes tsm_req_type and is just:
+>>
+>> TSM_REQ_TYPE_CCA
+>> TSM_REQ_TYPE_SEV
+>> TSM_REQ_TYPE_TDX
+>>
+>> I am leaning towards the latter at this point.
+>
+> But we already have struct pci_tsm_ops::guest_req, which is specific to
+> the underlying CC architecture. From the above, pci_tsm_req_scope also
+> appears to carry the same information. Is that useful?
+>
 
-	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
+I think there is value in having the VMM express the guest=E2=80=99s
+confidential computing architecture, so that the TSM backend can
+validate whether it should handle that guest request ?.
 
-When there are only 3 possible cases:
+So it would not be the IOMMU validating the scope value, but rather
+pci_tsm_ops::guest_req.
 
-	1 => 0xf
-	2 => 0xff
-	4 => 0xffff
+static ssize_t cca_tsm_guest_req(struct pci_tdi *tdi, enum pci_tsm_req_scop=
+e scope,
+		sockptr_t req, size_t req_len, sockptr_t resp,
+		size_t resp_len, u64 *tsm_code)
+{
+	struct pci_dev *pdev =3D tdi->pdev;
 
-and one of those cases needs a special case on top of it.
+	/* reject the guest request if VMM was using the link tsm wrongly. The gue=
+st
+	 * was using a wrong CC archiecture with this link tsm
+	 */
+	if (scope !=3D TSM_REQ_TYPE_CCA)
+		return -EINVAL;
 
-Maybe something like this?
 
-	/* Clear out part of RAX so part of args.r11 can be OR'd in: */
-	switch (size) {
-	case 1:
-		/* inb consumes lower 8 bits of r11: */
-		regs->ax &= ~GENMASK_ULL(7, 0);
-		args.r11 &=  GENMASK_ULL(7, 0);
-		break;
-	case 2:
-		/* inw consumes lower 16 bits of r11: */
-		regs->ax &= ~GENMASK_ULL(15, 0);
-		args.r11 &=  GENMASK_ULL(15, 0);
-		break;
-	case 4:
-		/* inl is weird and zeros the whole register: */
-		regs->ax &= ~GENMASK_ULL(63, 0);
-		/* But only consumes 32-bits from r11: */
-		args.r11 &=  GENMASK_ULL(31, 0);
-		break;
-	default:
-		/* Probable TDX module bug. Illegal in[bwl] size: */
-		WARN_ON_ONCE(1);
-		success = 0;
-	}
+Jason Gunthorpe <jgg@ziepe.ca> writes:
 
-	if (success)
-		regs->ax |= args.r11;
+> On Tue, May 26, 2026 at 11:17:50PM -0700, Dan Williams (nvidia) wrote:
+>
+>> In that case pci_tsm_req_scope becomes tsm_req_type and is just:
+>>=20
+>> TSM_REQ_TYPE_CCA
+>> TSM_REQ_TYPE_SEV
+>> TSM_REQ_TYPE_TDX
+>>=20
+>> I am leaning towards the latter at this point.
+>
+> Yeah, this sounds good. I would also include an common op field that
+> can be decoded by the TSM driver based on the TYPE above, and the
+> usual in/out message buffers.
 
-It might need a temporary variable for args.r11, but you get the point.
-That's basically the data from the comment but written as code.
---------------qh7EUZpxDlywN8WehcLGDAQL
-Content-Type: text/x-patch; charset=UTF-8; name="tdxinX.patch"
-Content-Disposition: attachment; filename="tdxinX.patch"
-Content-Transfer-Encoding: base64
+We already have iommufd_vdevice_tsm_op_ioctl() to handle common
+operations. Right now, it handles IOMMU_VDEVICE_TSM_BIND and
+IOMMU_VDEVICE_TSM_UNBIND. I guess we should move TSM_REQ_SET_TDI_STATE
+operations to that as well?
 
-IHRkeC5jIHwgICAyOSArKysrKysrKysrKysrKysrKysrKysrKysrKysrLQogMSBmaWxlIGNo
-YW5nZWQsIDI4IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkK
-
---------------qh7EUZpxDlywN8WehcLGDAQL--
+-aneesh
