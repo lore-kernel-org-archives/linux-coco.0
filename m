@@ -1,98 +1,102 @@
 Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C50B47AF4D
-	for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 18:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF704657CE
+	for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 18:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779905673; cv=none; b=Fomal9FxA7BcxbHVTQZ0XKn4zT8+GQwdbol4GhywnTbY+eFfaYrRKzWxS5GzZdVvqTbv87VZZpXIRcUu4xPIXn0R0YUo09JOiIvHa8FnSNbP5Bh90Hn259kly2LjYEY3CoN5hE2TZmg6ouWLSuMS1wSoO4LuLG8jcm356gf3aU8=
+	t=1779905960; cv=none; b=WG6dKGVcYLMHtlGKIITJF4p2YL4Nmv0qJmw59Aiw8VZx6A13YByhsnIR+frxFLiq7YUhe8wlFDdR5kqIdRK9Vn34Tply2cFPj9iR5RSaQTlKNzGOIGT+XE5GStNUK4XN19QEqlnUUrVKEBav/dUBMMosrM/MLfaZ5Jdxg95Sn3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779905673; c=relaxed/simple;
-	bh=O9pOk5v+q8VTzg7ynkOmwYh/WXaD4qHadkilsV42SIc=;
+	s=arc-20240116; t=1779905960; c=relaxed/simple;
+	bh=Z1Zx94X0cWuLLDvuaWo3EIgzuHMb287gu3LLySsTcqk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=TfC/QpzWMTzD4tGS4X4VOHD2JZ2NeqaGtqcQ3GQV82RSt1aCCDP03FXsOctmmaqxX1iyNM6aEExSSwQ3soJ1nEufaHeqFaL8r1Uh6RtlA+hlEEr8Pv628quAEyLV7EjZOYYH6rkB4kukOqkWmJQTAICSnrwRDn+qWcExN5TAk4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t8m+a+ip; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=rkTQXP7ua3XAKjg1vcsSHzzjjEIUlBlX/lK2jyIbq6jkjN9B+E+NhdmDK2EraTwD3Jmog7YsIgcwK9W6cPmYGdWgaD+IMvPgkQkL/MDm/GAWFoR6PnK2M/vCbS2km4SrfXQhg26jYlfr6tS3nLGt30q2qU3NqHvsUIm3P8Fyg4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cJ573j1S; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t8m+a+ip"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b99eb06178so28131575ad.2
-        for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 11:14:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cJ573j1S"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ba6fe41283so128751725ad.1
+        for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 11:19:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779905671; x=1780510471; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1779905958; x=1780510758; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yQnId2rHDW8In1E8uy3X9GmOauCk23K9nsxnBe9nCG8=;
-        b=t8m+a+ipdRLp7y9i9TQ1jGG7j44S0xwKaiqF+Ls9CVF+rR+ABvyEzRQ7/slp5cOPqz
-         Erm0vBYJGVH/O1XOs0SadUm7miYKLtgMwuxAGLMFEe6jhR5P2e+eTn+hI16mdP0U5yNC
-         GCPJ90KqeMIHH8tsMqVSJ8VMlKN7xzVTZUk9ucSlv4beqJakajsAKU3wWEpD3fFZVwGz
-         DKUH85PVtepJfEUJ4LRaqbiqHddrq1vb7fNeL1TLBG2foxzVqwrz24LCJ7mpn4BYk4vs
-         kAuU21in54lB+mauzHbujGH9uF4rHfAekNbY/HARQ1qugbpIF0kxVJ/6W9et+SHHBvMX
-         dRAw==
+        bh=1FDMNy7yFqqnYdLo7TleGm8a+2NMQswa9bOxZdbuYmc=;
+        b=cJ573j1STTXeF0Fl5XpHjUALC570NwHhF5eFRT+F416jODPfneOrZ7UvJ2sbGH48cF
+         CEj4sBKK9uEvvQuxSzazMTq/B20eQ8evaNqXySI3V+Xyn/4vRCs8Im5sNaP7yQ59si/3
+         7jdJ5GnzmdXj5jhc9YTiQA0caDUcFEdVPVEPjV2zvaRKzts2z+HsLi7rmhWpEOOkKPz+
+         Lrey31gYOqMESREPZzsI808WygfP3kg/RRQa0gJIUMoRLSrSMtR3l4ka42DF+lIN9j1C
+         AlU5UoQKV614E894h+/QwXbJ8yNYafmwX2l9pRhvpU9KLBntn+jxEmTBLmr76EqegWZx
+         34xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779905671; x=1780510471;
+        d=1e100.net; s=20251104; t=1779905958; x=1780510758;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yQnId2rHDW8In1E8uy3X9GmOauCk23K9nsxnBe9nCG8=;
-        b=nnWmRkw6uiqX+mqU7NAjtAmW/G088+NEPr4p3+X56yIKpueh59vyft4k+w+M0WUYlq
-         llkl7JPAFZAiXTxP0AyXQZb9qlL+9b2FG5NRNEc7KdSADSb2XIkGHUCrmxNd80n2Mb8T
-         W1xzgnb02zkrNu++C5LbU0wOuF3o+5rbaL6ENZzD+3tgE1uX+HIUSZ2xh/XwGOLNTmyF
-         wiNFgh6A4fadwWCAcN24mmJx2fX2iG5JtlGlkDKs4KuT+JmO3KdCj+sklZ9DFZl8BMnW
-         bhyL/j9hqZCYFsAs7OJsyz+ejTMv4AZRo2b9SV4tWiKzNAAR13S71C69wkcZCyBZZQKr
-         EEMw==
-X-Forwarded-Encrypted: i=1; AFNElJ+h4VoAy4wEi44IE9Tn01uqTE3fHz5I45XF8r7QT75A9vn0M1/o1YBQRcWUJ0hQrBsvRBIcWpg1qHTn@lists.linux.dev
-X-Gm-Message-State: AOJu0YxFr0Bz3cM6Urkem7npmuQ8NDuq6jyEa1O4HY+pSr7V3jIpt9T7
-	ZfVSUCWIYdzhTY92J50iRCHc3J0vgrj99z97B8lvjGGIryR566b2wwvfQAlyAjGjq7kHSweNHNg
-	7CbQVqw==
-X-Received: from plop17.prod.google.com ([2002:a17:902:8a91:b0:2bc:9bda:56d0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f64e:b0:2b2:50bd:83b3
- with SMTP id d9443c01a7336-2beb035c826mr257510165ad.10.1779905670713; Wed, 27
- May 2026 11:14:30 -0700 (PDT)
-Date: Wed, 27 May 2026 11:10:12 -0700
-In-Reply-To: <20260430014852.24183-1-yan.y.zhao@intel.com>
+        bh=1FDMNy7yFqqnYdLo7TleGm8a+2NMQswa9bOxZdbuYmc=;
+        b=e84nQ9GnU+om+s6AlhVoWcoj7uEeWr/lueAn7bxS+qpJ2FORVuhVVFczLVXuDP9PkW
+         QK/3hVr0x4j7GQsvWRDgvfL74zM8VkKXXVZzoYwJARmj1OJSsScIA6mKbSOrjAfvl/wa
+         qDn6AMU1bGJvvJMocSbKRdGm+XcjZblR8W9nRRmF9WZcXcPqH5qvOkemMjzGjTOS9nk5
+         18SmbDOGAw37xdFF/Bc55zRfOitFAnDt61LwEPuQgX6yik8gw06+mA+X/k9G/+qcmaGy
+         6ujmWO44nMA5Bo0M8p4qZnT3chOpSDP9FiV/uT2+NDgVNExa6FVP1RSySuuioE6P++IZ
+         1QSg==
+X-Forwarded-Encrypted: i=1; AFNElJ869U+ydP8VRl75f1S5Y/vs0FcmQKyWeU76D0N6QKt0bx1+wUCWct1Qmk4PQAaW6nM03l/59YiyjaTm@lists.linux.dev
+X-Gm-Message-State: AOJu0YxGsIPcuqaA+3sDcKCeV/vQpemCFNyXfHD0G0NtTTsxZ7Mm78uw
+	uFi919glzAkYF3Sk3Kk3W70PZfIbT6exkh5lKuirdzqpd1vao5mtZ7OoLgzxCvokDEQpnD3G/gv
+	/7kfeHQ==
+X-Received: from plhi4.prod.google.com ([2002:a17:903:2ec4:b0:2ae:abe9:b38b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fc85:b0:2bc:e2ed:fd03
+ with SMTP id d9443c01a7336-2beb06a041emr262464465ad.39.1779905957936; Wed, 27
+ May 2026 11:19:17 -0700 (PDT)
+Date: Wed, 27 May 2026 11:19:13 -0700
+In-Reply-To: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260430014852.24183-1-yan.y.zhao@intel.com>
+References: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com>
 X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
-Message-ID: <177990514368.4120011.1575758464694752462.b4-ty@google.com>
-Subject: Re: [PATCH v2 0/4] struct page to PFN conversion for TDX guest
- private memory
+Message-ID: <177990575884.4125337.10193162766753947326.b4-ty@google.com>
+Subject: Re: [PATCH v2 0/5] guest_memfd fixes for bind and populate
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, dave.hansen@linux.intel.com, pbonzini@redhat.com, 
-	Yan Zhao <yan.y.zhao@intel.com>
-Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, kas@kernel.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, kai.huang@intel.com, rick.p.edgecombe@intel.com, 
-	yilun.xu@linux.intel.com, vannapurve@google.com, ackerleytng@google.com, 
-	sagis@google.com, binbin.wu@linux.intel.com, xiaoyao.li@intel.com, 
-	isaku.yamahata@intel.com
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, Michael Roth <michael.roth@amd.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Zongyao Chen <ZongYao.Chen@linux.alibaba.com>, 
+	Ackerley Tng <ackerleytng@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, Yu Zhang <yu.c.zhang@linux.intel.com>, 
+	Fuad Tabba <tabba@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, 30 Apr 2026 09:48:52 +0800, Yan Zhao wrote:
-> This is v2 of the struct page to PFN conversion series, which converts TDX
-> guest private memory mapping/unmapping APIs from taking struct page to
-> taking PFN as input.
+On Fri, 22 May 2026 15:46:05 -0700, Ackerley Tng wrote:
+> This series is a group of fixes for the bind and populate flows for
+> guest_memfd, and fixes some issues reported by Sashiko after reviewing the
+> guest_memfd in-place conversions series [1] and another fixup series Sean
+> posted [3].
 > 
-> v2 is based on v7.1.0-rc1 + Sean's 4 cleanup patches (see details in
-> section "Base" below). The purpose is to get Dave's Ack, so Sean can take
-> it from the KVM x86 tree. The full stack of v2 is available at [14].
+> Changes in v2:
 > 
 > [...]
 
-Applied to kvm-x86 mmu, thanks!
+Applied 1, 4, and 5 to kvm-x86 sev, with massaged shortlogs+changelogs.
 
-[1/4] x86/tdx: Use PFN directly for mapping guest private memory
-      https://github.com/kvm-x86/linux/commit/6ad0badd765c
-[2/4] x86/tdx: Use PFN directly for unmapping guest private memory
-      https://github.com/kvm-x86/linux/commit/4c7a1247646c
-[3/4] x86/tdx: Drop exported function tdx_quirk_reset_page()
-      https://github.com/kvm-x86/linux/commit/4a72a6dc447d
-[4/4] x86/virt/tdx: Move mk_keyed_paddr() to tdx.c due to no external users
-      https://github.com/kvm-x86/linux/commit/3f330fbb918f
+[1/5] KVM: SEV: Pin source page for write when adding CPUID data for SNP guest
+      https://github.com/kvm-x86/linux/commit/f13e90059908
+[2/5] KVM: guest_memfd: Fix possible signed integer overflow
+      [SKIP]
+[3/5] KVM: guest_memfd: Handle errors from xa_store_range() when binding
+      [SKIP]
+[4/5] KVM: SEV: Unmap local kmaps in LIFO order, per highmem requirements
+      https://github.com/kvm-x86/linux/commit/138f5f9cbe37
+[5/5] KVM: SEV: Mark source page dirty when writing back CPUID data on failure
+      https://github.com/kvm-x86/linux/commit/97cd21d57e9b
 
 --
 https://github.com/kvm-x86/linux/tree/next
