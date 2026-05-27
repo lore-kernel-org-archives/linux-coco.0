@@ -1,176 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370783D525E;
-	Wed, 27 May 2026 15:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890FD3033DF
+	for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 15:34:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779896090; cv=none; b=qovODJWy3a3W0pzpg14QErV+lgsJ4d8ZanwmzT+gozn2oESU2WjoyVP4yyu/a5AyK60p9fSzAyNqtWMZUQbReNFcjSVjwYMSmbq6fXSKidS7YGpYnGsOSmiuBytPnIARPK/cKNn/4ZfcXbA4zplq8S4oPwB6JO4ofCLGqH4cB4o=
+	t=1779896091; cv=none; b=g6fqHM5RhuL8NiHiJHmmbTg4lt49KkcKFE+l+A66rCe4X7gY3VJm1wRupaBHoE099X8L8vDxDQcIZTIwdHQX7UaE45Njuhyvj8C+6uNNHy/VBLb82DA82ig26K7gOFSnOOAxwu5pyAru8tq5FaLM+iL/eD9Jr01KIcfXM3/w154=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779896090; c=relaxed/simple;
-	bh=eYVYYSuFVGmwCEA1eQW+wxuiUuETdO6GAvZY6GYSRBI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=uPqoXveINm6y5XotvW9ckVkSsVBf/LSfJKlSy7HY4I8DfXeW/eO1F2Z0AMyvCSU7zvz0JiFd0X7U4WTQpLKifZQF+6j1YHtikido+4xjLkvmtvVgQHSO1gnCssDr7TKtmxQEQWVUKHHCAMp4ajJyDP+WwMBDSWrA/ofGR0Lt+CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cRPgykzH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779896091; c=relaxed/simple;
+	bh=1ec+pVpqeVLhWCe7xUB7KjuK6D+1xR+jbGakCt2aScw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jVdo/ycd7zKNpjK0ZPbfi8MtGU0rqaAEnqEk6/YFOe/fb4k1tYsgISIyhgibr0TKbq3ee5s/0fqC8GHapNwHRtgSt8u6oN9kPIglvhwNIz7YytpCJaGyiknxRidakebivrSarTHFKl1y6wTswwclKPH6B6jJ6gNRZ2pNT7s8Vjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C9sLs+M0; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cRPgykzH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF14D1F000E9;
-	Wed, 27 May 2026 15:34:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779896086;
-	bh=Qxk8LHEih46ikb9+5L8RXjEX9FaNqLHHuYYo/bGlo+Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=cRPgykzHCaDaqPzIDLPcbYrF2yAeUbZQs/LCNaCCcaTYYXFUr8NOYjCZYJttqRqoH
-	 WgIDMzJMOfjtDQn5VA2Y4ylF19CJ26VwyK4P6zIfeku4eibJ43A/b/6S6Df7m9slJQ
-	 dX8f3VVU6JpNGGdPJ9bF0ykKlEm7GwC39FeY6xH+Ik7sIxZqmnf0PjOz3Fini74040
-	 yu+P78KT19LV/gZK0h08q4Qt/S4NO3AzAaUWGvOSXjvY1bipzp+CkcPdudfCa+MQn8
-	 +S1VEaH4rLtMfpGnzAK/qlNr43ILziLgY67YfRoMKwn7F12Sa9BFgQGMUmEw1UnSO3
-	 +BlfMwjxvqJ+Q==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: "Dan Williams (nvidia)" <djbw@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Bjorn Helgaas <helgaas@kernel.org>,
-	Dan Williams <djbw@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Tony Krowiak <akrowiak@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Jason Herne <jjherne@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Eric Farman <farman@linux.ibm.com>, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v5 5/5] iommufd/vdevice: add TSM request ioctl
-In-Reply-To: <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch>
-References: <20260525154816.1029642-1-aneesh.kumar@kernel.org>
- <20260525154816.1029642-6-aneesh.kumar@kernel.org>
- <becd865d-09a4-4ac3-b719-4a0deae2692a@amd.com>
- <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch>
-Date: Wed, 27 May 2026 21:04:29 +0530
-Message-ID: <yq5apl2gsw6y.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C9sLs+M0"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4891c00e7aeso81953175e9.2
+        for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 08:34:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779896087; x=1780500887; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rF1sdUt+x3ES0J+bZHKGMYq3dPxPJDXhYXNfFWraH5k=;
+        b=C9sLs+M0aYiltT2/XRiNLKxjAW/jQBpAAY7Xq3QsGm6uffPm/iBdlkr1ath0XAHXOT
+         p4B4pk9QXnki8tYarjMsMlC+p3O5WnUSpYHl83Jbd3suIPoVfhrb7NZyfhYj+cWpxMcO
+         RT2pDc+64HMw25KMCqMtNhuavwuG8R9u5BXDQCeg1oGw1mM+yNr+UBtD31GTiRUB3lVP
+         PvJXIYYmb1CWncorJ2LOImaHKZnu8tncViL50wRxLIc9SmxmTySYZ3Bi/m3PUlm5LV6Z
+         ui5nam/i+1pbmkCvI3hS7zfzQLJ61KK+mZFRHCYkpnsoqt84snwiKRgkuME3CTok3zBT
+         Kc6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779896087; x=1780500887;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rF1sdUt+x3ES0J+bZHKGMYq3dPxPJDXhYXNfFWraH5k=;
+        b=CaKYk9gSk6Vz7PH+SlFeIdcC9wFsd9WuS8Rb0DlwmGuZHJfSgtovxb4vbQNQgKq+eO
+         jWJB7dUw4wSoEU4HZr+fX5wbEuYSHFp/Nt4jRXol/RQ1h9iW9Hyp15d99ierNm5P5FQ+
+         8WFASofO/A1wnXIU/4ZcuB0bK6uEQh7uMNq+bExgZaUp4MqeiPajRG0MRaUctfD2yZPl
+         INgf/axHU525uv3Kh96NHJU5V/wV3kylup5JBcgv/23gHpMEXO/twJ/V+8uNV3QmHwJv
+         F/Io1UCV3pnB/ALoCqhs6VyYR+tLD8rheoqrrEn+mq3ILzbTS/fJsI+YOC5A/T6T7m7d
+         aOQg==
+X-Forwarded-Encrypted: i=1; AFNElJ+8+xmVw/gpmKpPSk6QAzb94RcpD9AWq/X2W2Uauth2Te8XUSpijg43ZZ2AX4g76uRJ9cqPJnNo074g@lists.linux.dev
+X-Gm-Message-State: AOJu0YxrRYT8pm+/XGVI3/fRYJoRtwhRKSLNpykH2c3l/YaVfDbthLyZ
+	9VegmHKd9iYbhtl3LwqtkNNgwmlRo4qmwlE1yPw2Kbk61Jsy1+FNExT2
+X-Gm-Gg: Acq92OGJfMV4Sr42smr5WssTjIou3VwCS+d4uFP2IrePuc1L08M96pRKE1Qz/aH95Dj
+	kEvIHYt/7KPi3qAhx4xj43D9ecplYVDsGQ77Rk69KwgtZ8J8FlMzyJUK7NAq+ptrJh+LpYP46lh
+	1kssZvD2G34jEpy8/kWD6gkI/NC2Y/tnt8+19hjnTe++j4oatBvTQBWs0mHSbEq8kAA0VIGRfKw
+	K/3uI0zSlqMF/IeK2KrrsYiPqHu40KSktYyqPyrSHVwqZaiIMkSKuSWISbi7b6l6MNLvqzVJ+xQ
+	eh6SG8t08ra3hV94GHi853ddwQ8QiXEHY49+e/Dwj+FLgRCjAASL0wcd569P86OAeycSuTBbWwJ
+	94RLKXY5+t0+XtKrPBvb7E7Nn1rchzXvMPaJZ8Tkx1Y6gq7fGxGxDnhGut/yMX0pnSZ1miNdj03
+	m630HzZT6NAVqtYfidweyuQ2X+03JKMFnEvqfs5Rd7xul4BQJ6kGLV6o99hmSg/opdTMOnQ4NvX
+	9bD+PU=
+X-Received: by 2002:a05:600c:c4a1:b0:490:3fd9:e78b with SMTP id 5b1f17b1804b1-490426cef8bmr400420045e9.17.1779896087157;
+        Wed, 27 May 2026 08:34:47 -0700 (PDT)
+Received: from [192.168.1.50] (static-82-85-206-37.clienti.tiscali.it. [82.85.206.37])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4908098f57asm18458415e9.20.2026.05.27.08.34.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 May 2026 08:34:46 -0700 (PDT)
+Message-ID: <ecd045de-8649-4bd6-a3e2-fecb6371f7b3@gmail.com>
+Date: Wed, 27 May 2026 17:34:45 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: SVSM Development Call May 27th, 2026
+To: Stefano Garzarella <sgarzare@redhat.com>, coconut-svsm@lists.linux.dev,
+ linux-coco@lists.linux.dev
+Cc: Tanish Desai <tanishdesai37@gmail.com>
+References: <CAGxU2F5hP=7pA1rKRvq5sgr0t2y1YoUzYCmH8hzaCS58U4+Y3A@mail.gmail.com>
+ <CAGxU2F4uJLH5OTv+y4712vmNBogfSspN-nJHzDJAz9N6HWeg2g@mail.gmail.com>
+Content-Language: en-US
+From: Nicola Ramacciotti <niko.ramak@gmail.com>
+In-Reply-To: <CAGxU2F4uJLH5OTv+y4712vmNBogfSspN-nJHzDJAz9N6HWeg2g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-"Dan Williams (nvidia)" <djbw@kernel.org> writes:
+Hi all,
 
-> Alexey Kardashevskiy wrote:
->> 
->> 
->> On 26/5/26 01:48, Aneesh Kumar K.V (Arm) wrote:
->> > Add IOMMU_VDEVICE_TSM_REQUEST for issuing TSM guest request/response
->> > transactions against an iommufd vdevice.
->> > 
->> > The ioctl takes a vdevice_id plus request/response user buffers and length
->> > fields, and forwards the request through tsm_guest_req() to the PCI TSM
->> > backend. This provides the host-side passthrough path used by CoCo guests
->> > for TSM device attestation and acceptance flows after the device has been
->> > bound to TSM.
->> > 
->> > Also add the supporting tsm_guest_req() helper and associated TSM core
->> > interface definitions.
->> > 
->> > Based on changes from: Alexey Kardashevskiy <aik@amd.com>
->> > 
->> > Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
->> > ---
->> >   drivers/iommu/iommufd/iommufd_private.h |  6 ++
->> >   drivers/iommu/iommufd/main.c            |  3 +
->> >   drivers/iommu/iommufd/tsm.c             | 68 +++++++++++++++++++++
->> >   drivers/virt/coco/tsm-core.c            | 39 ++++++++++++
->> >   include/linux/pci-tsm.h                 |  9 +--
->> >   include/linux/tsm.h                     | 25 ++++++++
->> >   include/uapi/linux/iommufd.h            | 80 +++++++++++++++++++++++++
->> >   7 files changed, 226 insertions(+), 4 deletions(-)
-> [..]
->> > diff --git a/drivers/iommu/iommufd/tsm.c b/drivers/iommu/iommufd/tsm.c
->> > index 09ee668dbed9..342fbdb6a6b9 100644
->> > --- a/drivers/iommu/iommufd/tsm.c
->> > +++ b/drivers/iommu/iommufd/tsm.c
->> > @@ -60,3 +60,71 @@ int iommufd_vdevice_tsm_op_ioctl(struct iommufd_ucmd *ucmd)
->> >   	iommufd_put_object(ucmd->ictx, &vdev->obj);
->> >   	return rc;
->> >   }
->> > +
->> > +static bool iommufd_vdevice_tsm_req_scope_valid(u32 scope)
->> > +{
->> > +	if (scope > IOMMU_VDEVICE_TSM_REQ_SCOPE_PCI_LAST)
->> > +		return false;
->> > +
->> > +	switch (scope) {
->> > +	case IOMMU_VDEVICE_TSM_REQ_PCI_INFO:
->> > +	case IOMMU_VDEVICE_TSM_REQ_PCI_STATE_CHANGE:
->> > +	case IOMMU_VDEVICE_TSM_REQ_PCI_DEBUG_READ:
->> > +	case IOMMU_VDEVICE_TSM_REQ_PCI_DEBUG_WRITE:
->> 
->> This scope thing still needs clarification.
->> 
->> I have 3 types of requests to fit here, all go via VM -> KVM -> QEMU -> IOMMUFD -> TSM.
->> 
->> 1) bind/unbind TDI <- moves to CONFIG_LOCKED, this is "OP";
->> 2) start/stop TDI <- moves to RUN, this is "GR"? Right now I route it via "OP";
->> 3) enable/disable MMIO/DMA <- no TDI state change, this is "GR" but which scope is it here?
->
-> The scope parameter was meant to enumerate a security model for classes
-> of commands that are otherwise opaque to the kernel. However, none of
-> the commands we are targeting are opaque (private specification with
-> unknown effect). It now turns out there is no role for @scope for
-> security.
->
-> Now a command family that iommufd can validate seems useful. As it
-> stands this implementation aliases command codes across TSMs. Do we
-> proceed with creating an actual shared command uapi for the truly shared
-> commands:
->
-> TSM_REQ_TYPE_DEFAULT: Commands every arch needs
-> TSM_REQ_READ_OBJECT
-> TSM_REQ_REGEN_OBJECT
-> TSM_REQ_OBJECT_INFO
-> TSM_REQ_VALIDATE_MMIO
-> TSM_REQ_SET_TDI_STATE
->
-> TSM_REQ_TYPE_SEV: Commands only SEV needs
-> TSM_REQ_SEV_ENABLE_DMA
-> TSM_REQ_SEV_DISABLE_DMA
->
-> ...or just observe that per CC arch commands are needed to setup the VM
-> so per CC arch commands are needed to marshal device assignment support
-> requests.
->
-> In that case pci_tsm_req_scope becomes tsm_req_type and is just:
->
-> TSM_REQ_TYPE_CCA
-> TSM_REQ_TYPE_SEV
-> TSM_REQ_TYPE_TDX
->
-> I am leaning towards the latter at this point.
+On 5/27/26 17:12, Stefano Garzarella wrote:
+> On Tue, 26 May 2026 at 17:46, Stefano Garzarella <sgarzare@redhat.com> wrote:
+>> Hi,
+>>
+>> Here is the call for agenda items for this weeks SVSM development
+>> call. Please send any agenda items you have in mind as a reply to this
+>> email or raise them in the meeting.
+> One topic could be the 2 GSoC projects we have this year.
+> If Nicola and Tanish join, it would be nice to allow them some time to
+> present their projects. They will work with the COCONUT community
+> during the summer :-)
 
-But we already have struct pci_tsm_ops::guest_req, which is specific to
-the underlying CC architecture. From the above, pci_tsm_req_scope also
-appears to carry the same information. Is that useful?
 
--aneesh
+Great. I'll be there!
+
+Regards,
+Nicola
+
+
+>
+> Stefano
+>
+>> We will use the LF Zoom instance. Details of the meeting can be found
+>> in our governance repository at:
+>>
+>>          https://github.com/coconut-svsm/governance
+>>
+>> The link to the COCONUT-SVSM calendar is:
+>>
+>>          https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
+>>
+>> The meeting will be recorded and the recording eventually published.
+>>
+>> Regards,
+>> Stefano
