@@ -1,124 +1,155 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B146B2D9EDC
-	for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 08:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AE82D97AA;
+	Wed, 27 May 2026 10:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779869917; cv=none; b=M91B7t59Yjtq0QvgIPmurq7apt5hT6Fg6ZoAJqtVP+WqIMBgMWCxRXOas94kpzMuSwTqEwfqBJoMH9sxJZf6USSDz8KnayOegpqHMDYLfymaQDTGsdjoY7OhUal4s8LPF+sgxvxNPUn4F7uiThqGm+DLNe/P0i8Dd4qPBHmcM7U=
+	t=1779876167; cv=none; b=Fcyuh4nzRUi5FcATe+410buSo2o4S2S0TyuHfV2Ngiajgi7C7cnTCwjBcA9jmPrx+737G1uLK6INY6Zftfzo4OIoi9m5MT/LoJVxlCzBROFqdCy6XI8BQ/kw+4zh7SfcUj+m6N/G2Bf1pxoQY9Wil/zYzJPkp49iQAS2QohtpBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779869917; c=relaxed/simple;
-	bh=b55VKgZiKOSG2FPMrZJzbwIxqWhf76qsIHBgDm2uw+8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UckUGm//z/kFRvLseL362HETx2TD2AXeIR6UIpDQA7WW+YCW17X341bXgDWH8NuAin03V29scWV9e0MWAmCMzHgY7aKDQ5FsOecTZJTSVCnHZrvy/qeYTRW3VqV8liReXeIby7AvD30JmGY6FjEhLUasdFwjbhDkDETksteAtxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jV3EJ1ps; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779876167; c=relaxed/simple;
+	bh=lvD4qR8y4Eoz9VaSEdZuOBmS0pP9QJ0yOVz6rR4IUBM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cX4TDjdukkUbWY6e4fpqEJWyMzJHybdd1SINLYEvU4+6tUI/y6zpIgkmzE7l7spkpmMnSMOB4NFUwfz3HjT8rMuy5KQ7vRF7BIAwLSc/DNNxX+rThH797wsidHod0NiDI2fTzSJHJ3AIT6SxOkRMBT6OtZ8+iPtvp76xPRsl/6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SJJuUNH0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jV3EJ1ps"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779869915; x=1811405915;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=b55VKgZiKOSG2FPMrZJzbwIxqWhf76qsIHBgDm2uw+8=;
-  b=jV3EJ1pschxYw23oxkdcTuo2CDVJl68YovIPYk/rWdfeE/Nr2ZUQK41Y
-   kdgrNdxYzYSfvOQhTr2/VfjVxD1H6oJfj3FKGR1FQAGg5LD/MlDpDROHP
-   ZFeI/z+O1g98pCzLTiNQptiAm1ALXBYSD+fbfI9n5yByL9ji2MsVwyjRp
-   DXYw6HpHmAxYu8jSB60Jl/qGTFPqlGBiHh1EMXlSutWdOfXwExqcwOeHi
-   fmz/6RiXUiBK5QW1LRDLbiIsf75gNOdMLea4DFbXjPPQXL98RrWL1ZRjJ
-   GY6XVSAe/fadl+46b20eI8lOn4h/tmEN8sXM3bc9ShzD9vVkqjMv+xV3m
-   A==;
-X-CSE-ConnectionGUID: ALITXDohRHmXUFonLrKMfQ==
-X-CSE-MsgGUID: 2Sfg8nzwT2m9KrEfh3phIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="84320723"
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="84320723"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 01:18:35 -0700
-X-CSE-ConnectionGUID: D5o+KFTNSTSlwNvmbE8HDw==
-X-CSE-MsgGUID: O0cjRpl6Qhyq1Uex2j8Uqw==
-X-ExtLoop1: 1
-Received: from unknown (HELO [10.239.158.45]) ([10.239.158.45])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 01:18:30 -0700
-Message-ID: <534aa31c-c643-4b64-ab0f-59cf29a52d99@intel.com>
-Date: Wed, 27 May 2026 16:18:28 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SJJuUNH0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 323581F00A3A;
+	Wed, 27 May 2026 10:02:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779876166;
+	bh=Hu7HoK2hIQnOl4q34hOD8+zjB4sz0oZzSs+uNBXGR34=;
+	h=From:To:Cc:Subject:Date;
+	b=SJJuUNH0kznHm/7NTJUFJDUDcFfxYASzOTl/Bfs0D7HTIRMx5pWuystQL+I2H3rJb
+	 dKDWOxMAyGmZRhsR7Wi/v96XGvxjYxN2uV8w6JGXmh8z2lH4bCP6ypQ48HOiFlxSF9
+	 oqqe01KfS9qTThO54vH12vQxak3K8T7+UIHUDv/GlLAvyLWJigzsIFY6/bhUEoJtDQ
+	 1TGNTP27Nqk03jbXkm7oL1Q08NigvNgKc6tLcDe4MeZEF86j6JG7rgr++jZRU8MaqY
+	 vMMcrr+bjUEH3IRoYljmskzX0/X1jZGYnzJHIBeBy3el+eORbbp3bFC3n7GbcT1Bgs
+	 Trdq5qsVU0V0Q==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Subject: [PATCH v6 0/4] Switch Arm SMCCC firmware services to an SMCCC bus
+Date: Wed, 27 May 2026 15:32:29 +0530
+Message-ID: <20260527100233.428018-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/15] x86/virt/tdx: Add extra memory to TDX Module for
- Extensions
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
- x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sohil.mehta@intel.com,
- yilun.xu@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-3-yilun.xu@linux.intel.com>
- <7139c55b-b949-415d-ab82-fca1b1cc3880@intel.com>
- <ahZpUA62NRdNrkvZ@yilunxu-OptiPlex-7050>
- <9073ac91-3aa4-41e2-bb81-8878409498e5@intel.com>
- <ahaeCGLPEfmYNFtC@yilunxu-OptiPlex-7050>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <ahaeCGLPEfmYNFtC@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 5/27/2026 3:32 PM, Xu Yilun wrote:
-> On Wed, May 27, 2026 at 02:38:27PM +0800, Xiaoyao Li wrote:
->> On 5/27/2026 11:47 AM, Xu Yilun wrote:
->>>>> +static void tdx_clflush_hpa_list(struct page *root, unsigned int nr_pages)
->>>>> +{
->>>>> +	u64 *entries = page_to_virt(root);
->>>>> +	int i;
->>>>> +
->>>>> +	for (i = 0; i < nr_pages; i++)
->>>>> +		clflush_cache_range(__va(entries[i]), PAGE_SIZE);
->>>>
->>>> Is the page flush only needed when CLFLUSH_BEFORE_ALLOC is true?
->>>>
->>>> If so, it inherits the same decision to always flush as what
->>>
->>> Yes it is basically the same as tdx_clflush_page().
->>>
->>>> tdx_clflush_page() did. Then, any chance we can use tdx_clflush_page() here
->>>
->>> But I don't think we should convert hpa/page/va back and forth just for
->>> re-using one line of code.
->>
->> Because we want/need to flush page as late as possible so that the page
->> flush needs to happen right before SEAMCALL?
-> 
-> I think so. Let the flushing be part of the tdh call semantic.
-> 
->>
->> How about we pass in the struct page * and number into tdx_ext_mem_add() and
->> construct the root page inside it?
-> 
-> I assume you don't suggest allocate root page inside the call, then we
-> need 3 parameters for the HPA_LIST_INFO:
-> 
->    struct page *, unsigned int nr_pages, struct page *root
-> 
-> which I think too much.
+As discussed here:
+https://lore.kernel.org/all/20250728135216.48084-12-aneesh.kumar@kernel.org
 
-yeah, sort of.
+The earlier CCA guest support used an arm-cca-dev platform device as a pure
+software anchor for the TSM class device. That platform device did not
+correspond to a DT/ACPI described device, MMIO range, interrupt, or other
+platform resource; it existed only to make the CCA guest driver bind and to
+place the resulting TSM device in the driver model. The same pattern also
+exists for smccc_trng. Creating separate platform devices for such
+SMCCC-discovered features is misleading, because those features are not
+independent platform devices.
 
-> I think your concern is to try not to introduce another tdx_clflush_
-> variant, but I believe this will happen, pfn based memory description is
-> on the way:
-> 
-> https://lore.kernel.org/all/20260430014929.24210-1-yan.y.zhao@intel.com/
+This series adds an Arm SMCCC bus for services discovered through the SMCCC
+firmware interface. The bus provides SMCCC device and driver registration
+helpers, name-based matching, uevent modalias generation, and a sysfs modalias
+attribute. SMCCC service drivers can use MODULE_DEVICE_TABLE(arm_smccc, ...)
+to emit arm_smccc:<name> aliases, allowing userspace to autoload service
+drivers when the SMCCC core registers matching firmware-service devices.
 
-I don't object the variant of tdx_clflush_hpa_list(), but suggest if 
-tdx_clflush_page() can be used instead of raw clflush_cache_range()
+The series then moves SMCCC TRNG and the Arm CCA guest RSI service off the
+platform bus. When the SMCCC core discovers the corresponding firmware
+service, it registers an arm-smccc device for that service. The hwrng
+arm_smccc_trng driver and the Arm CCA guest TSM provider are converted to
+SMCCC drivers that bind to those discovered devices.
 
-Maybe we can try to put tdx_clflush_hpa_list() along with 
-tdx_clflush_page() and tdx_clflush_pfn()? This way, I think we can save 
-the separate comment.
+The old arm-cca-dev platform device has also been used by userspace as a Realm
+guest indicator. Removing it without a replacement would leave userspace
+depending on an internal driver-binding device. This series therefore adds
+/sys/firmware/cca/realm_guest as a stable, architecture-provided ABI for
+detecting whether the kernel is running as an Arm CCA Realm guest, and then
+removes the dummy arm-cca-dev platform-device registration.
+
+Changes from v5:
+https://lore.kernel.org/all/20260514094030.42495-1-aneesh.kumar@kernel.org
+* Replace the arm-smccc platform-device plus auxiliary-child model with a
+  dedicated Arm SMCCC bus.
+* Add SMCCC module alias support so SMCCC service drivers can use
+  MODULE_DEVICE_TABLE(arm_smccc, ...) and autoload through arm_smccc:<name>
+  aliases.
+* Convert smccc_trng from a platform driver to an SMCCC driver.
+* Convert the Arm CCA guest TSM provider from the arm-cca-dev platform device
+  to an SMCCC driver bound to the discovered RSI service.
+* Add /sys/firmware/cca/realm_guest before removing the old arm-cca-dev dummy
+  platform device.
+
+Changes from v4:
+https://lore.kernel.org/all/20260427061615.905018-1-aneesh.kumar@kernel.org
+* Add /sys/firmware/cca/realm_guest for detecting realm guest
+* Convert smccc_trng to auxiliary device from platform device
+
+Changes from v3:
+https://lore.kernel.org/all/20260309100507.2303361-1-aneesh.kumar@kernel.org
+* Rebased onto the latest kernel
+* Drop pr_fmt() from drivers/firmware/smccc/rmm.c
+
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Jeremy Linton <jeremy.linton@arm.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suzuki K Poulose <Suzuki.Poulose@arm.com>
+
+
+Aneesh Kumar K.V (Arm) (4):
+  firmware: smccc: Add an Arm SMCCC bus
+  firmware: hwrng: arm_smccc_trng: Register as an SMCCC device
+  firmware: smccc: arm-cca-guest: Bind the TSM provider to an SMCCC
+    device
+  coco: guest: arm64: Replace dummy CCA device with sysfs ABI
+
+ Documentation/ABI/testing/sysfs-firmware-cca  |  10 +
+ arch/arm64/include/asm/rsi.h                  |   2 +-
+ arch/arm64/kernel/rsi.c                       |  39 +++-
+ drivers/char/hw_random/arm_smccc_trng.c       |  26 +--
+ drivers/firmware/smccc/Makefile               |   4 +
+ drivers/firmware/smccc/rmm.c                  |  25 +++
+ drivers/firmware/smccc/rmm.h                  |  17 ++
+ drivers/firmware/smccc/smccc.c                | 178 +++++++++++++++++-
+ drivers/virt/coco/arm-cca-guest/Kconfig       |   1 +
+ drivers/virt/coco/arm-cca-guest/Makefile      |   2 +
+ .../{arm-cca-guest.c => arm-cca.c}            |  60 +++---
+ include/linux/arm-smccc-bus.h                 |  49 +++++
+ include/linux/mod_devicetable.h               |  13 ++
+ scripts/mod/devicetable-offsets.c             |   3 +
+ scripts/mod/file2alias.c                      |   8 +
+ 15 files changed, 378 insertions(+), 59 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-firmware-cca
+ create mode 100644 drivers/firmware/smccc/rmm.c
+ create mode 100644 drivers/firmware/smccc/rmm.h
+ rename drivers/virt/coco/arm-cca-guest/{arm-cca-guest.c => arm-cca.c} (85%)
+ create mode 100644 include/linux/arm-smccc-bus.h
+
+
+base-commit: 50897c955902c93ae71c38698abb910525ebdc89
+-- 
+2.43.0
 
