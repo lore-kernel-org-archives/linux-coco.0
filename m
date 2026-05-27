@@ -1,178 +1,170 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136923939B2
-	for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 11:02:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2EC3F39EA;
+	Wed, 27 May 2026 11:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779879741; cv=none; b=XY+dnHUMcPIGqBuOdacsEzA3x8rQSlHRf6B1Z7jRH60so1+nKUI4jF0p54niTvpaf59SfQ1L1jkGfni9WjN0OHYBly6RQYD03ZONOrHU8EeGqqWVeH/GEDA+FET996bVwIiPa9CxoZVDM9y7IYQfM9QN0NllXA+VQ/RBmF5sXKY=
+	t=1779881237; cv=none; b=dfD9fiR9otqdYOOCuZWWtcqgP5bhiL4ZFlV9aBtbuS2c2chn1QyNaetG0VH1QS72T7CUNpC+ZakLQqxA9nmPxtGVAuO7Q6djjJMGTi4ZaO0UXMMGQ7HR1NgdWz1I7w0xL0sWSRNSIPX5fzyfS3jAu8l4yc0LRTLHQwVB93Rxbos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779879741; c=relaxed/simple;
-	bh=tFrXfqMuDYktSKSgxbr5V4AVjEfZpauBkUkMw2B2Drg=;
+	s=arc-20240116; t=1779881237; c=relaxed/simple;
+	bh=WDcP4uLRnCpQCWc1T/S+81baSRubdhT5/fcmMqKSQV0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kwFQh4NSt2rejgsrClBAr1gQINL8l8S+BohETi+IeK3NVbOW5gqCaU63rnyGQ8uluwzoHosiF342GJncjYp/FsKimvpjqcZY+Xrr4DwYu19Ysg6d2Cj1vF3TukXDnM1dDXhS1JNRVngTErUt5sNKg8S5l+vJkUkdXZJU/cBNuzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lGvJffx6; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=GlRiRua3ZWso4uHCyISTUk78lBQp7YF18jh4mV6OpYqzYUefRzrY0CzmZ9GjLmt4x1LtyW0QFRWtzM2wvlB7cuyLX5NwWRLX2rMywSk61S6BVsVZTOz9pVCgB0DBG+la71EYH/9eVh6StxTIbbKMNq5AdESnZuIilPPBE3Nocb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VhWqQ0fQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lGvJffx6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779879740; x=1811415740;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=tFrXfqMuDYktSKSgxbr5V4AVjEfZpauBkUkMw2B2Drg=;
-  b=lGvJffx63ET38mUSK87EWvbiE7CCLBgp0kw5X1aDPvGwXH1XcRhDmtnB
-   X0r55S6tc+5TsYDi/AQq5J09xWuAzsgvHdXyES99OXS/VB3YHVrrwl9Dq
-   veIe8hImMIZAhE8D3AWXjmAcQXvP0ryb0pFRsJ3sY89oANBeT8WZTuhQc
-   2sng77HwboyWCkVmDO5WojDxGq6ebbBmO8NvKfwuVZg2Nxf8xTYMEXECx
-   Us5R17StsX3zonVYF7FjjOwCWc68QFD8S+m4oMpH5Q1kiZmmNUGYVNj5N
-   +QAzb1utsWVLpCf3uWGMJf8G+cc4SKFXKMh4s9LGNyiRMBJ7UlEit91Hc
-   w==;
-X-CSE-ConnectionGUID: WdF/jfj/R3qhRqBlkzxpVQ==
-X-CSE-MsgGUID: Ng0LNAAWQ7imlRVYOhg1gg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="80689187"
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="80689187"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 04:02:19 -0700
-X-CSE-ConnectionGUID: wE7RJuvZRKywoYyKsXJmTQ==
-X-CSE-MsgGUID: 4fLQP8SqQICEgvIKIw/iCA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="280338075"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa001.jf.intel.com with ESMTP; 27 May 2026 04:02:16 -0700
-Date: Wed, 27 May 2026 18:38:20 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
-	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	yilun.xu@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH 00/15] Enable TDX Module Extensions and DICE-based TDX
- Quoting
-Message-ID: <ahbJnCFlGFwxrEkw@yilunxu-OptiPlex-7050>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <2542e761-57ed-4170-8ce9-1de3fc685dea@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VhWqQ0fQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F77C1F000E9;
+	Wed, 27 May 2026 11:27:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779881235;
+	bh=DxSzOyzZjnQzUKY1w35QWmemvf3P4E5LbaaAHGPxe/Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VhWqQ0fQYw4z7Iv43KkX5q8ldahaKPdN7aDT8SCB0kWRY3fPZlfwU2KtwwwDGBXup
+	 D5h6xAvRTdsRTWs+MDYm0bWZv4uAb0wRQWGpgL7SJV9AftH71fWk892hXD/zPG+JU2
+	 do0axeSkzRlwXAKlAk2xtIRcrFlREnK1IrQ4NoAvJNsedQcvvaxAqmUj8UWYvsBEBE
+	 rJac51PNY7nEd983MmBoI06O5/LziBMuJWGOculpIvmMTie5NR7BWcUT+B55dALx5j
+	 xsMYQSWdoonAhvecYmuQxhSmazcKXlMn06ZMSM60RuGj5tSuV9sKtbGKSVkFkcHcJt
+	 wbEVlvWGzga1A==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 680CBF40068;
+	Wed, 27 May 2026 07:27:14 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Wed, 27 May 2026 07:27:14 -0400
+X-ME-Sender: <xms:EtUWasqFJ4doi9b047h7o-XSGeX8xYqt4e2-xsyRap9Ffv6Mcjlwmg>
+    <xme:EtUWaqAzLN4DPahdOLs8bjLiyp-8iB5lj2gjwZuWhISQ8jll40nbSY0GmiDEduGKI
+    vZjBmAVEmzOr3R24FhlvPXg-HXydHazxFOBI7ExPDUjwFuKD7bstfI>
+X-ME-Received: <xmr:EtUWarjio82DgrOBGVJa6DRc_0WrGKaXNqK9rx5Cj5UmiiiVW66H0rUqiv0_bw>
+X-ME-Proxy-Cause: dmFkZTGZ5Y0VfjJLxz1ex4ImMFh3+sJdSsGEkMhCzrE5EzkEH0JVpyxbNavSMJM9m5v27B
+    RAmS7FSYFT+xkMdd1oCSD7qGNq+ynVmZRKX7afkMeZSlwV/xCBCK5rZp3ok4+iEswA61Jf
+    UyBqh19RmIz9TMiGA9AaOepW3gNdgVKZFuKkho1CxUfApXHXBOVKYa5sh73Jb6TLugDx45
+    lyihaCxmh9r2oMW2d5QHiZeiiADie3gFTILIgYYvslkAJYRe2opMsypsouFXHYwd8Hy8cu
+    lcCtYL/rXYYkN7A7OyJDROEy2+31NbxwFg02thgxYmIJ/w38ZKpxuHsCxrWybTvaVuPLTH
+    XBYd8ZxPsGkXRdrLt/vCdgKrP5G3tIGS0s+lANBatMwj5mfr6Q+ILo5bOUl8QoAUswBFcm
+    e/pSGrgDEKWcmSUZNZSik7xgrm7nzu9EkO2NqeSAV0Ct92VojVJGv8aUe6xzp4W/+p15tU
+    EJObDpI95tYuirj5WIIltgootl6uDZT/e+p1EYBSHDcmBj6syP2+XbvPG+KR+sVTlq+dhd
+    fDbRjWByQXOoaOkeWaT3yvNBl1XOLqJbZ9n5JSyhZfbjJSQaaL9k3RTIelumIsjXOqyQM4
+    lQ09yOtJXemkh/g4k09Zh7FxStXXHDLhoswPBiqfcHWxV1zTsXrOvWXzvmHA
+X-ME-Proxy: <xmx:EtUWap4VhXstRKGyS5NCjXYU6DRrEJKAuP1d3VISxhWeWdO0GtpCMA>
+    <xmx:EtUWavq-O_mN37gPk5pU4Kih2oKjOBDVVoXWsZk8BmwDZL3Cw4ZFZQ>
+    <xmx:EtUWal7txxUV23R3ww_SjyeAdcYwf1R7iO6ZWNC8u0MCzdPPpzUyBg>
+    <xmx:EtUWal0N81cdDlddCZW07nNd1gMB6tAAYs7hYvZwWQAI4OXJf6iAGg>
+    <xmx:EtUWajNwWTu9LAWUSuHq3YzPlqOUIgJDEyY2TaHoikZnlCUnhZDjJIS_>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 27 May 2026 07:27:12 -0400 (EDT)
+Date: Wed, 27 May 2026 12:27:07 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Chao Gao <chao.gao@intel.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, 
+	djbw@kernel.org, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
+	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
+	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
+	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
+	yilun.xu@linux.intel.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v10 13/25] x86/virt/seamldr: Allocate and populate a
+ module update request
+Message-ID: <ahbQiisGLyG9wQ_A@thinkstation>
+References: <20260520133909.409394-1-chao.gao@intel.com>
+ <20260520133909.409394-14-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2542e761-57ed-4170-8ce9-1de3fc685dea@intel.com>
+In-Reply-To: <20260520133909.409394-14-chao.gao@intel.com>
 
-> > == Overview ==
-> > 
-> > TDX Module introduces the "TDX Module Extensions" to support long
-> > running / hard-irq preemptible flows inside. This makes TDX Module
-> > capable of handling complex tasks through "Extension SEAMCALLs".
-> 
-> Can we explain a bit more about why these extensions are needed or what
-> would happen if the kernel didn't enable them? I ran the series through
-> an LLM for my curiosity. I think something on the below lines might be a
-> good addition for the cover letter itself.
-> 
-> (Please verify)
-> 
-> The TDX module's normal SEAMCALLs are designed to be short,
-> non-preemptible operations. However, some newer features (like
-> DICE-based TDX Quoting) require complex, potentially long-running
-> computations that can't complete within the tight constraints of a
-> single non-preemptible SEAMCALL.
-> 
-> The "TDX Module Extensions" solve this by introducing "Extension
-> SEAMCALLs" — a new class of SEAMCALLs that are:
-> 
-> * Long-running — they may take significant time to complete (e.g.,
-> cryptographic operations for attestation/quoting).
-> 
-> * Hard-IRQ preemptible — they can be interrupted by hardware interrupts
-> and later resumed, so they don't monopolize the CPU or cause
-> unacceptable interrupt latency.
-> 
-> Without this mechanism, complex operations like generating DICE
-> attestation quotes would either block interrupts for too long
-> (unacceptable for a host kernel) or wouldn't be possible inside the TDX
-> module at all. The Extensions give the TDX module a way to handle these
-> heavyweight tasks while remaining cooperative with the host's
-> interrupt/scheduling model.
+On Wed, May 20, 2026 at 06:38:16AM -0700, Chao Gao wrote:
+> +static void populate_pa_list(u64 *pa_list, const u8 *vmalloc_addr, u32 vmalloc_len_pages)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < vmalloc_len_pages; i++) {
+> +		unsigned long offset = i * PAGE_SIZE;
+> +		unsigned long pfn = vmalloc_to_pfn(&vmalloc_addr[offset]);
 
-I'm good to these detailed description. I'll add them to the
-cover-letter.
+I don't like that we need to assume how the image got allocated this
+deep in the stack.
 
-> 
-> > 
-> > TDX Module allows some add-on features to use the Extension. 
-> 
-> s/Module/module throughout the series.
-> 
-> The existing kernel code predominantly uses the lower case TDX "module".
+I can imagine situation in the future when we might want to load TDX
+module to memory on boot, like initrd. And it won't be vmalloced in this
+case.
 
-OK.
+Wouldn't be better to use a neutral way to get physical address that
+doesn't have the assumption? Like, slow_virt_to_phys().
 
-> 
-> 
-> > The first feature to use Extensions is DICE-based TDX Quoting [1].
-> > DICE is an industry-standard, certificate-backed attestation
-> > framework that layers evidence through a chain of certificates.
-> > 
-> > This series adds infrastructure to enable the Extensions and then
-> > implement DICE-based TDX Quoting.
-> > 
-> > The Extensions consumes relatively large amount of memory (~50MB). So it
-> > is designed to be off by default. It must be enabled after basic TDX
-> > Module initialization and when add-on features require it. To enable
-> > the Extensions, host first adds extra memory to TDX Module via a
-> > SEAMCALL (TDH.EXT.MEM.ADD), then uses another SEAMCALL (TDH.EXT.INIT) to
-> > initialize Extensions, and then some add-on features, e.g. DICE, could
-> > use Extension SEAMCALLs for work. Note that host can never get the added
-> > memory back.
-> > 
-> > Theoretically, the Extensions doesn't need to be enabled right after
-> > basic TDX initialization. It could be enabled right before the first
-> > Extension SEAMCALL is issued. That would save or postpone memory usage.
-> > But it isn't worth the complexity, the needs for the Extensions are vast
-> > but the savings are little for a typical TDX capable system (about
-> > 0.001% of memory). So the Linux decision is to just enable it along with
-> > the basic TDX.
-> > 
-> 
-> I think enabling it by default on TDX platforms (with the module
-> extension) might make sense. But the explanation here is slightly
-> confusing.
-> 
-> You said earlier that "The Extensions consumes relatively large amount
-> of memory (~50MB)" so they must be off by default. Later you say that
+> +
+> +		pa_list[i] = pfn << PAGE_SHIFT;
+> +	}
+> +}
+> +
+> +static void populate_seamldr_params(struct seamldr_params *params,
+> +				    const u8 *sig, u32 sig_nr_pages,
+> +				    const u8 *mod, u32 mod_nr_pages)
+> +{
+> +	params->version			= 0;
+> +	params->scenario		= SEAMLDR_SCENARIO_UPDATE;
+> +	params->module_nr_pages		= mod_nr_pages;
+> +
+> +	populate_pa_list(params->sigstruct_pages_pa_list, sig, sig_nr_pages);
+> +	populate_pa_list(params->module_pages_pa_list, mod, mod_nr_pages);
 
-Sorry maybe I should say "the firmware design is: 1. Off by default.
-2. Must be enabled after basic TDX module ...". I'll try to update the
-words.
+I am not sure what the value to have this as a separate function.
 
-> "..the saving are little .."
+Having it directly in init_seamldr_params() would be easier to follow.
 
-Because for security purpose, these add-on features are always needed,
-even if not all of them, so Extensions will most likely be enabled.
+> +}
+> +
+> +/*
+> + * @image points to a vmalloc()'d 'struct tdx_image'. Transform
+> + * it into @params which is the P-SEAMLDR ABI format.
+> + */
+> +static int init_seamldr_params(struct seamldr_params *params,
+> +			       const struct tdx_image *image,
+> +			       u32 image_len)
+> +{
+> +	const struct tdx_image_header *header	= &image->header;
+> +
+> +	u32 sigstruct_len	= header->sigstruct_nr_pages * PAGE_SIZE;
+> +	u32 module_len		= header->module_nr_pages * PAGE_SIZE;
+> +
+> +	u8 *header_start	= (u8 *)header;
+> +	u8 *header_end		= header_start + TDX_IMAGE_HEADER_SIZE;
+> +
+> +	u8 *sigstruct_start	= header_end;
+> +	u8 *sigstruct_end	= sigstruct_start + sigstruct_len;
+> +
+> +	u8 *module_start	= sigstruct_end;
+> +
+> +	/* Check the calculated payload size against the image size. */
+> +	if (TDX_IMAGE_HEADER_SIZE + sigstruct_len + module_len != image_len)
+> +		return -EINVAL;
+> +
+> +	/* Reject unsupported tdx_image ABI versions. */
+> +	if (header->version != TDX_IMAGE_VERSION_2)
+> +		return -EINVAL;
+> +
+> +	if (header->sigstruct_nr_pages > SEAMLDR_MAX_NR_SIG_PAGES ||
+> +	    header->module_nr_pages > SEAMLDR_MAX_NR_MODULE_PAGES)
+> +		return -EINVAL;
+> +
+> +	if (memcmp(header->signature, "TDX-BLOB", sizeof(header->signature)))
+> +		return -EINVAL;
+> +
+> +	if (memchr_inv(header->reserved, 0, sizeof(header->reserved)))
+> +		return -EINVAL;
+> +
+> +	populate_seamldr_params(params, sigstruct_start, header->sigstruct_nr_pages,
+> +					module_start,    header->module_nr_pages);
+> +	return 0;
+> +}
+> +
 
-And even if someone switched them off all and saved the memory, compared
-to the memory of a typical TDX capable system (lets say 1TB), the saving
-is still little (0.001%).
-
-> 
-> Are you saying that the dynamic enabling of the extensions is not worth
-
-The dynamic enabling of the Extensions is not worth.
-
-> it or the dynamic allocation of the memory needed to support them?
-> 
-> In addition, could you briefly describe the complexity we are trading off?
-
-If we delay the Extensions initialization to the first Extension
-SEAMCALL, we need to maintain additional TDX state machine for
-lifecycle, and we need mechanisms to synchronize parallel Extension
-enabling request from multiple callers.
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
