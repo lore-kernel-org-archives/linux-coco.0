@@ -1,167 +1,103 @@
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0EC387574
-	for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 20:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779913057; cv=pass; b=c6DKamIoPsWaz0ovvfkG+Oc8khuzdvmoLiJKuRHEEj2OIEdIWUnKDcDXlZOHTausw1IwL3PiPLoU2koMSPBvp6CXc7fZhgPRBYiE7xSS2wkP5m2pGRVucALHvJRBUNvv838yN9+eRFvph/YSejR0IItYn89OIe9HkBF58xy5Zb4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779913057; c=relaxed/simple;
-	bh=D97WCjEUn3j/vQRA7CTe83R6yLyzMyBDDHUoRbcz52Q=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YxpvzMGcI8x6uLrjjgNagR5E9NygrF7J7ve7rR4Li4m0ZTjwShM2W0sDT16HR1m9xCSEL26vPQsh5RkH6LLyVQ0flqLbw+H1Uj5SCRciapt16G+kqYPFKOwCVLukfEDn/AoZWfUJq5NESomyS22Hq1J4Q1JuwhTFgm6pHYRYVHU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rgmD8zpI; arc=pass smtp.client-ip=74.125.82.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D31350A10
+	for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 20:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779913089; cv=none; b=Cn7K4p4MpqgG3Ua2tKHQrJV9wvmU2IYoAS1skTcQ7stIJkRVw52V3VcryPqb8rOKJYd4coNFjkgns9V+CqRTOtFNKZ2WM7HqfZ8Yh2rzXhFu1MOXUtiiHD3Fqgv6rEffYnw+emDQFwO8WozbeBn/+mKuy7+4PP2Hy3Zq75kf9qI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779913089; c=relaxed/simple;
+	bh=XtYYjMlM6bVPUDCnr22kIaw6GFg+B5OUm5pOtfQlYfo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t4ocphwJGZO8osExb2YH1OV7gX6YCxiA1RjCgcAZtqT3mW/ldLNqr/2AMuu4bw/rZALJdV00TNLf+c9JzuCOg8CN2Wr+F7nvX6/iPVkOe0T5vF2SzVgMaMipv1F4CR/RHd/ammz6dTgk2TS+r26V5HnYzsbNcvIuR4QQzi73K+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=PWtnwTBw reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rgmD8zpI"
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-134ac81c445so21044737c88.1
-        for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 13:17:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779913056; cv=none;
-        d=google.com; s=arc-20240605;
-        b=N8Mybw6JNPjosAxLXPi5UmxBEyU5coM2FDHIAvDGA8f7sXW72BnLYaorvwI3t66xtC
-         CdBpwHJB9ixBk+FodQ4m4rJWpajcjjlkudtjieSt5N5f4sPUXzfEMBrZK119yz49+612
-         tYDUUUQ5g1O9TtRs+R+5AyATTSwyeyTUzIK/XETsN6Gjl281C5LpiDx3+wrdAQpYoWvO
-         Z9t0WiuMeCW780w7bcfQUlHYOM1vcYpTvXa8Mub8PMUx8nHkM88zwG6sQ2i78AlZUhPD
-         ZzwnH5EGMQjFQWE/yVlZSPFyt6mbUi6yXkdz1aQmcLf3RV6kgnD7X9XWCxsuwmVdvZ+w
-         TldA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=8vW9yiVSKiux9kpNjpgYi3apIQhlbRURD4raj5ZwDmk=;
-        fh=NtRPzkBvfu591LrnvVW4ulJDcZ5X0uPqH+aBFnQm9u0=;
-        b=CJURdREnWOdmvMsT4qk4rgycSNV9GOiVCEW4Y12fozeAX3WHU40llxg63dW7BGVnnw
-         JrDoHVFPA3ZovcDHAgVQrpb/cH7NjUl1JBOYam2KsukOGuf6DTF2RCiezZNHJQAhxptN
-         Y+S5Gt5tHuyGvYPWBzq0k3qufxw+3FH7cNmxSnifOzkalIx0nITcqShGVhVP+nuElmek
-         9IC11DFXseiBqkyASrS9zW7SFs8+fGNkERdNJErvflSwcfeuP5NN9hiwoMhkw645nVh+
-         7mOpidvOYj/WPpvjmYGfIycKUOBbE9r/hCYjpBnrgUrpAsyguokMcdXF62lF3qm72B4e
-         Q+5Q==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779913056; x=1780517856; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8vW9yiVSKiux9kpNjpgYi3apIQhlbRURD4raj5ZwDmk=;
-        b=rgmD8zpI/yAuKYuUgNqfoAZCQvcQ30oTvQc7WXy958oZyvsky0rX2CRe0sKCG7VNIh
-         xDBQhYoVUl/lX5MTyNLCP31lQXdnnLD1+jvqi86s0zuw5AbN12+Q+ZsyDBzxBwY9gqi2
-         yPLPmeHZTeh0Gs4bKur7TzEY/lpqg7ConouTYVBMIDf0X6kIhJUk9HOfxsUNBVpW0y9v
-         TDxYBTUCSkYRSyyREsr76684js77ED2ThFTGmiOUhCMZ2vdMIjtzkznJsjN8PRJ1hpJ4
-         U10IZdgrTJH2v4Mrlg3aVcIe7GdULkZ3mfeeDv4XZqcpmqriCalY+WfYrTtD4LC0VP78
-         6LsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779913056; x=1780517856;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8vW9yiVSKiux9kpNjpgYi3apIQhlbRURD4raj5ZwDmk=;
-        b=EV7LrU310i1r6ck7M3qqKoGbeFx+nUJJaagPsys384LD7sBh+uV7Im23DbKjFA5mbd
-         IlkUxF/R+aQt9WlljXroX7NBNCdyNVQJzSkAlt7TrVkS10XH4fuQMRHWEkDinrP7klqL
-         lLCDYwlcHCzPRWI1C5qqlXASQm3Pd7hTOpVZ0P7USOF8H0Wp8bZoBUpeYHXj818HUXJV
-         Y5ubv4/C9SiKP3bu8fqBKHdgzaDkgGw0ySRSjaUGA5XpQYT6K5S+wuRr99JiAucUBB4l
-         O8wl1JUL0XOnkMF9CK1845CLDAMSapR422roPD0JrsqpsDwiJ78F8D1+WuFvKUohEFIV
-         DsFw==
-X-Forwarded-Encrypted: i=1; AFNElJ/ynQSHqhwcOpF1dfQzzxwzOtNgn3DIBWO/8j6iOurscESoPN/HfHav3QxTQ1Tqu+JccXMtMmi+tXGT@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxiralb+T0L2WOwf3+CJxLjSnlibg/wc8h1hu8Wk/CyeZPdTytO
-	IAvmw1vMKlFvVe2Z/HQ2xQoj+onjZn3aomNPueCw2hWe4Nq1yaSrfN4ARLmmjq8fqOBNOaMJEMD
-	pU2aMIDJ1eMHbM8wOGyb1b+qksFlG3tLRc4oxPL78
-X-Gm-Gg: Acq92OEAgzDzE2CzDY+UJptIEiCjgE00xTeS5uuFh35dzNF6UuXS9Mn3N5xc3yWSxPU
-	9GvP9QLkRhXEt82sAhWWVcxPDk4cQrRwflHBwUELKnliauW0E3TRMUqSxDp/H3Cj8zNH+Jg/S/k
-	t3JkPFrjmyqNateotsJdknj+DQ1BYOwhWX0Pk7yX5Vb8cbPgFEsXDVWb/yqL6/DCPLz42miq5oW
-	E32qzIkxBce/W+hm1KjDO/uibYQPXUMHU2HI9yfajXAMInMmjUejrYED59f4aOUc1yHgxsV7lvb
-	pb8E6pVd4iSrO2gBqOZSrWl6PjFaqGQZ42rNNenD6Jx7w4oAdbICHWgoq756wm1PgP6h0b1xbGG
-	s3Xo=
-X-Received: by 2002:a05:7022:f313:b0:12d:b7e5:a67b with SMTP id
- a92af1059eb24-1365f81e628mr4828248c88.14.1779913054985; Wed, 27 May 2026
- 13:17:34 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 27 May 2026 13:17:34 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 27 May 2026 13:17:34 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <ahdFSxXnWhhsjhKe@google.com>
-References: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com>
- <20260522-fix-sev-gmem-post-populate-v2-2-3f196bfad5a1@google.com>
- <ahXB_tBWakUUjt6q@google.com> <CAEvNRgEN6syKVLjvFX-s=xU=r3CBZ3KtmeKvVYOC09uvFGXSFg@mail.gmail.com>
- <ahdFSxXnWhhsjhKe@google.com>
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="PWtnwTBw"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 751AC40E0031;
+	Wed, 27 May 2026 20:18:04 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id G1lIHx-rVMOi; Wed, 27 May 2026 20:17:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1779913073; bh=F3MXa6l0Flj1Bgg1aAsNjVybpJSuhc7kkfOSBEPLJT8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PWtnwTBwzUid6OfUVo9fpEPV8kJiBMvI5LtfXIfUhQy+nMWsJedo2Qhjs+F6HvtZ3
+	 a54goqO9NJiAZtvs5d0s/CGkyysa2LXz6loArUFAIfl/kyC3oi7iVNvIXYLWOuRQnW
+	 MHHHRiAjPVKjdvm3lPJ3oiK4GYmjRF34WsSLTcZcU55qe6RVOScyL1nrPTKjeYsuqo
+	 qnxA+GpZhZ/OYj0w6VcgYXCh9n4Hw90QrBvOqvMiAoSxw6ByKLhEpq7mj/5KHyRY4n
+	 mooi3UfrjjwO6Tqc2qrbyIrMJoGgyQk4C+09HgmU51P6ag7kk/ViekBH0Vdt8yWo0/
+	 4nO+4DizsU/bD78LWKK22E5NBKFRF9D2oRt/sZF0BGf/Pce0m7NUTy25ODTY5ujDFe
+	 ERTmJn9PFtB7KxdCV3vUoVZLgMO8joEMkF2X6nzYiXJnJDXUe21QexsYz7Bdo4LT9V
+	 983bLiF8A3wUv72/E9SPVfX92EdSnGUZuenvQdECMdp/uD8UIHnT6iFA86bZWzTw6w
+	 jD1mO4ZH8Zfg6JVrk7Si8nhxjuDlTEVuc0RHkfOGDWj1SpUER6SkJ5eGcrA17GF8u0
+	 kRTFnOBqbnQA3v5gAEwokDiHs1IgjyqPt1pBIqcRl6GklsgzgD/I+S6VEBJ/+9jwW9
+	 Fn35BHXAZva0pTbP68YMTnz4=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00:b8a3:f58e:8829:9ca6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 90D3940E01A1;
+	Wed, 27 May 2026 20:17:18 +0000 (UTC)
+Date: Wed, 27 May 2026 13:17:10 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v5 1/7] x86/cpufeatures: Add X86_FEATURE_AMD_RMPOPT
+ feature flag
+Message-ID: <20260527201710.GAahdRRoHFOor425im@fat_crate.local>
+References: <cover.1779133590.git.ashish.kalra@amd.com>
+ <305b625c0528f16a95542001c66e643fbd3a2622.1779133590.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Wed, 27 May 2026 13:17:34 -0700
-X-Gm-Features: AVHnY4LTkCqwZJgAdbJtHYJu60g77wWFGV10HPdHsIfRUwfgRQ4VgItFe8O8W08
-Message-ID: <CAEvNRgEW8nph=Hz-3pcQD7ZxRuAOcjcOfj8afgJMsRgESD-Wbw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/5] KVM: guest_memfd: Fix possible signed integer overflow
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Yan Zhao <yan.y.zhao@intel.com>, Michael Roth <michael.roth@amd.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Zongyao Chen <ZongYao.Chen@linux.alibaba.com>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Yu Zhang <yu.c.zhang@linux.intel.com>, Fuad Tabba <tabba@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <305b625c0528f16a95542001c66e643fbd3a2622.1779133590.git.ashish.kalra@amd.com>
+Content-Transfer-Encoding: quoted-printable
 
-Sean Christopherson <seanjc@google.com> writes:
+On Mon, May 18, 2026 at 09:41:53PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+>=20
+> Add a flag indicating whether RMPOPT instruction is supported.
+>=20
+> RMPOPT is a new instruction designed to minimize the performance
+> overhead of RMP checks on the hypervisor and on non-SNP guests by
+> allowing RMP checks to be skipped when 1G regions of memory are known
+> not to contain any SEV-SNP guest memory.
 
->
-> [...snip...]
->
->> >> [Use size_t for size instead of u64]
->> >
->> > Why?  Oh, right, because kvm_memory_slot.npages is an "unsigned long".  The
->> > discrepancy between a u64 for the offset and a size_t for the size is confusing,
->> > as they are both conceptually in the same "domain".
->> >
->> > Rather than u64 and size_t, we should use pgoff_t, which is what KVM already uses
->> > as the storage for kvm_memory_slot.gmem.pgoff.
->> >
->>
->> I picked size_t more because I thought it was semantically correct to
->> use the size type for a size. size_t may have different sizes (64 vs
->> 32), but in the comparison offset + size > i_size_read(inode), size is
->> promoted to 64 bits, and signed inode size is cast to unsigned for
->> comparison, so I think that works.
->>
->> pgoff_t is also unsigned, but I think that should be reserved for page
->> offsets/indices?
->
-> Just to avoid confusion over the definition of an offset/idnex:
->
->   * The type of an index into the pagecache.
->
-> I.e. it's not the 12-bit offset into a 4KiB page.  Which I'm pretty sure you were
-> saying as well, just want to ensure we're on the same page.
->
+Streamline:
 
-Wait yes I meant index as in the key if you think of the xarray of the
-page cache as a key-value store.
+"RMPOPT is a new instruction that reduces the performance overhead of RMP
+checks for the hypervisor and non=E2=80=91SNP guests by allowing those ch=
+ecks to be
+skipped when 1=E2=80=91GB memory regions are known to contain no SEV=E2=80=
+=91SNP guest
+memory."
 
-> I like pgoff_t more than size_t because, for KVM, it's really all about addressing
-> memory, thanks to the offset into guest_memfd being associated 1:1 with a GPA.
+--=20
+Regards/Gruss,
+    Boris.
 
-The offset into guest_memfd is associated 1:1 with a GPA, and this
-offset is
-
-    offset = index << PAGE_SHIFT
-
-> It's not perfect, because GPAs are tracked as 64-bit values, whereas the kernel
-> restricts itself to "unsigned long".  But that's a non-issue in practice since
-> guest_memfd is 64-bit only.
->
-> But conceptually, I like tracking the gmem offset as a pgoff_t to tie it back
-> to using GPAs to offset/index into gmem.  And for all intents and purposes, gmem
-> is nothing more than a glorified pagecache :-)
-
-So we actually want to use u64s for gmem offsets (where offset = index
-<< PAGE_SHIFT), and pgoff_t for indices, since indices (aka page
-offsets) are semantically the offset, counted in units of pages?
-
-I pulled this conclusion together from filemap-related code like
-filemap_add_folio() takes a pgoff_t index, so I thought gmem should
-follow that and stick with pgoff_t for index/indices.
+https://people.kernel.org/tglx/notes-about-netiquette
