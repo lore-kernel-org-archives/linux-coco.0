@@ -1,84 +1,86 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD33A23BCF7
-	for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 05:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486BD2BEC23
+	for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 06:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779859421; cv=fail; b=cKSlGIkuKnxprazstfWRrQsQMeTA0TsgHW24Ukf04aOfX6EwdwmGfaZr5jwW9blEWCn/qVPwe00LocwqZoJrRJnF7BykNbrVBvSDdmBgHb4AQRSQolUUaE6s4niLauTH63V+vP+HnOgYoe4VmKCKUl2wuoL7bw870vquuZcHAdg=
+	t=1779861958; cv=fail; b=drngHRq3RaGEO47LeKNxgj9N7mp3g+pnjBW1Mr4H6b7vcU91ZFxxOo/Y3HclxOAPCnZc3zXWlWLwfd+mbC3/OOWpad3E+hgU12ytQD4eT6bFBdaptF42DIfi2jWN8003r3qiJyGKJsVYT2AykFE1JE0wCCDq1MQCscBzJR0u580=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779859421; c=relaxed/simple;
-	bh=E/plLYU5237YfQafR3No3BBUOwkfcN4j45MQjAtAccA=;
+	s=arc-20240116; t=1779861958; c=relaxed/simple;
+	bh=FOifYwSNaq62ELJFmkNtK4yf7uCaTkU3H6Oy3niLJHA=;
 	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=gOCuQJ3YokQ2ZX5SUnjrDssQ7J+Ao4+/tj5bCaOWTeBAeV0DCYlRJ4p1FoCGGtXszqc+DjETOYzA4kixGyMVRX5g3sbWcqpEml43v1CndRMR1ExmtBGx7MyL+gpsyE8K2gBfb4DlswLLs9WBVzbq31m3pAk2vr+yax/V84hmrW4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dFk+I6bN; arc=fail smtp.client-ip=192.198.163.17
+	 Content-Type:MIME-Version; b=U7rZyKE988qNK1Pi1I8VZQkZzz/L7HXO+wUdcge6eWRkoAeED59js/jlQpMMmqmYJ0sm/CTqdAng50VkyZO/tFEj//YQBhoiMwv3WoUycnbi7T3i2s7+3op0TkSO5PBWIVwH5XD3INzKqOMB/KV6lq/fGIhejoGiHH7uZrreWJc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=irdguoJx; arc=fail smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dFk+I6bN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="irdguoJx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779859419; x=1811395419;
+  t=1779861956; x=1811397956;
   h=message-id:date:subject:to:cc:references:from:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=E/plLYU5237YfQafR3No3BBUOwkfcN4j45MQjAtAccA=;
-  b=dFk+I6bNT7fh51y3v5rZ7fCvR3k83n6yacG4/vUqvxQsxpKx8zju8mhF
-   RTSPKqhbFm8cn5s7U/RVjus7BUugApQkQ5PD1E3LjUbg5IffMSXHScJ3T
-   ikZmERvI78N+dYe4ykQOezJQpcXONabyuZRlKFU9mTHZ+KHlWD/MTFTyY
-   R2sA670xeMykhniiXG9VMSFrPS/TFQXjlDVM2ycxR5fEbIEHvA39hoPqw
-   4vCB74TrGpdgIEI5eCKkZ/M7C8Tjo7+C9C6ulz2RsiVw5W1ndTezRLem4
-   TvT47AZN9DNSibVTC0Pq4oICAJtEoQ+lZfHy5uoDXqcdzgX5DiJ+Mok8+
-   w==;
-X-CSE-ConnectionGUID: NhfC6GegR9+EkE6125PKqg==
-X-CSE-MsgGUID: dbY/DW3RSXOPWKg6uXy51A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="80530926"
+  bh=FOifYwSNaq62ELJFmkNtK4yf7uCaTkU3H6Oy3niLJHA=;
+  b=irdguoJxRBKshxuwTbHAQx7+JnolbBLXqSX8n4dy/iFH7Eer4WaAW+lb
+   OpHNNLqExnwX5xRtvb8jSr+5R6UqyURp4Q2W6sGja4W3OR3kxma5hg55k
+   hzIwoCgRxNWSdEWsLwBPSwX6uJW6DpBcAXiGkWmS2rUzhAdRBUQIEQL17
+   syUXlskT+MWuibYoHGp9ijWg0BQ921sRCUd4vGqABgePF+42GviiZMs1T
+   Wb5V0gUQPGtox9iAa9YczvfiCkC+Z6F2hCR9nsZ2qSpMCmH57gDDcWFDp
+   S7lbre1JnrWRiM5RG4Sp4/3tD0yd/9n2/4Cz+bcZ8cZ8Ym2ea9RyTHAvo
+   A==;
+X-CSE-ConnectionGUID: bZaXNTgTS5G6JECrFeouxA==
+X-CSE-MsgGUID: O2VAY9jNQNKKtPiSMo19ng==
+X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="98259731"
 X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
-   d="scan'208";a="80530926"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 22:23:39 -0700
-X-CSE-ConnectionGUID: fqP5Kze/TgKmQoj7ZO6bFg==
-X-CSE-MsgGUID: TcEKpyIUT7O4+Z5G/mv41Q==
+   d="scan'208";a="98259731"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 23:05:55 -0700
+X-CSE-ConnectionGUID: yUQyI46xQl+wnVSW3to4jw==
+X-CSE-MsgGUID: bBto7EZjQIibhnXlx2QKDQ==
 X-ExtLoop1: 1
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 22:23:39 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 26 May 2026 22:23:38 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="266011829"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 23:05:55 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 26 May 2026 22:23:38 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.26) by
+ 15.2.2562.37; Tue, 26 May 2026 23:05:54 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 26 May 2026 23:05:54 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.11) by
  edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 26 May 2026 22:23:35 -0700
+ 15.2.2562.37; Tue, 26 May 2026 23:05:52 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KJ4ZtEVqbiQYBqN5/fX9b0kq2lU218atZSvq9iSoI/ZfTD1ilr5CRX6B4tsu1pbF81gkZntyhs1z3KJEgOnuautMhwHxV1vbDt0y0+zdipJGIWIh+ToH5VC1aw5QCMJ+cFpWzJOIoc887E/OfKSqENgm7U8Sbr3rWCJv1HxjHcO5XlgJW8mDS1CK125DU4RJWBP2DiTWFv9Qc9CKlG96I2Vq2E7GLy2INLfCa4ThYdc8/iqZqLpmfS9azqiVuJBtaLqioGckFHdjmj83MSYhF8cLinPCVaqOQkodQPUTBVBK+P/os52tzy5MArWbSEmqxM4n+aIEirQWZARFUfOp3A==
+ b=Z9XCs6qjDe6e/0JbV+OXufujhg9othJOMvz+H4TO5aP+vVZYsS8N+f1srF8zt5RLibWCh/3XiRUPO4qx1MimUxQzoBQOjivfux9BOeikirlwN+7eS5VTLSELDMxuRmTbKEO5K1QuauNUER4yQB3j60p6lY4PbEBMqe3CZIZXrlkQhV9212d3VwmyW9sPOl3UmB76+OGqjvaM/71nm6//DGEFIhe5+3ZiapV14tUcvNrf/hQZ6NFQDt9IhyIRHkb2fKqEMW6j7f4/9UytvIVqzIPlrjUQR/V1eG0nGSul46cDptgYF2zBoWkHBvBsaqw1qb2psfRk1WUkRhMxxiVAzQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0feH+pT6qIql6qWZRgC3JZvo2/38diiOwmX1XmAV/T0=;
- b=RtJ49mD7jdoHSVpkRiAK7Cw1UUTRT+cAyj9m9PRhkyPrUu12nM3a/pQEyzLYEs9xLY5jyAvzdPZpY/DxRqEbxfReQFGlJwiCiFoJIMsKhlcjNjzqLppxtEsr/l+0HIEJzYN8ps/5Nwt7K1pkKlJIXoDkiViL/IyyiPwP3BCojUMX857DISZ3M4sLbVR7WwZTIU9oNfhM2fId3YMHvmRs9hYriBQ6QuWahJ0icBl/0sJupZjNizh3MOVCtsFmORtnzXzX5tqrV2iDAxUVX+oTiYqiMpaMDe9r9Q0Nb9K9ZL9Jmj1Im5+f96UrKAqqwwpabaWmt+9o1MMicQ+dVw+n6g==
+ bh=m4mUl1zmsgMRwvcZKMsX2JUdLgjpcv1oDUKxuB1Zn14=;
+ b=nCWTtcBrWo09eN93Xb85oW/baTYIM96c4yIDmdicuufM6czTUD4r4xuVmUu6s6Hpx7PJfa7gJTNfxwPNn4kQDNAg5ErMYKSgskucuHz9mXlJHb5S4FOS25psqoZ52LVtBLlALGRvO8grcn1ilqe/l0hpP/D+bmj7IjF98m1yOTJAp5s6zPrYNgFnIT1a9dDTJOFTVMvxEbLdNU2et9cSpDuuEbOLONIg/o5WK+MLsaI5bVRYVFg+AoNIqQMT6OjK+TDcRGQuHEKaauzIP66hHkA/VuSlrsELKdHSlYZvITtgoMtk2E1PujDipYwsozmkPUF8wPrOicMTa/yh8/7LUg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DS0PR11MB7997.namprd11.prod.outlook.com (2603:10b6:8:125::14)
- by LVUPR11MB9568.namprd11.prod.outlook.com (2603:10b6:408:39e::18) with
+ by DM4PR11MB7277.namprd11.prod.outlook.com (2603:10b6:8:10b::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.19; Wed, 27 May
- 2026 05:23:32 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Wed, 27 May
+ 2026 06:05:50 +0000
 Received: from DS0PR11MB7997.namprd11.prod.outlook.com
  ([fe80::24fa:827f:6c5b:6246]) by DS0PR11MB7997.namprd11.prod.outlook.com
  ([fe80::24fa:827f:6c5b:6246%4]) with mapi id 15.21.0071.010; Wed, 27 May 2026
- 05:23:32 +0000
-Message-ID: <2542e761-57ed-4170-8ce9-1de3fc685dea@intel.com>
-Date: Tue, 26 May 2026 22:23:30 -0700
+ 06:05:50 +0000
+Message-ID: <b25e03ad-0bf4-482f-86ec-eebc6ac03d95@intel.com>
+Date: Tue, 26 May 2026 23:05:48 -0700
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/15] Enable TDX Module Extensions and DICE-based TDX
- Quoting
+Subject: Re: [PATCH 01/15] x86/virt/tdx: Read global metadata for TDX Module
+ Extensions
 Content-Language: en-US
 To: Xu Yilun <yilun.xu@linux.intel.com>, <kas@kernel.org>, <djbw@kernel.org>,
 	<rick.p.edgecombe@intel.com>, <x86@kernel.org>, <peter.fang@intel.com>
@@ -86,12 +88,13 @@ CC: <linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
 	<kvm@vger.kernel.org>, <yilun.xu@intel.com>, <baolu.lu@linux.intel.com>,
 	<zhenzhong.duan@intel.com>, <xiaoyao.li@intel.com>
 References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-2-yilun.xu@linux.intel.com>
 From: Sohil Mehta <sohil.mehta@intel.com>
-In-Reply-To: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+In-Reply-To: <20260522034128.3144354-2-yilun.xu@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BY3PR04CA0023.namprd04.prod.outlook.com
- (2603:10b6:a03:217::28) To DS0PR11MB7997.namprd11.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY3PR04CA0025.namprd04.prod.outlook.com
+ (2603:10b6:a03:217::30) To DS0PR11MB7997.namprd11.prod.outlook.com
  (2603:10b6:8:125::14)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -100,161 +103,142 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7997:EE_|LVUPR11MB9568:EE_
-X-MS-Office365-Filtering-Correlation-Id: d1934988-332e-4394-dbe8-08debbb01806
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7997:EE_|DM4PR11MB7277:EE_
+X-MS-Office365-Filtering-Correlation-Id: 39bf6342-ecd3-494a-0b55-08debbb60090
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|18002099003|22082099003|5023799004|11063799006|6133799003|3023799007|56012099006;
-X-Microsoft-Antispam-Message-Info: 63BWrEN95j1sbPiDO33ZSYp8E1pcV+uQOtYOxSpEuKldQNXwMTVe4mIMhaXMvR9luspFwOPG/cuIX227OOs5YTewm0Pnpcr/ceWGnK8YcbUgUI3pt3JUl4j5vhQx9+VewiBqp/rbtjTO3RU1LGvw3xOFksP+rtAotD8tUJQmvthmrJSQjhmGhk6Ib5Qpq/Sw/554SiBjXP7Vf1b6Gr2NA0xP+FSK0s+ZMvZoahFaRP6nfW8081UjPYeE2z+qiTH5yN/Vy09WpToF+OC5zZzxTmmhc2LZCXNfaOx4jj+MEHRZGG24ZPRtpupgXKUC9DITK/4hzzw5d72SgrajglEhnauQlWnPppyaooIyv/x7yAlFVeyqJ3vOZkk9e87np089m5fsf0yZjAg0M78UNYuEjx4mvUe0PbIjrt/RtbXgbbw73BZc/VXMfzsQ0z7ji/49bvbEud/Ym7dDNyVnzkKCUGq0fy7vzQo4zdSATomzgaW+FMaSEFh37tY997K34pMNJ1QPlE2KUebuJ286SQC0hKKQ5IQYvq5W1Lgd08e6NRm+Hd1hDGlaAdwU5gt1oxdVK4szXjsMEBUje6zb2cokeiOwcbeA4uMbby+qcFKxX2HDHC4jUGAdu8n7LmM+hSg6HxcEjXL5kllsZVLma9l5m+vOqeHkpBxxCDq1ZtVnrx6T+Od/qUMwZ41sEpU0CaHf
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7997.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(18002099003)(22082099003)(5023799004)(11063799006)(6133799003)(3023799007)(56012099006);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|22082099003|18002099003|6133799003|3023799007|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info: 8Ylro6c3fjwyvGP8vXy9OwJjmcWjHN8uskTjvlOnFpBE5bGZQ5yXtSPiKDPIarsxVs4eye3zmSfjU6zxztB5ybUEU5ksW8CB8ZE9WVXxqF11AclPw3borOyDZNHEMtPbzELu/fV6PNdgPj7KE4t0jl4NQHhrI3kzQrzyq2WfJTXFMhHIlL0jifJ3xKL5bXA1EUWtLjQRnRZs2DOoEHPOva92fYglif7TPVpZ1S9EGWhbdrAqFh0lKzCKm4rcBJbWoRKv5rnW43GhTuhP9JE+RV74Z4d9O2+xkkK7KWc3S+S06GVaIVcjGgGqCnZedWwNyrbpPABhmEvIgJYb53cdhXN5V4qJNoIXdk3Xvgm7MHErD8kC2xtuOeloy+t1qVYLq05Mq1wsSz22VQchyrsei4JI9J8rxxIP3HtNPQOEgNEiz/zfGB8DtTU2x2LCJwcBV4I9vNw/AoBW02Dj6yQ/IUMkHILpKTTnRkJrP1Wc4NYuWN3rMtcKxLmmLApTgn+j2DzHL9xBtheHlHjP8t1jY/K0FmG/olhmXCNbrWlsdhBoqEa4L/oMmqroBbd1HvkrzJ2+PxNmx0n9h1dGF1PfDMj3z4zqHvvLuKgm0xIkxsA+X0GZAev2cPNbC89nwUKv53lY1mMK65BZ8BoBFkLkYlbUull2lcnSIjWAJo7DYGCHv/RAKB0gbTg7rut0tWJK
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7997.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(22082099003)(18002099003)(6133799003)(3023799007)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NU9rakZ2NDdkdi93a2p3VUhMbTZ5MXZCWUFrWitpczlWZnlSZVhNeGUzQW1r?=
- =?utf-8?B?eTQ4MCtQNU8rRmNNMGhHaUNoam5hNzR6L2FpUjAwWFRkQlhLWVNhbWNWcjRF?=
- =?utf-8?B?WWdKOXoxNTdiS1NjMHZncVlkQ0xKYTBRbzdmN0kvbmpXdk5MZ3owZ28zRmp2?=
- =?utf-8?B?T1Ixc1g4TnVUYUZUVjFZb0ltRVRtUS92V1hQVGNjRDc5V0dRK1ZzRU1QSlVt?=
- =?utf-8?B?d2htNkVablE4VWMzOUt6MlNEVTE2TEtFR0o3NVRlMjg4empOZlBGbmJ2bGh2?=
- =?utf-8?B?TkgzOHNNYW1VYmVncTM0QUFpY2lVdmdDS2hFTWZpQVNMN3RhVUIxN051MlNF?=
- =?utf-8?B?Y2Y2WTI3RGxEOFA3UXZ0M2l3Qml2a3FUdEtqcUJLVVBqN0I0WVdHbnJ2bVpH?=
- =?utf-8?B?UGJMN3h3S2EySFBjckVXQ3V4NUozV1pPZWRVRlpEUU5iR0RWb01xQkptZHIz?=
- =?utf-8?B?Y1VuRVduNEhXZzVvWDZNbGIyZXBMaldGTDU4UE9Ydk1ZSmI2UkZjNzFUaUFK?=
- =?utf-8?B?a3ltQXVodElQMU5rdDNHdHg5Q3M3LzNDbTMvdkJBZkx1SGc0TkltN3R5QWpa?=
- =?utf-8?B?ZDM1cm41bTl3aXNVQXdrNlJLL0R5NnhyS293akM0VUlOd3BQbHc5WVQyRUZ5?=
- =?utf-8?B?dkRTdXY2KzZDQTdYL0lqN25JbGxRY0dvdXpiQnFvZkhoL1A0Y1kvaGhmYm5i?=
- =?utf-8?B?dWlXM2wrTHhMQkRnS2doRGgzbVo0MjRORERDZk5QTmxHYmVXLytzaWh5TkdJ?=
- =?utf-8?B?dGk2WU14RmM0UWx0T1hLcDA5NVdYU2U0cEcyQk0vdmFTUTZYa3pxY1VJSlRn?=
- =?utf-8?B?YnFsSkQwendydzVPdTFCY3RoU1podjhpbVJ4b2RpK25mU1RkYW90Q2k3dWFZ?=
- =?utf-8?B?cEdna2l5a3JaK1Z3bjNkd3B3VDczdzZia2xtc0w2aXluNndvZWFwSVdNbGFp?=
- =?utf-8?B?aTNvbFNOc1lIcG1KWUJIdkdwVEFkU3BXdG8wcmZHVTZoYVZaMmRPUXozRUpn?=
- =?utf-8?B?NFFpeDhsQ1JLbEduSmhmYXRvMDI5RFN0Y3E5bVRma3NxOHpqMlhqMGhjL0lu?=
- =?utf-8?B?TlQ1eVNwZ1BQK1c0NUw2V2xDaWg3OXlRUDh2bGhJV29RQTVZZ2MvaHIvVDBn?=
- =?utf-8?B?ZndjVldqbm05Y1hkWklUWHRxSVREM2NrMmh5b2dVZi9Md2puTzRLeUpiVUl2?=
- =?utf-8?B?Yk85WDV0NWo0WmFJY3pnUGw0ZXBVSlhXV1ZiMGRoSUFsb2xNenhaUUs5RU9C?=
- =?utf-8?B?SjFMWTBMWWhhMjhadnhjd0piMmE0T1k2OVFmVFpmTFhPOTYzeU1sK01RRkpo?=
- =?utf-8?B?cWtxdFgyaC9hbDl6RUR0aXkvWm1XTVNJMmZvcWxRMmdpcTRkTHZPb2JrRGVZ?=
- =?utf-8?B?N3I3UG5lV2dHQXZvY2pldHdQekpLOWptZFFRQVJTVkVUNUVWME1IMlhXYlIz?=
- =?utf-8?B?cHlQbCs1azVlbjlqRXN2SmkyaU45SDk3UXRoN2J5RjNZZmphbWZBTWRjUDdY?=
- =?utf-8?B?eEJqdkJ4Qlk2U2VFWGFEb2h5Y3NrV2FUY0RkbDE0VmF6OHFIYXZOUEJ0K1Z5?=
- =?utf-8?B?Tkdvd1M0Z1ZvT0g0Uzg0bENUdjZUanVPV2p4UEZIazBWSE9lUnFkSE1xYmph?=
- =?utf-8?B?dFdjRWJHRmhLVGE2cTI4MllhYi9WV1NKb2ZNbzY5V0dST1ZnY0FPSG5WWEta?=
- =?utf-8?B?WGd2V0J4MW1XekZnK21qR3kyODd3SFROZTdHbHZrZWRGWUFVYzdFME1Va09Q?=
- =?utf-8?B?dmdncFNpTXZyWUorcU5oclJGczVDYlUzMGNUWDdHSVdMZnBHQUhTOE9oM0tm?=
- =?utf-8?B?RytLUXlsdU9qQnEzYndlbmVKU3R4YlJFVXZTSkpBM3IydzBKaWFjOGJQZDhG?=
- =?utf-8?B?bU1rMkUyRHptOVN0RjgzdFI5M21NZmVIYkwvN0hvQ3dKOUZpTjI0c0JtL1BP?=
- =?utf-8?B?cVdZcTZqTjhEWFliT2FuajFOQS9FVm1FSEJiaHJwSTBUNmNqczBPeHBXQ0VS?=
- =?utf-8?B?SE1SVlNpbjJIcnc3OEFvQXlqNTRDanVSQXlhL2l2U2JQaGNNZ2t6b0ZVM0JI?=
- =?utf-8?B?cW83TE9iU1lkRmJKVjVIZVFlSWkwZE13dTNBNStwYXZ3aWQwVnREYUVNZWpu?=
- =?utf-8?B?NXMzcDgyZ0xaTGZ6VkZVUFplQjJCQmE0Tklid0NxVGxXWW9LK1lkQmp4Qzl6?=
- =?utf-8?B?eWVQK3hSM0w0MjdoNU1XcDNjaGtaaC9RaHFmMGtVeGNMQitGd1cyUWo3SlhT?=
- =?utf-8?B?SDdVY0RGSFp0NC82N24zMllJWTNYcHMxZ0VwdHZPdE1hVmdRajlUNVFHM3BL?=
- =?utf-8?B?K2FnVTBlWlFqNEhHdWpwSHViZHZVVkYrQmZNRUpGdCtnamdyUE5vdz09?=
-X-Exchange-RoutingPolicyChecked: PcJl5McKiBRf/HoFOBLnElcKAnWDlcEOqz8WxVOutkZJ/4wdAX95SbASmriFYn8WmFymz8Lufhez0CGFWJwjrHZNyyHXd1eMjgklxtZ1CKFE0KP6guxPaKPF9IXfSvn9o+doY515SbDviUlB4AGepAiwqG5ZqAx9tBjKs1mVerjVUnjzYz++9t/hskWaC0pfvJx6A+rsg61zhZdEFfB62lsErpvxME/5+je8QhrkEmHdiz1fCFaldJim6a2TlB4uAQnQOOmSRRUAqeQXpbL1hmO5rM7agAtzEIirkI+uw/Ms924WNNJHzxYxTjCrp5A4YNHZrYTDGBtkxSnJEUfT/Q==
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1934988-332e-4394-dbe8-08debbb01806
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YTIrRUwwMUhXQ1M1UkVVV3pjSUQvL1pvTi9vZkFPTkFLWFlxb3gvcGFTU2lP?=
+ =?utf-8?B?QWZwakhCUSs4VCtieE8yRzBaR1phWHFhTndBMWVHYzZUSzBXUFJxd0w5T1RK?=
+ =?utf-8?B?L3hJMzlvNG1BVmFWTnJhakxEUDlORW5Ncmd6VTc3T2JIVEY3TXBzTnJzblJV?=
+ =?utf-8?B?dzhybFFUUVV3S3ZtZHN6a2VkMlcxNGlEVElkTzgzVFExWXB6R0QxcjFhdnJz?=
+ =?utf-8?B?Szd2Nmx1NVF4Mm1zYTd2VDVXYUhpTDliOTNYOEZEeHJlMVAxTVpHNE13RlJD?=
+ =?utf-8?B?Y1VDZnF3ZlJJYjlBUEUwYjJJaG0rNzRLMmZwTjlINXBCRUgybFhJK2ptUkVQ?=
+ =?utf-8?B?ZnBtdkZ0TWFJa0hGeG5sbTFYYzh2WXpXMVVENHNTTldCbnRUOFZ0cmxOQzZm?=
+ =?utf-8?B?UFZsZ0UyZi9ZSUhXVFZENThES0o3Zmt0Z0t3N3FLdEtqMkhyRzIrWElVRExT?=
+ =?utf-8?B?SkUvZ0UwSFg3NnFwL25UM2hqZjBucSt6a0hFL3J5MHFOankvcFBxa2NlOEZk?=
+ =?utf-8?B?WnJjeCtjeU9sYU9RRldBVXdhNnlRc29ITytrT1dMS0ZoejZCRC91YVVYZEY5?=
+ =?utf-8?B?VDZoM2V1ZWs5TFBkUll6ZGdwY1NlYno4Zm1ZdTAwTG5MVXFwMWcvRUpFRVlD?=
+ =?utf-8?B?SXlLblZtVHlyTUhzNlpSTVA3U0xUWGdLL3JyK3VkNElWS2liMzlOdDdTb052?=
+ =?utf-8?B?K1R0VWJBQXVMZ3BRZjdZZ2JFRFNWR1hXNlVmVFNtSGlDSDA4aFRHa3RXRkdW?=
+ =?utf-8?B?UUV3YTVsTGx4TG9rWmxIczRMYnlGckpPRFRCald4dzIrdi9BaTFFKzZUN3Yv?=
+ =?utf-8?B?S0tRa0dFVUtJVXgyakdqQTdPS24rQ2VLUFkvRTRJcEJsZWM4L3p5djV0WU1G?=
+ =?utf-8?B?SW93MFVTRTlpWUpBcEtjZTA3alp6T0xkN3VrUHdkOVlXcWxyZnR4VXlxMm1Y?=
+ =?utf-8?B?QTJjSmpldDNOVkhXZ1dZSGNTdEhVa3V2S1NIdUVUbnhWbkdpbzFIWVhzUTVu?=
+ =?utf-8?B?N2ZFUUlMQnJkSkpUWE0xRFFJRWpneUJITFdnUFZsY0M5SW5oYlJPSC93M2Zv?=
+ =?utf-8?B?MkFzS1RVTVBsR1JNZjg0dklLKy91aTZPUW5JZmNwT05CSUp2Q3oweFlmRTFt?=
+ =?utf-8?B?RXFFRDMrVHk3dE1SNzZBWHFFdXhpR0p2d1hCZ1JydzhFckJOSC9BVllxaUJH?=
+ =?utf-8?B?Vllkc2N0SzJiaDJMK241R3ZrOFQvckdxK2lmR1Y4V204ZkYvUlArQTM0eEZQ?=
+ =?utf-8?B?TjkyT1dIRmJsR1VQWTlucndnUHhuY0x4QktEOTE1MkhKNTBDbkIyR0kyT1VC?=
+ =?utf-8?B?bEFnbk5uRndLbnpmSVZvT1JYQmt0VWNwU1dhSzF0VWVXbmdNNmJKYkkxY2cw?=
+ =?utf-8?B?VjcwaXhxbGt1K3YxNDZvdDgybm5lREN6THNIT215VFpCNm80K1FiRXNGK2JX?=
+ =?utf-8?B?UTN0amdmL251V0o0WG95dTN0RlRwcytpODYwaEY4cUNicU1tTnpzOGJ2WE9X?=
+ =?utf-8?B?bmxSYlRxQmFJclUvdW01aTJNMlpjRU10RHl3Wmg3bUFIdEVCcEdSL3cwUGtF?=
+ =?utf-8?B?VWpVSzcxNUlDVW91VWpkZ0pzVm1xdjZsdkJTZ2ZDT1ZrT1NDMlpsYllpblB3?=
+ =?utf-8?B?WHBTREpOYnpka29tSHdnU2FWUkNLN1F4Qy8yVGZGSW5kQms3R1dBL1VjV1BS?=
+ =?utf-8?B?T1ozT1lvbVpKRjduQjRpSmJzeWRXbFJUVWhHSmFUMzlwc3BWMXcwZHhvbU5O?=
+ =?utf-8?B?cndHQjBSdWMvMUNZWldScm43RThVRmJnVitjSlZzZFphNEJrOGd4R0pvcVlN?=
+ =?utf-8?B?WGdnQUc2dm1ucUdlSG1xTkFCaTVPekZxelVJeTJhZ0tzZFFaQWRJbU5hckg4?=
+ =?utf-8?B?ZXdpWFppWXBCRWtPbnk5MytaMmFtM29hbTVuWmVMLytWRm8xL05mTzVoclpW?=
+ =?utf-8?B?YWtVUG0zUWR5dXJOdVVyME9ldDJCZWYwbEQ3WXdUT3RFS2dTYjY3bjZZaFZv?=
+ =?utf-8?B?UUlXeFlsUThmT2JyMmV0UHZlSC81VGY2RUtKN1o3S1UwVXBjSWxLRXYrSXp2?=
+ =?utf-8?B?TXdkeUJmWG5YQWU5ZjVIVERqaWI2MVlqb0dtUWR1MGJpRStSWkpGUTk3Z3E5?=
+ =?utf-8?B?TUlnOVJqcERpYzFMUzFKUXMvcHpiMDIxNTI3UnVFTVExSlpSdFNEbHBGQnBQ?=
+ =?utf-8?B?dzFXQlltRldBSE0yblpzYkxiVUJ0dWVORUs4VSs3VlNsRVIzUGszVXRTR3pv?=
+ =?utf-8?B?dEZPVjBpQ0NON2VOR0pKN29mU1Y5QUcrQkdoaTgzcjFmcnpITUo2dWJ2WWt6?=
+ =?utf-8?B?b1hNMGg5aUIwUFdxYjA0dmgrRTcrcVBXNm9XWlR2NW4vQnlnbHlJQT09?=
+X-Exchange-RoutingPolicyChecked: m8upDpMZ46kOUhueiQ3LEZWRgqpgGeJpohAuxQ+W1bJeEZ6btpYMuSz3mmHAo9OI2bkrMEOToNXJRSWTIP++aVV/VfG1Rb9IVdA0af5TjZfq26FpSAK8RGuecIxgJadSTHMKKPfbEuBMC8TWBAAdPVdHm77M1flDvX5jcqGqFBiieGamgrGbz/mCqwdw8Ml1rnSW2Y+sJzrxeMkvjBcrKdtIn6i000aiEJUPKOy7eZeW0SXUF0mtBI/ggz74ep2NVxW9ygmo63ZEVCRZP862KxzuB4aaRZt+pnp0tV3Eumsq1TYKKqdejUUlCnwrfoLWQusDTa3oii1RRNTKu7Hcuw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39bf6342-ecd3-494a-0b55-08debbb60090
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7997.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 05:23:32.6478
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 06:05:50.2657
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3Osu9Jp1GIeYW6VcW2MDUUQgAnU9/IptKKGEN20xuv0hLJN218rOeQNKpX9fpYzmSMHxji7jzxyFNVQIdJppWw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LVUPR11MB9568
+X-MS-Exchange-CrossTenant-UserPrincipalName: 59Wk5HPVXl2PHGs5wB9hsrcLHZfduxhkf8Wo+D2XbyVyiTBrqYPvuAoIHmOHYHzGd8D9KLKOncGZEGEJzYIk4g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7277
 X-OriginatorOrg: intel.com
 
-Hello,
-
 On 5/21/2026 8:41 PM, Xu Yilun wrote:
-
-> The first 4 patches will eventually need an ack by an x86 maintainer, so
-> please review with that in mind.
+> Add reading of the global metadata for TDX Module Extensions.
 > 
-
-I am looking at this from an x86 reviewer perspective with limited prior
-TDX knowledge.
-
-> == Overview ==
+> TDX Module Extensions is an add-on feature enumerated by TDX_FEATURES0.
+> But for the Module's integrity, Linux requires that all features that a
+> Module advertises must have a complete, valid set of metadata, and the
+> validation must succeed at core TDX initialization time.
 > 
-> TDX Module introduces the "TDX Module Extensions" to support long
-> running / hard-irq preemptible flows inside. This makes TDX Module
-> capable of handling complex tasks through "Extension SEAMCALLs".
-
-Can we explain a bit more about why these extensions are needed or what
-would happen if the kernel didn't enable them? I ran the series through
-an LLM for my curiosity. I think something on the below lines might be a
-good addition for the cover letter itself.
-
-(Please verify)
-
-The TDX module's normal SEAMCALLs are designed to be short,
-non-preemptible operations. However, some newer features (like
-DICE-based TDX Quoting) require complex, potentially long-running
-computations that can't complete within the tight constraints of a
-single non-preemptible SEAMCALL.
-
-The "TDX Module Extensions" solve this by introducing "Extension
-SEAMCALLs" — a new class of SEAMCALLs that are:
-
-* Long-running — they may take significant time to complete (e.g.,
-cryptographic operations for attestation/quoting).
-
-* Hard-IRQ preemptible — they can be interrupted by hardware interrupts
-and later resumed, so they don't monopolize the CPU or cause
-unacceptable interrupt latency.
-
-Without this mechanism, complex operations like generating DICE
-attestation quotes would either block interrupts for too long
-(unacceptable for a host kernel) or wouldn't be possible inside the TDX
-module at all. The Extensions give the TDX module a way to handle these
-heavyweight tasks while remaining cooperative with the host's
-interrupt/scheduling model.
-
+> Check TDX_FEATURES0 before reading these metadata. If a feature is
+> advertised, a failure in reading associated metadata causes the entire
+> TDX initialization to fail, otherwise skip.
 > 
-> TDX Module allows some add-on features to use the Extension. 
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> ---
+>  arch/x86/include/asm/tdx_global_metadata.h  |  6 ++++++
+>  arch/x86/virt/vmx/tdx/tdx.h                 |  1 +
+>  arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 16 ++++++++++++++++
 
-s/Module/module throughout the series.
+The top comments in tdx_global_metadata.h and tdx_global_metadata.c say
+that these files are autogenerated. I believe the script lives outside
+the tree. Is there a plan to merge the script?
 
-The existing kernel code predominantly uses the lower case TDX "module".
+The generated code is optimized for space instead of readability. Also,
+I see odd uncommented assignments u64 => u8/u16 all over the file. I am
+assuming the upper bits are expected to be zero.
+
+The patch is hard to review without the script. Can you post a link to
+the updated script that led to this patch?
 
 
-> The first feature to use Extensions is DICE-based TDX Quoting [1].
-> DICE is an industry-standard, certificate-backed attestation
-> framework that layers evidence through a chain of certificates.
+>  3 files changed, 23 insertions(+)
 > 
-> This series adds infrastructure to enable the Extensions and then
-> implement DICE-based TDX Quoting.
-> 
-> The Extensions consumes relatively large amount of memory (~50MB). So it
-> is designed to be off by default. It must be enabled after basic TDX
-> Module initialization and when add-on features require it. To enable
-> the Extensions, host first adds extra memory to TDX Module via a
-> SEAMCALL (TDH.EXT.MEM.ADD), then uses another SEAMCALL (TDH.EXT.INIT) to
-> initialize Extensions, and then some add-on features, e.g. DICE, could
-> use Extension SEAMCALLs for work. Note that host can never get the added
-> memory back.
-> 
-> Theoretically, the Extensions doesn't need to be enabled right after
-> basic TDX initialization. It could be enabled right before the first
-> Extension SEAMCALL is issued. That would save or postpone memory usage.
-> But it isn't worth the complexity, the needs for the Extensions are vast
-> but the savings are little for a typical TDX capable system (about
-> 0.001% of memory). So the Linux decision is to just enable it along with
-> the basic TDX.
-> 
+> diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
+> index 40689c8dc67e..533afe50a3f1 100644
+> --- a/arch/x86/include/asm/tdx_global_metadata.h
+> +++ b/arch/x86/include/asm/tdx_global_metadata.h
+> @@ -40,12 +40,18 @@ struct tdx_sys_info_td_conf {
+>  	u64 cpuid_config_values[128][2];
+>  };
+>  
+> +struct tdx_sys_info_ext {
+> +	u16 memory_pool_required_pages;
+> +	u8 ext_required;
 
-I think enabling it by default on TDX platforms (with the module
-extension) might make sense. But the explanation here is slightly
-confusing.
+The name ext_required seems like a boolean. It is also used like a
+boolean later.
+	if (!tdx_sysinfo.ext.ext_required)
+		return 0;
 
-You said earlier that "The Extensions consumes relatively large amount
-of memory (~50MB)" so they must be off by default. Later you say that
-"..the saving are little .."
+But, IIUC, is it actually a mask that lists any feature that needs
+extensions to work correctly? If so, it would be good to give it a name
+that reflects its usage. Maybe:
+features_requiring_ext or something better
 
-Are you saying that the dynamic enabling of the extensions is not worth
-it or the dynamic allocation of the memory needed to support them?
+As Xiaoyao mentioned, the struct requires a better explanation in the
+commit log.
 
-In addition, could you briefly describe the complexity we are trading off?
+> +};
 
-> This series has 2 distinct parts:
-> 
->   Patches  1-4:  TDX Module Extensions enabling
->   Patches  5-15: DICE-based TDX Quoting, primarily Peter's work.
-> 
+...
+
+>  static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+>  {
+>  	int ret = 0;
+> @@ -116,5 +129,8 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+>  	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
+>  	ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
+>  
+> +	if (sysinfo->features.tdx_features0 & TDX_FEATURES0_EXT)
+
+Other metadata reads aren't gated on feature checking. Is this check
+manually added or autogenerated. If manually added, it should have a
+code comment clarifying that.
+
+> +		ret = ret ?: get_tdx_sys_info_ext(&sysinfo->ext);
+> +
+>  	return ret;
+>  }
+
