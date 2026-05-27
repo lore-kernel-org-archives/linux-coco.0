@@ -1,141 +1,183 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D059C39021A
-	for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 22:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBEF38AC8B;
+	Wed, 27 May 2026 22:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779921802; cv=none; b=CtlTCwvRJa6DQx0BEB4Q6bKHxJ966T5FxHm0oDQuOT0p2hptTv5D2j/o5j+AFsh9C5+BZ0UhfWaXfqg7NRyyBGjCxyLh/qEfXEA/FXK8Z7BLJ8l5tCNohQwRHdtXu+hsDJknRljTqDm1auMDHPrnV8ylaIPNTtdpq55Jw7bOEfg=
+	t=1779922146; cv=none; b=T5l1hvyqhoglMkR5LFVeI9Ew/IGaODzq6K42ny7cpyU36NffG9rH7LOKf9ts2KrFp5Fh5v7GpCchJxDNVY/nY05ODPVczN9WiexCN0pb5AaSaYERPjt/uRf4hzHID8ljFFqbN4GeznwTKZEqq3wu7tT0LpnmEgfift1soXrADto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779921802; c=relaxed/simple;
-	bh=M2uIm2jED4+3dlkYBLLjgxfKzRcbFG9jIjgsHVHOBqg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EmJFUGBf0EeakHWOaUC54+IaoFww9biL/i86Z5Q/m1y7hLsxlnT7uyhCozm4i+CUlYI/O9Lhk4/YmkZYkBY6lLwNGaNuuv2rYahg01C4bhi9XawKuZvU7BB8PJV+lyMQNzn01tIef20uiSGb6XeTQY7dqaKwpWvDhdzYBEpAhnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lMvDu+Es; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779922146; c=relaxed/simple;
+	bh=XgCimAoT7hxbVKi27EM2uVlOhhGmrOb94/8bSorKk6o=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=lCveeWXPtIGs0CJQ8vPtldn0zHWmRRvxhDfSnoCT6hcPouLLzityAVbPe5+L54Gj0FH5fM7uVQVQRjdu2jBeRNrtSUSr4Bye9jagg8L+sodOrj4uxOwqeVTzBMUHlnWZaw6D4LsMuNm+ys2EpyeKZawNjbi33zH0o68iKxKniSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cQM/7+mO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lMvDu+Es"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8281d4cef8so5679075a12.2
-        for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 15:43:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779921800; x=1780526600; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FsmNkE2VI4iLm41l9qqqzl3T9LuJhEB/kk53DiCik+w=;
-        b=lMvDu+Es8KOqXNlsCDyvigu32zQLivty2Zwr1BFxNPoTHDSs2CWJMRQS+P+nmxMJlb
-         bhswhx0YLXam1BVs8JrBx19KzasG+S2OOXRWRKbJ/pnclBhfh3c9i7VmY3GKkmR2nlVN
-         vlu9y5x/kUQQPbT+deCn+HIQH/lPUrl1lhfiYQztDeJzkVWl2NT2yIlOnnCdCBxUUgBb
-         AtWorCVnUxAfzRfardnvQFvnF1RdNLadSCY6lkQt3NvlVJhKvSyqxVvv8kJUvbVpLdfS
-         fJVDTf8olRwlQiyxrnbGRGLhNcq/AVNgu0jSXFvE2HTy+/e8B6SwI/1WrCuvvQMd8Ep7
-         RWPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779921800; x=1780526600;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FsmNkE2VI4iLm41l9qqqzl3T9LuJhEB/kk53DiCik+w=;
-        b=Xicv9kaxUPD+D7rbXlexIAd77DOtoC+igGpDfThZQIcYaD5EqqB3iIb2xq0lc5pM+8
-         5+150H6R8nmlT21ec/ChR85BSN45fV9D9sUbkmQn3BM/L7LjdM4aeqQDfGeNKQaYp/WV
-         hBoMH/QM7qFdbgvCfkC9FdBnczx53dL6Rs7mM6Oysgcaj66QqjiSIxQK2lrdHt5YXR3k
-         d13aYAvmg0sRd1m5e5JXaF42Zqum7eGJYZfRqbOZWMjW4B3Zk9OaqIomWrwavvzVi5sk
-         +1Zl9NCjjM3FMo9HdxIq9AEnp/kXUWoWSfPGFLHAxPA7RgLx40GaKR3Pt8EQGBWuUMy6
-         wvjQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+vuJhPEi25iSjGi4qVbA9xTgcyeYjyyVrFpWzUozBgYHM2qCxuII3QM8QfafRa4bjbJJYFH3MWkVf5@lists.linux.dev
-X-Gm-Message-State: AOJu0YxR4urqGrWD0ZPpAVNS2TGAnwCMoboJap0/7QJiYMIbVVcUPxAE
-	ukFEFGBPjxXNqpLM2b18i5+MNwYoyzmXZub1yAX66EEuonmODkGGd7DaoUC0Xk73ihxG5fhj2ZM
-	Fppy3aA==
-X-Received: from pgtk13.prod.google.com ([2002:a65:68cd:0:b0:c76:1d9:8c20])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7486:b0:3aa:f2c7:fd87
- with SMTP id adf61e73a8af0-3b328e53f98mr25116032637.31.1779921799970; Wed, 27
- May 2026 15:43:19 -0700 (PDT)
-Date: Wed, 27 May 2026 15:43:19 -0700
-In-Reply-To: <CAEvNRgHnxEO+jXqEKuewiDgFBDQDSr68A8MnJJSyf9K5AgbwWg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cQM/7+mO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177CB1F000E9;
+	Wed, 27 May 2026 22:49:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779922144;
+	bh=kbwvCEgGUo53H1eMdHinsXodo5C04fK1nklZJsj/WrU=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=cQM/7+mO8VkPa5CyqU7+3Is7n83xQ1wTp7m1cbSHeli0D7CDAFCdvKaO4FqJznfCK
+	 v6nHTXxEiQUqSTTZIjHACctKfW7Mkt1PMwL1e+MiNgYnks9StIQxsbBPUyOiuqvIfP
+	 qjmmq/H7G8HSIg7GlM0OEQ4q72CduXppq7DOmfi35RZFpEuNs1mGBUMWfRv8zj5cFJ
+	 BkFqOrPK+InbY8KSFo4yaQtrWmGVN6vG1u0wIFgveU7rgS/COiX7kfuVO+jD4/Bzdm
+	 BOGodh+hA0xMBy1rRT71ZJc64te9C2/sLdJXaHbvzWqeUdyk2JCdSuSTkK96IjD9Sg
+	 rCjRyLQ5kpsBA==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5353AF4006B;
+	Wed, 27 May 2026 18:49:03 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Wed, 27 May 2026 18:49:03 -0400
+X-ME-Sender: <xms:33QXampOgvj0FTxfrrqvIaE2WkPjN4ZzJPeT7HLRAO703M5bbVhwQg>
+    <xme:33QXak_Ng1KpK1W3mzSKlCKYUqCS3oTxMAXUt2FXME0GQjoHgFhMWxhLzn6CciYqD
+    9SsY4d-krsQC2UkWuE6VAvdEwKZ4ehCyL2BmduTVTzPq-B5N1cM7Bg>
+X-ME-Received: <xmr:33QXai1I8lAnYd5E04lWVxWavWDl5KTjJfgqWjQAvIVzWMRYHkSiABWI9DPINF-1Cd57hmWuX9cQcFB39p8RBMgv0YkN36Om1lU>
+X-ME-Proxy-Cause: dmFkZTEKosdjcGQ0fUzOjNmQ2DaCEkmXgDIgGtQ7CeozMDS1NKqLYgRoYzp4SrcRkoePGh
+    I3/0gP8U7PceQZ5VeBofkCCiqKdtXu/IVi1l7qzDRfWoqulRf4ZxWwe+5xsnELv45z+f/G
+    MaW/6HK6PZ9Po7ctNfm2S2K8YTLug1Wy65sJ4o5Ro+jeumn5uaFuZ85G3XiIiuz96lPvyJ
+    5fVFLuiNLia/ofcgArMi7jyfqb+AyocmjpvFTrvevVedErrFHWQvg4mrVFRK+7hxI8TP9M
+    mH1GI7EFK4AsYlNCrehRXq0VRcua8GPJN1WdVOwJgcw1qyxxLSJNDVONOXjRw9Ti6ErZO8
+    IrHD8LSA2YBfCifjnv7QIoH3nmTTq5UhqXrsa2xxfEYB5iGFJ+/B967wkejXSzOP9s9tkv
+    UziHZTPytzoznWs846mNcKteLWm5xtwTynhnjOrk5gw8NB5l1etb2x+/nrPDugBmnBBK/v
+    1D0lDSGZ10+FSjJsdy6DjVLLoKrjKk78XVjOo/5ByP2KjEIVJvPtPm0VVSuBJj4eR3Sjyv
+    V6VDIJElnseu4xowOBfRXXRYf2l5RdjZ7CSob4xY0gEA9sCwels/KxGLYUc6MfH6UAP10J
+    Ki7RBESOfd6GCyV5R5advgpW4KSHN05EtIQ+9TPuuk3AJBaPYbxgY5UdHtyA
+X-ME-Proxy: <xmx:33QXagjbrn0N50-mkQRVcaem9HyvUmPsqN33puowc7OUHE5Za155kQ>
+    <xmx:33QXaucHNUjz6CMg_eWGBI2GVA5a4BRjQ0__UGwjLXLtFONMDBhu8w>
+    <xmx:33QXas0GqdHzsaxMbrruKhhHapNJW6YuDhyVjV57fZSmFdQuhJRAPA>
+    <xmx:33QXaiN8g3Bd53M7QMBeTuH-AWTijtnsJaP1eq_qSAR8M3WMXLjMYA>
+    <xmx:33QXarTzdGYhkry-UZRJtm3zXrRdJgI-w69jvHYiJrkKw_kYebPLmtte>
+Feedback-ID: i67ae4b3e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 27 May 2026 18:49:02 -0400 (EDT)
+Date: Wed, 27 May 2026 15:49:01 -0700
+From: "Dan Williams (nvidia)" <djbw@kernel.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ "Dan Williams (nvidia)" <djbw@kernel.org>, 
+ Alexey Kardashevskiy <aik@amd.com>, 
+ linux-coco@lists.linux.dev, 
+ iommu@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, 
+ kvm@vger.kernel.org
+Cc: Bjorn Helgaas <helgaas@kernel.org>,  Dan Williams <djbw@kernel.org>,
+  Jason Gunthorpe <jgg@ziepe.ca>,  Joerg Roedel <joro@8bytes.org>,
+  Jonathan Cameron <jic23@kernel.org>,  Kevin Tian <kevin.tian@intel.com>,
+  Nicolin Chen <nicolinc@nvidia.com>,  Samuel Ortiz <sameo@rivosinc.com>,
+  Steven Price <steven.price@arm.com>,
+  Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+  Will Deacon <will@kernel.org>,  Xu Yilun <yilun.xu@linux.intel.com>,
+  Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+  Paolo Bonzini <pbonzini@redhat.com>,
+  Tony Krowiak <akrowiak@linux.ibm.com>,
+  Halil Pasic <pasic@linux.ibm.com>,  Jason Herne <jjherne@linux.ibm.com>,
+  Harald Freudenberger <freude@linux.ibm.com>,
+  Holger Dengler <dengler@linux.ibm.com>,
+  Heiko Carstens <hca@linux.ibm.com>,  Vasily Gorbik <gor@linux.ibm.com>,
+  Alexander Gordeev <agordeev@linux.ibm.com>,
+  Christian Borntraeger <borntraeger@linux.ibm.com>,
+  Sven Schnelle <svens@linux.ibm.com>,
+  Alex Williamson <alex@shazbot.org>,
+  Matthew Rosato <mjrosato@linux.ibm.com>,
+  Farhan Ali <alifm@linux.ibm.com>,  Eric Farman <farman@linux.ibm.com>,
+  linux-s390@vger.kernel.org
+Message-ID: <6a1774dd80f74_19737610095@djbw-dev.notmuch>
+In-Reply-To: <yq5aldd4spyc.fsf@kernel.org>
+References: <20260525154816.1029642-1-aneesh.kumar@kernel.org>
+ <20260525154816.1029642-6-aneesh.kumar@kernel.org>
+ <becd865d-09a4-4ac3-b719-4a0deae2692a@amd.com>
+ <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch>
+ <yq5apl2gsw6y.fsf@kernel.org>
+ <yq5aldd4spyc.fsf@kernel.org>
+Subject: Re: [PATCH v5 5/5] iommufd/vdevice: add TSM request ioctl
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com>
- <20260522-fix-sev-gmem-post-populate-v2-3-3f196bfad5a1@google.com>
- <ahXMzPz1cQl6kZge@google.com> <CAEvNRgHnxEO+jXqEKuewiDgFBDQDSr68A8MnJJSyf9K5AgbwWg@mail.gmail.com>
-Message-ID: <ahdzh8yzbpX7OKwn@google.com>
-Subject: Re: [PATCH v2 3/5] KVM: guest_memfd: Handle errors from
- xa_store_range() when binding
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Yan Zhao <yan.y.zhao@intel.com>, Michael Roth <michael.roth@amd.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Zongyao Chen <ZongYao.Chen@linux.alibaba.com>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Yu Zhang <yu.c.zhang@linux.intel.com>, Fuad Tabba <tabba@google.com>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 27, 2026, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> > On Fri, May 22, 2026, Ackerley Tng wrote:
-> > If @entry is non-NULL, xa_store_range() pre-creates the entire range, before
-> > storing anything into the range:
+Aneesh Kumar K.V wrote:
+> >> I am leaning towards the latter at this point.
 > >
-> > 		if (entry) {
-> > 			unsigned int order = BITS_PER_LONG;
-> > 			if (last + 1)
-> > 				order = __ffs(last + 1);
-> > 			xas_set_order(&xas, last, order);
-> > 			xas_create(&xas, true);
-> > 			if (xas_error(&xas))
-> > 				goto unlock;
-> > 		}
+> > But we already have struct pci_tsm_ops::guest_req, which is specific =
+to
+> > the underlying CC architecture. From the above, pci_tsm_req_scope als=
+o
+> > appears to carry the same information. Is that useful?
 > >
-> 
-> xa_store_range() doesn't actually always iterate: if last + 1 is some
-> clean power of 2, it'll create a higher order xarray node.
-> 
-> Otherwise, it falls back to creating and storing 1 index/node at a time:
+> =
 
-Ugh, _that's_ what the code is doing?  Argh, I missed that "first" is incremented
-by whatever the batch size happened to be.
+> I think there is value in having the VMM express the guest=E2=80=99s
+> confidential computing architecture, so that the TSM backend can
+> validate whether it should handle that guest request ?.
 
-			first += xas_size(&xas);  <====
-		} while (first <= last);
+Yes, that is the idea.
 
-> if the above did manage to create an xarray node, xas_error() returns
-> false, it goes on to the store below.
-> 
-> > Yes, the API handles failure on the subsequent xas_store(), but I can't imagine
-> > that failure is actually, barring garbage input from KVM:
+> So it would not be the IOMMU validating the scope value, but rather
+> pci_tsm_ops::guest_req.
+> =
+
+> static ssize_t cca_tsm_guest_req(struct pci_tdi *tdi, enum pci_tsm_req_=
+scope scope,
+> 		sockptr_t req, size_t req_len, sockptr_t resp,
+> 		size_t resp_len, u64 *tsm_code)
+> {
+> 	struct pci_dev *pdev =3D tdi->pdev;
+> =
+
+> 	/* reject the guest request if VMM was using the link tsm wrongly. The=
+ guest
+> 	 * was using a wrong CC archiecture with this link tsm
+> 	 */
+> 	if (scope !=3D TSM_REQ_TYPE_CCA)
+> 		return -EINVAL;
+
+Right, iommufd is tunneling TSM requests. The tunnel should have an
+envelope of TSM_REQ_TYPE_* and an @op field. The TSM driver gets those
+from iommufd, validates the envelope and then processes @req.
+
+This self-consistency and explicitness also buys some future-proofing.
+It allows for alternate command sets within an arch, cross TSM
+implementation shared commands, IOMMUFD-to-TSM requests outside of guest
+requests.
+
+> Jason Gunthorpe <jgg@ziepe.ca> writes:
+> =
+
+> > On Tue, May 26, 2026 at 11:17:50PM -0700, Dan Williams (nvidia) wrote=
+:
 > >
-> > 		do {
-> > 			xas_set_range(&xas, first, last);
-> > 			xas_store(&xas, entry);
-> > 			if (xas_error(&xas))
-> > 				goto unlock;
-> > 			first += xas_size(&xas);
-> > 		} while (first <= last);
+> >> In that case pci_tsm_req_scope becomes tsm_req_type and is just:
+> >> =
+
+> >> TSM_REQ_TYPE_CCA
+> >> TSM_REQ_TYPE_SEV
+> >> TSM_REQ_TYPE_TDX
+> >> =
+
+> >> I am leaning towards the latter at this point.
 > >
-> 
-> So if a later xas_create() fails because it runs out of memory, the
-> earlier stores would have already been committed.
-> 
-> This ignores -EEXIST being returned since earlier in kvm_gmem_bind()
-> conflicts were already checked.
-> 
-> > Purely from a design perspective, providing an API that can fail partway through
-> > under normal operation, with no indication of where failure occured (AFAICT),
-> > would be awful.
-> >
-> 
-> Do you mean the API of xas_store_range()? 
+> > Yeah, this sounds good. I would also include an common op field that
+> > can be decoded by the TSM driver based on the TYPE above, and the
+> > usual in/out message buffers.
+> =
 
-No, I mean xa_store_range().  AFAICT, on failure, it doesn't actually communicate
-"where" failure occurred.  That's quite nasty.
+> We already have iommufd_vdevice_tsm_op_ioctl() to handle common
+> operations.
 
-> xas is updated by xas_set_range() so that should track the last store. Since
-> the cleanup is storing NULLs and won't allocate, I thought it would be fine
-> to just store NULL on the entire range on error.
+Per above, I believe this is about an @op value in a common location
+that iommufd can forward to the backend for validation of guest
+requests.
 
-Yeah, it's totally fine, and AFAICT the only remotely sane approach.
+> Right now, it handles IOMMU_VDEVICE_TSM_BIND and
+> IOMMU_VDEVICE_TSM_UNBIND. I guess we should move TSM_REQ_SET_TDI_STATE
+> operations to that as well?
+
+I think we can wait to move it to its own IOMMU operation unless/until
+there is a need to set RUN outside of an explicit guest request, right?=
