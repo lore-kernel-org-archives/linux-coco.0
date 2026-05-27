@@ -1,185 +1,199 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03B43F9A08
-	for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 17:17:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779902270; cv=fail; b=HZtkVAHsAPnl4JCmcWHXNynieVuVnqb9ZDa2GB+jBK3vXQMKcw3LBx5oy44sFVMjZddSzVioy1sfvhwtmEHaAYs00sf5mWX0vv/NfVOKa5z+CrLejDIQgqYoL1Zkm5KPf89dGcahYTXpnfttIrZX7qBNCIld2hxCStvhCeBUJvk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779902270; c=relaxed/simple;
-	bh=MgL/HgdAYFRhRupowwmTU7d1uJo8VWIro+8ik9LJ1Yo=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Rzq/Fhp1CgP1fmIPZWqepO1Ym0Cm50Xiw2VMJ7Caya3Cpg2x4WzD+wNOGvvcTnqPYXMWyDPJ6Y0v5wA9T2jdxbUW56vdfNMAMiAC4DgrzIhrRpgEdCi304jsglx9SLGOohklU7TZIvJsnZdVYC5oyRTjMeXuD3xont9zWeeViNs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UO7G/9wR; arc=fail smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F79227A462
+	for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 17:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779903965; cv=none; b=E5zFLrEfnvcre8Bf7Y3I9P37sNSVoYYNIr/d0xSGCV0omuWleE8ii6L7COtZH1j39St0Go7B1V14L1Fg8lEtdUUU45U/nRynRaNxr9pafVM0BXeF7eJeY2oyWJ/eKeISjuJWWIzjg65+01egXfkwtywlXtXIiKmKKfPQWbF9Jx8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779903965; c=relaxed/simple;
+	bh=0ThiOYWvoBP+x61ngBsl19TSjuAMKJt5lb2/LI++YMc=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=foEM6MHJplN2KUWk4EuSk/Bk6N7MXotQb4BMSWI2yX456xFLpEYVaXfraQm3jKpaFhsN7ud+iVZXbgZiB8+Q6ESb0/sNLkXZHwEFPLUz2K/hGmLyTvsbF3MN+SlCwh8Y9yFHRD5ozOECbarNxH5U7bLXihHVaFIN5RfrrDAA9pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TsY7bihV; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UO7G/9wR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TsY7bihV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779902269; x=1811438269;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=MgL/HgdAYFRhRupowwmTU7d1uJo8VWIro+8ik9LJ1Yo=;
-  b=UO7G/9wRjMvH2smmHxncQ5pdZsjtFeN2Wuqp68ZDFl80dYeIuf3bElSp
-   MLev9FhvdeZcDhVpNDDt5M79lLmvRy2h5qC7IX9X0Ms8uXLFjZBHR3Rsi
-   9MP6Ubfg/rUbMeHKAohaBOLuGF7boT0knglnQYUE9lMAsD7iZJpitcR7g
-   5cG18XCrDXffK331jXK5ANVkfgiC5B7rbjkNbrMYzFRo6PL+iu5aCjAct
-   Kp2F4TYrNtEwcJMhImXer4VQqX0Yj06DgvUyZsWVWJJoLiWTqcfAkna9K
-   MfJ/qnOiMkdBU8BhRHargleniiDeiYMtV81vRsF677KM8p/GyzyBSm/m8
-   A==;
-X-CSE-ConnectionGUID: Tk0iuzRaQDS8urBCd2z16A==
-X-CSE-MsgGUID: cmeGTMgdRIiHkPiLkwDhUQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="91429196"
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="91429196"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 10:17:48 -0700
-X-CSE-ConnectionGUID: qkipW8MiQ8+33hfcrySbiA==
-X-CSE-MsgGUID: T/2R0yKLTOyfCvPZEJ4Ptw==
+  t=1779903963; x=1811439963;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to;
+  bh=0ThiOYWvoBP+x61ngBsl19TSjuAMKJt5lb2/LI++YMc=;
+  b=TsY7bihVySzTYKM/EIpePu/WywDhHHN+7XRrMidO+tirOmgaYcHOHAAp
+   G0IDHq2UcrkaWT5/YtyxNF4ov8ZEBtwXu9UhEatwl8J9XoJbpIKvvAviL
+   3E7ZfsChDoNcZypkAjvMcdPbURHSaAGrMHPHTv5baJYAJfJjgzpE+00HR
+   oJReExL4fxVeW7IUgsEIev3Ppf/ggITQqEh+CfIjJApMGpHd3LieVQC9k
+   qbsI2Wpw5utqEAddA/QOi18TFpA50Sha/0GNM02AHBrHwh9CCEE+KKx44
+   sl/cG786E/nGTxwOGJs7bcpPdmIu67i+jZbKQpStmPXWX2bRcKq3DWXnL
+   w==;
+X-CSE-ConnectionGUID: FxqzLZ6ZRSioQt3KSNo5QA==
+X-CSE-MsgGUID: 3D+ovpR/Ts2pMTr+Dm9Ydw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="79893339"
+X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
+   d="scan'208";a="79893339"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 10:46:02 -0700
+X-CSE-ConnectionGUID: JihalDBCS721iENI+MVomQ==
+X-CSE-MsgGUID: Vqbx2Z5dSy6GzF6RTTz6ew==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="244124966"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 10:17:48 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 27 May 2026 10:17:47 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 27 May 2026 10:17:47 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.47) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 27 May 2026 10:17:47 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d+t2s9U5awH6E+wZG/GqECnjxlXr+JFf1zMnFGo/JbVTy2fj1JDLUZ4jGjvFHxY+ilYpSQzF71203urUgpj8s/QvlBJd50eF1QcrHy+nVgQ39/kWRF8LcFhrJS1DGB49VC9y2wJoTfDe6viuuem0iwGtG/OzzjsAX3yLdwJWPOWI3AaD2bDHjMLsxt8ugXQSv4OSdAlmTCyULc7mZnqVFVK1M6trjVKkI49QV1yW+ThzmqroLeBpZPNdMcDTC4ZKAJmTFnz+2MZ7xJsJb160yrWE85bCljNRUng/tr7KIhpmw9zVoi7KwMxP3APBWGV/T8Lqml/R4p5YI4dChptKoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qH5kYw6nejVM2Iz3QVMOd7FBe7mPHi1Rm4yrCBK0ztY=;
- b=bLwjfRu6zYSz09wxCJ8mTH//Hg/4/1JQDm3g6fy+8EXsrAliG715hHZncV7gN7ZhFgLW/dF6xAWxVAWQMNs+PnriIXdzqi3DX97GcuNB8TVJPbADkakMc17Uyr+83DEFhHJGkwefQ8I0zKFrG3+VkUmgmUj/UN3Z5zixNTCQjDPKKSrbXHYjPkbFy3SP3tDToZv2ze8dIFVN1QzwGpHk3851Hx22ySoAWhpFZs0CqHbE5dJ/UuzqASn3O1hM9N7DKWLxFkYMBjTwI5p+4g+GLTjF9Ws/sFRtJpUup8jXVxhBpZJe/ENxHcHJf0XsHaR7+E7+wNCQ97pDfrQ26pa/Eg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7997.namprd11.prod.outlook.com (2603:10b6:8:125::14)
- by DM6PR11MB4723.namprd11.prod.outlook.com (2603:10b6:5:2a0::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.18; Wed, 27 May
- 2026 17:17:39 +0000
-Received: from DS0PR11MB7997.namprd11.prod.outlook.com
- ([fe80::24fa:827f:6c5b:6246]) by DS0PR11MB7997.namprd11.prod.outlook.com
- ([fe80::24fa:827f:6c5b:6246%4]) with mapi id 15.21.0071.010; Wed, 27 May 2026
- 17:17:39 +0000
-Message-ID: <cdfa241c-2d8e-4aab-8491-1de4a54e8a59@intel.com>
-Date: Wed, 27 May 2026 10:17:36 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/15] x86/virt/tdx: Read global metadata for TDX Module
- Extensions
-Content-Language: en-US
-To: Xu Yilun <yilun.xu@linux.intel.com>
-CC: <kas@kernel.org>, <djbw@kernel.org>, <rick.p.edgecombe@intel.com>,
-	<x86@kernel.org>, <peter.fang@intel.com>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, <yilun.xu@intel.com>,
-	<baolu.lu@linux.intel.com>, <zhenzhong.duan@intel.com>,
-	<xiaoyao.li@intel.com>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-2-yilun.xu@linux.intel.com>
- <b25e03ad-0bf4-482f-86ec-eebc6ac03d95@intel.com>
- <ahaZPjf+A7ms0Ba9@yilunxu-OptiPlex-7050>
-From: Sohil Mehta <sohil.mehta@intel.com>
-In-Reply-To: <ahaZPjf+A7ms0Ba9@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY1P220CA0011.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59d::11) To DS0PR11MB7997.namprd11.prod.outlook.com
- (2603:10b6:8:125::14)
+X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
+   d="scan'208";a="247258093"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.111.27]) ([10.125.111.27])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 10:46:02 -0700
+Content-Type: multipart/mixed; boundary="------------qh7EUZpxDlywN8WehcLGDAQL"
+Message-ID: <5ed6121c-314e-4cf0-9a11-b0661c87c694@intel.com>
+Date: Wed, 27 May 2026 10:45:28 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7997:EE_|DM6PR11MB4723:EE_
-X-MS-Office365-Filtering-Correlation-Id: 28ec1264-5fb0-46b8-7c69-08debc13dad8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|4143699003|11063799006|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: AReS8DcKB+6ZYEnT5AffRWczh6EzJuQWlwB8Bcrgk1/IbosvYEB8UErdzQLPA6pPwAas+c32biwpRADrrM0FmJayXrTmK2R+/XiBRw//vX1S/oKhi8iXLDBHbLW1VClxBbbxF7mMz+FMXsV1X1N7tkx/Q1eQ6D//2u2wdh1WuwnBhgFsDlFmrRQu5rtQyH77IM1yT1ZlYXdA0ktc2EB+WczJGWc8zrXjT3Vp302qd2gRS/OsD0XEACs2Xw8e0mXwvFmBGUW95DDwY+nNrohv7fjsy3lI5l3XuftI8r+2zwN2XcN/jcXubbnQRA7ZWQ/vv54zOVR1pudcSIVpFhzmgXG2pFYw0jOvTUjYeFXQP8t4ojKnOcwqzeo/mKCy+3GPUB1/XeNSTlqyejWQQUQuMWqe7lHuNlL9kbGwfEzUxdHFmDPhUk6dcrOs97XF38o12WzBkuyo1kdj046BHvZiqKIsQ1fNKFTs1zTRZ0+6OOnrNplebjYhCTtd1tbI4/ZW/g8h81lAAv1EKnJJ9AuWMt4O51sHHVyHEWwGlMYspj023yHNvbBxHXX7IB+sS3FW4jv5KR9b3WKwv9V7sL8IrR0Pi8tV6QlSpEbeT398w/L0WoV1cF8Ou5IyP/XJK+GJhcpLont5UjskP+847monD139LT4+5fCM3SXG7QDJkOBfJGE4WWlGyA7QpMoR4KL/
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7997.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(4143699003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VFFQcTZ0QUN4cmk2ak5oMW4wSHRHRnhPZTNwNE9tbUlPTmZKZGdPSkY4MG1l?=
- =?utf-8?B?RW5ZNnBwNWpCQmdUNk15NFhxMG1GRHUyQ1pFdkIyNG15dUthRWg1aXIxYzVY?=
- =?utf-8?B?MC9pY0xUc2hBN1k1cU5vUm45cDlaUHBrUVFnTi9wcUhOM1cwQ1ovTFJiREZB?=
- =?utf-8?B?eE9ZMmJOMWVIN3BWak5ncFF6YlB1WnN3ZndkeTRzcGUzcVM1Rmwralhib1Br?=
- =?utf-8?B?M1BHRFAwWWdoMGFxc3FBYXRBZFNaVGs3b0pMMmtWeUxFOXYrWDRZWnp6OWc1?=
- =?utf-8?B?czVoaHdaanYwUk81OU9WNnkwQTY3MWRnZ2Rkb1EvUFJHWU5DSks2TjZOQnox?=
- =?utf-8?B?N0ZWMFdLb3dLbUNOM1RLazVzZnNIRW1PeGJ0RE1VbU83eGJSRit2cmtDRS9l?=
- =?utf-8?B?M1hmUjVweHg3SUMzM3lJRUpYVWpOZ2VZUUM3b1M2MGpvT2RjelMvckxjRUlT?=
- =?utf-8?B?aWo1RmQwam8xOEE1SWVadzBLVHFQNi9mVEtrd1lRam5TVVlMeldSNnAwNjBD?=
- =?utf-8?B?Z1FHRDZrMmN6eXhPWG8zNkkyR3crQ2huRXRwZjlGYVIzaENCZDhoUHg3RVVz?=
- =?utf-8?B?VTBvWlNPZzZYWEEyUDRtdkhKQnRaVjhQZzByN3ZXVlJjR05tSEtOOGJIWmcr?=
- =?utf-8?B?QTBOQU1LUU9aSk1zSFBrYlBvQllieXFkYlNwZE4xc041SVREeFU5ckhxNFc4?=
- =?utf-8?B?dTh0SCsvbGowcHNGZ0V2SmpvSVZwY1ROK3A2QUhQWC8zY3l1OFF3dGJHNkE2?=
- =?utf-8?B?N2tRcnJpdFNxUGc0V0JmYVpoRXlxL3FOODAxTkxCdUk3NXlRcmlhdXh3VVpY?=
- =?utf-8?B?T2lFQVQzd1hxbzM2RTIxVTZhQ3lCbVNIRmZld2kyM1V5VWRjRURjakJmWFEw?=
- =?utf-8?B?VTBUM0RkRGpaOStkcnN6UGp1dHlQRUNFajJPNU1TMHBrdUdreE1QUlp4K0Iw?=
- =?utf-8?B?TlRpNUZxVjZFL0RQalcwMjdTRlNZdWZTbU85WVlVQlZiVHAxdmRaOGJ6Q1Jl?=
- =?utf-8?B?eWc0N2dPZWtnRHM3ZWQwQ2lZb3p2QTdIc1NrS2VkQVdUYVdUUWlCcmhNTzdJ?=
- =?utf-8?B?SHVIVVV3azA1RGtjajVYMnVTWWIrQVcyRUttWXJnL0s2N3pxcmtaTmVpNlpB?=
- =?utf-8?B?aGczbEtHanJpc1NDckdNb0w4K2hyS3VpM1U4UjBPck5mV3Nib0pTd3Q1YUdm?=
- =?utf-8?B?UHNyQm1EQ3o2ZWdRaFIxM1d4Zm5NS3p2a004S3NnUnRWR2srWitIMzdOV1c4?=
- =?utf-8?B?V3Y0Qm15aU1BMVl4UkpLUW5FTERCaUozV0ZLRkppdlc2YXRZYXVEWmJ2K0tz?=
- =?utf-8?B?eHU2TEhtdU5RQ2J5SHA2bXB3RXoxTlRONG15akRJYloxUHpycTJXNXZHOFRT?=
- =?utf-8?B?K2V6VmUyYXJUY1JkM0RLMG11bS9OemJ5ZlFBc2dDL0h2bitYMDg1QmJmOEV6?=
- =?utf-8?B?VzM4M1pBdzVrYi94ZjJNZzZjbHR2V0tBNDZLbHRLSyt4VnVXT01jQTlFbkdy?=
- =?utf-8?B?QlhoVG9Gb1lXMEdPUEllbjRTV3lVc3VXamNESXg0a2c3dVY0d0VIWjV0OXpX?=
- =?utf-8?B?WndkY0IyVEZHQU15Si9leCtRN0hNL09lQlVWMldRdzliVGYzYVo3anlubExR?=
- =?utf-8?B?N3JZcGl0d1YyR0V1c3paSk92ZFJVMWRnUkx1NUNzZGIzQk13Skp3TlFZeUFh?=
- =?utf-8?B?NUVLTDM1emJCb1UyQmFQVDVKMzdEVFpvcVQ2QjhPYUtMU3lmN044WFh1MWts?=
- =?utf-8?B?d0tZRGtrdXNFcnV2S29XQlhLaC9NaVJpL3FTdEZ3ZE90ZkJwd3lJb2xQSGJq?=
- =?utf-8?B?V3draUM3R011Y0NXb2xiOGhzUUFZR2EyRXZXaGJqQmwwU0x1UXRZODZSeDJa?=
- =?utf-8?B?M2hjYk4reDUzRUkxdEIvUUpJMXpWWFBYMUk5TDU5cmltaGtDdjEwdFQ1TllQ?=
- =?utf-8?B?a3lhZ0pvQ0hHeDIveUovTkk5T3k4Y1ZMMEhQVk9QbFBnRmhNWS9jcS85cG5R?=
- =?utf-8?B?N2lUKytOS25lYmhNMkhQUjhuL1VPMjhab1dxK0x2YmdHZ0lEYVhwKzR1ZnJW?=
- =?utf-8?B?ekpmNG9xYW5DbldmN25FQllReG5RTnQ3VFBrR1JBbG03eUc5ZWpIKzNrQkc3?=
- =?utf-8?B?dHNDRTNwalFmb2RhYzU1M0dpZ0k2akhiUWxaMmNJQUM5Nyt2NENyUmNzRGlL?=
- =?utf-8?B?aUZRU2dQZEkxVS9XYVhRcGpuRHBtMlp4NU5iY1Q0clZTLzFhL0dQR0FtQXlw?=
- =?utf-8?B?cDduazQ5VVBPYnFqQm1Ick8ySGE5V2xPS2V6Rk5pWDdGanowUGRYNGc3YWNz?=
- =?utf-8?B?UktSam52UDRkZlFoT0dweDIrcUlIL2tlNWZaY1c4bmNEMVlGS1R1QT09?=
-X-Exchange-RoutingPolicyChecked: SxrtGRz3+OevIXMc1XAK+kUEwMqZc8uRrcMrExIGJm7Lpt6bNqML9JNc50kzXcmqYBxwD+lgI5Y04bD8aHmohSjgkBgvwhX4FAD+lIkIggK41OkgLZTZvpPioRFz8aOn75h179u6jJyfBOhnSbJ/E+0vT4CV/UCFUqlHNepif+Ee2xM9DqNzt5C6syrJwMSeU8OVF7mN8Gdgo61QFyCMAjJrRriGfL6WcCMEppL3snYnbputxQwEdrWxbDPTPNnbtcyr4vdqY4+yDeEijbb1lW9vGOaXy45AACdguxUClV8BDxpNrY4sjOcLRh2ZLLAbYj1PGEcNHFMcDLc2eTcuHQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 28ec1264-5fb0-46b8-7c69-08debc13dad8
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7997.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 17:17:39.6584
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8U2ZtcXXwO8Bc3HceTdCCsph0YnwJptASZVwOdvdDNL4YNqUr6+28LHbMzMWQO50UynOPpGexZ1aujw1Vy4qCw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4723
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org
+Cc: "H . Peter Anvin" <hpa@zytor.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Kai Huang <kai.huang@intel.com>, Sean Christopherson <seanjc@google.com>,
+ Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, stable@vger.kernel.org
+References: <20260527120544.2903923-1-kas@kernel.org>
+ <20260527120544.2903923-3-kas@kernel.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260527120544.2903923-3-kas@kernel.org>
 
-On 5/27/2026 12:11 AM, Xu Yilun wrote:
+This is a multi-part message in MIME format.
+--------------qh7EUZpxDlywN8WehcLGDAQL
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
->>> +struct tdx_sys_info_ext {
->>> +	u16 memory_pool_required_pages;
->>> +	u8 ext_required;
->>
->> The name ext_required seems like a boolean. It is also used like a
->> boolean later.
->> 	if (!tdx_sysinfo.ext.ext_required)
->> 		return 0;
->>
->> But, IIUC, is it actually a mask that lists any feature that needs
-> 
-> No it is just a bool about Extentions needs to be initialized or not.
-> 
-How does the kernel know which features need Extensions? Is there any
-hardware enumeration or the kernel just keeps a static list?
+On 5/27/26 05:05, Kiryl Shutsemau (Meta) wrote:
+...
+> -	/* Update part of the register affected by the emulated instruction */
+> -	regs->ax &= ~mask;
+> +	/*
+> +	 * IN writes the result into a sub-register of RAX. Only the
+> +	 * 32-bit form zero-extends; the smaller forms leave the upper
+> +	 * bits untouched:
+> +	 *
+> +	 *   insn  dest  size  bits written     bits preserved
+> +	 *   inb   AL    1     RAX[ 7: 0]       RAX[63: 8]
+> +	 *   inw   AX    2     RAX[15: 0]       RAX[63:16]
+> +	 *   inl   EAX   4     RAX[63: 0]       (none, zero-extended)
+> +	 *
+> +	 * 'mask' only covers the low 'size' bytes, which is exactly the
+> +	 * range affected for size 1 and 2. For size 4 the write also
+> +	 * clears RAX[63:32], so widen the clear-mask.
+> +	 */
+> +	if (size == 4)
+> +		regs->ax = 0;
+> +	else
+> +		regs->ax &= ~mask;
+> +
+
+Is there any way we could do this with fewer comments and more code?
+
+I mean, there's only three cases. Why have;
+
+	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
+
+When there are only 3 possible cases:
+
+	1 => 0xf
+	2 => 0xff
+	4 => 0xffff
+
+and one of those cases needs a special case on top of it.
+
+Maybe something like this?
+
+	/* Clear out part of RAX so part of args.r11 can be OR'd in: */
+	switch (size) {
+	case 1:
+		/* inb consumes lower 8 bits of r11: */
+		regs->ax &= ~GENMASK_ULL(7, 0);
+		args.r11 &=  GENMASK_ULL(7, 0);
+		break;
+	case 2:
+		/* inw consumes lower 16 bits of r11: */
+		regs->ax &= ~GENMASK_ULL(15, 0);
+		args.r11 &=  GENMASK_ULL(15, 0);
+		break;
+	case 4:
+		/* inl is weird and zeros the whole register: */
+		regs->ax &= ~GENMASK_ULL(63, 0);
+		/* But only consumes 32-bits from r11: */
+		args.r11 &=  GENMASK_ULL(31, 0);
+		break;
+	default:
+		/* Probable TDX module bug. Illegal in[bwl] size: */
+		WARN_ON_ONCE(1);
+		success = 0;
+	}
+
+	if (success)
+		regs->ax |= args.r11;
+
+It might need a temporary variable for args.r11, but you get the point.
+That's basically the data from the comment but written as code.
+--------------qh7EUZpxDlywN8WehcLGDAQL
+Content-Type: text/x-patch; charset=UTF-8; name="tdxinX.patch"
+Content-Disposition: attachment; filename="tdxinX.patch"
+Content-Transfer-Encoding: base64
+
+IHRkeC5jIHwgICAyOSArKysrKysrKysrKysrKysrKysrKysrKysrKysrLQogMSBmaWxlIGNo
+YW5nZWQsIDI4IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkK
+
+--------------qh7EUZpxDlywN8WehcLGDAQL--
