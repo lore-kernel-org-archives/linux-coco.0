@@ -1,233 +1,176 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EE03FC5DA;
-	Wed, 27 May 2026 15:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370783D525E;
+	Wed, 27 May 2026 15:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779895299; cv=none; b=ikJbhBrSz8Lk1IdWhbyS9dsTXy2mBCbNoGhn9+dELXlRQjA8QpV7OgON+fZpg4QJDmXMKOdwPlBL7Rfgc6/ob1j7GEljs98UossO0HoCswmdW8HT32D4BEyOyIeLeRrw+/D9OrqZJDIotAghuqgSxn6WZJXqO3tQZhg7V0DpZGU=
+	t=1779896090; cv=none; b=qovODJWy3a3W0pzpg14QErV+lgsJ4d8ZanwmzT+gozn2oESU2WjoyVP4yyu/a5AyK60p9fSzAyNqtWMZUQbReNFcjSVjwYMSmbq6fXSKidS7YGpYnGsOSmiuBytPnIARPK/cKNn/4ZfcXbA4zplq8S4oPwB6JO4ofCLGqH4cB4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779895299; c=relaxed/simple;
-	bh=tE2TU4DTN8usCHQHsX7JSxdcw9nunKjlogE83etYDEs=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TgRGVqTLGeRZnMEANynJUdF2x1z/ZZGHjnb48I8jCU+Sk+YiW7XpFVqFY6W6YamJ+2UHnr2leLO4p8WwvSfOnCheon1PyatJxGuRaketsPxaG+ew0J+oNbDQpbzs06iMcZUKGCLED0t5iQdPkg3Lf6QVsVmge6fVd+3cGHaJR1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bqKm/KIx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779896090; c=relaxed/simple;
+	bh=eYVYYSuFVGmwCEA1eQW+wxuiUuETdO6GAvZY6GYSRBI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=uPqoXveINm6y5XotvW9ckVkSsVBf/LSfJKlSy7HY4I8DfXeW/eO1F2Z0AMyvCSU7zvz0JiFd0X7U4WTQpLKifZQF+6j1YHtikido+4xjLkvmtvVgQHSO1gnCssDr7TKtmxQEQWVUKHHCAMp4ajJyDP+WwMBDSWrA/ofGR0Lt+CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cRPgykzH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bqKm/KIx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3C11F000E9;
-	Wed, 27 May 2026 15:21:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cRPgykzH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF14D1F000E9;
+	Wed, 27 May 2026 15:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779895295;
-	bh=zfzKYqdLKqLou2xyyPcBQZmXad6Js16rghPX85JNlC8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=bqKm/KIx9SZiNFvg+rRpM9FW+apfluy74behCm+gNm7zPh7TFNXNfkZcXFxlFkUXR
-	 75HJ325gNQJZ3eAVBm06XNdT8uXEB5lo5l2yZMiAJhfqKU9jiqvn1S2mECrepBDhHC
-	 QFdJee5SKkaZ6Htu401Go8q+AP0zROI8I94tc4MTUoD8brfWJrjzkVetrh52AHHaqS
-	 4e5uGQ5LFWCoFKYw7idtizfjriz5gVd2E/MVjBTFKsunebdNF0tWw7mbnDuzkWPAHn
-	 0cohXt53o9ybwk6hc0rS00bSwBp+8dMNOroAMfW1ENaVFhYu1QzSUb6Qbc2lVq0jB9
-	 /syB2Qilfkk1A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wSG4b-00000006jaR-1Cqt;
-	Wed, 27 May 2026 15:21:33 +0000
-Date: Wed, 27 May 2026 16:21:32 +0100
-Message-ID: <86jysovpxf.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	s=k20260515; t=1779896086;
+	bh=Qxk8LHEih46ikb9+5L8RXjEX9FaNqLHHuYYo/bGlo+Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=cRPgykzHCaDaqPzIDLPcbYrF2yAeUbZQs/LCNaCCcaTYYXFUr8NOYjCZYJttqRqoH
+	 WgIDMzJMOfjtDQn5VA2Y4ylF19CJ26VwyK4P6zIfeku4eibJ43A/b/6S6Df7m9slJQ
+	 dX8f3VVU6JpNGGdPJ9bF0ykKlEm7GwC39FeY6xH+Ik7sIxZqmnf0PjOz3Fini74040
+	 yu+P78KT19LV/gZK0h08q4Qt/S4NO3AzAaUWGvOSXjvY1bipzp+CkcPdudfCa+MQn8
+	 +S1VEaH4rLtMfpGnzAK/qlNr43ILziLgY67YfRoMKwn7F12Sa9BFgQGMUmEw1UnSO3
+	 +BlfMwjxvqJ+Q==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: "Dan Williams (nvidia)" <djbw@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: Bjorn Helgaas <helgaas@kernel.org>,
+	Dan Williams <djbw@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
 	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo.Pieralisi2@arm.com
-Subject: Re: [PATCH v14 13/44] arm64: RMI: Define the user ABI
-In-Reply-To: <20260513131757.116630-14-steven.price@arm.com>
-References: <20260513131757.116630-1-steven.price@arm.com>
-	<20260513131757.116630-14-steven.price@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tony Krowiak <akrowiak@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Jason Herne <jjherne@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v5 5/5] iommufd/vdevice: add TSM request ioctl
+In-Reply-To: <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch>
+References: <20260525154816.1029642-1-aneesh.kumar@kernel.org>
+ <20260525154816.1029642-6-aneesh.kumar@kernel.org>
+ <becd865d-09a4-4ac3-b719-4a0deae2692a@amd.com>
+ <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch>
+Date: Wed, 27 May 2026 21:04:29 +0530
+Message-ID: <yq5apl2gsw6y.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Wed, 13 May 2026 14:17:21 +0100,
-Steven Price <steven.price@arm.com> wrote:
-> 
-> There is one CAP which identified the presence of CCA, and one ioctl.
-> The ioctl is used to populate memory during creation of the realm as
-> this requires the RMM to copy data from an unprotected address to the
-> protected memory - CCA does not support memory conversion where the
-> memory contents is preserved as this is incompatible with memory
-> encryption.
+"Dan Williams (nvidia)" <djbw@kernel.org> writes:
+
+> Alexey Kardashevskiy wrote:
+>> 
+>> 
+>> On 26/5/26 01:48, Aneesh Kumar K.V (Arm) wrote:
+>> > Add IOMMU_VDEVICE_TSM_REQUEST for issuing TSM guest request/response
+>> > transactions against an iommufd vdevice.
+>> > 
+>> > The ioctl takes a vdevice_id plus request/response user buffers and length
+>> > fields, and forwards the request through tsm_guest_req() to the PCI TSM
+>> > backend. This provides the host-side passthrough path used by CoCo guests
+>> > for TSM device attestation and acceptance flows after the device has been
+>> > bound to TSM.
+>> > 
+>> > Also add the supporting tsm_guest_req() helper and associated TSM core
+>> > interface definitions.
+>> > 
+>> > Based on changes from: Alexey Kardashevskiy <aik@amd.com>
+>> > 
+>> > Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+>> > ---
+>> >   drivers/iommu/iommufd/iommufd_private.h |  6 ++
+>> >   drivers/iommu/iommufd/main.c            |  3 +
+>> >   drivers/iommu/iommufd/tsm.c             | 68 +++++++++++++++++++++
+>> >   drivers/virt/coco/tsm-core.c            | 39 ++++++++++++
+>> >   include/linux/pci-tsm.h                 |  9 +--
+>> >   include/linux/tsm.h                     | 25 ++++++++
+>> >   include/uapi/linux/iommufd.h            | 80 +++++++++++++++++++++++++
+>> >   7 files changed, 226 insertions(+), 4 deletions(-)
+> [..]
+>> > diff --git a/drivers/iommu/iommufd/tsm.c b/drivers/iommu/iommufd/tsm.c
+>> > index 09ee668dbed9..342fbdb6a6b9 100644
+>> > --- a/drivers/iommu/iommufd/tsm.c
+>> > +++ b/drivers/iommu/iommufd/tsm.c
+>> > @@ -60,3 +60,71 @@ int iommufd_vdevice_tsm_op_ioctl(struct iommufd_ucmd *ucmd)
+>> >   	iommufd_put_object(ucmd->ictx, &vdev->obj);
+>> >   	return rc;
+>> >   }
+>> > +
+>> > +static bool iommufd_vdevice_tsm_req_scope_valid(u32 scope)
+>> > +{
+>> > +	if (scope > IOMMU_VDEVICE_TSM_REQ_SCOPE_PCI_LAST)
+>> > +		return false;
+>> > +
+>> > +	switch (scope) {
+>> > +	case IOMMU_VDEVICE_TSM_REQ_PCI_INFO:
+>> > +	case IOMMU_VDEVICE_TSM_REQ_PCI_STATE_CHANGE:
+>> > +	case IOMMU_VDEVICE_TSM_REQ_PCI_DEBUG_READ:
+>> > +	case IOMMU_VDEVICE_TSM_REQ_PCI_DEBUG_WRITE:
+>> 
+>> This scope thing still needs clarification.
+>> 
+>> I have 3 types of requests to fit here, all go via VM -> KVM -> QEMU -> IOMMUFD -> TSM.
+>> 
+>> 1) bind/unbind TDI <- moves to CONFIG_LOCKED, this is "OP";
+>> 2) start/stop TDI <- moves to RUN, this is "GR"? Right now I route it via "OP";
+>> 3) enable/disable MMIO/DMA <- no TDI state change, this is "GR" but which scope is it here?
 >
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v13:
->  * KVM_ARM_VCPU_RMI_PSCI_COMPLETE removed.
->  * KVM_ARM_RMI_POPULATE documentation updated to reflect that the
->    structure is written by the kernel.
->  * CAP number bumped.
-> Changes since v12:
->  * Change KVM_ARM_RMI_POPULATE to update the structure with the amount
->    that has been progressed rather than return the number of bytes
->    populated.
->  * Describe the flag KVM_ARM_RMI_POPULATE_FLAGS_MEASURE.
->  * CAP number is bumped.
->  * NOTE: The PSCI ioctl may be removed in a future spec release.
-> Changes since v11:
->  * Completely reworked to be more implicit. Rather than having explicit
->    CAP operations to progress the realm construction these operations
->    are done when needed (on populating and on first vCPU run).
->  * Populate and PSCI complete are promoted to proper ioctls.
-> Changes since v10:
->  * Rename symbols from RME to RMI.
-> Changes since v9:
->  * Improvements to documentation.
->  * Bump the magic number for KVM_CAP_ARM_RME to avoid conflicts.
-> Changes since v8:
->  * Minor improvements to documentation following review.
->  * Bump the magic numbers to avoid conflicts.
-> Changes since v7:
->  * Add documentation of new ioctls
->  * Bump the magic numbers to avoid conflicts
-> Changes since v6:
->  * Rename some of the symbols to make their usage clearer and avoid
->    repetition.
-> Changes from v5:
->  * Actually expose the new VCPU capability (KVM_ARM_VCPU_REC) by bumping
->    KVM_VCPU_MAX_FEATURES - note this also exposes KVM_ARM_VCPU_HAS_EL2!
-> ---
->  Documentation/virt/kvm/api.rst | 40 ++++++++++++++++++++++++++++++++++
->  include/uapi/linux/kvm.h       | 13 +++++++++++
->  2 files changed, 53 insertions(+)
-
-$SUBJECT looks wrong. This is a KVM change, not an RMI change.
-
+> The scope parameter was meant to enumerate a security model for classes
+> of commands that are otherwise opaque to the kernel. However, none of
+> the commands we are targeting are opaque (private specification with
+> unknown effect). It now turns out there is no role for @scope for
+> security.
 >
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index 52bbbb553ce1..ca68aae7faa2 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -6553,6 +6553,37 @@ KVM_S390_KEYOP_SSKE
->    Sets the storage key for the guest address ``guest_addr`` to the key
->    specified in ``key``, returning the previous value in ``key``.
->  
-> +4.145 KVM_ARM_RMI_POPULATE
-> +--------------------------
-> +
-> +:Capability: KVM_CAP_ARM_RMI
-> +:Architectures: arm64
-> +:Type: vm ioctl
-> +:Parameters: struct kvm_arm_rmi_populate (in/out)
-> +:Returns: 0 on success, < 0 on error
-> +
-> +::
-> +
-> +  struct kvm_arm_rmi_populate {
-> +	__u64 base;
-> +	__u64 size;
-> +	__u64 source_uaddr;
-> +	__u32 flags;
-> +	__u32 reserved;
-> +  };
-> +
-> +Populate a region of protected address space by copying the data from the
-> +(non-protected) user space pointer provided into a protected region (backed by
-> +guestmem_fd). It implicitly sets the destination region to RIPAS RAM. This is
-> +only valid before any VCPUs have been run. The ioctl might not populate the
-> +entire region and in this case the kernel updates the fields `base`, `size` and
-> +`source_uaddr`. User space may have to repeatedly call it until `size` is 0 to
-> +populate the entire region.
-> +
-> +`flags` can be set to `KVM_ARM_RMI_POPULATE_FLAGS_MEASURE` to request that the
-> +populated data is hashed and added to the guest's Realm Initial Measurement
-> +(RIM).
+> Now a command family that iommufd can validate seems useful. As it
+> stands this implementation aliases command codes across TSMs. Do we
+> proceed with creating an actual shared command uapi for the truly shared
+> commands:
+>
+> TSM_REQ_TYPE_DEFAULT: Commands every arch needs
+> TSM_REQ_READ_OBJECT
+> TSM_REQ_REGEN_OBJECT
+> TSM_REQ_OBJECT_INFO
+> TSM_REQ_VALIDATE_MMIO
+> TSM_REQ_SET_TDI_STATE
+>
+> TSM_REQ_TYPE_SEV: Commands only SEV needs
+> TSM_REQ_SEV_ENABLE_DMA
+> TSM_REQ_SEV_DISABLE_DMA
+>
+> ...or just observe that per CC arch commands are needed to setup the VM
+> so per CC arch commands are needed to marshal device assignment support
+> requests.
+>
+> In that case pci_tsm_req_scope becomes tsm_req_type and is just:
+>
+> TSM_REQ_TYPE_CCA
+> TSM_REQ_TYPE_SEV
+> TSM_REQ_TYPE_TDX
+>
+> I am leaning towards the latter at this point.
 
-Where is that measurement stored? And retrieved? At least a pointer to
-that would help.
+But we already have struct pci_tsm_ops::guest_req, which is specific to
+the underlying CC architecture. From the above, pci_tsm_req_scope also
+appears to carry the same information. Is that useful?
 
-> +
->  .. _kvm_run:
->  
->  5. The kvm_run structure
-> @@ -8904,6 +8935,15 @@ helpful if user space wants to emulate instructions which are not
->  This capability can be enabled dynamically even if VCPUs were already
->  created and are running.
->  
-> +7.47 KVM_CAP_ARM_RMI
-> +--------------------
-> +
-> +:Architectures: arm64
-> +:Target: VM
-> +:Parameters: None
-> +
-> +This capability indicates that support for CCA realms is available.
-> +
->  8. Other capabilities.
->  ======================
->  
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index 6c8afa2047bf..b8cff0938041 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -996,6 +996,7 @@ struct kvm_enable_cap {
->  #define KVM_CAP_S390_USER_OPEREXEC 246
->  #define KVM_CAP_S390_KEYOP 247
->  #define KVM_CAP_S390_VSIE_ESAMODE 248
-> +#define KVM_CAP_ARM_RMI 249
->  
->  struct kvm_irq_routing_irqchip {
->  	__u32 irqchip;
-> @@ -1669,4 +1670,16 @@ struct kvm_pre_fault_memory {
->  	__u64 padding[5];
->  };
->  
-> +/* Available with KVM_CAP_ARM_RMI, only for VMs with KVM_VM_TYPE_ARM_REALM */
-> +#define KVM_ARM_RMI_POPULATE	_IOWR(KVMIO, 0xd7, struct kvm_arm_rmi_populate)
-> +#define KVM_ARM_RMI_POPULATE_FLAGS_MEASURE	(1 << 0)
-> +
-> +struct kvm_arm_rmi_populate {
-> +	__u64 base;
-> +	__u64 size;
-> +	__u64 source_uaddr;
-> +	__u32 flags;
-> +	__u32 reserved;
-> +};
-> +
->  #endif /* __LINUX_KVM_H */
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+-aneesh
