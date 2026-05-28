@@ -1,163 +1,190 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192BD72622
-	for <linux-coco@lists.linux.dev>; Thu, 28 May 2026 00:44:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027442F49FD
+	for <linux-coco@lists.linux.dev>; Thu, 28 May 2026 04:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779929080; cv=none; b=HZh4j86GzsFGaqa8YL0Jgtp9xIZzygWoGay0f7DroIlwJilvQNTqKfZrw0HxyGf1pNZvBhrh0oxaMfTwFXcsKFE3mu8gAP5Mh9d6dw2RVlym/sJV70aUXUWTs8Wra7aqb4CfZ3KUsU8kDTa/hjzpvEp8nLc6YPHdmtzCSKvK4No=
+	t=1779941265; cv=none; b=phPnbUXknDroLfV1N84pDxNm2sNOpQ8SQ7JI7y2MJCdxfk6cUsUQuq4+H7cl5N7qys8RMsw9nBIVgUYttT8GuWbzpu2+MpmD3EftCAx6ClQg9K+IGjM60E4IlV/oBuogS0xjvFuqzEWPsvnRF49hnXiFqZIAYIt6EBGiqs+sqjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779929080; c=relaxed/simple;
-	bh=bDTrfEuwom6i5MThXI5R1UwEnTXDV0vKQACpDJnvGh8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AiSAct87iI1z73DH1qBTGhr5wqeDpKwY0nDhHGidIaS3Q2Mcj7R/F44kAUGYedFuFG2wm0QQqwmt+z34r3UR7PMGH9Yj2BhUbKFe+6lORG52VNioMxAHUTXy1SKdkgrf+Py1UUKt15b+F2rxMa588PvEBu6ztjWcbntifUrXvHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=OrncL6jv; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1779941265; c=relaxed/simple;
+	bh=cU9MrMDCM5kbfai4cHhsGBkpS8gyY3/6wYuHRs6bx2w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KZ4LJL9M9p+ppNDJbHAVMzfq6kf8l8FhbkG0Zb5o+XTEP8YttavJ7V3Vw5Jwymrr+TNQH7r4EzB3Oo8KsD8JFWZeB51amK98jlfBiCMNVvzYz2c40d2V50H1lSobBnhtOKoLsIAu1r8zhiOg0i7EIYciEc4ib7IDTju1LDuaWoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ISMa+96Z; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="OrncL6jv"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 38FC440E01A1;
-	Thu, 28 May 2026 00:44:35 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id KR4e47BzWvud; Thu, 28 May 2026 00:44:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1779929065; bh=AaWMBYTf75iaPkQ8SFSigt2tHVLgPRWYvQ0dA7Bz0YA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OrncL6jvU2vsKhSsUwU7nlF7luLIEvDiLKsrYxqPzQg2zwqBwjGUdRPg+/kPProId
-	 hN+5WEsnYO1eqnVnKgrEt/zJkiTQ5BbBhQXG17u+eXAzZ3hjvAvOYGsuVoxCuX77Q7
-	 EIJr5y1/o+mprpbqNY5vBu4dOVw5Kx561JDaTabvTNGWdc5Iba/e8DkUQ91INeirVg
-	 QTxGVGbx1HsuI58iq/5Rj5cqMQv2eI4W1spJvpm+yAKMaIKgQtniAAZhGeAvPToP/b
-	 71QBH0qRdpfQl0xtxjO6izjnivOC2yTD7tNTjKCUFxHfWGQZ4O+fI2sGe2Udc6zAvS
-	 3lanrSpvvQtZENPj+ASpudqGY1XLfGFc+xyIqWoS3XARVqgXfwZ7nHkqWBxXupKbtZ
-	 pmj2Q4zvTQyDvBSRxNiEBWDMHUR//l4GnF5DQ25q+wvm0JDFLo/GRF2bWjvibadahv
-	 bQGt78AhbbbJ8GVhH2xSjCqjQ6cmijfWyu7rTgVeJFVW7kUF9rcJnX+XAXsX+JGlU3
-	 VKoMJaB9zi1SNMAV8wh/o+cjrDYo53hcWJYinGqaH2KvUR7tclHjI6h0NvNGYHx51E
-	 Nmn8yCL4FUwNa3Y8Hq0wGaeEaeHFzg8+bQWUVIfr503YE3uwDYEJTCyTMC4spgYqNd
-	 vfzCDnbZC6zeUwCM+mkcppbA=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00:b8a3:f58e:8829:9ca6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0928340E0031;
-	Thu, 28 May 2026 00:43:49 +0000 (UTC)
-Date: Wed, 27 May 2026 17:43:32 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	john.allen@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v5 2/7] x86/msr: add wrmsrq_on_cpus helper
-Message-ID: <20260528004332.GDahePtGqVp2boiEJL@fat_crate.local>
-References: <cover.1779133590.git.ashish.kalra@amd.com>
- <c9fe5c2fef063f5006cc9bfa03eec824ac015db7.1779133590.git.ashish.kalra@amd.com>
- <20260527210603.GCahdcu8zvVjfKfGEL@fat_crate.local>
- <eea0497f-6930-43e3-947d-dae139e657ad@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ISMa+96Z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779941262;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1I8KzNpXq63WE4CP85HoO7zZcc0AvIs01nVPYeq3DW0=;
+	b=ISMa+96ZeHZUdBNli90Ih7fKFQCb4SszJ8p6hebdcQ42XBqfiaY6gR2TfUBOqgIL8cCZAT
+	XBNuE4mMYKEDPFJNirGqmpuVbi8t+YFPjveB1uczM1drhjwbgFOY/b1vEzBe82aw/0cPF6
+	F3r6lKPzkM0FUFrbi7OdsYioh432xTM=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-138-nbG1R-jVOXOR0iuS2A39Kw-1; Thu, 28 May 2026 00:07:40 -0400
+X-MC-Unique: nbG1R-jVOXOR0iuS2A39Kw-1
+X-Mimecast-MFC-AGG-ID: nbG1R-jVOXOR0iuS2A39Kw_1779941259
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-835423c69ffso6542180b3a.1
+        for <linux-coco@lists.linux.dev>; Wed, 27 May 2026 21:07:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779941259; x=1780546059;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1I8KzNpXq63WE4CP85HoO7zZcc0AvIs01nVPYeq3DW0=;
+        b=Fl2BArKdA5cQbMcDMkhC7G3qWQufQ6yC7RzEI5TczrcJJLK+0dRKQdVyG55/LuVpAb
+         7okaIEMPYHG28pmt+6If7xpKD8wQQ2p5i+39nYAIWtkIerIdlN6FBHpdm11KI4AvhGGZ
+         jI3tL8D2D2jJ1km5rndvaUXKjYXo1+R2PeoFj/Eb/fckUgT++xJfVyXDrzIaAzOucBEq
+         Gf/m+DyAFm89QJVx7Sa8Sm3b27EIO5Ae3A370DOuajhFzpJjTRiMgEsoiBoLuwST2gY8
+         4gjqiyCbTQt3wSqobwziGsfo7/e34KyPOKdU4U6XSIpcjUfnlMyjPRH94GPCnFaiTqZj
+         A83g==
+X-Forwarded-Encrypted: i=1; AFNElJ/5+zaiw6nEcMU//+Zai6Qz2XWYcvu2H0B+b7MIpV7WGVwkF4CLIOWNljR7MtdzTBM0Rq2l2nBP2DyQ@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxig6gvyJJHz5e4TTqDECQMSCbRjulRXPdb5x/8n29Mp7FDTVCU
+	w1Shlud9fRXFf3dvnq3Yf0G1cCqGLNHifESDPqtRESUmXNM/95PF9piYB3AaLY41auLLKbqXq6x
+	Dm5w1Vn+iddVkR6ZewyJTGF6HsMa7jwAGs/+2dUhHnXtxQcSHNJKWtZHk3hc4WLE=
+X-Gm-Gg: Acq92OEc1X2gMroL+sOvp7OrXzMsSSNt1EPGpRVPvfoNA9uR9QL0HG5d/9Q3FHb4fWK
+	OQP6BUkSY3LzN8agNHVfJxAnQocVV8u6iFJ0CdzVB07XAxPy3TCTNK6EUiEGwIQIZ/kJDM0J1KL
+	2I1dn+bgkgpJoEpKItKvOQI0nH0RXvV/IMU76Q6TmHLN5HE3g7x1MxN1C7nL8586yJGZ4LL7+a5
+	ZN+F/jUuvRgcQyvGqn0g2XU4oaE2ZJ3x4t8Undk/qVCNs/KxUlr2yZH8bN3lyjzbMJ5cpGAgFgy
+	Fw898rJI4S1dftwNPS3flObkiPFZ8xkE8BpASE1AamRYwW7JO8hbE8oSgrEF9aKvaGXXi3W3x2b
+	x2xvHXgWZvtAEDzQe4ff3GZDzF1AVpWakGSgQxSTt2FoIc6iVYkH2DfQ8U7G6+PjD6d6OzcRx3A
+	I=
+X-Received: by 2002:a05:6a00:194f:b0:837:acd7:a78 with SMTP id d2e1a72fcca58-8415f329ac5mr24016484b3a.16.1779941259199;
+        Wed, 27 May 2026 21:07:39 -0700 (PDT)
+X-Received: by 2002:a05:6a00:194f:b0:837:acd7:a78 with SMTP id d2e1a72fcca58-8415f329ac5mr24016447b3a.16.1779941258714;
+        Wed, 27 May 2026 21:07:38 -0700 (PDT)
+Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841d7300ea4sm3790751b3a.56.2026.05.27.21.07.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 May 2026 21:07:37 -0700 (PDT)
+Message-ID: <5ea74b6a-a51a-415e-b53f-5ece9829dee8@redhat.com>
+Date: Thu, 28 May 2026 14:07:27 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <eea0497f-6930-43e3-947d-dae139e657ad@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 20/44] arm64: RMI: Support for the VGIC in realms
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-21-steven.price@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20260513131757.116630-21-steven.price@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: qOJIZ-bHyjW7dsHIyTGf4ZDUyxUE74W-fCEur2XhIyA_1779941259
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 27, 2026 at 02:38:05PM -0700, Dave Hansen wrote:
-> This one is my doing.
+Hi Steve,
 
-I know.
-
-But hey, maybe we should not disagree on the public ML because the submitter
-might disappear like the last one. :-P
-
-> wrmsr_on_cpus() is kinda a mess. I think it only has a single user. It's
-> also not very flexible because it needs a 'struct msr __percpu *msrs'
-> argument where each MSR has a value in memory.
-
-Right, we did that a looong time ago.
-
-The only reason I'd have for per-CPU MSR structs is reading different MSR
-values on different cores, modifying only the bits you need and then *keeping*
-the remaining values as they were. And that interface allows you to do that
-while this new thing won't.
-
-And I'm going to venture a guess here that adding a simpler interface which
-simply forces a new value ontop of a whole MSR could cause a lot of subtle
-bugs when people don't pay attention to keep the old values.
-
-> The use case for RMPOPT is that all CPUs get the same value. It'd be a
-> little awkward to go create a percpu data structure to duplcate the same
-> value to call wrmsr_on_cpus(). The RMPOPT case is also arguably
-> performance sensitive since it's done during boot. It should do the IPIs
-> in parallel.
-
-Oh sure, my meaning was to create something that serves both purposes.
-
-> toggle_ecc_err_reporting(), on the other hand, is done at module init
-> time. It's not really performance sensitive. It's probably pretty easy
-> to zap wrmsr_on_cpus() and just have toggle_ecc_err_reporting() do
-> something slightly less efficient.
-
-Sure. That's fine.
-
-> Yeah, the
+On 5/13/26 11:17 PM, Steven Price wrote:
+> The RMM provides emulation of a VGIC to the realm guest. With RMM v2.0
+> the registers are passed in the system registers so this works similar
+> to a normal guest, but kvm_arch_vcpu_put() need reordering to early out,
+> and realm guests don't support GICv2 even if the host does.
 > 
-> 	wrmsr_on_cpus()
-> 	wrmsrq_on_cpus()
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes from v12:
+>   * GIC registers are now passed in the system registers rather than via
+>     rec_entry/rec_exit which removes most of the changes.
+> Changes from v11:
+>   * Minor changes to align with the previous patches. Note that the VGIC
+>     handling will change with RMM v2.0.
+> Changes from v10:
+>   * Make sure we sync the VGIC v4 state, and only populate valid lrs from
+>     the list.
+> Changes from v9:
+>   * Copy gicv3_vmcr from the RMM at the same time as gicv3_hcr rather
+>     than having to handle that as a special case.
+> Changes from v8:
+>   * Propagate gicv3_hcr to from the RMM.
+> Changes from v5:
+>   * Handle RMM providing fewer GIC LRs than the hardware supports.
+> ---
+>   arch/arm64/kvm/arm.c            | 11 ++++++++---
+>   arch/arm64/kvm/vgic/vgic-init.c |  2 +-
+>   2 files changed, 9 insertions(+), 4 deletions(-)
 > 
-> naming pain is real. There's little chance of bugs coming from it
-> because the function signatures are *SO* different. But, it certainly
-> could confuse humans for a minute.
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 93d34762db91..21d9dfdb1ea0 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -786,19 +786,24 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+>   		kvm_call_hyp_nvhe(__pkvm_vcpu_put);
+>   	}
+>   
+> +	kvm_timer_vcpu_put(vcpu);
+> +	kvm_vgic_put(vcpu);
+> +
+> +	vcpu->cpu = -1;
+> +
+> +	if (vcpu_is_rec(vcpu))
+> +		return;
+> +
 
-Yap.
+For a REC, kvm_vcpu_{load, put}_debug() becomes unbalanced in kvm_arch_vcpu_{load, put}().
+kvm_vcpu_load_debug() is called in kvm_arch_vcpu_load(), but kvm_vcpu_put_debug() won't
+be called in kvm_arch_vcpu_put() after this whole series is applied.
 
-> But the real solution to this is axing wrmsr_on_cpus(). 
+>   	kvm_vcpu_put_debug(vcpu);
+>   	kvm_arch_vcpu_put_fp(vcpu);
+>   	if (has_vhe())
+>   		kvm_vcpu_put_vhe(vcpu);
+> -	kvm_timer_vcpu_put(vcpu);
+> -	kvm_vgic_put(vcpu);
+>   	kvm_vcpu_pmu_restore_host(vcpu);
+>   	if (vcpu_has_nv(vcpu))
+>   		kvm_vcpu_put_hw_mmu(vcpu);
+>   	kvm_arm_vmid_clear_active();
+>   
+>   	vcpu_clear_on_unsupported_cpu(vcpu);
+> -	vcpu->cpu = -1;
+>   }
+>   
+>   static void __kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
+> diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
+> index 933983bb2005..a9db963dfd23 100644
+> --- a/arch/arm64/kvm/vgic/vgic-init.c
+> +++ b/arch/arm64/kvm/vgic/vgic-init.c
+> @@ -81,7 +81,7 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
+>   	 * the proper checks already.
+>   	 */
+>   	if (type == KVM_DEV_TYPE_ARM_VGIC_V2 &&
+> -		!kvm_vgic_global_state.can_emulate_gicv2)
+> +	    (!kvm_vgic_global_state.can_emulate_gicv2 || kvm_is_realm(kvm)))
+>   		return -ENODEV;
+>   
+>   	/*
 
-Yap, for example. Basically reingeneering the whole
-write-MSRs-on-multiple-CPUs functionality is what I meant.
+Thanks,
+Gavin
 
-> Which I think we could do after killing its one user which the attached
-> (completely untested) patch does. The only downside of the patch is that it
-> does RDMSR via IPIs one CPU at a time. But, looking at the code, I'm not
-> sure anyone would care. If anyone did, I _think_ all those MSRs have the
-> same value and the code could be simplified further. But that would take
-> more than 3 minutes.
-> 
-> It's also possible that my grepping was bad or I'm completely
-> misunderstanding amd64_edac.c. Cluebat welcome if I'm being dense.
-
-Looks ok to me, we can surely do that. I even hw to test it. I think...
-
-> BTW, I also don't feel the need to make Ashish go do any of this edac
-> cleanup. I think it can just be done in parallel. But I wouldn't stop
-> him if he volunteered.
-
-Why not?
-
-It has always been the case: cleanups and bug fixes first, new features ontop.
-
-So yeah, modulo figuring out how to redefine the *msr_on_cpus() interface,
-I think this all makes sense.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
