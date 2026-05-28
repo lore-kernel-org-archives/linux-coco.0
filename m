@@ -1,66 +1,50 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3360040961A
-	for <linux-coco@lists.linux.dev>; Thu, 28 May 2026 15:50:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3FB3EFFB3
+	for <linux-coco@lists.linux.dev>; Thu, 28 May 2026 16:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779983418; cv=none; b=WKZdPmOOq1m+1LwAkMp64rih75kGOdOuKkcQlhxjLQElAMbvNg/6whsnubQpBXDOVgisDVGI1+q5Ss4DJI4UIMyJ7/GkzfkSXZLnEKBL9kHj8C9X2bDkfsxKwvx68ItYsCpuLT1RgV7GfEO5ez86tcO66pyrXpkjNPOmCs17Jj4=
+	t=1779986659; cv=none; b=V3cygZ59rEtvY2Ye1fFf7yFfTFdlzr8M6TG3JPBSldx+7R0vJep1J+WbdUpdEzm6ubrSSBIkX3r7Q/cQpypnq39ukUt0Z2A4LrDiNq/bP9/6qlj57sfw1uxD2L9kF96cOMea/YNVi6VhW7i5QnclcnQhqfapSTsoXsTyeIDg/IQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779983418; c=relaxed/simple;
-	bh=p/t3az9j2nUFdYjomEcJqIsII4O3DAIx1cEWIP63ut4=;
+	s=arc-20240116; t=1779986659; c=relaxed/simple;
+	bh=nDfOi7I8EsGjEZJKW1fFpQ+3yIGjQAwG9zuzLIZCuxs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H3/WuVeHlpyPLcdEgh7R6sqM6A0D8ZW/ctIR9jZH/NVPx8lXNG3Ykx5kIIAYbIo7yEZ8bFJr3zGbHk8eyMBXXjKmFWQDPgRhfKOQxYOsG/qo9VS1xZqMA/gqbj3cCERHJJ+hZEdnu9btSbelxjZE3UCSSsQMEx1n0ztMpROIZVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Lw4wPYVS; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	 In-Reply-To:Content-Type; b=dTqqF4fO05nEwEHhYubLoIXbvPmTK1NFuoLrDA2OQBnRMN5IqNCHWKefdSmQaKGe2U26WOIQ1vwYXFFPGJIhcIeCoH+mRJZasVQGZFzCp8/lCwkLK9r9g8PH7eP4OQIdf/WBySh1UiL0hXjTXtzk870Q2lj8xQENifyI9ij0FAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CgaTT+I3; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Lw4wPYVS"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-bcc9fdc959cso2234784366b.2
-        for <linux-coco@lists.linux.dev>; Thu, 28 May 2026 08:50:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1779983408; x=1780588208; darn=lists.linux.dev;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=p/t3az9j2nUFdYjomEcJqIsII4O3DAIx1cEWIP63ut4=;
-        b=Lw4wPYVSXg4I1QsXhdFMeUXer7c3QSF2peVQIxw2jp6okYH29JS+vu5vZxwqZdg4tp
-         oH4qTTgmHj2mLlqPG8bmydNIAveRARE8GRRyhDodJzMsxakQf/lxJd9fiEfAKwQk3w1B
-         YaWSX9Px4BJk9uyf1aIE4Lo0jQTD9IbQTv31bULCmM+olJ6dJj4YVKxzyjDJGDRwfeUq
-         oiFVyJX+YCXq303aprKFhwwsu/h9LPKnnw5K1cHuLT+HhMZGH+29KP38tPu+wWa5XIP/
-         4enPg/rRoZNh31MVhu1VBXsDiWVi9XisQl2Y7tbXxUeD3TyCYbAQRvuAfOd8hBKmeadt
-         M27Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779983408; x=1780588208;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=p/t3az9j2nUFdYjomEcJqIsII4O3DAIx1cEWIP63ut4=;
-        b=FhTk/3Aeqcxst3P5lqx9ctxMbJr4nthnZipv+NpRVHUEA515iZIpYq9nNB/aoMJuGL
-         sm3+roD+djKm2G029U7bTu7GOxO93ZStBJVkJY0ooKrAh+Jc8cmGS3YlA4J5Qr0dWY1T
-         EjkwQVSkctrazyAAiZ+2jLtCQ4pRIbBWg4ahn8hnzsRv3nUqsD/DUxMU/46TIt+BSXqk
-         hENUDuueoAhi/HPJmXm2r/taXd/xBqnPxhYfGcQwoNseFkF9U16G6gRWT9ZIfG1RFc6P
-         Xv2eR7tROJHVBNVIYZ9zI1OTw1vOU8rTuMs0SrSkib4uY43incKbawDFEfhRsJVkUNGY
-         6IcQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+3WHXLzFkVp1N3727DcxykwTBbk7054EZYZwPcZNHycV7D4Jh2KCUsCSzMFD0Uc282+4jxVipU7qJY@lists.linux.dev
-X-Gm-Message-State: AOJu0YzT9lUAMFlt984+SAeD7Z5jULTUDE/w2gw0o+MiG6ev6u5+CmxF
-	u0xgHEAQT3sj0th8kiuY3U/Tw/czNYuZYe97btL7rlvpa65u4Bw3b+AliYbiv4NJNU0=
-X-Gm-Gg: Acq92OEEqdPQvWEDjc0MrbQEh48RYScmP+cux13tZa7H7pjGMSiHtx7dRxbDvasAORg
-	xiq93EI5nhTz9thPXlUdTeE/KHSCeWP5rjj05CrkRcFDXWyCSjWUxbLY1WZGAW+B8OuC1C1jK6l
-	2d+rC/laIpIMwn2uaYxyH/3R5S5O/sB/R8QJfmoiy+L+XAn+KzmKH2iBhVwDqxNrSUjNON6D8bz
-	KqvJMYXbQZ/yADnKZY9P2XBz8YvAqI6B679sBDZxqtjNLjw7gVX5mGyQk+uLF2aE6zUTx7MsThV
-	VzL587XwZe415nn7Zc2RIOQ5+QDSDcITdZz/l+GaeWDjCViV2sZgBIzqnLDhbpN1sFSMrSBzN9t
-	qsLlaixlQxcaaFrU4r9nEqUwEhlwQhxlaKdFrykdv4UUWfiWoTL4IVHAA4lpHJJHxuXE1n3rjNK
-	ouFI3/Okke4eqjOUhF4kX7s/xA9ZPVKhvmZhm2kyo7P+o5GRgevFGiQNI/tU6f17h+bfcpkRmwr
-	U7mKUrNApRR9rlTzLhYk7NiTlVdr8cF63tIwH68q9CxxNL125dT64pCmcXMiJeX
-X-Received: by 2002:a17:907:267a:b0:bd5:4a0b:2655 with SMTP id a640c23a62f3a-bdd264bf629mr1181572866b.42.1779983408034;
-        Thu, 28 May 2026 08:50:08 -0700 (PDT)
-Received: from ?IPV6:2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112? (2a00-12d0-af5d-ad01-5d3f-14e6-9bcb-5112.ip.tng.de. [2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bddc264feb2sm735082966b.10.2026.05.28.08.50.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 May 2026 08:50:07 -0700 (PDT)
-Message-ID: <6a7843b6-3c8a-4151-b3cf-3df59c93ce9f@suse.com>
-Date: Thu, 28 May 2026 17:50:06 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CgaTT+I3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779986657; x=1811522657;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=nDfOi7I8EsGjEZJKW1fFpQ+3yIGjQAwG9zuzLIZCuxs=;
+  b=CgaTT+I3XwoSfmN/dEAi56rGeKGcApXlcGiLcfY3/IreLemZA6vle7Ug
+   ddMdpvV/bWr5lLqjKeC2mZy4DOuDQkLV/n5uKdFDckZ2DRQY9LKsxVhhi
+   oemjSuCqUe/I8s4AdfmKOsX6/uTBVKT4SQ5Ge2jKT+W3PDKrXsndfLUEu
+   bmvQppIlKBWZ/sM/IA92tKv9jB19XBTGvpBh21TjlJ9Lng2XGVs/bHaHb
+   83/Uv07bbPEoyMDrsqmwTC0Oxa0rF7auVDPK9fkFGJlUO3Hd7YoZAFX0b
+   uDI2qfuxOl0aPFww4t8MkiroU5aJm4qO41GeyoIPyyyFzYv31bRWwe/WT
+   g==;
+X-CSE-ConnectionGUID: 0IC1S/BeTXebJucNpTa5lQ==
+X-CSE-MsgGUID: 6byAvl1NQzO//7gtW3cF7A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="98408391"
+X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
+   d="scan'208";a="98408391"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 09:44:17 -0700
+X-CSE-ConnectionGUID: 3h2OnGaES+Wxwk+gk4LgnA==
+X-CSE-MsgGUID: 5aWX3z2wT9G5skJltP4+kA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
+   d="scan'208";a="238189900"
+Received: from mvcheng-desk2.amr.corp.intel.com (HELO [10.125.111.73]) ([10.125.111.73])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 09:44:16 -0700
+Message-ID: <350d139a-29d8-4ccc-ab4a-4c7c7cc73848@intel.com>
+Date: Thu, 28 May 2026 09:43:42 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -68,190 +52,124 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/6] KVM/x86: Drop "1" as MSR emulation return value
-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+Subject: Re: [PATCH v3 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
  Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, David Woodhouse <dwmw2@infradead.org>,
- Paul Durrant <paul@xen.org>
-References: <20260528113605.267111-1-jgross@suse.com>
- <a8f495f0-b4a9-42b6-be74-4fa9d83c7346@suse.com> <ahg-bEiwyqYTdWOD@google.com>
- <476964db-837a-45d8-a647-c5a2ea8b0cb6@suse.com> <ahhBQDvyzHQfTCBD@google.com>
+ x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Kai Huang <kai.huang@intel.com>, Sean Christopherson <seanjc@google.com>,
+ Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, stable@vger.kernel.org
+References: <20260527120544.2903923-1-kas@kernel.org>
+ <20260527120544.2903923-3-kas@kernel.org>
+ <5ed6121c-314e-4cf0-9a11-b0661c87c694@intel.com>
+ <ahgUBLjBRGhxULu3@thinkstation>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <ahhBQDvyzHQfTCBD@google.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------dJ6Frlw2MeWYx0VjZPsu8A2M"
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <ahgUBLjBRGhxULu3@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------dJ6Frlw2MeWYx0VjZPsu8A2M
-Content-Type: multipart/mixed; boundary="------------3UAK6p13eVO03qBHAO5xSS04";
- protected-headers="v1"
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, David Woodhouse <dwmw2@infradead.org>,
- Paul Durrant <paul@xen.org>
-Message-ID: <6a7843b6-3c8a-4151-b3cf-3df59c93ce9f@suse.com>
-Subject: Re: [PATCH v2 0/6] KVM/x86: Drop "1" as MSR emulation return value
-References: <20260528113605.267111-1-jgross@suse.com>
- <a8f495f0-b4a9-42b6-be74-4fa9d83c7346@suse.com> <ahg-bEiwyqYTdWOD@google.com>
- <476964db-837a-45d8-a647-c5a2ea8b0cb6@suse.com> <ahhBQDvyzHQfTCBD@google.com>
-In-Reply-To: <ahhBQDvyzHQfTCBD@google.com>
+On 5/28/26 03:14, Kiryl Shutsemau wrote:
+> +	switch (size) {
+> +	case 1:
+> +		*(u8 *)&regs->ax = (u8)val;
+> +		break;
+> +	case 2:
+> +		*(u16 *)&regs->ax = (u16)val;
+> +		break;
 
---------------3UAK6p13eVO03qBHAO5xSS04
-Content-Type: multipart/mixed; boundary="------------1JAOtio9rrxW38PavkHDe8wr"
+Is this intentionally clever to only work on little endian, or
+accidentally clever? This seems like a great IOCCC thing to do, but it's
+far too clever for my taste.
 
---------------1JAOtio9rrxW38PavkHDe8wr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+I mean, it's making a pointer to a 64-bit value with an 8-bit name and
+casting that to an 8-bit pointer and then assigning that to a 32-bit
+value cast to a u8.
 
-T24gMjguMDUuMjYgMTU6MjEsIFNlYW4gQ2hyaXN0b3BoZXJzb24gd3JvdGU6DQo+IE9uIFRo
-dSwgTWF5IDI4LCAyMDI2LCBKw7xyZ2VuIEdyb8OfIHdyb3RlOg0KPj4gT24gMjguMDUuMjYg
-MTU6MDksIFNlYW4gQ2hyaXN0b3BoZXJzb24gd3JvdGU6DQo+Pj4gT24gVGh1LCBNYXkgMjgs
-IDIwMjYsIEp1ZXJnZW4gR3Jvc3Mgd3JvdGU6DQo+Pj4+IFBsZWFzZSBkaXNyZWdhcmQgdGhp
-cyBzZXJpZXMsIHRoZXJlIGlzIG9uZSBjb21wbGljYXRpb24gc2FzaGlrbyBtYWRlIG1lDQo+
-Pj4+IGF3YXJlIG9mLg0KPj4+DQo+Pj4gU2FzaGlrbyBiZWF0IG1lIHRvIHRoZSBwdW5jaC4g
-Oi0pDQo+Pj4NCj4+PiBTZWUgY29tbWl0IDIzNjgwNDhiZjVjMiAoIktWTTogeDg2OiBTaWdu
-YWwgI0dQLCBub3QgLUVQRVJNLCBvbiBiYWQgV1JNU1IoTUNpX0NUTC9TVEFUVVMpIikNCj4+
-PiBmb3IgYSByZWFsIHdvcmxkIGV4YW1wbGUgb2YgaG93IHRoaW5ncyBjYW4gYW5kIHdpbGwg
-Z28gd3JvbmcuDQo+Pg0KPj4gWWVhaCwgd2l0aCBTYXNoaWtvJ3MgcG9pbnRlciBpdCB3YXMg
-ZWFzeSB0byBzcG90Lg0KPj4NCj4+IFF1ZXN0aW9uIG5vdyBpcyB3aGV0aGVyIHRoZSBhbHJl
-YWR5IGV4aXN0aW5nIGNhc2VzIG9mIC1lcnJubyBwYXNzZWQgYXMgcmV0dXJuDQo+PiB2YWx1
-ZSBhcmUgd3Jvbmcgb3Igb24gcHVycG9zZS4NCj4gDQo+IFdoYXQgYXJlIHRoZSBleGlzdGlu
-ZyBjYXNlcz8NCj4gDQo+PiBJZiB0aGUgbGF0dGVyLCB0aGVyZSBzaG91bGQgYmUgYSBjb21t
-ZW50IGZvcg0KPj4gdGhhdCwgb3RoZXJ3aXNlIHRoZXkgbmVlZCB0byBiZSBmaXhlZC4uDQo+
-Pg0KPj4gRGlzZW50YW5nbGluZyB0aGUgTVNSIGVtdWxhdGlvbiByZXR1cm4gdmFsdWVzIGZy
-b20gdGhlICJub3JtYWwiIG9uZXMgKCJyZXR1cm4NCj4+IHRvIGd1ZXN0Ii8icmV0dXJuIHRv
-IHVzZXIgbW9kZSIpIHdpbGwgYmUgcXVpdGUgaW50ZXJlc3Rpbmcgd2l0aCB0aGUgb3Zlcmxv
-YWRlZA0KPj4gc2VtYW50aWNzIG9mICIxIi4NCj4gDQo+IExPTCwgImludGVyZXN0aW5nIi4N
-Cg0KV2hhdCBkbyB5b3UgdGhpbmsgYWJvdXQgdGhlIGZvbGxvd2luZyBpZGVhOg0KDQpMZXRz
-IHBhc3Mgc3RydWN0IG1zcl9pbmZvICogZG93biB0byBhbGwgZnVuY3Rpb25zIHdoaWNoIGdl
-dCB0aGVpciByZXR1cm4NCnZhbHVlIHBhc3NlZCB1cC4gVGhlbiBleHRlbmQgbXNyX2luZm8g
-d2l0aCBhIGJvb2wgInJldHVybl90b19ndWVzdCIgKHZhbGlkDQpvbmx5IGlmICFob3N0X2lu
-aXRpYXRlZCksIHdoaWNoIHNob3VsZCBiZSBzZXQgaW5zdGVhZCBvZiBwYXNzaW5nICIxIiB1
-cCB0bw0KdGhlIGNhbGxlciAocHJvYmFibHkgdXNpbmcgYW4gaW5saW5lIGhlbHBlcikuIFRo
-ZW4gdGhlIHJldHVybiB2YWx1ZSBjb3VsZA0KYmUgMCBvciAtZXJybm8sIGFuZCBhZnRlciBN
-U1IgZW11bGF0aW9uIHRoZSByZXR1cm5fdG9fZ3Vlc3QgaW5kaWNhdG9yIGNhbg0KYmUgdGVz
-dGVkIGlmIG5lZWRlZC4NCg0KDQpKdWVyZ2VuDQo=
---------------1JAOtio9rrxW38PavkHDe8wr
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+Is it just my tiny brain that thinks this will be unintelligible on Monday?
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+How about we just make the CPU do the thinking for us? IN[BWL] and
+MOV[BWL] have the same semantics here, right? So even if 'rax' and 'val'
+are 64-bit values here, the following should have all the right
+behaviors, I think.
 
-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
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
+I generally loathe inline assembly. But we have a CPU that kinda knows
+the rules already. No need for us to laboriously reimplement it. Right?
 
---------------1JAOtio9rrxW38PavkHDe8wr--
+Thanks to the friendly LLM that knows inline assembly better than I do.
+The resulting compiled assembly looks right to me.
 
---------------3UAK6p13eVO03qBHAO5xSS04--
+/*
+ * Use MOV[BWL] to/from registers to match the IN[BWL] behavior
+ * including the fact that INL zeros the upper 64-bits while
+ * IN[BW] don't zero anything.
+ */
 
---------------dJ6Frlw2MeWYx0VjZPsu8A2M
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+    switch (size) {
+    case 1:
+	// Just write 1 byte of RAX:
+        __asm__ volatile ("movb %b1, %b0" : "+q"(rax)
+                                          : "q"(val));
+        break;
+    case 2:
+	// Write 2 bytes of RAX:
+        __asm__ volatile ("movw %w1, %w0" : "+r"(rax)
+                                          : "r"(val));
+        break;
+    case 4:
+	// Write 'val' into lower 32 bits. Zero the upper 32 bits:
+        __asm__ volatile ("movl %k1, %k0" : "=r"(rax)
+                                          : "r"(val));
+        break;
+    default:
+	// WARN
+    }
 
------BEGIN PGP SIGNATURE-----
-
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmoYZC8FAwAAAAAACgkQsN6d1ii/Ey/+
-4Qf9EKvWHnOf1U2uJK4aD0o8/EbLCY+vZ4JY2mTwTnBOqa2HM8+zW0VjEI/lWdPno3GUXK4jVoCs
-VOLry1cw+gvMVfqLyiIM04zrLqCAwsy9qD3MKfipF2AMEjpbLhQsVBc2C213RwZELzLhJMayKtHX
-O4zmeAnuoLJaweGdWDDfj6tCaKq0ZDs53uFDFDZUOescqPQm6zKixsqcYAIWONlLToMs3lEyF9bv
-LvYitMChGm603QRznkC+Ui4tCET0NsBWJOw66d6+xIWT42cfNEi0pFXr2vBBaltcKYB4+iS+F2x0
-KYpg51+C0fBzegUXw84/nxHcpz1hKIOQ0eMATpOhwA==
-=TOA1
------END PGP SIGNATURE-----
-
---------------dJ6Frlw2MeWYx0VjZPsu8A2M--
+Thoughts?
