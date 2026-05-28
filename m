@@ -1,243 +1,179 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96366348C45
-	for <linux-coco@lists.linux.dev>; Thu, 28 May 2026 19:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998307; cv=none; b=T4Cyxq3+9c1i4uv1rCXXXpcHG0zYKvrpcToWrBH5DDp7ynSHxLKsyg+ozGCCo+j38QT9WdBFxa0umq+pSvjpiDLpGFdSxhhCCfNyQtm1KQM8aEZDDhdpenIzzmRNhmsyA5y3zko//lA0Qw9ACGcA9XWjj1XanBInAIMvrpick10=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998307; c=relaxed/simple;
-	bh=WTTIpQ7jQ/NRd9fEiQtD8QkYgfCehLlyMwVPbgSShLU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gxOh5pcCxDdHlUR0hBvk/Q9qOMp8R241IdvdD+RcQvoQUTR3OzhOv3eq0XRwR55P0aQSHUvYIKuVMcdoZ1J7QZj7YRRb25b5+hkhMjZkTHV9h3WRrvMcKpFMARiLzNu0i8kfKRq+BJuxO8pqPxXwnYBIVdrQKVZz7bWUh3w0OHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l70/d5Wg; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466F213D53C
+	for <linux-coco@lists.linux.dev>; Thu, 28 May 2026 21:00:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780002018; cv=fail; b=VxKJlcY2i23Vg/0JhWaMOIyZrz8jxLxn3vARlYtMznb9zd2a3cOq6b56X8XXgwcUyPXl8SZrh11DuK7RNFkmNVK5YJvYqekNusQmKNb3LdAH7k+tU6Qa2ikYrxb/nZIzhREB4JnkWOPIOeNOf4e9Pr/viWswPyEoxxSyGrlFQWM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780002018; c=relaxed/simple;
+	bh=cPl5McI6nnPK8YpxEfgKED4siUS7QxxglmCUR6ufvOg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=PuQXzFxWYfjqD2DnsnbZ3iHMebU35RuWsD6SLSJ57O3F7YcQxz0jNoObdiDBOVM7h+7n4NzW/nGfD7I2aIOP3WmX6eoeZOZ8hASCWaBuAZdkegNuxYuMKAYIc2k4G2lWJ4nZAfiAMkYg8lGnu8NGtQ34MQJVRePwpvlI6lsV1/o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BOPr/S3g; arc=fail smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l70/d5Wg"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4904127c32cso43901025e9.2
-        for <linux-coco@lists.linux.dev>; Thu, 28 May 2026 12:58:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779998304; x=1780603104; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ea+7QZi8CgY0HmyJuCQXCsEGJlQb2tlTWQbckXtNEc0=;
-        b=l70/d5WgSbKC5Zc/lVTq7x56MwZI4UFlbDiq44TrTWalFlNzlvPJPmBPMYzP8hLqME
-         LoCuui5/A02j/n5zpejc4FMtVVDGtBMwOKIN1rqdJ1Wj+E2O2gns5ol1t+4nJ2Hj61LR
-         VyI6Aey419xrbD8WMQ0KtBtCVPteKbAxNS9wIYOaN+XY/O3MTXr4zrNUP9flXftes5v+
-         HDBlQDuOVts8D8eAhDPur4zEeVBxIrRF/W6SzvhMWyhX9HIB1BBZwxHGtO34i3GHK+Hz
-         g712sjF9mQoDqccZj0oAjfiMs298jOjGW7NI3ngjWjnlOUqSt/az3BQzERmxjKWOjrY5
-         lflA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779998304; x=1780603104;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ea+7QZi8CgY0HmyJuCQXCsEGJlQb2tlTWQbckXtNEc0=;
-        b=mbL25/Kp1cLm63OiHoxi7HpahzfYSoGPUkEj2FtekEl27S5z160e2tPP03ceaFwcwa
-         b7iQ6TExCXL4TCMXqnQT2AiAyxZG/UKVmDKV+5/LxgEmqmWgdg1GvSvR5SLsgswNReOX
-         oI++a1FS0EP3/jwckkzl5crZt2eXIZXwDN2DOjXhkbmwS7p+v1nSzT4sbEYCtsawj0ZT
-         kP6f4dpDW9ji3KQthkwlJAWnTpshKqwigqTq46nP8nGA2tzqT53Lp2WJVy+Tojanv66Z
-         S7vNdCYXl8LaUkMVFv4fzdt3XuaI+ShROlzCqrWXnMF0P8ak1B/i7cGU89sq8j29YV23
-         agZA==
-X-Forwarded-Encrypted: i=1; AFNElJ+X4JAKpz7G5TD7OJmHEGrz0mnHf+9YuFa0sC9Wy+yW3okMdAH2kKz1xGCv0YzgpNoyuyHBEohUr6A/@lists.linux.dev
-X-Gm-Message-State: AOJu0YzjSe2w9KKc5lkQbGnq9MwOrGvnMoXTteqbneBK67K0J+iGzGTU
-	y2N2G7h22eWKdtNXXPvdroEh4Ucaye5toeC3xdOCNB75R1HkX8AdIdu4
-X-Gm-Gg: Acq92OHDoOVCWyl9vbzYEPJTobpyUEkkI787J8jhCkhKSl1IpxGlVhE5b5dP6ezD55e
-	mmQ1y70ai/VoS8lYf8/qqikEXWH1y/MvuihMhXUqkYUSyKKt6MFMcjzxUgiVbKRCf1U9fZ4nbWb
-	Wx+5sAyzU03PuVa6DQ8mEMzM+wq+1d0oGCQ2u5lfbk1z0myCTnSruwf/AAZxqPV9GoFjn5t4Ot8
-	vYaBaIBeKCI5mB8+q1hZq5Dxw7JvQfZLSMJAbM+XdlmAEA6muwJyNzY9/qi/URHxk7hawNZjYmu
-	6I1/zsVV3pMOF30rwRjKUOcRVEB+aEwwR5j+00ggkyDrAW2FqSfC3paVDCi68rYupIQu2/TMyQQ
-	Mg9GgzbHZhGOfQIa8w75h/DNWcDoYVP4BO9GuLZmcicCWjef3rcmzKQNSlVEJQy6LZnKtcXw0Xd
-	UJ2NFsWr6YgExlbohQ/Hp0oAItTNfFU1GvX9jZeYEXISrkgh/rFlyGSFSyMdcGxBGKV4+KXPdF1
-	Tutgx0OZg==
-X-Received: by 2002:a05:600d:8496:20b0:48f:be94:d82c with SMTP id 5b1f17b1804b1-4909bfcc3bcmr676545e9.19.1779998303798;
-        Thu, 28 May 2026 12:58:23 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49091d57c0dsm93170965e9.0.2026.05.28.12.58.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 12:58:23 -0700 (PDT)
-Date: Thu, 28 May 2026 20:58:22 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Dave Hansen <dave.hansen@intel.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin"
- <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Kuppuswamy
- Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Kai Huang
- <kai.huang@intel.com>, Sean Christopherson <seanjc@google.com>, Borys
- Tsyrulnikov <tsyrulnikov.borys@gmail.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
-Message-ID: <20260528205822.26840d6e@pumpkin>
-In-Reply-To: <ahgUBLjBRGhxULu3@thinkstation>
-References: <20260527120544.2903923-1-kas@kernel.org>
-	<20260527120544.2903923-3-kas@kernel.org>
-	<5ed6121c-314e-4cf0-9a11-b0661c87c694@intel.com>
-	<ahgUBLjBRGhxULu3@thinkstation>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BOPr/S3g"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780002017; x=1811538017;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=cPl5McI6nnPK8YpxEfgKED4siUS7QxxglmCUR6ufvOg=;
+  b=BOPr/S3gTqC9InX2RzTWDRoIy6AlRafbCl5U7ZGvu/OHe2d3L5UOBfuA
+   w4qCTuvvLf6SQHfsAe0brOQ954oBt/ORDpl62UM8kDhMz3MbEiI6lXZlu
+   yfrhgHMC3Yg0liLjGiqzWtoVbL0z2HiAJIq+ejd1N0BxD9oW0Y409t9zz
+   96gemjGoHHR9hILRWQoBt9f9XbWMh2QiSHmtBquhIMg60aS1pOqurP6nV
+   7kdp7tZ2TE/geik48AlBpdZ9cPcVbLkaDVB48NUyHJq6D3gA8rZBjZWNW
+   9WBta3WJ1lkv4FdSy/Eb0GakBXzRI8Rru/07iJRaVaHvfGrf+0/ZS0N0I
+   Q==;
+X-CSE-ConnectionGUID: +ir4sPkzQt2zj+h8e6x18w==
+X-CSE-MsgGUID: Bp/rAJCESlqgKlP6wYMdRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="79889580"
+X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
+   d="scan'208";a="79889580"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 14:00:17 -0700
+X-CSE-ConnectionGUID: Ng3m7CeiTu23aT+1FdTcjw==
+X-CSE-MsgGUID: NCEJu8kjThG2uygYpDOAPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
+   d="scan'208";a="236302092"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 14:00:16 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 28 May 2026 14:00:16 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 28 May 2026 14:00:16 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.17) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 28 May 2026 14:00:15 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qBPgPX8ijraz52WM/vSN6H2WEISzPNjnRqJK3y18ky9rDuch2YTdC+QhgNmFxMrqVIUwxRsYYoHHlIUS5xs9MCxH9/vj2aKX/mzLZIPGB5LeOPWTNoBfT9IxPFkdGxuhtFHSjVRoWbdMaBsR7vakRpwOSDgLEGNEaNwOSQPtBDJ8adnr7fUP1SUJ0Ubv3NLr7P+dHST5I7wxnbxixqNBjEMRPdPmzymJq5Y4dKrxWNeBnotFh2tOhcCJbauWAflxQh82eCEvKBlMogSDPU+L7wgVnoZko2uTX8YLbVGkF9hZhUFMqpAJg1r8eU8+osEtoVbBt1uNDuiVdG+6r07S8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cPl5McI6nnPK8YpxEfgKED4siUS7QxxglmCUR6ufvOg=;
+ b=Bs/vFdt7MyLNLgVBJJQVOqH2ZMDsNl8RA9dqw795dmIb3I/cDDyViqdw80OmjjLd2+e0V9lxLU3iTaxB2NI7ro6XezVWLiBnxtTC/kX2HpEYFjGOAfaiXPLcslonLPW218EiH07u+elNHqC94s3HuiIkxfK6xHBdQCghoNWXdunFofEgoz/YQg0Q0oAXQD7XfDatyyKbw7EXH0Xf9V1mG9iVNmZ86g11py6KeVqmh0sLcjT/h8C2aJDgyfU9IZt+WIiJybr6SMYr7gDhzXB77RmPXSSp9I86/S7BDytGLJjFLpaNe53/sx33F5PF4ASW93DF38MXjl0XvspDpDSalA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6771.namprd11.prod.outlook.com (2603:10b6:510:1b5::20)
+ by SJ2PR11MB8450.namprd11.prod.outlook.com (2603:10b6:a03:578::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.14; Thu, 28 May
+ 2026 21:00:12 +0000
+Received: from PH7PR11MB6771.namprd11.prod.outlook.com
+ ([fe80::effa:162e:c9c9:a1b4]) by PH7PR11MB6771.namprd11.prod.outlook.com
+ ([fe80::effa:162e:c9c9:a1b4%5]) with mapi id 15.21.0071.011; Thu, 28 May 2026
+ 21:00:12 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "Fang, Peter" <peter.fang@intel.com>, "kas@kernel.org" <kas@kernel.org>,
+	"djbw@kernel.org" <djbw@kernel.org>, "yilun.xu@linux.intel.com"
+	<yilun.xu@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>
+CC: "Xu, Yilun" <yilun.xu@intel.com>, "Duan, Zhenzhong"
+	<zhenzhong.duan@intel.com>, "baolu.lu@linux.intel.com"
+	<baolu.lu@linux.intel.com>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Mehta, Sohil"
+	<sohil.mehta@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH 01/15] x86/virt/tdx: Read global metadata for TDX Module
+ Extensions
+Thread-Topic: [PATCH 01/15] x86/virt/tdx: Read global metadata for TDX Module
+ Extensions
+Thread-Index: AQHc6aA9T+sLFts0xU6ca4lQ9VIhqbYj9rGA
+Date: Thu, 28 May 2026 21:00:12 +0000
+Message-ID: <fd3f9e1f70babe97f98852f2a705341b86ed1132.camel@intel.com>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+	 <20260522034128.3144354-2-yilun.xu@linux.intel.com>
+In-Reply-To: <20260522034128.3144354-2-yilun.xu@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.44.4-0ubuntu2.1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6771:EE_|SJ2PR11MB8450:EE_
+x-ms-office365-filtering-correlation-id: 8a914118-6aff-4e0c-c0f5-08debcfc1c2f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700021|22082099003|18002099003|56012099006|4143699003|11063799006;
+x-microsoft-antispam-message-info: efYe86z3IYllKbiYBCOirY/yC9SsrGUv+OdioonZOZ50rjGVZ04QWc6wXTbjRdScPZ+Upr2WhPMQZXInCoV3lUfQi0U/nEqHRQRXvnDzhC6Wcx6oaUw9595swx+xmCTowKxo20W5rYvFNQ1inzMgIMbJU27tWaR/B8MleXVF5SAHjSc/R0uDlMdBikVtwMm7/3Hb51c3iyNlHRI3Rbhg8CwtNnkeqJ84uzG3CGEwywAU3mqSXC3rXgCPu6zk+SdMxgDjXkKVmpxQo1IEFazW11tNXQXqlpRgK2nxNrYPFemUBuda14T0AxP+tIYWF611cbLhzACvoqacWCBTwDCePKdc4oTkEqd/3gaerBHV2SzVz5QFChbLI6JUDauyu9tlgfx5PTT/I4eq/ZJwRXZsGxQuQSCc3s6ikcIGIVaXtyaX5j/4iheHPFtnm90ImZS9cAscNPv1mhIkPlVJfRt56fzXdKPBPORBMJMyF2siomdhM0QD7Yq/dAVm/d9oodUL0pnm3qRT+85kZY6Mu4yZzeAWZCL6p2iJwfvCu353s4r0C/BMVtH8lAMOm8m/G7IEbwGE65UsT6ReV3QecyD2C9PUOqFaIFqdpP2savZDDPrqjsn95IJxCrFMvTl6GKaTav/3LA2cWwjhubpW2qR+b/4EXlcMKEgBOSAY0vuD41EzCaYyz1RPGn80n4sHrYNwu8B1ySmsNY2qaFJ2rewU/g1Im6vNbvEw5lFXwg3KyXR0ELu5YbUHx9taGhOhl4X8
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6771.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700021)(22082099003)(18002099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?aEo2ZEljQWFIZDhHUEhtV0NJcmx5cityL2NUOFdKNXp4allacGhXYTJHZlBZ?=
+ =?utf-8?B?WjFtcHB1UzhJZXhWU0VxTmZVUE0rOFpsZDdZK1RKekRBZ2dWTXJ4RUNNcWJQ?=
+ =?utf-8?B?ZGRWNVZCWDFVSDYzRjN1UEhLS01ZMW8vTmIrSGh3aUtMcnlRak1RRlNoNkRO?=
+ =?utf-8?B?T0F5MGhucmFnWnVQbmJrWGJHZHY4ajFVbVZXQk5TMDI4WXl4Q0pVUzdQZWFx?=
+ =?utf-8?B?M2p3VnFiNXNYcCsyVWxIWGpjR2xuY25oK1pKMk1yMmF1K3lqNzFCWG1oY0VF?=
+ =?utf-8?B?bkp1TTZwL1krYXNTVjNONjJJUDlGWnh0UG00YTk2MGFoR0xXRWJpdmpWZ0lw?=
+ =?utf-8?B?K0xRQnlKYW1JTXpXV1pBbVd4R2xYZWNpczVUcWJLclFjaEI0c1IrSmhTY3ZG?=
+ =?utf-8?B?SGRPNElwVFhKNSsyN2JzWVNpZ0Z1RUc4akd1b3E4R1ZtRndzK1Q5Y0tiaXlZ?=
+ =?utf-8?B?MGVyR1JrcHlKUnd1VWhsQ0JrSFJmVVJLcmlDVlRieHZkRlhiSW9mL1JkRDkx?=
+ =?utf-8?B?QU9hZ0NyS1pDMSt3Z2p6cnFqL1JCVDVsc0g3RVZBbEpRMSszejJaUCt5UDJK?=
+ =?utf-8?B?K21JamF1WmpMTkJBeGo3NWhjZ2RiMm90RzFhVFViM0RUUzg4L1BCVG1lbFZn?=
+ =?utf-8?B?YzNuWGxrYXNpUEVpUFdpU3FwQ1YvTDRKM0xrMndDOE5vNW9kNnVVQnlqUDJl?=
+ =?utf-8?B?U3BxamdBa2RUdmhZM3JZR3MzWmowRkxtQnJjR2dWeXczRnpKN0U0UXo5YTR0?=
+ =?utf-8?B?RW1IWXhNdWlCRjJ5N3BTK3p6N2J0d09FdlNVek9EVzNWL29pejUzMzNwZENy?=
+ =?utf-8?B?dDVsYXZvWGN3Sk1ZMzZxUnRqMGE4MlgrRHZkcFFHa3ZsVGQwN3NYeUFxNmRX?=
+ =?utf-8?B?TjhLUzR2eHRkY1Z4STZheit1OFVrZnoweGV4eWg1bE1PaHVPRk9KeXpXR1VN?=
+ =?utf-8?B?QUN6NzFJVE9pcHJFZW9ZTzkrYk8wRm9yVndwYjNtaHFIN204Tjdpc3ZRSVpC?=
+ =?utf-8?B?Nk1lY0VBNkN1ei8vS01SVk9CREZQV2c0QU1vbHJ1OGIzbEh5QmFKQzJ3MVg0?=
+ =?utf-8?B?Ri9VVnJJelZOWG5zZzhXdkJ1VnllcnMrTWdvUG1INXBocGFtOG9NK2k0bW5T?=
+ =?utf-8?B?VUNwRTM0S3lqc2dIcFdRb0M2T0FEZU1kYUR0b2F4QTdSRkVSRVVxVjNzOVRw?=
+ =?utf-8?B?VVRqQjRqUHp2czJlWlYrMEcyYTE1ekF6d3pxbE9LZWZiclpETGRnQUZzdi9q?=
+ =?utf-8?B?Q0lvK1ZneXk2RWx6NHNWT2gwL3pybXU5NzRVM2FpYWkxOExqRDVrdTRDTkFl?=
+ =?utf-8?B?QVpqNkhFM3NvK2pCelUxRWhlR3JrOEZKcnpxaEVYTmNhMmt5bkVYMXhENk0v?=
+ =?utf-8?B?Q3dpbGNFSVFCMXdOU3lBLzdEd2FjWm9hcFRESVdWS1ZiU1lmU0RCMEFMU1hY?=
+ =?utf-8?B?WC9ldnhHVkZ4aXlLZUx5dXZNMm1CVVZ5Z0JkdVBRREhxekpvU3JVeUNoa3N0?=
+ =?utf-8?B?UjFZdEM1QzlMZ1FzTFMxQnI3R1E4VFhCV0dyL01FcUlRUENaTHVVbWlmZk1Z?=
+ =?utf-8?B?YlBEbnpuRkVpRDlwNXlLbGlydy9vWjBMeUU5RzlSZnArNUZtQTZsNXV5U3Z0?=
+ =?utf-8?B?bkNLUW4yRHdOWW1XbVFXMUwxNW00U0RHRGlTUE9wcEJKRG5wa1VTdFVFOWtE?=
+ =?utf-8?B?M3RSWm1mWk8wYm1jRE1VSC9oY291ZkF6UENrSUpnZUovVVFiRTRoTVJhOWR2?=
+ =?utf-8?B?Y09pK3RHWlI1Z1I2M0ZiKzRxNllUcE9PRzl3cU9qUXE5MEJpeFNQSVBCZmVM?=
+ =?utf-8?B?SzljdjVXSEVoZ0REZGF3MkszUkN1WS82OHlhZzA3YVd1aW9KM0RIUHNCVWxx?=
+ =?utf-8?B?RU5qR2lkQ2RsdE1WSWZyZy9YMHlBY0xlZjFwd2xybDBWUzE4aUhoRGtzTTdr?=
+ =?utf-8?B?MkZSUitiTlVLeUs0bVpOc2lQbCtxRDVBdlFFaDRFaFdYQnljZDVPcnYzMWlz?=
+ =?utf-8?B?ZmRKQ1BJa2wrcnE4Zjg5S3RZcHUwNDFYaEd6THBSYS9ubm1NNTJZUUw3NEJp?=
+ =?utf-8?B?OFAyekZRMTYzb3lSUE4rc1czRVdxMUpHQ2dkbGxvQ29CbjJIZEcxUzFqMm5V?=
+ =?utf-8?B?T2N5SWdHbWpCMnNuTUhRTndmK3U5cHJlQkp3dERMRUl3a3JIKzQ4eTB6UERS?=
+ =?utf-8?B?M2pic2xpWGVyanViMFo0eGYwNEdMbkNUb0FhMFlkeEdqNE5HU0R2bzB1Vit3?=
+ =?utf-8?B?RTA4WUlibU1OR2tkSVpOcU0vcGxhZVZTUWxqZFg5WUxNTURENE5ka0dKRkNQ?=
+ =?utf-8?B?eFV5ZlBsOU9PWlQ0TlcwWVpZYWdUSktJUkY2Uy9NSjNjQllBMTB3bStRc2NW?=
+ =?utf-8?Q?d37eHE63LrIu7L/A=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <3A2A0DF20A97DB418FE4A1D807FC4FDD@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-Exchange-RoutingPolicyChecked: C7ZnIPF4F2J02rUEOlfysidyJumPThOW7pDr2zW57fwiPHTemYK6RxH6NZZFlRDHVgmXMJ1s8Hxl0rp+4zKUVvcndJg0S5M01PtWt+zQYK55RNE13DmSUp7hN8zH5a4HYuC+5todBHJzugW4zoSWiOSplyAw+0rVrKUOebHwf7RXBLy5l8ZzmC+mG1xmijwTR0wSnop8mnG0jugRTZhniPdG2t63cKsu0t6YU0cturjVKDPfuTUqZhA1zf2S//WIDM08J9SjcYJxwQ14IyD1vPiLgHEfhUPGFzcV33/fspI+YUy0DDiGEanqBwzQ+5ind3lThEFRWvuoS1ofQcZj2A==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6771.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a914118-6aff-4e0c-c0f5-08debcfc1c2f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 May 2026 21:00:12.2528
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: VXP43Az7shufWg8owK158Z2OQKTwT2tIaC7OXmVmu+3sbInSaHSxWgxF4rboVziAVZ3DbxGEcxG5V+Cn6e2WeGgByYtz6sZNlOHsf2s8uUg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8450
+X-OriginatorOrg: intel.com
 
-On Thu, 28 May 2026 11:14:38 +0100
-Kiryl Shutsemau <kas@kernel.org> wrote:
-
-> On Wed, May 27, 2026 at 10:45:28AM -0700, Dave Hansen wrote:
-> > On 5/27/26 05:05, Kiryl Shutsemau (Meta) wrote:
-> > ...  
-> > > -	/* Update part of the register affected by the emulated instruction */
-> > > -	regs->ax &= ~mask;
-> > > +	/*
-> > > +	 * IN writes the result into a sub-register of RAX. Only the
-> > > +	 * 32-bit form zero-extends; the smaller forms leave the upper
-> > > +	 * bits untouched:
-> > > +	 *
-> > > +	 *   insn  dest  size  bits written     bits preserved
-> > > +	 *   inb   AL    1     RAX[ 7: 0]       RAX[63: 8]
-> > > +	 *   inw   AX    2     RAX[15: 0]       RAX[63:16]
-> > > +	 *   inl   EAX   4     RAX[63: 0]       (none, zero-extended)
-> > > +	 *
-> > > +	 * 'mask' only covers the low 'size' bytes, which is exactly the
-> > > +	 * range affected for size 1 and 2. For size 4 the write also
-> > > +	 * clears RAX[63:32], so widen the clear-mask.
-> > > +	 */
-> > > +	if (size == 4)
-> > > +		regs->ax = 0;
-> > > +	else
-> > > +		regs->ax &= ~mask;
-> > > +  
-> > 
-> > Is there any way we could do this with fewer comments and more code?
-> > 
-> > I mean, there's only three cases. Why have;
-> > 
-> > 	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
-> > 
-> > When there are only 3 possible cases:
-> > 
-> > 	1 => 0xf
-> > 	2 => 0xff
-> > 	4 => 0xffff
-> > 
-> > and one of those cases needs a special case on top of it.
-> > 
-> > Maybe something like this?
-> > 
-> > 	/* Clear out part of RAX so part of args.r11 can be OR'd in: */
-> > 	switch (size) {
-> > 	case 1:
-> > 		/* inb consumes lower 8 bits of r11: */
-> > 		regs->ax &= ~GENMASK_ULL(7, 0);
-> > 		args.r11 &=  GENMASK_ULL(7, 0);
-> > 		break;
-> > 	case 2:
-> > 		/* inw consumes lower 16 bits of r11: */
-> > 		regs->ax &= ~GENMASK_ULL(15, 0);
-> > 		args.r11 &=  GENMASK_ULL(15, 0);
-> > 		break;
-> > 	case 4:
-> > 		/* inl is weird and zeros the whole register: */
-> > 		regs->ax &= ~GENMASK_ULL(63, 0);
-> > 		/* But only consumes 32-bits from r11: */
-> > 		args.r11 &=  GENMASK_ULL(31, 0);
-> > 		break;
-> > 	default:
-> > 		/* Probable TDX module bug. Illegal in[bwl] size: */
-> > 		WARN_ON_ONCE(1);
-> > 		success = 0;
-> > 	}
-> > 
-> > 	if (success)
-> > 		regs->ax |= args.r11;
-> > 
-> > It might need a temporary variable for args.r11, but you get the point.
-> > That's basically the data from the comment but written as code.  
-> 
-> I hate how verbose it is. All these GENMASK_ULL() make it hard to
-> follow.
-> 
-> What about the patch below. Inspired by kvm's assign_register().
-> 
-> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index 65119362f9a2..460b9fbabf14 100644
-> --- a/arch/x86/coco/tdx/tdx.c
-> +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -693,8 +693,8 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
->  		.r13 = PORT_READ,
->  		.r14 = port,
->  	};
-> -	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
->  	bool success;
-> +	u32 val;
->  
->  	/*
->  	 * Emulate the I/O read via hypercall. More info about ABI can be found
-> @@ -703,10 +703,33 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
->  	 */
->  	success = !__tdx_hypercall(&args);
->  
-> -	/* Update part of the register affected by the emulated instruction */
-> -	regs->ax &= ~mask;
->  	if (success)
-> -		regs->ax |= args.r11 & mask;
-> +		val = args.r11;
-> +	else
-> +		val = 0;
-> +
-> +	/*
-> +	 * IN writes the result into a sub-register of RAX.
-> +	 *
-> +	 * Only the 32-bit form zero-extends; the smaller forms leave
-> +	 * the upper bits untouched.
-> +	 */
-> +	switch (size) {
-> +	case 1:
-> +		*(u8 *)&regs->ax = (u8)val;
-> +		break;
-> +	case 2:
-> +		*(u16 *)&regs->ax = (u16)val;
-> +		break;
-> +	case 4:
-> +		/* zero-extended */
-> +		regs->ax = val;
-> +		break;
-> +	default:
-> +		/* Probable TDX module bug. Illegal in[bwl] size. */
-> +		WARN_ON_ONCE(1);
-> +		break;
-> +	}
-
-Just write it as normal arithmetic code:
-
-	/* IN writes the result into a sub-register of RAX. */
-	switch (size) {
-	case 1:
-		regs->ax = (regs->ax & ~0xfful) | (val & 0xff);
-		break;
-	case 2:
-		regs->ax = (regs->ax & ~0xfffful) | (val & 0xffff);
-		break;
-	case 4:
-	default:
-		/* 32bit 'INB' will zero the high bits. */
-		regs->ax = val
-		break;
-	}
-
-Succinct, obvious and readable.
-
--- David
-
-
->  
->  	return success;
->  }
-
+T24gRnJpLCAyMDI2LTA1LTIyIGF0IDExOjQxICswODAwLCBYdSBZaWx1biB3cm90ZToNCj4gK3N0
+cnVjdCB0ZHhfc3lzX2luZm9fZXh0IHsNCj4gKwl1MTYgbWVtb3J5X3Bvb2xfcmVxdWlyZWRfcGFn
+ZXM7DQoNCj4gKwl1OCBleHRfcmVxdWlyZWQ7DQoNClRoZSBkb2NzIHNheSB0aGlzIGlzIGEgYm9v
+bC4NCg0KPiArfTsNCj4gKw0KDQo=
