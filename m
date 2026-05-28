@@ -1,340 +1,200 @@
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8ABC2C11F1
-	for <linux-coco@lists.linux.dev>; Thu, 28 May 2026 14:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779979545; cv=pass; b=pL398bjiGyErEMdIaR0VizHyotkOushoNivN2Y9cIhGbf52QA6IGK5XPOTym0QA+HtIQ6hoyWJLhDa6xTxva45Zq1IDVkYteIB5j610aDFLbbE8jq1w+BMTKfIWWhYDMtp2JICorCbuYAdC8T/iAPCn0YTH2bLvwBbRltoEFITA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779979545; c=relaxed/simple;
-	bh=rq8gxBxKbnVaF8wdJLl6SkHZ/ZKLEKE5u5RN3PdP+Jw=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DCJdGFFgTpcp4HNdl9XYGQ1YSYbAw0Ma6liQzoRlKEPtjWBJswiVNl1TAB9eYRR+sMiG3x2JXN78d0VPoGBp922b6rKN4x9XSKWHdjk6LVVxjyICoZJ1/MMv/p57t0bNK3FXENkHMh5NAuWqsIqS1zC139OKfi9qiNSgYJOQqtQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AEap4b5d; arc=pass smtp.client-ip=74.125.82.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B752176238;
+	Thu, 28 May 2026 15:32:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779982338; cv=none; b=ktzgLVHHb34cWgtKCkA32t7jfHQ1dcF+0vsyOgFLM4KiKZkmuX0UxOO5vEbdQp7FSfBfS0xescz6n62DqV53qDDOLIpROYV5I9mkcTUgC/O8Th7dPMMP3TRzRl48Jwe6SxA5V0p+oG3CQAV8JWDGDF/7/+OOuX5xGNfrCICypLo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779982338; c=relaxed/simple;
+	bh=20nB2Unf4TEU/nmf0brbMpnEcKQdoJB5ubCBy0YTZ5A=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OHCp/zBCaTlNJZYu5I1gC0aV/jbbUO8+hmHVREQB2aM4IV6QcfNH4oG527EFe7tH2k/cK3a1saMdRt9KkmwC7M7ru+UyQUxCmjPk7TwMnbQJov/PL3FCg1D5V9XCbsx9kE39QzoiZpEzgMKeXX8PU8xYn+iKG+3dh21eNjxKt/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=VPrTIA1u; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AEap4b5d"
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-1363e78746eso9019565c88.1
-        for <linux-coco@lists.linux.dev>; Thu, 28 May 2026 07:45:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779979541; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Z5mr+3z73iNO7He7vPAq5tW9t0WO9HZpYSUAjPu/cN+kjrnaKylIOOFionXm44T2Fd
-         7EzAVn+4NY3A5wR8z8L8GV86waIkWQFdG+9neUn47CYysw+p0eKJNEwQ8ZHxkRBFAW34
-         SyULx6vmxWtr7nQ5W9HHVgJlrEAY01G/C84awxk9vUXgzdiaLGCRbi3qAYqMF0vLkob0
-         hdJh8yTJ/zB2Y8l7OSUi4BSDKTmhfF1LspPYKAXfVzskwpLMT0M/7nNnKBe8F7ZuhDCM
-         QKJPbgdmGZOgsuHyCBENbTEC/oogkTRkKsyar0O+pAIDyrxB+7Sta6hmOcdN4EXcDfKy
-         1R5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=+gjkdBns27ZcM6QB3XftdqjlzU6m8DV5aKnzoL5burk=;
-        fh=m7knzsj7tY8z/qOnU4xE0t+bzonBT8Y2S9YSW6x2d+8=;
-        b=Vg7599lktRIvrAcXfabsDtn7chn+SwRMPBSRpkCLrkwVbGGRrXp1lH5Uu63iiE6YhE
-         mAQaEuxf7AyyF9lCBHbTTj9DY8AUuBqHrwGzAoCMlm6QGhVAWpMo4SXL4PD+rujm4rRJ
-         cRbeLKiLNcyFVhgMKxgqGr/s8sSMcSZUO/1RpYrZrU2MBG3nPlbREYbpkAFYOsmt7Vkj
-         i9WUHrMhuq5t5D+k274fhhhrDA0AhsVeHdBRCxv7lYV8SpnTp/+yexePOVqmuhr23lam
-         IS73BajuYNQjUBhoJeMxX2U5iS68Rg013BsQc2fmVnjF3mHSNNfdcm1NEaq/MwOHoPu3
-         mfVA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779979541; x=1780584341; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+gjkdBns27ZcM6QB3XftdqjlzU6m8DV5aKnzoL5burk=;
-        b=AEap4b5dDkPX840FZ+MAfU3dB5IBtHtXhFNvcQdBXAIAfC9F0bChg6XVaZCv8Pweza
-         Qe4oTikiEH5P/b5HQLRZwpZG3g9NOYw5h7OeENvF9vJsvOnqycIR5Tcf0kzx7EHO3Nwo
-         IAGiyJvk+aQP82SoaYugGJGB/SbW264X2wTwU0YkuYHHKQyDvVYbE93menG9reizaSCL
-         HQwCA9n9V9nlggtfDOt5OUJM9get4XFWaTTBnpM9j8mZTjWOyx+NjB9t5Apu+zoJqst/
-         5FzCOpGalfjbxoRIo/a+E1Y5Ylu1behh0teq9SL9wguMFPJ93RVVh1q5e2NWYQuGU7c6
-         Z2MQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779979541; x=1780584341;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+gjkdBns27ZcM6QB3XftdqjlzU6m8DV5aKnzoL5burk=;
-        b=aN28i3vSD/JTlO4p6D+c0As+LYOTLXeca0aj0W4DgUiHAbSPFWwBuDpgq59kI+jTPS
-         1IPCDJkkBY78QKcabLIeriVfX/WPMw8HgD3R5N1vtC7IGb1xSsrP5hkdt0MWMgTk5zHa
-         5imiX02uD9dhAYKKGXvHguwpmsD6S1P+IxTjF9bNkzZauU8pl20sq5C+afWjFyrbP4gq
-         hhO/fuf1TQ1SsfzIDvToL6+e/LFinuu9IJtFrf2hrRnMPBxHG1/6gWI/pmX43KCUYDg7
-         nVff+d5TazJEmvP5Zo5Wbc/ZCfYM7GcH95E1WLyaGWFKdh7sOTMS7RwqzGcQD0TaUMLX
-         yYHQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9ePJY9W9pRK2odMa9bbQeGFoTUBwJCBp+munb0q0RqV14QSzjiJJ3d/Ztp0moEKUoC8cco6gI9i4QG@lists.linux.dev
-X-Gm-Message-State: AOJu0YwX4tPUXDG5ElVsihe/RRAYbv7Vh+Vc5LWbdfnbumDhB85/GifF
-	9lxl/oW/BLLbNd7+SJ4BR1vrVxr7ao1xAisSNceAPEdEeKvs2mZvvzHk9IU5okuiKgDs4nCFL7I
-	J7cXyGoG1Ylcjld0j2jw+WneRd4JlF246lxZTd/Pn
-X-Gm-Gg: Acq92OGghINSls6i3idqNMFnvTxjIae5ezdiJ+sflV4mznvd8NboYj0A1bbjRvVf5Fg
-	wfJ5XrCdGvrAphE4qQQnZCmQv0VJglpmluojjJ2A2Ko7PiXzf09mmxG0K6fyTTNWhTd+vtmHo/u
-	Uak1XI5igp4JwpryrLjEsVVaTzcWVR7DERt1FMG3JR8zVDYc2C5iS1sBMLVGCgvuUbVw0ylUGEV
-	aLR1qiz1dEVMtHrk4QkKhXz16u5QRQuysPVT6s7+pnrWPXk3b2uDbQn8aNdcz6x14jm5FjeGoj7
-	o8T5985szn73V+b+qqYMc87+95uoPb3A2l4ecZ/rms51PQeZiri9K1iY/j9LNtWZuTAL4Ex6vd/
-	ZFwmD
-X-Received: by 2002:a05:7022:258a:b0:135:e312:47a0 with SMTP id
- a92af1059eb24-1365fa34af3mr9213804c88.26.1779979539969; Thu, 28 May 2026
- 07:45:39 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 28 May 2026 07:45:38 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 28 May 2026 07:45:38 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <6f1ec3d8ebcf3aaceccc099c07d0deb545dd4ab9.1779133590.git.ashish.kalra@amd.com>
-References: <cover.1779133590.git.ashish.kalra@amd.com> <6f1ec3d8ebcf3aaceccc099c07d0deb545dd4ab9.1779133590.git.ashish.kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="VPrTIA1u"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=20nB2Unf4TEU/nmf0brbMpnEcKQdoJB5ubCBy0YTZ5A=; b=VPrTIA1uFgnWq8LmI37urVtc9/
+	qufgRLKZ2u44C6YMeXWhBmSNq9CudN7BDEIElX8DAJzufAprB4ZhQRT44KJBZHpAb5C0Wv+G6ZO+W
+	glKKvOI3CCilZtW59CNUStq3RBX41o1khUtZ7ysBqlvN1SbNFbRDbYyDnbskuyV3l/zlZBEC4l/vC
+	zDTT3g9trzwJcok/z+JUvEYaJTlRVVk8DZcBFH98pyiy7xADEyw/BD//ZcgJpGC/oE9W5sdLHtQ2q
+	e1D7M1E9Yakg0gxea1bsjf61wnTenZYJve8Sb3Zl29uDE8TCgXBETBe67wSosibOfckJqaA9rH7gf
+	xdkNb+LA==;
+Received: from 54-240-197-239.amazon.com ([54.240.197.239] helo=edge-cache-150.e-ind6.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wSciL-00000004R24-0V3n;
+	Thu, 28 May 2026 15:32:07 +0000
+Message-ID: <a6fdbcc655ea24209ed03e377f7e4a2a4d43bd9c.camel@infradead.org>
+Subject: Re: [PATCH v2 0/6] KVM/x86: Drop "1" as MSR emulation return value
+From: David Woodhouse <dwmw2@infradead.org>
+To: =?ISO-8859-1?Q?J=FCrgen_Gro=DF?= <jgross@suse.com>, Sean Christopherson
+	 <seanjc@google.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
+ linux-coco@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Thomas
+ Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>,  Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter
+ Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl
+ Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Paul Durrant <paul@xen.org>
+Date: Thu, 28 May 2026 16:32:04 +0100
+In-Reply-To: <8d3f3cbe-89ca-44df-b35f-90c2724e9154@suse.com>
+References: <20260528113605.267111-1-jgross@suse.com>
+	 <a8f495f0-b4a9-42b6-be74-4fa9d83c7346@suse.com>
+	 <ahg-bEiwyqYTdWOD@google.com>
+	 <476964db-837a-45d8-a647-c5a2ea8b0cb6@suse.com>
+	 <ahhBQDvyzHQfTCBD@google.com>
+	 <8d3f3cbe-89ca-44df-b35f-90c2724e9154@suse.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-GJG805fU/68s8LS6pg3j"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Thu, 28 May 2026 07:45:38 -0700
-X-Gm-Features: AVHnY4IiVpW6Kxx2WcbuW_kautt7HYMS3rg-qGKju88FQuYeSjZIIv004vFPuvg
-Message-ID: <CAEvNRgGfyb7zvZ1u1j7YLomD+JdAxnVW36gtvNG9gxgZ80vMyQ@mail.gmail.com>
-Subject: Re: [PATCH v5 4/7] x86/sev: Add support to perform RMP optimizations asynchronously
-To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, seanjc@google.com, 
-	peterz@infradead.org, thomas.lendacky@amd.com, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, ardb@kernel.org
-Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com, 
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com, 
-	jackyli@google.com, pgonda@google.com, rientjes@google.com, 
-	jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com, 
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com, 
-	darwi@linutronix.de, linux-kernel@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-GJG805fU/68s8LS6pg3j
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Ashish Kalra <Ashish.Kalra@amd.com> writes:
+On Thu, 2026-05-28 at 16:33 +0200, J=C3=BCrgen Gro=C3=9F wrote:
+> On 28.05.26 15:21, Sean Christopherson wrote:
+> > On Thu, May 28, 2026, J=C3=BCrgen Gro=C3=9F wrote:
+> > > On 28.05.26 15:09, Sean Christopherson wrote:
+> > > > On Thu, May 28, 2026, Juergen Gross wrote:
+> > > > > Please disregard this series, there is one complication sashiko m=
+ade me
+> > > > > aware of.
+> > > >=20
+> > > > Sashiko beat me to the punch. :-)
+> > > >=20
+> > > > See commit 2368048bf5c2 ("KVM: x86: Signal #GP, not -EPERM, on bad =
+WRMSR(MCi_CTL/STATUS)")
+> > > > for a real world example of how things can and will go wrong.
+> > >=20
+> > > Yeah, with Sashiko's pointer it was easy to spot.
+> > >=20
+> > > Question now is whether the already existing cases of -errno passed a=
+s return
+> > > value are wrong or on purpose.
+> >=20
+> > What are the existing cases?
+>=20
+> Found another one:
+>=20
+> kvm_xen_write_hypercall_page() (called by kvm_set_msr_common())
 
-Thank you Ashish!
+You mean in the case where it's using the user-provided hypercall page,
+and can't copy from the buffer that the VMM provided?
 
-> From: Ashish Kalra <ashish.kalra@amd.com>
->
-> When SEV-SNP is enabled, all writes to memory are checked to ensure
-> integrity of SNP guest memory. This imposes performance overhead on the
-> whole system.
->
-> RMPOPT is a new instruction that minimizes the performance overhead of
-> RMP checks on the hypervisor and on non-SNP guests by allowing RMP
-> checks to be skipped for 1GB regions of memory that are known not to
-> contain any SEV-SNP guest memory.
->
-> Add support for performing RMP optimizations asynchronously using a
-> dedicated workqueue.
->
-> Enable RMPOPT optimizations globally for all system RAM up to 2TB at
+I think that's correct to return -errno via PTR_ERR() and let the guest
+die?
 
-This should also be updated to say "Enable RMPOPT optimizations for up
-to 2TB worth of system RAM at..."
+The rest return 0 or 1.
 
-The current phrasing sounds like only addresses [0, 2TB) are allowed to
-be optimized, but actually any address [start, start + 2TB) can be
-optimized?
+--=-GJG805fU/68s8LS6pg3j
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-> RMP initialization time. RMP checks can initially be skipped for 1GB
-> memory ranges that do not contain SEV-SNP guest memory (excluding
-> preassigned pages such as the RMP table and firmware pages). As SNP
-> guests are launched, RMPUPDATE will disable the corresponding RMPOPT
-> optimizations.
->
-> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
-> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> ---
->  arch/x86/virt/svm/sev.c | 167 +++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 164 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-> index 82f9dc7a57c3..8876cac052d5 100644
-> --- a/arch/x86/virt/svm/sev.c
-> +++ b/arch/x86/virt/svm/sev.c
-> @@ -19,6 +19,7 @@
->  #include <linux/iommu.h>
->  #include <linux/amd-iommu.h>
->  #include <linux/nospec.h>
-> +#include <linux/workqueue.h>
->
->  #include <asm/sev.h>
->  #include <asm/processor.h>
-> @@ -125,7 +126,18 @@ static void *rmp_bookkeeping __ro_after_init;
->  static u64 probed_rmp_base, probed_rmp_size;
->
->  static cpumask_t rmpopt_cpumask;
-> -static phys_addr_t rmpopt_pa_start;
-> +static phys_addr_t rmpopt_pa_start, rmpopt_pa_end;
-> +
-> +enum rmpopt_function {
-> +	RMPOPT_FUNC_VERIFY_AND_REPORT_STATUS,
-> +	RMPOPT_FUNC_REPORT_STATUS
-> +};
-> +
-> +#define RMPOPT_WORK_TIMEOUT	10000
-> +
-> +static struct workqueue_struct *rmpopt_wq;
-> +static struct delayed_work rmpopt_delayed_work;
-> +static DEFINE_MUTEX(rmpopt_wq_mutex);
->
->  static LIST_HEAD(snp_leaked_pages_list);
->  static DEFINE_SPINLOCK(snp_leaked_pages_list_lock);
-> @@ -564,12 +576,21 @@ EXPORT_SYMBOL_FOR_MODULES(snp_prepare, "ccp");
->
->  static void rmpopt_cleanup(void)
->  {
-> +	guard(mutex)(&rmpopt_wq_mutex);
-> +
-> +	if (!rmpopt_wq)
-> +		return;
-> +
-> +	cancel_delayed_work_sync(&rmpopt_delayed_work);
-> +	destroy_workqueue(rmpopt_wq);
-> +
->  	cpus_read_lock();
->  	wrmsrq_on_cpus(&rmpopt_cpumask, MSR_AMD64_RMPOPT_BASE, 0);
->  	cpus_read_unlock();
->
->  	cpumask_clear(&rmpopt_cpumask);
-> -	rmpopt_pa_start = 0;
-> +	rmpopt_pa_start = rmpopt_pa_end = 0;
-> +	rmpopt_wq = NULL;
->  }
->
->  void snp_shutdown(void)
-> @@ -587,6 +608,105 @@ void snp_shutdown(void)
->  }
->  EXPORT_SYMBOL_FOR_MODULES(snp_shutdown, "ccp");
->
-> +static inline bool __rmpopt(u64 rax, u64 rcx)
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUyODE1MzIw
+NFowLwYJKoZIhvcNAQkEMSIEIF/RL2lyFGy5Nksr2SRMcq3uWnW86T8smhW16uFB4AmZMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIATiwGWB98jMbM
+eDExNYjgN5ykyOaeuE3aa77dRvGuWesGSXYU7YtAiw2F8Yc8DLeRxBmwME/hO/xt/+pOcwLnFpKt
+uGfsdnnEO7hT/PyvBEg/jS+WJLiXJJ29tQbJCoMav5qwfAk+mhG79YnzjNxqXH6raZ7oZq4dZXBW
+XKmvvgqC6lqqvrhG453g+7vVhK17XMFzv7qEYkeR43g6BXx5V7TEouBkztJTsEnMmeyz8UVrhPyx
+3gAPGVlx4rVLL/6suU50JOGJ5kQKz9gO4jlAf6aRp6IL8+aoo39t1WaQfzKDuLnzpX65rRGN3Buw
+o5rD08OR2T/GKAuuQqTGRyMDwuk5m5uaZM/sGnKp403BAIQ27EppJidsT2diDzsW8fZT/v0LqWju
+rLq4Rl619PyNO6RkocktIvZs9rVZfeKS1I4HHgVhml1KGSFrirutBgTBOAOT0PYbDpHxpcNSTKTV
+HLfpx8drgaS5uL3shb0p0gA3T0ap5Y3J1Sbd8I7q5ET5PZpUAy6wJ575MpxEe+KzZKUSN90jI50V
+a2jqQXHExDIPW3/TQwXAe3DZ6iQIkMfbJ42nZAGTrKDiXfAK1DSdD7q9TWNscYDoiR6FyceW6f49
+NIY3QpGW/47G4GKnM8vtKf+hZBOxrQ2/ljrbr6oEAWDUJnRN8prjvGKVUqsIMy0AAAAAAAA=
 
-Perhaps use pa_start instead of rax and op_type for rcx?
 
-> +{
-> +	bool optimized;
-> +
-> +	asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc"
-> +		     : "=@ccc" (optimized)
-> +		     : "a" (rax), "c" (rcx)
-> +		     : "memory", "cc");
-> +
-> +	return optimized;
-> +}
-> +
-> +static void rmpopt(u64 pa)
-> +{
-> +	u64 rax = ALIGN_DOWN(pa, SZ_1G);
-> +	u64 rcx = RMPOPT_FUNC_VERIFY_AND_REPORT_STATUS;
-> +
-
-And pa_start and op_type here too.
-
-> +	__rmpopt(rax, rcx);
-> +}
-> +
-> +/*
-> + * 'val' is a system physical address.
-> + */
-> +static void rmpopt_smp(void *val)
-> +{
-> +	rmpopt((u64)val);
-> +}
-> +
-> +/*
-> + * RMPOPT optimizations skip RMP checks at 1GB granularity if this
-> + * range of memory does not contain any SNP guest memory.
-> + */
-> +static void rmpopt_work_handler(struct work_struct *work)
-> +{
-> +	bool current_cpu_cleared = false;
-> +	phys_addr_t pa;
-> +	int this_cpu;
-> +
-> +	pr_info("Attempt RMP optimizations on physical address range @1GB alignment [0x%016llx - 0x%016llx]\n",
-> +		rmpopt_pa_start, rmpopt_pa_end);
-> +
-> +	/*
-> +	 * RMPOPT scans the RMP table, stores the result of the scan in the
-> +	 * reserved processor memory. The RMP scan is the most expensive
-> +	 * part. If a second RMPOPT occurs, it can skip the expensive scan
-> +	 * if they can see a cached result in the reserved processor memory.
-> +	 *
-> +	 * Do RMPOPT on one CPU alone. Then, follow that up with RMPOPT
-> +	 * on every other primary thread. This potentially allows the
-
-I like the leader and follower comments below, thanks! With this
-leader/follower setup, will the followers definitely see the cached scan
-results, or might the followers still potentially not benefit from the
-caching? If it's still only "potentially", why?
-
-> +	 * followers to use the "cached" scan results to avoid repeating
-> +	 * full scans.
-> +	 */
-> +
-> +	/*
-> +	 * Pin the worker to the current CPU for the leader loop so that
-> +	 * this_cpu remains valid and the RMPOPT instruction executes on
-> +	 * the CPU that was cleared from the cpumask.  The workqueue is
-> +	 * WQ_UNBOUND, so without pinning, the scheduler could migrate
-> +	 * the worker between the cpumask manipulation and the leader
-> +	 * loop, causing the leader to run on a different CPU while
-> +	 * this_cpu's core is skipped entirely.
-> +	 *
-> +	 * Use migrate_disable() rather than get_cpu() to prevent
-> +	 * migration while still allowing preemption.
-> +	 *
-> +	 * Note: rmpopt_cpumask is modified here without holding
-> +	 * rmpopt_wq_mutex.  This is safe because the delayed_work
-> +	 * mechanism guarantees single-threaded execution of this
-> +	 * handler, and rmpopt_cleanup() calls cancel_delayed_work_sync()
-> +	 * to ensure handler completion before tearing down the cpumask.
-> +	 */
-> +	migrate_disable();
-> +	this_cpu = smp_processor_id();
-> +	if (cpumask_test_cpu(this_cpu, &rmpopt_cpumask)) {
-> +		cpumask_clear_cpu(this_cpu, &rmpopt_cpumask);
-> +		current_cpu_cleared = true;
-> +	}
-> +
-
-Instead of reusing the global rmpopt_cpumask, why not make a copy of
-rmpopt_cpumask for this function? Then this function won't have to
-figure out current_cpu_cleared or restore rmpopt_cpumask at the end.
-
-I'm thinking to also drop the test and clear, this function can just
-always clear, like
-
-  cpumask_clear_cpu(smp_processor_id(), followers_cpumask);
-
-and later
-
-  on_each_cpu_mask(&followers_cpumask, ...);
-
-Actually, if for whatever reason cpumask_test_cpu(this_cpu,
-&rmpopt_cpumask) above returns false, would that mean somehow some cpu
-exists that wasn't enabled right when rmpopt was initialized? If yes,
-what happens if we call rmpopt() on a cpu where it wasn't initialized?
-
-> +	/* Leader: prime the RMPOPT cache on this CPU */
-> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
-> +		rmpopt(pa);
-> +
-> +	migrate_enable();
-> +
-> +	/* Followers: run RMPOPT on all other cores */
-> +	cpus_read_lock();
-> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G) {
-> +		on_each_cpu_mask(&rmpopt_cpumask, rmpopt_smp,
-> +				 (void *)pa, true);
-> +
-> +		 /* Give a chance for other threads to run */
-> +		cond_resched();
-> +	}
-> +	cpus_read_unlock();
-> +
-> +	if (current_cpu_cleared)
-> +		cpumask_set_cpu(this_cpu, &rmpopt_cpumask);
-> +}
-> +
->
-> [...snip...]
->
+--=-GJG805fU/68s8LS6pg3j--
