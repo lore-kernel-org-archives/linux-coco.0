@@ -1,528 +1,240 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9D23E51C7
-	for <linux-coco@lists.linux.dev>; Thu, 28 May 2026 11:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7843BBA07;
+	Thu, 28 May 2026 11:44:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779968197; cv=none; b=ri39b/rat/lBUJYlYwTCxdsqjy0RVVFjL4Aj8+QYvyDV3SMu8YJuz84UZ7D1FKXxLtoIOO2SAidz/Fw6fITnCIyimQLca7zac8iAk9zdCkDE6Sq0sHG+jJhvoreSGXgk8P8OtboeggBDoFY4NXKkLG2VFmmCk5ihmvftBlWOJtE=
+	t=1779968657; cv=none; b=BvtMQvZ/2gxmwenZt9tU6FReP9/G/fehAwIb7ibBqL6k/L1Wy4EU2777o7zxdFWKLbozqMtm4eoc9Lr/VeO52xZcsf1zoZinphVXtKJVbrbQk6K8CpWYxPzbcx6Xjd24dIhP5kCV1xQJr325auzl39vnKb6vux8R3k1dqtnyGtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779968197; c=relaxed/simple;
-	bh=m9d+7c85/6AA7n1Y3SufmsyrJZT30Ju59L4xiYM0eEA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMjyAGT7geD3G050EYatMIh4+sH8UZNzb0U0s4O/rgrN6Tl8FhLNLbEx13EAYljMLuPRYZnrkHCPm5RHhe+s4K0/g/y+HNGD4V7NtxKZJG/B9UDlDBjz6eAWEWa/fZQEKETeaFgWZnswdzVESKLSiYY4L2dc6OzVOw2JqlMNPeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	s=arc-20240116; t=1779968657; c=relaxed/simple;
+	bh=ZFsJLTZmrChJB5Tls1zhVzW18QgPm1S7P1G6rGUBWzU=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=sS+ecaAkun8rsUKagfDIbP8DNCOwj5RNgAS3fXnBxJABE+pUNrQQgZ1/mz1SAGTF9y0K7uFIrFRXRW6Vx+vuFl3sOo2vlx4LY8ePu0przMXnKIAtfGTFluojNSGX2YJOD5peFv3igEO92j+kV2NNogLF6lc7BddxUJlzMwMC780=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Received: from 8bytes.org (p200300f6af4fc5002be3892054af1079.dip0.t-ipconnect.de [IPv6:2003:f6:af4f:c500:2be3:8920:54af:1079])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 117BC6ADE3;
-	Thu, 28 May 2026 11:36:34 +0000 (UTC)
-Authentication-Results: smtp-out1.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B7AE45AD79;
-	Thu, 28 May 2026 11:36:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id OfWFK8EoGGqvSQAAD6G6ig
-	(envelope-from <jgross@suse.com>); Thu, 28 May 2026 11:36:33 +0000
-From: Juergen Gross <jgross@suse.com>
-To: linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Cc: Juergen Gross <jgross@suse.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [PATCH v2 4/6] KVM/x86: Return -errno instead of "1" for VMX related MSR emulation
-Date: Thu, 28 May 2026 13:36:03 +0200
-Message-ID: <20260528113605.267111-5-jgross@suse.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528113605.267111-1-jgross@suse.com>
-References: <20260528113605.267111-1-jgross@suse.com>
+	by mail.8bytes.org (Postfix) with ESMTPSA id E42001C59BB;
+	Thu, 28 May 2026 13:44:13 +0200 (CEST)
+Date: Thu, 28 May 2026 13:44:12 +0200
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: COCONUT-SVSM Development Release v2026.05-devel
+Message-ID: <ahgqjAdCTnhWQz_N@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[]
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Queue-Id: 117BC6ADE3
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Spam-Level: 
-X-Rspamd-Action: no action
 
-Instead of a literal "1" for signalling an error, use a negative errno
-value in the emulation code of VMX related MSR registers.
+Hi all,
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
----
-V2:
-- use -errno instead of KVM_MSR_RET_ERR
----
- arch/x86/kvm/vmx/nested.c    |  2 +-
- arch/x86/kvm/vmx/pmu_intel.c | 16 +++---
- arch/x86/kvm/vmx/tdx.c       | 10 ++--
- arch/x86/kvm/vmx/vmx.c       | 96 ++++++++++++++++++------------------
- 4 files changed, 62 insertions(+), 62 deletions(-)
+The month is almost over and it is time for a new COCONUT-SVSM development
+release. This one turned out bigger than usual with 33 merges that brought in
+91 non-merge commits from 9 contributors.
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 3fe88f29be7a..2236f15ffab2 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -1611,7 +1611,7 @@ int vmx_get_vmx_msr(struct nested_vmx_msrs *msrs, u32 msr_index, u64 *pdata)
- 		*pdata = msrs->vmfunc_controls;
- 		break;
- 	default:
--		return 1;
-+		return -EINVAL;
- 	}
- 
- 	return 0;
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 27eb76e6b6a0..4f7e354c4b50 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -362,7 +362,7 @@ static int intel_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		} else if (intel_pmu_handle_lbr_msrs_access(vcpu, msr_info, true)) {
- 			break;
- 		}
--		return 1;
-+		return -EINVAL;
- 	}
- 
- 	return 0;
-@@ -379,14 +379,14 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	switch (msr) {
- 	case MSR_CORE_PERF_FIXED_CTR_CTRL:
- 		if (data & pmu->fixed_ctr_ctrl_rsvd)
--			return 1;
-+			return -EINVAL;
- 
- 		if (pmu->fixed_ctr_ctrl != data)
- 			reprogram_fixed_counters(pmu, data);
- 		break;
- 	case MSR_IA32_PEBS_ENABLE:
- 		if (data & pmu->pebs_enable_rsvd)
--			return 1;
-+			return -EINVAL;
- 
- 		if (pmu->pebs_enable != data) {
- 			diff = pmu->pebs_enable ^ data;
-@@ -396,13 +396,13 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		break;
- 	case MSR_IA32_DS_AREA:
- 		if (is_noncanonical_msr_address(data, vcpu))
--			return 1;
-+			return -EINVAL;
- 
- 		pmu->ds_area = data;
- 		break;
- 	case MSR_PEBS_DATA_CFG:
- 		if (data & pmu->pebs_data_cfg_rsvd)
--			return 1;
-+			return -EINVAL;
- 
- 		pmu->pebs_data_cfg = data;
- 		break;
-@@ -411,7 +411,7 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		    (pmc = get_gp_pmc(pmu, msr, MSR_IA32_PMC0))) {
- 			if ((msr & MSR_PMC_FULL_WIDTH_BIT) &&
- 			    (data & ~pmu->counter_bitmask[KVM_PMC_GP]))
--				return 1;
-+				return -EINVAL;
- 
- 			if (!msr_info->host_initiated &&
- 			    !(msr & MSR_PMC_FULL_WIDTH_BIT))
-@@ -427,7 +427,7 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 			    (pmu->raw_event_mask & HSW_IN_TX_CHECKPOINTED))
- 				reserved_bits ^= HSW_IN_TX_CHECKPOINTED;
- 			if (data & reserved_bits)
--				return 1;
-+				return -EINVAL;
- 
- 			if (data != pmc->eventsel) {
- 				pmc->eventsel = data;
-@@ -439,7 +439,7 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 			break;
- 		}
- 		/* Not a known PMU MSR. */
--		return 1;
-+		return -EINVAL;
- 	}
- 
- 	return 0;
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 04ce321ebdf3..acc3242af4f4 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -2158,12 +2158,12 @@ int tdx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 		return 0;
- 	case MSR_IA32_MCG_EXT_CTL:
- 		if (!msr->host_initiated && !(vcpu->arch.mcg_cap & MCG_LMCE_P))
--			return 1;
-+			return -EINVAL;
- 		msr->data = vcpu->arch.mcg_ext_ctl;
- 		return 0;
- 	default:
- 		if (!tdx_has_emulated_msr(msr->index))
--			return 1;
-+			return -EACCES;
- 
- 		return kvm_get_msr_common(vcpu, msr);
- 	}
-@@ -2175,15 +2175,15 @@ int tdx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 	case MSR_IA32_MCG_EXT_CTL:
- 		if ((!msr->host_initiated && !(vcpu->arch.mcg_cap & MCG_LMCE_P)) ||
- 		    (msr->data & ~MCG_EXT_CTL_LMCE_EN))
--			return 1;
-+			return -EINVAL;
- 		vcpu->arch.mcg_ext_ctl = msr->data;
- 		return 0;
- 	default:
- 		if (tdx_is_read_only_msr(msr->index))
--			return 1;
-+			return -EACCES;
- 
- 		if (!tdx_has_emulated_msr(msr->index))
--			return 1;
-+			return -EACCES;
- 
- 		return kvm_set_msr_common(vcpu, msr);
- 	}
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index b9103de01428..2eee599fca30 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2076,7 +2076,7 @@ int vmx_get_feature_msr(u32 msr, u64 *data)
- 	switch (msr) {
- 	case KVM_FIRST_EMULATED_VMX_MSR ... KVM_LAST_EMULATED_VMX_MSR:
- 		if (!nested)
--			return 1;
-+			return -EINVAL;
- 		return vmx_get_vmx_msr(&vmcs_config.nested, msr, data);
- 	default:
- 		return KVM_MSR_RET_UNSUPPORTED;
-@@ -2111,18 +2111,18 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	case MSR_IA32_TSX_CTRL:
- 		if (!msr_info->host_initiated &&
- 		    !(vcpu->arch.arch_capabilities & ARCH_CAP_TSX_CTRL_MSR))
--			return 1;
-+			return -EINVAL;
- 		goto find_uret_msr;
- 	case MSR_IA32_UMWAIT_CONTROL:
- 		if (!msr_info->host_initiated && !vmx_has_waitpkg(vmx))
--			return 1;
-+			return -EINVAL;
- 
- 		msr_info->data = vmx->msr_ia32_umwait_control;
- 		break;
- 	case MSR_IA32_SPEC_CTRL:
- 		if (!msr_info->host_initiated &&
- 		    !guest_has_spec_ctrl_msr(vcpu))
--			return 1;
-+			return -EINVAL;
- 
- 		msr_info->data = to_vmx(vcpu)->spec_ctrl;
- 		break;
-@@ -2139,14 +2139,14 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		if (!kvm_mpx_supported() ||
- 		    (!msr_info->host_initiated &&
- 		     !guest_cpu_cap_has(vcpu, X86_FEATURE_MPX)))
--			return 1;
-+			return -EINVAL;
- 		msr_info->data = vmcs_read64(GUEST_BNDCFGS);
- 		break;
- 	case MSR_IA32_MCG_EXT_CTL:
- 		if (!msr_info->host_initiated &&
- 		    !(vmx->msr_ia32_feature_control &
- 		      FEAT_CTL_LMCE_ENABLED))
--			return 1;
-+			return -EINVAL;
- 		msr_info->data = vcpu->arch.mcg_ext_ctl;
- 		break;
- 	case MSR_IA32_FEAT_CTL:
-@@ -2155,16 +2155,16 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	case MSR_IA32_SGXLEPUBKEYHASH0 ... MSR_IA32_SGXLEPUBKEYHASH3:
- 		if (!msr_info->host_initiated &&
- 		    !guest_cpu_cap_has(vcpu, X86_FEATURE_SGX_LC))
--			return 1;
-+			return -EINVAL;
- 		msr_info->data = to_vmx(vcpu)->msr_ia32_sgxlepubkeyhash
- 			[msr_info->index - MSR_IA32_SGXLEPUBKEYHASH0];
- 		break;
- 	case KVM_FIRST_EMULATED_VMX_MSR ... KVM_LAST_EMULATED_VMX_MSR:
- 		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_VMX))
--			return 1;
-+			return -EINVAL;
- 		if (vmx_get_vmx_msr(&vmx->nested.msrs, msr_info->index,
- 				    &msr_info->data))
--			return 1;
-+			return -EINVAL;
- #ifdef CONFIG_KVM_HYPERV
- 		/*
- 		 * Enlightened VMCS v1 doesn't have certain VMCS fields but
-@@ -2180,19 +2180,19 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		break;
- 	case MSR_IA32_RTIT_CTL:
- 		if (!vmx_pt_mode_is_host_guest())
--			return 1;
-+			return -EINVAL;
- 		msr_info->data = vmx->pt_desc.guest.ctl;
- 		break;
- 	case MSR_IA32_RTIT_STATUS:
- 		if (!vmx_pt_mode_is_host_guest())
--			return 1;
-+			return -EINVAL;
- 		msr_info->data = vmx->pt_desc.guest.status;
- 		break;
- 	case MSR_IA32_RTIT_CR3_MATCH:
- 		if (!vmx_pt_mode_is_host_guest() ||
- 			!intel_pt_validate_cap(vmx->pt_desc.caps,
- 						PT_CAP_cr3_filtering))
--			return 1;
-+			return -EINVAL;
- 		msr_info->data = vmx->pt_desc.guest.cr3_match;
- 		break;
- 	case MSR_IA32_RTIT_OUTPUT_BASE:
-@@ -2201,7 +2201,7 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 					PT_CAP_topa_output) &&
- 			 !intel_pt_validate_cap(vmx->pt_desc.caps,
- 					PT_CAP_single_range_output)))
--			return 1;
-+			return -EINVAL;
- 		msr_info->data = vmx->pt_desc.guest.output_base;
- 		break;
- 	case MSR_IA32_RTIT_OUTPUT_MASK:
-@@ -2210,14 +2210,14 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 					PT_CAP_topa_output) &&
- 			 !intel_pt_validate_cap(vmx->pt_desc.caps,
- 					PT_CAP_single_range_output)))
--			return 1;
-+			return -EINVAL;
- 		msr_info->data = vmx->pt_desc.guest.output_mask;
- 		break;
- 	case MSR_IA32_RTIT_ADDR0_A ... MSR_IA32_RTIT_ADDR3_B:
- 		index = msr_info->index - MSR_IA32_RTIT_ADDR0_A;
- 		if (!vmx_pt_mode_is_host_guest() ||
- 		    (index >= 2 * vmx->pt_desc.num_address_ranges))
--			return 1;
-+			return -EINVAL;
- 		if (index % 2)
- 			msr_info->data = vmx->pt_desc.guest.addr_b[index / 2];
- 		else
-@@ -2359,7 +2359,7 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		break;
- 	case MSR_IA32_DEBUGCTLMSR:
- 		if (!vmx_is_valid_debugctl(vcpu, data, msr_info->host_initiated))
--			return 1;
-+			return -EINVAL;
- 
- 		data &= vmx_get_supported_debugctl(vcpu, msr_info->host_initiated);
- 
-@@ -2377,10 +2377,10 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		if (!kvm_mpx_supported() ||
- 		    (!msr_info->host_initiated &&
- 		     !guest_cpu_cap_has(vcpu, X86_FEATURE_MPX)))
--			return 1;
-+			return -EINVAL;
- 		if (is_noncanonical_msr_address(data & PAGE_MASK, vcpu) ||
- 		    (data & MSR_IA32_BNDCFGS_RSVD))
--			return 1;
-+			return -EINVAL;
- 
- 		if (is_guest_mode(vcpu) &&
- 		    ((vmx->nested.msrs.entry_ctls_high & VM_ENTRY_LOAD_BNDCFGS) ||
-@@ -2391,21 +2391,21 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		break;
- 	case MSR_IA32_UMWAIT_CONTROL:
- 		if (!msr_info->host_initiated && !vmx_has_waitpkg(vmx))
--			return 1;
-+			return -EINVAL;
- 
- 		/* The reserved bit 1 and non-32 bit [63:32] should be zero */
- 		if (data & (BIT_ULL(1) | GENMASK_ULL(63, 32)))
--			return 1;
-+			return -EINVAL;
- 
- 		vmx->msr_ia32_umwait_control = data;
- 		break;
- 	case MSR_IA32_SPEC_CTRL:
- 		if (!msr_info->host_initiated &&
- 		    !guest_has_spec_ctrl_msr(vcpu))
--			return 1;
-+			return -EINVAL;
- 
- 		if (kvm_spec_ctrl_test_value(data))
--			return 1;
-+			return -EINVAL;
- 
- 		vmx->spec_ctrl = data;
- 		if (!data)
-@@ -2430,9 +2430,9 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	case MSR_IA32_TSX_CTRL:
- 		if (!msr_info->host_initiated &&
- 		    !(vcpu->arch.arch_capabilities & ARCH_CAP_TSX_CTRL_MSR))
--			return 1;
-+			return -EINVAL;
- 		if (data & ~(TSX_CTRL_RTM_DISABLE | TSX_CTRL_CPUID_CLEAR))
--			return 1;
-+			return -EINVAL;
- 		goto find_uret_msr;
- 	case MSR_IA32_CR_PAT:
- 		ret = kvm_set_msr_common(vcpu, msr_info);
-@@ -2451,12 +2451,12 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		     !(to_vmx(vcpu)->msr_ia32_feature_control &
- 		       FEAT_CTL_LMCE_ENABLED)) ||
- 		    (data & ~MCG_EXT_CTL_LMCE_EN))
--			return 1;
-+			return -EINVAL;
- 		vcpu->arch.mcg_ext_ctl = data;
- 		break;
- 	case MSR_IA32_FEAT_CTL:
- 		if (!is_vmx_feature_control_msr_valid(vmx, msr_info))
--			return 1;
-+			return -EINVAL;
- 
- 		vmx->msr_ia32_feature_control = data;
- 		if (msr_info->host_initiated && data == 0)
-@@ -2481,70 +2481,70 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		    (!guest_cpu_cap_has(vcpu, X86_FEATURE_SGX_LC) ||
- 		    ((vmx->msr_ia32_feature_control & FEAT_CTL_LOCKED) &&
- 		    !(vmx->msr_ia32_feature_control & FEAT_CTL_SGX_LC_ENABLED))))
--			return 1;
-+			return -EINVAL;
- 		vmx->msr_ia32_sgxlepubkeyhash
- 			[msr_index - MSR_IA32_SGXLEPUBKEYHASH0] = data;
- 		break;
- 	case KVM_FIRST_EMULATED_VMX_MSR ... KVM_LAST_EMULATED_VMX_MSR:
- 		if (!msr_info->host_initiated)
--			return 1; /* they are read-only */
-+			return -EINVAL; /* they are read-only */
- 		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_VMX))
--			return 1;
-+			return -EINVAL;
- 		return vmx_set_vmx_msr(vcpu, msr_index, data);
- 	case MSR_IA32_RTIT_CTL:
- 		if (!vmx_pt_mode_is_host_guest() ||
- 			vmx_rtit_ctl_check(vcpu, data) ||
- 			vmx->nested.vmxon)
--			return 1;
-+			return -EINVAL;
- 		vmcs_write64(GUEST_IA32_RTIT_CTL, data);
- 		vmx->pt_desc.guest.ctl = data;
- 		pt_update_intercept_for_msr(vcpu);
- 		break;
- 	case MSR_IA32_RTIT_STATUS:
- 		if (!pt_can_write_msr(vmx))
--			return 1;
-+			return -EINVAL;
- 		if (data & MSR_IA32_RTIT_STATUS_MASK)
--			return 1;
-+			return -EINVAL;
- 		vmx->pt_desc.guest.status = data;
- 		break;
- 	case MSR_IA32_RTIT_CR3_MATCH:
- 		if (!pt_can_write_msr(vmx))
--			return 1;
-+			return -EINVAL;
- 		if (!intel_pt_validate_cap(vmx->pt_desc.caps,
- 					   PT_CAP_cr3_filtering))
--			return 1;
-+			return -EINVAL;
- 		vmx->pt_desc.guest.cr3_match = data;
- 		break;
- 	case MSR_IA32_RTIT_OUTPUT_BASE:
- 		if (!pt_can_write_msr(vmx))
--			return 1;
-+			return -EINVAL;
- 		if (!intel_pt_validate_cap(vmx->pt_desc.caps,
- 					   PT_CAP_topa_output) &&
- 		    !intel_pt_validate_cap(vmx->pt_desc.caps,
- 					   PT_CAP_single_range_output))
--			return 1;
-+			return -EINVAL;
- 		if (!pt_output_base_valid(vcpu, data))
--			return 1;
-+			return -EINVAL;
- 		vmx->pt_desc.guest.output_base = data;
- 		break;
- 	case MSR_IA32_RTIT_OUTPUT_MASK:
- 		if (!pt_can_write_msr(vmx))
--			return 1;
-+			return -EINVAL;
- 		if (!intel_pt_validate_cap(vmx->pt_desc.caps,
- 					   PT_CAP_topa_output) &&
- 		    !intel_pt_validate_cap(vmx->pt_desc.caps,
- 					   PT_CAP_single_range_output))
--			return 1;
-+			return -EINVAL;
- 		vmx->pt_desc.guest.output_mask = data;
- 		break;
- 	case MSR_IA32_RTIT_ADDR0_A ... MSR_IA32_RTIT_ADDR3_B:
- 		if (!pt_can_write_msr(vmx))
--			return 1;
-+			return -EINVAL;
- 		index = msr_info->index - MSR_IA32_RTIT_ADDR0_A;
- 		if (index >= 2 * vmx->pt_desc.num_address_ranges)
--			return 1;
-+			return -EINVAL;
- 		if (is_noncanonical_msr_address(data, vcpu))
--			return 1;
-+			return -EINVAL;
- 		if (index % 2)
- 			vmx->pt_desc.guest.addr_b[index / 2] = data;
- 		else
-@@ -2563,20 +2563,20 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		if (data & PERF_CAP_LBR_FMT) {
- 			if ((data & PERF_CAP_LBR_FMT) !=
- 			    (kvm_caps.supported_perf_cap & PERF_CAP_LBR_FMT))
--				return 1;
-+				return -EINVAL;
- 			if (!cpuid_model_is_consistent(vcpu))
--				return 1;
-+				return -EINVAL;
- 		}
- 		if (data & PERF_CAP_PEBS_FORMAT) {
- 			if ((data & PERF_CAP_PEBS_MASK) !=
- 			    (kvm_caps.supported_perf_cap & PERF_CAP_PEBS_MASK))
--				return 1;
-+				return -EINVAL;
- 			if (!guest_cpu_cap_has(vcpu, X86_FEATURE_DS))
--				return 1;
-+				return -EINVAL;
- 			if (!guest_cpu_cap_has(vcpu, X86_FEATURE_DTES64))
--				return 1;
-+				return -EINVAL;
- 			if (!cpuid_model_is_consistent(vcpu))
--				return 1;
-+				return -EINVAL;
- 		}
- 		ret = kvm_set_msr_common(vcpu, msr_info);
- 		break;
--- 
-2.54.0
+The changes include:
+
+  - Boot flow: stage2 was removed and replaced by the new simpler boot/bldr
+    loader. Build, xbuild, IGVM builder, configs, and launch paths now
+    prefer/consume bldr.
+
+  - Platform/CPU feature model: CPUID handling was routed through the platform
+    abstraction, with a feature lookup table added for x2APIC, physical address
+    size, Hyper-V discovery, CET, FPU/SSE, INVLPGB, C-bit, and related SNP
+    features.
+
+  - Attestation: Added vsock transport support with serial fallback, refactored
+    aproxy transport handling, added read_exact / write_all helpers, and
+    documented the vsock transport option.
+
+  - Protocol hardening: Core and attestation protocol handlers gained stricter
+    region validation, reserved-bit checks, request validation, mutually
+    exclusive core calls, safer CAA/VMSA handling, and better guest fault
+    forwarding.
+  
+  - Memory and guest handling: Shared pages are made private on SharedBox drop,
+    guest memory reads now require FromBytes, VMSA registration checks
+    overlaps, and CAA/VMSA tracking was tightened.
+
+  - Virtio/vTPM fixes: Virtio owning queue validation now checks tokens and
+    lengths before indexing/slicing. vTPM failure mode no longer returns
+    uninitialized heap bytes.
+
+  - ACPI/fw_cfg cleanup: Removed leftover fw_cfg-based ACPI/MADT logic and
+    dropped the ACPI fuzz target.
+
+  - Common architecture code: MSR, CR0/CR4, SEV status, x86, and APIC
+    definitions moved into cpuarch.
+
+  - Scripts and CI: QEMU launch no longer invokes sudo, gained --tcg, dropped
+    the QEMU >= 11 nocc object path, improved test timeout/error reporting,
+    fixed workflow triggers, added Verus caching, updated dependency review to
+    Node 24, and dumps host dmesg on QEMU/test failures.
+
+  - Verification: Documentation and workflows now reflect cargo-verus usage and
+    Verus installation changes.
+
+  - Misc fixes: ELF symbol/buffer bounds fixes, IPI race fixes, CPU vendor
+    display, kernel version display during guest launch, and IGVM target VTL
+    selection based on firmware presence.
+
+As usual, the full shortlog since the last release is attached.
+
+Have fun!
+
+Regards,
+
+	Joerg
+
+Carlos López (18):
+      kernel: platform: add platform_method!() macro
+      kernel: platform: do not take &self to query CPUID
+      kernel: cpu/vc: simplify snp_cpuid()
+      kernel: platform/snp: properly handle CPUID leaf 0xd
+      kernel: platform: add default CPUID implementation
+      kernel: always route CPUID through the platform abstraction
+      kernel: cpu/features: create feature lookup table
+      kernel: cet: make CET discovery into a feature
+      kernel: cpu/sse: make FPU feature detection into a feature
+      kernel: hyperv: make Hyper-V discovery into a feature
+      kernel: sev/tlb: make INVLPGB max entry detection into a feature
+      kernel: platform: make phys address sizes into a feature
+      kernel: platform: make x2apic into a feature
+      kernel: platform: make platform statics read-only after init
+      kernel: platform: remove trivial FIXME for SvsmPlatformCell
+      kernel: platform/snp: make C-bit into a feature
+      kernel: platform/snp: get physical address size through CPU features
+      kernel: platform: remove setup_guest_host_comm()
+
+Joerg Roedel (23):
+      kernel/guestmem: Require FromBytes for read_from_guest()
+      kernel/mm: Make all pages private when SharedBox is dropped
+      kernel/protocols: Forward GuestPtr faults to the guest
+      kernel/protocols: Make sure memory regions are valid for attestation protocol
+      kernel/greq: Round extended guest request size up to page-size
+      kernel/percpu: Always page_align CAA address before mapping
+      kernel/percpu: Track CAA address in PERCPU_VMSAS
+      kernel/percpu: Check for region overlap in VMSA registration
+      kernel/percpu: Return SvsmError from PERCPU_VMSAS.unregister()
+      kernel/snp: Register initial guest VMSA
+      kernel/protocols: Check for valid regions in core_pvalidate
+      kernel/protocols: Update PERCPU_VMSAS in core_remap_caa()
+      kernel/protocols: Do not deregister VMSA before updating RMP state
+      kernel/protocols: Check for reserved bits in core_pvalidate_one()
+      kernel/protocols: Check for region validity in core_pvalidate_one()
+      kernel/protocols: Check whether attestation requests are valid
+      kernel/protocols: Remove try_from_as_ref() from attestation structures
+      kernel/protocols: Use valid_phys_region() where needed
+      kernel/protocols: Make some core protocol calls mutually exclusive
+      kernel/protocols: Use MemoryRegion::checked_new() in core protocol handlers
+      Elf: Make sure buffer length is multiple of 16
+      Elf: Do not read symbols beyond symbol table
+      COCONUT-SVSM Release 2026.05-devel
+
+Jon Lange (22):
+      cpuarch: move MSR and CR0/CR4 definitions to common crate
+      igvmbuilder: reshape the initial low-mem page tables
+      bldr: implement a simpler boot loader
+      igvmbuild: support bldr
+      xbuild: support bldr
+      build: consume bldr instead of stage2
+      Merge pull request #1029 from msft-jlange/bldr
+      svsm: prefer bldr to stage2
+      xbuild: remove stage2 support
+      igvmbuilder: remove support for stage2
+      stage2: remove stage2
+      bldr: clear temporary mapping PTEs after use
+      Merge pull request #1064 from MelodyHuibo/init_vgif
+      Merge pull request #1068 from 00xc/platform/fixme
+      error: avoid `SvsmReqError` outside of SVSM-specific paths
+      svsm: detect and display CPU vendor
+      scripts: display kernel version when launching guest
+      cpu/ipi: fix race conditions
+      Merge pull request #1076 from msft-jlange/cpu_vendor
+      Merge pull request #1077 from msft-jlange/kernel_info
+      igvmbuilder: configure target VTL based on the presence of firmware
+      cpuarch: move APIC constants to a common location
+
+Jörg Rödel (24):
+      Merge pull request #1048 from luigix25/fix_ci
+      Merge pull request #1052 from n-ramacciotti/ci/remove_unmaintained_action
+      Merge pull request #1054 from msft-jlange/bldr_ptes
+      Merge pull request #1043 from mvanhorn/feat/1042-tools-check
+      Merge pull request #1050 from n-ramacciotti/ci/simplify-test-in-svsm
+      Merge pull request #1053 from msft-jlange/remove_stage2
+      Merge pull request #1055 from n-ramacciotti/ci/update_dep_review_node_24
+      Merge pull request #1030 from 00xc/platform/cpuid-v2
+      Merge pull request #1059 from ziqiaozhou/fix-broken-alloc-proof
+      Merge pull request #1067 from 00xc/ro-after-init
+      Merge pull request #1070 from MelodyHuibo/enable_alternate_injection
+      Merge pull request #1071 from 00xc/platform/remove-host-comm
+      Merge pull request #1072 from stefano-garzarella/virtio-fix-owning-pop
+      Merge pull request #1074 from stefano-garzarella/fix-tpm-allocation
+      Merge pull request #1078 from msft-jlange/ipi_fix
+      Merge pull request #1038 from ziqiaozhou/cargo-verus
+      Merge pull request #1079 from stefano-garzarella/verus-cache
+      Merge pull request #1080 from stefano-garzarella/ci-fix-verification-label-trigger
+      Merge pull request #1082 from stefano-garzarella/ci-dmesg
+      Merge pull request #1066 from luigix25/remove_sudo
+      Merge pull request #1090 from luigix25/fw_cfg_cleanup
+      Merge pull request #1085 from msft-jlange/igvm_vtl
+      Merge pull request #1087 from msft-jlange/cpu_apic
+      Merge pull request #1069 from 00xc/platform/missing-features
+
+Luigi Leonardi (14):
+      github/workflows: add apt update before apt install in publish-docs
+      io: add `read_exact` and `write_all` to Read and Write trait
+      aproxy: use read/write traits
+      aproxy: factor out accept loop to a separate function
+      aproxy: enable vsock for attestation
+      kernel/attest: abstract transport implementation
+      kernel/attest: switch to write_all/read_exact
+      kernel/attest: add vsock transport with serial fallback
+      Documentation/ATTESTATION: document vsock transport option
+      scripts/launch_guest: drop nocc object for QEMU >= 11.0
+      scripts/launch_guest: add --tcg option to use TCG acceleration
+      github/workflows: set up /dev/kvm permissions
+      scripts/launch_guest: remove sudo from QEMU invocation
+      acpi: remove fw_cfg-based ACPI/MADT leftover
+
+Matt Van Horn (1):
+      testing/scripts: Check required host tools before launching guest
+
+Melody Wang (2):
+      cpu: Make sure guest's GIF is set
+      boot: Allow Alternate Injection to be configured via boot params
+
+Nicola Ramacciotti (5):
+      github/workflows: Remove unmaintained action
+      scripts/test-in-svsm: Print exit code when failing
+      scripts/test-in-svsm: Add optional timeout handling
+      github/workflows: Use the test-in-svsm script directly
+      github/workflows: update dependency review to node 24
+
+Stefano Garzarella (10):
+      Merge pull request #879 from luigix25/add_attestation_to_vsock
+      Merge pull request #1058 from luigix25/qemu_11_launch
+      Merge pull request #1065 from msft-jlange/svsm_req_error
+      virtio-drivers: queue/owning: validate the token before indexing buffer table
+      virtio-drivers: queue/owning: validate len before slicing buffer
+      kernel/vtpm: fix uninitialized heap bytes returned in TPM failure mode
+      github/manual-verify: fix triggering on 'verification' label
+      github/manual-verify: cache verus toolchain
+      Merge pull request #1073 from joergroedel/fixes
+      github/qemu: dump host kernel messages on QEMU or test failure
+
+Ziqiao Zhou (5):
+      mm/alloc.verus: update phys_to_virt proof after stage2 removal
+      verification: Support Verus's verita test via cargo-verus.
+      scripts: Update vsinstall.sh to directly install verus.
+      workflow: Revert "github/manual-verify: check cargo-v output for errors"
+      doc: Update verification.md to reflect the use of cargo-verus
+
 
