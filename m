@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3FB3EFFB3
-	for <linux-coco@lists.linux.dev>; Thu, 28 May 2026 16:44:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D802877DA
+	for <linux-coco@lists.linux.dev>; Thu, 28 May 2026 17:26:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779986659; cv=none; b=V3cygZ59rEtvY2Ye1fFf7yFfTFdlzr8M6TG3JPBSldx+7R0vJep1J+WbdUpdEzm6ubrSSBIkX3r7Q/cQpypnq39ukUt0Z2A4LrDiNq/bP9/6qlj57sfw1uxD2L9kF96cOMea/YNVi6VhW7i5QnclcnQhqfapSTsoXsTyeIDg/IQ=
+	t=1779989190; cv=none; b=JDxEt1KrBec0vCiCy2oM6iWmRoyrF+1f8Q/1oUyPHCQnEABMot95ooO9y2nNt/KK6+PzLqckb1xMVceX5bYSEKcXdzSqSiF6b2nEchSL+nbTvrpbVImLBzyvzUJD79D28xFQqGQOkQMkX3n9dqazp5c9O4XPeekGNGWhCQMlX7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779986659; c=relaxed/simple;
-	bh=nDfOi7I8EsGjEZJKW1fFpQ+3yIGjQAwG9zuzLIZCuxs=;
+	s=arc-20240116; t=1779989190; c=relaxed/simple;
+	bh=TH53RhMK+XlGaeSMZCGvsA56LInHc9XKnxaBVzhxXj8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dTqqF4fO05nEwEHhYubLoIXbvPmTK1NFuoLrDA2OQBnRMN5IqNCHWKefdSmQaKGe2U26WOIQ1vwYXFFPGJIhcIeCoH+mRJZasVQGZFzCp8/lCwkLK9r9g8PH7eP4OQIdf/WBySh1UiL0hXjTXtzk870Q2lj8xQENifyI9ij0FAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CgaTT+I3; arc=none smtp.client-ip=192.198.163.8
+	 In-Reply-To:Content-Type; b=OKLxpXx+O7DwXMlE9yXkGU0X6tM59ax+SB9vW3mCS26VJRLApyJ8YWMp5mmOTnTXRceD6NHXLKzlgAFnueakKU9QlFyOjKVXgZFEPx486uMBch1hlBc/V+S4pz4lekGAVYzB/HR3Mfe89dZl3/3vS9+doV5j6upTkPwhz5C9pgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=COdE6Heu; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CgaTT+I3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="COdE6Heu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779986657; x=1811522657;
+  t=1779989189; x=1811525189;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=nDfOi7I8EsGjEZJKW1fFpQ+3yIGjQAwG9zuzLIZCuxs=;
-  b=CgaTT+I3XwoSfmN/dEAi56rGeKGcApXlcGiLcfY3/IreLemZA6vle7Ug
-   ddMdpvV/bWr5lLqjKeC2mZy4DOuDQkLV/n5uKdFDckZ2DRQY9LKsxVhhi
-   oemjSuCqUe/I8s4AdfmKOsX6/uTBVKT4SQ5Ge2jKT+W3PDKrXsndfLUEu
-   bmvQppIlKBWZ/sM/IA92tKv9jB19XBTGvpBh21TjlJ9Lng2XGVs/bHaHb
-   83/Uv07bbPEoyMDrsqmwTC0Oxa0rF7auVDPK9fkFGJlUO3Hd7YoZAFX0b
-   uDI2qfuxOl0aPFww4t8MkiroU5aJm4qO41GeyoIPyyyFzYv31bRWwe/WT
-   g==;
-X-CSE-ConnectionGUID: 0IC1S/BeTXebJucNpTa5lQ==
-X-CSE-MsgGUID: 6byAvl1NQzO//7gtW3cF7A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="98408391"
+  bh=TH53RhMK+XlGaeSMZCGvsA56LInHc9XKnxaBVzhxXj8=;
+  b=COdE6HeuauSFNQZRQ9DBGGY6RrsjXxnijtLPeaZ9MmqgiCwZ5Iu2dHxj
+   F8Ms2kB2VyBudN2MMl0S19QNzB5/XTvmSapin/k+Vemy5DwCY76UlMr64
+   3+wZA2g2r5otF8MAK61t+IkvwQF+aP+7o9uETdMPyt6Bi6ObaHhL5dve3
+   DpkmcTwdlMKU8vmqy/d077AMZsEoaLHEOepGpVn5uahunlGONvxqXPKK1
+   ZIBfmuJMxIsTGIzAdY6ZfYcOZOhkgBVYw4JEJQcS3xXS5Nfd/06tjyhqC
+   m3/pZFwPiUIdJEwM5Aq8DSsY9FaKaBP/uBWFPQecyB8wPSiC/FD4nFRbd
+   A==;
+X-CSE-ConnectionGUID: jCxwbyltQcasNqOUuaGTQw==
+X-CSE-MsgGUID: cFwkwVHcTrCNaeHBl1qHxA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="79870690"
 X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
-   d="scan'208";a="98408391"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 09:44:17 -0700
-X-CSE-ConnectionGUID: 3h2OnGaES+Wxwk+gk4LgnA==
-X-CSE-MsgGUID: 5aWX3z2wT9G5skJltP4+kA==
+   d="scan'208";a="79870690"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 10:26:28 -0700
+X-CSE-ConnectionGUID: mwCUubzRQtGxuPEV3ByqYg==
+X-CSE-MsgGUID: 1MhySJ4UR+GvmUdHHsWyMg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
-   d="scan'208";a="238189900"
+   d="scan'208";a="247690447"
 Received: from mvcheng-desk2.amr.corp.intel.com (HELO [10.125.111.73]) ([10.125.111.73])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 09:44:16 -0700
-Message-ID: <350d139a-29d8-4ccc-ab4a-4c7c7cc73848@intel.com>
-Date: Thu, 28 May 2026 09:43:42 -0700
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 10:26:28 -0700
+Message-ID: <5a142330-17a6-4eac-adbf-f6d6cfa7a092@intel.com>
+Date: Thu, 28 May 2026 10:25:55 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -117,59 +117,9 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 5/28/26 03:14, Kiryl Shutsemau wrote:
-> +	switch (size) {
-> +	case 1:
-> +		*(u8 *)&regs->ax = (u8)val;
-> +		break;
-> +	case 2:
-> +		*(u16 *)&regs->ax = (u16)val;
-> +		break;
+> What about the patch below. Inspired by kvm's assign_register().
 
-Is this intentionally clever to only work on little endian, or
-accidentally clever? This seems like a great IOCCC thing to do, but it's
-far too clever for my taste.
+I think I could stand this if it consolidated this site with kvm's
+assign_register(). The copy/paste is too much to bear.
 
-I mean, it's making a pointer to a 64-bit value with an 8-bit name and
-casting that to an 8-bit pointer and then assigning that to a 32-bit
-value cast to a u8.
 
-Is it just my tiny brain that thinks this will be unintelligible on Monday?
-
-How about we just make the CPU do the thinking for us? IN[BWL] and
-MOV[BWL] have the same semantics here, right? So even if 'rax' and 'val'
-are 64-bit values here, the following should have all the right
-behaviors, I think.
-
-I generally loathe inline assembly. But we have a CPU that kinda knows
-the rules already. No need for us to laboriously reimplement it. Right?
-
-Thanks to the friendly LLM that knows inline assembly better than I do.
-The resulting compiled assembly looks right to me.
-
-/*
- * Use MOV[BWL] to/from registers to match the IN[BWL] behavior
- * including the fact that INL zeros the upper 64-bits while
- * IN[BW] don't zero anything.
- */
-
-    switch (size) {
-    case 1:
-	// Just write 1 byte of RAX:
-        __asm__ volatile ("movb %b1, %b0" : "+q"(rax)
-                                          : "q"(val));
-        break;
-    case 2:
-	// Write 2 bytes of RAX:
-        __asm__ volatile ("movw %w1, %w0" : "+r"(rax)
-                                          : "r"(val));
-        break;
-    case 4:
-	// Write 'val' into lower 32 bits. Zero the upper 32 bits:
-        __asm__ volatile ("movl %k1, %k0" : "=r"(rax)
-                                          : "r"(val));
-        break;
-    default:
-	// WARN
-    }
-
-Thoughts?
