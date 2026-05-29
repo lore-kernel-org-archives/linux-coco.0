@@ -1,265 +1,263 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8423C1F29
-	for <linux-coco@lists.linux.dev>; Fri, 29 May 2026 09:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F123EAC9B
+	for <linux-coco@lists.linux.dev>; Fri, 29 May 2026 14:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780047102; cv=none; b=X3Z/tIsY7D1X2ESlGW+TO+5EUF3ybKSsu1H+XCLSpq7NZN95s+DFy83xiIjCwxevApBwKGt8VUgt3CEMQ5vvchUfw3xJFZTrFVLNIkMDrMOQUJ36M+sTMKrhZWtRDVlya2E3Xyx/7JaH9DGPrOiFWtcjP8hGuDORXqxU0Gg2kw8=
+	t=1780065893; cv=none; b=pp/wBuN01wrdKm+wbIF+2r9Tc4UdDe4QFG7fTkZf0FY06fBnsitx/YwiNZEITZrdLD1CVq1dRC8LPxVwCM39DOG413sN/IFLKaxlBTDs5X7AWwAbPNCWVPts46r2/Xl7cY3+Y2Dju+soI/g7KN34rRMCciAMmGu6JuBgbGWCzxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780047102; c=relaxed/simple;
-	bh=zwPWSNVQOEVb3+MrbGjW0ngDm8bF68wRLffTqbd5Nk4=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Xx+jlHcqcEGnYIrKmoFNNWe88F4VZ8xscgzk7ZX0/5xZg3IRlReFJqBlfs8uT0SU6WTA2iHFaSB2dg09/O3a+YOWEnt+KuBWGkbuQSz3buhdaOhJz4QBbjfhepWx9+r/EEoLALqG2MUBCHN9y0AZ5UwTRcm3DGM/KDfSmdGcupQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=P//CkpUr; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1780065893; c=relaxed/simple;
+	bh=3cpMbzFFqk1fqsz2bupF/ffg3SDdqCGa7/msOxpC62s=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IORGsvuSjZjuVsiZRNPscMRhJ5cuiJC+1OlbjUI92N2bvSxaOgYT1AoU2eWvgHSXrxrVRyOHiP+grhCn5GByDt6kDViVzzDEuk45ckNiLFA5h7EInosjIMoUWVxgotPEMfUf+BwT0jrOWAaWD24gPRmabcl+TlVeAwTNWHMNLfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JSlayFHC; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="P//CkpUr"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-687e7edaafeso12325199a12.1
-        for <linux-coco@lists.linux.dev>; Fri, 29 May 2026 02:31:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JSlayFHC"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-842208d5b0eso117275b3a.3
+        for <linux-coco@lists.linux.dev>; Fri, 29 May 2026 07:44:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1780047100; x=1780651900; darn=lists.linux.dev;
-        h=in-reply-to:autocrypt:content-language:references:cc:to:from
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zwPWSNVQOEVb3+MrbGjW0ngDm8bF68wRLffTqbd5Nk4=;
-        b=P//CkpUremkGJaDkIDuFtDMlTRziGSIHjTX+EJuAGhPKmW1A6e1U6YLOWq/7pY6ZUA
-         OBwgimSNDrayLv3xvcKKq83gjTckPK/Z3Qvzy3fl1rsZt/ue7AVhuHsapzGlj5aJDkw8
-         rSIGiF+FB5leLabHBdX5NMooSdlc+Me+ZJCXcVFm4TLFCMRgWtCOuvToNs76cbSrR2lc
-         RMdEmEvnMg8qDIBoXNRNy0lvCyXE8Beu1SSlTnOGPMO0SfpUxj/4b1oQjXh8Yyf4S3eS
-         abQMj6GS6oKsGGQlqh1sxVuLR9M4RZH+cHlUB3NGA+rhNXDYgfGE//2W4V8HkKq1k9ye
-         6h6g==
+        d=google.com; s=20251104; t=1780065891; x=1780670691; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4ZSmySQjJHcnKIUXjsIIs83nT6d2RU++b42lJ4OxIH4=;
+        b=JSlayFHCPMRF5Ga5zQ4ffyE3X9niS8FXAzGZUHJyJaf+R6dA5iAs+sfzu14PM1tAEZ
+         DLmR8DemlRq7N8EJuhZeATd53CJd+stljKuzUao6AmIFzQjgDDAQcsClPEgkCZDEj0Xo
+         H9lhtp4gsHNvVH8eNUqL2uK1uYHrg4JTB3gfZrOjXCbRAtp/MUbYg2mLtLD7C2U2z7M+
+         dmXoIBN5otAYa0F1nA/9lnwvTriYLT9KZOfbxYmpACAv+u/VbVcPjQzfsBApGr703FU0
+         cEbnE/Uy3RbYQazaTHc4807F/Q/4HeFa2bSQ/gKHZpOBIPvHD5Urtjob8olHp1eMdxLk
+         lRjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780047100; x=1780651900;
-        h=in-reply-to:autocrypt:content-language:references:cc:to:from
-         :subject:user-agent:mime-version:date:message-id:x-gm-gg
+        d=1e100.net; s=20251104; t=1780065891; x=1780670691;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zwPWSNVQOEVb3+MrbGjW0ngDm8bF68wRLffTqbd5Nk4=;
-        b=P0VkMCabE9A8WlzaKWMSHfiINxcM6R9VFW0ayRiwcpkxGLaWiX9Yw4RO4Jptb+SQsf
-         cKZYi3krqJu0kelYIooDvXVf8gAcapWD6LuNTgu0gnCOS8czhaqYMbkskjEfsgKlhhbm
-         LDuxmSJ0fL9oFObhJRGF2dzkag2hVEIa4GkBvPrgmFgWbot459hUnzTjoZ3pVElcTTFS
-         wljVVzEIy9/haEGimXoINy9P6qBc0VjjrLUSLM83QbVfmRo4FPAZ7Y+RM7QgzqsDayAz
-         Aw3iNQ8KUChlk9BR709kjucXO4QTVWKh3spVNI1H2WUCCzUaEZkhkDLhFYR4mqyRXJGz
-         wjcA==
-X-Forwarded-Encrypted: i=1; AFNElJ8Pzv7tjxlpTt7MNFTvdnDK7DSgLGpahtyGGWaAR0qjzQQLIAY5BuEVh+0NZ+1EXxFJCMjAO25tsXo/@lists.linux.dev
-X-Gm-Message-State: AOJu0YwognBF/+pQY+onJ3UvZd2VNAJwBALmCl7XwgKe1ngAsu24iA5H
-	jruWrGE0po8PPNJ83fHb1p02tM5mPHEWClSv+Unwp5pgmfU1gZa0hvkwNLz4d6W2N8k=
-X-Gm-Gg: Acq92OEaWrajO1RUjZ4mxTlgAHJjVIUceYSH57zfijByxbBS+3bBOggkdRe164b2KDs
-	HD0drQ7Hd8i/275gxAVB+S5GmbGbh4cJW4kbUMyl8eaeniswTEItP2nWqDJ5vhLoNXB60z9/Cgo
-	L/ZhzLb/wnHjeE8zspYPP46Qnk+aQ8tmpgjxp2t1ZNlBOsqqx435rw1DsZAdz+VPchw0a11BfTZ
-	PA6swAONp+Zfi7IY7BpCpeQJizbhZtmtgKZ7HvE9eOzR+FX6hKfaKlN0bmVZeFHKBxEuZCfVyut
-	5mmUUX5kbHmKbfmQuiqAyAGa+rxeG/pIWJQGQwgui9o1Gl/sHgegnw3w48pglP50SjRrRE3I8pB
-	GErZTR2HUIYPfDsFyk5yQ5rls/Lgdco8EA1hO1e86fRO5BG7meLljWvlSy9QrECZfpTi96FqDZp
-	E/H1oxjWeNmeXurT6xOWh3OUFgtT8dBuloIzLrwBYNaa0lDCgdIvX3qVX8NP/GR5NUy1WtnTEvc
-	LA1tR4nV9n0ehSARS1pfB/7sq3SyPL/ZwG1ScKKWq16jozZ/TYN7g6s3sRw52wh
-X-Received: by 2002:a05:6402:35ca:b0:68b:117b:215d with SMTP id 4fb4d7f45d1cf-68c11a387c4mr1022597a12.15.1780047099788;
-        Fri, 29 May 2026 02:31:39 -0700 (PDT)
-Received: from ?IPV6:2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112? (2a00-12d0-af5d-ad01-5d3f-14e6-9bcb-5112.ip.tng.de. [2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68c1620d5bcsm396853a12.2.2026.05.29.02.31.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 May 2026 02:31:39 -0700 (PDT)
-Message-ID: <c70e2e92-487b-46bb-9f02-7daeff4f4dc7@suse.com>
-Date: Fri, 29 May 2026 11:31:38 +0200
+        bh=4ZSmySQjJHcnKIUXjsIIs83nT6d2RU++b42lJ4OxIH4=;
+        b=bvNQ5YuhVgM5HKtYeM8oJBcF6cW0OiDsISbzpioZYdh3bEnHBdfpznFM9WL0hUGfv7
+         g16oiWp9coUnWa5ZoOCL8Wz4A8DSU5E9G4zEMQuINlUigsqs76VI8bHH45zzdUAMLZHC
+         WRmYs/JL9byIflX5bxGTc8YAd5Lz4LhhO+X7Hc5WsS3NL0um4e5dJe4ZLHDNq1ZmH0QR
+         SYobCzUPVRgbADDfjG4KtQY9u7DAmW4G0mZ0iCvZkagJ0FHpM4I/2tP6kkJx6iFGaerC
+         IKgMq4lBhOYORS6cSLPDLI6qMSaj9K24pdh9My48SOmrJ4OlUFG3qF87xkYCraT6K6Lf
+         w9rg==
+X-Forwarded-Encrypted: i=1; AFNElJ803+9ST1xYSnjwFOnohx0TK5xL55fQ7Y+ML3hkHRFCy/bdIZYK4Dm2PVELc9OHqWGveVeZvAaOTtRa@lists.linux.dev
+X-Gm-Message-State: AOJu0YwSPl4+zpNwFabPEgnKZ8xJbKsPUdMsnLFNh9VlTALcw2NTSiIC
+	C8Vrgm/hfWsC0y92rPZQ/dLxAmxke36HkrqusQvKXGjcRQ9NqJhkBnQRRfTHZ7SMs6qaDryJrUo
+	y3U5S/g==
+X-Received: from pfbgg3.prod.google.com ([2002:a05:6a00:6303:b0:838:ec6d:449c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:140f:b0:83e:ccd6:2dc8
+ with SMTP id d2e1a72fcca58-84212ce3e9emr3273017b3a.27.1780065890910; Fri, 29
+ May 2026 07:44:50 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri, 29 May 2026 07:43:47 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/6] KVM/x86: Drop "1" as MSR emulation return value
-From: Juergen Gross <jgross@suse.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, David Woodhouse <dwmw2@infradead.org>,
- Paul Durrant <paul@xen.org>
-References: <20260528113605.267111-1-jgross@suse.com>
- <a8f495f0-b4a9-42b6-be74-4fa9d83c7346@suse.com> <ahg-bEiwyqYTdWOD@google.com>
- <476964db-837a-45d8-a647-c5a2ea8b0cb6@suse.com> <ahhBQDvyzHQfTCBD@google.com>
- <6a7843b6-3c8a-4151-b3cf-3df59c93ce9f@suse.com>
-Content-Language: en-US
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <6a7843b6-3c8a-4151-b3cf-3df59c93ce9f@suse.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------Pg1Qe0NOYoVDsSJvARbIaDZb"
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
+Message-ID: <20260529144435.704127-1-seanjc@google.com>
+Subject: [PATCH v4 00/47] x86: Try to wrangle PV clocks vs. TSC
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, 
+	xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Michael Kelley <mhklinux@outlook.com>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------Pg1Qe0NOYoVDsSJvARbIaDZb
-Content-Type: multipart/mixed; boundary="------------uv1mrTtyFMlmtr2ihy0gn2lQ";
- protected-headers="v1"
-From: Juergen Gross <jgross@suse.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, David Woodhouse <dwmw2@infradead.org>,
- Paul Durrant <paul@xen.org>
-Message-ID: <c70e2e92-487b-46bb-9f02-7daeff4f4dc7@suse.com>
-Subject: Re: [PATCH v2 0/6] KVM/x86: Drop "1" as MSR emulation return value
-References: <20260528113605.267111-1-jgross@suse.com>
- <a8f495f0-b4a9-42b6-be74-4fa9d83c7346@suse.com> <ahg-bEiwyqYTdWOD@google.com>
- <476964db-837a-45d8-a647-c5a2ea8b0cb6@suse.com> <ahhBQDvyzHQfTCBD@google.com>
- <6a7843b6-3c8a-4151-b3cf-3df59c93ce9f@suse.com>
-In-Reply-To: <6a7843b6-3c8a-4151-b3cf-3df59c93ce9f@suse.com>
+Well, the number of patches in the series is going in the wrong direction,
+but I'm much happier with this version, which eschews the x86_platform
+overrides entirely in favor of a fixed sequence for selecting the TSC/CPU
+frequency "routine".
 
---------------uv1mrTtyFMlmtr2ihy0gn2lQ
-Content-Type: multipart/mixed; boundary="------------OSTWYVetfyCEol80SnNTXPkQ"
+Given that previous versions had fatal NULL pointer deref bugs that affected
+VMware and Xen, this series needs testing and acks from those maintainers.
 
---------------OSTWYVetfyCEol80SnNTXPkQ
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+The primary goal of this series to fix flaws with SNP and TDX guests where a
+PV clock provided by the untrusted hypervisor is used instead of the secure
+TSC that is controlled by trusted firmware.
 
-T24gMjguMDUuMjYgMTc6NTAsIErDvHJnZW4gR3Jvw58gd3JvdGU6DQo+IE9uIDI4LjA1LjI2
-IDE1OjIxLCBTZWFuIENocmlzdG9waGVyc29uIHdyb3RlOg0KPj4gT24gVGh1LCBNYXkgMjgs
-IDIwMjYsIErDvHJnZW4gR3Jvw58gd3JvdGU6DQo+Pj4gT24gMjguMDUuMjYgMTU6MDksIFNl
-YW4gQ2hyaXN0b3BoZXJzb24gd3JvdGU6DQo+Pj4+IE9uIFRodSwgTWF5IDI4LCAyMDI2LCBK
-dWVyZ2VuIEdyb3NzIHdyb3RlOg0KPj4+Pj4gUGxlYXNlIGRpc3JlZ2FyZCB0aGlzIHNlcmll
-cywgdGhlcmUgaXMgb25lIGNvbXBsaWNhdGlvbiBzYXNoaWtvIG1hZGUgbWUNCj4+Pj4+IGF3
-YXJlIG9mLg0KPj4+Pg0KPj4+PiBTYXNoaWtvIGJlYXQgbWUgdG8gdGhlIHB1bmNoLiA6LSkN
-Cj4+Pj4NCj4+Pj4gU2VlIGNvbW1pdCAyMzY4MDQ4YmY1YzIgKCJLVk06IHg4NjogU2lnbmFs
-ICNHUCwgbm90IC1FUEVSTSwgb24gYmFkIA0KPj4+PiBXUk1TUihNQ2lfQ1RML1NUQVRVUyki
-KQ0KPj4+PiBmb3IgYSByZWFsIHdvcmxkIGV4YW1wbGUgb2YgaG93IHRoaW5ncyBjYW4gYW5k
-IHdpbGwgZ28gd3JvbmcuDQo+Pj4NCj4+PiBZZWFoLCB3aXRoIFNhc2hpa28ncyBwb2ludGVy
-IGl0IHdhcyBlYXN5IHRvIHNwb3QuDQo+Pj4NCj4+PiBRdWVzdGlvbiBub3cgaXMgd2hldGhl
-ciB0aGUgYWxyZWFkeSBleGlzdGluZyBjYXNlcyBvZiAtZXJybm8gcGFzc2VkIGFzIHJldHVy
-bg0KPj4+IHZhbHVlIGFyZSB3cm9uZyBvciBvbiBwdXJwb3NlLg0KPj4NCj4+IFdoYXQgYXJl
-IHRoZSBleGlzdGluZyBjYXNlcz8NCj4+DQo+Pj4gSWYgdGhlIGxhdHRlciwgdGhlcmUgc2hv
-dWxkIGJlIGEgY29tbWVudCBmb3INCj4+PiB0aGF0LCBvdGhlcndpc2UgdGhleSBuZWVkIHRv
-IGJlIGZpeGVkLi4NCj4+Pg0KPj4+IERpc2VudGFuZ2xpbmcgdGhlIE1TUiBlbXVsYXRpb24g
-cmV0dXJuIHZhbHVlcyBmcm9tIHRoZSAibm9ybWFsIiBvbmVzICgicmV0dXJuDQo+Pj4gdG8g
-Z3Vlc3QiLyJyZXR1cm4gdG8gdXNlciBtb2RlIikgd2lsbCBiZSBxdWl0ZSBpbnRlcmVzdGlu
-ZyB3aXRoIHRoZSBvdmVybG9hZGVkDQo+Pj4gc2VtYW50aWNzIG9mICIxIi4NCj4+DQo+PiBM
-T0wsICJpbnRlcmVzdGluZyIuDQo+IA0KPiBXaGF0IGRvIHlvdSB0aGluayBhYm91dCB0aGUg
-Zm9sbG93aW5nIGlkZWE6DQo+IA0KPiBMZXRzIHBhc3Mgc3RydWN0IG1zcl9pbmZvICogZG93
-biB0byBhbGwgZnVuY3Rpb25zIHdoaWNoIGdldCB0aGVpciByZXR1cm4NCj4gdmFsdWUgcGFz
-c2VkIHVwLiBUaGVuIGV4dGVuZCBtc3JfaW5mbyB3aXRoIGEgYm9vbCAicmV0dXJuX3RvX2d1
-ZXN0IiAodmFsaWQNCj4gb25seSBpZiAhaG9zdF9pbml0aWF0ZWQpLCB3aGljaCBzaG91bGQg
-YmUgc2V0IGluc3RlYWQgb2YgcGFzc2luZyAiMSIgdXAgdG8NCj4gdGhlIGNhbGxlciAocHJv
-YmFibHkgdXNpbmcgYW4gaW5saW5lIGhlbHBlcikuIFRoZW4gdGhlIHJldHVybiB2YWx1ZSBj
-b3VsZA0KPiBiZSAwIG9yIC1lcnJubywgYW5kIGFmdGVyIE1TUiBlbXVsYXRpb24gdGhlIHJl
-dHVybl90b19ndWVzdCBpbmRpY2F0b3IgY2FuDQo+IGJlIHRlc3RlZCBpZiBuZWVkZWQuDQoN
-CkluIHRoZSBlbmQgSSB0aGluayBpdCBpcyBsZXNzIGVycm9yIHByb25lIHRvIGRlZmluZSBh
-IHN0cnVjdCBrdm1fbXNyX3JldF90DQp1c2VkIGFzIHJldHVybiB0eXBlLCBjb25zaXN0aW5n
-IG9mIGFuIGludCBhbmQgYSBib29sIHdpdGggdGhlIHNhbWUgc2VtYW50aWNzDQphcyBhYm92
-ZS4gSGVscGVycyB3aWxsIHN0aWxsIGJlIGEgZ29vZCBpZGVhIElNSE8uDQoNCkknbGwgaGF2
-ZSBhIHRyeSBob3cgaXQgbG9va3MgbGlrZS4NCg0KDQpKdWVyZ2VuDQo=
---------------OSTWYVetfyCEol80SnNTXPkQ
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+The secondary goal is modernize running under KVM.  Currently, KVM guests will
+use TSC for clocksource, but not sched_clock.  And Linux-as-a-KVM-guest doesn't
+support paravirt enumeration of the TSC/APIC frequencies, even though QEMU
+provides that information by default.
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+The tertiary goal is to clean up the PV clock code to deduplicate logic across
+hypervisors, and to hopefully make it all easier to maintain going forward.
 
-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
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
+v4 also adds a quaternary goal of cleaning up the TSC calibration code, which
+was made stupidly hard to follow by hypervisor code mixing in with the native
+calibration routines, instead of being implemented as a pure alternative.
 
---------------OSTWYVetfyCEol80SnNTXPkQ--
+Lots more background on the SNP/TDX motiviation:
+https://lore.kernel.org/all/20250106124633.1418972-13-nikunj@amd.com
 
---------------uv1mrTtyFMlmtr2ihy0gn2lQ--
+As before, I deliberately omitted jailhouse-dev@googlegroups.com from the To/Cc,
+as those emails bounced on v1, AFAICT nothing has changed.
 
---------------Pg1Qe0NOYoVDsSJvARbIaDZb
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+Note, I deliberately didn't collect a few reviews as the patches changed quite
+a bit from what was reviewed in v3.
 
------BEGIN PGP SIGNATURE-----
+v4:
+ - Use x86_init_noop() to skip save/restore on VMware and Xen instead of
+   nullifying x86_platform.{save,restore}_sched_clock_state. [Sashiko]
+ - Use '0' to indicate "failure" when getting the CPU frequency from CPUID, to
+   avoid using an out-param and thus make it all but impossible to
+   unintentionally clobber the global cpu_khz (which v3 did). [Sashiko]
+ - Rename cpuid_get_cpu_freq() => __cpu_khz_from_cpuid() to capture its
+   relationship with cpu_khz_from_cpuid().
+ - Compute lapic_timer_period in units of ticks, not Khz. [Sashiko]
+ - Kill off x86_platform_ops.calibrate_{cpu,tsc}(), and instead use dedicated
+   hooks for hypervisor code, and direct calls for TDX and SNP. [David, loosely]
+ - Drop SNP's secure TSC override of _CPU_ calibration, as there's zero
+   evidence it's justified or a net positive.
+ - Collect reviews/acks. [David, Wei]
+ - Decouple getting TSC/APIC frequencies from KVM PV CPUID from kvmclock. [David]
+ - Fix an amusing number of Opportunistically misspellings. [David]
+ - Set kvm_sched_clock_offset _before_ registering kvmclock as sched_clock,
+   and add a comment to guard against future goofs. [Sashiko]
+ - Keep "setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE)" in Hyper-V's handling
+   of HV_ACCESS_TSC_INVARIANT, as it's technically possible to have a VM
+   with HV_ACCESS_TSC_INVARIANT but not HV_ACCESS_FREQUENCY_MSRS.  Though as
+   a _very_ nice side effect of using dedicated sequencing for selecting the
+   TSC frequency source, this would have naturally happened anyways. [Sashiko]
 
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmoZXPoFAwAAAAAACgkQsN6d1ii/Ey/6
-mAf9GzLHUwzLdFmJmdTd3RR1NN+rEtnT63qpA4GhpOxC43wwuzia49lnMKdhY7MV5KTF69SW1pi0
-miYaUIfttYJEYkKcvEQhHEZ9RpVp6WGaNV/MG3CyZUHADrdaipudRFzI2TDEKcVF0199RpVHl5Cp
-0lu/3UUBhMUtgSUQU2+ahJe2jqgmzvhnfy7W3zsislhYMy21oey14z7Fr1S3GmBgFUFbcniot/bk
-9wB05/XzwJH0VNO0IUBZXvomLS2uv6KVyDg0AlZP/mNhQ5u4pv8R/pSj8ktij7dpz382xhV6WDVh
-SXK+MQyhNFO6UcGjUoIKOCJSCisAKe4NVvHOf2D/ZA==
-=eWZa
------END PGP SIGNATURE-----
+v3:
+ - https://lore.kernel.org/all/20260515191942.1892718-1-seanjc@google.com
+ - Collect reviews. [Michael, Thomas]
+ - Use Hyper-V reference counter / refcounter instead of Hyper-V timer. [Michael]
+ - Use the paravirt CPUID interface first proposed by VMware for KVM's
+   "official" mechanism for communicating frequency to KVM-aware guests,
+   instead of abusing Intel's CPUID leafs. [David]
+ - Deal with paravirt code being moved into asm/timers.h and
+   arch/x86/kernel/tsc.c.
 
---------------Pg1Qe0NOYoVDsSJvARbIaDZb--
+v2:
+ - https://lore.kernel.org/all/Z8YWttWDtvkyCtdJ@google.com
+ - Add struct to hold the TSC CPUID output. [Boris]
+ - Don't pointlessly inline the TSC CPUID helpers. [Boris]
+ - Fix a variable goof in a helper, hopefully for real this time. [Dan]
+ - Collect reviews. [Nikunj]
+ - Override the sched_clock save/restore hooks if and only if a PV clock
+   is successfully registered.
+ - During resome, restore clocksources before reading persistent time.
+ - Clean up more warts created by kvmclock.
+ - Fix more bugs in kvmclock's suspend/resume handling.
+ - Try to harden kvmclock against future bugs.
+
+v1: https://lore.kernel.org/all/20250201021718.699411-1-seanjc@google.com
+
+David Woodhouse (3):
+  KVM: x86: Officially define CPUID 0x40000010 as PV Timing Info (TSC
+    and Bus)
+  x86/kvm: Obtain TSC frequency from PV CPUID if present
+  x86/xen: Obtain TSC frequency from CPUID if present
+
+Sean Christopherson (44):
+  x86/tsc: Never re-calibrate TSC frequency if its exact timing is known
+  x86/tsc: Add a standalone helpers for getting TSC info from CPUID.0x15
+  x86/sev: Mark TSC as reliable when configuring Secure TSC
+  x86/sev: Don't override CPU frequency calibration for SNP's Secure TSC
+  x86/sev: Move check for SNP Secure TSC support to tsc_early_init()
+  x86/sev: Shove SNP's secure/trusted TSC frequency directly into
+    "calibration"
+  x86/tdx: Force TSC frequency with CPUID-based info provided by the
+    TDX-Module
+  x86/tsc: Add dedicated hypervisor hooks for getting known TSC/CPU
+    frequencies
+  x86/acrn: Mark TSC frequency as known when using ACRN for calibration
+  x86/tsc: Consolidate forcing of X86_FEATURE_TSC_KNOWN_FREQ for PV code
+  x86/tsc: Kill off x86_platform_ops.calibrate_{cpu,tsc}() hooks
+  x86/tsc: Rename pit_hpet_ptimer_calibrate_cpu() =>
+    native_calibrate_cpu_late()
+  x86/tsc: Fold native_calibrate_cpu() into recalibrate_cpu_khz()
+  x86/kvmclock: Rename kvm_get_tsc_khz() to kvmclock_get_tsc_khz()
+  x86/kvm: Mark TSC as reliable when it's constant and nonstop
+  x86/kvm: Get local APIC bus frequency from PV CPUID Timing Info
+  x86/tsc: Add standalone helper for getting CPU frequency from CPUID
+  x86/kvm: Get CPU base frequency from CPUID when it's available
+  clocksource: hyper-v: Register sched_clock save/restore iff it's
+    necessary
+  clocksource: hyper-v: Drop wrappers to sched_clock save/restore
+    helpers
+  clocksource: hyper-v: Don't save/restore TSC offset when using HV
+    sched_clock
+  x86/kvmclock: Setup kvmclock for secondary CPUs iff CONFIG_SMP=y
+  x86/kvm: Don't disable kvmclock on BSP in syscore_suspend()
+  x86/paravirt: Remove unnecessary PARAVIRT=n stub for
+    paravirt_set_sched_clock()
+  x86/paravirt: Move handling of unstable PV clocks into
+    paravirt_set_sched_clock()
+  x86/kvmclock: Move sched_clock save/restore helpers up in kvmclock.c
+  x86/xen/time: NOP-ify x86_platform's sched_clock save/restore hooks
+  x86/vmware: NOP-ify save/restore hooks when using VMware's sched_clock
+  x86/tsc: WARN if TSC sched_clock save/restore used with PV sched_clock
+  x86/paravirt: Pass sched_clock save/restore helpers during
+    registration
+  x86/kvmclock: Move kvm_sched_clock_init() down in kvmclock.c
+  x86/xen/time: Mark xen_setup_vsyscall_time_info() as __init
+  x86/pvclock: Mark setup helpers and related various as
+    __init/__ro_after_init
+  x86/pvclock: WARN if pvclock's valid_flags are overwritten
+  x86/kvmclock: Refactor handling of PVCLOCK_TSC_STABLE_BIT during
+    kvmclock_init()
+  timekeeping: Resume clocksources before reading persistent clock
+  x86/kvmclock: Hook clocksource.suspend/resume when kvmclock isn't
+    sched_clock
+  x86/kvmclock: WARN if wall clock is read while kvmclock is suspended
+  x86/paravirt: Mark __paravirt_set_sched_clock() as __init
+  x86/paravirt: Plumb a return code into __paravirt_set_sched_clock()
+  x86/paravirt: Don't use a PV sched_clock in CoCo guests with trusted
+    TSC
+  x86/kvmclock: Use TSC for sched_clock if it's constant and non-stop
+  x86/kvmclock: Plumb in AP-online and BSP-resume to kvmlock, for
+    documentation
+  x86/paravirt: Move using_native_sched_clock() stub into timer.h
+
+ Documentation/virt/kvm/x86/cpuid.rst |  12 ++
+ arch/x86/coco/sev/core.c             |  21 +--
+ arch/x86/coco/tdx/tdx.c              |  19 ++-
+ arch/x86/include/asm/acrn.h          |   5 -
+ arch/x86/include/asm/kvm_para.h      |  12 +-
+ arch/x86/include/asm/sev.h           |   4 +-
+ arch/x86/include/asm/tdx.h           |   2 +
+ arch/x86/include/asm/timer.h         |  15 +-
+ arch/x86/include/asm/tsc.h           |  11 +-
+ arch/x86/include/asm/x86_init.h      |   8 +-
+ arch/x86/include/uapi/asm/kvm_para.h |  11 ++
+ arch/x86/kernel/cpu/acrn.c           |  10 +-
+ arch/x86/kernel/cpu/mshyperv.c       |  65 +-------
+ arch/x86/kernel/cpu/vmware.c         |  13 +-
+ arch/x86/kernel/jailhouse.c          |   7 +-
+ arch/x86/kernel/kvm.c                | 108 +++++++++++--
+ arch/x86/kernel/kvmclock.c           | 208 ++++++++++++++++---------
+ arch/x86/kernel/pvclock.c            |   9 +-
+ arch/x86/kernel/tsc.c                | 218 +++++++++++++++++----------
+ arch/x86/kernel/x86_init.c           |   2 -
+ arch/x86/mm/mem_encrypt_amd.c        |   3 -
+ arch/x86/xen/time.c                  |  25 ++-
+ drivers/clocksource/hyperv_timer.c   |  38 +++--
+ include/clocksource/hyperv_timer.h   |   2 -
+ kernel/time/timekeeping.c            |   9 +-
+ 25 files changed, 533 insertions(+), 304 deletions(-)
+
+
+base-commit: 4678d11f294de0fd295a265e02955b5d1a4a2684
+-- 
+2.54.0.823.g6e5bcc1fc9-goog
+
