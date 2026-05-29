@@ -1,56 +1,54 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F56409617
-	for <linux-coco@lists.linux.dev>; Fri, 29 May 2026 15:08:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4283AA4F6
+	for <linux-coco@lists.linux.dev>; Fri, 29 May 2026 15:10:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780067319; cv=none; b=doVMZ0UQ2kW8pBQ3cM6OdKyVZdsNSoD2tyUUXKgOvUrK9m0j/hJ0KwUetTu91sD9NOVKDNhvhzZgQH3LNSt/m0+H1E/RRzbrSfGsm6s1HNiw0Yqg5PqEtQMJTah39imrstvdRU4Hu2pbtqnwCF2Et+FSLo9S+5yD/Pnm2g488S8=
+	t=1780067431; cv=none; b=AW2DpgjXbVKb+83xKBDyXkpiMiTnRhCTz7HGRWc5onVsoF/3swYDExo3DfoFMhQYYweKSOGE9RX6TXiEGDSAWajEbKN+nAM/G5r5KRSslJx5Jyp74nSBiDvsnVBJzj1lojp/RlUEIt86NrlnfcD6cOi+SLZJEc0d98iblLO9xtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780067319; c=relaxed/simple;
-	bh=Z4oAOLUpAYbd1Tz0ygnPD0Nha8ewr7CaV2/fH3E4CC0=;
+	s=arc-20240116; t=1780067431; c=relaxed/simple;
+	bh=V/hxOsVp4piMpArHe7ioxetvdl4y0PTvTNEBx/lxH1A=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=os02i2PWv7y+EaglZpzEniFRQ10CbZNs4ms5nZ/fjV+XK7NPz7wxGSgHvhfh4ckTBOpy7pQcmgNsIQf11PpmW+RqThCRSPxkUKntUPBCUC2tqIyQhsHw7zCYLsYybUvZwg+kVEf7E0lkYM+lvZah085AV2qDwvJI1UjmpG43aJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iu9qKaYh; arc=none smtp.client-ip=209.85.216.74
+	 To:Content-Type; b=l/SAlr0vVc3kcRn7TGFNBpJdGzOs1y+PLDC61H2JnkBu4hqJ5aAuXEcqW5vBKLUfSpG6tCozdp+vn/pwq1P4v+vGr/0l75amnnYpePoKyIlEsqr4z0q/1bHr1Bzyfpu66BmV53074JU8Tg+Xj9wcs2NsNLe9X/Z3uvcveqkGCcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Oyjbw5LV; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iu9qKaYh"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-367f715cbd0so13448371a91.0
-        for <linux-coco@lists.linux.dev>; Fri, 29 May 2026 08:08:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Oyjbw5LV"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2beff6b6e74so28190885ad.1
+        for <linux-coco@lists.linux.dev>; Fri, 29 May 2026 08:10:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780067318; x=1780672118; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=79xm+AEEzsSDw8ktlax8YEYwGg5Kvc01O7CLcLHBYus=;
-        b=iu9qKaYhDu9VO9XIW2FgA2bO4DEan2Y1LWJqwfIPjnOiZ/pSOP11liEM1zQeAhKsvH
-         7Qzsa0q726BmPa9FG+dpJBIGZ/zOkRY4W+m8ZoBKLRbciU9iDFoERofKqnCNr5y7nMPo
-         LGLMvasTFiir23BamBaiGCy3dG7aPTZC2IlxJvNCpbebKukp5WGd0qqkhnaGv0OKFo2O
-         7cbj3lRvJ6afLBnBiMEHUzOAB6lIrppY6ZVpcf7GgSHbhAodTq24nZh1wawfhSz65+0d
-         yPEpoelQ37JhScnFW4aevK0mOQMtpr7UEe2f5GJ9lJoemttpivdX6P1bWf7PX8OBbj9v
-         6URQ==
+        d=google.com; s=20251104; t=1780067430; x=1780672230; darn=lists.linux.dev;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q3KwUKexhBMnhxMu/5zzl7QcY3Y917Dhb3kMyW4ALaw=;
+        b=Oyjbw5LV1U3ZZ2K3l9nEZWOPEfLCD4+6qvRnHymMiOdwOCiGKduU2KvtXT82LF7qWs
+         gLyQrb1qPotXqFtr5isF1JPWbHl0383LDHCKylGtnv35oox7Ws+VU/GaVB2rxwdbP7Xj
+         pDwLmczCFigRZ4/nVlEfampqkWKnJTYtRjdjNKpyZXzJ6MSHIIpKyWAKWZoAhR7oasPA
+         plTMJWOvJ+KVTBSh236+xF7GLD+f9NW6Sft7Nx4cZ/7VfBXpu3uYV9VVRHcMP9irMVmQ
+         ut16yjAD76iKNRCvvtnn2xlbcHyZLOk5vMY1j3V194DaMJEkz7OkAQG0N7CqD9oEZzwA
+         hgBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780067318; x=1780672118;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=79xm+AEEzsSDw8ktlax8YEYwGg5Kvc01O7CLcLHBYus=;
-        b=NvoI2OSEJlod1NHNnqJ9PTvopQrKqptuJY8ZKofXzp2L1OwGNAFkNiQ4tZ2I3oaSdG
-         xQsg3Vl6yRiO5ObJDjS1ks2P1yfbXGiqlYTFxTiAsiWRdIBORxLllPhHSUIlc9OVrgxO
-         MCUmzmcX0CMuNYSmLh5Kek9TaJlb8jfPe6QtAriit8+jJNmwwX6D/eUgErcSg7vXxb7d
-         Y8817jGc4Ac3JDE11auO2P94RfDgK558c1oRHi6tSNE/+TeSbV1Q1QjfeLUvxJFBz2al
-         KXXp+hsKZufnhrNQO9qs3O1dWCvj7SHQ9LPh3KGcJY9V8+NuaP8jM+GFdOmkGFYfEqRv
-         0DKA==
-X-Forwarded-Encrypted: i=1; AFNElJ+B7+vawraMWhsF3KNT+YPfJitg2tdXwRMB2aCqoDbd0uAkZV6HNBUCUCiMa42TBzJW6gYW3HjohK8K@lists.linux.dev
-X-Gm-Message-State: AOJu0YxYwjvOFSUNBoY+RDfWWtAiurSQmNX3LysRH++a/7x9XAYuN+Nz
-	QSyQw5QFKosOOfKbDGeAJcaClrKokWL6NLvp+i9yNvHoY2TXw0MjxpUfAPO6oG67SISObkx48sX
-	ypwDg0A==
-X-Received: from pgh1.prod.google.com ([2002:a05:6a02:4e01:b0:c79:8102:80bb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:184b:b0:366:479e:63a5
- with SMTP id 98e67ed59e1d1-36bbcc160f0mr4139147a91.2.1780067317529; Fri, 29
- May 2026 08:08:37 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 08:08:35 -0700
+        d=1e100.net; s=20251104; t=1780067430; x=1780672230;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q3KwUKexhBMnhxMu/5zzl7QcY3Y917Dhb3kMyW4ALaw=;
+        b=LnYX472K05RQIZ4rX4SAxJCoNmiNPxIqBAIJ5IkjpHiV8pFqQB5Lns+RTI5BCoyNuq
+         xA3KR1Zxp9tTd8GEHWO1Nkt3uJC5+5pB6PVupRm1TtUvPqtQPPJN2YhpauRFFwHW3mL1
+         fvaCd6uXY+W/DMK1C1O8TwDTfOzdJyrGdWik42ssVKBlUXWNMnRKf5JJjV9n69znPtC0
+         KDiJSRRm+3G7AUNGHOZCXCPZScWS5wiga7UpRlGiGKx2ngLx5B2USb6FqL0wxeBC3s/j
+         6x4bd29RHfsYWPH1mlpN965ztUXIdGXbLqT9tvR6o9NNyI2l7yyMYH7m57220quxIvf8
+         suEw==
+X-Forwarded-Encrypted: i=1; AFNElJ/W+1YRsP/lu3TRRCoGIW7rx0YrCNZf4AwluFshsdXaSDNJdTzFrgE0GfBc7KpigtwyvayD9WFu/pHb@lists.linux.dev
+X-Gm-Message-State: AOJu0YxYIrquwAxHmL6DX8ov9IBWPAMlSmpN5Q95PsTqXhQ9jPbvr/cF
+	EMdlNJc8ISb0docyTglIknDSB15B18vjiPdR6sj+vfRgB823EUxKVcJXEmehcwQsOevIWZom0QS
+	YZ+KLDg==
+X-Received: from plpo14.prod.google.com ([2002:a17:903:3e0e:b0:2bf:19e3:ff16])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1b64:b0:2b7:aa20:3c61
+ with SMTP id d9443c01a7336-2bf36858f5bmr2472455ad.33.1780067429457; Fri, 29
+ May 2026 08:10:29 -0700 (PDT)
+Date: Fri, 29 May 2026 08:10:28 -0700
 In-Reply-To: <20260529144435.704127-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -59,21 +57,19 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260529144435.704127-1-seanjc@google.com>
-X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529150835.715093-1-seanjc@google.com>
-Subject: [PATCH v4 47/47] x86/paravirt: Move using_native_sched_clock() stub
- into timer.h
+Message-ID: <ahmsZA8mHj9CPnd2@google.com>
+Subject: Re: [PATCH v4 00/47] x86: Try to wrangle PV clocks vs. TSC
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
 	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Sean Christopherson <seanjc@google.com>, 
-	"K . Y . Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Kiryl Shutsemau <kas@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
 	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
 	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
 	Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, 
 	Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
-	Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>
-Cc: "H . Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, 
 	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
 	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, kvm@vger.kernel.org, 
@@ -83,59 +79,14 @@ Cc: "H . Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.co
 	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
 	David Woodhouse <dwmw2@infradead.org>, Michael Kelley <mhklinux@outlook.com>, 
 	Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
 
-Now that timer.h ended up with CONFIG_PARAVIRT #ifdeffery anyways, move the
-PARAVIRT=n using_native_sched_clock() stub into timer.h as a "free"
-optimization.
+On Fri, May 29, 2026, Sean Christopherson wrote:
+> Well, the number of patches in the series is going in the wrong direction,
+> but I'm much happier with this version, which eschews the x86_platform
+> overrides entirely in favor of a fixed sequence for selecting the TSC/CPU
+> frequency "routine".
 
-No functional change intended.
-
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/include/asm/timer.h | 6 ++++--
- arch/x86/kernel/tsc.c        | 2 --
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/include/asm/timer.h b/arch/x86/include/asm/timer.h
-index ca5c95d48c03..a52388af6055 100644
---- a/arch/x86/include/asm/timer.h
-+++ b/arch/x86/include/asm/timer.h
-@@ -11,9 +11,9 @@ extern void recalibrate_cpu_khz(void);
- 
- extern int no_timer_check;
- 
--extern bool using_native_sched_clock(void);
--
- #ifdef CONFIG_PARAVIRT
-+extern bool using_native_sched_clock(void);
-+
- int __init __paravirt_set_sched_clock(u64 (*func)(void), bool stable,
- 				      void (*save)(void), void (*restore)(void));
- 
-@@ -23,6 +23,8 @@ static __always_inline void paravirt_set_sched_clock(u64 (*func)(void),
- {
- 	(void)__paravirt_set_sched_clock(func, true, save, restore);
- }
-+#else
-+static inline bool using_native_sched_clock(void) { return true; }
- #endif
- 
- /*
-diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-index 036916953f4a..159d7d060204 100644
---- a/arch/x86/kernel/tsc.c
-+++ b/arch/x86/kernel/tsc.c
-@@ -302,8 +302,6 @@ int __init __paravirt_set_sched_clock(u64 (*func)(void), bool stable,
- }
- #else
- u64 sched_clock_noinstr(void) __attribute__((alias("native_sched_clock")));
--
--bool using_native_sched_clock(void) { return true; }
- #endif
- 
- notrace u64 sched_clock(void)
--- 
-2.54.0.823.g6e5bcc1fc9-goog
-
+FYI, our internal mail server flamed out after sending patch 26 in the initial
+go.  I'm pretty sure I managed to get the rest sent without screwing up the
+threading.  Holler if something is wonky and I'll RESEND the whole pile if necessary.
