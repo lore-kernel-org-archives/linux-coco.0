@@ -1,129 +1,118 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31210190462;
-	Sat, 30 May 2026 03:08:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780110516; cv=none; b=r+Yrz5p4O9bNZ+t9zjgZZiij5VInVG7mGt8sjmnzNthPi3uqe0oS1BWvlKZQVtKUJbopb8FRSB8gPXRV3+oRSsjZcoijsbRZ9uXz4REA1HGlxPph3njOKiytO/ttAXVbyxPn7sGq65tQD+kXFzobwrmo7cp8MXWeJnhlByxRJV8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780110516; c=relaxed/simple;
-	bh=OeUvWYhtnIcVniNlaEAPf7t6L7no4/+FQ0TEbE0p0E4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jcFRueHZjKViHWm4clOKg8gU6MrL7OlSbx7JKt6CpBlxKc37yE/bQ7mbLf0q6nbT7gqWjNeFL1k6txFJHsFP2NTieuHCJJ45SXf1yS32jv/K5UgSvCHshEcfUGj7XG0TUFkqLjvTmlfP9hK8qKICL0Hmp4z7f9Yl0xI+1iyOsbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=RlZugvf2; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB76E31CA4E
+	for <linux-coco@lists.linux.dev>; Sat, 30 May 2026 16:47:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780159679; cv=pass; b=FGKKz7PQpArBC8F+Egt7KAHTGwt0GGX+DI8/zYBwPb+y/d+pFGxtxiBrBxd+5EOfyzKxKwrak3yiroqN69d7fAdYFwbrEyB5kE+ch/tbg0f3eqQR5dZGyucP0H2irVn4UhJ4XBBGhbOlCunS8EeCGaOBtQTIdNB34LvMg8R16ko=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780159679; c=relaxed/simple;
+	bh=NO55GTUIErfjMW/u3wp6zeJt9pZ5TEdqDypSXTrdktw=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=DWr3jmBjGRU9N46pCwEhEK68x3rfAB96OzvYRNDFJfcZ5BGqDaReR6CJOElaLiGdvmiKVTuothBY8tYX4Mh47ZEvzv0PHkymdXQ47dFW5PW8BH6f6eWUj8BsJcu9xMDIP3e9aD5TTeZmQBxLar4ng+k+xyEhs7uB1Lg2HO3rzbA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CviO1rN7; arc=pass smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="RlZugvf2"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A8F6540E015B;
-	Sat, 30 May 2026 03:08:30 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id PuzC0Ft-HHGf; Sat, 30 May 2026 03:08:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1780110500; bh=xvvniitijThI5M/vzeUngJ2o5o2bAFGL6v1h1J/weaM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RlZugvf28JewjKobWij+z7qIEzuJleC7UW1AkwP8rIPfgHvDVyKCrVyw/Qymrp83Z
-	 oMbgDR2FbH11di++QnPPImwLEX2QWfLIIXSP1ypHOZXuL8uzhRYviGTB6dzv+qnCeb
-	 Gpjy/sGySdR+2Du+p++dlzJkZH9f7yDl1Iu2Fre6FT/CcfHszYCqFtrvvnC9mv0qHc
-	 VeeoN4BaHXjs2/UWNE6zir9SYUOs75Xg4Of1T4uw5yhGpFM4a3E1cmNVNmJaKIUq6R
-	 yPy/Ir3fplxnFBnCyQR1Mih6ew0Q+bN5yquZw+MmRi4V8Lj+CiVHxa20Vu+5eKSmYk
-	 giEEXZB1RSLVAV6SsDTp793DrNhxj4wm0EvU2xn+GoJTqXtQ7jCQ/UV7q72yZwrhw6
-	 Hr/fzxFzU2n0bEEtOtOgL6M+OPmeiiF9CNlohP/WUUTGr0G7qVWyY3IBL6L60qHrmi
-	 G28aB2e/4cv56a+4WyUu0hncXyyo8wJb54Pd1OOsv3eUOm/6ojaoKm4aTJ7E2o38BY
-	 +wUXFuMdzDYShBipYVX8+o8FNNEGBfWyPWxpIXqjj6tOadHwHan4leJuqlNl1iFQ/z
-	 P8Ic44MZ/AWAUKuhucIKSKuYuKaxZPvVv03zf0laMmYz+Zwgn1PGjB2t4S2+q2afEM
-	 hP4TtO4p/8Y97d14SV7L5qrs=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00:b8a3:f58e:8829:9ca6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8255040E015A;
-	Sat, 30 May 2026 03:07:41 +0000 (UTC)
-Date: Fri, 29 May 2026 20:07:31 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Kiryl Shutsemau <kas@kernel.org>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juergen Gross <jgross@suse.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Stephen Boyd <sboyd@kernel.org>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-	xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v4 01/47] x86/tsc: Never re-calibrate TSC frequency if
- its exact timing is known
-Message-ID: <20260530030731.GBahpUcwWXdKCf1lJO@fat_crate.local>
-References: <20260529144435.704127-1-seanjc@google.com>
- <20260529144435.704127-2-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CviO1rN7"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-68be16c61d1so3333048a12.2
+        for <linux-coco@lists.linux.dev>; Sat, 30 May 2026 09:47:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780159676; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JnMOzOCIA9L0WOMofp91Eii2M6moXTsKshs15gEn4QzU7BBlOlPltBCAd8cMB9zJck
+         hTJ3/8FZCKXHJSE4Vc9ZZuBw6k88LuDidEaEPKKp1VEyjYZp9cn4pZ1jxUHBU1pu0wEN
+         +vaN+Q1Mbiw8ncpoeqfS8SEzi7oJru4UrECbkUQ2GBoik/F9Jm7aCJjQ5aN2PnMJhw7v
+         fkLkM/CgWktRYi/Dma8lanl30PePi86tbNJ1c23mNeBryZMpNm0nku3EmNoRvFsoUK/y
+         UTwz6sEmJdchWYlSK1gMsQAzU1/QWq/8B8dLCPEg6DCT6PjwE2Tmz0Tw6O7hZ3LceLzN
+         9Iiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:reply-to:mime-version
+         :dkim-signature;
+        bh=uDjMWTL59bSew6EuBBjyiKQsK4J1StRuWvcVY3hIZ9s=;
+        fh=hrf6AFXrugI5ldWQP1V5G+QAqGikLZTRJIJYUwNCqlQ=;
+        b=gi/OcCKbUfeI1re7a8nRgcNSr5yjP7yPNbjzhhrCYuuigq6rhtBEz8h4pqZk4Vu4+Y
+         2ERis/F7rgnjTsdqMXVcgaElhrPE6xmsO+YKzphWY+hJ9zPIBc7MkO994iE1M/9Iiz1b
+         qcUVz7m8tkeFKbQy0GX+KsJUZLVeUiUXcun4vTTzhHNjSmoDGEYcPaa6gE/9oVe/wPrt
+         d6veM5bsK5xdEx5cZ9bYONeiPYBB3IwQW7Rrl1tkf23TcitGw+16IWGZ/x/p+DBj5ne5
+         ANoW5MQA0UXyjJ04NhQzvZ5q7eDc6YPo8EEwxxYaCnR/fIpX0Ir1icsgXBbjU7OW11+3
+         Jwcw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780159676; x=1780764476; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uDjMWTL59bSew6EuBBjyiKQsK4J1StRuWvcVY3hIZ9s=;
+        b=CviO1rN72lw7ofxwoBABaTeyPHqwqbttUjvsSMrCbgLPMHMaf7lt1kOE+K9obj7Ibg
+         iUM3mZ56tQ/VgwBDHlEJQYrUTTcNMljj0V8U7FrA8hxmJYEIfQfCvdU04ZWsOzTGV987
+         VvaeWAXu7s0TuO2ehjfdP4L33JgUtka1+A0nUe2OAMg+d1ouNjhRF+Brm4I0o9ub7Xqe
+         zBwtSHR6/7G9WQkW2p5JxDrLMVKyAkrlJw64OWG8Jjr3Uum2xzBkMYk+Q4wXUG312BQb
+         T/GbVkCFdW/Ln3+jaxi0KFMvEdfSBBnrpHEeghyFzlLTqw6h46MnYAWvCUzuYBXkDxBi
+         O1uQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780159676; x=1780764476;
+        h=cc:to:subject:message-id:date:from:reply-to:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uDjMWTL59bSew6EuBBjyiKQsK4J1StRuWvcVY3hIZ9s=;
+        b=YV3zPwIxOeU40aIdyKxtDBEQVFvQRg7E76d10MYwlfdCH+BL8aPWhYhfCacw+0hPRs
+         l0dc7uE8GYV+DeFcw0fIHCAPNEo9bKT4IxSucuZqJh4LI60VX33/TcTX9n9aoYadzQ+m
+         5YsNDp7yFLJW5cOzfSviNVwixVkGTH/DHoOotrVP+0PaUCrj40eTINrdFyCzCYIHCmWo
+         ChGqclOFF+FTR2mQCmcQLzDoGk/6ytSBt0hy8r1C/Q5e+uR5HERVb7OFQHdkGT/ccIio
+         Dy7EYWVyH2RLhVqpEbEtdlApYzjh6TPwLa0lpfdJUjc0UPkl8J7VofB3HWYglOlAkjoI
+         aLlA==
+X-Forwarded-Encrypted: i=1; AFNElJ/H9TjbDrd92OxtEOc6UqpsGLacFCURlzXJ17XE4yPJSkmwyt5ig60KjNwlATS3rlJp9ZnIpkHK3nSH@lists.linux.dev
+X-Gm-Message-State: AOJu0YzkjGr9SUl1uCCrhOmf9k703wLQLnxr1gvBg8lG2vhY3/Xegxr5
+	3XDaA99GixqDvymivYRgNM61gQFK0C4Ll847UiQ/YiYsVWzr9cf4exmHtnT4McpCO1LS1ckSIXh
+	XIyW7JWEJs0ex8UAy2ZiywoXRd1aMIJY=
+X-Gm-Gg: Acq92OFjMb80gM9Khv1KDHGHs1XeyCsy/Q/hpOxl2lLa86qcrKrzmwVbWsbUNCWqSlK
+	jz025utb+A0RZeleK0n9N5Glt0NvMdPiXd1XBkXh7ERGnrdFn4lPPxNvSLpZlewP1AnR9I2ukc4
+	gEVpmg1+v7GYx6CGRvX4KBMNns+qSaxi0PGsznQKXmWWal/qjPXuaUDaJSVES/v0rmXl82X3imj
+	D4DdxMOIaRCHkTPNo9U35mf+76iIeXwQ/xLVsV7z62HAY7qqt0MYmseCtBmVIKRSV6ErEhL8bvU
+	lwzyuxY3J5TsmSsvHIuxEHzxAHGMW3M5HAthPYTHMx8ncTJ2wg==
+X-Received: by 2002:a17:907:80a:b0:bae:d29c:4e28 with SMTP id
+ a640c23a62f3a-beab3850c0emr227580166b.12.1780159676193; Sat, 30 May 2026
+ 09:47:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260529144435.704127-2-seanjc@google.com>
+Reply-To: ludloff@gmail.com
+From: Christian Ludloff <ludloff@gmail.com>
+Date: Sat, 30 May 2026 09:47:44 -0700
+X-Gm-Features: AVHnY4LzRI4mtM2MVMA9vVPgTReaIAtSfV8wr74SnOQ4vnVCBcmxdNjiRFE8TOw
+Message-ID: <CAKSQd8XBoaUf7MyvPJCv_DHeuEd-DtRYb5GnAofkbJTP89LLMw@mail.gmail.com>
+Subject: Re: [PATCH v4 15/47] KVM: x86: Officially define CPUID 0x40000010 as
+ PV Timing Info (TSC and Bus)
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Stephen Boyd <sboyd@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-hyperv@vger.kernel.org, 
+	virtualization@lists.linux.dev, xen-devel@lists.xenproject.org, 
+	David Woodhouse <dwmw@amazon.co.uk>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Nikunj A Dadhania <nikunj@amd.com>, David Woodhouse <dwmw2@infradead.org>, 
+	Michael Kelley <mhklinux@outlook.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	bcm-kernel-feedback-list@broadcom.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, May 29, 2026 at 07:43:48AM -0700, Sean Christopherson wrote:
-> Don't re-calibrate the TSC frequency if the TSC is known to run at a fixed
-> frequency.  In practice, this is likely one big nop, as re-calibration is
-> used only for SMP=n kernels, and only for hardware that is 20+ years old,
-> i.e. is extremely unlikely to collide with TSC_KNOWN_FREQ.
+> + *  # EAX: (Virtual) TSC frequency in kHz.
+> + *  # EBX: (Virtual) Bus (local APIC timer) frequency in kHz.
+> + *  # ECX, EDX: Reserved (must be zero).
 
-Why do we care?
+Can someone from Broadcom please speak up as to
+what a non-ECX value signifies for their HV? (Asking
+because I see a value of 2, not a must-be-zero.)
 
-So what if it recalibrates once on UP?
-
-Look where it is called - all old rust which no one uses anymore.
-
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/kernel/tsc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-> index c5110eb554bc..08cf6625d484 100644
-> --- a/arch/x86/kernel/tsc.c
-> +++ b/arch/x86/kernel/tsc.c
-> @@ -946,7 +946,8 @@ void recalibrate_cpu_khz(void)
->  		return;
->  
->  	cpu_khz = x86_platform.calibrate_cpu();
-> -	tsc_khz = x86_platform.calibrate_tsc();
-> +	if (!boot_cpu_has(X86_FEATURE_TSC_KNOWN_FREQ))
-
-cpu_feature_enabled() everywhere please.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+--
+C.
