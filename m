@@ -1,114 +1,170 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010071.outbound.protection.outlook.com [52.101.201.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C061397321
-	for <linux-coco@lists.linux.dev>; Mon,  1 Jun 2026 10:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780308054; cv=none; b=twF8R3a5vu9gnb51XKYRU/6C3Q+OEjs203Ao2xIgZ+145PsvPeuSo5G3Ny/76Jt3s92xStdNgQtVpWmn1ZfLOcWw4H1u6pW51oExGmvpir5oy/sdKFYUAI/UOB4kcfSljFcTixfubW9vVv6edC9dbZunLS8oLCYnHkp7spb45fE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780308054; c=relaxed/simple;
-	bh=FbI0bRlPAddTyHFXSSwTRkzWoJNkdtw0GL/zZRhWu4s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aLc1j8zalqTsCLhRvruzqK+IBIcen9yvrcZTFHEUACbm7HkhAqDhraGfGhooK/2DQK9feakXIu5FSCu3nXSToDQmSflWAQl5DyR5Xuxgm6KRVgEA5pD5BlwuZt1/d9Vu2r6EGZe9mixkk+rHQbCRBDcnCrLSkfmxtZvFXUNxqFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V5zUpisj; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A2D3E1CFB
+	for <linux-coco@lists.linux.dev>; Mon,  1 Jun 2026 18:03:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780336999; cv=fail; b=TwYLsYh297jmLyDSGscLFM2IPwyHX9g9JWk1LIVEXuqR8dejFgnbIwM1ChDIR+F5rZkrTYn2UsFLGiOzQ05mEpepN1iohaxtXCIDiE8rDCytBh2DLtyynTDfUcXCstb+3jmK2RxHtKrS+X8UA+8nY7mYZpfcJP7oEBxK8THfayM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780336999; c=relaxed/simple;
+	bh=+bnjMvM1WM3z1Kh/AwPKVh32w/l0vtqgzn4Bwa4shnE=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=eXqcjGOGnWyz4vMynpe9AMwnLc+Yyzc5BCeeNTizIoekBPMoIOKiDj0rruY/zLOboNpyvMv9EsabtshJk9u4+NTts9t0gHX7JNZK95lP77HHvtli7V1XjAxS96DWWT9+eT+NW0TXaZUTniKvpq2nQxbm+n48E9dR+EVtXMxmWec=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=GFts2m17; arc=fail smtp.client-ip=52.101.201.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V5zUpisj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780308045; x=1811844045;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FbI0bRlPAddTyHFXSSwTRkzWoJNkdtw0GL/zZRhWu4s=;
-  b=V5zUpisjHqzxKIN5zqHW9yzN/2OvFl0Snii8NpG0xKu5JrpaPPKBOGM6
-   yHWzO7owsnYMA2+ZIrKtlu3ZKOT6H8qYI1IMHS1WJy6LfHu9aVbfORCOj
-   m3o0tyKKdGr+07TC59ol2LxLF6wWqnwux/BX3N1usP+qSN7p2aZOipp0G
-   hT4pUU0CnyvnknT95n0fJsAkQfZX7n1Dl7h/KwhIltKgCaHzN0la5XccR
-   cNNPVnIKP7EOboAq6pnYV8PsB9Cy89N3SaJThCTIxvTg1qg4N3SqzlkQ2
-   fZOwTQxU+HBFbvaCRmd+S/vUxjMJIKNFH6+DMEIo5rWVeJ/SlHj/ZsVAz
-   g==;
-X-CSE-ConnectionGUID: G3QEGGdfSXSjaO7UjbRmeA==
-X-CSE-MsgGUID: Z1VDL8thRNOvKbz9pjgusQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11803"; a="84951614"
-X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
-   d="scan'208";a="84951614"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 03:00:44 -0700
-X-CSE-ConnectionGUID: 0BGM89pkSViqMP1oK1e2ew==
-X-CSE-MsgGUID: F2/YS7loQYWKytKP0S6wOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
-   d="scan'208";a="242486625"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa006.jf.intel.com with ESMTP; 01 Jun 2026 03:00:41 -0700
-Date: Mon, 1 Jun 2026 17:36:30 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
-	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	yilun.xu@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH 00/15] Enable TDX Module Extensions and DICE-based TDX
- Quoting
-Message-ID: <ah1SnuEHuFeX873m@yilunxu-OptiPlex-7050>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <2542e761-57ed-4170-8ce9-1de3fc685dea@intel.com>
- <ahbJnCFlGFwxrEkw@yilunxu-OptiPlex-7050>
- <e9b8083b-6747-4adf-9e48-ffae70dc6508@intel.com>
- <ahfJ9MW+kJp+kE6A@yilunxu-OptiPlex-7050>
- <7fdc27cc-22a8-4442-9c9b-4bace9ee0d23@intel.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GFts2m17"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jlmTMNNe8eEDUHMs11bts5fxxXReA+4UL8dt0TYFuLEQByDGqoUA8lyq0hTyaPcQXxptLtU6FkjFE4bCuO/icr2ni18Oxq8IlJpBsAaF9cd8DBTb2VSjsdney4/25g0UMX6fpXN0gMbpblS8vF9DrIVOEBsirvNEqSTXmpVLBGYXZVi5nANZ5e+UMzWjr/cWG+kj/X2Zdh9fWuUAJ95k+22jI50H6NInL+isE65obHT4gOxfCIBdm+cbbG7SsHyvoma6xL5IjIJppvHpmFWtCiVFODHu/dqxNSaTuCG66qyA67pq5Ib5fHkgBsBd/W6xR1CiYwV/NGVfaMQCpKxuMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xn36oogcTKrYeiVIdnmc/zehzbtdM03wJij0Rym00cQ=;
+ b=nOIsJXY2+iG8baUICTqnOM6rnDCIVwycbwBKWkPd5a7nhnT79MNkIc9dghocL5ok43+0qMLM5JIScNrnkYn2+IcsqvErKJkEbOzwIsebnHVGblRLafXQSFT9i64zVRBvSA2lJiVEAo4fIixsQqh+qXSK9vNo/0290zgdzryieVUgjPXq/io0ZI21OuxOXPfQPx28zagjDsl0IOtZRyDkmR+AR3r/O+yyBgG4E5GCDUfJCe4MUtXsz4w6I8O7z1b/q3WcTlp8iJftHGiBQc7xETCXJst2zMvVN0wpKvDK5fZ+WOcMGsLUzRsoRDeOEarmJBuhIssyBJ8EGTcqxcqjxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xn36oogcTKrYeiVIdnmc/zehzbtdM03wJij0Rym00cQ=;
+ b=GFts2m17WQ7yarGy6F3/TitbusJOsDAM14J4B45n0o6hgnFpIv2ESymXCwlShekwaqiM4wxC2/JpL93t4KsPVsfAXgu9N7YWS6u7ipDfM3fJcdK52KejUqUJtPtrpjJZ0PPg9/7iZYk0JpQNK4IMyfxi3aaS4Qc/YxQgC3OBeaw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
+ by PH7PR12MB7308.namprd12.prod.outlook.com (2603:10b6:510:20c::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Mon, 1 Jun 2026
+ 18:03:14 +0000
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad%6]) with mapi id 15.21.0071.015; Mon, 1 Jun 2026
+ 18:03:14 +0000
+Message-ID: <af2d0e4a-b721-4273-9a2e-328d61421900@amd.com>
+Date: Mon, 1 Jun 2026 13:03:10 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 4/7] x86/sev: Add support to perform RMP optimizations
+ asynchronously
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+To: Ackerley Tng <ackerleytng@google.com>, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
+ herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ jackyli@google.com, pgonda@google.com, rientjes@google.com,
+ jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+ babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
+ darwi@linutronix.de, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1779133590.git.ashish.kalra@amd.com>
+ <6f1ec3d8ebcf3aaceccc099c07d0deb545dd4ab9.1779133590.git.ashish.kalra@amd.com>
+ <CAEvNRgGfyb7zvZ1u1j7YLomD+JdAxnVW36gtvNG9gxgZ80vMyQ@mail.gmail.com>
+ <8b7f6c93-ad5a-45e1-aa70-945518d29ddc@amd.com>
+Content-Language: en-US
+In-Reply-To: <8b7f6c93-ad5a-45e1-aa70-945518d29ddc@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH2PR18CA0004.namprd18.prod.outlook.com
+ (2603:10b6:610:4f::14) To BL3PR12MB9049.namprd12.prod.outlook.com
+ (2603:10b6:208:3b8::21)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7fdc27cc-22a8-4442-9c9b-4bace9ee0d23@intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|PH7PR12MB7308:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1b148a83-8f98-4138-107d-08dec0080ce3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|921020|18002099003|22082099003|56012099006|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	dKv5dUAFA68BXHT2n8DrFcb8AMvwIyqjvVKfsTkDdpWAHF5MSj6Xdcr+BEmfTdCtD6Gk69QexmkkVDZDYbrMMEQrmdQl+5KYJhYQdwOj/eizwmhIWlZaIu4TlBwskZC4ppAn/9xNZo4pYDa/YeInmN9uY5YnVtU+MjEs2IiBKU6xhiy+/TY/8sWfBkNEjmCy74aEJvkoPM4johRD7rYHEv+Rd5bXClGxtR53HPWkg/wKZuAeLGFaO5+BGfDDu41EpxxGbTS+GphpQGX5rcDIXe3SiFd8Aefs807+Ba0oHrDDD7IODZIj6UQzOcE1sHf6QRpIog9vLfWqcpwzY4BdkResGKatJumyw8RVNUu94LLFCMJQwRYTRQDO7MPtNNZ7B8ZvmjJ+PZF9ZzEprNfqeWQQYETTvKXeWfzst60rbfv6LOZhFsd04DB7Mxl4Psx6knWeG2VEiTQVgSI/s4QmuPf2ZZIDB3KvSgRrXjKhq/3TzvggVIumR41e8YmdXTGC0iuoZm78Bcn1Co6XYyQR7N5XBUZkbpoWI+8XMG9ufF2OmiB5eLhZXOLosL2mvrsJ/yCMEW9qkxSpsUoZTHBMko6JOyFSpQu0TPLb9dX3+pd7qPfUQXY1speobpvXZRDLNgJIl83kax+bjoYa8NMsZgSRgl9w6B2YNWYgUTzhNdQXfN93EhS+vCS5HmN6k/W6JTiVVB62Cg2KaSCL7TG9KPdUzH3ZWFtCtrtt+z3B5T8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(921020)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UUw4NnNSbGRDQUwrR2JJb0JEMzFhSUppN3NvSjB4NzJnckpSTUVPOGZ5a3lL?=
+ =?utf-8?B?R3h0R3dsMTV0RVE0c2pVV1lCRkhwNi9lckozdERoZlZTNDFXK3Z5MzYzK2Mx?=
+ =?utf-8?B?cjJwUVRwRGdlWm92Vk1FdDdqSTdYcTRBNi94RUNZdVZERWxJTVFzc3h2RDJU?=
+ =?utf-8?B?QTFFaDU2SHY2MmJrMnphRU9wSHM0dmJHbHBNSGdvS1VTdEFRM2xPNEhoTkVp?=
+ =?utf-8?B?UEh2VUFORG5uVWk2Q3BsYVZJUVBLWkZIajEzOFJ1bzZqN2V2UC9xM0ZQZGxj?=
+ =?utf-8?B?TzRwUk10cmtUMk45aVMzMWkyTFVJTWRMOEhKZ053YmVLMjdUOEFUNklZUkdH?=
+ =?utf-8?B?WVV3YWR3cWJCZjVmbk5BZnM1cGtZVGg1V1pUQXI3Z2I1Vlh0QUV5MHErSlRp?=
+ =?utf-8?B?c2tETmxRcWNMYm5WMDZCSXc3c3d6ZVNNU0hXdTMzOVJ1RXU5YXhMM3EwWjB5?=
+ =?utf-8?B?bTlGaWVoTGwrTXdhSmZ5cEF4NWlpdzk2ODBkb3ZtdmtlRGc3MjM0QXF6VHZ6?=
+ =?utf-8?B?OHAzRW5RaldqNVFlSFZ2TE9GNktvRXU2T2Y2WDBwMm5vYzRESXhvamVGYTJB?=
+ =?utf-8?B?VVdjZ2kza0t2cXp2Si8zN1RxUzlUSFpFaUJVVUMwTnJoUk9oVy94d0RXMDJY?=
+ =?utf-8?B?UUp3bGFyeUU1Q1hVWEFQYXBGNG1RUzlKRFo4QnloZXF2TTNXSzV2VEhQbVNh?=
+ =?utf-8?B?d0RDTVdnTndOa1BxOEFhOFoxenFZM2d0SHpaeURJM3F2WVI3M1lXOFZkdlRO?=
+ =?utf-8?B?dGI3N2djYndmYS9sM0hDZnZjZ25nYThPVnRqS2J0Y2JKVCtDOXNPYXZ3Wnh4?=
+ =?utf-8?B?TVNDaGNUVElMVEdHd0tZS2R3T25SRm14aENhcGdDOW5FVXNIbzhCeitWalUy?=
+ =?utf-8?B?ZWx6b3p4WEx4UHVBd0Z6NGp5VytJMXBRY1Fub1o4TzR5WHk0b1d3SmRLbEs4?=
+ =?utf-8?B?RDUrWXZHVDNaQk5OTW03Tk05Nk0rRGhhM2lEZzY0MURVbGRlNTVXVVBjSmNE?=
+ =?utf-8?B?VTFvcmZBNWd3MU5hUUlZNWZMMWdVNFNSbklXRG5iZkxDM214aDN5dWJ6ZHNt?=
+ =?utf-8?B?aTFEcGprNVFXZWUzUW0zZ2pPdU93cS83NzBwaDlmdG5oVXNJOW16T2p0WXRD?=
+ =?utf-8?B?VDVyMklNTTR5Q2Z3a051cTV4cUxGbXVjU3JIcXJaU3grVURtTy9yNDA2RkZW?=
+ =?utf-8?B?L0FpZUxxQTVUMmsvYW5Ud2ZWTC9IZDlud3FQdFBxSGx2MmtYSkJBT0NIK2NT?=
+ =?utf-8?B?cno0akZZYlpKUlk0Z1lwUVpPczh0TmlPdS9kS09tTFJwYlA3ZWNwSTJiU25S?=
+ =?utf-8?B?TGErRm4xSnZHWVRYNFdkN00wcEFtenNhL29DVUcxYkVjcVlTMDVEU2ZFbGJm?=
+ =?utf-8?B?MWdvUUM4QXlwU2tpVndKVzlTekZzS1FveXJ2dWNqaDZ2MU9ZNk8rbEhLYUVU?=
+ =?utf-8?B?SlhjZldDeWpjZW12VjRERlFrSjVsTnUrTVlacTI2ZGhjODRYeG9iQTlIRy9J?=
+ =?utf-8?B?Wlh4RkEzZGdUbTNpVVJDUHJsWlU3UXlPZDlOZTNPRzdUc3VFdVZ0NmtQWnNB?=
+ =?utf-8?B?ajFrSnExTm1YeXRQL3ppK0lRYnA5d3N6Z1M4QWJocDBLYituUlFTRTVuNHM1?=
+ =?utf-8?B?WkpKRm1GNTdUcDZWaE43czAyYzFtd3lkQzFkbTJxRGpuZFE2SzNrelFlMGpa?=
+ =?utf-8?B?MU5IaDFJRW83bWdzc2U5dVZydk4xcDdKcUJOais2Ky9lSkJ2ajlsWERwNlJ5?=
+ =?utf-8?B?SFpUMEJRQXA5Unl3OUZDdlBtRXdqNU8vcVR0WXZhZnZLMm5Nb25QREh5Mkht?=
+ =?utf-8?B?U3FEYXl1WFQ2THU5MHZtQzZsMElobks2NFA2UVBhZEROY1FiN3AycXUySHov?=
+ =?utf-8?B?czA5c20zQVl4bjVIdFhZcnhBL1h2QVVoS0JFQUJ0Y3dEZGZ3akV0YnVTblly?=
+ =?utf-8?B?VjBrWWFzZHV1WGRocXE4UnZWTlFoMG1TeUN3TElYV2JuOFRoVi9LbHE0YkRr?=
+ =?utf-8?B?UTBQU240cnc0UThwUmh0a2VyRlFLNmtic1JpZnZYeFFEbVgyTFhBMTQxZWpB?=
+ =?utf-8?B?S0ZmZkZlMmFCUnN0cFpWSGN5OXFiUzk0aW9pWHRxMVY0OGFoOWp4bmw1ZWht?=
+ =?utf-8?B?dk1IZHF5aUZOVzlDdmtUT082VzBjVTUzbkhtU25idkxCcjBsN2xLUGFWMkkr?=
+ =?utf-8?B?VTMxTG1rUk82aHVRS3VPMTR0VDhValFyRGY2eUUyM1VPVklRM2FoTE9DSklw?=
+ =?utf-8?B?WFl5OG45TEdhL2RacncvRENYRUdoSUUrWFVBcm1ET1hDZnloalFRdEViS09w?=
+ =?utf-8?Q?FxuaLvFjWO3puU1iyz?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b148a83-8f98-4138-107d-08dec0080ce3
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 18:03:14.4290
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qCOYaF2NnaoP1/22vNy487M3y3aSV06JxtEceaCVHTqyinDg2+x/AOFIuNdY1+AOQtPlaoWmu4PF5giF65QyNQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7308
 
-On Thu, May 28, 2026 at 12:50:34PM -0700, Sohil Mehta wrote:
-> On 5/27/2026 9:52 PM, Xu Yilun wrote:
+
+On 5/28/2026 6:52 PM, Kalra, Ashish wrote:
+> Hello Ackerley,
+
+>>> +	/*
+>>> +	 * RMPOPT scans the RMP table, stores the result of the scan in the
+>>> +	 * reserved processor memory. The RMP scan is the most expensive
+>>> +	 * part. If a second RMPOPT occurs, it can skip the expensive scan
+>>> +	 * if they can see a cached result in the reserved processor memory.
+>>> +	 *
+>>> +	 * Do RMPOPT on one CPU alone. Then, follow that up with RMPOPT
+>>> +	 * on every other primary thread. This potentially allows the
+>>
+>> I like the leader and follower comments below, thanks! With this
+>> leader/follower setup, will the followers definitely see the cached scan
+>> results, or might the followers still potentially not benefit from the
+>> caching? If it's still only "potentially", why?
 > 
-> > No the memory needed varies depends on the feature or the number of
-> > features. But currently I see the total requirement is ~50MB.
-> > 
-> This is important consideration when defining the default policy. Could
-> you please elaborate on how this will scale in the future?
+> I am verifying with the H/W architects if this is always going to be true or not,
+> will the followers always benefit from the scan results cached by the leader (first CPU)
+> or there is a possibility that the followers cannot see/access/get the cached results
+> and instead do full RMP scanning ?
 > 
-> How are the memory requirements expected to grow with additional features?
 
-I queried the TDX module team, and the answer is they almost grow
-linear. I measured the only feature - PCIe Link encryption (SPDM) - on
-my hand again, the precise memory consumption is now 35M.
+Following up on this, i have checked with the H/W architects, and the feedback is that
+the: followers are "designed to" skip the scan if they see a cached result.
 
-In the foreseeable future, the features are SPDM, DICE & TD Migration,
-so will cost ~105M at most. I think the number still works with the
-default policy.
-
-> 
-> Let's say a future platform has a lot more features and needs
-> significantly more memory. Wouldn't loading a legacy kernel with this
-> default policy lead to excessive wastage?
-
-A legacy kernel won't consume Extensions memory. The Extensions memory
-is only required by TDX module when add-ons features are explicitly
-configured via TDH.SYS.CONFIG [1]. For legacy kernel, no add-on features
-configured so no memory consumption.
-
-But yes, if the features grow rapidly out of expectation, may need new
-options to switch something off. I think if we discuss later when the
-need actually arises.
-
-[1]: https://lore.kernel.org/all/20260522034128.3144354-16-yilun.xu@linux.intel.com/
-
-> 
-> Maybe I am missing something obvious. The struct in patch 1,
-> memory_pool_required_pages is u16. So, will the Extensions support never
-> require more than 256MB?
-
-Good catch. TDX module team admitted this is an issue. They want to
-increase the size to 4 bytes for future.
+Thanks,
+Ashish
