@@ -1,261 +1,349 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013012.outbound.protection.outlook.com [40.93.196.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4130737AA87;
-	Tue,  2 Jun 2026 08:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780389657; cv=fail; b=eCPDsxvFXDqmCmLMpChYBJupOd3AfawxxiNH90J1WikcviMjwpjK937pfjQMm9eCFlUnJ8WpBI4vOfOpcq2n34mE8UGq1fuyDnhG2RB7I+fqZCkm9iHHOnbp7B4bTltG43sY/9cvFX5/AkjXvClEw3spqenIj8pbUXyd8YfUwW8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780389657; c=relaxed/simple;
-	bh=yZPiHqRX8EK1So1TIdYXzt+HroFIsy2TTYgk+gYKd3Y=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=TuT/D9UWqUqVL/lmq3nvJPw5asSfDZRCYVKWmXz/keGaEeiDejSGA+UdJv0RL7DKkceF36hmeCemXzf3FhKQdX7+aqs/QQ503JHZcDPCJs8eXOnXp9Ea8AUs8K+9kFNnCWMsdqbpSgpr9cbF2Jm2fE7l3YU/3tcxV3UC87pK5vc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2QoeidLW; arc=fail smtp.client-ip=40.93.196.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E4B84039;
+	Tue,  2 Jun 2026 08:42:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780389762; cv=none; b=Av4XQ7dtFEEQEaK9MMca+/2iK7BepnU8E2XrWyNh3iZFmphPyB2umfqnEH0ulmfJ9fQFHsJkugf5dEp6+WBYnMDHtRXzjHKPKCpSMipNCig8iCbAqGXoLOTSdM4+cQw+xvQ4pgsOehBHw/AH8bsonPcAuvjvlqarYQwufSrWVEE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780389762; c=relaxed/simple;
+	bh=+aiN5iJ2I2mC9JPwpIX5MnpMhtNXhz6nndfzghl8VZw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=foih1CBYzmTvmgKUuSu8rDYfPv2EnbrZFG3c4ZMnL6tRYAAn4tksxTYCcDha9EVL1Xu02GHtcuVT2XwaKqZ0a5MI8FVKt8J7HcNIqtn3tL1BGNH+x/I5hVoAgFDa/CT7wQ2tJFUIbdjd9S7vUfRyGCOa7uLNIVXBgl9R6pveYc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XwnoCysD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2QoeidLW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vyV9rNVazpEsu1jqFbuo3OuBZW9BEG8c5kX/53lkiIiyvqgtybFLhhGPvGYKWBom4JjQsIn2KcbNbxJufF5JJqnZSUmXvaPRhbSWOD9uNKbYUm0Q5WlXJ4a4yiXY4ELdqksRjg9hhizZ/+APyISjr69CU2dm5EqRXwCJkf4AD+COt0QrU7ENIm3/RniGmmBFQtqyeoZhtIv/qwtTW82TnlWjAeBcwPKQTVzQDylKNs/pRu4xn0VaijioUvNZizKGydCMoxxqJIM7WPcZnFzQ8NHiAt3YRhxVZHLMzC/iWsSTlpWytvZ2arMNKwTHYRYuvFicLAaEuGC0TrijNHuzlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pbF79Kva7slDJKE7CrwyYRAVnEU18jzWePo7D6jZfiE=;
- b=vqrf6FoLRS4iB8VWjh5UGrZWkdvRk+petR3JCpmyS9/SmCyVG8aKOvDGrywmtuP6ABNzO5CqxEt/vkkO9L2MS8dhyzpf+DdlynVV5AmWeUR2yZCbcZ/3SdAHz7fNnfkR0E/e9jRTllPlSThD7ZZudlmyDeFwTXkw/Hmz1FPOQJj7tZTuFsOnqK54YULWGAaaLqMs2zGfM7/Q4dcCtOqLCZKGGDdaoIFRhLy8HsGhAvGX/Z8q+Lb1vl2fGmvNlg83GtqDlel3uAPVyE39CBZDLrY/1SF90TBXhNYrS1rQhp2/cbUp5mDnPPV01OT65aOyXKEUljqk2rgwIaJSsvaeuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pbF79Kva7slDJKE7CrwyYRAVnEU18jzWePo7D6jZfiE=;
- b=2QoeidLWNhDG/jNVCc+c+BNOkeMQxS5bliR8XWgrDLYgkliGL8AMAfHwvdX7QrH78kEcYbTejXq5f2NHlO7CJt4W+E1zVaeuAnsKzZkzDPpWKpp/t7SzRbdjmF669/g50CdUQmz76tHyFLtJCMpm0LDE4jhgA3KyyMMxQ26mEcI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10) by DM6PR12MB4219.namprd12.prod.outlook.com
- (2603:10b6:5:217::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.17; Tue, 2 Jun 2026
- 08:40:52 +0000
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3%4]) with mapi id 15.21.0025.012; Tue, 2 Jun 2026
- 08:40:52 +0000
-Message-ID: <ea56cb07-6366-4242-981c-1cb25715747c@amd.com>
-Date: Tue, 2 Jun 2026 18:40:42 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 5/5] iommufd/vdevice: add TSM request ioctl
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XwnoCysD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492221F00898;
+	Tue,  2 Jun 2026 08:42:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780389760;
+	bh=qveqGFW5pGyJ7y2OX1FRu6tdbioQt3jxiHxeuavlPwY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=XwnoCysDcNG1KCQFwSSgBb4aFrAh4/cT4FyFsLCPS/5U4WIWHkJLlonJuxj4XRIzC
+	 ymgRDIVnrW/1n4NB9VsUnH6mu/tWhAzGrg17dtau2NXTRYgVJA8TOPUntLJ/kBqEro
+	 WhvVFrNT0kSfFvWTIxO7iuilwiKKBYvK3amo9Nw52YN6uIbOauhrRIu5i8ZHIHIQ0X
+	 6R0zJr1An5Nr2rcUTQUrWKe8b7K8D3sUzPeAvZbBD5N3KzjOSmafD2dGJdRUHxmV70
+	 yaRbho9EgZ+pU8kuXPPzEoUnOCpATshhvGA83kNM2OlZSbozDdexmtbexB4oHz6Y62
+	 8/v66+QZgjeIQ==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
 To: "Dan Williams (nvidia)" <djbw@kernel.org>,
- "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- linux-coco@lists.linux.dev, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
- Kevin Tian <kevin.tian@intel.com>, Nicolin Chen <nicolinc@nvidia.com>,
- Samuel Ortiz <sameo@rivosinc.com>, Steven Price <steven.price@arm.com>,
- Suzuki K Poulose <Suzuki.Poulose@arm.com>, Will Deacon <will@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>,
- Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Tony Krowiak <akrowiak@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>, Jason Herne <jjherne@linux.ibm.com>,
- Harald Freudenberger <freude@linux.ibm.com>,
- Holger Dengler <dengler@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Alex Williamson <alex@shazbot.org>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Farhan Ali <alifm@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, linux-s390@vger.kernel.org
-References: <20260525154816.1029642-1-aneesh.kumar@kernel.org>
- <20260525154816.1029642-6-aneesh.kumar@kernel.org>
- <becd865d-09a4-4ac3-b719-4a0deae2692a@amd.com>
- <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch>
-Content-Language: en-US
-From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY5P300CA0052.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:10:1fe::11) To SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10)
+	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: Re: [RFC PATCH v4 01/14] coco: host: arm64: Add host TSM callback
+ and IDE stream allocation support
+In-Reply-To: <6a17d6f1d6371_2b1fb710057@djbw-dev.notmuch>
+References: <20260427065121.916615-1-aneesh.kumar@kernel.org>
+ <20260427065121.916615-2-aneesh.kumar@kernel.org>
+ <6a17d6f1d6371_2b1fb710057@djbw-dev.notmuch>
+Date: Tue, 02 Jun 2026 14:12:31 +0530
+Message-ID: <yq5aa4tds58o.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|DM6PR12MB4219:EE_
-X-MS-Office365-Filtering-Correlation-Id: e5121517-8857-4de3-e034-08dec082a79a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|7416014|1800799024|18002099003|22082099003|3023799007|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	N1NxnoJhKCKZDMQKH6igORi4LYcMsSO2mINeP3zrbTtmeuuv8aGdzh10K7kkjKSYWIhRxD/JlbYtYHIF3LqCjoVe5sYaBdpZ1x8/PB6YaM40Fo6mMmNx+oUl3Rjqnds0Q0y6S6z6Bl5ZUSAzHaTvUuJDEnpLpuB2Ey3gd2I4QoRRiuG/AtD+q70v0qC+j7/jgAM9Z7+XlwjeO4LMX04o1fmEJoaF00VQp2Q2Qv5GPYTG9AbYPzdLhTtTp+i9tvWOQmEFVQLvsS4VjQXKyVys7O7Q28tTcTFNrVgDHMznsuC6Px1ki9aEmWzs/8LOdv82IRul8ekcCOwd60sygfu67dOvEuzliGFGfSkBSAH04KXGSq/dWn7Skd+Hk8rHH1wJHwUDpTBxRo5TMmvWJDs1GY5qN+ubo5pbVzSlSi6lz7nlAaATgpCcGJ4DPt2yXqXh7gaKptpB6RKloDYdrqNv2IFGVAozvsYbO3Z695mDcpFea9gkPNwCBGiqSKxwrM5d5HoKhxeLiUTfK36AYBfk5tmH3IHxNwkziXjqf5QwAkIriubFluBAiudwuI2L6V8S8/kPEujOG6o61TDZpzKBqVuNkFFsjD1eO+s3nWxzC3otHumzZfWOSqiJ4Wf38HxV8FczjEwH940vJAy3vSBArIkuKRbTDjbKZWOKPDeJ149mQROIeHFNVhlQtK1hXHv/
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(18002099003)(22082099003)(3023799007)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?L3FTSUdaSk9ya0ZHSnU1UWdZSjVCRUpZQ3JGQkVWTWxINk53aGhPZ3hkL0k4?=
- =?utf-8?B?dU9zbGEzenJoaGlsK0JHcjdNMU5DVXd4anQwTXh2a0FKNEFqbloraFNMTDEz?=
- =?utf-8?B?NEMxZ3l4RnNRWmk4NzZGS2pFV0pNWXZsUjFwZWZFRUVvYlk0ZjkrSWx0MVpD?=
- =?utf-8?B?SjExWEQ2K3k4UHZYZ2xoWXFIb3M1ZUgyWFM1cnVPQlhibm5SYk5UYjljMWYz?=
- =?utf-8?B?ZWszeHVXZU1mTEI3QkZBaDFpekZjOUIwUm4rRUVndEV1TFlwRHhWU2s1Y1lP?=
- =?utf-8?B?NHNib3ErTEZPVGJoY1Bnb1dxYmVVTGw2WTNKcGRYUmk0djlPZTlzZ3FRelQ5?=
- =?utf-8?B?RnZKNTJ3d3Y4NHdFVTF3WDk4V0hWYnV5Nllna1BSZGordytqSjFrTnNzMWdW?=
- =?utf-8?B?N3B5NERNK1JhbnB0bk8wWmVvcUtMaVZIbUQ4Q2xWb2tRSVgvM2VmdlZsbmVJ?=
- =?utf-8?B?aUdHd0lWd3dzNHVScXkwcHVobHRSOE03WjcrU28wQ3p0Q2gxL3g0VFlscm1p?=
- =?utf-8?B?UXNHZEQxalNsMlhEM053NHh0V1NNNWg4K2k2b0xuc0pDQ1JYTmcxT1NZMUU4?=
- =?utf-8?B?aXNVWmozeWlNOXlTOHFqM0FId3ZGSkcyWUlpTDhhdDBCQXVzazVQdTBaM1dp?=
- =?utf-8?B?UlZSamtiOGxtTVFUVms4YVVaMUR3cnFOOFl5bVVSZEJXSlZZQ3RPSDhyaHFq?=
- =?utf-8?B?Q3lNVkhMa2pmWjBoTzJzY2tCUi9JQldWNkpoTEpPRGF2clI1cVd4NElIZHdq?=
- =?utf-8?B?SDB1K280bjJLL2pPTE1xT05MaVpsUmt6NzJjaFZNWTFLRlFrQzZTWVFUOWpI?=
- =?utf-8?B?K0ptQUFEbEtkNXJFazBJSXVOZlR4dUwrM2JjM0l4bGp0aUlCMlVWQnkxaktq?=
- =?utf-8?B?Ly9lMk85OS9pOU5JR1J2WTlWRWdNV29yaFdVUk0wZkFscUtpMExYaE51RkJm?=
- =?utf-8?B?QkZKV2FObkErT3dBMTV4NkhRZlNGbVFrYTJUa1hzbFRBa0RaZlJNLzVMdEtE?=
- =?utf-8?B?WG5xcUZzK1hlMG1HRWdGOFBseWFSVjYvVUZjYlNka3M4RWhIa2FqYXU3UWh4?=
- =?utf-8?B?N0NYU0JEMEtkOEgxdVgwclJ3OUJuamEydDRJb3MvVVVZMC9UWmZta1hNclAr?=
- =?utf-8?B?K3FJcTRua1lJTkY1cFhqZFg4c2xZSHVMbEtSM1FLVW5YNDZ3QUNUS3BOMmR2?=
- =?utf-8?B?elR4N0xTOXVZNWRRVWU4emdnem1RZTBIaFNkd29xbUt4dysvNGJ5bW1oSE1R?=
- =?utf-8?B?cEJWT05VQVpyM0l0a3JIT3d4M3hLNWZzSTYzNzJnWXFNNTNBQzRwZ3NRTWpZ?=
- =?utf-8?B?YStXWEp3THc3NkZhcStEWUFkOG1mMGkrRFZPU2dOMkoyWEo5cU01SlNKeDA4?=
- =?utf-8?B?NmxmTXBSRGUwc1lON1ltUjRmdElHOEZuWm02QnFTQXEyV0NGb01MeCttWSt2?=
- =?utf-8?B?RGtBVUdNTklGYVJnR2hIdmtpMDVBYVBWN05IQmU3QWp3aHM3ZkxCY3AvWFE2?=
- =?utf-8?B?dFdNRkxYbnhKbHBYRjd4aFNMNEI2T04wS0ZQdm5aYW85TUJyWCs2S2djdmE4?=
- =?utf-8?B?UmIybjBCeS9Nd2l3RkhWUmpzbGFFMDM3NHhKaXU0RnJVVVordy80MjlTNDFy?=
- =?utf-8?B?aGhuSzF0UVprWHh2VDhZVjBhMzV4WU85ZzJ2bTROMGpxZDZaTHF3eWxEaWt6?=
- =?utf-8?B?QzVPR2RFeGRJVHVFa0tHNi9FU1gzUGQ5QVlFT3BXVE5hVURnUTVySGowQ0dV?=
- =?utf-8?B?S3YzNyswTVNlMEMxVUlrWStKRnp4ak1LdUVsMWE5OW10L2NhejBnTGE4SXd6?=
- =?utf-8?B?WGs1TTBleWNidm1RQ3hTSHdhZjZ6S0svWW9lVGNlcTkyK3lsYVpYbTZWQW1q?=
- =?utf-8?B?MTJxUXdIcWJ2MFRWMk5WSnNGN2k5M2VjZ3VRYmVwVnA4SXdPNGxWUU1TS3Vm?=
- =?utf-8?B?TElPSmFJQ0NrRDRqd0FUclZUb2Yza0IrdDMyYW8zWmpwS2pHZ29rdXNqUjVO?=
- =?utf-8?B?eWRpQlIrck1PWWtZcExLZE1pS2k1VnczQWdJNG1nT3NKaDZ6SUZncFBvcVI5?=
- =?utf-8?B?djFjZVBRVGhwcEZ4dm1Ua1Bia1pyclBYYnFRUVkvS0ZJcjFUcCtDeXdDZnR6?=
- =?utf-8?B?Wi91OGJURWFtRVdCS2s2Z3dZR3JoUjg4a0pHNmQ2TG5BN3RBZ2NlVGU0MGtq?=
- =?utf-8?B?OUNQWXh6QXhqYW9kZW55NnFlWW9Ca3dQQkNpaDJ0RTJiWUZuVzUrckFuZ0I4?=
- =?utf-8?B?b2Flcm1malFMM0lva0dGUGhIeWFzSkN2ZTBzWHZHd2w1MnlISDVoam9HWkll?=
- =?utf-8?B?cy9qdy9wT3k4YkNjVERCZG0zS0lEcjBFQnNIM3E1NmtFQUt4S1JOdz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e5121517-8857-4de3-e034-08dec082a79a
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2026 08:40:52.4387
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fAkWqgsn6UfULMzf3wVhGxIX23tSyqxxZvOlNh56LWX5rySJWgi8E5nf51hshpC0d7mAFY+ijqffxKh4ru5apQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4219
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+"Dan Williams (nvidia)" <djbw@kernel.org> writes:
 
+> Aneesh Kumar K.V (Arm) wrote:
+>> Register the TSM callback when the DA feature is supported by KVM.
+>>=20
+>> This driver handles IDE stream setup for both the root port and PCIe
+>> endpoints. Root port IDE stream enablement itself is managed by RMM.
+>>=20
+>> In addition, the driver registers pci_tsm_ops with the TSM subsystem.
+>
+> Do you want to call out that this is an infrastructure / scaffolding
+> patch that only handles the PCI-TSM skeleton. The CCA meat comes later,
+> in particular IDE key management. Tell a bit more of the story=20
+>
+> Otherwise, mostly looks good.
+>
 
-On 27/5/26 16:17, Dan Williams (nvidia) wrote:
-> [You don't often get email from djbw@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> Alexey Kardashevskiy wrote:
->>
->>
->> On 26/5/26 01:48, Aneesh Kumar K.V (Arm) wrote:
->>> Add IOMMU_VDEVICE_TSM_REQUEST for issuing TSM guest request/response
->>> transactions against an iommufd vdevice.
->>>
->>> The ioctl takes a vdevice_id plus request/response user buffers and length
->>> fields, and forwards the request through tsm_guest_req() to the PCI TSM
->>> backend. This provides the host-side passthrough path used by CoCo guests
->>> for TSM device attestation and acceptance flows after the device has been
->>> bound to TSM.
->>>
->>> Also add the supporting tsm_guest_req() helper and associated TSM core
->>> interface definitions.
->>>
->>> Based on changes from: Alexey Kardashevskiy <aik@amd.com>
->>>
->>> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
->>> ---
->>>    drivers/iommu/iommufd/iommufd_private.h |  6 ++
->>>    drivers/iommu/iommufd/main.c            |  3 +
->>>    drivers/iommu/iommufd/tsm.c             | 68 +++++++++++++++++++++
->>>    drivers/virt/coco/tsm-core.c            | 39 ++++++++++++
->>>    include/linux/pci-tsm.h                 |  9 +--
->>>    include/linux/tsm.h                     | 25 ++++++++
->>>    include/uapi/linux/iommufd.h            | 80 +++++++++++++++++++++++++
->>>    7 files changed, 226 insertions(+), 4 deletions(-)
+Sure, I=E2=80=99ll update the commit message.
+
+>
+> Minor comments below...
+>
+>> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+>> ---
+>>  arch/arm64/include/asm/rmi_smc.h         |   2 +
+>>  drivers/firmware/smccc/rmm.c             |  12 ++
+>>  drivers/firmware/smccc/rmm.h             |   8 +
+>>  drivers/firmware/smccc/smccc.c           |   1 +
+>>  drivers/virt/coco/Kconfig                |   2 +
+>>  drivers/virt/coco/Makefile               |   1 +
+>>  drivers/virt/coco/arm-cca-host/Kconfig   |  19 ++
+>>  drivers/virt/coco/arm-cca-host/Makefile  |   5 +
+>>  drivers/virt/coco/arm-cca-host/arm-cca.c | 225 +++++++++++++++++++++++
+>>  drivers/virt/coco/arm-cca-host/rmi-da.h  |  46 +++++
+>>  10 files changed, 321 insertions(+)
+>>  create mode 100644 drivers/virt/coco/arm-cca-host/Kconfig
+>>  create mode 100644 drivers/virt/coco/arm-cca-host/Makefile
+>>  create mode 100644 drivers/virt/coco/arm-cca-host/arm-cca.c
+>>  create mode 100644 drivers/virt/coco/arm-cca-host/rmi-da.h
+>>=20
+>> diff --git a/arch/arm64/include/asm/rmi_smc.h b/arch/arm64/include/asm/r=
+mi_smc.h
+>> index fa23818e1b4c..109d6cc6ef37 100644
+>> --- a/arch/arm64/include/asm/rmi_smc.h
+>> +++ b/arch/arm64/include/asm/rmi_smc.h
 > [..]
->>> diff --git a/drivers/iommu/iommufd/tsm.c b/drivers/iommu/iommufd/tsm.c
->>> index 09ee668dbed9..342fbdb6a6b9 100644
->>> --- a/drivers/iommu/iommufd/tsm.c
->>> +++ b/drivers/iommu/iommufd/tsm.c
->>> @@ -60,3 +60,71 @@ int iommufd_vdevice_tsm_op_ioctl(struct iommufd_ucmd *ucmd)
->>>      iommufd_put_object(ucmd->ictx, &vdev->obj);
->>>      return rc;
->>>    }
->>> +
->>> +static bool iommufd_vdevice_tsm_req_scope_valid(u32 scope)
->>> +{
->>> +   if (scope > IOMMU_VDEVICE_TSM_REQ_SCOPE_PCI_LAST)
->>> +           return false;
->>> +
->>> +   switch (scope) {
->>> +   case IOMMU_VDEVICE_TSM_REQ_PCI_INFO:
->>> +   case IOMMU_VDEVICE_TSM_REQ_PCI_STATE_CHANGE:
->>> +   case IOMMU_VDEVICE_TSM_REQ_PCI_DEBUG_READ:
->>> +   case IOMMU_VDEVICE_TSM_REQ_PCI_DEBUG_WRITE:
->>
->> This scope thing still needs clarification.
->>
->> I have 3 types of requests to fit here, all go via VM -> KVM -> QEMU -> IOMMUFD -> TSM.
->>
->> 1) bind/unbind TDI <- moves to CONFIG_LOCKED, this is "OP";
->> 2) start/stop TDI <- moves to RUN, this is "GR"? Right now I route it via "OP";
->> 3) enable/disable MMIO/DMA <- no TDI state change, this is "GR" but which scope is it here?
-> 
-> The scope parameter was meant to enumerate a security model for classes
-> of commands that are otherwise opaque to the kernel. However, none of
-> the commands we are targeting are opaque (private specification with
-> unknown effect). It now turns out there is no role for @scope for
-> security.
-> 
-> Now a command family that iommufd can validate seems useful. As it
-> stands this implementation aliases command codes across TSMs. Do we
-> proceed with creating an actual shared command uapi for the truly shared
-> commands:
-> 
-> TSM_REQ_TYPE_DEFAULT: Commands every arch needs
-> TSM_REQ_READ_OBJECT
-> TSM_REQ_REGEN_OBJECT
-> TSM_REQ_OBJECT_INFO
+>> diff --git a/drivers/firmware/smccc/rmm.c b/drivers/firmware/smccc/rmm.c
+>> index 2a6187df3285..7444cc3a588c 100644
+>> --- a/drivers/firmware/smccc/rmm.c
+>> +++ b/drivers/firmware/smccc/rmm.c
+> [..]
+>> diff --git a/drivers/firmware/smccc/rmm.h b/drivers/firmware/smccc/rmm.h
+>> index a47a650d4f51..37d0d95a099e 100644
+>> --- a/drivers/firmware/smccc/rmm.h
+>> +++ b/drivers/firmware/smccc/rmm.h
+> [..]
+>> diff --git a/drivers/firmware/smccc/smccc.c b/drivers/firmware/smccc/smc=
+cc.c
+>> index fc9b44b7c687..2bf2d59e686d 100644
+>> --- a/drivers/firmware/smccc/smccc.c
+>> +++ b/drivers/firmware/smccc/smccc.c
+>> @@ -97,6 +97,7 @@ static int __init smccc_devices_init(void)
+>>  		 * the required SMCCC function IDs at a supported revision.
+>>  		 */
+>>  		register_rsi_device(pdev);
+>> +		register_rmi_device(pdev);
+>>  	}
+>
+> Would splitting the above three hunks make this series stand on its own
+> relative to the base CCA series? I assume likely not as soon as we get
+> to patch2.
+>
+> Otherwise, just curious what your intended merge strategy is for this,
+> tsm.git or arm.git, and what help this needs?
+>
+> [..]
+> snip code that looks good.
+>
 
-These 3 are already in that netlink interface of the TSM (so common for all arches), right?
+Yes, I=E2=80=99ll split this into a separate patch.
 
-> TSM_REQ_VALIDATE_MMIO
+>
+>> diff --git a/drivers/virt/coco/arm-cca-host/Makefile b/drivers/virt/coco=
+/arm-cca-host/Makefile
+>> new file mode 100644
+>> index 000000000000..c236827f002c
+>> --- /dev/null
+>> +++ b/drivers/virt/coco/arm-cca-host/Makefile
+>> @@ -0,0 +1,5 @@
+>> +# SPDX-License-Identifier: GPL-2.0-only
+>> +#
+>> +obj-$(CONFIG_ARM_CCA_HOST) +=3D arm-cca-host.o
+>> +
+>> +arm-cca-host-y	+=3D  arm-cca.o
+>> diff --git a/drivers/virt/coco/arm-cca-host/arm-cca.c b/drivers/virt/coc=
+o/arm-cca-host/arm-cca.c
+>> new file mode 100644
+>> index 000000000000..67f7e80106e8
+>> --- /dev/null
+>> +++ b/drivers/virt/coco/arm-cca-host/arm-cca.c
+>> @@ -0,0 +1,225 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +/*
+>> + * Copyright (C) 2026 ARM Ltd.
+>> + */
+>> +
+>> +#include <linux/auxiliary_bus.h>
+>> +#include <linux/pci-tsm.h>
+>> +#include <linux/pci-ide.h>
+>> +#include <linux/module.h>
+>> +#include <linux/pci.h>
+>> +#include <linux/tsm.h>
+>> +#include <linux/vmalloc.h>
+>> +#include <linux/cleanup.h>
+>> +
+>> +#include "rmi-da.h"
+>> +
+>> +/* Total number of stream id supported at root port level */
+>> +#define MAX_STREAM_ID	256
+>> +
+>> +static struct pci_tsm *cca_tsm_pci_probe(struct tsm_dev *tsm_dev, struc=
+t pci_dev *pdev)
+>> +{
+>> +	int ret;
+>> +
+>> +	if (!is_pci_tsm_pf0(pdev)) {
+>> +		struct cca_host_fn_dsc *fn_dsc __free(kfree) =3D
+>> +			kzalloc(sizeof(*fn_dsc), GFP_KERNEL);
+>
+> kzalloc_obj(*fn_dsc)
+>
+>> +
+>> +		if (!fn_dsc)
+>> +			return NULL;
+>> +
+>> +		ret =3D pci_tsm_link_constructor(pdev, &fn_dsc->pci, tsm_dev);
+>> +		if (ret)
+>> +			return NULL;
+>> +
+>> +		return &no_free_ptr(fn_dsc)->pci;
+>> +	}
+>> +
+>> +	if (!pdev->ide_cap)
+>> +		return NULL;
+>
+> Bailing early?
+>
+> Maybe the RMM knows something about this device not needing IDE? I have
+> a similar question in patch2 around trusted sources for whether a device
+> is internal or not.
+>
 
-SEV handles this in the KVM as this is where RMP and NPT are managed + opaque guest request to the TSM, I'd think it is the same for others.
+Yes. This get updated later in
+https://lore.kernel.org/all/20260427065121.916615-14-aneesh.kumar@kernel.org
 
-> TSM_REQ_SET_TDI_STATE
+>
+>> +
+>> +	struct cca_host_pf0_ep_dsc *pf0_ep_dsc __free(kfree) =3D
+>> +		kzalloc(sizeof(*pf0_ep_dsc), GFP_KERNEL);
+>> +	if (!pf0_ep_dsc)
+>> +		return NULL;
+>> +
+>> +	ret =3D pci_tsm_pf0_constructor(pdev, &pf0_ep_dsc->pci, tsm_dev);
+>> +	if (ret)
+>> +		return NULL;
+>> +
+>> +	pci_dbg(pdev, "tsm enabled\n");
+>> +	return &no_free_ptr(pf0_ep_dsc)->pci.base_tsm;
+>> +}
+>> +
+>> +static void cca_tsm_pci_remove(struct pci_tsm *tsm)
+>> +{
+>> +	struct pci_dev *pdev =3D tsm->pdev;
+>> +
+>> +	if (is_pci_tsm_pf0(pdev)) {
+>> +		struct cca_host_pf0_ep_dsc *pf0_ep_dsc =3D to_cca_pf0_ep_dsc(pdev);
+>> +
+>> +		pci_tsm_pf0_destructor(&pf0_ep_dsc->pci);
+>> +		kfree(pf0_ep_dsc);
+>> +	} else {
+>> +		kfree(to_cca_fn_dsc(pdev));
+>> +	}
+>> +}
+>> +
+>> +/* For now global for simplicity. Protected by pci_tsm_rwsem */
+>> +static DECLARE_BITMAP(cca_stream_ids, MAX_STREAM_ID);
+>> +static int alloc_stream_id(struct pci_host_bridge *hb)
+>> +{
+>> +	int stream_id;
+>> +
+>> +redo_alloc:
+>> +	stream_id =3D find_first_zero_bit(cca_stream_ids, MAX_STREAM_ID);
+>> +	if (stream_id =3D=3D MAX_STREAM_ID)
+>> +		return stream_id;
+>> +
+>> +	if (ida_exists(&hb->ide_stream_ids_ida, stream_id)) {
+>> +		/* mark the stream allocated in the global bitmap. */
+>> +		set_bit(stream_id, cca_stream_ids);
+>> +		goto redo_alloc;
+>> +	}
+>> +	return stream_id;
+>
+> Is 256 total an RMM limit, and/or does it require globally unique
+> stream-ids? If not you could do what SEV-TIO does and just set stream-id
+> =3D=3D stream-index.
+>
 
-This is a common one.
+Yes, I=E2=80=99ll switch to that.
 
-> TSM_REQ_TYPE_SEV: Commands only SEV needs
-> TSM_REQ_SEV_ENABLE_DMA
-> TSM_REQ_SEV_DISABLE_DMA
+>
+>> +}
+>> +
+>> +static inline bool cca_pdev_need_sel_ide_streams(struct pci_dev *pdev)
+>> +{
+>> +	return pci_pcie_type(pdev) =3D=3D PCI_EXP_TYPE_ENDPOINT;
+>> +}
+>> +
+>> +static int cca_tsm_connect(struct pci_dev *pdev)
+>> +{
+>> +	struct pci_dev *rp =3D pcie_find_root_port(pdev);
+>> +	struct cca_host_pf0_ep_dsc *pf0_ep_dsc;
+>> +	struct pci_ide *ide;
+>> +	int ret, stream_id =3D 0;
+>> +
+>> +	/* Only function 0 supports connect in host */
+>> +	if (WARN_ON(!is_pci_tsm_pf0(pdev)))
+>> +		return -EIO;
+>> +
+>> +	pf0_ep_dsc =3D to_cca_pf0_ep_dsc(pdev);
+>> +	if (cca_pdev_need_sel_ide_streams(pdev)) {
+>> +		/* Allocate stream id */
+>> +		stream_id =3D alloc_stream_id(pci_find_host_bridge(pdev->bus));
+>> +		if (stream_id =3D=3D MAX_STREAM_ID)
+>> +			return -EBUSY;
+>> +		set_bit(stream_id, cca_stream_ids);
+>> +
+>> +		ide =3D pci_ide_stream_alloc(pdev);
+>> +		if (!ide) {
+>> +			ret =3D -ENOMEM;
+>> +			goto err_stream_alloc;
+>> +		}
+>> +
+>> +		pf0_ep_dsc->sel_stream =3D ide;
+>> +		ide->stream_id =3D stream_id;
+>> +		ret =3D pci_ide_stream_register(ide);
+>> +		if (ret)
+>> +			goto err_stream;
+>> +		/*
+>> +		 * Configure IDE capability for target device
+>> +		 *
+>> +		 * Some test devices work only with DEFAULT_STREAM enabled.
+>> +		 * For simplicity, enable DEFAULT_STREAM for all devices. A
+>> +		 * future decent solution may be to have a quirk table to
+>> +		 * specify which devices need DEFAULT_STREAM.
+>> +		 */
+>> +		ide->partner[PCI_IDE_EP].default_stream =3D 1;
+>> +		pci_ide_stream_setup(pdev, ide);
+>> +		pci_ide_stream_setup(rp, ide);
+>> +
+>> +		ret =3D tsm_ide_stream_register(ide);
+>> +		if (ret)
+>> +			goto err_tsm;
+>> +
+>> +		/*
+>> +		 * Once ide is setup, enable the stream at the endpoint
+>> +		 * Root port will be done by RMM
+>> +		 */
+>> +		pci_ide_stream_enable(pdev, ide);
+>
+> The end point of these patches follows the spec recommendation of
+> delaying enable until after key programming.
+>
+>> +	}
+>> +	return 0;
+>
+> Should this be making security claims to userspace without taking any
+> action for non-endpoint devices that happen to be passed in?
+>
+> Thinking about a bisection case this should either fail here, print a
+> message that is removed in the final enabling patch, or do the
+> __maybe_unused arrangement to land all the CCA bits first and then do
+> this hookup. Up to you.
 
-No change to host owned part of the IOMMU when TDX or CCA moves the device to secure? Or it is packed into those opaque requests to the TSM?
+Will do the latter. ie, I=E2=80=99ll call tsm_register() only in the final
+patch.
 
-> ...or just observe that per CC arch commands are needed to setup the VM
-> so per CC arch commands are needed to marshal device assignment support
-> requests.
-> 
-> In that case pci_tsm_req_scope becomes tsm_req_type and is just:
-> 
-> TSM_REQ_TYPE_CCA
-> TSM_REQ_TYPE_SEV
-> TSM_REQ_TYPE_TDX
-> 
-> I am leaning towards the latter at this point.
-
-Dunno, besides the DMA thing, these CCA/SEV/TDX types will only appear in WARN_ON of the arch TSM drivers and will not really be seen. If a wrong TSM driver is loaded (say, TDX on AMD), then something just went terribly wrong. Thanks,
-
-
--- 
-Alexey
-
+-aneesh
