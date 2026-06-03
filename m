@@ -1,236 +1,144 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010039.outbound.protection.outlook.com [52.101.84.39])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC0A42B722
-	for <linux-coco@lists.linux.dev>; Wed,  3 Jun 2026 09:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.39
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780477204; cv=fail; b=rmgvujQQigt/lYoyoON0nRgcqHl0mhqzvTShAUrHJa+oW5ADVKNEzT9AOlFbvXCJqU+BmjjvBbabrVYeUn5pLjkkNtnSvszGgxmDtTnkj8IPv5y8Qopfvtve85vjTDjTBZqynKLm4M5FJdors96tG41SllGSt99ZMaHowJD+vr0=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780477204; c=relaxed/simple;
-	bh=XHrPero2zBgfOzZAF9o/NyIhkZmzinCoXetJ6xNYyFk=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=D3O8m+qbF+E00VoCy4+71YXN9RReJrc/lFnP17+qcuoEkj8bx2JU+MjA7kOdUlLHB/zxCGR/kuy7rrGvdGu4NgjlGM0HCUfF+BwVD7YTadw+7pnoVuEJxbUe9zMomfgJ4NKuWL0IJkKT7QPyol8QAU+g4ut31rITYpRYvb6AOk4=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=rev1ga8g; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=rev1ga8g; arc=fail smtp.client-ip=52.101.84.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF12B359A6D;
+	Wed,  3 Jun 2026 10:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780480950; cv=none; b=c/F/Dh2FO/GHQGve2dWB1kmzadyp9qygbj0EDeA+0nJKxLcuYiHO9MFJH5TyDSkZu/I4dTGjQexkWemzJ6s/qZN/XNGXs285uJ25HILOVCRvP0hlA1cXABFxnyh1D/sfMNOtpUfUekqsyOHzLCmwIfoStJC/kqgUlgU3+qBwP7k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780480950; c=relaxed/simple;
+	bh=yXx+rqfeV3LVpiDnFV5kG5jvMFi7X+jyX4MxnENzlnM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qtrjQLNCTsPGqktZfKW1Chu/xbQ0F8r9uSleZGNLVZ5zqg6TPZ1dxPFraGLUH1WJ2p3MtLqXzdFStb+8tJyeBndLtfJomwu+t3hfFFKNvLb3zQDOYvm09fK9QVWw0e2l/+cFYUX0eN4dSOVpor7rcWM664bFyhBViw1Q32ypycM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=heqiJfYN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="rev1ga8g";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="rev1ga8g"
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=v3q6gMv4FwBL7vLnHCQvIV1do2oEFopynj3HKAHaAnOjbq8uBOsHq+3j9n5UgmJCw79X4L4CVDXRM4L0TfsqMYxHxFu78/Ax18ELaIuPQzM8DtI7SdpdN+DpSMmpJpnC+dw7jf9/2vMKGbuB3YawiLBl+3iNTCrIO2+9jHRBNo1l5FGiD5vHJF/KNOmkR36A2lHuODivgHoJI0wMlbaKw2ZqAkx1x9vFjcu0eHvbeFqroo99sQnst8MB4SyYm3xKGH55sJwIFSanUN5iH7iXbDaU8Jp2OLaLolPnSt2+wenptSy9rgITziPMOAuZIi3Ujm3C8h7z/89vqcqMIlUKTw==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6IicQCtcCk7kVw2DQcmAHZD9BLKGpYz2zKMJtqG+KbM=;
- b=Gmx/MZbxS6rKgE7byDUkwqprBW2cD2PRQEgkA7Jar38mSIjRzMcVrwItPKXgbyGQ5r6xjqua3T4TWEmMO/xAlRUt+hYnHjUnw/DnWK9BfdueNcqqElmFrHXUTzYUYQTXD3BTtvWouiVCHBG2uWykg9Zoh0lea8Ebht41a+iNrqvNIqXX/zRGct6nKR1jW4iatJaCQgfmALxUCzOxWFftLnTIY//ute0TB2xKp6HpaEGPfVFf7VYD+pacvKiqwPqY0q/sbuY6d/fkKEbO7MyJsIZiBi1tw8eMxD9mxXZ03ymS1+Nab9Y/sqzmvLXw01qu61ypQ1pDOF4e1yThtaf7CQ==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=infradead.org smtp.mailfrom=arm.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6IicQCtcCk7kVw2DQcmAHZD9BLKGpYz2zKMJtqG+KbM=;
- b=rev1ga8goaf53SlpfiGGL+9uQL1FXmNOfCd+rq7YT/oCKBsz0LsptxCYWUqdw3ydVi0zTQes0vTRkGZArhniynE23Bw/U2l/EVfEeId7BMWol9Ha654AvG4v3HsZ4IDGTCkeK7YpYrjW+6GF6yGzYNS97OpNt1j0Z88I/f/OAUo=
-Received: from DUZPR01CA0256.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b5::16) by PAWPR08MB9494.eurprd08.prod.outlook.com
- (2603:10a6:102:2e3::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
- 08:59:57 +0000
-Received: from DB1PEPF00050A00.eurprd03.prod.outlook.com
- (2603:10a6:10:4b5:cafe::4c) by DUZPR01CA0256.outlook.office365.com
- (2603:10a6:10:4b5::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.7 via Frontend Transport; Wed, 3
- Jun 2026 08:59:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DB1PEPF00050A00.mail.protection.outlook.com (10.167.242.42) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.5 via
- Frontend Transport; Wed, 3 Jun 2026 08:59:55 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MTQlsnzDlWWWmddOu3s21vWO4DeGxiLZYIgaDxAaA/tcbHSoh7lf1IrlQqbtxGuTqNPAssgBWYxFz/xRfT+ZJdjCDBFiAE/QCLp9eTuNajQg2NHl/jqnGqnb/CxT7HumB886QojPYkNz/K/rlUOJqgBmFmbT6T3/9WeCmlVZs3wvPi46dgNMh6SWnsxJMNm/fApc7rjaas5P1UzAn01VqO1ZKhP2142R8CrfZjaM//LpjV5ht2/v5wZMaLglkUmZ0qeNu4vHR3/asLjWIuT6fcB+X6gURTd5+XvWT7BQfl/+j+nytFiNzD0EMTS3Q4KM7J8C8TdA+5+SMZl2Zm0YmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6IicQCtcCk7kVw2DQcmAHZD9BLKGpYz2zKMJtqG+KbM=;
- b=dgCuL8j9CH+kWN2XWfaWeq4MYYqgCTMq+gsb0AicfHJkkZCLU5G71wXKUVJQK0Xq6TRYWral9MEfA237C7yZHc65QIYXYlvvcssUx8rUeVlPu9tIcFgMXaprcmuZHDsDI5XUCrPYTeKuTYWBpSpMGytqbbLqpQGewugWOzjHswdwYByHQ1uKgSCZgBgT6kd6oUg1oU7FtvXuFlES0ggtLn6NnID+3EyEdz+w1oumbxZ9kHPxlqFjEbEb2MqNxItkwtcWqErM3adPDGeRXS+cx+eKvc1743t/tujCxC8hcVA8nXpLAWqgIRzvslOydzzjmE8+VEubgK2qGp3gNaPZTQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6IicQCtcCk7kVw2DQcmAHZD9BLKGpYz2zKMJtqG+KbM=;
- b=rev1ga8goaf53SlpfiGGL+9uQL1FXmNOfCd+rq7YT/oCKBsz0LsptxCYWUqdw3ydVi0zTQes0vTRkGZArhniynE23Bw/U2l/EVfEeId7BMWol9Ha654AvG4v3HsZ4IDGTCkeK7YpYrjW+6GF6yGzYNS97OpNt1j0Z88I/f/OAUo=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from PAWPR08MB10975.eurprd08.prod.outlook.com (2603:10a6:102:46e::7)
- by AM9PR08MB6209.eurprd08.prod.outlook.com (2603:10a6:20b:283::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
- 08:58:46 +0000
-Received: from PAWPR08MB10975.eurprd08.prod.outlook.com
- ([fe80::3c7a:9a64:14bc:ce15]) by PAWPR08MB10975.eurprd08.prod.outlook.com
- ([fe80::3c7a:9a64:14bc:ce15%7]) with mapi id 15.21.0092.006; Wed, 3 Jun 2026
- 08:58:46 +0000
-Message-ID: <88cae738-18e9-4ed3-8414-506a1ad8fb18@arm.com>
-Date: Wed, 3 Jun 2026 09:58:45 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 07/42] KVM: guest_memfd: Only prepare folios for
- private pages
-To: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
- andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com,
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
- steven.price@arm.com, tabba@google.com, willy@infradead.org,
- wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com,
- pratyush@kernel.org, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
- <20260522-gmem-inplace-conversion-v7-7-2f0fae496530@google.com>
- <d01cf1ec-b85d-4af6-9810-8107c0e2a4ec@arm.com>
- <144bbb9f-39a2-4c90-8903-51521e022da0@arm.com>
- <CAEvNRgE1dCVAxJWd_hyFa8N=m9JLfn97ip9tAmvHxspWJ50oGg@mail.gmail.com>
-Content-Language: en-US
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CAEvNRgE1dCVAxJWd_hyFa8N=m9JLfn97ip9tAmvHxspWJ50oGg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO4P123CA0467.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1aa::22) To PAWPR08MB10975.eurprd08.prod.outlook.com
- (2603:10a6:102:46e::7)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="heqiJfYN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8BB81F00898;
+	Wed,  3 Jun 2026 10:02:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780480949;
+	bh=V8fVwdI7wxnksQVE14DY2HWli3Oy9+kR4dG/B9JF5Y8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=heqiJfYNfvCVfeDdF07xE4qHhG7Ix22oFDFTYVM3WDBZVFjjq7MdBm7RxPXb2NQ3h
+	 wlPm/fq9mnt4GRJr7WluzoMlgjC2Kl3T10enIwOHJ1XpcPMo83xxJet1qDAoJ1C1JD
+	 5XKUMVwQ6K/HPE0uhrHFM3U4IWwd0Tbk3NwNrZWaS8txhD7kZTaMg6w+5lvM8K01uY
+	 //OoJ4TLPg+551ngLS3gx286ROaDNVBuWuY8QWxE7kMKzW/dfnSG/n5UV6niq98AxV
+	 toH0afbm7Bb1/0qnLaXL2Xfmx4yRd7FHvPV5vtqCusZI3PhWlaVNLDGaeRYlkK2oBf
+	 9MHHVXSJAHBKQ==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 1B503F4007E;
+	Wed,  3 Jun 2026 06:02:28 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Wed, 03 Jun 2026 06:02:28 -0400
+X-ME-Sender: <xms:tPsfauhaxGVEUgsvlHEIwecFN-9ZEF71setn4TDGW-FCZRyQ0LUDyA>
+    <xme:tPsfamdy_fjRoYDOeR8cmy-cPfUgoaO8mBFumrmZMVa1jqXBPwZUvuLW59ggNGPh6
+    y6Fg25GDh1rZ4Nor5r3OQmW7R6jePR7YEy-XB3OaBYhUGAYnBP5RIw>
+X-ME-Received: <xmr:tPsfajmUqQ7cLJ253fvAZjjjhxIAhgwirNcqfwrQkow3MYEGcKhn-5N2p_izhw>
+X-ME-Proxy-Cause: dmFkZTGuwFznDiQhelvFQOBp2/9r9H4fxoNNaEmxB6iOaHyiMwffQUPfC1FAZMpbzqIqkk
+    CN9TCgwxMINXJSdtTnBkzIXOc6K717wq9QjeaoGXRWKTpKm0u+QpWfmKKW9HN3pL/A1+6p
+    92lcvawl98fM5nvrzMFAJ0zCHVpCTPUX+0fcWGBVn0sUJNaILiDyF6WAR5GTLaYBf9LtF9
+    HeIJf/jM6FJN5c4MVjb/Nm52s7djeDzHoqhhvyRfCScg4aR0UhUORBt/S3XR36+WsGhT7P
+    bVueHPke7HzKjPxs+Lmcr4uF/2Rif/nWiVWI2Sn/X2KEDbfEm3ZjS1qdm+5tHCszTtFFts
+    /VzzRZabQfVduEReAlUgkBJ79Z4LSt1cBS+rSnnFi9jDTiczC1H87ZS7qLCKADqoqzrmR4
+    mGIz8sa4eqINRsLod/oLKxieYbrnEsfQXN/59nPX9ObnVXbRESfnOCNA6fc+BZp0oeNprP
+    PvGGkzDmtovVRJkI3ywAfrhFpNJvUXD0fDzsSJPA0RLCqMYGu9iLwI5MlFSpJg7a/5udeS
+    lJZWm/zw2dGecCf6mp/nhd1OdYPK7oDQIXbomfj0Bb9MYjyFb44nJOTTHxAkkFlEu1IJB4
+    mvQH42vq4f+lwAhvj17/Vsi6xt4tXviwqxjQO+AmX3bH/ZlUDX8iOWPxS9lA
+X-ME-Proxy: <xmx:tPsfaixl8twHiScZRF0l3aPUkADDTTORVWaND_noCCfDud9HhsTR5Q>
+    <xmx:tPsfalcLZ32BWK_NdqC_-FR1DBldNJTO6IRNGnlVk2pTTVI454R5Rg>
+    <xmx:tPsfajhekMHXMQ6qYg0RgZ4pegrE87GtuiN4Aa5Q13qUrGdoLAXSdw>
+    <xmx:tPsfap-OinTX938zNS5LgCJfS2x6J85u1U-3v3h3dj98T7oCnvJ1vg>
+    <xmx:tPsfapa94FWneQTrYxrkNAOdSEUGyY-WiNNfJ2K6qxxwDuEUGbG_4uoT>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 3 Jun 2026 06:02:25 -0400 (EDT)
+Date: Wed, 3 Jun 2026 11:02:19 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "K. Y. Srinivasan" <kys@microsoft.com>,
+ 	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, 	Long Li <longli@microsoft.com>,
+ Ajay Kaher <ajay.kaher@broadcom.com>,
+ 	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Jan Kiszka <jan.kiszka@siemens.com>, 	Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, 	Juergen Gross <jgross@suse.com>,
+ Daniel Lezcano <daniel.lezcano@kernel.org>,
+ 	John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>,
+ 	Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ 	Stephen Boyd <sboyd@kernel.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	linux-coco@lists.linux.dev,
+ linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+ 	xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>,
+ 	Tom Lendacky <thomas.lendacky@amd.com>,
+ Nikunj A Dadhania <nikunj@amd.com>,
+ 	David Woodhouse <dwmw2@infradead.org>,
+ Michael Kelley <mhklinux@outlook.com>,
+ 	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v4 07/47] x86/tdx: Force TSC frequency with CPUID-based
+ info provided by the TDX-Module
+Message-ID: <ah_7jEMnqs80gXLG@thinkstation>
+References: <20260529144435.704127-1-seanjc@google.com>
+ <20260529144435.704127-8-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	PAWPR08MB10975:EE_|AM9PR08MB6209:EE_|DB1PEPF00050A00:EE_|PAWPR08MB9494:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3a4f5ba1-fee5-4f4e-7ae8-08dec14e7b38
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|366016|376014|7416014|1800799024|18002099003|22082099003|921020|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info-Original:
- dgSqH/7TcRrHp25inGfGMCLOQFTQCcgsY/At+cVJ3S+rc3o2L7R5iFxOd91Th8MDlWIaeJamEixrf2VOdhDDET/jYdLzuM2aOZsxPyTlCt5O+4PEbvGaC39PKmdJ67eWTecCw3dFhIsscyy5atxoOpFarQVaIeVRwLkjcpe+O+/iRgJXXb5wG1Gfx4zU9ccPMjLHcpwW2jFkZ6dAetTc313+7ie/5UVRawbJFw+fLI3+dtB/RcVKDcHi4TmnDKAdSuN8qkb6ymG92J194VuIH9xPsoFNj2ddT2ufxGoxeQzDowZJQq5F42FD+1L8k9RrPjk6gVCE0eR9qPleEPuvZQW6KbcSlNexfGhaT+Dl3rxWWJ0T9vZoXBaLMw295vj5TxczISZnNq+Tb4dv/pMcvXXfcSzAjZUNTrqp8HCLfow38WhRHQiul83L0R7MquSdvexmqcSVOBKTKC6UwXCPe0bUmOLgWRG+3FWox8Ye6PQ+Ut2OSLUNYvNY7bHosB6zLoOkU6RlxGy42ogkX/uH7WN3au34lO68Yg0xRSqdtI5W7TcgCRMCQRGtbyuXLsvy0srfEyPCl6Yi4oDmz0QPV1VaK1jKTrAsBrOeoDJGGrxA84dWzRb5i+wSoYVe3JvMAI4/x2x5exLbgeVtekW+A/8Esz1ovM+00UjjD9sc5ScxC6ryB0ppnGen21gzXDuKlsmFd2ehFBIQlBIG4LuYjYaw14Pxi8XzG4n8jqF4uTI=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAWPR08MB10975.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(921020)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- Gd3Hh2Ae9/yd2amPs7sOt6Rk5pMuoIro+b9/FmtW/WBpkF9jrAEsPtCc5Xm/iWYoqB3ETElo2/1D8elcHl8oWzlUDpCeIauSFllBAN7w7j6YAmtQ1GPlfX/r15fMypQkDwV+0Ob2nraslnVmVVlEtHyWEgCFuX9bg2BwKj4aSWIwK3G+RJUWCyBuE6GsxStCo1DDhwGXuaD7mfwjF4gLrTzWFwZrrT4f88OdUYwcCxpB23mP8lXnWidmX8Y2Gmi4je4ljL3FWDLAithjQp628KR+0Whkh3alNkxBKQmH5fJt8yWBxuTNUwWTQAPPf/wu7yxULI78SAzr+4k/fZ2GvA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR08MB6209
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DB1PEPF00050A00.eurprd03.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	eb36bd1c-5f50-4816-ff6a-08dec14e524d
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|7416014|82310400026|35042699022|14060799003|376014|921020|56012099006|11063799006|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	fQiLjgI5Vlka4kWLgkkhLrIc57RgfQknIzfYK+SHbdS0PDS9iw+QeV3gVveuDik2Jxlj676d1JSSXjGPoWtX4eJeOKSksEJ3FmwgcZDHGdgHLN/OOpVBZ6MdWVo24dUzzbcmUjkgrpe2IxdEoXflYYSpV9pp3az8yDNxkpu4bpi9hMj0uu7U4axfrlvOW/ieWWUK/7EqObel4/k0gS1juc8Thn2HcCWG13jTYOSmOXERCpSyUG2hjdX5Ie+ElfR2dpGnKz49Iq8AhYjyfJWWanGiawHy1PUst3NGbJbOTBsygX/CvYxAYeImM6NpXdKlICmFbK6WtrFikGWbuJYerte/YoJw1uU5AGsz3u7kaC5qba5kM3w4S5O95C0Cb6T9yJylEmnznIQvqdmQFCpqFN7Wl3d+PmJpxwIlH1M4OeTHhyWr5q64ljCAt3mMB2Eu+FfXWibbq+ze9SV9b0Gj5Qh/GeejVf+IgkjIgitW2MJwDAcxyhOypy7Yn7qVjH2eQCglzzYcjSQN/GmKSttdgsrlPLhEdqq4MhH6YdijBYyJKHJfH0gk7+KxAm+laxCRloklfHxm9kXL3RxfKwDaK+377Uvdw/NC/DlB320xegE8NqmYlcvwFaIB/FgGiPZPUaKWK4Lrl8/O3HqxJtvyYc4FK2PnD/sYgInt3NpVeLeM77C0u0fetpz+CGCfbYpVyboKAs5kR88UMrvcDTsN6HNanS0kEgkkL3T+1r4Z1WGo6cro36YBagOaxC261T7X/yKLxICqVfB7qxEOfIHhdQ==
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(7416014)(82310400026)(35042699022)(14060799003)(376014)(921020)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	vr8xkBeEXrz66duK1fYSNuUKbOMmDIWDj4CgeluSJEK0kArEn4zT16WyqpogXtVyrtr1HmuubCpJfpXMk2xPejgJ26lUpWEwZi78pC20YnQ/kdJwkxjh7WqFpuOea0Ng/+mi2DhetoNIxx3uqQIaPFSeD3DUlzRlHZC0G7sCZPOGtremCzoAznLybUCpILJr6tiHSdWCn4NjDouw+fefl3a2e972sSp7fktkLhrQgWUMBDRozKSoE0XFuu4HyLJo8tsYGLxIcmcofLXHbhLby18chm6EUYUXwpiZo7XE4yzcEKupZlQLjvUdk982OlORoRDNPMyMwvmGx0Mgho1upFa39ZMYPLO6TNqJkDnk1PGYExx0YyVrxwdCbtoL7veQlXhXvpzou0OlqfOy3xKJsSVADQFw+eYc8FuyWqiDJBj+SD2e3T81xaivncwktYKV
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 08:59:55.1090
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a4f5ba1-fee5-4f4e-7ae8-08dec14e7b38
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF00050A00.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB9494
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260529144435.704127-8-seanjc@google.com>
 
-On 02/06/2026 23:41, Ackerley Tng wrote:
-> Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+On Fri, May 29, 2026 at 07:43:54AM -0700, Sean Christopherson wrote:
+> When running as a TDX guest, explicitly set the TSC frequency to a known
+> value, using CPUID-based information, instead of potentially relying on a
+> hypervisor-controlled PV routine.  For TDX guests, CPUID.0x15 is always
+> emulated by the TDX-Module, i.e. the information from CPUID is more
+> trustworthy than the information provided by the hypervisor.
+
+Right. EBX is configurable by TD_PARAMS.TSC_FREQUENCY at TD build. The
+rest is fixed.
+
+> To maintain backwards compatibility with TDX guest kernels that use native
+> calibration, and because it's the least awful option, retain
+> native_calibrate_tsc()'s stuffing of the local APIC bus period using the
+> core crystal frequency.  While it's entirely possible for the hypervisor
+> to emulate the APIC timer at a different frequency than the core crystal
+> frequency, the commonly accepted interpretation of Intel's SDM is that APIC
+> timer runs at the core crystal frequency when that latter is enumerated via
+> CPUID:
 > 
->>
->> [...snip...]
->>
->>>> @@ -914,7 +916,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct
->>>> kvm_memory_slot *slot,
->>>>            folio_mark_uptodate(folio);
->>>>        }
->>>> -    r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
->>>> +    if (kvm_gmem_is_private_mem(inode, index))
->>>
->>> Don't we need to make sure the entire folio is private ? Not just the
->>> page at the index ?
->>>       if (kvm_gmem_range_is_private(, index, folio_nr_pages(folio)) ?
+>   The APIC timer frequency will be the processor’s bus clock or core
+>   crystal clock frequency (when TSC/core crystal clock ratio is enumerated
+>   in CPUID leaf 0x15).
 > 
-> I was thinking to fix this when I do huge pages, for now guest_memfd is
-> always just PAGE_SIZE, so just looking up index is fine.
-> 
-> Is that okay?
+> If the hypervisor is malicious and deliberately runs the APIC timer at the
+> wrong frequency, nothing would stop the hypervisor from modifying the
+> frequency at any time, i.e. attempting to manually calibrate the frequency
+> out of paranoia would be futile.
 
-Thats fine, but would be good to enforce that here, so that we don't 
-miss out when we add support for multi page folios.
+Agreed.
 
-> 
->>
->> Or rather, we should go through the individual pages and apply the
->> prepare for ones that are private ?
->>
->> Suzuki
->>
-> 
-> IIRC the plan was to make kvm_gmem_prepare_folio() idempotent, as in, if
-> a page is already private, just skip. Currently sev_gmem_prepare() does
-> a pr_debug(), which I guess is technically still idempotent.
-> 
-> I'm thinking that the information tha needs tracking to make
-> .gmem_prepare() idempotent should be tracked by arch code.
-> 
-> Does this work for ARM CCA?
+> Deliberately leave CPU frequency calibration as is, since the TDX-Module
+> doesn't provide any guarantees with respect to CPUID.0x16.
 
-We don't hook into the prepare yet, but have plans to do that. We should
-be able to handle the pages that are already private. (For CCA context,
-RMI_GRANULE_DELEGATE_RANGE can skip over already REALM pages). So this
-should be fine.
+It is fixed to zeros. Sounds like a guarantee to me :P
 
-My point is, in a given folio, there may be pages that are shared.
-Like you said, this could be dealt with when we support hugepages.
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Suzuki
+Looks sane to me. Including your reasoning about tsc_early_khz= in reply
+to Sashiko.
 
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-> 
->>>
->>> [...snip...]
->>>
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
