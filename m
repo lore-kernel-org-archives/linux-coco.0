@@ -1,331 +1,41 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6183E3C5A;
-	Wed,  3 Jun 2026 15:48:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A831384CDC;
+	Wed,  3 Jun 2026 18:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780501735; cv=none; b=I7lImePL/Gsmdlb7HxNvtrCkBbTWs8/nwYovrg2VdmAhe47l2LmGfekx1gv0Hv1xA0g96GngjHfxx7ydumAoxTL7kxUSuh6nQ8eyVG8bzqaYzwFock8N8D9w9/pXr3vLLemR7tuh9qwyFsZ+X1NiRjHebAcxh+ruzAR7lpMbGH4=
+	t=1780509842; cv=none; b=qznweo1dRlLg03Ibu+xzYwwrFpz4ewDgjeaDcQcQCXo0VBuZxiCT2DIqW1hbTpc6+vDHEYUUsMY6neCYykIP5qNcXnlBNufc7V8zwCoF90a8+HbHQORWQqx5p80N4LmvzviC2OF47O1zRPi6N0TJF58wPNU96zEZsKt8FpQN8F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780501735; c=relaxed/simple;
-	bh=PpYTAUv2Q8yQ4mjH5wA/7BzqV8xwkMc1OIxAcnNR5Us=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p2WO/kiJ7dEQuoiKVNw0cUMIwPO5BwXzlw46SeIqYB6MzBmQZgwvuPoy1CElTeoWQ6C5M8EeMhLVFi1O8vZXZNpHGWSqgrS65D39B2bZunw00JbgSj9bnws8XjmmA6LAeK/hZ/TMmQtYq3DSz7yNzaz+OZC7yjZh5Jq0LpAfOrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=cbQfhaNY; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="cbQfhaNY"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AD2B43565;
-	Wed,  3 Jun 2026 08:48:47 -0700 (PDT)
-Received: from [10.57.26.22] (unknown [10.57.26.22])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ABAB23F86F;
-	Wed,  3 Jun 2026 08:48:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780501732; bh=PpYTAUv2Q8yQ4mjH5wA/7BzqV8xwkMc1OIxAcnNR5Us=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cbQfhaNYFnv2Gfp7ZY7HewJV9FJI9CFZ4ZDLc8VCxJWF2iXCo2pXt8aFJWTBVmjR6
-	 sKVUN5Imv8qQybzHgLT39q0n3qYGEkrn1S1EGXhLg3QRLlivKQzt51fHivkodWRWUx
-	 lgLy/soFIGAyHjSXZe8ewJke5/KpKmBF8ocVqInQ=
-Message-ID: <043ff7ce-7543-407e-b879-6ed524df60e0@arm.com>
-Date: Wed, 3 Jun 2026 16:48:42 +0100
+	s=arc-20240116; t=1780509842; c=relaxed/simple;
+	bh=c9T/zZEcPMQCizDzd8CZwdTUjc63gvX2E/OUgBC/74o=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fZ3JVGsCfPBsHuT2NnshEuzwW9oux+Bibv3/RLnsnKHmlsUuPn70k05eOAnt6iBGk3JV3xRMpCQJfSQvs6zrJGxwx7YSVIC+LAqydNNe5iH6rjVLGN9w+ldZLUAqvi8pa2KgyFTteU3uKslVHGDwxe2qGulQ8v67QNgxFjvwEQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Received: from 8bytes.org (p200300f6af4fc500cb168346ed3abba9.dip0.t-ipconnect.de [IPv6:2003:f6:af4f:c500:cb16:8346:ed3a:bba9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 796141C7747;
+	Wed,  3 Jun 2026 20:03:52 +0200 (CEST)
+Date: Wed, 3 Jun 2026 20:03:51 +0200
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: Re: SVSM Development Call June 3rd, 2026
+Message-ID: <aiBsawI5ycK-zfLf@8bytes.org>
+References: <ah7_t33cbOVFJcbo@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 08/44] arm64: RMI: Ensure that the RMM has GPT entries
- for memory
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-9-steven.price@arm.com> <868q9cx4ac.wl-maz@kernel.org>
- <e175cb7b-b4fa-4139-b46d-1986e2372d16@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <e175cb7b-b4fa-4139-b46d-1986e2372d16@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ah7_t33cbOVFJcbo@8bytes.org>
 
-On 21/05/2026 16:39, Suzuki K Poulose wrote:
-> On 21/05/2026 14:47, Marc Zyngier wrote:
->> On Wed, 13 May 2026 14:17:16 +0100,
->> Steven Price <steven.price@arm.com> wrote:
->>>
->>> The RMM maintains the state of all the granules in the system to make
->>> sure that the host is abiding by the rules. This state can be maintained
->>> at different granularity, per page (TRACKING_FINE) or per region
->>> (TRACKING_COARSE). The region size depends on the underlying
->>> "RMI_GRANULE_SIZE". For a "coarse" region all pages in the region must
->>> be of the same state, this implies we need to have "fine" tracking for
->>> DRAM, so that we can delegated individual pages.
->>>
->>> For now we only support a statically carved out memory for tracking
->>> granules for the "fine" regions. This can be extended in the future to
->>> allow modifying the tracking granularity and remove the need for a
->>> static allocation.
->>>
->>> Similarly, the firmware may create L0 GPT entries describing the total
->>> address space. But if we change the "PAS" (Physical Address Space) of a
->>> granule then the firmware may need to create L1 tables to track the PAS
->>> at a finer granularity.
->>>
->>> Note: support is currently missing for SROs which means that if the RMM
->>> needs memory donating this will fail (and render CCA unusable in Linux).
->>> This effectively means that the L1 GPT tables must be created before
->>> Linux starts.
->>>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>> ---
->>> Changes since v13:
->>>   * Moved out of KVM
->>> ---
->>>   arch/arm64/include/asm/rmi_cmds.h |   2 +
->>>   arch/arm64/kernel/rmi.c           | 103 ++++++++++++++++++++++++++++++
->>>   2 files changed, 105 insertions(+)
->>>
->>> diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/
->>> asm/rmi_cmds.h
->>> index 9179934925c5..9078a2920a7c 100644
->>> --- a/arch/arm64/include/asm/rmi_cmds.h
->>> +++ b/arch/arm64/include/asm/rmi_cmds.h
->>> @@ -33,6 +33,8 @@ struct rmi_sro_state {
->>>   } while (RMI_RETURN_STATUS(res.a0) == RMI_BUSY ||            \
->>>        RMI_RETURN_STATUS(res.a0) == RMI_BLOCKED)
->>>   +bool rmi_is_available(void);
->>> +
->>>   unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t gfp);
->>>   void rmi_sro_free(struct rmi_sro_state *sro);
->>>   diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
->>> index a14ead5dedda..52a415e99500 100644
->>> --- a/arch/arm64/kernel/rmi.c
->>> +++ b/arch/arm64/kernel/rmi.c
->>> @@ -7,6 +7,8 @@
->>>     #include <asm/rmi_cmds.h>
->>>   +static bool arm64_rmi_is_available;
->>> +
->>>   unsigned long rmm_feat_reg0;
->>>   unsigned long rmm_feat_reg1;
->>>   @@ -88,6 +90,102 @@ static int rmi_configure(void)
->>>       return 0;
->>>   }
->>>   +/*
->>> + * For now we set the tracking_region_size to 0 for
->>> RMI_RMM_CONFIG_SET().
->>> + * TODO: Support other tracking sizes (via Kconfig option).
->>> + */
->>> +#ifdef CONFIG_PAGE_SIZE_4KB
->>> +#define RMM_GRANULE_TRACKING_SIZE    SZ_1G
->>> +#elif defined(CONFIG_PAGE_SIZE_16KB)
->>> +#define RMM_GRANULE_TRACKING_SIZE    SZ_32M
->>> +#elif defined(CONFIG_PAGE_SIZE_64KB)
->>> +#define RMM_GRANULE_TRACKING_SIZE    SZ_512M
->>> +#endif
->>
->> Basically, a level 2 mapping. Which means this whole block really is:
->>
->> #define RMM_GRANULE_TRAKING_SIZE    (2 * PAGE_SHIFT - 3)
->>
->> (adjust for D128 as needed).
-> 
-> True,
+Meeting minutes are now ready for review:
 
-As Gavin pointed out we actually don't need this anymore because of the
-move to a range based API.
+	https://github.com/coconut-svsm/governance/pull/110
 
-It's also not quite that simple because for 4K PAGE_SIZED the RMM
-doesn't support 2MB (which would be the level 2 size), instead jumping
-to 1GB. And if we add a Kconfig option in the future then this could
-change because of that.
-
-For now I'll just delete this block since it's unused.
-
->>
->>> +
->>> +/*
->>> + * Make sure the area is tracked by RMM at FINE granularity.
->>> + * We do not support changing the tracking yet.
->>> + */
->>> +static int rmi_verify_memory_tracking(phys_addr_t start, phys_addr_t
->>> end)
->>> +{
->>> +    while (start < end) {
->>> +        unsigned long ret, category, state, next;
->>> +
->>> +        ret = rmi_granule_tracking_get(start, end, &category,
->>> &state, &next);
->>> +        if (ret != RMI_SUCCESS ||
->>> +            state != RMI_TRACKING_FINE ||
->>> +            category != RMI_MEM_CATEGORY_CONVENTIONAL) {
->>> +            /* TODO: Set granule tracking in this case */
->>> +            pr_err("Granule tracking for region isn't fine/
->>> conventional: %llx",
->>> +                   start);
->>> +            return -ENODEV;
->>
->> How is this triggered? Do we really need to spam the console with
->> this? A PA doesn't mean much, and there is no context (stack trace).
-
-I'm not sure 1 message really counts as 'spam' - it provides the
-information on why the RMI interface (and therefore realm guests) is
-unavailable. The PA might help track down whether this physical region
-was intended to be given to Linux.
-
-> This could be triggered if the RMM doesn't have static carveout
-> for tracking the DRAM granules. (state != RMI_TRACKING_FINE).
-> This not worth WARN_ONCE(), we could simply not enable KVM.
-> We plan to add support for donating memory to the RMM in
-> the future. (Primarily we don't yet have an RMM implementation
-> that does dynamic management via SRO. This can be added later
-> as a separate series)
-
-As Suzuki says - this case should be handled in the future - so it's a
-limitation in the current implementation. So a WARN_ONCE is a bit strong
-- it's not a "can never happen" situation - it's a "Linux doesn't
-support this (yet)".
-
->>
->> If that's not expected, turn this into a WARN_ONCE().
-> 
-> 
-> 
-> 
->>
->>> +        }
->>> +        start = next;
->>> +    }
->>> +
->>> +    return 0;
->>> +}
->>> +
->>> +static unsigned long rmi_l0gpt_size(void)
->>> +{
->>> +    return 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
->>> +                      rmm_feat_reg1));
->>> +}
->>> +
->>> +static int rmi_create_gpts(phys_addr_t start, phys_addr_t end)
->>> +{
->>> +    unsigned long l0gpt_sz = rmi_l0gpt_size();
->>> +
->>> +    start = ALIGN_DOWN(start, l0gpt_sz);
->>> +    end = ALIGN(end, l0gpt_sz);
->>> +
->>> +    while (start < end) {
->>> +        int ret = rmi_gpt_l1_create(start);
->>> +
->>> +        /*
->>> +         * Make sure the L1 GPT tables are created for the region.
->>> +         * RMI_ERROR_GPT indicates the L1 table already exists.
->>> +         */
->>> +        if (ret && ret != RMI_ERROR_GPT) {
->>> +            /*
->>> +             * FIXME: Handle SRO so that memory can be donated for
->>> +             * the tables.
->>> +             */
->>> +            pr_err("GPT Level1 table missing for %llx\n", start);
->>> +            return -ENOMEM;
->>
->> If any of this fails, where is the cleanup done? Is that part of the
->> missing SRO support that's indicated in the commit message?
->>
-> 
-> For now, there is no cleanup required. What we essentially do here is
-> making sure that the GPT tables have been created upto L1 (i.e.,
-> by checking ret == RMI_ERROR_GPT).
-> 
-> We do not donate any memory now, but only support RMMs with static
-> memory carved out for L1 GPT. Support for dynamic RMMs could be added as
-> a separate series, at which point, we could defer the table creation to
-> the actual use case (e.g, RMI_GRANULE_DELEGATE).
-> 
-> Clean up would be required when we donate memory to the RMM.
-
-The missing SRO support is why we're not donating memory - with that
-missing the clean up is unnecessary as Suzuki says.
-
->>> +        }
->>> +        start += l0gpt_sz;
->>> +    }
->>> +
->>> +    return 0;
->>> +}
->>> +
->>> +static int rmi_init_metadata(void)
->>> +{
->>> +    phys_addr_t start, end;
->>> +    const struct memblock_region *r;
->>> +
->>> +    for_each_mem_region(r) {
->>> +        int ret;
->>> +
->>> +        start = memblock_region_memory_base_pfn(r) << PAGE_SHIFT;
->>> +        end = memblock_region_memory_end_pfn(r) << PAGE_SHIFT;
->>> +        ret = rmi_verify_memory_tracking(start, end);
->>> +        if (ret)
->>> +            return ret;
->>> +        ret = rmi_create_gpts(start, end);
->>> +        if (ret)
->>> +            return ret;
->>> +    }
->>
->> How does this work with, say, memory hotplug?
-> 
-> Good point, we need a hook for hotpug to make sure this is taken care
-> of. As mentioned above, when we add support for RMM with support for
-> dynamic Tracking/GPT with SRO, this could be deferred to the actual
-> use (handling RMI return codes, RMI_ERROR_TRACKING/RMI_ERROR_GPT)
-
-Yep, that was an oversight - we definitely will need to handle hotplug.
-
-Thanks,
-Steve
-
-> Suzuki
-> 
-> 
->>
->>> +
->>> +    return 0;
->>> +}
->>> +
->>> +bool rmi_is_available(void)
->>> +{
->>> +    return arm64_rmi_is_available;
->>> +}
->>> +
->>>   static int __init arm64_init_rmi(void)
->>>   {
->>>       /* Continue without realm support if we can't agree on a
->>> version */
->>> @@ -101,6 +199,11 @@ static int __init arm64_init_rmi(void)
->>>         if (rmi_configure())
->>>           return 0;
->>> +    if (rmi_init_metadata())
->>> +        return 0;
->>> +
->>> +    arm64_rmi_is_available = true;
->>> +    pr_info("RMI configured");
->>>         return 0;
->>>   }
->>
->> Thanks,
->>
->>     M.
->>
-> 
-
+-Joerg
