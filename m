@@ -1,220 +1,237 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172E243D4E3;
-	Wed,  3 Jun 2026 10:57:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780484248; cv=none; b=k+83VJJAMW/KxmA22I8rE9BKErwWw+nQbXTZkCDVhCCNWKHNClFIEB0W1jaQ2YhSincBV9tdoRJVatm0Da4ZHXFdb+mlt+G6fYak8wPz4L2WFf33K9Hs15iBrQqoFIT0tyZIMoV1DZwwYwU39UXhvyc8ilgROQvKVehY4yi9U3Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780484248; c=relaxed/simple;
-	bh=Cbom3lLA/oZS7Gf7ajwverW1Ai4B/b3z2gFyR3cP6kg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bAOUxVMYfYynVoMTqcqbFsiLFPRdqkzXGuf3TXe8/b2ndPf1xhx78U9G3jgZboDB4GjnES94S2iDR6kUhtfQ8fujZMUcf4gi1viAICHlFTrwVGeSDEdV4wouyzKaA/rJm2ad6TTpqEuIYz/UwsU5wnz0Nh40woXSKNgniyPIgL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=eNBypVqi; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010017.outbound.protection.outlook.com [52.101.61.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C9C3451AF
+	for <linux-coco@lists.linux.dev>; Wed,  3 Jun 2026 13:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780494910; cv=fail; b=k7oAqFG0Xg/X3HUwKGUeiI1YkfWYfHiZ0vCIaRZSWhajOo4PEdSWct7iFgL86RG0L0HVKIsIugTHgYYKMksiCmxcXSAIi0wHCr8yYGQNAHZ0B+U9Cn+TSSkIXmko2aSnmGpt9Lccpyo1tT0sWNh7rD5uRt0YP68UkCtkUFWSx58=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780494910; c=relaxed/simple;
+	bh=rfz8UVefd+bkoGK5TcAABYhKTolEHA1NISoK1xJPlqU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ats3vcaqmwndPNuo7zJjj/28n4xNx2YTVdpwMUkkk3cWirvoVbX2vlQVKfqXwRAMfmoxedgtw2M3UWEnYKjFU9X+hazNvbw8UJ31AgqcxDojhXV0hg8OX28ma78SH10oaO+cRYtgyyb6AZ2h/fukjIia7K8eoNA63YclhqxNtNA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=fail (1024-bit key) header.d=amd.com header.i=@amd.com header.b=VmbUMxLj reason="signature verification failed"; arc=fail smtp.client-ip=52.101.61.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="eNBypVqi"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8346249E3;
-	Wed,  3 Jun 2026 03:57:20 -0700 (PDT)
-Received: from [10.57.26.22] (unknown [10.57.26.22])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5D3013F632;
-	Wed,  3 Jun 2026 03:57:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780484245; bh=Cbom3lLA/oZS7Gf7ajwverW1Ai4B/b3z2gFyR3cP6kg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eNBypVqikAVvslU2dozRzAi/42KRf1QN3GyF+PjiX1Fwkyr5+wSTOg4FSY5wO0t72
-	 pZ3567HwrF3FO2JZjd0DpdkFQF+q9NSYA/WiQBBKtpkStJity9ezznwGOBMIfTZnyv
-	 pivG5AchAXnj1UwH6V3pS50qAnqFDiXn+0L+3McM=
-Message-ID: <1085ff2d-1e23-4df9-baad-cfafeb1f6449@arm.com>
-Date: Wed, 3 Jun 2026 11:57:12 +0100
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VmbUMxLj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qYmCoavDEMSKELSvlMkV7GBPB2EFPTFmjn9ddcZ/FPqvi1z/0kUp+a00PiNn3Jz+FTgvocPo28d+jYVqWiji9ziH8BjDh80m8szZv2bLFD14FGuYVts/NBMx8fd4NuMaA+auZdZbiTGlfXpmrDB6w889DqQsWvv9apzO4EDnTolGxuyMm5DbSPFl0ulujd5bFoB5T0rX37idK36zFBBaI6QkFDXcnXW6yZ9ZXwv1hOX5eQPmjMSwX5uTPsadYFc0tOEkxz29vTZqBehb+5dZc55jxJyKL45DffWpQ5EAjcY9WSke9Mh+KhOWvB64Wv/rNQUi1nPajz9d5UOHiPXbyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lWJJKq0XHaGHI5TnSD9auhv2n2Mb1lFzBdKs7NDxrRQ=;
+ b=vQDsd/0fKnzNv52Vata+2kLSVLbvYnPrptNbaoZJ89J3dUKL6+zdeRv++XFBFZkbDoRffPPqio0Q9SXAN+uyg7WVDC2Ob+1pS6JaZauIrutpExiu+h/OwjyJgtyAaONP5hZzWByYtd/vDQLKBws3BCw7YUTONb4CG5Cizqs3InWMQbFyQHQoN4/SwZn/odj8Kt1s+xu4+bzmvVnROOt4rduZvkgtKP5/8EcLlvyA6Yymx4f/ZPGsytq9yfNd137TP9LfyDxIPWXnCYeK9CrKj54HID+Nv/6+w3oBlPB7Sp9AjfHPf3M2s49XyOGPrkzgt9vU3cRXeo3uDrxoYvixXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=arm.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lWJJKq0XHaGHI5TnSD9auhv2n2Mb1lFzBdKs7NDxrRQ=;
+ b=VmbUMxLjBCW0HGGIOwvbxB72biW1VEdZ5YfIJNoTnTBDAcis1ucNw5bJHhF6aS3rLc0u2uxOjWmo8GqHd61QlbYTL1mrw4oLnZH6J1s3DhBnarEdjR1dz2PTNURP5NLWSfxxP8+AiF3OXtXDHIU+C4hjRyqjzxaVOW9QBPxtWkM=
+Received: from SJ2PR07CA0024.namprd07.prod.outlook.com (2603:10b6:a03:505::14)
+ by SA1PR12MB6797.namprd12.prod.outlook.com (2603:10b6:806:259::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
+ 13:54:55 +0000
+Received: from SJ1PEPF00002314.namprd03.prod.outlook.com
+ (2603:10b6:a03:505:cafe::52) by SJ2PR07CA0024.outlook.office365.com
+ (2603:10b6:a03:505::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.7 via Frontend Transport; Wed, 3
+ Jun 2026 13:54:55 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF00002314.mail.protection.outlook.com (10.167.242.168) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.92.5 via Frontend Transport; Wed, 3 Jun 2026 13:54:54 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 3 Jun
+ 2026 08:54:54 -0500
+Date: Wed, 3 Jun 2026 08:51:53 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+CC: Ackerley Tng <ackerleytng@google.com>, <aik@amd.com>,
+	<andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>, <brauner@kernel.org>,
+	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <ira.weiny@intel.com>,
+	<jmattson@google.com>, <jthoughton@google.com>, <oupton@kernel.org>,
+	<pankaj.gupta@amd.com>, <qperret@google.com>, <rick.p.edgecombe@intel.com>,
+	<rientjes@google.com>, <shivankg@amd.com>, <steven.price@arm.com>,
+	<tabba@google.com>, <willy@infradead.org>, <wyihan@google.com>,
+	<yan.y.zhao@intel.com>, <forkloop@google.com>, <pratyush@kernel.org>,
+	<aneesh.kumar@kernel.org>, <liam@infradead.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, "Thomas
+ Gleixner" <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, "Vishal
+ Annapurve" <vannapurve@google.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
+	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+	<nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song
+	<baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+	<yuanchu@google.com>, Wei Xu <weixugc@google.com>, Youngjun Park
+	<youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
+	<shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH v7 07/42] KVM: guest_memfd: Only prepare folios for
+ private pages
+Message-ID: <mzbsmlljbqxv7epwh6bpjrlbsbc4yqdj456cb5hanxetco3thd@c7mdph3oi6o4>
+References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
+ <20260522-gmem-inplace-conversion-v7-7-2f0fae496530@google.com>
+ <d01cf1ec-b85d-4af6-9810-8107c0e2a4ec@arm.com>
+ <144bbb9f-39a2-4c90-8903-51521e022da0@arm.com>
+ <CAEvNRgE1dCVAxJWd_hyFa8N=m9JLfn97ip9tAmvHxspWJ50oGg@mail.gmail.com>
+ <88cae738-18e9-4ed3-8414-506a1ad8fb18@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 06/44] arm64: RMI: Check for RMI support at init
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-7-steven.price@arm.com> <86bje8x6dj.wl-maz@kernel.org>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <86bje8x6dj.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <88cae738-18e9-4ed3-8414-506a1ad8fb18@arm.com>
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002314:EE_|SA1PR12MB6797:EE_
+X-MS-Office365-Filtering-Correlation-Id: 01fdd232-0bde-4b91-a416-08dec177b10e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|7416014|82310400026|376014|6133799003|56012099006|11063799006|4143699003|18002099003|22082099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	wGsDUj1VqMffVhv6PLZsn/UDfBQso8yfRbErvW2EFHXdDhQGSV0Y30uImcLMGsLd90tiGc6NMD0PEqPfNJCqwEz8UGoy04GngQOx1RHfPD0/R16l9Kdms6yLIEzXXaOuhoq3bVkvisGJuVSeX1LljM4ccybWG0pXg9iOZ/zrVKmLcVzLPP5R5CiIG3Eu0IWRO0Sxn+viDdZWC2QXLERVmo25dSCP10BEQjIiEubNO0fu87tN3inskd4j6IGSjSdoPxs0zZs8ONhvN61umymciIO4/oZlKnkwaZwnikq00nABmXDA3vXkPqQN0f2iv631C/IE47Zf+226DobLjTMlog6ZCQ6F8Rqs9db4cdioJiedFHQCVoMesiSG1X9mzQfRcaVjprziye5zQP6PXnumUgbricOuAqbSRT0iAN3NrLF+lSRBmwNo096+AmvfhLycabrRJLwQgKyC5gcGjnfPD3oTzOXg6Dhqej0KOYYLySxq0byEcVcAHXmYfGp7L4H4ZbNEYqE4euf1tmDadw2R3NXZJuiy/5lcsLRtISYszygsQOA9a390/mW5SR9Hedru1X578Gb75t8FZmwWM8+jYb/StrTsocuoeOxGdQkj225YKFUr9nQ9e2IaClLoqk1GiqQ7ykCRhjWxvLiQfULCP4ZOknD2h+UbSv9/GAfwWOCPjhuT/no+UP34wue+xwyocaxWNclPS1F0NV4U+zRbAmJq3D0f43vnqqQ8eNkftUg=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(7416014)(82310400026)(376014)(6133799003)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	vMtahuW4IGDeowK92ErtLxT3iBnRKNqnxnyEfRe2rBzCfsx8f9k9brqwDk0UoGKXy/xNp52GKAfBH1HrnsyL+4BH9BdA6u3dRhj2qSzFWN0AytLSHj8AGnle1tjA23biT4FB1vgvztZBouklQWWMXcjSlu6kIKoIkNqFJ1eYj6yJ/E+BUGH0X3eItSbmaUmO5M1vncUuxzBeMzVNv+zjNz1kv+7TMdS0wdLjgeghNdVxgv7LCK3HRND/Nt1ajee7DXYdPDXbDmx50CgRVJ5TljYSqR52LXnhfSOTm2ZtgmOxhtdb3o3/uye/M/KRHdziXv3C21opqNLIia5cu3cB2OkTFmA3IpZSkwkkKAOBYsJgFh++fAA6WxficmtlbpBkUsvBnQS06InLv9UWnpkaZ9yY8dN/uCCPiRpYkAgjS/jzP2294IM+JtxW+IJuSEyn
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 13:54:54.7713
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01fdd232-0bde-4b91-a416-08dec177b10e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002314.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6797
 
-On 21/05/2026 14:02, Marc Zyngier wrote:
-> On Wed, 13 May 2026 14:17:14 +0100,
-> Steven Price <steven.price@arm.com> wrote:
->>
->> Query the RMI version number and check if it is a compatible version.
->> The first two feature registers are read and exposed for future code to
->> use.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> v14:
->>  * This moves the basic RMI setup into the 'kernel' directory. This is
->>    because RMI will be used for some features outside of KVM so should
->>    be available even if KVM isn't compiled in.
->> ---
->>  arch/arm64/include/asm/rmi_cmds.h |  3 ++
->>  arch/arm64/kernel/Makefile        |  2 +-
->>  arch/arm64/kernel/cpufeature.c    |  1 +
->>  arch/arm64/kernel/rmi.c           | 65 +++++++++++++++++++++++++++++++
->>  4 files changed, 70 insertions(+), 1 deletion(-)
->>  create mode 100644 arch/arm64/kernel/rmi.c
->>
->> diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/asm/rmi_cmds.h
->> index 04f7066894e9..9179934925c5 100644
->> --- a/arch/arm64/include/asm/rmi_cmds.h
->> +++ b/arch/arm64/include/asm/rmi_cmds.h
->> @@ -10,6 +10,9 @@
->>  
->>  #include <asm/rmi_smc.h>
->>  
->> +extern unsigned long rmm_feat_reg0;
->> +extern unsigned long rmm_feat_reg1;
->> +
->>  struct rtt_entry {
->>  	unsigned long walk_level;
->>  	unsigned long desc;
->> diff --git a/arch/arm64/kernel/Makefile b/arch/arm64/kernel/Makefile
->> index 74b76bb70452..d68f351aae75 100644
->> --- a/arch/arm64/kernel/Makefile
->> +++ b/arch/arm64/kernel/Makefile
->> @@ -34,7 +34,7 @@ obj-y			:= debug-monitors.o entry.o irq.o fpsimd.o		\
->>  			   cpufeature.o alternative.o cacheinfo.o		\
->>  			   smp.o smp_spin_table.o topology.o smccc-call.o	\
->>  			   syscall.o proton-pack.o idle.o patching.o pi/	\
->> -			   rsi.o jump_label.o
->> +			   rsi.o jump_label.o rmi.o
->>  
->>  obj-$(CONFIG_COMPAT)			+= sys32.o signal32.o			\
->>  					   sys_compat.o
->> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
->> index 6d53bb15cf7b..8bdd95a8c2de 100644
->> --- a/arch/arm64/kernel/cpufeature.c
->> +++ b/arch/arm64/kernel/cpufeature.c
->> @@ -292,6 +292,7 @@ static const struct arm64_ftr_bits ftr_id_aa64isar3[] = {
->>  static const struct arm64_ftr_bits ftr_id_aa64pfr0[] = {
->>  	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_CSV3_SHIFT, 4, 0),
->>  	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_CSV2_SHIFT, 4, 0),
->> +	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_RME_SHIFT, 4, 0),
->>  	ARM64_FTR_BITS(FTR_VISIBLE, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_DIT_SHIFT, 4, 0),
->>  	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_AMU_SHIFT, 4, 0),
->>  	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_MPAM_SHIFT, 4, 0),
->> diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
->> new file mode 100644
->> index 000000000000..99c1ccc35c11
->> --- /dev/null
->> +++ b/arch/arm64/kernel/rmi.c
->> @@ -0,0 +1,65 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Copyright (C) 2023-2025 ARM Ltd.
->> + */
->> +
->> +#include <linux/memblock.h>
->> +
->> +#include <asm/rmi_cmds.h>
->> +
->> +unsigned long rmm_feat_reg0;
->> +unsigned long rmm_feat_reg1;
+On Wed, Jun 03, 2026 at 09:58:45AM +0100, Suzuki K Poulose wrote:
+> On 02/06/2026 23:41, Ackerley Tng wrote:
+> > Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+> > 
+> > > 
+> > > [...snip...]
+> > > 
+> > > > > @@ -914,7 +916,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct
+> > > > > kvm_memory_slot *slot,
+> > > > >            folio_mark_uptodate(folio);
+> > > > >        }
+> > > > > -    r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+> > > > > +    if (kvm_gmem_is_private_mem(inode, index))
+> > > > 
+> > > > Don't we need to make sure the entire folio is private ? Not just the
+> > > > page at the index ?
+> > > >       if (kvm_gmem_range_is_private(, index, folio_nr_pages(folio)) ?
+> > 
+> > I was thinking to fix this when I do huge pages, for now guest_memfd is
+> > always just PAGE_SIZE, so just looking up index is fine.
+> > 
+> > Is that okay?
 > 
-> What is the requirement for making those globally accessible? Can't
-> they be made static and use an accessor that returns them? Can the
-> variables be made __ro_after_init?
+> Thats fine, but would be good to enforce that here, so that we don't miss
+> out when we add support for multi page folios.
 
-Good point - there's no requirement. Also the name isn't quite right - 
-these should be named rmi_ as there is a different set for RSI.
+We sort of already enforce that in kvm_gmem_get_folio():
 
->> +
->> +static int rmi_check_version(void)
->> +{
->> +	struct arm_smccc_res res;
->> +	unsigned short version_major, version_minor;
->> +	unsigned long host_version = RMI_ABI_VERSION(RMI_ABI_MAJOR_VERSION,
->> +						     RMI_ABI_MINOR_VERSION);
->> +	unsigned long aa64pfr0 = read_sanitised_ftr_reg(SYS_ID_AA64PFR0_EL1);
->> +
->> +	/* If RME isn't supported, then RMI can't be */
->> +	if (cpuid_feature_extract_unsigned_field(aa64pfr0, ID_AA64PFR0_EL1_RME_SHIFT) == 0)
->> +		return -ENXIO;
->> +
->> +	arm_smccc_1_1_invoke(SMC_RMI_VERSION, host_version, &res);
->> +
->> +	if (res.a0 == SMCCC_RET_NOT_SUPPORTED)
->> +		return -ENXIO;
->> +
->> +	version_major = RMI_ABI_VERSION_GET_MAJOR(res.a1);
->> +	version_minor = RMI_ABI_VERSION_GET_MINOR(res.a1);
->> +
->> +	if (res.a0 != RMI_SUCCESS) {
->> +		unsigned short high_version_major, high_version_minor;
->> +
->> +		high_version_major = RMI_ABI_VERSION_GET_MAJOR(res.a2);
->> +		high_version_minor = RMI_ABI_VERSION_GET_MINOR(res.a2);
->> +
->> +		pr_err("Unsupported RMI ABI (v%d.%d - v%d.%d) we want v%d.%d\n",
->> +		       version_major, version_minor,
->> +		       high_version_major, high_version_minor,
->> +		       RMI_ABI_MAJOR_VERSION,
->> +		       RMI_ABI_MINOR_VERSION);
->> +		return -ENXIO;
->> +	}
->> +
->> +	pr_info("RMI ABI version %d.%d\n", version_major, version_minor);
->> +
->> +	return 0;
->> +}
->> +
->> +static int __init arm64_init_rmi(void)
->> +{
->> +	/* Continue without realm support if we can't agree on a version */
->> +	if (rmi_check_version())
->> +		return 0;
->> +
->> +	if (WARN_ON(rmi_features(0, &rmm_feat_reg0)))
->> +		return 0;
->> +	if (WARN_ON(rmi_features(1, &rmm_feat_reg1)))
->> +		return 0;
->> +
->> +	return 0;
->> +}
->> +subsys_initcall(arm64_init_rmi);
+        /*
+         * External interfaces like kvm_gmem_get_pfn() support dealing
+         * with hugepages to a degree, but internally, guest_memfd currently
+         * assumes that all folios are order-0 and handling would need
+         * to be updated for anything otherwise (e.g. page-clearing
+         * operations).
+         */
+        WARN_ON_ONCE(!IS_ERR(folio) && folio_order(folio));
+
+which was done as part of:
+
+  commit 6538b6221cc2feda415ca1946e66a5ef02dc6a0a
+  Author: Michael Roth <michael.roth@amd.com>
+  Date:   Thu Jan 8 15:46:18 2026 -0600
+  
+      KVM: guest_memfd: Remove partial hugepage handling from kvm_gmem_populate()
+
+and that should trigger before you even reach the prepare path, so I think
+that's covered.
+
+In general, there some previous discussion where we decided we would stop wasting
+time guessing at what we'll need to do for hugepages and instead just strip out
+the partial support. Sean wanted the folio order kept at part of the internal API
+since we know MMU will need that one way or another, but elsewhere within
+guest_memfd we are okay to assume 4K. If we *know* certain points that will need
+to change then a comment mentioning it isn't a bad idea, but even those comments
+have tended to be wrong so far about exactly what changes are supposed to happen.
+
+I'm not sure where the original discussion happened but there's some aftermath
+discussion here[1] that I think summarizes current [non-]plans around
+prepare+hugepages.
+
+[1] https://lore.kernel.org/kvm/20250711163440.kwjebnzd7zeb4bxt@amd.com/
+
 > 
-> Is there any reliance on this being executed before or after KVM's own
-> initialisation? If so, this should be captured.
+> > 
+> > > 
+> > > Or rather, we should go through the individual pages and apply the
+> > > prepare for ones that are private ?
+> > > 
+> > > Suzuki
+> > > 
+> > 
+> > IIRC the plan was to make kvm_gmem_prepare_folio() idempotent, as in, if
+> > a page is already private, just skip. Currently sev_gmem_prepare() does
+> > a pr_debug(), which I guess is technically still idempotent.
+> > 
+> > I'm thinking that the information tha needs tracking to make
+> > .gmem_prepare() idempotent should be tracked by arch code.
+> > 
+> > Does this work for ARM CCA?
+> 
+> We don't hook into the prepare yet, but have plans to do that. We should
+> be able to handle the pages that are already private. (For CCA context,
+> RMI_GRANULE_DELEGATE_RANGE can skip over already REALM pages). So this
+> should be fine.
+> 
+> My point is, in a given folio, there may be pages that are shared.
+> Like you said, this could be dealt with when we support hugepages.
 
-Yes I'm expecting this to be called before KVM's initialisation. 
-kvm_init_rmi() alls rmi_is_available() to check if CCA is supported and 
-only enables the KVM side of things if that check passes. So if the 
-initialisation was the other way round then Realm guests would be 
-unsupported. I'll add a comment
+Sounds good, that's also what SNP will do once hugepages come along.
 
-/*
- * Note arm64_init_rmi() must be called before kvm_init_rmi() otherwise KVM
- * will not support realm guests. subsys_initcall() is called before
- * module_init() (used for KVM) so this is OK.
- */
+-Mike
 
-Thanks,
-Steve
+> 
+> Suzuki
+> 
+> 
+> > 
+> > > > 
+> > > > [...snip...]
+> > > > 
+> 
