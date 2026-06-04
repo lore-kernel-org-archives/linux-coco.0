@@ -1,33 +1,33 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99FA7339861;
-	Thu,  4 Jun 2026 15:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B25133A9FF
+	for <linux-coco@lists.linux.dev>; Thu,  4 Jun 2026 15:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780586895; cv=none; b=jvcbibxIXP0zGgUof8Up91cmdsz6dbYaLLBl7GxYUVruAztv5WuvAfjctM1RBD9TgN4hZMhMUYGAJEbwXqF9U1NjINhs5oEXYCwRBEWGjdWsHyA4iKWUU68GJMNqZksoupp6cLnVq7BtkpXHFN0zGSqZ0vhSXr6CV+MAygiBVq4=
+	t=1780586973; cv=none; b=IyUyr7M/098p8/Dkb7MT6Xy6ouoRkpUEXpNFy+DOastyqzrxPUmctU7spjLFvh1YH2b7FKNsqD3yRo7p4/u0+fK9hefWg+hkt9cMuItJsZYG7FsR8sBuSgjHDtroSqIGA3fAF87TrHP09BI1+2Aj0BiDOq69blrLaqcfP7cpWoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780586895; c=relaxed/simple;
-	bh=U+vxUTdHbW20siTX3dFVZo9Bt+XzRLjvG5MjTOCV9RQ=;
+	s=arc-20240116; t=1780586973; c=relaxed/simple;
+	bh=bsr5b2gpdP7Z02h1Njek9qwNAkWcpQjmCyE6Te0xtUY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HUn07/i+bakymgY1lErVFxdI8i5h4RhaU8IpOtEZsmKtqnfPF1LDyUcEt9hiU4eGuCnclJk5bYRTM0NnRYK2p6MhYHPEgmecav1PF96IkbkX7nZhptgBRGiIvxZv/A1XAjbRigc215tMVY9kw1j/bvA0H1VzzbgOe2TQ5FiUET4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=K0kmt3C/; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=QfSfb2QN/TQjIYnCGmvvJlZrz5ktf0A7Qj9zps+ug+UG412h5m6a3h6VT0QzXPBz38Ip4uuiGeQ6JTeeeumhImce9pckXbOXBXMTy7oGb1TN3QlBnTvPf+83mg4MoR/ekZYblhwe8z6s4BS2aCr+BRtFgEiR0yxBvk9y16bZqzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=u5tYSEK0; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="K0kmt3C/"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="u5tYSEK0"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B775E1516;
-	Thu,  4 Jun 2026 08:28:07 -0700 (PDT)
-Received: from [10.1.34.54] (e122027.cambridge.arm.com [10.1.34.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 285EE3F86F;
-	Thu,  4 Jun 2026 08:28:06 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C5F644993;
+	Thu,  4 Jun 2026 08:29:26 -0700 (PDT)
+Received: from [10.57.95.39] (unknown [10.57.95.39])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DA02C3F86F;
+	Thu,  4 Jun 2026 08:29:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780586892; bh=U+vxUTdHbW20siTX3dFVZo9Bt+XzRLjvG5MjTOCV9RQ=;
+	t=1780586971; bh=bsr5b2gpdP7Z02h1Njek9qwNAkWcpQjmCyE6Te0xtUY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=K0kmt3C/w1k1/6n0F9rLjabKEulh884qSAOTEDtUvrfqwXhIPmD/u/+TDcan9mRlh
-	 Uz3PZDEhQmZP92vxbgVpLeStWi1s2nc35dzj+xBj6xzqW76+pEzcRfzfh9rdvb6zTJ
-	 hqvaO1R6yqUEw1gmGZCfBmf15tWhoWXn85jOGi5k=
-Message-ID: <16e9386c-7180-439d-8174-2be824abbd1e@arm.com>
-Date: Thu, 4 Jun 2026 16:27:58 +0100
+	b=u5tYSEK0WD6FzVygVZ2inUsRE7KPNU6aiooHb7WFFytVH7MwdY+o3iH91d3sWJQym
+	 G77ajQTrso6CQR5994wgSjTDCEuz6fiiAdnuNQFgcq6pkYJfcMWf+6whcM46UC6c2z
+	 1s46Od/7JFr/FBCHQRzYdrTjrodXGQYEF9NX3838=
+Message-ID: <9d15479e-e36b-4865-804c-7d93eb339e4e@arm.com>
+Date: Thu, 4 Jun 2026 16:29:19 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -35,195 +35,182 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 13/44] arm64: RMI: Define the user ABI
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-14-steven.price@arm.com>
- <86jysovpxf.wl-maz@kernel.org>
-From: Steven Price <steven.price@arm.com>
+Subject: Re: [PATCH v7 20/42] KVM: SEV: Make 'uaddr' parameter optional for
+ KVM_SEV_SNP_LAUNCH_UPDATE
 Content-Language: en-GB
-In-Reply-To: <86jysovpxf.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, ira.weiny@intel.com, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
+ <20260522-gmem-inplace-conversion-v7-20-2f0fae496530@google.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260522-gmem-inplace-conversion-v7-20-2f0fae496530@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 27/05/2026 16:21, Marc Zyngier wrote:
-> On Wed, 13 May 2026 14:17:21 +0100,
-> Steven Price <steven.price@arm.com> wrote:
->>
->> There is one CAP which identified the presence of CCA, and one ioctl.
->> The ioctl is used to populate memory during creation of the realm as
->> this requires the RMM to copy data from an unprotected address to the
->> protected memory - CCA does not support memory conversion where the
->> memory contents is preserved as this is incompatible with memory
->> encryption.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes since v13:
->>  * KVM_ARM_VCPU_RMI_PSCI_COMPLETE removed.
->>  * KVM_ARM_RMI_POPULATE documentation updated to reflect that the
->>    structure is written by the kernel.
->>  * CAP number bumped.
->> Changes since v12:
->>  * Change KVM_ARM_RMI_POPULATE to update the structure with the amount
->>    that has been progressed rather than return the number of bytes
->>    populated.
->>  * Describe the flag KVM_ARM_RMI_POPULATE_FLAGS_MEASURE.
->>  * CAP number is bumped.
->>  * NOTE: The PSCI ioctl may be removed in a future spec release.
->> Changes since v11:
->>  * Completely reworked to be more implicit. Rather than having explicit
->>    CAP operations to progress the realm construction these operations
->>    are done when needed (on populating and on first vCPU run).
->>  * Populate and PSCI complete are promoted to proper ioctls.
->> Changes since v10:
->>  * Rename symbols from RME to RMI.
->> Changes since v9:
->>  * Improvements to documentation.
->>  * Bump the magic number for KVM_CAP_ARM_RME to avoid conflicts.
->> Changes since v8:
->>  * Minor improvements to documentation following review.
->>  * Bump the magic numbers to avoid conflicts.
->> Changes since v7:
->>  * Add documentation of new ioctls
->>  * Bump the magic numbers to avoid conflicts
->> Changes since v6:
->>  * Rename some of the symbols to make their usage clearer and avoid
->>    repetition.
->> Changes from v5:
->>  * Actually expose the new VCPU capability (KVM_ARM_VCPU_REC) by bumping
->>    KVM_VCPU_MAX_FEATURES - note this also exposes KVM_ARM_VCPU_HAS_EL2!
->> ---
->>  Documentation/virt/kvm/api.rst | 40 ++++++++++++++++++++++++++++++++++
->>  include/uapi/linux/kvm.h       | 13 +++++++++++
->>  2 files changed, 53 insertions(+)
+On 23/05/2026 01:18, Ackerley Tng via B4 Relay wrote:
+> From: Michael Roth <michael.roth@amd.com>
 > 
-> $SUBJECT looks wrong. This is a KVM change, not an RMI change.
-
-Ah, true I guess "KVM: arm64: Define the user ABI for CCA" is more accurate.
-
->>
->> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
->> index 52bbbb553ce1..ca68aae7faa2 100644
->> --- a/Documentation/virt/kvm/api.rst
->> +++ b/Documentation/virt/kvm/api.rst
->> @@ -6553,6 +6553,37 @@ KVM_S390_KEYOP_SSKE
->>    Sets the storage key for the guest address ``guest_addr`` to the key
->>    specified in ``key``, returning the previous value in ``key``.
->>  
->> +4.145 KVM_ARM_RMI_POPULATE
->> +--------------------------
->> +
->> +:Capability: KVM_CAP_ARM_RMI
->> +:Architectures: arm64
->> +:Type: vm ioctl
->> +:Parameters: struct kvm_arm_rmi_populate (in/out)
->> +:Returns: 0 on success, < 0 on error
->> +
->> +::
->> +
->> +  struct kvm_arm_rmi_populate {
->> +	__u64 base;
->> +	__u64 size;
->> +	__u64 source_uaddr;
->> +	__u32 flags;
->> +	__u32 reserved;
->> +  };
->> +
->> +Populate a region of protected address space by copying the data from the
->> +(non-protected) user space pointer provided into a protected region (backed by
->> +guestmem_fd). It implicitly sets the destination region to RIPAS RAM. This is
->> +only valid before any VCPUs have been run. The ioctl might not populate the
->> +entire region and in this case the kernel updates the fields `base`, `size` and
->> +`source_uaddr`. User space may have to repeatedly call it until `size` is 0 to
->> +populate the entire region.
->> +
->> +`flags` can be set to `KVM_ARM_RMI_POPULATE_FLAGS_MEASURE` to request that the
->> +populated data is hashed and added to the guest's Realm Initial Measurement
->> +(RIM).
+> For vm_memory_attributes=1, in-place conversion/population is not
+> supported, so the initial contents necessarily must need to come
+> from a separate src address, which is enforced by the current
+> implementation. However, for vm_memory_attributes=0, it is possible for
+> guest memory to be initialized directly from userspace by mmap()'ing the
+> guest_memfd and writing to it while the corresponding GPA ranges are in
+> a 'shared' state before converting them to the 'private' state expected
+> by KVM_SEV_SNP_LAUNCH_UPDATE.
 > 
-> Where is that measurement stored? And retrieved? At least a pointer to
-> that would help.
-
-It's stored within the RMM and retrieved by the guest (using the RSI
-interface). I'll update to:
-
-`flags` can be set to `KVM_ARM_RMI_POPULATE_FLAGS_MEASURE` to request
-that the populated data is hashed and added to the guest's Realm Initial
-Measurement (RIM) stored by the RMM. This can then be retrieved by the
-guest (using the RSI interface) to present to an attestation server.
-
-Thanks,
-
-Steve
-
->> +
->>  .. _kvm_run:
->>  
->>  5. The kvm_run structure
->> @@ -8904,6 +8935,15 @@ helpful if user space wants to emulate instructions which are not
->>  This capability can be enabled dynamically even if VCPUs were already
->>  created and are running.
->>  
->> +7.47 KVM_CAP_ARM_RMI
->> +--------------------
->> +
->> +:Architectures: arm64
->> +:Target: VM
->> +:Parameters: None
->> +
->> +This capability indicates that support for CCA realms is available.
->> +
->>  8. Other capabilities.
->>  ======================
->>  
->> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
->> index 6c8afa2047bf..b8cff0938041 100644
->> --- a/include/uapi/linux/kvm.h
->> +++ b/include/uapi/linux/kvm.h
->> @@ -996,6 +996,7 @@ struct kvm_enable_cap {
->>  #define KVM_CAP_S390_USER_OPEREXEC 246
->>  #define KVM_CAP_S390_KEYOP 247
->>  #define KVM_CAP_S390_VSIE_ESAMODE 248
->> +#define KVM_CAP_ARM_RMI 249
->>  
->>  struct kvm_irq_routing_irqchip {
->>  	__u32 irqchip;
->> @@ -1669,4 +1670,16 @@ struct kvm_pre_fault_memory {
->>  	__u64 padding[5];
->>  };
->>  
->> +/* Available with KVM_CAP_ARM_RMI, only for VMs with KVM_VM_TYPE_ARM_REALM */
->> +#define KVM_ARM_RMI_POPULATE	_IOWR(KVMIO, 0xd7, struct kvm_arm_rmi_populate)
->> +#define KVM_ARM_RMI_POPULATE_FLAGS_MEASURE	(1 << 0)
->> +
->> +struct kvm_arm_rmi_populate {
->> +	__u64 base;
->> +	__u64 size;
->> +	__u64 source_uaddr;
->> +	__u32 flags;
->> +	__u32 reserved;
->> +};
->> +
->>  #endif /* __LINUX_KVM_H */
+> Update the handling/documentation for KVM_SEV_SNP_LAUNCH_UPDATE to allow
+> for 'uaddr' to be set to NULL when vm_memory_attributes=0, which
+> SNP_LAUNCH_UPDATE will then use to determine when it should/shouldn't
+> copy in data from a separate memory location. Continue to enforce
+> non-NULL for the original vm_memory_attributes=1 case.
 > 
-> Thanks,
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> [Added src_page check in error handling path when the firmware command fails]
+> [Dropped ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES]
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+
+
+
+
+> ---
+>   Documentation/virt/kvm/x86/amd-memory-encryption.rst | 15 +++++++++++----
+>   arch/x86/kvm/svm/sev.c                               | 18 +++++++++++++-----
+>   virt/kvm/kvm_main.c                                  |  1 +
+>   3 files changed, 25 insertions(+), 9 deletions(-)
 > 
-> 	M.
+> diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> index b2395dd4769de..43085f65b2d85 100644
+> --- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> +++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> @@ -503,7 +503,8 @@ secrets.
+>   
+>   It is required that the GPA ranges initialized by this command have had the
+>   KVM_MEMORY_ATTRIBUTE_PRIVATE attribute set in advance. See the documentation
+> -for KVM_SET_MEMORY_ATTRIBUTES for more details on this aspect.
+> +for KVM_SET_MEMORY_ATTRIBUTES/KVM_SET_MEMORY_ATTRIBUTES2 for more details on
+> +this aspect.
+>   
+>   Upon success, this command is not guaranteed to have processed the entire
+>   range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
+> @@ -511,9 +512,15 @@ range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
+>   remaining range that has yet to be processed. The caller should continue
+>   calling this command until those fields indicate the entire range has been
+>   processed, e.g. ``len`` is 0, ``gfn_start`` is equal to the last GFN in the
+> -range plus 1, and ``uaddr`` is the last byte of the userspace-provided source
+> -buffer address plus 1. In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO,
+> -``uaddr`` will be ignored completely.
+> +range plus 1, and ``uaddr`` (if specified) is the last byte of the
+> +userspace-provided source buffer address plus 1.
+> +
+> +In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO, ``uaddr`` will be
+> +ignored completely. Otherwise, ``uaddr`` is required if
+> +kvm.vm_memory_attributes=1 and optional if kvm.vm_memory_attributes=0, since
+> +in the latter case guest memory can be initialized directly from userspace
+> +prior to converting it to private and passing the GPA range on to this
+> +interface.
+
+Just to confirm, so the sev_gmem_prepare doesn't destroy the contents in 
+the process of making it "private" ? i.e., the contents of a SNP shared
+page are preserved while transitioning to "SNP Private" (via RMP
+update).
+
+Suzuki
+
+
+
+>   
+>   Parameters (in): struct  kvm_sev_snp_launch_update
+>   
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 1a361f08c7a3d..e1dbc827c2807 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -2343,7 +2343,15 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>   	int level;
+>   	int ret;
+>   
+> -	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page))
+> +	/*
+> +	 * For vm_memory_attributes=1, in-place conversion/population is not
+> +	 * supported, so the initial contents necessarily need to come from a
+> +	 * separate src address. For vm_memory_attributes=0, this isn't
+> +	 * necessarily the case, since the pages may have been populated
+> +	 * directly from userspace before calling KVM_SEV_SNP_LAUNCH_UPDATE.
+> +	 */
+> +	if (vm_memory_attributes &&
+> +	    sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page)
+>   		return -EINVAL;
+>   
+>   	ret = snp_lookup_rmpentry((u64)pfn, &assigned, &level);
+> @@ -2390,7 +2398,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>   	 */
+>   	if (ret && !snp_page_reclaim(kvm, pfn) &&
+>   	    sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
+> -	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM) {
+> +	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM && src_page) {
+>   		void *src_vaddr = kmap_local_page(src_page);
+>   		void *dst_vaddr = kmap_local_pfn(pfn);
+>   
+> @@ -2423,8 +2431,8 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+>   	if (copy_from_user(&params, u64_to_user_ptr(argp->data), sizeof(params)))
+>   		return -EFAULT;
+>   
+> -	pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d\n", __func__,
+> -		 params.gfn_start, params.len, params.type, params.flags);
+> +	pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d src %llx\n", __func__,
+> +		 params.gfn_start, params.len, params.type, params.flags, params.uaddr);
+>   
+>   	if (!params.len || !PAGE_ALIGNED(params.len) || params.flags ||
+>   	    (params.type != KVM_SEV_SNP_PAGE_TYPE_NORMAL &&
+> @@ -2481,7 +2489,7 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+>   
+>   	params.gfn_start += count;
+>   	params.len -= count * PAGE_SIZE;
+> -	if (params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
+> +	if (src && params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
+>   		params.uaddr += count * PAGE_SIZE;
+>   
+>   	if (copy_to_user(u64_to_user_ptr(argp->data), &params, sizeof(params)))
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index ba195bb239aaa..3bf212fd99193 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -105,6 +105,7 @@ module_param(allow_unsafe_mappings, bool, 0444);
+>   #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+>   bool vm_memory_attributes = true;
+>   module_param(vm_memory_attributes, bool, 0444);
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(vm_memory_attributes);
+>   #endif
+>   DEFINE_STATIC_CALL_RET0(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
+>   EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_KEY(__kvm_get_memory_attributes));
 > 
 
