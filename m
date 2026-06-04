@@ -1,152 +1,177 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8812847DFBC
-	for <linux-coco@lists.linux.dev>; Thu,  4 Jun 2026 14:30:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66223B19D8;
+	Thu,  4 Jun 2026 14:43:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780583405; cv=none; b=GdJ1XrRBpF2s2UA92HamhpQkBfhskTBiIN/H/d4JbuDE7ORIIBQWR1zNmAVnnI8/sfMiUP1yf2vED6RncvvJEvnL03ss9poF3HnhdtZHfV5ktW2FbUK9wR7vNx4/FgbuqN2hS1lkgORp+jaEe9k+ZKZFknjVLX8vXB3ePyPG6Xk=
+	t=1780584238; cv=none; b=ttnDrcrGyO6nsFD4F8mincuiC+XMYYwrOLZ/vvS6tW6iM4daUlUIMmjOeDk1e6+3cmCGQJ6wTx60NbO+kCs1GLfs5PwCWHKcL9J7Rhq7LOFO3vR1HBIchQ6snJndoUp5XtF/pDG1cVhh9qG5DOaMORU42nudQXOHoB8xSABauDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780583405; c=relaxed/simple;
-	bh=uV78Na/cU+RIve0Q1YJ19wLHf0X6yGP9GKIsahjNfAg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pZR7FjAmmcW/auxUJVxApXngK3uuStXkjhynHK3If+oeGdOtGiN2lsJ3oTiBzEm7XxBQPSzXx8FhyuuCvop5vF5qufdeITFCKyo+jSd7FU4Rz3mb9CB3kJW1s7dxvKcxnO/3rZF04k7NoK+vT9hkNxNMoRxflzQYGH7Z9g9Xa84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=V6vu/dOs; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1780584238; c=relaxed/simple;
+	bh=b/UDPb8ZwzcbmTijGa9ghHw1SVkFtR2lx41scNsuBjo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=a7tAJAe6liVW+zt/A7sjpNzG5MY6PzblcgCo2RSeu9V0QurbiUA90TPthLjXFedvql2ANb825ErivsPt0+DKXAMExgbZM4RLKLe7recsrRrjCBRD0WxmdzrydkGBgzwcMRQX1G+BA5GizM7o5zwZJ97qrdNmYsopVFonN3qSGL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Gn6z/d22; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="V6vu/dOs"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-9157ec935c5so131585785a.2
-        for <linux-coco@lists.linux.dev>; Thu, 04 Jun 2026 07:30:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1780583403; x=1781188203; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=leYnnf5Pg/xQRLvt6GMDQfv6g59yyMdkhV1lUPQrWAM=;
-        b=V6vu/dOs9iuTES3ccZVTFyyL1vejOso8sMMBoC62tGPdny9Rcia7rbrZW4Pp7WsSNy
-         wUxobmtIrijO18K54ddKfro5JL/uTLn184uKit2Ly8ZA3iFROO6UnIODtiTzSPMEr/7H
-         PoBh0gVp8mnaDybSBRboi9n6RDPImSl9NhxtlLbIVA8DQyskbvT0BqyLjloLzZeCE5IH
-         npmP9ZcIrsuxccjVxdLtaCsWac5BUV5D5kzCCqfzZ7YVU5xhO9Nmu7tBhOuH4WUlmiTv
-         dYq4fNODQLwq+VREWz+TuNGFmkP2hvcR2/8MBqUyMZCZaDR4muU+YXp+JOmVMqxohOJ8
-         W8tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780583403; x=1781188203;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=leYnnf5Pg/xQRLvt6GMDQfv6g59yyMdkhV1lUPQrWAM=;
-        b=jUfpQOB/VLdBTWuJOsZqdcHOQ7c91TL4OemYN5uVWKyE2R4rGxIdgjp75gRsTYPmLD
-         InJrtoQ92CWau08Wf0EZjwm0WQC7MPLjGh9WchZO0HCnx+esi5BfvkwgxzJFCjJVm36/
-         z4WEKr928TbhWAI2oahX5zk2mu3F/HYMT00HKQkVZbk2Dva1E+E20EzE1KXqW0x/riNm
-         qDEVuPMqG7RI5+wEh7BaX80c+GtbeXVPadoU8rKNJf1SXWzcAUdhEHu+cU0DuOUvocW9
-         Xpyl4eXQlBBKigwOqRA0tvbKBV7JmUgoBe68V5ETaek7bIjZ+rNfwjJqxVA8mKUYzi3G
-         ovCA==
-X-Forwarded-Encrypted: i=1; AFNElJ/No96WN5t2UWMga9uzWV4I0AZoyT6yj1qUJLRV2UXeZ/M68AQA5RePiqrSQ8TSwnZkm1JmQAYygVZT@lists.linux.dev
-X-Gm-Message-State: AOJu0YwnmoiQFXSOj07JXe3jDG1wLP7RU2EQBy9QjmjiIlGsKCn+077i
-	ycJVdvlOwKHGUr7iUqwXpvF/yNfXhJs7TQ+0KyrrSLwWi7+hk6WkKQCCdkX3N4axyZc=
-X-Gm-Gg: Acq92OFdYg9+2PYrG72D+91sJ0inRaGJx/6xwjlcp6W73VLDQVQ5OMUqTRI5j1bBDDa
-	Hf419J0eLRO1LImUu0zDRTABw5sqRR8QoPfMg1I/b5PeSgQNCIUqNKDpkLYN5rYWBfOvdhqJxoN
-	QXbuwjilqGQfRVX2M7tUf2nNRwVePwYsJ1woKK2/cbF6ckucgBhRWTid2k415itJxG0F4T90pbj
-	+09dAi5BfMUYUSwBdyU3aYTLo+9zeunlR7ZOAluuHW0V0STYp+ztqNglwP4hPguXOHWf2INt20x
-	u75Ra3Ftk+1s+X5gJXeQAbliXxRbmxVzRvurChGeSBBs5cVx5L/8fmLPfABBsgVmYC+32amjDth
-	0jo9Wxo4aALHMCmS4Y/gIudTBNd4cp63gknQe6axM5dh/m7gYXENG/8fpXkHoyImug6GFOpyPIr
-	Sgv1UInUyeM3KwtZvaI/Uxdmsy9PToHgDfD5XUxGLkBk5RY09lOM/Ab3IP0NNHCandlz2YAtG/Y
-	SUnGVKN9PpIEVyL
-X-Received: by 2002:a05:620a:2544:b0:915:3e46:c44a with SMTP id af79cd13be357-9158a80c3f3mr1387419585a.46.1780583403463;
-        Thu, 04 Jun 2026 07:30:03 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a21d2c1sm657350885a.11.2026.06.04.07.30.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 07:30:02 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wV958-00000008IZw-1Hzl;
-	Thu, 04 Jun 2026 11:30:02 -0300
-Date: Thu, 4 Jun 2026 11:30:02 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	"x86@kernel.org" <x86@kernel.org>, Jiri Pirko <jiri@nvidia.com>
-Subject: Re: [PATCH v5 05/20] dma-pool: track decrypted atomic pools and
- select them via attrs
-Message-ID: <20260604143002.GA2487554@ziepe.ca>
-References: <20260522042815.370873-1-aneesh.kumar@kernel.org>
- <20260522042815.370873-6-aneesh.kumar@kernel.org>
- <SN6PR02MB415754E94A9505C2B9739E4DD4092@SN6PR02MB4157.namprd02.prod.outlook.com>
- <yq5afr35sciu.fsf@kernel.org>
- <SN6PR02MB4157D9955A93244014AB7978D4122@SN6PR02MB4157.namprd02.prod.outlook.com>
- <20260603005454.GM2487554@ziepe.ca>
- <SN6PR02MB4157F94C902B78E55E99372DD4102@SN6PR02MB4157.namprd02.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Gn6z/d22"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F1F783D4D;
+	Thu,  4 Jun 2026 07:43:49 -0700 (PDT)
+Received: from [10.1.34.54] (e122027.cambridge.arm.com [10.1.34.54])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE2373F7D8;
+	Thu,  4 Jun 2026 07:43:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780584234; bh=b/UDPb8ZwzcbmTijGa9ghHw1SVkFtR2lx41scNsuBjo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Gn6z/d22MGsutY4vrKsRLbGb1JtpNa5H68u4zp2JsNXjaVzof1wCdH042dXjksL32
+	 3bQQkNGnNvI/E3bx/qFU+wirdXrg2s3UT8bnf/anDlnzOBsOrKTbQ0RD5hblrWE1yd
+	 Xm4/PDVe6lFcK9jaluBGd8A0FpR/YMBGavFmftuY=
+Message-ID: <fad5dc03-f7ce-4b15-bb73-e2dbd43810a6@arm.com>
+Date: Thu, 4 Jun 2026 15:43:47 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SN6PR02MB4157F94C902B78E55E99372DD4102@SN6PR02MB4157.namprd02.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 09/44] arm64: RMI: Provide functions to
+ delegate/undelegate ranges of memory
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo.Pieralisi2@arm.com
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-10-steven.price@arm.com>
+ <867bowx3qx.wl-maz@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <867bowx3qx.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 04, 2026 at 02:05:35PM +0000, Michael Kelley wrote:
-> From: Jason Gunthorpe <jgg@ziepe.ca> Sent: Tuesday, June 2, 2026 5:55 PM
-> > 
-> > On Tue, Jun 02, 2026 at 02:24:40PM +0000, Michael Kelley wrote:
-> > 
-> > > Except that in a normal VM, the "unencrypted" pool attribute does *not*
-> > > describe the state of the memory itself.  In a normal VM, the memory is
-> > > unencrypted, but the "unencrypted" pool attribute is false. That
-> > > contradiction is the essence of my concern.
-> > 
-> > I would argue no..
-> > 
-> > When CC is enabled the default state of memory in a Linux environment
-> > is "encrypted". You have to take a special action to "decrypt" it.
-> > 
-> > Thus the default state of memory in a non-CC environment is also
-> > paradoxically "encrypted" too. 
+On 21/05/2026 14:59, Marc Zyngier wrote:
+> On Wed, 13 May 2026 14:17:17 +0100,
+> Steven Price <steven.price@arm.com> wrote:
+>>
+>> The RMM requires memory is 'delegated' to it so that it can be used
+>> either for a realm guest or for various tracking purposes within the RMM
+>> (e.g. for metadata or page tables). Memory that has been delegated
+>> cannot be accessed by the host (it will result in a Granule Protection
+>> Fault).
+>>
+>> Undelegation may fail if the memory is still in use by the RMM. This
+>> shouldn't happen (Linux should ensure it has destroyed the RMM objects
+>> before attempting to undelegate). In the event that it does happen this
+>> points to a programming bug and the only reasonable approach is for the
+>> physical pages to be leaked - it is up to the caller of
+>> rmi_undelegate_range() to handle this.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> v14:
+>>  * Split into separate patch and moved out of KVM
+>> ---
+>>  arch/arm64/include/asm/rmi_cmds.h | 13 +++++++++++
+>>  arch/arm64/kernel/rmi.c           | 36 +++++++++++++++++++++++++++++++
+>>  2 files changed, 49 insertions(+)
+>>
+>> diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/asm/rmi_cmds.h
+>> index 9078a2920a7c..eb213c8e6f26 100644
+>> --- a/arch/arm64/include/asm/rmi_cmds.h
+>> +++ b/arch/arm64/include/asm/rmi_cmds.h
+>> @@ -33,6 +33,19 @@ struct rmi_sro_state {
+>>  } while (RMI_RETURN_STATUS(res.a0) == RMI_BUSY ||			\
+>>  	 RMI_RETURN_STATUS(res.a0) == RMI_BLOCKED)
+>>  
+>> +int rmi_delegate_range(phys_addr_t phys, unsigned long size);
+>> +int rmi_undelegate_range(phys_addr_t phys, unsigned long size);
+>> +
+>> +static inline int rmi_delegate_page(phys_addr_t phys)
+>> +{
+>> +	return rmi_delegate_range(phys, PAGE_SIZE);
+>> +}
+>> +
+>> +static inline int rmi_undelegate_page(phys_addr_t phys)
+>> +{
+>> +	return rmi_undelegate_range(phys, PAGE_SIZE);
+>> +}
+>> +
+>>  bool rmi_is_available(void);
+>>  
+>>  unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t gfp);
+>> diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
+>> index 52a415e99500..08cef54acadb 100644
+>> --- a/arch/arm64/kernel/rmi.c
+>> +++ b/arch/arm64/kernel/rmi.c
+>> @@ -12,6 +12,42 @@ static bool arm64_rmi_is_available;
+>>  unsigned long rmm_feat_reg0;
+>>  unsigned long rmm_feat_reg1;
+>>  
+>> +int rmi_delegate_range(phys_addr_t phys, unsigned long size)
+>> +{
+>> +	unsigned long ret = 0;
+>> +	unsigned long top = phys + size;
+>> +	unsigned long out_top;
+>> +
+>> +	while (phys < top) {
+>> +		ret = rmi_granule_range_delegate(phys, top, &out_top);
+>> +		if (ret == RMI_SUCCESS)
+>> +			phys = out_top;
+>> +		else if (ret != RMI_BUSY && ret != RMI_BLOCKED)
+>> +			return ret;
+>> +	}
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +int rmi_undelegate_range(phys_addr_t phys, unsigned long size)
+>> +{
+>> +	unsigned long ret = 0;
+>> +	unsigned long top = phys + size;
+>> +	unsigned long out_top;
+>> +
+>> +	WARN_ON(size == 0);
 > 
-> The need to have such an unnatural premise is usually an indication
-> of a conceptual problem with the overall model, or perhaps just a
-> terminology problem. 
+> I find it odd to warn on size = 0. After all, free(NULL) is not an
+> error. But even then, you continue feeding this to the RMM.
 
-Oh yes I do think the AMD derived terminogy is aweful :(
+Ok, I'll admit that this is left over debugging - although this is a
+condition that shouldn't happen.
 
-> Here's a proposal. The new DMA attribute is DMA_ATTR_CC_SHARED.
-> Name the pool attribute "cc_shared" instead of "unencrypted". 
+Note that the while() condition prevents this from actually getting to
+the RMM.
 
-Yeah maybe. I sometimes imagine replacing the encrypted/decrypted
-names with cc_shared too just to make it sane.
+I'll drop the WARN_ON() since it's confusing.
 
-> "cc_shared" set to false in a normal VM doesn't lead to the non-sensical
-> situation of claiming that a normal VM is encrypted.
+Thanks,
+Steve
 
-It seems like a good idea to me
+> You also don't seem to be bothered with that on the delegation side...
+> 
+>> +
+>> +	while (phys < top) {
+>> +		ret = rmi_granule_range_undelegate(phys, top, &out_top);
+>> +		if (ret == RMI_SUCCESS)
+>> +			phys = out_top;
+> 
+> and size==0 doesn't violate any of the failure conditions listed in
+> B4.5.18.2 (beta2). Will you end-up looping around forever?
+> 
+> Same questions for the delegation, obviously.
+> 
+> 	M.
+> 
 
-Jason
