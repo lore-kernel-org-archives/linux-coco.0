@@ -1,499 +1,308 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74ED4399348;
-	Thu,  4 Jun 2026 15:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79EAE3C09EB
+	for <linux-coco@lists.linux.dev>; Thu,  4 Jun 2026 16:05:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780588511; cv=none; b=Fo8248Tl3zmZ/7Cs5bY8ixIdrtmOACARi7wp1tAW05No+V3LPJjbmitgjn0auhRnMRtjAO9vM9NL6bJnBShNuAchDnMfCwrKf/QP9fcO9nWJExx/Nvyi+E2ko0PJTSqcgcjxwLM251sQ2ng2gkai2ODy+J9SbpV09zyhEVnM61I=
+	t=1780589159; cv=none; b=CcuCG8FfoMhC3Zq62JKGTtL/DLe4MpDQUn5j3kAVdQG8y6ANYE5kJaIbPOVvUbLj+2kp38c5Ouk5vIgxBTipFUZxv+w5Bhe0whHrVMulkfwsaDMk7jygyq3kN8yeoI+y1azHh2JtI9QBCB62w5sDEnZeHKgHwnrFIxVVqvPiatQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780588511; c=relaxed/simple;
-	bh=CsHrryjDtgR3ZDYbyzhq41lvy+WJE8b/sMyCmyZnR5Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OJKoXnEzi/Z2dK9lnc30dOVRitvj0Y2QoBzWjfYIeectLfikqbSTggEIwLqzgTBLE++HSGmgG6D8EWnykWmA555PUgFJEBTHxdXiVpHCyJGk5RHcqWXEa1WPZpOxKwBhSJ8HutvQMBW8FUZ6qm7my6i7ftBDMi65mkQCCn5uxQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=jC+NNncl; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1780589159; c=relaxed/simple;
+	bh=C+3/Y8UM+QF4b+fxUP6DMkOPxlSgLT2Ew0IkUAd7ZBk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uiNHlst/fCxLAVJfznKgH1tTzBjWZAim5MGX8nJSlz+V0V+16eJsPLOi24XumIbc1iR9mGt6CWN9r9Zvw6MbpxT49MLPGoaDXsNUstthJ2KjM+b/wD+PecpRFeCz1Jmv8sKSaFKP9zRBgddxvlrG6ORELLIOMrgyQDNO88psFbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U53n/eYJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="jC+NNncl"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A75EE499F;
-	Thu,  4 Jun 2026 08:55:02 -0700 (PDT)
-Received: from [10.1.34.54] (e122027.cambridge.arm.com [10.1.34.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A071E3F86F;
-	Thu,  4 Jun 2026 08:55:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780588507; bh=CsHrryjDtgR3ZDYbyzhq41lvy+WJE8b/sMyCmyZnR5Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jC+NNncltyW8C1Hw6hB3OYN7d2ZzNnuWb33R14JtHRtYhxcJa7Vk/JCLu9/ZRxggS
-	 FFNw1+Xdtv98H494qn1FXD4Uzvt44NEYvg7EDkHKIiNu4JGAcdX5Mal59csDaPzW35
-	 LPFSB6Tk0ifJGTK0VOGjiV7FvLEzM9WKhw7wHi18=
-Message-ID: <cb918d27-e37a-41d8-b4b4-746ffa8d8583@arm.com>
-Date: Thu, 4 Jun 2026 16:55:01 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U53n/eYJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8091F0089B;
+	Thu,  4 Jun 2026 16:05:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780589157;
+	bh=yVTz1uwL1NNB95GiENNhSXV/zvAW1QB+RQh5yDivS9Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=U53n/eYJFU+DltQIrh9jMR7xb6PYWBeAX+OJQ1QBCVtMnXdVZYyQ10H28CIt0yCjm
+	 NHvqDaLvs/8UZd06nXwa2/uPJsdYD7u3mKcH5pwnzWsg7qFRkQYLg3k5y2psbko+Rn
+	 0zCw6GA0Nv4+9W1VuJChafZzGAJlmOooCLVD14SegCTCGA7YBf8JuPNNbudHXFYnPj
+	 tHkUTUI5rXwhUCHjUBCbk7UJZDDdHjF2gx5bpQCJyOP2B+H6GDV3Rq3uo0ZxesHR79
+	 7OyMSbOYZjE08zq3KXmiB2yAwbhIz4XikTPR+RsF2F+hCDU7tXurawk5WknddQUXjK
+	 ffV3j2deZfdEQ==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id ED797F40072;
+	Thu,  4 Jun 2026 12:05:55 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Thu, 04 Jun 2026 12:05:55 -0400
+X-ME-Sender: <xms:Y6IhahnHXc09KilZvFzUSBZgTSLIkEVygC0kGisdcxVNEKWyRMxGBw>
+    <xme:Y6IhaqtBr2N5Ps4cgjVM-Im_rzv11AUNqNFez-P-R_haS4tzA3BMK62krcfnL0STb
+    2nMO5pkdjsKaKlgK95VqrzoeZWJ8bBKa5PIoiyvL4EWo-gzF_vR8w>
+X-ME-Received: <xmr:Y6IhagsMGGZ5nB454xWyFruYQrqtm5hAUF4aEe9Cx4QsVtL1cF2LpHxL1bd0wA>
+X-ME-Proxy-Cause: dmFkZTFWOXm/HbsQkCfZ0JEDY7FJu/nVG/x0j3OWWRZksOqWO2cAdoQsNzQcvJeAF7T6wu
+    yw3RhoVAzGLCcdWmON5DYz2p1qN+phCm6+K5u7cpldS1sgAmg2ww0rqmwunmD4tc32uiSL
+    OJaP+3cfqmhdriIifqpvM3rYkemJiIJaAuqZ/bYJu+yFHX1aUPGas+wSyV/YCgyg3apGfX
+    jeBZRQGpawV2oGEvl7OINeHp115YYqmyGZWnP4M8hNrIQs2UnHEAqSJAlDGkYGO06OF/AS
+    ipoLNMUWYA+g7PheK5gtmnLK0LaLiJvuy7PRw7r52HFPk19FLjXZ1XO2UKefyecs9Ox5kx
+    SZY8ocoNDU7HkqYDwAc+EvaIYPL/5dX42cdazX4XSGrW37W6+LpwvoM0cTUE1ZR+oVIQ3O
+    pN0C8RDxcNuWfZuqWqK+z/gGuJRPc5EM3LhvlI6/XN+IBB3bsmYZW7wdR4zvcwVsUz5J5B
+    XG+u49B2DvY0QFy2A+Pq2Ora3d5Gc1xpJyb8+SP03RID8WNfP7ZQi1VUd7u/FqJ33+MNPO
+    Jr6x9KlODIKyeQ1uSXXpMvuszK0ldcqOx3UOj0R+0f+pWmn/jqKctW8XfbLmm4WlW+N51V
+    f66QJpT5ZSKg10X+S+QoRl1Hod8ihzmmcD5TJKkG7W/O1vPBmThgYvLF7fNQ
+X-ME-Proxy: <xmx:Y6Ihai1gRVJqQDK-wAYgh4IVoPsfpj0WIZDWQoKtMJqeZkEwh9WgJg>
+    <xmx:Y6IhaoNjkt5jhap18TBFNnPFBYtRR6zhU4y2qrAm_sZeBfUjr3q9Ag>
+    <xmx:Y6IhaoWiwMRCKigm9wIuXI3pCgSjGuZgviC77oMPa72wIXF0dLSU-A>
+    <xmx:Y6IhaoYvxw-HXITfeaxlQuluR8fwJzGepU7zG1IqMj670gSDQ0Qt_Q>
+    <xmx:Y6IhajvO5uppJzHZ_sZztkh5Ssr3Q2CM6UlAyFYU0bB2iKgWAhO6cD0L>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 4 Jun 2026 12:05:53 -0400 (EDT)
+Date: Thu, 4 Jun 2026 17:05:48 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, dave.hansen@intel.com, hpa@zytor.com, 
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, mingo@redhat.com, nik.borisov@suse.com, pbonzini@redhat.com, 
+	seanjc@google.com, tglx@kernel.org, vannapurve@google.com, x86@kernel.org, 
+	chao.gao@intel.com, yan.y.zhao@intel.com, kai.huang@intel.com, 
+	Binbin Wu <binbin.wu@linux.intel.com>
+Subject: Re: [PATCH v6 01/11] x86/virt/tdx: Simplify tdmr_get_pamt_sz()
+Message-ID: <aiGheH8YceumotUU@thinkstation>
+References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
+ <20260526023515.288829-2-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 14/44] arm64: RMI: Basic infrastructure for creating a
- realm.
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-15-steven.price@arm.com>
- <86ik88ui0g.wl-maz@kernel.org> <1bb9da2a-bcc2-4232-944e-0730e9e1f45a@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <1bb9da2a-bcc2-4232-944e-0730e9e1f45a@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260526023515.288829-2-rick.p.edgecombe@intel.com>
 
-On 02/06/2026 15:49, Suzuki K Poulose wrote:
-> Hi Marc
+On Mon, May 25, 2026 at 07:35:05PM -0700, Rick Edgecombe wrote:
+> For each memory region that the TDX module might use (called TDMR), three
+> separate traditional PAMT allocations are needed. One for each supported
+> page size (1GB, 2MB, 4KB). These store information on each page in the
+> TDMR. In Linux, they are allocated out of one physically contiguous block,
+> in order to more efficiently use some internal TDX module book keeping
+> resources. So some simple math is needed to break the single large
+> allocation into three smaller allocations for each page size.
 > 
-> On 28/05/2026 08:10, Marc Zyngier wrote:
->> On Wed, 13 May 2026 14:17:22 +0100,
->> Steven Price <steven.price@arm.com> wrote:
->>>
->>> Introduce the skeleton functions for creating and destroying a realm.
->>> The IPA size requested is checked against what the RMM supports.
->>>
->>> The actual work of constructing the realm will be added in future
->>> patches.
->>
->> Again, $SUBJECT doesn't reflect that this is purely a KVM patch.
+> There are some commonalities in the math needed to calculate the base and
+> size for each smaller allocation, and so an effort was made to share logic
+> across the three. Unfortunately doing this turned out unnaturally tortured,
+> with a loop iterating over the three page sizes, only to call into a
+> function with cases statement for each page size. In the future Dynamic
+> PAMT will add more logic that is special to the 4KB page size, making the
+> benefit of the math sharing even more questionable.
+> 
+> Three is not a very high number, so get rid of the loop and just duplicate
+> the small calculation three times. In doing so, setup for future Dynamic
+> PAMT changes.
+> 
+> Since the loop that iterates over it is gone, further simplify the code by
+> dropping the array of intermediate size and base storage. Just store the
+> values to their final locations. Accept the small complication of having
+> to clear tdmr->pamt_4k_base in the error path, so that tdmr_do_pamt_func()
+> will not try to operate on the TDMR struct when attempting to free it.
+> 
+> Assisted-by: GitHub Copilot:claude-opus-4-6 Claude:claude-opus-4-7
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-Indeed - "KVM: arm64: CCA" is a better prefix.
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
->>>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>> ---
->>> Changes since v13:
->>>   * Rebased and updated to RMM-v2.0-bet1.
->>>   * Auxiliary granules have been removed in RMM-v2.0-bet1
->>> Changes since v12:
->>>   * Drop the RMM_PAGE_{SHIFT,SIZE} defines - the RMM is now
->>> configured to
->>>     be the same as the host's page size.
->>>   * Rework delegate/undelegate functions to use the new RMI range based
->>>     operations.
->>> Changes since v11:
->>>   * Major rework to drop the realm configuration and make the
->>>     construction of realms implicit rather than driven by the VMM
->>>     directly.
->>>   * The code to create RDs, handle VMIDs etc is moved to later patches.
->>> Changes since v10:
->>>   * Rename from RME to RMI.
->>>   * Move the stage2 cleanup to a later patch.
->>> Changes since v9:
->>>   * Avoid walking the stage 2 page tables when destroying the realm -
->>>     the real ones are not accessible to the non-secure world, and the
->>> RMM
->>>     may leave junk in the physical pages when returning them.
->>>   * Fix an error path in realm_create_rd() to actually return an
->>> error value.
->>> Changes since v8:
->>>   * Fix free_delegated_granule() to not call
->>> kvm_account_pgtable_pages();
->>>     a separate wrapper will be introduced in a later patch to deal with
->>>     RTTs.
->>>   * Minor code cleanups following review.
->>> Changes since v7:
->>>   * Minor code cleanup following Gavin's review.
->>> Changes since v6:
->>>   * Separate RMM RTT calculations from host PAGE_SIZE. This allows the
->>>     host page size to be larger than 4k while still communicating
->>> with an
->>>     RMM which uses 4k granules.
->>> Changes since v5:
->>>   * Introduce free_delegated_granule() to replace many
->>>     undelegate/free_page() instances and centralise the comment on
->>>     leaking when the undelegate fails.
->>>   * Several other minor improvements suggested by reviews - thanks for
->>>     the feedback!
->>> Changes since v2:
->>>   * Improved commit description.
->>>   * Improved return failures for rmi_check_version().
->>>   * Clear contents of PGD after it has been undelegated in case the RMM
->>>     left stale data.
->>>   * Minor changes to reflect changes in previous patches.
->>> ---
->>>   arch/arm64/include/asm/kvm_emulate.h | 29 ++++++++++++++
->>>   arch/arm64/include/asm/kvm_rmi.h     | 51 +++++++++++++++++++++++++
->>>   arch/arm64/kvm/arm.c                 | 12 ++++++
->>>   arch/arm64/kvm/mmu.c                 | 12 +++++-
->>>   arch/arm64/kvm/rmi.c                 | 57 ++++++++++++++++++++++++++++
->>>   5 files changed, 159 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/
->>> include/asm/kvm_emulate.h
->>> index 5bf3d7e1d92c..82fd777bd9bb 100644
->>> --- a/arch/arm64/include/asm/kvm_emulate.h
->>> +++ b/arch/arm64/include/asm/kvm_emulate.h
->>> @@ -688,4 +688,33 @@ static inline void vcpu_set_hcrx(struct kvm_vcpu
->>> *vcpu)
->>>               vcpu->arch.hcrx_el2 |= HCRX_EL2_EnASR;
->>>       }
->>>   }
->>> +
->>> +static inline bool kvm_is_realm(struct kvm *kvm)
->>> +{
->>> +    if (static_branch_unlikely(&kvm_rmi_is_available))
->>> +        return kvm->arch.is_realm;
->>> +    return false;
->>> +}
->>> +
->>> +static inline enum realm_state kvm_realm_state(struct kvm *kvm)
->>> +{
->>> +    return READ_ONCE(kvm->arch.realm.state);
->>> +}
->>> +
->>> +static inline void kvm_set_realm_state(struct kvm *kvm,
->>> +                       enum realm_state new_state)
->>> +{
->>> +    WRITE_ONCE(kvm->arch.realm.state, new_state);
->>> +}
->>> +
->>> +static inline bool kvm_realm_is_created(struct kvm *kvm)
->>> +{
->>> +    return kvm_is_realm(kvm) && kvm_realm_state(kvm) !=
->>> REALM_STATE_NONE;
->>> +}
->>> +
->>> +static inline bool vcpu_is_rec(const struct kvm_vcpu *vcpu)
->>> +{
->>> +    return false;
->>> +}
->>> +
->>>   #endif /* __ARM64_KVM_EMULATE_H__ */
->>> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/
->>> asm/kvm_rmi.h
->>> index 4936007947fd..9de34983ee52 100644
->>> --- a/arch/arm64/include/asm/kvm_rmi.h
->>> +++ b/arch/arm64/include/asm/kvm_rmi.h
->>> @@ -6,12 +6,63 @@
->>>   #ifndef __ASM_KVM_RMI_H
->>>   #define __ASM_KVM_RMI_H
->>>   +#include <asm/rmi_smc.h>
->>> +
->>> +/**
->>> + * enum realm_state - State of a Realm
->>> + */
->>> +enum realm_state {
->>> +    /**
->>> +     * @REALM_STATE_NONE:
->>> +     *      Realm has not yet been created. rmi_realm_create() has not
->>> +     *      yet been called.
->>> +     */
->>> +    REALM_STATE_NONE,
->>> +    /**
->>> +     * @REALM_STATE_NEW:
->>> +     *      Realm is under construction, rmi_realm_create() has been
->>> +     *      called, but it is not yet activated. Pages may be
->>> populated.
->>> +     */
->>> +    REALM_STATE_NEW,
->>> +    /**
->>> +     * @REALM_STATE_ACTIVE:
->>> +     *      Realm has been created and is eligible for execution with
->>> +     *      rmi_rec_enter(). Pages may no longer be populated with
->>> +     *      rmi_data_create().
->>> +     */
->>> +    REALM_STATE_ACTIVE,
->>> +    /**
->>> +     * @REALM_STATE_DYING:
->>> +     *      Realm is in the process of being destroyed or has
->>> already been
->>> +     *      destroyed.
->>> +     */
->>> +    REALM_STATE_DYING,
->>> +    /**
->>> +     * @REALM_STATE_DEAD:
->>> +     *      Realm has been destroyed.
->>> +     */
->>> +    REALM_STATE_DEAD
->>> +};
->>
->> What is the ABI status of this state? Is it purely internal to KVM? Or
->> is it something that the RMM actively tracks?
-> 
-> The states are in line with what the RMM maintains for the Realm state,
-> (Section A2.2.5 Realm Lifecycle)
-> except for :
-> 
-> 1. REALM_STATE_DYING is really a KVM internal state to indicate, we
-> are in the process of destroying the Realm and no further requests
-> needs to be serviced
-> 
-> 2. We don't track the REALM_SYSTEM_OFF, REALM_ZOMBIE states separately
-> as we :
->  a) Always TERMINATE the Realm, just before the DESTROY
->  b) SYSTEM_OFF is naturally triggering the tear down path, leading to
-> DYING.
-> 
+Couple of nits below.
 
-I'll add a comment:
+> ---
+> v6:
+>  - Drop {} by moving a comment (Binbin)
+>  - Log tweaks
+> 
+> v4:
+>  - Just refer to global var instead of passing pamt_entry_size around
+>    (Xiaoyao)
+>  - Remove setting pamt_4k_base to zero, because it already is zero.
+>    Adjust the comment appropriately (Kai)
+> 
+> v3:
+>  - New patch
+> ---
+>  arch/x86/virt/vmx/tdx/tdx.c | 93 ++++++++++++-------------------------
+>  1 file changed, 29 insertions(+), 64 deletions(-)
+> 
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index 967482ae3c801..487f389f52f4b 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -516,31 +516,21 @@ static __init int fill_out_tdmrs(struct list_head *tmb_list,
+>   * Calculate PAMT size given a TDMR and a page size.  The returned
+>   * PAMT size is always aligned up to 4K page boundary.
+>   */
+> -static __init unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz,
+> -					     u16 pamt_entry_size)
+> +static __init unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz)
+>  {
+>  	unsigned long pamt_sz, nr_pamt_entries;
+> +	const int tdx_pg_size_shift[] = { PAGE_SHIFT, PMD_SHIFT, PUD_SHIFT };
+> +	const u16 pamt_entry_size[TDX_PS_NR] = {
+> +		tdx_sysinfo.tdmr.pamt_4k_entry_size,
+> +		tdx_sysinfo.tdmr.pamt_2m_entry_size,
+> +		tdx_sysinfo.tdmr.pamt_1g_entry_size,
+> +	};
+>  
+> -	switch (pgsz) {
+> -	case TDX_PS_4K:
+> -		nr_pamt_entries = tdmr->size >> PAGE_SHIFT;
+> -		break;
+> -	case TDX_PS_2M:
+> -		nr_pamt_entries = tdmr->size >> PMD_SHIFT;
+> -		break;
+> -	case TDX_PS_1G:
+> -		nr_pamt_entries = tdmr->size >> PUD_SHIFT;
+> -		break;
+> -	default:
+> -		WARN_ON_ONCE(1);
+> -		return 0;
+> -	}
+> +	nr_pamt_entries = tdmr->size >> tdx_pg_size_shift[pgsz];
+> +	pamt_sz = nr_pamt_entries * pamt_entry_size[pgsz];
+>  
+> -	pamt_sz = nr_pamt_entries * pamt_entry_size;
+>  	/* TDX requires PAMT size must be 4K aligned */
+> -	pamt_sz = ALIGN(pamt_sz, PAGE_SIZE);
+> -
+> -	return pamt_sz;
+> +	return PAGE_ALIGN(pamt_sz);
+>  }
+>  
+>  /*
+> @@ -578,28 +568,21 @@ static __init int tdmr_get_nid(struct tdmr_info *tdmr, struct list_head *tmb_lis
+>   * within @tdmr, and set up PAMTs for @tdmr.
+>   */
+>  static __init int tdmr_set_up_pamt(struct tdmr_info *tdmr,
+> -				   struct list_head *tmb_list,
+> -				   u16 pamt_entry_size[])
+> +				   struct list_head *tmb_list)
+>  {
+> -	unsigned long pamt_base[TDX_PS_NR];
+> -	unsigned long pamt_size[TDX_PS_NR];
+> -	unsigned long tdmr_pamt_base;
+>  	unsigned long tdmr_pamt_size;
+>  	struct page *pamt;
+> -	int pgsz, nid;
+> -
+> +	int nid;
 
-+ * Mirrors the RMM's Realm lifecycle states where they are meaningful to KVM,
-+ * with REALM_STATE_DYING being a KVM-internal state used to prevent further
-+ * requests while teardown is in progress. KVM does not track REALM_SYSTEM_OFF
-+ * or REALM_ZOMBIE separately as they naturally lead to teardown.
+Add a newline here?
 
-> 
-> 
->>
->>> +
->>>   /**
->>>    * struct realm - Additional per VM data for a Realm
->>> + *
->>> + * @state: The lifetime state machine for the realm
->>> + * @rd: Kernel mapping of the Realm Descriptor (RD)
->>> + * @params: Parameters for the RMI_REALM_CREATE command
->>> + * @ia_bits: Number of valid Input Address bits in the IPA
->>>    */
->>>   struct realm {
->>> +    enum realm_state state;
->>> +    void *rd;
->>
->> Why is this void? Doesn't it have a proper type?
-> 
-> Not really. This is an object that RMM manages (Realm Descriptor)
-> in the Realm world. We use it as a parameter to address the Realm.
-> 
-> 
->>
->>> +    struct realm_params *params;
->>> +    unsigned int ia_bits;
->>
->> Consider reordering this structure to avoid holes.
+>  	nid = tdmr_get_nid(tdmr, tmb_list);
+>  
+>  	/*
+>  	 * Calculate the PAMT size for each TDX supported page size
+>  	 * and the total PAMT size.
+>  	 */
+> -	tdmr_pamt_size = 0;
+> -	for (pgsz = TDX_PS_4K; pgsz < TDX_PS_NR; pgsz++) {
+> -		pamt_size[pgsz] = tdmr_get_pamt_sz(tdmr, pgsz,
+> -					pamt_entry_size[pgsz]);
+> -		tdmr_pamt_size += pamt_size[pgsz];
+> -	}
+> +	tdmr->pamt_4k_size = tdmr_get_pamt_sz(tdmr, TDX_PS_4K);
+> +	tdmr->pamt_2m_size = tdmr_get_pamt_sz(tdmr, TDX_PS_2M);
+> +	tdmr->pamt_1g_size = tdmr_get_pamt_sz(tdmr, TDX_PS_1G);
+> +	tdmr_pamt_size = tdmr->pamt_4k_size + tdmr->pamt_2m_size + tdmr->pamt_1g_size;
+>  
+>  	/*
+>  	 * Allocate one chunk of physically contiguous memory for all
+> @@ -607,26 +590,18 @@ static __init int tdmr_set_up_pamt(struct tdmr_info *tdmr,
+>  	 * in overlapped TDMRs.
+>  	 */
+>  	pamt = alloc_contig_pages(tdmr_pamt_size >> PAGE_SHIFT, GFP_KERNEL,
+> -			nid, &node_online_map);
+> +				  nid, &node_online_map);
+> +
 
-Sure
+Looks like unrelated whitespace change. Is it intentional?
 
->>>   };
->>>     void kvm_init_rmi(void);
->>> +u32 kvm_realm_ipa_limit(void);
->>
->> The use of 'realm' is confusing. This is not a per-realm property, but
->> something global. I'd rather reserve the term 'realm' for CCA VMs (cue
->> the two prototypes below).
-> 
-> Agreed. Perhaps, kvm_rmm_ipa_limit() ?
-
-Sounds good to me.
-
-> 
->>
->>> +
->>> +int kvm_init_realm(struct kvm *kvm);
->>> +void kvm_destroy_realm(struct kvm *kvm);
->>>     #endif /* __ASM_KVM_RMI_H */
->>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->>> index 247e03b33035..18251e561524 100644
->>> --- a/arch/arm64/kvm/arm.c
->>> +++ b/arch/arm64/kvm/arm.c
->>> @@ -264,6 +264,13 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned
->>> long type)
->>>         bitmap_zero(kvm->arch.vcpu_features, KVM_VCPU_MAX_FEATURES);
->>>   +    /* Initialise the realm bits after the generic bits are
->>> enabled */
->>> +    if (kvm_is_realm(kvm)) {
->>> +        ret = kvm_init_realm(kvm);
->>> +        if (ret)
->>> +            goto err_uninit_mmu;
->>> +    }
->>> +
->>>       return 0;
->>>     err_uninit_mmu:
->>> @@ -326,6 +333,8 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
->>>       kvm_unshare_hyp(kvm, kvm + 1);
->>>         kvm_arm_teardown_hypercalls(kvm);
->>> +    if (kvm_is_realm(kvm))
->>> +        kvm_destroy_realm(kvm);
->>>   }
->>>     static bool kvm_has_full_ptr_auth(void)
->>> @@ -486,6 +495,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm,
->>> long ext)
->>>           else
->>>               r = kvm_supports_cacheable_pfnmap();
->>>           break;
->>> +    case KVM_CAP_ARM_RMI:
->>> +        r = static_key_enabled(&kvm_rmi_is_available);
->>> +        break;
->>>         default:
->>>           r = 0;
->>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->>> index d089c107d9b7..ba8286472286 100644
->>> --- a/arch/arm64/kvm/mmu.c
->>> +++ b/arch/arm64/kvm/mmu.c
->>> @@ -877,10 +877,14 @@ static struct kvm_pgtable_mm_ops kvm_s2_mm_ops = {
->>>     static int kvm_init_ipa_range(struct kvm_s2_mmu *mmu, unsigned
->>> long type)
->>>   {
->>> +    struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
->>>       u32 kvm_ipa_limit = get_kvm_ipa_limit();
->>>       u64 mmfr0, mmfr1;
->>>       u32 phys_shift;
->>>   +    if (kvm_is_realm(kvm))
->>> +        kvm_ipa_limit = kvm_realm_ipa_limit();
->>> +
->>>       phys_shift = KVM_VM_TYPE_ARM_IPA_SIZE(type);
->>>       if (is_protected_kvm_enabled()) {
->>>           phys_shift = kvm_ipa_limit;
->>> @@ -974,6 +978,8 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct
->>> kvm_s2_mmu *mmu, unsigned long t
->>>           return -EINVAL;
->>>       }
->>>   +    mmu->arch = &kvm->arch;
->>> +
->>>       err = kvm_init_ipa_range(mmu, type);
->>>       if (err)
->>>           return err;
->>> @@ -982,7 +988,6 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct
->>> kvm_s2_mmu *mmu, unsigned long t
->>>       if (!pgt)
->>>           return -ENOMEM;
->>>   -    mmu->arch = &kvm->arch;
->>
->> Why moving this init?
-> 
-> Because, we need to know the "kvm" instance for kvm_init_ipa_range to
-> detect the limit that applies to Realms.
-> 
->>
->>>       err = KVM_PGT_FN(kvm_pgtable_stage2_init)(pgt, mmu,
->>> &kvm_s2_mm_ops);
->>>       if (err)
->>>           goto out_free_pgtable;
->>> @@ -1114,7 +1119,10 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
->>>       write_unlock(&kvm->mmu_lock);
->>>         if (pgt) {
->>> -        kvm_stage2_destroy(pgt);
->>> +        if (!kvm_is_realm(kvm))
->>> +            kvm_stage2_destroy(pgt);
->>> +        else
->>> +            kvm_pgtable_stage2_destroy_pgd(pgt);
->>
->> Why can't you make kvm_stage2_destroy() do the right thing? Surely the
->> PTs have to be reclaimed one way or another.
-> 
-> Actually yes, we could make it work. We need to skip walking the page
-> table for Realms. We may be able to do the checks via pgt->mmu->arch-
->>kvm and skip the walking for Realms. ( The S2 is unmapped and torn
-> down before the RD is destroyed in kvm_destroy_realm(). We can't
-> rely on the contents of the PGDs to be zero - e.g., with MEC.)
-
-Yes I'll move the check into kvm_stage2_destroy() instead with a comment
-explaining what's going on.
-
->>
->>>           kfree(pgt);
->>>       }
->>>   }
->>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->>> index 6e28b669ded2..f51ec667445e 100644
->>> --- a/arch/arm64/kvm/rmi.c
->>> +++ b/arch/arm64/kvm/rmi.c
->>> @@ -5,6 +5,8 @@
->>>     #include <linux/kvm_host.h>
->>>   +#include <asm/kvm_emulate.h>
->>> +#include <asm/kvm_mmu.h>
->>>   #include <asm/kvm_pgtable.h>
->>>   #include <asm/rmi_cmds.h>
->>>   #include <asm/virt.h>
->>> @@ -14,6 +16,61 @@ static bool rmi_has_feature(unsigned long feature)
->>>       return !!u64_get_bits(rmm_feat_reg0, feature);
->>>   }
->>>   +u32 kvm_realm_ipa_limit(void)
->>> +{
->>> +    return u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_S2SZ);
->>> +}
->>> +
->>> +void kvm_destroy_realm(struct kvm *kvm)
->>> +{
->>> +    struct realm *realm = &kvm->arch.realm;
->>> +    size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
->>> +
->>> +    if (realm->params) {
->>> +        free_page((unsigned long)realm->params);
->>> +        realm->params = NULL;
->>> +    }
->>> +
->>> +    if (!kvm_realm_is_created(kvm))
->>> +        return;
->>> +
->>> +    kvm_set_realm_state(kvm, REALM_STATE_DYING);
->>> +
->>> +    write_lock(&kvm->mmu_lock);
->>> +    kvm_stage2_unmap_range(&kvm->arch.mmu, 0,
->>> +                   BIT(realm->ia_bits - 1), true);
->>> +    write_unlock(&kvm->mmu_lock);
->>> +
->>> +    if (realm->rd) {
->>> +        phys_addr_t rd_phys = virt_to_phys(realm->rd);
->>> +
->>> +        if (WARN_ON(rmi_realm_terminate(rd_phys)))
->>> +            return;
->>> +
->>> +        if (WARN_ON(rmi_realm_destroy(rd_phys)))
->>> +            return;
->>> +        free_delegated_page(rd_phys);
->>> +        realm->rd = NULL;
->>> +    }
->>> +
->>> +    if (WARN_ON(rmi_undelegate_range(kvm->arch.mmu.pgd_phys,
->>> pgd_size)))
->>> +        return;
->>> +
->>> +    kvm_set_realm_state(kvm, REALM_STATE_DEAD);
->>> +
->>> +    /* Now that the Realm is destroyed, free the entry level RTTs */
->>> +    kvm_free_stage2_pgd(&kvm->arch.mmu);
->>> +}
->>
->> This really needs documentation: what happens at each stage? What
->> memory is reclaimed when?
-> 
-> Agreed.
-> 
->>
->> But even more importantly, why is this built in a completely parallel
->> way, potentially deviating from the existing KVM S2 management?
-> 
-> 
-> RMM requires a Realm is not live at the time of REALM_DESTROY.
-> (See section A2.2.4 Realm Liveness).
-> i.e., All RECs are destroyed, Root RTTs wiped clean (no live mappings)
-> before the RD is destroyed. So, we need to make sure all of this is
-> done at Realm Destroy. Hence we delay the kvm_free_stage2_pgd() until
-> we destroy the RD.
-> 
-> Does that help? May be we could improve the comments around it.
-
-I'll add a comment in kvm_destroy_realm().
-
-Thanks,
-Steve
-
-> 
-> Suzuki
-> 
-> 
-> 
->> Thanks,>
->>     M.
->>
+> +	/*
+> +	 * tdmr->pamt_4k_base is still zero so the error
+> +	 * path of the caller will skip freeing the pamt.
+> +	 */
+>  	if (!pamt)
+>  		return -ENOMEM;
+>  
+> -	/*
+> -	 * Break the contiguous allocation back up into the
+> -	 * individual PAMTs for each page size.
+> -	 */
+> -	tdmr_pamt_base = page_to_pfn(pamt) << PAGE_SHIFT;
+> -	for (pgsz = TDX_PS_4K; pgsz < TDX_PS_NR; pgsz++) {
+> -		pamt_base[pgsz] = tdmr_pamt_base;
+> -		tdmr_pamt_base += pamt_size[pgsz];
+> -	}
+> -
+> -	tdmr->pamt_4k_base = pamt_base[TDX_PS_4K];
+> -	tdmr->pamt_4k_size = pamt_size[TDX_PS_4K];
+> -	tdmr->pamt_2m_base = pamt_base[TDX_PS_2M];
+> -	tdmr->pamt_2m_size = pamt_size[TDX_PS_2M];
+> -	tdmr->pamt_1g_base = pamt_base[TDX_PS_1G];
+> -	tdmr->pamt_1g_size = pamt_size[TDX_PS_1G];
+> +	tdmr->pamt_4k_base = page_to_phys(pamt);
+> +	tdmr->pamt_2m_base = tdmr->pamt_4k_base + tdmr->pamt_4k_size;
+> +	tdmr->pamt_1g_base = tdmr->pamt_2m_base + tdmr->pamt_2m_size;
+>  
+>  	return 0;
+>  }
+> @@ -657,10 +632,7 @@ static __init void tdmr_do_pamt_func(struct tdmr_info *tdmr,
+>  	tdmr_get_pamt(tdmr, &pamt_base, &pamt_size);
+>  
+>  	/* Do nothing if PAMT hasn't been allocated for this TDMR */
+> -	if (!pamt_size)
+> -		return;
+> -
+> -	if (WARN_ON_ONCE(!pamt_base))
+> +	if (!pamt_base)
+>  		return;
+>  
+>  	pamt_func(pamt_base, pamt_size);
+> @@ -686,14 +658,12 @@ static __init void tdmrs_free_pamt_all(struct tdmr_info_list *tdmr_list)
+>  
+>  /* Allocate and set up PAMTs for all TDMRs */
+>  static __init int tdmrs_set_up_pamt_all(struct tdmr_info_list *tdmr_list,
+> -					struct list_head *tmb_list,
+> -					u16 pamt_entry_size[])
+> +				 struct list_head *tmb_list)
+>  {
+>  	int i, ret = 0;
+>  
+>  	for (i = 0; i < tdmr_list->nr_consumed_tdmrs; i++) {
+> -		ret = tdmr_set_up_pamt(tdmr_entry(tdmr_list, i), tmb_list,
+> -				pamt_entry_size);
+> +		ret = tdmr_set_up_pamt(tdmr_entry(tdmr_list, i), tmb_list);
+>  		if (ret)
+>  			goto err;
+>  	}
+> @@ -970,18 +940,13 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
+>  				  struct tdmr_info_list *tdmr_list,
+>  				  struct tdx_sys_info_tdmr *sysinfo_tdmr)
+>  {
+> -	u16 pamt_entry_size[TDX_PS_NR] = {
+> -		sysinfo_tdmr->pamt_4k_entry_size,
+> -		sysinfo_tdmr->pamt_2m_entry_size,
+> -		sysinfo_tdmr->pamt_1g_entry_size,
+> -	};
+>  	int ret;
+>  
+>  	ret = fill_out_tdmrs(tmb_list, tdmr_list);
+>  	if (ret)
+>  		return ret;
+>  
+> -	ret = tdmrs_set_up_pamt_all(tdmr_list, tmb_list, pamt_entry_size);
+> +	ret = tdmrs_set_up_pamt_all(tdmr_list, tmb_list);
+>  	if (ret)
+>  		return ret;
+>  
+> -- 
+> 2.54.0
 > 
 
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
