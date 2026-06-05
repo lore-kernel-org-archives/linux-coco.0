@@ -1,253 +1,117 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2520E4D8D85
-	for <linux-coco@lists.linux.dev>; Fri,  5 Jun 2026 11:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9414B1DFF0;
+	Fri,  5 Jun 2026 11:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780658431; cv=none; b=nyLsCgDK02AFLRvHMv4acDQubRC5vD9fbIpzPudDv6uDNgHD2kwiYQFd3OUPnw/RaAP7VwYMQeNqgu6ehAMlJuNyLWPCtEQa2SxsFXWV5p1CIDklwf+RwCCYv+nQEHuOTWihVZkjaG5iJpxrKhG18MTsaLEeYG5NtVpqdrsTXmA=
+	t=1780659782; cv=none; b=WYACXjkC4FPBXVz2e00FBxIOMkBt8p7wLzyLev8Jcw1Um1bQdbbhVn5hT6zk1ciXPXFyFasKzPfGHOAv76Y44iQv+QtnU2wXWrdU4hbYNfF5A066BaUm0j+66a57e7zDEM4oLvsVHw7hFmyXPSHsP2+tNmJn6+fCBb30sOJ+lQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780658431; c=relaxed/simple;
-	bh=x0UYxgYNv6TD6Wlw2FfxY0+ckKC90VlYJ2Ty2LB51yU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g9UtCTIMrRgw0bt386Z7TeEPYVFG28ufCQBAu7iZPNMVEp661W/4eIlQbI3BXYMCtsY3uFFoiHmm2gfha3M92LRx4r3kM0t+XA1hP6Pp3MlTOmzQ6gG5QYc4q6O6o8cwM8QZLBb+WE7d2L+7u9Scis6fimWZx18KY3jAZJBD/Yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NQst+ned; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1780659782; c=relaxed/simple;
+	bh=vfXXqLlOtJN8aZcbY5EAxkL5IWkZ7JVgfcav9z4SLU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uPpqjGrXfn17Y3xqk/16vwNwhxBJMsisNcaGeO36sc5ksriSfrAms4rif8aoYaHL9w2kZYUdu0ytoAhTVd99JIM/FGEbz4uX0I5oGWD1X6xL9r9fTekemdCkDHOYT/dnmlh8Qe6LtKC47OLeWyWbulAMH01qL2NmuRH3JO9ReIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JMC21LFK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NQst+ned"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780658428;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M+dHNKFMVBkDdICjg2Muej8aIFbwcMiW4DpFYR49CkI=;
-	b=NQst+nedkCx5EBACavuTEYwl5fdcsVCvHNGRmBOs2S5+QnDNwUfcjHxgxAV6aLpCTpAkAo
-	155lKHETS6LRBxfRI9+0xO9qctfZxPVbGUV9IKmQtI4NRu4IHw/K7NLSJuerZQTt01NtCe
-	3JPteZmSK5LlE4UceS6v+KUDh0LQy7s=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-191-hkEcLVRLN2ancp4aX0NxlQ-1; Fri, 05 Jun 2026 07:20:27 -0400
-X-MC-Unique: hkEcLVRLN2ancp4aX0NxlQ-1
-X-Mimecast-MFC-AGG-ID: hkEcLVRLN2ancp4aX0NxlQ_1780658426
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-842b0dd8107so561253b3a.0
-        for <linux-coco@lists.linux.dev>; Fri, 05 Jun 2026 04:20:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780658426; x=1781263226;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=M+dHNKFMVBkDdICjg2Muej8aIFbwcMiW4DpFYR49CkI=;
-        b=LeLrQHpnphLP5wnJtnzYDAiUneeJfpguHuxzUcLbdxPzzV+/T4KMJM7579sJhg3nvf
-         H6T7s3Q7oSuZCCI6Nij8YaPGHL47zu9+K+rNqsobPGWObneWVzH62BZIaK0VPT5BayBx
-         cKfH/3UITbCaUebsQVtLhDCexpr6VIq6P8xwZySXWvuOPLi2yXb612g6g0P95NiwzTru
-         PfeeP8rxxQrNESE44PUYQxPbVi1ZU+vBUOB9al6wTnICllJtWtGdydjwRomAKA8cImcM
-         I/+zwd2rn8f3mIBTLNCV5F2DendqgNUEQbSCp+EtxWN8NpXZmVQNBmTiVVJkh8TslxuY
-         KEpg==
-X-Forwarded-Encrypted: i=1; AFNElJ/FxCo5vMgrMpWY5QN/s0b2faFsGYMtX7lIYUxT8Bqrv+wqK8hGNopWG9Or30DshY95QDjgldH9aUCg@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx3hnzLR9AsYCPH/Kv78wmdoB66DAwgnS74zypZhSwGJIOBTFfz
-	AugiygP4u67c4yVu1D7O01pAAhhVXw29B74I0NCbqm8LgMJLJ02ssMfpLSUT4p3i8OXqDIA+eWq
-	ujgXUmPQ08waqEMPC9+OflEDpEzdCCmUgPlCoH6hu1lpncfBlSBD+dCnrbaMW/DM=
-X-Gm-Gg: Acq92OGiaW+G5avHNxAjfsatFXvJLTbjo/zwuuiEcJXeENS46q0XAVyCMqml8GLYBNo
-	A+RwYVWDEraul2sbB10vPj0FTNy6i4Xk16lIX42RdYUCXMCj8KXM9ZnhLS43psOLtK3Zi0cPR0j
-	swEmnvTpMjc3+WuFRnd5XdoshdxEOZiiuVf6iK6htbwcDPWxuEdiNTh68NmnDrote/zIaALiyWX
-	mGzIzCooU2O/WJBfloAAy/sS3c4VN7yXi16tZaJsVo24HQplnEzEQNpVwaeIXpdlohdbadTiWA4
-	9C9nnhBt8EZpGbxXZqJTGFJAErOlAFLwsgR+Me7aXua95HgqTyA7125j9ULC4BZwAbn/kZASLFm
-	7H6t5cfc2YoLkt2sUTKz8X5LvXS5MYEOWvKdj5ZYdYEfevFhhJr3o9SahWMxWICl+c7UOTRqqFl
-	0=
-X-Received: by 2002:a05:6a00:2351:b0:835:3949:3c22 with SMTP id d2e1a72fcca58-842b0f52eefmr3355873b3a.27.1780658425882;
-        Fri, 05 Jun 2026 04:20:25 -0700 (PDT)
-X-Received: by 2002:a05:6a00:2351:b0:835:3949:3c22 with SMTP id d2e1a72fcca58-842b0f52eefmr3355817b3a.27.1780658425323;
-        Fri, 05 Jun 2026 04:20:25 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84282880050sm8756478b3a.29.2026.06.05.04.20.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Jun 2026 04:20:24 -0700 (PDT)
-Message-ID: <d08ca4d6-1e7c-473d-909e-89642bd8c4c2@redhat.com>
-Date: Fri, 5 Jun 2026 21:20:14 +1000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JMC21LFK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9162B1F00898;
+	Fri,  5 Jun 2026 11:43:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780659781;
+	bh=UvHXc8Wa99igeIl7xckPhI70Cop5FhBGDIa6jmltA4g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JMC21LFKDA1kPlweR0clo954/ecOI5AU9OS9Zp07y3eR91V1xOl8O6J5r3seIzpRU
+	 ZGndTfupFYhckhpPW0to+Izj1rzvohHlzVRe+Ew0QwUNAUTZbXc1W1TjaHM8ug1/0J
+	 f5icpYSDKct/0/MNLgtK+uCSYMPbFsiN3MHxXQSDTRl/lHE1bT7iuYpE++MQzwCHE+
+	 nXYhbhFoN/pYVgVEoxLV5yWirylWZ6zn0bRr7d1Q9Z2Mmot5pjdb6ozaSeOVmSYfJZ
+	 0tlMK4JZjrEENpZdbKEH18Sn/WRBkH2/o12am0effAE1ufKvlcKfazl83erZ8HLFQo
+	 Sd5Brrgu74WSA==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A5B16F4007E;
+	Fri,  5 Jun 2026 07:42:59 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Fri, 05 Jun 2026 07:42:59 -0400
+X-ME-Sender: <xms:Q7YiagGo4p1mC9UkkVMbbzreAkrAzX0Cvz1bY3igE4JC9BJ09WshfA>
+    <xme:Q7YiaraxMuvzRQMRiK9r85BuT2JtizvmiAn7Z-C8feXKnzsIpl2e8eSU6N_3KmuU4
+    a1KWqC0vpJmiHJXGf4f3wBLy7BAMl1dW05_hLoSKtYg16yi9OMpvnc>
+X-ME-Received: <xmr:Q7YiaoQ03NAB-nX6EMWSpLVuokzrLP1jZ3dcbrGUsEAP6VyJ_pIUs8JGWbwzew>
+X-ME-Proxy-Cause: dmFkZTFYaIvxv9MP+iw0KsftJJWaFrp5VUjXabHoGf57vb2raD7+CO9Kp337Bre/hKBoAK
+    9IO/oXQejZtUBc2brjuFlQ4eTz6ohV5VY3IyFbCZl5laikyvbqiUnR0DIJEjq/7qfrFmS9
+    KkSKe2NHawg5KaGREDOHaStqlk3hw9Wddz5brumMPPgS0g5DcCsX9Ay2osLqaNLq5py/ib
+    s/mLxh+NqzybNG41UqbojayVEHkL7mySQTTIOfS+WzFElTpWWcy14u5vmuiOt+AlaYLPQm
+    xRMtTWF2kevkwye8RZm17o7WSC3MHDeHxQkDtei5bGD3keIPOXIkhIpgZffYLuaGdI5ae6
+    V/0nc/4ps2b8RU+qff2+EF1Jq6EZkXzd51RI/1MhCfAC34KfYaZKTaeabwgmxC/Y5qSPVQ
+    Ja2vXI9tPDFsa4XRPzXt9YvQBkaBhPc0OXasZaAb6Fe069yaJlNv1xwAC7Z7Xr2KI5H/EU
+    aaHMQZc/+m3WwhYc0TRtt2B4zSk8oznh8yiAwDbs3HLvUTQRp7W6NCDiDHqWbq2fWxFpqd
+    5DPc0vyXqVq4EknQgyYzjTnp1U3LfT1QJWC5WyZoFw4AhksjVRarENAifITjHSfQKgQ5AI
+    wrGxTUsJ3YPwqaeFRh4R24yc6carEM8iUOrHP+NQZzFlcvh33Rb9itatbU5w
+X-ME-Proxy: <xmx:Q7YianBodlK9I_FscX7uFhfmBzN2f0k0z4MMrB3gmEdt6HaaLUPdLw>
+    <xmx:Q7Yiai51kYAdfaI8HBCAvuWs_2mK4-l39rZmY7vNqKn5RX0MX1WdEA>
+    <xmx:Q7YiavA6wiqYkIysquuVFuPGZO2GYYoUUC9vL6xnnBqV77sXIjrYlA>
+    <xmx:Q7Yiau5JJ0_T8rOH5OCoGaLrs_VzPk87rSdzL49CDz7SrwgTrBu5Cg>
+    <xmx:Q7YiajvNsJrn3ZWwPQTsrmbq05jobKiz1J7aPkGi1jpQ5fovWvLdX_3k>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 5 Jun 2026 07:42:57 -0400 (EDT)
+Date: Fri, 5 Jun 2026 12:42:52 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Chao Gao <chao.gao@intel.com>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"Huang, Kai" <kai.huang@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>, 
+	"Zhao, Yan Y" <yan.y.zhao@intel.com>, "seanjc@google.com" <seanjc@google.com>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "Annapurve, Vishal" <vannapurve@google.com>, 
+	"bp@alien8.de" <bp@alien8.de>, 
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v6 06/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
+Message-ID: <aiK1_q8beMcIEiwO@thinkstation>
+References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
+ <20260526023515.288829-7-rick.p.edgecombe@intel.com>
+ <ahVghgNAe4JrmlQH@intel.com>
+ <fe08f03a22acfe758cd97f7c2880deeafbc5fe58.camel@intel.com>
+ <aiGq7XjmMrsqdBY5@thinkstation>
+ <aiJhScChLZkH44eB@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 29/44] arm64: RMI: Runtime faulting of memory
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-30-steven.price@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20260513131757.116630-30-steven.price@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: bX3-QxS3NsMY0UhdRK7jHDpK33Hfpm2nCuOSIqP526M_1780658426
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aiJhScChLZkH44eB@intel.com>
 
-Hi Steve,
-
-On 5/13/26 11:17 PM, Steven Price wrote:
-> At runtime if the realm guest accesses memory which hasn't yet been
-> mapped then KVM needs to either populate the region or fault the guest.
+On Fri, Jun 05, 2026 at 01:40:25PM +0800, Chao Gao wrote:
+> On Thu, Jun 04, 2026 at 05:59:02PM +0100, Kiryl Shutsemau wrote:
+> >On Tue, May 26, 2026 at 04:42:24PM +0000, Edgecombe, Rick P wrote:
+> >> On Tue, 2026-05-26 at 16:57 +0800, Chao Gao wrote:
+> >> > > -	scoped_guard(spinlock, &pamt_lock) {
+> >> > 
+> >> > This converts the scoped_guard() added by the previous patch to
+> >> > explicit lock/unlock and goto. It would reduce code churn if the
+> >> > previous patch used that form directly.
+> >> 
+> >> Yea, it's a good point. I actually debated doing it, but decided not to because
+> >> the scoped version is cleaner for the non-optimized version. But for
+> >> reviewability, never doing the scoped version is probably better.
+> >
+> >I don't see a reason why we can't keep the scoped_guard() on get side.
 > 
-> For memory in the lower (protected) region of IPA a fresh page is
-> provided to the RMM which will zero the contents. For memory in the
-> upper (shared) region of IPA, the memory from the memslot is mapped
-> into the realm VM non secure.
+> One additional reason to drop scoped_guard() is that it mixes cleanup helpers
+> with goto, which is discouraged. See [*]
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v13:
->   * Numerous changes due to rebasing.
->   * Fix addr_range_desc() to encode the correct block size.
-> Changes since v12:
->   * Switch to RMM v2.0 range based APIs.
-> Changes since v11:
->   * Adapt to upstream changes.
-> Changes since v10:
->   * RME->RMI renaming.
->   * Adapt to upstream gmem changes.
-> Changes since v9:
->   * Fix call to kvm_stage2_unmap_range() in kvm_free_stage2_pgd() to set
->     may_block to avoid stall warnings.
->   * Minor coding style fixes.
-> Changes since v8:
->   * Propagate the may_block flag.
->   * Minor comments and coding style changes.
-> Changes since v7:
->   * Remove redundant WARN_ONs for realm_create_rtt_levels() - it will
->     internally WARN when necessary.
-> Changes since v6:
->   * Handle PAGE_SIZE being larger than RMM granule size.
->   * Some minor renaming following review comments.
-> Changes since v5:
->   * Reduce use of struct page in preparation for supporting the RMM
->     having a different page size to the host.
->   * Handle a race when delegating a page where another CPU has faulted on
->     a the same page (and already delegated the physical page) but not yet
->     mapped it. In this case simply return to the guest to either use the
->     mapping from the other CPU (or refault if the race is lost).
->   * The changes to populate_par_region() are moved into the previous
->     patch where they belong.
-> Changes since v4:
->   * Code cleanup following review feedback.
->   * Drop the PTE_SHARED bit when creating unprotected page table entries.
->     This is now set by the RMM and the host has no control of it and the
->     spec requires the bit to be set to zero.
-> Changes since v2:
->   * Avoid leaking memory if failing to map it in the realm.
->   * Correctly mask RTT based on LPA2 flag (see rtt_get_phys()).
->   * Adapt to changes in previous patches.
-> ---
->   arch/arm64/include/asm/kvm_emulate.h |   8 ++
->   arch/arm64/include/asm/kvm_rmi.h     |  12 ++
->   arch/arm64/kvm/mmu.c                 | 128 ++++++++++++++++----
->   arch/arm64/kvm/rmi.c                 | 173 +++++++++++++++++++++++++++
->   4 files changed, 301 insertions(+), 20 deletions(-)
-> 
+>  :Lastly, given that the benefit of cleanup helpers is removal of “goto”, and
+>  :that the “goto” statement can jump between scopes, the expectation is that
+>  :usage of “goto” and cleanup helpers is never mixed in the same function.
 
-[...]
+Fair enough.
 
-> @@ -1604,27 +1641,52 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
->   	bool write_fault, exec_fault;
->   	enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_SHARED;
->   	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
-> -	struct kvm_pgtable *pgt = s2fd->vcpu->arch.hw_mmu->pgt;
-> +	struct kvm_vcpu *vcpu = s2fd->vcpu;
-> +	struct kvm_pgtable *pgt = vcpu->arch.hw_mmu->pgt;
-> +	gpa_t gpa = kvm_gpa_from_fault(vcpu->kvm, s2fd->fault_ipa);
->   	unsigned long mmu_seq;
->   	struct page *page;
-> -	struct kvm *kvm = s2fd->vcpu->kvm;
-> +	struct kvm *kvm = vcpu->kvm;
->   	void *memcache;
->   	kvm_pfn_t pfn;
->   	gfn_t gfn;
->   	int ret;
->   
-> -	memcache = get_mmu_memcache(s2fd->vcpu);
-> -	ret = topup_mmu_memcache(s2fd->vcpu, memcache);
-> +	if (kvm_is_realm(vcpu->kvm)) {
-> +		/* check for memory attribute mismatch */
-> +		bool is_priv_gfn = kvm_mem_is_private(kvm, gpa >> PAGE_SHIFT);
-> +		/*
-> +		 * For Realms, the shared address is an alias of the private
-> +		 * PA with the top bit set. Thus if the fault address matches
-> +		 * the GPA then it is the private alias.
-> +		 */
-> +		bool is_priv_fault = (gpa == s2fd->fault_ipa);
-> +
-> +		if (is_priv_gfn != is_priv_fault) {
-> +			kvm_prepare_memory_fault_exit(vcpu, gpa, PAGE_SIZE,
-> +						      kvm_is_write_fault(vcpu),
-> +						      false,
-> +						      is_priv_fault);
-> +			/*
-> +			 * KVM_EXIT_MEMORY_FAULT requires an return code of
-> +			 * -EFAULT, see the API documentation
-> +			 */
-> +			return -EFAULT;
-> +		}
-> +	}
-> +
+But it can also be address if we free the PAMT page array with the guard
+too :P
 
-For a Realm, gmem_abort() is called by kvm_handle_guest_abort() only when
-we're faulting in the private (protected) space.
-
-     if (kvm_slot_has_gmem(memslot) && !shared_ipa_fault(vcpu->kvm, fault_ipa))
-         ret = gmem_abort(&s2fd);
-     else
-         ret = user_mem_abort(&s2fd);
-
-With the condition, this block of code can be simplied to handle conversion
-(shared -> private) instead of both directions.
-
-     /* Convert the shared address to the private adress for Realm */
-     if (kvm_is_realm(vcpu->kvm) &&
-         !kvm_mem_is_private(kvm, gpa >> PAGE_SHIFT)) {
-         /*
-          * KVM_EXIT_MEMORY_FAULT requires an return code of
-          * -EFAULT, see the API documentation
-          */
-         kvm_prepare_memory_fault_exit(vcpu, gpa, PAGE_SIZE,
-                                       kvm_is_write_fault(vcpu),
-                                       false, true);
-         return -EFAULT;
-     }
-
-
-[...]
-
-> @@ -2396,7 +2475,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->   				!write_fault &&
->   				!kvm_vcpu_trap_is_exec_fault(vcpu));
->   
-> -		if (kvm_slot_has_gmem(memslot))
-> +		if (kvm_slot_has_gmem(memslot) && !shared_ipa_fault(vcpu->kvm, fault_ipa))
->   			ret = gmem_abort(&s2fd);
->   		else
->   			ret = user_mem_abort(&s2fd);
-gmem_abort() is only called for faults in the protected (private) space.
-
-Thanks,
-Gavin
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
