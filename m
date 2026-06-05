@@ -1,113 +1,118 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24123ABD99
-	for <linux-coco@lists.linux.dev>; Fri,  5 Jun 2026 18:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5B444A724;
+	Fri,  5 Jun 2026 19:51:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780684081; cv=none; b=ZT3rmzuiorrF8Yd54Za6ZD2F3wcDH6kpg1GdVTetbnmfAnZv5Whpsc9zsVv0H8UlTyL+URQrkI9YMGsxRWTs6ILQ6rJkA448C9JHh8rV+INcfA7lJ3JMarTZly/FNO3dIppn0luIuRbDpaDpTdVNAtErfakd+ubNkUmx7IvBohk=
+	t=1780689102; cv=none; b=qHbyfQWCkWnqYaU3oaDdvJOU6DvTFtOJY4yIZQtR3pq0gGB2arott2i0YEmBcLC+t+aUK3uCiQXhKgkpB+Ck0tLqPETnLSIVMzdPO6h3arv9itjzz1f2L83311965OFRLV5M2al1mDQ4qoeF4MTdmEpMz2ON0jQbsIH7jofZ4RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780684081; c=relaxed/simple;
-	bh=5jiFPb4shRixueM3EXqj7rLUUpc6Mvk/umob9LPRscI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EMZaDsFihAL9ZJiyPW8mIjxIk7vP0n9VN4eZYD3a9yqZFWwqV0hPfbOZfp3Iec8gBu4mtrnMzI2/COHkhCAqIXkzKvsBanflAyxptjQjTPkU6YAksAjNNAJjvsvbIwJrtLBjM9buRxwiX7vdkZvZZoPe3aXII2EruIWOdI66+OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FtBSOZ+c; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780689102; c=relaxed/simple;
+	bh=nyCCfHlezDTGlkFVHqBKpPLP7Re1FMEtAy1uM5EiH7k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=I2G+bcaXJ4rkbXeayboviW8k3fmMkgICnTJ80ZJDvmT7DPCnc8moo6tembz0Wo6kNDMj5+zzTMz634vxAAqul/Y6VaFNV/fjPMWGhkbyn/0q8mwTNr9bK4ZynR+p9rcYMiwDW2OEdLTQaKHkvT1Pq0Hm0Qi4ohYJhQxkMkREPc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HJKk9HX+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FtBSOZ+c"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d6389bbf4so2085318a91.3
-        for <linux-coco@lists.linux.dev>; Fri, 05 Jun 2026 11:27:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780684079; x=1781288879; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Al0zDa4bN146O1R+FtGZtDttdy90kv7zGQH5evIcYPw=;
-        b=FtBSOZ+cX7rEUEN7nOC1fOwwl8fDuoB3QsXriHlETx4PdrrNoofb6ktNUheuhVZOgj
-         mozZGSDGdOAjFAHMcAsU+QfzOpSfS9S9JyaV6ZlU8Cnjlx1KGcqKlR1diQ2Rx68U4wfu
-         CUhpwGT83D+luaTi0Yx/QZWXRJNxklzIqfb/tNqA2lTRaLmKtByUKyZ40tPnieItdvpk
-         CwVFI29zFj2VbvAX3z5TXNnM5ieyI0Bkap2306OFgYXevCZSNwFx6Xdkyr7vWv2nwWcU
-         2Z+whiPcG8kQiBAiIbSaKO61Vi3VWukQFpUPJbLCsxjdZmHTXCrkg8IK701sOUvZl5Pq
-         jDaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780684079; x=1781288879;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Al0zDa4bN146O1R+FtGZtDttdy90kv7zGQH5evIcYPw=;
-        b=H/LCLHV34IoMdejsi3VMS+TplOiyP7FbyNDM6gXDcnAmXWfTL2XlNNIKdOJVBh3W/L
-         c9KGbGYXAODbE7sA8Gt8g4NgJf1G31iEwSNTRE+S0b8EDEwxLmCkaF/5+p4pHvRP/mMh
-         +dTDyYqcUMkDNLvwx4Lt5yrQkqc6bZAqBtCpnf+e1gQ08MR2mdMj3iT5budCJa3rB3FZ
-         WgHVXPbZkPM/ogUKc2qRcD99KNGCTrISBaqU30Xhv+MdXG6K+icNcfmfU3FM+/YQuzlq
-         kSNmTMrio5nC1RW2ZfUdYsX7IqdsPVxDdwZuEqY5eQg4OXOcQlufqE0vtk3WMJsL8oZv
-         Sz5g==
-X-Forwarded-Encrypted: i=1; AFNElJ+H9VZZjonJQkphB5a/MFRAH3E5Iesm2afbou5o1UYC58dJIXX723/VqcIRZzjAZ1RC5nAEheTbucoE@lists.linux.dev
-X-Gm-Message-State: AOJu0YzVvwgT5JyyD8jbvmG2HmSIUPxhTwyR59pEjF+gK7drS5zdslso
-	Ve2oN4VLzphUqMwHEPZhOXRnVSAMi2EJDTk7rMF6DyKQFaOIGc6ifh6icdVit1WyCC9XD4nBeag
-	m6wjKIA==
-X-Received: from pfwp41.prod.google.com ([2002:a05:6a00:26e9:b0:842:5fa6:3103])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5210:b0:36a:1ed8:6fe6
- with SMTP id 98e67ed59e1d1-370f0b58cefmr4684526a91.24.1780684078907; Fri, 05
- Jun 2026 11:27:58 -0700 (PDT)
-Date: Fri, 5 Jun 2026 11:27:58 -0700
-In-Reply-To: <CAEvNRgHz5GDjq0GqRmpQdHc-X45gCNr39VYWZH-T7XhPEtN5CQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HJKk9HX+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AE31F00893;
+	Fri,  5 Jun 2026 19:51:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780689101;
+	bh=/4/R21/fqtDVS3dMxk8YUcZsiYIZNFflJGsvUsdqCpw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=HJKk9HX+g5UPbatALcVIkf0hR4ph+0Wx8iYP9GEhI83XdOxXt7ZFz/GyAcdNSqC3b
+	 59tx5s2p8e97ACe09fjCrUGDsFH0mUGYy6hjREF82KGE5tE3NRoM2KruI4GtHlI4zf
+	 9JzxtgHFG+ngZyRIRnCNTlILcrBvBhmuDuMhpklDDYDJvC7XRvgVA6xfP46bUmOz7Q
+	 DvD8utVSK+xnYsPP5vFZO758kEbbdtewrTCb2MLyAHXLoJqapxPvfVQRwAWSsiuX7l
+	 5hn4/v5jowzGbNQzjCTmK+bZEv5FiaP+Dh9Aalw1jf8a8vDBqU3s5PlzLhytckiQry
+	 oZh4Oqjmh3P1Q==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>, "K. Y. Srinivasan"
+ <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
+ <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
+ <longli@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, Alexey
+ Makhalov <alexey.makhalov@broadcom.com>, Jan Kiszka
+ <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, Daniel
+ Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>, "H.
+ Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Broadcom internal kernel review
+ list <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
+ <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-hyperv@vger.kernel.org,
+ virtualization@lists.linux.dev, xen-devel@lists.xenproject.org, David
+ Woodhouse <dwmw@amazon.co.uk>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Nikunj A Dadhania <nikunj@amd.com>, David Woodhouse <dwmw2@infradead.org>,
+ Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v4 01/47] x86/tsc: Never re-calibrate TSC frequency if
+ its exact timing is known
+In-Reply-To: <aiMPxl5vkvJDldi9@google.com>
+References: <20260529144435.704127-1-seanjc@google.com>
+ <20260529144435.704127-2-seanjc@google.com> <87fr315fq9.ffs@fw13>
+ <aiMPxl5vkvJDldi9@google.com>
+Date: Fri, 05 Jun 2026 21:51:38 +0200
+Message-ID: <87a4t86a0l.ffs@fw13>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
- <CAEvNRgGpaggjd3=ooyzv7iEbmA-x1mWJHgjLSjPi8=5CPrk-yQ@mail.gmail.com>
- <aiHeDZEPkAcWcSkn@google.com> <CAEvNRgHz5GDjq0GqRmpQdHc-X45gCNr39VYWZH-T7XhPEtN5CQ@mail.gmail.com>
-Message-ID: <aiMVLtblIKu1DQWJ@google.com>
-Subject: Re: [PATCH v7 00/42] guest_memfd: In-place conversion support
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Thu, Jun 04, 2026, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> >> + KVM: selftests: Test conversion with elevated page refcount
-> >>     + Askar pointed out that soon vmsplice may not pin pages. Should I
-> >>       pin pages through CONFIG_GUP_TEST like in [2]? I prefer not to
-> >>       take a dependency on CONFIG_GUP_TEST.
-> >
-> > I'm not exactly excited about taking a dependency on CONFIG_GUP_TEST either, but
-> > it probably is the least awful choice.  E.g. KVM also pins pages is certain flows,
-> > but we're _also_ actively working to remove the need to pin.
-> >
-> > Hmm, maybe IORING_REGISTER_PBUF_RING?  AFAICT, it's almost literally a "pin user
-> > memory" syscall.
-> >
-> 
-> Hmm that takes a dependency on io_uring, which isn't always compiled
-> in. Between CONFIG_IO_URING and CONFIG_GUP_TEST, I'd rather
-> CONFIG_GUP_TEST.
+On Fri, Jun 05 2026 at 11:04, Sean Christopherson wrote:
+> On Fri, Jun 05, 2026, Thomas Gleixner wrote:
+>> On Fri, May 29 2026 at 07:43, Sean Christopherson wrote:
+>> > Don't re-calibrate the TSC frequency if the TSC is known to run at a fixed
+>> > frequency.
+>> 
+>> That's misleading because fixed frequency means that the frequency does
+>> not change, i.e. X86_FEATURE_CONSTANT_TSC is set. But
+>> X86_FEATURE_CONSTANT_TSC does not imply that the frequency can be read
+>> from CPUID/MSRs.
+>
+> Sorry, "if the TSC runs at a known, fixed frequency" would be a better way to
+> phrase this.
+>
+>> > In practice, this is likely one big nop, as re-calibration is
+>> > used only for SMP=n kernels, and only for hardware that is 20+ years old,
+>> > i.e. is extremely unlikely to collide with TSC_KNOWN_FREQ.
+>> 
+>> recalibrate_cpu_khz() is only invoked from Intel P4 and AMD K7 CPU
+>> frequency drivers, which means that's absolutely not interesting and
+>> neither X86_FEATURE_CONSTANT_TSC nor X86_FEATURE_TSC_KNOWN_FREQ can be
+>> set on those systems.
+>
+> It _shouldn't_ be set on those systems, but in the world of virtualization it's
+> not completely impossible.
+>
+>> IOW, this patch is pointless voodoo ware.
+>
+> Would y'all be opposed to adding a WARN?  I don't actually care about P4 or K7
+> CPUs, but without any reference to X86_FEATURE_TSC_KNOWN_FREQ in
+> recalibrate_cpu_khz(), the code _looks_ wrong, and so is very confusing for
+> readers that don't already know that in practice, it's limited to ancient CPUs.
+>
+> In other words, the point is to document expectations and mutual exclusion, not
+> to "fix" anything.
 
-Or try both?  If it's not a ridiculous amount of work.
+Fair enough.
+
+So yes, having a check there for actually X86_FEATURE_CONSTANT_TSC
+(X86_FEATURE_CONSTANT_TSC is not interesting) and emitting a warning and
+returning early is the right thing to do there.
+
+But we also should have a check in the TSC init code somewhere which
+validates that X86_FEATURE_CONSTANT_TSC is set when
+X86_FEATURE_TSC_KNOWN_FREQ is set. X86_FEATURE_TSC_KNOWN_FREQ is useless
+w/o X86_FEATURE_CONSTANT_TSC.
+
+Thanks,
+
+        tglx
+
+
