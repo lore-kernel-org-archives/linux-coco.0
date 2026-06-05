@@ -1,106 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7D94D8D92;
-	Fri,  5 Jun 2026 11:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9FA371CE6;
+	Fri,  5 Jun 2026 12:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780660682; cv=none; b=DrPlkzomqjln/aJwgmMpk3LLrBVQKt6hW3Vg21TMyDq6VIu8mkBgipWH5mLiruLtUYe72x7ru6O5bnod7CJ4PkKsxt0KF4r2HYMJn61GJNzzmyRiMFXs9S+FYzTmEdJUWU8Git/Rw1O7mIrLz2y1MFzH1ZP+/rAWDoGpma/8lfY=
+	t=1780662818; cv=none; b=I3vNu2lO/qi9Ch8mVC+8gTE8dV0Kx0rQPnjTpj3s70mYFioMQPUip+KA8upOmDoLoUaJBCYxBtsnSPaBYuKQ8ruPs3lJwLM7mG527r3WdAZpIglLK/IO8mPyLCfvQuBIkJAlvtobD6vvxy908pebO6e6QEyTZ6MrbGkdvBKdHe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780660682; c=relaxed/simple;
-	bh=zpQ6si7uw1jl/RIzu1NxCMPAq6M4QSAgXRUDFD4KHAY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aipev9OCcmdiY3wnmPOxom9ZY/cRACfuXlXIjSFrTY903xvhJi+Fap+NTkwmzvcdIX5k3rqfDQIY3fPE18nLpEmvqfnspA/Jg67xoEwWEedWF20jdaynIiZeYcHu2XSu9F5XnJIHAW1Wevwv9UjEVEr71k4D5tKAQSU7aBObPtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=loX0r3T+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780662818; c=relaxed/simple;
+	bh=qf5drNVbfjiyqun/6twX6dsS58RoE5Z2+L/qXXwmUeA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ckmRJYa11mpDYNAfrZ13w5sZXUPP1Rtt2bCWp4g9IYyxAwQ1WC/lIyT3o0h+M5TJvs9b57Eo+ZNgXq29INcO7gw1C42t3AzBeuCGpdaenqs+NcBeCNl+k1XmDAbm7WUBMp6b4TD105YZLvlwH5sNmAhNmSu5JwoMlR+0GeLN3YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=biVHvO6L; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="loX0r3T+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A17A1F00898;
-	Fri,  5 Jun 2026 11:57:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="biVHvO6L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3511F00898;
+	Fri,  5 Jun 2026 12:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780660680;
-	bh=N5UqwPknsHGDQjy1hj/N8q1WQ81FcdAIH2gYxPFswcQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=loX0r3T+GIzuMgq8TcMZ8o94w4VqLbhGRBvsOSMdJbI+GvVhZlqFeh8eFfrkPOpmR
-	 lHxxK6sIo8o3WRMl+kh2A5GnXGX16abFzkRB/ngbQxyCMUZeYkR5EKAz9KEFXY9sgg
-	 HtM+Gl1oYb4ckLWlSiidDiB6BGBq3OQXBaCReXKQB2NhXqE+h6FB9mV9JTiDpgM2F5
-	 mxvone+RMKG6Y8G1Rqw2H4+xAqCzBh9QFLfudlha5MfF30AT46oGOUtQl7SneX8gwk
-	 jzBUca0wI0u8wcp4UycrKiJdLcpVIa3xx7OoZtIkYB3uf6JEAP99q8XGg+Q4q3uQMG
-	 FExrZd7JszovQ==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id CCB97F40068;
-	Fri,  5 Jun 2026 07:57:58 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Fri, 05 Jun 2026 07:57:58 -0400
-X-ME-Sender: <xms:xrkiaohhsBejZS_wkdgPIUUqGKdf3fbQxRq1bje0ytlp9LGjpgmkgA>
-    <xme:xrkiatNivklow-apLIqPrXnzlvtD55MOMJP9Af9jrxxfok6D17Y2-NcHJU6XzrMOI
-    Wm8bco-74L4fbFZbMG4s1mPI2ylnMwGOTQMbrYWjaGZhQlrN4pIAa0>
-X-ME-Received: <xmr:xrkianMMLoxn-PFPPoOphZYOXa6UwnUMayhMLOLmyxytdnAI6GXHJy38XTpkmg>
-X-ME-Proxy-Cause: dmFkZTGlMapHgO6YPxLOBpEgF2Nb0Po1CwNgwnzdZXXDmQLsRei8CnmZzV6j4zUiNwC0oR
-    n3vF7GbKPb4lL7Q26i3oNiGGyFvC7IrxrN6en5MlCla4erAiuF0EaxeRhcW2riql7/GA3e
-    qRJwlLyh0wNvOgiPpeUqndlYfnTbGpTJZnrBELkchn7nKJce6m77HAgeMqKrp0hWi3XArV
-    QEheiBglO4ZXJrJUBi4uCOBpmNwKMV0TC3LWNqs8VX2SRkiYX+GZ6/U2RBCZ+yd3x6h9Aa
-    Cl7+yqqNwQd6SvjfR6MlgnBRT84dO2WjZMf9U/Rx/RLVBXfmA+iKUYcRRpshqKu+GFTlJO
-    32m9WXtKGPKPsSRyqSKqWMJWyVJOHLAKvbjcPDuW9z53/AOT4tqdj8Vh2wy/6l0oyAEa8/
-    pSNJFWwTB5lQo49qxGYHREjjYYq3K6j9UfSuOPqJlG0dbT4Ueg/bKQevPqXa047DF39fJq
-    xtaTRRBx2ZrYj8M+yVOiTHFuH6vHE1+8kYRL7mW37Wjfm6yHhaLcPhdVE0Bya6LoPUYAok
-    c8ZclHkLl19lAr4Ne4Che6i7eywyuY3zmoZdqK8RJ9HSrW1ep/0WV/1mLK9zpK6klmx4Jv
-    f8KEsvIw2VmnF4QmwN41Bb4ewy2NFJyYFz7n97SzEfKzE4D7SqQAcvb3TfzA
-X-ME-Proxy: <xmx:xrkiak0BWjEcy2tZ0lbcC00Uno29pfygx18eQ-A0VffU7FhJpObPCQ>
-    <xmx:xrkianFb7boTwnKWIoN6F2s2X_bog_uFUWcDPqdGdpazlG0VMAL3RA>
-    <xmx:xrkiathKIFMy529l82kWgg44Vlikr1czc0Q_ghF0ysVd3DbaKHUjBg>
-    <xmx:xrkiatYgC1SxW_kVZmJ9eCACfB0RRmYQyAUg_o3afc5Tp3WmMddnzQ>
-    <xmx:xrkiaq1B7bC-cClojz01n-_Yb-gga_qG_w4EKf74606p9ygBanjTH_yd>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 5 Jun 2026 07:57:58 -0400 (EDT)
-Date: Fri, 5 Jun 2026 12:57:57 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: dave.hansen@linux.intel.com, Binbin Wu <binbin.wu@linux.intel.com>
-Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, seanjc@google.com, 
-	pbonzini@redhat.com, sathyanarayanan.kuppuswamy@linux.intel.com, kai.huang@intel.com, 
-	xiaoyao.li@intel.com, rick.p.edgecombe@intel.com, david.laight.linux@gmail.com, 
-	ak@linux.intel.com, djbw@kernel.org, tsyrulnikov.borys@gmail.com, x86@kernel.org, 
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] x86/tdx: Fix zero-extension for 32-bit port I/O
-Message-ID: <aiK5eu0GuXhd0NAx@thinkstation>
-References: <cover.1780584300.git.kas@kernel.org>
- <ca503ae3de72d90956fcaf5dbc0760ec20f5a5e0.1780584300.git.kas@kernel.org>
- <22c789c3-13b1-4c39-898f-2eec3bce98c1@linux.intel.com>
+	s=k20260515; t=1780662817;
+	bh=Bt6OT0/VKhphh3HzvyFQdhPrJoF2vdMvqgs31u2+MPI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=biVHvO6L31ky0DbhkuxtmImICmlXKP2o3OOF5xVHa1tc098wBX1/8D0U6NRSAf9rU
+	 UlsP63nvrDyBlVYwUJcuAnujyoNQ95whuvY+bxaawMtNzpCnwEgWQG9+8u42DTkSSe
+	 9hyPT7fEUrW04s8KALcwsFNNMbFDLxDgZq1Nb08Kj94hN23fq7QZ7Y7h9I6l9dbKdO
+	 8bFYyDz3BH1KgWZzgZlBp9yzM5NPcwaf0meH8bgEH3e2pkctUJ/aFFBRVz2loNKWNl
+	 BrCqWfY0ReG2TSOUagWxFiBQP66Fg2udQzTY+TxTNPa5tbV+j0qLaLI1k8ShJ/LI0K
+	 XOACtKWJ8Suxw==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Kiryl Shutsemau <kas@kernel.org>, Sean Christopherson <seanjc@google.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang
+ <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
+ <decui@microsoft.com>, Long Li <longli@microsoft.com>, Ajay Kaher
+ <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>,
+ Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz
+ <jstultz@google.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
+ <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-hyperv@vger.kernel.org,
+ virtualization@lists.linux.dev, xen-devel@lists.xenproject.org, David
+ Woodhouse <dwmw@amazon.co.uk>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Nikunj A Dadhania <nikunj@amd.com>, David Woodhouse <dwmw2@infradead.org>,
+ Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v4 01/47] x86/tsc: Never re-calibrate TSC frequency if
+ its exact timing is known
+In-Reply-To: <20260529144435.704127-2-seanjc@google.com>
+References: <20260529144435.704127-1-seanjc@google.com>
+ <20260529144435.704127-2-seanjc@google.com>
+Date: Fri, 05 Jun 2026 14:33:34 +0200
+Message-ID: <87fr315fq9.ffs@fw13>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <22c789c3-13b1-4c39-898f-2eec3bce98c1@linux.intel.com>
+Content-Type: text/plain
 
-On Fri, Jun 05, 2026 at 03:10:39PM +0800, Binbin Wu wrote:
-> 
-> 
-> On 6/4/2026 10:47 PM, Kiryl Shutsemau (Meta) wrote:
-> > According to x86 architecture rules, 32-bit operations zero-extend the
-> > result to 64 bits. The current implementation of handle_in() only masks
-> > the lower 32 bits, which preserves the upper 32 bits of RAX when a
-> > 32-bit port IN instruction is emulated.
-> > 
-> > Use insn_assign_reg() to write the result back into RAX with proper
-> > partial-register-write semantics: 1- and 2-byte forms leave the upper
-> > bits untouched, the 4-byte form zero-extends to the full register.
-> > 
-> > Fixes: 03149948832a ("x86/tdx: Port I/O: Add runtime hypercalls")
-> > Reported-by: Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>
-> > Link: https://lore.kernel.org/all/CAKw_Dz96rfSQc6Rn+9QBcUFHhmkK+9zu+P=bxowfZwxrATCBRg@mail.gmail.com/
-> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> > Cc: stable@vger.kernel.org
-> 
-> I think the concern sashiko commented in patch 2 is valid.
+On Fri, May 29 2026 at 07:43, Sean Christopherson wrote:
+> Don't re-calibrate the TSC frequency if the TSC is known to run at a fixed
+> frequency.
 
-Yeah. I guess I'll just use the KVM implementation verbatim.
+That's misleading because fixed frequency means that the frequency does
+not change, i.e. X86_FEATURE_CONSTANT_TSC is set. But
+X86_FEATURE_CONSTANT_TSC does not imply that the frequency can be read
+from CPUID/MSRs.
 
-Dave, any objections?
+> In practice, this is likely one big nop, as re-calibration is
+> used only for SMP=n kernels, and only for hardware that is 20+ years old,
+> i.e. is extremely unlikely to collide with TSC_KNOWN_FREQ.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+recalibrate_cpu_khz() is only invoked from Intel P4 and AMD K7 CPU
+frequency drivers, which means that's absolutely not interesting and
+neither X86_FEATURE_CONSTANT_TSC nor X86_FEATURE_TSC_KNOWN_FREQ can be
+set on those systems.
+
+IOW, this patch is pointless voodoo ware.
+
+Thanks,
+
+        tglx
