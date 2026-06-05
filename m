@@ -1,118 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5B444A724;
-	Fri,  5 Jun 2026 19:51:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67D52DC332
+	for <linux-coco@lists.linux.dev>; Fri,  5 Jun 2026 20:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780689102; cv=none; b=qHbyfQWCkWnqYaU3oaDdvJOU6DvTFtOJY4yIZQtR3pq0gGB2arott2i0YEmBcLC+t+aUK3uCiQXhKgkpB+Ck0tLqPETnLSIVMzdPO6h3arv9itjzz1f2L83311965OFRLV5M2al1mDQ4qoeF4MTdmEpMz2ON0jQbsIH7jofZ4RE=
+	t=1780692536; cv=none; b=mdnoxlOpoBG2h6R9g5yjFwmHgEVdI1wxReexadjP439diQj5noAk4ZNvMVlhIjZDCS5Tx1WygE9jSyZDFNcG/iloXsTcbMmygRIzV0/1HaPKp4PZX+a16pkUQPe+wubhhrAkhq4rOYB5elnUsu5BS29s022FPqDwQWL07Xx0ucs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780689102; c=relaxed/simple;
-	bh=nyCCfHlezDTGlkFVHqBKpPLP7Re1FMEtAy1uM5EiH7k=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=I2G+bcaXJ4rkbXeayboviW8k3fmMkgICnTJ80ZJDvmT7DPCnc8moo6tembz0Wo6kNDMj5+zzTMz634vxAAqul/Y6VaFNV/fjPMWGhkbyn/0q8mwTNr9bK4ZynR+p9rcYMiwDW2OEdLTQaKHkvT1Pq0Hm0Qi4ohYJhQxkMkREPc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HJKk9HX+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780692536; c=relaxed/simple;
+	bh=u4fko0paQcZtAksUjeK+qBbXQtJI5ESw1gxeXRzR6nc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=UybtbMb2Q6eYWGU444YWWe0OfbykYkBZA9qtSLCXp9iX57apU5Z4vkqDfT6TuaHxGbDfnQ5q5ujQF1JPWGlHtWSm09YeyUw17cHW7vSDc3feDsxr+ijYW4ZGE0u5QnWEOA5VI4E+LljPoq22EyF1Oo5aFuAYvZFL2YEsPr0sLqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nQnhWAPo; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HJKk9HX+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AE31F00893;
-	Fri,  5 Jun 2026 19:51:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780689101;
-	bh=/4/R21/fqtDVS3dMxk8YUcZsiYIZNFflJGsvUsdqCpw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=HJKk9HX+g5UPbatALcVIkf0hR4ph+0Wx8iYP9GEhI83XdOxXt7ZFz/GyAcdNSqC3b
-	 59tx5s2p8e97ACe09fjCrUGDsFH0mUGYy6hjREF82KGE5tE3NRoM2KruI4GtHlI4zf
-	 9JzxtgHFG+ngZyRIRnCNTlILcrBvBhmuDuMhpklDDYDJvC7XRvgVA6xfP46bUmOz7Q
-	 DvD8utVSK+xnYsPP5vFZO758kEbbdtewrTCb2MLyAHXLoJqapxPvfVQRwAWSsiuX7l
-	 5hn4/v5jowzGbNQzjCTmK+bZEv5FiaP+Dh9Aalw1jf8a8vDBqU3s5PlzLhytckiQry
-	 oZh4Oqjmh3P1Q==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>, "K. Y. Srinivasan"
- <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
- <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
- <longli@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, Alexey
- Makhalov <alexey.makhalov@broadcom.com>, Jan Kiszka
- <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, Daniel
- Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>, "H.
- Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Broadcom internal kernel review
- list <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
- <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-hyperv@vger.kernel.org,
- virtualization@lists.linux.dev, xen-devel@lists.xenproject.org, David
- Woodhouse <dwmw@amazon.co.uk>, Tom Lendacky <thomas.lendacky@amd.com>,
- Nikunj A Dadhania <nikunj@amd.com>, David Woodhouse <dwmw2@infradead.org>,
- Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH v4 01/47] x86/tsc: Never re-calibrate TSC frequency if
- its exact timing is known
-In-Reply-To: <aiMPxl5vkvJDldi9@google.com>
-References: <20260529144435.704127-1-seanjc@google.com>
- <20260529144435.704127-2-seanjc@google.com> <87fr315fq9.ffs@fw13>
- <aiMPxl5vkvJDldi9@google.com>
-Date: Fri, 05 Jun 2026 21:51:38 +0200
-Message-ID: <87a4t86a0l.ffs@fw13>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nQnhWAPo"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8424aac207eso1947006b3a.0
+        for <linux-coco@lists.linux.dev>; Fri, 05 Jun 2026 13:48:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780692535; x=1781297335; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CPB6Ty3aEBots6OrnX5Whlsfo7rcobyK8YPdkP8GAcM=;
+        b=nQnhWAPo2janB9j40TcPmffvMbe7tQ9/oBsN1ly2tiLIO5DolPBIOnbxsDd98unpAE
+         umj2JUjaxo2ztgDDGNPzdHmI2di8aynLriVhQ8t9qXquhSttqVc7tHwd4b1rrSr85J3/
+         VY/fJ/CHPmcmfyLs4AsgIfRx5Hr6NNloqp4NXU+eOoSq82q1at8MQ8rBOuMMEyheIY4Z
+         55wCJa8TxgsSLKDC7Uolc7fZmHiOItlLiTSwyddv96VQTcq0lcjttQbh683uJ1Bkz7tk
+         cZX6GGWBTvFOtUP1ZVVQBDlI75B4AKVmKiEcvUoAvXnysG4DKfhU8hIwgiTW/+GxfyLk
+         ClrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780692535; x=1781297335;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CPB6Ty3aEBots6OrnX5Whlsfo7rcobyK8YPdkP8GAcM=;
+        b=nyomAC2ojLd30j2tz/ovqd42qa9nSXSFMphbIntavHlP7dV723yBoyqZOwl7HgUWye
+         KdPLlXuhwAXUHhyLbzMN0jlPJvz3RQ0hyU77cHMvPGTjSgez75bSkqtFTLbtT6sIi8+z
+         uZ6seAoKV/gU83VwMJ3LnlVWx2WS702NeBXMr/2sWnnat0qxsv3d5yUuiCPIWpY5skG7
+         qjGMv1ysP9t/J2gYT6KOQWBR+xQKBjZdRyeu/P4UF2sC2WmlhOOITCeZWLpVOGO4OWoG
+         LFQFNKSH5lUORpb+18eB/MvjpgyY9/Fuqfb54/EDiW4VHqN13tnchLzAPouFCGno63dt
+         QKIA==
+X-Forwarded-Encrypted: i=1; AFNElJ9ad2DNTRtzw4SxPBZs5OjuFKQN+0g6omVvM4N/HtGPQKXTvyKypQsY4cX9vW4FZWK99vXOR0vrWtVH@lists.linux.dev
+X-Gm-Message-State: AOJu0YzA3GIC3Vb5smIwp6Lv1uGAYzZBLQ4HFeHSGgZIjztkH28xVXhA
+	5uPAHkpKblsHI7G5//vC8DkYT8vV13nWXryW44VUkr4sC4pKPKFPLRM9WUlcw8ywV2I/yNhvK4F
+	ZzxkBTA==
+X-Received: from pfnz10.prod.google.com ([2002:aa7:85ca:0:b0:842:650a:1d62])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d07:b0:842:4bf8:cfdb
+ with SMTP id d2e1a72fcca58-842b0f83825mr5392458b3a.32.1780692534760; Fri, 05
+ Jun 2026 13:48:54 -0700 (PDT)
+Date: Fri, 5 Jun 2026 13:48:54 -0700
+In-Reply-To: <CAEvNRgF09SfDm=OgbrS8-wpfxbNecQkqAQwf1ELq1jWu7NjbUA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-19-6983ae4c3a4d@google.com>
+ <CAEvNRgHEq-hHcTivUw8TYBeMu-RpS=Ho4DXaNXKQKLPL_biTgg@mail.gmail.com>
+ <aiMOWkiVBqoQDAPd@google.com> <CAEvNRgF09SfDm=OgbrS8-wpfxbNecQkqAQwf1ELq1jWu7NjbUA@mail.gmail.com>
+Message-ID: <aiM2Nm9Eh68mIVX3@google.com>
+Subject: Re: [PATCH v13 19/22] KVM: selftests: Finalize TD memory as part of kvm_arch_vm_finalize_vcpus
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Jun 05 2026 at 11:04, Sean Christopherson wrote:
-> On Fri, Jun 05, 2026, Thomas Gleixner wrote:
->> On Fri, May 29 2026 at 07:43, Sean Christopherson wrote:
->> > Don't re-calibrate the TSC frequency if the TSC is known to run at a fixed
->> > frequency.
->> 
->> That's misleading because fixed frequency means that the frequency does
->> not change, i.e. X86_FEATURE_CONSTANT_TSC is set. But
->> X86_FEATURE_CONSTANT_TSC does not imply that the frequency can be read
->> from CPUID/MSRs.
->
-> Sorry, "if the TSC runs at a known, fixed frequency" would be a better way to
-> phrase this.
->
->> > In practice, this is likely one big nop, as re-calibration is
->> > used only for SMP=n kernels, and only for hardware that is 20+ years old,
->> > i.e. is extremely unlikely to collide with TSC_KNOWN_FREQ.
->> 
->> recalibrate_cpu_khz() is only invoked from Intel P4 and AMD K7 CPU
->> frequency drivers, which means that's absolutely not interesting and
->> neither X86_FEATURE_CONSTANT_TSC nor X86_FEATURE_TSC_KNOWN_FREQ can be
->> set on those systems.
->
-> It _shouldn't_ be set on those systems, but in the world of virtualization it's
-> not completely impossible.
->
->> IOW, this patch is pointless voodoo ware.
->
-> Would y'all be opposed to adding a WARN?  I don't actually care about P4 or K7
-> CPUs, but without any reference to X86_FEATURE_TSC_KNOWN_FREQ in
-> recalibrate_cpu_khz(), the code _looks_ wrong, and so is very confusing for
-> readers that don't already know that in practice, it's limited to ancient CPUs.
->
-> In other words, the point is to document expectations and mutual exclusion, not
-> to "fix" anything.
+On Fri, Jun 05, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> 
+> >
+> > [...snip...]
+> >
+> >> Was kvm_arch_vm_finalize_vcpus() supposed to be for finalizing vCPUs
+> >> instead?
+> >>
+> >> The awkward part is that kvm_arch_vm_finalize_vcpus() is called from
+> >> __vm_create_with_vcpus().
+> >>
+> >> While building this POC to test conversions [1] I only wanted to create
+> >> the vm and vcpus and didn't want to finalize yet, since I still needed
+> >> to do more mappings in the guest (and I needed the vm pointer to do
+> >> mappings in the guest).
+> >
+> > Hmm, I would argue this is a flaw in the selftests infrastructure.  IMO, as a
+> > developer, it's quite surprising that the current value of a global variable
+> > doesn't show up in the VM automagically.  I totally understand why selftests
+> > work that way, but it's certainly odd and annoying.  If _that_ were solved, then
+> > the kludginess of what you're doing goes away.
+> >
+> > The other way this could be solved is by adding support for annotating globals
+> > with a __shared flag, a la the kernel's __bss_decrypted, so that loading memory
+> > into the VM can automatically mark the associated globals' pages as shared.
+> >
+> 
+> More generally, is your opinion that tests should not have to add extra
+> memslots?
 
-Fair enough.
+I don't care?  What I care about is making it as easy and intuitive as possible
+for people to write tests, and to minimize maintenance costs.
 
-So yes, having a check there for actually X86_FEATURE_CONSTANT_TSC
-(X86_FEATURE_CONSTANT_TSC is not interesting) and emitting a warning and
-returning early is the right thing to do there.
+> If I wanted a shared page, would I have to do
+> 
+>   static __shared test_page[4096] = {0};
+> 
+> and then rely on ELF loading to put that in the guest for me? Are there
+> some compiler flags/how will I require that test_page be page aligned?
 
-But we also should have a check in the TSC init code somewhere which
-validates that X86_FEATURE_CONSTANT_TSC is set when
-X86_FEATURE_TSC_KNOWN_FREQ is set. X86_FEATURE_TSC_KNOWN_FREQ is useless
-w/o X86_FEATURE_CONSTANT_TSC.
+Compilere and linker shenanigans.
 
-Thanks,
+> If I mark 10 globals as __shared, would the compiler automatically
+> consolidate the shared memory together?
 
-        tglx
+Yes, follow the __bss_decrypted breadcrumbs.
 
+  #define __bss_decrypted __section(".bss..decrypted")
 
+> I think it's a bit constraining to require that all guest memory be set
+> up statically. It's nice to have but I'd like another option...
+
+You do have options, they just require more work.
+
+> Many tests use vm_userspace_mem_region_add(), CoCo tests that require
+> finalizing shouldn't be disallowed that option.
+
+What does that have to do with finalizing the VM?
+
+> >> It's also possible to have some kvm_vm_finalize() call that can be
+> >> explicitly and manually invoked from selftests just for CoCo selftests.
+> >
+> > Why bother?  It's obviously possible to all kvm_arch_vm_finalize_vcpus() directly.
+> 
+> Works for me to call directly. Do you mean kvm_arch_vm_finalize_vcpus()
+> is the right function where the TD is finalized?
+> 
+> For tests that need to do more setup after creating a vm, is the only
+> way out to call __vm_create() then vm_vcpu_add() to avoid premature
+> finalization in __vm_create_with_vcpus() when
+> kvm_arch_vm_finalize_vcpus() is called?
+
+Depends on what you're doing.  Sometimes, the answer will be yes.  That's why
+there are "low level" APIs, so that some tests can do fancy things, while most
+tests can leave the details to the infrastructure.
+
+If there's a recurring problem, or we anticipate one, then we can and should
+figure out how to minimize the pain so that tests don't have to deal with the
+same boilerplate issues over and over.  Hence the __shared idea.
