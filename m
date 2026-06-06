@@ -1,159 +1,200 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67D52DC332
-	for <linux-coco@lists.linux.dev>; Fri,  5 Jun 2026 20:48:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6CF1A6823;
+	Sat,  6 Jun 2026 00:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780692536; cv=none; b=mdnoxlOpoBG2h6R9g5yjFwmHgEVdI1wxReexadjP439diQj5noAk4ZNvMVlhIjZDCS5Tx1WygE9jSyZDFNcG/iloXsTcbMmygRIzV0/1HaPKp4PZX+a16pkUQPe+wubhhrAkhq4rOYB5elnUsu5BS29s022FPqDwQWL07Xx0ucs=
+	t=1780706121; cv=none; b=GYVG3Wb/kvM2W1unz6WyInMJ8dkgcs2v1wVsmMB27aZv7rVLcFhFX8x9vYXm8BKSBCBjHspqzSeKLUi+j9JiYpAJe1Wnhd6KiRUY9+gwkAGJoVlLSKncJyVzHiulEmB2s1xBJBerT4/s7H1UMJbZRpDUl7kl2dZh0RBZqUYVqi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780692536; c=relaxed/simple;
-	bh=u4fko0paQcZtAksUjeK+qBbXQtJI5ESw1gxeXRzR6nc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UybtbMb2Q6eYWGU444YWWe0OfbykYkBZA9qtSLCXp9iX57apU5Z4vkqDfT6TuaHxGbDfnQ5q5ujQF1JPWGlHtWSm09YeyUw17cHW7vSDc3feDsxr+ijYW4ZGE0u5QnWEOA5VI4E+LljPoq22EyF1Oo5aFuAYvZFL2YEsPr0sLqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nQnhWAPo; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780706121; c=relaxed/simple;
+	bh=kRuUTHyC1UVjCHxIFx/pGev+tDI7tyOrbtbkozT1AyM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZVOK0idDAbwrLX7jrdA+slQPwhIL0+CsORaiHr/TYUcO3hmU2S8ocEn9kNcNH+gGSJJpQPGrNBL5lWxlfHJKMxQGFfw7o1c9B8xnHQwJjcyigwir2TZS4liYu433r02ZIK/3mKWk8SX7MqLfEWGS9gN7Rr54Jdfq2JCfPoq8BfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=RoUHrZSB; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nQnhWAPo"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8424aac207eso1947006b3a.0
-        for <linux-coco@lists.linux.dev>; Fri, 05 Jun 2026 13:48:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780692535; x=1781297335; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CPB6Ty3aEBots6OrnX5Whlsfo7rcobyK8YPdkP8GAcM=;
-        b=nQnhWAPo2janB9j40TcPmffvMbe7tQ9/oBsN1ly2tiLIO5DolPBIOnbxsDd98unpAE
-         umj2JUjaxo2ztgDDGNPzdHmI2di8aynLriVhQ8t9qXquhSttqVc7tHwd4b1rrSr85J3/
-         VY/fJ/CHPmcmfyLs4AsgIfRx5Hr6NNloqp4NXU+eOoSq82q1at8MQ8rBOuMMEyheIY4Z
-         55wCJa8TxgsSLKDC7Uolc7fZmHiOItlLiTSwyddv96VQTcq0lcjttQbh683uJ1Bkz7tk
-         cZX6GGWBTvFOtUP1ZVVQBDlI75B4AKVmKiEcvUoAvXnysG4DKfhU8hIwgiTW/+GxfyLk
-         ClrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780692535; x=1781297335;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CPB6Ty3aEBots6OrnX5Whlsfo7rcobyK8YPdkP8GAcM=;
-        b=nyomAC2ojLd30j2tz/ovqd42qa9nSXSFMphbIntavHlP7dV723yBoyqZOwl7HgUWye
-         KdPLlXuhwAXUHhyLbzMN0jlPJvz3RQ0hyU77cHMvPGTjSgez75bSkqtFTLbtT6sIi8+z
-         uZ6seAoKV/gU83VwMJ3LnlVWx2WS702NeBXMr/2sWnnat0qxsv3d5yUuiCPIWpY5skG7
-         qjGMv1ysP9t/J2gYT6KOQWBR+xQKBjZdRyeu/P4UF2sC2WmlhOOITCeZWLpVOGO4OWoG
-         LFQFNKSH5lUORpb+18eB/MvjpgyY9/Fuqfb54/EDiW4VHqN13tnchLzAPouFCGno63dt
-         QKIA==
-X-Forwarded-Encrypted: i=1; AFNElJ9ad2DNTRtzw4SxPBZs5OjuFKQN+0g6omVvM4N/HtGPQKXTvyKypQsY4cX9vW4FZWK99vXOR0vrWtVH@lists.linux.dev
-X-Gm-Message-State: AOJu0YzA3GIC3Vb5smIwp6Lv1uGAYzZBLQ4HFeHSGgZIjztkH28xVXhA
-	5uPAHkpKblsHI7G5//vC8DkYT8vV13nWXryW44VUkr4sC4pKPKFPLRM9WUlcw8ywV2I/yNhvK4F
-	ZzxkBTA==
-X-Received: from pfnz10.prod.google.com ([2002:aa7:85ca:0:b0:842:650a:1d62])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d07:b0:842:4bf8:cfdb
- with SMTP id d2e1a72fcca58-842b0f83825mr5392458b3a.32.1780692534760; Fri, 05
- Jun 2026 13:48:54 -0700 (PDT)
-Date: Fri, 5 Jun 2026 13:48:54 -0700
-In-Reply-To: <CAEvNRgF09SfDm=OgbrS8-wpfxbNecQkqAQwf1ELq1jWu7NjbUA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="RoUHrZSB"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 655KPGLH3165334;
+	Sat, 6 Jun 2026 00:34:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=10R7bp
+	EJTdOdzVayFD9Q6l+SCZSwLyUlb7ZztL7dxms=; b=RoUHrZSBgzuGWiJYOobbkB
+	/uQkABo/YV4/wSRYGiwn9Ynd3JL66r4IQeDQvzBMEgK3kIX0ZxDPjx2aNkSaTOVs
+	gTquWUfkdJp4D41f8WqPwCGXecmnbTJYjOSAkisQRTD5eWdvIlADCk0h+ymg9sqe
+	ytafL6jBkxQn3Y+qxgVP9e42FMaX1eCiCBRPx1sy0V7uItqD3CJWavhEiEclAYIN
+	4+mS9hCXrkzBjH0VZP3xbY4y4HCfp9bXE2sYFBWify0bxsKhFP/TJoNtj1tuq+VE
+	4ytyKsZpXDnSEN1FkNsq/pCg6+k3ih0UWLoz7Bz8L5CZGjM0/fACZpgM+qBmTn5w
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efpaep0sr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 06 Jun 2026 00:34:49 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6560O6gk027834;
+	Sat, 6 Jun 2026 00:34:48 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ega7qv6fn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 06 Jun 2026 00:34:48 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6560YlZk30933536
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 6 Jun 2026 00:34:47 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B8FA95804B;
+	Sat,  6 Jun 2026 00:34:46 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 147E058063;
+	Sat,  6 Jun 2026 00:34:45 +0000 (GMT)
+Received: from [9.61.255.106] (unknown [9.61.255.106])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Sat,  6 Jun 2026 00:34:44 +0000 (GMT)
+Message-ID: <fbf37e22-8698-4688-9fe2-9e38658920cb@linux.ibm.com>
+Date: Fri, 5 Jun 2026 19:34:43 -0500
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
- <20260521-tdx-selftests-v13-v13-19-6983ae4c3a4d@google.com>
- <CAEvNRgHEq-hHcTivUw8TYBeMu-RpS=Ho4DXaNXKQKLPL_biTgg@mail.gmail.com>
- <aiMOWkiVBqoQDAPd@google.com> <CAEvNRgF09SfDm=OgbrS8-wpfxbNecQkqAQwf1ELq1jWu7NjbUA@mail.gmail.com>
-Message-ID: <aiM2Nm9Eh68mIVX3@google.com>
-Subject: Re: [PATCH v13 19/22] KVM: selftests: Finalize TD memory as part of kvm_arch_vm_finalize_vcpus
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 01/20] s390: Expose protected virtualization through
+ cc_platform_has()
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-coco@lists.linux.dev
+Cc: Robin Murphy <robin.murphy@arm.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+        Steven Price <steven.price@arm.com>,
+        Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Jiri Pirko <jiri@resnulli.us>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Mostafa Saleh <smostafa@google.com>, Petr Tesarik <ptesarik@suse.com>,
+        Alexey Kardashevskiy <aik@amd.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Xu Yilun
+ <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
+        Halil Pasic <pasic@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>
+References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
+ <20260604083959.1265923-2-aneesh.kumar@kernel.org>
+Content-Language: en-US
+From: JAEHOON KIM <jhkim@linux.ibm.com>
+In-Reply-To: <20260604083959.1265923-2-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=Zt3d7d7G c=1 sm=1 tr=0 ts=6a236b29 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=blRdvrxeXnuE--CKtYQA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: ggpQfBSPHMe1E8vMi3W1YAcBxeGqHkU7
+X-Proofpoint-ORIG-GUID: R-cCnVSeKSEuXI4kZncs7oFO8xtbizvI
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA1MDIzOCBTYWx0ZWRfX9CWxwkp73QOf
+ ZCH4PcwFj7hkSywfl53gPqnUYZONt+fisFvoWdZOYTyT/hiKmJ9eU+cj3qU6bOdD1JUJjUTnFwa
+ ucoZ3M+XIX/H7cgV5kPBdBK5BaKIZSeRJbxRpdepy5t8VxGknQ853KyhwMtTE/YQ2FN+AFuAGWL
+ d9i4B/tfPrel1DUWKv+3FV71IZJI4IX6EyXoSz/8AnFWX1hASHDLUA/+OpTgKTnZkjMBBvWY4az
+ ooWmu/2NwO95b7RZWbB5O/Pj1qgGuwwJZtlZkf6UxLW9lLcU9vvHHM201Mu0ZikAVCd0fMGCHHp
+ 9ns2dJJMnWbtvb2lhH1iR2pZGU73I+zgWWuTpgupFrYDkoYrbQCdgou2J4ENmDyinF5Jimv+1Yl
+ JX76uXu3wzudOrj/Ql4gsBnWAA+lAuSIXm00ffyXp7fu1ZI0zbiwzHJS/MepnwU8HYqA7viDiba
+ mDkSbz2OSX92hxN+c4w==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-05_05,2026-06-05_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
+ phishscore=0 spamscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606050238
 
-On Fri, Jun 05, 2026, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> 
-> >
-> > [...snip...]
-> >
-> >> Was kvm_arch_vm_finalize_vcpus() supposed to be for finalizing vCPUs
-> >> instead?
-> >>
-> >> The awkward part is that kvm_arch_vm_finalize_vcpus() is called from
-> >> __vm_create_with_vcpus().
-> >>
-> >> While building this POC to test conversions [1] I only wanted to create
-> >> the vm and vcpus and didn't want to finalize yet, since I still needed
-> >> to do more mappings in the guest (and I needed the vm pointer to do
-> >> mappings in the guest).
-> >
-> > Hmm, I would argue this is a flaw in the selftests infrastructure.  IMO, as a
-> > developer, it's quite surprising that the current value of a global variable
-> > doesn't show up in the VM automagically.  I totally understand why selftests
-> > work that way, but it's certainly odd and annoying.  If _that_ were solved, then
-> > the kludginess of what you're doing goes away.
-> >
-> > The other way this could be solved is by adding support for annotating globals
-> > with a __shared flag, a la the kernel's __bss_decrypted, so that loading memory
-> > into the VM can automatically mark the associated globals' pages as shared.
-> >
-> 
-> More generally, is your opinion that tests should not have to add extra
-> memslots?
+On 6/4/2026 3:39 AM, Aneesh Kumar K.V (Arm) wrote:
+> Protected virtualization guests use memory encryption, so advertise that to
+> the rest of the kernel through cc_platform_has(CC_ATTR_MEM_ENCRYPT).
+>
+> s390 already forces DMA mappings to be unencrypted for protected
+> virtualization guests through force_dma_unencrypted(). Add
+> ARCH_HAS_CC_PLATFORM and provide the matching cc_platform_has()
+> implementation
+>
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 
-I don't care?  What I care about is making it as easy and intuitive as possible
-for people to write tests, and to minimize maintenance costs.
+Tested-by: Jaehoon Kim <jhkim@linux.ibm.com>
 
-> If I wanted a shared page, would I have to do
-> 
->   static __shared test_page[4096] = {0};
-> 
-> and then rely on ELF loading to put that in the guest for me? Are there
-> some compiler flags/how will I require that test_page be page aligned?
+Tested on s390 PV guest with swiotlb_dynamic configuration. SWIOTLB
+bounce buffer allocation and dynamic pool management work correctly.
+Also concurrent I/O stress completed successfully.
 
-Compilere and linker shenanigans.
+Thanks,
+Jaehoon.
 
-> If I mark 10 globals as __shared, would the compiler automatically
-> consolidate the shared memory together?
+> ---
+> Cc: Halil Pasic <pasic@linux.ibm.com>
+> Cc: Matthew Rosato <mjrosato@linux.ibm.com>
+> Cc: Jaehoon  Kim <jhkim@linux.ibm.com>
+> ---
+>   arch/s390/Kconfig   |  1 +
+>   arch/s390/mm/init.c | 14 ++++++++++++++
+>   2 files changed, 15 insertions(+)
+>
+> diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+> index ecbcbb781e40..9b5e6029e043 100644
+> --- a/arch/s390/Kconfig
+> +++ b/arch/s390/Kconfig
+> @@ -87,6 +87,7 @@ config S390
+>   	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
+>   	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
+>   	select ARCH_HAS_CC_CAN_LINK
+> +	select ARCH_HAS_CC_PLATFORM
+>   	select ARCH_HAS_CPU_FINALIZE_INIT
+>   	select ARCH_HAS_CURRENT_STACK_POINTER
+>   	select ARCH_HAS_DEBUG_VIRTUAL
+> diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
+> index 1f72efc2a579..ad3c6d92b801 100644
+> --- a/arch/s390/mm/init.c
+> +++ b/arch/s390/mm/init.c
+> @@ -50,6 +50,7 @@
+>   #include <linux/virtio_anchor.h>
+>   #include <linux/virtio_config.h>
+>   #include <linux/execmem.h>
+> +#include <linux/cc_platform.h>
+>   
+>   pgd_t swapper_pg_dir[PTRS_PER_PGD] __section(".bss..swapper_pg_dir");
+>   pgd_t invalid_pg_dir[PTRS_PER_PGD] __section(".bss..invalid_pg_dir");
+> @@ -140,6 +141,19 @@ bool force_dma_unencrypted(struct device *dev)
+>   	return is_prot_virt_guest();
+>   }
+>   
+> +
+> +bool cc_platform_has(enum cc_attr attr)
+> +{
+> +	switch (attr) {
+> +	case CC_ATTR_MEM_ENCRYPT:
+> +		return is_prot_virt_guest();
+> +
+> +	default:
+> +		return false;
+> +	}
+> +}
+> +EXPORT_SYMBOL_GPL(cc_platform_has);
+> +
+>   /* protected virtualization */
+>   static void __init pv_init(void)
+>   {
 
-Yes, follow the __bss_decrypted breadcrumbs.
 
-  #define __bss_decrypted __section(".bss..decrypted")
-
-> I think it's a bit constraining to require that all guest memory be set
-> up statically. It's nice to have but I'd like another option...
-
-You do have options, they just require more work.
-
-> Many tests use vm_userspace_mem_region_add(), CoCo tests that require
-> finalizing shouldn't be disallowed that option.
-
-What does that have to do with finalizing the VM?
-
-> >> It's also possible to have some kvm_vm_finalize() call that can be
-> >> explicitly and manually invoked from selftests just for CoCo selftests.
-> >
-> > Why bother?  It's obviously possible to all kvm_arch_vm_finalize_vcpus() directly.
-> 
-> Works for me to call directly. Do you mean kvm_arch_vm_finalize_vcpus()
-> is the right function where the TD is finalized?
-> 
-> For tests that need to do more setup after creating a vm, is the only
-> way out to call __vm_create() then vm_vcpu_add() to avoid premature
-> finalization in __vm_create_with_vcpus() when
-> kvm_arch_vm_finalize_vcpus() is called?
-
-Depends on what you're doing.  Sometimes, the answer will be yes.  That's why
-there are "low level" APIs, so that some tests can do fancy things, while most
-tests can leave the details to the infrastructure.
-
-If there's a recurring problem, or we anticipate one, then we can and should
-figure out how to minimize the pain so that tests don't have to deal with the
-same boilerplate issues over and over.  Hence the __shared idea.
