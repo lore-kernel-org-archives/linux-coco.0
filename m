@@ -1,200 +1,148 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6CF1A6823;
-	Sat,  6 Jun 2026 00:35:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A552330BF67;
+	Sat,  6 Jun 2026 10:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780706121; cv=none; b=GYVG3Wb/kvM2W1unz6WyInMJ8dkgcs2v1wVsmMB27aZv7rVLcFhFX8x9vYXm8BKSBCBjHspqzSeKLUi+j9JiYpAJe1Wnhd6KiRUY9+gwkAGJoVlLSKncJyVzHiulEmB2s1xBJBerT4/s7H1UMJbZRpDUl7kl2dZh0RBZqUYVqi8=
+	t=1780742094; cv=none; b=nW+NAVuUxTN5tkfbtl2VsBeOOC3S/F0Zol4hRFIwI9akk07x9ToOifVG6G4eybPYTRPiGOvSNaX2zpLI5FxO421WYXY+ZXiMwwyrWflB7A0YAiwpr9gOFROQuiop5+jupy18Tc7YoYZuLPcI+A67mymFOFE/cE/7OxAB6ZMrLXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780706121; c=relaxed/simple;
-	bh=kRuUTHyC1UVjCHxIFx/pGev+tDI7tyOrbtbkozT1AyM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZVOK0idDAbwrLX7jrdA+slQPwhIL0+CsORaiHr/TYUcO3hmU2S8ocEn9kNcNH+gGSJJpQPGrNBL5lWxlfHJKMxQGFfw7o1c9B8xnHQwJjcyigwir2TZS4liYu433r02ZIK/3mKWk8SX7MqLfEWGS9gN7Rr54Jdfq2JCfPoq8BfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=RoUHrZSB; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780742094; c=relaxed/simple;
+	bh=HjP63eMiZ3E5RbC63Wf6TIubQrzpeHmhV/E4yWzmoPo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=D3YuNyolnDqVE55m6+VWl8Jnfi8wcIWn0uPjD9WxkuNr3W92eAgLAGBOHjqSsYjZIpaaLTOzqlRFpA5OuFJcuKO3ofIWFIFJZMsCrwB50yMhkuFeZpMvZ4CqsPGN2f30055jYJDm0nHE45WSob8xJgjLh6rifO/JzhMa/ileXsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXyU/D82; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="RoUHrZSB"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 655KPGLH3165334;
-	Sat, 6 Jun 2026 00:34:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=10R7bp
-	EJTdOdzVayFD9Q6l+SCZSwLyUlb7ZztL7dxms=; b=RoUHrZSBgzuGWiJYOobbkB
-	/uQkABo/YV4/wSRYGiwn9Ynd3JL66r4IQeDQvzBMEgK3kIX0ZxDPjx2aNkSaTOVs
-	gTquWUfkdJp4D41f8WqPwCGXecmnbTJYjOSAkisQRTD5eWdvIlADCk0h+ymg9sqe
-	ytafL6jBkxQn3Y+qxgVP9e42FMaX1eCiCBRPx1sy0V7uItqD3CJWavhEiEclAYIN
-	4+mS9hCXrkzBjH0VZP3xbY4y4HCfp9bXE2sYFBWify0bxsKhFP/TJoNtj1tuq+VE
-	4ytyKsZpXDnSEN1FkNsq/pCg6+k3ih0UWLoz7Bz8L5CZGjM0/fACZpgM+qBmTn5w
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efpaep0sr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 06 Jun 2026 00:34:49 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6560O6gk027834;
-	Sat, 6 Jun 2026 00:34:48 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ega7qv6fn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 06 Jun 2026 00:34:48 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6560YlZk30933536
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 6 Jun 2026 00:34:47 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B8FA95804B;
-	Sat,  6 Jun 2026 00:34:46 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 147E058063;
-	Sat,  6 Jun 2026 00:34:45 +0000 (GMT)
-Received: from [9.61.255.106] (unknown [9.61.255.106])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Sat,  6 Jun 2026 00:34:44 +0000 (GMT)
-Message-ID: <fbf37e22-8698-4688-9fe2-9e38658920cb@linux.ibm.com>
-Date: Fri, 5 Jun 2026 19:34:43 -0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IXyU/D82"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EDCD1F00898;
+	Sat,  6 Jun 2026 10:34:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780742093;
+	bh=NtWrycsv8R2U43lwkz14BzyHb4n6w50k0ikzyF9jV3E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=IXyU/D8264eSLC2QDbXcAcYtJaBaXZQFhc3eMNaexij+8rWkr00hLcCxbU8sE+dyX
+	 mA+0vh4jhmQewxXtcNgNlHzXYQxy3xltXkTXAvckzwoIzIHRe33MgJj8Z/eoKIZg7/
+	 OS3AcAdgYKZfgsMlvmrE9ixBzNG2b9ZZdmXOqeb5AoGkbbvWGXnmwwu7r9FDGH7MPJ
+	 /ags4E/71IJXIaZDB2vgU6XhD0IfqTYGjQGdAaEMrOXXRxdiQY3pri70AgZucTGyCC
+	 26QCAArNsLQlKTvztPntE64Lex8sfSLNWgTTXMw3c1CK7vs7qdGaoXt7ZZuAKprlo6
+	 2CEQuUIqJnPEA==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Kiryl Shutsemau <kas@kernel.org>, Sean Christopherson <seanjc@google.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang
+ <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
+ <decui@microsoft.com>, Long Li <longli@microsoft.com>, Ajay Kaher
+ <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>,
+ Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz
+ <jstultz@google.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
+ <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-hyperv@vger.kernel.org,
+ virtualization@lists.linux.dev, xen-devel@lists.xenproject.org, David
+ Woodhouse <dwmw@amazon.co.uk>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Nikunj A Dadhania <nikunj@amd.com>, David Woodhouse <dwmw2@infradead.org>,
+ Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v4 10/47] x86/tsc: Consolidate forcing of
+ X86_FEATURE_TSC_KNOWN_FREQ for PV code
+In-Reply-To: <20260529144435.704127-11-seanjc@google.com>
+References: <20260529144435.704127-1-seanjc@google.com>
+ <20260529144435.704127-11-seanjc@google.com>
+Date: Sat, 06 Jun 2026 12:34:50 +0200
+Message-ID: <877boc554l.ffs@fw13>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/20] s390: Expose protected virtualization through
- cc_platform_has()
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-coco@lists.linux.dev
-Cc: Robin Murphy <robin.murphy@arm.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-        Steven Price <steven.price@arm.com>,
-        Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Jiri Pirko <jiri@resnulli.us>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Mostafa Saleh <smostafa@google.com>, Petr Tesarik <ptesarik@suse.com>,
-        Alexey Kardashevskiy <aik@amd.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Xu Yilun
- <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
-        Halil Pasic <pasic@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>
-References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
- <20260604083959.1265923-2-aneesh.kumar@kernel.org>
-Content-Language: en-US
-From: JAEHOON KIM <jhkim@linux.ibm.com>
-In-Reply-To: <20260604083959.1265923-2-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=Zt3d7d7G c=1 sm=1 tr=0 ts=6a236b29 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=blRdvrxeXnuE--CKtYQA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: ggpQfBSPHMe1E8vMi3W1YAcBxeGqHkU7
-X-Proofpoint-ORIG-GUID: R-cCnVSeKSEuXI4kZncs7oFO8xtbizvI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA1MDIzOCBTYWx0ZWRfX9CWxwkp73QOf
- ZCH4PcwFj7hkSywfl53gPqnUYZONt+fisFvoWdZOYTyT/hiKmJ9eU+cj3qU6bOdD1JUJjUTnFwa
- ucoZ3M+XIX/H7cgV5kPBdBK5BaKIZSeRJbxRpdepy5t8VxGknQ853KyhwMtTE/YQ2FN+AFuAGWL
- d9i4B/tfPrel1DUWKv+3FV71IZJI4IX6EyXoSz/8AnFWX1hASHDLUA/+OpTgKTnZkjMBBvWY4az
- ooWmu/2NwO95b7RZWbB5O/Pj1qgGuwwJZtlZkf6UxLW9lLcU9vvHHM201Mu0ZikAVCd0fMGCHHp
- 9ns2dJJMnWbtvb2lhH1iR2pZGU73I+zgWWuTpgupFrYDkoYrbQCdgou2J4ENmDyinF5Jimv+1Yl
- JX76uXu3wzudOrj/Ql4gsBnWAA+lAuSIXm00ffyXp7fu1ZI0zbiwzHJS/MepnwU8HYqA7viDiba
- mDkSbz2OSX92hxN+c4w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-05_05,2026-06-05_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
- phishscore=0 spamscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606050238
+Content-Type: text/plain
 
-On 6/4/2026 3:39 AM, Aneesh Kumar K.V (Arm) wrote:
-> Protected virtualization guests use memory encryption, so advertise that to
-> the rest of the kernel through cc_platform_has(CC_ATTR_MEM_ENCRYPT).
+On Fri, May 29 2026 at 07:43, Sean Christopherson wrote:
+
+> Now that all paravirt code that explicitly specifies the TSC frequency
+> also sets X86_FEATURE_TSC_KNOWN_FREQ, replace all of the one-off code
+> and simply set X86_FEATURE_TSC_KNOWN_FREQ if the TSC frequency is known.
 >
-> s390 already forces DMA mappings to be unencrypted for protected
-> virtualization guests through force_dma_unencrypted(). Add
-> ARCH_HAS_CC_PLATFORM and provide the matching cc_platform_has()
-> implementation
+> Do NOT force set TSC_KNOWN_FREQ if the "known" TSC frequency was provided
+> by the user.  Per commit bd35c77e32e4 ("x86/tsc: Add tsc_early_khz command
+> line parameter"), one of the goals of the param is to allow the refined
+> calibration work "to do meaningful error checking".
 >
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> Note, preferring the user-provided TSC frequency over the frequency from
+> the hypervisor or trusted firmware, while simultaneously not treating the
+> user-provided frequency as gospel, is obviously incongruous.  Sweep the
+> problem under the rug for now to avoid opening a big can of worms that
+> likely doesn't have a great answer.
 
-Tested-by: Jaehoon Kim <jhkim@linux.ibm.com>
+There is a good answer I think.
 
-Tested on s390 PV guest with swiotlb_dynamic configuration. SWIOTLB
-bounce buffer allocation and dynamic pool management work correctly.
-Also concurrent I/O stress completed successfully.
+early_tsc_khz exists to cater for the overclocking crowd. On their
+modded systems the firmware supplied TSC frequency (CPUID/MSR) is not
+matching reality anymore. So they work around that by supplying a close
+enough tsc_early_khz and then they let the refined calibration work
+figure it out.
+
+Arguably that's only relevant for bare metal systems and what's worse is
+that in virtual environments the refined calibration work can fail,
+which renders the TSC unstable.
+
+So I'd rather say we change this logic to:
+
+   if (!hypervisor_is_type(X86_HYPER_NATIVE)) {
+      tsc_khz = x86_init.....();
+      force(X86_FEATURE_TSC_KNOWN_FREQ);
+   } else if (tsc_khz_early) {
+      ....
+   } else {
+      ...
+   }
+
+Along with:
+
+   if (!hypervisor_is_type(X86_HYPER_NATIVE)) {
+      if (tsc_khz_early)
+         pr_warn("Ignoring non-sensical tsc_early_khz command line argument\n");
+
+or something daft like that.
+
+The kernel has for various reasons always tried to cater for the needs
+of users who are plagued by bonkers firmware, but we have to stop to
+prioritize or treating equal ancient and modded out of spec hardware.
+
+TBH, I consider that whole KVM clock nonsense to fall into the modded
+out of spec hardware realm. Do a reality check:
+
+   How many production systems are out there still which run VMs on CPUs
+   with a broken TSC and the lack of VM TSC scaling?
+
+I'm not saying that we should not support the few remaining systems
+anymore, but our tendency to pretend that we can keep all of this
+nonsense working and at the same time making progress is just a fallacy.
+
+I rather want to have a more fine grained differentiation and
+prioritization of:
+
+  1) The actual real world relevant use cases which run on contemporary
+     hardware.
+
+  2) Still relevant use cases on slightly older hardware with less
+     capabilities
+
+  3) Broken firmware
+
+  4) Modded out of spec nonsense
+
+  5) Support for ancient museums pieces
 
 Thanks,
-Jaehoon.
 
-> ---
-> Cc: Halil Pasic <pasic@linux.ibm.com>
-> Cc: Matthew Rosato <mjrosato@linux.ibm.com>
-> Cc: Jaehoon  Kim <jhkim@linux.ibm.com>
-> ---
->   arch/s390/Kconfig   |  1 +
->   arch/s390/mm/init.c | 14 ++++++++++++++
->   2 files changed, 15 insertions(+)
->
-> diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-> index ecbcbb781e40..9b5e6029e043 100644
-> --- a/arch/s390/Kconfig
-> +++ b/arch/s390/Kconfig
-> @@ -87,6 +87,7 @@ config S390
->   	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
->   	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
->   	select ARCH_HAS_CC_CAN_LINK
-> +	select ARCH_HAS_CC_PLATFORM
->   	select ARCH_HAS_CPU_FINALIZE_INIT
->   	select ARCH_HAS_CURRENT_STACK_POINTER
->   	select ARCH_HAS_DEBUG_VIRTUAL
-> diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
-> index 1f72efc2a579..ad3c6d92b801 100644
-> --- a/arch/s390/mm/init.c
-> +++ b/arch/s390/mm/init.c
-> @@ -50,6 +50,7 @@
->   #include <linux/virtio_anchor.h>
->   #include <linux/virtio_config.h>
->   #include <linux/execmem.h>
-> +#include <linux/cc_platform.h>
->   
->   pgd_t swapper_pg_dir[PTRS_PER_PGD] __section(".bss..swapper_pg_dir");
->   pgd_t invalid_pg_dir[PTRS_PER_PGD] __section(".bss..invalid_pg_dir");
-> @@ -140,6 +141,19 @@ bool force_dma_unencrypted(struct device *dev)
->   	return is_prot_virt_guest();
->   }
->   
-> +
-> +bool cc_platform_has(enum cc_attr attr)
-> +{
-> +	switch (attr) {
-> +	case CC_ATTR_MEM_ENCRYPT:
-> +		return is_prot_virt_guest();
-> +
-> +	default:
-> +		return false;
-> +	}
-> +}
-> +EXPORT_SYMBOL_GPL(cc_platform_has);
-> +
->   /* protected virtualization */
->   static void __init pv_init(void)
->   {
-
+        tglx
 
