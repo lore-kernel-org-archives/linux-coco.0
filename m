@@ -1,123 +1,101 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E2314A4F0;
-	Mon,  8 Jun 2026 13:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1BE23A561
+	for <linux-coco@lists.linux.dev>; Mon,  8 Jun 2026 15:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780926844; cv=none; b=Uto/d1jDi63ZqMBDZUtR2XiIkrXoTYQGqsQ3P7kFNbQHYJg9amWSzSbD7s5qLAOLf+tjrtfIS1PJ8ydSxQwPspC1hIoPd0ryfGmGX00CFh5YfMi28zcYaV0DTraLdAgFeWD9NXvWmJjXPGjusnQxjCvcxYk+nAqSiYlUiDcARik=
+	t=1780932906; cv=none; b=jdxmAibxmCXEvgITZnkHKuN+ro1GXCU+bQU+FiuOGqFAHEmBKmVvxDy2jVWm9T/hqp/26vGzciCyTVegB1bK6bvfuOKrDWlGbD/h52dDj53xZaJiUazWLrSI5up1qb0mz0bR0EW4YVEvKQnG8lRPHkl8Q44Cob82yeoIalyEamQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780926844; c=relaxed/simple;
-	bh=zyFb9/SAECng/VTwTudQLxjUQyq0g0AZM0OK2JIT8NA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jNwy33/GQF9mqxdbkSOyouaWaFUiae6p3KHhQYPr2xjjh3WTrnZLtbw6ZSKpAShEuH+3215xNyZ5bY5aP/3zi+7nUDnL4k86KIyEX7PzWi/zVbdhZAnHWN6dfGp4RLHuk1jGpESPh45WVOkbgXOEtsQlmzby9THkU+uIfUx8upo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Am229Gtp; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1780932906; c=relaxed/simple;
+	bh=LJ0Jbj9a+0TVtKGhGTHRqvJzO02a9KgcfakJQpkU9hE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s6SwHRbFkyfZfVte1XTSbj2NP4kjzWCJ4F7z4288wi/TMJZ/RQ2eIs1+Lx9U6MVBB/nCFAi/c6Hiwjhz6fdvQvWNFPGaeoSbkY5Mbc3Ga3pEqielWdPggmXTGDsnsCy20lSJs700t7L2rxZj5v69MJ67vcKRA6BUCMlIm5BKtig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=enFq5ybm; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Am229Gtp"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5FD22244B;
-	Mon,  8 Jun 2026 06:53:57 -0700 (PDT)
-Received: from [10.57.28.93] (unknown [10.57.28.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4B1E43F86F;
-	Mon,  8 Jun 2026 06:53:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780926842; bh=zyFb9/SAECng/VTwTudQLxjUQyq0g0AZM0OK2JIT8NA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Am229GtpwnsAOTgPNgH0rKMU0izNXaGe3sEaiDNq7CSGq+5bEqKfsCQAYLrBmWu9g
-	 R3SFvmmvI0pML1LYEXP6f3iuiDl8j4v8RrDvp7FFT4rwKDMIrcT7jYncMiFsWKki02
-	 FZWtyD5eqhQTmw5GvKPFroyhVAwfW/ZXzGJk0H/A=
-Message-ID: <9631be66-c757-488d-bb66-a62698aa26b8@arm.com>
-Date: Mon, 8 Jun 2026 14:53:56 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="enFq5ybm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780932904; x=1812468904;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=LJ0Jbj9a+0TVtKGhGTHRqvJzO02a9KgcfakJQpkU9hE=;
+  b=enFq5ybm+OHxGEHQ7pR6IjsddAkWqfBwWaZw/pVwprpdIXMPRPluugZP
+   vze67wk32nI8w0kHmJ0xCFwlZ0VufzGn/kN1+PTOEnu95K3yG02tG9ICo
+   es1mEU67yJ2WYQpFseAKpLk7iOFLXlzJTMSUDS+QLktNaWyQAJSgcWRKe
+   7wQmeDfRMTwvV1hsByAXLtjqj8NykPimVXNJ2DwzPzHcXd+e5XysaX2MP
+   BeKL1ot8VzZrPdXojDhsD2yiftZzjwdYR7Bd+wE0oDTJ+3VOIcvKt37aj
+   CRVpK1YfLB+T2yar6oJzOa1CXeWn9rL1dX3cDDRd9GkuKN83LaCgmGCyM
+   A==;
+X-CSE-ConnectionGUID: okEBoNCrSCOQztcsy06TBA==
+X-CSE-MsgGUID: jZidWHDiTB61L7qIYgVHrQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11811"; a="81718061"
+X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
+   d="scan'208";a="81718061"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 08:35:04 -0700
+X-CSE-ConnectionGUID: M8BRURc8RV6QZU0W3pf59A==
+X-CSE-MsgGUID: G7cmvkLZT92J6dBW5WN/Sw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
+   d="scan'208";a="244465076"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa006.jf.intel.com with ESMTP; 08 Jun 2026 08:35:01 -0700
+Date: Mon, 8 Jun 2026 23:10:29 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Kishen Maloor <kishen.maloor@intel.com>
+Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
+	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
+Subject: Re: [RFC PATCH 15/15] x86/virt/tdx: Enable TDX Quoting extension
+Message-ID: <aibbZcey8e4APa5N@yilunxu-OptiPlex-7050>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-16-yilun.xu@linux.intel.com>
+ <caf5de99-bce3-4dc6-8757-cf2b4aaf85c9@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 26/44] arm64: RMI: Allow populating initial contents
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, Gavin Shan <gshan@redhat.com>,
- kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-27-steven.price@arm.com>
- <ea4be6c5-9506-4253-80c5-c76c9ac3b77d@redhat.com>
- <0c71b4b8-ad0b-4a24-9f4a-180b2aaacdb6@arm.com>
- <ad45c64c-18ab-4d42-9813-0ac1704bb127@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <ad45c64c-18ab-4d42-9813-0ac1704bb127@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <caf5de99-bce3-4dc6-8757-cf2b4aaf85c9@intel.com>
 
-On 08/06/2026 10:41, Suzuki K Poulose wrote:
-> On 08/06/2026 10:36, Steven Price wrote:
->> On 28/05/2026 06:30, Gavin Shan wrote:
->>> Hi Steve,
->>>
->>> On 5/13/26 11:17 PM, Steven Price wrote:
->>>> The VMM needs to populate the realm with some data before starting
->>>> (e.g.
->>>> a kernel and initrd). This is measured by the RMM and used as part of
->>>> the attestation later on.
->>>>
->>>> Signed-off-by: Steven Price <steven.price@arm.com>
+> > diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+> > index 10aff23cd01f..524a14c01aa6 100644
+> > --- a/arch/x86/virt/vmx/tdx/tdx.h
+> > +++ b/arch/x86/virt/vmx/tdx/tdx.h
+> > @@ -58,7 +58,8 @@
+> >   #define TDH_PHYMEM_CACHE_WB		40
+> >   #define TDH_PHYMEM_PAGE_WBINVD		41
+> >   #define TDH_VP_WR			43
+> > -#define TDH_SYS_CONFIG			45
+> > +#define TDH_SYS_CONFIG_V0		45
 > 
+> Is it necessary to add _Vx macros when multiple versions can co-exist?
+> 
+> Just wondering if it would be cleaner in the following way?
+> 
+> - Leave the macros set at the current (non-deprecated) baseline version.
+> - Select vX using SEAMCALL_LEAF_VER() in config_tdx_module() when a vX feature
+>   is enabled.
+
+My perference is to have the most simple rule for the unversioned macro.
+And leave all workarounds to _Vx macros, they will eventually been
+removed or deprecated.
+
+Anyway this patch is not expected to merge with this series, maybe we
+will have a public release with V1 supported when it is to be merged,
+then we don't have to make such a hard choice.
+
+> 
+> u64 seamcall_fn = TDH_SYS_CONFIG;
 > ...
-> 
->>>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->>>> index a89873a5eb77..209087bcf399 100644
->>>> --- a/arch/arm64/kvm/rmi.c
->>>> +++ b/arch/arm64/kvm/rmi.c
->>>> @@ -486,6 +486,75 @@ void kvm_realm_unmap_range(struct kvm *kvm,
->>>> unsigned long start,
->>>>            realm_unmap_private_range(kvm, start, end, may_block);
->>>>    }
->>>>    +static int realm_data_map_init(struct kvm *kvm, unsigned long ipa,
->>>> +                   kvm_pfn_t dst_pfn, kvm_pfn_t src_pfn,
->>>> +                   unsigned long flags)
->>>> +{
->>>> +    struct realm *realm = &kvm->arch.realm;
->>>> +    phys_addr_t rd = virt_to_phys(realm->rd);
->>>> +    phys_addr_t dst_phys, src_phys;
->>>> +    int ret;
->>>> +
->>>> +    dst_phys = __pfn_to_phys(dst_pfn);
->>>> +    src_phys = __pfn_to_phys(src_pfn);
->>>> +
->>>> +    if (rmi_delegate_page(dst_phys))
->>>> +        return -ENXIO;
->>>> +
->>>> +    ret = rmi_rtt_data_map_init(rd, dst_phys, ipa, src_phys, flags);
->>>> +    if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
->>>> +        /* Create missing RTTs and retry */
->>>> +        int level = RMI_RETURN_INDEX(ret);
->>>> +
->>>> +        KVM_BUG_ON(level == KVM_PGTABLE_LAST_LEVEL, kvm);
->>>
->>>          KVM_BUG_ON(level >= KVM_PGTABLE_LAST_LEVEL, kvm);
->>
->> Ack.
->>
-> 
-> Thinking more about this, I guess a buggy VMM can trigger this
-> by populating twice ? (level == KVM_PGTABLE_LAST_LEVEL). So, we should
-> return the error back, than warning here and suppressing the error ?
-
-Populating twice causes rmi_delegate_page() to be run twice on the same
-page and the second one will then fail. So I don't think this is
-possible (please correct me if I've missed something!)
-
-Thanks,
-Steve
+> if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE) {
+> ...
+>     seamcall_fn = SEAMCALL_LEAF_VER(TDH_SYS_CONFIG, 1);
