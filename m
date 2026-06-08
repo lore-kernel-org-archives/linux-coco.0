@@ -1,105 +1,112 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB2F38BF9A
-	for <linux-coco@lists.linux.dev>; Mon,  8 Jun 2026 10:37:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6617A3BBFBF;
+	Mon,  8 Jun 2026 10:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780915033; cv=none; b=sqaHgZox1Jkq1+PVA8XKLvBIndwWJvt0J4JdGmHZxgALYcpgOMJn08aJef0u7fUvxfcWlgxZztNkxo0+LgVXD6NS5ocPlGqMPOLW8rYjuzhbvSUG49XaAjk0HcHtm+qZBmh1CLgNU0vgnDSFQotJR5GyVYETr6GT9tMAwjCtYvo=
+	t=1780915492; cv=none; b=JnkXL0B8QAlHdqc6Jfu/7c29aU1eD1sIzkOfTfy6s8GpzmJtOxCsKTL83a1Yu5q2HwOI1uvmXOTXnLx00ZusQUgCOwmWK13GU/fnrlECPvdMTVRFF7ALFh5kFC/uY6Tq8/EY7pL/eGa28D/i0GkSESczzft81OyvkZXXtXR4A14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780915033; c=relaxed/simple;
-	bh=2FThFKxYs4bzxGqjzsQzOD6fyC3fuZhlK+6psg6h0vc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VzJsXUt0SpSbnUpDlFyt6MNWBaIZ0Ioo6mw/fE1OXNMJoWHmiYtrL6uT9qqAdnb+Ap+MLB8E6cJ1AsJBRBKy6FfDt0El8n/pvWLUuOC+GS3t4wZIgaVujiIAJHEhCbKEXjoNOFT+J+T81THtRbjG9cJwQcxM7ov8U1LJbHfCobY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TPokVi0w; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1780915492; c=relaxed/simple;
+	bh=S39wh1Aor7xPqz2F0/ELhdZtaK0sGHh/tjvXrBVkkHY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=VC8grHNAnMYhfHfMDexi7TV+c+v5bFPKH3npni/v1mfCWkecNWW82+FCyG2SmKAkSS08176mcOzsPaXU+GnyirrEMuzr26Ux/HHO8x1oOfNdEnKC03QbitmKDRm+YI6PlSCIMAbEtBcfAEeq+tLanzy1uw7GYFFUdhBHl3uotao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=JoCZ/WKI; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TPokVi0w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780915030; x=1812451030;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2FThFKxYs4bzxGqjzsQzOD6fyC3fuZhlK+6psg6h0vc=;
-  b=TPokVi0wv8z85tYz181RnLruu7HqQ7HSgbpmkaU1zvB7QmI+41tSMFKN
-   2gl9NvptVCyYgJgX3jMISLrKAbi6sRO93xV20OeOP83Xp8pSiWZGIU2TO
-   NVKad1wv5L+ZkF/MMzfAK9zwUL7EI0xSMZP8VsJgLewKtdVpUZrkBRO7x
-   TK+iozKpIElSfpRkmHHOaim8R4M/ynT9LBxXGNv6v1PXPpqtDYqAthKxr
-   mcpROL53XgosuW1raYpO7lJGxzXV2f5Z8xYo3boPa4nQz1Piyq//qQ3F5
-   aO84totQE1qF/LEZvyUweitvJaFgz0Ql55i5FbFeAjIbPeEh1dcK0MvWx
-   g==;
-X-CSE-ConnectionGUID: Oid+r5TBS9GQE1Vio9Ii2g==
-X-CSE-MsgGUID: a1mzezcxQ6eRibJbPz8YRg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11810"; a="99230360"
-X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
-   d="scan'208";a="99230360"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 03:37:10 -0700
-X-CSE-ConnectionGUID: GjsIbh1DRv+INMaLSd1MDA==
-X-CSE-MsgGUID: UBHN8JTwS6qLqA9D5Kgiwg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
-   d="scan'208";a="243061766"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa008.fm.intel.com with ESMTP; 08 Jun 2026 03:37:06 -0700
-Date: Mon, 8 Jun 2026 18:12:35 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Kishen Maloor <kishen.maloor@intel.com>
-Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
-	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH 04/15] x86/virt/tdx: Enable the Extensions right after
- basic TDX Module init
-Message-ID: <aiaVk9Lx7iakgd4g@yilunxu-OptiPlex-7050>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-5-yilun.xu@linux.intel.com>
- <f8b7aea2-228c-4e51-b79e-094da656f4c9@intel.com>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="JoCZ/WKI"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260608104448euoutp02462bcf49bb960e5e74d4dfba6373e0ce~3FTN8Nl8Y2450824508euoutp02S;
+	Mon,  8 Jun 2026 10:44:48 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260608104448euoutp02462bcf49bb960e5e74d4dfba6373e0ce~3FTN8Nl8Y2450824508euoutp02S
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1780915488;
+	bh=plNYBzzaUu+CjxUfVgmwKMU0d70IRGPw0rK3BmwuPjc=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=JoCZ/WKIAI4ynKcKsLsemvNM9WajLCXA73D5zw2xoD7lCL3z54ZkMrkLh/JyPdEyE
+	 /kqCaIilwuycoqSIz0z02aXZrhcLMotd35EHMU7drq2vG8mZar/SYgy1xT2vcdWCN6
+	 uGoRfxIdzyZOSLqUCzO80yrI3lBIVEMsvs8BDl3o=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260608104448eucas1p1685dd3246a9e2b35613d32758481919c~3FTNnAVOb0713807138eucas1p1-;
+	Mon,  8 Jun 2026 10:44:48 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260608104446eusmtip22e466d5ec2468bd35b4ff28e72e16298~3FTMH8FJe2930429304eusmtip2T;
+	Mon,  8 Jun 2026 10:44:46 +0000 (GMT)
+Message-ID: <4d30ec2d-72e4-4d5d-98aa-d2519ed6737e@samsung.com>
+Date: Mon, 8 Jun 2026 12:44:45 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f8b7aea2-228c-4e51-b79e-094da656f4c9@intel.com>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v5 05/20] dma-pool: track decrypted atomic pools and
+ select them via attrs
+To: Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar K.V"
+	<aneesh.kumar@kernel.org>
+Cc: Michael Kelley <mhklinux@outlook.com>, "iommu@lists.linux.dev"
+	<iommu@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, Robin Murphy <robin.murphy@arm.com>, Will
+	Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Steven Price
+	<steven.price@arm.com>, Suzuki K Poulose <Suzuki.Poulose@arm.com>, Catalin
+	Marinas <catalin.marinas@arm.com>, Jiri Pirko <jiri@resnulli.us>, Mostafa
+	Saleh <smostafa@google.com>, Petr Tesarik <ptesarik@suse.com>, Alexey
+	Kardashevskiy <aik@amd.com>, Dan Williams <dan.j.williams@intel.com>, Xu
+	Yilun <yilun.xu@linux.intel.com>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>, "linux-s390@vger.kernel.org"
+	<linux-s390@vger.kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Alexander Gordeev
+	<agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
+	<svens@linux.ibm.com>, "x86@kernel.org" <x86@kernel.org>, Jiri Pirko
+	<jiri@nvidia.com>
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20260604182419.GC2487554@ziepe.ca>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260608104448eucas1p1685dd3246a9e2b35613d32758481919c
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260604182425eucas1p172fc82b218cbed92f71a093549902d3a
+X-EPHeader: CA
+X-CMS-RootMailID: 20260604182425eucas1p172fc82b218cbed92f71a093549902d3a
+References: <20260522042815.370873-1-aneesh.kumar@kernel.org>
+	<20260522042815.370873-6-aneesh.kumar@kernel.org>
+	<SN6PR02MB415754E94A9505C2B9739E4DD4092@SN6PR02MB4157.namprd02.prod.outlook.com>
+	<yq5afr35sciu.fsf@kernel.org>
+	<SN6PR02MB4157D9955A93244014AB7978D4122@SN6PR02MB4157.namprd02.prod.outlook.com>
+	<20260603005454.GM2487554@ziepe.ca>
+	<SN6PR02MB4157F94C902B78E55E99372DD4102@SN6PR02MB4157.namprd02.prod.outlook.com>
+	<yq5apl26qrof.fsf@kernel.org>
+	<CGME20260604182425eucas1p172fc82b218cbed92f71a093549902d3a@eucas1p1.samsung.com>
+	<20260604182419.GC2487554@ziepe.ca>
 
-> > +static __init int init_tdx_ext(void)
-> >   {
-> >   	int ret;
-> > @@ -1373,6 +1373,10 @@ static __init int init_tdx_module(void)
-> >   	if (ret)
-> >   		goto err_reset_pamts;
-> > +	ret = init_tdx_ext();
-> > +	if (ret)
-> > +		goto err_reset_pamts;
-> 
-> Is it a reasonable policy to fail TDX bringup entirely upon failing
-> initialization of extensions (which are "add-on features")?
+On 04.06.2026 20:24, Jason Gunthorpe wrote:
+> On Thu, Jun 04, 2026 at 08:27:36PM +0530, Aneesh Kumar K.V wrote:
+>> I already sent a v6 in the hope of getting this merged for the next
+>> merge window. Should I send a v7, or would you prefer that I do the
+>> rename on top of v6?
+> I think it is too late for such a major change, but this should be
+> imaginged to be for rc2ish next cycle. You also have to spell out how
+> the pkvm patch will get sequenced as well, it would be best to push
+> that it gets picked up right away.
 
-mm.. I think TDX Extension is not strictly an add-on feature from OS
-POV. It is still a fundamental TDX infrastructure. Host should not
-look into the Module and create substates like Base-good-Extension-bad or
-both-good. There are some considerations:
 
- - Extension cannot be explicitly configured by TDH.SYS.CONFIG, it is
-   implicitly configured by TDX Module if an add-on feature requires it.
+I would like to give this a bit of time in linux-next so it is a bit too
+late for v7.2, but before merging it I would also like to have this code
+reviewed by someone with confidential computing knowledge.
 
- - There is no enumeration of which SEAMCALLs are Extension-SEAMCALLs so
-   Base-good-Extension-bad actually brings more chaos later.
 
-So the series is making all effort to make TDX bringup a stateless
-process, no intermediate state.
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-> 
-> The handling of tdx_quote_init() in Patch 6 suggests a more
-> best-effort approach.
-
-TDX Quoting is however a clear self-contained add-on feature from OS POV.
-Though I'm not sure if a TDX platform is still a safe TCB with DICE
-available but failed, and good for "best-effort" policy? Maybe Peter
-could answer.
-> 
