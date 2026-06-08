@@ -1,250 +1,216 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A692B348C6A;
-	Mon,  8 Jun 2026 11:15:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E813655F5;
+	Mon,  8 Jun 2026 11:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780917310; cv=none; b=tDbtC6RgG7V5yhIURwmr2aYu5QSG4ZSO6hpa+s96KjQY0uy6cDSTgCJASZXaiKRNtZzLFGaJTj9lTJssfNpiUYmJNUU1tbfMMsCQg4kJ9a/7L17/YMeb4fNpyz6YKGfr31dCpqKBmKV1Rv5DBbPnJOprXFgyzWHH8DS6cKcEDc4=
+	t=1780917999; cv=none; b=Un9iXfpuKeJlUt7zS9avC3zboomCam5xALQ5f/+zsbLlXipNcAphh6y1X7ugioe3Tuz12dJaWgAW1wVv3Z2VcE3lSol1/dMlMk6DAOTwCCCKUgQYWNcqDn3Jx1MysFv9rEdMYyEBpgr9A1gvRNVOz0d5ctrIPTRtE1FuMLqwEWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780917310; c=relaxed/simple;
-	bh=NT9SjpeSaUaPs6mTzZoOuRZvfOJboQptqNnZ7k1R9SE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cOqLAsbznEyVfWlikQfenXw5jIqR2fTC4dGywv1oIIJFKi6/QNM499gZqtV8yHX+gcY/2tOzdZuA4qKe5y/R7mx/OgNBUInItVJ/48NpjsbYFMIZGZFFj8tfv8CUNy2L3OBr5qdOqJCLwLuD3E4lyGTz9dj849UlUCG8jFE2JJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=MtCboeBz; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1780917999; c=relaxed/simple;
+	bh=y4cCLSHODe3aTzG0oO0ce9b53PPjH4NtE4IuCFdiQvk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=VOv5dY7vsE4NJk9EiW+HQFdwyQfusJsIfU8QUlDXxRm7+1K3EsFNYHQmPmj3zrF1A8VRBY4dNv5ssV5DecMGT0hKCGSQIBdlxYCIUlqt6NeQM3TJeWxzpFY8dvhQ5h2FNoNm1ZPx/I4zNt7j9tsJsDJkWN56Cg6gZtkEtXuBFz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mT3HVqaw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="MtCboeBz"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1EE8E1C01;
-	Mon,  8 Jun 2026 04:15:03 -0700 (PDT)
-Received: from [10.57.28.93] (unknown [10.57.28.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 45A3E3F86F;
-	Mon,  8 Jun 2026 04:15:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780917307; bh=NT9SjpeSaUaPs6mTzZoOuRZvfOJboQptqNnZ7k1R9SE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MtCboeBzk2dAdFydLOFiNhb5EdBEEhdtHveoclXm8AKsDlHbycpAmJ59UFP3FGlhh
-	 Ivseopd9E0d4YjveXKT6AvAyvQLVqub98b68CZwu3SNhMIpz58qZdaOQ1NYTky+TRI
-	 uXM0L3c2EL5eG4QbslgeJ0pnOPt/ifx/77lB1ilM=
-Message-ID: <a4a9abf8-0691-488a-b54d-4f1d1a2d89ed@arm.com>
-Date: Mon, 8 Jun 2026 12:15:01 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mT3HVqaw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246951F00893;
+	Mon,  8 Jun 2026 11:26:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780917998;
+	bh=mN+u0pCJSsPAoXFbYCcI3ncWrm0wZKcAiKPT7u/ARIY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=mT3HVqaw3DuU9tlhMrY09QOQltV352yiglepQMcHm1SLLiT/ypbKxV45DUzvAKld8
+	 EgGc4D5icVebi8W9iO1+Ms150cbeb7qE6vmDzUFOy0iqcvpIzEoHKvsOnSvANbhBCU
+	 YXQR3kHpKdx7v6wtMdhC9GbGkVcL8GT5egeSbhRBFj4Nl2BpotRLND1c43xt6Hd7/d
+	 e1yImNR4cPh8ikhKGwRxWIMpYHZKO1EejAwZbDUenP6/OiXIXKFnn6fROU/l0RJQnR
+	 Apj2v3s+UBe3X/kCk1+VkwAxJ6TbpQkE67WclAO6R8hShS3KldHQF117mEixaxtveo
+	 A3ECAMAWS50Xg==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>
+Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>
+Subject: Re: [PATCH v6 3/4] firmware: smccc: arm-cca-guest: Bind the TSM
+ provider to an SMCCC device
+In-Reply-To: <e0071e90-c2f5-4d15-b3c6-fe05bf1464e4@arm.com>
+References: <20260527100233.428018-1-aneesh.kumar@kernel.org>
+ <20260527100233.428018-4-aneesh.kumar@kernel.org>
+ <20260603-determined-bumblebee-of-promise-e633d6@sudeepholla>
+ <yq5ase72qvwb.fsf@kernel.org>
+ <20260604-juicy-daft-starling-3eec1f@sudeepholla>
+ <yq5ao6hlzbpa.fsf@kernel.org>
+ <e0071e90-c2f5-4d15-b3c6-fe05bf1464e4@arm.com>
+Date: Mon, 08 Jun 2026 16:56:29 +0530
+Message-ID: <yq5aldcpz316.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 32/44] KVM: arm64: Handle Realm PSCI requests
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-33-steven.price@arm.com>
- <775a0d29-4d92-4ecc-96dd-5b0eaeff1528@redhat.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <775a0d29-4d92-4ecc-96dd-5b0eaeff1528@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On 28/05/2026 07:55, Gavin Shan wrote:
-> Hi Steve,
-> 
-> On 5/13/26 11:17 PM, Steven Price wrote:
->> The RMM needs to be informed of the target REC when a PSCI call is made
->> with an MPIDR argument.
->>
->> This requirement will be removed in a future release of the RMM 2.0
->> specification but is still required for v2.0-bet1.
->>
->> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Chanegs since v13:
->>   * The ioctl KVM_ARM_VCPU_RMI_PSCI_COMPLETE has gone. The RMI call is
->>     made automatically just before entering the REC again.
->> Changes since v12:
->>   * Chance return code for non-realms to -ENXIO to better represent that
->>     the ioctl is invalid for non-realms (checkpatch is insistent that
->>     "ENOSYS means 'invalid syscall nr' and nothing else").
->> Changes since v11:
->>   * RMM->RMI renaming.
->> Changes since v6:
->>   * Use vcpu_is_rec() rather than kvm_is_realm(vcpu->kvm).
->>   * Minor renaming/formatting fixes.
->> ---
->>   arch/arm64/include/asm/kvm_rmi.h |  3 ++
->>   arch/arm64/kvm/psci.c            | 15 ++++++++-
->>   arch/arm64/kvm/rmi.c             | 58 ++++++++++++++++++++++++++++++++
->>   3 files changed, 75 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/
->> asm/kvm_rmi.h
->> index b65cfec10dee..eacf82a7467d 100644
->> --- a/arch/arm64/include/asm/kvm_rmi.h
->> +++ b/arch/arm64/include/asm/kvm_rmi.h
->> @@ -109,6 +109,9 @@ int realm_map_non_secure(struct realm *realm,
->>                unsigned long size,
->>                enum kvm_pgtable_prot prot,
->>                struct kvm_mmu_memory_cache *memcache);
->> +int realm_psci_complete(struct kvm_vcpu *source,
->> +            struct kvm_vcpu *target,
->> +            unsigned long status);
->>     static inline bool kvm_realm_is_private_address(struct realm *realm,
->>                           unsigned long addr)
->> diff --git a/arch/arm64/kvm/psci.c b/arch/arm64/kvm/psci.c
->> index 3b5dbe9a0a0e..a2cd55dc7b5b 100644
->> --- a/arch/arm64/kvm/psci.c
->> +++ b/arch/arm64/kvm/psci.c
->> @@ -103,7 +103,6 @@ static unsigned long kvm_psci_vcpu_on(struct
->> kvm_vcpu *source_vcpu)
->>         reset_state->reset = true;
->>       kvm_make_request(KVM_REQ_VCPU_RESET, vcpu);
->> -
-> 
-> This change isn't supposed to be part of this patch :-)
+Suzuki K Poulose <suzuki.poulose@arm.com> writes:
 
-Whoops - indeed it isn't!
+> On 08/06/2026 09:19, Aneesh Kumar K.V wrote:
+>> Sudeep Holla <sudeep.holla@kernel.org> writes:
+>> 
+>>> On Thu, Jun 04, 2026 at 06:56:28PM +0530, Aneesh Kumar K.V wrote:
+>>>> Sudeep Holla <sudeep.holla@kernel.org> writes:
+>>>>
+>>>> ...
 
->>       /*
->>        * Make sure the reset request is observed if the RUNNABLE
->> mp_state is
->>        * observed.
->> @@ -142,6 +141,20 @@ static unsigned long
->> kvm_psci_vcpu_affinity_info(struct kvm_vcpu *vcpu)
->>       /* Ignore other bits of target affinity */
->>       target_affinity &= target_affinity_mask;
->>   +    if (vcpu_is_rec(vcpu)) {
->> +        struct kvm_vcpu *target_vcpu;
->> +
->> +        /* RMM supports only zero affinity level */
->> +        if (lowest_affinity_level != 0)
->> +            return PSCI_RET_INVALID_PARAMS;
->> +
->> +        target_vcpu = kvm_mpidr_to_vcpu(kvm, target_affinity);
->> +        if (!target_vcpu)
->> +            return PSCI_RET_INVALID_PARAMS;
->> +
->> +        return PSCI_RET_SUCCESS;
->> +    }
->> +
->>       /*
->>        * If one or more VCPU matching target affinity are running
->>        * then ON else OFF
->> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->> index 761b38a4071c..2b03e962ee41 100644
->> --- a/arch/arm64/kvm/rmi.c
->> +++ b/arch/arm64/kvm/rmi.c
->> @@ -3,6 +3,7 @@
->>    * Copyright (C) 2023-2025 ARM Ltd.
->>    */
->>   +#include <uapi/linux/psci.h>
->>   #include <linux/kvm_host.h>
->>     #include <asm/kvm_emulate.h>
->> @@ -127,6 +128,25 @@ static void free_rtt(phys_addr_t phys)
->>       kvm_account_pgtable_pages(phys_to_virt(phys), -1);
->>   }
->>   +int realm_psci_complete(struct kvm_vcpu *source, struct kvm_vcpu
->> *target,
->> +            unsigned long status)
->> +{
->> +    int ret;
->> +
->> +    /*
->> +     * XXX: RMM-v2.0 doesn't require the target REC address for
->> completing
->> +     * PSCI requests. Temporary hack until RMM implementation catches up
->> +     * to the full spec.
->> +     */
->> +    ret = rmi_psci_complete(virt_to_phys(source->arch.rec.rec_page),
->> +                virt_to_phys(target->arch.rec.rec_page),
->> +                status);
->> +    if (ret)
->> +        return -EINVAL;
-> 
->         return -ENXIO;
+...
 
-Ack, although as the comment says this should be going away.
+>>> I was trying to avoid conditional compilation altogether and hence the
+>>> reason for keeping it as simple as possible. Also IS_ENABLED(CONFIG_ARM64)
+>>> in above snippet must come as some condition to this generic probe.
+>>>
+>>> Adding any more logic or callback defeats the bus idea here if we need
+>>> to rely/depend on multiple conditional compilation or callbacks IMO.
+>>>
+>>> Let's find see if it can work with what we are adding now and may add in
+>>> near future and then decide.
+>>>
+>> 
+>> If we move all the conditional checks to the driver probe path, then I
+>> think this can work. Something like the below:
+>> 
+>> struct smccc_device_info {
+>> 	u32 func_id;
+>> 	bool requires_smc;
+>> 	const char *device_name;
+>> };
+>> 
+>> static const struct smccc_device_info smccc_devices[] __initconst = {
+>> 	{
+>> 		.func_id        = ARM_SMCCC_TRNG_VERSION,
+>> 		.requires_smc   = false,
+>> 		.device_name    = "arm-smccc-trng",
+>> 	},
+>> 
+>> 	{
+>> 		.func_id        = RSI_ABI_VERSION,
+>
+> Don't we need parameters passed to this (Requested Interface version for 
+> e.g.) ? See more below.
+>
 
-Thanks,
-Steve
+The idea is that we only check whether the function ID is supported. All
+other conditional logic should be handled in the driver probe path, as
+demonstrated by the changes in drivers/char/hw_random/arm_smccc_trng.c.
 
->> +
->> +    return 0;
->> +}
->> +
->>   static int realm_rtt_create(struct realm *realm,
->>                   unsigned long addr,
->>                   int level,
->> @@ -1004,6 +1024,41 @@ static void kvm_complete_ripas_change(struct
->> kvm_vcpu *vcpu)
->>       rec->run->exit.ripas_base = base;
->>   }
->>   +static void kvm_rec_complete_psci(struct kvm_vcpu *vcpu)
->> +{
->> +    struct rec_run *run = vcpu->arch.rec.run;
->> +    unsigned long status = PSCI_RET_DENIED;
->> +    unsigned long ret = vcpu_get_reg(vcpu, 0);
->> +    struct kvm_vcpu *target;
->> +
->> +    switch (run->exit.gprs[0]) {
->> +    /*
->> +     * XXX: RMM-v2.0 doesn't cause RMI_EXIT_PSCI for AFFINITY_INFO
->> +     * Temporary hack until tf-RMM gets the REC to MPIDR mapping via
->> +     * RD Auxiliary granules.
->> +     * For now always report SUCCESS
->> +     */
->> +    case PSCI_0_2_FN64_AFFINITY_INFO:
->> +        status = PSCI_RET_SUCCESS;
->> +        break;
->> +    case PSCI_0_2_FN64_CPU_ON: {
->> +        if (ret != PSCI_RET_SUCCESS &&
->> +            ret != PSCI_RET_ALREADY_ON)
->> +            status = PSCI_RET_DENIED;
->> +        else
->> +            status = PSCI_RET_SUCCESS;
->> +        break;
->> +    }
->> +    default:
->> +        return;
->> +    }
->> +
->> +    target = kvm_mpidr_to_vcpu(vcpu->kvm, run->exit.gprs[1]);
->> +    /* RMM makes sure that we don't get RMI_EXIT_PSCI for invalid
->> mpidrs */
->> +    if (target)
->> +        realm_psci_complete(vcpu, target, status);
->> +}
->> +
->>   /*
->>    * kvm_rec_pre_enter - Complete operations before entering a REC
->>    *
->> @@ -1028,6 +1083,9 @@ int kvm_rec_pre_enter(struct kvm_vcpu *vcpu)
->>           for (int i = 0; i < REC_RUN_GPRS; i++)
->>               rec->run->enter.gprs[i] = vcpu_get_reg(vcpu, i);
->>           break;
->> +    case RMI_EXIT_PSCI:
->> +        kvm_rec_complete_psci(vcpu);
->> +        break;
->>       case RMI_EXIT_RIPAS_CHANGE:
->>           kvm_complete_ripas_change(vcpu);
->>           break;
-> 
-> Thanks,
-> Gavin
-> 
+>
+>> 		.requires_smc   = true,
+>> 		.device_name    = RSI_DEV_NAME,
+>> 	},
+>> };
+>> 
+>> static bool __init smccc_probe_smccc_device(const struct smccc_device_info *smccc_dev)
+>> {
+>> 	unsigned long ret;
+>> 	struct arm_smccc_res res;
+>> 
+>> 	if (smccc_conduit == SMCCC_CONDUIT_NONE)
+>> 		return false;
+>> 
+>> 	if (smccc_dev->requires_smc && smccc_conduit != SMCCC_CONDUIT_SMC)
+>> 		return false;
+>> 
+>> 	arm_smccc_1_1_invoke(smccc_dev->func_id, &res);
+>> 	ret = res.a0;
+>> 
+>> 	if ((s32)ret == SMCCC_RET_NOT_SUPPORTED)
+>
+> Is this a reliable check for all possible SMCCC services ? i.e., Are we 
+> expected to get RET_NOT_SUPPORTED for any service for which the backend
+> is not available ?
+>
 
+That is correct. That is what the SMCCC specification says
+
+> Also, as pointed out RSI_ABI_VERSION may return other errors based on 
+> the input (requested version, e.g., RSI_ERROR_INPUT) and we may still go
+> ahead and register the device ?
+>
+
+Correct, and the driver probe will check for the minimum and maximum supported versions.
+
+>> 		return false;
+>> 
+>> 	return true;
+>> }
+>> 
+>> static int __init smccc_devices_init(void)
+>> {
+>> 	struct arm_smccc_device *sdev;
+>> 	const struct smccc_device_info *smccc_dev;
+>> 
+>> 	for (int i = 0; i < ARRAY_SIZE(smccc_devices); i++) {
+>> 		smccc_dev = &smccc_devices[i];
+>> 
+>> 		if (!smccc_probe_smccc_device(smccc_dev))
+>> 			continue;
+>> 
+>>                 sdev = arm_smccc_device_register(smccc_dev->device_name);
+>>                 if (IS_ERR(sdev))
+>>                         pr_err("%s: could not register device: %ld\n",
+>>                                smccc_dev->device_name, PTR_ERR(sdev));
+>> 
+>> 	}
+>> 
+>> 	return 0;
+>> }
+>> device_initcall(smccc_devices_init);
+>> 
+>> with the diff to hw_random/smccc_trng
+>> 
+>> modified   arch/arm64/include/asm/archrandom.h
+>> @@ -12,7 +12,7 @@
+>>   
+>>   extern bool smccc_trng_available;
+>>   
+>> -static inline bool __init smccc_probe_trng(void)
+>> +static inline bool smccc_probe_trng(void)
+>>   {
+>>   	struct arm_smccc_res res;
+>>   
+>> modified   drivers/char/hw_random/arm_smccc_trng.c
+>> @@ -19,6 +19,8 @@
+>>   #include <linux/arm-smccc.h>
+>>   #include <linux/arm-smccc-bus.h>
+>>   
+>> +#include <asm/archrandom.h>
+>> +
+>>   #ifdef CONFIG_ARM64
+>>   #define ARM_SMCCC_TRNG_RND	ARM_SMCCC_TRNG_RND64
+>>   #define MAX_BITS_PER_CALL	(3 * 64UL)
+>> @@ -98,6 +100,10 @@ static int smccc_trng_probe(struct arm_smccc_device *sdev)
+>>   {
+>>   	struct hwrng *trng;
+>>   
+>> +	/* validate the minimum version requirement */
+>> +	if (!smccc_probe_trng())
+>> +		return -ENODEV;
+>> +
+>>   	trng = devm_kzalloc(&sdev->dev, sizeof(*trng), GFP_KERNEL);
+>>   	if (!trng)
+>>   		return -ENOMEM;
+>> 
+>> We can also move arch/arm64/include/asm/rsi_smc.h to
+>> include/linux/arm-rsi-smccc.h. There was a suggestion to move these
+>
+> super minor nit: arm-smccc-rsi.h ?
+>
+
+-aneesh
