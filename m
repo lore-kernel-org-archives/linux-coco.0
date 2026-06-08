@@ -1,61 +1,42 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1BE23A561
-	for <linux-coco@lists.linux.dev>; Mon,  8 Jun 2026 15:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345B9347537
+	for <linux-coco@lists.linux.dev>; Mon,  8 Jun 2026 15:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780932906; cv=none; b=jdxmAibxmCXEvgITZnkHKuN+ro1GXCU+bQU+FiuOGqFAHEmBKmVvxDy2jVWm9T/hqp/26vGzciCyTVegB1bK6bvfuOKrDWlGbD/h52dDj53xZaJiUazWLrSI5up1qb0mz0bR0EW4YVEvKQnG8lRPHkl8Q44Cob82yeoIalyEamQ=
+	t=1780933029; cv=none; b=H3e/jU0yTqtTnaJJUB7TIecWIJgZLaagOsQ1uzmsvRqglEkPYUAPF+gQ4eABpG2xUYF3hgDHmky2NfA5K0HwN1RVryMGAqsgcHOcNOdssyDQuvj6kwAyHN/f9D4OhoAQrBfOdZaImzg4k7pggItSMCn9lxeCnDD+QGezq4bvjvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780932906; c=relaxed/simple;
-	bh=LJ0Jbj9a+0TVtKGhGTHRqvJzO02a9KgcfakJQpkU9hE=;
+	s=arc-20240116; t=1780933029; c=relaxed/simple;
+	bh=Xu4EpoEVeMBr4+03yHgtOAgELj7OjAwLMfxBTH0IrbU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s6SwHRbFkyfZfVte1XTSbj2NP4kjzWCJ4F7z4288wi/TMJZ/RQ2eIs1+Lx9U6MVBB/nCFAi/c6Hiwjhz6fdvQvWNFPGaeoSbkY5Mbc3Ga3pEqielWdPggmXTGDsnsCy20lSJs700t7L2rxZj5v69MJ67vcKRA6BUCMlIm5BKtig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=enFq5ybm; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=gzgCHfwcjqDtva97hZe/y1+JLAuHM2zFSYimEnHR0jLyJRLXxkDLUMsKxscR4nBeZurcKb4LXwS4WyC5y0WJv7OQYdXMB9RMCiiEMwLZ6F8M8vI6wjKqQrnA36iuyJXxQqkaU/w/nAL7dPfY48IGuba61q21MqZrBBspgp/O7G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=d0/nWOEC; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="enFq5ybm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780932904; x=1812468904;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LJ0Jbj9a+0TVtKGhGTHRqvJzO02a9KgcfakJQpkU9hE=;
-  b=enFq5ybm+OHxGEHQ7pR6IjsddAkWqfBwWaZw/pVwprpdIXMPRPluugZP
-   vze67wk32nI8w0kHmJ0xCFwlZ0VufzGn/kN1+PTOEnu95K3yG02tG9ICo
-   es1mEU67yJ2WYQpFseAKpLk7iOFLXlzJTMSUDS+QLktNaWyQAJSgcWRKe
-   7wQmeDfRMTwvV1hsByAXLtjqj8NykPimVXNJ2DwzPzHcXd+e5XysaX2MP
-   BeKL1ot8VzZrPdXojDhsD2yiftZzjwdYR7Bd+wE0oDTJ+3VOIcvKt37aj
-   CRVpK1YfLB+T2yar6oJzOa1CXeWn9rL1dX3cDDRd9GkuKN83LaCgmGCyM
-   A==;
-X-CSE-ConnectionGUID: okEBoNCrSCOQztcsy06TBA==
-X-CSE-MsgGUID: jZidWHDiTB61L7qIYgVHrQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11811"; a="81718061"
-X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
-   d="scan'208";a="81718061"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 08:35:04 -0700
-X-CSE-ConnectionGUID: M8BRURc8RV6QZU0W3pf59A==
-X-CSE-MsgGUID: G7cmvkLZT92J6dBW5WN/Sw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
-   d="scan'208";a="244465076"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa006.jf.intel.com with ESMTP; 08 Jun 2026 08:35:01 -0700
-Date: Mon, 8 Jun 2026 23:10:29 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Kishen Maloor <kishen.maloor@intel.com>
-Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
-	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-Subject: Re: [RFC PATCH 15/15] x86/virt/tdx: Enable TDX Quoting extension
-Message-ID: <aibbZcey8e4APa5N@yilunxu-OptiPlex-7050>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-16-yilun.xu@linux.intel.com>
- <caf5de99-bce3-4dc6-8757-cf2b4aaf85c9@intel.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="d0/nWOEC"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B20D11E2F;
+	Mon,  8 Jun 2026 08:37:01 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3FB4D3FD80;
+	Mon,  8 Jun 2026 08:37:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780933026; bh=Xu4EpoEVeMBr4+03yHgtOAgELj7OjAwLMfxBTH0IrbU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d0/nWOECo2S/dhvr4nKDtkYkcWA+bUJVSZOhi0EsXdPJnQVMRplE1SOJFOTNAklR/
+	 glKbWqMaGn/PnX4OeU7HHLIB9M755vR8t/aaCVQ8pVwpM/NRo4T2NuYK4y+yzqR1fg
+	 O6He95z1esL+nbujmVR7gD/POR01aJyU++Dtg9wc=
+Date: Mon, 8 Jun 2026 16:37:02 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Kameron Carr <kameroncarr@linux.microsoft.com>
+Cc: akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, rppt@kernel.org, mhklinux@outlook.com,
+	linux-coco@lists.linux.dev,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Subject: Re: [RFC PATCH] mm/vmalloc: add vmalloc_decrypted() and
+ vzalloc_decrypted()
+Message-ID: <aibhnnDFQTHWMEFe@arm.com>
+References: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -64,38 +45,142 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <caf5de99-bce3-4dc6-8757-cf2b4aaf85c9@intel.com>
+In-Reply-To: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
 
-> > diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-> > index 10aff23cd01f..524a14c01aa6 100644
-> > --- a/arch/x86/virt/vmx/tdx/tdx.h
-> > +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> > @@ -58,7 +58,8 @@
-> >   #define TDH_PHYMEM_CACHE_WB		40
-> >   #define TDH_PHYMEM_PAGE_WBINVD		41
-> >   #define TDH_VP_WR			43
-> > -#define TDH_SYS_CONFIG			45
-> > +#define TDH_SYS_CONFIG_V0		45
-> 
-> Is it necessary to add _Vx macros when multiple versions can co-exist?
-> 
-> Just wondering if it would be cleaner in the following way?
-> 
-> - Leave the macros set at the current (non-deprecated) baseline version.
-> - Select vX using SEAMCALL_LEAF_VER() in config_tdx_module() when a vX feature
->   is enabled.
++ linux-coco, Suzuki (for the arm64 behaviour)
 
-My perference is to have the most simple rule for the unversioned macro.
-And leave all workarounds to _Vx macros, they will eventually been
-removed or deprecated.
-
-Anyway this patch is not expected to merge with this series, maybe we
-will have a public release with V1 supported when it is to be merged,
-then we don't have to make such a hard choice.
-
+On Thu, May 21, 2026 at 01:58:34PM -0700, Kameron Carr wrote:
+> In confidential computing environments (arm64 CCA, x86 SEV/TDX), guest
+> memory is encrypted by default and must be explicitly transitioned to a
+> decrypted/shared state for host-visible access.  Calling
+> set_memory_decrypted() on a vmalloc address is not supported, and not
+> recommended as it would be inefficient to decrypt the pages after they
+> have been mapped.
 > 
-> u64 seamcall_fn = TDH_SYS_CONFIG;
-> ...
-> if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE) {
-> ...
->     seamcall_fn = SEAMCALL_LEAF_VER(TDH_SYS_CONFIG, 1);
+> Add vmalloc_decrypted() and vzalloc_decrypted() which decrypt pages on
+> the linear map before creating the vmalloc mapping via vmap(), so
+> physical pages are never mapped with conflicting encryption attributes
+> across aliases.  A new VM_DECRYPTED flag marks these allocations so that
+> vfree() automatically re-encrypts pages before returning them to the
+> page allocator.
+> 
+> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+> Link: https://lore.kernel.org/linux-arm-kernel/ZmNJdSxSz-sYpVgI@arm.com/
+> Signed-off-by: Kameron Carr <kameroncarr@linux.microsoft.com>
+> ---
+>  include/linux/vmalloc.h |   7 ++
+>  mm/vmalloc.c            | 163 ++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 170 insertions(+)
+
+There are a few Sashiko comments worth reviewing:
+
+https://sashiko.dev/#/patchset/20260521205834.1012925-1-kameroncarr@linux.microsoft.com
+
+[...]
+> +/*
+> + * Re-encrypt the linear-map alias of all pages backing a VM_DECRYPTED area.
+> + * Best-effort: on per-block failure the loop continues so as many pages as
+> + * possible are returned to the encrypted state.  Pages that fail to
+> + * transition are left out of area->pages and leaked.
+> + */
+> +static int vm_pages_encrypt(struct vm_struct *area)
+> +{
+> +	unsigned int nr = 1U << vm_area_page_order(area);
+> +	unsigned int i;
+> +	unsigned int leaked;
+> +	int ret = 0;
+> +
+> +	for (i = 0; i < area->nr_pages; i += nr) {
+> +		int err = __vm_pages_enc_dec(area, i, nr, true);
+> +
+> +		if (err && !ret)
+> +			ret = err;
+> +	}
+> +
+> +	leaked = vm_compact_leaked_pages(area);
+> +	if (leaked)
+> +		pr_warn("vmalloc: re-encryption failed, leaked %u pages\n",
+> +			leaked);
+> +	return ret;
+> +}
+> +
+> +/*
+> + * Decrypt the linear-map alias of all pages backing a VM_DECRYPTED area.
+> + * On failure, the already-decrypted prefix is rolled back to encrypted.
+> + * Pages that fail either the initial decrypt or the rollback re-encrypt are
+> + * left out of area->pages and leaked.
+> + */
+> +static int vm_pages_decrypt(struct vm_struct *area)
+> +{
+> +	unsigned int nr = 1U << vm_area_page_order(area);
+> +	unsigned int i;
+> +	unsigned int leaked;
+> +	int ret = 0;
+> +
+> +	for (i = 0; i < area->nr_pages; i += nr) {
+> +		ret = __vm_pages_enc_dec(area, i, nr, false);
+> +		if (ret)
+> +			goto rollback;
+> +	}
+> +	return 0;
+> +
+> +rollback:
+> +	while (i) {
+> +		i -= nr;
+> +		__vm_pages_enc_dec(area, i, nr, true);
+> +	}
+> +
+> +	leaked = vm_compact_leaked_pages(area);
+> +	if (leaked)
+> +		pr_warn("vmalloc: decryption failed, leaked %u pages\n",
+> +			leaked);
+> +	return ret;
+> +}
+> +
+>  /**
+>   * vfree - Release memory allocated by vmalloc()
+>   * @addr:  Memory base address
+> @@ -3457,6 +3554,9 @@ void vfree(const void *addr)
+>  		return;
+>  	}
+>  
+> +	if (unlikely(vm->flags & VM_DECRYPTED))
+> +		vm_pages_encrypt(vm);
+
+I think we still have the vmalloc aliases at this point as we lazily
+reclaim them. We should call vm_unmap_aliases() before
+vm_pages_encrypt(). It matches the x86 __set_memory_enc_pgtable() as
+well with the explicit call to vm_unmap_aliases().
+
+The vrealloc() path may have some issues as well but I haven't looked in
+detail. Not sure it actually re-allocs decrypted pages. The simplest is
+to reject vrealloc() for such vms until we have a use-case.
+
+> +/**
+> + * vzalloc_decrypted - allocate zeroed virtually contiguous decrypted memory
+> + * @size:    allocation size
+> + *
+> + * Like vmalloc_decrypted(), but the memory is set to zero.
+> + *
+> + * Return: pointer to the allocated memory or %NULL on error
+> + */
+> +void *vzalloc_decrypted_noprof(unsigned long size)
+> +{
+> +	void *addr;
+> +
+> +	addr = __vmalloc_node_range_noprof(size, 1, VMALLOC_START, VMALLOC_END,
+> +					   GFP_KERNEL,
+> +					   pgprot_decrypted(PAGE_KERNEL),
+> +					   VM_DECRYPTED, NUMA_NO_NODE,
+> +					   __builtin_return_address(0));
+> +	if (addr)
+> +		memset(addr, 0, size);
+
+Talking to Suzuki, the small window between set_memory_decrypted() and
+memset() potentially exposing stale data is safe, at least for Arm CCA
+as the memory would be scrubbed (there are other places in the kernel
+where we do something similar). I assume that's also the case for other
+architectures, although not sure what pKVM does.
+
+-- 
+Catalin
