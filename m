@@ -1,306 +1,331 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011025.outbound.protection.outlook.com [40.107.208.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448D5367B7A
-	for <linux-coco@lists.linux.dev>; Mon,  8 Jun 2026 18:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCB934104B
+	for <linux-coco@lists.linux.dev>; Mon,  8 Jun 2026 18:56:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.25
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780943526; cv=fail; b=CQOdXQoINBPwWJ52BgOmmC7ug9NXIgT7v1hBsmgcRNhw1IJB5fuLpuva2+owT6+MsdkR2wrP3nYAO71gsHuWu0pq8FFwq2Jocyac5dteBZHBw4/ee8tqitl2fFPX8L/wttqoPQQ7WVOC/SePt374OcQdqvUYQc1tvV7jo87gCLc=
+	t=1780944981; cv=fail; b=MFmrVPbfv3ocWNU1f+H9QVcG0m0uGed7p8+YnnfCubR00tR9iuhLqTvM923Q23ghFC3piTrk+fV7MZjqBoeSYdexdtRqnIj8B2KQ9T/BPB+Wzs23W6ElgARgrMuvhpDVsnYGx+VPeRdTUb4jidjQ2sy6cxYiMhdrNCpt/85BtNg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780943526; c=relaxed/simple;
-	bh=DXakx+GpjvOzqFHZP6ajowfh0GEpQywed7mokrp2xio=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=o4KFFggNFLjtXRm14aZnWqd8+gmz4s2oWECvegFHFGR+jI5lvh5pM7RrC5wRy38BfBeECs0STzyiCvGM9WysoPk93i6M+fpDeVuEuC0EF6JGq9/p3iqB45MPObcKpQTaLy66eQh4Wwu4rxtsAimMGJENXXDCdugSk7JDdTc0OW4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c39uKZxN; arc=fail smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1780944981; c=relaxed/simple;
+	bh=si8vSwTRLssrMHXvvsIm0ZhEjPfU57i1SdakalpAdKE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KmNqex3XSijwuChquhHTVvvcFvhcSE7BhfYJd5suBfZ/AdIX/J0NwMOK0qgsqiRas6UGftzEXbbtxAGjIyGka1XVBU+TDDEjCROsEqvuwcLkiY4uLX2yE5i3dAKXOy9DEHUOFu2Et5vwHgbasKyKeWd8bfOmxMDXFrmMN7J+hG4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=x4Lm8+CV; arc=fail smtp.client-ip=40.107.208.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c39uKZxN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780943523; x=1812479523;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=DXakx+GpjvOzqFHZP6ajowfh0GEpQywed7mokrp2xio=;
-  b=c39uKZxNuzEkqO124XdFnuLX5/LCKUNBNsvpSbbUCjptEB9X6HqW3/sp
-   E9VGh/UeXPwqdHbCTsj26u8tr8P+1FTPWEbVVuyy3/K4Ya4QowHi2EIq/
-   TT18eP8itp6Kceqcxi0NnG0lt6831B03mhOxAvDRsz8R4o+nHgzxVQiv4
-   TqSS4vDIDDA/DcO+fEK/8CqH1UMR8HNPoWcrEpzr7Z7P9NFmpycOZNjMH
-   F1RLXIdsirFT6x5sKNcX2VFDatnyFrFCdv9yxHYHmPUc8GdjRMh9fzioM
-   /kAiZckHEBgTl0eMTGuZP6N07eBJdTyvNolcSEQlw6a8aqIpJ6xna7dTG
-   A==;
-X-CSE-ConnectionGUID: XTvxaXQeQbmWbJ7/TOqmbg==
-X-CSE-MsgGUID: FglHzDLjRSqDKYj5VN5QgA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11811"; a="81668181"
-X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
-   d="scan'208";a="81668181"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 11:32:03 -0700
-X-CSE-ConnectionGUID: F6yiHyJ0SoiArawHXPQg2A==
-X-CSE-MsgGUID: 4MruYHC+SOOU+BMabw3luA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
-   d="scan'208";a="241188781"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 11:32:02 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 8 Jun 2026 11:32:02 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 8 Jun 2026 11:32:02 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.22) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 8 Jun 2026 11:32:01 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="x4Lm8+CV"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SfQqkqKDN+nKseoAHvFZUJM85r5pBVi0k6TWr5rZr8AhtYx0d87k6GOjx/n7BuCAuj+99lzNIf4WD7er9/C2l495lnseZtZIrv8YyvCedJZZWNCQbBSIc+uE/nwM7Fqv1IpqHg4SX5UC91x+cFy51TK/bdl+Z8qWZYTQoX0EZpqhuEUbP8OvGSgKY26jRwVANSXbvxNACPW0afndomclKbfuhcCHShI+oUq3OJn3yiE38Hvw3sfiCARu+J4r92WePoDE2w4QuBLJEParZBCJKBTFpKdEYrrqaVSSK9R+aHuRDO3HvgugNNFxZ9Dzbm8XM/SoNYg8XysL+7tCZ4lz+A==
+ b=Bdr8MN6MITussTbD5m4hdu9385JLv8O3pV8fAmdu+XfO/uzu4G1KxI0c2q2vphP3bpr7ZDXIh/PdwIRatExbX61KzL3F6Neg3aYrfiP07E0P+MjYwrMbEyE6nqTkVUVCh+151lkqvxZD+WZCtfZoWbXenKcbHNlR8siId57ZU8K2hPhwBpzANNl4ypPyc1CJuOMlqCTYUpLGs1GMIfg1JjaX/UuzWYMJBYWeYGZjgFRUNb2XBEtxvHVMrk/0svVtnCeNiA0yE2qXpd6dlI73mxzJFks1Lu0NZqlv/FAQLgryjKbtiK2I0xVOFBlcjPsqUz2TGAwICNgY9sXKpGXziA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Of2RqnWBKz8FPakJJhZj/8yrS/jiwC4KDkslUtrYmYY=;
- b=Qvl3vExHqvpu12y+awbiCu3YmESgjEX9ZeZ32wdJHMbIDA5k2KZTCfqzJ4HbNB9sajfamc7ZuxBuie4DJtCEubD8E6pwhh8+BYR9/ddGdmJRI72MU8QQmvQSIKeJ4HwmXeiaerEq9e/4Ud1fc2o8nT5Mq5H7ehPQynKIlFN8LyWULPNZLLyf8kLk52B7LTyR0VqT68qevDdgUWJ+CcQ5JjZ107hqO7wbHJQ2z2T2XOYJEC2GaGdxN0Uv/2xenFh382N4xx79SumxzOyAs3WA93rf74mP6su7WJqN7KbKy5PtIRenUpiNscQ0eCyxvXV6f1/Do4FdLjKPg9u4Df+zYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA1PR11MB7198.namprd11.prod.outlook.com (2603:10b6:208:419::15)
- by SA3PR11MB7462.namprd11.prod.outlook.com (2603:10b6:806:31d::9) with
+ bh=D0cwJKj+UVWjT23vE+9Kq2Jd8le0Gb47re5P3n4pgTs=;
+ b=tT+81QFLwot0fMW08SinN07p4VPLGxEye1jxRFNW7N6XVZk0dXw6fz/oPPEZMCFSux/t+k3GfU1C4TwAi8vnStldsJCK/rTwudyL6mLBsBfgcQPdvOhEjvcZtJZvxI6v9XOlBWmVPAJxLYeMENGAhG7oRD0lYAsF+SFqmVk6QfQh1l5E0IpnbEs0ZTFFQ+lhoQViN19qqRbD6i3AZbCgh/SnMOiz7OSKkeyxtoB0RSCZUhpQWz9nn4I/lBj8Kh/XF+qOesmrR66Hwu0zUdG/fUYDKg5uc5DtpLQPcvFNgY2POvWVz3grSaXghR+psNmbGIbA39fgi7D7uPIP2evEbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=D0cwJKj+UVWjT23vE+9Kq2Jd8le0Gb47re5P3n4pgTs=;
+ b=x4Lm8+CVC/nIiFAln+j2+sR2MkchGPwU/ip9b/rnHtfRUpuYbfywpmSLxjgSCgVQLyeSRmUxgtpMt36kX2IjtPyOJtFvlrbwvE+1i0mdCzWFtouzvIx5RA9ttILMeZnXF9VQpC0atMBgWIev3bIojsBH44bIxiq1UrkjsjK5EaU=
+Received: from SJ0PR13CA0213.namprd13.prod.outlook.com (2603:10b6:a03:2c1::8)
+ by DS0PR12MB9421.namprd12.prod.outlook.com (2603:10b6:8:1a1::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Mon, 8 Jun 2026
- 18:31:58 +0000
-Received: from IA1PR11MB7198.namprd11.prod.outlook.com
- ([fe80::2c4e:e92a:4fa:a456]) by IA1PR11MB7198.namprd11.prod.outlook.com
- ([fe80::2c4e:e92a:4fa:a456%3]) with mapi id 15.21.0092.011; Mon, 8 Jun 2026
- 18:31:52 +0000
-Message-ID: <af2063d5-3d00-4d1a-83b5-de709825759d@intel.com>
-Date: Mon, 8 Jun 2026 21:31:47 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/15] Enable TDX Module Extensions and DICE-based TDX
- Quoting
-To: Xu Yilun <yilun.xu@linux.intel.com>, <kas@kernel.org>, <djbw@kernel.org>,
-	<rick.p.edgecombe@intel.com>, <x86@kernel.org>, <peter.fang@intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <sohil.mehta@intel.com>, <yilun.xu@intel.com>,
-	<baolu.lu@linux.intel.com>, <zhenzhong.duan@intel.com>,
-	<xiaoyao.li@intel.com>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park,
- 6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 -
- 4, Domiciled in Helsinki
-In-Reply-To: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DU2PR04CA0298.eurprd04.prod.outlook.com
- (2603:10a6:10:28c::33) To IA1PR11MB7198.namprd11.prod.outlook.com
- (2603:10b6:208:419::15)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Mon, 8 Jun 2026
+ 18:56:13 +0000
+Received: from MWH0EPF000C6187.namprd02.prod.outlook.com
+ (2603:10b6:a03:2c1:cafe::12) by SJ0PR13CA0213.outlook.office365.com
+ (2603:10b6:a03:2c1::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.8 via Frontend Transport; Mon, 8
+ Jun 2026 18:56:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ MWH0EPF000C6187.mail.protection.outlook.com (10.167.249.119) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.113.7 via Frontend Transport; Mon, 8 Jun 2026 18:56:12 +0000
+Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 8 Jun
+ 2026 13:56:10 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+	<seanjc@google.com>, <peterz@infradead.org>, <thomas.lendacky@amd.com>,
+	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
+CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
+	<KPrateek.Nayak@amd.com>, <Tycho.Andersen@amd.com>,
+	<Nathan.Fontenot@amd.com>, <ackerleytng@google.com>, <jackyli@google.com>,
+	<pgonda@google.com>, <rientjes@google.com>, <jacobhxu@google.com>,
+	<xin@zytor.com>, <pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
+	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
+	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>
+Subject: [PATCH v7 0/6] Add RMPOPT support.
+Date: Mon, 8 Jun 2026 18:56:00 +0000
+Message-ID: <cover.1780903370.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB7198:EE_|SA3PR11MB7462:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5441ef6f-2322-4a11-88f7-08dec58c3603
+X-MS-TrafficTypeDiagnostic: MWH0EPF000C6187:EE_|DS0PR12MB9421:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5f0c4f0b-58df-444a-c977-08dec58f9c32
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|6133799003|22082099003|18002099003|56012099006|5023799004|11063799006;
-X-Microsoft-Antispam-Message-Info: 5zLVVg4uo7GpBrpTgcOOSAjbUiw+qwpYuO1rdfPYwXw63m+oxHXay1Oye3JcnRnuHsgWeyS35ILtlS/XEFi1D1I99eHAficF5oCYrItLyDSs/XBE/Xe62so3QfQ1WGq66HdiKkoD03xCLo6cFAR0Pyia3nK/J04GG1uaiacYSOIqe6pywnP6yvJxbZJRRAuMHtMHrDVE4IieRACrMOIAvqw7oVZ8OtUqFUyMpXHUOWAqggeyCj7rL4F/i06glQJUDV0Uu7tQZHvuMcQRrKDPV/lwXfXUsEPShkqHB1NuZp60hTZkUVtsaeKMAYCOLyxHXjWnUAuqnRz2kaCJ9nfi/9Mq+iH8EQ0eXPsfreBo9JEkv9lBLtbDqPjizrC4rFw+s9BtKDCulGQK+ucteH2bJu2qdtjDeiyp5n1ljCqj4E8nQIsBFUWbT3I/VCwFP/g6NAUV7ZZxhVP4/eeC7JgH5iM5AkbnX+9JV1QxvetHkyNQWJ3ramboisTgMxoDAflPUvKeneD5osSvPvR5vNpktF4u4hRAYVzFMnlvL79+ejXEYQxbeodlNBAl52x8D3bNYkdTZKtmLj2eq5izWdKRdik5H0XLaWYFKljR3HwmKuRmKZXy6+QSdpBnAFqqFtz4FI1vlv9DlGJ47evWT8o6cg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7198.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(6133799003)(22082099003)(18002099003)(56012099006)(5023799004)(11063799006);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|7416014|376014|921020|6133799003|3023799007|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	cIx4qaFN1UfAZfq5Itji9Bhk5/uUdYE83e6x0mhKkreUbIsSfA4woAm7fjgiOCp4z4Brre2jlmYTvhQfVDl488dBgpmgN44u4+7V/xVQuv8PXXPXdUp4yGuVJWVDTsLpSWrf8JIA/GYXiE124Im9Zx0291roKPygsJ53WYhhrayINWSpFkDpc4qVbCXXb2gLho3Rn68DETiRxYvbfxnfFzNhNCHrwFcG6rWRdpiv71w73m62reWTflmbr5UpWnqbB2vgfsU0YDUT88vw/nI9wK02LjwCpRrD1OVWsTC326LgqSptuMBQ5S0seaHHefQ0dRk3E+m1gBzqh7dVgif1oKrvDHZ2cby/xjdZ9gonVjzaqBCY4CnI6ntm2l1CNYfAPelG3qgvMZ3YQq6tL9Unhc8UMGV5SHt57qTF8IfhPczBmH7TH1PSiKIms1KWJwuI8yov7ZYtntek7yzJGKsDYQhWQAyz3j1tJVtvVAIn2YPY6a1UuWghONNg2J/2bDg60fDL2UMjBzh12OHSC9h45fibgVsUe+tn/iK8EnK8DIxuvEFnkF4FLxbgCIncIZuc21THHEKAleN7ctTrarYtt8NWMy+xCRNJZcwBtH5DlPfMu/+zFhuzQlmzmVJsZK+0wv0g5seVv9K+m5oy3rl6NehMmVP6Nf/p5tR+xp/oBvm2kdaDYSiBBhlAfdZIUGfKt/Ynp4cQph7rxA05IBm+amVoaqlvoznDgF0/8Y8VQyUpeQl2sidf1VvjWNKwFo9LxXgYCOyXnEqjLIhHyUNsUQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(7416014)(376014)(921020)(6133799003)(3023799007)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TkxMeUhabnl1cVZzZU5JS3FqR1l3SU9VZVgyUWJheXdjdGREdnlJZStTYXdm?=
- =?utf-8?B?MTM2VkdZOVFOMjhXSXpnSXhEKzQvZXFFY1JrbGgyYjNadC9XVkxvU2ZPQmVy?=
- =?utf-8?B?dUVNb2Y1QzNiMkxRd0gzTXpTNmc0Q09rSnVHUG9LdjhTYnUycFg2TFd3bEVN?=
- =?utf-8?B?a0g1YW95M0dqaXNKSU1mNXF5THpDWkk2Q0djRXlyUitzMFFpMnE2bzNiNnBV?=
- =?utf-8?B?Vm51ckNkb0s0MWk5TWJwTHB2VnhXM2NxVHVvT1NZemo5UVZmanR4TWNqT1E2?=
- =?utf-8?B?aCs5ZHBZUEJJREphaHZnallWTU1vZEh4R3p3bVR0N3RZWGlZaEFQNzNxZEVR?=
- =?utf-8?B?V3FDQVJHT1ViL1VzallKV1NJeEk3K3VjbXg0M21sRU9JMTVLRHg5VVlJc0p4?=
- =?utf-8?B?T1FpcFlEUml0MHU0TW5Nc1VubXR2aDY3T3NvdDNEZmNYLzd0OW9XR09BS2Y5?=
- =?utf-8?B?Z3llaXhKUkVGQkFyaHdXeG1IcFZsR3RDbkJJbjNQVVU3SjMwNTdPdkxRVkdO?=
- =?utf-8?B?UitxTm9JS2hSYTA0WnM3WVdLcm1RYUlTdmFVL2hjdGluRXJubVhocmlEZ1px?=
- =?utf-8?B?WE0wWE4zS0E2YTNmNUV5MVZ2YjcxSGo5VDJtUmFyVDRCRFF3OXRnTEZTU1Ez?=
- =?utf-8?B?bGQ4MlkrYko2TmxTeCsyVm5TYTh3UHp5U1dSRDh2b2dsM2RBTEpOYmUyajZY?=
- =?utf-8?B?RXYySzFSalFHU1hRRFdnNGFyaFMrVHdEdFpVaTlzQ254UE05WHpmNmJyWDA4?=
- =?utf-8?B?ZStPVXA1Y1ZxUDZZejQ0TWtnSUpyMVkwYjIrOGRvV2pRREFhYlA3dCtTeTAy?=
- =?utf-8?B?Umo5aGJhR2JhdmxYMkNxNUR2dDF5QWk5bmdzVnhvOXZ5OW8yNGg2YTRLNnJo?=
- =?utf-8?B?K2w2cTdyVlZsc3J5VUNWaVZId0xoNnNXYjM2S0hmRTFuM2hEeU5oZWdRajFW?=
- =?utf-8?B?RHJjcFZnamhmOFIyRk02UEpUTm1DLzVJb3NYU3dwazh2ZklNODFCdWxmTXE4?=
- =?utf-8?B?N3ZsZWFneUw2U0Zka0NQT2FqVUJ1RlBUZms5dGsxcXdtcGlTNmlaaVhnM1NI?=
- =?utf-8?B?K3NnOHBpL1p1VjJKL0k2TlVJamNOZ2tZZ2ZHTHRJcnU4ZTVWOW1PWUhvKy9H?=
- =?utf-8?B?elNnVzRNU2lTQ29lcEpMZFhQSUx2SzFrUnNlWjJrL0FQL3ovdmw0Z1VpdVJ1?=
- =?utf-8?B?cElxbklpTGF4cmVtaVVxQ0sxVkNiRGcyQW9JNk40TDNlYVJtdFRsZ29NVkJt?=
- =?utf-8?B?N2tyU0xtWk9DeW9uNmd2S2c2bkRiaXFiQWtybzVQSko1b1ZkbUxCTG1ERGNv?=
- =?utf-8?B?K0ZmTEkxSWJZdER2SUtSdDYvVVpKQzZQSzR1OUFleXUrL1lMQ28xY01SU01h?=
- =?utf-8?B?M1RSNm8wcnIzeEpKUStOQm9wTThYVlJYTkkySk5YZmJlWW1pZkoyMS91RS9D?=
- =?utf-8?B?S0QzejQyMGt4Ty9IUC81bTVMUk1TUlZLblc0VzNZUE9xL0dXZk56a0RWL3p2?=
- =?utf-8?B?TGwwZVVKR2xqZWFtOE1UMXhYMjZzRS82dFVGQlFsNmJJekxWVlZveEpXU0RK?=
- =?utf-8?B?QkdxUEx2MWd2LzJ6UTVxUXRBNHVSVXBlNUx0UlBwQ3BzVjFOS0U3VittMGRC?=
- =?utf-8?B?Kzd5cVA3WmV1S3JQcHRZYjBFRVNSLzVwNmxFYnR4YkRZbjBlL28yNlE1OXlu?=
- =?utf-8?B?SjI0cGVsLzYxY3pONHQyVjEycHFHU3FoKzRqODFDeHJOL2JYRGJtNXNuaWwx?=
- =?utf-8?B?R2FvNExjdS9VSnVaVWRjSDVmSEZhd2F2ZHNMUGVwSDFndlFOc2dPa3E3Njk0?=
- =?utf-8?B?bnI5LzM2NTJFZkZOOWVRdEE1SUpQMnBxSG12UE1oWUpueXZ6UTgwK01YRC9Y?=
- =?utf-8?B?RmgxUjdBQ3JiVXJVMzU5NmVmbkV1dmlXYnRoWVZuRkpidlhvNnI3dlVsR2Z1?=
- =?utf-8?B?ekw5Sk13RDI3NWZ6dUdzc012Yy9CVmtFOE0vOU1jejZpREwwVU14ZmdENVZG?=
- =?utf-8?B?di9QdlErSm5zekNLSTlHdFpXV2k0YmR6M3N5czZSVEtkcjBwYklGbmRsdXdu?=
- =?utf-8?B?dmxrYlFiY3FnNU9aU3NLUy9jQUlvMDBIRFF3Y0RVcHlFV0pON0RYUU82V0cy?=
- =?utf-8?B?L3JKZFYzSytCdzZWQlVvNmtVd2liaGNXRHJLOU1HOS8vU3RNKzFpSFk2NGJs?=
- =?utf-8?B?S1BPWDN5NzNaemdGa0pwSEFNcjVFWXZwdmlZY3VWT3dwUmpYOVdhejQ4a1ZE?=
- =?utf-8?B?TzJvS2kvSmdGMFYycFV0cTgrQlI1S0VaeU95UDRtRE9xOXFQT3pwdTNvRG9J?=
- =?utf-8?B?OUZaVENyQlBtcDMzUElER1IySmhyY05DT3JjWEMzdHQzTTNFWUU2N1Z6T0o4?=
- =?utf-8?Q?25aJsZ2EBV4C/x8M=3D?=
-X-Exchange-RoutingPolicyChecked: guVUDbTQ4Mt+1FAYStkqV9x/S3RI94kmlpaSPSieaJboCiAbzXaf8aSGSKVDvp1mOnWygu4CMC/M29W+eXBROahaH/wkD/inXzSqfWrVytUAGPBvzGVeqs2a7XRkeHw0Ual9i4nU0wJXuW5QymAW/bnEVzI0IaZx9UUh64bBGGJzjO2GKbn4X7Ustb7SM0uYOAFABriSllEZ7OQK0wonZLrY1qP2GN5lkaBs2C0lyg9WPRZghHQOyaodyd1BxSxtG5YfGnhbyqsaj/52FZrfzHpxlAmnHrqIQ8KR74giXlgZFRi9eix8UJB+hgCNZrMQQDnU2cE4bjt/hAxe0umCcw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5441ef6f-2322-4a11-88f7-08dec58c3603
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7198.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 18:31:52.8688
+X-MS-Exchange-AntiSpam-MessageData-0:
+	udeW/Ibavx5pZocTNbrYHzIz6Ff0gvhZkRJPB6FAI4SZ361a1PgChigXa5jqMFl/tlFAfViOcDzjgb4WblsjvtCG3qXfRghJeD8d51kcuYw+P6iqyVIcszvDnb0OXKVSHl5z4b0AuVcdaktv7HkS9Sh+Ie3nY37/ioTBH/1bopjP1fSU0o27TZGUazVoE3zR5HCFdUQCLON10l+NU07sp+y6z9tXjNB3w7R0KMVPp1LAgaTxvuFV5UB56MeIvi4C+Nai7Lk3liOxrUpfButt9i52teq8AeUtzHWyRxmo5fOXi2ywf3uAMEoeD/4A9MESwSQJyA+aI9APnX7S1N78NDtA9rbYZKXBlnbHHaJqnNMvPmeaL+71LrNaOQ8uCx82nl414NoqhMq0FFkY+3jnNilHEby6r08TNswp5/jWNjprSG+7sdU0TjEP6a6CrbTx
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 18:56:12.3321
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /ROwurSXpVNzZT1csjX9sekZwZsJRFCwzzmoXB8xVF0IUtk+Wzd/MyTIrpVc6spnCeIYqkh3SxFpoOHrbBMgvg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7462
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f0c4f0b-58df-444a-c977-08dec58f9c32
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000C6187.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9421
 
-On 22/05/2026 06:41, Xu Yilun wrote:
-> This posting is just to collect initial review.
-> 
-> Sean, Paolo, Dave please feel free to ignore for now. Sean, especially
-> the x86 KVM stuff is only here as an example for the init code, and not
-> ready for review.
-> 
-> Kiryl and Dan, we are trying to get acks for the first 4 patches of the
-> series so they can be serve as a settled base for all the other work
-> that uses Extensions. Please review the first 4 patches and treat the
-> later ones as an example for the Extensions initialization.
-> 
-> == Why it's being posted ==
-> 
-> The TDX Module is introducing a new concept called "TDX Module
-> Extensions", and several upcoming features depend on them. The
-> Extensions need some extra setup at TDX module init time, and the code
-> to do this is expected to be somewhat generic.
-> 
-> We want to get the basics of this TDX module extensions piece sorted so
-> that all of the extension-based work can build on it. This series
-> includes those basics, and an example usage called DICE-based TDX
-> Quoting. Only the first 4 patches are about initializing the TDX module
-> Extensions. I'd like some review on them. The later DICE patches are
-> just included to serve as a usage example for the TDX module extension
-> code.
-> 
-> The first 4 patches will eventually need an ack by an x86 maintainer, so
-> please review with that in mind.
-> 
-> == Overview ==
-> 
-> TDX Module introduces the "TDX Module Extensions" to support long
-> running / hard-irq preemptible flows inside. This makes TDX Module
-> capable of handling complex tasks through "Extension SEAMCALLs".
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-For me it would be easier to understand by starting higher level,
-like:
+In the SEV-SNP architecture, hypervisor and non-SNP guests are subject
+to RMP checks on writes to provide integrity of SEV-SNP guest memory.
 
-"TDX Module Extensions enables optional but important TDX features
- - such as DICE-based attestation quoting, TDX Connect, and live
-migration - that require substantially more processing time than
-core TDX operations, and also additional memory."
+The RMPOPT architecture enables optimizations whereby the RMP checks
+can be skipped if 1GB regions of memory are known to not contain any
+SNP guest memory.
 
-Also I would find it helpful to clarify how "TDX Module Extensions"
-enhances interruptibility for Extension SEAMCALLs compared with
-regular SEAMCALLs, since "hard-irq preemptible flows" had me
-initially thinking along the wrong lines.
+RMPOPT is a new instruction designed to minimize the performance
+overhead of RMP checks for the hypervisor and non-SNP guests.
 
-> 
-> TDX Module allows some add-on features to use the Extension. The first
-> feature to use Extensions is DICE-based TDX Quoting [1]. DICE is an
-> industry-standard, certificate-backed attestation framework that layers
-> evidence through a chain of certificates.
-> 
-> This series adds infrastructure to enable the Extensions and then
-> implement DICE-based TDX Quoting.
-> 
-> The Extensions consumes relatively large amount of memory (~50MB). So it
-> is designed to be off by default. It must be enabled after basic TDX
-> Module initialization and when add-on features require it. To enable
-> the Extensions, host first adds extra memory to TDX Module via a
-> SEAMCALL (TDH.EXT.MEM.ADD), then uses another SEAMCALL (TDH.EXT.INIT) to
-> initialize Extensions, and then some add-on features, e.g. DICE, could
-> use Extension SEAMCALLs for work. Note that host can never get the added
-> memory back.
-> 
-> Theoretically, the Extensions doesn't need to be enabled right after
-> basic TDX initialization. It could be enabled right before the first
-> Extension SEAMCALL is issued. That would save or postpone memory usage.
-> But it isn't worth the complexity, the needs for the Extensions are vast
-> but the savings are little for a typical TDX capable system (about
-> 0.001% of memory). So the Linux decision is to just enable it along with
-> the basic TDX.
-> 
-> This series has 2 distinct parts:
-> 
->   Patches  1-4:  TDX Module Extensions enabling
->   Patches  5-15: DICE-based TDX Quoting, primarily Peter's work.
-> 
-> == Some history ==
-> 
-> The TDX Module Extensions part was first posted along with TDX
-> Connect [2]. Now this part is remarkably smaller because we've removed
-> the generic tdx_page_array abstraction for HPA_LIST_INFO. TDX Module
-> Extensions is the first user of HPA_LIST_INFO, and doesn't use it in a
-> typical way (HPA_LIST_INFO can only hold at most 2MB memory). There
-> isn't enough justification to make the abstraction in this series. A
-> possible plan is to rebuild tdx_page_array iteratively when more use
-> cases arise.
-> 
-> == Misc ==
-> 
-> This series is based on tip/x86/tdx [3], because we need a small
-> being-merged patch [4] before our work.
-> 
-> 
-> Link: https://cdrdv2.intel.com/v1/dl/getContent/874303 # [1]
-> Link: https://lore.kernel.org/all/20260327160132.2946114-1-yilun.xu@linux.intel.com/ # [2]
-> Link: https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/log/?h=x86/tdx # [3]
-> Link: https://patch.msgid.link/20260402-fuller_tdx_kexec_support-v3-1-34438d7094bf@intel.com # [4]
-> 
-> 
-> Peter Fang (10):
->   x86/virt/tdx: Move tdx_tdr_pa() up in the file
->   x86/virt/tdx: Initialize Quoting extension during bringup
->   x86/virt/tdx: Prepare Quote buffer during extension bringup
->   x86/virt/tdx: Add interface to check Quoting availability
->   x86/virt/tdx: Add interface to generate a Quote
->   x86/tdx: Move and rename Quote request structure
->   KVM: TDX: Factor out userspace return path from tdx_get_quote()
->   KVM: TDX: Add in-kernel Quote generation
->   KVM: TDX: Support event-notify interrupts only with userspace quoting
->   x86/virt/tdx: Enable TDX Quoting extension
-> 
-> Xu Yilun (5):
->   x86/virt/tdx: Read global metadata for TDX Module Extensions
->   x86/virt/tdx: Add extra memory to TDX Module for Extensions
->   x86/virt/tdx: Make TDX Module initialize Extensions
->   x86/virt/tdx: Enable the Extensions right after basic TDX Module init
->   x86/virt/tdx: Embed version info in SEAMCALL leaf function definitions
-> 
->  Documentation/virt/kvm/api.rst              |   8 +-
->  arch/x86/include/asm/tdx.h                  |  34 ++
->  arch/x86/include/asm/tdx_global_metadata.h  |  11 +
->  arch/x86/kvm/vmx/tdx.h                      |   6 +
->  arch/x86/virt/vmx/tdx/tdx.h                 |  32 +-
->  arch/x86/kvm/vmx/tdx.c                      | 176 ++++++++-
->  arch/x86/virt/vmx/tdx/tdx.c                 | 387 +++++++++++++++++++-
->  arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  27 ++
->  drivers/virt/coco/tdx-guest/tdx-guest.c     |  25 +-
->  virt/kvm/kvm_main.c                         |   1 +
->  10 files changed, 655 insertions(+), 52 deletions(-)
-> 
-> 
-> base-commit: 5209e5bfe5cab593476c3e7754e42c5e47ce36de
+RMPOPT instruction currently supports two functions. In case of the
+verify and report status function the CPU will read the RMP contents,
+verify the entire 1GB region starting at the provided SPA is HV-owned.
+For the entire 1GB region it checks that all RMP entries in this region
+are HV-owned (i.e, not in assigned state) and then accordingly updates
+the RMPOPT table to indicate if optimization has been enabled and
+provide indication to software if the optimization was successful.
+
+In case of report status function, the CPU returns the optimization
+status for the 1GB region.
+
+The RMPOPT table is managed by a combination of software and hardware.
+Software uses the RMPOPT instruction to set bits in the table,
+indicating that regions of memory are entirely HV-owned.  Hardware
+automatically clears bits in the RMPOPT table when RMP contents are
+changed during RMPUPDATE instruction.
+
+For more information on the RMPOPT instruction, see the AMD64 RMPOPT
+technical documentation.
+
+As SNP is enabled by default the hypervisor and non-SNP guests are
+subject to RMP write checks to provide integrity of SNP guest memory.
+
+This patch-series adds support to enable RMP optimizations for up to
+2TB of system RAM across the system and allow RMPUPDATE to disable
+those optimizations as SNP guests are launched.
+
+Support for RAM larger than 2 TB will be added in follow-on series.
+
+This series also introduces support to re-enable RMP optimizations
+during SNP guest termination, after guest pages have been converted
+back to shared.
+
+RMP optimizations are performed asynchronously by queuing work on a
+dedicated workqueue after a 10 second delay.
+
+Delaying work allows batching of multiple SNP guest terminations.
+
+Once 1GB hugetlb guest_memfd support is merged, support for
+re-enabling RMPOPT optimizations during 1GB page cleanup will be added
+in follow-on series.
+
+Additionally add debugfs interface to report per-CPU RMPOPT status
+across all system RAM.
+
+v7:
+- Sync tools/arch/x86/include/asm/cpufeatures.h to mirror the kernel
+  header for X86_FEATURE_RMPOPT.
+- Fix commit title to use X86_FEATURE_RMPOPT to match the code
+  (was X86_FEATURE_AMD_RMPOPT).
+- Add static bool rmpopt_configured, set only when segmented RMP setup
+  succeeds in setup_rmptable().  Check rmpopt_configured alongside
+  cpu_feature_enabled(X86_FEATURE_RMPOPT) in snp_setup_rmpopt() and
+  snp_rmpopt_all_physmem(), because setup_clear_cpu_cap() is unreliable
+  after alternatives are patched.  Add snp_clear_rmpopt_configured()
+  called from amd_cc_platform_clear() when CC_ATTR_HOST_SEV_SNP is
+  cleared.  Do not use __ro_after_init on rmpopt_configured since the
+  writer snp_clear_rmpopt_configured() is not __init.
+- Add cond_resched() to all three leader loops in rmpopt_work_handler()
+  to prevent soft lockups on systems with up to 2TB of RAM.
+- Add comment above __rmpopt() documenting the RMPOPT instruction
+  encoding (F2 0F 01 FC) and register interface (RAX = system physical
+  address input, RCX = operation type input, RFLAGS.CF = output).
+  Note: RMPOPT does not modify RAX unlike PVALIDATE/RMPUPDATE, so
+  the existing "a" (input-only) constraint is correct.
+
+  Sashiko AI code review identified several of the above issues.
+
+v6:
+- Drop wrmsrq_on_cpus() helper; use for_each_cpu() with wrmsrq_on_cpu()
+  instead, as RMPOPT_BASE MSR programming is not performance-critical.
+- Rewrite rmpopt_work_handler() leader selection to use a local
+  follower_mask copy instead of modifying the global rmpopt_cpumask.
+  This eliminates the current_cpu_cleared tracking and the restore at
+  the end, and removes the need for synchronization comments about
+  transient cpumask inconsistency.
+- Add three-way leader selection in rmpopt_work_handler():
+  1. Current CPU is a primary thread in cpumask: run leader locally.
+  2. Current CPU is a sibling thread whose primary is in cpumask:
+     run leader locally (RMPOPT_BASE MSR is per-core), remove the
+     primary from followers via cpumask_andnot(topology_sibling_cpumask).
+  3. Current CPU's core has no RMPOPT_BASE MSR programmed: pick an
+     explicit leader via cpumask_first() + smp_call_function_single()
+     to avoid #UD, with cpus_read_lock() around the IPI loop.
+- Add WARN_ON_ONCE guard for empty cpumask in the explicit leader
+  fallback path, with migrate_enable() before goto out.
+- Add .llseek = seq_lseek to rmpopt_table_fops for consistency with
+  other seq_file-based debugfs files and to support tools like "less".
+- Change debugfs file permissions from 0444 to 0400 to restrict access
+  to root only.
+- Add comment in rmpopt_table_seq_show() explaining why cpu_online_mask
+  is safe: RMPOPT_BASE MSR is per-core and snp_prepare() ensures all
+  CPUs are online when the MSR is programmed.
+
+  Sashiko AI code review identified several of the above issues.
+
+v5:
+- Introduce rmpopt_cleanup() to tear down workqueue, debugfs, cpumask,
+  and MSR state, called from snp_shutdown().
+- Introduce rmpopt_wq_mutex to serialize snp_setup_rmpopt(),
+  snp_rmpopt_all_physmem(), and rmpopt_cleanup().
+- Introduce rmpopt_show_mutex to serialize debugfs reporting of
+  rmpopt_report_cpumask.
+- Move snp_rmpopt_all_physmem() call after SNP DECOMMISSION during
+  guest shutdown.
+- Use migrate_disable()/migrate_enable() for CPU pinning in the
+  rmpopt_work_handler() leader loop to maintain CPU affinity without
+  disabling preemption for the entire RMPOPT scan.
+- Add cpus_read_lock()/cpus_read_unlock() around the follower
+  on_each_cpu_mask() loop in rmpopt_work_handler().
+- Guard snp_setup_rmpopt() against re-initialization when
+  SNP_SHUTDOWN_EX with x86_snp_shutdown=0 skips rmpopt_cleanup()
+  but clears snp_initialized, preventing workqueue and resource
+  leaks on repeated init/shutdown cycles.
+- Replace setup_clear_cpu_cap() with pr_err() on alloc_workqueue()
+  failure in snp_setup_rmpopt(), as setup_clear_cpu_cap() cannot be
+  used after alternatives are patched; callers check rmpopt_wq != NULL
+  as the runtime guard instead.
+- Add pr_info() when RMPOPT coverage is capped at 2TB.
+- Add comments noting CPU hotplug is not supported with SNP enabled
+  and only online primary threads are covered by rmpopt_cpumask.
+- Add comment in setup_rmptable() noting Segmented RMP must be
+  enabled to enable RMPOPT.
+- Simplify cpumask setup loop to set if primary thread rather than
+  skip if not primary.
+- Improve grammar and clarity in snp_setup_rmpopt() comments.
+- Added Reviewed-by's.
+
+  Sashiko AI code review identified several of the above issues.
+
+v4:
+- Add new wrmsrq_on_cpus() helper to write same u64 value to a
+  per-CPU MSR across a cpumask without per-cpu struct allocation
+  overhead. 
+- Rename configure_and_enable_rmpopt() to snp_setup_rmpopt().
+- Use wrmsrq_on_cpus() instead of wrmsrq_on_cpu() loop for
+  programming RMPOPT_BASE MSRs.
+- Add setup_clear_cpu_cap(X86_FEATURE_RMPOPT) if segmented RMP
+  setup fails or workqueue allocation fails.
+- Add X86_FEATURE_RMPOPT feature clear logic in amd_cc_platform_clear()
+  for CC_ATTR_HOST_SEV_SNP.
+- All of the above allow checking for only X86_FEATURE_RMPOPT for both
+  RMPOPT setup/enable and RMP re-optimizations.
+- Rename snp_perform_rmp_optimization() to snp_rmpopt_all_physmem().
+- Split rmpopt() into rmpopt() and rmpopt_smp() for SMP callback use.
+- Introduce separate rmpopt_report_cpumask for debugfs reporting,
+  distinct from rmpopt_cpumask used for primary thread tracking.
+- Remove snp_perform_rmp_optimization() call from __sev_snp_init_locked() 
+  and instead setup and enable RMPOPT after SNP is enabled and 
+  initialized.
+
+v3:
+- Drop all RMPOPT kthread support and introduce adding custom and
+  dedicated workqueue to schedule delayed and asynchronous RMPOPT work.
+- Drop the guest_memfd inode cleanup interface and add support to
+  re-enable RMP optimizations during guest shutdown using the
+  asynchronous and delayed workqueue interface.
+- Introduce new __rmpopt() helper and rmpopt() and
+  rmpopt_report_status() wrappers on top which use rax and rcx
+  parameters to closely match RMPOPT specs.
+- Use new optimized RMPOPT loop to issue RMPOPT instructions on all
+  system RAM upto 2TB and all CPUs, by optimizing each range on one CPU
+  first, then let other CPUs execute RMPOPT in parallel so they can skip
+  most work as the range has already been optimized.
+- Also add support for running the optimized RMPOPT loop only on
+  one thread per core.
+- Replace all PUD_SIZE references with SZ_1G to conform to 1GB regions
+  as specified by RMPOPT specifications and not be dependent on PUD_SIZE
+  which makes the RMPOPT patch-set independent of x86 page table sizes.
+- Use wrmsrq_on_cpu() to program the RMPOPT_BASE MSR registers on
+  all CPUs that removes all ugly casting to use on_each_cpu_mask().
+- Fix inline commits and patch commit messages
+
+
+v2:
+- Drop all NUMA and Socket configuration and enablement support and
+  enable RMPOPT support for up to 2TB of system RAM.
+- Drop get_cpumask_of_primary_threads() and enable per-core RMPOPT
+  base MSRs and issue RMPOPT instruction on all CPUs.
+- Drop the configfs interface to manually re-enable RMP optimizations.
+- Add new guest_memfd cleanup interface to automatically re-enable
+  RMP optimizations during guest shutdown.
+- Include references to the public RMPOPT documentation.
+- Move debugfs directory for RMPOPT under architecuture specific
+  parent directory.
+
+Ashish Kalra (6):
+  x86/cpufeatures: Add X86_FEATURE_RMPOPT feature flag
+  x86/sev: Initialize RMPOPT configuration MSRs
+  x86/sev: Add support to perform RMP optimizations asynchronously
+  x86/sev: Add interface to re-enable RMP optimizations.
+  KVM: SEV: Perform RMP optimizations on SNP guest shutdown
+  x86/sev: Add debugfs support for RMPOPT
+
+ arch/x86/coco/core.c                     |   3 +
+ arch/x86/include/asm/cpufeatures.h       |   2 +-
+ arch/x86/include/asm/msr-index.h         |   3 +
+ arch/x86/include/asm/sev.h               |   6 +
+ arch/x86/kernel/cpu/scattered.c          |   1 +
+ arch/x86/kvm/svm/sev.c                   |   2 +
+ arch/x86/virt/svm/sev.c                  | 417 ++++++++++++++++++++++-
+ drivers/crypto/ccp/sev-dev.c             |   3 +
+ tools/arch/x86/include/asm/cpufeatures.h |   2 +-
+ 9 files changed, 436 insertions(+), 3 deletions(-)
+
+-- 
+2.43.0
 
