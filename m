@@ -1,196 +1,144 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2432038F922
-	for <linux-coco@lists.linux.dev>; Tue,  9 Jun 2026 06:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDFA3E5EE3;
+	Tue,  9 Jun 2026 07:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780987538; cv=none; b=bytWGJWMZ7nDaju+JwMsxLFcOD2625g+Al0M8TFksfxTB31xglDyWsbQM4oWZ40hFIZbZsWfZmoOE7gq4c9ZTjmhxowMPbYgBo0F7Sl4/h5iex7s5H1J4mFe1e5tPzRON+Qb2Ky+V3OMWGhFgN1CAGNwcBVNrlI49uGuZ8d/v4E=
+	t=1780991292; cv=none; b=EEaRFHt0w7kNcCfULhcLp5Qyu86gnx4HdIST2JRfYADdZTRkZY69v9e88hJPwa6l6RdiYKfx7MqKJqsZcZ86kHzGZJWwqkT3vA1zzwhmaRiFD3IdgstbY9DuxSncZ3hd1BplMYnEJZ5+aLY/GUdALUeLxKCvaDojLQlhSFKJgdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780987538; c=relaxed/simple;
-	bh=mReAix0LSYK6FclEHavg7EVgJC59/qq0PQ1n3G0Dor0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CHVpe1iwSp1sZqHlPXRGXtsNOPlj1ILC35KA1tEO9+ZvgBS/syUKxaBw0uOc585buaunhO3CWfhfE9Z5eOja94g4z0Apj8iOXfS6AiB8AIRjM1VHjlJe4MeZ7ArwAWdif5ADQyMkAJtCEz8OwVHnXfB7mMVsr5GfY+DjZfXUPQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NLi5PomX; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1780991292; c=relaxed/simple;
+	bh=ZBX5eahzd46CUbwIFun4qVkUb3QTM+g7fn0ziOL7Zx4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=i+xLbsH5B/AdRFAIAZXqVCbK4/yx/OJdO/iJH+K29HTkXq1o9U+a+YFQFRKutJaRjDPzyh85f7/Veo9++YOdY33qWBpME9NO8rNgIDGLDIJYHJuD58DXV6/fcKDHlotI15aip+Jpr6AQg9J56WlmDCvAgLpEvWbyVhfBh/mvzLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fhT/BnDr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NLi5PomX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780987535; x=1812523535;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=mReAix0LSYK6FclEHavg7EVgJC59/qq0PQ1n3G0Dor0=;
-  b=NLi5PomX6ZX3q3i7xLN28t4S8x298PJpgGsOevudHd3gekInAyFYCWHt
-   wI/3WbGrUqrJ+njeVRzbwsUPIwe5fQETV7SApY8kfMhrDcC7GlrGu6LFd
-   E4B/edLtYSrkDRLKmcBPNC+LrZaqfIVSq1L4mlMEAcEU+HNDptJDvrVWk
-   wojfr58ZWjNA+oetMUb2HqveaNC9CpT5hPxhJPLqNtKKhYa+pJzKsnjXq
-   9/nBx8mi20vlb4hbcwXK0YjXFxQRkWoaBMo461Rut4u82DaKJYQJjswKa
-   xHLWOEUvP0T41sJhJND4abawzUNurTdxn42S4XCZpqJdH1Ecf9/4RgfKF
-   w==;
-X-CSE-ConnectionGUID: 1hyjWiB8QZOkMmDJd8HFhw==
-X-CSE-MsgGUID: RoGnvxcMQO+zzGuJl7eMog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11811"; a="107175917"
-X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; 
-   d="scan'208";a="107175917"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 23:45:34 -0700
-X-CSE-ConnectionGUID: qJtNBrs8QnqhS9ujN+hdAA==
-X-CSE-MsgGUID: w5/whA3kSkGPcZA6dTvr9w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; 
-   d="scan'208";a="245623860"
-Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 23:45:28 -0700
-Message-ID: <051df51b-cbf0-48d2-8d34-9392783afe2d@linux.intel.com>
-Date: Tue, 9 Jun 2026 14:45:25 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fhT/BnDr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB4D1F00893;
+	Tue,  9 Jun 2026 07:48:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780991290;
+	bh=iiljLo4Dj3SESslIfwzIuSptLw3aAN39KXfU2xj2Ngk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=fhT/BnDr+KIL6FSHMueMDrXiAeihxCx9XYmV4sQEsCrgZ1a/wLUlA82c1I6chu2MM
+	 rwKusfZOsEM3kx5pEdK9ggrNvlOkxF1bXbC0sEg1cxOzYdFCuBBw2Q4HB3K+Tk2mgF
+	 cv0n962KH23nlUg4uss93akTXM5KJMfq8JYgGQ0evU2dHo+DKQ9+YcNw/k+9RPPLKp
+	 J47WOewPhoa36WNJqXt4oaEjhDK0itmBDVBlKuYN0GyqnPG07ArrFllQqbbqboqHCC
+	 oIieu3huEj6Hct6nh+p+M18BgnBSbKYb1ebIk/0iA2wklf1pZ6SvQa5gkT9+Y/gL8Z
+	 WvHbYAtwWzDSg==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Sean Christopherson <seanjc@google.com>, David Woodhouse
+ <dwmw2@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>, "K. Y. Srinivasan"
+ <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
+ <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
+ <longli@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, Alexey
+ Makhalov <alexey.makhalov@broadcom.com>, Jan Kiszka
+ <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, Daniel
+ Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>, "H.
+ Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Broadcom internal kernel review
+ list <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
+ <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-hyperv@vger.kernel.org,
+ virtualization@lists.linux.dev, xen-devel@lists.xenproject.org, Tom
+ Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
+ Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v4 10/47] x86/tsc: Consolidate forcing of
+ X86_FEATURE_TSC_KNOWN_FREQ for PV code
+In-Reply-To: <aidEfvTMjLa2zt43@google.com>
+References: <20260529144435.704127-1-seanjc@google.com>
+ <20260529144435.704127-11-seanjc@google.com> <877boc554l.ffs@fw13>
+ <eef867eae15e30d08482ba16a1a32159745b64a7.camel@infradead.org>
+ <aidEfvTMjLa2zt43@google.com>
+Date: Tue, 09 Jun 2026 09:48:07 +0200
+Message-ID: <87a4t440js.ffs@fw13>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 20/22] KVM: selftests: Implement MMIO WRITE for the
- TDX VM
-To: Lisa Wang <wyihan@google.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
- Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
- <20260521-tdx-selftests-v13-v13-20-6983ae4c3a4d@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260521-tdx-selftests-v13-v13-20-6983ae4c3a4d@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Jun 08 2026 at 15:38, Sean Christopherson wrote:
+> On Sat, Jun 06, 2026, David Woodhouse wrote:
+>> > Along with:
+>> >=20
+>> > =C2=A0=C2=A0 if (!hypervisor_is_type(X86_HYPER_NATIVE)) {
+>> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (tsc_khz_early)
+>> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_warn("Ignoring non=
+-sensical tsc_early_khz command line argument\n");
+>> >=20
+>> > or something daft like that.
+>
+> Ya, I ended up in the same place once Sashiko pointed out that skipping t=
+he SNP/TDX
+> setup was hazardous[*], and also once I realized that tsc_khz_early *comp=
+lemented*
+> the refinement instead of replacing it.
+>
+> This is what I have locally:
+>
+>         if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
+>                 known_tsc_khz =3D snp_secure_tsc_init();
+>         else if (boot_cpu_has(X86_FEATURE_TDX_GUEST))
+>                 known_tsc_khz =3D tdx_tsc_init();
+>
+>         /*
+>          * If the TSC frequency wasn't provided by trusted firmware, try =
+to get
+>          * it from the hypervisor (which is untrusted when running as a C=
+oCo guest).
+>          */
+>         if (!known_tsc_khz && x86_init.hyper.get_tsc_khz)
+>                 known_tsc_khz =3D x86_init.hyper.get_tsc_khz();
+>
+>         /*
+>          * Mark the TSC frequency as known if it was obtained from a hype=
+rvisor
+>          * or trusted firmware.  Don't mark the frequency as known if the=
+ user
+>          * specified the frequency, as the user-provided frequency is int=
+ended
+>          * as a "starting point", not a known, guaranteed frequency.
+>          */
+>         if (known_tsc_khz && !tsc_early_khz)
+>                 setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
 
+If the frequenct is known via the above then you want to set the
+KNOWN_FREQ feature bit unconditionally. SNP/TDX/hypervisor override the
+command line argument as you print below.
 
-On 5/22/2026 7:17 AM, Lisa Wang wrote:
-> From: Erdem Aktas <erdemaktas@google.com>
-> 
-> Implement the tdx_mmio_write() to allow TDX VMs to request MMIO
-> emulation.
-> 
-> Follow the Intel Guest-Hypervisor Communication Interface (GHCI) spec
-> to the minimum extent that a spec-abiding TDX module will pass the
-> request to KVM. Skip implementing the #VE handler as described in the
-> GHCI spec so selftests will not take a dependency on having a working
-                                                                       ^
-Something was cut off?
+>         /*
+>          * Ignore the user-provided TSC frequency if the exact frequency =
+was
+>          * obtained from trusted firmware or the hypervisor, as the user-
+>          * provided frequency is intended as a "starting point", not a kn=
+own,
+>          * guaranteed frequency.
+>          */
+>         if (!known_tsc_khz)
+>                 known_tsc_khz =3D tsc_early_khz;
+>         else if (tsc_early_khz)
+>                 pr_err("Ignoring 'tsc_early_khz' in favor of firmware/hyp=
+ervisor.\n");
 
-> 
-> To perform emulated I/O, VMs use the TDG.VP.VMCALL instruction to
-> request MMIO.
-> 
-> Signed-off-by: Erdem Aktas <erdemaktas@google.com>
-> Co-developed-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Co-developed-by: Lisa Wang <wyihan@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> ---
->  tools/testing/selftests/kvm/Makefile.kvm          |  1 +
->  tools/testing/selftests/kvm/include/x86/tdx/tdx.h | 16 ++++++++++++
->  tools/testing/selftests/kvm/lib/x86/tdx/tdx.c     | 30 +++++++++++++++++++++++
->  3 files changed, 47 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-> index a651a876c522..489324cecf83 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -33,6 +33,7 @@ LIBKVM_x86 += lib/x86/ucall.c
->  LIBKVM_x86 += lib/x86/vmx.c
->  LIBKVM_x86 += lib/x86/tdx/tdx_util.c
->  LIBKVM_x86 += lib/x86/tdx/td_boot.S
-> +LIBKVM_x86 += lib/x86/tdx/tdx.c
->  
->  LIBKVM_arm64 += lib/arm64/gic.c
->  LIBKVM_arm64 += lib/arm64/gic_v3.c
-> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-> new file mode 100644
-> index 000000000000..810ca7423c84
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef SELFTESTS_TDX_TDX_H
-> +#define SELFTESTS_TDX_TDX_H
+>> All the nonsense about updating it every time we enter a CPU could just
+>> go away completely.
+>
+> But to Thomas' point, why bother?  For actual old hardware, kvmclock is w=
+hat it
+> is.  For modern hardware, it's completely antiquated.
 
-Nit:
-The headers in tools/testing/selftests/kvm use SELFTEST_KVM_XXX.
+I agree, but we are not forced to make it a first class citizen to the
+detriment of sane systems.
 
-> +
-> +#include <linux/types.h>
-> +
-> +enum mmio_size {
-> +	MMIO_SIZE_1B = 1,
-> +	MMIO_SIZE_2B = 2,
-> +	MMIO_SIZE_4B = 4,
-> +	MMIO_SIZE_8B = 8
-> +};
-> +
-> +u64 tdx_mmio_write(u64 address, enum mmio_size size, u64 data_in);
-> +
-> +#endif // SELFTESTS_TDX_TDX_H
-> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx.c
-> new file mode 100644
-> index 000000000000..f19be79fe11f
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx.c
-> @@ -0,0 +1,30 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +#include "tdx/tdx.h"
-> +
-> +#define TDG_VP_VMCALL 0
-> +#define TDG_VP_VMCALL_VE_REQUEST_MMIO    48
-> +#define TDVMCALL_MMIO_WRITE		  1
-> +#define TDVMCALL_EXPOSE_REGS_MASK    0xFC00
-> +
-> +u64 tdx_mmio_write(u64 address, enum mmio_size size, u64 data_in)
-> +{
-> +	register u64 r10_reg asm("r10") = TDG_VP_VMCALL;
+Thanks,
 
-I think this should just be 0 instead of TDG_VP_VMCALL, although
-TDG_VP_VMCALL is also 0.
-Per GHCI spec about R10:
- : Set to 0 indicates that TDG.VP.VMCALL leaf used in R11 is defined
- : in this specification.
- : All other values 0x1 to 0xFFFFFFFFFFFFFFFF indicate TDG.VP.VMCALL
- : is vendor-specific (both R10 and R11).
-
-
-> +	register u64 r11_reg asm("r11") = TDG_VP_VMCALL_VE_REQUEST_MMIO;
-> +	register u64 r12_reg asm("r12") = size;
-> +	register u64 r13_reg asm("r13") = TDVMCALL_MMIO_WRITE;
-> +	register u64 r14_reg asm("r14") = address;
-> +	register u64 r15_reg asm("r15") = data_in;
-> +	register u64 rax_reg asm("rax") = TDG_VP_VMCALL;
-> +	register u64 rcx_reg asm("rcx") = TDVMCALL_EXPOSE_REGS_MASK;
-> +
-> +	asm volatile(
-> +	 ".byte 0x66,0x0f,0x01,0xcc" /* tdcall */
-> +	 : "+r" (r10_reg), "+r" (r11_reg)
-> +	 : "r" (r12_reg), "r" (r13_reg), "r" (r14_reg), "r" (r15_reg),
-> +	   "r" (rax_reg), "r" (rcx_reg)
-> +	 : "cc", "memory"
-> +	);
-> +
-> +	return r10_reg;
-> +}
-> 
-
+        tglx
