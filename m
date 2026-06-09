@@ -1,81 +1,81 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857E43451DA
-	for <linux-coco@lists.linux.dev>; Tue,  9 Jun 2026 14:32:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927A642B72D
+	for <linux-coco@lists.linux.dev>; Tue,  9 Jun 2026 14:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781015567; cv=none; b=TgiFXV78LpkWkeppQEsO3v2xkwkyZrOX1P++IZVgKwFjOAq/rnCvAY0VMPtC/CXRe+zzF3Boiv6ac4djdqlM4gqTzS/y/Ux8Ju+3PlnLPn4qjL3q0mmyDU8jSJ8eafCvPO7slFMc68VXyy1Lcagp+IOWcxe+b1a5t1fh872eMEY=
+	t=1781016470; cv=none; b=Tmw1hefboM/tYR68OM9y4lWwgClD1WE2cXz4u2qgnNNxCwDnikAq69ASUVgzv+K/Hv/BvibA2fmPgCWTQsLbejOTuPesT9bwhmHyWPhyczAXXuQ2Xb3Li43CAwtgk6l3Sl1T+ZpNEIUqvXQSAMDQvjeqsaWjyrT/7KGkSHczwWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781015567; c=relaxed/simple;
-	bh=HZyPOuiNCQ2/FcFDihBMt8c7vcnJQS9bgoylFwsrqHw=;
+	s=arc-20240116; t=1781016470; c=relaxed/simple;
+	bh=flX4syNBceOQnZIne8mUXe1H3ubYr57A93RZ+UOuZeA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g/l0pCGpP2g91jPavIZYgnemKR4MWk3Pt5SdLHCi4Tc3gvAVXHaqD3dBb+iX3oneDHdxECnA/upLe1KPZc1OBDH0mt+ny+R5kqQ1Vnf4Tv2gO9z5wcbFAZS1meBOBZQ3izlzGJshBriyJzs9HfrR5p38gn5I3RI0C+3FN934yh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=l4ulVzMc; arc=none smtp.client-ip=209.85.222.171
+	 Content-Type:Content-Disposition:In-Reply-To; b=PrL4G1TO+jtlSNeyqYScF+I8+prpWSCUJzo5WcNbteTldsKl0EY2HAKLG2k29hr8UV5TAkfRTeNPRlcrdXqJJmPdsEsZNBwAhs/B7cseCm/DCVfQpI7sKE3WXSL9KLq/GOotHarAmQ7DGtsRvknDSRqcxdaNjQq5gOo6DusUBGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=XnMjILTm; arc=none smtp.client-ip=209.85.222.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="l4ulVzMc"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-91587626ae1so637176885a.3
-        for <linux-coco@lists.linux.dev>; Tue, 09 Jun 2026 07:32:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="XnMjILTm"
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-9158643e538so501791485a.1
+        for <linux-coco@lists.linux.dev>; Tue, 09 Jun 2026 07:47:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1781015564; x=1781620364; darn=lists.linux.dev;
+        d=ziepe.ca; s=google; t=1781016467; x=1781621267; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=D9KAUhO8tYdZLzMRayCE9PmCg2//sOlzvRLMvdEyREI=;
-        b=l4ulVzMcJs2+BxlBOD7AFkOYRSvnOzZHDn+UbVr/SfYOogdxfJID3kjbF7ldxRLxVa
-         OPg/nTmFit9A5CKQuVSuEyZ1kYV2ExSvsm23RTktAcSzzmbE/Oo0nvFOHsBU5X/mc6qL
-         xe4o9oDGvC7DVpQ5n7W18KScEnjbJADW+3+meAMSE2MMDd3EtCXMJx/KPr5oGHCV98mg
-         smkVpHV7g9kTMdKEPlNJQFi6OFoGjz+GorabCQ0EKSQFfbLL180RCyyBhRON04TAp1hp
-         Lw4MEcewpPPyMn0ryUZGUA1z6ly+d+apPrDYAzUd+3VcaD3QRTJhAewzGPN/RYCeSS/Y
-         tWCQ==
+        bh=jVABLuHAzbvMd8rLAYuqriN8lpaGXdnOhBwKXzGn2mk=;
+        b=XnMjILTmRQFadu4F8KAup53ig5bqhRy5N15beV2iCbaEdf/oMwudFTu1iwuC//Js5q
+         BTL4/3AmVpHq75GkKyDwNZLLwPcUIQ4o64bS9JP+a3/vhYphLyTrml0IA5XrNhJRhs+h
+         RziC1m6JySO8ykEzypxC+Eo+IrXJKn43E2lZ75DJmhfahj56BaVgWQtemXkRY/yR4o/3
+         PYkzrCXLde8NdWP7/7qjPsKleunp5qbhFMGNHOlMiTCZWGspE//Gfa+OjuUrLl0JkVeS
+         EjD3azH7dRuvsfeJJXaXVsrDOCPqv7rv5zPpDGggVpv6NJHZhG67659xUlDItYkN26XY
+         X5Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781015564; x=1781620364;
+        d=1e100.net; s=20251104; t=1781016467; x=1781621267;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=D9KAUhO8tYdZLzMRayCE9PmCg2//sOlzvRLMvdEyREI=;
-        b=rNgAkTiRoCeYsqLSnYqX3NWy4mjxyCne5O8XiwQ/VKhhYeJWmE6uua4Kbqu5DdmEc8
-         0w28tYnsUspZ+ovhQqJ9p60CXGI7vTw+ly9wdJVW5cAyW27BUdVPkl2arpH9qmevfi6Z
-         XcGlXinLDuIInh2dDVi7ghmx2O6QmEztgyFIvEGbi0EjbtM6qNwUk7s85v+R3HKvRWf3
-         zDUshnFFJ6JP+QiaKR0uLnKE7iB0JQHY35K21mBqjSxgCNcBP+A+CHLxXrjAJn4nasz6
-         4JHzCZl3catPracUilcI96Ew8xbU5DVmiuTn8EED/M8BoLexksgsdfD2c0deBF3sd6SO
-         pOzw==
-X-Forwarded-Encrypted: i=1; AFNElJ9Ti6ZmJHKeLJxkED+ACu1uQ6uYD2mf3q++J4kN90nWDkeDfdL3lwivRPVqQMyUNG8ameatmw4CDkNg@lists.linux.dev
-X-Gm-Message-State: AOJu0YytHXDDlDzorGrP+M4Sufa85pe9SJo1vEXe4RVNa8jkAjR9xNiX
-	iR4o14Ky06GNIY2oCFNDU4w6c5hc97ajHUjdRURqUlSKBFD76f0gIiftxbguRy2+lE0=
-X-Gm-Gg: Acq92OGyJeOxlHC2cCAYtEgevgf8Z93eTT3WGoNygdNziWHfjP06i3ENIe6SXGj85pr
-	fxz90kU2rUSO3Ru+5p7fWURF2aQnpCLgXuluebY9G11RkxfX56z2wY/LifqxltPg3KB3OOplz1e
-	GCiWy+dkIFdNvbXmn5rOo0kAPW7uKIuQ+8v3IqEHcIz8+/9eAabFcxUxL8zU3A54p+iMLkS+sij
-	GKOJTk3TLL+B1lQlvRjkjO+JEI5bX1kH8PPfkhByJ0Sw16aRpoMLgVv1K7FyXMPkpoY+9deVvaY
-	YgdSsuCucjt8Ku2mSVPZeWZllI0JU3DgaDT52KK66CwH9EleaP8PYzLTbsHutanN47DMTI6IXA/
-	dkx2Kgm151YAJuumDgqt5vC8raLTEwARSq7q53RtpWFEOfpzsMeNw5QjYQJS4z6avle3/4F3nRx
-	Wbvxo9Kbo4005i0RMo+d3Yj6C/5CPDonhFzPyUNh+zs5s4hYBGpc4o9aM71HZZQeieG+e/LHxkZ
-	RhVmzgw+uPMgrTv
-X-Received: by 2002:a05:620a:c46:b0:915:9f28:6748 with SMTP id af79cd13be357-915a9cdcf02mr3443110085a.23.1781015564257;
-        Tue, 09 Jun 2026 07:32:44 -0700 (PDT)
+        bh=jVABLuHAzbvMd8rLAYuqriN8lpaGXdnOhBwKXzGn2mk=;
+        b=HEWxsF5hkGnvn4nLE/cJ15oWAXvWZmxrrfOUFvIYBBMMxl0Ec/Gby2laR/T3cqHPW/
+         M53OpKswPbVz1dqHwNxng7jGdGoMLznKUvf+Qmilm6Jx3v1kmZt7scosmAIq+JRgXWBe
+         VnhG17AGZE4JmCheO5UpNt9ZDonRCWGwhInJ6GUcp+u++z8/qIqsJ2E2Y5+NrFsKlQrJ
+         tbRCjpcHHRsaumrkmT13kewj1sxvbq7rPJLi5B4vgSw9FWGFyvW393VK+r2Kix5WCCFg
+         VRBltdfnjiTL2PAt679cdh39NlDtN41gT3BNCIvc+qoFAH4RdirSD/Tij1QhF8mJB49k
+         rAPA==
+X-Forwarded-Encrypted: i=1; AFNElJ/ZFyw9A14v0WlZFmEPrggxFnulm7am+PJNcvcJKjQ5tCt42/0fi5blHSD4uUBGds3YbYSojslUEp+o@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywcp3G2XI6wPJiIIRb1NIvo+zywna7qfC+gaTPdpoJ8g+QmAkkm
+	8jQNHs5vK317dk3iQw0HUUqLSG874i3qq6FgsI4VpxZqEvvaVDTxWW3vMdg29+hbT54=
+X-Gm-Gg: Acq92OGuT870XrwAsmDCOofGQdnXgf3+iZpxlTnq0IR6zYHzRVnL9STIqoJeDIs+MTC
+	PaXP/IEAG3JgoxeG++qa7sISHEeHRd7jm5zNcgjiJrZsTamWHbZ+ZXcTIt1uSZlNxONrp+sD8Kw
+	3MlY0gw5ZCmVQEcA0BUsl7Rtwj/Njp/hpkUJPnWY62SSPa68LeJL0AKlVxoxuzGkIC6SBfTwuV3
+	jkT+QJGR8HhsftbuMADq38DFLKZFPqMJAg3PkAjSWlYBYGDFBt3syN5zs/gk12gNVygi9IXeAyv
+	iHRpUKyfWpIl5PVVOO0Jafh3z5PEuL2xi6yYmyHjCDU4SkWlfqIJi0HPAVwdcBxI7QV0ddkP2f3
+	4TfBo+DRQ/I/N72dK5AbuZL3XPQXsut3abAknPKo2zX8qlkzF3Cxl/VJBynZ88G9ttVxftHMQzg
+	BFsvk0DqcOTsrezzFYekiGweaxzRpnuM0Z+H+2Hf2jS0Z5XWlHYJZjx/OhOj2cBAqF8Ff1xO94t
+	1JvPFyVAtPQvg4P
+X-Received: by 2002:a05:620a:4886:b0:915:9efe:6dd8 with SMTP id af79cd13be357-915a9db8256mr3196001885a.42.1781016467473;
+        Tue, 09 Jun 2026 07:47:47 -0700 (PDT)
 Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a00afafsm2106743685a.2.2026.06.09.07.32.43
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a411333sm2254245885a.46.2026.06.09.07.47.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 07:32:43 -0700 (PDT)
+        Tue, 09 Jun 2026 07:47:47 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1wWxVS-0000000241b-3Vv0;
-	Tue, 09 Jun 2026 11:32:42 -0300
-Date: Tue, 9 Jun 2026 11:32:42 -0300
+	id 1wWxk2-000000025BT-2DH0;
+	Tue, 09 Jun 2026 11:47:46 -0300
+Date: Tue, 9 Jun 2026 11:47:46 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Alexey Kardashevskiy <aik@amd.com>
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Robin Murphy <robin.murphy@arm.com>,
 	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
 	Steven Price <steven.price@arm.com>,
 	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
 	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
 	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
 	Dan Williams <dan.j.williams@intel.com>,
 	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
 	linux-s390@vger.kernel.org,
@@ -88,13 +88,12 @@ Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	Heiko Carstens <hca@linux.ibm.com>,
 	Vasily Gorbik <gor@linux.ibm.com>,
 	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
-	Jiri Pirko <jiri@nvidia.com>, Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH v6 04/20] dma-pool: track decrypted atomic pools and
- select them via attrs
-Message-ID: <20260609143242.GK2764304@ziepe.ca>
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
+Subject: Re: [PATCH v6 00/20] dma-mapping: Use DMA_ATTR_CC_SHARED through
+ direct, pool and swiotlb paths
+Message-ID: <20260609144746.GL2764304@ziepe.ca>
 References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
- <20260604083959.1265923-5-aneesh.kumar@kernel.org>
+ <aigYbK12D8uKQvJF@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -103,59 +102,70 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260604083959.1265923-5-aneesh.kumar@kernel.org>
+In-Reply-To: <aigYbK12D8uKQvJF@arm.com>
 
-On Thu, Jun 04, 2026 at 02:09:43PM +0530, Aneesh Kumar K.V (Arm) wrote:
->  struct page *dma_alloc_from_pool(struct device *dev, size_t size,
-> -		void **cpu_addr, gfp_t gfp,
-> +		void **cpu_addr, gfp_t gfp, unsigned long attrs,
->  		bool (*phys_addr_ok)(struct device *, phys_addr_t, size_t))
->  {
-> -	struct gen_pool *pool = NULL;
-> +	struct dma_gen_pool *dma_pool = NULL;
->  	struct page *page;
->  	bool pool_found = false;
->  
-> -	while ((pool = dma_guess_pool(pool, gfp))) {
-> +	while ((dma_pool = dma_guess_pool(dma_pool, gfp))) {
-> +
-> +		if (dma_pool->unencrypted != !!(attrs & DMA_ATTR_CC_SHARED))
-> +			continue;
+On Tue, Jun 09, 2026 at 02:43:08PM +0100, Catalin Marinas wrote:
+> On Thu, Jun 04, 2026 at 02:09:39PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> > This series propagates DMA_ATTR_CC_SHARED through the dma-direct,
+> > dma-pool, and swiotlb paths so that encrypted and decrypted DMA buffers
+> > are handled consistently.
+> > 
+> > Today, the direct DMA path mostly relies on force_dma_unencrypted() for
+> > shared/decrypted buffer handling. This series consolidates the
+> > force_dma_unencrypted() checks in the top-level functions and ensures
+> > that the remaining DMA interfaces use DMA attributes to make the correct
+> > decisions.
+> 
+> Please check Sashiko's reports, it has some good points:
+> 
+> https://sashiko.dev/#/patchset/20260604083959.1265923-1-aneesh.kumar@kernel.org
+> 
+> I think the main one is the swiotlb_tbl_map_single() changes which break
+> AMD SME host support. There cc_platform_has(CC_ATTR_MEM_ENCRYPT) is true
+> but force_dma_unencrypted() is false. Normally you'd not end up on this
+> path but you can have swiotlb=force.
 
-I don't think you should be overloading DMA_ATTR_CC_SHARED like this.
+IMHO that's an AMD issue, not with the design of this series..
+
+The series is right, a device that is !force_dma_decrypted() must be
+considerd to be a trusted device and we must never place any DMA
+mappings for a trusted device into shared memory.
+
+That AMD has done somethine insane:
+
+bool force_dma_unencrypted(struct device *dev)
+{
+	/*
+	 * For SEV, all DMA must be to unencrypted addresses.
+	 */
+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+		return true;
 
 	/*
-	 * DMA_ATTR_CC_SHARED is not a caller-visible dma_alloc_*()
-	 * attribute. The direct allocator uses it internally after it has
-	 * decided that the backing pages must be shared/decrypted, so the
-	 * rest of the allocation path can consistently select DMA addresses,
-	 * choose compatible pools and restore encryption on free.
+	 * For SME, all DMA must be to unencrypted addresses if the
+	 * device does not support DMA to addresses that include the
+	 * encryption mask.
 	 */
-	if (attrs & DMA_ATTR_CC_SHARED)
-		return NULL;
+	if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
+		u64 dma_enc_mask = DMA_BIT_MASK(__ffs64(sme_me_mask));
+		u64 dma_dev_mask = min_not_zero(dev->coherent_dma_mask,
+						dev->bus_dma_limit);
 
-	if (force_dma_unencrypted(dev)) {
-		attrs |= DMA_ATTR_CC_SHARED;
-		mark_mem_decrypt = true;
+		if (dma_dev_mask <= dma_enc_mask)
+			return true;
 	}
 
-It is fine to have a bit inside the attrs that is only used by the
-internal logic, but it needs to have a clearer name
-__DMA_ATTR_REQUIRE_CC_SHARED perhaps.
+Is an AMD issue. We already have an address mask limit system built
+into the DMA API, arch code should not be co-opting the CC mechanism
+to create a special pool for address limited devices.
 
-The sashiko note does look legit though:
+The correct thing is to ensure the DMA API is checking any address
+limits on the actual true dma_addr_t, not on an intermediate like a
+phys_addr before it is adjusted with any C bit. Then it is a normal
+low address swiotlb bounce like any other.
 
-	if (IS_ENABLED(CONFIG_DMA_DIRECT_REMAP) &&
-	    !gfpflags_allow_blocking(gfp) && !coherent) {
-		page = dma_alloc_from_pool(dev, PAGE_ALIGN(size), &cpu_addr,
-					   gfp, attrs, NULL);
-		if (!page)
-			return NULL;
-
-I don't see anything doing the force_dma_unencrypted test along this
-callchain..
-
-I guess it should be done one step up in dma_alloc_attrs() instead of
-in dma_direct_alloc()?
+I think we can ignore this Sashiko remark, in real systems the use of
+swiotlb for 64 bit devices is very rare. Though it would be good to
+remove this code from AMD...
 
 Jason
