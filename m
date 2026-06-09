@@ -1,64 +1,64 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8C3410D13
-	for <linux-coco@lists.linux.dev>; Tue,  9 Jun 2026 12:15:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC7441363C
+	for <linux-coco@lists.linux.dev>; Tue,  9 Jun 2026 12:18:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781007361; cv=none; b=c00/rNCN0ccszCVZV3Oeo3sCzxXy2dpdp0BHv+ns9+szzN8524zD1Mjq6zMNcuffKKBj5uhHd/EFPPoUm0oRs6kM6ynDAgwXSOF6rytZkCRCKjOIU7+smnTdp58E5cYKKwFqeWBG6ZGXdm0qVGqugRInR/ugzBsOL0gT6AIdhX8=
+	t=1781007507; cv=none; b=QQW/9dTJzLt1p6de0g5en9klcYEcKs+R8W2diuJJLSG1p9YL563JBkr5bgWOt7yKusuWXnHhH1X0/3IxzTx/6J2PkfeOLzBth+NUWZ1PuoBiB0K3sqEret66DIEj/A4+Koz02Oh6EvSyTKXuKbQFKuc72AtI78EXmmR6HmWnqOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781007361; c=relaxed/simple;
-	bh=brtgLaNnyjw2YXdYG21MgcS8I6CCPSHYKNmm+BOhNKM=;
+	s=arc-20240116; t=1781007507; c=relaxed/simple;
+	bh=AWet2x3HjRD8h6Y0eGbnk+I6u0raEbNWeeBz8Mgsei8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eCQNcbyabzv8nRfKKgm+Jz9UL/J+u3X9/UnFWux7+iK+U+z6DgIhw3y12zC81GteGbr+HBTM+Y6wx5vXp+hcffM+O7H5yv9tvnxlBuKLSv9+vs83H3WjV/86+fOD2b4W7qqTmgpz9SdLjYk+BAGYw04ZYfXN3T87txwGnZOTsgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=aEO24Yv/; arc=none smtp.client-ip=209.85.128.46
+	 MIME-Version:Content-Type; b=T4hicfR60eJcU6dtus2ZK5FFlovkjx1lEOFx0fa2FHVLbmgwXdFpz//SEFUkuzSsHLaMBsvpTnHgUnCcxRChattuFm03/kgl9oqO6Vz3LbT2AqL5xXs7z9M9iBbOk9GVkasmLkhk5OBNNiDLo6GZHLmmjYWSJLnY8i2Ob4+HZns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=dPyEeshT; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="aEO24Yv/"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490b1aefe1cso5820315e9.2
-        for <linux-coco@lists.linux.dev>; Tue, 09 Jun 2026 05:15:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="dPyEeshT"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-490b1c39fe4so5484415e9.3
+        for <linux-coco@lists.linux.dev>; Tue, 09 Jun 2026 05:18:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1781007357; x=1781612157; darn=lists.linux.dev;
+        d=suse.com; s=google; t=1781007504; x=1781612304; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=d7sN51CIvQwRuTJi3qMza06o4wJMznBiMEkiJVIlNBs=;
-        b=aEO24Yv/+ICVYF8i7VSgo2y64nzVygobJX2R1G4m4L0/3pY5YkUpMQOLZzSVzoHauy
-         YvXmZuvhz/H1FatM8xvz3QiehzD2ICb8WX2sAq9/HjZXGAQweWS0zZx4JltpBciWh0Mu
-         Y8TYhF/wRmT4AFsU1MASII8rZL7EnEFdEmaCUaUFAB/AqV2GHowqtLfxjhTL2PxRLg6A
-         Vyl6sl07CDfxbABh/QcCDC+Qhy0cWMY5mS0FZoHLMr1nZf1FsJ5BBHWnMewtGmKENZ9h
-         57AISMIUAcHaBF12M/mRpier4vaZrcoXc0SblOLpj/OEUgk5vVv3dgnakAJgUbkjeFMI
-         7bmQ==
+        bh=5cgmjA35OZT82unFdAfj17g91mhG8pXqbVF134yH8ow=;
+        b=dPyEeshTh1m0a0yinTGJlL72vV8JmtvaWM6RyWiQ55kW6qTZqBPKZ/iHrOxKt5jroB
+         t9RXYE4OxMI+WPZn67crwJ4PCYXNZDADCyvgeMW/CNduMEviGno/mK0PYYG6OHJZLlJL
+         4ahA/pTBV6aRBo4gWfdyosKedHdoXnjbGJMw+MtLNtTvhKZky+JKiWKHNuXmnI34WJtb
+         fT2qpwEECyyXytZWksViH49k4E8uqqafHaFbXuGmncDIYOdjRCCVJjITHifSANImWbMM
+         QGXmNR7kRoGhIcHbJxPbI7LspD82EiFfJj8CLxAQ0KS2JTSM/wXU/3o5iCi1XPQEPFrm
+         /x4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781007357; x=1781612157;
+        d=1e100.net; s=20251104; t=1781007504; x=1781612304;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=d7sN51CIvQwRuTJi3qMza06o4wJMznBiMEkiJVIlNBs=;
-        b=rrBCzRW7vAHTkViRiojdq+TuKPwinGLcjQ6+bYpjPoMGaVx1w+cKyiDsneTdThMTvr
-         4UOQ5samco1eRA1xZBsNSa0bMY501JCOJvGdxSmIXhg+hku4Xg4wHil3pKnvi6Knkfun
-         +iMgn6JMEiXr96Qi9T+V80cDjsEOtcKh/BhVut9tQEVn/nLdgiiWZ3InMqm2viv/9T5k
-         xx84G2X4Gy04kIMzAiTJP1M41wvGnJMo74zsN4XLyjM9nbYtMRdTE2nFlpZEiJaGP8Hx
-         Kbegzp2btEeQdaE1/vfb8T6M8tqT46EjOFIEBanDyw7E2NVvX6oyfUpd74yHAaH3/d6+
-         M1aw==
-X-Forwarded-Encrypted: i=1; AFNElJ+xLTVjZ+FIdZRxBWedTklNOTs/BeYr7bNAqXtVefUMDUMLM4yIuSQc7lqdzVJFebykwh9oPjzC/aH4@lists.linux.dev
-X-Gm-Message-State: AOJu0YxiEqpzm0PJJ/UkLs2XtcD5olCVg9N0LA6J9Hievid4/Ocd+cDf
-	X+9O+Uupz/xVYeLfqb+ntyuTBnYfwsU938NfehAef5HMy6aT6x624DiMHNSgTek70+A=
-X-Gm-Gg: Acq92OHud37Bpw0fqKjFZueKiXP4RJlKVbRBPUfslwQWvJw0zbX91kdpHYleh9Do6WP
-	z5sOyoas9cLWT9EBQbg9bOpmVmoddp8UY9bZfxbgNprDNqAMS6oCBQ2Gru4GLn5Bj73/oyv5Xx5
-	76H6z0jp53RYrUDydq2PvTGAJNWZ/w4w39btbpkJGs7IVWyip+DDas+ImEh37z3SFDvvsRxNUQ4
-	hbFVJgcGJ2THJSFUGZAcHorEwtxQmHnX7ZM6O6IzoszgF+yVzsMhSeHZT0WnbjbSJPBBkh8Q+er
-	EDBIs86mQs8y7gc2sRIaZQAaPxMtuo0f7w7GtgqLpUo2AtDEIaFEX64wCT9wvl5qDlQ6YiEvkbt
-	4DzUgf5AydkbI7BOOFJpgeF4dwFyZW7lGeNg2l/wjRGk/wRIj9GoVIi+o6mnb7lHGIEHwt6ySZ8
-	pw5AqILfOUI0gPzlTqaETRnvc=
-X-Received: by 2002:a05:600c:620d:b0:48d:1021:e5d1 with SMTP id 5b1f17b1804b1-490c25f597emr139602585e9.3.1781007356518;
-        Tue, 09 Jun 2026 05:15:56 -0700 (PDT)
+        bh=5cgmjA35OZT82unFdAfj17g91mhG8pXqbVF134yH8ow=;
+        b=i7jIXSLWWhrZQ/uQLhtpWFzSJfwSFQ3oQaC4rZLJsLjASLgynU4XcQ/+sUDTpmwUO5
+         /gI+FYSUIHa7MM2cmAVWQSqclrFbVvAEE4fFypPXTVCP9uFpPvHjCnDEpg2lktKoM/yi
+         jfAdsVVtB9JG2M/bWBZZmp5XZbb7AuGHaBy4PwDhmi2iF2ZKN7Q1TaXtKBAhCQgiFCKk
+         Br/uyxkpTuar7cSJKzH1zj8ND7xCYKM8v9+AbGHIdMQBbCghAdv2Olbn4ztQKxcrl1we
+         AAniBsUqqekY82R26aoQNmo1OTaUkRN/gc9hZEP4lXVnitIvXl5uNQ8Psf5wwoP05ETT
+         0iCg==
+X-Forwarded-Encrypted: i=1; AFNElJ9u2RBh9Gg6cZf2Xgk5NWOrYPe9GQTfXFa/BdGvJUtnXUt+UCQ2GHzzy7f7X9EEQkGNoCunir0aHBOl@lists.linux.dev
+X-Gm-Message-State: AOJu0YwCdTo7veqaIOpbAgEPHoWBfeQp3BkXIPF5DehRwMmsB2MSx9M3
+	BAKAGTUvPc9LbiZp39EDUmAK+0TxOLrjXqQvtK3wV6djGinK7HP9cLKkItuqAdx/A7c=
+X-Gm-Gg: Acq92OEkawh7fSqomKEjASOp/+jCsXib4LGp9RrFjYe43wCUqiBAwC6jTE6qLKm16qM
+	vAQDyykgDRhcYfrMZVejdxwxLG+qCu3WhD6DWXZqxxXcZUhGA94ar5zgJMa63ZuA1A0hpp0BuOu
+	X/s4vuLKRF11F205uQF/QuKeqb8+KkzUMC0wwaI3HiU7cVq9/tZ/96FN82DzguO24UYwWx2YG1x
+	gFUAxaZXb85+OVzG4Kvbr0mflpBKnTtDSA4+NZgrVj/SjOfNNRF0VIIbt+UUNmGvyQbrfRdVw0p
+	KlrkDPy3pj+0pIrkL82+npevzsVMEiHrTArqASCSsOcnVbNgHUXFgEOO6taVRRjOB0SPLWaoN2N
+	bkOwQ1RIUdqHtG009wQfVGSFKnEDtq08UwWQM29pFU9TLrGgavJqRbZqFSQDZZ1yG+K9ipmCEns
+	AF4TwzPC1Klzuv8nCIvvAm3k8=
+X-Received: by 2002:a05:600c:6990:b0:490:c123:3b7a with SMTP id 5b1f17b1804b1-490c25f5864mr145239965e9.4.1781007503651;
+        Tue, 09 Jun 2026 05:18:23 -0700 (PDT)
 Received: from mordecai ([62.77.90.70])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3e5a00sm473055565e9.15.2026.06.09.05.15.54
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f3444fesm61851766f8f.20.2026.06.09.05.18.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 05:15:55 -0700 (PDT)
-Date: Tue, 9 Jun 2026 14:15:48 +0200
+        Tue, 09 Jun 2026 05:18:22 -0700 (PDT)
+Date: Tue, 9 Jun 2026 14:18:14 +0200
 From: Petr Tesarik <ptesarik@suse.com>
 To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
@@ -78,12 +78,12 @@ Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
  <svens@linux.ibm.com>, x86@kernel.org, Jiri Pirko <jiri@nvidia.com>,
  Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH v6 02/20] dma-direct: swiotlb: handle swiotlb alloc/free
- outside __dma_direct_alloc_pages
-Message-ID: <20260609141548.70a5848d@mordecai>
-In-Reply-To: <20260604083959.1265923-3-aneesh.kumar@kernel.org>
+Subject: Re: [PATCH v6 03/20] dma-direct: use DMA_ATTR_CC_SHARED in
+ alloc/free paths
+Message-ID: <20260609141814.413c1f2f@mordecai>
+In-Reply-To: <20260604083959.1265923-4-aneesh.kumar@kernel.org>
 References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
-	<20260604083959.1265923-3-aneesh.kumar@kernel.org>
+	<20260604083959.1265923-4-aneesh.kumar@kernel.org>
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-suse-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -94,260 +94,132 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu,  4 Jun 2026 14:09:41 +0530
+On Thu,  4 Jun 2026 14:09:42 +0530
 "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
 
-> Move swiotlb allocation out of __dma_direct_alloc_pages() and handle it in
-> dma_direct_alloc() / dma_direct_alloc_pages().
+> Propagate force_dma_unencrypted() into DMA_ATTR_CC_SHARED in the
+> dma-direct allocation path and use the attribute to drive the related
+> decisions.
 > 
-> This is needed for follow-up changes that simplify the handling of
-> memory encryption/decryption based on the DMA attribute flags.
-> 
-> swiotlb backing pages are already mapped decrypted by
-> swiotlb_update_mem_attributes() and rmem_swiotlb_device_init(), so
-> dma-direct should not call dma_set_decrypted() on allocation nor
-> dma_set_encrypted() on free for swiotlb-backed memory.
-> 
-> Update alloc/free paths to detect swiotlb-backed pages and skip
-> encrypt/decrypt transitions for those paths. Keep the existing highmem
-> rejection in dma_direct_alloc_pages() for swiotlb allocations.
-> 
-> Only for "restricted-dma-pool", we currently set `for_alloc = true`, while
-> rmem_swiotlb_device_init() decrypts the whole pool up front. This pool is
-> typically used together with "shared-dma-pool", where the shared region is
-> accessed after remap/ioremap and the returned address is suitable for
-> decrypted memory access. So existing code paths remain valid.
+> This updates dma_direct_alloc(), dma_direct_free(), and
+> dma_direct_alloc_pages() to fold the forced unencrypted case into attrs.
 > 
 > Tested-by: Jiri Pirko <jiri@nvidia.com>
 > Tested-by: Michael Kelley <mhklinux@outlook.com>
 > Tested-by: Mostafa Saleh <smostafa@google.com>
 > Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> ---
->  include/linux/swiotlb.h |  6 ++++
->  kernel/dma/direct.c     | 71 ++++++++++++++++++++++++++++++-----------
->  kernel/dma/swiotlb.c    |  6 ++++
->  3 files changed, 65 insertions(+), 18 deletions(-)
-> 
-> diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
-> index 3dae0f592063..133bb8ca9032 100644
-> --- a/include/linux/swiotlb.h
-> +++ b/include/linux/swiotlb.h
-> @@ -284,6 +284,8 @@ extern void swiotlb_print_info(void);
->  #ifdef CONFIG_DMA_RESTRICTED_POOL
->  struct page *swiotlb_alloc(struct device *dev, size_t size);
->  bool swiotlb_free(struct device *dev, struct page *page, size_t size);
-> +void swiotlb_free_from_pool(struct device *dev, phys_addr_t tlb_addr,
-> +		size_t size, struct io_tlb_pool *pool);
->  
->  static inline bool is_swiotlb_for_alloc(struct device *dev)
->  {
-> @@ -299,6 +301,10 @@ static inline bool swiotlb_free(struct device *dev, struct page *page,
->  {
->  	return false;
->  }
-> +static inline void swiotlb_free_from_pool(struct device *dev, phys_addr_t tlb_addr,
-> +		size_t size, struct io_tlb_pool *pool)
-> +{
-> +}
->  static inline bool is_swiotlb_for_alloc(struct device *dev)
->  {
->  	return false;
-> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-> index 583c5922bca2..a741c8a2ee66 100644
-> --- a/kernel/dma/direct.c
-> +++ b/kernel/dma/direct.c
-> @@ -96,14 +96,6 @@ static int dma_set_encrypted(struct device *dev, void *vaddr, size_t size)
->  	return ret;
->  }
->  
-> -static void __dma_direct_free_pages(struct device *dev, struct page *page,
-> -				    size_t size)
-> -{
-> -	if (swiotlb_free(dev, page, size))
-> -		return;
-> -	dma_free_contiguous(dev, page, size);
-> -}
-> -
->  static struct page *dma_direct_alloc_swiotlb(struct device *dev, size_t size)
->  {
->  	struct page *page = swiotlb_alloc(dev, size);
-> @@ -125,9 +117,6 @@ static struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
->  
->  	WARN_ON_ONCE(!PAGE_ALIGNED(size));
->  
-> -	if (is_swiotlb_for_alloc(dev))
-> -		return dma_direct_alloc_swiotlb(dev, size);
-> -
->  	gfp |= dma_direct_optimal_gfp_mask(dev, &phys_limit);
->  	page = dma_alloc_contiguous(dev, size, gfp);
->  	if (page) {
-> @@ -204,6 +193,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->  		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
->  {
->  	bool remap = false, set_uncached = false;
-> +	bool mark_mem_decrypt = true;
->  	struct page *page;
->  	void *ret;
->  
-> @@ -250,11 +240,21 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->  	    dma_direct_use_pool(dev, gfp))
->  		return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
->  
-> +	if (is_swiotlb_for_alloc(dev)) {
-> +		page = dma_direct_alloc_swiotlb(dev, size);
-> +		if (page) {
-> +			mark_mem_decrypt = false;
-> +			goto setup_page;
-> +		}
-> +		return NULL;
-> +	}
-> +
->  	/* we always manually zero the memory once we are done */
->  	page = __dma_direct_alloc_pages(dev, size, gfp & ~__GFP_ZERO, true);
->  	if (!page)
->  		return NULL;
->  
-> +setup_page:
->  	/*
->  	 * dma_alloc_contiguous can return highmem pages depending on a
->  	 * combination the cma= arguments and per-arch setup.  These need to be
-> @@ -281,7 +281,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->  			goto out_free_pages;
->  	} else {
->  		ret = page_address(page);
-> -		if (dma_set_decrypted(dev, ret, size))
-> +		if (mark_mem_decrypt && dma_set_decrypted(dev, ret, size))
->  			goto out_leak_pages;
->  	}
->  
-> @@ -298,10 +298,11 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->  	return ret;
->  
->  out_encrypt_pages:
-> -	if (dma_set_encrypted(dev, page_address(page), size))
-> +	if (mark_mem_decrypt && dma_set_encrypted(dev, page_address(page), size))
->  		return NULL;
->  out_free_pages:
-> -	__dma_direct_free_pages(dev, page, size);
-> +	if (!swiotlb_free(dev, page, size))
-> +		dma_free_contiguous(dev, page, size);
->  	return NULL;
->  out_leak_pages:
->  	return NULL;
-> @@ -310,6 +311,9 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->  void dma_direct_free(struct device *dev, size_t size,
->  		void *cpu_addr, dma_addr_t dma_addr, unsigned long attrs)
->  {
-> +	phys_addr_t phys;
-> +	bool mark_mem_encrypted = true;
-> +	struct io_tlb_pool *swiotlb_pool;
->  	unsigned int page_order = get_order(size);
->  
->  	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
-> @@ -338,16 +342,25 @@ void dma_direct_free(struct device *dev, size_t size,
->  	    dma_free_from_pool(dev, cpu_addr, PAGE_ALIGN(size)))
->  		return;
->  
-> +	phys = dma_to_phys(dev, dma_addr);
-> +	swiotlb_pool = swiotlb_find_pool(dev, phys);
-> +	if (swiotlb_pool)
-> +		/* Swiotlb doesn't need a page attribute update on free */
-> +		mark_mem_encrypted = false;
-> +
->  	if (is_vmalloc_addr(cpu_addr)) {
->  		vunmap(cpu_addr);
->  	} else {
->  		if (IS_ENABLED(CONFIG_ARCH_HAS_DMA_CLEAR_UNCACHED))
->  			arch_dma_clear_uncached(cpu_addr, size);
-> -		if (dma_set_encrypted(dev, cpu_addr, size))
-> +		if (mark_mem_encrypted && dma_set_encrypted(dev, cpu_addr, size))
->  			return;
->  	}
->  
-> -	__dma_direct_free_pages(dev, dma_direct_to_page(dev, dma_addr), size);
-> +	if (swiotlb_pool)
-> +		swiotlb_free_from_pool(dev, phys, size, swiotlb_pool);
-> +	else
-> +		dma_free_contiguous(dev, dma_direct_to_page(dev, dma_addr), size);
->  }
->  
->  struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
-> @@ -359,6 +372,15 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
->  	if (force_dma_unencrypted(dev) && dma_direct_use_pool(dev, gfp))
->  		return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
->  
-> +	if (is_swiotlb_for_alloc(dev)) {
-> +		page = dma_direct_alloc_swiotlb(dev, size);
-> +		if (!page)
-> +			return NULL;
-> +
-> +		ret = page_address(page);
-> +		goto setup_page;
-> +	}
-> +
->  	page = __dma_direct_alloc_pages(dev, size, gfp, false);
->  	if (!page)
->  		return NULL;
-> @@ -366,6 +388,7 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
->  	ret = page_address(page);
->  	if (dma_set_decrypted(dev, ret, size))
->  		goto out_leak_pages;
-> +setup_page:
->  	memset(ret, 0, size);
->  	*dma_handle = phys_to_dma_direct(dev, page_to_phys(page));
->  	return page;
-> @@ -377,16 +400,28 @@ void dma_direct_free_pages(struct device *dev, size_t size,
->  		struct page *page, dma_addr_t dma_addr,
->  		enum dma_data_direction dir)
->  {
-> +	phys_addr_t phys;
->  	void *vaddr = page_address(page);
-> +	struct io_tlb_pool *swiotlb_pool;
-> +	bool mark_mem_encrypted = true;
->  
->  	/* If cpu_addr is not from an atomic pool, dma_free_from_pool() fails */
->  	if (IS_ENABLED(CONFIG_DMA_COHERENT_POOL) &&
->  	    dma_free_from_pool(dev, vaddr, size))
->  		return;
->  
-> -	if (dma_set_encrypted(dev, vaddr, size))
-> +	phys = page_to_phys(page);
-> +	swiotlb_pool = swiotlb_find_pool(dev, phys);
-> +	if (swiotlb_pool)
-> +		mark_mem_encrypted = false;
-> +
-> +	if (mark_mem_encrypted && dma_set_encrypted(dev, vaddr, size))
->  		return;
-> -	__dma_direct_free_pages(dev, page, size);
-> +
-> +	if (swiotlb_pool)
-> +		swiotlb_free_from_pool(dev, phys, size, swiotlb_pool);
-> +	else
-> +		dma_free_contiguous(dev, page, size);
->  }
->  
->  #if defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_DEVICE) || \
-> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-> index 1abd3e6146f4..ac03a6856c2e 100644
-> --- a/kernel/dma/swiotlb.c
-> +++ b/kernel/dma/swiotlb.c
-> @@ -1809,6 +1809,12 @@ bool swiotlb_free(struct device *dev, struct page *page, size_t size)
->  	return true;
->  }
->  
-> +void swiotlb_free_from_pool(struct device *dev, phys_addr_t tlb_addr, size_t size,
-> +		struct io_tlb_pool *pool)
 
-What's the reason to pass the buffer size if it's not used?
-
-Other than that, this patch looks good to me.
+Reviewed-by: Petr Tesarik <ptesarik@suse.com>
 
 Petr T
 
-> +{
-> +	swiotlb_release_slots(dev, tlb_addr, pool);
-> +}
-> +
->  static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
->  				    struct device *dev)
+> ---
+>  kernel/dma/direct.c | 53 +++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 44 insertions(+), 9 deletions(-)
+> 
+> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+> index a741c8a2ee66..90dc5057a0c0 100644
+> --- a/kernel/dma/direct.c
+> +++ b/kernel/dma/direct.c
+> @@ -193,16 +193,31 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+>  		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
 >  {
+>  	bool remap = false, set_uncached = false;
+> -	bool mark_mem_decrypt = true;
+> +	bool mark_mem_decrypt = false;
+>  	struct page *page;
+>  	void *ret;
+>  
+> +	/*
+> +	 * DMA_ATTR_CC_SHARED is not a caller-visible dma_alloc_*()
+> +	 * attribute. The direct allocator uses it internally after it has
+> +	 * decided that the backing pages must be shared/decrypted, so the
+> +	 * rest of the allocation path can consistently select DMA addresses,
+> +	 * choose compatible pools and restore encryption on free.
+> +	 */
+> +	if (attrs & DMA_ATTR_CC_SHARED)
+> +		return NULL;
+> +
+> +	if (force_dma_unencrypted(dev)) {
+> +		attrs |= DMA_ATTR_CC_SHARED;
+> +		mark_mem_decrypt = true;
+> +	}
+> +
+>  	size = PAGE_ALIGN(size);
+>  	if (attrs & DMA_ATTR_NO_WARN)
+>  		gfp |= __GFP_NOWARN;
+>  
+> -	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
+> -	    !force_dma_unencrypted(dev) && !is_swiotlb_for_alloc(dev))
+> +	if (((attrs & (DMA_ATTR_NO_KERNEL_MAPPING | DMA_ATTR_CC_SHARED)) ==
+> +	     DMA_ATTR_NO_KERNEL_MAPPING) && !is_swiotlb_for_alloc(dev))
+>  		return dma_direct_alloc_no_mapping(dev, size, dma_handle, gfp);
+>  
+>  	if (!dev_is_dma_coherent(dev)) {
+> @@ -236,7 +251,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+>  	 * Remapping or decrypting memory may block, allocate the memory from
+>  	 * the atomic pools instead if we aren't allowed block.
+>  	 */
+> -	if ((remap || force_dma_unencrypted(dev)) &&
+> +	if ((remap || (attrs & DMA_ATTR_CC_SHARED)) &&
+>  	    dma_direct_use_pool(dev, gfp))
+>  		return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
+>  
+> @@ -312,12 +327,24 @@ void dma_direct_free(struct device *dev, size_t size,
+>  		void *cpu_addr, dma_addr_t dma_addr, unsigned long attrs)
+>  {
+>  	phys_addr_t phys;
+> -	bool mark_mem_encrypted = true;
+> +	bool mark_mem_encrypted = false;
+>  	struct io_tlb_pool *swiotlb_pool;
+>  	unsigned int page_order = get_order(size);
+>  
+> -	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
+> -	    !force_dma_unencrypted(dev) && !is_swiotlb_for_alloc(dev)) {
+> +	/* see dma_direct_alloc() for details */
+> +	WARN_ON(attrs & DMA_ATTR_CC_SHARED);
+> +
+> +	/*
+> +	 * if the device had requested for an unencrypted buffer,
+> +	 * convert it to encrypted on free
+> +	 */
+> +	if (force_dma_unencrypted(dev)) {
+> +		attrs |= DMA_ATTR_CC_SHARED;
+> +		mark_mem_encrypted = true;
+> +	}
+> +
+> +	if (((attrs & (DMA_ATTR_NO_KERNEL_MAPPING | DMA_ATTR_CC_SHARED)) ==
+> +	     DMA_ATTR_NO_KERNEL_MAPPING) && !is_swiotlb_for_alloc(dev)) {
+>  		/* cpu_addr is a struct page cookie, not a kernel address */
+>  		dma_free_contiguous(dev, cpu_addr, size);
+>  		return;
+> @@ -366,10 +393,14 @@ void dma_direct_free(struct device *dev, size_t size,
+>  struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
+>  		dma_addr_t *dma_handle, enum dma_data_direction dir, gfp_t gfp)
+>  {
+> +	unsigned long attrs = 0;
+>  	struct page *page;
+>  	void *ret;
+>  
+> -	if (force_dma_unencrypted(dev) && dma_direct_use_pool(dev, gfp))
+> +	if (force_dma_unencrypted(dev))
+> +		attrs |= DMA_ATTR_CC_SHARED;
+> +
+> +	if ((attrs & DMA_ATTR_CC_SHARED) && dma_direct_use_pool(dev, gfp))
+>  		return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
+>  
+>  	if (is_swiotlb_for_alloc(dev)) {
+> @@ -403,7 +434,11 @@ void dma_direct_free_pages(struct device *dev, size_t size,
+>  	phys_addr_t phys;
+>  	void *vaddr = page_address(page);
+>  	struct io_tlb_pool *swiotlb_pool;
+> -	bool mark_mem_encrypted = true;
+> +	/*
+> +	 * if the device had requested for an unencrypted buffer,
+> +	 * convert it to encrypted on free
+> +	 */
+> +	bool mark_mem_encrypted = force_dma_unencrypted(dev);
+>  
+>  	/* If cpu_addr is not from an atomic pool, dma_free_from_pool() fails */
+>  	if (IS_ENABLED(CONFIG_DMA_COHERENT_POOL) &&
+
