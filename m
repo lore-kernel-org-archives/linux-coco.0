@@ -1,117 +1,83 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A5640D568
-	for <linux-coco@lists.linux.dev>; Tue,  9 Jun 2026 19:28:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97563282F24
+	for <linux-coco@lists.linux.dev>; Wed, 10 Jun 2026 03:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781033334; cv=none; b=Tjwql5zMftCL3Iip5/ERBsJlFljuRJzMbQ+Cz2W6OYT1jmUInnyOfYqr7lAlf58Mp1d2o/a+V+zY1385EObn/iToOnOqDR+l9+rkIvFD2hIzsE8xoxlw5LXYzHJjSmbtrQ7DUhUePCNt3B/AyhGxwgpDOInqdi9gQ32tq2DEDeM=
+	t=1781063090; cv=none; b=rtqXX6+edMQygvJV8Jeh8Idh7b+CsHmHsUrC3B50N1WfkQSd3BRGKyGrQj17G2Bg4Y0v9sLQTLb2r9EDW+K//BN48tCuokfogYVaTUrRxH2aADOBFaxSpzfMfpIIQ7OCdy64NqECZZqIIMG+0ItFyDaGZzneHN48L2yJWbmbaWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781033334; c=relaxed/simple;
-	bh=DEq1jYRvE+O17je84XUU131j/oCIfTBQGBFCnmOvDsA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sLtsUkAbyV4vLmrifRr0nRJAYhFo8tbKqegtRhq4gV3dJWOQQp4aowBXZ9ee9ZZSKJepDTNfDS2UEbxD/xPmJr68nWQc//uULQDjlibzUba7H4sLl+Xf9KxTaJerTY1vmIFou+ETxsXlrvtUJZxoyFnC1Sbop4EeR+SH5AJyx80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=knVREyl7; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1781063090; c=relaxed/simple;
+	bh=5m8rpWcj8S1LrjDLtPFW7I3UyIZB8r+D/oJzbIFA1uY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J+D8KwT2sm6pf4ajIdn3oQnEfDUYOSeiV6lGJG5KlIV2UUELMzhQGffaXnWB4nc6VMRkF/59qQ6/9WdlhJs2wAt5DrnCOLsu+Pp9EU3jSXja4TTZp4EUL2TDNVPU2qV9rRQv68UrNts4kybY/YFHyhK7AxSZfAEIlSzWj/dI6pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BcSyLRB5; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="knVREyl7"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d97415004so11364958a91.2
-        for <linux-coco@lists.linux.dev>; Tue, 09 Jun 2026 12:28:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781033332; x=1781638132; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=guAeemkMCkyys/PJ2ZLLCH34LSaDcqFIXbZHYNdXwyE=;
-        b=knVREyl7HsdZ4zP2gXt8MMK6GAi3Su6TSBo+Aj7nheOeIhGu2BOL4zz0VCXLFO4j2M
-         tW0qhPtWNiwcOfY+H/1R3GmBObbfav7uQbL0N5lmxDvwX/IwSEanz4pRVHpVxLk/qfhB
-         RENsdJbd7LuaDdrHrNqbuRI4l/szNm9kSeq9XqgonATbE4pIEOpEQqIqCXUQGFIxQGs8
-         g/Kwl7MG5osfwmXJExe4RVZaxMDOrCiMbwhLJR3gJYdN1yTvsRZ6E8ARBPsL+CR9H2Ob
-         7e54hwePyYo3nk1aK/MtDgP78eYMa04YjLmEgC2LalM/UiWUMy6bMppRa86not9EQrYQ
-         RzZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781033332; x=1781638132;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=guAeemkMCkyys/PJ2ZLLCH34LSaDcqFIXbZHYNdXwyE=;
-        b=DlYLV3Xih8C4T/y2KV4jxNFHYnu78ztM7ka6utmhYX80YVeYl3miSh8aDVtUjSuDo3
-         Wv6FxtVQleLiNGzmHY2GJIgX4aT4ypluNj6Cu3aocDSDaxQSy3R1jkST8NEJ7tUVVaEB
-         WT2lyJUVi+V+i3UWtlL3vs7V+E3YzTi35C9T7Ei7R+2lBwe9GJwVCkmpLFqLILynYi0H
-         m/1qsU1E9sVoXyo6rAEF5Fm5XHgntl10koYxn7uoxrOJ2OoVDMSFe/xN7c5Y0kcuioUW
-         4eHtXCVAkF+42vjqEkuTa01UfThN1x2P4T61wYDz/HLmKaMqfUtA4/MxuPw4+fvTd79A
-         nJHA==
-X-Forwarded-Encrypted: i=1; AFNElJ+lEARuCSqDarDR9VbxzLMmAzVO3dWaFUkEXjt8A/jRrr+CEbF6LA+zxleSXdOfd+041qTWJp5m/2lC@lists.linux.dev
-X-Gm-Message-State: AOJu0YxiUwAnZDbCesBA18V1uHnU/ftQl0Rm5knwqQBl5vgqNtuxyUg0
-	xf7dG9H3ZNS59zI40eS3cAw5p1XYxt5xT++ptFPJelzZL0yz1dJPF9efpdVldXmUitT/PwW6QRI
-	oMzcTig==
-X-Received: from pjbgq16.prod.google.com ([2002:a17:90b:1050:b0:36d:c3f4:8460])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:390c:b0:36d:f28b:72e2
- with SMTP id 98e67ed59e1d1-370ef2ec248mr22562261a91.8.1781033331787; Tue, 09
- Jun 2026 12:28:51 -0700 (PDT)
-Date: Tue, 9 Jun 2026 12:28:50 -0700
-In-Reply-To: <20260602034916.GGah5SvARd77mkvxe3@fat_crate.local>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BcSyLRB5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781063089; x=1812599089;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5m8rpWcj8S1LrjDLtPFW7I3UyIZB8r+D/oJzbIFA1uY=;
+  b=BcSyLRB5GFLKYbzj0l1xnk9VYabDuYIZwR7isD2V9wJg57MH7xrnVet5
+   fBu4iZzMjm51cldFzjyibv/tx6baw50KSollbX4sRZWxyahUaFoYUQ47I
+   p3brSUS0YkiWG4rlXfVjG9SFLUmI3OmI2dTCkSfp68DWgA3RQEQaiK7Cu
+   r6ZZ80o33zPA6t2dMczmsnuVBwG9CpQt1S2lNXOA8qoNbyQcLryLLsPzU
+   OTSYoEl31t+QTchqA4o2ZO+y5DiCMW3pY2iZcVJbD2rr0XZT3sMMZ2/mH
+   hpzwdXRoStNXDPaqjPFu1aStAPZFUPkAaRN8B9A6bqW+IX1ORD1KG75UG
+   Q==;
+X-CSE-ConnectionGUID: CUo44kR7T521/n1kwSNr2A==
+X-CSE-MsgGUID: moi/lF02TJaJYy4NYEs8OQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="104511844"
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
+   d="scan'208";a="104511844"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 20:44:48 -0700
+X-CSE-ConnectionGUID: iVCN9X4TTrCCDqpOnegVsw==
+X-CSE-MsgGUID: im8uohycQcuHzMFbyuHPgw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
+   d="scan'208";a="245198930"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa010.jf.intel.com with ESMTP; 09 Jun 2026 20:44:45 -0700
+Date: Wed, 10 Jun 2026 11:20:08 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Adrian Hunter <adrian.hunter@intel.com>
+Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
+	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
+Subject: Re: [PATCH 01/15] x86/virt/tdx: Read global metadata for TDX Module
+ Extensions
+Message-ID: <aijX6DkLP8eMRhIa@yilunxu-OptiPlex-7050>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-2-yilun.xu@linux.intel.com>
+ <1783e7bd-3759-41f7-93e3-2f9e21264bd4@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260529144435.704127-1-seanjc@google.com> <20260529144435.704127-3-seanjc@google.com>
- <20260602034916.GGah5SvARd77mkvxe3@fat_crate.local>
-Message-ID: <aihpch8FG6Esl3Jx@google.com>
-Subject: Re: [PATCH v4 02/47] x86/tsc: Add a standalone helpers for getting
- TSC info from CPUID.0x15
-From: Sean Christopherson <seanjc@google.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
-	Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, 
-	xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
-	David Woodhouse <dwmw2@infradead.org>, Michael Kelley <mhklinux@outlook.com>, 
-	Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1783e7bd-3759-41f7-93e3-2f9e21264bd4@intel.com>
 
-On Mon, Jun 01, 2026, Borislav Petkov wrote:
-> On Fri, May 29, 2026 at 07:43:49AM -0700, Sean Christopherson wrote:
-> > +static int cpuid_get_tsc_info(struct cpuid_tsc_info *info)
-> > +{
-> > +	unsigned int ecx_hz, edx;
-> > +
-> > +	memset(info, 0, sizeof(*info));
+On Tue, Jun 09, 2026 at 04:06:50PM +0300, Adrian Hunter wrote:
+> On 22/05/2026 06:41, Xu Yilun wrote:
+> > Add reading of the global metadata for TDX Module Extensions.
 > 
-> Let's not clear this unnecessarily...
-> 
-> > +
-> > +	if (boot_cpu_data.cpuid_level < CPUID_LEAF_TSC)
-> > +		return -ENOENT;
-> 
-> ... just to return here...
-> 
-> > +
-> > +	/* CPUID 15H TSC/Crystal ratio, plus optionally Crystal Hz */
-> > +	cpuid(CPUID_LEAF_TSC, &info->denominator, &info->numerator, &ecx_hz, &edx);
-> > +
-> > +	if (!info->denominator || !info->numerator)
-> > +		return -ENOENT;
-> 
-> ... or here.
-> 
-> We wanna clear it here, when we'll return success.
+> For tip, isn't the expectation to explain the context first.  The
+> very first patch, might be a good place to explain a bit about
+> TDX Module Extensions in general.
 
-Actually, if we take the approach of relying on the user to check the return
-code, then there's no need to zero the struct since all fields will be explicitly
-written, especially if we drop the "tsc_khz" field.  I was zeroing the field
-purely as defense in depth.
+Yes. I'm trying to add a long context for the first patch but was
+suggested to move to cover-letter. I think I can add a brief
+introduction at the beginning:
+
+  TDX module introduces a new concept caled "TDX module Extension" to
+  support long running / hard-irq preemptible flows inside. ...
