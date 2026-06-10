@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBAB3815FD
-	for <linux-coco@lists.linux.dev>; Wed, 10 Jun 2026 08:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34DC3AE6F3
+	for <linux-coco@lists.linux.dev>; Wed, 10 Jun 2026 08:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781078935; cv=none; b=pbxE9v5mukqCapW+S5VGDb0RFhL4wlV1sSy880+B8AnFLgvFI6s22kIbkYARlsas8OCOdkqmeDIAxZlOjxj/Kg4BbviZqJlnCnGNMgNwM3e5NJkOPTkBP5EH6x7TmKm6wegkpsmW7xvSkNhMe9bl/BDLhelqIVPRosHC3mS5T1k=
+	t=1781080480; cv=none; b=AU3TDnLK97OuYvJ9N9/azR68VoYYVP/+bq/S2iPlmGuREW9eJSPCkUmJbJjIprJCD1SWgIjBAypo6f1sq/LAHh+Sqd3UVYLnYsikd+Lq9KRg5Bl4psagVbpesPSZBn1XraK0B/44jPYTa7IBq3GIMNuhQJNHOfqvxNG/ABIXTWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781078935; c=relaxed/simple;
-	bh=A6Q+8jkFk5qYGuzlU0EFsmoMuystZMGRG3neQusWxFA=;
+	s=arc-20240116; t=1781080480; c=relaxed/simple;
+	bh=PPVeDOSDXrnMWp7tNZLhyZLJiQOtz/9d+t/nlGj5jX8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dUYQfFkqaTyfEqyUpGH11EdGHAeWGZtiXNNDwaGHNcGAK6183B4LHxdx8I0+QVIIc/mTF8rO39S9ioi2Lq7GMHLo+KJjv4mO6nMI3ujSKZtNTISOd0/qvMSEQU8UY38DEorq2ISkzv/s4r9MvLY6jRI1cqN+6YGOUmDNKlIi2IQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PF7agJh1; arc=none smtp.client-ip=198.175.65.10
+	 Content-Type:Content-Disposition:In-Reply-To; b=UQspJLloj/szb3Gf9OQDeAKM4TO7VdASPle+8I2KmtUxkB1detn6etWnLsiT6r0VLMwp7J9x9p8TwxcNXVOOl37er86UcHICLUuZfAVsDt7fLKdsk+VM4TF4BWzop6suOz0dx0BCBuZmLivFsnFUmyw79Y7sAERsj44Ytd+/pa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kTM35nJ+; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PF7agJh1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kTM35nJ+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781078935; x=1812614935;
+  t=1781080480; x=1812616480;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=A6Q+8jkFk5qYGuzlU0EFsmoMuystZMGRG3neQusWxFA=;
-  b=PF7agJh1f6c4pqII9/1a31vRXb2jxp6wleBt05uw3347EqSA8FlGGmdW
-   tzcdI53evNgv+jG4hvGkQDeIjLK5nw9IN9xxj5uMoGlWTLdB2qQrvIPkj
-   /V+cKMtFud9cB7GvHIR2exkWIOBst9NED6oal02i1FB9kPpN52pzTHmv/
-   tCxv5k0PUiv7v0jsCo6nKehdnK4MKRJDGb7RjxNR8wi5zczwjLCbzeWgT
-   SCiR0ggkjuu1QNVnDZDNLojUih2khoUbAcVxjtHZMUkCbtbE6yOpvIciZ
-   22HF1ilbbfgPMqi4c9Tlc4UGmK7jnjmAH30udAFRYptE+sa28nSylfpRI
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=PPVeDOSDXrnMWp7tNZLhyZLJiQOtz/9d+t/nlGj5jX8=;
+  b=kTM35nJ+xFcSSro4kxLdcOu413znRkD3Vquufkyim/xM/Pc20ExB+KFg
+   eQwZ9PJ8GqeKHFacQ8IGp99ZXi6PK/KYBcFzgug780oXW4uDZXzWErNrp
+   Ecn1RaQLg7V5Z9RiByoF/ZgCsHGpXt9vHn6nlTag0qOdIlrD0Yali73al
+   y6IfcPRwEW0QVup3HOVeKNDUcdeodSrmFBTvZcEodK9Zu8TgfPwaJeUCc
+   Ov8ijdWoAU8IToyb6VGbTQqm/+7ne8bahwCWxOaz177rc31AR/mg3f5HG
+   kfwON/PWsmMQ2vmQs8nHzKaWtlS6sKP4ua2RXMWjjPcTqnOK1dBBb04oV
    w==;
-X-CSE-ConnectionGUID: y+51T76aR6+mcN5MaImYbw==
-X-CSE-MsgGUID: 4vyAZUtyRiydgu2ht5qdBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="99283383"
+X-CSE-ConnectionGUID: 73gdSBUaQkiUbl538BeroA==
+X-CSE-MsgGUID: mpYc/kWVTSuR6Ke+CepdrQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="81845086"
 X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
-   d="scan'208";a="99283383"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 01:08:55 -0700
-X-CSE-ConnectionGUID: EXjDNt0tQ2ec+G3M46i2vQ==
-X-CSE-MsgGUID: vI2/hr+5SFS78zjNrBNzGw==
+   d="scan'208";a="81845086"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 01:34:39 -0700
+X-CSE-ConnectionGUID: BPQqV6s2TciNEngtMYXryw==
+X-CSE-MsgGUID: qjh8GI0RTyOrDe31He1RDA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
-   d="scan'208";a="243135429"
+   d="scan'208";a="241680088"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa007.fm.intel.com with ESMTP; 10 Jun 2026 01:08:50 -0700
-Date: Wed, 10 Jun 2026 15:44:13 +0800
+  by fmviesa006.fm.intel.com with ESMTP; 10 Jun 2026 01:34:35 -0700
+Date: Wed, 10 Jun 2026 16:09:58 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: Adrian Hunter <adrian.hunter@intel.com>
 Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
@@ -51,36 +51,47 @@ Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
 	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH 02/15] x86/virt/tdx: Add extra memory to TDX Module for
- Extensions
-Message-ID: <aikVzTYAYpgNtgT9@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH 03/15] x86/virt/tdx: Make TDX Module initialize Extensions
+Message-ID: <aikb1oPW3Dzcoj9K@yilunxu-OptiPlex-7050>
 References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-3-yilun.xu@linux.intel.com>
- <f7238ced-73a0-44f3-8a50-23eb5a2da5dc@intel.com>
- <aijygJ9YqskIOvB3@yilunxu-OptiPlex-7050>
- <33974159-ec7c-4c5a-845f-02ea4e67a0c4@intel.com>
+ <20260522034128.3144354-4-yilun.xu@linux.intel.com>
+ <1f6bf040-6a90-47f8-93dd-0e36d4f256dc@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <33974159-ec7c-4c5a-845f-02ea4e67a0c4@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1f6bf040-6a90-47f8-93dd-0e36d4f256dc@intel.com>
 
-> >>> +	if (r != TDX_SUCCESS)
-> >>
-> >> Similarly could this also be TDX_EXT_MEMORY_POOL_FULL?
-> > 
-> > I don't think we should pass the case. The Module provides the number of
-> > required pages via metadata, host follows and feeds pages but the Module
-> > said "Sorry, I'm already full". This is inconsistent behavior that we
-> > should call out.
+On Tue, Jun 09, 2026 at 06:14:22PM +0300, Adrian Hunter wrote:
+> On 22/05/2026 06:41, Xu Yilun wrote:
+> > +/* Initialize the TDX Module Extensions then Extension-SEAMCALLs can be used */
 > 
-> TDX_EXT_MEMORY_POOL_FULL is not an error code. It is a success code,
-> so the question is whether it will ever show up on, say, the very last
-> TDH_EXT_MEM_ADD.
+> Reads slightly better without "the", so taking Tony's suggestion
+> one word less:
+> 
+> "Initialize TDX Module Extensions for Extension-SEAMCALLs"
 
-It will not show up. I got from Module team that it shows up when the
-poll is already full and host still adds more pages.
+OK, included.
+
+> 
+> > +static int tdx_ext_init(void)
+> > +{
+> > +	struct tdx_module_args args = {};
+> > +	u64 r;
+> > +
+> > +	do {
+> > +		r = seamcall(TDH_EXT_INIT, &args);
+> > +	} while (r == TDX_INTERRUPTED_RESUMABLE);
+> > +
+> > +	if (r != TDX_SUCCESS)
+> 
+> There seems to be TDX_PREV_FEATURES_ENABLED which is unused,
+> but could it turn up here?
+
+“Yes, but not now.” from Module team. It is some future thing
+under discussion.
