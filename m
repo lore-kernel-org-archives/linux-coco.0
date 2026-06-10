@@ -1,168 +1,120 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB001DED5C;
-	Wed, 10 Jun 2026 08:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8080E13959D;
+	Wed, 10 Jun 2026 15:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781081192; cv=none; b=hkV9tEkfqisSol5X365Jexd+JqBE+AxTg22jX6shGda5ZLfaGvz0sO/JMLWzSIAOgsJ8Bp1x0EMftKMdKlSY2Sfy6keZcDQOcNl5caz1B8Z1np+pPCQRF8hj78X2Mtj53L/0vZT75TdY2gipxl80Zi/q511iJGcPCnCCMeroJWE=
+	t=1781107171; cv=none; b=hcDvRVCx4qHGGNRg6TA33e4zLXrrQ4JIuVtaZNW+ZnUEn32qhjo8Roacbul38keuRcE2TIlkpqMwDHppKjJRBLJFWhUK0BTqDqOXP3yPibvq130qyvSDShy4rZ88w5kkJTBhmriG2PmhPsvJP+PqwFliXRCHSBmZi/aLKkxCNig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781081192; c=relaxed/simple;
-	bh=CW7D2KmFoUyODNxdFyyPKcB7Pvi/YhHuRsdONjhmuQg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YCyPkjD7pD7sZFif8nJ2b98vPpicJEJ/tSkbJ/aE6UJBsbAJic4szDwKVh1YoAA05kt+zAuu6trurHsLnCmHezciT0THVAwMFPd44J+PHGk9vbjbDQUolbN8OHxb3sqtnm9vq8toRGyrb54VnWTUlhs4qLxE12/c+H10OeH6qBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gqceO5Wt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781107171; c=relaxed/simple;
+	bh=Vb7BHcXUEbWMm9U+eXrYGZhoh5ZaNKeY/ZtJxABDK/0=;
+	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=MO3H+N/lLzBvy5x/IhHvuFtXuAu47MNbG6jRPDGaV7m+hLzjsogVnDM1jgPFZulFsrDxwdFWR7dE5+dfMyweWTfbSxv+hlT/zlrALKb7FWEvGkx1sXVDboNTWW/VFwHxTOgrUnAzCqM38R3n9cFv8WiYSZPUtnOku437cJkdaus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B596G8wn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gqceO5Wt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954211F00893;
-	Wed, 10 Jun 2026 08:46:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B596G8wn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC621F00893;
+	Wed, 10 Jun 2026 15:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781081191;
-	bh=GIu5mk7+fDzBkFE8LUyyxyRKu1YjSQcW0/cQDtsXGSI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=gqceO5WtU+8o4iRLg+54E8X01VwOX/Pcl7CIT39DQ0pqmrHHo/vBxeK7jsaOAcCaS
-	 YBgcKllYIQj1HWF/hPyROXVFlBBcsVf7biqD1SoLBFLlOCDPz2cSZKwrkPq2JjJeON
-	 Ktk7ZoQL/je6Tm7V0x4WHLl6FPfnSFgfRLowvXIjL0V6x/Z73L5zTuiKuUCUObt8VJ
-	 vIsqW9AMwRWNEkg0dDhmgKSYTJ0+WlZY+fHkDiYP/mNT/IAr5DJi+PSaHxr1QXu7ax
-	 U6yoqsWAiXT9wxpMsRUn8xlVD4N61bGUJO8A/UMw01rLgt/SDu1HpcZ4IbOjfgm+V1
-	 vidQTXP2nKKgg==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Petr Tesarik <ptesarik@suse.com>
-Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Mostafa Saleh <smostafa@google.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
-	Jiri Pirko <jiri@nvidia.com>,
-	Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH v6 06/20] dma: swiotlb: track pool encryption state and
- honor DMA_ATTR_CC_SHARED
-In-Reply-To: <20260609144836.4ecea34e@mordecai>
-References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
- <20260604083959.1265923-7-aneesh.kumar@kernel.org>
- <20260609144836.4ecea34e@mordecai>
-Date: Wed, 10 Jun 2026 14:16:17 +0530
-Message-ID: <yq5acxxyzsti.fsf@kernel.org>
+	s=k20260515; t=1781107170;
+	bh=Wwl5EFOwcAOEDq8p0RlqImogvq+z7shANIcC+8tlztc=;
+	h=Date:From:To:Subject;
+	b=B596G8wnDvRmb7UeeKOXoUJnVEaxNNezk/kt+6eRUKSVAn8HYJU26RIJuJq0jCFVy
+	 ARrLxecy2/jdFDvEf1TBuUaOu85pCBE5/uvzNuTMHdBql46cnUCwfYWYDwys3Igyiu
+	 EJwqvkFm+ZZCegIAZnBqvinTVbtYTlxPsqv2imToSnY4OyzF6Q0x3F46rDHskGrZYl
+	 06+fENzyrC/W0Rg5iKikVRRkZyfrOAluHpNXD2yzwxZqPt9TAoAmdhie6eWM88RfKB
+	 dVo7T2ZOf0NyWCFsXA3a2IfQ/mpEYe+ykhicN8KeDwtVrSsSHNh+bsEp+MacaLql+J
+	 mqAsGCPhmzU/Q==
+Message-ID: <8ca7bdec-847d-405a-adb9-ada87e7222aa@kernel.org>
+Date: Wed, 10 Jun 2026 17:59:18 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-06-11
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Petr Tesarik <ptesarik@suse.com> writes:
+Hi,
 
-> On Thu,  4 Jun 2026 14:09:45 +0530
-> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
->
+Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+2026-06-11 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-...
+So far we don't have a lot of topics: I'll have some clarifying questions around
+virtio-mem for CoCo, and likely it would be a good idea to talk about memory
+hot(un)plug+memory ballooning for CoCo in general (what already works, what
+doesn't, which requirements/limitations do different platforms have, etc). Apart
+from that, I'm sure interesting stuff will come up.
 
->>  /*
->>   * If memory encryption is supported, phys_to_dma will set the memory encryption
->>   * bit in the DMA address, and dma_to_phys will clear it.
->> diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
->> index 29187cec90d8..4dcbf3931be1 100644
->> --- a/include/linux/swiotlb.h
->> +++ b/include/linux/swiotlb.h
->> @@ -81,6 +81,7 @@ struct io_tlb_pool {
->>  	struct list_head node;
->>  	struct rcu_head rcu;
->>  	bool transient;
->> +	bool unencrypted;
->
-> IIUC this is a copy of the unencrypted member in the corresponding
-> struct io_tlb_mem. In other words, if pools are allocated dynamically,
-> all pools must have the same encryption state, correct?
->
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
 
-That is correct. The reason we have the unencrypted member in struct
-io_tlb_pool is that we need it in swiotlb_dyn_free().
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write me
+or Ackerley a mail.
 
-When freeing memory from an unencrypted pool, we need to convert the
-memory back to private/encrypted
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
 
->
->>  #endif
->>  };
->>  
->> @@ -111,6 +112,7 @@ struct io_tlb_mem {
->>  	struct dentry *debugfs;
->>  	bool force_bounce;
->>  	bool for_alloc;
->> +	bool unencrypted;
->>  #ifdef CONFIG_SWIOTLB_DYNAMIC
->>  	bool can_grow;
->>  	u64 phys_limit;
->> @@ -282,7 +284,8 @@ static inline void swiotlb_sync_single_for_cpu(struct device *dev,
->>  extern void swiotlb_print_info(void);
 
-....
+[1]
+https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
 
->> @@ -604,30 +621,26 @@ static struct page *alloc_dma_pages(gfp_t gfp, size_t bytes, u64 phys_limit)
->>   * @dev:	Device for which a memory pool is allocated.
->>   * @bytes:	Size of the buffer.
->>   * @phys_limit:	Maximum allowed physical address of the buffer.
->> + * @attrs:	DMA attributes for the allocation.
->>   * @gfp:	GFP flags for the allocation.
->>   *
->>   * Return: Allocated pages, or %NULL on allocation failure.
->>   */
->>  static struct page *swiotlb_alloc_tlb(struct device *dev, size_t bytes,
->> -		u64 phys_limit, gfp_t gfp)
->> +		u64 phys_limit, unsigned long attrs, gfp_t gfp)
->
-> If my assumption above is correct, then I prefer to add a struct
-> io_tlb_mem *mem parameter here and calculate the allocation attributes
-> inside this function, so you don't have to repeat it in the callers.
->
+-- 
+Cheers,
 
-Will switch to that. That is, we will use struct io_tlb_mem->unencrypted
-to determine the pool attribute instead of using unsigned long attrs
+David
 
->
->>  {
->>  	struct page *page;
->> -	unsigned long attrs = 0;
->>  
->>  	/*
->>  	 * Allocate from the atomic pools if memory is encrypted and
->>  	 * the allocation is atomic, because decrypting may block.
->>  	 */
->> -	if (!gfpflags_allow_blocking(gfp) && dev && force_dma_unencrypted(dev)) {
->> +	if (!gfpflags_allow_blocking(gfp) && (attrs & DMA_ATTR_CC_SHARED)) {
->
-> You're removing the check that dev is non-NULL. This is fine, because
-> the only call with dev == NULL is from swiotlb_dyn_alloc(), and that one
-> uses GFP_KERNEL (i.e. allows blocking). However, if this is an intended
-> optimization, I'd rather have it in a separate commit, with this
-> explanation why it's OK to do it.
->
-> The rest of the patch looks good to me.
->
-
-I'll add that back.
-
--aneesh
