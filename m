@@ -1,237 +1,121 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBF93655C1
-	for <linux-coco@lists.linux.dev>; Thu, 11 Jun 2026 19:37:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781206624; cv=fail; b=V8PHf0gUhEGusf2udUoBOK8LXD1od9XXVgSMSindQxy9atU4u03W7TUXipMTJ9aygYxaRTP8qxP6sL36SFSUMsmqhv+eowIXyAmiNHQ5aeXsor8T1taHeyE2BCzpshuQqWzbX66/69XbVSHQz3L22eoa4q+JlxeR0wnm6VcxoWI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781206624; c=relaxed/simple;
-	bh=xPoAQw6U7zkaG/TWYgjltOSdL33L444xAa6Iksq7FsQ=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZVE3lWxDOYebINEph06MJteWRieYSWq+XhO8R+VY7Kg6IcM3C8nr5BBm699FK51Jm5fjbsdq0+SsoEafNlVuWUaSFxm1vuuV22Y5f62S9t/QDJ45Mup9aR5VRr6kO5ejIEMdN5tdVJswvGqxUDJSzezk1Z1PYjx4RCVFlk1Kf2A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=boMwX1Cv; arc=fail smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B7235E950;
+	Thu, 11 Jun 2026 19:45:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781207109; cv=none; b=Vtr0tIOF1tlGAJmWmaduwy7epazRGfEBBQFI15ACkv6gPK5qDekN950bLYPbYxmnr3d2f0Svp4mURT/X0h5mlsSroyqZwbNyPjauTtPB568gNcnw4sP3Ce37Zum4dnIzl97PJo5sVfu9q02MWzGe/DwTyxYAsiE/71wl6MmNQz0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781207109; c=relaxed/simple;
+	bh=uYuSDuWvOD/EVbNBrhJXMRns9NB9B02a8g/Sgq3O2kk=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=oZMd6R/Ei7egGmd87kOHteX0ICvY0dupAXu81fjke2vXuQaqEq7tF2SfZBcSI3RZu8ULSkxEvZMPb/vqEzMRo24m7zHJxp0f/AvsOOjbPjPxbdVpYatdeA6dYXzGwA7+lvu5ZMhclW2lJ0WG1NwOSoqVJiHEwX8uS0gfNq86yx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HEyMdzOk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="boMwX1Cv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781206621; x=1812742621;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=xPoAQw6U7zkaG/TWYgjltOSdL33L444xAa6Iksq7FsQ=;
-  b=boMwX1Cv2NaSJo8La2lWyDl8HMHMkI6/RHcJV92Ho7SerPMCYh0DcuvI
-   ZaTkMu+tb1VvFBbyoMpQcNHm6M03wukt3jBFOCvy3zwIyXgQ7ZoPweQkL
-   T3SZNHKcjxzNBWdaBIAvv+s7UU9lRNd6BWlpWr+22RpZt/XGG1z2avSFr
-   hXWrL9RkEJaofl+UmAA2oCgxZJFU+e4jf6t6V0nfhd+7BGcDypTtvyyra
-   w+7CHYxjxh/Wtdv3+1ZQYqNNEQ67Prasj4TCFniNBBKRAhiRCRKqcbcMt
-   O2WxqrIsg6r1aIy5tK/XLzcrbk/gh+8Gv02+apOSxmZxT0L/ptYKuLxvK
-   w==;
-X-CSE-ConnectionGUID: dIK5QswlTcW+a+1/4lurNw==
-X-CSE-MsgGUID: dONyzbneSRWjxHqaKtBr3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="93141339"
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; 
-   d="scan'208";a="93141339"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 12:37:01 -0700
-X-CSE-ConnectionGUID: IljoLMMuQCyYZAdDm+Z8SQ==
-X-CSE-MsgGUID: L+qVjVOzT4SwNy6bg3ECrg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; 
-   d="scan'208";a="248476152"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 12:37:01 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 11 Jun 2026 12:37:00 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 11 Jun 2026 12:37:00 -0700
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.46) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 11 Jun 2026 12:37:00 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xVcGJS3ZZ8uuyckLOUaoftUzuDFaaBuyTYYjawTQ0yuV0WXgo3NT2opLVpsNDsCySY9CUKglaMSFxIt+vnINmO/8HzzQAjYueMtPKr+FXsCgiAvJBepZNjY6ZL15P+dliCZgSuBjkPrb+XWTi3/sYyD6/u24UdtXcsVxeHowRsSj6X+/bpA82pKi+2nwbR64csBWVE8KBx/ag6wtiIIA/rDODmCWD5xTq7GoEjad0+ENu4EOHCiEQyMKbMUXdYDhWTeru+DHNHgrH9szXNFg/wIupl/sv6fSdk7r+Fqw1f9kNa/N4wheeZn6PoHZd+3n7cpRvhYjvOpgmH0iw51ihQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kZXSA+V9ii//mmhVi1io+OqoLflKNHozMQVxdNQgcq8=;
- b=PxXaddtYG/+mvzksjve1mm3q8ba1kxiKiM+5gIwy01Lt43afYYHf5y/Y5sGz2sdIexc0lYMGZQKynC8PKDjm4B/QEoNZ4dfm8f7NSb9OqK0xzIyfGL0keIy1gbTjAhToAHJqN9dqmOMT8iy1qaGJk+KFCvlLg3f9LjIhWyJ++/w5RwPmPNRD5lx64UMdYtiGC+MCrsm21YM5RVasLQIUwTH+ZLvKBOIezlYtebyXMsGrP/M6/BAzzKY0zzMNCzGxH3W8UhED6V3LlGVBti693nuQ+f9wzJS58U07ZSsexvhnmk4xYYoRZvl1U25WcNdvclNFXEYsdtkoermSMyg/7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA1PR11MB7198.namprd11.prod.outlook.com (2603:10b6:208:419::15)
- by IA3PR11MB8939.namprd11.prod.outlook.com (2603:10b6:208:580::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.14; Thu, 11 Jun
- 2026 19:36:58 +0000
-Received: from IA1PR11MB7198.namprd11.prod.outlook.com
- ([fe80::2c4e:e92a:4fa:a456]) by IA1PR11MB7198.namprd11.prod.outlook.com
- ([fe80::2c4e:e92a:4fa:a456%3]) with mapi id 15.21.0113.013; Thu, 11 Jun 2026
- 19:36:58 +0000
-Message-ID: <7090f4af-3a6d-40fd-82ab-0ba6272534dd@intel.com>
-Date: Thu, 11 Jun 2026 22:36:52 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 13/15] KVM: TDX: Support event-notify interrupts only
- with userspace quoting
-To: Xu Yilun <yilun.xu@linux.intel.com>, <kas@kernel.org>, <djbw@kernel.org>,
-	<rick.p.edgecombe@intel.com>, <x86@kernel.org>, <peter.fang@intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <sohil.mehta@intel.com>, <yilun.xu@intel.com>,
-	<baolu.lu@linux.intel.com>, <zhenzhong.duan@intel.com>,
-	<xiaoyao.li@intel.com>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-14-yilun.xu@linux.intel.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park,
- 6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 -
- 4, Domiciled in Helsinki
-In-Reply-To: <20260522034128.3144354-14-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DUZPR01CA0208.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b6::6) To IA1PR11MB7198.namprd11.prod.outlook.com
- (2603:10b6:208:419::15)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HEyMdzOk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C961F00A3E;
+	Thu, 11 Jun 2026 19:45:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781207107;
+	bh=9a0SMkSfHUNTNvr1ftlH6X3IHP1fEtjtfsq2G98gVcc=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=HEyMdzOkqvfYpdlVynMSxr60vo4FtJqKv3cSjacdLoM/WKd37tPY+oTwRh3hABg+X
+	 4DmE2knYx10skQt6hgabMskl1FFWuhGhXtXhe0XpML805CEDFjlTDlYJTgKjy+Ba+3
+	 ptLUN150tgNW3RD0GKZg3b1+k1FaG/YBe9xN8tBh2DRkbJlLA93sE8cGd8XgoLlZ1n
+	 Te+JiScXWSvzF6r2F+wsxw4yYzn3TmSg94UG31v/K/BvWxO/pMWCVPa9QO8jEWrq5s
+	 ABqcYAieOm2il05MXtWFIXJHivOW+ueS8uHSKDno5a8Vky8qHtWqSgUv1U+uwd33PH
+	 b4TGY7eQGdssA==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 8C559F40074;
+	Thu, 11 Jun 2026 15:45:06 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 11 Jun 2026 15:45:06 -0400
+X-ME-Sender: <xms:QhArauT_XORPZQJTyWXJvXazZXH64vikBYAouHNqg-2OH8PdFvftxA>
+    <xme:QhArapUrYxtM4EblKHzdWDE1w5Nylxwo_nmHMv4Kyd0EK0vhOmy4JUpH-f5BtE9z2
+    Raqedl3oybuOn0nPGpdvW-KR5LMKYBu6q4QRv9U_2abVlUJhplw6AY>
+X-ME-Received: <xmr:QhAralb0Djr-tMHKM44b994W0tIJcW4Q2tN3oJ2Q3tzj1CPuKBaXqc06GdQnXhKDaZYmlEkoBQodxhPuFusap9WTmLL4GpFMIxM>
+X-ME-Proxy-Cause: dmFkZTECBux9In0mEU9Au6vS4FNBdtvHVz/tllZbDvTycM4hXMN9CVUaaBaCIVRt5YM1oS
+    pRew6NN2qH7ImIJ5Wb05SRFSk28NsXHOGrQTXw84upkzwXl8CqB3ZOKoq/Kx9cYEBglm3w
+    BbUrrCmtibzG/Lx9h6QKU0SY91myEPjYwF9xOXA7L2M8c+A59qHqD/VaYg+bvy8mWSqNwc
+    M9emOR+vkWFrDAHaeV7jLY+9Z0vsQzJqqJnefUlVZ2XbNnwgio9TDclRg9cfrKK1ar8zbK
+    0azGtHOtYqhsYc9srmJpQgjAXz4tobNTKCMblCkWoA7Ye7nUaKCFAT9dvTNawqfOfcgMgT
+    n0V966t/vWGGs0Lw7BKLMmGaDbXz4sEHLKOjib7OFPEDmo29EYffc74FjTof71EuKBFlM1
+    3qa82npD24vYiH+tSg8rhBa04MOYPN0pH5KWOZ9Fu693nge6qPlclv5t2CWbNqFOnnsuUZ
+    1pFHwtaXsDF0VZg+NRNLLIwSc/obV4amq0eCVQhkJGkZAjFSPXxxRqZqDyec7Ndp3yTuL5
+    xV+TOTby38nfp2jMCZDDlxlcPedmx73PC8Uvzo4eaw/uRilHRHkJj+facaynr95wgTtnQc
+    M49FkNzeqzcQrl/FO0i1o2lEwRP0FPFFhSOMReF+CY92OjXsr91GvzOUBlUw
+X-ME-Proxy: <xmx:QhAraq6KsdoZP4NoRjDNugptzew59m2Tqgi9wlXeqnFVeUpgShLPpQ>
+    <xmx:QhAraux7lNJ9YgaLEhAZbiX0C5wVPqRiRiM0so5mjM1wxdhb3A6_fw>
+    <xmx:QhArajoXhceO78AVFbxtGlIIgfSpqsQhXkNaG94z16Td0ExOaBD6fw>
+    <xmx:QhArao09AAxXtStCUZkADFiJ5PxwdAgFG4hxAYgqz8mjHzvv-H33pQ>
+    <xmx:QhArakBhm5NrsWWOFm5QXhFRdiqW4XJiTyP71TrtfsIGSAxHarIfgQuJ>
+Feedback-ID: i67ae4b3e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 11 Jun 2026 15:45:04 -0400 (EDT)
+Date: Thu, 11 Jun 2026 12:45:01 -0700
+From: "Dan Williams (nvidia)" <djbw@kernel.org>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, 
+ linux-coco@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, 
+ Catalin Marinas <catalin.marinas@arm.com>, 
+ Greg KH <gregkh@linuxfoundation.org>, 
+ Jeremy Linton <jeremy.linton@arm.com>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ Mark Rutland <mark.rutland@arm.com>, 
+ Sudeep Holla <sudeep.holla@arm.com>, 
+ Will Deacon <will@kernel.org>, 
+ Steven Price <steven.price@arm.com>, 
+ Suzuki K Poulose <Suzuki.Poulose@arm.com>, 
+ Andre Przywara <andre.przywara@arm.com>
+Message-ID: <6a2b103d77596_344af1000@djbw-dev.notmuch>
+In-Reply-To: <20260611130429.295516-7-aneesh.kumar@kernel.org>
+References: <20260611130429.295516-1-aneesh.kumar@kernel.org>
+ <20260611130429.295516-7-aneesh.kumar@kernel.org>
+Subject: Re: [PATCH v7 6/6] coco: guest: arm64: Replace dummy CCA device with
+ sysfs ABI
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB7198:EE_|IA3PR11MB8939:EE_
-X-MS-Office365-Filtering-Correlation-Id: 86d32a34-e8f8-4e28-a0ed-08dec7f0cd0a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|4143699003|3023799007|11063799006|5023799004|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: PoBeUemKtRHokGBpCqYdcoUlndWFhfP9bVm8IbZS6okLSzPiv0TOeMtdn8aAQdhFBRsdnhh2P3DAAKuFppCXX2VgXdgOEir86iw79nI4XN3ZUMDN/JKJWgbw1l8807vmrwLgHeHDJEvt6K/tFU+PgPXJvOR7JMN6JTj6GT9l7ULGZXfLTFjXaCwUY7+bSVzcYb/R2w1Jea348UhcTN9yvzXvtcf7bCCmvdEMyqAbCqSRiGbkHrc3z1crerdrMjEJRnOo1ICtjNGLwsBtS1U5QX5k12XxmUbV0Y2yJn6/4yLO3Pid1t6b/YvgB4lhDf50r/4rnuB0Qv54FqZ8lX4xhXWJ3s/akoeCtPEbD10mXJbiZIGfIVIjv7MJmu3Bpyoo6lj+npUUFBXXRZR0s6yWEbqxkzwZ9wSdnah7tS4dhL5fjEZU6Z/NC1R7P52ICSXzSBfTQSlFk57Fhi0lrQpV5Rmc76fvD4b4euHPFjSJkxbLp9VG797TMCUiWtaHF7UE+JfctCQw5NqCo5yMZiqrP5YsU6iUQyO0e1I+U3JH6PMR+gvtrVCnSyF97Sc/l3mEsuKlO8/lQrNQHZuZ49+7mYJWHdaANYlq5xFNAXf0r5xAuOzjL7bVEUmPrZBRY/TUPYfPMkBeahCJjaaM/fXeF+F2ZDnXWfSfCDxvtDIDotDVSb3jQ5+wIpVG2gWg+lzR
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7198.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(4143699003)(3023799007)(11063799006)(5023799004)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WmNYQllwYU1IcWVYRUpTQlZSb3dNcUhRb2dRY0NkY2llUGFYYXlidVJYUmlh?=
- =?utf-8?B?K3JJaC9INmdwRmpmb3hkU0Z4Q3ZOQ28yVkx2R2dUTlVSZTZyMFNtUnUzWnVH?=
- =?utf-8?B?RFc2dXIwSmM4bjBrT09Fb1ZYWFdicXVOeWNkUGxrVFFkeDN5bjE3WVVqck9l?=
- =?utf-8?B?V2ZlNTkvMmkvVlN3MXF1eEU2Z3JNSmlrQUk2bit4M1F6SGpmdzhEVnhUWlRI?=
- =?utf-8?B?UmZaVVRhdDJ0eWE1MXFxZ1loRW11SEo5bGk5RFVTOHFSZHQ5d3AyRDhuSVZw?=
- =?utf-8?B?N0U4c2FOZEtOQTF2Y0YvOVFRRUREY1JjUFhlYk50VzJRZk42QjR4c001TDFl?=
- =?utf-8?B?L3pmVDRxRmdKMnJ4TnJRTEZlRTJZN1kvODBDMDZpL2NLWkI0dGRpbVZnZG5y?=
- =?utf-8?B?NDBMd05GTDdua2xNcnlGeHNhREJ0K0hvZ2Qyc2djbmdSNEF1OWtqZXRTcUJj?=
- =?utf-8?B?MjhFUWh2c1Vwb1JjeURsTi8rdkUzSFB5UkJZdmRqSUNtUFBSRFZSREtBSk8y?=
- =?utf-8?B?SlNDaXp3TjBjbWorejhEakFTek9kbFVCbmFhSDduOFdjUDZURVE0VXY2YkhY?=
- =?utf-8?B?RmxFQlk4MEd2U1B0dTQ5cHhya2VQSytNSDJoZ0FvNm1wOGtpSWpUU3l4Vm9l?=
- =?utf-8?B?VVFQOHU5cG1CTlJuMmU4VkkyRkRjWkFrSURBZGlmV0tESVl4VlZkM3VUSzRN?=
- =?utf-8?B?L1pIQ1RHcktFTDRIYmpBazJQSlNBdnhhZmJhMTZrMWUzRXArTGp4bVoxTkd4?=
- =?utf-8?B?TlcvTmQrN2g0TFpiQ1UvZ1JuQ3FSSXZOQ3lmcjB3Ty9VbnhuOElLTzltMDNp?=
- =?utf-8?B?dFUzUUVVTnNKcHJoNGdXRFhjOXY3UlFVTHhHSXltYkI4MnBqZW5OcTVYQkFw?=
- =?utf-8?B?UWxFZTN6bExxVUQ1M3ZXQ0MybysrMEx3RytrSFBlUktPVzBWcHlKcjRSbENl?=
- =?utf-8?B?a0cyc2RoWU5NTVBnV01zaTNHMGRzUVNTUDI4VGYxUWZKTmcyc1RTQmQvSHF6?=
- =?utf-8?B?NVcyVWNZN0RlZlcxMUxyYlZEb1hUZ3E4Z2lUUkExOFhIUDdWZHhJeUFZc1dT?=
- =?utf-8?B?M1B3QjlyUWNmRUR2OVhjTXVZcCtDZGE2Vzg0YjN1MVN3K09nenByNE1FRU5G?=
- =?utf-8?B?elhGZVpvTkx4T1JSa2FhM2tCVkNHQjZPZUtPK0J1V3BZQU4vTk9ySVhuRkJj?=
- =?utf-8?B?ZlZpVlBjelBxRCt5NjlueUUzOVF2c3pqdGZmamxzWDVQNFQ3MWdkOCtSOXdF?=
- =?utf-8?B?cTNaMzJDc0pMS3Yva1MzdUxpbWRudXVya2tlV2xaZGMrM2twMHZDQlJWbU85?=
- =?utf-8?B?bDVoblpteE0vaC9vaWdTVmpSeGcwUXZHZjZrZnhUU3dRRTgzTmxQaDQxU3dE?=
- =?utf-8?B?M2V4WW5GTktiemp6SGpNNnU2emM4alI3ZHYxVU5WWHFoUlg2MTRrMGFyVllw?=
- =?utf-8?B?ZGJvV05PNG11QWpKNzFmK3JLeVZrVjlveWROOUhIeFhYM3ltNWJOa3N2OHBy?=
- =?utf-8?B?SzI4K0dYM3BVWkV1NmFiR1Nyc1JJNGZGL0thcld4dHhPcUY4Y2xpTlFJZnlV?=
- =?utf-8?B?Tis1ZDZpSDZ3Mm1qb0FncmdkeFFmUjBUSWUwNlF0MDBkb2s0Zit6c0R2QUto?=
- =?utf-8?B?Vmd2cFBVa0xhVW93ckw1V3JuYlUwUEtSSDR1SXE0SzlyOW1HaThRanJCcW1z?=
- =?utf-8?B?K2pKdlBnc01GNzRmYmJocCt6REZQcG5qTTlWSFBveCtEUDJqT3U5ajFuTmNR?=
- =?utf-8?B?Q1VYS0xjYUwvQ0pmdTNhUitDZnVLM0dSeHllVXhSWU5BVk4ra3RBQ1l6ZDRl?=
- =?utf-8?B?R1FYUWc3RkJiZnhTdzRFRnVJckJaUDlidzhJOTFPK0FFUE1lV3NQeEp1U2RI?=
- =?utf-8?B?QURYREhveFRnd2FLOWF6REc0aG1tM29ZQXg5R3ZZOVNraEluM2s3RHc1MkRQ?=
- =?utf-8?B?QzlHdjVLVWlJZExnL2Fkb21uWXpYNUtzNU9Za0Y1V2tVOHdpZmJ4ZDFWdGJu?=
- =?utf-8?B?T2hrVkJYNW5zcFBzSE5OWGxnalBoMWd4dzB2UWp3RjhaekF3RyszbStXYVVN?=
- =?utf-8?B?dU1zQk5oSGgwcnJMVmJCMnRRWUZtZEhIZmJpaGp6WVRvM1dMUGtueVY5d1R0?=
- =?utf-8?B?L3JUSzV0WXl3b3p4bUs0aVd6U2ZQTFZnNlRrTmYweGtxQjdBcElNM21INXFV?=
- =?utf-8?B?aDZCMll1TWFNRHBSQkM3NXZxK0Z2Um5scnZhVWMwZVAyQmo2Z1hDNlFINm83?=
- =?utf-8?B?bnVtRTQwdEIySjhWbWVNajJKZTlub2prL1c4cVJKa0JGMXRGVmNRTHFBZkM5?=
- =?utf-8?B?YlhKNU05YWo3OEFvSjUyaWtQYXpGTzdqM3FvUnNGRWNaVWhLeThtdnAvQitY?=
- =?utf-8?Q?qTcYLtLx4AUhHAHI=3D?=
-X-Exchange-RoutingPolicyChecked: owOPPnvhyzESqsFklN+Ie+o7L7rxA6j/NZQbDSIyoANFjc/GDYaXW7454P5SKHIc7MOnoHQ+78uXNpR+AgQcxAZwTmRjKuCeDhxvfa5MUlUYgQJLSWj3GhJNkLAkj5PELSawUA5aq4jYnPLoPWW3JHav0Nk4AExmxDNEs45bSrsNIHMa9s+6d69+jsU4KTIjFzn2NttSZAzXtTn3JM68TTzMejdHCvzs0gS05rxgiU5dN+cPWRwqy5P3+oE0/eLTnu0CFZ1GKmnyiyKd7sS63TJL67IybMg54oj1UJs/1vChHAw9tsiI+sMbOnMFOX8SW99xqmZi0c27ac8HPP1o/g==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86d32a34-e8f8-4e28-a0ed-08dec7f0cd0a
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7198.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 19:36:58.2844
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8FvriYUA5Q37Obkty6zC8l7ZUCgaHtB2+baV8FkWXSW8GVkVi95auPXl8jkqAV+JkqYECdhE+PcK5mYiKkKgMA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB8939
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On 22/05/2026 06:41, Xu Yilun wrote:
-> From: Peter Fang <peter.fang@intel.com>
+Aneesh Kumar K.V (Arm) wrote:
+> The SMCCC firmware driver now creates the arm-smccc platform device and
+> instantiates the CCA RSI auxiliary devices once the RSI ABI is discovered.
+> The arm64-specific arm-cca-dev platform device stub is therefore no longer
+> needed.
 > 
-> Tie userspace SetupEventNotifyInterrupt support to userspace Quote
-> generation. Delivering event-notify interrupts via userspace breaks if
-> KVM never exits to userspace in the first place.
-
-Breaks how exactly?
-
-Seems like a TDX guest has no way to know whether the VMM will use
-the Event Notify Interrupt anyway, so it cannot rely upon it, so
-it should already handle the case when the interrupt does not fire.
-
+> However, userspace has used the arm-cca-dev platform device to detect Arm
+> CCA Realm guests [1]. Removing it without a replacement would break that
+> detection and would also leave userspace depending on kernel device-model
+> details.
 > 
-> No known guest currently requires event-notify interrupt support, so
-> defer adding in-kernel support for now. Linux TDX guests use polling
-> only.
-
-If no guest is using it, then why does it need special treatment?
-
+> Add /sys/firmware/cca/realm_guest as a stable, architecture-provided ABI
+> for detecting whether the kernel is running as an Arm CCA Realm guest. The
+> file returns 1 in Realm world and 0 otherwise, similar to the existing s390
+> /sys/firmware/uv/prot_virt_guest interface for protected virtualization
+> guests.
 > 
-> Update the KVM API Documentation to reflect the change.
-> 
-> Signed-off-by: Peter Fang <peter.fang@intel.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> ---
->  Documentation/virt/kvm/api.rst |  8 +++++++-
->  arch/x86/kvm/vmx/tdx.c         | 20 +++++++++++++++++---
->  2 files changed, 24 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index 52bbbb553ce1..8a02745a36ee 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -7335,6 +7335,9 @@ inputs and outputs of the TDVMCALL.  Currently the following values of
->     queued successfully, the TDX guest can poll the status field in the
->     shared-memory area to check whether the Quote generation is completed or
->     not. When completed, the generated Quote is returned via the same buffer.
-> +   If the host kernel generates Quotes through the TDX Quoting service provided
-> +   by the TDX module, KVM processes the GetQuote request and it will not appear
-> +   in userspace.
+> Remove the dummy arm-cca-dev registration now that userspace has a
+> dedicated CCA Realm guest indicator, and document the new ABI in
+> Documentation/ABI/testing/sysfs-firmware-cca.
 
-There is an Attestation section in Documentation/virt/kvm/x86/intel-tdx.rst
-that could be updated too.
+I would have expected an attribute in /sys/class/tsm/tsmX to be the
+common protected guest indicator. Then, if you need to distinguish the
+architecture that registered that tsm it would be in the name of the
+parent device for the tsm class device. 
 
-> +                  KVM only supports version 1 of the GetQuote request.
+That also gives you the property that a uevent has signalled the arrival
+of tsm guest services. Otherwise, userspace still needs some custom
+device-model details to know when it can start issuing tsm requests.
 
-Is that relevant here?
-
->  
->   * ``TDVMCALL_GET_TD_VM_CALL_INFO``: the guest has requested the support
->     status of TDVMCALLs.  The output values for the given leaf should be
-> @@ -7342,7 +7345,10 @@ inputs and outputs of the TDVMCALL.  Currently the following values of
->     field of the union.
->  
->   * ``TDVMCALL_SETUP_EVENT_NOTIFY_INTERRUPT``: the guest has requested to
-> -   set up a notification interrupt for vector ``vector``.
-> +   set up a notification interrupt for vector ``vector``.  Since this TDVMCALL
-> +   is used to optimize ``TDVMCALL_GET_QUOTE``, KVM disables this support in
-> +   userspace VMM if ``TDVMCALL_GET_QUOTE`` is completely handled in the kernel.
-> +   KVM may add kernel support for this in the future.
-
-Is that really necessary?
-
->  
->  KVM may add support for more values in the future that may cause a userspace
->  exit, even without calls to ``KVM_ENABLE_CAP`` or similar.  In this case,
+Is auxilliary device arrival too late in the flow for what systemd
+needs?
