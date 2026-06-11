@@ -1,245 +1,160 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010002.outbound.protection.outlook.com [52.101.61.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5AA3FE66B
-	for <linux-coco@lists.linux.dev>; Thu, 11 Jun 2026 13:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781183202; cv=fail; b=dL9e1L6d5jvV9DUYHg1VPX3ZpHs75YKhseRehsGehoR1dQIVU1fkz6InZjajKnYW+YHxKEHRlB1/TcH43Ka7myEUqy66n0sdvL5lyIgTVRLn1lTHB2JuieGT2ulGfZt7GtYcGFvP5yTh780PpnvMqqD1zYOZjwhGIGpLirBovOk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781183202; c=relaxed/simple;
-	bh=olfQQbnpeg9ecdFmCw/S72RrvERIKQlUL1h11e1/Nr4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=R/DITghWC9ir10+JT0wHciLAhjn9Wemvai8pTtjOhD9bu0/fTIDa5zl2tnovr+hqNqrvl97mqgJ7ABbyB8CBDuj0Y6Vp5WQQXNDfux28LMEdru2e6cC6zR4sv3vPYBo7rIiAtIPwSWHg7XUw1tng0rpuNtufPnBxoRqkTflHE34=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=C7R6SEqQ; arc=fail smtp.client-ip=52.101.61.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7EA395AD2
+	for <linux-coco@lists.linux.dev>; Thu, 11 Jun 2026 15:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781192797; cv=none; b=lQvwcDFLBvxNaeJYrJGJMtQWvLq9cjg2/euCWgXtYK1md7WgIdS714qRspqULyjncZC8xJrdqEPLzXiyKwo7DiD/9uqA9cUns8VYfgvktqpYRnlFyL4xSWoqCyCsgTO1jAwjo4L3mm20xmyi57CbIUbrI5y7KcmyXjB78gwdeCE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781192797; c=relaxed/simple;
+	bh=rzzbz++k+Syo0+alvwR6Pj1Z4/WDKW3XNFj7YkGBOUo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=kP+NoJIX4CNwrM3DjlkFhkeuRwQ+zEiYXKK9uwOHCFyzX0KxYjl9s/N0hlvMeV65/BAHKT001CbsDLt8ptES0dTLqfLEWzIeBYHu8GdCOPgdHk+W/AXUApGRFqKK2v6mOrD8SLPSLH/4soQD6jG+9zn/G1JYzG165qPhBhRHRow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fE+Un+AV; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="C7R6SEqQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VzKxTuz3263gAt3RIakGEU9waq62NhBkCEowuxE9wMd7Qd8vE38Aww+zM9RKGYep+yh7loTt1uoS0ckjmlEKOrK97ZSS+esUbmA9sP12SW57CEySWnkgMA4U/Cp4Q7ihJlSSRhiwsikkIxdZZ5/JbvIVWPduoDKsuk1wDDQmuRx/aLY3u1d5ozEAJGfDyuyruKDnVj6INX79SpcN7X0zf8AB3r/uW56fPQCZfahJOonhhndqh6GEvsFZpg24xVsiB/y9i/FcHtPz+TbnEOizQrREk2mp/tGmUDuyN9e4vNWAhC9Wj/n4ZIn5g3O626peklfZ6l5xDHvSuRX2NZl3Yw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yfXGCChRs+6Xzto4NU/K/MuGcsi8nsi0kpDBsa/xHpU=;
- b=gYwSNC3BBNj3mPcPL/5Nq5fo8NdmH2P0aQLgZ/QXCi+Ie0OYPsqBV8pmMVWISDI7uFEIWVUkbTeWwa/XL6AMnK6N21rjMH/NGRRfSJZp89QiGx/z7paeBdwVNKukNQEWvv81GOdTRS+Kd67H/reHFsZhGlOhW75TjKAPVZH9QlT4RWabEHTH7OrPfOfRIeuY9ud37DqVMHfuwdB+lUGwIYgQervOF2NrL21+mBBndVUWJ+ScwEIcju9SLTPtjpIqgm06x4GkqsMFYSIriIqAEJnlzeVrI9gahc9GZPgDqtgEp1t3K9WWIfExJIQI1ToOCuhImU873mQ2vlDwtcHcjw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yfXGCChRs+6Xzto4NU/K/MuGcsi8nsi0kpDBsa/xHpU=;
- b=C7R6SEqQlFkbBjyFWek6pHkievTpTLwbglB2D2Gz5u5gdDKjoZQW6dBBfCbupaPlcKSDjCzaONaO7gRsNAEOUghgltUUVgA8BJIdxgu2RA3V+FNz0FiBjHPl78FBkTU6Qk3vcctKXUTLScuX7y67tlK10tKjIwr1EDq/tfTjD4I=
-Received: from MW4PR03CA0276.namprd03.prod.outlook.com (2603:10b6:303:b5::11)
- by IA0PR12MB8253.namprd12.prod.outlook.com (2603:10b6:208:402::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.18; Thu, 11 Jun
- 2026 13:06:33 +0000
-Received: from SJ5PEPF000001CE.namprd05.prod.outlook.com
- (2603:10b6:303:b5:cafe::1a) by MW4PR03CA0276.outlook.office365.com
- (2603:10b6:303:b5::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.11 via Frontend Transport; Thu,
- 11 Jun 2026 13:06:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ5PEPF000001CE.mail.protection.outlook.com (10.167.242.38) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.7 via Frontend Transport; Thu, 11 Jun 2026 13:06:32 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 11 Jun
- 2026 08:06:32 -0500
-Received: from [127.0.1.1] (10.180.168.240) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 11 Jun
- 2026 06:06:23 -0700
-From: Shivank Garg <shivankg@amd.com>
-Date: Thu, 11 Jun 2026 13:05:10 +0000
-Subject: [PATCH RFC 3/3] KVM: selftests: exercise guest_memfd folio
- migration
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fE+Un+AV"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf3636d6c0so85382245ad.2
+        for <linux-coco@lists.linux.dev>; Thu, 11 Jun 2026 08:46:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781192792; x=1781797592; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tkYI56ab44R+CGvXUlfI3ycHykGEF+9O0JMidioFwIA=;
+        b=fE+Un+AVn2SIaQMfJ1tJC+8d0BM/TpbxTSDqa864ML+uJQU9J/h0GU1tDzuMiq26p7
+         3K5PhuYIYycgX49NvBGYBrkZP0JdDiJd2k/dsprRBFsDx4PF5XURJpD9VLXWcEnqo1PY
+         kuGTlk+Kg+efvtU1TvaAQhjhVBKlRWu7TQj8PIZ25HNNzvqNCwG9gdiuMO9v5su4Jt9+
+         uMLoepSOIo4VTgNjgZJ4y4ZQRwk/QyooIzD9ZSQ1vzKkdWy8B6n2JES6z+BWo19Cjh3N
+         TBmYdRaXPRfcJN2Vt2Sa7//gC3lx9Atl1NC5IaCW7PgOT+xatwgNJfVXBX7npWNWMIwy
+         rM1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781192792; x=1781797592;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tkYI56ab44R+CGvXUlfI3ycHykGEF+9O0JMidioFwIA=;
+        b=KqUehpdo+00qZi4A4SSz8wSu6/kBdjeAgpFZm97dTFNrOetxPzM8MXXoIfAESqplR1
+         /eDMIDe842UBj/tALzhGXRKI07s4sE6z7uvdjaLmhHY15xvxo6v+01nNJ/de5Un5Gwl1
+         0+id29hVJPU6Gb5rjuNMbOpfnZPzZ1LP64HBAaQl0X/o/gpjZGSZ8gSx63S6U4ASbJtW
+         oJbX5J+8h4l7A+lmrOTc61ciN6G4np6UzPNUkICaPhIDIOP36l8yG8xN8cGC/3jORUY7
+         Y7WwwpLDNeOs1m+QV+xEf9ZUVyCfAZc9E2E9vlKHpVMR/3OTu6HKQ63GMxyz0RAyNrF1
+         Kf2Q==
+X-Forwarded-Encrypted: i=1; AFNElJ97j+g4KYBzaOce3BioQUjSYTRSrovIRVF2bXeGHmhRvxk0qXl8/1nUQ0ocUAVBdSuKy2pMbA5Hos99@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywsatfb1WETHY24j7mudjv+l5++3Tpq689Mka263mH0vmcH8V8Q
+	iCqSWTxcs5ILTn9a1/gnfF33ZQ4wv/Pei9EA/SVTRyGilAUF/0/YuH3q0h6gMPCXlP+zW2AsZ5W
+	B5YV+UQ==
+X-Received: from plbbb1.prod.google.com ([2002:a17:902:bc81:b0:2bf:17b5:30c9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:947:b0:2c2:245a:3366
+ with SMTP id d9443c01a7336-2c2f305aff9mr45838065ad.27.1781192791738; Thu, 11
+ Jun 2026 08:46:31 -0700 (PDT)
+Date: Thu, 11 Jun 2026 08:46:31 -0700
+In-Reply-To: <CAEvNRgF31BzyFyVUa7tDJ=qJ-8ws2kxfNjLxmV=OxKSqhaOiPw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20260611-shivank-gmem-migrate-v1-3-2d266bfc6f95@amd.com>
-References: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
-In-Reply-To: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka
-	<vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
-	<mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
-	<hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, David Hildenbrand
-	<david@kernel.org>, Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
-	<joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
-	<byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
-	<ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, "Paolo
- Bonzini" <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Chao Peng
-	<chao.p.peng@linux.intel.com>, Nikunj A Dadhania <nikunj@amd.com>, Ira Weiny
-	<ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>, Pankaj Gupta
-	<pankaj.gupta@amd.com>, Ackerley Tng <ackerleytng@google.com>, Fuad Tabba
-	<tabba@google.com>, Sean Christopherson <seanjc@google.com>, Vishal Annapurve
-	<vannapurve@google.com>, Nikita Kalyazin <nikita.kalyazin@linux.dev>, Patrick
- Roy <patrick.roy@linux.dev>, Pratik Sampat <prsampat@amd.com>, Ashish Kalra
-	<Ashish.Kalra@amd.com>
-CC: <linux-fsdevel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781183157; l=3950;
- i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
- bh=olfQQbnpeg9ecdFmCw/S72RrvERIKQlUL1h11e1/Nr4=;
- b=gCRHu2UP0v6tDLOup1gOXGbI2VE6k9oe02ImNCzdI4rhQe/MxeZrk70mgsBHgkjLhExbw0Q3O
- pUcb1/scYcVCaoNzwOYiOTJKxwIicEIMoOV1zcM0fGxkvR2Q2y2DRWP
-X-Developer-Key: i=shivankg@amd.com; a=ed25519;
- pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb09.amd.com
- (10.181.42.218)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CE:EE_|IA0PR12MB8253:EE_
-X-MS-Office365-Filtering-Correlation-Id: c80cc666-b88d-4af9-84ac-08dec7ba42a7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|82310400026|23010399003|36860700016|1800799024|921020|56012099006|11063799006|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	ndx+OFsZQrE1uyHd2iaXYZHTEngD8o9JqrQSu4ZYnfjmaC9juzeWR1AEMbvWUmaqKbj3C4Oa/HZcNLOaQk4lWpFfG5cWcJ7o1OPqWUpZiZ7wuCO9qdZR7zY5a2ploxlyPpUoyOwydJG4Tmva7w9tIr8llZe4ak9Vp47DRIRR+SOHt1dzD8HAKfqBACqbIbuP541W/1Yip6+rautgv6EH+vPDeJ+sAe6UcBkYgZXNIgNVHaTXwe12oGZ7z+4x3aE3mk0g5UvuvsWlAfxuKiawS8UWXov7tVc36/0dXK3J4Kmr09vnwYm2SQgSi+oURq4TJhIRxIUdFQOIU0Sbzv4yLPHbgaETlbbVtZTV9B3RxmYRGZ7W+u6+PMSd95Ft4nNxj2L3rlajxONb6KHqs6unNxW5YmnYhHWxER2AomRowTkw+2ocGh9b/6YVa1UdNgiynhbXQ483rP1Snp/kvCXu5Dop5V04CU6DZ144Xxk1QLUX6mNpDwKQvxMxf/HH7k7ms5u4MYuyZRn/9IQM28FMHZOKRVMvA7czgHgrUhsdjOdQQqbLZf6nE7urG/kpJSbuLTrON8aE8zThbezUw8Act0Yn9zIQFWICmPWhym77zg6E4F9ADRd4UUfobaiLgMG9AoFtsYFLXK58IZd1If2NQ3ednPHmiEYVRoZqsDRHzG7sN2oyR4iA5MTOx2T7vosyrbdHjj74IQaMTD1uwYJTxGDj6TgE6Cwp31JyOwufYW1ctQjAVqGkqI+qXppxvYFGqjJV+X+WvPODi4NIW1VNkg==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(23010399003)(36860700016)(1800799024)(921020)(56012099006)(11063799006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	UuEo3rDAGfl127U0x2hIeO6XV418a27jKMa7i+Pp7QT2REp2bjhBQBIx3w9veDn2r404vCZcxF9Nc3mD/Tfq5bq9dLNiqnNeRwUkxIMLargqJuq3EvzbmMpUbzcLyAqbEAZwpLdgsQ7vGF7klWk8IQf0zf2MPw3H2J5a61hdc2vZT+j8EE7eRxOsoJN2JvOs1ePmt9d6BaNk+U2XPMtv2dwO4ZJ+vr6c8wb2vkSlMG9s4mIpxL13ocwYTDkCKoAOzOvyrF+oETLSxjFChsQZqNcffm+z2m9frIphYZ/oHXfWz97c7MshK1wB7pAkCef0xTwIOSySACfH9KENcwaL4JRMdBn03iXYQvlHUij6ilqhnwRUUL5e1klx/FVRlGUrmqs+Szx6wyMPSVpK+yfJ4RGjswab9xdPV06fxJvlBwUjbRalB/oSc8w4qNulS8ee
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 13:06:32.8220
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c80cc666-b88d-4af9-84ac-08dec7ba42a7
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001CE.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8253
+Mime-Version: 1.0
+References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
+ <CAEvNRgGpaggjd3=ooyzv7iEbmA-x1mWJHgjLSjPi8=5CPrk-yQ@mail.gmail.com>
+ <aiHeDZEPkAcWcSkn@google.com> <CAEvNRgHz5GDjq0GqRmpQdHc-X45gCNr39VYWZH-T7XhPEtN5CQ@mail.gmail.com>
+ <aiMVLtblIKu1DQWJ@google.com> <CAEvNRgF31BzyFyVUa7tDJ=qJ-8ws2kxfNjLxmV=OxKSqhaOiPw@mail.gmail.com>
+Message-ID: <airYV9lcIM4xdA60@google.com>
+Subject: Re: [PATCH v7 00/42] guest_memfd: In-place conversion support
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>, aik@amd.com, 
+	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
+	chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-Add a migration test to guest_memfd_test, run for the
-MMAP | INIT_SHARED configuration on systems with at least two NUMA
-nodes (skipped otherwise).
+On Wed, Jun 10, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> 
+> > On Thu, Jun 04, 2026, Ackerley Tng wrote:
+> >> Sean Christopherson <seanjc@google.com> writes:
+> >> >> + KVM: selftests: Test conversion with elevated page refcount
+> >> >>     + Askar pointed out that soon vmsplice may not pin pages. Should I
+> >> >>       pin pages through CONFIG_GUP_TEST like in [2]? I prefer not to
+> >> >>       take a dependency on CONFIG_GUP_TEST.
+> >> >
+> >> > I'm not exactly excited about taking a dependency on CONFIG_GUP_TEST either, but
+> >> > it probably is the least awful choice.  E.g. KVM also pins pages is certain flows,
+> >> > but we're _also_ actively working to remove the need to pin.
+> >> >
+> >> > Hmm, maybe IORING_REGISTER_PBUF_RING?  AFAICT, it's almost literally a "pin user
+> >> > memory" syscall.
+> >> >
+> >>
+> >> Hmm that takes a dependency on io_uring, which isn't always compiled
+> >> in. Between CONFIG_IO_URING and CONFIG_GUP_TEST, I'd rather
+> >> CONFIG_GUP_TEST.
+> >
+> > Or try both?  If it's not a ridiculous amount of work.
+> 
+> CONFIG_GUP_TEST was tried in [1]
+> 
+> [1] https://lore.kernel.org/all/baa8838f623102931e755cf34c86314b305af49c.1747264138.git.ackerleytng@google.com/
+> 
+> It looks like this
+> 
+>   static void pin_pages(void *vaddr, uint64_t size)
+>   {
+>   	const struct pin_longterm_test args = {
+>   		.addr = (uint64_t)vaddr,
+>   		.size = size,
+>   		.flags = PIN_LONGTERM_TEST_FLAG_USE_WRITE,
+>   	};
+> 
+>   	gup_test_fd = open("/sys/kernel/debug/gup_test", O_RDWR);
+>   	TEST_REQUIRE(gup_test_fd > 0);
 
-Migrate every folio from node 0 to node 1 with move_pages(2) and
-check both the resulting node and the data. Migrate them back and
-re-check the data.
+Use __open_path_or_exit().  I also think it makes sent to make these available
+to all KVM selftests, there are probably other testcases that could utilize page
+pinning.
 
-Signed-off-by: Shivank Garg <shivankg@amd.com>
----
- tools/testing/selftests/kvm/guest_memfd_test.c | 77 ++++++++++++++++++++++++++
- 1 file changed, 77 insertions(+)
+>   	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args), 0);
+>   }
+> 
+>   static void unpin_pages(void)
+>   {
+>   	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_STOP), 0);
+>   }
+> 
+> So in the test I'll call pin_pages(), then try to convert, see that it
+> fails with EAGAIN and reports the expected error_offset, then I call
+> unpin_pages(), then I convert again and expect success.
+> 
+> Are you uncomfortable with the CONFIG_GUP_TEST interface?
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 832ef4dfb99faa4411af847d21eb426c34342434..04931d3add46cb117fe5b093ed48f838cb124542 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -76,6 +76,82 @@ static void test_mmap_supported(int fd, size_t total_size)
- 	kvm_munmap(mem, total_size);
- }
- 
-+/*
-+ * Each page is filled with a distinct byte (its index). Check every byte that
-+ * data is intact after migration.
-+ */
-+static void verify_page(const char *page, int page_idx, size_t size,
-+			const char *when)
-+{
-+	char expected = (char)(page_idx & 0xff);
-+	size_t off;
-+
-+	for (off = 0; off < size; off++)
-+		TEST_ASSERT(page[off] == expected,
-+			    "Page %d corrupted at offset %zu %s", page_idx, off, when);
-+}
-+
-+static void test_migrate_folio(int fd, size_t total_size)
-+{
-+	const unsigned long nodemask_0 = 1; /* nid: 0 */
-+	unsigned long maxnode = BITS_PER_TYPE(nodemask_0);
-+	int page_count = total_size / page_size;
-+	void **addr;
-+	int *status, *nodes;
-+	char *mem;
-+	int i;
-+
-+	if (!is_multi_numa_node_system())
-+		return;
-+
-+	mem = kvm_mmap(total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd);
-+
-+	addr = calloc(page_count, sizeof(*addr));
-+	status = calloc(page_count, sizeof(*status));
-+	nodes = calloc(page_count, sizeof(*nodes));
-+	TEST_ASSERT(addr && status && nodes, "Failed to allocate page arrays");
-+
-+	/* Allocate all folios on node 0 and fill each with a known pattern. */
-+	kvm_mbind(mem, total_size, MPOL_BIND, &nodemask_0, maxnode, 0);
-+	for (i = 0; i < page_count; i++) {
-+		memset(mem + i * page_size, (char)(i & 0xff), page_size);
-+		addr[i] = mem + i * page_size;
-+	}
-+
-+	kvm_move_pages(0, page_count, addr, NULL, status, 0);
-+	for (i = 0; i < page_count; i++)
-+		TEST_ASSERT(status[i] == 0, "Page %d should be on node 0", i);
-+
-+	/* Migrate node 0 -> 1, then check both the location and the data. */
-+	for (i = 0; i < page_count; i++)
-+		nodes[i] = 1;
-+	kvm_move_pages(0, page_count, addr, nodes, status, MPOL_MF_MOVE);
-+
-+	kvm_move_pages(0, page_count, addr, NULL, status, 0);
-+	for (i = 0; i < page_count; i++)
-+		TEST_ASSERT(status[i] == 1,
-+			    "Page %d should be on node 1 after migration", i);
-+	for (i = 0; i < page_count; i++)
-+		verify_page(mem + i * page_size, i, page_size, "after migration");
-+
-+	/* Migrate back node 1 -> 0, then re-check the location and the data. */
-+	for (i = 0; i < page_count; i++)
-+		nodes[i] = 0;
-+	kvm_move_pages(0, page_count, addr, nodes, status, MPOL_MF_MOVE);
-+
-+	kvm_move_pages(0, page_count, addr, NULL, status, 0);
-+	for (i = 0; i < page_count; i++)
-+		TEST_ASSERT(status[i] == 0,
-+			    "Page %d should be on node 0 after round-trip", i);
-+	for (i = 0; i < page_count; i++)
-+		verify_page(mem + i * page_size, i, page_size, "after round-trip");
-+
-+	free(addr);
-+	free(status);
-+	free(nodes);
-+	kvm_munmap(mem, total_size);
-+}
-+
- static void test_mbind(int fd, size_t total_size)
- {
- 	const unsigned long nodemask_0 = 1; /* nid: 0 */
-@@ -434,6 +510,7 @@ static void __test_guest_memfd(struct kvm_vm *vm, u64 flags)
- 			gmem_test(fault_overflow, vm, flags);
- 			gmem_test(numa_allocation, vm, flags);
- 			__gmem_test(collapse, vm, flags, pmd_size);
-+			gmem_test(migrate_folio, vm, flags);
- 		} else {
- 			gmem_test(fault_private, vm, flags);
- 		}
+No, my concern is/was the potential for leaking pages if the test fails/crashes,
+but it looks gup_test_release() ensures all pins are dropped when the file is
+released, so that should be a non-issue.
 
--- 
-2.43.0
-
+> What would you like me to try with CONFIG_IO_URING? I'm thinking that the
+> main difference between the two is just down to which non-default CONFIG
+> option we want to take for guest_memfd tests.
