@@ -1,171 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010028.outbound.protection.outlook.com [52.101.56.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971B92EA731;
-	Thu, 11 Jun 2026 13:05:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781183119; cv=none; b=HqNmTg6P+B5R4RVnSxnFkmBkoWOWgTVBnjMYia1dz88dGLVS0N7Ver+rcCFCccsM35t+ba2oTRyke8+qQ3Mlat1XZX5UNwifOO+kkoZt4VxGtdr3WWD5Jnyo0IhMqFf8npqs7VVVMrCtkvx+7V8phut6gycQZVPy1RhBVCYcJqg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781183119; c=relaxed/simple;
-	bh=iA/6eVaIs2YRbOL8p+zvsk4lHQ7EZADkD10ncYRdudw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nY7cXapGOYjGlvpAA0GmnuNLd+ESNXtyB/6a2r7WGQQr+ANABekIoZV1ZFLznhzCF7JyfDkY47gEcgiRUYn/p7OhxkZYShMomCGglQjdOrobxyb4O4VU0a5cbHsV0xNbfF85sL8mJy+wtQtsWHYBizrHypfMXdqsJN1qO9EIh0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WM3aFKVp; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D1F401492
+	for <linux-coco@lists.linux.dev>; Thu, 11 Jun 2026 13:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781183173; cv=fail; b=GeaZJfiSxQakrKepfi8TxPhnpsmHnzhVTE23714rB88rczAIUjLPo9BF3alg7ztAV+pL9DZZFjCth/QGN20BJ51q832ooplF0N2wtaOoujdf+ooWyYuwlrE1psp+TcVgSFhLWWu6nDB+Q1/hvTtvIFw009DVEYzfAY2dGwSv974=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781183173; c=relaxed/simple;
+	bh=l9OhizZBliSH6176iirfCD0QxXUpxYCmVPS9IJnO3zs=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=Wdohw3oL6ChWQFXszxoNmV6fZHOFgGoT6Zrd2pjqAbVn4gx2zvvcasPQk4KDwQHY9lRkP+Cg3/FWq0hqRCi9UoJSWnbh6F8fY5OZsXqgJx4gK22m0hT7SL959f0Zvm9GazXj1wqY3pJGQfbmp/dwa+C0Hhxm+GT5f9G831ffky4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4YznSylr; arc=fail smtp.client-ip=52.101.56.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WM3aFKVp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DD71F00893;
-	Thu, 11 Jun 2026 13:05:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781183118;
-	bh=F2nYKWWl6fKV1ODVGqLXuKiCYR5y2lxxAtCQSJik2Eo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WM3aFKVp4d+/8qnaKDMpxG+rZPWaErndJdrDT3UdF81QCWVYTCShAb2bQ7M5Hey2D
-	 d+kgvvPeNhisUY603Ft0FbKDc60WTnEu0P6Vz8kamadbBUxa4GTF4qKvEpr7FUcfmp
-	 d3JWz4cuDEqhcbGTQ4Z+Zpx1+qpIOra+RUcFP5qbcCVjRkZPfm/XLcxP3ewp6Ymbde
-	 aIfOh43np5d96gSNCER89SED8RYvTSIERfXxiWSN2zZYWC917l06YAVYnWajxeZ0d/
-	 devdqwYH35ipXTPB0bR2C0Bgvl+RG0wMZiIHE9RFlIEatDxS2UGzpqQNomSjvNwxHu
-	 hNaCJWMbb2SrA==
-From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-To: linux-coco@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Andre Przywara <andre.przywara@arm.com>
-Subject: [PATCH v7 6/6] coco: guest: arm64: Replace dummy CCA device with sysfs ABI
-Date: Thu, 11 Jun 2026 18:34:29 +0530
-Message-ID: <20260611130429.295516-7-aneesh.kumar@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260611130429.295516-1-aneesh.kumar@kernel.org>
-References: <20260611130429.295516-1-aneesh.kumar@kernel.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4YznSylr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MvlTaBu9KiKn4RfF+f22HvpI9djYBAiW+zP6ScGKFF00KrCxRcaYG/lu3Doi1EQlqusnXUJOge/9n1B64nRGsCN7bih8WN3psMoQOKorxNhUGudBZOlskf6VIk8WijimW2dr9A3JMP+YUuK8YnEmXgS04yQM8kqOxj3L0Lg4PQnYFlR2xFpxfOilr5JPk2a9faqdEtF43fb8OjzVh0LTmmTwGtnbfS8for0ohJyVo/Vec5MXx6huOQ1JHiYIqKFU0i5gzEe3yWzMgQwvzm/284tcpnrxCGTGWBXVpzXxv4BKsFgzaogYqE4BgKO8VqERpG+57aOBQajxx8Gr/YOu6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eQO7zgINNKZsiYp5nq4F4iy7c2ZCMmxiGWjMPq0oX2k=;
+ b=TmlURwvA/G6VLMEIkRgUTU9tKyFVzZYHwKA9IGynPRNHHcneyyiM1bX6cSesZAjnzn/6JD+yQwJMiju8eS5s7ieTHA73sHKJhzmDzM6PGTKMZykTy09mEpi4f3JKZh6imdCy2Nje3PIx8VVveE6YKCNZyeOeuPsfRgGzoIZFenIhJjcFExq5TdqrT+g+ShUkcpYyNiHTxNRMX29HjMQOFaBxwyMO7Q1rVEHQ16Re7ZxlBuJW8UQRpBfa+BVwpMxw3yLgDAw+4cXpS7t8NZwTSbjknezazXYJzIl2MHqiZyOicy9m9mLcqyWLHb3XSU4tXmJbLWIgs+bWJpUSdXn9lw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eQO7zgINNKZsiYp5nq4F4iy7c2ZCMmxiGWjMPq0oX2k=;
+ b=4YznSylrmvHWT3Bi/0gRPLA643If/ij9k21GuuPmfKPrchgBnx2MbhL9fmJzz6n46AFDUYj8PdvrX2bZYTA0FGU29Pw2r+ty2Ae5kyMDvjz6tCyFBxQtKueMJrLJtjiOoDqNuM5S0xl9LTezKKP2lFvSl+3y+/HRiXqr4jfIyrg=
+Received: from BY3PR03CA0020.namprd03.prod.outlook.com (2603:10b6:a03:39a::25)
+ by SN7PR12MB8769.namprd12.prod.outlook.com (2603:10b6:806:34b::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.12; Thu, 11 Jun
+ 2026 13:06:06 +0000
+Received: from SJ5PEPF000001CB.namprd05.prod.outlook.com
+ (2603:10b6:a03:39a:cafe::4) by BY3PR03CA0020.outlook.office365.com
+ (2603:10b6:a03:39a::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.13 via Frontend Transport; Thu,
+ 11 Jun 2026 13:06:06 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ5PEPF000001CB.mail.protection.outlook.com (10.167.242.40) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.113.7 via Frontend Transport; Thu, 11 Jun 2026 13:06:06 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 11 Jun
+ 2026 08:06:06 -0500
+Received: from [127.0.1.1] (10.180.168.240) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 11 Jun
+ 2026 06:05:57 -0700
+From: Shivank Garg <shivankg@amd.com>
+Subject: [PATCH RFC 0/3] KVM: guest_memfd: folio migration for
+ non-confidential VMs
+Date: Thu, 11 Jun 2026 13:05:07 +0000
+Message-ID: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIOyKmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDM0ND3eKMzLLEvGzd9NzUXN3czPSixJJUXYtkw2RTQ8skY4NEMyWg1oK
+ i1LTMCrCx0UpBbs5KsbW1AIAClyhrAAAA
+X-Change-ID: 20260611-shivank-gmem-migrate-8c1c519b30a6
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka
+	<vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	<mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
+	<hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, David Hildenbrand
+	<david@kernel.org>, Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
+	<joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
+	<byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
+	<ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Chao Peng
+	<chao.p.peng@linux.intel.com>, Nikunj A Dadhania <nikunj@amd.com>, Ira Weiny
+	<ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>, Pankaj Gupta
+	<pankaj.gupta@amd.com>, Ackerley Tng <ackerleytng@google.com>, Fuad Tabba
+	<tabba@google.com>, Sean Christopherson <seanjc@google.com>, Vishal Annapurve
+	<vannapurve@google.com>, Nikita Kalyazin <nikita.kalyazin@linux.dev>, Patrick
+ Roy <patrick.roy@linux.dev>, Pratik Sampat <prsampat@amd.com>, Ashish Kalra
+	<Ashish.Kalra@amd.com>
+CC: <linux-fsdevel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781183157; l=2240;
+ i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
+ bh=l9OhizZBliSH6176iirfCD0QxXUpxYCmVPS9IJnO3zs=;
+ b=fyWLp9D+B/8tocZMXW/rxGICD365Q3/0VKP8FNBXloIxVWOcer3HHneMWjLmbuknLVzqkV4uT
+ 4aZ8Jz+9IQxADIo40ZcmTjeK8fSVaLMQR3EINQrddvYlbWVZOeUOYsd
+X-Developer-Key: i=shivankg@amd.com; a=ed25519;
+ pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb09.amd.com
+ (10.181.42.218)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CB:EE_|SN7PR12MB8769:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6d85cd26-e6b3-4e77-dce4-08dec7ba32ea
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|82310400026|1800799024|376014|36860700016|7416014|18002099003|921020|6133799003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	0VRLDm1PJKKNzJ7jmPiEBc8Guc2NNGyM7GdKQlrjV0n9G6ib/suis0vmG1d+w1WebaPYzQnNmNXgr1uih9miK0zaE988CHszo2IpM3LNTeacfXeHx/8ZLssjy7Prt1r2gz5TJ/hxUPc2Z+2E8AoeYqq8hHpyS/ScI02e+o4A7TcH5x/MSkfeIZgu7rukH2RZsv2fI+HWkOGZl8eBE4SswzUNe055Mw8StL+ojnp2huKXa1T79n7EzgGuhPkjz/kgo4LYA+b3ubuiI7N3fozRD9ArLvkOJSh0VGwPlDktxlGTqEYuIyIFeCPFVy8qY6ymV8289h1D0srzXBevfoT6dMdXLdX56YwFZvw5ajgxo3/AZIjDrKdRaAHViqDrhvGYnd0mcnY/DBtCx/Il86micOuBpsgWB1O9q2m7p6WDNlvSE5D3ozJxKzT1biw5aGGKwPBHpzzsFjlDImMNiU70xmlX/AWM1vfdGIZdUgMUx5/S9sM3If2VFCOhNB9NXGLhVU1P6sCMZdLM7iPlPqMIyhYK5epGbXkJZpWtLpCzxnn4Yw7fgdOCBSNvsuIZ4pn/y17/tCwl0hVwerjJGxs711vOBr1f3ntTcfcOiWOoUlSknEnBM1T9Br/FM5eQ6FfTXdAW5X0F72WqPLPYtZP0zBAShTzWVQhaDUbB96y0z2jjwlrua3R6v474dPA5vD8e2Cbe3oJIAfdAyg8GPhXc3gPRAvCYEvSkPO2Hyj0D5bfMg+Dlq4QOxMPbJzL3edUVMNeJsheld6LK7yokrvVLrFORlYlQMzxnLqnA1ZsSR44=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(1800799024)(376014)(36860700016)(7416014)(18002099003)(921020)(6133799003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	/G2FJaV5/D57DMvsxlHWeYJS1zVE4fZJEoh7IdmfOpxtpNgGawlyewZqRIwNfvpNUr12yMav8+cptLkww3/guX+CacFFQtM+XUoRtHsBpSSBK3SKOQnq1U54C0opWpVYQv+K1hu+Z0Rxbb5cTCAVKuwgnICcK1jMJ/VTq/JGZubAG/ch00UDKlhXe8FittJXv9pYuFGG9eSa2t7SjfJxsB7KGvLDtzD6GPOb5I7ywRrA6pxLGsFEvYzu1KmXNYSatspBqdL0zf55salL5qbyiiV2Tv6l9YpSg8PlLCatrA3hRZnuoIxJ1C7nCE6z2YDAThvsj/iu/IkdCWgYR9ph+YR11uwruXn9gXlPtNmnonFERU9/DoKoxDD+GvuOLv9NvNPyjdWwQCWWFHeUyIfaboDyBeqPXu8GSu+myAWGiApJk3Z1/Trpj8vPnFgD0ATP
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 13:06:06.4192
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d85cd26-e6b3-4e77-dce4-08dec7ba32ea
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001CB.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8769
 
-The SMCCC firmware driver now creates the arm-smccc platform device and
-instantiates the CCA RSI auxiliary devices once the RSI ABI is discovered.
-The arm64-specific arm-cca-dev platform device stub is therefore no longer
-needed.
+guest_memfd folios are currently marked unmovable, so the kernel cannot
+perform NUMA-balancing, memory compaction, etc. This is unavoidable for
+confidential VMs (SEV-SNP, TDX), since memory is encrypted and copying it
+needs firmware assistance. However, for non-confidential VMs (like
+Firecracker), we can migrate the folios.
 
-However, userspace has used the arm-cca-dev platform device to detect Arm
-CCA Realm guests [1]. Removing it without a replacement would break that
-detection and would also leave userspace depending on kernel device-model
-details.
+This series enables folio migration for non-confidential guest_memfd and
+also lays the groundwork for migrating confidential guest_memfd later.
+Once firmware-assisted copying support is available, those VMs can be
+made movable, the confidential folio content can be copied separately,
+and the destination folio marked with FOLIO_CONTENT_COPIED so
+__migrate_folio() skips the host-side folio_mc_copy().
 
-Add /sys/firmware/cca/realm_guest as a stable, architecture-provided ABI
-for detecting whether the kernel is running as an Arm CCA Realm guest. The
-file returns 1 in Realm world and 0 otherwise, similar to the existing s390
-/sys/firmware/uv/prot_virt_guest interface for protected virtualization
-guests.
+Testing
+-------
+Host: 7.1-rc7 + this, 2 NUMA nodes
 
-Remove the dummy arm-cca-dev registration now that userspace has a
-dedicated CCA Realm guest indicator, and document the new ABI in
-Documentation/ABI/testing/sysfs-firmware-cca.
+- KVM selftest: allocate folios on node 0, migrate them to node 1 and
+  back and verify resulting NUMA node and the folio contents at each
+  step.
 
-[1] https://lore.kernel.org/all/4a7d84b2-2ec4-4773-a2d5-7b63d5c683cf@arm.com
+- Firecracker [1]: booted a microVM backed by guest_memfd. While the
+  guest was running, forced host-side migration of its folios via
+  migratepages(8) and explicit move_pages(2) of guest_memfd
+  pages. Verify with /proc/firecracker_pid/numa_maps.
 
-Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+[1] https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
+    and change builder.rs to remove GUEST_MEMFD_FLAG_NO_DIRECT_MAP from
+    vm.create_guest_memfd()
+
+Best regards,
+Shivank
+
+Signed-off-by: Shivank Garg <shivankg@amd.com>
 ---
- Documentation/ABI/testing/sysfs-firmware-cca | 10 +++++
- arch/arm64/kernel/rsi.c                      | 39 +++++++++++++++-----
- 2 files changed, 39 insertions(+), 10 deletions(-)
- create mode 100644 Documentation/ABI/testing/sysfs-firmware-cca
+Shivank Garg (3):
+      mm: split AS_UNMOVABLE back out of AS_INACCESSIBLE
+      KVM: guest_memfd: support folio migration for non-confidential VMs
+      KVM: selftests: exercise guest_memfd folio migration
 
-diff --git a/Documentation/ABI/testing/sysfs-firmware-cca b/Documentation/ABI/testing/sysfs-firmware-cca
-new file mode 100644
-index 000000000000..bf177d636b92
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-firmware-cca
-@@ -0,0 +1,10 @@
-+What:		/sys/firmware/cca/realm_guest
-+Date:		May 2026
-+Contact:	Linux ARM Kernel Mailing list <linux-arm-kernel@lists.infradead.org>
-+Description:	Read-only. Indicates whether the kernel is running as an
-+		Arm Confidential Compute Architecture (CCA) Realm guest.
-+
-+		The value is one of:
-+
-+		0: the kernel is not running as a Realm guest
-+		1: the kernel is running as a Realm guest
-diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
-index da440f71bb64..a333029ddf08 100644
---- a/arch/arm64/kernel/rsi.c
-+++ b/arch/arm64/kernel/rsi.c
-@@ -9,6 +9,8 @@
- #include <linux/swiotlb.h>
- #include <linux/cc_platform.h>
- #include <linux/platform_device.h>
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
- 
- #include <asm/io.h>
- #include <asm/mem_encrypt.h>
-@@ -16,6 +18,7 @@
- #include <asm/rsi.h>
- 
- static struct realm_config config;
-+static struct kobject *cca_kobj;
- 
- unsigned long prot_ns_shared;
- EXPORT_SYMBOL(prot_ns_shared);
-@@ -160,17 +163,33 @@ void __init arm64_rsi_init(void)
- 	static_branch_enable(&rsi_present);
- }
- 
--static struct platform_device rsi_dev = {
--	.name = "arm-cca-dev",
--	.id = PLATFORM_DEVID_NONE
-+static ssize_t cca_is_realm_guest(struct kobject *kobj,
-+		struct kobj_attribute *attr, char *buf)
-+{
-+	return sysfs_emit(buf, "%d\n", is_realm_world());
-+}
-+
-+static struct kobj_attribute cca_realm_guest =
-+	__ATTR(realm_guest, 0444, cca_is_realm_guest, NULL);
-+
-+static const struct attribute *cca_realm_attrs[] = {
-+	&cca_realm_guest.attr,
-+	NULL,
- };
- 
--static int __init arm64_create_dummy_rsi_dev(void)
-+static int __init realm_sysfs_init(void)
- {
--	if (is_realm_world() &&
--	    platform_device_register(&rsi_dev))
--		pr_err("failed to register rsi platform device\n");
--	return 0;
--}
-+	int ret;
-+
-+	cca_kobj = kobject_create_and_add("cca", firmware_kobj);
-+	if (!cca_kobj)
-+		return -ENOMEM;
- 
--arch_initcall(arm64_create_dummy_rsi_dev)
-+	ret = sysfs_create_files(cca_kobj, cca_realm_attrs);
-+	if (!ret)
-+		return 0;
-+
-+	kobject_put(cca_kobj);
-+	return ret;
-+}
-+device_initcall(realm_sysfs_init);
+ include/linux/pagemap.h                        | 24 ++++++--
+ mm/compaction.c                                | 12 ++--
+ mm/migrate.c                                   |  2 +-
+ tools/testing/selftests/kvm/guest_memfd_test.c | 77 ++++++++++++++++++++++++++
+ virt/kvm/guest_memfd.c                         | 49 ++++++++++++++--
+ 5 files changed, 149 insertions(+), 15 deletions(-)
+---
+base-commit: 4549871118cf616eecdd2d939f78e3b9e1dddc48
+change-id: 20260611-shivank-gmem-migrate-8c1c519b30a6
+
+Best regards,
 -- 
-2.43.0
+Shivank Garg <shivankg@amd.com>
 
