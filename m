@@ -1,160 +1,313 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7EA395AD2
-	for <linux-coco@lists.linux.dev>; Thu, 11 Jun 2026 15:46:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB40403126
+	for <linux-coco@lists.linux.dev>; Thu, 11 Jun 2026 16:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781192797; cv=none; b=lQvwcDFLBvxNaeJYrJGJMtQWvLq9cjg2/euCWgXtYK1md7WgIdS714qRspqULyjncZC8xJrdqEPLzXiyKwo7DiD/9uqA9cUns8VYfgvktqpYRnlFyL4xSWoqCyCsgTO1jAwjo4L3mm20xmyi57CbIUbrI5y7KcmyXjB78gwdeCE=
+	t=1781193890; cv=none; b=Bp5iCNYWWQcoHOXeH0JftCUMi42gqBivCG3/ljLC3t0TJ31EslFfzb7hOowClyiqpbpx59KOUtKKWvBuHaZCTr24no2UAeUjvDiL+8M20bldMtm31IYtnqph76+ioMzGe/cVdrQXNuynyTQWmNFt78y3HJi3wIBYrutBujd1VFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781192797; c=relaxed/simple;
-	bh=rzzbz++k+Syo0+alvwR6Pj1Z4/WDKW3XNFj7YkGBOUo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kP+NoJIX4CNwrM3DjlkFhkeuRwQ+zEiYXKK9uwOHCFyzX0KxYjl9s/N0hlvMeV65/BAHKT001CbsDLt8ptES0dTLqfLEWzIeBYHu8GdCOPgdHk+W/AXUApGRFqKK2v6mOrD8SLPSLH/4soQD6jG+9zn/G1JYzG165qPhBhRHRow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fE+Un+AV; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1781193890; c=relaxed/simple;
+	bh=6xYaxGkqvTZyvLlDsKba/9ML96k7MD4vHd7KxNuiUJ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LTxbiv3ZnR7GH7/kwApOp9EKOtA2oABkrqn0diVXPteuD8XcOCbzjxO0q0n52Bm0yuMNdyLrv/pAJbv1V/+Ma+H55J/wLYKWmr8e3vrc6otfrBB2m1wTon+5deUHFtkfmJKbR52nTHBw8aETf5k2bjtYz22NBj+Vejs82aBDuzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=vpTSepwZ; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fE+Un+AV"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf3636d6c0so85382245ad.2
-        for <linux-coco@lists.linux.dev>; Thu, 11 Jun 2026 08:46:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781192792; x=1781797592; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tkYI56ab44R+CGvXUlfI3ycHykGEF+9O0JMidioFwIA=;
-        b=fE+Un+AVn2SIaQMfJ1tJC+8d0BM/TpbxTSDqa864ML+uJQU9J/h0GU1tDzuMiq26p7
-         3K5PhuYIYycgX49NvBGYBrkZP0JdDiJd2k/dsprRBFsDx4PF5XURJpD9VLXWcEnqo1PY
-         kuGTlk+Kg+efvtU1TvaAQhjhVBKlRWu7TQj8PIZ25HNNzvqNCwG9gdiuMO9v5su4Jt9+
-         uMLoepSOIo4VTgNjgZJ4y4ZQRwk/QyooIzD9ZSQ1vzKkdWy8B6n2JES6z+BWo19Cjh3N
-         TBmYdRaXPRfcJN2Vt2Sa7//gC3lx9Atl1NC5IaCW7PgOT+xatwgNJfVXBX7npWNWMIwy
-         rM1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781192792; x=1781797592;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tkYI56ab44R+CGvXUlfI3ycHykGEF+9O0JMidioFwIA=;
-        b=KqUehpdo+00qZi4A4SSz8wSu6/kBdjeAgpFZm97dTFNrOetxPzM8MXXoIfAESqplR1
-         /eDMIDe842UBj/tALzhGXRKI07s4sE6z7uvdjaLmhHY15xvxo6v+01nNJ/de5Un5Gwl1
-         0+id29hVJPU6Gb5rjuNMbOpfnZPzZ1LP64HBAaQl0X/o/gpjZGSZ8gSx63S6U4ASbJtW
-         oJbX5J+8h4l7A+lmrOTc61ciN6G4np6UzPNUkICaPhIDIOP36l8yG8xN8cGC/3jORUY7
-         Y7WwwpLDNeOs1m+QV+xEf9ZUVyCfAZc9E2E9vlKHpVMR/3OTu6HKQ63GMxyz0RAyNrF1
-         Kf2Q==
-X-Forwarded-Encrypted: i=1; AFNElJ97j+g4KYBzaOce3BioQUjSYTRSrovIRVF2bXeGHmhRvxk0qXl8/1nUQ0ocUAVBdSuKy2pMbA5Hos99@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywsatfb1WETHY24j7mudjv+l5++3Tpq689Mka263mH0vmcH8V8Q
-	iCqSWTxcs5ILTn9a1/gnfF33ZQ4wv/Pei9EA/SVTRyGilAUF/0/YuH3q0h6gMPCXlP+zW2AsZ5W
-	B5YV+UQ==
-X-Received: from plbbb1.prod.google.com ([2002:a17:902:bc81:b0:2bf:17b5:30c9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:947:b0:2c2:245a:3366
- with SMTP id d9443c01a7336-2c2f305aff9mr45838065ad.27.1781192791738; Thu, 11
- Jun 2026 08:46:31 -0700 (PDT)
-Date: Thu, 11 Jun 2026 08:46:31 -0700
-In-Reply-To: <CAEvNRgF31BzyFyVUa7tDJ=qJ-8ws2kxfNjLxmV=OxKSqhaOiPw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="vpTSepwZ"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F2241476;
+	Thu, 11 Jun 2026 09:04:43 -0700 (PDT)
+Received: from [192.168.1.148] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D2EE83FBB1;
+	Thu, 11 Jun 2026 09:04:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1781193887; bh=6xYaxGkqvTZyvLlDsKba/9ML96k7MD4vHd7KxNuiUJ4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=vpTSepwZXYsFn0TTMY0RWfCQZiVD41iOwclFwgAqlOYlcE4ASxS8WFUO/TshVDJmo
+	 KaAjCZPU6SPZU74Ekp0pbGhvIGF+poAtUg1oEfiumvIoui0ZyAEU5fLdxUtakpP3y8
+	 lsPDDwVznhYL63DoJyp8KtiIOSXvo5wE9ocXv0/U=
+Message-ID: <b009e840-6b79-415c-a3da-705ea569af38@arm.com>
+Date: Thu, 11 Jun 2026 17:04:44 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
- <CAEvNRgGpaggjd3=ooyzv7iEbmA-x1mWJHgjLSjPi8=5CPrk-yQ@mail.gmail.com>
- <aiHeDZEPkAcWcSkn@google.com> <CAEvNRgHz5GDjq0GqRmpQdHc-X45gCNr39VYWZH-T7XhPEtN5CQ@mail.gmail.com>
- <aiMVLtblIKu1DQWJ@google.com> <CAEvNRgF31BzyFyVUa7tDJ=qJ-8ws2kxfNjLxmV=OxKSqhaOiPw@mail.gmail.com>
-Message-ID: <airYV9lcIM4xdA60@google.com>
-Subject: Re: [PATCH v7 00/42] guest_memfd: In-place conversion support
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 3/6] firmware: smccc: Move RSI definitions to
+ include/linux
+Content-Language: en-GB
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ Greg KH <gregkh@linuxfoundation.org>, Jeremy Linton <jeremy.linton@arm.com>,
+ Jonathan Cameron <jic23@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Will Deacon <will@kernel.org>, Steven Price <steven.price@arm.com>,
+ Andre Przywara <andre.przywara@arm.com>
+References: <20260611130429.295516-1-aneesh.kumar@kernel.org>
+ <20260611130429.295516-4-aneesh.kumar@kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260611130429.295516-4-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 10, 2026, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
+On 11/06/2026 14:04, Aneesh Kumar K.V (Arm) wrote:
+> The RSI SMCCC function IDs describe a firmware ABI and are not arm64
+> architecture specific definitions. Follow-up changes need to use them from
+> non-arch code, including drivers/firmware/smccc and the Arm CCA guest
+> driver.
 > 
-> > On Thu, Jun 04, 2026, Ackerley Tng wrote:
-> >> Sean Christopherson <seanjc@google.com> writes:
-> >> >> + KVM: selftests: Test conversion with elevated page refcount
-> >> >>     + Askar pointed out that soon vmsplice may not pin pages. Should I
-> >> >>       pin pages through CONFIG_GUP_TEST like in [2]? I prefer not to
-> >> >>       take a dependency on CONFIG_GUP_TEST.
-> >> >
-> >> > I'm not exactly excited about taking a dependency on CONFIG_GUP_TEST either, but
-> >> > it probably is the least awful choice.  E.g. KVM also pins pages is certain flows,
-> >> > but we're _also_ actively working to remove the need to pin.
-> >> >
-> >> > Hmm, maybe IORING_REGISTER_PBUF_RING?  AFAICT, it's almost literally a "pin user
-> >> > memory" syscall.
-> >> >
-> >>
-> >> Hmm that takes a dependency on io_uring, which isn't always compiled
-> >> in. Between CONFIG_IO_URING and CONFIG_GUP_TEST, I'd rather
-> >> CONFIG_GUP_TEST.
-> >
-> > Or try both?  If it's not a ridiculous amount of work.
-> 
-> CONFIG_GUP_TEST was tried in [1]
-> 
-> [1] https://lore.kernel.org/all/baa8838f623102931e755cf34c86314b305af49c.1747264138.git.ackerleytng@google.com/
-> 
-> It looks like this
-> 
->   static void pin_pages(void *vaddr, uint64_t size)
->   {
->   	const struct pin_longterm_test args = {
->   		.addr = (uint64_t)vaddr,
->   		.size = size,
->   		.flags = PIN_LONGTERM_TEST_FLAG_USE_WRITE,
->   	};
-> 
->   	gup_test_fd = open("/sys/kernel/debug/gup_test", O_RDWR);
->   	TEST_REQUIRE(gup_test_fd > 0);
+> Move the RSI SMCCC definitions from arch/arm64/include/asm/ to
+> include/linux/ so they can be shared with the driver code. This also
+> keeps the firmware interface outside architecture code, as requested [1].
 
-Use __open_path_or_exit().  I also think it makes sent to make these available
-to all KVM selftests, there are probably other testcases that could utilize page
-pinning.
+Please could we also mention about moving the "wrappers" only used by
+drivers accordingly ?
 
->   	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args), 0);
+> 
+> [1] https://lore.kernel.org/all/agsNO9cc7H-b0H8L@willie-the-truck
+> 
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>   arch/arm64/include/asm/rsi_cmds.h             | 74 +---------------
+>   .../virt/coco/arm-cca-guest/arm-cca-guest.c   |  2 +
+>   drivers/virt/coco/arm-cca-guest/rsi.h         | 84 +++++++++++++++++++
+>   .../linux/arm-smccc-rsi.h                     |  6 +-
+>   4 files changed, 90 insertions(+), 76 deletions(-)
+>   create mode 100644 drivers/virt/coco/arm-cca-guest/rsi.h
+>   rename arch/arm64/include/asm/rsi_smc.h => include/linux/arm-smccc-rsi.h (98%)
+> 
+> diff --git a/arch/arm64/include/asm/rsi_cmds.h b/arch/arm64/include/asm/rsi_cmds.h
+> index 2c8763876dfb..633123a4e5d5 100644
+> --- a/arch/arm64/include/asm/rsi_cmds.h
+> +++ b/arch/arm64/include/asm/rsi_cmds.h
+> @@ -8,10 +8,9 @@
+>   
+>   #include <linux/arm-smccc.h>
+>   #include <linux/string.h>
+> +#include <linux/arm-smccc-rsi.h>
+
+super minor nit: Please keep them in the alphabetical order.
+
+With that:
+
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+
+Suzuki
+
+
+>   #include <asm/memory.h>
+>   
+> -#include <asm/rsi_smc.h>
+> -
+>   #define RSI_GRANULE_SHIFT		12
+>   #define RSI_GRANULE_SIZE		(_AC(1, UL) << RSI_GRANULE_SHIFT)
+>   
+> @@ -88,75 +87,4 @@ static inline long rsi_set_addr_range_state(phys_addr_t start,
+>   	return res.a0;
 >   }
-> 
->   static void unpin_pages(void)
->   {
->   	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_STOP), 0);
->   }
-> 
-> So in the test I'll call pin_pages(), then try to convert, see that it
-> fails with EAGAIN and reports the expected error_offset, then I call
-> unpin_pages(), then I convert again and expect success.
-> 
-> Are you uncomfortable with the CONFIG_GUP_TEST interface?
+>   
+> -/**
+> - * rsi_attestation_token_init - Initialise the operation to retrieve an
+> - * attestation token.
+> - *
+> - * @challenge:	The challenge data to be used in the attestation token
+> - *		generation.
+> - * @size:	Size of the challenge data in bytes.
+> - *
+> - * Initialises the attestation token generation and returns an upper bound
+> - * on the attestation token size that can be used to allocate an adequate
+> - * buffer. The caller is expected to subsequently call
+> - * rsi_attestation_token_continue() to retrieve the attestation token data on
+> - * the same CPU.
+> - *
+> - * Returns:
+> - *  On success, returns the upper limit of the attestation report size.
+> - *  Otherwise, -EINVAL
+> - */
+> -static inline long
+> -rsi_attestation_token_init(const u8 *challenge, unsigned long size)
+> -{
+> -	struct arm_smccc_1_2_regs regs = { 0 };
+> -
+> -	/* The challenge must be at least 32bytes and at most 64bytes */
+> -	if (!challenge || size < 32 || size > 64)
+> -		return -EINVAL;
+> -
+> -	regs.a0 = SMC_RSI_ATTESTATION_TOKEN_INIT;
+> -	memcpy(&regs.a1, challenge, size);
+> -	arm_smccc_1_2_smc(&regs, &regs);
+> -
+> -	if (regs.a0 == RSI_SUCCESS)
+> -		return regs.a1;
+> -
+> -	return -EINVAL;
+> -}
+> -
+> -/**
+> - * rsi_attestation_token_continue - Continue the operation to retrieve an
+> - * attestation token.
+> - *
+> - * @granule: {I}PA of the Granule to which the token will be written.
+> - * @offset:  Offset within Granule to start of buffer in bytes.
+> - * @size:    The size of the buffer.
+> - * @len:     The number of bytes written to the buffer.
+> - *
+> - * Retrieves up to a RSI_GRANULE_SIZE worth of token data per call. The caller
+> - * is expected to call rsi_attestation_token_init() before calling this
+> - * function to retrieve the attestation token.
+> - *
+> - * Return:
+> - * * %RSI_SUCCESS     - Attestation token retrieved successfully.
+> - * * %RSI_INCOMPLETE  - Token generation is not complete.
+> - * * %RSI_ERROR_INPUT - A parameter was not valid.
+> - * * %RSI_ERROR_STATE - Attestation not in progress.
+> - */
+> -static inline unsigned long rsi_attestation_token_continue(phys_addr_t granule,
+> -							   unsigned long offset,
+> -							   unsigned long size,
+> -							   unsigned long *len)
+> -{
+> -	struct arm_smccc_res res;
+> -
+> -	arm_smccc_1_1_invoke(SMC_RSI_ATTESTATION_TOKEN_CONTINUE,
+> -			     granule, offset, size, 0, &res);
+> -
+> -	if (len)
+> -		*len = res.a1;
+> -	return res.a0;
+> -}
+> -
+>   #endif /* __ASM_RSI_CMDS_H */
+> diff --git a/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c b/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
+> index 66d00b6ceb78..8b6854e7a188 100644
+> --- a/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
+> +++ b/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
+> @@ -14,6 +14,8 @@
+>   
+>   #include <asm/rsi.h>
+>   
+> +#include "rsi.h"
+> +
+>   /**
+>    * struct arm_cca_token_info - a descriptor for the token buffer.
+>    * @challenge:		Pointer to the challenge data
+> diff --git a/drivers/virt/coco/arm-cca-guest/rsi.h b/drivers/virt/coco/arm-cca-guest/rsi.h
+> new file mode 100644
+> index 000000000000..f7303f4bce17
+> --- /dev/null
+> +++ b/drivers/virt/coco/arm-cca-guest/rsi.h
+> @@ -0,0 +1,84 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2026 ARM Ltd.
+> + */
+> +
+> +#ifndef _VIRT_COCO_RSI_H_
+> +#define _VIRT_COCO_RSI_H_
+> +
+> +#include <linux/arm-smccc-rsi.h>
+> +
+> +/**
+> + * rsi_attestation_token_init - Initialise the operation to retrieve an
+> + * attestation token.
+> + *
+> + * @challenge:	The challenge data to be used in the attestation token
+> + *		generation.
+> + * @size:	Size of the challenge data in bytes.
+> + *
+> + * Initialises the attestation token generation and returns an upper bound
+> + * on the attestation token size that can be used to allocate an adequate
+> + * buffer. The caller is expected to subsequently call
+> + * rsi_attestation_token_continue() to retrieve the attestation token data on
+> + * the same CPU.
+> + *
+> + * Returns:
+> + *  On success, returns the upper limit of the attestation report size.
+> + *  Otherwise, -EINVAL
+> + */
+> +static inline long
+> +rsi_attestation_token_init(const u8 *challenge, unsigned long size)
+> +{
+> +	struct arm_smccc_1_2_regs regs = { 0 };
+> +
+> +	/* The challenge must be at least 32bytes and at most 64bytes */
+> +	if (!challenge || size < 32 || size > 64)
+> +		return -EINVAL;
+> +
+> +	regs.a0 = SMC_RSI_ATTESTATION_TOKEN_INIT;
+> +	memcpy(&regs.a1, challenge, size);
+> +	arm_smccc_1_2_smc(&regs, &regs);
+> +
+> +	if (regs.a0 == RSI_SUCCESS)
+> +		return regs.a1;
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +/**
+> + * rsi_attestation_token_continue - Continue the operation to retrieve an
+> + * attestation token.
+> + *
+> + * @granule: {I}PA of the Granule to which the token will be written.
+> + * @offset:  Offset within Granule to start of buffer in bytes.
+> + * @size:    The size of the buffer.
+> + * @len:     The number of bytes written to the buffer.
+> + *
+> + * Retrieves up to a RSI_GRANULE_SIZE worth of token data per call. The caller
+> + * is expected to call rsi_attestation_token_init() before calling this
+> + * function to retrieve the attestation token.
+> + *
+> + * Return:
+> + * * %RSI_SUCCESS     - Attestation token retrieved successfully.
+> + * * %RSI_INCOMPLETE  - Token generation is not complete.
+> + * * %RSI_ERROR_INPUT - A parameter was not valid.
+> + * * %RSI_ERROR_STATE - Attestation not in progress.
+> + */
+> +static inline unsigned long rsi_attestation_token_continue(phys_addr_t granule,
+> +							   unsigned long offset,
+> +							   unsigned long size,
+> +							   unsigned long *len)
+> +{
+> +	struct arm_smccc_res res;
+> +
+> +	arm_smccc_1_1_invoke(SMC_RSI_ATTESTATION_TOKEN_CONTINUE,
+> +			     granule, offset, size, 0, &res);
+> +
+> +	if (len)
+> +		*len = res.a1;
+> +	return res.a0;
+> +}
+> +
+> +
+> +
+> +#endif
+> diff --git a/arch/arm64/include/asm/rsi_smc.h b/include/linux/arm-smccc-rsi.h
+> similarity index 98%
+> rename from arch/arm64/include/asm/rsi_smc.h
+> rename to include/linux/arm-smccc-rsi.h
+> index e19253f96c94..fddb77986f70 100644
+> --- a/arch/arm64/include/asm/rsi_smc.h
+> +++ b/include/linux/arm-smccc-rsi.h
+> @@ -3,8 +3,8 @@
+>    * Copyright (C) 2023 ARM Ltd.
+>    */
+>   
+> -#ifndef __ASM_RSI_SMC_H_
+> -#define __ASM_RSI_SMC_H_
+> +#ifndef __LINUX_ARM_SMCCC_RSI_H_
+> +#define __LINUX_ARM_SMCCC_RSI_H_
+>   
+>   #include <linux/arm-smccc.h>
+>   
+> @@ -190,4 +190,4 @@ struct realm_config {
+>    */
+>   #define SMC_RSI_HOST_CALL			SMC_RSI_FID(0x199)
+>   
+> -#endif /* __ASM_RSI_SMC_H_ */
+> +#endif /* __LINUX_ARM_SMCCC_RSI_H_ */
 
-No, my concern is/was the potential for leaking pages if the test fails/crashes,
-but it looks gup_test_release() ensures all pins are dropped when the file is
-released, so that should be a non-issue.
-
-> What would you like me to try with CONFIG_IO_URING? I'm thinking that the
-> main difference between the two is just down to which non-default CONFIG
-> option we want to take for guest_memfd tests.
