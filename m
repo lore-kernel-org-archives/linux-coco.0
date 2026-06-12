@@ -1,81 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7EB364EA6;
-	Fri, 12 Jun 2026 22:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2FE3A5E9E;
+	Fri, 12 Jun 2026 23:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781302846; cv=none; b=jFqHD9/WAO8PlruN1PqrR3z2iVEajXdY8xW2shG6YBCaCODq+Z2M6x7Io01vmt0g3s75xyWe1NO3aKJI8yIzfospRFDAJ+XQr00m4uVoZEcHwPktJl+83ut2JpdEbE6sCwZPtRMStmPuAz4AL+JmLXXLlBrO6ihgookekr61t2k=
+	t=1781305662; cv=none; b=LmTwILQ8pQ2rgnk1GkYOHALFggHpkaTRPMh14cxbUIyBsS3wcVHfweLF05HTGyk/isGiUHTtJFlzEWMZCc5CJ8nzB9NaJqgJXB20HepO7hJA71yRnmLV7PaTDXAjBlwjVT/KHTpAxk59FBZIIEIu1PehguvSNMJX7B+YSRLIKDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781302846; c=relaxed/simple;
-	bh=7x6kSlZQGfAFexoU1OlfqwUGK1nj6IJaeGi5o9AQz+A=;
+	s=arc-20240116; t=1781305662; c=relaxed/simple;
+	bh=YBrqrwHyEinMJud+wSOxqD1Dzh0Zrmog//tJakBkST8=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=YW46Z4StXvTs8SLyHOQbbrQQJnfBigyIOl+8NlmUaIs3uAB1DUJjEirc2VAEL0eFIK1SYZ0ULeuQuvEiJspe6gEQp02KWvWzf7d+27DukDWlGqQYYMwVown5rbJrE6PjwQ2SnfKih5eUmsqC7kGrwsc0rgx0jvXN4VEhFX273+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gOagGIp+; arc=none smtp.client-ip=100.103.45.18
+	 Mime-Version:Content-Type; b=moKr4QzsLGAnG2MU7dxomm7QFqdqzgFaa6XoDtIRkRxSyC5274LLE2Lu+NVSBtlpY6KoXgnw1+Emy3Ulg5v4Z52818HK8m5YaJdKnXxoc9MszqUGOoQ7U+UQ19e+iqeEDHCUfQHHZkMo9BTuRjuUFrJTIfGcF2Hlhc4+wxkK59E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a17gwCrf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gOagGIp+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925FD1F00A3D;
-	Fri, 12 Jun 2026 22:20:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a17gwCrf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 238EE1F00A3D;
+	Fri, 12 Jun 2026 23:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781302845;
-	bh=ztDC5Nfbx5tCMLN+HeyysCV+hhwsD1YPStFDbx5Qn9o=;
+	s=k20260515; t=1781305661;
+	bh=l4Z6iPCoEVif5czqX7mpOnEGf86eCdSIsJaNrDC+CNs=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=gOagGIp+lImXnIIOxb3IWUjuUyUuUiuZQ5dE32Jgcr3kjjZcFxQQKNF1xeW0DUk7e
-	 h1pPoHlCybVZfkr7IRgzIH/fwMOglK4Imqq97LfoULNmYHDW1OKhUG1bk4QreAXe2l
-	 JNZrDtb7oxfsr99cXtRKNkKg7zM7CQrUCb9g7k/kR7T5KPfd1AIxA4F/2ZFizZTQPm
-	 9SAwQIQh7GvOflzmH3QIMndudSemOEMYO3zyCPMyHLoGF+lt8QaZUxamlhZTpy7zT/
-	 thkR1bbQMQQgMMIzj/pAvmc1fU+QmQpp4TUqbJYc+nN65ydPXin2zmagTJrejgvJyF
-	 oHAhCG+n40/7g==
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D103DF40078;
-	Fri, 12 Jun 2026 18:20:43 -0400 (EDT)
+	b=a17gwCrfd6vGLIr9o7ocQWB8yED4dumZYT1bcPsAcP0zxi7uH9swCs0Hume9vvyMZ
+	 GPChiMZ3ClFFffdyym8c/OSAoMoO8fqfknGIpynYwKhPuQMPKu80PflMlMvMgUy0O1
+	 +TcW6YWg/moGnwUwQRj9ahHQIszFKkQFz7cictCJXRaYSgTGM/zSFKr/W2y3IbGO7w
+	 CWkNViXkTWqgyAPnCfFfYxOtfrm52G0y7Nh17Xpt9VxUDAWjuK624UQKhg3EFh3SNB
+	 HJ99ubusY32W/5Zw05LBcxOhVBS9Qe0567FEv4fix4DiBje+pjEmex0/FN1046pW0d
+	 nz2bjmXs7yh2g==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5C9B0F4006A;
+	Fri, 12 Jun 2026 19:07:39 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Fri, 12 Jun 2026 18:20:43 -0400
-X-ME-Sender: <xms:O4YsahByAQSxfEZTv08ppVtRQ62CQG9abG2xp7wWzrRBGASm-9iXYg>
-    <xme:O4YsalFQi7vCfJcIQ2tLAVW5i3RpZuoqx121lC7h3jToqSB0zjspahSH9zP_nkbyD
-    15BEcBZk0ppGjwGTJniKjoHSDeC57ToZdoxZr7cbrzmaNCYeAYVwAI>
-X-ME-Received: <xmr:O4YsamKAd2Fszrrn4ZYsP74S8Fhqdzgg2A4PU1pqPwfsHpG301aIsGquah3Cy3xKBRC0zrV8r-BC7HGjcY4VYUB6gXMx3mHxke4>
-X-ME-Proxy-Cause: dmFkZTEbdDP9kN0QKLI+4aVGbax1rKXXCXkeRhON2/Q5LyeTbOtXJpWxagbHzvln3jQlmg
-    9twoXvMB4tZaY+WaCAd4CTq6eKXTDk2UO4qRyP1fZQV7ySx9YcIh1wNt0aMLyWfHxdXCiu
-    A3ZPO2xo+y+kdJswyU8YJZBV9phhSH408vK2EKBETe5koI75a7x6i6S9iYUi5nd9gWdMMT
-    YNrMVF0kD0qEIm+YrwSMHcWGg4d6MK59yVgQLy16e2OhvgGnSTQvwKTuocB66hIN2Uw9rz
-    e5o/VbjdxA/qYHjHovFUCHButvCGp7NCUzcM7z78P8LS9fsJ8RozhCLhVuF0AoXeBzg/Z+
-    GRSVMxcGYs2hw3odWzG6ybe80jMECud2kRy+pyveKByGngtr6pVWQdQtwyl7fTTszvl8Pd
-    dDep5w53V8w52SXTRRD/T7HSr1G5npCUHJbKxYvhrhMa5MpCI3Ejlp/OGJDlsn7kDLkz6n
-    SjIiA0zPfmFEI0iy8R3vyQBoFOtZn1WBdDHcNnb5rS8tJLPyrzx7mFTljg3aQX3msxFvaq
-    HvtD1UVc6hxm684X9tPXgnNNgqrf7W1RgT34QhVsxAmYFgfYq5oaBkjLhHZkn2S6bLfwcG
-    ko34xtnG9Lj8sHkJr5IqLfUNvMvqgsOIj5zfjIKdfepWexHm4uO3fPmePYUw
-X-ME-Proxy: <xmx:O4YsasrzFxNj9Jp_kUWspUTjC9SAZt74mBH_Abh64Dr2eik_et-UKw>
-    <xmx:O4YsathkbgaT7cwc5ATrcvWr9tqS4pa6jsTXNtLU_xkajXTJ96ydwQ>
-    <xmx:O4YsarZLIQSsOIB2PmntRjfcWdjxc_Bb1E8Afqf4IZapmDZZ8pkSwg>
-    <xmx:O4Ysaln--RsGUQZswSKC2ntyeRrDSKDq95fKDinqnHKXFlWGI49CpA>
-    <xmx:O4YsahzAOWhG3_wPZkhnZyjcCQwH94RtrDbELt9ddigmorWExqwSFMUf>
+  by phl-compute-01.internal (MEProxy); Fri, 12 Jun 2026 19:07:39 -0400
+X-ME-Sender: <xms:O5EsasWXLEW7BfEs00q2LOU9UGNxJD8cSyX8hmuNQw6AjmRdF9fjqg>
+    <xme:O5EsauDizZYmqNrKG1kG7XvyhWVjSF-XTC2CAzI1HcX2RJkVGSdX2p8IWW5WD4VsJ
+    SdkkiTQB44YrKdpeLAmbtCMthxV8ac7Uw-ZwfiZYvjLEcY3EyvLuyQ>
+X-ME-Received: <xmr:O5EsagWVT7RSGKTAb2dRsQ753FoYwqJVH5pl_ky2k-XpQPdMjviWPxKxCJQheRyhGJb0wiAI1S-0GXFJUT2sz-213Xqnx7xQvsg>
+X-ME-Proxy-Cause: dmFkZTEJDXZbVWi1dWDhXfR3V8OFIFiukzmdYSaS1v+Di3g5XrlCcZQ2QlKQoSOmWsLUgI
+    fFYKOPBvXSD2ZDBY5QNO9ZOLn4eJl4GE23lbKDOq9+RQnuQznFY+fZe2+MOTgIWBnUIR5c
+    ngPc3VFH7ztEHkppv8h4DL/BcASSCwg+98kWriWtVY2EdphbtpA4jwK+n/gNLhr985JXpV
+    +wCZ4KiAal7aBY0rnSZmnNYNkmEmzhTnfb56Ezfu6V39YKqbO1wtNlmYEzB20t5yaXEQDr
+    VvT7qPO88nnScuZGDmAjNdUC4T2R3ssLj+NJikJAwvx/9Jvnz0VW9GvTyn8bW1OyQ5DNsb
+    aL1Io+iSKFP9VyhFtluoCMXLJ1J99LlVqAbTC69H04hf4ASy496Hfl9japnmqVgoUHhXhL
+    5G6bFTlaIqCLCnTvM/KaqRqVntbjZtTtrhdynyW5KPUtVanarfQRLdydRQ1Q3uaCMX6CXX
+    Xl6E86OWrLbEUcHk+0JUrOM8o3CaMfdulStNuOtYNdihXP1YjItSJGiTLUq817GD0JNEm9
+    lo4QflSOqWvm9DspG1du14Vhh5Ec0T0gB/+Pxt09JU+vhhQPpJ6qamChF5Ry85Y+9SGcq3
+    vs0yMtOD8M8QXLdjNJ3bYO+TUItd3ggWkvxH3zvl8lCB17ryr3QvFTpU/onw
+X-ME-Proxy: <xmx:O5Esas-JpWaqtyuBUxQT17fhEmc3A2gP3VDEOKrFGwXRkHyq0BMdcQ>
+    <xmx:O5Esamn_4yVPWbvirZegfSCN5xEHFNBrHWG6QTUL705GNOar8dJ0Vg>
+    <xmx:O5EsanJHtm2vJS5foGBWbQl6rGnD6xB-Avd9YnSlmzhuzZfeVr1aSg>
+    <xmx:O5EsaspAtn0tZxi8290aSDSph_1CT0x4Te6T-uEEdVr03kyGmBSGiQ>
+    <xmx:O5EsakRxFm_NX6lZNtxUMm8ycxZvTjj1Vziuk8xPU7epbDt4FN8vifXD>
 Feedback-ID: i67ae4b3e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 12 Jun 2026 18:20:43 -0400 (EDT)
-Date: Fri, 12 Jun 2026 15:20:42 -0700
+ 12 Jun 2026 19:07:38 -0400 (EDT)
+Date: Fri, 12 Jun 2026 16:07:37 -0700
 From: "Dan Williams (nvidia)" <djbw@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>, 
- kas@kernel.org, 
- djbw@kernel.org, 
- rick.p.edgecombe@intel.com, 
- x86@kernel.org, 
- peter.fang@intel.com
-Cc: linux-coco@lists.linux.dev, 
- linux-kernel@vger.kernel.org, 
+To: Steven Price <steven.price@arm.com>, 
+ Gavin Shan <gshan@redhat.com>, 
  kvm@vger.kernel.org, 
- sohil.mehta@intel.com, 
- yilun.xu@intel.com, 
- yilun.xu@linux.intel.com, 
- baolu.lu@linux.intel.com, 
- zhenzhong.duan@intel.com, 
- xiaoyao.li@intel.com
-Message-ID: <6a2c863a681d6_9b85510064@djbw-dev.notmuch>
-In-Reply-To: <20260522034128.3144354-2-yilun.xu@linux.intel.com>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-2-yilun.xu@linux.intel.com>
-Subject: Re: [PATCH 01/15] x86/virt/tdx: Read global metadata for TDX Module
- Extensions
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, 
+ Marc Zyngier <maz@kernel.org>, 
+ Will Deacon <will@kernel.org>, 
+ James Morse <james.morse@arm.com>, 
+ Oliver Upton <oliver.upton@linux.dev>, 
+ Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Zenghui Yu <yuzenghui@huawei.com>, 
+ linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, 
+ Joey Gouly <joey.gouly@arm.com>, 
+ Alexandru Elisei <alexandru.elisei@arm.com>, 
+ Christoffer Dall <christoffer.dall@arm.com>, 
+ Fuad Tabba <tabba@google.com>, 
+ linux-coco@lists.linux.dev, 
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, 
+ Shanker Donthineni <sdonthineni@nvidia.com>, 
+ Alper Gun <alpergun@google.com>, 
+ "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, 
+ Emi Kisanuki <fj0570is@fujitsu.com>, 
+ Vishal Annapurve <vannapurve@google.com>, 
+ WeiLin.Chang@arm.com, 
+ Lorenzo.Pieralisi2@arm.com
+Message-ID: <6a2c91398fad5_a003b10027@djbw-dev.notmuch>
+In-Reply-To: <50d70588-2ebc-4c9b-98ec-68f3d04a9d21@arm.com>
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-11-steven.price@arm.com>
+ <872ce762-0a83-42a4-bbe8-b21ea6f4e1cf@redhat.com>
+ <50d70588-2ebc-4c9b-98ec-68f3d04a9d21@arm.com>
+Subject: Re: [PATCH v14 10/44] arm64: RMI: Add support for SRO
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -86,23 +98,44 @@ Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-Xu Yilun wrote:
-> Add reading of the global metadata for TDX Module Extensions.
+Steven Price wrote:
+[..]
+> > alloc_pages_exact() will fail if the requested size exceeds the maximal
+> > allowed
+> > size (1 << MAX_PAGE_ORDER). The maximal size is usually smaller than
+> > PUD_SIZE
+> > but PUD_SIZE is allowed by the RMM.
 > 
-> TDX Module Extensions is an add-on feature enumerated by TDX_FEATURES0.
-> But for the Module's integrity, Linux requires that all features that a
-> Module advertises must have a complete, valid set of metadata, and the
-> validation must succeed at core TDX initialization time.
+> This is an area where to be honest I'm really not sure what to do.
+> Technically the RMM is allowed to ask for a contiguous range of 512GB
+> pages (on a 4K system - larger with larger page sizes) - but clearly no
+> real OS is going to be able to provide anything like that.
 > 
-> Check TDX_FEATURES0 before reading these metadata. If a feature is
-> advertised, a failure in reading associated metadata causes the entire
-> TDX initialization to fail, otherwise skip.
+> In practise we don't expect the RMM to do anything so crazy. It's not
+> really clear to be whether even 2MB (PMD_SIZE) is needed. But the spec
+> is written to be generic.
+> 
+> So my current approach is to calculate the required size and pass it
+> into alloc_pages_exact(). For "stupidly large" values this will fail and
+> Linux just doesn't support an RMM which attempts this. If there is ever
+> a usecase which needs this then we'd need to find a different method of
+> providing the memory (most likely some form of carveout to avoid
+> fragmentation). But my view is we should wait for that usecase to be
+> identified first.
 
-Others already commented on the patch ordering, so I will just comment
-on the changelog to recommend referring back to the "any available
-extension, all the time" implementation policy rather than saying "Linux
-requires" which is ambiguous.
+Just some comparison comments as I am also going through the TDX patches
+which enable "Extension SEAMCALLs". These new SEAMCALLs are similar to
+the SRO mechanism [1].
 
-The patch reordering will make it more clear that
-memory_pool_required_pages scales based on the number of features that
-Linux grows enabling for at configuration time.
+TDX asks for an upfront delegation of memory at init time using
+alloc_contig_pages() that is never returned until entire module is
+shutdown. alloc_contig_pages() is not subject to the MAX_ORDER limit,
+but not sure that alloc_contig_pages() is suitable for small+dynamic
+runtime memory add / release that SRO potentially wants to do?
+
+Does SRO always balance the size of RMI_OP_MEM_REQ_DONATE with
+RMI_OP_MEM_REQ_RECLAIM, or might some donate requests be a one way
+donation like TDX? Just poking to see if there is a path to preallocate
+a pool vs the fine grained per-operation alloc/free.
+
+[1]: http://lore.kernel.org/20260522034128.3144354-3-yilun.xu@linux.intel.com
