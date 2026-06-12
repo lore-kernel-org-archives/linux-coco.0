@@ -1,121 +1,117 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B7235E950;
-	Thu, 11 Jun 2026 19:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A25138E11C;
+	Fri, 12 Jun 2026 05:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781207109; cv=none; b=Vtr0tIOF1tlGAJmWmaduwy7epazRGfEBBQFI15ACkv6gPK5qDekN950bLYPbYxmnr3d2f0Svp4mURT/X0h5mlsSroyqZwbNyPjauTtPB568gNcnw4sP3Ce37Zum4dnIzl97PJo5sVfu9q02MWzGe/DwTyxYAsiE/71wl6MmNQz0=
+	t=1781242874; cv=none; b=XlrKOjkLfNzoduxvAFNNPkSIm09zXySy1KKbWbWaNUH1jF6/2G3hjgGkqaZ2wCZ7OlNtwjwTeYd/jeea2RBtdIpgHCeI47+L0DOENuOJRwuCfS4/CwV5FSeVCN6LIxE/mkDOc7q3CSjbavJrK9k9aiANwaaKr8dPCBPShdeaW0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781207109; c=relaxed/simple;
-	bh=uYuSDuWvOD/EVbNBrhJXMRns9NB9B02a8g/Sgq3O2kk=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=oZMd6R/Ei7egGmd87kOHteX0ICvY0dupAXu81fjke2vXuQaqEq7tF2SfZBcSI3RZu8ULSkxEvZMPb/vqEzMRo24m7zHJxp0f/AvsOOjbPjPxbdVpYatdeA6dYXzGwA7+lvu5ZMhclW2lJ0WG1NwOSoqVJiHEwX8uS0gfNq86yx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HEyMdzOk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781242874; c=relaxed/simple;
+	bh=alXJcuiZ79e8o19bRq7VL4+xFvAo8kK+X99Ch2O2bD4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=jqd16zUJVLqJnGL2mUnBoC5IeL/PZhUGJt5l4NsX2UwNGPiISRfLypPMKzGmNvO5hTtxBChk9vJ7faG1NFgg0GE10vTUWnot8nJVnKLkLc3M3Y7Owz+1mg1Kms4Dmk9tya8BGZZNJgMBnvxrydnKIq9ZmV9M+tfdt5RzMmtf9yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P/0HuaVV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HEyMdzOk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C961F00A3E;
-	Thu, 11 Jun 2026 19:45:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P/0HuaVV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507891F000E9;
+	Fri, 12 Jun 2026 05:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781207107;
-	bh=9a0SMkSfHUNTNvr1ftlH6X3IHP1fEtjtfsq2G98gVcc=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=HEyMdzOkqvfYpdlVynMSxr60vo4FtJqKv3cSjacdLoM/WKd37tPY+oTwRh3hABg+X
-	 4DmE2knYx10skQt6hgabMskl1FFWuhGhXtXhe0XpML805CEDFjlTDlYJTgKjy+Ba+3
-	 ptLUN150tgNW3RD0GKZg3b1+k1FaG/YBe9xN8tBh2DRkbJlLA93sE8cGd8XgoLlZ1n
-	 Te+JiScXWSvzF6r2F+wsxw4yYzn3TmSg94UG31v/K/BvWxO/pMWCVPa9QO8jEWrq5s
-	 ABqcYAieOm2il05MXtWFIXJHivOW+ueS8uHSKDno5a8Vky8qHtWqSgUv1U+uwd33PH
-	 b4TGY7eQGdssA==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8C559F40074;
-	Thu, 11 Jun 2026 15:45:06 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Thu, 11 Jun 2026 15:45:06 -0400
-X-ME-Sender: <xms:QhArauT_XORPZQJTyWXJvXazZXH64vikBYAouHNqg-2OH8PdFvftxA>
-    <xme:QhArapUrYxtM4EblKHzdWDE1w5Nylxwo_nmHMv4Kyd0EK0vhOmy4JUpH-f5BtE9z2
-    Raqedl3oybuOn0nPGpdvW-KR5LMKYBu6q4QRv9U_2abVlUJhplw6AY>
-X-ME-Received: <xmr:QhAralb0Djr-tMHKM44b994W0tIJcW4Q2tN3oJ2Q3tzj1CPuKBaXqc06GdQnXhKDaZYmlEkoBQodxhPuFusap9WTmLL4GpFMIxM>
-X-ME-Proxy-Cause: dmFkZTECBux9In0mEU9Au6vS4FNBdtvHVz/tllZbDvTycM4hXMN9CVUaaBaCIVRt5YM1oS
-    pRew6NN2qH7ImIJ5Wb05SRFSk28NsXHOGrQTXw84upkzwXl8CqB3ZOKoq/Kx9cYEBglm3w
-    BbUrrCmtibzG/Lx9h6QKU0SY91myEPjYwF9xOXA7L2M8c+A59qHqD/VaYg+bvy8mWSqNwc
-    M9emOR+vkWFrDAHaeV7jLY+9Z0vsQzJqqJnefUlVZ2XbNnwgio9TDclRg9cfrKK1ar8zbK
-    0azGtHOtYqhsYc9srmJpQgjAXz4tobNTKCMblCkWoA7Ye7nUaKCFAT9dvTNawqfOfcgMgT
-    n0V966t/vWGGs0Lw7BKLMmGaDbXz4sEHLKOjib7OFPEDmo29EYffc74FjTof71EuKBFlM1
-    3qa82npD24vYiH+tSg8rhBa04MOYPN0pH5KWOZ9Fu693nge6qPlclv5t2CWbNqFOnnsuUZ
-    1pFHwtaXsDF0VZg+NRNLLIwSc/obV4amq0eCVQhkJGkZAjFSPXxxRqZqDyec7Ndp3yTuL5
-    xV+TOTby38nfp2jMCZDDlxlcPedmx73PC8Uvzo4eaw/uRilHRHkJj+facaynr95wgTtnQc
-    M49FkNzeqzcQrl/FO0i1o2lEwRP0FPFFhSOMReF+CY92OjXsr91GvzOUBlUw
-X-ME-Proxy: <xmx:QhAraq6KsdoZP4NoRjDNugptzew59m2Tqgi9wlXeqnFVeUpgShLPpQ>
-    <xmx:QhAraux7lNJ9YgaLEhAZbiX0C5wVPqRiRiM0so5mjM1wxdhb3A6_fw>
-    <xmx:QhArajoXhceO78AVFbxtGlIIgfSpqsQhXkNaG94z16Td0ExOaBD6fw>
-    <xmx:QhArao09AAxXtStCUZkADFiJ5PxwdAgFG4hxAYgqz8mjHzvv-H33pQ>
-    <xmx:QhArakBhm5NrsWWOFm5QXhFRdiqW4XJiTyP71TrtfsIGSAxHarIfgQuJ>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 11 Jun 2026 15:45:04 -0400 (EDT)
-Date: Thu, 11 Jun 2026 12:45:01 -0700
-From: "Dan Williams (nvidia)" <djbw@kernel.org>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, 
- linux-coco@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- Greg KH <gregkh@linuxfoundation.org>, 
- Jeremy Linton <jeremy.linton@arm.com>, 
- Jonathan Cameron <jic23@kernel.org>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- Mark Rutland <mark.rutland@arm.com>, 
- Sudeep Holla <sudeep.holla@arm.com>, 
- Will Deacon <will@kernel.org>, 
- Steven Price <steven.price@arm.com>, 
- Suzuki K Poulose <Suzuki.Poulose@arm.com>, 
- Andre Przywara <andre.przywara@arm.com>
-Message-ID: <6a2b103d77596_344af1000@djbw-dev.notmuch>
-In-Reply-To: <20260611130429.295516-7-aneesh.kumar@kernel.org>
+	s=k20260515; t=1781242872;
+	bh=ZrlCKzvFsyxGrxQK3KvEE4LY6nBZ6Rnv7YfgKkrzOIM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=P/0HuaVV38AfmIGLj++Oa3uvFtlo76KtgEUe/JBTlKIS3pwTnxrWAmjZrib9C4eMB
+	 XNY35ihgn30HbafuVL9YMTqR42haFVp2ildahYKETPRgTIGL/3p9F3vqF+yLc0VoOJ
+	 zZF5fp7b7Izp9KPHmFImJgWUb5FzQlti4QRgoJYSfCD7xL6rasIukNwvyHzAWHELzP
+	 Qt/nWeqMnHnW7CwfjlAbG044pBnK9nWANg/JsL/hV/6zp72SxP1kvOf15eG9+67O0C
+	 9B+xAE0PaR604D392rDMPD9oop876felITahXdEDvR0US6k/vfwH2gX7C0n9K68Z2O
+	 qljPW3aeKI1NA==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Andre Przywara <andre.przywara@arm.com>
+Subject: Re: [PATCH v7 3/6] firmware: smccc: Move RSI definitions to
+ include/linux
+In-Reply-To: <b009e840-6b79-415c-a3da-705ea569af38@arm.com>
 References: <20260611130429.295516-1-aneesh.kumar@kernel.org>
- <20260611130429.295516-7-aneesh.kumar@kernel.org>
-Subject: Re: [PATCH v7 6/6] coco: guest: arm64: Replace dummy CCA device with
- sysfs ABI
+ <20260611130429.295516-4-aneesh.kumar@kernel.org>
+ <b009e840-6b79-415c-a3da-705ea569af38@arm.com>
+Date: Fri, 12 Jun 2026 11:11:04 +0530
+Message-ID: <yq5a4ij8mi33.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Aneesh Kumar K.V (Arm) wrote:
-> The SMCCC firmware driver now creates the arm-smccc platform device and
-> instantiates the CCA RSI auxiliary devices once the RSI ABI is discovered.
-> The arm64-specific arm-cca-dev platform device stub is therefore no longer
-> needed.
-> 
-> However, userspace has used the arm-cca-dev platform device to detect Arm
-> CCA Realm guests [1]. Removing it without a replacement would break that
-> detection and would also leave userspace depending on kernel device-model
-> details.
-> 
-> Add /sys/firmware/cca/realm_guest as a stable, architecture-provided ABI
-> for detecting whether the kernel is running as an Arm CCA Realm guest. The
-> file returns 1 in Realm world and 0 otherwise, similar to the existing s390
-> /sys/firmware/uv/prot_virt_guest interface for protected virtualization
-> guests.
-> 
-> Remove the dummy arm-cca-dev registration now that userspace has a
-> dedicated CCA Realm guest indicator, and document the new ABI in
-> Documentation/ABI/testing/sysfs-firmware-cca.
+Suzuki K Poulose <suzuki.poulose@arm.com> writes:
 
-I would have expected an attribute in /sys/class/tsm/tsmX to be the
-common protected guest indicator. Then, if you need to distinguish the
-architecture that registered that tsm it would be in the name of the
-parent device for the tsm class device. 
+> On 11/06/2026 14:04, Aneesh Kumar K.V (Arm) wrote:
+>> The RSI SMCCC function IDs describe a firmware ABI and are not arm64
+>> architecture specific definitions. Follow-up changes need to use them from
+>> non-arch code, including drivers/firmware/smccc and the Arm CCA guest
+>> driver.
+>> 
+>> Move the RSI SMCCC definitions from arch/arm64/include/asm/ to
+>> include/linux/ so they can be shared with the driver code. This also
+>> keeps the firmware interface outside architecture code, as requested [1].
+>
+> Please could we also mention about moving the "wrappers" only used by
+> drivers accordingly ?
+>
 
-That also gives you the property that a uevent has signalled the arrival
-of tsm guest services. Otherwise, userspace still needs some custom
-device-model details to know when it can start issuing tsm requests.
+Added this
 
-Is auxilliary device arrival too late in the flow for what systemd
-needs?
+Not all helpers in rsi_cmds.h are used by architecture code. The
+attestation token helper wrappers are only used by the Arm CCA guest
+driver, so move them to a driver-private header under
+drivers/virt/coco/arm-cca-guest/. Keep the remaining RSI command helpers,
+which are shared by architecture code and drivers, in the arm64 header.
+
+
+>
+>> 
+>> [1] https://lore.kernel.org/all/agsNO9cc7H-b0H8L@willie-the-truck
+>> 
+>> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+>> ---
+>>   arch/arm64/include/asm/rsi_cmds.h             | 74 +---------------
+>>   .../virt/coco/arm-cca-guest/arm-cca-guest.c   |  2 +
+>>   drivers/virt/coco/arm-cca-guest/rsi.h         | 84 +++++++++++++++++++
+>>   .../linux/arm-smccc-rsi.h                     |  6 +-
+>>   4 files changed, 90 insertions(+), 76 deletions(-)
+>>   create mode 100644 drivers/virt/coco/arm-cca-guest/rsi.h
+>>   rename arch/arm64/include/asm/rsi_smc.h => include/linux/arm-smccc-rsi.h (98%)
+>> 
+>> diff --git a/arch/arm64/include/asm/rsi_cmds.h b/arch/arm64/include/asm/rsi_cmds.h
+>> index 2c8763876dfb..633123a4e5d5 100644
+>> --- a/arch/arm64/include/asm/rsi_cmds.h
+>> +++ b/arch/arm64/include/asm/rsi_cmds.h
+>> @@ -8,10 +8,9 @@
+>>   
+>>   #include <linux/arm-smccc.h>
+>>   #include <linux/string.h>
+>> +#include <linux/arm-smccc-rsi.h>
+>
+> super minor nit: Please keep them in the alphabetical order.
+>
+> With that:
+>
+> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>
+
+Thanks
+-aneesh
