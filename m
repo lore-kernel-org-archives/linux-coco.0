@@ -1,157 +1,105 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84DAE387361
-	for <linux-coco@lists.linux.dev>; Fri, 12 Jun 2026 14:25:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E69C340401
+	for <linux-coco@lists.linux.dev>; Fri, 12 Jun 2026 17:49:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781274310; cv=none; b=U8au2bHoO/leeI3iW3AaQswlR3DhUO0XIGoEkv4cd+vobs10GG6jLiXATwb6KOL+HzcC5wDqOZua/rwrZzxASyKIR4zKpnDaHco4PYDRHXebtXH7pMhgeD3Jm5PMdKcJ33dkcyXKNA2HtfvkESay9lIyg/Vjta2OPMqeJs3o3W4=
+	t=1781286579; cv=none; b=dz8xKYF6LcrZOInai1AJg9PfmqXHQZYW4D3WKOj10fEx4BvqoCpN3SMD0dA3AbSVra062Op9dIrsynvgOpV9w3QeBF0O98tXxiBmlU3qRV9syCM8QXd3++yvWQtMIAEPNZT8LIB+nTkLgcnztp/snWVUASBE0r1sPl6IpMGB+/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781274310; c=relaxed/simple;
-	bh=yWDIQ525CsCrGba842/ZiC36lT56EmiAWt4deOpVL6Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XUwsewb10FN9xlmOxfEMhYYb5wupjzJD/GA88xyDEuWcu93G3bGrsrwiUTFL3MnwplRzVGwhd98+FWrfIq3d8kXHVBFw6IhAGt3fcR4JgZYc3ukW9RWpQpPs44Qjr2JTmu1ctArqyTuuYh02EHqdplBpTSW6XIIp8lnNMHcNmNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Sz76rST/; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1781286579; c=relaxed/simple;
+	bh=S1PIlzk8vGChQ04VWrfS3SSCm8k5SS5ze78gg8eQ4iE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c67nR8kYUakEuIdqcnwztEsO2xa7a6XWtAcEY/zfY5lUiZ59rDlVpO2Ct2YeXrdwrcBr0ieLVFWnjax5sxmdlgn7c4nCyhEFlSCqNIowLA3u7UgKTvcQS/p8UlWr7zsXqgAhcBStrbph2z3kg5263KRoBkxwmqA85bt5/Wx1w5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=uy6OGp6s; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Sz76rST/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781274309; x=1812810309;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=yWDIQ525CsCrGba842/ZiC36lT56EmiAWt4deOpVL6Y=;
-  b=Sz76rST/AAjmIVwDbLEWtCcjdm6dy1Jzo0YQnIGwwc89+68QK2U/YjWR
-   TbqMXnQpEx0CYuXYN3x4kdsWYJAtFpQQeMIVOTEX477iNY8BwHP7d2d6E
-   rbLNGLg0KddvVOcER5C5uKNPgz4ZA/256VbYajFDBvxAK5I+4TmAh98Te
-   6zTSYL9PiUJ0FODHWVZLQpIM/e5x77HNSjiMcKav5j8SEbVIJNGxgX0Lx
-   q0JJUNOMjTLCiFGNYae90SlDCeOU2YOt5BaHLnLZ9cYLf6Z5PSeP4HqpX
-   zeC6TVCGScy59CWzbp7bga1iUxIYZ7NC6dFX4/fPNkwjHZttWbTR+T+8A
-   w==;
-X-CSE-ConnectionGUID: A/x8pPEOQJKyY2h2nbee6A==
-X-CSE-MsgGUID: Trz++2w0SKi0z9maQA0qTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81116102"
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; 
-   d="scan'208";a="81116102"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 07:25:09 -0700
-X-CSE-ConnectionGUID: +a8NPcjIRDO8RZkcFNkx7w==
-X-CSE-MsgGUID: 2vFqB7OMQQWGST3/MQ7/ZQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; 
-   d="scan'208";a="243902245"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.18]) ([10.124.240.18])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 07:25:06 -0700
-Message-ID: <49728a57-a996-470d-92b7-209a010b4761@intel.com>
-Date: Fri, 12 Jun 2026 22:25:03 +0800
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="uy6OGp6s"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 560E322EA;
+	Fri, 12 Jun 2026 10:49:32 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A6EC83FAA1;
+	Fri, 12 Jun 2026 10:49:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1781286577; bh=S1PIlzk8vGChQ04VWrfS3SSCm8k5SS5ze78gg8eQ4iE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uy6OGp6sf2LANX/v1lPC+CjkVElax8HpROBJYsFdfEoQTcjHKYfpSsAZQW2I6/mnk
+	 DuOxFOY9rbNiWlQyd6WPeyxZ4VqSaZES7REmNf2Q/oY5ujJ866IrsEpHGDO70h32qg
+	 qSDwXZW+ZgwGbxDT6BgaVVARLOeURjr7wyfjFyKM=
+Date: Fri, 12 Jun 2026 18:49:28 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Kameron Carr <kameroncarr@linux.microsoft.com>,
+	akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, rppt@kernel.org, mhklinux@outlook.com,
+	linux-coco@lists.linux.dev,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Subject: Re: [RFC PATCH] mm/vmalloc: add vmalloc_decrypted() and
+ vzalloc_decrypted()
+Message-ID: <aixGqCqKkQeDfUST@arm.com>
+References: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
+ <aibhnnDFQTHWMEFe@arm.com>
+ <20260611114954.GC1066031@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] x86/tdx: Add helper to query maximum TD Quote size
-To: Peter Fang <peter.fang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org
-References: <20260612110853.3188196-1-peter.fang@intel.com>
- <20260612110853.3188196-2-peter.fang@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260612110853.3188196-2-peter.fang@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260611114954.GC1066031@ziepe.ca>
 
-On 6/12/2026 7:08 PM, Peter Fang wrote:
-> TDX attestation blob ("TD Quote") sizes can grow with newer
-> cryptographic schemes, so guests can no longer rely on a fixed-size
-> buffer for the Quote.
+On Thu, Jun 11, 2026 at 08:49:54AM -0300, Jason Gunthorpe wrote:
+> On Mon, Jun 08, 2026 at 04:37:02PM +0100, Catalin Marinas wrote:
+> > > +/**
+> > > + * vzalloc_decrypted - allocate zeroed virtually contiguous decrypted memory
+> > > + * @size:    allocation size
+> > > + *
+> > > + * Like vmalloc_decrypted(), but the memory is set to zero.
+> > > + *
+> > > + * Return: pointer to the allocated memory or %NULL on error
+> > > + */
+> > > +void *vzalloc_decrypted_noprof(unsigned long size)
+> > > +{
+> > > +	void *addr;
+> > > +
+> > > +	addr = __vmalloc_node_range_noprof(size, 1, VMALLOC_START, VMALLOC_END,
+> > > +					   GFP_KERNEL,
+> > > +					   pgprot_decrypted(PAGE_KERNEL),
+> > > +					   VM_DECRYPTED, NUMA_NO_NODE,
+> > > +					   __builtin_return_address(0));
+> > > +	if (addr)
+> > > +		memset(addr, 0, size);
+> > 
+> > Talking to Suzuki, the small window between set_memory_decrypted() and
+> > memset() potentially exposing stale data is safe, at least for Arm CCA
+> > as the memory would be scrubbed (there are other places in the kernel
+> > where we do something similar). I assume that's also the case for other
+> > architectures, although not sure what pKVM does.
 > 
-> Newer TDX modules report the maximum TD Quote size via a TD-scope
-> metadata field. Add a helper to query it instead of exposing tdg_vm_rd()
-> directly, as it can read arbitrary metadata fields.
-> 
-> Thanks to Xu Yilun for suggesting this.
-> 
-> Assisted-by: Claude:claude-opus-4-7
-> Assisted-by: GitHub Copilot:gpt-5.4
-> Signed-off-by: Peter Fang <peter.fang@intel.com>
+> It seems like a poor practice though, this should probably be
+> re-organized to use __GFP_ZERO so things are ordered sensibly.
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+__GFP_ZERO doesn't work if the intermediate set_memory_decrypted()
+mangles the data (e.g. changes encryption keys) and it no longer reads
+as zeros.
 
-I have another nit other than Kiryl's
+> But what is the purpose of this? I guess some hyperv thing - but
+> shouldn't we have a more structured way to "DMA map" things for the
+> hypervisor instead of stuff like this? Why can't you use
+> dma_alloc_coherent() which actually gives you an address that is
+> sensible to pass to the hypervisor?
 
-> ---
->   arch/x86/coco/tdx/tdx.c           | 19 +++++++++++++++++++
->   arch/x86/include/asm/shared/tdx.h |  1 +
->   arch/x86/include/asm/tdx.h        |  2 ++
->   3 files changed, 22 insertions(+)
-> 
-> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index 186915a17c50..88c66c46e70a 100644
-> --- a/arch/x86/coco/tdx/tdx.c
-> +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -197,6 +197,25 @@ u64 tdx_hcall_get_quote(u8 *buf, size_t size)
->   }
->   EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
->   
-> +/**
-> + * tdx_get_max_quote_size() - Get the maximum TD Quote size
-> + *
-> + * Read the maximum size of a TD Quote from a 4-byte TD metadata field. The TDX
-> + * guest driver uses it to size the buffer for Quote retrieval. Older TDX
-> + * modules do not support this field and return an error.
-> + *
-> + * Return: Maximum Quote size in bytes on success, or 0 on failure.
-> + */
-> +u32 tdx_get_max_quote_size(void)
-> +{
-> +	u64 val, ret;
-> +
-> +	ret = tdg_vm_rd(TDCS_QUOTE_MAX_SIZE, &val);
-> +
-> +	return ret ? 0 : (u32)val;
-> +}
-> +EXPORT_SYMBOL_GPL(tdx_get_max_quote_size);
+IIRC netvsc_init_buf() uses vzalloc() to allocate some memory and that
+buffer ends up in set_memory_decrypted() via vmbus_establish_gpadl().
+arm64 does not support changing the decrypted/shared attributed of
+vmalloc mappings and I don't think we should add it. Better to just
+allocate it properly upfront.
 
-Do we need to start to use
+We might be able to use the DMA API but we won't get something like
+vmalloc() - physically non-contiguous. I think dma_alloc_noncontiguous()
+just falls back to dma_direct_alloc_pages() in the absence of an iommu.
 
-EXPORT_SYMBOL_FOR_MODULES(tdx_get_max_quote_size, "tdx-guest") ?
-
-> +
->   static void __noreturn tdx_panic(const char *msg)
->   {
->   	struct tdx_module_args args = {
-> diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-> index 049638e3da74..2880f493a8e5 100644
-> --- a/arch/x86/include/asm/shared/tdx.h
-> +++ b/arch/x86/include/asm/shared/tdx.h
-> @@ -49,6 +49,7 @@
->   /* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
->   #define TDCS_CONFIG_FLAGS		0x1110000300000016
->   #define TDCS_TD_CTLS			0x1110000300000017
-> +#define TDCS_QUOTE_MAX_SIZE		0x9010000200000008
->   #define TDCS_NOTIFY_ENABLES		0x9100000000000010
->   #define TDCS_TOPOLOGY_ENUM_CONFIGURED	0x9100000000000019
->   
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index a149740b24e8..ac39674c9479 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -72,6 +72,8 @@ int tdx_mcall_extend_rtmr(u8 index, u8 *data);
->   
->   u64 tdx_hcall_get_quote(u8 *buf, size_t size);
->   
-> +u32 tdx_get_max_quote_size(void);
-> +
->   void __init tdx_dump_attributes(u64 td_attr);
->   void __init tdx_dump_td_ctls(u64 td_ctls);
->   
-
+-- 
+Catalin
