@@ -1,59 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85F79475
-	for <linux-coco@lists.linux.dev>; Sat, 13 Jun 2026 00:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6531A2C0B;
+	Sat, 13 Jun 2026 00:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781309332; cv=none; b=olGVDzs6ueESKdRB1hYZapLWcNFXxlCHTElPuW6gOxeGp5+VfkJOjNwVsI5Ygmhwaq3VlGJCAafX7j7cW9rlv8HNn+jehQdR5o1dDV2o6w8KETYhPcgOc6EF210GwYWh0dyTyQip89Ycd5CI0V9We+TrOmQT5OUg6sVHSQWvMSc=
+	t=1781310036; cv=none; b=Aw3D6dgtzxDgVmaD291vP2JowqBmDHDOWSnxpJfnbFwxIYWpeY2TBPuP/vxAQJGN/cY79+/Cn0MJ32o+oDJwSR3xeUefvQJIvYU1I0zI8B3UP1i1ds6vNVSb+u2Q8PD4oRCgUCj4eJSzqsElgrdMa1hhcfGXKv3pevjIqn0SITM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781309332; c=relaxed/simple;
-	bh=FGfDSYUzR4CCGquDoYUGvbdgqtpxGy59aE+t6VmydzQ=;
+	s=arc-20240116; t=1781310036; c=relaxed/simple;
+	bh=A/XloPAD2cMS8vUfQ5KdwFSk93vR8Ny1utNuIYvd9wU=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=hWsNnlcItLcWqtj3DImgYP9QLXRT/XIEZyFoPOCekjbbeXLSA+UZxaIsIBnJVXcjK5bOLGFB2htVbaHeILxu4Yeem/pcQy1PG4+OTdr+++1C+chsVjpFsXd6A9TTF44L9FVNx29yPhvRJ/YxW06DXw/gmXJCGjePBmePm+D9P8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bxYyOi6H; arc=none smtp.client-ip=100.103.45.18
+	 Mime-Version:Content-Type; b=b4AOrhHMpi/CxOcFWPpZIb43A9uNGRR1y1pjhV3FRx8ulNTR5XYDWqslnYkFbvLVwTz3ylvNy6udj0Qr/YWQnzhvTLpUA/fpyFT05a1YN1M1GCB3h8seJewEy3RIT3gCBNd2sv+Jm9KLRJSHURvuPptHgXTmFoz5WRNSU5eyVCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JgJKyL2d; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bxYyOi6H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8931F000E9;
-	Sat, 13 Jun 2026 00:08:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JgJKyL2d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D8A1F00A3D;
+	Sat, 13 Jun 2026 00:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781309331;
-	bh=nGxa9IMcv53z2azwObO2YlW/PW02VJ6MFszDO1jlzVg=;
+	s=k20260515; t=1781310033;
+	bh=X0Pc0LwLc4RmH6+Qu3X6i5FQfx/7NQF+K9TgmHSN+NY=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=bxYyOi6H/XWA/Y2J/44vOjtGAF7mr9yIQGqqhNEydZvUE9u4kKAF/sbt/+q8JTMzE
-	 7x/8hSbfi7oni499ospkve5C/3kWuSaA0VnzJk+YJcbBEkXfHuc6Uqdg7tI97rITth
-	 pZUyTGYVU3iwDUDDl3o9qkJMdwjEgblsGFmLwbb+LsOcAVnQzfHMQ9jV+52/jZX2x8
-	 IPkG8jAcxB+EIdw5/c/woX8sGZDyBR99nMeTl3zRXvXBIAbcsEvYzT+/TfgmzkwkUW
-	 jbK12QWLjlVIu5PXBEenmtnBpeex5l179TyqMHAE30VJ/h+t4QIjq+cBpDKVUo3cML
-	 bTBgxd3K1J73g==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6F12CF40068;
-	Fri, 12 Jun 2026 20:08:50 -0400 (EDT)
+	b=JgJKyL2dsFf1fYjudONxl0omQdlc+0A3LL+vGAmPdjgUxHtppGLl80ujZ0cXS3Ujs
+	 og1gjnpEKxEiDYenuYY2nJzCF7m++5KPiKG4ifS5/R8vAEIxAdiKuEV/tdI9pc/njC
+	 ZhiWONOxF6oJH150c870nq+13zYN2l3o7hqkHIE397+JHvUflUgeyiRmcWypgHQ+WH
+	 n9zwPs1zsd+n5de94mw10mCP5k17tzSZns9Et1NNKGnA4yO82Q2nYvmZbrzjq2PCLt
+	 w/HKeXscyPtsPNuLzQ1181AKgYXu9QTSOYefcL8fzT9IdZo/zzUdUdisogaWNIGMrT
+	 Snhfi2VConAyA==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 8451DF4008F;
+	Fri, 12 Jun 2026 20:20:32 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 12 Jun 2026 20:08:50 -0400
-X-ME-Sender: <xms:kp8sas-m1MadYzNzE3GKeoiMZdV_iMnwY7WN2W807kSfARnzcno5Aw>
-    <xme:kp8saqRf8LKFJTelwbeuoV4cGT4wXHldUaUH0pSOI6GmBc6qWISfQuLqlxp_3n4K8
-    99rs6EuyH2_1pdH3CKLSG9o93pMOvrB8kKC6nVh0iQMvp9VqxvHQJgO>
-X-ME-Received: <xmr:kp8sarmYx51mvAAm0oNLuyy2le9TzUBmK1zgPNpfaNUknmgMGr1D0iijO2oWT9JTIkGMpub54h4qWDBJj_L1wmnLVp4wqpIBncM>
-X-ME-Proxy-Cause: dmFkZTECaqWc+bBCQTP33LZCVcgpDog5woX4Pk0w+tN7k5C+anpxEi+11sOcToFp2YNhFQ
-    XXkOLiPpOtcuAt4BLAJvhlb7O8nxZgdFWzhdtvXjhffwAwacbY3zEbPPvwbumpAUPAXWEp
-    Bgx4CamE/ooy9Rmp4n+szWTIeEluvgAHuE6mZuG6nDvB/dq+sGK1+KOb0YPrrcX4etzoM+
-    +yT1xXSfn4eeQcVYqtsfFhqJYvzY3citFLQahF05zyv5SAjzoM5MjNRKy10Mg5qTaHSyhY
-    8r7x73EwCEReh81vhTNa8Fa+wkxrHfA2h/jnBVT4BIn0M6gOMHeKu7A4dH+8HtfbI3FRsb
-    0gC/ywipQLbX4MDqxESNJlQK+K9po3Od5p68lT4Ij01H2wvcaei9NEiImuGkhU5Tal/XLP
-    ikUsRTZyY5FVFhEAkc/8dziVLZdtOKQjOK0axXbWT2ETRtzHpPWQYNGhk2lUedQeb0NFvS
-    x9CNornK2PKwLHbeSiyN3nbNb3tUqt+RdAka3rapqv90vtVcuRLInHWKoClF9WglfjN02R
-    KYkVur8cw2Q5QVgKjU/oygOXvy36wu13mNk/aYeXCFrjsI4zumNphrYvgUFLxpWUqPBZMU
-    IMzvcZpVm8LRKBt+mhI5y4UQVyg2Do3bgpCREoh9JEcdkpk2wav3kt8TLUKw
-X-ME-Proxy: <xmx:kp8satV6RJn4UUYUx3wYePDlQV8snuogAWSta9882ttLqcOQcO2Jsg>
-    <xmx:kp8saofG2zDXntFvensLmhV9Bt29j2buk9lnb9ENt-4q-xciuZAO5g>
-    <xmx:kp8sajkdyylhXrju-6QIgs8f5Dnzyw2AE14HafsmDQoMjWiWqGqCMQ>
-    <xmx:kp8saiDlR3aE0buPQbXmapb9-xLOZrHwiy4y3RWwu7QcpGLjx4iWyA>
-    <xmx:kp8satfMLyqNZj6_XFOMNauI5LKtT3OX2EdTzSY-TmDo60JQ-MDdtOgK>
+  by phl-compute-03.internal (MEProxy); Fri, 12 Jun 2026 20:20:32 -0400
+X-ME-Sender: <xms:UKIsamZIl_rpbPZXuqyluy6LnQjftM8_QcZ7d1O_zIOVW_qT7kIiVA>
+    <xme:UKIsau_WMIMWo85UzLz6DV70yBJsVkpRJIObEjPvoCQpBs8kacLsQcNtJ0OxKbZvZ
+    Fb-gudC4252xn1eDuMVHRqGYjhiCvf3q7_eg5JBqlP0R9epvIzAn4k>
+X-ME-Received: <xmr:UKIsaqjFizeoQ8epCEqNN1symK3Dm4TdD7BHGVmtF72bjLguVgPv5oTPRanWIGKpv1AJRSpS7Onj6WaAOvihsv4pZJzC-fJHR7A>
+X-ME-Proxy-Cause: dmFkZTEvXz8b8PCNm26NU7mvbWwj/clozIv9nUxrgaKxBy0LBIOYhD7XCtXTKvDkbVKPUx
+    Os9ugHRt4u+xI1H3KQDrSPWfI9srSq70eVm20us6U8L2kYEMNj3AR9+TfSKCYW8Pu81hN5
+    rMXSMnSVi6EwodNFKLI/x6W1JqqchNGOTZsrG+WVpLBcfDsdqeqRVmyKSF5kMu/rFnIBfz
+    cOBD9Z0oRN091CWIEVfQuEbsC2MXQEfbO6223i84YTf2gfv/AQN7pj9CzIWAyfdmaZZ53e
+    NKgEj8EXpukf0wJZ4AekttZmJl8/R23lr+9w8N4PAWBsnHYK5kk0TUaGIgmZFYx9o37Fm6
+    SyoB5vEhs3i3vS6xkyHfq8xyCkRKoFfnsPSdBBQB8YxVhZbuLlZ2fZq4njhFBKgR3CDp+m
+    oT4E3IULw2h+H9x/TjoZ7JFs0rNXm9UGuP+tMqEvFq1hB5qlsEM0YakHqJVj1Px0CYTRia
+    rp4rjPTz7w8gPtfr9MvsHebN8MhVJZOxv34wcZYInGH8T1ZO4glVbf+mJnAjKUN3HRMO90
+    Rl3dO2jmJE4hGV7MzsXlYHcdwJY/a/uPvru35W5Y7eM8kPAn97brmJWkyVzJNdFPZHNBSv
+    st1rjnOAD0Y4YtX0EpG7m6869kAKNrFSEUsv/+pt386x4q4ztJ5leiS+cX5Q
+X-ME-Proxy: <xmx:UKIsaphWfgAKDGIbzR0cXJfu72AK8OFhRYlJm9yZr5rgKXkQFKLQFg>
+    <xmx:UKIsao6Ks9GC7VXW1UCWz3qqeY3MACrqlJItLU6qjzcED5lcvpcifg>
+    <xmx:UKIsajTeO0j19rjSpCGm7eCYmm5PyeoU1p0BcaeFdbjNRag_03Vy3w>
+    <xmx:UKIsav-RD0u5nZwO7VZIRgbxS9i1VREXERILCODcz1CL21eY6I0pgQ>
+    <xmx:UKIsasrBGOgNML_HeoIg3Pkx-EmIotij5pk7Syvb6H3Dxzntv-5iMU6O>
 Feedback-ID: i67ae4b3e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 12 Jun 2026 20:08:49 -0400 (EDT)
-Date: Fri, 12 Jun 2026 17:08:48 -0700
+ 12 Jun 2026 20:20:31 -0400 (EDT)
+Date: Fri, 12 Jun 2026 17:20:31 -0700
 From: "Dan Williams (nvidia)" <djbw@kernel.org>
 To: Xu Yilun <yilun.xu@linux.intel.com>, 
  kas@kernel.org, 
@@ -70,12 +70,11 @@ Cc: linux-coco@lists.linux.dev,
  baolu.lu@linux.intel.com, 
  zhenzhong.duan@intel.com, 
  xiaoyao.li@intel.com
-Message-ID: <6a2c9f90d348_9b8551003e@djbw-dev.notmuch>
-In-Reply-To: <20260522034128.3144354-5-yilun.xu@linux.intel.com>
+Message-ID: <6a2ca24f16277_9b85510070@djbw-dev.notmuch>
+In-Reply-To: <20260522034128.3144354-13-yilun.xu@linux.intel.com>
 References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-5-yilun.xu@linux.intel.com>
-Subject: Re: [PATCH 04/15] x86/virt/tdx: Enable the Extensions right after
- basic TDX Module init
+ <20260522034128.3144354-13-yilun.xu@linux.intel.com>
+Subject: Re: [RFC PATCH 12/15] KVM: TDX: Add in-kernel Quote generation
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -87,22 +86,36 @@ Content-Type: text/plain;
 Content-Transfer-Encoding: 7bit
 
 Xu Yilun wrote:
-> The detailed initialization flow for TDX Module Extensions has been
-> fully implemented. Enable the flow after basic TDX Module
-> initialization.
+> From: Peter Fang <peter.fang@intel.com>
 > 
-> Theoretically, the Extensions doesn't need to be enabled right after
-> basic TDX initialization. It could be enabled right before the first
-> Extension SEAMCALL is issued. That would save or postpone memory usage.
-> But it isn't worth the complexity, the needs for the Extensions are vast
-> but the savings are little for a typical TDX capable system (about
-> 0.001% of memory). So the Linux decision is to just enable it along with
-> the basic TDX.
+> Provide an in-kernel path for TDX Quote generation when handling
+> TDG.VP.VMCALL<GetQuote>, without requiring an exit to userspace.
+> 
+> Use the core TDX API when the TDX Quoting extension is available. For
+> simplicity, each KVM guest checks for availability only once during
+> initialization. KVM does not handle Quoting service disruptions.
+> 
+> Signed-off-by: Peter Fang <peter.fang@intel.com>
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> ---
+[..]
+> +static u64 __get_quote_kernel(struct kvm_vcpu *vcpu, struct tdx_quote_req *req,
+> +			      size_t req_len, gpa_t req_gpa, size_t total_len)
+> +{
+> +	struct tdx_td *td = &to_kvm_tdx(vcpu->kvm)->td;
+> +
+> +	/* Only support version 1 as defined in the GHCI spec */
+> +	if (req->version != 1)
+> +		return TDX_QUOTE_STATUS_ERROR;
+> +
+> +	if ((size_t)req->in_len + TDX_QUOTE_REQ_HDR_SIZE > req_len)
+> +		return TDX_QUOTE_STATUS_ERROR;
+> +
+> +	/* The caller frees the quote data */
 
-No real point in rehashing the rationale for the "any available, all the
-time" policy yet again especially when this directly conflicts with the
-"relatively large amount" comment in the original cover letter.
+No, it is freed by cleanup as far as I can see
 
-Otherwise I agree with the proposed reordering of this initial series.
+> +	void *quote_data __free(kvfree) =
 
-In general though, no big showstoppers for me in this first 4.
+...this shadows the global "quote_data". A global really should be
+properly namespaced.
