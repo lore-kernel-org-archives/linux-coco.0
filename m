@@ -1,121 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6531A2C0B;
-	Sat, 13 Jun 2026 00:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A575D30D412
+	for <linux-coco@lists.linux.dev>; Sat, 13 Jun 2026 16:20:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781310036; cv=none; b=Aw3D6dgtzxDgVmaD291vP2JowqBmDHDOWSnxpJfnbFwxIYWpeY2TBPuP/vxAQJGN/cY79+/Cn0MJ32o+oDJwSR3xeUefvQJIvYU1I0zI8B3UP1i1ds6vNVSb+u2Q8PD4oRCgUCj4eJSzqsElgrdMa1hhcfGXKv3pevjIqn0SITM=
+	t=1781367604; cv=none; b=qVkappgZ1TRPJ7TI2emx+N1qEmE4YQEZLeDeDv5b7hMIRmw/dhNKjpDxSPsqmXN45v51rUtyRa4D/tN8LI7/qnYmO8CLZSdMNct0zx7fWHIXWntecFduVBkpupdkau1HLYhZehYwo1GWhlx+sCPp7Xjc+gQwevYW7ukA/XFKhdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781310036; c=relaxed/simple;
-	bh=A/XloPAD2cMS8vUfQ5KdwFSk93vR8Ny1utNuIYvd9wU=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=b4AOrhHMpi/CxOcFWPpZIb43A9uNGRR1y1pjhV3FRx8ulNTR5XYDWqslnYkFbvLVwTz3ylvNy6udj0Qr/YWQnzhvTLpUA/fpyFT05a1YN1M1GCB3h8seJewEy3RIT3gCBNd2sv+Jm9KLRJSHURvuPptHgXTmFoz5WRNSU5eyVCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JgJKyL2d; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781367604; c=relaxed/simple;
+	bh=Pn0O9H+dHOsZNix6wexCA4umwU7at3UPvyRFwrUZkuE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NK1KVmsXUM8OCzXDhNgkUVwhSf78HxhAcAMTp1K8JH074NF1zmY/toRsHoFueg5r/coW6fh0thA3VOYfKGfeo6iLQOQjD0b/8Uwaot/T/XonkiVThex8vKvqrIZCRnyc/6GC7nKH0zrHusgM6FIdMvKg5d4FTgm7ibR203Ylekk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h+0iz8Ps; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JgJKyL2d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D8A1F00A3D;
-	Sat, 13 Jun 2026 00:20:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781310033;
-	bh=X0Pc0LwLc4RmH6+Qu3X6i5FQfx/7NQF+K9TgmHSN+NY=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=JgJKyL2dsFf1fYjudONxl0omQdlc+0A3LL+vGAmPdjgUxHtppGLl80ujZ0cXS3Ujs
-	 og1gjnpEKxEiDYenuYY2nJzCF7m++5KPiKG4ifS5/R8vAEIxAdiKuEV/tdI9pc/njC
-	 ZhiWONOxF6oJH150c870nq+13zYN2l3o7hqkHIE397+JHvUflUgeyiRmcWypgHQ+WH
-	 n9zwPs1zsd+n5de94mw10mCP5k17tzSZns9Et1NNKGnA4yO82Q2nYvmZbrzjq2PCLt
-	 w/HKeXscyPtsPNuLzQ1181AKgYXu9QTSOYefcL8fzT9IdZo/zzUdUdisogaWNIGMrT
-	 Snhfi2VConAyA==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8451DF4008F;
-	Fri, 12 Jun 2026 20:20:32 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Fri, 12 Jun 2026 20:20:32 -0400
-X-ME-Sender: <xms:UKIsamZIl_rpbPZXuqyluy6LnQjftM8_QcZ7d1O_zIOVW_qT7kIiVA>
-    <xme:UKIsau_WMIMWo85UzLz6DV70yBJsVkpRJIObEjPvoCQpBs8kacLsQcNtJ0OxKbZvZ
-    Fb-gudC4252xn1eDuMVHRqGYjhiCvf3q7_eg5JBqlP0R9epvIzAn4k>
-X-ME-Received: <xmr:UKIsaqjFizeoQ8epCEqNN1symK3Dm4TdD7BHGVmtF72bjLguVgPv5oTPRanWIGKpv1AJRSpS7Onj6WaAOvihsv4pZJzC-fJHR7A>
-X-ME-Proxy-Cause: dmFkZTEvXz8b8PCNm26NU7mvbWwj/clozIv9nUxrgaKxBy0LBIOYhD7XCtXTKvDkbVKPUx
-    Os9ugHRt4u+xI1H3KQDrSPWfI9srSq70eVm20us6U8L2kYEMNj3AR9+TfSKCYW8Pu81hN5
-    rMXSMnSVi6EwodNFKLI/x6W1JqqchNGOTZsrG+WVpLBcfDsdqeqRVmyKSF5kMu/rFnIBfz
-    cOBD9Z0oRN091CWIEVfQuEbsC2MXQEfbO6223i84YTf2gfv/AQN7pj9CzIWAyfdmaZZ53e
-    NKgEj8EXpukf0wJZ4AekttZmJl8/R23lr+9w8N4PAWBsnHYK5kk0TUaGIgmZFYx9o37Fm6
-    SyoB5vEhs3i3vS6xkyHfq8xyCkRKoFfnsPSdBBQB8YxVhZbuLlZ2fZq4njhFBKgR3CDp+m
-    oT4E3IULw2h+H9x/TjoZ7JFs0rNXm9UGuP+tMqEvFq1hB5qlsEM0YakHqJVj1Px0CYTRia
-    rp4rjPTz7w8gPtfr9MvsHebN8MhVJZOxv34wcZYInGH8T1ZO4glVbf+mJnAjKUN3HRMO90
-    Rl3dO2jmJE4hGV7MzsXlYHcdwJY/a/uPvru35W5Y7eM8kPAn97brmJWkyVzJNdFPZHNBSv
-    st1rjnOAD0Y4YtX0EpG7m6869kAKNrFSEUsv/+pt386x4q4ztJ5leiS+cX5Q
-X-ME-Proxy: <xmx:UKIsaphWfgAKDGIbzR0cXJfu72AK8OFhRYlJm9yZr5rgKXkQFKLQFg>
-    <xmx:UKIsao6Ks9GC7VXW1UCWz3qqeY3MACrqlJItLU6qjzcED5lcvpcifg>
-    <xmx:UKIsajTeO0j19rjSpCGm7eCYmm5PyeoU1p0BcaeFdbjNRag_03Vy3w>
-    <xmx:UKIsav-RD0u5nZwO7VZIRgbxS9i1VREXERILCODcz1CL21eY6I0pgQ>
-    <xmx:UKIsasrBGOgNML_HeoIg3Pkx-EmIotij5pk7Syvb6H3Dxzntv-5iMU6O>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 12 Jun 2026 20:20:31 -0400 (EDT)
-Date: Fri, 12 Jun 2026 17:20:31 -0700
-From: "Dan Williams (nvidia)" <djbw@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>, 
- kas@kernel.org, 
- djbw@kernel.org, 
- rick.p.edgecombe@intel.com, 
- x86@kernel.org, 
- peter.fang@intel.com
-Cc: linux-coco@lists.linux.dev, 
- linux-kernel@vger.kernel.org, 
- kvm@vger.kernel.org, 
- sohil.mehta@intel.com, 
- yilun.xu@intel.com, 
- yilun.xu@linux.intel.com, 
- baolu.lu@linux.intel.com, 
- zhenzhong.duan@intel.com, 
- xiaoyao.li@intel.com
-Message-ID: <6a2ca24f16277_9b85510070@djbw-dev.notmuch>
-In-Reply-To: <20260522034128.3144354-13-yilun.xu@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h+0iz8Ps"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781367602; x=1812903602;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Pn0O9H+dHOsZNix6wexCA4umwU7at3UPvyRFwrUZkuE=;
+  b=h+0iz8Pssli9gSf9xssRbphnomKwnKJhSS9pNEEM6tcFP5mnEZootS4A
+   8OXybKrNYr9IbkMZP1vPr0j1rggtUQoUkrwJ98Dj95Zz3IAyeERTXli5w
+   bJhvPzGfhKtbVag3bMgMjuea62iJeD4ey4KWIlOOqVBOoxgF7Ct26Ytsn
+   brj+td/eJ5HIiJUU6ly359WX79Z7gmn9K2GdFOqxy0K4KMVzRQxzCgzXu
+   k/Fob2PWuUg3xG6tEY2M2gn6oZBsI06Inzz8Gty+p/pZFPNrBMt/qJvcg
+   +3yiCmsWJ6/XJzEuvAXGvHS89Gh8fYrZ2J3aYKAFbvHKMrOH+OaKSCoQO
+   g==;
+X-CSE-ConnectionGUID: DbVhstQRQhilVCM6PSWudw==
+X-CSE-MsgGUID: K6dR6wDXT5OCsR7KfCdv2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11816"; a="84742637"
+X-IronPort-AV: E=Sophos;i="6.24,202,1774335600"; 
+   d="scan'208";a="84742637"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2026 09:20:02 -0700
+X-CSE-ConnectionGUID: z6Fm7FP6S5upqf2g1/QC9A==
+X-CSE-MsgGUID: 94ECnm0ZQZaPGdWGUJUmwg==
+X-ExtLoop1: 1
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa003.fm.intel.com with ESMTP; 13 Jun 2026 09:19:59 -0700
+Date: Sat, 13 Jun 2026 23:55:12 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Adrian Hunter <adrian.hunter@intel.com>
+Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
+	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
+Subject: Re: [RFC PATCH 14/15] x86/virt/tdx: Embed version info in SEAMCALL
+ leaf function definitions
+Message-ID: <ai19YA+sy32CVIBv@yilunxu-OptiPlex-7050>
 References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-13-yilun.xu@linux.intel.com>
-Subject: Re: [RFC PATCH 12/15] KVM: TDX: Add in-kernel Quote generation
+ <20260522034128.3144354-15-yilun.xu@linux.intel.com>
+ <dd9027c7-ea84-4cee-9484-4e464a766b0d@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dd9027c7-ea84-4cee-9484-4e464a766b0d@intel.com>
 
-Xu Yilun wrote:
-> From: Peter Fang <peter.fang@intel.com>
+On Fri, Jun 12, 2026 at 08:47:26AM +0300, Adrian Hunter wrote:
+> On 22/05/2026 06:41, Xu Yilun wrote:
+> > Embed version information in SEAMCALL leaf function definitions rather
+> > than let the caller open code them. For now, only TDH.VP.INIT is
+> > involved.
 > 
-> Provide an in-kernel path for TDX Quote generation when handling
-> TDG.VP.VMCALL<GetQuote>, without requiring an exit to userspace.
+> > @@ -31,7 +44,7 @@
+> >  #define TDH_VP_CREATE			10
+> >  #define TDH_MNG_KEY_FREEID		20
+> >  #define TDH_MNG_INIT			21
+> > -#define TDH_VP_INIT			22
+> > +#define TDH_VP_INIT			SEAMCALL_LEAF_VER(22, 1)
 > 
-> Use the core TDX API when the TDX Quoting extension is available. For
-> simplicity, each KVM guest checks for availability only once during
-> initialization. KVM does not handle Quoting service disruptions.
+> FWIW I find the macro a bit ugly, and hiding the version number in
+> the leaf number macro a little counter-intuitive compared with setting
+> it at the call site.  It anyway needs some explanation at the call site.
+
+We actually discussed about this and realized we don't need to keep
+version. This is because:
+
+  1. Newer version SEAMCALLs are always compatible with older ones.
+  2. System security requires us to stop using an older TDX module when
+     there is a newer one. So don't try to support an older TDX module
+     which doesn't understand newer version SEAMCALLs.
+
+https://lore.kernel.org/all/ca331aa3-6304-4e07-9ed9-94dc69726382@intel.com/
+
 > 
-> Signed-off-by: Peter Fang <peter.fang@intel.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> ---
-[..]
-> +static u64 __get_quote_kernel(struct kvm_vcpu *vcpu, struct tdx_quote_req *req,
-> +			      size_t req_len, gpa_t req_gpa, size_t total_len)
-> +{
-> +	struct tdx_td *td = &to_kvm_tdx(vcpu->kvm)->td;
-> +
-> +	/* Only support version 1 as defined in the GHCI spec */
-> +	if (req->version != 1)
-> +		return TDX_QUOTE_STATUS_ERROR;
-> +
-> +	if ((size_t)req->in_len + TDX_QUOTE_REQ_HDR_SIZE > req_len)
-> +		return TDX_QUOTE_STATUS_ERROR;
-> +
-> +	/* The caller frees the quote data */
+> > @@ -2217,8 +2217,8 @@ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
+> >  		.r8 = x2apicid,
+> >  	};
+> >  
+> > -	/* apicid requires version == 1. */
+> > -	return seamcall(TDH_VP_INIT | (1ULL << TDX_VERSION_SHIFT), &args);
+> > +	/* apicid requires version == 1. See TDH_VP_INIT definition.*/
+> > +	return seamcall(TDH_VP_INIT, &args);
+> 
+> Now the reader has to go look at TDH_VP_INIT.
 
-No, it is freed by cleanup as far as I can see
-
-> +	void *quote_data __free(kvfree) =
-
-...this shadows the global "quote_data". A global really should be
-properly namespaced.
+mm.. I think I should just delete the comment.
