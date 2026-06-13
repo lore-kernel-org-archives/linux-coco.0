@@ -1,59 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0964C2BE035;
-	Sat, 13 Jun 2026 00:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D292F7EED
+	for <linux-coco@lists.linux.dev>; Sat, 13 Jun 2026 00:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781308815; cv=none; b=rzQzCxKaD7rHI2+JKr8u1ZRepMVfv2/caRWjYtkuHMf4ZVzrhWgLt3Sl2JnQnJG9UIP6TGwTDKyvjtQzEN+FzUZAvgsaeCkKlVyWbATWcQrb+p68WhYFpINegMLBlGnCHGauB6mLUnOW4dQN7r4+Z36JcnVjcifOFD1tDeljht8=
+	t=1781309050; cv=none; b=CS4K22zEJ+LMSqaIXrPdMNMWONSPiayXY8VPNp4aPrv7i6TUlFZZquUCnxkFlmO65YFsFr2FNi89AgusU5wYqgW39f6VtBBZPbHFedFVVOopAMdYal+Qa4TaehZFlYMoDrBgwIIY8OEjvkRPAPSJNPBQGhx0xwvx/9mijnKVMtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781308815; c=relaxed/simple;
-	bh=vQiPto57O9dkdl+XRVwjetNC4JB2ICzm6c+0r7erA18=;
+	s=arc-20240116; t=1781309050; c=relaxed/simple;
+	bh=5FMZpreKP6HzR6iIHGMdQc1YAzXWkwVPy8yLJhUS+xw=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=CC9v4DbVtBgGlDycLngq6bujPmljmYdAscTSc8nFP54qj4pIKr+xLhZBAvxmRlqE0PwlHIcfcpPL1LQxPZ8OKvBT4Wy8luqWdORngaCTnfYBY+CZCfKTSt+KBewpaldsLaziKPL/X1BDSgG+wRwjkV5fHtj3pgm5AJKwgKgcn00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bC7kT+Tt; arc=none smtp.client-ip=100.103.45.18
+	 Mime-Version:Content-Type; b=uoWXH5gWfK65L3s4qXhnylIBOCfjmSZWg32ri+7w80C9bAP+Pz4HAoMftCQQF7bRqjraWSjm4C6Bj8HTKvrrRZkdNz41VASxrNRVHZn6Q/qcl3GnzqDznm2oqjxztOmDmf4rPr0BVw5zeTwDGhcWJxRGUNdtiUBT5YLg1ms0tgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WF9c1mlx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bC7kT+Tt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563841F000E9;
-	Sat, 13 Jun 2026 00:00:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WF9c1mlx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CE21F00A3D;
+	Sat, 13 Jun 2026 00:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781308814;
-	bh=9l+mNRqboOtRgfhPe+mmuhZHWZensQmKvoxFdS8+hD4=;
+	s=k20260515; t=1781309047;
+	bh=xOe8t2DMbm5StRw8EdR0ZiBhDS5a4ADhrFiSB8gnD2M=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=bC7kT+TtwePUo48FvNvwFV5jsmHvHGUG52IThC6EmMGiX0vA0LlPJXjJN1+BRg8HO
-	 36q0+xYa+j2DWtlaG7bMH9RMfV+bWjuFL4PE0Y0zZ1eBJZ/5VPGm7auGCVu5BGc1I/
-	 eSfIWyxUudjZjJKXRpSWlBuF9e1M/bdWB8+5uK953hlwlvO6/X8bc1Y+2d0IBGk9kk
-	 9KeeLq/HduXUyjab9sQokQwukZk6Q2baGaMq4jx3NzpyMxzx6fdo07gyUKaUxNjT8b
-	 jbysyyZwQpIN8DrUfOogKXNNYsubV78ScYkYxAC3PWEQUhkA7KP+l9c4/z2LcH6L9A
-	 rfgh5fQHTylBg==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 912A4F40078;
-	Fri, 12 Jun 2026 20:00:13 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 12 Jun 2026 20:00:13 -0400
-X-ME-Sender: <xms:jZ0sahvkVH-grpqOoU5ciQCOC5gWepJIkVWv0TR2L8CLNVTClBXEcw>
-    <xme:jZ0sagDBrOIlR4wTreYByvufalQ9PE-bn92qU54NLM3PL207Z9OV2zbD6c0ggTHXT
-    lRn8bjWGz8ZvkWpaz-nNH3JfNHsUzpUzm7oDnQpaDWEawiEEgpV5io>
-X-ME-Received: <xmr:jZ0sauW0RbmeC7CGt4tiGo6o1TClaSkRe7LZjfEu_M4txsCc8X1qIZ1sey1YxkZMeVz8rakHCsF3zTC29O-tbNI2TFIbE7MWZQI>
-X-ME-Proxy-Cause: dmFkZTEyH7ZgW8x8zWOOs3YLqCsd8vM/giRH54jmDva/ATX/E8RWtKsfgjPbMCIM5ljXtE
-    /iQxleIhbhZgZI660CPAoOPVI1CY9xqXvrqeJQsTuzRNWphptjXfP08d874134vN0oO9H+
-    eoJrTtGiYw3ZVvJN0m2L/3s9JWb1KZCPBVcaFL3V4W5hxqDs35AxCtKlQ/dReZ+C6szqBn
-    tMDPPjEzKiCt0H+oGMQyryfTjB5oOhWeKSHlUHRlhCp9q2QZKebtbijnFa+SsLqvLLUEiz
-    zFqkALL7i1mz4H7fGnxaJY/uQyY9Bf1S0g9FxCGgmuyPm7ELY7SzVs2eYFRtXv7MwSctf8
-    wbj2wEYAC9SNw9hpN9ReCJjUeZhv6/Tp3AHXoZzZKMyXAg0IAxdPp3jM+TfUXRkQd+kGgc
-    ZxM/JRmCmjGOo5ZtYVDRpSJemNBufmiqZLOjNdcUb/XIt+caqoY3x7siqzwHu03mctbxJW
-    uEcQoaL7G0Z7LThrDQi9ueGAG0IQzCu/UvrwlIYpe6RWXIPUNph7d+HekX2uRC38tDjkNu
-    4Cp9Y4tQrLXwD9ph3ml/YeG1BpUBdHjCbiIM9XsPsMkYFjScFuIZT1v7XA4RsxZ3AOpj50
-    qXpOXv0Y3ui9Xh0Jk6rEOdJ/mdP+3Tyb35C6xPYmeRY7T9dwODLFO2HShlpg
-X-ME-Proxy: <xmx:jZ0sapEB1rtGYjmuSCZCvtv-frYy0oBVPaRQJAHutPsP8FT3uwl_kg>
-    <xmx:jZ0sapMML-XUkOeMAlZ7lxAVdvJJQL3Peqvyv1Wn7jOp4dXDuUxs1w>
-    <xmx:jZ0salW4Pr15u6vO0ACfJ-FxsNTkOLwAiGDS6Ex_UhoWA1Cgw-qwTg>
-    <xmx:jZ0sagwYrGGgXKTOwmWl4bwT0xw-CS-w373Zsv-2BZ6EnORIl8PNnA>
-    <xmx:jZ0salODKQOgHwgz85pf_oOrrSt50zktJx2H0wAwg1RhgcpNVsSMp3i->
+	b=WF9c1mlxb6s4k0hdx4LvKb8hoNVYRPOYHsLtcvKmQVOvqWGDgzmKkngdzqQlAL0+i
+	 bCr69tq5hGus0FESVgpp7xMkX/ZPl2VvmU6eu0pgsaiPQup80ba+IaztAm2latLxpB
+	 o4qnc1K66PDLzXKgs3qZ6g6+he4RLvpsrYsptBhpIXgFDuLT0txSNHuSFuAwwFc77p
+	 nJnav+gz23Nap1eSRxQ02XrtK0tgxOWudgT24kLHG7bwggoyFLvr/24+U3DXfkNBkt
+	 T53WSUS3DfwjGk8Qik42g80iWkQceg8AHNR2K+OMMzZjtnLQyzNSOrUbQiiEgKg7Ho
+	 iKLehq4FP+g5Q==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id AFCF7F4009A;
+	Fri, 12 Jun 2026 20:04:06 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Fri, 12 Jun 2026 20:04:06 -0400
+X-ME-Sender: <xms:dp4sahBXfp_865DigpZ6hNYNRHK6cEVMuaheh-nlHf4Hg8MLRMYX2w>
+    <xme:dp4salHRdkFfmONFBwvfnuSepuzGHI0gTohHGLu-AokqKyIV5MUOsHDPe6Nq2Ko7q
+    mzIoUY0EVp5YyPl-hEH29fYwa0n9E8lGx5Af4cniO-8MrrS-kloH7E>
+X-ME-Received: <xmr:dp4samJto-gXLR12evbbkmymNYRQVH5bUAGv22Wp-vXx1gKIAYqF1uc0HjCVh0c6w-dIlVBmx-W6YbU57FjD48WcRvCkNHjGTbo>
+X-ME-Proxy-Cause: dmFkZTGilS0M3dezmeGnrGSX4Ch+dgHPVJ5esWLPQpGyfdBgwogwB0N8myN/g6TDUzG7S8
+    4oBuSjyUBpCNhBGetgLyALiw2ouI1Y7lD2UpVQe9d3hTQzFJPY56Fm1DXrRfCgyfm7X0Lu
+    JP0+VAV/KffvTK2oRSXSLn0k5fG4zhcfuoteHmcAAbuXqhOLsAGH6zacut63PB8mx9I7lb
+    M2fOaKlBgGUX8DC0XAUFq74ZLpgah07mNXd1P4qZZjjUWsZUcYvjm0g2bzpQFHBecfj0Ka
+    8/gQU0LkSNuD27Fpfhs0vgj7K8Sj68M4utYPxmcc2ZRwlFOeAbPaQ13Nm7Afsk4UP8lqSR
+    u8wgnJnox5f2IjJNlGZL4mVEF/Uh3A2nkcr+mooL1AIGvqunFALAFzeapS4+jwtT5cmDsT
+    4/HDwYui1i3rtpsr44bp7z/Ml8eXn92EUFUg60MI+FJEnlOgyj9HZM0IznsOaC8EZfViOh
+    szh+1ghYsMrUMMW7dPrgUGvdwT4sH7u95FK1MT2C0pW9T+ZbkkIpVJTEMA2JcVmtPG6MpX
+    p3wFw28/iFZt48lE2WO/hxcLmhh8vxziySDU/a9wbMjbiGhk7N5HlKJllOM6sUSZRXhpqE
+    5pZeab7bOjahaZz7hfS8kir9iUH/79PphQbsDs3El4Qe7QI8x8o7gQhcpP0g
+X-ME-Proxy: <xmx:dp4sasrcuZOkoRn3yROUCGO5NwPngY1DvAMF8stBguzB5QyKnx0XEA>
+    <xmx:dp4satiZtA4UYaFm--jb4DaSHlAhegufhslKvdibXta1jpAwq_C6zg>
+    <xmx:dp4sarbco3kcupAp5SiGhjP-xrMGAn0b7nm1_R7DDz_6B5H5rPUTLw>
+    <xmx:dp4salm71x6hazR3m2GfBSl2R52V6ck4o2Yv6ct_cDdRz9cixJcViQ>
+    <xmx:dp4sahw5cRQDIykIJJ87f1OzstY0YCeDLzIsvn-yiollqG0_iXOuQ6_w>
 Feedback-ID: i67ae4b3e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 12 Jun 2026 20:00:12 -0400 (EDT)
-Date: Fri, 12 Jun 2026 17:00:11 -0700
+ 12 Jun 2026 20:04:06 -0400 (EDT)
+Date: Fri, 12 Jun 2026 17:04:05 -0700
 From: "Dan Williams (nvidia)" <djbw@kernel.org>
 To: Xu Yilun <yilun.xu@linux.intel.com>, 
  kas@kernel.org, 
@@ -70,12 +70,12 @@ Cc: linux-coco@lists.linux.dev,
  baolu.lu@linux.intel.com, 
  zhenzhong.duan@intel.com, 
  xiaoyao.li@intel.com
-Message-ID: <6a2c9d8b8bfe9_9b85510018@djbw-dev.notmuch>
-In-Reply-To: <20260522034128.3144354-7-yilun.xu@linux.intel.com>
+Message-ID: <6a2c9e7570dd_9b855100eb@djbw-dev.notmuch>
+In-Reply-To: <20260522034128.3144354-11-yilun.xu@linux.intel.com>
 References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-7-yilun.xu@linux.intel.com>
-Subject: Re: [RFC PATCH 06/15] x86/virt/tdx: Initialize Quoting extension
- during bringup
+ <20260522034128.3144354-11-yilun.xu@linux.intel.com>
+Subject: Re: [RFC PATCH 10/15] x86/tdx: Move and rename Quote request
+ structure
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -89,19 +89,54 @@ Content-Transfer-Encoding: 7bit
 Xu Yilun wrote:
 > From: Peter Fang <peter.fang@intel.com>
 > 
-> Initialize the Quoting extension and fetch its metadata during TDX
-> bringup.
+> struct tdx_quote_buf is currently used only by the guest, but the Quote
+> buffer format will also be needed by the host for in-kernel Quote
+> generation. Move the definition to tdx.h so it can be shared by both.
 > 
-> Because Quoting is an optional TDX feature, do not let its
-> initialization failures cause TDX bringup to fail.
+> Rename the struct to tdx_quote_req to better reflect its purpose.
+> 
+> Signed-off-by: Peter Fang <peter.fang@intel.com>
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> ---
+>  arch/x86/include/asm/tdx.h              | 21 +++++++++++++++++++++
+>  drivers/virt/coco/tdx-guest/tdx-guest.c | 25 +++----------------------
+>  2 files changed, 24 insertions(+), 22 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index bc512a00a0d0..945e6817abb2 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -96,6 +96,27 @@ static inline long tdx_kvm_hypercall(unsigned int nr, unsigned long p1,
+>  }
+>  #endif /* CONFIG_INTEL_TDX_GUEST && CONFIG_KVM_GUEST */
+>  
+> +#if defined(CONFIG_INTEL_TDX_GUEST) || defined(CONFIG_KVM_INTEL_TDX)
+> +/* struct tdx_quote_req: Format of Quote request message.
+> + * @version: Quote format version, filled by TD.
+> + * @status: Status code of Quote request, filled by VMM.
+> + * @in_len: Length of TDREPORT, filled by TD.
+> + * @out_len: Length of Quote data, filled by VMM.
+> + * @data: Quote data on output or TDREPORT on input.
+> + *
+> + * More details of Quote request message can be found in TDX
+> + * Guest-Host Communication Interface (GHCI) for Intel TDX 1.0,
+> + * section titled "TDG.VP.VMCALL<GetQuote>"
+> + */
+> +struct tdx_quote_req {
+> +	u64 version;
+> +	u64 status;
+> +	u32 in_len;
+> +	u32 out_len;
+> +	u8 data[];
+> +};
+> +#endif /* CONFIG_INTEL_TDX_GUEST || CONFIG_KVM_INTEL_TDX */
 
-Is this micro-optimization worth it? What are the classes of quote-init
-failures vs just make the policy be anything in the module must init.
+Drop the ifdef guards.
 
-> This patch does not include the opt-in portion of the initialization.
-> It mainly lays the groundwork for TDX Quoting support. Opt-in will be
-> added in a follow-up patch once the feature can be properly used by the
-> system.
+There is no cost to allowing a data structure to be defined
+unconditionally. Usually the ifdef guards are to prevent compilation
+errors when symbols do not resolve.
 
-It is unconditionally calling quote init even if the feature is not
-present. Is that not a problem?
+Otherwise looks ok.
+
+Reviewed-by: Dan Williams <djbw@kernel.org>
