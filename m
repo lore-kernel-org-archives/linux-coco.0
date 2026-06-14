@@ -1,100 +1,103 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754F62F8E80
-	for <linux-coco@lists.linux.dev>; Sun, 14 Jun 2026 07:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EE8315793
+	for <linux-coco@lists.linux.dev>; Sun, 14 Jun 2026 10:28:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781423432; cv=fail; b=tT/LzidJrEF3B+ohSBZrWrDDQyrUF9BL5N2EoVgOGLWEPPLCUkfq/nrkQdwud+iOmR9el+6CDJu9pS0EX9nK+g+9l3sP89mrotjsV2gXrWkQRW6xdfzMkos6aK9ud6ImrRPZbd2O4w2rsk8Rd2iPv7djiuZbr3AP9m/5vHSMl3M=
+	t=1781432929; cv=fail; b=tkvmE6q39Gj9ZVvdB/8/JPXKDuYVJgzZr6J90TdqieabDOBMzNJ0tRlA9n/4FQ0m9Tghqpdzi50jO83lrgvvBH2fyn6gLkabdDNbSHkZ+X2r3lXGthSrQGzy8zAb4nY7m+bhOi0jCbRDhgflQ3hSxU8gL58DaCbb3tYn8Ws4v2A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781423432; c=relaxed/simple;
-	bh=8XrsFqxB9LY5OS2u40yXABNipusr4AuKyi8PffuF1LU=;
+	s=arc-20240116; t=1781432929; c=relaxed/simple;
+	bh=1fJcM3vQL0/A8F1qfLzAdWI9bFV+N7qKoGA1KTry97I=;
 	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=OUcnM6vMMmz3asqG5BkWmF5ia59odjSWr0BJGtlyZP0XmC+cQDe7t6mipgX9crduXz0/OBWX9JWx8kUnsrj6SU9FKSsVCK8Zx/CVWro4uFTqN9cLfYSBdRi5aam6izxIdS+cg1hfxZOUJF421rMtO5WNGVmQ2PRSZhYF3XAl1eE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YIMCTXhE; arc=fail smtp.client-ip=192.198.163.16
+	 Content-Disposition:In-Reply-To:MIME-Version; b=qq+lY40FvQZg3uMxBQsU6joCmN1n31hk5tEetb6SmDU1RSt1CvY+mIm8GsCOlyqj5DeRViR4f/fS7/3JRrAbkfUVu7Mb1VR88wraLaEZHqMRjXkpw+M0F6FJfsRFs09u3Ag2dBWuiTbUZplylC1kimaVtav1yVC7oj+vsO57NC8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fL07h6RW; arc=fail smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YIMCTXhE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fL07h6RW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781423432; x=1812959432;
+  t=1781432928; x=1812968928;
   h=date:from:to:cc:subject:message-id:references:
    in-reply-to:mime-version;
-  bh=8XrsFqxB9LY5OS2u40yXABNipusr4AuKyi8PffuF1LU=;
-  b=YIMCTXhEVZEPEQswuKyQqfKKz7o19RhgffmppdIVZ1xTiJzFn8HCuSpO
-   TLgN+In3ekvBSCc11K7wnT7YcjSO9aL7dLUxio10iB3LMRQRHmbdREL6O
-   27Dhoeje21rPxrl8+tCaKc1ThlgeCNoVcJKTPPG90iiOo21Vn1O20iH1q
-   1Ldv8N1lq1SGbPkJp3hIyk58M7CwHr0GsmHLtOlhj7LlAkBihYpCPXOP7
-   55KWgvsY88wGbg5k4hUqnGRAI+YZ5mesDtO8reRNrr/a73t178F0s7EBn
-   ZOYmAQQO08tO8u2yF3Skg4bt9OysB8xvnbAgqtAyClSHQ0qe/UQWqDput
-   w==;
-X-CSE-ConnectionGUID: dIa6mFxmRPiSIB+DOqEGOQ==
-X-CSE-MsgGUID: FFIVwM+PRMWJni70Or/buQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11816"; a="69738872"
+  bh=1fJcM3vQL0/A8F1qfLzAdWI9bFV+N7qKoGA1KTry97I=;
+  b=fL07h6RWn4Crtugyg5hkN8KKSFrCyrjOzWqGgB/0WTQFNfkCW0ehNLO/
+   ahtF7fz4kVO4bRnSsFTYmkmDSS23wLeBf9PZH+Cze/PoK+MBhxdZ604gl
+   nVX/n/+6FrKNEaMc3UdPlTMfTpyvb3rFL6NZsadOjxAp0l2qGVllravbY
+   WK3ZMullk6TK6eqoxUTD1tMVxkOjIgb6H0DdwixplNgs3tm225ajmK6Bf
+   JQCdo+1b+CkGw/BLf3JXduD71ptmJZgUcKw1axGo0bG20y+jbyey6/xAI
+   +Db+LquVsltCKR/sXkcqRS+ujsJqegVY7KfUSuOd5ngU3SsoXZiXTQh3D
+   A==;
+X-CSE-ConnectionGUID: zl2doG2hT0eQLpR/lI+FEw==
+X-CSE-MsgGUID: kzDEdPbwTQK0ZLgo9m9GFQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11816"; a="92759247"
 X-IronPort-AV: E=Sophos;i="6.24,204,1774335600"; 
-   d="scan'208";a="69738872"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2026 00:50:31 -0700
-X-CSE-ConnectionGUID: A0wv64+HS2+rYvRGAMsgbw==
-X-CSE-MsgGUID: AhsLNEIgRuqZddXxLAWJyw==
+   d="scan'208";a="92759247"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2026 03:28:47 -0700
+X-CSE-ConnectionGUID: y5GGRDblSMWoenWvVwE92w==
+X-CSE-MsgGUID: kiT9yQ0OSFeP9c0U0UPunA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,204,1774335600"; 
-   d="scan'208";a="252290737"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2026 00:50:30 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+   d="scan'208";a="246326805"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2026 03:28:48 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Sun, 14 Jun 2026 00:50:30 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ 15.2.2562.37; Sun, 14 Jun 2026 03:28:47 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Sun, 14 Jun 2026 00:50:30 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.39) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Sun, 14 Jun 2026 03:28:47 -0700
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.19)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Sun, 14 Jun 2026 00:50:30 -0700
+ 15.2.2562.37; Sun, 14 Jun 2026 03:28:46 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DArIXz4EdCq4AX0B+X+d81Oq9aGqtkfnfRiStzruBB9m3gHxSdICSyEtyeFWDcvTKGy7g11nyeTXY7yJ+Z2s//j8PRJey1OZBS+ITkWt/90MGkF+b47hxrPcqM3WGvcQB1i9O+yiiOxOTJAWCjnbJ0KtDLkUg3SI7IhSgBxcXaFEsGJxCfbBAYswxmt9qIR9FUao16gy1WDnh/Y4FrwbOXyeLcJCSzgc0ElPPNn6TbyYoESdfYaL4BQl4VnsiM8Z8d5UF2JRTTIAqhMHcaF3GktlDcrEWE1weHVpUMwcJ7SocrdP5rA053B4xDI1luQVOlaboRz/4KaqpM8D17aCvg==
+ b=kHpZMKpvtsI98ttK59sH+JCNVhsuLYNY6ZMraH7mdedG41LTgM2dRPQ/zXJE1xJCCMwrs1ZV5lhjN9tojo8NZJDtC5dbhPDyzA3aqisS/IXQFVXhqplgjji60G+kkMkqo2bTE66J/4pgfoQtx2hYXokZfgd1wnJ1dG5EKBRxS1MKl7zrMhB7k7vMun3l2n8OOQbYKHqxRTFo7cvZIGguavoErtUcugzAt/kl7dwdshtmpb9qbH1xacItiKIXlQjTitbhdfGApirRkMkB2WTQc7LzHd9lTR2tlLD91ygfDITqFxYABTQIatgdCvgsc1o6zv7XAMu3SPHRoCcv1qdLpw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qdzTprKpRZxCRpqCFBZjNixhCHb3MQGPPx70HfgXmxs=;
- b=t3jXk+E/Kpfoq5Jnvpo6wT/Z0WDj5a8OA08j61BHssYEER/iu/fCh+LdMrbCWTamlGWM3dqm4hP6S2UfyFEmMcB8fCP0pcVezGuNwEn5o25VWTatu4N2CAi58tfsR1r6fwvZcHZT7t2JHE/ZnBWHuvXumnjlmtlIMha61AqF5mOO8G/y7sN2dums3QfPoQQpNglzK/FvaZia0PGS3/TlUuSMkjmc/YDhA+bRKxbk3fZa4ChiJdHZs+2cm+/LtJh00GBddQbpftiuMHEUwBMuUZUxQ4AnZZ3bHkD2OoKkrTW5iMMUkB4eSuol7BLNHR4q3uh1qwpZjuMbNFLVAAlgEw==
+ bh=7V1hDbHk2MMYzBYTf0qJI+2WAEzg6NhFFqTjIsyS6n8=;
+ b=UPTnuCCUHvRq0cIRnMT+KLTT7ZlF8LI9mjRx2MnubGjXpwgTI+wqzNOIlN+KrSi54le4qzTEs8w6sG342dtyrSAh/M2Gz7DxWoe02nWw9qorXzjq11vFEJ6iruLIb3tegagoGz2lqBBbt3hJPX2pgSm6K6kwVbWeeb1spFLiXvcy4Od1dRGkEXH6Uql0cCoOMNc5fA1MgvWj9IiLgS3yqwzLMywBsD5k00wCdDAHdSkqckh6CNWEjtutheKuzJShOJx4748TWq0gnBA8cAKnYnhf7ajXVEpnvCgjJu4Wx4OOMWOBEVTfSNiRX2JptkOPZugOdiEcavi9r8yL/6CniA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from SJ0PR11MB5645.namprd11.prod.outlook.com (2603:10b6:a03:3b9::19)
- by SN7PR11MB6775.namprd11.prod.outlook.com (2603:10b6:806:264::21) with
+ by SAVPR11MB9549.namprd11.prod.outlook.com (2603:10b6:806:4e9::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.16; Sun, 14 Jun
- 2026 07:50:27 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.18; Sun, 14 Jun
+ 2026 10:28:43 +0000
 Received: from SJ0PR11MB5645.namprd11.prod.outlook.com
  ([fe80::fb19:f933:8bb3:b42e]) by SJ0PR11MB5645.namprd11.prod.outlook.com
  ([fe80::fb19:f933:8bb3:b42e%4]) with mapi id 15.21.0113.015; Sun, 14 Jun 2026
- 07:50:27 +0000
-Date: Sun, 14 Jun 2026 00:50:26 -0700
+ 10:28:43 +0000
+Date: Sun, 14 Jun 2026 03:28:40 -0700
 From: Peter Fang <peter.fang@intel.com>
-To: "Dan Williams (nvidia)" <djbw@kernel.org>
-CC: Xu Yilun <yilun.xu@linux.intel.com>, <kas@kernel.org>,
-	<rick.p.edgecombe@intel.com>, <x86@kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<sohil.mehta@intel.com>, <yilun.xu@intel.com>, <baolu.lu@linux.intel.com>,
-	<zhenzhong.duan@intel.com>, <xiaoyao.li@intel.com>
-Subject: Re: [RFC PATCH 06/15] x86/virt/tdx: Initialize Quoting extension
- during bringup
-Message-ID: <20260614075026.GE3200182@pedri>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+CC: "kas@kernel.org" <kas@kernel.org>, "djbw@kernel.org" <djbw@kernel.org>,
+	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>, "Duan, Zhenzhong"
+	<zhenzhong.duan@intel.com>, "baolu.lu@linux.intel.com"
+	<baolu.lu@linux.intel.com>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Mehta, Sohil"
+	<sohil.mehta@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject: Re: [RFC PATCH 07/15] x86/virt/tdx: Prepare Quote buffer during
+ extension bringup
+Message-ID: <20260614102840.GF3200182@pedri>
 References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-7-yilun.xu@linux.intel.com>
- <6a2c9d8b8bfe9_9b85510018@djbw-dev.notmuch>
+ <20260522034128.3144354-8-yilun.xu@linux.intel.com>
+ <1a4d1126d6fe86e94fa8e1de6764656853e61106.camel@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <6a2c9d8b8bfe9_9b85510018@djbw-dev.notmuch>
-X-ClientProxiedBy: SJ0PR03CA0027.namprd03.prod.outlook.com
- (2603:10b6:a03:33a::32) To SJ0PR11MB5645.namprd11.prod.outlook.com
+In-Reply-To: <1a4d1126d6fe86e94fa8e1de6764656853e61106.camel@intel.com>
+X-ClientProxiedBy: SJ0PR05CA0180.namprd05.prod.outlook.com
+ (2603:10b6:a03:339::35) To SJ0PR11MB5645.namprd11.prod.outlook.com
  (2603:10b6:a03:3b9::19)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -103,98 +106,234 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB5645:EE_|SN7PR11MB6775:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e3b97e4-4fd9-4e8b-02bb-08dec9e99983
+X-MS-TrafficTypeDiagnostic: SJ0PR11MB5645:EE_|SAVPR11MB9549:EE_
+X-MS-Office365-Filtering-Correlation-Id: ee9c7dfe-a615-4da0-7997-08dec9ffb4a7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|18002099003|22082099003|56012099006|4143699003|11063799006|6133799003;
-X-Microsoft-Antispam-Message-Info: bDzbwhM/jZalws8eot23eQys9zPcMCO+56EOJOZ/NR9ikqxouczgIWAZsFQ6M6sftYe3kGq4a51K36LiCOeBaOW5oEmQplROncqiJArQ4O85x8h3ZnCRMCzy6HOqQW8LLWsd3q5bEMRvlsC9nMMKgJWpswgXPx8NRsM10Le0UC6p7QreaAJReWXHV/68IAg4g/wgVvjdzUxwep7VmvtkKZJebIUa4HVW7eDkwPIS/CAVDGChZwS0c/iSUWbiu5R4zSksUijApOJzgQCscqlt0G1/hidZix3uF7M4+urGvXBYruhKoKrPqqjFE0bBQJ2z31raAVUX5a4Ge/xA7OGTqiMT3St/44+5oEDE7MIzDQc1tQ+9iX2ObPUe/3ZG1ud+rZjURuude6LQJvCpyJDsxeObd2jgY6ojoN7pYyKdUByc+LHVsyDn6idEczB/7Z2ReluKOvwIFy11UVEGnTHZoTo4Bq7ewtlcGBRN/NJHXHivLuH2oDbDJilrLqB6BcSwIpP4Tzij/nE8hd6LzdEeZ4v078PxTZJINej4TbfW0ATAd8767DqQqWQg41uNVeoov4m1oGrJ7n4wm78PKzUo2IDzyaFncaGhGE2XCLXCEaXz0VOsFd8oGoL30QDV0f6LRWG1yw0lau5bY3RAUnAF+SXCOFSB8nJD2Y7RqTuYQ5RmSB69mM8chEkAvSEZVpkm
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5645.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|5023799004|56012099006|11063799006|6133799003|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: lHCy9sHMnbxRsk+u3VN2VYu8RdqaZP2QrXdpewjo7dLr3ZIWl635sZXO2KGqwcY9RB1W7A2TY+hLEaReI7giMMrojQHMAcd5jhrkOdS66Gxdw3CtS8BUsG1/ydzeWxtEoufa7JsGsD2Jfj89AOvakpPvVUHY33t9ae8qiPwOFAEJkSp4ctbU5ER/nb6SqR6xyVKa7C4Fsya4IJlmX3M7DY1uDuRqJQI80IX9xsWDMwsZEgt64yhIfdJmoIlF+q/627qOfP7iJKtmHeH41M0aQ6+9SFEI7/ZYydnBwB9lszOb2HslhCVAGC+Qs5eoiFTjA9bdiq+hDdmc1x+NA85pgSs7wryAUSqikfUNEyKGQB3ezL62kc/eSz1yASf4cQjiRBkpb5U1hpLPTBdV/6JjzaJrQLKPMgJaPvwUw+iw0WUT+dMr4aL8Bk1En19MffWtscvvHwwbpyrKViA8c/rlelb4aKP8gDTKYZImG7gcU3OOJ0Svbi8VB4PAx9WWKQjpB1uyzjil4opMUJsPTuCsrSb8obWh0FrD0CKLTn9KDCZvAbQLxjFQ5MfHmakrP442ehUdrI8A+XclYwFESX4BsOXjXUoCup3GXgyQGO7eLtCTI1XzMnEYRjsdS2+kStIQGgHsT+Sg4+UFTZHlFhc5/wikRn73d1CoHJNvBw6aBIgsYLNcjs19a7clCUYoXUlF
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5645.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(5023799004)(56012099006)(11063799006)(6133799003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?kXR8bX3I85eiDOL913n7a5rUoYb0au3wCaou98/if36O5g7Zo/6hzJbcoTyN?=
- =?us-ascii?Q?5IjvgWyBaYdw5itgc79OQBeQ83W5LI12+tUfp6UOYvE5T0yHLnUY5oRHDRLd?=
- =?us-ascii?Q?fJgWXiwJwDHrcYeONOaFHT7U9Gxdgomq3FkJKAFNLW3tclph7pHTMPVXlxt/?=
- =?us-ascii?Q?QE+IOsRocCpD81hfQkX+hnIE1IOxpa3a6uRiOyekZ8XCpzTdK0UXLHoTeLfS?=
- =?us-ascii?Q?Ukb9dIp/NPYq9/kQbu0hE+nXLrjb7YQkxRK8iWA5QUe++NaZj1rY/3cEHfpO?=
- =?us-ascii?Q?LlkX0q19Ifu9N6mMSY8qyI/hXeNHD3+UHQwWfijvz1l7Mm/YvSbvM+HkTeoU?=
- =?us-ascii?Q?4ZVMFFk8vXtaPEZUl91WuPeuzuTCNmKBjtZc0X5BXrh4tt1Ag9ReQu9mP8gQ?=
- =?us-ascii?Q?Jbah/WSPkcEMbwGRLNayIDoQXWI4lr3uxgyyJCknS/nrqfUBkrJXfj/DrohE?=
- =?us-ascii?Q?8D9Em8moVngj5eGprvKw0OpDwoBV2D011xHbWgj5WqJ60RV/WX+gKP43Lcsz?=
- =?us-ascii?Q?shyh0InCnxYwmq5Teci+y5x1VmpyUXuDXD3aSnL8BM/N3Upp22HqingWkZEg?=
- =?us-ascii?Q?/VChhp1pmHVsfxSoaWYL3FXS6UrDkPmLYPPc4zB7ZUVEaG07xzULqgD2cFLz?=
- =?us-ascii?Q?jWVN0EHdRsa1AamiUVsSDfLi5aOsihMB81AL06lFKNH0X6YW6Au0973b7nVJ?=
- =?us-ascii?Q?qKdACFQtMgUMusLI1M7ZhNt5JPWUaxJtSh/3vvw/aMiK/N5MglnjVUyBzuRE?=
- =?us-ascii?Q?z9eB+LOGf/M4+eCxN9pjdIrRJPeOTXxDGIdUPQIXVD4GyVzoaIcxskD/yB2H?=
- =?us-ascii?Q?yDWCY1kAb7tNc//h0GxgPIt5aGvqOiY+FBkX7hUeTEG9PnzJdQWt+89T1B+y?=
- =?us-ascii?Q?NP7+CztUIk/Mp5jrrfTXdY72KCpOrgU+UWxwYK8lAVL5rr1Dle1SAni+hwca?=
- =?us-ascii?Q?UWPPB7iGocH8kd6Cw+B2zm315kGwXHQF+3UJ/Wmy/rvKgRA186X2m8p3tvGp?=
- =?us-ascii?Q?R78OVIG3of3m2skUd5rsFMUEmclXx9jAHF0atXE5G/GroyAggNbPZQBH57fh?=
- =?us-ascii?Q?bBRiQV4Qh4rqKskiVWE/OSPdvg3j0or40MdqkPxpUsN5Nc0Jbge5dvoizbQ8?=
- =?us-ascii?Q?irXJCLjCTvIxKNLdLfRC9Wz2Ybu4P3GN4+mxTxggchQ2FrIg3THUFiYzwMRs?=
- =?us-ascii?Q?T92rh429leKLIOegJlP3lgKiStxK2pq7OeEELp4JMj5Wz+4fk3FlkYadNaZ8?=
- =?us-ascii?Q?H3Jm4njWJY5HGkZALNXvN/1qGTot1TfEcQpygebieBwjfnHNdiYTEB7coK/D?=
- =?us-ascii?Q?TiWHxomBRA/NVHNS0eH5PG1eBuTEtO0FdVIHuRL2tUQURKe5t1836SjBwLp1?=
- =?us-ascii?Q?gdB5ICUJnqvtU28xVrAQZxauOyTfcs8Gqv/UVSFHgV3XR8pwVVM3d2lrTjYC?=
- =?us-ascii?Q?WnMXbHCESOUe2me/PB2/Y/fJtD9+QWaEOS/pKHB07iSM+LCEe+8RBOzqXrQA?=
- =?us-ascii?Q?Sdw4C4lMoFe1hyxvjo8EBftcyTniAOTTH/NF2tqFYbo81CbEwoSgSEALv+0i?=
- =?us-ascii?Q?FFEow7md8FaJg3FCcV/xEErqdmiSTd0HTbyvRWMgkddlEx4JQ0h4lMHkW/JT?=
- =?us-ascii?Q?ItS0pFZwD/5k82FZWcl04YYh3b0DWa7aK0RJzT+eHMTdy7E6aWtq/odeEw2E?=
- =?us-ascii?Q?h1CDY0tofdmuFdHx1SLGn/qO2CKTf3kqfUzvjQ6j49+1Ax/EOW4hjM9gky83?=
- =?us-ascii?Q?3agO09Zz/A=3D=3D?=
-X-Exchange-RoutingPolicyChecked: FnKb6eThnRjto8QRYukgg9k4CjSS4YiVVWZWQIxpMym7xnSMYUeIvhyWC7IHNshbX1zzjrtjpPupalZXCJChFmN3DFcfcBDQ9aQ4kiAyneUqc23rJQGPtB6kmg4gVXIu7vev3/1Dv4A6hCUCKpubScgSZHQaoeZTQ58XuIwH3TM0+WODM4eSDeSA+Y+tc5bM/sts+vX4xH+t7uh8mZ9YgFjUpUZ43RZjviUdkHu0/GqzEEmydwHeHQDoMnx7DMO3U1sYLUQkdgWYw1a5sjscpxjBCGGhGnQCCCSzwfKoDEBKRN8pyQfYy7WGLzmKyOYUVTMZp7tn7EXGRQc7KAELTQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e3b97e4-4fd9-4e8b-02bb-08dec9e99983
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?/WkHn5x0GYgpEhAvass8AMVugh/0fRZ8I/1OWrgo+74j1R0jr48vdpVPIUo3?=
+ =?us-ascii?Q?VjlkbH/WSZZHPLR6SyxYayNewzfI+0tUZ2gK5INORM/fYWXOZDgWsCobGzO/?=
+ =?us-ascii?Q?0gBPcuQdKq5em0z+pknRCVFGIQiUOhZDjGqayLtyylFHaX30wB5h8WhulXp2?=
+ =?us-ascii?Q?yQPvVJBBr9mVNs194fsnF2tUHlECoiZs6Y5fEVS9xL0fHr2m0ztuRoK9tlaw?=
+ =?us-ascii?Q?tLF3VtNierOAOBA3cA85V22EYCgr+2V6fwX5baTa+ho8FiALGLfjrmrWRot0?=
+ =?us-ascii?Q?Rfc5J0gMQFH5YgytZCqaeeDbknHbP89lhkz9HHY2yDctl1eCVZvIAGUaC+pw?=
+ =?us-ascii?Q?DAMwvHxXQdt+9qM9Jav4EqiaebiUk6Yy4pwfzk26fch+iYo4CoSH4bspdvwA?=
+ =?us-ascii?Q?6EcJQEDnX998VPJGy5HeVHl5Ws/1iABt93M4/SYHw5eQnXCDQIVon1vPW3bg?=
+ =?us-ascii?Q?mDbb0WSkzNqxHLRns5j4f0mUNbVhhiDX0DqeaBle6KTG55DhUgqmEjYNDNE0?=
+ =?us-ascii?Q?Q28GSdNGi6j5xOu+t4gvrXyHAuv/0jTonNjCB3spvFbwvOBWGcwZGsyNdaTJ?=
+ =?us-ascii?Q?Zakye5aebWbTYPyO6rkBXjsx8XtnDMbrKBuNFsPx2ujvNAt34RcCL+Gebqj2?=
+ =?us-ascii?Q?bswmvUuRUmTqv9gttvQLbsDD4gbX33b3EAJipNOGURZOgsY5g3z80ZHzGl9V?=
+ =?us-ascii?Q?Cid1LO7GYZ8eaLDkfuM2KWnXXXtzGjuCTmIOAW6GPCxt2smbT5zrYGAOOBSy?=
+ =?us-ascii?Q?NJyVT6YW85tl4zEfVIx3UpzyYo+HZaRWZDcZAReXTmzihtvweTt0N1ZF3Kyd?=
+ =?us-ascii?Q?tZU7GKPbz48e37qHqpPbZ8W0uNSyI3AGHSPme2YPLBa+dnnyWirJAay7KjCe?=
+ =?us-ascii?Q?Sivhqx06PYxI8patJEj/7lKyac5epQpN56blXP6JMgi0VgMVaObdceA+gfZj?=
+ =?us-ascii?Q?QF7+KZKSy+c99labO/2sKSCBryC2H37/XCwmTBMmm0/GBnyqNMNtQTgNQauT?=
+ =?us-ascii?Q?Xx/NkXX0Wh8D31WUitntTvF5WuUuESg8BnKgerDBR2kdAVc63sEDzlXDT/9/?=
+ =?us-ascii?Q?tRl/7hRK30+NQ8oON8P7a1zuo4DRgNFm38DIr5lxkPBhrkcK1sfUUlk/8bRu?=
+ =?us-ascii?Q?4xjsOr+Z6iqc+YbOUp57bPQZubgPOyv2kmmXJMpUEbY6E+hrimGVsDpP5SdA?=
+ =?us-ascii?Q?+XvpQg1e+VAYXE8EkxOWynsg6nnGtTMt2halHzr6frtK9qIj63lIULXAzD9C?=
+ =?us-ascii?Q?1KxkzZfmyxtFxNX+oB4EGZsRuBdKY+Mwla2QGaLskg6lSNok6fhyVB7JjFQe?=
+ =?us-ascii?Q?X4E3M5PQ8x7tR9mIEeplfOK6fF+CxWaDVyu9u9ePt7dXUGQ0hOBvLoM9w/Q2?=
+ =?us-ascii?Q?FW7CQAVBMs1bsS1EqnJTfaJPIgwQ/SEEhz7uMYvERrUMxN2VLUL1c8b5mSQF?=
+ =?us-ascii?Q?oKo1L8Mj9E0sjYZEi4Mhlx0SMiyRDbnyKjvJXRbUMX+of1eVjDA7Ps0K8nHM?=
+ =?us-ascii?Q?Xl5cqsC6A1m5gNdJ6AB/LJngbznzScaTkNjuotyrKiQZFnoQhVVoj/KVrlv8?=
+ =?us-ascii?Q?cMBr+GkqeTM599u/XHfWc1Y0tZXgMZoyfNu2Ii58YSDgDv6MHUSMgR6AojfD?=
+ =?us-ascii?Q?rllJ6pjpyzzhmt4j/r6teXdNNfk2PHtNqRmWVyBYlPbmsRUflsiwrT5dJSyj?=
+ =?us-ascii?Q?J1OpBD86FfgdE46QYbmp2H+ApDyHDYW38BEHFyFm1kG8QFOIhGlsuabKLJHY?=
+ =?us-ascii?Q?YN88oPhhLw=3D=3D?=
+X-Exchange-RoutingPolicyChecked: aKtc6JccqR/XEFmPV0M+7Z8psMnWS5bau96dP6jK++U/qHdyLEpHDYATRV7Czalle1Ci7+jdHKiaKnv+wmeUQoHX3GQDAtdVbFyTb288javU7PU+Lojk6TiI2EtQM5r8S3KqcqjOdo73fBcAV2jokosHPezHUjeUWCLzEfSo1i04gMkcS6iEX1P9OnWyFIGLf04wLXGh4NMak9ULx0HQ33qnTGxWdHmkzehBdKuYZfcBthQUVBkMYoxm4P8nmFiik5daoUEV7XBOW+MoAynhSB/x5JPX2bZkC/iS905jt5EU1IN7pgB/OeujCp9XtGTMcx2/+LLeg5nYDlruukN50g==
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee9c7dfe-a615-4da0-7997-08dec9ffb4a7
 X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5645.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2026 07:50:27.4867
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2026 10:28:42.7496
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K4JCj+yk80fwq2+QHMEzg9yYskr/WhTjrQ3IyTlKpJ/ht12sdap7GPIueL2A0INeumTXaIOea5+geIt/T/Musw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6775
+X-MS-Exchange-CrossTenant-UserPrincipalName: no852xSPcEapnxgk4Pud14QhPOD5QzscpWhUpo1Stq6bge4ijIOxT6Fo3zYlEtjKfmHgOXA8G38BNpvFtQeyFg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAVPR11MB9549
 X-OriginatorOrg: intel.com
 
-On Fri, Jun 12, 2026 at 05:00:11PM -0700, Dan Williams (nvidia) wrote:
-> Xu Yilun wrote:
+On Thu, May 28, 2026 at 03:30:36PM -0700, Edgecombe, Rick P wrote:
+> On Fri, 2026-05-22 at 11:41 +0800, Xu Yilun wrote:
 > > From: Peter Fang <peter.fang@intel.com>
 > > 
-> > Initialize the Quoting extension and fetch its metadata during TDX
-> > bringup.
+> > The host uses a Quote buffer to communicate with the TDX module when
+> > generating Quotes.
 > > 
-> > Because Quoting is an optional TDX feature, do not let its
-> > initialization failures cause TDX bringup to fail.
 > 
-> Is this micro-optimization worth it? What are the classes of quote-init
-> failures vs just make the policy be anything in the module must init.
+> Can this be put in common terms. This is going to mean nothing to someone
+> reading this that doesn't already know the feature.
 
-Since there is a fallback option to do the Quoting in userspace, I think
-it is probably not worth shooting down TDX entirely over quote-init
-failures.
-
-The quote-init failures can come from:
-
-  1. Quoting init SEAMCALL failures, which look pretty opaque to the
-     kernel and there's not much it can do about it.
-  2. Quoting buffer allocation failures, which *are* understood by the
-     kernel, and it could maybe try something else. Right now, we just
-     treat it the same as 1.
-
-This is helpful because I think the question of "what if the Quoting
-extension fails" has come up enough times that it warrants some
-explanation in the patch log. Thanks.
+I'll add more background in common terms here.
 
 > 
-> > This patch does not include the opt-in portion of the initialization.
-> > It mainly lays the groundwork for TDX Quoting support. Opt-in will be
-> > added in a follow-up patch once the feature can be properly used by the
-> > system.
+> >  Because the Quote buffer is shared with TDX guests,
 > 
-> It is unconditionally calling quote init even if the feature is not
-> present. Is that not a problem?
+> Why capitalize "Quote"?
 
-Good question... I should reorder the patches so this looks more
-straightforward. I enable everything in patch 15 (including the check
-for the Quoting feature) and I think that just creates confusion for
-folks looking at this patch.
+This is again the balance between using common terms vs TDX language. In
+general, TDX docs capitalize terms a lot. TDX attestation docs always
+refer to the attestation blob as "Quotes".
 
+I mainly went with "Quotes" in the logs because that term has already
+been used everywhere in the tdx-guest code/logs (see tdx-guest.c). So I
+wanted to preserve some consistency at least in the logs. In the added
+host code and prints, I'm starting to just use "quotes" because that
+seems to be the more common convention in the TDX host code. I'm happy
+to make adjustments if this doesn't make sense.
+
+> 
+> > prepare the required metadata during Quoting extension bringup.
+> 
+> What does prepare the required metadata mean?
+
+That's a poor choice of word on my part. I'll rephrase it in the next
+revision. I mainly just wanted to convey "prepare struct quote_data".
+
+> 
+> How does it being shared with TDX guest suggest this? Just that TDX guests will
+> need them? Is the reason just that only one is needed, so do it during global
+> init? 
+
+Yes, that's exactly it. I'll make it clearer.
+
+> 
+> > +static struct quote_data {
+> > +	void *buf;
+> > +	u64 buf_len;
+> > +	u64 *hpa_list;
+> > +	phys_addr_t hpa_list_pa;
+> > +} quote_data;
+> 
+> Hmm, I think this should separate the type and variable declaration. It's not a
+> common pattern. I don't think there is an official rule.
+
+Sure, I'll fix this.
+
+> 
+> > +	qlist = vmalloc_array(qlist_npages, PAGE_SIZE);
+> > +	if (!qlist) {
+> > +		err = -ENOMEM;
+> > +		goto out_err;
+> 
+> Just return ENOMEM here. vfree() doesn't do any work if passed NULL, but it's
+> weird flow.
+
+Will do.
+
+> 
+> > +	}
+> > +
+> > +	/*
+> > +	 * Make sure unfilled entries are always -1, which means NULL in TDX.
+> 
+> Huh?
+
+I'll add more explanation here (see below).
+
+> 
+> > +	 * Only the last page needs to be filled. All the other pages will be
+> > +	 * fully populated.
+> > +	 */
+> > +	memset((u8 *)qlist + (qlist_npages - 1) * PAGE_SIZE, 0xff, PAGE_SIZE);
+> 
+> What are the entries? And what is a -1 in u8? Or is it supposed to be u64?
+> Please make this a lot clearer.
+
+Yeah I was trying to create all-1 u64 entries. This is pretty
+under-commented. I'll redo the comments.
+
+> 
+> > +	/* Populate HPA_LINKED_LIST as per TDX ABI spec */
+> > +	for (i = 0, j = 0; j < nr_pages; i++) {
+> > +		if ((i % HPAS_PER_PAGE) == HPAS_PER_PAGE - 1) {
+> > +			/*
+> > +			 * The last entry always points to the next page. The
+> > +			 * address of the following entry must be on next page's
+> > +			 * boundary.
+> > +			 */
+> 
+> Can you maybe just explain this format that you are building in like one
+> sentence at the beginning of the function? "The quote buffer is passed to the
+> tdx module in a format that like... (some common terms that have no TDX
+> jargon)."
+
+Will do. This part is pretty under-commented as well.
+
+> 
+> > +	qdata->buf = qbuf;
+> > +	qdata->buf_len = (u64)nr_pages * PAGE_SIZE;
+> > +	qdata->hpa_list = qlist;
+> > +
+> > +	pfn = vmalloc_to_pfn(qlist);
+> 
+> Do we need a vmalloc_to_pa() helper? Maybe put it in terms of tdx format. Like
+> vmalloc_pfn_to_tdxpa() and keep it here? The tdx update stuff does this a bunch
+> too.
+
+That's a really good idea. I'll do that.
+
+> 
+> > +	qdata->hpa_list_pa = PFN_PHYS(pfn);
+> > +
+> > +	return 0;
+> > +
+> > +out_err:
+> > +	vfree(qlist);
+> > +
+> > +	return err;
+> 
+> It only returns -ENOMEM, so do we need the err var?
+
+Good point. I think I had some other errors that I later removed. I'll
+just return -ENOMEM directly here.
+
+> 
+> > +}
+> > +
+> >  static void tdx_quote_init(void)
+> >  {
+> >  	struct tdx_module_args args = {};
+> > +	unsigned int nr_quote_pages;
+> >  	u64 r;
+> >  
+> >  	do {
+> > @@ -1218,7 +1295,13 @@ static void tdx_quote_init(void)
+> >  		return;
+> >  
+> >  	/* Quoting metadata is valid only after initialization */
+> > -	get_tdx_sys_info_quote(&tdx_sysinfo.quote);
+> > +	if (get_tdx_sys_info_quote(&tdx_sysinfo.quote))
+> > +		return;
+> 
+> How come this patch gets error handling? Why is it needed now when it wasn't
+> before?
+
+Previously, get_tdx_sys_info_quote() just happened to be the last
+statement in tdx_quote_init() so getting an error didn't require an
+early return. tdx_quote_init() wasn't doing much at the time. But now
+the code can't see a valid max_quote_size if get_tdx_sys_info_quote()
+fails.
+
+> 
+> > +
+> > +	nr_quote_pages = PAGE_ALIGN(tdx_sysinfo.quote.max_quote_size) /
+> > +			 PAGE_SIZE;
+> > +	if (tdx_quote_create_buf(nr_quote_pages, &quote_data))
+> > +		pr_err("Failed to create quote buffer\n");
+> 
+> Err... what happens in ENOMEM scenario? NULL pointer later?
+
+Yes. struct quote_data remains uninitialized so it will have NULL
+pointers. All the added APIs will take this into account so there won't
+be NULL pointer accesses.
+
+> 
+> >  }
+> >  
+> >  /* Initialize the TDX Module Extensions then Extension-SEAMCALLs can be used */
 > 
