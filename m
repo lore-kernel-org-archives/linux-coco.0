@@ -1,40 +1,61 @@
-Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5FA3CAA48;
-	Mon, 15 Jun 2026 15:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E4E3FB06B
+	for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 15:47:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781538255; cv=none; b=KnS0aeR4xjuiJU8dJx/PuqRrjrsTvYzaks2YgTOunusE9Gzh2O00bYs7tFXk9Fzc1Gtqh8u7qBBGFRxyNNUDggp8UyPlVzhEXnCyzoKiPWg7kkUK6c8XjzwMWBwIlns2HAm9LWTJ041+9u2a1OwApfXZBKScJw5rpWsJm2BNnVA=
+	t=1781538463; cv=none; b=Jca3eqvWY85cztzCNVG3e/UfXU/xYIxaCzmY/YcuIfdZFsZmcqueUcsS1SRG38sDVr5n1nLNoJMCYCnk6puFJO7k9ENBcZ0aUHgstmpRMyyV6vZe3FekQeGFLXhNcKAi8Tq6edCFJU4rRDH5H/IEMk7M6f2bnBYSmZt/OTKzSrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781538255; c=relaxed/simple;
-	bh=Dwxhv7sf09IRSFSSoN2QRxvu5M8MbqOUFr8Ti4Q5s9s=;
+	s=arc-20240116; t=1781538463; c=relaxed/simple;
+	bh=s5SNeakhFf5GRw3iiYXSIN3p/gjwim3Vefo2sUWBCKk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JfRy26xVrli0NYkG8kMo8TIIi/XAcYGBlSzbRNJJSwWdlfIIXiGPsBQKe4cZW6vS5W+En0bXEKW/f0TW1tM/Bu61YceBERgQW2u9/dNqlklD9RIg45XqaJvybbMD9+50gb6v2z/f0MLPVFFA7XynQsMR7JqDCbevyUulbjA8Z8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.95.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
-	 client-signature ECDSA (secp384r1) client-digest SHA384)
-	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
-	by mailout1.hostsharing.net (Postfix) with ESMTPS id 636473A6;
-	Mon, 15 Jun 2026 17:37:52 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 49A146019068; Mon, 15 Jun 2026 17:37:52 +0200 (CEST)
-Date: Mon, 15 Jun 2026 17:37:52 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: sashiko-reviews@lists.linux.dev
-Cc: linux-pci@vger.kernel.org, Dan Williams <djbw@kernel.org>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH] PCI/TSM: Resume device to D0 for CMA-SPDM operation
-Message-ID: <ajAcUOumwyK_RYs0@wunner.de>
-References: <7bdfaf14d7e5a466f3f650150c688a60e947a7a9.1781527060.git.lukas@wunner.de>
- <20260615134252.B34A21F000E9@smtp.kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ALopwsNmgCTd0uApyHzT4sc1wSB2IgMcZLbnZxeUDuT5mc5sCR+GFmB0Zv6sz3Y9zdZPa/EyFePHaXRhGrKMDGsPpSmfUsGwojNp9Bef4BO/LaP1ATlKBvJMja38kmRwy0sr/vNOufBM+lthcHhq128ZMW+EGodDTRW0ho5igIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZyJaAuit; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZyJaAuit"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781538462; x=1813074462;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=s5SNeakhFf5GRw3iiYXSIN3p/gjwim3Vefo2sUWBCKk=;
+  b=ZyJaAuithZn5iQS0RlzbMtGSyA/KFrQmnug+G74TKMqNLMpAbw/1NzN1
+   AFayWBV9AdZf1btkAUb7EwoTIkH5bHj7D+TDkwppVUP1T8XAQZurpji0M
+   kfEmeXXmzJfULkIF9gFfUdMyhFUxXVu/fz7ybFpDzRug++Tu5p7mXAb4k
+   PTbwOB6skTRKhT9JOq9cM213TyGyHbNTOpmB+1o92WpYt2TzGnl42ruwI
+   SxX/jfXLhK4yeDvCnYpxTt/DlgCMiifKA4nXMUER6+CxCcno2bvEBn3A3
+   rBrCLPEbKrofnyCyV49pPT3/O9dzHwqTkxNcD8WhhqnYsNmSIayv3lc76
+   w==;
+X-CSE-ConnectionGUID: YJevTMYkQqmr75CzGPzEbA==
+X-CSE-MsgGUID: yZamSpX9RoeUM30pb8g+6Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="86183232"
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
+   d="scan'208";a="86183232"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 08:47:42 -0700
+X-CSE-ConnectionGUID: dxTWT7UBSQmtiabpz15mOg==
+X-CSE-MsgGUID: GP1+6tDTTcaajYtUILXXYw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
+   d="scan'208";a="271206560"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa002.fm.intel.com with ESMTP; 15 Jun 2026 08:47:38 -0700
+Date: Mon, 15 Jun 2026 23:22:46 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Dan Williams (nvidia)" <djbw@kernel.org>
+Cc: kas@kernel.org, rick.p.edgecombe@intel.com, x86@kernel.org,
+	peter.fang@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
+Subject: Re: [PATCH 00/15] Enable TDX Module Extensions and DICE-based TDX
+ Quoting
+Message-ID: <ajAYxo83xVV1Sb+Y@yilunxu-OptiPlex-7050>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <6a2c821a99e3_9b8551002a@djbw-dev.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -43,88 +64,67 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260615134252.B34A21F000E9@smtp.kernel.org>
+In-Reply-To: <6a2c821a99e3_9b8551002a@djbw-dev.notmuch>
 
-On Mon, Jun 15, 2026 at 01:42:52PM +0000, sashiko-bot@kernel.org wrote:
-> > +++ b/drivers/crypto/ccp/sev-dev-tsm.c
-> > @@ -38,6 +40,10 @@ static int sev_tio_spdm_cmd(struct tio_dsm *dsm, int ret)
-> >  	if (ret <= 0)
-> >  		return ret;
-> >  
-> > +	PM_RUNTIME_ACQUIRE(&dsm->tsm.base_tsm.pdev->dev, pm);
-> > +	if ((pm_ret = PM_RUNTIME_ACQUIRE_ERR(&pm)))
-> > +		return pm_ret;
-> > +
+> The internal implementation details of extension seamcalls buries the
+> lead on why this mechanism is important, why Linux should care, and why
+> this brings TDX in line with the other major CC architectures. Something
+> like:
 > 
-> [Severity: Medium]
-> The commit message mentions that "resuming to D0 needs to (only) be done in
-> code paths which use DOE specifically for CMA-SPDM", but does this code
-> unconditionally resume the device to D0 regardless of the operation?
+> ===
+> To date, SEAMCALLs have been short lived routines that monopolize the
+> CPU for their duration. This limits their utility for implementing
+> higher order security protocols or pushes complexity into Linux. The
+> Linux appetite for ingesting complexity is low, so TDX now adds a new
+> class of SEAMCALLs that are preemptible and resumable. This capability
+> enables higher order service APIs to carry out a security protocol like
+> "establish an SPDM session".
 > 
-> Looking at sev_tio_spdm_cmd(), the resume happens before the loop checks if
-> the operation is actually PCI_DOE_FEATURE_CMA or PCI_DOE_FEATURE_SSESSION.
-> Could this cause unnecessary power transitions for generic operations where
-> accessing the config space in D3hot would be sufficient?
+> The TDX "Extension SEAMCALL" capability is akin to ARM CCA's "Stateful
+> RMI Operations (SRO)", and achieves similar externalized complexity
+> relief as a dedicated hardware coprocessor like AMD SEV-SNP. The
 
-Moving PM_RUNTIME_ACQUIRE() inside the while loop may lead to repeated
-D0 -> D3hot -> D0 -> D3hot ... transitions (depending on autosuspend
-settings of the device, which are user-configurable through sysfs).
-It would also lead to overhead induced by runtime PM code (repeated
-spinlock acquisition etc).
+I may not include the ARM/AMD examples, not sure I can explain them
+well.
 
-So I believe keeping PM_RUNTIME_ACQUIRE() outside the while loop is
-the right thing to do, but I'll leave this to AMD engineers to decide.
-
-> [Severity: High]
-> Does using PM_RUNTIME_ACQUIRE() here risk leaving the hardware permanently
-> stuck in D0 during the device removal path?
+> mechanism is "give the service environment some memory", "invoke the
+> service API", and "continue invoking until complete". All protocol state
+> is internal the service API.
 > 
-> The PM_RUNTIME_ACQUIRE() macro queues an asynchronous pm_runtime_put() when
-> dropping the reference. If sev_tio_spdm_cmd() is called during teardown
-> sequences, the pending asynchronous suspend can be cancelled by a subsequent
-> device_del() call, which disables runtime PM. 
+> The simplest class of extension SEAMCALLs to support are in support of
+> "DICE-based TDX Quoting", a service to turn guest launch attestation
+> reports into a document that can be externally verified.
+> ===
+
+[...]
+
+> > The Extensions consumes relatively large amount of memory (~50MB). So it
+> > is designed to be off by default.
 > 
-> Should a synchronous runtime put be used here to ensure the device actually
-> suspends before the removal completes?
+> This confuses the TDX design with the Linux design, and sets up "50MB" as
+> something to be quibbled with. The Linux design is turn on all the
+> features that Linux knows about all the time. Unless and until the "any
+> available, all the time" becomes untenable it just simplifies the init
+> flow to not play piecemeal games. Await evidence to change the simple
+> policy. Suffice to say the cost of this policy will burn 10s of
+> megabytes.
 
-If the device is deleted anyway, we don't care about leaked references.
-And we absolutely do not want to synchronously runtime suspend here.
+[...]
 
-> > +++ b/drivers/pci/tsm.c
-> > @@ -894,6 +896,10 @@ int pci_tsm_doe_transfer(struct pci_dev *pdev, u8 type, const void *req,
-> >  	if (!tsm->doe_mb)
-> >  		return -ENXIO;
-> >  
-> > +	PM_RUNTIME_ACQUIRE(&pdev->dev, pm);
-> > +	if ((rc = PM_RUNTIME_ACQUIRE_ERR(&pm)))
-> > +		return rc;
-> > +
 > 
-> [Severity: Medium]
-> Similarly to sev_tio_spdm_cmd(), does this code unconditionally resume the
-> device to D0, ignoring the type parameter?
+> > == Some history ==
+> > 
+> > The TDX Module Extensions part was first posted along with TDX
+> > Connect [2]. Now this part is remarkably smaller because we've removed
+> > the generic tdx_page_array abstraction for HPA_LIST_INFO. TDX Module
+> > Extensions is the first user of HPA_LIST_INFO, and doesn't use it in a
+> > typical way (HPA_LIST_INFO can only hold at most 2MB memory). There
+> > isn't enough justification to make the abstraction in this series. A
+> > possible plan is to rebuild tdx_page_array iteratively when more use
+> > cases arise.
 > 
-> If a generic DOE transfer is requested that does not strictly require D0, it
-> appears this will still force a transition to D0, contradicting the commit
-> message's stated power management requirements.
+> No need to talk about details not in this series. I would maybe just
+> note that quoting is the simplest first consumer and was chosen as the
+> lead vehicle over TDX Connect previously posted in case anyone asks.
 
-Hallucination, this code does not perform "generic DOE" exchanges, only
-CMA-SPDM ones.
-
-> [Severity: High]
-> Is this exported API also susceptible to the same asynchronous put regression
-> mentioned above?
-> 
-> If pci_tsm_doe_transfer() is invoked during a teardown sequence, the async
-> idle and suspend queued by the macro might get canceled by device_del(),
-> leaving the device in D0.
-
-We have to leave de-enumerated devices in D0 to ensure that a subsequent
-rescan successfully re-enumerates them.  E.g. leaving a Downstream Port
-in D3hot upon de-enumeration would leave any children inaccessible.
-
-We also leave unbound devices in D0 for similar reasons.
-
-Thanks,
-
-Lukas
+Good to me, will include most of them, thanks.
