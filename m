@@ -1,129 +1,181 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A75407CCC
-	for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 16:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3B3409602
+	for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 16:19:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781539534; cv=none; b=C0KQyu780A1wlWy0rUpVrKda1Ws61UdpBA9UGg4IXMQWSoC2jMmtHeSvdi5KHZXRTIeemgjgmIPQHloiQscIGWvXWnX8XCult6x+1IX/iYOWwSgsacmG0pP+pKNZTH92YAnCmDGIzPF0wlbWgx4Ly/eK+aYswKo9jTBAWsmHig8=
+	t=1781540400; cv=none; b=iG+yubVLw/mAGgX7EqjDwA9/Ymvyk683znTFB9bsK3h/xDK9Yv0ggoUshj5l783SwhoSwGNEASdNFfPaYrWaBjXqhsLFnspDqHOHJjyZHW9KpUcBkruNQEPWEphj9y8m1jSvNxwRlMG6dIf6ZnaTmC9dS6MtEczv84Tv3/+W+S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781539534; c=relaxed/simple;
-	bh=8Xglb0VN4Knikj/QNg75wE2/nmnV9n4uzhX1MLj9t7E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lRTONPLNsUMTBJFTP5aEEYmjspGgpgYqFQAnVnadQcvX/eVqZIyiktUsIm28NEWLGvqEqsPzFsbC3P8ZmkUmzJLacugOxdplJHvevEPPnShRqX+27lvTnDN0GsHBU9XZnymHzRPsJAK4gQT/kHh6J5QNoET8TdnIBc1qGG01BOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wd83GgNF; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1781540400; c=relaxed/simple;
+	bh=v+GlP93c2gOOWA0G1d+CAuYo07g+93rnM6Sk2lU9G9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ocM5rZd1VvSFhSU0/8rOLI/6CqwJh6Re5B/+qPAFWKI16wK33pDEWJ1QRdcUCSqRH5gKV9TA9Ol55bgixtBJr8Rzywd/2eBQlHfyc/bjQH6eyYOH2q+F6xO22ujGiB1b3EPhUeHfdp/VYgmZQOBvKtd36EHv7RjcNjSTBJFUsKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O48lS74E; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wd83GgNF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O48lS74E"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781539533; x=1813075533;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=8Xglb0VN4Knikj/QNg75wE2/nmnV9n4uzhX1MLj9t7E=;
-  b=Wd83GgNFF3aDgSqpt3cL9yyQ3iBt3LRT+c9WivEk4unhSafF+oMqTyBH
-   CiId5aIiKphNPiJioJHRiGYdK6LezaGG5A501khv9bolBUpDR6+impZ2z
-   BnB9FurnxFHPKc0yCBGqb07MsLyRaq/6+KW1b4uNx0tP7dbho9TU0/JX5
-   5SS+qPSZByWe4eAwtq4/bH8WU3aSlHS1JGxTA7S8selbQkIKiyJyO3KMb
-   vxOomf1SNUCR2016sae1J7r6v56yXEgihiT8zuJz+GG89kMRwJo6sTSwU
-   BvyQ99dlgqypChUJ4DbCZmtSRVGTUcnhIVeB65whV18CcCTGGueXBojmL
-   Q==;
-X-CSE-ConnectionGUID: r0fVWoaYQJmTpB6X2vHIgQ==
-X-CSE-MsgGUID: /w40hK9eQtW+CLGZSXH8HA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="92844133"
+  t=1781540399; x=1813076399;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=v+GlP93c2gOOWA0G1d+CAuYo07g+93rnM6Sk2lU9G9c=;
+  b=O48lS74EAxdq6rFWvhjywH4ERtPkjDsJsZCkKB6QO/W+j99wMuv3XVUD
+   IDntoT5kpGwZRZaCYJZb2/Ff9StmWN+jz1Nb8DK9QNcuDyHaiwcMkj42A
+   rueZHIoS3c97kAr1CEiG3OTCf3orDmKCDS5lJzbwJn02Ms5xFWtFXMXqM
+   Dn23HSVUH4TixNBdolzACfLDCNbvN8bHE432sSZG2nD7ym57AFznoMYOe
+   hp+5Kto2T4L5W6qWbAwdZquaPwp+ZnSjFYL0XsXZKjkWphThyKhnjMBWH
+   O/ctJxTibLKfQxAM7Sdm0/xnRoPt+XlSwZwNOX3jrUhGTEFJ4IuRJWrCa
+   A==;
+X-CSE-ConnectionGUID: sn+en1shSUqSmNP7edDbCA==
+X-CSE-MsgGUID: 9OgJ2xfASTWfeOpQfHxzqg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="84850661"
 X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
-   d="scan'208";a="92844133"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 09:05:32 -0700
-X-CSE-ConnectionGUID: 9LCrFjFoQ9Si0kPc9ahtjw==
-X-CSE-MsgGUID: 0/taGEr3TBO1rbn6FXFYkg==
+   d="scan'208";a="84850661"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 09:19:58 -0700
+X-CSE-ConnectionGUID: NL9yBQEmRlepxMkEJtIe3g==
+X-CSE-MsgGUID: +AaJ1TCjSuKCqWcSkGoBsw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
-   d="scan'208";a="285627829"
-Received: from bradocaj-mobl.ger.corp.intel.com (HELO [10.125.111.24]) ([10.125.111.24])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 09:05:31 -0700
-Message-ID: <ac842307-1ec7-45e4-b5be-57af3239df60@intel.com>
-Date: Mon, 15 Jun 2026 09:05:33 -0700
+   d="scan'208";a="271591183"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa001.fm.intel.com with ESMTP; 15 Jun 2026 09:19:55 -0700
+Date: Mon, 15 Jun 2026 23:55:03 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Dan Williams (nvidia)" <djbw@kernel.org>
+Cc: kas@kernel.org, rick.p.edgecombe@intel.com, x86@kernel.org,
+	peter.fang@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
+Subject: Re: [PATCH 02/15] x86/virt/tdx: Add extra memory to TDX Module for
+ Extensions
+Message-ID: <ajAgV+aXsYIJyT6+@yilunxu-OptiPlex-7050>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-3-yilun.xu@linux.intel.com>
+ <6a2c9b10574ce_9b8551005d@djbw-dev.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/15] x86/virt/tdx: Read global metadata for TDX Module
- Extensions
-To: "Dan Williams (nvidia)" <djbw@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>, kas@kernel.org,
- rick.p.edgecombe@intel.com, x86@kernel.org, peter.fang@intel.com
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, sohil.mehta@intel.com, yilun.xu@intel.com,
- baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-2-yilun.xu@linux.intel.com>
- <6a2c863a681d6_9b85510064@djbw-dev.notmuch>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <6a2c863a681d6_9b85510064@djbw-dev.notmuch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6a2c9b10574ce_9b8551005d@djbw-dev.notmuch>
 
-On 6/12/26 15:20, Dan Williams (nvidia) wrote:
->> Check TDX_FEATURES0 before reading these metadata. If a feature is
->> advertised, a failure in reading associated metadata causes the entire
->> TDX initialization to fail, otherwise skip.
-> Others already commented on the patch ordering, so I will just comment
-> on the changelog to recommend referring back to the "any available
-> extension, all the time" implementation policy rather than saying "Linux
-> requires" which is ambiguous.
+On Fri, Jun 12, 2026 at 04:49:36PM -0700, Dan Williams (nvidia) wrote:
+> Xu Yilun wrote:
+> > TDX Module introduces a new concept called "TDX Module Extensions" to
+> > support long running / hard-irq preemptible flows inside. This makes TDX
+> > Module capable of handling complex tasks through "Extension SEAMCALLs".
+> > Adding more memory to TDX Module is the first step to enable Extensions.
+> 
+> Like I said on the cover, I think "long running hard-irq preemptible"
+> invites more questions that it answers. The service calls are not "long
+> running" on their own. I think it is sufficient to say they are
+> resumable unlike typical calls that run to completion while monopolizing
+> the CPU.
 
-One other note on this: the current Linux policy of "any available
-extension, all the time" is the simplest possible functional policy. If
-Linux has one policy, I think that's the one it should have.
+Yes, I'll drop long running, keep preemptible and resumable.
 
-That said, I'm open to the idea that users might desire other policies.
-We should absolutely explore them another day in another series.
+> 
+> > Currently, TDX Module memory use is relatively static. But, the
+> > Extensions need to use memory more dynamically. While 'static' here
+> > means the kernel provides necessary amount of memory to TDX Module for
+> > its basic functionalities, 'dynamic' means extra memory is needed only
+> > if new add-on features are to be enabled. So add a new memory feeding
+> > process backed by a new SEAMCALL TDH.EXT.MEM.ADD.
+> 
+> Rick commented on this as well, but a simpler way to say it is
+> extensions receive a one time memory pool allocation at init time.  The
+> extension uses that pool as its baseline for its own internal state and
+> data for the service APIs it offers.
+
+Good to me.
+
+> > For now, TDX Module Extensions consumes relatively large amount of
+> > memory (~50MB). Use contiguous page allocation to avoid permanently
+> > fragment too much memory. Print the allocation amount on TDX Module
+> > Extensions initialization for visibility.
+> 
+> To be clear I believe there is a low chance of fragmentation given this
+> allocation happening early. However, at 10s of MB the benefit of
+> isolating blocks of PFNs that will never be returned, it makes to not
+> use the buddy allocator for that.
+
+Agree. I'll change it as:
+
+For now, TDX module extensions consume tens of megabytes memory that
+will never be returned to host. Use contiguous page allocation to
+isolate these large blocks entirely, avoiding permanent memory
+fragmentation and reducing buddy allocator efficiency. Print ...
+
+
+> > +	u64 *root;
+
+...
+
+> > +	root = kzalloc(PAGE_SIZE, GFP_KERNEL);
+> > +	if (!root)
+> > +		return -ENOMEM;
+> 
+> I think this "root" term is a holdover from the complicated TDX Connect
+
+Agree. I really don't have to introduce a new "root" page term. The SPEC
+says "The HPA_LIST is a 4KB page which contains a list of HPAs", so
+hpa_list page is a good name.
+
+> case where it might sometimes be this odd "singleton" object? You could
+> just make it this for actual type safety.
+> 
+> struct tdx_hpa_list {
+> 	u64 phys[PAGE_SIZE/sizeof(u64)];
+> }
+> 
+> > +
+> > +	page = alloc_contig_pages(nr_pages, GFP_KERNEL, numa_mem_id(),
+> > +				  &node_online_map);
+> > +	if (!page) {
+> > +		ret = -ENOMEM;
+> > +		goto out_free_root;
+> > +	}
+> > +
+> > +	for (i = 0; i < nr_pages;) {
+> > +		unsigned int nents = min(nr_pages - i,
+> > +					 PAGE_SIZE / sizeof(*root));
+> 
+> This looks wrong, sizeof(struct page)?, or size of physical address?
+> 
+> Becomes less error prone if you do:
+> 
+> min(nr_pages - i, ARRAY_SIZE(hpa_list->phys))
+
+OK, let me try.
+
+> > +		ret = tdx_ext_mem_add(virt_to_page(root), nents);
+> > +		/*
+> > +		 * No SEAMCALLs to reclaim the added pages. For simple error
+> > +		 * handling, leak all pages.
+> > +		 */
+> > +		WARN_ON_ONCE(ret);
+> 
+> Perhaps to be friendlier to folks without the source code in front of
+> them drop the comment and do:
+> 
+> WARN(ret, "Fatal: TDX Module failed (%d) to accept memory, stranded %ld pages\n", ret, nr_pages)
+> 
+> ...the once flavor not needed, right? It's toast at this point.
+
+Yes no need the 'once'.
+
+Since I'll print all memory for the extensions anyway below. I'll use:
+
+	WARN(ret, "Fatal: TDX Module rejected (%d) memory for extensions, stranded all pages\n",
+	     ret);
+
+Thanks,
+Yilun
