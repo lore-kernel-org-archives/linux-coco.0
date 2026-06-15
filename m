@@ -1,129 +1,132 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0983E5A10
-	for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 12:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E244D3F4126
+	for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 13:28:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781525383; cv=none; b=CnouwOf6vqfGz0ZOFRXfG7U9D6w/sG/GSWgukm+w95AiokuzKcgyrPMNnca+juVBX8F8ieYxgngx10b/x47EhDOCSPi5ts+7Al8P30tsaFtnoTRdElzikgCxM0mK9MdiSD8LF0yYHXwskleyk1zU1gq4Q4YZUC07wodwPsFKuho=
+	t=1781530109; cv=none; b=a3+dZlziPwNYmEOU16LmSQf8EE4l//73OKtuOAdGjV6XkQEx4Efp6HTyoqzovwU0Cw03szuPNCaxdn1f49Uxg0CRh3e1nYfrsK3AI3GNWiInzDE8Cg9EGRx+dL7ww0tmkN7MwRIhYWHeMFIpso/yg4rYCAPr9q4yrm8IU1AgzSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781525383; c=relaxed/simple;
-	bh=NhOb8NqBxbG/Cu+c+JkZK43xUZGy405b0MyExjd14Zo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GGy9URC1XyQDr3ZaNVt5ha3DIOMqXsY0JJhuYwlBgQc5I5dVob9D67typOK9WAyTryjhj3O6ROsR5GfYk5NAChHY3wRIo3ZhjuM5VgkwDAnM+eurmpI3wFQk0KxJeTxgc1RBu7xRtePGbWofE7IAtHyu46UviN37tpq9sUISV9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=pBQ0fkuP; arc=none smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="pBQ0fkuP"
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8ce9df31840so26587576d6.1
-        for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 05:09:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1781525381; x=1782130181; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xOdMIsFz2F8FrAy6a0jOSLjcHU/RXuOpv1/VNxSWE8o=;
-        b=pBQ0fkuPuLZI7xK57+5g0uqsHW2hpAfG3GMpMXSNb+ThBDQVo9cZV1Y5y5sKvBmw1U
-         7vWyIvq5aaum4JAJr0YC9gvfM76Pbpignm0+ietBWlq3SmHcfbBTIRB8sAPYRZkAgS9i
-         zY9UVK6OOOanMZpfwqhYW4loSNpZK6XCQw8s5DShO8tnhPa3MunQ4Adw//qm3XVI6e5U
-         ax9ZV/26aUV588QGakycf8moGjZXSmK2b2tl/LHvJLtHfPkXgGzVW6pFfrYzc1uiH3UG
-         lLX75lJMq0qm3IS+h+MoZ8O35eKREz+0YMVarm2JpdOXeECFNt2OSKy4MjWuawg5Gb8g
-         lyuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781525381; x=1782130181;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xOdMIsFz2F8FrAy6a0jOSLjcHU/RXuOpv1/VNxSWE8o=;
-        b=UO+UGeUoNmpnB0H0df6hWLUjqMyfmE0pYaYeaDNAuhplOZlIe/91VNqxUMWGVxPp/+
-         jUh/1EBuYzGGt0OyfyE05JDgMvKry24uPA6jc19XLioofY12oSrPq0zBP0FpT1kNF/GY
-         mFzIpA617+S2LvKsuUY3z36txqjIBFKCkm0TJFFxHGw/8zlyH6c+W8IQIVcRckP5JXtW
-         dCdRvWyLoferZIzJDV529exBmRh1qcjZ57fj0o4ZSNVApm1Fj/y0L/goPXPlqLtvykEI
-         ox8ujP8h5qDjsaz9HzJpgD7tZqDpwupxmNAm7vrF1O8ohvU50l+RAZVblrOOsuVbkNlE
-         SuTQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9Ea2mgRx81FA+PZgnK0OGo8cwHcjmRMcFFtjgudeNvS1TTgq8SvJadNKcnoJdro/OjB3WJQAP1fXxf@lists.linux.dev
-X-Gm-Message-State: AOJu0YxC7+5gRIDNxfM1hbzT09ZS/GuB0B/2CwdFz2H8aSMJNgRosUZs
-	H2LMbbQPQAdOThV4LMOzdAGwUQIO0WNNuMqgEuVGoIFbgCQyLboyHWL0fH8rqAeDfMc=
-X-Gm-Gg: Acq92OFrprE9V/LsQUm0CGxSwmxB4hZFVuj8ofuGu1AWP9ZpjDGKoWXBIqcmRw8Y3c5
-	Tk2MVR0p+rWiUUEDztmKO2oxLLI5jhDflGlBqb72NG3KHIA/BuJjbaURsNjeskxqM7nPkWITElq
-	ZWgkdAIR2Ic+BhbkkojZwrgHgxtDlX2TgC53+99W66Gqa56K6ogbGQnzAm6fFg7nCVCqKbjVU2Y
-	c4KsY3AVthm8fx5g7g0Ec0bhdStCizC0hf5Wbqv3/Mw3qmrP4EHRHKOWCrH64ouAJiU2wPUOQD3
-	pzzbAb6B1eZVcR1hWZJJCi/aLc+UUNqbVq0h5Vrj8xucq+srmhGjXm7gw64BjoSv2D6toDr/2UZ
-	bNRqDws/EWcSyFfAMRwEFaBUfDV+athE1kQhdpe/992RJ7zUPARCJJt3B9OfWLOmbSr/AawjUtq
-	NZfUgkGdYB1wxcxOzZB5j7w4Dsd/WVM+6XNh56uIzjBcnOQa9+SZRRLMH+KSU6Pz+u4XgZjCaFU
-	CYmcw==
-X-Received: by 2002:a05:620a:bce:b0:915:8f08:5fa7 with SMTP id af79cd13be357-9161bf92252mr2134995585a.52.1781525380729;
-        Mon, 15 Jun 2026 05:09:40 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-91619f05fe7sm1176650485a.12.2026.06.15.05.09.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 05:09:39 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wZ68I-0000000DLwG-2JkO;
-	Mon, 15 Jun 2026 09:09:38 -0300
-Date: Mon, 15 Jun 2026 09:09:38 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Kameron Carr <kameroncarr@linux.microsoft.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"urezki@gmail.com" <urezki@gmail.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"rppt@kernel.org" <rppt@kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>
-Subject: Re: [RFC PATCH] mm/vmalloc: add vmalloc_decrypted() and
- vzalloc_decrypted()
-Message-ID: <20260615120938.GR1066031@ziepe.ca>
-References: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
- <aibhnnDFQTHWMEFe@arm.com>
- <20260611114954.GC1066031@ziepe.ca>
- <aixGqCqKkQeDfUST@arm.com>
- <20260612181807.GP1066031@ziepe.ca>
- <SN6PR02MB4157EC032AD55D182FBC1318D4182@SN6PR02MB4157.namprd02.prod.outlook.com>
+	s=arc-20240116; t=1781530109; c=relaxed/simple;
+	bh=C08qkmQPoPQU/ScYvUW+JTSposABCSApDCgHvXzmWHg=;
+	h=Message-Id:From:Date:Subject:To:Cc; b=gpV4IMFujjYTgHKt/N/4oQo+RwOtBxOblIESKzUxq/fPqNz1H+8Qc7pB365VutfR0yvNWamye1fBxj2OqFfrV3OgLkkygrBw9+IIf5yJbzScsD76YtGfk4+qklvPeGNViTahLttlC9kkPx4idJ9Qgm7IlqyymlINWobIrqBfIJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by mailout2.hostsharing.net (Postfix) with ESMTPS id 32D1610E07;
+	Mon, 15 Jun 2026 15:19:24 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 2D8846018168; Mon, 15 Jun 2026 15:19:24 +0200 (CEST)
+Message-Id: <7bdfaf14d7e5a466f3f650150c688a60e947a7a9.1781527060.git.lukas@wunner.de>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Mon, 15 Jun 2026 15:19:30 +0200
+Subject: [PATCH] PCI/TSM: Resume device to D0 for CMA-SPDM operation
+To: Dan Williams <djbw@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Vivaik Balasubrawmanian <vivaik.balasubrawmanian@intel.com>, John Allen <john.allen@amd.com>, Bjorn Helgaas <helgaas@kernel.org>, linux-coco@lists.linux.dev, linux-pci@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Yilun Xu <yilun.xu@linux.intel.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>, Alexey Kardashevskiy <aik@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SN6PR02MB4157EC032AD55D182FBC1318D4182@SN6PR02MB4157.namprd02.prod.outlook.com>
 
-On Fri, Jun 12, 2026 at 07:06:00PM +0000, Michael Kelley wrote:
+Per PCIe r7.0 sec 6.31.3, CMA-SPDM operation in non-D0 states is optional.
+The spec does not define a way to determine if it's supported, so resume
+to D0 unconditionally for the duration of a CMA-SPDM exchange.  Vivaik has
+talked to Windows engineers and they said that Windows does the same.
 
-> > I thought arches are either preserving the memory content or zeroing
-> > it, you are saying some arch leaves it as garbage? I'd argue that's an
-> > arch bug and they should clear it in their path.
-> 
-> AMD SEV-SNP leaves the memory contents as garbage after an encryption
-> or decryption state change. On the flip side, my understanding has been
-> that TDX zeroes the memory (or at least has an option to do so) after
-> such a state change, though a couple of AI chats say TDX also leaves
-> garbage. To be sure, I'd have to run an experiment to check in a TDX
-> guest on Hyper-V.
+Note that for plain DOE operation, it is sufficient for the device to be
+in D3hot and its parents in D0 because config space remains accessible in
+D3hot.  So CMA-SPDM goes beyond the requirements of plain DOE and hence
+resuming to D0 needs to (only) be done in code paths which use DOE
+specifically for CMA-SPDM.
 
-So there are many bugs then if the pre-zero is lost and you have to
-zero it again. Even swiotlb doesn't reliably zero it's pools in the
-right order under these rules, though alloc coherent does get it
-right at least.
+The pattern used herein for runtime resume is the best practice introduced
+by commit ef8057b07c72 ("PM: runtime: Wrapper macros for ACQUIRE()/
+ACQUIRE_ERR()").
 
-IMHO this is too sketchy to be usable and optimizing for AMD is not
-the right call, IMHO.
+Fixes: 3225f52cde56 ("PCI/TSM: Establish Secure Sessions and Link Encryption")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org # v6.19+
+Cc: Vivaik Balasubrawmanian <vivaik.balasubrawmanian@intel.com>
+---
+We're in the merge window for v7.2 and this isn't super urgent,
+so it's targeting v7.3 via tsm.git/next.
 
-> > Otherwise this sharp edge is not documented and we have many other
-> > places getting it wrong, eg system_heap_allocate() doesn't re-zero the
-> > memory after decrypting it.
-> 
-> In the Hyper-V code that uses set_memory_decrypted()/encrypted(),
-> there's always an explicit call to set the memory to zero afterwards.
+Technically I'd have permission to apply myself,
+but I wouldn't want to without acks from Dan and AMD!
+Thanks for taking a look!
 
-Good for it, maybe next time improve the APIs :(
+ drivers/crypto/ccp/sev-dev-tsm.c | 6 ++++++
+ drivers/pci/tsm.c                | 6 ++++++
+ 2 files changed, 12 insertions(+)
 
-Even more compelling that hyper-v should be using the dma api..
+diff --git a/drivers/crypto/ccp/sev-dev-tsm.c b/drivers/crypto/ccp/sev-dev-tsm.c
+index b07ae52..108204f7 100644
+--- a/drivers/crypto/ccp/sev-dev-tsm.c
++++ b/drivers/crypto/ccp/sev-dev-tsm.c
+@@ -7,6 +7,7 @@
+ #include <linux/tsm.h>
+ #include <linux/iommu.h>
+ #include <linux/pci-doe.h>
++#include <linux/pm_runtime.h>
+ #include <linux/bitfield.h>
+ #include <linux/module.h>
+ 
+@@ -30,6 +31,7 @@ static int sev_tio_spdm_cmd(struct tio_dsm *dsm, int ret)
+ {
+ 	struct tsm_dsm_tio *dev_data = &dsm->data;
+ 	struct tsm_spdm *spdm = &dev_data->spdm;
++	int pm_ret;
+ 
+ 	/* Check the main command handler response before entering the loop */
+ 	if (ret == 0 && dev_data->psp_ret != SEV_RET_SUCCESS)
+@@ -38,6 +40,10 @@ static int sev_tio_spdm_cmd(struct tio_dsm *dsm, int ret)
+ 	if (ret <= 0)
+ 		return ret;
+ 
++	PM_RUNTIME_ACQUIRE(&dsm->tsm.base_tsm.pdev->dev, pm);
++	if ((pm_ret = PM_RUNTIME_ACQUIRE_ERR(&pm)))
++		return pm_ret;
++
+ 	/* ret > 0 means "SPDM requested" */
+ 	while (ret == PCI_DOE_FEATURE_CMA || ret == PCI_DOE_FEATURE_SSESSION) {
+ 		ret = pci_doe(dsm->tsm.doe_mb, PCI_VENDOR_ID_PCI_SIG, ret,
+diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
+index 5fdcd7f..af1817e 100644
+--- a/drivers/pci/tsm.c
++++ b/drivers/pci/tsm.c
+@@ -12,6 +12,7 @@
+ #include <linux/pci.h>
+ #include <linux/pci-doe.h>
+ #include <linux/pci-tsm.h>
++#include <linux/pm_runtime.h>
+ #include <linux/sysfs.h>
+ #include <linux/tsm.h>
+ #include <linux/xarray.h>
+@@ -886,6 +887,7 @@ int pci_tsm_doe_transfer(struct pci_dev *pdev, u8 type, const void *req,
+ 			 size_t req_sz, void *resp, size_t resp_sz)
+ {
+ 	struct pci_tsm_pf0 *tsm;
++	int rc;
+ 
+ 	if (!pdev->tsm || !is_pci_tsm_pf0(pdev))
+ 		return -ENXIO;
+@@ -894,6 +896,10 @@ int pci_tsm_doe_transfer(struct pci_dev *pdev, u8 type, const void *req,
+ 	if (!tsm->doe_mb)
+ 		return -ENXIO;
+ 
++	PM_RUNTIME_ACQUIRE(&pdev->dev, pm);
++	if ((rc = PM_RUNTIME_ACQUIRE_ERR(&pm)))
++		return rc;
++
+ 	return pci_doe(tsm->doe_mb, PCI_VENDOR_ID_PCI_SIG, type, req, req_sz,
+ 		       resp, resp_sz);
+ }
+-- 
+2.53.0
 
-Jason
