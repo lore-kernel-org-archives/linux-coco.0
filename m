@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DFEC4071FC
-	for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 15:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A75407CCC
+	for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 16:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781539029; cv=none; b=jmtiyL2amKqEjY+6C79dyZPrADVGiEIxyDgdcoZS6xwdK5fhOEDlck3o4WaFK/xCmZCD1FxKK9FyjdDX4G1pWI2pCft+Z39Y+PPbHT4xvEbm05TPxLv84cLRUFk9xX1km6yfL/7AD6EhkLyRnfMpNN0Q03C2s21LCR/jH0STMIU=
+	t=1781539534; cv=none; b=C0KQyu780A1wlWy0rUpVrKda1Ws61UdpBA9UGg4IXMQWSoC2jMmtHeSvdi5KHZXRTIeemgjgmIPQHloiQscIGWvXWnX8XCult6x+1IX/iYOWwSgsacmG0pP+pKNZTH92YAnCmDGIzPF0wlbWgx4Ly/eK+aYswKo9jTBAWsmHig8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781539029; c=relaxed/simple;
-	bh=j/mKm2TfqQ7DKHkhnzIfXfSg+pJCBtpTijxSZQ22v0I=;
+	s=arc-20240116; t=1781539534; c=relaxed/simple;
+	bh=8Xglb0VN4Knikj/QNg75wE2/nmnV9n4uzhX1MLj9t7E=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g6vBdhqiqoLv9M/aAsso4M+nWiR6wRIXiARKWaCpWqvVyuCjILTADnLRH40dkldoyyXEDwkzTM3Bgh5WvuzdhiyYJbbkTl7Z/r56W8xH6BRDQw0TGLSBtQsJ9oSS7Qz8JqtT5OKXz1GLWM1RJmNTTG1gx98B20ef81jIlmfJfDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ihbDhv6j; arc=none smtp.client-ip=192.198.163.11
+	 In-Reply-To:Content-Type; b=lRTONPLNsUMTBJFTP5aEEYmjspGgpgYqFQAnVnadQcvX/eVqZIyiktUsIm28NEWLGvqEqsPzFsbC3P8ZmkUmzJLacugOxdplJHvevEPPnShRqX+27lvTnDN0GsHBU9XZnymHzRPsJAK4gQT/kHh6J5QNoET8TdnIBc1qGG01BOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wd83GgNF; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ihbDhv6j"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wd83GgNF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781539029; x=1813075029;
+  t=1781539533; x=1813075533;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=j/mKm2TfqQ7DKHkhnzIfXfSg+pJCBtpTijxSZQ22v0I=;
-  b=ihbDhv6j9ClV+0WB8JtQhAzKgnHdns8yFrBy/6KlczaUeeZOzUU3S6en
-   MHzpdX0IoyuGyF+GQdMIHkBWu1fu8iutko2MzciDchP2wIRwR4HL4ezEm
-   eX4zIuZvV9IfdbfbZJOwfwDDkrhZKc66FDFtGVrL1KCT72DJV8JUHFIys
-   rpu2crQw7f3NoIaZlJJl915ezDFpf7rGYJqLJgZONEsjh3U/MsHo2kkDa
-   RS0nyAGRyRcDU+KTnwo9+ItilOaWsyPfBlL3HUJFBAOsz3V8c5R4VANTV
-   t6DhV+Qc+sbIvRcglfywjJGexuyhkIBB9TiHA4XK9ZE9ZZeymxvxFJR1H
-   A==;
-X-CSE-ConnectionGUID: Ku7jDhtUSR6xpcef55v3zw==
-X-CSE-MsgGUID: 8jKsacfFR8GMg500wMg1Lw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="92843152"
+  bh=8Xglb0VN4Knikj/QNg75wE2/nmnV9n4uzhX1MLj9t7E=;
+  b=Wd83GgNFF3aDgSqpt3cL9yyQ3iBt3LRT+c9WivEk4unhSafF+oMqTyBH
+   CiId5aIiKphNPiJioJHRiGYdK6LezaGG5A501khv9bolBUpDR6+impZ2z
+   BnB9FurnxFHPKc0yCBGqb07MsLyRaq/6+KW1b4uNx0tP7dbho9TU0/JX5
+   5SS+qPSZByWe4eAwtq4/bH8WU3aSlHS1JGxTA7S8selbQkIKiyJyO3KMb
+   vxOomf1SNUCR2016sae1J7r6v56yXEgihiT8zuJz+GG89kMRwJo6sTSwU
+   BvyQ99dlgqypChUJ4DbCZmtSRVGTUcnhIVeB65whV18CcCTGGueXBojmL
+   Q==;
+X-CSE-ConnectionGUID: r0fVWoaYQJmTpB6X2vHIgQ==
+X-CSE-MsgGUID: /w40hK9eQtW+CLGZSXH8HA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="92844133"
 X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
-   d="scan'208";a="92843152"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 08:57:08 -0700
-X-CSE-ConnectionGUID: W4YCSpG4S+iGBFege3HjCQ==
-X-CSE-MsgGUID: JkQwHcWaR4GhmFbreoL9uA==
+   d="scan'208";a="92844133"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 09:05:32 -0700
+X-CSE-ConnectionGUID: 9LCrFjFoQ9Si0kPc9ahtjw==
+X-CSE-MsgGUID: 0/taGEr3TBO1rbn6FXFYkg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
-   d="scan'208";a="249400358"
+   d="scan'208";a="285627829"
 Received: from bradocaj-mobl.ger.corp.intel.com (HELO [10.125.111.24]) ([10.125.111.24])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 08:57:07 -0700
-Message-ID: <1fc76b45-a25b-41a7-b7fa-06650c8052fb@intel.com>
-Date: Mon, 15 Jun 2026 08:57:09 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 09:05:31 -0700
+Message-ID: <ac842307-1ec7-45e4-b5be-57af3239df60@intel.com>
+Date: Mon, 15 Jun 2026 09:05:33 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,18 +52,17 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/15] Enable TDX Module Extensions and DICE-based TDX
- Quoting
-To: Xu Yilun <yilun.xu@linux.intel.com>,
- "Dan Williams (nvidia)" <djbw@kernel.org>
-Cc: kas@kernel.org, rick.p.edgecombe@intel.com, x86@kernel.org,
- peter.fang@intel.com, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sohil.mehta@intel.com,
- yilun.xu@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
- xiaoyao.li@intel.com
+Subject: Re: [PATCH 01/15] x86/virt/tdx: Read global metadata for TDX Module
+ Extensions
+To: "Dan Williams (nvidia)" <djbw@kernel.org>,
+ Xu Yilun <yilun.xu@linux.intel.com>, kas@kernel.org,
+ rick.p.edgecombe@intel.com, x86@kernel.org, peter.fang@intel.com
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, sohil.mehta@intel.com, yilun.xu@intel.com,
+ baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, xiaoyao.li@intel.com
 References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <6a2c821a99e3_9b8551002a@djbw-dev.notmuch>
- <ajAYxo83xVV1Sb+Y@yilunxu-OptiPlex-7050>
+ <20260522034128.3144354-2-yilun.xu@linux.intel.com>
+ <6a2c863a681d6_9b85510064@djbw-dev.notmuch>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -109,30 +108,22 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <ajAYxo83xVV1Sb+Y@yilunxu-OptiPlex-7050>
+In-Reply-To: <6a2c863a681d6_9b85510064@djbw-dev.notmuch>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 6/15/26 08:22, Xu Yilun wrote:
->> The TDX "Extension SEAMCALL" capability is akin to ARM CCA's "Stateful
->> RMI Operations (SRO)", and achieves similar externalized complexity
->> relief as a dedicated hardware coprocessor like AMD SEV-SNP. The
-> I may not include the ARM/AMD examples, not sure I can explain them
-> well.
+On 6/12/26 15:20, Dan Williams (nvidia) wrote:
+>> Check TDX_FEATURES0 before reading these metadata. If a feature is
+>> advertised, a failure in reading associated metadata causes the entire
+>> TDX initialization to fail, otherwise skip.
+> Others already commented on the patch ordering, so I will just comment
+> on the changelog to recommend referring back to the "any available
+> extension, all the time" implementation policy rather than saying "Linux
+> requires" which is ambiguous.
 
-I actually think they're pretty important proof points. One of the big
-challenges as a maintainer evaluating these things is judging the
-solution itself.
+One other note on this: the current Linux policy of "any available
+extension, all the time" is the simplest possible functional policy. If
+Linux has one policy, I think that's the one it should have.
 
-Is this architecture a good one? Is it overly complex? Are the avenues
-for simplification?
-
-If five vendors pop up all with similar problems and solutions, then
-it's a pretty good bet that they're all on the right track. But, if
-there are four going one direction and one going off by itself, it's a
-sign that the errant one might need a course correction.
-
-It would honestly be worth your time to go *talk* to the AMD and ARM
-folks and ensure that you are all on the same page. Last I checked, they
-seemed to be at least halfway reasonable human beings and don't bite.
-Let me know if I can help with some introductions.
+That said, I'm open to the idea that users might desire other policies.
+We should absolutely explore them another day in another series.
