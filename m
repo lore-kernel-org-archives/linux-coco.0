@@ -1,95 +1,130 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F643409618
-	for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 16:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229C14183CC
+	for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 17:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781540598; cv=none; b=MPiNc8nRHD5sjV1L3VUGDBwZZes5Ax+rIvQi97WlfkW53GL9deKlwi5OiHecwwwzMjxMkREWEKLG6BbQBUpCBGKDfY69yvidfrEVaFcCEZh0O57wx1h2skR+zC8XFZvh0500C0bncOjDAApIiN77d8BjnBaY9G0WNXqOjUx9lxY=
+	t=1781545183; cv=none; b=qKSAX3+OxH3u7rlHpTk+q4mmjmjAfnTNgxXm/jHwRO/9nW0XOYtEq6IuvQF5mZXGxspslvQYaPFPgRXgBBMmTBLcgNEVomOlxF06aoJG1qTrRHrWQszO1o/BQEDMhWDwXVEzpcVhjOCWAQpr5eOLUCkJgBxsbio/tZRu321BBiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781540598; c=relaxed/simple;
-	bh=hadKou4uoljaU+4LI3Rv8abKPkMOjSaFglihRi7xjFU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MD85LFiX75apMjo4OmOwuD8/6OnhAYGNI1nI4Djbr0byvuF04SrsuzbT3Gero4h8TYnSTWdE+xEeoUjNe50rF7jYnRAbTESmuI+XUqNOkZmZ6qopREKAlAD2gRTGIBR3TmE6GBf+L1aiePqy0eWA/HsX+7B4wLtoJw2edTEoZmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G9j9uSkW; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1781545183; c=relaxed/simple;
+	bh=R3Ew4UG09Tlztc6dINQgLDygyhYIKiJlxV2UJACXXFw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=FVWiVtz99QuaAcREpiBPW+CIUuVM2w2Bo0n1oGDb/PpQvHgVWexKGwUM8wdHKdZHkv/usBH+7BqEKcE1TEXb2FqufP0BmDtVFQeNLw1TH/cj9EnXVh883oEseUvfFvoquXygYegNd2rPkwUlzwbi4cPtDU3lR/S9AHAuWdgphiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I6OFKPFR; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G9j9uSkW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781540597; x=1813076597;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hadKou4uoljaU+4LI3Rv8abKPkMOjSaFglihRi7xjFU=;
-  b=G9j9uSkWwtY5xH77oG1sPMhOL3xAIxm4moiU2KkoqD0VQ99D1WYYO62X
-   Kt3plEttB26G0w1/Iqtbm2S0OiipSGslhSP/JUNeP7aSsfboXiOqQ0Qo1
-   qbeoYw/YcnbsByzbcUC6ETCWX+4AlOt2wrxFKJAb6gIc0mBR3KC4WhiCf
-   xF6W6HbI6aGDKR+chWeuEgkTbSjNgAGO7YJapVJiXJ4iIqT3giDW2cFWT
-   +8iGwcf81GhJAAFWxFbWo9GDQ/YcWZGjv1exT/LMjWydZc6bCTJMqfP0F
-   EZcpEEMCoagtUmtB3eBBU6Ix1EnaumDXz10KjWMsFuNTi5mj2j923x4N8
-   w==;
-X-CSE-ConnectionGUID: jSBOcAMKRM+fSIp3n2EVqQ==
-X-CSE-MsgGUID: viOgUsabTBGcu0D264yuvA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="82394279"
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
-   d="scan'208";a="82394279"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 09:23:16 -0700
-X-CSE-ConnectionGUID: n/IvD/qPRly03AV42TiJ7A==
-X-CSE-MsgGUID: erddFOBIQRujdY0BKpx1Og==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
-   d="scan'208";a="249407173"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa004.fm.intel.com with ESMTP; 15 Jun 2026 09:23:11 -0700
-Date: Mon, 15 Jun 2026 23:58:18 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Dan Williams (nvidia)" <djbw@kernel.org>
-Cc: kas@kernel.org, rick.p.edgecombe@intel.com, x86@kernel.org,
-	peter.fang@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH 04/15] x86/virt/tdx: Enable the Extensions right after
- basic TDX Module init
-Message-ID: <ajAhGj391ysXQS5g@yilunxu-OptiPlex-7050>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-5-yilun.xu@linux.intel.com>
- <6a2c9f90d348_9b8551003e@djbw-dev.notmuch>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I6OFKPFR"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8423f3e4728so2658452b3a.2
+        for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 10:39:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781545181; x=1782149981; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zt0anKDYS0gqDu93ubQsMfBghI6qH1md1eoQ9mMVUKo=;
+        b=I6OFKPFRq54vGfQUpE2gIvzRDDPWuPyfDJ6QUXlU0gK5dEMO6vvKA3rMzUbDK3t3vg
+         3JraT4ItKXBTOTQlBZ1CLTRKJ0gdvcK8lkhP6+fte6Y2OQwwgwRU8O5QroE6IGi9HGFV
+         KzaZkNiqjcDPZA1Ez1bqnqW/TffBqhsH5kC9kwrI/CxKvwL0VL7Jy3R8Wbf3EUtD/xwe
+         T1QQe/xvxHfLH2HYAQTeI9fOI8ViruhM0Ux9W63xnskYCDc0cGZU0Yp9CzH18iWwghHM
+         moUxoN2McJUvI0BA/Zgq02EAuzAGrW3yvnih8lol7W7gPwvTQ5tmzE26szOh2drc9cAx
+         3z8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781545181; x=1782149981;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zt0anKDYS0gqDu93ubQsMfBghI6qH1md1eoQ9mMVUKo=;
+        b=RExfoohk3n81kx6z4hEAErYkdI6VO83zLloS4KpVfC54Zxgz2k2hdbmyVMNkvzt3Ai
+         JwNVoETdkCQjLR2pd+0IjEooGD1Gvugl343quUs+Lx6zDtwR1Zkd1TisdEr7ARNT84BF
+         Uf8evgmNB+mJeB4e9bgFpJnmVmfYj6RqwgIgUiErTH7bMJvVEUvb5cnuJ3V2hMj5AxsG
+         V9agqthaB7/n0x7uybEvNrXTf75IZx6/QR2DwF0hllNSDAoTF33fVIWVqaV2F4Q3kb2Z
+         sEOC0p+M/EfZ8ey5WrlIwHHCpI5eyP0oRwdzbPkJkwNyUkfgECTgsWxp9kaocOWFvWBN
+         Xy8A==
+X-Forwarded-Encrypted: i=1; AFNElJ8r+8LUGk5WuaGndugKk1wl5Wf2GNhLeih0BXORd+CrkKS1RGT1RBuO5/bKyK2UfBNAD891e8eNdRxQ@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx1nJHPnrUYVcLTXgbE/U8A/uMgIPGyT3FIsfkId0tM2wB3Dqmm
+	rLdmWcKrDBlOCj7ReXvKuF/fERSoak9X8obrvaSYfvbEryqdFumcBxhXqUYpXVyzcYEijdqgXnm
+	oFSU4Kw==
+X-Received: from pfbmy22-n1.prod.google.com ([2002:a05:6a00:6d56:10b0:842:6be9:dfa5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:ac01:b0:842:6c02:2fa1
+ with SMTP id d2e1a72fcca58-8434cec1cd2mr16474936b3a.39.1781545180989; Mon, 15
+ Jun 2026 10:39:40 -0700 (PDT)
+Date: Mon, 15 Jun 2026 10:39:27 -0700
+In-Reply-To: <ai_aczmeH2IA6JaB@raptor>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6a2c9f90d348_9b8551003e@djbw-dev.notmuch>
+Mime-Version: 1.0
+References: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
+ <ai_XK__RTXMCEcCG@raptor> <ai_aczmeH2IA6JaB@raptor>
+Message-ID: <ajA4z_Wkb93cTW4m@google.com>
+Subject: Re: [PATCH RFC 0/3] KVM: guest_memfd: folio migration for
+ non-confidential VMs
+From: Sean Christopherson <seanjc@google.com>
+To: Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: Shivank Garg <shivankg@amd.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	David Hildenbrand <david@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Chao Peng <chao.p.peng@linux.intel.com>, Nikunj A Dadhania <nikunj@amd.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>, 
+	Pankaj Gupta <pankaj.gupta@amd.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Fuad Tabba <tabba@google.com>, Vishal Annapurve <vannapurve@google.com>, 
+	Nikita Kalyazin <nikita.kalyazin@linux.dev>, Patrick Roy <patrick.roy@linux.dev>, 
+	Pratik Sampat <prsampat@amd.com>, Ashish Kalra <Ashish.Kalra@amd.com>, linux-fsdevel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Jun 12, 2026 at 05:08:48PM -0700, Dan Williams (nvidia) wrote:
-> Xu Yilun wrote:
-> > The detailed initialization flow for TDX Module Extensions has been
-> > fully implemented. Enable the flow after basic TDX Module
-> > initialization.
+On Mon, Jun 15, 2026, Alexandru Elisei wrote:
+> Hi,
+> 
+> On Mon, Jun 15, 2026 at 11:43:14AM +0100, Alexandru Elisei wrote:
+> > Hi,
 > > 
-> > Theoretically, the Extensions doesn't need to be enabled right after
-> > basic TDX initialization. It could be enabled right before the first
-> > Extension SEAMCALL is issued. That would save or postpone memory usage.
-> > But it isn't worth the complexity, the needs for the Extensions are vast
-> > but the savings are little for a typical TDX capable system (about
-> > 0.001% of memory). So the Linux decision is to just enable it along with
-> > the basic TDX.
-> 
-> No real point in rehashing the rationale for the "any available, all the
-> time" policy yet again especially when this directly conflicts with the
-> "relatively large amount" comment in the original cover letter.
+> > On Thu, Jun 11, 2026 at 01:05:07PM +0000, Shivank Garg wrote:
+> > > guest_memfd folios are currently marked unmovable, so the kernel cannot
+> > > perform NUMA-balancing, memory compaction, etc. This is unavoidable for
+> > > confidential VMs (SEV-SNP, TDX), since memory is encrypted and copying it
+> > > needs firmware assistance. However, for non-confidential VMs (like
+> > > Firecracker), we can migrate the folios.
+> > > 
+> > > This series enables folio migration for non-confidential guest_memfd and
+> > > also lays the groundwork for migrating confidential guest_memfd later.
+> > > Once firmware-assisted copying support is available, those VMs can be
+> > > made movable, the confidential folio content can be copied separately,
+> > > and the destination folio marked with FOLIO_CONTENT_COPIED so
+> > > __migrate_folio() skips the host-side folio_mc_copy().
+> > 
+> > I always thought that one of the nice things about using guest_memfd as a
+> > memory backend, as opposed to host userspace mappings, is that the host
+> > cannot unmap VM memory because of KSM, automatic NUMA balancing, hugepage
+> > collapse, compaction, etc, acting on the host userspace mapping of the
+> > VM memory, and outside of the VMM's or KVM's control.
 
-Agree. Will remove the section which is copied from cover letter.
++1000.  It's not just "nice to have", it's a core design principle of guest_memfd.
 
+> > I think it would be useful to preserve this behaviour, even in the absence
+> > of confidential VMs (i.e, guest_memfd file descriptor created with
+> > GUEST_MEMFD_FLAG_MMAP).
 > 
-> Otherwise I agree with the proposed reordering of this initial series.
-> 
-> In general though, no big showstoppers for me in this first 4.
+> Just to be clear, I was thinking that it might be useful for both
+> behaviours to exist (migratable and non-migratable) for non-confidential
+> VMs, and allow KVM or userspace to decide which they prefer for a
+> guest_memfd.
 
-Thanks for the review!
+For the purposes of this discussion, we should separate the physical act of
+migrating pages from the features that trigger migration.  As I said in last week's
+guest-memfd call, I am a-ok with supporting page migration as a mechanism, but I
+am dead set against supporting NUMA balancing, KSM, LRU-based swap/reclaim, and
+anything else that goes against the goal of guest-first memory.
+
+If userspace wants mm/ functionality, then use anon, memfd, hugetlb, shmem, etc.
+
+Shivank, what's the immediate motivation for this series?
