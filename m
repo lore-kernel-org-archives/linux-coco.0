@@ -1,146 +1,129 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E567212F89;
-	Mon, 15 Jun 2026 11:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0983E5A10
+	for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 12:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781523938; cv=none; b=kI7WO+OUQHnqqUl+/bHQT2YHHHN2/qJsE7B7LngAEI/SFtgQBmBM3J14p7STnKrB3w02WHrLrQarb07HGD02+oIUpnD6aicL1I71nl3ggu7QhtlNnm863yVIASEQ3ue38JeDI7ANM5K81dRE/VBJar1shwykoKsNFp8pEqmD53g=
+	t=1781525383; cv=none; b=CnouwOf6vqfGz0ZOFRXfG7U9D6w/sG/GSWgukm+w95AiokuzKcgyrPMNnca+juVBX8F8ieYxgngx10b/x47EhDOCSPi5ts+7Al8P30tsaFtnoTRdElzikgCxM0mK9MdiSD8LF0yYHXwskleyk1zU1gq4Q4YZUC07wodwPsFKuho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781523938; c=relaxed/simple;
-	bh=yl9rySnseoF1FeFXRn9TN4yr2P1Ptx7JPUgpPqcwm0g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lCOYTk8+7JkgOjVkgaVQ8lRrTbPD/ZCNEXHesBhCnu2XU7PcLPv+IB+QhaP9xg90cYriqKV5/uq8xEZJ6LJCtsSRmxYmS2FizMxZ5CdzDtpjtroWKMbdComa8+HZUNUfIya+i1St7pdfjmxB1GeMTaVJWh1nDRwDFLKZl1WZais=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=MHnZ0RGn; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1781525383; c=relaxed/simple;
+	bh=NhOb8NqBxbG/Cu+c+JkZK43xUZGy405b0MyExjd14Zo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GGy9URC1XyQDr3ZaNVt5ha3DIOMqXsY0JJhuYwlBgQc5I5dVob9D67typOK9WAyTryjhj3O6ROsR5GfYk5NAChHY3wRIo3ZhjuM5VgkwDAnM+eurmpI3wFQk0KxJeTxgc1RBu7xRtePGbWofE7IAtHyu46UviN37tpq9sUISV9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=pBQ0fkuP; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="MHnZ0RGn"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B1E30328D;
-	Mon, 15 Jun 2026 04:45:30 -0700 (PDT)
-Received: from [10.1.29.27] (e122027.cambridge.arm.com [10.1.29.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E2EF23F915;
-	Mon, 15 Jun 2026 04:45:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781523935; bh=yl9rySnseoF1FeFXRn9TN4yr2P1Ptx7JPUgpPqcwm0g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MHnZ0RGnY5yquoeTXirjmrkWmRzjXO/gwWE70gcVFlGHngZWIkgOBZF3tbUpE5U7X
-	 3IAA/JOKX6IPitz0r3JchFuqknr920GAb1G0BhNcbpfE7b5JWLusQrf5zqaFjrTE+d
-	 7Ph+32XAuVOXxEAh0fSZABQvj9sk1oorA+yrbZeU=
-Message-ID: <649692d0-fa5b-455f-b6d7-6f41eec87ff7@arm.com>
-Date: Mon, 15 Jun 2026 12:45:27 +0100
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="pBQ0fkuP"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8ce9df31840so26587576d6.1
+        for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 05:09:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1781525381; x=1782130181; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xOdMIsFz2F8FrAy6a0jOSLjcHU/RXuOpv1/VNxSWE8o=;
+        b=pBQ0fkuPuLZI7xK57+5g0uqsHW2hpAfG3GMpMXSNb+ThBDQVo9cZV1Y5y5sKvBmw1U
+         7vWyIvq5aaum4JAJr0YC9gvfM76Pbpignm0+ietBWlq3SmHcfbBTIRB8sAPYRZkAgS9i
+         zY9UVK6OOOanMZpfwqhYW4loSNpZK6XCQw8s5DShO8tnhPa3MunQ4Adw//qm3XVI6e5U
+         ax9ZV/26aUV588QGakycf8moGjZXSmK2b2tl/LHvJLtHfPkXgGzVW6pFfrYzc1uiH3UG
+         lLX75lJMq0qm3IS+h+MoZ8O35eKREz+0YMVarm2JpdOXeECFNt2OSKy4MjWuawg5Gb8g
+         lyuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781525381; x=1782130181;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xOdMIsFz2F8FrAy6a0jOSLjcHU/RXuOpv1/VNxSWE8o=;
+        b=UO+UGeUoNmpnB0H0df6hWLUjqMyfmE0pYaYeaDNAuhplOZlIe/91VNqxUMWGVxPp/+
+         jUh/1EBuYzGGt0OyfyE05JDgMvKry24uPA6jc19XLioofY12oSrPq0zBP0FpT1kNF/GY
+         mFzIpA617+S2LvKsuUY3z36txqjIBFKCkm0TJFFxHGw/8zlyH6c+W8IQIVcRckP5JXtW
+         dCdRvWyLoferZIzJDV529exBmRh1qcjZ57fj0o4ZSNVApm1Fj/y0L/goPXPlqLtvykEI
+         ox8ujP8h5qDjsaz9HzJpgD7tZqDpwupxmNAm7vrF1O8ohvU50l+RAZVblrOOsuVbkNlE
+         SuTQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9Ea2mgRx81FA+PZgnK0OGo8cwHcjmRMcFFtjgudeNvS1TTgq8SvJadNKcnoJdro/OjB3WJQAP1fXxf@lists.linux.dev
+X-Gm-Message-State: AOJu0YxC7+5gRIDNxfM1hbzT09ZS/GuB0B/2CwdFz2H8aSMJNgRosUZs
+	H2LMbbQPQAdOThV4LMOzdAGwUQIO0WNNuMqgEuVGoIFbgCQyLboyHWL0fH8rqAeDfMc=
+X-Gm-Gg: Acq92OFrprE9V/LsQUm0CGxSwmxB4hZFVuj8ofuGu1AWP9ZpjDGKoWXBIqcmRw8Y3c5
+	Tk2MVR0p+rWiUUEDztmKO2oxLLI5jhDflGlBqb72NG3KHIA/BuJjbaURsNjeskxqM7nPkWITElq
+	ZWgkdAIR2Ic+BhbkkojZwrgHgxtDlX2TgC53+99W66Gqa56K6ogbGQnzAm6fFg7nCVCqKbjVU2Y
+	c4KsY3AVthm8fx5g7g0Ec0bhdStCizC0hf5Wbqv3/Mw3qmrP4EHRHKOWCrH64ouAJiU2wPUOQD3
+	pzzbAb6B1eZVcR1hWZJJCi/aLc+UUNqbVq0h5Vrj8xucq+srmhGjXm7gw64BjoSv2D6toDr/2UZ
+	bNRqDws/EWcSyFfAMRwEFaBUfDV+athE1kQhdpe/992RJ7zUPARCJJt3B9OfWLOmbSr/AawjUtq
+	NZfUgkGdYB1wxcxOzZB5j7w4Dsd/WVM+6XNh56uIzjBcnOQa9+SZRRLMH+KSU6Pz+u4XgZjCaFU
+	CYmcw==
+X-Received: by 2002:a05:620a:bce:b0:915:8f08:5fa7 with SMTP id af79cd13be357-9161bf92252mr2134995585a.52.1781525380729;
+        Mon, 15 Jun 2026 05:09:40 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-91619f05fe7sm1176650485a.12.2026.06.15.05.09.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 05:09:39 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wZ68I-0000000DLwG-2JkO;
+	Mon, 15 Jun 2026 09:09:38 -0300
+Date: Mon, 15 Jun 2026 09:09:38 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Kameron Carr <kameroncarr@linux.microsoft.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"urezki@gmail.com" <urezki@gmail.com>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Subject: Re: [RFC PATCH] mm/vmalloc: add vmalloc_decrypted() and
+ vzalloc_decrypted()
+Message-ID: <20260615120938.GR1066031@ziepe.ca>
+References: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
+ <aibhnnDFQTHWMEFe@arm.com>
+ <20260611114954.GC1066031@ziepe.ca>
+ <aixGqCqKkQeDfUST@arm.com>
+ <20260612181807.GP1066031@ziepe.ca>
+ <SN6PR02MB4157EC032AD55D182FBC1318D4182@SN6PR02MB4157.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 10/44] arm64: RMI: Add support for SRO
-To: "Dan Williams (nvidia)" <djbw@kernel.org>, Gavin Shan <gshan@redhat.com>,
- kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-11-steven.price@arm.com>
- <872ce762-0a83-42a4-bbe8-b21ea6f4e1cf@redhat.com>
- <50d70588-2ebc-4c9b-98ec-68f3d04a9d21@arm.com>
- <6a2c91398fad5_a003b10027@djbw-dev.notmuch>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <6a2c91398fad5_a003b10027@djbw-dev.notmuch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SN6PR02MB4157EC032AD55D182FBC1318D4182@SN6PR02MB4157.namprd02.prod.outlook.com>
 
-Hi Dan,
+On Fri, Jun 12, 2026 at 07:06:00PM +0000, Michael Kelley wrote:
 
-On 13/06/2026 00:07, Dan Williams (nvidia) wrote:
-> Steven Price wrote:
-> [..]
->>> alloc_pages_exact() will fail if the requested size exceeds the maximal
->>> allowed
->>> size (1 << MAX_PAGE_ORDER). The maximal size is usually smaller than
->>> PUD_SIZE
->>> but PUD_SIZE is allowed by the RMM.
->>
->> This is an area where to be honest I'm really not sure what to do.
->> Technically the RMM is allowed to ask for a contiguous range of 512GB
->> pages (on a 4K system - larger with larger page sizes) - but clearly no
->> real OS is going to be able to provide anything like that.
->>
->> In practise we don't expect the RMM to do anything so crazy. It's not
->> really clear to be whether even 2MB (PMD_SIZE) is needed. But the spec
->> is written to be generic.
->>
->> So my current approach is to calculate the required size and pass it
->> into alloc_pages_exact(). For "stupidly large" values this will fail and
->> Linux just doesn't support an RMM which attempts this. If there is ever
->> a usecase which needs this then we'd need to find a different method of
->> providing the memory (most likely some form of carveout to avoid
->> fragmentation). But my view is we should wait for that usecase to be
->> identified first.
+> > I thought arches are either preserving the memory content or zeroing
+> > it, you are saying some arch leaves it as garbage? I'd argue that's an
+> > arch bug and they should clear it in their path.
 > 
-> Just some comparison comments as I am also going through the TDX patches
-> which enable "Extension SEAMCALLs". These new SEAMCALLs are similar to
-> the SRO mechanism [1].
+> AMD SEV-SNP leaves the memory contents as garbage after an encryption
+> or decryption state change. On the flip side, my understanding has been
+> that TDX zeroes the memory (or at least has an option to do so) after
+> such a state change, though a couple of AI chats say TDX also leaves
+> garbage. To be sure, I'd have to run an experiment to check in a TDX
+> guest on Hyper-V.
 
-Looks like at least at the moment it's much more one-way than the SRO
-mechanism - there's no reclaim mechanism (yet).
+So there are many bugs then if the pre-zero is lost and you have to
+zero it again. Even swiotlb doesn't reliably zero it's pools in the
+right order under these rules, though alloc coherent does get it
+right at least.
 
-> TDX asks for an upfront delegation of memory at init time using
-> alloc_contig_pages() that is never returned until entire module is
-> shutdown. alloc_contig_pages() is not subject to the MAX_ORDER limit,
-> but not sure that alloc_contig_pages() is suitable for small+dynamic
-> runtime memory add / release that SRO potentially wants to do?
+IMHO this is too sketchy to be usable and optimizing for AMD is not
+the right call, IMHO.
 
-Yeah I'm not sure quite what is best. I expect the RMM to only request
-contiguous memory for very small allocations to use as hardware page
-tables. It's an issue I'm trying to work through that the specification
-doesn't provide any guidance for what sort of allocations the host
-should expect to provide.
+> > Otherwise this sharp edge is not documented and we have many other
+> > places getting it wrong, eg system_heap_allocate() doesn't re-zero the
+> > memory after decrypting it.
+> 
+> In the Hyper-V code that uses set_memory_decrypted()/encrypted(),
+> there's always an explicit call to set the memory to zero afterwards.
 
-> Does SRO always balance the size of RMI_OP_MEM_REQ_DONATE with
-> RMI_OP_MEM_REQ_RECLAIM, or might some donate requests be a one way
-> donation like TDX? Just poking to see if there is a path to preallocate
-> a pool vs the fine grained per-operation alloc/free.
+Good for it, maybe next time improve the APIs :(
 
-The spec is unfortunately not prescriptive on this point. For an
-operation which eventually fails, the expectation is that the RMM will
-return all the memory that was provided (and exactly that memory). But
-the specification doesn't actually require that.
+Even more compelling that hyper-v should be using the dma api..
 
-The problem is that there are situations where a racing operation on
-another CPU could trigger this to not happen. For example, a new page
-table needs to be allocated to complete a map operation, but then a
-racing operation on another CPU makes use of this page table (e.g due to
-a map at a different address), the memory for the page table cannot be
-returned even if the operation doesn't complete because it's in use from
-the racing operation.
-
-I don't believe the current RMM design will actually do this - but it's
-not something we actually want to prevent in the spec.
-
-Equally the expectation is that all the donated memory for a guest will
-be returned when the guest is destroyed. But we don't have anything in
-the spec to enforce this.
-
-I don't particularly expect a pool to be that useful for the expected
-memory allocation patterns as I expect SRO donations to be long lived.
-We don't (yet at least) have a concept of donating memory just for
-"scratch" memory during an operation. Although the SRO mechanism doesn't
-rule that out.
-
-Thanks,
-Steve
-
+Jason
