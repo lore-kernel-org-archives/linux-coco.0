@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E4E3FB06B
-	for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 15:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565D24071DE
+	for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 15:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781538463; cv=none; b=Jca3eqvWY85cztzCNVG3e/UfXU/xYIxaCzmY/YcuIfdZFsZmcqueUcsS1SRG38sDVr5n1nLNoJMCYCnk6puFJO7k9ENBcZ0aUHgstmpRMyyV6vZe3FekQeGFLXhNcKAi8Tq6edCFJU4rRDH5H/IEMk7M6f2bnBYSmZt/OTKzSrQ=
+	t=1781538552; cv=none; b=VWvxS/985ynXpVvnqyshq8C9tlVMqsxkNGM+C5vL4lkJNTsrNlQmjWjnBpc48zCxJNGpCnpwepbLwaaPZrU2mNfgHuEXMrRDObdCN/J/TyInm7/D+dUMJ/vRAA5d2KAB08DMeqUmrc4r6vQSp82JM28fW+L55XD/Qlo6UsrQnas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781538463; c=relaxed/simple;
-	bh=s5SNeakhFf5GRw3iiYXSIN3p/gjwim3Vefo2sUWBCKk=;
+	s=arc-20240116; t=1781538552; c=relaxed/simple;
+	bh=fyl0yUaPClU2NroLplGRQmx8vws/UzQ/L1fCrdFgHNI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ALopwsNmgCTd0uApyHzT4sc1wSB2IgMcZLbnZxeUDuT5mc5sCR+GFmB0Zv6sz3Y9zdZPa/EyFePHaXRhGrKMDGsPpSmfUsGwojNp9Bef4BO/LaP1ATlKBvJMja38kmRwy0sr/vNOufBM+lthcHhq128ZMW+EGodDTRW0ho5igIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZyJaAuit; arc=none smtp.client-ip=198.175.65.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=g6fS0hBl+NwBVzceE3dPQuF/raArXVGWPG+btR3rDZV1OKFi7P2WNhezFOlwG53jx7AIN/6nztrPUqBz5KHwZ56u6C0Ob2mz02Dn/mgdOi3Nx1tCIlPg0IXBgxs78SIZ5RD96xnVb87FPiG1wa5W0rOLKkA5/VtPBBIws6A3cpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nx/Kg7t8; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZyJaAuit"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nx/Kg7t8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781538462; x=1813074462;
+  t=1781538551; x=1813074551;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=s5SNeakhFf5GRw3iiYXSIN3p/gjwim3Vefo2sUWBCKk=;
-  b=ZyJaAuithZn5iQS0RlzbMtGSyA/KFrQmnug+G74TKMqNLMpAbw/1NzN1
-   AFayWBV9AdZf1btkAUb7EwoTIkH5bHj7D+TDkwppVUP1T8XAQZurpji0M
-   kfEmeXXmzJfULkIF9gFfUdMyhFUxXVu/fz7ybFpDzRug++Tu5p7mXAb4k
-   PTbwOB6skTRKhT9JOq9cM213TyGyHbNTOpmB+1o92WpYt2TzGnl42ruwI
-   SxX/jfXLhK4yeDvCnYpxTt/DlgCMiifKA4nXMUER6+CxCcno2bvEBn3A3
-   rBrCLPEbKrofnyCyV49pPT3/O9dzHwqTkxNcD8WhhqnYsNmSIayv3lc76
-   w==;
-X-CSE-ConnectionGUID: YJevTMYkQqmr75CzGPzEbA==
-X-CSE-MsgGUID: yZamSpX9RoeUM30pb8g+6Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="86183232"
+  bh=fyl0yUaPClU2NroLplGRQmx8vws/UzQ/L1fCrdFgHNI=;
+  b=nx/Kg7t8mYt+bFCJV5f7EM/ei9hpmw7mVsH+zF8KPNPQtlN27ag59pVl
+   GuRKr+ehUdpU6IYY2zACXY9LxoKwlkCYoCynCkqyj36b1KSnpWydEE43X
+   sKpj9N1Q4ECIronN6Rad5QRdI+ACbVfxHsQysyYhrm+sYJ9aHFZr7jCG9
+   mfUGfQ8gu8Y9r29TIDVdX/pKgXo4WIsQVeZC0VsMnMvyG6+wBynxx1CTC
+   YFw9xkcPKgSqGsXiCzVXECK6imQwqtJt3Ovd/EAK/c5i4ZPeeDTgcWrRw
+   Nsl8fepSa9lUL7CJlkJ8hVrb83u9+BcPHC9xrIQ3vgt9lLmbY5hURLMfV
+   g==;
+X-CSE-ConnectionGUID: AN+IV9jdRICJd1o3rgHt6A==
+X-CSE-MsgGUID: PeoH8lhRS2m+yGcju1lrZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="99858351"
 X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
-   d="scan'208";a="86183232"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 08:47:42 -0700
-X-CSE-ConnectionGUID: dxTWT7UBSQmtiabpz15mOg==
-X-CSE-MsgGUID: GP1+6tDTTcaajYtUILXXYw==
+   d="scan'208";a="99858351"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 08:49:11 -0700
+X-CSE-ConnectionGUID: 9b+mtrtkSSK5BG0LA5fjbQ==
+X-CSE-MsgGUID: Ro29/Ul1SkGIttGVy9cQYg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
-   d="scan'208";a="271206560"
+   d="scan'208";a="247593571"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa002.fm.intel.com with ESMTP; 15 Jun 2026 08:47:38 -0700
-Date: Mon, 15 Jun 2026 23:22:46 +0800
+  by orviesa007.jf.intel.com with ESMTP; 15 Jun 2026 08:49:07 -0700
+Date: Mon, 15 Jun 2026 23:24:15 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: "Dan Williams (nvidia)" <djbw@kernel.org>
 Cc: kas@kernel.org, rick.p.edgecombe@intel.com, x86@kernel.org,
@@ -51,11 +51,12 @@ Cc: kas@kernel.org, rick.p.edgecombe@intel.com, x86@kernel.org,
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
 	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH 00/15] Enable TDX Module Extensions and DICE-based TDX
- Quoting
-Message-ID: <ajAYxo83xVV1Sb+Y@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH 01/15] x86/virt/tdx: Read global metadata for TDX Module
+ Extensions
+Message-ID: <ajAZHwyMdSlhiNYx@yilunxu-OptiPlex-7050>
 References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <6a2c821a99e3_9b8551002a@djbw-dev.notmuch>
+ <20260522034128.3144354-2-yilun.xu@linux.intel.com>
+ <6a2c863a681d6_9b85510064@djbw-dev.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -64,67 +65,15 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6a2c821a99e3_9b8551002a@djbw-dev.notmuch>
+In-Reply-To: <6a2c863a681d6_9b85510064@djbw-dev.notmuch>
 
-> The internal implementation details of extension seamcalls buries the
-> lead on why this mechanism is important, why Linux should care, and why
-> this brings TDX in line with the other major CC architectures. Something
-> like:
+> > Check TDX_FEATURES0 before reading these metadata. If a feature is
+> > advertised, a failure in reading associated metadata causes the entire
+> > TDX initialization to fail, otherwise skip.
 > 
-> ===
-> To date, SEAMCALLs have been short lived routines that monopolize the
-> CPU for their duration. This limits their utility for implementing
-> higher order security protocols or pushes complexity into Linux. The
-> Linux appetite for ingesting complexity is low, so TDX now adds a new
-> class of SEAMCALLs that are preemptible and resumable. This capability
-> enables higher order service APIs to carry out a security protocol like
-> "establish an SPDM session".
-> 
-> The TDX "Extension SEAMCALL" capability is akin to ARM CCA's "Stateful
-> RMI Operations (SRO)", and achieves similar externalized complexity
-> relief as a dedicated hardware coprocessor like AMD SEV-SNP. The
+> Others already commented on the patch ordering, so I will just comment
+> on the changelog to recommend referring back to the "any available
+> extension, all the time" implementation policy rather than saying "Linux
+> requires" which is ambiguous.
 
-I may not include the ARM/AMD examples, not sure I can explain them
-well.
-
-> mechanism is "give the service environment some memory", "invoke the
-> service API", and "continue invoking until complete". All protocol state
-> is internal the service API.
-> 
-> The simplest class of extension SEAMCALLs to support are in support of
-> "DICE-based TDX Quoting", a service to turn guest launch attestation
-> reports into a document that can be externally verified.
-> ===
-
-[...]
-
-> > The Extensions consumes relatively large amount of memory (~50MB). So it
-> > is designed to be off by default.
-> 
-> This confuses the TDX design with the Linux design, and sets up "50MB" as
-> something to be quibbled with. The Linux design is turn on all the
-> features that Linux knows about all the time. Unless and until the "any
-> available, all the time" becomes untenable it just simplifies the init
-> flow to not play piecemeal games. Await evidence to change the simple
-> policy. Suffice to say the cost of this policy will burn 10s of
-> megabytes.
-
-[...]
-
-> 
-> > == Some history ==
-> > 
-> > The TDX Module Extensions part was first posted along with TDX
-> > Connect [2]. Now this part is remarkably smaller because we've removed
-> > the generic tdx_page_array abstraction for HPA_LIST_INFO. TDX Module
-> > Extensions is the first user of HPA_LIST_INFO, and doesn't use it in a
-> > typical way (HPA_LIST_INFO can only hold at most 2MB memory). There
-> > isn't enough justification to make the abstraction in this series. A
-> > possible plan is to rebuild tdx_page_array iteratively when more use
-> > cases arise.
-> 
-> No need to talk about details not in this series. I would maybe just
-> note that quoting is the simplest first consumer and was chosen as the
-> lead vehicle over TDX Connect previously posted in case anyone asks.
-
-Good to me, will include most of them, thanks.
+Agree.
