@@ -1,132 +1,257 @@
-Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E244D3F4126
-	for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 13:28:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.233
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1397402424
+	for <linux-coco@lists.linux.dev>; Mon, 15 Jun 2026 15:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781530109; cv=none; b=a3+dZlziPwNYmEOU16LmSQf8EE4l//73OKtuOAdGjV6XkQEx4Efp6HTyoqzovwU0Cw03szuPNCaxdn1f49Uxg0CRh3e1nYfrsK3AI3GNWiInzDE8Cg9EGRx+dL7ww0tmkN7MwRIhYWHeMFIpso/yg4rYCAPr9q4yrm8IU1AgzSE=
+	t=1781536514; cv=none; b=FXzCovLOazxfO8qsfKod0JdjLuqUhN1r/Ir2e6zC6JFxpP8+cmEB6tQ2F2FOKdcDwK8JE2VIMWr4VrcYJutGionpXel8hBxFte0Qyg0GnwjN4XHzGTK9VuV1LTcx4DpQatPUYBif/6ueReiKLWIrw65xUx+l80TeY4gKWZm/Oik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781530109; c=relaxed/simple;
-	bh=C08qkmQPoPQU/ScYvUW+JTSposABCSApDCgHvXzmWHg=;
-	h=Message-Id:From:Date:Subject:To:Cc; b=gpV4IMFujjYTgHKt/N/4oQo+RwOtBxOblIESKzUxq/fPqNz1H+8Qc7pB365VutfR0yvNWamye1fBxj2OqFfrV3OgLkkygrBw9+IIf5yJbzScsD76YtGfk4+qklvPeGNViTahLttlC9kkPx4idJ9Qgm7IlqyymlINWobIrqBfIJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
-	 client-signature ECDSA (secp384r1) client-digest SHA384)
-	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
-	by mailout2.hostsharing.net (Postfix) with ESMTPS id 32D1610E07;
-	Mon, 15 Jun 2026 15:19:24 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 2D8846018168; Mon, 15 Jun 2026 15:19:24 +0200 (CEST)
-Message-Id: <7bdfaf14d7e5a466f3f650150c688a60e947a7a9.1781527060.git.lukas@wunner.de>
-From: Lukas Wunner <lukas@wunner.de>
-Date: Mon, 15 Jun 2026 15:19:30 +0200
-Subject: [PATCH] PCI/TSM: Resume device to D0 for CMA-SPDM operation
-To: Dan Williams <djbw@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Vivaik Balasubrawmanian <vivaik.balasubrawmanian@intel.com>, John Allen <john.allen@amd.com>, Bjorn Helgaas <helgaas@kernel.org>, linux-coco@lists.linux.dev, linux-pci@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Yilun Xu <yilun.xu@linux.intel.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>, Alexey Kardashevskiy <aik@amd.com>
+	s=arc-20240116; t=1781536514; c=relaxed/simple;
+	bh=UMds3JWYoP4xBh9/MVtO7qrCiFXS+QTbkrgDexGU2lk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Fh2/YAFgVHfymimqOw86f17FzHxZ2Cj/7H0Hnk2Lk1kDBz0JJRNgR3rqZcSndtopi6ZhIPylsL2559NPtDIeuB7TP+xKwkQ3+tNW1t2c4BqExehhmI2HJMpG09mkTK9BQHNvlOU4bZiFW02AB/Ox3iX0Oc5dYw++b8745m5YarI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=otpBswBz; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="otpBswBz"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 45EFB153B;
+	Mon, 15 Jun 2026 08:15:07 -0700 (PDT)
+Received: from [192.168.178.24] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D29AF3F915;
+	Mon, 15 Jun 2026 08:15:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1781536512; bh=UMds3JWYoP4xBh9/MVtO7qrCiFXS+QTbkrgDexGU2lk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=otpBswBzH9O7Ge221RiwYL1pM+rZbDK1y6azYqw6h/bfL58KOx+j5GhPusqfeqrgC
+	 UW3MkAsQHlw4FZBw4bjAvMvuRdKOTkhsNG7PPl+O6yGp9qZj7WS6SQVRvcaqZK/La/
+	 Sbw1ivz4uRfRhzBUiuEVfMtdssP8SEffMnIrSs+A=
+Message-ID: <56c6c2c7-c270-4864-a26b-a7de8428acec@arm.com>
+Date: Mon, 15 Jun 2026 17:15:08 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/6] firmware: hwrng: arm_smccc_trng: Register as an
+ SMCCC device
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ Greg KH <gregkh@linuxfoundation.org>, Jeremy Linton <jeremy.linton@arm.com>,
+ Jonathan Cameron <jic23@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Will Deacon <will@kernel.org>, Steven Price <steven.price@arm.com>,
+ Suzuki K Poulose <Suzuki.Poulose@arm.com>
+References: <20260611130429.295516-1-aneesh.kumar@kernel.org>
+ <20260611130429.295516-3-aneesh.kumar@kernel.org>
+Content-Language: en-US
+From: Andre Przywara <andre.przywara@arm.com>
+In-Reply-To: <20260611130429.295516-3-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Per PCIe r7.0 sec 6.31.3, CMA-SPDM operation in non-D0 states is optional.
-The spec does not define a way to determine if it's supported, so resume
-to D0 unconditionally for the duration of a CMA-SPDM exchange.  Vivaik has
-talked to Windows engineers and they said that Windows does the same.
+Hi Aneesh,
 
-Note that for plain DOE operation, it is sufficient for the device to be
-in D3hot and its parents in D0 because config space remains accessible in
-D3hot.  So CMA-SPDM goes beyond the requirements of plain DOE and hence
-resuming to D0 needs to (only) be done in code paths which use DOE
-specifically for CMA-SPDM.
+thanks for doing this, we have thought about this for quite a while, but 
+no one dared to just bite the bullet...
 
-The pattern used herein for runtime resume is the best practice introduced
-by commit ef8057b07c72 ("PM: runtime: Wrapper macros for ACQUIRE()/
-ACQUIRE_ERR()").
+On 6/11/26 15:04, Aneesh Kumar K.V (Arm) wrote:
+> The SMCCC TRNG interface is a firmware-provided SMCCC service rather than a
+> standalone platform device. Now that the SMCCC core has an SMCCC bus,
+> create an arm-smccc-trng device for the discovered TRNG service and convert
+> the hwrng driver to an SMCCC driver.
+> 
+> The SMCCC id table preserves module autoloading for systems where the TRNG
+> driver is built as a module.
+> 
+> The sysfs device path changes from the old smccc_trng platform-device path
+> to an arm-smccc device path. No known userspace dependency on the old path
+> was found; a Debian Code Search lookup for the existing platform-device
+> name/path did not find any users.
+> 
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>   arch/arm64/include/asm/archrandom.h     |  2 +-
+>   drivers/char/hw_random/arm_smccc_trng.c | 32 +++++++++-----
+>   drivers/firmware/smccc/smccc.c          | 58 +++++++++++++++++++++----
+>   3 files changed, 71 insertions(+), 21 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/archrandom.h b/arch/arm64/include/asm/archrandom.h
+> index 8babfbe31f95..7605dd81bd1e 100644
+> --- a/arch/arm64/include/asm/archrandom.h
+> +++ b/arch/arm64/include/asm/archrandom.h
+> @@ -12,7 +12,7 @@
+>   
+>   extern bool smccc_trng_available;
+>   
+> -static inline bool __init smccc_probe_trng(void)
+> +static inline bool smccc_probe_trng(void)
+>   {
+>   	struct arm_smccc_res res;
+>   
+> diff --git a/drivers/char/hw_random/arm_smccc_trng.c b/drivers/char/hw_random/arm_smccc_trng.c
+> index dcb8e7f37f25..8f7f9d830cf2 100644
+> --- a/drivers/char/hw_random/arm_smccc_trng.c
+> +++ b/drivers/char/hw_random/arm_smccc_trng.c
+> @@ -16,8 +16,10 @@
+>   #include <linux/device.h>
+>   #include <linux/hw_random.h>
+>   #include <linux/module.h>
+> -#include <linux/platform_device.h>
+>   #include <linux/arm-smccc.h>
+> +#include <linux/arm-smccc-bus.h>
+> +
+> +#include <asm/archrandom.h>
+>   
+>   #ifdef CONFIG_ARM64
+>   #define ARM_SMCCC_TRNG_RND	ARM_SMCCC_TRNG_RND64
+> @@ -94,29 +96,37 @@ static int smccc_trng_read(struct hwrng *rng, void *data, size_t max, bool wait)
+>   	return copied;
+>   }
+>   
+> -static int smccc_trng_probe(struct platform_device *pdev)
+> +static int smccc_trng_probe(struct arm_smccc_device *sdev)
+>   {
+>   	struct hwrng *trng;
+>   
+> -	trng = devm_kzalloc(&pdev->dev, sizeof(*trng), GFP_KERNEL);
+> +	/* validate the minimum version requirement */
+> +	if (!smccc_probe_trng())
+> +		return -ENODEV;
+> +
+> +	trng = devm_kzalloc(&sdev->dev, sizeof(*trng), GFP_KERNEL);
+>   	if (!trng)
+>   		return -ENOMEM;
+>   
+>   	trng->name = "smccc_trng";
+>   	trng->read = smccc_trng_read;
+>   
+> -	return devm_hwrng_register(&pdev->dev, trng);
+> +	return devm_hwrng_register(&sdev->dev, trng);
+>   }
+>   
+> -static struct platform_driver smccc_trng_driver = {
+> -	.driver = {
+> -		.name		= "smccc_trng",
+> -	},
+> -	.probe		= smccc_trng_probe,
+> +static const struct arm_smccc_device_id smccc_trng_id_table[] = {
+> +	{ .name = "arm-smccc-trng" },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(arm_smccc, smccc_trng_id_table);
+> +
+> +static struct arm_smccc_driver smccc_trng_driver = {
+> +	.name	  = KBUILD_MODNAME,
+> +	.probe	  = smccc_trng_probe,
+> +	.id_table = smccc_trng_id_table,
+>   };
+> -module_platform_driver(smccc_trng_driver);
+> +module_arm_smccc_driver(smccc_trng_driver);
+>   
+> -MODULE_ALIAS("platform:smccc_trng");
+>   MODULE_AUTHOR("Andre Przywara");
+>   MODULE_DESCRIPTION("Arm SMCCC TRNG firmware interface support");
+>   MODULE_LICENSE("GPL");
+> diff --git a/drivers/firmware/smccc/smccc.c b/drivers/firmware/smccc/smccc.c
+> index bdee057db2fd..a47696f3a5de 100644
+> --- a/drivers/firmware/smccc/smccc.c
+> +++ b/drivers/firmware/smccc/smccc.c
+> @@ -9,7 +9,8 @@
+>   #include <linux/init.h>
+>   #include <linux/arm-smccc.h>
+>   #include <linux/kernel.h>
+> -#include <linux/platform_device.h>
+> +#include <linux/arm-smccc-bus.h>
+> +
+>   #include <asm/archrandom.h>
+>   
+>   static u32 smccc_version = ARM_SMCCC_VERSION_1_0;
+> @@ -81,16 +82,55 @@ bool arm_smccc_hypervisor_has_uuid(const uuid_t *hyp_uuid)
+>   }
+>   EXPORT_SYMBOL_GPL(arm_smccc_hypervisor_has_uuid);
+>   
+> +struct smccc_device_info {
+> +	u32 func_id;
+> +	bool requires_smc;
+> +	const char *device_name;
+> +};
+> +
+> +static const struct smccc_device_info smccc_devices[] __initconst = {
+> +	{
+> +		.func_id        = ARM_SMCCC_TRNG_VERSION,
+> +		.requires_smc   = false,
+> +		.device_name    = "arm-smccc-trng",
+> +	},
+> +};
+> +
+> +static bool __init smccc_probe_smccc_device(const struct smccc_device_info *smccc_dev)
+> +{
+> +	unsigned long ret;
+> +	struct arm_smccc_res res;
+> +
+> +	if (smccc_conduit == SMCCC_CONDUIT_NONE)
+> +		return false;
+> +
+> +	if (smccc_dev->requires_smc && smccc_conduit != SMCCC_CONDUIT_SMC)
+> +		return false;
+> +
+> +	arm_smccc_1_1_invoke(smccc_dev->func_id, &res);
+> +	ret = res.a0;
 
-Fixes: 3225f52cde56 ("PCI/TSM: Establish Secure Sessions and Link Encryption")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org # v6.19+
-Cc: Vivaik Balasubrawmanian <vivaik.balasubrawmanian@intel.com>
----
-We're in the merge window for v7.2 and this isn't super urgent,
-so it's targeting v7.3 via tsm.git/next.
+Mostly a nit:
+Why the assignment to a variable of the same type here? Wouldn't it be 
+cleaner to let "ret" be an "int"? Then you can save the cast below.
+Or drop the assignment, and just cast res.a0 below directly.
 
-Technically I'd have permission to apply myself,
-but I wouldn't want to without acks from Dan and AMD!
-Thanks for taking a look!
+In any case, I tested this in a KVM guest, and it worked flawlessly: the 
+device is created, works, and sysfs looks good, both with this file 
+compiled in (=y), and also as a module. Module autoloading also seems to 
+work.
+So that's:
 
- drivers/crypto/ccp/sev-dev-tsm.c | 6 ++++++
- drivers/pci/tsm.c                | 6 ++++++
- 2 files changed, 12 insertions(+)
+Tested-by: Andre Przywara <andre.przywara@arm.com>
 
-diff --git a/drivers/crypto/ccp/sev-dev-tsm.c b/drivers/crypto/ccp/sev-dev-tsm.c
-index b07ae52..108204f7 100644
---- a/drivers/crypto/ccp/sev-dev-tsm.c
-+++ b/drivers/crypto/ccp/sev-dev-tsm.c
-@@ -7,6 +7,7 @@
- #include <linux/tsm.h>
- #include <linux/iommu.h>
- #include <linux/pci-doe.h>
-+#include <linux/pm_runtime.h>
- #include <linux/bitfield.h>
- #include <linux/module.h>
- 
-@@ -30,6 +31,7 @@ static int sev_tio_spdm_cmd(struct tio_dsm *dsm, int ret)
- {
- 	struct tsm_dsm_tio *dev_data = &dsm->data;
- 	struct tsm_spdm *spdm = &dev_data->spdm;
-+	int pm_ret;
- 
- 	/* Check the main command handler response before entering the loop */
- 	if (ret == 0 && dev_data->psp_ret != SEV_RET_SUCCESS)
-@@ -38,6 +40,10 @@ static int sev_tio_spdm_cmd(struct tio_dsm *dsm, int ret)
- 	if (ret <= 0)
- 		return ret;
- 
-+	PM_RUNTIME_ACQUIRE(&dsm->tsm.base_tsm.pdev->dev, pm);
-+	if ((pm_ret = PM_RUNTIME_ACQUIRE_ERR(&pm)))
-+		return pm_ret;
-+
- 	/* ret > 0 means "SPDM requested" */
- 	while (ret == PCI_DOE_FEATURE_CMA || ret == PCI_DOE_FEATURE_SSESSION) {
- 		ret = pci_doe(dsm->tsm.doe_mb, PCI_VENDOR_ID_PCI_SIG, ret,
-diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
-index 5fdcd7f..af1817e 100644
---- a/drivers/pci/tsm.c
-+++ b/drivers/pci/tsm.c
-@@ -12,6 +12,7 @@
- #include <linux/pci.h>
- #include <linux/pci-doe.h>
- #include <linux/pci-tsm.h>
-+#include <linux/pm_runtime.h>
- #include <linux/sysfs.h>
- #include <linux/tsm.h>
- #include <linux/xarray.h>
-@@ -886,6 +887,7 @@ int pci_tsm_doe_transfer(struct pci_dev *pdev, u8 type, const void *req,
- 			 size_t req_sz, void *resp, size_t resp_sz)
- {
- 	struct pci_tsm_pf0 *tsm;
-+	int rc;
- 
- 	if (!pdev->tsm || !is_pci_tsm_pf0(pdev))
- 		return -ENXIO;
-@@ -894,6 +896,10 @@ int pci_tsm_doe_transfer(struct pci_dev *pdev, u8 type, const void *req,
- 	if (!tsm->doe_mb)
- 		return -ENXIO;
- 
-+	PM_RUNTIME_ACQUIRE(&pdev->dev, pm);
-+	if ((rc = PM_RUNTIME_ACQUIRE_ERR(&pm)))
-+		return rc;
-+
- 	return pci_doe(tsm->doe_mb, PCI_VENDOR_ID_PCI_SIG, type, req, req_sz,
- 		       resp, resp_sz);
- }
--- 
-2.53.0
+Cheers,
+Andre.
+
+
+> +
+> +	if ((s32)ret == SMCCC_RET_NOT_SUPPORTED)
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+>   static int __init smccc_devices_init(void)
+>   {
+> -	struct platform_device *pdev;
+> -
+> -	if (smccc_trng_available) {
+> -		pdev = platform_device_register_simple("smccc_trng", -1,
+> -						       NULL, 0);
+> -		if (IS_ERR(pdev))
+> -			pr_err("smccc_trng: could not register device: %ld\n",
+> -			       PTR_ERR(pdev));
+> +	struct arm_smccc_device *sdev;
+> +	const struct smccc_device_info *smccc_dev;
+> +
+> +	for (int i = 0; i < ARRAY_SIZE(smccc_devices); i++) {
+> +		smccc_dev = &smccc_devices[i];
+> +
+> +		if (!smccc_probe_smccc_device(smccc_dev))
+> +			continue;
+> +
+> +		sdev = arm_smccc_device_register(smccc_dev->device_name);
+> +		if (IS_ERR(sdev))
+> +			pr_err("%s: could not register device: %ld\n",
+> +			       smccc_dev->device_name, PTR_ERR(sdev));
+>   	}
+>   
+>   	return 0;
 
