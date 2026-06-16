@@ -1,89 +1,66 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25FE35B654
-	for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 03:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735333C2769
+	for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 03:16:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781578981; cv=none; b=j9iaVYwwO+VjN4gw4BrJlSpVj3ZzcbqT0e8ajBiQwf62uHMZ4b8T+N//Lr5vO53vLNW56kzjcnX2ocTyCl4ZTsS5qLgeCkk+LsD5pvTnrg6J9BuFv5UuasFpUBH0T+Vexgx4zzyZxYnygMTtZLqQeWecJGd6Ji6TC/e/zU8Dq6o=
+	t=1781579779; cv=none; b=qcXpkn4VuM8ZSSi8O5dXgVhUFUMIK7YWKQHU7XJSliFrb9ZR7o1bPdTGCeCIZu4qVnU2RfsK2Vj25kn0kdPemjkKikK8UyMn2S/agTLLYAzwSpOu8f1aRNm6luLWIoyit+ZyWow+PUR/kSTV2D+Fjkf8QfTYEGgKH1zzR8PQyH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781578981; c=relaxed/simple;
-	bh=oyR9p5VtYwpI3FRcEw4r6hp2pV/vqJ+uviGUzttcr1w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=W95FLhy0LfC0jS780bgNntYCHVnBTPUeO4gUlD50SQ3e0hwhq8cP+3d0hBMcmU1o1flz6SSrWZQrPrcvvJxODNqE6HSX9Xz28u3NQKKZ0OvGpKoF/1PKBqm30MazvtB15+Ko+D3LzSSDN+EGoBkxUhqJ+hCtEInuwgYwcEAtJz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowAAHINfgvDBqUfbhFA--.8356S2;
-	Tue, 16 Jun 2026 11:02:56 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: djbw@kernel.org,
-	bhelgaas@google.com
-Cc: linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
+	s=arc-20240116; t=1781579779; c=relaxed/simple;
+	bh=qtqTjDdI6m+T4XN/N6CcVLUF+QBmCRwe8Yyo4kAe7/4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cru0DenjTszwCoQkAnxB/Ik7GTkHsjMVahJQLcUFJ8zkq0iwgAmj/58mL3aTaHqqjkMAGsLYGiv+pvHouxow1QPkaUL3ocLH1dOU4mO47IkSa3ciqZBhDdlGRlChwrVzTkkYRyajQBV6JzIt7nqbPyKHMYCvpLdAM37Hpxu58U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by mailout2.hostsharing.net (Postfix) with ESMTPS id 6A5EB10DD4;
+	Tue, 16 Jun 2026 05:16:13 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 44434600DC48; Tue, 16 Jun 2026 05:16:13 +0200 (CEST)
+Date: Tue, 16 Jun 2026 05:16:13 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: djbw@kernel.org, bhelgaas@google.com, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] PCI/TSM: fix use-after-free in find_dsm_dev()
-Date: Tue, 16 Jun 2026 03:02:43 +0000
-Message-Id: <20260616030243.1661791-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+Subject: Re: [PATCH] PCI/TSM: fix use-after-free in find_dsm_dev()
+Message-ID: <ajC__b2Z3W_8746Z@wunner.de>
+References: <20260616030243.1661791-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAAHINfgvDBqUfbhFA--.8356S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKF4DuF43Gw4fXr4kCFWruFg_yoWkWwcEga
-	4UZFsFgr4IyFnIkw15tF4fury293WFvr4xWw4xtFy3tr9avw4DJFy7uF98JrnrWw4rG34D
-	Cwn5Aryfury7WjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb4AFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWrXVW3AwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
-	6r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
-	AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCI
-	c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267
-	AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_
-	Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUUyEEU
-	UUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwoAA2owkLOi+AAAst
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260616030243.1661791-1-vulab@iscas.ac.cn>
 
-In find_dsm_dev(), pf0 is obtained via pf0_dev_get() which returns a
-reference-counted pointer.  It is declared with __free(pci_dev_put),
-so pci_dev_put() will be called when the variable goes out of scope.
-Returning 'pf0' directly while it still has __free cleanup causes the
-reference to be dropped before the caller can use the pointer, leading
-to a use-after-free.
+On Tue, Jun 16, 2026 at 03:02:43AM +0000, Wentao Liang wrote:
+> In find_dsm_dev(), pf0 is obtained via pf0_dev_get() which returns a
+> reference-counted pointer.  It is declared with __free(pci_dev_put),
+> so pci_dev_put() will be called when the variable goes out of scope.
+> Returning 'pf0' directly while it still has __free cleanup causes the
+> reference to be dropped before the caller can use the pointer, leading
+> to a use-after-free.
 
-Fix by using return no_free_ptr(pf0) to suppress the automatic
-cleanup and properly transfer ownership to the caller.
+No, the code comment preceding find_dsm_dev() explicitly states:
 
-Fixes: 3225f52cde56 ("PCI/TSM: Establish Secure Sessions and Link Encryption")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/pci/tsm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+   "Note that no additional reference is held for the resulting device
+    because that resulting object always has a registered lifetime
+    greater-than-or-equal to that of the @pdev argument."
 
-diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
-index 5fdcd7f2e820..dd4e0cb0c6aa 100644
---- a/drivers/pci/tsm.c
-+++ b/drivers/pci/tsm.c
-@@ -670,7 +670,7 @@ static struct pci_dev *find_dsm_dev(struct pci_dev *pdev)
- 		return NULL;
- 
- 	if (is_dsm(pf0))
--		return pf0;
-+		return no_free_ptr(pf0);
- 
- 	/*
- 	 * For cases where a switch may be hosting TDISP services on behalf of
--- 
-2.34.1
+Your patch looks like it may be an LLM-generated hallucination.
+Did you use an LLM to come up with the patch?  If so, please use
+an Assisted-by tag per Documentation/process/coding-assistants.rst
+so that we know to expect hallucinations.
 
+Thanks,
+
+Lukas
