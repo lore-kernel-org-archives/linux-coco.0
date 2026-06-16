@@ -1,199 +1,178 @@
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC255472760
-	for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 17:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E7C3D45D0
+	for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 18:10:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632287; cv=pass; b=DaGpw6Klj0alEE5hhumFuqatc5mEpBNBviqG9qZqBY1FHZgZyZQAsTOhUzhFd5s4HJma45AUNTY24Pc2P26V8YenSBe4kS1Pc0HjVO9kujxZH/qo1g3gNZQLxfmqGZ3O7uQGUfCmv6R3T/51Vt0SdeS6L6Lbu6wQrsYdKG8KXpg=
+	t=1781633402; cv=pass; b=tPEepU3Fz+GvXXEfhEv8PBXMoVLykVERIk3E1pT79JQHMoSI+xVHYvinmO7LT7Mw2OYWysYwttuMg/djq//2nMthljz1Sh/cHaK8wEXxEWZOuHu+xOVvMk9sL/wme0tfarP0fmgjGwo5nQzB1BQdbNpZsm8Y7mTHxKII2VL2PSE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632287; c=relaxed/simple;
-	bh=p2ANGxzNJ20KDUvX+I4Q+f5qJmFbZs4+5xfreNmKUKU=;
+	s=arc-20240116; t=1781633402; c=relaxed/simple;
+	bh=hbZ7AtqKeATB2r4kr93uGgpM+Y/zj6+leroFxw5uOv8=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b63swfTZpl4YKzJbHQE+HRCzYXGsRM7hWwBz79ewAJ+eYnUErrQJybL/9mngswKl63URkRRF//KkhDi39NXUn51RcmKtvDfChWth8f6X1VxLtuMeqIcHExMzmgjbQ+2wFt0TXApWaQWfGO5Xxi/VAaencMyHE0Vp9gqcziedYS0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ji92PBuk; arc=pass smtp.client-ip=74.125.82.47
+	 To:Cc:Content-Type; b=mARvxXTcT0/GAooakcWVe8PfJvarksBQaFEjlToPED4AelVkwNmr7hqGU4GdsG4/dxRh2EJTpw/XB4MEIEVtOUT9ztp5qUSMCei4IzVieW4j92cSQOksk/xA6wXzdi0lRusKhuLOYNflpfSmRfWO/o3x4IAvjSMeDobwo4/3wFY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D5QFutuc; arc=pass smtp.client-ip=74.125.82.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ji92PBuk"
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-13986d61b4eso2378351c88.0
-        for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 10:51:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781632285; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D5QFutuc"
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-137335bc3caso5951150c88.0
+        for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 11:10:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781633400; cv=none;
         d=google.com; s=arc-20240605;
-        b=jTDDiNi/i8EC+YF3k+13PSFFOIqtO1DS8u2EgjMuEw4Zn906eU97Wj+lWF+BNItzdI
-         umZMHUBDsknQvHggrLQijpqxJDjNnHOw3xOp5/PXspBJ3nwWxPHUyz9vcLGW0augHOxJ
-         5ab5KaXz/+W7oYYRGQCk13QPRermYC+Oh+tknpTWMOpNWG/7P+sAAWpzbusasQxnM8q4
-         3RYOKOlYLSVosc6N+ASmEUtXVqveAbgT2X0RzZ8nzsP1o36UAvXXpbNm77XeVNVgQIuk
-         DhTBWiMAv4kADdcJf8OnHVIedqyhGmN201EpcYw2t/mDGrCeHif64Ux1w68l/uvGsyOD
-         zRug==
+        b=Lk9oQ7YKiZr5iLQMt5ptCmVNrYqAw1ATTC6uZVDogKRFpHgrSSs+sCcZy6JniQ/PTD
+         SBGQuSozhB7DrdBYqSSO7rjbCzYD8thO48GUAquUq2zpXAhWjiMJIlkMK/bBlOPJ+2K3
+         GWl5RaS52YbBx5JgPst+Gz3wsxV6DMBaXM1ns3154O65hXS4EsOKWB+ZxiakxSzg/BIY
+         bKKnp1tz2t82wx/CRKstd0tPupsAoyct+HCrNxsSAMb3q+gdmkGtepFqICdpTIlfQAbM
+         d0rPEsu4U2yGFxiDxr0pGx/cXgDgLsUpmAKjY2PmR83zJTnaqjIp87b7miCrLF9X8ndu
+         ZNvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=vAJ+Zx927BzPJvAUqjNTscby/9Gt71bp8RVRdDOhQVA=;
-        fh=tiru2BOJ/PR1jE9RrVxr+p5yxhJEYkFMUPzSxXMmQ3U=;
-        b=DeBRJsVzJMUW7g0Rg5ToyqBeXum8jbn8sSm2tJJhPoDPLWNjTBSDnneI1XnpmJ3fMr
-         HkPRqW2jBwlCAhdMMmoG1t9jPtIpPT+zEUwIXIupSKT30wn4spDR4wKRndDN+BC4cA+/
-         pkmHDldOAYLOOvAVYQR5fMBZ7H2aMtdHz0MLtuYEP2vAHFBstUbbvmPWIvpYDfEAeFG6
-         iNJ3lPWuXn247qxohE6hfhIgAiHc0UzRcR8f2OiZSfOxNEaO8331gPGUJqiotOPLfYyw
-         cqvNJUqgUqsF2zoXYpvlGh/5+uM2gPeTOTDoUrYV6afbQJb2uYZE1zTYMNhmtAJnN2hn
-         G54Q==;
+        bh=o82nbH8071ZDGLm0iYK2gdlkX600tsvrzfNh6VLN4Fo=;
+        fh=PEiLEg6stAsYPNhOaSDO8fw2Rml2xH/XxnmvyGEc+AE=;
+        b=JFrgMO1w9jxX2eSpQOMIxchRQnyt2UDu7Drw29niz1f4QcoN8KWPRk2tcszEPgHvNn
+         qXArTazVVF07G9T5d+Iln2JxolmZk8ZAR+0xaS8c2bjlMb3uxxcjh8eaE2H3OD3P2XUI
+         r0+XEQeIiLRsi1LMbVzm9KZmaBR5avMLX+470oj5vXAX83rqPjk+A4jSAN5OrYzs8CJp
+         nJ8dYc4tQL6GhPt0DB0uStVgsCCUZp9PUvPBqXYvOvYYOO+LMRLFONRRZfA2YzbhuUJd
+         fzJxWpZHssycNgRa2cjE5x+z37jz1LKGVt2nlr+StU2MM+xY2ezh0R+WlFyl4nRPh6su
+         Wgiw==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781632285; x=1782237085; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1781633400; x=1782238200; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vAJ+Zx927BzPJvAUqjNTscby/9Gt71bp8RVRdDOhQVA=;
-        b=ji92PBukPdWxrml7y7UBSunZRfHoRy1y5oCjrmWstn8Evw0eGdd9JOcsREgYMaUKPx
-         sIBvnRmJMu338NC8GkI2zu7YFabJam440W6RNCmIqNgMFPoALDJH5rcQiw+fgjglQx/J
-         Ri2+BGpGMtYm8hiA8TKJgSok2gwCNCTnNT+N08x+xjSHRsBgXDgbbI4QRK4f8hci0Ehp
-         xwP9PgEAREAYtzKhxq64zUAKEEPLWsuG1Fz9tG/dYIoC+7orWn/uYW2D7j6aefq8JvNd
-         WfoX0PzcGOpvhmk8G61OANZ1K5C7CIN3Mkwb7mlu7UeSsoRZaKbtVvQwjJOHQGGmce6H
-         D/ig==
+        bh=o82nbH8071ZDGLm0iYK2gdlkX600tsvrzfNh6VLN4Fo=;
+        b=D5QFutucSPC5tF9PlGNttapmlFbnNOXbTHF8T2MoZTAdYr2lrr1s/TMa2k/PjPJKO9
+         Fg0KiWfNMrovr85xqRV79ARIXZHlFl2mUTDUAjXlPVnB22ZeHhEPQWuhAHowQKPRY/iC
+         R+SBmFzYUwBqZPIiHszn7zse6telj1jhaUeha32bSm/JHTPkCKtLqFJvtJYCeS1v4sMn
+         Doa+p8ln0z7vNTnWHZkjGSyyh9RGqL65u42x76HbrprnJmF76zoa6s6UkB3JgFbJuq/y
+         z0v/97a2rXasbeGP10pBAefQ/8Iv44xkHUC2pJGtoTqLUYvh+1S3/x2sXxyH/qApIp04
+         cxGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781632285; x=1782237085;
+        d=1e100.net; s=20251104; t=1781633400; x=1782238200;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=vAJ+Zx927BzPJvAUqjNTscby/9Gt71bp8RVRdDOhQVA=;
-        b=UN0ZLrGHmukcPn8LGDpWgPykWTcBcbJjqTUrEn/1PfzF2/r0bhCJVgIqSv79JIXvuY
-         JdIuXzdfGKzUZ1XrcGi0LXfEqLHysf0fXWXN6kA6m1O7AxYIsya5pt9vs1CzkeDFYiDT
-         xSZJkdu3/2ps0s+Ag2xI9NV3FyLhdw5uWhYOAYVs14qyYXmKNEB85AEax7MjPoOcmV+N
-         MSl+b9oAoqyq4SLCLDv/9S/5ZJyVyuGWqw9ksiU1++TMxJraSZvPGRUIo5U0TZKpIPuk
-         S2+mGvN6oAxZdZRAiI8Trm4PIC5/gwPr6DclagmdCw6Wknaszyh4NK+JmHUSRXw2HzUL
-         KJqA==
-X-Forwarded-Encrypted: i=1; AFNElJ+7VzPaQIq2CI5r+ubuCrbGJ9BXFwWj+0eC73m8qFjmcwW0NekYaB4U10uaggf6q0/oVug4xSdll86I@lists.linux.dev
-X-Gm-Message-State: AOJu0YxyMDekEWmN2Dv8W27vHMohs1Ow6oyYl3DjNWrI3scxM4ardOD8
-	6fnq75OK9Bj13oe9uWmPeK3TKUpAk/4oa+IA0MLn8zFUo6J+IHcCNtTwLmmARwqlYex+68XMBtV
-	mrAOQ5GTJkG5Zt7/Xha87AsmBKPxvPtoSSzpGO8lt
-X-Gm-Gg: Acq92OEN6/SIIAIdZ50Wvlh+mP4oP2//sz6bxIZ+qXdgVNFS317LD9SglBfIXvSuVuL
-	UgDvk7r4FqoXTjJnOLqaYPmjGgBFzmS0fgw4ia9kmXU+r8+JJBFlvNIbVv5TOLFCndmawNPZPLJ
-	/TXjS8F0YJpStPl8yutTLQeNcqHuDbfEfldS44RqDvSwwY0ojEUOUPfXSExjgkQjV9CLPQx8xGS
-	Nj/3a8br2JKMAopSLqraS/pv3Dn/EUZeEHfUqqXweFcrK3TENV/+5SsxdxjXqmBo4rOLnDgxmUJ
-	iXQC11ZlzXOeMSWzAUFiewQ5H19gU+rIQ5c2+4O2QXxxydnjLooZT7gfkGV7tXn8BnmyBg==
-X-Received: by 2002:a05:7022:6890:b0:12d:c730:c7f with SMTP id
- a92af1059eb24-13985f391b7mr2153523c88.33.1781632284036; Tue, 16 Jun 2026
- 10:51:24 -0700 (PDT)
+        bh=o82nbH8071ZDGLm0iYK2gdlkX600tsvrzfNh6VLN4Fo=;
+        b=OrfIF+m/evTJqKm4mTjnIjzIVCYVT1WIgUTWdurgrcu4variMjMcT3QDHBrqJQDFPt
+         QJSR2poE3sP0AQcR3BL12F+y6u7gL1qgostg0AN89R/yyTK3vUaolIN2l89Nfvnfi1kJ
+         9m3G4R9PYiPV+0oSLu8tObT8+SR7iuLo6aexuei1u/YOjcUiL6DwKvbeItnblMYRQu87
+         oGf3sOSV5/wiq0N069efpS4rH7avl/ObRf38bZlXt71w56iuSrCDYeRsGUGXODom4ZBj
+         XRrG4q9PfV7tzJODU9hm6sUsUyiSgcbGVzLamcf4dUxr+UCany7BoWmfIKOImuGScUVG
+         VMpA==
+X-Forwarded-Encrypted: i=1; AFNElJ/jENhNWkybu7o1r0CPpMGDAbBPnGYK9kNkW2QpTGPgvMR0XXCCgblrEgySfqUfhbtUa+J5GsJ4NWJ+@lists.linux.dev
+X-Gm-Message-State: AOJu0YzmBGlaqPgO/pl15zylYaGEjSC7LhExLl/KLoXLrxPP3/4CXHnr
+	O1kAU3gs/dp0C7VTf+QrmDhMX6CAaidSOVBf6/YGt56YCzBHUORzJcZI7BvCS4aAGxRCsARSsnS
+	HDj97oeflJldEF7kFM9vhB0Gu5qTf0mC6taIH2fdL
+X-Gm-Gg: Acq92OHFbjeOmqsDMQLQgJUm9Y24c4v5yWjrCWdirohfSp5fz3Zd7J0Kcbm8bB+wSrc
+	kad/Y3lwyAWb4mGVZF5kVHEDFYB3LHQCxkhfwhKdPBHseo4JoPB94G22Ng+q7kq95fJfJNlTLW7
+	LamW1Ub5XYBdWk101nbae7DWqn5JVmQ9ujuRTf4dwkWFaMAEI+mynz+HcH1HUIMtPVUHnWY1Nyb
+	ZDbELIk68sggUhA/IchZayrEZzFWN3q+vcpEswzOf5RKH6pUeyBQRp5ItWATAfSl6LFLCkoD3wa
+	/6vpjVp8x5rff8lHMOG3guqrmCWr7ZCcMb6RzKyz0VDIzJNEnWc00o/XEEacw22uTwMsifGBzAb
+	iT7km
+X-Received: by 2002:a05:7022:622:b0:137:9399:fc59 with SMTP id
+ a92af1059eb24-1398f69626amr23221c88.21.1781633399141; Tue, 16 Jun 2026
+ 11:09:59 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 16 Jun 2026 10:51:23 -0700
+ HTTPREST; Tue, 16 Jun 2026 11:09:58 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 16 Jun 2026 10:51:23 -0700
+ HTTPREST; Tue, 16 Jun 2026 11:09:58 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
-References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+In-Reply-To: <1e77f24d-315a-4f68-a109-2f4520343c0c@kernel.org>
+References: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
+ <ai_XK__RTXMCEcCG@raptor> <ai_aczmeH2IA6JaB@raptor> <ajA4z_Wkb93cTW4m@google.com>
+ <1e77f24d-315a-4f68-a109-2f4520343c0c@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Tue, 16 Jun 2026 10:51:23 -0700
-X-Gm-Features: AVVi8CeVvqhvGF5MX5YfSPvn-N1x5SmL7ZQyivueF-K8QCQbzjfdjv9TTd4B_6A
-Message-ID: <CAEvNRgH7Lk=z9NqcY4OZXv=y5SeCZHnDNcB0=kHfarjCA4ZPTw@mail.gmail.com>
-Subject: Re: [PATCH v13 00/22] TDX KVM selftests
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Erdem Aktas <erdemaktas@google.com>, Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
-	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
-	Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Adrian Hunter <adrian.hunter@intel.com>
+Date: Tue, 16 Jun 2026 11:09:58 -0700
+X-Gm-Features: AVVi8Cfci2aZVOJMaXs8XbxR0646nJUtiwZFbcmm9wi2jMlpzFimiOSyoy_glyY
+Message-ID: <CAEvNRgFQLEsKanKrj=ePHoShiY2cgQgxtGs_2CJcZHP=JOjidg@mail.gmail.com>
+Subject: Re: [PATCH RFC 0/3] KVM: guest_memfd: folio migration for
+ non-confidential VMs
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: Shivank Garg <shivankg@amd.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Chao Peng <chao.p.peng@linux.intel.com>, Nikunj A Dadhania <nikunj@amd.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>, 
+	Pankaj Gupta <pankaj.gupta@amd.com>, Fuad Tabba <tabba@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Nikita Kalyazin <nikita.kalyazin@linux.dev>, 
+	Patrick Roy <patrick.roy@linux.dev>, Pratik Sampat <prsampat@amd.com>, 
+	Ashish Kalra <Ashish.Kalra@amd.com>, linux-fsdevel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Lisa Wang <wyihan@google.com> writes:
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-> This patch series focuses on setting up a TDX VM and adding all code
-> necessary to run a basic lifecycle test.
+> On 6/15/26 19:39, Sean Christopherson wrote:
+>> On Mon, Jun 15, 2026, Alexandru Elisei wrote:
+>>> Hi,
+>>>
+>>> On Mon, Jun 15, 2026 at 11:43:14AM +0100, Alexandru Elisei wrote:
+>>>> Hi,
+>>>>
+>>>>
+>>>> I always thought that one of the nice things about using guest_memfd as a
+>>>> memory backend, as opposed to host userspace mappings, is that the host
+>>>> cannot unmap VM memory because of KSM, automatic NUMA balancing, hugepage
+>>>> collapse, compaction, etc, acting on the host userspace mapping of the
+>>>> VM memory, and outside of the VMM's or KVM's control.
+>>
+>> +1000.  It's not just "nice to have", it's a core design principle of guest_memfd.
 >
-> Unlike standard KVM selftests can set up the VM through guest registers,
-> TDX module protects TDs' register state from the host. This feature of
-> TDX causes problems on VM boot state initialization and the ucall
-> implementation.
+> Right, and I raised in the guest_memfd call also the rough idea of Alexandru's
+> use case of having non-movable guest_memfd pages such that we can support use
+> cases where we can hopefully guarantee that a stage-2 mapping will not just
+> randomly go away.
 >
-> In standard KVM selftests, the host directly initializes the guest state
-> by manipulating Special Registers (SREGs) and General Purpose Registers
-> (GPRs) via IOCTLs (KVM_SET_SREGS, etc.) before the first KVM_RUN.
+>>
+>>>> I think it would be useful to preserve this behaviour, even in the absence
+>>>> of confidential VMs (i.e, guest_memfd file descriptor created with
+>>>> GUEST_MEMFD_FLAG_MMAP).
+>>>
+>>> Just to be clear, I was thinking that it might be useful for both
+>>> behaviours to exist (migratable and non-migratable) for non-confidential
+>>> VMs, and allow KVM or userspace to decide which they prefer for a
+>>> guest_memfd.
+
+More concretely, are y'all pointing towards a
+GUEST_MEMFD_FLAG_MIGRATABLE, which will set .migrate =
+kvm_gmem_migrate_folio, and for now, error out for CoCo VMs?
+
+>>
+>> For the purposes of this discussion, we should separate the physical act of
+>> migrating pages from the features that trigger migration.  As I said in last week's
+>> guest-memfd call, I am a-ok with supporting page migration as a mechanism, but I
+>> am dead set against supporting NUMA balancing, KSM, LRU-based swap/reclaim, and
+>> anything else that goes against the goal of guest-first memory.
 >
-> To bypass direct register initialization by the host, we utilize the
-> standard x86 reset vector as the default entry point.
->
-> The mechanism works as follows:
-> 1. The host places register values into a specific memory region and
->    inserts boot code at the VM's default starting point.
-> 2. When the VM starts, it executes this boot code to "pull" values from
->    memory and manually set up its own SREGs and GPRs.
-> 3. Once the environment is ready, the boot code jumps to the guest code.
->
-> The standard x86 ucall() implementation uses PIO, but it does not
-> actually transmit data through the 4-byte PIO data. Instead, it relies
-> on the host reading the ucall address directly from the guest's RDI
-> register.
->
-> TDX selftests cannot utilize the standard x86 ucall implementation,
-> because the host is unable to access the guest's RDI register. Based on
-> this restriction, we considered these potential solutions for the TDX
-> ucall implementation.
->
-> 1. TDCALL PIO with RCX-bits Passthrough
-> We first considered passing the RDI value through RCX bits to bypass the
-> hardware's register protection, which could be the closest approach to
-> the non-TDX implementation as per Sean's suggestion[1]. However, this
-> approach is blocked by the software-side implementation: KVM_GET_REGS
-> currently does not support TDX VMs and returns -EINVAL. To make this
-> work, the KVM ioctl would need a test-only hack.
->
-> 2. TDCALL PIO with buffer indexing
-> To keep a PIO-based approach and unify the get_ucall implementation for
-> both TDX and non-TDX VMs, we considered TDCALL PIO with buffer indexing.
-> Since the ucall buffer is initialized prior to execution, the VM could
-> just pass a buffer index rather than an 8-byte ucall address to fit
-> within the 4-byte PIO data limit. The host, already knowing the ucall
-> buffer's base address, could then resolve the ucall content via this
-> index. We abandoned this solution because it would require changes to
-> the common ucall structure and impact other non-x86 architectures.
->
-> 3. TDCALL MMIO (Selected solution)
-> We ultimately selected TDCALL with an 8-byte MMIO data. This method only
-> requires initializing an MMIO GPA and adding TDCALL MMIO implementation
-> for TDX under the original x86 ucall path. While this diverges from the
-> non-TDX PIO, it provides the cleanest implementation with minimal
-> disruption to the overall ucall architecture.
+> Right. Page migration for supporting ZONE_MOVABLE/CMA, compaction, memory
+> offlining, virtio-mem and possibly some collapse mechanism if we were to support
+> THP of some sorts in guest_memfd would are all reasonable.
 >
 
-Sean, Lisa evaluated your suggestion [1] (summarized as 1. above) but we
-think TDCALL MMIO is better, what do you think?
+Background question: how would virtio-mem use migration in the host/guest_memfd?
 
-+ Jump directly to where the mmio is used: [2]
-+ And here's [3] how tdx_mmio_write() is implemented, with no more
-  throwing everything in a structure. It's also not macroed/prototyped
-  like you suggested in [4], but I think those prototypes can evolve out
-  of future tdx functions?
-
-Let us know so Lisa can try another option (if necessary) while we
-collect more reviews :)
-
-[1] https://lore.kernel.org/all/aQTcDH9LRezI30dm@google.com/
-[2] https://lore.kernel.org/all/20260521-tdx-selftests-v13-v13-21-6983ae4c3a4d@google.com/
-[3] https://lore.kernel.org/all/20260521-tdx-selftests-v13-v13-20-6983ae4c3a4d@google.com/
-[4] https://lore.kernel.org/all/aQTdTkMIukzt-YlA@google.com/
-
-> 4. A note on #VE and x86 ucall simplification
-> It is worth noting that the use of a Virtualization Exception (#VE)
-> is orthogonal to the PIO vs. MMIO discussion; rather, it is a question
-> of how much we want to simplify the x86 ucall implementation. A #VE
-> handler is one option to allow VMs use PIO/MMIO identical to the
-> non-TDX case. Alternatively, having an MMIO_WRITE wrapper macro, as Sean
-> suggested[2], is another option. Either way, discussion for this is
-> likely a premature optimization right now, since the PIO/MMIO call is
-> only used under ucall_arch_do_ucall(), and standard and TDX VMs use
-> different ones now. We should optimize this in the future, but for now,
-> invoking TDCALL directly is more robust and concise.
+> As soon as we mix in access/lru semantics, we're going into the wrong direction.
+>
+> Fortunately KSM is anon-only and not even worth a rant here :)
 >
 >
-> [...snip...]
 >
+> --
+> Cheers,
+>
+> David
