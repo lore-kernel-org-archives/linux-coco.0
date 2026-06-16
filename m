@@ -1,128 +1,128 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A6E47D93C
-	for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 17:07:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302793A3E78
+	for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 17:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629622; cv=none; b=WcFirEUuffNqU5bliNp8nc9BY/vGY7axeU/KshAU7yL1TQpUB06H8tfw0XEepD7wqYJEyrAWZ/tTdRZDb74Oq8cnX4IaklUAhkAOEDAQJF/n1OeyLkxQh7CkwINMWjR40xUZfaBCU20GTPt355xvQPCY+FlCwjDA7i6mrzS9AQ4=
+	t=1781631275; cv=none; b=IH16ZkuAvRmSeZAsCycJFpm8RG3vu/dZyeGq9sWRSkYMs+BPnJCcPUfGE+aWnsxAScFxV1lB++aBGeNW61OpCzrZKuYkSI7AUb01rx6P87SEktE79y76e40V9kwThOf6sKdikGGpQw1iZhFsxWqf4JY0IhGU+9rp0d6UzlLj5f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629622; c=relaxed/simple;
-	bh=7g+3VFOqzLTevM//CB6btZhXREAjis1zBYeItrSo5zk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OGCwtgx/RUsmshsjDjqk16jFK7jYpQD8OMRW4zPTB/T8Qn6spXBTP7u0WXCKjCHz0wVgMp6/0gSNnxV9KI/obaDnWhEanrNvmbDbPz/AZ6NqDxFI1qdey9uWmsYeXzDzu/LswkCXV2Z8Eg8Vl1CMMZLssaAwT/t6dQmRcA2LQgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oMmjQPFM; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1781631275; c=relaxed/simple;
+	bh=hYMsCM6MsLNsadLZJMLyNz8OZ6JWnCIkL6qZbfi8A5g=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=dELy25Y1bdx5DPPR5kKNOFbydwWRLLZfbTSBC6FvLKS8lzFSV01FH5wnFb8MTk+7ECwClazLwY77MyGRZcke1gukOjNNM3DHUKvFhfNiPncN/je2VmGWQKZdQO9WmbRHuJKqwcQwP0ZKSZ8WQ4i0W9nECuOhZ0DYASn82C8F9IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hxL0d9O7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oMmjQPFM"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8423f3e4728so3444912b3a.2
-        for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 10:07:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781629620; x=1782234420; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MuFT5oHokDW0bk02xVZpBpyZ66QlfdjnHGkLbhNe2ho=;
-        b=oMmjQPFMGmHwBtAQ5563U/BhQj2w8Z7ScBtBBqLA8uDSVSdQtr0ii1qylFnONZiyL+
-         Av4POM9UGnWCsb71PXzb5xPgcC8M8iIvzDUJaYhmFk9mZ8SbsQxxd2MukFHISZTU56Os
-         oHiFEuQ4N+VEly2blagqKht07h0sxC2k8bbd9p/8qayKUgYeIdj0dBYfIsq2p8mj7fjx
-         gjAcwUaOlVR0Ulc5PxLsmmSIqwwxZAq6QMiCtC1wWbfhjPV5WeeGq1pAi8VXcwVlOX6j
-         +N3QEpKbPlIm53WEXa61OxKU+GCDOQnq3qlZsbQN4NPa9K+Mxr3Atm/hEiE0wJMCjvhs
-         JvLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781629620; x=1782234420;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MuFT5oHokDW0bk02xVZpBpyZ66QlfdjnHGkLbhNe2ho=;
-        b=FUJWJoeyJi6Q/j0LdzrmtTaAem75iRMo+kN5ac+lmrooIq8wo0rw0WAbE+4TnO6tmo
-         +wsaGRvuDvC/AeM7Kll5+qbJ/5ccQ7MjzOUTaO8AyB1Z88GLcAEienrRxM1IpyNn++Gj
-         jyt5K+dEm1CLUcH3kpV3GZdhChQN83zeh3F4zTBFT91WjWPNehtVrydGkO9zz1n05cHl
-         zXnq7WochmVSjUSPdMHYqXOof4Q28i6z4r72zLSEhDZI++gC4VKmk0Hbs7ia+Cqx5gdI
-         vGXvp4hxHHgu5Y5W5kvpsQjWzLyEix1mPcpyCVnZJkZ5HjVm5FCTkQJRl4d+EZGcQ3xI
-         facg==
-X-Forwarded-Encrypted: i=1; AFNElJ8uOyXliy4ivFaZP09zn/xT4ZPsBE9Jt96Hx2GlspdheefXBf8QVhaZFQImYssTCld56oku+/Amc+tC@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz6KnRR1dibEQ5RY+eM9w1N/F0DK2ajOmyHsyqa5S0XVkFlnlFg
-	Ig5tPfobg5mmuejkYBOPIX9CnD3POXYYRSqoK1cguhj8cefcoqhatW3XB+xb6visnRN0DG4DLlS
-	PNjC6bQ==
-X-Received: from pfbfj40.prod.google.com ([2002:a05:6a00:3a28:b0:842:3d2d:1e84])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:600a:b0:841:dcb5:e6f2
- with SMTP id d2e1a72fcca58-84524561d40mr12669b3a.23.1781629619966; Tue, 16
- Jun 2026 10:06:59 -0700 (PDT)
-Date: Tue, 16 Jun 2026 10:06:59 -0700
-In-Reply-To: <CAEvNRgFPKC2uOMaams7SS9B7LxvfU4h8DrPM5vXFb=pmXsgPbA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hxL0d9O7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C941F000E9;
+	Tue, 16 Jun 2026 17:34:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781631274;
+	bh=LCWDQZIZGap6nQfAuNOlbgQoRHiTvNOD0M6LQaSMPRQ=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=hxL0d9O7IMzZTkVthCwIGi/xvkWajNIs1nxIdoXTJTD2Top9LHTkD4guNlSAXwiOR
+	 89IBGZoD/XVhbVG8sjp4bNs1ThCbEr/XL0nSzlOH7uP3urNe2hgoVTmMK8QWyc22Ig
+	 Rk/10VLxJOeb+QXocx79D+h961A4HZTSPJtBqlyS4jB1Sh5pDqlCOnmURiOJT36jMh
+	 dITa1LwvTMLHhbvO84z6dEDwsG7D2/1D1GstJpxSffwvxHj6LZXINhe8g/WZoQ7E+e
+	 pH2lMY1IJ4whv1IzaaBFQYn/O+y9SRf2UgyEK9Kwy6GzHlWD6BNtrSgmSMOycxp1EF
+	 nWCMl/ThOcaJQ==
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id D744AF40082;
+	Tue, 16 Jun 2026 13:34:32 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Tue, 16 Jun 2026 13:34:32 -0400
+X-ME-Sender: <xms:KIkxargcq1-eOz0iu7VK-yQ1MkhGwiZMM7Ko9qC1wamLJLC9SNP43w>
+    <xme:KIkxaskdxGMngd-hasE64VoS3WDP29v1oGd-lTTkL_acMo4KmL2HMx6_-2FII7hBf
+    ezS8YnKh182gIdl6xv4tLL5MdozK3V3E41N9ViUBj4YnayaVUEvNQ>
+X-ME-Received: <xmr:KIkxaoPEb7FYdfzoQ0do0tJC8PhL_KXjOuc11EqLm7W0YQJGWjTjNPyhoKH1gIs6BTP3QGYU1IbU9_eIT6wTHdOQt-nvwwzSlqc>
+X-ME-Proxy-Cause: dmFkZTEZjNKkieDC5FUSjm8JTujve4vXzyj5XF9lUPCu95PoeIO7Z3QF61U57lMx4k7gk3
+    r8n4HzqfjWRTZxAzycXejqSIkw8J09WeBk6YUVYVCVzkW0EuUQwVh8UZ+uqdwm7OKWbFx4
+    Gzw/llBoZM6RmeJ1yg7YKh3ut6CTpDAm3u+ZrDq3itLchsT+gEQhJJDc2X8iFgUpFT4LiT
+    rqvE5keh6M3mGdpBrtXISp8gRtp69lhubyDzYx3E9sG+o659tQNt+oig2xL7Dl/X6VUrD8
+    tYlJGGBTMCCJluSXh+de6/vRLMXf6JAOE7iu98kud2i+/fijeA1S7vbvP83Z3A4VieCCHf
+    sOHT5VsxhqY858tJta3Kfyu2Tpdam0BRTFYy38u/KTEfIgE65sB98EwSu7vQqO01z3MzoS
+    Qd8EkW7Ll9yllaK2hk/odU0MhaiQgbyIIidR70pd5ztf1P0vFUP+Gvm7OHdD5Rb8+xreLj
+    9Y4+Epnh7m9vczsPUvHV3Rn5escMp0RUndhFENRS2+waAvR5A0DM/KLpjqJbyVX7xN4Bt4
+    VL6dsNqcn9be0t7WUFNOfj/Rr/96Tdh4qUuv2VxYrByXd3iU7BxKHCZhv8X18JlJCBnsEa
+    CcjJAj9jkz6clJEgD0IXs0gnEJLIRKbWVYRWOykW8nI+N50Qx2ZuMrfkQ2aQ
+X-ME-Proxy: <xmx:KIkxavHuo_wpxAmKsYbAAGuJ7rdEfDpHxOEFckgw4HLHjXMzD-0Hrg>
+    <xmx:KIkxamtX2qXOgUoNOzfGwIYn-XEJoxfyabBYYKe7cguD81v6wp3sGw>
+    <xmx:KIkxanT669UmRZvdDYKz_Nt88tlj5hvPgjXcM5cPHLb7VsT0rEggvw>
+    <xmx:KIkxaoP_1K6NoMIvPoYai2gzURwctLa6ZCRoYYgBCvU9CFxFaYW-fg>
+    <xmx:KIkxat6BL4kMTSA7gV3NxaxbG87Q90eBR9QCPvO-3jkBa7q2ZtnEh7rE>
+Feedback-ID: i67ae4b3e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 16 Jun 2026 13:34:32 -0400 (EDT)
+Date: Tue, 16 Jun 2026 10:34:31 -0700
+From: "Dan Williams (nvidia)" <djbw@kernel.org>
+To: Lukas Wunner <lukas@wunner.de>, 
+ Dan Williams <djbw@kernel.org>, 
+ Ashish Kalra <ashish.kalra@amd.com>, 
+ Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Vivaik Balasubrawmanian <vivaik.balasubrawmanian@intel.com>, 
+ John Allen <john.allen@amd.com>, 
+ Bjorn Helgaas <helgaas@kernel.org>, 
+ linux-coco@lists.linux.dev, 
+ linux-pci@vger.kernel.org, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ Yilun Xu <yilun.xu@linux.intel.com>, 
+ Zhenzhong Duan <zhenzhong.duan@intel.com>, 
+ Alexey Kardashevskiy <aik@amd.com>
+Message-ID: <6a3189272d3ce_9b8551008b@djbw-dev.notmuch>
+In-Reply-To: <7bdfaf14d7e5a466f3f650150c688a60e947a7a9.1781527060.git.lukas@wunner.de>
+References: <7bdfaf14d7e5a466f3f650150c688a60e947a7a9.1781527060.git.lukas@wunner.de>
+Subject: Re: [PATCH] PCI/TSM: Resume device to D0 for CMA-SPDM operation
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
- <20260521-tdx-selftests-v13-v13-19-6983ae4c3a4d@google.com>
- <CAEvNRgHEq-hHcTivUw8TYBeMu-RpS=Ho4DXaNXKQKLPL_biTgg@mail.gmail.com>
- <aiMOWkiVBqoQDAPd@google.com> <CAEvNRgF09SfDm=OgbrS8-wpfxbNecQkqAQwf1ELq1jWu7NjbUA@mail.gmail.com>
- <aiM2Nm9Eh68mIVX3@google.com> <CAEvNRgHjno=XDnMpTvZcNCR6D5RAi1rbynrL4CnnEa7Y-M3VLg@mail.gmail.com>
- <ajFfb9u6dU47Nj3v@google.com> <CAEvNRgFPKC2uOMaams7SS9B7LxvfU4h8DrPM5vXFb=pmXsgPbA@mail.gmail.com>
-Message-ID: <ajGCs3W_zMyFmJjR@google.com>
-Subject: Re: [PATCH v13 19/22] KVM: selftests: Finalize TD memory as part of kvm_arch_vm_finalize_vcpus
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Erdem Aktas <erdemaktas@google.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
-	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
-	Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jun 16, 2026, Ackerley Tng wrote:
-> >> 1. What do you think of a kvm_arch_vm_finalize() that calls
-> >>    vm_sev_launch() and tdx_vm_finalize()? My key issue is that
-> >>    kvm_arch_vm_finalize_*vcpus*() seems to be for finalizing vCPUs
-> >>    rather than the whole VM.
-> >
-> > Key word "seems".  I'm pretty sure Oliver picked kvm_arch_vm_finalize_vcpus() as
-> > the name in commit 8911c7dbc607 ("KVM: arm64: selftests: Create a VGICv3 for
-> > 'default' VMs") for the same reasons I think it's a good fit for coco VMs: like
-> > finalizing TDX VMs, initializing the vGIC effectively finalizes vCPUs.
-> >
-> > We could rename it to kvm_arch_vm_finalize(), but that won't change the fact that
-> > we'll need to decide between automagic vs. manual finalization, and it definitely
-> > should be a separate discussion.
-> >
+Lukas Wunner wrote:
+> Per PCIe r7.0 sec 6.31.3, CMA-SPDM operation in non-D0 states is optional.
+> The spec does not define a way to determine if it's supported, so resume
+> to D0 unconditionally for the duration of a CMA-SPDM exchange.  Vivaik has
+> talked to Windows engineers and they said that Windows does the same.
 > 
-> This definitely should not block this series.
+> Note that for plain DOE operation, it is sufficient for the device to be
+> in D3hot and its parents in D0 because config space remains accessible in
+> D3hot.  So CMA-SPDM goes beyond the requirements of plain DOE and hence
+> resuming to D0 needs to (only) be done in code paths which use DOE
+> specifically for CMA-SPDM.
 > 
-> It's coming together for me now with your explanation:
-> kvm_arch_vm_finalize_vcpus() actually means finalizing vCPUs! vGIC ==
-> Virtual Generic Interrupt Controller, which has to be done after all the
-> vCPUs are set up. Since the name is describing where in the VM
-> creation/setup flow the hook is called (after creating VM and after
-> creating vCPUs), maybe something like kvm_arch_vm_post_vcpu_create()?
-
-No, because I would expect post_vcpu_create() to run after creating each vCPU,
-not after creating all vCPUs.  E.g. see KVM's kvm_arch_vcpu_{pre,post}create().
-
-> Renaming this to kvm_arch_vm_finalize() makes it sound like it is
-> finalizing the VM, but this function shouldn't finalize the VM since for
-> CoCo finalizing the VM also loads the guest image into the guest - deals
-> with memory, not just vCPUs.
+> The pattern used herein for runtime resume is the best practice introduced
+> by commit ef8057b07c72 ("PM: runtime: Wrapper macros for ACQUIRE()/
+> ACQUIRE_ERR()").
 > 
-> 8911c7dbc607 ("KVM: arm64: selftests: Create a VGICv3 for 'default'
-> VMs") also includes a test_disable_default_vgic() function, we could
-> also use something like that to skip CoCo VM finalization for some
-> tests? Maybe that's a good middle ground.
+> Fixes: 3225f52cde56 ("PCI/TSM: Establish Secure Sessions and Link Encryption")
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> Cc: stable@vger.kernel.org # v6.19+
+> Cc: Vivaik Balasubrawmanian <vivaik.balasubrawmanian@intel.com>
+> ---
+> We're in the merge window for v7.2 and this isn't super urgent,
+> so it's targeting v7.3 via tsm.git/next.
+> 
+> Technically I'd have permission to apply myself,
+> but I wouldn't want to without acks from Dan and AMD!
+> Thanks for taking a look!
 
-That probably won't work well, and in practice it's just shuffling deck chairs
-on the Titanic.  For vGIC, and pre-create hook works because the tests that opt
-out of automatic vGIC instantiation want that behavior to apply to all VMs that
-the test creates.  That's not the case for sev_smoke_test though, because some
-testcases need deferred launch (test_sync_vmsa()), whereas others can use
-automatic launch (test_sev()).
+Thanks, Lukas. A few questions:
 
-The other wrinkle is that SEV at least needs to provide the policy, which again
-varies per VM within a single test.
+This says Fixes, but I assume it is based on inspection and not a
+report?
+
+There are no upstream usages of pci_tsm_doe_transfer() yet, but the ones
+in flight would suffer from the "D0 -> D3hot -> D0 -> D3hot" bounce that
+you described to sashiko. I.e. the runtime acquire should be done at a
+higher level.
+
+I think the natural place to add PM_RUNTIME_ACQUIRE() that covers all
+cases is withing pci_tsm_connect() and pci_tsm_disconnect().
+
+I also think failure to power manage the device in the disconnect path
+should not be fatal to performing the rest of the cleanup.
