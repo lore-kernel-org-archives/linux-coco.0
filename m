@@ -1,143 +1,151 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D2247CC80
-	for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 18:45:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F934466B4C
+	for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 18:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635505; cv=none; b=hqJZhy7/OH1aQkp1mhfcWhDM3l0iQMnh2ihO6iPGITGZ2OCDIHX2zM6nvAUtXXv/vlXIrM7nrMEF4jRWJQkbNN1IB8YCXaIe0QKouR9prbpdrRtfef12KBXMEcWyZoLWsYnZ7y6oqtlqJ931Congny9FrdGKyqk3/b0+P8DfFZ0=
+	t=1781635637; cv=none; b=b0VgzKjtig4mLcE4u3N7Li52ruPc2fvCr91QQHumzqGUjgrvrC20MwXpr8VEGcZGs9VRF0fCrUyGapYQ61LFvoDVZeOeZVgA0xdZPslFe5aZ7+gHr6hRFxubJm40SmRuaF6qKYgYIkSWJBQHb0+EXPpnM7TvYxa03PtwUJInbnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635505; c=relaxed/simple;
-	bh=R33LmJr8q6kqHkYQWLGz7MbJ2uGNUERbltu0/vzmAZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UWiSvcadZGu4B9IBohuPeGT9AXA3/Jq6TNRWgaWpDbWPpbVA2io3fl081+YRNQO6xo+UtyAY2nbS9UmQDVpxAculTyKCNT7x7Hspw++z/ygB7Q/ldPrK882zDQRzlunJijW8430V8ZLf8dm5sr5JF5blURQxUxYcscHKZcRtN98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Pwie9d5E; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1781635637; c=relaxed/simple;
+	bh=buTnY0ETqHFz9mHm8vPYqufrzuCw85DNR5Yn8mLP9Ew=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Fvg1U1ZGnrf25frtLMipj5gnvaBPUgWe/mz52GQeHq/uWchiZTHFE38aMX7hx6Mbcp01zURAKFRRanxWkRqj34/KRrFZ9+YIgk5SZaQ0BHt0Ueb848WotOtagU39jtljUtRClj3YE9gvNm/KrVSkswZPZ+j4WtKyQ5FXSZNTHpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LZjDGJqL; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Pwie9d5E"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-91ae31bbaa9so209723485a.1
-        for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 11:45:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LZjDGJqL"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-842211d6e48so5803109b3a.0
+        for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 11:47:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1781635502; x=1782240302; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=G18mYJrcuFPmmxraU/yFJy+0YudgzW+4bZ7GypMnwpM=;
-        b=Pwie9d5ELq1gVZ8l3wcDNbMZw/gXX0r2bCtTRh2KutC8u/UTLMkK7dVsoESeSvnXbh
-         re6WvXWlQ7GM9iZIrYo1agWa7VWeX1FlbQa+fvEIRINs/Ugzzydav5XMbYac3+bN/izj
-         gi8esPoXPKdwatz8nMQt4wjP6LeNqm/LHzVOzO1wHFBUbFKji7F/kODFL322Vu9FCoBW
-         WeUMN8mRSqSlM/WwIReY+BIldRjt5w5KmeS5IeCbMFk4YW9ktT+TSEOhvYjWp45m7Ff1
-         5n9/KwlGXGwNy+208AVxvow3IAcUniAXS+TpW2RBZHU1OeLcDQZuJtBNhFPzQwpe6qj6
-         3J9g==
+        d=google.com; s=20251104; t=1781635635; x=1782240435; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vkLeRGdGFIEMQT4xMcSv70D3LKPlWrgZN2ISeIkos5o=;
+        b=LZjDGJqLydcA7WvqC233y4LVZ9JkWIagm7kw21mqR4/WBpQq3bHdkKTz3Q+ulQMFfC
+         jiNXv+gtYtT6fzBSGkBQDK9rxrbIqYsrLWpP0F9rnyF4Zm51xkw+Ti9RKfALhKCUM2lp
+         Jf3oFp1eOoKmfXpgpgyFRObrpIu6UvtvvaJq2ZvrHKYOPWUaixQu2nTtCF4DCiwI4VtC
+         VvLOwsB7jJZ6u0ftU9sF78cLe67LUaIf8kvVDaMroojV6/Qjdh5kJAbVcHOpeyReMPeo
+         tOX0eAsWuWB9nE8txNl4uCzPzxr8ZKtQ7OUEHKZQs8+qW5i72UPRoGIHNGtkJQ4AMPTg
+         TGNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781635502; x=1782240302;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G18mYJrcuFPmmxraU/yFJy+0YudgzW+4bZ7GypMnwpM=;
-        b=K7Hx5EP9h7LMSWwuCNeN464bmu8C8OtOv/ODdLiE8ER5pKhJiofOlsYmfomuDExvPJ
-         C4qLOsUcF9k1t43rYJEVsXVFX3A3RW2FNt2fsmEkzSjA30VxceRoPYYp5odwipLIa4bG
-         Epb6vfII13g2DqR94trNIoiJdZIbyF0+dS/UC0OPy3oUvaHNgatQ41bbL0HKYOsUtgG7
-         aXhb2tGKDzyOoa5+gFvSyINFLsT0yLCXuTp1ub7/rrfZHidO2KIdR3wQpFX8CAdiBDmD
-         ecL8hN2RmGqj+Lez1eFZOlVGsARI9X8klnD+ZaGutrX9LNdtLBX1LW5EfV/RJH+jH9hy
-         sjtA==
-X-Forwarded-Encrypted: i=1; AFNElJ9FTvbum3Tiy2bxClst7FxbxxtUpnSZg7OmoqfzqgkOA7o+x55KoENrmmSrW5WOAJPNR9IIIZFJ6B7Z@lists.linux.dev
-X-Gm-Message-State: AOJu0YynKrtFtiGbq5gk/BWPvoJjaw9f2J+S7x+7GMueJs8B+lHe7+ys
-	LIfzYX2/dyz6ea9GKTA7SJqZZMzunfcpqeFw6oAlTrmf65sn59oLvYsI14rEUEbdMzI=
-X-Gm-Gg: Acq92OECjIMB0yPcr7fWQMOViHnhRMSvpDOHxpeR48Dy3JUvYAN07OR9riTa7eJALQc
-	NOybPgaG0nyX6Hd0G6KGOPgoVkB8EkTb1VcBD0x9l5TwCDAH1gOaKFuFB6A7RWrn5hP238KsMoa
-	qjPPuWzVwj2pgFfg5iUax/OeYHWYPqPKtgKHkgqeQf3jFKhlaRaxWWTM+Vl6VEVOo+A/TLitpYM
-	K8qBI7GiFJZaLzxx8DK6AHVkgh8z+ebulpFhe0qewqgR3ND2E6dxbr4sHkgFoRCIe516Vy6HGnV
-	ZsLKu+eofq8OybsYdcRpza1fBOoK7l6aITuBmpC/e//egvFxhzlfiUsqWZiV3UfEKqDluIPJPT8
-	iw+XudSEJm2cbfOtBaG/sFnqnZA9cu+3Gv/LKpvW7nGb2OPAye9Kg8lrNQbh9nvcsmRj5vErnbG
-	VPZSdJ4EDXksAJWxnirT/6bjRSi2ZD7oE/egNki9VmB0B+ZR6KscbW8o3G0yKXeBLlGcuxPFkTe
-	K2Iiw==
-X-Received: by 2002:a05:620a:2908:b0:915:d32a:1cba with SMTP id af79cd13be357-91dbc52c4damr20136485a.27.1781635502015;
-        Tue, 16 Jun 2026 11:45:02 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9161a00af50sm1669672285a.30.2026.06.16.11.45.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 11:45:01 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wZYmS-0000000GgQZ-3dnI;
-	Tue, 16 Jun 2026 15:45:00 -0300
-Date: Tue, 16 Jun 2026 15:45:00 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Kameron Carr <kameroncarr@linux.microsoft.com>,
-	akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, rppt@kernel.org, mhklinux@outlook.com,
-	linux-coco@lists.linux.dev,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>
-Subject: Re: [RFC PATCH] mm/vmalloc: add vmalloc_decrypted() and
- vzalloc_decrypted()
-Message-ID: <20260616184500.GD3577091@ziepe.ca>
-References: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
- <aibhnnDFQTHWMEFe@arm.com>
- <20260611114954.GC1066031@ziepe.ca>
- <aixGqCqKkQeDfUST@arm.com>
- <20260612181807.GP1066031@ziepe.ca>
- <ajGTPelKLhgFqh7F@arm.com>
+        d=1e100.net; s=20251104; t=1781635635; x=1782240435;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vkLeRGdGFIEMQT4xMcSv70D3LKPlWrgZN2ISeIkos5o=;
+        b=E9RG7KuJXUZEftM/ygpmHxdKtFEHd8pS2TNprWTaVhQaNPF72Gtv0YfiYZnh326QiO
+         fLxv2PgqzlFB09MwFZgmrcnUjtzCDkszZswes5Aw1X+qN6+VGRh7bWLpQr7a9fljCi95
+         XvrBCQjjmw12whgKRsUF+vGeIr6Ug0mikvQBHzbK1w+rYPCWPNJuZO8zN1vXbTWJ68Qn
+         7moCUOGfDRfMi6p82akCPv5Fq4XBE48Vn1NXPui59qxeeaTUtI2nZ3w0r4fE9Wlk0CeW
+         ZXEh8lGIWOe0enBW5Qq5X7dCCAeu5mc3XCer8X6I3fREOtVh8b3ZbKTIb9Hm7Z8ogTmG
+         3AZg==
+X-Forwarded-Encrypted: i=1; AFNElJ9qD/UO83Zi4ibEHTJ6apuqlsriwRamoNcSKKuPAzlL9soASDxJXWA3snjh6otrXUbkJbi/OC0sW3c7@lists.linux.dev
+X-Gm-Message-State: AOJu0YxsuvjSxvAy5j7NfTjRLoHZEJXZGjTME4n4SCGeDUDGVkcWyuYd
+	7SK3L/hzYI3YalvFrEtru//3HXCfcQalWst+TaImGjHDnBB7YQmOn7/PbT83vQDr8vNqJ/S02zD
+	AVaFAqA==
+X-Received: from pfjc12.prod.google.com ([2002:a05:6a00:8c:b0:82f:6a26:5f78])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3cd2:b0:842:6849:2192
+ with SMTP id d2e1a72fcca58-8452459cb0fmr338659b3a.42.1781635634170; Tue, 16
+ Jun 2026 11:47:14 -0700 (PDT)
+Date: Tue, 16 Jun 2026 11:47:13 -0700
+In-Reply-To: <20260521-tdx-selftests-v13-v13-21-6983ae4c3a4d@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ajGTPelKLhgFqh7F@arm.com>
+Mime-Version: 1.0
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com> <20260521-tdx-selftests-v13-v13-21-6983ae4c3a4d@google.com>
+Message-ID: <ajGaMb6Lrk3OS8B4@google.com>
+Subject: Re: [PATCH  v13 21/22] KVM: selftests: Add ucall support for TDX
+From: Sean Christopherson <seanjc@google.com>
+To: Lisa Wang <wyihan@google.com>
+Cc: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Jun 16, 2026 at 07:17:33PM +0100, Catalin Marinas wrote:
+On Thu, May 21, 2026, Lisa Wang wrote:
+> diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/selftests/kvm/lib/x86/ucall.c
+> index e7dd5791959b..c8e3418d53af 100644
+> --- a/tools/testing/selftests/kvm/lib/x86/ucall.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
+> @@ -5,11 +5,34 @@
+>   * Copyright (C) 2018, Red Hat, Inc.
+>   */
+>  #include "kvm_util.h"
+> +#include "tdx/tdx.h"
+> +#include "tdx/tdx_util.h"
+>  
+>  #define UCALL_PIO_PORT ((u16)0x1000)
+>  
+> +static u8 vm_type;
+> +static gpa_t host_ucall_mmio_gpa;
+> +static gpa_t ucall_mmio_gpa;
+> +
+> +void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
 
-> > The entry point is dma_alloc_noncontiguous() and you get a scatterlist
-> > back.
-> 
-> Yes but not scattered pages unless there's an iommu behind. Anyway,
-> that's an implementation detail, something like
-> dma_alloc_noncontiguous_vmap() could allocate scattered pages as a
-> fallback.
+I think we should use an x86-specific GPA, not the first address past memslot0.
+Unlike other architectures, x86 has a nice swath of addresses that are pretty
+much guaranteed to be unused, thanks to selftests creating a local APIC by default.
+On the other hand, the chances of a collision with a memslot just after memslot0
+are decidedly non-zero.
 
-Oh I never noticed it deliberately returns only a single dma entry. I
-think that could be optionally weakened without alot of trouble
+Note, because CoCo VMS don't support read-only memslots, the TODO in __vm_create()
+can't be resolved for TDX using the suggested shenanigans.
 
-There is also dma_vmap_noncontiguous() already, so I think the main
-framework is there, though it seems like it needs a a bit mmore features.
+I vote for either the I/O APIC (0xfec00000) or HPET(0xfed00000).  We *know* TDX
+doesn't support an in-kernel I/O APIC, and the odds of KVM selftests ever
+implementing an I/O APIC are basically nil.  Ditto for the HPET.
 
-> Currently, something like netvsc_init_buf() just does a vzalloc() and
-> passes it down to vmbus_establish_gpadl() which knows how to interpret
-> the channel encryption status. I assume with the vzalloc_decrypted()
-> API, that info needs to be interpreted at the netvsc_init_buf() level to
-> know which allocation to call.
+> +{
+> +	vm_type = vm->type;
+> +	sync_global_to_guest(vm, vm_type);
+> +
+> +	if (is_tdx_vm(vm)) {
+> +		host_ucall_mmio_gpa = ucall_mmio_gpa = mmio_gpa;
 
-But it doesn't end at alloc does it? hyperv will still have to reach
-into the vmap and convert it into an appropriate IPA to pass to the
-hypervisor. That really needs to use the arch helpers the DMA API has
-and those should not be called by any sort of driver environment like
-hyperv.
+Drop host_ucall_mmio_gpa entirely.  "host GPA" is rather nonsensical, and KVM is
+responsible for stripping the shared bit.  You can actually drop ucall_mmio_gpa
+as well if we go with a hardcoded magic address.
 
-> If we move towards a dma_alloc_noncontiguous_vmap() API we need vmbus to
-> encode the encryption requirement in the hv_device::device somehow so
-> that force_dma_unencrypted() knows what do return. 
+> +		ucall_mmio_gpa |= vm->arch.s_bit;
+> +		sync_global_to_guest(vm, ucall_mmio_gpa);
+> +	}
+> +}
+> +
+>  void ucall_arch_do_ucall(gva_t uc)
+>  {
+> +	if (vm_type == KVM_X86_TDX_VM) {
+> +		tdx_mmio_write(ucall_mmio_gpa, MMIO_SIZE_8B, uc);
 
-Yes, they would have to act like PCI and mark in-TEE and out of-TEE
-struct devices properly so the DMA API knows what to do instead of
-open coding a copy of all this logic in hyperv.
+s/MMIO_SIZE_8B/sizeof(hva_t), because what you're writing is the address of a
+pointer in the host virtual address space.
 
-> We have the DMA_ATTR_CC_SHARED but that's not interpreted on the DMA
-> alloc path, 
+> +		return;
+> +	}
+> +
+>  	/*
+>  	 * FIXME: Revert this hack (the entire commit that added it) once nVMX
+>  	 * preserves L2 GPRs across a nested VM-Exit.  If a ucall from L2, e.g.
+> @@ -46,6 +69,13 @@ void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
+>  {
+>  	struct kvm_run *run = vcpu->run;
+>  
+> +	if (vm_type == KVM_X86_TDX_VM) {
+> +		if (run->exit_reason == KVM_EXIT_MMIO &&
+> +		    run->mmio.phys_addr == host_ucall_mmio_gpa &&
+> +		    run->mmio.len == MMIO_SIZE_8B && run->mmio.is_write)
+> +			return (void *)(*((u64 *)run->mmio.data));
 
-It is to describe memory that was deliberately allocated as decrypted,
-not to control allocation choices.
-
-> so there's a bit more work needed on the DMA API I think (not sure
-> whether Aneesh's series covers any of this).
-
-I don't think it does directly. It largely sets the stage to properly
-allow a struct device to opt out of force_dma_unencrypted() so we get
-support a T=1 PCI device.
-
-Jason
-
+This needs to return NULL.  Either that or make this an if-elif.  Falling
+through to the normal KVM_EXIT_IO check is not what we want.
