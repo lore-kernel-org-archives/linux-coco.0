@@ -1,69 +1,50 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012055.outbound.protection.outlook.com [52.101.53.55])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B4A33D6C7
-	for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 07:27:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781594867; cv=fail; b=J0chm2SYVM7d2EPVXABYrIepbtEg7Dubuc7rfFghmpEd5yMObxBdYRFvZZbyqqiBHBsUM2bfU1P0Kt5oM7y0wqWC0LnKs30wwgITmRV/oszStgpue8Ujny2iUfrj42dsXUXtQbeptm/UWaz9og3SL4bZwm0mnxi7ZOLpvZLN0NQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781594867; c=relaxed/simple;
-	bh=+CiPN4Obibz/RZpw3paXXUpMOoEqnwFZkRl/EYt3LlM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=GsFlerk83xx+O7h6LRygXjuVOg5zBpnzWM7hIwJ8DX29etJMjpU062tX8t9Ayx/Is9RRAKKYj10Ps+Ai8D1XEN0A+n0Xj/Xur3o0q2A6MWbgJDjdxX8DzW/79vsoIIECq76Wae83Qt7PSYepV5cazh12ENEMP7IRx2a0q5FoksU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wwbgqmlV; arc=fail smtp.client-ip=52.101.53.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D968A3AE1B4
+	for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 08:57:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781600238; cv=none; b=W47izLO5+qjIUzKnxuLLT/EcOxvN2UbN/K9KfaUMubHqFIgg/y8IS8+9yvq+xwalYGQdQykj5UdMKwaXFw8ggkyjp9zryBAhQYlWohQUHc4keeLKj1Y3dOjFd745ymGTN6+pMfHK/dFGUvNow53zl2W+ERApmjfnNUYgCsWcqZQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781600238; c=relaxed/simple;
+	bh=1e3LlVBULL94K4OR2/cvcZTCxBPThyoWu9as3n1vewo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=O6DrXbh6VAfxLewEC+gH2dVN9w/rY8sq6yfLEo/zEp3kuc1ZolJPUKDCxFmFEuBie/LZg6S052q9C+EIuNl4xUoPtQNpMN5TftTK3QutnXklh1EQAlKQlpTQpjO1p98sYHwuUSfR9IoQfj3yhmK7BdfaB3VCXMf8fZdl51ZVQdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W1nvaNBG; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wwbgqmlV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SpoZ2a1mzfWzeBc9PgSmj23UX+sOAJEMq1kxj8DU9FQuysRAhoImZweOaElqcGMfYzxQYr7Xtd/zSmgWKMXPzbS8li6MifencVqIEwFCjl3HJa9w2IPBUxXbpWwdlYe3UZ7I1J+eNvWqSyLyri9dQPJ8IZmQTid9sq98+B8FaKKevAgIP4A9fe8ejlzh69wej4b9s48sQuYxIdciDv82/AA3w2wkx5gDTMmTQNDLtbv6rEUc5BcFQa+/svFRm7zPVTCZGok39ecZhTsWLNM9r6vhjQUaXCoGteHxP0vHqImXfKSP12o8uiAjMeXiJSawpSZ5+y67SUNqIYWdrLYOug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yMbrZN8ZiJRa9iRFbMfdyl36iGIaHFvtXokcqC+WZvE=;
- b=amJrSEpwar3nv5PWC/0qJCSxdfdYOajmM3Vn1QjbgJq6pwd/4lxquU7zOhPRFZsoOBEcaw6rbI+Aadbe/+/uysZNypL+snH1Fe+mhb6DrIsFgQuqGLqrnUSfzAFVdH0Pa+bV2lD9OaxMJmylJCvExm668vG1EvuUazm7fKVjG6DQj6CZTinIim20Je5ChcMbG5HFOGBvrYsWdP86nrIk9DD2G+zCxlzjBXzCMS5Focm7ZKAh0fOcmuW9MSmN4xlHVR/JxZJC2SHyV4n8DoAzOod531MmgpWQDHO26pfzUd7b7Dk8TWRAKwPDYYAWczg697FUsqUuKWvnRqATvT58+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yMbrZN8ZiJRa9iRFbMfdyl36iGIaHFvtXokcqC+WZvE=;
- b=wwbgqmlVUDHR0J2I+n/T2nVaLDDV29wFe2iXI8AtG/QSTucZUFui/IBxZ32ypyJIGryvBnHN2puZ4Fk2O+NMhnG64knwe5K+Nd8da6LeVJzvn8fcnJSH5DwlHSbCqeDjvZUQV9jEXiw9ZYemFZyq8kpnPc8K2rvr1c9DYC6iT/I=
-Received: from SJ0PR13CA0160.namprd13.prod.outlook.com (2603:10b6:a03:2c7::15)
- by SJ2PR12MB8717.namprd12.prod.outlook.com (2603:10b6:a03:53d::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Tue, 16 Jun
- 2026 07:27:40 +0000
-Received: from MWH0EPF000C6190.namprd02.prod.outlook.com
- (2603:10b6:a03:2c7:cafe::5e) by SJ0PR13CA0160.outlook.office365.com
- (2603:10b6:a03:2c7::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.11 via Frontend Transport; Tue,
- 16 Jun 2026 07:27:40 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- MWH0EPF000C6190.mail.protection.outlook.com (10.167.249.101) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.139.8 via Frontend Transport; Tue, 16 Jun 2026 07:27:40 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 16 Jun
- 2026 02:27:39 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 16 Jun
- 2026 02:27:39 -0500
-Received: from [10.136.46.240] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Tue, 16 Jun 2026 02:27:29 -0500
-Message-ID: <0fa0bc95-ff31-40c5-b083-3c885d09d0ab@amd.com>
-Date: Tue, 16 Jun 2026 12:57:28 +0530
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W1nvaNBG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781600236; x=1813136236;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=1e3LlVBULL94K4OR2/cvcZTCxBPThyoWu9as3n1vewo=;
+  b=W1nvaNBGthFdeZwRcv1VzYygM1zOJd5hEtQ35ekUIoOEGeQiA7QlT8t4
+   +6Lqdl6wRZY7NUPKVJWN1KqedzS6B3qz7M2QvEAVY2tgIt2jorrGRuzQY
+   AE/+SxPb8AGa3FO2eJ67IceGqqgy0NBN62CAaaMV2rcBv+rs3il+RYXNB
+   71YhENmBTmJuaMHvT8eoUf1YSfJTT15GZuoQ7g/xRsuXiU1HSHFf6BLyg
+   URqdw0lJ3iqz9rlTVsBpDLXuS/XduErPUGTDvOTVQSUgomzm5eH0yA5NE
+   tMFCZMHCXEPW9if+uz1OrKdXQdHVRQN3zPLsYieTAXMWL9BbC3gd8g+e7
+   g==;
+X-CSE-ConnectionGUID: YQ5FUI0MTWWpOaraGnHvDA==
+X-CSE-MsgGUID: xelxJV/USFKntXz3VupYIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="82371498"
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
+   d="scan'208";a="82371498"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 01:57:16 -0700
+X-CSE-ConnectionGUID: gXEoff+HTrS779D3//JQAw==
+X-CSE-MsgGUID: GKR0w9PmQt+FMMvj+u2huA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
+   d="scan'208";a="252021497"
+Received: from unknown (HELO [10.239.158.65]) ([10.239.158.65])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 01:57:09 -0700
+Message-ID: <e0b99e9a-c20f-4def-ac4b-0070996c10ef@intel.com>
+Date: Tue, 16 Jun 2026 16:57:07 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -71,175 +52,124 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 4/7] x86/sev: Add support to perform RMP optimizations
- asynchronously
-To: Ashish Kalra <Ashish.Kalra@amd.com>, <tglx@kernel.org>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, <hpa@zytor.com>, <seanjc@google.com>,
-	<peterz@infradead.org>, <thomas.lendacky@amd.com>,
-	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
-CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
-	<Tycho.Andersen@amd.com>, <Nathan.Fontenot@amd.com>,
-	<ackerleytng@google.com>, <jackyli@google.com>, <pgonda@google.com>,
-	<rientjes@google.com>, <jacobhxu@google.com>, <xin@zytor.com>,
-	<pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
-	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>
-References: <cover.1781419998.git.ashish.kalra@amd.com>
- <de274c2fb3f794ff1f19f0c96184ee50d04d1282.1781419998.git.ashish.kalra@amd.com>
+Subject: Re: [PATCH v13 01/22] KVM: selftests: Add macros to simplify creating
+ VM shapes for non-default types
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
+ Ackerley Tng <ackerleytng@google.com>, Binbin Wu
+ <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
+ Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-1-6983ae4c3a4d@google.com>
 Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <de274c2fb3f794ff1f19f0c96184ee50d04d1282.1781419998.git.ashish.kalra@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260521-tdx-selftests-v13-v13-1-6983ae4c3a4d@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000C6190:EE_|SJ2PR12MB8717:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1552474e-54f9-42fb-69b7-08decb78bf9a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|7416014|376014|23010399003|1800799024|36860700016|921020|22082099003|18002099003|10063799003|3023799007|11063799006|56012099006|6133799003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	PNF5UsrWbNDrGagnZ/ljZx2OMI2y6uXitgUKsWwQZtoMIq6PbxCVzq7/HNsJ9EcIhot+Eg7eYuFW2Gaen5NE7ArvubGU8EIRadfAFrH09/9QRV/c5q0liHEFowYfDYkzXD7CIwoy+itnUqrGQ1cvQLMf+4ZwZ8JukNJix77z1Bg6t8bA8FQWjiFnR6K/NSk4DW9+4NqjzcIznRmp7kaQVVnWe99WnKi7/IOIbEHXlAS/wW6GZyp8e52J1KllzBPEUguuWxmMiwU+R64+mSw3+j3A4zU6dVnV2sfaMoTVtm1OgAg/AH+HBd6yJ5jSck/F/4VKo9TKH6N917TMlbplg2IXKPl3YDx89cG+Hi5vM7jl7uWD1K4q67AZG0tnAQWdNf6sqofD281diO3z8Sw3MnydwREjRj3DrmcvEAeayWxO+jF5FdBn+8qghG7t6xofaS+z9CFHWXg6e8p1qYgZIMYPFx0HwLD0oSFALLFMVR3Ebf5caDrmVudrFodUv5CZcH9E8QmvjvQdXrSjk+Eg446/2ydRvuZyorMhbMIBexTnUbH0eSlvtcU2xdKqWE/6c7AGa7XuTWR8/M4L4lyks9ZNP8Iuug9Wt1vpU8oM4tMe0ztwzkDXxcOhDJnwicxx45NGlWEjs/JvpFDRcD6r3da+ysmDPFqe83rj+4wOwOCy50CvjB6kytyO+vt/XIS5ZFIFah1gcVG7h+s7Z8vW4/S7Hqa+Tog5cQk5HiobEAOTysOP7NTcLIeM1w5SqAZbYw1iCd8Xn76F4+YeuZ4x3w==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(23010399003)(1800799024)(36860700016)(921020)(22082099003)(18002099003)(10063799003)(3023799007)(11063799006)(56012099006)(6133799003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	fE9Wpz1dzC2LcwIX9//szHpRnL1U88O1xZYLKF34UppBS6WVkpfwvyFxGu8qEPj3DNOvC8twWzysJqb5wzyD/B6R6pD/0ILK7aCWL96FeAxViOh2RgozYH5uRa7tyTXyxD3n7Pxk00TQf2g9HZWYexdF+iArKXIhjfC3TVF/OZ7tQG+HdB3ecjeswuEoP+n1na7KBrWi3Ga1rzGf5wTXRdqZoNCMCM/RL1g1TeDylvxEsUwFZnGhaJeBbIFSQkULfncr0XFKz1Hj206Gp0fZUIgW1VsZzwNAVCmupy6aK2S9uP0UiSWeQJXIUzm3Q495JmzvjdFDqMJQBk1Nlz6gnhho/FxZTOxwLTmcujMBpI3AT1Aj4bPwMyeXz14MAdwnIEmzSz/9ZFm/xxTyFOvQOEoqfyyOiManYLgmU/ePJSjujb4DoJ2D8piSRtp+35fs
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2026 07:27:40.3547
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1552474e-54f9-42fb-69b7-08decb78bf9a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000C6190.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8717
 
-Hello Ashish,
+On 5/22/2026 7:16 AM, Lisa Wang wrote:
+> From: Sean Christopherson<seanjc@google.com>
+> 
+> Add VM_TYPE() and __VM_TYPE() macros to create a vm_shape structure given
+> a type (and mode), and use the macros to define VM_SHAPE_{SEV,SEV_ES,SNP}
+> shapes for x86's SEV family of VM shapes.  Providing common infrastructure
+> will avoid having to copy+paste vm_sev_create_with_one_vcpu() for TDX.
+> 
+> Use the new SEV+ shapes and drop vm_sev_create_with_one_vcpu().
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Sean Christopherson<seanjc@google.com>
+> Signed-off-by: Sagi Shahar<sagis@google.com>
+> Reviewed-by: Binbin Wu<binbin.wu@linux.intel.com>
+> Reviewed-by: Ira Weiny<ira.weiny@intel.com>
+> Signed-off-by: Lisa Wang<wyihan@google.com>
 
-On 6/16/2026 1:19 AM, Ashish Kalra wrote:
-> +	/*
-> +	 * RMPOPT scans the RMP table, stores the result of the scan in the
-> +	 * reserved processor memory. The RMP scan is the most expensive
-> +	 * part. If a second RMPOPT occurs, it can skip the expensive scan
-> +	 * if they can see a cached result in the reserved processor memory.
-> +	 *
-> +	 * Do RMPOPT on one CPU alone. Then, follow that up with RMPOPT
-> +	 * on every other primary thread. Followers are "designed to"
-> +	 * skip the scan if they see the "cached" scan results.
-> +	 */
-> +	cpumask_copy(follower_mask, &rmpopt_cpumask);
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-rmpopt_cpumask is constructed after hotplug is disabled but ...
+> ---
+>   tools/testing/selftests/kvm/include/kvm_util.h     | 13 +++++++
+>   .../testing/selftests/kvm/include/x86/processor.h  |  4 +++
+>   tools/testing/selftests/kvm/include/x86/sev.h      |  2 --
+>   tools/testing/selftests/kvm/lib/x86/sev.c          | 16 ---------
+>   tools/testing/selftests/kvm/x86/sev_smoke_test.c   | 40 +++++++++++-----------
+>   5 files changed, 37 insertions(+), 38 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+> index dc70c6da63fa..041bdbfb93f7 100644
+> --- a/tools/testing/selftests/kvm/include/kvm_util.h
+> +++ b/tools/testing/selftests/kvm/include/kvm_util.h
+> @@ -233,6 +233,19 @@ kvm_static_assert(sizeof(struct vm_shape) == sizeof(u64));
+>   	shape;					\
+>   })
+>   
+> +#define __VM_TYPE(__mode, __type)		\
 
+It seems the name "__VM_SHAPE" fits better?
+
+> +({						\
+> +	struct vm_shape shape = {		\
+> +		.mode = (__mode),		\
+> +		.type = (__type)		\
+> +	};					\
+> +						\
+> +	shape;					\
+> +})
 > +
-> +	/*
-> +	 * Pin the worker to the current CPU for the leader loop so that
-> +	 * this_cpu remains valid and the RMPOPT instruction executes on
-> +	 * the correct CPU.
-> +	 *
-> +	 * Use migrate_disable() rather than get_cpu() to prevent
-> +	 * migration while still allowing preemption.
-> +	 */
-> +	migrate_disable();
-> +	this_cpu = smp_processor_id();
-> +
-> +	if (cpumask_test_cpu(this_cpu, follower_mask)) {
-> +		/*
-> +		 * Current CPU is a primary thread in rmpopt_cpumask.
-> +		 * Run leader locally and remove from follower mask.
-> +		 */
-> +		cpumask_clear_cpu(this_cpu, follower_mask);
-> +
-> +		for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G) {
-> +			rmpopt(pa);
-> +			cond_resched();
-> +		}
-> +	} else if (cpumask_intersects(topology_sibling_cpumask(this_cpu),
-> +				      follower_mask)) {
-> +		/*
-> +		 * Current CPU is a sibling thread whose primary is in
-> +		 * rmpopt_cpumask.  RMPOPT_BASE MSR is per-core, so it
-> +		 * is safe to run the leader locally.  Remove the sibling's
-> +		 * primary from the follower mask as this core is already
-> +		 * covered by the leader.
-> +		 */
-> +		cpumask_andnot(follower_mask, follower_mask,
-> +			       topology_sibling_cpumask(this_cpu));
-> +
-> +		for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G) {
-> +			rmpopt(pa);
-> +			cond_resched();
-> +		}
-> +	} else {
-> +		/*
-> +		 * Current CPU does not have RMPOPT_BASE MSR programmed.
-> +		 * Pick an explicit leader from the cpumask to avoid #UD.
-> +		 * Use work_on_cpu() to run in process context on the leader,
-> +		 * avoiding IPI latency.
-> +		 */
+> +#define VM_TYPE(__type)				\
+> +	__VM_TYPE(VM_MODE_DEFAULT, __type)
 
-... this_cpu is neither in the "rmpopt_cpumask", nor is any of its
-siblings on "rmpopt_cpumask".
+and I think making it one line would be OK?
 
-How does that happen?
+So something on top:
 
-> +		int leader_cpu = cpumask_first(follower_mask);
-> +
-> +		if (WARN_ON_ONCE(leader_cpu >= nr_cpu_ids)) {
-> +			migrate_enable();
-> +			goto out;
-> +		}
-> +
-> +		cpumask_clear_cpu(leader_cpu, follower_mask);
-> +
-> +		/* Release migration pin before work_on_cpu(). */
-> +		migrate_enable();
-> +
-> +		work_on_cpu(leader_cpu, rmpopt_leader_fn, NULL);
+---8<---
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h 
+b/tools/testing/selftests/kvm/include/kvm_util.h
+index 041bdbfb93f7..a1b5d2029d05 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -223,17 +223,7 @@ kvm_static_assert(sizeof(struct vm_shape) == 
+sizeof(u64));
 
-This creates a delayed work and also waits for it to finish execution
-which will add more latency than a simple IPI if the comment about IPI
-latency above is accurate.
+  #define VM_TYPE_DEFAULT                        0
 
-I think there is some corner case in construction of the
-"rmpopt_cpumask" that requires this not-so-pretty else block. Can you
-elaborate why this is required?
+-#define VM_SHAPE(__mode)                       \
+-({                                             \
+-       struct vm_shape shape = {               \
+-               .mode = (__mode),               \
+-               .type = VM_TYPE_DEFAULT         \
+-       };                                      \
+-                                               \
+-       shape;                                  \
+-})
+-
+-#define __VM_TYPE(__mode, __type)              \
++#define __VM_SHAPE(__mode, __type)             \
+  ({                                             \
+         struct vm_shape shape = {               \
+                 .mode = (__mode),               \
+@@ -243,8 +233,8 @@ kvm_static_assert(sizeof(struct vm_shape) == 
+sizeof(u64));
+         shape;                                  \
+  })
 
-Perhaps the "rmpopt_cpumask" construction needs:
+-#define VM_TYPE(__type)                                \
+-       __VM_TYPE(VM_MODE_DEFAULT, __type)
++#define VM_SHAPE(__mode)       __VM_SHAPE(__mode, VM_TYPE_DEFAULT)
++#define VM_TYPE(__type)                __VM_SHAPE(VM_MODE_DEFAULT, __type)
 
-    for_each_online_cpu(cpu) {
-        /* Nominate the first CPU on the sibling mask for RMPOPT */
-        if (cpu != cpumask_first(topology_sibling_cpumask(cpu)))
-            continue;
-        cpumask_set_cpu(cpu, &rmpopt_cpumask);
-    }
+  extern enum vm_guest_mode vm_mode_default;
 
-
-and all you need here is:
-
-    /* Do RMPOPt for local core */
-    for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
-        rmpopt(pa);
-
-    /* Skip this core from concurrent RMPOPT */
-    cpumask_and_not(follower_mask, &rmpopt_cpumask, topology_sibling_cpumask(cpu));
-
-No?
-
-> +
-> +		goto followers;
-> +	}
-> +
-> +	migrate_enable();
-> +
--- 
-Thanks and Regards,
-Prateek
 
