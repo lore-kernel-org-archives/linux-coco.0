@@ -1,78 +1,212 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A9435CBD7;
-	Tue, 16 Jun 2026 12:57:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599303A7582
+	for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 14:36:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781614631; cv=none; b=aU2oKmxXt51bOuksrXNVPlGxGfeQCMcqga8aUR6kk6NGvhjpvMJNtVQXlXjt8eVwFkFNvEM4KijcRpUtVfgTxcl5FrFxjB7/Uwpf3gGcRLOU8p+5/u6UjuRqTBAZcA3I8ZfexknbWsZ2nELgXVYN5qBCjYZjM1P7GUinGCt/520=
+	t=1781620594; cv=none; b=SjA06zTaDnxKmuEd59blsG1ruk0L8cFNO1Jum2I2B+3JUpyyr6SVqBa24ts68vICD1d0jv9DEvKA6svmy+Pl2nMD1M571gCIbWBdQSHF2r4sbp3ozgueG94Jop5ahVX1JGS/O8X6Onn2dgImvkJgvr3CadGnqLscoLOgOCWeGfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781614631; c=relaxed/simple;
-	bh=yIWEZ6Mwe3B+5GKAj721Up1Y7xM5BlEWCxTchsqZOIU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TInWugxSOICMNouTkwLQ42LK6TL+9bOL3+jtE2x+HglQ8l7mCpUGVW82YdUobnW6CB/2dS51D73onpAVeb5uhvz/N7O3uKlZQ7j5IIwpqKkrrqqkm9UBA2vFJ3+pamR9WvHdyucyF2+YcI0f8zvjxH9H8xLEvXo5HaTSu0QlCEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j7vkxDU4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781620594; c=relaxed/simple;
+	bh=AbpNe24xlhwm/PgmZ5FVGnfkuQ7wHlOr/56VCgER2Wg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=eCPaAhAAIKL9DDbpAy7+LNpDKDhfcURQyxZecH/Bn6bJSTtl1DO5We4KEQ6nebxte1A7t7ir+C+bS2iFFa+6nKdGyIj1opl2GNsA0eTNZK5SdPGkIjKgYLi4dKXZPxe4rKfZOKUGlsJWfrXANCVVF9Ej164J6GxeQdEFb3EICtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c6R90Ok3; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j7vkxDU4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B47F1F000E9;
-	Tue, 16 Jun 2026 12:57:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781614630;
-	bh=Amsf7byLU6TUTGoZquZNNTh0rzHsPl14KFh90IgFwH4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=j7vkxDU4hGGSROpH1MXuuJT7/P3tgm6yyooLwsL9ewWx/awd9RgCk+eQP3GV3Wpj6
-	 Mr8T8nI6HHEL8M5fQINsCgKSfVIXp9M8vWVOAN/uJ0NSiON2+HVnRWspD0Ix2GOoyB
-	 UAXbj+XT0QYx5tzvwceWaZI64gV3UIG6XR5PzVe8TYr/YrfWzggWbgDAU4GbNuwfTN
-	 uEcLWku1E+tWSrIMxEk5GUToFzgN2DFHC05fLeolsa5ArA24L8+l1jMzUew2BGHKJw
-	 +0Bs4CD7OXlHLagesEfTuBnq26bietWKsnAcPdr0i3Hgug3wqjWK0jb8z5efon0b9G
-	 IqCx+8UtzAqEw==
-Date: Tue, 16 Jun 2026 13:57:00 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Dan Williams <djbw@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>, Tom
- Lendacky <thomas.lendacky@amd.com>, Vivaik Balasubrawmanian
- <vivaik.balasubrawmanian@intel.com>, John Allen <john.allen@amd.com>, Bjorn
- Helgaas <helgaas@kernel.org>, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Yilun Xu <yilun.xu@linux.intel.com>, Zhenzhong Duan
- <zhenzhong.duan@intel.com>, Alexey Kardashevskiy <aik@amd.com>
-Subject: Re: [PATCH] PCI/TSM: Resume device to D0 for CMA-SPDM operation
-Message-ID: <20260616135700.2b2b9056@jic23-huawei>
-In-Reply-To: <7bdfaf14d7e5a466f3f650150c688a60e947a7a9.1781527060.git.lukas@wunner.de>
-References: <7bdfaf14d7e5a466f3f650150c688a60e947a7a9.1781527060.git.lukas@wunner.de>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c6R90Ok3"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c6b7c75550so371985ad.2
+        for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 07:36:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781620593; x=1782225393; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gyflg7buPy8xj/laUw+X3H9z80FdaQb7zGq2p9sCm08=;
+        b=c6R90Ok3bubtfgSjfoaihsR9MujfBXq6DhLwHJs9RTNtWIjSLJofJGuAI4fCaPqyzT
+         drdwMVm0OtBvmic+SdjSkxSh1BoGiOaV1GSqpYhuZQ1hwG4uN0deSenn6oXJQdh2pW0q
+         /jwmWavFjIY5HzcpgXcJi9UD1SFjr4oa+MQcRZwNfDC0RfJu2oi/Vc1mOh3kvGOJ6hpG
+         ldHB4b8q/eLI7354Uq6E8Y4WM/9U4sGlU2ypKtQtlFiBAMfBzTcEOHRxEcGHLyCR2ve5
+         zRK97U9eNhN++EDy4fcHsw01QtDRpuZyFbBW2QPa8vmyUbbMiyWSUfPMx4Aw7j0rNOG2
+         XSbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781620593; x=1782225393;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gyflg7buPy8xj/laUw+X3H9z80FdaQb7zGq2p9sCm08=;
+        b=kajfj6JxDTMP/NLBhY0YyA1W7xkj9UqziUTTdmY/lE8zajOFTCiEA2CVXAUt0tPKUL
+         1gwQuvLs76irRNEr01psca6QiH0C/m2ag3OdepuXNoBeHliJHeBAFv2Mwu1Hwk2FYX1p
+         Wi6m4EFZbkzKrbhr2wcolEv+hNYX1DJAMbt9KKLn+tSr7AxFmAoG0FTlZwowh5S5lrfP
+         oZp/bWirhUD/rA2KwpbgXelfB2a7Un2p1kHDSt6FEj5vjCb/w9k+TD82DQ2sWEWQ5MY3
+         BdpSMgJK02ZFf181G87c6lbPFR4I0ALyRP3K/7Sbjwnp7rqxMGtdwnaZoGI4KQmszHuK
+         pHQA==
+X-Forwarded-Encrypted: i=1; AFNElJ8UaUDolbYtIy2xvriA6zIevDQsJEIBo0fjV8f6JpzVtQ284oi6ZK7hT41oFquHZAp2uWT9ohYWonXf@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw7CKECn0kzoTtNjvhotbvMigoXruXmqHq1piK+UpLiSJYvrBlS
+	Y8HqUM1aWBzE6iSL8ER7ovMs6ACscNgNgiH3fyklzDbKzR4ogd6x7cxSNOEn+e9hFe5bjCxfQtK
+	4KJogAA==
+X-Received: from plsk16.prod.google.com ([2002:a17:902:ba90:b0:2c6:779e:5007])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f70b:b0:2be:e3bc:e8e4
+ with SMTP id d9443c01a7336-2c69a186b29mr41194995ad.18.1781620592472; Tue, 16
+ Jun 2026 07:36:32 -0700 (PDT)
+Date: Tue, 16 Jun 2026 07:36:31 -0700
+In-Reply-To: <CAEvNRgHjno=XDnMpTvZcNCR6D5RAi1rbynrL4CnnEa7Y-M3VLg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-19-6983ae4c3a4d@google.com>
+ <CAEvNRgHEq-hHcTivUw8TYBeMu-RpS=Ho4DXaNXKQKLPL_biTgg@mail.gmail.com>
+ <aiMOWkiVBqoQDAPd@google.com> <CAEvNRgF09SfDm=OgbrS8-wpfxbNecQkqAQwf1ELq1jWu7NjbUA@mail.gmail.com>
+ <aiM2Nm9Eh68mIVX3@google.com> <CAEvNRgHjno=XDnMpTvZcNCR6D5RAi1rbynrL4CnnEa7Y-M3VLg@mail.gmail.com>
+Message-ID: <ajFfb9u6dU47Nj3v@google.com>
+Subject: Re: [PATCH v13 19/22] KVM: selftests: Finalize TD memory as part of kvm_arch_vm_finalize_vcpus
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, 15 Jun 2026 15:19:30 +0200
-Lukas Wunner <lukas@wunner.de> wrote:
+On Mon, Jun 15, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> 
+> > On Fri, Jun 05, 2026, Ackerley Tng wrote:
+> >> Sean Christopherson <seanjc@google.com> writes:
+> >> Many tests use vm_userspace_mem_region_add(), CoCo tests that require
+> >> finalizing shouldn't be disallowed that option.
+> >
+> > What does that have to do with finalizing the VM?
+> 
+> I could add more memslots after finalizing the VM, but then I'd have to
+> make the guest accept more memory. Hence, I'd rather set up all the
+> memslots and then finalize the VM.
 
-> Per PCIe r7.0 sec 6.31.3, CMA-SPDM operation in non-D0 states is optional.
-> The spec does not define a way to determine if it's supported, so resume
-> to D0 unconditionally for the duration of a CMA-SPDM exchange.  Vivaik has
-> talked to Windows engineers and they said that Windows does the same.
-> 
-> Note that for plain DOE operation, it is sufficient for the device to be
-> in D3hot and its parents in D0 because config space remains accessible in
-> D3hot.  So CMA-SPDM goes beyond the requirements of plain DOE and hence
-> resuming to D0 needs to (only) be done in code paths which use DOE
-> specifically for CMA-SPDM.
-> 
-> The pattern used herein for runtime resume is the best practice introduced
-> by commit ef8057b07c72 ("PM: runtime: Wrapper macros for ACQUIRE()/
-> ACQUIRE_ERR()").
-> 
-> Fixes: 3225f52cde56 ("PCI/TSM: Establish Secure Sessions and Link Encryption")
-> Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> Cc: stable@vger.kernel.org # v6.19+
-> Cc: Vivaik Balasubrawmanian <vivaik.balasubrawmanian@intel.com>
-Seems reasonable to me and your replies to sashiko stuff seem to have that well
-covered.  So FWIW
+Why?  It's not like the performance of this code matters terribly.
 
-Reviewed-by: Jonathan Cameron <jic23@kernel.org>
+Regardless, nothing *requires* a test to go down that route.  As I said before,
+my goal with the selftests infrastructure is to effectively optimize the entire
+experience, i.e. to provide default behavior that works well for the majority of
+tests.  Attempting to provide default behavior that perfectly fits *every* test
+is simply impossible.
+
+> sev_smoke_test currently has a separate vm_sev_launch(), which is the
+> equivalent of tdx_init_mem_region(), and that's called in the tests
+> themselves.
+> 
+> sev_smoke_test also uses vcpu_args_set() after creating the VM with
+> vm_create_shape_with_one_vcpu(). Would that work if vm_sev_launch() got
+> moved into kvm_arch_vm_finalize_vcpus()?
+
+No, because vCPU state would be encrypted at that point.  Moving vm_sev_launch()
+would also break test_sev_dbg(), which sets a global buffer to all 0xaa prior to
+encrypting that data.
+
+> >> >> It's also possible to have some kvm_vm_finalize() call that can be
+> >> >> explicitly and manually invoked from selftests just for CoCo selftests.
+> >> >
+> >> > Why bother?  It's obviously possible to all kvm_arch_vm_finalize_vcpus() directly.
+> >>
+> >> Works for me to call directly. Do you mean kvm_arch_vm_finalize_vcpus()
+> >> is the right function where the TD is finalized?
+> >>
+> >> For tests that need to do more setup after creating a vm, is the only
+> >> way out to call __vm_create() then vm_vcpu_add() to avoid premature
+> >> finalization in __vm_create_with_vcpus() when
+> >> kvm_arch_vm_finalize_vcpus() is called?
+> >
+> > Depends on what you're doing.  Sometimes, the answer will be yes.  That's why
+> > there are "low level" APIs, so that some tests can do fancy things, while most
+> > tests can leave the details to the infrastructure.
+> >
+> > If there's a recurring problem, or we anticipate one, then we can and should
+> > figure out how to minimize the pain so that tests don't have to deal with the
+> > same boilerplate issues over and over.  Hence the __shared idea.
+> 
+> I still think kvm_arch_vm_finalize_vcpus() is an odd place to be
+> finalizing the VM.
+
+That's literally why the function exists though.  The one and only existing
+implementation (on arm64) uses it to initialize the vGIC.
+
+  void kvm_arch_vm_finalize_vcpus(struct kvm_vm *vm)
+  {
+	if (vm->arch.has_gic)
+		__vgic_v3_init(vm->arch.gic_fd);
+  }
+
+That's *very* similar to the proposed TDX usage, where some per-VM asset(s) can
+be initialized/frozen only after all vCPUs have been added.  In other words, the
+name is describing where in the VM creation/setup flow the hook is called, and
+perhaps more importantly, the impact of the call: vCPUs are finalized (obviously
+with a different definition of "finalized" based on the VM properties).
+
+> I would prefer to not have to explicitly call some function like
+> kvm_arch_vm_finalize() (no vcpu in the name), but a common arch function
+> calling vm_sev_launch() and tdx_vm_finalize() is what I can think of
+> for test setup flexibility, without too much magic.
+
+We can't have our cake and eat it too.  Either we launch/finalize SEV/TDX VMs as
+part of the common VM creation flows (as proposed for TDX), or we force tests to
+manually launch/finalize the VM after additional setup.  The only way to have it
+both ways is to utilize crazy macro shenanigans to execute arbitrary code between
+creating the VM and launching/finalizing the VM, and even I would balk at that.
+
+I honestly don't see any reason to try to figure out which of the two approaches
+is optimal at this time.  Whatever decision we make isn't set in stone, and in
+fact should be relative easy to change.  And without being able to see all the
+TDX/SEV tests that are waiting in the wings, it's more or less impossible to make
+an informed decision.
+
+I definitely want to have SEV and TDX use the same core approach in the end, but
+I don't think we should force the issue right now, because the cost of reworking
+the SEV and/or TDX infrastructure when there are only a bare handful of tests is
+so low.  It will cost more to try to predict the future of a 50/50 outcome than
+it will to make a completely wild guess between the two options and rework things
+if we guess wrong.
+
+> For now, I can't think of many uses of __shared. ucall shared memory is
+> allocated dynamically, and we can also make it shared cleanly within
+> ucall code.
+
+Uh, every selftest that uses global variables to communicate between guest and
+host?
+
+> The global variables (sync_global_to_guest()) will appear in the guest
+> as long as sync_global_to_guest() is called before
+> kvm_arch_vm_finalize(), which I think makes sense to people writing
+> tests for CoCo.
+
+Yes, but that's completely orthogonal to all of this.
+
+> So 2 questions to push this along:
+> 
+> 1. What do you think of a kvm_arch_vm_finalize() that calls
+>    vm_sev_launch() and tdx_vm_finalize()? My key issue is that
+>    kvm_arch_vm_finalize_*vcpus*() seems to be for finalizing vCPUs
+>    rather than the whole VM.
+
+Key word "seems".  I'm pretty sure Oliver picked kvm_arch_vm_finalize_vcpus() as
+the name in commit 8911c7dbc607 ("KVM: arm64: selftests: Create a VGICv3 for
+'default' VMs") for the same reasons I think it's a good fit for coco VMs: like
+finalizing TDX VMs, initializing the vGIC effectively finalizes vCPUs.
+
+We could rename it to kvm_arch_vm_finalize(), but that won't change the fact that
+we'll need to decide between automagic vs. manual finalization, and it definitely
+should be a separate discussion.
+
+> 3. Would you like __shared implemented together with this series, as a
+>    prerequisite, or later?
+
+Only if __shared is a hard requirement for base TDX support, which I assume is
+not the case.
