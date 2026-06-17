@@ -1,283 +1,165 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013019.outbound.protection.outlook.com [40.93.196.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514C3134CF;
-	Wed, 17 Jun 2026 00:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781657462; cv=fail; b=BY6bgd2VvKJSZYcDyAoP+8lRl8XDzS7O/FvacwWAu18ZoGPv6BRaicDstpyOcdD9e3PppKXozaiLmOl5gE8SsudX9e3mjRlU+YUfF/qnRwi+o0mRbYirMyU9alzGVlqmyeJNIew7Wtbskt8x/Jn07NBHeZu9az025vH76GHy4MU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781657462; c=relaxed/simple;
-	bh=coHfAFyUav8lH2C/EBwTeKGZvN20FSscA/I4IF9CEj4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=A5kIl55CHiQfRKzPEZPrlP1kYTxQ3L13nvFU2QjCf3Ju9U9ShTshIBk/cw6QTfXVg2rh+yKCjEu6Aegxiz/FRSjU409K4pHSY64ix7hprqSP0iFZhRdhkRr0FW1ih+miT59FVgEDzQ9j04Mc+TvLroG7DQPWWWNCWdXf1EvBQl4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gbFulCjB; arc=fail smtp.client-ip=40.93.196.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D352DCF45
+	for <linux-coco@lists.linux.dev>; Wed, 17 Jun 2026 02:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781663892; cv=none; b=BDpH01nflLu7er7EHQ27jSFqZAxRJNxTb+ENj+FkZAV1Sk/ERcZ/mzbexy2flanBsMBNHfrosD0e/pk9kAbS5ccfSTAUwCtFOEdDvy5AV/xZtfKmsREM3Wti1Zm1rgBvImg50jUFNfQOpClmvx3pcEDvGXAysCkMq1EzO/WzhWI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781663892; c=relaxed/simple;
+	bh=BCedZ8Rz/sbsae+H5+CU0ZsEreiRmGlqG1pWD3F6WcI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jA+ZgOGaGsJBkvl2H5pJI9c/v+Dr1elDBLglXzNYJwUGBlJP0T8y4c/gr1dElN1RwXLtHh79O/yrUmxEh7BIPXvbyEOikXbFd0rgCtHFQTikqihZKJ5ei2JFqqKerM3s3sp4GMzNemCvV1mIZFKt/kcDYqb8os2dzHjJ9xkhzOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OkDhKX55; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gbFulCjB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KmDOZbQkjVrJuiLw8/nOZeTLYgCbTgsOGuxjF/Jd4hTMvpVUk2/fcYa8GbJ/tKGmFKwpXxuHLMuaOGhjmwx8lvp7PKgA6Q1I2+sun+xrImWFC3mn3jOJEvnGDY73gg4ZgSN7MuG7+VR5nfA10ZNxknnFMFxvTN8qtwSFmT7KtUbeotKZjRIxXr30DNoCnHFgAwYH2mG3cE8g0K/aDodCk2HtR57xqwVom5PMPmC8E9rG+cxbYVz9NDzucnwZrfMgxHaXLGQTnA8NPI+bs0IKADhunGmGwI6UhX1lT930ThQEplt8SHaJjV8FDg6BWAaPGHr6yOoq3zKVrBSwpb5m9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x8JBnesZBrm7U/LhrZYPe4Gp0x7oIXKYBqhmhzRNnEc=;
- b=hqb1Hkuuf976iKWnavL4H84yQkWopgdXGwSrW2CbLrYqht6jRzNnCDgh6cdxdU1epHp0N+V5PtB1gSe2WLiV3gKrmSZy9nLpr/bj5N6ic1o5vcxaRuhUnSvisi5VatE81fHeaUbA+ZzioAP7jJKKpBhJy4z4OU1DSmoeWNVebPWeX4I1eU87ywjIiDXy1sEThZTN32hu2ZMHNYJEpFwu7a3yKY1mtyfImCrjC3/5yfVkQ5kluVPIsPRJb2NV/727IQPHdkqfr7VSZ1Y9+SZx+/u0G0cH595ydwIVmnB0RBbxgxNdypBeRJMrOBLdsrYrMPOQJoHilgLWP0RXeFENjA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x8JBnesZBrm7U/LhrZYPe4Gp0x7oIXKYBqhmhzRNnEc=;
- b=gbFulCjBL38tkmww8QotejWQclPTUrfD1hSp8qKBxL+ofshQPJIWuVMje4Mg5tzsQcNf8qyY4QNNqsjZrbu3v3TJVXiCFVeIWlJLVoH10+RRNN5cCY0Cc1SsjqOFvYNwpDUH8aHbQejJKgACC93BNAFSr+oLjfIs0lptSR3SoIw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10) by SA3PR12MB7805.namprd12.prod.outlook.com
- (2603:10b6:806:319::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Wed, 17 Jun
- 2026 00:50:48 +0000
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3%4]) with mapi id 15.21.0113.015; Wed, 17 Jun 2026
- 00:50:48 +0000
-Message-ID: <845d0c8a-6d51-47aa-8e0b-8381e733444a@amd.com>
-Date: Wed, 17 Jun 2026 10:50:39 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 03/20] dma-direct: use DMA_ATTR_CC_SHARED in alloc/free
- paths
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-Cc: Robin Murphy <robin.murphy@arm.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Will Deacon <will@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Steven Price <steven.price@arm.com>,
- Suzuki K Poulose <Suzuki.Poulose@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Jiri Pirko <jiri@resnulli.us>,
- Jason Gunthorpe <jgg@ziepe.ca>, Mostafa Saleh <smostafa@google.com>,
- Petr Tesarik <ptesarik@suse.com>, Dan Williams <dan.j.williams@intel.com>,
- Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
- Jiri Pirko <jiri@nvidia.com>, Michael Kelley <mhklinux@outlook.com>,
- "Cheloha, Scott" <Scott.Cheloha@amd.com>
-References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
- <20260604083959.1265923-4-aneesh.kumar@kernel.org>
-Content-Language: en-US
-From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <20260604083959.1265923-4-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY8P282CA0021.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:29b::34) To SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OkDhKX55"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781663889; x=1813199889;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=BCedZ8Rz/sbsae+H5+CU0ZsEreiRmGlqG1pWD3F6WcI=;
+  b=OkDhKX55bAYWryneruz1t9ZxfxMlU6lB6fjqH0TYmYcK/mqcIAbsgBDV
+   ai3VG/WYCNpN+DLPcwxBM5hzlH5U0/s2aFnM8djm2TccWx8bQCeOwPACN
+   3z62VB2SHV6kB32N/FTRNmu8blZ27g8VaLD1mdy4mZiUaZDWrqy2s6Vye
+   swBWFAHChflnGviwXX8Tk6A1X6A/B4CIppev1UnIamwjc5q9KyM000Wx7
+   sM6TUnuVzxXgB91cEyikgeiSzhJQZ+iqP/ab2fy/i1aBbd8AnFon6I6LJ
+   ZgVqPcrJiEGes53oo/yzRE9OWXeNQVb73OeM109r74fpwX5uqKHr+G3lC
+   Q==;
+X-CSE-ConnectionGUID: 3wKoYAWBTQ6EXe96zyVHdQ==
+X-CSE-MsgGUID: uEfHAXXmS5KxJz0Hspfxag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="82315495"
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
+   d="scan'208";a="82315495"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 19:38:04 -0700
+X-CSE-ConnectionGUID: Eb653s8HSTyqv1EOEU4eoA==
+X-CSE-MsgGUID: bIk3G2dsRWWKXPPFJ45fuw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
+   d="scan'208";a="271657628"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.18]) ([10.124.240.18])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 19:37:54 -0700
+Message-ID: <d8a9a574-1c15-4c94-b33d-fa72e1b5096d@intel.com>
+Date: Wed, 17 Jun 2026 10:37:50 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|SA3PR12MB7805:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf3c37af-cffc-4830-8386-08decc0a78c9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|23010399003|376014|22082099003|18002099003|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	nkXzYCUuCGe+qORqV4+JnKcgFHHkw1lLwrFP5+ZHFs1VgzanCtsUEw7M137pvWhT6JNP/o07sz2W8dtL6SID28WSXwMcOV+p3uKcD1y4JRtz+DcdhWnw8o/miDHUNPJYyo+pDHW+qatPxWnr6YTtesdCvfa4QErw8lhuWgzxkgMDDnyaSZnuV5QfDBvAnLv5STpnXNgkRxdpHsEQIWTkttoAL+ZitY4r1oeGULU+ZMyhYCHajXagrxZq8HAmRzPXpscqPmFzagbwIgxJ9bmCFW2thlzMt1D7RFmzZQ7NHAp4soO7gT1dw2Ww9VOQrem2HrRybjg4Ed4snvDRC/ZOzO9v1xpXB/cHgYpDpVaSjTn+HH0nn7E3X+5vT1h0elXMJ2jBQdh1GVPub58a7poebsD8Q05tFpGLNru8B1ANI2q383tmfdAp/MfaN4jwFQ25O/Ny85BSs6Y29C9NKard6dUgsdes7AQPIApq7HXFp1GDD1ikM0xBSpvGroa3HTKmqm+iEuH3JpWiJwJ7k6B0H1D2HjTVe/hiuqq4bGPf7os/DstDKN+fzdgCuDtcituNSwFxGQoqeat9aC0FYhB6vcHhFhhjvu4JN1R6F9Uw//R+Vs1PEZX6Jjfr34SrmWCE2S2u/DMX7bUb5pTO/kNE33wIN73zxB4C7dGMSEMnGXQs9Q3thUEDdxc8BuPOngCq
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(23010399003)(376014)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dTJNWXBBdUJWU3lONGRYdzUzYUlXK1hNUkkrUHN6bWpGbHJZcHppbkh1NFBs?=
- =?utf-8?B?eXRKeXIveHJGNWwwbmY1UFJOajNaRTN2ZlN0alU4REN1czcrYjlFUTFraUFn?=
- =?utf-8?B?SDR1MVB0YXpWQXNDQk1tbE9Tc0xISjR3b1ZGSDFNbTA4VU8wN3JBeUowSnZN?=
- =?utf-8?B?SC9SVllWMUdHM1N5YnRubytJNElSSTY1dFJLTmZ3QjE0ZXhFWTUzaHM2VEpw?=
- =?utf-8?B?MGNmTVJzNWxXRUJPZU9zaG00UXdwNG5UOFhBdndmZjA5bytzWUJYWEt0NU5j?=
- =?utf-8?B?eG94ZWVIenRVUzlpbEplT1ZmdFJwbjF6MzN2Y082RVJKNnBMci9FazhDVzhz?=
- =?utf-8?B?Nk94a2JPcEFqT3dDTWN5Y2lha0lLVEErd2tFSlZFdnUvR0YyckF4a2k0bHhV?=
- =?utf-8?B?VkROYzhLSzVNbW5DZnRrVU1jenNkNlppbWdkWXkxUEo5UkJMT0FKbEJmTUwr?=
- =?utf-8?B?dE1jTzhwMlBsczYzcVVDSFVTcnUzZ0tOc1lyVmFkUElxN0JJbU5Ob0p2Sk1j?=
- =?utf-8?B?SlhnUjl1NXZrejJidFdpTk9SZDQxQUdQRGovU2NwVWE4ZUJhOUljSmhreXh5?=
- =?utf-8?B?TEM4OCtjNG9NbUJYQVE1d1hScE9tTEhZRGp4VCswNi90aGk4dzBSMWRta0Uw?=
- =?utf-8?B?MXV1ME1vanQwOEFoMzNWRWpDSkwyb250M0NzVS9wL0NQTnVJS3ZVRW44M1h4?=
- =?utf-8?B?RHVFMGMyYzNLdUtacklqZFVRb0U5SjRyVjIxOVA3eHlGd082K3N1K2pEYnZr?=
- =?utf-8?B?b3BMNW1UWjZVNVRHMXFNbWtncU1wQ0thNVdGTFM1bXBiZGF5TDVJRWJIbUEy?=
- =?utf-8?B?MDlEZVNEVzhKQ1hUQjZqNFI0MHV4UUtZOWtYMXhVWEdnV094Wjh4RVJtMnNF?=
- =?utf-8?B?Zk1oV21HZUNkSXh5MXNTeXNRYUdqMXo0TElqUVVJRWFkRlA2OUVKZWM5VC96?=
- =?utf-8?B?THBZWU9ZdGFzYk0wVXR1cmU3aTNNT0ZGQ1ZJdEFtZDlOWW4xaXBZOFBVZkNp?=
- =?utf-8?B?K283YXJCb3NkeExaRWhUK1RpNm95TkxVZmdLVEgvV2pRbjdRNlZnYTdDUmJM?=
- =?utf-8?B?ZlpHbDBhaUpTd3NsNnQ3cXZ6QXoxQ2VxdU4zTVgxTDA0YWJKTVc5RXRteHA3?=
- =?utf-8?B?bS9hZnNyWVZ1RTVsNDgvL29ZVDhvNDRvbG95NFB4Y1J4MFE1STRKY3pGRlZo?=
- =?utf-8?B?OWVZZjJoWnUyTzFnUHFlZFNndFZna2drVFE1NEpuWGZZa0xMNlZ3RzdTclV0?=
- =?utf-8?B?Q1E2bjhzblRuRjhHYUtoSFJmQkcvWDNIYXpFQUxjUHJrWUsrUUR2SUp5NDll?=
- =?utf-8?B?YWlrbUZSRFFkUWdSRHB3LzErb1p5bXc3ZjE3S0ZTck9MOUVCYnpJbDNtV05p?=
- =?utf-8?B?d2pXbVEzNTRpTStLK05ZRDdxLzg4RlIzMndjQTg1dUk0bk43SUlaS0NoUEJs?=
- =?utf-8?B?MlZWRTFHcGR4QkI5Y21TS0dpWmFrajUydWh5VlZFWEVxdm44UG5Od2dEWE1B?=
- =?utf-8?B?QmlUZnJRaXFycTRncW5sclFFVGlSK1o4OGdwdExNUFpLNVhCcEFOdmQ2MHly?=
- =?utf-8?B?anZDdWt4RHJRbmswVWxwZFV5UlVGQkhJdTFIbUJTWUpJeUhwMjNER2RyN0RC?=
- =?utf-8?B?RGU4anl5bzMxYVk2WXlwRHFseWZ5VkFSakhUbythL2xsTXBNMGhJdXkybGtP?=
- =?utf-8?B?c0U3SGFDem80NGxrV3p6cnc1UEM1U3JhUTczd0dWZmllM056RzFhSWhkMDEr?=
- =?utf-8?B?Q0pIanp5S0tROUZWUGFkZmJVbnpOQnk1bmFwdms4NmNRWG9aV0x6Q2RwbGds?=
- =?utf-8?B?NzFtNjZIKzBQZVQwc1Fpb0hXQ0JFditJWWtkWTlBdG9ydHJSTG84dUUvaDYv?=
- =?utf-8?B?VWZNUWs5WUFxT0xYcXdMZlNCTjNtTXBhZTNpTFpWdkNPNXZzeFlaS1orc3RS?=
- =?utf-8?B?d3poK0ZKM0R4aEZySjg2Nk1sTjZ3cjZIaVZSK2hRU2J1ek16T1BZT1hqdWVu?=
- =?utf-8?B?T3l3ZUxnMHMra3h4VWUxRWF3STR3ZGd0c2lXeFByc1hRTXJoMTFTUWxOUjlK?=
- =?utf-8?B?QmkyMi9UalN5SUFBSFJFNVNDclM4UStsM0p1eW5XaFRRNjRIL0RSZTBrcndk?=
- =?utf-8?B?ZzY0dVhKWkx6aUN5ei9aMkhYcVhmU1RNOW1KK0k2QVZ1bitSNDJ2aktyd1dp?=
- =?utf-8?B?OVg5V3I0TjZLMWZXeXk1N0xuMG9zWi9FUkVOZlFnK3VHeUVONUY1TTA2MTkz?=
- =?utf-8?B?Y3RUZjVaYk1ndUdxdEc0cXVOOWE5VEY2N0RybkowSWN4TVdDa0l6K0NBdGhF?=
- =?utf-8?Q?1t5hJgEz/QtEBcgP+c?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf3c37af-cffc-4830-8386-08decc0a78c9
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2026 00:50:48.2126
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xJyYNehu4aFAnuaNinqQcslh0HzPNpR+EN7/6VUccgE4GzgT43HcxJmU5ai6ILjOhnnQ38ROI0a6z1yCGQ/dRQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7805
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 02/22] KVM: selftests: Update
+ kvm_init_vm_address_properties() for TDX
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
+ Ackerley Tng <ackerleytng@google.com>, Binbin Wu
+ <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
+ Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org,
+ Adrian Hunter <adrian.hunter@intel.com>
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-2-6983ae4c3a4d@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260521-tdx-selftests-v13-v13-2-6983ae4c3a4d@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-
-
-On 4/6/26 18:39, Aneesh Kumar K.V (Arm) wrote:
-> Propagate force_dma_unencrypted() into DMA_ATTR_CC_SHARED in the
-> dma-direct allocation path and use the attribute to drive the related
-> decisions.
+On 5/22/2026 7:16 AM, Lisa Wang wrote:
+> From: Isaku Yamahata <isaku.yamahata@intel.com>
 > 
-> This updates dma_direct_alloc(), dma_direct_free(), and
-> dma_direct_alloc_pages() to fold the forced unencrypted case into attrs.
+> Initialize the TDX S-bit and the GPA tag mask in
+> kvm_init_vm_address_properties() for TDX VMs, similar to how the C-bit
+> is initialized for SEV VMs.
 > 
-> Tested-by: Jiri Pirko <jiri@nvidia.com>
-> Tested-by: Michael Kelley <mhklinux@outlook.com>
-> Tested-by: Mostafa Saleh <smostafa@google.com>
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> The TDX S-bit is used to distinguish between shared and private guest
+> physical addresses. Its position is determined by the guest physical
+> address width, which is either 48 or 52 bits for current TDX
+> implementations.
+> 
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Co-developed-by: Adrian Hunter <adrian.hunter@intel.com>
+> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> Co-developed-by: Sagi Shahar <sagis@google.com>
+> Signed-off-by: Sagi Shahar <sagis@google.com>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Lisa Wang <wyihan@google.com>
+
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+
 > ---
->   kernel/dma/direct.c | 53 +++++++++++++++++++++++++++++++++++++--------
->   1 file changed, 44 insertions(+), 9 deletions(-)
+>   tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h | 14 ++++++++++++++
+>   tools/testing/selftests/kvm/lib/x86/processor.c        | 12 ++++++++++--
+>   2 files changed, 24 insertions(+), 2 deletions(-)
 > 
-> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-> index a741c8a2ee66..90dc5057a0c0 100644
-> --- a/kernel/dma/direct.c
-> +++ b/kernel/dma/direct.c
-> @@ -193,16 +193,31 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->   		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
+> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+> new file mode 100644
+> index 000000000000..f647e6ca6b34
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+> @@ -0,0 +1,14 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef SELFTESTS_TDX_TDX_UTIL_H
+> +#define SELFTESTS_TDX_TDX_UTIL_H
+> +
+> +#include <stdbool.h>
+> +
+> +#include "kvm_util.h"
+> +
+> +static inline bool is_tdx_vm(struct kvm_vm *vm)
+> +{
+> +	return vm->type == KVM_X86_TDX_VM;
+> +}
+> +
+> +#endif /* SELFTESTS_TDX_TDX_UTIL_H */
+> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+> index b51467d70f6e..b68ad1dc7e02 100644
+> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+> @@ -11,6 +11,7 @@
+>   #include "smm.h"
+>   #include "svm_util.h"
+>   #include "sev.h"
+> +#include "tdx/tdx_util.h"
+>   #include "vmx.h"
+>   
+>   #ifndef NUM_INTERRUPTS
+> @@ -1311,12 +1312,19 @@ void kvm_get_cpu_address_width(unsigned int *pa_bits, unsigned int *va_bits)
+>   
+>   void kvm_init_vm_address_properties(struct kvm_vm *vm)
 >   {
->   	bool remap = false, set_uncached = false;
-> -	bool mark_mem_decrypt = true;
-> +	bool mark_mem_decrypt = false;
->   	struct page *page;
->   	void *ret;
->   
-> +	/*
-> +	 * DMA_ATTR_CC_SHARED is not a caller-visible dma_alloc_*()
-> +	 * attribute. The direct allocator uses it internally after it has
-> +	 * decided that the backing pages must be shared/decrypted, so the
-> +	 * rest of the allocation path can consistently select DMA addresses,
-> +	 * choose compatible pools and restore encryption on free.
-
-Why this limit?
-
-Context: I am looking for a memory pool for a few shared pages (to do some guest<->host communication), SWIOTLB seems like the right fit but swiotlb_alloc() is not exported and dma_direct_alloc(DMA_ATTR_CC_SHARED) is not allowed.  Thanks,
-
-
-> +	 */
-> +	if (attrs & DMA_ATTR_CC_SHARED)
-> +		return NULL;
+> +	u32 gpa_bits = kvm_cpu_property(X86_PROPERTY_GUEST_MAX_PHY_ADDR);
 > +
-> +	if (force_dma_unencrypted(dev)) {
-> +		attrs |= DMA_ATTR_CC_SHARED;
-> +		mark_mem_decrypt = true;
-> +	}
+> +	vm->arch.sev_fd = -1;
 > +
->   	size = PAGE_ALIGN(size);
->   	if (attrs & DMA_ATTR_NO_WARN)
->   		gfp |= __GFP_NOWARN;
+>   	if (is_sev_vm(vm)) {
+>   		vm->arch.sev_fd = open_sev_dev_path_or_exit();
+>   		vm->arch.c_bit = BIT_ULL(this_cpu_property(X86_PROPERTY_SEV_C_BIT));
+>   		vm->gpa_tag_mask = vm->arch.c_bit;
+> -	} else {
+> -		vm->arch.sev_fd = -1;
+> +	} else if (is_tdx_vm(vm)) {
+> +		TEST_ASSERT(gpa_bits == 48 || gpa_bits == 52,
+> +			    "TDX: bad X86_PROPERTY_GUEST_MAX_PHY_ADDR value: %u", gpa_bits);
+> +		vm->arch.s_bit = BIT_ULL(gpa_bits - 1);
+> +		vm->gpa_tag_mask = vm->arch.s_bit;
+>   	}
+>   }
 >   
-> -	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
-> -	    !force_dma_unencrypted(dev) && !is_swiotlb_for_alloc(dev))
-> +	if (((attrs & (DMA_ATTR_NO_KERNEL_MAPPING | DMA_ATTR_CC_SHARED)) ==
-> +	     DMA_ATTR_NO_KERNEL_MAPPING) && !is_swiotlb_for_alloc(dev))
->   		return dma_direct_alloc_no_mapping(dev, size, dma_handle, gfp);
->   
->   	if (!dev_is_dma_coherent(dev)) {
-> @@ -236,7 +251,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->   	 * Remapping or decrypting memory may block, allocate the memory from
->   	 * the atomic pools instead if we aren't allowed block.
->   	 */
-> -	if ((remap || force_dma_unencrypted(dev)) &&
-> +	if ((remap || (attrs & DMA_ATTR_CC_SHARED)) &&
->   	    dma_direct_use_pool(dev, gfp))
->   		return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
->   
-> @@ -312,12 +327,24 @@ void dma_direct_free(struct device *dev, size_t size,
->   		void *cpu_addr, dma_addr_t dma_addr, unsigned long attrs)
->   {
->   	phys_addr_t phys;
-> -	bool mark_mem_encrypted = true;
-> +	bool mark_mem_encrypted = false;
->   	struct io_tlb_pool *swiotlb_pool;
->   	unsigned int page_order = get_order(size);
->   
-> -	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
-> -	    !force_dma_unencrypted(dev) && !is_swiotlb_for_alloc(dev)) {
-> +	/* see dma_direct_alloc() for details */
-> +	WARN_ON(attrs & DMA_ATTR_CC_SHARED);
-> +
-> +	/*
-> +	 * if the device had requested for an unencrypted buffer,
-> +	 * convert it to encrypted on free
-> +	 */
-> +	if (force_dma_unencrypted(dev)) {
-> +		attrs |= DMA_ATTR_CC_SHARED;
-> +		mark_mem_encrypted = true;
-> +	}
-> +
-> +	if (((attrs & (DMA_ATTR_NO_KERNEL_MAPPING | DMA_ATTR_CC_SHARED)) ==
-> +	     DMA_ATTR_NO_KERNEL_MAPPING) && !is_swiotlb_for_alloc(dev)) {
->   		/* cpu_addr is a struct page cookie, not a kernel address */
->   		dma_free_contiguous(dev, cpu_addr, size);
->   		return;
-> @@ -366,10 +393,14 @@ void dma_direct_free(struct device *dev, size_t size,
->   struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
->   		dma_addr_t *dma_handle, enum dma_data_direction dir, gfp_t gfp)
->   {
-> +	unsigned long attrs = 0;
->   	struct page *page;
->   	void *ret;
->   
-> -	if (force_dma_unencrypted(dev) && dma_direct_use_pool(dev, gfp))
-> +	if (force_dma_unencrypted(dev))
-> +		attrs |= DMA_ATTR_CC_SHARED;
-> +
-> +	if ((attrs & DMA_ATTR_CC_SHARED) && dma_direct_use_pool(dev, gfp))
->   		return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
->   
->   	if (is_swiotlb_for_alloc(dev)) {
-> @@ -403,7 +434,11 @@ void dma_direct_free_pages(struct device *dev, size_t size,
->   	phys_addr_t phys;
->   	void *vaddr = page_address(page);
->   	struct io_tlb_pool *swiotlb_pool;
-> -	bool mark_mem_encrypted = true;
-> +	/*
-> +	 * if the device had requested for an unencrypted buffer,
-> +	 * convert it to encrypted on free
-> +	 */
-> +	bool mark_mem_encrypted = force_dma_unencrypted(dev);
->   
->   	/* If cpu_addr is not from an atomic pool, dma_free_from_pool() fails */
->   	if (IS_ENABLED(CONFIG_DMA_COHERENT_POOL) &&
-
-
--- 
-Alexey
+> 
 
