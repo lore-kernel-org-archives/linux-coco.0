@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E9D2F99B8
-	for <linux-coco@lists.linux.dev>; Wed, 17 Jun 2026 03:22:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39F82C0299
+	for <linux-coco@lists.linux.dev>; Wed, 17 Jun 2026 03:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781666523; cv=none; b=PPSg0jBffUmS50FBQa7QHrab7fx8Lkr40iIaEzl+NBBCC6zxC6jFT7aoytJYDnVY0+l1oOPX+mabGYElL+5YC9XfTqmzMl3edIVm1yEBuQAgpBa5NVhgS850JdknMidbUxwU1HCfjMzoQZD52XKZ5Zj/XjnFTMCS/i4JBY6nn48=
+	t=1781668339; cv=none; b=mpEFr73vNZRR/BjVrtX2e0ggyrNZtXoi2cgxf57n0mjtUBVLlP4sxsFtWEMSdhv+zLF8qQNAPUPgw3yVavZbDqFoAMjAgKPKTnYXYalnM/YUJZRr7YucidjhL6mF7R7fxBMKOpc1mvV+GEbhcMXBj5O8z6pGpE90SSLd9DZJiu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781666523; c=relaxed/simple;
-	bh=6HpxdSonD14MUq86QFuFcHCrJli+014DzQjASDo8anA=;
+	s=arc-20240116; t=1781668339; c=relaxed/simple;
+	bh=tQIbKSGCggsDjsPRQYgkiN1yqMvDId6VFgfc4clu/AE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tyy04MusNcdYlMnb2361T64RG0+9YHWSoguJYrUAPLa109TZca0mdfgSfEBpPY+pB+mfmcjKX+t04O+FcGjoUHRKafUY24tbftCVRkFlOJVx7Fn74P4rFW1jHEMRcrof7/1EdwL6axpbOwPC3FUK1CNDjXfUojNQTlHDlMq3agw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JBp5efAq; arc=none smtp.client-ip=198.175.65.12
+	 In-Reply-To:Content-Type; b=t1PBm0BWlWojg/9SGxK/iqGnnleRmQQcZdGYWfunO/tvxPBoKao6r9b2oSV1m5Qsod/LHAPdLA41NsEwzA0bDV33Dw48loO4cWm6Ffq2bJdvwGksCP152hcStZemFJZ2p0/i9S/3FannkRSxvVhT70udimoDcGhFn0r9f42DTHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dAM810Fk; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JBp5efAq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dAM810Fk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781666521; x=1813202521;
+  t=1781668338; x=1813204338;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=6HpxdSonD14MUq86QFuFcHCrJli+014DzQjASDo8anA=;
-  b=JBp5efAqTyN0lbYYWVfBnld7VRpBrA0ZT1nAT9UtmCMVvTE5y99QQqPw
-   5NeQuWbJ7F5cApUnn/aYKLpvG2cfACzWhQJIhgXpVIa9Mx4R49FYeo7wV
-   FUEiWLCOJttnIIagtlCaAJpd2Vu3lc9SXlV1crbbeQbYHFPaoTVsxUJPm
-   riy6zm4akOT/d1J83JoqJ1A19PbN8bzLduWJi8OFDx01jOWVVtFepMu6a
-   3aBIEY4p+YEvogB6bmpZUkIMvkg3uLxGWlbI2UsIyNDutYQ5Bk1CYKSns
-   Ea/00XAmsXlkfEpUq44L9Po7ajTOaxdPUZCtjwoJVK/MmMyJbtTXlChH4
+  bh=tQIbKSGCggsDjsPRQYgkiN1yqMvDId6VFgfc4clu/AE=;
+  b=dAM810FkquGwRor8IRw48eA4egv+peULBUUJ/6tV9gWFF7YjtNTL6cpC
+   cBEZr0hNts9R6OlO2e0JgMf7TmswWjoo+8n9Ed9qcbkLp3ptF9xh//Fkk
+   IN+mW/xwc7oGV0n5WoiOJzZ0R2hnE2fYQUDftA1592kyeHQS9BVmIuPAm
+   oWFdHccfU4P9viSmAhd2ep/pI7SahQK1vtLXBz80UcQ/4kHOOH5SEDl+K
+   JRFo8UUVzshTtWSGVOvfADOF+wi2MJETGYJnbHXLTCHjMje12o8bvqFPB
+   Ls/O/NtSw+zAskzxBXoKqoOiunM4hQrao5U166z//l9fgdVUFYYqy4HN7
    Q==;
-X-CSE-ConnectionGUID: 2gjnyAP8S4ChQFXvIhakbw==
-X-CSE-MsgGUID: 7oWmMoSVTu+gB4gdTcd/OQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="93937537"
+X-CSE-ConnectionGUID: zUXy/o1WSq+tkmans185Ng==
+X-CSE-MsgGUID: gt1QqBS4RWegxGUZuNxXFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="81581043"
 X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
-   d="scan'208";a="93937537"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 20:22:00 -0700
-X-CSE-ConnectionGUID: xidktX55RqWZASGKUWF32Q==
-X-CSE-MsgGUID: xZBIA6wJSB2UaDzMKqPTAA==
+   d="scan'208";a="81581043"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 20:51:58 -0700
+X-CSE-ConnectionGUID: zSVH7aMSSmWNkKi6YvOJ8w==
+X-CSE-MsgGUID: UdMBFn0qRjeB2ZEEfriO6g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
-   d="scan'208";a="252906870"
+   d="scan'208";a="278153339"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.18]) ([10.124.240.18])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 20:21:52 -0700
-Message-ID: <d27cce6a-da0b-46dc-96b3-5f2f699907eb@intel.com>
-Date: Wed, 17 Jun 2026 11:21:49 +0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 20:51:49 -0700
+Message-ID: <e0847903-e9ee-4b3c-b120-aaba46894ada@intel.com>
+Date: Wed, 17 Jun 2026 11:51:46 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,7 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 03/22] KVM: selftests: Initialize the TDX VM
+Subject: Re: [PATCH v13 04/22] KVM: selftests: TDX: Use KVM_TDX_CAPABILITIES
+ to validate TDs' attribute configuration
 To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
  Ackerley Tng <ackerleytng@google.com>, Binbin Wu
  <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
@@ -70,175 +71,74 @@ To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
 Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
 References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
- <20260521-tdx-selftests-v13-v13-3-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-4-6983ae4c3a4d@google.com>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260521-tdx-selftests-v13-v13-3-6983ae4c3a4d@google.com>
+In-Reply-To: <20260521-tdx-selftests-v13-v13-4-6983ae4c3a4d@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 5/22/2026 7:16 AM, Lisa Wang wrote:
-> From: Sagi Shahar <sagis@google.com>
+> From: Isaku Yamahata <isaku.yamahata@intel.com>
 > 
-> Add tdx_init_vm() to handle the mandatory VM-level initialization
-> sequence required for Intel TDX.
+> Make sure that all the attributes enabled by the test are reported as
+> supported by both the TDX module and KVM. KVM filters out the attributes
+> not supported by itself.
 > 
-> For TDX, the guest's CPUID configuration must be "sealed" during
-> KVM_TDX_INIT_VM before any vCPUs are created. This is necessary because
-> the TDX hardware directly virtualizes CPUID and includes the
-> configuration in the guest's initial security measurement.
+> This also exercises the KVM_TDX_CAPABILITIES ioctl.
 > 
-> The helper calculates the required CPUID values by filtering the host-
-> supported bits (kvm_get_supported_cpuid) against the "directly
-> configurable" bits reported by KVM_TDX_CAPABILITIES, ensuring
-> compliance with the strict requirements of the TDH.MNG.INIT SEAMCALL.
-> 
-> Co-developed-by: Isaku Yamahata <isaku.yamahata@intel.com>
 > Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Co-developed-by: Sagi Shahar <sagis@google.com>
 > Signed-off-by: Sagi Shahar <sagis@google.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 > Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 > Signed-off-by: Lisa Wang <wyihan@google.com>
+
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+
 > ---
->   .../selftests/kvm/include/x86/tdx/tdx_util.h       |  30 +++++
->   tools/testing/selftests/kvm/lib/x86/processor.c    |   3 +
->   tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 137 +++++++++++++++++++++
->   3 files changed, 170 insertions(+)
+>   tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 14 ++++++++++++++
+>   1 file changed, 14 insertions(+)
 > 
-> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> index f647e6ca6b34..48d4bd36c35b 100644
-> --- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> @@ -11,4 +11,34 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
->   	return vm->type == KVM_X86_TDX_VM;
+> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
+> index 868ff62e22f2..e5c998874a0d 100644
+> --- a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
+> @@ -110,6 +110,18 @@ static void tdx_filter_cpuid(struct kvm_vm *vm,
+>   	free(tdx_cap);
 >   }
 >   
-> +/*
-> + * TDX ioctls
-> + * Use underscores to avoid collisions with struct member names.
-> + */
-> +#define __tdx_vm_ioctl(vm, cmd, _flags, arg)				\
-> +({									\
-> +	int r;								\
-> +									\
-> +	union {								\
-> +		struct kvm_tdx_cmd c;					\
-> +		unsigned long raw;					\
-> +	} tdx_cmd = { .c = {						\
-> +		.id = (cmd),						\
-> +		.flags = (u32)(_flags),				\
-> +		.data = (u64)(arg),				\
-> +	} };								\
-> +									\
-> +	r = __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
-> +	r ?: tdx_cmd.c.hw_error;					\
-> +})
-
-It looks __tdx_vm_ioctl() can be implemented as the static inline function.
-
-Given all the existing xxx_ioctl() are implmeneted as MACRO, I'm OK with it.
-
-> +
-> +#define tdx_vm_ioctl(vm, cmd, flags, arg)				\
-> +({									\
-> +	int ret = __tdx_vm_ioctl(vm, cmd, flags, arg);			\
-> +									\
-> +	__TEST_ASSERT_VM_VCPU_IOCTL(!ret, #cmd,	ret, vm);		\
-> +})
-> +
-> +void tdx_init_vm(struct kvm_vm *vm, u64 attributes);
-> +
->   #endif /* SELFTESTS_TDX_TDX_UTIL_H */
-> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-> index b68ad1dc7e02..8d06e7186df1 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-> @@ -802,6 +802,9 @@ void kvm_arch_vm_post_create(struct kvm_vm *vm, unsigned int nr_vcpus)
->   		vm_sev_ioctl(vm, KVM_SEV_INIT2, &init);
->   	}
->   
-> +	if (is_tdx_vm(vm))
-> +		tdx_init_vm(vm, 0);
-> +
->   	r = __vm_ioctl(vm, KVM_GET_TSC_KHZ, NULL);
->   	TEST_ASSERT(r > 0, "KVM_GET_TSC_KHZ did not provide a valid TSC frequency.");
->   	guest_tsc_khz = r;
-> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> new file mode 100644
-> index 000000000000..868ff62e22f2
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> @@ -0,0 +1,137 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +#include "kvm_util.h"
-> +#include "processor.h"
-> +#include "tdx/tdx_util.h"
-> +
-> +static struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
+> +static void tdx_check_attributes(struct kvm_vm *vm, u64 attributes)
 > +{
-> +	struct kvm_tdx_capabilities *tdx_cap = NULL;
-> +	int nr_cpuid_configs = 4;
-> +	int rc = -1;
-> +	int i;
+> +	struct kvm_tdx_capabilities *tdx_cap;
 > +
-> +	do {
-> +		nr_cpuid_configs *= 2;
-> +
-> +		tdx_cap = realloc(tdx_cap, sizeof(*tdx_cap) +
-> +					   sizeof(tdx_cap->cpuid) +
+> +	tdx_cap = tdx_read_capabilities(vm);
 
-No need to add sizeof(tdx_cap->cpuid). It's included by sizeof(*tdx_cap)
+well, this is another caller of tdx_read_capabilities().
 
-> +					   (sizeof(struct kvm_cpuid_entry2) * nr_cpuid_configs));
-> +		TEST_ASSERT(tdx_cap,
-> +			    "Could not allocate memory for tdx capability nr_cpuid_configs %d\n",
-> +			    nr_cpuid_configs);
-> +
-> +		tdx_cap->cpuid.nent = nr_cpuid_configs;
-> +		rc = __tdx_vm_ioctl(vm, KVM_TDX_CAPABILITIES, 0, tdx_cap);
-> +	} while (rc < 0 && errno == E2BIG);
-> +
-> +	TEST_ASSERT(rc == 0, "KVM_TDX_CAPABILITIES failed: %d %d",
-> +		    rc, errno);
-> +
-> +	pr_debug("tdx_cap: supported_attrs: 0x%016llx\n"
-> +		 "tdx_cap: supported_xfam 0x%016llx\n",
-> +		 tdx_cap->supported_attrs, tdx_cap->supported_xfam);
-> +
-> +	for (i = 0; i < tdx_cap->cpuid.nent; i++) {
-> +		const struct kvm_cpuid_entry2 *config = &tdx_cap->cpuid.entries[i];
-> +
-> +		pr_debug("cpuid config[%d]: leaf 0x%x sub_leaf 0x%x eax 0x%08x ebx 0x%08x ecx 0x%08x edx 0x%08x\n",
-> +			 i, config->function, config->index,
-> +			 config->eax, config->ebx, config->ecx, config->edx);
-> +	}
-
-The debug info will be printed everytime the function is called, which 
-is unnecessary.
-
-Ideally, the kvm_tdx_capabilities can be cached like what is done for 
+As I commented in the previous patch, it's worth caching the result in 
+tdx_read_capabilities() like what kvm_get_supported_cpuid() does for 
 kvm_supported_cpuid.
 
-> +	return tdx_cap;
-> +}
-> +
-> +static struct kvm_cpuid_entry2 *tdx_find_cpuid_config(struct kvm_tdx_capabilities *cap,
-> +						      u32 leaf, u32 sub_leaf)
-> +{
-> +	struct kvm_cpuid_entry2 *config;
-> +	u32 i;
-> +
-> +	for (i = 0; i < cap->cpuid.nent; i++) {
-> +		config = &cap->cpuid.entries[i];
-> +
-> +		if (config->function == leaf && config->index == sub_leaf)
-> +			return config;
-> +	}
-> +
-> +	return NULL;
-> +}
+And it can help only print the debug once.
 
-No need to introduce a new fucntin. We can use get_cpuid_entry().
+> +	/* Make sure all the attributes are reported as supported */
+> +	TEST_ASSERT_EQ(attributes & tdx_cap->supported_attrs, attributes);
+> +
+> +	free(tdx_cap);
+> +}
+> +
+>   void tdx_init_vm(struct kvm_vm *vm, u64 attributes)
+>   {
+>   	struct kvm_tdx_init_vm *init_vm;
+> @@ -129,6 +141,8 @@ void tdx_init_vm(struct kvm_vm *vm, u64 attributes)
+>   	memcpy(&init_vm->cpuid, cpuid, kvm_cpuid2_size(cpuid->nent));
+>   	free(cpuid);
+>   
+> +	tdx_check_attributes(vm, attributes);
+> +
+>   	init_vm->attributes = attributes;
+>   
+>   	tdx_vm_ioctl(vm, KVM_TDX_INIT_VM, 0, init_vm);
+> 
 
