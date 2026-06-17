@@ -1,117 +1,82 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013038.outbound.protection.outlook.com [40.93.201.38])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013019.outbound.protection.outlook.com [40.93.196.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3923C37880B
-	for <linux-coco@lists.linux.dev>; Tue, 16 Jun 2026 19:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514C3134CF;
+	Wed, 17 Jun 2026 00:51:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781639792; cv=fail; b=Wc02haGQ52VLfri4Mu0qvk9JXIAAx4jUdnqYAkbcNQWhqV+SLsn8YUTTKPCdlgjgUH5BVmnbZE9d472IdH0+T3wELqwAkMPWFwKj+XeOhabkpTbTVPvvCsBc+H58pgmCQnnh/WbEDX1b+/uVZ8CxsgCdAjYdsGQ15tuN+stwD/0=
+	t=1781657462; cv=fail; b=BY6bgd2VvKJSZYcDyAoP+8lRl8XDzS7O/FvacwWAu18ZoGPv6BRaicDstpyOcdD9e3PppKXozaiLmOl5gE8SsudX9e3mjRlU+YUfF/qnRwi+o0mRbYirMyU9alzGVlqmyeJNIew7Wtbskt8x/Jn07NBHeZu9az025vH76GHy4MU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781639792; c=relaxed/simple;
-	bh=yZSPwI5Fe1MbJAwJ+Rms4tFEKk5/P1YwIu7gAvzt/rU=;
+	s=arc-20240116; t=1781657462; c=relaxed/simple;
+	bh=coHfAFyUav8lH2C/EBwTeKGZvN20FSscA/I4IF9CEj4=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=uJ+peMJ0Ob1R7bD/u0Vt54G7wStoLE4bLLv1vlirLkUdEvZqhVmo84d93wF7acZex8nKeDim3wxdObL6gz9IFKlFyyJe68zA7TH8NkQ3nVALPh9Cs3zmkixvTapToE1V3ldoFtHkiGLonSEOTZ1T6DvMVNKIXAH9vEinWmbRsgQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=hhBnxhzB; arc=fail smtp.client-ip=40.93.201.38
+	 Content-Type:MIME-Version; b=A5kIl55CHiQfRKzPEZPrlP1kYTxQ3L13nvFU2QjCf3Ju9U9ShTshIBk/cw6QTfXVg2rh+yKCjEu6Aegxiz/FRSjU409K4pHSY64ix7hprqSP0iFZhRdhkRr0FW1ih+miT59FVgEDzQ9j04Mc+TvLroG7DQPWWWNCWdXf1EvBQl4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gbFulCjB; arc=fail smtp.client-ip=40.93.196.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="hhBnxhzB"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gbFulCjB"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NkYOFCgjYn7PFSqs4RUNDrGztfUSBRD3mhggoAudu8ZdKtXYnzf0JZl6CeSbyahiMwS98ChViS8EEi0HuXb82KU0AJPpcvV2nkBC0YZHWVUaF5+N+300x/dY6d/1OjQLnwsCdMP/qI0J0PMNXjohRziNNEP2/U6nzhHV1BEmSkmLnhHfBQ3cI9GDHSQTEWcoEGFC82k35CfpumLu2goMgv0HbSgqNbGHTudO5xDCQNa8DwopR8PkUCCXr7/1LsV9wwcJqpppl9UCFljTp91vzsRMZa73C3tgcrGaDAwNn0oSz8N5gRFvY8qWPiGC1dMQDWH0ewIRQIvrHOYL1bYiSg==
+ b=KmDOZbQkjVrJuiLw8/nOZeTLYgCbTgsOGuxjF/Jd4hTMvpVUk2/fcYa8GbJ/tKGmFKwpXxuHLMuaOGhjmwx8lvp7PKgA6Q1I2+sun+xrImWFC3mn3jOJEvnGDY73gg4ZgSN7MuG7+VR5nfA10ZNxknnFMFxvTN8qtwSFmT7KtUbeotKZjRIxXr30DNoCnHFgAwYH2mG3cE8g0K/aDodCk2HtR57xqwVom5PMPmC8E9rG+cxbYVz9NDzucnwZrfMgxHaXLGQTnA8NPI+bs0IKADhunGmGwI6UhX1lT930ThQEplt8SHaJjV8FDg6BWAaPGHr6yOoq3zKVrBSwpb5m9A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lWAeFW/Kypu80ln5WAgrVfeJCfaMVo73VRMrrZd/zAo=;
- b=C2PIhaG+vLMIMVe0C2OcG9qPUhGLFc8i+Yz/bC5Sp45iBUu9xDJTC+OydIRd5o/K+F4eLAYWKhLljoY+zXELwV1tBfBLoFPgTjAzZrmUEbFXaD0LBf9Nd4UWm3idvQrwPGVGZKIq3SLv856yLwj0WK+bWN7RWHXUj9MWpheVK8ygH+CUSL0tkGXOnOhIeet7LP0JBpAwL/SUBkmZqjWe5ljLx77ge+QqPshZFrsL4lXfQFGa7HqM2HmXfLY3XQMK0lLOGWpnaLpbGjlIZUyiJcQO73PzKgltKNMtS543rqalt1MI0NmXsTIDaPyBCnxOILwKXgiQ+Hvcw6ziiO+8UQ==
+ bh=x8JBnesZBrm7U/LhrZYPe4Gp0x7oIXKYBqhmhzRNnEc=;
+ b=hqb1Hkuuf976iKWnavL4H84yQkWopgdXGwSrW2CbLrYqht6jRzNnCDgh6cdxdU1epHp0N+V5PtB1gSe2WLiV3gKrmSZy9nLpr/bj5N6ic1o5vcxaRuhUnSvisi5VatE81fHeaUbA+ZzioAP7jJKKpBhJy4z4OU1DSmoeWNVebPWeX4I1eU87ywjIiDXy1sEThZTN32hu2ZMHNYJEpFwu7a3yKY1mtyfImCrjC3/5yfVkQ5kluVPIsPRJb2NV/727IQPHdkqfr7VSZ1Y9+SZx+/u0G0cH595ydwIVmnB0RBbxgxNdypBeRJMrOBLdsrYrMPOQJoHilgLWP0RXeFENjA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lWAeFW/Kypu80ln5WAgrVfeJCfaMVo73VRMrrZd/zAo=;
- b=hhBnxhzBtvWItU2eUpmpXU5cS+dUCuixFVJg4RdjxGmzRZ7PGdUyKZt/6/lCU7ZjoMUG6bLMOcX6LBZIgXHK7nyxtJTecA8XlsD5Ab7cJ3XuBLz4YfB9lXQGFXUGH3Qtz5bi5hiQ0URVwQ0816MfPWrrcCUxTCVtvjj7u3AztLM=
+ bh=x8JBnesZBrm7U/LhrZYPe4Gp0x7oIXKYBqhmhzRNnEc=;
+ b=gbFulCjBL38tkmww8QotejWQclPTUrfD1hSp8qKBxL+ofshQPJIWuVMje4Mg5tzsQcNf8qyY4QNNqsjZrbu3v3TJVXiCFVeIWlJLVoH10+RRNN5cCY0Cc1SsjqOFvYNwpDUH8aHbQejJKgACC93BNAFSr+oLjfIs0lptSR3SoIw=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by DM6PR12MB4449.namprd12.prod.outlook.com (2603:10b6:5:2a5::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Tue, 16 Jun
- 2026 19:56:26 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%6]) with mapi id 15.21.0113.015; Tue, 16 Jun 2026
- 19:56:26 +0000
-Message-ID: <8c5f4082-e3a5-4f65-b058-33938a7ee324@amd.com>
-Date: Tue, 16 Jun 2026 14:56:21 -0500
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10) by SA3PR12MB7805.namprd12.prod.outlook.com
+ (2603:10b6:806:319::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Wed, 17 Jun
+ 2026 00:50:48 +0000
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3%4]) with mapi id 15.21.0113.015; Wed, 17 Jun 2026
+ 00:50:48 +0000
+Message-ID: <845d0c8a-6d51-47aa-8e0b-8381e733444a@amd.com>
+Date: Wed, 17 Jun 2026 10:50:39 +1000
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 4/7] x86/sev: Add support to perform RMP optimizations
- asynchronously
-To: K Prateek Nayak <kprateek.nayak@amd.com>, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
- thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net,
- ardb@kernel.org
-Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com, ackerleytng@google.com,
- jackyli@google.com, pgonda@google.com, rientjes@google.com,
- jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
- babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
- darwi@linutronix.de, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1781419998.git.ashish.kalra@amd.com>
- <de274c2fb3f794ff1f19f0c96184ee50d04d1282.1781419998.git.ashish.kalra@amd.com>
- <0fa0bc95-ff31-40c5-b083-3c885d09d0ab@amd.com>
+Subject: Re: [PATCH v6 03/20] dma-direct: use DMA_ATTR_CC_SHARED in alloc/free
+ paths
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+Cc: Robin Murphy <robin.murphy@arm.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Will Deacon <will@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Steven Price <steven.price@arm.com>,
+ Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Jiri Pirko <jiri@resnulli.us>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Mostafa Saleh <smostafa@google.com>,
+ Petr Tesarik <ptesarik@suse.com>, Dan Williams <dan.j.williams@intel.com>,
+ Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
+ Jiri Pirko <jiri@nvidia.com>, Michael Kelley <mhklinux@outlook.com>,
+ "Cheloha, Scott" <Scott.Cheloha@amd.com>
+References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
+ <20260604083959.1265923-4-aneesh.kumar@kernel.org>
 Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-Autocrypt: addr=ashish.kalra@amd.com; keydata=
- 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
-In-Reply-To: <0fa0bc95-ff31-40c5-b083-3c885d09d0ab@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH2PR14CA0056.namprd14.prod.outlook.com
- (2603:10b6:610:56::36) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+From: Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <20260604083959.1265923-4-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY8P282CA0021.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:29b::34) To SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -119,255 +84,200 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|DM6PR12MB4449:EE_
-X-MS-Office365-Filtering-Correlation-Id: 034340e8-2b05-4b10-9037-08decbe15913
+X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|SA3PR12MB7805:EE_
+X-MS-Office365-Filtering-Correlation-Id: cf3c37af-cffc-4830-8386-08decc0a78c9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|7416014|23010399003|921020|10063799003|3023799007|22082099003|18002099003|4143699003|11063799006|56012099006|6133799003;
+	BCL:0;ARA:13230040|1800799024|366016|7416014|23010399003|376014|22082099003|18002099003|56012099006|11063799006|4143699003;
 X-Microsoft-Antispam-Message-Info:
-	Wp7Av7kGyTzFeWhxt9d1i4oAHS/vV+3c1Q3sDapXpp5Ws/+wuUuRTito5h+dLQaC1zkeltUuencvj1ORbhDL+fno3LXnvCft2eFnVGWVXrlekP2knKkepLxBLapiMg5JbAR4ZoQlxS/5uwwjZPp+GIvGoO1reafdd8rpzL25FGa1+Bj8CPMQ+M6qOuKYJQzMj5gmXd7zshe2aqqV0EPScKd/CgnuDnVkoM7/0iOB2EWxEZA15xXisjVU6QShbf0GGbZAh5mI1hMV+yIDeDZesybrRe1yyQ1V+5OiRHs+fvmGYIQC2LxYOVUy8/fT4RfaOt9fPqrAsLjCovXIsduPegbCuffjHTFho5Tgsbi+q+jsAZ5PtfWlYKguSTvu4tpAEM4E0da0DsYG0zUoYZR4f6p/mVEMaA+fumHdLls45mRiJFpOg6I5a5OmVBWN2GXdTMI/9ZZNiKTbgVnlfqPLe2K55tD73/zC3L/7v6+xqadODrTZnne5GhfEjwkmFGToH9cpkxD7J3maCBURBLeDQkkfVWlGIMbx1yf9fw/TuH2IJsxh5t+LVGCr/fc6b3sfvdZYSk7pf00qzgr+fu4xVLuGhNVBuvIoHbWkfZM/NurhvDwpIanWryhnP1rzF041Ycj1WbHgMhJ+tz/aCaOgrznKl7xZvRwU93/luWLpjpslWgDNFvbmtg3lvAhSQfkPEYEtiCiiLD8h/rWqAkBjRffN5ZLp0lQZU6tda+y/TvY=
+	nkXzYCUuCGe+qORqV4+JnKcgFHHkw1lLwrFP5+ZHFs1VgzanCtsUEw7M137pvWhT6JNP/o07sz2W8dtL6SID28WSXwMcOV+p3uKcD1y4JRtz+DcdhWnw8o/miDHUNPJYyo+pDHW+qatPxWnr6YTtesdCvfa4QErw8lhuWgzxkgMDDnyaSZnuV5QfDBvAnLv5STpnXNgkRxdpHsEQIWTkttoAL+ZitY4r1oeGULU+ZMyhYCHajXagrxZq8HAmRzPXpscqPmFzagbwIgxJ9bmCFW2thlzMt1D7RFmzZQ7NHAp4soO7gT1dw2Ww9VOQrem2HrRybjg4Ed4snvDRC/ZOzO9v1xpXB/cHgYpDpVaSjTn+HH0nn7E3X+5vT1h0elXMJ2jBQdh1GVPub58a7poebsD8Q05tFpGLNru8B1ANI2q383tmfdAp/MfaN4jwFQ25O/Ny85BSs6Y29C9NKard6dUgsdes7AQPIApq7HXFp1GDD1ikM0xBSpvGroa3HTKmqm+iEuH3JpWiJwJ7k6B0H1D2HjTVe/hiuqq4bGPf7os/DstDKN+fzdgCuDtcituNSwFxGQoqeat9aC0FYhB6vcHhFhhjvu4JN1R6F9Uw//R+Vs1PEZX6Jjfr34SrmWCE2S2u/DMX7bUb5pTO/kNE33wIN73zxB4C7dGMSEMnGXQs9Q3thUEDdxc8BuPOngCq
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014)(23010399003)(921020)(10063799003)(3023799007)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(23010399003)(376014)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aC9iNGplTDR5bDB1RjRZSXA1U2dLeUhOQzF5WjNnd3FqaWZ0NXFrUWMyVnl1?=
- =?utf-8?B?MXdLS00ra0xaUkFNVFNJMm81Rkg0MXRLT2ZoaHBydGFxU2lSOWlobFY5aERw?=
- =?utf-8?B?WUNjWWZHSlBad01wSkUrSXBWbkk1YnkrVEZsYTNKNU1RYmE4NTVKVmhuU0xU?=
- =?utf-8?B?REVyb083QnpmMDdnb0Jka1BtSG8ydWlYQlIrcVZFOEJDNDlvZ2dTWVhDeUo5?=
- =?utf-8?B?L1ZTVWJzMzlzamtLZE8zQm9kV1htS1hvRW1Ma2xVbTBta2lwMWpUNzZ1dzFV?=
- =?utf-8?B?ZGJkNlRwS3lPTWF0MmF3ZlNlUUxIUzBZdVpFb21xbmVUOE84aDVCT2dPbjhH?=
- =?utf-8?B?OWZCTUw2c0pQWk5OUE80VVo0ZlZZdm1CK3B6S0xJYS9waGc2SElIZGhxQlg2?=
- =?utf-8?B?OEQ3a0Y5VDEvVXZZL245NEVkR0orbHNvMnM5anV1NHJMNFlEQmFGejNodzAw?=
- =?utf-8?B?UFA0eGhJOVFOVGZYQU8waUl2bVdLTjdrSk1jUmZHcDU0ZWpwZWV2QXdHTEQ5?=
- =?utf-8?B?VG8yeEF5SmpodTAyaE15U3VXSmhJbUZUNDdkQ0JrNmprZjRVZHFqYTdkcGR2?=
- =?utf-8?B?SkJjYzZVdXhwMVBaL0duYzhKZWt0N2tacXRzbEd0UlNJc0ZlRTF2VnhsdjND?=
- =?utf-8?B?WCt4V3ZTcGpPR1hQV1AyNkViclNnby9LSENlZ1hSUGlaT1huaVVCMktaRXVs?=
- =?utf-8?B?TmI2UW40T3orNjZhUTN1aXB3VnJZcWxrQ3FNQi9ZazdKeVpPeVp4OWh0N1NM?=
- =?utf-8?B?N0cvMlhVTzJVVEMxcjN5VStGS3lYbm4vUkdNeVVwcWg0VkQ3Mm93M05SdXM2?=
- =?utf-8?B?ZVB1UHFNTkxUZURpQ1RkY1ByN2FjalZ6OTgySDhKcVZWUmI0anVmWVZONERn?=
- =?utf-8?B?MFBXOGlFWks2bHF0dXlDSkgrMmg2clVEQ25yK2dlcW51OU85cW5sSUxINlJh?=
- =?utf-8?B?dlNHN3E4ejlhV0JxZkYveGFObmMzdUlBLzVudmlXVi9qTHZqV0FSYURaYlMw?=
- =?utf-8?B?ODRtU3VCRGdpcG9mRVg0WFJZTnlHU0tEc0d6UHhJR04xMkJjRGFaU2lMNzZC?=
- =?utf-8?B?SEZFam92Z01HTERUVFVXV2xvS3ZzOUowL0x5NTI1TU53NHlnSWxneHRwWURy?=
- =?utf-8?B?YnRPd2V6SnA5WEhxcnREa0dWc2RGYTdMWFFhQmVoVWx3bTl2Sm1tWlNIZUlQ?=
- =?utf-8?B?ZTBFOC8ydkt1Zkl6bldTVlJJQk5IcEdUUXlpY1ZrZnhXMzFFWUxmeUVPUVgz?=
- =?utf-8?B?Z0FWb3NUaUlKTmZlUFYzL0JjbUlwNlpJUDdNNFYzd20vdGJlWFpvWmFoaTRx?=
- =?utf-8?B?ZFIzUFR0YXZCKytrS2ovMDBxZlZBREgzUFFNUm1iZnBKWGtwdkYrYVFJd0hG?=
- =?utf-8?B?dUVxNkkzb0I4OTVkL0NiRVAxU1l3Nyt0UzRaYkNkWWpLeVplaVVOL1dtMGM1?=
- =?utf-8?B?VXg0TWgwdmV6R2hReEV1Y0VMbW9Wek1qaWVoZlgwQkRGWmoxdm43QzFRMmoz?=
- =?utf-8?B?WEhQOFhKRUZwNzkvSUR1WTRZekRkc3pwVjRCbGZsd2c3MTFEUTJXMit2ZmJU?=
- =?utf-8?B?SFVlMUhPWDFYV21OSitYelJvVGxPSTAyWXZsZWtueDduMGtaYytsRndrWENw?=
- =?utf-8?B?cGo5bzBIVXlaOS9uOEZyT0xROC9udUxsUFQ5bGsvTldZZ3ZPQUFIVGlPRW8w?=
- =?utf-8?B?T0V3UUFUSWFlUm9zL2ZEbnVUNmlVVHFlQUNNN3EyQ2FBeUN5TUhWVTRieFNN?=
- =?utf-8?B?ajV2REtUOWJZQ2dQSVlDVWFNN3FUcFo5U0hsSW8rQ0VOL0N1K24rNUE3OEtZ?=
- =?utf-8?B?R2c0c1pVOVlJNmwwV0YrY3JpNE8vaTFLM0dDVE5yeHhZbzRPUVlvNjhLa0hp?=
- =?utf-8?B?WUV6a2RHclVWS0hKQTRabmhHc3dGeFdVWXh1bjlvcitpbnRxN2padWlXV0l5?=
- =?utf-8?B?c2Z3L09vN1FadVByVXVwMVJWOUhQMnA4eUhpUFpmc1NPRjZHbTdKQjJJSHF3?=
- =?utf-8?B?VEFYOWlSVjZjQkNhK25idDNpTTJyV2QrQmFtTzFDaFUvS2pmNGFYdW96SVQ2?=
- =?utf-8?B?QXRYT0NDaTJRN1ZLTFFVUGtGVTh4S0FmK0NDWkJuN29pNEtzWWV6QWpkbnRC?=
- =?utf-8?B?V2lSanh2ZS9qSmllWGR5TW56UUZJdm9ISCsrK2VETFFkU3QyeWs0bGhoWjdn?=
- =?utf-8?B?QjRidmJKaDdoUmhaVXlhNmtoRjNXNHBzTG1oSTFHZmc4UWVsOWRYNFh0Qytv?=
- =?utf-8?B?Sld0RU5tVFZEdm9TY2hLOElDam8vaGxTUnlGNDN5c1JaUnd5amZJSHZsblpQ?=
- =?utf-8?B?QXBtcGJna3pJQVFhcVpzb0wvTGIzbDhhZVVsaFRZckhsVnI2V3RtQT09?=
+	=?utf-8?B?dTJNWXBBdUJWU3lONGRYdzUzYUlXK1hNUkkrUHN6bWpGbHJZcHppbkh1NFBs?=
+ =?utf-8?B?eXRKeXIveHJGNWwwbmY1UFJOajNaRTN2ZlN0alU4REN1czcrYjlFUTFraUFn?=
+ =?utf-8?B?SDR1MVB0YXpWQXNDQk1tbE9Tc0xISjR3b1ZGSDFNbTA4VU8wN3JBeUowSnZN?=
+ =?utf-8?B?SC9SVllWMUdHM1N5YnRubytJNElSSTY1dFJLTmZ3QjE0ZXhFWTUzaHM2VEpw?=
+ =?utf-8?B?MGNmTVJzNWxXRUJPZU9zaG00UXdwNG5UOFhBdndmZjA5bytzWUJYWEt0NU5j?=
+ =?utf-8?B?eG94ZWVIenRVUzlpbEplT1ZmdFJwbjF6MzN2Y082RVJKNnBMci9FazhDVzhz?=
+ =?utf-8?B?Nk94a2JPcEFqT3dDTWN5Y2lha0lLVEErd2tFSlZFdnUvR0YyckF4a2k0bHhV?=
+ =?utf-8?B?VkROYzhLSzVNbW5DZnRrVU1jenNkNlppbWdkWXkxUEo5UkJMT0FKbEJmTUwr?=
+ =?utf-8?B?dE1jTzhwMlBsczYzcVVDSFVTcnUzZ0tOc1lyVmFkUElxN0JJbU5Ob0p2Sk1j?=
+ =?utf-8?B?SlhnUjl1NXZrejJidFdpTk9SZDQxQUdQRGovU2NwVWE4ZUJhOUljSmhreXh5?=
+ =?utf-8?B?TEM4OCtjNG9NbUJYQVE1d1hScE9tTEhZRGp4VCswNi90aGk4dzBSMWRta0Uw?=
+ =?utf-8?B?MXV1ME1vanQwOEFoMzNWRWpDSkwyb250M0NzVS9wL0NQTnVJS3ZVRW44M1h4?=
+ =?utf-8?B?RHVFMGMyYzNLdUtacklqZFVRb0U5SjRyVjIxOVA3eHlGd082K3N1K2pEYnZr?=
+ =?utf-8?B?b3BMNW1UWjZVNVRHMXFNbWtncU1wQ0thNVdGTFM1bXBiZGF5TDVJRWJIbUEy?=
+ =?utf-8?B?MDlEZVNEVzhKQ1hUQjZqNFI0MHV4UUtZOWtYMXhVWEdnV094Wjh4RVJtMnNF?=
+ =?utf-8?B?Zk1oV21HZUNkSXh5MXNTeXNRYUdqMXo0TElqUVVJRWFkRlA2OUVKZWM5VC96?=
+ =?utf-8?B?THBZWU9ZdGFzYk0wVXR1cmU3aTNNT0ZGQ1ZJdEFtZDlOWW4xaXBZOFBVZkNp?=
+ =?utf-8?B?K283YXJCb3NkeExaRWhUK1RpNm95TkxVZmdLVEgvV2pRbjdRNlZnYTdDUmJM?=
+ =?utf-8?B?ZlpHbDBhaUpTd3NsNnQ3cXZ6QXoxQ2VxdU4zTVgxTDA0YWJKTVc5RXRteHA3?=
+ =?utf-8?B?bS9hZnNyWVZ1RTVsNDgvL29ZVDhvNDRvbG95NFB4Y1J4MFE1STRKY3pGRlZo?=
+ =?utf-8?B?OWVZZjJoWnUyTzFnUHFlZFNndFZna2drVFE1NEpuWGZZa0xMNlZ3RzdTclV0?=
+ =?utf-8?B?Q1E2bjhzblRuRjhHYUtoSFJmQkcvWDNIYXpFQUxjUHJrWUsrUUR2SUp5NDll?=
+ =?utf-8?B?YWlrbUZSRFFkUWdSRHB3LzErb1p5bXc3ZjE3S0ZTck9MOUVCYnpJbDNtV05p?=
+ =?utf-8?B?d2pXbVEzNTRpTStLK05ZRDdxLzg4RlIzMndjQTg1dUk0bk43SUlaS0NoUEJs?=
+ =?utf-8?B?MlZWRTFHcGR4QkI5Y21TS0dpWmFrajUydWh5VlZFWEVxdm44UG5Od2dEWE1B?=
+ =?utf-8?B?QmlUZnJRaXFycTRncW5sclFFVGlSK1o4OGdwdExNUFpLNVhCcEFOdmQ2MHly?=
+ =?utf-8?B?anZDdWt4RHJRbmswVWxwZFV5UlVGQkhJdTFIbUJTWUpJeUhwMjNER2RyN0RC?=
+ =?utf-8?B?RGU4anl5bzMxYVk2WXlwRHFseWZ5VkFSakhUbythL2xsTXBNMGhJdXkybGtP?=
+ =?utf-8?B?c0U3SGFDem80NGxrV3p6cnc1UEM1U3JhUTczd0dWZmllM056RzFhSWhkMDEr?=
+ =?utf-8?B?Q0pIanp5S0tROUZWUGFkZmJVbnpOQnk1bmFwdms4NmNRWG9aV0x6Q2RwbGds?=
+ =?utf-8?B?NzFtNjZIKzBQZVQwc1Fpb0hXQ0JFditJWWtkWTlBdG9ydHJSTG84dUUvaDYv?=
+ =?utf-8?B?VWZNUWs5WUFxT0xYcXdMZlNCTjNtTXBhZTNpTFpWdkNPNXZzeFlaS1orc3RS?=
+ =?utf-8?B?d3poK0ZKM0R4aEZySjg2Nk1sTjZ3cjZIaVZSK2hRU2J1ek16T1BZT1hqdWVu?=
+ =?utf-8?B?T3l3ZUxnMHMra3h4VWUxRWF3STR3ZGd0c2lXeFByc1hRTXJoMTFTUWxOUjlK?=
+ =?utf-8?B?QmkyMi9UalN5SUFBSFJFNVNDclM4UStsM0p1eW5XaFRRNjRIL0RSZTBrcndk?=
+ =?utf-8?B?ZzY0dVhKWkx6aUN5ei9aMkhYcVhmU1RNOW1KK0k2QVZ1bitSNDJ2aktyd1dp?=
+ =?utf-8?B?OVg5V3I0TjZLMWZXeXk1N0xuMG9zWi9FUkVOZlFnK3VHeUVONUY1TTA2MTkz?=
+ =?utf-8?B?Y3RUZjVaYk1ndUdxdEc0cXVOOWE5VEY2N0RybkowSWN4TVdDa0l6K0NBdGhF?=
+ =?utf-8?Q?1t5hJgEz/QtEBcgP+c?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 034340e8-2b05-4b10-9037-08decbe15913
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf3c37af-cffc-4830-8386-08decc0a78c9
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2026 19:56:25.8360
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2026 00:50:48.2126
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4UxvI8HbljayIEFYf6dRAQGGMtZlHlkwLfJPgTOiGe4DnraD5ErYj9H2gY6LE08ZS8BTCKNbuiguTjjzqD+HFg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4449
+X-MS-Exchange-CrossTenant-UserPrincipalName: xJyYNehu4aFAnuaNinqQcslh0HzPNpR+EN7/6VUccgE4GzgT43HcxJmU5ai6ILjOhnnQ38ROI0a6z1yCGQ/dRQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7805
 
-Hello Prateek,
 
-On 6/16/2026 2:27 AM, K Prateek Nayak wrote:
-> Hello Ashish,
+
+On 4/6/26 18:39, Aneesh Kumar K.V (Arm) wrote:
+> Propagate force_dma_unencrypted() into DMA_ATTR_CC_SHARED in the
+> dma-direct allocation path and use the attribute to drive the related
+> decisions.
 > 
-> On 6/16/2026 1:19 AM, Ashish Kalra wrote:
->> +	/*
->> +	 * RMPOPT scans the RMP table, stores the result of the scan in the
->> +	 * reserved processor memory. The RMP scan is the most expensive
->> +	 * part. If a second RMPOPT occurs, it can skip the expensive scan
->> +	 * if they can see a cached result in the reserved processor memory.
->> +	 *
->> +	 * Do RMPOPT on one CPU alone. Then, follow that up with RMPOPT
->> +	 * on every other primary thread. Followers are "designed to"
->> +	 * skip the scan if they see the "cached" scan results.
->> +	 */
->> +	cpumask_copy(follower_mask, &rmpopt_cpumask);
+> This updates dma_direct_alloc(), dma_direct_free(), and
+> dma_direct_alloc_pages() to fold the forced unencrypted case into attrs.
 > 
-> rmpopt_cpumask is constructed after hotplug is disabled but ...
+> Tested-by: Jiri Pirko <jiri@nvidia.com>
+> Tested-by: Michael Kelley <mhklinux@outlook.com>
+> Tested-by: Mostafa Saleh <smostafa@google.com>
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>   kernel/dma/direct.c | 53 +++++++++++++++++++++++++++++++++++++--------
+>   1 file changed, 44 insertions(+), 9 deletions(-)
 > 
->> +
->> +	/*
->> +	 * Pin the worker to the current CPU for the leader loop so that
->> +	 * this_cpu remains valid and the RMPOPT instruction executes on
->> +	 * the correct CPU.
->> +	 *
->> +	 * Use migrate_disable() rather than get_cpu() to prevent
->> +	 * migration while still allowing preemption.
->> +	 */
->> +	migrate_disable();
->> +	this_cpu = smp_processor_id();
->> +
->> +	if (cpumask_test_cpu(this_cpu, follower_mask)) {
->> +		/*
->> +		 * Current CPU is a primary thread in rmpopt_cpumask.
->> +		 * Run leader locally and remove from follower mask.
->> +		 */
->> +		cpumask_clear_cpu(this_cpu, follower_mask);
->> +
->> +		for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G) {
->> +			rmpopt(pa);
->> +			cond_resched();
->> +		}
->> +	} else if (cpumask_intersects(topology_sibling_cpumask(this_cpu),
->> +				      follower_mask)) {
->> +		/*
->> +		 * Current CPU is a sibling thread whose primary is in
->> +		 * rmpopt_cpumask.  RMPOPT_BASE MSR is per-core, so it
->> +		 * is safe to run the leader locally.  Remove the sibling's
->> +		 * primary from the follower mask as this core is already
->> +		 * covered by the leader.
->> +		 */
->> +		cpumask_andnot(follower_mask, follower_mask,
->> +			       topology_sibling_cpumask(this_cpu));
->> +
->> +		for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G) {
->> +			rmpopt(pa);
->> +			cond_resched();
->> +		}
->> +	} else {
->> +		/*
->> +		 * Current CPU does not have RMPOPT_BASE MSR programmed.
->> +		 * Pick an explicit leader from the cpumask to avoid #UD.
->> +		 * Use work_on_cpu() to run in process context on the leader,
->> +		 * avoiding IPI latency.
->> +		 */
-> 
-> ... this_cpu is neither in the "rmpopt_cpumask", nor is any of its
-> siblings on "rmpopt_cpumask".
-> 
-> How does that happen?
+> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+> index a741c8a2ee66..90dc5057a0c0 100644
+> --- a/kernel/dma/direct.c
+> +++ b/kernel/dma/direct.c
+> @@ -193,16 +193,31 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+>   		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
+>   {
+>   	bool remap = false, set_uncached = false;
+> -	bool mark_mem_decrypt = true;
+> +	bool mark_mem_decrypt = false;
+>   	struct page *page;
+>   	void *ret;
+>   
+> +	/*
+> +	 * DMA_ATTR_CC_SHARED is not a caller-visible dma_alloc_*()
+> +	 * attribute. The direct allocator uses it internally after it has
+> +	 * decided that the backing pages must be shared/decrypted, so the
+> +	 * rest of the allocation path can consistently select DMA addresses,
+> +	 * choose compatible pools and restore encryption on free.
 
-Actually, this was the implementation before the CPU hotplug disable enforcement code was implemented and added in v8,
-and i should have fixed this rmpopt_work_handler() accordingly for v8.
+Why this limit?
 
-With the enforced cpu hotplug disable support, case #3 here (above) is now dead code, and removing it lets
-cases #1 and #2 collapse too.
-
-snp_prepare() requires cpu_online_mask == cpu_present_mask before SNP init — so when snp_setup_rmpopt() programs the MSRs, every
-core's primary is online -> every core is in rmpopt_cpumask.
-  
-So now the work handler always runs on a CPU whose core is programmed. topology_sibling_cpumask(this_cpu) therefore always intersects
-rmpopt_cpumask -> case #1 or #2 always matches.
-
-So i should actually drop case #3 here - which is: "this_cpu is neither in the "rmpopt_cpumask", nor is any of its
-siblings on rmpopt_cpumask"
+Context: I am looking for a memory pool for a few shared pages (to do some guest<->host communication), SWIOTLB seems like the right fit but swiotlb_alloc() is not exported and dma_direct_alloc(DMA_ATTR_CC_SHARED) is not allowed.  Thanks,
 
 
-> 
->> +		int leader_cpu = cpumask_first(follower_mask);
->> +
->> +		if (WARN_ON_ONCE(leader_cpu >= nr_cpu_ids)) {
->> +			migrate_enable();
->> +			goto out;
->> +		}
->> +
->> +		cpumask_clear_cpu(leader_cpu, follower_mask);
->> +
->> +		/* Release migration pin before work_on_cpu(). */
->> +		migrate_enable();
->> +
->> +		work_on_cpu(leader_cpu, rmpopt_leader_fn, NULL);
-> 
-> This creates a delayed work and also waits for it to finish execution
-> which will add more latency than a simple IPI if the comment about IPI
-> latency above is accurate.
-> 
-> I think there is some corner case in construction of the
-> "rmpopt_cpumask" that requires this not-so-pretty else block. Can you
-> elaborate why this is required?
-> 
-> Perhaps the "rmpopt_cpumask" construction needs:
-> 
->     for_each_online_cpu(cpu) {
->         /* Nominate the first CPU on the sibling mask for RMPOPT */
->         if (cpu != cpumask_first(topology_sibling_cpumask(cpu)))
->             continue;
->         cpumask_set_cpu(cpu, &rmpopt_cpumask);
->     }
-> 
-> 
-> and all you need here is:
-> 
->     /* Do RMPOPt for local core */
->     for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
->         rmpopt(pa);
-> 
->     /* Skip this core from concurrent RMPOPT */
->     cpumask_and_not(follower_mask, &rmpopt_cpumask, topology_sibling_cpumask(cpu));
-> 
-> No?
-> 
+> +	 */
+> +	if (attrs & DMA_ATTR_CC_SHARED)
+> +		return NULL;
+> +
+> +	if (force_dma_unencrypted(dev)) {
+> +		attrs |= DMA_ATTR_CC_SHARED;
+> +		mark_mem_decrypt = true;
+> +	}
+> +
+>   	size = PAGE_ALIGN(size);
+>   	if (attrs & DMA_ATTR_NO_WARN)
+>   		gfp |= __GFP_NOWARN;
+>   
+> -	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
+> -	    !force_dma_unencrypted(dev) && !is_swiotlb_for_alloc(dev))
+> +	if (((attrs & (DMA_ATTR_NO_KERNEL_MAPPING | DMA_ATTR_CC_SHARED)) ==
+> +	     DMA_ATTR_NO_KERNEL_MAPPING) && !is_swiotlb_for_alloc(dev))
+>   		return dma_direct_alloc_no_mapping(dev, size, dma_handle, gfp);
+>   
+>   	if (!dev_is_dma_coherent(dev)) {
+> @@ -236,7 +251,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+>   	 * Remapping or decrypting memory may block, allocate the memory from
+>   	 * the atomic pools instead if we aren't allowed block.
+>   	 */
+> -	if ((remap || force_dma_unencrypted(dev)) &&
+> +	if ((remap || (attrs & DMA_ATTR_CC_SHARED)) &&
+>   	    dma_direct_use_pool(dev, gfp))
+>   		return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
+>   
+> @@ -312,12 +327,24 @@ void dma_direct_free(struct device *dev, size_t size,
+>   		void *cpu_addr, dma_addr_t dma_addr, unsigned long attrs)
+>   {
+>   	phys_addr_t phys;
+> -	bool mark_mem_encrypted = true;
+> +	bool mark_mem_encrypted = false;
+>   	struct io_tlb_pool *swiotlb_pool;
+>   	unsigned int page_order = get_order(size);
+>   
+> -	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
+> -	    !force_dma_unencrypted(dev) && !is_swiotlb_for_alloc(dev)) {
+> +	/* see dma_direct_alloc() for details */
+> +	WARN_ON(attrs & DMA_ATTR_CC_SHARED);
+> +
+> +	/*
+> +	 * if the device had requested for an unencrypted buffer,
+> +	 * convert it to encrypted on free
+> +	 */
+> +	if (force_dma_unencrypted(dev)) {
+> +		attrs |= DMA_ATTR_CC_SHARED;
+> +		mark_mem_encrypted = true;
+> +	}
+> +
+> +	if (((attrs & (DMA_ATTR_NO_KERNEL_MAPPING | DMA_ATTR_CC_SHARED)) ==
+> +	     DMA_ATTR_NO_KERNEL_MAPPING) && !is_swiotlb_for_alloc(dev)) {
+>   		/* cpu_addr is a struct page cookie, not a kernel address */
+>   		dma_free_contiguous(dev, cpu_addr, size);
+>   		return;
+> @@ -366,10 +393,14 @@ void dma_direct_free(struct device *dev, size_t size,
+>   struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
+>   		dma_addr_t *dma_handle, enum dma_data_direction dir, gfp_t gfp)
+>   {
+> +	unsigned long attrs = 0;
+>   	struct page *page;
+>   	void *ret;
+>   
+> -	if (force_dma_unencrypted(dev) && dma_direct_use_pool(dev, gfp))
+> +	if (force_dma_unencrypted(dev))
+> +		attrs |= DMA_ATTR_CC_SHARED;
+> +
+> +	if ((attrs & DMA_ATTR_CC_SHARED) && dma_direct_use_pool(dev, gfp))
+>   		return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
+>   
+>   	if (is_swiotlb_for_alloc(dev)) {
+> @@ -403,7 +434,11 @@ void dma_direct_free_pages(struct device *dev, size_t size,
+>   	phys_addr_t phys;
+>   	void *vaddr = page_address(page);
+>   	struct io_tlb_pool *swiotlb_pool;
+> -	bool mark_mem_encrypted = true;
+> +	/*
+> +	 * if the device had requested for an unencrypted buffer,
+> +	 * convert it to encrypted on free
+> +	 */
+> +	bool mark_mem_encrypted = force_dma_unencrypted(dev);
+>   
+>   	/* If cpu_addr is not from an atomic pool, dma_free_from_pool() fails */
+>   	if (IS_ENABLED(CONFIG_DMA_COHERENT_POOL) &&
 
-Yes, a simpler implementation will be like this: 
-...
 
- 	if (!alloc_cpumask_var(&follower_mask, GFP_KERNEL))
-                return;
+-- 
+Alexey
 
- 	cpumask_copy(follower_mask, &rmpopt_cpumask);
-
-        /*
-         * The current CPU's core always has RMPOPT_BASE programmed
-         * (snp_prepare() required all CPUs online at setup and CPU hotplug
-         * is disabled while SNP is active), so it can always be the leader.
-         * RMPOPT_BASE is per-core; exclude this core from the followers.
-         */
-        migrate_disable();
-        cpumask_andnot(follower_mask, follower_mask,
-                       topology_sibling_cpumask(smp_processor_id()));
-
-        for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G) {
-                rmpopt(pa);
-                cond_resched();
-        }
-        migrate_enable();
-
-        cpus_read_lock();
-        for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G) {
-                on_each_cpu_mask(follower_mask, rmpopt_smp, (void *)pa, true);
-                cond_resched();
-        }
-        cpus_read_unlock();
-
-        free_cpumask_var(follower_mask);
-
-
- Here, the leader exclusion must use the sibling mask, not clear_cpu(this_cpu). That's why my collapsed version uses:
-
-        cpumask_andnot(follower_mask, follower_mask,
-                       topology_sibling_cpumask(smp_processor_id()));
-
-  - If this_cpu is a primary: its sibling mask contains itself (the primary) -> andnot removes this core's primary from the followers.
-  
-  - If this_cpu is a secondary: it isn't in follower_mask at all, but its sibling mask contains its primary, which is in
-  follower_mask -> andnot still removes this core's primary. 
-
-  So either way the current core is dropped from the followers. (The old code needed two branches because case #1 used
-  clear_cpu(this_cpu) — only correct when this_cpu is the primary — while case #2 used the sibling andnot. The single andnot works for
-  both cases).
-
-Thanks,
-Ashish
-
->> +		goto followers;
->> +	}
->> +
->> +	migrate_enable();
->> +
