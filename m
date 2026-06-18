@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACE13BBA1E
-	for <linux-coco@lists.linux.dev>; Thu, 18 Jun 2026 14:45:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26B33F54BD
+	for <linux-coco@lists.linux.dev>; Thu, 18 Jun 2026 15:04:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781793929; cv=none; b=nbMIu6jxechYCAssIfS+7XzNBW/eWfsBpTXYdoeZcjZvvo9ICavmStWKsW8u5M0k1zYm+R+PHbsUZIA9UQpEj2RA023eshghLLitwj8uLKUBWfzMlONcDw+zWEB7+Mfy6OYt9EX0mwYsbxH1UhJSoD04hxbLUAEYaAix2I1+q0w=
+	t=1781795101; cv=none; b=Zt8Yfz0v09Q3Ziw3cJySQOgzV5UMcLLAQm8cKDCMlltrt7Y07xj+rNkHlh8nGxmrKKTBTkVO7pZ9qxliwrA5vYjFBJxv5iUPkCUCTeZ07vi8BELsABs7k7z1RqEKB1h65satq0Jo+w3eFFotN6a+MR/balv+AMS9QeaRW/+HSic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781793929; c=relaxed/simple;
-	bh=A9WK/cPD3uw2LH2iZlFk79auznhqO1irExbdoBfW/PU=;
+	s=arc-20240116; t=1781795101; c=relaxed/simple;
+	bh=ro4+gpoLrqsLmi2y6DwQCGTfQAAwPydgwx+VKGvATtU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mF5poMLsQbx4IthCFfLRZF0QmaFN1xgKCLadFEcfm93S0+nlopIQJZR6xem+XbC3fzm+oHAv3QhkEnh05EUegfrz9XpO9c6FWV9uD7wqPKbK1wG1Vmc/KNNRfH6O9gUIEV/3EpLjVO9od+yOEwYOUHCUeq2vS1HsyfWqployM7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J8cU5FaN; arc=none smtp.client-ip=192.198.163.10
+	 In-Reply-To:Content-Type; b=gCxVkcxDgofSMIvCWW7nL38R8FiXpNXoLG0ET1/ul8rbmVmCxe2i2K14t81XAcJchUf565okxJjsSmfA+dQDDS5iy4jHT+nKioypOWc05EcHCK/lIFAgixuI961YNaznQh5B379T+BIz7xBYCWcWxnC/xV9WcnIdozP5ryqzwIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J2bbruFF; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J8cU5FaN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J2bbruFF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781793927; x=1813329927;
+  t=1781795100; x=1813331100;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=A9WK/cPD3uw2LH2iZlFk79auznhqO1irExbdoBfW/PU=;
-  b=J8cU5FaNfEkhfBFhIOIrG/A501Qm4v6+z4CHcKfi2dwFPLwxvZo8A92A
-   3R4lf+gvil4hyTLT2RXzabP9I6nYMxZwFhqB415bidosN5uN17k42BQGU
-   N2wsTNEh6B0fec8oQITgE91j0PI1eExNzUA7yZmodPzd7CDY1q/Hpqbw5
-   LbnQIleK7wqby5olqumbNdLeBODMFzqDRtreUSu58fgbnmtTylrsrAeUZ
-   BronMpVdjj0b9pRS6XAKuUSVwKt2SLdhF8rguTorIsxI3GhIXI7wMlhnW
-   /qjp2f1HvIOoZpu1gcIUUL9Uqv6viYkm320oezUzDPKv6BZ3lqUmMhSyr
-   A==;
-X-CSE-ConnectionGUID: tPBMpK77RF2uqfT0MCiAgQ==
-X-CSE-MsgGUID: CsAk58oSTJ+K6uFkL+Z4VA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="94005377"
+  bh=ro4+gpoLrqsLmi2y6DwQCGTfQAAwPydgwx+VKGvATtU=;
+  b=J2bbruFFpbDHGy8EuwwewY7+IfMh+vddvW+sBMUXN0khxiGOWEuM06L0
+   16GhGYbFRZwj2XGuGfvRNRUa3jvABHATP523He9nAUcW08Fhq8nDbcoqN
+   Kuzm2R6UL7sHBnjkaOlNH5UjggHeO4zY2DTph2ijT1Z0BShrmxm3A9tdR
+   p+6vmLz5LxjmCic2uHMWgW7BhDy9pzqdBVRqdkO+SkpuK34UgebwKIP2+
+   2h9a6TniwDxRfbJN09JufxRSK5Wv5+40tBmoyrenQ7B4rzWlWE4CCb+Xb
+   7vSc+8fsFmi5+78mqlYDdDl/lvSGexkY1ftxVB6Q4Au1/lFjn+5nOaIX0
+   g==;
+X-CSE-ConnectionGUID: TCVvQeqFQnaSR5a7UpUZXQ==
+X-CSE-MsgGUID: rwKTQ2tDSQq/pOllQGA27g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="86545392"
 X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
-   d="scan'208";a="94005377"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 07:45:26 -0700
-X-CSE-ConnectionGUID: nF25pagpQ9uvctuMkgguDQ==
-X-CSE-MsgGUID: oRaU7j/aRDuERW+LhZZEZQ==
+   d="scan'208";a="86545392"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 08:05:00 -0700
+X-CSE-ConnectionGUID: 9kUffgg9Scy/8SUvatPtOA==
+X-CSE-MsgGUID: ebaT3CgCT0yxru2RWbcQpw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
-   d="scan'208";a="247502339"
+   d="scan'208";a="248465617"
 Received: from rfrazer-mobl3.amr.corp.intel.com (HELO [10.125.111.222]) ([10.125.111.222])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 07:45:25 -0700
-Message-ID: <bdde1a33-9513-4be3-87cb-044c034eddb1@intel.com>
-Date: Thu, 18 Jun 2026 07:45:25 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 08:04:59 -0700
+Message-ID: <4f4b0f29-424b-45ed-8cfd-c77da2ea390f@intel.com>
+Date: Thu, 18 Jun 2026 08:04:58 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/17] x86/virt/tdx: Embed version info in SEAMCALL
- leaf function definitions
+Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
+ module init and update
 To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Cc: djbw@kernel.org, kas@kernel.org, rick.p.edgecombe@intel.com,
@@ -63,7 +63,7 @@ Cc: djbw@kernel.org, kas@kernel.org, rick.p.edgecombe@intel.com,
  baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
  dave.hansen@linux.intel.com, seanjc@google.com
 References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-2-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-3-yilun.xu@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -109,127 +109,62 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260618081355.3253581-2-yilun.xu@linux.intel.com>
+In-Reply-To: <20260618081355.3253581-3-yilun.xu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 6/18/26 01:13, Xu Yilun wrote:
-> Embed version information in SEAMCALL leaf function definitions rather
-> than let the caller open code them. For now, only TDH.VP.INIT is
-> involved.
-
-This is jumping the gun a bit in the changelog.
-
-What is a SEAMCALL leaf function?
-
-How does the version fit in?
-
-> Don't bother the caller to choose the SEAMCALL version if unnecessary.
-
-I think I see what you are trying to say here but it's more than that.
-
-The question is whether there should be a base seamcall() API that takes
-an explicit version or whether the version should be passed in by callers.
-
-One wrinkle is that the naming of all of these things is around
-"function", "func" and "fn":
-
-u64 __seamcall(u64 fn, struct tdx_module_args *args);
-
-A "function" is TDH.SYS.INIT or TDH.SYS.INFO, not 'TDH.SYS.INFO v123'.
-
-But the low-level calls could be:
-
-	u64 __seamcall(u64 fn, u64 version, ...);
-	
-or
-
-	u64 __seamcall(u64 fn, ...);
-
-Where 'fn' encodes the function *and* version.
-
-> The old TDX modules that only support TDH.VP.INIT v0 are all deprecated,
-> so only provide the latest (v1) definition.
-
-No, this isn't how this is going to work.
-
-What do we *NEED* from v1? Why churn the code if we don't *NEED*
-something from v1 and can live with v0? It has *ZERO* to do with the TDX
-module being deprecated or whatever.
-
-Linux stays on the old interface until we need a new interface. We are
-*not* going to bump version numbers just because.
-
-
->  /*
->   * TDX module SEAMCALL leaf functions
->   */
-> @@ -31,7 +44,7 @@
->  #define TDH_VP_CREATE			10
->  #define TDH_MNG_KEY_FREEID		20
->  #define TDH_MNG_INIT			21
-> -#define TDH_VP_INIT			22
-> +#define TDH_VP_INIT			SEAMCALL_LEAF_VER(22, 1)
->  #define TDH_PHYMEM_PAGE_RDMD		24
->  #define TDH_VP_RD			26
->  #define TDH_PHYMEM_PAGE_RECLAIM		28
-> @@ -50,14 +63,6 @@
->  #define TDH_SYS_UPDATE			53
->  #define TDH_SYS_DISABLE			69
-
-That is unreadable and patterns can't be seen. This is better:
-
-#define TDH_MNG_INIT			SEAMCALL_LEAF_VER(21, 0)
-#define TDH_VP_INIT			SEAMCALL_LEAF_VER(22, 1)
-#define TDH_PHYMEM_PAGE_RDMD		SEAMCALL_LEAF_VER(24, 0)
-
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -1903,8 +1903,7 @@ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
->  		.r8 = x2apicid,
->  	};
+>  int tdx_module_run_update(void)
+>  {
+> +	u64 seamcall_fn = TDH_SYS_UPDATE_V0;
+>  	struct tdx_module_args args = {};
+>  	int ret;
 >  
-> -	/* apicid requires version == 1. */
-> -	return seamcall(TDH_VP_INIT | (1ULL << TDX_VERSION_SHIFT), &args);
-> +	return seamcall(TDH_VP_INIT, &args);
->  }
->  EXPORT_SYMBOL_FOR_KVM(tdh_vp_init);
+> -	ret = seamcall_prerr(TDH_SYS_UPDATE, &args);
+> +	if (tdx_addon_feature0) {
+> +		args.r9 = tdx_addon_feature0;
+> +		seamcall_fn = TDH_SYS_UPDATE;
+> +	}
 
-But that whole scheme falls apart the first time the kernel needs
-functionality from v2. You'll need:
+Heh, and it falls apart into craziness immediately. See how it
+immediately loses the logical information that there's a version 1 and a
+version 0? The "1" isn't even visible. It's hidden in "TDH_SYS_UPDATE".
 
-#define TDH_VP_INIT_V0			SEAMCALL_LEAF_VER(22, 0)
-#define TDH_VP_INIT_V1			SEAMCALL_LEAF_VER(22, 1)
+Isn't this a million times more sane?
 
-and then the calls will do:
+	struct tdx_module_args args = {};
+	u64 version;
+  	int ret;
 
-	if (foo)
-		return seamcall(TDH_VP_INIT_V0, &args);
-	else
-		return seamcall(TDH_VP_INIT_V1, &args);
+	if (tdx_addon_feature0) {
+		args.r9 = tdx_addon_feature0;
+		version = 1;
+	} else {
+		version = 0;
+	}
 
-So this 100% goes down the road of needing #defines for *EACH* version.
-That's the real implication here and the real choice.
+	ret = seamcall_prerr(TDH_SYS_UPDATE, version, &args);
 
-That said, I don't particularly like:
 
-	if (foo)
-		return seamcall(TDH_VP_INIT, 0, &args);
-	else
-		return seamcall(TDH_VP_INIT, 1, &args);
+There's also zero stopping us from putting version in args:
 
-all that much either because of the seemingly magic numbers.
+	struct tdx_module_args args = {};
+  	int ret;
 
-The whole seamcall RAX thing is one step too clever. I think Linux did
-the right thing:
+	if (tdx_addon_feature0) {
+		args.r9 = tdx_addon_feature0;
+		args.version = 1;
+	}
 
-5	common	open				sys_open
-288	common	openat				sys_openat
-437	common	openat2				sys_openat2
+	ret = seamcall_prerr(TDH_SYS_UPDATE, &args);
 
-New ABI gets a new base number. No need for the other end of the ABI to
-know that 288 is arguably a later version of 5.
+Eh?
 
-Ugh. But why is this patch even in here in the first place? Why is this
-even *ASSOCIATED* with DICE-based attestation? Isn't this completely
-orthogonal?
+That gives args.version==0 in all the normal cases which just happens to
+be the exact behavior we want. It also avoids having to plumb version
+through all the seamcall*() wrappers.
+
+But this is *exactly* the kind of thing that shouldn't be a part of an
+attestation patch series. This could very much have been a separate
+discussion and happened a month or a year ago. But now it is blocking
+this DICE thing from getting done <grumble>.
