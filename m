@@ -1,166 +1,288 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BBF276049;
-	Thu, 18 Jun 2026 08:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D416E3AA182
+	for <linux-coco@lists.linux.dev>; Thu, 18 Jun 2026 08:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781771853; cv=none; b=LIeyk/IBtu4oqA3VzJL74bUPduqWYLeJfwAjIRgZkFq5fdSH8n32Xwm8bDWd608BF9LZ77J1dpRxAODkiCYQ5I4F2CWELDEmjXCpNdGAbCQZQcjGSIp7IXhUQUkBtY8wv1H/KmwaPBOPnZA2mp+m8oa/EXuY8j6MWqIoDpmZmm4=
+	t=1781771943; cv=none; b=swuhvvwJo7w/Q/lLMbbkwKfWjYnE+cipPe4Q5YdV6vyUnqhENvYjlHF7XqEAuQ/1u4fhpu7/uu5V0IpC3gEff1FV4Y5VYlgu6L101OR8r7aUmRM0VnSSTQDplNk4O4TJEPa9+jwlo8uNav7e7l+mVbG2mrV1aTGDqq7TG1louvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781771853; c=relaxed/simple;
-	bh=2p8Tyh/UWigSfVM1Alp/U1v3F1IYe71ZRicsBMgPa0w=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=LpvhNLDfo3FDN0+JKJjC48n5JsK6BAIfOpLcdxFq0fTicyPamqrCAZxcrA4i62ihh/3GTcfjx3YBEq6BDzWcCpJUyzO6UnCVtD6MBF0xXZZcthlpvvmV0RLQzBDj+dq9K9ad4zp50/N7eglFl/B6IRz4mgHDsMjsRcc1ZpAX42Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bJYmurEU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781771943; c=relaxed/simple;
+	bh=pQqkQ0d0Cwu6speH476hyRJ334B2J0cZc/f+1YHX0eA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SArmn7AiG368/h+QGZhGCynqzXXld4ezYCu5tGzndwor4+rt8loKC5f9aI+0thbLjl7Gpmf7kDUpeK6I5LYffcl3Y3XvmTeyVM3eGGOkCEx56Ksw6kmu9e8NKA42VqLwZ3kGDUs4geIzQ+YWK9tP6d9zdPV5Td22X3gxbXEBNns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CvbbpTlB; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bJYmurEU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334ED1F000E9;
-	Thu, 18 Jun 2026 08:37:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781771851;
-	bh=Tjfp3FF0f+SxzpFBuG9E9B1amsn/loCXBkKBhFITWIo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=bJYmurEUTf4p9ddXp1VSCskBHjygy+xD/oNjB9s2Ep/Uu73ZeAFn3grah/ZH/26bC
-	 Z2IKNbkJrX3SQyniq2V3c43nApViK8ptRc8Gz9vZ5aBx3WYWws6jmsSQ1n8wC/ZhsC
-	 aPXbP4vBO9+s7L7Gu2B1QTaU30Q3lwF3YsxuWM4vVa7T2kphUxDrfVTBh2RPbtKviM
-	 f3h5f4VrWfNGB2xgQRFYm9r1q8fBv53E49ns83ljI6VaL3Opsq3DE6buX9d8xYbXtu
-	 r9HlAXaeEfYUQ5HKSssJFRAz7y8WVKnEyAfSl5fBP2P87RedjDBY2R+S227cOm339+
-	 HGR07rvOMXPTg==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Alexey Kardashevskiy <aik@amd.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [PATCH v6 00/20] dma-mapping: Use DMA_ATTR_CC_SHARED through
- direct, pool and swiotlb paths
-In-Reply-To: <2ecfa1a8-6202-4319-9692-a6ffeb5a3dbf@amd.com>
-References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
- <aigYbK12D8uKQvJF@arm.com> <20260609144746.GL2764304@ziepe.ca>
- <2ecfa1a8-6202-4319-9692-a6ffeb5a3dbf@amd.com>
-Date: Thu, 18 Jun 2026 09:37:22 +0100
-Message-ID: <yq5aqzm4dz25.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CvbbpTlB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781771941; x=1813307941;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=pQqkQ0d0Cwu6speH476hyRJ334B2J0cZc/f+1YHX0eA=;
+  b=CvbbpTlB0h9n2Zeka758m/xAdPekH5PWRnPgOnXoBavLSGgTxy5wDRRT
+   XbdJxdWW0kpqKNov6/b5xt/I6b4pPNvcAPFVtn6uHv52cBPywXXx+21RY
+   PYEP6ooZ+2NFh4W4ZQpoNibzxF/BUdG8q8SU+xCzdllNiOJMTvTesaWp/
+   szmE3FQdQJ27vageIdiqUbF2V8N1SPW4Bg9uyv3Q+EZCvomhgIc8h4m55
+   j3/uHJOn2Q5/bIQ7pJZ1yS8t9seBjKC3BrGFEbkSsJICZ+px2dS8w5uol
+   bxeTKjn3/qQ0D+aMu9s3hBGUMZxAASsf9FZO4gekQ0PtQvZuKe4CzwDGj
+   A==;
+X-CSE-ConnectionGUID: YJw/QKKlTyKW1cDJzQaHsg==
+X-CSE-MsgGUID: 9nXAXgDZSwixO1RilX/u1Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="81584607"
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="81584607"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 01:39:00 -0700
+X-CSE-ConnectionGUID: ay1jMGVKTc+uUVWke/A3kw==
+X-CSE-MsgGUID: Rr4xM7vcQZ2d2Cq2tLg7gQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="248392112"
+Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
+  by orviesa009.jf.intel.com with ESMTP; 18 Jun 2026 01:38:55 -0700
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: x86@kernel.org,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: djbw@kernel.org,
+	kas@kernel.org,
+	rick.p.edgecombe@intel.com,
+	yilun.xu@linux.intel.com,
+	yilun.xu@intel.com,
+	xiaoyao.li@intel.com,
+	sohil.mehta@intel.com,
+	adrian.hunter@intel.com,
+	kishen.maloor@intel.com,
+	tony.lindgren@linux.intel.com,
+	peter.fang@intel.com,
+	baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com,
+	dave.hansen@intel.com,
+	dave.hansen@linux.intel.com,
+	seanjc@google.com
+Subject: [PATCH v2 00/17] Enable DICE-based TDX Quoting Extension
+Date: Thu, 18 Jun 2026 16:13:38 +0800
+Message-Id: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Alexey Kardashevskiy <aik@amd.com> writes:
+This series adds infrastructure to enable TDX module extensions and
+then implements DICE-based TDX Quoting extension. This is the 2nd
+version and a significant change is that we want the quoting part to
+merge along with the basic TDX module extensions part, rather than
+serving as an example. So the quoting part drops RFC tags and requires
+initial review. The basic extensions part addresses v1 comments and
+needs more detailed review.
 
-> On 10/6/26 00:47, Jason Gunthorpe wrote:
->> On Tue, Jun 09, 2026 at 02:43:08PM +0100, Catalin Marinas wrote:
->>> On Thu, Jun 04, 2026 at 02:09:39PM +0530, Aneesh Kumar K.V (Arm) wrote:
->>>> This series propagates DMA_ATTR_CC_SHARED through the dma-direct,
->>>> dma-pool, and swiotlb paths so that encrypted and decrypted DMA buffers
->>>> are handled consistently.
->>>>
->>>> Today, the direct DMA path mostly relies on force_dma_unencrypted() for
->>>> shared/decrypted buffer handling. This series consolidates the
->>>> force_dma_unencrypted() checks in the top-level functions and ensures
->>>> that the remaining DMA interfaces use DMA attributes to make the correct
->>>> decisions.
->>>
->>> Please check Sashiko's reports, it has some good points:
->>>
->>> https://sashiko.dev/#/patchset/20260604083959.1265923-1-aneesh.kumar@kernel.org
->>>
->>> I think the main one is the swiotlb_tbl_map_single() changes which break
->>> AMD SME host support. There cc_platform_has(CC_ATTR_MEM_ENCRYPT) is true
->>> but force_dma_unencrypted() is false. Normally you'd not end up on this
->>> path but you can have swiotlb=force.
->> 
->> IMHO that's an AMD issue, not with the design of this series..
->> 
->> The series is right, a device that is !force_dma_decrypted() must be
->> considerd to be a trusted device and we must never place any DMA
->> mappings for a trusted device into shared memory.
->
->
-> swiotlb=force forces swiotlb, not decryption.
->
->> That AMD has done somethine insane:
->> 
->> bool force_dma_unencrypted(struct device *dev)
->> {
->> 	/*
->> 	 * For SEV, all DMA must be to unencrypted addresses.
->> 	 */
->> 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
->> 		return true;
->> 
->> 	/*
->> 	 * For SME, all DMA must be to unencrypted addresses if the
->> 	 * device does not support DMA to addresses that include the
->> 	 * encryption mask.
->> 	 */
->> 	if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
->> 		u64 dma_enc_mask = DMA_BIT_MASK(__ffs64(sme_me_mask));
->> 		u64 dma_dev_mask = min_not_zero(dev->coherent_dma_mask,
->> 						dev->bus_dma_limit);
->> 
->> 		if (dma_dev_mask <= dma_enc_mask)
->> 			return true;
->> 	}
->
->
-> So when I try "mem_encrypt=on iommu=pt swiotlb=force" with this patchset, it fails to boot. But it boots with a hack like this:
->
-> ===
-> @@ -39,7 +41,7 @@ bool force_dma_unencrypted(struct device *dev)
->                          return true;
->          }
->   
-> -       return false;
-> +       return swiotlb_force_bounce;
->   }
-> ===
->
-> Or we say "mem_encrypt=on iommu=pt swiotlb=force" combo is just weird and we won't be supporting which bit in this? Thanks,
->
+The quoting part contains some KVM patches, so we sorted the series for
+easier review and pick:
 
-Something like?
+  Patches  1-6:  Enable the TDX module extensions support
+  Patches  7-14: DICE-based TDX Quoting, x86/tdx part
+  Patches  15-N: DICE-based TDX Quoting, KVM part
 
-modified   arch/x86/mm/mem_encrypt.c
-@@ -34,6 +34,13 @@ bool force_dma_unencrypted(struct device *dev)
- 		u64 dma_enc_mask = DMA_BIT_MASK(__ffs64(sme_me_mask));
- 		u64 dma_dev_mask = min_not_zero(dev->coherent_dma_mask,
- 						dev->bus_dma_limit);
-+		/*
-+		 * With memory encryption enabled, SWIOTLB is marked decrypted.
-+		 * If SWIOTLB bouncing is forced, treat the device as requiring
-+		 * decrypted DMA.
-+		 */
-+		if (is_swiotlb_force_bounce(dev))
-+			return true;
- 
- 		if (dma_dev_mask <= dma_enc_mask)
- 			return true;
+== Overview ==
+
+To date, SEAMCALLs have been short lived routines that monopolize the
+CPU for their duration. This limits their utility for implementing
+higher order security protocols, or pushes complexity into Linux - such
+as by fragmenting a protocol setup service into several SEAMCALLs. The
+Linux appetite for ingesting complexity is low, so TDX now adds a new
+class of SEAMCALLs that are preemptible and resumable. This capability
+allows for higher-level API constructions - like "create a DICE-based
+quote" - which are more aligned to what is a good fit for Linux.
+
+This new "extension SEAMCALL" capability is akin to ARM CCA's "Stateful
+RMI Operations (SRO)", and achieves similar externalized complexity
+relief as a dedicated hardware co-processor like AMD SEV-SNP. The
+mechanism is "give the service environment some memory", "invoke the
+service API", and "continue invoking until complete". All protocol state
+is internal to the service API.
+
+TDX introduces "TDX module extensions" as the service environment for
+some add-on features - such as DICE-based quoting, TDISP, and live
+migration - to use "extension SEAMCALLs".
+
+The extension SEAMCALLs are designed to be transparent to the host,
+using the same interface as normal SEAMCALLs, but the service
+environment should be initialized in several steps. First,
+configure/select (via TDH.SYS.CONFIG) add-on features during basic TDX
+initialization. Second, check if TDX module extensions are required to
+support these add-on features by reading TDX global metadata. Third, add
+extra memory to the TDX module via a SEAMCALL (TDH.EXT.MEM.ADD).
+Finally, use another SEAMCALL (TDH.EXT.INIT) to initialize the
+extensions.
+
+== DICE-based Quoting extension ==
+
+The first feature to use these extensions is the TDX Quoting extension [1],
+which converts guest launch attestation reports into a document that can be
+verified externally.
+
+Today, the TDX host requires a separate software service to generate Quotes.
+The Quoting extension allows the TDX module to generate Quotes directly,
+without relying on a discrete Quoting engine. This simplifies the overall
+attestation flow: KVM no longer needs to return to userspace for Quote
+generation. Instead, Quote generation is handled directly by the TDX module
+through an extension SEAMCALL. See [2] for an overview of TDX attestation.
+
+The Device Identifier Composition Engine ("DICE") provides a standardized
+framework for layering attestation evidence. It replaces SGX-based attestation
+and moves away from Intel-proprietary formats. It also eliminates the SGX
+requirement to contact an Intel service to obtain a certificate first.
+Instead, all attestation evidence is embedded in the Quote itself.
+
+== The trade-off ==
+
+The extensions create an extension instance for each feature that
+requires extension SEAMCALLs. More memory is consumed when more
+extension instances are created. There are 3 extensions (quoting, TDISP,
+Migration) in the foreseeable future. Turning on them all will require
+tens of megabytes. Note that the host can never reclaim the memory added
+to the extensions.
+
+According to the TDX module design, basic TDX functionalities can run
+without the extensions. So theoretically the extensions don't need to be
+enabled at basic TDX initialization time. They could be lazily enabled
+right before the first extension SEAMCALL is issued.
+
+However, Linux applies a simple policy for TDX: turn on all the features
+that Linux knows about all the time, unless and until any evidence makes
+this approach untenable. Enabling the extensions along with the basic
+TDX at boot time aligns with the policy, and offers several good
+reasons:
+
+  1. Simplify TDX state management, avoid runtime state transitions that
+     could introduce race conditions or unexpected failure modes.
+
+  2. The kernel doesn't have to keep track of which SEAMCALLs need the
+     extensions, as there is no HW/FW enumeration for this.
+
+  3. When no extension is configured, the extensions initialization is
+     virtually skipped. So no impact on existing kernels.
+
+  4. A small trade-off is that eager initialization allocates memory
+     (tens of megabytes) at boot time before any feature starts to work.
+     However, these features provide critical security capabilities in
+     confidential computing. They are expected to be enabled eventually
+     when available. So this merely advances the timing of memory
+     allocation.
+
+== Restore the extensions after runtime TDX module update ==
+
+Runtime TDX module update introduces a mechanism to update the module
+firmware while preserving and restoring TDX operations. As part of the
+restoration process, TDX module extensions must also be re-initialized
+to re-enable extension SEAMCALLs.
+
+Similar to TDH.SYS.CONFIG, TDX module extends TDH.SYS.UPDATE with more
+parameters for the host to re-enable desired add-on features. Then host
+must re-execute all extensions initialization steps to restore extension
+SEAMCALL functionality.
+
+However, Linux runs the update in stop_machine() context, which prevents
+memory allocation. This introduces a hard restriction that the updated
+TDX environment must not consume more memory for the extensions.
+
+Fortunately, Linux applies another policy that no newer features should
+be added during runtime update to avoid disrupting live TDX operations.
+To adhere to this, TDH.SYS.UPDATE must enable the same features as the
+TDH.SYS.CONFIG. This policy mitigates the memory allocation problem a
+lot by minimizing the chance of increased memory demand. So now the
+restriction only affects the compatibility rule for choosing the update
+image.
+
+The same memory constraint applies to the Quoting extension. A compatible
+runtime update must not increase the size limit of its Quotes, because the
+buffer used for Quote generation is allocated during TDX bringup. Otherwise,
+attestation could fail after the update if the TDX module requires a larger
+buffer for Quotes.
+
+== Some history ==
+
+The TDX module extensions support part was first posted along with TDX
+TDISP [3]. But quoting is the simplest consumer and is chosen as the
+lead vehicle over TDISP.
+
+== Misc ==
+
+This series is based on tip/x86/tdx [4], because we need the extensions
+play nice with runtime TDX module update.
+
+Link: https://cdrdv2.intel.com/v1/dl/getContent/874303 # [1]
+Link: Documentation/arch/x86/tdx.rst, Section "Attestation" # [2]
+Link: https://lore.kernel.org/all/20260327160132.2946114-1-yilun.xu@linux.intel.com/ # [3]
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/log/?h=x86/tdx # [4]
+
+== Changelog ==
+
+v2:
+- Support runtime TDX module update
+- Refine quoting patches, drop RFC tag
+- Change the patch order. (Xiaoyao & Tony)
+- Fold metadata readings changes into patches that use them.
+- Read the extensions metadata at init_tdx_ext() (Rick & Xiaoyao)
+- Don't do get_tdx_sys_info() a 2nd time after TDH.SYS.CONFIG (Rick & Xiaoyao)
+- Delete tdx_clflush_hpa_list() (Rick)
+- s/TDX Module/TDX module (Sohil)
+- s/Extensions/extensions (Dave)
+- Change the data type of ext_required to bool (Rick)
+- Change the data type of memory_pool_required_pages from u16 to u32,
+  the Module team see this problem and promise the change (Sohil)
+- s/init_tdx_ext()/init_tdx_module_extensions() to disambiguate from
+  tdx_ext_init() (Kishen)
+- Cover-letter & change log re-phrase (All reviewers)
+
+v1: https://lore.kernel.org/all/20260522034128.3144354-1-yilun.xu@linux.intel.com/
 
 
+Peter Fang (11):
+  x86/virt/tdx: Initialize Quoting extension
+  x86/virt/tdx: Prepare Quote buffer during extension bringup
+  x86/virt/tdx: Add interface to check Quoting availability
+  x86/virt/tdx: Move tdx_tdr_pa() up in the file
+  x86/virt/tdx: Add interface to generate a Quote
+  x86/virt/tdx: Reinitialize the Quoting extension after TDX module
+    update
+  x86/virt/tdx: Enable Quoting extension
+  x86/tdx: Move and rename Quote request structure
+  KVM: TDX: Factor out userspace return path from tdx_get_quote()
+  KVM: TDX: Add in-kernel Quote generation
+  KVM: TDX: Support event-notify interrupts only with userspace Quoting
 
--aneesh
+Xu Yilun (6):
+  x86/virt/tdx: Embed version info in SEAMCALL leaf function definitions
+  x86/virt/tdx: Configure add-on features on TDX module init and update
+  x86/virt/tdx: Detect if the extensions initialization is required
+  x86/virt/tdx: Add extra memory to TDX module for the extensions
+  x86/virt/tdx: Make TDX module initialize the extensions
+  x86/virt/tdx: Re-initialize the extensions on runtime TDX module
+    update
+
+ Documentation/arch/x86/tdx.rst              |  19 +-
+ Documentation/virt/kvm/api.rst              |   3 +
+ arch/x86/include/asm/tdx.h                  |  35 ++
+ arch/x86/include/asm/tdx_global_metadata.h  |   9 +
+ arch/x86/kvm/vmx/tdx.h                      |   6 +
+ arch/x86/virt/vmx/tdx/tdx.h                 |  33 +-
+ arch/x86/kvm/vmx/tdx.c                      | 176 +++++++-
+ arch/x86/virt/vmx/tdx/tdx.c                 | 465 +++++++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  34 ++
+ drivers/virt/coco/tdx-guest/tdx-guest.c     |  47 +-
+ virt/kvm/kvm_main.c                         |   1 +
+ 11 files changed, 755 insertions(+), 73 deletions(-)
+
+
+base-commit: 2b9ad7a6154e0938b9458691536296dd0224942d
+-- 
+2.25.1
+
