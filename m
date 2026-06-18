@@ -1,170 +1,167 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26B33F54BD
-	for <linux-coco@lists.linux.dev>; Thu, 18 Jun 2026 15:04:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD4A330650
+	for <linux-coco@lists.linux.dev>; Thu, 18 Jun 2026 15:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781795101; cv=none; b=Zt8Yfz0v09Q3Ziw3cJySQOgzV5UMcLLAQm8cKDCMlltrt7Y07xj+rNkHlh8nGxmrKKTBTkVO7pZ9qxliwrA5vYjFBJxv5iUPkCUCTeZ07vi8BELsABs7k7z1RqEKB1h65satq0Jo+w3eFFotN6a+MR/balv+AMS9QeaRW/+HSic=
+	t=1781797029; cv=none; b=stk79/FF6LPL4MpSLwvKEuGm5YEXcd7ZkmdhwH6xmbMH9hb0EO0vG5/wXU4IUtUWBSylZoeek51UYu/1RKUnpKSkHvKjTxUpnlbAj9wg/AOYXeM6ptEv51JKh68tW6B/SnwbXlwYi1CNpFqOPv0Ud2jzZ2w9ggch9hJjt/GI540=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781795101; c=relaxed/simple;
-	bh=ro4+gpoLrqsLmi2y6DwQCGTfQAAwPydgwx+VKGvATtU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gCxVkcxDgofSMIvCWW7nL38R8FiXpNXoLG0ET1/ul8rbmVmCxe2i2K14t81XAcJchUf565okxJjsSmfA+dQDDS5iy4jHT+nKioypOWc05EcHCK/lIFAgixuI961YNaznQh5B379T+BIz7xBYCWcWxnC/xV9WcnIdozP5ryqzwIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J2bbruFF; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1781797029; c=relaxed/simple;
+	bh=HppPOGKgKIoggGCewCbUbyU4i7DooaPcpXs3DkDXKHI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KaGC+ar9i3ZaivU6Su4s0FCSci93UoXbV4RuMrNcilfDF+LFBZVtPBA9KMvbRUK21/c67gxAczlVEuIqJY11Vm83fMmrp5RdBMcrTN9icLYjd9Ga2EGvNGv8+Zxp11oFN5MLIZ4PI7cPCbhVdRPC5KhtTIEEv7Lhao7Rlr0Uz/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=od86ZYi8; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J2bbruFF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781795100; x=1813331100;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ro4+gpoLrqsLmi2y6DwQCGTfQAAwPydgwx+VKGvATtU=;
-  b=J2bbruFFpbDHGy8EuwwewY7+IfMh+vddvW+sBMUXN0khxiGOWEuM06L0
-   16GhGYbFRZwj2XGuGfvRNRUa3jvABHATP523He9nAUcW08Fhq8nDbcoqN
-   Kuzm2R6UL7sHBnjkaOlNH5UjggHeO4zY2DTph2ijT1Z0BShrmxm3A9tdR
-   p+6vmLz5LxjmCic2uHMWgW7BhDy9pzqdBVRqdkO+SkpuK34UgebwKIP2+
-   2h9a6TniwDxRfbJN09JufxRSK5Wv5+40tBmoyrenQ7B4rzWlWE4CCb+Xb
-   7vSc+8fsFmi5+78mqlYDdDl/lvSGexkY1ftxVB6Q4Au1/lFjn+5nOaIX0
-   g==;
-X-CSE-ConnectionGUID: TCVvQeqFQnaSR5a7UpUZXQ==
-X-CSE-MsgGUID: rwKTQ2tDSQq/pOllQGA27g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="86545392"
-X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
-   d="scan'208";a="86545392"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 08:05:00 -0700
-X-CSE-ConnectionGUID: 9kUffgg9Scy/8SUvatPtOA==
-X-CSE-MsgGUID: ebaT3CgCT0yxru2RWbcQpw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
-   d="scan'208";a="248465617"
-Received: from rfrazer-mobl3.amr.corp.intel.com (HELO [10.125.111.222]) ([10.125.111.222])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 08:04:59 -0700
-Message-ID: <4f4b0f29-424b-45ed-8cfd-c77da2ea390f@intel.com>
-Date: Thu, 18 Jun 2026 08:04:58 -0700
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="od86ZYi8"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-9159f631656so150975685a.1
+        for <linux-coco@lists.linux.dev>; Thu, 18 Jun 2026 08:37:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1781797027; x=1782401827; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tm+jP+3WfoLtXaL6gn2l0sQY+Wj2XqJdxBBXikZyHQE=;
+        b=od86ZYi8VRaxi2qBmcnKXDTVvWHYUg2ITZ+BWhwJC5Xq4DZduuGWhDf4r2SVOUkHYL
+         kCazIUUTigHlG9eWZG0ThucwTn/bji4phU5IkUS9jTa26BPQXCy7C2SFfT9Gyt/KzN8S
+         moB5YTUtIKiL6xpUsZU9AbKA4YtaSEpatfx+YKHChcCTWlREndGycDsHCYiYeIBIsPWX
+         VFl7RaWs5qTzUSS2skP+k0NJUnoHYo6fRtF8NmGx7YHZrmLnPCf9FalDL1Emxtn3tEMW
+         FoHWpv3vuLuyJJ/Kab1J5srUgEJkONl7hrBeQMuJC5zMLn9N4svmF/psqFFDb8AFesZY
+         EP8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781797027; x=1782401827;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Tm+jP+3WfoLtXaL6gn2l0sQY+Wj2XqJdxBBXikZyHQE=;
+        b=ezaYniO662wBZSS+BDa9KFCf20mSiDJb6YCnqqHAF7kVRIlZSkYJpnpxiLF7eMhYR6
+         7rRPBuq3/LyekxL3wSHwbNcPGIsZaB/WvCukWlJwfeYMB5R8xUDVLf9JYhY7DngF2mky
+         CrAZXVMbjXa+UDryFpSGDw97NRY7XAf0vLAlugtFPEqpvB+M7wd7/syHKPuPlymuP+Nl
+         MXXf/4vo8dwdnE/S0aFMinhCt8qs7MNROAl8ugw55wLKDGy5Qv9AXrFW/7QQYq2SmqM1
+         wrZjezbvw23vrXXqbLbascgOScElO5xz3GCZ4nZe84OWnEPLcsXlKI6RuIHOOjQR+x5f
+         bifg==
+X-Forwarded-Encrypted: i=1; AFNElJ/YqqVjMUaEIV+lCZK1htuQQHU5Whx18KETsHTaazpqPLIUBHwGwHac9cdrentlzQJCnUERfBWWXqvR@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyw562VGgkWR6ERvF0uu6xuhrLZfCGW6KqfEuFtI7gDuG4k+kSn
+	hXye7CHM38oTYYOmkLMZ9SdiDz4tbpVlmRCAV2jMcxK4XdGEUT02jTeYJijaGdTU4i8=
+X-Gm-Gg: AfdE7cmkPxKrJobzX9UzbunSu0iChMo+L3ouiWmjx49IHvfogTva9aTwiwYGw9T3x/8
+	qw+Bs51MdGPwB0N7aLQ/TkDcOpkmIwTTfRFsC4r/gnzbnA1GYhZxudYJrbwCf7VMhyk85Id/IC6
+	M1W2TQYyTkDHjNCs7iHyMXXmxJyKp4FzXD8XkdOhqLmxQdRxJDdmHPLOMys7N39iftsRSoEfHRs
+	NtokAMf8zSRuOX0HLDXewsB7ZhiWDP3HJiVSMSNI5hCXWOgJgTebaDWu/l8CB8YpRpKpYV6s7qM
+	nNxVpl0BT6g7BZ8aXP5kZnXgbHp5aWoLT1ThFxxo/ajDA5cN+sCUs5HeBw++43i7dKEtCjSFoge
+	t0sBnL6/3JVCUQ7wkoPPay5Zu+IITj937ORZbM8rNgnHLhrnzFROUnp5t6j6YWJIPKyhmYOpBLy
+	MpGnXCRgz2ftmGxvzH4qoAXf8TGGdmRGGQ/UaKobQzVT3miG0VLC2qt4l2ZoHk51WQmkA=
+X-Received: by 2002:a05:620a:469e:b0:915:8f64:604c with SMTP id af79cd13be357-91f082ff425mr678605385a.15.1781797026718;
+        Thu, 18 Jun 2026 08:37:06 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-91619f3c324sm2104263685a.21.2026.06.18.08.37.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jun 2026 08:37:06 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1waEnh-00000002tSw-24HO;
+	Thu, 18 Jun 2026 12:37:05 -0300
+Date: Thu, 18 Jun 2026 12:37:05 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	Catalin Marinas <catalin.marinas@arm.com>, iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
+Subject: Re: [PATCH v6 00/20] dma-mapping: Use DMA_ATTR_CC_SHARED through
+ direct, pool and swiotlb paths
+Message-ID: <20260618153705.GH231643@ziepe.ca>
+References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
+ <aigYbK12D8uKQvJF@arm.com>
+ <20260609144746.GL2764304@ziepe.ca>
+ <2ecfa1a8-6202-4319-9692-a6ffeb5a3dbf@amd.com>
+ <yq5aqzm4dz25.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
- module init and update
-To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: djbw@kernel.org, kas@kernel.org, rick.p.edgecombe@intel.com,
- yilun.xu@intel.com, xiaoyao.li@intel.com, sohil.mehta@intel.com,
- adrian.hunter@intel.com, kishen.maloor@intel.com,
- tony.lindgren@linux.intel.com, peter.fang@intel.com,
- baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
- dave.hansen@linux.intel.com, seanjc@google.com
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-3-yilun.xu@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260618081355.3253581-3-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5aqzm4dz25.fsf@kernel.org>
 
-On 6/18/26 01:13, Xu Yilun wrote:
->  int tdx_module_run_update(void)
->  {
-> +	u64 seamcall_fn = TDH_SYS_UPDATE_V0;
->  	struct tdx_module_args args = {};
->  	int ret;
->  
-> -	ret = seamcall_prerr(TDH_SYS_UPDATE, &args);
-> +	if (tdx_addon_feature0) {
-> +		args.r9 = tdx_addon_feature0;
-> +		seamcall_fn = TDH_SYS_UPDATE;
-> +	}
+On Thu, Jun 18, 2026 at 09:37:22AM +0100, Aneesh Kumar K.V wrote:
+> Alexey Kardashevskiy <aik@amd.com> writes:
+> 
+> > On 10/6/26 00:47, Jason Gunthorpe wrote:
+> >> On Tue, Jun 09, 2026 at 02:43:08PM +0100, Catalin Marinas wrote:
+> >>> On Thu, Jun 04, 2026 at 02:09:39PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> >>>> This series propagates DMA_ATTR_CC_SHARED through the dma-direct,
+> >>>> dma-pool, and swiotlb paths so that encrypted and decrypted DMA buffers
+> >>>> are handled consistently.
+> >>>>
+> >>>> Today, the direct DMA path mostly relies on force_dma_unencrypted() for
+> >>>> shared/decrypted buffer handling. This series consolidates the
+> >>>> force_dma_unencrypted() checks in the top-level functions and ensures
+> >>>> that the remaining DMA interfaces use DMA attributes to make the correct
+> >>>> decisions.
+> >>>
+> >>> Please check Sashiko's reports, it has some good points:
+> >>>
+> >>> https://sashiko.dev/#/patchset/20260604083959.1265923-1-aneesh.kumar@kernel.org
+> >>>
+> >>> I think the main one is the swiotlb_tbl_map_single() changes which break
+> >>> AMD SME host support. There cc_platform_has(CC_ATTR_MEM_ENCRYPT) is true
+> >>> but force_dma_unencrypted() is false. Normally you'd not end up on this
+> >>> path but you can have swiotlb=force.
+> >> 
+> >> IMHO that's an AMD issue, not with the design of this series..
+> >> 
+> >> The series is right, a device that is !force_dma_decrypted() must be
+> >> considerd to be a trusted device and we must never place any DMA
+> >> mappings for a trusted device into shared memory.
+> >
+> > swiotlb=force forces swiotlb, not decryption.
 
-Heh, and it falls apart into craziness immediately. See how it
-immediately loses the logical information that there's a version 1 and a
-version 0? The "1" isn't even visible. It's hidden in "TDH_SYS_UPDATE".
+If force_dma_decrypted() == true then swiotlb must allocate from a
+decrypted memory pool. It is right there in the name!
 
-Isn't this a million times more sane?
+The hypervisor environment should *never* set force_dma_decrypted()
+because all devices can access all hypervisor memory, up to their IOVA
+limits.
 
-	struct tdx_module_args args = {};
-	u64 version;
-  	int ret;
+> > So when I try "mem_encrypt=on iommu=pt swiotlb=force" with this
+> > patchset, it fails to boot. But it boots with a hack like this:
 
-	if (tdx_addon_feature0) {
-		args.r9 = tdx_addon_feature0;
-		version = 1;
-	} else {
-		version = 0;
-	}
+On the host side I expect this to cause swiotlb to allocate encrypted
+memory and bounce to it.
 
-	ret = seamcall_prerr(TDH_SYS_UPDATE, version, &args);
+>  		u64 dma_enc_mask = DMA_BIT_MASK(__ffs64(sme_me_mask));
+>  		u64 dma_dev_mask = min_not_zero(dev->coherent_dma_mask,
+>  						dev->bus_dma_limit);
+> +		/*
+> +		 * With memory encryption enabled, SWIOTLB is marked decrypted.
+> +		 * If SWIOTLB bouncing is forced, treat the device as requiring
+> +		 * decrypted DMA.
+> +		 */
 
+And this is more insane logic. The right fix is to allocate the
+swiotlb bounce from the *encrypted* pools when running on the
+hypervisor which requires undoing this abuse of force_dma_decrypted().
 
-There's also zero stopping us from putting version in args:
-
-	struct tdx_module_args args = {};
-  	int ret;
-
-	if (tdx_addon_feature0) {
-		args.r9 = tdx_addon_feature0;
-		args.version = 1;
-	}
-
-	ret = seamcall_prerr(TDH_SYS_UPDATE, &args);
-
-Eh?
-
-That gives args.version==0 in all the normal cases which just happens to
-be the exact behavior we want. It also avoids having to plumb version
-through all the seamcall*() wrappers.
-
-But this is *exactly* the kind of thing that shouldn't be a part of an
-attestation patch series. This could very much have been a separate
-discussion and happened a month or a year ago. But now it is blocking
-this DICE thing from getting done <grumble>.
+Jason
