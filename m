@@ -1,92 +1,93 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38C831E842
-	for <linux-coco@lists.linux.dev>; Fri, 19 Jun 2026 08:11:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A95B35C1B1
+	for <linux-coco@lists.linux.dev>; Fri, 19 Jun 2026 08:13:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781856679; cv=pass; b=HJ1MBl8CupZLba7NAjQ6EmBJMekJQi/f495+tOWJigmVhPZYuz0jaL0lFTXcXJVwKhIcI6cqqY0Zsr+6XhuBut56BzNeS3CL2lIyP97013z8f0F6EgCIV82W4L9EwOig3KZDpJrmyrgOA8J3j0zsVDtG15D9LCPHKWBFrEloir8=
+	t=1781856786; cv=pass; b=bQM6zIKmyUqYWczq3gpUtZzthSXS5dhnXrSeIHZB2eHpSLRFzlrG6yy1sR8dv5uwiTBR88HmgP2tEoghDZn8syxKodgqfxKK1ZARjPlkH0/K9TF28psYtEVrQreRbXyqzOcZQBOV7VoTRGuj7bC/HpjHoLJe2WgISgQc/4vnEic=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781856679; c=relaxed/simple;
-	bh=pR0Zn2zvw6IcMAbbufKDgeBYie2BeloIDPjTlVVsmpY=;
+	s=arc-20240116; t=1781856786; c=relaxed/simple;
+	bh=mhRQfYgewaEHTKhgMkBt4xMNRF1jHjLdpGKjwA/SfyU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dIK3qytOVcF2ghc4BbskLACjNRzq4oFKLsyemi5rv3E6vy+o3/VPTLSvARiyfja8LN9IJ3fkkT4cQgPOefeFp0zqyrl4KJ6FSaoeAwObTWOGJ4MGwZG5Q2q7Bu7IhTGAFRe3BArSV0xkaQOVPWel2dEOLTAKfgJ3O+e5vAU4qac=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FuFyTIhR; arc=pass smtp.client-ip=209.85.160.177
+	 To:Cc:Content-Type; b=Vk4YObx9/HXirMn60acY93uzxka/zMkwDgD68sI0wUL3tdBWXLK/YG1pM1tQaFudAdGlH+Zb8eHJhd7VRFz7v8bg4qyKpZmcn7jb8w060+KNc4yZY/XJnvXLRpTbulCUvxcKlHzO+2b0DwUCYD9cUSFUPvQPZBqEmF2rz9VwsF0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YD7/THd0; arc=pass smtp.client-ip=209.85.160.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FuFyTIhR"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5177d1ff061so112871cf.1
-        for <linux-coco@lists.linux.dev>; Fri, 19 Jun 2026 01:11:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781856677; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YD7/THd0"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51765531803so194681cf.0
+        for <linux-coco@lists.linux.dev>; Fri, 19 Jun 2026 01:13:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781856783; cv=none;
         d=google.com; s=arc-20260327;
-        b=aCxd7ZQE7bI481uQt/1yiWUmjILRDSivtG4WFXDpvC0ZaUJcXhB2++Csj7Dk4Y38FT
-         ZA7feAw7mc3qtu/B7eZDcDAG6GpOk5XSmrkMie6ydO1ejY1MmISTqzXjvzxcmVXt47CZ
-         Rfyxl6JRNF9IFknUAvkEM7HRSa+2QQ0YwkmHIqCXryyZ26pxZhhSKhvuwbMoKJ3QyD/q
-         7jSZos53VHF/kWBAWBBDJkk4gZwLNDj4+PH07NuSmE7P5al3A6IPxGObfQGUcVdPp0oF
-         SJLcM0WunYLAkzlqkXuKX0A2t0Z6BuHlzrzUIlXRKnQIpte1erclYi22zrttBLOHoeWt
-         mHRg==
+        b=Lk3/ymK57Xblhfy7LZQTVeRO7V22JwIz/YsxKKWkP1XChEX8I74d5RBQtwiY0ELBKZ
+         5v54/wZgtj5Xx+rfelVCOrjs/gwbzFOEDiso+uBGbvqKN8RQgOJAV34S6HZqRPdJHXpb
+         p9dkv0L0oa0nZo2bdw/BSmd9mQxvrX/pAoqdNQ0++fXOTXV1F4x+xHDzqfZnj/n21FLX
+         rQntgeM9FQHbZ6Mg6vtF6h4v7UMapdkP4pEKfSFWkz/01wIQfg7WvxHfSPZoECX6uXhl
+         lVM7X6A0VMtx6IlKwPMYQE0J4Hi5xqiXxOOy6Z5JAIDAoVXq+T78CcMgylu54oSnmJmF
+         uwqg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=iM+8nrvlghRqxLR5gEfhNSNnyjY3ZW8GVmgYtfXOYBs=;
-        fh=WCZpeLXXyVlJuZGeI41W4f2AFgKAn1Ew/CI3AvSNF3A=;
-        b=WYXucULL/4TJQcQX9JvdTBPA7PdD6dXGHPVACBJXAD7py2aTYw7S6xfMozC0bcff61
-         SP0kONK6jyl32Gf5sGZCj5Buqr2ZUmZtq5oDju8w5BXJQG0V6ZdHe1VzGB8Rf5jJUKT9
-         3cFtVNORD6/MN5uYLoL/p+PRF4tg6AjDMHe2e9MMB76VG3Q1BN0KuIXTLTbosrlJzr6y
-         3ruQ9qGmcMbwVBR2Ol8ibAeKlsswP8/9WPOrxtibL4latiXpXQSfrr53VoG0TW1wnA4K
-         4R3ZPJbYdKpNVKBWAn6Vr3LdQ7OxIQ4HnEtpujRmrKymnHHucxd8Trh3YS/Af7Y0u3aq
-         QhIQ==;
+        bh=RFwtLOklkbcVKFnDpfEXKv2zd3HGlCKJCihUf5qCkBo=;
+        fh=EB1Wrzsocg2ubkOcyaISbVsDJ3kjkbk4ooiaWokZ6So=;
+        b=GucSn0SjMO4s6P9J4kqeoM55U4Nl8+SAGj6CojUoGqeAft6X6NIHGD4NUy735iszLV
+         tUnuXIyyxzc+adlDqpMkQwHlqHvro7oBdG38nHvUnq1TS8heOgNLV0AKufMSayweLDqu
+         C69KPTuIPDPO7IuuROyFWaOoDZ9La1dsm1A3aYlUFDqAJBpy6jG6fX7lg/zzQe8vzVFh
+         TS2YrQ8woZN+OEXd2sVKgJdKB4VNoGek9a6uqSEBS0kRzkZplv+dNDDG034r31OGb1EK
+         BlNKSuYe2YnvK6QCsSJ6etaXMn1yS0FGtl6ssT+epKGGC5OnHyHj+sjPFPdxU5sExK1F
+         AenQ==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781856677; x=1782461477; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1781856783; x=1782461583; darn=lists.linux.dev;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=iM+8nrvlghRqxLR5gEfhNSNnyjY3ZW8GVmgYtfXOYBs=;
-        b=FuFyTIhRSMvh94YA3fb65Hl3SFNxxubaE4mlZT0/6ZSz88/1JnD3ySXDnfuFQNh6Ox
-         ds2ZXMLivEYse9+Aawo4JbK7cbLWmutc1g0l16F6caauWpfaN4g3zJDJX30Go39V8F8E
-         gWQhlefCVjwSqNSd/1DJypGxXTYOilcA6qHwilVeUGNWzUVSj8+T9GXjoHZzIn0DDszy
-         3EVlUGxFZIptGgbdVm0TffeuUwCF1NhyIgUrnLtyQq7Qk4cC0AIgUYwdqC4hP2KZqZbm
-         vXLzmS/JTXd/vfC39wEk8Uw0+sKLTxUq0wUjuBSPadhkfaSbLFkm293hohmnKzsJ4tGG
-         NLww==
+        bh=RFwtLOklkbcVKFnDpfEXKv2zd3HGlCKJCihUf5qCkBo=;
+        b=YD7/THd0febR0sia8s4SBpxDi94KJ/xAnb/egjY8YuCKAJY+aYJP85MEvhDW53+et8
+         /bY2rTKHyoAsbnQDAy6Ws7riHcPGE2n/Zes5GEipVlIBSPaHgSpuNv670ZshuTm/1QiG
+         i/LHToyQ0+wcnke/EJW77Z+F8227JHZW7748ZuyeeEwIV0F7RBxuGBIJGLS2x2wQ1LEf
+         Z8IWNz7UAkKdrjit6A/CFFo5KtVnEtNofzPOl6ze++RiKtwsdM+Pr9PLzOQ2r+LryGuc
+         cv+/ZWNa9P3vJlCRd0w4sa+bdm4765hrAMY9ZzVg3GEgNR2e52VgB/AzjJA+rqI+ZjJJ
+         UkiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781856677; x=1782461477;
+        d=1e100.net; s=20251104; t=1781856783; x=1782461583;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=iM+8nrvlghRqxLR5gEfhNSNnyjY3ZW8GVmgYtfXOYBs=;
-        b=aXZr2Wwgfq5OC0IhiC1UUua6T3LPr6nkSABfcHth5wKZMeaenba2ynV2ywy+CMvBCm
-         X7HO6FP3j/CgfEm6SFraB+hmo4PJDHQJfqWAG6rXWx5fXIWzTwhGuHo26twjOUPIOF2Y
-         RGgoTUt5E1i0Sr9vlBsqQ7G82PJugkukfNBCe4dIKi9MWaisePz2uw+Qp5/tP5XXfFFv
-         08qXKXivug16JXBPiLusUe7TdoGCCD1usld868oNTdjsC2F0fGG30IPlyZMlR5+aChE6
-         4Z5CvZaXUS5XaUdMxlCC/1tgp3d2Y5XFZ3x0ChDp8eLV2dVPZCxGRPyOdIhutmE3qHT6
-         u1Qg==
-X-Forwarded-Encrypted: i=1; AFNElJ+xyHVSjZjaSyGN84PunXJ1x0C74w8UA5zkFvK1PI1ACjw8t+dSlp39Fn3Ve9wS1SiitTj6xYATS8zY@lists.linux.dev
-X-Gm-Message-State: AOJu0YwnRFvVO8nVGoDKx8QVFA4pG3SdbZ9994Fs4ZAuX3p1rd+WZJZz
-	ZzYoBxoI9+zKHgxARFbXIx+Gxni1FGJRq23j8XIdbKaHj96e9wfcBkoZe/iPgQfzKjigyiB9cY+
-	A+uHd0lV0HizRKVm/Ah9di3Mjp+AvOtQZkcJz4RPa
-X-Gm-Gg: AfdE7ckq5Tnb9rwfL61PlQJOxHx8wne11fy9zUAZW+73jyt7XO2HkBPO9oGsOwAsIXQ
-	v+yh0pKb6XJWA9c2xPHf3AftPu1COmq2EnMo4l/zXZ3KWTGcC34pkDeCqgRkLihjpz1/PvjbIKs
-	jsCPetZBHJo1rbBpFz6L27FfRIg0e3NF9BhGM6g+YoaQCxIK+ZTe20qx/nfMzy7h30BAWUD/9Yp
-	bUfxq3UmC8Ka4yUvWihsj1gSkAETD+wA8HMSZzbYj57ZgDW7EP19HrslvdYuDW8mbMogbGe7w==
-X-Received: by 2002:a05:622a:191d:b0:517:38aa:c2b3 with SMTP id
- d75a77b69052e-519e48d02b3mr6024501cf.14.1781856676299; Fri, 19 Jun 2026
- 01:11:16 -0700 (PDT)
+        bh=RFwtLOklkbcVKFnDpfEXKv2zd3HGlCKJCihUf5qCkBo=;
+        b=llk212dqPIyFyNzJZ92BvgdDTsozQmO9FvVPnH1gydQ+ln4h9+mCw5YipCXt/L+fC7
+         Im/y1JpxgJ8nxtIPAcf959n6AU25nKVdC12hI+Dy2EmGKuIEvXdgwk12X1zyVbCcmtfv
+         Xy247r9US6Wu64LxEuMmg1jswqUrVXY7yXs+bTE/lFgpYuBKDNqxDgBpJm2RhdcVsFIm
+         Jh0TSeHDalCggNkQeHK7glkgbrq7gqT/De6QHFTJP/pVj/VZ5KW8LrSnuESdnFR8h2Ao
+         1lgnNc1GoY6krKuE8AtxsHEVAG3yJVLM2Zqio454CY3wCGylvYgtwnT2Dx+k1BVX2hpH
+         YXwA==
+X-Forwarded-Encrypted: i=1; AFNElJ9jfHITEwq0V9VqNI2rEdKkM4cQWTM6nWg4ybg5jHvqvRn+Rrxe8QFxthd5QRAlgZToBpc+XmWLhAdB@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz3cq9yREgAtt9OvPSlRAZyFdSyId9upJmeNwPsvD3hKVzi5Q7X
+	V3xt23QJPmVeD7mjm2TS/UICX03nwvuKa4fJhia+8fix+WS8LCIq77pE7SgHDKBza2Md+zHswdL
+	bcmxER0uHPYp4eqNbzzquS0PwStOheIWet/jrrzFY
+X-Gm-Gg: AfdE7cn4ale9LUMVDlOn9h7mYBjwMdBtxP363qRiQ7wcGc0jFjpx9D+V4J42jfIm1qH
+	N+d6QP9U5hjQjEn86+HueEr1m1n5sQr0nX0+eKXJ1QJ9fnRu/Dt0bCN/JeUSgpPGN1tnt/GY/MM
+	hamY385zPjT7qugkyGH+7LmYhzPgokbf0/NZ6um5T/eJqUlYUzKdJ+NSTqkQ9O+tWaHbKj5pGe5
+	RylyF1AHC3oL8q2TePR33dAdHrSdgCCYAJ5MOURE1cxXQcV+LHRLt3LLV2064SjOKy5IQI7Exzy
+	hOjKQLx4
+X-Received: by 2002:a05:622a:1906:b0:516:4f62:85ea with SMTP id
+ d75a77b69052e-519e8d3111amr4387331cf.21.1781856782436; Fri, 19 Jun 2026
+ 01:13:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-4-9d2959357853@google.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-4-9d2959357853@google.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-5-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-5-9d2959357853@google.com>
 From: Fuad Tabba <tabba@google.com>
-Date: Fri, 19 Jun 2026 09:10:39 +0100
-X-Gm-Features: AVVi8CdHX5FmAYr_l4a3mgee9sp6dg3wXgxt_dR1E7cWLhRy0b4A0kukfNDJw2g
-Message-ID: <CA+EHjTxT9tcPk4HtyPXs1eo0bUQvwf3=G7P8ZTfJhDpXNm=ntg@mail.gmail.com>
-Subject: Re: [PATCH v8 04/46] KVM: Decouple kvm_has_arch_private_mem from CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+Date: Fri, 19 Jun 2026 09:12:25 +0100
+X-Gm-Features: AVVi8CcN5N8mHAFYGVLMZrPjXc2jn5V9jAAbKlAQIrOrX_OPU6MaDRc17hIP_FI
+Message-ID: <CA+EHjTwrfont5S84MpiwSLfk5doD_RwS96EX88e07c4-1DeMZw@mail.gmail.com>
+Subject: Re: [PATCH v8 05/46] KVM: Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable
 To: ackerleytng@google.com
 Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -119,57 +120,66 @@ Content-Type: text/plain; charset="UTF-8"
 On Fri, 19 Jun 2026 at 01:31, Ackerley Tng via B4 Relay
 <devnull+ackerleytng.google.com@kernel.org> wrote:
 >
-> From: Sean Christopherson <seanjc@google.com>
+> From: Ackerley Tng <ackerleytng@google.com>
 >
-> When memory attributes become trackable in guest_memfd, the concept of
-> having private memory is no longer dependent on
-> CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+> Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable, only for (CoCo) VM types
+> that might use vm_memory_attributes.
 >
-> With this, on x86, kvm_arch_has_private_mem() is defined if some CoCo
-> platform support (or the testing CONFIG_KVM_SW_PROTECTED_VM) is compiled
-> in.
+> Also document CONFIG_KVM_VM_MEMORY_ATTRIBUTES to specifically be about the
+> private/shared attribute.
 >
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+
+You're missing a SoB, but with that fixed:
 
 Reviewed-by: Fuad Tabba <tabba@google.com>
 
 Cheers,
 /fuad
+
 > ---
->  arch/x86/include/asm/kvm_host.h | 4 +++-
->  include/linux/kvm_host.h        | 2 +-
->  2 files changed, 4 insertions(+), 2 deletions(-)
+>  arch/x86/kvm/Kconfig | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
 >
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 8e8eb8a5e8a6b..1bde67cf6eb0e 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -2394,7 +2394,9 @@ void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
->                        int tdp_max_root_level, int tdp_huge_page_level);
+> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+> index 24f96396cfa1c..c28393dc664eb 100644
+> --- a/arch/x86/kvm/Kconfig
+> +++ b/arch/x86/kvm/Kconfig
+> @@ -81,13 +81,16 @@ config KVM_WERROR
+>           If in doubt, say "N".
 >
+>  config KVM_VM_MEMORY_ATTRIBUTES
+> -       bool
+> +       depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
+> +       bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
+> +       help
+> +         Enable support for tracking PRIVATE vs. SHARED memory using per-VM
+> +         memory attributes.
 >
-> -#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> +#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||     \
-> +       defined(CONFIG_KVM_INTEL_TDX) ||        \
-> +       defined(CONFIG_KVM_AMD_SEV)
->  #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
->  #endif
->
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 201d0f2143976..d370e834d619e 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -722,7 +722,7 @@ static inline int kvm_arch_vcpu_memslots_id(struct kvm_vcpu *vcpu)
->  }
->  #endif
->
-> -#ifndef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> +#ifndef kvm_arch_has_private_mem
->  static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
->  {
->         return false;
+>  config KVM_SW_PROTECTED_VM
+>         bool "Enable support for KVM software-protected VMs"
+>         depends on EXPERT
+>         depends on KVM_X86 && X86_64
+> -       select KVM_VM_MEMORY_ATTRIBUTES
+>         help
+>           Enable support for KVM software-protected VMs.  Currently, software-
+>           protected VMs are purely a development and testing vehicle for
+> @@ -138,7 +141,6 @@ config KVM_INTEL_TDX
+>         bool "Intel Trust Domain Extensions (TDX) support"
+>         default y
+>         depends on INTEL_TDX_HOST
+> -       select KVM_VM_MEMORY_ATTRIBUTES
+>         select HAVE_KVM_ARCH_GMEM_POPULATE
+>         help
+>           Provides support for launching Intel Trust Domain Extensions (TDX)
+> @@ -162,7 +164,6 @@ config KVM_AMD_SEV
+>         depends on KVM_AMD && X86_64
+>         depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
+>         select ARCH_HAS_CC_PLATFORM
+> -       select KVM_VM_MEMORY_ATTRIBUTES
+>         select HAVE_KVM_ARCH_GMEM_PREPARE
+>         select HAVE_KVM_ARCH_GMEM_INVALIDATE
+>         select HAVE_KVM_ARCH_GMEM_POPULATE
 >
 > --
 > 2.55.0.rc0.738.g0c8ab3ebcc-goog
