@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FA42EC57C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDDF2FE59C;
 	Fri, 19 Jun 2026 00:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781829110; cv=none; b=d+Kud2KVn3pcNvht6hkk+I9GH0t1/N9Uc+vtMRZrF1/aMGTzE0RMvDIgxIG8yrPi1Qm4DLtzMCM4IpA7WKIaQYOQ54A4WqIFFm1mEKmZ+fyrRnp9t1eiSKw6NcmwG6Qsuz7wJVcmeCdc9SKbf3xEiziB9d0axFrUR6NkO07Hu8E=
+	t=1781829111; cv=none; b=Epun5aA2gfFUWuxVb7hR3aQzi0MUgBepflfwOZjfvimulY15zIHeyyzbvp1cvlomsbb4csw68DYgfmCLDqtX4vwCMMv908lArF04TMkGCvpevpW7WPv0/JCXZF0OjgceohxGCjnMauEWq4DDt5wLFr8bErnFbiqcfTTIiAhtvYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781829110; c=relaxed/simple;
-	bh=dTjvdbldo6HKcpb1OVxxxBSBTPhC9ZG8R90oBObq0WE=;
+	s=arc-20240116; t=1781829111; c=relaxed/simple;
+	bh=OrL4CKMYwmB6iIWg3HkCxDUl7gZtW0zGcxry6xJCAGA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=e37x8ktA3zRskQcE4t7U53h4j2O0hVvQXpP0rYE8M3iGFm/ACsqEloGD1RzzkoXE4pAXegeEyM3Mq+WhYXS7BCfTigxAHz62/K46BAGv8DVYlAZ22UO/4GneDrFB2QFovvoRUYxSpISVgfVXVl5IhLnJl/ydv7IKK88UHV4E+pI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQA+w28p; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=b8TxtCoHk3+H51dHqVHYIHp4J2VmPTlbCxxNtxHDclWbVWBwZehn0oevActqVhTiuupGiIosHBjcRyfJwBYAVgtWD5vi2/dAE7IS96kpQak2BzJWfT4b1kSngeYcVok8RvvZEnNjcY0XjaLaWXQu+edgi6f1jAg0DRy0RlVmqX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZBpHuGb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQA+w28p"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 78A2FC2BCFB;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZBpHuGb"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AC067C4AF61;
 	Fri, 19 Jun 2026 00:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1781829110;
-	bh=dTjvdbldo6HKcpb1OVxxxBSBTPhC9ZG8R90oBObq0WE=;
+	bh=OrL4CKMYwmB6iIWg3HkCxDUl7gZtW0zGcxry6xJCAGA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=PQA+w28p4YnJlJvePg3QGiEXL9kSdUqaoXOi+UNbVWrQEFZX08cr47rJH+9Kxzs1W
-	 xMzzPizpzVa4CfxhT0J8pKdqZJawnF2t74ect6zqfadfCBm7lZ1DpHCE/vaWuAbb2h
-	 8pmYRGiavCb7eLTGNMYA+8vI9KX8zNCzh/nfTIhe2Xs/rLvhgZNQX6voT7Df7Z2/sJ
-	 v2pEaUlSrU8ZhpjTPhVRLP+Ezhe8aNjV/8DtdITz3GVI8ieb8g6o87bAcL6EgHCOq4
-	 paVq0uCP1jSXo+0BKRfvZjobrSZNP1Cwxqe6ZQU3lA2d05s0BWU9kb9sG7AS6Wp6wU
-	 EYjb/gQDcMijg==
+	b=FZBpHuGbKG9ZfT2UrF31X9LcBjDJoh39wpiJnpOcHn4wpVJsWkzju60a8ZSveji90
+	 wKDusZCwLkIg8Xfxje+xgSVzUDy2RUvP35qmrmE+r8nS3odcE+sSDteWXpTPs1mav6
+	 34fNMJESZt/MDtOOY5quwZOcwkV4vKsbU7e6InapcbYScx55HVKKgdktN6CMMVue/U
+	 tMFECn4N4mFGVjF7av+qY4H9azkEUuMDmFM7KxUTPc/9S+lEu6nQImvUqTUX09xqt7
+	 +zdbHl5rsaYRsUauCewY03dr1UhSp+xuzbvfQPzdwwEd4jQFT8sciQuwyl59fTmakr
+	 4UHUcpBE8b69g==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F071CDB464;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BBF9CDB461;
 	Fri, 19 Jun 2026 00:31:50 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 18 Jun 2026 17:32:12 -0700
-Subject: [PATCH v8 35/46] KVM: selftests: Convert with allocated folios in
- different layouts
+Date: Thu, 18 Jun 2026 17:32:14 -0700
+Subject: [PATCH v8 37/46] KVM: selftests: Test that shared/private status
+ is consistent across processes
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260618-gmem-inplace-conversion-v8-35-9d2959357853@google.com>
+Message-Id: <20260618-gmem-inplace-conversion-v8-37-9d2959357853@google.com>
 References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
 In-Reply-To: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -75,11 +75,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781829104; l=2233;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781829104; l=4931;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=YB4MHWioMUMOBpaWhCcoyCgc6wLuvVO37S+IBwb9CKM=;
- b=uDlxhnYV+YZ0oFV4bZE5+6ERknddzJH9VyO8hwGfyeiMiR2/Nz9B2wZrjnFmwJdooJMnrwTRF
- gyNJQjqOB83AUiB/WIBt7GV9w4CsJtjV6zH1i4IUiFcXA7ve0FOgMkg
+ bh=QFGusShJmmZT9C364dWtwaxifYzefTMauT7Y2OJejBw=;
+ b=/UTfA/taWQbgDxeNW73fbVoFb6WiUw4zOYRQkXrqRDA/4nbmLmfFXsf6OPMtJ0KxVYS9QVcFa
+ b6J6hH9WV9ZBzPvjqKyejWNQ6snhl7ULMHAl0xf24U/n15KydeCKNv5
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -87,58 +87,157 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Ackerley Tng <ackerleytng@google.com>
+From: Sean Christopherson <seanjc@google.com>
 
-Add a guest_memfd selftest to verify that memory conversions work
-correctly with allocated folios in different layouts.
+Add a test to verify that a guest_memfd's shared/private status is
+consistent across processes, and that any shared pages previously mapped in
+any process are unmapped from all processes.
 
-By iterating through which pages are initially faulted, the test covers
-various layouts of contiguous allocated and unallocated regions, exercising
-conversion with different range layouts.
+The test forks a child process after creating the shared guest_memfd
+region so that the second process exists alongside the main process for the
+entire test.
 
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
+The processes then take turns to access memory to check that the
+shared/private status is consistent across processes.
+
 Signed-off-by: Sean Christopherson <seanjc@google.com>
+Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- .../kvm/x86/guest_memfd_conversions_test.c         | 30 ++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ .../kvm/x86/guest_memfd_conversions_test.c         | 118 +++++++++++++++++++++
+ 1 file changed, 118 insertions(+)
 
 diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-index b43ac196330f1..0b024fb7227f0 100644
+index f03af2c46426f..99b0023609670 100644
 --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
 +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-@@ -279,6 +279,36 @@ GMEM_CONVERSION_TEST_INIT_PRIVATE(before_allocation_private)
- 	test_convert_to_shared(t, 0, 0, 'A', 'B');
+@@ -2,6 +2,8 @@
+ /*
+  * Copyright (c) 2024, Google LLC.
+  */
++#include <pthread.h>
++#include <time.h>
+ #include <sys/mman.h>
+ #include <unistd.h>
+ 
+@@ -323,6 +325,122 @@ GMEM_CONVERSION_TEST_INIT_SHARED(truncate)
+ 	test_private(t, 0, 0, 'A');
  }
  
-+/*
-+ * Test that when some of the folios in the conversion range are allocated,
-+ * conversion requests are handled correctly in guest_memfd.  Vary the ranges
-+ * allocated before conversion, using test_page, to cover various layouts of
-+ * contiguous allocated and unallocated regions.
-+ */
-+GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(unallocated_folios, 8)
++/* Test that shared/private memory protections work and are seen from any process. */
++GMEM_CONVERSION_TEST_INIT_SHARED(forked_accesses)
 +{
-+	const int second_page_to_fault = 4;
-+	int i;
++	enum test_state {
++		STATE_INIT,
++		STATE_CHECK_SHARED,
++		STATE_DONE_CHECKING_SHARED,
++		STATE_CHECK_PRIVATE,
++		STATE_DONE_CHECKING_PRIVATE,
++	};
 +
-+	/*
-+	 * Fault 2 of the pages to test filemap range operations except when
-+	 * test_page == second_page_to_fault.
-+	 */
-+	host_do_rmw(t->mem, test_page, 0, 'A');
-+	if (test_page != second_page_to_fault)
-+		host_do_rmw(t->mem, second_page_to_fault, 0, 'A');
++	struct sync_state {
++		pthread_mutex_t mutex;
++		pthread_cond_t cond;
++		enum test_state step;
++	} *sync;
 +
-+	gmem_set_private(t->gmem_fd, 0, nr_pages * page_size);
-+	for (i = 0; i < nr_pages; ++i) {
-+		char expected = (i == test_page || i == second_page_to_fault) ? 'A' : 0;
++	pthread_mutexattr_t mattr;
++	pthread_condattr_t cattr;
++	pid_t child_pid, parent_pid;
++	int status;
 +
-+		test_private(t, i, expected, 'B');
++	sync = kvm_mmap(sizeof(*sync), PROT_READ | PROT_WRITE,
++			MAP_SHARED | MAP_ANONYMOUS, -1);
++
++	pthread_mutexattr_init(&mattr);
++	pthread_mutexattr_setpshared(&mattr, PTHREAD_PROCESS_SHARED);
++	pthread_mutex_init(&sync->mutex, &mattr);
++	pthread_mutexattr_destroy(&mattr);
++
++	pthread_condattr_init(&cattr);
++	pthread_condattr_setpshared(&cattr, PTHREAD_PROCESS_SHARED);
++	pthread_cond_init(&sync->cond, &cattr);
++	pthread_condattr_destroy(&cattr);
++
++	sync->step = STATE_INIT;
++
++#define TEST_STATE_AWAIT(__state)						\
++	do {									\
++		pthread_mutex_lock(&sync->mutex);				\
++		while (sync->step != (__state)) {				\
++			struct timespec ts, stop;				\
++			int ret;						\
++										\
++			clock_gettime(CLOCK_REALTIME, &ts);			\
++			stop = timespec_add_ns(ts, 100 * 1000000UL);		\
++										\
++			ret = pthread_cond_timedwait(&sync->cond, &sync->mutex, &stop); \
++			if (ret == ETIMEDOUT) {					\
++				bool alive = (child_pid == 0) ?			\
++					     (getppid() == parent_pid) :		\
++					     (waitpid(child_pid, NULL, WNOHANG) == 0); \
++				TEST_ASSERT(alive, "Other process exited prematurely"); \
++			} else {						\
++				TEST_ASSERT(!ret, "pthread_cond_timedwait failed"); \
++			}							\
++		}								\
++		pthread_mutex_unlock(&sync->mutex);				\
++	} while (0)
++
++#define TEST_STATE_SET(__state)							\
++	do {									\
++		pthread_mutex_lock(&sync->mutex);				\
++		sync->step = (__state);						\
++		pthread_cond_broadcast(&sync->cond);				\
++		pthread_mutex_unlock(&sync->mutex);				\
++	} while (0)
++
++	parent_pid = getpid();
++	child_pid = fork();
++	TEST_ASSERT(child_pid != -1, "fork failed");
++
++	if (child_pid == 0) {
++		const char inconsequential = 0xdd;
++
++		TEST_STATE_AWAIT(STATE_CHECK_SHARED);
++
++		/*
++		 * This maps the pages into the child process as well, and tests
++		 * that the conversion process will unmap the guest_memfd memory
++		 * from all processes.
++		 */
++		host_do_rmw(t->mem, 0, 0xB, 0xC);
++
++		TEST_STATE_SET(STATE_DONE_CHECKING_SHARED);
++		TEST_STATE_AWAIT(STATE_CHECK_PRIVATE);
++
++		TEST_EXPECT_SIGBUS(READ_ONCE(t->mem[0]));
++		TEST_EXPECT_SIGBUS(WRITE_ONCE(t->mem[0], inconsequential));
++
++		TEST_STATE_SET(STATE_DONE_CHECKING_PRIVATE);
++		exit(0);
 +	}
 +
-+	for (i = 0; i < nr_pages; ++i)
-+		test_convert_to_shared(t, i, 'B', 'C', 'D');
++	test_shared(t, 0, 0, 0xA, 0xB);
++
++	TEST_STATE_SET(STATE_CHECK_SHARED);
++	TEST_STATE_AWAIT(STATE_DONE_CHECKING_SHARED);
++
++	test_convert_to_private(t, 0, 0xC, 0xD);
++
++	TEST_STATE_SET(STATE_CHECK_PRIVATE);
++	TEST_STATE_AWAIT(STATE_DONE_CHECKING_PRIVATE);
++
++	TEST_ASSERT_EQ(waitpid(child_pid, &status, 0), child_pid);
++	TEST_ASSERT(WIFEXITED(status) && WEXITSTATUS(status) == 0,
++		    "Child exited with unexpected status");
++
++	pthread_mutex_destroy(&sync->mutex);
++	pthread_cond_destroy(&sync->cond);
++	kvm_munmap(sync, sizeof(*sync));
++
++#undef TEST_STATE_SET
++#undef TEST_STATE_AWAIT
 +}
 +
  int main(int argc, char *argv[])
