@@ -1,200 +1,219 @@
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010027.outbound.protection.outlook.com [52.101.85.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5A033121C
-	for <linux-coco@lists.linux.dev>; Fri, 19 Jun 2026 14:06:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781877980; cv=none; b=Noh7Ca0s9jmTGlZg2wSsSgXSFXluKC/uDBq76hPpm3yCXCKRCXlQYpimglVLqQZB0cTyCKeWCcVsQVZff+7vTL4FVWlXTw46Z/yWNP1zf3RTZpvgOmbWymMp4IMwlbvsZyTAYgmZUi3vvLOBVTLjEWB1Ji3kuFi8QdmvJWote1E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781877980; c=relaxed/simple;
-	bh=buYF9eHsVHWOFCxWTqm+jvcdCDIuP3TzFXTJBvz1HK8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U9yQAU4oIdEhlSaGLhLwxu8qZPTG2Igzhw67wxpkQtlL40eur6HWHTsF/E9dFi9iCqXlhhViB9mo+r2hZeCLTw9BGLnJpDkrSgKQq/Sy3yHX66XJTVqNYwQ0+BYQYp+lZ2r/ABb12xwTBwDeMI0U65u+ebX211N3PEdd+y61C+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=h/6toOBf; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760E233D4E4
+	for <linux-coco@lists.linux.dev>; Fri, 19 Jun 2026 20:51:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781902291; cv=fail; b=QSsrR1L+aSTP3V/SPSxZ34XyW9dcIJMhK3wxeZA6/bw6at58P9Wa5YvgjEvM+WNpIk9BMWlQA6IiQ6Gg2QDokoCLP4PY9n4aHP6bI1OBF6DgPeo/ygxyoS5NSJOd4tqqEx6GwTKjuwRqwiEsof8TTbPRS+KeSUqMB0msDgpKEP0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781902291; c=relaxed/simple;
+	bh=wd/ycAdpmm/42sKKVlJ6xL4oRKcQSU2wY+dRZT+b/eI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=bzz93lL0YIaF91ggA/ItQJgv3O4ZSAo357FXATuhGiXofkQXUW354YgvBIOWcq/WLKbMRGF7TGHiWnJ3kj4QOIuyU74AntrnsivCuh1IeWKDofvQ+S4MUyj28/VocUV2Jck85SXnGvHU2q80BgQgqPX4nrFmT+Z7WBBR17b1da8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Wq4z/w0q; arc=fail smtp.client-ip=52.101.85.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="h/6toOBf"
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-91578c374ecso173900385a.3
-        for <linux-coco@lists.linux.dev>; Fri, 19 Jun 2026 07:06:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1781877978; x=1782482778; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rSB/t2vnZpwaKaBmIo7hL1ql2I4ostuStLW/up58Wu8=;
-        b=h/6toOBfTGMegUqkD00fnIv/1Q0hU51bDbo0pCYTdkAjBJkFSeB7XOBBjOs+psV+p9
-         LDS0Y2T+X6fhqe+1KBaf/YB/fW19b/kyWJwgjkqONlUAy2pwM4XsUk5c4wqMf2rKxEt1
-         2R0XEvbmqv2ekjRx8DGsNQe3G5SV/nBlA1YLTtYVr17K6zoSY974ykzje5iDPi+mZic9
-         E1u1Tfd4AoZWXVklIa7VYIZRVloBQZtEeFDrmwfSIcsFO3OT8rOUQLgpTu1F589Tz4ln
-         tXNquXoQNDPRex9s0p4UpTmgILxGssszDsPvNuuj9/45Gb5+AEqwSKWGu0j2fJgJEn0g
-         XUrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781877978; x=1782482778;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rSB/t2vnZpwaKaBmIo7hL1ql2I4ostuStLW/up58Wu8=;
-        b=bqdlNLPFwbaTwuwBsWif0g90VgElRfdXG9gs+6/5volS12HezOXt/M44jk1P6v+BiF
-         vyVB8bf9mGGQ0s3EXITQJ5gE7EPT/z7voN3qAXpEWMO2MuEG9SDb9BIr2CmJ+YhQSb94
-         SmyAutOGvuy92Yjub0Yp4c7f0ci3gJaLpV4uvpSys/tXw5gSNGGXUzRVq6QNbk8dio3O
-         v7Rul4Py2pyHbvOpgQ9Av3gbokwBXg08IF+rRYj0GQ6lKIAuug0tlWqv+mR4W+vmfx4M
-         tr6Bq3XNZJ8s+Ohw2F7hBIVaBt+tKbsJD6zpUKRuRX+tBYOKwYJNc2eRoJMgAMEhoyiM
-         BhWA==
-X-Forwarded-Encrypted: i=1; AFNElJ8Kg2t325qe2UGTsdw6Ws/KxIDI70jRzbNcQUozAIkIy3uIyY+UsiXJsVwZ0CoU/bH+KIAbZ0PgHDDM@lists.linux.dev
-X-Gm-Message-State: AOJu0YzOBT/I+NLBbkZdbNyJ42jZS5NaNJCkpSezycryx66FOjXdzObI
-	Po03xcQFsIlmO2N5tQaEDTBrhcL+VlX3/jw4VFEinoW9MBxz7x7TJ+ZedrQXQSb+Pac=
-X-Gm-Gg: AfdE7cnOB4q/gok6F1Thl1aiXxs2kRpawk4c2U4nHUFjhojueiRLe6IYyChp6cTxPD1
-	caIwPQxwyuOjcTDMBaUhfwxxgyj1DeyomUWkeJCgKaItxbKtmOCkX2JHc/9x6Z/FiJp/bLz/4/D
-	8DV4f3MWZ+koMz9SwIGCo6AyOhyJWT6T2AiI4d+bwPvFMK8Obmu7Kz1WmH+fWJxMXxHokuIhc8o
-	JRTsN+g9r+NiAS6IjZYqzsO3k0ULiqFSjdTZ8QvKDNZtmAC41jf4NJyEYLxrnk9uPsIDLDy3BAR
-	evbpyIEKvp9KZxo2r2QUYOny64LiToXIpUc3ltFMlXq09ph729LpSa4nOsSOIYMtcB1ROWLN7qZ
-	zCc5uPqIkonw4ThNsjEhFOvJ2uMwhoMe97G4o/aj+YG9fSk9W7cBi+wEZh1fonlxZ0ZnYOVqnzJ
-	DhDAtci1VynEix01id4HgT9j7AkE7q0CRnFw+e8K/JnOdixU8E9+kvT1sQrty1zOhZgGo=
-X-Received: by 2002:a05:620a:6842:b0:914:ac45:a98 with SMTP id af79cd13be357-9208f6479eamr503398085a.17.1781877977966;
-        Fri, 19 Jun 2026 07:06:17 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-920a142f50asm250739785a.12.2026.06.19.07.06.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 07:06:17 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1waZrM-00000004cLp-3AI9;
-	Fri, 19 Jun 2026 11:06:16 -0300
-Date: Fri, 19 Jun 2026 11:06:16 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [PATCH v6 00/20] dma-mapping: Use DMA_ATTR_CC_SHARED through
- direct, pool and swiotlb paths
-Message-ID: <20260619140616.GB1068655@ziepe.ca>
-References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
- <aigYbK12D8uKQvJF@arm.com>
- <20260609144746.GL2764304@ziepe.ca>
- <2ecfa1a8-6202-4319-9692-a6ffeb5a3dbf@amd.com>
- <yq5aqzm4dz25.fsf@kernel.org>
- <20260618153705.GH231643@ziepe.ca>
- <yq5ao6h6enhm.fsf@kernel.org>
- <20260619122148.GL231643@ziepe.ca>
- <yq5aldcaejos.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Wq4z/w0q"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=t/x31REhVfZ9pquEj33EKvjx6hZyqFfQC47YNcs+ZcPy7iqtEwBfIDKIk4aTq0ecFHb/fpgJW5EVM/b83BtxT8SWyG1UiPxgEsxZFWiaGiBG7zB+5KrRviEdjuIkOTM1HIh5SPIfVmbH7LKG5W8z3X0Y8JzAMesuwZhMhg/0TWJwnjKfj8K4WO6LkXtOAiD+lFmX8m/qtHaR6grylJh4MTsa1kwHMA3yrNE+4aVYFcnd349C6iDWgNlXINNru61eR9jg3wnnvDlhH+CEhzNUbkWMDe6AUA/nXFLmltzypSsYJZHxByrIzS269lIST0W2pt9LjEX0WTpO2BOq5TtNkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Pkj2Yxn+V5cw+6YEJ8HdqYzrTJHJ9G+brrYz4iPl0G8=;
+ b=n/rPPYAiVJlak/uByasZ4iqJeSE5ZuWLSPDBWjSXsPfvXILoYIylcVWXr/7KfVnydiJk0LNP9XupO8mfYoCN2smgWwRvbptpuB/1VfogUR/YRU6pm+Znv1GACtO14Y/b2UwT39EqSqzVSQPiB7dxxFuVKlV2Auzp4OxKQsO2FfaEnSRUm3uGLWDx/G0kAIBnxtSdcDytKmcU5se1EKlclASETsPVq+7/pt1aggoWG8tcVhNWJ3DqH7E1NmSBFPFdLEub/XE6qvOOcaCWQVB6zZHB+z0RqU+mk7zCRg5DBSnuGzn4FdJ7M28n1YXar7XMPUgz4Pa1isSkZBDCtlRKUg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Pkj2Yxn+V5cw+6YEJ8HdqYzrTJHJ9G+brrYz4iPl0G8=;
+ b=Wq4z/w0q00l7eoSNq6/rYsS+r7Fww1X20N5sO3B4KRsP6JQpFTAVrqYoxPvI+x/96hbOuJ4ICzuvaNRZP/+9diqXlQlstG0Kvn9IMBptxWzka/BmXA0Ugfwr2LIBHuzvJHpICde1okO6fNQF+jzLhipXbRfrk67zuB+z+NEXSF4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB9066.namprd12.prod.outlook.com (2603:10b6:510:1f6::5)
+ by CYYPR12MB8750.namprd12.prod.outlook.com (2603:10b6:930:be::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Fri, 19 Jun
+ 2026 20:51:26 +0000
+Received: from PH7PR12MB9066.namprd12.prod.outlook.com
+ ([fe80::f71e:4264:146c:b356]) by PH7PR12MB9066.namprd12.prod.outlook.com
+ ([fe80::f71e:4264:146c:b356%5]) with mapi id 15.21.0139.009; Fri, 19 Jun 2026
+ 20:51:26 +0000
+Message-ID: <bd2dc2e0-e975-40a9-8e0a-4403db858316@amd.com>
+Date: Fri, 19 Jun 2026 15:51:20 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 3/7] crypto/ccp: Disable CPU hotplug while SNP is
+ active
+To: Dave Hansen <dave.hansen@intel.com>, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
+ herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
+ rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
+ pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
+ nikunj@amd.com, john.allen@amd.com, darwi@linutronix.de,
+ linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1781419998.git.ashish.kalra@amd.com>
+ <1feccf6e2a56d949b30f403c0ca7949f580e5982.1781419998.git.ashish.kalra@amd.com>
+ <49380c3e-c275-4211-876a-c51f644aeb17@intel.com>
+Content-Language: en-US
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+Autocrypt: addr=ashish.kalra@amd.com; keydata=
+ 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
+In-Reply-To: <49380c3e-c275-4211-876a-c51f644aeb17@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH0PR03CA0193.namprd03.prod.outlook.com
+ (2603:10b6:610:e4::18) To PH7PR12MB9066.namprd12.prod.outlook.com
+ (2603:10b6:510:1f6::5)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5aldcaejos.fsf@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB9066:EE_|CYYPR12MB8750:EE_
+X-MS-Office365-Filtering-Correlation-Id: 40d733c9-adc0-46ff-bd66-08dece448724
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|7416014|921020|18002099003|22082099003|11063799006|5023799004|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	D3yCJWzOKu6NLbyiM+HtSqzjk0mruXVPzvKeYYS1Y7oHSTKV1WaWHj3XY3kufXZtpTV8M+EbPJgfaCvcZmb54tbloEcFUH1YLD0IoHvBNoDEasB4QjCBj1oR4L308WnhvjCgg7/4mmYpUMjqufKDpKbASYs+Hj72tyR99/7m7lD3Umc3gPaPHvVsJ4rqtk1G7JcOT1UMbZ0pwSjAz8y2UPOSi75/gnvgotl0kfNa3riFL4fng1/9V0TcmhFxRcHRSqJY44MzKjUyiBWGroGpWzBeo5nj8x64u4qGZuwcYfmirFNFsmtf9/sloKU29xtTB/o4aEjv7y0H9rG3EcsRVT7yzWZjlvrRkJr3xWtdeHYt/wm1rfteIwkUlEaYwUODlqg9IyO1IX/BVNQdq1KldWg4wTnkDpoum/7O8Ke3NQKjCYoVpgS96lti7VkWhUB3YDYKNTt483q+WKYsTVnSoqRh2jF+iYLm782z1LokwPgGWFSsY+HuKg98Gz4mrsyBkMZugpvsKCpR6XADwdyk2vw5OjAUUexzzxLnOmxIbC66FMt4LVxutydNkIiJdx9fGf/WFLH3+25NI9cSOu0kqn487gT3iUqqilUwS/U265BwrgzA2CUeT8la13/xGK9G+o+jzQ9xJELtMFrCkNOW4y2kQPB+LRCKkMUi0bmjuvIMoE4DxmRg0LtK8di30jhqXJSlzCz4uknlRKor4FpXMg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB9066.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(7416014)(921020)(18002099003)(22082099003)(11063799006)(5023799004)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SWs1YTFIKzBiRnRlNWsxUDJVYStBSUNud2w1OVVKTXRYdThxRHV1ZVpVMG5u?=
+ =?utf-8?B?M3RJRFQ4NTJyYWF1K0xuZ1hwendTd2lhR09qZWIwdTFwbEtyc2pIS3dyZjNz?=
+ =?utf-8?B?MGIwYm9hUWwvek5qVU45R2ZLd3ZKb2Q4WS9MbjkweW9pVWJNa1o0dzFTTTl2?=
+ =?utf-8?B?aVRGL2pHRFZQaTlnVytldG9ZRnRHaTV5Slk0Y0kxa2hHRVVEMDlkVVZBM3BH?=
+ =?utf-8?B?UzhQWWZIQ3ZVQ21vVU9zaURLb0pHWk5uam52MzF3YlhROGVMMlpLOTZIanFn?=
+ =?utf-8?B?UFZHVGYzU25LVGgvNzZFSFg3eDhlTHY2bFB4TkRZa2pTbU9TaktkdFpzR2ZC?=
+ =?utf-8?B?NDF6QjliRVdvMlk1ZXN5ZENHcm1qbFpHQlczcXdpZlN4VHdmaDRLOVppV1JI?=
+ =?utf-8?B?V3U0U2x5Ni83RmN6SzViZ29hcWxvQTZwdDFjOFpQM3dKR3RjVVIzWkFZVEVL?=
+ =?utf-8?B?NDJ4UkNKM2RhMjN6Mll4TmNQd3lHMUFmYVRMemxXL3djeUhPZlpyTWRpVUM3?=
+ =?utf-8?B?N2dobldyclhpM2RzN2JLdUVvd1kwSjNSUnhKRDE3YURmRkV1SnVubThpSjVW?=
+ =?utf-8?B?UFhXN3dWbFdCVW9Sb2tvWUw2eDVjaDkzT1lBdGdMbWUyemQvRU9Eem9Zb2xr?=
+ =?utf-8?B?NC9jZFNWNk1uRTNqblc5aTZzYzJrN3dEZExHd2lHOUo1alJhVFJXcGtoTnZW?=
+ =?utf-8?B?SmVZWUhjOEd6a1ZHbU8walZpRUxTQ0R5U2c1TThFSnRDNHdTaXJndTNXVHYx?=
+ =?utf-8?B?LzFUN1VObkhlRUxUYW1FckdVSEV3QjBqZFJqbVlEbUdWVlpiOUxEN2x5SE5p?=
+ =?utf-8?B?Y2pQNDVnMzE1eWFBQm5TbE5sald2QU5hVUlTeWZYRkRTcDJPYXg5YXZKTE51?=
+ =?utf-8?B?RDFScS9kTGY0Mis5bmRVOERWMlhHTzJtbFlrZm5jWUlwN3NYNUhJN3kxcnJW?=
+ =?utf-8?B?UzhyTldtd3RocjJlSHAyd1R6eEhhTUlQM2l0T2ZXdXVPMDdsSnQ2R3FKSU9k?=
+ =?utf-8?B?VXNScTVQTDBrWVRTYmdoTTdCOU9xb0NwMFUwNFRIVGN2VUVpV1Z3WXFkeDlI?=
+ =?utf-8?B?S3NuaEVzZkppY3l1U052MWRITFpvMkNLSFVXZ0pCU3hYallmRm1zNEU2S2dk?=
+ =?utf-8?B?bzQydWFQZXg4azVDYXlCekljRGpDdjdJZVlOSDRObk5oM1FNVVBHZjEweXAr?=
+ =?utf-8?B?dFhwNTZ5Q1VPVnJta01GMXcvRnhubHdUL2wyTUh2KzU5TnFNdnFRVXd6ZHJv?=
+ =?utf-8?B?bVp2TDcwYlpqeXJiR2dLZjJML2M3RmE4aWZuMGFzUGVRWjNnVkVTaFBJTlNm?=
+ =?utf-8?B?cGxyUFJxMG5SZzB5d0k1RytHK1RlczZDVnZ1THM2Sm5SYjFVbzIwTVlDaTI5?=
+ =?utf-8?B?dm4wZUl6OGR2ZWZCOFUwVWtPUi9VV3lIUzRBYldsb2pLQ2RsSENNSXl5ODBB?=
+ =?utf-8?B?MTQ1cy9CT21OcTJBbm4yVFFuU0x0U1JxbG5SV0NGWXAxc2I0NzBVVkFIMlZF?=
+ =?utf-8?B?YUdqamR1YTV5ZEluTy9zblJhbk00alVJbGllQUsrUk1WbVNMbmlnMWd6azNW?=
+ =?utf-8?B?dVQxcTl0TVhJVCs2ZGlURHUwWFcxWk1wUXlzYzZ5elN6TTVWZnpDTHljMjB6?=
+ =?utf-8?B?cVJXWDFMU04wTVM4SW01S09rU0czd3hwV3dGWGZoN2VMZ290cUhBb084UzRT?=
+ =?utf-8?B?YjFpL1dxMTJsREpqdzIwdzMrN2piOEZQRThEQllFRVdXKyswYWozWk9yQmRr?=
+ =?utf-8?B?Zll0cGlRRFpCY1BnWHREOENMbTQyelZOY1BJUjRYSkx2ZnpWYzdGZXRyZHov?=
+ =?utf-8?B?Y3dBcVBkTWR6UlM0d29zTHliRVB3Vngya3lnUElCVFpLellrUEJjWVFkbFNK?=
+ =?utf-8?B?VDBqbVVVK0JaVFRDdHYyVUVNMlU4VVMwTVVWaENUQjVWang4WGtwSWdEMHpi?=
+ =?utf-8?B?NGlnVGhRS3BWOVhabkMyUEVtQytZTXlDV0FVZDkvdWlSQTIrNUYrQStnUTFX?=
+ =?utf-8?B?UldCOFBIcXhKYXVaanB0dFNsZVpjQWJzdUxFRnhZRmRqMjVJY3crWGxLNXZF?=
+ =?utf-8?B?aGpUZyticXFtc0NSdVBobEtrVTY3QU52Z1JpdTRzV3RPRHlVTStQbkwyWXNq?=
+ =?utf-8?B?TWRaNzZPazdsVkJVOEx3Z2ZkZWVNb2t6K09QWENIQzJQMmV6c01PSHBSbE84?=
+ =?utf-8?B?eGt4T0l0KzBLZkROVTlySTdQRXF4cGhKc2ZEZFlnZElncDFqdUhLN3BwS2Jq?=
+ =?utf-8?B?VXVNL0lwMm9VTWJtMUsydDFmMHJ0dmw2eDduZnN2Z3F5SkJ0YW81cUd6aU9F?=
+ =?utf-8?Q?YAWBugeEKTa2VefLIS?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40d733c9-adc0-46ff-bd66-08dece448724
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB9066.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2026 20:51:25.9145
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XKbVBoaAgQTc3dIk72Hvq0IiVFUlLa6gq3ciNqe7aTBI0bfeYHAXxCrkqQctMEkij8WDeTSFnXJ8Fw1Rm1bmvA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8750
 
-On Fri, Jun 19, 2026 at 02:36:19PM +0100, Aneesh Kumar K.V wrote:
-> >> Agreed. If the device can do encrypted DMA and requires bouncing, it
-> >> should bounce through encrypted pools. We don't support encrypted pools
-> >> now and that means, we mark the option ("mem_encrypt=on iommu=pt
-> >> swiotlb=force") not supported for now? 
-> >
-> > ?? if you don't have a CC system then the swiotlb is "encrypted"
-> > meaning ordinary struct page system memory.
-> >
-> > The hypervisor should not be triggering any CC special stuff here, it
-> > is not a CC guest.
-> >
-> > Agree we don't need to worry about swiotlb=force with a trusted device
-> > in the GUEST for now, but it should be something to fix eventually.
-> >
+
+On 6/18/2026 4:35 PM, Dave Hansen wrote:
+> On 6/15/26 12:49, Ashish Kalra wrote:
+>> +	/*
+>> +	 * Disable CPU hotplug while SNP is active.  Guard against stacking
+>> +	 * the disable count: the legacy SNP_SHUTDOWN_EX path clears
+>> +	 * snp_initialized without re-enabling hotplug, so this can run
+>> +	 * again while hotplug is already disabled.
+>> +	 */
+>> +	if (!snp_cpu_hotplug_disabled) {
+>> +		cpu_hotplug_disable();
+>> +		snp_cpu_hotplug_disabled = true;
+>> +	}
 > 
-> If i understand this correctly, the setup Alexey is referring to here is
-> bare metal system with memory encryption enabled and dma address doesn't
-> need C bit cleared because it is handled in iommu.
+> This seems like a hack, guys.
+> 
+> cpu_hotplug_disable() seems like more of a temporary lock than enforcing
+> basically permanent system state.
+> 
+> This seems like it would be better implemented by registering a CPU
+> hotplug callback and then refusing to offline if sev->snp_initialized is
+> set.
+> 
+> snp_setup_rmpopt() can be run any time, right? It doesn't need to be
+> after sev->snp_initialized=1.
 
-This is how I understand it too, if the iommu is turned on then it can
-take the high PA with the C bit set and map it to an IOVA that matches
-the device's dma limit.
+Yes, snp_setup_rmpopt() doesn't depend on snp_initialized. Programming RMPOPT_BASE only needs
+the CPU online and the system rmpopt_capable.
 
-> ( I consider this as memory encryption that is handled
-> transparently, device can access any address because that encryption
-> details are now managed by iommu).
+Based on Dave's feedback, i am going to drop this cpu_hotplug_disable()/cpu_hotplug_enable()
+and instead implementing and registering the CPU hotplug callback and then refusing to go offline
+if SNP is enabled, unless anyone else here has a different thought/suggestion.
 
-Compared to the guest side there are some important host side differences:
-
- - On the host the iommu can fix it because this is only a matter of
-   IOVA range not access control. On a guest even a IOMMU cannot
-   permit access to private memory
- - On the host the state of the device is driven by the dma limit
-   which is not set until after the driver probes. On guest the state is
-   set by the tsm and device security level before the driver
-   probes
- - Both flows end up using pgprot_decrypted and set_memory_decrypted()
-   to create their special pools, but for completely different
-   reasons.
- - The memory coming from the special swiotlb pool must NOT be used by
-   a trusted device on a CC guest, while there is no problem for any
-   device to use it on the host.
-
-> Thinking about this more, I guess we should mark the swiotlb as
-> cc_shared only with  CC_ATTR_GUEST_MEM_ENCRYPT instead of
-> CC_ATTR_MEM_ENCRYPT as we have below.
-
-The name cc_shared should be used for GUEST scenarios only.
-
-I guess there is some merit in keeping swiotlb using "decrypted" to
-mean it usinig pgprot_decrypted and set_memory_decyped() which AMD
-gives meaning to on both host and guest.
-
-IDK what AMD should do on the host by default. I guess it should setup
-a swiotlb pool of low dma addrs "unencrypted", but not "cc_shared"?
-
-But if we are operating on the host then this pool is not limited to
-only T=0 devices, every device can "safely" use it. (ignoring this
-destroys the security memory encryption on bare metal was supposed to
-provide)
-
-> Now we have the case of host memory encryption where the C-bit needs to
-> be cleared in dma_addr_t. That requires special handling in the kernel, and
-> I believe we need to mark swiotlb as unencrypted in this configuration.
-
-I think we need to split the two things up, they have different
-behaviors and need different flags and labels to make it all work
-right.
-
-> I am still not clear whether there is a config option or runtime check
-> we can use to identify this case.
-
-The dma api has to detect, after the driver sets the dma limit, that
-none of system memory is usable when:
- - The direct path is being used
- - phys to dma for 0 is outside the dma limit
-
-Then it should assume the arch has setup a swiotlb pool for it to use
-to fix the high memory problem.
-
-Similar hackery would be needed in the dma alloc path to know that
-decrypted can be used to fix the high memory problem like for GUEST.
-
-I guess some 'dev_cannot_reach_memory(dev)' sort of test in a
-few key places? Setup with a static branch to be a nop on everything
-but AMD, compiled out on every other arch.
-
-Jason
+Thanks,
+Ashish
