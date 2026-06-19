@@ -1,126 +1,131 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF1938330C
-	for <linux-coco@lists.linux.dev>; Fri, 19 Jun 2026 12:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458A615E97;
+	Fri, 19 Jun 2026 13:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781873513; cv=none; b=Gxe0qA3yFFhDypyjNrN066IrWUDp5WL2K0Nr5fGRoxZdSyut63eD1gQwIjS9RVXc1k0tm+Rld9K5yc6nsWx4zYboao1jgcecOHI6qTJRndTVYZhnMeisPiWyQ2zVAOn49ZLiy7cEmVCQBbkrFjhiRjhki7ccyTNSA+nGyuFNQqc=
+	t=1781876190; cv=none; b=plBIeswuIIVENdeUbzekBRwboQKGHs8uWgFy2QqFm99vSktAuA7PqSj3FfRfWy7gI0EL2JvSPt5ps8vzs7wWbcQtPbDreOQdVc0yf6FoVg01eZcn6TPzJGYF14Z/5qwPeP9cxdme1ngFI6IX6tH+bU8ERNGoaWkR0X3nkYU3bDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781873513; c=relaxed/simple;
-	bh=AoSchuXJGAayDzDPFIuHozNVcqm/iWheUa1nSVya5uQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N+Lh1OJ1w3d2uJRZgbeT64Us0FzEzs/IBGIQGCfIyCqNZY1RG6YfDQr9NgGwZZU1G3mm7N5Pa3R+aDH880DNJWoqPSDy5D9OtS7cNhmIP9v2rJGb0Aom75cORYVBEMLcsuCkDvsjnTUCq77ZiRI3IsyHe9G/Opd76Z7VFSDfIvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L/YBscbG; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781876190; c=relaxed/simple;
+	bh=kgWTjM0lLkQqHxifyD8GjM7GhU9P2lQzVwhyK1YpcwU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=N9bcwm/EFoW5i5VeBT+y/MM/DmmOg/Asri8l7BMWlhhz3aXEoTa5zsJvJXqh18bho89e/IHtdH7mus6k1CoBrF/6pcSU8JT2+fzKFln/4AGxgR9SLd4BEYD7kZsHeNtwRRE+FyiDY6H4ycqdnkfkWNmU7RbjXJDS8N613De05V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kAH1+xXX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L/YBscbG"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-490ace40f4bso21061125e9.3
-        for <linux-coco@lists.linux.dev>; Fri, 19 Jun 2026 05:51:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781873510; x=1782478310; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=laROZbWnzE0hCDsDDd6yA+mJoystSAqNpvIVq0sPclE=;
-        b=L/YBscbGh/MoDxCZBwNkPhkkLz0kBmL0VC+rpTsX0VImxj4QDV0ArR8FUtKU5Nqp/Q
-         TStjII8rXGHfGZXHOclCgXjQumPt/0/nr0MbS3G3obX5xcvIc4bKwtD/opaUmUORBz1K
-         tXTFK/opTApf0fE0gBTYohKT19jJ4pb/G/yyoOl4Rdsn21lJmU7/jCGVkpvvATMIhsg5
-         zU4iGc+qbRWYf+Rqxx0kD3rd0YDhMZ0+SMq4pGxq3tzMlpMPXQAeNng1iXDCVfj+W9h/
-         R1wNV1u6y5de1/Ox8dfy6bv+ayYj7TYL25JS1flLCkPTh+NaUZmHf4Wteq3QxNuWC3hm
-         PvdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781873510; x=1782478310;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=laROZbWnzE0hCDsDDd6yA+mJoystSAqNpvIVq0sPclE=;
-        b=gGodsT2/G6d6ImSzR5KsT2f77CN91s7GxyFl4pLPC2HEHXPi2Aqud9xx3a151NDHIg
-         TEgiySfpfguke6iLGV0vEC+tD36AskYdqnHpQgj48N/kxhd34G+p9hEi7nNexf8WQlML
-         H+KM2Q4Xw+zbwKO+QpbqgF+MX3XwV6KhAArA23LeunSzQtATStSludZcQXTEdXXWpoV3
-         x5zNfJU95SCXKEnAzfQIbUnlJYusi6qOsDKHL/fFKrwZVX8vFF0Whu82gZ/XpIQGTVw/
-         rggD7QUvMi9fTLmbXxiD3ti+fXcDIHAFnbo/LRq18nO/0s1y4FQKW7NjE9zd9JgAbsim
-         fp1g==
-X-Forwarded-Encrypted: i=1; AFNElJ+zhCP0+oTR2Fc9UTzqYOO+yJyrMItXiizpFw75rUpPVFbzyEx25+V4b04omg3JZdxrnM8rObI5mrNZ@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxg1G/1BvvWjrERQqB6AQ3KKIVcYiMeYuqv5HwWMC9ZM36Mkt/c
-	t2vuEIITIoW8VWzu/kaUc/j01xJSeIp9vpoVCCdKPYWi06kwIo9KKMkO
-X-Gm-Gg: AfdE7cnII/9BcHe14AlfDUxH5/1hY96GFHG8QuZCZ86L5gcMYbuc0AFaOOnwOFLliod
-	yKVXjFc5T7je4uGY8zKZnZ6ysEPaP5I1wJonglBP8fsBpgDOznp4UXwJ+yhDQOBZqiuoNcKWNMG
-	KEOexIr4kWlDhc+68BjsVszA4AiyHcJ5taMAvpQEpd9WKqfO/SMau8CC1zQrE4UIDF9PRFMmnuN
-	LtAvA5f2MKihIyJFz2aOCGAD+4ydOGTSMFkTgXGehC9n+ag7YP76aj1RPwGQ/e//+4dy1JDPhee
-	H49k4lWdHTrjt//8k45PsD/wZgaft9Gs553xNfOO0VsDSDOCz3IRGuVuZx9k0fYW4HtmIEKkXq2
-	2SOJdgGp3fAqy6cFxk8H9RKA79V8+m1iUg2NlOV9DY8jGad9dxxLSstPCZ8oGAmURxgH6eva8Hk
-	XrUL2iVjJVGSvLNvs3HkqV15GxtseFzaVkHHxfuNRTGD/pY1rTbTeE36NR6expG1knhJE5i8bwT
-	9TEm2A=
-X-Received: by 2002:a05:600c:8b10:b0:490:b00c:8e6a with SMTP id 5b1f17b1804b1-4923f58988dmr65892965e9.28.1781873510164;
-        Fri, 19 Jun 2026 05:51:50 -0700 (PDT)
-Received: from [10.128.11.42] (195-23-151-163.net.novis.pt. [195.23.151.163])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4650c115fd8sm7984157f8f.35.2026.06.19.05.51.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Jun 2026 05:51:48 -0700 (PDT)
-Sender: Julian Braha <julian.braha@gmail.com>
-Message-ID: <8e53844c-f2f8-4a4b-bf72-f3140c170d43@gmail.com>
-Date: Fri, 19 Jun 2026 13:51:45 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kAH1+xXX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF291F000E9;
+	Fri, 19 Jun 2026 13:36:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781876189;
+	bh=MBitVv/Wp6PuH6BWLvxBrPjtZ76g3L5KKs3NVrBh8ZQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=kAH1+xXXWAZrnqaGD7/jcVVJZXKo1zqhlJeoVFzORJVb9aVkw/eIs71MOGxdZcaTO
+	 gLj5qu44i7FTmN2rf5o3o/3j1qWmECbRssq5GeQm2sT4GmMMGH4Lse//y80zxxhIqT
+	 eyzkJU4bptugVm248QSCRQqo6wkaBO5MtCdvWI+LkKIpVqimUNwXQyk7VRJgm6IXk3
+	 ndmjfdpm/R6nLX5ltoS7VekJgvgsRGw66rPjZVRqav3g0KHKladHM/yUbPDEHAuJZV
+	 RUHs/hLvB02W/2/PHdotsxouWvZD8zoQIaFae5QnDu6Xlklqdeh3wTLyYSkbez2bG/
+	 fcXGVjxDeiEiw==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
+Subject: Re: [PATCH v6 00/20] dma-mapping: Use DMA_ATTR_CC_SHARED through
+ direct, pool and swiotlb paths
+In-Reply-To: <20260619122148.GL231643@ziepe.ca>
+References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
+ <aigYbK12D8uKQvJF@arm.com> <20260609144746.GL2764304@ziepe.ca>
+ <2ecfa1a8-6202-4319-9692-a6ffeb5a3dbf@amd.com>
+ <yq5aqzm4dz25.fsf@kernel.org> <20260618153705.GH231643@ziepe.ca>
+ <yq5ao6h6enhm.fsf@kernel.org> <20260619122148.GL231643@ziepe.ca>
+Date: Fri, 19 Jun 2026 14:36:19 +0100
+Message-ID: <yq5aldcaejos.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 05/46] KVM: Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES
- selectable
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-5-9d2959357853@google.com>
-Content-Language: en-US
-From: Julian Braha <julianbraha@gmail.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-5-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-Hi Ackerley,
+Jason Gunthorpe <jgg@ziepe.ca> writes:
 
-On 6/19/26 01:31, Ackerley Tng via B4 Relay wrote:
+> On Fri, Jun 19, 2026 at 01:14:13PM +0100, Aneesh Kumar K.V wrote:
+>> > And this is more insane logic. The right fix is to allocate the
+>> > swiotlb bounce from the *encrypted* pools when running on the
+>> > hypervisor which requires undoing this abuse of force_dma_decrypted().
+>> >
+>> 
+>> Agreed. If the device can do encrypted DMA and requires bouncing, it
+>> should bounce through encrypted pools. We don't support encrypted pools
+>> now and that means, we mark the option ("mem_encrypt=on iommu=pt
+>> swiotlb=force") not supported for now? 
+>
+> ?? if you don't have a CC system then the swiotlb is "encrypted"
+> meaning ordinary struct page system memory.
+>
+> The hypervisor should not be triggering any CC special stuff here, it
+> is not a CC guest.
+>
+> Agree we don't need to worry about swiotlb=force with a trusted device
+> in the GUEST for now, but it should be something to fix eventually.
+>
 
->  config KVM_VM_MEMORY_ATTRIBUTES
-> -	bool
-> +	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
-> +	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
+If i understand this correctly, the setup Alexey is referring to here is
+bare metal system with memory encryption enabled and dma address doesn't
+need C bit cleared because it is handled in iommu. ( I consider this as
+memory encryption that is handled transparently, device can access any
+address because that encryption details are now managed by iommu).
 
-Sorry for the style nitpick, but could you keep the type and prompt as
-the first attribute in the Kconfig option definition (like the other
-options do)?
+Thinking about this more, I guess we should mark the swiotlb as
+cc_shared only with  CC_ATTR_GUEST_MEM_ENCRYPT instead of
+CC_ATTR_MEM_ENCRYPT as we have below.
 
-- Julian Braha
+
+	/*
+	 * if platform support memory encryption, swiotlb buffers are
+	 * shared by default.
+	 */
+	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+		io_tlb_default_mem.cc_shared = true;
+	else
+		io_tlb_default_mem.cc_shared = false;
+
+....
+	if (io_tlb_default_mem.cc_shared)
+		set_memory_decrypted((unsigned long)mem->vaddr, bytes >> PAGE_SHIFT);
+
+So we consider swiotlb as encrypted pool in such config.
+
+Now we have the case of host memory encryption where the C-bit needs to
+be cleared in dma_addr_t. That requires special handling in the kernel, and
+I believe we need to mark swiotlb as unencrypted in this configuration.
+
+I am still not clear whether there is a config option or runtime check
+we can use to identify this case.
+
+-aneesh
