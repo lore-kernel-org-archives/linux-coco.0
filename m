@@ -1,83 +1,49 @@
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AD22DB788
-	for <linux-coco@lists.linux.dev>; Fri, 19 Jun 2026 12:03:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681D3379EC8;
+	Fri, 19 Jun 2026 12:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781870595; cv=none; b=LD/+FLbw/8AHCKiCPfzVRLS7uAXRi6FwXJ0+LwrhKaz6QS2eMckPiL6by9QH2jD6J++HAhGRaux3taO0qiNpcwefs77qSzVIQ3/fLjoFcfLEEcodJZWcChkiaopUYTUnjUPopV7/cC6fla8cgpmNHg9RXjngenx1faL3POtTdn0=
+	t=1781871265; cv=none; b=X6lh2x6iDfFtTH/PO/M0fSR3Mnng8hPQ487MsqfwFGOkRGT4u2n8NA5jwXnnkBY8cJ2r8iGQZ3zyRw7320a1VM0MpKGdRpIJeEn2ShR+aReL+bKdtKPvFQeotOebe6jSHVMI/AWrx3J35JtxNj633EvJojkWaXqVhHmM/GqT5Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781870595; c=relaxed/simple;
-	bh=3CfcX4Be+5vi/NadGQc4bvpp+jHS4/eMDxItDtd8Qqs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UhcBSICwWXZH6XNuzU7MlKmeJ1B2zgIK4Xxtmjwa43lS4vmKLoW2lRGfsmPWxSDPEnS5NWrCBrwZ8svv1v9HYPI6tFld1Wcob+CXiGjgo3lcexZtZ0igbdnEcoe4Eeu80Rdr2xHyx+4+D4SPvYxUsG0ELltfBGLmv2J0Y8X3Yaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=ovEEzDFd; arc=none smtp.client-ip=209.85.217.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1781871265; c=relaxed/simple;
+	bh=D18Y7QMf2ua3rnX5TS42ytW40kBRhvzW3ESkYKGnS+U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=r8PbCLFVci419vh6DvSNHywzu0TFEK1xUTESRs44i1Lk8j0aSTsye977j6/Qe/I5EUMT8s8Gm/WcNJ4A5Si/dugoj9MTVKw0hXaC1vLeyCFJVV1tfp79VmBwRg+/aQvyOut8Kyv3UX19+0Y2vEFWb5oDN/mYBdJsmJHeK+M1rIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rt0Naddy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="ovEEzDFd"
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-7296b2650c6so1036309137.0
-        for <linux-coco@lists.linux.dev>; Fri, 19 Jun 2026 05:03:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1781870592; x=1782475392; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=StlCUTUicQISJ/bWwbWkmSHhXapLgWFJJHXk0oHb5Ig=;
-        b=ovEEzDFdmge1XBEPWD/OuNrmNkHwFKp80azqXIGH8HSziLhgMxCuDoCclDBwwgjdTN
-         sjwFTARD+lgizP3oDOPAY8d64Re+vLflxTJ5RH7D2y64x86ashlgzOqVMc3/Bkg4Q58H
-         DRkG+hQ4PvIKikm93izM2VoxkqPdLHIA3T13lMX06eKlN5GFaMnB1SOOipWv+OOH2FXl
-         UCPE+VEIY1Pzp/qz1D3AQKlGgM5dcSrc/4pmBmN0dOyGiS7fg8+4pzLw3T2vTT7GTjeh
-         hKuUuwnQR56M8mfbNTaLuwQV/Kf/tW3EWdoLPhA43KSmDpstFMmy1Os8YmFruH4XKMPs
-         KhgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781870592; x=1782475392;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=StlCUTUicQISJ/bWwbWkmSHhXapLgWFJJHXk0oHb5Ig=;
-        b=kNlUcul2k7OLqQy9+v1NXbvzW4dOnyb+bdpYipCTeRz1z1nUvAvDJpuFchGWkkFlaP
-         HXyHFWktMhGO+07ThwJvm1gSlYinTcXljVT65vFgqtzS9CUvEAcPIo7S5Eq7tX477sR0
-         GYn7aGpi/y1WkL7ol8z5f9nF1NhYNPwoErx0muGJ4EPVfdGkCsu44F4D2o1tmGatLwJn
-         MCGRknWesLwWfhfyWhR70za2jE/5vOmWk/WLvb38D1GV+zJ8jmFPfnT43wV9xdrJaAaw
-         5TTkX+HTzPKFbRvT2szjlae4JTvMmJ6PN76+NElJlLWfcgiG2C8pPfCJDHA6exhCu0U/
-         XMIg==
-X-Forwarded-Encrypted: i=1; AFNElJ9MarxzNZ8C7pO1UdMCvPcQzaXUro0IMExyIItpuq5ETuVl0Qzu5Dv0Bg2gC++cLHh9TgnSFnOSArpB@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzrvc8sc80sMjglsSJHA6w0ES9zGMtJDtOC1LQQJPL8ihTIohAz
-	0XNl9l8zCVKUF6prOk8ukwFocnL2kaoGlLoUdYAvEnMbmDKrsbu9ICJEhitAFf8DJqY=
-X-Gm-Gg: AfdE7ckZ9OjVg0MpBpDZ9k1c0FSHiTg6cb/IBI6eMnJhATd0Jnp8h//Jxm/FCr6FRPY
-	xHKMAORm/eGDHeswJOL96JB0fbSImm36b5k4U9kJ7Ya4sBp2cAo67GweaADHDfNwe6wM9suru4G
-	W9dd0yjeTgMiiawbv3luPnbdFekIAIBNAiASxPaRULc6RXif4PCs66JAVvcN6a15qSFE3mY//Pn
-	7/W0pH+hUu8V95u3HwczNF0x/ltP8ENKJEHZszBoH5wczGuPS1TSSWaK/orS7WtHQMlFcGLuGGH
-	x/B39V2T5Ev+XQyTHrBM62kEDC6LNtHMKC1bxHJ5x7YSVtJhUZ82KQjEYOCY4UHHXLrKqgvYOX4
-	gXy2dRDf+qkzgyxkL8vgS7KqpuTkEIEg6roLsv3wsR0ayayx6QfmB9qsO+hNid4qMkWWpZ3KFR5
-	Hn31V/QpT0SZX0S5d+fefAJ+2gHJErBLBzi+XDsZOsmCFPrMBsWNeiIb14JV0XmisNOTwLoQZ0L
-	q9XIg==
-X-Received: by 2002:a05:6102:c89:b0:729:213f:76ca with SMTP id ada2fe7eead31-72a20215eaamr1999509137.29.1781870591985;
-        Fri, 19 Jun 2026 05:03:11 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-920a424f817sm215731985a.22.2026.06.19.05.03.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 05:03:10 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1waXwD-00000004SQK-4AfU;
-	Fri, 19 Jun 2026 09:03:09 -0300
-Date: Fri, 19 Jun 2026 09:03:09 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rt0Naddy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D9471F000E9;
+	Fri, 19 Jun 2026 12:14:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781871263;
+	bh=KrOJsDp07RvjHOd4cMkZps4YSuiVy126p7RvYOPP0A8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Rt0NaddySWLItBMWeGU37cEP6ghBwAiCgFoVL/yDeYKFrgWjjOXw5fnpeRkuQFogY
+	 CLQbZdwDh+aShieCJXxvlci/ACzTq16EHZ6mSrAk3gTro6XT5InFDGLxT0cVRcEqfb
+	 FihgVAzw/GPJ10OXjcrRrP/594+fy9kNP/aeuNTCXdZBvKOKjXYtpHsmL/+1mwrFLv
+	 oVkEnkNi8gubNsQu/SLW3F9g7CDV8OKpc/DTxyw/Rmn+RCGXkd42YTjCTaq4zmSo9u
+	 5ej1hm8jG9aoxWXPIhtGGBmT2MJcNjAicaMSdL3a0XPTJmSSxFB09c0n1Sp7+9yfRg
+	 /ADZdG2vuqkog==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Robin Murphy <robin.murphy@arm.com>,
 	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
 	Steven Price <steven.price@arm.com>,
 	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Mostafa Saleh <smostafa@google.com>,
 	Petr Tesarik <ptesarik@suse.com>,
 	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
@@ -90,84 +56,86 @@ Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
 	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
 Subject: Re: [PATCH v6 00/20] dma-mapping: Use DMA_ATTR_CC_SHARED through
  direct, pool and swiotlb paths
-Message-ID: <20260619120309.GI231643@ziepe.ca>
+In-Reply-To: <20260618153705.GH231643@ziepe.ca>
 References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
- <aigYbK12D8uKQvJF@arm.com>
- <20260609144746.GL2764304@ziepe.ca>
+ <aigYbK12D8uKQvJF@arm.com> <20260609144746.GL2764304@ziepe.ca>
  <2ecfa1a8-6202-4319-9692-a6ffeb5a3dbf@amd.com>
- <yq5aqzm4dz25.fsf@kernel.org>
- <20260618153705.GH231643@ziepe.ca>
- <d4ef9a9f-18d9-40e1-9d02-87aeb9cb6540@amd.com>
+ <yq5aqzm4dz25.fsf@kernel.org> <20260618153705.GH231643@ziepe.ca>
+Date: Fri, 19 Jun 2026 13:14:13 +0100
+Message-ID: <yq5ao6h6enhm.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d4ef9a9f-18d9-40e1-9d02-87aeb9cb6540@amd.com>
+Content-Type: text/plain
 
-On Fri, Jun 19, 2026 at 12:05:45PM +1000, Alexey Kardashevskiy wrote:
+Jason Gunthorpe <jgg@ziepe.ca> writes:
 
-> > > > > IMHO that's an AMD issue, not with the design of this series..
-> > > > > 
-> > > > > The series is right, a device that is !force_dma_decrypted() must be
-> > > > > considerd to be a trusted device and we must never place any DMA
-> > > > > mappings for a trusted device into shared memory.
-> > > > 
-> > > > swiotlb=force forces swiotlb, not decryption.
-> > 
-> > If force_dma_decrypted() == true then swiotlb must allocate from a
-> > decrypted memory pool. It is right there in the name!
-> > 
-> > The hypervisor environment should *never* set force_dma_decrypted()
-> > because all devices can access all hypervisor memory, up to their IOVA
-> > limits.
-> 
-> True. But we do not have encrypted swiotlb pool today, right?
+> On Thu, Jun 18, 2026 at 09:37:22AM +0100, Aneesh Kumar K.V wrote:
+>> Alexey Kardashevskiy <aik@amd.com> writes:
+>> 
+>> > On 10/6/26 00:47, Jason Gunthorpe wrote:
+>> >> On Tue, Jun 09, 2026 at 02:43:08PM +0100, Catalin Marinas wrote:
+>> >>> On Thu, Jun 04, 2026 at 02:09:39PM +0530, Aneesh Kumar K.V (Arm) wrote:
+>> >>>> This series propagates DMA_ATTR_CC_SHARED through the dma-direct,
+>> >>>> dma-pool, and swiotlb paths so that encrypted and decrypted DMA buffers
+>> >>>> are handled consistently.
+>> >>>>
+>> >>>> Today, the direct DMA path mostly relies on force_dma_unencrypted() for
+>> >>>> shared/decrypted buffer handling. This series consolidates the
+>> >>>> force_dma_unencrypted() checks in the top-level functions and ensures
+>> >>>> that the remaining DMA interfaces use DMA attributes to make the correct
+>> >>>> decisions.
+>> >>>
+>> >>> Please check Sashiko's reports, it has some good points:
+>> >>>
+>> >>> https://sashiko.dev/#/patchset/20260604083959.1265923-1-aneesh.kumar@kernel.org
+>> >>>
+>> >>> I think the main one is the swiotlb_tbl_map_single() changes which break
+>> >>> AMD SME host support. There cc_platform_has(CC_ATTR_MEM_ENCRYPT) is true
+>> >>> but force_dma_unencrypted() is false. Normally you'd not end up on this
+>> >>> path but you can have swiotlb=force.
+>> >> 
+>> >> IMHO that's an AMD issue, not with the design of this series..
+>> >> 
+>> >> The series is right, a device that is !force_dma_decrypted() must be
+>> >> considerd to be a trusted device and we must never place any DMA
+>> >> mappings for a trusted device into shared memory.
+>> >
+>> > swiotlb=force forces swiotlb, not decryption.
+>
+> If force_dma_decrypted() == true then swiotlb must allocate from a
+> decrypted memory pool. It is right there in the name!
+>
+> The hypervisor environment should *never* set force_dma_decrypted()
+> because all devices can access all hypervisor memory, up to their IOVA
+> limits.
+>
+>> > So when I try "mem_encrypt=on iommu=pt swiotlb=force" with this
+>> > patchset, it fails to boot. But it boots with a hack like this:
+>
+> On the host side I expect this to cause swiotlb to allocate encrypted
+> memory and bounce to it.
+>
+>>  		u64 dma_enc_mask = DMA_BIT_MASK(__ffs64(sme_me_mask));
+>>  		u64 dma_dev_mask = min_not_zero(dev->coherent_dma_mask,
+>>  						dev->bus_dma_limit);
+>> +		/*
+>> +		 * With memory encryption enabled, SWIOTLB is marked decrypted.
+>> +		 * If SWIOTLB bouncing is forced, treat the device as requiring
+>> +		 * decrypted DMA.
+>> +		 */
+>
+> And this is more insane logic. The right fix is to allocate the
+> swiotlb bounce from the *encrypted* pools when running on the
+> hypervisor which requires undoing this abuse of force_dma_decrypted().
+>
 
-"encrypted" is just normal struct page memory, that's the default for
-swiotlb.
+Agreed. If the device can do encrypted DMA and requires bouncing, it
+should bounce through encrypted pools. We don't support encrypted pools
+now and that means, we mark the option ("mem_encrypt=on iommu=pt
+swiotlb=force") not supported for now? 
 
-I think it was a big mistake for the AMD SME stuff to overload the
-decrypted/encrypted CC stuff which should mean shared/private in a
-guest context to also mean things about physical memory encryption in
-the host. It is really confusing.
-
-The SME side is just a bad arch choice, the real world doesn't work
-well if you set high address bits in your dma_addr_t. I think AMD
-needs to use those restricted swiotlb pool where it allocates this
-very special "SME Disabled" memory that will have a low
-dma_addr_t. Then alloc and bouncing will get memory with a suitable
-dma_addr_t. This has nothing to do with force_dma_unencrypted() which
-is only a CC guest concept and nothing else in the OS should ever
-touch decrypted memory.
-
-> > And this is more insane logic. The right fix is to allocate the
-> > swiotlb bounce from the *encrypted* pools when running on the
-> > hypervisor which requires undoing this abuse of force_dma_decrypted().
-> 
-> +1.
-> 
-> But how does the kernel decide if it is this swiotlb pool or just
-> some page which happens to be below the IOVA limit?
-
-You mean in swiotlb_tbl_unmap_single() ? It checks the address against
-the pool's range?
-
-> swiotlb can be for bouncing (with all these dma_sync_single_for_cpu)
-> or, if dev->dma_io_tlb_mem->for_alloc = true, for coherent
-> allocation (no need in dma_sync_single_for_cpu).
-> 
-> I am looking for a way to set up my "sev-guest" device such as when
-
-Whats a "sev-guest" device?
-
-> dma_alloc_attrs(snp_dev->dev,...) happens, it allocates a page from
-> the shared swiotlb pool (with no actual bouncing) and there is no
-> obvious way to trick the DMA layer into doing that.
-
-Why do you need this?
-
-Jason
+-aneesh
