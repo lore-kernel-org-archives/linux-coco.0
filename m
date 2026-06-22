@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD69379EDC
-	for <linux-coco@lists.linux.dev>; Mon, 22 Jun 2026 12:05:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695533B14DA
+	for <linux-coco@lists.linux.dev>; Mon, 22 Jun 2026 13:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782129932; cv=none; b=MveCd9784uak5ZZI7YqqskvjJGAg0G+gztf91lkm6pyq/LpF8JR/8ZhNvDKkwncEc/IkzIFtmLQicQF9uRBXjxQnlGo6JQyEir36YmUcuQAY25AX8SV9NjJd9jd9ApzgoA0OcmbH7Wjh5T6sHb57cY9izVF3o2hKeZ/iZ157B50=
+	t=1782134123; cv=none; b=jntU6lSEqyClBeppu0q9/vm25NEhbgEoqap67rupzlLxL+ZPIRERxGMrEPGWYIyAwr8QnbunP/ALd3pZ3l9YqoASPH2aFUzgoWMccamw0O9GOeq8pvKiLiNH6vftDxXeCU3rOo42qYghejVNTrvCm3c/ExWkm3TwmuT8F9agEUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782129932; c=relaxed/simple;
-	bh=BYS7T/Ih5enpda3QrTXqGfExXB6WnMBwqnxrQGORuDQ=;
+	s=arc-20240116; t=1782134123; c=relaxed/simple;
+	bh=5kJJ0jBEBcZgpsBD3iTZRct7s2YdiRXW58TdAFGGXNs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OyY0yfP3864e1HypiTPFF7q5qO6xFNNr55l5yL8eMukIw4eBqm24VQkS9hirBURhfpMH+XiZuwzhfrhfdor273R5WMrbhj3J76wTeOZW5qliqmgMVs1SdWd2dtreYHfuDXGvgwuSjeSL04CinqAeqCByjGgkKgJfX9vn3PdEBFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CRUhZQF8; arc=none smtp.client-ip=192.198.163.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=HrydzIWup/ZwBnNp8oNrK6LXYmEMQ9Pp96cEJ4181P6vtf6N6xtFJcGGIvtPfVKmCh2brNCZ6185EaKg/Y2r1dBxP3B6H/59GtBCKwAyyViKPfVjHj7tLLTzQY9n4YC8lG1g1W167bgRjG80WNULcvIWOG3Z+CWPcgz5kXY6yJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O/yb4eRN; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CRUhZQF8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O/yb4eRN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782129931; x=1813665931;
+  t=1782134121; x=1813670121;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=BYS7T/Ih5enpda3QrTXqGfExXB6WnMBwqnxrQGORuDQ=;
-  b=CRUhZQF8Y1aD4XFutA/ajCc+MbNTEHc+GH5nuhzGkOnOcg/6sDeg8tHm
-   OYxouIae47WA06NdPMi2udlPsG4hlsIkKbo0J2TdsQ1TFK9W1cEpw7T7s
-   pRC7Xcuc5mOLrt50oP8JZk3WPo8MeGNgnTC+cezLnK1hkcw2QyLKInLR+
-   Yo5e8oC3jo1qOLSs848RqYPPvnjZjfpaQbE40NCjH5QStTTUhh67EVv1b
-   Fh+uQHZSUKS8+EgC/AGZvFcYP5d1Ufq0GQgpdEzdQHYbGQOFfnf/yCnSX
-   GJHvEKnbzH9+V6SlzVyLu+kutQrdZzxk/FF3jAehUCxdCTKvBvFXgjzGA
-   g==;
-X-CSE-ConnectionGUID: CHzvnKxKRK+L/XSee0XwFQ==
-X-CSE-MsgGUID: 1O/oqywnQ9e/oqEp0hwS8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="82965906"
+  bh=5kJJ0jBEBcZgpsBD3iTZRct7s2YdiRXW58TdAFGGXNs=;
+  b=O/yb4eRNiXkoGX5infJnPnIf6yOmmJuTPNYxVWAoTqXtq4zrVroydX3M
+   xBNSrCFAsVjLFxnQwyg8aETc3dJmQezMzjjfu9ywwwPKl31qYGZKb9ud6
+   4KkknEBDWUIYgYn8vNsHVfKzNMTmKTUkp0WpbNhe99SNJeacwI0ed3K2Y
+   mspZ6VvKZ4iE0j8bsl8FmUOOBy7tVCtbl1ymQN4kTseuLJKlCclh7xjvg
+   EeS60Ig7tNqmFbO0xBDKrMbOlCBoUl9F3a6P+JpJhgVsttZWFNcoEv56U
+   T+ARVvuCrIalVmibQrc3awWwp30CyyhUQnvAidv0rdCkUPVjkHMMuNBPQ
+   Q==;
+X-CSE-ConnectionGUID: WE/HX0QVQ0mlSA+8la3Qcw==
+X-CSE-MsgGUID: eOrzkjxNR+GnzZzRxZeHQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="81966613"
 X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
-   d="scan'208";a="82965906"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 05:05:30 -0700
-X-CSE-ConnectionGUID: biJUyoNiS9+z5etFrODsNQ==
-X-CSE-MsgGUID: VlNb0URbQ4CTngHkcl0Byw==
+   d="scan'208";a="81966613"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 06:15:20 -0700
+X-CSE-ConnectionGUID: EQIh5x00RLeUoqQcAS7dUQ==
+X-CSE-MsgGUID: O1Jx3ChjTTKcvtRqfJ++Iw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
-   d="scan'208";a="245060335"
+   d="scan'208";a="254322008"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa010.fm.intel.com with ESMTP; 22 Jun 2026 05:05:26 -0700
-Date: Mon, 22 Jun 2026 20:05:25 +0800
+  by fmviesa005.fm.intel.com with ESMTP; 22 Jun 2026 06:15:15 -0700
+Date: Mon, 22 Jun 2026 21:15:14 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: Dave Hansen <dave.hansen@intel.com>
 Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
@@ -54,12 +54,12 @@ Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
 	tony.lindgren@linux.intel.com, peter.fang@intel.com,
 	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
 	dave.hansen@linux.intel.com, seanjc@google.com
-Subject: Re: [PATCH v2 01/17] x86/virt/tdx: Embed version info in SEAMCALL
- leaf function definitions
-Message-ID: <ajklBUw1bmo3HoGZ@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
+ module init and update
+Message-ID: <ajk1YuMEs4YCwVak@yilunxu-OptiPlex-7050>
 References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-2-yilun.xu@linux.intel.com>
- <bdde1a33-9513-4be3-87cb-044c034eddb1@intel.com>
+ <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+ <4f4b0f29-424b-45ed-8cfd-c77da2ea390f@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -68,113 +68,117 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bdde1a33-9513-4be3-87cb-044c034eddb1@intel.com>
+In-Reply-To: <4f4b0f29-424b-45ed-8cfd-c77da2ea390f@intel.com>
 
-> This is jumping the gun a bit in the changelog.
+> There's also zero stopping us from putting version in args:
 > 
-> What is a SEAMCALL leaf function?
+> 	struct tdx_module_args args = {};
+>   	int ret;
 > 
-> How does the version fit in?
-
-I think the word "leaf function" is confusing, maybe I should say
-"... SEAMCALL interface function definitions..."?
-
-And I missed some more context explanation here:
-
-  SEAMCALL accepts parameters via CPU registers (RAX, RCX, RDX, ...),
-  where RAX selects the specific TDX module function to execute. According
-  to the TDX module SPEC, RAX is mainly composed of:
-
-  1. leaf number: selects the function.
-  2. version number: selects the function version. The newer version
-     defines more operations. It also defines additional parameters for
-     the rest of registers.
-
-  Newer version SEAMCALL uses the same leaf number as older versions,
-  with only the version number increased. Newer version SEAMCALLs are
-  guaranteed to be backward compatible.
-
-[...]
-
-> > The old TDX modules that only support TDH.VP.INIT v0 are all deprecated,
-> > so only provide the latest (v1) definition.
+> 	if (tdx_addon_feature0) {
+> 		args.r9 = tdx_addon_feature0;
+> 		args.version = 1;
+> 	}
 > 
-> No, this isn't how this is going to work.
+> 	ret = seamcall_prerr(TDH_SYS_UPDATE, &args);
 > 
-> What do we *NEED* from v1? Why churn the code if we don't *NEED*
-> something from v1 and can live with v0?
+> Eh?
 
-Sorry for the confusing words, for this TDH.VP.INIT, kernel is now using
-v1, we need v1 for virtual x2APIC. Maybe I should add "No functional change
-intended."
+I'm thinking the version is only needed for 3 SEAMCALLs. We don't have
+to make version common for all 100+ SEAMCALLs. Besides the layout of
+"struct tdx_module_args" correlates the fundamental assembly code of
+__seamcall() in tdcall.S.
 
-> It has *ZERO* to do with the TDX module being deprecated or whatever.
-
-Since newer version SEAMCALLs are always backward compatible. TDH.VP.INIT v0
-is only needed when we need to support legacy modules that don't understand
-TDH.VP.INIT v1. We don't support such legacy modules, so I meant to
-eliminate TDH.VP.INIT v0 definition and reduce histroy burdens.
-
-We have some previous discussion that leads to "kernel don't keep SEAMCALL
-version at all":
-
-https://lore.kernel.org/all/ca331aa3-6304-4e07-9ed9-94dc69726382@intel.com/
-
-But I have trouble for not keeping versions for TDH.SYS.CONFIG/UPDATE (in
-next patch). No public module supports TDH.SYS.CONFIG/UPDATE v1 so I can't
-eliminate TDH.SYS.CONFIG/UPDATE v0. I'm GOOD we are now considering keep
-aware of SEAMCALL versions at some level. Keeping in mind which module
-is published is another burden...
-
-[...]
-
-> But that whole scheme falls apart the first time the kernel needs
-> functionality from v2. You'll need:
-> 
-> #define TDH_VP_INIT_V0			SEAMCALL_LEAF_VER(22, 0)
-> #define TDH_VP_INIT_V1			SEAMCALL_LEAF_VER(22, 1)
-> 
-> and then the calls will do:
-> 
-> 	if (foo)
-> 		return seamcall(TDH_VP_INIT_V0, &args);
-> 	else
-> 		return seamcall(TDH_VP_INIT_V1, &args);
-> 
-> So this 100% goes down the road of needing #defines for *EACH* version.
-
-TDH_VP_INIT_V0 has no use case in current code, so maybe not #define for
-EACH version.
-
-And we have 100+ SEAMCALLs in SPEC, 30+ is being used in Linux, 20+ is
-comming, only 3 need versions now. I think making versioned definitions
-for EACH of them is overkill.
-
-I see you have another suggestion in next patch which avoids the
-#defines. Let me continue in that patch.
-
-
-> The whole seamcall RAX thing is one step too clever. I think Linux did
-> the right thing:
-> 
-> 5	common	open				sys_open
-> 288	common	openat				sys_openat
-> 437	common	openat2				sys_openat2
-> 
-> New ABI gets a new base number. No need for the other end of the ABI to
-> know that 288 is arguably a later version of 5.
-
-Yes, that's true.
+Could we make dedicated SEAMCALL wrappers for TDH_SYS_UPDATE similar to
+other SEAMCALLs and wrapper the specific version handling there? I put
+the diff in the end.
 
 > 
-> Ugh. But why is this patch even in here in the first place? Why is this
-> even *ASSOCIATED* with DICE-based attestation? Isn't this completely
-> orthogonal?
+> That gives args.version==0 in all the normal cases which just happens to
+> be the exact behavior we want. It also avoids having to plumb version
+> through all the seamcall*() wrappers.
+> 
+> But this is *exactly* the kind of thing that shouldn't be a part of an
+> attestation patch series. This could very much have been a separate
+> discussion and happened a month or a year ago. But now it is blocking
+> this DICE thing from getting done <grumble>.
 
-TDH.SYS.UPDATE/CONFIG is the second user of the version stuff. So as
-required, fix the open code issue of the first existing user.
+Sorry, I was thinking "don't keep version" was the conclusion...
 
-https://lore.kernel.org/all/62bec236-4716-4326-8342-1863ad8a3f24@intel.com/
+--------8<--------
 
-Thanks,
-Yilun
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 01fb01313077..b3b3540e431a 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1757,18 +1757,12 @@ int tdx_module_shutdown(void)
+
+ int tdx_module_run_update(void)
+ {
+-       u64 seamcall_fn = TDH_SYS_UPDATE_V0;
+-       struct tdx_module_args args = {};
++       u64 err;
+        int ret;
+
+-       if (tdx_addon_feature0) {
+-               args.r9 = tdx_addon_feature0;
+-               seamcall_fn = TDH_SYS_UPDATE;
+-       }
+-
+-       ret = seamcall_prerr(seamcall_fn, &args);
+-       if (ret)
+-               return ret;
++       err = tdx_sys_update(tdx_addon_feature0);
++       if (err)
++               return -EIO;
+
+        ret = get_tdx_sys_info_version(&tdx_sysinfo.version);
+        /*
+@@ -2351,7 +2345,7 @@ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
+                .r8 = x2apicid,
+        };
+
+-       return seamcall(TDH_VP_INIT, &args);
++       return seamcall(SEAMCALL_LEAF_VER(TDH_VP_INIT, 1), &args);
+ }
+ EXPORT_SYMBOL_FOR_KVM(tdh_vp_init);
+
+@@ -2463,3 +2457,16 @@ void tdx_sys_disable(void)
+        if (ret && (ret & TDX_SW_ERROR) != TDX_SW_ERROR)
+                pr_err("TDH.SYS.DISABLE failed: 0x%016llx\n", ret);
+ }
++
++u64 tdx_sys_update(u64 features_enable0)
++{
++       struct tdx_module_args args = {
++               .r9 = features_enable0,
++       };
++       u64 fn = TDH_SYS_UPDATE;
++
++       if (features_enable0)
++               fn = SEAMCALL_LEAF_VER(TDH_SYS_UPDATE, 1);
++
++       return seamcall(fn, &args);
++}
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index 32b13b0c85f9..f07e12552bf9 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -44,7 +44,7 @@
+ #define TDH_VP_CREATE                  10
+ #define TDH_MNG_KEY_FREEID             20
+ #define TDH_MNG_INIT                   21
+-#define TDH_VP_INIT                    SEAMCALL_LEAF_VER(22, 1)
++#define TDH_VP_INIT                    22
+ #define TDH_PHYMEM_PAGE_RDMD           24
+ #define TDH_VP_RD                      26
+ #define TDH_PHYMEM_PAGE_RECLAIM                28
+@@ -61,8 +61,7 @@
+ #define TDH_SYS_SHUTDOWN               52
+-#define TDH_SYS_UPDATE_V0              53
+-#define TDH_SYS_UPDATE                 SEAMCALL_LEAF_VER(TDH_SYS_UPDATE_V0, 1)
++#define TDH_SYS_UPDATE                 53
+ #define TDH_EXT_INIT                   60
+ #define TDH_EXT_MEM_ADD                        61
+ #define TDH_SYS_DISABLE                        69
+
