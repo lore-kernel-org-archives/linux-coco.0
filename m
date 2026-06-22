@@ -1,125 +1,247 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012023.outbound.protection.outlook.com [40.107.209.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC071A6829;
-	Sun, 21 Jun 2026 10:44:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782038658; cv=none; b=hDJYwuatwHsO5B1nNqCNJ4Jv+7rRS0L7pjf838XNtLJaPFOdTHE2eXW8giezcbwgUhaiaJRojWD7ahOoQ0PMT45cTeLS+QBzKcHn1xGPT8TfIWUFnPE5hxwBBySvJhBnXRKSjBLsWdwK9bnr+aoO+cyX2ZWb4s4SgfA8pKwAbek=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782038658; c=relaxed/simple;
-	bh=QM4BW+Se0xS0feWQ0RySLRmnpDhsQ2somB3WvhbhRHM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=OwY15T7j5mLtz7O+cA6CRsOfy0gCCAjN4eVoVn/TR1PRSIMMOklD850TutOJ7Qw6YrS+L7yU4QiySMmbFH1InwOIJ8Zs7QIaTv/Z9nu/Z8kb2oMdk6Rh+qH28UzSfAJ6UZDIIRwY+2QULdKy5mG+3bJnavK4uE5p7gmyg7Nt3g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mE4NV8SU; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA6813D8B1;
+	Mon, 22 Jun 2026 00:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782089917; cv=fail; b=HW8oQmTVyq7zU7WAIzc0iE6MLJQg0gfsySUblIHHs2TBEUZjKW9Z47Lk+WkDBErMhOfnAf+5mVjhnhx9nAL0ABKEJxKw+Mp0S+C2L9iuueY/02vvxxo5gwIOQsbHDtKE5NvoeOeD4OOAUkNf9NJxPHb/vjLHTm3WulKyWMECdQU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782089917; c=relaxed/simple;
+	bh=7CHy71Nt7nUICvVAYTE9tsXPYUoxYjmZk+P0TPDPGGg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=R336smlEFSdYwu0K0U04Ue2sWWk1ShA9kQHfusPF0Ux3ZVARDvc0SwTRpwppxv/PAGd/lF1nHFXG9Gk+wlmqDUu1krtbCHZ8BUydy8hQ0S5AzKkjhD6VBoEdKe+Z/VvYbKAZ7x1CBiWk+NYj6wOfqA6MPmWdx/offlW92i3PAQw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=rrRfZOxZ; arc=fail smtp.client-ip=40.107.209.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mE4NV8SU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30AC21F000E9;
-	Sun, 21 Jun 2026 10:44:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782038657;
-	bh=65JqXxMqQ34nDFxTpNu1D7QubbJQ2zgWdNEBKESFgc0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=mE4NV8SU9Yxbw+x62c3ej466A4D2vbNkkezUwYsLGovWSkcZLkntr7p0QeO1bs2e6
-	 1S3X8vPTE/a7lCu2Jm7Eu639RLwy8piMQHnXtPGq5yaPKH5NAjjYNGavilDfcoxf4r
-	 0JIdVv6/sk1NMeJdVTI8WXw4/22khm6DWVN6gWOdPnuxkrsz67K4y+Mzn+VfEmA83h
-	 VKZ65gS9/KmXkXc1XVilz+0Kd9XkETcYAGiW+eckOISVFYHozvUuK2YBv4k8gjdqRS
-	 Z00jPZp7od0X5j7ANkctfg//RRKQ7ktMAzn03tNvssxGe0+IGDBWhrx6A4E6N2qilO
-	 wrl+BmW2uhmsw==
-From: Thomas Gleixner <tglx@kernel.org>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>, Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@intel.com>, mingo@redhat.com,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
- herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
- pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
- ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
- rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
- pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
- nikunj@amd.com, john.allen@amd.com, darwi@linutronix.de,
- linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v8 3/7] crypto/ccp: Disable CPU hotplug while SNP is active
-In-Reply-To: <e68a126a-6f2e-4a76-a691-f514b7f37489@amd.com>
-References: <cover.1781419998.git.ashish.kalra@amd.com>
- <1feccf6e2a56d949b30f403c0ca7949f580e5982.1781419998.git.ashish.kalra@amd.com>
- <49380c3e-c275-4211-876a-c51f644aeb17@intel.com>
- <bd2dc2e0-e975-40a9-8e0a-4403db858316@amd.com>
- <20260619221022.GBajW-TvxyCuGo0FWX@fat_crate.local>
- <d91bf0a8-0c4a-4552-9009-0ecef46aa279@amd.com>
- <20260619232007.GCajXOpyPbiu4FVZIW@fat_crate.local>
- <e68a126a-6f2e-4a76-a691-f514b7f37489@amd.com>
-Date: Sun, 21 Jun 2026 12:44:13 +0200
-Message-ID: <87fr2gmav6.ffs@fw13>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rrRfZOxZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vMAqy/0MFsA2psc6ReWgWqyzA8l3jj0ISXznOvxaHg2/H9uBkHnybw88v0Wt/M5nJUZXNMAhzHPCglo8/ZJTnYeZCNZyCVL/NfYg8aY17Y9XlyTONxNXDq5R+I6H7bvHS47ISupe7yV+qL/e/lLeM9fU01zNjfW6qKhLgMzqiOQ8pib0dcs7aD6NqLakhE310fO0VLfLFhH415JWgBcI/rxy+fd5iKfazcOuX4V3GdfMPOWHBZOmzakt4DJwsucSHZ38okGzjOLdtd9nlBrN8ubjX5/F46tf7McNlyGJwfkSzGOLyQK0oCXnnMNp5As/+L5K/EKAyHxZACT62dDLHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YaGyQ9yh8csbwApDJxSVr9q03p5Lu/Ktj4l8kTToqMA=;
+ b=G7Hlsp5f3wHDcr8FnKcEYsB70y/LV6s/Y8EM0JsrrUuQNS5y7gm4AfbCU0CnwzxSMNnH8NXjq0m22ppw2VsMFaGDZmlzaSNN4J8p5mPU2QRERXFY1RfDwVTrhjJl62KAWF+BnxpNLOgY6IPzfWqHNi6ylihMnyzFl3lz4ZXJpcdjBPXiWTWj5GDWAbhSUgw6//HXNihbgwj25YQrP4Ndupmpc3INk4s50LtnpxgmgxTDmN986OF3rEHODGy05Z9hS8Y75ZpdDsw/d5GBxmwqSx32YokIBsU7ysYA1VyUpoqRvzRTze4eOKT2UN97NADLI08o19X/Vpt1usy4Gl/WMA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YaGyQ9yh8csbwApDJxSVr9q03p5Lu/Ktj4l8kTToqMA=;
+ b=rrRfZOxZ/w4HP2kJoN3LIjfMGeisZjIbWMzF1bTr40Hr68H/5gU/oRToK1Qz+CFA0231FXnOa6FfCNrDzpavekcy7qnVLA7xjjaoDhSzp96E5BO+m7tiCCRUathASNumfzR7NfT34qLX2Nntt02T9Q7Qr8GrbelMz5JXGu2ruG0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10) by SJ2PR12MB9161.namprd12.prod.outlook.com
+ (2603:10b6:a03:566::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.18; Mon, 22 Jun
+ 2026 00:58:32 +0000
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3%4]) with mapi id 15.21.0113.015; Mon, 22 Jun 2026
+ 00:58:32 +0000
+Message-ID: <9f20ce61-1edd-411e-a7c3-be541fb89cb4@amd.com>
+Date: Mon, 22 Jun 2026 10:58:23 +1000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 00/20] dma-mapping: Use DMA_ATTR_CC_SHARED through
+ direct, pool and swiotlb paths
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, iommu@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Will Deacon <will@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Steven Price <steven.price@arm.com>,
+ Suzuki K Poulose <Suzuki.Poulose@arm.com>, Jiri Pirko <jiri@resnulli.us>,
+ Mostafa Saleh <smostafa@google.com>, Petr Tesarik <ptesarik@suse.com>,
+ Dan Williams <dan.j.williams@intel.com>, Xu Yilun
+ <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
+References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
+ <aigYbK12D8uKQvJF@arm.com> <20260609144746.GL2764304@ziepe.ca>
+ <2ecfa1a8-6202-4319-9692-a6ffeb5a3dbf@amd.com> <yq5aqzm4dz25.fsf@kernel.org>
+ <20260618153705.GH231643@ziepe.ca>
+ <d4ef9a9f-18d9-40e1-9d02-87aeb9cb6540@amd.com>
+ <20260619120309.GI231643@ziepe.ca>
+Content-Language: en-US
+From: Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <20260619120309.GI231643@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY5PR01CA0128.ausprd01.prod.outlook.com
+ (2603:10c6:10:246::26) To SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|SJ2PR12MB9161:EE_
+X-MS-Office365-Filtering-Correlation-Id: 184e9de2-6718-48ea-6866-08decff96151
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|22082099003|4143699003|3023799007|56012099006|5023799004|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	TrkR5OBkj0SFTEYRg7Dlw3r7mkTXiPngouKmV2hEXVeMlX4t4cS8uxsh41YeS6ACueT8l0e0YcjZkck6kJomHhl7HQncARXHB4lN3/AISDZBkhBBzG420AK0pFe/6HwEHu+PryfpAu1ifoNxk+HnxpyTVZNFyCf389pKj2dcPlXAkbZ9eHXea/zwpN7sBDq9vRXG1HbTxeBMff7dxFBqhmAgYSLBEVLz2lkTuASSOloxXLRI1kbQqgTuRsHL2j1JQ5C3kQKr/4kLVSjdjB0szYQ1z3ohm+tLj+BCb2Inx91x8Y+DqkaLfxhb4ZU7lwMaJnfmKgJwmR6suNWR+y+kQKn8x83vhlBOe3gHK0R4FRDOwIrzvaomo/K+E4xeeOcE8N0raRS0P4MjUAPkMycuzudICEzYnhXYgEW5mNmcMg67b8tRMQbHmXSxucr1ZtbLfbio+pvCvrsFRubTwud5N6ogkGtb6nshyz/zvITx5XCUuLfBhYSzYdBzPeqf7L7sepzn6R/P+kvjY8otwpMCvUvERTpESx2Lr8QD9nzgZsW88dQZvAwLN3ge8PN/BcY1QrMiOPlEd4OPfCD+lqYS41Ktachn6oiP2Y2g48wTpXejmGnPxkDl6zzKUt/m2e0+xNQn/BM9preC1VtSFHeFqCyLIvmjQRTXzXRSHuCP0Lw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(22082099003)(4143699003)(3023799007)(56012099006)(5023799004)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dVFVYlhRMnQyaUhLNUIxRlUyTEk5Mm5iNEpkbnlyRmJETGUwSmJVSjNDVjNF?=
+ =?utf-8?B?Wm1jTHhQR3IrMHlwb0szOFFZTXdZMVFLMGd1Ly8rZmNYb2pISzlOSEdFWUcx?=
+ =?utf-8?B?QVNmYjM4V3VyK3lIcW1NSER4MWNHTnRPZW5BMDN5NDlWWDQwbm8wR3o4ZTNi?=
+ =?utf-8?B?QzIwblpsZ0ZJMHZWeWdJd3pPVXdqNThDd0tLTW85eTBXZWwyTHlzV05hWHNk?=
+ =?utf-8?B?bmZGMVpsTkYzYWdTdStsc1FMd21rbDZuL3lmdUtDUlV5dlNDRVlPNUF3dWF4?=
+ =?utf-8?B?VDVSL2JZejRxNUFLMldrSmxIa21PSzhjN1crTUMraWFzUG5yMEdiNkhodUdT?=
+ =?utf-8?B?YXVWR2hvaS9KSHRPdnV1dkNyZFBLblhPUGFBeVBWbEtqOTZPRFFNMUpDelpa?=
+ =?utf-8?B?MlVCcXdVS1FxR29VaU1PNXE5aDIzL0V6WmRRZzdGNHJHZTV2OUNkajRDcnZa?=
+ =?utf-8?B?SGdPcFlLcmpGMlRYck12Qm9jdE5uRDR5TjlDb3BrNEZDYVZrNjE3WTg5V1BV?=
+ =?utf-8?B?eWswcnFwY3pwdXZYQlV0M0tWQWdNL0NFT2owTTZuT1FWOWVUdnE5cnUzTXFN?=
+ =?utf-8?B?UGZvdnFQYlB1SVFUVDhUS2hwNzJhY3B4dDU1WjJNVkRNV2RZTjh1blhRd3Nj?=
+ =?utf-8?B?LzVqN1NOZjFMUzUrcnU5bW05WUtKL2JhNGluejhKWmxnSWdSc2dMSDdrMzZP?=
+ =?utf-8?B?YnpVNkJnYmcyakRvTjlFL2FNeUFvTkVKcjMyQ2lVYW15aUlscmpZTmI1WDNu?=
+ =?utf-8?B?RkVacnRVekIvTjRERjhVcDl1WEZjcmFKejhHcnVXUjZnMi9iRXloSHRYYkJo?=
+ =?utf-8?B?ZmRIM1hVQXlHaDRrc0JFWXAvYzFQbGd2cmxwTjBGRytIdTBYSDUyTVd2UzU0?=
+ =?utf-8?B?Y3h2QkxNcmwrS3RVb3dMMGJOai9rZ0MvZlRSSFpxYlhnQkRJMGVuNitQNmwx?=
+ =?utf-8?B?OTVJNGtQWEVEc0NWQVN2ZmlyM3RNdU5UY1dnaDdDc2tRTnV4VDBvSGpwUmEv?=
+ =?utf-8?B?aEtjZUM0NndxTGEzeXlrMXZnQ2FUNjc1cEFHQ3h5QXJadnhUT3AzdkdLbDJS?=
+ =?utf-8?B?enJNRzRuZE9KOTc0YThEcldjaHFUbVZNQXREdklhcnlHTXhUZWR3cmxmWGgz?=
+ =?utf-8?B?WFlWcldEcXBEbkg4aXVmbjVjUHJFQmZPZmRSUW1XamUyMlNLcFZRWHIvUHVP?=
+ =?utf-8?B?cVc0dmtaM0pzOWN2aEMyTWttdjM0S09lVHArcFRRcW9IZlh0M2VUVHl1bWw3?=
+ =?utf-8?B?dW9kSTF4Sk1sdmJIM1E5cHk1RVo1Z0lkRXhod1RYa05BekI2TTdZbnhiTUpZ?=
+ =?utf-8?B?YUlWOXVUamlUMzkydDVVdEZsNVpDRUtUTWtCY1hlTjAzRU5Kb3daYVprbkh1?=
+ =?utf-8?B?dC8vR0dmVXc4OUUyblJ0Y2xrTmNDY3RNZHRXWnplLzIzME90azB4eVFzOEVF?=
+ =?utf-8?B?anUzalBvZXd0aE9zaVBIaWdmY2V6TStjL1NWRTNydHBUWEtJV0xraU1JaUls?=
+ =?utf-8?B?MkJrTVh4Q09aTXBMcGtadi9Lc0xZTjd5dUg0Q3MrWVRkanFSdExHZ0ZrK0Vq?=
+ =?utf-8?B?V1pnQ2drVEtGekdJbnpLcm9BV0p3bk1ubitxNFhoZlk5RTlobzVLaGZWNVBo?=
+ =?utf-8?B?OG5mL0pRbi81b2thcXMxRjVCMHdpa1B2WTh4eTNoUGo5U2lVcTY4YVViREJa?=
+ =?utf-8?B?VWFGb0NZVjhveHpPME43VngvZEtFbmxmS0Jkc0lLRDNTOFhLcTNsMWd5MU5w?=
+ =?utf-8?B?SHcwaFZZV0RkamZoS0xuSVJPMDBSS2xISmE4cXJHNFJjQ29VZlgvYlltZHdD?=
+ =?utf-8?B?clBJWG04NEoydFBMVDh0Qnl5cHJrYkUrVmxJSEloaFcvSVk3U21HazJWYlp1?=
+ =?utf-8?B?SWpEaGxZNWxRaTZlQ05wS0QyOFJoNGVCMStCR1FIS1hZU0tHYk1CVFBsemlq?=
+ =?utf-8?B?NldISlVOWkhnWmI3dVBZYkhjRG41RWs0WndqZ0duZkdjUGRrcW5jMGlhcG41?=
+ =?utf-8?B?ZFBYaVg4TTBpR1lsc2RpNklOSDJJZURjcVBlWThVNmwwelZ2QU9ML3I3NDJq?=
+ =?utf-8?B?YWpPOFgvY3ZubklWUkM3T0Y0Y1QwTWRyNkFIbDBaK1lIVWJ6OUNpZGhhMmFE?=
+ =?utf-8?B?TW90MUc4QVBMWWpQMGNMWGU2TnFoVCtiWTZ3RXVNRlc1SkM3WDZmS0RhVnZB?=
+ =?utf-8?B?RktmMFpEN2NGRTcyN0E5YzRpOG5vNk1mN2xKT2J4dGVua3FVTElDZ2QxdDdY?=
+ =?utf-8?B?VVZtZFVhTk1GZGZWSFlZQVo1K0dza0IyaU5Hb1dvVWZIeW9Fb2NpbTIrYzhn?=
+ =?utf-8?Q?TL2SSsgsh3IWEi4JiQ?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 184e9de2-6718-48ea-6866-08decff96151
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 00:58:32.0636
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GhrF+egcCsB2mea8FAdBg1CvwoFWgJBugB4e2B0lmgz3HQD8vqAGQaVKnTXhk737w2VFIODShNcg901Z8+jJlA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9161
 
-On Fri, Jun 19 2026 at 18:51, Ashish Kalra wrote:
-> On 6/19/2026 6:20 PM, Borislav Petkov wrote:
->> I'd let tglx maybe give a better idea but this cpu_hotplug_disable stati=
-c var
->> in kernel/cpu.c could get a getter function and be used instead of you
->> reinventing the wheel in here.
+
+
+On 19/6/26 22:03, Jason Gunthorpe wrote:
+> On Fri, Jun 19, 2026 at 12:05:45PM +1000, Alexey Kardashevskiy wrote:
+> 
+>>>>>> IMHO that's an AMD issue, not with the design of this series..
+>>>>>>
+>>>>>> The series is right, a device that is !force_dma_decrypted() must be
+>>>>>> considerd to be a trusted device and we must never place any DMA
+>>>>>> mappings for a trusted device into shared memory.
+>>>>>
+>>>>> swiotlb=force forces swiotlb, not decryption.
+>>>
+>>> If force_dma_decrypted() == true then swiotlb must allocate from a
+>>> decrypted memory pool. It is right there in the name!
+>>>
+>>> The hypervisor environment should *never* set force_dma_decrypted()
+>>> because all devices can access all hypervisor memory, up to their IOVA
+>>> limits.
+>>
+>> True. But we do not have encrypted swiotlb pool today, right?
+> 
+> "encrypted" is just normal struct page memory, that's the default for
+> swiotlb.
 >
-> I don't follow =E2=80=94 I'm not reinventing anything here. Patch 3 will =
-use
-> the existing CPU-hotplug callback interface: cpuhp_setup_state() with
-> a down callback that returns -EBUSY to refuse the offline while SNP is
-> active. That's the standard mechanism for conditionally preventing a
-> CPU offline, and it keeps no private "hotplug disabled" state of its
-> own =E2=80=94 so there's nothing here for a getter on cpu_hotplug_disable=
-d to
-> replace.
+> I think it was a big mistake for the AMD SME stuff to overload the
+> decrypted/encrypted CC stuff which should mean shared/private in a
+> guest context to also mean things about physical memory encryption in
+> the host. It is really confusing.
+It is a bit in the PTE which says "encrypted", what do you mean by overloaded?...
 
-That's not a standard mechanism. That's a hack as you have to start the
-offlining operation in order to prevent something you already know.
+> The SME side is just a bad arch choice, the real world doesn't work
+> well if you set high address bits in your dma_addr_t. I think AMD
+> needs to use those restricted swiotlb pool where it allocates this
+> very special "SME Disabled" memory that will have a low
+> dma_addr_t.
 
-The return code which prevents offlining is there for situations where
-the subsystem/driver is momentarily in a state which cannot be
-resolved.
+The generic __init iommu_subsys_init(void) calls iommu_set_default_translated() if CC_ATTR_MEM_ENCRYPT (==force the use of IOMMU) and eliminates the bouncing by default, pretty much. We (AMD) do not really want to force Cbit in DMA handles and it is not happening unless "iommu=pt".
 
-That's a very different story than knowing that state at the point of
-installing the callback already.
+> Then alloc and bouncing will get memory with a suitable
+> dma_addr_t. This has nothing to do with force_dma_unencrypted() which
+> is only a CC guest concept and nothing else in the OS should ever
+> touch decrypted memory.
 
-> I chose the cpuhp callback specifically over
-> cpu_hotplug_disable_offlining(): the callback can be torn down with
-> cpuhp_remove_state() when SNP is fully shut down, which re-enables CPU
-> offlining. cpu_hotplug_disable_offlining() sets
-> cpu_hotplug_offline_disabled, which is __ro_after_init and one-way =E2=80=
-=94
-> there's no interface to clear it, and adding one would mean dropping
-> the __ro_after_init marking and a new core "re-enable offlining"
-> API. So that route can't re-enable offlining on SNP shutdown without
-> new core plumbing, whereas the cpuhp callback gives me that for free.
+True.
 
-That's exactly the wrong attitude. Hack around a core limitation in a
-random driver by abusing the provided mechanism instead of sitting down
-and doing the extra five lines of code which makes it entirely clear
-what's going on.
+Although, with "iommu=pt" enabled, dma handles from swiotlb should not have Cbit so these swiotlb pages  have to be unencrypted.
 
-When Boris asked me how to disable hotplug, I had the impression that
-this is about permanently preventing it. So I pointed him to
-cpu_hotplug_disable_offlining().
+As you mentioned in another mail in the thread, DMAing to unencrypted memory with mem_encrypt=on make no sense security wise. May be enforce either mem_encrypt=on or iommu=pt is allowed at the same time but not both? I am worried though that some weirdo still has a use case for it.
 
-If I had known that it's about temporary prevention during runtime of
-something, then I'd pointed him to cpu_hotplug_disable()/enable() which
-is five lines farther down in cpu.c. It's not rocket science to find
-them. The first AI chatbot I asked pointed me to it immediately.
 
-cpu_hotplug_disable()/enable() is _the_ standard mechanism to prevent
-hotplug operations temporarily. They return -EBUSY without invoking any
-callback or changing any related state.
+>>> And this is more insane logic. The right fix is to allocate the
+>>> swiotlb bounce from the *encrypted* pools when running on the
+>>> hypervisor which requires undoing this abuse of force_dma_decrypted().
+>>
+>> +1.
+>>
+>> But how does the kernel decide if it is this swiotlb pool or just
+>> some page which happens to be below the IOVA limit?
+> 
+> You mean in swiotlb_tbl_unmap_single() ? It checks the address against
+> the pool's range?
+> 
+>> swiotlb can be for bouncing (with all these dma_sync_single_for_cpu)
+>> or, if dev->dma_io_tlb_mem->for_alloc = true, for coherent
+>> allocation (no need in dma_sync_single_for_cpu).
+>>
+>> I am looking for a way to set up my "sev-guest" device such as when
+> 
+> Whats a "sev-guest" device?
 
-So what's exactly the new core plumbing you need?
+It is a platform device, presented in SNP VMs as /dev/sev-guest and the guest userspace calls ioctls on it when it needs VM attestation report/certificates/etc.
+
+The sev-guest driver makes calls to the HV (GHCB protocol) to:
+1) get report/certificates/measurements from the HV <- this is done via shared memory as the HV writes to it;
+2) asks the HV to get the digests from the PSP <- this is done via encrypted memory (buuuut it is software encrypted and as far as the hw is concerned - it is shared - no Cbit, no RMP - these buffers contain plaintext headers of the PSP requests and cyphertext of the request/response body).
+
+>> dma_alloc_attrs(snp_dev->dev,...) happens, it allocates a page from
+>> the shared swiotlb pool (with no actual bouncing) and there is no
+>> obvious way to trick the DMA layer into doing that.
+> 
+> Why do you need this?
+
+/dev/sev-guest uses only shared memory (from the HW standpoint), and it is normally lot less than 1MB. If hugepages are used, then today it allocates 4K pages (they come encrypted and likely backed with a 2M page), the driver converts them to shared to make that GHCB call. The conversion smashes backing 2M page to 4K pages (+RMP +IOPDE as there is possible ongoing DMA), which is a problem (I have mentioned it as "TMPM" before - a hw/fw helper to do the smashing).
+
+The idea here is that if swiotlb is already shared, the sev-guest could use that memory pool.
 
 Thanks,
 
-        tglx
+
+> 
+> Jason
+
+-- 
+Alexey
 
