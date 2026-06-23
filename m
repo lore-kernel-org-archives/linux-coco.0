@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F89C242910
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 06:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6B63C65F2
+	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 07:39:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782197344; cv=none; b=J1KtLcMYx3XGGlLESc8W626uuZ4GN4k45PaYeRymiFVUjZeqeEmMFs6NuGpGi21ErxycMz9SO0Zo9cX/Srco/ZudOySTUJteiwKco9Eszqa4UKYS5EdPTcDokhxlh0fTD+GBB2QVAolqMFgvxQFqqBEBJOE0IBAUGEleAxj77To=
+	t=1782200343; cv=none; b=aQkypq/wKcpShDqPB37u1aEjY9eUWGxIiqpPVSvYSNJkdvT80aQhdGHC46Rdk1bwoyfhBotS/35SyAuCoO3Pb9FUwX0K6I/KY8YwDONj2AEz9PSCtZzwzx7uMeKSsF5AJLgT27DAr/+auY38Bpso969yCtYch+OSL4DVt/1JHZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782197344; c=relaxed/simple;
-	bh=h8AQJDX3UfNiJ86zepeJMtjP8yPCQGflfnfOwDXysvw=;
+	s=arc-20240116; t=1782200343; c=relaxed/simple;
+	bh=9M53Doqkm/ZxlnBoSdM7DNRi6CHdmePszrm5SmUxjlw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rkug84J0e/bh4g7FtiLroXUS05enyYmUZdAGT5G7mUVSVpH7WSKVhGFYVmnSzFAuwIEEQ0cl6iWm6jE2QEj+1i8BJYm+DfMHQAFeRMvGCty6spiGr6AhjaOu2EOSrYj7XQ0tIpdVJhzYkB3t7Ff0f6MV4/Jl6slWZX2tQbCoRdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bXK1xsux; arc=none smtp.client-ip=198.175.65.20
+	 In-Reply-To:Content-Type; b=pWDbUuMqTPtdVRl7NIRBq0f3qR09L4KkLo8T4+mZ/eB81P2hExsaf/4aAeo/i9d5jWvPi744E+ASDkJbhk9I+tk8QZq6n88cXt7UGjVelIUECvZQZuk0TPqiGaE3lzkeTPPd7mKhUxUhDmE65HC+1dZMGRvKRTNf1mnxO5iPTEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U7IixbY6; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bXK1xsux"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U7IixbY6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782197344; x=1813733344;
+  t=1782200342; x=1813736342;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=h8AQJDX3UfNiJ86zepeJMtjP8yPCQGflfnfOwDXysvw=;
-  b=bXK1xsuxNccQ8Ip6aNhtnU6cXJtpMepuLUyp1On0HmupbKsCHCfw1KAy
-   c8kjycCVFLMLfrGqWVpbnXVYBozuVEr5y4vUv9urHvVpdzei7ylN32uNZ
-   t4cT/HQSrzG7DSzKUjyuQPvE0K2GP9RFT8JdXysujXqTd4HBFybRUtIFm
-   xG0B1Fydsw8OSjQTc6ssAurth7UCbnm1xZxpeSbC6TKkxhpQThxQVw+js
-   /5+OeDxIHZ5lSbqzIxT7p20wn3KM2CcCgLDy058hbS/gubvI0ljpnPO7G
-   hGGBgaI/Iz49bd6b4piunb7P+h1OIYn2pghPYqXOTm3e+9pr/An/9asfF
-   Q==;
-X-CSE-ConnectionGUID: bqt8PGFURByR+0IkqrALTQ==
-X-CSE-MsgGUID: 0m3W756BR1yNnjePY7L85Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82701968"
+  bh=9M53Doqkm/ZxlnBoSdM7DNRi6CHdmePszrm5SmUxjlw=;
+  b=U7IixbY6CJ8B/RFouZj0Qdshs3RLxVsKjlwWevvsJP2zSkk4Namn03UU
+   3NTve40zudYOwT7mhr80eNNq9QOXngd392jQeYbJSQUVlIgjZdSCUFyIG
+   ukoygZom4jd9iqYsGBhKJKjB4VDaXK2DMlU0CzOaYVDog9Npd+FfdzXbt
+   lJm1LxeHRve8J0ZcjimeAHhEqTXZTSXMwUPPEstViVLm8vHHPi6zrSEjY
+   N2/BM+yHV0r6SIdkHrH02KPouPRQRAJlnob2dKfAzunStX+RRRlh+hQrS
+   zUgWRz6Wy5+2nCL5RYzzcfRPpy8PFOIFu9JrtnIh0S3vT9jiQQns0GYqi
+   w==;
+X-CSE-ConnectionGUID: /b+RnCfcQK+OCdO3K7E00g==
+X-CSE-MsgGUID: agPrQniPQMmyd2Jzit9sfg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="93300749"
 X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="82701968"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 23:49:03 -0700
-X-CSE-ConnectionGUID: UQ6n62bSSPGTWfszTIj7Fw==
-X-CSE-MsgGUID: AN4e/MmzQW2EM/WlHV3RkA==
+   d="scan'208";a="93300749"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 00:39:01 -0700
+X-CSE-ConnectionGUID: ouVIYE8qSdG+QaUlar4m7w==
+X-CSE-MsgGUID: 3mQz4kUVQfKSAD4PEZxlOg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="243076433"
+   d="scan'208";a="248298804"
 Received: from unknown (HELO [10.238.2.81]) ([10.238.2.81])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 23:48:50 -0700
-Message-ID: <120b6d16-4218-4ba6-824e-54c62dd3d74f@linux.intel.com>
-Date: Tue, 23 Jun 2026 14:48:47 +0800
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 00:38:47 -0700
+Message-ID: <ede86ac4-d560-49a6-82d6-b33ac5fc9355@linux.intel.com>
+Date: Tue, 23 Jun 2026 15:38:44 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 12/46] KVM: guest_memfd: Only prepare folios for
- private pages
+Subject: Re: [PATCH v8 13/46] KVM: guest_memfd: Add base support for
+ KVM_SET_MEMORY_ATTRIBUTES2
 To: ackerleytng@google.com
 Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
  chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
@@ -85,35 +85,67 @@ Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
  linux-coco@lists.linux.dev
 References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-12-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-12-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
 > From: Ackerley Tng <ackerleytng@google.com>
 > 
-> All-shared guest_memfd used to be only supported for non-CoCo VMs where
-> preparation doesn't apply. INIT_SHARED is about to be supported for CoCo
-> VMs in a later patch in this series.
+> Introduce base support for KVM_SET_MEMORY_ATTRIBUTES2 in guest_memfd, which
+> just updates attributes tracked by guest_memfd.
 > 
-> In addition, KVM_SET_MEMORY_ATTRIBUTES2 is about to be supported in
-> guest_memfd in a later patch in this series.
+> Validate input fields in general. Guard usage of KVM_SET_MEMORY_ATTRIBUTES2
+> by making sure requested attributes are supported for this instance of kvm.
 > 
-> This means that the kvm fault handler may now call kvm_gmem_get_pfn() on a
-> shared folio for a CoCo VM where preparation applies.
+> A new KVM_SET_MEMORY_ATTRIBUTES2 is defined to support writes (unlike
+> KVM_SET_MEMORY_ATTRIBUTES) in addition to reads so it can provide error
+> details to userspace. This will be used in a later patch.
 > 
-> Add a check to make sure that preparation is only performed for private
-> folios.
+> The two ioctls use their corresponding structs with no overlap, but
+> backward compatibility is baked in for future support of
+> KVM_SET_MEMORY_ATTRIBUTES2 and struct kvm_memory_attributes2 in the VM
+> ioctl.
 > 
-> Preparation will be undone on freeing (see kvm_gmem_free_folio()) and on
-> conversion to shared.
+> The process of setting memory attributes is set up such that the later half
+> will not fail due to allocation. Any necessary checks are performed before
+> the point of no return.
 > 
-> Suggested-by: Michael Roth <michael.roth@amd.com>
+> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
+> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> Co-developed-by: Sean Christoperson <seanjc@google.com>
+> Signed-off-by: Sean Christoperson <seanjc@google.com>
+
+s/Christoperson /Christopherson
+
 > Reviewed-by: Fuad Tabba <tabba@google.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+>  include/uapi/linux/kvm.h |  13 ++++++
+>  virt/kvm/Kconfig         |   1 +
+>  virt/kvm/guest_memfd.c   | 116 +++++++++++++++++++++++++++++++++++++++++++++++
+>  virt/kvm/kvm_main.c      |  12 +++++
+>  4 files changed, 142 insertions(+)
+> 
+>
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+[...]
 
+> diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
+> index 297e4399fbd49..cfa2c78ba5fb9 100644
+> --- a/virt/kvm/Kconfig
+> +++ b/virt/kvm/Kconfig
+> @@ -102,6 +102,7 @@ config KVM_MMU_LOCKLESS_AGING
+>  
+>  config KVM_GUEST_MEMFD
+>         select XARRAY_MULTI
+> +       select KVM_MEMORY_ATTRIBUTES
+
+What's this?
+This config is gone.
+
+>         bool
+>  
