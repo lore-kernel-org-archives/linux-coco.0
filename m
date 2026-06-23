@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF53A396B76
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 06:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F18C3BCD2A
+	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 06:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782195321; cv=none; b=ab80Hm8wI6Y8Htb2yRJN6G9ocpFw/ryJ8kZcO0aChLoX12WN9SCwl5ZyxopmfqaBhMGm/5WwPZLhRNM9k7DTPlDXOQz7C3jWTAVfqpEMBflUEalFJliWSenjYnT88fo0GIdJGaHmmDMhvo39Gorp3qbAN5ilaLCiGUwBRVeCj7w=
+	t=1782195598; cv=none; b=e6qM9009BcQMahxOzOznq/aZ8ycMm+i+bCDP50v+OIZ4d2p61zhF3+pJL+H8BAjdFNHvVGJzMTVEJjP/lI8QcsO5YxqsBVAhryq9yhzZpTgwR72Ua08Ud0+CRI7ZNIu+Xqf7aAX9LkFQAOk8MgJl0HTblNHeTDpvnUSA6zF8JkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782195321; c=relaxed/simple;
-	bh=iDJQ8q9y8/lBVlCSKCHv2KFuzeprLfn94oYskcqsbro=;
+	s=arc-20240116; t=1782195598; c=relaxed/simple;
+	bh=OVl0lauamZ9UP82xgjaUBVhU9XMWc3+GnTCVk+DPPMA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CjdreqoLkRNErS1poYP7Ltp2JvJmob8CpSvfPLotVtkXPJuLs19QyJByFYqhrOaURVXmRpkuHmBdikMXVx1RLdnCgsoAj+O5ykY5DwLI0BO1N/Tf3uhdeqSDdq+k+48MpFuwrmX4ie43qIfoqV9vQro3GHyqpk4ilYRWakbjsgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EW0G8ol9; arc=none smtp.client-ip=198.175.65.11
+	 In-Reply-To:Content-Type; b=sH/edUVsdF6O0q42P+I29BmFLTSWn+LMHCecKOwkFmRizFn7xD2bz24//L9ytO0ARuiAm580xbf5+1uyXHKHgz5z96ySupQ6rajtEeI10UmNl5ISpsKRGSQZz0JNGpqu9pCuhkpVIPGuAxs2MuQXl4uujAueTc7HztdirydUPNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TERLac2S; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EW0G8ol9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TERLac2S"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782195318; x=1813731318;
+  t=1782195590; x=1813731590;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=iDJQ8q9y8/lBVlCSKCHv2KFuzeprLfn94oYskcqsbro=;
-  b=EW0G8ol9BtzNIz6smi8tAUi3HcP9KttzCn3jMZ6QW05V7AStaHkI0jtP
-   U2hiK80Uotz7Ym/oUoTa3eJCsVJRFVfkbQRoQOH1ZW3qzp9dT0q84mlIY
-   NJOm9uPElbkugpICVqquohNUglq6RkJ4ZitxlbienuUJKgLa7wSkr/cK4
-   XQpNioFwFeaOF2nFsBneyAoXGEcwxIeFt4ky1M1RdfxMNk40ryc0Hxtdk
-   Gv17HASbDZGdPsBWPMuJ9Xs9DcygqRcSCkWZdHIkA5yPC23nEQJecub2g
-   +2m29GxwR07fuPcVMRaQ0Lg63JQcIDNVvGqnTpIJ2tEwHQf1reumX6JhX
-   A==;
-X-CSE-ConnectionGUID: Pay8wl1sRMC4fT4B6sYIwA==
-X-CSE-MsgGUID: FxhG+Q4/Qf+qv6bhSbSH3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="93293243"
+  bh=OVl0lauamZ9UP82xgjaUBVhU9XMWc3+GnTCVk+DPPMA=;
+  b=TERLac2SaCJt8ng8/OiCxjT7VaZN/MXAwbUc0fnkeDZaXSY+Gv6j8vl1
+   foBxEsoxX14B+9M6FY/ddM+M86cpovUTBic8vadrYdO3Trzg8GmmfV/Di
+   EwlOeIqU5U+WQYCE4QoxkgVz3G0PAWJ1lU0JHoxB5qrqRULZkHhg022wu
+   jMxu+e3RWOdK1zBE4A6Pe5ibJZ04lqAp2NfGplKvw1wlZX/kYKC5hNNEp
+   xAkveGH+oN0uYLhBWttGSMtQXyeYtjbvkvUwSAOVqWF23cL7MO9ZIt2do
+   uyVESymvc0vXDfFo0lTCX6W8ddP9R32woXIm08l7MiPOegoQNiIs0+GKB
+   Q==;
+X-CSE-ConnectionGUID: 2LHMhJJCSwWHAVjEjf4Jfg==
+X-CSE-MsgGUID: BNd6pTFDSeC42XmaeocCRw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="93293799"
 X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="93293243"
+   d="scan'208";a="93293799"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 23:15:17 -0700
-X-CSE-ConnectionGUID: HBGg64mmROGLAXtatw76Ug==
-X-CSE-MsgGUID: FlT3tdEoQW+kTfbe58pb3w==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 23:19:49 -0700
+X-CSE-ConnectionGUID: 7CTGyGSsSQeyst4z2E8mrA==
+X-CSE-MsgGUID: 3FFN9xRISGGDv0urrvE/jQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="248278935"
+   d="scan'208";a="248279937"
 Received: from unknown (HELO [10.238.2.81]) ([10.238.2.81])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 23:15:04 -0700
-Message-ID: <2ef455c3-a3f5-4ba1-86ea-b96416d163ce@linux.intel.com>
-Date: Tue, 23 Jun 2026 14:15:01 +0800
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 23:19:36 -0700
+Message-ID: <49cee70e-86a4-46b6-b690-0d48aeb94221@linux.intel.com>
+Date: Tue, 23 Jun 2026 14:19:33 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 10/46] KVM: guest_memfd: Wire up core private/shared
- attribute interfaces
+Subject: Re: [PATCH v8 11/46] KVM: Consolidate private memory and guest_memfd
+ ifdeffery in kvm_host.h
 To: ackerleytng@google.com
 Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
  chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
@@ -85,47 +85,25 @@ Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
  linux-coco@lists.linux.dev
 References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-10-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-11-9d2959357853@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-10-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-11-9d2959357853@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> Move the kvm_arch_has_private_mem() stub and a few guest_memfd function
+> definitions/declarations "down" in kvm_host.h to utilize existing #ifdefs,
+> and so that related code is clustered together.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-[...]
+After fixing SoB ...
 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index bca912db5be6e..e0e544ef47d69 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -926,6 +926,24 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
->  
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
-> +static bool kvm_gmem_range_is_private(struct file *file, pgoff_t index,
-> +				      size_t nr_pages, struct kvm *kvm, gfn_t gfn)
-> +{
-> +	struct maple_tree *mt = &GMEM_I(file_inode(file))->attributes;
-> +	pgoff_t end = index + nr_pages - 1;
-> +	void *entry;
-> +
-> +	if (!gmem_in_place_conversion)
-> +		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
-> +							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
-> +							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
-> +
-> +	mt_for_each(mt, entry, index, end) {
-> +		if (xa_to_value(entry) != KVM_MEMORY_ATTRIBUTE_PRIVATE)
-> +			return false;
-> +	}
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-Patch 1 noted that "Ensuring every index is represented in the maple tree at all times".
-So I think the queried range should not be a hole in the maple tree.
-However, there is a inconsistency: in patch 1 kvm_gmem_get_attributes() explicitly
-checks for holes, but this patch does not.
-
-> +	return true;
-> +}
->  
