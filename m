@@ -1,126 +1,164 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AB53672AC
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 09:48:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE0F376A08;
+	Tue, 23 Jun 2026 10:17:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782208120; cv=none; b=eLcqR6mDLRvERmKyY2TLjuq7qUzvh4QER3JQEPx5w75grZysM26l2jQtib61znjK2Oa0PF+FxEZ/Gpg5DP8aM0f5ysH0NaldTdZIo1CSEWnudQHa99dI0d9RbM5zf4sYgpU7lL7myclRLrh2SV/kDD1fnAQZmbvamPa4d2FV/cI=
+	t=1782209874; cv=none; b=iBJFpPl2TPxv7nCqxDic729yPLWsGcwVT1CV5IH1zz4BY4EL8mVDkla59/kYuVxqZJh4kFV8I+PweBbTqXt2Mnc+kNJ+mzgq8SUe0vRnPlv5Ehoqr83tD2uf7u4fweFvrq6sUz7qw/sI2inN+9R6os6nACNzCP+YHUin3dr/VWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782208120; c=relaxed/simple;
-	bh=5923JLJcSnP+ammi926uhmSL7dT/T35P5AbtWqZVok4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ciiKaUMGa84h68WdY1T1ASu0iq+ySji3PzvORcqE5By8l4cJrhXiNTUX94E/PmJEOQP1bxOPmsEtj+azBfjaEpvtJP3BOMRvUi/6HdMy8zw3zeVa5LkW5lWylDOflo6DOv3Prcvv9MOkQDz2SF+b1Ram4WiCeaq2gffyhbjvmz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HVWAeXsZ; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1782209874; c=relaxed/simple;
+	bh=9+NmUPZYan/2z3lhCSLU0gmTAwoalPBELi3FaHFAQLk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HMAc/6QL9vVZemGtWRLYcb99WkzR911zf0vooLak+qeNiePhxE1tRklLt5hSjMC3bLaoMVOBihbRn1zQu5tj2j2ILagHCUfrP8Gzoo/pjX8H396/8UDU2t4KvjcezxUKZxyp3kmO70+ihb0dRJDzD+sjzq4bpFdrUaA92Fk/huQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jb6wQiNl; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HVWAeXsZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jb6wQiNl"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782208119; x=1813744119;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=5923JLJcSnP+ammi926uhmSL7dT/T35P5AbtWqZVok4=;
-  b=HVWAeXsZZ04y2rG1ynfyYqnYLjUDHAa7/nhP5FOe2R/+bKeICOoaOg8s
-   XsgYhT1QWiNJ0EoRQ0q7Vvn/qLWT8wft8IszM7Uel0X2XI7kW/pJ7IlqO
-   +TtnUI9FzREuTpk3/8iW5pHTk3fJaD8+lFBShck5bMnDRr618wlE5cTic
-   zaNzPz4H9KRy1fzOXiLdebr4avRHPjnRxeuFZ5cLz19TPafs1a4eCN3qE
-   3Nu9Xn+Jk2+4m0y3Xk1C2k3QuajeA/6FYbwwiayv3duJst2K7szKP0ymr
-   xpoZal99Ikmh4Cw77bXOAhjEkdhTartk1dfsOozmOIJL+e1DrWxawsXcT
-   w==;
-X-CSE-ConnectionGUID: CW/eBJP2SK6pDcx4SE97NA==
-X-CSE-MsgGUID: 0GwghTdRR4e0CJBQmpfoVA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82988598"
+  t=1782209873; x=1813745873;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=9+NmUPZYan/2z3lhCSLU0gmTAwoalPBELi3FaHFAQLk=;
+  b=Jb6wQiNlyhQF6yjY1Y6KPx/XAHf/tMqeQd92oN+99YvjrOzbkU/C0CsJ
+   oh6kqll2fLfS3eB1kx6IpwheFcGryb9G19EFssxnhLQTNn1uys7YdjJhb
+   G1ja5kYk7WjJY/oAphAqTsR0piEK7E278iuuUXczupe2htF8pj+1tUrdj
+   0ElDmuwtiZgql7yp5WW0BIPxO+qZqSwk0AjA1PX40Wrl5Lg4psN9htyQH
+   x7e725QceyUULQau+Ord4UlCTh6c7LznbtDwY1UwK+9Lp2dJ8N543FrKy
+   oALiHZKOSpiEMcFlPLGQvrBhfNY16geut8p6au3IijCqywUFwPGg60U2t
+   g==;
+X-CSE-ConnectionGUID: pgDt5LnDTwODHAX2qcXwTA==
+X-CSE-MsgGUID: PjqdLhKqR6u9j5K23adCQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82717777"
 X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="82988598"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 02:48:38 -0700
-X-CSE-ConnectionGUID: MXLmCZy4SperyKCaH8GJSA==
-X-CSE-MsgGUID: DGnOq6mSRvK9V69SMz9Zcg==
+   d="scan'208";a="82717777"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 03:17:52 -0700
+X-CSE-ConnectionGUID: RhHLqMzURSmpCYOQcmFWuQ==
+X-CSE-MsgGUID: rrLgd3jeShecIHLr9tfqtw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="254572830"
-Received: from unknown (HELO [10.238.2.81]) ([10.238.2.81])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 02:48:26 -0700
-Message-ID: <6fc7f450-6d0a-494d-b295-297e4703148d@linux.intel.com>
-Date: Tue, 23 Jun 2026 17:48:24 +0800
+   d="scan'208";a="245339804"
+Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 03:17:48 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: marcandre.lureau@redhat.com,
+	david@kernel.org,
+	kas@kernel.org,
+	rick.p.edgecombe@intel.com,
+	prsampat@amd.com,
+	pbonzini@redhat.com,
+	mst@redhat.com,
+	peterx@redhat.com,
+	chenyi.qiang@intel.com,
+	elena.reshetova@intel.com,
+	michael.roth@amd.com,
+	ackerleytng@google.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	virtualization@lists.linux.dev,
+	x86@kernel.org,
+	yilun.xu@intel.com,
+	xiaoyao.li@intel.com,
+	chao.p.peng@intel.com
+Subject: [RFCv2 PATCH 0/6] Support memory hotplug/unplug for TDX CoCo guests
+Date: Tue, 23 Jun 2026 06:17:31 -0400
+Message-ID: <20260623101739.79695-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 18/46] KVM: guest_memfd: Handle lru_add fbatch
- refcounts during conversion safety check
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-18-9d2959357853@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-18-9d2959357853@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> @@ -606,12 +608,20 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
->  	next = start;
->  	while (safe && filemap_get_folios(mapping, &next, last, &fbatch)) {
->  
-> -		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> +		for (i = 0; i < folio_batch_count(&fbatch);) {
->  			struct folio *folio = fbatch.folios[i];
->  
-> -			if (folio_ref_count(folio) !=
-> -			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
-> -				safe = false;
-> +			safe = (folio_ref_count(folio) ==
-> +				folio_nr_pages(folio) +
-> +				filemap_get_folios_refcount);
-> +
-> +			if (safe) {
-> +				++i;
-> +			} else if (folio_may_be_lru_cached(folio) &&
-> +				   !lru_drained) {
-> +				lru_add_drain_all();
+This RFCv2 series implements comprehensive support for virtio-mem and ACPI
+DIMM memory hotplug/unplug in Intel TDX confidential computing guests.
+It explores the start-private memory approach utilizing the native
+TDG.MEM.PAGE.RELEASE API.
 
-It seems unprivileged userspace is able to trigger lru_add_drain_all() repeatedly
-by invoking KVM_SET_MEMORY_ATTRIBUTES2 in a loop, which could lead to DoS risk?
+We are seeking feedback from Kiryl on the CoCo guest implementation, MM
+experts on DIMM & virio-mem memory hotplug integration and broader
+virtio/CoCo community input on the overall approach. We are not seeking
+x86 maintainer review at this stage.
 
-> +				lru_drained = true;
-> +			} else {
->  				*err_index = max(start, folio->index);
->  				break;
->  			}
-> 
+== Changes from RFC v1 ==
+
+- Eliminated callback infrastructure: Dropped plug callback and replaced
+  unplug callback with platform-level unaccept function into core MM
+  hotplug and virtio-mem subsystems.
+- Added comprehensive bitmap tracking: Introduced a "plugged" bitmap
+  alongside the unaccepted bitmap to track populated hotplug memory
+  states to support load_unaligned_zeropad().
+- Enhanced SRAT parsing: Extended the EFI stub to parse ACPI SRAT tables
+  early, ensuring hotpluggable ranges are tracked from initial boot.
+
+For more introduction about the background or other efforts in community,
+please check the RFCv1 cover letter [1].
+
+== Technical Approach ==
+
+- Early SRAT Integration: A lightweight EFI stub parser scans ACPI SRAT
+  tables to identify hotpluggable ranges and adjust bitmap boundaries
+  early, avoiding the overhead of the full ACPI subsystem.
+- Comprehensive Bitmap Tracking: Introduces a "plugged" bitmap right
+  after the unaccepted bitmap. Both static and hotplugged memory are
+  tracked, allowing the guest to map which ranges are populated by the
+  VMM. This prevents acceptance beyond plugged memory boundaries due to
+  load_unaligned_zeropad() operations.
+- Platform Extensibility: Exposes generic CoCo memory interfaces. Other
+  confidential platforms (like AMD SEV-SNP) can easily adopt this by
+  hooking their specific mechanisms into arch_unaccept_memory().
+- Hotplug & Guest Control: Integrates platform-level unaccept logic
+  into ACPI hotplug and virtio-mem handlers. Uses TDG.MEM.PAGE.RELEASE
+  for TDX to explicitly set memory to the "unaccepted" state during
+  unplug, removing host hole-punching dependencies.
+- Kexec Handover: Leverages existing EFI mechanisms to seamlessly hand
+  over both the extended unaccepted bitmap and the new plugged bitmap
+  across kexec boundaries.
+
+== Testing ==
+
+- dimm and virtio-mem memory hotplug/unplug
+- lazy and eager accept
+- kexec/kdump with hotplugged memory
+
+This is tested with Marc-André Lureau's newest qemu series [2]
+
+Comments appreciated, thanks.
+
+Zhenzhong
+
+[1] https://lore.kernel.org/all/20260604093551.1511079-1-zhenzhong.duan@intel.com/
+[2] https://lore.kernel.org/all/20260604-rdm5-v5-0-5768e6a0943d@redhat.com/
+
+Zhenzhong Duan (6):
+  efi/unaccepted: Support hotplug memory in unaccepted bitmap via SRAT
+  efi/unaccepted: Set unaccepted bits for all hotplug memory
+  efi/unaccepted: Create plugged bitmap to support hotplug memory in
+    coco guest
+  x86/tdx: Implement arch_unaccept_memory()
+  mm/memory_hotplug: Support ACPI hotplug/unplug for coco guest
+  virtio-mem: Support memory hotplug/unplug for coco guest
+
+ arch/x86/include/asm/shared/tdx.h             |   2 +
+ arch/x86/include/asm/tdx.h                    |   2 +
+ arch/x86/include/asm/unaccepted_memory.h      |  11 ++
+ drivers/firmware/efi/libstub/efistub.h        |   6 +
+ include/linux/efi.h                           |   5 +
+ include/linux/mm.h                            |  11 ++
+ arch/x86/boot/compressed/mem.c                |   4 +-
+ arch/x86/coco/tdx/tdx.c                       | 120 ++++++++++++++++
+ drivers/firmware/efi/efi.c                    |   4 +-
+ .../firmware/efi/libstub/unaccepted_memory.c  | 128 +++++++++++++++++-
+ drivers/firmware/efi/unaccepted_memory.c      | 122 ++++++++++++++++-
+ drivers/virtio/virtio_mem.c                   |   8 ++
+ mm/memory_hotplug.c                           |  16 +++
+ 13 files changed, 425 insertions(+), 14 deletions(-)
+
+-- 
+2.52.0
 
