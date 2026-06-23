@@ -1,14 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C22B3630B3
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 09:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132D7363C72
+	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 09:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782206167; cv=none; b=Vu1asPOU6t6dj7ymYZZECUFxKNqG0brN3GbUiG3NCchLTP2FquZMcyW53B2On2V8P+i0C+mPN9fl7ll5KRj1RJj21iNFw7v6U1I/0zkym0pJvpqCf3ERzDUFwmBLMW3lZjdnzjafRbtzskZZsHrbrVQxaTn86PS7cLUs8sMNOzU=
+	t=1782206167; cv=none; b=H1rNwOC7ExGkacNmQLptaCY/wE9Z3AwinsMzYO93jaA8i0nPg8ywb0ML+7+AYuGZezBDMN4mgO2VcdgtUrU3cPfTT3FPLj8vEXE2eVqXTj/qLa2xlH2lDXg3sQHYlGv2857m59czoRopqsxpN8grq393C1Ve5E9HLDHkBudaj0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782206167; c=relaxed/simple;
-	bh=SgieSUQKIZcxPKT1efnQHDrcznVjNoLVpORDYa66UsM=;
+	bh=woSZT/9pDCXxSsP4glVhuBhl2ALgJ2lKgcEJJCB2crA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TsjRQkOAQ5MvONLYxK8PJXDkHjXVmnfzTm4rAvdCbHnNTfIVuR7u1r+e9FGe/A+UOlTZddybRuRlxFzz6RdgbBUC+vIjrrPpiFvtN5IzdTsMsq3an7Q/TINvM4XH/kEvxQsipc8t+HN5WQAjf+YNZLtIG4l7oKiSzeJAPxzR2uE=
+	 MIME-Version; b=padQZaqfy/5Iwhe+1aAupXBIVVaSesb0OnTudTULbWHXXGWtHMfgslIC9a09LafpdI0Bg/hqmkzNaXbEO0MVxkhdkoD/snMF+YBsPN9IO6Uj3C9k1xi8zE0XF47yr65hJZbatWYLQMX09y86nDOZ/vM11Q+vZrqXnm9+GiCAL7E=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -16,7 +16,7 @@ Received: from io.fritz.box (p200300f6af4fc500cc95bb0c16cd4e45.dip0.t-ipconnect.
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 049EA203D3F;
+	by mail.8bytes.org (Postfix) with ESMTPSA id 49736203D41;
 	Tue, 23 Jun 2026 11:16:03 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Sean Christopherson <seanjc@google.com>,
@@ -31,9 +31,9 @@ Cc: x86@kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
 	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 1/4] kvm: sev: Fix user-space triggerable WARN_ON on snp_launch_update path
-Date: Tue, 23 Jun 2026 11:15:53 +0200
-Message-ID: <20260623091556.1500930-2-joro@8bytes.org>
+Subject: [PATCH 3/4] KVM: guest_memfd: Add `write` parameter to kvm_gmem_populate()
+Date: Tue, 23 Jun 2026 11:15:55 +0200
+Message-ID: <20260623091556.1500930-4-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260623091556.1500930-1-joro@8bytes.org>
 References: <20260623091556.1500930-1-joro@8bytes.org>
@@ -47,51 +47,96 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <joerg.roedel@amd.com>
 
-Sashiko reported on an unrelated patch:
+The call-path of kvm_gmem_populate() might subsequently write to the
+page provided by user-space. This is used to provide detailed error
+information in case the page population failed.
 
-  [Severity: High]
-  This is a pre-existing issue, but can a host userspace process trigger a
-  kernel warning by passing a NULL user address (uaddr = 0) here?
+But since kvm_gmem_populate() only acquires a read-only reference to
+the user-space page via get_user_pages_fast(), the error information
+might be written to a read-only page later on.
 
-  If params.uaddr is 0, src becomes NULL and passes the PAGE_ALIGNED(src)
-  check. kvm_gmem_populate() skips fetching the user page and passes
-  src_page = NULL to sev_gmem_post_populate().
+Add a parameter to kvm_gmem_populate() to optionally acquire a
+writeable reference to the source page to make sure page permissions
+can be enforced.
 
-  That function then unconditionally evaluates:
-
-  WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO &&
-               !src_page)
-
-  Since the type isn't ZERO, won't this allow an unprivileged user to spam
-  the kernel log?
-
-The assessment is correct, so check for this condition earlier in the
-snp_launch_update() path to avoid the WARN_ON_ONCE.
-
-Fixes: dee5a47cc7a45 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_UPDATE command")
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- arch/x86/kvm/svm/sev.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kvm/svm/sev.c   | 2 +-
+ arch/x86/kvm/vmx/tdx.c   | 2 +-
+ include/linux/kvm_host.h | 4 +++-
+ virt/kvm/guest_memfd.c   | 4 ++--
+ 4 files changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 6c6a6d663e29..41dcba5180ca 100644
+index f09d15f68964..dab8109edf26 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -2438,6 +2438,13 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	if (!PAGE_ALIGNED(src))
- 		return -EINVAL;
+@@ -2475,7 +2475,7 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 	sev_populate_args.sev_fd = argp->sev_fd;
+ 	sev_populate_args.type = params.type;
  
-+	/*
-+	 * Make sure user-mode did not pass NULL as src with
-+	 * type != KVM_SEV_SNP_PAGE_TYPE_ZERO.
-+	 */
-+	if (src == NULL && params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
-+		return -EINVAL;
-+
- 	npages = params.len / PAGE_SIZE;
+-	count = kvm_gmem_populate(kvm, params.gfn_start, src, npages,
++	count = kvm_gmem_populate(kvm, params.gfn_start, src, npages, 0,
+ 				  sev_gmem_post_populate, &sev_populate_args);
+ 	if (count < 0) {
+ 		argp->error = sev_populate_args.fw_error;
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 04ce321ebdf3..46b1d84fddf2 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -3185,7 +3185,7 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
+ 		};
+ 		gmem_ret = kvm_gmem_populate(kvm, gpa_to_gfn(region.gpa),
+ 					     u64_to_user_ptr(region.source_addr),
+-					     1, tdx_gmem_post_populate, &arg);
++					     1, 0, tdx_gmem_post_populate, &arg);
+ 		if (gmem_ret < 0) {
+ 			ret = gmem_ret;
+ 			break;
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 4c14aee1fb06..622c0b04d8c3 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -2581,6 +2581,8 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
+  *       (passed to @post_populate, and incremented on each iteration
+  *       if not NULL). Must be page-aligned.
+  * @npages: number of pages to copy from userspace-buffer
++ * @write: user-space provided buffer must be writable. The function
++ *	 will acquire a writable reference when set to 1.
+  * @post_populate: callback to issue for each gmem page that backs the GPA
+  *                 range
+  * @opaque: opaque data to pass to @post_populate callback
+@@ -2597,7 +2599,7 @@ typedef int (*kvm_gmem_populate_cb)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ 				    struct page *page, void *opaque);
  
- 	/*
+ long kvm_gmem_populate(struct kvm *kvm, gfn_t gfn, void __user *src, long npages,
+-		       kvm_gmem_populate_cb post_populate, void *opaque);
++		       int write, kvm_gmem_populate_cb post_populate, void *opaque);
+ #endif
+ 
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 69c9d6d546b2..7a245a402a1b 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -859,7 +859,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+ }
+ 
+ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long npages,
+-		       kvm_gmem_populate_cb post_populate, void *opaque)
++		       int write, kvm_gmem_populate_cb post_populate, void *opaque)
+ {
+ 	struct kvm_memory_slot *slot;
+ 	int ret = 0;
+@@ -893,7 +893,7 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+ 		if (src) {
+ 			unsigned long uaddr = (unsigned long)src + i * PAGE_SIZE;
+ 
+-			ret = get_user_pages_fast(uaddr, 1, 0, &src_page);
++			ret = get_user_pages_fast(uaddr, 1, write, &src_page);
+ 			if (ret < 0)
+ 				break;
+ 			if (ret != 1) {
 -- 
 2.53.0
 
