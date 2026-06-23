@@ -1,256 +1,141 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393673A6F1B
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 14:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782226019; cv=none; b=IgKHT2YNwvOztHAOADGpnaHgd84iWIFlWB0d5zbIHM2ZPjMdPrG8ZRX3umRdmxeBQOxopoTJFaF1qJVgYCMuABXc2TOsg5HB1Nef0RpmMzKzG5kprBdThfeAw7e8wLm0sdRxkKTdte1LAKf41kStLssmmYV9Fcwyrzib0MTjcBw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782226019; c=relaxed/simple;
-	bh=uCovmKLbfmFLoE2/urfF+dvVPy41a+i6I//kOeY8DcY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LEi5GMMuPq4KRAaZHslX7l1AYOKkBlVNuQF56dOsF4puHoHJLkVvNaPlgXfWoJ7BPHcrtc5E6Nd7BJNmMRMKGt0a0pVnO65zqbmkm1frv+NvTu6IpLmo+egshdn4flbgOaMCvTqxXKPVNzxxeXYgaGLkv5jUqEhiI6skZQdKpY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LUChlssJ; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADFE38D41F
+	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 17:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782236908; cv=pass; b=NqMsDQm6fb+ntd9L4q+166wwblBYQPCmEe/qsuFjomtYRPsmLWDszyit33fUGLnWgxjJ8sEzkATuRg/+gEcFk4lV5n/062K28kBoRHUplndI6FraHuXYiXc524ipHsKmAtm6UCdM7DrReGFcRMMqWLaalYuNhUAKA/0kLv5mrRw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782236908; c=relaxed/simple;
+	bh=Y9+yQ6m2SHjTMQK+C809Y49D4LsiLBGTR1bcbiYo9aM=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LoHUnN9KrvlgM1qIqx4GZNdgKGScUo7m1hSSVEMg8TL5un1yluRcfMYyDYO1ct4qxWE0++CBiKyQGBXkMzwmL9y6ceff1lcbgU05RBXg4Xjuat+CJQQvvzx+87D2wnt1iOGBH5JUDtGdHq1PDDf9jwMU/b6910KP46FhtIes4F0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ix4pRfrI; arc=pass smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LUChlssJ"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-84540d59430so10427b3a.0
-        for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 07:46:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ix4pRfrI"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-bebb72b845aso18896166b.3
+        for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 10:48:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782236905; cv=none;
+        d=google.com; s=arc-20240605;
+        b=L4BDqDAM9qAG7cPJRjOZL0uQy9WzylE6YbPG1AytGUm8oG9Te9vKo0jQ6+744uxJiS
+         JgUosBsMLo0H8oA17XbYLxvkJn+Rx6cYxG6J152x2ybXZjqID60QjZDdeBO5rMpSWFIa
+         IK9pm9w5FiMioGtcOS2oszgD48dxKt2qsssy8AeQ1l3TDA2RDWf6eboOWrz0/tlNWZCF
+         s19C4y/zaCl0hOcSE+F/NkZmOC2ivOHmM86ipxqtCJIZGqKfVYmek/2MFhJVW7bQuvRT
+         0/hFgdjpW6JfxF3nONU5ERsYTSHC0pesxDe9R2iwSK+mBqSCT/ARFZlPQlVe2QDHqff7
+         l6eg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=Y9+yQ6m2SHjTMQK+C809Y49D4LsiLBGTR1bcbiYo9aM=;
+        fh=l15fm8K5L5u3OO4TkREPYVjYv73eTbRawzo0aouS67E=;
+        b=kaKCeDmivbTR8ZTMGQuVSZnlatA1XoyqKyPYXkQV1KlktxjZb4OXGDfQH/aYh7EKt1
+         61UYhjzdXc/+I2uIisLE6m/OuH8QC4RsoC05Z84eq4gZSCpiQRHYmBNIMblEkhLfpy4N
+         ZHLZSqXJBGynhE9AeSCKgg/WIwsZGKaqWXcDNUXGlaBq6oB2Q/ycz3Fk2qqW09h7QE0P
+         biVeB+vuDUzsLm0zxGEgMT4Gv4p7KjlYq7Ih2dcmdYRLgmjxA0q6dKyIiYQEG4LjfK92
+         0uTkXAOdOB8S/ymDTrszJKQmFWgJ/llsjIiTv6Mg8RqwjHcKIPWM3aJ+1taOnlqyd9Vv
+         xbWg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782226017; x=1782830817; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UdMlzNzBO3Xt+yspWM89C1Xa5bIxqPG08PXu7xLh3sw=;
-        b=LUChlssJATggtrUGV8cC1W8FY970tjQvX5MsQDQelCEmAipgVI7hCcGaMTI0VR4rws
-         wrrET+PA0TubQ/E5/EfiULgN+nZxkPLrLIaVDIBMRmWkynIp4nTFCIXFVUGrFJAOHnkf
-         o62P/NSoG8o5HtYkFudvR1jLT2xi1wpyAZNMfLRTZ9r72jPyzbmj5kZePTnDIeKeNMtH
-         BDHGlXorQtF1ZCgzJwHdX5TZmOsKIMvm3EaolqF59N3LkGMTOIZCij/cI1Ylpe4XHjf5
-         DGCMjAEmBlCCvfbisHlLtzOUDN0u/wArEnzGuJ1etaJw2JYrYLqeYmKlrmhCfULgERGm
-         hppA==
+        d=google.com; s=20251104; t=1782236905; x=1782841705; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y9+yQ6m2SHjTMQK+C809Y49D4LsiLBGTR1bcbiYo9aM=;
+        b=Ix4pRfrIL2lVnygZ8MiwiVb55oHSG0ZDB38WCK3ay1JAhbMxe5gpKym9oI0/Z9TdN+
+         HM9lWHsZy2qATeV0Z2FBIIlohRVv5U+JY2ZZUtNPMuvOihduyWQqKa40UUWJ0Ut+L/jM
+         sdpzp7QuKQ3dWBt6p0GikU3pL4K7VxXVvQX0jdHJNT+n7GsgnMpIaVH1VZkBglV8J37c
+         vrmxrzGqPbEPqGHy151jnoFTvMYd4w0l11WM0ZSHpkPXa2LvQNr7jz0F2qLCVyk6M9MB
+         asGzUxalM/8OLWswki+KikRUx+U5UKR93NXQ7OXoymgdmwRmhYppO6+wPX4GuEWBOhfA
+         zebg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782226017; x=1782830817;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=UdMlzNzBO3Xt+yspWM89C1Xa5bIxqPG08PXu7xLh3sw=;
-        b=QDcFNAE6KGM7kKYw6sJord6FbNNgJbeC4Wrs1DYrC/tUlns1PcZdg1zNwT5F7vLyaK
-         b2QDgDnp9A5gIyRoKijvkmA2TUXm4FD1KnihBVCGTlLuF8Idw0hnecIZYBkTWe62KIiK
-         R9P4AJBdDKgIG0Z5f+3rTOPey3gmFW04zqg6jbHhpeHabm9ri7RXF/4k++G8wZMetiYG
-         Tumf3lsmY5tbSIGQDDavAz1GYqaFnSBw94ecusr4JRBHW2P2+eU4cFkp5TEPy9VhPkfr
-         5hFSXR32LsYvHd2l6SmY6OmM+KVkQkexRqT6bvZL+7U5KrPv4QxAVr56GlZe1gp6mBLY
-         xOww==
-X-Forwarded-Encrypted: i=1; AFNElJ//UXrbM8oY+lceOgc/qjqBQkaxyqPmpvfAY38p7ARBvym1+1vmETilXOl/G565vucbj4vSFGfEAkhd@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyq74LfLIi6xHebVl/C9Fs9MkBnbuHKQfHt57HN3NYm+75tehhm
-	eqHM8u2u1MkMZ/KhIDfwJ0Zoict7MAydB8M6Ifvk4HMnM+olDjVu5PgGwN3WPEAO19jmrrSEfp5
-	jptwPTQ==
-X-Received: from pfcp22.prod.google.com ([2002:a05:6a00:a256:b0:842:83c0:8d73])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:438e:b0:845:3ac5:1b8a
- with SMTP id d2e1a72fcca58-84595115b40mr4016477b3a.0.1782226017134; Tue, 23
- Jun 2026 07:46:57 -0700 (PDT)
-Date: Tue, 23 Jun 2026 07:46:56 -0700
-In-Reply-To: <20260623091556.1500930-2-joro@8bytes.org>
+        d=1e100.net; s=20251104; t=1782236905; x=1782841705;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Y9+yQ6m2SHjTMQK+C809Y49D4LsiLBGTR1bcbiYo9aM=;
+        b=jPnhTDFAmMiQQNBgyP9k2MWRKZ8qgVbbPbbjq0ac0qrUsZD9x3tpai8Fm8mWG+F3nA
+         a/4p6esTSu4yl/XBIwpI+QIvzeWD+ratZR61HMo5AkgKH4eb4g1NCcxf8MzZAlyIlOsX
+         Upboyfne8ULT4bYoksPMJHXm526xwrX5SZOTWtc/vDpRMWGOm31fJBfPfMYExf9ClBMT
+         VxhYGDKauqgf/wd/3ssknhHKkG0Ft4ZsMcmhlzxTuinZMbQsS5vElQzyzVRSH+lXvuG1
+         wo9ZP36XqHosCDMv8X0+fg+W3Blv+P4mAUzfUp53aqzKHSFx8/VV0GxQIeHCWi/dlltp
+         faIA==
+X-Forwarded-Encrypted: i=1; AFNElJ/DQJEdTMYetrlWrAR8BqknSuqzHdfE5Hd55WQZEJJ+sYJJBmxXKVdMWbt6pJCv0z6a04qXo9OTqxVe@lists.linux.dev
+X-Gm-Message-State: AOJu0YyABVhEpaHdSLiUorJHRx+g9TI4z3kZen+HkRgIEDpK+GRGqe9M
+	pRcAodWfnA8ef5P8DuEHsEFZsXJ+QIteJC1fs7aOwlYqswwla8q7PXV6X/pCNXcmAu0LONzEpIg
+	Fg5D6Lwm2oye6KOzfxKNNDX4fGDS+aNcFrxFulu/z
+X-Gm-Gg: AfdE7cmfXRwXJi5Lo3mY4vvBro6pRLTr5gSwtrz6ldOf2jkzh1GI3jLD49kUHQ8mK/Z
+	OQUrBCuSqcjSYUUy34J+x7JwiP3IIjiVUCqudSIjiHVhzTpsuC3Bf/UlsLyaIA/vDJwqc2iBEic
+	c+FciTFkF7bYnRPO2Qai2z2IpKwCCaoohnDfG9Xy9w1B2GuNVQJSzWoDrYDTBri9MiA3tl/Hq5M
+	s8ZucHrHAzv342adhP39rK8jLxAX9PwFrbdZ0ElcSou928ISCROCo8oCW/ZwTho1pJvmC+7MOVd
+	IQhzui02FdwMvjSwAYmmSyRHCfS1x3xQTbkuetIKHi9hLO0KD0li6UZlumVl5U0FRwAfLw==
+X-Received: by 2002:a17:907:60cc:b0:c0d:5466:ce4c with SMTP id
+ a640c23a62f3a-c0d5466d9dcmr844180966b.1.1782236904428; Tue, 23 Jun 2026
+ 10:48:24 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 23 Jun 2026 10:48:22 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 23 Jun 2026 10:48:22 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <0df3b665-3a9c-4c46-a7aa-14388e8e1577@fortanix.com>
+References: <cover.1781419998.git.ashish.kalra@amd.com> <1feccf6e2a56d949b30f403c0ca7949f580e5982.1781419998.git.ashish.kalra@amd.com>
+ <0df3b665-3a9c-4c46-a7aa-14388e8e1577@fortanix.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260623091556.1500930-1-joro@8bytes.org> <20260623091556.1500930-2-joro@8bytes.org>
-Message-ID: <ajqcYNMkfX0fsyF0@google.com>
-Subject: Re: [PATCH 1/4] kvm: sev: Fix user-space triggerable WARN_ON on
- snp_launch_update path
-From: Sean Christopherson <seanjc@google.com>
-To: "=?utf-8?B?SsO2cmcgUsO2ZGVs?=" <joro@8bytes.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Ashish Kalra <ashish.kalra@amd.com>, Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Joerg Roedel <joerg.roedel@amd.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Date: Tue, 23 Jun 2026 10:48:22 -0700
+X-Gm-Features: AVVi8CctYJVp25OwZWeFxJ-OUwcfHXzFhyslZieHlTKLg5vqXDjAr-hhZP5Iwqw
+Message-ID: <CAEvNRgHDNGCETxLsy0v-_cBO1=1U+tXtOXWEFrXLU7pYz7U9ow@mail.gmail.com>
+Subject: Re: [PATCH v8 3/7] crypto/ccp: Disable CPU hotplug while SNP is active
+To: Jethro Beekman <jethro@fortanix.com>, Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
+	hpa@zytor.com, seanjc@google.com, peterz@infradead.org, 
+	thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net, 
+	ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com, 
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com, 
+	jackyli@google.com, pgonda@google.com, rientjes@google.com, 
+	jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com, 
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com, 
+	darwi@linutronix.de, linux-kernel@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Please capitalize the scope, i.e. "KVM: SEV:".
+Jethro Beekman <jethro@fortanix.com> writes:
 
-On Tue, Jun 23, 2026, J=C3=B6rg R=C3=B6del wrote:
-> From: Joerg Roedel <joerg.roedel@amd.com>
->=20
-> Sashiko reported on an unrelated patch:
->=20
->   [Severity: High]
->   This is a pre-existing issue, but can a host userspace process trigger =
-a
->   kernel warning by passing a NULL user address (uaddr =3D 0) here?
->=20
->   If params.uaddr is 0, src becomes NULL and passes the PAGE_ALIGNED(src)
->   check. kvm_gmem_populate() skips fetching the user page and passes
->   src_page =3D NULL to sev_gmem_post_populate().
->=20
->   That function then unconditionally evaluates:
->=20
->   WARN_ON_ONCE(sev_populate_args->type !=3D KVM_SEV_SNP_PAGE_TYPE_ZERO &&
->                !src_page)
->=20
->   Since the type isn't ZERO, won't this allow an unprivileged user to spa=
-m
->   the kernel log?
+> On 2026-06-15 21:49, Ashish Kalra wrote:
+>> From: Ashish Kalra <ashish.kalra@amd.com>
+>>
+>> The SEV firmware enumerates the CPUs at SNP initialization and is not
+>> aware of the OS bringing CPUs online or offline afterwards, so OS CPU
+>> hotplug can diverge from the firmware's expectations and break SNP.
+>> Disable CPU hotplug while SNP is active.
+>
+> I think this is too broad. If I have a hypervisor that supports SNP virtualization, a (non-confidential) L1 guest running Linux should still support CPU hotplug while also running confidential L2 guests.
+>
+> --
+> Jethro Beekman | CTO | Fortanix
+>
 
-Use Reported-by: + Closes to capture Sashiko's effecitve bug report instead=
- of
-copy+pasting the finding.  There's no reason to treat Sashiko any different=
-ly
-than any other bot.
+Were any other solutions considered other than disabling CPU hotplug?
 
-> The assessment is correct, so check for this condition earlier in the
-> snp_launch_update() path to avoid the WARN_ON_ONCE.
->=20
-> Fixes: dee5a47cc7a45 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_UPDATE command")
-> Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-> ---
->  arch/x86/kvm/svm/sev.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->=20
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 6c6a6d663e29..41dcba5180ca 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -2438,6 +2438,13 @@ static int snp_launch_update(struct kvm *kvm, stru=
-ct kvm_sev_cmd *argp)
->  	if (!PAGE_ALIGNED(src))
->  		return -EINVAL;
-> =20
-> +	/*
-> +	 * Make sure user-mode did not pass NULL as src with
-> +	 * type !=3D KVM_SEV_SNP_PAGE_TYPE_ZERO.
+Is this temporary until something else is implemented?
 
-Meh, that's pretty obvious from the code.
+I'm not sure how commonly CPU hotplug is used, and if people are okay
+with trading in CPU hotplug to get SNP.
 
-> +	 */
-> +	if (src =3D=3D NULL && params.type !=3D KVM_SEV_SNP_PAGE_TYPE_ZERO)
+Is it that fundamentally the SEV firmware can't support hotplug, so
+there's no point in keeping it enabled anyway?
 
-I think I'd prefer this over checking for KVM_SEV_SNP_PAGE_TYPE_ZERO twice,
-especially since the PAGE_ALIGNED() check for the NULL pointer case is rath=
-er
-weird.
+Is there some way of supporting hotplug for CPUs that won't be used with
+SNP, for serving non-SNP VMs on the same host as SNP VMs, or is that too
+complicated?
 
-	if (params.type =3D=3D KVM_SEV_SNP_PAGE_TYPE_ZERO)
-		src =3D NULL;
-	else if (!params.uaddr || !PAGE_ALIGNED(params.uaddr))
-		return -EINVAL;
-	else
-		src =3D u64_to_user_ptr(params.uaddr);
-
-
-> +		return -EINVAL;
-
-Gah, we created quite the mess for ourselves.  TDX returns -EOPNOTSUPP inst=
-ead
-of -EINVAL, I guess as a placeholder for in-place conversion?  I don't care=
- which
-error code is returned, but I do want KVM to be consistent.
-
-We should also adjust TDX to pre-check the source address, because checking=
- only
-in the post-populate flow subtly relies on tdx_vcpu_init_mem_region() retur=
-ning
-immediately on error.  If that weren't the case (ignoring for the moment th=
-at
-continuing on would be nonsensical), KVM would advace the address by PAGE_S=
-IZE
-and suddenly a NULL userspace address becomes non-NULL.
-
-I also think it makes sense to drop the WARN in sev_gmem_post_populate(), i=
-t's
-completely redundant once this bug is fixed.
-
-Ugh, and both SNP and TDX fail to account for tags, and fail to check for
-striding into kernel space.  Which I suppose is fine, since gup() handles t=
-hose
-correctly.  And I don't see a strong argument for disallowing tagged addres=
-ses,
-because unlike the userspace address for memslots, KVM doesn't keep the add=
-ress
-around long-term.
-
-So over two patches, the below?  I can send a v2, I've already got changelo=
-gs
-written (I was fiddling around with extracting and reusing kvm_set_memory_r=
-egion()'s
-checks on the userspace address+size, but as above, convinced myself that K=
-VM
-should continue to allow tagged addresses for SNP and TDX).
-
----
- arch/x86/kvm/svm/sev.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
-
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 74fb15551e83..621a2eaa58f2 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2330,9 +2330,6 @@ static int sev_gmem_post_populate(struct kvm *kvm, gf=
-n_t gfn, kvm_pfn_t pfn,
- 	int level;
- 	int ret;
-=20
--	if (WARN_ON_ONCE(sev_populate_args->type !=3D KVM_SEV_SNP_PAGE_TYPE_ZERO =
-&& !src_page))
--		return -EINVAL;
--
- 	ret =3D snp_lookup_rmpentry((u64)pfn, &assigned, &level);
- 	if (ret || assigned) {
- 		pr_debug("%s: Failed to ensure GFN 0x%llx RMP entry is initial shared st=
-ate, ret: %d assigned: %d\n",
-@@ -2421,10 +2418,12 @@ static int snp_launch_update(struct kvm *kvm, struc=
-t kvm_sev_cmd *argp)
- 	     params.type !=3D KVM_SEV_SNP_PAGE_TYPE_CPUID))
- 		return -EINVAL;
-=20
--	src =3D params.type =3D=3D KVM_SEV_SNP_PAGE_TYPE_ZERO ? NULL : u64_to_use=
-r_ptr(params.uaddr);
--
--	if (!PAGE_ALIGNED(src))
-+	if (params.type =3D=3D KVM_SEV_SNP_PAGE_TYPE_ZERO)
-+		src =3D NULL;
-+	else if (!params.uaddr || !PAGE_ALIGNED(params.uaddr))
- 		return -EINVAL;
-+	else
-+		src =3D u64_to_user_ptr(params.uaddr);
-=20
- 	npages =3D params.len / PAGE_SIZE;
-
----
- arch/x86/kvm/vmx/tdx.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
-
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index ffe9d0db58c5..b0ec054732b9 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -3198,9 +3198,6 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gf=
-n_t gfn, kvm_pfn_t pfn,
- 	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
- 		return -EIO;
-=20
--	if (!src_page)
--		return -EOPNOTSUPP;
--
- 	kvm_tdx->page_add_src =3D src_page;
- 	ret =3D kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
- 	kvm_tdx->page_add_src =3D NULL;
-@@ -3247,8 +3244,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *=
-vcpu, struct kvm_tdx_cmd *c
- 	if (copy_from_user(&region, u64_to_user_ptr(cmd->data), sizeof(region)))
- 		return -EFAULT;
-=20
--	if (!PAGE_ALIGNED(region.source_addr) || !PAGE_ALIGNED(region.gpa) ||
--	    !region.nr_pages ||
-+	if (!PAGE_ALIGNED(region.source_addr) || !region.source_addr ||
-+	    !PAGE_ALIGNED(region.gpa) || !region.nr_pages ||
- 	    region.gpa + (region.nr_pages << PAGE_SHIFT) <=3D region.gpa ||
- 	    !vt_is_tdx_private_gpa(kvm, region.gpa) ||
- 	    !vt_is_tdx_private_gpa(kvm, region.gpa + (region.nr_pages << PAGE_SHI=
-FT) - 1))
---=20
+>>
+>> [...snip...]
+>>
