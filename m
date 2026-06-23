@@ -1,160 +1,88 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C3C30E0E5
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 09:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3222F364043
+	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 09:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782206077; cv=none; b=p3qJO6fGPifXcvg5WbIC+ASRDo6bbz4wrN4egMIsNoVtNX2X7bXyvNq5H3i4x66kWfyP2mSutn0T/tPioM7mgds19V1edYaoFOIJRFfwSqc5yXbVL+UXp97+nLky395uWNjMVWHcI7lKSt2ajv1vkneDGghrsLuVEaZaKGNIHDQ=
+	t=1782206166; cv=none; b=D8N1uOB9iSkGRaxSzGeXSKwgbSOrX1sIHA9bs6unsiwB0DzGFOTyv8hq402ncCrMjYdu0/BlVKkxpBu1jw0e8Ljaionusyqik4E5L03lFIzwsQVxpHUpYQ6Y51w8Jrxg6u361pce1Iv9m2RYb1oeXDDtwUmFhSZ/YwXAClPKhX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782206077; c=relaxed/simple;
-	bh=Jrc3/1n6ncWF3VtGjXxG0cjpZMrkrKJOMwZImn13ef8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kfcEZgaRDimrIinxh6Vh7qx3ZIt+2dQ+bAWGEf9699NT5vUlw9t4mgZpcIRiqG/5NY7MQdHFm4MYg9LfAWM2betWdVqf29W5Vp0K+gS7RgB9i9VXBO49KMCVy8NZfSQtNTAwuwIHxmaimoJh6c5gUvQy6H/N5Ng5f1M2MUChPCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B1HYBTv5; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B1HYBTv5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782206074; x=1813742074;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Jrc3/1n6ncWF3VtGjXxG0cjpZMrkrKJOMwZImn13ef8=;
-  b=B1HYBTv5zCc1yg03wjf7qw0TL8Nk5byljL4eqNNuyWCrmUSoYniENJ1M
-   P1qUfgrPDhA+6rqxYza4LpljJxYeLBizrFdKu3LZAVu/R0Q/vxjZF+oHW
-   +RpQTFwwBxd2mVtc4ftAcAluETznR6jsKhSdMnMLv5E3cII9BakePN6Ab
-   YDox8bHtwc91R8RsG3M0PtOHe3JV4AsPl+urx70D5Xy5LoQjqF7Y3ApaE
-   JKn3LeTgswUXffP6d0vl1KwJebY5VcNRUlS9/QeiF7WrysdqAu4eBa1YT
-   f0gJWYilaK6F3cBw1uwr3pfvqSN5mCIEAV/vyahuOK5stqVWornyHhpZ/
-   A==;
-X-CSE-ConnectionGUID: RKfwoqvDReSyuqEBxq8Daw==
-X-CSE-MsgGUID: yCrnfO9QRgiY94Hw9kD3dA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="83035929"
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="83035929"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 02:14:33 -0700
-X-CSE-ConnectionGUID: yDliffaBQUauzjb87+herA==
-X-CSE-MsgGUID: hc/L1AFkR22qU5djSHzk5w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="245328315"
-Received: from unknown (HELO [10.238.2.81]) ([10.238.2.81])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 02:14:20 -0700
-Message-ID: <058d1f8c-b718-47fe-a7c4-f13828993189@linux.intel.com>
-Date: Tue, 23 Jun 2026 17:14:18 +0800
+	s=arc-20240116; t=1782206166; c=relaxed/simple;
+	bh=aOIiXKA/SFm7+njc7xkF99K3wosAUWatMCuT5f/7i50=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DZWCjEmrZd4ZC1kYUIYer5fu53QfSLbSOKCxyWerE7kZGcU3lZG4l+3EJqhF5ixNm1cMA1WNlwheiQWgaMMPrcf6vpD36dWBvrqw7GXD0VLPxqM+m2L7AAU1mtaNC8H+zl/gnUx1A1Z909aJsliyCCuM/yFF1kCN343IW0JP65c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Received: from io.fritz.box (p200300f6af4fc500cc95bb0c16cd4e45.dip0.t-ipconnect.de [IPv6:2003:f6:af4f:c500:cc95:bb0c:16cd:4e45])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 6B06F203D42;
+	Tue, 23 Jun 2026 11:16:03 +0200 (CEST)
+From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: x86@kernel.org,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 4/4] kvm: sev: Acquire a writeable page reference for CPUID pages
+Date: Tue, 23 Jun 2026 11:15:56 +0200
+Message-ID: <20260623091556.1500930-5-joro@8bytes.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260623091556.1500930-1-joro@8bytes.org>
+References: <20260623091556.1500930-1-joro@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 17/46] KVM: guest_memfd: Advertise
- KVM_SET_MEMORY_ATTRIBUTES2 ioctl
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-17-9d2959357853@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-17-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> Introduce KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES to advertise the
-> availability of the KVM_SET_MEMORY_ATTRIBUTES2 ioctl.
-> 
-> KVM_SET_MEMORY_ATTRIBUTES2 is a guest_memfd-scoped version of the existing
-> KVM_SET_MEMORY_ATTRIBUTES VM ioctl. It allows userspace to manage memory
-> attributes, such as KVM_MEMORY_ATTRIBUTE_PRIVATE, directly on a guest_memfd
-> file descriptor.
-> 
-> This new version uses struct kvm_memory_attributes2, which adds an
-> error_offset field to the output. This allows KVM to return the specific
-> offset that triggered an error, which is especially useful for handling
-> EAGAIN results caused by transient page reference counts during attribute
-> conversions.
-> 
-> Update the KVM API documentation to define the new ioctl and its behavior,
-> and add the necessary UAPI definitions and capability checks.
-> 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Suggested-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+From: Joerg Roedel <joerg.roedel@amd.com>
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+When the PSP checks on a user-provided CPUID page fail KVM will write
+back the detailed error information to the user-provided buffer.
 
-Two nits below.
+Make sure this buffer is actually writable to not write the errors to
+a read-only page.
 
+Fixes: 2a62345b3052 ("KVM: guest_memfd: GUP source pages prior to populating guest memory")
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+---
+ arch/x86/kvm/svm/sev.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
->  
-> +4.145 KVM_SET_MEMORY_ATTRIBUTES2
-> +---------------------------------
-> +
-> +:Capability: KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES
-> +:Architectures: all
-> +:Type: guest_memfd ioctl
-> +:Parameters: struct kvm_memory_attributes2 (in/out)
-> +:Returns: 0 on success, <0 on error
-> +
-> +Errors:
-> +
-> +  ========== ===============================================================
-> +  EINVAL     The specified `offset` or `size` were invalid (e.g. not
-                                                   ^
-                                                 was
- > +             page aligned, causes an overflow, or size is zero).
-> +  EFAULT     The parameter address was invalid.
-> +  EAGAIN     Some page within requested range had unexpected refcounts. The
-> +             offset of the page will be returned in `error_offset`.
-> +  ENOMEM     Ran out of memory trying to track private/shared state
-> +  ========== ===============================================================
-
-[...]
-
-> +
-> +Set attributes for a range of offsets within a guest_memfd to
-> +KVM_MEMORY_ATTRIBUTE_PRIVATE to limit the specified guest_memfd backed
-> +memory range for guest_use. Even if KVM_CAP_GUEST_MEMFD_MMAP is
-                         ^
-                    guest use
-
-> +supported, after a successful call to set
-> +KVM_MEMORY_ATTRIBUTE_PRIVATE, the requested range will not be mappable
-> +into host userspace and will only be mappable by the guest.
-> +
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index dab8109edf26..5fd08d34be3f 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2415,6 +2415,7 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 	struct kvm_memory_slot *memslot;
+ 	long npages, count;
+ 	void __user *src;
++	int write;
+ 
+ 	if (!sev_snp_guest(kvm) || !sev->snp_context)
+ 		return -EINVAL;
+@@ -2475,7 +2476,10 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 	sev_populate_args.sev_fd = argp->sev_fd;
+ 	sev_populate_args.type = params.type;
+ 
+-	count = kvm_gmem_populate(kvm, params.gfn_start, src, npages, 0,
++	/* Acquire a write-reference for CPUID pages as kernel might write to it */
++	write = params.type == KVM_SEV_SNP_PAGE_TYPE_CPUID;
++
++	count = kvm_gmem_populate(kvm, params.gfn_start, src, npages, write,
+ 				  sev_gmem_post_populate, &sev_populate_args);
+ 	if (count < 0) {
+ 		argp->error = sev_populate_args.fw_error;
+-- 
+2.53.0
 
