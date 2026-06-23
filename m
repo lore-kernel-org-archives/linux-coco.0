@@ -1,14 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C324363C46
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C22B3630B3
 	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 09:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782206166; cv=none; b=Xt8549j+eLqVFflZvs+7FehZliQQvQAjTrZcsQ+WVt7dOT0P1AtrKkVSynzEzjEvlw1TzhZVd8zv8XWspdlQKHloP3bGp5MlSKNnbmMqOcGC1QS5V/bihybhQUtZD2Q2VG1JVnI+bYyAdiE+eEwpWCYCxLfwIR2m0+cLFR7pZeg=
+	t=1782206167; cv=none; b=Vu1asPOU6t6dj7ymYZZECUFxKNqG0brN3GbUiG3NCchLTP2FquZMcyW53B2On2V8P+i0C+mPN9fl7ll5KRj1RJj21iNFw7v6U1I/0zkym0pJvpqCf3ERzDUFwmBLMW3lZjdnzjafRbtzskZZsHrbrVQxaTn86PS7cLUs8sMNOzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782206166; c=relaxed/simple;
-	bh=xpsrDYFTmiRF4oI632s75CvkbiV8Eses+SRTA5q3r5Y=;
+	s=arc-20240116; t=1782206167; c=relaxed/simple;
+	bh=SgieSUQKIZcxPKT1efnQHDrcznVjNoLVpORDYa66UsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WNtmGhugGUYrh0btZFeHGDJFcuk8Hr1j31Nk+LRO0UJasjsw5meseYv2ZrQEJmNk7NTRCNhegFtUrljtJrtc4+ppt9aDYl992ltFqCizTJD7qhNuwxhfQgrAGD6rTMWvDNbhl22tGx6VtaFlOcrwNqr9qvPe0GZvk/kuVE/mbo4=
+	 MIME-Version; b=TsjRQkOAQ5MvONLYxK8PJXDkHjXVmnfzTm4rAvdCbHnNTfIVuR7u1r+e9FGe/A+UOlTZddybRuRlxFzz6RdgbBUC+vIjrrPpiFvtN5IzdTsMsq3an7Q/TINvM4XH/kEvxQsipc8t+HN5WQAjf+YNZLtIG4l7oKiSzeJAPxzR2uE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -16,7 +16,7 @@ Received: from io.fritz.box (p200300f6af4fc500cc95bb0c16cd4e45.dip0.t-ipconnect.
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 2799F203D40;
+	by mail.8bytes.org (Postfix) with ESMTPSA id 049EA203D3F;
 	Tue, 23 Jun 2026 11:16:03 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Sean Christopherson <seanjc@google.com>,
@@ -31,9 +31,9 @@ Cc: x86@kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
 	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 2/4] kvm: sev: Unmap pages in correct order in sev_gmem_post_populate()
-Date: Tue, 23 Jun 2026 11:15:54 +0200
-Message-ID: <20260623091556.1500930-3-joro@8bytes.org>
+Subject: [PATCH 1/4] kvm: sev: Fix user-space triggerable WARN_ON on snp_launch_update path
+Date: Tue, 23 Jun 2026 11:15:53 +0200
+Message-ID: <20260623091556.1500930-2-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260623091556.1500930-1-joro@8bytes.org>
 References: <20260623091556.1500930-1-joro@8bytes.org>
@@ -47,29 +47,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <joerg.roedel@amd.com>
 
-The kmap_local() interface requires unmapping of pages in reverse
-order of mapping.
+Sashiko reported on an unrelated patch:
 
-Fixes: 2a62345b3052 ("KVM: guest_memfd: GUP source pages prior to populating guest memory")
+  [Severity: High]
+  This is a pre-existing issue, but can a host userspace process trigger a
+  kernel warning by passing a NULL user address (uaddr = 0) here?
+
+  If params.uaddr is 0, src becomes NULL and passes the PAGE_ALIGNED(src)
+  check. kvm_gmem_populate() skips fetching the user page and passes
+  src_page = NULL to sev_gmem_post_populate().
+
+  That function then unconditionally evaluates:
+
+  WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO &&
+               !src_page)
+
+  Since the type isn't ZERO, won't this allow an unprivileged user to spam
+  the kernel log?
+
+The assessment is correct, so check for this condition earlier in the
+snp_launch_update() path to avoid the WARN_ON_ONCE.
+
+Fixes: dee5a47cc7a45 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_UPDATE command")
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- arch/x86/kvm/svm/sev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/sev.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 41dcba5180ca..f09d15f68964 100644
+index 6c6a6d663e29..41dcba5180ca 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -2360,8 +2360,8 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+@@ -2438,6 +2438,13 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 	if (!PAGE_ALIGNED(src))
+ 		return -EINVAL;
  
- 		memcpy(dst_vaddr, src_vaddr, PAGE_SIZE);
++	/*
++	 * Make sure user-mode did not pass NULL as src with
++	 * type != KVM_SEV_SNP_PAGE_TYPE_ZERO.
++	 */
++	if (src == NULL && params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
++		return -EINVAL;
++
+ 	npages = params.len / PAGE_SIZE;
  
--		kunmap_local(src_vaddr);
- 		kunmap_local(dst_vaddr);
-+		kunmap_local(src_vaddr);
- 	}
- 
- 	ret = rmp_make_private(pfn, gfn << PAGE_SHIFT, PG_LEVEL_4K,
+ 	/*
 -- 
 2.53.0
 
