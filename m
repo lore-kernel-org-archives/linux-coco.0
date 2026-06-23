@@ -1,135 +1,208 @@
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F67E3546F5
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 08:20:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782202850; cv=none; b=IU5I1VbIQY87JxEtvIXuxJssInHZnwgmAyk8N3R0ORxP+l9oktOEEaPooCo8y2IXeSfV4+LeI5buF3Hvatxv7xE+F66gh0eWcD15+j/+/BmHovyxRn7TE51tdDxSKZw12aYyw9aHQw4Lnh+YXMWVvRxjNsYRIf9bytt9FW/Tjco=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782202850; c=relaxed/simple;
-	bh=vWncEwffRc3SYTUhcngGHajaIOMNvIgO6vhdoy3NFQs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uRZGwlgk8BK+UjGbXENlqvpXMb4xynWrPR4JLL1xLCW8/AwpuaE/P0L94KhKjEmmcbG34cKX8FtirTQwoPtuoqzQDmL2yTPmCBtxgK++G2sGSSHO5xjltRMO2CP/zRTOeFFiwwYlcFDh3YjHmi9rNmtDSmMwaqqL1DvmF42nd98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=a4kWolYf; arc=none smtp.client-ip=91.218.175.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A593CF680
+	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 08:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782204269; cv=fail; b=f23wSHID9XMhXMPYaP1zRChFYuJ5aT/HxBjMYSiBgEMgOxUEO5BVi7qw9SvzMeQgiScpxgcHmqANuI4zbfkNVOKPG30IeVJFf0+ppS13poDK8AM+BAEJJpHLFmLBIazdfniKHSFCncCZn/LqIRtNYcB2NAbsRWWUI7w8fLpfgyw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782204269; c=relaxed/simple;
+	bh=jgy3LzKopwzzIsYUV+IOapJsWwrWXda2unIWJeFfGwU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=RNB7er2WzvqQdDVC/J12aN3fbTkr3Ninv2QUATKFtlOc3WXqlCJz7ymhhnqD10FWfvoigx2Lt7+Hlsq2hZFOmInnJJNjklIS/7P3VSdtHQ5nfKBXfoZZRAVOpwKY2RrQaSOk+0mgEnGO6vsRwQEsEhGmHK1p3NGM2+pra1N9UEA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bE+YdMem; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="a4kWolYf"
-X-Forwarded-Encrypted: i=1; AFNElJ8dj7s4HOkG+OEagYRg7TgsjCDwTP/sBttyN6bXMNHZ2XA9/UdQKNMfFkmh83J6U8tYvJ622ceJ7O2c@lists.linux.dev
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782202846;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QXAENCcp5BDbPSOsn4f1upfQaIKMcigDEFtOKnyVkvM=;
-	b=a4kWolYfP+oAyRKjJJ92ku5DrejiTBPG2MZxl9sqLPBTA96QFzyTQxYx1IyTXIw05odeIt
-	w2JSZZKOsctDxIIYNBhNjR7R/JdB+F0EPggNzIPYPPe5pxfx7DopXnqpt4E/UWyGdlvpob
-	XtgukHhQqEMi8xCHr+N38yBgCRpfpJU=
-X-Gm-Message-State: AOJu0YwsVQ4HtwBRpBE6ulhL6PVNWNbPzzXArY81p5tooW58hMO9lVSL
-	ty2YWTxtom+auPoeyWocpmj4YiZiNjH00Wq/QXR5EKTlIsNhKk19U55r7t7B7SVQBpu6ULNday7
-	HWEXYklBPjFauWqYBzmVfXwj7vD09a9igtrLfeKYL
-X-Received: by 2002:a05:622a:1246:b0:519:f8a0:16b4 with SMTP id
- d75a77b69052e-51a522c6f26mr6874451cf.14.1782202842728; Tue, 23 Jun 2026
- 01:20:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bE+YdMem"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782204265; x=1813740265;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=jgy3LzKopwzzIsYUV+IOapJsWwrWXda2unIWJeFfGwU=;
+  b=bE+YdMemqHE6WVLUQPxC27WTBHlushnOfdOn9nvnnOjH5T3jarbjOs45
+   orvWMq5+iL4wSyiItRPSL7h87JBQls4Aarcl4r0AG/ST+ul/JgDIhViFz
+   5aBCht2imIIk9RDkc3ZfcS0QVhrd09b+MUCkfmzQ7wpLvSLc1wktvsH4W
+   wDZKThI6SnqvKKtGCk9yKOo6213I7gDJddmeEOIDQMWnH9Auw3hSoM8O/
+   ID2ZC1jIYgvcfahvEketv8LJqHF6R6eFtZMSpLamu9Bc1JF1164g3d4po
+   TkAx3bcWaXcyn+90RBUCuqyxF43fBJF80z6bzamLZJOydRlE338MnkWpw
+   A==;
+X-CSE-ConnectionGUID: 9KZ14CaLSMqGrylKRWJI4Q==
+X-CSE-MsgGUID: DhM3SOkjRYm95kwLSvD62Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="70459129"
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
+   d="scan'208";a="70459129"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 01:44:24 -0700
+X-CSE-ConnectionGUID: EaIagTq2Qn24pWIou/bzqw==
+X-CSE-MsgGUID: UDa3CqkKSgOCJaGRLezecw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
+   d="scan'208";a="247116443"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 01:44:24 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 23 Jun 2026 01:44:24 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 23 Jun 2026 01:44:24 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.29) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 23 Jun 2026 01:44:23 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XAoUBvd5cYbkv4tjDoTg6wveZUoQxvyMm2PrEokPHjSB9CSJxBm1S8D7FBBW8z9JRsccRojdxVkvR1IcM9MSjIFnmNJLn1sGfFtGOd9m+KW5HKQEp0IvaoX44baZkdHmUKys+Sjw0DSYSHhpL4SIV/jMrfT5UJ7kFcLug77d2eZp9nrkxBRRviTPUTWOaCU2GJ715cWx7I8xQOk/qj7NJvwdigbsII5cDtTs6wQhvxvV5nDL9WJzcPMZwcMj96xsRRFhTm6nVgckxpUt/wvANwoeVRL/EfBusjgGTomQnu0YnsrAOoHdUUle41lGpyz3hKpcuxMymZDo+gj+LY4xLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XXUw+XU/6s4cTDIZVtKepwFjauLL8rQpKpRBMDYqvwM=;
+ b=xkXtW8Ki0TNDe3NaPOzwnIUC/HQjN5SB/gzc7CFtY08mKXadLk590eYgrBRKmxX9p5a6EL4dsvfet9A0UKDrnPMjbH8bCSBSDf6B1Fs+8QP2jszMXGlT175JiH4WoneDzx6Q4i9aYdWeBw+Y7RqhiOb0oz8n5WcXDdtMMQQd+qHvCL0eHbb4GddQrxGCFB0bWlC9PYFpMcitKuoyxLJaHJGVL+iWQjKpNPKuhisWDkuSfGEfv/WdVcwjU31ZgcrQ3N6Hw8VmoZZc8id200OsLHdV/CKm58ViSlEhJELbhj6W483Q0BZuTNO2XtVMU85iS3pNJHnsVukBLBczXNfB0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com (2603:10b6:406:ad::26)
+ by CY5PR11MB6341.namprd11.prod.outlook.com (2603:10b6:930:3e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.13; Tue, 23 Jun
+ 2026 08:44:20 +0000
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b]) by BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b%6]) with mapi id 15.21.0139.018; Tue, 23 Jun 2026
+ 08:44:20 +0000
+Date: Tue, 23 Jun 2026 16:43:48 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+CC: <x86@kernel.org>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <djbw@kernel.org>, <kas@kernel.org>,
+	<rick.p.edgecombe@intel.com>, <yilun.xu@intel.com>, <xiaoyao.li@intel.com>,
+	<sohil.mehta@intel.com>, <adrian.hunter@intel.com>,
+	<kishen.maloor@intel.com>, <tony.lindgren@linux.intel.com>,
+	<peter.fang@intel.com>, <baolu.lu@linux.intel.com>,
+	<zhenzhong.duan@intel.com>, <dave.hansen@intel.com>,
+	<dave.hansen@linux.intel.com>, <seanjc@google.com>
+Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
+ module init and update
+Message-ID: <ajpHRNaq+z5bdn+R@intel.com>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+X-ClientProxiedBy: TPYP295CA0001.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:7d0:9::18) To BN7PR11MB2836.namprd11.prod.outlook.com
+ (2603:10b6:406:ad::26)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com>
- <CA+EHjTx2xKjheiW5VzHw_TdWFUqdJqfgu=dOPa=_yaYBMY8uyw@mail.gmail.com> <ajnRxuJ19OzZ8zJC@google.com>
-In-Reply-To: <ajnRxuJ19OzZ8zJC@google.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 23 Jun 2026 09:20:06 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTwLPCvZJgPv=8u3pgp+kwEwQbsXn_13FL3xUbJ7HRfXzw@mail.gmail.com>
-X-Gm-Features: AVVi8Cd8AX_ogmuHxl3lyKLs763XEWuLTlPOQRHFThhzmhUCsdYVCq6sKYCvrh8
-Message-ID: <CA+EHjTwLPCvZJgPv=8u3pgp+kwEwQbsXn_13FL3xUbJ7HRfXzw@mail.gmail.com>
-Subject: Re: [PATCH v8 13/46] KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
-To: Sean Christopherson <seanjc@google.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN7PR11MB2836:EE_|CY5PR11MB6341:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2d046952-9f20-4c6f-f4fb-08ded1039df1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|18002099003|22082099003|6133799003|56012099006|3023799007|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info: d0r4M1s74nQZAw3ZdGu8QOMJ0K7U98lCCKoJJ6tTtHdh3saFMiI0Vszk2UaUvNufFASchRH8oRW0W8kp28wIIR6FlXKIUwRLldphTp2YtrDaoeFQQQpMVUdfntL5aeyVhBlN8RCq8mqEauU4qCXVJEgEqQxrqZr8oWnzN9p8fbZoqJ5SoMdX0zgMN1B1d+KnLvxBOrVcnFRwON8A8w8anAMt/NXsWNJgFcRy7ywEEvekmOBJ96lbTMs3Aaoz+z9TopPM+9I+K2AXOh7LgM/eu89XWg0PlrwgnmHCqO6cZ9dq8YaFgh1bwQVsMLvRzaiYZk8Om80klK/4QVL0Ah1ZXruS8914L/P9Q2gOcEFSeIX1s9/DV96r7EKlSlOVzXHcosfP49FWs/GHevFGiXz7gXpYAQ1Rc4Z90bcUgB0nDHpmbWMt4ouOTzujlApeZOMW0scs0GV9Z8yXLVxulcOT7OtH8UKYfBPzNgyAXF1IVo+z0bPT4asm1IvM2NO15mfp7GLVOHKsVWqlE6FfuH5hrwjcrSLd0tiH6CHL07QeC/TCfEBE1JDq5mmcJLcR6Qe3R/Mzg9HRR46RS7o2MNMIe0xBOAZxFCEkRtgAL9yeC75MqMPZcu4M+UUlRxHw8K6nwxpfZainX5RochmRnoJnewkIBrY3aZ5/KHp3z2yOkg8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR11MB2836.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(18002099003)(22082099003)(6133799003)(56012099006)(3023799007)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4zCzZ4xK874ErPdoASkisgQe1kSgGnxn+DR/N+d6Xk9A/AIxQtO1SPVQ5aFF?=
+ =?us-ascii?Q?9jYDjtNTgR4ASxXGPz4OBKAl2uFv7htCIQ8uKIvFDjISev57HllXZg5i1SsF?=
+ =?us-ascii?Q?7gH6XfthllV5wy8PH/9YgqYqyysjHLEwGo7cbIgLvG0t8evfwmqd0Zl1jB/T?=
+ =?us-ascii?Q?xJvOIX1MmgxXoq/1I7xVHraQZ6n5Wx7HuB/u+apCyfmlu329F9hUuVabnCf6?=
+ =?us-ascii?Q?NRzZ9E0LI9oqJvG8mdunDHOWUQ/3eoDkM8kMvfeLa1vlwnuw6mSXodoX3V6W?=
+ =?us-ascii?Q?VYkngo3nlUFe6Z6O5Bo+3swj/MgDQbLxPa+zzcq2BOmJ4IJ8LPMzGoMCSTWF?=
+ =?us-ascii?Q?8D9/jkPhOjI0kVmmjqF5HvRCMntE4qqRUiW2smBTj0dBDSvBO+awpGyyJnXm?=
+ =?us-ascii?Q?RvIy4qx1rPw27BnQvxXsrVqDdVVwQI61VmBEOm+fIlN+F/4CUh59OxI6vN3h?=
+ =?us-ascii?Q?jfuNFVPin5A2A16eW8n3DcqwpLLcX26XKRSKD0v1yk3YI6vk4XaGU4PJuKaA?=
+ =?us-ascii?Q?n146PNw+zreS4iIQcL67E7u6VfyZqHeHaRwgi44mEhMZFVCG2d+GKljrTeBp?=
+ =?us-ascii?Q?N2rXzVYiObpIQIJuARO/++gPsZjyAXdao/Rce/s3r2K3M162ukZHmfRaRz5W?=
+ =?us-ascii?Q?+kCapZXj3lBuRR+rnbFoyjuvu0HuwacQU7KO9zzet6QT+oQfr8FB9/0h8G8g?=
+ =?us-ascii?Q?CEvfAoNwQ2/m2PTKRNBcaUCf/QUmMjo/wlpSESrRmg8fKI2SpPsmZXuHYebJ?=
+ =?us-ascii?Q?By2+pOrMuFTomMueDHsHwHezZcESYp2OjhgtCmNIL/RTc2V93R0kp0s7G8LX?=
+ =?us-ascii?Q?psXXBSoi9yVTWODMfGe9K/wOguG6QYIJ3dwBnc49GfCa48VWd+3V8XPWUGGi?=
+ =?us-ascii?Q?Bg/TZoiHWjuw+k+DU6qW2gKBW0YZZU+pKEgsG0RN2escgPQL1PLmpgmwZTj9?=
+ =?us-ascii?Q?BjJt3230j1IHN+IGGuSLkpNl2EJdFgnAgt4Dt4J7bXxXfgKvsV+0TKmBHkUW?=
+ =?us-ascii?Q?t1Iv5pkedlp/h69wBDwCoQxcWRz8NTkJh97D1U12ee1Gcz0JXesmRaHAOke8?=
+ =?us-ascii?Q?5kHzI5SmS+rF6w3d7gxP+HKDHYeW2dmayciTl2WKxoulEklqpZLzjmbxLWM/?=
+ =?us-ascii?Q?YAvd0cODQdAxOnYz9kzxMU4QIx+eYkX5XCBEW7Oz05YTUyTybXYTB82U3bY9?=
+ =?us-ascii?Q?eVYxSbgF919o0YTGvRTOfPbm4GEgO2xCKT9g5TXg/M7LEYlCNzFWcKglmZbX?=
+ =?us-ascii?Q?mdN4l4GoLAuiLZ2+huGPfjtUgvJSgdewSpgrA7clr8VctPQF0n9eXkMy8yqP?=
+ =?us-ascii?Q?Ywc5gRj27gGGzJHGsB08Of0J26Xe71iB4sK/kVJ+fort7lMygmFmXUXj2gEh?=
+ =?us-ascii?Q?ocFKDJNDd1Cxt9Q2we4MnmVp6P6NcBOUakEwbrlHcOmTxMgyT+AKtaKfjWae?=
+ =?us-ascii?Q?YqkFsNQsCOjzvYsKAt6X7/JWYFnxhqy7XGiNQ8OXdGV4CshcjpEHTNIsbO5o?=
+ =?us-ascii?Q?N+W0C4/EJWBa9OT7w0R93Tdd9a6cIFHBWqZ73jsWgv6NyosdrACc24u3cqFs?=
+ =?us-ascii?Q?xuWq387sm8N8wNEGbuHrjLLykQ8IZyEQOYWJN32v+rm+nkhgQeYUSViaPsaV?=
+ =?us-ascii?Q?warrInbYDbJb6pNAPZege0nXIfxYQUKH3VjOsLXSt05XfoYzs7bMRrhBUK6P?=
+ =?us-ascii?Q?r1iW5FRT6LohJROraTsYO4s1aUs61UV8z7lSxWghQHt4IBgn0Dw3h2AE2VC6?=
+ =?us-ascii?Q?QlmkIpQrSQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked: NKPa5NmbkUsxcU42skD2neBB7MM0DJdACovayFRRLv+7dWbOXvn1OQpD8BGxRzBRjqukA3s6j1rjvab6eaYXZ5LiOe3X/rIlqhecVh0U+lZtRnQOlqXaheXphLstpn3go4TBAuGyo21GTeb7HbA9OiTtSCIFVyy3XDzzS0qK3ANmToVWQahAldWcQA6l6C2xgMcbTiPrrTwgPopMhyjh1DN0U/XWwr7E98wrrw65/V5rxMhYSouKn1DuV9AwonV1eErHGk/P5EHOTGb475jPwqdhhBMqJb5QA1NEVxHFqukS9bXZS3pTUxp+lmihu3jKY7jE6eR/csUMYU6qBtib5g==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d046952-9f20-4c6f-f4fb-08ded1039df1
+X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2836.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2026 08:44:20.1093
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: X4u/NimAkh5KkD5cLhgfaPuYw9m9GfQj1azVrCccj4aUpeuRUCCif6Udzwkjv7KIDkUp6pbKarsfbAHy4AKrwQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6341
+X-OriginatorOrg: intel.com
 
-On Tue, 23 Jun 2026 at 01:22, Sean Christopherson <seanjc@google.com> wrote:
+On Thu, Jun 18, 2026 at 04:13:40PM +0800, Xu Yilun wrote:
+>In addition to basic TDX functionalities, TDX module provides add-on
+>features that can be progressively enabled as the kernel supports them.
+>The kernel should explicitly configure these features at boot or
+>post-update initialization time. Configuring an add-on feature, such as
+>TDX Quoting, that uses extension SEAMCALLs is the prerequisite for
+>initializing TDX module extensions. TDX Quoting is the target feature to
+>enable but defer it for now until full kernel support is in place.
 >
-> On Fri, Jun 19, 2026, Fuad Tabba wrote:
-> > On Fri, 19 Jun 2026 at 01:31, Ackerley Tng via B4 Relay
-> > <devnull+ackerleytng.google.com@kernel.org> wrote:
-> > >
-> > > From: Ackerley Tng <ackerleytng@google.com>
-> > >
-> > > Introduce base support for KVM_SET_MEMORY_ATTRIBUTES2 in guest_memfd, which
-> > > just updates attributes tracked by guest_memfd.
-> > >
-> > > Validate input fields in general. Guard usage of KVM_SET_MEMORY_ATTRIBUTES2
-> > > by making sure requested attributes are supported for this instance of kvm.
-> > >
-> > > A new KVM_SET_MEMORY_ATTRIBUTES2 is defined to support writes (unlike
-> > > KVM_SET_MEMORY_ATTRIBUTES) in addition to reads so it can provide error
-> > > details to userspace. This will be used in a later patch.
-> > >
-> > > The two ioctls use their corresponding structs with no overlap, but
-> > > backward compatibility is baked in for future support of
-> > > KVM_SET_MEMORY_ATTRIBUTES2 and struct kvm_memory_attributes2 in the VM
-> > > ioctl.
-> > >
-> > > The process of setting memory attributes is set up such that the later half
-> > > will not fail due to allocation. Any necessary checks are performed before
-> > > the point of no return.
-> > >
-> > > Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-> > > Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> > > Co-developed-by: Sean Christoperson <seanjc@google.com>
-> > > Signed-off-by: Sean Christoperson <seanjc@google.com>
-> > > Reviewed-by: Fuad Tabba <tabba@google.com>
-> > > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> >
-> > Note sure if it's user error on my part, if I'm applying this to the
-> > wrong base, but I found a build break here on patch 13:
-> > kvm_gmem_invalidate_start() doesn't exist in the base tree. The
-> > function is kvm_gmem_invalidate_begin() here. The rename
-> > (190cc5370a8b6) landed via a different merge path and isn't an
-> > ancestor of the stated base.
-> >
-> > Patches 19 and 20 have the same mismatch. Fix for all three is
-> > s/kvm_gmem_invalidate_start/kvm_gmem_invalidate_begin/.
+>TDX module extends TDH.SYS.CONFIG and TDH.SYS.UPDATE with new bitmap
+>input parameters to specify which add-on features to configure. The
+>bitmap uses the same definitions as TDX_FEATURES0.
 >
-> Ya, Ackerley used a slightly older kvm/next to send the patches.  I at least was
-> testing against kvm-x86/next, which does have the rename.
->
-> Other than noting that this should be applied against the current kvm/next, I
-> don't think there's anything else to be done?
+>For runtime update, Linux applies a policy that no newer features should
+>be added after update to avoid disrupting live TDX operations. To adhere
+>to this, TDH.SYS.UPDATE must configure the same features as the
+>TDH.SYS.CONFIG. Record the kernel required add-on feature bitmap in a
+>global var so that both phases can use it.
 
-Agree. Sorry, didn't mean to be nit-picky, but this really threw me off :)
+Actually, we do not need another global variable here. tdx_features0 is cached
+and is not updated across a runtime update, so the derived add-on feature
+bitmap will be the same before and after the update.
 
-Cheers,
-/fuad
+
+> static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+> 				    u64 global_keyid)
+> {
+>+	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
+> 	struct tdx_module_args args = {};
+> 	u64 *tdmr_pa_array;
+> 	size_t array_sz;
+>@@ -1032,7 +1042,15 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+> 	args.rcx = __pa(tdmr_pa_array);
+> 	args.rdx = tdmr_list->nr_consumed_tdmrs;
+> 	args.r8 = global_keyid;
+>-	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
+>+
+>+	set_tdx_addon_features();
+>+
+>+	if (tdx_addon_feature0) {
+>+		args.r9 = tdx_addon_feature0;
+
+How about moving this r9 assignment out of the if block and placing it next to
+'args.r8 = global_keyid;'? There is no need to guard it, because args.r9 will
+be 0 when no add-on features are enabled, which is perfectly fine.
+
+>+		seamcall_fn = TDH_SYS_CONFIG;
+>+	}
+>+
+>+	ret = seamcall_prerr(seamcall_fn, &args);
