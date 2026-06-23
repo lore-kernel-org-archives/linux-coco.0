@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E831037B40E
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 01:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53BF38655E
+	for <linux-coco@lists.linux.dev>; Tue, 23 Jun 2026 02:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782179996; cv=none; b=f6ki2oy8RZ9mfDFUUXiF/zmPD6PCuseVIToiQWH6jX4LkyO0f8vybBwMq44pX/AOaVZp4EPMWuV3IavDvkztPQXNvv77w6rXcIoCvGufEdg+zXCziaocf1+4UbTMf00F1HruoHOY708gP0litf5zSfHNe3iiF/CscfTphMgIF+0=
+	t=1782180915; cv=none; b=qhvY7ghRVWvr1UbMCwPRqfiFmqjFtjU6vpsoJ83m/0M5B3+/hd5YuBsndp4QWefNaWOwAldZprpZ5OUcXRpQAu+dHsTG6JEisXSGm+pTeXcQk2YN4XkQM7wUhfERmuvY2TiGCv8AwVXUrS5Om2/A6ZnZtG/T5lMaC1g6wI7i8ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782179996; c=relaxed/simple;
-	bh=y8r7p0aS42aPKj2cF+3PhRwu0lZj2g44SnufwIbftTU=;
+	s=arc-20240116; t=1782180915; c=relaxed/simple;
+	bh=d5AgO5tMzxYFDBtDlIOi/5Ij485uiyqm1kvbZMmKbDQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C1t8huQ8zsFwXR3Jmo8rijDrVmliziO2HFNWblvoRxG4sGMawnpXMhAlTzE4DVed1IMxQiMwt0VTQ4cAtL5oDkMwfb76RQEUv5RTV9o0uRKtWyni233yDcJZU5NL2ypymKWfaOs8MtXInty4yoh3bA2+HOHGmNzVI2sy6rjnl9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CJKCQgUg; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 In-Reply-To:Content-Type; b=jhYx0gO5c5R4thjBW8DKsFwDARmIb+1fb0WQ/qflj/g67q55tS/m022m726bxED+4MdhcwuSIWPf+p+PoxrMxmiXscveA4Zzbe43YBFiB/nOBg92S5GWEPABR17mls/3VSscdjU+lv+8cDxXEj/Igc9ouem1MoOXlkXokmyk0C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dyd0oM4U; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CJKCQgUg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dyd0oM4U"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782179996; x=1813715996;
+  t=1782180913; x=1813716913;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=y8r7p0aS42aPKj2cF+3PhRwu0lZj2g44SnufwIbftTU=;
-  b=CJKCQgUgKDZX/XTiGASRLbHEFq148Npmo5TDv8/nT3Di+EPO1ZVPV6rJ
-   mOGU3Qo0wap6kARME9HHMVVo66vaWG8O+SfWJQybkCyJiUHo5Ty1FwqQb
-   /JitArMcDvPmSSJDwYtu/x2jyI9kK1WpeiL9qS3ws0UBBFC1S1IRVqz2k
-   V/tlk8YEOKjH3TTsA1db7K1+6gXVJIzLLsNAxFxqKwNsVAT2fPPQeAHFP
-   P8EOMVAbKWXlZtILESay1vgw167ObYgd1hfqmLeXaGifAHpphadRMSM21
-   PSa9R3/TjbRzNmPVKZ9ahGWghcLYhsTAryNm7va6dHNt6eol5RQJCC82X
-   A==;
-X-CSE-ConnectionGUID: xTopKMv+Rom1YzELan9aIw==
-X-CSE-MsgGUID: jaNNlAHcRXejhdi3QUvJDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82687627"
+  bh=d5AgO5tMzxYFDBtDlIOi/5Ij485uiyqm1kvbZMmKbDQ=;
+  b=Dyd0oM4Uwa4X4KhWzfuc/HmCRUWv1QR2IMhv+ikryvUVX4GMYmATAWHC
+   QbJ+sFb2rDEoxZu2fuUqKOl6ghprtU8p7YC4oUUVAPjW7S0YIS8s1aaac
+   Qjj8Pt3Ou61kzNlyv5+dkx76nFGpq3C7m8/0v0BMLA0C4jzG6Hr5ehMH7
+   a9oSEHp7cb5dAE4ugrKO47FxCGKH8ysFQb/0hAXP9CGU6xqdOJoRlg9ll
+   V9zfKZs+FV0p+t9lWrdwkgWArjCukmxCt08jzBsaAJisqNbXiENvlDIDE
+   DDWDPBTkGJEuVnD/Z0y9llfKex6zIWJLN9ZqRbOmZUOHk7+4P0rdhlh8X
+   Q==;
+X-CSE-ConnectionGUID: DCG2tAT2QXG4DvnWod2z7w==
+X-CSE-MsgGUID: SAx7oWn5RsWGTzexXTvl5g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="100467928"
 X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="82687627"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 18:59:55 -0700
-X-CSE-ConnectionGUID: kOVtgx2ZTwaWXu+0vapFSQ==
-X-CSE-MsgGUID: hAzyAjTCQhS3Gq4ocdIzKA==
+   d="scan'208";a="100467928"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 19:15:13 -0700
+X-CSE-ConnectionGUID: tGc2qhuAQciVN83fjDT2Dg==
+X-CSE-MsgGUID: 2ZnM0rp0RyKyL7OQapoTMw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="251316609"
-Received: from unknown (HELO [10.239.158.46]) ([10.239.158.46])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 18:59:46 -0700
-Message-ID: <1b332812-f3f4-41d3-936b-829f2f9f7968@intel.com>
-Date: Tue, 23 Jun 2026 09:59:44 +0800
+   d="scan'208";a="247044499"
+Received: from unknown (HELO [10.238.2.81]) ([10.238.2.81])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 19:15:00 -0700
+Message-ID: <cc2fbb22-e70c-4f97-9c91-ac1f4dfbe48a@linux.intel.com>
+Date: Tue, 23 Jun 2026 10:14:58 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,149 +52,100 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 08/22] KVM: selftests: Add TDX boot code
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
- <20260521-tdx-selftests-v13-v13-8-6983ae4c3a4d@google.com>
+Subject: Re: [PATCH v8 01/46] KVM: guest_memfd: Introduce per-gmem attributes,
+ use to guard user mappings
+To: Sean Christopherson <seanjc@google.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org,
+ jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
+ oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
+ rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
+ steven.price@arm.com, tabba@google.com, willy@infradead.org,
+ wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com,
+ pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org,
+ liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-1-9d2959357853@google.com>
+ <aceb07e1-77bc-49b6-a932-5fd9b5a21727@linux.intel.com>
+ <ajnjTJdQKD1Kz3tf@google.com>
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260521-tdx-selftests-v13-v13-8-6983ae4c3a4d@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <ajnjTJdQKD1Kz3tf@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 5/22/2026 7:16 AM, Lisa Wang wrote:
-> From: Erdem Aktas <erdemaktas@google.com>
+
+
+On 6/23/2026 9:37 AM, Sean Christopherson wrote:
+> On Mon, Jun 22, 2026, Binbin Wu wrote:
+>> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+>>
+>> [...]
+>>
+>>>  
+>>> +static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
+>>> +{
+>>> +	struct maple_tree *mt = &GMEM_I(inode)->attributes;
+>>> +	void *entry = mtree_load(mt, index);
+>>> +
+>>> +	return WARN_ON_ONCE(!entry) ? 0 : xa_to_value(entry);
+>>
+>> If the entry is unexpectedly missing, returning 0 means the attribute would
+>> be treated as shared.  And then in kvm_gmem_fault_user_mapping(), it would
+>> allow the userspace to fault in the folio.
+>>
+>> Should gmem deny such edge case?
 > 
-> Add code to boot a TDX test VM. Since TDX registers are inaccessible to
-> KVM, the boot code loads the relevant values from memory into the
-> registers before jumping to the guest code.
+> After several bugs this year where a WARN_ON_ONCE() fired, but was entirely
+> insufficient to prevent true badness, I'm definitely senstive to making the "bad"
+> behavior as harmless as possible.
 > 
+> However, in this case I think we're just hosed.  If KVM treats the memory as
+> private, KVM will incorrectly do prepare(), incorrectly allow populate(), and
+> will caused missed invalidations (though I suppose __kvm_gmem_set_attributes()
+> "only" lies to userspace in that case).
+> 
+> That said, assuming SHARED is definitely odd for cases where guest_memfd *can't*
+> hold shared memory.  Ditto for assuming PRIVATE.  
 
-<snip>
+Indeed.
 
-> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/td_boot.h b/tools/testing/selftests/kvm/include/x86/tdx/td_boot.h
-> index af4474dee387..e5d54a20ed72 100644
-> --- a/tools/testing/selftests/kvm/include/x86/tdx/td_boot.h
-> +++ b/tools/testing/selftests/kvm/include/x86/tdx/td_boot.h
-> @@ -66,4 +66,9 @@ struct td_boot_parameters {
->   	struct td_per_vcpu_parameters per_vcpu[];
->   };
->   
-> +void td_boot(void);
-> +void td_boot_code_end(void);
-> +
-> +#define TD_BOOT_CODE_SIZE (td_boot_code_end - td_boot)
-> +
->   #endif /* SELFTEST_TDX_TD_BOOT_H */
-> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/td_boot_asm.h b/tools/testing/selftests/kvm/include/x86/tdx/td_boot_asm.h
-> new file mode 100644
-> index 000000000000..10b4b527595c
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/include/x86/tdx/td_boot_asm.h
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef SELFTEST_TDX_TD_BOOT_ASM_H
-> +#define SELFTEST_TDX_TD_BOOT_ASM_H
-> +
-> +/*
-> + * GPA where TD boot parameters will be loaded.
-> + *
-> + * TD_BOOT_PARAMETERS_GPA is arbitrarily chosen to
-> + *
-> + * + be within the 4GB address space
-> + * + provide enough contiguous memory for the struct td_boot_parameters such
-> + *   that there is one struct td_per_vcpu_parameters for KVM_MAX_VCPUS
-> + */
-> +#define TD_BOOT_PARAMETERS_GPA 0xffff0000
+> What if we instead fall back to
+> the "init" state, e.g.?
+LGTM.
 
-Why not just put it into tdx_boot.h where it also gets referenced?
-
-And even just define it in patch 06.
-
-> +#endif  // SELFTEST_TDX_TD_BOOT_ASM_H
-> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S b/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S
-> new file mode 100644
-> index 000000000000..7aa33caa9a78
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S
-> @@ -0,0 +1,60 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +
-> +#include "tdx/td_boot_asm.h"
-> +#include "tdx/td_boot_offsets.h"
-> +#include "processor_asm.h"
-> +
-> +.code32
-> +
-> +.globl td_boot
-> +td_boot:
-> +	/* In this procedure, edi is used as a temporary register. */
-> +	cli
-> +
-> +	/* Paging is off. */
-
-It's weird to put such a comment here. Put it together with the comment 
-above cli?
-
-> +	movl $TD_BOOT_PARAMETERS_GPA, %ebx
-> +
-> +	/*
-> +	 * Find the address of struct td_per_vcpu_parameters for this
-> +	 * vCPU based on esi (TDX spec: initialized with vCPU id). Put
-> +	 * struct address into register for indirect addressing.
-> +	 */
-> +	movl $SIZEOF_TD_PER_VCPU_PARAMETERS, %eax
-> +	mul %esi
-> +	leal TD_BOOT_PARAMETERS_PER_VCPU(%ebx), %edi
-> +	addl %edi, %eax
-> +
-> +	/* Setup stack. */
-> +	movl TD_PER_VCPU_PARAMETERS_ESP_GVA(%eax), %esp
-> +
-> +	/* Setup GDT. */
-> +	leal TD_BOOT_PARAMETERS_GDT(%ebx), %edi
-> +	lgdt (%edi)
-> +
-> +	/* Setup IDT. */
-> +	leal TD_BOOT_PARAMETERS_IDT(%ebx), %edi
-> +	lidt (%edi)
-> +
-> +	/*
-> +	 * Set up control registers (There are no instructions to mov from
-> +	 * memory to control registers, hence use edi as a scratch register).
-> +	 */
-> +	movl TD_BOOT_PARAMETERS_CR4(%ebx), %edi
-> +	movl %edi, %cr4
-> +	movl TD_BOOT_PARAMETERS_CR3(%ebx), %edi
-> +	movl %edi, %cr3
-> +	movl TD_BOOT_PARAMETERS_CR0(%ebx), %edi
-> +	movl %edi, %cr0
-> +
-> +	/* Switching to 64bit mode after ljmp and then jump to guest code */
-> +	ljmp $(KERNEL_CS),$1f
-> +1:
-> +	jmp *TD_PER_VCPU_PARAMETERS_GUEST_CODE(%eax)
-> +
-> +/* Leave marker so size of td_boot code can be computed. */
-> +.globl td_boot_code_end
-> +td_boot_code_end:
-> +
-> +/* Disable executable stack. */
-> +.section .note.GNU-stack,"",%progbits
+> 
+> static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
+> {
+> 	struct maple_tree *mt = &GMEM_I(inode)->attributes;
+> 	void *entry = mtree_load(mt, index);
+> 
+> 	if (WARN_ON_ONCE(!entry)) {
+> 		bool shared = GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED;
+> 
+> 		return shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
+> 	}
+> 
+> 	return xa_to_value(entry);
+> }
 > 
 
