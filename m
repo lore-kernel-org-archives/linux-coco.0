@@ -1,59 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAFA3A9615
-	for <linux-coco@lists.linux.dev>; Wed, 24 Jun 2026 12:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3428224234
+	for <linux-coco@lists.linux.dev>; Wed, 24 Jun 2026 12:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782304167; cv=none; b=djRLkFJJH11mv8ycJMLR+svUtu+ayWKjTfaIvG3XWLfVc5rBYvutbXb+VxOpuDCBxQf4xQGwE8eTWuerpMPdAdczatNvqeDrf9hJK1k8umY3NIViKAZrCT67E2fO8en+KsOW5CPmm4WUDsImO16DUjtHfD0VWsHz1afqNmFHMW8=
+	t=1782304402; cv=none; b=Iemje2InPV5dF7FHxcAmD8FsygIvFsKKGa4FTN51T7Avnt/pu+Mv4BVm7wWpTKNmhFieH3zIRRvd4/jcG/5BCUDJQH3ZEnqWnsooB5vaAxnxRx0drwejACATNMfHLotNx6LohXDn+z7zEQrTi0msTVxAcYhEfLq+Y6bMf046U2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782304167; c=relaxed/simple;
-	bh=kl72IjQB4r8Mj690f0sUnXtHd1ElCNuCYNR8bLEx9zk=;
+	s=arc-20240116; t=1782304402; c=relaxed/simple;
+	bh=aXKEZeAIyTQvGAvWdKWZTpM9Tn7v8MPQIk0I3bgXiwU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N8qJWnIVh4oqjn5wT9H4SiTfVu8CB4OcW7H7CgCQkuWorXYFBHfhslOipNdn1qCja3W3Wz71Lp0kgHDpCdjV7pEalVmSAB8tANfXR+ThjJ+HYkwnfSbEns/V0/XFKfsHqAGog43AxxD/QJjeJFJ9EKicjfuPHyTe9NYJOegLdQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EyR0cK8g; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=JR/FqrAjVicVj1khb/Sm/d0LdJVxjV04IbAJ9PU+5PYvbj9nyXrbJ/6Edxd1/PaVQ75y264d12wN0QaRsLL2P5JFIhh0DL2QbgErWKI148RyW7TuQbd0FFYxZUllm3lyr+Wo3zMrte/sBH7okL9zd8bDr9rz9rItcA/KqD9YN78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZB1jNphk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EyR0cK8g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 028F71F0155A;
-	Wed, 24 Jun 2026 12:29:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZB1jNphk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BA71F000E9;
+	Wed, 24 Jun 2026 12:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782304166;
-	bh=vLFDKfatClB4S8ssznZTLIRUnzRia7uBrtLEqy9t/ek=;
+	s=k20260515; t=1782304400;
+	bh=Nki/E82hyr5wzO/AYQ3QdWs1GuwADLma1GsoIRocgYM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EyR0cK8gTidJXBYhqgvqIgBnPh9+CTQutCo9XWYZ+eRmDqdJy/417jZ9UiInoVz9z
-	 uQjL6cccG3Tp3Gm75itu/W4o+jiimu+iW3YV0/IDi7LAs5Eq2XGrFILvVdqONJKDlO
-	 YSMY0mYOh9XUqAG102c/jidc952SGjm4pEFFXrfgFkPlfnJfh6bNSwy+hkao1puiPm
-	 NZNH0wdAGQ87cCFf93BjOIEDEmNurMNLWyhFPIAT+2Pt03ZrZK6lY1vJCskIVJ4iv2
-	 LLOXo30HRnvVo0G9niCIefsNNJvJSr9S4qwS/tJxfOYk7ATreurdjFwvvq5GsEB0CQ
-	 21dbu4sL4dt9w==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 598D0F40079;
-	Wed, 24 Jun 2026 08:29:25 -0400 (EDT)
+	b=ZB1jNphkHO6MwhR6XuqIIqKqYY9iu0gKejp6yxcLX1F7oq21yymnhbvHzmuu2X5Pj
+	 Vp+mInO7vlxUEtgKaxdQZdSe6BOA8Yb6uxxhNwTP1ARX24J0FvaLWPOKU+tCuoBZDK
+	 rs/T6PP6Yp289i6COE981MCh4bobEWM8kDODAdnr1+XtXLwCLKXFWOEiSWn4XxRLBa
+	 2Jmg3GyZ/rRB9KJrkjE8hpsDyEVvLN+mvYvGaeOlxTAMAfFH2YwGVEYUn1aRpO1N7J
+	 P6oihZBRIdZkq+ugURrxuqPLTayhll/Jcgg1YfMaw5KwJ9HNeGZItwEuBv8wXDYy38
+	 q1KIIm+K5SKvw==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 4E2A9F40084;
+	Wed, 24 Jun 2026 08:33:19 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Wed, 24 Jun 2026 08:29:25 -0400
-X-ME-Sender: <xms:pc07akVgWsrz8Um1BZEfEsb-lC3PRABzLRgVC0koasw9QSjY29BfKA>
-    <xme:pc07aq_FtrgoYLR5Dn1xUbUFEwB4biEy8UISgM2Vm2OWJ-lB0Fb60-dAXhLHvyVrI
-    h3k5aMlSeFP6tswjZUqL-AO5pEMs5gs1CiCSq7b6UxPfkFdub8IqtM>
-X-ME-Received: <xmr:pc07ai_AJa60Y8IhCkwr9ntYkKgGzFxURn4o1PCyRoJp9TWZ9teN8OcVLu-TlQ>
-X-ME-Proxy-Cause: dmFkZTGQArAWzBSIqfuCjB0QzONNhA+q1CTAuSMwuEBhzBy/tzZqNdZnhLnrUk/bzcO1Ob
-    qV5IsSKZlnlHEtJlLVg73sfCfTAynNDnYDTF4kwRi+w+FTkK0Cj/188NyX7JkGKPWfnNxe
-    ZM17FZj2tytGZvcbggL5ccIEAiZubQjW2zQ07p6w8z8ORw0594PYKzpLhaAAFoTGFnu7lT
-    mIFyKVlsfgsicOOXIpKoRyBfzhw2QmhbjRQVUl1F5TMPInjH/W7zYT1cpsVHPi/+sVRVBH
-    vqkvswFzfuR86M13twlXL/uVXDyIS9Q4ttcM4JAEe/dw44lKApfjLlgg9VpuTCIqLAFjs3
-    RIA08dwy6F4iWczpnRZXpo4MPQHLqROZILWVGAZorUDkjAOXQ9gbs4OT+/LmgsSZczp9kf
-    Mste3iIbGoP6dN+l35jCfBfax7CLUTb32ma3ijo+GQyaxJK9cXrdbLgtaerKNVPgnvzlEN
-    IlvY4DPzmirrQtEpYzqpe12TSlwKsaHdbR1fF79xctOLhKnilhIdzucN0G7k1UhMedTSsH
-    DbVx+0ULLLZW8+dmXHpGOf4T4invnzS8frZk2Tt7Ep0X498mJvzSVJ/UXteMpHepPcfvKA
-    xlXAu8rDHYyKGBhWoYKFnqWQB673AsBFiFd08KCD3eiDhOfGQBC9yk3SsWfg
-X-ME-Proxy: <xmx:pc07at1we4XECoMGHO5PAcbvgNrgjBcErfNgS9jqsN-Xcp400eZFHQ>
-    <xmx:pc07anbgisMzY7jfVVYbR1bbUyJDaIt3NTXZ4E4xg9kUJoTaiP5hJA>
-    <xmx:pc07apuEJT-3QZIZ3OSgUYSSXiwmoyV6xRIRHC_90igBK6QJd-h1wA>
-    <xmx:pc07auBhOE8MJxJOBUX_7HTvZLd1VfIWbm5cjeiZgu1x4gDB3iICOw>
-    <xmx:pc07akA2QBIBPbKFZjZL3NU288XO95EK2pW6Hq5m8DsRA9ZiCSKf_tBr>
+  by phl-compute-04.internal (MEProxy); Wed, 24 Jun 2026 08:33:19 -0400
+X-ME-Sender: <xms:j847agv6zFQJ6Lx56W2Ad4SsiRvOg-ldB6AexUeLL31cCY7YoLpJ9w>
+    <xme:j847aqOCde6aTy69J-ZJ7macCNXtZ9cgdkhACmaT_YRaHehyWwaNRJH5qcbHIXZPE
+    Skt63GLQpWw26ymfylH34ojkfWxZE0akXU-e1yvWZrKY2H5VqW-IlI>
+X-ME-Received: <xmr:j847arXbzKtAE4MYHqfHd4KAxT03nQYyEsqwQ5TsclJrcapKPjlnwPBNuFn3zg>
+X-ME-Proxy-Cause: dmFkZTEshFasPiuUqrsCqlwMRprq3eUmLI2Qea4inUfatnVfKbcgTrYCk/YZwKl+RFjobo
+    UKJrX0das8rKVf3QXBESD63zwVytHbUc6Y1UbALzr/gAwy9p/QgDo5dMJZMh+Db6azfrSF
+    hMVBZcH5gVUrD145SS8mpc0HAgSEuRCqOfwe9hQQPGNFikP0flMvElGrfmlv4U25n6y0DG
+    u0CWBVQvazrLfUtEasDGaka78VCXTqNa/Yf5HFs1Ut/jqOYlJICz26w4tbplGi8sdNaB7k
+    ML8jtKLbzQe7NICpn95E+XLFKPoJHnJ9gQy9xPst1WDc7Uy+5MeRf+yZn6Iz6zmG5WAuGn
+    AzzYuc5kqB81AXIuW4xjXYtVsh5Cf2PSh96QRbRcuMmNTLZDcDtBNST0NgHasnXURmxhqo
+    nlF16s6ZnExY1kkiyU3XbmAq/UHPkeF/lmJXTHXYU2Uk1nq1wCSHxKpfg40D7v6SpwTrks
+    ozgfiH/UBAbQxtruqE5qrpzF9wwSf0dUFaOsSOuepEykXIufsrbKbwWt88wuxtC3EO2Ohe
+    aQP6l5peBETAbMbCUUrMlpDzX/iYqpWHhhkuJteI7K/34E10kxXRu9kQ9Yxz91KWVHh1mm
+    5sF/yJ+5CE+rXoqH+soQSVuVINZsKlnMMbfA6ysjl1QdZcUauXbVXZ5DiS3g
+X-ME-Proxy: <xmx:j847ar2E3odeoKaMGsLVMwjTFaTF8lVUUXn1kwJ_GiFKqsLKkTXp1w>
+    <xmx:j847alO1ppDq5ehSS1WZXmNeD2CIZKvnqz_bgslW9I_nGEMlxdhkjg>
+    <xmx:j847arQKQdUgvCggDOoBDlgAu17N4oLk_IXNBa9dIeeS7PSP_jvZBQ>
+    <xmx:j847agE10SgRUgRg2ZUB3jYpLk-027wOlmnk7aEjw9FoEVfq-o72sQ>
+    <xmx:j847ak4h1h-_EYk4PBGiujMCnAHihXqPj1AuWYYSGNYpbqF9LZXdMoFc>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 24 Jun 2026 08:29:23 -0400 (EDT)
-Date: Wed, 24 Jun 2026 13:29:17 +0100
+ 24 Jun 2026 08:33:18 -0400 (EDT)
+Date: Wed, 24 Jun 2026 13:33:17 +0100
 From: Kiryl Shutsemau <kas@kernel.org>
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Cc: marcandre.lureau@redhat.com, david@kernel.org, 
@@ -62,11 +62,11 @@ Cc: marcandre.lureau@redhat.com, david@kernel.org,
 	michael.roth@amd.com, ackerleytng@google.com, linux-kernel@vger.kernel.org, 
 	linux-coco@lists.linux.dev, virtualization@lists.linux.dev, x86@kernel.org, 
 	yilun.xu@intel.com, xiaoyao.li@intel.com, chao.p.peng@intel.com
-Subject: Re: [RFCv2 PATCH 2/6] efi/unaccepted: Set unaccepted bits for all
- hotplug memory
-Message-ID: <ajvNXyYwb7FXAJhP@thinkstation>
+Subject: Re: [RFCv2 PATCH 5/6] mm/memory_hotplug: Support ACPI hotplug/unplug
+ for coco guest
+Message-ID: <ajvOP9NwqNstgNvl@thinkstation>
 References: <20260623101739.79695-1-zhenzhong.duan@intel.com>
- <20260623101739.79695-3-zhenzhong.duan@intel.com>
+ <20260623101739.79695-6-zhenzhong.duan@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -75,67 +75,33 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260623101739.79695-3-zhenzhong.duan@intel.com>
+In-Reply-To: <20260623101739.79695-6-zhenzhong.duan@intel.com>
 
-On Tue, Jun 23, 2026 at 06:17:33AM -0400, Zhenzhong Duan wrote:
-> In coco guests, hotpluggable memory ranges are initially unaccepted.
-> While a previous change expanded the unaccepted memory bitmap boundaries
-> to include these hotplug spaces, the actual bits inside the bitmap are
-> not yet marked as unaccepted.
-> 
-> Walks SRAT a second time after the bitmap is allocated and sets the bits
-> corresponding to hotpluggable ranges.
-> 
-> This ensures the bitmap state accurately reflects all static and hotplug
-> memory ranges before booting kernel.
-> 
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->  .../firmware/efi/libstub/unaccepted_memory.c   | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
-> 
-> diff --git a/drivers/firmware/efi/libstub/unaccepted_memory.c b/drivers/firmware/efi/libstub/unaccepted_memory.c
-> index bfbb78bd7b8a..01bed8e751ca 100644
-> --- a/drivers/firmware/efi/libstub/unaccepted_memory.c
-> +++ b/drivers/firmware/efi/libstub/unaccepted_memory.c
-> @@ -92,6 +92,23 @@ static void update_mem_boundaries(struct acpi_srat_mem_affinity *mem, struct sra
->  		*(ctx->mem_end) = range_end;
->  }
->  
-> +static void mark_hotplug_memory_unaccepted(struct acpi_srat_mem_affinity *mem,
-> +					   struct srat_parse_ctx *ctx)
-> +{
-> +	u64 unit_size = unaccepted_table->unit_size;
-> +	u64 start, end;
+On Tue, Jun 23, 2026 at 06:17:36AM -0400, Zhenzhong Duan wrote:
+> +	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+> +	for (; range_start < bitmap_size; range_start = range_end) {
+> +		unsigned long phys_start, phys_end;
+> +		unsigned long unaccepted_one, plugged_zero;
 > +
-> +	start = round_up(mem->base_address, unit_size);
-> +	end = round_down(mem->base_address + mem->length, unit_size);
+> +		range_start = find_next_andnot_bit(plugged_bitmap, unaccepted->bitmap,
+> +						   bitmap_size, range_start);
+> +
+> +		if (range_start >= bitmap_size)
+> +			break;
+> +
+> +		unaccepted_one = find_next_bit(unaccepted->bitmap, bitmap_size, range_start);
+> +		plugged_zero = find_next_zero_bit(plugged_bitmap, bitmap_size, range_start);
+> +		range_end = min(unaccepted_one, plugged_zero);
+> +
+> +		phys_start = range_start * unit_size + unaccepted->phys_base;
+> +		phys_end = range_end * unit_size + unaccepted->phys_base;
+> +
+> +		arch_unaccept_memory(phys_start, phys_end);
+> +		bitmap_set(unaccepted->bitmap, range_start, range_end - range_start);
+> +	}
+> +	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
 
-We can get here with start > end if srat range is less then unit_size.
-
-> +
-> +	/* Translate to offsets from the beginning of the bitmap */
-> +	start -= unaccepted_table->phys_base;
-> +	end -= unaccepted_table->phys_base;
-> +
-> +	bitmap_set(unaccepted_table->bitmap,
-> +		   start / unit_size, (end - start) / unit_size);
-> +}
-> +
->  efi_status_t allocate_unaccepted_bitmap(__u32 nr_desc,
->  					struct efi_boot_memmap *map)
->  {
-> @@ -169,6 +186,7 @@ efi_status_t allocate_unaccepted_bitmap(__u32 nr_desc,
->  	unaccepted_table->phys_base = unaccepted_start;
->  	unaccepted_table->size = bitmap_size;
->  	memset(unaccepted_table->bitmap, 0, bitmap_size);
-> +	parse_acpi_srat_regions(mark_hotplug_memory_unaccepted, &ctx);
->  
->  	status = efi_bs_call(install_configuration_table,
->  			     &unaccepted_table_guid, unaccepted_table);
-> -- 
-> 2.52.0
-> 
+Accept TDCALL under the spin lock will kill scalability.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
