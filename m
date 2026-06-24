@@ -1,211 +1,189 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011068.outbound.protection.outlook.com [40.93.194.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6305C3C1981
-	for <linux-coco@lists.linux.dev>; Wed, 24 Jun 2026 14:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82FE3BCD3E;
+	Wed, 24 Jun 2026 14:23:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782310731; cv=pass; b=D+/foywWWK0qLqoD4KjTEXXcmOlcFtWSGW69kmTYl0XV4xDOVyMzDgjL34xvhinnqBIJ32u1QxhDXDsUn9kwQBl3dU6Il3N5BpogJHS9JYJ/fKcEO7eL8Qo5++VqdX8KXAQYuc+VagVls1fYwHmQ/Ek32kZw1WgAk8sT98DJ0Cc=
+	t=1782311020; cv=fail; b=ffxhQiBDyzVfAMhGzV6LkWypYF6/lHKJwDEyw/ExyQqS2xBsHkZmW6FBkE9E6ODd4BtLY1CUJjHircFv5XHenrj1N7RXcb8vCo2ouM8Wu4Tk8jh3WBEPMmLnL9UbNMB1JoIzNGfsxSiAsHEOm/JqaApWAmSUOzDzkiSv1K6US7s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782310731; c=relaxed/simple;
-	bh=S43KLHfWZf4rr+LSchiMooKQ2vnBu5Vtd0C00yl/idE=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TbTPXU1ryvwlb6LHhX+9IOU/grQw4pnJ5BS2eJ+eYuQclIdDMGJIxQrne67aGQYOCjXpuBxF201JizP8CCmeNrG9l4go4NQCoa4oryWp9AcWFIWW2FS7Jh853mvPIosNW70R1+KNiuqdxZFffekonxM/Mpz9v1NLeGw1tlNMzJE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P5+8kZKR; arc=pass smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1782311020; c=relaxed/simple;
+	bh=sSJHy08IeXPUlXvX6nOxnJ2RDt5RPf2xYznHUFOzRSQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=swbu6HZ4h+92YgjTnf6dr+s7KZgD7I1QyN2T6IN6e+QwDu/i8nr47unpsVB7wKFVdL876StnQj7nwgJc9ZV5J60ukyUbbggItZqvBTsUadehc6w93ks5edcPMrnUKMpyn8/kDMtglunQswScUfE74xZHnJTMljqIZZbNocOCqnc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=a+Slyn1A; arc=fail smtp.client-ip=40.93.194.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P5+8kZKR"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-13986d61b4eso2706784c88.0
-        for <linux-coco@lists.linux.dev>; Wed, 24 Jun 2026 07:18:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782310728; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Zttkbok5kFqR4BcVrrb/kWcBtu2uVoy90UeWbu+Z/XDs2v3oyqTgcx5Oy92GPGTN5J
-         leuCO4vFX6jO7kHGdxp2gADGwleCYdtZDMVtTArmojESSNJzFmdNkyDAHsCNOaYjkub6
-         Ny7qwLFfjYIWmATYl6Ag3VfPRBQheN8Mnh78m4vbVzFu6mKcMXz7H/aPeBvJTEKK4IA6
-         IwCOiyUFg2GR73oKpzD2V0mnoLod04LLC6VhY/nMQxAs9vXg3YLedQ6QepR8wQWMYFGX
-         BRKOmy6FqKkSlbYMbVVvOc3Pv7NqvQbJMqI244YP5Z7z6E4DdfkZl4Hk24Z3MISJGeXE
-         HjGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=ucZ6vleVNv7XMe9m+p1ud+LWxJsaO5xEtX2/mrf+WGU=;
-        fh=8OnMaF3bC5ijhuWO9GJXs27MHdfV5bLGehq0QuRIwRw=;
-        b=D2iw+3wRdKlmdioYqPaoeqMSX7hHhpFl+yWW/djF/1XRolV20iRR3kP8b/iXF24DPo
-         McU+ZtzV5VkN1RSCHQF/NHXZ6U7iu0i7+p3L+1FgF4GJRdJYa5Zz69JrGAv27a1xa6/X
-         qeyKWQFZHOFgL8TAv25TxFg556LBkVzDALLbATLOwXXalacUZWVrHV9bmDnSsSZj/yeW
-         E2h/PkgmUedv9nzUgwdUy8bV772fnOtfj5OsJuBMt3rQ0ypVyl8d/uw5LVb4mMde02WP
-         Oatbsz58+MkhReKyhbhBzkO0vfxOpELB4vtRTna44kN1zCuVZuqstyiKvwyxP3cQS1xk
-         l68w==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782310728; x=1782915528; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ucZ6vleVNv7XMe9m+p1ud+LWxJsaO5xEtX2/mrf+WGU=;
-        b=P5+8kZKRv/YA3jNGCGCe9GUk1l5V7EsQr6UA3HXZrWlZD4NDe8lfHjBkTzOmM0394t
-         YtqIYlLXnZffXofgUBvcm35HC83J0/ws1Y0BUVrwigItu3fVNTd7GFxC0mzM4ivsCzJT
-         6GsYPbMYi1Gga+DFZamNCnn3FdOgKnvu0FrjZiM4sTEuv9jKa2VNfUGS6QxE26zwdgoh
-         ISmyOyGtYbfElUJMMoP22awSxfTvOt8fh+Vwy/R4jR9okXiKtq4hBiwiIoFwAmFwz77A
-         nCijQLABWaaMEij5MspRMcBFGH6G1kv4OIGu/nB/gfmQ2D0E4sU156hz5tzRvzwoksKa
-         qsag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782310728; x=1782915528;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ucZ6vleVNv7XMe9m+p1ud+LWxJsaO5xEtX2/mrf+WGU=;
-        b=YSWGQ0mQjFVjlIBATJvoEti78ln5fj+86YawZwxDRHVdQzgFM6w2RXX8tbzgvR5hXH
-         HYtCFnOuuXfeNuJhuIoYIZFNBPe24/5fwHoo/YvQ47a4wGGDIOe0/aNCFnb8FVz6hXiB
-         J76jvS0tczJDDtofjE8c51DhszltNgXy8yRRwmJhPlyakF4fk8C4ZhDtAH8T+ADtkm6+
-         +zjFs0DTaqiPhKjL8QryOrst7g33lnD15rnQQeXT8RapDLexNJtn9NztkbxKxsZUWUDG
-         5HDeM5Kj/lk1nKeyUL0vN2xzv1FaZCf84guR+7vfiyK/ulNu0HlrQ5TTnlRI1DpsBlx5
-         DxdQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8bCKj7PRi5CqiB+xgrvUtjEMSt/P1tcrPtXn0luMLsXPUnLiP+7cj/UawZ5O82GlGf/VAWvd6qpBpx@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywf9s746pdUdkKLtxINgVEb/07GPCeVpnBgSuJUYsTotggJzlNe
-	DD4abyOa+hqbgBOruJkKkxVZWFWxcK+gi12NiWDBlnTIBJHxorNVAiv4FZ3wH+nYjV+rpAdNfeY
-	P8wdM7HPrVAQ2mfhW+8s4rl+7BlRdf+iTyhdJGa5P
-X-Gm-Gg: AfdE7cn0A+2jNbwOfhXA3+qgCCcv/jj0cawqsyKRN3i6oKA5ixH2SPzS9huqex2vJsz
-	h9G41w/vABlp78DkkBd9HcfKsy3FtapBBckqeq2ZEWUzuR1L78XmGZ5OtEvboli+J3d3hFIjqF9
-	FZbrhZAEJq8L3tG4vnOHOoESS8lMn2Dud41ZyVUljxoq0Bd8uvUp/S9J1po4JPETcPWpmg6i77Y
-	eK1u3yIlN2X6Xu/Zxsxs94AwE2QKGvwflj0GtnfJfV/mdl04j1z2t9rKiOL7577+X6uUE81AUiQ
-	1bcIXBaal4JqKJ16qfJDBlG0/3HD
-X-Received: by 2002:a05:7022:43a0:b0:12d:de3e:86a8 with SMTP id
- a92af1059eb24-139ad72bfe4mr15983384c88.38.1782310725876; Wed, 24 Jun 2026
- 07:18:45 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 07:18:45 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 07:18:44 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <3ec15992-2a29-434b-8c99-8b86bfcf007e@arm.com>
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-8-9d2959357853@google.com>
- <CA+EHjTw6x-mxDnJjnhE-6SV73tMrb0paKDTtOC2j6zJ1fXZDLA@mail.gmail.com>
- <CA+EHjTxu32nQ+vPV7Zmcw76_-V4g2_g=P_UzRnnO2dP1PFO2ww@mail.gmail.com> <3ec15992-2a29-434b-8c99-8b86bfcf007e@arm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="a+Slyn1A"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=El7098Bz3LcKh9v+qW12go1kitYEUejShE1pgjlNPNtPMF3ujM196v9G+FF+Wa7qWdqDwoGuEqc4GXI3upBFK3m7u5H1wWM0b30MOGlFTd0C5juepAp5n8ZpzgGomqWWcPYcZ9uay/U0zeRskE/lk4Cpwia+EHABtmq1/OvGL7pNDVviPIZi7OIjPsCri0mLGC+QGIkt+UG7N+xGkGZQuJlygXYjn5qOEiaV6x0Rzipe4UxYR6dBDqpPJnLIxSmZHkauQKm9azl7FnNVRQrpmRRXawx9eMR4De4ElLnjJFQpm7RHIxRSylass2K63i+AVe0EMzghfMUYKGF+I1sLFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Jz+46/RoVSyvF5KwRSS5OXmsw+HU4OKwc3ca61cqU38=;
+ b=Z/AEEoLA7weg3uvarCk3ug+qj3Ips+j2sOXF62jFo9YcXRIfGhlf7N4umj83Haqf7wsXnn8ILqfpjZpQzKgi3pOfI+I61C3UdQfZ5LA1tkOyTqs/EtcMzMiR+4aCWQkAunILUE0rBtZQQBJlryGvEiGdES1bH2rZjD0ZiWqbs1dh2xXys3bTs9SuOwlZdE5eOQ5XBFhoMBde+fzbN68KkcC6ZqS9VenR+XMU29ty1uu1elll32bMWpWUIJbeSWPKKpKTn+1Gnd2Ulu0BABqy72Qk+JDBTQQjIzUepzAIfDkTOmUTs0GeWNT6MdKKiSjbyfaQZjOC6MRDhjk/7PJy1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Jz+46/RoVSyvF5KwRSS5OXmsw+HU4OKwc3ca61cqU38=;
+ b=a+Slyn1A4mo6gObGaIx+KDJj+di/MKW0yeMVNpJEzJR7Oqn8renF14hdfIFSvjpTjO+YInLUXjyPJD/66SmUwNndEcOEEarpf6Zd3kEvihZwanHLculbzVhNajTCrQTnSd3Z+W0rV7yc0OaC6Bt28YKUB8L+wCG5oT6h8Wb/j/M=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB8660.namprd12.prod.outlook.com (2603:10b6:610:177::5)
+ by CY5PR12MB6346.namprd12.prod.outlook.com (2603:10b6:930:21::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.15; Wed, 24 Jun
+ 2026 14:23:34 +0000
+Received: from CH3PR12MB8660.namprd12.prod.outlook.com
+ ([fe80::87aa:52e5:4b72:d5f3]) by CH3PR12MB8660.namprd12.prod.outlook.com
+ ([fe80::87aa:52e5:4b72:d5f3%5]) with mapi id 15.21.0159.007; Wed, 24 Jun 2026
+ 14:23:34 +0000
+Message-ID: <99b5307e-e892-4d82-9e85-4f664b4d29b9@amd.com>
+Date: Wed, 24 Jun 2026 10:23:21 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFCv2 PATCH 1/6] efi/unaccepted: Support hotplug memory in
+ unaccepted bitmap via SRAT
+To: Kiryl Shutsemau <kas@kernel.org>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Cc: marcandre.lureau@redhat.com, david@kernel.org,
+ rick.p.edgecombe@intel.com, pbonzini@redhat.com, mst@redhat.com,
+ peterx@redhat.com, chenyi.qiang@intel.com, elena.reshetova@intel.com,
+ michael.roth@amd.com, ackerleytng@google.com, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, virtualization@lists.linux.dev, x86@kernel.org,
+ yilun.xu@intel.com, xiaoyao.li@intel.com, chao.p.peng@intel.com
+References: <20260623101739.79695-1-zhenzhong.duan@intel.com>
+ <20260623101739.79695-2-zhenzhong.duan@intel.com>
+ <ajvLaBs62bDoxC3W@thinkstation>
+Content-Language: en-US
+From: "Pratik R. Sampat" <prsampat@amd.com>
+In-Reply-To: <ajvLaBs62bDoxC3W@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BL1P221CA0038.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:208:5b5::9) To CH3PR12MB8660.namprd12.prod.outlook.com
+ (2603:10b6:610:177::5)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Wed, 24 Jun 2026 07:18:44 -0700
-X-Gm-Features: AVVi8CeUzt8nV1nzvS6dw32sjloWQ_ALAuG02W0rgNOvY8pSNnpach_kfV-0O1g
-Message-ID: <CAEvNRgEKB0FhD=qhyX=0m2o+d02Jz6n6njdbFmjyiUpK3Up-4Q@mail.gmail.com>
-Subject: Re: [PATCH v8 08/46] KVM: Provide generic interface for checking
- memory private/shared status
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, Fuad Tabba <tabba@google.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8660:EE_|CY5PR12MB6346:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7403ff75-4e57-40c1-1e72-08ded1fc2c7c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|4143699003|22082099003|18002099003|6133799003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	VWxAI8iGir+nHlw/JOugUVEC1nACOQW+GqRlYAfCNUpPE0ssZOnvPKCauTqRCHJwB46WbLqPT+ns5wBUiPHbefqPw5q1SS7UwIhmXyzdLd7sQfCWF7sbftMByAORC37ua6CRxF5jaBKnu1bTN2upsheGYH6L36OLbcDMQ31cei6dLP79TwHO96QDyVnz9W7d2OePdZgfDlzgWyFHfzWx6u6T4Xee2uC/KrnwzehkPvpYuYev5lQwBHKR/Pt/gTtfeNU72SKzH+NYT0RdhyEbnOefkp5r7VlMM9cRRY90CI1g6nf/Pmy0AKoOHtwDDlz59TNHfavwyAt6C98sLbLTZIeanzdz5CpWAXiBZz8JQ6n+hdCFClBp88SqAUSfsnb6Q6jHdHM0gvh2iSQY8tqxFz2rEDWRXGFBxGtaTZXWxB8v3bHJsOmRT2sGNE24Nox1KLNQZB1rIi9f1gckloOL+ZDerJ7UbcaY1KuAN3LYCxCCM3rLiXVcVek/R0+WuasxlkZaLmNCupW1N8S1P+AIvS5UjQn8T6EH5c/7VsRovhcGjIAb8Hz7fpAzQc1/FvaczGvc5eEC8LB1qv5nY+ChlUCpe76PHrp826KilRxa4D6YShAWx0tiNXzww9jO7Oth7F7x/706Yp/h+8Vn2RtalxtdfZxz/g5GgL0etbNvlb4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8660.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(4143699003)(22082099003)(18002099003)(6133799003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Z1d4N2luYWpnWmF2VUZGWnUyL1hjN3F4eHc0NG0xbGJVam5lSW4zcGtEYmd5?=
+ =?utf-8?B?VS9Ya3R1Tk1xMHZ2TFpnbGJDdExzZ25rSjlEUGNkV2xDK1p3SE1CV3BrdFlU?=
+ =?utf-8?B?Y3ZqZ3pzSko0Q0tPVmtmTVhqRW0vYjFoSWVYbXAvR2RJdXhzMnZUWTZMZHFB?=
+ =?utf-8?B?eHBqOUpCaDg3Zmk1TEg2NUU2ZGo4RDRDUzIrdXZ4WDVNWUVDUWIvbEVsRW1P?=
+ =?utf-8?B?Q3p5SGJnZ3RRZHVuSjVlME1aSU84dVlUc3hsVFdZajZBaXRBRXcxTXFWa2tl?=
+ =?utf-8?B?RmJvRnBKdVBqeWExUVUwRWFwY3NvTTRwV3hJVFppdCtUK2g3YlAwUWEreklz?=
+ =?utf-8?B?NTdoSDhwMmtWN2FDdlhGZFNURXZ5T1lDUUNWZGJmRWQ5VjdmS0pwYkpWcnh1?=
+ =?utf-8?B?TFlJMzZhSXh5cXJTeUNMMUxNVlpENzkvd1p5Y0J2OXg2dE0yRDhBWXMxUlEx?=
+ =?utf-8?B?N3ZMZWY4RGtwVGlFUnRhdUN3VFJuZ2dKN2ZzUlM3dTRWaFE3L2VVR1ZwdDJ2?=
+ =?utf-8?B?dGxOSHl2WnE5N0tBTEVVM1c4aHpJNnZKc2xjMk9kTmUzTEpaM3BQUGlVUUpS?=
+ =?utf-8?B?VEJOeFVVcVFSVXJYL0lOTVUwaEM1dTBlYnl5UldJb0tnLzd2bkR3R2UrYVE1?=
+ =?utf-8?B?a21FRHZVbjMzcTlLNFRaL0hwT1VidTZDYVVENWFtRlFTT20wT2F5NnNoTkpu?=
+ =?utf-8?B?RjJudnNsSkhHRXNmdHZCQXVDaEgrZ0lsYXZLWW9SdXZLblM4YURKSmlScC9k?=
+ =?utf-8?B?Zmp0UVVWVjdjUmw0dUxCNldPZEFSSjNUbXVkKy9pa3Ara2F2N2hSaUdRRnht?=
+ =?utf-8?B?TGhBYkFKNFVKVVBIbXJCb2RLV3ltQkJaU0xIcURVOUdXT0lnOG4yUmlrcFR5?=
+ =?utf-8?B?Zy92U0ZwQlRQZ05wcmpXT2wya3hGSThZTm5DVDlHbXZRa29mVUkxYjNBb3dQ?=
+ =?utf-8?B?RVNFWGZsUkhta3hVU0tlckZ1Sk9kRWdJU3UvMGtkeHJ5Ui9rSUI5aVVTd0wv?=
+ =?utf-8?B?NndMVXdKQzBTTTJVVS9sSDNraXJtUWx4cXk4THBFWlV0bW55dmViUTExMUpP?=
+ =?utf-8?B?RnNpWTZKY0ZmZk4xdkhkR05INDBLU0JpcGd4dUJtd3lOVkM5cEgwM0lBWDY5?=
+ =?utf-8?B?bmtsS0k5cm1CTkRoQ3pOSXpFaEhoMVM2NGhuY25jc05pNGF2d2I0UFZmWlV2?=
+ =?utf-8?B?RGlHMVVKMU9kcnUzam5tTlFFSjluNjA4UzdFcnJnbW9EV2VPOXJKRlo4UFJN?=
+ =?utf-8?B?RG8va2RrVnZ6UTEzNVhEM1lSSmtENTNuekZURERlMi9sWDFLVHhuK0VFZ2Rk?=
+ =?utf-8?B?OHlJWEZLV2RveVJ5bjZWSlh2aXA1NFlPRzFZTTRCNVpTQkdDc0JTNURqUFIy?=
+ =?utf-8?B?RGJDN09TRjV3ZHdrcFFwdWx3RXFXUkY5eVJVV1J0eDVGYmlyVFJoRGNTcDFB?=
+ =?utf-8?B?SkNuNE1hdUwxVnFEZkw4RHpQRDY0cHZDOER4M3o3OG4xdm5CTWRPMHZoT0po?=
+ =?utf-8?B?NnE4TWsyTVNGb0d4ZnFpMGgySkFGRngwZUhWbTNOelZ6dXJqMG84VlRweHNo?=
+ =?utf-8?B?S3o5WG5mRGFLOTlWN3B2Qm9yT3pFVGd0MmVzR3MzWHVaZkZxQjdNbEdWSkph?=
+ =?utf-8?B?amQyaE1tWFFybGVsV3Fmd0pDNHR3RDdvem9rMVprRWlJSVVZbWpQUUxBUkhI?=
+ =?utf-8?B?ZGtJZTcrVlFNUWhBRXlxWXd1MEtRdWorSVVKUlltZzBwbmFMTWVMMGt1NXE0?=
+ =?utf-8?B?S3U3d0ZKVERhM3pDRk55aUlSSENOeXhqSDdoSllkMXhHb29tUEwzZ0hmbGtu?=
+ =?utf-8?B?VERzVUNrMElWUzJqZGIxYkFGQkhwZmxDOFBrRGQvbWlkYm82T1laa0Y5ZUVl?=
+ =?utf-8?B?NEdhVU11c2lwNUY3MTVKNCtKam9wTmRPd0NTNktULzBJWkRmUUcxcEh3cWxE?=
+ =?utf-8?B?RjNOVGp2UVVPcUtiSlFhT1Q4VXd2c3pUZTV2MzZkMEloNmJoZDhxeE9jclNk?=
+ =?utf-8?B?UmVqMVlmNEcwaG1nU0tLeEgySmN2Qm94eXFLeW95S3doUmpzTDZUODVjY25x?=
+ =?utf-8?B?ZEw4V3FoaHhhbkZ1eHVRN3FQTXVpRjhpOUYrRENpN2NXZ0hqVERWY3V1aU5W?=
+ =?utf-8?B?QTVoelhtS3Z2N3FYRGNwcC9kTy8wM1RVa0FUZGNRejFqdlBSb3g4K0ZzOTBz?=
+ =?utf-8?B?alB5QXVHT1ZmN3hGd1Y2di9TcytMbkxDQnp2SVpZN0ZsOXdBaExCdXgvaFVE?=
+ =?utf-8?B?b0tZVGZVNnJtZm43YWVDcDFVWlNRMGxjcUtHdllXNjMvZTNRb255bjh1bHRt?=
+ =?utf-8?Q?Ndfv5gpb3AJQUy6+WA?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7403ff75-4e57-40c1-1e72-08ded1fc2c7c
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8660.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2026 14:23:34.4318
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QRwi2CYEFOPKXnc+kNvWYqPkSopLeGUWUVAIESXaUwDENor9dosUUfHKGpFs0xQzrsuqHiqkpLu/N1H/eQjOdg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6346
 
-Suzuki K Poulose <suzuki.poulose@arm.com> writes:
 
->
-> [...snip...]
->
->>>> @@ -2546,7 +2546,7 @@ bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
->>>>   bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
->>>>                                           struct kvm_gfn_range *range);
->>>>
->>>> -static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->>>> +static inline bool kvm_vm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+
+On 6/24/26 8:25 AM, Kiryl Shutsemau wrote:
+> On Tue, Jun 23, 2026 at 06:17:32AM -0400, Zhenzhong Duan wrote:
+>> Currently, allocate_unaccepted_bitmap() only scans the initial EFI
+>> boot memory map. This misses hotpluggable ranges described in the
+>> ACPI SRAT. Without early tracking, hotplug pages are accessed without
+>> acceptance and this triggers guest crash.
 >>
->> Should have read the Sashiko review first, but where is this used?
->> It's not used at all in this series...
->
-> See below:
->
->>
->> /fuad
->>
->>>>   {
->>>>          return kvm_get_vm_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
->>>>   }
->>>> @@ -2557,6 +2557,16 @@ static inline bool kvm_mem_range_is_private(struct kvm *kvm, gfn_t start,
->>>>                                                    KVM_MEMORY_ATTRIBUTE_PRIVATE,
->>>>                                                    KVM_MEMORY_ATTRIBUTE_PRIVATE);
->>>>   }
->>>> +#endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
->>>> +
->>>> +#ifdef kvm_arch_has_private_mem
->>>> +typedef bool (kvm_mem_is_private_t)(struct kvm *kvm, gfn_t gfn);
->>>> +DECLARE_STATIC_CALL(__kvm_mem_is_private, kvm_mem_is_private_t);
->>>> +
->>>> +static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->>>> +{
->>>> +       return static_call(__kvm_mem_is_private)(kvm, gfn);
->>>> +}
->>>>   #else
->>>>   static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->>>>   {
->>>> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
->>>> index 6669f1477013c..8b238e461b854 100644
->>>> --- a/virt/kvm/kvm_main.c
->>>> +++ b/virt/kvm/kvm_main.c
->>>> @@ -2627,6 +2627,20 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
->>>>   }
->>>>   #endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
->>>>
->>>> +#ifdef kvm_arch_has_private_mem
->>>> +DEFINE_STATIC_CALL_RET0(__kvm_mem_is_private, kvm_mem_is_private_t);
->>>> +EXPORT_STATIC_CALL_GPL(__kvm_mem_is_private);
->>>> +
->>>> +static void kvm_init_memory_attributes(void)
->>>> +{
->>>> +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
->>>> +       static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
->>>> +#endif
->>>> +}
->
->
-> Here ^^ as the static call update ?
->
->
-> Suzuki
+>> Introduce a lightweight ACPI SRAT parser to scan these regions early.
+>> If a region has both ACPI_SRAT_MEM_ENABLED and ACPI_SRAT_MEM_HOT_PLUGGABLE
+>> flags, expand the tracking boundaries. This avoids pulling in the full
+>> ACPI subsystem while ensuring the bitmap covers both static memory and
+>> hotplug memory.
+> 
+> Ugh.. Parsing SRAT there is ugly. I would rather avoid it.
+> 
 
-Thanks Suzuki, it is used here. kvm_mem_is_private() was and still is
-the function used to check if some gfn is private or shared. Hence, in
-this patch, the usages of kvm_mem_is_private() were not
-updated. Instead, kvm_mem_is_private() is now set up as a static call,
-and the static call is hard-wired to kvm_vm_mem_is_private() in this
-patch.
+I agree. Parsing it here means SRAT gets parsed twice, which doesn't make much
+sense.
 
-In the later wiring patch, all the places where attributes are looked up
-are updated all at once: if conversion enabled, take gmem route, else
-take VM route.
+> Do I understand correctly that we don't have a way represent pluggable,
+> but not present memory in EFI memory map?
+> 
+> IIUC, EFI_MEMORY_HOT_PLUGGABLE is actually present, but unpluggable
+> memory.
+> 
 
-kvm_mem_is_private() is special in that the if-else is done at KVM load
-time rather than runtime, and I believe that's for performance reasons
-since this is checked quite often from the KVM fault handling code.
+Right. And repurposing EFI_MEMORY_HOT_PLUGGABLE (plus updating the spec) would
+likely make this messier: by its current definition it describes cold-plugged
+pages that may be removed, not pages that may be hot-added later.
 
-Buut I think perhaps Fuad was referring to kvm_mem_range_is_private(),
-which is indeed not used anywhere. Binbin also asked about this, I think
-we should drop kvm_mem_range_is_private(). My reply to Binbin is at [1].
+> Maybe it would be better just allocate bitmap upto maxmem?
+> 
+> And fix EFI spec to add pluggable-but-not-present attribute.
+> 
 
-[1] https://lore.kernel.org/all/CAEvNRgGbBcrX5Fw3vNTsTOBNC=Ypi=9-S07674yPxLU9i4akjA@mail.gmail.com/
+I am currently working with the UEFI community around two proposals for a spec
+change:
+1. Add a new attribute, as Kiryl suggested, or
+2. Add a generic new hotplug memory type that represents all the memory that
+   could be added later.
+
+In either case, we could then precisely allocate the bitmap by parsing the
+region with the attribute/type.
+
+I prefer (1), but I have RFC proposals, code-first edk2 changes, and the Linux
+plumbing ready for both approaches, and plan to post them in the following week
+after ironing out a few kinks.
+
+Thanks,
+--Pratik
