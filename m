@@ -1,93 +1,99 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062232EC09F
-	for <linux-coco@lists.linux.dev>; Wed, 24 Jun 2026 16:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F062033FE0F
+	for <linux-coco@lists.linux.dev>; Wed, 24 Jun 2026 16:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782317259; cv=none; b=dHmoQ0lf9RdyWFBGg077zdVTzDQ9D7KpC63M68NSaYr06+1Ij680dQo0b444zf36ucQAURaERcu/QIR0FwOFnU9OKDI4AhjW5zlmVWnPuXVXf6aqwKvpMJyp5rM/vkf8MUTiw6Ta0F+ySAglGQcq4W9tsD5w4Fe9NYrth+fbCMc=
+	t=1782320227; cv=none; b=iuH+nTMgIyEqJxa3ECX0Zm0YCEL7NuxjB5PV3/X5+LbfUwqCwjDucCYI0CSKbAH+vhjGZqt2pfENF4x53W+AGn2ymTuXtUCiY48Qf6glCfSDK0KG9P+xbK9v5bR6rO5QciMpBl7koqLIWqum1kKoBbqealEicJjYE/FVEg2K/uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782317259; c=relaxed/simple;
-	bh=11GcyBMUEaMVpP2tNUELZmobxFuiGR8sDyQRMOunA+o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bBLV6BJK60LbofK/zQ5QMQc+lwWD2TIFNmwpBdvhEEvVdBVyzLgWaXcyO6Ulgk7j25NcdBzU5WQN/v9KA3EjP/0LDgyfYbPQwIga50dxlCGz4VtwcbYMg4WvvCR5bXJLkQJQ5abyAISvSbTHvm043epdzKjISioXZRKSToehQgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EN4FsWHK; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1782320227; c=relaxed/simple;
+	bh=sFclBlGuLlklutyWalxOxdLRxtPJWxF7xb2dfh79PCc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=q9qW3TpZN3Qb4rzKoLac6BfGYu6D8Kws+14cKYD3+cHiik3av6VhtmiywmeLnkqV8ealhGcaxxn9+4MTWX5XKogNDtsbHWdub8n9rMDt/GKzc6/FxcGlU/iz4vZpEeOFPFK0aLsENS/IWd7r+WL0QGnqKVSeaeZdUzROC/viChA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZjT+Qk9A; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EN4FsWHK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782317258; x=1813853258;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=11GcyBMUEaMVpP2tNUELZmobxFuiGR8sDyQRMOunA+o=;
-  b=EN4FsWHKVsCZQXYPNFFkfbqQSZw1Nwm/eq944zGJA9Jp2p4cHumkzN9U
-   6sx+ANQJBOlXGE+7z+HXYsrtUxvwDmVz4W8WtpfAK2nwGljl/ScO+jWdV
-   HdFPbjed+7eej2cQteWA34SJoBOuk6QP1kf19q0uyyLyo7r5ALxilWNDH
-   ubv9SOArhyasN0QsEEpqMLoc+EV+cdsKwFswTBV8wiHxG+w4KIU1rwKvs
-   SQ6eLAEneeIJOWfpDpFCNtuzW6jKT9+uGMB8uifafWDmO0HnADIyWTbzk
-   51t6BwpRGx+rpS6R7OYIMCe54CDX/8eadfebMAFLAQ6Jr3cW/ggE5udgH
-   Q==;
-X-CSE-ConnectionGUID: hdiDYQcBSkWvO+yYRRtG+g==
-X-CSE-MsgGUID: poVf96TbTCO/KeDJBal0gg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="94480815"
-X-IronPort-AV: E=Sophos;i="6.24,222,1774335600"; 
-   d="scan'208";a="94480815"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 09:07:37 -0700
-X-CSE-ConnectionGUID: vXFfLJdiQz++37OKCSPH3A==
-X-CSE-MsgGUID: IkydLMwlSeGusOq1cDIDaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,222,1774335600"; 
-   d="scan'208";a="250073156"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.18]) ([10.124.240.18])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 09:07:31 -0700
-Message-ID: <03aea6bd-4747-4583-b072-5b5b4a825123@intel.com>
-Date: Thu, 25 Jun 2026 00:07:29 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZjT+Qk9A"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c7f0d806f2so3834835ad.2
+        for <linux-coco@lists.linux.dev>; Wed, 24 Jun 2026 09:57:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782320225; x=1782925025; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bTiRAq90VFPvdthoswICGCbbk82NFtmBH/qctXPK1uM=;
+        b=ZjT+Qk9A5Rv4MR+xp8Ub6AhfKb+baw73MSOoVxRMbKzRjqriU9sL1EjBGW/n8YNNhk
+         XJ0IrbXadELWnEvWLj4KRfDRug4nw955hA7Bd1n0K3CCe8Ydjh7kugbkqZZyYV8R0hhg
+         NdHqfN3qfw+WKRC5ZoRcWzB95Ib2GTGXDCUJ4RACPdaip0yacKuydzoJImyLhMTAOsu5
+         jmGV9ds/nx09WNnVub+yfb54Hv5oIHuy8MlT5VAoHCjwUmsVYMWzs2Y4d7ZoIGSxz4JU
+         lgoG6bo/FvrV34fx06LUltlcn/oVY9Lt9PCSA65YT983y1pArl33ZocqWEc9j3nvFJ5c
+         lryw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782320225; x=1782925025;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bTiRAq90VFPvdthoswICGCbbk82NFtmBH/qctXPK1uM=;
+        b=DLSQeRzdvswSJ2HEug9+X5MSzov9vwHKOp1BdzfrLXJWNiqK2FJtyo5cXCJ+Iwliyq
+         p75KPj0wsJnWP6HNz7DGsZS6tp4ygC9iBIezxY0okluIjsPxHsgA0sI4xhiP5/6wMq2Z
+         83jeYCZrEJTKrqWehYUCobJcHDR4tXo3JaWCrLWIrOjF+WWlGndsd3YPB1OlpyGRNQRV
+         p19hyqJ7fRnrNScIKS9P2fSrYom7w7AuZS1vd8ZvA4xHRKwAFRzu0PXilIhl67iRltg/
+         qbdP/kmuRsumPcsMZLe0gVD4hPgbvb7h79s/WZQxSL5YPdpCUtf+v2aqgyV2YFBqE3L4
+         yyLA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr/ftO8PKwknkQydXXDZTzfeK0bbpYJMOgk4LjHoTyZZKWJXcjTSL0xQdxuIYuNrPBQ+Nx+tIk5vOFf@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxj960WXH/9QecVVUi2NDY/wUW/bfd+Gn8fSiBz+kCOxEuJpTx/
+	EcSd6qCKAMifpJnKhUwzD+SWLxxmK/0Tix5+tMxaCLqW7Uf1DHXC8AbQEquSl/B/wvs2SXN8r1Z
+	RszvXiQ==
+X-Received: from plpn21.prod.google.com ([2002:a17:902:9695:b0:2c6:b814:535b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fd47:b0:2c0:b081:84b1
+ with SMTP id d9443c01a7336-2c7e1464d1amr26763135ad.10.1782320224855; Wed, 24
+ Jun 2026 09:57:04 -0700 (PDT)
+Date: Wed, 24 Jun 2026 09:57:04 -0700
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-18-9d2959357853@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 11/22] KVM: selftests: Set up TDX boot parameters
- region
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
- <20260521-tdx-selftests-v13-v13-11-6983ae4c3a4d@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260521-tdx-selftests-v13-v13-11-6983ae4c3a4d@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-18-9d2959357853@google.com>
+Message-ID: <ajwMYCSrPlxg-Fok@google.com>
+Subject: Re: [PATCH v8 18/46] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On 5/22/2026 7:16 AM, Lisa Wang wrote:
-> +void tdx_vm_load_common_boot_parameters(struct kvm_vm *vm)
-> +{
-> +	struct td_boot_parameters *params =
-> +		addr_gpa2hva(vm, TD_BOOT_PARAMETERS_GPA);
-> +	u32 cr4;
-> +
-> +	TEST_ASSERT_EQ(vm->mode, VM_MODE_PXXVYY_4K);
+On Thu, Jun 18, 2026, Ackerley Tng wrote:
+> When checking if a guest_memfd folio is safe for conversion, its refcount
+> is examined. A folio may be present in a per-CPU lru_add fbatch, which
+> temporarily increases its refcount. 
 
-Why TDX needs to check it explicitly?
-
-x86's virt_arch_pgd_alloc() already has such assertation. I think we can 
-just drop it.
+Under what circumstances does this happen, and what alternatives are there for
+userspace to work around the issue?
