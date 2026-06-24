@@ -1,107 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3428224234
-	for <linux-coco@lists.linux.dev>; Wed, 24 Jun 2026 12:33:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A39A6DCE1
+	for <linux-coco@lists.linux.dev>; Wed, 24 Jun 2026 13:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782304402; cv=none; b=Iemje2InPV5dF7FHxcAmD8FsygIvFsKKGa4FTN51T7Avnt/pu+Mv4BVm7wWpTKNmhFieH3zIRRvd4/jcG/5BCUDJQH3ZEnqWnsooB5vaAxnxRx0drwejACATNMfHLotNx6LohXDn+z7zEQrTi0msTVxAcYhEfLq+Y6bMf046U2g=
+	t=1782306102; cv=none; b=W6nphMx9tbfIYhxmYVMt5RCRLCT21XwBm36jp/SeBjBVgu9FcPCGjSb9Syxg5dIRYZsJPm2VnYlQnfVLF2pZSjKfFQOnaQPX3lkjrjPKEO1D3fIuvFXzrpL4IheYeNtjV9CMXNAs1vmRtWUqcmdR9u7AVVsEnQamQKUHy+8PuUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782304402; c=relaxed/simple;
-	bh=aXKEZeAIyTQvGAvWdKWZTpM9Tn7v8MPQIk0I3bgXiwU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JR/FqrAjVicVj1khb/Sm/d0LdJVxjV04IbAJ9PU+5PYvbj9nyXrbJ/6Edxd1/PaVQ75y264d12wN0QaRsLL2P5JFIhh0DL2QbgErWKI148RyW7TuQbd0FFYxZUllm3lyr+Wo3zMrte/sBH7okL9zd8bDr9rz9rItcA/KqD9YN78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZB1jNphk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782306102; c=relaxed/simple;
+	bh=gQmzfH4wFSB2uF8jIaDkyYrCqmG9Xfrcludt8+nB9tU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AnhIN9wRAGXWSbHYzy3pdeQRjqJtxsD/wJF2zkvjBepDEOdrw1Sfzmh5Qc/kMFKJoOe7uNAV3QOeex+VGmA1040njJnourz1iYX4OyN/s2yEYkt1sUgwDjGfTwKkoH9G9KaHn1E4uURT+J+S3oMTt86s9oCB4gUhMZZXBAoiQW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fdUb8Yz+; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZB1jNphk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BA71F000E9;
-	Wed, 24 Jun 2026 12:33:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782304400;
-	bh=Nki/E82hyr5wzO/AYQ3QdWs1GuwADLma1GsoIRocgYM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZB1jNphkHO6MwhR6XuqIIqKqYY9iu0gKejp6yxcLX1F7oq21yymnhbvHzmuu2X5Pj
-	 Vp+mInO7vlxUEtgKaxdQZdSe6BOA8Yb6uxxhNwTP1ARX24J0FvaLWPOKU+tCuoBZDK
-	 rs/T6PP6Yp289i6COE981MCh4bobEWM8kDODAdnr1+XtXLwCLKXFWOEiSWn4XxRLBa
-	 2Jmg3GyZ/rRB9KJrkjE8hpsDyEVvLN+mvYvGaeOlxTAMAfFH2YwGVEYUn1aRpO1N7J
-	 P6oihZBRIdZkq+ugURrxuqPLTayhll/Jcgg1YfMaw5KwJ9HNeGZItwEuBv8wXDYy38
-	 q1KIIm+K5SKvw==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4E2A9F40084;
-	Wed, 24 Jun 2026 08:33:19 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Wed, 24 Jun 2026 08:33:19 -0400
-X-ME-Sender: <xms:j847agv6zFQJ6Lx56W2Ad4SsiRvOg-ldB6AexUeLL31cCY7YoLpJ9w>
-    <xme:j847aqOCde6aTy69J-ZJ7macCNXtZ9cgdkhACmaT_YRaHehyWwaNRJH5qcbHIXZPE
-    Skt63GLQpWw26ymfylH34ojkfWxZE0akXU-e1yvWZrKY2H5VqW-IlI>
-X-ME-Received: <xmr:j847arXbzKtAE4MYHqfHd4KAxT03nQYyEsqwQ5TsclJrcapKPjlnwPBNuFn3zg>
-X-ME-Proxy-Cause: dmFkZTEshFasPiuUqrsCqlwMRprq3eUmLI2Qea4inUfatnVfKbcgTrYCk/YZwKl+RFjobo
-    UKJrX0das8rKVf3QXBESD63zwVytHbUc6Y1UbALzr/gAwy9p/QgDo5dMJZMh+Db6azfrSF
-    hMVBZcH5gVUrD145SS8mpc0HAgSEuRCqOfwe9hQQPGNFikP0flMvElGrfmlv4U25n6y0DG
-    u0CWBVQvazrLfUtEasDGaka78VCXTqNa/Yf5HFs1Ut/jqOYlJICz26w4tbplGi8sdNaB7k
-    ML8jtKLbzQe7NICpn95E+XLFKPoJHnJ9gQy9xPst1WDc7Uy+5MeRf+yZn6Iz6zmG5WAuGn
-    AzzYuc5kqB81AXIuW4xjXYtVsh5Cf2PSh96QRbRcuMmNTLZDcDtBNST0NgHasnXURmxhqo
-    nlF16s6ZnExY1kkiyU3XbmAq/UHPkeF/lmJXTHXYU2Uk1nq1wCSHxKpfg40D7v6SpwTrks
-    ozgfiH/UBAbQxtruqE5qrpzF9wwSf0dUFaOsSOuepEykXIufsrbKbwWt88wuxtC3EO2Ohe
-    aQP6l5peBETAbMbCUUrMlpDzX/iYqpWHhhkuJteI7K/34E10kxXRu9kQ9Yxz91KWVHh1mm
-    5sF/yJ+5CE+rXoqH+soQSVuVINZsKlnMMbfA6ysjl1QdZcUauXbVXZ5DiS3g
-X-ME-Proxy: <xmx:j847ar2E3odeoKaMGsLVMwjTFaTF8lVUUXn1kwJ_GiFKqsLKkTXp1w>
-    <xmx:j847alO1ppDq5ehSS1WZXmNeD2CIZKvnqz_bgslW9I_nGEMlxdhkjg>
-    <xmx:j847arQKQdUgvCggDOoBDlgAu17N4oLk_IXNBa9dIeeS7PSP_jvZBQ>
-    <xmx:j847agE10SgRUgRg2ZUB3jYpLk-027wOlmnk7aEjw9FoEVfq-o72sQ>
-    <xmx:j847ak4h1h-_EYk4PBGiujMCnAHihXqPj1AuWYYSGNYpbqF9LZXdMoFc>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 24 Jun 2026 08:33:18 -0400 (EDT)
-Date: Wed, 24 Jun 2026 13:33:17 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Cc: marcandre.lureau@redhat.com, david@kernel.org, 
-	rick.p.edgecombe@intel.com, prsampat@amd.com, pbonzini@redhat.com, mst@redhat.com, 
-	peterx@redhat.com, chenyi.qiang@intel.com, elena.reshetova@intel.com, 
-	michael.roth@amd.com, ackerleytng@google.com, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, virtualization@lists.linux.dev, x86@kernel.org, 
-	yilun.xu@intel.com, xiaoyao.li@intel.com, chao.p.peng@intel.com
-Subject: Re: [RFCv2 PATCH 5/6] mm/memory_hotplug: Support ACPI hotplug/unplug
- for coco guest
-Message-ID: <ajvOP9NwqNstgNvl@thinkstation>
-References: <20260623101739.79695-1-zhenzhong.duan@intel.com>
- <20260623101739.79695-6-zhenzhong.duan@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fdUb8Yz+"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5aa68cfc182so927519e87.0
+        for <linux-coco@lists.linux.dev>; Wed, 24 Jun 2026 06:01:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782306099; x=1782910899; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qlukBmGw8Sm2tX1xXG0U5Mu1/h6hpq5SqrIdrPAMuCE=;
+        b=fdUb8Yz+QDKfNpOA7P7VwDAyxOuV7eWa34airu/hpU61cb7BJdEiwpOpKK/hBy2UX8
+         yutaYjGqOncZayb7JLccdwA9ylcr+2NOdh47/eag1wCsYhKuKLRbZaUC74r/PK7qMG2b
+         Uzl/5umdonC4D83pv2p7qNUuyn5o4MnfJIgWEL0RjMmgLii1PGAuZ3uTycIB949833uh
+         rCNY4rS5McXtLwxQ2WeNh6vOEgH1XHIwDZJEhU3WP4FFBdoTws8i2oPGhdcsZ996BWgx
+         W0S3r57et1fbmu26appSON3Av6x1n8Lm5CrJFzvk61VB2LJlrZdi/twbkBpP1IqC2hFl
+         coxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782306099; x=1782910899;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qlukBmGw8Sm2tX1xXG0U5Mu1/h6hpq5SqrIdrPAMuCE=;
+        b=CZAaigEnxhNFUpsWK2RkB8jI2+wQMCYx+16h59Qnm8DZOPTfzHmR49erWIf3xE7hLv
+         9KuV0lcPaj3cCAOXBw+bDpeyHM1RgDbDFxfc0ijbx5t1NHrsQCbC2AOjIxHxc9+Ru+Wi
+         gBoTbDk5/7rLLYFVXxkYSHiqL6dOV+FEMoEZw1sCOIQkM8byp9mdt76KY1twreH4GLYA
+         iebavt2xJP0sKE/eot1623HN/qeENtP6Y92n5DUoPdkSAGd9/UD8pTJg6KWQvhbOp5e4
+         zxeby/cQTNZzDQ0GAZxpNb2L11U4oWUgEeUqlsV+isbq1jjScY8knOKhAByIsYL2X4Cy
+         0o+w==
+X-Gm-Message-State: AOJu0Yxud5VCBJ+NXorA4UI1l6iJ857/eLMvonhLKfoh0i8yiuxT5iiV
+	SAzBR4XsRcjqujsCvjIH8V2hE36DL3UvTwEzoUlXy5k+sDqIkido5nFGe4J8Fy10WJoEvg==
+X-Gm-Gg: AfdE7ck2iIN8kPgfEA5guJVzW/is0zIln642ZQDsapVC40nV69ejt68xgcUEDwhPsGO
+	Dl/WJg6xf/cBcMyyIs/wtjzXz1DOnfUTKDiSG/vcSaNharbz720aqlLdJcqoupBlFveNu0zyFJ0
+	rW8NLcUu1QlueviyuQuOqgZl+ivEBIhRKf6FczjEyLXhKPoCnFO3bDBNDo/WFlt7ejY36JMUrFB
+	y4PXE4nw3R2wkJunCkj24YyTpfM61IBWWHb9T7AobKDHxvuFhDk+4yo4H7IPCagMKgg8AeEB9zv
+	O+CPIznmWMtI1x6V9Eyuc/+LwuMHe/yPahXjk+HmHn05eLw3Lge4CWxVSQb74tr9vaKY+/smOLL
+	DubN2yCA2yZ+ldsxDvLf0QdNYqH2mAwhvQsv1HZiJwgY69M2f+2o9qcCgsmUHtxs+I1/Fgvuj7f
+	chMyCNfyagDQSdoBQAC8/lssEV8nainLlJ7Fhl
+X-Received: by 2002:a05:600c:a012:b0:492:2e1c:1d19 with SMTP id 5b1f17b1804b1-49260875bbamr47169585e9.31.1782306087033;
+        Wed, 24 Jun 2026 06:01:27 -0700 (PDT)
+Received: from Dev-Null-MSI ([2a0d:3344:52ac:a808:98a4:4381:be45:536f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4926064e948sm58804125e9.0.2026.06.24.06.01.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jun 2026 06:01:26 -0700 (PDT)
+From: Yousef Alhouseen <alhouseenyousef@gmail.com>
+To: Dan Williams <djbw@kernel.org>
+Cc: linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Yousef Alhouseen <alhouseenyousef@gmail.com>
+Subject: [PATCH] virt: coco: harden TSM MR attribute allocation
+Date: Wed, 24 Jun 2026 15:00:15 +0200
+Message-ID: <20260624130015.12086-1-alhouseenyousef@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260623101739.79695-6-zhenzhong.duan@intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 23, 2026 at 06:17:36AM -0400, Zhenzhong Duan wrote:
-> +	spin_lock_irqsave(&unaccepted_memory_lock, flags);
-> +	for (; range_start < bitmap_size; range_start = range_end) {
-> +		unsigned long phys_start, phys_end;
-> +		unsigned long unaccepted_one, plugged_zero;
-> +
-> +		range_start = find_next_andnot_bit(plugged_bitmap, unaccepted->bitmap,
-> +						   bitmap_size, range_start);
-> +
-> +		if (range_start >= bitmap_size)
-> +			break;
-> +
-> +		unaccepted_one = find_next_bit(unaccepted->bitmap, bitmap_size, range_start);
-> +		plugged_zero = find_next_zero_bit(plugged_bitmap, bitmap_size, range_start);
-> +		range_end = min(unaccepted_one, plugged_zero);
-> +
-> +		phys_start = range_start * unit_size + unaccepted->phys_base;
-> +		phys_end = range_end * unit_size + unaccepted->phys_base;
-> +
-> +		arch_unaccept_memory(phys_start, phys_end);
-> +		bitmap_set(unaccepted->bitmap, range_start, range_end - range_start);
-> +	}
-> +	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
+tsm_mr_create_attribute_group() combines the bin_attribute pointer table
+and generated MR name strings into one allocation. It open-coded both the
+aggregate name length calculation and the final allocation size as plain
+additions and multiplication.
 
-Accept TDCALL under the spin lock will kill scalability.
+The current in-tree caller uses a small static MR table, but this helper is
+exported for confidential-computing guest drivers. Reject impossible MR
+definitions instead of allowing arithmetic wraparound to under-allocate the
+combined attributes buffer.
 
+Use size_add() and array_size() for the name-length accumulation and the
+final allocation size.
+
+Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
+---
+ drivers/virt/coco/guest/tsm-mr.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/virt/coco/guest/tsm-mr.c b/drivers/virt/coco/guest/tsm-mr.c
+index 657b9c573..789988111 100644
+--- a/drivers/virt/coco/guest/tsm-mr.c
++++ b/drivers/virt/coco/guest/tsm-mr.c
+@@ -140,7 +140,11 @@ static ssize_t tm_digest_write(struct file *filp, struct kobject *kobj,
+ const struct attribute_group *
+ tsm_mr_create_attribute_group(const struct tsm_measurements *tm)
+ {
++	const struct bin_attribute **attrs __free(kfree) = NULL;
++	struct tm_context *ctx __free(kfree) = NULL;
++	size_t attrs_size, name_len;
+ 	size_t nlen;
++	char *name, *end;
+ 
+ 	if (!tm || !tm->mrs)
+ 		return ERR_PTR(-EINVAL);
+@@ -164,8 +168,12 @@ tsm_mr_create_attribute_group(const struct tsm_measurements *tm)
+ 			return ERR_PTR(-EINVAL);
+ 
+ 		/* MR sysfs attribute names have the form of MRNAME:HASH */
+-		nlen += strlen(tm->mrs[i].mr_name) + 1 +
+-			strlen(hash_algo_name[tm->mrs[i].mr_hash]) + 1;
++		name_len = size_add(strlen(tm->mrs[i].mr_name),
++				    strlen(hash_algo_name[tm->mrs[i].mr_hash]));
++		name_len = size_add(name_len, 2);
++		nlen = size_add(nlen, name_len);
++		if (name_len == SIZE_MAX || nlen == SIZE_MAX)
++			return ERR_PTR(-EINVAL);
+ 	}
+ 
+ 	/*
+@@ -173,11 +181,13 @@ tsm_mr_create_attribute_group(const struct tsm_measurements *tm)
+ 	 * so that we don't have to free MR names one-by-one in
+ 	 * tsm_mr_free_attribute_group()
+ 	 */
+-	const struct bin_attribute **attrs __free(kfree) =
+-		kzalloc(sizeof(*attrs) * (tm->nr_mrs + 1) + nlen, GFP_KERNEL);
+-	struct tm_context *ctx __free(kfree) =
+-		kzalloc_flex(*ctx, mrs, tm->nr_mrs);
+-	char *name, *end;
++	attrs_size = size_add(array_size(size_add(tm->nr_mrs, 1),
++					 sizeof(*attrs)), nlen);
++	if (attrs_size == SIZE_MAX)
++		return ERR_PTR(-EINVAL);
++
++	attrs = kzalloc(attrs_size, GFP_KERNEL);
++	ctx = kzalloc_flex(*ctx, mrs, tm->nr_mrs);
+ 
+ 	if (!ctx || !attrs)
+ 		return ERR_PTR(-ENOMEM);
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.54.0
+
