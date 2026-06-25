@@ -1,92 +1,93 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19F23815FB
-	for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 07:41:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61282371887
+	for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 08:05:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782373290; cv=pass; b=ewRNXp2t+3a5qgSD7igYY8z1YzkZxDzn+oaBrTcK4euk6EFu+ESIfEphwzkQ/GQCp6oYrewN+LMpZ/4Tn/lPWJ4fgsPSZif2pSdn3QdSC9o7qU7Zq2QqVONON4kE9vL1lDgt4A4g4Gs3+yJugq5EsDasIiiGU0Ls999GBy3f6OU=
+	t=1782374756; cv=pass; b=fDI78wFMGta8dISke8AohmIdc36JUGkkRdnIsemOX8rFNzg4C+7GHIXuKxJ3NUfWEDy6cZnFWv/Bmv4EQXnZPRkL2+ut30yIi9INa+yQaBQaGTiBXtclqCcvY7FW4TrNP6IWItiqP/zKY6kRpz1o/l40Fab6JWrakTluLyyqlAc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782373290; c=relaxed/simple;
-	bh=Qvcbq0DaasBf8gUW2nSthq4nzSVZglaEH511+tU5N4k=;
+	s=arc-20240116; t=1782374756; c=relaxed/simple;
+	bh=gUH5CYeDQBwLfZeJDBALuowu5eygG91h78hLIiPuwTE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LLTC4GHaYlsC98gs/Ux8ofXRYuOQnB+9+9lNqr381Y+NtKs1RA1yupkOIVhDC0vCYpDeK52OssNQ4TQLWGSRkJZsePq4N0L1N2M7hccp4rd8QjGCEuiIUzLy2YCkyPCrfGjrXhcheQ05EwsIBXfqT97JLUKxncHW5KzUTM9d6I0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ObZh2gC0; arc=pass smtp.client-ip=209.85.160.180
+	 To:Cc:Content-Type; b=WUou6h6hUVGabJOPjYaov/iGD+wvqgSxmmppf3fJHREzTTVi+OSy1kLB8CvP1o4yfuk5pAy/YeFzK//n6wYvVRhBwhPe2zSF6XsW91DQo7fF4P0m+YCtcDvNbRGQEQTCn4yPQ0slP5UKPnO9+InlJ3XxfAfTyWQ5MIrduAM0pIU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AKTRsCGv; arc=pass smtp.client-ip=209.85.160.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ObZh2gC0"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-5177d1ff061so143931cf.1
-        for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 00:41:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782373288; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AKTRsCGv"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-51765331535so141301cf.1
+        for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 01:05:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782374753; cv=none;
         d=google.com; s=arc-20260327;
-        b=ksAc9Eb7SNmp+i1T+BmHkaWDc43dqGeQlSH398T49XK15zS4ioACZirWFPzBDUkEx/
-         6K+2R5xUl5C8fbJ2S3C+yaK+kd5tHm1Z28iY9UUI51VaObbpBRmXIV3NO0Zq3B+hCrE0
-         /Ge+6X553zy/LsQUn1H8g944HFhY0Wv2ur/eW/zz5EonNbRuXqLRjfR+CA+eNzkynsK7
-         pvqv/eDroYIF0Jh7UM1QFVqPtgr3GgM3MuZMTJbgMBs1W8kDiQJET8o59aOZehWI9rg1
-         tX3nF9l5zrKNHip3N7/slU8O1N2IwPeh2CTouTwkLwIiKMMwugr3VfaP6Q2TsvLrX0pb
-         95pw==
+        b=Dt0rHosXFbWyqgRn6rYmkwsFrRRJ2stoKXW5J32opdvWNJc5ISXRr/+2QhIFzj9cjY
+         5vAs5yAUqajm8eP5fH3J9C+gGfVJG5R7BnpS6hI/AzudXhiSy8AjccDsftaIVQU5asvw
+         NK7Q4MPq2QpKpUd8hLRuVYwdEVyxJnbjRklxUn0vClRq3+YtG3Y6Mgx2kvbqTnm+gcSO
+         95Mi+2nb9OESZ3asq8sop0Fg0oKvL/ooWT5IwejD/FDsSDHh5yVxFdZczn5XnmRF5xH/
+         oHk/iYek36d1pZxcHyAt+K8NEih+gvJTRnWc6WAbiGX6ybsq8WFdB08zp71nrsT72oMf
+         jg1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=IKDmrHuQqoBYlM3iNILSe07cr8MVKcj1ghLIbtUqfRQ=;
-        fh=XSvfk8MDkeh8ugY9hYIPjPOqP53jHVbeiYx0mcOWwr4=;
-        b=poxlsK6LAxlK4cQWYG1CB5mNSPfDlKm+82jVCLFMgDl6gSgdBo8LQjc3S43pDjGfD7
-         +f5YAFqUkEfTAIvhBdjBtJY2RixwSnTURc8x3v09ZyqtQDBC7otZ8h+ZM9jANA/Ji6n8
-         Eyhvd/eMG3FMmC8HsITCBoR4OpXhYXvnpQQurSfa8pdlcwOs1WkNNoBeoESzrPTlg8ii
-         4ygszJnlOtTdoq6s25TYaiY9TIZ2VR+agpQHJ5nuNPzrdVZf9ux39ePiJcOa2E3QFRmA
-         WmnK3mi4/yIe+1wWlsvI1bPJyq+XRlJsLgbjxkxTtHNx4qolS3WD/7O3C2uBHQL3dZ+a
-         0hmw==;
+        bh=9LjtIzZk3vxrXZVAwqdL1YMS08SLuDbLYjQh10VCn/I=;
+        fh=7M1wTqNDiaesuF8mKe76WjvON2p0m9PXkos5BJoVRNg=;
+        b=gjro1I6ZxYJLFDPLhTTeINMHHfCm42kav6uuh9JuErwXRYs/f4LArpynykuqy4niGn
+         d4opSRaq1+ku9QGPTnT37P1krSC/VqpEVVL2xd7brQZxBhiud7mONTqbRkJMSImcWQXP
+         vZb/Pz5n2O8u9mdFrvJ3EjvgBagjiaHTvbcEzRdrZb8OwHLTYGdb9piLp9JdcRlyXrFd
+         r7dZLznK9A988oQwrSC3ovuMJncgUAwlvXO7wW2+gA2VESi1Ebqy94BEEBMrqPeDqAGy
+         j3u9IpAzPhbxZVji/+wUfBkHiuHHCvvjuAyqeGcPK0ikewYDv/xHjdYqwypDVYM5nE3P
+         zPpA==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782373288; x=1782978088; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1782374753; x=1782979553; darn=lists.linux.dev;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=IKDmrHuQqoBYlM3iNILSe07cr8MVKcj1ghLIbtUqfRQ=;
-        b=ObZh2gC0Y8Y1w/QozA0UW2twLId4YxBiIHjp/dvxUoJ5VAzzfgp5Re1iRjBkDZ/lBf
-         HNxcHlCtZ/7iBES+BY7brQyTAMlWIrLF0hiJKbSyui/rSLq+SgsREaS2xdHy0XLCSt4r
-         fOiH/duuT7e2f4nVA73Mgo0SE8g0XykY8HSFlQOICiyoq3hQnQFGVX/emUBb1JjYII2H
-         FUucxa6NL1QBs4ucB7/sfGGBnb/cjV321L2cgr+in69J4bkjkGg9WkWNgw2fisPRiFr7
-         smcmR468CmAiO5yomXiD/o6gfsizXwzj0ejYEArffCK3mF04iyHKH634ES0GFeiS+oiy
-         NF8g==
+        bh=9LjtIzZk3vxrXZVAwqdL1YMS08SLuDbLYjQh10VCn/I=;
+        b=AKTRsCGv3IZr9g77qTlA5BIacOlsNPzVA9sdsHbabceWaACWWFTDeuWpJ8iVTf8tzA
+         dEYSKUFhhN+WRSQ9NL6XKoNQZ0f7SF8ae4wzGZwzJftIqdodN/D9i6USMLRo76nXgAJ1
+         5eDBZqrrRQoC1N4Uq2cS6yeuhWBU47k/MQ1HmHU0IP/j3Dz9m0l+tcnN9LTL19pJKXAg
+         GEVue4Rnp2ARvekddYlqT3wf0svoYzRN3xVAeCuOuXZSUuKNeUxD2No9Brr14SgcIxAQ
+         /xy/TwqVrzcxWwujGlrAoIZdXtuMQ5yuELGUF0G6t1+8aKuTCdrEt+2Xb6SDyTBlZ3Ks
+         3DnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782373288; x=1782978088;
+        d=1e100.net; s=20251104; t=1782374753; x=1782979553;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=IKDmrHuQqoBYlM3iNILSe07cr8MVKcj1ghLIbtUqfRQ=;
-        b=Qt//+jBot2HdRVwQepLCuz17N5ogJrri4aRKSW/d+kO6ilF/5WdKWvgCuwJVeic7iU
-         Mtz1uGWPkTNgTLrmnbnHYX0diemwLbIB8OOOyEm0lydHVQxwM0OWM0JenEnsDPYi1Ctr
-         Sn0r36uk9IzTstb7tdV/PDH03QUNowBRevS+VK/T1z9D35DtQ6Ij6y9skJwjURDZLETJ
-         Rmafaln11Ocw16tpexYaXkt38tcfbHBftFDK35VssA00Vn7nMn0TnvkeCfszL/fuYqYP
-         keBHRlN4vjTpkjfLS8tr5euapOtYXkOKVbxJZIGAHps0dMLe5nAmA508r2aH/BUICa2f
-         L8Fg==
-X-Forwarded-Encrypted: i=1; AFNElJ82mLK0yzPvy4eMEOUovSLrq2d5mn0MRlvY/ldV3p+4GT/0Ox1629JBnLpSL6jtqsEJWEphl64oNqa9@lists.linux.dev
-X-Gm-Message-State: AOJu0YyNeQzwgF/LVjhxfAjyv+PUfqzAFqnZgo5c3KZvdkBt63SNI7vZ
-	SIYJAU8CCHXUnLRy0oPfxnyZ+XLmoSgNZJyeeakPikcqrcjvaFIw1P/ZZSP8zhBYpUYIIy592q0
-	TLzzwQurjt/EyKayAln8b4CNZI5VtMhPkg1Te+mrJ
-X-Gm-Gg: AfdE7cn/ATeIw4V8y//w3mhZRV1N2wpoKVBbqUWGSHqxCu79VIXKns3Carca1zZoop2
-	J9KJRimr0JgcHyMB3j/NE+U7kacZqeo1eXBegylS5Q+lOnfwxqFDqCatsZ3yx/Rf88zChcRhyTq
-	Lmslxx5XSYrcjmDD0Ov1A5ZPsZ5AN29KwsyO770Ljuo3ZG6P2GJD/IBcw9R38C7iVak32+GkNGJ
-	Y/1g/MBsQ1ABGhxuE2u4eoHAL/XGiOQhtSJMdvYsQHQqC1SHzBfN3GQQeYB/S7g83MFmtkNxw==
-X-Received: by 2002:a05:622a:120e:b0:519:56a8:2693 with SMTP id
- d75a77b69052e-51a6ebae001mr6553451cf.24.1782373286970; Thu, 25 Jun 2026
- 00:41:26 -0700 (PDT)
+        bh=9LjtIzZk3vxrXZVAwqdL1YMS08SLuDbLYjQh10VCn/I=;
+        b=AOHuOT/jrNL0N/aX865QWbQhUyAguCyiw1Fpcd46yFC7Fgj4KJzSdGc7ad8OJI41ia
+         sqJtHrAQ1td3pX1iJ3jMKc/3Ng90Q3EsFs93usO7C2GLPEHCA3HCisSL+hXau4dE7+Tr
+         52WRsL3vVZNtHYBKTaIbo9YBsOiGb0D7PGWyg/VS8p+zo9do5quazCfXmNt+Hu2W5iZo
+         /VolPjbsqiw0lPrcP9K+8NB8xdrC1FtltkkaZAhQCdX7EhUJ5ClLl2V+W8h3cI/fQ6q7
+         5xDxozo9BfSvLRxwcQNIoAO/1KWZsv0txV8nU8YfbFlsMYbRffQzedD0bFkRSSCBxz02
+         bChw==
+X-Forwarded-Encrypted: i=1; AFNElJ+3fRsOLLPJtmSg2qwRTbOpv1XFxLi7DkB5QM33BEfQE8HWBrkePnMpMKQWpK/RIkA/GJyS4vvvYIcG@lists.linux.dev
+X-Gm-Message-State: AOJu0YwzNM3JJiGVeeArjIV4gnHicxIXdYkidi+UVzu4rInGM7MlSyt0
+	dLr655qwRdGD2VrRKHV5MonHYs7nOd9/4DLQqw/TwEwrDL+m3T2d+CYRLU+bXm6HqRoATaK+QoR
+	8nZkOXs9m0LRvGCXc5cHvb92e5d+aC2hGb7kdA07a
+X-Gm-Gg: AfdE7clXkGnVCCAdaMvp0nJABu6CsN3yoBZDQdiAjfp8yzTdJa8Y2SWUCwPPyMq4oV3
+	VXLvzjqDLJloQEh0Iue8GFE0L1vfk6/zW3nwfN2fgLHpqS5NzYeoBePjncZdi0HzqgFtk5F9V03
+	t3+UqJqrVDWPrbm+VE5/ZmuyTtyFE2CnxSlZDc2CoBeNa/PffWR1no/l7TQ2mE5sBcHrUbXABv6
+	R7Q6HWJCk1aEDYPh96O4AfNAIKjtqicfOlj8jBfHnUsW5cbXpjxg8gYMoRD/NJCIEaRempVeQ==
+X-Received: by 2002:a05:622a:4d99:b0:516:4f62:85ec with SMTP id
+ d75a77b69052e-51a7097cdf7mr5787961cf.17.1782374752598; Thu, 25 Jun 2026
+ 01:05:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-38-9d2959357853@google.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-38-9d2959357853@google.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-39-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-39-9d2959357853@google.com>
 From: Fuad Tabba <tabba@google.com>
-Date: Thu, 25 Jun 2026 08:40:00 +0100
-X-Gm-Features: AVVi8CdNvXe7DIQJSIUqqBW3OCX6JP2NJsxm61_dCUo-WV2w6fSxq-mU03dKtt8
-Message-ID: <CA+EHjTzEGxZQXPPsY5nynYf6ts+Jt3TBevgLpPVyHDqf4i7RGw@mail.gmail.com>
-Subject: Re: [PATCH v8 38/46] KVM: selftests: Add helpers to pin pages with CONFIG_GUP_TEST
+Date: Thu, 25 Jun 2026 09:04:00 +0100
+X-Gm-Features: AVVi8CcBY4t5giF0-A9bP1HPllgz1zAJhj3Ny1-iABTQtlbD2BJIIQOiCS34wl4
+Message-ID: <CA+EHjTxtL+usjD5XWzrEXegSAt-JD_SjH9MG1S6aOy8sWYf67g@mail.gmail.com>
+Subject: Re: [PATCH v8 39/46] KVM: selftests: Test conversion with elevated
+ page refcount
 To: ackerleytng@google.com
 Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -121,19 +122,23 @@ On Fri, 19 Jun 2026 at 01:32, Ackerley Tng via B4 Relay
 >
 > From: Ackerley Tng <ackerleytng@google.com>
 >
-> Add helper functions to allow KVM selftests to pin memory using
-> CONFIG_GUP_TEST. This is useful for testing scenarios where some page has
-> an increased refcount. such as in guest_memfd in-place conversion tests.
+> Add a selftest to verify that converting a shared guest_memfd page to a
+> private page fails if the page has an elevated reference count.
 >
-> The helpers open /sys/kernel/debug/gup_test and invoke the
-> PIN_LONGTERM_TEST_START and PIN_LONGTERM_TEST_STOP ioctls. Since this
-> functionality depends on the kernel being built with CONFIG_GUP_TEST,
-> provide stub implementations that trigger a test failure if the
-> configuration is missing.
+> When KVM converts a shared page to a private one, it expects the page to
+> have a reference count equal to the reference counts taken by the
+> filemap. If another kernel subsystem holds a reference to the page, the
+> conversion must be aborted.
+>
+> The test asserts that both bulk and single-page conversion attempts
+> correctly fail with EAGAIN for the pinned page. After the page is unpinned,
+> the test verifies that subsequent conversions succeed.
 >
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Co-developed-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-nit below, otherwise:
+Not sure Sashiko's concern is worth it.
 
 Reviewed-by: Fuad Tabba <tabba@google.com>
 
@@ -141,68 +146,76 @@ Cheers,
 /fuad
 
 > ---
->  tools/testing/selftests/kvm/include/kvm_util.h |  3 +++
->  tools/testing/selftests/kvm/lib/kvm_util.c     | 23 +++++++++++++++++++++++
->  2 files changed, 26 insertions(+)
+>  .../kvm/x86/guest_memfd_conversions_test.c         | 56 ++++++++++++++++++++++
+>  1 file changed, 56 insertions(+)
 >
-> diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-> index 323d06b5699ec..79ab64ac8b869 100644
-> --- a/tools/testing/selftests/kvm/include/kvm_util.h
-> +++ b/tools/testing/selftests/kvm/include/kvm_util.h
-> @@ -1195,6 +1195,9 @@ static inline int pin_self_to_any_cpu(void)
->         return pin_task_to_any_cpu(pthread_self());
+> diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> index 99b0023609670..4ebbd29029526 100644
+> --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> @@ -441,6 +441,62 @@ GMEM_CONVERSION_TEST_INIT_SHARED(forked_accesses)
+>  #undef TEST_STATE_AWAIT
 >  }
 >
-> +void pin_pages(void *vaddr, uint64_t size);
-> +void unpin_pages(void);
-> +
->  void kvm_print_vcpu_pinning_help(void);
->  void kvm_parse_vcpu_pinning(const char *pcpus_string, u32 vcpu_to_pcpu[],
->                             int nr_vcpus);
-> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-> index b73817f7bc803..524ef97d634bf 100644
-> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
-> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-> @@ -18,6 +18,8 @@
->  #include <unistd.h>
->  #include <linux/kernel.h>
->
-> +#include "../../../../mm/gup_test.h"
-> +
->  #define KVM_UTIL_MIN_PFN       2
->
->  u32 guest_random_seed;
-> @@ -639,6 +641,27 @@ int __pin_task_to_cpu(pthread_t task, int cpu)
->         return pthread_setaffinity_np(task, sizeof(cpuset), &cpuset);
->  }
->
-> +static int gup_test_fd = -1;
-> +
-> +void pin_pages(void *vaddr, uint64_t size)
+> +static void test_convert_to_private_fails(test_data_t *t, u64 pgoff,
+> +                                         size_t nr_pages,
+> +                                         u64 expected_error_offset)
 > +{
-> +       const struct pin_longterm_test args = {
-> +               .addr = (uint64_t)vaddr,
-> +               .size = size,
-> +               .flags = PIN_LONGTERM_TEST_FLAG_USE_WRITE,
-> +       };
+> +       /* +1 to make it anything but expected_error_offset. */
+> +       u64 error_offset = expected_error_offset + 1;
+> +       u64 offset = pgoff * page_size;
+> +       int ret;
 > +
-> +       gup_test_fd = __open_path_or_exit("/sys/kernel/debug/gup_test", O_RDWR,
-> +                                         "Is CONFIG_GUP_TEST enabled?");
-
-nit: should you close this/reset it to -1 after the tests?
-
-> +
-> +       TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args), 0);
+> +       do {
+> +               ret = __gmem_set_private(t->gmem_fd, offset,
+> +                                        nr_pages * page_size, &error_offset);
+> +       } while (ret == -1 && errno == EINTR);
+> +       TEST_ASSERT(ret == -1 && errno == EAGAIN,
+> +                   "Wanted EAGAIN on page %lu, got %d (ret = %d)", pgoff,
+> +                   errno, ret);
+> +       TEST_ASSERT_EQ(error_offset, expected_error_offset);
 > +}
 > +
-> +void unpin_pages(void)
+> +GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(elevated_refcount, 4)
 > +{
-> +       TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_STOP), 0);
+> +       int i;
+> +
+> +       pin_pages(t->mem + test_page * page_size, page_size);
+> +
+> +       for (i = 0; i < nr_pages; i++)
+> +               test_shared(t, i, 0, 'A', 'B');
+> +
+> +       /*
+> +        * Converting in bulk should fail as long any page in the range has
+> +        * unexpected refcounts.
+> +        */
+> +       test_convert_to_private_fails(t, 0, nr_pages, test_page * page_size);
+> +
+> +       for (i = 0; i < nr_pages; i++) {
+> +               /*
+> +                * Converting page-wise should also fail as long any page in the
+> +                * range has unexpected refcounts.
+> +                */
+> +               if (i == test_page)
+> +                       test_convert_to_private_fails(t, i, 1, test_page * page_size);
+> +               else
+> +                       test_convert_to_private(t, i, 'B', 'C');
+> +       }
+> +
+> +       unpin_pages();
+> +
+> +       gmem_set_private(t->gmem_fd, 0, nr_pages * page_size);
+> +
+> +       for (i = 0; i < nr_pages; i++) {
+> +               char expected = i == test_page ? 'B' : 'C';
+> +
+> +               test_private(t, i, expected, 'D');
+> +       }
 > +}
 > +
->  static u32 parse_pcpu(const char *cpu_str, const cpu_set_t *allowed_mask)
+>  int main(int argc, char *argv[])
 >  {
->         u32 pcpu = atoi_non_negative("CPU number", cpu_str);
+>         TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
 >
 > --
 > 2.55.0.rc0.738.g0c8ab3ebcc-goog
