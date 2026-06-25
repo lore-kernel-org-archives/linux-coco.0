@@ -1,32 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB063DE44C;
-	Thu, 25 Jun 2026 12:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D893CF1F6;
+	Thu, 25 Jun 2026 12:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782389558; cv=none; b=c0wk/WX4JZJtU9FvEafRm+vZYuegR3pJlRK5/DYjgNs3p82oWRX+D+H+u6cM/4k+kJEY/wlT6/A46FOaKQ4y0ewFOQdDR1HAiCpWwLsLOIe/A6wAMAKmEGqO0g+1jfYwCqraZ02diryXawRmBuq5tIeojr47OjkS5a38K5nyTa0=
+	t=1782391009; cv=none; b=Lw64LDJPCWNBugeQKO6ndboHPO+SBRdsMHgtQH38tDAv7ApEHS892vJ9JTpuMEaPyN2xoiQi/GIriSjpAMCv990LouklHMCCYz4Q1hhLO7e3O+qlqDRKG+Tx5w48bVyj/YUgxr1Ns/Td0FIh125maameE2LiRlbIpiijxe8GDH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782389558; c=relaxed/simple;
-	bh=IHeLSk6tC+5D8wWkZYOJSS4AYtPst1QA8Cdf1hqfXrI=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=uhhQZ6eoqshZJ2Csjcc9Plcgw4sDlnonGgY05ph/GYihsEhgqYAa5cM6vbKirftPvYc1O+a+n+1aPfbMsaj7wK7b+9ba7ll9rfq3RTEfNyayFeEIvBrdRtssponVR3ZdBLvXV4wxZ71QmyEyTIvosQEIovS0yHDz1hCMiuX3RJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jfdMMVYP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782391009; c=relaxed/simple;
+	bh=rsXW/oTxxNuHiB7YJrgPUoxiGDcUurYkCysXiCxVZV8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C1kW9VxQREqqK+xjzq5V2oZbK21kbWh7B6orYV3RyUoNCKxxQUsrIyrvnAkOM8zB0pXOVzDLYP+sTPFPLxmQ/mx4eP1Klkj4lQAMuenMPlpg24fRNilxjv736DLPqaBmdcMdydLSZ46Sq8jkTmO1ct1HlgUlPygN8pIDx1FcOCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kj8c6IOP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jfdMMVYP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49A11F000E9;
-	Thu, 25 Jun 2026 12:12:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kj8c6IOP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 151881F000E9;
+	Thu, 25 Jun 2026 12:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782389557;
-	bh=IdozHlBC1r2aqUzPaf46PBkgt34i1vS5Qrw7ojqdRjA=;
-	h=Date:From:To:Subject;
-	b=jfdMMVYPILjEqtCwtHJT5w91p2W5mxdNnYsojr36Py6vueoKsIoULClYP1btsPVtw
-	 fRk6IDtPzUwmpYS/LrmjgqXZTr9jxSCQpZ4YF2j2F65JlrimEl9tL6yRGwN7v80bE0
-	 LVHBiSjsQxOppJunf+w2p7mjeaZEBSfBO83V8n+AU4f3YoWmu6zFKdhXiF6zzLIoMZ
-	 PTR8/stRnCsp97tyP6nrT0OI0BA2DlfX5Z44MK80aCFaEoYJFKS5RbChwN87eGM6D5
-	 pVU5Cmz+UCRSCmOGnFRdnAUTbdQju//ldyaWqR86Z+DWmKIFrSm3w0+xK5wIaEaWtc
-	 jKa9x9vInX/5g==
-Message-ID: <3b190dc7-296b-499f-ae19-c7b80b9ef491@kernel.org>
-Date: Thu, 25 Jun 2026 14:12:25 +0200
+	s=k20260515; t=1782391003;
+	bh=0uu7gdoQEdoZUwJ0MDafJIXOJkq/sIP8btQOGYvnT2g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kj8c6IOP635C/jK71RNETwqtzkumMX+bN7xVpwgoozalu59LqzLn5myc6+CGZGVOr
+	 acmJgg9QozXxSWGs5lARRAao5LNw0qlHM6bIw2O3mupJ642jqMd2RjVcDx81bTHA6f
+	 U1YjJY+qDDHAYbka7Uj/0BBpZvL2RcIUrmEweS5hPMFF2B2Y1lqZ9J32E34bYoLx/4
+	 te5gjDL4zagobX/70siQAcfOiSCDpbUQiHYUUB3BukZ4CcPbMacsICz1Sr9JNeMb6o
+	 /o/LiPtBxR9PY6IrUql8MnN6dse8gxxJb8WUj4N7DXo80yh1LwDsNuMYhUEgbD90bH
+	 s3NjbK8+MfNow==
+Message-ID: <088e9969-9104-4163-8ad4-59bec96014e0@kernel.org>
+Date: Thu, 25 Jun 2026 14:36:23 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -34,11 +35,45 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 10/42] KVM: guest_memfd: Ensure pages are not in use
+ before conversion
+To: Ackerley Tng <ackerleytng@google.com>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, aik@amd.com,
+ andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, ira.weiny@intel.com, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
+ <20260522-gmem-inplace-conversion-v7-10-2f0fae496530@google.com>
+ <509f9a66-5ae9-4c05-bef1-ced89fd29bf0@kernel.org>
+ <CAEvNRgHM4a66Jx9++6iioQLpFY-KgPvjY5+bg_X97DfSjpXzRQ@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-06-25
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -83,40 +118,45 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
+In-Reply-To: <CAEvNRgHM4a66Jx9++6iioQLpFY-KgPvjY5+bg_X97DfSjpXzRQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi,
+On 6/19/26 02:17, Ackerley Tng wrote:
+> "Vlastimil Babka (SUSE)" <vbabka@kernel.org> writes:
+> 
+>> On 5/23/26 02:17, Ackerley Tng via B4 Relay wrote:
+>>> From: Ackerley Tng <ackerleytng@google.com>
+>>>
+>>> When converting memory to private in guest_memfd, it is necessary to ensure
+>>> that the pages are not currently being accessed by any other part of the
+>>> kernel or userspace to avoid any current user writing to guest private
+>>> memory.
+>>>
+>>> guest_memfd checks for unexpected refcounts to determine whether a page is
+>>> still in use. The only expected refcounts after unmapping the range
+>>> requested for conversion are those that are held by guest_memfd itself.
+>>
+>> Is it sufficient to only check, and not also freeze the refcount? (i.e.
+>> using folio_ref_freeze()), because without freezing, anything (e.g.
+>> compaction's pfn-based scanner) could do a speculative folio_try_get() and
+>> the checked refcount becomes stale.
+>>
+> 
+> I believe there's no issue here, since the main thing here is to check
+> for long-term pins on the folio. Perhaps David can help me verify. :)
 
-very late reminder :/
+I think I raised this in the past as well: ideally, we'd be freezing the
+refcount, then, there is no need to worry about any concurrent access.
 
-Our next guest_memfd upstream call is scheduled for today, Thursday,
-2026-06-25 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+However, we could really only get additional page references through PFN walkers
+(or speculative references), not through page tables or GUP pins, which is what
+we care about.
 
-So far we don't have a lot of topics, so maybe this could be one of these rare
-short meetings :)
+So if we can tolerate a speculative bump+release of a folio reference, likely
+we're good.
 
-If we have the right people in the call, I would like to continue the discussion
-on proposed memory hot(un)plug/virtio-mem support.
-
-
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
-
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-or Ackerley a mail.
-
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
-
-
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
 -- 
 Cheers,
 
 David
-
