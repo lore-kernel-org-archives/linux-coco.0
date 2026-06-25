@@ -1,33 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB013DCD80;
-	Thu, 25 Jun 2026 12:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25076345CD0
+	for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 13:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392264; cv=none; b=Uw5rH2JRXgJpyezTniFHwGBiAeOKB58/gDI/q+bNZo6N/Gj9eWDZyuvHppbUPvH337JI9dRuYwYRCrCPGx1OpDK6BjWA++1zgYQVzQ7Ymu/qWJRn4PuTrtmEBX+ED16d863RVthh2srmBGJgbrHhM4E5CJcAaVhQdkWu6kglOn4=
+	t=1782395639; cv=none; b=u7P19wWXjCHR+ZfoQ9qgsogVvli5+N9lZb4Do1+c7kHA1zzyM9ikhJ62x9Y7bfsmB2+7wKmlt55UP9gU0kPJYBxBhvZTV8Ub/Ciigw6DvMGqCcgOot075TuqaROVIBYexokNNbBJOkj08kSxO/7dzWX/wA9/8vXlQLZXbM/+Fws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392264; c=relaxed/simple;
-	bh=kUD4yxqkQ3I71PGnDd7xEHq2Yhfg0jaZRyTX8ogxiA4=;
+	s=arc-20240116; t=1782395639; c=relaxed/simple;
+	bh=TEtUb2t7/GatcjTLqxJxCqQNRI+9vBLfCeDeqCkz0R8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nuqj90KPeJkDnYceaYMzUYsRxLaouKhSkGv2vjoB5gA2t687t4NJDhkJ3BC7hDklEfbhCLGpv7Rb9NPK4fMK8v4QSaglqSHDaTPQEvghOmZsHzVo7grH6QgPmkJgoUYosWEcBygHZCQiNxPCFfoPKOulo8L8grpuqmuovGqaPgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dHmpLCYx; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=OyRmClKxBYUEpBxaYipHv6cCZdorcgK7S28/scm/MiWAbcDrP5fyR0bR3khNdhhG4nN9Npd7Bwmad1lq5V34bTFvjQ++rKHBXvBXtj3w6oq2wTMRJimA8BjuwbrxGT7m6suxjm7PxThXeQkBln4ZuZ7DOJZeaoJ8w3ytMn3vHv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M8UdtDTO; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dHmpLCYx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DBCE1F00A3A;
-	Thu, 25 Jun 2026 12:57:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782392263;
-	bh=kBH/vS8hZh8Igpj0aw8/HaHtMjB3pKyKAfYdrgPsQCU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dHmpLCYxkcYHAnhShuZZiNteUIsANckSSdSG7HqREuNtilbYWQipbTko618b1Yqz0
-	 TdmqsVsHCGZsqS/WBZm4cZsmyAR29Rb2Z0yEWyZqjWRGGDfP33LlQQ6+1lxyqZxoRp
-	 yjEiovspVIARiluKrlsUuXuVAk+XCr1BoRB8pEztZQ7RjuT4jQfM5sBPW4JxKpY3v7
-	 Yr8XpCL4sC80zDNED3TFkKh0otLxXx+aGAsD4h0vpvKtyevTGOjQ3tMZyxONEStJZh
-	 27J6zBoo6Pu7SjU7iu4yPlyB6hd1OxletytvTKm7z4321BrdJn+b4w+S2Yu07TTkhf
-	 WX1h0k78BILkA==
-Message-ID: <6ed7d12a-c3a1-4572-8385-754e6d5b8b44@kernel.org>
-Date: Thu, 25 Jun 2026 14:57:25 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M8UdtDTO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782395636;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F2JG4NFwUS2cEMv5rtucKqmVkk7/NshCHssLA8DLWUk=;
+	b=M8UdtDTOjk+NlrV7Q6q/EG0/R+B/9hBwDxYBb+ZrXzoEw4ZldqgSiJPjAsKt1gcorYuEQm
+	yz9u5OeT3xXdD40cE2UhsDxieBHvrQz6GU1k6aFoUV13bU/ESRGkqQQqlKML1KvxzF0CuA
+	JGDRLU3PFsw5ELhLqC9/m3EYNnbfsuA=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-617-RI1ZBjdgNOKjjO-1wAfJYQ-1; Thu, 25 Jun 2026 09:53:52 -0400
+X-MC-Unique: RI1ZBjdgNOKjjO-1wAfJYQ-1
+X-Mimecast-MFC-AGG-ID: RI1ZBjdgNOKjjO-1wAfJYQ_1782395631
+Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-5ad4f8a1c78so1182123e87.3
+        for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 06:53:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782395631; x=1783000431;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=F2JG4NFwUS2cEMv5rtucKqmVkk7/NshCHssLA8DLWUk=;
+        b=mxQIlLmTpf4loEhXAPg30rIPZGO95YZlf8GlcKmX6GuarxH7IVVLYVanqS4pZdwbCS
+         28paWkGNYY8ctGKVjSO306qI/LPfBR9/IR+SwTKq1+Jw+8nk3Dl/uWxvE780maQ3nLIT
+         dMO94QexVD53LmutAv1g9uiakIQKPirvJ7UAcg6Hew1pOa23r7Runr2vaABPj39WOUy1
+         pfDvAx3rfKCZbI81pe0w058T1FRe4OZF+0wGezWtjs099Y7UdjnhF1LDoV+OrJ5y2te3
+         Zzth4yAO2E/aPChafwxfabf5SRK9TA2ctiZVrkad+OMolMW67UEnaj6tr91wNIzAkDOP
+         rQcQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqzYBJvkVXAgjKc7N4AqY+zVcxLb+POuLUBsWJUw3adcuzRNT4J7OnFSKKGK8xKvXg+z3x4lU7ESQbG@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz6BTjGARy5xOhFaUh8QyiaX+AiFQrQN5jBcCaEC/0hRu/FvpFJ
+	dDCaZ8hYHrNPi1ejBzLhDpHTtXMIS9eb+J+qVdwVrkvIm3QoLG7q4fyriD2yEmOObFT7Ld63cN1
+	f97aYj80pCXwhH2DItCFRaShR/yt0Xhst2nQVfE0n7+holAu0Ks5mbdi19zq0xB0=
+X-Gm-Gg: AfdE7cmWjwu8K6XdNkKY8przSwnmzjU1p8kDzivju6VWL6RLtRoyg5W7Jfn6fgQGoW/
+	c2dsB3pynHtyPJqz20ZsrbSjG4iejiL/yAkpGl1xfbjmruMTicmi+1M/papctgHfs1TxM+lO5xz
+	g2bH3Mt3LU0va63Cq2Wn0B6u8JbrDrQxuGS7jZC9YgHDeUmzF+LA7DPI7140rtS1wPuR0vaCznf
+	JXLpDkjAVxgweQqI4ZZXcD69SK8C//NFWFgwH840zCB+tMpgdLUBmjigJjOIOhXq99VhvAETaT2
+	sv2f3nT61Yjx5GK4qHQMJ1+YeuZB5UjjQILTurX5uN4OsvuyY8USWhKPz2whZOs/G4dRXE+vO38
+	ElAlaRns1PXDPY9VouPZql3WZAHjlPD3Wd9jPDusMlhhrmqhb6HQO8g==
+X-Received: by 2002:a05:6512:6805:b0:5a8:86a8:2e09 with SMTP id 2adb3069b0e04-5aea1f40aecmr867683e87.7.1782395630932;
+        Thu, 25 Jun 2026 06:53:50 -0700 (PDT)
+X-Received: by 2002:a05:6512:6805:b0:5a8:86a8:2e09 with SMTP id 2adb3069b0e04-5aea1f40aecmr867655e87.7.1782395630346;
+        Thu, 25 Jun 2026 06:53:50 -0700 (PDT)
+Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad69550febsm2641151e87.25.2026.06.25.06.53.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Jun 2026 06:53:49 -0700 (PDT)
+Message-ID: <1e39094f-7fa3-4ef1-be54-53d7a8643506@redhat.com>
+Date: Thu, 25 Jun 2026 23:53:32 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -35,145 +74,251 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 18/46] KVM: guest_memfd: Handle lru_add fbatch
- refcounts during conversion safety check
-To: Sean Christopherson <seanjc@google.com>,
- Ackerley Tng <ackerleytng@google.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
- brauner@kernel.org, chao.p.peng@linux.intel.com, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-18-9d2959357853@google.com>
- <ajwMYCSrPlxg-Fok@google.com>
- <CAEvNRgE8HZDOnexMJeim6TjmxGG1AUXFY2+HH1YyKB=aM6D-DQ@mail.gmail.com>
- <ajx3vmNPRf-M9kR6@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v14 29/44] arm64: RMI: Runtime faulting of memory
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
+ Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-30-steven.price@arm.com>
+ <3359f788-07fa-41a1-9ac7-45c58577c1fa@redhat.com>
+ <aiJ6u83O0nVUtPyv@lpieralisi>
+ <ecef952b-e8c6-4102-933b-c99c46f14431@redhat.com>
+ <aiLes2ecZSr17UwZ@lpieralisi>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <aiLes2ecZSr17UwZ@lpieralisi>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 45BLj6JQM8QUYaNM8BI6g5gBJpYLLBxcldP41bdahBE_1782395631
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <ajx3vmNPRf-M9kR6@google.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 6/25/26 02:35, Sean Christopherson wrote:
-> On Wed, Jun 24, 2026, Ackerley Tng wrote:
->> Sean Christopherson <seanjc@google.com> writes:
->>
+On 6/6/26 12:35 AM, Lorenzo Pieralisi wrote:
+> On Fri, Jun 05, 2026 at 06:11:11PM +1000, Gavin Shan wrote:
+>> On 6/5/26 5:28 PM, Lorenzo Pieralisi wrote:
+>>> On Fri, Jun 05, 2026 at 04:23:15PM +1000, Gavin Shan wrote:
 >>>
->>> Under what circumstances does this happen,
+>>> [...]
+>>>
+>>>>> +static int realm_map_ipa(struct kvm *kvm, phys_addr_t ipa,
+>>>>> +			 kvm_pfn_t pfn, unsigned long map_size,
+>>>>> +			 enum kvm_pgtable_prot prot,
+>>>>> +			 struct kvm_mmu_memory_cache *memcache)
+>>>>> +{
+>>>>> +	struct realm *realm = &kvm->arch.realm;
+>>>>> +
+>>>>> +	/*
+>>>>> +	 * Write permission is required for now even though it's possible to
+>>>>> +	 * map unprotected pages (granules) as read-only. It's impossible to
+>>>>> +	 * map protected pages (granules) as read-only.
+>>>>> +	 */
+>>>>> +	if (WARN_ON(!(prot & KVM_PGTABLE_PROT_W)))
+>>>>> +		return -EFAULT;
+>>>>> +
+>>>>
+>>>> I'm a bit concerned with this. We don't have KVM_PGTABLE_PROT_W set in @prot
+>>>> if the stage2 fault is raised due to memory read. With -EFAULT returned to VMM
+>>>> (e.g. QEMU), the vCPU continuous execution is stopped and system won't be
+>>>> working any more.
+>>>>
+>>>>> +	ipa = ALIGN_DOWN(ipa, PAGE_SIZE);
+>>>>> +	if (!kvm_realm_is_private_address(realm, ipa))
+>>>>> +		return realm_map_non_secure(realm, ipa, pfn, map_size, prot,
+>>>>> +					    memcache);
+>>>>> +
+>>>>> +	return realm_map_protected(kvm, ipa, pfn, map_size, memcache);
+>>>>> +}
+>>>>> +
+>>>>>     static bool kvm_vma_is_cacheable(struct vm_area_struct *vma)
+>>>>>     {
+>>>>>     	switch (FIELD_GET(PTE_ATTRINDX_MASK, pgprot_val(vma->vm_page_prot))) {
+>>>>> @@ -1604,27 +1641,52 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
+>>>>>     	bool write_fault, exec_fault;
+>>>>>     	enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_SHARED;
+>>>>>     	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
+>>>>> -	struct kvm_pgtable *pgt = s2fd->vcpu->arch.hw_mmu->pgt;
+>>>>> +	struct kvm_vcpu *vcpu = s2fd->vcpu;
+>>>>> +	struct kvm_pgtable *pgt = vcpu->arch.hw_mmu->pgt;
+>>>>> +	gpa_t gpa = kvm_gpa_from_fault(vcpu->kvm, s2fd->fault_ipa);
+>>>>>     	unsigned long mmu_seq;
+>>>>>     	struct page *page;
+>>>>> -	struct kvm *kvm = s2fd->vcpu->kvm;
+>>>>> +	struct kvm *kvm = vcpu->kvm;
+>>>>>     	void *memcache;
+>>>>>     	kvm_pfn_t pfn;
+>>>>>     	gfn_t gfn;
+>>>>>     	int ret;
+>>>>> -	memcache = get_mmu_memcache(s2fd->vcpu);
+>>>>> -	ret = topup_mmu_memcache(s2fd->vcpu, memcache);
+>>>>> +	if (kvm_is_realm(vcpu->kvm)) {
+>>>>> +		/* check for memory attribute mismatch */
+>>>>> +		bool is_priv_gfn = kvm_mem_is_private(kvm, gpa >> PAGE_SHIFT);
+>>>>> +		/*
+>>>>> +		 * For Realms, the shared address is an alias of the private
+>>>>> +		 * PA with the top bit set. Thus if the fault address matches
+>>>>> +		 * the GPA then it is the private alias.
+>>>>> +		 */
+>>>>> +		bool is_priv_fault = (gpa == s2fd->fault_ipa);
+>>>>> +
+>>>>> +		if (is_priv_gfn != is_priv_fault) {
+>>>>> +			kvm_prepare_memory_fault_exit(vcpu, gpa, PAGE_SIZE,
+>>>>> +						      kvm_is_write_fault(vcpu),
+>>>>> +						      false,
+>>>>> +						      is_priv_fault);
+>>>>> +			/*
+>>>>> +			 * KVM_EXIT_MEMORY_FAULT requires an return code of
+>>>>> +			 * -EFAULT, see the API documentation
+>>>>> +			 */
+>>>>> +			return -EFAULT;
+>>>>> +		}
+>>>>> +	}
+>>>>> +
+>>>>> +	memcache = get_mmu_memcache(vcpu);
+>>>>> +	ret = topup_mmu_memcache(vcpu, memcache);
+>>>>>     	if (ret)
+>>>>>     		return ret;
+>>>>>     	if (s2fd->nested)
+>>>>>     		gfn = kvm_s2_trans_output(s2fd->nested) >> PAGE_SHIFT;
+>>>>>     	else
+>>>>> -		gfn = s2fd->fault_ipa >> PAGE_SHIFT;
+>>>>> +		gfn = gpa >> PAGE_SHIFT;
+>>>>> -	write_fault = kvm_is_write_fault(s2fd->vcpu);
+>>>>> -	exec_fault = kvm_vcpu_trap_is_exec_fault(s2fd->vcpu);
+>>>>> +	write_fault = kvm_is_write_fault(vcpu);
+>>>>> +	exec_fault = kvm_vcpu_trap_is_exec_fault(vcpu);
+>>>>>     	VM_WARN_ON_ONCE(write_fault && exec_fault);
+>>>>> @@ -1634,7 +1696,7 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
+>>>>>     	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, gfn, &pfn, &page, NULL);
+>>>>>     	if (ret) {
+>>>>> -		kvm_prepare_memory_fault_exit(s2fd->vcpu, s2fd->fault_ipa, PAGE_SIZE,
+>>>>> +		kvm_prepare_memory_fault_exit(vcpu, gpa, PAGE_SIZE,
+>>>>>     					      write_fault, exec_fault, false);
+>>>>>     		return ret;
+>>>>>     	}
+>>>>> @@ -1654,14 +1716,20 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
+>>>>>     	kvm_fault_lock(kvm);
+>>>>>     	if (mmu_invalidate_retry(kvm, mmu_seq)) {
+>>>>>     		ret = -EAGAIN;
+>>>>> -		goto out_unlock;
+>>>>> +		goto out_release_page;
+>>>>> +	}
+>>>>> +
+>>>>> +	if (kvm_is_realm(kvm)) {
+>>>>> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn,
+>>>>> +				    PAGE_SIZE, KVM_PGTABLE_PROT_R | KVM_PGTABLE_PROT_W, memcache);
+>>>>> +		goto out_release_page;
+>>>>>     	}
+>>>>>     	ret = KVM_PGT_FN(kvm_pgtable_stage2_map)(pgt, s2fd->fault_ipa, PAGE_SIZE,
+>>>>>     						 __pfn_to_phys(pfn), prot,
+>>>>>     						 memcache, flags);
+>>>>> -out_unlock:
+>>>>> +out_release_page:
+>>>>>     	kvm_release_faultin_page(kvm, page, !!ret, prot & KVM_PGTABLE_PROT_W);
+>>>>>     	kvm_fault_unlock(kvm);
+>>>>> @@ -1847,7 +1915,7 @@ static int kvm_s2_fault_get_vma_info(const struct kvm_s2_fault_desc *s2fd,
+>>>>>     	 * mapping size to ensure we find the right PFN and lay down the
+>>>>>     	 * mapping in the right place.
+>>>>>     	 */
+>>>>> -	s2vi->gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi->vma_pagesize) >> PAGE_SHIFT;
+>>>>> +	s2vi->gfn = kvm_gpa_from_fault(kvm, ALIGN_DOWN(s2fd->fault_ipa, s2vi->vma_pagesize)) >> PAGE_SHIFT;
+>>>>>     	s2vi->mte_allowed = kvm_vma_mte_allowed(vma);
+>>>>> @@ -2056,6 +2124,9 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
+>>>>>     		prot &= ~KVM_NV_GUEST_MAP_SZ;
+>>>>>     		ret = KVM_PGT_FN(kvm_pgtable_stage2_relax_perms)(pgt, gfn_to_gpa(gfn),
+>>>>>     								 prot, flags);
+>>>>> +	} else if (kvm_is_realm(kvm)) {
+>>>>> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn, mapping_size,
+>>>>> +				    prot, memcache);
+>>>>>     	} else {
+>>>>>     		ret = KVM_PGT_FN(kvm_pgtable_stage2_map)(pgt, gfn_to_gpa(gfn), mapping_size,
+>>>>>     							 __pfn_to_phys(pfn), prot,
+>>>>
+>>>> For the case kvm_is_realm(), need we adjust 's2fd->fault_ipa' for the sake of
+>>>> huge pages. In kvm_s2_fault_map(), @gfn and @pfn may have been adjusted by
+>>>> transparent_hugepage_adjust() to be aligned with huge page size. If the
+>>>> adjustment happened in transparent_hugepage_adjust(), we need to align
+>>>> s2fd->fault_ipa down to the huge page size either.
+>>>
+>>> All of the above + some RMM changes are needed to get QEmu VMM going
+>>> with anon pages guest memory backing - currently testing various
+>>> configurations in the background.
+>>>
 >>
->> It happened 100% of the time in selftests. Perhaps it's because in the
->> selftests the pages are almost always freshly allocated and so the
->> lru_add fbatch isn't full yet? (and that the host isn't super busy so
->> lru_add fbatch doesn't get drained yet).
+>> I tried to rebase Jean's latest QEMU series [1] to upstream QEMU, and found
+>> that memory slots backed by THP are broken. With THP disabled on the host and
+>> other fixes (mentioned in my prevous replies) applied on the top of this (v14)
+>> series, I'm able to boot a realm guest with rebased QEMU series [2], plus more
+>> fxies on the top.
+>>
+>> [1] https://git.codelinaro.org/linaro/dcap/qemu.git  (branch: cca/latest)
+>> [2] https://git.qemu.org/git/qemu.git                (branch: cca/gavin)
+>>
+>> Lorenzo, You may be saying there is someone making QEMU to support ARM/CCA?
 > 
-> I chatted with Ackerley about this.  What I wanted to understand is why guest_memfd
-> pages were getting put onto per-CPU batches for lru_add(), given that guest_memfd
-> pages are unevictable.  The answer (assuming I read the code right), is that
-> lruvec_add_folio() updates stats and other per-lru metadata for the unevictable
-> lru, and does so under a per-lru lock.  I.e. we don't want to skip that stuff
-> entirely.
-
-Hm. Our pages don't participate in any LRU activity (including
-isolation+migration). Isolation+migration would only apply once we'd support
-page migration.
-
-But yes, secretmem also does it like that: filemap_add_folio() will call
-folio_add_lru().
-
-Traditionally we used the unevictable LRU only for mlock purposes.
-
-But yeah, there are "unevictable" stats involved ....
-
+> Mathieu and I are working on that yes and with Steven/Suzuki to fix the THP
+> issues you pointed out above.
 > 
-> One thought I had, to avoid the IPIs that draining all per-CPU caches requires,
-> was to disallow putting guest_memfd pages in folio batches, e.g. by hacking
-> something into folio_may_be_lru_cached().  But due to taking a per-lru lock,
-> that would penalize the relatively hot path and definitely common operation of
-> faulting in guest memory.  On the other hand, memory conversion is already a
-> relatively slow operation and is relatively uncommon compared to page faults,
-> (and likely very uncommon for real world setups).  I.e. having to drain all
-> caches if conversion isn't safe penalizes a relatively slow, relatively uncommon
-> path.
+>> If so, I'm not sure if there is a QEMU repository for me to try?
+> 
+> We should be able to submit patches by end of June - we shall let you know
+> whether we can make something available earlier.
+> 
 
-Yeah, the lru_add_drain_all is rather messy.
+Not sure if there are other known issues in this series. It seems the stage2
+page fault handling on the shared space isn't working well. In my test, the
+vring (struct vring_desc) of virtio-net-pci is updated by the guest, and the
+data isn't seen by QEMU, I'm suspecting if the host-page-frame-number is properly
+resolved in the s2 page fault handler for shared (unprotected) space.
 
-We have similar code in
+- I rebased Jean's latest qemu branch to the upstream qemu;
 
-collect_longterm_unpinnable_folios(), where we first try a lru_add_drain(), to
-then escalate to a lru_add_drain_all().
+- On the host, which is emulated by qemu/tcg, the THP (transparent huge page) is
+   disabled.
 
-Maybe we could factor that (suboptimal code) out to not have to reinvent the
-same thing multiple times?
+- On the guest, I can see the virtio vring (struct vring_desc) is updated. The
+   S1 page-table entry looks correct because the corresponding physical address
+   0x10046880000 is a sane shared (unprotected) space address.
 
--- 
-Cheers,
+   [   52.094143] software IO TLB: Memory encryption is active and system is using DMA bounce buffers
+   [   52.289746] virtqueue_add_desc_split: desc[0]@0xffff000006880000, [00000100b983f000  00000640  0002  0001]
+   [   52.432150] PTE 0x00e8010046880707 at address 0xffff000006880000
 
-David
+- On the host, the s2 page-table-entry is unmapped due to attribute transition (private -> shared).
+   A subsequent S2 page fault is raised against the adress and the s2 page-table-entry is built.
+
+   [  109.259077] ====> realm_unmap_shared_range: tracked_unprot_addr=0x10046880000
+   [  109.260249] realm_unmap_shared_range: unmapped shared range at 0x10046880000
+   [  109.317786] realm_unmap_shared_range: unmapped shared range at 0x10046880000
+   [  109.629939] ====> kvm_handle_guest_abort: fault_ipa=0x10046880000, esr=0x92000007
+   [  109.630245] realm_map_non_secure: ipa=0x10046880000, pfn=0xb8b59, size=0x1000, prot=0xf
+   [  109.630331] realm_map_non_secure: ipa=0x10046880000, ipa_top=0x10046881000, flags=0x1e0001, range_desc=0xb8b59004
+
+- On QEMU, the updated vring (struct vring_desc) at GPA 0x46880000 isn't seen. All the
+   data in that adress are zeros.
+
+   ====> virtqueue_split_pop: vdev=<virtio-net>, sz=0x38, queue_index=0x0, vq->vring.num=0x100
+   virtqueue_split_pop: last_avail_idx=0x0, head=0x0
+   address_space_read_cached_slow: cache@0xffff1c036440, addr=0x0, buf=0xffffeee34880, len=0x10
+   address_space_read_cached_slow: cache: ptr=0x0, xlat=0x10046880000, len=0x1000, mrs=<realm-dma-region>, is_write=no
+   address_space_read_cached_slow: translated to mr=<mach-virt.ram>, mr_addr=0x6880000, l=0x10
+   flatview_read_continue_step: mr=<mach-virt.ram>, host=0xffff23e00000, mr_addr=0x6880000, ram_ptr=0xffff2a680000
+   virtqueue_split_pop: desc: 0000000000000000 - 00000000 - 00000000 - 00000000
+   qemu-system-aarch64: virtio: zero sized buffers are not allowed
+
+
+Thanks,
+Gavin
+
