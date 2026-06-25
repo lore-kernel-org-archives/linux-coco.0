@@ -1,217 +1,128 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088743C10B2
-	for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 09:57:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782381446; cv=pass; b=JWghY2dUVExPFttD0ZLYhE91q0DFoHTBJDDr99eWaOI26N4CokuKjhQYYtOY9AOt+Wyr8K5uJv49bLuq8lOeuKx7562XMsJ31k2t75mbKS3eDbmilKiPkTZnLNq3sDMvu9JA1rFCKdkHEoIE/5J143nyhfkZnaRXkKzhTcQywVc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782381446; c=relaxed/simple;
-	bh=qvhKJbkEFFfAWC+9rpTE+bYHpR0yaiYW1uDCpafn5Jk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SpDNZc6oqx9mB3fqjqzrCuVd2KfVSKAf87ZAEgCDzNV+nocIMIanMah3J6t7q1WVUX3svC6Vw2IE71sAItuVXVyS/g1z7XF32lCbKa/xP0ExzHMbv5JMt+/Pu2ZhKeGTVAvN2NTPJLDONdxlxsMER6aV9TX2d/ek2pQjc4Pk/fc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gBkGtFBu; arc=pass smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFF12EDD6C
+	for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 10:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782384643; cv=none; b=jUPZ0tUV5bch5ObH4umgkJZGouZjttWHq6QpJYC6NVsQ4hC5gMDR3nOt9SNi/lF+xbCHk2d5N76pgcHCbRKyGVMjXwqf9wGiiOVup7q5R7mNrTLCgHkGAmhT40/ax622h35Sb0vLAAb1VFjT3ZaGFhnMVaIRxLFzMLwz1y1xKTY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782384643; c=relaxed/simple;
+	bh=Q794jxvpN3RYVnGFiRc8AABrGLmQZmazq6J7iMfJkgw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RHF8ghx1Knv/uDj4a+frmWXDKue43nUruvUTMRJuEmsh3jmqnHbP8vV1EZY+Du81uqQvGsKeVc+bnIbnlbWKTPcHj23vtR3TYCzXEu3yy+2fvwYqXDa4K+6KKXHLCoYwXOvSIhL8JoOpAKe3EpHmuEUBzmRhjk0lWwrK2ZIdH74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jm/8q39l; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gBkGtFBu"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5177d1ff061so182961cf.1
-        for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 02:57:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782381444; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nGQS3HNEnfIiPslGvoMfdAU4NCHI4MhrBWfKkF0qp82xYPxrvAvxbuyYAES8VQjMVr
-         QfG+TzT12EygWJOQKVe1L9u7QSA++n+xjG94JsFJqnPEHU9ulGxFITmuRpsMRqbpBJW/
-         dkf3zIA4dT2+DyYJ8eTnHgHXcKgGdX2n+mDMJWEbVfUSlqmdsq5a3jpeWGlrHt+qPAJt
-         00MGIFkr4ytkCMNagHgpyqSboWMscczKv+ePggGJjsrZmGr0YzfIWmqY9TkMqCS2taKv
-         rjbMOp87q8aazxQz7FZEMU2DOI9LabKjLCzgEPr3H1HjQsXwu3KRXz/Sx3pNnpQJRTu9
-         p9FQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=u/mrXMGknIREFr9L6V/jI2fkRAbyZYaUWGH07oXz/yk=;
-        fh=CGD/0OcuVxUCE8HQY1YrWknmpAcXqQmuibuFzI4GQVk=;
-        b=YBoZBqpDC6+cOhhb/rN43XqTlsJj9jc3tfcak9+WacCLl6rcapxIHJP4rd/CPZBhIi
-         5+csHlymhNWGEFeqHNJRRp5+Jz7u9sta5kdUySEMT2yLwHphH5ogtCg/UzVAY7PuwYE4
-         yPXRmOJtt3f64RoTbUF8xKajqTwH2Ccfy7iEbHQ1xIhkSm42ChG94TeLGsoJ94bz1Ywb
-         9HMbKoi+850BDDH/nwltsF1U34zpG/7qhbY9kAHKBJX2IBaDj8Qmfg7B6aDFpZsuCu5M
-         7v9XLFCZeh/evKJLKmHRh3l2SRG13UIhv1wJavly3sEk9A1Hcs8S9Zb1RWwwXto7w3Io
-         f2kQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782381444; x=1782986244; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=u/mrXMGknIREFr9L6V/jI2fkRAbyZYaUWGH07oXz/yk=;
-        b=gBkGtFButhSGJEjnwXWpykUl/cw5wdZrbR97KFCK/ejBglHtMZfTR7md/hG4eIz/aq
-         r+k3xDeuvxxVNDj2NttBPfb666dg0AjXjje1Qg6YGxFNYiGf73FVR7Y6haX5FUi6jDJA
-         9iGIpQjPu1rZD8nEoEsj6dm57k6gEtTFvUKVchvsztxP7v1IEu+jvdwRptYC6/V8gyEb
-         dqzrWAjsavBTv1FIgjqiwpTf96Dm7d6gqKTW6PGrTsx1zR//siOReqXXQ8iDhvLgZGIa
-         3CiyL+OcnKpPBChCXra/zFS7suQDBl/+RIdTA7U91IAQQOYpliYTXUT44m3Gy6YoPHBS
-         sGOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782381444; x=1782986244;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=u/mrXMGknIREFr9L6V/jI2fkRAbyZYaUWGH07oXz/yk=;
-        b=TXct0tE8EPuP7QWYjsC9XctssussAc4i5d9rG+7rdcA4YSUIEqL8LPS9ztsUAXZE8y
-         dUb9LiO35YbCGpixbpmg/9gg33fq650kv1H6qd6uoy/ZGdFeYxLs6LSP0BzUJm7BLjyQ
-         qIAxKE3HkbHMnWaIje4I78ETD3knHJn6fLOpk8G9pyUuxfghkjxFMCRIXVlKUzelP9wp
-         Ff8xnWx627pdiGBe/ql8D/CY9Uwju8yomPZf214QE3eFUIDOM8oYtAQWeCVYb84yBXZ5
-         oBbF44YzkdqQm+demLsDPbJJaLQiMh6A2RARBFNPF04xS/HVqytpQfNryRXwRxb8uMTZ
-         26JQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+1ZVnSkO7rYp+LNt9UaKUMtX02ijBwjWt9uXzUkDcun7Bewf5M3zbzulTlCs+NtINHf9A/r3+BDbRa@lists.linux.dev
-X-Gm-Message-State: AOJu0YwI9BcoVmDqVMB8uuXLua1vxgRXeKYZVSFSWKw+0anbCJ0IElHK
-	56jw4nT/q9bPvT5diGmupDfD4lW4cW8D8XxVMpWEGrzoGfvB6JJTc9Mv1YquOdaKQ6ctl5MsWzL
-	dMDqTOGaun2UPDkar37an7Gl2xyet7bJWDKEI7YF3
-X-Gm-Gg: AfdE7cm9L8VjOSDrSKwOALqXCCoKd2u/WNZpDMas5JJNljcZYgHd0HD7qCebMzt1yBk
-	aUSdSQVux7C3pwe8kFYlZPn5c24fj0l4q2HI1FvhUacSnd+R4lcgQmsciJtmDKSzDTZ+q+NCWDD
-	nkZiooWPowrL/g9msIZB2u+bp6V1ghEK8e3/+8Uzwdkj2zoDmv2/oqHuxsUCCbwAUrSO299VDbF
-	xBw2NqHr92FMXSiibXtbbaLG9j5OJJp9sGKY5hulw+DosLnB5c7e+uJR82y3BNkrUvgtxSSNBh/
-	T6mQz8kd
-X-Received: by 2002:a05:622a:1804:b0:50e:38f0:ccb2 with SMTP id
- d75a77b69052e-51a7097b73dmr6249471cf.15.1782381443129; Thu, 25 Jun 2026
- 02:57:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jm/8q39l"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782384641; x=1813920641;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Q794jxvpN3RYVnGFiRc8AABrGLmQZmazq6J7iMfJkgw=;
+  b=jm/8q39lxeDnrda+gcKMlUpUhAeh3l5etWYMXEKDxxxOTB3IdgU+NGm2
+   IW/H+r7/TYdLJxnzEuh4ZG+K90IbWEJaVW8AKjnJmGtvP3aOPUz2GraFl
+   +d1kNS5NHcpUlzLtJS0CIIalcrCmljo/XRU0+koMUZBnuKW2mSdppnaCU
+   QV83jYK+ZDtmDjTu2sSCmlHwBLRdN5+tD6WSewP7M1xQtLjNopWn3LkNt
+   ONrg9WKtRWnECH0ROg/At8OwqdtenQULgAE0e4xW/mcBIpxupRpGkJbIi
+   CgJpydTQy8Ao5a2EQkQ95NFXhievIwqmOCDCfnUUqD2ocnp09wvsOPeXc
+   Q==;
+X-CSE-ConnectionGUID: cUq+4QsHScSN3LRPCzH0Ng==
+X-CSE-MsgGUID: 3WIwv/XFQOem5IdNavOoxg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="94650223"
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="94650223"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 03:50:41 -0700
+X-CSE-ConnectionGUID: E3hHIgrJT7yHAx1Xaw7w1g==
+X-CSE-MsgGUID: /dHp0zbqQ3ieesIJtsbyrQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="255497412"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa005.fm.intel.com with ESMTP; 25 Jun 2026 03:50:36 -0700
+Date: Thu, 25 Jun 2026 18:50:35 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, djbw@kernel.org, kas@kernel.org,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	xiaoyao.li@intel.com, sohil.mehta@intel.com,
+	adrian.hunter@intel.com, kishen.maloor@intel.com,
+	tony.lindgren@linux.intel.com, peter.fang@intel.com,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	dave.hansen@intel.com, dave.hansen@linux.intel.com,
+	seanjc@google.com
+Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
+ module init and update
+Message-ID: <aj0H+68svEME5x+h@yilunxu-OptiPlex-7050>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+ <ajpHRNaq+z5bdn+R@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-46-9d2959357853@google.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-46-9d2959357853@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 25 Jun 2026 10:56:00 +0100
-X-Gm-Features: AVVi8Cdu5TEy7e9mOJQzpvO2gtGAQsCwELbue-J7rOmw4IFWddPVfZNy_ZtxEUs
-Message-ID: <CA+EHjTw3MrKXdOjC10Q6rrxehwYZjFv7J45wK2E2PBWtSBwCRQ@mail.gmail.com>
-Subject: Re: [PATCH v8 46/46] KVM: selftests: Update private memory exits test
- to work with per-gmem attributes
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajpHRNaq+z5bdn+R@intel.com>
 
-On Fri, 19 Jun 2026 at 01:32, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Sean Christopherson <seanjc@google.com>
->
-> Skip setting memory to private in the private memory exits test when using
-> per-gmem memory attributes, as memory is initialized to private by default
-> for guest_memfd, and using vm_mem_set_private() on a guest_memfd instance
-> requires creating guest_memfd with GUEST_MEMFD_FLAG_MMAP (which is totally
-> doable, but would need to be conditional and is ultimately unnecessary).
->
-> Expect an emulated MMIO instead of a memory fault exit when attributes are
-> per-gmem, as deleting the memslot effectively drops the private status,
-> i.e. the GPA becomes shared and thus supports emulated MMIO.
->
-> Skip the "memslot not private" test entirely, as private vs. shared state
-> for x86 software-protected VMs comes from the memory attributes themselves,
-> and so when doing in-place conversions there can never be a disconnect
-> between the expected and actual states.
->
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> >For runtime update, Linux applies a policy that no newer features should
+> >be added after update to avoid disrupting live TDX operations. To adhere
+> >to this, TDH.SYS.UPDATE must configure the same features as the
+> >TDH.SYS.CONFIG. Record the kernel required add-on feature bitmap in a
+> >global var so that both phases can use it.
+> 
+> Actually, we do not need another global variable here. tdx_features0 is cached
+> and is not updated across a runtime update, so the derived add-on feature
+> bitmap will be the same before and after the update.
 
-Reviewed-by: Fuad Tabba <tabba@google.com>
+I think a global var "static u64 tdx_addon_feature0 *__ro_after_init*;"
+better illustrates the policy that add-on feature bitmap should be decided at
+boot up and never change later. It will also be used to decide if a specific
+add-on feature initialization is needed. We don't want to calculate the bitmap
+again and again, though the result must be the same.
 
-Cheers,
-/fuad
+Maybe I should strenghthen the commit message:
 
-> ---
->  .../selftests/kvm/x86/private_mem_kvm_exits_test.c | 36 ++++++++++++++++++----
->  1 file changed, 30 insertions(+), 6 deletions(-)
->
-> diff --git a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-> index 10db9fe6d9063..70ed16066c63e 100644
-> --- a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-> +++ b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-> @@ -62,8 +62,9 @@ static void test_private_access_memslot_deleted(void)
->
->         virt_map(vm, EXITS_TEST_GVA, EXITS_TEST_GPA, EXITS_TEST_NPAGES);
->
-> -       /* Request to access page privately */
-> -       vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
-> +       /* Request to access page privately. */
-> +       if (!kvm_has_gmem_attributes)
-> +               vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
->
->         pthread_create(&vm_thread, NULL,
->                        (void *(*)(void *))run_vcpu_get_exit_reason,
-> @@ -74,10 +75,26 @@ static void test_private_access_memslot_deleted(void)
->         pthread_join(vm_thread, &thread_return);
->         exit_reason = (u32)(u64)thread_return;
->
-> -       TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
-> -       TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
-> -       TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
-> -       TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-> +       /*
-> +        * If attributes are tracked per-gmem, deleting the memslot that points
-> +        * at the gmem instance effectively makes the memory shared, and so the
-> +        * read should trigger emulated MMIO.
-> +        *
-> +        * If attributes are tracked per-VM, deleting the memslot shouldn't
-> +        * affect the private attribute, and so KVM should generate a memory
-> +        * fault exit (emulated MMIO on private GPAs is disallowed).
-> +        */
-> +       if (kvm_has_gmem_attributes) {
-> +               TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MMIO);
-> +               TEST_ASSERT_EQ(vcpu->run->mmio.phys_addr, EXITS_TEST_GPA);
-> +               TEST_ASSERT_EQ(vcpu->run->mmio.len, sizeof(u64));
-> +               TEST_ASSERT_EQ(vcpu->run->mmio.is_write, false);
-> +       } else {
-> +               TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
-> +               TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
-> +               TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
-> +               TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-> +       }
->
->         kvm_vm_free(vm);
->  }
-> @@ -88,6 +105,13 @@ static void test_private_access_memslot_not_private(void)
->         struct kvm_vcpu *vcpu;
->         u32 exit_reason;
->
-> +       /*
-> +        * Accessing non-private memory as private with a software-protected VM
-> +        * isn't possible when doing in-place conversions.
-> +        */
-> +       if (kvm_has_gmem_attributes)
-> +               return;
-> +
->         vm = vm_create_shape_with_one_vcpu(protected_vm_shape, &vcpu,
->                                            guest_repeatedly_read);
->
->
-> --
-> 2.55.0.rc0.738.g0c8ab3ebcc-goog
->
->
+  ... both phases can use it. This actually mirrors a TDX module internal state
+  so that kernel knows which add-on TDX operations (for example, quoting
+  SEAMCALLs, which will be added in later patches) are valid.
+
+> 
+> 
+> > static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+> > 				    u64 global_keyid)
+> > {
+> >+	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
+> > 	struct tdx_module_args args = {};
+> > 	u64 *tdmr_pa_array;
+> > 	size_t array_sz;
+> >@@ -1032,7 +1042,15 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+> > 	args.rcx = __pa(tdmr_pa_array);
+> > 	args.rdx = tdmr_list->nr_consumed_tdmrs;
+> > 	args.r8 = global_keyid;
+> >-	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
+> >+
+> >+	set_tdx_addon_features();
+> >+
+> >+	if (tdx_addon_feature0) {
+> >+		args.r9 = tdx_addon_feature0;
+> 
+> How about moving this r9 assignment out of the if block and placing it next to
+> 'args.r8 = global_keyid;'? There is no need to guard it, because args.r9 will
+> be 0 when no add-on features are enabled, which is perfectly fine.
+
+I tend to keep r9 assignment in the block, it clearly shows which
+SEAMCALL version needs what parameters, help people map the code to TDX
+module spec.
+
+> 
+> >+		seamcall_fn = TDH_SYS_CONFIG;
+> >+	}
+> >+
+> >+	ret = seamcall_prerr(seamcall_fn, &args);
