@@ -1,170 +1,169 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9628F3B52EE
-	for <linux-coco@lists.linux.dev>; Wed, 24 Jun 2026 23:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782345016; cv=none; b=VZzUtUltH0OS093J5NRTfuSBRhxuuHLbP7wqhuuW3mMjg6V3wKFzKvVXf8Ep810nuC4yy+uCecXXLzmkKeB3HVKLnlgw/6VEGQwGDP15//zQA4H+OydQXSbfHs0xp9psoqXjVquPomq8RvnJ+id4aqz9yrJTPatwLAI1r8uYnTY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782345016; c=relaxed/simple;
-	bh=jFwTgMVyvPSe2l2h8xYHy/RhaF5bRwpBGbC2LGmMwX8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dn8pnYNIsTouMqspiCXayuUsJwMPDt1JmLYrezDcINm+VzUanyNa2YLNGmHL6RSZkj3+0J0S6n5kD6UUS+6KowK+jcXdnZBBnCuycpig71sEf9eBG9cFxyQa+FVIJ1o8Uvu8kx5gt1CR+f6cQf4feZgBR5WKrFTKUpgLugR6dws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tPGA/lw3; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8FE18AE3
+	for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 00:05:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782345949; cv=pass; b=KkMo2IxNuC8kCjjbKN59FJ0OkTL62CKAVqxFClgxG8ZQZWkm49jui6SYlkxwfl2CHvhS8Cg9x1VzfYvhsPiwmDxelid3qjJ51HciubrfVKBCCxWsv19xgwLw7wjbfPH/f5PL/i4a6Ik1FXfjfPAYFjcmEx5eKTJnRS1e5+VU3EM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782345949; c=relaxed/simple;
+	bh=Vhp59FnIevSXEEdWsugGzaR2Idu0ffRc20bSQFGQLZc=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Bhsp5U/5bZjdWrsdhzBo7N6+uTy09WRpAC2HTgmUGwNjTN6BPD4+PUT4m4FUl1/t5blsZtBElTy5iHHkwAw0YPlWnAKNecX4yd10exP51u7mC9skwkv6xaypTJksT8hZvegimEZCL177nFBt2YWavwfyMZ8Hj0u4WdZu5VTCTSQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h4N3ra0m; arc=pass smtp.client-ip=74.125.82.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tPGA/lw3"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2c6b7bd4e8dso21365ad.0
-        for <linux-coco@lists.linux.dev>; Wed, 24 Jun 2026 16:50:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h4N3ra0m"
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-139a71baa35so4316972c88.0
+        for <linux-coco@lists.linux.dev>; Wed, 24 Jun 2026 17:05:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782345947; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TalrcVEIpkjde2CqhJWNPd8fsVOuRsOBN3QpMFAdPbnJD+gAL2RtvEbdfX2ciEnjdX
+         XdFzbEQ+58RPpQeSwvt6vAQTAUkLjEEAiuOO5wGMJ1As+kzr7dzXk1haMQTWdXwKZUEi
+         vYwb0bc3neJGTEg9/XrX+WzIZdAP0bFxbWt77NIshNb+YN6hlxuoz4zRy13hLFANt7Ry
+         eX7nCRZGeTnx7wZ0W8TPFrRm2PSHILikDVrnfimlhVmPZsioM3IlcT+tHevtpZ6nkxE0
+         hObRYSQyz4v2kT3XM/E30tNtv4Y2deey0mX2Z6Bq81tWCUCIp6o2kJ405T3rKuL7Aviw
+         hPCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=FpepC4xFaJGVnjf18g1C8zYeq9gRMdq/7IlUInDggZs=;
+        fh=vvQYfgXMDloLZXnlWnN+I6RQopZ164TiSzFejWotAEk=;
+        b=QSv99OlP5RQnRVY40FENOEZ27Hptj1aKTj63QKHaXicOg6LcdYfoUjDgJlL/X3f91o
+         NzPHD1QyezPUb/f11T1tk3pnGUKtegC348FHioSVX8v214Rvu+8bDdH8QjJeyspSjKjo
+         6tyUluzqxLjkXhwE1Fw3ybDF6dr8hDEwVKXmmtOJxcMrUhqmDB17lavMcZ+mTK0fh02c
+         1ZA+RDVr/6zSa/savm3ZUoExAqn1j64APgMoQ5YXV6GpB0NZ7KI9ye5MQj8jpmgAsLN6
+         oezlrI7xCjc260KvOobwNHucyVlN0w3/U5/nQvH2C57b1geK+S742a8ZP9t5RkeU5OKq
+         abOw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782345015; x=1782949815; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=re80BiDMtfSQEgMKbr3zmDreG+eTyRX3VIJM0LJKtgI=;
-        b=tPGA/lw3WdNFBbPlKd4lNIa3OnuV7g5tL9sIMHXLDoqeVZ7jECFMdUXMUReFwnJ5A/
-         TsBqQHCJni8ToJgnhF1T2niMe32zBdV+JConVkYT03MZ2p03MfJJvYI1KLBRhJtOVnwp
-         azniGXfJika4nGe/bm30GZfkS3CV6d02rdNUJLrPCZmgvQufhLWyNNQTPacqV7HxSr45
-         k5BkurxzJikD499C+Bo+XEzMUuunlD3h9rbPF0jUmBAwk2D1jFAtw6AUKsXaK+TbIyIX
-         mA/Vdj6Xw7FL5yqfbjuqMASnixdF9K5kphrVuWgg7iZ5oc9AiLoQy62NaspBbb66YQkB
-         Zhgg==
+        d=google.com; s=20251104; t=1782345947; x=1782950747; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FpepC4xFaJGVnjf18g1C8zYeq9gRMdq/7IlUInDggZs=;
+        b=h4N3ra0mFGdyxJc5zd2axhH4i2gLLZpaGD8JURhvVTYQDj+A/UPp1zPZW7QZBbebC3
+         dqTHP8lSHKDPdSd0JyXltDfc7+IGw6DqcQmFxpty3wVZH6nJC9xUuXT36/5IHLNvh9jZ
+         9Ls5Javv48Dsyx2Ng6aGQb+3SC3eS2OdM7Eqb8jJONLB9PmiTRuv5x4DFDT5iGZj4JoI
+         AkufLQeog2+ot6eSkJnq2mrsgl8AJWo3y7Qr3j0ZyZVt00fyEomk6QTstppiXPS8hedN
+         o1g7CXxUyFv/EmqEqnI13ZfOHqbNajTktzJtrNiy4jgUD4iUi6G5snI8X+kE+w6s0/vD
+         ABhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782345015; x=1782949815;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=re80BiDMtfSQEgMKbr3zmDreG+eTyRX3VIJM0LJKtgI=;
-        b=QNogEPNBkOQBPncd6dfZ2ILeSYwHnYa3nFPBNI+NHIyOSbk7Tm+XzwvTu6qNXqz19R
-         /KFOM/uvh7K9gqP24TaaSDO18GxsoAkkMNMk4qZ37gvHVRmWTBFI9p6zz+zTfEiBsuVI
-         61G9fgrFOe3znwncCDFR2e0UxKESZmirMXW5x1WfZMNIHVlTeXiGmoQ/RjTxGgQ6xcEl
-         AfexFRIGSPGx6zVeiKZgqw9R6s2lNIYOp6uUfWWim8c6M2d64NBBa25EFqtzT8kowiNH
-         RtXp9Nm6tb/E8dMklES/bmmRp0l2RXoHkD7x+r3NUIZKolzDI7LCNuqRAvzoibtguDgt
-         PKrA==
-X-Forwarded-Encrypted: i=1; AHgh+RpjOOTv9HSmIj56taCVURltm44AfhaDoGLG+RCeozJcUO3jf4W8o8F5/vTFtl/l8YDF1UWOBu5Dt46w@lists.linux.dev
-X-Gm-Message-State: AOJu0YzRIh+yBpNhrSpy85H2VaSNUzFqigTTL4wQx5kXeHM/gF0JxsOR
-	XXZu69UVjeNAduvv/uN/04tz9/4vD3QUIMV3FVh5v0CMoGuyb01PH7AjVGB2OBD4aw==
-X-Gm-Gg: AfdE7cnXz+C1Y/iVEP14U1LdAw3Eum1XYl3T7XMTxgceQM/66kotogHusSApFyjVtmB
-	3ODENsLrA7nT0Cmq2iqHY0nIFt3Doks9XRcCkboIo+Z5UcQvg5SX0nFVf3XMzcyllFK+vjzoD/6
-	zBmGwnIVavFEY4MtC/aqRNjz6S3te95jWDQTvUp1GduWdoCU1qTTbago5wFkfqIoy/DEv/1/y68
-	EAlcKEXsQhydeHNI1lL3Ytxj985UU166h/UwQAM4rDETSZlNreQOFNVV9Z70nuAuPHgYJNSXK0Z
-	eLgl8erguz/sMTlWGU1hPutnj7pg1MJbWobGq03jBPBOmpm5lKBfuNwVmD0qFRvAlGHmALYCCGG
-	U5DuKVnzXYFk6oAt7iS2O8ruto1saCcT1UimbmBA3ugBFmHBko3dAl9J/9mlHl+9k3jg0/XHYbN
-	TvysVScCca2Zc1MBH4LOZKGc6feb+mZbiH5Hnc4/60vmY=
-X-Received: by 2002:a17:902:f687:b0:2bf:193b:a195 with SMTP id d9443c01a7336-2c7fae6b840mr507585ad.11.1782345014009;
-        Wed, 24 Jun 2026 16:50:14 -0700 (PDT)
-Received: from google.com (74.67.83.34.bc.googleusercontent.com. [34.83.67.74])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c92bc1df037sm546294a12.17.2026.06.24.16.50.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 16:50:13 -0700 (PDT)
-Date: Wed, 24 Jun 2026 23:50:09 +0000
-From: Lisa Wang <wyihan@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Chenyi Qiang <chenyi.qiang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Isaku Yamahata <isaku.yamahata@intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Roger Wang <runanwang@google.com>,
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	x86@kernel.org
-Subject: Re: [PATCH v13 03/22] KVM: selftests: Initialize the TDX VM
-Message-ID: <ajxtMdOFCPiMU0Pw@google.com>
-References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
- <20260521-tdx-selftests-v13-v13-3-6983ae4c3a4d@google.com>
- <d27cce6a-da0b-46dc-96b3-5f2f699907eb@intel.com>
+        d=1e100.net; s=20251104; t=1782345947; x=1782950747;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FpepC4xFaJGVnjf18g1C8zYeq9gRMdq/7IlUInDggZs=;
+        b=JfRh2vZhAmTuRBU3NFXNdBwjutngoi5agO0vzGK+rB0lsFzfyok/Z0ywUemG+RjSR6
+         oOg1pehpM6RFDpM8XhAs6uCsWW7CJXqhjKEwSxaWeSlUZJ0ZLiUNW8fdtZ6vgI9LOhFm
+         suoBTkWpY3ZcDmRAz11S+Vuq49YdCFrrQbk7K0nTdtKKWZ8WScsY0H7X39S3qE38yAUK
+         5+I+PicuU1AeWNSwd4wcQNYKzigQTNy0ZXyma3ZbSJg+vI7fIuERvxaFyMYkwpY6TeCW
+         kfIJdCarteP1haYFUNvsoyQH35KRPxkzg7hARU2ERaSmjB4iu5E5d+0kLZKWgTLtV/Cc
+         Q2yg==
+X-Forwarded-Encrypted: i=1; AFNElJ9spxjHSpqwyRhq+VyBFu2DlQr5Fi5Ky/22Dm+UX71T7LO4q4tHE2/em2ZB6WPVNjKASVs6g+toWCDb@lists.linux.dev
+X-Gm-Message-State: AOJu0YxOu/DtoQBkvh5SpuLWHNj1UgiGsgDkJ9itiGUCAUoLeTzcPkpn
+	009w6ZTRIcJeCaHLWj6c24TGyi2fSLexXMVcHgk9D5PFQ3YicVrwtSHxX6+lIUJvkH5jqytdSbF
+	oy+9lBgCJdvjvmphlkqfsjjuMOpzpCGTpqzVL3fTd
+X-Gm-Gg: AfdE7cmEr6+6YAYflfMOfUO5nW8aEAsS4askNOxCfNY9Ske3ARmPaSSzBv49G37WIr0
+	UcZgOiBihrH17dQxnjBjhK94UmdfJzZsRevxVklz2PzvuQOQuSUGKlwkLOs0MFoAdl461NdwKML
+	/Owhx8Kl5oRR92jBmfsV6tQxQMw6qln7jdVSDyMUvPZ/AAu852FEnBZRcQUYcDSHPA1UOeOLmTO
+	gRPUhDEjdzqYG2LdN1rj92NTBVRc8ur+dcIqCC3dAUZhLLSpJoEefDPH/eaU7TFBWqYZj0wZAim
+	LUbPYUqr4VOt7x5VKPaLfSExHT5ixCk+CraJAIm3dlAyl25SXnn4PYy414g=
+X-Received: by 2002:a05:7022:e01:b0:138:49ea:f463 with SMTP id
+ a92af1059eb24-139dba54880mr251235c88.16.1782345945708; Wed, 24 Jun 2026
+ 17:05:45 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 24 Jun 2026 17:05:44 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 24 Jun 2026 17:05:44 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <aji/2svhcc84rn5w@yzhao56-desk.sh.intel.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-24-9d2959357853@google.com> <aji/2svhcc84rn5w@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d27cce6a-da0b-46dc-96b3-5f2f699907eb@intel.com>
+Date: Wed, 24 Jun 2026 17:05:44 -0700
+X-Gm-Features: AVVi8CctoVihMuJ7SOXsg73Uq4ZLzDcGYZqps3qpfVHZ_IQN9jIN9AXdoFf5CH4
+Message-ID: <CAEvNRgHYTFnHbsLLgMTCSitmnp1_j9Pomikm9qmpGTh1w8YE5Q@mail.gmail.com>
+Subject: Re: [PATCH v8 24/46] KVM: guest_memfd: Make in-place conversion the default
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Jun 17, 2026 at 11:21:49AM +0800, Xiaoyao Li wrote:
-> > +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> > @@ -11,4 +11,34 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
-> >   	return vm->type == KVM_X86_TDX_VM;
-> >   }
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
-Thanks for the review. I will change all comments for this patch I did
-not reply here in the next version.
+>
+> [...snip...]
+>
+>>
+>>  #ifdef kvm_arch_has_private_mem
+>> -bool __ro_after_init gmem_in_place_conversion = false;
+>> +bool __ro_after_init gmem_in_place_conversion = !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES);
+>> +module_param(gmem_in_place_conversion, bool, 0444);
+>
+> With gmem_in_place_conversion=true, userspace can create guest_memfd without the
+> MMAP flag. In such cases, shared memory is allocated from different backends.
+> This means this module parameter only enables per-gmem memory attribute and does
+> not guarantee that gmem in-place conversion will actually occur.
+>
+> To avoid confusion, could we rename this module parameter to something more
+> accurate, such as gmem_memory_attribute?
+>
 
-> > +/*
-> > + * TDX ioctls
-> > + * Use underscores to avoid collisions with struct member names.
-> > + */
-> > +#define __tdx_vm_ioctl(vm, cmd, _flags, arg)				\
-> > +({									\
-> > +	int r;								\
-> > +									\
-> > +	union {								\
-> > +		struct kvm_tdx_cmd c;					\
-> > +		unsigned long raw;					\
-> > +	} tdx_cmd = { .c = {						\
-> > +		.id = (cmd),						\
-> > +		.flags = (u32)(_flags),				\
-> > +		.data = (u64)(arg),				\
-> > +	} };								\
-> > +									\
-> > +	r = __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
-> > +	r ?: tdx_cmd.c.hw_error;					\
-> > +})
-> 
-> It looks __tdx_vm_ioctl() can be implemented as the static inline function.
-> 
-> Given all the existing xxx_ioctl() are implmeneted as MACRO, I'm OK with it.
+I asked Sean about this after getting some fixes off list. Sean said
+gmem_in_place_conversion is named for a host admin to use, and something
+like gmem_memory_attributes is too much implementation details for the
+admin.
 
-Most vm_ioctl() and vcpu_ioctl() used MACRO.
-I prefer to use MACRO for `tdx_vm_ioctl()` for the `#cmd`, but I am ok
-to change `__tdx_vm_ioctl()` to static inline function.
-If we can only change part of it, do you think it is better to change it
-as the static inline fucntion ?
+Sean, would you reconsider since Yan also asked? If the admin compiled
+the kernel knowing what CONFIG_KVM_VM_MEMORY_ATTRIBUTES means, then the
+admin would also be able to use a param like gmem_memory_attributes?
 
-> > +}
-> > +
-> > +static struct kvm_cpuid_entry2 *tdx_find_cpuid_config(struct kvm_tdx_capabilities *cap,
-> > +						      u32 leaf, u32 sub_leaf)
-> > +{
-> > +	struct kvm_cpuid_entry2 *config;
-> > +	u32 i;
-> > +
-> > +	for (i = 0; i < cap->cpuid.nent; i++) {
-> > +		config = &cap->cpuid.entries[i];
-> > +
-> > +		if (config->function == leaf && config->index == sub_leaf)
-> > +			return config;
-> > +	}
-> > +
-> > +	return NULL;
-> > +}
-> 
-> No need to introduce a new fucntin. We can use get_cpuid_entry().
+There's the additional benefit that the similar naming aids in
+understanding for both the admin and software engineers.
 
-I think we cannot use `get_cpuid_entry()` directly here.
-This function is called by `tdx_filter_cpuid()` to check if KVM's
-supported CPUID entries are present in the TDX capabilities list. Since
-the TDX list only contains a subset of CPUID leaves, some queries will
-naturally return NULL (which we want to gracefully filter out) However,
-`get_cpuid_entry()` has an embedded TEST_FAIL(), which would abort for
-any missing leaf.
-How about I add a `__get_cpuid_entry()` to share the same part of them?
+Either way, in the next revision, I'll also add this documentation for
+this module_param:
 
-Lisa
+  Setting the module parameter gmem_in_place_conversion to true will
+  enable the KVM_SET_MEMORY_ATTRIBUTES2 guest_memfd ioctl and disables
+  the KVM_SET_MEMORY_ATTRIBUTES VM ioctl. If gmem_in_place_conversion is
+  true, the private/shared attribute will be tracked per-guest_memfd
+  instead of per-VM.
+
+Let me know what y'all think of the wording!
+
+>>
+>> [...snip...]
+>>
