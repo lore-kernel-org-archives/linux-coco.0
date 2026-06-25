@@ -1,324 +1,163 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25076345CD0
-	for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 13:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8C13E63A1
+	for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 14:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782395639; cv=none; b=u7P19wWXjCHR+ZfoQ9qgsogVvli5+N9lZb4Do1+c7kHA1zzyM9ikhJ62x9Y7bfsmB2+7wKmlt55UP9gU0kPJYBxBhvZTV8Ub/Ciigw6DvMGqCcgOot075TuqaROVIBYexokNNbBJOkj08kSxO/7dzWX/wA9/8vXlQLZXbM/+Fws=
+	t=1782398192; cv=none; b=VMOweUfzjLpWRq+EZc2M3dt668pnzE4/1me7gxy90pWEv7Pai7pDH9+edFMhwYQCeXPsiyjjYPgi0X7qYfCAjnJniQeRH9Ks2qq+ko7/8y+N2pQXyqINaXaLP4s8NAzBSfhMCYGhvhlF+1Rl2+mzNjUFOZuTLn44bddwBaLIqlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782395639; c=relaxed/simple;
-	bh=TEtUb2t7/GatcjTLqxJxCqQNRI+9vBLfCeDeqCkz0R8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OyRmClKxBYUEpBxaYipHv6cCZdorcgK7S28/scm/MiWAbcDrP5fyR0bR3khNdhhG4nN9Npd7Bwmad1lq5V34bTFvjQ++rKHBXvBXtj3w6oq2wTMRJimA8BjuwbrxGT7m6suxjm7PxThXeQkBln4ZuZ7DOJZeaoJ8w3ytMn3vHv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M8UdtDTO; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782398192; c=relaxed/simple;
+	bh=3+XZ1J9Fg+1riF/ZK2t4KROucxsp3psGgRCdBaJ8GJ8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=I9sO6Kx2S0hbPgAcGG+rcj0R150oCddTS/ZRndix/Rsgu7EPSSAPejx0bEFzf9A1/nUWVgU3L/Wh6fgnXchSQn6cfL6FR9XRauiRunGSs+f6EVp/FCI3XhaiAWyDFCQkRyDmrkMNLdWXbIZsniA04ibDcAyGGW6AUX7twntYLVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i1qvwSxl; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M8UdtDTO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782395636;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F2JG4NFwUS2cEMv5rtucKqmVkk7/NshCHssLA8DLWUk=;
-	b=M8UdtDTOjk+NlrV7Q6q/EG0/R+B/9hBwDxYBb+ZrXzoEw4ZldqgSiJPjAsKt1gcorYuEQm
-	yz9u5OeT3xXdD40cE2UhsDxieBHvrQz6GU1k6aFoUV13bU/ESRGkqQQqlKML1KvxzF0CuA
-	JGDRLU3PFsw5ELhLqC9/m3EYNnbfsuA=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-617-RI1ZBjdgNOKjjO-1wAfJYQ-1; Thu, 25 Jun 2026 09:53:52 -0400
-X-MC-Unique: RI1ZBjdgNOKjjO-1wAfJYQ-1
-X-Mimecast-MFC-AGG-ID: RI1ZBjdgNOKjjO-1wAfJYQ_1782395631
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-5ad4f8a1c78so1182123e87.3
-        for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 06:53:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i1qvwSxl"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c80f89b64bso795765ad.2
+        for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 07:36:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782398190; x=1783002990; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yIUA7CCwzOR/KQalR5wXJaS4YlQ6wVTBXf5qStDGhQA=;
+        b=i1qvwSxlOE+Nt5O9qR6nxxJgmsikkIGnBlFVqvFQEC2cRNv7i6cujKdB19BX1nyXfz
+         KSGdO1OiYw29aaPanII73cFj2vJA3k0OOPskaPPifcSKPw05olK0beR0Z8a2Gr5wL8nc
+         Lfj6RHWl5K7Bkn8WEcvsrL0AEny+J57kCoz0ZBK3jzxN3kQSdIAjOcbi6H4NqXcKWr5e
+         wdKfT4L5Ttu5a1HpROq0IK4FrEU7OVrU5PGnRMfFcRnLALVaTaMjtV+ANafP9w5NmjMM
+         sCtxB+VdVSPQpD1Au00G97UG/cJChcxiK1uMDgZed56pr1Xc9cjQInLYjIL74sKlX8OI
+         MoFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782395631; x=1783000431;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=F2JG4NFwUS2cEMv5rtucKqmVkk7/NshCHssLA8DLWUk=;
-        b=mxQIlLmTpf4loEhXAPg30rIPZGO95YZlf8GlcKmX6GuarxH7IVVLYVanqS4pZdwbCS
-         28paWkGNYY8ctGKVjSO306qI/LPfBR9/IR+SwTKq1+Jw+8nk3Dl/uWxvE780maQ3nLIT
-         dMO94QexVD53LmutAv1g9uiakIQKPirvJ7UAcg6Hew1pOa23r7Runr2vaABPj39WOUy1
-         pfDvAx3rfKCZbI81pe0w058T1FRe4OZF+0wGezWtjs099Y7UdjnhF1LDoV+OrJ5y2te3
-         Zzth4yAO2E/aPChafwxfabf5SRK9TA2ctiZVrkad+OMolMW67UEnaj6tr91wNIzAkDOP
-         rQcQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqzYBJvkVXAgjKc7N4AqY+zVcxLb+POuLUBsWJUw3adcuzRNT4J7OnFSKKGK8xKvXg+z3x4lU7ESQbG@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz6BTjGARy5xOhFaUh8QyiaX+AiFQrQN5jBcCaEC/0hRu/FvpFJ
-	dDCaZ8hYHrNPi1ejBzLhDpHTtXMIS9eb+J+qVdwVrkvIm3QoLG7q4fyriD2yEmOObFT7Ld63cN1
-	f97aYj80pCXwhH2DItCFRaShR/yt0Xhst2nQVfE0n7+holAu0Ks5mbdi19zq0xB0=
-X-Gm-Gg: AfdE7cmWjwu8K6XdNkKY8przSwnmzjU1p8kDzivju6VWL6RLtRoyg5W7Jfn6fgQGoW/
-	c2dsB3pynHtyPJqz20ZsrbSjG4iejiL/yAkpGl1xfbjmruMTicmi+1M/papctgHfs1TxM+lO5xz
-	g2bH3Mt3LU0va63Cq2Wn0B6u8JbrDrQxuGS7jZC9YgHDeUmzF+LA7DPI7140rtS1wPuR0vaCznf
-	JXLpDkjAVxgweQqI4ZZXcD69SK8C//NFWFgwH840zCB+tMpgdLUBmjigJjOIOhXq99VhvAETaT2
-	sv2f3nT61Yjx5GK4qHQMJ1+YeuZB5UjjQILTurX5uN4OsvuyY8USWhKPz2whZOs/G4dRXE+vO38
-	ElAlaRns1PXDPY9VouPZql3WZAHjlPD3Wd9jPDusMlhhrmqhb6HQO8g==
-X-Received: by 2002:a05:6512:6805:b0:5a8:86a8:2e09 with SMTP id 2adb3069b0e04-5aea1f40aecmr867683e87.7.1782395630932;
-        Thu, 25 Jun 2026 06:53:50 -0700 (PDT)
-X-Received: by 2002:a05:6512:6805:b0:5a8:86a8:2e09 with SMTP id 2adb3069b0e04-5aea1f40aecmr867655e87.7.1782395630346;
-        Thu, 25 Jun 2026 06:53:50 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad69550febsm2641151e87.25.2026.06.25.06.53.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Jun 2026 06:53:49 -0700 (PDT)
-Message-ID: <1e39094f-7fa3-4ef1-be54-53d7a8643506@redhat.com>
-Date: Thu, 25 Jun 2026 23:53:32 +1000
+        d=1e100.net; s=20251104; t=1782398190; x=1783002990;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yIUA7CCwzOR/KQalR5wXJaS4YlQ6wVTBXf5qStDGhQA=;
+        b=XqnSlnXI5Ckl9R1vyfhM45m/bdJiJEXaRUX5uArWx5nER1SZ09RuywA7H0GKBAflhG
+         jjtiOKSfEJjk5ML4Cl2ig1x4+JLiOhgRZQwkW2IgWshgAzqC1bJLc2wi+o874kZUfzwL
+         bYlVh4n2QLf87GHslCdtvCWiWALKdFWfvozVhtlmMF/9gDT643IObyxL/siiuZhFd1ej
+         IgogNH4IcnZH9GhzdnNrvT9U8ZCUHgKnSaIbrq8yvZaTZ0pG+2FAm9x7rcnRbKGKmTMl
+         Apuy2xRtGmyWUI2j0HXKUb0/bokc/m6u/Vw2cj5DosAdxM2QJExjJUXhnPh8VCeoCmLx
+         tqvg==
+X-Forwarded-Encrypted: i=1; AHgh+RofcfPKoeEYknTGiRiBsDQ+6RbRi7LdMJK8ntqFx5RjKFiQx4DdyXSkTlQCS6o47fWtPn1fgQ4EC+62@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw7JP1c9DrGSCGIEwF+l+y1gt7IXu8oDQ9IVBYGtonATN/5pdMi
+	NBmYdc+utDvqEJeaNCnVHelycR+5UH335GqixpBuSnW3xNBZdfTuonGiJ5q79I9Ky7XOe/FluKx
+	62URfSQ==
+X-Received: from plpb15.prod.google.com ([2002:a17:902:d60f:b0:2bd:a0e6:1a81])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2304:b0:2c0:d91d:c3e8
+ with SMTP id d9443c01a7336-2c7fc65423emr29366505ad.4.1782398189481; Thu, 25
+ Jun 2026 07:36:29 -0700 (PDT)
+Date: Thu, 25 Jun 2026 07:36:28 -0700
+In-Reply-To: <aj0Jf30PS2f7x1nt@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 29/44] arm64: RMI: Runtime faulting of memory
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
- Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-30-steven.price@arm.com>
- <3359f788-07fa-41a1-9ac7-45c58577c1fa@redhat.com>
- <aiJ6u83O0nVUtPyv@lpieralisi>
- <ecef952b-e8c6-4102-933b-c99c46f14431@redhat.com>
- <aiLes2ecZSr17UwZ@lpieralisi>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <aiLes2ecZSr17UwZ@lpieralisi>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 45BLj6JQM8QUYaNM8BI6g5gBJpYLLBxcldP41bdahBE_1782395631
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-24-9d2959357853@google.com>
+ <aji/2svhcc84rn5w@yzhao56-desk.sh.intel.com> <CAEvNRgHYTFnHbsLLgMTCSitmnp1_j9Pomikm9qmpGTh1w8YE5Q@mail.gmail.com>
+ <ajx5Vrz9ma--hrGH@google.com> <ajyJhZcgfYFtGfS2@yzhao56-desk.sh.intel.com> <aj0Jf30PS2f7x1nt@yzhao56-desk.sh.intel.com>
+Message-ID: <aj087H1UWSFxbShR@google.com>
+Subject: Re: [PATCH v8 24/46] KVM: guest_memfd: Make in-place conversion the default\
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On 6/6/26 12:35 AM, Lorenzo Pieralisi wrote:
-> On Fri, Jun 05, 2026 at 06:11:11PM +1000, Gavin Shan wrote:
->> On 6/5/26 5:28 PM, Lorenzo Pieralisi wrote:
->>> On Fri, Jun 05, 2026 at 04:23:15PM +1000, Gavin Shan wrote:
->>>
->>> [...]
->>>
->>>>> +static int realm_map_ipa(struct kvm *kvm, phys_addr_t ipa,
->>>>> +			 kvm_pfn_t pfn, unsigned long map_size,
->>>>> +			 enum kvm_pgtable_prot prot,
->>>>> +			 struct kvm_mmu_memory_cache *memcache)
->>>>> +{
->>>>> +	struct realm *realm = &kvm->arch.realm;
->>>>> +
->>>>> +	/*
->>>>> +	 * Write permission is required for now even though it's possible to
->>>>> +	 * map unprotected pages (granules) as read-only. It's impossible to
->>>>> +	 * map protected pages (granules) as read-only.
->>>>> +	 */
->>>>> +	if (WARN_ON(!(prot & KVM_PGTABLE_PROT_W)))
->>>>> +		return -EFAULT;
->>>>> +
->>>>
->>>> I'm a bit concerned with this. We don't have KVM_PGTABLE_PROT_W set in @prot
->>>> if the stage2 fault is raised due to memory read. With -EFAULT returned to VMM
->>>> (e.g. QEMU), the vCPU continuous execution is stopped and system won't be
->>>> working any more.
->>>>
->>>>> +	ipa = ALIGN_DOWN(ipa, PAGE_SIZE);
->>>>> +	if (!kvm_realm_is_private_address(realm, ipa))
->>>>> +		return realm_map_non_secure(realm, ipa, pfn, map_size, prot,
->>>>> +					    memcache);
->>>>> +
->>>>> +	return realm_map_protected(kvm, ipa, pfn, map_size, memcache);
->>>>> +}
->>>>> +
->>>>>     static bool kvm_vma_is_cacheable(struct vm_area_struct *vma)
->>>>>     {
->>>>>     	switch (FIELD_GET(PTE_ATTRINDX_MASK, pgprot_val(vma->vm_page_prot))) {
->>>>> @@ -1604,27 +1641,52 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
->>>>>     	bool write_fault, exec_fault;
->>>>>     	enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_SHARED;
->>>>>     	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
->>>>> -	struct kvm_pgtable *pgt = s2fd->vcpu->arch.hw_mmu->pgt;
->>>>> +	struct kvm_vcpu *vcpu = s2fd->vcpu;
->>>>> +	struct kvm_pgtable *pgt = vcpu->arch.hw_mmu->pgt;
->>>>> +	gpa_t gpa = kvm_gpa_from_fault(vcpu->kvm, s2fd->fault_ipa);
->>>>>     	unsigned long mmu_seq;
->>>>>     	struct page *page;
->>>>> -	struct kvm *kvm = s2fd->vcpu->kvm;
->>>>> +	struct kvm *kvm = vcpu->kvm;
->>>>>     	void *memcache;
->>>>>     	kvm_pfn_t pfn;
->>>>>     	gfn_t gfn;
->>>>>     	int ret;
->>>>> -	memcache = get_mmu_memcache(s2fd->vcpu);
->>>>> -	ret = topup_mmu_memcache(s2fd->vcpu, memcache);
->>>>> +	if (kvm_is_realm(vcpu->kvm)) {
->>>>> +		/* check for memory attribute mismatch */
->>>>> +		bool is_priv_gfn = kvm_mem_is_private(kvm, gpa >> PAGE_SHIFT);
->>>>> +		/*
->>>>> +		 * For Realms, the shared address is an alias of the private
->>>>> +		 * PA with the top bit set. Thus if the fault address matches
->>>>> +		 * the GPA then it is the private alias.
->>>>> +		 */
->>>>> +		bool is_priv_fault = (gpa == s2fd->fault_ipa);
->>>>> +
->>>>> +		if (is_priv_gfn != is_priv_fault) {
->>>>> +			kvm_prepare_memory_fault_exit(vcpu, gpa, PAGE_SIZE,
->>>>> +						      kvm_is_write_fault(vcpu),
->>>>> +						      false,
->>>>> +						      is_priv_fault);
->>>>> +			/*
->>>>> +			 * KVM_EXIT_MEMORY_FAULT requires an return code of
->>>>> +			 * -EFAULT, see the API documentation
->>>>> +			 */
->>>>> +			return -EFAULT;
->>>>> +		}
->>>>> +	}
->>>>> +
->>>>> +	memcache = get_mmu_memcache(vcpu);
->>>>> +	ret = topup_mmu_memcache(vcpu, memcache);
->>>>>     	if (ret)
->>>>>     		return ret;
->>>>>     	if (s2fd->nested)
->>>>>     		gfn = kvm_s2_trans_output(s2fd->nested) >> PAGE_SHIFT;
->>>>>     	else
->>>>> -		gfn = s2fd->fault_ipa >> PAGE_SHIFT;
->>>>> +		gfn = gpa >> PAGE_SHIFT;
->>>>> -	write_fault = kvm_is_write_fault(s2fd->vcpu);
->>>>> -	exec_fault = kvm_vcpu_trap_is_exec_fault(s2fd->vcpu);
->>>>> +	write_fault = kvm_is_write_fault(vcpu);
->>>>> +	exec_fault = kvm_vcpu_trap_is_exec_fault(vcpu);
->>>>>     	VM_WARN_ON_ONCE(write_fault && exec_fault);
->>>>> @@ -1634,7 +1696,7 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
->>>>>     	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, gfn, &pfn, &page, NULL);
->>>>>     	if (ret) {
->>>>> -		kvm_prepare_memory_fault_exit(s2fd->vcpu, s2fd->fault_ipa, PAGE_SIZE,
->>>>> +		kvm_prepare_memory_fault_exit(vcpu, gpa, PAGE_SIZE,
->>>>>     					      write_fault, exec_fault, false);
->>>>>     		return ret;
->>>>>     	}
->>>>> @@ -1654,14 +1716,20 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
->>>>>     	kvm_fault_lock(kvm);
->>>>>     	if (mmu_invalidate_retry(kvm, mmu_seq)) {
->>>>>     		ret = -EAGAIN;
->>>>> -		goto out_unlock;
->>>>> +		goto out_release_page;
->>>>> +	}
->>>>> +
->>>>> +	if (kvm_is_realm(kvm)) {
->>>>> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn,
->>>>> +				    PAGE_SIZE, KVM_PGTABLE_PROT_R | KVM_PGTABLE_PROT_W, memcache);
->>>>> +		goto out_release_page;
->>>>>     	}
->>>>>     	ret = KVM_PGT_FN(kvm_pgtable_stage2_map)(pgt, s2fd->fault_ipa, PAGE_SIZE,
->>>>>     						 __pfn_to_phys(pfn), prot,
->>>>>     						 memcache, flags);
->>>>> -out_unlock:
->>>>> +out_release_page:
->>>>>     	kvm_release_faultin_page(kvm, page, !!ret, prot & KVM_PGTABLE_PROT_W);
->>>>>     	kvm_fault_unlock(kvm);
->>>>> @@ -1847,7 +1915,7 @@ static int kvm_s2_fault_get_vma_info(const struct kvm_s2_fault_desc *s2fd,
->>>>>     	 * mapping size to ensure we find the right PFN and lay down the
->>>>>     	 * mapping in the right place.
->>>>>     	 */
->>>>> -	s2vi->gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi->vma_pagesize) >> PAGE_SHIFT;
->>>>> +	s2vi->gfn = kvm_gpa_from_fault(kvm, ALIGN_DOWN(s2fd->fault_ipa, s2vi->vma_pagesize)) >> PAGE_SHIFT;
->>>>>     	s2vi->mte_allowed = kvm_vma_mte_allowed(vma);
->>>>> @@ -2056,6 +2124,9 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
->>>>>     		prot &= ~KVM_NV_GUEST_MAP_SZ;
->>>>>     		ret = KVM_PGT_FN(kvm_pgtable_stage2_relax_perms)(pgt, gfn_to_gpa(gfn),
->>>>>     								 prot, flags);
->>>>> +	} else if (kvm_is_realm(kvm)) {
->>>>> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn, mapping_size,
->>>>> +				    prot, memcache);
->>>>>     	} else {
->>>>>     		ret = KVM_PGT_FN(kvm_pgtable_stage2_map)(pgt, gfn_to_gpa(gfn), mapping_size,
->>>>>     							 __pfn_to_phys(pfn), prot,
->>>>
->>>> For the case kvm_is_realm(), need we adjust 's2fd->fault_ipa' for the sake of
->>>> huge pages. In kvm_s2_fault_map(), @gfn and @pfn may have been adjusted by
->>>> transparent_hugepage_adjust() to be aligned with huge page size. If the
->>>> adjustment happened in transparent_hugepage_adjust(), we need to align
->>>> s2fd->fault_ipa down to the huge page size either.
->>>
->>> All of the above + some RMM changes are needed to get QEmu VMM going
->>> with anon pages guest memory backing - currently testing various
->>> configurations in the background.
->>>
->>
->> I tried to rebase Jean's latest QEMU series [1] to upstream QEMU, and found
->> that memory slots backed by THP are broken. With THP disabled on the host and
->> other fixes (mentioned in my prevous replies) applied on the top of this (v14)
->> series, I'm able to boot a realm guest with rebased QEMU series [2], plus more
->> fxies on the top.
->>
->> [1] https://git.codelinaro.org/linaro/dcap/qemu.git  (branch: cca/latest)
->> [2] https://git.qemu.org/git/qemu.git                (branch: cca/gavin)
->>
->> Lorenzo, You may be saying there is someone making QEMU to support ARM/CCA?
-> 
-> Mathieu and I are working on that yes and with Steven/Suzuki to fix the THP
-> issues you pointed out above.
-> 
->> If so, I'm not sure if there is a QEMU repository for me to try?
-> 
-> We should be able to submit patches by end of June - we shall let you know
-> whether we can make something available earlier.
-> 
+On Thu, Jun 25, 2026, Yan Zhao wrote:
+> On Thu, Jun 25, 2026 at 09:51:01AM +0800, Yan Zhao wrote:
+> > On Wed, Jun 24, 2026 at 05:41:58PM -0700, Sean Christopherson wrote:
+> > > On Wed, Jun 24, 2026, Ackerley Tng wrote:
+> > > > Yan Zhao <yan.y.zhao@intel.com> writes:
+> > > > > With gmem_in_place_conversion=true, userspace can create guest_memfd without the
+> > > > > MMAP flag. In such cases, shared memory is allocated from different backends.
+> > > > > This means this module parameter only enables per-gmem memory attribute and does
+> > > > > not guarantee that gmem in-place conversion will actually occur.
+> > > 
+> > > KVM module params are pretty much always about what KVM supports, not what is
+> > > guaranteed to happen.
+> > > 
+> > >   - enable_mmio_caching doesn't guarantee there will actually be MMIO SPTEs,
+> > >     because maybe the guest never accesses emulated MMIO.
+> > >   - enable_pmu doesn't guarantee VMs will get a PMU, because userspace may elect
+> > >     not to advertise one.
+> > >   - and so on and so forth...
+> > > 
+> > > Yes, there's a small mental jump to get from "KVM supports in-place conversion"
+> > > to "I need to set memory attributes on the guest_memfd instance, not the VM",
+> > > but I don't see that as a big hurdle, certainly not in the long term.  And once
+> > > the VMM code is written, I really do think most people are going to care about
+> > > whether or not KVM supports in-place conversion, not where PRIVATE is tracked.
+> > Sorry, I just saw this mail after posting my reply in [1].
+> > 
+> > I'm ok with gmem_in_place_conversion=true just means KVM supports in-place
+> > conversion, while we can still create VMs with shared memory not from gmem.
+> Or what about "allow_gmem_in_place_conversion" ?
 
-Not sure if there are other known issues in this series. It seems the stage2
-page fault handling on the shared space isn't working well. In my test, the
-vring (struct vring_desc) of virtio-net-pci is updated by the guest, and the
-data isn't seen by QEMU, I'm suspecting if the host-page-frame-number is properly
-resolved in the s2 page fault handler for shared (unprotected) space.
+No, because turning on the param also disallows setting PRIVATE in the VM-scoped
+KVM_SET_MEMORY_ATTRIBUTES ioctl.
 
-- I rebased Jean's latest qemu branch to the upstream qemu;
+> > Though it still feels a bit odd to require TDX huge pages to depend on
+> > gmem_in_place_conversion=true when shared memory is not currently allocated
+> > from gmem, 
 
-- On the host, which is emulated by qemu/tcg, the THP (transparent huge page) is
-   disabled.
+I fully expect that to be a transient state, and in all likelihood not something
+that is *ever* shipped in production.  Landing TDX hugepages without guest_memfd
+hugepage support is all about avoiding unnecessary serialization of series and
+features that aren't strictly dependent on each other.
 
-- On the guest, I can see the virtio vring (struct vring_desc) is updated. The
-   S1 page-table entry looks correct because the corresponding physical address
-   0x10046880000 is a sane shared (unprotected) space address.
+> > it should become more natural over time once gmem supports in-place
+> > conversions for huge page.
 
-   [   52.094143] software IO TLB: Memory encryption is active and system is using DMA bounce buffers
-   [   52.289746] virtqueue_add_desc_split: desc[0]@0xffff000006880000, [00000100b983f000  00000640  0002  0001]
-   [   52.432150] PTE 0x00e8010046880707 at address 0xffff000006880000
+Yes, and I want to prioritize the steady state for end users, not the in-progress
+state for developers.  Once all of this settles out, I fully expect the majority
+of deployments to only support in-place conversion, at which point the end user
+is only going to care whether or not in-place conversion is enabled in KVM, not
+the subtle detail that it's still possible to do out-of-place conversions (and
+that will always hold true, it's not like VMA-based memslots are being deprecated).
 
-- On the host, the s2 page-table-entry is unmapped due to attribute transition (private -> shared).
-   A subsequent S2 page fault is raised against the adress and the s2 page-table-entry is built.
+> > Besides my current usage, there may be other scenarios where gmem memory
+> > attributes is preferred without allocating shared memory from gmem.
+> > (e.g., PAGE.ADD from a temp extra shared source memory).
+> > 
+> > For such use cases, I'm concerns that the admins may find it confusing if they
+> > enable gmem_in_place_conversion but still observe extra memory consumptions for
+> > shared memory.
 
-   [  109.259077] ====> realm_unmap_shared_range: tracked_unprot_addr=0x10046880000
-   [  109.260249] realm_unmap_shared_range: unmapped shared range at 0x10046880000
-   [  109.317786] realm_unmap_shared_range: unmapped shared range at 0x10046880000
-   [  109.629939] ====> kvm_handle_guest_abort: fault_ipa=0x10046880000, esr=0x92000007
-   [  109.630245] realm_map_non_secure: ipa=0x10046880000, pfn=0xb8b59, size=0x1000, prot=0xf
-   [  109.630331] realm_map_non_secure: ipa=0x10046880000, ipa_top=0x10046881000, flags=0x1e0001, range_desc=0xb8b59004
+KVM can help with documentation, but beyond that, it's not KVM's problem to solve.
+If a VMM *and* platform owner chooses to deploy a setup that utilizes out-of-place
+conversions, then it's on the VMM and/or plaform owner to understand and communicate
+the implications to the end user.
 
-- On QEMU, the updated vring (struct vring_desc) at GPA 0x46880000 isn't seen. All the
-   data in that adress are zeros.
-
-   ====> virtqueue_split_pop: vdev=<virtio-net>, sz=0x38, queue_index=0x0, vq->vring.num=0x100
-   virtqueue_split_pop: last_avail_idx=0x0, head=0x0
-   address_space_read_cached_slow: cache@0xffff1c036440, addr=0x0, buf=0xffffeee34880, len=0x10
-   address_space_read_cached_slow: cache: ptr=0x0, xlat=0x10046880000, len=0x1000, mrs=<realm-dma-region>, is_write=no
-   address_space_read_cached_slow: translated to mr=<mach-virt.ram>, mr_addr=0x6880000, l=0x10
-   flatview_read_continue_step: mr=<mach-virt.ram>, host=0xffff23e00000, mr_addr=0x6880000, ram_ptr=0xffff2a680000
-   virtqueue_split_pop: desc: 0000000000000000 - 00000000 - 00000000 - 00000000
-   qemu-system-aarch64: virtio: zero sized buffers are not allowed
-
-
-Thanks,
-Gavin
-
+And I'm not remotely convinced that prepending allow_ to the param will help
+end users diagnose "unexpected" memory consumption, in quotes because anyone that
+is deploying a stack that utilizes out-of-place conversion absolutely needs to
+understand and plan for the additional memory consumption.  I.e. if the memory
+consumption is "unexpected" to the end user, they likely have far bigger problems.
