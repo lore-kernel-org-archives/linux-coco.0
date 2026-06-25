@@ -1,225 +1,401 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5ABE2E06EF;
-	Thu, 25 Jun 2026 06:39:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB733C0A0E
+	for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 06:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782369544; cv=fail; b=TBiVLpPLEDgQWKoHeQyN80AK5P5C1hGtna7v9W2n4TPnFGF2JuHM1/5UR3QZfraRpGIwVvRhk8RjWCuLylz7pZhwcVZNInPm2gV/HVP47F0mRYvFpEAH6zVbQz5QHeCryEpDSF4qzhM4faiNIR9IZtw85pTsa0lcOhP3hpSOJ7A=
+	t=1782370174; cv=pass; b=liP/j1v77V/nrdOYbZwkDknaDE9Jp6VOMwf+7CflRN+ueQDEAdzzBW/xxCIdJviy3SwKfZtR5yPxIFM7jQebsQ91w/I/fdGP4IoVygVejVr3weEk8EjS91PmQ62T3WfT6v+eq7JXSCyGPQTVkAxG7aBOIonTZfKyKOp9YaBp/Go=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782369544; c=relaxed/simple;
-	bh=JNSTdVh2KT/osiNTTPT/G2Poc7BqTFCIxW6QRLM3J0Y=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=iP5D21Zm0kEz0MVhef530QQhhcXQmhC43csyCimMLPIKBD5GsBm4kH+vpEYEXjEtpyJWGWTfI+odxwD+KF3FRf8mpBYOb7KhPfkP5LGt0W6aH2LTsYhS+nRTNWGjHlICRBRV7DfmE8EoYCgvyG07+jBF/uA2jlBHgcNqaf7PSJg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B/DZb31x; arc=fail smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1782370174; c=relaxed/simple;
+	bh=iBVsJ8b3QQtga9Wh/Fpr8CyO+1tQQB/LUsRxsWFpMQM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BPpX7hOWYLZb76Ja9JdX2Cmztsy/5xQpo+QYIy0hVteyzbtb1dTxbkFwFhu6at/zvjQczPOO4TonukvYzzHSKXSlRCtlY3nC86TJxGOcP3NvIlL67RR+AbPq8pmNMdow7Y3jo0QLBCrG3tgnmg27z4L28Cu1l4+Ty9BKT+COIUk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nZjZf1NF; arc=pass smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B/DZb31x"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782369542; x=1813905542;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=JNSTdVh2KT/osiNTTPT/G2Poc7BqTFCIxW6QRLM3J0Y=;
-  b=B/DZb31x/R7ijBWbTzbZIGfq7Xnlvv0JU0uZO5xzGmA8CwtTXfinaCIf
-   JJS3OWOko7JgHv3EufUWMkWn8H2gPRJlqeYmVR3q8lY+EQwUO3RuqKS+d
-   X2nAGLpzJ7MTFKAYqUswZmAidMOtA99rF7OgUlRpOkaN+Dsw753qqyCd9
-   7mR7OaqaoqzaGM63+6x0GjWlm+usnVLz5nBI53AXqn+E1uivBhmIUuoC1
-   anIefkzQ/W0CAbCh2vlGt9EQSQoEbIBXKJAh/rZzq6xP0DIb+6foGh/2r
-   FJNsmSIP74Ar8UKHV4rGChfQv7aGiVg/gh+Bb61x7PMpkrbBdESa/qZgW
-   g==;
-X-CSE-ConnectionGUID: 8M5wxpM9SKiqumVlQIp6IQ==
-X-CSE-MsgGUID: OOoX8vR3SSyCD4FjksJ5Dw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="94632154"
-X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
-   d="scan'208";a="94632154"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 23:39:01 -0700
-X-CSE-ConnectionGUID: VogE5PA4SBGOzHeBmvYmZw==
-X-CSE-MsgGUID: sIj1oPsmRqy9pOEvOCJ63Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
-   d="scan'208";a="249396286"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 23:39:01 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 24 Jun 2026 23:39:01 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 24 Jun 2026 23:39:01 -0700
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.26) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 24 Jun 2026 23:39:00 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bM2YgqoTSJIMRNFtjOuleQGPH9sZLTp17yP/d++YuH0z8XBHc66ipJc2JBcqTy9iWiRErDuHQ8v8Xlo5UbsbPaZN1hOY0Hu//vGH3ZTEM5hbv4aW2NlcXm6KaoOVor1klT79vpnltnSNmd2ywI7ifS7Pjq8Og2aHNuUxQi0X+GyHPFvMRE5CoHRKAh3SZ/H80KSed6aK3N+8pZBFwsO4v5fwGCAg+2z9zJmXBWuKfckCw0jVDjP0O15yrHhFu29VyYXpaKz4tOnS8G9RXlslUmbaGl12EkEvdZ4qhzhZdHB1f47sOwFjY9bvV9Jk86jukQTR4jMeA/IUNztJUMnWJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sVJu8X1BBtidz1p3sPYqM4M+wdesXnVf10AOBzUH7lI=;
- b=G7IaF/qiVLEuQIep3UaENZX12/9U9H0qTQpuDxA+XIlAbLUwcQ/OmGfL0Y/fep7yxNi0kP0aiWp9jCmgVagDED6zo9awStuff42xGUmkXhj2laH6PtC9KiKrwtZIkie9568P3iWx+f1Kz0GIJRovKqyGnj6Fxxh2c3zzZvmD6003Hxb6/rM8GwdSiS6Xqqjq3SKmbXldt3y50SaB3tQTAT6lzY9yWjDOsZXWBst8clYUVejA+NscZRpTlzx3zxqNTd30iR6mUL5KGYduip0QMdiFiSQhs6/9EOeaQUx9MbsXNEI3yIBSK4Uy++qJzNtiF0kLjzbFfSI5SHpKQ4IRzw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB9136.namprd11.prod.outlook.com (2603:10b6:208:574::12)
- by DS7PR11MB9449.namprd11.prod.outlook.com (2603:10b6:8:266::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.16; Thu, 25 Jun
- 2026 06:38:59 +0000
-Received: from IA3PR11MB9136.namprd11.prod.outlook.com
- ([fe80::37b4:37a9:4f3:518b]) by IA3PR11MB9136.namprd11.prod.outlook.com
- ([fe80::37b4:37a9:4f3:518b%3]) with mapi id 15.21.0113.015; Thu, 25 Jun 2026
- 06:38:59 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-CC: "marcandre.lureau@redhat.com" <marcandre.lureau@redhat.com>,
-	"david@kernel.org" <david@kernel.org>, "Edgecombe, Rick P"
-	<rick.p.edgecombe@intel.com>, "prsampat@amd.com" <prsampat@amd.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "mst@redhat.com"
-	<mst@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>, "Qiang, Chenyi"
-	<chenyi.qiang@intel.com>, "Reshetova, Elena" <elena.reshetova@intel.com>,
-	"michael.roth@amd.com" <michael.roth@amd.com>, "ackerleytng@google.com"
-	<ackerleytng@google.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "virtualization@lists.linux.dev"
-	<virtualization@lists.linux.dev>, "x86@kernel.org" <x86@kernel.org>, "Xu,
- Yilun" <yilun.xu@intel.com>, "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Peng,
- Chao P" <chao.p.peng@intel.com>
-Subject: RE: [RFCv2 PATCH 2/6] efi/unaccepted: Set unaccepted bits for all
- hotplug memory
-Thread-Topic: [RFCv2 PATCH 2/6] efi/unaccepted: Set unaccepted bits for all
- hotplug memory
-Thread-Index: AQHdA9UlvvGGcWmIkkaRajltXiJfLrZOz7aw
-Date: Thu, 25 Jun 2026 06:38:59 +0000
-Message-ID: <IA3PR11MB91363A8CF58C51AF4DF142D292EC2@IA3PR11MB9136.namprd11.prod.outlook.com>
-References: <20260623101739.79695-1-zhenzhong.duan@intel.com>
- <20260623101739.79695-3-zhenzhong.duan@intel.com>
- <ajvNXyYwb7FXAJhP@thinkstation>
-In-Reply-To: <ajvNXyYwb7FXAJhP@thinkstation>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB9136:EE_|DS7PR11MB9449:EE_
-x-ms-office365-filtering-correlation-id: 69983047-1571-4351-4aec-08ded284702b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|23010399003|10070799003|4143699003|56012099006|11063799006|38070700021|18002099003|22082099003;
-x-microsoft-antispam-message-info: PgwiP7eCRarzPIuwrL9Xx9D5S+SIU2NesxYHe5NcCr9Yf3Q+rMjTdnya5lSJESKwUOz7c+g4WFyNLXZ6+Mt4ClAfIgaO8xn1NiLmQA+KSWPTAHuF5160+llEf4EipiKRZxumbDiWoBzcP+kQm7U5bX30dsIX0DuveHp76MytN7JQBp78SF5NER5JyAX/cJDrcW/zXr9ZCUQUVNdEfi9d3/5uIyxV54Gmk6SUPWuC0lF/xwH2f16RWgiVsPI9Ku6cu5bk2Q88OMWZYAHk8kiGgq3OehylixBsU11tJf+nUBxpCyXdSjfC+h95xEwOcWleWKF6PVgHAsXqN1dWK8PhyrCn7aY6pslzVKwj5p3blqF4YD2VEta08xPSV8Q8BoqEQiOIw6SpYK4jy6aD/knCFa42VH2OlxA7A2SPBVBb0HiflmeISEPFHFPXgSDdH1zcchLJIyLXry/CSMLkWUDJbKX7VjK4dz3Eo4SiT85LKHIqSQTunaWdSBcw9bIXs33HDyS3OaFRsdpJ7oDvaeDRJzPitEEd6/vKvUTjdNF/ghx516xBE4z+7GGQvuO8fMOqThSzhTzf2+KLgj/lLkusVsbqbIPUgHDRHQ0FIiMZlIqyDBkXAM6UWy7q5w5GNzpuz5Rihgrq/uZMPsWAXYc34Du0wcEWDGTwM2JpEQZnGvRCZamqnCg1aICwEeGEATnjA71PDHgfgKWiG6mGNC5A9FRQrtFrAnd4EHFomaijQJ8=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB9136.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(23010399003)(10070799003)(4143699003)(56012099006)(11063799006)(38070700021)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?5TdZah/nQzwlyijNdDHy2AW/pFor4ZYV7mqQut25L/Ow+OHKUWJR3w0zL00N?=
- =?us-ascii?Q?bXyAoRksTpl5Cuk3eJ2e16WWPmFFjw0KR0wEROcLPYWM8YMzRUibKDjq0Hw/?=
- =?us-ascii?Q?AWM1jRh7WfHsyiPv5FKylgl7l4oKKdFYAK9eDlyeK7R34OXFvZBpOvrJubQa?=
- =?us-ascii?Q?uLSeNY1qKJXUkC3ev2GEQx6OVocFcBWzx6LvVdPNUTzWSSv2ryavSaTHCMVH?=
- =?us-ascii?Q?DXvNIulhkXn94Qyc91LzCvjr79+8bS3cB58zMU0gmaYEu0N1Ui0h6Xn5871V?=
- =?us-ascii?Q?+7eGvVtI3ZPMifrLnevjnlrvN6NtqUO+8z/wUk1hikToKKEVpT4ZlM/4Fz+X?=
- =?us-ascii?Q?91B/cN/a/IFlV/v3PMV49RPji5zxacwmMhVtwZlhq+PHWeiBNq3ifk548GkO?=
- =?us-ascii?Q?T7ERUpM26ZjCDeNn/10NmffuE8kzhdRBqLTqObdgvtLmBGw0CVGsHBORaXaR?=
- =?us-ascii?Q?CAYQSYNYjZ3RfMXnXL6k2WkklM2/YcVXtxKW/sQ1avRUrPY7cJYAw4qjbhyo?=
- =?us-ascii?Q?RmAF1RNLY+TnrJVGj7wZ3sThdRHavlI7xwk+GJFs3X+jKBhclVPlYd1+F1j3?=
- =?us-ascii?Q?uefQcQeBYjdFO+6YFRv577bwc+X2lIjcbN5lA6gOwQmXNyCVH0EN+k544SMS?=
- =?us-ascii?Q?AcF4DyXecn8ziSuJ7m9phfrIX2OXc0c5rpwGX3WdPolMWzCZ+fPrqhdQH6qg?=
- =?us-ascii?Q?4ZV8z2vtqJdI/b2xQKGeCv+RPbQAbJSVrlJt2BSiCdqOVEYuDgqQjLmRH4IJ?=
- =?us-ascii?Q?s7Ju80oQRou2d9Fh4VR3N6g9Ebd4Q+LiaUMvkBw71ZxsyWAdzrm3NPnpS/kG?=
- =?us-ascii?Q?7MeOsc8HyW/Qbe08UVH3hiHoNluzswz3TmOcCwdJDMJG/lmhTGcQUQ9I0OmO?=
- =?us-ascii?Q?G9/ewS/Go+vps7G+SRFF/BOL+n1uAx7RtN87Gfd4u3i2F0A9aYmz9mqrZh1s?=
- =?us-ascii?Q?5MOlWFLaLx+kbw+ZNj4al2PZMwG11NDDmujH4PG3Fk8IEfcGt3Gjoh35HO8e?=
- =?us-ascii?Q?R43DEFJEUZAYRlRqcyJUO1RSzxsomEtKGrpHeE8XbMzijvgpEJotfgdUJbhc?=
- =?us-ascii?Q?cV7EaZqBhb0D2Jp6QKpWGqqRWFRng+4hUnyLp9Ij3bFgDl8n0nYhkcWPAGt1?=
- =?us-ascii?Q?Idj9FLiD7imKqqUbjJ/kvv/SjZNs8AbIOpuPf8olQowwbubp8szVLWYT/SIj?=
- =?us-ascii?Q?lfBXhokK0qmiKhlJDYh9QYmPrPZ4y7n7VPPq7oTl4B9kkPRmf5GS4BRJNwrN?=
- =?us-ascii?Q?XAiPXgvwAhm9nxy8qW9ExbxNEJNOPHgPSQhNxET5TgJvBR6mc5sMAcFbaqtV?=
- =?us-ascii?Q?mPATRy9mxRCoEXQaMLRkpTcvDzSojHnumEDqjdcI4bCvH3cuEqRsGjk54nSw?=
- =?us-ascii?Q?Jdez3EFnzMWLYY5Et/R7frMUWAeVE1aA2jGIiDibop28l2FAOTKe8OziY4Fn?=
- =?us-ascii?Q?gBjtPnx2sSWLACHWXpAzs0WCAeG1CWbn1UgiLa8ksdzGKj6eQwekweuSz+QC?=
- =?us-ascii?Q?AyvQdt7wcRzGG+9IXYndfzdfYC/eU/GFk5uI+2mD9NTtInx8F+rJrYHHYtZm?=
- =?us-ascii?Q?cOeGiAy2ibyokhUeecovOdD/NIug8BraN4fbJ0VX7E4qrGhdtYZhvOLQQu3D?=
- =?us-ascii?Q?+W/vmmJJ5karwXDrO/gQhfaf23RleLdJtiNAWjwZucU4hWvTX9c9dM4HHOJK?=
- =?us-ascii?Q?gBkVEYlq0xGGJ+Dk7BRdAvl2BBICok1X56pv0g9eOR3k+1kubGqmTFl7up0A?=
- =?us-ascii?Q?K5OBNM4INT/4915Z/ddaivt4tu0A6/smK18G8eY+9k2HFb1mncsNHCJgERDZ?=
-x-ms-exchange-antispam-messagedata-1: aJrtoKIA6sm1kg==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nZjZf1NF"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-5177d1ff061so132381cf.1
+        for <linux-coco@lists.linux.dev>; Wed, 24 Jun 2026 23:49:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782370172; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rhsX/G9uLNULTim9sT8Wh0FI7F2Fv7jQxsKXvVWXcN3NHjLLjOuo6HljY0DmO60p+h
+         OnbwmEXJ2RvraNWcNNPyMsRH+4rrJzatxsxVYrMJdZUO38lcy+qJcvY3/4vqFXR96EZ0
+         x0udqTIVHbsMydwyvGXvojOZGRsLPT7LXSOnuOo/bZ+laDIE35s2z8+nZb+IdkJxdi/O
+         W5qKbZoHRRKdM8DQHYbWTbULyJA799zvw7iLB7vmYCu6L7odzZOfRVEu7aY78tNuf0yt
+         ijAKoCoPugiodkyUqYlJe1VGIzzk1TASZQ1rrN/Y4GDENx8mi62CJNzf4jbXbQ1RFkIf
+         74hA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=BW7Opa6Dhh+zjWlX+o6b9MK5iA1TvQIACZyIwKHD0Lc=;
+        fh=/230W5H3a+eUklmJmNKu2OQBg63U5rxv2Z6sUy+/cVk=;
+        b=Ael61NuRutyzr0H1W3brym8uNu44dLA8UnQ67Sne67/ODG8UfOgsdG/X1qAjYLXcK6
+         Tryul3Zvh20i6tJi/V1pDYUGPleMtBoj5IVv/zOxcnJutVVn9Z6k0qQmxVEQG+gQXtLj
+         9d3kn5oZ+qDEBlSlfv6B0AHT+Upp9aP25sVpnFE7vFn+r/80B3UcU4kCiUSMF1W1sDIX
+         N2Qv5rGSeJihGknrKzuQbIz+e+CGKxjfsTYuQ7HpxD10B6pog7tQrVkBodDmQlEoj1y0
+         gWCLduWfkBwVZklzrfmb6GlShz0/LRBFoNsHm+fcMc+5In6W/+xTjFqREy5wC4iqVNI9
+         R5Nw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782370172; x=1782974972; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BW7Opa6Dhh+zjWlX+o6b9MK5iA1TvQIACZyIwKHD0Lc=;
+        b=nZjZf1NFDBClPiXuP9FZgOj0yOFVXvShUiQfJhVbd1mL8D5I/+hYnX/xTZO1ooEyzZ
+         D3aFjxwpFmC9l/J+iy40G0s7c6+EF85hxoO8yUrDUV4nDLQwxCZJPrFI8FJAkYnKJb4J
+         nNySlmyuG4TQZ45qq0/jcaUsnae7qwAN34ArRvhYE2Ytjv7Kt6A8LVnYCheLBAsNHWBs
+         OiYSDLTJUr5x+ZyCxA8Lvwki34k7smqb4+zjB06Q9ySY8UJ/dx+Dd6BdIAqZRQAWXLLb
+         8bhAMAghm01YVky9GM8FM2TyqNQgqYF5b7eub7zI5/klBf0ZLapl29UYbjNRQoNprlC3
+         EE2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782370172; x=1782974972;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=BW7Opa6Dhh+zjWlX+o6b9MK5iA1TvQIACZyIwKHD0Lc=;
+        b=tL8mj6xzf4e+sE2adxn/luaQE/Nie1cmv1GMoqEUIxr2gx+BsJXbgVISKUGzwDhxiC
+         GJ+6WKDT94XJ/hpDrnkPYEvhQy+VIaS/SknfAB0HwX/gY6U4vU3ZfX7eYvuZCqIhI3Y8
+         uU+SkxfoBPkFcWdTWZMENfZSmNkcF7K0FiZvDOC+p3jQ9UWZBxa9VIran0uqC8cDjEWl
+         IK6hEcxSjcbA13RmrDxdjTrmSzMuEeGIAGmWh1Q6T9reYPWLMx4lA8+OrnDZ/KXf0vSq
+         mVLUqgsIqdqfv7ntriB1hMDfIc60V8iVNWAg/zL7/6zggVFv50yINFnZXd+3/D8VbITf
+         zAxw==
+X-Forwarded-Encrypted: i=1; AFNElJ8Za3nVn2T3XIkUI9ZdZjMB3CdwwaOQTEM2Mb0ritp0Ufm+ZyGvxQf0+TSDzlMjSmpVvX5UisHcwQrU@lists.linux.dev
+X-Gm-Message-State: AOJu0YznEDOmpmticwmzbCxqOQUA6xJ/Ha4UWMx/coj3Nbr8l6muK/YT
+	5lKIXwpABW+tFSUKT7SOvLLPg/vG4t4KFZqSaYWzkcxu+g8uoItuoRwM4hkJBfIvgng6dN0Xa65
+	bd/4UrIzAkUX0evGxHBk24Zp4lu2fwQO+iY4j5b8i
+X-Gm-Gg: AfdE7clLC6QJIExc2JuZir0x2FxWZAd7NmFAWgHZeEVVI2GoUsOQ+2QdoL6NrAeK/Wk
+	WWAufcx9krW04hIgmJR48lRFCKA1r1hG2qjeDCCDFRXT+NnlivxCIzFyfM7ArMcnlsM8oJo1b/O
+	zFYkZJlFAfmlJRqu3UAluQtgyud+/aVk9vyx9/FSSaO/459OO8HTHx6QMDvHR3zSVV6UZ2T3byX
+	AKUU9yIhzAxknkpjGMDg0aTKJaVt/vMLMVaTLVWwIcxq6fXI7WlrvEtdfmLDRtNT5lRwtmPxg==
+X-Received: by 2002:a05:622a:590d:b0:516:4f62:85e7 with SMTP id
+ d75a77b69052e-51a6eba2d56mr6487551cf.18.1782370171491; Wed, 24 Jun 2026
+ 23:49:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: g7DncIkmqd3+Ws8uAEN7Vi6n5ZrrSBLzjdDjIr0WJekYeGF7ouxq018vKUNjh0C1XnV2SyHSo+VvqSd96dyTjPZEPYTvQHtXJ+TgGW2DDUAyCnBn8YsehmuZFGeLQ83iP1ZSvkpjZgc4Tr0InVYmtAQMcajzlxHENgrcXhN3aVr61fo2Z3cBx4mh8Lsu3jferLRQeJzTICjolrKWBHULUN32Gyn4XqoWs8jyd2oDapyGW3BP8+41s6/ZFIPE55L3HQVqFvLQ1ZWMAHn7iEU9KIwXUmGBZzlAqPv9che1ed2+0ImdPA8zo1ravocrCOxYxZYRux+KzZAtGeW6mhAcuQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB9136.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 69983047-1571-4351-4aec-08ded284702b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Jun 2026 06:38:59.2343
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 7d7Y+p6EqrhXzH8v/6HCuCMX5OkxxVg1Nyzs65ldfFIhrHpz6AOyhy1nf9laVGwvNF3Mvv1MpQRfGh96jK6uIzUabOoqBx5+QFDMkLPor7Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB9449
-X-OriginatorOrg: intel.com
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-15-9d2959357853@google.com>
+ <CA+EHjTx+3U++dnhGEkwh2SO82xMugAvvJ9ee1O__sxZCKL_X5A@mail.gmail.com>
+ <ajneQVLriUshjFIO@google.com> <CAEvNRgGX3GkazCWM=6y9YLgn=YemXuG==Oo+L58cac1Fd86_TQ@mail.gmail.com>
+In-Reply-To: <CAEvNRgGX3GkazCWM=6y9YLgn=YemXuG==Oo+L58cac1Fd86_TQ@mail.gmail.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Thu, 25 Jun 2026 07:48:54 +0100
+X-Gm-Features: AVVi8CfreADhCYO8SWIiCTVF-3y6AW4q3NKMJ9GslS4VlV8Wo9lYZb5g5o0n_q8
+Message-ID: <CA+EHjTwLRzrq0vY0-OosENJ2Gkknerux53aVBj0zGRQUkRQP=A@mail.gmail.com>
+Subject: Re: [PATCH v8 15/46] KVM: guest_memfd: Call arch invalidate hooks on conversion
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-
-
->-----Original Message-----
->From: Kiryl Shutsemau <kas@kernel.org>
->Subject: Re: [RFCv2 PATCH 2/6] efi/unaccepted: Set unaccepted bits for all=
- hotplug
->memory
+On Wed, 24 Jun 2026 at 18:46, Ackerley Tng <ackerleytng@google.com> wrote:
 >
->On Tue, Jun 23, 2026 at 06:17:33AM -0400, Zhenzhong Duan wrote:
->> In coco guests, hotpluggable memory ranges are initially unaccepted.
->> While a previous change expanded the unaccepted memory bitmap boundaries
->> to include these hotplug spaces, the actual bits inside the bitmap are
->> not yet marked as unaccepted.
->>
->> Walks SRAT a second time after the bitmap is allocated and sets the bits
->> corresponding to hotpluggable ranges.
->>
->> This ensures the bitmap state accurately reflects all static and hotplug
->> memory ranges before booting kernel.
->>
->> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->> ---
->>  .../firmware/efi/libstub/unaccepted_memory.c   | 18 ++++++++++++++++++
->>  1 file changed, 18 insertions(+)
->>
->> diff --git a/drivers/firmware/efi/libstub/unaccepted_memory.c
->b/drivers/firmware/efi/libstub/unaccepted_memory.c
->> index bfbb78bd7b8a..01bed8e751ca 100644
->> --- a/drivers/firmware/efi/libstub/unaccepted_memory.c
->> +++ b/drivers/firmware/efi/libstub/unaccepted_memory.c
->> @@ -92,6 +92,23 @@ static void update_mem_boundaries(struct
->acpi_srat_mem_affinity *mem, struct sra
->>  		*(ctx->mem_end) =3D range_end;
->>  }
->>
->> +static void mark_hotplug_memory_unaccepted(struct acpi_srat_mem_affinit=
-y
->*mem,
->> +					   struct srat_parse_ctx *ctx)
->> +{
->> +	u64 unit_size =3D unaccepted_table->unit_size;
->> +	u64 start, end;
->> +
->> +	start =3D round_up(mem->base_address, unit_size);
->> +	end =3D round_down(mem->base_address + mem->length, unit_size);
+> Sean Christopherson <seanjc@google.com> writes:
 >
->We can get here with start > end if srat range is less then unit_size.
+> > On Fri, Jun 19, 2026, Fuad Tabba wrote:
+> >> On Fri, 19 Jun 2026 at 01:31, Ackerley Tng via B4 Relay
+> >> <devnull+ackerleytng.google.com@kernel.org> wrote:
+> >> >
+> >> > From: Ackerley Tng <ackerleytng@google.com>
+> >> >
+> >> > When memory in guest_memfd is converted from private to shared, the
+> >> > platform-specific state associated with the guest-private pages must be
+> >> > invalidated or cleaned up.
+> >> >
+> >> > Iterate over the folios in the affected range and call the
+> >> > kvm_arch_gmem_invalidate() hook for each PFN range. This allows
+> >> > architectures to perform necessary teardown, such as updating hardware
+> >> > metadata or encryption states, before the pages are transitioned to the
+> >> > shared state.
+> >> >
+> >> > Invoke this helper after indicating to KVM's mmu code that an invalidation
+> >> > is in progress to stop in-flight page faults from succeeding.
+> >> >
+> >> > Reviewed-by: Fuad Tabba <tabba@google.com>
+> >> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> >>
+> >> Coming back to this after working through the arm64/pKVM side. My
+> >> Reviewed-by here is from the previous round and the patch hasn't
+> >> changed, but I missed an implication for arm64.
+> >>
+> >> kvm_arch_gmem_invalidate() is now called from two paths with the same
+> >> (start, end) signature: folio teardown (kvm_gmem_free_folio) and
+> >> private->shared conversion (here). For SNP/TDX that's fine, conversion is
+> >> destructive anyway. For pKVM the two need opposite content semantics:
+> >> conversion must preserve the page in place (same physical page, the point
+> >> of in-place conversion without encryption), while teardown must scrub it
+> >> before returning it to the host.
+> >>
+> >> The hook gets only a pfn range with no indication of which caller it's
+> >> serving, so arm64 can't give the two paths the behaviour they need. It
+> >> would help to signal intent on the conversion path: a reason/flag, a
+> >> separate hook, or not routing non-destructive conversion through the
+> >> teardown hook.
+> >>
+> >> arm64 isn't here yet, so this isn't urgent, but the hook is gaining a
+> >> second caller now, and it's cheaper to leave room for the distinction
+> >> than to change a generic contract other arches depend on later.
+> >
+> > Crud.  It may not be urgent for arm64, but it's urgent for other reasons that
+> > I "can't" describe in detail at the moment, and even if that weren't the case, I
+> > think we should clean things up now.  More below.
+> >
+> >> >  virt/kvm/guest_memfd.c | 41 +++++++++++++++++++++++++++++++++++++++++
+> >> >  1 file changed, 41 insertions(+)
+> >> >
+> >> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> >> > index 433f79047b9d1..3c94442bc8131 100644
+> >> > --- a/virt/kvm/guest_memfd.c
+> >> > +++ b/virt/kvm/guest_memfd.c
+> >> > @@ -607,6 +607,42 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+> >> >         return safe;
+> >> >  }
+> >> >
+> >> > +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+> >> > +static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end)
+> >
+> > Not your fault, but kvm_arch_gmem_invalidate() is badly misnamed.  It's not
+> > "invalidating" anything, it's much more of a "free" callback, as SNP uses it to
+> > put physical pages back into a shared state when a maybe-private folio is freed.
+> >
+> > As Fuad points out, (ab)using that hook for the private=>shared conversion case
+> > "works", but not broadly.  And it makes the bad name worse, because it's called
+> > from code that _is_ doing true invalidations.  For pKVM, it may not even need to
+> > do anything invalidation-like.
+> >
+>
+> Thanks, I also didn't like the naming of kvm_gmem_invalidate(),
+> especially when conversions also calls
+> kvm_gmem_invalidate_{start,end}() and those do different things.
+>
+> > To avoid a conflict with patches that are going to have priority over this series,
+> > to set the stage for arm64 support, and to avoid avoid bleeding vendor details
+> > into guest_memfd, as if they are core guest_memfd behavior (only SNP needs the
+> > "invalidation" on this specific transition), I think we should add an arch hook
+> > to do conversions straightaway.
+> >
+> > Unless there's a clever option I'm missing, it'll mean adding yet another
+> > HAVE_KVM_ARCH_GMEM_XXX flag?  Hmm, especially because IIUC, arm64/pKVM doesn't
+> > need a callback for this case, only the free_folio case.
+> >
+> >> > +{
+> >> > +       struct folio_batch fbatch;
+> >> > +       pgoff_t next = start;
+> >> > +       int i;
+> >> > +
+> >> > +       folio_batch_init(&fbatch);
+> >> > +       while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
+> >> > +               for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+> >> > +                       struct folio *folio = fbatch.folios[i];
+> >> > +                       pgoff_t start_index, end_index;
+> >> > +                       kvm_pfn_t start_pfn, end_pfn;
+> >> > +
+> >> > +                       start_index = max(start, folio->index);
+> >> > +                       end_index = min(end, folio_next_index(folio));
+> >> > +                       /*
+> >> > +                        * end_index is either in folio or points to
+> >> > +                        * the first page of the next folio. Hence,
+> >> > +                        * all pages in range [start_index, end_index)
+> >> > +                        * are contiguous.
+> >> > +                        */
+> >> > +                       start_pfn = folio_file_pfn(folio, start_index);
+> >> > +                       end_pfn = start_pfn + end_index - start_index;
+> >> > +
+> >> > +                       kvm_arch_gmem_invalidate(start_pfn, end_pfn);
+> >> > +               }
+> >> > +
+> >> > +               folio_batch_release(&fbatch);
+> >> > +               cond_resched();
+> >> > +       }
+> >> > +}
+> >> > +#else
+> >> > +static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end) {}
+> >> > +#endif
+> >> > +
+> >> >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> >> >                                      size_t nr_pages, uint64_t attrs,
+> >> >                                      pgoff_t *err_index)
+> >> > @@ -647,7 +683,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> >> >          */
+> >> >
+> >> >         kvm_gmem_invalidate_start(inode, start, end);
+> >> > +
+> >> > +       if (!to_private)
+> >> > +               kvm_gmem_invalidate(inode, start, end);
+> >
+> > E.g. instead make this something like this?
+> >
+> >       kvm_gmem_set_pfn_attributes(...)
+> >
+> > Hrm, though that wastes folio lookups in the to_private case.  So maybe just this,
+> > assuming pKVM doesn't need to take additional action on conversions?
+> >
+> >       if (!to_private)
+> >               kvm_gmem_make_shared(...)
+> >
+> > Actually, if we do that, then we don't need a separate arch hook, just a separate
+> > config.  It'll still bleed SNP details into guest_memfd, but it'll at least be
+> > done in a way that's more explicitly arch specific (and it's no different than
+> > what we already do for PREPARE...).
+> >
+>
+> pKVM needs some arch guest_memfd lifecycle functions that
+>
+> + for conversion, doesn't do anything,
+> + for teardown, resets page state (IIUC it'll be reset to
+>   PKVM_PAGE_OWNED (by the host))
+>
+> So I think we need different functions for those two stages in the
+> lifecycle of a page with guest_memfd? What if we have
 
-Will add a check to ignore small range less than unit_size:
+Yes, the split is what I was after. One PFN-range hook for both
+teardown and private->shared conversion can't tell them apart, and for
+pKVM the two want opposite content semantics.
 
-+       if (start >=3D end)
-+               return;
-+
+Two configs rather than one is right, since the needs are independent.
+pKVM wants teardown but not conversion.
 
-Thanks
-Zhenzhong
+>
+> CONFIG_HAVE_KVM_ARCH_GMEM_SET_PFN_ATTRIBUTES, which gates
+>
+> + kvm_gmem_should_set_pfn_attributes(attributes) and
+>   .gmem_should_set_pfn_attributes
+> + kvm_gmem_set_pfn_attributes(start_pfn, end_pfn, attributes) and
+>   .gmem_set_pfn_attributes
+>
+> CONFIG_HAVE_KVM_ARCH_GMEM_TEARDOWN, which gates
+>
+> + kvm_gmem_teardown() and .gmem_teardown
+>
+> SNP:
+>
+> + .gmem_should_set_pfn_attributes = sev_gmem_should_set_pfn_attributes,
+>   and sev_gmem_should_set_pfn_attributes returns !is_private
+> + Rename .gmem_invalidate and sev_gmem_invalidate to *set_pfn_attributes
+> + .gmem_teardown = sev_gmem_set_pfn_attributes
+>
+> TDX:
+>
+> + Disable CONFIG_HAVE_KVM_ARCH_GMEM_SET_PFN_ATTRIBUTES
+> + Disable CONFIG_HAVE_KVM_ARCH_GMEM_TEARDOWN
+>
+> pKVM:
+>
+> + Disable CONFIG_HAVE_KVM_ARCH_GMEM_SET_PFN_ATTRIBUTES
+> + .gmem_teardown = pkvm_gmem_set_pfn_attributes
+
+Right for pKVM:
+
+- teardown is not a no-op: it scrubs the page and resets the host
+  state to PKVM_PAGE_OWNED before the page returns to the host. Your
+  "reset to PKVM_PAGE_OWNED" reading is correct.
+
+- the arch conversion hook is a no-op, so disabling SET_PFN_ATTRIBUTES
+  is correct. Conversions in pKVM are guest-initiated: the
+  share/unshare hypercall does the stage-2 and page-state transition
+  at EL2. The host still runs the generic conversion path (safety
+  check, attribute update) and accepts the conversion, but EL2 has
+  already done the transition, so there is nothing arch-specific left
+  for a hook to do. The page is preserved in place (no scrub).
+
+  If pKVM does turn out to need a step on conversion, it stays
+  non-destructive either way, and it can opt in later without touching
+  a contract others depend on.
+
+
+Folding the direction check behind .gmem_should_set_pfn_attributes is
+a good cleanup, it keeps the !to_private check out of generic gmem.
+
+On naming: gmem_teardown is better. gmem_set_pfn_attributes reads a
+bit close to KVM_SET_MEMORY_ATTRIBUTES, but naming is hard. :)
+
+>
+> Suzuki, does this work for ARM CCA?
+>
+> This way,
+>
+> + The if (is_private) check doesn't leak SNP details into guest_memfd
+> + .gmem_make_shared doesn't stick out without a .gmem_make_private
+> + .gmem_set_pfn_attributes, .gmem_prepare and .gmem_teardown are aligned
+>   conceptually as lifecycle hooks
+>
+> + I think the private/shared check for prepare can also be folded into
+>   preparation.
+>     + Preparation perhaps doesn't need a should_prepare equivalent since
+>       there's no iteration and getting the gfn is just doing some math?
+>     + In another patch series?
+
+Agreed, separate series.
+
+Thank you Ackerley!
+
+
+/fuad
+
+>
+> > E.g. this?  There will still be a looming rename conflict, but that's easy enough
+> > to handle.
+> >
+> > diff --git virt/kvm/guest_memfd.c virt/kvm/guest_memfd.c
+> > index 9ce5be7843f2..8aead0abd788 100644
+> > --- virt/kvm/guest_memfd.c
+> > +++ virt/kvm/guest_memfd.c
+> > @@ -648,8 +648,8 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+> >         return safe;
+> >  }
+> >
+> > -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+> > -static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end)
+> > +#ifdef CONFIG_KVM_ARCH_GMEM_FREE_ON_SHARED_CONVERSION
+> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
+> >  {
+> >         struct folio_batch fbatch;
+> >         pgoff_t next = start;
+> > @@ -681,7 +681,7 @@ static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end)
+> >         }
+> >  }
+> >  #else
+> > -static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end) {}
+> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) { }
+> >  #endif
+> >
+> >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> > @@ -729,7 +729,7 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> >         kvm_gmem_invalidate_start(inode, start, end);
+> >
+> >         if (!to_private)
+> > -               kvm_gmem_invalidate(inode, start, end);
+> > +               kvm_gmem_make_shared(inode, start, end);
+> >
+> >         mas_store_prealloc(&mas, xa_mk_value(attrs));
