@@ -1,203 +1,309 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013028.outbound.protection.outlook.com [40.93.201.28])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B466037C900
-	for <linux-coco@lists.linux.dev>; Thu, 25 Jun 2026 22:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76720A59
+	for <linux-coco@lists.linux.dev>; Fri, 26 Jun 2026 00:04:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782425793; cv=fail; b=lGQI2pnC+th1xN2z+JDCoOVLLNxvr2jEtDzP0Tt/g5DGNAPvp042mkkgoN5r3j79JcP6/83hLT9Q4CAlmIoj0e6Nj3GqmpxkBVFue9w2EwZw8QJ8t51lexzqyW7QDY2VMhmnHV6iKEmx9TyX6NK7SCFSabh/M3PhVxElCzhDx14=
+	t=1782432284; cv=fail; b=HENNE+dwOf/5A7pWYHBtLUgwhO1z1/FBBG+/yTvWD+9PpG3KKHedHHMcGoERQUQxq7HppSRYX/U6mdTPAd94QpsEjjLxm6YnReUvqj2baFSGz8lpdKJxAEer8JrWDxL5NUabwXaUyGwqqCfYCVLXHRXGegMB2y/w6x82gjz1BC4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782425793; c=relaxed/simple;
-	bh=pnZgpY9JSTt1y12weju0XJYPWmQbq9CfKh9lrjyHQ/M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=XNISpSIlkQ0jNl8KmvRUpoyD1LVLwTTI8pj5zyhtL7LNg5qZmQTCuA+6i6fstFFBi3E48Ojwh5IPufNpv/YY01TXZvwLIcq4Hk5mMCllLstYgX5lljvPN4uesiHObVYJt1lG39goonx1B0ce1FW1jMqDps8hPPfio3g99utHxEA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2e0EJT4p; arc=fail smtp.client-ip=40.93.201.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1782432284; c=relaxed/simple;
+	bh=4bIcno7nZL8O8LyckrjWiqFl6CDEJ0fxotEwlAcx+XI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=smMgm1JiwZ7Vteh0pKpoiNjBwUKPUjlOCswn6PYzqQNojYgPDbwSAT72EN+nUOvzloVMfOAe6MpgSlYGmUPZpSgOHT2bC7w5ot89BZItQNkskTGwcZjt088s5x43AJ1wtG0+KcbZ2AfmyWZAiQZ79Aye9fVi84PN5XOj3JWi1cI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bHxAB+Ke; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2e0EJT4p"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bHxAB+Ke"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782432283; x=1813968283;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=4bIcno7nZL8O8LyckrjWiqFl6CDEJ0fxotEwlAcx+XI=;
+  b=bHxAB+KeHqGX1GR+DePb1DodJngcDfSWlv1oZHKiI0co2MN6/9JwCyuh
+   i+tTUGyvT35vkP1mRL6vWclwLJoTGGfIvB1UKwLDgSOJj+k5CRD9koBM9
+   utlK6V/oyDfzuvwzidLu6sIYjW1lkafsD9XybPKxrwqA1B9YkQiyROqme
+   rE95xjOQUoAKssKPit9Fs4M3VbVeNLYwLiYhJrmVzc4TL04rR8v2xAQK6
+   +/FKYLTAvbGgPbd6LqPXUJr3SN13hlenEF5HAkkft+Hg735bDvXp4n3AX
+   jxKIQksojmKgq7WzzL4voOXoAjtNlOILoKOgOtZdxDIwKo1HBtMT7CVcd
+   Q==;
+X-CSE-ConnectionGUID: u5y0WjoaQR2qblp7aKuXjg==
+X-CSE-MsgGUID: E1PIt5fgRluqD79TRgkkVQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11828"; a="83231563"
+X-IronPort-AV: E=Sophos;i="6.24,225,1774335600"; 
+   d="scan'208";a="83231563"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 17:04:42 -0700
+X-CSE-ConnectionGUID: rzxDhC1lS66TH1t8+w8vNQ==
+X-CSE-MsgGUID: lH1gIchkSUu2unBTzB6jhA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,225,1774335600"; 
+   d="scan'208";a="289261963"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 17:04:41 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 25 Jun 2026 17:04:40 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 25 Jun 2026 17:04:40 -0700
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.32) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 25 Jun 2026 17:04:40 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=evCkHriiYV5nDlSIFC8JLkjnqzWoytV6ARAhC6+VOJUIpWiueCDxg6c3HAJSwp2xwIP/3bV6GUw42X4miLQ5tTg8qFjIQf7sq957VbAJPThgEF1CcIjlk0/OkGRFnVroEntX56oJE3KNv30EEnLcAI8SKJASNcxeFQUvto6o/r9bDsik40cXxp9Dc3JvA9ff1tUdBxaHTZva7Fod/cvfvvj0JwjFmSuOfosfWaC96au+GobqUbkgGkUkfpxxxtJGhBVcCBfU+IZ1PuqlpWlThfuRjVmEdyyPsL1dHkerMs8Eww64W72Wi7IU/kgHfTrsK3fa8Las5pxyJVYfcZFuNw==
+ b=JBMUB9cwtWSH4mfGMN5emSmOQcvxLPwUXC6HnfPYA1E/MkEudaLBsfXH88uGVUiP/PtcfQ3Y4dBzNDc7UrOsNhS2Q1GQnJUsdUlVHxuBGQEFuGsHjwmEBqymnfb+LP88uWK4G+QBiQLrOa8UdTum9m/WbNM4E/Pr9BTecslO7WYvulZZnCcxD+uGCa7bieUyaakxInvPfJpDMXgoiJmggXqz+a17GltGI2qvCFoAbVvJNq+kxhpo8e+k2cTJQntJrflyOE5SUfjQxJWvtD+q26DFuxk3GYjW/4YbiWT4XQyy9PHHlJ0GnOVdkrPtl/6iYCSvnsHE/JbBcS56Do7mZg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XY6v4ff5fR6nZrP3+BFcd2C4XpfWZ/79ce8CyCKy++g=;
- b=Ejp2oBs8WOptIiKL8GywN3pKLg3qYr5uwh2YryIKIBGFMmPG7jK8f8nYITajGndzQDW+iX3CBfWK63Tp/y3kFFBSzXVBp20MEdGo3Il9EpUA/jDtiwhyhBDvxplFh92clcKEEhUiPS4Bv2uYrWX/w95KliTu9Gyy7IQeBlcqgEHSfMFTzONjT3r8Rx1MwaoypnKfFh/MjuDFZ73jdPhczfHO4keikKS1AL7mwiHB58RAXdbZqmPJG/lEFhrVCuCHyKgmPVAgEwQzQzHFNiyHPUqBBvuN8ckhG0s1h1Qvi6g010vHurdiSLiWRkyS93wEKwUHgocFbdqrUcMLOu9Ypw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XY6v4ff5fR6nZrP3+BFcd2C4XpfWZ/79ce8CyCKy++g=;
- b=2e0EJT4pIBXNvaxCHl6MtVnj9gxLRHkXHA/Run0Kib8+tZ3DflKcl7TdhveAbqlmY2NF7smESrusdrgjlgaUzMIMRaUVDMTPuubXjyaWgh0Hqm9JPuV5Ak77iySwQIef2COjRhDWrVDDhW5pFN0KuF/X7DN8vG7kvNk9jaTqiRc=
-Received: from SJ0PR13CA0071.namprd13.prod.outlook.com (2603:10b6:a03:2c4::16)
- by DM4PR12MB8451.namprd12.prod.outlook.com (2603:10b6:8:182::7) with
+ bh=8o9Ohs6Q9dYoo8Xm58GzjjDUChHFO7fAyOAyGIngCJY=;
+ b=sW71M1Kb3SESxC+1Vhx7pI1tqj4jhmUFWH5XMVDudHOlMH8cspMZ+QCO3OMcUJmkgxlfYfLo87KmStFsZ/wZDhp5UrTc9gY2h0e8yvNQXr3gljSwdJXT9HxJNLpH7VzxhshSb1m903Gwg/nn4oAXVAU2G5MjZ0UrGNWzRkj0lH3dSc1vhtSrvNzL13VcpyLQPJFtkHWSvWdwdslLz25kGkXKyVm+ohv/dzs7BqCYU1EFOBrLpGQqCXSXrt05UwwDcUupj3idFfz+80madcnbytRRMUvn9aaPq6m+c7nu42Kwnnh7EAaKkyg+zN4ZcZhqbm3IO1KFH7ORMh78eL8ZUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
+ by DM3PPF7C7D8332C.namprd11.prod.outlook.com (2603:10b6:f:fc00::f31) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Thu, 25 Jun
- 2026 22:16:23 +0000
-Received: from SJ5PEPF00000203.namprd05.prod.outlook.com
- (2603:10b6:a03:2c4:cafe::55) by SJ0PR13CA0071.outlook.office365.com
- (2603:10b6:a03:2c4::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.6 via Frontend Transport; Thu, 25
- Jun 2026 22:16:23 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ5PEPF00000203.mail.protection.outlook.com (10.167.244.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Thu, 25 Jun 2026 22:16:22 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 25 Jun
- 2026 17:16:21 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 25 Jun
- 2026 17:16:21 -0500
-Received: from [172.31.184.125] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Thu, 25 Jun 2026 17:16:13 -0500
-Message-ID: <898e378a-cf7c-4310-b439-e28ec0a71338@amd.com>
-Date: Fri, 26 Jun 2026 03:46:14 +0530
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Fri, 26 Jun
+ 2026 00:04:36 +0000
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475%5]) with mapi id 15.21.0159.013; Fri, 26 Jun 2026
+ 00:04:36 +0000
+Date: Fri, 26 Jun 2026 08:04:29 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Ackerley Tng <ackerleytng@google.com>
+CC: <aik@amd.com>, <andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>,
+	<brauner@kernel.org>, <chao.p.peng@linux.intel.com>, <david@kernel.org>,
+	<jmattson@google.com>, <jthoughton@google.com>, <michael.roth@amd.com>,
+	<oupton@kernel.org>, <pankaj.gupta@amd.com>, <qperret@google.com>,
+	<rick.p.edgecombe@intel.com>, <rientjes@google.com>, <shivankg@amd.com>,
+	<steven.price@arm.com>, <tabba@google.com>, <willy@infradead.org>,
+	<wyihan@google.com>, <forkloop@google.com>, <pratyush@kernel.org>,
+	<suzuki.poulose@arm.com>, <aneesh.kumar@kernel.org>, <liam@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Borislav
+ Petkov" <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt
+	<rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, "Mathieu
+ Desnoyers" <mathieu.desnoyers@efficios.com>, Jonathan Corbet
+	<corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan
+	<shuah@kernel.org>, "Vishal Annapurve" <vannapurve@google.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
+	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+	<nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
+	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
+	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH v8 24/46] KVM: guest_memfd: Make in-place conversion the
+ default
+Message-ID: <aj3CDdxADTduxPmz@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-24-9d2959357853@google.com>
+ <aji/2svhcc84rn5w@yzhao56-desk.sh.intel.com>
+ <CAEvNRgHYTFnHbsLLgMTCSitmnp1_j9Pomikm9qmpGTh1w8YE5Q@mail.gmail.com>
+ <ajyCn0PnFtQK+Nka@yzhao56-desk.sh.intel.com>
+ <CAEvNRgFfgV0FbQLzP8hhNH5hMGaQao6OFQin4cb3TAmC7SVhfA@mail.gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAEvNRgFfgV0FbQLzP8hhNH5hMGaQao6OFQin4cb3TAmC7SVhfA@mail.gmail.com>
+X-ClientProxiedBy: TP0P295CA0017.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:910:5::11) To PH0PR11MB7472.namprd11.prod.outlook.com
+ (2603:10b6:510:28c::12)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 3/6] x86/sev: Disable CPU hotplug while SNP is active
-To: "Kalra, Ashish" <ashish.kalra@amd.com>, Borislav Petkov <bp@alien8.de>
-CC: <tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, <hpa@zytor.com>, <seanjc@google.com>,
-	<peterz@infradead.org>, <thomas.lendacky@amd.com>,
-	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>,
-	<pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
-	<Tycho.Andersen@amd.com>, <Nathan.Fontenot@amd.com>,
-	<ackerleytng@google.com>, <jackyli@google.com>, <pgonda@google.com>,
-	<rientjes@google.com>, <jacobhxu@google.com>, <xin@zytor.com>,
-	<pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
-	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>
-References: <cover.1782336473.git.ashish.kalra@amd.com>
- <ba146ca15b7f76eee386c8c073fb3f1cc36e5781.1782336473.git.ashish.kalra@amd.com>
- <20260625150253.GAaj1DHZC8ULg6PzbI@fat_crate.local>
- <7c64d96f-f932-4db9-8119-b9e40d5b7fd9@amd.com>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <7c64d96f-f932-4db9-8119-b9e40d5b7fd9@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF00000203:EE_|DM4PR12MB8451:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f61571a-eff1-4e9b-6b42-08ded30763ec
+X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|DM3PPF7C7D8332C:EE_
+X-MS-Office365-Filtering-Correlation-Id: fa4e1473-dca1-469e-f74d-08ded316820d
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|7416014|376014|1800799024|82310400026|23010399003|22082099003|18002099003|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	Fpx/nTZ2jAfC/zcyysUHDGOajydz1LRE9N2EEyHU3VyetTr3Uutu4E9GPyHvp6m5ubFcle5Ln2fHW6eBugk72+/ACT48aUdIsA743COcRDVeWKVs/CQ3PBYQTX/QNwcxpwCJB1OpkviidHF2w7O25xEIoHCPOmApH1kIgJ2CQH60h2oG2ak8Bn6LcNh3IBUQ89luFNlFTiprf/w7O3zQ031oevHvZPRGBAT4/rtIllAnwF/aA/0N9X7nRmxIzR8QgeDu/ELIN9IvQfoMpa3G9HUPjIIlW2z6/Z0E/zg6uzQ4dPn1NfBYfrJdZO/VBF9f7Q0wz2V5n2U9mPdNWKXA8COddKcDPyWpHE49tb19S0ajTOGrwPuz1M/gBdNMaehbcwD2LSy52mOPxq74ZOvmjUvLdGw9LOthpgM4QXVVhRn7Bu3jCQLS5ccFWK7aJjhPvkGzScanLmqgjQdbr0MSR+98JEhZUJhrTehhDefPuklbGXRqBYFq1c26eUNaYRsP6zWTSPA3LPcJJIBA7BAragmJyyW/AbX6BtWVUjm7dV7XWsY9V7exKtTRH/IeLAntwXth5gVQ/EaMvgFEKobVyGAo2Uev0xR8eHszAvOe6+iHjN+NrkS+Jrv/D9GSDc04AhFz9FbQImpHW9C5MoB538Hxj656fNTx++uwyK5D3+KlJWLuK/kpJG/oCDf8tgwj6pPQED5pTugfZxCNE9nz7g==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(7416014)(376014)(1800799024)(82310400026)(23010399003)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|23010399003|366016|7416014|376014|18002099003|22082099003|4143699003|11063799006|56012099006|6133799003;
+X-Microsoft-Antispam-Message-Info: ombbUJ/DI1bKO4pKg2/GTG8aOM+UON+F2YGGJD8YjRKVYRrDqNdHa9Dd6CL/MMP0J2BYttc2bGFU66mdsiwFXlLoZmq3EGElJJ7Zo13eYB1XlxkEtqfkf2zWOFwhDWTUsnmk8o2mjXP1CHaOpz1osNvi3Rr1QRBVIR9JSyjY74NzhjFnbxVy4HTCtGQ84jOzgLwNjodoaJm6SKhexg1mfHIxYMIrGvWRMDDuMHk+16l677H1ZKP23VJwh0tdZF47ZgiB+CVgTfaE1flk7sxxnWhbKnpHoV04ZGeKDOcewbTfqCVYuRKgUQi+913beA9G83DrY82jm/yxHzGJeQMnJXi9Ks7nTWUiybRMP4czevqbC2SxjBM8zR/P4bhCqFyp6Rd/2Hovn6AVs38292uiaqpfxT+J9jq+v/TQHajGzgM+iWXMZlcNFuTv4MpKvn81uv6aDHwtcNZrspWqFiy7sKT6UgvRYzp+5zPu4nhcB+e2Zuer5p1oKPmH12QrCvY7Q6+MhSH07cQB0nY23UgSEj98ydFkfkaCtVVsHprEe2ALnGLHJ8asp82RVQv5vfTWm4+c3sYTsLqx7EvDrpvtnLOm8la3pyh6oyk9LfkXWmGJFUfGXewEzv6Tg+lfggpXdufPXMNraxzB1qfBmt5PpjyCc1fcPOKAzVw2RqDc+D4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(7416014)(376014)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	ec49LKsBinFYz5VXFx24rwUfcWnMDzErPHZ99BGB7g9Cg83XxjRStfyUq6kiqnYR/43XDYV9EPfh+h1RgAhFCOImiA3AT1LSFa5lcIthUwVLI4zH67HcZO4MHVi5f4Ti9uOuzEvYcOxn0ah+UyDYL2xG1tuS4mequKVnf+Krzz4/k4kAG7vriuAy++CcfwFaBvkovg0ibV6/9RXYtrFacGgl7VECtQZwBJRat5zoApFdXYKA1kbREY/WgbTtSC7h5e9EQDMnReSD+YSd9xKS2hpuwh+Q85um9xZLsh2T18SNeuAgzYTFUnA1LuSrWtuRylAS07xsPuGKAgXptknDxjQ/boPTVxXah2VQtSRGLhbWPVoIKah/LDA64aquEV2xWNHVKx+G1Uk9+oQO9CR7Z0IQIiSEg1de0+QxxE+Iv9c8E6f5vU5ljw6SMAYC4Y9i
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 22:16:22.7138
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?y+wnaDBQbUDRF9F0e0hsYxpTN4zr2TywDkM4qqzQ37gLQRR++RiqmeQ8OxFK?=
+ =?us-ascii?Q?5iDd/31fWycKHuKDIs762z9toqZQYEQ6AZL12igSOUeg51DDLc7EZv/9vErH?=
+ =?us-ascii?Q?svxm8VuR77j32ybvXaTM0LhJfuHEoPcu4ZEby+tNyopduXMmYFJNN0nEKVw+?=
+ =?us-ascii?Q?Fy/qsAbiXv1ZNx/Bb4i1U9ih4USWKo1WCeEpsT5mApoBDtF5aIR2Cz2iyb3Z?=
+ =?us-ascii?Q?HP54vmFoyWzOGHuziAZyFZFcRMRfmEKPCa8pGVkghTAQdQjAgWwJfn78ZopI?=
+ =?us-ascii?Q?ZrT4/vvRIMlFLfPlhIHyfPR5ujd6A+eDtkh2iZQ7z/4xPOlAw77W6PSuSS1N?=
+ =?us-ascii?Q?lVJ6qEN0hXeBGCtpV1teSSGuzQbmkxvBNk+NVEkyeFy8Ms5d4taij20g6EZt?=
+ =?us-ascii?Q?RkL2I+FnN2K9lEGdWPOtn8bwnHknqTexqOdQaet2GR+UYzZ7X/dw2F5hdQ9m?=
+ =?us-ascii?Q?WBLyd06FjblNpASWkzajEN7BA92B0pcG9ZjLix79igszTdupd/riyMZFA4rc?=
+ =?us-ascii?Q?uF3wIj1my706JNTXswkrKfPAVuwsI8ZGQdD8dGMyV/xONtpRjfhIkZjHKiWI?=
+ =?us-ascii?Q?OWVXCmf15bX+ZhI7SGwV3cQMIqj7FK70Hc0byLjv5bCIgBEeCcCm44IrBJJW?=
+ =?us-ascii?Q?rB6vKHAsFPjTZYOqugsQvDBZsK6wbxRISX4mYLzJGewNGXxZ/g9cIYwPhTdu?=
+ =?us-ascii?Q?+s8sCLPEsHV0mcyHU0slTNH+7iCCUEaLEI5NcYydF1L2f9C1PdIGHMfHddqe?=
+ =?us-ascii?Q?009TqnZ+j4wUI/5EH01vC110N4CDzCCySfBcenVm6qm0gPLN7kfIXLEUwu61?=
+ =?us-ascii?Q?xWDR5iWUIATSwyXp0s/m0cUu9yHTosD1vwHvgfpAmfQQvpk5ughOObmQBIlI?=
+ =?us-ascii?Q?Pd96TNwzzYJaBlblmNgEQuLSGuYYG3BCikn1aGtp647u2CFgPeNHZWM6LO/R?=
+ =?us-ascii?Q?+b0reaqHS76VE6YgQ6YaUU0mhz89xYpzWrlRwqc7EtxO3okRG6pcrWNBtCxJ?=
+ =?us-ascii?Q?DXuF6lW44WgijrQYY4JJn/1Ih75EJMh/uMaEZtlefzSHs2A+h0OfBBvdyDVD?=
+ =?us-ascii?Q?kOJntcmhYlj3W2i0ungfnaMXQKlvozC9tJMdzUhNq1kzBLHn/+eXkjLeEw4D?=
+ =?us-ascii?Q?Ro+e1BYdQfcDLu/3qspMmmvAlSKbbh5jFbfCJx2A9wSWckZRRlzCF2KvUtyL?=
+ =?us-ascii?Q?ntoEWfcCTB4yN4vk9qaTr6cNxkkxZL8UdY0OEcnxjNnPfhv8xVb2Q4BRtk+m?=
+ =?us-ascii?Q?JN6h0Mt7AwpfT53fe9u7SJyn57i75i7hHYoax2Zra9DZBh53o1TqBVMx0C8z?=
+ =?us-ascii?Q?3A6bmLFHHpfGxe4utB3c27TQFd2YTjH+VXa2Rj4Y51dqnTcLUsn1plucAokw?=
+ =?us-ascii?Q?TdA1qfmWZTBctmyrocg2h+hSivj65AZWSPMfUvhckiFIgSq1MkJfa0+VBOAv?=
+ =?us-ascii?Q?LJYVzMf4tJ88nYT2gtJv1UDLSoSiK01A4jZ2NU9NNGnVihP3adY3nSpOGQLr?=
+ =?us-ascii?Q?7G6tGkFNlTSa5t2rYlATzNVArVjL+RVXJ+pMbyGsiGukZuNCuEO8EBLQXMaj?=
+ =?us-ascii?Q?RcvK9bTucTPRBOgF/ZYNWR+Rfbqj9k6MxBMPDhmjaLIvxlg0bot2lQsri2Hw?=
+ =?us-ascii?Q?LYw/qUNXUKtzAssNiDK4VThbe18gYAtxueCmu9vQNbLesLasVRHL44/MYYmN?=
+ =?us-ascii?Q?V/RvhfkhP6Dn5mp2mJYNMgIMQ6TPr8ViwuqZHfoDLUZW/PBNZZpW+Wudm9OF?=
+ =?us-ascii?Q?lNY9N9CrNQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked: hWHfAq6yfJIYVGbbGNKvGTdr906zRDm2XXU6DbtChu3aQjmschdvQPOC4FN2lFLn4fEyet6be8xe9FAdxN5QCdfKx/eYTo26YrIJgoRULHzyV5HLboyqnFVhCXt5D+LYuogoTdQpiHVgBLpMH3wf2c49fC82SjCiqqj9UPePykgohUILTB+5DCVdxsXq4OW8uNdtzQHYb9ss3piew1HFHLOs98KrXG1SMn4mwYnXCkZXv915xr1Imwr9zBZlA6UqdYtSSRCzUZT3lgyt1GPGL4GFtZ+dGaTE5q7OzQqMke/58jCQx1G23dsiPMcBYWYuLkTGWl9FoPKZ+bcLO5EXXA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa4e1473-dca1-469e-f74d-08ded316820d
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7472.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 00:04:35.9733
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f61571a-eff1-4e9b-6b42-08ded30763ec
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF00000203.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8451
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /Uc5lmj4e5MhfvLdgzsHaA0rhhc+6pPjE0LhLqMFSWWvJOvjqrpNas7inWnFCL1J6Fv8hyTW6eKVENVABHhf6A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF7C7D8332C
+X-OriginatorOrg: intel.com
 
-Hello Ashish,
-
-On 6/26/2026 1:12 AM, Kalra, Ashish wrote:
-> Hello Boris,
+On Thu, Jun 25, 2026 at 11:20:30AM -0700, Ackerley Tng wrote:
+> Yan Zhao <yan.y.zhao@intel.com> writes:
 > 
-> On 6/25/2026 10:02 AM, Borislav Petkov wrote:
->> On Wed, Jun 24, 2026 at 09:56:49PM +0000, Ashish Kalra wrote:
->>> +/* Set while SNP has CPU hotplug disabled (kernel-lifetime; survives ccp reload). */
->>> +static bool snp_cpu_hotplug_disabled;
->>
->> Do you really need this?
->>
+> > On Wed, Jun 24, 2026 at 05:05:44PM -0700, Ackerley Tng wrote:
+> >> Yan Zhao <yan.y.zhao@intel.com> writes:
+> >>
+> >> >
+> >> > [...snip...]
+> >> >
+> >> >>
+> >> >>  #ifdef kvm_arch_has_private_mem
+> >> >> -bool __ro_after_init gmem_in_place_conversion = false;
+> >> >> +bool __ro_after_init gmem_in_place_conversion = !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES);
+> >> >> +module_param(gmem_in_place_conversion, bool, 0444);
+> >> >
+> >> > With gmem_in_place_conversion=true, userspace can create guest_memfd without the
+> >> > MMAP flag. In such cases, shared memory is allocated from different backends.
+> >> > This means this module parameter only enables per-gmem memory attribute and does
+> >> > not guarantee that gmem in-place conversion will actually occur.
+> >> >
+> >> > To avoid confusion, could we rename this module parameter to something more
+> >> > accurate, such as gmem_memory_attribute?
+> >> >
+> >>
+> >> I asked Sean about this after getting some fixes off list. Sean said
+> >> gmem_in_place_conversion is named for a host admin to use, and something
+> >> like gmem_memory_attributes is too much implementation details for the
+> >> admin.
+> > Thanks for this background.
+> >
+> > Some more context on why I'm asking:
+> >
+> > Currently, I'm testing TDX huge pages with the following two gmem components:
+> > 1. The gmem memory attribute in this gmem in-place conversion v8.
+> > 2. The gmem 2MB from buddy allocator. (for development/testing only).
+> >
+> > The gmem 2MB from buddy allocator allocates 2MB folios from buddy for private
+> > memory, while shared memory is allocated from a different backend.
+> > (To avoid fragmentation, only private mappings are split during private-to-shared
+> > conversions. In this approach, the 2MB folios are always retained in the gmem
+> > inode filemap cache without splitting.)
+> >
+> > Since shared memory is not allocated from gmem, there're no in-place conversions.
+> > The reason I'm using "gmem memory attribute" is that the per-VM attribute is
+> > being deprecated, as suggested by Sean [1].
+> >
 > 
-> Yes.
+> v8 of conversions series changed that slightly, per-VM attributes is
+> going to stay around (because of work on RWX attributes, coming up) and
+> RWX will stay tracked at the VM level.
 > 
-> cpu_hotplug_disable()/cpu_hotplug_enable() are refcounted (cpu_hotplug_disabled++/--,
-> with a WARN on underflow), so they have to be balanced. This flag collapses them to
-> exactly one outstanding disable per SNP-active window, because the disable and enable
-> sites are not reached a symmetric number of times:
-> >   - On firmware without SNP_X86_SHUTDOWN_SUPPORTED, __sev_snp_shutdown_locked() does not
->   call snp_shutdown() (it's gated on data.x86_snp_shutdown), so SNP stays enabled in
->   hardware — SNP_EN stays set and hotplug stays disabled — while sev->snp_initialized is
->   cleared. Re-init after that is routine, the SNP ioctls self-bracket init and shutdown
->   (e.g. SNP_COMMIT, SNP_SET_CONFIG, SNP_VLEK_LOAD):
+> For v8 and beyond, only tracking of private/shared in per-VM attributes
+> is being deprecated.
 > 
->   if (!sev->snp_initialized)
->           snp_move_to_init_state(...);   /* -> __sev_snp_init_locked -> snp_prepare() */
->   ... SNP_CMD ...
->   if (shutdown_required)
->           __sev_snp_shutdown_locked(...);
->   - So whenever SNP isn't already initialized (psp_init_on_probe off, or after a prior
->   legacy shutdown), every such ioctl does init -> command -> legacy shutdown. Each init
->   reaches snp_prepare() with SNP_EN already set, and the disable now sits at the top of
->   snp_prepare(), so it fires on every cycle. Without this flag that keeps bumping
->   cpu_hotplug_disabled while the legacy shutdown never re-enables — hotplug ends up stuck
->   disabled. This flag makes all but the first disable a no-op.
->  
->   - Also, importantly, kvm-amd module reload on legacy firmware is the same pattern: 
->   unload leaves SNP_EN set, reload re-inits.)
+> By extension the entire thing about using guest_memfd for private memory
+> and a different backing memory for shared memory is being deprecated.
+Thanks for the info. I was actually referring to the per-VM shared/private
+attribute, which is being deprecated. Sean hoped TDX huge page would be the
+first mandated user of the per-gmem shared/private attribute.
 
-Looking at snp_prepare(), we have an early-bailout for
 
-    rdmsrq(MSR_AMD64_SYSCFG, val);
-    if (val & MSR_AMD64_SYSCFG_SNP_EN)
-         return;
-
-Does executing SHUTDOWN command lead to the firmware clearing SNP_EN in
-SYSCFG on all CPUS?
-
-If SNP_EN remains set (and Linux can't clear it since it is
-"Write-1-only" bit), then a subsequent snp_prepare() will skip setting
-SYSCFG if it sees SNP_EN on local CPU.
-
-It can so happen that we enable hotlpug at shutdown, CPUs come online
-without setting SNP_EN in SYSCFG, subsequent snp_prepare() runs on a CPU
-where SNP_EN is still set and skips configuring it for the CPUs that
-don't have it set, and we'll be in a pickle still.
-
-The comment above that bailout saying "this can happen in case of kexec
-boot" makes me believe that SNP_EN remains set until a full system
-reset.
-
-The only safe way to do this is to ensure all possible CPUs are online
-during snp_prepare() and do snp_enable() regardless of whether local CPU
-has SNP_EN or not.
-
-Am I missing something?
-
+> > Besides my current usage,
 > 
->   - On the enable side it avoids an unbalanced cpu_hotplug_enable() when the teardown/failure
->   paths run without an outstanding disable (e.g. shutdown of a never-fully-initialized SNP).
-> 
-> So it's not redundant with cpu_hotplug_disabled — it tracks whether the outstanding disable
-> belongs to this SNP-active window in this kernel, which keeps the single disable/enable
-> balanced across the asymmetric legacy-vs-full SNP teardown paths and re-init.
--- 
-Thanks and Regards,
-Prateek
+> I think you can set up guest_memfd+2M for private memory and shared
+> memory from some other source, and that's the deprecated usage pattern.
 
+Yes, though this is the deprecated usage pattern, gmem_in_place_conversion=true
+allows it.
+
+In fact, even without huge pages, v8 allows userspace to have shared memory
+allocated from other source when gmem_in_place_conversion=true.
+(My default testing of this series for the 4KB setting is with this
+configuration).
+
+> > there may be other scenarios where gmem memory
+> > attributes is preferred without allocating shared memory from gmem.
+> > (e.g., PAGE.ADD from a temp extra shared source memory).
+> >
+> 
+> Is this TDH.MEM.PAGE.ADD, used indirectly from
+> tdx_gmem_post_populate()? This use case isn't blocked. Even if
+> gmem_in_place_conversion=true, you can still set src_address to
+> non-guest_memfd memory and load from anywhere you like.
+> 
+> Please let me know if that is broken! I think I accidentally used that
+It's not broken. I tested it with my hacked-up QEMU.
+
+> setup in selftests and it worked. The selftests are now defaulting to
+> in-place conversion.
+> 
+> > For such use cases, I'm concerns that the admins may find it confusing if they
+> > enable gmem_in_place_conversion but still observe extra memory consumptions for
+> > shared memory.
+> >
+> 
+> Hmm but I guess if someone enables gmem_in_place_conversion but still
+> allocates from elsewhere, they'd have to figure it out?
+
+If gmem_in_place_conversion=true means gmem in place conversion is allowed (but
+not enforced), I agree.
+
+I'm wondering if we could rename it to "allow_gmem_in_place_conversion":)
+
+> > [1] https://lore.kernel.org/kvm/aWmEegVP_A613WIr@google.com/
+> >
+> >> Sean, would you reconsider since Yan also asked? If the admin compiled
+> >> the kernel knowing what CONFIG_KVM_VM_MEMORY_ATTRIBUTES means, then the
+> >> admin would also be able to use a param like gmem_memory_attributes?
+> >>
+> >> There's the additional benefit that the similar naming aids in
+> >> understanding for both the admin and software engineers.
+> >>
+> >> Either way, in the next revision, I'll also add this documentation for
+> >> this module_param:
+> >>
+> >>   Setting the module parameter gmem_in_place_conversion to true will
+> >>   enable the KVM_SET_MEMORY_ATTRIBUTES2 guest_memfd ioctl and disables
+> >>   the KVM_SET_MEMORY_ATTRIBUTES VM ioctl. If gmem_in_place_conversion is
+> >>   true, the private/shared attribute will be tracked per-guest_memfd
+> >>   instead of per-VM.
+> >>
+> >> Let me know what y'all think of the wording!
+> >>
+> >> >>
+> >> >> [...snip...]
+> >> >>
