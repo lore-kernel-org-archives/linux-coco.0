@@ -1,264 +1,379 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD0A380FF8
-	for <linux-coco@lists.linux.dev>; Fri, 26 Jun 2026 11:43:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782474200; cv=none; b=JsIEDuHrS3mKs1auqWGh3aojg3/zQRkYixvkBe8w1LkNwGdj0fTQfa5bdl4TLJ52uWpl3ndCA/jHJARmQhoVBhYkam7Eh+kb75cqYK/ofbrY4tMFVhcJCTqGlANQd3G1KDTZuIM7uMXbul97GQkSq3LW3XTqqMHNikqzOx6ZTUY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782474200; c=relaxed/simple;
-	bh=xW+BL81td0NoKYkE3Cd7vg2N4s0NFsoCr7K+SBFKbok=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iF3OgpMsiQCWK5fDR9a4eRTCRp0uQFhGe4rUTmq+wIg46ZpwPcQ8DegVbaMPYBLXdE4zb+RSuFTqUknICip1f9uCwbodp8ZvtueD+FJclLMhTVlXPi7ZnW5a+YQh7aVG6AZo/o0Zklxmm+TNGql93v0pA0M6Cw4NZ6OS2T8JGLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tkm+rl0I; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FF139A7F2
+	for <linux-coco@lists.linux.dev>; Fri, 26 Jun 2026 15:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782487717; cv=pass; b=A9FPodVO1hSRHUaySclne2TVK4vgBpkA2R2H70ShlSiSReRAaZ2lDRu95NNT0REHJtIuhzkUzek25zq1tTy+lDG55U7oFXNs3wW2nFPNZRHmlyg3+skZiwnamA8oTBK6Fy8HSRBq7vBgs3sF1oDz7WAbelasl+q0l06KWA4qQO8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782487717; c=relaxed/simple;
+	bh=g4P0nqNIz6c24n+j2DMZMnoVOfTI5xYyfF7Wxip8Dao=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=K/Anwk6OB1WdE3Yq4nK/+SahFyB0F9A5l2l+DraZKx2j6+inJcjhlEn/1H99uPs7gNvxjgNVNvJFsHlOygZ8zCteXmR6k/7Afg2DurwZftfHyg0bciG+wvCqK9Ezjz+MGHY/YQNkPUpC9YnYEHoeb3zL1e521uAC+2KMu+Myx1w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VcGHerqF; arc=pass smtp.client-ip=74.125.82.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tkm+rl0I"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782474198;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N1xry/9Vu0APEb/gAq9NvEMqCHHr10KqvQ0Ln8sHSPw=;
-	b=Tkm+rl0Iv+wV86MpjijxhlpJrlxf7TFZ9/1uUxRH0e5k9+jHV+Ov+r7utgDrv73hic7J4r
-	ZBEnuO6Bd/EVCD4wXmNU+49qcJI7iTZUW5kIyFdA0MtIHSHjKdsO3DKwCzXeYc8KQzL1fB
-	nA02xJjlxSbOMBQwdo0CnMO0ZJ9t0Yg=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-553-RMWkWyLYNzCbHfxB3N2FBw-1; Fri, 26 Jun 2026 07:43:17 -0400
-X-MC-Unique: RMWkWyLYNzCbHfxB3N2FBw-1
-X-Mimecast-MFC-AGG-ID: RMWkWyLYNzCbHfxB3N2FBw_1782474196
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-37f72223fc9so36808a91.3
-        for <linux-coco@lists.linux.dev>; Fri, 26 Jun 2026 04:43:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VcGHerqF"
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-139d5c9a495so119258c88.0
+        for <linux-coco@lists.linux.dev>; Fri, 26 Jun 2026 08:28:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782487715; cv=none;
+        d=google.com; s=arc-20260327;
+        b=oZOD4ivp4hJelbH9yRd3P1p7l3mXj3N72pOmmXYeKUqxXI37QTt/q06fpPkTjgx/3u
+         edNo2Nxb5AiXJP5pCPBIg6H0Mx0QWzI38NrLSLO8wtCDDsW+gdv8BLM23//vsq7CaXF+
+         bypqUfcmWW6YWImYRuvn0hTDXq/xu2xP5KPgJUYiMpbXj5uQJfHkNTDb0VXWnfbi4Oup
+         hVy9BP0vb+MFExxlmQ6wq/1thLRmcXyJGcxxdnqUKJkykwasR3lqpuEOOToRUeoHeYv/
+         gPm7iYGk8NQ2YT/0y86QGSMYl+EApQvIDhecCyc0NG82jPi3tA/33CLrFulaqNKVfiJH
+         7Dcg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=JSgVUERoRNVGTFJweVHOL66/ldGV42KdpD5nvU6ojsg=;
+        fh=5P1SXpYk9JB6tx1kXiJvO4p6WLlVIvqqt0XN8jbL0bQ=;
+        b=mkC4TEmUeSsBxqgU4NL92S4HZD6umoV0IDCeGaNBt2LdAUTYG9WYaQXR0wpuYWb1I3
+         EQlNtvWAoh9nkoCtWry4x4Wy2X96J5jFe58F4nJDs0UF7Zes7zZG4QtMkrvgJg9pNZUs
+         Ft77DXz2Pyc1Ns3F/UnUDIBVkWrQ604/Mk6Cb+2NzEm7QP/sLqA5wKMNIstSVJxWPspJ
+         FYzvKJbTM5MdkwXUxlmjuScZi3mn9srCOr4AzEMaLWYQwxTXsqCVh574z5dUaLNBIx9+
+         JW8Udh0mnph/y+7w60Hw7fWAmkTgFmFdX9A8ReArvsJt8Pknv9oRmtWnxEyWog3d7wUr
+         We9g==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782487715; x=1783092515; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JSgVUERoRNVGTFJweVHOL66/ldGV42KdpD5nvU6ojsg=;
+        b=VcGHerqFmyAXOVrmDW7M4uLYr/qtneJtSjYBBE46wKTMpQyFp9mK8BVy4nsjDcUJVi
+         DOuuug3q/QjCINtJ4zMr8Cd6CTHHINdrn6eOIiOWZoVG3rCQuTHdZ6ipApo3Qhel1/Dr
+         s4UgO9ZP2jsYbZXUK9H05QMJgrrJgz33k+bE7pKH/eZlkG6w2kjvXx6z9uzh7EVvJpLn
+         ToujEytBm+KsWIFK7JXfSh/7w3J7WHzUnPCrl3TRiIaD6lUEm5xGR2SuTNrLlMg4/KYi
+         31AHh5gqoXZhWt519Xs+Z4O4zgXXWUcPMoZKiy6CKvLsqUcTgiHE3LdBk+qG2hJbA81+
+         sLTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782474196; x=1783078996;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20251104; t=1782487715; x=1783092515;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=N1xry/9Vu0APEb/gAq9NvEMqCHHr10KqvQ0Ln8sHSPw=;
-        b=q+c6xPxUTJV/MO9FIDCaSJkWcH3hSqlD7X31Qcg5IirhZ+QFXQq+bU5MpNvzaOcBcS
-         KFbDjzmHCwXJJljnCv3+95/yG5L6qpTh97A8LfSoL79IgALORM5DmY3UiwOvp5m7qa4r
-         bSYSxzIJ6uWYuZobucg4BEY33DStiME1kZETKXoleCz4CDqVmK+0OIPWamzRI76lFUYj
-         5YGGhwLhcm+ZcGwfjFXeTJLSFFiSd70+HYNJ1fQvbuiCAyaI1MEHAJsxWIiBctdytqx7
-         bu065dUAQcJ4eVMUAbDZrH+X5oG01QpgkOxzuAqZpgIZaocLo8WFsf+IZOjG42+bcGgV
-         gZtw==
-X-Forwarded-Encrypted: i=1; AHgh+RqGI2P5WwUpcj/zqEOs18rEOkZJJ0NkayXj53gb88ex1sudDn/Moa80xbBQ9Q963Kouh73KOyZx3xjA@lists.linux.dev
-X-Gm-Message-State: AOJu0YyN6sJyU9wvXUODAlyibKmfw0aR4/cyvdrcKklr3lxKW708+poW
-	/p+TpMdD1kDqJLH15rouv4vJOrIZnewF3cSry1fs7fxbTANd7b66vFrH4aXuRvbW13NJBvHoN4N
-	KYXgqD+5lGdDbjoE2SItDyU5H8GUhlK4KxA7l7OGJ6aHwRmt1E5lzqlEQOISiT0A=
-X-Gm-Gg: AfdE7cl8ifFc9AyQQmQoyYOWTOLuTCgcec6m4pR4YHozzORG3yEMrtDTaXg/yjA9j6Z
-	f25M4CKmAzKVO/FRxb/9k6f2HEWAsGHGwNlxfT+1gl7FzN2Kg4OT43Yk39xaQOg+tVrhq6CpVCc
-	sR0jrt6mXMHEyZBZRw53N1ZBkgzISSGz+f4cw8VsYjfiAmj6QUc0Fh0q50iAJhNaKcaY+A4NsxU
-	hvTh3Hdo7iHsc44BUp4CXxyI1DQVOz1hOFv/dgrdfoDQGllO0msnVCkbOlfL+FzvYj6LV/fdG0F
-	qpgUVF/beBMIiA+3zSO7aIOzhTdWj4aFR5pkDq1XBeQdrVYxlWnjcJkUKbj7afUem9OojZCL/bl
-	sIVTLA2QUkpJkb1szhk3RcB0hN517SQe3grPR5aog/NHmqKdp7OejQA==
-X-Received: by 2002:a17:90b:58cb:b0:36b:7c2a:263e with SMTP id 98e67ed59e1d1-37dfa2a229amr6235466a91.20.1782474195879;
-        Fri, 26 Jun 2026 04:43:15 -0700 (PDT)
-X-Received: by 2002:a17:90b:58cb:b0:36b:7c2a:263e with SMTP id 98e67ed59e1d1-37dfa2a229amr6235429a91.20.1782474195355;
-        Fri, 26 Jun 2026 04:43:15 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37df39dc707sm3703588a91.3.2026.06.26.04.43.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Jun 2026 04:43:14 -0700 (PDT)
-Message-ID: <8f81ed99-c53a-4196-baa2-adea9239a000@redhat.com>
-Date: Fri, 26 Jun 2026 21:43:03 +1000
+        bh=JSgVUERoRNVGTFJweVHOL66/ldGV42KdpD5nvU6ojsg=;
+        b=CCCD87vDDn2pTODqX01DV1ZNppWp8uzija0eXSIZ7Y28pqUGj9N2V+8p1ZHT9HJnvs
+         aWe2YgVk/AfdKKbrFOXHOcxolx6z2gZZoPtr59ADyzwcz5TLr9aIUIy7YMvmj3kdNlcK
+         S74FrlJi82NVHRVKKwAmboyniWJOXAQrO3UfWWjiCrhexENXgJ6JT+16Fw0V33GbY3If
+         iuJK0yOmMn3MXlT5o6BoswbGkVUTkneJ4fkslEIEn4FsYviygn4x0taUlXfqxKX+mq4/
+         3cBca1XheaWcOpde3b1G33edF6JDGo+BPpbDJ/fYKJVAvGgSmk2qEFEO5YfQ4knKgnPZ
+         18mg==
+X-Forwarded-Encrypted: i=1; AFNElJ++pYZ+qOcvPCNooleftJvhRG72gPger09cTrc9kJqdFG7nCr89ISwNxfNIc9BeoBA88OF+lfNDD4wM@lists.linux.dev
+X-Gm-Message-State: AOJu0YxkcLpQohxPdThEoD0tf9P65L6PAocIK/t3Nu6blVGU8IPgfrxz
+	Ng96USQKb02/TuVYPE78kZOoFV5t23+tOFtE4Z5t4mDDnNNlQ3Vg3iLtg6ja48rKW6bBTh+jBIE
+	BCPHRCUbkUuOuY6gZ6q1hlfw+iZNseuH9b/SuZ/zR
+X-Gm-Gg: AfdE7ckEMV6kscqbJe/NwmJxzKH7uU109FvsX2r/PiZnBPg+X4NurD0BmqZAuHiM8oX
+	e7FRKqmX3Rd0mqk6d6zSsqan+53/du/Wv+UOWGNxnX7oTdNWgTrWyhZRbOMH7gQmIIcjhBDzxZg
+	wdLEyQ05T6+RQSzmBpA1FkDGGzAhLWjXpbMVJWzssNzePc8aXhzyL8k1g0BDKe2qrVxqLrlaIYC
+	16ILLltOyG4yBInuAyKgAHEfRU+P/1OLKgepwaCD5rQbEWs/ejMvdAspcY5WMynlWeIcs+BiyyD
+	y51cPqxTEOqPM8pJIEbntbQ6DO8fkkm4tXZGzaxfED2+zTB2jNTbuLVivS4=
+X-Received: by 2002:a05:7022:481:b0:133:1ba6:f42d with SMTP id
+ a92af1059eb24-139dbaa6f11mr6321808c88.3.1782487713577; Fri, 26 Jun 2026
+ 08:28:33 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 26 Jun 2026 08:28:32 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 26 Jun 2026 08:28:32 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <aj3TGLGWT1kMFIVH@yzhao56-desk.sh.intel.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-23-9d2959357853@google.com>
+ <ajjc0hw8PjGw69e9@yzhao56-desk.sh.intel.com> <ajnf5Z9nWZxoLS4x@google.com>
+ <ajoWngKaZ+wfIyR+@yzhao56-desk.sh.intel.com> <ajpGxu2uQys+S2F8@yzhao56-desk.sh.intel.com>
+ <ajxasFBzp_9KnQLq@google.com> <CAEvNRgG1nHipzw4=eBgwhvyXi8xYo7FQD_sy9Ax6FDf7YDu3Og@mail.gmail.com>
+ <ajyRg3BwGu5dCfOn@yzhao56-desk.sh.intel.com> <CAEvNRgH5KOHoemnC9QOn_oK97=KeAH1XuX3ps36-pJ0Fn0aBHQ@mail.gmail.com>
+ <aj3TGLGWT1kMFIVH@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 29/44] arm64: RMI: Runtime faulting of memory
-To: Suzuki K Poulose <suzuki.poulose@arm.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
- Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-30-steven.price@arm.com>
- <3359f788-07fa-41a1-9ac7-45c58577c1fa@redhat.com>
- <aiJ6u83O0nVUtPyv@lpieralisi>
- <ecef952b-e8c6-4102-933b-c99c46f14431@redhat.com>
- <aiLes2ecZSr17UwZ@lpieralisi>
- <1e39094f-7fa3-4ef1-be54-53d7a8643506@redhat.com>
- <98d2a0f3-b831-466a-8212-5bcf97ad9d8b@arm.com>
- <8da87878-2a5d-478a-a280-60dbed7ad1b9@redhat.com>
- <9482dfbc-4d96-47ba-a615-f4ba0bda833f@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <9482dfbc-4d96-47ba-a615-f4ba0bda833f@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: NBwS1lDp-A3-NgIQGeUj5ivRAfgRVFgZy7b8H039lZY_1782474196
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Date: Fri, 26 Jun 2026 08:28:32 -0700
+X-Gm-Features: AVVi8CdXoJwmFS4d0lnA6dJlBDOu8Tqkyef5BrEHt8qMv-aHgkBxRUgcAuJaPfQ
+Message-ID: <CAEvNRgHb6WmOha6Pct_Tn8Ucuov95L=fj5=2R9gcHfx=b2V_+A@mail.gmail.com>
+Subject: Re: [PATCH v8 23/46] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 6/26/26 6:47 PM, Suzuki K Poulose wrote:
-> On 26/06/2026 08:43, Gavin Shan wrote:
->> On 6/26/26 1:58 AM, Suzuki K Poulose wrote:
->>> On 25/06/2026 14:53, Gavin Shan wrote:
->>>> On 6/6/26 12:35 AM, Lorenzo Pieralisi wrote:
->>>>> On Fri, Jun 05, 2026 at 06:11:11PM +1000, Gavin Shan wrote:
->>>>>> On 6/5/26 5:28 PM, Lorenzo Pieralisi wrote:
->>>>>>> On Fri, Jun 05, 2026 at 04:23:15PM +1000, Gavin Shan wrote:
->>
->> [...]
->>
->>>>>>
->>>>>> I tried to rebase Jean's latest QEMU series [1] to upstream QEMU, and found
->>>>>> that memory slots backed by THP are broken. With THP disabled on the host and
->>>>>> other fixes (mentioned in my prevous replies) applied on the top of this (v14)
->>>>>> series, I'm able to boot a realm guest with rebased QEMU series [2], plus more
->>>>>> fxies on the top.
->>>>>>
->>>>>> [1] https://git.codelinaro.org/linaro/dcap/qemu.git  (branch: cca/ latest)
->>>>>> [2] https://git.qemu.org/git/qemu.git                (branch: cca/ gavin)
->>>>>>
->>>>>> Lorenzo, You may be saying there is someone making QEMU to support ARM/CCA?
->>>>>
->>>>> Mathieu and I are working on that yes and with Steven/Suzuki to fix the THP
->>>>> issues you pointed out above.
->>>>>
->>>>>> If so, I'm not sure if there is a QEMU repository for me to try?
->>>>>
->>>>> We should be able to submit patches by end of June - we shall let you know
->>>>> whether we can make something available earlier.
->>>>>
->>>>
->>>> Not sure if there are other known issues in this series. It seems the stage2
->>>> page fault handling on the shared space isn't working well. In my test, the
->>>> vring (struct vring_desc) of virtio-net-pci is updated by the guest, and the
->>>> data isn't seen by QEMU, I'm suspecting if the host-page-frame-number is properly
->>>> resolved in the s2 page fault handler for shared (unprotected) space.
->>>>
->>>> - I rebased Jean's latest qemu branch to the upstream qemu;
->>>>
->>>> - On the host, which is emulated by qemu/tcg, the THP (transparent huge page) is
->>>>    disabled.
->>>>
->>>> - On the guest, I can see the virtio vring (struct vring_desc) is updated. The
->>>>    S1 page-table entry looks correct because the corresponding physical address
->>>>    0x10046880000 is a sane shared (unprotected) space address.
->>>>
->>>>    [   52.094143] software IO TLB: Memory encryption is active and system is using DMA bounce buffers
->>>>    [   52.289746] virtqueue_add_desc_split: desc[0]@0xffff000006880000, [00000100b983f000  00000640  0002  0001]
->>>>    [   52.432150] PTE 0x00e8010046880707 at address 0xffff000006880000
->>>>
->>>> - On the host, the s2 page-table-entry is unmapped due to attribute transition (private -> shared).
->>>>    A subsequent S2 page fault is raised against the adress and the s2 page-table-entry is built.
->>>>
->>>>    [  109.259077] ====> realm_unmap_shared_range: tracked_unprot_addr=0x10046880000
->>>>    [  109.260249] realm_unmap_shared_range: unmapped shared range at 0x10046880000
->>>>    [  109.317786] realm_unmap_shared_range: unmapped shared range at 0x10046880000
->>>>    [  109.629939] ====> kvm_handle_guest_abort: fault_ipa=0x10046880000, esr=0x92000007
->>>>    [  109.630245] realm_map_non_secure: ipa=0x10046880000, pfn=0xb8b59, size=0x1000, prot=0xf
->>>>    [  109.630331] realm_map_non_secure: ipa=0x10046880000, ipa_top=0x10046881000, flags=0x1e0001, range_desc=0xb8b59004
->>>
->>> Are you able to correlate the order of the transitions and the Guest
->>> access with RMM log ? We haven't seen this from our end. We are aware
->>> of permission fault issues with Unprotected IPA when backing the memslot
->>> with MAP_PRIVATE areas. But this looks different.
->>>
->>> Lorenzo, have you run into this ?
->>>
->>
->> It's hard to correlate the order since the logs are collected from two separate
->> consoles. For the write permission, I add code to the host where the permission
->> is always added for all s2 page faults in the shared space. Otherwise, qemu can
->> be killed by -EFAULT or similar error.
-> 
-> This is the problem. We can't add WRITE permission by default. I believe
-> you may have MAP_PRIVATE mapping and it has to be mapped as READ only
-> and on a permission fault, we replace it with a writable page. By
-> overriding the WRITE permission, you let the guest write to a page
-> that may not be seen by the VMM.
-> 
-> We identified this as a bug in the KVM driver in this series (reported
-> by Lorenzo) and there is a corresponding tf-RMM change that is required
-> to get this working. So, please could you wait until the next series
-> when this will be addressed ? Or you could switch to using MAP_SHARED
-> for the "shared" memory in the memslot.
-> 
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
-Exactly. the syntax for MAP_PRIVATE is broken if the write permission is
-enforced for a read fault in the shared space. In my case, the host page can
-be the zero page and eventually multiple s2 page-table entries (for multiple
-unprotected or shared pages) point to the zero page. It's why clearing the
-3rd queue (Ctrl queue) also clears the first queue (Rx queue) in my case.
+> On Thu, Jun 25, 2026 at 05:07:23PM -0700, Ackerley Tng wrote:
+>> Yan Zhao <yan.y.zhao@intel.com> writes:
+>>
+>> > On Wed, Jun 24, 2026 at 04:00:32PM -0700, Ackerley Tng wrote:
+>> >> Sean Christopherson <seanjc@google.com> writes:
+>> >>
+>> >> > On Tue, Jun 23, 2026, Yan Zhao wrote:
+>> >> >> On Tue, Jun 23, 2026 at 01:16:14PM +0800, Yan Zhao wrote:
+>> >> >> > On Mon, Jun 22, 2026 at 06:22:45PM -0700, Sean Christopherson wrote:
+>> >> >> > > On Mon, Jun 22, 2026, Yan Zhao wrote:
+>> >> >> > > > On Thu, Jun 18, 2026 at 05:32:00PM -0700, Ackerley Tng via B4 Relay wrote:
+>> >> >> > > > > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+>> >> >> > > > > index ffe9d0db58c59..56d10333c61a7 100644
+>> >> >> > > > > --- a/arch/x86/kvm/vmx/tdx.c
+>> >> >> > > > > +++ b/arch/x86/kvm/vmx/tdx.c
+>> >> >> > > > > @@ -3198,8 +3198,12 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>> >> >> > > > >  	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+>> >> >> > > > >  		return -EIO;
+>> >> >> > > > >
+>> >> >> > > > > -	if (!src_page)
+>> >> >> > > > > -		return -EOPNOTSUPP;
+>> >> >> > > > > +	if (!src_page) {
+>> >> >> > > > > +		if (!gmem_in_place_conversion)
+>> >> >> > > > When userspace turns on gmem_in_place_conversion while creating guest_memfd
+>> >> >> > > > without the MMAP flag, the absence of src_page should still be treated as an
+>> >> >> > > > error.
+>> >> >> > >
+>> >> >> > > Why MMAP?
+>> >> >> > Hmm, I was showing a scenario that in-place conversion couldn't occur.
+>> >> >> > I didn't mean that with the MMAP flag, mmap() and user write must occur.
+>> >> >> >
+>> >> >> > > Shouldn't this be a general "if (!src_page && !up-to-date)"?  Just
+>> >> >> > > because userspace _can_ mmap() the memory doesn't mean userspace _has_ mmap()'d
+>> >> >> > > and written memory.  And when write() lands, MMAP wouldn't be necessary to
+>> >> >> > > initialize the memory.
+>> >> >> > Do you mean using up-to-date flag as below?
+>> >> >
+>> >> > Yes?  I didn't actually look at the implementation details.
+>> >> >
+>> >> >> > if (!src_page) {
+>> >> >> > 	src_page = pfn_to_page(pfn);
+>> >> >> > 	if (!folio_test_uptodate(page_folio(src_page)))
+>> >> >> > 		return -EOPNOTSUPP;
+>> >> >> > }
+>> >>
+>> >> Yan is right that with the earlier patch "Zero page while getting pfn",
+>> >> folio_test_uptodate() here will always return true.
+>> >>
+>> >> Actually, this is an alternative fix for the issue Sashiko pointed out
+>> >> on v7 where userspace can do a populate() (either TDX or SNP) without
+>> >> first allocating the page, with src_address == NULL, and leak
+>> >> uninitialized memory into the guest.
+>> >>
+>> >> Advantage of using the uptodate check in populate: if the host never
+>> >> allocates the page, populate doesn't incur zeroing before writing the
+>> >> page anyway in populate().
+>> >>
+>> >> Disadvantage: Both TDX and SNP will have to implement this uptodate
+>> >> check. guest_memfd can't check centrally because for SNP, for a
+>> >> PAGE_TYPE_ZERO, !src_page should be allowed with a !uptodate page since
+>> >> firmware will zero and there's no leakage of uninitialized host memory?
+>> > Another disadvantage: the uptodate flag is per-folio. What if the folio
+>> > is only partially initialized by the userspace especially after huge page is
+>> > supported?
+>> >
+>>
+>> Good point on huge pages!
+>>
+>> The uptodate flag on the folio in guest_memfd means "this folio has been
+>> written to". As of now (before patch at [1]), this happens when
+>>
+>> + folio is zeroed on first use by userspace
+>> + folio is zeroed on first use of the guest
+>> + folio is populated
+>>
+>> When huge pages are supported, the folio can't partially be initialized?
+>>
+>> On allocation, if any part is shared, we split the page. The parts are
+>> separate folios that have their own uptodate flags.
+>>
+>> On splitting, if the huge page is uptodate, the split pages will also be
+>> uptodate. If the huge page is not uptodate, the split pages won't be
+>> uptodate, but that's ok since they will be marked uptodate on first use.
+>>
+>> On merging, the non-uptodate parts have to be zeroed and then marked
+> If that's true, it would be good.
+>
+>> uptodate. Any parts that are in use would have been marked uptodate
+>> already, so there's no overwriting data that is in use. I'll need to
+>> think more about when it's safe to zero.
+>>
+>> I'm still on the fence between the two options
+>>
+>> 1. Using uptodate check in populate to reject src_pages that have never
+>>    been written to or
+>> 2. Always zero before populate
+> 2 does not work?
+> The flow is
+> 1. mmap gmem_fd, make GFN shared, and write initial content.
+> 2. convert GFN to private
+> 3. invoke ioctl to trigger populate.
+>
 
-Yes, this issue can be avoid by using a shared memory backend in qemu, something
-like below. With this, I'm able to see virtio-net-pci starts to work...
+This flow is correct, is what users of in-place conversion should do.
 
-     -object memory-backend-ram,id=mem0,size=2G,share=yes
+"Always" is the wrong word, I should have said "zero if not uptodate
+before populate", as in, with patch at [1].
 
-Thanks,
-Gavin
+By doing the zeroing in __kvm_gmem_get_pfn instead, by the time populate
+gets the pfn, the page would be zeroed, either because userspace faulted
+it in, and the zeroing happened in kvm_gmem_fault_user_mapping(), or if
+userspace never faulted it in, the zeroing would happen because
+populate() allocated the page.
 
-> 
-> Suzuki
-> 
-> 
->>
->> There are more findings after more experiments: this virtio-net-pci device has 3
->> queues or vrings (Rx/Tx/Ctrl). The Rx/Tx/Ctrl queue are populated in order one after
->> one. In the guest kernel, I intentionally write fixed data (0x0123456789abcdef) to
->> the first 8 bytes of the queue when it gets populated, and stop the guest at random
->> points to see if the data is gone. I found that the data written to Rx/ Tx queue are
->> lost after Ctrl queue is allocated.
->>
->> The data written to Rx/Tx queue is lost if the guest stops (B). The data written to
->> Rx/Tx queue isn't lost if the guest stops at (A). I can see the pattern (0x0123...cdef)
->> by dumping the physcial memory through 'pmemsave' command in qemu.
->>
->> DMA allocation
->> ==============
->> dma_alloc_coherent
->>    dma_alloc_attrs
->>      dma_direct_alloc
->>        __dma_direct_alloc_pages
->>        dma_set_decrypted                    // (A) No data lost if being stopped here for the Ctrl queue
->>        memset(ret, 0, size)                 // (B) Data lost after being stopped after memset() for the Ctrl queue
->>
->> The memset() on the Ctrl queue should trigger a stage2 page fault. It seems the page
->> fault enforces the shared pages for Rx/Tx queue to be dropped? I need to add more
->> debugging code and track it down.
->>
->>> Suzuki
->>>
->>>
->>>>
->>>> - On QEMU, the updated vring (struct vring_desc) at GPA 0x46880000 isn't seen. All the
->>>>    data in that adress are zeros.
->>>>
->>>>    ====> virtqueue_split_pop: vdev=<virtio-net>, sz=0x38, queue_index=0x0, vq->vring.num=0x100
->>>>    virtqueue_split_pop: last_avail_idx=0x0, head=0x0
->>>>    address_space_read_cached_slow: cache@0xffff1c036440, addr=0x0, buf=0xffffeee34880, len=0x10
->>>>    address_space_read_cached_slow: cache: ptr=0x0, xlat=0x10046880000, len=0x1000, mrs=<realm-dma-region>, is_write=no
->>>>    address_space_read_cached_slow: translated to mr=<mach-virt.ram>, mr_addr=0x6880000, l=0x10
->>>>    flatview_read_continue_step: mr=<mach-virt.ram>, host=0xffff23e00000, mr_addr=0x6880000, ram_ptr=0xffff2a680000
->>>>    virtqueue_split_pop: desc: 0000000000000000 - 00000000 - 00000000 - 00000000
->>>>    qemu-system-aarch64: virtio: zero sized buffers are not allowed
->>>>
->>>>
->> Thanks,
->> Gavin
->>
-> 
+>> but whether the uptodate flag is per-folio or not doesn't affect these
+>> two options in terms of fixing the leak of uninitialized host memory,
+>> right?
+> yes, provided "On merging, the non-uptodate parts have to be zeroed and then
+> marked uptodate".
+>
 
+Thank you so much for bringing this up, I hadn't considered this
+before. I'll do that when I get to guest_memfd hugepage restructuring.
+
+>> >
+>> >> >> Another concern with this fix is that:
+>> >> >> commit "KVM: guest_memfd: Zero page while getting pfn" [1] always marks the
+>> >> >> folio uptodate before reaching post_populate().
+>> >> >>
+>> >> >> [1] https://lore.kernel.org/all/20260618-gmem-inplace-conversion-v8-21-9d2959357853@google.com/
+>> >> >>
+>> >> >> > One concern is that TDX now does not much care about the up-to-date flag since
+>> >> >> > TDX doesn't rely on the flag to clear pages on conversions.
+>> >> >> > I'm not sure if the flag can be reliably checked in this case. e.g.,
+>> >> >> > now the whole folio is marked up-to-date even if only part of it is faulted by
+>> >> >> > user access.
+>> >> >> > Ensuring that the up-to-date flag works correctly with huge page support seems
+>> >> >> > to have more effort than introducing a dedicated flag for TDX.
+>> >> >> >
+>> >> >> > > > Additionally, to properly enable in-place copying for the TDX initial memory
+>> >> >> > > > region, userspace must not only specify source_addr to NULL, but also follow
+>> >> >> > > > a specific sequence (where steps 1/2/3/7 are required only for in-place copy):
+>> >> >> > > > 1. create guest_memfd with MMAP flag
+>> >> >> > > > 2. mmap the guest_memfd.
+>> >> >> > > > 3. convert the initial memory range to shared.
+>> >> >> > > > 4. copy initial content to the source page.
+>> >> >> > > > 5. convert the initial memory range to private
+>> >> >> > > > 6. invoke ioctl KVM_TDX_INIT_MEM_REGION.
+>> >> >> > > > 7. do not unmap the source backend.
+>> >> >> > > >
+>> >> >> > > > So, would it be reasonable to introduce a dedicated flag that allows userspace
+>> >> >> > > > to explicitly opt into the in-place copy functionality? e.g.,
+>> >> >> > >
+>> >> >> > > Why?  It's userspace's responsibility to get the above right.  If userspace fails
+>> >> >> > > to provide a src_page when it doesn't want in-place copy, that's a userspace bug.
+>> >>
+>> >> Yan, is your concern that userspace forgot to update the code and
+>> >> forgets to provide a src_page, and if we keep the "Zero page while
+>> > Yes. Previously, it would be rejected after GUP fails.
+>> >
+>>
+>> I see, didn't realize previously it would be rejected because GUP
+>> fails. GUP failed because it wasn't faulted into the host?
+> GUP fails if 0 is not a valid user address.
+> But GUP would not fail if 0 is a valid address. e.g., in below scenario:
+>
+> #include <sys/mman.h>
+> #include <stdio.h>
+> int main(void)
+> {
+>         void *p=mmap((void*)0,4096,PROT_READ|PROT_WRITE, MAP_FIXED|MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
+>         if (p==MAP_FAILED) {
+>                 perror("mmap");
+>                 return 1;
+>         }
+>         *(char*)0='Y';
+>         printf("addr0=%p val=%c\n",p,*(char*)0);
+>         return 0;
+> }
+>
+>
+>> That's kind of orthogonal, I don't think GUP fail leading to rejecting
+>> populate was meant to help userspace catch these issues. GUP would also
+>> fail if the user did mmap(), write to it, unmap using
+>> madvise(MADV_DONTNEED), then forget and pass 0 as src_address.
+> The original uAPI did not explicitly define 0 as an invalid uaddr. Whether 0 was
+> rejected depended on whether the user mmap()'d address 0. If 0 was a valid
+> mapping, populate() could proceed.
+>
+> commit 2a62345b3052 ("KVM: guest_memfd: GUP source pages prior to populating
+> guest memory") changed the behavior though. It would return -EOPNOTSUPP for a 0
+> uaddr.
+>
+
+I see, I only looked at this after commit 2a62345b3052.
+
+> But if a user configures 0 uaddr as valid, writes to it, and then passes 0 as
+> source_addr(not from gmem), I'm not sure if it's good for the kernel to silently
+> treat 0 uaddr as an identifier for in-place copy from the private PFN in gmem.
+>
+
+I'd say the original uAPI perhaps just didn't document 0 as an
+unsupported uaddr. Given that commit 2a62345b3052 already merged, uAPI
+was perhaps accidentally changed and no customer complained, I think we
+can move forward with 0 as an invalid src_address? I wouldn't think
+anyone relies on 0 intentionally being a valid address.
+
+I could document that, if it helps?
+
+>
+>> >> getting pfn" patch, ends up with the guest silently having a zero page?
+>> >> I think that would be found quite early in userspace VMM testing...
+>> > I actually encountered this during testing this patch.
+>> > I update most code path to follow this sequence. However, still some corner ones
+>> > for TDVF HOB, which are less obvious and harder to update.
+>> > The TD just booted up and hang silently.
+>> >
+>>
+>> I think this is just the life of a close-to-hardware software engineer
+>> :P no errors, got stuck somewhere, root cause is some unitialized
+>> thing.
+>>
+>> >> >> > I mean if userspace specifies a NULL source_addr by mistake, it's better for
+>> >> >> > kernel to detect this mistake, similar to how it validates whether source_addr
+>> >> >> > is PAGE_ALIGNED.
+>> >> >
+>> >> > The alignment case is different.  If userspace provides an unaligned value, KVM
+>> >> > *can't* do what userspace is asking because hardware and thus KVM only supports
+>> >> > converting on page boundaries.
+>> >> >
+>> >> > For a NULL source, KVM can still do what userspace is asking.  Rejecting userspace's
+>> >> > request would then be making assumptions about what userspace wants.
+>> >> >
+>> >>
+>> >> Also, +1 on this, what if userspace, knowing that pages are zeroed on
+>> >> allocation, actually wants to rely on that to get a zero page in the guest?
+>> > What if 0 uaddr is a valid address? :)
+>> >
+>> >> >> > Since userspace already needs to perform additional steps to enable in-place
+>> >> >> > copy, specifying a dedicated flag to indicate that the NULL source_addr is
+>> >> >> > intentional seems like a reasonable burden.
+>> >> >
+>> >> > I don't see how it adds any value.  I wouldn't be at all surprised if most VMMs
+>> >> > just wen up with code that does:
+>> >> >
+>> >> > 	if (in-place) {
+>> >> > 		src = NULL;
+>> >> > 		flags |= KVM_TDX_IN_PLACE_COPY_INITIAL_MEMORY_REGION;
+>> >> > 	}
+>> >>
