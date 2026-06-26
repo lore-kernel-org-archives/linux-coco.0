@@ -1,65 +1,72 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012006.outbound.protection.outlook.com [52.101.53.6])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0AF27B50F
-	for <linux-coco@lists.linux.dev>; Fri, 26 Jun 2026 04:02:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782446545; cv=fail; b=E3hMYIrRk4Vnlq6pcTCm1pIRqV7vyTnpyZg1gEX3s36NMVeNFEi/9EZMGtQ4qmnbZeF/FCJgQQG3kVMg0Jn9cE6oCWTTLEzQwylrOAVVYZgLncPJS2KBzvafNGKgrHWJiaQhg7951tgQ7LwTs+BuPXlZ4d8qPUq5vUqKTsil7Uc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782446545; c=relaxed/simple;
-	bh=z18ssLQZE9EEsk/V7PEyYPTr9V+y0Q4lMo8VbSEfY/I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=vGSTByzoEQYZH+UQU2E2SFUppCn1N4D1uqnfGaKDveKDXev3Ar4u5C+n1V8TlHmpr8VzoUwwv09G7zgDT+Y9Q+WqPixPEKe0wVviYDxT4JXaYSjQjs0qB8EjdkMF3HJcAj8tSyXJFnlOEbY0Ybb7AnKQGlDzMBywuGJQHuRtWNo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=SR+kC4AO; arc=fail smtp.client-ip=52.101.53.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202003E1233
+	for <linux-coco@lists.linux.dev>; Fri, 26 Jun 2026 07:43:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782459833; cv=none; b=AZnNxzn/FLk/ghnhosIGrMXZvKwGiZJQYgGSeMHtuMTJFa4SeKSKdUD/2ylQwfPwnAXxMiXXhV6IZZ8oY9Dgn5vZHoAp0B1KrT69pS3tWLFQv0tBxBHbuGT4/AmXMpU/3vxRagbZ8m12JGGTkDeEwOpzb0Gd1n0zBm7sQynZKRg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782459833; c=relaxed/simple;
+	bh=s0U6052cZS8r73pCwXoBgHD40+SRrB/8u/7DqNhuwIY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g4kAGpuiM/p1TkFGpqipwJTCmAAoNwRChiE1C6unBKxMp41UPvVdVnzUEuX39Ng39UQdV6w9RRvAlcwwv7Kcpmze1lPGmPKvbEpgLnAGEieLy8mwGHSH49CZPasJNK4srTA22NY5v65r353n0FLfy96uYQiT/+TCopq7pOeCn9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JKOYpLp3; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SR+kC4AO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UkYV0d1Vqu075aU2krJ7xFiUwdSYk8Tc5Q4Rb8SFiitRyXwzEeegrsRPNkPsQGxktldk5Dp1V833JsJHztAHEpuZI0Fh6Z/oGOKSbqefsvR6xRerg+/TykCv9HfRhX9FmMgcbjeDn1DeohTSiY4QVncnIBn7AbQ6neKR5oU7NGRrnSL017BGxaT+epDjcnWlcRzUYdPuqduKkK2WizYyRX9eWCDInmT/uXFzAOge41oZo320akAt/fZE3Mcb01QaUAlKPjuuzoW6YJ4hXqTdGiZh7AcKqOS5rtqhNDNYQHtzq/3KFi97W29F9rMnvVG3rw0rzXx7PgL/IPMYj26SqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GIJjdo66gTpFAxChpohtVwLy18XSAQ1c0E9x3CezJNA=;
- b=kYnCosewXTh9iCIzNl7n0mmmYcYjn6+kbDeLka0+1acaW3tK/PLCb+4az9aQ1kPTnoP+zxkpsYYRes3hdGk1QPLi4aSZsekLbGNW/ItHFFSCnq9/wWv4JmHNfC0+0Y8Z3KVRpCczc79GdP8a9xwgG3PPTyYslBD7HFMe2kRuSLC6wtAeMoDUqUUNPZk8RajVGi2W6NdNYo4QJKQVumLaJ0NxwO4ZUYWVUqoukDL/iwwjrJhxVDklwioixLVROn9+AwEcXin2uNWzC7mzepFdJD5NoN1LFVo0LVDydwBQ22bAEhS/C5ROySYlhHzbsuxuy0YOFv3LlRSLZKsfQZMMUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GIJjdo66gTpFAxChpohtVwLy18XSAQ1c0E9x3CezJNA=;
- b=SR+kC4AOfPoyZ4ggyMVGjWhbgOEoFTD5rRgjm6AdV24YxkDln9RFLYytpEEsKJ7pPXr7jecrmSGk8K2rCwVgkCGTHFfXHOlq7oxNOmuVxCdohGLfd6aocH+bg15dSorIzNUyklIzqn7cHDuUehyiJeVHsTSZF2APHnuyzl+Lcxk=
-Received: from MN0P220CA0006.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:52e::30)
- by PH0PR12MB7929.namprd12.prod.outlook.com (2603:10b6:510:284::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Fri, 26 Jun
- 2026 04:02:16 +0000
-Received: from BN3PEPF0000B371.namprd21.prod.outlook.com
- (2603:10b6:208:52e:cafe::44) by MN0P220CA0006.outlook.office365.com
- (2603:10b6:208:52e::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.17 via Frontend Transport; Fri,
- 26 Jun 2026 04:02:15 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN3PEPF0000B371.mail.protection.outlook.com (10.167.243.168) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.0 via Frontend Transport; Fri, 26 Jun 2026 04:02:15 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 25 Jun
- 2026 23:02:05 -0500
-Received: from [10.136.35.225] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Thu, 25 Jun 2026 23:01:56 -0500
-Message-ID: <24aef42a-86da-42d4-92d1-9a6d2d329592@amd.com>
-Date: Fri, 26 Jun 2026 09:31:55 +0530
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JKOYpLp3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782459831;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xt7ue9HwiPWHFMmu1Qr+INx7bk2xLViK4an0U84LPO8=;
+	b=JKOYpLp3yaUHS6OE+l7CdtKCDwB3J3pYCh/OUVijt8TyFRAe0BXve7iXXcTzLTaSOc/UT+
+	+IZqq3qk5g21fAXlOtZCGRFkUPwdWs+V7Qq8kNQ9uOqqLI6YWakT/4RJ37J1Fjm+mTmISU
+	MG+EvR9aBd+ZNDH94zpidrDRcze/IGY=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-194-Zprj7Tw6NtiiivrZfyb9BQ-1; Fri, 26 Jun 2026 03:43:49 -0400
+X-MC-Unique: Zprj7Tw6NtiiivrZfyb9BQ-1
+X-Mimecast-MFC-AGG-ID: Zprj7Tw6NtiiivrZfyb9BQ_1782459829
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2c6bbd0afffso11402595ad.0
+        for <linux-coco@lists.linux.dev>; Fri, 26 Jun 2026 00:43:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782459829; x=1783064629;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Xt7ue9HwiPWHFMmu1Qr+INx7bk2xLViK4an0U84LPO8=;
+        b=HrL8fIxHAEpeM6fMf43JKnWeJfsOF7B9xUg3Q6iCNk0rFegyNXM1/gDH+X7gMUO/C0
+         iH9vzITpARrl/mPiJVONHrw3G7CRxcpYm8v6v3HQDBJy9UJBs2vk6dRM2JVZ/d59jBU3
+         +/n31aIaMTSkapMi0ByeuStofHxaIeUpimrvmQXHHe/a3t7X1SnHOgbLyB0pyl3gvc70
+         RT5110s9aLjflusGRskr80i5I+6wUNhbNlqGr+tg13X2Cxcwx1K3i46GIt857kMkYcA4
+         1uJW60XeYDXjxKJzluUIoIMfKcvAaQeHmR5kC/LH1gaWkXopg4yLg6ItIXEiVZmxCQlK
+         +0BA==
+X-Forwarded-Encrypted: i=1; AHgh+RoXEnLPsGJbOrcaBYitdtgqir6wcYXcznC4yeaFiNeD/UgkJKxGXKGlFggjCcWmVQYUkgQYullzZobB@lists.linux.dev
+X-Gm-Message-State: AOJu0YxORDidL/KKVdHY6LbCQzVt9VDvpJgXVEqU3nE4yIC6Q3xnJsSE
+	gTLuR0QGyclG1amkcgErDoIpLDi7jK8vRqnkMT8Q3EWRMJ9xQ7hoZKuFU2K42kHA0w9MYAAky+6
+	sOu9yw23a2n8bTkD8Pw7jDxOhnn9jtS7NKwjd1zpchFwtr91B5nZ9UiYaUKu1Wlo=
+X-Gm-Gg: AfdE7clIEpKdTiBQWif3Oy4ki9odO7qZTWenEOf5Ry5qquHz4lnEQXqWstaJBaZeUCT
+	0EuK9oEZcaK2T8VSGHlcRnqD2YVk5eRuxDTvROJ1NJTEs8WVnKNVVf3FTm2ujy7Lb1vWSSCOSab
+	Ht/BkYIvjkH6VizoPJo2Vf8FyzgcydNWLX24mYcJOm9W+kt5LmUh/zqNs49ykxO6ntSM5jM80HK
+	G8BGzH5P3zwI+7GKxJ6schy79BQk90W1sAS/LOK9AOJoEFcJdjog9beO7aB5eeysUOPmMevY2W6
+	MeARYeSIcXNGrLAXBfEGNXYZNK/uaoKD7sBX8XQRasV8H7djqGs0CfkENrd9my3c3it9++pq5uH
+	WizuAoPwtzDYRCHecjnUXRNPBWidKbbj16AHhQ+/etaBCSH5XlpjENQ==
+X-Received: by 2002:a17:902:d510:b0:2c7:f233:3df8 with SMTP id d9443c01a7336-2c7fc8ab880mr56064635ad.31.1782459828703;
+        Fri, 26 Jun 2026 00:43:48 -0700 (PDT)
+X-Received: by 2002:a17:902:d510:b0:2c7:f233:3df8 with SMTP id d9443c01a7336-2c7fc8ab880mr56064265ad.31.1782459828076;
+        Fri, 26 Jun 2026 00:43:48 -0700 (PDT)
+Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f63b27f4sm34866665ad.53.2026.06.26.00.43.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Jun 2026 00:43:47 -0700 (PDT)
+Message-ID: <8da87878-2a5d-478a-a280-60dbed7ad1b9@redhat.com>
+Date: Fri, 26 Jun 2026 17:43:34 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,157 +74,153 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 3/6] x86/sev: Disable CPU hotplug while SNP is active
-To: "Kalra, Ashish" <ashish.kalra@amd.com>, Borislav Petkov <bp@alien8.de>
-CC: <tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, <hpa@zytor.com>, <seanjc@google.com>,
-	<peterz@infradead.org>, <thomas.lendacky@amd.com>,
-	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>,
-	<pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
-	<Tycho.Andersen@amd.com>, <Nathan.Fontenot@amd.com>,
-	<ackerleytng@google.com>, <jackyli@google.com>, <pgonda@google.com>,
-	<rientjes@google.com>, <jacobhxu@google.com>, <xin@zytor.com>,
-	<pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
-	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>
-References: <cover.1782336473.git.ashish.kalra@amd.com>
- <ba146ca15b7f76eee386c8c073fb3f1cc36e5781.1782336473.git.ashish.kalra@amd.com>
- <20260625150253.GAaj1DHZC8ULg6PzbI@fat_crate.local>
- <7c64d96f-f932-4db9-8119-b9e40d5b7fd9@amd.com>
- <898e378a-cf7c-4310-b439-e28ec0a71338@amd.com>
- <b9777de5-a6fa-418c-92d2-89c095e91837@amd.com>
+Subject: Re: [PATCH v14 29/44] arm64: RMI: Runtime faulting of memory
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
+ Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-30-steven.price@arm.com>
+ <3359f788-07fa-41a1-9ac7-45c58577c1fa@redhat.com>
+ <aiJ6u83O0nVUtPyv@lpieralisi>
+ <ecef952b-e8c6-4102-933b-c99c46f14431@redhat.com>
+ <aiLes2ecZSr17UwZ@lpieralisi>
+ <1e39094f-7fa3-4ef1-be54-53d7a8643506@redhat.com>
+ <98d2a0f3-b831-466a-8212-5bcf97ad9d8b@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <98d2a0f3-b831-466a-8212-5bcf97ad9d8b@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: b3r4bu3t6aIE_C-5dh4AByXV76Q7zXOOraeRHCmPDO0_1782459829
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <b9777de5-a6fa-418c-92d2-89c095e91837@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B371:EE_|PH0PR12MB7929:EE_
-X-MS-Office365-Filtering-Correlation-Id: 406b6ccb-4f98-467c-c448-08ded337b5a6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|36860700016|82310400026|1800799024|23010399003|18002099003|22082099003|5023799004|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	Fsuec6Dm8rPFNHL0EmyIJFtHihd+PYjcxjrEwarf5VKiG8a5/dkjE49eo/D39gKK9zI3MZDWnT+IxEQAetfVoXM6pnoLOdUEOclBrFSDcw8F9ucsjPEJL8+hrWh7LLTx4DNudVj0JVy0a284zyd1zenCcFTHxS9h8CszM3GsnNcLacfwn6peMJGGfZQRjeOJjVnu/gx869xsl2VytSmgHJ5wWbD1sFwPXaD65vxc1SIdMF6xP6PLz+wHMXUjBXlw+Jae+IL10/tUuLqyWTH23o2gXcutIMzDP6pDv+h0FH3kVpoKtGWDJBCHedL7WJfhBJm/GkNSvzZCjvkS5htcATE5vSs1/qe4nCgdIooY6I2SePb2pTT+K0arRu+fPH2QeuKzIEVpiBZpJO60yheCjd3yCHAy7Qnb9aMxHHRKbTJOOjvKsyI9JZB5sKkKr7I221+Oah/gLCrvFfnTo6OvmgyWaGNRJa4Mjt9usU/C3aYIVjHKTBTNYjFE9gblN7tCakoXx1PEAMEb/Pm9u2Ye5co7bNXyNLdTsjoBX9JtCAhBim0xlH8WEgMJo9CLgr2BsJOCN9nISXzz+mAndYSc2mn1fwhZr0SOzRiwlRZaw/FhMtc95DPn7PWIzImD4JCyXS0m8k47VK3/pE3h9wvAeswExPYSFEn1281vq36mBRgmVt4uFCB5seB28iZq3qWY432XK9Al5mAouOqRrEoYEw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700016)(82310400026)(1800799024)(23010399003)(18002099003)(22082099003)(5023799004)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	dQnBnqnoLcFaB666q8c7O7l81Ez0noK5+QqwooasIuXJJ52GiaV7PxjpmzOCV0MhpWmaSg+eLvLryW+jSe3eHtV7RBteFD23gEX9/9vi3Wbd8yPotEK5t+a1KVy1/Mhoxf1Q3mPFRF0gWX7M30ogamV2LHRD9twLKuj9H7umFjm79EmTs/CftIJU2vHH13Q2SKwTxN0u76ds5VUHeFyj6YZwH3/L8Lu2w7q7rIT2IU2jpocyce/a+c8r3g1nj+2xCnoGKyu9bdfzKY1nDXa/c6aG9xRf7Deig12Dyy7wT7GG/UrLeHtyYSPLI5FEjWdV/oF1txYcoKc8Lj7xlumhyHHpfadMdzw4wHEiO9yEIDwFLKO8NOC0tlrIkui3CANT8HRwfzxT15t4cJqOhAh6oPyb0DQEB2eaCDa0qtmwHO/huUvFUU6NNc+WfbScGby0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 04:02:15.7191
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 406b6ccb-4f98-467c-c448-08ded337b5a6
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B371.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7929
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hello Ashish,
+On 6/26/26 1:58 AM, Suzuki K Poulose wrote:
+> On 25/06/2026 14:53, Gavin Shan wrote:
+>> On 6/6/26 12:35 AM, Lorenzo Pieralisi wrote:
+>>> On Fri, Jun 05, 2026 at 06:11:11PM +1000, Gavin Shan wrote:
+>>>> On 6/5/26 5:28 PM, Lorenzo Pieralisi wrote:
+>>>>> On Fri, Jun 05, 2026 at 04:23:15PM +1000, Gavin Shan wrote:
 
-On 6/26/2026 8:08 AM, Kalra, Ashish wrote:
->> Looking at snp_prepare(), we have an early-bailout for
+[...]
+
+>>>>
+>>>> I tried to rebase Jean's latest QEMU series [1] to upstream QEMU, and found
+>>>> that memory slots backed by THP are broken. With THP disabled on the host and
+>>>> other fixes (mentioned in my prevous replies) applied on the top of this (v14)
+>>>> series, I'm able to boot a realm guest with rebased QEMU series [2], plus more
+>>>> fxies on the top.
+>>>>
+>>>> [1] https://git.codelinaro.org/linaro/dcap/qemu.git  (branch: cca/ latest)
+>>>> [2] https://git.qemu.org/git/qemu.git                (branch: cca/gavin)
+>>>>
+>>>> Lorenzo, You may be saying there is someone making QEMU to support ARM/CCA?
+>>>
+>>> Mathieu and I are working on that yes and with Steven/Suzuki to fix the THP
+>>> issues you pointed out above.
+>>>
+>>>> If so, I'm not sure if there is a QEMU repository for me to try?
+>>>
+>>> We should be able to submit patches by end of June - we shall let you know
+>>> whether we can make something available earlier.
+>>>
 >>
->>     rdmsrq(MSR_AMD64_SYSCFG, val);
->>     if (val & MSR_AMD64_SYSCFG_SNP_EN)
->>          return;
+>> Not sure if there are other known issues in this series. It seems the stage2
+>> page fault handling on the shared space isn't working well. In my test, the
+>> vring (struct vring_desc) of virtio-net-pci is updated by the guest, and the
+>> data isn't seen by QEMU, I'm suspecting if the host-page-frame-number is properly
+>> resolved in the s2 page fault handler for shared (unprotected) space.
 >>
->> Does executing SHUTDOWN command lead to the firmware clearing SNP_EN in
->> SYSCFG on all CPUS?
+>> - I rebased Jean's latest qemu branch to the upstream qemu;
+>>
+>> - On the host, which is emulated by qemu/tcg, the THP (transparent huge page) is
+>>    disabled.
+>>
+>> - On the guest, I can see the virtio vring (struct vring_desc) is updated. The
+>>    S1 page-table entry looks correct because the corresponding physical address
+>>    0x10046880000 is a sane shared (unprotected) space address.
+>>
+>>    [   52.094143] software IO TLB: Memory encryption is active and system is using DMA bounce buffers
+>>    [   52.289746] virtqueue_add_desc_split: desc[0]@0xffff000006880000, [00000100b983f000  00000640  0002  0001]
+>>    [   52.432150] PTE 0x00e8010046880707 at address 0xffff000006880000
+>>
+>> - On the host, the s2 page-table-entry is unmapped due to attribute transition (private -> shared).
+>>    A subsequent S2 page fault is raised against the adress and the s2 page-table-entry is built.
+>>
+>>    [  109.259077] ====> realm_unmap_shared_range: tracked_unprot_addr=0x10046880000
+>>    [  109.260249] realm_unmap_shared_range: unmapped shared range at 0x10046880000
+>>    [  109.317786] realm_unmap_shared_range: unmapped shared range at 0x10046880000
+>>    [  109.629939] ====> kvm_handle_guest_abort: fault_ipa=0x10046880000, esr=0x92000007
+>>    [  109.630245] realm_map_non_secure: ipa=0x10046880000, pfn=0xb8b59, size=0x1000, prot=0xf
+>>    [  109.630331] realm_map_non_secure: ipa=0x10046880000, ipa_top=0x10046881000, flags=0x1e0001, range_desc=0xb8b59004
 > 
-> Yes, in case of X86_SNP_SHUTDOWN (available if firmware supports X86SnpShutdown feature)
-> SNP is disabled on all cores by clearing SYSCFG[SNPEn] bit.
+> Are you able to correlate the order of the transitions and the Guest
+> access with RMM log ? We haven't seen this from our end. We are aware
+> of permission fault issues with Unprotected IPA when backing the memslot
+> with MAP_PRIVATE areas. But this looks different.
 > 
-> If X86_SNP_SHUTDOWN is set to 1, the firmware clears the SYSCFG[SNPEn] bit in each core. 
+> Lorenzo, have you run into this ?
 > 
-> But, in case of legacy SNP shutdown, SNP_EN bit is not cleared and so SNP remains enabled.
 
-Ah! That was the bit I was missing. Thanks a ton for clarifying.
+It's hard to correlate the order since the logs are collected from two separate
+consoles. For the write permission, I add code to the host where the permission
+is always added for all s2 page faults in the shared space. Otherwise, qemu can
+be killed by -EFAULT or similar error.
 
+There are more findings after more experiments: this virtio-net-pci device has 3
+queues or vrings (Rx/Tx/Ctrl). The Rx/Tx/Ctrl queue are populated in order one after
+one. In the guest kernel, I intentionally write fixed data (0x0123456789abcdef) to
+the first 8 bytes of the queue when it gets populated, and stop the guest at random
+points to see if the data is gone. I found that the data written to Rx/Tx queue are
+lost after Ctrl queue is allocated.
+
+The data written to Rx/Tx queue is lost if the guest stops (B). The data written to
+Rx/Tx queue isn't lost if the guest stops at (A). I can see the pattern (0x0123...cdef)
+by dumping the physcial memory through 'pmemsave' command in qemu.
+
+DMA allocation
+==============
+dma_alloc_coherent
+   dma_alloc_attrs
+     dma_direct_alloc
+       __dma_direct_alloc_pages
+       dma_set_decrypted                    // (A) No data lost if being stopped here for the Ctrl queue
+       memset(ret, 0, size)                 // (B) Data lost after being stopped after memset() for the Ctrl queue
+
+The memset() on the Ctrl queue should trigger a stage2 page fault. It seems the page
+fault enforces the shared pages for Rx/Tx queue to be dropped? I need to add more
+debugging code and track it down.
+
+> Suzuki
+> 
 > 
 >>
->> If SNP_EN remains set (and Linux can't clear it since it is
->> "Write-1-only" bit), then a subsequent snp_prepare() will skip setting
->> SYSCFG if it sees SNP_EN on local CPU.
+>> - On QEMU, the updated vring (struct vring_desc) at GPA 0x46880000 isn't seen. All the
+>>    data in that adress are zeros.
 >>
->> It can so happen that we enable hotlpug at shutdown, CPUs come online
->> without setting SNP_EN in SYSCFG, subsequent snp_prepare() runs on a CPU
->> where SNP_EN is still set and skips configuring it for the CPUs that
->> don't have it set, and we'll be in a pickle still.
+>>    ====> virtqueue_split_pop: vdev=<virtio-net>, sz=0x38, queue_index=0x0, vq->vring.num=0x100
+>>    virtqueue_split_pop: last_avail_idx=0x0, head=0x0
+>>    address_space_read_cached_slow: cache@0xffff1c036440, addr=0x0, buf=0xffffeee34880, len=0x10
+>>    address_space_read_cached_slow: cache: ptr=0x0, xlat=0x10046880000, len=0x1000, mrs=<realm-dma-region>, is_write=no
+>>    address_space_read_cached_slow: translated to mr=<mach-virt.ram>, mr_addr=0x6880000, l=0x10
+>>    flatview_read_continue_step: mr=<mach-virt.ram>, host=0xffff23e00000, mr_addr=0x6880000, ram_ptr=0xffff2a680000
+>>    virtqueue_split_pop: desc: 0000000000000000 - 00000000 - 00000000 - 00000000
+>>    qemu-system-aarch64: virtio: zero sized buffers are not allowed
 >>
->> The comment above that bailout saying "this can happen in case of kexec
->> boot" makes me believe that SNP_EN remains set until a full system
->> reset.
 >>
->> The only safe way to do this is to ensure all possible CPUs are online
->> during snp_prepare() and do snp_enable() regardless of whether local CPU
->> has SNP_EN or not.
->>
->> Am I missing something?
->>
-> 
-> The piece that makes the early bailout safe is the disable this patch adds:
-> hotplug is disabled while SNP is active, so the online set can't change under an
-> active SNP. snp_prepare() already requires online == present, so at a successful
-> init every present CPU gets SNP_EN,
-
-How is this enforced? AFAICT, on_each_cpu(snp_enable) will only covers
-the online CPUs and there could be CPUs that have been offlined before
-that right?
-
-> and because hotplug is then disabled none
-> can leave or rejoin without it. So whenever the bailout is hit with SNP active,
-> every online CPU already has SNP_EN:
-> 
->   - kexec: SNP_EN is already set on all CPUs by the previous kernel.
-
-There is a catch here: you can have offline CPUs during the previous boot
-(say you have maxcpus=8 in your cmdline), and then you kexec with a different
-kernel / cmdline that brings online a bunch more CPUs.
-
-SNP_EN will only be set for a subset of then with the legacy SNP_INIT and
-if snp_prepare() runs on those legacy CPUs, you still skip setting it for
-the ones that don't have SNP_EN set.
-
-Is that case covered somehow or is it a non-issue?
-
->   - re-init while SNP is still active (e.g. after a legacy SNP_SHUTDOWN that
->   leaves SNP_EN set): hotplug was disabled the whole time, so the online set is
->   unchanged and all of them still have SNP_EN.
-> 
-> The only way a CPU can be online without SNP_EN is when SNP is not active --
-> i.e. after an SNP_INIT failure, where this patch re-enables hotplug. That is
-> deliberately the same as the behavior before this support existed (hotplug was
-> never disabled then), and it is benign: SNP_EN only gates RMP checks, the RMP
-> itself is initialized by SNP_INIT, so on a failed init the RMP is all-zeroes --
-> every entry is in the default HV-owned state, no page is assigned, no check ever blocks
-> and snp_initialized stays false, so no SNP guest can be created.
-> Nothing is enforced and nothing is protected.
-> 
-> So I've kept snp_prepare()'s existing bailout / snp_enable() behavior unchanged;
-> what this patch adds is disabling hotplug while SNP is active, which is what
-> actually closes the window (a CPU coming online without SNP_EN while SNP is
-> live). That window -- and the SNP_EN-stays-set-on-failure situation -- already
-> exist in today's code, this patch constrains the dangerous (active) case and
-> otherwise matches current behavior.
-
-Ack! Just that one small bit up above bothers me but other than that,
-doing it in snp_prepare() should be good.
-
-This is all new to me so thanks a ton for answering my queries.
-
-> 
-> (On the v9 placement specifically: I'm moving the disable into snp_prepare()
-> ahead of SNP_EN in the next version; in v9 it sits after SNP_INIT, which leaves
-> the window you originally pointed out.)
--- 
-Thanks and Regards,
-Prateek
+Thanks,
+Gavin
 
