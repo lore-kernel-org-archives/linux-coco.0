@@ -1,56 +1,56 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAB82BE63F
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 21:37:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D3432470F
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 21:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782855436; cv=none; b=QdN3wduS1PpKWGoduqIYwVf4RWeYK1G/mp6xD2NC7jt5stN0zQkMDIpR4q4OFZJlDjogIkSniY0Y3MyjF0ZsBLQE05Z5w0/SqoF+844jqzWpu2ffBnJ984lHlbbv57E5kFhZPseINzED/CIorY7VAsTbIWUAgbFS6Lwrf1+w1sI=
+	t=1782855438; cv=none; b=dPpXwEsbEoIWfJROKgO4p9IAu0mS4GqhQhBmIBvBVml9esUY0O5czTleVMk2Yu0ArgIXxNcItqvQHRYYvx1cAbPqUdMaVArO0JNjVixkVRfygf1mJwa5faoDP9Tb5S0h3Kcyu8EDzENyiALNJwsiC2O/BlSkmC/uB7qXMhAbiXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782855436; c=relaxed/simple;
-	bh=VEV764k+YjgSV8ElwdVW6Rpo38QFc1TTbPvkYXFjsh8=;
+	s=arc-20240116; t=1782855438; c=relaxed/simple;
+	bh=PfL/KrfF/nM4dCO0Bt5k6/6q2wcRo8P21hIe83hdWwg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=eAstmwM33GVWNl5LnCgQTSeq3Noi5JmvSuPAv+EZMERU2nWzI8yyfXDku++Tls20FroA67LkK59u1+hyQmg62VwFZuCf/mc09qyfVi9mslyq9qjEsG2RyYlqErYDzxdU2KKomZ+BGO5L1izbSum2co5eccf7SCFxL3a0CP8luww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HbKLvDKY; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=Ua6NCpth2BnKMcSG6ED+DR63lEiU1zUsgp8yj0DXqPmyDKpgtpbdCRQp7pbTii/ZkI/bh32IuyjKqeqL5lkEyV2q1iUxYurG6b1KWq8IDO6XkF3QNOjJqlvjq2EMogv6VqtYR0y7W2tv1MzWsC7wvjlXbuz+eTDLnnskdwr1q9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qCa8G1V5; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HbKLvDKY"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c9ae1da340so57628595ad.3
-        for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 14:37:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qCa8G1V5"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c987913b08so125495ad.2
+        for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 14:37:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782855434; x=1783460234; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1782855436; x=1783460236; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=uJbwc1Qhi2ZE+Oi6hXPhS12AxXWHzXClhddjya3ipjo=;
-        b=HbKLvDKYfnp9a5XVrVjiJAxFY8XA0xdIVQxfZ5h8zZGo8P10Wv6XVFA4BzDC1AWV9P
-         5UpvDxEpanZHBan1dunl7NfqbuGwqPnlA0+5vjzWU5116h3BS7SIivPK6JJNoQ7i0bVT
-         +oJOE4hoyWAM2/XNolwBNPxelTqDEa9tuAwA4cyJhIG564sg8HhRaQ2eb2miz/DUvLIZ
-         6Xq+mWvWcwnQZb8x6l0xhp9Up/uYvQ4S+/ouJp90DDi3P+jQA15+yOhxZXxA9y0RR2aF
-         Wpn8SR3bqZjNEpfbuve/Zx9g4fN3QnOy8wh08amZsu9vjmw9CXXPSlT9Nm1Cy/P8ICpy
-         hh4A==
+        bh=TOW0Zc3HQX5JVoEMdXzsZ2+bZzhBD5tvhepZcMxoBvs=;
+        b=qCa8G1V5Z3qufrq1KRJ6+jT5gNuoweUZQnCfS5goypkn2+QugD5g7GjsEjVT7bVclN
+         UyE+zcabmtfYR6Ty4uHZFkjSfMkFDHWuDJNThLrf3AekeusWgZF03li06zXEBGFQhcXS
+         Ej48hR1qcfIasUfjp5mAO/0aKMvI1J4ivlw+/TYU/Px00mgFDtiA4SrHI8A5X9egSUnW
+         cnLZbDvOItj40Iu3iVH6OHZlj7W83dKbuEFHrO/POiluifgWNjiZ3LIVhlKsRibQYqPf
+         tAOOUEC37bgrFWSUxjvG0lfQHpqMHafLKlV1RvGlnD/l69jK+xJt5gzLZN3LH4nqCoQf
+         7Piw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782855434; x=1783460234;
+        d=1e100.net; s=20251104; t=1782855436; x=1783460236;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uJbwc1Qhi2ZE+Oi6hXPhS12AxXWHzXClhddjya3ipjo=;
-        b=ZCVAllRgS4mgmclJniZ0oa5W1TQQpRVlt1W94KEWIUS9lNp2arUUIF3v4ztyEG7iP/
-         MbovFvSbF6KuI2vZWgmggKIXTZ28nHw3/mKCxGkN/CSwmSqJhoKzbbtGK8M5hI1MHIGL
-         nwNog8LZ4XntPv/Fi5Vm7XiamXV9O3tltVNkmBlGfFdIoVTCiQntvBBMPoS1ev4ShO5F
-         9wjKMH4HCXqAjYy3QmTu691WjmsNHq4D2kZQssrHKsGQ7zSM13AOzI1h4lhWmtyMRnKS
-         1SlfgsLA8CdPHARZJnEkagIUTLYm4kNqb+6Galm9VML5/PU+os3A8QEGvprJK8RJXKPV
-         mlrw==
-X-Forwarded-Encrypted: i=1; AHgh+RozVCe1c/SoOxmpUldBk526Hg071H2mkoiiyi4RmLokzLERtV77Ts9FG9vRjRolho4iUtoznyZChvXy@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx+dckJtHF6pA4HwWY5Z3GGC0fSMH2Q9UESigENcy1aYec17iOu
-	4Jn5GtejG4JhvpR1p0BQuo4axJ7gKq6vrmovSYbKWwWQsyV4oU8lmiEYLq+CQpkpttKXl35lp9j
-	rMgqUHA==
-X-Received: from plbkq4.prod.google.com ([2002:a17:903:2844:b0:2c7:f3c5:4bc6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1a0e:b0:2c0:af09:f3c7
- with SMTP id d9443c01a7336-2ca2ea17914mr38760775ad.30.1782855434158; Tue, 30
- Jun 2026 14:37:14 -0700 (PDT)
+        bh=TOW0Zc3HQX5JVoEMdXzsZ2+bZzhBD5tvhepZcMxoBvs=;
+        b=X0e1oSZPkH2wb98p5u41OpKwirJAzztei2YvukXKu+gRkj7AR+eWmz6kJQaWvh3v16
+         M228zb78lF47OhA9NOv3mQwuyYVknQRODnu6Uh0S+FZKLbAN5p0C/DX74VgRKLXyb/5N
+         Mm3ayRxggCbo73E4GH+6Ck4OOHlnnBnvQFVyg496TcywF+eU+QJgY4zDEcq2FcfHCDSN
+         vKyQhIIayij8tUlN53bTxRRvNM6NrEofPUXYbHQ82g+OOsks9NcVcCRHUXakQsq7uisE
+         HOMX1ekGsdvUBF8jfnX4IFYa4ZDftbHr2TXwNWqQHM7NlpPWLWg6uKyNmIO4STHqAPc6
+         jveQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rpw8z2qYy6lRcWbbyePMwdi5BURkCfOPnPRuP66nKuPvJB7i2clu/ycUFaoo1qeRiya58m1JXSEf9wL@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx1n/SOYntg4nY/O8jWPjHoHHfJusUqhQjTCovQ6e7WTIqa+jL6
+	CvbUzw1iP2dS/udCZdJ77J3B5hiOGWpTqPQ0NWujL8C9+kb+jz7w3jbjOW5FTH/jRmDj9dAncZF
+	2XL/YSg==
+X-Received: from plcl21.prod.google.com ([2002:a17:902:e2d5:b0:2c7:ed23:f48b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e949:b0:2c6:9f6a:9f6f
+ with SMTP id d9443c01a7336-2ca5a5eaff3mr18323585ad.28.1782855436276; Tue, 30
+ Jun 2026 14:37:16 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 30 Jun 2026 14:37:10 -0700
+Date: Tue, 30 Jun 2026 14:37:11 -0700
 In-Reply-To: <20260630213711.479692-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260630213711.479692-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260630213711.479692-2-seanjc@google.com>
-Subject: [PATCH v2 1/2] KVM: SEV: Explicitly disallow NULL user address for SNP_LAUNCH_UPDATE
+Message-ID: <20260630213711.479692-3-seanjc@google.com>
+Subject: [PATCH v2 2/2] KVM: TDX: Return EINVAL, not EOPNOTSUPP, for NULL
+ INIT_MEM_REGION source
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Kiryl Shutsemau <kas@kernel.org>
@@ -72,59 +73,53 @@ Cc: Dave Hansen <dave.hansen@linux.intel.com>,
 	Yan Zhao <yan.y.zhao@intel.com>, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Joerg Roedel <joerg.roedel@amd.com>
+Return EINVAL instead of EOPNOTSUPP if userspace attempts to pass a NULL
+pointer for the source page of INIT_MEM_REGION, so that KVM's ABI is
+consistent between TDX and SNP (for LAUNCH_UPDATE).  EOPNOTSUPP was chosen
+to be a forward-looking error code for when guest_memfd supports in-place
+conversion, but even when in-place conversion comes along, it's an awkward
+error code as KVM is deliberately choosing to disallow virtual address '0',
+which is technically a legal userspace address.  I.e. it's not so much a
+lack of support as it is that KVM reserves address '0' to simplify KVM's
+internal implementation.
 
-Explicitly reject a NULL userspace virtual address for the source page of
-SNP_LAUNCH_UPDATE instead of relying on the post-populate callback to do
-the check, and don't WARN on failure, as the scenario is blatantly user-
-triggerable, as reported by Sashiko.  Waiting until post-populate to check
-the address "works", but makes it unnecessarily difficult to see that KVM's
-ABI is to disallow a NULL source page for non-ZERO pages.
+Opportunistically move the check so that it's co-located with the other
+checks on the userspace address, and so that it's more obvious that a NULL
+source address is explicitly disallowed.
 
-Note, several existing VMMs pass a valid userspace address for the ZERO
-case, i.e. KVM can't *require* the userspace address to be NULL for ZERO
-pages, at least not without breaking userspace.
-
-Fixes: dee5a47cc7a4 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_UPDATE command")
-Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/all/20260611125849.9ED631F00893@smtp.kernel.org
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
+Fixes: 2a62345b3052 ("KVM: guest_memfd: GUP source pages prior to populating guest memory")
+Cc: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Ackerley Tng <ackerleytng@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/svm/sev.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ arch/x86/kvm/vmx/tdx.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 74fb15551e83..621a2eaa58f2 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2330,9 +2330,6 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 	int level;
- 	int ret;
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index ffe9d0db58c5..b0ec054732b9 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -3198,9 +3198,6 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ 	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+ 		return -EIO;
  
--	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page))
--		return -EINVAL;
+-	if (!src_page)
+-		return -EOPNOTSUPP;
 -
- 	ret = snp_lookup_rmpentry((u64)pfn, &assigned, &level);
- 	if (ret || assigned) {
- 		pr_debug("%s: Failed to ensure GFN 0x%llx RMP entry is initial shared state, ret: %d assigned: %d\n",
-@@ -2421,10 +2418,12 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	     params.type != KVM_SEV_SNP_PAGE_TYPE_CPUID))
- 		return -EINVAL;
+ 	kvm_tdx->page_add_src = src_page;
+ 	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
+ 	kvm_tdx->page_add_src = NULL;
+@@ -3247,8 +3244,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
+ 	if (copy_from_user(&region, u64_to_user_ptr(cmd->data), sizeof(region)))
+ 		return -EFAULT;
  
--	src = params.type == KVM_SEV_SNP_PAGE_TYPE_ZERO ? NULL : u64_to_user_ptr(params.uaddr);
--
--	if (!PAGE_ALIGNED(src))
-+	if (params.type == KVM_SEV_SNP_PAGE_TYPE_ZERO)
-+		src = NULL;
-+	else if (!params.uaddr || !PAGE_ALIGNED(params.uaddr))
- 		return -EINVAL;
-+	else
-+		src = u64_to_user_ptr(params.uaddr);
- 
- 	npages = params.len / PAGE_SIZE;
- 
+-	if (!PAGE_ALIGNED(region.source_addr) || !PAGE_ALIGNED(region.gpa) ||
+-	    !region.nr_pages ||
++	if (!PAGE_ALIGNED(region.source_addr) || !region.source_addr ||
++	    !PAGE_ALIGNED(region.gpa) || !region.nr_pages ||
+ 	    region.gpa + (region.nr_pages << PAGE_SHIFT) <= region.gpa ||
+ 	    !vt_is_tdx_private_gpa(kvm, region.gpa) ||
+ 	    !vt_is_tdx_private_gpa(kvm, region.gpa + (region.nr_pages << PAGE_SHIFT) - 1))
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
