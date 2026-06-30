@@ -1,221 +1,396 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010034.outbound.protection.outlook.com [52.101.61.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2D23DD537
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 17:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782841340; cv=none; b=kwuQ2LRwiI1iSkOOZESL4ZXchIhc7rREetbNCucPMeIitoUKCcALxxDcVMQljb9gBhF8GzNibZmx0zPrkfgiI+pGvJSaCPWr53DtZykJ4cAacib6uNQw5mAwZsk5BleKLerUNrO+siGoshhvak3BJroQpmXezXj01GCAb/wrVYc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782841340; c=relaxed/simple;
-	bh=40oEbRtFZjh6zocY8nSse6CdFmdhYjJwkaMk4N2oNpw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gLZiSksaVXfYhxjtzlPloEcEzyuKFxhbpolKIH8HW4Z6qaDBW5ENDwx/TUZwMuW5uYJaFo7u6ujS+TjO7zX+Fhz+gSe2mQjiqdmH1h36UffPWumvxypEQNoP96kHelntVXbaF/OQFZV8NLKk7jFK7CbK0WtDlDxbz13K/lKpCwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=naEzMBKM; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8473DEAFB
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 18:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782842954; cv=fail; b=mP8aaBZvZg1AYVuBkR2OgLEKFWAs4dqAuXydQiYCdk6vKh0yRqhUuvt4gm+T2p8kCsvC83jQAQgP9X6Sc0/OaTFvMOnpEP6yRKt+emzvsae95cXjko67zkr982v7bEvi0xN9XPnHDYjVqW+4DYgz/nk9Tbvf2PS1UXoHblJslvA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782842954; c=relaxed/simple;
+	bh=r9LjNMJUU6eeW68Btd99C210GZKHcf0tN2wUhALjGvk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LKBVjRwwVUcoExEEHg9HvcJhigYDNPzpE5LWXRhzPJ0rqAkBXrXpIp6C4u4/5burfii5mNDN2KjYprywdUGuenXj5YNIvUStVeY+uKl5dsO7RD/zs4NloPml++TqzrZHupEEfQRo5dZ/O7HE86tAP6CsS22ocHS8tenxwsHAPeQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=H/UMc+gg; arc=fail smtp.client-ip=52.101.61.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="naEzMBKM"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51c19f91d7dso5352801cf.1
-        for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 10:42:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1782841338; x=1783446138; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zClWOUjkDWFvMHOUBkD6PB+uKy7SGdgOfe7bM5K85sk=;
-        b=naEzMBKM/o3XhzGwYn4QKVmTG/TY8X25tX7ADYf0IJIQW+fmEbQNHvPaoGfjgg8LEj
-         inbxQe4tXC8GG+7w+JPgoXNtiWpw7bLCGLLFoRmFmxnKEu1Cq54GdmVgwxzDKx1xBRGJ
-         yaaBHUxjECEpwmtfNmjzgzVKn/rgCQiSGZHg4FHbIXkAc+VzrmczrzJLN/uhtjNwJY0G
-         SE63E5GMQT9O//4dCPJ2lySLUirM8pZUcmyrOkyQ3BfXJsFhzd4vy4lX3yRbQ6+k8Mf9
-         TtzOsdW47gg8oPdZNV/bXAxNGJR6CIKrQ6aBA979vHpJO3Twl2z1ZF4KMEiru53OisGB
-         IMoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782841338; x=1783446138;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zClWOUjkDWFvMHOUBkD6PB+uKy7SGdgOfe7bM5K85sk=;
-        b=Lwhgy90uKhogxa1lRKBRWWN2Kw7l9ba+GaH6nokOYs0zAaelr1gZhPVYfG+AiUCHWX
-         KV1VCwbMI6+0/5CE2/QFK4Bhf3cGwDpBaTWSg+gU4z1rf7FTlvmOb/EWh6BuyLQPr3p5
-         LnoWOXV4DMhQ7TBvnkMPAGEuC7TMbQhc8Do9UQEgMkQB/qbLe21sWHO2ytXt8HUzuY+i
-         tiAtMCic3Iq5Oj3fSgO/gV+GP+X0NxJVtu8yDRCIbsaj/37D3bqS+feldLyjeyTFURBf
-         b5U58JhQJTIr0WkMPrOA2Owhtxxou0aMpP10HqGgWXLJvPuOH0dv1mOl4tTINZKcTeT8
-         7V5Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/nZw3iRBDf/699HOk16j6YdfhB4Hs/0gJvF0j9n8QUgnnHsbfU/wY635c70m82GTSvC+yO7OzUVvKq@lists.linux.dev
-X-Gm-Message-State: AOJu0YyqmjLA0T9ZQ+G/xOBKnKLek5//sGZ4OxopKupxxki/yS1dSz9C
-	MDjrt9z0QMPOoS+41gs01xXHj8+pwa7IadZO0fcIsZ6WytT1M89A4mmAJUjMQbWXSAc=
-X-Gm-Gg: AfdE7ckMQywMD4sfw1y7M0jONhwHB0O/JVTw7Y2rRadaK0fgfLtheDJ+b4DilUK+IZP
-	80odTHl+nkPSMrpFfaDg58CtKZ6pCDFK9DVD7ZxiJtklpJ5MWcWb9pS1e+nM/Ruy70IoUYc95nM
-	z8mRb5fXfShb8ygindvK5r+nE7YTQgqQYQLQj8owUgMXJUhzGjfyrfRPvuziyEnebApvKvRA07I
-	GBpZl+f1A8zb0UVc+aBxC8lb/wghTY9shZIYiFff7ZYJEtk/rPkHUtIdfKB43Yd3mvQ6SyKwFwC
-	/jrXnUMSFClL310Nh3aa44AornYQ15RX1twCK1bWA6hufNQjZVRRVjZvyCOGQv0rzqYjBv+nibZ
-	/F3BZCWhChjIJ6BhjWcMTQcDCosGWhMXA1qWKYqnZGhkMpEfSlA4Nm5RXOLJQpm3FqO1mWW3zCw
-	RdpYJi/yBtz/GzyAqvztg4ZQkiQro8HtgVSUaggfY1nNQbbo4/tM5IGY74qcFvNwI2hRU=
-X-Received: by 2002:ac8:59d4:0:b0:51a:8c99:1f14 with SMTP id d75a77b69052e-51c108ca48fmr58918701cf.67.1782841337969;
-        Tue, 30 Jun 2026 10:42:17 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c1080d4dcsm22942861cf.5.2026.06.30.10.42.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 10:42:17 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wecTQ-00000002FOX-35V1;
-	Tue, 30 Jun 2026 14:42:16 -0300
-Date: Tue, 30 Jun 2026 14:42:16 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [PATCH v6 00/20] dma-mapping: Use DMA_ATTR_CC_SHARED through
- direct, pool and swiotlb paths
-Message-ID: <20260630174216.GK7525@ziepe.ca>
-References: <aigYbK12D8uKQvJF@arm.com>
- <20260609144746.GL2764304@ziepe.ca>
- <2ecfa1a8-6202-4319-9692-a6ffeb5a3dbf@amd.com>
- <yq5aqzm4dz25.fsf@kernel.org>
- <20260618153705.GH231643@ziepe.ca>
- <yq5ao6h6enhm.fsf@kernel.org>
- <20260619122148.GL231643@ziepe.ca>
- <yq5aldcaejos.fsf@kernel.org>
- <20260619140616.GB1068655@ziepe.ca>
- <yq5ao6gtoncp.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="H/UMc+gg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Nj1QYQenRJey5lGm0bl/Bx21hv1djAY9SScXP5Ig17CEnGz2jF03ThIqVZRebHDjZ/IRowgTiLDyymOMGrPoHiJbca9IqlBOEERRbRy6JlK43dg8mVvsbMX1eHwzNjskx4Nr/pEzHiHpqNr0YlYObDYpVzZOtRBm09dDqlrw/71fF0WvRitGmY4p02oNdpn1o3aIGozORoXk6ydMh9lKySQSeybViqr578c9KHL4F9CpME7vLTPG+5P3A9A0g3/HbRBFr+vIob6SIFK0wnRpIyRDp62NOgK48rh4zIxuIL2ztWcv/MMlJ9GYHgg/BKE0FH7rMY14vjob+Y76la35Tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/O5m2nTqoZBS7wxGTJQBA7iLLeUhTDcS891J9TkEZbA=;
+ b=Fc3BJG9HyxMek7D+61TpqclJrDKWyt89AkN7+I9WN5ul160xpD2Uh/a7b5DLeu9I9jZr6QUZJP1oW1iRAA8KE4PavwSLd1xyQHxZC+7lMD9yqSszuYolIiQ/zV6rBIksk3lnawa3zBWbQdIwrvEjc5yWo/Jhn+3I0tnKiIPZvHRetCbh/NlE5L8Yj2axnmyAS3dfaNjVoOyo61uFcI+cHw3vbhXH+M+SPqZLXo3/lGM1/elb1J406MSwECupax2gRzmtHYlic+tH84FEH/gV8+HUQavUD3xtYeCvHcJEvvCjj/4mg7okEYmyaDs6prRcHWRBqr2LSYb3Cj8IZ9UxsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/O5m2nTqoZBS7wxGTJQBA7iLLeUhTDcS891J9TkEZbA=;
+ b=H/UMc+ggJmlS/d2EQYGYMlLBS+nCK5b3GlIEqYsaYKid0heCCYobM03Ki5eJ/ipoEMpgWh4yDD+VLV5lPzf/Ozf8WxlnV8ir8lUCNBlAjPEYtQYPByLcrVcXcGLwlwaaiK+hFMg0AmlpjqlT36NMC/oBBIBi7EFicQYkN9e2FTY=
+Received: from BN9PR03CA0726.namprd03.prod.outlook.com (2603:10b6:408:110::11)
+ by IA1PR12MB9498.namprd12.prod.outlook.com (2603:10b6:208:594::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Tue, 30 Jun
+ 2026 18:09:00 +0000
+Received: from MN1PEPF0000F0E3.namprd04.prod.outlook.com
+ (2603:10b6:408:110:cafe::8e) by BN9PR03CA0726.outlook.office365.com
+ (2603:10b6:408:110::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.18 via Frontend Transport; Tue,
+ 30 Jun 2026 18:09:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ MN1PEPF0000F0E3.mail.protection.outlook.com (10.167.242.41) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Tue, 30 Jun 2026 18:09:00 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 30 Jun
+ 2026 13:09:00 -0500
+Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 30 Jun
+ 2026 11:08:58 -0700
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+	<seanjc@google.com>, <peterz@infradead.org>, <thomas.lendacky@amd.com>,
+	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
+CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
+	<KPrateek.Nayak@amd.com>, <Tycho.Andersen@amd.com>,
+	<Nathan.Fontenot@amd.com>, <ackerleytng@google.com>, <jackyli@google.com>,
+	<pgonda@google.com>, <rientjes@google.com>, <jacobhxu@google.com>,
+	<xin@zytor.com>, <pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
+	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
+	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>
+Subject: [PATCH v10 0/6] Add RMPOPT support.
+Date: Tue, 30 Jun 2026 18:08:37 +0000
+Message-ID: <cover.1782841284.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5ao6gtoncp.fsf@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb09.amd.com
+ (10.181.42.218)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0E3:EE_|IA1PR12MB9498:EE_
+X-MS-Office365-Filtering-Correlation-Id: a7940975-b691-4e4d-a847-08ded6d2a92b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|36860700016|23010399003|1800799024|82310400026|6133799003|921020|5023799004|56012099006|11063799006|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	XWwvK6v4Dkk4oCTWl8b/UevevRJLFRsJ5Hruaz7Om6ay6aDXpAru3RoSrOdojYJ/46z5SNBrS9ppukKCy4a2bev16vPL7nMSz/8yZRt55xRK0nhiW0NGfjc3Ut2G/mYgQ3P3qXWFXb3DR04AOHz6WdZm6BR3hV56VoQ60uv6YQmCkPyBsliPvlyvliHN8p3j29KuDmm9NNsR1RhCganlF5iY1mEY9m8UKZ4FHITDM5EG8F9Nil+Fgtyp9HjApVE0IFnMku87O4crj6kobVMCxl1dAErq6dkNZbN/Scv+qaOLWxJpFUct3HO8T8dqHKl8DWIcgaZdQJXXT5NzmszgLrTpgGBEjrhAAvSmtlNhA7k3mBav97UEUfJeUUaJ+fld/BfyJsyRr7PjYALaLXFXzyIkOtKAYWAjXuofCbMYUeY5Q8l2ysxQk5WcFCDtntUcG0gxGVKdwUWH147J/vstHnS2yM4k9dgrB3Wna8ZQBYZY2pG82daB0IOEnJN51G2+0wc0Y0OX0P+nUm2sO+E+eRZbb+mfahqRxC7UmUR69T2RIJ0B3mcMusOJOIx25G5AXpQhdF604JHjN0IXH9jo8Qrcabt9hgzWzU2n452meXqMogHopPNv3N50RScUznclPv9+DbGKV+dwpcu6VSxB9oGUvuzAagLqrABxy7e+pxfOTUoWIZeK1A75LUsYqFuAKA+PudK9ZitquLoswT0lxIWagckW9y0u/QMSbdoch0jjjWTIIwDheHvgJ/8soEaL
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700016)(23010399003)(1800799024)(82310400026)(6133799003)(921020)(5023799004)(56012099006)(11063799006)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	k0ZsFdUft6sw5LJKxzppA3MwHS9YcQEOB1sFRA2jMnx8dPWHlutcae6vBv1Nt7MzvWhxYDBL0rQZhbQr+YXzvgaEIx4+qtZ1mwwQlHjyjmhrFaAhs0NA/pElxmgKLzf846nTDEXXN3yZFHWnxzYZfflAbOjW2czpw5/ia1Shq9TqBIL7N4goSm7R4GkRj3DlEuJ/smNFlEsecFZZ8qGJnPs61aMprllmjVVZ+wH0HFn2B0uPqFMYmrq/CkEbM5xelqDAKogKckiAZ6LiBgNeevMDRJE9Pit6sn9kzg4jnpiV2Uqc769AUHV3NvO6uOVMVPG0lVITHZUIWhQhM4RtDiUSXJYfqR78BnlZVBeompHNMbL2jWDdS//72m67d9DRF060el2SpXYDLkptkRb+h3yBcq4gOT5PXXbRG7CceR7mraE38w4QW7gsVTjJ59Fw
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 18:09:00.2594
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7940975-b691-4e4d-a847-08ded6d2a92b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN1PEPF0000F0E3.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9498
 
-On Mon, Jun 29, 2026 at 12:16:30PM +0530, Aneesh Kumar K.V wrote:
-> >> Thinking about this more, I guess we should mark the swiotlb as
-> >> cc_shared only with  CC_ATTR_GUEST_MEM_ENCRYPT instead of
-> >> CC_ATTR_MEM_ENCRYPT as we have below.
-> >
-> > The name cc_shared should be used for GUEST scenarios only.
-> >
-> > I guess there is some merit in keeping swiotlb using "decrypted" to
-> > mean it usinig pgprot_decrypted and set_memory_decyped() which AMD
-> > gives meaning to on both host and guest.
-> 
-> Are you suggesting to change the struct io_tlb_mem::cc_shared back to
-> struct io_tlb_mem::unencrypted?. 
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-Yes
+In the SEV-SNP architecture, hypervisor and non-SNP guests are subject
+to RMP checks on writes to provide integrity of SEV-SNP guest memory.
 
-> > IDK what AMD should do on the host by default. I guess it should setup
-> > a swiotlb pool of low dma addrs "unencrypted", but not "cc_shared"?
-> >
-> 
-> If by low DMA address you mean using an address with the C-bit
-> cleared. 
+The RMPOPT architecture enables optimizations whereby the RMP checks
+can be skipped if 1GB regions of memory are known to not contain any
+SNP guest memory.
 
-Yes
+RMPOPT is a new instruction designed to minimize the performance
+overhead of RMP checks for the hypervisor and non-SNP guests.
 
-> The current code already does this and uses the swiotlb pool correctly
-> on SME.
+RMPOPT instruction currently supports two functions. In case of the
+verify and report status function the CPU will read the RMP contents,
+verify the entire 1GB region starting at the provided SPA is HV-owned.
+For the entire 1GB region it checks that all RMP entries in this region
+are HV-owned (i.e, not in assigned state) and then accordingly updates
+the RMPOPT table to indicate if optimization has been enabled and
+provide indication to software if the optimization was successful.
 
-Well, through the force_dma_unencrypted() hack...
+In case of report status function, the CPU returns the optimization
+status for the 1GB region.
 
-> The challenge arises when we want to force SWIOTLB
-> bouncing even for devices that can handle encrypted DMA addresses (more
-> on that below). For such a config force_dma_uencrypted(dev) will return
-> false and swiotlb will be marked cc_shared/decrypted = true; This trip
-> the new check we added.
+The RMPOPT table is managed by a combination of software and hardware.
+Software uses the RMPOPT instruction to set bits in the table,
+indicating that regions of memory are entirely HV-owned.  Hardware
+automatically clears bits in the RMPOPT table when RMP contents are
+changed during RMPUPDATE instruction.
 
-Yes, because cc_shared (guest) and unencrypted (host) are very
-different things and we've mixed them:
+For more information on the RMPOPT instruction, see the AMD64 RMPOPT
+technical documentation.
 
-> 	if (unlikely(mem->cc_shared != force_dma_unencrypted(dev)))
+As SNP is enabled by default the hypervisor and non-SNP guests are
+subject to RMP write checks to provide integrity of SNP guest memory.
 
-I'm aruging force_dma_unencrypted should mean cc_shared and be
-guest_only, but the SME hack breaks this.
+This patch-series adds support to enable RMP optimizations for up to
+2TB of system RAM across the system and allow RMPUPDATE to disable
+those optimizations as SNP guests are launched.
 
-> We can also do
-> 
-> 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
-> 		/* swiotlb pool is incorrect for this device */
-> 		if (unlikely(mem->cc_shared != force_dma_unencrypted(dev)))
-> 			return (phys_addr_t)DMA_MAPPING_ERROR;
-> 
-> 		/* Force attrs to match the kind of memory in the pool */
-> 		if (mem->cc_shared)
-> 			*attrs |= DMA_ATTR_CC_SHARED;
-> 		else
-> 			*attrs &= ~DMA_ATTR_CC_SHARED;
-> 	} else {
-> 		/*
-> 		 * Host memory encryption where device requires an
-> 		 * unencrypted dma_addr_t due to dma mask limit
->     		 */
-> 		if (force_dma_unencrypted(dev))
-> 			*attrs |= DMA_ATTR_CC_SHARED;
-> 		else
-> 			*attrs &= ~DMA_ATTR_CC_SHARED;
-> 	}
+Support for RAM larger than 2 TB will be added in follow-on series.
 
-If we do this I would like to split the force_dma_.. functions into
-guest and host, ie force_dma_cc_shared() and force_host_decrypted()
+This series also adds support to disable CPU hotplug while SNP is
+active, as the SEV firmware enumerates CPUs at SNP initialization and is
+not aware of the OS bringing CPUs online or offline afterwards.  This
+also keeps the set of CPUs stable for the asynchronous RMPOPT scan, so
+the per-core RMPOPT_BASE MSRs programmed during setup remain valid.
 
-To make it clear there are two very different things here.
+This series also introduces support to re-enable RMP optimizations
+during SNP guest termination, after guest pages have been converted
+back to shared.
 
-> Here I see value in having DMA_ATTR_UNENCRYPTED. The question is do we
-> need to split this into two flags and introduce the resulting code
-> duplication.
+RMP optimizations are performed asynchronously by queuing work on a
+dedicated workqueue after a 10 second delay.
 
-The external flag name should be DMA_ATTR_CC_SHARED and only used on
-CC guest. Internally that turns into using set_memory_decrypted()
-which works on guest and host for AMD. I don't know how to make the
-host only case clearer and still keep the code efficient..
+Delaying work allows batching of multiple SNP guest terminations.
 
-> > The dma api has to detect, after the driver sets the dma limit, that
-> > none of system memory is usable when:
-> >  - The direct path is being used
-> >  - phys to dma for 0 is outside the dma limit
-> >
-> > Then it should assume the arch has setup a swiotlb pool for it to use
-> > to fix the high memory problem.
-> >
-> > Similar hackery would be needed in the dma alloc path to know that
-> > decrypted can be used to fix the high memory problem like for GUEST.
-> >
-> > I guess some 'dev_cannot_reach_memory(dev)' sort of test in a
-> > few key places? Setup with a static branch to be a nop on everything
-> > but AMD, compiled out on every other arch.
-> >
-> 
-> If we are not able to reach the memory because of the memory encryption
-> bit, then isn't dev_cannot_reach_memory(dev) the same as
-> force_dma_unencrypted(dev)? If so, that is how it is already done.
+Once 1GB hugetlb guest_memfd support is merged, support for
+re-enabling RMPOPT optimizations during 1GB page cleanup will be added
+in follow-on series.
 
-Sort of yes, but it is properly named to its purpose and not confused
-with what should be a guest-only function.
+v10:
+- Rework the CPU-hotplug patch (3/6): disable CPU hotplug in
+  snp_prepare(), before SnpEn is set, instead of late in
+  __sev_snp_init_locked(), so no CPU can come online without SnpEn during
+  SNP initialization (per upstream review).  Tie hotplug to SnpEn: it
+  stays disabled while SnpEn is set -- including across a failed SNP_INIT
+  and across the legacy SNP_SHUTDOWN_EX path -- and is re-enabled only
+  once the firmware clears SnpEn on the x86_snp_shutdown path.  Drop the
+  separate idempotent flag: snp_prepare() re-enables hotplug on its own
+  early failure, and a kexec target that boots with SnpEn already set
+  disables hotplug once in snp_rmptable_init().  Reword the commit log and
+  comments accordingly.
+- Emit a pr_warn() in rmpopt_work_handler() (4/6) when the follower
+  cpumask allocation fails, instead of silently skipping the optimization
+  pass.
 
-> x86/dma: Disable forced SWIOTLB bouncing for SME IOMMU passthrough
+  Sashiko AI upstream review identified several of the above issues.
 
-Maybe as a crutch to get this series merged..
+v9:
+- Rename rmpopt_configured to rmpopt_capable.
+- Make rmpopt_cpumask a cpumask_var_t (allocated/freed at setup/cleanup)
+  instead of a static cpumask_t.
+- Drop the v8 WARN_ON_ONCE() on the RMPOPT_BASE writes; use a plain
+  wrmsrq_on_cpu(), matching the SNP MSR-write convention in this file.
+- Disable CPU hotplug with cpu_hotplug_disable()/cpu_hotplug_enable()
+  (per tglx); re-enable only on the full x86_snp_shutdown path.
+- Simplify rmpopt_work_handler() to a single leader-then-followers path:
+  with CPU hotplug disabled while SNP is active and snp_prepare()
+  requiring all CPUs online when RMPOPT_BASE is programmed, every core is
+  always programmed, so the explicit-leader fallback is now unreachable.
+  Drop it along with the v8 work_on_cpu()/rmpopt_leader_fn() helper.
+- Drop the debugfs interface (was patch 7/7) and its report-only
+  plumbing; observability will be revisited after this series is merged.
+- Restrict snp_rmpopt_all_physmem()'s export to the kvm-amd module.
+- Use scoped_guard(cpus_read_lock) for the per-CPU MSR and follower
+  loops.
 
-Jason
+  Sashiko AI upstream review identified several of the above issues.
+
+v8:
+- Add a new patch to disable CPU hotplug while SNP is active, keeping
+  the CPU set stable for the RMPOPT work handler.
+- Drop the setup_clear_cpu_cap(X86_FEATURE_RMPOPT) calls; the
+  rmpopt_configured bool is the runtime guard.
+- WARN_ON_ONCE() on the RMPOPT_BASE MSR writes that previously ignored
+  their return value.
+- Simplify rmpopt_work_handler() by removing the explicit-leader
+  fallback: with CPU hotplug disabled while SNP is active and
+  snp_prepare() requiring all CPUs online when RMPOPT_BASE is programmed,
+  every core is always programmed, so the running CPU can always be the
+  leader.  This drops the smp_call_function_single() fallback (and with
+  it the AB-BA deadlock and IRQ-latency concerns) and collapses the
+  leader selection into a single leader-then-followers path.
+- Use mod_delayed_work() in snp_rmpopt_all_physmem() so the batching
+  delay tracks the last SNP guest termination.
+
+  Sashiko AI code review identified several of the above issues.
+
+v7:
+- Sync tools/arch/x86/include/asm/cpufeatures.h to mirror the kernel
+  header for X86_FEATURE_RMPOPT.
+- Fix commit title to use X86_FEATURE_RMPOPT to match the code
+  (was X86_FEATURE_AMD_RMPOPT).
+- Add static bool rmpopt_configured, set only when segmented RMP setup
+  succeeds in setup_rmptable().  Check rmpopt_configured alongside
+  cpu_feature_enabled(X86_FEATURE_RMPOPT) in snp_setup_rmpopt() and
+  snp_rmpopt_all_physmem(), because setup_clear_cpu_cap() is unreliable
+  after alternatives are patched.  Add snp_clear_rmpopt_configured()
+  called from amd_cc_platform_clear() when CC_ATTR_HOST_SEV_SNP is
+  cleared.  Do not use __ro_after_init on rmpopt_configured since the
+  writer snp_clear_rmpopt_configured() is not __init.
+- Add cond_resched() to all three leader loops in rmpopt_work_handler()
+  to prevent soft lockups on systems with up to 2TB of RAM.
+- Add comment above __rmpopt() documenting the RMPOPT instruction
+  encoding (F2 0F 01 FC) and register interface (RAX = system physical
+  address input, RCX = operation type input, RFLAGS.CF = output).
+  Note: RMPOPT does not modify RAX unlike PVALIDATE/RMPUPDATE, so
+  the existing "a" (input-only) constraint is correct.
+
+  Sashiko AI code review identified several of the above issues.
+
+v6:
+- Drop wrmsrq_on_cpus() helper; use for_each_cpu() with wrmsrq_on_cpu()
+  instead, as RMPOPT_BASE MSR programming is not performance-critical.
+- Rewrite rmpopt_work_handler() leader selection to use a local
+  follower_mask copy instead of modifying the global rmpopt_cpumask.
+  This eliminates the current_cpu_cleared tracking and the restore at
+  the end, and removes the need for synchronization comments about
+  transient cpumask inconsistency.
+- Add three-way leader selection in rmpopt_work_handler():
+  1. Current CPU is a primary thread in cpumask: run leader locally.
+  2. Current CPU is a sibling thread whose primary is in cpumask:
+     run leader locally (RMPOPT_BASE MSR is per-core), remove the
+     primary from followers via cpumask_andnot(topology_sibling_cpumask).
+  3. Current CPU's core has no RMPOPT_BASE MSR programmed: pick an
+     explicit leader via cpumask_first() + smp_call_function_single()
+     to avoid #UD, with cpus_read_lock() around the IPI loop.
+- Add WARN_ON_ONCE guard for empty cpumask in the explicit leader
+  fallback path, with migrate_enable() before goto out.
+- Add .llseek = seq_lseek to rmpopt_table_fops for consistency with
+  other seq_file-based debugfs files and to support tools like "less".
+- Change debugfs file permissions from 0444 to 0400 to restrict access
+  to root only.
+- Add comment in rmpopt_table_seq_show() explaining why cpu_online_mask
+  is safe: RMPOPT_BASE MSR is per-core and snp_prepare() ensures all
+  CPUs are online when the MSR is programmed.
+
+  Sashiko AI code review identified several of the above issues.
+
+v5:
+- Introduce rmpopt_cleanup() to tear down workqueue, debugfs, cpumask,
+  and MSR state, called from snp_shutdown().
+- Introduce rmpopt_wq_mutex to serialize snp_setup_rmpopt(),
+  snp_rmpopt_all_physmem(), and rmpopt_cleanup().
+- Introduce rmpopt_show_mutex to serialize debugfs reporting of
+  rmpopt_report_cpumask.
+- Move snp_rmpopt_all_physmem() call after SNP DECOMMISSION during
+  guest shutdown.
+- Use migrate_disable()/migrate_enable() for CPU pinning in the
+  rmpopt_work_handler() leader loop to maintain CPU affinity without
+  disabling preemption for the entire RMPOPT scan.
+- Add cpus_read_lock()/cpus_read_unlock() around the follower
+  on_each_cpu_mask() loop in rmpopt_work_handler().
+- Guard snp_setup_rmpopt() against re-initialization when
+  SNP_SHUTDOWN_EX with x86_snp_shutdown=0 skips rmpopt_cleanup()
+  but clears snp_initialized, preventing workqueue and resource
+  leaks on repeated init/shutdown cycles.
+- Replace setup_clear_cpu_cap() with pr_err() on alloc_workqueue()
+  failure in snp_setup_rmpopt(), as setup_clear_cpu_cap() cannot be
+  used after alternatives are patched; callers check rmpopt_wq != NULL
+  as the runtime guard instead.
+- Add pr_info() when RMPOPT coverage is capped at 2TB.
+- Add comments noting CPU hotplug is not supported with SNP enabled
+  and only online primary threads are covered by rmpopt_cpumask.
+- Add comment in setup_rmptable() noting Segmented RMP must be
+  enabled to enable RMPOPT.
+- Simplify cpumask setup loop to set if primary thread rather than
+  skip if not primary.
+- Improve grammar and clarity in snp_setup_rmpopt() comments.
+- Added Reviewed-by's.
+
+  Sashiko AI code review identified several of the above issues.
+
+v4:
+- Add new wrmsrq_on_cpus() helper to write same u64 value to a
+  per-CPU MSR across a cpumask without per-cpu struct allocation
+  overhead.
+- Rename configure_and_enable_rmpopt() to snp_setup_rmpopt().
+- Use wrmsrq_on_cpus() instead of wrmsrq_on_cpu() loop for
+  programming RMPOPT_BASE MSRs.
+- Add setup_clear_cpu_cap(X86_FEATURE_RMPOPT) if segmented RMP
+  setup fails or workqueue allocation fails.
+- Add X86_FEATURE_RMPOPT feature clear logic in amd_cc_platform_clear()
+  for CC_ATTR_HOST_SEV_SNP.
+- All of the above allow checking for only X86_FEATURE_RMPOPT for both
+  RMPOPT setup/enable and RMP re-optimizations.
+- Rename snp_perform_rmp_optimization() to snp_rmpopt_all_physmem().
+- Split rmpopt() into rmpopt() and rmpopt_smp() for SMP callback use.
+- Introduce separate rmpopt_report_cpumask for debugfs reporting,
+  distinct from rmpopt_cpumask used for primary thread tracking.
+- Remove snp_perform_rmp_optimization() call from __sev_snp_init_locked()
+  and instead setup and enable RMPOPT after SNP is enabled and
+  initialized.
+
+v3:
+- Drop all RMPOPT kthread support and introduce adding custom and
+  dedicated workqueue to schedule delayed and asynchronous RMPOPT work.
+- Drop the guest_memfd inode cleanup interface and add support to
+  re-enable RMP optimizations during guest shutdown using the
+  asynchronous and delayed workqueue interface.
+- Introduce new __rmpopt() helper and rmpopt() and
+  rmpopt_report_status() wrappers on top which use rax and rcx
+  parameters to closely match RMPOPT specs.
+- Use new optimized RMPOPT loop to issue RMPOPT instructions on all
+  system RAM upto 2TB and all CPUs, by optimizing each range on one CPU
+  first, then let other CPUs execute RMPOPT in parallel so they can skip
+  most work as the range has already been optimized.
+- Also add support for running the optimized RMPOPT loop only on
+  one thread per core.
+- Replace all PUD_SIZE references with SZ_1G to conform to 1GB regions
+  as specified by RMPOPT specifications and not be dependent on PUD_SIZE
+  which makes the RMPOPT patch-set independent of x86 page table sizes.
+- Use wrmsrq_on_cpu() to program the RMPOPT_BASE MSR registers on
+  all CPUs that removes all ugly casting to use on_each_cpu_mask().
+- Fix inline commits and patch commit messages
+
+
+v2:
+- Drop all NUMA and Socket configuration and enablement support and
+  enable RMPOPT support for up to 2TB of system RAM.
+- Drop get_cpumask_of_primary_threads() and enable per-core RMPOPT
+  base MSRs and issue RMPOPT instruction on all CPUs.
+- Drop the configfs interface to manually re-enable RMP optimizations.
+- Add new guest_memfd cleanup interface to automatically re-enable
+  RMP optimizations during guest shutdown.
+- Include references to the public RMPOPT documentation.
+- Move debugfs directory for RMPOPT under architecuture specific
+  parent directory.
+
+Ashish Kalra (6):
+  x86/cpufeatures: Add X86_FEATURE_RMPOPT feature flag
+  x86/sev: Initialize RMPOPT configuration MSRs
+  x86/sev: Disable CPU hotplug while SNP is active
+  x86/sev: Add support to perform RMP optimizations asynchronously
+  x86/sev: Add interface to re-enable RMP optimizations.
+  KVM: SEV: Perform RMP optimizations on SNP guest shutdown
+
+ arch/x86/coco/core.c                     |   2 +
+ arch/x86/include/asm/cpufeatures.h       |   2 +-
+ arch/x86/include/asm/msr-index.h         |   3 +
+ arch/x86/include/asm/sev.h               |   6 +
+ arch/x86/kernel/cpu/scattered.c          |   1 +
+ arch/x86/kvm/svm/sev.c                   |  10 +
+ arch/x86/virt/svm/sev.c                  | 277 +++++++++++++++++++++++
+ drivers/crypto/ccp/sev-dev.c             |   3 +
+ tools/arch/x86/include/asm/cpufeatures.h |   2 +-
+ 9 files changed, 304 insertions(+), 2 deletions(-)
+
+-- 
+2.43.0
+
