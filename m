@@ -1,115 +1,164 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5335236A379
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 15:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25FE46AF06
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 16:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782832989; cv=none; b=vAmB9frnSmofYBaOQPLz2q5SCUU8AfnfmeoN6eaOhjM635aFYENG5wjRyPVO/vchbpxF2ONngRr8/PJIuHB7qBN/0zgZWgl4M4nMyjz6KU2z9hJkQe25Av1+I1CWm3Z18z44IrulrC7hqZDZ4Thjgn0pf1jpIu4rYBbXVrVX99U=
+	t=1782835371; cv=none; b=BBBZqZSLY9ONC8HpVMI1xFFHhvDC1DrXJho54ITfrnqTPWYbffGq91KLgPxoUiRAJf+ZD6Y8CzELxeACfVP+0Q04SoQtZtq+UsOIJXexglVT0KI8qPlkHX9sQdq4din0yBy2bKffkJxiHYlPVlbHPjwECTsqsNWyx08bxYINg5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782832989; c=relaxed/simple;
-	bh=mnhOZlEbmNxq5YsCTla36EPa18OakR+bG+jTvbDU7EM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QEpVwiMe/qfO62U9HvuEZ+3Lv4pLd3W+kx0RwPfT/WFqpZGtQi2ldL4QPilbSq624sjN0RknBbvRdhF8vDqD39lUYI0NdtNOBN7sq9unn1g2LIaJJunpv32NWQHy2gFVeGcwCUzCC7FWotu5SXfkVybeCmALy3HZ4AJq2si50Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MHc1saCt; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1782835371; c=relaxed/simple;
+	bh=kHw7DLrL4QjCK55x79lTHIkq15rpEE6+NeVSt2Lz+08=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WKa0AXa08AKXvlKmzgX4KprPJ7jrY8uDkvirnx2FAv4/tQHF0D+f5Od5U2bFRY6abqb20ld311Z7IxygtCKKBKFyodKgClfleJfuoOErDDE3miq1CswoPYwYrrmYHQroY02U/oZWtJKgAD7+Ga0a6riA5vEK5rD1spBjdqIueSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=dYdw35nh; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MHc1saCt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782832988; x=1814368988;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=mnhOZlEbmNxq5YsCTla36EPa18OakR+bG+jTvbDU7EM=;
-  b=MHc1saCtMsiBF66Fg81f6NeGqR5kPocL6EBqbk7JMtVxhyzCaGzaiCNu
-   K4hToOvkqG1nldxuyvxUADU7bLXxDVd+FncWUlt5vhbsWSOTCiYRydoHm
-   nI+AtOsvVnIgZbRD78HBZzjD29t6SjSe6tMM7xZu3y7Y+utUbNDVt2tWZ
-   V86GnJYPKH3CXFTpjG/Sm3iRjK4QeFvxJdx3Uhyxkm5u5kzV5pPjmsbAH
-   GHHFnR79hhXJg5E4Nfu0M5kPqe1hUaZ12pu/RxD0AGPRmVuRMltAnAXrS
-   IyhtMB4/xZpr0s16OqK4Yibs3k8/IJNHirUySwroFslhzlPF02Gn3sTyb
-   A==;
-X-CSE-ConnectionGUID: 7e6xowZwRoyDZxhiEnTw2Q==
-X-CSE-MsgGUID: zrtH2yZMSACJLFtbQGc20w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="94933090"
-X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
-   d="scan'208";a="94933090"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 08:23:07 -0700
-X-CSE-ConnectionGUID: koRW/7MOQAWk92/0rXPmZQ==
-X-CSE-MsgGUID: uXiMTSzqQL6ITT9qU5pf5g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
-   d="scan'208";a="254200312"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.232.239]) ([10.124.232.239])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 08:22:54 -0700
-Message-ID: <a1b06afb-af6e-4666-8c7d-990e7fa150fa@intel.com>
-Date: Tue, 30 Jun 2026 23:22:51 +0800
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="dYdw35nh"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-92e50c5d14cso153613685a.2
+        for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 09:02:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1782835367; x=1783440167; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GI+sDv/bw0RypxsaDxkfRwNjpEKuAX+hIc2iRD1v3+Q=;
+        b=dYdw35nhcym0hOws2kRXnqOlgUNWUJgStsZcX0Z/sHJVjgAmcZfF4GSrQCrM6CXnFv
+         66GKoJoj1bBxzKKm/M+qOv2C2lNLgBn1D8KMEKTI5BmUzF07khxTMHbhfeh/L56BAAg1
+         W0PUDq+g4MS0vAMeKFSONYz1dTCKxU+vtTe+Ad1G3j/O+02gMH9aJn7NUorpH9mCxzsH
+         ts7zeVvCf6Ido8QFjMAvM2o17xkRMnuBiH5nV67CFOHaTw/WsrmT1uwrr3a/wx2TJMIG
+         ddeQUPfuLddwm0GpA2cu6jMRIbTweBxQjD6bN/Kpe5JQj3hXo3SYkSjdEaBpzhwwLAhZ
+         eDLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782835367; x=1783440167;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GI+sDv/bw0RypxsaDxkfRwNjpEKuAX+hIc2iRD1v3+Q=;
+        b=AKxjRwQFXk7xlygpnVQXbndN+9HD8jpxBdbmBm7P+cePRn23NXNN0iQm0TN4vTbhn2
+         4vo6/U5CCmWfKxlktjpwJY5Qg+FG5QsnRZ3JcRe32gWQKQM3gooI78yKANKY0jRA021V
+         KFRJpZU8VMV/QoL5ZKUOveX3yyKajqC12cgeO2dMol9nZxn2VSXomAIj6vmLBKCMV+7U
+         3jJT1eL8whuWy3jwWryiV4JUq97Xj0DyUpAAaokbn2hOAAEZYaI+R5VA4lO6stZkWusQ
+         WxHuD/iNao3mj/cDYdVfJzP+GIpI6zpOMWRqBzgeAD1gZewAK8j86A4hhaWP0OdKgoIz
+         pD/Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+bcZXh5Acz0QftOU6Lb9DT2KNRRx0HjC0AwljJrI4exQl/ioZa/089yl9/fllnZUvww72LBr2R5cJ1@lists.linux.dev
+X-Gm-Message-State: AOJu0YzVGYiXX4I3Zr+2zlbdOuOr8o1XL5JslN5sv0nmieiM17vM1sZB
+	n+0Bj+HgoHfv8W6GlBZMof2vF1Qzz+t5ineAIT5nQQx75Kxx4Ux70kyxRb5o7J1pUCU=
+X-Gm-Gg: AfdE7cnfPnRKttzKvlRyuifHRwmpXKFk87KX15UGlqK7x+IURjPGYGxcf++fbtbFbpo
+	rZs9jIyapv0/Ne5UiDOTaQGDIo90F5Q37VV46enw9RPVZvUZpNrwfPmbVJzjSocI78Rq9MiI3/E
+	4eahEceFAN9U3P/5aoqrV9xDo0Gmx6G3FQWEE6OopiPLBPkU25HdVpU26VtNgTuC3VnbpaV1u08
+	n08VaBfTge45L2zRE1sGLwFvPk0p0SFv+qvNyuw/BFait1XF17ltRdY5dlm/3uxK7Vj6cC+6q3P
+	I1y2mLSXI935U/iCFSfRdayLjdeA01bc7UCUGC1mWZunuVYkLEK1jX34Td5dNBxO0VdSYrE7Irk
+	K4hnWP0TT3PxVHhAocy7SkZgMVpsz4h6FaeA8ugvSdfEuNBAipciarpNBLIrkCUEpvlatfQ7Ois
+	ysnSgUIJtU6J2mBWoMWr4FG0CqgsS3GMISJl7hkxbQ+qIDSNrBOdDOUG7jhXkZuKFRryc=
+X-Received: by 2002:a05:620a:839b:b0:915:c4de:7ac0 with SMTP id af79cd13be357-92e6278d80fmr646181785a.31.1782835365891;
+        Tue, 30 Jun 2026 09:02:45 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e6236b9fcsm262102385a.41.2026.06.30.09.02.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 09:02:44 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1weav4-000000027Ay-3dT0;
+	Tue, 30 Jun 2026 13:02:42 -0300
+Date: Tue, 30 Jun 2026 13:02:42 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
+	Jiri Pirko <jiri@nvidia.com>, Michael Kelley <mhklinux@outlook.com>,
+	"Cheloha, Scott" <Scott.Cheloha@amd.com>
+Subject: Re: [PATCH v6 03/20] dma-direct: use DMA_ATTR_CC_SHARED in
+ alloc/free paths
+Message-ID: <20260630160242.GI7525@ziepe.ca>
+References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
+ <20260604083959.1265923-4-aneesh.kumar@kernel.org>
+ <845d0c8a-6d51-47aa-8e0b-8381e733444a@amd.com>
+ <20260617154101.GE3577091@ziepe.ca>
+ <25155bd6-4348-4aa8-ba70-0a882fc84db9@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 07/46] KVM: Rename memory attribute APIs to prepare for
- in-place gmem conversion
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-7-9d2959357853@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-7-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <25155bd6-4348-4aa8-ba70-0a882fc84db9@amd.com>
 
-On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> -bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
-> -				     unsigned long mask, unsigned long attrs);
-> +bool kvm_range_has_vm_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
-> +					unsigned long mask, unsigned long attrs);
->   bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
->   					struct kvm_gfn_range *range);
->   bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
+On Thu, Jun 18, 2026 at 12:39:21PM +1000, Alexey Kardashevskiy wrote:
+> 
+> 
+> On 18/6/26 01:41, Jason Gunthorpe wrote:
+> > On Wed, Jun 17, 2026 at 10:50:39AM +1000, Alexey Kardashevskiy wrote:
+> > > > @@ -193,16 +193,31 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+> > > >    		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
+> > > >    {
+> > > >    	bool remap = false, set_uncached = false;
+> > > > -	bool mark_mem_decrypt = true;
+> > > > +	bool mark_mem_decrypt = false;
+> > > >    	struct page *page;
+> > > >    	void *ret;
+> > > > +	/*
+> > > > +	 * DMA_ATTR_CC_SHARED is not a caller-visible dma_alloc_*()
+> > > > +	 * attribute. The direct allocator uses it internally after it has
+> > > > +	 * decided that the backing pages must be shared/decrypted, so the
+> > > > +	 * rest of the allocation path can consistently select DMA addresses,
+> > > > +	 * choose compatible pools and restore encryption on free.
+> > > 
+> > > Why this limit?
+> > > 
+> > > Context: I am looking for a memory pool for a few shared pages (to
+> > > do some guest<->host communication), SWIOTLB seems like the right
+> > > fit but swiotlb_alloc() is not exported and
+> > > dma_direct_alloc(DMA_ATTR_CC_SHARED) is not allowed.  Thanks,
+> > 
+> > Then setup your struct device so that the DMA API knows the
+> > guest<->host channel requires unecrypted and it will work correctly.
+> > 
+> > I think this is a reasonable API to use for that, and I was just
+> > advocating that hyperv should be using it too.
+> > 
+> > But it all relies on a properly setup struct device.
+> 
+> Sounds good but how do I do that in practice? 
 
-We have
+I think we haven't got there yet, I understood Dan's plan was to add a
+bit in the struct device that signals if the device must be
+unencrypted or can support all memory.
 
-  - kvm_pre_set_memory_attributes()
-  - kvm_arch_pre_set_memory_attributes()
-  - kvm_arch_post_set_memory_attributes()
+Currently the dma api assumes all devices must have unencrypted by
+default so it should be fine already, shouldn't it?
 
-left, do they need to be renamed as well?
+> not externally available so I'll have to trick the DMA layer into
+> using SWIOTLB (which is still all shared, right?) as I specifically
+> want to skip page conversions. Setting low DMA mask won't guarantee
+> that the DMA layer won't allocate a page outside of SWIOTLB and
+> convert it. Manually do
 
-then the interesting one is kvm_vm_set_mem_attributes(), which contains 
-"vm" already while it means "vm ioctl". Do we need to rename it to
-kvm_vm_set_vm_mem_attributes()?
+Why so particular? Any address that satisifies the constraints should
+be good enough?
 
+Jason
