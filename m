@@ -1,109 +1,109 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985EC342CB2
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 10:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FCE3F6C5E
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 10:45:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782815260; cv=none; b=Mvt+uJmFP3Yl0342jPg6TEtPSNBMseSK8QayIutOYn/nIbndlFAJQTMPSMuGRtTlTqP9wyOANu18ILR/2ToD78QmCTvesRzZhSijJh/HaeRgV4sUO1YSPPSOLXIfU0/Sw+5a4dLQ1ux+i7DzAdeN/am8S3YnUdmG/Y7/mTNmKzQ=
+	t=1782816337; cv=none; b=ErrD04Qil6GSSpKN1JfZpLGqYBid1AJsQBngne2hrOjWO5qGdnR2WFvCPx5VzmIO2bXeIe7tuLY9KJvrEyeuOKw56Hl7rBevKSyZMBdB4v1MGxKLwXWZZvsAwHmyqCT/fBiiGGUktH+ejB+TMx/sUSkKxABx0HNZZnpXDWQ8AKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782815260; c=relaxed/simple;
-	bh=QDDSYdMdGP2ovms0lOZuTN+BTzI0+lAeZzZ2Fc3jSCk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TIM2Yws1OepPlK7cTlYl926v/hCj8qPY/3Vzoq5LXD9EC+vd1El3sw9icmU7i2tKFPnl57tMul2jkBQHVXwHeTGUEqU67jajGj+Fyg2gbzGB+b50l8y7m7lA1PUd7wa1UfFWweWF14cncMKZP7MQvIDsA147LEnLwVaSqBGCfsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VYd0OM4D; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1782816337; c=relaxed/simple;
+	bh=p7ttWHTIJD2B+YvyB5/VMyFJN3tiZnBMZB/A/uANGBQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iNXO8biAfSrJZy12GSGqciPF7Zo5s5xBnx1fU5sUhqNc85McTnri9/aKoOgW+lfi83J+/haFS8Rk4XNRsEUJKz75WKXCwhFrgvAB8txaAIP0Gb4w7W5Xg6T/zXn3C6kTdK5MqdjV45snj5+5cpoPIUzMTMPmNJ5+A5niH6Y6Ic8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a0PS2a2L; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VYd0OM4D"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a0PS2a2L"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782815259; x=1814351259;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QDDSYdMdGP2ovms0lOZuTN+BTzI0+lAeZzZ2Fc3jSCk=;
-  b=VYd0OM4DlnEgnlOp+EAxupyP+0KdVMj8cj3TszJT8nDvYxsZ/4TZm94Y
-   3hVaoqGBaKajI+/Nzax6pE9XqlsgRSGM0J7kECYO2IMyza3WWePfkMMJw
-   0p0YZGqYHK/TS9Juv5B37ZPutups23ipofwEWq9Tz/pKBBuqdpmM1CBEY
-   V86B9gPIa9HxsvZB0FSVaaTMWkvJEjNG0oUdRFFMJI7NuePVkp19lDMsR
-   +4R8RNBN64Igdi6SF7D5pz2Aoe9b7k0VqfMIsbV7sRohEJlG0IuVixAqb
-   wNcG2liLBMnvzwtmvY+rdfW1oi+PN1crhiSEGwZqHqyJhY069Q/okkks/
-   g==;
-X-CSE-ConnectionGUID: 6xwyc38pQmKWd0OkQ98CyA==
-X-CSE-MsgGUID: SPewqbSBQrGh/Tc9FxeyzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="82637715"
+  t=1782816334; x=1814352334;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=p7ttWHTIJD2B+YvyB5/VMyFJN3tiZnBMZB/A/uANGBQ=;
+  b=a0PS2a2L6VfcUwwdzTGSXQmdRp4zinWZuyrRBQu+N/wR1LrXFxoXe704
+   L8J0URditpT1g7DoW9gTfrUZwyhH/GjSmjjoZ8RJtSowhfHGE/qNAiyQG
+   IS1hAPOVLdpUX+1uqx/OcJjOWAZDh9IjtzAnWb5sm2gWyEAYqStUIyYXv
+   hddKlcJ5D5XUX2VxqpjvMYFR4jNf1wQHfVzUhWzRDsuJh0LXJo77txYk8
+   6P9xdh8FO80uITITD3YSjrEYT08QDSV08QF4wk/1t5vhyiC2uVD1cVtvC
+   Yyb0TedtEw0rv0SP3ChwFDO/CxLo2wfYGDVAv+eaJLWF3u/1UpS3DNoGK
+   w==;
+X-CSE-ConnectionGUID: FVSBy7ReTO+GNq7zTfh36g==
+X-CSE-MsgGUID: fuFiuqUsTX+NT3M08HADZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="94676762"
 X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
-   d="scan'208";a="82637715"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 03:27:39 -0700
-X-CSE-ConnectionGUID: 6rD+6zbNT+mwNuGbuCeZig==
-X-CSE-MsgGUID: MvmNzZDKS8q25JIWWpKKDQ==
+   d="scan'208";a="94676762"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 03:45:33 -0700
+X-CSE-ConnectionGUID: G0umWb9HQS+An4zhZ2J2GQ==
+X-CSE-MsgGUID: 7pJP5KKLS4CYFPJWUNGiXg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
-   d="scan'208";a="276506274"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa001.fm.intel.com with ESMTP; 30 Jun 2026 03:27:34 -0700
-Date: Tue, 30 Jun 2026 18:27:33 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, djbw@kernel.org, kas@kernel.org,
-	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
-	xiaoyao.li@intel.com, sohil.mehta@intel.com,
-	adrian.hunter@intel.com, kishen.maloor@intel.com,
-	tony.lindgren@linux.intel.com, peter.fang@intel.com,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	dave.hansen@intel.com, dave.hansen@linux.intel.com,
-	seanjc@google.com
-Subject: Re: [PATCH v2 04/17] x86/virt/tdx: Add extra memory to TDX module
- for the extensions
-Message-ID: <akOaFdwnQjk6zHwi@yilunxu-OptiPlex-7050>
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-5-yilun.xu@linux.intel.com>
- <akIlHqh0/Rna7aYY@intel.com>
+   d="scan'208";a="251179200"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.239.158.70]) ([10.239.158.70])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 03:45:19 -0700
+Message-ID: <8206e8f8-4759-4dcc-a764-1c7b0ab0a757@intel.com>
+Date: Tue, 30 Jun 2026 18:45:17 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <akIlHqh0/Rna7aYY@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 02/46] KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to
+ KVM_VM_MEMORY_ATTRIBUTES
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-2-9d2959357853@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-2-9d2959357853@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> >+static __init int tdx_ext_mem_setup(unsigned int required_pages)
-> >+{
-> >+	struct tdx_hpa_list *hpa_list;
-> >+	struct page *page;
-> >+	unsigned int i;
-> >+	int ret;
-> >+
-> >+	/*
-> >+	 * memory_pool_required_pages == 0 means no need to add pages,
-> >+	 * skip the memory setup.
-> >+	 */
+On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> From: Sean Christopherson <seanjc@google.com>
 > 
-> There is no "memory_pool_required_pages" here.
-
-OK.
-
-BTW, sashiko says the comment restates what the if-statement. So I
-change to:
-
-
-	/*
-	 * This required_pages comes from the metadata
-	 * memory_pool_required_pages. TDX module uses it to indicate how much
-	 * memory is still needed. This value decreases each time memory is
-	 * added via TDH.EXT.MEM.ADD.
-	 *
-	 * On first time initialization, a value of 0 before any memory is
-	 * added is unusual. But host makes no assumptions. Skip the memory
-	 * setup and let subsequent steps catch any actual errors.
-	 */
-
+> Rename the per-VM memory attributes Kconfig to make it explicitly about
+> per-VM attributes in anticipation of adding memory attributes support to
+> guest_memfd, at which point it will be possible (and desirable) to have
+> memory attributes without the per-VM support, even in x86.
 > 
-> >+	if (!required_pages)
-> >+		return 0;
+> No functional change intended.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Reviewed-by: Fuad Tabba <tabba@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-Other comments are all good, included.
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
