@@ -1,79 +1,86 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEFAE40F8CF
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 13:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513F64192F6
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 13:27:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782824809; cv=none; b=K5f/oxca4D5lePJozODrfOQ3EdLgTGZikazaQFs4sQYIYiHUw0joYfUW1fWzrLPFNMx8qqG/w+IWNoESUc3LD6RC/tQkLB+8FqEwB32MOUB/O3TJ5m5x7dLUbtdadHKTP8EzVFGyX6wGKRgz8xvc87svfJsfo5I+aSckGAMY3z4=
+	t=1782826029; cv=none; b=d1NkVwMrAnUKxr5xxBe54TN3QutuxbGZ1bLwCdePdFblJL23oZL830GqEUxGWjdNqTKt8vDU9UX10h35gs17Kfh1RQLYX4C0zox0tCgykvQXngKvaLGBpWKr5ZLZcAUdLvj56M5eMdpmGJZzpJW93g7jI0ZZiBhIlULn85v149s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782824809; c=relaxed/simple;
-	bh=CyC5ny1bAKX8WJocn0Ihrx94MGIS+dltREW/5h3LDKw=;
+	s=arc-20240116; t=1782826029; c=relaxed/simple;
+	bh=kfZMo0p6hs1cAypJ2ukMYvmmWfmbsMXBTl6UnRGRZI0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=P6iu9zVhZyECa0nUw7Nm10501i0rsDSvRipqudomfRsuAq1NWVf2jLOYAtk9h4aJ9FFr5UCpcBsg/FNJZ/Wo0L7qASoXILrds9rENNj1A4f5NWcXhvNcbiSAkJp6niEJNIyv05LAHD/BNI5Qfzx9O78Z6JfUyPQYuzJ3cLVgbrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TltMkDB9; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=oR3uMb9weYW0TINxYgIRjC3kbhoD3tRTXfDRDGi27cKsqrnxMLilkPqqn8DVoCA+UxmUargOOEqDl3hQskenZU2QqOL59Fw1uUF2lWWEDvg/yVxAc8Rtxuo1wPkkU9YljkXHPkK3dhV5KKTpHFJWOFgHBXkCr3hDG5o8aFncjSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LSb83SlD; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TltMkDB9"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37d4eede8ccso2594966a91.0
-        for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 06:06:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LSb83SlD"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8478d2bea7cso597552b3a.1
+        for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 06:27:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782824806; x=1783429606; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1782826028; x=1783430828; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GKmnhEmEL5Q9+VdT5YV6KYZqx0ZeftgvFW7GNXKQRJU=;
-        b=TltMkDB9JFhRxecdO3JJl1UebjulBkQme+E4i29bcE7cQXEidTdZ6es1RJflmtMGOg
-         pNRPXjyc/c9mCysU/3/X/HUMhieyL0bR1P1A87/C1YPHOz+sVREln123s3fz8WNhFAhb
-         oWicscsct64hKoYlbs6Ms9R2scRI+4oVoGrfcWPGjmCJwX96G1+6TkE7Rv4Jbq1CTWVG
-         Xaypul6+26xchb4cy7c36eO1hGdp0Uyib3UsMIPTfjVe9RDmHSeud5YnS+Nfwvqozdi9
-         adQ3ntDxVrnp4EOw3Yxk3dN0avoHPc2rCEpkGwRBi3J3kR4U0v+yNMG2SFBV4bjmGFKO
-         gs+g==
+        bh=AhLYh/cBIA1fFqX5RYZRm50yWfU0LfaJB+fi+NtWOq0=;
+        b=LSb83SlDPvno/QOqyZhhyXy8X1ji4IUzHKbZ+/j/+32miloxzXVm/hBZKqauasZnkK
+         WQ3P4xGPhuHGdj2K/IsK+8FP/Nj8L221LViFUXrKv6jRWdBVI0hLsHshhokW4g6jHQ6s
+         T45O/YnmV/yhdidbREyb6ni23eo6xHsCxPvWgX4rhcRFgoYaxhSnzD9M5NG2RgNbs3+Z
+         rAMftrILykNjNXoRGYxpTVQCN8Uj/b6EqUDpaO8KEL+8y+dah8LCsIE8wOecj48qD6gU
+         ltshap6Pfoqr6HChqIdBQ+OLxvK2eaDPAJjpsQyL45Z+zCeehIP0t9BgRW/YW0IAtUoI
+         J3HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782824806; x=1783429606;
+        d=1e100.net; s=20251104; t=1782826028; x=1783430828;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GKmnhEmEL5Q9+VdT5YV6KYZqx0ZeftgvFW7GNXKQRJU=;
-        b=UEf/BYxcIt6BO2NZfVYdAkLmeKVR5gIwt1ANXbUS7cxB+BR8yb8ufI61BO5D7tTbJD
-         iHEV8QkxJScv2fzp/JLb3FSLSS7XJcIhIyCsrT+me1/V2tZ+7rSlNvNXqambY8zwXc1Y
-         8ZAHycRbkpe44b5PR8cGy9j7VEz2GsjpjMXCae/UJfXz4k7MTQtuW0PjRyqZSwW3DKEt
-         7/eFwTgcUBQ9tJe98SYgwiPHWI+FEGRDRDJ6D8LuebhgCf3K3VLkyLhhTf9HlC0X+Eck
-         tg+XPtk/mConySEFb8tH2WPaq5VIubw3IH98c+y0e52twKcAIN7mstKkE/+nu/4lKErj
-         dwEw==
-X-Forwarded-Encrypted: i=1; AHgh+RrmNYZnzbGwtOygVCIu3eodnVeVbuW1Bbo52ArQuztSObsE792qOFSxfAfSqSjKyhrK3OcSYwQ2Vx0r@lists.linux.dev
-X-Gm-Message-State: AOJu0YxxAZ6F5kh08QWMmoJZPkgXHdQlPji6azoNeM8kMLtD+8Tj5LQj
-	ikB4VItaRmMviK8t3s/XTXmzuMNuqb1k3BsxHcluN38fQMwqSC8POs9VLCfK/MCnSK42QJHRiN3
-	xrZlJ5w==
-X-Received: from pjboo8.prod.google.com ([2002:a17:90b:1c88:b0:37d:8595:7a08])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:390b:b0:380:540:d49a
- with SMTP id 98e67ed59e1d1-3808bd2ffe9mr347677a91.7.1782824805381; Tue, 30
- Jun 2026 06:06:45 -0700 (PDT)
-Date: Tue, 30 Jun 2026 06:06:43 -0700
-In-Reply-To: <6b1f0c77-f059-4f8d-8f46-443b944c59a0@intel.com>
+        bh=AhLYh/cBIA1fFqX5RYZRm50yWfU0LfaJB+fi+NtWOq0=;
+        b=c7gpt9PZ0DbcGmC+aZn2a9OQWDqsEgWu00htuhEKAK1Vp4qlyZp5h2K5lFayhYZSR4
+         Q20nW7FcKusHkdfApAU3N4/HGnNL6sT24RUm2OnbpQ4FwgeteF+aEOaP0dGGyQQeL8bL
+         Bq22fLelzZEWcz78UtCjBcsTxtEx2WArhwNUOduOYSm2zlJ6sL7Hu4mlgUbEEmvuH6LT
+         NSFeMipgZSYgsQg6mUA3TP4XjngMMyWK3DJ5AUp1DwakOyomZYRdgY6n8Mzcj0c/cWeK
+         msmQyntlLrzf1bCMEJKC/zzkpAdWnVpHHfUax39ffEuQECuVffadfPpSHJmO9oSHe17M
+         lD4Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rr4P2ne6Ghc+qrke17DBYP9pZ5Df2pVmVq9PEdlGENPnW+3TDt7jgs9TSRFvZVyCoUd3sMlYEGlgYhh@lists.linux.dev
+X-Gm-Message-State: AOJu0Yykj1dKPX355gLtvz8UIC+pHCSSV5McuhQDsHglOzqdTs9maaRX
+	S3nt3YM1uilFufSzRLBMyh0Y39sxqVm7EywAANbJUyPTwc1DAcI/ag8BxtMOIYWsaCYppYGeTq/
+	7Z5+FTA==
+X-Received: from pfqy13.prod.google.com ([2002:aa7:9e0d:0:b0:845:ec34:5047])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1143:b0:845:ebe6:417d
+ with SMTP id d2e1a72fcca58-847a8224797mr1270415b3a.24.1782826026676; Tue, 30
+ Jun 2026 06:27:06 -0700 (PDT)
+Date: Tue, 30 Jun 2026 06:27:06 -0700
+In-Reply-To: <akMoFqj/8Af2i/Al@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-4-9d2959357853@google.com> <6b1f0c77-f059-4f8d-8f46-443b944c59a0@intel.com>
-Message-ID: <akO_Y0-ERgBoCqoQ@google.com>
-Subject: Re: [PATCH v8 04/46] KVM: Decouple kvm_has_arch_private_mem from CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+References: <ajpGxu2uQys+S2F8@yzhao56-desk.sh.intel.com> <ajxasFBzp_9KnQLq@google.com>
+ <CAEvNRgG1nHipzw4=eBgwhvyXi8xYo7FQD_sy9Ax6FDf7YDu3Og@mail.gmail.com>
+ <ajyRg3BwGu5dCfOn@yzhao56-desk.sh.intel.com> <CAEvNRgH5KOHoemnC9QOn_oK97=KeAH1XuX3ps36-pJ0Fn0aBHQ@mail.gmail.com>
+ <aj3TGLGWT1kMFIVH@yzhao56-desk.sh.intel.com> <CAEvNRgHb6WmOha6Pct_Tn8Ucuov95L=fj5=2R9gcHfx=b2V_+A@mail.gmail.com>
+ <akI9m02jgKAdi4gX@yzhao56-desk.sh.intel.com> <akMPZePBdwQlD74H@google.com> <akMoFqj/8Af2i/Al@yzhao56-desk.sh.intel.com>
+Message-ID: <akPEKslqAhygyjhg@google.com>
+Subject: Re: [PATCH v8 23/46] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
 From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, "aik@amd.com" <aik@amd.com>, 
+	"andrew.jones@linux.dev" <andrew.jones@linux.dev>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "brauner@kernel.org" <brauner@kernel.org>, 
+	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "david@kernel.org" <david@kernel.org>, 
+	"jmattson@google.com" <jmattson@google.com>, "jthoughton@google.com" <jthoughton@google.com>, 
+	"michael.roth@amd.com" <michael.roth@amd.com>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"pankaj.gupta@amd.com" <pankaj.gupta@amd.com>, "qperret@google.com" <qperret@google.com>, 
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>, "rientjes@google.com" <rientjes@google.com>, 
+	"shivankg@amd.com" <shivankg@amd.com>, "steven.price@arm.com" <steven.price@arm.com>, 
+	"tabba@google.com" <tabba@google.com>, "willy@infradead.org" <willy@infradead.org>, 
+	"wyihan@google.com" <wyihan@google.com>, "forkloop@google.com" <forkloop@google.com>, 
+	"pratyush@kernel.org" <pratyush@kernel.org>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "liam@infradead.org" <liam@infradead.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
 	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
 	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
 	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
@@ -84,51 +91,101 @@ Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
 	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
 	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
 	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
+	Vlastimil Babka <vbabka@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
 Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Jun 30, 2026, Xiaoyao Li wrote:
-> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> >   arch/x86/include/asm/kvm_host.h | 4 +++-
-> >   include/linux/kvm_host.h        | 2 +-
-> >   2 files changed, 4 insertions(+), 2 deletions(-)
+On Tue, Jun 30, 2026, Yan Zhao wrote:
+> On Tue, Jun 30, 2026 at 08:35:49AM +0800, Sean Christopherson wrote:
+> > Gah, I thought I had sent this out this morning, long before Ackerley's response.
+> > But I got distracted by a meeting and forgot to get back to this... *sigh*
 > > 
-> > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> > index 8e8eb8a5e8a6b..1bde67cf6eb0e 100644
-> > --- a/arch/x86/include/asm/kvm_host.h
-> > +++ b/arch/x86/include/asm/kvm_host.h
-> > @@ -2394,7 +2394,9 @@ void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
-> >   		       int tdp_max_root_level, int tdp_huge_page_level);
-> > -#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> > +#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||	\
-> > +	defined(CONFIG_KVM_INTEL_TDX) ||	\
-> > +	defined(CONFIG_KVM_AMD_SEV)
+> > Sending what I already wrote, even though there's a lot of overlap with Ackerley's
+> > mail.
+> > 
+> > On Mon, Jun 29, 2026, Yan Zhao wrote:
+> > > On Fri, Jun 26, 2026 at 08:28:32AM -0700, Ackerley Tng wrote:
+> > > > Yan Zhao <yan.y.zhao@intel.com> writes:
+> > > > > But if a user configures 0 uaddr as valid, writes to it, and then passes 0 as
+> > > > > source_addr(not from gmem), I'm not sure if it's good for the kernel to silently
+> > > > > treat 0 uaddr as an identifier for in-place copy from the private PFN in gmem.
+> > > > >
+> > > > 
+> > > > I'd say the original uAPI perhaps just didn't document 0 as an
+> > > > unsupported uaddr. Given that commit 2a62345b3052 already merged, uAPI
+> > > > was perhaps accidentally changed and no customer complained, I think we
+> > > > can move forward with 0 as an invalid src_address? I wouldn't think
+> > > > anyone relies on 0 intentionally being a valid address.
+> > > > 
+> > > > I could document that, if it helps?
+> > > What about just documenting that 0 is an unsupported uaddr which will be
+> > > re-purposed as an indicator to use the target pfn as the source, regardless of
+> > > whether gmem_in_place_conversion is true? i.e.,
+> > > 
+> > > if (!src_page) 
+> > > 	src_page = pfn_to_page(pfn);
+> > 
+> > Because KVM can't generally use the target page as the source without in-place
+> > conversion, it's not supported today, and out-of-place conversion is being
+> > deprecated.
+> By "out-of-place conversion", do you mean using per-VM memory attribute
+> conversion?
+
+Yep, I couldn't come up with a better description.
+
+> > > I don't get why the two scenarios should be treated differently:
+> > > 1. gmem_in_place_conversion==true, shared memory is not from gmem 
+> > > 2. gmem_in_place_conversion==false, shared memory is not from gmem
+> > > 
+> > > In both case, a 0 uaddr could be mapped to a valid page not from gmem.
+> > 
+> > That's immaterial.  KVM's ABI (that we're solidifying) is that an address of '0'
+> > for the source means NULL.  The fact that userspace could have a valid mapping
+> > at virtual address '0' is irrelevant.
+> So, I'm wondering if we can document that 0 uaddr could always mean using target
+> PFN.
+
+I would document it as saying "no source page", and then state that a source page
+is required if in-place conversion isn't enabled/supported/allowed.
+
+> i.e., for both scenarios 1 and 2, al long as 0 uaddr is specified, we always
+> use target PFN as source for in-place add.
 > 
-> Maybe we can just remove the #ifdef and make it always avaiable?
+> > Again, just because something is technically possible doesn't mean it needs to
+> > be supported by every piece of KVM's uAPI.
+> > 
+> > > So why not update the uAPI to handle both cases consistently? :)
+> > 
+> > Because retroactively adding support for out-of-place conversion is pointless
+> > (requires a userspace update for a feature that's being deprecated), KVM can't
+> > generally support using the source for out-of-place conversion (it's effectively
+> > an obscure zero-page optimization), and IMO rejecting the out-of-place conversion
+> > scenario is valuable for KVM developers, e.g. to help newcomers understand what
+> > exactly is and isn't possible.
+> Ok. You mean per-VM memory attribute is deprecating, and source page from !gmem
+> backend is also deprecating, so we don't want to change uAPI for scenarios under
+> gmem_in_place_conversion==false. Right?
 
-No, because common KVM keys off the macro to determine whether or not PRIVATE is
-a supported attribute:
+Right.
 
-  #ifdef kvm_arch_has_private_mem
-  static u64 kvm_supports_private_mem(struct kvm *kvm)
-  {
-	return !kvm || kvm_arch_has_private_mem(kvm);
-  }
-  #else
-  #define kvm_supports_private_mem(kvm) false
-  #endif
+> 
+> > Side topic, isn't TDX broken if target page has already been added to the TD?
+> > IIUC, kvm_tdp_mmu_map_private_pfn() will be a glorified nop due to the page
+> > already having a valid S-EPT mapping, and so KVM will incorrectly allow a double
+> Not sure if my understand out-of-place conversion correctly.
+> Given target PFNs and GFNs are not duplicated, what would cause double add? :)
 
-And also whether or not to provide the in-place conversion param (without PRIVATE,
-conversions aren't supported in general):
+I was working through what would happen if userspace did KVM_TDX_INIT_MEM_REGION
+on the same target page multiple times.
 
-  #ifdef kvm_arch_has_private_mem
-  bool __ro_after_init gmem_in_place_conversion = !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES);
-  module_param(gmem_in_place_conversion, bool, 0444);
-  EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
-  #endif
+> 
+> > add.  Ahhh, no, because KVM will return RET_PF_SPURIOUS and
+> > kvm_tdp_mmu_map_private_pfn() will then return -EIO.
+> My asking was if we could document uaddr always means using target PFN, since
+> TDX's in-place add does not rely on gmem in-place conversion.
 
-I agree the #ifdeffery is ugly, but kvm_supports_private_mem() in particular
-needs to evaluate to false if PRIVATE memory isn't supported.
+Yeah, I was on a tangent, ignore everything from "Side topic" on.
