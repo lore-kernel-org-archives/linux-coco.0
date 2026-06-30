@@ -1,169 +1,98 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A34083F58EA
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 10:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373D83ED3CA
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jun 2026 11:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782816936; cv=none; b=uTjtwhXr/GkQjYd8FqY4UJOfQ7bXxaNg8QD/3Kb6N3uKOkNn9R0OGTl8sKDQ/+okRH9VqP0+gukQqxBPbgeQX72Q+pzw2xg3OEx8C8pjL8f239u4gPa7lvYGX4rZJbiZogA+VP01ZBHcma4/I9dWkSjYEowQ8jgzmlvHsAgSDV4=
+	t=1782817825; cv=none; b=lpEmWEsDbuNo4kq4/mBkhsoFmbC83aNaK6LJ8Gv72ejcn29txjoXEiZLqTAlibyyTl+0vcGnpwgYohoARD0mvGFnX6P9fOXZ2ygduJcs6HI7T2K0KLKWmVXSXqMhezv60zSxJ/jdmpV09AngHButkDt88lcoV6gq8PtfjFQfklM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782816936; c=relaxed/simple;
-	bh=OinqCn7yZwhhZsCKKCwIFGV4JtEuLIbKl0RX5IPXpt0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ng4vYjMYhAb3TkELQCpqof4vgg0svOh+sxCsV3ko7WLrZa5gZ+FhWKu9XzvUR4McDHGZ1VwitxJYuixuaygYyj7RmT+H1IfGrMx1PME7BbPK1S8r3lyHyFVQN3apLayeGl4Il6ZM22ZntIwvTyYNbqUy00E1oRsve4F0u09qNhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HU4nsEpy; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1782817825; c=relaxed/simple;
+	bh=IlOiklHOXwmwp0vtiS+gd5qOIwexun6AyiW0nv87qTQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sTEH1Nt/uradScQXB6iU69+bgmSGG+bFLyWttutjRMefi/NdUQyp3d35fjqME3dNpukY+lbzeixF1k3QxwUuDPJ8Fg2P4nWd/6fsQHojgcWwBJa6087IPxsNmzMOsiE4Jtcr8TRhDLb5bW2A+ZRx8MZZI8OzpoCJR8Ei2L6Dciw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dn98edRZ; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HU4nsEpy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dn98edRZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782816932; x=1814352932;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=OinqCn7yZwhhZsCKKCwIFGV4JtEuLIbKl0RX5IPXpt0=;
-  b=HU4nsEpyZFVubkTkW/GtIp+Q6UfQRT/qtAsyb5s8qD5w8pnUWeFy/I5F
-   jxtY8sU8I0YHRKK2orDN5Ej+HnRAOIRaBiUxYZhFfXCoppxV8+netiYmq
-   XLpvfXByf3TKzDbKPHSEil7gNrWW6Xo6Lc5wE2oqXtNltBGjAhOwIL1Qn
-   FvCEQyB1Lf0jEAiKK/qW96g0XXwNNXK2Z+Y7U7kNYl4xeat8cohBYmZ4M
-   +wYeJGPsEHuLUCnjixDrhuhZrSjC0CGUa1NBvzdQYIl7gJ5Cp/A6a3p3w
-   vKdvNCgYPkyifJPW2AHBVVMTOrkVp+AmFFgRi9mdQZMs0pllqP/CXuCbQ
-   w==;
-X-CSE-ConnectionGUID: SJSI62vqT96N1icOpJtXJw==
-X-CSE-MsgGUID: Ru+lCwE0Rz2Fgg6/7w4VFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="94677488"
+  t=1782817824; x=1814353824;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=IlOiklHOXwmwp0vtiS+gd5qOIwexun6AyiW0nv87qTQ=;
+  b=dn98edRZL3irF+O/0FF1W/7+CHLH9TkE53O7mj7vadzt/+tUQvuAIgu5
+   zL6snaCAWtbZoUBgP+Wv7/Ot9uX1v01J4ZU02QY6HyBJqlKyScwIoFtyf
+   W/DJ/JoJTda+i6r3ux9miR4VNN9UmfGR6hygnxaVEedIcFSePBEtz42wA
+   gjmpRMwjGSFla/7xru+3nBZYnE/nppOwXQUQEE9RgjRY4L1EQLOxEVHs5
+   nWZlBsINEhyTp7z5ogZCFByG+vRyvDVuFp16QZqDLcokiBb98nHrToZj4
+   DG2XkMwC6Ure43yYtEOFYMBWMyHCTbO9TXWpNVLvHEy19HwhZTmVc6m7q
+   Q==;
+X-CSE-ConnectionGUID: Yoa36j2xSpCBppZKO2M3nA==
+X-CSE-MsgGUID: jHxYrhv0TlmhHi/9phqj0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="94127207"
 X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
-   d="scan'208";a="94677488"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 03:55:31 -0700
-X-CSE-ConnectionGUID: QRJE9D0fTAuqi24otunImw==
-X-CSE-MsgGUID: xXZpy8SqQASrfl6ZIk3hPA==
+   d="scan'208";a="94127207"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 04:10:23 -0700
+X-CSE-ConnectionGUID: ZqReD9O9TrKigWMzkBHldg==
+X-CSE-MsgGUID: M0p7rEZNRKGGpolu3Yl60w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
-   d="scan'208";a="290361286"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.239.158.70]) ([10.239.158.70])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 03:55:17 -0700
-Message-ID: <39671141-d317-40ab-8c50-66252015514c@intel.com>
-Date: Tue, 30 Jun 2026 18:55:14 +0800
+   d="scan'208";a="275472852"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa002.fm.intel.com with ESMTP; 30 Jun 2026 04:10:19 -0700
+Date: Tue, 30 Jun 2026 19:10:18 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, djbw@kernel.org, kas@kernel.org,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	xiaoyao.li@intel.com, sohil.mehta@intel.com,
+	adrian.hunter@intel.com, kishen.maloor@intel.com,
+	tony.lindgren@linux.intel.com, peter.fang@intel.com,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	dave.hansen@intel.com, dave.hansen@linux.intel.com,
+	seanjc@google.com
+Subject: Re: [PATCH v2 03/17] x86/virt/tdx: Detect if the extensions
+ initialization is required
+Message-ID: <akOkGqH6RQEs/RWN@yilunxu-OptiPlex-7050>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-4-yilun.xu@linux.intel.com>
+ <akIR1ClnTs1bRsD9@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 05/46] KVM: Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES
- selectable
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-5-9d2959357853@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-5-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akIR1ClnTs1bRsD9@intel.com>
 
-On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
+On Mon, Jun 29, 2026 at 02:33:56PM +0800, Chao Gao wrote:
+> >+static __init int init_tdx_module_extensions(void)
+> >+{
+> >+	struct tdx_sys_info_ext sysinfo_ext;
+> >+	int ret;
+> >+
+> >+	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
+> >+		return 0;
+> >+
+> >+	ret = get_tdx_sys_info_ext(&sysinfo_ext);
+> >+	if (ret)
+> >+		return ret;
+> >+
+> >+	/* Skip if no feature requires TDX module extensions. */
+> >+	if (!sysinfo_ext.ext_required)
+> >+		return 0;
 > 
-> Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable, only for (CoCo) VM types
-> that might use vm_memory_attributes.
+> What would happen if the kernel doesn't do this 'ext_required' check
+> and always does the extension initialization?
 > 
-> Also document CONFIG_KVM_VM_MEMORY_ATTRIBUTES to specifically be about the
-> private/shared attribute.
+> If TDH.EXT.INIT returns success when no extension is configured, we
 
-I think this patch needs to be moved later after per-gmem shared/private 
-attribute is implemented. Because so far, TDX/SEV indeed depend on 
-CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+No, TDH.EXT.INIT fails when ext_required==false
 
-Not to discuss if it makes sense to report TDX as supported VM TYPE when 
-CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not enabled, this patch just fails 
-the compilation when
-
-   CONFIG_KVM_VM_MEMORY_ATTRIBUTES = n
-
-and KVM_INTEL_TDX/KVM_AMD_SEV is enabled:
-
-arch/x86/kvm/../../../virt/kvm/guest_memfd.c: In function 
-‘__kvm_gmem_populate’:
-arch/x86/kvm/../../../virt/kvm/guest_memfd.c:918:14: error: implicit 
-declaration of function ‘kvm_range_has_memory_attributes’ 
-[-Werror=implicit-function-declaration]
-   918 |         if (!kvm_range_has_memory_attributes(kvm, gfn, gfn + 1,
-       |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->   arch/x86/kvm/Kconfig | 9 +++++----
->   1 file changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-> index 24f96396cfa1c..c28393dc664eb 100644
-> --- a/arch/x86/kvm/Kconfig
-> +++ b/arch/x86/kvm/Kconfig
-> @@ -81,13 +81,16 @@ config KVM_WERROR
->   	  If in doubt, say "N".
->   
->   config KVM_VM_MEMORY_ATTRIBUTES
-> -	bool
-> +	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
-> +	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
-> +	help
-> +	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
-> +	  memory attributes.
->   
->   config KVM_SW_PROTECTED_VM
->   	bool "Enable support for KVM software-protected VMs"
->   	depends on EXPERT
->   	depends on KVM_X86 && X86_64
-> -	select KVM_VM_MEMORY_ATTRIBUTES
->   	help
->   	  Enable support for KVM software-protected VMs.  Currently, software-
->   	  protected VMs are purely a development and testing vehicle for
-> @@ -138,7 +141,6 @@ config KVM_INTEL_TDX
->   	bool "Intel Trust Domain Extensions (TDX) support"
->   	default y
->   	depends on INTEL_TDX_HOST
-> -	select KVM_VM_MEMORY_ATTRIBUTES
->   	select HAVE_KVM_ARCH_GMEM_POPULATE
->   	help
->   	  Provides support for launching Intel Trust Domain Extensions (TDX)
-> @@ -162,7 +164,6 @@ config KVM_AMD_SEV
->   	depends on KVM_AMD && X86_64
->   	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
->   	select ARCH_HAS_CC_PLATFORM
-> -	select KVM_VM_MEMORY_ATTRIBUTES
->   	select HAVE_KVM_ARCH_GMEM_PREPARE
->   	select HAVE_KVM_ARCH_GMEM_INVALIDATE
->   	select HAVE_KVM_ARCH_GMEM_POPULATE
-> 
-
+> could drop this 'ext_required' from this series entirely.
