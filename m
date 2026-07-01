@@ -1,56 +1,56 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0714DBD75
-	for <linux-coco@lists.linux.dev>; Wed,  1 Jul 2026 19:32:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A804DD6E5
+	for <linux-coco@lists.linux.dev>; Wed,  1 Jul 2026 19:32:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782934371; cv=none; b=YZgemdln4vdciGVIMmqMJ0Gs9/JVsI9svlHIv2yjBCfdu+VL0OG/raTIvoBNC3/BX9Fvg1dLtTb3W6T4e5khE48/XLdAfxXcJ3Ts/Ax5HGYqgVZQO2uiufmczFqu35PBUrtCXA0pAakBiOx4p9Dp8WI8sQGotT7YGpzYYhXmwxw=
+	t=1782934372; cv=none; b=iDugvOZ6Sds/M149RoImRK7t4M8ZaTOwaN3o5nGpevOfZ45Yd9fsZV7MTqWO7z+3zncNhmushnIDpkmYuRWeiw++iYunYZ+z6YdZ92zsQFHalZo8sdFMKtgnPiLzvjd4av2ouGtApfX7EvySTa6UYS56ayMQniq6sDZEmcNX8n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782934371; c=relaxed/simple;
-	bh=LqpoY1Xy6lWAOBZfOfvu2nbWJoGoJs43yElnN9RLdxU=;
+	s=arc-20240116; t=1782934372; c=relaxed/simple;
+	bh=BNbYGSH55jffEq4VtE+b969iyJXTMV1HTMSCzkA3sgE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SikyuadOgcRDJctr3iR17goR/iA8RrI1AROj16nZDttpX6BCXo8sq6PBBEFO1AMTJws6xtbOHx04dzbNskBBk7wg5pARtcs01TtkBdpLg5XxYCn5xy2rVw+UMo96+DfsxCvi6JvZzM8kqpncXO90KGmWEbjAUbB0Qmwb0/BQ8tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iEBaNbeq; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=puR3zsDN+dgEccu0vQ/a/vMoqtuUgpCON2zWw4K9yMYtoveLo0iostY/d1bnGSU/loHe9g45VgUs/rLeDQNHte1CQ4fdYjjVjcMfsZsa5r+87ZW7seTK9wfK7t7s4rEXlR3Gl5ypF9PKlXeu/wUNqiO+1X4rvsLHfJAmfm+Oc54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KvuztkGz; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iEBaNbeq"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-380b630c505so623677a91.1
-        for <linux-coco@lists.linux.dev>; Wed, 01 Jul 2026 12:32:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KvuztkGz"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c9667280edeso636936a12.2
+        for <linux-coco@lists.linux.dev>; Wed, 01 Jul 2026 12:32:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782934368; x=1783539168; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1782934369; x=1783539169; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=+CBMOnR0NQyGIEx0KnXnLe9zyF/J2rmq2NSzuBA4h88=;
-        b=iEBaNbeqAjh0vbTScHpJCpRiFGhN/j4wmZLdqURjRrVx7+eB3vVeignr1ojSNicj1g
-         XT5tHwwR7Slk9Ub/o5qwe3ZkDG3/QOdEarnJc3HV1Bpn7/FcYXvN573CkKe4LCq7d8nh
-         wx/6HCC5EOQNp5ShgNp4IHDnMuCbpmBxrSu2xmeU81TpYq8fvShUJ3Fe8GrkZjA4cmXi
-         S8dcaCFuDUfgcXcQL40PJ70SNFdMt5hNKQnigjV+fqzEjDjYoP1rYynpBIJqVwNHjmxE
-         V5FnvYrhUNEoFd5aJpoBZrrKNlLwEzYJsqAE+HF9gHBOabMczjwsZcoF+oWzyLPopPpl
-         oCtA==
+        bh=/Hl8ESM1aN3u3Me6yWngcHpVlzQnDyaS4TqcnFx8YJ8=;
+        b=KvuztkGz9srb5fgcqCmgpBTVR2/Kiz8rp/Xp2o4djKHDSGCouvQT8nJsmsp0LhNiVS
+         3lXaA+4+NdRyx/il+/LUsd58oNFBgfO/ugmrnxfj8gwhJOyRNQP99rlNnXNnEQ2Vzt3b
+         wcvKvRlwlteykdFDfYyajR48aWimCQyttQeQk6gFd0+OGrT1kOmcmon06TdzxXJM/3in
+         1DlW3/d2KPoSsxrzHbhxchRm2fys8HEwhdgZGSXZyAQeCzBdjfBMONUfge/D+RDP39eG
+         4EkRENxVSIvE+5Jhe1eoDoirHe/bK4aw1dLB3q+rI3fX17ImoiFOz4xOb8WRveo2MwzP
+         zltg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782934368; x=1783539168;
+        d=1e100.net; s=20251104; t=1782934369; x=1783539169;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+CBMOnR0NQyGIEx0KnXnLe9zyF/J2rmq2NSzuBA4h88=;
-        b=mMh4x5Z5Wfz51enh/3UdKRNkdClAlIkUHUwZC/2Rew2iAfoCOAwHRIMr64PgfFLRqp
-         RPsjbekRmWnnDIdHCmQ82Z/kLCvARvrs48LYDq29xG4/tQyLJAqeVGOyeqyIfKk4Egf4
-         c2eDgix08XaAIFY7xGlPoZv+xyyt4rgcQIorI6xtfPCKAi/k2BV6jsUsryceeD5VEN3d
-         B4IB8d1VMSmRK0+EdDpS4tNnS67Ap0BEQGQmvinRF0kjU8uQcVRNAZQb2qOow/f/jsUR
-         CRTGcQp2ohzoINlBkk9EJe8VbF58zvXAV7qXOn9n5883KUvwx5rc9b787eqIxYljELL/
-         zFdw==
-X-Forwarded-Encrypted: i=1; AHgh+RqQy7PfFno+90zULI0sVyJEl6FLXqVnkQImfU0lxITPYSsaixf4fg25K1sBUNVPtzhzYSRD6oz76Lwg@lists.linux.dev
-X-Gm-Message-State: AOJu0YyiJAZouP5uiGL7kk10ZvGYem6BTWdSMVrpzduGvexISn7jaGdN
-	YTjYXjJwjJ+VTwZBH9hSxHO1Blu4a9winhHhdVaW0vTc620DQwborBokJA9cAC1mAIoNBJM3xAL
-	EHl3aFg==
-X-Received: from pjbca16.prod.google.com ([2002:a17:90a:f310:b0:37c:9369:8b75])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4acb:b0:37f:d6f3:450d
- with SMTP id 98e67ed59e1d1-380aa1313ecmr3162862a91.14.1782934368170; Wed, 01
- Jul 2026 12:32:48 -0700 (PDT)
+        bh=/Hl8ESM1aN3u3Me6yWngcHpVlzQnDyaS4TqcnFx8YJ8=;
+        b=IKrdLneGzIb2HE/568YPjJDCRpoUpFmxax4u7YqYRcct4lMJdmNDI9XIkFEuD6Zmwn
+         SDLqJhHKKv8b12Hqd7rnwYOgl4wIqILwjGRtt26S/ORl9015Hq3Khx89JjE1KoXPorGf
+         VgiefsBFIN7DuQbdpYRYZaaObcqTH/14+Gtabk7TRPrRGqe2sFstZYwDjL79mfYRup6B
+         QPCF9xzSGrsda53QoIsYOq/OIJSJA4UiI3Aa4QvYQDLYOu2ZLXTBJXgaXhYi8f7PIMQd
+         BjT7XEpvPBLz+OnBH1/cIAMD+9gvsHICOkOXqscNRdqlSSwRESiguYxsc6Th8EUkl9bu
+         CA9w==
+X-Forwarded-Encrypted: i=1; AHgh+RpOAgksm2GXsWzOx5PEuKLdGmi5co6KZOnmvkO0nglBv3+BexT8ybwtzmjBrGa9IQArhJmNmODOUx25@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy5SNzvp8L07poCe/KTS5GPfYhj7TMm2RqPF30eNbetKO+/cV8C
+	Et5nmF3e3fHZBO1ZYSRK8RrmqsUZsaVD7pG2rs1lo9tfS22fhywbFumoIaWRjmgLDkANfIonpdC
+	/dtY11A==
+X-Received: from plrx15.prod.google.com ([2002:a17:902:b40f:b0:2c0:bd65:1a98])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:18e:b0:2c9:e86e:a9f5
+ with SMTP id d9443c01a7336-2ca7e73cbd7mr31240015ad.18.1782934369266; Wed, 01
+ Jul 2026 12:32:49 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed,  1 Jul 2026 12:31:39 -0700
+Date: Wed,  1 Jul 2026 12:31:40 -0700
 In-Reply-To: <20260701193212.749551-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260701193212.749551-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260701193212.749551-19-seanjc@google.com>
-Subject: [PATCH v5 18/51] x86/kvmclock: Rename kvm_get_tsc_khz() to kvmclock_get_tsc_khz()
+Message-ID: <20260701193212.749551-20-seanjc@google.com>
+Subject: [PATCH v5 19/51] x86/kvmclock: Drop dead check on TSC being unstable
+ during kvmclock_init()
 From: Sean Christopherson <seanjc@google.com>
 To: Jonathan Corbet <corbet@lwn.net>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
@@ -86,50 +87,44 @@ Cc: Shuah Khan <skhan@linuxfoundation.org>, "H. Peter Anvin" <hpa@zytor.com>,
 	Thomas Gleixner <tglx@linutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 
-Rename kvm_get_tsc_khz() to kvmclock_get_tsc_khz() in anticipation of
-adding support for getting TSC info from PV CPUID, i.e. in a KVM specific
-way, but without non-kvmclock.
+As pointed out by Sashiko[*], kvmclock_init() runs before __setup() and
+thus before notsc_setup() or tsc_setup() can mark the TSC unstable.
+kvmclock_init() also runs well before tsc_init(), and even before
+tsc_early_init().  Simply delete the check, as it's been dead code since
+it was introduced.
 
-No functional change intended.
+Note, odds are good the check_tsc_unstable() call was copied from Xen's
+xen_time_init()+xen_tsc_safe_clocksource() logic (as so much of KVM's PV
+code was).  However, xen_time_init() runs via x86_init.timers.timer_init(),
+which is invoke from x86_late_time_init(), and thus after params have been
+parsed.
 
+Alternatively, kvmclock could register itself later on, or tsc_setup()
+could be parsed as an early param.  Given that there's zero evidence there
+was any meaningful intent or need to actually check for an unstable TSC,
+go with the simplest option.
+
+Fixes: 7539b174aef4 ("x86: kvmguest: use TSC clocksource if invariant TSC is exposed")
+Link: https://lore.kernel.org/all/20260529181213.0B27A1F00893@smtp.kernel.org [*]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kernel/kvmclock.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kernel/kvmclock.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-index 35a879d33e9e..061a22d31dea 100644
+index 061a22d31dea..29ca37e9a3bc 100644
 --- a/arch/x86/kernel/kvmclock.c
 +++ b/arch/x86/kernel/kvmclock.c
-@@ -136,7 +136,7 @@ static inline void kvm_sched_clock_init(bool stable)
-  * poll of guests can be running and trouble each other. So we preset
-  * lpj here
-  */
--static unsigned int __init kvm_get_tsc_khz(void)
-+static unsigned int __init kvmclock_get_tsc_khz(void)
- {
- 	return pvclock_tsc_khz(this_cpu_pvti());
- }
-@@ -146,7 +146,7 @@ static void __init kvm_get_preset_lpj(void)
- 	unsigned long khz;
- 	u64 lpj;
+@@ -362,8 +362,7 @@ void __init kvmclock_init(void)
+ 	 *
+ 	 */
+ 	if (boot_cpu_has(X86_FEATURE_CONSTANT_TSC) &&
+-	    boot_cpu_has(X86_FEATURE_NONSTOP_TSC) &&
+-	    !check_tsc_unstable())
++	    boot_cpu_has(X86_FEATURE_NONSTOP_TSC))
+ 		kvm_clock.rating = 299;
  
--	khz = kvm_get_tsc_khz();
-+	khz = kvmclock_get_tsc_khz();
- 
- 	lpj = ((u64)khz * 1000);
- 	do_div(lpj, HZ);
-@@ -342,8 +342,8 @@ void __init kvmclock_init(void)
- 	flags = pvclock_read_flags(&hv_clock_boot[0].pvti);
- 	kvm_sched_clock_init(flags & PVCLOCK_TSC_STABLE_BIT);
- 
--	x86_init.hyper.get_tsc_khz = kvm_get_tsc_khz;
--	x86_init.hyper.get_cpu_khz = kvm_get_tsc_khz;
-+	x86_init.hyper.get_tsc_khz = kvmclock_get_tsc_khz;
-+	x86_init.hyper.get_cpu_khz = kvmclock_get_tsc_khz;
- 	x86_platform.get_wallclock = kvm_get_wallclock;
- 	x86_platform.set_wallclock = kvm_set_wallclock;
- #ifdef CONFIG_X86_LOCAL_APIC
+ 	clocksource_register_hz(&kvm_clock, NSEC_PER_SEC);
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
