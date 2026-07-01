@@ -1,185 +1,186 @@
-Received: from esa4.hc1455-7.c3s2.iphmx.com (esa4.hc1455-7.c3s2.iphmx.com [68.232.139.117])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AC34F5E0;
-	Wed,  1 Jul 2026 02:16:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060B033AD8B;
+	Wed,  1 Jul 2026 03:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782872196; cv=none; b=CMDZ2wSUvND6UriVay59EXnTTgPXzphpplT4/JWxLvsF+7bhHZ08xVxvUF48cYY8DrlO2135bJ7+/oCK1ifSJRcvcgmbpu+sMVc0HS9+FW/ytXhIvVlfLzjG7lm/Y1vUaBz50mzUTZRTUKIBOchwuFusycITTxYletru3l/a6jU=
+	t=1782875361; cv=none; b=uOe0vwgZ782msgNJ3OscovkrGhppLxJyPPbm3UD1h0a+ee42lgHBvKZ4HRyGephNIfhsyKma+I09LuPGdrPangLGlOS8/1tvOXqz9AtsFiunVkK1oMpxTf4+D3bxvpAnZzlYJmBogdclFOSagbW3VX7IeHj79B0dJkDDXRLZY8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782872196; c=relaxed/simple;
-	bh=Pw/JDUXvjVK+3QrfI9yFi2jVw+bIU28wBw3FXCmitUA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vEcCIK/kww/QAY0g3YINkZJIE3BGhaBkcsHe0PmB4kU1ihk5ljMdpm3OZJMYaBxoxrg63EER+FBlRtJiL29fux96QPExos0cxecJpQoKDAqNB/q0v0URpM//Dy0W4DmN8JPG+Jfivy6f1DKtGX0RF9AJi0s4RYgntZs+NHojtGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=VBfxUdvE; arc=none smtp.client-ip=68.232.139.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1782875361; c=relaxed/simple;
+	bh=FPT9y30vnOlO/lNgfWP5ptP/TtCb7F5Scbs6AXcyfNM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=KbRsp258eRuj5JIYvud3A6NghR/NCNHUiCC4kFmRFC5g/C5n8YQrM1NX8DntBnql9jzr/S0pfcf10JT+R3oA7VQfm+XxQZE+wfP4jz0/4qapBDJTlgLvKBZm5UZ5aFPX0Oggx3sfb4GaYsONtSeh8iy8JZEhPW7//fK+xIh7HRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Apa1e2TN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="VBfxUdvE"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1782872196; x=1814408196;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Pw/JDUXvjVK+3QrfI9yFi2jVw+bIU28wBw3FXCmitUA=;
-  b=VBfxUdvEXz6zc1Uwi6v8CLESpsKm2y5FS3y2O1hKteqlwusDWIZMs6rE
-   FGqZMhmZZryI4czoUA/VHoOLmk5K9UmAMt6pmW54YT38NJoOW4Kd3foL7
-   rrosiVaT1HtMW9tHvO6sW1OSrKeWomXBhuMUlAA+9aR6n3T/VfAls4o7G
-   MJksHfkTb6N3phvMrm5TO8bH94Q3cXqs7+n/tb+DE53PmNjNFhHOYJgxz
-   MKgMDuJAHdejXS/Qb/aSycIxPUU9PNLlc9BnSq8nw0Glo7Arf1wmFj2wB
-   Dtr+eZylAPj9ihzfba1RDNP6FNvEnXjfNDU0e1PWNoA5q9YTqQO/E9JVF
-   Q==;
-X-CSE-ConnectionGUID: 9KDU+YqdRGm/U1dNJy6lgQ==
-X-CSE-MsgGUID: vCYQZTj6StOXQ/yM4hnFPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="245334295"
-X-IronPort-AV: E=Sophos;i="6.24,235,1774278000"; 
-   d="scan'208";a="245334295"
-Received: from gmgwnl01.global.fujitsu.com (HELO mgmgwnl01.global.fujitsu.com) ([52.143.17.124])
-  by esa4.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 11:15:27 +0900
-Received: from az2nlsmgm2.o.css.fujitsu.com (unknown [10.150.26.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mgmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 985C5CA50;
-	Wed,  1 Jul 2026 02:15:25 +0000 (UTC)
-Received: from az2nlsmom3.fujitsu.com (unknown [10.150.26.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 437F91C4DE99;
-	Wed,  1 Jul 2026 02:15:25 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.8.91.60])
-	by az2nlsmom3.fujitsu.com (Postfix) with SMTP id BF254100A6C3;
-	Wed,  1 Jul 2026 02:15:16 +0000 (UTC)
-Date: Wed, 1 Jul 2026 11:15:15 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-Subject: Re: [PATCH v14 00/44] arm64: Support for Arm CCA in KVM
-Message-ID: <akR0eX0nCumIgnlh@FCCLS0092175.localdomain>
-References: <20260513131757.116630-1-steven.price@arm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Apa1e2TN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598A71F000E9;
+	Wed,  1 Jul 2026 03:09:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782875359;
+	bh=FJhajr5kdTmXSpbRHiZGZT3ioUVr6sHAFFO+7D7H7Iw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Apa1e2TNAD1OXcazOEFCxJl7l5BrVVMLldpRf0byGAFIxmHZcJ9j3O57EBDpqqCGC
+	 npNWTMDbd5MynUk+n9TOEgWrKZLUeu0x85rBnH3oE01O8UmQAVgtiT8Oxe0DwbXarq
+	 Rhj55UyvnpmtD02vXdUXMyNS/Gwhk3JQUnTOPAcDA46ZE++fUcZtSTuxWdL5uTuivC
+	 kvC2jhtCrGypZNaCdpd0nztN0oQqPcwT5h4mHQP6EvhXUQv1O6OZax7pV/JnK+5h4f
+	 Xtfv09ZeJ7OVs0ct4YkBueDVTpnVdg+nTb12bqzwLvFUbpPUCF35eDdmAKCrVeiZyW
+	 sl8y0F2F3AO0Q==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
+Subject: Re: [PATCH v6 00/20] dma-mapping: Use DMA_ATTR_CC_SHARED through
+ direct, pool and swiotlb paths
+In-Reply-To: <20260630174216.GK7525@ziepe.ca>
+References: <aigYbK12D8uKQvJF@arm.com> <20260609144746.GL2764304@ziepe.ca>
+ <2ecfa1a8-6202-4319-9692-a6ffeb5a3dbf@amd.com>
+ <yq5aqzm4dz25.fsf@kernel.org> <20260618153705.GH231643@ziepe.ca>
+ <yq5ao6h6enhm.fsf@kernel.org> <20260619122148.GL231643@ziepe.ca>
+ <yq5aldcaejos.fsf@kernel.org> <20260619140616.GB1068655@ziepe.ca>
+ <yq5ao6gtoncp.fsf@kernel.org> <20260630174216.GK7525@ziepe.ca>
+Date: Wed, 01 Jul 2026 08:39:06 +0530
+Message-ID: <yq5abjcro17x.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260513131757.116630-1-steven.price@arm.com>
+Content-Type: text/plain
 
-On 05/13 14:17, Steven Price wrote:
-> This series adds support for running protected VMs using KVM under the
-> Arm Confidential Compute Architecture (CCA).
-> 
-> This is rebased on v7.1-rc1, but still targets RMM v2.0-bet1[1].
-> 
-> The major updates from v13 remain but have been more fully implemented:
-> the RMM uses the host's page size, range based RMI APIs mean we don't
-> have to break everything down to base page sizes, the GIC state is
-> passed via system registers, and the uAPI has been simplified.
-> 
-> The main changes since v13 are:
-> 
->  * The RMI definitions and wrappers have been fully updated for RMM
->    v2.0-bet1. In particular the temporary RMM v1.0 SMC compatibility
->    patch has been dropped.
-> 
->  * The PSCI completion ioctl has been removed. RMM v2.0-bet1 still
->    requires the host to provide the target REC for PSCI calls which
->    name another vCPU, but KVM now performs the RMI PSCI completion
->    automatically before entering the REC again. Userspace no longer
->    needs to issue KVM_ARM_VCPU_RMI_PSCI_COMPLETE. A future spec should
->    remove the need for the host to provide the MPIDR mapping.
-> 
->  * The generic RMI init, RMM configuration, GPT setup,
->    delegate/undelegate helpers and SRO infrastructure have moved out of
->    KVM into arch/arm64/kernel/rmi.c. RMI is expected to be used by
->    features outside KVM, so this code should be available even when KVM
->    is not built.
-> 
->  * RMI_GRANULE_TRACKING_GET has been updated to work on a range, this
->    allows it to work when the region is not aligned to the tracking
->    size. Solves the problem reported by Mathieu[2].
-> 
->  * SRO support has been moved earlier in the series and improved. It
->    provides a cleaner way for the host to provide the RMM with the extra
->    memory it requires. However support is still incomplete where the
->    TF-RMM code does not yet implement it. This is noted by FIXMEs in the
->    code.
-> 
->  * The ARM VM type encoding has been reworked to coexist with the
->    upstream pKVM KVM_VM_TYPE_ARM_PROTECTED bit.
-> 
->  * The private-memory documentation now notes that arm64 uses
->    KVM_CAP_MEMORY_ATTRIBUTES.
-> 
->  * PMU support is dropped for now. It will be added later in a separate
->    series. Similarly for selecting the hash algorithm and RPV.
+Jason Gunthorpe <jgg@ziepe.ca> writes:
 
-Hi Steven,
+> On Mon, Jun 29, 2026 at 12:16:30PM +0530, Aneesh Kumar K.V wrote:
+>> >> Thinking about this more, I guess we should mark the swiotlb as
+>> >> cc_shared only with  CC_ATTR_GUEST_MEM_ENCRYPT instead of
+>> >> CC_ATTR_MEM_ENCRYPT as we have below.
+>> >
+>> > The name cc_shared should be used for GUEST scenarios only.
+>> >
+>> > I guess there is some merit in keeping swiotlb using "decrypted" to
+>> > mean it usinig pgprot_decrypted and set_memory_decyped() which AMD
+>> > gives meaning to on both host and guest.
+>> 
+>> Are you suggesting to change the struct io_tlb_mem::cc_shared back to
+>> struct io_tlb_mem::unencrypted?. 
+>
+> Yes
+>
+>> > IDK what AMD should do on the host by default. I guess it should setup
+>> > a swiotlb pool of low dma addrs "unencrypted", but not "cc_shared"?
+>> >
+>> 
+>> If by low DMA address you mean using an address with the C-bit
+>> cleared. 
+>
+> Yes
+>
+>> The current code already does this and uses the swiotlb pool correctly
+>> on SME.
+>
+> Well, through the force_dma_unencrypted() hack...
+>
+>> The challenge arises when we want to force SWIOTLB
+>> bouncing even for devices that can handle encrypted DMA addresses (more
+>> on that below). For such a config force_dma_uencrypted(dev) will return
+>> false and swiotlb will be marked cc_shared/decrypted = true; This trip
+>> the new check we added.
+>
+> Yes, because cc_shared (guest) and unencrypted (host) are very
+> different things and we've mixed them:
+>
+>> 	if (unlikely(mem->cc_shared != force_dma_unencrypted(dev)))
+>
+> I'm aruging force_dma_unencrypted should mean cc_shared and be
+> guest_only, but the SME hack breaks this.
+>
+>> We can also do
+>> 
+>> 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
+>> 		/* swiotlb pool is incorrect for this device */
+>> 		if (unlikely(mem->cc_shared != force_dma_unencrypted(dev)))
+>> 			return (phys_addr_t)DMA_MAPPING_ERROR;
+>> 
+>> 		/* Force attrs to match the kind of memory in the pool */
+>> 		if (mem->cc_shared)
+>> 			*attrs |= DMA_ATTR_CC_SHARED;
+>> 		else
+>> 			*attrs &= ~DMA_ATTR_CC_SHARED;
+>> 	} else {
+>> 		/*
+>> 		 * Host memory encryption where device requires an
+>> 		 * unencrypted dma_addr_t due to dma mask limit
+>>     		 */
+>> 		if (force_dma_unencrypted(dev))
+>> 			*attrs |= DMA_ATTR_CC_SHARED;
+>> 		else
+>> 			*attrs &= ~DMA_ATTR_CC_SHARED;
+>> 	}
+>
+> If we do this I would like to split the force_dma_.. functions into
+> guest and host, ie force_dma_cc_shared() and force_host_decrypted()
+>
+> To make it clear there are two very different things here.
+>
 
-Is there any plan to add support for selecting the MEC policy (shared or
-private)? We have been working on adding support for this on top of your
-series. If this is not already in the works, we may upstream our
-implementation later.
+I have now folded the below change into
 
-Thanks,
-Kohei
+modified   kernel/dma/swiotlb.c
+@@ -1514,9 +1514,23 @@ phys_addr_t swiotlb_tbl_map_single(struct device *dev, phys_addr_t orig_addr,
+ 	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+ 		pr_warn_once("Memory encryption is active and system is using DMA bounce buffers\n");
+ 
+-	/* swiotlb pool is incorrect for this device */
+-	if (unlikely(mem->cc_shared != force_dma_unencrypted(dev)))
+-		return (phys_addr_t)DMA_MAPPING_ERROR;
++	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
++
++		/* swiotlb pool is incorrect for this device */
++		if (unlikely(mem->cc_shared != force_dma_unencrypted(dev)))
++			return (phys_addr_t)DMA_MAPPING_ERROR;
++
++	} else if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
++		/*
++		 * On hosts with memory encryption, SWIOTLB-backed memory is
++		 * unencrypted. DMA addresses returned for bounce buffers must
++		 * therefore be marked unencrypted, even for devices that can
++		 * address encrypted memory. This also preserves swiotlb=force
++		 * behavior for those devices.
++		 */
++		if (unlikely(!mem->cc_shared))
++			return (phys_addr_t)DMA_MAPPING_ERROR;
++	}
+ 
+[PATCH] dma: swiotlb: track pool encryption state and honor DMA_ATTR_CC_SHARED
 
-> 
-> There are also the usual rebase updates and smaller fixes, including
-> changes to the RMM v2.0-bet1 range APIs, removal of REC auxiliary
-> granule handling, fixes to the address range descriptor encoding, and
-> cleanups around realm stage-2 teardown.
-> 
-> Stateful RMI Operations
-> -----------------------
-> 
-> The RMM v2.0 spec introduces Stateful RMI Operations (SROs), which allow
-> the RMM to complete an operation over several SMC calls while requesting
-> or returning memory to the host. This allows interrupts to be handled in
-> the middle of an operation and lets the RMM dynamically allocate memory
-> for internal tracking purposes. For example, RMI_REC_CREATE no longer
-> needs auxiliary granules to be provided up front, and can instead
-> request memory during the operation.
-> 
-> This series includes the generic SRO infrastructure in
-> arch/arm64/kernel/rmi.c and uses it for REC create/destroy. The other
-> cases are not yet used by TF-RMM and a future revision will be needed to
-> finish those paths in Linux.
-> 
-> This series is based on v7.1-rc1. It is also available as a git
-> repository:
-> 
-> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v14
-> 
-> Work in progress changes for kvmtool are available from the git
-> repository below:
-> 
-> https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v12
-> 
-> The TF-RMM has not yet merged the RMM v2.0 support, so you will need to
-> use a branch with RMM v2.0-bet1 support. At the time of writing the
-> following branch is being used:
-> 
-> https://git.trustedfirmware.org/TF-RMM/tf-rmm.git topics/rmm-v2.0-poc_2
-> (tested on commit 3340667a291a)
-> 
-> There is a kvm-unit-test branch which has been updated to support the
-> attestation used in RMMv2.0 available here:
-> 
-> https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca cca/v4
-> 
-> [1] https://developer.arm.com/documentation/den0137/2-0bet1/
-> [2] https://lore.kernel.org/all/acrj-cKphy4hJsEG@p14s/
+This is the only code path where we need to special-case host memory
+encryption. For this reason, I have avoided renaming
+io_tlb_mem::cc_shared to io_tlb_mem::unencrypted. I can send a v7 with
+the above and we can review the changes based on that?
+
+-aneesh
