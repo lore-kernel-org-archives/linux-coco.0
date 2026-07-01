@@ -1,56 +1,56 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C479941C8FE
-	for <linux-coco@lists.linux.dev>; Wed,  1 Jul 2026 19:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3425041C8C7
+	for <linux-coco@lists.linux.dev>; Wed,  1 Jul 2026 19:33:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782934384; cv=none; b=jMvHUMQfZ7U2Ft60U07+DuterehVbUFWVMrxXIBPNnjlDAyb+rAyHl2JOPNFuY2LcCryEMotoI/XXkW6v/4yCJUAbOxAxeMJuICc+3fDFbv/8JVppymfNSdYjWd7MlPHtf7er1xRx0EGeG0EJApX/8Nci+/938fUWJ0t0Ba6Th8=
+	t=1782934386; cv=none; b=QqMSLXuyQ/8nG9HlpZNlqgUmJjCpcmyVR3ub0v96WpV+vmJSkF0xcq0RzC7/lb386PKZbxoeT2s0BaS/Lz0AHrJJFZeNCva5MVv9B+rujwBwFw895EetXNCwHTyJ/aEtyYuo22y+/u8wGWf709koIpEBpEd2avbvITqgRQcpcj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782934384; c=relaxed/simple;
-	bh=7ECvDpVYy24rqoUPVQpDZNfw6Aqt7A7i1akOyN+Prss=;
+	s=arc-20240116; t=1782934386; c=relaxed/simple;
+	bh=n+A51rFoj4USUN6oHKtUVePZwkXkBrZ3Utmadq/pitI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nrQ9wwirInCsCbSHM+f4YpxHpLKykYiIXMF+feUU5rJsdWXo7NPeQuLyhdiolYwogxquAI5lwvD8Wk2tDnix0eo6EkFoUCQqUsMgYEqkZb7pFWUk4SmROwu3xbpxt4ERd9ge4MFAXNFGC209zwpiCEwdgvstVHzx5VtyS4JbKvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FwFScT8+; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=jSAvTjZUnWE1bFlkDSKD7zaFxzvrOOcT5OvK2AoEDXoP7CCTC0coZz1lN8Db9jE/92IrI5VazCxeLckI4QdDkZPqtKyPfBeennFwkQA0fNmSOgMjnqGuo+IhhBt14T/G6qqyahjBrVcWerjRYDAr/ObWgBSNOXfMh5ea1HqGAns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tRIRPLcr; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FwFScT8+"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ca3b3141a6so13432035ad.1
-        for <linux-coco@lists.linux.dev>; Wed, 01 Jul 2026 12:33:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tRIRPLcr"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-37fe5d16d15so1557906a91.0
+        for <linux-coco@lists.linux.dev>; Wed, 01 Jul 2026 12:33:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782934381; x=1783539181; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1782934383; x=1783539183; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=IHAlzrllQ2SIWnv0fCfBsaTBNv7ymljQujJZvblLIYE=;
-        b=FwFScT8+OiwEGBK952uermUzhiWGkW6NMRbc63IKBa53bFmIdPxZBd8PNrtictgwJW
-         yiEjsvSHh8GJeIfkyyZHIyyTBl8nHMEIHYmNbG5UN8ocdjTzxCV55cD0J1Dn/tzIYxa+
-         y1SigXDQ0Kj0oZv5EF5+sujyD6Wi2R/LMK/TINUWm35NGaTKo/EKi7bAU59EzzAXK6/m
-         LtH/ccdlOtKbTfpXOBHzyyfCgP6bsd5hfENmiZ2VfEdTKmiYzGA3+uqVBB3NRD/5Oa2n
-         VI0uPMW0HNE4UoWtm+0K5VkWwQw1oHdCe9RJzNAxWA5SyPD3wVY67H1s/gGB2wCUmuPk
-         lIMA==
+        bh=YK2zVmNLEJoBEawF7PlPSBbbkhRpzdy0apLvLWVt+lo=;
+        b=tRIRPLcrpLJS1feToXys/fSLmFyCRx34T6Kv6zUS1HLgy3e7AWCIvWx3uiI11gi1It
+         pjxxwVRVmVx+frGPQXWHYyhaAqJPVqQlPCwqqK6bmN0QlQd2FygPsF2/JWPdlepbtU8F
+         aBu55ttJwZG6sSD1GLBdnwWPb0hdqWJpk6PH26sQOdAMSgSd1QvkrJPL5l9zlZ9PTQDN
+         J7ggbVzqitUtvZYVPLdWjN+t1mRTrGWF9xkqZ1UQjoMayAbSwNnoktsdXLf9Q+Q1R0PL
+         CfQzdYGdoOSAkAZttCyOfYyp6LCniWSfGyPUYM1nclYDg8DPr0UU67dcDhEpSZ1LGWDC
+         sjkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782934381; x=1783539181;
+        d=1e100.net; s=20251104; t=1782934383; x=1783539183;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=IHAlzrllQ2SIWnv0fCfBsaTBNv7ymljQujJZvblLIYE=;
-        b=PH435jrFekn2MXfo9JOBfzCjLmnhWtOuPTSaOHZae3Zm0JTjaAqfQlVr7lBGOXtHFU
-         wCKsG98hxKBP+MELwFTXJm37yvepQoGaYVDMtXuqRS0aS9/BYVtVQOwH7B0KAO2/OIke
-         t/OnZLTLe74437azE2o/z70Bnyen3UzsiNxdKYWr/weGpz6YhUF7VHAArltsz9enbJaH
-         Y1XsJa5Nt46cPwR6XnkWKKAebhUc6UH4vK8gHVi/1lB+o5xzRCibOBOFNR35Z89qucje
-         mQG1rmZUXHADlvcXlMr0fir+NYXUDkHolXY8sQNsBe0t3qE/666ZEGLKWoumo8mVYPs7
-         7NRg==
-X-Forwarded-Encrypted: i=1; AHgh+RqOIo/vCJymPDAz+hPcN65/jgFURGTG98iBXIeM3YmX3K0zRKw7gZHrNmdd0Rchl3bhOFVU4V63lqEa@lists.linux.dev
-X-Gm-Message-State: AOJu0YwxKqM1JqmyOkbgYYuljSGHJcXbXwu2FEBU/Tb/0yB11lX932we
-	FLl4f+jDv61C/ETsYg1PVtXeX2vRpZTuqQSvkC2h++nfKsRLhMJhIjq5gFcP34gjGvTnYjurn5t
-	fXW23EA==
-X-Received: from plblk15.prod.google.com ([2002:a17:903:8cf:b0:2c7:f338:5690])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:41c7:b0:2ca:de3:15e2
- with SMTP id d9443c01a7336-2ca7e561189mr31594705ad.0.1782934380474; Wed, 01
- Jul 2026 12:33:00 -0700 (PDT)
+        bh=YK2zVmNLEJoBEawF7PlPSBbbkhRpzdy0apLvLWVt+lo=;
+        b=d7hdJPGPbMHOQXp3I7iL05zP3CMdcQwHoDy5WSQY9ae7vQK1WTJ0tEcyCwwKp29oTg
+         E+Ilx6pjDKkeZixsd1olp0su1AdQmhhIDh71I96Hb2rNEUzHQz3DrP0meG3Uhhr85Lwd
+         /kayA1pNNqesTdU7OmLcecmotM1q4N1jgNYYLOa6BVGigKpT1ZUR7bJv1FRvBgLMeJCb
+         XlrUp4DT/EQ62ihfq0cP+Zt6p4hNall9mkKZxKBsTRgUB+oui4zoau+v2y/F0NouCmJs
+         Qym15v8+hsagmivJUCvAe4MyvJzUbm8P8UC2EUOxHhE3Y3Dj8yQvrZRtQJgP1VPQ4Fdj
+         Ug/Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9JtLBW3cIIcz7yudNyIqcIe+UgPUnic2kP41voaWvAAFNSV5mAWtQ2WvSqYOlKbh4Ntwh5Gp0Gzr81@lists.linux.dev
+X-Gm-Message-State: AOJu0YxS68vSUCQpDgwNQSV7aEI2Ed11CUfHVBWEsAGTvkcCm0lDjxxz
+	Jf0PxwSJTeXxMli9AK25JYPyD3fWp6D8ONIJieHCh7X3IZUfwMQsldbMhR7RmlNLN4qVgV8P4+t
+	ubkOAlA==
+X-Received: from pgwa6.prod.google.com ([2002:a65:6546:0:b0:c99:cbb4:1dcb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a11b:b0:3b2:924c:567d
+ with SMTP id adf61e73a8af0-3bff42bedd3mr2415279637.46.1782934383031; Wed, 01
+ Jul 2026 12:33:03 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed,  1 Jul 2026 12:31:49 -0700
+Date: Wed,  1 Jul 2026 12:31:50 -0700
 In-Reply-To: <20260701193212.749551-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260701193212.749551-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260701193212.749551-29-seanjc@google.com>
-Subject: [PATCH v5 28/51] x86/kvmclock: Setup kvmclock for secondary CPUs iff CONFIG_SMP=y
+Message-ID: <20260701193212.749551-30-seanjc@google.com>
+Subject: [PATCH v5 29/51] x86/kvm: Don't disable kvmclock on BSP in syscore_suspend()
 From: Sean Christopherson <seanjc@google.com>
 To: Jonathan Corbet <corbet@lwn.net>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
@@ -86,40 +86,167 @@ Cc: Shuah Khan <skhan@linuxfoundation.org>, "H. Peter Anvin" <hpa@zytor.com>,
 	Thomas Gleixner <tglx@linutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 
-Gate kvmclock's secondary CPU code on CONFIG_SMP, not CONFIG_X86_LOCAL_APIC.
-Originally, kvmclock piggybacked PV APIC ops to setup secondary CPUs.
-When that wart was fixed by commit df156f90a0f9 ("x86: Introduce
-x86_cpuinit.early_percpu_clock_init hook"), the dependency on a local APIC
-got carried forward unnecessarily.
+Don't disable kvmclock on the BSP during syscore_suspend(), as the BSP's
+clock is NOT restored during syscore_resume(), but is instead restored
+earlier via the sched_clock restore callback.  If suspend is aborted, e.g.
+due to a late wakeup, the BSP will run without its clock enabled, which
+"works" only because KVM-the-hypervisor is kind enough to not clobber the
+shared memory when the clock is disabled.  But over time, the BSP's view
+of time will drift from APs.
 
+Plumb in an "action" to KVM-as-a-guest and kvmclock code in preparation
+for additional cleanups to kvmclock's suspend/resume logic.
+
+Fixes: c02027b5742b ("x86/kvm: Disable kvmclock on all CPUs on shutdown")
+Cc: stable@vger.kernel.org
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kernel/kvmclock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/kvm_para.h |  8 +++++++-
+ arch/x86/kernel/kvm.c           | 15 ++++++++-------
+ arch/x86/kernel/kvmclock.c      | 31 +++++++++++++++++++++++++------
+ 3 files changed, 40 insertions(+), 14 deletions(-)
 
+diff --git a/arch/x86/include/asm/kvm_para.h b/arch/x86/include/asm/kvm_para.h
+index 4a49fc286b4c..08686ff19caa 100644
+--- a/arch/x86/include/asm/kvm_para.h
++++ b/arch/x86/include/asm/kvm_para.h
+@@ -118,8 +118,14 @@ static inline long kvm_sev_hypercall3(unsigned int nr, unsigned long p1,
+ }
+ 
+ #ifdef CONFIG_KVM_GUEST
++enum kvm_guest_cpu_action {
++	KVM_GUEST_BSP_SUSPEND,
++	KVM_GUEST_AP_OFFLINE,
++	KVM_GUEST_SHUTDOWN,
++};
++
+ void kvmclock_init(bool prefer_tsc);
+-void kvmclock_disable(void);
++void kvmclock_cpu_action(enum kvm_guest_cpu_action action);
+ bool kvm_para_available(void);
+ unsigned int kvm_arch_para_features(void);
+ unsigned int kvm_arch_para_hints(void);
+diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+index 6c7011ff7bd1..604b52f233aa 100644
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -460,7 +460,7 @@ static void __init sev_map_percpu_data(void)
+ 	}
+ }
+ 
+-static void kvm_guest_cpu_offline(bool shutdown)
++static void kvm_guest_cpu_offline(enum kvm_guest_cpu_action action)
+ {
+ 	kvm_disable_steal_time();
+ 	if (kvm_para_has_feature(KVM_FEATURE_PV_EOI))
+@@ -468,9 +468,10 @@ static void kvm_guest_cpu_offline(bool shutdown)
+ 	if (kvm_para_has_feature(KVM_FEATURE_MIGRATION_CONTROL))
+ 		wrmsrq(MSR_KVM_MIGRATION_CONTROL, 0);
+ 	kvm_pv_disable_apf();
+-	if (!shutdown)
++	if (action != KVM_GUEST_SHUTDOWN)
+ 		apf_task_wake_all();
+-	kvmclock_disable();
++
++	kvmclock_cpu_action(action);
+ }
+ 
+ static int kvm_cpu_online(unsigned int cpu)
+@@ -726,7 +727,7 @@ static int kvm_cpu_down_prepare(unsigned int cpu)
+ 	unsigned long flags;
+ 
+ 	local_irq_save(flags);
+-	kvm_guest_cpu_offline(false);
++	kvm_guest_cpu_offline(KVM_GUEST_AP_OFFLINE);
+ 	local_irq_restore(flags);
+ 	return 0;
+ }
+@@ -737,7 +738,7 @@ static int kvm_suspend(void *data)
+ {
+ 	u64 val = 0;
+ 
+-	kvm_guest_cpu_offline(false);
++	kvm_guest_cpu_offline(KVM_GUEST_BSP_SUSPEND);
+ 
+ #ifdef CONFIG_ARCH_CPUIDLE_HALTPOLL
+ 	if (kvm_para_has_feature(KVM_FEATURE_POLL_CONTROL))
+@@ -768,7 +769,7 @@ static struct syscore kvm_syscore = {
+ 
+ static void kvm_pv_guest_cpu_reboot(void *unused)
+ {
+-	kvm_guest_cpu_offline(true);
++	kvm_guest_cpu_offline(KVM_GUEST_SHUTDOWN);
+ }
+ 
+ static int kvm_pv_reboot_notify(struct notifier_block *nb,
+@@ -792,7 +793,7 @@ static struct notifier_block kvm_pv_reboot_nb = {
+ #ifdef CONFIG_CRASH_DUMP
+ static void kvm_crash_shutdown(struct pt_regs *regs)
+ {
+-	kvm_guest_cpu_offline(true);
++	kvm_guest_cpu_offline(KVM_GUEST_SHUTDOWN);
+ 	native_machine_crash_shutdown(regs);
+ }
+ #endif
 diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-index 2e7ab54cb9dc..b0c871ba8232 100644
+index b0c871ba8232..a3ec298d56d7 100644
 --- a/arch/x86/kernel/kvmclock.c
 +++ b/arch/x86/kernel/kvmclock.c
-@@ -208,7 +208,7 @@ static void kvm_restore_sched_clock_state(void)
+@@ -199,8 +199,22 @@ static void kvm_register_clock(char *txt)
+ 	pr_debug("kvm-clock: cpu %d, msr %llx, %s", smp_processor_id(), pa, txt);
+ }
+ 
++static void kvmclock_disable(void)
++{
++	if (msr_kvm_system_time)
++		native_write_msr(msr_kvm_system_time, 0);
++}
++
+ static void kvm_save_sched_clock_state(void)
+ {
++	/*
++	 * Stop host writes to kvmclock immediately prior to suspend/hibernate.
++	 * If the system is hibernating, then kvmclock will likely reside at a
++	 * different physical address when the system awakens, and host writes
++	 * to the old address prior to reconfiguring kvmclock would clobber
++	 * random memory.
++	 */
++	kvmclock_disable();
+ }
+ 
+ static void kvm_restore_sched_clock_state(void)
+@@ -208,6 +222,17 @@ static void kvm_restore_sched_clock_state(void)
  	kvm_register_clock("primary cpu clock, resume");
  }
  
--#ifdef CONFIG_X86_LOCAL_APIC
-+#ifdef CONFIG_SMP
++void kvmclock_cpu_action(enum kvm_guest_cpu_action action)
++{
++	/*
++	 * Don't disable kvmclock on the BSP during suspend.  If kvmclock is
++	 * being used for sched_clock, then it needs to be kept alive until the
++	 * last minute, and restored as quickly as possible after resume.
++	 */
++	if (action != KVM_GUEST_BSP_SUSPEND)
++		kvmclock_disable();
++}
++
+ #ifdef CONFIG_SMP
  static void kvm_setup_secondary_clock(void)
  {
- 	kvm_register_clock("secondary cpu clock");
-@@ -348,7 +348,7 @@ void __init kvmclock_init(bool prefer_tsc)
- 		x86_init.hyper.get_cpu_khz = kvmclock_get_tsc_khz;
- 	x86_platform.get_wallclock = kvm_get_wallclock;
- 	x86_platform.set_wallclock = kvm_set_wallclock;
--#ifdef CONFIG_X86_LOCAL_APIC
-+#ifdef CONFIG_SMP
- 	x86_cpuinit.early_percpu_clock_init = kvm_setup_secondary_clock;
+@@ -215,12 +240,6 @@ static void kvm_setup_secondary_clock(void)
+ }
  #endif
- 	x86_platform.save_sched_clock_state = kvm_save_sched_clock_state;
+ 
+-void kvmclock_disable(void)
+-{
+-	if (msr_kvm_system_time)
+-		native_write_msr(msr_kvm_system_time, 0);
+-}
+-
+ static void __init kvmclock_init_mem(void)
+ {
+ 	unsigned long ncpus;
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
