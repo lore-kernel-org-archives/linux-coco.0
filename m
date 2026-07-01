@@ -1,292 +1,161 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA074279EE
-	for <linux-coco@lists.linux.dev>; Wed,  1 Jul 2026 11:46:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EBD3F4DFD
+	for <linux-coco@lists.linux.dev>; Wed,  1 Jul 2026 13:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782906383; cv=none; b=RCEQiSzVZRdoRWBaUvrd0MzSh+U40BiZz04uvAxydh5gD0Z3ryUgNZES3kyoUfbc7Z5XrMLambrOEQTNONcu/D5mRJqFqvtmYz0n8UXG2+4Ac9tRZ/VBULuubHjVMNomisdXz4xtkP5j1klsIeqaZSBoWAJjQLotcq+cTzEavMA=
+	t=1782912361; cv=none; b=Ms0FoU31EVexDR9MfsExAtvOdE5vokItAXI2UPAZrCc398t4UVk4otmckjnUcpMX5rbLKNIgakB6+BOGW5lvYTlEpoWk7D+Ifb9DGBIhrM7hRS/dSVbFheCO04w+bHbDsc8TWPKlywuki5zMRlyvi406Gab4GqAI1U6ToGdxbks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782906383; c=relaxed/simple;
-	bh=xTEfbWT5LJSM6gKyc3oFGUQ41/RoQ8ITPezgvgLQC0k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Kpfsf/i18prZLTB97SwV//JxhoZWp5UTQQDEa9mc06/Pn27WTEsDyzpqjH0NjoXOXNEiVQnd45bYXJCvmu5cXTNKmkhNKdpHx1T5D6WoA+klHh7BnSL2lniajpdMv7xrFHHT/7qNjt6RMinV/YX9xZ07I6B3D1u6+gUWzk8wHzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Nh4OmkYy; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1782912361; c=relaxed/simple;
+	bh=8nfXIomqSXgIICZsYr/d0hMEYIbWZJBgkVXniOZmk9c=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=blZwgEk4wNq1ASAMVUxBw6OVK0ghzTI3tZw8+zbxXEyNiTG4wHUs8rTzevDs/kZzFql7sCLhgG31PbsWqV+8mpb7yPzGXU5EmJg/u4Tw3qqLtt9K9AwSqbJR43J0WphGsWUSjpXfO6zsm3zPricwKbJ/zzlIQoBVLZNmRpOP5cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Rg2eCsG6; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Nh4OmkYy"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493c2c0b9a8so2825225e9.1
-        for <linux-coco@lists.linux.dev>; Wed, 01 Jul 2026 04:46:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Rg2eCsG6"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c88aab7c1d4so462076a12.3
+        for <linux-coco@lists.linux.dev>; Wed, 01 Jul 2026 06:26:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1782906379; x=1783511179; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=84l0kSo6RKfg4k5hRcx6ro1EZzuiFwmA3iygG4exLEE=;
-        b=Nh4OmkYyroszVcry2/MFCRaOwsERERuzyiDXFVFMmodQCwbhuCI03RVqdFpDLjtlk7
-         XpBF/yNeS07PbJ0rrq2+H4ToYjvDDjGlMEXq/vadCJ8Kt8X6RV6+BZspCbptCT0GRjxI
-         evAi/2XLRXdy7Yl+JdHcGrImBIbg7vOv/u9KC8a8TJhxke6Sv6Zpc9wDOCTLg3eflFf7
-         IUvS7sYoYu9bHHM270orlOQp5dpS9X253abnjQ3w5VUZBoJSwxyNbRjg6HihHby5Usw+
-         rnIj+VPTMpsRBeTN2hVj7rYr4n9fne1x1VsWeO8a3jiPWxJUkJBoKwF7yCUWIxn6HODp
-         ZxEQ==
+        d=google.com; s=20251104; t=1782912359; x=1783517159; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nfLgJd4SFiMfB5hvCG5v1jWKkuB92AfQ/vUitXihKB8=;
+        b=Rg2eCsG6b5MBTFxaYh8tMykNGNqDgnk40zig64vH3aNaS/FQaW+T1Tti5Enl42GLxc
+         UdYwYsFT1yyUP1HvtNnDw7fAQFOQ6S7bKHfTjMYT0DECwSidkrh4HEQs8EoeXJ1zHujb
+         0r4zXjsKu4KhPCuQqw1qQBtuHI7eSCHKd7YJPYfq1FOKVQMUFn6Le8e2XhxwYa7mXDQT
+         hItdH9giPp1dc/Iu0mXkl59e9stPn0MJZiupUVqAntvxfWVH9X875ftOCeZYk66xlOL9
+         c1TxGddIv7gER/Ar388oEK77mDxDaWOhER1rVU9VIsO3HUmMCYHn2kAgXGUCOJIpRmLm
+         UQrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782906379; x=1783511179;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=84l0kSo6RKfg4k5hRcx6ro1EZzuiFwmA3iygG4exLEE=;
-        b=GkoGTwIGsIyQH2K5iaeH81skoOGt6c1sArupHAld/ea6pzge0Eu34qOnb3ai+MX/Cr
-         SbMwwpKiwpUbnWQX8e7RaNM3Q2WIiIODOwkiMvUv+1i2gtqDWHopoHBF36H+OYZmbeEi
-         0zUf9XSREPqOfYWpY3cJAVcp0jE3WcZh7HDMbdz1Z8+Sb9L4EPOcoS8CKN/62yrI/nak
-         sKHpfnfWMdEH/F1NCFl60QrbWVbyxiV5GT/eaipr4Z3fA4GHkEft2EOXGkZp4bz7SpCb
-         pETfbW4K28krD5qHevbvH+mYrF9DdkuN5lruFlsd737HL1sVmey5l26sbXFNSHcMXZth
-         21vQ==
-X-Gm-Message-State: AOJu0YxDvAMi0krcvuhtFd4zvR/FICfROJLgbIbaVp6UO0bOS4H9MuVz
-	uvFOjwywP78NLm0tKrzOhhjJgm/vOFj8frDxxRdTgVNWEdUAX40NBqXKEPzfIZ+jOAgxgn3xaiO
-	kLuNlVXo=
-X-Gm-Gg: AfdE7clD++XX3rr8pBLoMXa7hFjDMyMl+F1y29gzYSO1GbSisnCiGpmtK46/e9nU83B
-	9nPBu/N+hIxf62awjguF9xhtVHT8BN9piHqhz3RKIkzCEkx2lWM4cIlfe7XlOFpHeyu2+ruwZ4M
-	gTjB3Fb5g+o4yEWzFTmAfijEJBy5JNMxs5qFZHNwSh22qJHzYfIY62YzdUGh5AKs4PY9/msdjMg
-	s7hhG0PfelQRI/eylbwL6IaUNllzXKhdgYe5v/EpdxEL7P2x6lHC9yMhXqsiJM8sxMYMXAsI8qr
-	TGG2TZ9oSFLFZkN8b9qXCD7KmHGqbffMhf2BI3XCIpZugANoa8CbHUxrhwzap+2gPEdBLIDgQO5
-	C9T0fuiIdMIvtqfnYElLens/CmVq2OcFYF4W+/X+u+yFTlUy7oO2vGrUCBJvqFuM4n0ZAKsu/OP
-	KDnD/xTYA3JJET1APC/SNEvLBbtw==
-X-Received: by 2002:a05:600c:e494:20b0:493:9661:f55d with SMTP id 5b1f17b1804b1-493c3cfd391mr2852225e9.30.1782906378668;
-        Wed, 01 Jul 2026 04:46:18 -0700 (PDT)
-Received: from [10.20.4.146] ([149.62.207.101])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493bfc32992sm61543595e9.11.2026.07.01.04.46.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Jul 2026 04:46:18 -0700 (PDT)
-Message-ID: <a8441214-1560-498d-ba01-0807502d0e28@suse.com>
-Date: Wed, 1 Jul 2026 14:46:16 +0300
+        d=1e100.net; s=20251104; t=1782912359; x=1783517159;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nfLgJd4SFiMfB5hvCG5v1jWKkuB92AfQ/vUitXihKB8=;
+        b=FkQa4Z0tj3qZItod+IeYItR4KvmM6JYDPSN3nOYOJJGgH5sNYzE5LEM+zGnZa10RZc
+         M07bGr9PC5atrGrXV3tGeEcY1XNqmK0jG2zWindmR2JisSOPdn0IfdraaPrkKZEwjPd+
+         q9zCc9x74Ibf7iFPi9Xhs1MGEu191QWBEJUbDcTc0O+i9PGuiPa4JBof4UVWeXnvvIGS
+         5xGzxy6tr5boMUASmLgn4Rt2QEtSXBJxMvcL1fF8guFFcSj6rXGR+/TXauNs0hXqAJXP
+         0WXvsEavB9KWQqsxJNKBooiBPS1weGPw2dMbqzXtLBoc3qYERNHtfF8RHC24nhwY9MVZ
+         xrzA==
+X-Forwarded-Encrypted: i=1; AFNElJ/FSXoGe9VKJMeMMyB1rwXqFGBIW7JU8pYI0rbRW75chlmFsQzEnyKEsuHfHcHMjp30sqIIxCPJYrV9@lists.linux.dev
+X-Gm-Message-State: AOJu0YxXQ3HGrYu6UvYDYuqAiwDjD2fWypjwTUWFFCw6Z/9BeZAEACdf
+	DLf8poweEW5TCiv7bKgjKbR2A0whLFFtDeALc+w3gpTD2XdLEUGVaCozMWIY7smJg3WeC0X+LKW
+	svwwesQ==
+X-Received: from pgcv24.prod.google.com ([2002:a05:6a02:5318:b0:c9a:c533:8316])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3944:b0:38d:fad1:cf2a
+ with SMTP id adf61e73a8af0-3bfed1b2b94mr1854511637.13.1782912359138; Wed, 01
+ Jul 2026 06:25:59 -0700 (PDT)
+Date: Wed, 1 Jul 2026 06:25:57 -0700
+In-Reply-To: <daac026e677c10b68740b16ed8ad2556bd9583f8.1780584300.git.kas@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 09/15] x86/virt/tdx: Add interface to generate a Quote
-To: Xu Yilun <yilun.xu@linux.intel.com>, kas@kernel.org, djbw@kernel.org,
- rick.p.edgecombe@intel.com, x86@kernel.org, peter.fang@intel.com
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, sohil.mehta@intel.com, yilun.xu@intel.com,
- baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-10-yilun.xu@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20260522034128.3144354-10-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <cover.1780584300.git.kas@kernel.org> <daac026e677c10b68740b16ed8ad2556bd9583f8.1780584300.git.kas@kernel.org>
+Message-ID: <akUVZQ6SgK8wRetj@google.com>
+Subject: Re: [PATCH v4 2/3] x86/insn-eval: Add insn_assign_reg() helper
+From: Sean Christopherson <seanjc@google.com>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, pbonzini@redhat.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, kai.huang@intel.com, 
+	xiaoyao.li@intel.com, binbin.wu@linux.intel.com, rick.p.edgecombe@intel.com, 
+	david.laight.linux@gmail.com, ak@linux.intel.com, djbw@kernel.org, 
+	tsyrulnikov.borys@gmail.com, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
+In the shortlog, please capture that code is being moved out of KVM.  This isn't
+"adding" a helper, it's moving and renaming an existing helper.   The misleading
+shortlog is quite literally why I didn't look at this for a ~month, I thought it
+was entirely outside of my normal scope.
 
+On Thu, Jun 04, 2026, Kiryl Shutsemau (Meta) wrote:
+> KVM's instruction emulator has a small helper, assign_register(), that
+> writes a value into a sub-register with x86 partial-register-write
+> semantics: 1- and 2-byte writes leave the upper bits of the destination
+> untouched, 4-byte writes zero-extend to 64 bits, 8-byte writes overwrite
+> the full register.
+> 
+> The TDX guest #VE handler needs the same logic for port I/O emulation
+> to get 32-bit zero-extension right. Rather than copy-pasting the helper,
+> lift it to <asm/insn-eval.h> as insn_assign_reg() so both can use it.
+> 
+> Rewrite the body using arithmetic instead of pointer punning so the
+> helper does not depend on -fno-strict-aliasing 
 
-On 5/22/26 06:41, Xu Yilun wrote:
-> From: Peter Fang <peter.fang@intel.com>
+Meh, building with -fno-strict-aliasing is 100% mandatory for the kernel.  IMO,
+even so much as suggesting that strict aliasing is something worth shooting for
+is a misleading and wrong.
+
+https://lore.kernel.org/all/CAHk-=wh921g_+TJ33JRxRGFM2uruMdqG-SONfFOD9UOsLQJ_uw@mail.gmail.com
+
+> or little-endian byte order,
+
+Oh come on, this is low level x86 code used to write registers.
+
+> and add <asm/insn.h> to the header's includes so it builds standalone in
+> callers that have not pulled it in transitively.
 > 
-> Use the TDX Quoting extension's TDH.QUOTE.GET SEAMCALL to generate a
-> Quote. Since the interface is shared across all KVM instances,
-> serialize access to the SEAMCALL buffer with a mutex.
+> No functional change.
 > 
-> Allocate and return a per-call buffer containing the generated Quote so
-> callers don't need to size the Quote buffer themselves. The caller is
-> responsible for freeing the returned buffer.
-> 
-> Signed-off-by: Peter Fang <peter.fang@intel.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 > ---
->   arch/x86/include/asm/tdx.h  |  2 +
->   arch/x86/virt/vmx/tdx/tdx.h |  1 +
->   arch/x86/virt/vmx/tdx/tdx.c | 82 +++++++++++++++++++++++++++++++++++++
->   3 files changed, 85 insertions(+)
+>  arch/x86/include/asm/insn-eval.h | 25 +++++++++++++++++++++++++
+>  arch/x86/kvm/emulate.c           | 26 ++++----------------------
+>  2 files changed, 29 insertions(+), 22 deletions(-)
 > 
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index 7b257088aa1e..bc512a00a0d0 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -177,6 +177,8 @@ struct tdx_vp {
->   };
->   
->   bool tdx_quote_enabled(void);
-> +void *tdx_quote_generate(struct tdx_td *td, void *in_data, u32 in_data_len,
-> +			 u32 *quote_len);
->   
->   static inline u64 mk_keyed_paddr(u16 hkid, struct page *page)
->   {
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-> index 3849f4f9cc78..01a7d7d8ada9 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.h
-> +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> @@ -49,6 +49,7 @@
->   #define TDH_EXT_INIT			60
->   #define TDH_EXT_MEM_ADD			61
->   #define TDH_SYS_DISABLE			69
-> +#define TDH_QUOTE_GET			98
->   #define TDH_QUOTE_INIT			100
->   
->   /*
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index b305fa5aab5c..821f677e9a86 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -62,6 +62,8 @@ static LIST_HEAD(tdx_memlist);
->   static struct tdx_sys_info tdx_sysinfo __ro_after_init;
->   static bool tdx_module_initialized __ro_after_init;
->   
-> +static DEFINE_MUTEX(tdx_quote_lock);
-> +
->   static struct quote_data {
->   	void *buf;
->   	u64 buf_len;
-> @@ -1228,6 +1230,86 @@ bool tdx_quote_enabled(void)
->   }
->   EXPORT_SYMBOL_FOR_KVM(tdx_quote_enabled);
->   
-> +#define QUOTE_ID_MASK		GENMASK_U64(47, 32)
-> +
-> +static u64 tdx_quote_get(struct tdx_td *td, u64 in_data_pa, u64 in_data_len,
-> +			 u64 hpa_list_pa, u64 total_len, u64 *quote_len)
-> +{
-> +	struct tdx_module_args args = {
-> +		.rcx = tdx_tdr_pa(td),
-> +		/* Don't bother specifying the quote id */
-> +		.rdx = QUOTE_ID_MASK & (u64)-1,
+> diff --git a/arch/x86/include/asm/insn-eval.h b/arch/x86/include/asm/insn-eval.h
+> index 4733e9064ee5..85251e718a77 100644
+> --- a/arch/x86/include/asm/insn-eval.h
+> +++ b/arch/x86/include/asm/insn-eval.h
+> @@ -9,6 +9,7 @@
+>  #include <linux/compiler.h>
+>  #include <linux/bug.h>
+>  #include <linux/err.h>
+> +#include <asm/insn.h>
+>  #include <asm/ptrace.h>
+>  
+>  #define INSN_CODE_SEG_ADDR_SZ(params) ((params >> 4) & 0xf)
+> @@ -46,4 +47,28 @@ enum insn_mmio_type insn_decode_mmio(struct insn *insn, int *bytes);
+>  
+>  bool insn_is_nop(struct insn *insn);
+>  
+> +/*
+> + * Write @val into *@reg with x86 partial-register-write semantics: a 1-
+> + * or 2-byte write leaves the upper bits of the destination untouched; a
 
-This is simply equal to QUOTE_ID_MASK, so why not create a special value 
-meaning "ANY QUOTE" i.e
+Careful with the "upper bits" wording.  As Sashiko pointed out, this is used for
+{A,B,C,D}H sub-registers as well, in which case the *lower* bits are also left
+untouched.
 
-#define QUOTE_ID_MASK ....
-#define ANY_QUOTE QUOTE_ID_MASK
-
-or some such .
-
-> +		.r8 = in_data_pa,
-> +		.r9 = in_data_len,
-> +		.r10 = hpa_list_pa,
-> +		.r11 = total_len,
-> +	};
-> +	u64 r;
-> +
-> +	do {
-> +		r = seamcall_ret(TDH_QUOTE_GET, &args);
-> +	} while (r == TDX_INTERRUPTED_RESUMABLE);
-
-
-nit: This pattern seems to repeat a lot, might be worth it to consider 
-introducing a wrapper similar to existing sc_retry?
-> +
-> +	*quote_len = args.rcx;
-> +
-> +	return r;
-> +}
-> +
-> +/**
-> + * tdx_quote_generate() - Generate a quote for a TD
-> + * @td: The TD to generate the quote for.
-> + * @in_data: Input data for the quote request.
-> + * @in_data_len: Size of the input data in bytes.
-> + * @quote_len: Returned size of the generated quote in bytes.
-> + *
-> + * Use the TDX Quoting extension to generate a TD quote. Pass the input data
-> + * through the shared quote buffer and return the quote.
-> + *
-> + * Return: Newly allocated quote buffer or %NULL on failure.
-> + * The caller must free the returned buffer with kvfree().
+> + * 4-byte write zero-extends to 64 bits (matching IN[BWL], MOV[BWL]
+> + * etc.); an 8-byte write overwrites the full register.
 > + */
-> +void *tdx_quote_generate(struct tdx_td *td, void *in_data, u32 in_data_len,
-> +			 u32 *quote_len)
+> +static inline void insn_assign_reg(unsigned long *reg, u64 val, int bytes)
 > +{
-> +	void *quote_dup = NULL;
-> +	u64 r, out_len;
-> +
-> +	if (!tdx_quote_enabled())
-> +		return NULL;
-> +
-> +	/* TDH.QUOTE.GET expects the input data to fit in a page */
-> +	if (in_data_len > PAGE_SIZE)
-> +		return NULL;
-> +
-> +	mutex_lock(&tdx_quote_lock);
-> +
-> +	/*
-> +	 * Use the first page of the quote buffer for input data. The buffer
-> +	 * must be at least one page in size. @in_data may not be page-aligned,
-> +	 * but TDH.QUOTE.GET expects page-aligned addresses.
-> +	 */
-> +	memcpy(quote_data.buf, in_data, (size_t)in_data_len);
+> +	switch (bytes) {
+> +	case 1:
+> +		*reg = (*reg & ~0xfful)   | (val & 0xff);
 
-Perhaps you can use min(PAGE_SIZE, in_data_len) and that way you can 
-eliminate the in_data_len check above and copy up-to PAGE_SIZE data, if 
-the data is longer - you will copy PAGE_SIZE which will likely result in 
-error on generating the quote?
-> +
-> +	r = tdx_quote_get(td, quote_data.hpa_list[0], (u64)in_data_len,
-> +			  quote_data.hpa_list_pa, quote_data.buf_len, &out_len);
-> +	if (r || !out_len || out_len > quote_data.buf_len)
-> +		goto out;
-> +
-> +	/*
-> +	 * The quote buffer is a shared resource, so use it only for the
-> +	 * SEAMCALL and copy the data out as soon as possible.
-> +	 */
-> +	quote_dup = kvmemdup(quote_data.buf, out_len, GFP_KERNEL);
-> +
-> +out:
-> +	mutex_unlock(&tdx_quote_lock);
-> +
-> +	*quote_len = (u32)out_len;
-> +
-> +	return quote_dup;
+Sashiko's feedback aside, I strongly prefer KVM's approach as I find it much more
+intuitive.  And its far, far more consistent with respect to the 4-byte and 8-byte
+cases.
+
+> +		break;
+> +	case 2:
+> +		*reg = (*reg & ~0xfffful) | (val & 0xffff);
+> +		break;
+> +	case 4:
+> +		*reg = (u32)val;
+> +		break;
+> +	case 8:
+> +		*reg = val;
+> +		break;
+> +	}
 > +}
-> +EXPORT_SYMBOL_FOR_KVM(tdx_quote_generate);
-> +
->   #define HPAS_PER_PAGE			(PAGE_SIZE / sizeof(u64))
->   
->   static int tdx_quote_create_buf(unsigned int nr_pages, struct quote_data *qdata)
-
