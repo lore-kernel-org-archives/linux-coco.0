@@ -1,215 +1,185 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from esa4.hc1455-7.c3s2.iphmx.com (esa4.hc1455-7.c3s2.iphmx.com [68.232.139.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357F133CEA2
-	for <linux-coco@lists.linux.dev>; Wed,  1 Jul 2026 01:46:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782870370; cv=fail; b=exSc2Y/UlwKR5HiK1RIi6DyVG0lxSa2TghTUiwGsYWyoHFGUDG/yqcU3qR2uYg2nS7iDxfOcjq/wozgXIu6gAUE/syXEZOrof4mYyIahnSS1YsanZELJc3BWvJ23mO2GQUF8lg6NcSc2qv20qol/mpTuG62PC2M4wNb2xsH3Je8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782870370; c=relaxed/simple;
-	bh=VTkXaaXGnkMqZVYO4B5+JIYrNSt21fB/8cW5HKqmlog=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=hn91Wpa5UUA2sgIaFottQtpmRGd0gc6sS2NXTmNMVxO31SPgICx90czs1yicTaaY33EBkMxzalx0MEbn+imUpkYSOIiOSVViQlQxUiZiLRTHOi6E3MQ+RMwYAF8jYuy3/sE5ERoi0fvrTNsfm3IueQxUxs2l2B2RBlTiU1jkmOs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TufnnRHq; arc=fail smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AC34F5E0;
+	Wed,  1 Jul 2026 02:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.117
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782872196; cv=none; b=CMDZ2wSUvND6UriVay59EXnTTgPXzphpplT4/JWxLvsF+7bhHZ08xVxvUF48cYY8DrlO2135bJ7+/oCK1ifSJRcvcgmbpu+sMVc0HS9+FW/ytXhIvVlfLzjG7lm/Y1vUaBz50mzUTZRTUKIBOchwuFusycITTxYletru3l/a6jU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782872196; c=relaxed/simple;
+	bh=Pw/JDUXvjVK+3QrfI9yFi2jVw+bIU28wBw3FXCmitUA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=vEcCIK/kww/QAY0g3YINkZJIE3BGhaBkcsHe0PmB4kU1ihk5ljMdpm3OZJMYaBxoxrg63EER+FBlRtJiL29fux96QPExos0cxecJpQoKDAqNB/q0v0URpM//Dy0W4DmN8JPG+Jfivy6f1DKtGX0RF9AJi0s4RYgntZs+NHojtGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=VBfxUdvE; arc=none smtp.client-ip=68.232.139.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TufnnRHq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782870369; x=1814406369;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=VTkXaaXGnkMqZVYO4B5+JIYrNSt21fB/8cW5HKqmlog=;
-  b=TufnnRHqr7QMHw4KU05W+t9zrgri35bcZ5DucEO6vL555jBSVFlQEtAA
-   DjS0q8IH0DLaMF5G03cfEBT/aXXTyz1sK+IZa+q2BYdMm0l+WlzhAh/7n
-   3m6HsTbHhJc6H7DuAyBDB/DI8ooIaxR2Yb1OyqEulRW9NjVc6hrkAukCC
-   AaCdjE5gQ1gXHjlk/Cjm4IPPozOF+KODb7pLw3f6KdjrvBZTM4BtahdbT
-   Qh10gAVRKfEVbJrc2jZzhE+2z9BPSTYa3NEMQsK5Qn5WBnySJFVQMyoyE
-   BYtfHNN1xKuAQNdCmVimw2CRFKehvlkQP1wqLdwytgu2uqnr72T5F++sz
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="VBfxUdvE"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1782872196; x=1814408196;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Pw/JDUXvjVK+3QrfI9yFi2jVw+bIU28wBw3FXCmitUA=;
+  b=VBfxUdvEXz6zc1Uwi6v8CLESpsKm2y5FS3y2O1hKteqlwusDWIZMs6rE
+   FGqZMhmZZryI4czoUA/VHoOLmk5K9UmAMt6pmW54YT38NJoOW4Kd3foL7
+   rrosiVaT1HtMW9tHvO6sW1OSrKeWomXBhuMUlAA+9aR6n3T/VfAls4o7G
+   MJksHfkTb6N3phvMrm5TO8bH94Q3cXqs7+n/tb+DE53PmNjNFhHOYJgxz
+   MKgMDuJAHdejXS/Qb/aSycIxPUU9PNLlc9BnSq8nw0Glo7Arf1wmFj2wB
+   Dtr+eZylAPj9ihzfba1RDNP6FNvEnXjfNDU0e1PWNoA5q9YTqQO/E9JVF
    Q==;
-X-CSE-ConnectionGUID: GVfUmyA9Td2ZExgNQxOjrA==
-X-CSE-MsgGUID: TzmJ2GKoSgKon6b9Fq5O2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="83624746"
-X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
-   d="scan'208";a="83624746"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 18:46:08 -0700
-X-CSE-ConnectionGUID: eB9JtE/aQgSQ/3qNuOb0aw==
-X-CSE-MsgGUID: ptF/yDdTTE6eFO3DS5AV4Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
-   d="scan'208";a="254348624"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 18:45:30 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 30 Jun 2026 18:45:29 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Tue, 30 Jun 2026 18:45:29 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.6) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 30 Jun 2026 18:45:29 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eAn2jnycWYY87oXr4jtUM7gtmlxmVr/YmoOS09G68cG2JZRYnOMFVDY6XTUSB1199hOdMA2t2xABqf7B3M/g1p9FNUrHIRhvzQZF6dPw1za8OE+ku4RwvEpa1lM7A/jkgDc5P7QfnmF752GeC7E5yidhvGeFEfS+9IjLQP10MndgiY6czzy0bp8bovlk85uwodrNtoAPkTlrCy2vXG5C+ZfKy+ExnfBkU301SPkTSesVteW63h01VbNrehqGOFAUj/F5fwEMqrXVrxMnVgdHiq80xA4sB3xl7kbMX7qECKjN4pgCmTkyVBH2kv1WJLj8lOBFksuDdwSKgZ33a/Tceg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VTkXaaXGnkMqZVYO4B5+JIYrNSt21fB/8cW5HKqmlog=;
- b=O5HlzSMe5eC4046hkhWgjDlRou17s8KB3SuFOkaB2H8bN/tBXJYsUM+o95hQtOBoay/8TBPvjILaNg5nMoO/GX/dlBYfo3WzctEEMGEaCl4ZAaLXS0rkyaOtTRL1uTE3zj8ogaZEpfmcBw07g2Wga+CBBQ5zx+kJvj2DNhYHgQOzbYOltKjX9WZdZPQwNTfbJFG30Ue4uDmN3X5YNzApw8Gi2vqIBN/51Tv3ODRpiouyxwigibY/D6RS8l/qbPy+p3j94tJhmh9BYq4cJBqaeyfwa2lLMRinVuP71E7X7/jAbRtceLPSmFzvt9HGzNr5uvyKeQ20ISVqT407o0hAHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SN7PR11MB6776.namprd11.prod.outlook.com (2603:10b6:806:263::21)
- by DS0PR11MB8181.namprd11.prod.outlook.com (2603:10b6:8:159::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
- 01:45:24 +0000
-Received: from SN7PR11MB6776.namprd11.prod.outlook.com
- ([fe80::9c32:5b6b:3a48:dfa1]) by SN7PR11MB6776.namprd11.prod.outlook.com
- ([fe80::9c32:5b6b:3a48:dfa1%6]) with mapi id 15.21.0159.018; Wed, 1 Jul 2026
- 01:45:24 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "Hansen, Dave" <dave.hansen@intel.com>, "Zhao, Yan Y"
-	<yan.y.zhao@intel.com>
-CC: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Huang, Kai"
-	<kai.huang@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kas@kernel.org" <kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
-	"mingo@redhat.com" <mingo@redhat.com>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "hpa@zytor.com"
-	<hpa@zytor.com>, "Annapurve, Vishal" <vannapurve@google.com>,
-	"tglx@kernel.org" <tglx@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
-	"bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v6 06/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
-Thread-Topic: [PATCH v6 06/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
-Thread-Index: AQHc7LhTkBJCRmynDUGCQ1lB6jZxi7YgAfsAgACB1YCADimiAIAA1LqAgABlRQCAAE5egIAEST4AgCOeEoA=
-Date: Wed, 1 Jul 2026 01:45:24 +0000
-Message-ID: <173092378dcc803463b8d2af9f6f3ab6a908f77b.camel@intel.com>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
-	 <20260526023515.288829-7-rick.p.edgecombe@intel.com>
-	 <ahVghgNAe4JrmlQH@intel.com>
-	 <fe08f03a22acfe758cd97f7c2880deeafbc5fe58.camel@intel.com>
-	 <aiGq7XjmMrsqdBY5@thinkstation> <aiJhScChLZkH44eB@intel.com>
-	 <aiK1_q8beMcIEiwO@thinkstation>
-	 <572868d7-4794-4fec-b80f-97d8434d5fb6@intel.com>
-	 <aiaQaCzL8o2yLu/2@yzhao56-desk.sh.intel.com>
-In-Reply-To: <aiaQaCzL8o2yLu/2@yzhao56-desk.sh.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.44.4-0ubuntu2.1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN7PR11MB6776:EE_|DS0PR11MB8181:EE_
-x-ms-office365-filtering-correlation-id: a36ee0d5-0882-4b6e-7ada-08ded7126b88
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|7416014|11063799006|56012099006|4143699003|22082099003|18002099003|38070700021;
-x-microsoft-antispam-message-info: I+2uEh7Djm4YKH/C5p5u9qbT7ekeskrGlGEFtb8WTi8tDOWK4ksk0TytyxMD209XhHWk/O/kSgt4JvU2yUSATRtDUQfK9lzj3lczoKc17p/7Od02bGblKsoNiJYP17msTD1qSIFruiaAcvy7KJY1zvilnT0BKwhyX49mdHQaf/6mWtZDFP3SGUQjbd7YOf87WHF7XTE4oqcBBs4v9TqZMj3M4r44BekUjJ4NY1WsFipWN51TWO/e11mGprJyCTpBoEFRfj81Rag4a6udFlFrTATzSdWTEkZ0Maohu9j5fCJLkIF3JdWrPTzujCGC7YSkwRZpMaYfWytDgbLITmKNwm7i6el1kiLTJRi/W9l5CJuHFNtepCFcv1a2hgQJrfCzcFU0LDZQLjTjhlgbP0JvD3d7PGMLv30RDOp430/VlQCpcixsvTVZw3Yq9uhQUwApfkeqhlnXouawxBNKv7Kc9fHkkhG4oOhh3GWigtAa73+yEY1bT5rtG5QQGrjEm8vEFRNBy9xNM8HH68g9mAIE4AWFriTT5/uhUuiEVKYfruDawWt8P7lL6QEuvn+/N7xLnFUlfiB1Gz5scI51c+XdrdEL8kUjL/7S+mxEDhfxdg4MypCg3CFr8NDLZCzEgPnxZxiPbP7U1/jG5VIfifGrAfwD5+TFFo3bNeMgNifY6xxwBgvpPMXp+k6C+ZG94FGEBzEl9cMktMVfUR3dJtn/yB1zo0iQEJivaNeGEbtyGjs=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB6776.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(7416014)(11063799006)(56012099006)(4143699003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Y1R2UDQ1Vy9tM3k2b0hVekxQVkhPZ2VieU01ek5yU0ExY01CY05lVjhtMFFT?=
- =?utf-8?B?Zi9LMVgxK1BEUXY3M0JnUUFFYnFtN1NPTUY4UzJPa2xRZExBY0UzcUgvdEZV?=
- =?utf-8?B?RW9DR282Z3h1eDFjb09tLzlaMEhZZXdYRm1zWTFqTktMZjZHV0VNVW9mSmhG?=
- =?utf-8?B?MDA3VW5IU0lvbkNmOXRlVWFqSkdISjJmdERacVdVSlMxZjV1UWxDTkZxQVpG?=
- =?utf-8?B?UG1CWXBSangrU0lLRE5XTGxwOHVRWUdZSEwzVUVoT1RFcFZ6c2dIdXl5eVk0?=
- =?utf-8?B?OVhpc2x6ZGU1UmIrN0N0YVp6ZjJJVjBXZENqZlh1U0VFRE5KWkJsaktyOVoz?=
- =?utf-8?B?WFhva2VwL0NOZkZiaG1yQUUvb1J3Z2RUalRXRHAxVzdEMEllNzBSclNScWlD?=
- =?utf-8?B?TmJTQkZlREQ4Y2QrT0lkVjZUUGlTU0dhTTlnM0wyWnpEVzVPTGNIcFJWUUlZ?=
- =?utf-8?B?Z3dFN3YwM21aN3dsak5FYzVwSEt3azgwMTFUWStCcmNQSUxrdzF3MVpsRzFr?=
- =?utf-8?B?TW9DSU8vT1FURGNyWVIyTFVOdVloaHA5TC9NK3FkMHFmL0Y5ZXY3VUNoZmZI?=
- =?utf-8?B?WDJWcjBKVnNWWmw5MWFzZ1g3MitQNlJKUnMxS3dRenBMNHJBU3lkT0RDR3NV?=
- =?utf-8?B?Y0kyeXAwcGNVUjZxd2RYQzEzYkZXejA2MGZESWkrWkRJdG5XUERMbk03dXFW?=
- =?utf-8?B?K3ZkOCtnWGFReTdVWlNhVUN3bTNqSlJkeU9QbWE2UEl1QnNpN1FPU2lOcGhS?=
- =?utf-8?B?ejJZME9UQTkzc3NqemhCL09PSDN0ZTNnZ2ptSE9wRGsyTHluS2UxdEsyY3NP?=
- =?utf-8?B?cDh2RlRaUjRDVUNXa0hGQzdCYm9ha0g0WlpPcEJGY29EWEdGUlEvMmFaWFda?=
- =?utf-8?B?eHBZRXJ0RmtBUVRQay9SOW5VRkNZNjJpdW4xN0NMMDkvdHEybWt4OW5MdGMx?=
- =?utf-8?B?NEEzNXFIbGFTVXVwVVJ2Z3pQRlV1SXRJZGI5eldPYU1PZkNEd1h5SU9yelhz?=
- =?utf-8?B?enRjeG9pd25GaUlTandSWkVPck4rbGlZSUUwcTA2L3dpYTg1d0hEdE1HQUl5?=
- =?utf-8?B?SUNwL2dGRzF2OFdkU2JmeHRSNVVZbXdpSlF1RitjUittWktKVVlkSXlUUzRQ?=
- =?utf-8?B?TlZSazdROGdLamRLZDEyeGRRaDU0cHpzRW5PNyttSkNqSDhpSGtDek50VldX?=
- =?utf-8?B?dVQxeDVjK2pJRmltVW5xMlNvVGFWTFJQNUFKTlJZejZVb1QwMDNGb0RrMVJs?=
- =?utf-8?B?cCtGWE5tbk1DUlE2a3hJTC85TGRNalJiSzZIVEtjTXh1ek1qV0dLMjZEby9p?=
- =?utf-8?B?NUZOWm9NOVdaTysxSG5LKzZhN3lwYVhLcW9VMGxleXFBdnpVS1YrYU5jVGRV?=
- =?utf-8?B?RHNFV0pITTdDYkM5SVhOcERXRFFDekU1NWhrM3o1RUZTSDcvL0M0NCtqbG9j?=
- =?utf-8?B?Nm1iR3R4UnoxU2dGNVpPbU5Fa2lWZGwzNGYvYjF4eEJTVnJLbEozNHJSbytZ?=
- =?utf-8?B?ZDZCdDlnb2lGa3c3TzdNcHRkQWh2SzBhU1dmUXBZTkhRcVo3N0lJRlhXbjBk?=
- =?utf-8?B?ZEtBRHlvMytEN2FUM0htUitUeGFMdG1aQ2R5RTNRT010T1dCK2NGTG0wZWZv?=
- =?utf-8?B?ZXoxN3pNczdsVzJZUE0vKzVUM1dkT0RRYmlKZGVTQmQ4WnhTZGwxR0k1aUFl?=
- =?utf-8?B?ZzN2VU9JWE1IMFNlaTA5cUtQNGY3ZE5EUUNFeGw0OG85d0U4dXRVOEZYZnVp?=
- =?utf-8?B?Wm1mZFpjOWQ0dldhVVdXOTNJeDlSSDhwdWduWjE0SXZiSmk5RGI0MnFDZGZa?=
- =?utf-8?B?N2lWNjluMnloWk8wSk1YanVVTTZQaWVFRkdLOHJhT3JFUkY5RGh1c3o2bFd1?=
- =?utf-8?B?OTVGMGFtMkZaTGU0SSt6MGxZa2NNVlVKbGo5ZVQ4YUh0L0JCQU1uRUJRTEdh?=
- =?utf-8?B?Qm9oa0NtSmZSUkhvV1hGNURoV2NoNU04Vmp5L21ocXgrWldmMStWam12RmdP?=
- =?utf-8?B?UTlQZnpFR0VyR3ZDOHlIem5tMWRubzJYWGF0STNtenppSHdGdmdhOU5HeEJD?=
- =?utf-8?B?N1FILzRLekt0ZXl3Q1ZLSDdsU3lHdFpmSko3UTBxTVRFTmNTZUNKWXhPdW13?=
- =?utf-8?B?S0JXaDh3Z1BkL1czbWZDVTN4cDVTYjZSYkxoRFVBWWppcFFVQzd3SERIZllM?=
- =?utf-8?B?b0VsWXAya1R1NUpYNDFHNWRqV3ZxT0toZ0xEWDVYbXVEMjhRTFNKU3d5ek5X?=
- =?utf-8?B?ODB3blo1YVJVY2N0RGFVMlRqYTVPWnBjQ3RkdDhQS0NJd3d3amY1ckFhNUxQ?=
- =?utf-8?B?dVY2Qy9WKzd6QnhuMlN6cCtYQStkUEtHRFlwcG9TNkxoREN4Ni9lc1pMbzBi?=
- =?utf-8?Q?kONNBJLFzX42jBpc=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E53DE1E6CFABE74F8F3D6D35F9AA6C92@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+X-CSE-ConnectionGUID: 9KDU+YqdRGm/U1dNJy6lgQ==
+X-CSE-MsgGUID: vCYQZTj6StOXQ/yM4hnFPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="245334295"
+X-IronPort-AV: E=Sophos;i="6.24,235,1774278000"; 
+   d="scan'208";a="245334295"
+Received: from gmgwnl01.global.fujitsu.com (HELO mgmgwnl01.global.fujitsu.com) ([52.143.17.124])
+  by esa4.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 11:15:27 +0900
+Received: from az2nlsmgm2.o.css.fujitsu.com (unknown [10.150.26.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mgmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 985C5CA50;
+	Wed,  1 Jul 2026 02:15:25 +0000 (UTC)
+Received: from az2nlsmom3.fujitsu.com (unknown [10.150.26.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 437F91C4DE99;
+	Wed,  1 Jul 2026 02:15:25 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.8.91.60])
+	by az2nlsmom3.fujitsu.com (Postfix) with SMTP id BF254100A6C3;
+	Wed,  1 Jul 2026 02:15:16 +0000 (UTC)
+Date: Wed, 1 Jul 2026 11:15:15 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+Subject: Re: [PATCH v14 00/44] arm64: Support for Arm CCA in KVM
+Message-ID: <akR0eX0nCumIgnlh@FCCLS0092175.localdomain>
+References: <20260513131757.116630-1-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: n1N2q3UDgbcsNuHwU1TkPn9r11QdmLsayQ5AY2V8krsDgWI6Gt+w5o63Zlit1mrjtNHNM4ttAm00tCzNK0y1Kqzd40OUXCjXm4Z5IjL/gEuCKUm/oQ7GP6R5CRAnf6xGuZ1y6BMRbQNm5SYja79O0eExIDQgunNj8HVZCrqWdmZE4mNRrXQBuJcBmU3bXcV13s4JUBDkHFPc2kXCFktNykQVNIrvQJjA6bLzshr8MFzur4GAG1xxBaJBR5JjomrCtmdqXlRMZ2nMyBVlBIUkIKwlSTN7zoXlBBm+prv43upGSxBzVXXOLXElvJp5n6YjKprIB29P8C0UWZnoIFtPJw==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB6776.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a36ee0d5-0882-4b6e-7ada-08ded7126b88
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jul 2026 01:45:24.6595
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: JXZaTqyacD/TvPm8Z3kvb7Esmd0tgON/mdYqSe3PL9QZAimCQUR6pvaIqwknjoKNi+ZtgPOepS3EJOXvHbWSVEyncpNju0cDLrUa7kgKOow=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8181
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260513131757.116630-1-steven.price@arm.com>
 
-T2ghIFlvdSBhbHJlYWR5IGRpZCBzb21lIHRlc3RpbmcuCgpPbiBNb24sIDIwMjYtMDYtMDggYXQg
-MTc6NTAgKzA4MDAsIFlhbiBaaGFvIHdyb3RlOgo+ID4gSG93IGltcG9ydGFudCBpcyB0aGlzIHBh
-dGNoPyBJIHNlZSAiT3B0aW1pemUiIGJ1dCBJIHJlYWQgIk9wdGlvbmFsIi4KPiBUaGlzIHBhdGNo
-IHJlZHVjZXMgdGhlIG51bWJlciBvZiBnbG9iYWwgcGFtdF9sb2NrIGFjcXVpc2l0aW9ucy4KPiAK
-PiBSZWZlcmVuY2UgdGVzdGluZyBkYXRhIHdpdGgvd2l0aG91dCB0aGUgb3B0aW1pemF0aW9uOgo+
-IChjb2xsZWN0ZWQgb24gbXkgU1BSIHRlc3QgbWFjaGluZSkKPiAKPiBCb290aW5nL3RlYXJkb3du
-IG9mIDEgVEQgKDggdmNwdXMvOEcgbWVtb3J5KSBwZXIgaXRlcmF0aW9uOgo+IMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCB8LS0tLS0tLS0tLS0tLS18LS0tLS0tLS0tLS0tLXwtLS0tLS0t
-LS0tLS18Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgwqAgYXZnICh1cynC
-oCB8wqDCoCBtYXggKHVzKcKgIHzCoMKgIG1pbiAodXMpIHwgCj4gwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgIHzCoCB3L2/CoCB8wqAgdy/CoCB8wqAgdy9vwqAgfCB3L8KgIHwgdy9vwqAg
-fMKgIHcvIHwKPiAtLS0tLS0tLS0tLS0tLS0tfC0tLS0tLS18LS0tLS0tfC0tLS0tLS18LS0tLS18
-LS0tLS0tfC0tLS0tfAo+IF9fdGR4X3BhbXRfZ2V0KCl8wqDCoCAywqDCoCB8wqAgMMKgwqAgfMKg
-IDU3OMKgIHwgNTA1IHzCoCAywqDCoCB8wqAgMMKgIHwKCiBeIGl0IGxvb2tzIGxpa2UgdGhlIG9s
-ZCB2ZXJzaW9uLiBJcyB0aGlzIG9uIGEgaHVnZSBwYWdlIHN0YWNrPyBPciBqdXN0IHBsYWluCmR5
-bmFtaWMgUEFNVD8KCj4gX190ZHhfcGFtdF9wdXQoKXzCoMKgIDDCoMKgIHzCoCAwwqDCoCB8wqAg
-NTYzwqAgfCA0OTYgfMKgIDDCoMKgIHzCoCAwwqAgfAo+IC0tLS0tLS0tLS0tLS0tLS18LS0tLS0t
-LS0tLS0tLS18LS0tLS0tLS0tLS0tLXwtLS0tLS0tLS0tLS18Cj4gCj4gQm9vdC90ZWFyZG93biBv
-ZiA1IFREcyAoZWFjaCBURDogOCB2Y3B1cy84RyBtZW1vcnkpIGNvbmN1cnJlbnRseToKPiDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfC0tLS0tLS0tLS0tLS0tfC0tLS0tLS0tLS0tLS18
-LS0tLS0tLS0tLS0tfAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqDCoMKgIGF2
-ZyAodXMpwqAgfMKgwqAgbWF4ICh1cynCoCB8wqDCoCBtaW4gKHVzKSB8IAo+IMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgdy9vwqAgfMKgIHcvwqAgfMKgIHcvb8KgIHwgdy/CoCB8
-IHcvb8KgIHzCoCB3LyB8Cj4gLS0tLS0tLS0tLS0tLS0tLXwtLS0tLS0tfC0tLS0tLXwtLS0tLS0t
-fC0tLS0tfC0tLS0tLXwtLS0tLXwKPiBfX3RkeF9wYW10X2dldCgpfMKgIDE1wqDCoCB8wqAgMMKg
-wqAgfMKgIDE3MjMgfCAxMzg2fMKgIDLCoMKgIHzCoCAwwqAgfAo+IF9fdGR4X3BhbXRfcHV0KCl8
-wqDCoCAwwqDCoCB8wqAgMMKgwqAgfMKgwqAgNTYyIHzCoCA3MzN8wqAgMMKgwqAgfMKgIDDCoCB8
-Cj4gLS0tLS0tLS0tLS0tLS0tLXwtLS0tLS0tLS0tLS0tLXwtLS0tLS0tLS0tLS0tfC0tLS0tLS0t
-LS0tLXwKCgpEaWQgeW91IHJlY29yZCB0b3RhbCB0aW1lLCBvciBudW1iZXIgb2YgaW52b2NhdGlv
-bnMgdGhhdCB3ZSBjb3VsZCB1c2UgdG8gdHVybgp0aGlzIGludG8gc29tZSBtb3JlIHJlYWwgd29y
-bGQgaW1wYWN0Pwo=
+On 05/13 14:17, Steven Price wrote:
+> This series adds support for running protected VMs using KVM under the
+> Arm Confidential Compute Architecture (CCA).
+> 
+> This is rebased on v7.1-rc1, but still targets RMM v2.0-bet1[1].
+> 
+> The major updates from v13 remain but have been more fully implemented:
+> the RMM uses the host's page size, range based RMI APIs mean we don't
+> have to break everything down to base page sizes, the GIC state is
+> passed via system registers, and the uAPI has been simplified.
+> 
+> The main changes since v13 are:
+> 
+>  * The RMI definitions and wrappers have been fully updated for RMM
+>    v2.0-bet1. In particular the temporary RMM v1.0 SMC compatibility
+>    patch has been dropped.
+> 
+>  * The PSCI completion ioctl has been removed. RMM v2.0-bet1 still
+>    requires the host to provide the target REC for PSCI calls which
+>    name another vCPU, but KVM now performs the RMI PSCI completion
+>    automatically before entering the REC again. Userspace no longer
+>    needs to issue KVM_ARM_VCPU_RMI_PSCI_COMPLETE. A future spec should
+>    remove the need for the host to provide the MPIDR mapping.
+> 
+>  * The generic RMI init, RMM configuration, GPT setup,
+>    delegate/undelegate helpers and SRO infrastructure have moved out of
+>    KVM into arch/arm64/kernel/rmi.c. RMI is expected to be used by
+>    features outside KVM, so this code should be available even when KVM
+>    is not built.
+> 
+>  * RMI_GRANULE_TRACKING_GET has been updated to work on a range, this
+>    allows it to work when the region is not aligned to the tracking
+>    size. Solves the problem reported by Mathieu[2].
+> 
+>  * SRO support has been moved earlier in the series and improved. It
+>    provides a cleaner way for the host to provide the RMM with the extra
+>    memory it requires. However support is still incomplete where the
+>    TF-RMM code does not yet implement it. This is noted by FIXMEs in the
+>    code.
+> 
+>  * The ARM VM type encoding has been reworked to coexist with the
+>    upstream pKVM KVM_VM_TYPE_ARM_PROTECTED bit.
+> 
+>  * The private-memory documentation now notes that arm64 uses
+>    KVM_CAP_MEMORY_ATTRIBUTES.
+> 
+>  * PMU support is dropped for now. It will be added later in a separate
+>    series. Similarly for selecting the hash algorithm and RPV.
+
+Hi Steven,
+
+Is there any plan to add support for selecting the MEC policy (shared or
+private)? We have been working on adding support for this on top of your
+series. If this is not already in the works, we may upstream our
+implementation later.
+
+Thanks,
+Kohei
+
+> 
+> There are also the usual rebase updates and smaller fixes, including
+> changes to the RMM v2.0-bet1 range APIs, removal of REC auxiliary
+> granule handling, fixes to the address range descriptor encoding, and
+> cleanups around realm stage-2 teardown.
+> 
+> Stateful RMI Operations
+> -----------------------
+> 
+> The RMM v2.0 spec introduces Stateful RMI Operations (SROs), which allow
+> the RMM to complete an operation over several SMC calls while requesting
+> or returning memory to the host. This allows interrupts to be handled in
+> the middle of an operation and lets the RMM dynamically allocate memory
+> for internal tracking purposes. For example, RMI_REC_CREATE no longer
+> needs auxiliary granules to be provided up front, and can instead
+> request memory during the operation.
+> 
+> This series includes the generic SRO infrastructure in
+> arch/arm64/kernel/rmi.c and uses it for REC create/destroy. The other
+> cases are not yet used by TF-RMM and a future revision will be needed to
+> finish those paths in Linux.
+> 
+> This series is based on v7.1-rc1. It is also available as a git
+> repository:
+> 
+> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v14
+> 
+> Work in progress changes for kvmtool are available from the git
+> repository below:
+> 
+> https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v12
+> 
+> The TF-RMM has not yet merged the RMM v2.0 support, so you will need to
+> use a branch with RMM v2.0-bet1 support. At the time of writing the
+> following branch is being used:
+> 
+> https://git.trustedfirmware.org/TF-RMM/tf-rmm.git topics/rmm-v2.0-poc_2
+> (tested on commit 3340667a291a)
+> 
+> There is a kvm-unit-test branch which has been updated to support the
+> attestation used in RMMv2.0 available here:
+> 
+> https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca cca/v4
+> 
+> [1] https://developer.arm.com/documentation/den0137/2-0bet1/
+> [2] https://lore.kernel.org/all/acrj-cKphy4hJsEG@p14s/
