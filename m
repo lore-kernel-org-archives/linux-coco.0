@@ -1,161 +1,120 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EBD3F4DFD
-	for <linux-coco@lists.linux.dev>; Wed,  1 Jul 2026 13:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A448492508
+	for <linux-coco@lists.linux.dev>; Wed,  1 Jul 2026 13:36:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782912361; cv=none; b=Ms0FoU31EVexDR9MfsExAtvOdE5vokItAXI2UPAZrCc398t4UVk4otmckjnUcpMX5rbLKNIgakB6+BOGW5lvYTlEpoWk7D+Ifb9DGBIhrM7hRS/dSVbFheCO04w+bHbDsc8TWPKlywuki5zMRlyvi406Gab4GqAI1U6ToGdxbks=
+	t=1782912990; cv=none; b=hocwDTczltAe1j7uWQgoZEHPVMDURp6eLA2p7JgaTSLuZZwf+A6WLX4Ov6v53/4+wgC3cb08PSZiUnYAQgOUShetd5Mb1kCzmyhdoIaNUEgLlJxvfJU0YWyyiIobKrKtIW7YHCQr4U7c3Jqn8cccPUIeTtVjXD71uNM2ul/ew2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782912361; c=relaxed/simple;
-	bh=8nfXIomqSXgIICZsYr/d0hMEYIbWZJBgkVXniOZmk9c=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=blZwgEk4wNq1ASAMVUxBw6OVK0ghzTI3tZw8+zbxXEyNiTG4wHUs8rTzevDs/kZzFql7sCLhgG31PbsWqV+8mpb7yPzGXU5EmJg/u4Tw3qqLtt9K9AwSqbJR43J0WphGsWUSjpXfO6zsm3zPricwKbJ/zzlIQoBVLZNmRpOP5cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Rg2eCsG6; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782912990; c=relaxed/simple;
+	bh=kj8tVAMeyk2zaR0NgWiJc61AewxzrxHInMMw+uxN4yE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bW3Z/u+fLT3G9zJtfwXAFoKhivRg+9tM1IKZoJ3KMp4T0PG1qG1bq0835lbg/RmhmqqvKJ6Qk/Sb4EEEKuagK+04jiaSnFKeYmYwZp/3QWQ+K9atBsyiVHyZHdJtlRH7AJmjjepRJowOYovmiGAeESTNglv5nBTUm7XL+EuE5RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T6uV0JT5; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Rg2eCsG6"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c88aab7c1d4so462076a12.3
-        for <linux-coco@lists.linux.dev>; Wed, 01 Jul 2026 06:26:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782912359; x=1783517159; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nfLgJd4SFiMfB5hvCG5v1jWKkuB92AfQ/vUitXihKB8=;
-        b=Rg2eCsG6b5MBTFxaYh8tMykNGNqDgnk40zig64vH3aNaS/FQaW+T1Tti5Enl42GLxc
-         UdYwYsFT1yyUP1HvtNnDw7fAQFOQ6S7bKHfTjMYT0DECwSidkrh4HEQs8EoeXJ1zHujb
-         0r4zXjsKu4KhPCuQqw1qQBtuHI7eSCHKd7YJPYfq1FOKVQMUFn6Le8e2XhxwYa7mXDQT
-         hItdH9giPp1dc/Iu0mXkl59e9stPn0MJZiupUVqAntvxfWVH9X875ftOCeZYk66xlOL9
-         c1TxGddIv7gER/Ar388oEK77mDxDaWOhER1rVU9VIsO3HUmMCYHn2kAgXGUCOJIpRmLm
-         UQrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782912359; x=1783517159;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nfLgJd4SFiMfB5hvCG5v1jWKkuB92AfQ/vUitXihKB8=;
-        b=FkQa4Z0tj3qZItod+IeYItR4KvmM6JYDPSN3nOYOJJGgH5sNYzE5LEM+zGnZa10RZc
-         M07bGr9PC5atrGrXV3tGeEcY1XNqmK0jG2zWindmR2JisSOPdn0IfdraaPrkKZEwjPd+
-         q9zCc9x74Ibf7iFPi9Xhs1MGEu191QWBEJUbDcTc0O+i9PGuiPa4JBof4UVWeXnvvIGS
-         5xGzxy6tr5boMUASmLgn4Rt2QEtSXBJxMvcL1fF8guFFcSj6rXGR+/TXauNs0hXqAJXP
-         0WXvsEavB9KWQqsxJNKBooiBPS1weGPw2dMbqzXtLBoc3qYERNHtfF8RHC24nhwY9MVZ
-         xrzA==
-X-Forwarded-Encrypted: i=1; AFNElJ/FSXoGe9VKJMeMMyB1rwXqFGBIW7JU8pYI0rbRW75chlmFsQzEnyKEsuHfHcHMjp30sqIIxCPJYrV9@lists.linux.dev
-X-Gm-Message-State: AOJu0YxXQ3HGrYu6UvYDYuqAiwDjD2fWypjwTUWFFCw6Z/9BeZAEACdf
-	DLf8poweEW5TCiv7bKgjKbR2A0whLFFtDeALc+w3gpTD2XdLEUGVaCozMWIY7smJg3WeC0X+LKW
-	svwwesQ==
-X-Received: from pgcv24.prod.google.com ([2002:a05:6a02:5318:b0:c9a:c533:8316])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3944:b0:38d:fad1:cf2a
- with SMTP id adf61e73a8af0-3bfed1b2b94mr1854511637.13.1782912359138; Wed, 01
- Jul 2026 06:25:59 -0700 (PDT)
-Date: Wed, 1 Jul 2026 06:25:57 -0700
-In-Reply-To: <daac026e677c10b68740b16ed8ad2556bd9583f8.1780584300.git.kas@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T6uV0JT5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782912986; x=1814448986;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=kj8tVAMeyk2zaR0NgWiJc61AewxzrxHInMMw+uxN4yE=;
+  b=T6uV0JT5b3ZMcCiBRUQ9GVZzCFZCQ1aNjHGeYnaTKo5zAYrFCQ9fIM01
+   h6h2de9aN320b69eHvSjfYO4XHOiGJKK18UlEWfkhF4Hs/Cwzo0IGH4ZN
+   sJgvOixwyDJZB9mzjkcRa/g7jnont94L8d9EGHy5G0VRNbrfFWUVe2Dt6
+   KsYCh+Irx5R9jk0G0Db+Vvq1m+IoycLIMaxibau+ewlWBOe3ijrZijwuL
+   3+EXmeHCzHS2dccOzv7Y0hT5eQ7MIyQzrKigohkKWFEfMINu87N2AAbV1
+   bB+P8ysE3izUfvJS1KJJ+t/dljzd4ZvjB7poX7yCualHw/ah/zRP6+L9L
+   Q==;
+X-CSE-ConnectionGUID: nh9zb3kcRaycp+iCAPOwzQ==
+X-CSE-MsgGUID: se6pYV22Q1mvPXb2rusYag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="83517670"
+X-IronPort-AV: E=Sophos;i="6.25,141,1779174000"; 
+   d="scan'208";a="83517670"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 06:36:25 -0700
+X-CSE-ConnectionGUID: 1lEryM2mToWTiZ6o+ouDzw==
+X-CSE-MsgGUID: n+BqvtQaR46j02XAnkeYnQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,141,1779174000"; 
+   d="scan'208";a="249205453"
+Received: from meihao-mobl1.amr.corp.intel.com (HELO [10.124.240.18]) ([10.124.240.18])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 06:36:17 -0700
+Message-ID: <81caa42d-9d07-4bed-892d-c24e0b298a1d@intel.com>
+Date: Wed, 1 Jul 2026 21:36:14 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <cover.1780584300.git.kas@kernel.org> <daac026e677c10b68740b16ed8ad2556bd9583f8.1780584300.git.kas@kernel.org>
-Message-ID: <akUVZQ6SgK8wRetj@google.com>
-Subject: Re: [PATCH v4 2/3] x86/insn-eval: Add insn_assign_reg() helper
-From: Sean Christopherson <seanjc@google.com>
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, pbonzini@redhat.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, kai.huang@intel.com, 
-	xiaoyao.li@intel.com, binbin.wu@linux.intel.com, rick.p.edgecombe@intel.com, 
-	david.laight.linux@gmail.com, ak@linux.intel.com, djbw@kernel.org, 
-	tsyrulnikov.borys@gmail.com, x86@kernel.org, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 13/22] KVM: selftests: Set first memory region as
+ shared if guest_memfd
+To: Ackerley Tng <ackerleytng@google.com>, Lisa Wang <wyihan@google.com>,
+ Andrew Jones <ajones@ventanamicro.com>, Binbin Wu
+ <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
+ Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-13-6983ae4c3a4d@google.com>
+ <CAEvNRgEBiivp9tOHZnFmWvF6ek-Ar-m2B+hb=-H0dgAcM2=z8Q@mail.gmail.com>
+ <f8937d16-4aed-44d9-a058-beff56eac4ad@intel.com>
+ <CAEvNRgFLjt+-cO-XT0s8uW2xXgyd+VVZ0g0Os6V0+LBFQzx8cQ@mail.gmail.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <CAEvNRgFLjt+-cO-XT0s8uW2xXgyd+VVZ0g0Os6V0+LBFQzx8cQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-In the shortlog, please capture that code is being moved out of KVM.  This isn't
-"adding" a helper, it's moving and renaming an existing helper.   The misleading
-shortlog is quite literally why I didn't look at this for a ~month, I thought it
-was entirely outside of my normal scope.
+On 7/1/2026 2:18 AM, Ackerley Tng wrote:
+>>> I think this patch should fully buy into in-place conversions, so we
+>>> need to also set GUEST_MEMFD_FLAG_MMAP:
+>>>
+>>> @@ -483,6 +483,7 @@ struct kvm_vm *__vm_create(struct vm_shape shape,
+>>> u32 nr_runnable_vcpus,
+>>>    {
+>>>    	u64 nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
+>>>    						 nr_extra_pages);
+>>> +	enum vm_mem_backing_src_type src_type = VM_MEM_SRC_ANONYMOUS;
+>>>    	struct userspace_mem_region *slot0;
+>>>    	u64 gmem_flags = 0;
+>>>    	struct kvm_vm *vm;
+>>> @@ -503,10 +504,16 @@ struct kvm_vm *__vm_create(struct vm_shape
+>>> shape, u32 nr_runnable_vcpus,
+>>>    	 */
+>>>    	if (is_guest_memfd_required(shape)) {
+>>>    		flags |= KVM_MEM_GUEST_MEMFD;
+>>> -		gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED;
+>>> +		gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED | GUEST_MEMFD_FLAG_MMAP;
+>> GUEST_MEMFD_FLAG_INIT_SHARED is valid only when the memory attributes is
+>> per-gmem.
+>>
+> GUEST_MEMFD_FLAG_INIT_SHARED was introduced before guest_memfd in-place
+> conversions, so I think it's orthogonal to whether memory attributes is
+> per-gmem.
 
-On Thu, Jun 04, 2026, Kiryl Shutsemau (Meta) wrote:
-> KVM's instruction emulator has a small helper, assign_register(), that
-> writes a value into a sub-register with x86 partial-register-write
-> semantics: 1- and 2-byte writes leave the upper bits of the destination
-> untouched, 4-byte writes zero-extend to 64 bits, 8-byte writes overwrite
-> the full register.
-> 
-> The TDX guest #VE handler needs the same logic for port I/O emulation
-> to get 32-bit zero-extension right. Rather than copy-pasting the helper,
-> lift it to <asm/insn-eval.h> as insn_assign_reg() so both can use it.
-> 
-> Rewrite the body using arithmetic instead of pointer punning so the
-> helper does not depend on -fno-strict-aliasing 
+But before gmem in-place conversion, i.e., per-gmem attribute, 
+GUEST_MEMFD_FLAG_INIT_SHARED is not supported/valid for Coco VMs.
+>> we need to check KVM_CAP_GUEST_MEMFD_FLAGS or kvm_has_gmem_attributes.
+> I think we do want to deprecate the non-in-place-conversions setup, so
+> how about inserting a TEST_REQIRE(kvm_has_gmem_attributes) here?
 
-Meh, building with -fno-strict-aliasing is 100% mandatory for the kernel.  IMO,
-even so much as suggesting that strict aliasing is something worth shooting for
-is a misleading and wrong.
+Well, then all the TDX and SNP selftest will be skipped on the kernel 
+with gmem_in_place_conversion=false.
 
-https://lore.kernel.org/all/CAHk-=wh921g_+TJ33JRxRGFM2uruMdqG-SONfFOD9UOsLQJ_uw@mail.gmail.com
-
-> or little-endian byte order,
-
-Oh come on, this is low level x86 code used to write registers.
-
-> and add <asm/insn.h> to the header's includes so it builds standalone in
-> callers that have not pulled it in transitively.
-> 
-> No functional change.
-> 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> ---
->  arch/x86/include/asm/insn-eval.h | 25 +++++++++++++++++++++++++
->  arch/x86/kvm/emulate.c           | 26 ++++----------------------
->  2 files changed, 29 insertions(+), 22 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/insn-eval.h b/arch/x86/include/asm/insn-eval.h
-> index 4733e9064ee5..85251e718a77 100644
-> --- a/arch/x86/include/asm/insn-eval.h
-> +++ b/arch/x86/include/asm/insn-eval.h
-> @@ -9,6 +9,7 @@
->  #include <linux/compiler.h>
->  #include <linux/bug.h>
->  #include <linux/err.h>
-> +#include <asm/insn.h>
->  #include <asm/ptrace.h>
->  
->  #define INSN_CODE_SEG_ADDR_SZ(params) ((params >> 4) & 0xf)
-> @@ -46,4 +47,28 @@ enum insn_mmio_type insn_decode_mmio(struct insn *insn, int *bytes);
->  
->  bool insn_is_nop(struct insn *insn);
->  
-> +/*
-> + * Write @val into *@reg with x86 partial-register-write semantics: a 1-
-> + * or 2-byte write leaves the upper bits of the destination untouched; a
-
-Careful with the "upper bits" wording.  As Sashiko pointed out, this is used for
-{A,B,C,D}H sub-registers as well, in which case the *lower* bits are also left
-untouched.
-
-> + * 4-byte write zero-extends to 64 bits (matching IN[BWL], MOV[BWL]
-> + * etc.); an 8-byte write overwrites the full register.
-> + */
-> +static inline void insn_assign_reg(unsigned long *reg, u64 val, int bytes)
-> +{
-> +	switch (bytes) {
-> +	case 1:
-> +		*reg = (*reg & ~0xfful)   | (val & 0xff);
-
-Sashiko's feedback aside, I strongly prefer KVM's approach as I find it much more
-intuitive.  And its far, far more consistent with respect to the 4-byte and 8-byte
-cases.
-
-> +		break;
-> +	case 2:
-> +		*reg = (*reg & ~0xfffful) | (val & 0xffff);
-> +		break;
-> +	case 4:
-> +		*reg = (u32)val;
-> +		break;
-> +	case 8:
-> +		*reg = val;
-> +		break;
-> +	}
-> +}
+I don't object it. But we still need to get Sean's answer.
