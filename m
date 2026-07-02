@@ -1,78 +1,77 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2435353A75
-	for <linux-coco@lists.linux.dev>; Thu,  2 Jul 2026 14:47:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62CA30DD30
+	for <linux-coco@lists.linux.dev>; Thu,  2 Jul 2026 15:19:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783003653; cv=none; b=KaUJphA7LEIdbvOqnf7ENY0BlMa5nLq2ShtU+Ulbb/iqibEnPtq3m2ngfS4mbkPJC55EDV+virPQZcDEaCiSgX9Lfx7RzhR9VPprScmRZ2bxme631qq/hD+lsYExPzPI5ojjv/EJzJtuNAVK9NQqXXbjRCnP8d0L4Z4wFUcwDnI=
+	t=1783005580; cv=none; b=tkqkc/vZ/OAVoNeO6kC1zFQHD2JqR1EcRE4vcT/eFx0x2GxqgmTDarup/n8gWYBniiaf1s13Jt6k3yWmZ6l7ELyRqffadhyag6f/U9wVRjVLr0G/QIadfm4mwUDJf4Ehm5ui57aapWxz66SXCFz4IZwAg3r9Hn+GJT5mWDswAOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783003653; c=relaxed/simple;
-	bh=wPrLPIkahV/48dLiq8gAC7HDusdQj1NNPVoCnuPpx5M=;
+	s=arc-20240116; t=1783005580; c=relaxed/simple;
+	bh=una0b7iSQE3/1X7UfiBFNzSBZGQVECZybRvoQUF1H+I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PzekqfTQ9zHkmlemHfF0YCcLZ1zTyiFgRU/1zH+5Bfoy41s2G8kMZNBpU00mFXUUEZJMJJ4Au7HUhUMSxpauQAfGTM+tIy+/h/sZ5aa6x5POCy4fGz2FCSDZ1W06Q7BHEG77PPFkBe1humUGp0Lb/PK8Mn6DtL3rg+hmV1J4JHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=e/anwoG3; arc=none smtp.client-ip=209.85.160.177
+	 Content-Type:Content-Disposition:In-Reply-To; b=m35COz0KsmTxEk/AbPE/M5NKBbwcEhrUEnhHmAIdaPPw/xGiMVkPcm5XQ5efhIS1kkOO3NWyR2yjxdADtblofrJfwfMnnff3DLD6eOxtrZHAmPtVgwYYaoln2QprtovgHjkJQqnWTYCSXCJt5fNeklbtIk3FSxkOOQEWmtdX/14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=ndwCFHuK; arc=none smtp.client-ip=209.85.219.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="e/anwoG3"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51c08df8513so13020421cf.3
-        for <linux-coco@lists.linux.dev>; Thu, 02 Jul 2026 07:47:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="ndwCFHuK"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8ee43b3e5abso13234696d6.3
+        for <linux-coco@lists.linux.dev>; Thu, 02 Jul 2026 08:19:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1783003651; x=1783608451; darn=lists.linux.dev;
+        d=ziepe.ca; s=google; t=1783005579; x=1783610379; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VHZVkcI1dGlitqBERLzcSZUkSvuExam94MObbuJvLAQ=;
-        b=e/anwoG31Hergg0KVEgIbZj5/SqaoWCwXRJNQWcBpbLJtvc7SL+7ktcXjj6+hxVPUW
-         hzbx0lKe4w+pvCLT8cJsVaEtyBHnIdKLj20bxiRjlzDK7HVgVagjObGZ1uljB6ka9BGT
-         hsoOSgBmdABYIe+ovbxAayzM5yHc+sEmJVzkK9t9RIC/inIdVXIxs1GZlb0UdaoEua3x
-         LKaDvPe8d/ctF9vJTs2LhglylsJBRfi94e31fu07YgrbZMClPkYVx8BwbQPrFf2pFLn5
-         /o3w0/q16qbRByvBQiSyGQZ+olveDhTGBZu0Bb89d/x1GGZQMCDiKFJukmHIbVftvt10
-         jYRg==
+        bh=una0b7iSQE3/1X7UfiBFNzSBZGQVECZybRvoQUF1H+I=;
+        b=ndwCFHuKINeN8wCfTs6+jYDPMQmUa/daKxB176zlXYOdTfSHPbw+c42mmeiUqVg8z7
+         8hOP8V3tagcd7dVj8i3Rkw3rT9PY6V2wZhV2rXC/zbRt3PGL2d6U/qRIhJg04g0ph+ba
+         FMet/MsZSAfFgoCc3MYP1rOF11zJkRxnaceS/BvhiSv6a5pqCImPzVF89eK6gKIziudc
+         +2cn1BLiZIABHt2hY1KyTJ5I3hWjxsIk7HQTVYdqXjWaGpCniL6iO3CfxTJLLSxsZIt0
+         JZkMF0ayA4vSfO4mFkK+JAZLDr8t3pZmryT7Mr+1fu584BaUxkW7Iy8iEZOOufGiXzhC
+         mcIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783003651; x=1783608451;
+        d=1e100.net; s=20251104; t=1783005579; x=1783610379;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VHZVkcI1dGlitqBERLzcSZUkSvuExam94MObbuJvLAQ=;
-        b=Hpb1vegW0JYhhBe38/Ann0bt/PrE68kThVp0D+ubDT9cQGE0QxtysxOa0rvpz4YzQR
-         UoTjJT70EJzAlgqpOjgU+IB37K0NTGmYUGRAtyNrpdosCjg7G3buYdi5OfP7PfBH9r3E
-         MpXVmabsqjE8H6FZyWJRkIhG3JGEZwnEYiHHhz9IMWNx7r/bh5Xo+mPi0N51klZHi0b4
-         fBy7ugV0cKtiXcsgp80p6SeUFMxiDTMNv7GVGJCPgkO0KMERy9ZhHc9Z5sz12NlV+y+L
-         0QNt6paGMVmQ/rL4pVTi8TLeqOP+Hq5MXVAznzRYRLCW35/ZhYbSjxSENWAZtU3PYycj
-         cU5Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9zlYEFIAw9Zh23/qQtsDq5phj0bR7qwr93/hIBPEYJB7fXcmjDIV604w3B0epCkrbGXyIRWuDdZxXF@lists.linux.dev
-X-Gm-Message-State: AOJu0YzyGVu6lQ725EflAD8Zbqsyw36RfZfcerp3lOKJWrTJJFKUDLzR
-	scrn/Goej0ok8Rpg/rUhH5ZuFQY+2j+cEt314dVPRwmi3TtDogYFA2bXyCbXVT5Qpg4=
-X-Gm-Gg: AfdE7ckVmmEJfvLstrTaf5/pOMLeO9BLqoScc0qcBmDj8uUd04r5/4gDnjvlogi4K53
-	OFOpEh2hq4c4L5BM/+OSo3aRXknCIEjuUIqzTst5UppLd8Ky5jkkbXfi+fYvb6lDVxN0F5CwNui
-	u6qx5Pu4xAU38WpHWv04SS5/K79ramVkNsn/Hg+L8R6JFSu/Bza3G6PY3o7mh1011LJ17QTUbhe
-	r98jvsSKzz/3RcCVV0f6XFHgI3nVsxa9e7KWadgVGf/bePIf+yifIrSXZ5Yyu6ThjEUhug2wyf3
-	0R5k4jpEe0lgb4sjSZH2X06mqcFIM0QH2D24NjJVLQZyG7nEQl+oqj5dIJID4Nrj1lvVdDgzmzG
-	pD+5htbgBsJyjPPAIlqjB8ymV0yw97KWoLi3TtuzlfrE8yOyx8Wa0nhFZt6Ij1qrXMYBUQhGyOk
-	AEFczJgYooGOulbNViH3btRn534t3j7j8LFXjVodPTDuvhFzDZPBOQz7kgVt9THxOSPhI=
-X-Received: by 2002:a05:622a:1b92:b0:51c:1ec5:d0f with SMTP id d75a77b69052e-51c2aebaa70mr65534301cf.40.1783003650663;
-        Thu, 02 Jul 2026 07:47:30 -0700 (PDT)
+        bh=una0b7iSQE3/1X7UfiBFNzSBZGQVECZybRvoQUF1H+I=;
+        b=Qv/m289D0NLeMgwXmjAzMir7Im2S8ZclPadu9xBsCHADZIEZCVqltSygvDnLXQ/OT0
+         c3SmwMT//WmLMXgvzzeCUvbp0VuqzlOLhbDEl2DbgqnJYDOiEIanl/jceiP40gYifpCF
+         GUa3L/N/0qvoFo4V2Hv4m48WJTu3uFC9zAXzLwpyXTGTGOEwvgWCrq4D+3CGSh6WBgeN
+         djkqhuuW6TUPMhMcoLnm2k/apzgDYiY6C42t5itONXwalNgPU5TBy/oeumpNEgovANdE
+         20AUl4+L0HdRKzAADggfBL/36REFTFGsxN9H+DOk6zkp/4hXRvvg3N706l18FCTj1prj
+         aJvA==
+X-Forwarded-Encrypted: i=1; AHgh+RoYFAysIEY+KbkjPJkWz8J2X2/2be0atmZOmNq+yDDZBt+CB5qddNsfdWfLb2gspGkNOvf5ZxgnVVmM@lists.linux.dev
+X-Gm-Message-State: AOJu0YzSlVbRG5h4JCF5Gw9gNWGH9C095hPSQRfQe1bIUntzOWNHNMu9
+	r4B0dJ31SebCbNjf+lwxNeYwGqYBma3mc++806rM00o+H9iHUUqgssHekjzHpd+kn04=
+X-Gm-Gg: AfdE7ckn1ZQQ2EtKqoPzDUx+QnC0l8mj/wH1++HfiYkJDP7WPcFGFly/M2IoCF2aJwK
+	WBnhjXxQQdH2MZ8Vp93boO+MdXpvXVn8Tm0ReAyN0KVsfTAS+3SbYrtmZfP/vu/v1otjZ7LTYlI
+	/7Jtr+X1gwJ2zgnZlud29g4I2t2RqMrpdV0wXxGD1oE6uvIWzO2O8ZVwhJZBqYegQvJ5H3kurOU
+	oxDLxGfICWpYMv9k46WdLtybVgO+GkOhZT0Y2DuxMvbmeNqcpixkrHBW9BmlScAS8RxSd9HAqXk
+	wvTvO4uI02tyze9sG26PHx0+YthMUVxuhB8BJci2ZxBeXHL7yCf+1i/bLgFtg0cIxxlAvBRCZA6
+	pbW0zMDSFdEJKQHVmsXg/kOQNIQrylK7ZWZZe0VprprkU40ndjeDG7yYJ7Lan+f+o92fSxqpjqA
+	GN4sEIedWPRGMo52SXYaeFE2Ep//1+ajcKYtL+9KzjIrFXv1oI6SCNIc34a/JnniGiLHY=
+X-Received: by 2002:a05:6214:4208:b0:8de:16a7:fbe3 with SMTP id 6a1803df08f44-8f3c863d139mr68985636d6.31.1783005578597;
+        Thu, 02 Jul 2026 08:19:38 -0700 (PDT)
 Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c30c61857sm15516901cf.28.2026.07.02.07.47.29
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f471de93a1sm27985376d6.34.2026.07.02.08.19.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 07:47:29 -0700 (PDT)
+        Thu, 02 Jul 2026 08:19:36 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1wfIhN-00000005tmX-0mNc;
-	Thu, 02 Jul 2026 11:47:29 -0300
-Date: Thu, 2 Jul 2026 11:47:29 -0300
+	id 1wfJCR-00000005wsj-2X8o;
+	Thu, 02 Jul 2026 12:19:35 -0300
+Date: Thu, 2 Jul 2026 12:19:35 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	Catalin Marinas <catalin.marinas@arm.com>, iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
 	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
 	Steven Price <steven.price@arm.com>,
 	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
 	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
 	Petr Tesarik <ptesarik@suse.com>,
 	Dan Williams <dan.j.williams@intel.com>,
@@ -87,19 +86,20 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	Vasily Gorbik <gor@linux.ibm.com>,
 	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
-	Jiri Pirko <jiri@nvidia.com>, Michael Kelley <mhklinux@outlook.com>,
-	"Cheloha, Scott" <Scott.Cheloha@amd.com>
-Subject: Re: [PATCH v6 03/20] dma-direct: use DMA_ATTR_CC_SHARED in
- alloc/free paths
-Message-ID: <20260702144729.GP7525@ziepe.ca>
-References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
- <20260604083959.1265923-4-aneesh.kumar@kernel.org>
- <845d0c8a-6d51-47aa-8e0b-8381e733444a@amd.com>
- <20260617154101.GE3577091@ziepe.ca>
- <25155bd6-4348-4aa8-ba70-0a882fc84db9@amd.com>
- <20260630160242.GI7525@ziepe.ca>
- <98800d21-18f6-44d6-9ba0-da9b77567d85@amd.com>
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
+Subject: Re: [PATCH v6 00/20] dma-mapping: Use DMA_ATTR_CC_SHARED through
+ direct, pool and swiotlb paths
+Message-ID: <20260702151935.GR7525@ziepe.ca>
+References: <2ecfa1a8-6202-4319-9692-a6ffeb5a3dbf@amd.com>
+ <yq5aqzm4dz25.fsf@kernel.org>
+ <20260618153705.GH231643@ziepe.ca>
+ <yq5ao6h6enhm.fsf@kernel.org>
+ <20260619122148.GL231643@ziepe.ca>
+ <yq5aldcaejos.fsf@kernel.org>
+ <20260619140616.GB1068655@ziepe.ca>
+ <yq5ao6gtoncp.fsf@kernel.org>
+ <20260630174216.GK7525@ziepe.ca>
+ <yq5abjcro17x.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -108,27 +108,15 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <98800d21-18f6-44d6-9ba0-da9b77567d85@amd.com>
+In-Reply-To: <yq5abjcro17x.fsf@kernel.org>
 
-On Thu, Jul 02, 2026 at 10:25:16AM +1000, Alexey Kardashevskiy wrote:
+On Wed, Jul 01, 2026 at 08:39:06AM +0530, Aneesh Kumar K.V wrote:
 
-> > > not externally available so I'll have to trick the DMA layer into
-> > > using SWIOTLB (which is still all shared, right?) as I specifically
-> > > want to skip page conversions. Setting low DMA mask won't guarantee
-> > > that the DMA layer won't allocate a page outside of SWIOTLB and
-> > > convert it. Manually do
-> > 
-> > Why so particular?
-> 
-> aahhh I missed "pre-". I need a way to get pre-shared pages for my
-> sev-guest activities.
+> This is the only code path where we need to special-case host memory
+> encryption. For this reason, I have avoided renaming
+> io_tlb_mem::cc_shared to io_tlb_mem::unencrypted. I can send a v7 with
+> the above and we can review the changes based on that?
 
-It sounds to me like you don't, what you are worried about is
-optimizing the dma_alloc_coherent flow to avoid fragmentation and all
-CC architetures require this optimization.
-
-So I'm strongly against you trying to open code something in your
-driver. Use the DMA API as-is. Propose general DMA API improvements to
-reduce the fragmentation problem. It is a real problem.
+I'm OK with this
 
 Jason
