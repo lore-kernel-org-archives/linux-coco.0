@@ -1,206 +1,134 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E1B4E3795
-	for <linux-coco@lists.linux.dev>; Thu,  2 Jul 2026 14:46:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2435353A75
+	for <linux-coco@lists.linux.dev>; Thu,  2 Jul 2026 14:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783003580; cv=none; b=gmXsKMxeMnK3ohC9mjjT9cgSh1yFucozXfQUyjxbPeG52hbydF5Mw/KAbO2BjoZMVN9cUPbRk5pxpE8aKRC57f/uWz+q8KWemci6FtT+8nUptxgfPW1hFFiNhCcLhVJdOGB7FisYV2ab7/+G2yoGxGgQ6eIuH9zLuxbaLd0rSNw=
+	t=1783003653; cv=none; b=KaUJphA7LEIdbvOqnf7ENY0BlMa5nLq2ShtU+Ulbb/iqibEnPtq3m2ngfS4mbkPJC55EDV+virPQZcDEaCiSgX9Lfx7RzhR9VPprScmRZ2bxme631qq/hD+lsYExPzPI5ojjv/EJzJtuNAVK9NQqXXbjRCnP8d0L4Z4wFUcwDnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783003580; c=relaxed/simple;
-	bh=AhGEHMjoSFJS41jJNuP3r5KzF4DiP4K+TE056Rzwp7Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AswCxLmMiWRK16W1kWhPJo0R2OmcqaOBCrlWD/SLRvlSkCMNCOSBp7naMpejjZGqZOb00LifB6sAtEOd80L7VxEAHh5Oy9QFIQ7eLLX30lWSc6O9U2IYVVWW05fkUraTafoiDJWLGVJozagBE5wT7IQ8PrfpjR4mF8GSw59D4Ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yhg8/ClM; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1783003653; c=relaxed/simple;
+	bh=wPrLPIkahV/48dLiq8gAC7HDusdQj1NNPVoCnuPpx5M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PzekqfTQ9zHkmlemHfF0YCcLZ1zTyiFgRU/1zH+5Bfoy41s2G8kMZNBpU00mFXUUEZJMJJ4Au7HUhUMSxpauQAfGTM+tIy+/h/sZ5aa6x5POCy4fGz2FCSDZ1W06Q7BHEG77PPFkBe1humUGp0Lb/PK8Mn6DtL3rg+hmV1J4JHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=e/anwoG3; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yhg8/ClM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783003579; x=1814539579;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=AhGEHMjoSFJS41jJNuP3r5KzF4DiP4K+TE056Rzwp7Q=;
-  b=Yhg8/ClMGbLDZGWkvjbO0jEYe36Qp/mcD6MGXae4snW31nrbi0MX+ovx
-   RYhtYIcHdhedLFR+GEE+FyMRBoL1wrYwbXPdDJmOIL0YY89Qh9ZMLn/ei
-   IGRsmdyifere5SnfqhxrMy6mb61JX+K4MLvpGOTj2Fkm1ijBuqeB5gmdW
-   Z5il8fVMHvlou5Ws3DK5ULUV1P96h6tj9KDVHhdXDXwQ65xLDwmTvbI9m
-   FZtFf/bgj98G1lE/Kt1nHsNdWP2eUDj+o1cV9yH+QjITkr0/z7h3TFZ1h
-   uDbmJ/Cskw58M5fhMJxO4q61VsjqPieCcTaFR7Gt0tleGPhnh76wO6J9k
-   A==;
-X-CSE-ConnectionGUID: nqbWBmvGT3a0bE4gqKGYVg==
-X-CSE-MsgGUID: g539dCNrSg2AjiL8KV1O0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="94358606"
-X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; 
-   d="scan'208";a="94358606"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 07:46:18 -0700
-X-CSE-ConnectionGUID: bGZBAgMvS/ifPgGj7l7GUQ==
-X-CSE-MsgGUID: dpAooArFREOJcBAVUzWrQw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; 
-   d="scan'208";a="277201127"
-Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
-  by fmviesa001.fm.intel.com with ESMTP; 02 Jul 2026 07:46:15 -0700
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: x86@kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: kas@kernel.org,
-	rick.p.edgecombe@intel.com,
-	dave.hansen@intel.com,
-	dave.hansen@linux.intel.com,
-	yilun.xu@linux.intel.com,
-	yilun.xu@intel.com,
-	chao.gao@intel.com,
-	djbw@kernel.org,
-	linux-coco@lists.linux.dev,
-	peter.fang@intel.com
-Subject: [PATCH] x86/virt/tdx: Formalize SEAMCALL version encoding support
-Date: Thu,  2 Jul 2026 22:46:14 +0800
-Message-Id: <20260702144614.59464-1-yilun.xu@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="e/anwoG3"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51c08df8513so13020421cf.3
+        for <linux-coco@lists.linux.dev>; Thu, 02 Jul 2026 07:47:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1783003651; x=1783608451; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VHZVkcI1dGlitqBERLzcSZUkSvuExam94MObbuJvLAQ=;
+        b=e/anwoG31Hergg0KVEgIbZj5/SqaoWCwXRJNQWcBpbLJtvc7SL+7ktcXjj6+hxVPUW
+         hzbx0lKe4w+pvCLT8cJsVaEtyBHnIdKLj20bxiRjlzDK7HVgVagjObGZ1uljB6ka9BGT
+         hsoOSgBmdABYIe+ovbxAayzM5yHc+sEmJVzkK9t9RIC/inIdVXIxs1GZlb0UdaoEua3x
+         LKaDvPe8d/ctF9vJTs2LhglylsJBRfi94e31fu07YgrbZMClPkYVx8BwbQPrFf2pFLn5
+         /o3w0/q16qbRByvBQiSyGQZ+olveDhTGBZu0Bb89d/x1GGZQMCDiKFJukmHIbVftvt10
+         jYRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783003651; x=1783608451;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VHZVkcI1dGlitqBERLzcSZUkSvuExam94MObbuJvLAQ=;
+        b=Hpb1vegW0JYhhBe38/Ann0bt/PrE68kThVp0D+ubDT9cQGE0QxtysxOa0rvpz4YzQR
+         UoTjJT70EJzAlgqpOjgU+IB37K0NTGmYUGRAtyNrpdosCjg7G3buYdi5OfP7PfBH9r3E
+         MpXVmabsqjE8H6FZyWJRkIhG3JGEZwnEYiHHhz9IMWNx7r/bh5Xo+mPi0N51klZHi0b4
+         fBy7ugV0cKtiXcsgp80p6SeUFMxiDTMNv7GVGJCPgkO0KMERy9ZhHc9Z5sz12NlV+y+L
+         0QNt6paGMVmQ/rL4pVTi8TLeqOP+Hq5MXVAznzRYRLCW35/ZhYbSjxSENWAZtU3PYycj
+         cU5Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9zlYEFIAw9Zh23/qQtsDq5phj0bR7qwr93/hIBPEYJB7fXcmjDIV604w3B0epCkrbGXyIRWuDdZxXF@lists.linux.dev
+X-Gm-Message-State: AOJu0YzyGVu6lQ725EflAD8Zbqsyw36RfZfcerp3lOKJWrTJJFKUDLzR
+	scrn/Goej0ok8Rpg/rUhH5ZuFQY+2j+cEt314dVPRwmi3TtDogYFA2bXyCbXVT5Qpg4=
+X-Gm-Gg: AfdE7ckVmmEJfvLstrTaf5/pOMLeO9BLqoScc0qcBmDj8uUd04r5/4gDnjvlogi4K53
+	OFOpEh2hq4c4L5BM/+OSo3aRXknCIEjuUIqzTst5UppLd8Ky5jkkbXfi+fYvb6lDVxN0F5CwNui
+	u6qx5Pu4xAU38WpHWv04SS5/K79ramVkNsn/Hg+L8R6JFSu/Bza3G6PY3o7mh1011LJ17QTUbhe
+	r98jvsSKzz/3RcCVV0f6XFHgI3nVsxa9e7KWadgVGf/bePIf+yifIrSXZ5Yyu6ThjEUhug2wyf3
+	0R5k4jpEe0lgb4sjSZH2X06mqcFIM0QH2D24NjJVLQZyG7nEQl+oqj5dIJID4Nrj1lvVdDgzmzG
+	pD+5htbgBsJyjPPAIlqjB8ymV0yw97KWoLi3TtuzlfrE8yOyx8Wa0nhFZt6Ij1qrXMYBUQhGyOk
+	AEFczJgYooGOulbNViH3btRn534t3j7j8LFXjVodPTDuvhFzDZPBOQz7kgVt9THxOSPhI=
+X-Received: by 2002:a05:622a:1b92:b0:51c:1ec5:d0f with SMTP id d75a77b69052e-51c2aebaa70mr65534301cf.40.1783003650663;
+        Thu, 02 Jul 2026 07:47:30 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c30c61857sm15516901cf.28.2026.07.02.07.47.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2026 07:47:29 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wfIhN-00000005tmX-0mNc;
+	Thu, 02 Jul 2026 11:47:29 -0300
+Date: Thu, 2 Jul 2026 11:47:29 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
+	Jiri Pirko <jiri@nvidia.com>, Michael Kelley <mhklinux@outlook.com>,
+	"Cheloha, Scott" <Scott.Cheloha@amd.com>
+Subject: Re: [PATCH v6 03/20] dma-direct: use DMA_ATTR_CC_SHARED in
+ alloc/free paths
+Message-ID: <20260702144729.GP7525@ziepe.ca>
+References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
+ <20260604083959.1265923-4-aneesh.kumar@kernel.org>
+ <845d0c8a-6d51-47aa-8e0b-8381e733444a@amd.com>
+ <20260617154101.GE3577091@ziepe.ca>
+ <25155bd6-4348-4aa8-ba70-0a882fc84db9@amd.com>
+ <20260630160242.GI7525@ziepe.ca>
+ <98800d21-18f6-44d6-9ba0-da9b77567d85@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <98800d21-18f6-44d6-9ba0-da9b77567d85@amd.com>
 
-TDX uses the SEAMCALL instruction to invoke various TDX module
-functions. Just like the syscall, a SEAMCALL specifies the operation
-using a function number and parameters. Moreover, TDX also uses SEAMCALL
-versions to extend the functionalities of existing SEAMCALLs while
-keeping backward compatibility. Unlike syscall versions that assign
-brand new numbers, TDX segments the function number into a basic
-function number field and a version field. Together, they encode the new
-function number.
+On Thu, Jul 02, 2026 at 10:25:16AM +1000, Alexey Kardashevskiy wrote:
 
-An existing SEAMCALL (TDH.VP.INIT) helper is already using the version
-field. However, having the caller pack the version into the function
-number open-codes the ABI layout, making the SEAMCALL helper definition
-obscure and error prone.
+> > > not externally available so I'll have to trick the DMA layer into
+> > > using SWIOTLB (which is still all shared, right?) as I specifically
+> > > want to skip page conversions. Setting low DMA mask won't guarantee
+> > > that the DMA layer won't allocate a page outside of SWIOTLB and
+> > > convert it. Manually do
+> > 
+> > Why so particular?
+> 
+> aahhh I missed "pre-". I need a way to get pre-shared pages for my
+> sev-guest activities.
 
-Add a version field in struct tdx_module_args, so that most existing
-SEAMCALL helpers get a default "version == 0" behavior without code
-churn, while callers requiring extended functionalities can specify the
-version descriptively. As an internal implementation detail, encode the
-tdx_module_args.version in the function number before calling into
-assembly code.
+It sounds to me like you don't, what you are worried about is
+optimizing the dma_alloc_coherent flow to avoid fragmentation and all
+CC architetures require this optimization.
 
-Two alternative schemes were considered:
+So I'm strongly against you trying to open code something in your
+driver. Use the DMA API as-is. Propose general DMA API improvements to
+reduce the fragmentation problem. It is a real problem.
 
-1. Define versioned macros like TDH_VP_INIT_V0, TDH_VP_INIT_V1, etc.
-   However, this breaks naming consistency unless all existing stable
-   function macros are changed to TDH_XXX_V0.
-
-2. Add an explicit 'version' parameter to the base seamcall() API. This
-   unnecessarily forces all stable SEAMCALL helpers to pass a
-   meaningless '0' argument. Additionally, the magic '0' or '1' values
-   at caller sites are not descriptive.
-
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
----
- arch/x86/include/asm/shared/tdx.h         |  2 ++
- arch/x86/virt/vmx/tdx/seamcall_internal.h | 19 ++++++++++++++++++-
- arch/x86/virt/vmx/tdx/tdx.h               |  8 --------
- arch/x86/virt/vmx/tdx/tdx.c               |  5 +++--
- 4 files changed, 23 insertions(+), 11 deletions(-)
-
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index f20e91d7ac35..b9aac2de233a 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -143,6 +143,8 @@ struct tdx_module_args {
- 	u64 rbx;
- 	u64 rdi;
- 	u64 rsi;
-+	/* ABI version, encoded in rax */
-+	u8  version;
- };
- 
- /* Used to communicate with the TDX module */
-diff --git a/arch/x86/virt/vmx/tdx/seamcall_internal.h b/arch/x86/virt/vmx/tdx/seamcall_internal.h
-index be5f446467df..7002e41cddad 100644
---- a/arch/x86/virt/vmx/tdx/seamcall_internal.h
-+++ b/arch/x86/virt/vmx/tdx/seamcall_internal.h
-@@ -11,6 +11,7 @@
- #ifndef _X86_VIRT_SEAMCALL_INTERNAL_H
- #define _X86_VIRT_SEAMCALL_INTERNAL_H
- 
-+#include <linux/bitfield.h>
- #include <linux/printk.h>
- #include <linux/types.h>
- #include <asm/archrandom.h>
-@@ -23,6 +24,22 @@ u64 __seamcall_saved_ret(u64 fn, struct tdx_module_args *args);
- 
- typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
- 
-+/*
-+ * SEAMCALL leaf:
-+ *
-+ * Bit 15:0	Leaf number
-+ * Bit 23:16	Version number
-+ */
-+#define SEAMCALL_VERSION_MASK		GENMASK_U64(23, 16)
-+
-+static __always_inline u64 __seamcall_encode_fn(sc_func_t func, u64 fn,
-+						struct tdx_module_args *args)
-+{
-+	FIELD_MODIFY(SEAMCALL_VERSION_MASK, &fn, args->version);
-+
-+	return func(fn, args);
-+}
-+
- static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
- 						  struct tdx_module_args *args)
- {
-@@ -39,7 +56,7 @@ static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
- 	 */
- 	this_cpu_write(cache_state_incoherent, true);
- 
--	return func(fn, args);
-+	return __seamcall_encode_fn(func, fn, args);
- }
- 
- static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index bdfd0e1e337a..63e3acfb5d0c 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -50,14 +50,6 @@
- #define TDH_SYS_UPDATE			53
- #define TDH_SYS_DISABLE			69
- 
--/*
-- * SEAMCALL leaf:
-- *
-- * Bit 15:0	Leaf number
-- * Bit 23:16	Version number
-- */
--#define TDX_VERSION_SHIFT		16
--
- /* TDX page types */
- #define	PT_NDA		0x0
- #define	PT_RSVD		0x1
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 42df8ea464c4..7a89e29b118c 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1910,10 +1910,11 @@ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
- 		.rcx = vp->tdvpr_pa,
- 		.rdx = initial_rcx,
- 		.r8 = x2apicid,
-+		/* apicid requires version == 1. */
-+		.version = 1,
- 	};
- 
--	/* apicid requires version == 1. */
--	return seamcall(TDH_VP_INIT | (1ULL << TDX_VERSION_SHIFT), &args);
-+	return seamcall(TDH_VP_INIT, &args);
- }
- EXPORT_SYMBOL_FOR_KVM(tdh_vp_init);
- 
--- 
-2.25.1
-
+Jason
