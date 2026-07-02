@@ -1,102 +1,206 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA4E4ADD9D;
-	Thu,  2 Jul 2026 14:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E1B4E3795
+	for <linux-coco@lists.linux.dev>; Thu,  2 Jul 2026 14:46:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783001242; cv=none; b=dVzD1S1Ntqc8S0IPWYGO9jCyd2S16libQIMjBbxyut2PhUtLGX44SVm8LaSgbn91UOYNzdI7uBvFEDftvHoT8f0n5GH0G4XadEoT0Ysx/svWCktsV1nIpxuAKTcYY8t3z1+5toUoOu5fG9m0eeEyrVCJm7TDdb7tSgJZlz0UhLE=
+	t=1783003580; cv=none; b=gmXsKMxeMnK3ohC9mjjT9cgSh1yFucozXfQUyjxbPeG52hbydF5Mw/KAbO2BjoZMVN9cUPbRk5pxpE8aKRC57f/uWz+q8KWemci6FtT+8nUptxgfPW1hFFiNhCcLhVJdOGB7FisYV2ab7/+G2yoGxGgQ6eIuH9zLuxbaLd0rSNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783001242; c=relaxed/simple;
-	bh=Mcy2l8Ak5QnfHc6U+494XBnpd6E/K9FucMu2tYmWpfw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R+tkxJOY2DVKKqtPCW6y4LNOJcH/oQmpwt8t63gYalcX9RZzgVcmq1GoyW0apDxg3VLgp82fzcpt20yqnwaSQree7UQnaHLGjc2EuOKTnzHEfI/0gFZBC7Z0gQPQ0xIbNF75J1Qe3b7txXg4F+7p/iMOLrIsY91Ri37HNfHHJhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PSSXjRy8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783003580; c=relaxed/simple;
+	bh=AhGEHMjoSFJS41jJNuP3r5KzF4DiP4K+TE056Rzwp7Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AswCxLmMiWRK16W1kWhPJo0R2OmcqaOBCrlWD/SLRvlSkCMNCOSBp7naMpejjZGqZOb00LifB6sAtEOd80L7VxEAHh5Oy9QFIQ7eLLX30lWSc6O9U2IYVVWW05fkUraTafoiDJWLGVJozagBE5wT7IQ8PrfpjR4mF8GSw59D4Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yhg8/ClM; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PSSXjRy8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8209C1F00A3A;
-	Thu,  2 Jul 2026 14:07:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783001241;
-	bh=J4TDctaT9B+X+zPqki1x9fmk8MLNfGToi4HsS7g0NBU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PSSXjRy8wM5BCUB6QUnHL0gGBAsAFbYa4uhrhW6hQo/3aVF1NsaClsPuO/KgLf+n6
-	 XjGzN/ODONQWuOIHI0XrbjZFXuYv/rilrd0LJYWSVVy7fU/RIN6gXcX2OH8i5ockYb
-	 PXnp//bzLzHvHgjlINfGtkd1p1LbUpjEQQv6ECqP+lnvndJsOwLbxE067VfCbmy0FO
-	 B3P3wgG9ogk6QcdwDPhP5v6truCiqjtv4/BJi8LXk1lSDtrTOvZ3HWPCm4RuFVpo+n
-	 06FY3S0C/32fJ1G6SJqnMupRim2pKrnyYx4ilbxX6FZXNn3pm/6QhtDxFs6JbPtCte
-	 zDmNT6db5NyQQ==
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 98BC3F40073;
-	Thu,  2 Jul 2026 10:07:19 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Thu, 02 Jul 2026 10:07:19 -0400
-X-ME-Sender: <xms:l3BGapTbkW3X0VhH6JqW2c2QtkAZIAlu0Bl5V3-mNnLiJjDRa09rVg>
-    <xme:l3BGai5W2eQQoArKw1kvPticcFPeQ_c0TMuYNkDZhfF_VWSXn4hJJNmYWzMRrPF30
-    kqzhqz6xFL-Y8sE20SKpSjT_TH0LRLbPQBiADOg-UkWXycHJkcfEA>
-X-ME-Received: <xmr:l3BGaspjNQWTZeKdUPyggtHx0WhCR8GQQcVNcIowcGvPSRHxAp2DprsoeD8S3A>
-X-ME-Proxy-Cause: dmFkZTFUM6GxX1Kgnzd8GV9GokXanMJuwqfF95TXt1vel74GIqYnWXFVd3EMFZzaIif8uk
-    dNQtx264nUI5xZufMVbneeLsugpVtMYDGSnAYAELWyRr7iw5/nTcdQKg+HBdW4zN04PVlM
-    Gf3BjHaEl/XbSY2VNc7yrNih+eQ3mfhMl3DCeHDleYks6SsmZ3aw5o3ax3OSzSj7zshtfs
-    XD6QvagOSUKlM6ijjNjXdlA2I9Kyp8/20SSqgTchbmexu5a1d/BpLCj5zUgtVEfRlvw+TJ
-    rPwuhdxfo+Nt3T7ctVXkXu9AoiV331aCMrb3AoW6PCx6oSnC+DTKvw8eem2dh7HTKGKAj3
-    lEu57zCoDf/obB/ZQTotfyvUctelXPHnCV8mbC5xhUSaR4m09uJ3ryw8NTb5A1S7ZlIyAf
-    zwwbeyICzCgMuGtGR6L9cQsebUGGM1ArV53xusl48+T7C1Nbt9RLxQT0Al3J7dRf6iiyqL
-    /G72XgQj3+/f1aV65O7hDqNT9eXZbRZxqTelNtZPL9sXgThww/84HebwqswkwgBTi8VHL0
-    v0MI8TrtpinGCr7jdNlcn6f4uoff0n7uBD+xpqJMAIsylj7oZeWhQEKC4ll7vsKwhXsO+u
-    2G1+qWsR66CYLxFg3m7qEJRB6LNI1TBMJymrzw0q93vy7MmZk4ZLewEArd9A
-X-ME-Proxy: <xmx:l3BGalQ4kO3THBtghPQ5tfbED_ccqF2ImT3ASTf7rFy1MyrgbpHAdw>
-    <xmx:l3BGagsijdjZDYrF0Cc9AzpFc-PfVip-lYVJzL-07ZzJBS2_d1Vm1A>
-    <xmx:l3BGalNUV5zI9YiC2hJvzgwjfSMhQufVmbQj9Hvx4Z_5q0NQM8SKIw>
-    <xmx:l3BGaqWf56AqHPkOJ948KPrIHMPankW0bxAd_G4JWGw9geUZ-6vG8Q>
-    <xmx:l3BGatg4vNfQxJGuFrnQj7t3XhhztI9f-hIl3iOMpXj_Kw2xBRdY2Too>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 2 Jul 2026 10:07:18 -0400 (EDT)
-Date: Thu, 2 Jul 2026 15:07:17 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Cc: seanjc@google.com, linux-kernel@vger.kernel.org, 
-	Dan Williams <dan.j.williams@intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org
-Subject: Re: [PATCH] KVM: x86/tdx: Do not print error message on non-present
- feature
-Message-ID: <akZwaHqZZzES793F@thinkstation>
-References: <20260702043204.81741-1-jirislaby@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yhg8/ClM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783003579; x=1814539579;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=AhGEHMjoSFJS41jJNuP3r5KzF4DiP4K+TE056Rzwp7Q=;
+  b=Yhg8/ClMGbLDZGWkvjbO0jEYe36Qp/mcD6MGXae4snW31nrbi0MX+ovx
+   RYhtYIcHdhedLFR+GEE+FyMRBoL1wrYwbXPdDJmOIL0YY89Qh9ZMLn/ei
+   IGRsmdyifere5SnfqhxrMy6mb61JX+K4MLvpGOTj2Fkm1ijBuqeB5gmdW
+   Z5il8fVMHvlou5Ws3DK5ULUV1P96h6tj9KDVHhdXDXwQ65xLDwmTvbI9m
+   FZtFf/bgj98G1lE/Kt1nHsNdWP2eUDj+o1cV9yH+QjITkr0/z7h3TFZ1h
+   uDbmJ/Cskw58M5fhMJxO4q61VsjqPieCcTaFR7Gt0tleGPhnh76wO6J9k
+   A==;
+X-CSE-ConnectionGUID: nqbWBmvGT3a0bE4gqKGYVg==
+X-CSE-MsgGUID: g539dCNrSg2AjiL8KV1O0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="94358606"
+X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; 
+   d="scan'208";a="94358606"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 07:46:18 -0700
+X-CSE-ConnectionGUID: bGZBAgMvS/ifPgGj7l7GUQ==
+X-CSE-MsgGUID: dpAooArFREOJcBAVUzWrQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; 
+   d="scan'208";a="277201127"
+Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
+  by fmviesa001.fm.intel.com with ESMTP; 02 Jul 2026 07:46:15 -0700
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: x86@kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: kas@kernel.org,
+	rick.p.edgecombe@intel.com,
+	dave.hansen@intel.com,
+	dave.hansen@linux.intel.com,
+	yilun.xu@linux.intel.com,
+	yilun.xu@intel.com,
+	chao.gao@intel.com,
+	djbw@kernel.org,
+	linux-coco@lists.linux.dev,
+	peter.fang@intel.com
+Subject: [PATCH] x86/virt/tdx: Formalize SEAMCALL version encoding support
+Date: Thu,  2 Jul 2026 22:46:14 +0800
+Message-Id: <20260702144614.59464-1-yilun.xu@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260702043204.81741-1-jirislaby@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 02, 2026 at 06:32:04AM +0200, Jiri Slaby (SUSE) wrote:
-> Before commit 165e77353831 below, the kernel did not print anything when
-> X86_FEATURE_TDX_HOST_PLATFORM was not present in a cpu.
-> 
-> After the commit, this is emitted to the log, with the error level:
-> virt/tdx: TDX not supported by the host platform
-> 
-> This is disturbing as it is not an error running CPUs without the
-> feature.
-> 
-> Drop the error message completely to revert to the state before
-> 165e77353831.
-> 
-> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-> Fixes: 165e77353831 ("KVM: x86/tdx: Do VMXON and TDX-Module initialization during subsys init")
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Chao Gao <chao.gao@intel.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Sean Christopherson <seanjc@google.com>
+TDX uses the SEAMCALL instruction to invoke various TDX module
+functions. Just like the syscall, a SEAMCALL specifies the operation
+using a function number and parameters. Moreover, TDX also uses SEAMCALL
+versions to extend the functionalities of existing SEAMCALLs while
+keeping backward compatibility. Unlike syscall versions that assign
+brand new numbers, TDX segments the function number into a basic
+function number field and a version field. Together, they encode the new
+function number.
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+An existing SEAMCALL (TDH.VP.INIT) helper is already using the version
+field. However, having the caller pack the version into the function
+number open-codes the ABI layout, making the SEAMCALL helper definition
+obscure and error prone.
 
+Add a version field in struct tdx_module_args, so that most existing
+SEAMCALL helpers get a default "version == 0" behavior without code
+churn, while callers requiring extended functionalities can specify the
+version descriptively. As an internal implementation detail, encode the
+tdx_module_args.version in the function number before calling into
+assembly code.
+
+Two alternative schemes were considered:
+
+1. Define versioned macros like TDH_VP_INIT_V0, TDH_VP_INIT_V1, etc.
+   However, this breaks naming consistency unless all existing stable
+   function macros are changed to TDH_XXX_V0.
+
+2. Add an explicit 'version' parameter to the base seamcall() API. This
+   unnecessarily forces all stable SEAMCALL helpers to pass a
+   meaningless '0' argument. Additionally, the magic '0' or '1' values
+   at caller sites are not descriptive.
+
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+---
+ arch/x86/include/asm/shared/tdx.h         |  2 ++
+ arch/x86/virt/vmx/tdx/seamcall_internal.h | 19 ++++++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx.h               |  8 --------
+ arch/x86/virt/vmx/tdx/tdx.c               |  5 +++--
+ 4 files changed, 23 insertions(+), 11 deletions(-)
+
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index f20e91d7ac35..b9aac2de233a 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -143,6 +143,8 @@ struct tdx_module_args {
+ 	u64 rbx;
+ 	u64 rdi;
+ 	u64 rsi;
++	/* ABI version, encoded in rax */
++	u8  version;
+ };
+ 
+ /* Used to communicate with the TDX module */
+diff --git a/arch/x86/virt/vmx/tdx/seamcall_internal.h b/arch/x86/virt/vmx/tdx/seamcall_internal.h
+index be5f446467df..7002e41cddad 100644
+--- a/arch/x86/virt/vmx/tdx/seamcall_internal.h
++++ b/arch/x86/virt/vmx/tdx/seamcall_internal.h
+@@ -11,6 +11,7 @@
+ #ifndef _X86_VIRT_SEAMCALL_INTERNAL_H
+ #define _X86_VIRT_SEAMCALL_INTERNAL_H
+ 
++#include <linux/bitfield.h>
+ #include <linux/printk.h>
+ #include <linux/types.h>
+ #include <asm/archrandom.h>
+@@ -23,6 +24,22 @@ u64 __seamcall_saved_ret(u64 fn, struct tdx_module_args *args);
+ 
+ typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
+ 
++/*
++ * SEAMCALL leaf:
++ *
++ * Bit 15:0	Leaf number
++ * Bit 23:16	Version number
++ */
++#define SEAMCALL_VERSION_MASK		GENMASK_U64(23, 16)
++
++static __always_inline u64 __seamcall_encode_fn(sc_func_t func, u64 fn,
++						struct tdx_module_args *args)
++{
++	FIELD_MODIFY(SEAMCALL_VERSION_MASK, &fn, args->version);
++
++	return func(fn, args);
++}
++
+ static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
+ 						  struct tdx_module_args *args)
+ {
+@@ -39,7 +56,7 @@ static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
+ 	 */
+ 	this_cpu_write(cache_state_incoherent, true);
+ 
+-	return func(fn, args);
++	return __seamcall_encode_fn(func, fn, args);
+ }
+ 
+ static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index bdfd0e1e337a..63e3acfb5d0c 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -50,14 +50,6 @@
+ #define TDH_SYS_UPDATE			53
+ #define TDH_SYS_DISABLE			69
+ 
+-/*
+- * SEAMCALL leaf:
+- *
+- * Bit 15:0	Leaf number
+- * Bit 23:16	Version number
+- */
+-#define TDX_VERSION_SHIFT		16
+-
+ /* TDX page types */
+ #define	PT_NDA		0x0
+ #define	PT_RSVD		0x1
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 42df8ea464c4..7a89e29b118c 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1910,10 +1910,11 @@ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
+ 		.rcx = vp->tdvpr_pa,
+ 		.rdx = initial_rcx,
+ 		.r8 = x2apicid,
++		/* apicid requires version == 1. */
++		.version = 1,
+ 	};
+ 
+-	/* apicid requires version == 1. */
+-	return seamcall(TDH_VP_INIT | (1ULL << TDX_VERSION_SHIFT), &args);
++	return seamcall(TDH_VP_INIT, &args);
+ }
+ EXPORT_SYMBOL_FOR_KVM(tdh_vp_init);
+ 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.25.1
+
