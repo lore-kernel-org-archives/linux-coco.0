@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0734B3A7F55
-	for <linux-coco@lists.linux.dev>; Thu,  2 Jul 2026 10:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4049B3C2BBA
+	for <linux-coco@lists.linux.dev>; Thu,  2 Jul 2026 10:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782987389; cv=none; b=ctOpi0y0eJmORlt6X1rPQsEqJOGouWDp5n6olLk36pI0eObAwRgNXGGxY7tkDSkpmVZFkV8wcIZQ96bOa4yN7hrtRAXrDNk1qgsZy3QJDuWdqutZuGf/dnLoiNsAQeQ0+AsFaO5SENrVP1hB7NUN6TC88qaOt2lOrBO7acS4mYI=
+	t=1782989544; cv=none; b=AYB/MmSUlgJ2pR+cSd95+LAslJOX049xZ2VHjaE2N5Har3Qtn9kLk2t3hDBYadOh0rK0GV0jtmrFLKQ4P8GMGdJtLfwQtTqWJRmWHbzZJfgFhg5hwtJIYp7xbZxnM3GH/6j863SS11WQU/hUZUlKMX0Enfyg9f7O/dm3YQZWWNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782987389; c=relaxed/simple;
-	bh=HoCoNYt317DxUaFW18oSXEBEx4zbnTTD7VvNIfo0zuw=;
+	s=arc-20240116; t=1782989544; c=relaxed/simple;
+	bh=Tgt4hhMcByBvGKOTB4ie6cqyN7pvf1X8oWW3X+m/fC8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=De29xCL/RtMguA9LiEa2DW4WhB8avvMEtd4/dTPNYUqMTcLGQk8+TmObWOigZ60RAeqmCosL3cmPSodie9K0+/x9DSnKMN8BivLGbwCWTXbng0qIvIXwsykTws0IoDLPFmqQrF7o05uCZxR5WyMjdQpeFVb5j2XBG8o5NLJ522k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P3l219zP; arc=none smtp.client-ip=198.175.65.18
+	 In-Reply-To:Content-Type; b=lusDGBetqqU+N6AYRa9rmhPrwKeCrIK6UTY5Ed1tfGOjVVszr6DI/ZYCj62CYieA5f4dHLN+kIqaUmonK32jTljK6hHQ34Ugx5hln5HRLF7Kt8Wa9UxF2uKrASWj44t1EI6J0SE7D9U0wHajg2D/7/3Wpp72/sjzzoWK55cwIu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QEOIh4dL; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P3l219zP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QEOIh4dL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782987388; x=1814523388;
+  t=1782989543; x=1814525543;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=HoCoNYt317DxUaFW18oSXEBEx4zbnTTD7VvNIfo0zuw=;
-  b=P3l219zPawXg9rZdCzTftbUynfdxnZXIfOu+XYT9WFRMzmvdWlfRAhNw
-   AWtiuzCUGsLRb/GzZBQzXggmBmUEGxQRadgJwSOXIrPRCXyPa/CkJsbye
-   PmPBm6M7Kvqb+oMhUqgLPWGQlw2JewTtXziLr/dm7Z5+dJCNGd+STCWXY
-   oZ6Nnd1Xajv2nlT9Cs+EgkmeA4PoktVVETMP82rRTUmnHGgDni3zqx6bx
-   DrC3Ve1NCSmym7KB/B4AXB3pJTmxB4kHeeXhFgSPpnJ2CfAWnjYXr6JRX
-   3uNHZPDmvCOPiWpA4ESPcgAWULwx78cC+T/LlFPNAaukHNzDi+DNcae09
-   A==;
-X-CSE-ConnectionGUID: tKDYYdprTk+y/TDON5lRrQ==
-X-CSE-MsgGUID: Xa34JhckRIO2OSHVtuZ9qg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11834"; a="83826010"
+  bh=Tgt4hhMcByBvGKOTB4ie6cqyN7pvf1X8oWW3X+m/fC8=;
+  b=QEOIh4dLPSgZTiJQ6n/WXeHupxdpenB6hloOnu/zIQSBK3LxKI2hqKQe
+   WJSpb3MA/txWbCAxa1OrGTCbI2sw8GSUK8KTyvBJainextvybpcZc6IPs
+   DoZRj8snJ/uHAYzppcbaStOyi9+FZhRtSBE0WmHwuiqlKW0xCMAJXnPVC
+   SJIpXnZENHi+8BUl81z2JLr57FjK8AoZWk3S/PGOjmVB9J5/mtPPGItge
+   zMhwORNIhPH5kaXx43a1snNagEugotMt10iCQpdmGPcciLulqnUoihXXm
+   iAL91IFlwOdwT6AvcFa0hYQamCrXVPfUDbAws8wQ1SFJ4GHzXIh00pIZS
+   Q==;
+X-CSE-ConnectionGUID: olB898PLSrGE8kClei9sgQ==
+X-CSE-MsgGUID: paLRwBm9QziAWocSh7lpHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11834"; a="94341062"
 X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; 
-   d="scan'208";a="83826010"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 03:16:27 -0700
-X-CSE-ConnectionGUID: /EbeYfYiQTqtcOR7lINrXg==
-X-CSE-MsgGUID: TKOXIuqgTpSsNpdduyxdSw==
+   d="scan'208";a="94341062"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 03:52:23 -0700
+X-CSE-ConnectionGUID: I7qt9/olRoyxa2x0VmcfeQ==
+X-CSE-MsgGUID: Yp1EvDSzRoq8GXy7mZVstQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; 
-   d="scan'208";a="252378529"
+   d="scan'208";a="282905050"
 Received: from unknown (HELO [10.239.158.38]) ([10.239.158.38])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 03:16:25 -0700
-Message-ID: <cdb43316-6535-4f11-9fb0-abdf2adf4568@intel.com>
-Date: Thu, 2 Jul 2026 18:16:21 +0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 03:52:09 -0700
+Message-ID: <c0e2df0a-19b2-4234-b0f7-41e010452b06@intel.com>
+Date: Thu, 2 Jul 2026 18:51:46 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,62 +52,119 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] x86/tdx: Add helper to query maximum TD Quote size
-To: Peter Fang <peter.fang@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org
-References: <20260612110853.3188196-1-peter.fang@intel.com>
- <20260612110853.3188196-2-peter.fang@intel.com>
- <49728a57-a996-470d-92b7-209a010b4761@intel.com>
- <20260623044411.GB923079@pedri>
+Subject: Re: [PATCH v8 17/46] KVM: guest_memfd: Advertise
+ KVM_SET_MEMORY_ATTRIBUTES2 ioctl
+To: Sean Christopherson <seanjc@google.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-17-9d2959357853@google.com>
+ <584a8f9a-1538-4f8b-b576-75ef0fa961c7@intel.com>
+ <akU7uAKb5E_Tklx-@google.com>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260623044411.GB923079@pedri>
+In-Reply-To: <akU7uAKb5E_Tklx-@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 6/23/2026 12:44 PM, Peter Fang wrote:
-> On Fri, Jun 12, 2026 at 10:25:03PM +0800, Xiaoyao Li wrote:
->>>
->>> Assisted-by: Claude:claude-opus-4-7
->>> Assisted-by: GitHub Copilot:gpt-5.4
->>> Signed-off-by: Peter Fang <peter.fang@intel.com>
->>
->> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> 
-> Thanks for the review Xiaoyao!
-> 
->>
->> I have another nit other than Kiryl's
->>
->>> +u32 tdx_get_max_quote_size(void)
->>> +{
->>> +	u64 val, ret;
+On 7/2/2026 12:09 AM, Sean Christopherson wrote:
+> On Wed, Jul 01, 2026, Xiaoyao Li wrote:
+>> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+>>> @@ -4969,6 +4973,11 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
+>>>    		return 1;
+>>>    	case KVM_CAP_GUEST_MEMFD_FLAGS:
+>>>    		return kvm_gmem_get_supported_flags(kvm);
+>>> +	case KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES:
+>>> +		if (!gmem_in_place_conversion || !kvm_supports_private_mem(kvm))
+>>> +			return 0;
 >>> +
->>> +	ret = tdg_vm_rd(TDCS_QUOTE_MAX_SIZE, &val);
->>> +
->>> +	return ret ? 0 : (u32)val;
->>> +}
->>> +EXPORT_SYMBOL_GPL(tdx_get_max_quote_size);
+>>> +		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
+>>>    #endif
+>>>    	default:
+>>>    		break;
 >>
->> Do we need to start to use
+>> this looks inconsistent with the
 >>
->> EXPORT_SYMBOL_FOR_MODULES(tdx_get_max_quote_size, "tdx-guest") ?
+>> 	case KVM_SET_MEMORY_ATTRIBUTES2:
+>> 		if (!gmem_in_place_conversion)
+>> 			return -ENOTTY;
 >>
+>> Well, the check of
+>>
+>> 	if (!kvm_arch_has_private_mem(f->kvm))
+>> 		return -EINVAL;
+>>
+>> is buried in the following kvm_gmem_set_attributes(). How about moving of
+>> kvm_arch_has_private_mem() check to put it along with
+>> gmem_in_place_conversion check in kvm_gmem_ioctl() in Patch 13?
 > 
-> This makes sense. But can we use a follow-up patch to improve this file
-> later? Right now there are only EXPORT_SYMBOL_GPL() usages, so using
-> EXPORT_SYMBOL_FOR_MODULES() here might look inconsistent.
+> Me confused, patch 13 already adds the kvm_arch_has_private_mem() in
+> kvm_gmem_set_attributes().
 
-If maintainers is going to merge the series as-is, then fine.
+I wanted to make the check in KVM_SET_MEMORY_ATTRIBUTES2 in Patch 13 
+like something below:
 
-If we will have a v2, I don't see why cannot update to use 
-EXPORT_SYMBOL_FOR_MODULES().
+	case KVM_SET_MEMORY_ATTRIBUTES2:
+		if (!gmem_in_place_conversion || !kvm_arch_has_private_mem(f->kvm))
+		return -EXXX;
 
-The existing ones can be updated in a separate patch before or after.
+and finally, with the introduction of kvm_supports_private_mem() in this 
+patch, it becomes:
+
+	case KVM_SET_MEMORY_ATTRIBUTES2:
+		if (!gmem_in_place_conversion || !kvm_supports_private_mem(f->kvm))
+		return -EXXX;
+
+So that the guard for KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES and 
+KVM_SET_MEMORY_ATTRIBUTES2 is consistent.
+
+> That said, the ordering here is wonky and misleading.  A cursory read of the series
+> would make one think that waiting to advertise KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES
+> makes it safe/ok for KVM to plumb in support for KVM_SET_MEMORY_ATTRIBUTES2 over
+> multiple patches.  But that's not actually true, because the ioctl becomes live
+> the instant the code exists, userspace doesn't need to wait for KVM to formally
+> advertise support.
+> 
+> To further confuse matters, it is actually safe/ok to iteratively add support,
+> because it's all effectively dead code until "Let userspace disable per-VM mem
+> attributes, enable per-gmem attributes".
+
+yeah, before patch 24, gmem_in_place_conversion is always false. So 
+KVM_SET_MEMORY_ATTRIBUTES2 on gmem fd always return -ENOTTY.
+
+> So, I think we should go a step further than what I think Xiaoyao is suggesting,
+> and fully squash patch 17 into patch 13.  That way the reader doesn't have to jump
+> through as many mental hoops to piece together what is happening.  It'll obviously
+> be a bigger patch, but should be easier to review/understand overall.
+> 
+> Oh, and that combined patch should carve out error_offset straightaway, so that
+> the full uAPI can be reviewed in a single patch.
+
+It sounds good.
