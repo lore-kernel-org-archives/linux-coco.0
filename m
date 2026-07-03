@@ -1,149 +1,290 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295CE3C196B
-	for <linux-coco@lists.linux.dev>; Fri,  3 Jul 2026 11:46:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA922F1FEC
+	for <linux-coco@lists.linux.dev>; Fri,  3 Jul 2026 23:36:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783079219; cv=none; b=hI+gbTQ2pKupN5yP9Q0c+Hu5FQm1WxESUCKwR7j6+yy+f1W5sQItFc2b+fRoIqhtbvayWDjI79pd7egU703l+X2bC3qOQGTEOnfM4pD0Tg6viD1eYEG+1cCpZUxeJz1O+YJGclAaNR2kz60Cv/SHc4ArmL3yiJZmNxZoOInW/OE=
+	t=1783121792; cv=none; b=t8TjKUaTcmlKuAe2do9cEihfh9cInkdv9iSHEh8UeJOvXO+XyuzBNfcgo8WkIQI18GonW4M7cH0GMx72KmJTprO/8oUyKtmmHt+rrlcAjgXiYeC2Ai/dXXM48OEPzrpwMTQ5xsQVhyvPTlHried2gIH5Kdb7hqszpobtC1XpfVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783079219; c=relaxed/simple;
-	bh=ErVa6O+H+ziQoQxw89SnZ3zm/NmC5i67ydJ72rOS0eE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rX76iY3pwHGy2hiB8olsa3XMcX7p6y8PIrujNfn2KXmcm1NtQDS4x/V2Vdkqe0XtDGMEzv/nOOLfomTuuVmq757AiT0vRCIxthTgttjLrc4R15mdXtwA2dW6iT+ZcoJzMkVcIfwyIHTd9KVMAI9nOyeLKSZrYE4fAvaawcVm0hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=b3idcErl; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1783121792; c=relaxed/simple;
+	bh=FJrkXEGnSM16j0KzsIIDtaYYae/POg0kQ+D0kVLkfcU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=htt9VgXVHta3uCL5A0fNZJnPVI6x4h6Mj3QYSed0PY9rV1tKvloPLRMhgECZrVhhC5qdrv+ibGwoQU6S0LGbufW7LU//Om7/NlfZiozMgTBKsp5wZYVrWLSkkHlHA9VGjDCNs72S32dwYbYUfIrJ3nnawzbN4DZNkvpWuLWgKfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cWBypMv1; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="b3idcErl"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c4436d02cso1394631cf.1
-        for <linux-coco@lists.linux.dev>; Fri, 03 Jul 2026 04:46:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1783079217; x=1783684017; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GF/dZxM95AsUU1wWK1B0B/CUui/snGJUvA0tIkHl1DM=;
-        b=b3idcErlIeQB36DyX2V8uG4M/1xQSYHXJwYvS7hMQq8dM23e1qk9uKesz2nWC8tiKJ
-         6qE7EoucabPBhw3nwXpniN6lrgQpkuqZdzqDHoT635btbmzIxRvt98l9eazeh93XSN4+
-         nQ6jsQY+M2ZQsGXvFJISx++AosLgNxA89C/BzSIXbY7eXZKtVlPE6T5IYqoxmND1F7He
-         j/gqZ6WA3IyeNPpPkeHEl46yfu2NM/viAXeLhgsVexCrETMRS1ZLp0+djOuCvyyfviPl
-         tzINoRtXieqjs9WMgLw002OcK7Pb4B0wkL6xvcFkQs/vhLMIONFuM+ISBMHi67HSA7E4
-         1Vpg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cWBypMv1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783121789;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SwERFhdzSv4+amzd0QIu7iqPOMHAE60bTr8DX2KgDYo=;
+	b=cWBypMv1k/+P6CbhAqILOAUgz2o9NkV41uHVHlxdDkSwGE2IEoZ54QoIbt92LzP5b7QOkU
+	RnR9lohaSaFPpjA2iEjcpkGA79cr7dGjZ6i2Ie9VuwOL9nbcbKrr3fej1YTETWodbQ6bRv
+	xKMrqmq7dBV+UpfZ8T4lgAsdAH3n8hw=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-463-KpZEdlB3OzmwuL2v2vMokg-1; Fri, 03 Jul 2026 19:36:28 -0400
+X-MC-Unique: KpZEdlB3OzmwuL2v2vMokg-1
+X-Mimecast-MFC-AGG-ID: KpZEdlB3OzmwuL2v2vMokg_1783121787
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-37fc0aaa94cso1630364a91.1
+        for <linux-coco@lists.linux.dev>; Fri, 03 Jul 2026 16:36:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783079217; x=1783684017;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GF/dZxM95AsUU1wWK1B0B/CUui/snGJUvA0tIkHl1DM=;
-        b=skjx4pAa37r0EZZKL30nSNwyovmiY5VQY0lgftj3wqmf/dpkgFu3h58xxek/SpToMP
-         Y33Rg9o/Elr2dDO6EghHXaEyJEVVx/ZFO2mrni2mBs1ocEDWj5uLjGIsoTP7Q0LFCZwj
-         fMFTBHCUPHXifg9LmRaxrIpoU/IA6juWfezzknwyWbu1Y7KryaCYAmh8yZTN4L6Ve7at
-         cGnJinjM7/Q8wyich04IzE6Ec7tqm4/lQJbEVpDeDQpJlC/yuQFExtOoLonlJ7CCQkXb
-         qvj7MU6rA9PWB1XSFrbwGBjmnlvp4D0YS5Dmgl5vRc5VVaInfddB99dQSyaX5ff1m7Y9
-         fLzw==
-X-Forwarded-Encrypted: i=1; AFNElJ9Ru0SGtJ38SiePj2inCw0s3+waTUqHU4tY0x/jdcUMwsiSHsmOHEmyXuezr53Vu6FmCtz+sRMGYGKE@lists.linux.dev
-X-Gm-Message-State: AOJu0YyzgLkG2VAXh9ROOK5olZP+ipKYpnGS9/4vZud5FihOghCQtqEy
-	OkgF3ktNddGPDShEDtGbUKTvsJQHkfX3Yc3ABtGaQMw9Br54nAKaraq3Om0PlLcGGo0=
-X-Gm-Gg: AfdE7cm6i5uDMfY4rQtAQVPnfCLN2m2Qgt+t73LgG7MUI529Qgze2/2UVoAz+ResyQ4
-	NHoB2Dsub3IdAY5r/6xaYz0uJqls9XTHf7YbWVwIu7JNALJyh3fXCdJSvb9CKjsHqeEnpV0RejA
-	3Jv4I9d9T3Oqo99fOZNccTK/PT/tlKjd0nPU2Wo24HV9puQbQcxhVJPdBTHxIHFnIbp/jCxnCSu
-	jMU7tbsM9evR7nc08X6Qo1EnpJy5FPEWW3vXLmItLVfbIxN+4QVTQsP+60G3VJucWFobdw5fGao
-	PZnTOY7zcyhROd211BOaYk6oAZ33u9fjVXebDQ+WCkK0e0GrxDTQO19Pq6QzS5V2dgP0heZnOD1
-	Laa1CdcqByAG+svtvC2YWEaB+6bMHBtOCEPR/SNH4oxsuDB+3aDt7fp0Je/Sr3raZbtzzFAM1Ao
-	k75w53No4pYqOBvIxNwHNg3flzwY6iOpLQThMTG11BaAd6RmmsyvtzBTMlHcs9Y0nSvN8=
-X-Received: by 2002:ac8:59d1:0:b0:51c:555:7dea with SMTP id d75a77b69052e-51c2ad42df1mr112307971cf.30.1783079216951;
-        Fri, 03 Jul 2026 04:46:56 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c4202366csm13366551cf.30.2026.07.03.04.46.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jul 2026 04:46:56 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wfcMB-00000007ngp-0vd7;
-	Fri, 03 Jul 2026 08:46:55 -0300
-Date: Fri, 3 Jul 2026 08:46:55 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
-	Jiri Pirko <jiri@nvidia.com>, Michael Kelley <mhklinux@outlook.com>,
-	"Cheloha, Scott" <Scott.Cheloha@amd.com>
-Subject: Re: [PATCH v6 03/20] dma-direct: use DMA_ATTR_CC_SHARED in
- alloc/free paths
-Message-ID: <20260703114655.GW7525@ziepe.ca>
-References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
- <20260604083959.1265923-4-aneesh.kumar@kernel.org>
- <845d0c8a-6d51-47aa-8e0b-8381e733444a@amd.com>
- <20260617154101.GE3577091@ziepe.ca>
- <25155bd6-4348-4aa8-ba70-0a882fc84db9@amd.com>
- <20260630160242.GI7525@ziepe.ca>
- <98800d21-18f6-44d6-9ba0-da9b77567d85@amd.com>
- <20260702144729.GP7525@ziepe.ca>
- <58bb92a9-c5ea-47a3-b19a-934573f15305@amd.com>
+        d=1e100.net; s=20251104; t=1783121787; x=1783726587;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SwERFhdzSv4+amzd0QIu7iqPOMHAE60bTr8DX2KgDYo=;
+        b=po9o0PcHUxsMlY1w+BhXXbZ7Jl8yXAHn4Nyq27TNXKYf1aFWPI//7X6sVHYYlvjAmn
+         KLvqHkgKFcAHf0Eh0EoUzK831ixC+ay7gDsGEXrg7NOR9BMysM/93eNUYl/ltAwa9/Ge
+         jjws/hqqeLYguNDCJE/4IwBXC2b9OFLxcKYtHWCaToR43DkYmgH9/Ra6Oj/F3SY0pMXz
+         dcA52K5nNFK6vBH2exCXXF20/2C5SGJXO0COc+uhaVd7o1WKMexk1BBLSGi+AkWOihle
+         1SX510YWmBiLgKZX4N/uU8FVIq//Ri8ipURCw1bn4S7AhTjVSoxritScXYgbZL8qBsSg
+         XcDg==
+X-Forwarded-Encrypted: i=1; AHgh+Ro/EyQPlOI7r6oB3MKtu2FA4HJuxrkIT1f10qykDH0F3i5OfTs8vmD0ZL6/c5JqBYXlmtqvkwUHLsAa@lists.linux.dev
+X-Gm-Message-State: AOJu0YwQwzErZEJ2UdoZ/u7UEnJIhfX5fs0xaO6YN7ZG2oXA8j7jktTx
+	DyaK2BwXgq7Io+uJ4fEVOFwKD9MMJeMcwAQtXlnluooO6o2yRwdxVNODW9LW89H5JlIw37w3M8z
+	yqnks2PaQOFkVz3Me1h9Zpen7wf8u7aoiuEDs2PiBfNZVM2xKa5DMuXNPwaXxtOU=
+X-Gm-Gg: AfdE7clm60g3Djgf1sOlyEvBZKaeZngFLr3Oo6BbJkfpJxS401tYEmI14xQK8KydATP
+	f2i9n7Wbjzj/Fcb8dbiXOubFJBPexYVChEd7VwY8mAqZR27cM3yRZyD8lreypF95I99cSLpPuuN
+	NB1rxqZOBhomnJu7Msg+ntiKjOfz2rhEZYaHt/CCNndwiS7jm+SaFKjONvJNXgn+69ze1xIrUBu
+	SUNM9iWtOQFg6lJ+fAl+z+r8UNEq6fkOTIL58f/tBO4aKwAA7vsSAKkZywZTYn0Xx8WyTjI+N3r
+	cIrVrlIb02yVpGLEpIhGK8MdyoaKtecC6/EvSAiBDH0KlVtb9bpiom5COoLqvUHUirK9C0oGlkj
+	N2kx54skl1ELblp/vJQYvp+Xc9RoIQF7G5kvIA7oxX1gmjTVqXVwYWg==
+X-Received: by 2002:a17:90a:e708:b0:37e:a09:2640 with SMTP id 98e67ed59e1d1-382807ae330mr1215669a91.7.1783121786860;
+        Fri, 03 Jul 2026 16:36:26 -0700 (PDT)
+X-Received: by 2002:a17:90a:e708:b0:37e:a09:2640 with SMTP id 98e67ed59e1d1-382807ae330mr1215656a91.7.1783121786156;
+        Fri, 03 Jul 2026 16:36:26 -0700 (PDT)
+Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30f0bbd223esm25620535eec.21.2026.07.03.16.36.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Jul 2026 16:36:25 -0700 (PDT)
+Message-ID: <77d7e748-25d0-4090-8954-ab96bb37f223@redhat.com>
+Date: Sat, 4 Jul 2026 09:36:13 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <58bb92a9-c5ea-47a3-b19a-934573f15305@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 29/44] arm64: RMI: Runtime faulting of memory
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
+ Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+References: <aiJ6u83O0nVUtPyv@lpieralisi>
+ <ecef952b-e8c6-4102-933b-c99c46f14431@redhat.com>
+ <aiLes2ecZSr17UwZ@lpieralisi>
+ <1e39094f-7fa3-4ef1-be54-53d7a8643506@redhat.com>
+ <98d2a0f3-b831-466a-8212-5bcf97ad9d8b@arm.com>
+ <8da87878-2a5d-478a-a280-60dbed7ad1b9@redhat.com>
+ <9482dfbc-4d96-47ba-a615-f4ba0bda833f@arm.com>
+ <8f81ed99-c53a-4196-baa2-adea9239a000@redhat.com>
+ <aj6sdzlbxT8D5fnf@lpieralisi>
+ <901398bb-ed6c-4997-b3cd-ce2829b09c87@redhat.com>
+ <akUc/ScJN0GlM+9G@lpieralisi>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <akUc/ScJN0GlM+9G@lpieralisi>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: pNPSNQt-TpP5wxH8PYfpUz33gV_oN7ovJPyMLBpc-7g_1783121787
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jul 03, 2026 at 08:15:49PM +1000, Alexey Kardashevskiy wrote:
-> On 3/7/26 00:47, Jason Gunthorpe wrote:
-> > On Thu, Jul 02, 2026 at 10:25:16AM +1000, Alexey Kardashevskiy wrote:
-> > 
-> > > > > not externally available so I'll have to trick the DMA layer into
-> > > > > using SWIOTLB (which is still all shared, right?) as I specifically
-> > > > > want to skip page conversions. Setting low DMA mask won't guarantee
-> > > > > that the DMA layer won't allocate a page outside of SWIOTLB and
-> > > > > convert it. Manually do
-> > > > 
-> > > > Why so particular?
-> > > 
-> > > aahhh I missed "pre-". I need a way to get pre-shared pages for my
-> > > sev-guest activities.
-> > 
-> > It sounds to me like you don't, what you are worried about is
-> > optimizing the dma_alloc_coherent flow to avoid fragmentation and all
-> > CC architetures require this optimization.
+On 7/1/26 11:58 PM, Lorenzo Pieralisi wrote:
+> On Sun, Jun 28, 2026 at 08:33:01PM +1000, Gavin Shan wrote:
+>> On 6/27/26 2:44 AM, Lorenzo Pieralisi wrote:
+>>> On Fri, Jun 26, 2026 at 09:43:03PM +1000, Gavin Shan wrote:
+>>>> On 6/26/26 6:47 PM, Suzuki K Poulose wrote:
+>>>>> On 26/06/2026 08:43, Gavin Shan wrote:
+>>>>>> On 6/26/26 1:58 AM, Suzuki K Poulose wrote:
+>>>>>>> On 25/06/2026 14:53, Gavin Shan wrote:
+>>>>>>>> On 6/6/26 12:35 AM, Lorenzo Pieralisi wrote:
+>>>>>>>>> On Fri, Jun 05, 2026 at 06:11:11PM +1000, Gavin Shan wrote:
+>>>>>>>>>> On 6/5/26 5:28 PM, Lorenzo Pieralisi wrote:
+>>>>>>>>>>> On Fri, Jun 05, 2026 at 04:23:15PM +1000, Gavin Shan wrote:
+>>>>>>
+>>>>>> [...]
+>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> I tried to rebase Jean's latest QEMU series [1] to upstream QEMU, and found
+>>>>>>>>>> that memory slots backed by THP are broken. With THP disabled on the host and
+>>>>>>>>>> other fixes (mentioned in my prevous replies) applied on the top of this (v14)
+>>>>>>>>>> series, I'm able to boot a realm guest with rebased QEMU series [2], plus more
+>>>>>>>>>> fxies on the top.
+>>>>>>>>>>
+>>>>>>>>>> [1] https://git.codelinaro.org/linaro/dcap/qemu.git  (branch: cca/ latest)
+>>>>>>>>>> [2] https://git.qemu.org/git/qemu.git                (branch: cca/ gavin)
+>>>>>>>>>>
+>>>>>>>>>> Lorenzo, You may be saying there is someone making QEMU to support ARM/CCA?
+>>>>>>>>>
+>>>>>>>>> Mathieu and I are working on that yes and with Steven/Suzuki to fix the THP
+>>>>>>>>> issues you pointed out above.
+>>>>>>>>>
+>>>>>>>>>> If so, I'm not sure if there is a QEMU repository for me to try?
+>>>>>>>>>
+>>>>>>>>> We should be able to submit patches by end of June - we shall let you know
+>>>>>>>>> whether we can make something available earlier.
+>>>>>>>>>
+>>>>>>>>
+>>>>>>>> Not sure if there are other known issues in this series. It seems the stage2
+>>>>>>>> page fault handling on the shared space isn't working well. In my test, the
+>>>>>>>> vring (struct vring_desc) of virtio-net-pci is updated by the guest, and the
+>>>>>>>> data isn't seen by QEMU, I'm suspecting if the host-page-frame-number is properly
+>>>>>>>> resolved in the s2 page fault handler for shared (unprotected) space.
+>>>>>>>>
+>>>>>>>> - I rebased Jean's latest qemu branch to the upstream qemu;
+>>>>>>>>
+>>>>>>>> - On the host, which is emulated by qemu/tcg, the THP (transparent huge page) is
+>>>>>>>>      disabled.
+>>>>>>>>
+>>>>>>>> - On the guest, I can see the virtio vring (struct vring_desc) is updated. The
+>>>>>>>>      S1 page-table entry looks correct because the corresponding physical address
+>>>>>>>>      0x10046880000 is a sane shared (unprotected) space address.
+>>>>>>>>
+>>>>>>>>      [   52.094143] software IO TLB: Memory encryption is active and system is using DMA bounce buffers
+>>>>>>>>      [   52.289746] virtqueue_add_desc_split: desc[0]@0xffff000006880000, [00000100b983f000  00000640  0002  0001]
+>>>>>>>>      [   52.432150] PTE 0x00e8010046880707 at address 0xffff000006880000
+>>>>>>>>
+>>>>>>>> - On the host, the s2 page-table-entry is unmapped due to attribute transition (private -> shared).
+>>>>>>>>      A subsequent S2 page fault is raised against the adress and the s2 page-table-entry is built.
+>>>>>>>>
+>>>>>>>>      [  109.259077] ====> realm_unmap_shared_range: tracked_unprot_addr=0x10046880000
+>>>>>>>>      [  109.260249] realm_unmap_shared_range: unmapped shared range at 0x10046880000
+>>>>>>>>      [  109.317786] realm_unmap_shared_range: unmapped shared range at 0x10046880000
+>>>>>>>>      [  109.629939] ====> kvm_handle_guest_abort: fault_ipa=0x10046880000, esr=0x92000007
+>>>>>>>>      [  109.630245] realm_map_non_secure: ipa=0x10046880000, pfn=0xb8b59, size=0x1000, prot=0xf
+>>>>>>>>      [  109.630331] realm_map_non_secure: ipa=0x10046880000, ipa_top=0x10046881000, flags=0x1e0001, range_desc=0xb8b59004
+>>>>>>>
+>>>>>>> Are you able to correlate the order of the transitions and the Guest
+>>>>>>> access with RMM log ? We haven't seen this from our end. We are aware
+>>>>>>> of permission fault issues with Unprotected IPA when backing the memslot
+>>>>>>> with MAP_PRIVATE areas. But this looks different.
+>>>>>>>
+>>>>>>> Lorenzo, have you run into this ?
+>>>>>>>
+>>>>>>
+>>>>>> It's hard to correlate the order since the logs are collected from two separate
+>>>>>> consoles. For the write permission, I add code to the host where the permission
+>>>>>> is always added for all s2 page faults in the shared space. Otherwise, qemu can
+>>>>>> be killed by -EFAULT or similar error.
+>>>>>
+>>>>> This is the problem. We can't add WRITE permission by default. I believe
+>>>>> you may have MAP_PRIVATE mapping and it has to be mapped as READ only
+>>>>> and on a permission fault, we replace it with a writable page. By
+>>>>> overriding the WRITE permission, you let the guest write to a page
+>>>>> that may not be seen by the VMM.
+>>>>>
+>>>>> We identified this as a bug in the KVM driver in this series (reported
+>>>>> by Lorenzo) and there is a corresponding tf-RMM change that is required
+>>>>> to get this working. So, please could you wait until the next series
+>>>>> when this will be addressed ? Or you could switch to using MAP_SHARED
+>>>>> for the "shared" memory in the memslot.
+>>>>>
+>>>>
+>>>> Exactly. the syntax for MAP_PRIVATE is broken if the write permission is
+>>>> enforced for a read fault in the shared space. In my case, the host page can
+>>>> be the zero page and eventually multiple s2 page-table entries (for multiple
+>>>> unprotected or shared pages) point to the zero page. It's why clearing the
+>>>> 3rd queue (Ctrl queue) also clears the first queue (Rx queue) in my case.
+>>>>
+>>>> Yes, this issue can be avoid by using a shared memory backend in qemu, something
+>>>> like below. With this, I'm able to see virtio-net-pci starts to work...
+>>>>
+>>>>       -object memory-backend-ram,id=mem0,size=2G,share=yes
+>>>
+>>> Yes, as Suzuki said that's what we have been fixing. QEmu patches
+>>> will be on the mailing lists very shortly - the KVM/tf-RMM fixes
+>>> to make MAP_PRIVATE work will be included in the next posting.
+>>>
+>>> Feel free to drop your QEmu command line so that I can give it
+>>> a shot and check whether the fixes solve the problem you hit
+>>> (I think so because that's precisely the kind of issue I got
+>>> into when I started debugging THP/MAP_PRIVATE but it is better
+>>> to check).
+>>>
+>>
+>> The virtio-net-pci doesn't work with the following command lines. The guest
+>> kernel image is built from upstream kernel (v7.1.rc7).
+>>
+>>      qemu-system-aarch64 -enable-kvm -object rme-guest,id=rme0,             \
+>>      -machine virt,gic-version=3,confidential-guest-support=rme0            \
+>>      -cpu host,pmu=off                                                      \
+>>      -smp maxcpus=2,cpus=2,sockets=1,clusters=1,cores=1,threads=2           \
+>>      -m 2G -object memory-backend-ram,id=mem0,size=2G                       \
+>>      -numa node,nodeid=0,cpus=0-1,memdev=mem0                               \
+>>      -serial mon:stdio -monitor none -nographic -nodefaults                 \
+>>      -kernel /mnt/linux/arch/arm64/boot/Image                               \
+>>      -initrd /mnt/buildroot/output/images/rootfs.cpio.xz                    \
+>>      -append earlycon=pl011,mmio,0x10009000000                              \
+>>      -device pcie-root-port,bus=pcie.0,chassis=1,id=pcie.1                  \
+>>      -device pcie-root-port,bus=pcie.0,chassis=2,id=pcie.2                  \
+>>      -device pcie-root-port,bus=pcie.0,chassis=3,id=pcie.3                  \
+>>      -device pcie-root-port,bus=pcie.0,chassis=4,id=pcie.4                  \
+>>      -netdev tap,id=tap1,vhost=on,script=/etc/qemu-ifup,downscript=/etc/qemu-ifdown  \
+>>      -device virtio-net-pci,bus=pcie.2,netdev=tap1,mac=b8:3f:d2:1d:3e:c0
 > 
-> It is not about fragmentation, it is about unwanted page state
-> changes when few pages are shared for a very short time.
+> Tested with private RAM backend, THP left enabled (and additional KVM and
+> RMM patches that will be included in v15) looks like the net interface
+> comes up cleanly.
+> 
+> Probably it is best to sync up on the upcoming v15 posting that I am
+> testing in the background to make sure you don't spend more time chasing
+> it.
+> 
 
-That's really basically the same thing. The responsiblity for
-optimizing the shared/private conversion lies with the DMA API not the
-callers.
+Thanks for your confirmation. For every respin of the arm/cca host series,
+I try to give it a test to make sure nothing gets broken in my coverage.
+For this specific revision (v14), more time was actually spent to rebase
+Jean's qemu (branch: cca/latest) to upstream so that I can do the tests.
 
-> When I needed these pages, I could: get a private page, convert,
-> (possibly trigger RMP and IO PDE smashing if that 4K is backed with
-> 2M), do the VM<->HV communication, convert back to private (and
-> possibly unsmash the page).
+Lets wait for a while to see what we will have in v15 and the qemu series
+you're going to post, and I will give it another try.
 
-IMHO it would be better to use something like dma_pool to amortize the
-coherent allocations instead of trying to hack with swiotlb.
+One unrelated question is 64KB granule size, it's not supported by upstream
+TF-RMM "main" or "topics/rmm-v2.0-poc_2" branch, not sure about the plan
+when this will be supported in TF-RMM. Since 64KB isn't supported by TF-RMM,
+I was unable to test 64KB page size.
 
-Jason
+Upstream EDK2 doesn't support realm guest yet even some of related commits
+have been merged. So I still use linaro's one at "https://git.codelinaro.org
+/linaro/dcap/edk2  (branch: cca/latest).
+  
+Thanks,
+Gavin
+
+
+> Thanks,
+> Lorenzo
+> 
+>>
+>> The virtio-net-pci starts to work with the shareable memory-backend.
+>>
+>>      -object memory-backend-ram,id=mem0,size=2G,share=yes
+>>
+>> Note that THP is disabled on my host.
+>>
+>>      root@host:~# cat /sys/kernel/mm/transparent_hugepage/enabled
+>>      always madvise [never]
+> 
+
