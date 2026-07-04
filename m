@@ -1,97 +1,96 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AA6276050
-	for <linux-coco@lists.linux.dev>; Sat,  4 Jul 2026 14:26:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05749256C8B
+	for <linux-coco@lists.linux.dev>; Sat,  4 Jul 2026 14:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783175217; cv=pass; b=Z9mIdCP2AXyeRY1IODiLhV/dy0ApxBUPOa8eaUAT46eZlBfFroNm5gtbMV6Uv9yfhyfx4MY9n/nas+pQSvbS3rnK9Q2RbJMJtJb5yR0TpH9Uqi7lzEH2DgOviCTN4Lm6BvKZhbh6/SbTUMhWmOaEX7Fda1B7TnECkocM8A3rhq4=
+	t=1783176153; cv=pass; b=gt/bRHPR/9BhoOvFWUnSj/cZrSqqL+XWUKMidl4z6QvuUsf+I0IChC7hUVhY8ybcZ4XRI/zR48S8q2zC2AxFyBOds3GW1qaKjHhBHxyiCMyYvIwTgeVk8Vcz+F+rz1RW4kYs0FUGYatfvfoWbWqDzpoxvXCo1f4jAP6vdocV61U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783175217; c=relaxed/simple;
-	bh=9YDFkrKXe8+xQwIOAGKt+OLc4uyD4YgCdy+nIHJ3u8A=;
+	s=arc-20240116; t=1783176153; c=relaxed/simple;
+	bh=MoaHjkaWH3mVoA4yYUij+2yJ1onRPN8dEfQ18Xxn+3Y=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iYBxyebE47W8AZOqgp/plbgNIFIILwcju/2RUkx81/msyTAohy9Gf4cMxfgiAhfI5skOeV9zL5AZyxzmagj6ETPy3OtqFODguWv0UHgYGdFbHXlxPWBt3ZNrcCV3YYy3ZaDJXBvDU4IgxqY5PDu4cLvjf7nItnva3w3Lx2DLvS4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S2RHK2Yb; arc=pass smtp.client-ip=209.85.214.181
+	 To:Cc:Content-Type; b=uVDnGC8p1xeujmfL+0oifrzrh93jUS8dQJ5e7Xnw8Ns2BL9TSSPA5jC8hXvnFKgBUSQKrIodcqSvQL/KdSnpytM0DyI7kaH6cljgnp0/+UOySIfGLktW+ibNuqXH0Ju7Sh0Zs0Vm4VKYvAnysSnaFbX0Cha3aSZeglDYbbQm+OA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e2h+k+Bj; arc=pass smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S2RHK2Yb"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ca7aaa4b85so12092395ad.3
-        for <linux-coco@lists.linux.dev>; Sat, 04 Jul 2026 07:26:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783175215; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e2h+k+Bj"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cae134bdc8so7006915ad.3
+        for <linux-coco@lists.linux.dev>; Sat, 04 Jul 2026 07:42:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783176150; cv=none;
         d=google.com; s=arc-20260327;
-        b=qqhRI/pQlCu7klQes07FvCxp25fcIrfZmj89BYV7cylXqf+BSeEit0SGfpZjjTWTcg
-         ni34KulrCYOf+khkPRM70QpQIvx0NxehFk9rWXZgMECy0aTjCzWaIImhWNOSstMIWMc0
-         WVq1PCkEujxZR/E9QlQrFNJ99mYfLy8WSk3+/+7acJpeC+8nIZpSw4NYqyBEaZ2aQLY/
-         uul5G3TObOj9mloAYQWWOwzGYCKnyAuqCLiEQgFeUTXyLii+SmI9Rr6cDFdCJ4ic2il6
-         93iQiG52WPeWlaMbu6hEKEkC5fO1cKSJlvaArACa2JjxEVTT8ozuk/mC86HXERr6uqcG
-         uFBA==
+        b=fXE6lILFyJa2F9dowf+MKGmg0edpD6opU7lQAYNd/VyrnQbmO+b6lQ5k20Mi952r7r
+         hEcxv4jQqk6B1KErQqMLeCRE+xRbgz/kSe1VaExAQtLslHDiiDTR5arlWMhfuCSGlkej
+         nJY1mN71biW3kPTJvVnBsSPVuZH1eH7e9iHDPc0yimq6WKvovXBVky4IB/B7W2/84wCN
+         QkX/az9GBgJxhsIArT3wDShqvQchaj7jAxBEZNdogBKKOctoFf03YtRmciAjdtafthrG
+         obTHezlNlywcADDvnhYZcyqMpLFAE9aCDUeObzgy4R7gTeqtw7KUOM99Iw3b1RorPQk4
+         jcLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=WFnktr3xnr1z9FtsyBzXxn1YoZbHM5Izj7pi+H56QNg=;
-        fh=EweT7Nm4i+kX1WxFcYRofySgspn/HSNYHDJLK5mfrzw=;
-        b=SM5tN8/WQeSul4zoEk6/yeQg129USh8tp12vCUufZ/Wyb3QUFWNN7udjegbzp/up8M
-         YSPqEuNhnjnWkoVlfg3iWq2w3hYo4oEjocgKxiRWVmaYwAYx4FGB2O9kogLsSgEis3e2
-         3Ne3+wFEr84DST3DMinOWAH22W+CVfzwFhnspYAXxXAJo32rgIxn6dT/VDBUbrjKSFql
-         tglI9ohqMLzJLtlsm1CFq7YeiVLghm2wwK4ZI0mRaq49zD2Gw/wlsfMeHSvX58n1zZbD
-         eFmkQoPt9E7X6OPnGwRjYj6l1NfKZuL79+9KA3wXIkgp9dmpFG9qf2U7boEjWFHiFBkp
-         X+Dw==;
+        bh=3hO7xVm3JMi+xvznWIzbCWLHGJef3ve9nJtp5Srpwow=;
+        fh=3vlaSbfVHvqooJAD9KANWx1hUmhOI4ur5SVnAalimG4=;
+        b=dQdyL211i8EIc3AscA7+nV54MipfPitve0xYSWy4IqVjMJnUhG5JwKCv25MANzs+bK
+         wpBMiK+dV4TO46aDf9vIr1dhnYvt5DmoJNFYKJP0oxvSy0OZdwrB+/jR3mH30GrT6Ita
+         Is4IQnG1SRtquuz7xJ8x8uGUfkdiYDuhFzMgNxEw9IDYHp4YMFBFdovaswCkad4u5ytn
+         z4fIw3a2VwjIMHEa5rd3XIas0aE82Nb0WlMTU/caTGTSb/N+K5H03WAbWjzc7QLdIPs/
+         OcgMn9dI08m2vx3vc6LFUbP9iPj2Xetglw7fGSDV+wvjV+so2dXeke04cD2SLjXXn1Aj
+         2RLg==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783175215; x=1783780015; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WFnktr3xnr1z9FtsyBzXxn1YoZbHM5Izj7pi+H56QNg=;
-        b=S2RHK2YbrGIvfsfPwFYHK9YO2Dc8J4sOenLFQiKsp/+APR4FudKatbJS4BjBgR+BZP
-         KK8BpzLRugO7Tps6Xp9tgRCrD0aTfiyFKWlD5xfHlxNfz6Eq6JrLHvJam/iLbYRv+ZYW
-         6XJRr4nvNmyoO4GvDAL6hLRMkLJRQFoIatnasV5i7IiaeQpGD5Zcfwlbdv+QxllVSQZk
-         +D9t/0C8bN4HgiJEysu04085eMBYbUhyxQSmpx+ZgNJp2yKe7OQGxdSrJQEDx/pOKpJy
-         7t2bcPvfVHzOSItbDcSSxdCuhsDqqlo3xn5Xomc++96b/L/7g05DnPIJ9kETdU79tiRc
-         MgJg==
+        d=google.com; s=20251104; t=1783176150; x=1783780950; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3hO7xVm3JMi+xvznWIzbCWLHGJef3ve9nJtp5Srpwow=;
+        b=e2h+k+BjDpQHdTZGAyXimXD6okyRTozL8Hme5+WtKrF11Qw4L3LCBqb7YRnT6sn/Ia
+         KtDWZKbMH0UZ9zZ6NpyCUtor1oD7+0HLRufyNezy7o6gT/YMjAwp9L/hDtTa2ITr/xX/
+         ROf8QKQt2VTApQYVlJGh7lDhUkYyKHguc81iGxb27gFmwzzMFFpDHNrPNPw4Yi6fKpYO
+         gqs/uf8Am4Gx1yL1QVCQorA9TpKDXwbFZolzQFjD8xDgzspqnK4nZD+jUpFmtH/9liUg
+         6AADuAxaly2f6sIuguwDrzbCzpNMPmSEoiIt4y8H+NR6dXAVmC9jJc73JipIw5N0jGQN
+         9rmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783175215; x=1783780015;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=WFnktr3xnr1z9FtsyBzXxn1YoZbHM5Izj7pi+H56QNg=;
-        b=iG5eJd7gopvXnDy6mnm1ML6RnnWEGCZpkxjZ90J+pbo0dTyllxxL9EFJYsE7Vs36Ec
-         hx29fjRQHd2oJVmdEr9TjT2vHuDsFrMJJPIgxf8Ieq9xQvzf9XkVv5Q2noqa4U+Pos8u
-         XySqpq/2FUVn/4APk6SQ7WQjrHN3uoVCcXYIPKAghFKB7NMgSW/ROuytUnHxdwYVoD1S
-         6AksaYSwAmF6Cjtv8rz3sRqeHGMEWSnlVYkeqowGJotnuGaowUEwtRUSc0jomXkw/8sI
-         TsCWcUdayQHC7pGtq5oN2XGbNJRqPrAuPBRtj2uTSSyxkYruyL2y8FxOsccB2bQ2jmj7
-         VcuQ==
-X-Forwarded-Encrypted: i=1; AHgh+Roq3t53hMzUMK4/WmhPcCRJuN78Qzi3JfoZw4WS/9x6WrFrg9jRBKsPELCJcm28mQG0N3tAzxdeZ4sk@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw3I264tKxsWkQXlWBYXwljLyLJTP+sYnikxyMQMZkHat94Zno9
-	rxKYA5Gr/aWoTTo6Nnm61lW2BAdeiUOKjII6QklbWbeoFycYtGZptoCV9MGuP1vnS1d5Od6+8OE
-	4fVNABZdScChtrzSXcmBE+CqCC02mTDYq3HI2Ylly
-X-Gm-Gg: AfdE7clQh1y08+Zj45X2YUsK8IiMkqGV2S2QEw0jkgEV5JFc39xd2YlcUIUcocEE0bI
-	2aGEHNiBO6C/csj+M4/KIedvb1lpOPMk57oZDDrfzq1czG9N/p3aqAhSY5nCl6Ub9TDJzOEqhJe
-	m3wKh8BY8JBZwdlJIDkftPKGwspdsZm+gHZemNlE/hS4lNkotfCteO70wHyrMGKROpM+WCLzpP0
-	8xW8YbORPAKR6kamZSlEit5zVap78DiS0B5shjSPmxLDh+8S7oSbV9UpMvDs5+TJP6SGXHNXs/z
-	O4Cot7tKQaN48E7kbtPxgJXOOP7XfK8QfnW/wAw=
-X-Received: by 2002:a17:903:1ce:b0:2c6:a012:6241 with SMTP id
- d9443c01a7336-2cbb201b39cmr35063005ad.6.1783175214863; Sat, 04 Jul 2026
- 07:26:54 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783176150; x=1783780950;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3hO7xVm3JMi+xvznWIzbCWLHGJef3ve9nJtp5Srpwow=;
+        b=sy4e8tBCkj0IVFisXxi7fgzyY0L2jVHPo2J0OB7gu0z2l5CYKgJlqwFCr2ZIY8hFwr
+         ImoJNBgOB9BYrQa/ZShl2kTNfc3EbzuPN+2h1TvV4IRJvYXKM4MsdFh+ujg8GZnhQO4I
+         FlIzD+b2Bq+EulYMKNHVbezakmdH4y0LqPDfcVuAusb3vQCHyTu8JhH6YXgXm51RP9vf
+         /4l9XxiLt0ruRppxN20/GYXbiP/7CugluA3Ib5egyo68g7yCIXK4D96Y3jionkYoE4zr
+         JExXder9LPcubu5J/R+SpvX7sqUl2zRzOkNA6OC7KVu+M3SnyfBnB3GNM5pmAZ6b74zs
+         +Qzg==
+X-Forwarded-Encrypted: i=1; AHgh+RqCWLQ1jyJDKXSe9V2i2RtBCBBZkmOfbNK0KxX+b0Da3a0k86cAGfEnMOebcqYcU1wBQTWTNP8GI0u3@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx0CtXQCpxiWD4n6Xp5AMDZL6ErL8xfF8q2RkS8E27xAouuek60
+	S/CLFoupPHp+/hl/sAjPDSMNvzEKQoU1LiGhOA6xoGl2WSQbFmuUczSWgZI+gVIE4URe+nHD0Wt
+	Cb+5YUtBs+oT1JIPKO35r9mMsI4CKeJquvmAWwuOC
+X-Gm-Gg: AfdE7ckjuK1IEzkciO18CcpputP8Nwup0zfHAclv19u3S6HDSTZsp2Q5X19OPQkjatC
+	ImsE50Xb95fkAyBC+ut/foSmaH4GyqvvBlLQO2l+RaEwjcT/fyljQoGEsiEUqrPti0oC8NSw6Zx
+	VtggFKHM3/4XEHuBxVVhzKcZBu8/C8IkNbSII04tHGrcgcwLK5Fez3lHUB+9GlrulRqflKSbHUH
+	q3Fvy1o0cHtxqZTgb7nL8+Z+2udHwe+LcnMbMOtd9pROEUh/ZU2oY5FbHw/PPTfBg1xhd/YODuQ
+	pYNhiHFcUHay62+8E70wdd8JiIbyFPbEuEgwuQk=
+X-Received: by 2002:a17:903:b8f:b0:2c9:ed16:8d8d with SMTP id
+ d9443c01a7336-2cbb9eededcmr35313175ad.38.1783176149804; Sat, 04 Jul 2026
+ 07:42:29 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 4 Jul 2026 07:26:53 -0700
+ HTTPREST; Sat, 4 Jul 2026 07:42:28 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 4 Jul 2026 07:26:53 -0700
+ HTTPREST; Sat, 4 Jul 2026 07:42:28 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260327160132.2946114-16-yilun.xu@linux.intel.com>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com> <20260327160132.2946114-16-yilun.xu@linux.intel.com>
+In-Reply-To: <20260327160132.2946114-21-yilun.xu@linux.intel.com>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com> <20260327160132.2946114-21-yilun.xu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Sat, 4 Jul 2026 07:26:53 -0700
-X-Gm-Features: AVVi8CfdRsR_CKNKNIUlkjPTBxsOwA_Mmn0xqA4DX_E8qDCY3KX5iWgXVn3NJRs
-Message-ID: <CAEvNRgHauBdavhq68BepiOpJd1_UmBUQTkfsRmNimZycZ4VW-Q@mail.gmail.com>
-Subject: Re: [PATCH v2 15/31] coco/tdx-host: Introduce a "tdx_host" device
+Date: Sat, 4 Jul 2026 07:42:28 -0700
+X-Gm-Features: AVVi8CfswepA6TmyRRV0hFxy-bS0yysLNcHLp77b3888QFULsM5J1mmJGvtogqA
+Message-ID: <CAEvNRgGgTkOPWELeg5U3pjjw9NZOBQ5zswWy=MRxOXsUXXuFhQ@mail.gmail.com>
+Subject: Re: [PATCH v2 20/31] x86/virt/tdx: Add a helper to loop on TDX_INTERRUPTED_RESUMABLE
 To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev, 
 	linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
 Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com, 
@@ -102,57 +101,69 @@ Content-Type: text/plain; charset="UTF-8"
 
 Xu Yilun <yilun.xu@linux.intel.com> writes:
 
-> From: Chao Gao <chao.gao@intel.com>
+> Add a helper to handle SEAMCALL return code TDX_INTERRUPTED_RESUMABLE.
 >
-> TDX depends on a platform firmware module that is invoked via instructions
-> similar to vmenter (i.e. enter into a new privileged "root-mode" context to
-> manage private memory and private device mechanisms). It is a software
-> construct that depends on the CPU vmxon state to enable invocation of
-> TDX module ABIs. Unlike other Trusted Execution Environment (TEE) platform
-> implementations that employ a firmware module running on a PCI device with
-> an MMIO mailbox for communication, TDX has no hardware device to point to
-> as the TEE Secure Manager (TSM).
+> SEAMCALL returns TDX_INTERRUPTED_RESUMABLE to avoid stalling host for
+> long time. After host has handled the interrupt, it calls the
+> interrupted SEAMCALL again and TDX Module continues to execute. TDX
+> Module made progress in this case and would eventually finish. An
+> infinite loop in host should be safe.
 >
+> The helper is for SEAMCALL wrappers which output information by using
+> seamcall_ret() or seamcall_saved_ret(). The 2 functions overwrite input
+> arguments by outputs but much SEAMCALLs expect the same inputs to
 
-I'm trying to get up to speed on Confidential IO. Thank you for this
-summary!
+Did you mean most instead of much?
 
-s/TEE Secure Manager (TSM)/TEE Security Manager/
-
-> Create a virtual device not only to align with other implementations but
-> also to make it easier to
+> resume.
 >
->  - expose metadata (e.g., TDX module version, seamldr version etc) to
->    the userspace as device attributes
+> The helper is not for special cases where the SEAMCALL expects modified
+> inputs to resume. The helper is also not for SEAMCALLs with no output,
+> do {...} while (r == TDX_INTERRUPTED_RESUMABLE) just works.
 >
->  - implement firmware uploader APIs which are tied to a device. This is
->    needed to support TDX module runtime updates
->
->  - enable TDX Connect which will share a common infrastructure with other
->    platform implementations. In the TDX Connect context, every
->    architecture has a TSM, represented by a PCIe or virtual device. The
->    new "tdx_host" device will serve the TSM role.
->
-> A faux device is used for TDX because the TDX module is singular within
-> the system and lacks associated platform resources. Using a faux device
-> eliminates the need to create a stub bus.
->
-> The call to tdx_get_sysinfo() ensures that the TDX module is ready to
-> provide services.
->
-> Note that AMD has a PCI device for the PSP for SEV and ARM CCA will
-> likely have a faux device [1].
->
-> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-> Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Reviewed-by: Kai Huang <kai.huang@intel.com>
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Link: https://lore.kernel.org/all/2025073035-bulginess-rematch-b92e@gregkh/ # [1]
 > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> ---
+>  arch/x86/virt/vmx/tdx/tdx.c | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
 >
-> [...snip...]
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index cd0948794b6c..294f36048c03 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -2084,6 +2084,29 @@ static inline u64 tdx_tdr_pa(struct tdx_td *td)
+>  	return page_to_phys(td->tdr_page);
+>  }
 >
+> +static u64 __maybe_unused __seamcall_ir_resched(sc_func_t sc_func, u64 fn,
+> +						struct tdx_module_args *args)
+> +{
+> +	struct tdx_module_args _args;
+> +	u64 r;
+> +
+> +	while (1) {
+> +		_args = *(args);
+
+Is this copying meant to ensure that every retry has the same input
+args? Perhaps a comment should be added so it's obvious that every retry
+will have the same input, and outputs from each retry are dropped.
+
+> +		r = sc_retry(sc_func, fn, &_args);
+> +		if (r != TDX_INTERRUPTED_RESUMABLE)
+> +			break;
+> +
+> +		cond_resched();
+> +	}
+> +
+> +	*args = _args;
+> +
+> +	return r;
+> +}
+> +
+> +#define seamcall_ret_ir_resched(fn, args)	\
+> +	__seamcall_ir_resched(__seamcall_ret, fn, args)
+> +
+>  noinstr u64 tdh_vp_enter(struct tdx_vp *td, struct tdx_module_args *args)
+>  {
+>  	args->rcx = td->tdvpr_pa;
+> --
+> 2.25.1
