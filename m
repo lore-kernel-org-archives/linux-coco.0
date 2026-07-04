@@ -1,131 +1,338 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7613C286D5E
-	for <linux-coco@lists.linux.dev>; Sat,  4 Jul 2026 14:45:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783176318; cv=pass; b=GgUX05dfcrNSgX37Bb7sw4e9yFR8eNSqrgnAcDQvnJtDP/oERK672XBdUvYvs8KiCpA3P9JYb4fP+aiTGOSbVhFWHGzQ3ao38qxCbUXLD2EWjR5egG5TceQU+S29EMxi+LwxWBdu4m2yDsQWK4r2idjJzeEjgVHU4mQQB8lSTDE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783176318; c=relaxed/simple;
-	bh=XpQJwh2GgNhD6EAOhQ4I53c3yuO4+5Tzr8NzYHPiJFM=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rw1kqE6uUT10KMIGL2i8dwbdXDJOBBTu6SxXk9gELv4ij8ecw9cXZLOf4Eh2eMGNSuH7H2ORAqIKzrLC6UbESrA4Y8wZ85LSSYBDTYZZqD9QszsH/G/KBKqwCj+XORR/AQEn7/HlcYG6eeKRDpyNh3gxZSs7OP3OCot1dyd8lEM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AiOHFlTF; arc=pass smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAEF42FF675
+	for <linux-coco@lists.linux.dev>; Sat,  4 Jul 2026 23:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783208332; cv=none; b=qQyX4eAvjEJldDETDmkbsabTHy0eFvztDEspj130L7oYfk3cWZclNCHnvaWDknFdKReW4Lfv4g8CCqdHwZsw5DHaFZK12NZLI3PmeeEV5PL3+rrE9qCPjP1738Q2vtglE5p6Y9bQ6DudcxdDCVptuH4PHsLOo60wmPO7Cs42I6k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783208332; c=relaxed/simple;
+	bh=s8K7gocsWH9rX7pANzHxIK07Z+WF9Hm5c4sGgOuC5gs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s+N4v/4bKmPnUQHOVeRbNUuXptLKw2OIX1+Av+cg2jnBuqO+HdaaW5oIFDGNmhft98+h/IuVVhAlJpl9YpYceQK9Mk9PQKCN393kQOQhcRkkGkaMB/Lb8EoEMRS+ZAn/fiG1YBkpyxkEjLoY81vxc/p4s/dXXwm+3Ru6deww5ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=CQASIfnk; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AiOHFlTF"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c981c2c37cbso996545a12.0
-        for <linux-coco@lists.linux.dev>; Sat, 04 Jul 2026 07:45:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783176317; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EbIRDEz+yf+WJ5p2uZUfFsx7SsQX0YRwJBuACDNDC9ELd2vg9CEgszpFv9iq5Dcj2h
-         kMCwNUJE01QgHmkIk2jOZQQvIGHZIJ0eUr81FlzzjzMQeHrvtEALvYK6CAtAR1wkpvN2
-         3KvLq2k+u6PoLjnUPO+PVA+j6yyRfBofagCmPDr44CPnRMRU17vyEbD6JnetdeHadyq/
-         R/tnQ9i/z+mWmNIK+G43G8zYpsWhV16U1QyA8uqoAUe3arTh26leQjNew8Cffc707KfH
-         9mmjdfqISEbOxzKfOWD5VSIJtfb4Tg2MyGK3mwT4AcHPc7JfTHGfAMg5gnTkov1OjZ9g
-         rt4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=L9xOVRuKFfEvpugkoigwFk6Gb+xTAo+YrZVd7V9k8iM=;
-        fh=p9GgXCX4SQz9Snbgs+tDHsjQYrPHdPAvA7GXLYHUKk4=;
-        b=MOyY4U1znCczkeQoeHnsQC2vShkcdiJpBBU7bqZzIc6jyElkmVgzC4KzUap3QEHTmQ
-         nak6kCiKKlw1Y0HodN+Ts7Rd8E1l98TTwhyhM5cUWEXbRgSbjyKM3PJh4Bu187ZTy9SY
-         V5341uZyMopqC1Ko2JUVzdgrlKJA3PljwHEowrajhDdNEpXUfq8O8CHWTFbM4gqvOM3j
-         RYpfW90BWLKTA006OwTInNZ69pKcqgL5LRpAj3zTfmTEKUz2VqHGC9CltKoE/mCidNKf
-         unfO71wqqwzdAeK6DbHwqomxv2pxg45IBMYArdLUTS0LarUCnJ/KdV40ZwAGMmucIlud
-         yOWA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783176317; x=1783781117; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=L9xOVRuKFfEvpugkoigwFk6Gb+xTAo+YrZVd7V9k8iM=;
-        b=AiOHFlTFGcr6G5SdgdgMmF7GVRG8xHkUL1y624HkWfrLbxMgBU0mkOK2/FgASDYmQv
-         vjJ3QogJ+uqpJlJ+GI44PHGjuNxT5ZuRDhrGyFQRfkuaQOUfXugf8uxB3snI+3yppGYa
-         twlymSak95tbZvcepSNAPp+A3WeS61jLFVqX6aQWHWVeV2D21T1t5Woh5rBQFcWApLJx
-         T9DywcdrFPSACRqW61GQAtKo0/kTvqe0PQBzlPtmYvK6hG/NCLTyyxq649TQcZBChdE1
-         kXq2deuAd+IpOjpBrpIiy9efu8EhcN1+YT5FvWlT7e2LVWa/vdWAeNtTCcldUSQmDmWx
-         jE8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783176317; x=1783781117;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=L9xOVRuKFfEvpugkoigwFk6Gb+xTAo+YrZVd7V9k8iM=;
-        b=kCGNOp5YVy22FC3GZjAkX1fsGI3r/PUefH4bHG3oQKwnHKdnP02Nr8diqVO2jv0cmz
-         oA7iq1LTF44zv1ingm0GHK73nKk+qJUHVB3Ow56aLLPOZaFsF//CrersKeipdIzHG2/8
-         AaDwhooOgf+y+uY/XFSFyeU90BdheyV89Qd7TaQt8pLEnuYoazyzKjvDQXumlgfkJo0H
-         +MLByMypilRwQVCnfGy8iCTNXwbFDzEOy+iQtlrsINdILLV8VOUId3wFtJ7/FfdCUSOf
-         DJCOG8e081M8BCdWit6K9bO6PFh2V6ZL57UIRB9wDj07D//tjQEsKVhSL/IWJn5L17Ti
-         Oggw==
-X-Forwarded-Encrypted: i=1; AFNElJ+DXnzP2qHYLKl6yPqNK6fLJt7qqXjerLT61/ZgkksSoDupCYQ4xcg39f3w0XrIvHJKFGSWrFbWhNCA@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywfdft4ZbenHNwbBMjBvhUcpaU/p8vCADicVf4G3NCqrurkshH8
-	a0wTrQuT8Pp8izIttaqB0aCjZJPKo0AyDSytx19IcSNp0QYhXF3qZZyggO0z9sopxjPfLtSOU6f
-	uatndeoWNjtRLu1RykgGoiFxDjZMDtqk3KHfU/Iwl
-X-Gm-Gg: AfdE7ckvjxzHELvTczy/q4RYgzBcte1RdBpy/FdP6DDPSbDYIZfOKaGA6XfIo0mP5ZM
-	8NV+g18yP7xrSEQ1ErCwYAJRG404qpxA44NXYMueFyrd05oHwEjfT8/qQMdKbNe6FkB2Jh87510
-	MSLq6PTGt4zEzDp15bbeJw3cL4nwlS7HsMBopt+glX4BYvDhQRz/OuDnMlW+aS3sapdLYCQEDkT
-	sWG04xXSkPHnKReTtHRPmRGpJuS6E0/a9bolX3K29TZZoT6Xku+yd0Mtc7NMwkLbxttx8wqFUeD
-	pyfaGVAjucUdolxyn7Bm0NtRQU+T
-X-Received: by 2002:a05:6a21:4516:b0:3a2:d838:bfca with SMTP id
- adf61e73a8af0-3c03e18c1a6mr3784343637.3.1783176316400; Sat, 04 Jul 2026
- 07:45:16 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 4 Jul 2026 07:45:15 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 4 Jul 2026 07:45:15 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <BN9PR11MB52767E6C22CDF7DAD9D5FF1E8C582@BN9PR11MB5276.namprd11.prod.outlook.com>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-21-yilun.xu@linux.intel.com> <BN9PR11MB52767E6C22CDF7DAD9D5FF1E8C582@BN9PR11MB5276.namprd11.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="CQASIfnk"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 764091A9A;
+	Sat,  4 Jul 2026 16:38:35 -0700 (PDT)
+Received: from [10.57.39.250] (unknown [10.57.39.250])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B68F3F85F;
+	Sat,  4 Jul 2026 16:38:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783208319; bh=s8K7gocsWH9rX7pANzHxIK07Z+WF9Hm5c4sGgOuC5gs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=CQASIfnktKJ+nJBsa+sb+UUp/whO7qPhCX8lvNLWNHjZbzL0OZNmp18ACbtwf78sq
+	 5BQyc2Gvo4iMWs88e7iwAVmUzNwMDDnMKDS5JXpoQMiHp1m54keQESKtrPapIShSsS
+	 Y/fCh+eY83Tx1TDwgjWsfX8tgU4pzalslz35LonA=
+Message-ID: <114e2488-97ed-4740-a8e8-1edd991f26c5@arm.com>
+Date: Sun, 5 Jul 2026 00:38:24 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Sat, 4 Jul 2026 07:45:15 -0700
-X-Gm-Features: AVVi8CeBOQYKqHyO-ZgLrEnt9NfH2sTywpBsyBpG5p82n6nbBzKMaxoqUYDvD88
-Message-ID: <CAEvNRgFL_UYz8449z-PJ2ew9x3Ju6qzaBeSxVxLkcNMJeqzMww@mail.gmail.com>
-Subject: RE: [PATCH v2 20/31] x86/virt/tdx: Add a helper to loop on TDX_INTERRUPTED_RESUMABLE
-To: "Tian, Kevin" <kevin.tian@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "Williams, Dan J" <dan.j.williams@intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>
-Cc: "Gao, Chao" <chao.gao@intel.com>, "Jiang, Dave" <dave.jiang@intel.com>, 
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, "Xu, Yilun" <yilun.xu@intel.com>, 
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 13/46] KVM: guest_memfd: Add base support for
+ KVM_SET_MEMORY_ATTRIBUTES2
+Content-Language: en-GB
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, aneesh.kumar@kernel.org,
+ liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-"Tian, Kevin" <kevin.tian@intel.com> writes:
+Hi
 
->> From: Xu Yilun <yilun.xu@linux.intel.com>
->> Sent: Saturday, March 28, 2026 12:01 AM
->>
->> +static u64 __maybe_unused __seamcall_ir_resched(sc_func_t sc_func, u64
+On 19/06/2026 01:31, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
+> 
+> Introduce base support for KVM_SET_MEMORY_ATTRIBUTES2 in guest_memfd, which
+> just updates attributes tracked by guest_memfd.
+> 
+> Validate input fields in general. Guard usage of KVM_SET_MEMORY_ATTRIBUTES2
+> by making sure requested attributes are supported for this instance of kvm.
+> 
+> A new KVM_SET_MEMORY_ATTRIBUTES2 is defined to support writes (unlike
+> KVM_SET_MEMORY_ATTRIBUTES) in addition to reads so it can provide error
+> details to userspace. This will be used in a later patch.
+> 
+> The two ioctls use their corresponding structs with no overlap, but
+> backward compatibility is baked in for future support of
+> KVM_SET_MEMORY_ATTRIBUTES2 and struct kvm_memory_attributes2 in the VM
+> ioctl.
+> 
+> The process of setting memory attributes is set up such that the later half
+> will not fail due to allocation. Any necessary checks are performed before
+> the point of no return.
+> 
+> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
+> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> Co-developed-by: Sean Christoperson <seanjc@google.com>
+> Signed-off-by: Sean Christoperson <seanjc@google.com>
+> Reviewed-by: Fuad Tabba <tabba@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
 
-How about __seamcall_retry_interrupted, to emphasize that this function
-retries a certain kind of seamcall?
+...
 
-I think resched is part of the implementation, of what's done while
-retrying, which might not need to be part of the name.
 
-No strong opinion though. Thanks for considering.
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 65ce795c090d9..0d14548c1ed22 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -541,11 +541,127 @@ bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
 
->> fn,
->> +						struct tdx_module_args *args)
->> +{
->
-> 'ir' sounds redundant with the trailing 'resched'?
->
-> not big deal, just a bit confusing when seeing it in IOMMU side where
-> 'ir' also refers to 'interrupt remapping' and is frequently used in
-> irq_remapping.c... :)
+...
+
+> +static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> +				     size_t nr_pages, uint64_t attrs)
+> +{
+> +	struct address_space *mapping = inode->i_mapping;
+> +	struct gmem_inode *gi = GMEM_I(inode);
+> +	pgoff_t end = start + nr_pages;
+> +	struct maple_tree *mt;
+> +	struct ma_state mas;
+> +	int r;
+> +
+> +	mt = &gi->attributes;
+> +
+> +	filemap_invalidate_lock(mapping);
+> +
+> +	mas_init(&mas, mt, start);
+> +	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
+> +	if (r)
+> +		goto out;
+> +
+> +	/*
+> +	 * From this point on guest_memfd has performed necessary
+> +	 * checks and can proceed to do guest-breaking changes.
+> +	 */
+> +
+> +	kvm_gmem_invalidate_start(inode, start, end);
+
+I added support for Arm CCA KVM patches with the inplace conversion and
+I am hitting the following issue.
+
+1. I am supporting INIT_SHARED + MMAP flags.
+2. VMM creates the Gmem_fd with both the flags above.
+3. Uses the shared gmem-mmap to load the initial payloads (kernel, dtb).
+4. At the VM finalization time, Populate the loaded regions one by one
+    by
+     a) copying the images to a temparory buffer - Since CCA can't really
+        load the contents in-place.
+     b) Set the "region" to Private in the gmem_fd (via 
+SET_MEMORY_ATTRIBUTES2)
+     c) Invoke CCA backend to populate the private memory via
+        ioctl(KVM_ARM_RMI_POPULATE,..) [0]
+
+[0] 
+https://lore.kernel.org/all/20260513131757.116630-27-steven.price@arm.com/
+
+
+5. Additionally, VMM can mark the entire RAM to be private before the VM
+    starts running, again via SET_MEMORY_ATTRIBUTES2. On CCA, this 
+action is measured and doesn't require the Host to "commit" memory to 
+the VM.
+Instead the host can lazily donate memory on a fault.
+
+But step (5) triggers the invalidation of both private and shared
+mappings of the gmem area, from the kvm_gmem_invalidate_start()
+above.
+
+This is because, the entire DRAM now has, some portions PRIVATE (the 
+loaded regions) and the rest are SHARED (from the Gmem_fd creation).
+  Thus, kvm_gmem_get_invalidate_filter(Dram_start, Dram_end) causes the 
+invalidation of both "PRIVATE" and "SHARED" regions, which results
+in the destruction of the already loaded data and things go south.
+
+When we know that the kvm_gmem_invalidate_xx is triggered by a 
+conversion, we don't need to invalidate the existing pages that
+are in the requested state. i.e., the following patch on top of
+this series does the trick for me :
+
+
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index a97fcac34a0e..62e0427a49f4 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -250,16 +250,23 @@ static void __kvm_gmem_invalidate_start(struct 
+gmem_file *f, pgoff_t start,
+                 KVM_MMU_UNLOCK(kvm);
+  }
+
++static void kvm_gmem_invalidate_start_filter(struct inode *inode, 
+pgoff_t start,
++                                            pgoff_t end,
++                                            enum kvm_gfn_range_filter 
+attr_filter)
++{
++       struct gmem_file *f;
++
++       kvm_gmem_for_each_file(f, inode)
++               __kvm_gmem_invalidate_start(f, start, end, attr_filter);
++}
++
+  static void kvm_gmem_invalidate_start(struct inode *inode, pgoff_t start,
+                                       pgoff_t end)
+  {
+         enum kvm_gfn_range_filter attr_filter;
+-       struct gmem_file *f;
+-
+         attr_filter = kvm_gmem_get_invalidate_filter(inode, start, end);
+
+-       kvm_gmem_for_each_file(f, inode)
+-               __kvm_gmem_invalidate_start(f, start, end, attr_filter);
++       kvm_gmem_invalidate_start_filter(inode, start, end, attr_filter);
+  }
+
+  static void __kvm_gmem_invalidate_end(struct gmem_file *f, pgoff_t start,
+@@ -724,9 +731,14 @@ static int __kvm_gmem_set_attributes(struct inode 
+*inode, pgoff_t start,
+         /*
+          * From this point on guest_memfd has performed necessary
+          * checks and can proceed to do guest-breaking changes.
++        * Also, we don't have to invalidate the regions that
++        * may already be in the requested state. Hence, we could
++        * explicitly filter the invalidations to the opposite
++        * state.
+          */
+
+-       kvm_gmem_invalidate_start(inode, start, end);
++       kvm_gmem_invalidate_start_filter(inode, start, end,
++                                       to_private ? KVM_FILTER_SHARED : 
+KVM_FILTER_PRIVATE);
+
+         if (!to_private)
+                 kvm_gmem_invalidate(inode, start, end);
+
+
+Thoughts ?
+
+Suzuki
+
+
+> +	mas_store_prealloc(&mas, xa_mk_value(attrs));
+> +	kvm_gmem_invalidate_end(inode, start, end);
+> +out:
+> +	filemap_invalidate_unlock(mapping);
+> +	return r;
+> +}
+> +
+> +static long kvm_gmem_set_attributes(struct file *file, void __user *argp)
+> +{
+> +	struct gmem_file *f = file->private_data;
+> +	struct inode *inode = file_inode(file);
+> +	struct kvm_memory_attributes2 attrs;
+> +	size_t nr_pages;
+> +	pgoff_t index;
+> +	int i;
+> +
+> +	if (copy_from_user(&attrs, argp, sizeof(attrs)))
+> +		return -EFAULT;
+> +
+> +	if (attrs.flags)
+> +		return -EINVAL;
+> +	for (i = 0; i < ARRAY_SIZE(attrs.reserved); i++) {
+> +		if (attrs.reserved[i])
+> +			return -EINVAL;
+> +	}
+> +	if (!kvm_arch_has_private_mem(f->kvm))
+> +		return -EINVAL;
+> +	if (attrs.attributes & ~KVM_MEMORY_ATTRIBUTE_PRIVATE)
+> +		return -EINVAL;
+> +	if (attrs.size == 0 || attrs.offset + attrs.size < attrs.offset)
+> +		return -EINVAL;
+> +	if (!PAGE_ALIGNED(attrs.offset) || !PAGE_ALIGNED(attrs.size))
+> +		return -EINVAL;
+> +
+> +	if (attrs.offset >= i_size_read(inode) ||
+> +	    attrs.offset + attrs.size > i_size_read(inode))
+> +		return -EINVAL;
+> +
+> +	nr_pages = attrs.size >> PAGE_SHIFT;
+> +	index = attrs.offset >> PAGE_SHIFT;
+> +	return __kvm_gmem_set_attributes(inode, index, nr_pages,
+> +					 attrs.attributes);
+> +}
+> +
+> +static long kvm_gmem_ioctl(struct file *file, unsigned int ioctl,
+> +			   unsigned long arg)
+> +{
+> +	switch (ioctl) {
+> +	case KVM_SET_MEMORY_ATTRIBUTES2:
+> +		if (!gmem_in_place_conversion)
+> +			return -ENOTTY;
+> +
+> +		return kvm_gmem_set_attributes(file, (void __user *)arg);
+> +	default:
+> +		return -ENOTTY;
+> +	}
+> +}
+> +
+>   static struct file_operations kvm_gmem_fops = {
+>   	.mmap		= kvm_gmem_mmap,
+>   	.open		= generic_file_open,
+>   	.release	= kvm_gmem_release,
+>   	.fallocate	= kvm_gmem_fallocate,
+> +	.unlocked_ioctl	= kvm_gmem_ioctl,
+>   };
+>   
+>   static int kvm_gmem_migrate_folio(struct address_space *mapping,
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 01761f6e25d25..a08b518cdb175 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -105,6 +105,18 @@ module_param(allow_unsafe_mappings, bool, 0444);
+>   bool __ro_after_init gmem_in_place_conversion = false;
+>   #endif
+>   
+> +#define MEMORY_ATTRIBUTES_MATCH(one, two)				\
+> +	static_assert(offsetof(struct kvm_memory_attributes, one) ==	\
+> +		      offsetof(struct kvm_memory_attributes2, two));	\
+> +	static_assert(sizeof_field(struct kvm_memory_attributes, one) ==\
+> +		      sizeof_field(struct kvm_memory_attributes2, two))
+> +
+> +/* Ensure the common parts of the two structs are identical. */
+> +MEMORY_ATTRIBUTES_MATCH(address, address);
+> +MEMORY_ATTRIBUTES_MATCH(size, size);
+> +MEMORY_ATTRIBUTES_MATCH(attributes, attributes);
+> +MEMORY_ATTRIBUTES_MATCH(flags, flags);
+> +
+>   /*
+>    * Ordering of locks:
+>    *
+> 
+
