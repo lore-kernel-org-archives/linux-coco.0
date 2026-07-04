@@ -1,169 +1,131 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05749256C8B
-	for <linux-coco@lists.linux.dev>; Sat,  4 Jul 2026 14:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7613C286D5E
+	for <linux-coco@lists.linux.dev>; Sat,  4 Jul 2026 14:45:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.175
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783176153; cv=pass; b=gt/bRHPR/9BhoOvFWUnSj/cZrSqqL+XWUKMidl4z6QvuUsf+I0IChC7hUVhY8ybcZ4XRI/zR48S8q2zC2AxFyBOds3GW1qaKjHhBHxyiCMyYvIwTgeVk8Vcz+F+rz1RW4kYs0FUGYatfvfoWbWqDzpoxvXCo1f4jAP6vdocV61U=
+	t=1783176318; cv=pass; b=GgUX05dfcrNSgX37Bb7sw4e9yFR8eNSqrgnAcDQvnJtDP/oERK672XBdUvYvs8KiCpA3P9JYb4fP+aiTGOSbVhFWHGzQ3ao38qxCbUXLD2EWjR5egG5TceQU+S29EMxi+LwxWBdu4m2yDsQWK4r2idjJzeEjgVHU4mQQB8lSTDE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783176153; c=relaxed/simple;
-	bh=MoaHjkaWH3mVoA4yYUij+2yJ1onRPN8dEfQ18Xxn+3Y=;
+	s=arc-20240116; t=1783176318; c=relaxed/simple;
+	bh=XpQJwh2GgNhD6EAOhQ4I53c3yuO4+5Tzr8NzYHPiJFM=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uVDnGC8p1xeujmfL+0oifrzrh93jUS8dQJ5e7Xnw8Ns2BL9TSSPA5jC8hXvnFKgBUSQKrIodcqSvQL/KdSnpytM0DyI7kaH6cljgnp0/+UOySIfGLktW+ibNuqXH0Ju7Sh0Zs0Vm4VKYvAnysSnaFbX0Cha3aSZeglDYbbQm+OA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e2h+k+Bj; arc=pass smtp.client-ip=209.85.214.175
+	 To:Cc:Content-Type; b=rw1kqE6uUT10KMIGL2i8dwbdXDJOBBTu6SxXk9gELv4ij8ecw9cXZLOf4Eh2eMGNSuH7H2ORAqIKzrLC6UbESrA4Y8wZ85LSSYBDTYZZqD9QszsH/G/KBKqwCj+XORR/AQEn7/HlcYG6eeKRDpyNh3gxZSs7OP3OCot1dyd8lEM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AiOHFlTF; arc=pass smtp.client-ip=209.85.215.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e2h+k+Bj"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cae134bdc8so7006915ad.3
-        for <linux-coco@lists.linux.dev>; Sat, 04 Jul 2026 07:42:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783176150; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AiOHFlTF"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c981c2c37cbso996545a12.0
+        for <linux-coco@lists.linux.dev>; Sat, 04 Jul 2026 07:45:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783176317; cv=none;
         d=google.com; s=arc-20260327;
-        b=fXE6lILFyJa2F9dowf+MKGmg0edpD6opU7lQAYNd/VyrnQbmO+b6lQ5k20Mi952r7r
-         hEcxv4jQqk6B1KErQqMLeCRE+xRbgz/kSe1VaExAQtLslHDiiDTR5arlWMhfuCSGlkej
-         nJY1mN71biW3kPTJvVnBsSPVuZH1eH7e9iHDPc0yimq6WKvovXBVky4IB/B7W2/84wCN
-         QkX/az9GBgJxhsIArT3wDShqvQchaj7jAxBEZNdogBKKOctoFf03YtRmciAjdtafthrG
-         obTHezlNlywcADDvnhYZcyqMpLFAE9aCDUeObzgy4R7gTeqtw7KUOM99Iw3b1RorPQk4
-         jcLg==
+        b=EbIRDEz+yf+WJ5p2uZUfFsx7SsQX0YRwJBuACDNDC9ELd2vg9CEgszpFv9iq5Dcj2h
+         kMCwNUJE01QgHmkIk2jOZQQvIGHZIJ0eUr81FlzzjzMQeHrvtEALvYK6CAtAR1wkpvN2
+         3KvLq2k+u6PoLjnUPO+PVA+j6yyRfBofagCmPDr44CPnRMRU17vyEbD6JnetdeHadyq/
+         R/tnQ9i/z+mWmNIK+G43G8zYpsWhV16U1QyA8uqoAUe3arTh26leQjNew8Cffc707KfH
+         9mmjdfqISEbOxzKfOWD5VSIJtfb4Tg2MyGK3mwT4AcHPc7JfTHGfAMg5gnTkov1OjZ9g
+         rt4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=3hO7xVm3JMi+xvznWIzbCWLHGJef3ve9nJtp5Srpwow=;
-        fh=3vlaSbfVHvqooJAD9KANWx1hUmhOI4ur5SVnAalimG4=;
-        b=dQdyL211i8EIc3AscA7+nV54MipfPitve0xYSWy4IqVjMJnUhG5JwKCv25MANzs+bK
-         wpBMiK+dV4TO46aDf9vIr1dhnYvt5DmoJNFYKJP0oxvSy0OZdwrB+/jR3mH30GrT6Ita
-         Is4IQnG1SRtquuz7xJ8x8uGUfkdiYDuhFzMgNxEw9IDYHp4YMFBFdovaswCkad4u5ytn
-         z4fIw3a2VwjIMHEa5rd3XIas0aE82Nb0WlMTU/caTGTSb/N+K5H03WAbWjzc7QLdIPs/
-         OcgMn9dI08m2vx3vc6LFUbP9iPj2Xetglw7fGSDV+wvjV+so2dXeke04cD2SLjXXn1Aj
-         2RLg==;
+        bh=L9xOVRuKFfEvpugkoigwFk6Gb+xTAo+YrZVd7V9k8iM=;
+        fh=p9GgXCX4SQz9Snbgs+tDHsjQYrPHdPAvA7GXLYHUKk4=;
+        b=MOyY4U1znCczkeQoeHnsQC2vShkcdiJpBBU7bqZzIc6jyElkmVgzC4KzUap3QEHTmQ
+         nak6kCiKKlw1Y0HodN+Ts7Rd8E1l98TTwhyhM5cUWEXbRgSbjyKM3PJh4Bu187ZTy9SY
+         V5341uZyMopqC1Ko2JUVzdgrlKJA3PljwHEowrajhDdNEpXUfq8O8CHWTFbM4gqvOM3j
+         RYpfW90BWLKTA006OwTInNZ69pKcqgL5LRpAj3zTfmTEKUz2VqHGC9CltKoE/mCidNKf
+         unfO71wqqwzdAeK6DbHwqomxv2pxg45IBMYArdLUTS0LarUCnJ/KdV40ZwAGMmucIlud
+         yOWA==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783176150; x=1783780950; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1783176317; x=1783781117; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3hO7xVm3JMi+xvznWIzbCWLHGJef3ve9nJtp5Srpwow=;
-        b=e2h+k+BjDpQHdTZGAyXimXD6okyRTozL8Hme5+WtKrF11Qw4L3LCBqb7YRnT6sn/Ia
-         KtDWZKbMH0UZ9zZ6NpyCUtor1oD7+0HLRufyNezy7o6gT/YMjAwp9L/hDtTa2ITr/xX/
-         ROf8QKQt2VTApQYVlJGh7lDhUkYyKHguc81iGxb27gFmwzzMFFpDHNrPNPw4Yi6fKpYO
-         gqs/uf8Am4Gx1yL1QVCQorA9TpKDXwbFZolzQFjD8xDgzspqnK4nZD+jUpFmtH/9liUg
-         6AADuAxaly2f6sIuguwDrzbCzpNMPmSEoiIt4y8H+NR6dXAVmC9jJc73JipIw5N0jGQN
-         9rmA==
+        bh=L9xOVRuKFfEvpugkoigwFk6Gb+xTAo+YrZVd7V9k8iM=;
+        b=AiOHFlTFGcr6G5SdgdgMmF7GVRG8xHkUL1y624HkWfrLbxMgBU0mkOK2/FgASDYmQv
+         vjJ3QogJ+uqpJlJ+GI44PHGjuNxT5ZuRDhrGyFQRfkuaQOUfXugf8uxB3snI+3yppGYa
+         twlymSak95tbZvcepSNAPp+A3WeS61jLFVqX6aQWHWVeV2D21T1t5Woh5rBQFcWApLJx
+         T9DywcdrFPSACRqW61GQAtKo0/kTvqe0PQBzlPtmYvK6hG/NCLTyyxq649TQcZBChdE1
+         kXq2deuAd+IpOjpBrpIiy9efu8EhcN1+YT5FvWlT7e2LVWa/vdWAeNtTCcldUSQmDmWx
+         jE8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783176150; x=1783780950;
+        d=1e100.net; s=20251104; t=1783176317; x=1783781117;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3hO7xVm3JMi+xvznWIzbCWLHGJef3ve9nJtp5Srpwow=;
-        b=sy4e8tBCkj0IVFisXxi7fgzyY0L2jVHPo2J0OB7gu0z2l5CYKgJlqwFCr2ZIY8hFwr
-         ImoJNBgOB9BYrQa/ZShl2kTNfc3EbzuPN+2h1TvV4IRJvYXKM4MsdFh+ujg8GZnhQO4I
-         FlIzD+b2Bq+EulYMKNHVbezakmdH4y0LqPDfcVuAusb3vQCHyTu8JhH6YXgXm51RP9vf
-         /4l9XxiLt0ruRppxN20/GYXbiP/7CugluA3Ib5egyo68g7yCIXK4D96Y3jionkYoE4zr
-         JExXder9LPcubu5J/R+SpvX7sqUl2zRzOkNA6OC7KVu+M3SnyfBnB3GNM5pmAZ6b74zs
-         +Qzg==
-X-Forwarded-Encrypted: i=1; AHgh+RqCWLQ1jyJDKXSe9V2i2RtBCBBZkmOfbNK0KxX+b0Da3a0k86cAGfEnMOebcqYcU1wBQTWTNP8GI0u3@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx0CtXQCpxiWD4n6Xp5AMDZL6ErL8xfF8q2RkS8E27xAouuek60
-	S/CLFoupPHp+/hl/sAjPDSMNvzEKQoU1LiGhOA6xoGl2WSQbFmuUczSWgZI+gVIE4URe+nHD0Wt
-	Cb+5YUtBs+oT1JIPKO35r9mMsI4CKeJquvmAWwuOC
-X-Gm-Gg: AfdE7ckjuK1IEzkciO18CcpputP8Nwup0zfHAclv19u3S6HDSTZsp2Q5X19OPQkjatC
-	ImsE50Xb95fkAyBC+ut/foSmaH4GyqvvBlLQO2l+RaEwjcT/fyljQoGEsiEUqrPti0oC8NSw6Zx
-	VtggFKHM3/4XEHuBxVVhzKcZBu8/C8IkNbSII04tHGrcgcwLK5Fez3lHUB+9GlrulRqflKSbHUH
-	q3Fvy1o0cHtxqZTgb7nL8+Z+2udHwe+LcnMbMOtd9pROEUh/ZU2oY5FbHw/PPTfBg1xhd/YODuQ
-	pYNhiHFcUHay62+8E70wdd8JiIbyFPbEuEgwuQk=
-X-Received: by 2002:a17:903:b8f:b0:2c9:ed16:8d8d with SMTP id
- d9443c01a7336-2cbb9eededcmr35313175ad.38.1783176149804; Sat, 04 Jul 2026
- 07:42:29 -0700 (PDT)
+        bh=L9xOVRuKFfEvpugkoigwFk6Gb+xTAo+YrZVd7V9k8iM=;
+        b=kCGNOp5YVy22FC3GZjAkX1fsGI3r/PUefH4bHG3oQKwnHKdnP02Nr8diqVO2jv0cmz
+         oA7iq1LTF44zv1ingm0GHK73nKk+qJUHVB3Ow56aLLPOZaFsF//CrersKeipdIzHG2/8
+         AaDwhooOgf+y+uY/XFSFyeU90BdheyV89Qd7TaQt8pLEnuYoazyzKjvDQXumlgfkJo0H
+         +MLByMypilRwQVCnfGy8iCTNXwbFDzEOy+iQtlrsINdILLV8VOUId3wFtJ7/FfdCUSOf
+         DJCOG8e081M8BCdWit6K9bO6PFh2V6ZL57UIRB9wDj07D//tjQEsKVhSL/IWJn5L17Ti
+         Oggw==
+X-Forwarded-Encrypted: i=1; AFNElJ+DXnzP2qHYLKl6yPqNK6fLJt7qqXjerLT61/ZgkksSoDupCYQ4xcg39f3w0XrIvHJKFGSWrFbWhNCA@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywfdft4ZbenHNwbBMjBvhUcpaU/p8vCADicVf4G3NCqrurkshH8
+	a0wTrQuT8Pp8izIttaqB0aCjZJPKo0AyDSytx19IcSNp0QYhXF3qZZyggO0z9sopxjPfLtSOU6f
+	uatndeoWNjtRLu1RykgGoiFxDjZMDtqk3KHfU/Iwl
+X-Gm-Gg: AfdE7ckvjxzHELvTczy/q4RYgzBcte1RdBpy/FdP6DDPSbDYIZfOKaGA6XfIo0mP5ZM
+	8NV+g18yP7xrSEQ1ErCwYAJRG404qpxA44NXYMueFyrd05oHwEjfT8/qQMdKbNe6FkB2Jh87510
+	MSLq6PTGt4zEzDp15bbeJw3cL4nwlS7HsMBopt+glX4BYvDhQRz/OuDnMlW+aS3sapdLYCQEDkT
+	sWG04xXSkPHnKReTtHRPmRGpJuS6E0/a9bolX3K29TZZoT6Xku+yd0Mtc7NMwkLbxttx8wqFUeD
+	pyfaGVAjucUdolxyn7Bm0NtRQU+T
+X-Received: by 2002:a05:6a21:4516:b0:3a2:d838:bfca with SMTP id
+ adf61e73a8af0-3c03e18c1a6mr3784343637.3.1783176316400; Sat, 04 Jul 2026
+ 07:45:16 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 4 Jul 2026 07:42:28 -0700
+ HTTPREST; Sat, 4 Jul 2026 07:45:15 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 4 Jul 2026 07:42:28 -0700
+ HTTPREST; Sat, 4 Jul 2026 07:45:15 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260327160132.2946114-21-yilun.xu@linux.intel.com>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com> <20260327160132.2946114-21-yilun.xu@linux.intel.com>
+In-Reply-To: <BN9PR11MB52767E6C22CDF7DAD9D5FF1E8C582@BN9PR11MB5276.namprd11.prod.outlook.com>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-21-yilun.xu@linux.intel.com> <BN9PR11MB52767E6C22CDF7DAD9D5FF1E8C582@BN9PR11MB5276.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Sat, 4 Jul 2026 07:42:28 -0700
-X-Gm-Features: AVVi8CfswepA6TmyRRV0hFxy-bS0yysLNcHLp77b3888QFULsM5J1mmJGvtogqA
-Message-ID: <CAEvNRgGgTkOPWELeg5U3pjjw9NZOBQ5zswWy=MRxOXsUXXuFhQ@mail.gmail.com>
-Subject: Re: [PATCH v2 20/31] x86/virt/tdx: Add a helper to loop on TDX_INTERRUPTED_RESUMABLE
-To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev, 
-	linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
-Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com, 
-	yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org, 
-	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, kas@kernel.org, 
-	xiaoyao.li@intel.com, vishal.l.verma@intel.com, linux-kernel@vger.kernel.org
+Date: Sat, 4 Jul 2026 07:45:15 -0700
+X-Gm-Features: AVVi8CeBOQYKqHyO-ZgLrEnt9NfH2sTywpBsyBpG5p82n6nbBzKMaxoqUYDvD88
+Message-ID: <CAEvNRgFL_UYz8449z-PJ2ew9x3Ju6qzaBeSxVxLkcNMJeqzMww@mail.gmail.com>
+Subject: RE: [PATCH v2 20/31] x86/virt/tdx: Add a helper to loop on TDX_INTERRUPTED_RESUMABLE
+To: "Tian, Kevin" <kevin.tian@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "Williams, Dan J" <dan.j.williams@intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>
+Cc: "Gao, Chao" <chao.gao@intel.com>, "Jiang, Dave" <dave.jiang@intel.com>, 
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, "Xu, Yilun" <yilun.xu@intel.com>, 
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Xu Yilun <yilun.xu@linux.intel.com> writes:
+"Tian, Kevin" <kevin.tian@intel.com> writes:
 
-> Add a helper to handle SEAMCALL return code TDX_INTERRUPTED_RESUMABLE.
->
-> SEAMCALL returns TDX_INTERRUPTED_RESUMABLE to avoid stalling host for
-> long time. After host has handled the interrupt, it calls the
-> interrupted SEAMCALL again and TDX Module continues to execute. TDX
-> Module made progress in this case and would eventually finish. An
-> infinite loop in host should be safe.
->
-> The helper is for SEAMCALL wrappers which output information by using
-> seamcall_ret() or seamcall_saved_ret(). The 2 functions overwrite input
-> arguments by outputs but much SEAMCALLs expect the same inputs to
+>> From: Xu Yilun <yilun.xu@linux.intel.com>
+>> Sent: Saturday, March 28, 2026 12:01 AM
+>>
+>> +static u64 __maybe_unused __seamcall_ir_resched(sc_func_t sc_func, u64
 
-Did you mean most instead of much?
+How about __seamcall_retry_interrupted, to emphasize that this function
+retries a certain kind of seamcall?
 
-> resume.
->
-> The helper is not for special cases where the SEAMCALL expects modified
-> inputs to resume. The helper is also not for SEAMCALLs with no output,
-> do {...} while (r == TDX_INTERRUPTED_RESUMABLE) just works.
->
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> ---
->  arch/x86/virt/vmx/tdx/tdx.c | 23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
->
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index cd0948794b6c..294f36048c03 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -2084,6 +2084,29 @@ static inline u64 tdx_tdr_pa(struct tdx_td *td)
->  	return page_to_phys(td->tdr_page);
->  }
->
-> +static u64 __maybe_unused __seamcall_ir_resched(sc_func_t sc_func, u64 fn,
-> +						struct tdx_module_args *args)
-> +{
-> +	struct tdx_module_args _args;
-> +	u64 r;
-> +
-> +	while (1) {
-> +		_args = *(args);
+I think resched is part of the implementation, of what's done while
+retrying, which might not need to be part of the name.
 
-Is this copying meant to ensure that every retry has the same input
-args? Perhaps a comment should be added so it's obvious that every retry
-will have the same input, and outputs from each retry are dropped.
+No strong opinion though. Thanks for considering.
 
-> +		r = sc_retry(sc_func, fn, &_args);
-> +		if (r != TDX_INTERRUPTED_RESUMABLE)
-> +			break;
-> +
-> +		cond_resched();
-> +	}
-> +
-> +	*args = _args;
-> +
-> +	return r;
-> +}
-> +
-> +#define seamcall_ret_ir_resched(fn, args)	\
-> +	__seamcall_ir_resched(__seamcall_ret, fn, args)
-> +
->  noinstr u64 tdh_vp_enter(struct tdx_vp *td, struct tdx_module_args *args)
->  {
->  	args->rcx = td->tdvpr_pa;
-> --
-> 2.25.1
+>> fn,
+>> +						struct tdx_module_args *args)
+>> +{
+>
+> 'ir' sounds redundant with the trailing 'resched'?
+>
+> not big deal, just a bit confusing when seeing it in IOMMU side where
+> 'ir' also refers to 'interrupt remapping' and is frequently used in
+> irq_remapping.c... :)
