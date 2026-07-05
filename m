@@ -1,338 +1,290 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAEF42FF675
-	for <linux-coco@lists.linux.dev>; Sat,  4 Jul 2026 23:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33EC2359A90
+	for <linux-coco@lists.linux.dev>; Sun,  5 Jul 2026 22:08:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783208332; cv=none; b=qQyX4eAvjEJldDETDmkbsabTHy0eFvztDEspj130L7oYfk3cWZclNCHnvaWDknFdKReW4Lfv4g8CCqdHwZsw5DHaFZK12NZLI3PmeeEV5PL3+rrE9qCPjP1738Q2vtglE5p6Y9bQ6DudcxdDCVptuH4PHsLOo60wmPO7Cs42I6k=
+	t=1783289304; cv=none; b=d1oQRA3GsWKpt7vv963IhEJq5M2OQGXnwey3i0DIHZF8TqYfPSckh2fJFVAxzqckhnrjOItcZyvOz6/RAKDZvdY68x059ByVSr0a0iTdZJwwUpwlED5DSD9g/iDvMSuk3eWZyBrJfP0plFOuQIpP2VJyhHnkMoPzPmepFTAuZAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783208332; c=relaxed/simple;
-	bh=s8K7gocsWH9rX7pANzHxIK07Z+WF9Hm5c4sGgOuC5gs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s+N4v/4bKmPnUQHOVeRbNUuXptLKw2OIX1+Av+cg2jnBuqO+HdaaW5oIFDGNmhft98+h/IuVVhAlJpl9YpYceQK9Mk9PQKCN393kQOQhcRkkGkaMB/Lb8EoEMRS+ZAn/fiG1YBkpyxkEjLoY81vxc/p4s/dXXwm+3Ru6deww5ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=CQASIfnk; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1783289304; c=relaxed/simple;
+	bh=YoKIYSXqpnkM1bHU+01gM25AbhsAJcx32dbbqIjb1zk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FivCnoLJ5Lzr2wbqNxT7DhRzGCwk6GRd9CqlW0n/bwAJslkTGd8yHxTm1zdKSc46rfne8GIGKcuILks3E0jMqemgtJqv/GbZrdifACL4JVPOHaWbjiUCL9AAxa6+iZMa28soDxqq5qro+rNQY3i2fBwBZZYXdlDNzTAEzMAbdZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+y5XKGa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="CQASIfnk"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 764091A9A;
-	Sat,  4 Jul 2026 16:38:35 -0700 (PDT)
-Received: from [10.57.39.250] (unknown [10.57.39.250])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B68F3F85F;
-	Sat,  4 Jul 2026 16:38:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783208319; bh=s8K7gocsWH9rX7pANzHxIK07Z+WF9Hm5c4sGgOuC5gs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CQASIfnktKJ+nJBsa+sb+UUp/whO7qPhCX8lvNLWNHjZbzL0OZNmp18ACbtwf78sq
-	 5BQyc2Gvo4iMWs88e7iwAVmUzNwMDDnMKDS5JXpoQMiHp1m54keQESKtrPapIShSsS
-	 Y/fCh+eY83Tx1TDwgjWsfX8tgU4pzalslz35LonA=
-Message-ID: <114e2488-97ed-4740-a8e8-1edd991f26c5@arm.com>
-Date: Sun, 5 Jul 2026 00:38:24 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+y5XKGa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146071F00A3D;
+	Sun,  5 Jul 2026 22:08:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783289302;
+	bh=KfzxR0AleekAcJiyL5teZZE+RnL15mrHLBNUPFKzbIE=;
+	h=From:To:Cc:Subject:Date;
+	b=N+y5XKGauNLBlM/+s8/ssEr5rkTNukFsJKXRge0DCH2F2EHgSvf90O4jnqj1xLD+9
+	 8rYMWv4/XV/m5boujPX8KDy4Sp1fQX7R7bnni8wXdm6tH7Kvev0ZNihvYfPCJfl+c8
+	 Y3j2bVspuu/rUpmsHQgua3lXqgVqLrnb89Zc6AfAnIJE/2BhZ/m7CWacmTU+hBAY00
+	 j+Kty72Xq4FNvbgPBhYUIZ+WdsV7N6mRK+WHaIrhaP/koxd3y/SqXFfXzucMP1fVub
+	 4HSxv9Dn+Ldp0R41IJHsAz4KAPzcoiRD6xstrDBoo/IMNc73gk5n5CNHy3mdbG0TFU
+	 lkx+X5BABsRDg==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 2D2A2F40068;
+	Sun,  5 Jul 2026 18:08:21 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Sun, 05 Jul 2026 18:08:21 -0400
+X-ME-Sender: <xms:1dVKatb64XCmRJfDWJLJkZt5rk_W_8OrZTBNpbInM_uqFABymltWdA>
+    <xme:1dVKar5o06B56y-r00th8VLxDdKiw_VRgjANrbs65bbHwtH95PSJSVJcAlAbXlgoN
+    BTfQVTIPUPQ1p6HHzlOhJHhmuSSROLBXPd4hbGjGDjKjFo15egVvNU>
+X-ME-Received: <xmr:1dVKamBj6kajwm2wJtTBM0a8GWSKWtlYThtlYcw_7RAXVh0kORww13hOEIj8pMebJ15mpzib9_sKNjV6xAC1rrRanQZLq116B-A>
+X-ME-Proxy-Cause: dmFkZTEvGx/gkOz+BGnjuWiLxd8AvVU1sKyr9tpv0zA3+DcnGEfyUSh6NOjjzDbjf2g4vp
+    4kU/FRppIQqfGSVbKGszXUXLA/uh0+rcfkHFcKSje1sWEvTb+j3XRnjSMnOWW91fiqUmwF
+    WGwt9SrsTok1F729gNQubm2/uK/lgnqQ0wEHTLgfcSRwpcMHUz9kqfRAu9+EKC0tRyJWYY
+    MUg43P+7DbcqLRRmL+dI48AbXLmem8iBrt0Ln9j2hdfoX0uVWyl68flMWvNgMFH27erKeg
+    QbUUsf0/lK8RvrYGmPoxiAnCq9ORlu7xSmtP0Dvl/RKSWzd04s0MEyNtmowUZYRAqAsQF1
+    NdVmmMGzGJSdTrxwITwf6h/aRV3vG0y2+CoQdQ+KSn/qdlRlPJXAvDP781COHklNXeV6ng
+    Q4kbG/zsRWAQoFHWv8f2W0FA3c9+BCjp0bbXSk6TR/GhLCldvwh6YxE1NjURGBRBKTEOka
+    MKxhQupx9nZaTtYbxGJ5kSauYJHtufVqHFfiS85U5QbFcsxMr+0cPNYCmDH6zh0SdbvupU
+    /kd2n73CeS0IISgyn0bAjdzm/+sJJjQduXxTD+irANq6HmaoluaEjZNgEDuQFC4m4iHHSt
+    l1ty0qEDBSQ/WbxYzNFtJwxy3C/iUURsAYa7cIj9LEatf15DFYjvW0WvGbxw
+X-ME-Proxy: <xmx:1dVKapuZRfNvi72UOQvgc6jqPZnOWBcp9hHRrv2ThAUdFTFGDou0MA>
+    <xmx:1dVKajuKNR9WWNjxT8-u85ye3CuGbg1_VYuFEQo84mF0658409ZrRA>
+    <xmx:1dVKalowhDmUqXK4pfCZEZ3KEWiw4o2YnHGuRZxZTsfXxxS_FAn-ag>
+    <xmx:1dVKanNcbMSyY8pYuorbIcFm2GEsQU58o_3d7p1h_iB04Ztn96039Q>
+    <xmx:1dVKarkygm2XfYJenYryXLgEDBZUqGLY-dqN68rRNBRKnLce0_rmb4A8>
+Feedback-ID: i67ae4b3e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 5 Jul 2026 18:08:20 -0400 (EDT)
+From: Dan Williams <djbw@kernel.org>
+To: linux-coco@lists.linux.dev
+Cc: linux-pci@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	ankita@nvidia.com,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [PATCH 00/15] Device Evidence and Trust for PCI Security Protocol (TDISP)
+Date: Sun,  5 Jul 2026 15:08:04 -0700
+Message-ID: <20260705220819.2472765-1-djbw@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 13/46] KVM: guest_memfd: Add base support for
- KVM_SET_MEMORY_ATTRIBUTES2
-Content-Language: en-GB
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, aneesh.kumar@kernel.org,
- liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi
+Major changes since: "[PATCH v2 00/19] PCI/TSM: TEE I/O infrastructure" [1]
+- Implement a new netlink schema for dumping large SPDM blobs (Jakub,
+  Lukas)
+- Introduce a device core implementation for evidence gathering given
+  SPDM is applicable to devices outside of PCI (Lukas)
+- Replace the "CC acceptance" mechanism with "Device Trust" (Greg,
+  Jason)
+- Fix TDISP report parsing to use bytes instead of pfns for the start
+  value of an MMIO report (PCI spec clarification)
+- Support the CCA expectation that MMIO reports are BAR aligned (Aneesh)
 
-On 19/06/2026 01:31, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> Introduce base support for KVM_SET_MEMORY_ATTRIBUTES2 in guest_memfd, which
-> just updates attributes tracked by guest_memfd.
-> 
-> Validate input fields in general. Guard usage of KVM_SET_MEMORY_ATTRIBUTES2
-> by making sure requested attributes are supported for this instance of kvm.
-> 
-> A new KVM_SET_MEMORY_ATTRIBUTES2 is defined to support writes (unlike
-> KVM_SET_MEMORY_ATTRIBUTES) in addition to reads so it can provide error
-> details to userspace. This will be used in a later patch.
-> 
-> The two ioctls use their corresponding structs with no overlap, but
-> backward compatibility is baked in for future support of
-> KVM_SET_MEMORY_ATTRIBUTES2 and struct kvm_memory_attributes2 in the VM
-> ioctl.
-> 
-> The process of setting memory attributes is set up such that the later half
-> will not fail due to allocation. Any necessary checks are performed before
-> the point of no return.
-> 
-> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> Co-developed-by: Sean Christoperson <seanjc@google.com>
-> Signed-off-by: Sean Christoperson <seanjc@google.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
+[1]: http://lore.kernel.org/20260303000207.1836586-1-dan.j.williams@intel.com
 
-...
+[ Note, this series is back to a v1 posting given the new theme of
+  "Evidence and Trust". It defers some of the lower level details, like
+  touching arch-level ioremap implementations to consult encrypted_iomem,
+  until the higher order details are settled ].
 
+---
+Summary:
+A threat model wants to arrange for devices to not be operated until
+they present evidence. Add device evidence gathering, device trust
+levels, and hook those up for the PCI/TSM (PCI device security protocol)
+implementation.
+---
 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 65ce795c090d9..0d14548c1ed22 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -541,11 +541,127 @@ bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
+Confidential Computing and other use cases specify a threat model where
+devices are potentially adversarial. To date the device core trusts
+devices and their drivers, and only specific buses have local
+"adversary" device mitigations. The task is define a general trust
+concept to up-level existing trust mitigations, and allow for
+incremental tightening of mitigations across bus types and IOMMU
+drivers.
 
-...
+Goals:
+* Create a mechanism for booting with a limited set
+  devices + drivers and permit selectively enabling more devices +
+  drivers at runtime.
+* Up-level bus specific trust mitigations like PCI
+  untrusted to a core concept.
+* Let buses coordinate entry into the TCB via the existing
+  ->dma_configure() callback
 
-> +static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
-> +				     size_t nr_pages, uint64_t attrs)
-> +{
-> +	struct address_space *mapping = inode->i_mapping;
-> +	struct gmem_inode *gi = GMEM_I(inode);
-> +	pgoff_t end = start + nr_pages;
-> +	struct maple_tree *mt;
-> +	struct ma_state mas;
-> +	int r;
-> +
-> +	mt = &gi->attributes;
-> +
-> +	filemap_invalidate_lock(mapping);
-> +
-> +	mas_init(&mas, mt, start);
-> +	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
-> +	if (r)
-> +		goto out;
-> +
-> +	/*
-> +	 * From this point on guest_memfd has performed necessary
-> +	 * checks and can proceed to do guest-breaking changes.
-> +	 */
-> +
-> +	kvm_gmem_invalidate_start(inode, start, end);
+The proposal considers existing trust mitigation in various buses.  The
+PCI device "untrusted" flags is an example of limiting but not fully
+blocking operation of a device. The USB interface authorized flag is an
+example of not trusting a device to operate at all. The implementation
+starts with these trust level DEVICE_TRUST_NONE, no operation of the
+device, and DEVICE_TRUST_ADVERSARY, limited operation of the device.
+For example, the PCI "untrusted" flag turns off device translation
+capabilities (ATS) and strictly enforces IOMMU mappings, but otherwise
+allows operation of the device.
 
-I added support for Arm CCA KVM patches with the inplace conversion and
-I am hitting the following issue.
+The proposal does not currently incorporate other bus specific security
+mechanisms that are independent of individual device operational trust.
+For example, USB device (not interface) authorization and Thunderbolt
+switch authorization are transport gates to other devices.  PCIe Link
+Encryption is also a transport security mechanism that informs a trust
+decision, but it is still possible to distrust a device with Link
+Encryption and conversely distrust a device protected by Link
+Encryption. Those security mechanisms are orthogonal to trust policy for
+driver bind, address space access, and acceleration feature enabling.
 
-1. I am supporting INIT_SHARED + MMAP flags.
-2. VMM creates the Gmem_fd with both the flags above.
-3. Uses the shared gmem-mmap to load the initial payloads (kernel, dtb).
-4. At the VM finalization time, Populate the loaded regions one by one
-    by
-     a) copying the images to a temparory buffer - Since CCA can't really
-        load the contents in-place.
-     b) Set the "region" to Private in the gmem_fd (via 
-SET_MEMORY_ATTRIBUTES2)
-     c) Invoke CCA backend to populate the private memory via
-        ioctl(KVM_ARM_RMI_POPULATE,..) [0]
+The result is device trust is an input to the driver core and IOMMU
+layers. A bus can opt to sync its local bind policy, address space
+access, and acceleration features to the trust level, or treat it as an
+overriding second-stage policy from the bus's first stage mechanism.
 
-[0] 
-https://lore.kernel.org/all/20260513131757.116630-27-steven.price@arm.com/
+The trust levels established at enumeration and enforced at driver
+attach are DEVICE_TRUST_{NONE,ADVERSARY,AUTO,TCB}:
 
+* NONE: no usage of the device unless the trust is explicitly overridden
+  by user policy specified via a driver flag, module flag, or uapi (TBD).
 
-5. Additionally, VMM can mark the entire RAM to be private before the VM
-    starts running, again via SET_MEMORY_ATTRIBUTES2. On CCA, this 
-action is measured and doesn't require the Host to "commit" memory to 
-the VM.
-Instead the host can lazily donate memory on a fault.
+* ADVERSARY: needs acknowledgement from the bus and IOMMU / DMA layers
+  that the device is limited to strict IOMMU translation behavior. Drivers
+  can use this as a signal to limit functionality. This designation
+  implies follow-on IOMMU and bus enabling work for features like
+  arranging for the device to attach to a blocked IOMMU domain when
+  detached from a driver.
 
-But step (5) triggers the invalidation of both private and shared
-mappings of the gmem area, from the kvm_gmem_invalidate_start()
-above.
+* AUTO: typical / historical Linux driver model.
 
-This is because, the entire DRAM now has, some portions PRIVATE (the 
-loaded regions) and the rest are SHARED (from the Gmem_fd creation).
-  Thus, kvm_gmem_get_invalidate_filter(Dram_start, Dram_end) causes the 
-invalidation of both "PRIVATE" and "SHARED" regions, which results
-in the destruction of the already loaded data and things go south.
+* TCB: a trust level that only exists in Confidential Computing
+  environments. When acked by the IOMMU / DMA layer it enables the device
+  to issue direct-DMA to private/encrypted addresses or otherwise attach to
+  a secure vIOMMU within the TCB.
 
-When we know that the kvm_gmem_invalidate_xx is triggered by a 
-conversion, we don't need to invalidate the existing pages that
-are in the requested state. i.e., the following patch on top of
-this series does the trick for me :
+Overview of changes:
+Patches 1-6: Update netlink to be able to support large blob
+transfers that the SPDM standard requires. SPDM can be associated with
+any device type, so the implementation lands in the device core with
+PCI/TSM as the first consumer.
 
+Patches 7-9: Introduce DEVICE_TRUST_NONE and DEVICE_TRUST_ADVERSARY.
+Support blocking driver bind by default, and allow either build policy
+or module policy to override the the trust level.
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index a97fcac34a0e..62e0427a49f4 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -250,16 +250,23 @@ static void __kvm_gmem_invalidate_start(struct 
-gmem_file *f, pgoff_t start,
-                 KVM_MMU_UNLOCK(kvm);
-  }
+Patches 10-12,14-15: Plumb the PCI/TSM support for the PCI device
+security (TDISP) protocol to transition the device through
+UNLOCKED->LOCKED->RUN.
 
-+static void kvm_gmem_invalidate_start_filter(struct inode *inode, 
-pgoff_t start,
-+                                            pgoff_t end,
-+                                            enum kvm_gfn_range_filter 
-attr_filter)
-+{
-+       struct gmem_file *f;
-+
-+       kvm_gmem_for_each_file(f, inode)
-+               __kvm_gmem_invalidate_start(f, start, end, attr_filter);
-+}
-+
-  static void kvm_gmem_invalidate_start(struct inode *inode, pgoff_t start,
-                                       pgoff_t end)
-  {
-         enum kvm_gfn_range_filter attr_filter;
--       struct gmem_file *f;
--
-         attr_filter = kvm_gmem_get_invalidate_filter(inode, start, end);
+Patch 13: Support access to private memory either by the bus either
+coordinating with a TSM driver, or relying on the bus provider to have
+already arranged access (paravisor case).
 
--       kvm_gmem_for_each_file(f, inode)
--               __kvm_gmem_invalidate_start(f, start, end, attr_filter);
-+       kvm_gmem_invalidate_start_filter(inode, start, end, attr_filter);
-  }
+This passes basic checkout with the sample TSM driver and a sample
+netlink client for the device evidence facility. Those patches are only
+on the git tree for now [2].
 
-  static void __kvm_gmem_invalidate_end(struct gmem_file *f, pgoff_t start,
-@@ -724,9 +731,14 @@ static int __kvm_gmem_set_attributes(struct inode 
-*inode, pgoff_t start,
-         /*
-          * From this point on guest_memfd has performed necessary
-          * checks and can proceed to do guest-breaking changes.
-+        * Also, we don't have to invalidate the regions that
-+        * may already be in the requested state. Hence, we could
-+        * explicitly filter the invalidations to the opposite
-+        * state.
-          */
+[2]: https://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm.git/log/?h=devsec-phase2
 
--       kvm_gmem_invalidate_start(inode, start, end);
-+       kvm_gmem_invalidate_start_filter(inode, start, end,
-+                                       to_private ? KVM_FILTER_SHARED : 
-KVM_FILTER_PRIVATE);
+Dan Williams (15):
+  netlink: specs: Introduce multi-message blobs for SPDM
+  tools: ynl: Teach pyynl to handle blobs
+  tools: ynl: Teach ynl_gen_c to validate and dump 'blob' attributes
+  device core: Introduce "device evidence" over netlink
+  device core: Add "device evidence" 'validate' command
+  PCI/TSM: Add device evidence support
+  modules: Document the global async_probe parameter
+  device core: Initial device trust infrastructure
+  PCI, device core: Move "untrusted" concept to DEVICE_TRUST_ADVERSARY
+  PCI/TSM: Add device interface security LOCKED support
+  PCI/TSM: Add device interface security RUN support
+  PCI/TSM: Add device interface security DMA enable/disable
+  PCI, device core: Add private memory access for DEVICE_TRUST_TCB
+  PCI/TSM: Create MMIO descriptors via TDISP Report
+  PCI/TSM: Add relative MMIO offset support?
 
-         if (!to_private)
-                 kvm_gmem_invalidate(inode, start, end);
+ drivers/base/Kconfig                          |  91 +++
+ drivers/pci/Kconfig                           |   2 +
+ drivers/base/Makefile                         |   2 +
+ drivers/pci/Makefile                          |   2 +-
+ drivers/pci/tsm/Makefile                      |   8 +
+ Documentation/ABI/stable/sysfs-module         |  17 +
+ Documentation/ABI/testing/sysfs-bus-pci       |  47 +-
+ Documentation/ABI/testing/sysfs-class-tsm     |  19 +
+ Documentation/driver-api/pci/tsm.rst          |  47 ++
+ Documentation/netlink/genetlink-legacy.yaml   |   6 +
+ Documentation/netlink/genetlink.yaml          |   7 +
+ Documentation/netlink/netlink-raw.yaml        |   7 +
+ .../netlink/specs/device-evidence.yaml        | 203 ++++++
+ drivers/base/base.h                           |  15 +
+ drivers/base/device-evidence-netlink.h        |  25 +
+ include/linux/device.h                        |   3 +
+ include/linux/device/evidence.h               |  88 +++
+ include/linux/device/trust.h                  |  56 ++
+ include/linux/ioport.h                        |   2 +
+ include/linux/module.h                        |   6 +-
+ include/linux/pci-tsm.h                       | 104 +++-
+ include/linux/pci.h                           |  13 +-
+ include/uapi/linux/device-evidence.h          | 111 ++++
+ tools/net/ynl/lib/ynl-priv.h                  |   4 +
+ tools/net/ynl/lib/ynl.h                       |  14 +
+ drivers/base/core.c                           |   7 +
+ drivers/base/dd.c                             |   5 +
+ drivers/base/device-evidence-netlink.c        |  58 ++
+ drivers/base/evidence.c                       | 495 +++++++++++++++
+ drivers/base/trust.c                          | 103 ++++
+ drivers/iommu/amd/iommu.c                     |   2 +-
+ drivers/iommu/dma-iommu.c                     |  13 +-
+ drivers/iommu/intel/iommu.c                   |   2 +-
+ drivers/iommu/iommu.c                         |   2 +-
+ drivers/pci/ats.c                             |   2 +-
+ drivers/pci/pci-driver.c                      |  25 +-
+ drivers/pci/pci.c                             |   2 +-
+ drivers/pci/probe.c                           |  10 +-
+ drivers/pci/quirks.c                          |   4 +-
+ drivers/pci/{tsm.c => tsm/core.c}             | 579 +++++++++++++++++-
+ drivers/pci/tsm/evidence.c                    | 110 ++++
+ drivers/virt/coco/tsm-core.c                  |  43 +-
+ kernel/module/main.c                          |  13 +
+ kernel/resource.c                             |   8 +
+ tools/net/ynl/lib/ynl.c                       |  33 +
+ MAINTAINERS                                   |   6 +-
+ tools/net/ynl/pyynl/lib/nlspec.py             |  12 +
+ tools/net/ynl/pyynl/lib/ynl.py                |  62 +-
+ tools/net/ynl/pyynl/ynl_gen_c.py              |  80 ++-
+ 49 files changed, 2509 insertions(+), 66 deletions(-)
+ create mode 100644 drivers/pci/tsm/Makefile
+ create mode 100644 Documentation/netlink/specs/device-evidence.yaml
+ create mode 100644 drivers/base/device-evidence-netlink.h
+ create mode 100644 include/linux/device/evidence.h
+ create mode 100644 include/linux/device/trust.h
+ create mode 100644 include/uapi/linux/device-evidence.h
+ create mode 100644 drivers/base/device-evidence-netlink.c
+ create mode 100644 drivers/base/evidence.c
+ create mode 100644 drivers/base/trust.c
+ rename drivers/pci/{tsm.c => tsm/core.c} (61%)
+ create mode 100644 drivers/pci/tsm/evidence.c
 
 
-Thoughts ?
-
-Suzuki
-
-
-> +	mas_store_prealloc(&mas, xa_mk_value(attrs));
-> +	kvm_gmem_invalidate_end(inode, start, end);
-> +out:
-> +	filemap_invalidate_unlock(mapping);
-> +	return r;
-> +}
-> +
-> +static long kvm_gmem_set_attributes(struct file *file, void __user *argp)
-> +{
-> +	struct gmem_file *f = file->private_data;
-> +	struct inode *inode = file_inode(file);
-> +	struct kvm_memory_attributes2 attrs;
-> +	size_t nr_pages;
-> +	pgoff_t index;
-> +	int i;
-> +
-> +	if (copy_from_user(&attrs, argp, sizeof(attrs)))
-> +		return -EFAULT;
-> +
-> +	if (attrs.flags)
-> +		return -EINVAL;
-> +	for (i = 0; i < ARRAY_SIZE(attrs.reserved); i++) {
-> +		if (attrs.reserved[i])
-> +			return -EINVAL;
-> +	}
-> +	if (!kvm_arch_has_private_mem(f->kvm))
-> +		return -EINVAL;
-> +	if (attrs.attributes & ~KVM_MEMORY_ATTRIBUTE_PRIVATE)
-> +		return -EINVAL;
-> +	if (attrs.size == 0 || attrs.offset + attrs.size < attrs.offset)
-> +		return -EINVAL;
-> +	if (!PAGE_ALIGNED(attrs.offset) || !PAGE_ALIGNED(attrs.size))
-> +		return -EINVAL;
-> +
-> +	if (attrs.offset >= i_size_read(inode) ||
-> +	    attrs.offset + attrs.size > i_size_read(inode))
-> +		return -EINVAL;
-> +
-> +	nr_pages = attrs.size >> PAGE_SHIFT;
-> +	index = attrs.offset >> PAGE_SHIFT;
-> +	return __kvm_gmem_set_attributes(inode, index, nr_pages,
-> +					 attrs.attributes);
-> +}
-> +
-> +static long kvm_gmem_ioctl(struct file *file, unsigned int ioctl,
-> +			   unsigned long arg)
-> +{
-> +	switch (ioctl) {
-> +	case KVM_SET_MEMORY_ATTRIBUTES2:
-> +		if (!gmem_in_place_conversion)
-> +			return -ENOTTY;
-> +
-> +		return kvm_gmem_set_attributes(file, (void __user *)arg);
-> +	default:
-> +		return -ENOTTY;
-> +	}
-> +}
-> +
->   static struct file_operations kvm_gmem_fops = {
->   	.mmap		= kvm_gmem_mmap,
->   	.open		= generic_file_open,
->   	.release	= kvm_gmem_release,
->   	.fallocate	= kvm_gmem_fallocate,
-> +	.unlocked_ioctl	= kvm_gmem_ioctl,
->   };
->   
->   static int kvm_gmem_migrate_folio(struct address_space *mapping,
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 01761f6e25d25..a08b518cdb175 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -105,6 +105,18 @@ module_param(allow_unsafe_mappings, bool, 0444);
->   bool __ro_after_init gmem_in_place_conversion = false;
->   #endif
->   
-> +#define MEMORY_ATTRIBUTES_MATCH(one, two)				\
-> +	static_assert(offsetof(struct kvm_memory_attributes, one) ==	\
-> +		      offsetof(struct kvm_memory_attributes2, two));	\
-> +	static_assert(sizeof_field(struct kvm_memory_attributes, one) ==\
-> +		      sizeof_field(struct kvm_memory_attributes2, two))
-> +
-> +/* Ensure the common parts of the two structs are identical. */
-> +MEMORY_ATTRIBUTES_MATCH(address, address);
-> +MEMORY_ATTRIBUTES_MATCH(size, size);
-> +MEMORY_ATTRIBUTES_MATCH(attributes, attributes);
-> +MEMORY_ATTRIBUTES_MATCH(flags, flags);
-> +
->   /*
->    * Ordering of locks:
->    *
-> 
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+-- 
+2.54.0
 
