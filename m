@@ -1,72 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A148371887;
-	Sun,  5 Jul 2026 22:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AB7371880
+	for <linux-coco@lists.linux.dev>; Sun,  5 Jul 2026 22:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783289313; cv=none; b=MKmqB3/AGFjuHzFSkknr8tAsGy1yolsLrT1piEFPSiEe1fs0/a/61YqAWlDpvShaiDtdZNjugtALE8H9U+hvlo4hmic5fOTXSVjxtrNT+XNoh2Rgm0xfZU6H6tcjOkjQ+Hp9oAvCO/l93VJIRWRGtg+OzFW3uR+HTDAu+HznYAc=
+	t=1783289316; cv=none; b=bBtG7uIt8IfSNpIbJc5wO3DjXtJfH7aZDLngrkIp1GhMln+k/ueoCpMREE8dF6VRSpYV2TCnufB7HesdVIVxsQsa01q0my77NPP180Ln4fW45eJT4CIeR0UzY2vm4KqBUh26LokNrQVzSVVfY620gfpBouWPr6hL0my/3DhRltc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783289313; c=relaxed/simple;
-	bh=tRHN9XRDNqUwBn+zEjs4BrUxA3DvOhjBwakMx07O2aM=;
+	s=arc-20240116; t=1783289316; c=relaxed/simple;
+	bh=lB0Uwdd49bTxuSCetp8JhbpabVUwT9m9GvHRDConO6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hp//sCTqwq2OkBM5iemxLFMmxfYRqywnQUPyOlllT09E8p+GAxCUNoFbX4jur9ZX0JzHwTcJceQFJpVdgmksYSWMwTm42oZZpjmsiHBbucue2q8a0a6GMvpmmFo4VtyfSTPiaMvi8ahbhIain9pfU60FEoYBzXQr+9c/PLFLkDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZmIPjJbQ; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=kKzGBC8W7YBIbHmTQaT6ko3L6aYLzN4WFAwDpVrZzUBMcT9gYS3YvKTqwiHAHkG/wkUNMTP93qFU3FKimk7xVcXEbPE/pJyiIEqbzID2p91EvtPNy2zoqT84+98C5bfAbXXGASyo+WzkxnQgqv60TzJ9zz8fC+PcpMMGJEHOBys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cPRPxtir; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZmIPjJbQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D291F00ACA;
-	Sun,  5 Jul 2026 22:08:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cPRPxtir"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4C01F00A3D;
+	Sun,  5 Jul 2026 22:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783289311;
-	bh=SmA/JSmESj3ZmLdBl7V9IokWHV+lklm35LGu985fgVA=;
+	s=k20260515; t=1783289314;
+	bh=vGvTccp18slMQK+gRwx0VSmoMI6t2tnpqPg8n2OFhJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZmIPjJbQa4869kQtF+rFVeyt2FaOOaa8smNR2QQR7VpU7hhSNh1mwW5sMCL7cEVAT
-	 PaMrNkEsY+bM7L4nGH8RI2IW9H9kUBx/FyPGSfV8zGERvGGiZVlzjJna/KR7iP6LhV
-	 0kZglx6DT74Ta5j3tamTZaK4dSH30nfDQqZ7N58954vURGbbb15rGFjhm6GTf6nSXg
-	 z+gEqR20pBINQdqshaEyRYFmCIM8qRy0DtZBVIuOvRKAMAOqno+eWmruH+WeKd4fEc
-	 a2sS1BBiX05j9orc1VjDLheWSgX26y9oExVaMKCTtcWjsucXKvT2cMPaAiZW4tKLXo
-	 JiDNkHGY5hDKA==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D2A18F40068;
-	Sun,  5 Jul 2026 18:08:29 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Sun, 05 Jul 2026 18:08:29 -0400
-X-ME-Sender: <xms:3dVKalODJ7u_ecAlrUp2CP0PPgTxdlNWSgYvUR2nXgOCEfNxdze3Pg>
-    <xme:3dVKajznhPcV8Epe9EeYOQvBnjNP0hJsqud-jvZeWps5dw1mQq8zncLOrqosIXIaH
-    HDHhkJrNXVbmWHLdOa0ikILp8QhXlUtA-7y0XrQAJNEhhlaGEVkXBE>
-X-ME-Received: <xmr:3dVKavqV98ZucKvQA_EHtiQ9mQ79xcAkbTcLSwbpAeX2jH9H4Ll0LXXaYcMJ0tB91vkw_wx4L5Z3AJfVDVcUNGgmcRHht3oxofc>
-X-ME-Proxy-Cause: dmFkZTEU3a0dSe6i6CnOusv7UQo5bUt4W374Va1VF/civ2vS1aE3CdRJhR/3RPbTyg9YoM
-    8CAom15n8Hwdl1B+/h1BX21cW6wHDRg4U/cmaCbLlyhpdU2LCT1rVEv+DK0HS+o2M/AjWH
-    iVWhfG60Pi2dVHPivMF97pXf3jaizvHlxfCRSpiIxhKNx/MolpL6UNttWlJWb4t4hB9Kae
-    T3+coeSgiC7ftW/nhuCD0fxYogFKtnCGab8QGZDyZAEf35YW373TIPVGu01bfyvVSZEPke
-    BOSEFEOFNVa9Ap4hLBIb48azcD8J8Qw9QsbuF8JLJ/whQvUozGx088ZgysnOjUfjuHjwDz
-    TKQjNkPK0qI9WEWVhRT2bp2lu/ZkTQ9aOeMfxpOJhAsrDiSiqTB/9LhCazdODPNcHptWJi
-    1UejESQXhYKm0DJdKaPGAajaGSKiORUuGjbJwo+7FziYZcl28wqT0/Y0VjDFpMTfIV6L/Y
-    TWfrv4SC5n+I/4xR/N1KpDW083s2Etz/a9OYXYUUgojUakQcuCn6Aam/1AziqBi73rIvIm
-    jakd3+pFSU/slrMpKJVVuXGQYHFPCWhM6PfM774k/dEEDud0RQikWsFDxTVMsy7YCIHmA4
-    ZwGXy9d/3JLsUTJs6L41y9JZLz8b3xlo58BETgarzmS/HBWzPLhMr5FNg5Iw
-X-ME-Proxy: <xmx:3dVKarO0T2n86cq--x1ZA7mFaGhFk-zKWzMs96A6Q5BS8WkcnKxyDw>
-    <xmx:3dVKardY14jQxESy0N-sBFtRsYH47jnAq57BNO_MyOyZ1UWAGhc8MA>
-    <xmx:3dVKapUBGGNbr4OGcbd1nGTJ1Pwr97Hj2tixCwBjFvs7Fl0iqHcHCA>
-    <xmx:3dVKakCYmTfhF87DOOvjaTTl6h5_ko8qNYfMDXM8OcEf5ed9zbqm2A>
-    <xmx:3dVKas7RmdhjVd9NatCmbE95QYXTEmswz0OpnNwNHHRCsSBd3IGS1wRu>
+	b=cPRPxtirceqpsFpa0pEH5WeD82gpkkVfrk+oe3Cbzoe6slPChx65U5jEkK5SaNeU5
+	 kdCe08P4Sddk/Gpdja2Sh4TG1Q0iW64Y2ZZQ+qehAYV61p/+Ru6SFTLz9DnmTW/qR/
+	 Lcmki0dRxW840m7zwcyUA4PalTeaExnmG2qhwY/ooRznKiLfc40SL0vGE11W+xq83d
+	 NxP5EMAbSFu6laYNU5aRhcytNr6GAk7Y/mpKqIow2OQEtTHTE4LgjtjHgoChE+9Z4Z
+	 KSCRfsBi5xNgVv6Ms/f03OMfZMy6G61/cyT7o+L2TJchCr6YxcWOXAjaU6qdJiZDjb
+	 kZCQOxkRfiAGw==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C86D2F40068;
+	Sun,  5 Jul 2026 18:08:32 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Sun, 05 Jul 2026 18:08:32 -0400
+X-ME-Sender: <xms:4NVKahBFYg3S24ERXf9eU2y4mrZofd48osPe0fj8nlnPcPFzWrjCQw>
+    <xme:4NVKarYWp2PcKWlyc7dRQQOzWLzaoRDrsgrqEf8UZkC4wIRyOHSTmL6sqL1KRa4o6
+    sqRe6NbvcOnC2EwJ5NuTbEeCxnz7IbaCyXFFjwCo6m2d0aXzOquUbk>
+X-ME-Received: <xmr:4NVKaoEWaFmmQ2a-2CmhVm7Gn5a4L3nLS-x14vzhWCeDbkWbJK1Riv7SIMD0t2J1M2LzamloCuo_HOO-NReGBQpJe1bLuuDrD_Y>
+X-ME-Proxy-Cause: dmFkZTFW4DrwsoA7jiPQ/SYxavjnKvTVwJOvM8+n4Cymh77lN7HIpr25Nt433UIQsF1QRC
+    TtK3JnGUBp3zX2SJnjWLV8YEWH5/n64nuTY+54qwlL5101cxawSFo1WJ8SjJCy8ZoRC8kc
+    DpuD7J09e/T4vo0cHPFPH7vWIClVAcN6vERTMn+gJKrEEItEHHoEBxN1IX93vsoLKnXgAv
+    P1Pqz583odCRFNMps31OlwzygSPPLVlg3lbc/6i7nGVlb7Vx9dk75jHQ6SmV37tvlgoJuN
+    7OTkIW2lBpFRLxtqFq/WmDjpwUnVU5zxWqsPn75cQxnjchBgJuZK1TY7jrbnd/27KnuvF/
+    Mmh+kzl/HHWCNTcZfzWOSqa10ROspmHwyW6UZvfoBjrTA6roN82s/TZeOIadeUk/E3dd6T
+    Gsid3xf8mXAhNCHiPo8VnJ/Yqea8paxc8v4pccMRSstaWq8gCHQ/w2MGQkFJCb2VGefc4O
+    uXaD8YrTw3ylnD8/FLQjjs8ZJWl8PSOHGH+GWdRHGDYS7o2yzhnvMYXLR4pQOb82K5BEMr
+    e/5vR4Gcl0ebP2ggnnv+K2Dd+efm6C9OGUp5f9Sq2etaJXO+2Y9stAnMNkPLaTQ7smNJ7L
+    ZSoboQM47QKUK4mCTWEpt802OQZ0cAu8eOqFY8P03kW5W10rKG0epxeqWycA
+X-ME-Proxy: <xmx:4NVKavtk6IX88i3arGfOuhu91Vbj2WNPAwvC7H9YhqSSnzyVWarrnw>
+    <xmx:4NVKauI5fAuDfPFckes0AXdyEHkCEh7n6yFoVL4mfUO77WpQaJXD0Q>
+    <xmx:4NVKatNHmZhsUpG0wmX_P6Oud6Jl0lEWGJlXNjNJuYEjkYH3TipGTQ>
+    <xmx:4NVKamZIGeqyxfzzgyP_Mfk_gYdTWGS3K10kY1wWievu1pofi9mUnQ>
+    <xmx:4NVKapwr5l9OhRHsqAkiLzLqG5qMKKklmFop61PyK0CyA71o6rIwg4qy>
 Feedback-ID: i67ae4b3e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 5 Jul 2026 18:08:29 -0400 (EDT)
+ 5 Jul 2026 18:08:32 -0400 (EDT)
 From: Dan Williams <djbw@kernel.org>
 To: linux-coco@lists.linux.dev
 Cc: linux-pci@vger.kernel.org,
 	driver-core@lists.linux.dev,
 	ankita@nvidia.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
 	Bjorn Helgaas <bhelgaas@google.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Lukas Wunner <lukas@wunner.de>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
 	Xu Yilun <yilun.xu@linux.intel.com>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>
-Subject: [PATCH 06/15] PCI/TSM: Add device evidence support
-Date: Sun,  5 Jul 2026 15:08:10 -0700
-Message-ID: <20260705220819.2472765-7-djbw@kernel.org>
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>
+Subject: [PATCH 08/15] device core: Initial device trust infrastructure
+Date: Sun,  5 Jul 2026 15:08:12 -0700
+Message-ID: <20260705220819.2472765-9-djbw@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260705220819.2472765-1-djbw@kernel.org>
 References: <20260705220819.2472765-1-djbw@kernel.org>
@@ -78,300 +87,450 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Register the PCI Trusted Execution Environment Security Manager (TSM)
-framework with the device-evidence netlink ABI. The security operations
-that PCI core coordinates with a device security manager (DSM) through a
-platform TEE security manager (TSM), builds upon the SPDM protocol.
+Introduce a per-device trust concept [1]. To start, it plumbs "auto" and
+"none" levels to enable a scheme of requiring explicit opt-in to operate a
+device. This supports a Confidential Computing use case of operating a
+limited / vetted device and driver set to bootstrap the environment. It
+leans on module policy to effect changes to device's trust level.
 
-A TSM owns an SPDM session and publishes the corresponding evidence through
-TSM firwmware ABIs. A low level TSM driver is responsible for creating a
-'struct device_evidence' context and carrying out refresh_evidence()
-requests for regenerating measurement transcripts with a nonce.
+The motivations for using module policy to effect trust are:
 
+1/ It exists, no new ABI needed to inject "device firewall" policy into the
+   kernel [2].
+2/ Trust is a function of how the device is operated. A driver can be
+   trusted to carefully operate an untrusted device.
+
+It may prove too coarse for some situations, like a driver that talks to a
+mix of trusted and untrusted devices, or a module that contains multiple
+drivers, but it is a place to start.
+
+Specifically this "module trust" scheme allows for only attaching drivers
+from built-in modules by default, or modules that explicitly pass a
+"trust=auto" option by building with CONFIG_DEVICE_TRUST_NONE=y. Modules
+can also be configured to skip device attach by default by setting
+/sys/module/module/parameters/require_trust.
+
+The new dev->p->trust level is the operational trust level of a device. It is
+only in effect after device_add(). It is private to the device core because
+the "tcb" level is not suitable to be changed while a driver is attached to
+the device. The result force_dma_unencrypted() must be stable while the
+device is attached to its driver. That core coordination responsibility is
+not suitable to export to non-core code.
+
+Note that the overly trivial helper builtin_driver_trust() grows support
+for another trust level in a follow-on change.
+
+Also note that the IOMMU claims in the Kconfig commentary, where it says
+"possible" and "where available" imply follow-on work to assign
+DEVICE_TRUST_NONE devices to an IOMMU blocked domain.
+
+Link: http://lore.kernel.org/2026032621-astound-mounted-07a6@gregkh [1]
+Link: https://lwn.net/Articles/865918/ [2]
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Daniel Gomez <da.gomez@kernel.org>
+Cc: Sami Tolvanen <samitolvanen@google.com>
+Cc: Aaron Tomlin <atomlin@atomlin.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
 Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Alistair Francis <alistair.francis@wdc.com>
-Cc: Lukas Wunner <lukas@wunner.de>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: Samuel Ortiz <sameo@rivosinc.com>
 Cc: Alexey Kardashevskiy <aik@amd.com>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Dexuan Cui <decui@microsoft.com>
 Signed-off-by: Dan Williams <djbw@kernel.org>
 ---
- drivers/pci/Kconfig               |   1 +
- drivers/pci/Makefile              |   2 +-
- drivers/pci/tsm/Makefile          |   8 +++
- include/linux/pci-tsm.h           |  14 ++++
- drivers/pci/{tsm.c => tsm/core.c} |   9 +--
- drivers/pci/tsm/evidence.c        | 110 ++++++++++++++++++++++++++++++
- MAINTAINERS                       |   2 +-
- 7 files changed, 137 insertions(+), 9 deletions(-)
- create mode 100644 drivers/pci/tsm/Makefile
- rename drivers/pci/{tsm.c => tsm/core.c} (99%)
- create mode 100644 drivers/pci/tsm/evidence.c
+ drivers/base/Kconfig                  | 57 ++++++++++++++++++++
+ drivers/base/Makefile                 |  1 +
+ Documentation/ABI/stable/sysfs-module |  7 +++
+ drivers/base/base.h                   | 15 ++++++
+ include/linux/device/trust.h          | 42 +++++++++++++++
+ include/linux/module.h                |  6 ++-
+ drivers/base/core.c                   |  7 +++
+ drivers/base/dd.c                     |  5 ++
+ drivers/base/trust.c                  | 77 +++++++++++++++++++++++++++
+ kernel/module/main.c                  | 13 +++++
+ 10 files changed, 229 insertions(+), 1 deletion(-)
+ create mode 100644 include/linux/device/trust.h
+ create mode 100644 drivers/base/trust.c
 
-diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-index 0c7408509ba2..ed17b5d2d5ae 100644
---- a/drivers/pci/Kconfig
-+++ b/drivers/pci/Kconfig
-@@ -126,6 +126,7 @@ config PCI_IDE
+diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
+index e3929fe6b240..a08523d348d8 100644
+--- a/drivers/base/Kconfig
++++ b/drivers/base/Kconfig
+@@ -262,4 +262,61 @@ config FW_DEVLINK_SYNC_STATE_TIMEOUT
+ 	  command line option on every system/board your kernel is expected to
+ 	  work on.
  
- config PCI_TSM
- 	bool "PCI TSM: Device security protocol support"
-+	select DEVICE_EVIDENCE if NET
- 	select PCI_IDE
- 	select PCI_DOE
- 	select TSM
-diff --git a/drivers/pci/Makefile b/drivers/pci/Makefile
-index 41ebc3b9a518..211f195ff2c9 100644
---- a/drivers/pci/Makefile
-+++ b/drivers/pci/Makefile
-@@ -35,7 +35,7 @@ obj-$(CONFIG_XEN_PCIDEV_FRONTEND) += xen-pcifront.o
- obj-$(CONFIG_VGA_ARB)		+= vgaarb.o
- obj-$(CONFIG_PCI_DOE)		+= doe.o
- obj-$(CONFIG_PCI_IDE)		+= ide.o
--obj-$(CONFIG_PCI_TSM)		+= tsm.o
-+obj-$(CONFIG_PCI_TSM)		+= tsm/
- obj-$(CONFIG_PCI_DYNAMIC_OF_NODES) += of_property.o
- obj-$(CONFIG_PCI_NPEM)		+= npem.o
- obj-$(CONFIG_PCIE_TPH)		+= tph.o
-diff --git a/drivers/pci/tsm/Makefile b/drivers/pci/tsm/Makefile
-new file mode 100644
-index 000000000000..fd7ac2e862f1
---- /dev/null
-+++ b/drivers/pci/tsm/Makefile
-@@ -0,0 +1,8 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Makefile for the PCI/TSM infrastructure
++config DEVICE_TRUST
++	bool "Device core support for specifying trust levels for devices"
++	help
++	  Enable support for generic device trust levels when building a kernel
++	  that needs to operate in the presence of potentially adversarial
++	  devices. This is selected by buses that want to operate devices with
++	  reduced privileges, like externally connected devices, and it is a
++	  pre-requisite for operating devices with access to private memory in a
++	  Confidential Computing VM. See
++	  Documentation/ABI/testing/sysfs-kernel-iommu_groups for the type of
++	  IOMMU enforcement in effect.
 +
-+obj-$(CONFIG_PCI_TSM) += tsm.o
++choice
++	prompt "Default device trust"
++	default DEVICE_TRUST_AUTO
++	depends on DEVICE_TRUST
++	help
++	  Specify the device trust level at initial attachment. Any choice other
++	  than "Auto" assumes auditing the built-in driver set for trusted
++	  drivers, and an enlightened userspace modprobe policy for other
++	  devices + drivers.
 +
-+tsm-y := core.o
-+tsm-$(CONFIG_DEVICE_EVIDENCE) += evidence.o
-diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
-index a6435aba03f9..8bc16029d31e 100644
---- a/include/linux/pci-tsm.h
-+++ b/include/linux/pci-tsm.h
-@@ -3,7 +3,10 @@
- #define __PCI_TSM_H
- #include <linux/mutex.h>
- #include <linux/pci.h>
-+#include <linux/rwsem.h>
- #include <linux/sockptr.h>
-+#include <linux/tsm.h>
-+#include <linux/device/evidence.h>
- 
- struct pci_tsm;
- struct tsm_dev;
-@@ -18,6 +21,7 @@ enum pci_tsm_req_scope;
-  * @devsec_ops: Lock, unlock, and interrogate the security state of the
-  *		function via the platform TSM (typically virtual function
-  *		operations).
-+ * @refresh_evidence: Common operation to regenerate attestation objects
-  *
-  * This operations are mutually exclusive either a tsm_dev instance
-  * manages physical link properties or it manages function security
-@@ -75,6 +79,9 @@ struct pci_tsm_ops {
- 					struct pci_dev *pdev);
- 		void (*unlock)(struct pci_tsm *tsm);
- 	);
++config DEVICE_TRUST_NONE
++	bool "None"
++	help
++	  Devices are disallowed from attaching to a driver, and where
++	  possible, the device is blocked by an IOMMU from accessing
++	  assets.
 +
-+	int (*refresh_evidence)(struct pci_tsm *tsm, const void *nonce,
-+				size_t nonce_len);
++config DEVICE_TRUST_AUTO
++	bool "Auto"
++	help
++	  Typical historical driver model, devices eagerly attempt to attach to
++	  a driver and deploy all available mechanisms to allow performant
++	  direct memory access.
++
++endchoice
++
++choice
++	prompt "Trust devices with built-in drivers"
++	default BUILTIN_DEVICE_TRUST_AUTO
++	depends on DEVICE_TRUST
++	help
++	  Built-in drivers always bind to devices they match. Only
++	  select a setting other than "Auto" when building a kernel image
++	  targeted for use in Confidential Computing or other known
++	  adversarial environments.
++
++config BUILTIN_DEVICE_TRUST_AUTO
++	bool "Auto"
++	help
++	  Typical historical driver model, devices eagerly attempt to attach to
++	  a driver and deploy all available mechanisms to allow performant
++	  direct memory access This trust level does not grant TCB privileges.
++
++endchoice
++
+ endmenu
+diff --git a/drivers/base/Makefile b/drivers/base/Makefile
+index 02bdc4f74019..0744511c0599 100644
+--- a/drivers/base/Makefile
++++ b/drivers/base/Makefile
+@@ -8,6 +8,7 @@ obj-y			:= component.o core.o bus.o dd.o syscore.o \
+ 			   topology.o container.o property.o cacheinfo.o \
+ 			   swnode.o faux.o
+ obj-$(CONFIG_AUXILIARY_BUS) += auxiliary.o
++obj-$(CONFIG_DEVICE_TRUST) += trust.o
+ obj-$(CONFIG_DEVTMPFS)	+= devtmpfs.o
+ obj-y			+= power/
+ obj-$(CONFIG_ISA_BUS_API)	+= isa.o
+diff --git a/Documentation/ABI/stable/sysfs-module b/Documentation/ABI/stable/sysfs-module
+index 397c5c850894..5c4863f65d03 100644
+--- a/Documentation/ABI/stable/sysfs-module
++++ b/Documentation/ABI/stable/sysfs-module
+@@ -55,3 +55,10 @@ Description:
+ 		requests, the "driver_async_probe=..." kernel command line, the
+ 		"async_probe" module option, then this default. Write a valid
+ 		boolean value to toggle this policy.
++
++What:		/sys/module/module/parameters/require_trust
++Description:
++		(RW) Emits "1" if modules are required to specify a trust=
++		option on load to permit driver(s) in the module to attach to
++		matched devices. By default drivers always attach on match
++		unless the kernel was compiled with DEVICE_TRUST_NONE.
+diff --git a/drivers/base/base.h b/drivers/base/base.h
+index a5b7abc10ff0..e9d508521b5e 100644
+--- a/drivers/base/base.h
++++ b/drivers/base/base.h
+@@ -103,6 +103,7 @@ struct driver_private {
+  *			   dev_err_probe() for later retrieval via debugfs
+  * @device: pointer back to the struct device that this structure is
+  *	    associated with.
++ * @trust: device operational trust level
+  * @dead: This device is currently either in the process of or has been
+  *	  removed from the system. Any asynchronous events scheduled for this
+  *	  device should exit without taking any action.
+@@ -119,6 +120,7 @@ struct device_private {
+ 	const struct device_driver *async_driver;
+ 	char *deferred_probe_reason;
+ 	struct device *device;
++	enum device_trust	trust;
+ 	u8 dead:1;
  };
- 
- /**
-@@ -96,6 +103,8 @@ struct pci_tdi {
-  * @tsm_dev: PCI TEE Security Manager device for Link Confidentiality or Device
-  *	     Function Security operations
-  * @tdi: TDI context established by the @bind link operation
-+ * @evidence: cached evidence from SPDM session establishment (connect), or
-+ *	      TDISP bind (lock)
-  *
-  * This structure is wrapped by low level TSM driver data and returned by
-  * probe()/lock(), it is freed by the corresponding remove()/unlock().
-@@ -112,6 +121,7 @@ struct pci_tsm {
- 	struct pci_dev *dsm_dev;
- 	struct tsm_dev *tsm_dev;
- 	struct pci_tdi *tdi;
-+	struct device_evidence *evidence;
- };
- 
- /**
-@@ -216,6 +226,10 @@ void pci_tsm_tdi_constructor(struct pci_dev *pdev, struct pci_tdi *tdi,
- ssize_t pci_tsm_guest_req(struct pci_dev *pdev, enum pci_tsm_req_scope scope,
- 			  sockptr_t req_in, size_t in_len, sockptr_t req_out,
- 			  size_t out_len, u64 *tsm_code);
-+static inline const struct pci_tsm_ops *to_pci_tsm_ops(struct pci_tsm *tsm)
-+{
-+	return tsm->tsm_dev->pci_ops;
-+}
+ #define to_device_private_parent(obj)	\
+@@ -149,6 +151,19 @@ void auxiliary_bus_init(void);
  #else
- static inline int pci_tsm_register(struct tsm_dev *tsm_dev)
- {
-diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm/core.c
-similarity index 99%
-rename from drivers/pci/tsm.c
-rename to drivers/pci/tsm/core.c
-index 5fdcd7f2e820..220842df42bc 100644
---- a/drivers/pci/tsm.c
-+++ b/drivers/pci/tsm/core.c
-@@ -15,13 +15,13 @@
- #include <linux/sysfs.h>
- #include <linux/tsm.h>
- #include <linux/xarray.h>
--#include "pci.h"
-+#include "../pci.h"
+ static inline void auxiliary_bus_init(void) { }
+ #endif
++#ifdef CONFIG_DEVICE_TRUST
++bool device_trust_bind(const struct device_driver *drv, struct device *dev);
++void device_initialize_trust(struct device *dev);
++#else
++static inline void device_initialize_trust(struct device *dev)
++{
++}
++static inline bool device_trust_bind(const struct device_driver *drv,
++				     struct device *dev)
++{
++	return true;
++}
++#endif
  
- /*
-  * Provide a read/write lock against the init / exit of pdev tsm
-  * capabilities and arrival/departure of a TSM instance
-  */
--static DECLARE_RWSEM(pci_tsm_rwsem);
-+DECLARE_RWSEM(pci_tsm_rwsem);
+ struct kobject *virtual_device_parent(void);
  
- /*
-  * Count of TSMs registered that support physical link operations vs device
-@@ -30,11 +30,6 @@ static DECLARE_RWSEM(pci_tsm_rwsem);
- static int pci_tsm_link_count;
- static int pci_tsm_devsec_count;
- 
--static const struct pci_tsm_ops *to_pci_tsm_ops(struct pci_tsm *tsm)
--{
--	return tsm->tsm_dev->pci_ops;
--}
--
- static inline bool is_dsm(struct pci_dev *pdev)
- {
- 	return pdev->tsm && pdev->tsm->dsm_dev == pdev;
-diff --git a/drivers/pci/tsm/evidence.c b/drivers/pci/tsm/evidence.c
+diff --git a/include/linux/device/trust.h b/include/linux/device/trust.h
 new file mode 100644
-index 000000000000..ffb08208f0c0
+index 000000000000..3377d26dc485
 --- /dev/null
-+++ b/drivers/pci/tsm/evidence.c
-@@ -0,0 +1,110 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/include/linux/device/trust.h
+@@ -0,0 +1,42 @@
++/* SPDX-License-Identifier: GPL-2.0 */
 +/* Copyright (C) 2026 NVIDIA Corporation & Affiliates */
++#ifndef __DEVICE_TRUST_H__
++#define __DEVICE_TRUST_H__
 +
-+#include <linux/device/evidence.h>
-+#include <linux/init.h>
-+#include <linux/mutex.h>
-+#include <linux/pci.h>
-+#include <linux/pci-tsm.h>
-+#include <linux/tsm.h>
-+
-+extern struct rw_semaphore pci_tsm_rwsem;
-+
-+static bool evidence_available(struct pci_dev *pdev)
-+{
-+	return pdev->tsm && pdev->tsm->evidence;
-+}
-+
-+static struct device *pci_tsm_evidence_find_device(const char *name)
-+{
-+	ACQUIRE(rwsem_read_intr, lock)(&pci_tsm_rwsem);
-+	if (ACQUIRE_ERR(rwsem_read_intr, &lock))
-+		return NULL;
-+
-+	struct device *dev __free(put_device) =
-+		bus_find_device_by_name(&pci_bus_type, NULL, name);
-+
-+	/*
-+	 * Bail evidence gathering early if we know at this point that
-+	 * the device has no valid evidence provider, but still need to
-+	 * revalidate the same in pci_tsm_evidence_read_begin().
-+	 */
-+	if (!dev || !evidence_available(to_pci_dev(dev)))
-+		return NULL;
-+
-+	return no_free_ptr(dev);
-+}
-+
-+static struct device_evidence *pci_tsm_evidence_read_begin(struct device *dev)
-+{
-+	struct pci_dev *pdev = to_pci_dev(dev);
-+	struct device_evidence *evidence;
-+	int rc;
-+
-+	rc = down_read_interruptible(&pci_tsm_rwsem);
-+	if (rc)
-+		return ERR_PTR(rc);
-+
-+	if (!evidence_available(pdev))
-+		goto err;
-+
-+	/* Hold the evidence stable against conflicting refresh updates */
-+	evidence = pdev->tsm->evidence;
-+	rc = down_read_interruptible(&evidence->lock);
-+	if (rc)
-+		goto err;
-+
-+	return evidence;
-+err:
-+	up_read(&pci_tsm_rwsem);
-+	return ERR_PTR(-ENXIO);
-+}
-+
-+static void pci_tsm_evidence_read_end(struct device_evidence *evidence)
-+{
-+	up_read(&evidence->lock);
-+	up_read(&pci_tsm_rwsem);
-+}
-+
-+static int pci_tsm_refresh_evidence(struct device *dev, const void *nonce,
-+				    size_t nonce_len)
-+{
-+	struct pci_dev *pdev = to_pci_dev(dev);
-+	struct device_evidence *evidence;
-+	const struct pci_tsm_ops *ops;
-+	int rc;
-+
-+	/* Sync against disconnect */
-+	ACQUIRE(rwsem_read_intr, lock)(&pci_tsm_rwsem);
-+	if ((rc = ACQUIRE_ERR(rwsem_read_intr, &lock)))
-+		return rc;
-+
-+	if (!pdev->tsm)
-+		return -ENXIO;
-+
-+	ops = to_pci_tsm_ops(pdev->tsm);
-+	if (!ops->refresh_evidence)
-+		return -EOPNOTSUPP;
-+
-+	/* Sync against pci_tsm_evidence_read_begin */
-+	evidence = pdev->tsm->evidence;
-+	ACQUIRE(rwsem_write_kill, elock)(&evidence->lock);
-+	if ((rc = ACQUIRE_ERR(rwsem_write_kill, &elock)))
-+		return rc;
-+
-+	return ops->refresh_evidence(pdev->tsm, nonce, nonce_len);
-+}
-+
-+static const struct device_evidence_ops pci_tsm_evidence_ops = {
-+	.subsys_name = "pci",
-+	.find_device = pci_tsm_evidence_find_device,
-+	.evidence_read_begin = pci_tsm_evidence_read_begin,
-+	.evidence_read_end = pci_tsm_evidence_read_end,
-+	.refresh_evidence = pci_tsm_refresh_evidence,
++/**
++ * enum device_trust - Level of restrictions and privileges for a
++ * device. Trust is initially assigned by the bus, and the bus is
++ * responsible for coordinating transitions between trust levels with
++ * DMA/IOMMU and its own device security mechanisms.
++ *
++ * @DEVICE_TRUST_UNSET: Unregistered device object with no current bus
++ * @DEVICE_TRUST_NONE: Blocked when idle, cannot bind
++ * @DEVICE_TRUST_AUTO: All typical privileges granted
++ */
++enum device_trust {
++	DEVICE_TRUST_UNSET,
++	DEVICE_TRUST_NONE,
++	DEVICE_TRUST_AUTO,
 +};
 +
-+static int __init pci_tsm_evidence_init(void)
++#define DEVICE_DEFAULT_TRUST                                        \
++	(IS_ENABLED(CONFIG_DEVICE_TRUST_NONE) ? DEVICE_TRUST_NONE : \
++						DEVICE_TRUST_AUTO)
++
++struct device;
++struct device_driver;
++
++#ifdef CONFIG_DEVICE_TRUST
++void module_driver_trust(struct module *mod, const char *val);
++void module_driver_trust_init(struct module *mod, bool distrust);
++#else
++static inline void module_driver_trust(struct module *mod, const char *val)
 +{
-+	return device_evidence_register(&pci_tsm_evidence_ops);
++	pr_warn("module: %s: trust= support disabled\n", mod->name);
 +}
-+subsys_initcall(pci_tsm_evidence_init);
-diff --git a/MAINTAINERS b/MAINTAINERS
-index cb4f74957f69..6cefaddc1120 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -27472,7 +27472,7 @@ F:	Documentation/driver-api/coco/
- F:	Documentation/driver-api/pci/tsm.rst
- F:	Documentation/netlink/specs/device-evidence.yaml
- F:	drivers/base/*evidence*
--F:	drivers/pci/tsm.c
-+F:	drivers/pci/tsm/
- F:	drivers/virt/coco/guest/
- F:	include/uapi/linux/device-evidence.h
- F:	include/linux/device/evidence.h
++static inline void module_driver_trust_init(struct module *mod, bool distrust)
++{
++}
++#endif
++
++#endif /* __DEVICE_TRUST_H__ */
+diff --git a/include/linux/module.h b/include/linux/module.h
+index 7566815fabbe..0315035e6b3b 100644
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -29,6 +29,7 @@
+ #include <linux/srcu.h>
+ #include <linux/static_call_types.h>
+ #include <linux/dynamic_debug.h>
++#include <linux/device/trust.h>
+ 
+ #include <linux/percpu.h>
+ #include <asm/module.h>
+@@ -443,6 +444,10 @@ struct module {
+ #endif
+ 
+ 	bool async_probe_requested;
++#ifdef CONFIG_DEVICE_TRUST
++	/* Trust level override for devices matching this module's drivers. */
++	enum device_trust trust;
++#endif
+ 
+ 	/* Exception table */
+ 	unsigned int num_exentries;
+@@ -865,7 +870,6 @@ static inline bool module_requested_async_probing(struct module *module)
+ 	return false;
+ }
+ 
+-
+ /* Dereference module function descriptor */
+ static inline
+ void *dereference_module_function_descriptor(struct module *mod, void *ptr)
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 4d026682944f..155ff5852286 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3754,6 +3754,13 @@ int device_add(struct device *dev)
+ 		fw_devlink_link_device(dev);
+ 	}
+ 
++	/*
++	 * The bus and all device add notifiers have had a chance to
++	 * initialize trust, set a fallback default in case the trust
++	 * level is not yet established.
++	 */
++	device_initialize_trust(dev);
++
+ 	/*
+ 	 * The moment the device was linked into the bus's "klist_devices" in
+ 	 * bus_add_device() then it's possible that probe could have been
+diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+index 60c005223844..f0b2d58c89a0 100644
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -857,6 +857,11 @@ static int __driver_probe_device(const struct device_driver *drv, struct device
+ 	dev_dbg(dev, "bus: '%s': %s: matched device with driver %s\n",
+ 		drv->bus->name, __func__, drv->name);
+ 
++	if (!device_trust_bind(drv, dev)) {
++		dev_dbg(dev, "not trusted to bind\n");
++		return -ENODEV;
++	}
++
+ 	pm_runtime_get_suppliers(dev);
+ 	if (dev->parent)
+ 		pm_runtime_get_sync(dev->parent);
+diff --git a/drivers/base/trust.c b/drivers/base/trust.c
+new file mode 100644
+index 000000000000..0fd494e1557d
+--- /dev/null
++++ b/drivers/base/trust.c
+@@ -0,0 +1,77 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2026 NVIDIA Corporation & Affiliates */
++
++#include <linux/device.h>
++#include <linux/device/trust.h>
++#include <linux/module.h>
++#include "base.h"
++
++void device_initialize_trust(struct device *dev)
++{
++	if (dev->p->trust == DEVICE_TRUST_UNSET)
++		dev->p->trust = DEVICE_DEFAULT_TRUST;
++}
++
++/* Driver trust policy requires modules, builtin drivers always attach */
++static enum device_trust builtin_driver_trust(void)
++{
++	return DEVICE_TRUST_AUTO;
++}
++
++static enum device_trust driver_trust(struct module *mod)
++{
++	if (!mod)
++		return builtin_driver_trust();
++	return mod->trust;
++}
++
++/*
++ * @dev matches @drv and is locked for probe. Check if the driver has
++ * policy on trusting devices it attaches, update the device's trust
++ * level from that policy. Trust privileges beyond driver bind are
++ * realized in a bus's ->dma_configure().
++ */
++bool device_trust_bind(const struct device_driver *drv, struct device *dev)
++{
++	enum device_trust drv_trust = driver_trust(drv->owner);
++
++	if (drv_trust != DEVICE_TRUST_UNSET)
++		dev->p->trust = drv_trust;
++	return dev->p->trust > DEVICE_TRUST_NONE;
++}
++
++static const char * const device_trust_names[] = {
++	[DEVICE_TRUST_NONE]	 = "none",
++	[DEVICE_TRUST_AUTO]	 = "auto",
++};
++
++static enum device_trust device_trust_parse(const char *name)
++{
++	int i;
++
++	if (!name)
++		return DEVICE_TRUST_UNSET;
++
++	for (i = 0; i < ARRAY_SIZE(device_trust_names); i++)
++		if (device_trust_names[i] &&
++		    sysfs_streq(name, device_trust_names[i]))
++			return i;
++	return DEVICE_TRUST_UNSET;
++}
++
++void module_driver_trust(struct module *mod, const char *val)
++{
++	mod->trust = device_trust_parse(val);
++}
++
++/*
++ * Honor the module core forcing all modules to no trust by default,
++ * otherwise fallback to the compile-time default for all devices
++ */
++void module_driver_trust_init(struct module *mod, bool require_trust)
++{
++	if (require_trust)
++		mod->trust = DEVICE_TRUST_NONE;
++	else
++		mod->trust = DEVICE_DEFAULT_TRUST;
++}
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index 46dd8d25a605..3e1fe9966d50 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -36,6 +36,7 @@
+ #include <linux/notifier.h>
+ #include <linux/sched.h>
+ #include <linux/device.h>
++#include <linux/device/trust.h>
+ #include <linux/string.h>
+ #include <linux/mutex.h>
+ #include <linux/rculist.h>
+@@ -3068,6 +3069,12 @@ void flush_module_init_free_work(void)
+ static bool async_probe;
+ module_param(async_probe, bool, 0644);
+ 
++#ifdef CONFIG_DEVICE_TRUST
++/* Default value for module trust. When true, trust= override required */
++static bool require_trust;
++module_param(require_trust, bool, 0644);
++#endif
++
+ /*
+  * This is where the real work happens.
+  *
+@@ -3375,6 +3382,11 @@ static int unknown_module_param_cb(char *param, char *val, const char *modname,
+ 		return 0;
+ 	}
+ 
++	if (strcmp(param, "trust") == 0) {
++		module_driver_trust(mod, val);
++		return 0;
++	}
++
+ 	/* Check for magic 'dyndbg' arg */
+ 	ret = ddebug_dyndbg_module_param_cb(param, val, modname);
+ 	if (ret != 0)
+@@ -3544,6 +3556,7 @@ static int load_module(struct load_info *info, const char __user *uargs,
+ 		goto bug_cleanup;
+ 
+ 	mod->async_probe_requested = async_probe;
++	module_driver_trust_init(mod, require_trust);
+ 
+ 	/* Module is ready to execute: parsing args may do that. */
+ 	after_dashes = parse_args(mod->name, mod->args, mod->kp, mod->num_kp,
 -- 
 2.54.0
 
