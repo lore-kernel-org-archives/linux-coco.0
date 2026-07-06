@@ -1,131 +1,251 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF05348C79;
-	Mon,  6 Jul 2026 13:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2488A342507
+	for <linux-coco@lists.linux.dev>; Mon,  6 Jul 2026 13:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783345350; cv=none; b=reowY+s5DQPwxv0ljoiTlpCBycJOeZpKb3mom7Oof07GFLbCftTl1s5+TmIs/9VgvDt0tzByDgvppbvYWtUCU6s3jR5cmWA5LyUr0WKH2nsbHEiluBsqlIRvFFFq53CtYzBKApz8JDGdtE2SSwErltj6C4/cV0eJglpEZRFkGZA=
+	t=1783345535; cv=none; b=S1Msmf/9iNtKw/KT594FBnsurbp+B3U0+xhpZcCnNGxSr2xo9HZXNW+oICNAFYUV0SL55s5HLiZ2FOuBXLVZFfkeRx0BXLukqBePFA4u/lgPUvjG30i4ppmPhx9axDL8pvs02YJf5B7c/LRH4mNsdvsFNOkJ9XXM0mObCRSVNWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783345350; c=relaxed/simple;
-	bh=XAFY2PT6pdsrqzojrYs8JZ6/o40ZFesVrGhqlhhlBHU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=HAizfsSCtizZurK9wFdCxErf9xJoMJbldvd/VJCcZpZqp/3uR7o5KGwPMqG+9VOxm1+9pQqcyIzXWY+9Dk0NJU+0ZfhKGLftFOjBh40X0Xaa68T9ro/a3aas9j96kUnaLXj2NiCj/B6WPYsLdC1Kk9s3NPlNcdz+q27Mwn9uRYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MyTUEFo+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783345535; c=relaxed/simple;
+	bh=X2/xLz9f00ZteupBUVAyQDX4EmH5JlTROPHXFAocQHg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q0U/hcneoSF5jo2jPo9jkmSf0DZ++/zG+A+Ibbvk+MeH4DCSRHca245qQuBs3Br9E8qSoeeRc2Ef3I8HfkhtWUacDioBktq3ck7zMlle/Janv2q1EDyyJ/EOMa2I0/g6KUYDzqGlVD+C92HA5x3Mafi/BrkVklKHJ3/WMYiXAiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=RDB+DEbf; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MyTUEFo+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37CE11F000E9;
-	Mon,  6 Jul 2026 13:42:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783345348;
-	bh=gXQkycuyZrdfubY+a8etURqHKk4IqlvevFVov045YPE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=MyTUEFo+V8Urr2g/vi7rndXCyW+0VLn2hck1DNdkKhva7mSObnt3GYs6H3d1v3hK2
-	 1TEFyhfmmbXArlLTvIQhrsqFCwqyADwS+LVYNQ6G2RN7xDV96Hgd1pKXP/BOR0qEY6
-	 YIVYXs3JBwYYR5wjRxTrhFGO6SlfmE/XW880EnxFSxulA3EzvwnoyGuQS4G7OwJlmU
-	 tE3cwfhh4IxggHX4IMOWUIWlcOf/88vGjd6IlfgFYkaD8pYIBT3VuvHANC8OLDoHIA
-	 k0BAKkE0+1fxXVDXVUMFu0kRSY3YlZ4x0Ca+73lDkNDaDGsrE54C4a3ECtbhgV9uen
-	 Bzo4jyQVdJExA==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v5 02/10] irqchip/gic-v3-its: Align shared ITS
- allocations to the CoCo shared granule size
-In-Reply-To: <86ik6sp7fc.wl-maz@kernel.org>
-References: <20260706060432.1375570-1-aneesh.kumar@kernel.org>
- <20260706060432.1375570-3-aneesh.kumar@kernel.org>
- <86ik6sp7fc.wl-maz@kernel.org>
-Date: Mon, 06 Jul 2026 19:12:17 +0530
-Message-ID: <yq5a7bn8i69y.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="RDB+DEbf"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-92b21f65b60so246267485a.1
+        for <linux-coco@lists.linux.dev>; Mon, 06 Jul 2026 06:45:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1783345531; x=1783950331; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vSJ+2o+DU64Ct4lPSKlFPGtLgqM3IIcjx5unu2xlDoY=;
+        b=RDB+DEbfVdloIC/KBFDTYH6CL8bKTHLppm5KCYkDLJMGZ13H4g4HKfbsBV3hlWDmj4
+         4xgABq6vJHf6g9CBP2l0eld23CGsMubmUloSuhjwc5rfVCLwUrV8OKEpEe1zF4tHJjhf
+         Ym/HMIlQOwZ5kYLf4Mgm3I7y+vvLkPMasP45ABQ6FIgvJB2oR0mJPdlFqsjDLq+nw7uQ
+         96SRt0ejHICbVzUoTgQsxQIRzfLSnepVclNKdL2P4mzOjPft4TI1vXAV5sj9D4YUIggQ
+         GQ+4Y/tk2AO1Z472HKLEWiGArq1P8CUuAkx7WQ/cO48tR7vKTujAgc+SvWmWSDagPAqB
+         hchg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783345531; x=1783950331;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vSJ+2o+DU64Ct4lPSKlFPGtLgqM3IIcjx5unu2xlDoY=;
+        b=bJfj59GIBLYxSA/kKNEyPN2r2toRx5MeO6pQYZwJANOctay32XXCJ22dhbvfIwcSm/
+         YAEojBmbi5YTXpBI1CNRQXHDT+XihwVJj+MVicrAAtMIwzEHzpk7PFiuZB7fH8Rh4oLk
+         tg1BmbWtcq+DblTOCwDoLp11p6n36sqaCknAqS8YXGUCIuZmkQEFp5lmPCIRED6AHh92
+         510Yt/34TfNSETH9yUC0sM4emeusd07ACSRFLX3RUCfO2zL9FVv7OfNKm2OOOvVBOIF6
+         CGYp2mUwD96x/Qdy3r6yVZEQO3067jm7RTs6Tgq195kT4QBlWfdfDgGpNOOCpi/pdc1m
+         XpgQ==
+X-Gm-Message-State: AOJu0YylPGxhkmUOFrNH14YeCu2n/2eSZPkMvwIYiI2BXZsa/o3G1qdB
+	F99bSNtcDOqF6qwl+kMoPXrVR6fvN0tWOjLmp88u/L5pOViw5Mkfhu+YxNO58X7RcMY=
+X-Gm-Gg: AfdE7cmY5i/+EnmZi1OtfFI17N0VBRFsl25yf1PfGjrkHLDixG+f83z2D0YGGSj0/iR
+	rY0Kvw5iaaDFgenbmVDJtJ9mPRHLH+QjXA6qku9uPYOsSHUtmv7LC9pyd9RBsonJ93z4RSXj5md
+	GKTQ1i+yfFPGqZfr4dVoasxH5pWOUemiXEPjQRJJQg8/AV8VXK5X6Wi829Fo7jGVaUbQfEr8jm7
+	2VidKK52wal/tRl/ZEGmVUGFJIoVGHBEgfUleL52npwFb2IlZujuyILvfofKOOgaN3gjSBqkYVd
+	P//Diq65Zh3LyqSiolR4wdiydVxZ+WhdSvK0wa6ur2OufDQp7Xc3SJjByn/NWdx9bf0kQ9nWdQQ
+	CAiAAczsIgv+kJnJP1nbqgbOXUmHZk+OtUiqw/Gkl+ntQfItmq/QDFSJX65PJ
+X-Received: by 2002:a05:620a:608c:b0:92b:67e6:4b79 with SMTP id af79cd13be357-92ebb30952emr83798985a.35.1783345530033;
+        Mon, 06 Jul 2026 06:45:30 -0700 (PDT)
+Received: from ziepe.ca ([159.2.72.92])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e90cfdefasm943428385a.47.2026.07.06.06.45.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 06:45:29 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wgjdY-00000000Szh-370N;
+	Mon, 06 Jul 2026 10:45:28 -0300
+Date: Mon, 6 Jul 2026 10:45:28 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Dan Williams <djbw@kernel.org>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	driver-core@lists.linux.dev, ankita@nvidia.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>
+Subject: Re: [PATCH 08/15] device core: Initial device trust infrastructure
+Message-ID: <20260706134528.GC107792@ziepe.ca>
+References: <20260705220819.2472765-1-djbw@kernel.org>
+ <20260705220819.2472765-9-djbw@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260705220819.2472765-9-djbw@kernel.org>
 
-Marc Zyngier <maz@kernel.org> writes:
+On Sun, Jul 05, 2026 at 03:08:12PM -0700, Dan Williams wrote:
+> Introduce a per-device trust concept [1]. To start, it plumbs "auto" and
+> "none" levels to enable a scheme of requiring explicit opt-in to operate a
+> device. This supports a Confidential Computing use case of operating a
+> limited / vetted device and driver set to bootstrap the environment. It
+> leans on module policy to effect changes to device's trust level.
+> 
+> The motivations for using module policy to effect trust are:
+> 
+> 1/ It exists, no new ABI needed to inject "device firewall" policy into the
+>    kernel [2].
+> 2/ Trust is a function of how the device is operated. A driver can be
+>    trusted to carefully operate an untrusted device.
+> 
+> It may prove too coarse for some situations, like a driver that talks to a
+> mix of trusted and untrusted devices, or a module that contains multiple
+> drivers, but it is a place to start.
 
-> On Mon, 06 Jul 2026 07:04:24 +0100,
-> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
->> 
->> ITS tables allocated by the coco guest are shared with the hypervisor.
->> These allocations must satisfy the host shared-buffer granule size so that
->> the full converted range is safe for host access.
->> 
->> Allocate ITS pages using a size rounded up to the shared granule size and
->> use the same allocation order when encrypting, decrypting and freeing the
->> memory. Also grow the ITT cache in shared-granule sized chunks instead of
->> assuming PAGE_SIZE is sufficient.
->> 
->> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
->> ---
->>  drivers/irqchip/irq-gic-v3-its.c | 17 +++++++++++------
->>  1 file changed, 11 insertions(+), 6 deletions(-)
->> 
->> diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
->> index b57d81ad33a0..5d6d38aa0dae 100644
->> --- a/drivers/irqchip/irq-gic-v3-its.c
->> +++ b/drivers/irqchip/irq-gic-v3-its.c
->> @@ -213,16 +213,17 @@ static gfp_t gfp_flags_quirk;
->>  static struct page *its_alloc_pages_node(int node, gfp_t gfp,
->>  					 unsigned int order)
->>  {
->> +	unsigned int alloc_order;
->>  	struct page *page;
->>  	int ret = 0;
->>  
->> -	page = alloc_pages_node(node, gfp | gfp_flags_quirk, order);
->> -
->> +	alloc_order = get_order(mem_cc_align_to_shared_granule(PAGE_SIZE << order));
->> +	page = alloc_pages_node(node, gfp | gfp_flags_quirk, alloc_order);
->>  	if (!page)
->>  		return NULL;
->>  
->>  	ret = set_memory_decrypted((unsigned long)page_address(page),
->> -				   1 << order);
->> +				   1 << alloc_order);
->>  	/*
->>  	 * If set_memory_decrypted() fails then we don't know what state the
->>  	 * page is in, so we can't free it. Instead we leak it.
->> @@ -241,13 +242,16 @@ static struct page *its_alloc_pages(gfp_t gfp, unsigned int order)
->>  
->>  static void its_free_pages(void *addr, unsigned int order)
->>  {
->> +	int alloc_order;
->> +
->> +	alloc_order = get_order(mem_cc_align_to_shared_granule(PAGE_SIZE << order));
->>  	/*
->>  	 * If the memory cannot be encrypted again then we must leak the pages.
->>  	 * set_memory_encrypted() will already have WARNed.
->>  	 */
->> -	if (set_memory_encrypted((unsigned long)addr, 1 << order))
->> +	if (set_memory_encrypted((unsigned long)addr, 1 << alloc_order))
->>  		return;
->> -	free_pages((unsigned long)addr, order);
->> +	free_pages((unsigned long)addr, alloc_order);
->
-> The comments I had in [1] are still applicable.
->
-> 	M.
->
-> [1] https://lore.kernel.org/all/86zf2ozrb8.wl-maz@kernel.org/
->
+I'm a little confused what this is is for?
 
-I renamed it to alloc_order to make it clear that it refers to the
-allocation order rather than the requested order. If you feel strongly
-about not introducing another variable, I'll drop the new variable.
+Is this how we bootstrap enough drivers to get into the initrd? Ie
+is it only relavent for key boot time things like CLOCK, IRQ and IOMMU
+drivers?
 
--aneesh
+Once we get to the initrd eveything should be driven on a per-device
+basis without anything to do with modules. We already have cases for
+mlx5 where it will have to drive trusted and untrusted devices in the
+same system.
+
+> Specifically this "module trust" scheme allows for only attaching drivers
+> from built-in modules by default, or modules that explicitly pass a
+> "trust=auto" option by building with CONFIG_DEVICE_TRUST_NONE=y. Modules
+> can also be configured to skip device attach by default by setting
+> /sys/module/module/parameters/require_trust.
+
+So I'd imagine most systems would make all modules have
+require_trust=1 and some userspace compoment in the initrd will
+evaluate and assign trust to devices to trigger binding and module
+loading?
+
+> The new dev->p->trust level is the operational trust level of a device. It is
+> only in effect after device_add(). It is private to the device core because
+> the "tcb" level is not suitable to be changed while a driver is attached to
+> the device. The result force_dma_unencrypted() must be stable while the
+> device is attached to its driver. That core coordination responsibility is
+> not suitable to export to non-core code.
+
+I don't think force_dma_unencrypted() should be driven from the trust
+level.. It is a property of the interconnect, the trust level sits on
+top of that.
+
+> +config DEVICE_TRUST
+> +	bool "Device core support for specifying trust levels for devices"
+> +	help
+> +	  Enable support for generic device trust levels when building a kernel
+> +	  that needs to operate in the presence of potentially adversarial
+> +	  devices. This is selected by buses that want to operate devices with
+> +	  reduced privileges, like externally connected devices, and it is a
+> +	  pre-requisite for operating devices with access to private memory in a
+> +	  Confidential Computing VM. See
+> +	  Documentation/ABI/testing/sysfs-kernel-iommu_groups for the type of
+> +	  IOMMU enforcement in effect.
+> +
+> +choice
+> +	prompt "Default device trust"
+> +	default DEVICE_TRUST_AUTO
+> +	depends on DEVICE_TRUST
+> +	help
+> +	  Specify the device trust level at initial attachment. Any choice other
+> +	  than "Auto" assumes auditing the built-in driver set for trusted
+> +	  drivers, and an enlightened userspace modprobe policy for other
+> +	  devices + drivers.
+> +
+> +config DEVICE_TRUST_NONE
+> +	bool "None"
+> +	help
+> +	  Devices are disallowed from attaching to a driver, and where
+> +	  possible, the device is blocked by an IOMMU from accessing
+> +	  assets.
+
+It is a confusing what devices this applies to? I guess it is all
+devices that are not built in?
+
+I think it should also be in a kernel commandline, we should be able
+to support a single kernel image that works for CC VM and non CC VM, I
+think. You'd want the CC VM to have a kernel command line to turn on
+some of this stuff.
+
+> +choice
+> +	prompt "Trust devices with built-in drivers"
+> +	default BUILTIN_DEVICE_TRUST_AUTO
+> +	depends on DEVICE_TRUST
+> +	help
+> +	  Built-in drivers always bind to devices they match. Only
+> +	  select a setting other than "Auto" when building a kernel image
+> +	  targeted for use in Confidential Computing or other known
+> +	  adversarial environments.
+> +
+> +config BUILTIN_DEVICE_TRUST_AUTO
+> +	bool "Auto"
+> +	help
+> +	  Typical historical driver model, devices eagerly attempt to attach to
+> +	  a driver and deploy all available mechanisms to allow performant
+> +	  direct memory access This trust level does not grant TCB privileges.
+
+So what's the other choice?
+
+Is this "AUTO" or is it just all builtin devices?
+
+I think it does grant TCB privileges in some cases, ie the VIOMMU
+driver that binds is in the TCB and does have T=1 equivilent DMA
+access.
+
+What we want for a CC VM is a curated set of pre-initrd devices can
+auto probe:
+ - Drivers internally have some kind of attestation, eg on ARM the
+   VIOMMU driver is going to have to ask the RMM to prove the VIOMMU is
+   legitimate
+ - Drivers that don't do any DMA at all, and have approved drivers
+ - Drivers that are known to be hardened for untrusted DMA
+
+
+Maybe these options should be named a bit differently?
+
+config DEVICE_TRUST  <-- If the device trust framework is compiled in at all.
+
+DEVICE_TRUST_BUILTIN_DEFAULT = ALL, AUTO
+  Decide how pre-initrd devices are handled. ALL is current Linux,
+  every built in driver binds and runs, AUTO follows some module policy?
+
+DEVICE_TRUST_MODULE_DEFUALT = AUTO, NONE
+  Decide how post-initrd devices are handled. AUTO is current Linux,
+  follow the ACPI/etc. NONE means the initrd must run a policy agent
+  to assign trust.
+
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/* Copyright (C) 2026 NVIDIA Corporation & Affiliates */
+> +#ifndef __DEVICE_TRUST_H__
+> +#define __DEVICE_TRUST_H__
+> +
+> +/**
+> + * enum device_trust - Level of restrictions and privileges for a
+> + * device. Trust is initially assigned by the bus, and the bus is
+> + * responsible for coordinating transitions between trust levels with
+> + * DMA/IOMMU and its own device security mechanisms.
+> + *
+> + * @DEVICE_TRUST_UNSET: Unregistered device object with no current bus
+> + * @DEVICE_TRUST_NONE: Blocked when idle, cannot bind
+> + * @DEVICE_TRUST_AUTO: All typical privileges granted
+
+I expect there would be two enums, the policy - eg from the sysfs/etc
+which is possibly this, and then the actual in-effect trust level on
+the actual device which should only be DISABLED/FULL/ADVERSARY ?
+
+So maybe call this enum device_trust_policy ?
+
+Jason
