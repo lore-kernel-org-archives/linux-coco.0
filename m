@@ -1,97 +1,97 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674E73D75D1
-	for <linux-coco@lists.linux.dev>; Mon,  6 Jul 2026 19:21:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC540316190
+	for <linux-coco@lists.linux.dev>; Mon,  6 Jul 2026 19:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.171
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783365716; cv=pass; b=AXWbqBtEq7VI1BNBFjw11yQQflR3Aphokg7OhehVS+VpzpU105k6wIirlPtIAIuzAo3DXmzuvNWh/NGxZ+Ce31VeusdYfhiRD0U+p23RZcOkpKORcEsFlQdIMS9fq6XSq2iOKzPVxiqZ/PZS2E3K5tgJHLnT0I0+xexgo05scC4=
+	t=1783366286; cv=pass; b=ORk8ipcC7LT5tf72+AzTfvB8QYIZkArzPM/uNpTCfACaoX2Q9Z6tGT2RW9ty86+UuZELMXw6rCn574AC8LZ+mhJJ70s1H+hJ2Ry7DqWmksOB/IMiNOk2hI1dD/lTagPtsPagEWZUChHctdXY1QaR5tz8SnancawhQPCquRQ9TxA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783365716; c=relaxed/simple;
-	bh=OWqGJ2RXJX8lewCAqOdEDrfTZRegAiM0hVxCTzGD9RM=;
+	s=arc-20240116; t=1783366286; c=relaxed/simple;
+	bh=ZqWVpOj6fMq4bOzwenk+eFayci0sBP705y2M1gKjVSc=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hbJVcm630Kh/JyKbvFD+ez9YTz87r8a3ueIDGTqb+rlq+zQg0wWIl2o9hzwi96lM3Y67nU+P2pK3W3qQsU7va9X1k4bhXWRzj5eFPtZESW0A1xryfjqJ1oKIS+KAA7k13s5OYhuNxMvEHCyaqK2lZiKRJQ9NkOsWPZOW0acidGI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bJWMCGhf; arc=pass smtp.client-ip=209.85.215.180
+	 To:Cc:Content-Type; b=mnrO8UDUEIstzAM1BDdSZAy5i7D3/AObmM8tEq5Ml3vusYKJMe+XKSLo79tkuVLzuuKIWENFhMCI0MNNotHGuWrtfDIjCJmvqv/UXTX7hcUpopZLUhkaphq5AETWOTI/1eSV4CJVBtAROMPgyqMN/YjA8HZ6dWUTrDUZUJXE6FA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VG5+X1o2; arc=pass smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bJWMCGhf"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c96b08cdd1cso2448060a12.0
-        for <linux-coco@lists.linux.dev>; Mon, 06 Jul 2026 12:21:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783365715; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VG5+X1o2"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cab973140bso41750975ad.3
+        for <linux-coco@lists.linux.dev>; Mon, 06 Jul 2026 12:31:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783366284; cv=none;
         d=google.com; s=arc-20260327;
-        b=gV0xqwSPRfdail7FwXqD9ErvIc0aHw7IsnHKUj0DGqn0/3f4ACMjbn1rEH8cabofCS
-         a1a7r086cKZvoiRZw+R3J5dZzXZ/0A253Rmxt/n9Qhwox9mnTddRAJ7Xp3Ctuv7oFiqC
-         kHgLIRnVfE3TBhMSIt2uLmAb8T79CKIPu9jS5J4hHdDwQNpmiMIpIROqE3Yxfz8oU+ao
-         78DRBjcaOzlVse5KwIcwrevcrKV4m5PDOvK6PfNzpYyGk/JnuIIebLecGNngYGeqRPd1
-         HckEOG8dZ6AH3a8EJKcKKNLKr1O8JQAzTdTpXtdVBWmFsYUDsseLaupKGhulipOC49aI
-         gD4A==
+        b=edS7e6b+YBr8fh0iUWhr5bg5z0FS3xJFRb3DyIsU9h72NK6CKvE5JmtrHt2foxRKde
+         JQLH8XHN7Rkss893cNEy7PGhDIYdQO3/PMKgXV6oa44Ak4zaL+nyAIiJTaEcABj0NRbC
+         8SupbgLQt5hUkcB90WZtgJNW3rxDSnJw+wbZp9gLOiSNAl9SsQSjiL89akrvD1T4f44J
+         gh9NvuyHVxs7A8YIYINaXVozOJAslJj0NpnuzrW1Juk9aE2QD7S6YqOG7+RIRWBZCoSc
+         jzJH5lk5bXUxzUfrL6Q3Xtz8CTbA3vEhzM3fi0HchFN87xIqQezQOFWStYB42oliJDRT
+         KQvw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=3V+CQWicM3KLCiA78W5fLi8JtVISekHIFvC89/oYT3Q=;
-        fh=j/PznWyg0br349nHN+nwZU3c/QvToivx9dH+4D9gwNQ=;
-        b=g2pWF7uExJKF0QVkdwcdT/bkHVhyICLIV9KMp4M3rqwaOpWahxFLUTRvanPDeyXc0K
-         eUY7qYti/JqUJLGG/maL2EOoZHXGRlUnZXZyaQPKm7mOeF7R5h2VYT3E4Y+GbFfqPRw3
-         gqSEm4juqcLI7Kurxfc3B3BLAHJmt34uyoQz72Df5c7U+emIbqTBJJyiP0iMVw7WRfTC
-         2yW4LSrSdpCMr+zXnTqtzKGzyFfILYn7P7ZfBBeYTpDfCPDTlWbHmCkfgGEuzxqPaCbb
-         7mwTMQCpwK+CZcTbGHdw/mh+aqzeV8nVgnMUsnzgocXkep9kgyL4eGTplaO+hWn7pvtr
-         jV0w==;
+        bh=5sBbN6AQhjUw4Kzr8zci20KvZDn+C3bKKaEIfQEAul4=;
+        fh=Il70fy/6GKvZ2+aTO7Gd7qMKXV23+1FapOSwBicTdHw=;
+        b=Bui9r2qblKsExLnVs2U8Pl9JHNGM9ZuP9GwXbzur3uOHC1dNimWEAHmZvinrmgw1Ed
+         Fq3JbPfgnq1ygksLYmqmzZs/iOmI1QCsMNoVNdLrF4fPCMgcGbktsWYAOtLNEut4fW9j
+         9F+uPYkZ92eM4EsMlIRvgcFEoV03l/MIwAEuJNeNuh+Rhu1p617tZmP7SbH9Mo/y8Inq
+         Y07PKtueeufxin9w6d+C5sPukS+Vxf1GdgSaGUzh7FKURT9R03O5Jce1IEtxjjQOr0As
+         anWLdfeFDk+vK3eV05OXakYWjhp/rhXhgynvZGyLp3J774m3Mweq4185JbTPYYVlKzm5
+         lDJg==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783365715; x=1783970515; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3V+CQWicM3KLCiA78W5fLi8JtVISekHIFvC89/oYT3Q=;
-        b=bJWMCGhfTgTQcw5GPGGhqM/jH9nSlPTeDu352T41+VfrJDluamHP+Sb5A1cOz7v5k7
-         EnZND9Zhk4XA4UcjPymlHNG7ZDVSSqtKeJyU2d8zyxDV/GMpNEbmVngkv99wFOHJ1twS
-         0H0P8V6laaAPlNgSK1q4gxnCKVVHg64SGF6BvCET5v7wi3+4xomC3zhBw8Fx8TURwk6B
-         4AcK0uFicofuovhsMjgd3QGAgYmwwzBebLp7TnHlk8Y2T9YLEZCEZSZte+wpCyptWNXs
-         WoRhi7CHsndztWFTYqAR9wuFU3uy3YCQTs9Aq64cRG5WASxZ6tgHRL9wXESdWvGhIXtR
-         s0Gg==
+        d=google.com; s=20251104; t=1783366284; x=1783971084; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5sBbN6AQhjUw4Kzr8zci20KvZDn+C3bKKaEIfQEAul4=;
+        b=VG5+X1o2b6x/8AdLqdmcw0Mkojj5xZyBkRz/67GgShpodEHHl3YFrXG7W+IaYUqnlt
+         HUZIjsfllZmm8JfnnoePq2Fpd5GwXhtdQsUkIS49YE2+IUXjo4Mm26E+Ij9gLnf1PNdY
+         WcUy4KH5XNI17xHqng8N3B2qT7eKjWdVFIdfD3j0xdGOwmWevJt2hjjz/nv6LsWrHTxP
+         rWSReZMXQ21On3NyVk0CBIIjoKici+PFZyPNW2KnfldGwawQVJpu96Gx+hBB0jPGlfds
+         r//uNLdE09Yso7GXhbfCCly9aBc7PS4l7/KNCYRtv09XJhi7lRvps0IJMLA58nkBB0oC
+         auxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783365715; x=1783970515;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3V+CQWicM3KLCiA78W5fLi8JtVISekHIFvC89/oYT3Q=;
-        b=SLldBm4yFKLYiXTZZc2AjzIVjGVEr0YJD56bS83t1HaxebfI/w3NNPvG8QcWlrKmk4
-         d7ag90fSdgPUwMhT31Am8x/G10xTXq7cZeoOyBKJ2lgUj87Ig1n2YCk79JFixoIbN1XK
-         hnZ85jnbYtIJPDuhmui1KWUyPrXpJbVvzEBKrIfdUetIOgCBaBmmAMFpBSK9sFKh+2nM
-         kxHpk4GNk/bczNOKXSVM4LCjKWpG+93OE4gKoHlm+WawW3+fe+nW3SRu4MUSt2jnVwZs
-         9vk41mvj1OQKkpnUFV2NhXx6MMyOK4mIMyK7YS8pE/EtnB8C+ZtF30vNXExm03pDkvVX
-         9G7g==
-X-Forwarded-Encrypted: i=1; AHgh+RpiAVvIxkxQoWxWtFGcZQWY6DW65LfvhhsXEVHZMUivWJ4cqfehQNYbVtcGnt/qmDBAETZsJWK5SELL@lists.linux.dev
-X-Gm-Message-State: AOJu0YyvGhNsiTN0sVZeJXGXY0SEVAipZeu4TS94JmIwiFU8QrYsvGpx
-	IbuBXzC2xaaE07nm+MxFSRqRYnxAZzcIBgVDgb3toKBqi/yFujIiF72SJJm8Ya0bqqeMapdpFtF
-	hKMrO7pMmOnPSakKFLicUmkwfwvm6Y0Hx/rz8axCCjBJceYXXljavkf220mg=
-X-Gm-Gg: AfdE7clGDc5Kh9GbAhtUp9zKZPtJ9vDarnhVSZLZF0jYTLl2p6Xp4IOJcqsO5bJqID+
-	SXdBEzDhdltb0zJ+pkiGroO3RTrYso9mFZ6YNx7MP41EWpOthFA4FJEkBZPQYUONsPCUlaYtfdG
-	PyZKy8hXfjzdjxqdE+IH1a6Y697ik+dJBBGXpvGO/Vixy5SAyabvVJSOOVBYXvJUKuinxw1tTYi
-	FhLa0dK3M2XmUPx4k62zPD5QZF/OJEbnnPuq1gY7wvZZrSUS4OvdAYSj7s/SVmPGQnA6UtAUby7
-	4Tjy/uBZn0sNjg73glKlRA4gP96teuY9UbGiILoNlMlI4Z9jGESa9qhS9u4=
-X-Received: by 2002:a05:6a20:d499:b0:3b2:a809:1000 with SMTP id
- adf61e73a8af0-3c08ed14337mr2309434637.3.1783365714229; Mon, 06 Jul 2026
- 12:21:54 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783366284; x=1783971084;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5sBbN6AQhjUw4Kzr8zci20KvZDn+C3bKKaEIfQEAul4=;
+        b=irTcW8TM/c0jrIpp0OuqX3B8olsnRAvGJuwGsKy/uem1O7Vi/oYLrofATk4D3LmrI8
+         fakTjnhxIN0iUfw8Us2ZROieCegzJzb7xheXHQD3ZIjMtYp1tJ9S98K50XVC9aDO7baO
+         xJQ3VKxLpnkAIKOlVXzJF3UuHVZT73gh7GpzO26vBj3bPBL9h/nQOOZJt1WqPb5FfCoY
+         IRArGY6qyjYq06UjTCy/JOIFrqdjt9UbmGZqjILu6eZYUaRG6GYhCwqkXEuP7E+HeVb8
+         AtvnB08FJrs6JWnXferUudApJF5OZlBvb4/1kWqy34z9TWWKexSeXyTg+Ai+ZMi9xs1c
+         N8sA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro2LwUeq5IpwoxZIHDwEooe+rgiBzdBsEaGFo1ROJc2OPsjxtTlXNlbRmFL7efsrKODaH2t2Ij0k9Qw@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywg2Zm1B9/2ZYpoKmFvpTs6sBx+Iw1fWUhqEbx/M65BPnsGxPLx
+	NqZM2SOHTIJyYzEwUNfu3+Ny/zb6N4NFQiIiHS1nqYB/+1BNIiXf6+Irxt5UROlmSzjpU0tLPsp
+	m8/riuLaT4flYLPgbC/D2IDXaRlMhh77jL0g05u5H
+X-Gm-Gg: AfdE7cn07pcJvxQ4CtHRbxPqoMNzUDqbnGISGXl6L1K/AauQ+4GqPQXecx6IToRCGrc
+	W2xPKkYuX4fxrx4VoE/dHbRspuckN+mDHjxMqNN6un2I4+M/OFhJQY6x+YM4diHc9zna5LBC7Zd
+	5xk5f+gvgg9d8ABVf+WeXcOHIQX5+HcDHayS2wqvsOMk6a0Iz4ri19OMZY7HI8m0ivGC5J2ysEe
+	pHzTZAdRxPvmELTH+ecH88tpaHuL6yXs+pr2sdfOsI4AnF6Aqi/lEa9HKQGAL9bcohD76bVxZLj
+	PCHmpPL1UCj9pxCUqd4qwZgs5DeQnrBBQKZ5KieiHokQRdY1/ZxGQ8KvWhI=
+X-Received: by 2002:a17:902:eccd:b0:2ca:a284:a136 with SMTP id
+ d9443c01a7336-2ccbf188823mr18530635ad.42.1783366283312; Mon, 06 Jul 2026
+ 12:31:23 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 6 Jul 2026 12:21:53 -0700
+ HTTPREST; Mon, 6 Jul 2026 12:31:22 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 6 Jul 2026 12:21:53 -0700
+ HTTPREST; Mon, 6 Jul 2026 12:31:22 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260327160132.2946114-24-yilun.xu@linux.intel.com>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com> <20260327160132.2946114-24-yilun.xu@linux.intel.com>
+In-Reply-To: <20260327160132.2946114-27-yilun.xu@linux.intel.com>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com> <20260327160132.2946114-27-yilun.xu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Mon, 6 Jul 2026 12:21:53 -0700
-X-Gm-Features: AVVi8Cd9CK0d5hkj-fvDpFPP8e629cstUI2GaeEwDwzmHyMfLj4nBn8EKPgaG0Y
-Message-ID: <CAEvNRgGg9YVnLzanueJrHyt9Ra3-q7CmRvP2Sg5dkdctaZpKqw@mail.gmail.com>
-Subject: Re: [PATCH v2 23/31] coco/tdx-host: Setup all trusted IOMMUs on TDX
- Connect init
+Date: Mon, 6 Jul 2026 12:31:22 -0700
+X-Gm-Features: AVVi8Cc5ZxA9qF5433WWwdnaZDh9j1Ge4U5yFtnsyhw7BB1GFtQumPojoRxoK00
+Message-ID: <CAEvNRgE4fbMWpTJTMLru-8QW9bJyUEan=K1GYWxvpXY8+LUBrw@mail.gmail.com>
+Subject: Re: [PATCH v2 26/31] mm: Add __free() support for __free_page()
 To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev, 
 	linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
 Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com, 
@@ -102,141 +102,56 @@ Content-Type: text/plain; charset="UTF-8"
 
 Xu Yilun <yilun.xu@linux.intel.com> writes:
 
-> Setup all trusted IOMMUs on TDX Connect initialization and clear all on
-> TDX Connect removal.
+> Allow for the declaration of struct page * variables that trigger
+> __free_page() when they go out of scope.
 >
-> Trusted IOMMU setup is the pre-condition for all following TDX Connect
-> operations such as SPDM/IDE setup. It is more of a platform
-> configuration than a standalone IOMMU configuration, so put the
-> implementation in tdx-host driver.
+> A example usage would be in the following patch:
 >
-
-I was wondering about hotplug. There's dmar_device_hotplug(). Does it
-make sense to do TDH.IOMMU.SETUP from there?
-
-For boot, is the platform-level configuration due to dependencies? Is it
-because TDX is set up after IOMMUs and hence TDH.IOMMU.SETUP is done
-from the creation of the faux device?
-
-> There is no dedicated way to enumerate which IOMMU devices support
-> trusted operations. The host has to call TDH.IOMMU.SETUP on all IOMMU
-> devices and tell their trusted capability by the return value.
+>   static struct pci_tsm *tdx_tsm_link_pf0_probe(...)
+>   {
+> 	...
 >
+> 	struct page *in_msg_page __free(__free_page) =
+> 		alloc_page(GFP_KERNEL | __GFP_ZERO);
+> 	if (!in_msg_page)
+> 		return NULL;
 >
-> [...snip...]
+> 	struct page *out_msg_page __free(__free_page) =
+> 		alloc_page(GFP_KERNEL | __GFP_ZERO);
+> 	if (!out_msg_page)
+> 		return NULL;
 >
-> @@ -119,6 +120,82 @@ static void unregister_link_tsm(void *link)
->  	tsm_unregister(link);
->  }
+> 	...
 >
-> +static DEFINE_XARRAY(tlink_iommu_xa);
-> +
-> +static void tdx_iommu_clear(u64 iommu_id, struct tdx_page_array *iommu_mt)
-> +{
-> +	u64 r;
-> +
-> +	r = tdh_iommu_clear(iommu_id, iommu_mt);
-> +	if (r) {
-> +		pr_err("fail to clear tdx iommu 0x%llx\n", r);
-> +		goto leak;
-> +	}
-> +
-> +	if (tdx_page_array_ctrl_release(iommu_mt, iommu_mt->nr_pages,
-> +					virt_to_phys(iommu_mt->root))) {
-> +		pr_err("fail to release iommu_mt pages\n");
-> +		goto leak;
-> +	}
-> +
-> +	return;
-> +
-> +leak:
-> +	tdx_page_array_ctrl_leak(iommu_mt);
-> +}
-> +
-> +static int tdx_iommu_enable_one(struct dmar_drhd_unit *drhd)
-> +{
-> +	unsigned int nr_pages = tdx_sysinfo->connect.iommu_mt_page_count;
-> +	u64 r, iommu_id;
-> +	int ret;
-> +
-> +	struct tdx_page_array *iommu_mt __free(tdx_page_array_free) =
-> +		tdx_page_array_create_iommu_mt(1, nr_pages);
-> +	if (!iommu_mt)
-> +		return -ENOMEM;
-> +
-> +	r = tdh_iommu_setup(drhd->reg_base_addr, iommu_mt, &iommu_id);
-> +	/* This drhd doesn't support tdx mode, skip. */
-> +	if ((r & TDX_SEAMCALL_STATUS_MASK)  == TDX_OPERAND_INVALID)
-
-Extra space here before ==.
-
-Is there a chance that TDX_OPERAND_INVALID might be returned for some
-other reason other than that the drhd doesn't support TDX? I'm concerned
-that some drhd would be silently skipped for some other error.
-
-> +		return 0;
-> +
-> +	if (r) {
-> +		pr_err("fail to enable tdx mode for DRHD[0x%llx]\n",
-> +		       drhd->reg_base_addr);
-> +		return -EFAULT;
-> +	}
-> +
-> +	ret = xa_insert(&tlink_iommu_xa, (unsigned long)iommu_id,
-> +			no_free_ptr(iommu_mt), GFP_KERNEL);
-> +	if (ret) {
-> +		tdx_iommu_clear(iommu_id, iommu_mt);
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static void tdx_iommu_disable_all(void *data)
-> +{
-> +	struct tdx_page_array *iommu_mt;
-> +	unsigned long iommu_id;
-> +
-> +	xa_for_each(&tlink_iommu_xa, iommu_id, iommu_mt)
-> +		tdx_iommu_clear(iommu_id, iommu_mt);
-> +}
-> +
-
-Is there an equivalent teardown operation? Like on kexec, if TDX is torn
-down, would tdx_iommu_disable_all() need to be called to undo
-everything, so that after TDX is started again tdx_iommu_enable_all()
-would be set up again?
-
-For hot-unplug, would the TDX IOMMU config need to be disabled?
-
-> +static int tdx_iommu_enable_all(void)
-> +{
-> +	int ret;
-> +
-> +	ret = do_for_each_drhd_unit(tdx_iommu_enable_one);
-> +	if (ret)
-> +		tdx_iommu_disable_all(NULL);
-> +
-> +	return ret;
-> +}
-> +
->  static int __maybe_unused tdx_connect_init(struct device *dev)
->  {
->  	struct tsm_dev *link;
-> @@ -130,6 +207,14 @@ static int __maybe_unused tdx_connect_init(struct device *dev)
->  	if (!(tdx_sysinfo->features.tdx_features0 & TDX_FEATURES0_TDXCONNECT))
->  		return 0;
+> 	tlink->in_msg = no_free_ptr(in_msg_page);
+> 	tlink->out_msg = no_free_ptr(out_msg_page);
 >
-> +	ret = tdx_iommu_enable_all();
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Enable tdx iommu failed\n");
-> +
-> +	ret = devm_add_action_or_reset(dev, tdx_iommu_disable_all, NULL);
-> +	if (ret)
-> +		return ret;
-> +
->  	link = tsm_register(dev, &tdx_tsm_link_ops);
->  	if (IS_ERR(link))
->  		return dev_err_probe(dev, PTR_ERR(link),
+> 	...
+>   }
+>
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> ---
+>  include/linux/gfp.h | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+> index 51ef13ed756e..d37e5564234e 100644
+> --- a/include/linux/gfp.h
+> +++ b/include/linux/gfp.h
+> @@ -391,6 +391,7 @@ extern void free_pages_nolock(struct page *page, unsigned int order);
+>  extern void free_pages(unsigned long addr, unsigned int order);
+>
+>  #define __free_page(page) __free_pages((page), 0)
+> +DEFINE_FREE(__free_page, struct page *, if (_T) __free_page(_T))
+>  #define free_page(addr) free_pages((addr), 0)
+>
+>  void page_alloc_init_cpuhp(void);
 > --
 > 2.25.1
+
+This is nice to have, independent of this series. Perhaps it should be
+sent separately, and some existing function could be refactored to use
+this, maybe __tdx_td_init?
+
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
