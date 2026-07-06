@@ -1,155 +1,280 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799122BDC1C
-	for <linux-coco@lists.linux.dev>; Mon,  6 Jul 2026 13:49:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DC42BEC52;
+	Mon,  6 Jul 2026 14:35:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783345758; cv=none; b=pOT1Kz3QDgQEhh2yWyBt0cMsErICsl9ylY9AT3dwv/NtNRZ9QCnkKt0Ks853xM4Gfgspgx1bUNZQY2dv5BQ08UvkkBB7qHMCRiIqeFi6oS5nqkM9f5WDX0HdR2B+AVo8Ewp6I++9z1YupfpwlT6HcJ04ULP9xJVI/pYEQtEkVG4=
+	t=1783348512; cv=none; b=SR7bR4cbSOIrMt8TjLovqWapKoKu2kxnLQGa1fcfvqv72MoZgDjD4JVE/CzKo+AN4NCeFC1oO+SazvBVWV5OIAAOVIW7XiShTLlyajM2UEZH6eKZItBZ5p2hsWhmGRSg1zqZ2G2DQwRlrg21n3/nj0gnrFhJTiWF3dDz0WKowiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783345758; c=relaxed/simple;
-	bh=RJdYQi0PoM//5hK9gN4bBQ9zTfKlUTPFi/vPWsYCK8s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bFV6whmB9TW6yAsbzRl+l3D475rY3UGAY7S4ZhrFSotK9obrnX/wdvwPZOOYPJIXjFC7XP3xPYTnEBJmUQoM3LJ/E6tKXISuhQbgj2SXaaZwK727sZiecr1NX/h5B8DIgcBkkvtTvcaHjDW4jaG+4Gqci1KsgAlyQeSGiVBhk7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=UdadL68U; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1783348512; c=relaxed/simple;
+	bh=atTX8ZxvA+ThDFoaSeEuBZxjFhVu6ZvA6TzQZyRVqdc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=bSU4ch1BcmIGHxVM4RXFipSACxOAb+X7nAeJNVnApQkWwvk0l/qyM/y8IVrJOTySt16Fy2YXSVcq4u37AMpct8NJRIYN7ynvlPqIFBEijN9AOTYGBhOnBqXw6TkhilA0d7U49QZq2/SQDfZh5OBB/dF1tdz1T73h0E/wIWG6sh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NEV/IGF9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="UdadL68U"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8efb708b1a0so27783396d6.3
-        for <linux-coco@lists.linux.dev>; Mon, 06 Jul 2026 06:49:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1783345756; x=1783950556; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XwHo/0YkkJmp15u3gq5DlM2DOcKv24yUlUoqLvzeWGE=;
-        b=UdadL68UkI0sN7sAqK/3vmelT5Ylw5m8ScGxsxtCfycMbQ0PCk+6P+hkJThIJzV9fQ
-         obzjnRt4YPST9Fv9tHdsdu8nHMJhI27EH1HM030jvUtqxoY8CzfdtCHihKTN9AsPHiib
-         jlv2wbuUrcfO45RTI+1kW2VpzMd+XV55fVNfB7z4zRIHFtERXdHp9R+yReYpK5GHZghe
-         tYRJYbZSpBCiDPNYBNFnuP05DAErgMJW3Yp1BaEl+Q5T1DM2ul1ioAsmfCZf0q4miRif
-         GYRBAtAw6Fmn3ggVX7rubnJYeX0Qis7Mjui5ZbmnSI/wSbZZ+zQgbjK0EiwTGczWp9Ho
-         JdRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783345756; x=1783950556;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XwHo/0YkkJmp15u3gq5DlM2DOcKv24yUlUoqLvzeWGE=;
-        b=b2d3ztuZ6MkzLM7USx69OadTVTodPzTMgKPBMTyAuJtAr0p+yKDJzkgIG7uPGN+ROd
-         xGI378eEpbQnx6TTniQKTOQ5/3wi2oy8apIxW5MvgOrXW7vAGCQ7GQlFmsVGF7EyU4nW
-         U7+UCsgv++97O5geEsfG6ZWiOB3t4b+9I3fK9AOD+OIMTAN8aPeCxnIAhGZwL0gxcuzj
-         VvasejmyK09rT4SjJ4W6pNmIHg39SbJqJobVTEMKtA42QuLMk2wiugoY2rXbmgCAOSP/
-         Oc/Of6PD/daHpBPSMCucKrX0Hz0KCx1tBcETstKktt8QTe8Hj84oTdLRHPcj05foJSUd
-         1giw==
-X-Gm-Message-State: AOJu0YwSaN2gvjPLSb/clTWY0umamm50olqXSsVLTIq+3PTa57mvbIab
-	yLEVtUtCbOBCUlDjgl3bExl/nJKfTWb/U1ty7ACkfjb6zSfQcVqICQzV/L4jLyXpvdo=
-X-Gm-Gg: AfdE7ck5dgCDNTtjfVOEh78ZKAKW4zs3fWNsAQKLhYpsynD8wYs3pQcEUts9xHrbqDo
-	jhs9Jguu6OojsxYyEg4yd9BqPFknSZOca047BNfMY4Xv6H1sIL6g10QajkU5FZGfchW8WMp4dBZ
-	DfC28k4sBLVTknaXpPF6jxqKGeYmAeOkrMkba5uKX35JXvXXQeLVVuBvFXSfsducdzzmLO3Puq0
-	TzQFrCoXvcDj2Kt7svq2rN6XnneFXzYIBTbH8nlC8g3MT3TftVxm42wCXho2FB3+vWPymUqt04c
-	br/HRXQeJyK5kkh1b6wKncLPvZeOMrHiWVSw5eHbOjPpEn0UWSDZaevtjruEIDQ104hRd0cHs4w
-	cEgifI0eNKeDOHixfPtq5s7b5fCBcOXByHa3es0wGRXRvaAUTv0LbmVTzFZh8
-X-Received: by 2002:ad4:5aa2:0:b0:8f2:fbb1:cec4 with SMTP id 6a1803df08f44-8fcb2893eb8mr6044896d6.19.1783345755411;
-        Mon, 06 Jul 2026 06:49:15 -0700 (PDT)
-Received: from ziepe.ca ([159.2.72.92])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f4718141e6sm136628496d6.24.2026.07.06.06.49.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 06:49:14 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wgjhC-00000000T1F-0z1i;
-	Mon, 06 Jul 2026 10:49:14 -0300
-Date: Mon, 6 Jul 2026 10:49:14 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Dan Williams <djbw@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	driver-core@lists.linux.dev, ankita@nvidia.com,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>
-Subject: Re: [PATCH 09/15] PCI, device core: Move "untrusted" concept to
- DEVICE_TRUST_ADVERSARY
-Message-ID: <20260706134914.GD107792@ziepe.ca>
-References: <20260705220819.2472765-1-djbw@kernel.org>
- <20260705220819.2472765-10-djbw@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NEV/IGF9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA1E81F000E9;
+	Mon,  6 Jul 2026 14:35:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783348510;
+	bh=4G2RsN8SH7uKD9+kRsew7gX7F/3GSrDbp0viWGKOoGo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=NEV/IGF9E0Nysa5xJZI+X+fl8hW0SLwcbZVNP39U+dkJN3/kW3wVKiCmP8kRbbYnp
+	 Et0ZYU50/OIMlbuzdKpUlmppp4MB7+MRxG7M05PwYx9JDcubJ120JAx1t1U1/svHcG
+	 Cheur8tqElCKJrNqEunSNIRSr5HFes3KX2RrYGtL9r0b8h9qP4nj/SffrxgDAvDNpj
+	 63GUzit7cIfc6eSKbrjDuqKIg/C2tu6QqzjmLIwDPACVecDJsZLBvPQc+9y6i4pip/
+	 xtY74+3xkqZaoR4jZVesh6clQjs+5MFNOLJWH1ukZ+JRZTxaNvdiyv/ll8XkkLBArS
+	 G8bxiCpUXuGag==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Sudeep Holla <sudeep.holla@kernel.org>
+Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Andre Przywara <andre.przywara@arm.com>
+Subject: Re: [PATCH v7 1/6] firmware: smccc: Add an Arm SMCCC bus
+In-Reply-To: <20260706-belligerent-excellent-saluki-a4e431@sudeepholla>
+References: <20260611130429.295516-1-aneesh.kumar@kernel.org>
+ <20260611130429.295516-2-aneesh.kumar@kernel.org>
+ <20260706-belligerent-excellent-saluki-a4e431@sudeepholla>
+Date: Mon, 06 Jul 2026 20:05:00 +0530
+Message-ID: <yq5a4iici3u3.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260705220819.2472765-10-djbw@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jul 05, 2026 at 03:08:13PM -0700, Dan Williams wrote:
+Sudeep Holla <sudeep.holla@kernel.org> writes:
 
-> diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
-> index a08523d348d8..a4233bdf9804 100644
-> --- a/drivers/base/Kconfig
-> +++ b/drivers/base/Kconfig
-> @@ -291,6 +291,14 @@ config DEVICE_TRUST_NONE
->  	  possible, the device is blocked by an IOMMU from accessing
->  	  assets.
->  
-> +config DEVICE_TRUST_ADVERSARY
-> +	bool "Adversary"
-> +	help
-> +	  Device is allowed to bind. Bus, IOMMU, and driver layers may
-> +	  react to this trust level by disabling access validation
-> +	  bypass mechanisms like PCI ATS. When device is unbound from a
-> +	  driver the device is blocked by an IOMMU where possible.
-> +
->  config DEVICE_TRUST_AUTO
->  	bool "Auto"
->  	help
-> @@ -317,6 +325,11 @@ config BUILTIN_DEVICE_TRUST_AUTO
->  	  a driver and deploy all available mechanisms to allow performant
->  	  direct memory access This trust level does not grant TCB privileges.
->  
-> +config BUILTIN_DEVICE_TRUST_ADVERSARY
-> +	bool "Adversary"
-> +	help
-> +	  Deploy mitigations in the IOMMU layer and driver to limit access.
+> On Thu, Jun 11, 2026 at 06:34:24PM +0530, Aneesh Kumar K.V (Arm) wrote:
 
-I'm not sure it makes sense to have these options as compile time
-defaults. Arguably the non-built in path should only be auto or none
-and everything else should be handled by the initrd at runtime. If
-necessary a sysfs for the initrd to set a kernel default might make
-sense, IDK.
+...
 
-Ideally built in devices should not be any kind that is hooked up to
-the iommu.
+>> +static int arm_smccc_bus_match(struct device *dev,
+>> +		const struct device_driver *drv)
+>> +{
+>> +	const struct arm_smccc_device_id *id_table;
+>> +	struct arm_smccc_device *smccc_dev =3D to_arm_smccc_device(dev);
+>> +
+>> +	id_table =3D to_arm_smccc_driver(drv)->id_table;
+>> +	if (!id_table)
+>> +		return 0;
+>> +
+>
+> Any reason for not having this check when registering the driver also so
+> that it becomes a must to register ? I remember vaguely adding this as fi=
+x to
+> FF-A driver recently.
+>
 
-> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-> index 9abaec0703ef..957ef77911a9 100644
-> --- a/drivers/iommu/dma-iommu.c
-> +++ b/drivers/iommu/dma-iommu.c
-> @@ -588,16 +588,11 @@ static int iova_reserve_iommu_regions(struct device *dev,
->  	return ret;
->  }
->  
-> -static bool dev_is_untrusted(struct device *dev)
-> -{
-> -	return dev_is_pci(dev) && to_pci_dev(dev)->untrusted;
-> -}
-> -
->  static bool dev_use_swiotlb(struct device *dev, size_t size,
->  			    enum dma_data_direction dir)
->  {
->  	return IS_ENABLED(CONFIG_SWIOTLB) &&
-> -		(dev_is_untrusted(dev) ||
-> +		(device_untrusted(dev) ||
->  		 dma_kmalloc_needs_bounce(dev, size, dir));
->  }
+I will add
 
-I think it would be nice to use the new 'adversarial' word here and in
-other places instead of untrusted.
+int arm_smccc_driver_register(struct arm_smccc_driver *driver,
+		struct module *owner, const char *mod_name)
+{
+	if (!driver->probe || !driver->id_table)
+		return -EINVAL;
 
-Jason
+
+>
+>> +	while (id_table->name[0]) {
+>> +		if (!strcmp(smccc_dev->name, id_table->name))
+>> +			return 1;
+>> +		id_table++;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+
+...
+
+>> +struct arm_smccc_device *arm_smccc_device_register(const char *name)
+>> +{
+>> +	struct arm_smccc_device *smccc_dev;
+>> +	int id, ret;
+>> +
+>> +	id =3D ida_alloc_min(&arm_smccc_bus_id, 1, GFP_KERNEL);
+>> +	if (id < 0)
+>> +		return ERR_PTR(id);
+>> +
+>> +	smccc_dev =3D kzalloc_obj(*smccc_dev);
+>> +	if (!smccc_dev) {
+>> +		ida_free(&arm_smccc_bus_id, id);
+>> +		return ERR_PTR(-ENOMEM);
+>> +	}
+>> +
+>> +	smccc_dev->id =3D id;
+>> +	if (strscpy(smccc_dev->name, name) < 0) {
+>
+> Since this is exported symbol and one can call arm_smccc_device_register(=
+ptr)
+> where ptr =3D NULL, won't it blow up then ? IIUC strscpy() handles NULL d=
+st
+> but doesn't check for NULL src.
+>
+
+Will add the NULL check.
+
+>> +		kfree(smccc_dev);
+>> +		ida_free(&arm_smccc_bus_id, id);
+>> +		return ERR_PTR(-EINVAL);
+>> +	}
+>> +	smccc_dev->dev.bus =3D &arm_smccc_bus_type;
+>> +	smccc_dev->dev.release =3D arm_smccc_release_device;
+>> +
+>> +	ret =3D dev_set_name(&smccc_dev->dev, "%s-%d", smccc_dev->name, id);
+>> +	if (ret) {
+>> +		kfree(smccc_dev);
+>> +		ida_free(&arm_smccc_bus_id, id);
+>> +		return ERR_PTR(ret);
+>> +	}
+>> +
+>> +	ret =3D device_register(&smccc_dev->dev);
+>> +	if (ret) {
+>> +		put_device(&smccc_dev->dev);
+>> +		return ERR_PTR(ret);
+>> +	}
+>> +
+>> +	return smccc_dev;
+>> +}
+>> +EXPORT_SYMBOL_GPL(arm_smccc_device_register);
+
+...
+
+>> +#define to_arm_smccc_driver(d) \
+>> +	container_of_const(d, struct arm_smccc_driver, driver)
+>> +
+>> +int arm_smccc_driver_register(struct arm_smccc_driver *driver,
+>> +		struct module *owner, const char *mod_name);
+>> +void arm_smccc_driver_unregister(struct arm_smccc_driver *driver);
+>> +struct arm_smccc_device *arm_smccc_device_register(const char *name);
+>> +void arm_smccc_device_unregister(struct arm_smccc_device *smcc_dev);
+>> +
+>
+> I may be overthinking but what will happen if HAVE_ARM_SMCCC_DISCOVERY=3Dn
+> and some driver is compiled using this header ? It should be fine if it
+> fails to compile, just thinking out loud if we need to handle that are no=
+t.
+> As long as all the drivers using these depends on HAVE_ARM_SMCCC_DISCOVERY
+> it should be fine I think.
+
+This will result in a build failure. The driver should either select
+HAVE_ARM_SMCCC_DISCOVERY or depend on HAVE_ARM_SMCCC_DISCOVERY.
+
+>
+>> +#define arm_smccc_register(driver) \
+>> +	arm_smccc_driver_register(driver, THIS_MODULE, KBUILD_MODNAME)
+>> +#define arm_smccc_unregister(driver) \
+>> +	arm_smccc_driver_unregister(driver)
+>> +
+>> +#define module_arm_smccc_driver(__arm_smccc_driver) \
+>> +	module_driver(__arm_smccc_driver, arm_smccc_register, \
+>> +		      arm_smccc_unregister)
+>> +
+>> +extern const struct bus_type arm_smccc_bus_type;
+>> +
+>> +#endif /* __LINUX_ARM_SMCCC_BUS_H */
+>> diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicet=
+able.h
+>> index 23ff24080dfd..c9cee8c5a0b2 100644
+>> --- a/include/linux/mod_devicetable.h
+>> +++ b/include/linux/mod_devicetable.h
+>
+> This file seems to be reworked recently, so you need to rebase it moving
+> smccc specific changes to separate file I think.
+>
+
+Do we need to add a separate file? I was able to rebase the series on
+7.2-rc1
+
+modified   include/linux/mod_devicetable.h
+@@ -879,6 +879,19 @@ struct auxiliary_device_id {
+ 	kernel_ulong_t driver_data;
+ };
+=20
++#define ARM_SMCCC_NAME_SIZE 40
++#define ARM_SMCCC_MODULE_PREFIX "arm_smccc:"
++
++/**
++ * struct arm_smccc_device_id - Arm SMCCC bus device identifier
++ * @name: SMCCC device name
++ * @driver_data: driver data
++ */
++struct arm_smccc_device_id {
++	char name[ARM_SMCCC_NAME_SIZE];
++	kernel_ulong_t driver_data;
++};
++
+ /* Surface System Aggregator Module */
+=20
+ #define SSAM_MATCH_TARGET	0x1
+
+
+>> @@ -876,6 +876,19 @@ struct auxiliary_device_id {
+>>  	kernel_ulong_t driver_data;
+>>  };
+>>=20=20
+>> +#define ARM_SMCCC_NAME_SIZE 40
+>> +#define ARM_SMCCC_MODULE_PREFIX "arm_smccc:"
+>> +
+>> +/**
+>> + * struct arm_smccc_device_id - Arm SMCCC bus device identifier
+>> + * @name: SMCCC device name
+>> + * @driver_data: driver data
+>> + */
+>> +struct arm_smccc_device_id {
+>> +	char name[ARM_SMCCC_NAME_SIZE];
+>> +	kernel_ulong_t driver_data;
+>
+> Can't find any users of the above driver_data ?
+> Is it for future ? If so, can you add details on how it is supposed to be=
+ used
+> if you don't want to drop it.
+>
+
+That would depend on the driver, wouldn=E2=80=99t it? I was comparing this =
+with
+struct auxiliary_device_id, and very few drivers use driver_data;
+mei_gsc_probe() is one example.
+
+I am not sure there is a generic rule here. IIUC, it provides a place
+where a driver can add driver-specific data that can be used during the
+probe routine.
+
+>> +};
+>> +
+>>  /* Surface System Aggregator Module */
+>>=20=20
+>>  #define SSAM_MATCH_TARGET	0x1
+>> diff --git a/scripts/mod/devicetable-offsets.c b/scripts/mod/devicetable=
+-offsets.c
+>> index b4178c42d08f..a485011ff137 100644
+>> --- a/scripts/mod/devicetable-offsets.c
+>> +++ b/scripts/mod/devicetable-offsets.c
+>> @@ -254,6 +254,9 @@ int main(void)
+>>  	DEVID(auxiliary_device_id);
+>>  	DEVID_FIELD(auxiliary_device_id, name);
+>>=20=20
+>> +	DEVID(arm_smccc_device_id);
+>> +	DEVID_FIELD(arm_smccc_device_id, name);
+>> +
+>>  	DEVID(ssam_device_id);
+>>  	DEVID_FIELD(ssam_device_id, match_flags);
+>>  	DEVID_FIELD(ssam_device_id, domain);
+
+-aneesh
