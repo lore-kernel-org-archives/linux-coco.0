@@ -1,87 +1,83 @@
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2488A342507
-	for <linux-coco@lists.linux.dev>; Mon,  6 Jul 2026 13:45:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799122BDC1C
+	for <linux-coco@lists.linux.dev>; Mon,  6 Jul 2026 13:49:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783345535; cv=none; b=S1Msmf/9iNtKw/KT594FBnsurbp+B3U0+xhpZcCnNGxSr2xo9HZXNW+oICNAFYUV0SL55s5HLiZ2FOuBXLVZFfkeRx0BXLukqBePFA4u/lgPUvjG30i4ppmPhx9axDL8pvs02YJf5B7c/LRH4mNsdvsFNOkJ9XXM0mObCRSVNWo=
+	t=1783345758; cv=none; b=pOT1Kz3QDgQEhh2yWyBt0cMsErICsl9ylY9AT3dwv/NtNRZ9QCnkKt0Ks853xM4Gfgspgx1bUNZQY2dv5BQ08UvkkBB7qHMCRiIqeFi6oS5nqkM9f5WDX0HdR2B+AVo8Ewp6I++9z1YupfpwlT6HcJ04ULP9xJVI/pYEQtEkVG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783345535; c=relaxed/simple;
-	bh=X2/xLz9f00ZteupBUVAyQDX4EmH5JlTROPHXFAocQHg=;
+	s=arc-20240116; t=1783345758; c=relaxed/simple;
+	bh=RJdYQi0PoM//5hK9gN4bBQ9zTfKlUTPFi/vPWsYCK8s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q0U/hcneoSF5jo2jPo9jkmSf0DZ++/zG+A+Ibbvk+MeH4DCSRHca245qQuBs3Br9E8qSoeeRc2Ef3I8HfkhtWUacDioBktq3ck7zMlle/Janv2q1EDyyJ/EOMa2I0/g6KUYDzqGlVD+C92HA5x3Mafi/BrkVklKHJ3/WMYiXAiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=RDB+DEbf; arc=none smtp.client-ip=209.85.222.176
+	 Content-Type:Content-Disposition:In-Reply-To; b=bFV6whmB9TW6yAsbzRl+l3D475rY3UGAY7S4ZhrFSotK9obrnX/wdvwPZOOYPJIXjFC7XP3xPYTnEBJmUQoM3LJ/E6tKXISuhQbgj2SXaaZwK727sZiecr1NX/h5B8DIgcBkkvtTvcaHjDW4jaG+4Gqci1KsgAlyQeSGiVBhk7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=UdadL68U; arc=none smtp.client-ip=209.85.219.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="RDB+DEbf"
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-92b21f65b60so246267485a.1
-        for <linux-coco@lists.linux.dev>; Mon, 06 Jul 2026 06:45:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="UdadL68U"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8efb708b1a0so27783396d6.3
+        for <linux-coco@lists.linux.dev>; Mon, 06 Jul 2026 06:49:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1783345531; x=1783950331; darn=lists.linux.dev;
+        d=ziepe.ca; s=google; t=1783345756; x=1783950556; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vSJ+2o+DU64Ct4lPSKlFPGtLgqM3IIcjx5unu2xlDoY=;
-        b=RDB+DEbfVdloIC/KBFDTYH6CL8bKTHLppm5KCYkDLJMGZ13H4g4HKfbsBV3hlWDmj4
-         4xgABq6vJHf6g9CBP2l0eld23CGsMubmUloSuhjwc5rfVCLwUrV8OKEpEe1zF4tHJjhf
-         Ym/HMIlQOwZ5kYLf4Mgm3I7y+vvLkPMasP45ABQ6FIgvJB2oR0mJPdlFqsjDLq+nw7uQ
-         96SRt0ejHICbVzUoTgQsxQIRzfLSnepVclNKdL2P4mzOjPft4TI1vXAV5sj9D4YUIggQ
-         GQ+4Y/tk2AO1Z472HKLEWiGArq1P8CUuAkx7WQ/cO48tR7vKTujAgc+SvWmWSDagPAqB
-         hchg==
+        bh=XwHo/0YkkJmp15u3gq5DlM2DOcKv24yUlUoqLvzeWGE=;
+        b=UdadL68UkI0sN7sAqK/3vmelT5Ylw5m8ScGxsxtCfycMbQ0PCk+6P+hkJThIJzV9fQ
+         obzjnRt4YPST9Fv9tHdsdu8nHMJhI27EH1HM030jvUtqxoY8CzfdtCHihKTN9AsPHiib
+         jlv2wbuUrcfO45RTI+1kW2VpzMd+XV55fVNfB7z4zRIHFtERXdHp9R+yReYpK5GHZghe
+         tYRJYbZSpBCiDPNYBNFnuP05DAErgMJW3Yp1BaEl+Q5T1DM2ul1ioAsmfCZf0q4miRif
+         GYRBAtAw6Fmn3ggVX7rubnJYeX0Qis7Mjui5ZbmnSI/wSbZZ+zQgbjK0EiwTGczWp9Ho
+         JdRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783345531; x=1783950331;
+        d=1e100.net; s=20251104; t=1783345756; x=1783950556;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vSJ+2o+DU64Ct4lPSKlFPGtLgqM3IIcjx5unu2xlDoY=;
-        b=bJfj59GIBLYxSA/kKNEyPN2r2toRx5MeO6pQYZwJANOctay32XXCJ22dhbvfIwcSm/
-         YAEojBmbi5YTXpBI1CNRQXHDT+XihwVJj+MVicrAAtMIwzEHzpk7PFiuZB7fH8Rh4oLk
-         tg1BmbWtcq+DblTOCwDoLp11p6n36sqaCknAqS8YXGUCIuZmkQEFp5lmPCIRED6AHh92
-         510Yt/34TfNSETH9yUC0sM4emeusd07ACSRFLX3RUCfO2zL9FVv7OfNKm2OOOvVBOIF6
-         CGYp2mUwD96x/Qdy3r6yVZEQO3067jm7RTs6Tgq195kT4QBlWfdfDgGpNOOCpi/pdc1m
-         XpgQ==
-X-Gm-Message-State: AOJu0YylPGxhkmUOFrNH14YeCu2n/2eSZPkMvwIYiI2BXZsa/o3G1qdB
-	F99bSNtcDOqF6qwl+kMoPXrVR6fvN0tWOjLmp88u/L5pOViw5Mkfhu+YxNO58X7RcMY=
-X-Gm-Gg: AfdE7cmY5i/+EnmZi1OtfFI17N0VBRFsl25yf1PfGjrkHLDixG+f83z2D0YGGSj0/iR
-	rY0Kvw5iaaDFgenbmVDJtJ9mPRHLH+QjXA6qku9uPYOsSHUtmv7LC9pyd9RBsonJ93z4RSXj5md
-	GKTQ1i+yfFPGqZfr4dVoasxH5pWOUemiXEPjQRJJQg8/AV8VXK5X6Wi829Fo7jGVaUbQfEr8jm7
-	2VidKK52wal/tRl/ZEGmVUGFJIoVGHBEgfUleL52npwFb2IlZujuyILvfofKOOgaN3gjSBqkYVd
-	P//Diq65Zh3LyqSiolR4wdiydVxZ+WhdSvK0wa6ur2OufDQp7Xc3SJjByn/NWdx9bf0kQ9nWdQQ
-	CAiAAczsIgv+kJnJP1nbqgbOXUmHZk+OtUiqw/Gkl+ntQfItmq/QDFSJX65PJ
-X-Received: by 2002:a05:620a:608c:b0:92b:67e6:4b79 with SMTP id af79cd13be357-92ebb30952emr83798985a.35.1783345530033;
-        Mon, 06 Jul 2026 06:45:30 -0700 (PDT)
+        bh=XwHo/0YkkJmp15u3gq5DlM2DOcKv24yUlUoqLvzeWGE=;
+        b=b2d3ztuZ6MkzLM7USx69OadTVTodPzTMgKPBMTyAuJtAr0p+yKDJzkgIG7uPGN+ROd
+         xGI378eEpbQnx6TTniQKTOQ5/3wi2oy8apIxW5MvgOrXW7vAGCQ7GQlFmsVGF7EyU4nW
+         U7+UCsgv++97O5geEsfG6ZWiOB3t4b+9I3fK9AOD+OIMTAN8aPeCxnIAhGZwL0gxcuzj
+         VvasejmyK09rT4SjJ4W6pNmIHg39SbJqJobVTEMKtA42QuLMk2wiugoY2rXbmgCAOSP/
+         Oc/Of6PD/daHpBPSMCucKrX0Hz0KCx1tBcETstKktt8QTe8Hj84oTdLRHPcj05foJSUd
+         1giw==
+X-Gm-Message-State: AOJu0YwSaN2gvjPLSb/clTWY0umamm50olqXSsVLTIq+3PTa57mvbIab
+	yLEVtUtCbOBCUlDjgl3bExl/nJKfTWb/U1ty7ACkfjb6zSfQcVqICQzV/L4jLyXpvdo=
+X-Gm-Gg: AfdE7ck5dgCDNTtjfVOEh78ZKAKW4zs3fWNsAQKLhYpsynD8wYs3pQcEUts9xHrbqDo
+	jhs9Jguu6OojsxYyEg4yd9BqPFknSZOca047BNfMY4Xv6H1sIL6g10QajkU5FZGfchW8WMp4dBZ
+	DfC28k4sBLVTknaXpPF6jxqKGeYmAeOkrMkba5uKX35JXvXXQeLVVuBvFXSfsducdzzmLO3Puq0
+	TzQFrCoXvcDj2Kt7svq2rN6XnneFXzYIBTbH8nlC8g3MT3TftVxm42wCXho2FB3+vWPymUqt04c
+	br/HRXQeJyK5kkh1b6wKncLPvZeOMrHiWVSw5eHbOjPpEn0UWSDZaevtjruEIDQ104hRd0cHs4w
+	cEgifI0eNKeDOHixfPtq5s7b5fCBcOXByHa3es0wGRXRvaAUTv0LbmVTzFZh8
+X-Received: by 2002:ad4:5aa2:0:b0:8f2:fbb1:cec4 with SMTP id 6a1803df08f44-8fcb2893eb8mr6044896d6.19.1783345755411;
+        Mon, 06 Jul 2026 06:49:15 -0700 (PDT)
 Received: from ziepe.ca ([159.2.72.92])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e90cfdefasm943428385a.47.2026.07.06.06.45.29
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f4718141e6sm136628496d6.24.2026.07.06.06.49.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 06:45:29 -0700 (PDT)
+        Mon, 06 Jul 2026 06:49:14 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1wgjdY-00000000Szh-370N;
-	Mon, 06 Jul 2026 10:45:28 -0300
-Date: Mon, 6 Jul 2026 10:45:28 -0300
+	id 1wgjhC-00000000T1F-0z1i;
+	Mon, 06 Jul 2026 10:49:14 -0300
+Date: Mon, 6 Jul 2026 10:49:14 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: Dan Williams <djbw@kernel.org>
 Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
 	driver-core@lists.linux.dev, ankita@nvidia.com,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
 	Bjorn Helgaas <bhelgaas@google.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
 	Alexey Kardashevskiy <aik@amd.com>,
 	Xu Yilun <yilun.xu@linux.intel.com>,
 	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
 	Dexuan Cui <decui@microsoft.com>
-Subject: Re: [PATCH 08/15] device core: Initial device trust infrastructure
-Message-ID: <20260706134528.GC107792@ziepe.ca>
+Subject: Re: [PATCH 09/15] PCI, device core: Move "untrusted" concept to
+ DEVICE_TRUST_ADVERSARY
+Message-ID: <20260706134914.GD107792@ziepe.ca>
 References: <20260705220819.2472765-1-djbw@kernel.org>
- <20260705220819.2472765-9-djbw@kernel.org>
+ <20260705220819.2472765-10-djbw@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -90,162 +86,70 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260705220819.2472765-9-djbw@kernel.org>
+In-Reply-To: <20260705220819.2472765-10-djbw@kernel.org>
 
-On Sun, Jul 05, 2026 at 03:08:12PM -0700, Dan Williams wrote:
-> Introduce a per-device trust concept [1]. To start, it plumbs "auto" and
-> "none" levels to enable a scheme of requiring explicit opt-in to operate a
-> device. This supports a Confidential Computing use case of operating a
-> limited / vetted device and driver set to bootstrap the environment. It
-> leans on module policy to effect changes to device's trust level.
-> 
-> The motivations for using module policy to effect trust are:
-> 
-> 1/ It exists, no new ABI needed to inject "device firewall" policy into the
->    kernel [2].
-> 2/ Trust is a function of how the device is operated. A driver can be
->    trusted to carefully operate an untrusted device.
-> 
-> It may prove too coarse for some situations, like a driver that talks to a
-> mix of trusted and untrusted devices, or a module that contains multiple
-> drivers, but it is a place to start.
+On Sun, Jul 05, 2026 at 03:08:13PM -0700, Dan Williams wrote:
 
-I'm a little confused what this is is for?
-
-Is this how we bootstrap enough drivers to get into the initrd? Ie
-is it only relavent for key boot time things like CLOCK, IRQ and IOMMU
-drivers?
-
-Once we get to the initrd eveything should be driven on a per-device
-basis without anything to do with modules. We already have cases for
-mlx5 where it will have to drive trusted and untrusted devices in the
-same system.
-
-> Specifically this "module trust" scheme allows for only attaching drivers
-> from built-in modules by default, or modules that explicitly pass a
-> "trust=auto" option by building with CONFIG_DEVICE_TRUST_NONE=y. Modules
-> can also be configured to skip device attach by default by setting
-> /sys/module/module/parameters/require_trust.
-
-So I'd imagine most systems would make all modules have
-require_trust=1 and some userspace compoment in the initrd will
-evaluate and assign trust to devices to trigger binding and module
-loading?
-
-> The new dev->p->trust level is the operational trust level of a device. It is
-> only in effect after device_add(). It is private to the device core because
-> the "tcb" level is not suitable to be changed while a driver is attached to
-> the device. The result force_dma_unencrypted() must be stable while the
-> device is attached to its driver. That core coordination responsibility is
-> not suitable to export to non-core code.
-
-I don't think force_dma_unencrypted() should be driven from the trust
-level.. It is a property of the interconnect, the trust level sits on
-top of that.
-
-> +config DEVICE_TRUST
-> +	bool "Device core support for specifying trust levels for devices"
+> diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
+> index a08523d348d8..a4233bdf9804 100644
+> --- a/drivers/base/Kconfig
+> +++ b/drivers/base/Kconfig
+> @@ -291,6 +291,14 @@ config DEVICE_TRUST_NONE
+>  	  possible, the device is blocked by an IOMMU from accessing
+>  	  assets.
+>  
+> +config DEVICE_TRUST_ADVERSARY
+> +	bool "Adversary"
 > +	help
-> +	  Enable support for generic device trust levels when building a kernel
-> +	  that needs to operate in the presence of potentially adversarial
-> +	  devices. This is selected by buses that want to operate devices with
-> +	  reduced privileges, like externally connected devices, and it is a
-> +	  pre-requisite for operating devices with access to private memory in a
-> +	  Confidential Computing VM. See
-> +	  Documentation/ABI/testing/sysfs-kernel-iommu_groups for the type of
-> +	  IOMMU enforcement in effect.
+> +	  Device is allowed to bind. Bus, IOMMU, and driver layers may
+> +	  react to this trust level by disabling access validation
+> +	  bypass mechanisms like PCI ATS. When device is unbound from a
+> +	  driver the device is blocked by an IOMMU where possible.
 > +
-> +choice
-> +	prompt "Default device trust"
-> +	default DEVICE_TRUST_AUTO
-> +	depends on DEVICE_TRUST
+>  config DEVICE_TRUST_AUTO
+>  	bool "Auto"
+>  	help
+> @@ -317,6 +325,11 @@ config BUILTIN_DEVICE_TRUST_AUTO
+>  	  a driver and deploy all available mechanisms to allow performant
+>  	  direct memory access This trust level does not grant TCB privileges.
+>  
+> +config BUILTIN_DEVICE_TRUST_ADVERSARY
+> +	bool "Adversary"
 > +	help
-> +	  Specify the device trust level at initial attachment. Any choice other
-> +	  than "Auto" assumes auditing the built-in driver set for trusted
-> +	  drivers, and an enlightened userspace modprobe policy for other
-> +	  devices + drivers.
-> +
-> +config DEVICE_TRUST_NONE
-> +	bool "None"
-> +	help
-> +	  Devices are disallowed from attaching to a driver, and where
-> +	  possible, the device is blocked by an IOMMU from accessing
-> +	  assets.
+> +	  Deploy mitigations in the IOMMU layer and driver to limit access.
 
-It is a confusing what devices this applies to? I guess it is all
-devices that are not built in?
+I'm not sure it makes sense to have these options as compile time
+defaults. Arguably the non-built in path should only be auto or none
+and everything else should be handled by the initrd at runtime. If
+necessary a sysfs for the initrd to set a kernel default might make
+sense, IDK.
 
-I think it should also be in a kernel commandline, we should be able
-to support a single kernel image that works for CC VM and non CC VM, I
-think. You'd want the CC VM to have a kernel command line to turn on
-some of this stuff.
+Ideally built in devices should not be any kind that is hooked up to
+the iommu.
 
-> +choice
-> +	prompt "Trust devices with built-in drivers"
-> +	default BUILTIN_DEVICE_TRUST_AUTO
-> +	depends on DEVICE_TRUST
-> +	help
-> +	  Built-in drivers always bind to devices they match. Only
-> +	  select a setting other than "Auto" when building a kernel image
-> +	  targeted for use in Confidential Computing or other known
-> +	  adversarial environments.
-> +
-> +config BUILTIN_DEVICE_TRUST_AUTO
-> +	bool "Auto"
-> +	help
-> +	  Typical historical driver model, devices eagerly attempt to attach to
-> +	  a driver and deploy all available mechanisms to allow performant
-> +	  direct memory access This trust level does not grant TCB privileges.
+> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+> index 9abaec0703ef..957ef77911a9 100644
+> --- a/drivers/iommu/dma-iommu.c
+> +++ b/drivers/iommu/dma-iommu.c
+> @@ -588,16 +588,11 @@ static int iova_reserve_iommu_regions(struct device *dev,
+>  	return ret;
+>  }
+>  
+> -static bool dev_is_untrusted(struct device *dev)
+> -{
+> -	return dev_is_pci(dev) && to_pci_dev(dev)->untrusted;
+> -}
+> -
+>  static bool dev_use_swiotlb(struct device *dev, size_t size,
+>  			    enum dma_data_direction dir)
+>  {
+>  	return IS_ENABLED(CONFIG_SWIOTLB) &&
+> -		(dev_is_untrusted(dev) ||
+> +		(device_untrusted(dev) ||
+>  		 dma_kmalloc_needs_bounce(dev, size, dir));
+>  }
 
-So what's the other choice?
-
-Is this "AUTO" or is it just all builtin devices?
-
-I think it does grant TCB privileges in some cases, ie the VIOMMU
-driver that binds is in the TCB and does have T=1 equivilent DMA
-access.
-
-What we want for a CC VM is a curated set of pre-initrd devices can
-auto probe:
- - Drivers internally have some kind of attestation, eg on ARM the
-   VIOMMU driver is going to have to ask the RMM to prove the VIOMMU is
-   legitimate
- - Drivers that don't do any DMA at all, and have approved drivers
- - Drivers that are known to be hardened for untrusted DMA
-
-
-Maybe these options should be named a bit differently?
-
-config DEVICE_TRUST  <-- If the device trust framework is compiled in at all.
-
-DEVICE_TRUST_BUILTIN_DEFAULT = ALL, AUTO
-  Decide how pre-initrd devices are handled. ALL is current Linux,
-  every built in driver binds and runs, AUTO follows some module policy?
-
-DEVICE_TRUST_MODULE_DEFUALT = AUTO, NONE
-  Decide how post-initrd devices are handled. AUTO is current Linux,
-  follow the ACPI/etc. NONE means the initrd must run a policy agent
-  to assign trust.
-
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/* Copyright (C) 2026 NVIDIA Corporation & Affiliates */
-> +#ifndef __DEVICE_TRUST_H__
-> +#define __DEVICE_TRUST_H__
-> +
-> +/**
-> + * enum device_trust - Level of restrictions and privileges for a
-> + * device. Trust is initially assigned by the bus, and the bus is
-> + * responsible for coordinating transitions between trust levels with
-> + * DMA/IOMMU and its own device security mechanisms.
-> + *
-> + * @DEVICE_TRUST_UNSET: Unregistered device object with no current bus
-> + * @DEVICE_TRUST_NONE: Blocked when idle, cannot bind
-> + * @DEVICE_TRUST_AUTO: All typical privileges granted
-
-I expect there would be two enums, the policy - eg from the sysfs/etc
-which is possibly this, and then the actual in-effect trust level on
-the actual device which should only be DISABLED/FULL/ADVERSARY ?
-
-So maybe call this enum device_trust_policy ?
+I think it would be nice to use the new 'adversarial' word here and in
+other places instead of untrusted.
 
 Jason
