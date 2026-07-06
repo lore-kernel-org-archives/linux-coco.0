@@ -1,92 +1,50 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59A7437877
-	for <linux-coco@lists.linux.dev>; Mon,  6 Jul 2026 12:51:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D3B331222;
+	Mon,  6 Jul 2026 13:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783342304; cv=none; b=k7kT5MwxUD7Mx1oV6kr0mzKZ9TdGexEMmsJBFfwm5L+nP9uX0FHdPn8aiEbY9A7y5ku3Xem64TNb4F0ftszP8rtkT8uM3peNJ1fdg3afFeAw/alteiB1GFLNrAqGLRgnuAac88faD2jywddttLu2m+3j+fgvQPSzqQcGbRxO0tw=
+	t=1783343922; cv=none; b=BCG82moP0/kJNR0bt8rWlDG/HuyW46ce97s0JVL2M5Akp3h9P5PyL8KivNl5Ue2wbZbh7SU4pYIQNf9E8KOc2PdVfBkJ3SqKWI7x7DqTTavgmSRM9tsPWdEMc9DLgfC5Ms5hfa3VsOEexSaVZgtapamgG+nZYnqyqv18togRBXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783342304; c=relaxed/simple;
-	bh=5HxiaVFj4kKk0cIEKow6fV+sRV+xbZ0ZiNOAfE1z0kc=;
+	s=arc-20240116; t=1783343922; c=relaxed/simple;
+	bh=RhCvTH+puBHrLMdqq4GqjfjUXI1Mf66EvWPiFAtkzjU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A6g05v1DlsjgBXvJMboVNkU5VVV6HOrPwMfcOqk4voUKhAQhTdU0INXYofluSNLhIBOxv369UM4pRcChpnwKCjbTnYhqUHxIlvPp8oXOL8t7CftaY0FhEiEcaKGUm2G4SGhh1ifvWeCiOTEJAgQK2FgJwPuCA3rStIsZ2sZc9E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=DlnXuXZa; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=noS7/bhCPsM0uuAQ1usgEx49rDqxEzIDVCiB7OiJIjfCIX/R8p403earmKYn92LV+ufVcLtTxarEsvHxUFWEdLFKInvIaHzDBckzfbE4P1Caq7tRoY+onqfsGLcnXRupZKYJ7a3LJ1KUOhc26aYQH0RtkkFFXqjKa0pWEZnGOIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OWbqZfzT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="DlnXuXZa"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8f29ec73064so16575376d6.1
-        for <linux-coco@lists.linux.dev>; Mon, 06 Jul 2026 05:51:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1783342302; x=1783947102; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=U/Etd+6DfEYHgDTpR5rSNYT0+wAInQuGCrHtUqywQk8=;
-        b=DlnXuXZad53oNo1wSDtfWlfZ+8xd7+lssQOhBhUJ37YZ60vyeYiOMudSE7Vi519v+m
-         luOvHyr9bHz5KrdK34JdCN9XCH8935BXDsfZ5mE9fubiKgVuXX7ZdQE789gTACNteHyx
-         FXyxoZTvQgGwks+PA5LDv7W2D3rP5sQmkShhzU3zpyWsZl3STa1NEdjPFmN5S2xGPHEE
-         mmrVB83Wqoq9msZNa42FLTz/+le7AcWPEsj+RDYIIaKKeqHUuFbxcNOPacQyg8Hv9TNC
-         uKLJptC4Nl4MOd+VZFKdwUQc6LriSiEKVino/hrTcnkctdfp+XjAcKoalX15IH6JjTNm
-         l8zQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783342302; x=1783947102;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=U/Etd+6DfEYHgDTpR5rSNYT0+wAInQuGCrHtUqywQk8=;
-        b=etYeN2g6aonN0U+DmwgmRGUM4ULYwKhMjz6c0pONYKswvpMNiG2UecVRrLWJOGIRnY
-         l2D0ZnSrspSaKZNFW830Eu29vtUfiikg140/PN22VjkX4ZAjON7oQQv/0arxcc+d9Gza
-         LjYuJ53A9NoJrV7dhHoDk4SbGCBLOuRpNOfyYUCaX6iEWSuioefGhrPgmmedw2gGtxvd
-         W3aNkYr3toKgMx8AFnsZA6wKgZbLwKOscH/rHcp+NTzN7UuFaeg76ra/FpQ+Hwl7cUcQ
-         G/FMH/cxaqJPquxPVm0pb+f0nu1xjoBiue0V3Tg172vAtyig7QgwXjCV4FcIr+p1gMQ7
-         FXzQ==
-X-Gm-Message-State: AOJu0YzrE3KlIL9JDQo+EypJMqYfBp+c+C8kyWcBukw348t57cV+B9kx
-	5yBRAzZU7jJt84pW86Ke/GIuRb5FasSLjT58ETT81WegTzGZqdN8jT/qG5dwJE8fUto=
-X-Gm-Gg: AfdE7cmDIf4m7YWQwV+KB0C6H9wzR/MDXuwtv6VRLMQJX7+s0MsHUVISqN4o6sEgaaz
-	mrbE0K5SFQsWYGmUHw9VIb8f6JXwXJtOke4dr5vD3FeFNI4/qi/PZ00h+pohGkxM5cSNq/I+ex1
-	SeJLnL61Zm6SIlIl+T/f1mt/c1veiZcWsj6jqkKwxzrApvSAkHzzamTHmpT0Tpj1QWezJznVAwa
-	hPvUsQ6BLbT7qSio7MBHRAr16DSQ6We33ozO5/zETbh6HQe6ZTEMoaNixfsm8gJOH8oG/aXGxX4
-	xEGPkcF6AWqTvX1lLSB4dRBAhegAfWiwSyr1gwUZwVWr4xBqnY17kSiIHiAuFVCvvww567b+lRN
-	jFyaeCvahUBD0kBLKzK8KDL1XVgEg+ZJSnskifRzbzX5/lOoJbRQE8fZWxKYWMCFJUbwVGWw=
-X-Received: by 2002:a05:6214:519e:b0:8ec:eff:2485 with SMTP id 6a1803df08f44-8fcb375aaaamr2079086d6.24.1783342301530;
-        Mon, 06 Jul 2026 05:51:41 -0700 (PDT)
-Received: from ziepe.ca ([159.2.72.92])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f471814408sm134865456d6.23.2026.07.06.05.51.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 05:51:41 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wginU-00000000SiE-1Sq3;
-	Mon, 06 Jul 2026 09:51:40 -0300
-Date: Mon, 6 Jul 2026 09:51:40 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Dan Williams <djbw@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	driver-core@lists.linux.dev, ankita@nvidia.com,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>, Petr Pavlu <petr.pavlu@suse.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security
- Protocol (TDISP)
-Message-ID: <20260706125140.GB107792@ziepe.ca>
-References: <20260705220819.2472765-1-djbw@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OWbqZfzT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 648E71F000E9;
+	Mon,  6 Jul 2026 13:18:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783343920;
+	bh=o90i0cfZoLQRDEd07HRcrIoHeZh+FDlGHtKxB6iNI3Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OWbqZfzTjukjCzOtpI+vcCyyKg07CpN2ldAOpni3JjhkAkDxWhIsBCzUf286cmC9q
+	 yrE2uqIKA2KRLWx86P74/nxaNx/kFtX3BB3M23nsEVwTtEUirt6bvFBE70dUwfzoEM
+	 ny2qx0VQb+Z36+yFeQ3AmMS6XqBtpE/FPkbtN+rxNyJ7Kl0Dwysluo5K6ILluGm1nR
+	 m8ZcANJm4bSevE7vxYLN1zrEy/cRUeszik1g5Zky8oIU5XHxUs2NBeOpHJZkHx/FUf
+	 a4s1NienhNgGtHkksFdrnd8pXON5QdTn0GkaDA658UZak6YIkJXmtMr1cOZ7HnDCl1
+	 h1WeH/xT21RHA==
+Date: Mon, 6 Jul 2026 14:18:36 +0100
+From: Sudeep Holla <sudeep.holla@kernel.org>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Andre Przywara <andre.przywara@arm.com>
+Subject: Re: [PATCH v7 1/6] firmware: smccc: Add an Arm SMCCC bus
+Message-ID: <20260706-belligerent-excellent-saluki-a4e431@sudeepholla>
+References: <20260611130429.295516-1-aneesh.kumar@kernel.org>
+ <20260611130429.295516-2-aneesh.kumar@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -95,60 +53,366 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260705220819.2472765-1-djbw@kernel.org>
+In-Reply-To: <20260611130429.295516-2-aneesh.kumar@kernel.org>
 
-On Sun, Jul 05, 2026 at 03:08:04PM -0700, Dan Williams wrote:
-> * NONE: no usage of the device unless the trust is explicitly overridden
->   by user policy specified via a driver flag, module flag, or uapi (TBD).
+On Thu, Jun 11, 2026 at 06:34:24PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> SMCCC-discovered firmware services are currently represented by separate
+> platform devices, such as smccc_trng and arm-cca-dev. Those devices do not
+> represent independent DT/ACPI-described platform resources; they are
+> features of the SMCCC firmware interface.
 > 
-> * ADVERSARY: needs acknowledgement from the bus and IOMMU / DMA layers
->   that the device is limited to strict IOMMU translation behavior. Drivers
->   can use this as a signal to limit functionality. This designation
->   implies follow-on IOMMU and bus enabling work for features like
->   arranging for the device to attach to a blocked IOMMU domain when
->   detached from a driver.
+> Add an Arm SMCCC bus for services discovered through the SMCCC firmware
+> interface. The bus provides SMCCC device and driver registration helpers,
+> name-based matching, modalias generation, and a sysfs modalias attribute so
+> SMCCC service drivers can bind to discovered firmware services and autoload
+> as modules.
 > 
-> * AUTO: typical / historical Linux driver model.
+> Follow-up changes can then register SMCCC firmware services as arm-smccc
+> devices instead of creating independent per-feature platform devices.
 > 
-> * TCB: a trust level that only exists in Confidential Computing
->   environments. When acked by the IOMMU / DMA layer it enables the device
->   to issue direct-DMA to private/encrypted addresses or otherwise attach to
->   a secure vIOMMU within the TCB.
+> Based on arm_ffa code
+> 
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>  drivers/firmware/smccc/Makefile   |   2 +-
+>  drivers/firmware/smccc/bus.c      | 164 ++++++++++++++++++++++++++++++
+>  include/linux/arm-smccc-bus.h     |  49 +++++++++
+>  include/linux/mod_devicetable.h   |  13 +++
+>  scripts/mod/devicetable-offsets.c |   3 +
+>  scripts/mod/file2alias.c          |   8 ++
+>  6 files changed, 238 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/firmware/smccc/bus.c
+>  create mode 100644 include/linux/arm-smccc-bus.h
+> 
+> diff --git a/drivers/firmware/smccc/Makefile b/drivers/firmware/smccc/Makefile
+> index 40d19144a860..68bbff1407b8 100644
+> --- a/drivers/firmware/smccc/Makefile
+> +++ b/drivers/firmware/smccc/Makefile
+> @@ -1,4 +1,4 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  #
+> -obj-$(CONFIG_HAVE_ARM_SMCCC_DISCOVERY)	+= smccc.o kvm_guest.o
+> +obj-$(CONFIG_HAVE_ARM_SMCCC_DISCOVERY)	+= bus.o smccc.o kvm_guest.o
+>  obj-$(CONFIG_ARM_SMCCC_SOC_ID)	+= soc_id.o
+> diff --git a/drivers/firmware/smccc/bus.c b/drivers/firmware/smccc/bus.c
+> new file mode 100644
+> index 000000000000..fe7e893130ce
+> --- /dev/null
+> +++ b/drivers/firmware/smccc/bus.c
+> @@ -0,0 +1,164 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2026 Arm Limited
+> + */
+> +
+> +#include <linux/arm-smccc-bus.h>
+> +#include <linux/idr.h>
+> +#include <linux/slab.h>
+> +
+> +static DEFINE_IDA(arm_smccc_bus_id);
+> +
+> +static int arm_smccc_bus_match(struct device *dev,
+> +		const struct device_driver *drv)
+> +{
+> +	const struct arm_smccc_device_id *id_table;
+> +	struct arm_smccc_device *smccc_dev = to_arm_smccc_device(dev);
+> +
+> +	id_table = to_arm_smccc_driver(drv)->id_table;
+> +	if (!id_table)
+> +		return 0;
+> +
 
-I'm not sure I entirely like this one, certainly it needs to be
-possible to have both T=1 and ADVERSARY together.
+Any reason for not having this check when registering the driver also so
+that it becomes a must to register ? I remember vaguely adding this as fix to
+FF-A driver recently.
 
-Arguably the T=0/1 decision is much more like link encryption, it
-effects the transport of the DMA into the CPU. That it also impacts
-how the VIOMMU works is the only thing that make it sort of
-trust-like in this model.
+> +	while (id_table->name[0]) {
+> +		if (!strcmp(smccc_dev->name, id_table->name))
+> +			return 1;
+> +		id_table++;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int arm_smccc_bus_probe(struct device *dev)
+> +{
+> +	struct arm_smccc_driver *smccc_drv = to_arm_smccc_driver(dev->driver);
+> +
+> +	return smccc_drv->probe(to_arm_smccc_device(dev));
+> +}
+> +
+> +static void arm_smccc_bus_remove(struct device *dev)
+> +{
+> +	struct arm_smccc_driver *smcc_drv = to_arm_smccc_driver(dev->driver);
+> +
+> +	if (smcc_drv->remove)
+> +		smcc_drv->remove(to_arm_smccc_device(dev));
+> +}
+> +
+> +static int arm_smccc_bus_uevent(const struct device *dev,
+> +		struct kobj_uevent_env *env)
+> +{
+> +	const struct arm_smccc_device *smccc_dev = to_arm_smccc_device(dev);
+> +
+> +	return add_uevent_var(env, "MODALIAS=" ARM_SMCCC_MODULE_PREFIX "%s",
+> +			      smccc_dev->name);
+> +}
+> +
+> +static ssize_t modalias_show(struct device *dev,
+> +		struct device_attribute *attr, char *buf)
+> +{
+> +	struct arm_smccc_device *smccc_dev = to_arm_smccc_device(dev);
+> +
+> +	return sysfs_emit(buf, ARM_SMCCC_MODULE_PREFIX "%s\n", smccc_dev->name);
+> +}
+> +static DEVICE_ATTR_RO(modalias);
+> +
+> +static struct attribute *arm_smccc_device_attrs[] = {
+> +	&dev_attr_modalias.attr,
+> +	NULL,
+> +};
+> +ATTRIBUTE_GROUPS(arm_smccc_device);
+> +
+> +const struct bus_type arm_smccc_bus_type = {
+> +	.name = "arm_smccc",
+> +	.match = arm_smccc_bus_match,
+> +	.probe = arm_smccc_bus_probe,
+> +	.remove = arm_smccc_bus_remove,
+> +	.uevent = arm_smccc_bus_uevent,
+> +	.dev_groups = arm_smccc_device_groups,
+> +};
+> +EXPORT_SYMBOL_GPL(arm_smccc_bus_type);
+> +
+> +int arm_smccc_driver_register(struct arm_smccc_driver *driver,
+> +		struct module *owner, const char *mod_name)
+> +{
+> +	if (!driver->probe)
+> +		return -EINVAL;
+> +
+> +	driver->driver.bus = &arm_smccc_bus_type;
+> +	driver->driver.name = driver->name;
+> +	driver->driver.owner = owner;
+> +	driver->driver.mod_name = mod_name;
+> +
+> +	return driver_register(&driver->driver);
+> +}
+> +EXPORT_SYMBOL_GPL(arm_smccc_driver_register);
+> +
+> +void arm_smccc_driver_unregister(struct arm_smccc_driver *driver)
+> +{
+> +	driver_unregister(&driver->driver);
+> +}
+> +EXPORT_SYMBOL_GPL(arm_smccc_driver_unregister);
+> +
+> +static void arm_smccc_release_device(struct device *dev)
+> +{
+> +	struct arm_smccc_device *smccc_dev = to_arm_smccc_device(dev);
+> +
+> +	ida_free(&arm_smccc_bus_id, smccc_dev->id);
+> +	kfree(smccc_dev);
+> +}
+> +
+> +struct arm_smccc_device *arm_smccc_device_register(const char *name)
+> +{
+> +	struct arm_smccc_device *smccc_dev;
+> +	int id, ret;
+> +
+> +	id = ida_alloc_min(&arm_smccc_bus_id, 1, GFP_KERNEL);
+> +	if (id < 0)
+> +		return ERR_PTR(id);
+> +
+> +	smccc_dev = kzalloc_obj(*smccc_dev);
+> +	if (!smccc_dev) {
+> +		ida_free(&arm_smccc_bus_id, id);
+> +		return ERR_PTR(-ENOMEM);
+> +	}
+> +
+> +	smccc_dev->id = id;
+> +	if (strscpy(smccc_dev->name, name) < 0) {
 
-I'd also argue this list is missing "FULL" trust, which is the
-historical Linux behavior for a normal device. AUTO should be
-selecting between FULL/ADVERSARY based on things like the ACPI/etc as
-it does today.
+Since this is exported symbol and one can call arm_smccc_device_register(ptr)
+where ptr = NULL, won't it blow up then ? IIUC strscpy() handles NULL dst
+but doesn't check for NULL src.
 
-In a CC VM if we have a T=0 device we probably want to operate it with
-ADVERSARY (there is no T=0 VIOMMU so this is equivilent to FULL)
+> +		kfree(smccc_dev);
+> +		ida_free(&arm_smccc_bus_id, id);
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +	smccc_dev->dev.bus = &arm_smccc_bus_type;
+> +	smccc_dev->dev.release = arm_smccc_release_device;
+> +
+> +	ret = dev_set_name(&smccc_dev->dev, "%s-%d", smccc_dev->name, id);
+> +	if (ret) {
+> +		kfree(smccc_dev);
+> +		ida_free(&arm_smccc_bus_id, id);
+> +		return ERR_PTR(ret);
+> +	}
+> +
+> +	ret = device_register(&smccc_dev->dev);
+> +	if (ret) {
+> +		put_device(&smccc_dev->dev);
+> +		return ERR_PTR(ret);
+> +	}
+> +
+> +	return smccc_dev;
+> +}
+> +EXPORT_SYMBOL_GPL(arm_smccc_device_register);
+> +
+> +void arm_smccc_device_unregister(struct arm_smccc_device *smccc_dev)
+> +{
+> +	if (!smccc_dev)
+> +		return;
+> +
+> +	device_unregister(&smccc_dev->dev);
+> +}
+> +EXPORT_SYMBOL_GPL(arm_smccc_device_unregister);
+> +
+> +static int __init arm_smccc_bus_init(void)
+> +{
+> +	return bus_register(&arm_smccc_bus_type);
+> +}
+> +subsys_initcall(arm_smccc_bus_init);
+> +
+> diff --git a/include/linux/arm-smccc-bus.h b/include/linux/arm-smccc-bus.h
+> new file mode 100644
+> index 000000000000..188891441e57
+> --- /dev/null
+> +++ b/include/linux/arm-smccc-bus.h
+> @@ -0,0 +1,49 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2026 Arm Limited
+> + */
+> +#ifndef __LINUX_ARM_SMCCC_BUS_H
+> +#define __LINUX_ARM_SMCCC_BUS_H
+> +
+> +#include <linux/device.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +
+> +struct arm_smccc_device {
+> +	int id;
+> +	char name[ARM_SMCCC_NAME_SIZE];
+> +	struct device dev;
+> +};
+> +
+> +#define to_arm_smccc_device(d) container_of(d, struct arm_smccc_device, dev)
+> +
+> +struct arm_smccc_driver {
+> +	const char *name;
+> +	int (*probe)(struct arm_smccc_device *sdev);
+> +	void (*remove)(struct arm_smccc_device *sdev);
+> +	const struct arm_smccc_device_id *id_table;
+> +
+> +	struct device_driver driver;
+> +};
+> +
+> +#define to_arm_smccc_driver(d) \
+> +	container_of_const(d, struct arm_smccc_driver, driver)
+> +
+> +int arm_smccc_driver_register(struct arm_smccc_driver *driver,
+> +		struct module *owner, const char *mod_name);
+> +void arm_smccc_driver_unregister(struct arm_smccc_driver *driver);
+> +struct arm_smccc_device *arm_smccc_device_register(const char *name);
+> +void arm_smccc_device_unregister(struct arm_smccc_device *smcc_dev);
+> +
 
-For a T=1 device we need to have the choice of FULL or ADVERSARY. When
-a VIOMMU is present ADVERSARY will further restrict the T=1 traffic as
-a defense in depth.
+I may be overthinking but what will happen if HAVE_ARM_SMCCC_DISCOVERY=n
+and some driver is compiled using this header ? It should be fine if it
+fails to compile, just thinking out loud if we need to handle that are not.
+As long as all the drivers using these depends on HAVE_ARM_SMCCC_DISCOVERY
+it should be fine I think.
 
-So, it is really necessary to have "TCB" here?
+> +#define arm_smccc_register(driver) \
+> +	arm_smccc_driver_register(driver, THIS_MODULE, KBUILD_MODNAME)
+> +#define arm_smccc_unregister(driver) \
+> +	arm_smccc_driver_unregister(driver)
+> +
+> +#define module_arm_smccc_driver(__arm_smccc_driver) \
+> +	module_driver(__arm_smccc_driver, arm_smccc_register, \
+> +		      arm_smccc_unregister)
+> +
+> +extern const struct bus_type arm_smccc_bus_type;
+> +
+> +#endif /* __LINUX_ARM_SMCCC_BUS_H */
+> diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicetable.h
+> index 23ff24080dfd..c9cee8c5a0b2 100644
+> --- a/include/linux/mod_devicetable.h
+> +++ b/include/linux/mod_devicetable.h
 
-If the trust level is reduced to just be a command to the kernel how
-it should operate the device then it would be up to userspace to
-confirm things like T=1 before setting the trust. The kernel would
-have to set the trust to NONE when security sensitive changes are
-detected.
+This file seems to be reworked recently, so you need to rebase it moving
+smccc specific changes to separate file I think.
 
-If we still want a kernel-side policy gate, eg kernel will not
-progress unless T=1 is met, then I think that would be better as an
-independent pair'd policy field, ie
-   trust=FULL when policy=T=1, LINK_ENCRYPTION=1, etc
+> @@ -876,6 +876,19 @@ struct auxiliary_device_id {
+>  	kernel_ulong_t driver_data;
+>  };
+>  
+> +#define ARM_SMCCC_NAME_SIZE 40
+> +#define ARM_SMCCC_MODULE_PREFIX "arm_smccc:"
+> +
+> +/**
+> + * struct arm_smccc_device_id - Arm SMCCC bus device identifier
+> + * @name: SMCCC device name
+> + * @driver_data: driver data
+> + */
+> +struct arm_smccc_device_id {
+> +	char name[ARM_SMCCC_NAME_SIZE];
+> +	kernel_ulong_t driver_data;
 
-As bundling the two into "TCB" is probably going to turn problematic
-as we have more and more combinations of policy conditions.
+Can't find any users of the above driver_data ?
+Is it for future ? If so, can you add details on how it is supposed to be used
+if you don't want to drop it.
 
-Jason
+> +};
+> +
+>  /* Surface System Aggregator Module */
+>  
+>  #define SSAM_MATCH_TARGET	0x1
+> diff --git a/scripts/mod/devicetable-offsets.c b/scripts/mod/devicetable-offsets.c
+> index b4178c42d08f..a485011ff137 100644
+> --- a/scripts/mod/devicetable-offsets.c
+> +++ b/scripts/mod/devicetable-offsets.c
+> @@ -254,6 +254,9 @@ int main(void)
+>  	DEVID(auxiliary_device_id);
+>  	DEVID_FIELD(auxiliary_device_id, name);
+>  
+> +	DEVID(arm_smccc_device_id);
+> +	DEVID_FIELD(arm_smccc_device_id, name);
+> +
+>  	DEVID(ssam_device_id);
+>  	DEVID_FIELD(ssam_device_id, match_flags);
+>  	DEVID_FIELD(ssam_device_id, domain);
+> diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+> index 2ad87a74bb03..92d3917f27cc 100644
+> --- a/scripts/mod/file2alias.c
+> +++ b/scripts/mod/file2alias.c
+> @@ -1323,6 +1323,13 @@ static void do_auxiliary_entry(struct module *mod, void *symval)
+>  	module_alias_printf(mod, false, AUXILIARY_MODULE_PREFIX "%s", *name);
+>  }
+>  
+> +static void do_arm_smccc_entry(struct module *mod, void *symval)
+> +{
+> +	DEF_FIELD_ADDR(symval, arm_smccc_device_id, name);
+> +
+> +	module_alias_printf(mod, false, ARM_SMCCC_MODULE_PREFIX "%s", *name);
+> +}
+> +
+>  /*
+>   * Looks like: ssam:dNcNtNiNfN
+>   *
+> @@ -1493,6 +1500,7 @@ static const struct devtable devtable[] = {
+>  	{"mhi", SIZE_mhi_device_id, do_mhi_entry},
+>  	{"mhi_ep", SIZE_mhi_device_id, do_mhi_ep_entry},
+>  	{"auxiliary", SIZE_auxiliary_device_id, do_auxiliary_entry},
+> +	{"arm_smccc", SIZE_arm_smccc_device_id, do_arm_smccc_entry},
+>  	{"ssam", SIZE_ssam_device_id, do_ssam_entry},
+>  	{"dfl", SIZE_dfl_device_id, do_dfl_entry},
+>  	{"ishtp", SIZE_ishtp_device_id, do_ishtp_entry},
+> -- 
+> 2.43.0
+> 
+
+-- 
+Regards,
+Sudeep
