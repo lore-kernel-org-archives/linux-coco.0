@@ -1,213 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE303BFE2B;
-	Mon,  6 Jul 2026 06:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B404321420
+	for <linux-coco@lists.linux.dev>; Mon,  6 Jul 2026 09:17:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783317961; cv=none; b=JOv19GydvV+mTlpgM+VERFlGlumTtwG3u+bEoPAGomj7QRJdZtmZaCYs1tMcbnl8bB2toA+KUSIHt0Fi3hi9qMInbMYT54DuvW8p5p18ngS2uvv63ES6Q9hW57UPktjDNsuYOiAGXJrJT/A9IkPBpdY5xuQ5Nzbp/moZEu6FVaA=
+	t=1783329425; cv=none; b=VZcVrk1MEwgPRfDs38eg/F/LaI4cd/eezc2nCrncLxyoXVQ2fCIz+UPVzKntrC5hWbDd39EemyYI7JS6ObDMWgcpazYN6qyABaTsaYHBwOGhQFMRn8y3YfBu8blY/yKd7Kq+jMzcyC2YD6MNHcbEcrEXQx4byymC7BfC0z4HIao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783317961; c=relaxed/simple;
-	bh=aHZizbhEAfqrPA0yo/xctJ8q0zfUR7Ra2y+sLtJarAU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IwPODfCPVQdr6FVA5g0na+8pcwhf4vChkmPbwBtyAS3rObSY6LgYrzMzk7P0hF9V/fIK1Rhtdd7xSnlirU9KbhIn1XqVGWKCXj6/1x+2yRcgRw1lNZUUzfLSw2lENLSPHVkBz/YAQ8L90HrV1Bih+hXQr5zK6Stv6wIG5cVkl8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V3zjjBqd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783329425; c=relaxed/simple;
+	bh=r8IHjgajWWCYQeCDyqlBFZQ+jiagfASXseQII/EtCXs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ue0tHeX+TVdZcoxKFc01J8hexyQCjGSdpkGLZENI9bgu715JRbyAkwRkRKSAVm44CwrfGSz2EbWiw0xqiTOVtcXOmLfMv5ZE9G+2pxN+Q908nxEETTLIrh+kw5OF+cxUpN6phqJH+O60CfFV2OAThZwrnjX5/+CAG6X+Pdfd83o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i6RHYSv4; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V3zjjBqd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425311F000E9;
-	Mon,  6 Jul 2026 06:05:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783317959;
-	bh=W0GTpGojCkTLTigXJjUWY8A7Bx3gwP5wr1YCstPCEu8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V3zjjBqdcv8eoKzWoxHaUZNJXnhzGnVJ6LDlGEJ0g/uoEjoFlGJF93F7LnFvAzwV1
-	 ZBoUn5L0SHty3yrfyEXpodJLyNpLg9ibW1FD6o19jfXV6Mg8PkyG3vA4bDbyRbWl7k
-	 aYfp4Y3Gd4HMjFmfHABdZ2ib3xuZGeb219FrxQF6xeTtaBTK5EUv5SlOjZD9KwMrdm
-	 9O++XOLGiT8/DkGqOnnMoCJugcTTEiJOuSWAxMqrv/PSfrYbEIBaMAxPoEvPCJZL/j
-	 YbdPph+0mAX3ay04g4PWU7ERX+vPDrchXGh8sqfvzNb3hUlOly9QrJ01d/pvD89OWm
-	 weNWhxvBWxVkw==
-From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-To: linux-coco@lists.linux.dev,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH v5 10/10] arm64: realm: Expose the CCA shared granule size through mem_encrypt ops
-Date: Mon,  6 Jul 2026 11:34:32 +0530
-Message-ID: <20260706060432.1375570-11-aneesh.kumar@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260706060432.1375570-1-aneesh.kumar@kernel.org>
-References: <20260706060432.1375570-1-aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i6RHYSv4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783329421; x=1814865421;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=r8IHjgajWWCYQeCDyqlBFZQ+jiagfASXseQII/EtCXs=;
+  b=i6RHYSv4EV725yzAjlTFRsp/BZvhoXSPHG1Bcv1AoEWUUCUg/KOhGyHW
+   pLEvtFxK/ffd2Ximp1YN8wGAGTk46sWAHT+QsG9XHozQFwMtczZi4WFPV
+   B1wrrh2LPt07IVQqYTx6Hg0wiPYpGC7GvfFFfLaQ583/zXW8cz2udp2Lt
+   v/UQYUfwzFsO6QA1rjrRoAO48sMZgwtDPYdGiKEXHsWhXIi4IJ03KDGJ7
+   YCDIloEZgqUXkqwkgm651zOOQXtBAQvlByMdt1UU/6NNPhp8GxnJozlDY
+   dbhiORksxFlty/2dnRlxck5O/rx/ZZp+YGBSV7r2KpG4dap8jJQjivN39
+   A==;
+X-CSE-ConnectionGUID: YHd+V5SvSbWDK/dh04NOQg==
+X-CSE-MsgGUID: 4gLqoGs1RYquMTjptWgUWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11838"; a="87874113"
+X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; 
+   d="scan'208";a="87874113"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 02:16:56 -0700
+X-CSE-ConnectionGUID: Rrj/AClhTViGonEcemZGMw==
+X-CSE-MsgGUID: fmG3KLkoSNS9rV8fv5x97w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; 
+   d="scan'208";a="283757779"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa002.jf.intel.com with ESMTP; 06 Jul 2026 02:16:52 -0700
+Date: Mon, 6 Jul 2026 17:16:51 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	dan.j.williams@intel.com, x86@kernel.org, chao.gao@intel.com,
+	dave.jiang@intel.com, baolu.lu@linux.intel.com, yilun.xu@intel.com,
+	zhenzhong.duan@intel.com, kvm@vger.kernel.org,
+	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
+	kas@kernel.org, xiaoyao.li@intel.com, vishal.l.verma@intel.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 20/31] x86/virt/tdx: Add a helper to loop on
+ TDX_INTERRUPTED_RESUMABLE
+Message-ID: <aktyg51hj0SeSG50@yilunxu-OptiPlex-7050>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-21-yilun.xu@linux.intel.com>
+ <CAEvNRgGgTkOPWELeg5U3pjjw9NZOBQ5zswWy=MRxOXsUXXuFhQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAEvNRgGgTkOPWELeg5U3pjjw9NZOBQ5zswWy=MRxOXsUXXuFhQ@mail.gmail.com>
 
-CCA guests must align shared/private memory transitions to the size
-reported by the host for IPA state changes. This size can be larger than
-PAGE_SIZE, so allowing a guest to convert only a PAGE_SIZE-sized subrange
-can leave the remaining part of that host-sized range in the wrong state.
+> > +static u64 __maybe_unused __seamcall_ir_resched(sc_func_t sc_func, u64 fn,
+> > +						struct tdx_module_args *args)
+> > +{
+> > +	struct tdx_module_args _args;
+> > +	u64 r;
+> > +
+> > +	while (1) {
+> > +		_args = *(args);
+> 
+> Is this copying meant to ensure that every retry has the same input
+> args? Perhaps a comment should be added so it's obvious that every retry
+> will have the same input, and outputs from each retry are dropped.
 
-Cache the RHI-reported IPA sate change alignment during Realm
-initialization and expose it through a new arm64 mem_encrypt callback. Use
-PAGE_SIZE as the default shared granule size when no backend callback is
-registered.
+Yes, that's the intent.
 
-Validate both the address and byte size passed to set_memory_encrypted()
-and set_memory_decrypted() against mem_cc_shared_granule_size() before
-calling into the backend. This prevents callers from converting only part
-of a host-managed page.
+But now I've found this is not a good convention for INTERRUPTED_RESUMABLE.
+If outputs are necessary why we drop them, if outputs are not useful why
+we output them to overwrite inputs. The fact is that TDX module only
+outputs all 0's to zero out the inputs, that makes no sense.
 
-Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
----
- arch/arm64/include/asm/mem_encrypt.h |  4 ++++
- arch/arm64/kernel/rsi.c              | 13 ++++++++++-
- arch/arm64/mm/mem_encrypt.c          | 32 ++++++++++++++++++++++++----
- 3 files changed, 44 insertions(+), 5 deletions(-)
+So we now switch to another existing convention - if there is valid
+output, use the output to update the input for next loop, or keep the input
+unchanged. This way we only need to:
 
-diff --git a/arch/arm64/include/asm/mem_encrypt.h b/arch/arm64/include/asm/mem_encrypt.h
-index f6325f30e844..5018581fed87 100644
---- a/arch/arm64/include/asm/mem_encrypt.h
-+++ b/arch/arm64/include/asm/mem_encrypt.h
-@@ -9,6 +9,7 @@ struct device;
- struct arm64_mem_crypt_ops {
- 	int (*encrypt)(unsigned long addr, int numpages);
- 	int (*decrypt)(unsigned long addr, int numpages);
-+	size_t (*cc_shared_granule_size)(void);
- };
- 
- int arm64_mem_crypt_ops_register(const struct arm64_mem_crypt_ops *ops);
-@@ -17,6 +18,9 @@ int set_memory_encrypted(unsigned long addr, int numpages);
- int set_memory_decrypted(unsigned long addr, int numpages);
- int __set_memory_enc_dec(unsigned long addr, int numpages, bool encrypt);
- 
-+#define mem_cc_shared_granule_size mem_cc_shared_granule_size
-+size_t mem_cc_shared_granule_size(void);
-+
- static inline bool force_dma_unencrypted(struct device *dev)
- {
- 	return is_realm_world();
-diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
-index f52f240bb44c..54fb929067c9 100644
---- a/arch/arm64/kernel/rsi.c
-+++ b/arch/arm64/kernel/rsi.c
-@@ -20,6 +20,7 @@
- 
- static struct realm_config config;
- static struct kobject *cca_kobj;
-+static unsigned long ipa_state_change_granule_size;
- 
- unsigned long prot_ns_shared;
- EXPORT_SYMBOL(prot_ns_shared);
-@@ -168,9 +169,17 @@ static int realm_set_memory_decrypted(unsigned long addr, int numpages)
- 	return ret;
- }
- 
-+static size_t realm_cc_shared_granule_size(void)
-+{
-+	if (is_realm_world())
-+		return ipa_state_change_granule_size;
-+	return PAGE_SIZE;
-+}
-+
- static const struct arm64_mem_crypt_ops realm_crypt_ops = {
- 	.encrypt = realm_set_memory_encrypted,
- 	.decrypt = realm_set_memory_decrypted,
-+	.cc_shared_granule_size = realm_cc_shared_granule_size,
- };
- 
- static int realm_register_memory_enc_ops(void)
-@@ -180,7 +189,7 @@ static int realm_register_memory_enc_ops(void)
- 
- /* we need an aligned struct for rsi_host_call. slab is not yet ready */
- static struct rsi_host_call hostconf_call __initdata;
--static unsigned long __maybe_unused __init get_ipa_state_change_alignment(void)
-+static unsigned long __init get_ipa_state_change_alignment(void)
- {
- 	long ret;
- 	unsigned long shared_granule_size;
-@@ -230,6 +239,8 @@ void __init arm64_rsi_init(void)
- 		return;
- 	if (WARN_ON(rsi_get_realm_config(lm_alias(&config))))
- 		return;
-+
-+	ipa_state_change_granule_size = get_ipa_state_change_alignment();
- 	prot_ns_shared = __phys_to_pte_val(BIT(config.ipa_bits - 1));
- 
- 	if (arm64_ioremap_prot_hook_register(realm_ioremap_hook))
-diff --git a/arch/arm64/mm/mem_encrypt.c b/arch/arm64/mm/mem_encrypt.c
-index ee3c0ab04384..69783c6a3c08 100644
---- a/arch/arm64/mm/mem_encrypt.c
-+++ b/arch/arm64/mm/mem_encrypt.c
-@@ -17,8 +17,7 @@
- #include <linux/compiler.h>
- #include <linux/err.h>
- #include <linux/mm.h>
--
--#include <asm/mem_encrypt.h>
-+#include <linux/mem_encrypt.h>
- 
- static const struct arm64_mem_crypt_ops *crypt_ops;
- 
-@@ -33,18 +32,43 @@ int arm64_mem_crypt_ops_register(const struct arm64_mem_crypt_ops *ops)
- 
- int set_memory_encrypted(unsigned long addr, int numpages)
- {
--	if (likely(!crypt_ops) || WARN_ON(!PAGE_ALIGNED(addr)))
-+	unsigned long size = (unsigned long)numpages << PAGE_SHIFT;
-+
-+	if (likely(!crypt_ops))
- 		return 0;
- 
-+	if (WARN_ON(!IS_ALIGNED(addr, mem_cc_shared_granule_size())))
-+		return -EINVAL;
-+
-+	if (WARN_ON(!IS_ALIGNED(size, mem_cc_shared_granule_size())))
-+		return -EINVAL;
-+
- 	return crypt_ops->encrypt(addr, numpages);
- }
- EXPORT_SYMBOL_GPL(set_memory_encrypted);
- 
- int set_memory_decrypted(unsigned long addr, int numpages)
- {
--	if (likely(!crypt_ops) || WARN_ON(!PAGE_ALIGNED(addr)))
-+	unsigned long size = (unsigned long)numpages << PAGE_SHIFT;
-+
-+	if (likely(!crypt_ops))
- 		return 0;
- 
-+	if (WARN_ON(!IS_ALIGNED(addr, mem_cc_shared_granule_size())))
-+		return -EINVAL;
-+
-+	if (WARN_ON(!IS_ALIGNED(size, mem_cc_shared_granule_size())))
-+		return -EINVAL;
-+
- 	return crypt_ops->decrypt(addr, numpages);
- }
- EXPORT_SYMBOL_GPL(set_memory_decrypted);
-+
-+size_t mem_cc_shared_granule_size(void)
-+{
-+	if (likely(!crypt_ops) || !crypt_ops->cc_shared_granule_size)
-+		return PAGE_SIZE;
-+
-+	return crypt_ops->cc_shared_granule_size();
-+}
-+EXPORT_SYMBOL_GPL(mem_cc_shared_granule_size);
--- 
-2.43.0
+	do {
+		r = seamcall(TDH_XX_XX, &args);
+	} while (r == TDX_INTERRUPTED_RESUMABLE);
 
+	if (r != TDX_SUCCESS)
+		return -EFAULT;
+
+https://lore.kernel.org/kvm/20260618081355.3253581-6-yilun.xu@linux.intel.com/
+https://lore.kernel.org/kvm/20260618081355.3253581-5-yilun.xu@linux.intel.com/
+
+> 
+> > +		r = sc_retry(sc_func, fn, &_args);
+> > +		if (r != TDX_INTERRUPTED_RESUMABLE)
+> > +			break;
+> > +
+> > +		cond_resched();
+> > +	}
+> > +
+> > +	*args = _args;
+> > +
+> > +	return r;
+> > +}
