@@ -1,130 +1,181 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C381EB5CE;
-	Tue,  7 Jul 2026 08:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5FE288C2F;
+	Tue,  7 Jul 2026 08:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783411584; cv=none; b=OjZWradv5Qa72m2BSGyKOX396K3nemZUbGVBEEATK8oZne6tCR2nIu3kQQqqNSwsQOf+TyVIgiSwvddrXZRj8eTuG/TX6OxOWqzz0/UZF9BCEs4HAZuLyEhiezKqdABAfv3y+PT7O3zRQp8B/Z0zo6L9VVWEko2yitMHLShZJaU=
+	t=1783412042; cv=none; b=BlrvCDGGe1jES4ks+Ve1l7vMJspIHp+LMS6/QaRvvJgwYQSWBGnafCjBiagprb12QRWK3A3D1xhRiXpKH82Y94Rr5JyXxvK7lyuNSEfXN5XnrfpDAvKgUkJxy7nkD2sJQLpwYxBjS/ph1rq5UIiDwGWXqBpThjHQR5IeN971DxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783411584; c=relaxed/simple;
-	bh=YObFcIh1tDVXWjQY/EyHvVKx8GEiNlbw2CdpCpbxLDA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=V0W2HIKzLKDg2euldDtIhLwUqYhnWz/tEGZtc+JzDJOOplwC9isRsj1UJ24hzNw1WC3NzGX9BlfQ65Pd3FR5gRDFzEMsiLB007pbnduLEJsJdDmX7hM4lkX2FVQEqy0wFueT3Og7KhNwXig1V/BeCpnTUU9WdqeZjwYpEmwDvcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ehzJVAlx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783412042; c=relaxed/simple;
+	bh=8lOIsUR1i3ONhOFwP5iic7YQ0inGFNuiEHyrhLxIkhg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z6mauP54bzB8z9tKKjYqBqea2fFSID46OWg4jOWAsd+rcslG6WqiGWX1lsMAdX+sO1sXyAoWMXf6Z9mkwHpvgdJwJqpotGEDDqgUq7NhBzZChIrPjmRkArPp0UzPS3ahwdGq4B3co/VJLf0cyL+skauB4citQEirZ74SreVvbe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gxu31/NO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ehzJVAlx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E980D1F000E9;
-	Tue,  7 Jul 2026 08:06:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gxu31/NO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14F31F000E9;
+	Tue,  7 Jul 2026 08:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783411583;
-	bh=ea0IOau1aAltI3DRKVxyYkxeEjLOa5kYpwFj12qVzqc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=ehzJVAlxIC/pC2sXhGD1Zd5xyp2mkGV8OuobvUJm80sNhARBCJldhVJnR/fvzUlg8
-	 t2QQb326FSv7l+dfyMjQn+q4qi0x/iJZD8qCoLvIATEMQErD8y3iRKIcZPoxzVgszV
-	 oRoggpbomDjX7tQZq9G9GaoCtyybcTlqjfRz4+F1rB3X4H4ooSWHLgUZt7CnfLeeFM
-	 zwEb6VljE8Xh9Fi9TviWiquZI1cqM+c0j9tSvLQJ700z+8l/66JsCg+ZgzcpDbHZNA
-	 MK5IFv5kO6A9ODArwj2zGJLks6KS3/uwYgDXQCaGY1s1PvXpmfKk7P0jRMoD6rRJUF
-	 QGcIHGnDYecHw==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-Cc: Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	s=k20260515; t=1783412041;
+	bh=utNzOCf8v5U9bivCeckdbTQJ7ylFFiFIFRUxbc4AozY=;
+	h=From:To:Cc:Subject:Date;
+	b=gxu31/NOdzc3V+NXijRXWcAEGkKCLjvPc/x8rGsk3Q3fV2BZvACAyFkxhsTnh8e9V
+	 pzbRt0pQTeFGWX6GeSmpaeMn0RQvKfJTx+Z6k+w/51B0M8F7xF/88ddIxcsNpGkz/0
+	 7j0dPfT4tOS8ov5jQci3pVGcINC48FVRiAEBmvKQJJvz1aAjWJvVchxgJZ3S29dxJT
+	 ONvFrV8ObIjYV/N+02mIbtVEGD2OPjrecdL8d8cvai4ffgEWhoQD0GoqhBiNzOg43+
+	 rAk/L31EojcpjGQ/L6SXheg5exC1inAtXpWRxNamrxletovGENKUsWpHLmJrZ6UHou
+	 w+fZwswHo3ecQ==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Steven Price <steven.price@arm.com>,
 	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [PATCH v7 00/22] dma-mapping: Track shared DMA state through
- direct, pool and swiotlb paths
-In-Reply-To: <20260701054926.825925-1-aneesh.kumar@kernel.org>
-References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
-Date: Tue, 07 Jul 2026 13:36:10 +0530
-Message-ID: <yq5av7argr65.fsf@kernel.org>
+	Andre Przywara <andre.przywara@arm.com>
+Subject: [PATCH v8 0/6] Switch Arm SMCCC firmware services to an SMCCC bus
+Date: Tue,  7 Jul 2026 13:43:44 +0530
+Message-ID: <20260707081351.1680209-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
+As discussed here:
+https://lore.kernel.org/all/20250728135216.48084-12-aneesh.kumar@kernel.org
 
-> This series tracks confidential-computing shared DMA state through the
-> dma-direct, dma-pool, and swiotlb paths so that encrypted and decrypted
-> DMA buffers are handled consistently.
->
-> Today, the direct DMA path mostly relies on force_dma_unencrypted() for
-> shared/decrypted buffer handling. This series consolidates the
-> force_dma_unencrypted() checks in the top-level functions and ensures
-> that the remaining DMA interfaces use DMA attributes to make the correct
-> decisions.
->
-> The series separates mapping and allocation state:
-> - DMA_ATTR_CC_SHARED describes the DMA address attribute requested for a
->   mapping. It tells the DMA mapping path that the DMA address must target
->   shared/decrypted memory.
-> - __DMA_ATTR_ALLOC_CC_SHARED is an internal DMA-mapping attribute used only
->   by allocation paths after the DMA core decides that the backing pages
->   must be allocated as shared/decrypted memory.
->
-> The series:
-> - moves swiotlb-backed allocations out of __dma_direct_alloc_pages(),
-> - uses __DMA_ATTR_ALLOC_CC_SHARED through the dma-direct alloc/free paths
-> - teaches the atomic DMA pools to track encrypted versus decrypted
->   state
-> - tracks swiotlb pool encryption state and enforces strict pool
->   selection
-> - centralizes encrypted/decrypted pgprot handling in dma_pgprot() using
->   DMA attributes
-> - passes DMA attributes down to dma_capable() so capability checks can
->   validate whether the selected DMA address encoding matches
->   DMA_ATTR_CC_SHARED
-> - makes dma_direct_map_phys() choose the DMA address encoding from
->   DMA_ATTR_CC_SHARED and fall back to swiotlb when a shared DMA request
->   cannot use the direct mapping, which lets arm64 and x86 CCA guests stop
->   relying on SWIOTLB_FORCE for DMA mappings
-> - use the selected swiotlb pool state to derive the returned DMA
->   address
-> - reports CC_ATTR_GUEST_MEM_ENCRYPT for arm64 Realms, powerpc secure
->   guests, and s390 protected virtualization guests.
->
-> Dependency:
-> This series depends on the pKVM changes posted at:
-> https://lore.kernel.org/all/20260603110522.3331819-1-smostafa@google.com
->
-> Please merge this series only after the pKVM changes above are merged.
-> Otherwise pKVM will be broken.
->
+The earlier CCA guest support used an arm-cca-dev platform device as a pure
+software anchor for the TSM class device. That platform device did not
+correspond to a DT/ACPI described device, MMIO range, interrupt, or other
+platform resource; it existed only to make the CCA guest driver bind and to
+place the resulting TSM device in the driver model. The same pattern also
+exists for smccc_trng. Creating separate platform devices for such
+SMCCC-discovered features is misleading, because those features are not
+independent platform devices.
 
-A rebased tree on top of the dependent pKVM changes can be found at:
-https://gitlab.arm.com/linux-arm/linux-cca/-/tree/scratch/pkvm/testing?ref_type=heads
+This series adds an Arm SMCCC bus for services discovered through the SMCCC
+firmware interface. The bus provides SMCCC device and driver registration
+helpers, name-based matching, uevent modalias generation, and a sysfs modalias
+attribute. SMCCC service drivers can use MODULE_DEVICE_TABLE(arm_smccc, ...)
+to emit arm_smccc:<name> aliases, allowing userspace to autoload service
+drivers when the SMCCC core registers matching firmware-service devices.
 
-The patches had minor conflicts. I am not sure how we want to get this
-merged.
+The series then moves SMCCC TRNG and the Arm CCA guest RSI service off the
+platform bus. When the SMCCC core discovers the corresponding firmware
+service, it registers an arm-smccc device for that service. The hwrng
+arm_smccc_trng driver and the Arm CCA guest TSM provider are converted to
+SMCCC drivers that bind to those discovered devices.
 
-Should we ask the pKVM maintainers for a topic branch, and then I can
-repost the updated series on top of that?
+The old arm-cca-dev platform device has also been used by userspace as a Realm
+guest indicator. Removing it without a replacement would leave userspace
+depending on an internal driver-binding device. This series therefore adds
+/sys/firmware/cca/realm_guest as a stable, architecture-provided ABI for
+detecting whether the kernel is running as an Arm CCA Realm guest, and then
+removes the dummy arm-cca-dev platform-device registration.
 
--aneesh
+Changes from v7:
+https://lore.kernel.org/all/20260611130429.295516-1-aneesh.kumar@kernel.org
+* Rebase to latest kernel
+* Add id_table check in arm_smccc_driver_register
+* Add smccc device name check in arm_smccc_device_register
+* Drop driver_data from struct arm_smccc_device_id  
+
+Changes from v6:
+https://lore.kernel.org/all/20260527100233.428018-1-aneesh.kumar@kernel.org
+* Move SMCCC bus-related code to bus.c.
+* Remove CONFIG_ARM64 #ifdefs and switch device creation to use the generic function-ID support framework.
+* Move version-specific checks and other conditionals to the device driver probe routines.
+* Move RSI definitions to include/linux/arm-smccc-rsi.h.
+* Split the file and variable renames into a separate patch.
+
+Changes from v5:
+https://lore.kernel.org/all/20260514094030.42495-1-aneesh.kumar@kernel.org
+* Replace the arm-smccc platform-device plus auxiliary-child model with a
+  dedicated Arm SMCCC bus.
+* Add SMCCC module alias support so SMCCC service drivers can use
+  MODULE_DEVICE_TABLE(arm_smccc, ...) and autoload through arm_smccc:<name>
+  aliases.
+* Convert smccc_trng from a platform driver to an SMCCC driver.
+* Convert the Arm CCA guest TSM provider from the arm-cca-dev platform device
+  to an SMCCC driver bound to the discovered RSI service.
+* Add /sys/firmware/cca/realm_guest before removing the old arm-cca-dev dummy
+  platform device.
+
+Changes from v4:
+https://lore.kernel.org/all/20260427061615.905018-1-aneesh.kumar@kernel.org
+* Add /sys/firmware/cca/realm_guest for detecting realm guest
+* Convert smccc_trng to auxiliary device from platform device
+
+Changes from v3:
+https://lore.kernel.org/all/20260309100507.2303361-1-aneesh.kumar@kernel.org
+* Rebased onto the latest kernel
+* Drop pr_fmt() from drivers/firmware/smccc/rmm.c
+
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Jeremy Linton <jeremy.linton@arm.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Cc: Andre Przywara <andre.przywara@arm.com>
+
+
+Aneesh Kumar K.V (Arm) (6):
+  firmware: smccc: Add an Arm SMCCC bus
+  firmware: hwrng: arm_smccc_trng: Register as an SMCCC device
+  firmware: smccc: Move RSI definitions to include/linux
+  virt: coco: arm-cca-guest: Rename TSM report source file
+  firmware: smccc: arm-cca-guest: Bind the TSM provider to an SMCCC
+    device
+  coco: guest: arm64: Replace dummy CCA device with sysfs ABI
+
+ Documentation/ABI/testing/sysfs-firmware-cca  |  10 ++
+ arch/arm/include/asm/archrandom.h             |   2 +-
+ arch/arm64/include/asm/archrandom.h           |   2 +-
+ arch/arm64/include/asm/rsi.h                  |   2 -
+ arch/arm64/include/asm/rsi_cmds.h             |  75 +-------
+ arch/arm64/kernel/rsi.c                       |  39 ++--
+ drivers/char/hw_random/arm_smccc_trng.c       |  32 ++--
+ drivers/firmware/smccc/Makefile               |   2 +-
+ drivers/firmware/smccc/bus.c                  | 167 ++++++++++++++++++
+ drivers/firmware/smccc/smccc.c                |  65 ++++++-
+ drivers/virt/coco/arm-cca-guest/Kconfig       |   1 +
+ drivers/virt/coco/arm-cca-guest/Makefile      |   2 +
+ .../{arm-cca-guest.c => arm-cca.c}            |  62 +++----
+ drivers/virt/coco/arm-cca-guest/rsi.h         |  84 +++++++++
+ include/linux/arm-smccc-bus.h                 |  49 +++++
+ .../linux/arm-smccc-rsi.h                     |   8 +-
+ include/linux/device-id/arm_smccc.h           |  16 ++
+ include/linux/mod_devicetable.h               |   1 +
+ scripts/mod/devicetable-offsets.c             |   3 +
+ scripts/mod/file2alias.c                      |   8 +
+ 20 files changed, 488 insertions(+), 142 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-firmware-cca
+ create mode 100644 drivers/firmware/smccc/bus.c
+ rename drivers/virt/coco/arm-cca-guest/{arm-cca-guest.c => arm-cca.c} (85%)
+ create mode 100644 drivers/virt/coco/arm-cca-guest/rsi.h
+ create mode 100644 include/linux/arm-smccc-bus.h
+ rename arch/arm64/include/asm/rsi_smc.h => include/linux/arm-smccc-rsi.h (97%)
+ create mode 100644 include/linux/device-id/arm_smccc.h
+
+
+base-commit: 8cdeaa50eae8dad34885515f62559ee83e7e8dda
+-- 
+2.43.0
 
