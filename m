@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A7D288C2F;
-	Tue,  7 Jul 2026 08:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F732D7DDB;
+	Tue,  7 Jul 2026 08:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783412054; cv=none; b=feP6LDdF3R9N+EtTHJSeTWOxcVJM3YarQ4Wl9gcOLXy1KaW9BNxrN3z5DNB0/CGjPxM04ZPY/e1TstQT+uWalV5/EzGuhO8519/DfF2FJX4Df5ROyucS2phWaO2aaWTOczmQ+ekj4r4J2t2Lxbs5zc2HXkZZZMOUbGFBKBp5D2I=
+	t=1783412060; cv=none; b=VhdhwryYYbBzY70hp/O1cPJ4xmZPEsJBBtiokxQ7yGyzjR2UVce2q/vkfsJNANAn8Gp9mROHKdyFdWFFb7HtZPlgb8kCcoayDi3MKhNpi82dlipH/UJAs7Iylyj+LI5yiCCjS9R6+HfAoEaDV1AhUNFiTpV4u3Q/knjzPN6FuTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783412054; c=relaxed/simple;
-	bh=OsF5CWJ0/1Z2cKONm2HWChwYCHJnXO2AVh8v6AGuXKw=;
+	s=arc-20240116; t=1783412060; c=relaxed/simple;
+	bh=87u+9It+L4dZYJ7UBl7mZwOH9a15OaItz8vAY28YS5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gaKbXM1yzvItwv1M4VlYiMBEBstymkwLtlUmCxmj8AUCk5nXv5DUeW5TeBwx8DsReX88AmmF07vAKN5FsFc+Kyoe8I8Y2LsV7QtFMnxDRtvlD4oNHy6IF6wrtqpVBYkjdPjPQGkNHoZzK4Ys+jLin0Ubr+Al2HmgWBbEsLv1vDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d95a8fLg; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=NnUUp9gVbTWomVZ+DKEMaXmUGF2LwhDaUvux3T0BW6UE2G1/6VXPLPdj5k1FndYFTlLWb8jLz2RP1p9yKdohqDRcE+qTjEuNZFi1dth29hb86L+2gOrTp23vr9/bIBcS/WUMIfAAs7MTB5YFc1zyEmAVI8lZXCJmMmIVQQ04Lcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XHs+rbS+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d95a8fLg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966C01F000E9;
-	Tue,  7 Jul 2026 08:14:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XHs+rbS+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB0B1F00A3A;
+	Tue,  7 Jul 2026 08:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783412052;
-	bh=cNO8KX+tnbg1izPHkTLbYvlg8mMeD/CCy2enByxGwF0=;
+	s=k20260515; t=1783412059;
+	bh=h4vfx2SL3NwxVq1Rg75CKtaHkST87eRoJJKYPXdxq6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d95a8fLggHFGLNq6/YW8+u5XhC3LCp06za1VTwhCrvctErHBQlgo7BTo5ctQmWtW0
-	 IomgVs3IVQC7vxQBVsxMBEOB2wQ1Jvmf3JSuUca+YkzBPSNqt47/COzN5qGQcgOZaZ
-	 w7HwJHNq9JliNRZ6kSXoSB+shSEv/LiGjhoeI2PKclFew/o4cKN/2E+u9nsJq+Fw09
-	 5ZwwVFkaSrwC9KmJ/ForU9VLKh3W5AdM8U+w1I2Ihw4kMVIRR8/e7qIUx7ZgIFFhTc
-	 CStTlbswCfbWJqLcMhn9FdjWsO/wXzcIhxGZ9M3Shk/wAxy5K9Ch++Neshyk1J19gI
-	 MYNVHzERdzAcg==
+	b=XHs+rbS+DxZD6jVr3dVHRKXy95U6JoPbxKgUThWXdzpzKS2WMhVh7RceGfDj5F9TB
+	 vHF8NL5uL7ttPijOX7N1vNtyZQYRdf4HANKvpzykJauLXqYMQdJaS6V/itdG3AzFxz
+	 s5vkZBbuFbGtt8oK1eIJxCemiwkESOOFKlpEpwKoVU/qkmC+L8rmJMFW8tARISalrB
+	 XbJ+A2X4DxA9YAJ7wHP5K3tLiY+BqtdllE0ndDx6/e5H1XwLGDuKoji8/gF0N317G3
+	 UqrUAkYHqQ/u7BfwDLu9RUsTXxwZe2qmKa9E9h95jqGYdsNyLukiQvXTqONqp6QnVU
+	 FDGmz3kskj2Dw==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -41,10 +41,11 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	Will Deacon <will@kernel.org>,
 	Steven Price <steven.price@arm.com>,
 	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Andre Przywara <andre.przywara@arm.com>
-Subject: [PATCH v8 2/6] firmware: hwrng: arm_smccc_trng: Register as an SMCCC device
-Date: Tue,  7 Jul 2026 13:43:46 +0530
-Message-ID: <20260707081351.1680209-3-aneesh.kumar@kernel.org>
+	Andre Przywara <andre.przywara@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH v8 3/6] firmware: smccc: Move RSI definitions to include/linux
+Date: Tue,  7 Jul 2026 13:43:47 +0530
+Message-ID: <20260707081351.1680209-4-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260707081351.1680209-1-aneesh.kumar@kernel.org>
 References: <20260707081351.1680209-1-aneesh.kumar@kernel.org>
@@ -56,196 +57,255 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The SMCCC TRNG interface is a firmware-provided SMCCC service rather than a
-standalone platform device. Now that the SMCCC core has an SMCCC bus,
-create an arm-smccc-trng device for the discovered TRNG service and convert
-the hwrng driver to an SMCCC driver.
+The RSI SMCCC function IDs describe a firmware ABI and are not arm64
+architecture specific definitions. Follow-up changes need to use them from
+non-arch code, including drivers/firmware/smccc and the Arm CCA guest
+driver.
 
-The SMCCC id table preserves module autoloading for systems where the TRNG
-driver is built as a module.
+Move the RSI SMCCC definitions from arch/arm64/include/asm/ to
+include/linux/ so they can be shared with the driver code. This also
+keeps the firmware interface outside architecture code, as requested [1].
 
-The sysfs device path changes from the old smccc_trng platform-device path
-to an arm-smccc device path. No known userspace dependency on the old path
-was found; a Debian Code Search lookup for the existing platform-device
-name/path did not find any users.
+Not all helpers in rsi_cmds.h are used by architecture code. The
+attestation token helper wrappers are only used by the Arm CCA guest
+driver, so move them to a driver-private header under
+drivers/virt/coco/arm-cca-guest/. Keep the remaining RSI command helpers,
+which are shared by architecture code and drivers, in the arm64 header.
 
-Tested-by: Andre Przywara <andre.przywara@arm.com>
+[1] https://lore.kernel.org/all/agsNO9cc7H-b0H8L@willie-the-truck
+
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- arch/arm/include/asm/archrandom.h       |  2 +-
- arch/arm64/include/asm/archrandom.h     |  2 +-
- drivers/char/hw_random/arm_smccc_trng.c | 32 +++++++++-----
- drivers/firmware/smccc/smccc.c          | 58 +++++++++++++++++++++----
- 4 files changed, 72 insertions(+), 22 deletions(-)
+ arch/arm64/include/asm/rsi_cmds.h             | 75 +----------------
+ .../virt/coco/arm-cca-guest/arm-cca-guest.c   |  2 +
+ drivers/virt/coco/arm-cca-guest/rsi.h         | 84 +++++++++++++++++++
+ .../linux/arm-smccc-rsi.h                     |  6 +-
+ 4 files changed, 90 insertions(+), 77 deletions(-)
+ create mode 100644 drivers/virt/coco/arm-cca-guest/rsi.h
+ rename arch/arm64/include/asm/rsi_smc.h => include/linux/arm-smccc-rsi.h (98%)
 
-diff --git a/arch/arm/include/asm/archrandom.h b/arch/arm/include/asm/archrandom.h
-index cc4714eb1a75..ee39a03ddf8a 100644
---- a/arch/arm/include/asm/archrandom.h
-+++ b/arch/arm/include/asm/archrandom.h
-@@ -2,7 +2,7 @@
- #ifndef _ASM_ARCHRANDOM_H
- #define _ASM_ARCHRANDOM_H
+diff --git a/arch/arm64/include/asm/rsi_cmds.h b/arch/arm64/include/asm/rsi_cmds.h
+index 2c8763876dfb..8537d0fd3da6 100644
+--- a/arch/arm64/include/asm/rsi_cmds.h
++++ b/arch/arm64/include/asm/rsi_cmds.h
+@@ -6,12 +6,10 @@
+ #ifndef __ASM_RSI_CMDS_H
+ #define __ASM_RSI_CMDS_H
  
--static inline bool __init smccc_probe_trng(void)
-+static inline bool smccc_probe_trng(void)
- {
- 	return false;
- }
-diff --git a/arch/arm64/include/asm/archrandom.h b/arch/arm64/include/asm/archrandom.h
-index 8babfbe31f95..7605dd81bd1e 100644
---- a/arch/arm64/include/asm/archrandom.h
-+++ b/arch/arm64/include/asm/archrandom.h
-@@ -12,7 +12,7 @@
+-#include <linux/arm-smccc.h>
++#include <linux/arm-smccc-rsi.h>
+ #include <linux/string.h>
+ #include <asm/memory.h>
  
- extern bool smccc_trng_available;
+-#include <asm/rsi_smc.h>
+-
+ #define RSI_GRANULE_SHIFT		12
+ #define RSI_GRANULE_SIZE		(_AC(1, UL) << RSI_GRANULE_SHIFT)
  
--static inline bool __init smccc_probe_trng(void)
-+static inline bool smccc_probe_trng(void)
- {
- 	struct arm_smccc_res res;
- 
-diff --git a/drivers/char/hw_random/arm_smccc_trng.c b/drivers/char/hw_random/arm_smccc_trng.c
-index dcb8e7f37f25..8f7f9d830cf2 100644
---- a/drivers/char/hw_random/arm_smccc_trng.c
-+++ b/drivers/char/hw_random/arm_smccc_trng.c
-@@ -16,8 +16,10 @@
- #include <linux/device.h>
- #include <linux/hw_random.h>
- #include <linux/module.h>
--#include <linux/platform_device.h>
- #include <linux/arm-smccc.h>
-+#include <linux/arm-smccc-bus.h>
-+
-+#include <asm/archrandom.h>
- 
- #ifdef CONFIG_ARM64
- #define ARM_SMCCC_TRNG_RND	ARM_SMCCC_TRNG_RND64
-@@ -94,29 +96,37 @@ static int smccc_trng_read(struct hwrng *rng, void *data, size_t max, bool wait)
- 	return copied;
+@@ -88,75 +86,4 @@ static inline long rsi_set_addr_range_state(phys_addr_t start,
+ 	return res.a0;
  }
  
--static int smccc_trng_probe(struct platform_device *pdev)
-+static int smccc_trng_probe(struct arm_smccc_device *sdev)
- {
- 	struct hwrng *trng;
+-/**
+- * rsi_attestation_token_init - Initialise the operation to retrieve an
+- * attestation token.
+- *
+- * @challenge:	The challenge data to be used in the attestation token
+- *		generation.
+- * @size:	Size of the challenge data in bytes.
+- *
+- * Initialises the attestation token generation and returns an upper bound
+- * on the attestation token size that can be used to allocate an adequate
+- * buffer. The caller is expected to subsequently call
+- * rsi_attestation_token_continue() to retrieve the attestation token data on
+- * the same CPU.
+- *
+- * Returns:
+- *  On success, returns the upper limit of the attestation report size.
+- *  Otherwise, -EINVAL
+- */
+-static inline long
+-rsi_attestation_token_init(const u8 *challenge, unsigned long size)
+-{
+-	struct arm_smccc_1_2_regs regs = { 0 };
+-
+-	/* The challenge must be at least 32bytes and at most 64bytes */
+-	if (!challenge || size < 32 || size > 64)
+-		return -EINVAL;
+-
+-	regs.a0 = SMC_RSI_ATTESTATION_TOKEN_INIT;
+-	memcpy(&regs.a1, challenge, size);
+-	arm_smccc_1_2_smc(&regs, &regs);
+-
+-	if (regs.a0 == RSI_SUCCESS)
+-		return regs.a1;
+-
+-	return -EINVAL;
+-}
+-
+-/**
+- * rsi_attestation_token_continue - Continue the operation to retrieve an
+- * attestation token.
+- *
+- * @granule: {I}PA of the Granule to which the token will be written.
+- * @offset:  Offset within Granule to start of buffer in bytes.
+- * @size:    The size of the buffer.
+- * @len:     The number of bytes written to the buffer.
+- *
+- * Retrieves up to a RSI_GRANULE_SIZE worth of token data per call. The caller
+- * is expected to call rsi_attestation_token_init() before calling this
+- * function to retrieve the attestation token.
+- *
+- * Return:
+- * * %RSI_SUCCESS     - Attestation token retrieved successfully.
+- * * %RSI_INCOMPLETE  - Token generation is not complete.
+- * * %RSI_ERROR_INPUT - A parameter was not valid.
+- * * %RSI_ERROR_STATE - Attestation not in progress.
+- */
+-static inline unsigned long rsi_attestation_token_continue(phys_addr_t granule,
+-							   unsigned long offset,
+-							   unsigned long size,
+-							   unsigned long *len)
+-{
+-	struct arm_smccc_res res;
+-
+-	arm_smccc_1_1_invoke(SMC_RSI_ATTESTATION_TOKEN_CONTINUE,
+-			     granule, offset, size, 0, &res);
+-
+-	if (len)
+-		*len = res.a1;
+-	return res.a0;
+-}
+-
+ #endif /* __ASM_RSI_CMDS_H */
+diff --git a/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c b/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
+index 32cd038cb79b..d05acddf6c4e 100644
+--- a/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
++++ b/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
+@@ -14,6 +14,8 @@
  
--	trng = devm_kzalloc(&pdev->dev, sizeof(*trng), GFP_KERNEL);
-+	/* validate the minimum version requirement */
-+	if (!smccc_probe_trng())
-+		return -ENODEV;
+ #include <asm/rsi.h>
+ 
++#include "rsi.h"
 +
-+	trng = devm_kzalloc(&sdev->dev, sizeof(*trng), GFP_KERNEL);
- 	if (!trng)
- 		return -ENOMEM;
- 
- 	trng->name = "smccc_trng";
- 	trng->read = smccc_trng_read;
- 
--	return devm_hwrng_register(&pdev->dev, trng);
-+	return devm_hwrng_register(&sdev->dev, trng);
- }
- 
--static struct platform_driver smccc_trng_driver = {
--	.driver = {
--		.name		= "smccc_trng",
--	},
--	.probe		= smccc_trng_probe,
-+static const struct arm_smccc_device_id smccc_trng_id_table[] = {
-+	{ .name = "arm-smccc-trng" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(arm_smccc, smccc_trng_id_table);
+ /**
+  * struct arm_cca_token_info - a descriptor for the token buffer.
+  * @challenge:		Pointer to the challenge data
+diff --git a/drivers/virt/coco/arm-cca-guest/rsi.h b/drivers/virt/coco/arm-cca-guest/rsi.h
+new file mode 100644
+index 000000000000..f7303f4bce17
+--- /dev/null
++++ b/drivers/virt/coco/arm-cca-guest/rsi.h
+@@ -0,0 +1,84 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2026 ARM Ltd.
++ */
 +
-+static struct arm_smccc_driver smccc_trng_driver = {
-+	.name	  = KBUILD_MODNAME,
-+	.probe	  = smccc_trng_probe,
-+	.id_table = smccc_trng_id_table,
- };
--module_platform_driver(smccc_trng_driver);
-+module_arm_smccc_driver(smccc_trng_driver);
- 
--MODULE_ALIAS("platform:smccc_trng");
- MODULE_AUTHOR("Andre Przywara");
- MODULE_DESCRIPTION("Arm SMCCC TRNG firmware interface support");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/firmware/smccc/smccc.c b/drivers/firmware/smccc/smccc.c
-index bdee057db2fd..092bdbac26f2 100644
---- a/drivers/firmware/smccc/smccc.c
-+++ b/drivers/firmware/smccc/smccc.c
-@@ -9,7 +9,8 @@
- #include <linux/init.h>
- #include <linux/arm-smccc.h>
- #include <linux/kernel.h>
--#include <linux/platform_device.h>
-+#include <linux/arm-smccc-bus.h>
++#ifndef _VIRT_COCO_RSI_H_
++#define _VIRT_COCO_RSI_H_
 +
- #include <asm/archrandom.h>
- 
- static u32 smccc_version = ARM_SMCCC_VERSION_1_0;
-@@ -81,16 +82,55 @@ bool arm_smccc_hypervisor_has_uuid(const uuid_t *hyp_uuid)
- }
- EXPORT_SYMBOL_GPL(arm_smccc_hypervisor_has_uuid);
- 
-+struct smccc_device_info {
-+	u32 func_id;
-+	bool requires_smc;
-+	const char *device_name;
-+};
++#include <linux/arm-smccc-rsi.h>
 +
-+static const struct smccc_device_info smccc_devices[] __initconst = {
-+	{
-+		.func_id        = ARM_SMCCC_TRNG_VERSION,
-+		.requires_smc   = false,
-+		.device_name    = "arm-smccc-trng",
-+	},
-+};
-+
-+static bool __init smccc_probe_smccc_device(const struct smccc_device_info *smccc_dev)
++/**
++ * rsi_attestation_token_init - Initialise the operation to retrieve an
++ * attestation token.
++ *
++ * @challenge:	The challenge data to be used in the attestation token
++ *		generation.
++ * @size:	Size of the challenge data in bytes.
++ *
++ * Initialises the attestation token generation and returns an upper bound
++ * on the attestation token size that can be used to allocate an adequate
++ * buffer. The caller is expected to subsequently call
++ * rsi_attestation_token_continue() to retrieve the attestation token data on
++ * the same CPU.
++ *
++ * Returns:
++ *  On success, returns the upper limit of the attestation report size.
++ *  Otherwise, -EINVAL
++ */
++static inline long
++rsi_attestation_token_init(const u8 *challenge, unsigned long size)
 +{
-+	int ret;
-+	struct arm_smccc_res res = {};
++	struct arm_smccc_1_2_regs regs = { 0 };
 +
-+	if (smccc_conduit == SMCCC_CONDUIT_NONE)
-+		return false;
++	/* The challenge must be at least 32bytes and at most 64bytes */
++	if (!challenge || size < 32 || size > 64)
++		return -EINVAL;
 +
-+	if (smccc_dev->requires_smc && smccc_conduit != SMCCC_CONDUIT_SMC)
-+		return false;
++	regs.a0 = SMC_RSI_ATTESTATION_TOKEN_INIT;
++	memcpy(&regs.a1, challenge, size);
++	arm_smccc_1_2_smc(&regs, &regs);
 +
-+	arm_smccc_1_1_invoke(smccc_dev->func_id, &res);
-+	ret = res.a0;
++	if (regs.a0 == RSI_SUCCESS)
++		return regs.a1;
 +
-+	if (ret == SMCCC_RET_NOT_SUPPORTED)
-+		return false;
-+
-+	return true;
++	return -EINVAL;
 +}
 +
- static int __init smccc_devices_init(void)
- {
--	struct platform_device *pdev;
--
--	if (smccc_trng_available) {
--		pdev = platform_device_register_simple("smccc_trng", -1,
--						       NULL, 0);
--		if (IS_ERR(pdev))
--			pr_err("smccc_trng: could not register device: %ld\n",
--			       PTR_ERR(pdev));
-+	struct arm_smccc_device *sdev;
-+	const struct smccc_device_info *smccc_dev;
++/**
++ * rsi_attestation_token_continue - Continue the operation to retrieve an
++ * attestation token.
++ *
++ * @granule: {I}PA of the Granule to which the token will be written.
++ * @offset:  Offset within Granule to start of buffer in bytes.
++ * @size:    The size of the buffer.
++ * @len:     The number of bytes written to the buffer.
++ *
++ * Retrieves up to a RSI_GRANULE_SIZE worth of token data per call. The caller
++ * is expected to call rsi_attestation_token_init() before calling this
++ * function to retrieve the attestation token.
++ *
++ * Return:
++ * * %RSI_SUCCESS     - Attestation token retrieved successfully.
++ * * %RSI_INCOMPLETE  - Token generation is not complete.
++ * * %RSI_ERROR_INPUT - A parameter was not valid.
++ * * %RSI_ERROR_STATE - Attestation not in progress.
++ */
++static inline unsigned long rsi_attestation_token_continue(phys_addr_t granule,
++							   unsigned long offset,
++							   unsigned long size,
++							   unsigned long *len)
++{
++	struct arm_smccc_res res;
 +
-+	for (int i = 0; i < ARRAY_SIZE(smccc_devices); i++) {
-+		smccc_dev = &smccc_devices[i];
++	arm_smccc_1_1_invoke(SMC_RSI_ATTESTATION_TOKEN_CONTINUE,
++			     granule, offset, size, 0, &res);
 +
-+		if (!smccc_probe_smccc_device(smccc_dev))
-+			continue;
++	if (len)
++		*len = res.a1;
++	return res.a0;
++}
 +
-+		sdev = arm_smccc_device_register(smccc_dev->device_name);
-+		if (IS_ERR(sdev))
-+			pr_err("%s: could not register device: %ld\n",
-+			       smccc_dev->device_name, PTR_ERR(sdev));
- 	}
++
++
++#endif
+diff --git a/arch/arm64/include/asm/rsi_smc.h b/include/linux/arm-smccc-rsi.h
+similarity index 98%
+rename from arch/arm64/include/asm/rsi_smc.h
+rename to include/linux/arm-smccc-rsi.h
+index e19253f96c94..fddb77986f70 100644
+--- a/arch/arm64/include/asm/rsi_smc.h
++++ b/include/linux/arm-smccc-rsi.h
+@@ -3,8 +3,8 @@
+  * Copyright (C) 2023 ARM Ltd.
+  */
  
- 	return 0;
+-#ifndef __ASM_RSI_SMC_H_
+-#define __ASM_RSI_SMC_H_
++#ifndef __LINUX_ARM_SMCCC_RSI_H_
++#define __LINUX_ARM_SMCCC_RSI_H_
+ 
+ #include <linux/arm-smccc.h>
+ 
+@@ -190,4 +190,4 @@ struct realm_config {
+  */
+ #define SMC_RSI_HOST_CALL			SMC_RSI_FID(0x199)
+ 
+-#endif /* __ASM_RSI_SMC_H_ */
++#endif /* __LINUX_ARM_SMCCC_RSI_H_ */
 -- 
 2.43.0
 
