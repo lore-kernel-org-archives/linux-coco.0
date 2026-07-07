@@ -1,108 +1,98 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA491E51E0;
-	Tue,  7 Jul 2026 15:41:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347C0420E74
+	for <linux-coco@lists.linux.dev>; Tue,  7 Jul 2026 15:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783438910; cv=none; b=vCck41OAdCI5HpfAxd7y7l0JbhYMKFraUfdbtkAPpDGuLvSY+9wcUvHKyvOzyXmggGm+axGv0NWZYfMlckyOKFsmF81HO4ho7NuQCsUnEnOuJ+fL0DxFvXstlgOfx8Asqg1xdeDWt962VAJIQ9j+FicziD0OMQpebTQLJwmwB2g=
+	t=1783439144; cv=none; b=lPSrYBvoge5b3VA9uMLmLsDhTWehljb/4QapnMzP3L+PSQd4jNzqkJPa/ulxf3aY4WENelcluQJSaG63ptVVu31D/6OxnGQNH1/+GskHj0Ne6EUGSLl9fpvZcr92dp/4d3uKM0g8YAqPQwPiRgrL87nr235xODz0TWnW1a00IaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783438910; c=relaxed/simple;
-	bh=xMFTUswuraT98QQrkLx1TpVKtw83hgxNIbc8hHyXcSM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ni9ux8JDtWCjs2KwKfj9Z+LRPrLwvJde1pgykHxh6m8g/7xmbpB9AoeIfLUt67qmQtfTBGwqUTZy+5cmFO8geV+K8eafSufag1lRwVXhXjI3LstrYNdoqZURDZKbfFHNtqb6et3Fbvqxx785pt0J8h8xsnhxmENyr5HWm8kNI4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=YcCuSd4U; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1783439144; c=relaxed/simple;
+	bh=OLF4hmmf+Tc3sRZQ1Zn/zpMeXWlzqueZGfFai3lxUS4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ax7aq3C+QU3+NeAqJeKEigAAahNrziS6IIw2a18+gstc2SWaY24rqlHtn+9cetptHkGrYVPu0Kk8Oa3uuzZY8vRpk3z8ZdLhvQZ50cCNvzfRPguQf4ZO8IO8R6w8PVZaL8ntpEAN8Sd4KtuCFBBm2TQ8wxVAG5IamtwjP3Lt0ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KPNhNj0W; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="YcCuSd4U"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5EB481AED;
-	Tue,  7 Jul 2026 08:41:43 -0700 (PDT)
-Received: from [10.57.38.146] (unknown [10.57.38.146])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9F0913F905;
-	Tue,  7 Jul 2026 08:41:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783438907; bh=xMFTUswuraT98QQrkLx1TpVKtw83hgxNIbc8hHyXcSM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YcCuSd4USWQ9JvBOwgdQS/XGW7fN5UF5gHXcM0Ogcbv+GMTsGplKLOKCsaQ73/VF8
-	 1xuAF2K12iBvJ56gFYBusyY7CPREK4DmWCZ4DbU0txiXaoauL4t7iPzZRJzuP3+6Uq
-	 EAUVgOWIKMO2gsIMqcbYolSuec2zbVTSCMm62+CI=
-Message-ID: <8d6b24ea-3a63-497e-9ce9-6a8e4d340665@arm.com>
-Date: Tue, 7 Jul 2026 16:41:40 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KPNhNj0W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783439140; x=1814975140;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OLF4hmmf+Tc3sRZQ1Zn/zpMeXWlzqueZGfFai3lxUS4=;
+  b=KPNhNj0WUbQ38ZoWvszKKCuB89LNsqZMCtIICFiDiBBmwxX9xFXA3TaL
+   3r/qRRf4/ag6oJspZZ7/JvOS02Xaxxufze/+UTDUQFTBjh6q7U/93qzm7
+   z5EUQoy6LTVksaJu7F7AQMtUvhYC/H/CSoqN+T4li/fZAmhNkLm47bj1L
+   1qFBimoiCGZXdifiu6FCRCDALKxxfWYDdIsrggFtYa8RmatQCuAqxm2+L
+   gYPzfhc3WJQqTBrOaTUjp2iW0VI01UrkxWX06tMW4aFRqKqa7ubH9Br4t
+   kXafVaWxxAQHWwod3BXcu+kskP7YKLUZ5vuZ74yiF28qspwgBrozIQkv7
+   A==;
+X-CSE-ConnectionGUID: i8P6qLq4Qq66aEdg5ABgug==
+X-CSE-MsgGUID: Vj8uCAaxTYeCaCck2HJ7ag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="83066441"
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="83066441"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2026 08:45:37 -0700
+X-CSE-ConnectionGUID: MQL0LnQXR1id52jn/IouIg==
+X-CSE-MsgGUID: WiASptY7QHKl5InA4nxNwA==
+X-ExtLoop1: 1
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa003.fm.intel.com with ESMTP; 07 Jul 2026 08:45:35 -0700
+Date: Tue, 7 Jul 2026 23:45:33 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kas@kernel.org,
+	rick.p.edgecombe@intel.com, dave.hansen@intel.com,
+	dave.hansen@linux.intel.com, yilun.xu@intel.com, chao.gao@intel.com,
+	djbw@kernel.org, linux-coco@lists.linux.dev, peter.fang@intel.com
+Subject: Re: [PATCH] x86/virt/tdx: Formalize SEAMCALL version encoding support
+Message-ID: <ak0fHVtxjC6bXQZY@yilunxu-OptiPlex-7050>
+References: <20260702144614.59464-1-yilun.xu@linux.intel.com>
+ <ede965a3-0fd6-46b4-906d-716bce163036@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 08/22] coco: arm64: s390: powerpc: Mark secure guests
- with CC_ATTR_GUEST_MEM_ENCRYPT
-Content-Language: en-GB
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-Cc: Robin Murphy <robin.murphy@arm.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Will Deacon <will@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Steven Price <steven.price@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Jiri Pirko <jiri@resnulli.us>,
- Jason Gunthorpe <jgg@ziepe.ca>, Mostafa Saleh <smostafa@google.com>,
- Petr Tesarik <ptesarik@suse.com>, Alexey Kardashevskiy <aik@amd.com>,
- Dan Williams <dan.j.williams@intel.com>, Xu Yilun
- <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
- <20260701054926.825925-9-aneesh.kumar@kernel.org>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260701054926.825925-9-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ede965a3-0fd6-46b4-906d-716bce163036@intel.com>
 
-On 01/07/2026 06:49, Aneesh Kumar K.V (Arm) wrote:
-> arm64 Realms, powerpc secure guests and s390 protected virtualization
-> guests currently report CC_ATTR_MEM_ENCRYPT, but not
-> CC_ATTR_GUEST_MEM_ENCRYPT.
+On Fri, Jul 03, 2026 at 08:00:38AM +0800, Xiaoyao Li wrote:
+> On 7/2/2026 10:46 PM, Xu Yilun wrote:
+> > +/*
+> > + * SEAMCALL leaf:
+> > + *
+> > + * Bit 15:0	Leaf number
+> > + * Bit 23:16	Version number
+> > + */
+> > +#define SEAMCALL_VERSION_MASK		GENMASK_U64(23, 16)
+> > +
+> > +static __always_inline u64 __seamcall_encode_fn(sc_func_t func, u64 fn,
+> > +						struct tdx_module_args *args)
+> > +{
+> > +	FIELD_MODIFY(SEAMCALL_VERSION_MASK, &fn, args->version);
+> > +
+> > +	return func(fn, args);
+> > +}
+> > +
+> >   static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
+> >   						  struct tdx_module_args *args)
+> >   {
+> > @@ -39,7 +56,7 @@ static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
+> >   	 */
+> >   	this_cpu_write(cache_state_incoherent, true);
+> > -	return func(fn, args);
+> > +	return __seamcall_encode_fn(func, fn, args);
+> >   }
 > 
-> These environments are all secure guest configurations. Their
-> force_dma_unencrypted() implementations also treat the same secure guest
-> state as requiring unencrypted DMA. Report CC_ATTR_GUEST_MEM_ENCRYPT for
-> the same condition so generic confidential-computing code can distinguish
-> guest memory encryption from host memory encryption instead of relying only
-> on CC_ATTR_MEM_ENCRYPT.
+> Can we drop the new wrapper? I don't see why we need it. The wrapper makes
+> the code harder to read.
+
+OK, will call FIELD_MODIFY() directly in __seamcall_dirty_cache()
 > 
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-
-
-For arm64 bits:
-
-
-
-> ---
->   arch/arm64/kernel/rsi.c                      | 1 +
->   arch/powerpc/platforms/pseries/cc_platform.c | 1 +
->   arch/s390/mm/init.c                          | 1 +
->   3 files changed, 3 insertions(+)
 > 
-> diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
-> index 92160f2e57ff..207e36db1e7a 100644
-> --- a/arch/arm64/kernel/rsi.c
-> +++ b/arch/arm64/kernel/rsi.c
-> @@ -27,6 +27,7 @@ bool cc_platform_has(enum cc_attr attr)
->   {
->   	switch (attr) {
->   	case CC_ATTR_MEM_ENCRYPT:
-> +	case CC_ATTR_GUEST_MEM_ENCRYPT:
->   		return is_realm_world();
->   	default:
->   		return false;
-
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-
-
-Suzuki
