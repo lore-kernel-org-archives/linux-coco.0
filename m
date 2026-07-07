@@ -1,251 +1,146 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBF340D569
-	for <linux-coco@lists.linux.dev>; Tue,  7 Jul 2026 12:43:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0952224B28;
+	Tue,  7 Jul 2026 13:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783428206; cv=none; b=mcWp/BbEh3Zc5HrkszsEa11zAE96ePfetM169aBKYABowz+Z5UvTarYXjXXAzm+8H4XrnyUXoum8WHiH3SAcjwhb0q2t/Jt4OCBBoMQfl+8530T35P2mB+5zIAFytUPTl9AhGNd2xa4otIMxQsQcbLAGLa+dYX8WKzBdtM1aJbs=
+	t=1783429441; cv=none; b=mdUDKaDlvjlx7+5Vpft1g8F2uDck0B8eu0WdN0e2vAn9dLD/Vut6B1fPyLSwNqD9RL0/TziwmUT7K9tc7lRWQkCcRhmx4O2gQZRiidhNQK8HmQJ3LQdPMNPQ13Fw+yOvhXTlePNwL4qVFmSVs3JqROK/ST6xVf73tI3WYDPOrSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783428206; c=relaxed/simple;
-	bh=0syJgOL7UuJijsJI6FAumA8sQyhvCuWjenbq/nczlOM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o1otuTI8Jsj9rfHMKNWfp9XLllBM97eNW06wt9cwSfIuBqd396lBZC1gc7KUbYRiIOhSLoSwy4hK0oWtNqxGBIctv6F9LObXIXWyzoGA5Y7ZFPCr98yxiUM+5U2+l5lVyeMt+oxGHoc/5BJ7haZ8u5z1JKo6Z6dr6tXgehgtBbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=WjQBuRKW; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1783429441; c=relaxed/simple;
+	bh=I9l5C+AWVnctHlRI+9Q6TepCS4o9BXhroqvGump9+3M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=nIzSQtwrc4DcC9K7WesxDzVvs7jXems67OLFe56tyX4oHDHHH+Ii8+8amHdk4dc0vd0As+fltd/QWeOgUPbwa8Us00Kf5oFI8mKN8utaPxjygufYT8DCpYNrofG2WkJ28uzOvfs1hvx6iSHKrnTmgW7pdBmRJ3UCo80ocdNwtxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=bIpgAugu; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="WjQBuRKW"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51bfbe05683so27332031cf.2
-        for <linux-coco@lists.linux.dev>; Tue, 07 Jul 2026 05:43:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1783428203; x=1784033003; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DpR/IZcE7y8vF/86rmuimft6GS353sbM1gJlGWQ97b0=;
-        b=WjQBuRKWi4jpHUvedfSIJoPeOIbQDu8v16lUNiwEaG07hP5Qz+OZ6mmZfilBpY1zY0
-         ukip1Ld+Q9caI9draToqK3MwTe3tFBVa3PvUGMsQrUo+5A5gcSfv3tCoTA4+ydF8YQYo
-         lRmEh3qwzxgdFAa3qMNS2z02YdJ5koW7t4P8uC1UqNbjsXGl+tWzTh+abdLTgwvVtrJa
-         jusHwRbVW1vG/8hXc19fkR3rUdvhzqvNnChOdQz2NQIdoo7GBY3XhmxeHJ1r6SPedCUE
-         CQwavSMqfa5MJtdWnq0EqGDyKj+bIj20/H3I5BLF16Es17iJ/FnbxwWYXdxCc6W1Iozx
-         kflw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783428203; x=1784033003;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DpR/IZcE7y8vF/86rmuimft6GS353sbM1gJlGWQ97b0=;
-        b=CZWMA7A9JdEm5ZyY0XsiwLUwSUODIewpkq2UBDdPzaSBpPnxtskkTocBlROd9ZLlop
-         e6a4BOImBDmldh4uLHvEGr/1zqeVdeZ8QDoQKyjkS07OFoUYx5PEctqa3PSLpI/VaN4B
-         p3UjFzqy1SSC2UcdPeXIxssi5rZQLujXF++KpYYfGbQ117uePNW0uqLMant3kHEYqW8A
-         BFHYDsE0g++rLb6UESDihgxYHqcQdKQ+oXyx+M2ePgKWLyCbVWLPnp7KP9vO8Hd++xz1
-         FzV252/xvRA1Gqp9IKJb+TaH4E4SnTziJLscAWG04HevLe+0t4q7vviCZ9ekbQNnjJbK
-         k2Tg==
-X-Gm-Message-State: AOJu0YzI3eTDvq1tiwZwPN9vBkZc/NLcfPmQvcSF+VIWghpIfRuHVoh2
-	XDYAVtL4h02jQsL7gq2mV4mmum6D9dzfEp7rrqH2yxDIGf3OVNeCmO5qb/0mHT9Fpp4=
-X-Gm-Gg: AfdE7clOUugFrhvx2ZVHeIlPHs6T7gwKczsyMRCyKv4IhbxQ3Q4yS2h4p7nPZsYakP8
-	GWlPp8OFcmhHks9aeNzaE1lcGYJDqXc6hZ9bfkSH0gyvfbWZ0we8EypdMtSHS8fWaTlg5Rq+7Fw
-	wsCJCa4gTMvk9krqbwZRyEzeGhndohSS1kaXIE7wqiG1x7sMV+qL+NCCJ8kX4Lc5HbTP5wMs0Mb
-	SLgy9eU3Uan0Xcm75fA5grN6zPdK/b87pbLzrHS/qvUJ3KmlRuOJoqVZNIR9oBP2KudMHh6ziOk
-	MmO88REZkYfcmj33dywHcIo4PtkXh98wDy0bXpVBeDoclSzHDdGv6rFD8YKp8ePHoINtBWeoP7K
-	fjy2/0gtZ13UB+RCghsBxfA74mkR8AVKDkSOeLR5aRsGzwb0cxs7Q2YrYCqd1
-X-Received: by 2002:ac8:7f05:0:b0:51c:1cbd:5fdc with SMTP id d75a77b69052e-51c747a1052mr51204751cf.10.1783428202942;
-        Tue, 07 Jul 2026 05:43:22 -0700 (PDT)
-Received: from ziepe.ca ([159.2.72.92])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f4718143aasm158188786d6.32.2026.07.07.05.43.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 05:43:22 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wh58z-00000000vM8-1tLF;
-	Tue, 07 Jul 2026 09:43:21 -0300
-Date: Tue, 7 Jul 2026 09:43:21 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Dan Williams (nvidia)" <djbw@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	driver-core@lists.linux.dev, ankita@nvidia.com,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>, Petr Pavlu <petr.pavlu@suse.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security
- Protocol (TDISP)
-Message-ID: <20260707124321.GF118978@ziepe.ca>
-References: <20260705220819.2472765-1-djbw@kernel.org>
- <20260706125140.GB107792@ziepe.ca>
- <6a4c163072c60_174db6100c4@djbw-dev.notmuch>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="bIpgAugu"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260707130350euoutp01816b7aba68f35cc361a12757e4960321~AA55SXF0N2589025890euoutp01R;
+	Tue,  7 Jul 2026 13:03:50 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260707130350euoutp01816b7aba68f35cc361a12757e4960321~AA55SXF0N2589025890euoutp01R
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1783429431;
+	bh=1pXyGCmuZ2dd2pCX0ADJkgnLvZuWQnMbV/mJUc5jL2g=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=bIpgAugumnJ+vFbRlkBo8FzRtO/g5MYRDHE2BlHryQsTPFMC5fInDzKCOAgZ1npra
+	 WjvJ/rWNe/t/bQYYXvdlEuuxIM77d/dc9M35H15wIneXXtBw3nINopT0vdG4B55jJi
+	 2Rm+c3z4Adg15mIXdYkxRRDiDG8vmD3c75cZpyvY=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260707130350eucas1p1721c804c0be9f8bcca8c74b90c602459~AA55DsDSM2891728917eucas1p1P;
+	Tue,  7 Jul 2026 13:03:50 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260707130349eusmtip16fa04cbe7458b13574cd93f920780ed5~AA53jcBbZ1173511735eusmtip1K;
+	Tue,  7 Jul 2026 13:03:49 +0000 (GMT)
+Message-ID: <fc804746-4fb8-4ea9-997f-a4cae9ba8c14@samsung.com>
+Date: Tue, 7 Jul 2026 15:03:48 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6a4c163072c60_174db6100c4@djbw-dev.notmuch>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v7 00/22] dma-mapping: Track shared DMA state through
+ direct, pool and swiotlb paths
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Cc: Robin Murphy <robin.murphy@arm.com>, Will Deacon <will@kernel.org>, Marc
+	Zyngier <maz@kernel.org>, Steven Price <steven.price@arm.com>, Suzuki K
+	Poulose <Suzuki.Poulose@arm.com>, Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>, Jason Gunthorpe <jgg@ziepe.ca>, Mostafa Saleh
+	<smostafa@google.com>, Petr Tesarik <ptesarik@suse.com>, Alexey
+	Kardashevskiy <aik@amd.com>, Dan Williams <dan.j.williams@intel.com>, Xu
+	Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Alexander Gordeev
+	<agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
+	<svens@linux.ibm.com>, x86@kernel.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <yq5av7argr65.fsf@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260707130350eucas1p1721c804c0be9f8bcca8c74b90c602459
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260707080628eucas1p13fa8a57e60ef5dd3ec651e19e42af0a1
+X-EPHeader: CA
+X-CMS-RootMailID: 20260707080628eucas1p13fa8a57e60ef5dd3ec651e19e42af0a1
+References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
+	<CGME20260707080628eucas1p13fa8a57e60ef5dd3ec651e19e42af0a1@eucas1p1.samsung.com>
+	<yq5av7argr65.fsf@kernel.org>
 
-On Mon, Jul 06, 2026 at 01:55:12PM -0700, Dan Williams (nvidia) wrote:
-> Jason Gunthorpe wrote:
-> > On Sun, Jul 05, 2026 at 03:08:04PM -0700, Dan Williams wrote:
-> > > * NONE: no usage of the device unless the trust is explicitly overridden
-> > >   by user policy specified via a driver flag, module flag, or uapi (TBD).
-> > > 
-> > > * ADVERSARY: needs acknowledgement from the bus and IOMMU / DMA layers
-> > >   that the device is limited to strict IOMMU translation behavior. Drivers
-> > >   can use this as a signal to limit functionality. This designation
-> > >   implies follow-on IOMMU and bus enabling work for features like
-> > >   arranging for the device to attach to a blocked IOMMU domain when
-> > >   detached from a driver.
-> > > 
-> > > * AUTO: typical / historical Linux driver model.
-> > > 
-> > > * TCB: a trust level that only exists in Confidential Computing
-> > >   environments. When acked by the IOMMU / DMA layer it enables the device
-> > >   to issue direct-DMA to private/encrypted addresses or otherwise attach to
-> > >   a secure vIOMMU within the TCB.
-> > 
-> > I'm not sure I entirely like this one, certainly it needs to be
-> > possible to have both T=1 and ADVERSARY together.
-> 
-> T=1 and ADVERSARY are independent for link encryption and private MMIO.
-> In other words the device is placed into the TDISP RUN state independent
-> of its trust level. 
+On 07.07.2026 10:06, Aneesh Kumar K.V wrote:
+> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
+>
+>> This series tracks confidential-computing shared DMA state through the
+>> dma-direct, dma-pool, and swiotlb paths so that encrypted and decrypted
+>> DMA buffers are handled consistently.
+>>
+>> Today, the direct DMA path mostly relies on force_dma_unencrypted() for
+>> shared/decrypted buffer handling. This series consolidates the
+>> force_dma_unencrypted() checks in the top-level functions and ensures
+>> that the remaining DMA interfaces use DMA attributes to make the correct
+>> decisions.
+>>
+>> The series separates mapping and allocation state:
+>> - DMA_ATTR_CC_SHARED describes the DMA address attribute requested for a
+>>   mapping. It tells the DMA mapping path that the DMA address must target
+>>   shared/decrypted memory.
+>> - __DMA_ATTR_ALLOC_CC_SHARED is an internal DMA-mapping attribute used only
+>>   by allocation paths after the DMA core decides that the backing pages
+>>   must be allocated as shared/decrypted memory.
+>>
+>> The series:
+>> - moves swiotlb-backed allocations out of __dma_direct_alloc_pages(),
+>> - uses __DMA_ATTR_ALLOC_CC_SHARED through the dma-direct alloc/free paths
+>> - teaches the atomic DMA pools to track encrypted versus decrypted
+>>   state
+>> - tracks swiotlb pool encryption state and enforces strict pool
+>>   selection
+>> - centralizes encrypted/decrypted pgprot handling in dma_pgprot() using
+>>   DMA attributes
+>> - passes DMA attributes down to dma_capable() so capability checks can
+>>   validate whether the selected DMA address encoding matches
+>>   DMA_ATTR_CC_SHARED
+>> - makes dma_direct_map_phys() choose the DMA address encoding from
+>>   DMA_ATTR_CC_SHARED and fall back to swiotlb when a shared DMA request
+>>   cannot use the direct mapping, which lets arm64 and x86 CCA guests stop
+>>   relying on SWIOTLB_FORCE for DMA mappings
+>> - use the selected swiotlb pool state to derive the returned DMA
+>>   address
+>> - reports CC_ATTR_GUEST_MEM_ENCRYPT for arm64 Realms, powerpc secure
+>>   guests, and s390 protected virtualization guests.
+>>
+>> Dependency:
+>> This series depends on the pKVM changes posted at:
+>> https://lore.kernel.org/all/20260603110522.3331819-1-smostafa@google.com
+>>
+>> Please merge this series only after the pKVM changes above are merged.
+>> Otherwise pKVM will be broken.
+>>
+> A rebased tree on top of the dependent pKVM changes can be found at:
+> https://gitlab.arm.com/linux-arm/linux-cca/-/tree/scratch/pkvm/testing?ref_type=heads
+>
+> The patches had minor conflicts. I am not sure how we want to get this
+> merged.
+>
+> Should we ask the pKVM maintainers for a topic branch, and then I can
+> repost the updated series on top of that?
+I'm fine with merging on top of the topic branch and I assume that this
+patchset is mature enough to give it a try in linux-next, but first I
+would like to get a review or at least acks from others with good CC
+knowledge or experience.
 
-That's the right thing
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-> Downstream accesses to the device must have T=1, and
-> its upstream accesses will have T=1, but with force_dma_unencrypted() ==
-> true.
-
-That should never happen. Once in RUN force_dma_unencrypyted() ==
-false, it has nothing to do with the trust level.
-
-Even if you set ADVERSARY it should still be bouncing partial page
-DMAs into private memory. The point of running something like this is
-to remove the shared memory attack surface - ie the hypervisor SW. The
-attack surface is reduced to the device itself by remaining in shared
-memory.
-
-> > I'd also argue this list is missing "FULL" trust, which is the
-> > historical Linux behavior for a normal device. AUTO should be
-> > selecting between FULL/ADVERSARY based on things like the ACPI/etc as
-> > it does today.
-> 
-> 1/ that is effectively how the UNSET level behaves. If the
-> bus has not set ADVERSARY before device_add() then the default behavior
-> is the AUTO level. Where AUTO means all of the automatic privileges a
-> device can be offered without needing any other coordination.
-
-I think my other remark about two enums is some of the issue, the
-policy can have things like UNSET or AUTO, but once the driver starts
-to probe an in-effect mode should be computed and be concrete. Having
-a driver run with a trust mode of AUTO or UNSET is just confusing.
-
-> 2/ The ambiguity and conflict occurs at ->dma_configure() time when the
-> bus and IOMMU layer want to reject the device's access to some privilege
-> by failing. When FULL is defined as !ADVERSARY then it is difficult to
-> describe the semantics when FULL trust honors rejections to private DMA
-> and when it falls back to shared operation.
-
-Given that the trust level shouldn't impact force_dma_unencrypted(),
-the only thing left is to setup the IOMMU differently, and maybe
-operate a driver in a hardened mode or something like that.
-
-I don't see what the TCB is supposed to be changing here.
-
-That leaves it just as a policy gate to check that T=1, I'm not sure
-if that is worthwhile enough for dedicated UAPI?
-
-> The above more points to a need to have an explicit trust level for
-> adversarial private memory access. The address spaces are distinct
-> assets with different levels of trust.
-> 
-> UNSET: bus picks initial level, or leaves it to the device_core().
-> NONE:
-> ADVERSARY: Device can be in T=0, or T=1 mode (UNLOCKED, or RUN).
-> AUTO: Could rename this to be FULL or ALL or DEFAULT, I still keep
->       coming back to the "AUTO" name because the privileges are not
->       uniform based on the IOMMU / DMA topology and device capability.
->       Again, the TDISP state is independent. The TSM driver does
->       not get called to gatekeep and verify access in this mode.
-> TCB_ADVERSARY: or PRIVATE_ADVERSARY. Device can access private platform
-> 	       resources iff an enforcing IOMMU is present.
-> TCB: or PRIVATE_FULL, automatically enable all access privileges
->      including private memory access.
-
-Yeah, we can keep adding more modes to make a big cross product, but
-I do wonder if this is going to get too big..
-
-IDK, maybe it should be a bitmap instead of a level?
-
-bit 0 = Force Disable
-bit 1 = Device is adversarial:
-           - Enable strong IOMMU protections
-           - Enable driver protections
-bit 2 = Require T=1
-bit 3 = Require IOMMU
-bit 4 = Require DMA/MMIO security (eg Link IDE)
-
-Where value 0 means the current level of full trust.
-
-It is a little easier to explain what each thing is doing and easier
-to add new things
-
-Then from a sysfs perpsective the policy would have special string
-values like 'use bus default'
-
-> > If the trust level is reduced to just be a command to the kernel how
-> > it should operate the device then it would be up to userspace to
-> > confirm things like T=1 before setting the trust.
-> 
-> This discussion gets strained for me when T=1 is used to mean both
-> "device is in TDISP RUN (with link encryption and private MMIO)" and
-> "device is in TDISP RUN + force_dma_unencrypted() == false".
-
-It means both things though, we really must not run with
-force_dma_unencrypted() = true when T=1, that's pointless and harmful.
-
-> Otherwise, full bi-directional T=1 before setting the trust would
-> require an IOMMU to be blocking the device until that final confirmation
-> point. Given that is not always available the proposal is to defer
-> acknowledging the trust level with the TSM until ->dma_configure().
-
-?? If you have no iommu the instance you set T=1 and do the platform
-step to activate DMA the device has 100% acess to all
-memory. force_dma_unencrypted() does nothing to constrain device
-access, it is all about accommodating an addressing limitation.
-
-ARM at least has a dedicated call to enable DMA. It would be nice to
-place that call right before the driver probes so DMA remains off
-until we commit to using the device. Maybe other platforms have the
-same - but I'm not sure it is *essential* as the point of setting RUN
-can reasonably be the acceptance point.
-
-> NONE: Device core rejects device operation
-> ADVERSARY: reject device operation if an IOMMU to set IOMMU_DOMAIN_DMA
->            not available (not in current patches)
-> AUTO: no rejections, but no private memory access either
-> TCB_ADVERSARY: reject device operation if IOMMU_DOMAIN_DMA not
-> 	       available, or TSM rejects the evidence used to enable
->                private memory access.
-> TCB: reject device operation if TSM rejects chosen evidence
-
-What does "TSM rejectes chosen evidence" mean? Kernel isn't supposed
-to be evaluating evidence?
-
-Jason
