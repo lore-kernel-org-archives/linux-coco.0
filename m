@@ -1,98 +1,93 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347C0420E74
-	for <linux-coco@lists.linux.dev>; Tue,  7 Jul 2026 15:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621693E5A01
+	for <linux-coco@lists.linux.dev>; Tue,  7 Jul 2026 16:17:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783439144; cv=none; b=lPSrYBvoge5b3VA9uMLmLsDhTWehljb/4QapnMzP3L+PSQd4jNzqkJPa/ulxf3aY4WENelcluQJSaG63ptVVu31D/6OxnGQNH1/+GskHj0Ne6EUGSLl9fpvZcr92dp/4d3uKM0g8YAqPQwPiRgrL87nr235xODz0TWnW1a00IaE=
+	t=1783441057; cv=none; b=e9KBloUC1WO0pGF3ISkcuvBeZVaqpjvWOGjQUid6pcO/l5+3m2CltJd2mSqa0m/iHmv9KOEabxsiH0m7pKfSitiDCo2qIkDpPcbGW113Sfty3IBlAcpmRm4TGeD+bj8ZrlscEKQ+qj6s5ZASYKbYgV7mTdHyxXjA83bJTrhmidQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783439144; c=relaxed/simple;
-	bh=OLF4hmmf+Tc3sRZQ1Zn/zpMeXWlzqueZGfFai3lxUS4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ax7aq3C+QU3+NeAqJeKEigAAahNrziS6IIw2a18+gstc2SWaY24rqlHtn+9cetptHkGrYVPu0Kk8Oa3uuzZY8vRpk3z8ZdLhvQZ50cCNvzfRPguQf4ZO8IO8R6w8PVZaL8ntpEAN8Sd4KtuCFBBm2TQ8wxVAG5IamtwjP3Lt0ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KPNhNj0W; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1783441057; c=relaxed/simple;
+	bh=Al6q5hSzbakCy6OHe7OE0sutONb/Jedtd8RaoFJGZSw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ck1glOtUdPr6p7lZaIO4YT/WLf/U7mnfJCU5zaLyiHtFoHdG8V/GMkykmBoAKsVNiCgtqRdXoULhuQVEdVmxc0ijXzDzzQ/GOzqeDAVBC9eE/hLuyYsmPjsnSvzGkHOL+Le19sA+rsEZQ00i+D9ikeuRGkRadLlmeDdsRKWS50w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EPmHtH23; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KPNhNj0W"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783439140; x=1814975140;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OLF4hmmf+Tc3sRZQ1Zn/zpMeXWlzqueZGfFai3lxUS4=;
-  b=KPNhNj0WUbQ38ZoWvszKKCuB89LNsqZMCtIICFiDiBBmwxX9xFXA3TaL
-   3r/qRRf4/ag6oJspZZ7/JvOS02Xaxxufze/+UTDUQFTBjh6q7U/93qzm7
-   z5EUQoy6LTVksaJu7F7AQMtUvhYC/H/CSoqN+T4li/fZAmhNkLm47bj1L
-   1qFBimoiCGZXdifiu6FCRCDALKxxfWYDdIsrggFtYa8RmatQCuAqxm2+L
-   gYPzfhc3WJQqTBrOaTUjp2iW0VI01UrkxWX06tMW4aFRqKqa7ubH9Br4t
-   kXafVaWxxAQHWwod3BXcu+kskP7YKLUZ5vuZ74yiF28qspwgBrozIQkv7
-   A==;
-X-CSE-ConnectionGUID: i8P6qLq4Qq66aEdg5ABgug==
-X-CSE-MsgGUID: Vj8uCAaxTYeCaCck2HJ7ag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="83066441"
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="83066441"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2026 08:45:37 -0700
-X-CSE-ConnectionGUID: MQL0LnQXR1id52jn/IouIg==
-X-CSE-MsgGUID: WiASptY7QHKl5InA4nxNwA==
-X-ExtLoop1: 1
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa003.fm.intel.com with ESMTP; 07 Jul 2026 08:45:35 -0700
-Date: Tue, 7 Jul 2026 23:45:33 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kas@kernel.org,
-	rick.p.edgecombe@intel.com, dave.hansen@intel.com,
-	dave.hansen@linux.intel.com, yilun.xu@intel.com, chao.gao@intel.com,
-	djbw@kernel.org, linux-coco@lists.linux.dev, peter.fang@intel.com
-Subject: Re: [PATCH] x86/virt/tdx: Formalize SEAMCALL version encoding support
-Message-ID: <ak0fHVtxjC6bXQZY@yilunxu-OptiPlex-7050>
-References: <20260702144614.59464-1-yilun.xu@linux.intel.com>
- <ede965a3-0fd6-46b4-906d-716bce163036@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EPmHtH23"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c98136ceff4so7728890a12.2
+        for <linux-coco@lists.linux.dev>; Tue, 07 Jul 2026 09:17:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783441054; x=1784045854; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Al6q5hSzbakCy6OHe7OE0sutONb/Jedtd8RaoFJGZSw=;
+        b=EPmHtH23FGEqbzHegATHkjFCmEGfZSy2vEIOm3WKB+UAVQ0oXCKZhxSad3EY2+/YHv
+         RM+DkSQgcWPJmA7ONyx5RCyI/LFFi9oUzrkrXgj2DHknMIY3JlWdh8my7Jdpputyhehf
+         ZMbCruF06FIEHf6yQFBfjerB1E8m8RAGNr2Es6JJXuo5RII1jExICgu8fPIsmcvzMLMT
+         dlD2Zuv83i0/EwjZHYrhwmK73mbhP9VELjWEVBZnwbzOIrfdNpFxAi8BjJJ562j4vXWR
+         Rma/AKvUMfqxtXksnDmf71MTLNORv+4CS3Lkbf9FBST98n/si8KUzTY/fYtp/SSqsoeV
+         qejQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783441054; x=1784045854;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Al6q5hSzbakCy6OHe7OE0sutONb/Jedtd8RaoFJGZSw=;
+        b=qsrrWJ8VCLYcfH5Kdmk+IQ1n1hau2OOAjsz4JXNUhDAITbBG3kflmD3Uy62BhT8Mbp
+         WVtF1JespbPIL4X3uR+TIlh2arTF61xxC6fUb1wk4psZgcsZ0lVRAwUkS2ITetiz5bhx
+         IqpiYDo3dGmSfxQgfheYuuIXZ4Q2MZ5gzZPwOb4wUQnXu876iK04jk+y7Jg690wrheiB
+         IPHVnjZL6S2YI8JLi7XAy+4d4SFtnx4pBtTzYktLiVcWFqw7xJFMhCS4aAgv2LvgK6sI
+         /6OORxxvDgFo83at8vlY52Xgk/+eFPKL02WuX03730bfsFbetvf/mE7f9j666TtwYibw
+         G+lQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rrczrzo9T4+wqlTcc3YSFWhsM8by2WuEPTG3kyfpl//XEaT1iCh4ibXwN0Rm/yDzLBb3gzK/kIGUK+h@lists.linux.dev
+X-Gm-Message-State: AOJu0YxKxz0+bJyl6XHgTKHXG4kMSPjuTSU8WQJazBewP8aUVXWI4B+6
+	6mMwDK4qPlW3FLpz/8y+QloI+2xtSkIzQYn8/36QRWtiIjnn7exXnCdmFOplTH/8nUQ2rQUvPHc
+	Q3tKNeA==
+X-Received: from pgam21.prod.google.com ([2002:a05:6a02:2b55:b0:c99:d21a:f6b1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:c786:b0:3b3:be05:2b73
+ with SMTP id adf61e73a8af0-3c08ecd72famr6686068637.18.1783441054198; Tue, 07
+ Jul 2026 09:17:34 -0700 (PDT)
+Date: Tue, 7 Jul 2026 09:17:33 -0700
+In-Reply-To: <f2b2a3a048ad6429305e0e21319a8c27bedf39db.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ede965a3-0fd6-46b4-906d-716bce163036@intel.com>
+Mime-Version: 1.0
+References: <20260526023515.288829-1-rick.p.edgecombe@intel.com> <f2b2a3a048ad6429305e0e21319a8c27bedf39db.camel@intel.com>
+Message-ID: <ak0mnZKoxK5Y04Dw@google.com>
+Subject: Re: [PATCH v6 00/11] Dynamic PAMT
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Kai Huang <kai.huang@intel.com>, 
+	Dave Hansen <dave.hansen@intel.com>, Yan Y Zhao <yan.y.zhao@intel.com>, 
+	"kas@kernel.org" <kas@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"nik.borisov@suse.com" <nik.borisov@suse.com>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"tglx@kernel.org" <tglx@kernel.org>, Vishal Annapurve <vannapurve@google.com>, "bp@alien8.de" <bp@alien8.de>, 
+	Chao Gao <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 03, 2026 at 08:00:38AM +0800, Xiaoyao Li wrote:
-> On 7/2/2026 10:46 PM, Xu Yilun wrote:
-> > +/*
-> > + * SEAMCALL leaf:
-> > + *
-> > + * Bit 15:0	Leaf number
-> > + * Bit 23:16	Version number
-> > + */
-> > +#define SEAMCALL_VERSION_MASK		GENMASK_U64(23, 16)
-> > +
-> > +static __always_inline u64 __seamcall_encode_fn(sc_func_t func, u64 fn,
-> > +						struct tdx_module_args *args)
-> > +{
-> > +	FIELD_MODIFY(SEAMCALL_VERSION_MASK, &fn, args->version);
-> > +
-> > +	return func(fn, args);
-> > +}
-> > +
-> >   static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
-> >   						  struct tdx_module_args *args)
-> >   {
-> > @@ -39,7 +56,7 @@ static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
-> >   	 */
-> >   	this_cpu_write(cache_state_incoherent, true);
-> > -	return func(fn, args);
-> > +	return __seamcall_encode_fn(func, fn, args);
-> >   }
-> 
-> Can we drop the new wrapper? I don't see why we need it. The wrapper makes
-> the code harder to read.
+On Mon, Jul 06, 2026, Rick P Edgecombe wrote:
+> Sean,
+>=20
+> On Mon, 2026-05-25 at 19:35 -0700, Rick Edgecombe wrote:
+> > =C2=A0 KVM: TDX: Allocate PAMT memory for TD and vCPU control structure=
+s
+> > =C2=A0 KVM: TDX: Get/put PAMT pages when (un)mapping private memory
+>=20
+> Would you be willing to take a look at these two patches that need ack's =
+from
+> the KVM side? I'm hoping to make the next version of this the last one. S=
+o it
+> would be great to get any remaining comments before then.
 
-OK, will call FIELD_MODIFY() directly in __seamcall_dirty_cache()
-> 
-> 
+LGTM beyond the to_tdx() and Assited-by nits.
