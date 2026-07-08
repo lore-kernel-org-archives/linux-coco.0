@@ -1,75 +1,77 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E30E281369
-	for <linux-coco@lists.linux.dev>; Wed,  8 Jul 2026 13:48:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613F92EA173
+	for <linux-coco@lists.linux.dev>; Wed,  8 Jul 2026 13:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783518521; cv=none; b=Cv9+n38whgHhDUgs3ZHOVeqT5hbZ1MNOEKNcsuR9d/iYV3zSz4SZ4lYmT8vR4crfdj8foVbf4Wd14u21Tl2BsmENPtFREQ4qYYWqVYKqgXoFT0t0hGkR0fXub87q0kjlgKNX1Hmy2+grrRH7X1shWcm+NVnTTITq0Ez8GfzRbdc=
+	t=1783518524; cv=none; b=ntMW6/QZljjn6r6WYF0qVGNoRF30mmZiaoHngKH9lAzWguLrYxo4i9Z7jnfHK6wOERSKu1liARxaVQ1nnuNUG6ntLlFeiOoQv+4HhW79DzYwcLUFnYPM7kiDeOX1de4qcoOujPsXHwdAcWv9PgMfFjm16Ybfz6tc2SMNV2OG5hE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783518521; c=relaxed/simple;
-	bh=Q5Qk0KHQjVZbp0lFmVKnGWZtxtkKr3ZAe8XmELX1/6o=;
+	s=arc-20240116; t=1783518524; c=relaxed/simple;
+	bh=dFmRbKPIPJ1dWc3CYobE3uhZixiwIuXjAzJXkmuSq8A=;
 	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=PTI4Q9TixTIIBZ/K9mY8tIjhMx1hl8/XjjRy6qmF4OBsCIlRSKQU9SDKD1ODn1DfKFpNG+KQtTIyrDea3dlzVumPuSK8ik+uIPzsuAfO2oqoVERiKctL9Vm5RIqVMacbIPIrDQKUeHaXSQtmoRaeeBYWpEbFpdgLvAHdk4Wm7ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nq3taXGu; arc=none smtp.client-ip=209.85.167.53
+	 MIME-Version:Content-Type; b=HhypOIjqbbudtF1k4du9JaSG7dciZJG38I8cxoKaUzSx1WEZboiXeZ7VycxTz4u+Mwqhiapt+yj/RJCVwOTyXdAZtXubaZ6UnGJBdDWORLQPPr00Jq783icV3HbehFbliIutw2Iy9U9r8S20PcjPHOy1rR9829wzOiO3GtLC8fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lag9NZeK; arc=none smtp.client-ip=209.85.208.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nq3taXGu"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5b011edaf7dso501770e87.2
-        for <linux-coco@lists.linux.dev>; Wed, 08 Jul 2026 06:48:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lag9NZeK"
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-39b268e608eso6887101fa.1
+        for <linux-coco@lists.linux.dev>; Wed, 08 Jul 2026 06:48:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783518518; x=1784123318; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1783518521; x=1784123321; darn=lists.linux.dev;
         h=content-type:mime-version:user-agent:references:message-id:date
          :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=bzsuqGeu2ZztC5uiYt7ZwxUJKrCKRdPms1njvftvolk=;
-        b=Nq3taXGu70vhf1bfTms1NkS8XpcfNdnMtErhXqJ2Qiu8eTKPut+s9u3DCIjWnNI9sa
-         Q6Ad1RUJQY2Ta1uM/xJ7JOJ3skrwmJcuUDkdcip10JOiojIJIVWcD91dKE/zO6gT6mB8
-         jrYCklT+05KtW+It/rZ/LoiQGQ2nKZH+snHKD+k+/4mc8Do4HgtMjpwleQnqdo8aXpkG
-         bWFsbK9svoUyeI1VQHNmN/i6F9ZJTevaU2J5ClWFGyUCT9IYgIjiBvjbGyU6p2atkHdw
-         EH+A6Og+35e3Y3JbqiaM0LfuHMS8UI++7lJgYffRCytJAHjZFuBeWdBszMxv7yhuF36O
-         7xDg==
+        bh=EWSbzTVGjohibpFGciauhEYGIu8dVHtLsNaD8KvexjA=;
+        b=lag9NZeKxBfG/o7TtT+R7CgJt/wgaGd+VjPlYBLwXEl0yy7IyMnov8bZ4OvW/kGvyS
+         84sLk8WYqQ9rcXM1VSz0KwbKn0kMXVQfREQ12Sa6N82JQzkinJfNODP+aKRc2sNiLAjm
+         Hu2vgDnuYpTSUu2vuRdfTTevO4BHjwiNvtS0hhREOgfcAo+gSREp0I9LOo2SEJJrvpIB
+         K//0j1Ytn5cJrPHBWELNDzuWnFzo+t9PYeI0RtmHAFkoYdSMTZ+sg/dj2VDpdN37gOgB
+         wd6kvbvQoLLheyltcuCm2f1M8lf9v6p5b7TwcvusQmHZsldQn4OANsqRLn0cAy5Xw3Hy
+         RAnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783518518; x=1784123318;
+        d=1e100.net; s=20251104; t=1783518521; x=1784123321;
         h=content-type:mime-version:user-agent:references:message-id:date
          :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=bzsuqGeu2ZztC5uiYt7ZwxUJKrCKRdPms1njvftvolk=;
-        b=GbZZ+SxPdUgFRLlr1godGi/V5doXpKsgv8y8QZrn+4bzSsJGL1BrL2F1TdTjc+OR7q
-         PVE6253GTgkyZSaBPPplGA6dfj1mPIf7dwhrEcK+peuq1hfXaOFlcR2kXsry/Oa2v49l
-         MYEnnYCckjtUp/Ihf/5GQ7UFAyYFe+Djt3k+enTL/FPzC9yytDjG1s3kx05Ijdkp6/X4
-         Qf534DZoSPmx3o0TswQkbSpqiTsAEcTpnX6Hyr1CGo3JGYKCemZxrmDvuhDi1rpNagsc
-         VJD97jaSms7zk//3uFwqJ/S/pitBb51qdQwssZwLjPqnajkoQlWfMR8+CDNRKB9duWHU
-         rUMA==
-X-Gm-Message-State: AOJu0YxJslWMP9ZHMhMM/v4BGoZ6FxTNI43vVDpttstwcXLKeJRV0iHv
-	BaEl1LLcS4oNorl+x1bCKx2+xrUpV+81RkoRCIceoh2m3l0sbLMWWyLD
-X-Gm-Gg: AfdE7cnCxaKVkzvxIOcLdtvfigkR41gAFg9KwmoQST0N0xTsyuII4bA/3Tfc9/5tZrz
-	paQpIIcnIIVi3x+D4zx4R/CDg3rlR9PLD3+h82zU4A/xaYDFw1jLeRGfx/6soaW6FnaK46nhU4G
-	sWv+o0K829/DbKhMInhA0rhepuzcjfoIS31ZlN+k/Xq2g42dAaYBFB71ao/ir05/Uq53quiIgf4
-	Y3xeKIJsnT8iZLvjKYoAuGcG3+nX4XB59sNXyPRuC8q4H4NjQR150XWBm7feNAdcA5JTLugIhiS
-	W6OjnVO+D0dTpD3qtDC8Pq3TYloLFqnyIS7Dd9VL8tzv1EvsxetjP+FRmuhJSDMi7Z76nKF3k7r
-	1jelPV7dp9Y4/WeXCnC+sCga3P6po7MQeRZ/o+Ipcj8cDwy1xV9ee1zcD7XsFDx8BPIt3rk/9SO
-	YnrWdZd5zD7BsuiFHOTPPX2UY4ZqFFj6jQO3lVRKpocmnzlhx7
-X-Received: by 2002:a05:6512:66da:b0:5b0:eda:de34 with SMTP id 2adb3069b0e04-5b0114ad7b9mr525977e87.43.1783518517539;
-        Wed, 08 Jul 2026 06:48:37 -0700 (PDT)
+        bh=EWSbzTVGjohibpFGciauhEYGIu8dVHtLsNaD8KvexjA=;
+        b=QexskdwmJHJgCPELMdo/YMpNS5ByqNYBein0RD5ojdBR5dcVMEiCeb3mU/wFesmqxz
+         FIXa3kl/QalzOE2quUfBF1fSkmGkP46bUkcRkV/g4LznVuN4983q/lrlCgdA2pmUYP1v
+         ExVnCj8w5hyrj1XT1Blt1EQn1aioe7IV5+KQ8yGZH1HQPkNMxdBkPWgwm7DxdpMhMuU6
+         wkd4PaMciBSV/bQu8B+G48qpvgnNVCZbOajXVongLkwOFKa9qe6RW4pSWCuC0Jm2wK5J
+         mN9KkTRXjoLbnIj35Ia6peinvY6QpYcvPq3tn6VRkNHUFf6UcgqG5ofApjWg6gMr3qlK
+         Eb5A==
+X-Gm-Message-State: AOJu0YzpDp7DsMiGczrEMXartZoWrruRYsyxiF+xn+fFeJ+L6I05LdKz
+	tQPAuYTNWogYXP9hYETdtgmLSi9lXYP5gOgfDoY27BJURmEGYxQSsstg
+X-Gm-Gg: AfdE7clanJRriftYrKPZZvKE14OrclKN7zDoErqwyzCaX3uvlhUuG/gjf2rJGoyJ48i
+	KW/ruQ1uODnjS+Npqrxy9jr/AsKAHa+22tZLHkVQmrQG8tnJ2YxRg3Rb72QrmVBZHq1FyP26Gd2
+	FtF+d1en5ATz3tJCQeA6jgyJXa3oR59koa7a5/RfHkX9bm7jQU58PzcgRdYtpzUXu0nA3EqOmmi
+	VtVtad4g+PQ3XtmfqeRlwj9Z5tcvRXEaDZlk+k5gHo+cf+bTHKi1LquuO63aFsuLXtKLXfk/SQw
+	Ou0qEoiHuxP+fIf83qUh6HkvOhvJGqBBNZMkvDAF9wOm8lC4Kh28bxTQwOfROMC7fsWpfZj6lBm
+	cw+N3pP1WA+IUo9mDd4tqE5xYV5y5LzignCWJeiG8j0Q5jN0Z3+soFe1c+GWyySRphrpoI3C6ZC
+	pQhAxdWopwvSy2q0qfNHXmZ1E7vsoMNw==
+X-Received: by 2002:a2e:92d6:0:b0:39a:e7f6:49aa with SMTP id 38308e7fff4ca-39c7994ff4fmr5349471fa.2.1783518520282;
+        Wed, 08 Jul 2026 06:48:40 -0700 (PDT)
 Received: from imac ([2a02:8010:60a0:0:eccc:7ea2:9458:892d])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aed136f8dcsm4528257e87.11.2026.07.08.06.48.36
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39c78e8490esm3194461fa.17.2026.07.08.06.48.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 06:48:37 -0700 (PDT)
+        Wed, 08 Jul 2026 06:48:39 -0700 (PDT)
 From: Donald Hunter <donald.hunter@gmail.com>
 To: Dan Williams <djbw@kernel.org>
 Cc: linux-coco@lists.linux.dev,  linux-pci@vger.kernel.org,
   driver-core@lists.linux.dev,  ankita@nvidia.com,  Alistair Francis
  <alistair.francis@wdc.com>,  Lukas Wunner <lukas@wunner.de>,  Jakub
- Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH 01/15] netlink: specs: Introduce multi-message blobs for
- SPDM
-In-Reply-To: <20260705220819.2472765-2-djbw@kernel.org>
-Date: Wed, 08 Jul 2026 12:13:57 +0100
-Message-ID: <m2y0flbuoa.fsf@gmail.com>
+ Kicinski <kuba@kernel.org>,  Bjorn Helgaas <bhelgaas@google.com>,  Xu
+ Yilun <yilun.xu@linux.intel.com>,  "Aneesh Kumar K.V (Arm)"
+ <aneesh.kumar@kernel.org>,  Alexey Kardashevskiy <aik@amd.com>
+Subject: Re: [PATCH 04/15] device core: Introduce "device evidence" over
+ netlink
+In-Reply-To: <20260705220819.2472765-5-djbw@kernel.org>
+Date: Wed, 08 Jul 2026 14:22:06 +0100
+Message-ID: <m2tsq9boqp.fsf@gmail.com>
 References: <20260705220819.2472765-1-djbw@kernel.org>
-	<20260705220819.2472765-2-djbw@kernel.org>
+	<20260705220819.2472765-5-djbw@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -81,42 +83,308 @@ Content-Type: text/plain
 
 Dan Williams <djbw@kernel.org> writes:
 
-> The SPDM, Security Protocol and Data Model, underpins PCI device security
-> and other use cases. It defines objects that allow for verification of
-> device identity and configuration. These objects can be large in size 16MB.
-> Netlink is otherwise suitable to define the operations, with optional
-> parameters, and notifications for working with these objects. For example,
-> operations like "regenerate evidence with nonce", "mark evidence
-> validated", and "broadcast evidence / security state change events".
+> Multiple device security mechanisms are built on top of the SPDM protocol
+> from the DMTF. The protocol arranges for devices to verify their identity
+> and establish secure sessions between requesters and responders. In turn,
+> device security protocols like PCIe IDE use SPDM sessions to program link
+> encryption keys, and protocols like PCIe TDISP use exclusive secure
+> sessions for managing the device's security state.
 >
-> A netlink 'blob' is introduced as a way to teach YNL that one instance of a
-> attribute may span multiple messages. It enables netlink to convey all the
-> data needed for verification and manipulation of SPDM transported evidence.
+> All of these uses share a need to retrieve the device's installed
+> certificates, its measurements, and other protocol specific objects like
+> interface reports. Unify all of those object retrieval and regeneration
+> cases into a device-scoped ABI that buses can leverage.
 >
-> The schema change to allows YNL to infer that an attribute may span
+> When PCI CMA was presented at Linux Plumbers the consensus reaction was
+> that it was not suitable to be driven via sysfs. Given the varied use
+> cases of the same fundamental objects the consensus converged on
+> netlink. With the new 'blob' extensions to netlink, it can support up to
+> the 16MB signed transcripts that SPDM generates.
+>
+> A bus opts in to evidence gathering via device_evidence_register() and
+> passing device_evidence_ops. The ops resolve a device handle to its
+> corresponding 'struct device_evidence' context.
+>
+> See inline documentation in
+> Documentation/netlink/specs/device-evidence.yaml for the object types and
+> options. This includes objects like TDISP interface reports and options
+> like digests instead of full blobs.
 
-change to allows -> change allows
+Can you include sample pyynl output; it helps immensely during review.
 
-> multiple messages and interrogate its length to preallocate an
-> appropriately sized receive buffer.
->
-> The design direction to extend the netlink schema for a "multi-message
-> object receive" case was the result of this discussion [1].
 >
 > Cc: Alistair Francis <alistair.francis@wdc.com>
 > Cc: Lukas Wunner <lukas@wunner.de>
-> Cc: Jakub Kicinski <kuba@kernel.org>
 > Cc: Donald Hunter <donald.hunter@gmail.com>
-> Link: http://lore.kernel.org/20260318170014.6650d2bf@kernel.org [1]
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Xu Yilun <yilun.xu@linux.intel.com>
+> Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+> Cc: Alexey Kardashevskiy <aik@amd.com>
 > Signed-off-by: Dan Williams <djbw@kernel.org>
+
+You probably need to cc the netdev list so that the series gets picked
+up by patchwork.
+
 > ---
->  Documentation/netlink/genetlink-legacy.yaml | 6 ++++++
->  Documentation/netlink/genetlink.yaml        | 7 +++++++
->  Documentation/netlink/netlink-raw.yaml      | 7 +++++++
+>  drivers/base/Kconfig                          |   4 +
+>  drivers/base/Makefile                         |   1 +
+>  .../netlink/specs/device-evidence.yaml        | 186 +++++++
+>  drivers/base/device-evidence-netlink.h        |  23 +
+>  include/linux/device/evidence.h               |  85 ++++
+>  include/uapi/linux/device-evidence.h          | 110 +++++
+>  drivers/base/device-evidence-netlink.c        |  44 ++
+>  drivers/base/evidence.c                       | 453 ++++++++++++++++++
+>  MAINTAINERS                                   |   4 +
+>  9 files changed, 910 insertions(+)
+>  create mode 100644 Documentation/netlink/specs/device-evidence.yaml
+>  create mode 100644 drivers/base/device-evidence-netlink.h
+>  create mode 100644 include/linux/device/evidence.h
+>  create mode 100644 include/uapi/linux/device-evidence.h
+>  create mode 100644 drivers/base/device-evidence-netlink.c
+>  create mode 100644 drivers/base/evidence.c
+>
+> diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
+> index f7d385cbd3ba..e3929fe6b240 100644
+> --- a/drivers/base/Kconfig
+> +++ b/drivers/base/Kconfig
+> @@ -190,6 +190,10 @@ config HMEM_REPORTING
+>  	  Enable reporting for heterogeneous memory access attributes under
+>  	  their non-uniform memory nodes.
+>  
+> +config DEVICE_EVIDENCE
+> +	bool
+> +	depends on NET
+> +
+>  source "drivers/base/test/Kconfig"
+>  
+>  config SYS_HYPERVISOR
+> diff --git a/drivers/base/Makefile b/drivers/base/Makefile
+> index 8074a10183dc..02bdc4f74019 100644
+> --- a/drivers/base/Makefile
+> +++ b/drivers/base/Makefile
+> @@ -26,6 +26,7 @@ obj-$(CONFIG_DEV_COREDUMP) += devcoredump.o
+>  obj-$(CONFIG_GENERIC_MSI_IRQ) += platform-msi.o
+>  obj-$(CONFIG_GENERIC_ARCH_TOPOLOGY) += arch_topology.o
+>  obj-$(CONFIG_GENERIC_ARCH_NUMA) += arch_numa.o
+> +obj-$(CONFIG_DEVICE_EVIDENCE) += evidence.o device-evidence-netlink.o
+>  obj-$(CONFIG_ACPI) += physical_location.o
+>  
+>  obj-y			+= test/
+> diff --git a/Documentation/netlink/specs/device-evidence.yaml b/Documentation/netlink/specs/device-evidence.yaml
+> new file mode 100644
+> index 000000000000..44b278bc20e1
+> --- /dev/null
+> +++ b/Documentation/netlink/specs/device-evidence.yaml
+> @@ -0,0 +1,186 @@
+> +# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
+> +#
+> +---
+> +name: device-evidence
 
-I suggest you drop the changes to genetlink-legacy and netlink-raw
-because I don't think we want to support the blob functionality for
-legacy families.
+The naming seems to be too narrow - if the scope expands at all then the
+name would need to change. A subsystem name like spdm, tsm or tsm-device
+seems better?
 
-Can you also update Documentation/userspace-api/netlink/specs.rst to
-describe the multi-attr / bloblen API behaviour.
+> +protocol: genetlink
+> +uapi-header: linux/device-evidence.h
+> +doc: Device evidence retrieval over generic netlink
+> +
+> +definitions:
+> +  -
+> +    type: const
+> +    name: max-object-size
+> +    value: 0x01000000
+> +  -
+> +    type: const
+> +    name: max-nonce-size
+> +    value: 32
+> +  -
+> +    name: type
+> +    type: enum
+> +    doc: Device security evidence objects
+> +    render-max: true
+> +    entries:
+> +      -
+> +        name: cert0
+> +        doc: SPDM certificate chain from device slot0
+> +      -
+> +        name: cert1
+> +        doc: SPDM certificate chain from device slot1
+> +      -
+> +        name: cert2
+> +        doc: SPDM certificate chain from device slot2
+> +      -
+> +        name: cert3
+> +        doc: SPDM certificate chain from device slot3
+> +      -
+> +        name: cert4
+> +        doc: SPDM certificate chain from device slot4
+> +      -
+> +        name: cert5
+> +        doc: SPDM certificate chain from device slot5
+> +      -
+> +        name: cert6
+> +        doc: SPDM certificate chain from device slot6
+> +      -
+> +        name: cert7
+> +        doc: SPDM certificate chain from device slot7
+> +      -
+> +        name: vca
+> +        doc: |
+> +          SPDM version, capabilities, and algorithms transcript
+> +          negotiated at session establishment. An implementation may not
+> +          provide this separately and instead include it in the
+> +          measurements transcript.
+> +      -
+> +        name: measurements
+> +        doc: SPDM GET_MEASUREMENTS response
+> +      -
+> +        name: report
+> +        doc: |
+> +          A bus that implements a device interface security protocol
+> +          like TDISP may convey an interface report that details
+> +          interface settings and capabilities.
+> +  -
+> +    name: type-flag
+> +    type: flags
+> +    doc: Device security evidence request flags
+> +    render-max: true
+> +    # NOTE! these values must match the type enum name and order
+> +    entries:
+> +      -
+> +        name: cert0
+> +      -
+> +        name: cert1
+> +      -
+> +        name: cert2
+> +      -
+> +        name: cert3
+> +      -
+> +        name: cert4
+> +      -
+> +        name: cert5
+> +      -
+> +        name: cert6
+> +      -
+> +        name: cert7
+> +      -
+> +        name: vca
+> +      -
+> +        name: measurements
+> +      -
+> +        name: report
+> +  -
+> +    name: flag
+> +    type: flags
+> +    render-max: true
+> +    doc: Flags to control evidence retrieval
+> +    entries:
+> +      -
+> +        name: digest
+> +        doc: |
+> +          Request a secure hash of objects like vca and measurements.
+> +          The expectation is that this digest is produced by a responder
+> +          within the TCB like a platform TSM. It validates a blob that
+> +          may have traversed a transport without integrity protections.
+> +
+> +attribute-sets:
+> +  -
+> +    name: object
+> +    attributes:
+> +      -
+> +        name: type
+> +        type: u32
+
+Is this an instance of the type enum? If so then:
+
+           enum: type
+
+> +        doc: evidence type-id
+> +      -
+> +        name: type-mask
+> +        type: u32
+
+Likewise:
+           enum: type-flag
+
+> +        doc: evidence types as a flag mask
+> +      -
+> +        name: flags
+> +        type: u32
+
+And:
+           enum: flags
+
+> +        doc: evidence modifier flags like 'request object digest'
+> +      -
+> +        name: subsys
+> +        type: string
+> +        doc: device subsystem name (e.g. bus or class name)
+> +      -
+> +        name: dev-name
+> +        type: string
+> +        doc: device name
+> +      -
+> +        name: nonce
+> +        type: binary
+> +        checks:
+> +          max-len: max-nonce-size
+> +      -
+> +        name: generation
+> +        type: u32
+> +        doc: detect local threads racing evidence refresh
+> +      -
+> +        name: count
+> +        type: u64
+> +        doc: TSM, if present, observed count of evidence refresh events
+> +      -
+> +        name: length
+> +        type: u32
+> +        checks:
+> +          max: max-object-size
+> +        doc: |
+> +          Final size of 'val' blob after all messages received.
+> +      -
+> +        name: val
+
+Any reason for the abbreviated name?
+
+> +        type: binary
+> +        multi-attr: true
+> +        bloblen: length
+> +        doc: |
+> +          Ordered evidence object value chunk. Large evidence objects
+> +          may be split over several dump reply messages up to 'length'.
+> +          'length' is transmitted before the first chunk.
+> +
+> +operations:
+> +  list:
+> +    -
+> +      name: read
+> +      doc: |
+> +        Read device evidence objects of a given type mask. The dump reply
+> +        reports the total value length before val attributes fill the evidence
+> +        object, possibly across multiple messages.
+> +      attribute-set: object
+> +      flags: [admin-perm]
+> +      dump:
+> +        pre: device-evidence-nl-read-pre
+> +        post: device-evidence-nl-read-post
+> +        request:
+> +          attributes:
+> +            - type-mask
+> +            - flags
+> +            - subsys
+> +            - dev-name
+> +            - nonce
+> +        reply:
+> +          attributes:
+> +            - type
+> +            - generation
+> +            - length
+> +            - val
+
+Is the intention that the dump filter must narrow to a single device? Is
+the user expected to enumerate the devices in subsystem then read device
+evidence for each in turn?
