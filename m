@@ -1,345 +1,316 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011001.outbound.protection.outlook.com [52.101.52.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F80B1A9F82
-	for <linux-coco@lists.linux.dev>; Wed,  8 Jul 2026 03:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5833F38424F;
+	Wed,  8 Jul 2026 04:52:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783482647; cv=fail; b=ZgXW6dJahORRf9+JV2KM+/Z6E1BWM9NNqk/piu7SvXVUlCp9LqU5rWLxn5gjb8f6hpP6T0f1D1dqVO6/h8XCqULHGuVeJ979OUdy3GOH39pdx+oCdxNH5Nyge325vYisTogkVNtK00pw3D4b++6lk+nO+LsgLj/iEihBSKb/UGo=
+	t=1783486366; cv=fail; b=VIwEj0VPzoEIV0vgie/zm5Jl0JaDBb3pFKi0fTSn4wSTrqcJ8VqIbP4aTzcdxnp+ImZrKwOnV33tZTADbGG9P+e0Ni43O5SGRF3ovX4t7x5SG+XzQdkKowwaJBXKldpc1TC2TG5xK4u4yVZcg/TAwNMQZ82axpUj201P4oUgAZM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783482647; c=relaxed/simple;
-	bh=TQTwuNWVoHid0Iv/DT8P0FRgg7a58S3sYg6By8jlcP0=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=KyOy7aNBvoHhwGCY/hf6fu7Jpm5UGrWf5rc8+obhV18GgpExplUexnLPXH/LxjNXQHwSCrNLNvYPf18PDlZcR/fFazJaFtxSDPte15nXEBJSc23MbRiPLeGBWVxWn7/v9SjYmYaJu+pq2uz98Ov3S4oJE/yRboGUXYIsF8331DA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JkebjGG7; arc=fail smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1783486366; c=relaxed/simple;
+	bh=Kj8zK7dp27d1KKmXvWZuN2pzWYoXNW90QVOE00DK+3U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=vAVaDV/SCLDug19lh/dcyby+fPedd2UFH1pm6f1TGtYqTjPlsvTSqG9aCXTLj9qfr5bgnR0EScYznh5KVjdocpZ3NrVlfoLHNpNO9JcEtsab2NKuS1RV7/aguWv2OiQfq1pA/L6eQDj1H6Cpot2ETXjFUgdfeb7oE97lmw5M2MY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=f7tCGI8h; arc=fail smtp.client-ip=52.101.52.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JkebjGG7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783482644; x=1815018644;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=TQTwuNWVoHid0Iv/DT8P0FRgg7a58S3sYg6By8jlcP0=;
-  b=JkebjGG756yFiwLoE2zhLl2eJm5vqPN6dQeTcjO62YSWEUtnNEZ7o9NQ
-   nKjXZHJpPusSGiBpZyGN3gXyGZCsbdReEyQ9dFruBzggfRc88onn2L5wb
-   Jg+8SXPv83r4HektA8t7ahWWh7UN/b0AW95FJBVVlHpE50SCGvC5LPXD2
-   QJaLEy8H+SYBRp90MGPzcqVXYju1PUdT+ybe3BiXJ22QswEHoCu/si7Iv
-   NuYhqBStiH2408bAgVD8Kli0cP9RoD926ZSYRILGWtnrcIeg5e6ZTP4a5
-   EIVa65ia7/YjGk0/wFwuyKybMv7GfFj567lecwoJYLEZpGUbwpHW3nOaC
-   g==;
-X-CSE-ConnectionGUID: BuFGIIQ4RZW8W8SyKdqGYw==
-X-CSE-MsgGUID: 23maZj61RJKxHgr9TMJc6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="95654685"
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="95654685"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2026 20:50:44 -0700
-X-CSE-ConnectionGUID: RZcDbpvESjil5K52JXbvsg==
-X-CSE-MsgGUID: FJafSj8PSaSakLt23UY+DQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="247795187"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2026 20:50:43 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 7 Jul 2026 20:50:42 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Tue, 7 Jul 2026 20:50:42 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.47) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 7 Jul 2026 20:50:42 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="f7tCGI8h"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YlW9Rbgh8Z6SNGimChjH1v3Cg0oIOCH4n0Sdcco9qxfuP/hJjypybyHxGJtOnV6mxAXMK7guhT1aiN8UUN6ZHdOeuD9jvRl/QRr7zqp7tJ2mHmA0+QNzxFWEyjURR0KeMHQVufVk816ajqfw46mjPcsJQdcMJB+u4SIJnGipSqwiCj8RshKGbC3xVVFfMIRoTBjCvRb1J8COwZK1rbDC4hfjdZDpcFEh76iN/rzmjtT42Z+9cDxVwKjJN1jjrxGb4bt6ZJ2d2jOb6TvTZjAKWEm51ujnTJ6chbEut603TEjU7SGc5d74S4qb7X1K9Yko64VNo1uRfTWw2TIEp7C/QA==
+ b=iH11X8l0wQaiz4mtUMOCFsKSiDn3VTh+ubRI0d+Zk4N8o2JQjR+9+NeSR7rcBqInR7kNnjA53W/Oxd24A8cKY+r6ytS7JHmQSEpR4cZuAgNlQGEwU/bRBYrq3a8TnymMxZYz3s7kmYFenptmNsWirpFUlTmXOR4yZW0lDFWmcLiBfj+onD38KuMzVThCGhIR9kA5ySEJaUYqpyUgEp8SLF9Wz24GrvF5BB8mc+U3/VSuNl+jAkgx4P8o94i1XWIkzH/Z/SA+pv42nkRYpXKv9aGSKJr8r0YCbdPXZW1HeulRkS94vIJ3gAJZbdxxt3bSIIjdeCJ/xKTFox2fb4LqgQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XppsJnSI9UL3WLBZUObM3bTAgB8sVQq1wK9bEl528YY=;
- b=gU47tc63LMd3CEF0IxfrtAEtsOfJ+mChJ1OAk3V7KqMBiHpycFDBlYX1aAvQKr+1umAARyz+pgwFFyHhw+TRnetoGuDBvDRfQGoHybnXzc6iU6fgCQglR2c9n2FycxldOcRQP8IVrpQam8H4sN8dT6eFhVg0E5E9MYZQU6njXiVVaqklKIzVp1x82vTQrcqcdKCYKLOLzfySN6FGfaoaJuU/o3qFdtjRudNgKZAGara1++fTlLg2y59ld7nTU7whwwTsYX4YOHSpvvpB1D+AlSxVx+NM4nE/pEyaCw4Xs1/BhcmfeMC9CAB106b3LIgAIljgebUa7n5uVyb9ba2SGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7997.namprd11.prod.outlook.com (2603:10b6:8:125::14)
- by CH3PR11MB8701.namprd11.prod.outlook.com (2603:10b6:610:1c8::10) with
+ bh=Ei0d+QTfykHeiOAHu1tWpX6WZ1Hr1ps4k7WhbCYRX0E=;
+ b=Zm9Lv/JOG8wS7G60L2wgnbsLzf2abbea0DvyhBbQHk8CN/ftX4BlKaqY15bZnAdCv/xa0SEe82dX2vQ05qDvprCw2Yffk1FXWW4Yw3FpR4PkSYZ6JTnuO/5fLpzkZ2qO+teVqJNodRq3einpfy0Cuzle/oqpvXrYIqkYwYVx2JlJsCBowvCH8whCGCjJgTpeAiMgzGN0sz6gezp1gJpBECCxv0moQv1Is54xBCwq0e0vAMIxEtWWviyyzPItpAFMDLbZ3IQx0hO0CDYP+fznkdUfnc9YGmXi51kqMpw/k9qcv3b55abwNdZloAvGKmc+2PoZdBJsMLtwNe+afMOjSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ei0d+QTfykHeiOAHu1tWpX6WZ1Hr1ps4k7WhbCYRX0E=;
+ b=f7tCGI8ht0nTD1k6xFTevhEwNAU/gaASJuv6Wh17c5WZGimf9SKadjXju/StHRhF0zpiyczzRsHMUQRIr1f7rZKwKxEeKpqzfbUGHtslNs/B4VTC9WmMBNF1ORoGDC5u3nAZRYZsCLOSHvE21QTZfO3A6nFjsuLqBf4LM/IBCYw=
+Received: from CH0PR04CA0071.namprd04.prod.outlook.com (2603:10b6:610:74::16)
+ by DS0PR12MB8528.namprd12.prod.outlook.com (2603:10b6:8:160::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 8 Jul 2026
- 03:50:32 +0000
-Received: from DS0PR11MB7997.namprd11.prod.outlook.com
- ([fe80::24fa:827f:6c5b:6246]) by DS0PR11MB7997.namprd11.prod.outlook.com
- ([fe80::24fa:827f:6c5b:6246%4]) with mapi id 15.21.0181.009; Wed, 8 Jul 2026
- 03:50:32 +0000
-Message-ID: <7d39a92a-0555-41cb-91dd-96dace318dcf@intel.com>
-Date: Tue, 7 Jul 2026 20:50:29 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 03/11] x86/virt/tdx: Add tdx_alloc/free_control_page()
- helpers
-Content-Language: en-US
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>, <bp@alien8.de>,
-	<dave.hansen@intel.com>, <hpa@zytor.com>, <kas@kernel.org>,
-	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<mingo@redhat.com>, <nik.borisov@suse.com>, <pbonzini@redhat.com>,
-	<seanjc@google.com>, <tglx@kernel.org>, <vannapurve@google.com>,
-	<x86@kernel.org>, <chao.gao@intel.com>, <yan.y.zhao@intel.com>,
-	<kai.huang@intel.com>
-CC: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
- <20260526023515.288829-4-rick.p.edgecombe@intel.com>
-From: Sohil Mehta <sohil.mehta@intel.com>
-In-Reply-To: <20260526023515.288829-4-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR13CA0218.namprd13.prod.outlook.com
- (2603:10b6:a03:2c1::13) To DS0PR11MB7997.namprd11.prod.outlook.com
- (2603:10b6:8:125::14)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Wed, 8 Jul
+ 2026 04:52:36 +0000
+Received: from CH2PEPF00000148.namprd02.prod.outlook.com
+ (2603:10b6:610:74:cafe::94) by CH0PR04CA0071.outlook.office365.com
+ (2603:10b6:610:74::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.9 via Frontend Transport; Wed, 8
+ Jul 2026 04:52:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH2PEPF00000148.mail.protection.outlook.com (10.167.244.105) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Wed, 8 Jul 2026 04:52:36 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 7 Jul
+ 2026 23:52:35 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 7 Jul
+ 2026 23:52:35 -0500
+Received: from [10.252.210.85] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Tue, 7 Jul 2026 23:52:23 -0500
+Message-ID: <40e20edb-48f4-4f50-b5e4-d6e771235b4a@amd.com>
+Date: Wed, 8 Jul 2026 10:22:17 +0530
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 08/51] x86/sev: Shove SNP's secure/trusted TSC
+ frequency directly into "calibration"
+To: Sean Christopherson <seanjc@google.com>, Jonathan Corbet <corbet@lwn.net>,
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, "Ingo
+ Molnar" <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, Kiryl Shutsemau
+	<kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, "K. Y.
+ Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, "Wei
+ Liu" <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
+	<longli@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov
+	<alexey.makhalov@broadcom.com>, Jan Kiszka <jan.kiszka@siemens.com>, "Andy
+ Lutomirski" <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Juergen
+ Gross <jgross@suse.com>, Daniel Lezcano <daniel.lezcano@kernel.org>, John
+ Stultz <jstultz@google.com>
+CC: Shuah Khan <skhan@linuxfoundation.org>, "H. Peter Anvin" <hpa@zytor.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Broadcom internal kernel review list
+	<bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
+	<boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
+	<linux-doc@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-hyperv@vger.kernel.org>, <virtualization@lists.linux.dev>,
+	<xen-devel@lists.xenproject.org>, Tom Lendacky <thomas.lendacky@amd.com>,
+	David Woodhouse <dwmw@amazon.co.uk>, David Woodhouse <dwmw2@infradead.org>,
+	Michael Kelley <mhklinux@outlook.com>, Thomas Gleixner <tglx@linutronix.de>
+References: <20260701193212.749551-1-seanjc@google.com>
+ <20260701193212.749551-9-seanjc@google.com>
+Content-Language: en-US
+From: "Nikunj A. Dadhania" <nikunj@amd.com>
+In-Reply-To: <20260701193212.749551-9-seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7997:EE_|CH3PR11MB8701:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8305f615-0398-423b-5f45-08dedca40f25
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000148:EE_|DS0PR12MB8528:EE_
+X-MS-Office365-Filtering-Correlation-Id: 354d1e25-cfa8-4149-4105-08dedcacbae7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|23010399003|18002099003|22082099003|56012099006|4143699003|11063799006|921020|6133799003;
-X-Microsoft-Antispam-Message-Info: pwKT/4r8VmSqTfOCTIZ0YS/5LtFcIWr7RGzinkRKRLnhIk9aPUHSYtqPXCsPU48SKiFDAAhioJc8vLaw3g/gs1bxfMSkgbn4JceFeru3T76zd1BHY7Xm63uVTi6W8iQ9+cXWs1IQBmOC5Wm0SN9vzthEMm8ML7SwincFr2VI9xRquUCQpOiO15aQv8jgrU5/s3SHWk6QVrV1xS7LUWhfJl2BeS+ebDmM2LEgqxaZg54BGxnyXegrsnbR/wRZnaFpvpSKuxOfbz3hTMgwYpHTHrbqezRCm07XAEVqZGkYt7kbi8PzRts0u6ZgtqkTdT7R5+TewsWVREw6pzq7qwKoLz7xBK+py8NqIZHnfnlEGbbAIeG+9IA362N5qULy6MZqEgiWrL9GL+d/M2MRiY084NVCM075QF/6/4ArQnujFuh5Wyzbx0J929FanbJF15+sKYls+8td5x4hT/90aK/aCoQaQZRVnI0n4PE7D48D8C38fGKqMi+4+HZsBvna+yfQno15l7iSbw1KMuZCIrlxJVKlDOwwjPf5Wdp30XaTBWxxrvW70yc4AThR8OtZ0fnDz0dK5CdZmKr0dmn40oszvRJhsRClOf9tjsW4xAmT7TCpoogaVw056KD/NHWYl9J34leoWclj6nLxu9K1ILQJCT3zXFbnQX/ntWS4qicJUFXeeUhAUOZTSeZl6t/J3k9P1Q1oM9ya7tESjijbihg2Qg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7997.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(23010399003)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006)(921020)(6133799003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|32650700020|23010399003|36860700016|921020|3023799007|18002099003|22082099003|11063799006|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	zSazxnvGOuts/WNto6Qd6Wf4r/P9sqd09K5D2puyLqZ4pEyEZNoTRkTgLaZfL5QG8xxWcXJPW65egFexsW5+vb1r7g3lV6Wyv8vz2MQ++08z4dKKdErOg5fJc792NWTB8Gm5TLC0odjoP1+/rsi0+9hdAieR+SIToCobAtypB06p5oHfqwiHsNrBU1z6NyhdN7rbjtxikwsEKN4vHTEgHBkQufXwiSXxO7cWDC3UZWnv6aMc6yD7O/5MauoBpufAb9g/JxMF1tyzlqKOPQYUYxK+AZCLc8LGlL5z+ELrAqjghaBZ3xc9ldhtAMDqfgAKJIRJ6XrrZwaoXlAfeuCP6CEYmZi9KlDGk9bSa7x7shLawjE4XDmfYnYxIFlObPc+44bMEcrKDqy7GxBsrsP6xnr3P5tMGXBFkEMtfjaYDCQFAlhjE4OlD4b1yQZdQapDAwuyBCYsUs5L/2wwFb46BxF+CDXJHHeaiBtx38MOkZfdlMn96JPuZ424S4bQSgs415oDq/ou0hbKw13UlcSfLngNDcK3kzTNkHwvqLu2UkxggeC4wLf5mllYfRT/Anoh9uBiB6CDCZt+M07Be3OYJRQ9/Yxqk+66zXRQusfIwnWn5Xnu/qZIPtIVgbNxMephxjGZIzzwKBVSy0i5l7n4QsD1SQKLChEVEybcevrsUpmluDPP+p6WCoKcxpkTlAh0RZE4+DwJ71qFRopJm+HeGqsE4QxQAVkhjymn8NcxUR+/pAdFqixwvUvQDe6VYoFB
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(32650700020)(23010399003)(36860700016)(921020)(3023799007)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SjBpZjRkMkEyUFJWOCtyZWdPeUlJVUU1RUxHbE5TVVhQM1pnWkowTlJtS1Bz?=
- =?utf-8?B?YkQ4MWcwMmNsRXkzWEFEUmtJRUNRU0dlY1d3R2xUaTNKRE5wWkQ4SGNWVzNK?=
- =?utf-8?B?di9sMG9FYzJ5eXY4aXhieUJTOHJTeGorTjJSRXBQK2FNbmFiTGo0K3FZd2ZX?=
- =?utf-8?B?RDU3bGtickpkMExnOGxLL0UvMmFTMEF1WHFsZzhrQllUMTZDc3c3UTNWZUdV?=
- =?utf-8?B?b2VFMWxVeXFSYzcyR0xSRmZzeHY5VGZzQkp6N3NrQmFtTEgybTNsS0w0U3pr?=
- =?utf-8?B?S3dMc2lHYjJGdVRmbnpKeStGVTJwbFVnbkEwRUFyQ2JmWU9jcDlNcU1wZTVJ?=
- =?utf-8?B?NVh2SjJ4eUxYMUFCaTl5NFk3eE16aVd6SUNacnJySEhUL1lQMTlibzlHb2Ny?=
- =?utf-8?B?dlZpSlBBMzBVSmkrQnNYdytCVmZ4bkNGR0NCT3BUSHFQSytrbUxFbU9mSXli?=
- =?utf-8?B?MG9NemJMTWs0QlF0SUpwSC9SZXR6Mjh6bU1YbkthS3NBaHJxZURueExJTmZ3?=
- =?utf-8?B?bEtlQjF3SGdrandzYVhzNXBRTXhxMXZpQVpZWlhabm9nNi9Od0ZYMU5XNmVa?=
- =?utf-8?B?RktTNFZISzhSTjc3bTFkUUpuZnBiMEVuWFJ3SVZERm5HdEhweFV5SUVwMkh0?=
- =?utf-8?B?LzlCM1lJTmsyajFacnVjekd3YXdQUEdkdDk1VURPZC84QUtoTTNybHEyL3I1?=
- =?utf-8?B?SlRqbnN3dEo3ejNoT0N3QVdKeUZhTzFqMmxlUERZMXpjNHFZQUFKZWU5U3Ns?=
- =?utf-8?B?SU9yZS84Q2dYaHdxUHFyZTg4bmlJajNzUURmOFo1TzhZNXlOcUxpOXY0eDYv?=
- =?utf-8?B?NzZlbU90VGszOFdtcGVjbXVjME9NSHNuWVR5c3JUZFh5NER1Zm5qbUNKS1dn?=
- =?utf-8?B?WjlGUzlqVmZzR2huRWovN2ZlNjNMYlFSOGF1b3FlQUV3LzYwamJ3LzF1RVlo?=
- =?utf-8?B?YTFXS2d0cHFiU0EyMEQ3d3ZxeWwzcktlT3QycDFXbERPZjZVT0d2WFVEcm5u?=
- =?utf-8?B?dzJuNjd1QVNyNU5TeGxzTnF3d3ZFZ1kxUWpKSzFVYXAvY3VYazY2VE9tNnht?=
- =?utf-8?B?eXJhME0ra1BGcHJvVTNpOGJGYjE1SldJdm9oK2hJcGt3Sy8vcXVtc05ESzdK?=
- =?utf-8?B?anVMWjMxakpqakpWSjR0eGw0b2EzWG1HRTZlWDkwbmtxZFhmTUVxYU14aXhm?=
- =?utf-8?B?dk5taEtJbjRqb3Vta0YybklybHVIN0twTzlyOHhnZk5ZV1o0a291Y2w0eTBn?=
- =?utf-8?B?RWJuU3pxSSt0b2Z6RHU5dWlJcUJtRlBmT1FSZUpkeS9xMXFSZWxReC9UYXpz?=
- =?utf-8?B?OXBvd0d4SkVJajlNOTN1c1YzQm9qZ0FabDVrQXZWb3Zla1hBRXdnTUdRcGdH?=
- =?utf-8?B?SnkxdytER1BuRHlFWDFtK05CWHhQWUxxanNmSFMzUm51Z3ZsZjNOSHNqMkI1?=
- =?utf-8?B?MHZMbzVuQVhyallManJUUWx3aGM0cEFYZkQ4VnU3S01aZGIwdDZEV2RhVEV0?=
- =?utf-8?B?bEo3Uk1VcDEvSThSeFdlWkFoNHgxZWdQZnlmMWtiRDJRZVlCeEFad2E3ajBM?=
- =?utf-8?B?cUtvTGJpay9iWngyYkZrVVRKV3kvNlc5bWdBQ3l3cG83YXE3c2xpMG9xZGxi?=
- =?utf-8?B?cE1hSmF3N2poeFNPM2pVM3U1N0tsZlI0WElGcUFBYkM2VDdnMUdGRXpjaENL?=
- =?utf-8?B?UjQ5RWxwMjZ5RWprVC9JR25pcU5oQ29MY0RpVzh6RGFJS2JUSnp2dzNNZk1B?=
- =?utf-8?B?THBHYzRFenlHb25zc0xLOUN4czZpUjhGamNrcmxoN3U2bW9jTWhFcFY2VGRv?=
- =?utf-8?B?Y2kyenhjYmhoNERoUXEvRTlFN29wZVpIRHRlb3N1V09VQXZtdEJLK1lZMEZh?=
- =?utf-8?B?T29TQjllT2pEYmJFb1pXTlpJRnFpWE81Q0NzTkhneXE5VTl5YWhqVnZ2amkz?=
- =?utf-8?B?eXN0MVVjcnJVN3FpYllOREFjVFM5aCtXWVZUNWxhSEkrU2RKYzRBVnYwMW51?=
- =?utf-8?B?Y3NnZmpWMkxqQWRONHRXbVVtK2VScEhVM2M3S1FiTmpjb2xDTnRtc2JYVCtn?=
- =?utf-8?B?QlVWa1o4MHFzaVJhSUJDSGpORllwODJaei9rd3FUR3RRb0dKdHVKb29GQTZx?=
- =?utf-8?B?ODF5SDI0TDRZN0o1TnNHaUZaUytHZUlIM3UrZ2N2UkorWWxCK21PeHIvMU8r?=
- =?utf-8?B?MGgvQUkwV2xYb0lobUgrZC8xQ3lpTm9qL2RCWElnc0J5M2oxemt6cjJGVUNr?=
- =?utf-8?B?YzNLWFdRMUgwNG9BSldIZWNvSlBFckRHbWUxOGhPTWZySWk5LzRqM2FaYmVJ?=
- =?utf-8?B?clpqWGlvd1lQcDVlSzVRNnVXa291SjMwbUJHQW5MQ0NDY3NkU0xiQT09?=
-X-Exchange-RoutingPolicyChecked: j0WcKXoRliXppFkSevAE7L5DSJE+oLsd54XvJRbkf7l5JYveW+hZQuJuPKt+CoIWisXPoyZjLg67ziRAw9KRRyobuHAiNfSa9bjM440H8lGdLtML8vaW1YxJufNLtaBebYvYVIATvObw1AEQ4rh8faJPHhoLCQMWdpJxC7MdyxNpKqqaZVQmAOI9y6iQb8njbI8oOe5SBGknqdZ24LC9CmzRiJqVZ0A67LhIGFLauNIfGGhC5onUIUB4gGvTJmE/8p+Lb3BOOAUrCInX3Kb87nPOB+SCoxxRbQm/5Jbnq9KckqAlfnHTIW6sTKfPVmqxhUVJM/ObETk2Z46MTBNZIg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8305f615-0398-423b-5f45-08dedca40f25
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7997.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 03:50:32.1677
+X-MS-Exchange-AntiSpam-MessageData-0:
+	8oZhG7HxMEJzegkI9/kQ+k3b+X5K44QoYv3u7161yaJazWoV9bLbwBPcUf33s6heL5gj37WDbRSZJDwc9zw/9agj5/ie69Gkg5eQc6uBV0Xosa1NryXlFnVHJON/PQ6kBZHHpepHs6Vv46bv5hJBO3xWU4ppj/qClvOiVLmc8itTDbhb1ujyZns29ZEVhtpf7u7X8bZam20vVHfj60JHWMY3IJ/KVFbe7spun+F15KtluVfP6cr2R8RbkpXkMnnzI8EFgXokkEiXWsPqGLkxYIwJUIt0mZor/5KCB8EkbOCo7mpG95HYgDereND0gk3H0F2oAL5jcZk7zEXjGYYCIrwkKM2Od1klQSWsj/4WIWfG1j+JznHwpcWApnQHNWuj24F9+sS6dIvdpz/htCndsEQgUei0zdfR6W0oUM76RhgwKbyPjVCIIU4tNd8qjPQl
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 04:52:36.0842
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RHkDU0BcvuDjNLWUDc8rifC5APm5ngYv8layXXraRCSS3/z9QoW7GjG+rUMZnmWJWZWuBfZXeByeJ31RJ0wovA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8701
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 354d1e25-cfa8-4149-4105-08dedcacbae7
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000148.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8528
 
-How about?
 
-x86/virt/tdx: Add tdx_{alloc,free}_control_page() helpers
 
-On 5/25/2026 7:35 PM, Rick Edgecombe wrote:
-> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+On 7/2/2026 1:01 AM, Sean Christopherson wrote:
+> As a first step towards dropping .calibrate_{cpu,tsc}() and explicitly
+> defining precedence/priority for "calibration" routines, pass the secure
+> TSC frequency obtained from SNP firmware directly to
+> determine_cpu_tsc_frequencies() instead of overriding the .calibrate_tsc()
+> hook.
 > 
-> Add helpers to use when allocating or preparing pages that are handed to
-> the TDX-Module for use as control/S-EPT pages, and thus need Dynamic PAMT
-> adjustments.
+> Unlike the native calibration routines, all of the paravirtual overrides,
+> including SNP and TDX, are constant in the sense that the frequency
+> provided by the hypervisor or trusted firmware is fixed, known, and always
+> available during early boot.  More importantly, for CoCo (SNP and TDX) VMs,
+> it's imperative that the kernel uses the frequency provided by the trusted
+> firmware, not by the untrusted hypervisor.  Enforcing the priority between
+> sources by carefully ordering seemingly unrelated init calls, so that the
+> trusted override "wins", is brittle and all but impossible to follow.
 > 
-> The TDX module tracks some state for each page of physical memory that it
-> might use. It calls this state the PAMT. It includes separate state for
-> each page size a physical page could be utilized at within the TDX module
-> (1GB, 2MB, 4KB). In Dynamic PAMT, only the 4KB page size state is
-> allocated dynamically. So for pages that TDX will use as 2MB physically
-> contiguous pages, Dynamic PAMT backing is not needed.
-
-I lost the continuation in the last sentence. Why does it only talk
-about 2MB if only 4KB is dynamically allocated. What about 1GB?
-
-(Probably due to my lack of TDX knowledge)
-Similarly, why do these functions only refer to 2MB only and not 1GB?
-
-pamt_2mb_arg(), tdh_phymem_pamt_add(), tdh_phymem_pamt_remove().
-
+> Explicitly ignore tsc_early_khz if the exact TSC frequency was obtained
+> from trusted firmware, as per commit bd35c77e32e4 ("x86/tsc: Add
+> tsc_early_khz command line parameter"), the goal of the param is to play
+> nice with setups that provide partial frequency information in CPUID, i.e.
+> is NOT intended to be a hard override.  Neither SNP's secure TSC nor TDX
+> was supported when commit bd35c77e32e4 landed back in 2020, i.e. lack of
+> consideration for the interaction was purely due to oversight when SNP and
+> TDX support came along.
 > 
-> KVM will need to hand pages to the TDX module that it will use at 4KB
-> granularity. So these pages will need Dynamic PAMT backing added before
-> they are used by the TDX module, and removed afterwards.
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  .../admin-guide/kernel-parameters.txt         |  4 +++
+>  arch/x86/coco/sev/core.c                      | 14 +++--------
+>  arch/x86/include/asm/sev.h                    |  4 +--
+>  arch/x86/kernel/tsc.c                         | 25 ++++++++++++++-----
+>  4 files changed, 29 insertions(+), 18 deletions(-)
 > 
-
-...
-
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index 82dc27aecf297..74e75db5728c7 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -37,6 +37,7 @@
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index b5493a7f8f22..181149f633c3 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -7946,6 +7946,10 @@ Kernel parameters
+>  			with CPUID.16h support and partial CPUID.15h support.
+>  			Format: <unsigned int>
 >  
->  #include <uapi/asm/mce.h>
->  #include <asm/tdx_global_metadata.h>
-> +#include <linux/mm.h>
->  #include <linux/pgtable.h>
->  
->  /*
-> @@ -160,6 +161,12 @@ void tdx_guest_keyid_free(unsigned int keyid);
->  
->  void tdx_quirk_reset_paddr(unsigned long base, unsigned long size);
->  
-> +/* Number PAMT pages to be provided to TDX module per 2MB region of PA */
-
-	^^^ of PAMT pages
-
-
-> +#define TDX_DPAMT_ENTRY_PAGE_CNT 2
+> +			Note, tsc_early_khz is ignored if the TSC frequency is
+> +			provided by trusted firmware when running as an SNP
+> +			guest.
 > +
-> +struct page *tdx_alloc_control_page(void);
-> +void tdx_free_control_page(struct page *page);
-> +
->  struct tdx_td {
->  	/* TD root structure: */
->  	struct page *tdr_page;
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index 9ebd192cb5c17..9e0812d87ab06 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -1919,6 +1919,165 @@ u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, kvm_pfn_t pfn)
+>  	tsx=		[X86] Control Transactional Synchronization
+>  			Extensions (TSX) feature in Intel processors that
+>  			support TSX control.
+> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+> index 403dcea86452..bc5ae9ef74da 100644
+> --- a/arch/x86/coco/sev/core.c
+> +++ b/arch/x86/coco/sev/core.c
+> @@ -99,7 +99,6 @@ static const char * const sev_status_feat_names[] = {
+>   */
+>  static u64 snp_tsc_scale __ro_after_init;
+>  static u64 snp_tsc_offset __ro_after_init;
+> -static unsigned long snp_tsc_freq_khz __ro_after_init;
+>  
+>  DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
+>  DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
+> @@ -2014,15 +2013,10 @@ void __init snp_secure_tsc_prepare(void)
+>  	pr_debug("SecureTSC enabled");
 >  }
->  EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
 >  
-> +static int alloc_pamt_array(struct page **pamt_pages)
-> +{
-> +	int i, j;
+> -static unsigned long securetsc_get_tsc_khz(void)
+> -{
+> -	return snp_tsc_freq_khz;
+> -}
+> -
+> -void __init snp_secure_tsc_init(void)
+> +unsigned int __init snp_secure_tsc_init(void)
+>  {
+> +	unsigned long snp_tsc_freq_khz, tsc_freq_mhz;
+>  	struct snp_secrets_page *secrets;
+> -	unsigned long tsc_freq_mhz;
+>  	void *mem;
+>  
+>  	mem = early_memremap_encrypted(sev_secrets_pa, PAGE_SIZE);
+> @@ -2043,7 +2037,7 @@ void __init snp_secure_tsc_init(void)
+>  
+>  	snp_tsc_freq_khz = SNP_SCALE_TSC_FREQ(tsc_freq_mhz * 1000, secrets->tsc_factor);
+>  
+> -	x86_platform.calibrate_tsc = securetsc_get_tsc_khz;
+> -
+>  	early_memunmap(mem, PAGE_SIZE);
 > +
-> +	for (i = 0; i < TDX_DPAMT_ENTRY_PAGE_CNT; i++) {
-> +		pamt_pages[i] = alloc_page(GFP_KERNEL_ACCOUNT);
-> +		if (!pamt_pages[i])
-> +			goto err;
-> +	}
-> +
-> +	return 0;
-> +err:
-> +	for (j = 0; j < i; j++)
-> +		__free_page(pamt_pages[j]);
-> +	return -ENOMEM;
+> +	return snp_tsc_freq_khz;
+>  }
+> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+> index 594cfa19cbd4..05ebf0b73ef4 100644
+> --- a/arch/x86/include/asm/sev.h
+> +++ b/arch/x86/include/asm/sev.h
+> @@ -530,7 +530,7 @@ int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req
+>  int snp_svsm_vtpm_send_command(u8 *buffer);
+>  
+>  void __init snp_secure_tsc_prepare(void);
+> -void __init snp_secure_tsc_init(void);
+> +unsigned int snp_secure_tsc_init(void);
 
-Add a blank line before the return to separate from the for loop?
+It seems __init got dropped here accidentally?
 
-> +}
-> +
-> +static void free_pamt_array(struct page **pamt_pages)
-> +{
-> +	for (int i = 0; i < TDX_DPAMT_ENTRY_PAGE_CNT; i++) {
-> +		/*
-> +		 * Reset pages unconditionally to cover cases
-> +		 * where they were passed to the TDX module.
-> +		 */
-> +		tdx_quirk_reset_paddr(page_to_phys(pamt_pages[i]), PAGE_SIZE);
-> +
-> +		__free_page(pamt_pages[i]);
-> +	}
-> +}
-> +
-> +/*
-> + * Calculate the arg needed for operating on the DPAMT backing for
-> + * a given 4KB page.
-> + */
-> +static u64 pamt_2mb_arg(kvm_pfn_t pfn)
-> +{
-> +	unsigned long hpa_2mb = ALIGN_DOWN(pfn << PAGE_SHIFT, PMD_SIZE);
-> +
-> +	return hpa_2mb | TDX_PS_2M;
-> +}
-> +
-> +/* Add PAMT backing for the given page. */
-> +static u64 tdh_phymem_pamt_add(kvm_pfn_t pfn, struct page **pamt_pages)
-> +{
-> +	struct tdx_module_args args = {
-> +		.rcx = pamt_2mb_arg(pfn),
-> +		.rdx = page_to_phys(pamt_pages[0]),
-> +		.r8 = page_to_phys(pamt_pages[1]),
-> +	};
-> +
-> +	return seamcall(TDH_PHYMEM_PAMT_ADD, &args);
-> +}
-> +
-> +/* Remove PAMT backing for the given page. */
-> +static u64 tdh_phymem_pamt_remove(kvm_pfn_t pfn, struct page **pamt_pages)
-> +{
-> +	struct tdx_module_args args = {
-> +		.rcx = pamt_2mb_arg(pfn),
-> +	};
-> +	u64 ret;
-> +
-> +	ret = seamcall_ret(TDH_PHYMEM_PAMT_REMOVE, &args);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Copy PAMT pages out of the struct per the TDX ABI */
-> +	pamt_pages[0] = phys_to_page(args.rdx);
-> +	pamt_pages[1] = phys_to_page(args.r8);
-> +
-> +	return 0;
-> +}
-> +
-> +/* Allocate PAMT memory for the given page */
-> +static int tdx_pamt_get(kvm_pfn_t pfn)
-> +{
-> +	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT];
-> +	u64 tdx_status;
-> +	int ret;
-> +
-> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
-> +		return 0;
-> +
-> +	ret = alloc_pamt_array(pamt_pages);
-> +	if (ret)
-> +		return ret;
-> +
-> +	tdx_status = tdh_phymem_pamt_add(pfn, pamt_pages);
-> +	if (tdx_status != TDX_SUCCESS) {
-> +		ret = -EIO;
-> +		goto out_free;
-> +	}
-> +
-> +	return 0;
+Apart from this:
 
-Blank line here as well.
-> +out_free:
-> +	free_pamt_array(pamt_pages);
-> +	return ret;
-> +}
+Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
+Tested-by: Nikunj A Dadhania <nikunj@amd.com>
+
+>  enum es_result savic_register_gpa(u64 gpa);
+>  enum es_result savic_unregister_gpa(u64 *gpa);
+>  u64 savic_ghcb_msr_read(u32 reg);
+> @@ -637,7 +637,7 @@ static inline int snp_send_guest_request(struct snp_msg_desc *mdesc,
+>  					 struct snp_guest_req *req) { return -ENODEV; }
+>  static inline int snp_svsm_vtpm_send_command(u8 *buffer) { return -ENODEV; }
+>  static inline void __init snp_secure_tsc_prepare(void) { }
+> -static inline void __init snp_secure_tsc_init(void) { }
+> +static inline unsigned int __init snp_secure_tsc_init(void) { return 0; }
+>  static inline void sev_evict_cache(void *va, int npages) {}
+>  static inline enum es_result savic_register_gpa(u64 gpa) { return ES_UNSUPPORTED; }
+>  static inline enum es_result savic_unregister_gpa(u64 *gpa) { return ES_UNSUPPORTED; }
+> diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+> index 8f1604ffe986..f049c126e47c 100644
+> --- a/arch/x86/kernel/tsc.c
+> +++ b/arch/x86/kernel/tsc.c
+> @@ -1440,15 +1440,16 @@ static int __init init_tsc_clocksource(void)
+>   */
+>  device_initcall(init_tsc_clocksource);
+>  
+> -static bool __init determine_cpu_tsc_frequencies(bool early)
+> +static bool __init determine_cpu_tsc_frequencies(bool early,
+> +						 unsigned int known_tsc_khz)
+>  {
+>  	/* Make sure that cpu and tsc are not already calibrated */
+>  	WARN_ON(cpu_khz || tsc_khz);
+>  
+>  	if (early) {
+>  		cpu_khz = x86_platform.calibrate_cpu();
+> -		if (tsc_early_khz)
+> -			tsc_khz = tsc_early_khz;
+> +		if (known_tsc_khz)
+> +			tsc_khz = known_tsc_khz;
+>  		else
+>  			tsc_khz = x86_platform.calibrate_tsc();
+>  	} else {
+> @@ -1503,6 +1504,8 @@ static void __init tsc_enable_sched_clock(void)
+>  
+>  void __init tsc_early_init(void)
+>  {
+> +	unsigned int known_tsc_khz = 0;
 > +
+>  	if (!boot_cpu_has(X86_FEATURE_TSC))
+>  		return;
+>  	/* Don't change UV TSC multi-chassis synchronization */
+> @@ -1510,9 +1513,19 @@ void __init tsc_early_init(void)
+>  		return;
+>  
+>  	if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
+> -		snp_secure_tsc_init();
+> +		known_tsc_khz = snp_secure_tsc_init();
+>  
+> -	if (!determine_cpu_tsc_frequencies(true))
+> +	/*
+> +	 * Ignore the user-provided TSC frequency if the exact frequency was
+> +	 * obtained from trusted firmware, as the user-provided frequency is
+> +	 * intended as a "starting point", not a known, guaranteed frequency.
+> +	 */
+> +	if (!known_tsc_khz)
+> +		known_tsc_khz = tsc_early_khz;
+> +	else if (tsc_early_khz)
+> +		pr_err("Ignoring 'tsc_early_khz' in favor of trusted firmware.\n");
+> +
+> +	if (!determine_cpu_tsc_frequencies(true, known_tsc_khz))
+>  		return;
+>  	tsc_enable_sched_clock();
+>  }
+> @@ -1533,7 +1546,7 @@ void __init tsc_init(void)
+>  
+>  	if (!tsc_khz) {
+>  		/* We failed to determine frequencies earlier, try again */
+> -		if (!determine_cpu_tsc_frequencies(false)) {
+> +		if (!determine_cpu_tsc_frequencies(false, 0)) {
+>  			mark_tsc_unstable("could not calculate TSC khz");
+>  			setup_clear_cpu_cap(X86_FEATURE_TSC_DEADLINE_TIMER);
+>  			return;
 
