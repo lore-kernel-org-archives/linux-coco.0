@@ -1,385 +1,192 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C7C3E4C7F
-	for <linux-coco@lists.linux.dev>; Wed,  8 Jul 2026 07:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783497157; cv=none; b=WxfKZ00N/Efir+IWeSI2igm5GZUxNv2WvHf/V2Jd1lF649e1OZmFP5hedZSbwyTt0A+dW5YjlCzHSJgDlgIAEzSAY1oDosgTjNOa6xO96fmybnUY5P1anX7+69a2/kfIplfTqCd6tejSXKhIlqpuFrsnQmdvlbwH7rVQouiMEH8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783497157; c=relaxed/simple;
-	bh=pjB8XBmcLwr9zPI1lqewzOgCHaxXQGsSaHUZ1PExv5A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KRj/k+qkWm/WOKdP1ENGh8USKFjTPyCfFRD6YMGN+ctcx/zkJDNgo9ZhJiFteiNq5+7GyOOTm6g5AEKp+bfGOY8KkASiVbQaOLm1RWS51syKzdGJL/gluJvqQM41koonucHrNu3/vezfK9/1Ual/nPpzYzc4AaJGTYkPFLFuhLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=SOMukiZB; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B24401A38
+	for <linux-coco@lists.linux.dev>; Wed,  8 Jul 2026 08:35:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783499753; cv=fail; b=qoTiNPGZACrX/9+ttdi+U2b2u8xUdjSZsr8HzlLYFP4QSMyy6Ee1xX2BaMu9Ch0L/4HisatXRUeYcPaY9RtZ1miLZ3UTeil7YmsYpIY00e6dX2zWSMAGrFkL0KapHO1g5V491Vne5dqRudPxnoUHWUpymu3AB9o03QjJnZ/1Cu0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783499753; c=relaxed/simple;
+	bh=PiREt+2ESdGoNg6vz0uQMfcTYrhtQCI6ZFzxHRt5xpc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=gaSw/jhA7h6jyK3+h3txpg6gFFgOibzNa21MBJQIhd5sQpP6GwYhpJ2o+JQop/HXLSpcc3VPi9Tl7VmfeOHiRXTTHDvjI4I+0e26BitrkZIGgv2TRsKAQLCDxz6tgJFTxG+P/mA4LIjYZQ28tqjSj79KP1fsDZNuMtlMSm3M9UI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MukvqoGB; arc=fail smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="SOMukiZB"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-493d1e8aa46so2676655e9.0
-        for <linux-coco@lists.linux.dev>; Wed, 08 Jul 2026 00:52:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1783497132; x=1784101932; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=1z5ci1yV4mbIoJ3VVwr6wBXV3Qix2cWYJIljHwqOWVc=;
-        b=SOMukiZBzaJW6GA7JTuLwvPFKOB9jCcenD/mYsRPAlCcU7no4b0nexCP4o5Qy8dcTH
-         +NMtdb5eT+AFF5QXmoyg2S7P1aIRrt9zaaEfKuxyUYgCI/Jtzm1NVD2IaFnMTfkX1DoG
-         Rxn/LZc8dHpHqQtn2tEw3peV42xsBfAUvKBClYPcvkCqS8c5hsGaDSPJdr5w1NZC+Omb
-         +PPpO2vHJrKYAaFxuH3UX+KCSSLIVo3g+NSKRk6jpT03EwDRsAlUxnV1SkQeTiXJji18
-         vxyX9svGCq7b5bOE4IzaDMXh0oRlCdZ8zUoXGV5xQHL1sBVflx8gtLGsHUZZga+aBPJh
-         2KZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783497132; x=1784101932;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=1z5ci1yV4mbIoJ3VVwr6wBXV3Qix2cWYJIljHwqOWVc=;
-        b=K5c8Jkx0TpW9RLL2hz2sjmYZnEowFybYGpHN+lch7bcYcptsr10OaSBamfoYcLvuqI
-         K8RjmdhFOSJbAwvihpGN7bnwcDkvmZRNw9cO+hmkopLeqrqw+W0RqQQAe7fqwKn3kLdK
-         emREnImJuVABybniDsYc2KrkI7x2quu4XKqLUZ7Rqji2t9yOQNJg/qryOw8F0oMTxll9
-         Eddpwq6hlXF9zKn6xEK9O6IdeObEfydUtxIGzuG9mpcehpFjmuK9ttb/ILkbQdXLW9Gu
-         i09OLMO4QUDGcsAl5bhcL2SPgFyHAQWv+rA6AcZ5FMHCQKs18HbcxUuK8pZ+cfpsPC1t
-         ab9Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rpqel+WzSoPmirLjB2QKxFoT0OcX2DjwrQkie4n1lB8ohRdf/13FxqfsJ4eZmySpmcdy1aAfWCEplpz@lists.linux.dev
-X-Gm-Message-State: AOJu0YxNy7yKkb7FJN9lNP2/K70sXndi0bUi6T8WxB1+ISNYtPifoYY1
-	4/KTPTml7EgI/NO1sRbUOfobpU0rCzvTfJv1Tklam++FIY6cfy4BIMzBdtIQAndWEVE=
-X-Gm-Gg: AfdE7cnZMbHmSwK1xbCGba3rFcbQENXNezlGInbRaZVnbb/TZwwrPfRFJrI0R8RHi5R
-	i7egvxF7Z+7lJsLFW0+nEUZ+lWVsYlmvx4s/7TZwq95BYtE+n3sRhlkbTgVqgt+vikuEj/i47pk
-	fxk9HsYJG1Z8QB0dzKB3UtsDmoaGqa4B8OGcpfmDnJEBm6aOcIyi/NmP5iLyIbVzjEx2g2RzpY+
-	+gJ84K7UhGoehvuLWk5MeWL+pP91/Ybr3dgfekZaxNXZQ/mICbg8IUXmboM1lyvDI2zlE8xIWjX
-	ryIf4XXlhEKxS27QDRzmbXiyCsgrgwaUcTfjOO+W7GQbUEyqKx53kL9wAkvzmc8LAiaz4in3wPw
-	9wN0aTejFWCAjIlQlA/vXPvGyQh6tnVGOSAfwBjrWXDu1h4i63WpkoIn0eLrvcnyybKc2uGm4ya
-	Pb6J09BiIGp26IfbQ=
-X-Received: by 2002:a05:600c:6094:b0:492:28be:6098 with SMTP id 5b1f17b1804b1-493e68bef5dmr13224725e9.11.1783497132263;
-        Wed, 08 Jul 2026 00:52:12 -0700 (PDT)
-Received: from [10.20.4.146] ([149.62.207.236])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e4d843csm39654309f8f.14.2026.07.08.00.52.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jul 2026 00:52:11 -0700 (PDT)
-Message-ID: <d13c4073-b248-40ac-aa28-1c0dfc6b9043@suse.com>
-Date: Wed, 8 Jul 2026 10:52:07 +0300
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MukvqoGB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783499751; x=1815035751;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=PiREt+2ESdGoNg6vz0uQMfcTYrhtQCI6ZFzxHRt5xpc=;
+  b=MukvqoGB13C6EapDwPkdBmX2Gr1fe8pf6/NLuBCHIEHfQuvsFUUWl/sO
+   ik+XK8heTPVhphFDNrG7Y6aynUGYV81sLMoLw2hAsYi3+ugxzQjiKQiRe
+   5D/ldgAI9ZZAESDKogSMT0cS6wqxwtXxJ/fjvXQ1fTP+Eelp3TZFaH9Py
+   g7xxAguqdYW5Y2ZcEsk7MrSPORl9d16MN3fX1DaDUpylJjrDiy3VPGShg
+   CKdfEzCAQQp2nodJllNJ38nzOzZJRSmPwHHx1ah5Q2HFiBl7MP6qBIY7O
+   PJQoX9888tDZysBX4P9Qh1Qc7EagWvWAejYkf8KxiR2Pa5euMpRfVcvey
+   A==;
+X-CSE-ConnectionGUID: KDMGk11OToWcoT4FawvjKw==
+X-CSE-MsgGUID: VJvRjB7+RDiz8y6yZCqm1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="84275500"
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="84275500"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 01:35:51 -0700
+X-CSE-ConnectionGUID: 2yiIAGw/QqGkjpLer0t/OA==
+X-CSE-MsgGUID: 0946r057TH6lLAqJQoXp3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="254870306"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 01:35:51 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Wed, 8 Jul 2026 01:35:50 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Wed, 8 Jul 2026 01:35:50 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.21) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Wed, 8 Jul 2026 01:35:50 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=B7zb51A/QVix9uM1rhL4fazm+QszH/xetXvQVPuYVL/cjTrf4gxU59/y8c3zC6cftMVS8Zv+uUKe8XY9/CkrStO8LAo3a9LTy9V123ABVKM+eN0B6qez1tqutdTvo9ZuJfgu1rY6vHNCeXbsmCI5p2xvTRiRgwbzTgWUm08F9OSXjpbs1rorif2MIUJMtW5Eth8l4Zm/adS4J6mPg1IXiri4F9qnQ4fvTh5GxdEhu4579GpBz0QEmqRDSCA522ijMyjgKNq7ygSEiIdsS7my4k4bv61Tzzg28R2lV4uljlODTjkBnWCfFX76oosmG5cGrqVvR+f/o1TCQRaDrPJcOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZznFCGJt89tU+fPu1+FDCV9hx4JW2d3rOG2XeT31gYY=;
+ b=R3U3gVw3G4jKuAUCv3IKvaKkbm9oAKfPGdvxw4R6aQf2XvP/n+G6wY81s6i7wNqVLg4lvTJTXOotrbe8PqRCD6q9ODO//2hdtmx0a9wlMS9uW2piCu/RsaHFb3s8UTG5v2itC1FzZqR39sEkGVgubn0RnfqSLOE4fa+J/ixInG21I0mka9TLQ9OpQ+j/QG0lUQb5qb+K9Yqm4oUsHKnj8Scj6YtsWZJhV5KqssVUrBfrZqxtMieNnbxCyQBD1gNoggrcPxJQ8iDa1Rgcz2+junofLAv54thSdCnz1szLVciBatpcItc8hlv7XQMsnDYGh7LRTqXSkD7mXOZQi9uoSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com (2603:10b6:406:ad::26)
+ by MW4PR11MB6786.namprd11.prod.outlook.com (2603:10b6:303:20b::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 8 Jul 2026
+ 08:35:47 +0000
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b]) by BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b%6]) with mapi id 15.21.0181.012; Wed, 8 Jul 2026
+ 08:35:47 +0000
+Date: Wed, 8 Jul 2026 16:35:11 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+CC: <bp@alien8.de>, <dave.hansen@intel.com>, <hpa@zytor.com>,
+	<kas@kernel.org>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<mingo@redhat.com>, <nik.borisov@suse.com>, <pbonzini@redhat.com>,
+	<seanjc@google.com>, <tglx@kernel.org>, <vannapurve@google.com>,
+	<x86@kernel.org>, <yan.y.zhao@intel.com>, <kai.huang@intel.com>, "Kirill A.
+ Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH v6 09/11] KVM: TDX: Get/put PAMT pages when (un)mapping
+ private memory
+Message-ID: <ak4Lv+CQIG1P3k/f@intel.com>
+References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
+ <20260526023515.288829-10-rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260526023515.288829-10-rick.p.edgecombe@intel.com>
+X-ClientProxiedBy: SI1PR02CA0020.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::9) To BN7PR11MB2836.namprd11.prod.outlook.com
+ (2603:10b6:406:ad::26)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/17] x86/virt/tdx: Prepare Quote buffer during
- extension bringup
-To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: djbw@kernel.org, kas@kernel.org, rick.p.edgecombe@intel.com,
- yilun.xu@intel.com, xiaoyao.li@intel.com, sohil.mehta@intel.com,
- adrian.hunter@intel.com, kishen.maloor@intel.com,
- tony.lindgren@linux.intel.com, peter.fang@intel.com,
- baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, dave.hansen@intel.com,
- dave.hansen@linux.intel.com, seanjc@google.com
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-9-yilun.xu@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- xsFNBGcrpvIBEAD5cAR5+qu30GnmPrK9veWX5RVzzbgtkk9C/EESHy9Yz0+HWgCVRoNyRQsZ
- 7DW7vE1KhioDLXjDmeu8/0A8u5nFMqv6d1Gt1lb7XzSAYw7uSWXLPEjFBtz9+fBJJLgbYU7G
- OpTKy6gRr6GaItZze+r04PGWjeyVUuHZuncTO7B2huxcwIk9tFtRX21gVSOOC96HcxSVVA7X
- N/LLM2EOL7kg4/yDWEhAdLQDChswhmdpHkp5g6ytj9TM8bNlq9I41hl/3cBEeAkxtb/eS5YR
- 88LBb/2FkcGnhxkGJPNB+4Siku7K8Mk2Y6elnkOctJcDvk29DajYbQnnW4nhfelZuLNupb1O
- M0912EvzOVI0dIVgR+xtosp66bYTOpX4Xb0fylED9kYGiuEAeoQZaDQ2eICDcHPiaLzh+6cc
- pkVTB0sXkWHUsPamtPum6/PgWLE9vGI5s+FaqBaqBYDKyvtJfLK4BdZng0Uc3ijycPs3bpbQ
- bOnK9LD8TYmYaeTenoNILQ7Ut54CCEXkP446skUMKrEo/HabvkykyWqWiIE/UlAYAx9+Ckho
- TT1d2QsmsAiYYWwjU8igXBecIbC0uRtF/cTfelNGrQwbICUT6kJjcOTpQDaVyIgRSlUMrlNZ
- XPVEQ6Zq3/aENA8ObhFxE5PLJPizJH6SC89BMKF3zg6SKx0qzQARAQABzSZOaWtvbGF5IEJv
- cmlzb3YgPG5pay5ib3Jpc292QHN1c2UuY29tPsLBkQQTAQoAOxYhBDuWB8EJLBUZCPjT3SRn
- XZEnyhfsBQJnK6byAhsDBQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJECRnXZEnyhfs
- XbIQAJxuUnelGdXbSbtovBNm+HF3LtT0XnZ0+DoR0DemUGuA1bZAlaOXGr5mvVbTgaoGUQIJ
- 3Ejx3UBEG7ZSJcfJobB34w1qHEDO0pN9orGIFT9Bic3lqhawD2r85QMcWwjsZH5FhyRx7P2o
- DTuUClLMO95GuHYQngBF2rHHl8QMJPVKsR18w4IWAhALpEApxa3luyV7pAAqKllfCNt7tmed
- uKmclf/Sz6qoP75CvEtRbfAOqYgG1Uk9A62C51iAPe35neMre3WGLsdgyMj4/15jPYi+tOUX
- Tc7AAWgc95LXyPJo8069MOU73htZmgH4OYy+S7f+ArXD7h8lTLT1niff2bCPi6eiAQq6b5CJ
- Ka4/27IiZo8tm1XjLYmoBmaCovqx5y5Xt2koibIWG3ZGD2I+qRwZ0UohKRH6kKVHGcrmCv0J
- YO8yIprxgoYmA7gq21BpTqw3D4+8xujn/6LgndLKmGESM1FuY3ymXgj5983eqaxicKpT9iq8
- /a1j31tms4azR7+6Dt8H4SagfN6VbJ0luPzobrrNFxUgpjR4ZyQQ++G7oSRdwjfIh1wuCF6/
- mDUNcb6/kA0JS9otiC3omfht47yQnvod+MxFk1lTNUu3hePJUwg1vT1te3vO5oln8lkUo9BU
- knlYpQ7QA2rDEKs+YWqUstr4pDtHzwQ6mo0rqP+zzsFNBGcrpvIBEADGYTFkNVttZkt6e7yA
- LNkv3Q39zQCt8qe7qkPdlj3CqygVXfw+h7GlcT9fuc4kd7YxFys4/Wd9icj9ZatGMwffONmi
- LnUotIq2N7+xvc4Xu76wv+QJpiuGEfCDB+VdZOmOzUPlmMkcJc/EDSH4qGogIYRu72uweKEq
- VfBI43PZIGpGJ7TjS3THX5WVI2YNSmuwqxnQF/iVqDtD2N72ObkBwIf9GnrOgxEyJ/SQq2R0
- g7hd6IYk7SOKt1a8ZGCN6hXXKzmM6gHRC8fyWeTqJcK4BKSdX8PzEuYmAJjSfx4w6DoxdK5/
- 9sVrNzaVgDHS0ThH/5kNkZ65KNR7K2nk45LT5Crjbg7w5/kKDY6/XiXDx7v/BOR/a+Ryo+lM
- MffN3XSnAex8cmIhNINl5Z8CAvDLUtItLcbDOv7hdXt6DSyb65CdyY8JwOt6CWno1tdjyDEG
- 5ANwVPYY878IFkOJLRTJuUd5ltybaSWjKIwjYJfIXuoyzE7OL63856MC/Os8PcLfY7vYY2LB
- cvKH1qOcs+an86DWX17+dkcKD/YLrpzwvRMur5+kTgVfXcC0TAl39N4YtaCKM/3ugAaVS1Mw
- MrbyGnGqVMqlCpjnpYREzapSk8XxbO2kYRsZQd8J9ei98OSqgPf8xM7NCULd/xaZLJUydql1
- JdSREId2C15jut21aQARAQABwsF2BBgBCgAgFiEEO5YHwQksFRkI+NPdJGddkSfKF+wFAmcr
- pvICGwwACgkQJGddkSfKF+xuuxAA4F9iQc61wvAOAidktv4Rztn4QKy8TAyGN3M8zYf/A5Zx
- VcGgX4J4MhRUoPQNrzmVlrrtE2KILHxQZx5eQyPgixPXri42oG5ePEXZoLU5GFRYSPjjTYmP
- ypyTPN7uoWLfw4TxJqWCGRLsjnkwvyN3R4161Dty4Uhzqp1IkNhl3ifTDYEvbnmHaNvlvvna
- 7+9jjEBDEFYDMuO/CA8UtoVQXjy5gtOhZZkEsptfwQYc+E9U99yxGofDul7xH41VdXGpIhUj
- 4wjd3IbgaCiHxxj/M9eM99ybu5asvHyMo3EFPkyWxZsBlUN/riFXGspG4sT0cwOUhG2ZnExv
- XXhOGKs/y3VGhjZeCDWZ+0ZQHPCL3HUebLxW49wwLxvXU6sLNfYnTJxdqn58Aq4sBXW5Un0Q
- vfbd9VFV/bKFfvUscYk2UKPi9vgn1hY38IfmsnoS8b0uwDq75IBvup9pYFyNyPf5SutxhFfP
- JDjakbdjBoYDWVoaPbp5KAQ2VQRiR54lir/inyqGX+dwzPX/F4OHfB5RTiAFLJliCxniKFsM
- d8eHe88jWjm6/ilx4IlLl9/MdVUGjLpBi18X7ejLz3U2quYD8DBAGzCjy49wJ4Di4qQjblb2
- pTXoEyM2L6E604NbDu0VDvHg7EXh1WwmijEu28c/hEB6DwtzslLpBSsJV0s1/jE=
-In-Reply-To: <20260618081355.3253581-9-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN7PR11MB2836:EE_|MW4PR11MB6786:EE_
+X-MS-Office365-Filtering-Correlation-Id: 871dd234-2dc6-4230-281c-08dedccbe85d
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|366016|7416014|1800799024|56012099006|4143699003|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: gQMhqoZ6C9Lzju0VZScjxjDdgYITXELYNmD9jtPCcPjuyylz155J3Kf/d5PBK0/Kdy+eqz7j5zA6rZ6VlB9UKzHwGDJUTR7cmEdVT2kCDm1lRoQKe33+j17SOGTO100YThrI2PkXajuXDUJOwDtrvOH5uyemvESBALzLikd5h5HggbDkSWfxnPbcuoMPR547EhI7UpKb3uVQBusd1U8IWL0+CQM4a2uvq6adfS3CJebc5fxburGG4EdSFKhEU+WxG27BH65HRMNqgxnYoR5kyROKcBN1RwQMlFcitFTtWGRftu5Be1OyEmSz7zQlmpJ5wOmvLtlMlxVvAwzGnzZfXWSJQoY+OHOLWO3e0ZNfWy89PkcNH912xKpF9mJF3nCSGVvXJnuFh7rkXCVFfBtbh3MH3khePdUYt914d6yeaXddei3sUtxaOnLD7ir6zlcHlGiEbh31g7cEgh4RBT45xVWMwcKxzVdzNfKyTAeACApSNBO5sIccvAQNIqLcECSuqMJF22zGBhWUn4igRnAFZhYyktYq8ca5Wv42itQd0icBQqkqwIy2Sj39ff+X+Jhff9NV0cILl+1t7XI+q6GohuO/OkzmdnugDhEQL8ZKBR6BFu2e/e8ysxm52y3NbsltblZ/gf7373YkUycx7H1sRl5TyrL1dH+khO58txWB59w=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR11MB2836.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(7416014)(1800799024)(56012099006)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?61mdzYtRqOZPmTgOQ+n/INz0pxURO9OI2oGb9G3D0Faqk8rwSGOXqbIWc50V?=
+ =?us-ascii?Q?PsCEx0F+rLD4KOUOeLBkprcPGnwVhznKISxoZ05mAu8xXfGuAauD1CVqkVf1?=
+ =?us-ascii?Q?7kzzajq62QVNYJKYrPuFqti7xJ3fcZ9m25/WQgoNQpL15XmktfZuh4El+08Z?=
+ =?us-ascii?Q?C30IyAZskGPTqfAtI3OTOX6V1zct9XmGTiK+9zJLF1NARcvAKA8twgQRpRv7?=
+ =?us-ascii?Q?WT7CPf82I5CyInjWZtqKOxUhTNg0OgMaYVACquAFcTrY+AkSy3tOw4RI68ar?=
+ =?us-ascii?Q?agrdsrukFLYkWRW2Aj4st0rRtiL7SxHQPxN8JWTubGWOj7z5dsty4ucfpQaN?=
+ =?us-ascii?Q?iXqEoG22bDexmVkb4wzTQSB3VUwJ7STZIeWwrtchD/2kqjm+Cf8YGkwvblj3?=
+ =?us-ascii?Q?RIMVLPFLVrIns+qU/TDU7hnpuLQXz0GAI2PETaZ0CsYud9LbKKQS7gAxd3Rc?=
+ =?us-ascii?Q?uHAMYKKXhW6pyyIClq1Hvs/nI5Hvq2Qu8k4TsXd3Jd27A/mt2hCtMzEJZi3+?=
+ =?us-ascii?Q?GV9uFik6U9o2D8p28Z3+Nu5ladhjW0ESibaP26Yl5YtEz7NQ7FoOXnKtcs+S?=
+ =?us-ascii?Q?fiG91AefOlAhdmDa432ixpuZpJ1mbKD1sgaOB88Qiu8mPkAY0mBhXLeC2QgQ?=
+ =?us-ascii?Q?oxy8XhGMhsyKGZDDwuGh/qN29G+R810F2jZpuD+BNoLNrcVoSEFNsRMY1Nt4?=
+ =?us-ascii?Q?XCg6zXZXdAn1u4XmA8bMacBK6p6SPQ41S70qU8j62UkOSL1yaE0QyEXWAekJ?=
+ =?us-ascii?Q?TPzMAx7EdSeQAWVJ94w9VAEsIxxP7YpKYEy5caCQm76zEn0yyhsLPPWNrw9s?=
+ =?us-ascii?Q?22gT78d7AeZ52YLhBzFnlNVa0XNJi2DM18PlQNQfGWqWFR5PM5QX0hRWUA6F?=
+ =?us-ascii?Q?z1B9HzYLLBjSGaYACV9wK7ThCZUmdR0G6NN8dnkISbaOImjdCQTRfrWhYzY8?=
+ =?us-ascii?Q?ptmTUyWTnNBgsgoobKLifQXHGx1TPVG1ebnZeS5vWEJhMl/FAR4b0ujBr5ST?=
+ =?us-ascii?Q?vrEGPvkykibXgutQABJMJMBYgumNcb6ChMcoQk0hb0e5+Q4LtY8GoqjYAaaw?=
+ =?us-ascii?Q?tAg+wpxaRYoEstWvWx08aeNjE29HYWWggc0SkW5tkwkicc3+1/KqNmaB0IU8?=
+ =?us-ascii?Q?QRHVao+RCdgJ5iI/elRY1tNOu4pswEiQLk4i528RiKMC/GYI7Wq/m28H1s3P?=
+ =?us-ascii?Q?5u3LR31CPXElYhdQ9Gz0i3TVS8fXFP0eRrV9Myj1f3kFP+s6ObQd+EiucoSu?=
+ =?us-ascii?Q?y1hsvAL+lygyIpWGbjN5tQ7cXMZytjHm3GmrvtTtFZ2wLWlbrfZ7QAD5lZlG?=
+ =?us-ascii?Q?sRNJ1P4rmo23njiu/GZmIM+ExiVJkZMjAMPxVfoOP7cpWxbMX1DFOtmX8LdV?=
+ =?us-ascii?Q?b1xeEBGn4wAsm4dd63u6/jcU978Zmv/s1ZLdfKzYoL1rML5MXbz3WiMvDRae?=
+ =?us-ascii?Q?JT2piAqz8zgGPR62wG3AgAjOvL53ElHZEnR0lFCdZvgFqerF50naZ3a/q2kG?=
+ =?us-ascii?Q?Fg6dBmdHvCj013eNlmI4PTBtQNUgHnkdv6yy9MSgKbXTAykgf4C+LhVMmoTY?=
+ =?us-ascii?Q?QSwy+Q6pX+TDoYUAo5gnysy8IDSfPzeQzxSLjhOWuLQVmkmjj1uH7aXPoCnu?=
+ =?us-ascii?Q?bGfZaz+VzFDPkEUty8iDiJ0r3swX1ib4U3/NM4qMe2KCnOIve9OJQB0fOirI?=
+ =?us-ascii?Q?zfnoTBrsxDC/wl79QLDCy9cZ3zDwOlA4aa+i9hcBnbMrU2aVIQm6MN8BxGzV?=
+ =?us-ascii?Q?FsHob9TBPw=3D=3D?=
+X-Exchange-RoutingPolicyChecked: rc5c/H7S0L/JHuJmHsZyajBSZs+OwsJNHB9lX+Wbfp+oSr/JX9ioLxHi1NRsFZH+vh6if/CI2PGLtqk3AmJNfeSp/MKSty+/Itya4CBbCD/PoNRpiwTyTv3IHFLOyPFHw731WSVAEMi+F8D3Zi+mf/yYjB242gu9I279a+DcZjhNZ4clQpedBvqTfiuKBedlhwUWB94tsUGAueD6nM8ZHaRBzi/0OGnJdERxM7maSGUnhU7X3PN21caNavhqP1wevZlORR/29QF8DnLVM8/+MGxnb9TxITScwBzOTZygwy9+iOunn0nuBr9ox6NTotybpzZs8zG4CclrAPJnM5xblA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 871dd234-2dc6-4230-281c-08dedccbe85d
+X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2836.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 08:35:47.3958
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: s9DsVo75Rj8wHpGcSZdCS5U4kMbRVCSgy8jTKQ8DBsX1kufEg21aoQrFXg9cIqkDF1Td66ZXbZwou9WUpIjyHg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6786
+X-OriginatorOrg: intel.com
 
+On Mon, May 25, 2026 at 07:35:13PM -0700, Rick Edgecombe wrote:
+>From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+>
+>Add Dynamic PAMT support to KVM's S-EPT MMU by "getting" a PAMT page when
+>adding guest memory (PAGE.ADD or PAGE.AUG), and "putting" the page when
+>removing guest memory (PAGE.REMOVE).
+>
+>To access the per-vCPU PAMT caches without plumbing @vcpu throughout the
+>TDP MMU, begrudgingly use kvm_get_running_vcpu() to get the vCPU, and bug
+>the VM if KVM attempts to set an S-EPT leaf without an active vCPU.  KVM
+>only supports creating _new_ mappings in page (pre)fault paths, all of
+>which require an active vCPU.
+>
+>The PAMT memory holds metadata for TDX-protected memory. With Dynamic
+>PAMT, PAMT_4K is allocated on demand. The kernel supplies the TDX module
+>with a few pages that cover 2M of host physical memory.
+>
+>Releases are balanced via tdx_pamt_put(): every control-page free goes
+>through tdx_free_control_page(), and guest data pages are put directly on
+>the successful tdh_mem_page_remove() path and in the
+>tdx_mem_page_add/aug() error path.
+>
+>Assisted-by: Sashiko:claude-opus-4-6 GitHub Copilot:claude-opus-4-6 Claude:claude-opus-4-7
+>Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+>Co-developed-by: Sean Christopherson <seanjc@google.com>
+>Signed-off-by: Sean Christopherson <seanjc@google.com>
+>Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+>Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+>---
+>v6:
+> - Don't have topup op take a min param (Yan, Sean)
 
-
-On 6/18/26 11:13, Xu Yilun wrote:
-> From: Peter Fang <peter.fang@intel.com>
-> 
-> During TDX attestation, the TDX guest asks the host to generate a
-> signed, verifiable structure (a "Quote"). With the Quoting extension,
-> the TDX module returns the Quote in pages that the host shares via an
-> Extension-SEAMCALL.
-
-nit: Just say the host provides the pages to the TDX module, no need to 
-specify if it's via an ext seamcall or some otherway. One can infer this 
-from the code itself.
-
-> 
-> The SEAMCALL accepts the host buffer pages as a linked list of 4KB
-> "HPA_LINKED_LIST" nodes. Each entry holds the physical address of a 4KB
-> data page, except for the last entry, which points to the next node. The
-> TDX module reports the required Quote buffer size through a global
-> metadata field. See [1] for details.
-
-That HPA_LINKED_LIST is basically a linked list of arrays, each node 
-into the linked list being the array, and each entry of that array being 
-the HPA witht he last being a pointer to the next HPA_LINKED_LIST, so in 
-a way a 2 level data structure. Can you be more explicit and just say 
-something along the lines of :
-
-"SEAMCALL accepts host buffer pages arranged in a custom data structure, 
-consisting of nodes containing HPAs, arranged linearly, and each node is 
-linked to the next one via the last entry"
-
-> 
-> For simplicity, let all guests share a global buffer. Build the buffer's
-> HPA_LINKED_LIST at Quoting extension bringup. This saves a bunch of
-> va-to-pa conversions at runtime.
-> 
-> [1] Intel TDX Module ABI specification, Section "Physical Memory
->      Management Types"
-> 
-> Signed-off-by: Peter Fang <peter.fang@intel.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> ---
->   arch/x86/include/asm/tdx_global_metadata.h  |   4 +
->   arch/x86/virt/vmx/tdx/tdx.c                 | 115 +++++++++++++++++++-
->   arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  14 +++
->   3 files changed, 129 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
-> index b3442b7c88bb..17cb13a1bb40 100644
-> --- a/arch/x86/include/asm/tdx_global_metadata.h
-> +++ b/arch/x86/include/asm/tdx_global_metadata.h
-> @@ -57,4 +57,8 @@ struct tdx_sys_info_ext {
->   	bool ext_required;
->   };
->   
-> +struct tdx_sys_info_quote {
-> +	u32 max_quote_size;
-> +};
-> +
->   #endif
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index 06c42b86b05e..9716424a301f 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -32,6 +32,7 @@
->   #include <linux/idr.h>
->   #include <linux/kvm_types.h>
->   #include <linux/bitfield.h>
-> +#include <linux/vmalloc.h>
->   #include <asm/page.h>
->   #include <asm/special_insns.h>
->   #include <asm/msr-index.h>
-> @@ -71,6 +72,24 @@ static LIST_HEAD(tdx_memlist);
->   
->   static struct tdx_sys_info tdx_sysinfo;
->   
-> +/*
-> + * Quote buffer shared with the TDX module for quote generation, in HPA linked
-> + * list format.
-> + *
-> + * @buf: Virtual address of the quote buffer.
-> + * @buf_len: Size of @buf in bytes.
-> + * @hpa_entries: HPA entries, starting at the first list node.
-> + * @hpa_entries_pa: Physical address for @hpa_entries.
-> + */
-> +struct tdx_quote_data {
-> +	void		*buf;
-> +	u64		buf_len;
-> +	u64		*hpa_entries;
-> +	phys_addr_t	hpa_entries_pa;
-> +};
-> +
-> +static struct tdx_quote_data tdx_quote;
-> +
->   static DEFINE_RAW_SPINLOCK(sysinit_lock);
->   
->   /*
-> @@ -1167,6 +1186,81 @@ static __init int init_tdmrs(struct tdmr_info_list *tdmr_list)
->   	return 0;
->   }
->   
-> +static inline phys_addr_t tdx_vmalloc_to_pa(const void *addr)
-> +{
-> +	unsigned long pfn = vmalloc_to_pfn(addr);
-> +
-> +	return PFN_PHYS(pfn);
-> +}
-> +
-> +#define HPAS_PER_NODE			(PAGE_SIZE / sizeof(u64))
-> +
-> +/*
-> + * Pass the quote buffer to the TDX module as an HPA linked list, where each
-> + * node holds 4KB page HPAs and the last entry points to the next node.
-> + */
-> +static __init int tdx_quote_create_buf(unsigned int npages,
-> +				       struct tdx_quote_data *qdata)
-> +{
-> +	unsigned int nnodes;
-> +	u64 *hpas;
-> +	void *qbuf;
-> +	int i, j;
-> +
-> +	if (!npages)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * Each node holds up to (HPAS_PER_NODE - 1) 4KB page HPAs.
-> +	 * The last entry of the node points to the next node.
-> +	 */
-> +	nnodes = DIV_ROUND_UP(npages, HPAS_PER_NODE - 1);
-nit: It's somewhat arbitrary but num_nodes seems more explicit, saving 3 
-chars is not worth it.
-> +
-> +	hpas = vmalloc_array(nnodes, PAGE_SIZE);
-
-hpas is basically the starting node, so name it "nodes". Also I'm 
-slightly confused why you use vmalloc to allocate a contiguous address 
-space when the nodes are linked in a list? I.e you keep referring to 
-list in the changelog and the code seems to be working in an array chunks?
-
-> +	if (!hpas)
-> +		return -ENOMEM;
-> +
-> +	/*
-> +	 * ~0ULL is the list terminator for HPA_LINKED_LIST.
-> +	 *
-> +	 * Pre-fill the last node with 0xff bytes so that unused entries are
-> +	 * terminators. Overwrite populated entries later.
-> +	 */
-> +	memset((u8 *)hpas + (nnodes - 1) * PAGE_SIZE, 0xff, PAGE_SIZE);
-> +
-> +	qbuf = vcalloc(npages, PAGE_SIZE);
-> +	if (!qbuf)
-> +		goto out_nomem;
-
-'qbuf' is rather arbitrary here. You simply pre-allocate a bunch of 
-pages which you then initialize into the nodes. Can't this allocation be 
-moved inside the loop itself, of course it will increase the number of 
-allocs happening but this is during initialization so it's not 
-performance critical, yes?
-
-
-
-> +
-> +	/* Populate the linked list */
-> +	for (i = 0, j = 0; j < npages; i++) {
-
-nit: This feedback was given before, but both variables can be defined 
-in this loop.
-
-
-> +		if ((i % HPAS_PER_NODE) == HPAS_PER_NODE - 1) {
-> +			/*
-> +			 * The last node entry always points to the next node.
-> +			 * The address of the following entry must be on next
-> +			 * node's page boundary.
-> +			 */
-> +			hpas[i] = tdx_vmalloc_to_pa(&hpas[i + 1]);
-> +			continue;
-> +		}
-> +
-> +		hpas[i] = tdx_vmalloc_to_pa((u8 *)qbuf + j * PAGE_SIZE);
-> +		j++;
-> +	}
- > +> +	qdata->buf = qbuf;
-> +	qdata->buf_len = (u64)npages * PAGE_SIZE;
-> +	qdata->hpa_entries = hpas;
-> +	qdata->hpa_entries_pa = tdx_vmalloc_to_pa(hpas);
-> +
-> +	return 0;
-> +
-> +out_nomem:
-> +	vfree(hpas);
-> +
-> +	return -ENOMEM;
-> +}
-> +
->   /* Initialize quoting extension */
->   static __init int tdx_quote_init(void)
->   {
-> @@ -1185,12 +1279,25 @@ static __init int tdx_quote_init(void)
->   
->   static __init void init_tdx_quoting_extension(void)
->   {
-> -	int ret;
-> +	struct tdx_sys_info_quote sysinfo_quote;
-> +	unsigned int nr_quote_pages;
-> +
-> +	if (!(tdx_addon_feature0 & TDX_FEATURES0_QUOTE))
-> +		return;
->   
-> -	if (tdx_addon_feature0 & TDX_FEATURES0_QUOTE) {
-> -		ret = tdx_quote_init();
-> -		WARN_ON_ONCE(ret);
-> +	if (tdx_quote_init()) {
-> +		WARN_ON_ONCE(1);
-> +		return;
->   	}
-> +
-> +	/* Quoting metadata is valid only after initialization */
-> +	if (get_tdx_sys_info_quote(&sysinfo_quote))
-> +		return;
-> +
-> +	nr_quote_pages = PAGE_ALIGN(sysinfo_quote.max_quote_size) /
-> +			 PAGE_SIZE;
-> +	if (tdx_quote_create_buf(nr_quote_pages, &tdx_quote))
-> +		pr_err("Failed to create quote buffer\n");
->   }
->   
->   /* Initialize TDX module extensions for extension SEAMCALLs */
-> diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-> index 84364da89649..1eb2985307c6 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-> @@ -151,3 +151,17 @@ static int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
->   
->   	return 0;
->   }
-> +
-> +static __init int get_tdx_sys_info_quote(struct tdx_sys_info_quote *sysinfo_quote)
-> +{
-> +	int ret;
-> +	u64 val;
-> +
-> +	ret = read_sys_metadata_field(0x2300000200000002, &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	sysinfo_quote->max_quote_size = val;
-> +
-> +	return 0;
-> +}
-
+The topup_external_cache x86 op still takes int min_nr_spts. Did you
+forget to remove it, or am I misreading this changelog?
