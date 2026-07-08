@@ -1,358 +1,312 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951AADF6C;
-	Wed,  8 Jul 2026 00:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783469570; cv=none; b=TrRHWx6Zn3CnfXaYBG98wRgw1BjK2JxPIpFmDERJjbshUwEGwXMlWBS6+DOE/6tLsqdmJ6htOrtza+P4zO5ECvzFQk+ICZ5+BUVBXg/845ajFBvH7ftlMFMiEDwkTSyj+4fZ0/lVa7tWkb53EDFyb5UH84r6Ezpvb58skjjvjR0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783469570; c=relaxed/simple;
-	bh=uWbkefmHV8WOrsqMlAMvzHvl5OEe1Rw2ZiJAOe+cRSI=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=Mj60pr9nd8/g/eiKovgZ7EzwFljRC+bhLQ+N8pqi+ARQ/aL6Jh1qR/mSPJeRMq41eQZYvFyAAznyhruIMGI8jhql5I2ItLfR9mLFUk+WKma3bUX87jl/PkA+5WPObmbP+5a+CD7ZyUfCKm70Q842gME03yXhVmMQekXsjTiDaPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NnbTJfFs; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A4F2D2483
+	for <linux-coco@lists.linux.dev>; Wed,  8 Jul 2026 00:49:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783471757; cv=fail; b=LccDQVedjn4HwamOvpwwzEPf0bJpGDhsUkYmf6jXD7uyz24CQzEyNuN3wbCe5hF91X7OT0/cenevKLrl+QsJj9L5tUq/2LB885KaAip7mISBKcxoSutuLMPBLeXiYZIDviRZaheN+WWm+nyuQxIYiisZHlJj4DThEU9zPM4ikfA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783471757; c=relaxed/simple;
+	bh=6clZxCw5ORwYUuL+NIOj8Tmsqg98j5zZ5PVM9dpwgl4=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=dMosDpTelDBQFsTmSM4Zw0LVtzdkWYeXvDApX6kC7SQhdgaSgzJAUWPQg3ZpIuv7XOUNc0GAYDTXJP1ns6eNpa5+EE+uwl045sXlnORKoC+GrIrNC9x60q7/bih1+upif43AoIkpRABFTSA+oC3126/2GB66T7eh3hDgOc8kq2Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jw53GMDk; arc=fail smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NnbTJfFs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AABE1F000E9;
-	Wed,  8 Jul 2026 00:12:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783469568;
-	bh=XygNDL9LJUCyKIdSKNrAz2OLah10cRGyd/1yQENfFnQ=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=NnbTJfFsfj2zkbkzlWkWgo5CvsIHdc+c4ZXBvv3hogKcEuhFibxIdqHuoJrJ7fa9T
-	 aMbi+JusCyEuYXTPLt5J0eY+1ZSsk5rHVNi5Eqweqsref0RdyUAunCGXw+JMppllXV
-	 aX5X/LslSj5kzj9xEhI4M3kXs/OybASzU+jy9ueTeH1memSpF9ePt+OsCJ1m1aBsrS
-	 4gVmbqxOpZSZnKPkTXI6UZKq9ucVwWSnkxqjfNg2uE7o2W/axfYcV6kPqLSBxLv/PF
-	 xYl+pOrvGz9I1aNxmxT/SXB5rFxqMHkITu5raRbqCKboxxZsgnxBcpo+W6POu3SFMP
-	 sJW7rHVUMrd+A==
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id A8620F40068;
-	Tue,  7 Jul 2026 20:12:46 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Tue, 07 Jul 2026 20:12:46 -0400
-X-ME-Sender: <xms:_pVNagkZf3ztUU_zfONuDFS4gzCmKKwdpgNHXrlvBtZwxuXNGtv3Vw>
-    <xme:_pVNanUW38wTwp9bZ84mj9_Ht0XJjJSCQt_uOiUVtB7Epc8fA-pKCt1m4_hLAfDNO
-    s_x8at0mA9_9wgpzCIXxqJIsqctIhgn3YR9UbjFeZzmr2ZejLQePfI>
-X-ME-Received: <xmr:_pVNakvEqVxXeRowHhoRgfgXvXsnCTg5xA3wtie5RjTguTiWXDqXKTcl6e75zD1GlNWJmz1h_lpAi_VAlOTJcz1wR0YAZKOWCHU>
-X-ME-Proxy-Cause: dmFkZTEXr+/q7I+RcNXjcV3ObWqWLeEt1fwfx5A4rBgJxQvqhh3hbaJSlC5CUOD6s35Z+T
-    fH2v6lBffG/knpi5LGaFbUbuQsLVS53QXlC9rctoUQzl2za5EBO5yEdgkxUNHJKLrTS0Rl
-    Swl8bSG2y/zxnEfjbN6QXUvP3BzyrG8/BDHndVq7u/mj9e6yxrSUj/16lrt6ygnUlNGBIL
-    9OG75/FpjzBrWvpAPZHkyYMLQFhSzMAklGbNuAXCqeulcDn/1+bT2PLuIcvBzG4OFoOpve
-    UP3Fhqw7DQLVERIdQssZThs/Rz00KFXGUug1zftqpNDsGReGWdlvpCXMN4BVxyBnpLv3To
-    4QkuQpyVsKM+LnBvLLlWLeEzTPBArlLNHLYKbTGfzyWS0MNhKSDFoyU03XGcKsuXxGOC+A
-    rqozYUMuAfjRiiotGV0EczT8p8EX7iPzjEkJdarIYFKP9TSmQKq5xZm+MPgOYUTbleowPG
-    vfNO5SPMphDPgNQWibDSxyFAfCcCbQHlohqESdd92NqwzgM9t1aHz8szryKxEno5x0PEVJ
-    mLaHxoLU9Ih6BrLgxG6v3VAalaDjvG2Ukm3CbqSfjNmJEvd0Z7PdtubYy1jnEI2tS5j1Hk
-    Re0JxDRMx1jChhCNvODyJk57b+IdXA658fZzsFChL+NSXeC1USw7O/4p3ATw
-X-ME-Proxy: <xmx:_pVNaqr_eEn0kTIs2bj-Qb6uyWqSO_BQXI0rxi1DcFbm1icCe8iazA>
-    <xmx:_pVNap54nRjrQ0Dw4dwrTu7xvWnvYPWhkbHXoPW5I29oohqiG5hmlQ>
-    <xmx:_pVNaoGiNWgX5H5YLHltNtj39JeS4tjx6MJ2SDPR4CsLVJiqpwVYmw>
-    <xmx:_pVNag4BfSDnV7x2YcuqEx5CzLSI2HG4QbKQiPPzkrnXIxLf1C4bDQ>
-    <xmx:_pVNariKX72MEAoKAzBhvD2vRF5kxgcxsOyL4RLKoP-hl2WRmMGpsHV3>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 7 Jul 2026 20:12:45 -0400 (EDT)
-Date: Tue, 07 Jul 2026 17:12:44 -0700
-From: "Dan Williams (nvidia)" <djbw@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>, 
- "Dan Williams (nvidia)" <djbw@kernel.org>
-Cc: linux-coco@lists.linux.dev, 
- linux-pci@vger.kernel.org, 
- driver-core@lists.linux.dev, 
- ankita@nvidia.com, 
- Aaron Tomlin <atomlin@atomlin.com>, 
- Alexey Kardashevskiy <aik@amd.com>, 
- Alistair Francis <alistair.francis@wdc.com>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Arnd Bergmann <arnd@arndb.de>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- Daniel Gomez <da.gomez@kernel.org>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Dexuan Cui <decui@microsoft.com>, 
- Donald Hunter <donald.hunter@gmail.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Luis Chamberlain <mcgrof@kernel.org>, 
- Lukas Wunner <lukas@wunner.de>, 
- Petr Pavlu <petr.pavlu@suse.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Robin Murphy <robin.murphy@arm.com>, 
- Sami Tolvanen <samitolvanen@google.com>, 
- Samuel Ortiz <sameo@rivosinc.com>, 
- Saravana Kannan <saravanak@google.com>, 
- Will Deacon <will@kernel.org>, 
- Xu Yilun <yilun.xu@linux.intel.com>
-Message-ID: <6a4d95fcc92c2_2f05d5100f7@djbw-dev.notmuch>
-In-Reply-To: <20260707124321.GF118978@ziepe.ca>
-References: <20260705220819.2472765-1-djbw@kernel.org>
- <20260706125140.GB107792@ziepe.ca>
- <6a4c163072c60_174db6100c4@djbw-dev.notmuch>
- <20260707124321.GF118978@ziepe.ca>
-Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security Protocol
- (TDISP)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jw53GMDk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783471756; x=1815007756;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=6clZxCw5ORwYUuL+NIOj8Tmsqg98j5zZ5PVM9dpwgl4=;
+  b=jw53GMDkazQH5u4qIZUR4BQ9s523ETwhIPfFyyyaT/TMp6fpN0ojcXN2
+   Ax2zki5vPE8hLPzxIP4lbvq9ylIynxkrzhXMvlFVeLZc5yMcxuHE4gBe7
+   HAwWqZapbH1tGiD0NQlyA/u8heTdr+1ufyY/Gq7QBhNSojbcMiZNAdtNg
+   jEaNKVzoxwYqjdYlW+KkpxSc6sX+UAEwDPUM/flbA56EKZiso2T8u293e
+   ZqgvwiATVt0PV6KnlanMMgD69QDEQnW9mQTO6UKkxHdgdZQ477Ey1eJo9
+   Gj9OqIF7gc7mKIXY67z6FSFL7ltxuqsC+fLCRV84KHrV5+6UySk80ieic
+   A==;
+X-CSE-ConnectionGUID: +xZelthCScuoPF9TrnfTdQ==
+X-CSE-MsgGUID: 98D1HCrKSLC2sMQpnDZm4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="101678946"
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="101678946"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2026 17:49:16 -0700
+X-CSE-ConnectionGUID: 56ZfArubQA6gWa+bt0Vhcw==
+X-CSE-MsgGUID: gzOoxB6xTKuXmQTwpb+JGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="257728097"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2026 17:49:16 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Tue, 7 Jul 2026 17:49:14 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Tue, 7 Jul 2026 17:49:14 -0700
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.61) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Tue, 7 Jul 2026 17:49:12 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oWi71iULMXEVi3SOhxRW7q/gI0E35GGw6zr+gevZbekAqnuQRGlsEoPW8oDRGLwQVavzfpJpJAfRT8zKCXpKC/mD+mK+8j0SAAsreVQ+9sxDW4XqJZQyozLyIz/11aPL6ynoiVqeHJT4Dlf+CAhvfRgVGBuIDLGHvoPPRBMftoDpqPqMlCFUGA8PRS49LEVc6giVXaJ8aglg/mmLkNGLgqPAS5UfyYuYGI0+o+TG3i5mum6H50xNx1slIbBs3VX0r7qI1/+lUZa4Wvv0PdxZOb6bc+T7+i8RldjU7k8ZQLIQpUXK3OZBgpM4j/eNJrPjOoOeLEGKgNB6QIh8x6ZfhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NH+wbQN7JvSQ+TTmvb+8pJrmS2OcdjHtlRk/IRdUTkY=;
+ b=Icc7SieYzrXGfLKC3v2WUb8drDAvopwxttYZnoDhUZPuhF0ongNEMzW+2edaW63FA7cU8lOUV/ISu7fiTtx2wH7sTX0pleKELBTArpWRymuPM8LR8lM2Alht2/gm1X1Sbn2bl8ZaivO6CJmWWT8YfheYI6WG8c+0LSct1wPpV3kM8wrrK6VMUDmvUp50pA9uivDOgAi+oZv+8RmNpS0HOiKdYRPukmf6HxBVvw+HZ1yefiDf6mcwqgeuCPxjdSu5soXOYsVgA8bTI7y+zMm3g1i0FwL0r+Xh4z/6BU97zhjSiCX8lvgXhd6h6/nLGufUDtRwuWglcYx8ZC7l7CM53A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7997.namprd11.prod.outlook.com (2603:10b6:8:125::14)
+ by SJ0PR11MB8295.namprd11.prod.outlook.com (2603:10b6:a03:479::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.9; Wed, 8 Jul 2026
+ 00:49:07 +0000
+Received: from DS0PR11MB7997.namprd11.prod.outlook.com
+ ([fe80::24fa:827f:6c5b:6246]) by DS0PR11MB7997.namprd11.prod.outlook.com
+ ([fe80::24fa:827f:6c5b:6246%4]) with mapi id 15.21.0181.009; Wed, 8 Jul 2026
+ 00:49:06 +0000
+Message-ID: <efbff823-7b4e-4349-bdc4-72a244699d76@intel.com>
+Date: Tue, 7 Jul 2026 17:49:03 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 02/11] x86/virt/tdx: Allocate page bitmap for Dynamic
+ PAMT
+Content-Language: en-US
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>, <bp@alien8.de>,
+	<dave.hansen@intel.com>, <hpa@zytor.com>, <kas@kernel.org>,
+	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<mingo@redhat.com>, <nik.borisov@suse.com>, <pbonzini@redhat.com>,
+	<seanjc@google.com>, <tglx@kernel.org>, <vannapurve@google.com>,
+	<x86@kernel.org>, <chao.gao@intel.com>, <yan.y.zhao@intel.com>,
+	<kai.huang@intel.com>
+CC: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Binbin Wu
+	<binbin.wu@linux.intel.com>
+References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
+ <20260526023515.288829-3-rick.p.edgecombe@intel.com>
+From: Sohil Mehta <sohil.mehta@intel.com>
+In-Reply-To: <20260526023515.288829-3-rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY1P220CA0024.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:5c3::9) To DS0PR11MB7997.namprd11.prod.outlook.com
+ (2603:10b6:8:125::14)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7997:EE_|SJ0PR11MB8295:EE_
+X-MS-Office365-Filtering-Correlation-Id: 198c6b82-9e16-4043-237b-08dedc8ab69a
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|23010399003|366016|1800799024|921020|56012099006|4143699003|11063799006|6133799003|18002099003|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info: A7jSTXDAmcy2RsPAnaBwobdWhxd3UzWtqeTLbRFRN/k9W8KVUD9e6eXby0+JYot67Q+wmfLuBuLU/SbyWu/36ifEgXpu8AXK/MhRKNUUs1zUMj5QLme68cIAiAASTV71TyUZ8xGyX6H1WDdaZmBenMBpdHCMhyM955DNDpn+6fCgVYFZDkq0h7zCl/quWyt73elarzOjBO+aZaeMq7Zvg9GGCjFLLy85E7bq2WyJxZTxcGRG68pFWEr0q9FqGyv6un50a434ar3LLdKY09hORQRPGs/JOLahqIL2Jw8Qtgc4yo9RNMrEkIP0e/G5YqThC5A/HfJ9cJkOU+MR6tUVN3kwdzTI9Y1HoAiRcRSS12YPXE8ZqgmwuM/skR0TmrRkSuQM2hUZSwU5GS8e/EgUSYuu/SL6srph++cq8TUs8Dk5hQe7UP86rm6LYiy4B4lwk1lD9byFYaUKBzty54475d6cDaYtjgQTzJzGNG3HgcmSnkwRb25xzHS4lRISvotMvkmd6OvQgr5VfoJM22DvY6Wd7AnYhspFQbYpGfc5W/IQA9rb7v5P5nBpmB9RcSLdzeq3n1a6XtrKDzJkylyp9OuaGH/Q/fAsZx6PUXEFNpiLnyLYIeJdRFxCzK9JrSnt4T9H9GXDJaT1oQNsIxPg+JkmBfL+R3I4e0ARdQyYfjrzDvpysDmNK8IKGkRo4PAclFjhawpNZFt01LfPDsxRPA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7997.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(366016)(1800799024)(921020)(56012099006)(4143699003)(11063799006)(6133799003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NDhxenc1UDVIZjI3cVpkaE1aWXFESzBOa0VUK1FBeUYxVG5taTRWNXFpTVB4?=
+ =?utf-8?B?OWtNTTdHaVhvQk9qdDBHYXJhNkw3Wkhqb3ZnaWFKY0tKLy9PaVBuWlhvYVpJ?=
+ =?utf-8?B?R0p6NU9oOTlKOUdqeVIyK2w0U0NpaGNpTTgyR2RYOGgzRjNWaUpHOHBlUFdT?=
+ =?utf-8?B?U2lSdEwxZFUxOFpnZWpFTU1COTVhcktRS1FQSWc2RjREVHFIdzREMXNjNE1S?=
+ =?utf-8?B?Q2haSTB5MEd3bWI4QzF1QTNCbThwb1MvT05CeXNGWUx0WU5lM0haVFR6UUVv?=
+ =?utf-8?B?UmdWVlZiSVRkdXB1bzQ1djZiekJhaE13eUpFcHJSZEV3VTZBT1ZrS3cwaXh4?=
+ =?utf-8?B?OW9ZZGVDSFBpY1hrOTlvSXBVQkYwSE94UC96RTdzb1hnaVhGbUo1MmJoN3hP?=
+ =?utf-8?B?MWxVZFRlTlR6dndQcXBqU2hvY1JDMVlRTHFGaytVbnpiZHgvcURVc1h2MXRN?=
+ =?utf-8?B?TlFiNzRhRlcydi9PdjFwTUg4eUZscEpLVEx5L2JGOW1jWVg2c1ZzTHVtb0VZ?=
+ =?utf-8?B?UmdBOWpqUk84R3dQaDdOODlQY3hRYUc1OEJzdnpFRnNVU3E1VWdscDE5YThG?=
+ =?utf-8?B?a1RhZmM1NEJSaEtIY1RscXY2YXgxYktmNXNiSTdxa1pHR0xMeHJQZERURFR0?=
+ =?utf-8?B?cXpjY242L1hkV3RxV0ZZaEJhcXliSVptUVE5N0h0KzE4L3JiNzdBSE9yOXBN?=
+ =?utf-8?B?cWNUdWladExxSXlBK052dGtMQ0ZNc2FIN2c1Yk9RTjFnc3VtL21VamdkN1Bz?=
+ =?utf-8?B?RWE3MnVGaE5UQU8wTXhEQnV6REdHeGZqaXUvWVR2TWtJcTI4WDF3MDdOMU15?=
+ =?utf-8?B?UVh4TFBvU09GU1kwbnREejRDODdST21SVVJKNlA4NW80YzJyd1p4V2U3SWV0?=
+ =?utf-8?B?anhLYlcrQTF4R045MXdQeVhydnNlQWMzZEFTdU9RQTdiVnlvOEFJUDdDZTBw?=
+ =?utf-8?B?aEwxWlJJQ0x1d3gvemQySXkreENrdkRuWENiaHM1b1dTeDF4RWRlcnJrSXY0?=
+ =?utf-8?B?Q011NzhBMG16SnNZUzh3R1J6ZzlUYVN5OVgzOWtIU2tFTU9pbC8ySDJKN2Y5?=
+ =?utf-8?B?YkFYeXoyb0wwZXdSbGE5akd0bm9HYXVmdERIc0hkZ2dCVTRoeUo0UFpETkkw?=
+ =?utf-8?B?Q0k5eGIvZEtoNEhQTnpkWHRkTElqdlhIRUM1cmpSUkdOMk5CTTlFRzdNekhv?=
+ =?utf-8?B?UTFoN2p3aFlZOXJiMGp5SlVNOUkvSTBOc2JnVEpPbHJjK3RnRmJNcFFPTUR0?=
+ =?utf-8?B?VjZLU3VueHlJWjJWWVB5YkpoQVhvSm52L1cwVmZTVDlPR0U1VTNidFFHUUc2?=
+ =?utf-8?B?M2tQczRmSTI5UTFGWkR6QTlLSUlTcGhsWnZIYnF1SGs2ZTh3Tm45alYrNVhh?=
+ =?utf-8?B?dWNIbUdUcHljcTl1NFpyalhjNW5XZHNtMW40OUdyTVE2aElFaDNnQ0lIWWZw?=
+ =?utf-8?B?dnF1am1Pbi9zMjBJRFc5RlZMNVI5bi9iOWJDMU50UzBOTU1Dbmg1VWNDalYv?=
+ =?utf-8?B?cE5iMGNjb2kvbjBDdzFUOEVsZVpRdHV5TEg5bEsxWXQ0ZENsdHMwK3ovLzZj?=
+ =?utf-8?B?R2RqR2NhaTVhQ3Vvb2JkalllZ3FLMjBVWklzamttSndQRyttZ0xNTStnM01o?=
+ =?utf-8?B?aXBtdDRHbDAwcFdUT2xwaTA0Z25VWTNXek1KdGdnNEpvZmNnaEN2QUdEOUZ5?=
+ =?utf-8?B?ZFUrNDFka3RxVS9LTm9QaUx5K1NISHlTdVcrWE92U1N4d3dBSWgvUHlGU01o?=
+ =?utf-8?B?V3R1UDQ1VkU2U2UvVmlQVzNoM1FLOVN0VEdzdWc5WGpDck1mVUR4ZEV3bFAz?=
+ =?utf-8?B?MjU4em9kRHQ0emtmczJiL0drK0VXZ3pCcVR3OVFDdFJ5T1A4Z2JqT0RhQ0FQ?=
+ =?utf-8?B?NC83Q3F6bnY0ZVJNZ0s4cDJPekRCSmw1azR5bEZZM0FWdXBCUm5HbGNBNXhR?=
+ =?utf-8?B?bU4vMndvbUo2N01LM3FNUjIxNjh0Q09NVnpiK01OMWF3TzRPcVB5ZFRpVGJE?=
+ =?utf-8?B?VlZvRndUWFVoVjRhL0lXQWRJcXEzVllqbGpIQjAzcHQ4dWl0YUZhempsY05V?=
+ =?utf-8?B?ZnZ5WGtHU2QxVmc5TkJIeGRXU2NNWjBvWERhWkVNKzdlQ0RucHVNL1IxeG9w?=
+ =?utf-8?B?SG1vZVF0TFlpUDlJTVExMzIvV3pqZGhnTER2Q09XelBua1lJMjUwTVIxTWZp?=
+ =?utf-8?B?MzAyMGpSMmFLT2xmaHJZVVNmMllSR2tVT09vRE1haTFYeDNQVTMweGhsNWhZ?=
+ =?utf-8?B?UCtmMDE2cW5aT01KUlh1WG9YZjVjdmovRGRwVEtDSHdaQURCR1ByUjl5d0ZC?=
+ =?utf-8?B?RWRpRUtWRGtYREJaQSswY2JQSjliZVROTWIyM3BwbklpK243aVZGdz09?=
+X-Exchange-RoutingPolicyChecked: nvVzk3+Ndkzl4j2x4ABN1YJC0hNha1B3VQSnhNszooTIpEiXefaRrL++5b7M7F0vcop7bfnE06zkEOg1jVkVR9NN094r2gDcVIk22HCZJuSxrTWntnxmkkdPFLrOikMz1e3oxHJeITb76Ctd2qNGI6AJWZVBsJBnLgw1VXapqlIq1f1+4lormHarrkBArM6qH+t3oQCre7sKqY2If2DYHvlIPhwCfPBkuG3sFarCXuC8uZXUPxUgm/XuUjuIIzRIgyZorqpXPYYgKuLjOCWDvNyW/rb3H4t1Qxslaw4trx8r2TJA5M1CaVk73YzEMHpVpO7PXDuNvJJvFWNJRMQPHg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 198c6b82-9e16-4043-237b-08dedc8ab69a
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7997.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 00:49:06.5759
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: m+5QHI+Ye6uBgvlkDJ11MVf3WJm1RtWxhdsX9Z8qN6UWJlfQaKZ/8Ad/yV2iRDNmgkwY7324u26rg7mAPZT+HQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB8295
+X-OriginatorOrg: intel.com
 
-Jason Gunthorpe wrote:
-> On Mon, Jul 06, 2026 at 01:55:12PM -0700, Dan Williams (nvidia) wrote:
-> > Jason Gunthorpe wrote:
-> > > On Sun, Jul 05, 2026 at 03:08:04PM -0700, Dan Williams wrote:
-> > > > * NONE: no usage of the device unless the trust is explicitly overridden
-> > > >   by user policy specified via a driver flag, module flag, or uapi (TBD).
-> > > > 
-> > > > * ADVERSARY: needs acknowledgement from the bus and IOMMU / DMA layers
-> > > >   that the device is limited to strict IOMMU translation behavior. Drivers
-> > > >   can use this as a signal to limit functionality. This designation
-> > > >   implies follow-on IOMMU and bus enabling work for features like
-> > > >   arranging for the device to attach to a blocked IOMMU domain when
-> > > >   detached from a driver.
-> > > > 
-> > > > * AUTO: typical / historical Linux driver model.
-> > > > 
-> > > > * TCB: a trust level that only exists in Confidential Computing
-> > > >   environments. When acked by the IOMMU / DMA layer it enables the device
-> > > >   to issue direct-DMA to private/encrypted addresses or otherwise attach to
-> > > >   a secure vIOMMU within the TCB.
-> > > 
-> > > I'm not sure I entirely like this one, certainly it needs to be
-> > > possible to have both T=1 and ADVERSARY together.
-> > 
-> > T=1 and ADVERSARY are independent for link encryption and private MMIO.
-> > In other words the device is placed into the TDISP RUN state independent
-> > of its trust level. 
+On 5/25/2026 7:35 PM, Rick Edgecombe wrote:
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 > 
-> That's the right thing
+> The TDX Physical Address Metadata Table (PAMT) holds data about the
+> physical memory used by TDX, and must be allocated by the kernel during
+> TDX module initialization.
 > 
-> > Downstream accesses to the device must have T=1, and
-> > its upstream accesses will have T=1, but with force_dma_unencrypted() ==
-> > true.
+> The exact size of the required PAMT memory is determined by the TDX module
+> and may vary between TDX module versions. Currently it is approximately
+> 0.4% of the system memory. This is a significant commitment, especially if
+> it is not known upfront whether the machine will run any TDX guests.
 > 
-> That should never happen. Once in RUN force_dma_unencrypyted() ==
-> false, it has nothing to do with the trust level.
+> Each memory region that the TDX module might use needs three separate PAMT
+> allocations. One for each supported page size (1GB, 2MB, 4KB). The
+> TDX module supports a new feature designed to reduce PAMT overhead called
+> Dynamic PAMT. At a high level, Dynamic PAMT still has the 1GB and 2MB
+> levels allocated on TDX module initialization, but the 4KB level is
+> allocated dynamically during runtime.
 
-2 concerns:
+The last statement is slightly confusing to me. Is it trying to say that
+the "dynamic" part is only applicable to 4KB allocations?
 
-1/ We previously discussed a use case to operate a device's private MMIO
-while not allowing access to private memory (software encrypted NVME
-with private MMIO [1]). Many of the following comments are based on
-preserving this assumption so you can save some reading if we agree that
-use case can be abandoned.
-
-[1]: https://lore.kernel.org/all/20260326120046.GG67624@nvidia.com/
-
-If the private-MMIO-no-private-DMA case exists then ->dma_configure()
-needs a "trusted to access private-DMA" signal not a "required to access
-private-DMA" signal to determine how to set force_dma_unencrypyted()
-while the device is in the RUN state. I am ok to reconsider that use
-case, but that was part of what lead to the proposal for
-force_dma_unencrypyted() to use the trust level.
-
-2/ The confirmation of the trust level and the enabling of DMA are
-separated in time from setting the trust level and entering the RUN
-state.
-
-All the archs separate the RUN step from the ENABLE DMA step, and the
-implementation separates those steps in time.
-
-echo tsm0 > $pdev/tsm/lock
-cat $nonce | device-evidence dump $pdev
-device-evidence validate $pdev $generation
-echo full > $pdev/trust
-echo 1 > $pdev/tsm/accept
-<--- T=1 and force_dma_unencrypted() remains true in this window
-echo $pdev > $driver/bind
-
-The configuration window where $pdev/trust and $pdev/accept can be
-dynamically changing should not be changing the force_dma_unencrypyted()
-result if only because that value will mismatch the hardware state until
-the next ->dma_configure() event.
-
-
-Another factor that lead to the assumption that "operational trust level
-configures force_dma_unencrypted()" is taken from a comment from Greg
-[2].
-
-There are also buses and paravisors that may know that private-DMA is
-enabled for a device by construction. In that case it is also a "trusted
-to access" signal, and not a "required to access" signal.
-
-My answer, given the concerns of drivers dangerously flipping the
-force_dma_unencrypted() result at runtime was to place it in 'struct
-device_private' and make private memory access a result of the trust
-level. Otherwise it is confusing when 2 devices are at FULL trust, but
-one has private memory access and the other does not. One is FULL the
-other is FULL+.
-
-[2]: http://lore.kernel.org/2026031230-mastiff-create-7593@gregkh
-
-> Even if you set ADVERSARY it should still be bouncing partial page
-> DMAs into private memory. The point of running something like this is
-> to remove the shared memory attack surface - ie the hypervisor SW. The
-> attack surface is reduced to the device itself by remaining in shared
-> memory.
-
-Yes.
 
 > 
-> > > I'd also argue this list is missing "FULL" trust, which is the
-> > > historical Linux behavior for a normal device. AUTO should be
-> > > selecting between FULL/ADVERSARY based on things like the ACPI/etc as
-> > > it does today.
-> > 
-> > 1/ that is effectively how the UNSET level behaves. If the
-> > bus has not set ADVERSARY before device_add() then the default behavior
-> > is the AUTO level. Where AUTO means all of the automatic privileges a
-> > device can be offered without needing any other coordination.
+> However, in the details, Dynamic PAMT still needs some smaller per 4KB
+> page scoped data (currently it is 1 bit per page). The TDX module exposes
+> the number of bits as a separate piece of metadata than the 4KB static
+> allocation for regular PAMT. Although the size is enumerated differently,
+> it is handed to the TDX module in the same way the 4KB page size PAMT
+> allocation is for regular, non-dynamic PAMT.
 > 
-> I think my other remark about two enums is some of the issue, the
-> policy can have things like UNSET or AUTO, but once the driver starts
-> to probe an in-effect mode should be computed and be concrete. Having
-> a driver run with a trust mode of AUTO or UNSET is just confusing.
-
-UNSET never escapes to something a driver would see, but yes, appears
-AUTO is too confusing a term compared to FULL.
-
-> > 2/ The ambiguity and conflict occurs at ->dma_configure() time when the
-> > bus and IOMMU layer want to reject the device's access to some privilege
-> > by failing. When FULL is defined as !ADVERSARY then it is difficult to
-> > describe the semantics when FULL trust honors rejections to private DMA
-> > and when it falls back to shared operation.
+> Begin to implement Dynamic PAMT in the kernel by reading the bits-per-page
+> needed for Dynamic PAMT. Calculate the size needed for the bitmap,
+> and use it instead of the 4KB size determined for normal PAMT, in the case
+> of Dynamic PAMT.
 > 
-> Given that the trust level shouldn't impact force_dma_unencrypted(),
-> the only thing left is to setup the IOMMU differently, and maybe
-> operate a driver in a hardened mode or something like that.
+> Unlike the existing metadata reading code, this code is not generated by a
+> script. 
+
+
+It might be useful to say that this file was auto-generated in the past
+but going forward it is going to be manually updated.
+
+> So adjust the comment to be more generic. Also, start to adopt a
+> more normal kernel code style without the tenary statements and if
+
+s/a more/
+s/tenary/ternary
+
+
+> conditionals assignments that the auto generated code has.
 > 
-> I don't see what the TCB is supposed to be changing here.
-> 
-> That leaves it just as a policy gate to check that T=1, I'm not sure
-> if that is worthwhile enough for dedicated UAPI?
+> Assisted-by: Sashiko:claude-opus-4-6
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-If we ditch the private-MMIO-no-private-DMA case then yes I can
-see T=1 being a uniform requirement. 
+The review tags goes after the SOBs.
 
-> > The above more points to a need to have an explicit trust level for
-> > adversarial private memory access. The address spaces are distinct
-> > assets with different levels of trust.
-> > 
-> > UNSET: bus picks initial level, or leaves it to the device_core().
-> > NONE:
-> > ADVERSARY: Device can be in T=0, or T=1 mode (UNLOCKED, or RUN).
-> > AUTO: Could rename this to be FULL or ALL or DEFAULT, I still keep
-> >       coming back to the "AUTO" name because the privileges are not
-> >       uniform based on the IOMMU / DMA topology and device capability.
-> >       Again, the TDISP state is independent. The TSM driver does
-> >       not get called to gatekeep and verify access in this mode.
-> > TCB_ADVERSARY: or PRIVATE_ADVERSARY. Device can access private platform
-> > 	       resources iff an enforcing IOMMU is present.
-> > TCB: or PRIVATE_FULL, automatically enable all access privileges
-> >      including private memory access.
-> 
-> Yeah, we can keep adding more modes to make a big cross product, but
-> I do wonder if this is going to get too big..
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> ---
 
-The bus specific requirements like private MMIO + link encryption are
-pushed out to the TSM driver. Userspace policy that wants to require
-that the TSM driver is consulted on enable private DMA events needs to
-arrange for it to be loaded otherwise ->dma_configure() can just proceed
-with what the bus pre-configured.
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index 503f9a3f46d61..82dc27aecf297 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -149,6 +149,11 @@ static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
+>  const char *tdx_dump_mce_info(struct mce *m);
+>  const struct tdx_sys_info *tdx_get_sysinfo(void);
+>  
+> +static inline bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
+> +{
+> +	return false; /* To be enabled when kernel is ready */
 
-> IDK, maybe it should be a bitmap instead of a level?
+I would avoid the tail comment even if it is temporary.
 
-...not sure
+> +}
+> +
+>  int tdx_guest_keyid_alloc(void);
+>  u32 tdx_get_nr_guest_keyids(void);
+>  void tdx_guest_keyid_free(unsigned int keyid);
 
-> bit 0 = Force Disable
-> bit 1 = Device is adversarial:
->            - Enable strong IOMMU protections
->            - Enable driver protections
-> bit 2 = Require T=1
-> bit 3 = Require IOMMU
-> bit 4 = Require DMA/MMIO security (eg Link IDE)
->
-> Where value 0 means the current level of full trust.
-> 
-> It is a little easier to explain what each thing is doing and easier
-> to add new things
 
-The question is whether these requirements belong on a central device
-trust mechanism bitmap or should be pushed out to other ABI. For
-example, if the presence of the secure IOMMU is enumerated
-after the device is in the LOCKED state then userspace policy can know
-what it is getting into without needing to tell the kernel. If T=1 is
-required then either a TSM driver is present to validate it can enable
-DMA, or the bus/paravisor arranges for that T=1 capability to be
-pre-enabled.
 
-Perhaps the levels are indeed:
-DISABLED
-ADVERSARY
-FULL
+> @@ -33,6 +33,18 @@ static __init int get_tdx_sys_info_features(struct tdx_sys_info_features *sysinf
+>  	return ret;
+>  }
+>  
+> +static __init int get_tdx_sys_info_tdmr_dpamt(struct tdx_sys_info_tdmr *sysinfo_tdmr)
+> +{
+> +	int ret;
+> +	u64 val;
+> +
+> +	ret = read_sys_metadata_field(0x9100000100000013, &val);
 
-...with a T=1 flag on the side that leaf drivers can not set on their
-own.
+Should this be a #define now that the file is being manually updated? Or
+is the plan to do it all together? A #define would make it easier to
+read this patch.
 
-> Then from a sysfs perpsective the policy would have special string
-> values like 'use bus default'
-> 
-> > > If the trust level is reduced to just be a command to the kernel how
-> > > it should operate the device then it would be up to userspace to
-> > > confirm things like T=1 before setting the trust.
-> > 
-> > This discussion gets strained for me when T=1 is used to mean both
-> > "device is in TDISP RUN (with link encryption and private MMIO)" and
-> > "device is in TDISP RUN + force_dma_unencrypted() == false".
-> 
-> It means both things though, we really must not run with
-> force_dma_unencrypted() = true when T=1, that's pointless and harmful.
+> +	if (!ret)
+> +		sysinfo_tdmr->pamt_page_bitmap_entry_bits = val;
+> +
+> +	return ret;
+> +}
+> +
+>  static __init int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
+>  {
+>  	int ret = 0;
+> @@ -116,5 +128,12 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+>  	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
+>  	ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
+>  
+> +	/*
+> +	 * Don't treat a module that doesn't support Dynamic PAMT
+> +	 * as a failure. Only read the metadata optionally.
+> +	 */
+> +	if (!ret && tdx_supports_dynamic_pamt(sysinfo))
+> +		ret = get_tdx_sys_info_tdmr_dpamt(&sysinfo->tdmr);
 
-Like I said above, I am ok to ditch the consideration of the
-private-MMIO-no-private-DMA case.
+There is a need for the comment because it combines two checks:
 
-> > Otherwise, full bi-directional T=1 before setting the trust would
-> > require an IOMMU to be blocking the device until that final confirmation
-> > point. Given that is not always available the proposal is to defer
-> > acknowledging the trust level with the TSM until ->dma_configure().
-> 
-> ?? If you have no iommu the instance you set T=1 and do the platform
-> step to activate DMA the device has 100% acess to all
-> memory. force_dma_unencrypted() does nothing to constrain device
-> access, it is all about accommodating an addressing limitation.
+1) Did any of the previous stages fail?
+2) Does the TDX module support Dynamic PAMT?
 
-Right, this is my point above about why "echo 1 > $pdev/accept" does not
-immediately set force_dma_unencrypted to false nor enable private DMA.
+Should these be separated for readability and to follow the typical
+kernel style?
 
-> ARM at least has a dedicated call to enable DMA. It would be nice to
-> place that call right before the driver probes so DMA remains off
-> until we commit to using the device. Maybe other platforms have the
-> same - but I'm not sure it is *essential* as the point of setting RUN
-> can reasonably be the acceptance point.
+	if (ret)
+		return ret;
 
-Not essential, but it is useful to have the "operate device" intent,
-IOMMU default domain configuration, trust level, and private DMA enable
-all in the same bus operation (->dma_configure). Which is why "accept"
-was demoted to just set RUN state and leave the rest to be finalized
-later.
+	if (tdx_supports_dynamic_pamt(sysinfo))
+		ret = get_tdx_sys_info_tdmr_dpamt(&sysinfo->tdmr);
 
-> > NONE: Device core rejects device operation
-> > ADVERSARY: reject device operation if an IOMMU to set IOMMU_DOMAIN_DMA
-> >            not available (not in current patches)
-> > AUTO: no rejections, but no private memory access either
-> > TCB_ADVERSARY: reject device operation if IOMMU_DOMAIN_DMA not
-> > 	       available, or TSM rejects the evidence used to enable
-> >                private memory access.
-> > TCB: reject device operation if TSM rejects chosen evidence
-> 
-> What does "TSM rejectes chosen evidence" mean? Kernel isn't supposed
-> to be evaluating evidence?
+	return ret;
 
-The host / platform TSM is protecting the VM against evidence that has
-changed since the last time the VM asked. I.e. the TSM is tracking if
-the untrusted VMM relocked the device without the VM having re-read the
-evidence.
+I think you can avoid the comment altogether in that case.
+
+> +
+>  	return ret;
+>  }
+
