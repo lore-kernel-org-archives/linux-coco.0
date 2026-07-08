@@ -1,579 +1,204 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BF743934B;
-	Wed,  8 Jul 2026 15:09:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDFE4A13A6
+	for <linux-coco@lists.linux.dev>; Wed,  8 Jul 2026 17:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783523361; cv=none; b=Eiouid1tt6TWROnPHUlatGtDBHar/3zQYkJ+XBiHcC25xOCNImYMXtfHVa/Gnk8uKPya8ycJMnBlEL0hptXWckilOlXcap2ZndFNZ0PET8alsdEE0XFCJoFHfiIl718sfixRwfWqw/Tr7a7oOPAc2zsjfJq2O94C/qUKCd5pLzo=
+	t=1783530221; cv=none; b=iLCciSJ10MJJLtbL7XU++eQvxEIpSKBKSd7Mz+y2iM0UClmR/8altb3YQ/6xVjQ4gL7mMe73FVHW2AcpYa6jU+UcjMdfEse/uQEvPdCONyqOKHiBxiUtPcXPV1MT+lST8UY1o0ZdB8EMExwFls2t4CUWzPNBL9V3JLrqn2Q6i7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783523361; c=relaxed/simple;
-	bh=ovVa70K1EOneiBZ7lC3AoXEGPRmjzupYItZ1gg3SCQY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=oxnElqcEbDD2Mm8pxWJDZ9JQWKliouBR+BEb4TKqPnxIjyalJLjdcz39VOW4WTKTgqRXs98qXEGOYuTJWh5HVmuba5uhK/WtXEuWMCIEZoRXHWG/PYB4sB3JgpgxQBeMGch4Ntm+fWyqvDU3mxszF+k2elSgZGjyaV9t38g6i4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=duiLudFV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783530221; c=relaxed/simple;
+	bh=t/g77YT9P3m8kXLyiUdG2tXEDCJYA9xrv9VL9+UNxm4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZOFYqHWsFJERZR0ofGsPzqmj/8pGgPwvI57Wm4gOK4vsyx3KFPa9+lGB2xRFx6xUVwJTuU4UwErFHDJDpgGxydrsXkgQDi/M6u8pF3uK2Hd/MLOR8rgLkJqETrrlzKZxT+ml0v/SXY29gIMVq22N/ttWRVX5WzQXY7MK7yZs6mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZFPlEjpn; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="duiLudFV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6EC1F00A3A;
-	Wed,  8 Jul 2026 15:09:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783523359;
-	bh=wn/P+Gm3OCkFQ+7GJs+RVSAKPOX9EEcvT9NnSy5NxSA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=duiLudFVLeL3G/NPJkeMVZRUX3Un092z5jKJpfKTnO8neikVecyIet9W5yX1f7N3L
-	 N30FCWXE636kQaVba6y875r6A92xlvt3rFwIioTlhAYvRe//MWhTEzSiWTKpdxQ7bC
-	 p/6uB0lHuurI0YmHmTW9nKtWq4Pnk27mmoNKyo9MzwT0aGoo8BAtA2bTEhKgFguV7X
-	 lWPpbo+vSx6VDUn1AsA4EK4/LYf18sUEPE3QNQW2ooxE57bXLbK2gox2Yp0MHsw7/q
-	 lDehH0I1is4t3Gv2zNLePQLDLL3AqGZGDsvcvoyulnB4Kz8qjcUvusH1pBWfs5ull2
-	 0KQ5oOZsnESkg==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
-	Jiri Pirko <jiri@nvidia.com>,
-	Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH v7 16/22] dma-direct: make dma_direct_map_phys() honor
- DMA_ATTR_CC_SHARED
-In-Reply-To: <ak42F240d-53QeFN@arm.com>
-References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
- <20260701054926.825925-17-aneesh.kumar@kernel.org>
- <ak42F240d-53QeFN@arm.com>
-Date: Wed, 08 Jul 2026 20:39:04 +0530
-Message-ID: <yq5ase5th627.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZFPlEjpn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783530217; x=1815066217;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=t/g77YT9P3m8kXLyiUdG2tXEDCJYA9xrv9VL9+UNxm4=;
+  b=ZFPlEjpnplix/wDx7HS5S8rdgD2qV4nGTnB2180jb8iB8XbxkizITVD0
+   9w8NcnXPoltPUpZ4T/FNJpElzdLj/0gcbeRMyqY+RnO71E+IlWcPJGD/A
+   EbxOgMy7zLXGAh/3i003rJ110G8hw3P3LE0Ny2NfPhFQ5THlirlL6OCMt
+   tbVNv1c5OvF2fflDdVirEF6sOh7mUwZKnFv98k0gtIjcCZl20dpTU9PFA
+   QaE0sGM/73R2qYQiwYThNIzXBcjYiWkY7avORktjE6rcx1FkI5IHPN4CH
+   ZfI4x8wXpDxY7ktdU4dewvGiCQrwKY6NNuW8Oo3wnb33cACSuafp+uFIO
+   A==;
+X-CSE-ConnectionGUID: bvSb3g0NSEKzshFuMzEP2Q==
+X-CSE-MsgGUID: tXvxvX18RIODULhN7a3CqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="95718209"
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="95718209"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 10:03:35 -0700
+X-CSE-ConnectionGUID: auERyr5vQeuTz0N52Lj5sg==
+X-CSE-MsgGUID: zI3LVsJvRp+XeOmSkh5yrA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="251691818"
+Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
+  by fmviesa008.fm.intel.com with ESMTP; 08 Jul 2026 10:03:32 -0700
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: x86@kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: kas@kernel.org,
+	rick.p.edgecombe@intel.com,
+	dave.hansen@intel.com,
+	dave.hansen@linux.intel.com,
+	yilun.xu@linux.intel.com,
+	yilun.xu@intel.com,
+	chao.gao@intel.com,
+	djbw@kernel.org,
+	linux-coco@lists.linux.dev,
+	peter.fang@intel.com,
+	xiaoyao.li@intel.com
+Subject: [PATCH v2] x86/virt/tdx: Formalize SEAMCALL version encoding support
+Date: Thu,  9 Jul 2026 01:03:30 +0800
+Message-Id: <20260708170330.83850-1-yilun.xu@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Catalin Marinas <catalin.marinas@arm.com> writes:
+SEAMCALL invokes TDX module functions using a function number and
+parameters. To extend the functionalities of existing SEAMCALLs while
+keeping backward compatibility, TDX adds more numbered SEAMCALLs of the
+same family. This is just like syscalls, except that TDX defines a
+specific function number encoding pattern: a base function number and a
+version together encode the full function number.
 
-> On Wed, Jul 01, 2026 at 11:19:20AM +0530, Aneesh Kumar K.V (Arm) wrote:
->> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
->> index 97987f850a33..acf67c7064db 100644
->> --- a/arch/arm64/mm/init.c
->> +++ b/arch/arm64/mm/init.c
->> @@ -338,10 +338,8 @@ void __init arch_mm_preinit(void)
->>  	unsigned int flags = SWIOTLB_VERBOSE;
->>  	bool swiotlb = max_pfn > PFN_DOWN(arm64_dma_phys_limit);
->>  
->> -	if (is_realm_world()) {
->> +	if (is_realm_world())
->>  		swiotlb = true;
->> -		flags |= SWIOTLB_FORCE;
->> -	}
->
-> For this part:
->
-> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
->
->> diff --git a/kernel/dma/direct.h b/kernel/dma/direct.h
->> index e05dc7649366..f3fc28f352ba 100644
->> --- a/kernel/dma/direct.h
->> +++ b/kernel/dma/direct.h
->> @@ -88,37 +88,40 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
->>  {
->>  	dma_addr_t dma_addr;
->>  
->> +	/*
->> +	 * For a device requiring unencrypted DMA, MMIO memory is treated
->> +	 * as shared by default.
->> +	 */
->> +	if (force_dma_unencrypted(dev) && (attrs & DMA_ATTR_MMIO))
->> +		attrs |= DMA_ATTR_CC_SHARED;
->> +
->>  	if (is_swiotlb_force_bounce(dev)) {
->> -		if (!(attrs & DMA_ATTR_CC_SHARED)) {
->> -			if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
->> -				return DMA_MAPPING_ERROR;
->> +		if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
->> +			return DMA_MAPPING_ERROR;
->>  
->> -			return swiotlb_map(dev, phys, size, dir, attrs);
->> -		}
->> -	} else if (attrs & DMA_ATTR_CC_SHARED) {
->> -		return DMA_MAPPING_ERROR;
->> +		return swiotlb_map(dev, phys, size, dir, attrs);
->>  	}
->>  
->> -	if (attrs & DMA_ATTR_MMIO) {
->> -		dma_addr = phys;
->> -		if (unlikely(!dma_capable(dev, dma_addr, size, false, attrs)))
->> -			goto err_overflow;
->> -	} else if (attrs & DMA_ATTR_CC_SHARED) {
->> +	if (attrs & DMA_ATTR_CC_SHARED)
->>  		dma_addr = phys_to_dma_unencrypted(dev, phys);
->> +	else
->> +		dma_addr = phys_to_dma_encrypted(dev, phys);
->
-> For AMD/SME, on host with memory encryption we now end up setting the C
-> bit for DMA_ATTR_MMIO. This is fine for RAM but not sure whether
-> some other MMIO bus understands this attribute. Maybe we should stick to
-> something like __phys_to_dma() for the !CC_SHARED && MMIO path. Or,
-> since this is not universally defined, just use the old dma_addr = phys
-> if MMIO and ignore any unlikely DMA offsets.
->
-> In the other case, for an arm CCA guest, if the MMIO is shared we end up
-> setting the shared attribute but that's fine, it's only an IPA address.
->
+An existing SEAMCALL helper (TDH.VP.INIT) is already using the version
+field. Having the caller pack the version into the function number
+open-codes the ABI layout.
 
-P2PDMA with CoCo is currently not supported, as discussed here:
+Add a version field in struct tdx_module_args [1], so that most existing
+SEAMCALL helpers get a default "version == 0" behavior without code
+churn, while callers requiring extended functionalities can specify the
+version descriptively. Encode the tdx_module_args.version in the
+function number before calling into assembly code.
 
-https://lore.kernel.org/all/20260521175420.GA7702@ziepe.ca
-https://lore.kernel.org/all/20260522132240.GD7702@ziepe.ca
+Link: https://lore.kernel.org/kvm/4f4b0f29-424b-45ed-8cfd-c77da2ea390f@intel.com/ # [1]
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+---
+Two alternative schemes were considered:
 
-Since I do not have much experience with P2PDMA, I have prepared a patch
-that Leon Romanovsky <leonro@nvidia.com> has kindly agreed to review to
-ensure it is correct. I have attached it below.
+1. Define versioned macros like TDH_VP_INIT_V0, TDH_VP_INIT_V1, etc.
+   This breaks naming consistency unless all existing stable function
+   macros are changed to TDH_XXX_V0.
 
-The conclusion is that P2P is not currently supported, so we get this
-series merged first and handle P2PDMA support as a follow-up outside
-this series.
+2. Add an explicit 'version' parameter to the base seamcall() API. This
+   forces all stable SEAMCALL helpers to pass a meaningless '0'
+   argument. The magic '0' or '1' values at caller sites are not
+   descriptive.
 
-commit f39bcb603c5cc4cfa738597715828ac45f01f142
-Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-Date:   Fri May 22 10:10:35 2026 +0530
+Change in v2:
+- Drop the C wrapper __seamcall_encode_fn()
+- Rewrite the first paragraph of the changelog
+- Make change log concise
+- Add a link to the thread where this was suggested
+- Move alternative schemes description below the separator
 
-    PCI/P2PDMA: Carry host bridge DMA attrs through map and unmap
-    
-    P2PDMA host bridge mappings currently pass DMA_ATTR_MMIO and rely on
-    dma-direct to add DMA_ATTR_CC_SHARED for devices that require unencrypted
-    DMA. That puts P2PDMA-specific confidential-computing policy in the generic
-    dma-direct MMIO mapping path and does not preserve the selected attributes
-    through all unmap paths.
-    
-    Add DMA mapping flags to struct p2pdma_provider for host bridge mappings
-    and use those flags in the block, dma-buf and HMM mapping paths. Store the
-    attributes selected at map time where the unmap side no longer has provider
-    context, so that the unmap path uses the same attributes that were used for
-    mapping.
+v1: https://lore.kernel.org/all/20260702144614.59464-1-yilun.xu@linux.intel.com/
+---
+ arch/x86/include/asm/shared/tdx.h         |  2 ++
+ arch/x86/virt/vmx/tdx/seamcall_internal.h | 10 ++++++++++
+ arch/x86/virt/vmx/tdx/tdx.h               |  8 --------
+ arch/x86/virt/vmx/tdx/tdx.c               |  5 +++--
+ 4 files changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/block/blk-mq-dma.c b/block/blk-mq-dma.c
-index bfdb9ed70741..fafc6d6b8522 100644
---- a/block/blk-mq-dma.c
-+++ b/block/blk-mq-dma.c
-@@ -87,10 +87,11 @@ static bool blk_dma_map_bus(struct blk_dma_iter *iter, struct phys_vec *vec)
- static bool blk_dma_map_direct(struct request *req, struct device *dma_dev,
- 		struct blk_dma_iter *iter, struct phys_vec *vec)
- {
--	unsigned int attrs = 0;
-+	unsigned long attrs = 0;
- 
- 	if (iter->p2pdma.map == PCI_P2PDMA_MAP_THRU_HOST_BRIDGE)
--		attrs |= DMA_ATTR_MMIO;
-+		attrs |= iter->p2pdma.mem->dma_mapping_flags;
-+	iter->attrs = attrs;
- 
- 	iter->addr = dma_map_phys(dma_dev, vec->paddr, vec->len,
- 			rq_dma_dir(req), attrs);
-@@ -107,7 +108,7 @@ static bool blk_rq_dma_map_iova(struct request *req, struct device *dma_dev,
- 		struct phys_vec *vec)
- {
- 	enum dma_data_direction dir = rq_dma_dir(req);
--	unsigned int attrs = 0;
-+	unsigned long attrs = 0;
- 	size_t mapped = 0;
- 	int error;
- 
-@@ -115,7 +116,8 @@ static bool blk_rq_dma_map_iova(struct request *req, struct device *dma_dev,
- 	iter->len = dma_iova_size(state);
- 
- 	if (iter->p2pdma.map == PCI_P2PDMA_MAP_THRU_HOST_BRIDGE)
--		attrs |= DMA_ATTR_MMIO;
-+		attrs |= iter->p2pdma.mem->dma_mapping_flags;
-+	iter->attrs = attrs;
- 
- 	do {
- 		error = dma_iova_link(dma_dev, state, vec->paddr, mapped,
-@@ -168,6 +170,7 @@ static bool blk_dma_map_iter_start(struct request *req, struct device *dma_dev,
- 	struct phys_vec vec;
- 
- 	memset(&iter->p2pdma, 0, sizeof(iter->p2pdma));
-+	iter->attrs = 0;
- 	iter->status = BLK_STS_OK;
- 	iter->p2pdma.map = PCI_P2PDMA_MAP_NONE;
- 
-diff --git a/drivers/dma-buf/dma-buf-mapping.c b/drivers/dma-buf/dma-buf-mapping.c
-index 794acff2546a..e6d4ee8acd19 100644
---- a/drivers/dma-buf/dma-buf-mapping.c
-+++ b/drivers/dma-buf/dma-buf-mapping.c
-@@ -59,11 +59,13 @@ static unsigned int calc_sg_nents(struct dma_iova_state *state,
-  * @sgt:    Scatter-gather table
-  * @state:  DMA IOVA state relevant in IOMMU-based DMA
-  * @size:   Total size of DMA transfer
-+ * @attrs:  DMA attributes used for host bridge mappings
-  */
- struct dma_buf_dma {
- 	struct sg_table sgt;
- 	struct dma_iova_state *state;
- 	size_t size;
-+	unsigned long attrs;
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index f20e91d7ac35..b9aac2de233a 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -143,6 +143,8 @@ struct tdx_module_args {
+ 	u64 rbx;
+ 	u64 rdi;
+ 	u64 rsi;
++	/* ABI version, encoded in rax */
++	u8  version;
  };
  
- /**
-@@ -119,6 +121,7 @@ struct sg_table *dma_buf_phys_vec_to_sgt(struct dma_buf_attachment *attach,
- 		 */
- 		break;
- 	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
-+		dma->attrs = provider->dma_mapping_flags;
- 		dma->state = kzalloc_obj(*dma->state);
- 		if (!dma->state) {
- 			ret = -ENOMEM;
-@@ -147,7 +150,7 @@ struct sg_table *dma_buf_phys_vec_to_sgt(struct dma_buf_attachment *attach,
- 			ret = dma_iova_link(attach->dev, dma->state,
- 					    phys_vec[i].paddr, 0,
- 					    phys_vec[i].len, dir,
--					    DMA_ATTR_MMIO);
-+					    dma->attrs);
- 			if (ret)
- 				goto err_unmap_dma;
+ /* Used to communicate with the TDX module */
+diff --git a/arch/x86/virt/vmx/tdx/seamcall_internal.h b/arch/x86/virt/vmx/tdx/seamcall_internal.h
+index be5f446467df..53d7ab037750 100644
+--- a/arch/x86/virt/vmx/tdx/seamcall_internal.h
++++ b/arch/x86/virt/vmx/tdx/seamcall_internal.h
+@@ -11,6 +11,7 @@
+ #ifndef _X86_VIRT_SEAMCALL_INTERNAL_H
+ #define _X86_VIRT_SEAMCALL_INTERNAL_H
  
-@@ -155,7 +158,7 @@ struct sg_table *dma_buf_phys_vec_to_sgt(struct dma_buf_attachment *attach,
- 		} else {
- 			addr = dma_map_phys(attach->dev, phys_vec[i].paddr,
- 					    phys_vec[i].len, dir,
--					    DMA_ATTR_MMIO);
-+					    dma->attrs);
- 			ret = dma_mapping_error(attach->dev, addr);
- 			if (ret)
- 				goto err_unmap_dma;
-@@ -195,11 +198,11 @@ struct sg_table *dma_buf_phys_vec_to_sgt(struct dma_buf_attachment *attach,
- 		; /* Do nothing */
- 	} else if (dma_use_iova(dma->state)) {
- 		dma_iova_destroy(attach->dev, dma->state, mapped_len, dir,
--				 DMA_ATTR_MMIO);
-+				 dma->attrs);
- 	} else {
- 		for_each_sgtable_dma_sg(&dma->sgt, sgl, i)
- 			dma_unmap_phys(attach->dev, sg_dma_address(sgl),
--				       sg_dma_len(sgl), dir, DMA_ATTR_MMIO);
-+				       sg_dma_len(sgl), dir, dma->attrs);
- 	}
- 	sg_free_table(&dma->sgt);
- err_free_state:
-@@ -231,13 +234,13 @@ void dma_buf_free_sgt(struct dma_buf_attachment *attach, struct sg_table *sgt,
- 		; /* Do nothing */
- 	} else if (dma_use_iova(dma->state)) {
- 		dma_iova_destroy(attach->dev, dma->state, dma->size, dir,
--				 DMA_ATTR_MMIO);
-+				 dma->attrs);
- 	} else {
- 		struct scatterlist *sgl;
++#include <linux/bitfield.h>
+ #include <linux/printk.h>
+ #include <linux/types.h>
+ #include <asm/archrandom.h>
+@@ -23,6 +24,14 @@ u64 __seamcall_saved_ret(u64 fn, struct tdx_module_args *args);
  
- 		for_each_sgtable_dma_sg(sgt, sgl, i)
- 			dma_unmap_phys(attach->dev, sg_dma_address(sgl),
--				       sg_dma_len(sgl), dir, DMA_ATTR_MMIO);
-+				       sg_dma_len(sgl), dir, dma->attrs);
- 	}
+ typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
  
- 	sg_free_table(sgt);
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 69932d640b53..8f05f53b78fd 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -436,6 +436,7 @@ struct nvme_iod {
- 
- 	size_t total_len;
- 	struct dma_iova_state dma_state;
-+	unsigned long dma_attrs;
- 	void *descriptors[NVME_MAX_NR_DESCRIPTORS];
- 	struct nvme_dma_vec *dma_vecs;
- 	unsigned int nr_dma_vecs;
-@@ -443,6 +444,7 @@ struct nvme_iod {
- 	dma_addr_t meta_dma;
- 	size_t meta_total_len;
- 	struct dma_iova_state meta_dma_state;
-+	unsigned long meta_dma_attrs;
- 	struct nvme_sgl_desc *meta_descriptor;
- };
- 
-@@ -859,7 +861,7 @@ static void nvme_free_descriptors(struct request *req)
- 	}
- }
- 
--static void nvme_free_prps(struct request *req, unsigned int attrs)
-+static void nvme_free_prps(struct request *req, unsigned long attrs)
- {
- 	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
- 	struct nvme_queue *nvmeq = req->mq_hctx->driver_data;
-@@ -872,7 +874,7 @@ static void nvme_free_prps(struct request *req, unsigned int attrs)
- }
- 
- static void nvme_free_sgls(struct request *req, struct nvme_sgl_desc *sge,
--		struct nvme_sgl_desc *sg_list, unsigned int attrs)
-+		struct nvme_sgl_desc *sg_list, unsigned long attrs)
- {
- 	struct nvme_queue *nvmeq = req->mq_hctx->driver_data;
- 	enum dma_data_direction dir = rq_dma_dir(req);
-@@ -899,7 +901,7 @@ static void nvme_unmap_metadata(struct request *req)
- 	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
- 	struct device *dma_dev = nvmeq->dev->dev;
- 	struct nvme_sgl_desc *sge = iod->meta_descriptor;
--	unsigned int attrs = 0;
-+	unsigned long attrs = 0;
- 
- 	if (iod->flags & IOD_SINGLE_META_SEGMENT) {
- 		dma_unmap_page(dma_dev, iod->meta_dma,
-@@ -912,11 +914,11 @@ static void nvme_unmap_metadata(struct request *req)
- 		map = PCI_P2PDMA_MAP_BUS_ADDR;
- 	else if (iod->flags & IOD_META_MMIO) {
- 		map = PCI_P2PDMA_MAP_THRU_HOST_BRIDGE;
--		attrs |= DMA_ATTR_MMIO;
-+		attrs = iod->meta_dma_attrs;
- 	}
- 
- 	if (!blk_rq_dma_unmap(req, dma_dev, &iod->meta_dma_state,
--			      iod->meta_total_len, map)) {
-+			      iod->meta_total_len, map, attrs)) {
- 		if (nvme_pci_cmd_use_meta_sgl(&iod->cmd))
- 			nvme_free_sgls(req, sge, &sge[1], attrs);
- 		else
-@@ -935,7 +937,7 @@ static void nvme_unmap_data(struct request *req)
- 	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
- 	struct nvme_queue *nvmeq = req->mq_hctx->driver_data;
- 	struct device *dma_dev = nvmeq->dev->dev;
--	unsigned int attrs = 0;
-+	unsigned long attrs = 0;
- 
- 	if (iod->flags & IOD_SINGLE_SEGMENT) {
- 		static_assert(offsetof(union nvme_data_ptr, prp1) ==
-@@ -949,11 +951,11 @@ static void nvme_unmap_data(struct request *req)
- 		map = PCI_P2PDMA_MAP_BUS_ADDR;
- 	else if (iod->flags & IOD_DATA_MMIO) {
- 		map = PCI_P2PDMA_MAP_THRU_HOST_BRIDGE;
--		attrs |= DMA_ATTR_MMIO;
-+		attrs = iod->dma_attrs;
- 	}
- 
- 	if (!blk_rq_dma_unmap(req, dma_dev, &iod->dma_state, iod->total_len,
--			      map)) {
-+			      map, attrs)) {
- 		if (nvme_pci_cmd_use_sgl(&iod->cmd))
- 			nvme_free_sgls(req, &iod->cmd.common.dptr.sgl,
- 			               iod->descriptors[0], attrs);
-@@ -1270,6 +1272,7 @@ static blk_status_t nvme_map_data(struct request *req)
- 		break;
- 	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
- 		iod->flags |= IOD_DATA_MMIO;
-+		iod->dma_attrs = iter.attrs;
- 		break;
- 	case PCI_P2PDMA_MAP_NONE:
- 		break;
-@@ -1305,6 +1308,7 @@ static blk_status_t nvme_pci_setup_meta_iter(struct request *req)
- 		break;
- 	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
- 		iod->flags |= IOD_META_MMIO;
-+		iod->meta_dma_attrs = iter.attrs;
- 		break;
- 	case PCI_P2PDMA_MAP_NONE:
- 		break;
-@@ -1405,6 +1409,8 @@ static blk_status_t nvme_prep_rq(struct request *req)
- 	iod->nr_descriptors = 0;
- 	iod->total_len = 0;
- 	iod->meta_total_len = 0;
-+	iod->dma_attrs = 0;
-+	iod->meta_dma_attrs = 0;
- 	iod->nr_dma_vecs = 0;
- 
- 	ret = nvme_setup_cmd(req->q->queuedata, req);
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index b2d5266f8653..35ab3f8b53a8 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -285,6 +285,11 @@ int pcim_p2pdma_init(struct pci_dev *pdev)
- 			continue;
- 
- 		p2p->mem[i].owner = &pdev->dev;
++/*
++ * SEAMCALL leaf:
++ *
++ * Bit 15:0	Leaf number
++ * Bit 23:16	Version number
++ */
++#define SEAMCALL_VERSION_MASK		GENMASK_U64(23, 16)
 +
-+		p2p->mem[i].dma_mapping_flags = DMA_ATTR_MMIO;
-+		if (force_dma_unencrypted(dev))
-+			p2p->mem[i].dma_mapping_flags |= DMA_ATTR_CC_SHARED;
-+
- 		p2p->mem[i].bus_offset =
- 			pci_bus_address(pdev, i) - pci_resource_start(pdev, i);
- 	}
-diff --git a/include/linux/blk-mq-dma.h b/include/linux/blk-mq-dma.h
-index 214c181ff2c9..fab72c0f8053 100644
---- a/include/linux/blk-mq-dma.h
-+++ b/include/linux/blk-mq-dma.h
-@@ -16,6 +16,7 @@ struct blk_dma_iter {
- 	/* Output address range for this iteration */
- 	dma_addr_t			addr;
- 	u32				len;
-+	unsigned long			attrs;
- 	struct pci_p2pdma_map_state	p2pdma;
- 
- 	/* Status code. Only valid when blk_rq_dma_map_iter_* returned false */
-@@ -49,23 +50,19 @@ static inline bool blk_rq_dma_map_coalesce(struct dma_iova_state *state)
-  * @state:	DMA IOVA state
-  * @mapped_len: number of bytes to unmap
-  * @map:	peer-to-peer mapping type
-+ * @attrs:	DMA attributes used for the mapping
-  *
-  * Returns %false if the callers need to manually unmap every DMA segment
-  * mapped using @iter or %true if no work is left to be done.
-  */
- static inline bool blk_rq_dma_unmap(struct request *req, struct device *dma_dev,
- 		struct dma_iova_state *state, size_t mapped_len,
--		enum pci_p2pdma_map_type map)
-+		enum pci_p2pdma_map_type map, unsigned long attrs)
+ static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
+ 						  struct tdx_module_args *args)
  {
- 	if (map == PCI_P2PDMA_MAP_BUS_ADDR)
- 		return true;
+@@ -39,6 +48,7 @@ static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
+ 	 */
+ 	this_cpu_write(cache_state_incoherent, true);
  
- 	if (dma_use_iova(state)) {
--		unsigned int attrs = 0;
++	FIELD_MODIFY(SEAMCALL_VERSION_MASK, &fn, args->version);
+ 	return func(fn, args);
+ }
+ 
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index bdfd0e1e337a..63e3acfb5d0c 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -50,14 +50,6 @@
+ #define TDH_SYS_UPDATE			53
+ #define TDH_SYS_DISABLE			69
+ 
+-/*
+- * SEAMCALL leaf:
+- *
+- * Bit 15:0	Leaf number
+- * Bit 23:16	Version number
+- */
+-#define TDX_VERSION_SHIFT		16
 -
--		if (map == PCI_P2PDMA_MAP_THRU_HOST_BRIDGE)
--			attrs |= DMA_ATTR_MMIO;
--
- 		dma_iova_destroy(dma_dev, state, mapped_len, rq_dma_dir(req),
- 				 attrs);
- 		return true;
-diff --git a/include/linux/hmm-dma.h b/include/linux/hmm-dma.h
-index f58b9fc71999..d9f967ed7ce1 100644
---- a/include/linux/hmm-dma.h
-+++ b/include/linux/hmm-dma.h
-@@ -14,12 +14,14 @@ struct pci_p2pdma_map_state;
-  * @state: DMA IOVA state
-  * @pfns: array of PFNs
-  * @dma_list: array of DMA addresses
-+ * @dma_attrs: array of DMA attributes
-  * @dma_entry_size: size of each DMA entry in the array
-  */
- struct hmm_dma_map {
- 	struct dma_iova_state state;
- 	unsigned long *pfn_list;
- 	dma_addr_t *dma_list;
-+	unsigned long *dma_attrs;
- 	size_t dma_entry_size;
- };
+ /* TDX page types */
+ #define	PT_NDA		0x0
+ #define	PT_RSVD		0x1
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 42df8ea464c4..7a89e29b118c 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1910,10 +1910,11 @@ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
+ 		.rcx = vp->tdvpr_pa,
+ 		.rdx = initial_rcx,
+ 		.r8 = x2apicid,
++		/* apicid requires version == 1. */
++		.version = 1,
+ 	};
  
-diff --git a/include/linux/pci-p2pdma.h b/include/linux/pci-p2pdma.h
-index 873de20a2247..402dc5e5d62b 100644
---- a/include/linux/pci-p2pdma.h
-+++ b/include/linux/pci-p2pdma.h
-@@ -21,10 +21,12 @@ struct scatterlist;
-  *
-  * A p2pdma provider is a range of MMIO address space available to the CPU.
-  * @owner: Device to which this provider belongs.
-+ * @dma_mapping_flags: DMA attributes to use for host bridge mappings.
-  * @bus_offset: Bus offset for p2p communication.
-  */
- struct p2pdma_provider {
- 	struct device *owner;
-+	unsigned long dma_mapping_flags;
- 	u64 bus_offset;
- };
- 
-diff --git a/mm/hmm.c b/mm/hmm.c
-index c72c9ddfdb2f..a871d8cb7dd9 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -720,6 +720,11 @@ int hmm_dma_map_alloc(struct device *dev, struct hmm_dma_map *map,
- 	if (!map->pfn_list)
- 		return -ENOMEM;
- 
-+	map->dma_attrs = kvcalloc(nr_entries, sizeof(*map->dma_attrs),
-+				  GFP_KERNEL | __GFP_NOWARN);
-+	if (!map->dma_attrs)
-+		goto err_attrs;
-+
- 	use_iova = dma_iova_try_alloc(dev, &map->state, 0,
- 			nr_entries * PAGE_SIZE);
- 	if (!use_iova && dma_need_unmap(dev)) {
-@@ -731,6 +736,8 @@ int hmm_dma_map_alloc(struct device *dev, struct hmm_dma_map *map,
- 	return 0;
- 
- err_dma:
-+	kvfree(map->dma_attrs);
-+err_attrs:
- 	kvfree(map->pfn_list);
- 	return -ENOMEM;
+-	/* apicid requires version == 1. */
+-	return seamcall(TDH_VP_INIT | (1ULL << TDX_VERSION_SHIFT), &args);
++	return seamcall(TDH_VP_INIT, &args);
  }
-@@ -749,6 +756,7 @@ void hmm_dma_map_free(struct device *dev, struct hmm_dma_map *map)
- 		dma_iova_free(dev, &map->state);
- 	kvfree(map->pfn_list);
- 	kvfree(map->dma_list);
-+	kvfree(map->dma_attrs);
- }
- EXPORT_SYMBOL_GPL(hmm_dma_map_free);
+ EXPORT_SYMBOL_FOR_KVM(tdh_vp_init);
  
-@@ -811,11 +819,12 @@ dma_addr_t hmm_dma_map_pfn(struct device *dev, struct hmm_dma_map *map,
- 	case PCI_P2PDMA_MAP_NONE:
- 		break;
- 	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
--		attrs |= DMA_ATTR_MMIO;
-+		attrs |= p2pdma_state->mem->dma_mapping_flags;
- 		pfns[idx] |= HMM_PFN_P2PDMA;
- 		break;
- 	case PCI_P2PDMA_MAP_BUS_ADDR:
- 		pfns[idx] |= HMM_PFN_P2PDMA_BUS | HMM_PFN_DMA_MAPPED;
-+		map->dma_attrs[idx] = 0;
- 		return pci_p2pdma_bus_addr_map(p2pdma_state->mem, paddr);
- 	default:
- 		return DMA_MAPPING_ERROR;
-@@ -848,10 +857,12 @@ dma_addr_t hmm_dma_map_pfn(struct device *dev, struct hmm_dma_map *map,
- 		if (dma_need_unmap(dev))
- 			dma_addrs[idx] = dma_addr;
- 	}
-+	map->dma_attrs[idx] = attrs;
- 	pfns[idx] |= HMM_PFN_DMA_MAPPED;
- 	return dma_addr;
- error:
- 	pfns[idx] &= ~HMM_PFN_P2PDMA;
-+	map->dma_attrs[idx] = 0;
- 	return DMA_MAPPING_ERROR;
- 
- }
-@@ -871,14 +882,11 @@ bool hmm_dma_unmap_pfn(struct device *dev, struct hmm_dma_map *map, size_t idx)
- 	struct dma_iova_state *state = &map->state;
- 	dma_addr_t *dma_addrs = map->dma_list;
- 	unsigned long *pfns = map->pfn_list;
--	unsigned long attrs = DMA_ATTR_REQUIRE_COHERENT;
-+	unsigned long attrs = DMA_ATTR_REQUIRE_COHERENT | map->dma_attrs[idx];
- 
- 	if ((pfns[idx] & valid_dma) != valid_dma)
- 		return false;
- 
--	if (pfns[idx] & HMM_PFN_P2PDMA)
--		attrs |= DMA_ATTR_MMIO;
--
- 	if (pfns[idx] & HMM_PFN_P2PDMA_BUS)
- 		; /* no need to unmap bus address P2P mappings */
- 	else if (dma_use_iova(state))
-@@ -890,6 +898,7 @@ bool hmm_dma_unmap_pfn(struct device *dev, struct hmm_dma_map *map, size_t idx)
- 
- 	pfns[idx] &=
- 		~(HMM_PFN_DMA_MAPPED | HMM_PFN_P2PDMA | HMM_PFN_P2PDMA_BUS);
-+	map->dma_attrs[idx] = 0;
- 	return true;
- }
- EXPORT_SYMBOL_GPL(hmm_dma_unmap_pfn);
+-- 
+2.25.1
 
