@@ -1,258 +1,135 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2240015FA81
-	for <linux-coco@lists.linux.dev>; Wed,  8 Jul 2026 14:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4618934A78F
+	for <linux-coco@lists.linux.dev>; Wed,  8 Jul 2026 14:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783521120; cv=none; b=rCnoYGN7aSxHfz/bnbp6rAA+jqjnbK2tGvvBFwHXVfuzmLukWvqhddDQ4e9I/shf0UdYAZ5kntjiacCGXwkSHK5f6NniVGXSleqtwA8PVYhDKDHr8eVVRW//H0JGFyi+6OTIMfHcKTpm8RhBWf7UOUs56GowdJIkGBzJk6bu09g=
+	t=1783522011; cv=none; b=DT1jWQ0uXp3vr22sAPqiiPBH5g40xfTCC+TSodzfCHE+jMNp2sH5irgDle3eUXzhk+UvT8NiyeVePjSV9T22uMEHPL+tDbt27eR9yNSRnasOK5/HVirJOyv10la23CJDdlFsgX7ypcyP/+a91e4BHa0VaR6QSzTFh3+3ehONmG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783521120; c=relaxed/simple;
-	bh=IgXl7iqMESFBSRUjCOfKfddCVOr8JnN+nz0eoLc7Z84=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YRux3xmf6NfnYGfaS65VD2T5Sy+ykiKzmy3Z/F0gDYslevUf9siIMReArCpy5Pcj+emNXeRFl5PoEkXm1NQoUZNBYtNuoAkANWwUaq16SLaw3Ua1ppyDgVJ93R03LGmS3A2BH24mC8dUcYB5VubOw3SYWcbLvMUSnOaSnJfqF5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=kfJfha1F; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1783522011; c=relaxed/simple;
+	bh=ZParaNqKh+n5/l8AkI894kUXoKbsreK7ATteAPf6ibU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hJRaCkl85fKjoyIgHLN5QO3qvTj//QTMPsWEyZ7W4EsYIOQUSj24Jvxwwz6b+lQ8qLRO+w3L3kRvAuM9tYcsVY1dqJYy23dDj9I8AhbYblqVehgOhegjZXlNoek0eR59BqvO83wC1PjW7FMSQ9hWiwHxiTRss48I5eZ0SYJnCxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mqf+zhtY; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="kfJfha1F"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51c2a818fc4so5019871cf.2
-        for <linux-coco@lists.linux.dev>; Wed, 08 Jul 2026 07:31:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1783521118; x=1784125918; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ptMubsbsUzdG+JxP2QsQOH9vzaQruIf+8B8QS1ntb20=;
-        b=kfJfha1F1NRlKLbmTCOed28qnmcZqyQFku9eEFVjDY76tK2KWSuA8SazbrrBzKSwi6
-         0pO1kUK1g81d4CvPEQ+n8aAQaWCjSjq2HbeRqTdpcnSBqYwRLzhUYT3TEcO8Pbsoce+e
-         tNcq+ikIGmdeVuD8ASlsKwQ9KNSMpUH/JDXFwiaeEmcVXFssE21l35UvfWYFRMwvjIjy
-         KF9cEoC+oL9Oa+btWmH8RdPSl2gTt4qHc/q3+DqzSjDyeBjvhQZOWU3g8+6YLp0aKnTl
-         uY7Cjy+HblsNQWZCtcnlG9k1/FLJcH6T2XZNLwU+OU+aDYELTjXcrBOd8pu2uySLsDmr
-         e+vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783521118; x=1784125918;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ptMubsbsUzdG+JxP2QsQOH9vzaQruIf+8B8QS1ntb20=;
-        b=tOOjHFY3sbyCfNfFhbZzrtFjUJt7JGJxS0axepk4XEttglvLsg2oIxs1aizezz7OLO
-         sERbMH8GZa6LtAHSID7v9BGaLFadwIgYK3f26CnEzZn/zcpbx+PfXF2TxFrme6J5WOhK
-         nfD5lFeKA8Cu7PXgm6ilqJX6qFkFfLQFGZeIkQl7uC0hiZToM5Mv+LCE44MfjC50Tztu
-         Z1JK9RLuIDZndG2wZLQbn08EPSUARPL/JHHGLMXHTIPtXRtNM7EwpRSEuNdCJ2F7Qp6p
-         lveypn1UPAoj/wQzsmKNUsciblr/UmhTgTXJKnXIvAi7TcuhNnnexWdOICLJzW0dwW3M
-         4fPA==
-X-Gm-Message-State: AOJu0Yw6lgBCX4+fiLVy2BG3h/Cwcwcn/xwzfmWAdqQGjOBYMFLQsi66
-	0MvfAWgvCm2+z+6dWFtFGsNirHtHX3jwrGWfW2O3hdfCjzjZkSWatm/gl+BQ6EuWlLk=
-X-Gm-Gg: AfdE7cnyZJqwfHQHtxKUoci42Tc+fexbQi+NhL/rBZBCqEPNSTzEof+hEMKaPmy0N43
-	3D57ATaPn/RLo5wdbsSnyt6AWOJl2dmsnCs41TOid8g5N+VSCz8qhdCQZnKSUirnmNYCZqZhK5Y
-	jF5tIvYkeUXYO98iMheualEyEFyTQ9b2BTst8tbZR4EHmgD4Z7j6RR9KkztZxVyer6UxFLKTUKG
-	wL3rTJq0x+kcX5mInYZcPcDCeXC6i/na9w+sGypZO9S5pTSvkeiyUejWMCn+6iuceGqxpQvfnqh
-	8d/R1gx7mMgcFq17jdnANNaHKnbtaNOxMnBt8/PZCBZdB4G38JOrIYMWzZ4ZQ9Oj97RE6JZc3m1
-	A12ku4Qwm682pb3KwfqORcoZiMFcLtGC06doIEPxgaM5Pu15tLCn9uUaj6uSG7lvhT0EYtv4=
-X-Received: by 2002:a05:622a:15c7:b0:51b:ee04:5a4e with SMTP id d75a77b69052e-51c8b430fdfmr26314881cf.31.1783521115163;
-        Wed, 08 Jul 2026 07:31:55 -0700 (PDT)
-Received: from ziepe.ca ([159.2.72.92])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c41d2cde7sm146585651cf.18.2026.07.08.07.31.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 07:31:54 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1whTJZ-00000002wbD-1YEQ;
-	Wed, 08 Jul 2026 11:31:53 -0300
-Date: Wed, 8 Jul 2026 11:31:53 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Dan Williams (nvidia)" <djbw@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	driver-core@lists.linux.dev, ankita@nvidia.com,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>, Petr Pavlu <petr.pavlu@suse.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security
- Protocol (TDISP)
-Message-ID: <20260708143153.GH118978@ziepe.ca>
-References: <20260705220819.2472765-1-djbw@kernel.org>
- <20260706125140.GB107792@ziepe.ca>
- <6a4c163072c60_174db6100c4@djbw-dev.notmuch>
- <20260707124321.GF118978@ziepe.ca>
- <6a4d95fcc92c2_2f05d5100f7@djbw-dev.notmuch>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mqf+zhtY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783522010; x=1815058010;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ZParaNqKh+n5/l8AkI894kUXoKbsreK7ATteAPf6ibU=;
+  b=Mqf+zhtYW5H44BRGKWFc6fNXCH4TdD5WfUmZHud4YAll9V3NHtihdfRR
+   mX0YGPs3UFQMKKX9TmZuqeopwjellBEpI8kJhW6DsPRfWM/HFTTEmYpvP
+   fagReLXsgKh+KMd7lpUd1hFkEsYE8M37hunMx10VE98WJkHPOjQ8pWrx3
+   5X/fZfVBvFVLCO4i81TUrc9Qn5EM0gOg2wPpTo42zcgsMEcZICCKG5A0o
+   NApo4E1GtFnkK10RjIfqcJRYkD23p+ZrTmpKIzkaEU62Mrd4rKq7qnPsZ
+   12de8j3cm/s8AZIDPQPSqTTwJdBALqTIvbc6Bc/L6usa4/NajreLLChOI
+   w==;
+X-CSE-ConnectionGUID: ZcKfW/xkReG1pGWwt1Vfnw==
+X-CSE-MsgGUID: Jo0JcofcTxyMcaV5pReWqw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="88098793"
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="88098793"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 07:46:50 -0700
+X-CSE-ConnectionGUID: GM58W46OSiG4h2cLe+jlHg==
+X-CSE-MsgGUID: GszSDujEQqy0txQpUwXOoA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="258606752"
+Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.111.66]) ([10.125.111.66])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 07:46:50 -0700
+Message-ID: <885da2b2-56ec-412a-bffd-d0d6404fab5a@intel.com>
+Date: Wed, 8 Jul 2026 07:46:41 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6a4d95fcc92c2_2f05d5100f7@djbw-dev.notmuch>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/virt/tdx: Formalize SEAMCALL version encoding support
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
+ "x86@kernel.org" <x86@kernel.org>
+Cc: "Gao, Chao" <chao.gao@intel.com>, "Xu, Yilun" <yilun.xu@intel.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "kas@kernel.org" <kas@kernel.org>, "djbw@kernel.org" <djbw@kernel.org>,
+ "Fang, Peter" <peter.fang@intel.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+References: <20260702144614.59464-1-yilun.xu@linux.intel.com>
+ <7d3eba7a5442cf3e84fe3658ae53337a183290b1.camel@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <7d3eba7a5442cf3e84fe3658ae53337a183290b1.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 07, 2026 at 05:12:44PM -0700, Dan Williams (nvidia) wrote:
- 
-> 1/ We previously discussed a use case to operate a device's private MMIO
-> while not allowing access to private memory (software encrypted NVME
-> with private MMIO [1]). Many of the following comments are based on
-> preserving this assumption so you can save some reading if we agree that
-> use case can be abandoned.
+On 7/6/26 14:44, Edgecombe, Rick P wrote:
+>> Two alternative schemes were considered:
+>>
+>> 1. Define versioned macros like TDH_VP_INIT_V0, TDH_VP_INIT_V1, etc.
+>>    However, this breaks naming consistency unless all existing stable
+>>    function macros are changed to TDH_XXX_V0.
+>>
+>> 2. Add an explicit 'version' parameter to the base seamcall() API. This
+>>    unnecessarily forces all stable SEAMCALL helpers to pass a
+>>    meaningless '0' argument. Additionally, the magic '0' or '1' values
+>>    at caller sites are not descriptive.
+>>
+> Dave was recently saying something to the effect of "make every word count". I
+> think we could lose some filler words.
 
-force_dma_unencrypted() does not *prevent* device access to private
-memory and provides no security properties on its own. It's only
-purpose is to inform the DMA API what the HW restrictions are for
-doing DMA.
+This can also just go below the --- so it doesn't make it to the final
+changelog.
 
-The use case I had in mind relied on the vIOMMU to police access to
-the private memory. I think if you do T=1 and ADVERSARY you must have
-a vIOMMU or it is an illogical configuration.
-
-So, IMHO there is no use case for a T=1 device to only use shared
-memory, I would abandon that combination.
-
-> 2/ The confirmation of the trust level and the enabling of DMA are
-> separated in time from setting the trust level and entering the RUN
-> state.
-> 
-> All the archs separate the RUN step from the ENABLE DMA step, and the
-> implementation separates those steps in time.
-
-Yes, until the device is fully accepted the DMA has to be kept off. If
-you have to measure in the RUN state then we must have a second step
-after measurement completes, however we are measuring in LOCKED right?
-
-> echo tsm0 > $pdev/tsm/lock
-> cat $nonce | device-evidence dump $pdev
-> device-evidence validate $pdev $generation
-
-So the device is in LOCKED here, DMA remains off both because of
-LOCKED and becuase ENABLE DMA has not been done.
-
-> echo 1 > $pdev/tsm/accept
-
-And now it is RUN. So I don't see the issue with enabling DMA at the
-same time as gonig to RUN? (though defering it to driver probe would
-be a very nice touch as well)
-
-With this API you can't set the devices to RUN and *then* collect the
-evidence, is that restriction OK?
-
-> echo full > $pdev/trust
-> echo $pdev > $driver/bind
-
-Then we can set the trust and bind the driver, knowing that the T=1
-security property is in place.
-
-> The configuration window where $pdev/trust and $pdev/accept can be
-> dynamically changing should not be changing the force_dma_unencrypyted()
-> result if only because that value will mismatch the hardware state until
-> the next ->dma_configure() event.
-
-T=x cannot be changed while a driver is bound, we need to block
-that. Changing it will mess up all DMA and the DMA API won't work
-anymore.
-
-Thus force_dma_unencrypted() can only change when a driver is
-unbound.
-
-If a driver is unbound nothing ever reads force_dma_unencrypted() so
-it is safe to change it, thus we can just synchronize T=1 and
-force_dma_unencrypted() whenever T changes.
-
-The error case has to wait for the driver to unbind if userspace wants
-to go from ERROR->UNLOCKED. IMHO for RAS we are going to need a flow
-to logically go from ERROR->RUN, probably with the 'same device
-acceptance' I suggested earlier. In this case the DMAs will be halted,
-the devices gets back to T=1 and RUN, then the DMAs are turned on
-again. The driver remains in T=1 and force_dma_unencrypted() is always
-false.
-
-> There are also buses and paravisors that may know that private-DMA is
-> enabled for a device by construction. In that case it is also a "trusted
-> to access" signal, and not a "required to access" signal.
-
-In this case they wire force_dma_unencrypted()=false.
- 
-> My answer, given the concerns of drivers dangerously flipping the
-> force_dma_unencrypted() result at runtime was to place it in 'struct
-> device_private' 
-
-Yes, this seems good idea in general
-
-> Otherwise it is confusing when 2 devices are at FULL trust, but
-> one has private memory access and the other does not. One is FULL the
-> other is FULL+.
-
-It is confusing when phrased like this, but this is also why I was
-suggesting below that a pure trust level may not be sufficient as we
-have quite a cross product of scenarios.
-
-If the user wants to operate a device without T=1 and without
-ADVERSARY then that's goofy, but technically the kernel doesn't really
-need to care? It can do it.
-
-IMHO a big question is how much do we want the kernel to nanny
-userspace by having options to double check its work?
-
-Either we trust the user to have checked all the policy conditions
-before writing /sys/trust, or we encode some policy conditions and
-tell the kernel so it can double-check prior to probe.
-
-At least if we omit the double check it can be fairly easy to add in
-later if it really was needed for some time of use reason.
-
-> The question is whether these requirements belong on a central device
-> trust mechanism bitmap or should be pushed out to other ABI.
-
-Yes, for sure, I don't have a good sense what is better.
-
-> For
-> example, if the presence of the secure IOMMU is enumerated
-> after the device is in the LOCKED state then userspace policy can know
-> what it is getting into without needing to tell the kernel. 
-
-Yes, I think for almost all of this we could push it out to userspace
-and have knobs all over. Like IOMMU already has a knob to switch to
-DMA mode, we could add an IOMMU specific trust level to set ADVERSARY
-also if we go in this direction.
-
-But, I also do really like the idea of a central knob that was fairly
-general and simple DISABLE/ADVERSARY/FULL which all sorts of things
-can hang off. Including IOMMU and the drivers themselves that may
-change operation in ADVERSARY mode.
-
-That means they need simple general definitions for what they are, and
-I really like this ADVERSARY naming vs trust as it makes it very clear
-what the device disposition intention is.
-
-> Not essential, but it is useful to have the "operate device" intent,
-> IOMMU default domain configuration, trust level, and private DMA enable
-> all in the same bus operation (->dma_configure). Which is why "accept"
-> was demoted to just set RUN state and leave the rest to be finalized
-> later.
-
-I agree it is nice, and I think this can work fine, the bus code when
-it does the dma configure step can reach out to the TSM and have it
-enable DMA.
-
-We also want the IOMMU to change to a default-disabled state, so we
-also want its hook in dma configure to switch to non-default too.
-
-It makes alot of sense to me that *all* DMA enable knobs will be
-disabled until right before probe starts and then disabled again once
-remove completes. TSM, IOMMU, PCI, etc.
-
-Jason
+I like the discussion happening so far. I, too, dislike adding another
+level of C wrappers. I'm looking forward to v2.
