@@ -1,171 +1,442 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012053.outbound.protection.outlook.com [40.107.209.53])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012071.outbound.protection.outlook.com [52.101.43.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10B335E95E;
-	Wed,  8 Jul 2026 04:55:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0302C18B0A;
+	Wed,  8 Jul 2026 05:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783486508; cv=fail; b=kwnE96kHeB0MVColFuDPkjqNJ6rwiPVFfwDTNFXyeDW2q2kC8O3fKeLn/c6sNjE9pRkgTiLkx2MIWIOfq3itnzlz6ewQpc7WNgzefUmGXB3QzrxMWSaR2nPbj+pIc/gQU4Z94aLV+L8Ro0hYEPy+RKbrcRH6jrI5eaHMVlTCNKA=
+	t=1783486813; cv=fail; b=iPB3JCZEkJukBFVYAJeclcmSxWJQgs9UrDGGAeA42ruaj7ZH/l9ZfJUakJw8V3LM0dC9e7OEMKkPxDJXVMnQLfpknTRWn0MenH+T59Ax4gt+IeAiJ4YfoalLXMSZsQeZ7gVWBZG9EkbNhBCNF5CkKp0iAYc5DkISxZnbSxFg3lI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783486508; c=relaxed/simple;
-	bh=wYGztEHur/+UC83iouitqslsFqtesyuE4dG4V3n5VPI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=uyhXf2EB7xLc+VuvJZUR2vpeTyzXJXceJ/YRYhRRRT1VybYTBg6BifP7QTleggs+ZFucZ2FDLMl4RW/reAIf6CIwcc4P/sIIg+jCujN+W0nKc3N1X1FRUDgRJpYcy2J8JUgf+UM/khZpyLac7zlvF023VFBNae/l+AfOwsFz1Yw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Byzqzadf; arc=fail smtp.client-ip=40.107.209.53
+	s=arc-20240116; t=1783486813; c=relaxed/simple;
+	bh=Al+NmnjVG43XuRtbKMeKBkNtfQ1QqwIugH4gWkxnfYU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=gsKbD/4oOYuflFD0mMCyauuO0RoCXldXlQL0LMlnrnQfSKBGIKtj4QRODVzLVdNqQK+M9RlHH61NABOqqXXRBNjD3Jm33OH2ENqUlnsnK12nCb9ZpdLP8REXDVF+Oa7INM4zmnBJR3YKxxOoeFhPaFRtorLcCyaBLL01dKw/cL0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=onvfa/Me; arc=fail smtp.client-ip=52.101.43.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Byzqzadf"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="onvfa/Me"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=muck2zV8SaUyK1PkyvdQ2Ely+k1o8peyyDSIPc0ZqhGLEKWZZ8/L48dCtIrZQpKgoKYVtQcQn3L7zD9yiU2PDsmLrJ4CF+35nTsz55ferSyHq9z3PsDZCwjZovjkUJ8vUZ+yDJ6LVygsrvVw5avkQ7uO3iQmFLYTUg0Y+5XlNIOBxTYRewa9qN+U7j5DTtEnqJ1L4hkXLv/d1LSnNSO2pPWQG1hWll7t67f1mFTaIm+Q50BCjtl3xMpLLqWOSHgFcfq+1lVBqnCNiOjvmSvAGsnnpb+980Iy6X7W50KKqbZ4HtH/MSISyOCoMQU6IWdWsn7aQPo8wGTj4c1re7JuJw==
+ b=JKmFNtmo13C2LtlCqwXakfIKjpVg2t6qSXZldHxvBZKgFCb8cg6fUBpTb2XM1oQAr5ObVshyxFgop4zUpJuKyfRnz7dT+zArgqh6o3KqI7eg0dkIjIy5g3PdnVeuiKMploPudr0b0T/beqegXN8GMDmOreKPAEbbt7kHFB0FpIdc2z3T5pfx1hmmPTTJTHlbjgfee3gRItdX3w8HkANh8jPWZFmwGErz75qNKhH5OrbShPoKfjyN4Ro87U7hKheq2GqiUyR+aBTZppfNTJIWQmKbZaVjgzgqZ0gLL8s5KTP4IpXu07mFxl44Mp6/DXbfJaGmZ5bBEQIgs1SOSQrR1w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SZ5GDmkLZWd8J5P94VDAI93X1gZGJarzQBk2DH3fIMM=;
- b=X1iU6hK27j3SotgDmlGq5tHaQ8cESXQ3tO5dx3gf51fPmhTKH1dP2VjVTdkJ56kHQrxtIxxgIsKV3m4pB/lveXu8ajoSMnvVr/Va+gJN0v1z7gaYqDd+g1T/mJvK08CXKiHsk7qEUfLJeSqYjKsqZhy4IiCTxv7C/oyMkYh/KZz8YnpOQYcgl6S6tAM0cx18Ef54OxRkpb/nc2wUjgCaRY5tslm/Pmjis+7LtenZXvkAGUbSzaJYQ13zxhOiV7AToitRxrWkXt+UKjTKvNRfPR8Knh4BygLZ8UJg8510CeXoxfOw5t92/7ZN79CVAasctrSmXmwS9noU84hq156zKA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
+ bh=FcxSrSJs9LA8hG42e7dMo+31TEtCLJ1l5R/TSDbYaLs=;
+ b=uxAFLVZh4AsqAh0qmpx/T8C/JNTtnJ1WP+f5f8fYKcbC/kmk0jD3Wm4YtBq8JwXJz6kgdNdYTTD/ccrkkk7V21DddcZl6kdJH26reCg6ByRQDdFGE6NZssps6r5O3/TaVpO+Ur4d0+TjZZNSKWilQTl8fQXv+zzgFd2Vqz9zQia2bD8FUmuz7IH0UPK/pICMeAm6v15H6iOHqPhquV7aDhyjspO0qhVk8F+NBUfeLQEtuxTiTpI5ovLyFKj/ntpIvho6h5Dw2duNW3x8YhhIhQtAd+TM79Lm+A73vINpVtYBtojYDXBkFuLKvVR/BzhO+Zy2954MGUftJGU5mK0dQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SZ5GDmkLZWd8J5P94VDAI93X1gZGJarzQBk2DH3fIMM=;
- b=Byzqzadf4RqBBuyOB/9ulLcKrFNAA0r7xyTdZa92ndPqrS7AUZHodUoQN2bthMb38CjrMMfYMIZg1ZIQD4hK1okK+/bDbqENvVo4hW9ytrf+jizVmsbaU10iJYxWX8heP6MMHASHYUBNGJUpI+j+WrJTPcDUJht4jHPKtry0OvI=
-Received: from MW4PR04CA0341.namprd04.prod.outlook.com (2603:10b6:303:8a::16)
- by DM4PR12MB6135.namprd12.prod.outlook.com (2603:10b6:8:ac::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.10; Wed, 8 Jul 2026 04:55:00 +0000
-Received: from CO1PEPF00012E62.namprd05.prod.outlook.com
- (2603:10b6:303:8a:cafe::55) by MW4PR04CA0341.outlook.office365.com
- (2603:10b6:303:8a::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.9 via Frontend Transport; Wed, 8
- Jul 2026 04:55:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CO1PEPF00012E62.mail.protection.outlook.com (10.167.249.71) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Wed, 8 Jul 2026 04:55:00 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 7 Jul
- 2026 23:55:00 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 7 Jul
- 2026 23:54:59 -0500
-Received: from [10.252.210.85] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Tue, 7 Jul 2026 23:54:49 -0500
-Message-ID: <42708d69-42ff-48ec-bd54-0e683c440ae8@amd.com>
-Date: Wed, 8 Jul 2026 10:24:43 +0530
+ bh=FcxSrSJs9LA8hG42e7dMo+31TEtCLJ1l5R/TSDbYaLs=;
+ b=onvfa/Me/X8B3GgC2mVD+0+HJM1LLoZ90Z5kr2GtZy9UrcJgnurnMiuu7uOoDkFlbFykDiPR7uxXSQR7keMq3xQwPiCHdSgQFxaODfFejwcqslzUtOlNntCAlUlhylaLjBjXnxNHJYKPDLorICvyYZZA2eU+r9aAkbaakJxLTYs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10) by PH8PR12MB8607.namprd12.prod.outlook.com
+ (2603:10b6:510:1cf::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Wed, 8 Jul
+ 2026 05:00:07 +0000
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3%4]) with mapi id 15.21.0181.009; Wed, 8 Jul 2026
+ 05:00:07 +0000
+Message-ID: <e42b9ef3-a177-4e38-8aad-c3f4061f1b64@amd.com>
+Date: Wed, 8 Jul 2026 15:00:01 +1000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/15] PCI/TSM: Add device evidence support
+To: Dan Williams <djbw@kernel.org>, linux-coco@lists.linux.dev
+Cc: linux-pci@vger.kernel.org, driver-core@lists.linux.dev,
+ ankita@nvidia.com, Bjorn Helgaas <bhelgaas@google.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Lukas Wunner <lukas@wunner.de>,
+ Xu Yilun <yilun.xu@linux.intel.com>,
+ "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+References: <20260705220819.2472765-1-djbw@kernel.org>
+ <20260705220819.2472765-7-djbw@kernel.org>
+Content-Language: en-US
+From: Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <20260705220819.2472765-7-djbw@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY5P282CA0052.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:20a::11) To SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 06/51] x86/sev: Don't override CPU frequency
- calibration for SNP's Secure TSC
-To: Sean Christopherson <seanjc@google.com>, Jonathan Corbet <corbet@lwn.net>,
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, "Ingo
- Molnar" <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, Kiryl Shutsemau
-	<kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, "K. Y.
- Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, "Wei
- Liu" <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
-	<longli@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov
-	<alexey.makhalov@broadcom.com>, Jan Kiszka <jan.kiszka@siemens.com>, "Andy
- Lutomirski" <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Juergen
- Gross <jgross@suse.com>, Daniel Lezcano <daniel.lezcano@kernel.org>, John
- Stultz <jstultz@google.com>
-CC: Shuah Khan <skhan@linuxfoundation.org>, "H. Peter Anvin" <hpa@zytor.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Broadcom internal kernel review list
-	<bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
-	<boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
-	<linux-doc@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-hyperv@vger.kernel.org>, <virtualization@lists.linux.dev>,
-	<xen-devel@lists.xenproject.org>, Tom Lendacky <thomas.lendacky@amd.com>,
-	David Woodhouse <dwmw@amazon.co.uk>, David Woodhouse <dwmw2@infradead.org>,
-	Michael Kelley <mhklinux@outlook.com>, Thomas Gleixner <tglx@linutronix.de>
-References: <20260701193212.749551-1-seanjc@google.com>
- <20260701193212.749551-7-seanjc@google.com>
-Content-Language: en-US
-From: "Nikunj A. Dadhania" <nikunj@amd.com>
-In-Reply-To: <20260701193212.749551-7-seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF00012E62:EE_|DM4PR12MB6135:EE_
-X-MS-Office365-Filtering-Correlation-Id: 162212d4-dfcb-4a25-3888-08dedcad1125
+X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|PH8PR12MB8607:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7e4ac87a-f5e9-4683-d95c-08dedcadc7a8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|32650700020|23010399003|7416014|82310400026|376014|36860700016|6133799003|921020|3023799007|18002099003|22082099003|4143699003|11063799006|56012099006;
+	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|6133799003|4143699003|56012099006|11063799006|18002099003|22082099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	MhZdQQ5WQce4My/DtjEsGnXBCV401gswIsS7mXg6sHA+jS3dKPLv9bhlsOSW+PgXUqq24ehiXRKmCXee7KIAUZpniARNORz336IHWocle1CQNu3H5VOv/WplcTvPKuIFZQaqCKEghQwJmLsxwMpRxh4AYs0X3FsevuRJ6PhKPBIbCaBp7l03e/WQXCuMFp9bkY762K2HLPexq74B0sVq19YSoAtx6K4SWr1ObM7MzlD9cSm2FnLtD4NOgzJb5TsgtG0768blna0D4X1sUI6RJyQn92F30AuyoXsLVGJOD+aVlNE7uQRNby77xREvOEO77ferIlEezky6qOGbLXjkvXeuZriyLvfwTe67p/0LB8YGHzV8F76yXKdYBa3mP9u2FMlqTcfyR98LycSQFFKcUKYqsyTnd9uz2vUptUB83EpoD5oVGdMh14zIu3RvThkaSB1O2gxN5Yybt8E/B3h46S2R1H+TxQuIjAlj4suP/KTPOLCAO0kwoR6VuckSH6MmA+PxFbFFGXcZdrtZTcO2f7h1wGNqXMhaxob3Fp79KDflY/Lzq+gA3gHrlAN7e8koytdKxWrBfcnXgrNi5Qols+pbj/lcH3tEE5ch1o0cT0ykHcd3BRTkKdXi59MlTFa39s3qi5HCzXgmIRnNNb/xPStcPhbDbLWOhdj0KL8dJjyGc1AM8h99/dCGUYYqhd06qBKvWPzvMuonNs0MxiWuD6D/IK4DIWbr46CsbajuKUHwSsKZuYHh2SkIZkjnalRy
+	iYIrI/PteinfhMBkLrvXEWLKDUz2PFmoJwJj2A68nVs73HCtPJeM6sZ/YiyuqEFmrvC2hKeTR86ScZilxneEIU9wExI8+bVdz5DJtF+DioS9iK1GVkCKrkExJUnKcET23QbJp79ncZB6cCYNZ4W52APoviMXW3XTPoCTtu6d7yoHlRW7SUJJbTSxFcPM9V5/EZJVJONt9QJiM12j8M1xjSbHDtnR3GyjFXKPZKrY3eD+JpAfv4JU0oVRLdaxVM5zP6cIE5TfjOw+yPaGR9GskGNR4SIkE9yHn1MluNIztBB2Cox9N+jXyHSFvGeOiL2sTYUya/bQEC6RHpqH8xDQty1/T4cjR2iBWKhyFgE9B1qOBcvHZWA1LTgwZ51exYDpGu631PLMpS85sm86sSo6XhnuuMF/vjsUW1CCvA/f3vWAK1lzFHnjAiw1Rp2QEhgVZAU+DJlNFclQpLN5+zv5EoJIS+4c0XoTfyQu/IgsaixjDd0ioLnmjAONP8v9tpwAVR2tNmSrNpDhNIGfXOu8vxEKQ0nIrXWqKr5Gy9Q7OiRFI0rAhmlBOotmOrFP8ePiehgGmZzjbafdDHsGrNFFDJW2WDmT5o7E4jZsOV93LLBuWDbxKs80kFbKDFtodmOYNgioTdXeKDHrAZhofFKM+x9Lq6vKQIMAjqpA6pmlO1o=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(32650700020)(23010399003)(7416014)(82310400026)(376014)(36860700016)(6133799003)(921020)(3023799007)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(6133799003)(4143699003)(56012099006)(11063799006)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	k/vu6e0T2XlctZLtJdyr6MexpXA2QcnV3xEzcFHJPOr/EVdlmu5jyyjU3hTpkaj5sh8Q2y3b/oi2T6yg5BS4I2gkl3iwOY4W8YI0JYQn4qaUozlGtxruJH8ND67IXFH5zEGYOYaV/0OXdww5VFZi13//IA5WtOyUwh16xmnxbaWAEukUp8EMHCFs/m2RgKsJ02i5bbFAOJLM3+63L9EcgZBkAwu92lj4C3kZfQh3fSf2EYP4LTnxGc6551h1t5bca8bJI7bILyDm8jjXR3zGD7CVA5v4AF2ZpRuiFHauy3oxqkmM2IaFsrtWN/Gkal6K/iafbEZoOVceprE2xzZiQ0ePte4wrSzkYgnG5cHDAtbS8ilBBRfKoJ6rfSUH3DkVcnHHqNZNReQnzrp4rohh+VZI4K75igXJuV9+fqIV5LaVkRY69kxkt1NWz8UA5DQz
+	=?utf-8?B?OWd2bVV3c1JsRXdsZFRKYTNLZnRmTU9YWktGQ2NNWWNOQy9UdHRTU0Y3YkVD?=
+ =?utf-8?B?SEd5aXlQUURLWXBjMmF0OUhoRkVDckxBbk1hRVB2U3dpMC9jV09sMEhOYXph?=
+ =?utf-8?B?OE95YnVTNGlhYzdWYUtQM2NKNjFlNlRjOXVxTS9GalYrNUFQMGpBSU4rQlhZ?=
+ =?utf-8?B?bHFBeW5sQm5zS0tHVEZoV2hEWERXS0VrS2VJcW9rbXBHZjRBbHoraXZDQ3BT?=
+ =?utf-8?B?VlVwM3pMblBLWXIvMmNrc3FMRXRPMWFyV2NMYlI3OTE4amloem1XUktXeHBJ?=
+ =?utf-8?B?dDJLR29La0pkUFJuRy9GMDAyTVRyVllIVkRIVVdVbitEMUIrQ1BFZzdBblJ0?=
+ =?utf-8?B?WEw1bDJqeWNsMlpPM0hlUXFaSk9lM2tqQnRCYWR1Yng2Q0FUOU03dlFWVHJ1?=
+ =?utf-8?B?WW11M3dvMDNWTWlFSUtYTHBsRGFMeWdKckJ4WG12aEttWWhCamZpZlhLbkJL?=
+ =?utf-8?B?ZTNKRVR3a0x3Z2Q3NjV2aXlNZVFaSkF4VzVEL0R3YWJ0QzVCSVNJWHBQeHls?=
+ =?utf-8?B?dGtFbWhCaTFybVkxbDRCby9qTE91L3RhRVNsQ1FBbjR0NDFGdVAzWnVENnZ3?=
+ =?utf-8?B?bVUrejhteWwrWDN4QkVGdFVjVHVuaXFJcy9rWThhOUhKTExkOTlnaDE1L2VT?=
+ =?utf-8?B?WFZueWxHc3lYcTlqbGxEWTlTWTRPSitJUmQvVUpVVjNkblhneC9OZFhjRGxJ?=
+ =?utf-8?B?d1UrWEJyYjYyRXJEaXRmU0xSSVFRV0lzSGJId1d1QWlEVjdrWEt5ZHNVZkNl?=
+ =?utf-8?B?K1Z1VjJNS3h5TzNPeXBrdzNSU1Q4Vko5SlE3T2I1M2tHVW1uNEJMd2JlOHdM?=
+ =?utf-8?B?QjZaaDBwMTVxdkU4eXdBZjNhMnoyNm1BalJqbkZCYVh1MmZ1dzRtSm9iMC95?=
+ =?utf-8?B?RDVvTkJKQlNvKzB5ZlYzcWxDWWo3TG9jMis5aU53R2N5UU9EY3ptSStXUXYv?=
+ =?utf-8?B?ZDFiVlpVQ3FnUEVkUkJ1cmRxTEZqL1dpSUZMaXhEdzhvQWFPZThGQi9wemh0?=
+ =?utf-8?B?MWpzY0JvK1R6YjFpMVhjbk9oOE9HLzFXbUlGWGY3MXU3Z1R2cEV0d3dvR3JZ?=
+ =?utf-8?B?bXRjN1ZrbTJsRmp5R2RXR1I3UVpBbGhTOE1UaDlKL3ZFZnN2R1AvTXI3cVNC?=
+ =?utf-8?B?bzhxQVJHM2ViQVhvT3NlZzhnOGlYNmxGRGowL1VwOUlReWZpbHVlbW14KzA0?=
+ =?utf-8?B?N0JMRGtjN3g4US9SMmhKclIvMHlrYmJxa0MvMXhTQnVqL21TOTJpbUNIZTVt?=
+ =?utf-8?B?WG0wa0JCaVJ1MWpHTUlMTm8xRXprT1ZEWlRyVGlxMFRpRDM4MWVrbklPOU51?=
+ =?utf-8?B?bXBFbm1mQjBSaURxMVVhVWdBbUg4bXhOR05NTXMwa0Y2eENUT09HSFBwcFZx?=
+ =?utf-8?B?V2UvSDVsZmRsTUZOZ0tuTjZVUVlhTVp1ZXBSYkVMUElUNWo5SXR1VjBnM3J4?=
+ =?utf-8?B?Mlc0Q0QxN1Bhc2xhejg5SzdGWW9qZCtLS1VPcEFxSW12Q05ncHlEb2dRRWI3?=
+ =?utf-8?B?bDBYaHhFa3IwdjZneXRUc3d4MDZINHFPRUsxck9MTWNSUjNzWUthOWRwYjRh?=
+ =?utf-8?B?U0FyS0tkSlJyWndsMVcyeUpEbnFscjZJbm1yUGdvMEhTTHVJRlZqY2ZYbmx5?=
+ =?utf-8?B?RU9GRWJZaG9EVEttTXFaZms4ODJRU0FXOXRPODZNSG0wZ3B3Q3Jncnk2bHIy?=
+ =?utf-8?B?bEhCcElQS1VOUGZ2bTRPR3U2SGpsVWJYNmFzTVhpdTZ6WXNtZE56YktIY0ph?=
+ =?utf-8?B?Y2IvUlJoWUc0WHAxbmtyclNjS09CUGdObVI5UUNvQXUxbHFENEo5dk1SNU00?=
+ =?utf-8?B?Nm5VakpzcmlDY2R3NmN2YWJBRkF5OUxybTc3LzUxQzNpdGlwenZyU1QwaU1w?=
+ =?utf-8?B?dE9WQkcwTjhRYUpFTVYxU1BYZWc5Wks2bTZXQTRqMUZBSGV0M0gvN2VIVUIr?=
+ =?utf-8?B?R0srQUlHcGJ3ME8wWWlidjRTaG5wVmsvWGlkODNpcmhFbVhHRWNaZXlUYUlX?=
+ =?utf-8?B?Y3M2S0VudlA3UlN1QVpROVN1YVRrdGliMml1NnpodC9KRUhieGJ5NkttV2lz?=
+ =?utf-8?B?UzRFNUU0VlA4ZE8zT0xiV3M5ZGcyNDN1WTJTWHJaaitmYXhzcFQydVJMM3g5?=
+ =?utf-8?B?Yno5eTFxSjZIK21ENmIxbjZRL3hGQ2JYRTd3QVNoSVgvQWhBc0dzZEZTd3hC?=
+ =?utf-8?B?eWU3S0w4ZllpNk9PMU5ZYjdHMTlidjIybzk3M1ZPS3BaUDF4cC9NdVkyZEZM?=
+ =?utf-8?B?Z2JHaGg5RHFoY2ZacFkrRk10dGhkaytydGJ3ZWNsNWlMVThqa3diTXhTc0lr?=
+ =?utf-8?B?UzlUdk9wS3AwNHlhTVJvR21lQ0VTdmU3eFd3M21lY1pFdEtYK0Yrdz09?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 04:55:00.6860
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e4ac87a-f5e9-4683-d95c-08dedcadc7a8
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 05:00:07.2768
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 162212d4-dfcb-4a25-3888-08dedcad1125
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF00012E62.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6135
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5/KJodowpb6NLpbxXAaEqqALq4EGo3ghr6GJynBhWkk9JTIOD+ejrkOvuAUdVJ50fwAFC0SLpK1YhSDbbo58+Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB8607
 
-
-
-On 7/2/2026 1:01 AM, Sean Christopherson wrote:
-> Don't override the kernel's CPU frequency calibration routine when
-> registering SNP's Secure TSC calibration routine.  SNP (the architecture)
-> provides zero guarantees that the CPU runs at the same frequency as the
-> TSC.  The justification for clobbering the CPU routine was:
+On 6/7/26 08:08, Dan Williams wrote:
+> Register the PCI Trusted Execution Environment Security Manager (TSM)
+> framework with the device-evidence netlink ABI. The security operations
+> that PCI core coordinates with a device security manager (DSM) through a
+> platform TEE security manager (TSM), builds upon the SPDM protocol.
 > 
->   Since the difference between CPU base and TSC frequency does not apply
->   in this case, the same callback is being used.
-> 
-> but that's simply not true.  E.g. if APERF/MPERF is exposed to the VM, then
-> the CPU frequency absolutely does matter.
-> 
-> While relying on heuristics and/or the untrusted hypervisor to provide the
-> CPU frequency isn't ideal, it's at least not outright wrong.
-> 
-> Fixes: 73bbf3b0fbba ("x86/tsc: Init the TSC for Secure TSC guests")
-> Cc: Nikunj A Dadhania <nikunj@amd.com>
-> Cc: Tom Lendacky <thomas.lendacky@amd.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> A TSM owns an SPDM session and publishes the corresponding evidence through
+> TSM firwmware ABIs. A low level TSM driver is responsible for creating a
+> 'struct device_evidence' context and carrying out refresh_evidence()
 
-Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
 
+a nit: so it is really refresh_measurements() as it won't refresh the report? may be call it so?
+
+> requests for regenerating measurement transcripts with a nonce.
+> 
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Alistair Francis <alistair.francis@wdc.com>
+> Cc: Lukas Wunner <lukas@wunner.de>
+> Cc: Xu Yilun <yilun.xu@linux.intel.com>
+> Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+> Cc: Alexey Kardashevskiy <aik@amd.com>
+> Signed-off-by: Dan Williams <djbw@kernel.org>
 > ---
->  arch/x86/coco/sev/core.c | 1 -
->  1 file changed, 1 deletion(-)
+>   drivers/pci/Kconfig               |   1 +
+>   drivers/pci/Makefile              |   2 +-
+>   drivers/pci/tsm/Makefile          |   8 +++
+>   include/linux/pci-tsm.h           |  14 ++++
+>   drivers/pci/{tsm.c => tsm/core.c} |   9 +--
+>   drivers/pci/tsm/evidence.c        | 110 ++++++++++++++++++++++++++++++
+>   MAINTAINERS                       |   2 +-
+>   7 files changed, 137 insertions(+), 9 deletions(-)
+>   create mode 100644 drivers/pci/tsm/Makefile
+>   rename drivers/pci/{tsm.c => tsm/core.c} (99%)
+>   create mode 100644 drivers/pci/tsm/evidence.c
 > 
-> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-> index ed0ac52a765e..665de1aea0ee 100644
-> --- a/arch/x86/coco/sev/core.c
-> +++ b/arch/x86/coco/sev/core.c
-> @@ -2046,7 +2046,6 @@ void __init snp_secure_tsc_init(void)
->  
->  	snp_tsc_freq_khz = SNP_SCALE_TSC_FREQ(tsc_freq_mhz * 1000, secrets->tsc_factor);
->  
-> -	x86_platform.calibrate_cpu = securetsc_get_tsc_khz;
->  	x86_platform.calibrate_tsc = securetsc_get_tsc_khz;
->  
->  	early_memunmap(mem, PAGE_SIZE);
+> diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+> index 0c7408509ba2..ed17b5d2d5ae 100644
+> --- a/drivers/pci/Kconfig
+> +++ b/drivers/pci/Kconfig
+> @@ -126,6 +126,7 @@ config PCI_IDE
+>   
+>   config PCI_TSM
+>   	bool "PCI TSM: Device security protocol support"
+> +	select DEVICE_EVIDENCE if NET
+>   	select PCI_IDE
+>   	select PCI_DOE
+>   	select TSM
+> diff --git a/drivers/pci/Makefile b/drivers/pci/Makefile
+> index 41ebc3b9a518..211f195ff2c9 100644
+> --- a/drivers/pci/Makefile
+> +++ b/drivers/pci/Makefile
+> @@ -35,7 +35,7 @@ obj-$(CONFIG_XEN_PCIDEV_FRONTEND) += xen-pcifront.o
+>   obj-$(CONFIG_VGA_ARB)		+= vgaarb.o
+>   obj-$(CONFIG_PCI_DOE)		+= doe.o
+>   obj-$(CONFIG_PCI_IDE)		+= ide.o
+> -obj-$(CONFIG_PCI_TSM)		+= tsm.o
+> +obj-$(CONFIG_PCI_TSM)		+= tsm/
+>   obj-$(CONFIG_PCI_DYNAMIC_OF_NODES) += of_property.o
+>   obj-$(CONFIG_PCI_NPEM)		+= npem.o
+>   obj-$(CONFIG_PCIE_TPH)		+= tph.o
+> diff --git a/drivers/pci/tsm/Makefile b/drivers/pci/tsm/Makefile
+> new file mode 100644
+> index 000000000000..fd7ac2e862f1
+> --- /dev/null
+> +++ b/drivers/pci/tsm/Makefile
+> @@ -0,0 +1,8 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# Makefile for the PCI/TSM infrastructure
+> +
+> +obj-$(CONFIG_PCI_TSM) += tsm.o
+> +
+> +tsm-y := core.o
+> +tsm-$(CONFIG_DEVICE_EVIDENCE) += evidence.o
+> diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
+> index a6435aba03f9..8bc16029d31e 100644
+> --- a/include/linux/pci-tsm.h
+> +++ b/include/linux/pci-tsm.h
+> @@ -3,7 +3,10 @@
+>   #define __PCI_TSM_H
+>   #include <linux/mutex.h>
+>   #include <linux/pci.h>
+> +#include <linux/rwsem.h>
+
+then this file is missing extern struct rw_semaphore pci_tsm_rwsem;
+
+>   #include <linux/sockptr.h>
+> +#include <linux/tsm.h>
+> +#include <linux/device/evidence.h>
+>   
+>   struct pci_tsm;
+>   struct tsm_dev;
+> @@ -18,6 +21,7 @@ enum pci_tsm_req_scope;
+>    * @devsec_ops: Lock, unlock, and interrogate the security state of the
+>    *		function via the platform TSM (typically virtual function
+>    *		operations).
+> + * @refresh_evidence: Common operation to regenerate attestation objects
+>    *
+>    * This operations are mutually exclusive either a tsm_dev instance
+>    * manages physical link properties or it manages function security
+> @@ -75,6 +79,9 @@ struct pci_tsm_ops {
+>   					struct pci_dev *pdev);
+>   		void (*unlock)(struct pci_tsm *tsm);
+>   	);
+> +
+> +	int (*refresh_evidence)(struct pci_tsm *tsm, const void *nonce,
+> +				size_t nonce_len);
+>   };
+>   
+>   /**
+> @@ -96,6 +103,8 @@ struct pci_tdi {
+>    * @tsm_dev: PCI TEE Security Manager device for Link Confidentiality or Device
+>    *	     Function Security operations
+>    * @tdi: TDI context established by the @bind link operation
+> + * @evidence: cached evidence from SPDM session establishment (connect), or
+> + *	      TDISP bind (lock)
+>    *
+>    * This structure is wrapped by low level TSM driver data and returned by
+>    * probe()/lock(), it is freed by the corresponding remove()/unlock().
+> @@ -112,6 +121,7 @@ struct pci_tsm {
+>   	struct pci_dev *dsm_dev;
+>   	struct tsm_dev *tsm_dev;
+>   	struct pci_tdi *tdi;
+> +	struct device_evidence *evidence;
+>   };
+>   
+>   /**
+> @@ -216,6 +226,10 @@ void pci_tsm_tdi_constructor(struct pci_dev *pdev, struct pci_tdi *tdi,
+>   ssize_t pci_tsm_guest_req(struct pci_dev *pdev, enum pci_tsm_req_scope scope,
+>   			  sockptr_t req_in, size_t in_len, sockptr_t req_out,
+>   			  size_t out_len, u64 *tsm_code);
+> +static inline const struct pci_tsm_ops *to_pci_tsm_ops(struct pci_tsm *tsm)
+> +{
+> +	return tsm->tsm_dev->pci_ops;
+> +}
+>   #else
+>   static inline int pci_tsm_register(struct tsm_dev *tsm_dev)
+>   {
+> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm/core.c
+> similarity index 99%
+> rename from drivers/pci/tsm.c
+> rename to drivers/pci/tsm/core.c
+
+This move + related makefile changes + exposing pci_tsm_rwsem are better be in a separate patch. Thanks,
+
+> index 5fdcd7f2e820..220842df42bc 100644
+> --- a/drivers/pci/tsm.c
+> +++ b/drivers/pci/tsm/core.c
+> @@ -15,13 +15,13 @@
+>   #include <linux/sysfs.h>
+>   #include <linux/tsm.h>
+>   #include <linux/xarray.h>
+> -#include "pci.h"
+> +#include "../pci.h"
+>   
+>   /*
+>    * Provide a read/write lock against the init / exit of pdev tsm
+>    * capabilities and arrival/departure of a TSM instance
+>    */
+> -static DECLARE_RWSEM(pci_tsm_rwsem);
+> +DECLARE_RWSEM(pci_tsm_rwsem);
+>   
+>   /*
+>    * Count of TSMs registered that support physical link operations vs device
+> @@ -30,11 +30,6 @@ static DECLARE_RWSEM(pci_tsm_rwsem);
+>   static int pci_tsm_link_count;
+>   static int pci_tsm_devsec_count;
+>   
+> -static const struct pci_tsm_ops *to_pci_tsm_ops(struct pci_tsm *tsm)
+> -{
+> -	return tsm->tsm_dev->pci_ops;
+> -}
+> -
+>   static inline bool is_dsm(struct pci_dev *pdev)
+>   {
+>   	return pdev->tsm && pdev->tsm->dsm_dev == pdev;
+> diff --git a/drivers/pci/tsm/evidence.c b/drivers/pci/tsm/evidence.c
+> new file mode 100644
+> index 000000000000..ffb08208f0c0
+> --- /dev/null
+> +++ b/drivers/pci/tsm/evidence.c
+> @@ -0,0 +1,110 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/* Copyright (C) 2026 NVIDIA Corporation & Affiliates */
+> +
+> +#include <linux/device/evidence.h>
+> +#include <linux/init.h>
+> +#include <linux/mutex.h>
+> +#include <linux/pci.h>
+> +#include <linux/pci-tsm.h>
+> +#include <linux/tsm.h>
+> +
+> +extern struct rw_semaphore pci_tsm_rwsem;
+> +
+> +static bool evidence_available(struct pci_dev *pdev)
+> +{
+> +	return pdev->tsm && pdev->tsm->evidence;
+> +}
+> +
+> +static struct device *pci_tsm_evidence_find_device(const char *name)
+> +{
+> +	ACQUIRE(rwsem_read_intr, lock)(&pci_tsm_rwsem);
+> +	if (ACQUIRE_ERR(rwsem_read_intr, &lock))
+> +		return NULL;
+> +
+> +	struct device *dev __free(put_device) =
+> +		bus_find_device_by_name(&pci_bus_type, NULL, name);
+> +
+> +	/*
+> +	 * Bail evidence gathering early if we know at this point that
+> +	 * the device has no valid evidence provider, but still need to
+> +	 * revalidate the same in pci_tsm_evidence_read_begin().
+> +	 */
+> +	if (!dev || !evidence_available(to_pci_dev(dev)))
+> +		return NULL;
+> +
+> +	return no_free_ptr(dev);
+> +}
+> +
+> +static struct device_evidence *pci_tsm_evidence_read_begin(struct device *dev)
+> +{
+> +	struct pci_dev *pdev = to_pci_dev(dev);
+> +	struct device_evidence *evidence;
+> +	int rc;
+> +
+> +	rc = down_read_interruptible(&pci_tsm_rwsem);
+> +	if (rc)
+> +		return ERR_PTR(rc);
+> +
+> +	if (!evidence_available(pdev))
+> +		goto err;
+> +
+> +	/* Hold the evidence stable against conflicting refresh updates */
+> +	evidence = pdev->tsm->evidence;
+> +	rc = down_read_interruptible(&evidence->lock);
+> +	if (rc)
+> +		goto err;
+> +
+> +	return evidence;
+> +err:
+> +	up_read(&pci_tsm_rwsem);
+> +	return ERR_PTR(-ENXIO);
+> +}
+> +
+> +static void pci_tsm_evidence_read_end(struct device_evidence *evidence)
+> +{
+> +	up_read(&evidence->lock);
+> +	up_read(&pci_tsm_rwsem);
+> +}
+> +
+> +static int pci_tsm_refresh_evidence(struct device *dev, const void *nonce,
+> +				    size_t nonce_len)
+> +{
+> +	struct pci_dev *pdev = to_pci_dev(dev);
+> +	struct device_evidence *evidence;
+> +	const struct pci_tsm_ops *ops;
+> +	int rc;
+> +
+> +	/* Sync against disconnect */
+> +	ACQUIRE(rwsem_read_intr, lock)(&pci_tsm_rwsem);
+> +	if ((rc = ACQUIRE_ERR(rwsem_read_intr, &lock)))
+> +		return rc;
+> +
+> +	if (!pdev->tsm)
+> +		return -ENXIO;
+> +
+> +	ops = to_pci_tsm_ops(pdev->tsm);
+> +	if (!ops->refresh_evidence)
+> +		return -EOPNOTSUPP;
+> +
+> +	/* Sync against pci_tsm_evidence_read_begin */
+> +	evidence = pdev->tsm->evidence;
+> +	ACQUIRE(rwsem_write_kill, elock)(&evidence->lock);
+> +	if ((rc = ACQUIRE_ERR(rwsem_write_kill, &elock)))
+> +		return rc;
+> +
+> +	return ops->refresh_evidence(pdev->tsm, nonce, nonce_len);
+> +}
+> +
+> +static const struct device_evidence_ops pci_tsm_evidence_ops = {
+> +	.subsys_name = "pci",
+> +	.find_device = pci_tsm_evidence_find_device,
+> +	.evidence_read_begin = pci_tsm_evidence_read_begin,
+> +	.evidence_read_end = pci_tsm_evidence_read_end,
+> +	.refresh_evidence = pci_tsm_refresh_evidence,
+> +};
+> +
+> +static int __init pci_tsm_evidence_init(void)
+> +{
+> +	return device_evidence_register(&pci_tsm_evidence_ops);
+> +}
+> +subsys_initcall(pci_tsm_evidence_init);
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index cb4f74957f69..6cefaddc1120 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -27472,7 +27472,7 @@ F:	Documentation/driver-api/coco/
+>   F:	Documentation/driver-api/pci/tsm.rst
+>   F:	Documentation/netlink/specs/device-evidence.yaml
+>   F:	drivers/base/*evidence*
+> -F:	drivers/pci/tsm.c
+> +F:	drivers/pci/tsm/
+>   F:	drivers/virt/coco/guest/
+>   F:	include/uapi/linux/device-evidence.h
+>   F:	include/linux/device/evidence.h
+
+-- 
+Alexey
 
