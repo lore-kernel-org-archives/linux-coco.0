@@ -1,100 +1,102 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8A928643A
-	for <linux-coco@lists.linux.dev>; Thu,  9 Jul 2026 13:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EB33876B3
+	for <linux-coco@lists.linux.dev>; Thu,  9 Jul 2026 18:13:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783604166; cv=none; b=KBc796GR6szTmma9E8trnYBkNeCymqhd/k1msX9TZhWAdvwldHbS3xCdBZisOsvF9toJccnKjavkI1ojYfM4eejKf2U+xsfzOSHSVrz+Qkh55M32yBjxjw4vsD7b7NZIDWaH3Ty0PBlNNxtzGrWQE43TAxaCrXOX0z0mfh91ibI=
+	t=1783620819; cv=none; b=PB6Ptc2l8y41+y8j7AouGOOb72X7k3QoQD6M8/pq305coDXDqPSa8yfQrfZoJbFXc7CGy6LwFhMI0tIy+BSwPd2UiI4aKEnfovY5raT2oRV7B905fs4ViVAMP8DfubZ3PPgb2NDBRsfHi46665SYoexW6fh42GOr49O7WYqiOhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783604166; c=relaxed/simple;
-	bh=XY1DtExPK+vBehOtMz1hd26l+uA8hk3yO9vu4Vb4+DE=;
+	s=arc-20240116; t=1783620819; c=relaxed/simple;
+	bh=bvUrlGSFk5YOKRSganZsEuUYcVv+Ux1auqFKnDwJzG8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AJa9y4oEwunKJEgT+zgXI2JsC1WNN1ZDtfbv0Mw6AMgpPmu+FOej8TA26fY2OBGxcZASfmKLC3vLeNBaiagMFuhe2w73SGd0PIdNCfK9hJBAHJ2TEk7EtnIX8hHxdqbgjVN/DwKbQNj61nsHGdFime1IshUlVw8FxggASOKYSxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=T54XWtj+; arc=none smtp.client-ip=209.85.160.172
+	 Content-Type:Content-Disposition:In-Reply-To; b=jMzI/9frZMnSE9vzpTTes6bQUrpTljXlBvwJZMcEX333M/v0/8kpPArIaywzYI4OITy88mMSw/kKJTK7FMRUCzqettzCCnFIIsCKGfPph+Nv4w01gurvFKCDLrPrddIbiT5UuaXRd3IPItBrBzVbQlO34sU8VtZBHuF9Q+emO8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=W30nxUWe; arc=none smtp.client-ip=209.85.219.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="T54XWtj+"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51bf2479349so5597521cf.2
-        for <linux-coco@lists.linux.dev>; Thu, 09 Jul 2026 06:36:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="W30nxUWe"
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8ff20870ac7so1877396d6.1
+        for <linux-coco@lists.linux.dev>; Thu, 09 Jul 2026 11:13:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1783604163; x=1784208963; darn=lists.linux.dev;
+        d=ziepe.ca; s=google; t=1783620817; x=1784225617; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Wb9mS3uu6ir3/OS2ifAG+bggBvdExzW9AcfbPUafx3M=;
-        b=T54XWtj+Eigiw3Lsgp2ttbeGP+aK35BeKsVQdUbS3++n7drvsbXtroYqOcA3R6ce6A
-         p+BDV52dYXnEF/08vPoL/blqhj/D5ptL2pXTrN1YyAHrwcTtnYduMDStqz6wMRoH1tF7
-         XpxOSoljKkiDy3cpi7AAi/dNmloE1dQ7hUaaOT+XjIYKvkysPakJIU9kNiI376rQ/w7v
-         dkSpKRrqVFtVpDX5A1/uvbWjSBldeq1NNaeWQJRf/eBUXB+gxKLc/pJBPugkYHYm2Z4x
-         VJioPOjJm/JKLMexENhT1u+qkIWAcbBTIDpndpHzab3kA66ea8RyL/kpIgRxpR63sNxR
-         BnHQ==
+        bh=cHkQmsdB2OewXXEQfHxageXwJQg6EnEw6Gurdq9kErI=;
+        b=W30nxUWesP6diPPmP3mg9MWKyOJiRr9vt4sLrFXlitBqiyqZMRgJ67HJTI7rGFymnp
+         Jt29jaO/+dWLLQ8FFefyzDtY/jBnAETJ7I6GtPenFl6QYpwj6vM2cYTbMWkN5EF69+G4
+         oJs/J/ucDfbyUc2nYJF4BpVR7hkwqKw1kV/K+5virlKijE4OPTBxHGdOJtQ97+wH0EHH
+         722GqxAox1Dblv/+O68I5QXQ//Xz/7+4LiWget/D/6S7xI3mT9PO5/iRd3WuYPC7ZEwV
+         g8BHlgKiMEafksKMpp6uFPKJZkZrLEYbaP/nPOdrdC65MhepWB9yEbtr+ZANqAB4xp6v
+         xTuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783604163; x=1784208963;
+        d=1e100.net; s=20251104; t=1783620817; x=1784225617;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Wb9mS3uu6ir3/OS2ifAG+bggBvdExzW9AcfbPUafx3M=;
-        b=qgxoVQxw8C08qAtCBzH/lcBU/t6NOeKqgKUPbOr+wzFmnPSuKHpW9tQma/ouGygf5P
-         mBOd0jMM1eREED8dZeTpSkM/0GTNPgKjRnn45uB/QYyuDJvdzQzwZCNPpN7iFETD+5XZ
-         BZ+d/izc53U0BFLyoG0TOQ7GM9Qb/2padpLxe8OFOH6pDBcqer8p05dPpDyQvviaN4BL
-         DN+J7mtjAgApw3z6J85dlVVtSk8psWFOp+TPJZ8RPsr1OPgg5ff66+9SwwHC6c5vWCxi
-         IhTEl3aPc3ZZhH5A82ldPn295uXCjvutrG+ADwvk6ag0nsfzg23qMibHiML56JIWuzaL
-         xXgw==
-X-Gm-Message-State: AOJu0YwD7SD0haqZLt0zaPGzR1Y/PYT+P3sYvVqLjOCgKhsCdcni04ki
-	LsYLx7Lwez1p9Z8ntyG31elo0o8TaFU0b9ZBLjGNl6SThTyPWXWUQzQzxhTFr4pNkTY=
-X-Gm-Gg: AfdE7ckGlh/3A04W4+DEZL2LerNo4Tfm9Cv96GGDLvMS7/ONyeEtrmt8qY9uYJ0vSbq
-	2/Ci3Z6YcgEcVbyxNADU9wKnobLoTVJgt/u7EoW0HJQvLJ2tlgC5MgCErpwHQNBCitLTMM7JI2w
-	3LqNQn/fHB5jMVT+UZSXh9JN9fWZp402l1yw6/o9QdMdCuAQgq9Lml+l/Dsxntk/7/zcJfO/tFv
-	RsZmAF9VH5Od3U32UgnpIuNOev3zIax7BvEy9wUIjz9yK4TEL7Ued0405vAiNeyRW1YgsGWipBw
-	ezHOGizNCYN95bXPMdiBP5aABTVt5Q4TMlQE9VdjRZQxuGjtsaAuaPFDislNLP/143TY7WnUHqu
-	AB9+YUD26sMLt23T3mRxjyxH+tenR19qzrxt87ZKR/tF9RCosP/STTfWoignc
-X-Received: by 2002:a05:622a:2308:b0:51c:1a9b:fa0b with SMTP id d75a77b69052e-51c8b403c59mr77399961cf.10.1783604163246;
-        Thu, 09 Jul 2026 06:36:03 -0700 (PDT)
+        bh=cHkQmsdB2OewXXEQfHxageXwJQg6EnEw6Gurdq9kErI=;
+        b=DGOSHbFL1hzj0/JxG2Xz4i4+/uTQvXh1Z3RzxkN9ks2E0vrs/zExX0zFfY6VLBCtjv
+         6djyzyhQlQiLdiSnnwFVl2UzsULDP7J0pviNgmyxPapmMQ4UQontx5aOxa+7Z+A/HEgN
+         YZGlu8xdS7dCpn2LkORGmEtpntGNXDJZOn6qeurt9uoAmCmpfCm+jGzbYrFKepJ1nrU3
+         DDG9El1coXWezLOaDXcHW1xdbaZwBzzjQotnsezzJrtbT70flskXj6xwReI1Q4jkRw8G
+         H2uyh4dRO4dtYD3EfGQu2beEEsjZPv0aHF4fLkQhAS/MziLy8WF+X53egJBorGMT47m0
+         mM1Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrWirIVgWJCK4lLaUeIK3ZwUJOWdhRzzbABr3bHEAjSkvQoR/H0uCkecypjd7foQR58PG25ULfrB+ZI@lists.linux.dev
+X-Gm-Message-State: AOJu0YwXkiD/d7b1r2GGIVM04bDnVnTe4u6KJPRA1+ZjZUkUrUWc4Zxm
+	ZvYyJ1axQGbgL98NHRE2z/PI4Mn9AMkYi5Y7qdddW2KKYC1sKCV3CbHbmAF1qkdogfI=
+X-Gm-Gg: AfdE7cmsl/RXiiWZr4vtOSHDIjfF9gsE+vwS+bfOZ0M7ag6Ru7H0EI4NWU7UQHfraFS
+	22WevIpzccBmT/uGjAJOJdBeVzGX5J6CvrPb40pcNV/NvBxVwW1mVO6kY0JXfV5FIC+97wQ9gcG
+	wav+hbgUR4sCtIRUB0H+pfPS1gvJqsgJ3Ge9vlaxq2EVtrq/erWOKnQyIhK8JLdu4JPHYNHtlxr
+	mioRNPXSga8iVNplwJwOgNFWC/zGKZhZ3xOAbjLdGqac/J/bY263/zsukR0TDisc8nJ5riP20mx
+	MbItbplBY2/pCdMVB6UguB/SEQa0xEJct4nFCILkdiXIXbGoJuUpjosIHWBboD0eTfN3GVUAQPE
+	xhv9GtB1iG7KZdo1FS01/ApL4pN/tDPfRcVGzWjiu6pZ7TKjEB/maOw4xSzja
+X-Received: by 2002:ac8:690c:0:b0:51c:43d8:8604 with SMTP id d75a77b69052e-51c8b3b4eb1mr92527611cf.51.1783620817365;
+        Thu, 09 Jul 2026 11:13:37 -0700 (PDT)
 Received: from ziepe.ca ([159.2.72.92])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c41f1ee58sm155910441cf.29.2026.07.09.06.36.02
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd82ea9casm22695666d6.42.2026.07.09.11.13.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 06:36:02 -0700 (PDT)
+        Thu, 09 Jul 2026 11:13:36 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1whov3-00000004tQU-3mqL;
-	Thu, 09 Jul 2026 10:36:01 -0300
-Date: Thu, 9 Jul 2026 10:36:01 -0300
+	id 1whtFg-00000005Kqr-0IQc;
+	Thu, 09 Jul 2026 15:13:36 -0300
+Date: Thu, 9 Jul 2026 15:13:36 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Dan Williams (nvidia)" <djbw@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	driver-core@lists.linux.dev, ankita@nvidia.com,
-	Aaron Tomlin <atomlin@atomlin.com>,
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
 	Alexey Kardashevskiy <aik@amd.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>, Petr Pavlu <petr.pavlu@suse.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security
- Protocol (TDISP)
-Message-ID: <20260709133601.GJ118978@ziepe.ca>
-References: <20260705220819.2472765-1-djbw@kernel.org>
- <20260706125140.GB107792@ziepe.ca>
- <6a4c163072c60_174db6100c4@djbw-dev.notmuch>
- <20260707124321.GF118978@ziepe.ca>
- <6a4d95fcc92c2_2f05d5100f7@djbw-dev.notmuch>
- <20260708143153.GH118978@ziepe.ca>
- <6a4f0b35683b4_353c8910011@djbw-dev.notmuch>
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
+	Jiri Pirko <jiri@nvidia.com>, Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v7 16/22] dma-direct: make dma_direct_map_phys() honor
+ DMA_ATTR_CC_SHARED
+Message-ID: <20260709181336.GM118978@ziepe.ca>
+References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
+ <20260701054926.825925-17-aneesh.kumar@kernel.org>
+ <ak42F240d-53QeFN@arm.com>
+ <yq5apl0xgy89.fsf@kernel.org>
+ <ak-CT3oanlDfgTy4@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -103,111 +105,37 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6a4f0b35683b4_353c8910011@djbw-dev.notmuch>
+In-Reply-To: <ak-CT3oanlDfgTy4@arm.com>
 
-On Wed, Jul 08, 2026 at 07:45:09PM -0700, Dan Williams (nvidia) wrote:
-> > force_dma_unencrypted() does not *prevent* device access to private
-> > memory and provides no security properties on its own. It's only
-> > purpose is to inform the DMA API what the HW restrictions are for
-> > doing DMA.
-> 
-> Right, to be clear, this mode's security properties come from never
-> asking the TSM to enable private DMA while the device is in RUN.
-
-Ok, that's a twist I hadn't thought about. I don't see a reason to
-support a driver probed with RUN but T=1 DMA disabled by the TSM.
-
-Still, if we do this, I think having the TSM deal with it is probably
-better than making a cross product of the trust level, something like:
-
- echo only-shared-dma > $pdev/tsm/accept
-
-So maybe accept should be tweaked:
-
- echo full > $pdev/tsm/accept
-
-? It doesn't matter much
-
-> > > echo 1 > $pdev/tsm/accept
+On Thu, Jul 09, 2026 at 12:13:19PM +0100, Catalin Marinas wrote:
+> > > For AMD/SME, on host with memory encryption we now end up setting the C
+> > > bit for DMA_ATTR_MMIO. This is fine for RAM but not sure whether
+> > > some other MMIO bus understands this attribute. Maybe we should stick to
+> > > something like __phys_to_dma() for the !CC_SHARED && MMIO path. Or,
+> > > since this is not universally defined, just use the old dma_addr = phys
+> > > if MMIO and ignore any unlikely DMA offsets.
+> > >
 > > 
-> > And now it is RUN. So I don't see the issue with enabling DMA at the
-> > same time as gonig to RUN? (though defering it to driver probe would
-> > be a very nice touch as well)
-> 
-> It requires "accept" to consider the trust level. E.g. what does it mean
-> to do something like change requirements after accept?
-
-> echo full $pdev/trust
-> echo 1 > $pdev/tsm/accept
-> echo adversary > $pdev/trust
-
-> In that scenario this now adversary device may have been allowed to
-> operate without an enforcing vIOMMU, and needs to unlock the device to
-> correct that.
-
-If accept enables DMA then it is up to userspace to ensure all policy
-objectives are met before accepting, not after.
-
-I think the statement kernel makes to userspace is the moment it
-writes trust or accept the kernel is free to take action on it. ie
-don't write a trust or accept until you mean it.
-
-> > > There are also buses and paravisors that may know that private-DMA is
-> > > enabled for a device by construction. In that case it is also a "trusted
-> > > to access" signal, and not a "required to access" signal.
+> > Considering for AMD/SME system an unencrypted dma addr is one without C
+> > bit, will this be good?
 > > 
-> > In this case they wire force_dma_unencrypted()=false.
+> > 	/*
+> > 	 * For host memory encryption and device requiring unencrypted DMA,
+> > 	 * MMIO memory is treated as shared by default.
+> > 	 */
+> > 	if (attrs & DMA_ATTR_MMIO) {
+> > 		if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT) || force_dma_unencrypted(dev))
+> > 			attrs |= DMA_ATTR_CC_SHARED;
+> > 	}
 > 
-> Yeah, I just need a scheme where modular bus providers do not end up
-> compromising the private / unexported method of changing the flag that
-> force_dma_unencrypted() consumes.
+> Yes, I think it does the trick, preserves the current semantics for AMD.
+> I guess you could use a single 'if' for all checks (up to you).
 
-Yeah, the bus and TSM really have to control this property, it is like
-the other DMA attributes (eg dma seg boundary, etc)
-
-> > At least if we omit the double check it can be fairly easy to add in
-> > later if it really was needed for some time of use reason.
-> 
-> As long as IOMMU presence can be enumerated prior to acceptance, T=1
-> always includes private DMA, and the T=1 status is tracked independent
-> of the trust level then yes, the cross product can be avoided.
-
-Ok. iommu has to be setup the moment the struct device is created, it
-can't add on later. I *think* the iommu related sysfs ordering is done
-properly before any uevents, but I haven't validated that.
-
-> 'struct device' grows some "request" policy for trust and T=1 that can
-> be changed by modules etc. 'struct device_private' grows the operational
-> trust level stable under device_lock() and a new flag to reflect T=1.
-
-I guess
- - The active trust level should be RO visible to the driver, iommu, etc
-   It should be stable under a bound driver
-
- - The "dma require unencrypted" property needs to RO visible to the
-   DMA API and stable under a bound driver. This would input where
-   force_dma_unecrpyted() is in the flow [the name should align with
-   all the other per-device DMA API specific properties like seg
-   limit, boundary, mask, etc]
-
- - The requested trust policy should be internal to the driver core and
-   be converted to the active trust level right before probe
-
- - We should have ways to enable/disable all DMA before/after probe,
-   including both TSM and IOMMU approaches
-
-Broadly all busses get some way to convert the requested trust policy
-to the active trust level (eg by mixing in ACPI, etc, etc)
-
-All busses get some way to set the "dma require unencrypted" property
-
-IOMMU and drivers should be sensitive to the trust level
-
-TSM is sensitive to accept, not the trust level
-
-Userspace must ensure any security policy is met before accepting or
-binding.
-
-??
+Please don't change it, MMIO P2P is broken on CC systems today and it
+should stay broken. Passing DMA_ATTR_MMIO with DMA_ATTR_CC_SHARED is
+an error that we need to correct in the drivers not make work in the
+core code.
 
 Jason
+
+ 
