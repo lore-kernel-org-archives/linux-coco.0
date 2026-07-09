@@ -1,102 +1,67 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011038.outbound.protection.outlook.com [52.101.62.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A5D29DB64
-	for <linux-coco@lists.linux.dev>; Thu,  9 Jul 2026 07:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F742394798;
+	Thu,  9 Jul 2026 07:38:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.38
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783581477; cv=fail; b=b9sRm05JJnqV7KUixGlE8KoCzwIt8DGjzFfcAki2ONaqvCW/izT8+n2PfoO9xJVY2UJPdmR+H4IV8zHH8juYi7b6j8Hm3xWlbr8wWyAGLk5YsDFYWfloMMtolo5+piR88UTH8mKeA6lxGqqbuk9MgWds152jCQeAstjmJYcK8No=
+	t=1783582705; cv=fail; b=N6Nb1Iwlfv3H6kNHERa6Kgvy3KZfgTLW9Kv2uT3F15fa4Xl2l+Ghi0T1+CjHBViHSu66plXzvI8sIPpOW5tZgVN1384n+vKF38EcQ4mypNZ0AJcrtD2BpJgHdQFWSuXyseFGa6JtpqoqaKr8bqBSaC1n/sG6v8VkNRH4HQnxcyo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783581477; c=relaxed/simple;
-	bh=/VIK0Hz5IVFkp98Dkt5FvmpIYbSFN4IpWmY/vGUQ9zE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=uRW8XbCr73suG2mS3rxq7bUQdEbmXdvhYJj5IFn6kkgVCX+XjjRY5TmFcnvOg1tFuNSGbcgNNiECYmE/qIXvPNW89feCkOPM0+R8q9kiBOT7Eb3N2ldadv7tKMZga6TSXOQH17FyRJcFmjXizuViq/9g0cu1awhFph0pYXpBDhE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cBVNbYNh; arc=fail smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1783582705; c=relaxed/simple;
+	bh=DKsqJete20SBdBFV0zTJMdW14Ygf+J/enWoy49pxvcw=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=OTb30kdB4NePnQVZqG81r9zsfXbGZd+NZTuxC+ZOVEIewJQXtUTlS2EA11ipT3lNRG47aghjUKyRYp9wnbARVYDtt1VgVVoU36ddpGzXWQ1INAkJBFL2yQA/NbGp+mVesYxQ95WNtuxJD0wMBSwzIux4OStNs4BACNQ3j6yxKN4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2W35hj8H; arc=fail smtp.client-ip=52.101.62.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cBVNbYNh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783581475; x=1815117475;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=/VIK0Hz5IVFkp98Dkt5FvmpIYbSFN4IpWmY/vGUQ9zE=;
-  b=cBVNbYNhrSDC3UiebhG/Bus40iAB1k/LVGdDYDZj8K6V7wB1xevx6RRb
-   fSgv7HOp+u2Ij4Vy8qRK7iD0C5QSeIN8PKl1dd9l/I18mugAcuaIsJzNm
-   iUOp2LGZVWUTiRPxmhg5ymvpzitNe4JV9aytvRiRc6NF4Q7NteGeN+Mvq
-   OKyFI/byMohOXtBW9Ejc6N8In2SSGOgz4tfTMSic1OSZ9LsiPXrddeSDG
-   Mlo7tgleWsZ9qgRZpxdTNlMxloqNv1Uw47aFKnJ65mpRQfzVSXnlXEY+r
-   MNbXCu2S1/btqQk+wayBOYbDj4rb2qXJ0Y7yYSc9be5iDMmHdxn3eGnQL
-   A==;
-X-CSE-ConnectionGUID: xBGjxrDIRla7wOpndLs91g==
-X-CSE-MsgGUID: x4BiUpYJSLaDawz/ZM76Gw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="88170134"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="88170134"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 00:17:54 -0700
-X-CSE-ConnectionGUID: 7+FSGkP9TNSbZncEfpPqbg==
-X-CSE-MsgGUID: f+bcBInqQMa8cpfLB8LSkw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="292697432"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 00:17:53 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 9 Jul 2026 00:17:52 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Thu, 9 Jul 2026 00:17:52 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.48) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 9 Jul 2026 00:17:51 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2W35hj8H"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x9NDf6sANd+qyMojahhIaBCigTWqRgy+ua/sFTiMkGUYsa+WO5WcU3H5nYiS+Fxy9ZizsaufQq52JUVP7oCiv5nWSen3RZ0jMgInMojh8jbssfAn6q8560xfG99ZPzHFGUnp/ivKDasFMdpUckUhKswfsa0A9VVuBS+5jtIvwumzxK1Vg+48SiLzyhmTbZPbH5m9e/SwRiromWjEatPpP/BHHGuFW+fA/h1zFNYbS9YkG9UhCXnHQ6Fd658Oba3Du2SO7hPg9DAdQ28ktIpbS4BtIMzcfV1gP7v+7i4bTXf90qZZLdOwFyv4gnOtpubrRVmOCx66izuMfJaMMFjkPw==
+ b=up0X+76aEbb9vZWLh9B60Ku2802xpZkoRg0dc4VJm3deNZcAIBnQ4L3Crny11hctJwgmfKnJt1BP282zgnUablbQILsqvVY0xNnUoCLlFVlLK8dlOVLoe78ax5/Bny47/XGHvsIqJtKLLpP7UFvd40TXJYFkzlMYz4UTAlxFXJBK9scKPK0mDejRersDUdmUWcA6EYb+qYYwMVS705CJ5n4rgoUhv9j+kk41hmRoLYcUsnFURtsL+f43BYaumvnIKlr6aUdm6jn89l2pqNtrLYAuF50RAINW7um2sk+420VMoAnYxOociUU2iyL/0fQ48evFLcIscKlju1E5SwBM8w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MQT6m8GwHmIc75IQSlxSQXulgbAnIghJTGbHa+p8D00=;
- b=BJ7MnGpC6pEk39qFLzPQxQE4pcsc+JsJyPfpzdC9cRrW0B/5P+MxEN59zeY6utWptCrzFh4MrUpFODcnvj6JudFBzqPEZgSzZMV2Trvem/tFNfkk8rJVwTtDXu46Eio2m+ZCQ/sl5MUQ14w6xolHldKyYKKaOLXMTb/tjJVUKGBDz83n3bBaWsHAXtKLzsg5SrMU+C3d3/8JSFwoosqQSqN+oUkfP0LsKnigshxhx9rFMTy5wPq13t2BrjNXdoCbwWs9gmDdJDLhgjeeWdBNpNkMZRBmUC1DHVXou3MeaiLtIYTfMtYaA4oYCgoXnhv5Gj5OUAKwL0QjKNWbNhVgjw==
+ bh=gfFD3jS0yzGNyr8yYjFvAeCEYNB7Cq+Ruhb4pth53Ps=;
+ b=dAxNUJqbwyAEN475z3qGX8fZJUa6xiK+UtNlJpHJknM4LabhPvF51OYC2FMB2rdzzhhS+nvzIlUuEmJ7LXt4+NDalLN2IeVNbQk/51aaoVNjG8grHGQILv/+bREEoHv3DAqXrQZAjClkQ7YKGgJssTnb0R1QTFFkSnsfpTYbBVZEqJCUFNE95G98Xp1zHNXZ49r01xMLQxRuuFklb2d7GPBQbID8N6Elj9n7SOpgtf9kBLbL/mwJQZG56bOWl6VT5irdG8A9uzLOs8KPommm6NmSNHHqkmAlmLB5DoJRQuel9dJ/FbIQqb6ll0Y/rAdj1cAsmoc/LSQ6aQgXQaPPnQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gfFD3jS0yzGNyr8yYjFvAeCEYNB7Cq+Ruhb4pth53Ps=;
+ b=2W35hj8HjtyTvHJPau6XV7Gr1Wh6uLyxaTolo4GNS6iXKQb22/O4IWRoZc5n7KKVzoBKtG9yICOFHdCWRzidGZYYo3fmeeZKBIY7ase3acbjusjZUIhKodvj/YH52x8FBqCKS2GwjlStb6b54rCFmrquTcyEefL6nfOAUxhcxY0=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
- by MW4PR11MB5776.namprd11.prod.outlook.com (2603:10b6:303:183::9) with
- Microsoft SMTP Server (version=TLS1_2,
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10) by MW4PR12MB6804.namprd12.prod.outlook.com
+ (2603:10b6:303:20d::16) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Thu, 9 Jul 2026
- 07:17:42 +0000
-Received: from PH0PR11MB7472.namprd11.prod.outlook.com
- ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
- ([fe80::1bad:44dd:4e60:6475%5]) with mapi id 15.21.0181.014; Thu, 9 Jul 2026
- 07:17:42 +0000
-Date: Thu, 9 Jul 2026 15:17:34 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-CC: <bp@alien8.de>, <dave.hansen@intel.com>, <hpa@zytor.com>,
-	<kas@kernel.org>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<mingo@redhat.com>, <nik.borisov@suse.com>, <pbonzini@redhat.com>,
-	<seanjc@google.com>, <tglx@kernel.org>, <vannapurve@google.com>,
-	<x86@kernel.org>, <chao.gao@intel.com>, <kai.huang@intel.com>
-Subject: Re: [PATCH v6 08/11] x86/tdx: Add APIs to support Dynamic PAMT ops
- from KVM's fault path
-Message-ID: <ak9LDmWBIp52wv4X@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
- <20260526023515.288829-9-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260526023515.288829-9-rick.p.edgecombe@intel.com>
-X-ClientProxiedBy: SI2PR01CA0024.apcprd01.prod.exchangelabs.com
- (2603:1096:4:192::20) To PH0PR11MB7472.namprd11.prod.outlook.com
- (2603:10b6:510:28c::12)
+ 07:38:19 +0000
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3%4]) with mapi id 15.21.0181.009; Thu, 9 Jul 2026
+ 07:38:19 +0000
+Message-ID: <39809986-74dd-476f-ba61-a0a9187862d5@amd.com>
+Date: Thu, 9 Jul 2026 17:38:14 +1000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 13/15] PCI, device core: Add private memory access for
+ DEVICE_TRUST_TCB
+From: Alexey Kardashevskiy <aik@amd.com>
+To: Dan Williams <djbw@kernel.org>, linux-coco@lists.linux.dev
+Cc: linux-pci@vger.kernel.org, driver-core@lists.linux.dev,
+ ankita@nvidia.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Dexuan Cui <decui@microsoft.com>
+References: <20260705220819.2472765-1-djbw@kernel.org>
+ <20260705220819.2472765-14-djbw@kernel.org>
+ <f8b5b966-ea36-4b4a-a9f5-58a20855a6fb@amd.com>
+Content-Language: en-US
+In-Reply-To: <f8b5b966-ea36-4b4a-a9f5-58a20855a6fb@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SY8P300CA0001.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:29d::31) To SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -104,140 +69,210 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|MW4PR11MB5776:EE_
-X-MS-Office365-Filtering-Correlation-Id: d64da262-7683-48be-78d1-08dedd8a2a7b
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|MW4PR12MB6804:EE_
+X-MS-Office365-Filtering-Correlation-Id: e16bb370-c801-4c0a-ff6f-08dedd8d0c0c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|4143699003|18002099003|56012099006|11063799006|22082099003;
-X-Microsoft-Antispam-Message-Info: y6GxbrEIPJaWbeHtFO+ek5JkylY0TD1YfHHj+1NTwF9DlaJGJZLngtOiZcekhjW3hIiztz6VplXtR4rEblTYUmklrJI7sJLoIfqXdJz0vt7yHEUxq83M7FY5wjHXSdpJyLNlVVydGea6qHNu88zHoMsrZ5A/oYNxuNucZFlonWNamsSXZVZaVu7d4Z6KMJb/z0cM7P3lFLk+8Z7v45LzCwrejT/16Ti/i6DBPr6O3IyUpZbd1lHgoJl6yoDtm2gg1IR5QPge7Tfli8H1FFtkwg81iyj6AA+TnwsmTZh6ha06PrQYzmPNi1E14m4R7TVuFfj1iPqicTSpG3FFDUmG0R4Zi8SzM59JtXKYuvhhm4+e2Mmil6YvRO5iU5GVK3UWKV7+ZgXXUpvJ/TLlh4AzDBEJAim5v3oj0ZtXei3MvhASeLl2QV9W5N81QCq1LS5HxJ06ursZedxnDtLjPLiUiGaZ7DASTYmmwa9JSU81y0zPvVLx8kge8uHFSthKk/Rn1R0jqrrvS99BPeUaQ/i2vi9oY3+0rNvltFGHHrn2oLDURCQd5xaSbl8ryM1qzvU4ot8KG6AmmjlnzOky36gtIq8wCFkkUsS9vmKW971zKxuRK2ebPTVd/DbMIMcY1vmm
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(4143699003)(18002099003)(56012099006)(11063799006)(22082099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|376014|7416014|1800799024|18002099003|22082099003|6133799003|11063799006|4143699003|56012099006|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	8xf8UVgC7AjkNU0ZNi4zVUcPbZ7JGSptYkaU/xdWMpJziKRh9WjMhy62vczvduCBbxf2jHPtBk79wZWIeAA2mXVIbGGMZQkznHo0R9Vf4NgMfbXf9c0bl7naJaW1CH/tqIxRW5Q3ypWsReAk5K3dCmngXxm/l85Y8GEDU2xOpl97CIKEcfDy7kBa0IskEI1TKDVjQUnqG32a/c/gAJ1oQpBLKAlViMc6TjpGcRazmgqxPNp1C8uLbfmVHiWoVmUUyWa6sbfgXmB9wFhRrSr6aYTOex+RbcPCKw7B0975brBe6gKew/YrzDoON+OYzxJGsADhvHXQt3YQ0ciN+oVqYLpocrCHnD54pvX4SMT2G2gwqsABj4H3CBnlLbVJe2BC7PXgLnSLiWL3hm0qdLyyezIWJVtM8PWZK66aNWQ3WYkGFEDwERbZu4NnzFiI3+J0sW3Lb8+110kvd18Y02f/0ESJTSDSha61LXgtFj7XiUg/PBdWX89EuoyHFNL2C+14bgnrNOOokEgOoJ9ztUJzs14V5XsWeSzodZSXt5iRa65/ZV+rYQbMHIp5ONjJPjEiZW0LyLxR+sL7tBR6hpi4x+NNS8fRLMlTDpekV+q3OQVUpmPNDEOutsNiKNW1Aky0pED6l9lKNHqDKan4XAJ2kaA+TYwT3ZIzCCbFZ2IaKqM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(6133799003)(11063799006)(4143699003)(56012099006)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?AJwjskJFU8siFwGL1/8U6YIDBRO4l9HZn7yol92aoTrhhT+PnwRP70WgyHux?=
- =?us-ascii?Q?50D77AFnFGj+nEmHj3eqhZSyd36ksoUPkSDtMwDpHeN/NS7C3SZzpD2u0WWj?=
- =?us-ascii?Q?pSInmuyrjeJWXvGfrIW55Z6cQmeLT2RrQ49AYdP6ctagc42OsG8/r8QzYlBM?=
- =?us-ascii?Q?mPgV8zhw6kBO5zt0gbL9WhXckBRRLAE4HbbF/tJUxM/Q/Z/+5AdnvpkV/aMx?=
- =?us-ascii?Q?ZlNdD9+IJiKy3INk1uqbfZ+zfvSrjqclpfaaPlBwQp/gD7N6DK3Ynj99GJIo?=
- =?us-ascii?Q?0+ydB+XXQZLvugK3ohBly5CSRTbeSVXwioTK4JTv3c+4LkLQqQZX1fFhAxbs?=
- =?us-ascii?Q?uGQwrXIjYO2noOz3eitrEqZ9nBHa2w5hfd6SohUsD9YCz8YK+vaTSdYMdyqj?=
- =?us-ascii?Q?v6CcmvQXVCSYer2Db87E0rmadmu9k2y1rjp43AZqNmI2eciEM0+6p1P1ENT/?=
- =?us-ascii?Q?4a2HOzzpnbOJofxjKaLy09tUE+oiyLBINHxg4CzCf7tmB8ms3/YZ3O5aAGTm?=
- =?us-ascii?Q?VSdHdh1pF6EiHosR+jRiz+mxPCZa1JQW2pxSJwbDPiWl6HOco+bC2R5a3Rhx?=
- =?us-ascii?Q?+88aMf2hlnvYclFYvuvmu0VfgyTz7RWfCiKxd+G+VwUUfGH0j9D562yOXDq5?=
- =?us-ascii?Q?etIoPwLOYckh+6Kfdaxv2nIc4tFL6A/EbYfxjcXTlaTQuHygW6FWtqy3OJ70?=
- =?us-ascii?Q?I0KdKabseBrk8g67Po9WQNI9NBORm+CYhqqTgBd5JPP1uFqJz187qZFMTgDR?=
- =?us-ascii?Q?8TRgMa2Hn3lPw6NSahH18BZYpK3jluVq6i8RBL9yupQZxuDe5MIcGwtYsNXg?=
- =?us-ascii?Q?D0IHbAa4XLnfKiKZa5Wc+x6INaZYg0+dueXqqUnnPYFAAOKvgvIXEGiYvg+j?=
- =?us-ascii?Q?1COglZegM0CA4IcrfFX4MWj+gdnlOYn16TIN54klNcHipqd+8YezuiUEcHan?=
- =?us-ascii?Q?obBYEB4dkGPkXXyUVYwzD9TCuQ1ZlQfFriY5sJcoX+BZstbBLERU69ivKwKP?=
- =?us-ascii?Q?IExfLQ0JbXbCLrWiwSe11jIr0kLW+sEJ5CBD8R9z1egCspb+hnLLVzzpdi6y?=
- =?us-ascii?Q?CDVLrVhegr/E6TjagXCqilzq4hRhOb52wr4fD8nMyk/uwu5oQ8WkwfBcFCMZ?=
- =?us-ascii?Q?z709iz+Z4520eR2lzQZIHAxJBHEq/PQUK+w+rm//Qko/9IXNbuhl2KJyJiGq?=
- =?us-ascii?Q?wSWvzbAp/Ff9cZyvAu9DVHk5KJXF2xL3mtj19eEyuj5KfQ1pEqNjF7aFLXug?=
- =?us-ascii?Q?x+Di68LUMZ3xBsANppTdqy7NICIDC3VSkm6jkreRJg0BNi+mBO//6kWcTWRc?=
- =?us-ascii?Q?fxE9hdR3gEkcQkdjbK0WKCTinR7sCO5u0r6iSY/Myjlg44JVuhLNArJc7nWZ?=
- =?us-ascii?Q?4rcqdFkNssfI1EjN7yUIzjRRIQlXAd3zD90lgwTvncLWcMqKEODsjzT1x8zm?=
- =?us-ascii?Q?rMqD6U7XoouW5BbvlUEODdDdP4eS0B8RPTVTVe0lFnf0z6j15qoYWwDVMD7j?=
- =?us-ascii?Q?MfwrEkVMf2uF9+TFAUCDIXbORDTKh8Cc4QVdn+0Dx0buC0F3P4b7I1yM+ji3?=
- =?us-ascii?Q?j7SAxzltdS+zp2EfBJRz82PRx7Grks1wMC+1P2kz37IwKQXwgktehpuK9U2M?=
- =?us-ascii?Q?sGSV4JJmQLP2HTRmV3rHnqnLc4PXLwHIF6l3Dn+D1o2Eqj+NrH3j7WN8fAUw?=
- =?us-ascii?Q?22fNRagSQOQr2dv3J5ZdfXubdcpLvXPJ3LHI4Lk2iqhje3h56r0ikMvAmrhi?=
- =?us-ascii?Q?yLgl9tCGTQ=3D=3D?=
-X-Exchange-RoutingPolicyChecked: Bwgo/4j+lX/RenuSE3g4G5gDLF3JSYeTDOnokuM2a6RYg5rJzeqe7/EUkb0763Hm7lhi7j5FWnVBw3adracpmifMc+ecwsiB53w9twGKcig2UXfkssCvkRqv75xLngokM2KeMN0ndzc2mIpjDX8hutzl+7wSTNWG2csMXEmFtFzeN63q4wBlw2q15Aye+ccgjiCjLG++v9LrZAWhE9NnIZGYNY3pVlvMSDnxmIZxzdg32GzUc9SXJMBuj2Z7rN0zLvDHQYkLkJlp09fTph39kyTV9xlTq36Jm0rBwUAZ4DcrWNS/w8mE5QQa8C+1g3wtrw8mw8sTs8o7UG740u3fZA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: d64da262-7683-48be-78d1-08dedd8a2a7b
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7472.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WVB2UWZKeTRyckJlTytHNGIydzgydmZYcU1tNmlxQ3ViOEdGdnZnRG1hZUU4?=
+ =?utf-8?B?VnIxOVo5N3ZMVUtncW9MdjdzVW1rdnNMei9KN09YemcvenBvTGl6VTdJYzlT?=
+ =?utf-8?B?Y2pHME9pd1VwWXJRQUlnNjNScWF6RWJwaWh1VE5JaVRSTWdHaHNNNFg0a2lR?=
+ =?utf-8?B?eDJZNVp4eldVZVljSVBmYWpsdmcrbHJOR2lwdjU0Ni9NdGkxcDJOTDRrTitC?=
+ =?utf-8?B?VnVUTXBBeExlODJMSXBzVVU1V2VxNWc2NnJ3WFdMeUZVVEJ6aFIrYUhndDFK?=
+ =?utf-8?B?Qk1QZ0VPTU11SUVjYVA4RzJrWjI0eEVpd0ZFVXczYjNTbEpPZDhsSkdsUVJC?=
+ =?utf-8?B?MWxzY2NNY3NPVW9iSUY1aXZ4TXRJUzJyWVAzS3UzWHRPWUJHTjJHSTk3NzdQ?=
+ =?utf-8?B?MDRCSEV5bEFPdXMrRlN0SVA1VnJpbG92M2VlYUNEbEZ0dGZPZWNlOUIybGRR?=
+ =?utf-8?B?QWtqaEg0L1RybXM0cENIQVYwNGlDdTFnZ0lFWGhWRXpsRVZwbWwvRWdVZ25W?=
+ =?utf-8?B?SWpMTGJ5S1E5ajM4dnRsblBLOHRPang0V0s0UXp2OHJtVHQ3UStsd3oxbWUz?=
+ =?utf-8?B?VE1DVDVPeWpxdnBoU3J1Qi9naU1EQTl5YXllSFhtbUU0aUhZWkdjeVhGOTJy?=
+ =?utf-8?B?SjRqWUhGcTQwa0FEM2trcEltbnkycENlVllqak5CdjhtR2JCV1JVdFBHYTl1?=
+ =?utf-8?B?NzNuTmVVRDVqNEdMeldRbllsbms1d3NqNW5LYmRHaE40bktyQ1lGTndFMGZE?=
+ =?utf-8?B?b3lRc2EvSk5Oai9nbGVlL3NoMm9TNVJobmYrQklDVEJkbFRzTWFqcVRzMUpa?=
+ =?utf-8?B?SXlxQ3k1SW5RTnNsUFVnMlRyUEN1cGlaZzRKeHh1Q3ByRkdDU2gzekNrSlNq?=
+ =?utf-8?B?YjVEMEoxN3V2SXh1UHMzY2pMUjZYZTU0S29RWHFsb2U5QU9nbjRqN0duOFF0?=
+ =?utf-8?B?cGEvVDdDTWs1ZHZEZVBaYnRiOXVkQlpWMzdENG8wTjJucU5rbk5tQnlwUHJQ?=
+ =?utf-8?B?ZlBEdnRNclIrL2RtVWU1ZzZCaWcycDNVWFY5R3VsWU9hNFlVT0RpZnA5K0xj?=
+ =?utf-8?B?eGgxR3B3c0hvOW0zck5EZUxMd1BKbWxwc0V1aEFaVCs0NUdQKzNIdHlMWlhl?=
+ =?utf-8?B?Rm54VDJXWCttM0VQaEVsZ1JBek1xSnhNNk13SVRjck96S0orRDBSK3VNV0pU?=
+ =?utf-8?B?Q1NjM2pycXpJQ216SXBUNXdtZVkxRTF1YlJJRXRYU0Q0WUROUlFOWWZHc0da?=
+ =?utf-8?B?RHZzUUJWdkhWYzVlaTFoVXZZWE00T1dKbEF5UGt5OUhQcE9rendQNjNKc25R?=
+ =?utf-8?B?T2l3TzV5UlJmdjIyaUIrRURCZ2FWTVJBM0FzMm55eC8zYkx4a3pqWjNtalZE?=
+ =?utf-8?B?WHZJZ1BuWm56R21UT3JlQ0lNTjI2RDBKZ1dLT2VuWStFbWtGZG8zTVpnRjZM?=
+ =?utf-8?B?VGxjRitmQUdHRFF1TTNDZWdxYmpqUVBqWWtjamlOVjdZZENqc0VjSXM2NGR1?=
+ =?utf-8?B?Njk5ZkZLcDJxNjFvTW0xeVR1ZjNMMlVXWVdZWXNTSTFrWFNaTUZXalpNTU5K?=
+ =?utf-8?B?UjVjTXQxdmVQdE44L25KNlVjdi9MWkc4K2Z0NUhvbys0a0xjQ09PK1IweGhj?=
+ =?utf-8?B?c3Zuck1aeHU2eHZBdnJwcWgvVnBkZUlsKzArR1VlVkVoc2NOdVc5d0VBeHNs?=
+ =?utf-8?B?S2tDZ1RWQS9CMTl6dXgzdTVxN3Z6Q0xKMFdwM09wNTgvRUg0UmtCK0I5dkJM?=
+ =?utf-8?B?UjFwSVdwWUdaMzNyZ0JkdzcyS3JIWlBrcGx4c244bGxJQy9SM3pIdTdhL0Fm?=
+ =?utf-8?B?S01ybm5ZNVBDQU9TRFJsekU3ZWU5cjBjN0hHbXMxTjZwV2pTRVRqZ1pncGw1?=
+ =?utf-8?B?d1AybXIrNlBRenNPd3pYcG4rWHQrNmhxVWlydVUxdDZycDJzeVZlS3hkWmNB?=
+ =?utf-8?B?RDkzQmxsNHZibHdXRFJKcUJ3T1JlRlNNQ2ZUZTI2ZUx3SzdjNjB6akRTbEtq?=
+ =?utf-8?B?R08rYy93ZDUzVDVKMHl4K0JzYlF6YW1rdDhScWgzNGR3aXNHYVhHUURndnZS?=
+ =?utf-8?B?b3c3eHF3eTVDejR6dTVRQzNPa1ZGYWFiUzRDVFpmZkkzdVpVWnZuaUVjQ0pO?=
+ =?utf-8?B?UFlNdHJhdG01dFdHL1hPMXR0MGQzbWVaTjBld1MwVndSSFBDelVUVEo4emhw?=
+ =?utf-8?B?Sm51SHNyRVNBcC9Eb2RMKy8xWnF3RklIak11V1RvdkZQM2FRSEJXbmJHUzVi?=
+ =?utf-8?B?bEtROGRwK29TemlJVXg4a2pNcTN5bVQyaDB0K0RwU09KUnFVbEJ4MGREcm5K?=
+ =?utf-8?B?SjZacThFcVJaTy9OcVh0SmgzRmQ4WUlhYm5YdGhGRXdSVWdFeEttdz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e16bb370-c801-4c0a-ff6f-08dedd8d0c0c
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 07:17:42.2928
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 07:38:19.6162
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FtbCyoi/EPOjqIEIVlWkg6t+fDYmFvXL161fcQR6ubLIvu8fGjYMH2vkuNFjuaQtXS3+m4Jh0/PXZ7+nTXcbXg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB5776
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: wi0Oa5WaB8FWc4sI0ei3zLF7vX/bCX3hgBT3OiZX8jyyo7K5w218NZjrQWsHi5GpmZwmNMsucqJ1AsxStsACBQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6804
 
-On Mon, May 25, 2026 at 07:35:12PM -0700, Rick Edgecombe wrote:
-> When handling an EPT violation, KVM holds a spinlock while manipulating
-> the EPT. Before entering the spinlock it doesn't know how many EPT page
-> tables will need to be installed or whether a huge page will be used. For
-> this reason it allocates a worst case number of page tables that it might
-> need as part of servicing the EPT violation.
-> 
-> Under Dynamic PAMT these pre-allocated pages will potentially need to have
-> Dynamic PAMT backing pages installed for them. KVM already has helpers to
-> manage topping up page caches before taking the MMU lock, but they cannot be
-> passed from KVM to arch/x86 code.
-> 
-> The problem of how and when to install the DPAMT backing pages for the
-> pages given to the TDX module during the fault path has had a lot of
-> design attempts.
->  - Extracting KVM's MMU caches requires too much inlined code added to
->    headers.
->  - A few varieties of installing Dynamic PAMT backing when allocating the
->    S-EPT page tables. [0][1]
-IIUC, [0][1] here refer to design attempts that had various problems, right?
-However, [1] looks exactly like the one being adopted in v6?
 
-Did you paste a wrong link? Should [1] instead be
-https://lore.kernel.org/kvm/20260129011517.3545883-21-seanjc@google.com or
-https://lore.kernel.org/kvm/aYYCOiMvWfSJR1AL@google.com ?
 
->  - Using mempool_t to transfer the pages between KVM and arch/x86 doesn't
->    work because it is the component is designed more around maintaining a
->    pool of pages, rather than topping up a continually drained cache.
+On 9/7/26 16:32, Alexey Kardashevskiy wrote:
+> On 6/7/26 08:08, Dan Williams wrote:
+>> A device that wants to access private memory needs to have its trust
+>> elevated to DEVICE_TRUST_TCB. That trust is established either at compile
+>> time (unlikely), the bus knows the device is within the TCB to start (some
+>> paravisor setups), or the device is dynamically added to the TCB in
+>> coordination with a TSM driver (primary TDISP use case) and the trust is
+>> elevated by driver match.
+>>
+>> When a PCI device is associated with a TSM for security services the low
+>> level TSM driver in the CC VM has the opportunity validate DMA access.
+>> That validation happens at ->dma_configure() time when the device attaches
+>> to a driver. The TSM driver is responsible for proving to the platform TSM
+>> that the VM is enabling DMA with respect to the most recently generated
+>> evidence. If that fails, driver attach fails.
+>>
+>> When a PCI device is not associated with a TSM provider for security
+>> services, but the device is trusted there are 3 options.
+>>
+>> 1/ Arch requires all DMA enable events to be acked by TSM driver
+>>
+>> 2/ Arch does not require, but admin policy is responsible for knowing which
+>>     devices need TSM coordination to become active within the TCB.
+>>
+>> 3/ Device is approved by a paravisor to operate within the TCB, no TSM
+>>     coordination required.
+>>
+>> In cases 2 and 3 if the device needed TSM driver coordination, but the TSM
+>> driver or association to the device is missing, it triggers hardware
+>> errors. Those errors are a configuration error that the kernel does not
+>> actively prevent.
+>>
+>> Architectures still need to fixup force_dma_unencrypted() to call
+>> device_tcb_trusted() to tell the DMA layer that TCB access is granted.
+>>
+>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+>> Cc: Danilo Krummrich <dakr@kernel.org>
+>> Cc: Bjorn Helgaas <bhelgaas@google.com>
+>> Cc: Dexuan Cui <decui@microsoft.com>
+>> Signed-off-by: Dan Williams <djbw@kernel.org>
+>> ---
+>>   drivers/base/Kconfig         | 19 ++++++++++++++++++-
+>>   include/linux/device/trust.h |  4 ++++
+>>   drivers/base/trust.c         |  8 ++++++++
+>>   drivers/pci/pci-driver.c     | 25 ++++++++++++++++---------
+>>   4 files changed, 46 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
+>> index a4233bdf9804..3597b39ee0e3 100644
+>> --- a/drivers/base/Kconfig
+>> +++ b/drivers/base/Kconfig
+>> @@ -304,7 +304,17 @@ config DEVICE_TRUST_AUTO
+>>       help
+>>         Typical historical driver model, devices eagerly attempt to attach to
+>>         a driver and deploy all available mechanisms to allow performant
+>> -      direct memory access.
+>> +      direct memory access. This trust level does not include TCB privileges.
+>> +
+>> +config DEVICE_TRUST_TCB
+>> +    bool "TCB"
+>> +    depends on EXPERT
+>> +    help
+>> +      Devices are assumed to be within the Trusted Compute Boundary (TCB)
+>> +      with access to private TCB resources by default. This requires buses
+>> +      to have trust awareness and opt devices out of private operation,
+>> +      otherwise TCB integrity may fail the device's access or escalate to
+>> +      terminating the execution context (kill the CC VM).
+>>   endchoice
+>> @@ -330,6 +340,13 @@ config BUILTIN_DEVICE_TRUST_ADVERSARY
+>>       help
+>>         Deploy mitigations in the IOMMU layer and driver to limit access.
+>> +config BUILTIN_DEVICE_TRUST_TCB
+>> +    bool "TCB"
+>> +    depends on EXPERT
+>> +    help
+>> +      Devices bound by built-in drivers are assumed to be within the
+>> +      Trusted Compute Boundary with access to private/encrypted memory.
+>> +
+>>   endchoice
+>>   endmenu
+>> diff --git a/include/linux/device/trust.h b/include/linux/device/trust.h
+>> index 283d3196e5e6..24951f5c56ba 100644
+>> --- a/include/linux/device/trust.h
+>> +++ b/include/linux/device/trust.h
+>> @@ -13,6 +13,7 @@
+>>    * @DEVICE_TRUST_NONE: Blocked when idle, cannot bind
+>>    * @DEVICE_TRUST_ADVERSARY: Blocked when idle, constrained when active.
+>>    * @DEVICE_TRUST_AUTO: All typical privileges granted
+>> + * @DEVICE_TRUST_TCB: AUTO privileges + private/encrypted memory access
+>>    *
+>>    * Devices flagged as adversarial are the ones that can potentially
+>>    * execute DMA attacks and similar. They are typically connected through
+>> @@ -25,11 +26,13 @@ enum device_trust {
+>>       DEVICE_TRUST_NONE,
+>>       DEVICE_TRUST_ADVERSARY,
+>>       DEVICE_TRUST_AUTO,
+>> +    DEVICE_TRUST_TCB,
+>>   };
+>>   #define DEVICE_DEFAULT_TRUST \
+>>       (IS_ENABLED(CONFIG_DEVICE_TRUST_NONE)      ? DEVICE_TRUST_NONE      : \
+>>        IS_ENABLED(CONFIG_DEVICE_TRUST_ADVERSARY) ? DEVICE_TRUST_ADVERSARY : \
+>> +     IS_ENABLED(CONFIG_DEVICE_TRUST_TCB)       ? DEVICE_TRUST_TCB       : \
+>>        DEVICE_TRUST_AUTO)
+>>   struct device;
+>> @@ -37,6 +40,7 @@ struct device_driver;
+>>   #ifdef CONFIG_DEVICE_TRUST
+>>   bool device_untrusted(struct device *dev);
+>> +bool device_tcb_trusted(struct device *dev);
+>>   void module_driver_trust(struct module *mod, const char *val);
+>>   void module_driver_trust_init(struct module *mod, bool require_trust);
+>>   #else
+>> diff --git a/drivers/base/trust.c b/drivers/base/trust.c
+>> index 8efbe5c51250..21d374affbba 100644
+>> --- a/drivers/base/trust.c
+>> +++ b/drivers/base/trust.c
+>> @@ -23,11 +23,18 @@ bool device_untrusted(struct device *dev)
+>>       return dev->bus_trust && dev->bus_trust <= DEVICE_TRUST_ADVERSARY;
+>>   }
+>> +bool device_tcb_trusted(struct device *dev)
+>> +{
+>> +    return dev->p->trust >= DEVICE_TRUST_TCB;
+>> +}
+>> +
+>>   /* Driver trust policy requires modules, builtin drivers always attach */
+>>   static enum device_trust builtin_driver_trust(void)
+>>   {
+>>       if (IS_ENABLED(CONFIG_BUILTIN_DEVICE_TRUST_ADVERSARY))
+>>           return DEVICE_TRUST_ADVERSARY;
+>> +    else if (IS_ENABLED(CONFIG_BUILTIN_DEVICE_TRUST_TCB))
+>> +        return DEVICE_TRUST_TCB;
 > 
-> So don't do these as they all had various problems. Instead just create a
-> small simple data structure to use for handing a pre-allocated list of
-> pages between KVM and arch/x86 code. Model this on KVM's existing MMU
-> memory caches.
 > 
-> Add a tdx_pamt_cache arg to tdx_pamt_get() so it can draw pages from a
-> cache when needed. Not all DPAMT page installations will happen under
-> spinlock, for example control pages. So have tdx_pamt_get() maintain the
-Nit: In patch 9, S-EPT pages are regarded as control pages as well.
-So maybe
-"..., for example some control pages." or
-"..., for example control pages other than S-EPT pages." ?
+> No plan to override this via the kernel cmdline?
 
-> existing behavior of allocating from the page allocator when NULL is
-> passed for the struct tdx_pamt_cache arg. This prevents excess allocations
-> for cases where it can be avoided.
-> 
-> Export the new helpers for KVM.
-> 
-> Assisted-by: GitHub Copilot:claude-opus-4-6 Claude:claude-opus-4-7
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Link: https://lore.kernel.org/kvm/de05853257e9cc66998101943f78a4b7e6e3d741.camel@intel.com/ [0]
-> Link: https://lore.kernel.org/kvm/aYprxnSHKHUtk7pt@google.com/ [1]
-> ---
-> v6:
->  - Filled out log from Sean's series
-> ---
->  arch/x86/include/asm/tdx.h  | 17 ++++++++++
->  arch/x86/virt/vmx/tdx/tdx.c | 65 +++++++++++++++++++++++++++++++++----
->  2 files changed, 76 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index 74e75db5728c7..191da84bbf2a1 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -155,6 +155,23 @@ static inline bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
->  	return false; /* To be enabled when kernel is ready */
->  }
->  
-> +/* Simple structure for pre-allocating Dynamic PAMT pages outside of locks. */
-outside of spinlocks?
 
-Pre-allocating Dynamic PAMT pages are still inside mutex, e.g., inside of
-kvm->slots_lock, vcpu->mutex...
+Just tried - my test guest kernel has everything built-in. Since there is no module parameter - I did CONFIG_BUILTIN_DEVICE_TRUST_TCB=y. But now every driver gets this level, including virtio, which cannot ever be "TCB" (as anything emulated by QEMU). Thanks,
 
-> +struct tdx_pamt_cache {
-> +	struct list_head page_list;
-> +	int cnt;
-> +};
 
-The rest LGTM.
-Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
+-- 
+Alexey
 
