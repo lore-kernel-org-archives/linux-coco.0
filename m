@@ -1,111 +1,159 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9252B335566
-	for <linux-coco@lists.linux.dev>; Fri, 10 Jul 2026 03:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1304324336D;
+	Fri, 10 Jul 2026 05:23:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783654383; cv=none; b=creYfRC7w/pGO/n7bNLO3Zcf/doVyrsoUmq/n9b4YwX44LprxyL3F99ejzZrcVkKvwxg2oL6kMg9dy/82N7JM6JcOocaCGTmGazw9efOSRYZkcpc754fSEhS+EYkiqUQjbkZ4QZPQxn6IhXrOhzn1KbbLSga0O4G57x8WsRwcq0=
+	t=1783660985; cv=none; b=M3JDkMByZ7G+8gSWSYLoBLbKhM0QKILhJoodFrRAidAH1fmt2kLS7EYhoGYYi0owrxZ3YAYqyrKvsZ95u50HjURpV3EXM/6Td9idSb56pLTolWdaAy2AAd2veVJq8gCGenX0KbXzhOtDxYK2X5iv6NqKZU5Jg2W1dzmLZfDKYoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783654383; c=relaxed/simple;
-	bh=wxG3iOtajXHkXnF6It1b0JI5hhHMd2h1ezzqy4Qe7JY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PVc9qxBuDk/BvF6bt/UKvOAu3F5vJ+4S7meD4ugyweOeGnyVA47+9CI3iZeGG6GquhLSOTZAbHN4lR+Xl28LF4aVifySdHmaTnHo95Yu9tkxjxKmohQm2Ysjx92ojnOyFWNH/EXEkmMrqnMCSIoqnWIlWuUEbui9J/9llFcCujE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nkcQxB7H; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1783660985; c=relaxed/simple;
+	bh=lqBwW/if3qUGBNykxpmLTfRLLwSORAlTtLD14GzmOVY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=MzQq6/6IEeD6wztyXI0aXaBr3dYAe/RZRKu5wnhe19gAnRY6rd0LOHscECI01IfGCH2J1tTmCHEONKoLkJISG2zWPhvaSO4CFNv0oDHHKmL4BKIlJz1MZmDnaz2y1sYjP0KvVGCn4nQ/zvzafIaygvDMd2h2oVFPy6YxmAqHzd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bNlSVXT3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nkcQxB7H"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783654381; x=1815190381;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=wxG3iOtajXHkXnF6It1b0JI5hhHMd2h1ezzqy4Qe7JY=;
-  b=nkcQxB7HDzUqZ088vDxO8bLtqs+cG3Qwjsu5+CH1ILwUgUB7KlFKZmf9
-   WL2Lxfk6V85TIR9P2XeG2BYvtTMZXuqMbsJVLWwVC2SgteEg7cwFdutVc
-   76cWwhpcS9wwgL7pO5N7FDgXUt1OOmm9t9YN7Z5435BrvDpNjpnEaChm3
-   BMVy7PGwnl0IK8ayvdEBQ1O2IhMJyEQx0oUSWNSE659EiixKTziNaaWoI
-   AHYObylFZfcbQKZLNgMrFHWD9hakwo3TS8788DSbZucqZm7//OD/J2rCc
-   cXlC3nTVL5Bor/TVzr35aks/rcOIvWKaTLPZA9DykwRDuS4Jyl2HFKVWv
-   A==;
-X-CSE-ConnectionGUID: AK949UiSTjinGlLbVsH7Zg==
-X-CSE-MsgGUID: uEWvTaEjQciF+JAKS/7mgA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84466163"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="84466163"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 20:33:00 -0700
-X-CSE-ConnectionGUID: PYgBp+vdSYyfnWRYlj+iOw==
-X-CSE-MsgGUID: aPnN1mQdSqW9CJxcLyZGxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="252123823"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.241.120]) ([10.124.241.120])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 20:32:57 -0700
-Message-ID: <62069ec6-b586-446a-a696-6aa3356ac665@linux.intel.com>
-Date: Fri, 10 Jul 2026 11:32:55 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bNlSVXT3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EBD1F000E9;
+	Fri, 10 Jul 2026 05:22:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783660984;
+	bh=550ooWT8542+63+b73F3KAgnV89CFJo9aC92rxEIRio=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=bNlSVXT3ETCHbdeWOabjzODZivq8U9g4F7kEA6Aw4NSN7/iClos+6FnnRkEloBTQx
+	 kYDdZ5It6cK3pDU1sVLNfVvyp92GT9KnRBSjY45JIhg78l32NwyF7rJpiRPqj0BVUP
+	 8ZguLouhrS8wYHspEicQcK61eLs15Bcqz/9u2KhrJQJk4XgUD2q/0h/z4hDga0v9QI
+	 eMeQxwFokadPjLOrsMZkF6JDmQ/8georqPF7vU27VTFLhMKBvJISPjIM8Mrs4P/TXt
+	 yOJTeULh173Hgo7dKmAW3nhIaq8VFpWH+iVqc4tNoqbH1ucJJsZH4f7Af8vl/d9ed7
+	 nijIDYfIjO2vw==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
+	Jiri Pirko <jiri@nvidia.com>,
+	Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v7 16/22] dma-direct: make dma_direct_map_phys() honor
+ DMA_ATTR_CC_SHARED
+In-Reply-To: <20260709181336.GM118978@ziepe.ca>
+References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
+ <20260701054926.825925-17-aneesh.kumar@kernel.org>
+ <ak42F240d-53QeFN@arm.com> <yq5apl0xgy89.fsf@kernel.org>
+ <ak-CT3oanlDfgTy4@arm.com> <20260709181336.GM118978@ziepe.ca>
+Date: Fri, 10 Jul 2026 10:52:49 +0530
+Message-ID: <yq5ajyr3h106.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] virt: tdx-guest: Allocate Quote buffer dynamically
-To: Peter Fang <peter.fang@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org
-References: <20260612110853.3188196-1-peter.fang@intel.com>
- <20260612110853.3188196-3-peter.fang@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260612110853.3188196-3-peter.fang@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 6/12/2026 7:08 PM, Peter Fang wrote:
-> From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> 
-> The TDX attestation driver currently uses a fixed 128 KB Quote buffer
-> shared with the host VMM. This may be too small for Quotes using schemes
-> such as post-quantum cryptography (PQC), where certificate chains can
-> increase the Quote size to several megabytes.
+Jason Gunthorpe <jgg@ziepe.ca> writes:
 
-Nit:
-I think the description here should be more accurate.
-"Several megabytes" colloquially implies sizes that could easily exceed 4 MB.
-And it's a slight contradiction VS the 4MB limitation below.
+> On Thu, Jul 09, 2026 at 12:13:19PM +0100, Catalin Marinas wrote:
+>> > > For AMD/SME, on host with memory encryption we now end up setting the C
+>> > > bit for DMA_ATTR_MMIO. This is fine for RAM but not sure whether
+>> > > some other MMIO bus understands this attribute. Maybe we should stick to
+>> > > something like __phys_to_dma() for the !CC_SHARED && MMIO path. Or,
+>> > > since this is not universally defined, just use the old dma_addr = phys
+>> > > if MMIO and ignore any unlikely DMA offsets.
+>> > >
+>> > 
+>> > Considering for AMD/SME system an unencrypted dma addr is one without C
+>> > bit, will this be good?
+>> > 
+>> > 	/*
+>> > 	 * For host memory encryption and device requiring unencrypted DMA,
+>> > 	 * MMIO memory is treated as shared by default.
+>> > 	 */
+>> > 	if (attrs & DMA_ATTR_MMIO) {
+>> > 		if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT) || force_dma_unencrypted(dev))
+>> > 			attrs |= DMA_ATTR_CC_SHARED;
+>> > 	}
+>> 
+>> Yes, I think it does the trick, preserves the current semantics for AMD.
+>> I guess you could use a single 'if' for all checks (up to you).
+>
+> Please don't change it, MMIO P2P is broken on CC systems today and it
+> should stay broken. Passing DMA_ATTR_MMIO with DMA_ATTR_CC_SHARED is
+> an error that we need to correct in the drivers not make work in the
+> core code.
+>
 
-> 
-> Allocate the Quote buffer based on the size reported by the TDX module
-> instead of always reserving a fixed-size buffer. This avoids wasting
-> memory on platforms that do not require larger Quotes. Older platforms
-> fall back to the default 128 KB buffer.
-> 
-> Because the Quote buffer must be physically contiguous, its size is
-> bound by the buddy allocator's maximum page order (4 MB), which should
-> be sufficient for current attestation needs.
-> 
-> struct tdx_quote_buf has a trailing flexible array, so use offsetof()
-> instead of sizeof() to calculate the header size.
-> 
-> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> Assisted-by: Claude:claude-opus-4-7
-> Assisted-by: GitHub Copilot:gpt-5.4
+But the above changes are intended to handle HOST_MEM_ENCRYPT. In v7, we
+had the following diff:
 
-Same issue as pointed by Kiryl in the first patch.
+@@ -88,37 +88,40 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
+ {
+ 	dma_addr_t dma_addr;
+ 
++	/*
++	 * For a device requiring unencrypted DMA, MMIO memory is treated
++	 * as shared by default.
++	 */
++	if (force_dma_unencrypted(dev) && (attrs & DMA_ATTR_MMIO))
++		attrs |= DMA_ATTR_CC_SHARED;
++
 
-> Signed-off-by: Peter Fang <peter.fang@intel.com>
+This is now getting updated to
 
-Also the use of struct_size_t() instead of offsetof().
+@@ -624,37 +626,44 @@ dma_addr_t dma_direct_map_phys(struct device *dev, phys_addr_t phys,
+ {
+ 	dma_addr_t dma_addr;
+ 
++	if (attrs & DMA_ATTR_MMIO) {
++		/*
++		 * For host memory encryption and device requiring
++		 * unencrypted DMA, MMIO memory is treated as shared by
++		 * default.
++		 */
++		if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT) ||
++		    force_dma_unencrypted(dev))
++			attrs |= DMA_ATTR_CC_SHARED;
++	}
++
 
-Otherwise looks okay to me:
+I agree that we need to move that DMA_ATTR_CC_SHARED setting to 
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+modified   drivers/pci/p2pdma.c
+@@ -285,6 +285,11 @@ int pcim_p2pdma_init(struct pci_dev *pdev)
+ 			continue;
+ 
+ 		p2p->mem[i].owner = &pdev->dev;
++
++		p2p->mem[i].dma_mapping_flags = DMA_ATTR_MMIO;
++		if (force_dma_unencrypted(dev))
++			p2p->mem[i].dma_mapping_flags |= DMA_ATTR_CC_SHARED;
++
+
+As we discussed [1], that can come in a later patch. In the meantime, adding
+the HOST_MEM_ENCRYPT check preserves the previous behavior for SME.
+
+[1] https://lore.kernel.org/all/20260522132240.GD7702@ziepe.ca/
+
+-aneesh
