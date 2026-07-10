@@ -1,104 +1,70 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E69367B81
-	for <linux-coco@lists.linux.dev>; Fri, 10 Jul 2026 16:19:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F046359A99
+	for <linux-coco@lists.linux.dev>; Fri, 10 Jul 2026 16:21:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783700392; cv=none; b=qYb6PNHGZ05FTbzxEjkK/eVw8uNeK9dzMpgHitWlWSS1cMTe6d/KKNVIsgckIDHVOTnMRMAIfz8J+lVxfUhy92syO2hSHuf8dRsq0sldaNX+jgzxy2WdI0ww/Il2cVP6fvSsgigrLOlRIk+PEdneULQS7ZlpObOOfsRGVcTTLlU=
+	t=1783700476; cv=none; b=rxeVG4fXPD+bfujKWJGD9/YP/ell7FpHq1Qt6giHZ0a8PoMe7nyzfyApNReTblTyUPBQ7lUAuu/JYu91x8UrtPAAY6yuiA+Pm/1enwLF4z122GR88I6j1hhu7gf0pmZ5tT47/p55KPHDHchKfHCbk3Rk7t3fHZTMZYGjd5JUXes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783700392; c=relaxed/simple;
-	bh=ZcNef127/m6SyCOm4THElfckuZegJcazDJQV119TKbw=;
+	s=arc-20240116; t=1783700476; c=relaxed/simple;
+	bh=mEoRRWSo6DAIK0SlW+LQPTUO/5DjaFNEbyRnGasiBso=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h396Ur5rEQzkOJ5bG1OvifxXoJ2M6mBSiry4HkS1sXLfMAj1UkGVotrZ6IO0hwWxlGFpY7wTxR+7iyxCi+71OKVbO1usnYdCUchd7q7bAYoZ7G2W6GUkggNcEJhofXxfbT/sFUHUg2FqRao9DhO/cGIzMN4jEMFXTS7nLXUkmcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=moMI3tqd; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=arjasbIgJtofbLcBpw/BkGR0DbwKdAqDXpMKuNorGtFlPZGCq4pttUJoA4PzyVikcYardtLoRnw392WHMeE2ouxjwa5JFUTGEVynOrwRM2uzJIwJ9LhCNBZ7sPD1Ere0L9VKPi7fip3PX6/9/Fji+uRJkOeK5qeS85xS/rAsggU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ISRgInQD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="moMI3tqd"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8efbafa1bacso7701266d6.1
-        for <linux-coco@lists.linux.dev>; Fri, 10 Jul 2026 09:19:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1783700388; x=1784305188; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wu7pGf03sdcW+GKZ7Iww7/tPEwPDkL98YpGrOpuCsUc=;
-        b=moMI3tqdZfdin9SAkVjP5M2A8NaC/2t6HiY4gxyTX/Rp3CMfxeDcKCeVKsJBo26JNj
-         xNawpUfn/sKJVdo6wzSnC2fw7tEpajstjW8QSZK2mVXkIhGgEzx8wdVZFRWXkKuoN6mH
-         8Gha77bciaKkPG4UpaUpY3kJ416eFH3tmcjEJgu28wGy58Z2pK2oZt6I0+8o8cFCVX7v
-         GhxjaE2RXWKpj1Rt2of842QFJrKV95Ylbeqk1nBJEPI+YNMA9PlXjXeIptCc5DL/VA4S
-         WZ9CVfL2asOtkP5bppe9wB5aX3OA79cLI5gFK8DtKqPQW2HW+ltbF258lV1voZphfl2b
-         ckhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783700388; x=1784305188;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wu7pGf03sdcW+GKZ7Iww7/tPEwPDkL98YpGrOpuCsUc=;
-        b=arh9CWYdu8/PPA5DwSpLXnkifBOLdPhYe4RMqltMqgD1Hf5+jtM9l5P9oXqr6E+qZ8
-         9unBHjzU6UxK6vjR8C2ShTqAni5LNyIOPYaIYXOEpXgPgrOyPbM98oTi5qc8ufWJMzCJ
-         22+zTTaD6ykpv5BdDAHKJSBJHviVOuuHAeTHQAmMAkXFOaAhdF4zorJyRmPc2HbTDYaR
-         AoE3yl2OWz5GQ0LCCy0+GZsT1GVf4UwyKBBA8GhVrCj1iyDLe/2RWkm1QvxVe5xkHZvM
-         5Wsu23fqpeY8iQTryvYFumFsmWExNfOMHzwkCLFQiWdtEHx6GvJNjOi581Z4pHaMgayD
-         NVRA==
-X-Forwarded-Encrypted: i=1; AHgh+RoPVhMEDbVKGuF0HSLSlyO4HzP7uEF5MkUKd/IsCw3qvpOCNukgcg+R1Bh8j+KlvyMaHLTPst2YvzCo@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyg1aB3DPPi4XZuB0Of4qSR221j2YhtSxT3yxECczuF8E4N2tOk
-	AJ4OgXu3RUdrujZSE0ruy3pOFXIrvhvamSlBhhI/bx4np8kNCZwQoYYODjiOdwMITvA=
-X-Gm-Gg: AfdE7ckKIo7m/wLaTcVI0fLD436CZtrZ1znSxn4VlhOKeOmx2u68tpfS+hvU2q76jvc
-	9yahlY7RVAUcE4xQtsxgg6FnJYks+klQ/jRCpB7z0T+lUTJE1jMHRbLqaWI0gzhfLwV6kha6Naq
-	+41g4qv/hdmvoItBK0ObmMIM7KsA+saGWzmpLWkV05eljqqtb54vAyuU0Y8fassmcvskPtXQQos
-	urLmWKwCx5+M5yl5OrtkRbcIcVk/1lYug7+LXe2LHGgISPxTWspHSuQ4B0ZVCN07p/0mcbUGYZZ
-	3PIfb+tXcHiXFLHrzIIR5fkcNbfHmFn2Fw8GAToXOlaJb6rELx5nCduCX/+P6r5NdT1ZEbda8Wo
-	JqHX8QgRQl17uzmRlOe4FnpvT/uzS/+WCJqmla42D4iZcJqsO4ZPkgekZlUp+
-X-Received: by 2002:ad4:5743:0:b0:8f4:870f:72bc with SMTP id 6a1803df08f44-8fec3cf5d44mr142091486d6.51.1783700387612;
-        Fri, 10 Jul 2026 09:19:47 -0700 (PDT)
-Received: from ziepe.ca ([159.2.72.92])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd56bf455sm44263206d6.13.2026.07.10.09.19.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jul 2026 09:19:46 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wiDx3-00000007We8-41pt;
-	Fri, 10 Jul 2026 13:19:45 -0300
-Date: Fri, 10 Jul 2026 13:19:45 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
-	Jiri Pirko <jiri@nvidia.com>, Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH v7 16/22] dma-direct: make dma_direct_map_phys() honor
- DMA_ATTR_CC_SHARED
-Message-ID: <20260710161945.GO118978@ziepe.ca>
-References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
- <20260701054926.825925-17-aneesh.kumar@kernel.org>
- <ak42F240d-53QeFN@arm.com>
- <yq5apl0xgy89.fsf@kernel.org>
- <ak-CT3oanlDfgTy4@arm.com>
- <20260709181336.GM118978@ziepe.ca>
- <yq5ajyr3h106.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ISRgInQD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210991F00A3D;
+	Fri, 10 Jul 2026 16:21:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783700466;
+	bh=UzrzmVlQxn+ZR5FPF+zBoHQ+F/YG8ANO2IH5J4aS5zM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ISRgInQDYwEUXsW2taP4ZirjMgcqZ8F3ytDXHMOFsrGyIPnuI+zPIMK1C+Ar7b1+8
+	 ZY3Hau++Os2hMcskPmQHSOS+Nl9RLOyxulH7XGOMspujHJF4fH4Omiuiz8y69RyXV+
+	 GI9cE7LKleSYwamMQvZ9Uti/+uCNMVlXFt+b7Z65oml84f+z6SPiLueHlwPj4XNrLA
+	 JME2Xr/vVLo5qwJ9xtAU7aXCU0Js+JerTmTOrYO2x9zUuzB7op+rCVPuk4J8R4oP17
+	 OLw2G3WKa+/az27EU3PPxu23DyoEXr1L0b4+Fbs64wCOhwWQOKq3+T6RPCE4KCxwuN
+	 0TIuVroDfCM5Q==
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 33420F40244;
+	Fri, 10 Jul 2026 12:21:05 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-08.internal (MEProxy); Fri, 10 Jul 2026 12:21:05 -0400
+X-ME-Sender: <xms:8RtRajOi6ONqFSaOn8oSwqa7MNqQuU6DE6jHHjSMBK0E_M9VMfu3fA>
+    <xme:8RtRavp8J2DUc6XQZ_57rSIA7kXMKdIphr9zwj7XPnaTrOZNu4_teceLsXnM9m2W8
+    3R4b_g8QJnzND1q2ty-TnSeZWocb7xvVM29J_qey_7ORCJQOquU2l4>
+X-ME-Received: <xmr:8RtRaluDj2okVMG_L6VdsMF7FYnPeZF894KuaIiO-vNwqpRhALmHhD9cvRoKAw>
+X-ME-Proxy-Cause: dmFkZTGegIQIiSyXdto7rtHUCFF64bpvZRloqLHGkRPu0at43boRWxvfHZObrV/9El/SZX
+    BVVPULE5qylfcPoCz2VSKffXr5XWoKJvbMPqtS5XPbQ78+pQaRdyKBoDcLD3QB2TUdNxtk
+    yvubXwPaBGt4h2AvvaSx2KDhg818jKCsd6G6SNhnPhM6kfwfH6JelLdYM85fBwjgoiXZr9
+    EX2IOnDW0zj4RHBJQClzxr2SvB5TAtXWrxemY3QfS648gOotA8ZpCIm79gkg20EN6IZRr0
+    2yfML5a6+nNK6GqNoAAeVc5eZzMv+Eu/tLxjcNNbRmIZoDeAlIh6E8mn+CsRbToWzY+FdR
+    fxkJ8rIedE5G3C83qJqXWRvIHVki9onYoF9ahifUPW6UgQWcmct3jCeZWajWn0VhZq4NNs
+    Jv1RKEvyNe7aRn6iu55+p0aWBkZpaH8R4z4J52dkxmwIFt/mtsdqDqk2osirmu9ywUb5xm
+    L08Q6Epu2hKIw8hXCYM3xYoNnis04zF4rRBEOpCqAjlmlrUKZdgdRaxQ/lyCXYvgjTk3kH
+    Ma54/mJESjtATsveDWmrcWc20tp5VDSoMVrxQK+UR9SW7imxnmsXoVTlmPT/ur+tKuzTdZ
+    Yz7CloAi7+7gxd0CIREGq6/S+oz9sAqwQrpaP6nLGXvXEic6OvyFK6cUQ9zA
+X-ME-Proxy: <xmx:8RtRanilcaq62u-SDcJHCHU2UaT-rV_cCRRSgFYHW43u18t8veNjiQ>
+    <xmx:8RtRah2hGUyLXpxvYIvqt14PtPw-q9jl6dOnE-wFLa_BSGRVSsG0uQ>
+    <xmx:8RtRan8mSDvPTDAdjYpOcxDGs4WaOTmDXU4TmkOuJGsutc8ish8M5w>
+    <xmx:8RtRavOEOgac9QamloKFoJ8mvcyNaiiBnM22zTBjJQFY0kQswEHGbQ>
+    <xmx:8RtRarCkEWzGbjO1qv5cyO7kn3OSMwo1RdUcYoOee7NStRbMy6yP87aw>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 10 Jul 2026 12:21:04 -0400 (EDT)
+Date: Fri, 10 Jul 2026 17:21:03 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, 
+	yilun.xu@intel.com, chao.gao@intel.com, djbw@kernel.org, linux-coco@lists.linux.dev, 
+	peter.fang@intel.com, xiaoyao.li@intel.com
+Subject: Re: [PATCH v2] x86/virt/tdx: Formalize SEAMCALL version encoding
+ support
+Message-ID: <alEXflESyo6ndDTY@thinkstation>
+References: <20260708170330.83850-1-yilun.xu@linux.intel.com>
+ <e8aaca8c-6d88-490b-a3ae-c63a9e9a8b90@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -107,62 +73,100 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <yq5ajyr3h106.fsf@kernel.org>
+In-Reply-To: <e8aaca8c-6d88-490b-a3ae-c63a9e9a8b90@intel.com>
 
-On Fri, Jul 10, 2026 at 10:52:49AM +0530, Aneesh Kumar K.V wrote:
-> >> > 	/*
-> >> > 	 * For host memory encryption and device requiring unencrypted DMA,
-> >> > 	 * MMIO memory is treated as shared by default.
-> >> > 	 */
-> >> > 	if (attrs & DMA_ATTR_MMIO) {
-> >> > 		if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT) || force_dma_unencrypted(dev))
-> >> > 			attrs |= DMA_ATTR_CC_SHARED;
-> >> > 	}
-> >> 
-> >> Yes, I think it does the trick, preserves the current semantics for AMD.
-> >> I guess you could use a single 'if' for all checks (up to you).
-> >
-> > Please don't change it, MMIO P2P is broken on CC systems today and it
-> > should stay broken. Passing DMA_ATTR_MMIO with DMA_ATTR_CC_SHARED is
-> > an error that we need to correct in the drivers not make work in the
-> > core code.
-> >
+On Wed, Jul 08, 2026 at 11:03:14AM -0700, Dave Hansen wrote:
+> On 7/8/26 10:03, Xu Yilun wrote:
+> > +/*
+> > + * SEAMCALL leaf:
+> > + *
+> > + * Bit 15:0	Leaf number
+> > + * Bit 23:16	Version number
+> > + */
+> > +#define SEAMCALL_VERSION_MASK		GENMASK_U64(23, 16)
+> > +
+> >  static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
+> >  						  struct tdx_module_args *args)
+> >  {
+> > @@ -39,6 +48,7 @@ static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
+> >  	 */
+> >  	this_cpu_write(cache_state_incoherent, true);
+> >  
+> > +	FIELD_MODIFY(SEAMCALL_VERSION_MASK, &fn, args->version);
+> >  	return func(fn, args);
+> >  }
 > 
-> But the above changes are intended to handle HOST_MEM_ENCRYPT. In v7, we
-> had the following diff:
+> This is really looking fragmented and inconsistent.
+> 
+> What if someone *does* set the version bits in 'fn'? Also, if the "leaf
+> number" is just 16 bits, why is it a u64 in the API?
+> 
+> Additionally, look at this:
+> 
+> > /*
+> >  * Used in __tdcall*() to gather the input/output registers' values of the
+> >  * TDCALL instruction when requesting services from the TDX module. This is a
+> >  * software only structure and not part of the TDX module/VMM ABI
+> >  */
+> > struct tdx_module_args {
+> 
+> "version" doesn't fit this comment, does it? It's not a register.
+> 
+> If "fn" is just the 16-bit leaf number it should be a u16 everywhere.
+> Then there's no worry about the version number leaking in there
+> somewhere. The type can't even _carry_ the version number.
+> 
+> As a general rule, I dislike doing things in assembly that can be done
+> in C. But, in this case, we have some pretty darn simple assembly doing
+> a pretty simple job: marshaling data out of 'tdx_module_args' and in to
+> registers.
 
-To follow how the rest of the decrypted/encrypted stuff works the MMIO
-has to be flaged with CC_SHARED for HOST_MEM_ENCRYPT too, just like
-the PTEs.
+Ughh.. I think it is totally wrong direction.
 
-> @@ -88,37 +88,40 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
->  {
->  	dma_addr_t dma_addr;
->  
-> +	/*
-> +	 * For a device requiring unencrypted DMA, MMIO memory is treated
-> +	 * as shared by default.
-> +	 */
-> +	if (force_dma_unencrypted(dev) && (attrs & DMA_ATTR_MMIO))
-> +		attrs |= DMA_ATTR_CC_SHARED;
+The version is not a register operand, it is part of the function
+number. And RAX carries more than leaf+version: bit 24 is
+INTERRUPT_MODE (enumerated by TDX_FEATURES0 bit 62) and bit 63 selects
+P-SEAMLDR. If the version gets a struct field marshaled in assembly,
+do we add fields for these bits too? Composing 'fn' as u64 in the
+caller is the honest representation of the ABI.
 
-force_dma_unencrypted() says nothing about the properties of the
-address passed in, this was nonsense :\
+Rather than pushing the version all the way down to assembly, let's
+look if we can salvage what was proposed initially[1].
 
-> As we discussed [1], that can come in a later patch. In the meantime, adding
-> the HOST_MEM_ENCRYPT check preserves the previous behavior for SME.
+I know you didn't like it, but the problem there was that the version
+was invisible: TDH_SYS_UPDATE was silently v1 and the old one got
+renamed to TDH_SYS_UPDATE_V0. With the version spelled out at the call
+site, that objection goes away:
 
-It never worked. When we added ATTR_MMIO it started to have a chance
-to work but prior to that it was always broken anyhow. I don't see
-there is much merit in preserving the narrow window when we
-inadvertantly had a half working ATTR_MMIO.
+int tdx_module_run_update(void)
+{
+	struct tdx_module_args args = {};
+	u64 seamcall_fn = TDH_SYS_UPDATE;
+	int ret;
 
-But if you really want to it should be
-cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT) *only* and get rid of the wrong
-force_dma_unencrypted().
+	if (tdx_addon_feature0) {
+		seamcall_fn |= SEAMCALL_LEAF_VER(1);
+		args.r9 = tdx_addon_feature0;
+	}
 
-But IMHO, I'd rather this series treat ATTR_MMIO as private MMIO and
-ATTR_MMIO|CC_SHARED as shared MMIO and that's the right and correct
-thing for the DMA API.
+	ret = seamcall_prerr(seamcall_fn, &args);
+	if (ret)
+		return ret;
+	...
+}
 
-Jason
+And tdh_vp_init() stays what it is in mainline today, just with the
+macro instead of the open-coded shift:
+
+	/* apicid requires version == 1. */
+	return seamcall(TDH_VP_INIT | SEAMCALL_LEAF_VER(1), &args);
+
+This also addresses all three complaints above at once: there is no
+FIELD_MODIFY() to silently overwrite version bits in 'fn' as it is
+exactly what the caller wrote, tdx_module_args stays a pure register
+structure, and the assembly is untouched.
+
+[1] https://lore.kernel.org/kvm/20260618081355.3253581-3-yilun.xu@linux.intel.com/
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
