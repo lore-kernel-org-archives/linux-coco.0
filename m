@@ -1,172 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F046359A99
-	for <linux-coco@lists.linux.dev>; Fri, 10 Jul 2026 16:21:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4547F43FD29
+	for <linux-coco@lists.linux.dev>; Fri, 10 Jul 2026 16:48:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783700476; cv=none; b=rxeVG4fXPD+bfujKWJGD9/YP/ell7FpHq1Qt6giHZ0a8PoMe7nyzfyApNReTblTyUPBQ7lUAuu/JYu91x8UrtPAAY6yuiA+Pm/1enwLF4z122GR88I6j1hhu7gf0pmZ5tT47/p55KPHDHchKfHCbk3Rk7t3fHZTMZYGjd5JUXes=
+	t=1783702105; cv=none; b=oXLcbS/KBL6V0yQz65irA/vK7oXNEjIgYDxZ+VcyeOLA8LDhN+8k41StL3NeqsF2VkpS9u4F9ogqJkqYwoulXk+tdkrkMwIZbs/7/kKMfJA4rXTzg4mOX5D2HfOSvwnjFXh3xIJvhiSSoMaTV9kIwTJAQ/mEgx78Z0l9DIBdXog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783700476; c=relaxed/simple;
-	bh=mEoRRWSo6DAIK0SlW+LQPTUO/5DjaFNEbyRnGasiBso=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=arjasbIgJtofbLcBpw/BkGR0DbwKdAqDXpMKuNorGtFlPZGCq4pttUJoA4PzyVikcYardtLoRnw392WHMeE2ouxjwa5JFUTGEVynOrwRM2uzJIwJ9LhCNBZ7sPD1Ere0L9VKPi7fip3PX6/9/Fji+uRJkOeK5qeS85xS/rAsggU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ISRgInQD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783702105; c=relaxed/simple;
+	bh=hD3tjN3v4sWK/8RDMRfFJXi0ZRiLXNlQPvrj9YSOjPM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YIPU6VnroHtcn1sKNS/oMqe1rFT6eceqNfLDRUhlF/nLMgdYkFxDjiH4qKNisxjo4K90w00i3WIFkK5YLtE0so7dCCLlfwGHDuDGf9tvLhk6Z0zsUJFuWgLKgplaWQYcY4IEIFNGnjifnZLFDgMDldTKJqCsvrKBE7tAaDWOlBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=deUcAjw7; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ISRgInQD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210991F00A3D;
-	Fri, 10 Jul 2026 16:21:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783700466;
-	bh=UzrzmVlQxn+ZR5FPF+zBoHQ+F/YG8ANO2IH5J4aS5zM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ISRgInQDYwEUXsW2taP4ZirjMgcqZ8F3ytDXHMOFsrGyIPnuI+zPIMK1C+Ar7b1+8
-	 ZY3Hau++Os2hMcskPmQHSOS+Nl9RLOyxulH7XGOMspujHJF4fH4Omiuiz8y69RyXV+
-	 GI9cE7LKleSYwamMQvZ9Uti/+uCNMVlXFt+b7Z65oml84f+z6SPiLueHlwPj4XNrLA
-	 JME2Xr/vVLo5qwJ9xtAU7aXCU0Js+JerTmTOrYO2x9zUuzB7op+rCVPuk4J8R4oP17
-	 OLw2G3WKa+/az27EU3PPxu23DyoEXr1L0b4+Fbs64wCOhwWQOKq3+T6RPCE4KCxwuN
-	 0TIuVroDfCM5Q==
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 33420F40244;
-	Fri, 10 Jul 2026 12:21:05 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Fri, 10 Jul 2026 12:21:05 -0400
-X-ME-Sender: <xms:8RtRajOi6ONqFSaOn8oSwqa7MNqQuU6DE6jHHjSMBK0E_M9VMfu3fA>
-    <xme:8RtRavp8J2DUc6XQZ_57rSIA7kXMKdIphr9zwj7XPnaTrOZNu4_teceLsXnM9m2W8
-    3R4b_g8QJnzND1q2ty-TnSeZWocb7xvVM29J_qey_7ORCJQOquU2l4>
-X-ME-Received: <xmr:8RtRaluDj2okVMG_L6VdsMF7FYnPeZF894KuaIiO-vNwqpRhALmHhD9cvRoKAw>
-X-ME-Proxy-Cause: dmFkZTGegIQIiSyXdto7rtHUCFF64bpvZRloqLHGkRPu0at43boRWxvfHZObrV/9El/SZX
-    BVVPULE5qylfcPoCz2VSKffXr5XWoKJvbMPqtS5XPbQ78+pQaRdyKBoDcLD3QB2TUdNxtk
-    yvubXwPaBGt4h2AvvaSx2KDhg818jKCsd6G6SNhnPhM6kfwfH6JelLdYM85fBwjgoiXZr9
-    EX2IOnDW0zj4RHBJQClzxr2SvB5TAtXWrxemY3QfS648gOotA8ZpCIm79gkg20EN6IZRr0
-    2yfML5a6+nNK6GqNoAAeVc5eZzMv+Eu/tLxjcNNbRmIZoDeAlIh6E8mn+CsRbToWzY+FdR
-    fxkJ8rIedE5G3C83qJqXWRvIHVki9onYoF9ahifUPW6UgQWcmct3jCeZWajWn0VhZq4NNs
-    Jv1RKEvyNe7aRn6iu55+p0aWBkZpaH8R4z4J52dkxmwIFt/mtsdqDqk2osirmu9ywUb5xm
-    L08Q6Epu2hKIw8hXCYM3xYoNnis04zF4rRBEOpCqAjlmlrUKZdgdRaxQ/lyCXYvgjTk3kH
-    Ma54/mJESjtATsveDWmrcWc20tp5VDSoMVrxQK+UR9SW7imxnmsXoVTlmPT/ur+tKuzTdZ
-    Yz7CloAi7+7gxd0CIREGq6/S+oz9sAqwQrpaP6nLGXvXEic6OvyFK6cUQ9zA
-X-ME-Proxy: <xmx:8RtRanilcaq62u-SDcJHCHU2UaT-rV_cCRRSgFYHW43u18t8veNjiQ>
-    <xmx:8RtRah2hGUyLXpxvYIvqt14PtPw-q9jl6dOnE-wFLa_BSGRVSsG0uQ>
-    <xmx:8RtRan8mSDvPTDAdjYpOcxDGs4WaOTmDXU4TmkOuJGsutc8ish8M5w>
-    <xmx:8RtRavOEOgac9QamloKFoJ8mvcyNaiiBnM22zTBjJQFY0kQswEHGbQ>
-    <xmx:8RtRarCkEWzGbjO1qv5cyO7kn3OSMwo1RdUcYoOee7NStRbMy6yP87aw>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 10 Jul 2026 12:21:04 -0400 (EDT)
-Date: Fri, 10 Jul 2026 17:21:03 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, 
-	yilun.xu@intel.com, chao.gao@intel.com, djbw@kernel.org, linux-coco@lists.linux.dev, 
-	peter.fang@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH v2] x86/virt/tdx: Formalize SEAMCALL version encoding
- support
-Message-ID: <alEXflESyo6ndDTY@thinkstation>
-References: <20260708170330.83850-1-yilun.xu@linux.intel.com>
- <e8aaca8c-6d88-490b-a3ae-c63a9e9a8b90@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="deUcAjw7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783702105; x=1815238105;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=hD3tjN3v4sWK/8RDMRfFJXi0ZRiLXNlQPvrj9YSOjPM=;
+  b=deUcAjw7SUxLOnqWnFw/CeVVrAb2pVZTPI6/3cZsorSykZf4/8+Lh/eM
+   2n/pJLrFCcOPKqmZizsD2NVr5FRnn8Hj+SAVJ0yA4Hzr3GWTTd3hHhysA
+   bDCzrRRx2KtjO8ZtyrsSpWTFWVEmZtwOlvC75IRoQl1bsHlB/jjtRWAtC
+   bxT2chNAufbQnJslUpmw3rLwKjiEWkGoOP6GuHlPWPgNVDqfS+RfyO1ve
+   mnF+4V7/4G+jTIpWm7WIQ+evFmjHsaZLtGjQlRsTUAq7OkUvzfPNShsjW
+   PHwWzjVTW21FFcBuWf48Z1e1g1yUZuJf+2vvWK3R38mvPQT8FwHeBXWZD
+   Q==;
+X-CSE-ConnectionGUID: b0Baa+LySKijhdD6xCrbTA==
+X-CSE-MsgGUID: Xwk4PC4iQiiNGNWF+VLVCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="107201099"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="107201099"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 09:48:24 -0700
+X-CSE-ConnectionGUID: TPekdXm6QFeyR2snD9ujBA==
+X-CSE-MsgGUID: LUfFnIGrQbuyaq23s9B0lA==
+X-ExtLoop1: 1
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.111.199]) ([10.125.111.199])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 09:48:23 -0700
+Message-ID: <f8ef7a94-7824-4d1f-899a-60a0fbd2e2f7@intel.com>
+Date: Fri, 10 Jul 2026 09:48:22 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e8aaca8c-6d88-490b-a3ae-c63a9e9a8b90@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] x86/virt/tdx: Formalize SEAMCALL version encoding
+ support
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com,
+ dave.hansen@linux.intel.com, yilun.xu@intel.com, chao.gao@intel.com,
+ djbw@kernel.org, linux-coco@lists.linux.dev, peter.fang@intel.com,
+ xiaoyao.li@intel.com
+References: <20260708170330.83850-1-yilun.xu@linux.intel.com>
+ <e8aaca8c-6d88-490b-a3ae-c63a9e9a8b90@intel.com>
+ <alEXflESyo6ndDTY@thinkstation>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <alEXflESyo6ndDTY@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 08, 2026 at 11:03:14AM -0700, Dave Hansen wrote:
-> On 7/8/26 10:03, Xu Yilun wrote:
-> > +/*
-> > + * SEAMCALL leaf:
-> > + *
-> > + * Bit 15:0	Leaf number
-> > + * Bit 23:16	Version number
-> > + */
-> > +#define SEAMCALL_VERSION_MASK		GENMASK_U64(23, 16)
-> > +
-> >  static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
-> >  						  struct tdx_module_args *args)
-> >  {
-> > @@ -39,6 +48,7 @@ static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
-> >  	 */
-> >  	this_cpu_write(cache_state_incoherent, true);
-> >  
-> > +	FIELD_MODIFY(SEAMCALL_VERSION_MASK, &fn, args->version);
-> >  	return func(fn, args);
-> >  }
-> 
-> This is really looking fragmented and inconsistent.
-> 
-> What if someone *does* set the version bits in 'fn'? Also, if the "leaf
-> number" is just 16 bits, why is it a u64 in the API?
-> 
-> Additionally, look at this:
-> 
-> > /*
-> >  * Used in __tdcall*() to gather the input/output registers' values of the
-> >  * TDCALL instruction when requesting services from the TDX module. This is a
-> >  * software only structure and not part of the TDX module/VMM ABI
-> >  */
-> > struct tdx_module_args {
-> 
-> "version" doesn't fit this comment, does it? It's not a register.
-> 
-> If "fn" is just the 16-bit leaf number it should be a u16 everywhere.
-> Then there's no worry about the version number leaking in there
-> somewhere. The type can't even _carry_ the version number.
-> 
-> As a general rule, I dislike doing things in assembly that can be done
-> in C. But, in this case, we have some pretty darn simple assembly doing
-> a pretty simple job: marshaling data out of 'tdx_module_args' and in to
-> registers.
+On 7/10/26 09:21, Kiryl Shutsemau wrote:
+> The version is not a register operand, it is part of the function
+> number.
 
-Ughh.. I think it is totally wrong direction.
+I'm not sure why that's important.
 
-The version is not a register operand, it is part of the function
-number. And RAX carries more than leaf+version: bit 24 is
-INTERRUPT_MODE (enumerated by TDX_FEATURES0 bit 62) and bit 63 selects
-P-SEAMLDR. If the version gets a struct field marshaled in assembly,
-do we add fields for these bits too? Composing 'fn' as u64 in the
-caller is the honest representation of the ABI.
+Sure, the arg structure is all full registers now. But it's not even all
+the registers because RAX isn't there. So let's say we made the data
+structure smarter:
 
-Rather than pushing the version all the way down to assembly, let's
-look if we can salvage what was proposed initially[1].
-
-I know you didn't like it, but the problem there was that the version
-was invisible: TDH_SYS_UPDATE was silently v1 and the old one got
-renamed to TDH_SYS_UPDATE_V0. With the version spelled out at the call
-site, that objection goes away:
-
-int tdx_module_run_update(void)
-{
-	struct tdx_module_args args = {};
-	u64 seamcall_fn = TDH_SYS_UPDATE;
-	int ret;
-
-	if (tdx_addon_feature0) {
-		seamcall_fn |= SEAMCALL_LEAF_VER(1);
-		args.r9 = tdx_addon_feature0;
-	}
-
-	ret = seamcall_prerr(seamcall_fn, &args);
-	if (ret)
-		return ret;
+struct tdx_module_args {
+        union {
+                u64 rax;
+                struct {
+                        u16 function_nr;
+                        u8  version
+                        u8  padding0;
+                        u32 flags;
+                };
+        };
+        u64 rcx;
+        u64 rdx;
 	...
 }
 
-And tdh_vp_init() stays what it is in mainline today, just with the
-macro instead of the open-coded shift:
+All of the:
 
-	/* apicid requires version == 1. */
-	return seamcall(TDH_VP_INIT | SEAMCALL_LEAF_VER(1), &args);
+        struct tdx_module_args args = {};
 
-This also addresses all three complaints above at once: there is no
-FIELD_MODIFY() to silently overwrite version bits in 'fn' as it is
-exactly what the caller wrote, tdx_module_args stays a pure register
-structure, and the assembly is untouched.
+instances would default to version=0. It would take a one-liner to get
+bit 63 set:
 
-[1] https://lore.kernel.org/kvm/20260618081355.3253581-3-yilun.xu@linux.intel.com/
+ static int seamldr_call(u64 fn, struct tdx_module_args *args)
+ {
+ ...
++	args->flags |= SEAMLDR_BIT;
+        guard(raw_spinlock)(&seamldr_lock);
+        return seamcall_prerr(fn, args);
+ }
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+The truth of the matter is that 'fn' *IS* the RAX from the TDX ABI.
+We're carrying it around the kernel in that format, and it just doesn't
+work very well.
+
+The alternative is to carry the logical pieces of RAX around the kernel
+and them assemble RAX out of them in one (or very few) places. *Not* to
+build RAX in the TDX module ABI early far from the TDX module ABI layer
+itself.
+
+
