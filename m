@@ -1,148 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FA341C71
-	for <linux-coco@lists.linux.dev>; Sat, 11 Jul 2026 01:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783734213; cv=none; b=rCA3xxVdEknrqibDMNUwsOYJU4J4bwuYCHT7wRlSDsBJKR/VY6obPxNmynHsyPFElXBvizDfv4PpZRNhPkzbrUr4cTA1QW1GNMbUcnf0zsg4cSG6on1OdjgQJsgnsIYpeOMm5d9IKMnl66mT9GwSKZZuwbxmRfRsLfnomJE3Dys=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783734213; c=relaxed/simple;
-	bh=S0g/haHOPSvzU2y79/QbSWXT5WgEKV6clUHehCK8cck=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=G0THQoMOEhp+G2t9Rc/JunXs1atutQSccD07U1LYdRpzP2rPhpF/aYK7tM8JnsC2ceeTNA8arITZ3zIBC5pwnxQOOv+Wqaz0T6K0/b0YO5L3Qto1tvPSx3Oe13HhLIfrVea0EHJms5l0OkWJzEv0CjB0u//nOznox1siDuC6MI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PABJnd6y; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0922A1BF
+	for <linux-coco@lists.linux.dev>; Sun, 12 Jul 2026 01:01:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783818096; cv=pass; b=ol5FE4kuBMH5fFnDcptagTy8NBLkoH3jPFHP42Igisw67I+CRe2regr8kq9Shrc37+LDUYItMhSMYtnLmWqfQJMiNYkfAHDEqYYP5fh6IR8WpABUowlRmh00XFfJ994pdttOmyBmCFHwlOkurYe0xHUIveoaYbAX7Vc1Tnij8pI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783818096; c=relaxed/simple;
+	bh=R8xlg3RI6zLmG7lgrIZL1li1QImUsqosewBmuLTRodU=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TwR6Qd7yki1NqF+JmPbP/upL78QJ+76Zhi1WxC3qpErA61Nol9+cZj0nHxZ3JLweWgq6hGNgaw77MSLn2MLuNAJ8RvYK/4dLPV12F6wPQ8TWY+73R+h7XSOOrkXd06u78gE0OITLcNgnbE7TZWy5fzonkpYhbJBROglynu05hs0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WZK2t0ve; arc=pass smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PABJnd6y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D231F00A3A;
-	Sat, 11 Jul 2026 01:43:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783734212;
-	bh=X5VqJXvLCLHTE8wks7JmS5ApvXkflB2plX8EZ0k1ucQ=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=PABJnd6y/ULiJpKMY60px+O/S9+yOYzq2Hu69zW1//dFwTbBMKKfhYY7EtAT+MpeA
-	 zB2qF1wRC6yolnGIDImqJmiceYrsgvUA4QobkGALlqBxw66SY2RNn8ixWT1H7gfkzt
-	 zBFlGmzxbtS1G9+FELJPm4Y77pguZtKKyOTN/oTASUmYIdj9hwwNSFVajRzw6oVEuL
-	 Ht8IT6tr0p7t1WMePjJp5tQFm5XKUnvw1WPpoYnTH+Vp/jbI2YOR2D7Ogh1F+soPZx
-	 hWNWfCHgRkfOJK3txTEObQuIxxHh5Urd25gLXFYKSXBrcVR6vjZOtnEZBsw0UxrDaZ
-	 DC40K+RR4REQg==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id DB08FF4021A;
-	Fri, 10 Jul 2026 21:43:30 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Fri, 10 Jul 2026 21:43:30 -0400
-X-ME-Sender: <xms:wp9RaptfVbaWOtDQE1hjlfEs8ywkPv8WS42paTF2XSnKkRrrHs1M_Q>
-    <xme:wp9Rai6txPToY7cPmWX-RQbb2Afx-t59Rr6nc1WGBHO52kEOZGsK-384P-soi5rc_
-    QEI7atlYGged36DPziQke-YR3lRECzw7H1bkB1Jj-yBGeTFb6_mNKJs>
-X-ME-Received: <xmr:wp9RatcMxD7sKpt_Wt41-L6Oc-4xMLl6zMKfqWEL4YewHmVJq8dm3FkJdOzTY22PCFd9LEmI8r6Be-rWpMr9iZXAPpK7nnwjovU>
-X-ME-Proxy-Cause: dmFkZTFor6KCyo27hPkhFs4Wfza4vspf65rywiY4HhUO8p1nY97ffFzkLdXTLoU0Pe9vIy
-    09TNBCuf8Ef1NooJTEY2XP1+mY7cvpQV+9pX5j9vfx0jMLoKYbjhrQazS+j6z0JXXmrpGt
-    kCve8w7TzzxeoI/mibuWrXl+uCCoZN3LE3m+U4pNSH5BLlvafHSCwAiaUW0occ6oqnipka
-    aWybdAXNfHa23plUT0JThbn7ESMN9cI1MVzHs2ZJfRwcPpDqPa3N36dRRVRktfnRYmJgJp
-    hM1jY0hUjwVbnwWXRhQ/OwsBSZCljAJJwlH5vVZf2aeLDJB9JCppMwXcEKC/jpH+VwZJdk
-    OIpyH2emn0OREAvzj3jS0c3TONdIHntjIBtECIh6/BIy/OB3aMsYWmdofIu04CDuWyJtU4
-    V45CmYyPEeWP4q17/Q7o11GW4W9juSPR5YXFrP48JiYFe7gm5tfvXHZSAMVViD0u2pIKBB
-    iCnG6kBnW8B6xvEdnQXzR1w6fhZCmFLuiZF02qzlMidUJH/Z9m5QJJzFndyI5GgENCs+Ll
-    agn4S009/z1d6KmhoemnCw2ApzphfTLmAsLPk75qitVrVi4tHe1aI68kJpxgv/LBWEh8gz
-    xlDaBjoV24Iw6dyDdLuQDf/eN+SqC/dosr3Pv5G0Rz2f+h4Gzy/+lWUNhTYw
-X-ME-Proxy: <xmx:wp9RanyIAp1wrP_V-elMX-tx4JMNDOaJZifh64Gp2EQqpM0KFLbcRg>
-    <xmx:wp9Raq-9qe5X-xXUj08WzE4oBO-K3dCtSlbpAcjYaHMMCMuYi9oTsw>
-    <xmx:wp9Ratz-ee5QaYVrrQ2LujQ9b6ifHSNngXqI-xeGCwDIDxD0Oasc1w>
-    <xmx:wp9RaqoD2Tt-xe900HQSHU03SH8zRXKX4D-KJx9JugQ1ejvF8s7Kpw>
-    <xmx:wp9RaurCaxrslMTytDSVbfl3ftYc4MygLZjOHieTw62JXeocKdOj9ZQY>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 10 Jul 2026 21:43:30 -0400 (EDT)
-Date: Fri, 10 Jul 2026 18:43:29 -0700
-From: "Dan Williams (nvidia)" <djbw@kernel.org>
-To: Donald Hunter <donald.hunter@gmail.com>, 
- Dan Williams <djbw@kernel.org>
-Cc: linux-coco@lists.linux.dev, 
- linux-pci@vger.kernel.org, 
- driver-core@lists.linux.dev, 
- ankita@nvidia.com, 
- Alistair Francis <alistair.francis@wdc.com>, 
- Lukas Wunner <lukas@wunner.de>, 
- Jakub Kicinski <kuba@kernel.org>
-Message-ID: <6a519fc19172_253dc100e8@djbw-dev.notmuch>
-In-Reply-To: <m2y0flbuoa.fsf@gmail.com>
-References: <20260705220819.2472765-1-djbw@kernel.org>
- <20260705220819.2472765-2-djbw@kernel.org>
- <m2y0flbuoa.fsf@gmail.com>
-Subject: Re: [PATCH 01/15] netlink: specs: Introduce multi-message blobs for
- SPDM
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WZK2t0ve"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-ca957432c7fso1475074a12.1
+        for <linux-coco@lists.linux.dev>; Sat, 11 Jul 2026 18:01:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783818094; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DZl2f/avdXSnqCFP50GodbsGtTPQBiOeMGCgppop3aXwSg3bUT1KoQQEmfCVGHeE8y
+         700bRu778sljZt1xJWGPfd9Yf/H2+HrRXCwZGKcVvkadrvxrZPrJNlDJe9X+ADsR64Zc
+         wuj52NNd9I6nbnnZVT5iE5yAWKWjNE9SkRawXh+zvA3cCxSEBs5WswPACmUrq3Y2AI9t
+         wPnn1ZGVpTPIjhYsGZwH3xdyC4NAW71jrenHNxuWlq257VIzGydRy7+emnRtYyuZ1sk6
+         dCBZdMrI4B0okPqaZDWc+thYTEtkqactdQSqtakS3VCKzkbv+NxwHxdHotbAnx/4wRTN
+         lMcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=gGEYW3UAXERRsGZl8/IlnSaBkO9PGZLTdY+qnlryyhU=;
+        fh=39kBKamXyMlutdvkEnqhRfzFKkt23Pb7ytGdYuWIuvA=;
+        b=Dgh4wN7ha6PyLbTx3k+HTNMfbtRT1ZuxIQd/pMAErnQ9GuOGUzXL6ir3XYwdx33O/P
+         jlzy48/d8t1kQDaUu1ornO7XNKx9zHsteK4XGLRyvl0ZXqfXMqz31/dez+Usy+wympn+
+         ORzkGdMLnp9BOYrl5XK5+zZKxgCoo90LPmzVHBj/Ned7nm0JjSKWOuY/I5zmy0VXW20m
+         M0UF1nU6lj15VAjJg5xBJ3Z+CbCx0dutrHK7Fd+/l1krou0svwDJE+qQQ0BsUDP5rQL1
+         PuUcFnpx0MHlcklLFNzsSdW0TJwfP1fsk0Uj2QVgIrpu2+duwK8HxdNYP2EfiCLT5oYd
+         ZelQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783818094; x=1784422894; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gGEYW3UAXERRsGZl8/IlnSaBkO9PGZLTdY+qnlryyhU=;
+        b=WZK2t0veCziy0DtBKdF0topIqRD4IB173sps+8EmQtPWwMmiENvDSBY5iWn1G4P/9M
+         ihLS68gWx0+qgtee8my2k17x08CqcQ2mBpWcqpUDy9giP4MHAVmD3r/WSoIKLCCY7H2M
+         5cUkDbaX9zDWgECVBi10FHxeKW/V1ic2rejC5TAe0ApJ7JPUHwJfxRUTTGqHXRZyI7sK
+         X4lUKbi2RRnqlMtzwbbbDixztYwfzlcKYZe3Ck8O2s84Bu5VXjMWeojLcfNuAk04DYw3
+         +x8QvgOVKx9QcHiHkHUqnVwNCdeEl+kOiqhavrOqgpHsYOUXGKe9DNeZlN3W6dIt1GL1
+         zyWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783818094; x=1784422894;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gGEYW3UAXERRsGZl8/IlnSaBkO9PGZLTdY+qnlryyhU=;
+        b=eIaa+xKqIeiXJQDLybjJkN3eMM5PwwudKxp6/qM0wVW4Z20zNEntmOXqwhiguuMzNf
+         BMiMJGJv821l8SBOqSeEX2RW2gBvrKljQLR1K39Xne7hUNystr7u5kmUuca/l6jT3Oys
+         7Ema6KjyKHGLUg4zeWQAidNdQEMKKdTtxWlvVzOKKpWXxBKkKfVeK1kLmer89TiFPTVH
+         dcsDnM+E9vTtDx4jLQZAES2+UgH9CUSAFYH+QR4kDlp0XncpvzHAHCR4ynNPHuQT7TCn
+         YyIX41658Eydbp3FpF1EAPr9wQT/PFRih5rpX1XBswJ/DTihMefbGxW+WM80ooJGMOf3
+         hcWA==
+X-Forwarded-Encrypted: i=1; AHgh+RrlTU48FyHyDqVerWxZNK2hTGtPqrtQR+p+ag5YdK8IfuER75znSZm3dsP/gnPwQEHu4Mfy8EfntHQZ@lists.linux.dev
+X-Gm-Message-State: AOJu0YzubPqj14xjRpfMtkHF2gzr9tL6gg2ow6NRPaKA0PYV9Pq0FPT9
+	Xg4MZ02Gl/0ONBNtCFnDpULFhU9+Z0lGzo+u+jxDs4ltzVSJahIOV9TJb1hCoSPWJGqa7y+11Lb
+	g0dudVcrSpjWFrDygqpgNl5zH5nlbPT7bII5U5aQS/rxioiWvjKG6qqDf
+X-Gm-Gg: AfdE7clwJ8BPhE9Rp2q1kwxM3ZTKHn8BH09D1wn5Hcd9phURCGrapfvIx/ur6jQIgV2
+	cwMfkAGTG27t+FCWwKgq4r5vZqDaiwVx8RGQrK3kNI23QrkKHxUWRZtORd4WXdI7vudfDXkfQD2
+	w9cQfyrHC6T+DxeZ3bY6F3oGxAD03HXXstv2gAdIllmZWC/PzyvBVTmz3ep9HnqH9Be37YQke2T
+	eBjlxufkbUW59FV3rtbulpaHPdOONgVuw2/uatEE6M+j3QqLttiSyZHduIKO6v2JInh38k8PYyR
+	KJWgcjMRShig8BQxfCvBLXj2glT5
+X-Received: by 2002:a05:6a21:3990:b0:3bf:a7d5:df38 with SMTP id
+ adf61e73a8af0-3c11075f8f6mr4812182637.9.1783818093599; Sat, 11 Jul 2026
+ 18:01:33 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 11 Jul 2026 18:01:31 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 11 Jul 2026 18:01:31 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20250602133009.GC233377@nvidia.com>
+References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
+ <20250529053513.1592088-11-yilun.xu@linux.intel.com> <20250602133009.GC233377@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Date: Sat, 11 Jul 2026 18:01:31 -0700
+X-Gm-Features: AVVi8Cd0bGOMjMsYrL4vU20fXx-xb2mKPsbs-m9K5p8jfizmd9no0laxFphKWjw
+Message-ID: <CAEvNRgFpJWQ5M5sQhGpQUV3GbBq9N+MQhhaxdxa=D8ky94SCsw@mail.gmail.com>
+Subject: Re: [RFC PATCH 10/30] vfio/pci: Export vfio dma-buf specific info for importers
+To: Jason Gunthorpe <jgg@nvidia.com>, Xu Yilun <yilun.xu@linux.intel.com>
+Cc: kvm@vger.kernel.org, sumit.semwal@linaro.org, christian.koenig@amd.com, 
+	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com, 
+	dan.j.williams@intel.com, aik@amd.com, linux-coco@lists.linux.dev, 
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+	linaro-mm-sig@lists.linaro.org, vivek.kasireddy@intel.com, yilun.xu@intel.com, 
+	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com, 
+	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com, 
+	zhenzhong.duan@intel.com, tao1.su@intel.com, linux-pci@vger.kernel.org, 
+	zhiw@nvidia.com, simona.vetter@ffwll.ch, shameerali.kolothum.thodi@huawei.com, 
+	aneesh.kumar@kernel.org, iommu@lists.linux.dev, kevin.tian@intel.com
+Content-Type: text/plain; charset="UTF-8"
 
-Donald Hunter wrote:
-> Dan Williams <djbw@kernel.org> writes:
-> 
-> > The SPDM, Security Protocol and Data Model, underpins PCI device security
-> > and other use cases. It defines objects that allow for verification of
-> > device identity and configuration. These objects can be large in size 16MB.
-> > Netlink is otherwise suitable to define the operations, with optional
-> > parameters, and notifications for working with these objects. For example,
-> > operations like "regenerate evidence with nonce", "mark evidence
-> > validated", and "broadcast evidence / security state change events".
-> >
-> > A netlink 'blob' is introduced as a way to teach YNL that one instance of a
-> > attribute may span multiple messages. It enables netlink to convey all the
-> > data needed for verification and manipulation of SPDM transported evidence.
-> >
-> > The schema change to allows YNL to infer that an attribute may span
-> 
-> change to allows -> change allows
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-ack.
+> On Thu, May 29, 2025 at 01:34:53PM +0800, Xu Yilun wrote:
+>> Export vfio dma-buf specific info by attaching vfio_dma_buf_data in
+>> struct dma_buf::priv. Provide a helper vfio_dma_buf_get_data() for
+>> importers to fetch these data. Exporters identify VFIO dma-buf by
+>> successfully getting these data.
+>>
+>> VFIO dma-buf supports disabling host access to these exported MMIO
+>> regions when the device is converted to private. Exporters like KVM
+>> need to identify this type of dma-buf to decide if it is good to use.
+>> KVM only allows host unaccessible MMIO regions been mapped in private
+>> roots.
+>>
+>> Export struct kvm * handler attached to the vfio device. This
+>> allows KVM to do another sanity check. MMIO should only be assigned to
+>> a CoCo VM if its owner device is already assigned to the same VM.
+>
+> This doesn't seem right, it should be encapsulated into the standard
+> DMABUF API in some way.
+>
 
-> > multiple messages and interrogate its length to preallocate an
-> > appropriately sized receive buffer.
-> >
-> > The design direction to extend the netlink schema for a "multi-message
-> > object receive" case was the result of this discussion [1].
-> >
-> > Cc: Alistair Francis <alistair.francis@wdc.com>
-> > Cc: Lukas Wunner <lukas@wunner.de>
-> > Cc: Jakub Kicinski <kuba@kernel.org>
-> > Cc: Donald Hunter <donald.hunter@gmail.com>
-> > Link: http://lore.kernel.org/20260318170014.6650d2bf@kernel.org [1]
-> > Signed-off-by: Dan Williams <djbw@kernel.org>
-> > ---
-> >  Documentation/netlink/genetlink-legacy.yaml | 6 ++++++
-> >  Documentation/netlink/genetlink.yaml        | 7 +++++++
-> >  Documentation/netlink/netlink-raw.yaml      | 7 +++++++
-> 
-> I suggest you drop the changes to genetlink-legacy and netlink-raw
-> because I don't think we want to support the blob functionality for
-> legacy families.
+I'd like to propose an alternative. I've been working on guest_memfd and
+new to the world of IO, please help me along! :)
 
-Done.
+It seems like using dmabufs are used a little awkwardly here. IIUC
+dmabufs were originally meant to expose memory of one device to another
+device, mostly meant to share memory. Dmabufs do expose MMIO too, for
+device to device communications. Without virtualization, userspace MMIO
+would be done by mmap()-ing a VFIO fd and having the userspace program
+write to the userspace addresses.
 
-> Can you also update Documentation/userspace-api/netlink/specs.rst to
-> describe the multi-attr / bloblen API behaviour.
+Before CoCo, device passthrough (MMIO) is mostly handled by mmap()-ing a
+VFIO fd and setting up the userspace address in a KVM memslot for the
+guest.
 
-Added:
+With CoCo, is the problem we're solving that we want KVM to know what
+pfns to set up in stage 2 page tables, but not via userspace addresses?
 
-@@ -239,6 +239,16 @@ Boolean property signifying that the attribute may be present multiple times.
- Allowing an attribute to repeat is the recommended way of implementing arrays
- (no extra nesting).
- 
-+bloblen (multi-message binary blob)
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+String property specified on a ``type: binary`` ``multi-attr: true``
-+attribute to indicate that this single byte array may span multiple
-+messages. The string names an attribute that indicates the final size of
-+the blob when all messages are received. This differs from other ``type:
-+binary`` ``multi-attr: true`` instances without bloblen where each
-+message is an attribute boundary.
-+
- byte-order
- ~~~~~~~~~~
+guest_memfd already does that for regular host memory, tracks the
+private/shared-ness of the memory, tracks which struct kvm the memory
+belongs to.
+
+guest_memfd functions as KVM's bridge to host memory. KVM already can
+ask guest_memfd for the pfn to map into stage 2 page tables, and already
+asks guest_memfd for the shared/private state of the memory. guest_memfd
+already also blocks the host from faulting guest private memory
+(mmap()-ing is always allowed).
+
+
+Instead of using dmabuf as the intermediary between the MMIO PFNs and
+KVM, why not use guest_memfd?
+
+What if we make guest_memfd accept a VFIO fd, or a dmabuf fd?
+
+guest_memfd can then take the mmap() calls from userspace and .fault()
+from mm, and then forward them to VFIO or dmabuf. This way, VFIO/dmabuf
+can stick to their original functions, and the changes to VFIO/dmabuf
+would probably revolve around disabling access.
+
+Disabling access would probably involve some of these:
+
++ When guest_memfd receives the fd, it could return error for existing
+  mappings, or perhaps it could just force-unmap.
++ 1 extra flag or field to indicate that guest_memfd is controlling this
+  file, so that if userspace tries to take some actions with the
+  original VFIO or dmabuf fd, the request should be blocked.
++ Perhaps just close the original fd, like dup2(oldfd, newfd) closes
+  newfd?
+
+
+I'm about to restart work on guest_memfd HugeTLB and I'm thinking about
+a similar approach for guest_memfd HugeTLB, where perhaps the interface
+could be that userspace will give guest_memfd a HugeTLB fd at creation
+time, and then the original HugeTLB fd would be rendered unusable in the
+same way as above, perhaps like with the S_IMMUTABLE inode flag, but
+also blocking reads, and not userspace-modifiable.
+
+
+In the course of a CoCo guest's operation, will the guest need to
+convert between private/shared MMIO? Will the guest need some pages
+shared and others private? If these are required operations, guest_memfd
+already provides the tracking and is going to have a conversion ioctl
+very soon. Instead of further extending dmabuf to track more things, how
+about letting guest_memfd track it?
