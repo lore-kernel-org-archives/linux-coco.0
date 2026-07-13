@@ -1,68 +1,68 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41DF8356777
-	for <linux-coco@lists.linux.dev>; Mon, 13 Jul 2026 19:26:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124D7356747
+	for <linux-coco@lists.linux.dev>; Mon, 13 Jul 2026 19:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783970794; cv=none; b=I5Rc8SJCfyoSPT4KV5DpQyNWZh3lZIX35sGhXDCw0AWtPu2TYauISSZN/3lgGflOGbCG6qRhJBbJmHMbHgl8gAxeBy5y3Gu9ltwG2/nQmFUMcgz+mXtCWNm8bjoSzBwLqrR0cvr2VE69bCc1VohZcPHJKC93WsUnhm0YD6YUSKM=
+	t=1783970894; cv=none; b=JBjKr/LERl1ZqnJLXhHOSlybYx1DCcUQxiB3kx9ngxtJIouGi5ARcrNi99TSwk8puamtJPykKtVmuB3MryQlGgwNr1/OqJGnmAJmWQ7/1h09i2yYZYo2BzHzL87iPY5+c16DqFxIL5nMrRmbjDkwuz/eUDi/dY61yLRl5phhPWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783970794; c=relaxed/simple;
-	bh=3hYUesku0XYcq9M5Lzu0X2CUae3t5wbu+UMwDadhKgI=;
+	s=arc-20240116; t=1783970894; c=relaxed/simple;
+	bh=ASIpMrAC+mByzdrQ5Zb07sCc54XQ+GfbRmFG4npeTmM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EHqytL6VZm7rTHpsYJ3oR4EwWEMvPoQJ7j04X3mD9WZj+u7WeC9PlU+CjJGuzpeT7ZAgNCaRMZOfY7VlkXga+wDR/KzcoAAdHhsv1+BPFCn57arZ7tAIIyoeJouGqb1bapmWwveQZMMVj/JfrailxY3+eAl63yEHo7mMc2fKjI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=JWnKTSE7; arc=none smtp.client-ip=209.85.160.182
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wc5njmi3y5v/op6DJZjNxQTHCFpVro6A94RG0FxYHw1citdm+dW6Gidjbbvg7e05OjWj6iK+v2w3Xqbw7q5yAxbl/hHmONAslEVYklZblle+MZcKjOXLo13sdEds9bkDQVRZy/JwcUCx6zd+qGXLtd1+VIvHRWvqaD32Avo2g1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=oL4pJKgI; arc=none smtp.client-ip=209.85.222.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="JWnKTSE7"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51c928bf172so23035881cf.3
-        for <linux-coco@lists.linux.dev>; Mon, 13 Jul 2026 12:26:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="oL4pJKgI"
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-92e55b62640so205383885a.0
+        for <linux-coco@lists.linux.dev>; Mon, 13 Jul 2026 12:28:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1783970792; x=1784575592; darn=lists.linux.dev;
+        d=ziepe.ca; s=google; t=1783970892; x=1784575692; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=WcYJlt5p9Qz8AXWYIObijachKEBwhFuSBSepR8dnD2g=;
-        b=JWnKTSE7DB8AHjuAXeih+cIuR8qsMqkYMAgVfRrNeRkNESVlUeF0r4ainVvGLgOMRt
-         dBVEQS7saQRDzOmPJGporsgoLuc24NokaPuNfKxCxTqJqjEgCr1YdyLGn1PErR0i5NHN
-         Vz5FNycVW6by0Y3k3OMc7I8fA8zJURefH9nxbDf5q2y+iRO1YCEwP1gepHBc1SswHT6u
-         gt3yHY9mmRrGSQ2IVZR1xOb5Snp5AXR29UOOlh3Po/qpMPkNgFFTyBe0PdE19u5INd82
-         sqL2BPmY6tGSuSHXdwK01vbC8krjjUevZzJQasFrh7jfxJPXAzs9kEKH9qqeBNB3hxwT
-         T/vA==
+        bh=bN9JaggjBtthcoIhUPMeMbFxrz5q2FPyWPTtAmvW2io=;
+        b=oL4pJKgIYISyvEOUNFcsuwfuyD4Ral6m0gx8X61BT7+0eJzfb8U2ooDE1ZywIPKBAu
+         BlDmsJnjtw326YEtJRvlfA3k8WzBUMeeVxo82sNQwcHIAIKzmboQfOR11CtLJ17vhHJs
+         Cjrrk+cEKdfjbQnS7Fd1M7aHKEx0bRvw6cwaFgg/bx//Q1H1gwBeZITJ3uecXaw3qtxP
+         EbhshjpTh8RKbO1c2D3UaSnbKwP7gaBsIVtGL3PRH5j+NChwFILEh0rTPfyLqZlAMOmE
+         ezk9lkIekScvNXLFKR71wk7TZGwIHmQPdjWArzgQH7f7y9Bzh+0LNs499xO0IjMRNAcL
+         IQJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783970792; x=1784575592;
+        d=1e100.net; s=20251104; t=1783970892; x=1784575692;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=WcYJlt5p9Qz8AXWYIObijachKEBwhFuSBSepR8dnD2g=;
-        b=Jlnu81SZFt4DcawdVboKUVdhTP1RazwMEfHxZkkCAS/2rPp1YOx+1E2FKYY/7IcuMs
-         uxY6Wg79vU3zMqmZRC913D23wBXmWqDYvVf3i92q24953BsC++448SJ1M8q3Q7zmuiR4
-         LzvY1KVfVHunSUcB3YIhK7EvIpGjMtgt8TzrEELgGbP2rFKXs9sygLb8PghNaLB+sb9q
-         PDkyHuCk8E4sSPDJRrF0vESKwHXrfgxNqIjWAu3vOK1MwlkL8FkTfek85r7MEzJ5th3S
-         wEhhUPsl1FQoT6YlSIKnfF9t5Cr1pZ+r8Mnjub8lZEM3ixF05Q3v8cvVZDkLwo19dONG
-         3g5g==
-X-Forwarded-Encrypted: i=1; AHgh+Rqrw4q0Bu2VCFH7PWVilvTBlaSLf6XfePKNxrPsX7vcWQUym7SbmbB9R3MBP2ASbKMbOTCiCGijeBEE@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx8cWNw3nMAI4cHcvoCMbWnH8fk7xSzUlzjHdLZUpfIiw5YzxDd
-	H47N6/K+X5hJg09Aetu9cgcE1CI+b1xNEi5LwvLtyQ3CCOROpcrhGTNOJ6XCowgou/M=
-X-Gm-Gg: AfdE7cnIT5tZumqqS322Y0ligHSRxkGH/neffDj0VvCUuU/lqE0e6wHMa3A0Ibi5RIs
-	JCoozarTE9LkFNperOJmWMsig81dt+1VYx3oMcDcUzGYWgWo9+yN40uxHepbIAXCmwk+N2bY3l8
-	BKgv3h/TY9Bj2SfINPoXms6xO9C59DnpTwGX/RTlvZg+z82J1klttQF8t1DvBQxFq5HuLa7M5k9
-	YnDZn69kiTB4XdD1nVwwfH8UF46l2KgnQdj7hemGbyzk5o5H1zeN/zPIt5GI+OAv4aLCQ4pk4mL
-	vFOMrtPVGfetbXsroZLovtnmv3rfJQdqHpTAtyIHZ6CMqKGBG7b1EkM/6cQrvdiv8lm70phpau6
-	piy367OIo583b1aSdqw6C84uygZRwW+EneLdrOxPfIZ7K6lBZCKqxpABALXvV0R1ZWSbsMbo=
-X-Received: by 2002:ac8:5906:0:b0:51c:83ee:e430 with SMTP id d75a77b69052e-51cbf27d077mr95594101cf.75.1783970792197;
-        Mon, 13 Jul 2026 12:26:32 -0700 (PDT)
+        bh=bN9JaggjBtthcoIhUPMeMbFxrz5q2FPyWPTtAmvW2io=;
+        b=I0hhAAN6QEl8WKcZEXexohAx7vn2K/EhkYKNr/9/3X54uqLt+sZnGv2yBENbul4hjy
+         xFCE1+1byIOGxv8sVeMC4Ws9iQsZdK9mR67I8t37pEuW1CaGeia/ckM3BXrK/xxj5GtP
+         fCziQgtgfDnX94vF9ytRdOC3ONbcGPGpZ0sgDiA2vtYXnvPFxVwNEgtlU7EVffWI2PT7
+         XgZqUAZeOIDMlXCM7/oV+pnuS+/Nc1skfGR9DqVQBkA1NewsWMsa8Akg0jAPpNgPGBgP
+         me0a9+Gh8U2zCohfJZOzgnoJbp19N2MQyqcKVOuSN7u90ULYTdv5BwQNOKg2EC5jihx4
+         +mvw==
+X-Forwarded-Encrypted: i=1; AHgh+RpPYHTQLNxpZznTQoplpH6dSTMLJ4uK0e8O7dxTyzaJ7KcTeAqla8pqasAUOKZiU49gcpvcWs+qX9WO@lists.linux.dev
+X-Gm-Message-State: AOJu0YykSHoQ9V692jgXO4eAPXcFVT2LeZ+Ss1897rLZ/w9a4s2LpBym
+	ylPo9fduZSw+BeloHZSsKK/oNvucOIiNM3X/T9SUhRAZtJfPB/5qSAboitHL+MJcWIU=
+X-Gm-Gg: AfdE7cn+s1YHdpz9QLhXdBP45bjiSlOIsHA+Qvg2FTkgIT6nbD6gSs/FxsCxDLTS+IJ
+	amztR7zBO9T6IlYIS++tKZdejbAh2amEovinfF+UNnedUiz6dcTT8uqSO6QpfYqugfRNVqPZq6/
+	ijx1jixxg8XyZsT8EWmHePBbSDNqSMD0KQ0IJlI6wbRMwdeoI4GdzodnUYtPzKgvm+pD4mq+b1O
+	ZUbwZT5s4JV1cymesoXlCvKy6YssJ6v1Jlp2I47uFJd0Gcb7tNIJRJgJ5NZpAytn0dXpIO54RVD
+	PxsdxK6DxH25WIE7zjbiQI1OMFArCsQqjc4usBv0LS9pk1dIDTRr6VDWpcLLCuLOI2R98sqJpvf
+	0OHMr80tY5GZ5vrR1HxYdLeTcVGk1aQRGW9CZEdaQ9F99hbf8sMx9A6kMuB0MJ155tlBTHCI=
+X-Received: by 2002:a05:620a:2616:b0:92e:4a4a:4478 with SMTP id af79cd13be357-92ef2b55ebbmr1041396385a.31.1783970891864;
+        Mon, 13 Jul 2026 12:28:11 -0700 (PDT)
 Received: from ziepe.ca ([159.2.72.92])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51cbd8efab4sm70831241cf.1.2026.07.13.12.26.31
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd5bbac2asm137804776d6.21.2026.07.13.12.28.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 12:26:31 -0700 (PDT)
+        Mon, 13 Jul 2026 12:28:09 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1wjMIR-0000000E5Pw-0MTy;
-	Mon, 13 Jul 2026 16:26:31 -0300
-Date: Mon, 13 Jul 2026 16:26:31 -0300
+	id 1wjMK0-0000000E5Zr-4AHb;
+	Mon, 13 Jul 2026 16:28:09 -0300
+Date: Mon, 13 Jul 2026 16:28:08 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
@@ -90,11 +90,11 @@ Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	Christian Borntraeger <borntraeger@linux.ibm.com>,
 	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
 	Jiri Pirko <jiri@nvidia.com>, Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH v7 14/22] dma-mapping: make dma_pgprot() honor
- __DMA_ATTR_ALLOC_CC_SHARED
-Message-ID: <20260713192631.GT3133966@ziepe.ca>
+Subject: Re: [PATCH v7 15/22] dma-direct: pass attrs to dma_capable() for
+ DMA_ATTR_CC_SHARED checks
+Message-ID: <20260713192808.GU3133966@ziepe.ca>
 References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
- <20260701054926.825925-15-aneesh.kumar@kernel.org>
+ <20260701054926.825925-16-aneesh.kumar@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -103,25 +103,29 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260701054926.825925-15-aneesh.kumar@kernel.org>
+In-Reply-To: <20260701054926.825925-16-aneesh.kumar@kernel.org>
 
-On Wed, Jul 01, 2026 at 11:19:18AM +0530, Aneesh Kumar K.V (Arm) wrote:
-> Fold encrypted/decrypted pgprot selection into dma_pgprot() so callers
-> do not need to adjust the page protection separately.
+On Wed, Jul 01, 2026 at 11:19:19AM +0530, Aneesh Kumar K.V (Arm) wrote:
+> Teach dma_capable() about DMA_ATTR_CC_SHARED so the capability
+> check can reject encrypted DMA addresses for devices that require
+> unencrypted/shared DMA.
 > 
-> Update dma_pgprot() to apply pgprot_decrypted() when DMA_ATTR_CC_SHARED or
-> __DMA_ATTR_ALLOC_CC_SHARED is set and pgprot_encrypted() otherwise Convert
-> the dma-direct mmap paths to pass DMA_ATTR_CC_SHARED instead of open-coding
-> force_dma_unencrypted() handling around dma_pgprot().
+> Also propagate DMA_ATTR_CC_SHARED in swiotlb_map() when the selected
+> SWIOTLB pool is decrypted so the capability check sees the correct DMA
+> address attribute.
 > 
 > Tested-by: Jiri Pirko <jiri@nvidia.com>
 > Tested-by: Michael Kelley <mhklinux@outlook.com>
 > Tested-by: Mostafa Saleh <smostafa@google.com>
+> Reviewed-by: Petr Tesarik <ptesarik@suse.com>
 > Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 > ---
->  kernel/dma/direct.c  |  8 +++-----
->  kernel/dma/mapping.c | 16 ++++++++++++----
->  2 files changed, 15 insertions(+), 9 deletions(-)
+>  arch/x86/kernel/amd_gart_64.c | 30 ++++++++++++++++--------------
+>  drivers/xen/swiotlb-xen.c     |  6 +++---
+>  include/linux/dma-direct.h    | 10 +++++++++-
+>  kernel/dma/direct.h           |  6 +++---
+>  kernel/dma/swiotlb.c          |  2 +-
+>  5 files changed, 32 insertions(+), 22 deletions(-)
 
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
