@@ -1,261 +1,133 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A00346E60
-	for <linux-coco@lists.linux.dev>; Mon, 13 Jul 2026 17:27:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF94034C981
+	for <linux-coco@lists.linux.dev>; Mon, 13 Jul 2026 17:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783963671; cv=none; b=UmCcBXa2BF0la5+Rxuia1YlWpQxADaqJ3/gd6YTwY4Jbod3SBgrQx2Yt5QXvr1p2Jy+Kzpjutx9bcYj1lf1zHsUR720OyXuHQB+qX1oBKkICma0t0e+H1ayZSteNL1j0QXu5M/NXu2IagVVXXslohMBxBSXxmDOeFrHkwHBX4Eo=
+	t=1783965278; cv=none; b=hg9315O9STIzJt0NA7gkIhCXo9Ha7cAulWXOQ6cXwZzuGJy5GBT7E4x0aaPZo3N8rWkaJAkUZZjhYJ7XwpGLmizUG5riaHIBtqDd7T+i8G0h+dLnVc2q+7g6XVADEqvNjsXsIKOeIWFlKYSh/jAPgf25izYSoZhA7l+uSx3WNOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783963671; c=relaxed/simple;
-	bh=tRHm/snbkZcCM8XoGyq3hn28EYvaTxM6F0inLOwAoGA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aYQHi9DgTv0ozKLySzDipHe2EkGdj4yT2VXkEWt1C0lcKhlL4mkZOYkevCrCV7YFThBoATlkAjPcxiK71fPTjSu/9qZfW7pyhox0MgfLatiI3iAVHtScG36b0yvBOBsRvZ5QpaCY2mESqzvSaw/U0UAESF/7elCJ33ZhWtHs0OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RMFLJ4L3; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1783965278; c=relaxed/simple;
+	bh=K2KZlv8DzBtV03E/TVL3MeUwYAAgOJe/Vo9Rt0OvASs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qhxoOuyKKNhiDlOQ983thX5PzKx+Gxu7ghRCInoFWqrQ1xS9PxFP89kW62dhBu34yJBMs6XakmCnw0nK2i4S7PlPwa1yfRJjUtElezkJmOpAlywW+ET2mHJkTzk5bYPnRwL2SRyCORfxx0JXz7F3T+gcVznoyfLBH6pygjIEE5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Dk464SYW; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RMFLJ4L3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783963668; x=1815499668;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=tRHm/snbkZcCM8XoGyq3hn28EYvaTxM6F0inLOwAoGA=;
-  b=RMFLJ4L3cSddkit4I0+yMNUISOadPBajBNslTRSDdrj+PVAtJVYyplhp
-   dQYDisJ/Q21CH9F6I/Fw769B9IBQv8HtOFIqxy7zvV4XWZMdwSnV6XR9r
-   aAovOEiyUl24VBGtee+uiYRAQMPuVtX9iuGfDrNXDavCSuOSiOCAifHSc
-   sPPT10uTj0OFXYeSGUmRoQTjdyxCh43G1/9ozKEsBWNk3Sr8blDTQ8bhE
-   TtcSYfBezgqY+4I5MhiC6ETztvHSZTf5lT1r3ZQXBM4sOWRmPHcsQWLAK
-   xBCvgesmncx/sk8zO78nU65sWIXx0YzVZkDSxvZQb1m2RdEonJ8/TFhoq
-   w==;
-X-CSE-ConnectionGUID: JN5ZOmJeRBKXi+yqcMlEjw==
-X-CSE-MsgGUID: rZHl2j7VRWafYNBW7lo/0A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84456443"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="84456443"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 10:27:47 -0700
-X-CSE-ConnectionGUID: baLMqwBFTOm/DA8GhbGnfg==
-X-CSE-MsgGUID: gLzh6Y7+ReaGDTMSb3pw9w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="252232304"
-Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.80.90]) ([10.24.80.90])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 10:27:47 -0700
-Message-ID: <283d7cc7-e87e-4d4e-b1d9-ae19725e1606@linux.intel.com>
-Date: Mon, 13 Jul 2026 10:27:46 -0700
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Dk464SYW"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-92e50979c71so338135985a.3
+        for <linux-coco@lists.linux.dev>; Mon, 13 Jul 2026 10:54:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1783965275; x=1784570075; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Yflr35iQtozkrKsWPSXMB3haiCYqPE+VDxf/660hH9k=;
+        b=Dk464SYWGcVYur5g+kJw7Nhz0KXLeuFIO3eMXYpFC0EI27zCiwz8Efb1ytYc42rpVq
+         Fj+O/DEh07JtHMwhaIEP+tPP1d1o34c2ki0GHTlDv/4Mxy7x1Hyhp8sE6Pe90gwdQdUH
+         3aKMV0IZG5acRB6gkkmJe2QbM/FVPsE2Pizx6lqsB27CSChyjM6nJNeJOQXxGJllKtaG
+         c1knT92OC1KBU7prNvxaR1YkUuHRCMBad3cqNyu4DQtqZL9r4ya0uJQch+pkjAB6d85Y
+         17fotqiRtTypOAzqVBC5sZhvzo3FVMlg0BcRSPdCrJLx7vaW9sBhguTcwRe0F2L9SaO/
+         5nQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783965275; x=1784570075;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Yflr35iQtozkrKsWPSXMB3haiCYqPE+VDxf/660hH9k=;
+        b=QXnIhK2Q54tHWKVhwOLdK9DCa96iA5D7/5QWllCmTFIpFcCkH7l/nz23NpBPKvrNrH
+         X1V8g5XGOVNEgJXRmp0S0+jLubyq7DEbPfVLsaiS4/8HzyLGKaEp5GLR4IRjTpKa76ka
+         i/uSyX4gqa1rOQszh5g1/zpx4P98g4tSF/BCB1MIwTIUKF88U0ivJ3nOmrppuWHAVIIl
+         1OVJmrxJTM7VNLURKg7darvDLC1P7YAvMNT5yhV6+6KD28hgsyGhnh+v9oK81fXzHcg2
+         tR0oAZ729t85/2CuZHm6XoJZzcBjCxH1rQAqO2juGSpSoxy1F9R8gEn9RbpDefXOX7Gz
+         6vaQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoufGVpOJNQpv4Jx66w5OGQaCwjea9QGEieeiepDuLMCrOc47/BR591iuUbEsWIx/bylS3Tj2gwxKgt@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz6aQiP+Vyt+5/C76QeksJzc/IC9jhEuIJ6UppBNqvggbTqip7v
+	IgYwBFuEYtCtcpp2UVupr0KtnmY7CD16CG/4fNJXaeNKPjUWIbZ/vDaC7ELVehbblSU=
+X-Gm-Gg: AfdE7clUzzRHxieDFRz3rFJmhW0hTurIiQyR5pNRMMRs33ma0t0pP/bKvftD6wa3rIF
+	9Xl30JHH2bxxSuaHHq1fjhFDLPTD/cOtFkXk/LweIw3t3j3//ipGHjCfFThApcGT3hijsF7+zgJ
+	jmIGLd9+z/wL0HR6M3XmxCjlrMWzb5YUOHYlASj1r52CLuqtG/eCZCwE8e7VsWt6MAZqEsaHf1w
+	Dpprzw2Vy8Sw8H+zdLLNz7ll1VH6bmCOONsQ16raHlGsmLlwpCOf7Ucpx7Qeqbg8jLqRQlHRJYg
+	Usn7NmTnVSvNshnGUmre4tjUWveCo0etTo3qVJnp2uFLVS2Rl+wYsMW8qj3GrA7lTMdValL2ISI
+	JYS85DzA+TRwEqUNXE9QhFmig3+B3eZxtdaihKZhf7Vbh/6IvPvcpAcbQMd0f
+X-Received: by 2002:a05:620a:469e:b0:915:94f7:55df with SMTP id af79cd13be357-92ef2bd609cmr983527785a.20.1783965274729;
+        Mon, 13 Jul 2026 10:54:34 -0700 (PDT)
+Received: from ziepe.ca ([159.2.72.92])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92ee5cfdf6fsm1229104285a.24.2026.07.13.10.54.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 10:54:34 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wjKrR-0000000DwzJ-2as1;
+	Mon, 13 Jul 2026 14:54:33 -0300
+Date: Mon, 13 Jul 2026 14:54:33 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
+	Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v7 02/22] dma-pool: fix page leak in atomic_pool_expand()
+ cleanup
+Message-ID: <20260713175433.GI3133966@ziepe.ca>
+References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
+ <20260701054926.825925-3-aneesh.kumar@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] virt: tdx-guest: Allocate Quote buffer dynamically
-To: Peter Fang <peter.fang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org
-References: <20260612110853.3188196-1-peter.fang@intel.com>
- <20260612110853.3188196-3-peter.fang@intel.com>
-Content-Language: en-US
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20260612110853.3188196-3-peter.fang@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260701054926.825925-3-aneesh.kumar@kernel.org>
 
-Hi Peter,
+On Wed, Jul 01, 2026 at 11:19:06AM +0530, Aneesh Kumar K.V (Arm) wrote:
+> @@ -115,8 +116,10 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
+>  	 */
+>  	ret = set_memory_decrypted((unsigned long)page_to_virt(page),
+>  				   1 << order);
+> -	if (ret)
+> +	if (ret) {
+> +		leak_pages = true;
+>  		goto remove_mapping;
+> +	}
 
-On 6/12/2026 4:08 AM, Peter Fang wrote:
-> From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> 
-> The TDX attestation driver currently uses a fixed 128 KB Quote buffer
-> shared with the host VMM. This may be too small for Quotes using schemes
-> such as post-quantum cryptography (PQC), where certificate chains can
-> increase the Quote size to several megabytes.
-> 
-> Allocate the Quote buffer based on the size reported by the TDX module
-> instead of always reserving a fixed-size buffer. This avoids wasting
-> memory on platforms that do not require larger Quotes. Older platforms
-> fall back to the default 128 KB buffer.
-> 
-> Because the Quote buffer must be physically contiguous, its size is
-> bound by the buddy allocator's maximum page order (4 MB), which should
-> be sufficient for current attestation needs.
-> 
-> struct tdx_quote_buf has a trailing flexible array, so use offsetof()
-> instead of sizeof() to calculate the header size.
-> 
-> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> Assisted-by: Claude:claude-opus-4-7
-> Assisted-by: GitHub Copilot:gpt-5.4
-> Signed-off-by: Peter Fang <peter.fang@intel.com>
-> ---
+Truely these _set_memory_decrypted() things are an insane API. So a if
+it fails to decrypt it can be in any messy state?
 
-Looks good to me.
+> @@ -130,14 +133,15 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
+>  				   1 << order);
+>  	if (WARN_ON_ONCE(ret)) {
+>  		/* Decrypt succeeded but encrypt failed, purposely leak */
+> -		goto out;
+> +		leak_pages = true;
 
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+At least this one makes some sense..
 
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
->  drivers/virt/coco/tdx-guest/tdx-guest.c | 52 ++++++++++++++++++-------
->  1 file changed, 38 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> index a9ecc46df187..162fb47f3fae 100644
-> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> @@ -163,7 +163,7 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
->   * DICE-based attestation uses layered evidence that requires
->   * larger Quote size (~100K).
->   */
-> -#define GET_QUOTE_BUF_SIZE		SZ_128K
-> +#define GET_QUOTE_DEFAULT_BUF_SIZE	SZ_128K
->  
->  #define GET_QUOTE_CMD_VER		1
->  
-> @@ -171,7 +171,7 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
->  #define GET_QUOTE_SUCCESS		0
->  #define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
->  
-> -#define TDX_QUOTE_MAX_LEN		(GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
-> +#define TDX_QUOTE_BUF_LEN(n)		(offsetof(struct tdx_quote_buf, data) + (n))
->  
->  /* struct tdx_quote_buf: Format of Quote request buffer.
->   * @version: Quote format version, filled by TD.
-> @@ -192,8 +192,9 @@ struct tdx_quote_buf {
->  	u8 data[];
->  };
->  
-> -/* Quote data buffer */
-> +/* Quote data buffer and size */
->  static void *quote_data;
-> +static size_t quote_data_size;
->  
->  /* Lock to streamline quote requests */
->  static DEFINE_MUTEX(quote_lock);
-> @@ -210,9 +211,8 @@ static long tdx_get_report0(struct tdx_report_req __user *req)
->  			     USER_SOCKPTR(req->tdreport));
->  }
->  
-> -static void free_quote_buf(void *buf)
-> +static void free_quote_buf(void *buf, size_t len)
->  {
-> -	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
->  	unsigned int count = len >> PAGE_SHIFT;
->  
->  	if (set_memory_encrypted((unsigned long)buf, count)) {
-> @@ -223,19 +223,43 @@ static void free_quote_buf(void *buf)
->  	free_pages_exact(buf, len);
->  }
->  
-> -static void *alloc_quote_buf(void)
-> +static size_t get_quote_buf_size(void)
->  {
-> -	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
-> -	unsigned int count = len >> PAGE_SHIFT;
-> +	size_t buf_sz = GET_QUOTE_DEFAULT_BUF_SIZE;
-> +	u32 quote_sz;
-> +
-> +	quote_sz = tdx_get_max_quote_size();
-> +
-> +	if (quote_sz)
-> +		/* Reported size does not include GetQuote header */
-> +		buf_sz = TDX_QUOTE_BUF_LEN(quote_sz);
-> +
-> +	return PAGE_ALIGN(buf_sz);
-> +}
-> +
-> +static void *alloc_quote_buf(size_t *buflen)
-> +{
-> +	unsigned int count;
-> +	size_t len;
->  	void *addr;
->  
-> +	len = get_quote_buf_size();
-> +
-> +	/*
-> +	 * This fails if the requested size exceeds the buddy allocator's
-> +	 * maximum order (order-10, 4MB).
-> +	 */
->  	addr = alloc_pages_exact(len, GFP_KERNEL | __GFP_ZERO);
->  	if (!addr)
->  		return NULL;
->  
-> +	count = len >> PAGE_SHIFT;
-> +
->  	if (set_memory_decrypted((unsigned long)addr, count))
->  		return NULL;
->  
-> +	*buflen = len;
-> +
->  	return addr;
->  }
->  
-> @@ -286,7 +310,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
->  	if (desc->inblob_len != TDX_REPORTDATA_LEN)
->  		return -EINVAL;
->  
-> -	memset(quote_data, 0, GET_QUOTE_BUF_SIZE);
-> +	memset(quote_data, 0, quote_data_size);
->  
->  	/* Update Quote buffer header */
->  	quote_buf->version = GET_QUOTE_CMD_VER;
-> @@ -297,7 +321,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
->  	if (ret)
->  		return ret;
->  
-> -	err = tdx_hcall_get_quote(quote_data, GET_QUOTE_BUF_SIZE);
-> +	err = tdx_hcall_get_quote(quote_data, quote_data_size);
->  	if (err) {
->  		pr_err("GetQuote hypercall failed, status:%llx\n", err);
->  		return -EIO;
-> @@ -316,7 +340,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
->  
->  	out_len = READ_ONCE(quote_buf->out_len);
->  
-> -	if (out_len > TDX_QUOTE_MAX_LEN)
-> +	if (TDX_QUOTE_BUF_LEN(out_len) > quote_data_size)
->  		return -EFBIG;
-
-Nit: I think this check will be more readable if you can rename
-quote_data_size to quote_buf_size (since it holds total buffer
-size).
-
->  
->  	buf = kvmemdup(quote_buf->data, out_len, GFP_KERNEL);
-> @@ -418,7 +442,7 @@ static int __init tdx_guest_init(void)
->  	if (ret)
->  		goto deinit_mr;
->  
-> -	quote_data = alloc_quote_buf();
-> +	quote_data = alloc_quote_buf(&quote_data_size);
->  	if (!quote_data) {
->  		pr_err("Failed to allocate Quote buffer\n");
->  		ret = -ENOMEM;
-> @@ -432,7 +456,7 @@ static int __init tdx_guest_init(void)
->  	return 0;
->  
->  free_quote:
-> -	free_quote_buf(quote_data);
-> +	free_quote_buf(quote_data, quote_data_size);
->  free_misc:
->  	misc_deregister(&tdx_misc_dev);
->  deinit_mr:
-> @@ -445,7 +469,7 @@ module_init(tdx_guest_init);
->  static void __exit tdx_guest_exit(void)
->  {
->  	tsm_report_unregister(&tdx_tsm_ops);
-> -	free_quote_buf(quote_data);
-> +	free_quote_buf(quote_data, quote_data_size);
->  	misc_deregister(&tdx_misc_dev);
->  	tdx_mr_deinit(tdx_attr_groups[0]);
->  }
-
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
-
+Jason
