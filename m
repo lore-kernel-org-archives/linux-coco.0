@@ -1,146 +1,163 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99009437106
-	for <linux-coco@lists.linux.dev>; Mon, 13 Jul 2026 13:56:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6888A3090C2
+	for <linux-coco@lists.linux.dev>; Mon, 13 Jul 2026 16:01:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783951002; cv=none; b=Rjl4/i2Q/PuKqvw1nZClHie8RvAhSwNt1iYfdsLgWod+6UD7+yoZ/4TkLbqtEvlenJrFGfQHrrvAY56FMH1FzhFMBv1EX3FPLbgDFzfi7cqENuFjFqRy0YaTNXKWwyGCTGt5pnwoEEQIcMc6LLGWK7SHVvQkCmM/bjJQ9EVifZA=
+	t=1783958508; cv=none; b=Kye4q5POAVMMsm21iM6qeQkb6hUgNVbfswSiv+dkGLtybheTwYJfg0yLAst2XNWU861FngeJDo/GtuV6T057bQXpOqHN0yH76fjFRUmHuWR1KVrAK/0qfVb5NXOeHThZ+w4GRIy6/TuCRw8S7mcuS4i5KdORb1HzQ2/7BKCpYEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783951002; c=relaxed/simple;
-	bh=9KihY4IsvKVp0Oht8qbc03FAQfSZWEfFvdyOwhTMNR0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eTywzvqRs7RNj6Mm25nMLAw2xqazAX1V9NT9Vm64Qvc3VLwNBbfzT74Ws96S+YviiK3HdICwRFW2+xbWknSIL0rf6SNKB9vZ7shUSFURZNSccGqd0S4E+lSRa9iwbXy3xsp9EJIKpGplXgUSgEByItz/R2rPok/adS35SJcfOR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=eKsYPFfA; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1783958508; c=relaxed/simple;
+	bh=CD954zLyW+H+N700cDO8caRM/+OWbiqnsi8A3hbhkKg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l3UJ6vUgOrFo+uByvJg7O2UQZouwuVAuShIlML1aiqQ/vY/CZRJhT9pUJ3mi/KNNxPaY9LtBLuBkb8d0j2jyDCzBqesA046q/hdDQ3hTPEFXR8zpjgE6XzlYQ8neGhrU+hZ7GNnU4xy1W1o3/IEbZEcxE0FPtujsHba7lB9fsEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NJsNTqsz; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="eKsYPFfA"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-9030f8ea3b3so26953286d6.1
-        for <linux-coco@lists.linux.dev>; Mon, 13 Jul 2026 06:56:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1783951000; x=1784555800; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dThHBkWDs48b/2hz2YL35z2V9VnPq+MKY/40ZoZ5a/U=;
-        b=eKsYPFfAbTFJ1vUVyx78LXhQHpeJIUe3yG7M/G0E8S0cjUBEaKzZs3g3v6Y8bENRCx
-         xYI2vFLgYRMs8tiJbLrW0fJuFqmImRL0cRCWOtpG3V0S2d1DkJTmTTbzFsldpVGEMhO3
-         iXPe+U7aL1hfhS2Gb6he0REB4ZPngFmo7SKpBOTF0D57myvPbBfK7k4ZkBIlbpQYF9Np
-         MytDvKuaspmHcmiUa8hnTAh60ID8cVH7IwyCyJcMA9bSVwXwPllzTWuddmq0NKtQMff4
-         o0Xipp+q7abBp5ss92jJh35RNRRNPfYxr47rWklI5HDPuqtZWxRp9ZjG63ApCIJUmC74
-         O3Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783951000; x=1784555800;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dThHBkWDs48b/2hz2YL35z2V9VnPq+MKY/40ZoZ5a/U=;
-        b=N98keNrK3N1AjkdvgJNjbyI11fx66s0DAOxoE3St+lsyITqcvySvba1wLlgVaOXbp2
-         GbYZbQYGSLnrvdPBSOBDgONBwTn+WMejBGU4KssySgENMmNON0SH1XGG7Y2K64DW+oIw
-         /72t9hd+mtJCSL2ZAqtK/lTZ2gWTdrxfHSwSJT05iq7SSI1Q+0lqIE+4stc7O1BVFXuk
-         QRPNtjT4R0L/6RZeyspigHivn9cSbCdYSoe3fkhspYimuX4li4PMteso0SkJCy2ldY9k
-         6zHUhajHv9Ca1GD/PyvLvzlji0tSqAiaMcFJwXwBbH6951HNymsFeCdhVgBce060K1lM
-         Gt4w==
-X-Forwarded-Encrypted: i=1; AHgh+Rq5b5I3/A3yq1StYBHWaIhZiYJVq/ev1xegLlhieMQNhDP3MHOd1bo1G9wldEw6nDjj5mVpDvfDNvXD@lists.linux.dev
-X-Gm-Message-State: AOJu0YzMci9QbODBWc7N/tj9E89yuFSU4cAdJR9ls4GduD5k8N2eROnH
-	clpa0y2Mlfp33aOSAD6rc2hIamGhBJ26mDs2CkZpDY6ZuHVBzpJP7cG2QWgGStz5KHY=
-X-Gm-Gg: AfdE7cmTXXL8nRu/U0YorazRTx6/JGgC8PGPCop6TiKgDGKwyQa+TFrS4aPCNDo5yxR
-	7vzRgf/B4vpx3UhuBVNjMztwJu0fJSWka0YS6PVY6MiKFVs0zGfAZMvm/ZGpaBTMk7wnN4KhehT
-	c2oKR8sgLrIIUeUF9csrhxmCw6XJ7mFH603zrK7+1e6iEXjMXIIHopebe52WquZU6RfHfeYeOIs
-	KnR6jwm31Lkdgl8jkXRlBNVAQctdZbGdkGkhV7zTK30K8FEm8p3HMGbWULmhHAvm20kUGoluTU6
-	hAodgGvfU4PKHDIopRIKuOaRtg2qUqkkbfTSM3sSrpuYOB6X0L0aJpiarKYaMRcn2F6mdcg7a31
-	ljO52Ty2acPVBy6Gxx7ZOBKJ7KmYFe9Aq1ZOt4MfUtgjPzDe6YZ1ddXSPvq8z
-X-Received: by 2002:a05:6214:da9:b0:8ee:756a:f1d3 with SMTP id 6a1803df08f44-903ffc638e5mr98221496d6.28.1783950999687;
-        Mon, 13 Jul 2026 06:56:39 -0700 (PDT)
-Received: from ziepe.ca ([159.2.72.92])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd81f4bbdsm126704796d6.36.2026.07.13.06.56.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 06:56:39 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wjH9C-0000000DL9o-26N7;
-	Mon, 13 Jul 2026 10:56:38 -0300
-Date: Mon, 13 Jul 2026 10:56:38 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
-	Jiri Pirko <jiri@nvidia.com>, Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH v7 16/22] dma-direct: make dma_direct_map_phys() honor
- DMA_ATTR_CC_SHARED
-Message-ID: <20260713135638.GB3133966@ziepe.ca>
-References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
- <20260701054926.825925-17-aneesh.kumar@kernel.org>
- <ak42F240d-53QeFN@arm.com>
- <yq5apl0xgy89.fsf@kernel.org>
- <ak-CT3oanlDfgTy4@arm.com>
- <20260709181336.GM118978@ziepe.ca>
- <yq5ajyr3h106.fsf@kernel.org>
- <20260710161945.GO118978@ziepe.ca>
- <yq5atsq6hdaa.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NJsNTqsz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783958506; x=1815494506;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=CD954zLyW+H+N700cDO8caRM/+OWbiqnsi8A3hbhkKg=;
+  b=NJsNTqszoFL2lIEnjT3uA220H6AoBiyyafyjqatbT03l7daIJAEzIK54
+   /CJtV0+zF0QOgLsNs6RQV1doaSRveH3TJbcYbOoh0xYh3BZ8kijLNyZD7
+   qQSbMXJJWtUlTF06vUasnLu7g033Cb+HZgPtA0k+hv/IsubWpjzC7cKYT
+   1vmMSPNUJs82wCnSyL7oBWGlRp+WtP8skm/xeJiM73Cwey+3F7Q6oadZ5
+   E1gmJpf6dD9ofSAJTtjxZsC4+05C7k7DugUBzTPQfMM/Suizxs7jTLYq7
+   ycDaEDCeCmAUzScI2rFAI6boRyaFNFLyrmQAh7oNftUhnyeQuILNESkfA
+   w==;
+X-CSE-ConnectionGUID: 0D+VjRLBS2uSwZnzwGQWtQ==
+X-CSE-MsgGUID: 5dAUIcYaQsSQCRydDxbgPA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84348800"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="84348800"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 09:01:45 -0700
+X-CSE-ConnectionGUID: CPAh3dhWSUGNs6dbqkEkbQ==
+X-CSE-MsgGUID: 21ZP3ox8SRypvlTcge7k1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="249238465"
+Received: from unknown (HELO [10.24.80.90]) ([10.24.80.90])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 09:01:45 -0700
+Message-ID: <680a2be7-5a10-448d-8552-cb9ef64b6be7@linux.intel.com>
+Date: Mon, 13 Jul 2026 09:01:38 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5atsq6hdaa.fsf@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] x86/tdx: Add helper to query maximum TD Quote size
+To: Peter Fang <peter.fang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org
+References: <20260612110853.3188196-1-peter.fang@intel.com>
+ <20260612110853.3188196-2-peter.fang@intel.com>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20260612110853.3188196-2-peter.fang@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Jul 11, 2026 at 12:39:49AM +0530, Aneesh Kumar K.V wrote:
 
-> > But if you really want to it should be
-> > cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT) *only* and get rid of the wrong
-> > force_dma_unencrypted().
-> >
+
+On 6/12/2026 4:08 AM, Peter Fang wrote:
+> TDX attestation blob ("TD Quote") sizes can grow with newer
+> cryptographic schemes, so guests can no longer rely on a fixed-size
+> buffer for the Quote.
 > 
-> Ok, I will update the changes to so we preserve the previous behaviour
-> for SME?
+> Newer TDX modules report the maximum TD Quote size via a TD-scope
+> metadata field. Add a helper to query it instead of exposing tdg_vm_rd()
+> directly, as it can read arbitrary metadata fields.
 > 
-> 	if (attrs & DMA_ATTR_MMIO) {
-> 		/*
-> 		 * For host memory encryption treat MMIO memory as shared
-> 		 */
-> 		if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
-> 			attrs |= DMA_ATTR_CC_SHARED;
-> 	}
+> Thanks to Xu Yilun for suggesting this.
 
-I'm OK with this, with the expectation we should aim to remove it when
-fixing the callers.
+I'm not sure what the original suggestion was. Perhaps a link to the discussion
+(or Xu Yilun's email) would be helpful for context.
 
-> > But IMHO, I'd rather this series treat ATTR_MMIO as private MMIO and
-> > ATTR_MMIO|CC_SHARED as shared MMIO and that's the right and correct
-> > thing for the DMA API.
-> >
 > 
-> If you think the rest of the series is ready for upstream, could you
-> please ack it so it can be picked up for the next merge window? I'll
-> repost v8, rebased on top of the pKVM topic branch.
+> Assisted-by: Claude:claude-opus-4-7
+> Assisted-by: GitHub Copilot:gpt-5.4
+> Signed-off-by: Peter Fang <peter.fang@intel.com>
+> ---
 
-Yeah
+Looks good to me.
 
-Jason
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+
+
+
+>  arch/x86/coco/tdx/tdx.c           | 19 +++++++++++++++++++
+>  arch/x86/include/asm/shared/tdx.h |  1 +
+>  arch/x86/include/asm/tdx.h        |  2 ++
+>  3 files changed, 22 insertions(+)
+> 
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 186915a17c50..88c66c46e70a 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -197,6 +197,25 @@ u64 tdx_hcall_get_quote(u8 *buf, size_t size)
+>  }
+>  EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
+>  
+> +/**
+> + * tdx_get_max_quote_size() - Get the maximum TD Quote size
+> + *
+> + * Read the maximum size of a TD Quote from a 4-byte TD metadata field. The TDX
+> + * guest driver uses it to size the buffer for Quote retrieval. Older TDX
+> + * modules do not support this field and return an error.
+> + *
+> + * Return: Maximum Quote size in bytes on success, or 0 on failure.
+> + */
+> +u32 tdx_get_max_quote_size(void)
+> +{
+> +	u64 val, ret;
+> +
+> +	ret = tdg_vm_rd(TDCS_QUOTE_MAX_SIZE, &val);
+> +
+> +	return ret ? 0 : (u32)val;
+> +}
+> +EXPORT_SYMBOL_GPL(tdx_get_max_quote_size);
+> +
+>  static void __noreturn tdx_panic(const char *msg)
+>  {
+>  	struct tdx_module_args args = {
+> diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+> index 049638e3da74..2880f493a8e5 100644
+> --- a/arch/x86/include/asm/shared/tdx.h
+> +++ b/arch/x86/include/asm/shared/tdx.h
+> @@ -49,6 +49,7 @@
+>  /* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
+>  #define TDCS_CONFIG_FLAGS		0x1110000300000016
+>  #define TDCS_TD_CTLS			0x1110000300000017
+> +#define TDCS_QUOTE_MAX_SIZE		0x9010000200000008
+>  #define TDCS_NOTIFY_ENABLES		0x9100000000000010
+>  #define TDCS_TOPOLOGY_ENUM_CONFIGURED	0x9100000000000019
+>  
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index a149740b24e8..ac39674c9479 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -72,6 +72,8 @@ int tdx_mcall_extend_rtmr(u8 index, u8 *data);
+>  
+>  u64 tdx_hcall_get_quote(u8 *buf, size_t size);
+>  
+> +u32 tdx_get_max_quote_size(void);
+> +
+>  void __init tdx_dump_attributes(u64 td_attr);
+>  void __init tdx_dump_td_ctls(u64 td_ctls);
+>  
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
+
