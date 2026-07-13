@@ -1,158 +1,146 @@
-Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D01A4314A5
-	for <linux-coco@lists.linux.dev>; Mon, 13 Jul 2026 13:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99009437106
+	for <linux-coco@lists.linux.dev>; Mon, 13 Jul 2026 13:56:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783949887; cv=none; b=qy4Aes3VK1WIX07lFa/4hW6uw9FMB4rKPPa8R0WVdptDM4VgltpE6ctyPU8ryEWUpiDb9SkcZeOFEMI4CZL5u1mI8ayOtXCwy00x84ub3oHORR/sKgabF7K5tHe7igcfQgz3YAxIoSFLOXbK1K8WI8R+Ti2NMF4X3bDIUMzKsGA=
+	t=1783951002; cv=none; b=Rjl4/i2Q/PuKqvw1nZClHie8RvAhSwNt1iYfdsLgWod+6UD7+yoZ/4TkLbqtEvlenJrFGfQHrrvAY56FMH1FzhFMBv1EX3FPLbgDFzfi7cqENuFjFqRy0YaTNXKWwyGCTGt5pnwoEEQIcMc6LLGWK7SHVvQkCmM/bjJQ9EVifZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783949887; c=relaxed/simple;
-	bh=zbfTA2VJjWQfugM0y3HKDpUMdj5msjiIH2TZdK1WrjI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ie9frmCWcQgmKY75xMnwUdEl5Bnw2U8nDZm3dhjjwcG38eZ30rJCb2RcPtQFLWlETUuc5Yb91osb9KbIClsApeCTRZduGYaz+Frg8OQOPvNhFWEjcFtymCgfEVrPL0d12QLlYI+wAPTr4MoSS5wegwB+Q5i4XRLKPVZHAjHwHbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=SnxlMej2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KVZ4xmzq; arc=none smtp.client-ip=202.12.124.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+	s=arc-20240116; t=1783951002; c=relaxed/simple;
+	bh=9KihY4IsvKVp0Oht8qbc03FAQfSZWEfFvdyOwhTMNR0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eTywzvqRs7RNj6Mm25nMLAw2xqazAX1V9NT9Vm64Qvc3VLwNBbfzT74Ws96S+YviiK3HdICwRFW2+xbWknSIL0rf6SNKB9vZ7shUSFURZNSccGqd0S4E+lSRa9iwbXy3xsp9EJIKpGplXgUSgEByItz/R2rPok/adS35SJcfOR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=eKsYPFfA; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="SnxlMej2";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KVZ4xmzq"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id D5F5813000C4;
-	Mon, 13 Jul 2026 09:38:04 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 13 Jul 2026 09:38:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1783949884; x=
-	1783957084; bh=112Yvu8MDmd9GxnWgYRo8OOQeNBIsEEGqTciWSFqlIs=; b=S
-	nxlMej2TTJEJdZQwyjy/QgeFh9+k1ounA0jahS6aksRxAnCMkuwOn6chkBxI6WzQ
-	5BhoUBci/xVzsuMMCCMnLzhikutgaZV+tMBfhRDgmXzFwJ5mwRpzwpgl90jAAUNT
-	aR1vH3HbN9gmbrmatrNiWHd51a43tLLdrMDqgD67/VkwA6Xz0lyP+1a68jDJgec5
-	vi6ViS1aNO8WV2sXi5I9xE+8/EyIf1RNE0aV4oEeTFzRHSCerA09CJeuejAcmBcW
-	XM7JoZt+b4jcYsA1nWCsvHdk/OxrbpHMZBqoj3kiu4y8WRHJCRrY0AdGm134J5o1
-	YxeqRTtozOZ6I2k25i9HQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1783949884; x=1783957084; bh=1
-	12Yvu8MDmd9GxnWgYRo8OOQeNBIsEEGqTciWSFqlIs=; b=KVZ4xmzq8D226ZBsQ
-	4asGgbRqztjojoG9K+Ptvr2ESLfysvQV6Kx7pCaZL2e3+M96I6rCsX3b11vBTtQO
-	hdCtdaqg0RUj5uHD+CTmT2h9fwNDA8kYSz16RjdlxKUtvERTpIl0Bpp6APD/Jt4x
-	Mxf2+aKek2okYGMXzlkKQUmwJa+8cjJYsWyZWYKbnNKEX6VU7nKoUfdk4iplvCdP
-	jqoGS4vl0PIhd+1HvOstCbN17CwMm6TnIhk6ET+IcXz2pgBIqLXE0zH91BfEOWWN
-	y5m0cJ6PEsNNoaTdCoFAZIDJO+t0m+n0mdCGlXoVkTMsyDJ3Nh7yodX1RUwczJqj
-	rI6Nw==
-X-ME-Sender: <xms:POpUasU3WfQ8J9utIdv7h02WxmF7UFzfBh0w1S95h3nAhlEIcLcjzA>
-    <xme:POpUatwT7Ic0t1evl1iauSQcPG93VK1WXlJInLwd96rx-H_ndpa3zNtIbOWx8WRhk
-    fCzem0pMURg-amNBIrmTyy8lfSZUPyj1LE4a3K8-I2kvvy9jOwDLMTN>
-X-ME-Received: <xmr:POpUak6V4wf0DWDLByovSxtF0ZeaZqI1OguWuXp1GK23K1XnONjDDjqbqXZ_Vg>
-X-ME-Proxy-Cause: dmFkZTEW6S1SvXSlZs4OOnc4VahxjW69aaGDPVJd2EBjsmGIohL3aDaqbSu+8YkVanPFjR
-    tgfQDCCpmX969bn/U9UO+n3QFXz0q323naPF4jWiHMmRntzGcQhp3Vx2KAhMBucKBrMoVj
-    X5CwYvbDFJlTUkQTRAgKvI65LvTaLY14waW97LrBigSnkpE1VVt9mBrvLTUpmoEfS6d4eG
-    NKQd5S3QFjNq4Gy3l1vDGekWs+36+zmLytr+byevjqc4klRvGFU3gjURfoh9Tfq4eVG+a+
-    Cgqgl3n6aDHjUo+YCrNUfd8of0qgvvgGYEP4z2EH+IhHTWSStBT7XqcjOnyMOC1DkjQYMX
-    vH8zgGWR2ixyB/rEh8253RHKpjrS43SzwQtSH3LB3AZh6xNQY5gfxF4nBCzMk/8YR8HSoQ
-    fwW7D76ifB2ndnjsAGRCAZ6Xb26kxKS/6hOm30U77TwPv2NTc95nQQU2lzlkuW2z3qpd+I
-    JK3yXRpiyOtPFeS7RQ8K9pipl7bQDoiWczd/zPW2ao1maFXFG6lOiFrufnMqsxrBrskx95
-    CLTU1eJgfYwkBemJ6Sotnv+ZipxtQr5KLX9BjGTWdCKjL/ZLyGzzsGfObNSLwQhoByAGRq
-    82aKz2LNjMrhaG687s+bRC42Voc4QEgx3DqvsxcPq1HB2QzMN8ZZahDWNQhQ
-X-ME-Proxy: <xmx:POpUanituzHeGoASJzvZGmbF1FDFL8eayck3XMFWWm4HmaYHbCGjYQ>
-    <xmx:POpUaniRJCzRSBf63msiFbFX6_Bv4TlBbdLeSHf9EIekOk245ne_kA>
-    <xmx:POpUavlm9ZY5usq_RsqUkfFB8FhIZZ2CDwrtH_tcia48nEK3grP-2Q>
-    <xmx:POpUanEqh2oW6gQ6C8y_yzJ2TOTOZ6eCyXN4EOrze4C-FKriq0SnqA>
-    <xmx:POpUakt10YhM7s9lJZuMNT-i_znUd-TPIXPdsWCpCL48SSHrLRezflge>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Jul 2026 09:38:03 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Dan Williams <djbw@kernel.org>,
-	Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
-	kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH v6 3/3] x86/tdx: Fix zero-extension for 32-bit port I/O
-Date: Mon, 13 Jul 2026 14:37:53 +0100
-Message-ID: <20260713133753.223947-4-kirill@shutemov.name>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260713133753.223947-1-kirill@shutemov.name>
-References: <20260713133753.223947-1-kirill@shutemov.name>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="eKsYPFfA"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-9030f8ea3b3so26953286d6.1
+        for <linux-coco@lists.linux.dev>; Mon, 13 Jul 2026 06:56:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1783951000; x=1784555800; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dThHBkWDs48b/2hz2YL35z2V9VnPq+MKY/40ZoZ5a/U=;
+        b=eKsYPFfAbTFJ1vUVyx78LXhQHpeJIUe3yG7M/G0E8S0cjUBEaKzZs3g3v6Y8bENRCx
+         xYI2vFLgYRMs8tiJbLrW0fJuFqmImRL0cRCWOtpG3V0S2d1DkJTmTTbzFsldpVGEMhO3
+         iXPe+U7aL1hfhS2Gb6he0REB4ZPngFmo7SKpBOTF0D57myvPbBfK7k4ZkBIlbpQYF9Np
+         MytDvKuaspmHcmiUa8hnTAh60ID8cVH7IwyCyJcMA9bSVwXwPllzTWuddmq0NKtQMff4
+         o0Xipp+q7abBp5ss92jJh35RNRRNPfYxr47rWklI5HDPuqtZWxRp9ZjG63ApCIJUmC74
+         O3Wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783951000; x=1784555800;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dThHBkWDs48b/2hz2YL35z2V9VnPq+MKY/40ZoZ5a/U=;
+        b=N98keNrK3N1AjkdvgJNjbyI11fx66s0DAOxoE3St+lsyITqcvySvba1wLlgVaOXbp2
+         GbYZbQYGSLnrvdPBSOBDgONBwTn+WMejBGU4KssySgENMmNON0SH1XGG7Y2K64DW+oIw
+         /72t9hd+mtJCSL2ZAqtK/lTZ2gWTdrxfHSwSJT05iq7SSI1Q+0lqIE+4stc7O1BVFXuk
+         QRPNtjT4R0L/6RZeyspigHivn9cSbCdYSoe3fkhspYimuX4li4PMteso0SkJCy2ldY9k
+         6zHUhajHv9Ca1GD/PyvLvzlji0tSqAiaMcFJwXwBbH6951HNymsFeCdhVgBce060K1lM
+         Gt4w==
+X-Forwarded-Encrypted: i=1; AHgh+Rq5b5I3/A3yq1StYBHWaIhZiYJVq/ev1xegLlhieMQNhDP3MHOd1bo1G9wldEw6nDjj5mVpDvfDNvXD@lists.linux.dev
+X-Gm-Message-State: AOJu0YzMci9QbODBWc7N/tj9E89yuFSU4cAdJR9ls4GduD5k8N2eROnH
+	clpa0y2Mlfp33aOSAD6rc2hIamGhBJ26mDs2CkZpDY6ZuHVBzpJP7cG2QWgGStz5KHY=
+X-Gm-Gg: AfdE7cmTXXL8nRu/U0YorazRTx6/JGgC8PGPCop6TiKgDGKwyQa+TFrS4aPCNDo5yxR
+	7vzRgf/B4vpx3UhuBVNjMztwJu0fJSWka0YS6PVY6MiKFVs0zGfAZMvm/ZGpaBTMk7wnN4KhehT
+	c2oKR8sgLrIIUeUF9csrhxmCw6XJ7mFH603zrK7+1e6iEXjMXIIHopebe52WquZU6RfHfeYeOIs
+	KnR6jwm31Lkdgl8jkXRlBNVAQctdZbGdkGkhV7zTK30K8FEm8p3HMGbWULmhHAvm20kUGoluTU6
+	hAodgGvfU4PKHDIopRIKuOaRtg2qUqkkbfTSM3sSrpuYOB6X0L0aJpiarKYaMRcn2F6mdcg7a31
+	ljO52Ty2acPVBy6Gxx7ZOBKJ7KmYFe9Aq1ZOt4MfUtgjPzDe6YZ1ddXSPvq8z
+X-Received: by 2002:a05:6214:da9:b0:8ee:756a:f1d3 with SMTP id 6a1803df08f44-903ffc638e5mr98221496d6.28.1783950999687;
+        Mon, 13 Jul 2026 06:56:39 -0700 (PDT)
+Received: from ziepe.ca ([159.2.72.92])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd81f4bbdsm126704796d6.36.2026.07.13.06.56.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 06:56:39 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wjH9C-0000000DL9o-26N7;
+	Mon, 13 Jul 2026 10:56:38 -0300
+Date: Mon, 13 Jul 2026 10:56:38 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
+	Jiri Pirko <jiri@nvidia.com>, Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v7 16/22] dma-direct: make dma_direct_map_phys() honor
+ DMA_ATTR_CC_SHARED
+Message-ID: <20260713135638.GB3133966@ziepe.ca>
+References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
+ <20260701054926.825925-17-aneesh.kumar@kernel.org>
+ <ak42F240d-53QeFN@arm.com>
+ <yq5apl0xgy89.fsf@kernel.org>
+ <ak-CT3oanlDfgTy4@arm.com>
+ <20260709181336.GM118978@ziepe.ca>
+ <yq5ajyr3h106.fsf@kernel.org>
+ <20260710161945.GO118978@ziepe.ca>
+ <yq5atsq6hdaa.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5atsq6hdaa.fsf@kernel.org>
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On Sat, Jul 11, 2026 at 12:39:49AM +0530, Aneesh Kumar K.V wrote:
 
-According to x86 architecture rules, 32-bit operations zero-extend the
-result to 64 bits. The current implementation of handle_in() only masks
-the lower 32 bits, which preserves the upper 32 bits of RAX when a
-32-bit port IN instruction is emulated.
+> > But if you really want to it should be
+> > cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT) *only* and get rid of the wrong
+> > force_dma_unencrypted().
+> >
+> 
+> Ok, I will update the changes to so we preserve the previous behaviour
+> for SME?
+> 
+> 	if (attrs & DMA_ATTR_MMIO) {
+> 		/*
+> 		 * For host memory encryption treat MMIO memory as shared
+> 		 */
+> 		if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+> 			attrs |= DMA_ATTR_CC_SHARED;
+> 	}
 
-Use insn_assign_reg() to write the result back into RAX with proper
-partial-register-write semantics: 1- and 2-byte forms leave the upper
-bits untouched, the 4-byte form zero-extends to the full register.
+I'm OK with this, with the expectation we should aim to remove it when
+fixing the callers.
 
-Fixes: 03149948832a ("x86/tdx: Port I/O: Add runtime hypercalls")
-Reported-by: Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>
-Link: https://lore.kernel.org/all/CAKw_Dz96rfSQc6Rn+9QBcUFHhmkK+9zu+P=bxowfZwxrATCBRg@mail.gmail.com/
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: stable@vger.kernel.org
----
- arch/x86/coco/tdx/tdx.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+> > But IMHO, I'd rather this series treat ATTR_MMIO as private MMIO and
+> > ATTR_MMIO|CC_SHARED as shared MMIO and that's the right and correct
+> > thing for the DMA API.
+> >
+> 
+> If you think the rest of the series is ready for upstream, could you
+> please ack it so it can be picked up for the next merge window? I'll
+> repost v8, rebased on top of the pKVM topic branch.
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index b8bbd715fb62..f904a636d449 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -694,8 +694,8 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
- 		.r13 = PORT_READ,
- 		.r14 = port,
- 	};
--	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
- 	bool success;
-+	u64 val;
- 
- 	/*
- 	 * Emulate the I/O read via hypercall. More info about ABI can be found
-@@ -703,11 +703,9 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
- 	 * "TDG.VP.VMCALL<Instruction.IO>".
- 	 */
- 	success = !__tdx_hypercall(&args);
-+	val = success ? args.r11 : 0;
- 
--	/* Update part of the register affected by the emulated instruction */
--	regs->ax &= ~mask;
--	if (success)
--		regs->ax |= args.r11 & mask;
-+	insn_assign_reg(&regs->ax, val, size);
- 
- 	return success;
- }
--- 
-2.54.0
+Yeah
 
+Jason
