@@ -1,99 +1,194 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643B648C8CE
-	for <linux-coco@lists.linux.dev>; Tue, 14 Jul 2026 16:14:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9406A4A33ED
+	for <linux-coco@lists.linux.dev>; Tue, 14 Jul 2026 16:22:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784045682; cv=none; b=ucpEBj01g6FWSJDH/2+Dc9N9lRN0UPYEhBfIxECaM6h2Hx7cDc/CFmCUhkxxnffnA9TN+GqoOmcddjZYG3ff0NS7XbMOsZwzAGzl1mLHtY2gBh18KYOBxp0LnlBeSP8/xBbk2DdC7SnywBtqdVnKLaGVSkVEVmT8ULhmCwO77jw=
+	t=1784046133; cv=none; b=YX8OJkhIjcYofVUgUpUdHDzLvzcFUOGmBvHhW+YX+HGB1+ozi4lIUMChVR1UmZjMaxJNkmXBOIKuXFM+aCq2YxvSs3/5Ox09hl/Qhx+TqnZueZEoG8spH/DGZ4ykIERiPIhBEpIkPRuDh+c/HNB4Bh1Zir/+VIKpUM9IFU74j7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784045682; c=relaxed/simple;
-	bh=kQ6MFm1RcBK5lthrtsS3tKwgEUgIjQSVP8M3aj6hNVQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=Ikr5WyQg898R70gXqQOaRaie8NWnBkoD9nn4sBPWJFiVHKOKHYNAwWgjYkzl8Xh01zOAaTy/W7kOICr679BsY9AEN/p5AcXu27ElJE938ZZ5f35khy+3lhQH9Zt1huytMOVWrFL3ZO4V3ZBRvRa594F1lSZhbgwIIToD312YCgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f0+jgcWq; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784046133; c=relaxed/simple;
+	bh=IjW81UlirIvo9gXdrU2y8CuTZ4JeckEqr9kHsxEIZns=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IcMFcM+KYiqQqS107kLaFCYBoXMSMlGbhajoqXwiL5u3JkVyM2bGRyVK6ozPLfTIAMh5KPxxJeUDpl9h0EcGJSTZoKdbZEmszY3y5ztsUnvgZwmlJddEaS0uUsueqjK0ACdOB9QwcHB5X94CodQ+xm2Gh/iJ+tWNB+NWCVQvCig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lX8vfuE8; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f0+jgcWq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784045680;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=coBt7Zb3aZ3ZG0mTYJhcJ0JzfkK/zs88iplrFlJsbyY=;
-	b=f0+jgcWq990sHjWAQlt1/WI2rzuf1X3ET/OWYqzgh89ctrKktWOjbPfFpScNCOlRC+XrFL
-	eKz9iZm18pKWF+iGL5xbOQo+i3EsV2do0wgNpRaDj1UY6nAXcedgBDzG+5iDMOAT7xoGR7
-	mtFEAMVtcjBFGEMQx2LRt4DVdTj8wvQ=
-Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
- [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-427-2oJSSZpgPhu0Zjx8JN2exQ-1; Tue, 14 Jul 2026 12:14:37 -0400
-X-MC-Unique: 2oJSSZpgPhu0Zjx8JN2exQ-1
-X-Mimecast-MFC-AGG-ID: 2oJSSZpgPhu0Zjx8JN2exQ_1784045677
-Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-666399de8fcso8950334d50.2
-        for <linux-coco@lists.linux.dev>; Tue, 14 Jul 2026 09:14:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784045677; x=1784650477;
-        h=content-type:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=coBt7Zb3aZ3ZG0mTYJhcJ0JzfkK/zs88iplrFlJsbyY=;
-        b=YHdEV+dLTNtUBk8PBlwbY5+YFgDu+xygccrYQ2ptx3FMwQ+GyHX4PZjjPbuoCdfYGK
-         r5JWgW+cdlMuoQrPh+ZTM9ObHmKaWpapzlfxQ3ZLTL+vo1dJ1x3Ivg6QIfSWMo9Ga0l/
-         HPAt+rNPkR42LenDJImuBgrc5wdmVtPWtXGybz9XAqThFb9BTMoiNNWPdkWyDKelCCed
-         sUYmq9wDU+sHZ6ezaKCFt6CQMFxh2MZw5Do4vHezBdwfQa/igfRcmpBZr67QAvpikMJJ
-         /pI4UCO765tpJC+0Aeai96mm7fqwbxwwTk1myUsgSTEEEYIJopSZ9//pUTxzrjvA/1nj
-         X8qQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpBcmc1yUp9AJeFZl3+wb/suk9TgnVjAWVpIsm1KQnAUum9+3gkbnKVPdis3r/CgHMqgPScVyouq8DR@lists.linux.dev
-X-Gm-Message-State: AOJu0YzrTattLviIIACc2d2irrIbb6ApxGSBs8BQTcq+sLpmZQAq/TuX
-	x6GoZeQn592rfSk3GJJ7iB03bbMWkcfUMzGfRYgzVWrw3EkZRcL7ir374mZvk+J87muc/WAnsiY
-	CaRJ1c2Q3hEs5WtueB99VPz9tTeuCUc+BH98MX14BHREDknvqz7DIt8Z3LQLUV4wuFIUjrnXmBr
-	QhZyNQJzJvSGx+zU/RMRYt9vj0E8MfNkcyP3qnAqFp5rRH4w==
-X-Gm-Gg: AfdE7ckLO8HmP37x1TrrKZcvcbikgbDmMyvwvTfnnEFZcZWg9OLxan+q2D4b//y5YAE
-	7ASOqGkPoWidUAxlwu7GO9sxdozCGoi6S5ar6QTdvT8NxQHg91RSJWcW0mlkY/XJpXGYc6S+AHo
-	Q2jXkaVxeA1eyyaC9qq6ZmpUPKwdM0Wo6K+MQuNyeyIFyKk8FqgvyFf/lzeN1Maow6
-X-Received: by 2002:a05:690e:b8b:b0:668:931:6284 with SMTP id 956f58d0204a3-668093178f5mr1491192d50.22.1784045676885;
-        Tue, 14 Jul 2026 09:14:36 -0700 (PDT)
-X-Received: by 2002:a05:690e:b8b:b0:668:931:6284 with SMTP id
- 956f58d0204a3-668093178f5mr1491158d50.22.1784045676337; Tue, 14 Jul 2026
- 09:14:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lX8vfuE8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784046132; x=1815582132;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=IjW81UlirIvo9gXdrU2y8CuTZ4JeckEqr9kHsxEIZns=;
+  b=lX8vfuE81PwlgGKoZ2gaAwWZAS+sFb9634Ot+TFRA0Hd2QIMJJzFMK6S
+   wwqwATKNVwJ/0+B+oDmmnmSLCvSBbwMP/mwzPXryeFwG+wQn8guhcoT8J
+   OEc2fgLpja5oSez+6mv1qBvgQMhe++M20B4ObVpzp8jwU4LdDbj0nNrQq
+   v1YdxhU8kLgEeyCcLOjHD0IRki2p2nhme1AE4AmkAntXcvZLymjOCQgkS
+   TIAg7SBS54c+Uw7bxOShJJIL/tVUmTVFssPq4H3aXm0K+QGTIiFrMtCBU
+   Yz02iqOdxPIZW+aOIvMHM05CTtA1jbz7l9dSM6YMigUdpSqJmRQ6G3Vc+
+   Q==;
+X-CSE-ConnectionGUID: uLl4KEkZQzWKMP8TkIZO5Q==
+X-CSE-MsgGUID: aZZ/B0PqTNCh2mBzN5N19Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="83795560"
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
+   d="scan'208";a="83795560"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 09:22:11 -0700
+X-CSE-ConnectionGUID: WAKzB18BSE615YnM24rhyA==
+X-CSE-MsgGUID: /a5HeManRwyQIFFRvkmKyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
+   d="scan'208";a="255949195"
+Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.80.90]) ([10.24.80.90])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 09:22:11 -0700
+Message-ID: <dd51743d-74b2-4f89-a447-06618a6301ae@linux.intel.com>
+Date: Tue, 14 Jul 2026 09:22:10 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAGxU2F5hP=7pA1rKRvq5sgr0t2y1YoUzYCmH8hzaCS58U4+Y3A@mail.gmail.com>
-In-Reply-To: <CAGxU2F5hP=7pA1rKRvq5sgr0t2y1YoUzYCmH8hzaCS58U4+Y3A@mail.gmail.com>
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Tue, 14 Jul 2026 18:14:24 +0200
-X-Gm-Features: AUfX_mwjFvcoxi29cRMJOsZPgt37LHTV3cOwag5sNZw6X_Tr_Ucj0sF3N41PysY
-Message-ID: <CAGxU2F6ko6Ojyu138cB7szTszoYkx1AEw5oK6EMMaUoi=m7+sw@mail.gmail.com>
-Subject: SVSM Development Call July 15th, 2026
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wcP6bd00pE3W1-t4__CI8MnSpx7rIok8kVEzdtXz-AI_1784045677
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] virt: tdx-guest: Allocate Quote buffer dynamically
+To: Peter Fang <peter.fang@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
+References: <20260612110853.3188196-1-peter.fang@intel.com>
+ <20260612110853.3188196-3-peter.fang@intel.com>
+ <283d7cc7-e87e-4d4e-b1d9-ae19725e1606@linux.intel.com>
+ <20260714062502.GE3178326@pedri>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20260714062502.GE3178326@pedri>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
 
-Here is the call for agenda items for this weeks SVSM development
-call. Please send any agenda items you have in mind as a reply to this
-email or raise them in the meeting.
 
-We will use the LF Zoom instance. Details of the meeting can be found
-in our governance repository at:
+On 7/13/2026 11:25 PM, Peter Fang wrote:
+> On Mon, Jul 13, 2026 at 10:27:46AM -0700, Kuppuswamy Sathyanarayanan wrote:
+>> Hi Peter,
+>>
+>> On 6/12/2026 4:08 AM, Peter Fang wrote:
+>>> From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+>>>
+>>> The TDX attestation driver currently uses a fixed 128 KB Quote buffer
+>>> shared with the host VMM. This may be too small for Quotes using schemes
+>>> such as post-quantum cryptography (PQC), where certificate chains can
+>>> increase the Quote size to several megabytes.
+>>>
+>>> Allocate the Quote buffer based on the size reported by the TDX module
+>>> instead of always reserving a fixed-size buffer. This avoids wasting
+>>> memory on platforms that do not require larger Quotes. Older platforms
+>>> fall back to the default 128 KB buffer.
+>>>
+>>> Because the Quote buffer must be physically contiguous, its size is
+>>> bound by the buddy allocator's maximum page order (4 MB), which should
+>>> be sufficient for current attestation needs.
+>>>
+>>> struct tdx_quote_buf has a trailing flexible array, so use offsetof()
+>>> instead of sizeof() to calculate the header size.
+>>>
+>>> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+>>> Assisted-by: Claude:claude-opus-4-7
+>>> Assisted-by: GitHub Copilot:gpt-5.4
+>>> Signed-off-by: Peter Fang <peter.fang@intel.com>
+>>> ---
+>>
+>> Looks good to me.
+>>
+>> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> 
+> Thanks Sathya!
+> 
+>>
+>>
+>>>  drivers/virt/coco/tdx-guest/tdx-guest.c | 52 ++++++++++++++++++-------
+>>>  1 file changed, 38 insertions(+), 14 deletions(-)
+>>>
+>>> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+>>> index a9ecc46df187..162fb47f3fae 100644
+>>> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+>>> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+>>> @@ -163,7 +163,7 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
+>>>   * DICE-based attestation uses layered evidence that requires
+>>>   * larger Quote size (~100K).
+>>>   */
+>>> -#define GET_QUOTE_BUF_SIZE		SZ_128K
+>>> +#define GET_QUOTE_DEFAULT_BUF_SIZE	SZ_128K
+>>>  
+>>>  #define GET_QUOTE_CMD_VER		1
+>>>  
+>>> @@ -171,7 +171,7 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
+>>>  #define GET_QUOTE_SUCCESS		0
+>>>  #define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
+>>>  
+>>> -#define TDX_QUOTE_MAX_LEN		(GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
+>>> +#define TDX_QUOTE_BUF_LEN(n)		(offsetof(struct tdx_quote_buf, data) + (n))
+>>>  
+>>>  /* struct tdx_quote_buf: Format of Quote request buffer.
+>>>   * @version: Quote format version, filled by TD.
+>>> @@ -192,8 +192,9 @@ struct tdx_quote_buf {
+>>>  	u8 data[];
+>>>  };
+>>>  
+>>> -/* Quote data buffer */
+>>> +/* Quote data buffer and size */
+>>>  static void *quote_data;
+>>> +static size_t quote_data_size;
+>>>  
+> 
+> [ ... ]
+> 
+>>>  
+>>> @@ -286,7 +310,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
+>>>  	if (desc->inblob_len != TDX_REPORTDATA_LEN)
+>>>  		return -EINVAL;
+>>>  
+>>> -	memset(quote_data, 0, GET_QUOTE_BUF_SIZE);
+>>> +	memset(quote_data, 0, quote_data_size);
+>>>  
+>>>  	/* Update Quote buffer header */
+>>>  	quote_buf->version = GET_QUOTE_CMD_VER;
+>>> @@ -297,7 +321,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
+>>>  	if (ret)
+>>>  		return ret;
+>>>  
+>>> -	err = tdx_hcall_get_quote(quote_data, GET_QUOTE_BUF_SIZE);
+>>> +	err = tdx_hcall_get_quote(quote_data, quote_data_size);
+>>>  	if (err) {
+>>>  		pr_err("GetQuote hypercall failed, status:%llx\n", err);
+>>>  		return -EIO;
+>>> @@ -316,7 +340,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
+>>>  
+>>>  	out_len = READ_ONCE(quote_buf->out_len);
+>>>  
+>>> -	if (out_len > TDX_QUOTE_MAX_LEN)
+>>> +	if (TDX_QUOTE_BUF_LEN(out_len) > quote_data_size)
+>>>  		return -EFBIG;
+>>
+>> Nit: I think this check will be more readable if you can rename
+>> quote_data_size to quote_buf_size (since it holds total buffer
+>> size).
+> 
+> Hm. This pairs with the original "static void *quote_data". Or perhaps
+> "quote_data_len"?
 
-        https://github.com/coconut-svsm/governance
+Yes, it pairs with quote_data buffer name. May be both should be renamed.
 
-The link to the COCONUT-SVSM calendar is:
+If it is too much trouble, just leave it.
 
-        https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
+> 
+>>
 
-The meeting will be recorded and the recording eventually published.
-
-Regards,
-Stefano
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
