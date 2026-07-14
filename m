@@ -1,110 +1,150 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9486143E9CE;
-	Tue, 14 Jul 2026 10:00:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D697D37E2F3
+	for <linux-coco@lists.linux.dev>; Tue, 14 Jul 2026 11:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784023221; cv=none; b=Xc0i2ax40Z3o682M2RffHpzqHiQYef/piGxhOnyZtUpZB4hhki2KZUMnNyAl8tE9NKf1+eUllThcoHvz/O83fF1nwZlZVFFhmYzH0IVIttTq/8+z2xrO268OUQbdRXJJNN7k+Cboa0QqRnXtVhRhoQ8GHce2BG6ed/ZfL1DtuBI=
+	t=1784027929; cv=none; b=K9PyOoGGhXY1XsMEjrMTBYNkqziWm4Q5PRcFjJMfEEfHXevhNdbaDcIBBFsvfjAsxJ09SZyElun5Rl9oty1eAFP7Ix96AeiB3xbOECRjw3VH8UI/qjxuFtXQrOyOVOMUX03KSYn2eMaeBK//hIsg5Z15RCQ3+5PoTL6Om8jf6CI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784023221; c=relaxed/simple;
-	bh=oe7+UusSV/9zSaGQDbO7QrUpA1hbAEzSMWsSFJ1AoNw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=oLR8UCJa1R74Yrk/6PKDk1gIbNdAYIWovEtBKs1viy8jjrTL1ditl8WG5F9xqpZ37tFX6tIafMfgpvygU42tX/iDzOoOsF0kXq9MEIm0xytHFshUSWYfHilZpk0dS89/EOSDaJ8eeVC1J2voB8KCkqRUUSFQXpaZ8S2mc/dAmgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=NMjfCsqZ; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1784027929; c=relaxed/simple;
+	bh=nwD+LLuYuY87RlJT62pZIUTdyPGrcFxfNw+o1aBmQzM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nPrC+H+gQGE2ZrZBN4qmhcKakGgEWDBJ4ep1zUlRYscDa5TO4UFWY/TAS7gl/FxydaH83uBiHHPU+CZZLPA0DOjOvsDVup0ou76LyT4DYtn8iJbr3qG1NZFcLmGXIoxuL3LPb/p5W9yoteh+B6A5Ev+cOxG1VzX2RpTq7Xiiyww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PLNtGw78; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="NMjfCsqZ"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260714100016euoutp010b64ed20ec9ba1c6447f10b7abae08b8~CH6nFLiNZ1160011600euoutp01a;
-	Tue, 14 Jul 2026 10:00:16 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260714100016euoutp010b64ed20ec9ba1c6447f10b7abae08b8~CH6nFLiNZ1160011600euoutp01a
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1784023216;
-	bh=IUra5EJSRaUGl/khGQ/hVpRAn7fp80t3QbcNAonpnHo=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=NMjfCsqZ5hnUEU0WETu01Q9nOdFTV987l1OyEpSxVC3qsrjuo+pdKGHJOn1P/uqy9
-	 0ML3iTMDQp8jsFJA5eqo2WdyOclP9r+hDHP0Qb9E1dtE0XTKwa/FLLs+p4+9q/ScPz
-	 8vhb3Wq8om+OapgJr8LiPPxclNzpInm/pkQwvQpQ=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260714100016eucas1p2bbfe02d5fc02fcf561dc5409c7ecb5ab~CH6mtujgB0401004010eucas1p2d;
-	Tue, 14 Jul 2026 10:00:16 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260714100014eusmtip1f8ce1c67533271011f679d0bcf054f91~CH6lJz-Yt2122621226eusmtip1M;
-	Tue, 14 Jul 2026 10:00:14 +0000 (GMT)
-Message-ID: <6f35eaae-f3d2-48fb-abce-9a2cc124b0ef@samsung.com>
-Date: Tue, 14 Jul 2026 12:00:13 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PLNtGw78"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784027928; x=1815563928;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=nwD+LLuYuY87RlJT62pZIUTdyPGrcFxfNw+o1aBmQzM=;
+  b=PLNtGw78jireHfphiAF69BVvrjMHk+5U+YOBe/PnuPWXPlAuZEKZZdbx
+   MB6toJCdmK2NpEmeHbMgwHSOPf97LSopf7SPCn8hUUsNxxdyhYcJDjRh1
+   y8O/tl7+JsvbEgzCslAQCiX0uNB2m33YI/MkzxyRi/uw6EyZnhtDxt6Em
+   CsQ1zNEzMW9iEmiFKmKy3AubBBtLGFG3WFzU6e5t3emYIHQuJfL5EsNkT
+   df3QFoNaVqb1acCSm8fySII1uVmWV+A2y/e2pvEO/WUENCPp/rZ94tyH9
+   2Wlse/CcFStB1qixdDco2MLqG2ISw8OY9b1MamLlVYHzt7VFwALQzhUNZ
+   g==;
+X-CSE-ConnectionGUID: aSQIqNRaRSCLPUnEFGbPIA==
+X-CSE-MsgGUID: Hq7WWYEmTFusvyu/k7D1FA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="84742293"
+X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
+   d="scan'208";a="84742293"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 04:18:41 -0700
+X-CSE-ConnectionGUID: vMZUPnpFQB2zgo+ZDy8wnA==
+X-CSE-MsgGUID: ip0GhzOqQh6D3lMPGTbqJQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
+   d="scan'208";a="249477791"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa009.fm.intel.com with ESMTP; 14 Jul 2026 04:18:38 -0700
+Date: Tue, 14 Jul 2026 19:18:37 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
+	rick.p.edgecombe@intel.com, dave.hansen@intel.com,
+	dave.hansen@linux.intel.com, yilun.xu@intel.com, chao.gao@intel.com,
+	djbw@kernel.org, linux-coco@lists.linux.dev, peter.fang@intel.com,
+	xiaoyao.li@intel.com
+Subject: Re: [PATCH v2] x86/virt/tdx: Formalize SEAMCALL version encoding
+ support
+Message-ID: <alYbDcnzl2dUPEJ5@yilunxu-OptiPlex-7050>
+References: <20260708170330.83850-1-yilun.xu@linux.intel.com>
+ <alEUAMgx7HMegOmX@thinkstation>
+ <alSt/TgbDQgNveoS@yilunxu-OptiPlex-7050>
+ <alTMhIWnRgrqatUK@thinkstation>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v7 00/22] dma-mapping: Track shared DMA state through
- direct, pool and swiotlb paths
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Jason Gunthorpe
-	<jgg@ziepe.ca>
-Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, Robin Murphy
-	<robin.murphy@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier
-	<maz@kernel.org>, Steven Price <steven.price@arm.com>, Suzuki K Poulose
-	<Suzuki.Poulose@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, Jiri
-	Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>, Petr Tesarik
-	<ptesarik@suse.com>, Alexey Kardashevskiy <aik@amd.com>, Dan Williams
-	<dan.j.williams@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, Madhavan
-	Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)"
-	<chleroy@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Gerald
-	Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens
-	<hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Christian
-	Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
-	<svens@linux.ibm.com>, x86@kernel.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <yq5aldbdnbj8.fsf@kernel.org>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260714100016eucas1p2bbfe02d5fc02fcf561dc5409c7ecb5ab
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260707080628eucas1p13fa8a57e60ef5dd3ec651e19e42af0a1
-X-EPHeader: CA
-X-CMS-RootMailID: 20260707080628eucas1p13fa8a57e60ef5dd3ec651e19e42af0a1
-References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
-	<CGME20260707080628eucas1p13fa8a57e60ef5dd3ec651e19e42af0a1@eucas1p1.samsung.com>
-	<yq5av7argr65.fsf@kernel.org>
-	<fc804746-4fb8-4ea9-997f-a4cae9ba8c14@samsung.com>
-	<20260713194323.GC3133966@ziepe.ca>
-	<cd5d0504-1592-4b48-89ea-1efe8aa57968@samsung.com>
-	<yq5aldbdnbj8.fsf@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alTMhIWnRgrqatUK@thinkstation>
 
-On 14.07.2026 11:52, Aneesh Kumar K.V wrote:
-> Marek Szyprowski <m.szyprowski@samsung.com> writes:
->> On 13.07.2026 21:43, Jason Gunthorpe wrote:
->>> On Tue, Jul 07, 2026 at 03:03:48PM +0200, Marek Szyprowski wrote:
->>>> I'm fine with merging on top of the topic branch and I assume that this
->>>> patchset is mature enough to give it a try in linux-next, but first I
->>>> would like to get a review or at least acks from others with good CC
->>>> knowledge or experience.
->>> I think it is good to go from a CC perspective, there are still some
->>> more items to fix up (like the MMIO) but I'd rather they be followups
->>> at this point.
->> Great. Aneesh, any chance You could send v8 with the remaining items
->> fixed till end of this week? I will be happy to push it to
->> dma-mapping-for-next for testing in linux-next asap.
->>
-> Sure. You need this rebased on top of the pKVM changes, right?
-> Otherwise, we'll end up with conflicts when you do the final pull
-> request.
-Ah, indeed. I forgot about the pKVM changes. If there is a stable
-branch with those patches, please base v8 on top of it.
+On Mon, Jul 13, 2026 at 12:38:02PM +0100, Kiryl Shutsemau wrote:
+> On Mon, Jul 13, 2026 at 05:21:01PM +0800, Xu Yilun wrote:
+> > > The commit message covers the mechanics, but is silent on compatibility
+> > > with older TDX modules. That context matters for the design choice, so
+> > > regardless of where the implementation discussion lands, I think it
+> > > needs to be spelled out here.
+> > > 
+> > > Who is responsible for picking a version the module supports?
+> > > 
+> > > TDH.VP.INIT can hardcode version 1 only because KVM already refuses to
+> > > enable TDX on modules without TOPOLOGY_ENUM.
+> > > 
+> > > The TDH.SYS.UPDATE user from [1] is the opposite case: it has to pick
+> > > version 0 or 1 at runtime depending on whether add-on features are
+> > > configured, to keep working on modules that don't support them.
+> > > 
+> > > The second point is the actual argument for a version field in struct
+> > > tdx_module_args rather than encoding the version in the leaf defines:
+> > > the version is not always a compile-time property of the call site.
+> > 
+> > That's good point. I'll add the TDX module compatibility argument in
+> > changelog:
+> > 
+> >   One concern is the compatibility with older TDX modules which don't
+> >   recognize the new SEAMCALLs. The kernel should decide which SEAMCALL
+> >   version to use at runtime, selecting the minimum version number for the
+> >   required functionality. It can't overwrite the function number with a
+> >   new value at compile time.
+> 
+> There are two policies, not one: make the new version a hard
+> requirement at init time as we did with TDH.VP.INIT, or fall back to
+> version 0 at runtime like your TDH.SYS.UPDATE user does. Both are valid,
+> and the changelog should not claim runtime selection is the rule.
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+Maybe we don't need 2 policies. This first policy is only helpful if we
+don't keep version history at all, we always update to the newest (from
+Linux POV) version and forget about old module compatibility.
 
+Otherwise, we use the 2nd policy. Vx as the first version accepted by Linux,
+Vy as the latest version accepted by Linux. We should maintain
+module compatibility between [Vy, Vx]. TDH.VP.INIT has only V1
+because the accepted version range is [V1, V1]. If there is a case in
+future that requires TDH.VP.INIT v2, then it changes to [V1, V2].
+
+TDH.SYS.UPDATE V0 is the first accepted version, so it will be [V0, V1].
+
+I don't think we have to use different policies for each SEAMCALL,
+1st policy is simple but I see problem - the newest module is not always
+available. 2nd policy has better compatibility. Now I sort of like 2nd
+policy - the runtime selection.
+
+> 
+> BTW, we might eventually switch TDH.SYS.UPDATE to hardcoded v1 once we
+> stop caring about older modules.
+
+Maybe we don't have to. If we want compatibility, I don't see immediate
+benifit to shrink the compatibility.
+
+[...]
+
+> 
+> > > Without TDH.SYS.UPDATE context, the patch seems pointless.
+> > 
+> > mm.. It's true one target is to address the compatibility with old
+> > module. But is the other concern valid?
+> > 
+> >   Another concern is the obscure usage of the 'fn' parameter for seamcall
+> >   wrappers. An existing caller for TDH.VP.INIT packs the version into the
+> >   'fn' to match the low-level TDX ABI RAX layout. The RAX layout
+> >   interprets some bits differently, such as INTERRUPT_MODE, SEAMLDR flag,
+> >   which are not a good fit for the function number definition.
+> > 
+> > Is this a blocker for you as an independent cleanup patch?
+> 
+> Not a blocker. But respinning now seems premature: the shape of v3
+> depends entirely on where the RAX composition discussion lands --
+> args.version with FIELD_MODIFY(), a version macro in 'fn', or Dave's
+> rax-in-the-struct. I'd wait for that to settle first.
+
+Thanks for clarification.
