@@ -1,194 +1,100 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9406A4A33ED
-	for <linux-coco@lists.linux.dev>; Tue, 14 Jul 2026 16:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44843101B0
+	for <linux-coco@lists.linux.dev>; Tue, 14 Jul 2026 19:29:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784046133; cv=none; b=YX8OJkhIjcYofVUgUpUdHDzLvzcFUOGmBvHhW+YX+HGB1+ozi4lIUMChVR1UmZjMaxJNkmXBOIKuXFM+aCq2YxvSs3/5Ox09hl/Qhx+TqnZueZEoG8spH/DGZ4ykIERiPIhBEpIkPRuDh+c/HNB4Bh1Zir/+VIKpUM9IFU74j7o=
+	t=1784057375; cv=none; b=loZkQQiM5nG2tV1S2IRj4OS2kItRZcO0uis5TVU3jlQiC0OJPf7ROPQ0MuDpHkBfcf/OtvSUc6WTJyvc1G6879x+dRc1Psw4SGMgYHDVrZbm01Q6KQUNJ66tQ+Dzf7BLrBsgjAxjTdv43NVkCnx8urYbxzMlwid9Mu1FxI+Qxdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784046133; c=relaxed/simple;
-	bh=IjW81UlirIvo9gXdrU2y8CuTZ4JeckEqr9kHsxEIZns=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IcMFcM+KYiqQqS107kLaFCYBoXMSMlGbhajoqXwiL5u3JkVyM2bGRyVK6ozPLfTIAMh5KPxxJeUDpl9h0EcGJSTZoKdbZEmszY3y5ztsUnvgZwmlJddEaS0uUsueqjK0ACdOB9QwcHB5X94CodQ+xm2Gh/iJ+tWNB+NWCVQvCig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lX8vfuE8; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1784057375; c=relaxed/simple;
+	bh=5v0pjtg16nOYoh0LqjejD+BH5n9SM/7iCdtqM2SxC9k=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=CIfg13zo2969Q8GlNQgzOzmhH89MlZLy/bpLZhhGzRITSgbDMGq88TZZQzPJrtd1hprE9gGh7v6Dv2YK49q8z23eGhQ8HF6BESrQbscjDAlJ/aaXqEzBfxRl8mcDXEjbAICFgAQUTBMfRurzNxglzRGsTIBSAPnsuf7/Qg4S5gY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sGwYKfQk; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lX8vfuE8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784046132; x=1815582132;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=IjW81UlirIvo9gXdrU2y8CuTZ4JeckEqr9kHsxEIZns=;
-  b=lX8vfuE81PwlgGKoZ2gaAwWZAS+sFb9634Ot+TFRA0Hd2QIMJJzFMK6S
-   wwqwATKNVwJ/0+B+oDmmnmSLCvSBbwMP/mwzPXryeFwG+wQn8guhcoT8J
-   OEc2fgLpja5oSez+6mv1qBvgQMhe++M20B4ObVpzp8jwU4LdDbj0nNrQq
-   v1YdxhU8kLgEeyCcLOjHD0IRki2p2nhme1AE4AmkAntXcvZLymjOCQgkS
-   TIAg7SBS54c+Uw7bxOShJJIL/tVUmTVFssPq4H3aXm0K+QGTIiFrMtCBU
-   Yz02iqOdxPIZW+aOIvMHM05CTtA1jbz7l9dSM6YMigUdpSqJmRQ6G3Vc+
-   Q==;
-X-CSE-ConnectionGUID: uLl4KEkZQzWKMP8TkIZO5Q==
-X-CSE-MsgGUID: aZZ/B0PqTNCh2mBzN5N19Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="83795560"
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
-   d="scan'208";a="83795560"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 09:22:11 -0700
-X-CSE-ConnectionGUID: WAKzB18BSE615YnM24rhyA==
-X-CSE-MsgGUID: /a5HeManRwyQIFFRvkmKyw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
-   d="scan'208";a="255949195"
-Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.80.90]) ([10.24.80.90])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 09:22:11 -0700
-Message-ID: <dd51743d-74b2-4f89-a447-06618a6301ae@linux.intel.com>
-Date: Tue, 14 Jul 2026 09:22:10 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sGwYKfQk"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8482b95574dso5878565b3a.1
+        for <linux-coco@lists.linux.dev>; Tue, 14 Jul 2026 12:29:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784057373; x=1784662173; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NaWAefms5g2sZE1zJRpUsheJBiizyXeD+J/SLEPa9K8=;
+        b=sGwYKfQkBqKhQ/rtoKVYwFE3iG1eRXum4Zh7rVxuS2V2tW9FlNAjS4f40mu+9UuwYP
+         xQiatgBgpXYrCPJ0xb4lD/E8c+5BMkMJ16K6n16VPfiHxL3zXnoabn2h0hhAlStEmXYP
+         6TOJ3hZqFqZ+s+I9VESI0ByV0Yk2lrw2+/msxCPEF5TcektAoPq1W2ef6GqT4TR9qIVI
+         EuwZwS0i1xsYNUH9adf6NATkz35cdAjq4KHScO6umtMlGqxkY2Cd/eITvn410CvWrsiE
+         odv57hD+Y7KXwSxGTMWpRCNaKfqVyihhZ74baH54ra+E8c01iLcM+gluIQe9pEG/NlUq
+         k0Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784057373; x=1784662173;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NaWAefms5g2sZE1zJRpUsheJBiizyXeD+J/SLEPa9K8=;
+        b=BIOLDn/Ph8ABCZVtd1IVm0dd6NG5zgDE8PgPS+dDiVHTr7/HfrSD7xf+j4LZKBWKn7
+         F+dFRKWFcUz4cy0nOdY20THRZ8DBeZuJmU8o/VgKtB6/7kAXuXbS9nrn3T/be+deEZ2a
+         cGE0u//KV9uf1ekfBbp+fiuObdaPlbiypt4kTsjvc7MExG+eNWO/lbH8kGADQ8LrUpuU
+         SXJWX61h1s5FF2rmhudGV6DlFtDVP6VBw4WyaPiktHNBkJphC4ksPfAAiVQY5A4AuCkx
+         +Dvw7lIWu5jMuNUNS5mbsX/UV2sYw8dbH287BC01VmJxw0o0JfCKA6VSbNodWgCA8Bi4
+         jv+w==
+X-Forwarded-Encrypted: i=1; AHgh+RqWAuMsKCFxo/9gipO1WCzJKfHb0tOoMdzojlXC7BxAQY/Ip9uYTA7XQE9WJ/F3ULn+FR+HIF1prZAn@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy8/Fl7oLqRhBHit29Y4LUkGg2yqvvFquMU1hCYWJ1QmXsFCJnG
+	I36dkW4dXR7BRodTNy+hohttYC59fuprNqseSICx69Aun6LpYxG7s8kdw8Ktm72XWHxyBKiwywv
+	IuV++RA==
+X-Received: from pfee10.prod.google.com ([2002:a05:6a00:bc8a:b0:847:8fa5:76bc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:14cd:b0:847:83bd:6671
+ with SMTP id d2e1a72fcca58-84889667647mr13185570b3a.19.1784057372703; Tue, 14
+ Jul 2026 12:29:32 -0700 (PDT)
+Date: Tue, 14 Jul 2026 11:41:25 -0700
+In-Reply-To: <20260630213711.479692-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] virt: tdx-guest: Allocate Quote buffer dynamically
-To: Peter Fang <peter.fang@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
-References: <20260612110853.3188196-1-peter.fang@intel.com>
- <20260612110853.3188196-3-peter.fang@intel.com>
- <283d7cc7-e87e-4d4e-b1d9-ae19725e1606@linux.intel.com>
- <20260714062502.GE3178326@pedri>
-Content-Language: en-US
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20260714062502.GE3178326@pedri>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260630213711.479692-1-seanjc@google.com>
+X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
+Message-ID: <178405433333.3142919.4680610079893572404.b4-ty@google.com>
+Subject: Re: [PATCH v2 0/2] KVM: x86: gmem populate fix and cleanups
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org, x86@kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Sashiko Bot <sashiko-bot@kernel.org>, Joerg Roedel <joerg.roedel@amd.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-
-
-On 7/13/2026 11:25 PM, Peter Fang wrote:
-> On Mon, Jul 13, 2026 at 10:27:46AM -0700, Kuppuswamy Sathyanarayanan wrote:
->> Hi Peter,
->>
->> On 6/12/2026 4:08 AM, Peter Fang wrote:
->>> From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
->>>
->>> The TDX attestation driver currently uses a fixed 128 KB Quote buffer
->>> shared with the host VMM. This may be too small for Quotes using schemes
->>> such as post-quantum cryptography (PQC), where certificate chains can
->>> increase the Quote size to several megabytes.
->>>
->>> Allocate the Quote buffer based on the size reported by the TDX module
->>> instead of always reserving a fixed-size buffer. This avoids wasting
->>> memory on platforms that do not require larger Quotes. Older platforms
->>> fall back to the default 128 KB buffer.
->>>
->>> Because the Quote buffer must be physically contiguous, its size is
->>> bound by the buddy allocator's maximum page order (4 MB), which should
->>> be sufficient for current attestation needs.
->>>
->>> struct tdx_quote_buf has a trailing flexible array, so use offsetof()
->>> instead of sizeof() to calculate the header size.
->>>
->>> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
->>> Assisted-by: Claude:claude-opus-4-7
->>> Assisted-by: GitHub Copilot:gpt-5.4
->>> Signed-off-by: Peter Fang <peter.fang@intel.com>
->>> ---
->>
->> Looks good to me.
->>
->> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+On Tue, 30 Jun 2026 14:37:09 -0700, Sean Christopherson wrote:
+> Fix a user-triggerable WARN due to KVM not pre-checking that userspace
+> provided a source page for non-ZERO pages for SNP_LAUNCH_UPDATE, and then
+> clean up the equivalent TDX code to also explicitly check the incoming
+> source page *before* calling into guest_memfd, and to return -EINVAL, not
+> -EOPNOTSUPP.
 > 
-> Thanks Sathya!
+> v2:
+>  - Rewrite the SNP patch changelog.
+>  - Tweak the code to avoid checking KVM_SEV_SNP_PAGE_TYPE_ZERO twice.
+>  - Drop what is now effectively a sanity check in sev_gmem_post_populate(),
+>    so that we don't have to duplicate the logic when in-place conversion comes
+>    along.
+>  - Tack on the TDX change.
 > 
->>
->>
->>>  drivers/virt/coco/tdx-guest/tdx-guest.c | 52 ++++++++++++++++++-------
->>>  1 file changed, 38 insertions(+), 14 deletions(-)
->>>
->>> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
->>> index a9ecc46df187..162fb47f3fae 100644
->>> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
->>> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
->>> @@ -163,7 +163,7 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
->>>   * DICE-based attestation uses layered evidence that requires
->>>   * larger Quote size (~100K).
->>>   */
->>> -#define GET_QUOTE_BUF_SIZE		SZ_128K
->>> +#define GET_QUOTE_DEFAULT_BUF_SIZE	SZ_128K
->>>  
->>>  #define GET_QUOTE_CMD_VER		1
->>>  
->>> @@ -171,7 +171,7 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
->>>  #define GET_QUOTE_SUCCESS		0
->>>  #define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
->>>  
->>> -#define TDX_QUOTE_MAX_LEN		(GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
->>> +#define TDX_QUOTE_BUF_LEN(n)		(offsetof(struct tdx_quote_buf, data) + (n))
->>>  
->>>  /* struct tdx_quote_buf: Format of Quote request buffer.
->>>   * @version: Quote format version, filled by TD.
->>> @@ -192,8 +192,9 @@ struct tdx_quote_buf {
->>>  	u8 data[];
->>>  };
->>>  
->>> -/* Quote data buffer */
->>> +/* Quote data buffer and size */
->>>  static void *quote_data;
->>> +static size_t quote_data_size;
->>>  
-> 
-> [ ... ]
-> 
->>>  
->>> @@ -286,7 +310,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
->>>  	if (desc->inblob_len != TDX_REPORTDATA_LEN)
->>>  		return -EINVAL;
->>>  
->>> -	memset(quote_data, 0, GET_QUOTE_BUF_SIZE);
->>> +	memset(quote_data, 0, quote_data_size);
->>>  
->>>  	/* Update Quote buffer header */
->>>  	quote_buf->version = GET_QUOTE_CMD_VER;
->>> @@ -297,7 +321,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
->>>  	if (ret)
->>>  		return ret;
->>>  
->>> -	err = tdx_hcall_get_quote(quote_data, GET_QUOTE_BUF_SIZE);
->>> +	err = tdx_hcall_get_quote(quote_data, quote_data_size);
->>>  	if (err) {
->>>  		pr_err("GetQuote hypercall failed, status:%llx\n", err);
->>>  		return -EIO;
->>> @@ -316,7 +340,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
->>>  
->>>  	out_len = READ_ONCE(quote_buf->out_len);
->>>  
->>> -	if (out_len > TDX_QUOTE_MAX_LEN)
->>> +	if (TDX_QUOTE_BUF_LEN(out_len) > quote_data_size)
->>>  		return -EFBIG;
->>
->> Nit: I think this check will be more readable if you can rename
->> quote_data_size to quote_buf_size (since it holds total buffer
->> size).
-> 
-> Hm. This pairs with the original "static void *quote_data". Or perhaps
-> "quote_data_len"?
+> [...]
 
-Yes, it pairs with quote_data buffer name. May be both should be renamed.
+Applied to kvm-x86 misc, thanks!
 
-If it is too much trouble, just leave it.
+[1/2] KVM: SEV: Explicitly disallow NULL user address for SNP_LAUNCH_UPDATE
+      https://github.com/kvm-x86/linux/commit/2abe1ff20151
+[2/2] KVM: TDX: Return EINVAL, not EOPNOTSUPP, for NULL INIT_MEM_REGION source
+      https://github.com/kvm-x86/linux/commit/eb606a243863
 
-> 
->>
-
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
-
+--
+https://github.com/kvm-x86/linux/tree/next
