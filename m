@@ -1,63 +1,102 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D697D37E2F3
-	for <linux-coco@lists.linux.dev>; Tue, 14 Jul 2026 11:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FB544684A
+	for <linux-coco@lists.linux.dev>; Tue, 14 Jul 2026 12:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784027929; cv=none; b=K9PyOoGGhXY1XsMEjrMTBYNkqziWm4Q5PRcFjJMfEEfHXevhNdbaDcIBBFsvfjAsxJ09SZyElun5Rl9oty1eAFP7Ix96AeiB3xbOECRjw3VH8UI/qjxuFtXQrOyOVOMUX03KSYn2eMaeBK//hIsg5Z15RCQ3+5PoTL6Om8jf6CI=
+	t=1784031764; cv=none; b=svpfrA/4z5vG5y1tQLdzXMqxIKO18p8A2xrspMZq4EeEW79SJb7v3JEBIFRh9hjJ1t7Cas9iHOiAztsTHY3ARYYQPldwzqKJT5RbMi7xc/tmWe8xzzv3OWfyFf7KYzp5SxX+TYw/xyQE0L6v239OsXz3zmJYC0wmT5Jn7OBXgU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784027929; c=relaxed/simple;
-	bh=nwD+LLuYuY87RlJT62pZIUTdyPGrcFxfNw+o1aBmQzM=;
+	s=arc-20240116; t=1784031764; c=relaxed/simple;
+	bh=Gu04W+cCiiM26ZsyHUMdXjMPrm/Duv/aZB+CYp/Nq1c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nPrC+H+gQGE2ZrZBN4qmhcKakGgEWDBJ4ep1zUlRYscDa5TO4UFWY/TAS7gl/FxydaH83uBiHHPU+CZZLPA0DOjOvsDVup0ou76LyT4DYtn8iJbr3qG1NZFcLmGXIoxuL3LPb/p5W9yoteh+B6A5Ev+cOxG1VzX2RpTq7Xiiyww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PLNtGw78; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=VsFwTiE2WkeDKB7HeQn8UNY5RHZwy6GkC4LV1JMRKhrpx5ondSOTTgh/4I1VViz4sWocsisfgtqOgVpkijYBTt2kd7S45E7JdScIqsLlucBjCbEj1/AKSJ4FaWdZ8b35V1c2zuU3/VM5rl923Xq3i5ekW8jXFG5Cii/zs0eBNcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=hn86S0Qb; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PLNtGw78"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784027928; x=1815563928;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nwD+LLuYuY87RlJT62pZIUTdyPGrcFxfNw+o1aBmQzM=;
-  b=PLNtGw78jireHfphiAF69BVvrjMHk+5U+YOBe/PnuPWXPlAuZEKZZdbx
-   MB6toJCdmK2NpEmeHbMgwHSOPf97LSopf7SPCn8hUUsNxxdyhYcJDjRh1
-   y8O/tl7+JsvbEgzCslAQCiX0uNB2m33YI/MkzxyRi/uw6EyZnhtDxt6Em
-   CsQ1zNEzMW9iEmiFKmKy3AubBBtLGFG3WFzU6e5t3emYIHQuJfL5EsNkT
-   df3QFoNaVqb1acCSm8fySII1uVmWV+A2y/e2pvEO/WUENCPp/rZ94tyH9
-   2Wlse/CcFStB1qixdDco2MLqG2ISw8OY9b1MamLlVYHzt7VFwALQzhUNZ
-   g==;
-X-CSE-ConnectionGUID: aSQIqNRaRSCLPUnEFGbPIA==
-X-CSE-MsgGUID: Hq7WWYEmTFusvyu/k7D1FA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="84742293"
-X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
-   d="scan'208";a="84742293"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 04:18:41 -0700
-X-CSE-ConnectionGUID: vMZUPnpFQB2zgo+ZDy8wnA==
-X-CSE-MsgGUID: ip0GhzOqQh6D3lMPGTbqJQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
-   d="scan'208";a="249477791"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa009.fm.intel.com with ESMTP; 14 Jul 2026 04:18:38 -0700
-Date: Tue, 14 Jul 2026 19:18:37 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
-	rick.p.edgecombe@intel.com, dave.hansen@intel.com,
-	dave.hansen@linux.intel.com, yilun.xu@intel.com, chao.gao@intel.com,
-	djbw@kernel.org, linux-coco@lists.linux.dev, peter.fang@intel.com,
-	xiaoyao.li@intel.com
-Subject: Re: [PATCH v2] x86/virt/tdx: Formalize SEAMCALL version encoding
- support
-Message-ID: <alYbDcnzl2dUPEJ5@yilunxu-OptiPlex-7050>
-References: <20260708170330.83850-1-yilun.xu@linux.intel.com>
- <alEUAMgx7HMegOmX@thinkstation>
- <alSt/TgbDQgNveoS@yilunxu-OptiPlex-7050>
- <alTMhIWnRgrqatUK@thinkstation>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="hn86S0Qb"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-92ea24a2dbfso317289585a.0
+        for <linux-coco@lists.linux.dev>; Tue, 14 Jul 2026 05:22:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1784031754; x=1784636554; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5CIAv+UZ8t7s5h+WlDS73yJMkdztMQ3zXG2Fxq/to8M=;
+        b=hn86S0QbmD4alhFSQozEcnBS2MRkJA4nq5baGWYRsQTP/h352hBpvMs0e2GCo7c0w4
+         jP/EdT8tEcI+5tglyli9KU1t+v+TMCCXU/EgjAtUrhyYoQva9qYQSwOjbLhriE3WfDTF
+         17AmuPUhVfCM2e8CEtyYmEbYdDeWEViiC1JQxnT+GpfeDIDcln87ym2AQx9YlG/Hz346
+         6Tk0lajpefubuFmmUaBUxTfeTzxli2mNBqwM2eVR4TA1QB3WpzQZrlKxDpHP5+2rs+pJ
+         a0DNfL4j/iH7XpS5nB9XW/6zsb7X4X8bVtEDwMgek4QP5n+iNxuBx+bingHtif7rnyDJ
+         LBhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784031754; x=1784636554;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5CIAv+UZ8t7s5h+WlDS73yJMkdztMQ3zXG2Fxq/to8M=;
+        b=rKjwX/mrm9PIj+7QL9NFELWAxWpe0BbCZFRe98SZOhe69se445FMvQjvaIzxLQ9/m/
+         wygMyq8JsAiQJvLizW2W4hZNgEBDbUizvwovSgM5dyVyeA8Y+r6Fqc7tcK7Jg7PuRzTj
+         y2gWHZ4q+h7cib+KO+wuRDFCrrDcym2PA/chb3laWiQMo1vgo9KHUs/GZSn71L5XQURV
+         YJvRqmpK48GUHwJfLomBsfruU3fk3lDn0H6rsm0VQAZ4KqeB3XDfSO+msBwcfk9+l2oM
+         vHA6xalaqOXhnRyQ+ssuCDUYzHCz1joMHd/4n7cOVhk8CEfi8gdQBJU+MvzzkF8Lo/c5
+         hLFg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr4Ir7EDnp+WFJC9vMJ8Owyr/Mm4UUTiN0Tf82UalkrVAVuoK+2QiOCTJhE7xB5gB96DPGISctMXGQP@lists.linux.dev
+X-Gm-Message-State: AOJu0YyRdfiDqWD/I3r8oWQwktROWw/EtklLYkqUK1M48TJ9jqtg16dp
+	VdXol532aDbnBUsPk98u5iil6ey5ipKImmgbteegMyPoNzFfeGwPTGeSReDa8cNNtMo=
+X-Gm-Gg: AfdE7cncw10ha+fQm/ZzPN/5jhYbW8+KVU4rSyQcCdSYDKb5kOiuUmBMsVGXEGxDzMU
+	JOubgiXnCSzElSUlYgyiRbyzwDEQSCgPniAAcFHu/e6d/jpC6FR//FRddxjEU4ARs0/WcDecLqD
+	j1wMqOB18fHXV6dT96pfOgefD5yMSCWP9e6rq5wfFe3otfaeVexbGhpZUD51UYy9nEu3OMoT/CP
+	s2JBKYJiVjaKby3BdF0NT03JxO6Ol8Lb0WMcXpcOn0HAF4Zfw81gCj846Bzqdvh+MyI9Od4KNF9
+	B/HtaVPqxQyRBdlyLC1sxYKBjqgDjzAEYKea2vuJhBLgEHwTNG+VdurvgqcOSmIyEyc7A23Rd39
+	4xcFf+/sNdYe6ZBAdtJpEvfGwKWodC1YjP4D9vRVB/VtbeD6WKz12PqfWaEFl
+X-Received: by 2002:a05:620a:7085:b0:92e:6bbf:966e with SMTP id af79cd13be357-92ef2cb202cmr1211484585a.45.1784031754284;
+        Tue, 14 Jul 2026 05:22:34 -0700 (PDT)
+Received: from ziepe.ca ([159.2.72.92])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd82ea9casm164927486d6.42.2026.07.14.05.22.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 05:22:33 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wjc9g-0000000FRaG-0ohM;
+	Tue, 14 Jul 2026 09:22:32 -0300
+Date: Tue, 14 Jul 2026 09:22:32 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
+	Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v7 02/22] dma-pool: fix page leak in atomic_pool_expand()
+ cleanup
+Message-ID: <20260714122232.GE3133966@ziepe.ca>
+References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
+ <20260701054926.825925-3-aneesh.kumar@kernel.org>
+ <20260713175433.GI3133966@ziepe.ca>
+ <yq5azezumef6.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -66,85 +105,35 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alTMhIWnRgrqatUK@thinkstation>
+In-Reply-To: <yq5azezumef6.fsf@kernel.org>
 
-On Mon, Jul 13, 2026 at 12:38:02PM +0100, Kiryl Shutsemau wrote:
-> On Mon, Jul 13, 2026 at 05:21:01PM +0800, Xu Yilun wrote:
-> > > The commit message covers the mechanics, but is silent on compatibility
-> > > with older TDX modules. That context matters for the design choice, so
-> > > regardless of where the implementation discussion lands, I think it
-> > > needs to be spelled out here.
-> > > 
-> > > Who is responsible for picking a version the module supports?
-> > > 
-> > > TDH.VP.INIT can hardcode version 1 only because KVM already refuses to
-> > > enable TDX on modules without TOPOLOGY_ENUM.
-> > > 
-> > > The TDH.SYS.UPDATE user from [1] is the opposite case: it has to pick
-> > > version 0 or 1 at runtime depending on whether add-on features are
-> > > configured, to keep working on modules that don't support them.
-> > > 
-> > > The second point is the actual argument for a version field in struct
-> > > tdx_module_args rather than encoding the version in the leaf defines:
-> > > the version is not always a compile-time property of the call site.
-> > 
-> > That's good point. I'll add the TDX module compatibility argument in
-> > changelog:
-> > 
-> >   One concern is the compatibility with older TDX modules which don't
-> >   recognize the new SEAMCALLs. The kernel should decide which SEAMCALL
-> >   version to use at runtime, selecting the minimum version number for the
-> >   required functionality. It can't overwrite the function number with a
-> >   new value at compile time.
+On Tue, Jul 14, 2026 at 09:05:25AM +0530, Aneesh Kumar K.V wrote:
+> Jason Gunthorpe <jgg@ziepe.ca> writes:
 > 
-> There are two policies, not one: make the new version a hard
-> requirement at init time as we did with TDH.VP.INIT, or fall back to
-> version 0 at runtime like your TDH.SYS.UPDATE user does. Both are valid,
-> and the changelog should not claim runtime selection is the rule.
-
-Maybe we don't need 2 policies. This first policy is only helpful if we
-don't keep version history at all, we always update to the newest (from
-Linux POV) version and forget about old module compatibility.
-
-Otherwise, we use the 2nd policy. Vx as the first version accepted by Linux,
-Vy as the latest version accepted by Linux. We should maintain
-module compatibility between [Vy, Vx]. TDH.VP.INIT has only V1
-because the accepted version range is [V1, V1]. If there is a case in
-future that requires TDH.VP.INIT v2, then it changes to [V1, V2].
-
-TDH.SYS.UPDATE V0 is the first accepted version, so it will be [V0, V1].
-
-I don't think we have to use different policies for each SEAMCALL,
-1st policy is simple but I see problem - the newest module is not always
-available. 2nd policy has better compatibility. Now I sort of like 2nd
-policy - the runtime selection.
-
+> > On Wed, Jul 01, 2026 at 11:19:06AM +0530, Aneesh Kumar K.V (Arm) wrote:
+> >> @@ -115,8 +116,10 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
+> >>  	 */
+> >>  	ret = set_memory_decrypted((unsigned long)page_to_virt(page),
+> >>  				   1 << order);
+> >> -	if (ret)
+> >> +	if (ret) {
+> >> +		leak_pages = true;
+> >>  		goto remove_mapping;
+> >> +	}
+> >
+> > Truely these _set_memory_decrypted() things are an insane API. So a if
+> > it fails to decrypt it can be in any messy state?
+> >
 > 
-> BTW, we might eventually switch TDH.SYS.UPDATE to hardcoded v1 once we
-> stop caring about older modules.
+> Yes, we could possibly try to encrypt the page again and, if that
+> succeeds, avoid leaking it. We might want to do that tree-wide in a
+> separate patch.
 
-Maybe we don't have to. If we want compatibility, I don't see immediate
-benifit to shrink the compatibility.
+IMHO it is a horrid API if failure leaves thing in an indeterminate
+state. For something like this I don't see why the arch FW implementation
+would be unable to restore things back to as they were on failure.
 
-[...]
+But whatever, everything about set_memory_xx is really bad it could
+use a cleaning
 
-> 
-> > > Without TDH.SYS.UPDATE context, the patch seems pointless.
-> > 
-> > mm.. It's true one target is to address the compatibility with old
-> > module. But is the other concern valid?
-> > 
-> >   Another concern is the obscure usage of the 'fn' parameter for seamcall
-> >   wrappers. An existing caller for TDH.VP.INIT packs the version into the
-> >   'fn' to match the low-level TDX ABI RAX layout. The RAX layout
-> >   interprets some bits differently, such as INTERRUPT_MODE, SEAMLDR flag,
-> >   which are not a good fit for the function number definition.
-> > 
-> > Is this a blocker for you as an independent cleanup patch?
-> 
-> Not a blocker. But respinning now seems premature: the shape of v3
-> depends entirely on where the RAX composition discussion lands --
-> args.version with FIELD_MODIFY(), a version macro in 'fn', or Dave's
-> rax-in-the-struct. I'd wait for that to settle first.
-
-Thanks for clarification.
+Jason
