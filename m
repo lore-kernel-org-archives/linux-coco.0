@@ -1,170 +1,340 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from esa4.hc1455-7.c3s2.iphmx.com (esa4.hc1455-7.c3s2.iphmx.com [68.232.139.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AACD242D67;
-	Tue, 14 Jul 2026 04:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730402D0292;
+	Tue, 14 Jul 2026 04:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.117
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784003279; cv=none; b=mdJJcdoKBn7uakf5bgVQZp7s7SEwsLYLnnCSiHu5efE/gxI1bouxOUdbZlHApY0d3tq3+TZAJ7QQTj8TaD7a+RaTJVbgzzHiUvePUWdD2ChQ+hnAaIUNVskAikczRMxseEe9+mDN4C13pDIGAM3mfxqn1QrKSXm8vPDyTZuHzPY=
+	t=1784003960; cv=none; b=gKLolkFASKrB4lj28W0mo7dn5+AJy8HlV75sKXeOY8tzn/vyNaGPmXsqNOucedZhGyjwOUDQycJCJTl9r+hxXbV+X8xYaOhPAuaPjNZxMV4p3P63JLFeaJ8a2NCN7RGvJBf0k35HxEKebDRB6lfQGvLEeKKXTPQrG1wgf3wzN8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784003279; c=relaxed/simple;
-	bh=hFNDSfm0iAG1HoCrJRZJJz48PMPVKZgaZFFhazD6HEA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=tF48OZFPOn/y+j4iL3MK60Dylnnmrgwt6OHm6+W/6zZt5bG/ybq96bEPKE6KKA7stZ6GWKHXCgNk9epP0AgdJih4kcaHmhAMiGfHLF59EDogX946lOYnOHZaqzo9KEBM7C0s364LkANJKmJC7CE7Dqm0yQCzrXTqfukRbtpIKBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NJHJ1nkT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784003960; c=relaxed/simple;
+	bh=BPU73LTHJbaq71XFkCqH3AwjSkNrNo1hdXLT5odg614=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OMKMoNZe1fxaecoAk8MUfRJBOyVJ23l2auOfsSAjMMnu8uQzWG/wk3UOmpAbG9VYFUc6o2BqCeHFAkOxFo1v4UEzXllKPfrKi39pkf6li5qQExP9yUwBqoKmjOOK7+RifkDgRmHYaimRS/nM3a2rhvV4TZPWiEWZoLnRFFo07KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=YLBcQvAp; arc=none smtp.client-ip=68.232.139.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NJHJ1nkT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25181F000E9;
-	Tue, 14 Jul 2026 04:27:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784003277;
-	bh=NgdeQo2TB81zknr7ANK1aIrRxeu3MOxic6XnLAtyCXs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=NJHJ1nkTI1FRoIrGQfUrmz/9sKaOTlPMfecxhsBJjkAryeyRg38SqXMsX+CgDLuGR
-	 4Q+jx3b6NEJbgs8uemLCGN7Zkoj5723IXe4JdKf63X4D+ZVXsg0HpD4CBSG/Igtr2m
-	 iN5AaVHORWnFjRo7d87PKE0EuKEC5tvMH/+rVtulslDEm0/njvC512nUuoYQj8gPg2
-	 cWL5XiAM1KnkjzfrdR/N+hPFm8qQM/wctqv6dolHYgKwbun/QgJKr7pwtkQ+6ma+04
-	 OBdUqTBT1d9bGsHovryg0z+BKJjY3K/q0L0r2iALawfRiRXGezWmC0KKAIImrBlaDY
-	 5Ls8gREIG7Nzg==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
-	Jiri Pirko <jiri@nvidia.com>,
-	Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH v7 11/22] dma-pool: track decrypted atomic pools and
- select them via attrs
-In-Reply-To: <20260713184810.GM3133966@ziepe.ca>
-References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
- <20260701054926.825925-12-aneesh.kumar@kernel.org>
- <20260713184810.GM3133966@ziepe.ca>
-Date: Tue, 14 Jul 2026 09:57:43 +0530
-Message-ID: <yq5aqzl6mc00.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="YLBcQvAp"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1784003958; x=1815539958;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BPU73LTHJbaq71XFkCqH3AwjSkNrNo1hdXLT5odg614=;
+  b=YLBcQvApRtg0g1QG1eUA/rr9h/sCv5PzYVSzhYG/xO3ljc9en9pr7Rnz
+   fHcNMHwd+g/9jS/Amz1f5eBxj3QTVcr61l+kz3EdSxzSz33o3Hcv9GBNb
+   sInkpamQqNnwLvJ98vT7/FW+QUkab4DTK/xwbEqEWydf1fvpmNIh/aBbJ
+   UWLl0gAJacPoqlXT/eJ2a7AI/+4F0AND4cg1l+NIAnBWbKoyz2DKeqe31
+   b1yypymjJWkHCXCkZEaLLKBTPyOYKDFbcwq7sSnpDcm5kO+yNWDYi3SQ6
+   elzcs+ScaT3EG5DyKGu98quKMbsNvfJlIu5v74DXQybZ0lOp0UYk713gJ
+   A==;
+X-CSE-ConnectionGUID: oBm/wRA2SS6Zz34cU94YfA==
+X-CSE-MsgGUID: qOuLjlcMTMisoOZbllHnvA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="246775333"
+X-IronPort-AV: E=Sophos;i="6.25,163,1779116400"; 
+   d="scan'208";a="246775333"
+Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
+  by esa4.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 13:38:03 +0900
+Received: from az2nlsmgm4.fujitsu.com (unknown [10.150.26.204])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 981421000374;
+	Tue, 14 Jul 2026 04:38:03 +0000 (UTC)
+Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm4.fujitsu.com (Postfix) with ESMTPS id 498661000262;
+	Tue, 14 Jul 2026 04:38:03 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.9.86.149])
+	by az2nlsmom2.o.css.fujitsu.com (Postfix) with SMTP id EE48E1800B39;
+	Tue, 14 Jul 2026 04:37:54 +0000 (UTC)
+Date: Tue, 14 Jul 2026 13:37:52 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+Subject: Re: [PATCH v14 26/44] arm64: RMI: Allow populating initial contents
+Message-ID: <alWzvLK1RRotK1LL@FCCLS0092175.localdomain>
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-27-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260513131757.116630-27-steven.price@arm.com>
 
-Jason Gunthorpe <jgg@ziepe.ca> writes:
+On 05/13 14:17, Steven Price wrote:
+> The VMM needs to populate the realm with some data before starting (e.g.
+> a kernel and initrd). This is measured by the RMM and used as part of
+> the attestation later on.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v13:
+>  * Rename realm_create_protected_data_page() to realm_data_map_init().
+> Changes since v12:
+>  * The ioctl now updates the structure with the amount populated rather
+>    than returning this through the ioctl return code.
+>  * Use the new RMM v2.0 range based RMI calls.
+>  * Adapt to upstream changes in kvm_gmem_populate().
+> Changes since v11:
+>  * The multiplex CAP is gone and there's a new ioctl which makes use of
+>    the generic kvm_gmem_populate() functionality.
+> Changes since v7:
+>  * Improve the error codes.
+>  * Other minor changes from review.
+> Changes since v6:
+>  * Handle host potentially having a larger page size than the RMM
+>    granule.
+>  * Drop historic "par" (protected address range) from
+>    populate_par_region() - it doesn't exist within the current
+>    architecture.
+>  * Add a cond_resched() call in kvm_populate_realm().
+> Changes since v5:
+>  * Refactor to use PFNs rather than tracking struct page in
+>    realm_create_protected_data_page().
+>  * Pull changes from a later patch (in the v5 series) for accessing
+>    pages from a guest memfd.
+>  * Do the populate in chunks to avoid holding locks for too long and
+>    triggering RCU stall warnings.
+> ---
+>  arch/arm64/include/asm/kvm_rmi.h |   4 ++
+>  arch/arm64/kvm/Kconfig           |   1 +
+>  arch/arm64/kvm/arm.c             |  13 ++++
+>  arch/arm64/kvm/rmi.c             | 106 +++++++++++++++++++++++++++++++
+>  4 files changed, 124 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+> index 007249a13dbc..a2b6bc412a22 100644
+> --- a/arch/arm64/include/asm/kvm_rmi.h
+> +++ b/arch/arm64/include/asm/kvm_rmi.h
+> @@ -88,6 +88,10 @@ int kvm_rec_enter(struct kvm_vcpu *vcpu);
+>  int kvm_rec_pre_enter(struct kvm_vcpu *vcpu);
+>  int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
+>  
+> +struct kvm_arm_rmi_populate;
+> +
+> +int kvm_arm_rmi_populate(struct kvm *kvm,
+> +			 struct kvm_arm_rmi_populate *arg);
+>  void kvm_realm_unmap_range(struct kvm *kvm,
+>  			   unsigned long ipa,
+>  			   unsigned long size,
+> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
+> index 4e16719fda22..d0cd011cf672 100644
+> --- a/arch/arm64/kvm/Kconfig
+> +++ b/arch/arm64/kvm/Kconfig
+> @@ -38,6 +38,7 @@ menuconfig KVM
+>  	select GUEST_PERF_EVENTS if PERF_EVENTS
+>  	select KVM_GUEST_MEMFD
+>  	select KVM_GENERIC_MEMORY_ATTRIBUTES
+> +	select HAVE_KVM_ARCH_GMEM_POPULATE
+>  	help
+>  	  Support hosting virtualized guest machines.
+>  
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index ed88a203b892..073ba9181da9 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -2131,6 +2131,19 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+>  			return -EFAULT;
+>  		return kvm_vm_ioctl_get_reg_writable_masks(kvm, &range);
+>  	}
+> +	case KVM_ARM_RMI_POPULATE: {
+> +		struct kvm_arm_rmi_populate req;
+> +		int ret;
+> +
+> +		if (!kvm_is_realm(kvm))
+> +			return -ENXIO;
+> +		if (copy_from_user(&req, argp, sizeof(req)))
+> +			return -EFAULT;
+> +		ret = kvm_arm_rmi_populate(kvm, &req);
+> +		if (copy_to_user(argp, &req, sizeof(req)))
+> +			return -EFAULT;
+> +		return ret;
+> +	}
+>  	default:
+>  		return -EINVAL;
+>  	}
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> index a89873a5eb77..209087bcf399 100644
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -486,6 +486,75 @@ void kvm_realm_unmap_range(struct kvm *kvm, unsigned long start,
+>  		realm_unmap_private_range(kvm, start, end, may_block);
+>  }
+>  
+> +static int realm_data_map_init(struct kvm *kvm, unsigned long ipa,
+> +			       kvm_pfn_t dst_pfn, kvm_pfn_t src_pfn,
+> +			       unsigned long flags)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	phys_addr_t rd = virt_to_phys(realm->rd);
+> +	phys_addr_t dst_phys, src_phys;
+> +	int ret;
+> +
+> +	dst_phys = __pfn_to_phys(dst_pfn);
+> +	src_phys = __pfn_to_phys(src_pfn);
+> +
+> +	if (rmi_delegate_page(dst_phys))
+> +		return -ENXIO;
+> +
+> +	ret = rmi_rtt_data_map_init(rd, dst_phys, ipa, src_phys, flags);
+> +	if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
+> +		/* Create missing RTTs and retry */
+> +		int level = RMI_RETURN_INDEX(ret);
+> +
+> +		KVM_BUG_ON(level == KVM_PGTABLE_LAST_LEVEL, kvm);
+> +
+> +		ret = realm_create_rtt_levels(realm, ipa, level,
+> +					      KVM_PGTABLE_LAST_LEVEL, NULL);
+> +		if (!ret) {
+> +			ret = rmi_rtt_data_map_init(rd, dst_phys, ipa, src_phys,
+> +						    flags);
 
-> On Wed, Jul 01, 2026 at 11:19:15AM +0530, Aneesh Kumar K.V (Arm) wrote:
->> @@ -114,14 +120,17 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
->>  	 * Memory in the atomic DMA pools must be unencrypted, the pools do not
->>  	 * shrink so no re-encryption occurs in dma_direct_free().
->>  	 */
->> -	ret = set_memory_decrypted((unsigned long)page_to_virt(page),
->> -				   1 << order);
->> -	if (ret) {
->> -		leak_pages = true;
->> -		goto remove_mapping;
->> +	if (dma_pool->cc_shared) {
->> +		ret = set_memory_decrypted((unsigned long)page_to_virt(page),
->> +					   1 << order);
->> +		if (ret) {
->> +			leak_pages = true;
->> +			goto remove_mapping;
->> +		}
->>  	}
->
-> This makes the memory_decrypted conditional, but it doesn't change
-> the lines a few above:
->
-> 	addr = dma_common_contiguous_remap(page, pool_size,
-> 			pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL)),
->                             ^^^^^^^^^^^^
-> 			__builtin_return_address(0));
-> 	if (!addr)
-> 		goto free_page;
->
-> It is wrong to pass pgprot_decrypted() to the arch code if
-> set_memory_decrypted() was not called.
->
-> Also it looks at some point the nature of the atomic pool has become
-> confused. Originally it was just to allocate atomic memory that had
-> been vmap'd outside the atomic context (to set the non-coherent
-> pgprot), so every caller was expecting non-cached memory.
->
-> Then it was reused to also allocate CC shared memory outside the
-> atomic context. That was fine for x86 that doesn't use DMA_REMAP but
-> on ARM64 it now means all atomic pool CC memory is uncached? That
-> doesn't seem to make any sense...
->
-> I suppose along the lines of this patch the solution is to add a
-> noncoherent property to the pool so we can select the correct
-> combination:
->
->  noncoherent !SHARED = vmap pgprot_noncached
-> !noncoherent  SHARED= vmap pgprot_decrypted + set_memory_decrypted
->  noncoherent  SHARED = (probably unrealistic in real systems)
-> !noncoherent !SHARED = normal __dma_direct_alloc_pages()
->
-> But I don't view this as that important, the CC hypervisor is probably
-> going to use the S2 page table to force cachable on all system memory
-> so the non-cached pgprot is a NOP, but the extra vmap is wasteful and
-> it is confusing.. So maybe a little fixme is all that is needed here.
->
+I think rmi_rtt_data_map_init() returns a raw RMI return value which is
+positive on failure. Shouldn't it be converted to -ENXIO or another
+Linux errno before returning it?
 
-Something like?
+Otherwise, the positive error value can propagate through
+kvm_gmem_populate() and populate_region() to kvm_arm_rmi_populate().
+There, it would be treated as the number of pages populated, even though
+the operation did not populate any pages.
 
-modified   kernel/dma/direct.c
-@@ -260,6 +260,9 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- 	/*
- 	 * Remapping or decrypting memory may block, allocate the memory from
- 	 * the atomic pools instead if we aren't allowed block.
-+	 * FIXME!! With CONFIG_DMA_DIRECT_REMAP, the pool is also mapped as
-+	 * DMA-coherent (non-cacheable). We may want to create a separate pool
-+	 * dedicated to CC_SHARED atomic allocations.
- 	 */
- 	if ((remap || (attrs & __DMA_ATTR_ALLOC_CC_SHARED)) &&
- 	    dma_direct_use_pool(dev, gfp)) {
-modified   kernel/dma/pool.c
-@@ -88,6 +88,7 @@ static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
- 	unsigned int order;
- 	struct page *page = NULL;
- 	bool leak_pages = false;
-+	pgprot_t prot;
- 	void *addr;
- 	int ret = -ENOMEM;
- 	unsigned int min_encrypt_order = get_order(mem_cc_shared_granule_size());
-@@ -110,8 +111,12 @@ static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
- 	arch_dma_prep_coherent(page, pool_size);
- 
- #ifdef CONFIG_DMA_DIRECT_REMAP
--	addr = dma_common_contiguous_remap(page, pool_size,
--			pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL)),
-+	if (dma_pool->cc_shared)
-+		prot = pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL));
-+	else
-+		prot = pgprot_dmacoherent(PAGE_KERNEL);
-+
-+	addr = dma_common_contiguous_remap(page, pool_size, prot,
- 			__builtin_return_address(0));
- 	if (!addr)
- 		goto free_page;
+> +		}
+> +	}
+> +
+> +	if (ret) {
+> +		if (WARN_ON(rmi_undelegate_page(dst_phys))) {
+> +			/* Undelegate failed, so we leak the page */
+> +			get_page(pfn_to_page(dst_pfn));
+
+Since realm_create_rtt_levels() returns either 0 or a negative errno,
+how about preserving that error and converting any raw RMI erorr to
+-ENXIO here?
+
+		return ret < 0 ? ret : -ENXIO;
+
+> +		}
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static int populate_region_cb(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> +			      struct page *src_page, void *opaque)
+> +{
+> +	unsigned long data_flags = *(unsigned long *)opaque;
+> +	phys_addr_t ipa = gfn_to_gpa(gfn);
+> +
+> +	if (!src_page)
+> +		return -EOPNOTSUPP;
+> +
+> +	return realm_data_map_init(kvm, ipa, pfn, page_to_pfn(src_page),
+> +				   data_flags);
+> +}
+> +
+> +static long populate_region(struct kvm *kvm,
+> +			    gfn_t base_gfn,
+> +			    unsigned long pages,
+> +			    u64 uaddr,
+> +			    unsigned long data_flags)
+> +{
+> +	long ret = 0;
+> +
+> +	mutex_lock(&kvm->slots_lock);
+> +	ret = kvm_gmem_populate(kvm, base_gfn, u64_to_user_ptr(uaddr), pages,
+> +				populate_region_cb, &data_flags);
+> +	mutex_unlock(&kvm->slots_lock);
+> +
+> +	return ret;
+> +}
+> +
+>  enum ripas_action {
+>  	RIPAS_INIT,
+>  	RIPAS_SET,
+> @@ -574,6 +643,43 @@ static int realm_ensure_created(struct kvm *kvm)
+>  	return -ENXIO;
+>  }
+>  
+> +int kvm_arm_rmi_populate(struct kvm *kvm,
+> +			 struct kvm_arm_rmi_populate *args)
+> +{
+> +	unsigned long data_flags = 0;
+> +	unsigned long ipa_start = args->base;
+> +	unsigned long ipa_end = ipa_start + args->size;
+> +	long pages_populated;
+> +	int ret;
+> +
+> +	if (args->reserved ||
+> +	    (args->flags & ~KVM_ARM_RMI_POPULATE_FLAGS_MEASURE) ||
+> +	    !IS_ALIGNED(ipa_start, PAGE_SIZE) ||
+> +	    !IS_ALIGNED(ipa_end, PAGE_SIZE) ||
+> +	    !IS_ALIGNED(args->source_uaddr, PAGE_SIZE))
+> +		return -EINVAL;
+> +
+> +	ret = realm_ensure_created(kvm);
+> +	if (ret)
+> +		return ret;
+
+If I understand correctly, concurrent KVM_ARM_RMI_POPULATE calls can
+race with each other in realm_ensure_created(). 
+
+realm_ensure_created() calls realm_create_rd() when kvm_realm_state() ==
+REALM_STATE_NONE. Since kvm->arch.config_lock is not held here, multiple
+threads could enter realm_create_rd() concurrently.
+
+KVM_ARM_RMI_POPULATE can also race with KVM_RUN through
+kvm_activate_realm(). kvm_activate_realm() takes kvm->arch.config_lock
+while checking the Realm state, calling realm_ensure_created(), and
+updating the state, whereas KVM_ARM_RMI_POPULATE does not.
+
+How about serializing Realm creation here as follows?
+	scoped_guard(mutex, &kvm->arch.config_lock) {
+		ret = realm_ensure_created(kvm);
+		if (ret)
+			return ret;
+	}
+
+Does that make sense?
+
+> +
+> +	if (args->flags & KVM_ARM_RMI_POPULATE_FLAGS_MEASURE)
+> +		data_flags |= RMI_MEASURE_CONTENT;
+> +
+> +	pages_populated = populate_region(kvm, gpa_to_gfn(ipa_start),
+> +					  args->size >> PAGE_SHIFT,
+> +					  args->source_uaddr, data_flags);
+> +
+> +	if (pages_populated < 0)
+> +		return pages_populated;
+> +
+> +	args->size -= pages_populated << PAGE_SHIFT;
+> +	args->source_uaddr += pages_populated << PAGE_SHIFT;
+> +	args->base += pages_populated << PAGE_SHIFT;
+> +
+> +	return 0;
+> +}
+> +
+>  static void kvm_complete_ripas_change(struct kvm_vcpu *vcpu)
+>  {
+>  	struct kvm *kvm = vcpu->kvm;
+> -- 
+> 2.43.0
+> 
+> 
