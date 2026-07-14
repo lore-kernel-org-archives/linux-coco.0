@@ -1,179 +1,109 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA79E3D1A97
-	for <linux-coco@lists.linux.dev>; Mon, 13 Jul 2026 23:16:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783984568; cv=pass; b=E5y6r5egIPR78bwUja6opm+BQ7ppM7M8BIMzQzlVxIPXms4YgdBYGy9VNXU4b7eLJ2xsnSQCXfS2X8D6QIMajiEmo79bRD6ZK+iuTW68+MzKLhJ3jFHLnUqDO7UvwqHR81Xg8T4af/4ojXyzaU+QeFfMnAKlNOjzezmJiypc/3w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783984568; c=relaxed/simple;
-	bh=jNitDBOyiAnqLYAVTV2WWuN1NaJEYQUlElQBlTgvBIA=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sK/b44Ej5PeVXmacDe//9EltNmlo1KfgX1KWvDI+mhtFWvSn7MD0FJlfQowKKhvUH1L9r7J/Jtir2oPNnT59w3Hq7whPGTvG5LwtsMdBFICXBxEnF91W8Boyu7715EmhelUNG7Yd98EeBenq/HZUDD4m1Hmbc5VLv6KVNUK3TFk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YgT+XIbj; arc=pass smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E786230C63B;
+	Tue, 14 Jul 2026 03:35:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784000139; cv=none; b=HTIslSVkiImKpi5MFvd7SiVGlVDf8CSxDaogzFAB8llQb7pOjf8oVYquS7rkIib/3Jpkui0XHyLIUXeIi6JbzL5ecma+naOWJPl70qrjpp+QrCmpQBm3NBH1chwbyZRSRxgJ+r4k+2qwxE7LaSvzisKeuNjOZke2Mupmyqp5Ce4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784000139; c=relaxed/simple;
+	bh=oPcAVwulTEZqwgt+ROBzzFLUXbQYJQG9mLa7fFzzZ0o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=GFg6G9wCLH/cJ2Kw7XMDhPTAdWUzPSy4S9o4kAjoXvZiP3IrcLTYkgrju6zCOwxmtJW94pGg/zN2DyhpS9nJWEvL6sm2U80vhfao8RWnHryJZkL0fCS5OwKpfPc6u5Tykouep5aTGoOYZwoxHN71krJcyy9N2JQJkuFYG1wdkk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EcW9AEgv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YgT+XIbj"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c9cf07d2df6so2384274a12.2
-        for <linux-coco@lists.linux.dev>; Mon, 13 Jul 2026 16:16:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783984564; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VhDPMsJRmn7nmdJjprDblOiwkxeqndOUxiNo+uw0sJiL6rzUxW6+7fMcS24pIEiKBJ
-         FsrYST2mw3L1cnPfFqDlOdQvbb9ZdBTZlmwwEVafPLjyEpF4nrWSOJ9a2XcDsw87iPKL
-         HxHJi3fo02Fsbhb6t+0T5+yvpaBAQpTPkfmZuzbmm4iF8AUZR4WVE+BXQJecHXLXn8SM
-         pQpoDcRKUx83gXGXiiwq3VIy7NesPGUED7pmxkluE+Lh4Gz7TYQ5baTXGFc0PZUzQArE
-         gi98qpAUERIYCDGGokx2zTb4Etcb9Nfj/VD2+TkmaY2QexRtChzsSCJrKWVV/Pe0MY3x
-         h9Ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=mNe9rM8ZI02kYm64C7ciEQBT8YD2/cothZS9irUHQA8=;
-        fh=mVdNU3ozgvzRLYgLfIJDNJ6508I0XrDAjO9NTIZsM+Y=;
-        b=XYxOGmohBymp9mAfl7NRYguh29N4Xxcn/ElEFJiCxVXIsYxK9MjsBbJx2HGi5w5wvj
-         SMA4JX66Uh9I+ffTjdSZfyDQR118Ks8aX3ThT9CPitU6Cz2qWXMInJq8EIJZSHgfw6gl
-         UjtuECq1bckPeT2kCNEbSJZY8DVdC64acViawo8VrLo9Y4oE0cdHc5f3+0mxmXpxXVFd
-         8xrxQ4wwsj3dowgJvagTojlW7aWFcszpPvomj83B5/WBSV+Tu9fmUvN5xs0k6HFn91KM
-         SsyOjxh58uMfV3Mwr4s0HrZ9252yA9Ri2oHANe/3IKU3CDRYyQLFSDkmplQPWxrs9hfR
-         tRaA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783984564; x=1784589364; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mNe9rM8ZI02kYm64C7ciEQBT8YD2/cothZS9irUHQA8=;
-        b=YgT+XIbjH2EXETizkeuTekRsLhIFqUsCrdtKrdWmrfnFDfUrtrzWcecZEM4ifPl7qt
-         32WYauaeXouEftRpD4wraIdNKFSDr8F8eMLGzlF/w4TXPEK6qwebjHlJqWzzj0i7LyL4
-         e5C6TtEbrU+vIoQlobXZClZ+/7xRE9kpcD22K0oz5k7AUv0Cs6ZO4CL6dSUG0Odq64Ey
-         r/CATd0YedBcfxwKq2gcGCEmnLUxVWfFzyFkTSttvmZ3c9rlxFJs9Cr9DrlCPVfdEQae
-         QaJ52lQfoKurMiZXBl9VC0qZcZnLNqxVXIMlmTHSH2nZbj8kYtOXIMN7ej9IvtyDJMQP
-         eh/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783984564; x=1784589364;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mNe9rM8ZI02kYm64C7ciEQBT8YD2/cothZS9irUHQA8=;
-        b=sib2TnBBaSWaTshorbu0OOKAV5D8UEeaimt2QHGz+XoMwCbyyxQ02Udld7K65fPpsN
-         y2HPCKRQ+XqKjbkTEFq41xjBFR1+falwFkDqNHLQYR5cTP5vmm6g5vgChbPog2vNKkCy
-         HLUaZF8mcYT2JHzzNiL3Sj6uahObb2M7TpVEZBdylSAHIb1XcjV5XDEIWIdpA9zRmu8l
-         QIjvFvE/xRFNOj4ihnnQiqPvINApNMsgi2KDtDKCc+6xQnQHu4tnDZVPbZYulYwUeTWq
-         Vbf+uSj7ejrNrBUpce04mHGHzVVaNekJx9D7aioAVBQWhxTCyrorg73w9kqYPByrOBak
-         N6Fw==
-X-Forwarded-Encrypted: i=1; AHgh+RrrE1HwQKDrse9JNfGvumuhhRr6tW08KVRsaMeW3znIrR2a528Rv+UQ8TMXI98Ifitu3CehkH7kzB8I@lists.linux.dev
-X-Gm-Message-State: AOJu0YxjZN1HM0niL872gPVuVBB/115GY6WDtBb0oQoBx3nITl8qq6O4
-	QgY9255zsThtSL7PwkZMyp7LEvfnXsgrgj6SaMOOuHqiTxOJuh19jQaA7aJl/FcXIPTEPmfOpMf
-	KaRqnXMPH0Bw05WA35MDT23+D0EdFrRnJWZ1NUee9
-X-Gm-Gg: AfdE7cn24jdSuyzuGezs7nBzA41CIgOghtjX/T8I9HJlKeKyHyPnQjxr6B61zS4IF9t
-	KUkNS8dN/MPquMWtfhEWczJpqFFk+55gsb5lSMem/uJ3yl1r7SMYv1CJCd3PTvaQ+BCsKl9kbCK
-	ALO1gn9QuNN7lGdU18SoLi4xlzh4IVJSIDpwinHWnkqfLs07wGtHIsn9Ng0B17HntBVIVoX6+FK
-	tOnjUeac6CBQ9PvlLG5PEjaqG78aUw+XekhnfEt50AnS146vfpcVXNG02FjXEFBt0V+BBZVspmS
-	RNRlNU6R4/dXvKFO/iac6u7dgLo7U7irfY7y74alf7A8MTPkdCN3PDa50AY=
-X-Received: by 2002:a05:6a20:cd8f:b0:3bf:83f3:b810 with SMTP id
- adf61e73a8af0-3c110a7b287mr11689858637.29.1783984563364; Mon, 13 Jul 2026
- 16:16:03 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 13 Jul 2026 16:16:02 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 13 Jul 2026 16:16:02 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260712221934.GF674038@nvidia.com>
-References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
- <20250529053513.1592088-11-yilun.xu@linux.intel.com> <20250602133009.GC233377@nvidia.com>
- <CAEvNRgFpJWQ5M5sQhGpQUV3GbBq9N+MQhhaxdxa=D8ky94SCsw@mail.gmail.com> <20260712221934.GF674038@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EcW9AEgv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3675A1F000E9;
+	Tue, 14 Jul 2026 03:35:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784000138;
+	bh=J8EROicyvyqBHzNN9rE23d0T/JySclZqP++7t7T4RaE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=EcW9AEgvcMudcqLdd5C8/BiDRQ3ckffoh+3joXtfcvQArty1Bqy7GiIydvzIBCLJI
+	 ZYtj7PhBn7KY5xOXpbDoYrxVdGcfi3vpdsHKGCNWFha4MIt+IhEV5jDEBjBoyWy2iq
+	 bj05AAquiv+sKEDadr4DNLJ3+mfRTpc6qQeInr7Odr7bDn+pbXtO5yQMpfS+FUvAU4
+	 8ZpHoUc5+sQxY4Zemd+uQ3SKfXOCSJ2Ui1KfmTI6rr1/awo2nLjrYkhAKzaSTOFy+Z
+	 5A/hh2E0gsAAMZGguGSuY4n+PIlelCOb6vjM8CYbnyg5x9L/brWLTpdEsmw8Hz8Ctc
+	 KsvvwB6a/KzRw==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
+	Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v7 02/22] dma-pool: fix page leak in
+ atomic_pool_expand() cleanup
+In-Reply-To: <20260713175433.GI3133966@ziepe.ca>
+References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
+ <20260701054926.825925-3-aneesh.kumar@kernel.org>
+ <20260713175433.GI3133966@ziepe.ca>
+Date: Tue, 14 Jul 2026 09:05:25 +0530
+Message-ID: <yq5azezumef6.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Mon, 13 Jul 2026 16:16:02 -0700
-X-Gm-Features: AVVi8CczeGanVcGdhsy5HlDfD2XYPmjZautNceRH5dXiMXcxQCHaSODxjV4xdX8
-Message-ID: <CAEvNRgEo2kLUmaGU-Vsgx2sTQvU_NNUJ4bRp5Z4Ygs_xvVLOYA@mail.gmail.com>
-Subject: Re: [RFC PATCH 10/30] vfio/pci: Export vfio dma-buf specific info for importers
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org, sumit.semwal@linaro.org, 
-	christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com, 
-	alex.williamson@redhat.com, dan.j.williams@intel.com, aik@amd.com, 
-	linux-coco@lists.linux.dev, dri-devel@lists.freedesktop.org, 
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
-	vivek.kasireddy@intel.com, yilun.xu@intel.com, linux-kernel@vger.kernel.org, 
-	lukas@wunner.de, yan.y.zhao@intel.com, daniel.vetter@ffwll.ch, 
-	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
-	tao1.su@intel.com, linux-pci@vger.kernel.org, zhiw@nvidia.com, 
-	simona.vetter@ffwll.ch, shameerali.kolothum.thodi@huawei.com, 
-	aneesh.kumar@kernel.org, iommu@lists.linux.dev, kevin.tian@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
+Jason Gunthorpe <jgg@ziepe.ca> writes:
 
-> On Sat, Jul 11, 2026 at 06:01:31PM -0700, Ackerley Tng wrote:
+> On Wed, Jul 01, 2026 at 11:19:06AM +0530, Aneesh Kumar K.V (Arm) wrote:
+>> @@ -115,8 +116,10 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
+>>  	 */
+>>  	ret = set_memory_decrypted((unsigned long)page_to_virt(page),
+>>  				   1 << order);
+>> -	if (ret)
+>> +	if (ret) {
+>> +		leak_pages = true;
+>>  		goto remove_mapping;
+>> +	}
 >
->> In the course of a CoCo guest's operation, will the guest need to
->> convert between private/shared MMIO? Will the guest need some pages
->> shared and others private? If these are required operations, guest_memfd
->> already provides the tracking and is going to have a conversion ioctl
->> very soon. Instead of further extending dmabuf to track more things, how
->> about letting guest_memfd track it?
->
-> Use another FD type was sort of my fallback if we couldn't get DMABUF
-> into something workable. I'm kind of surprised to see guestmemfd
-> proposed as the other FD, but I don't know much about its insides.
+> Truely these _set_memory_decrypted() things are an insane API. So a if
+> it fails to decrypt it can be in any messy state?
 >
 
-For now guest_memfd only supports 4K pages, so the interfaces we're
-interested in are:
+Yes, we could possibly try to encrypt the page again and, if that
+succeeds, avoid leaking it. We might want to do that tree-wide in a
+separate patch.
 
-+ The .fault() handler, which core mm calls to service any page
-  faults. For this, guest_memfd first checks if the page is shared, and
-  if so, proceeds to return a struct page.
-    + For VFIO, guest_memfd could call vfio_pci_mmap_huge_fault() and do
-      vmf_insert_pfn().
-+ The kvm_gmem_get_pfn() function, which kvm calls to get a pfn and a
-  max_order to set up stage 2 page tables. Now guest_memfd returns
-  folio_pfn(folio) and max_order = 0 since guest_memfd only supports
-  PAGE_SIZE pages now.
-    + For VFIO, guest_memfd would need some way to get the PFN, so
-      probably something like dma_buf_get_pfn_unlocked() [1], but
-      probably from VFIO instead of dmabuf. Perhaps pci_resource_start()
-      is good enough to get a pfn.
-
-[1] https://lore.kernel.org/all/20250529053513.1592088-2-yilun.xu@linux.intel.com/
-
-> If VFIO can create one
-
-At guest_memfd creation time, guest_memfd is always created for a
-KVM. This is the first place where it is bound to a kvm instance. This
-is one place where it helps Yilun with Confidential VMs, so KVM can be
-sure that the memory was meant for a specific CoCo kvm and not any VM.
-
-I think it might be weird to have VFIO take a kvm fd to create a
-guest_memfd?
-
-I was thinking that the userspace VMM could do something like:
-
-  int vfio_fd = open("/dev/vfio/devices/vfio0");
-  int gmem_fd = ioctl(KVM_CREATE_GUEST_MEMFD, { .fd = vfio_fd });
-
-and creating from a template fd would also disable/close the vfio_fd so
-that the following will fail:
-
-  addr = mmap(vfio_fd);  // Maybe this should fail too?
-  *addr = 1;             // But this should definitely fail so that
-                         // guest_memfd gets to block private writes.
-
-> and fill it with MMIO physical addresses then
-> maybe it is OK?
+>
+>> @@ -130,14 +133,15 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
+>>  				   1 << order);
+>>  	if (WARN_ON_ONCE(ret)) {
+>>  		/* Decrypt succeeded but encrypt failed, purposely leak */
+>> -		goto out;
+>> +		leak_pages = true;
+>
+> At least this one makes some sense..
+>
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 >
 > Jason
 
-What interface would be used fill a guest_memfd with MMIO physical
-addresses?
-
-When a vdev is associated with a vfio file, can some other vfio file be
-created that can also do MMIO to the vdev's PFNs? Would I be able to set
-something to block any future associations to those PFNs? This will help
-guest_memfd to prevent any other writes to private PFNs.
+-aneesh
