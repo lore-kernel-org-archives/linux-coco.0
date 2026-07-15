@@ -1,39 +1,39 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F00C4156CE;
-	Wed, 15 Jul 2026 15:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A023AEF55;
+	Wed, 15 Jul 2026 16:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784131062; cv=none; b=hZerW6icMaXo+jncXB7z98QbtaTHRV1OJgktMZObjHda2YHMW9AuT4z/bvMPDYwWjNjYVz37tjJzdagF30wCjU1Pluw2DtHDbIzCUog9p78jaeydBeJm0+/8RElBZgmrt9xhcguihrzJ9xQ4NYl8zqbb9aQ9dMq9h/ErAv3FrqU=
+	t=1784132001; cv=none; b=dUDxTuLsh3gOc3kBEhOamENCmeFJAXkJ3McfvF0l1zQmUlMJ2gfntWngMTovgGWrpz5tlQ/D73N+4ZQwg1SXVb5CmYd19mU59gcsY8ykYIpLdOqM7yOznrAQynLF3qyev4mfpAdKGu5ri2wBlU7MLcCnrip6mO2uKE2Onv/oT1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784131062; c=relaxed/simple;
-	bh=Iei6Z4bv03ksicPJdsQKwAsUO5AzQQU72LhtPCF6AAE=;
+	s=arc-20240116; t=1784132001; c=relaxed/simple;
+	bh=B++rZ0AOH5H7l8/Ei2HbMmF1u7LUULq/3CU+hEvSOc0=;
 	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PLF2lA4UWYe8opaNuzG3Y+eW54sILKVsNoXJZQ/PrmAo6H+xXWtQRgb4tRDKvD/SsVAbpKxQKDYSQBBW3VBukQ/CgW6HK0yMBlmfmkwGx/tNsXoIWTjmGezDGEnDgQQdSi+q7GyBFrb95bSxrBNBDeya78fIfbyjV9fnAhV6zvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kwt0wudy; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=nQEUlo3qExP0zodfJe53ypaGmSXRw/v6jTrjO1Fzksl6JL1E9g+As3vvfgg+tjY5yth9c16a/2sdB8dwLayOfDnF3IFsmvrPf46La8gCeYUAZyxs0i36r7VofvkiyaST0L4OoLKK6hCNZ5o5V1FDFIjgQGZK+qAO/kyDVIqF3nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LRYqaDLw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kwt0wudy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC961F00A3A;
-	Wed, 15 Jul 2026 15:57:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LRYqaDLw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52DC11F000E9;
+	Wed, 15 Jul 2026 16:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784131060;
-	bh=XDk0Of4Ii82xYZ6joqOrrIwhzl5iv/e/NSKekosnOY0=;
+	s=k20260515; t=1784131989;
+	bh=hoc4sBVA38BJgNS+RSLviYr+scjAjo8V7n3kbm3q76s=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=kwt0wudy3mYXXqfhCr12TM/l479wknYIrDYxMIkO9sP9BH3icQgfDObNvzDUNhVBR
-	 EycTqxzIw5coFW/yIfMyHtfMPvfHivYLxf9JECR4GgDzBRacoX+5l+o1xPFWycOBA1
-	 nZVX80Z6WUud6jPDlk3CahjPIZdmxnM+4wQkvz0pM4EtPOMm0pm1lZYvre5SL+hndr
-	 cjLepI8IY/JT6yt+CJeWSPKhrcdjU+recDjPDZG1TCkSsFVAjfdB1mWD1lw5F1Eazv
-	 lfHXICV2wpdmX5Uw48OKCvGQ5hUiuCPnFlcHMNVZQkkmWcqveiwZSihRH9wVNI3DWg
-	 Ms+BlBkC8NakA==
+	b=LRYqaDLwCjZ90T7+b/n0QyldeEUvCYq1xgMdAV3MQotzOGco1EOXv+oWS5cTd98g6
+	 15FpqiOBf254F+RwRg/JeaT2xMhpI4iSD0o/bgCli/qCiywLgI2EMcyVEsIdSxRDR+
+	 +R3cYVvHzfSUc7nAgXeip5byLBQKup+IeFV2j+/cfAmOQnHOBxOj7apvwOaX/EapQA
+	 PHBs7XRrLfJz9jgFNoqEDakM8I1rjD55Xa81eAMszHPaW1RQgbmrbOTwEeVlIgQr5g
+	 b+rkej/XbF3+TfjjfdmbtF7If6pp3SSf4YHfP8VSQBFATEh24jLi31BgmjVRwhCFHF
+	 3wTF8R43u4D+A==
 Received: from [194.56.92.2] (helo=lobster-girl.misterjones.org)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1wk1zO-00000005Nsf-2dLH;
-	Wed, 15 Jul 2026 15:57:38 +0000
-Date: Wed, 15 Jul 2026 16:59:28 +0100
-Message-ID: <871pd45jmn.wl-maz@kernel.org>
+	id 1wk2EN-00000005OGD-1MhH;
+	Wed, 15 Jul 2026 16:13:07 +0000
+Date: Wed, 15 Jul 2026 17:14:56 +0100
+Message-ID: <87zezs44cf.wl-maz@kernel.org>
 From: Marc Zyngier <maz@kernel.org>
 To: Steven Price <steven.price@arm.com>
 Cc: kvm@vger.kernel.org,
@@ -60,10 +60,10 @@ Cc: kvm@vger.kernel.org,
 	Vishal Annapurve <vannapurve@google.com>,
 	WeiLin.Chang@arm.com,
 	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v15 02/37] KVM: arm64: Avoid including linux/kvm_host.h in kvm_pgtable.h
-In-Reply-To: <20260715142841.80544-3-steven.price@arm.com>
+Subject: Re: [PATCH v15 09/37] KVM: arm64: CCA: Allow passing the machine type in KVM creation
+In-Reply-To: <20260715142841.80544-10-steven.price@arm.com>
 References: <20260715142841.80544-1-steven.price@arm.com>
-	<20260715142841.80544-3-steven.price@arm.com>
+	<20260715142841.80544-10-steven.price@arm.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
  (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -79,57 +79,63 @@ X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, 15 Jul 2026 15:28:04 +0100,
+On Wed, 15 Jul 2026 15:28:11 +0100,
 Steven Price <steven.price@arm.com> wrote:
 > 
-> To avoid future include cycles, drop the linux/kvm_host.h include in
-> kvm_pgtable.h and include the lightweight headers required for the types and
-> inline helpers used there. Additionally provide a forward declaration for
-> struct kvm_s2_mmu as it's only used as a pointer in this file.
-> 
-> Both pgtable.c and kvm_pkvm.h relied on the indirect inclusion of
-> kvm_host.h, so make that explicit.
+> Previously machine type was used purely for specifying the physical
+> address size of the guest. Reserve the higher bits to specify an ARM
+> specific machine type and declare a new type 'KVM_VM_TYPE_ARM_REALM'
+> used to create a realm guest.
 > 
 > Signed-off-by: Steven Price <steven.price@arm.com>
 > ---
-> New patch in v13
+> Changes since v13:
+>  * Rework to use the two top bits for the machine type now that pKVM has
+>    merged and used the top bit for KVM_VM_TYPE_ARM_PROTECTED.
+>  * Update the documentation to include KVM_VM_TYPE_ARM_PROTECTED as
+>    well.
+> Changes since v9:
+>  * Explictly set realm.state to REALM_STATE_NONE rather than rely on the
+>    zeroing of the structure.
+> Changes since v7:
+>  * Add some documentation explaining the new machine type.
+> Changes since v6:
+>  * Make the check for kvm_rme_is_available more visible and report an
+>    error code of -EPERM (instead of -EINVAL) to make it explicit that
+>    the kernel supports RME, but the platform doesn't.
 > ---
->  arch/arm64/include/asm/kvm_pgtable.h | 6 +++++-
->  arch/arm64/include/asm/kvm_pkvm.h    | 2 +-
->  arch/arm64/kvm/hyp/pgtable.c         | 1 +
->  3 files changed, 7 insertions(+), 2 deletions(-)
+>  Documentation/virt/kvm/api.rst | 18 ++++++++++++++++--
+>  arch/arm64/kvm/arm.c           | 11 +++++++++++
+>  include/uapi/linux/kvm.h       |  7 ++++++-
+>  3 files changed, 33 insertions(+), 3 deletions(-)
 > 
-> diff --git a/arch/arm64/include/asm/kvm_pgtable.h b/arch/arm64/include/asm/kvm_pgtable.h
-> index 41a8687938eb..c2e4b29e605f 100644
-> --- a/arch/arm64/include/asm/kvm_pgtable.h
-> +++ b/arch/arm64/include/asm/kvm_pgtable.h
-> @@ -8,9 +8,13 @@
->  #define __ARM64_KVM_PGTABLE_H__
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index b38e090ad95d..e39d146b34a3 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -181,8 +181,22 @@ flag KVM_VM_MIPS_VZ.
+>  ARM64:
+>  ^^^^^^
 >  
->  #include <linux/bits.h>
-> -#include <linux/kvm_host.h>
-> +#include <linux/kvm_types.h>
-> +#include <linux/rbtree_types.h>
-> +#include <linux/rcupdate.h>
->  #include <linux/types.h>
->  
-> +struct kvm_s2_mmu;
+> -On arm64, the physical address size for a VM (IPA Size limit) is limited
+> -to 40bits by default. The limit can be configured if the host supports the
+> +On arm64, the machine type identifier is used to encode a type and the
+> +physical address size for the VM. The lower byte (bits[7-0]) encode the
+> +address size and the upper bits[30-31] encode a machine type. The machine
+> +types that might be available are:
 > +
->  #define KVM_PGTABLE_FIRST_LEVEL		-1
->  #define KVM_PGTABLE_LAST_LEVEL		3
->  
-> diff --git a/arch/arm64/include/asm/kvm_pkvm.h b/arch/arm64/include/asm/kvm_pkvm.h
-> index 74fedd9c5ff0..a0f7a699d690 100644
-> --- a/arch/arm64/include/asm/kvm_pkvm.h
-> +++ b/arch/arm64/include/asm/kvm_pkvm.h
-> @@ -9,7 +9,7 @@
->  #include <linux/arm_ffa.h>
->  #include <linux/memblock.h>
->  #include <linux/scatterlist.h>
-> -#include <asm/kvm_host.h>
-> +#include <linux/kvm_host.h>
+> + =========================   ============================================
+> + KVM_VM_TYPE_ARM_NORMAL      A standard VM
+> + KVM_VM_TYPE_ARM_REALM       A "Realm" VM using the Arm Confidential
+> +                             Compute extensions, the VM's memory is
+> +                             protected from the host.
+> + KVM_VM_TYPE_ARM_PROTECTED   A "protected" VM using pKVM to isolate the
+> +                             VM from the host.
+> + =========================   ============================================
+> +
 
-nit: please keep the include directives in alphabetical order.
+Probably worth mentioning that REALM+PROTECTED is an illegal
+combination.
 
 	M.
 
