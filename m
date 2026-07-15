@@ -1,146 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CE73AEF20;
-	Wed, 15 Jul 2026 16:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F83306B3D;
+	Wed, 15 Jul 2026 16:32:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784132624; cv=none; b=IGypIVuPfySDcmBJHpMP/gfeBrsRVRtj+7QBi1Wc17h4nG9ZL79mbsUTE3467nNGE19iouHrdDzEtanRSV/hdIc7dFdJxuPmGdiXSmUTlYkmR6ZotNCo8v9CzVQivkUvsav9EkVeOsdc8hXSx/WXSs5DKcRKkDzY9n6tr8VHpEU=
+	t=1784133126; cv=none; b=OhCr4taIzqAg0nCUhUPaaIHergLoRA2GzKAmFPxUJPKq4IkOdBTB4DLyP1wjFf/sjjNZwzHDT05v/ABoe8TDGIgPJoqs76sBjGoGfAWRQf9VkZ9gPSNwYIVHa/E8R001B1FG0DEvWoSwNyDDunnuulzAfhbVrXAU7dTxuhKtOBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784132624; c=relaxed/simple;
-	bh=aDC53O3NEn+8TEtVUJUhBVpv1GJvm3ztotyfhpTNoxQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=caWpvwWMNnOyFq5IjYdpPV2WLEXGOScxNulUGgktvctiIneSKLZ4WqkVpuuXffjeeL/sP2C7sOzV94e/zoqGX0wFjt8DyCFD5QrNQOtfFkLPAWe+UwHNkxTEx49HH+zWGTds46ut/NyHcID7sl49HC5xsL6iNdx+N09IMmmhTk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aDVnt9vR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784133126; c=relaxed/simple;
+	bh=YEfGwbfCCDQLg/NWb7ORac95kV+EGg+EboFB0vctntM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rXWZ/MW2IjSR2NbjyABklZHwazJ33VDkcE4ePMQYYd8v2xVt7hT88AUaAa+AWu45G6LI5ueIsMHJXvuf2OsFMq5utsNSqU5jXOHEwi3FIJFt7h7kK5g2qGAn09pb9zqnXUSaGyy3lfX+HwlMQ7983AkcBAqKa+9fzEEsyskXcMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=EsnnfkBL; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aDVnt9vR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38971F000E9;
-	Wed, 15 Jul 2026 16:23:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784132622;
-	bh=nVtlpmzMXPInWvl/hpKSfGHp45T1wj2acsX8b9iirpc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=aDVnt9vR5KV+6pF4ampF1wEeddjMcxnvrJa7deL8fPo/iuJwSL2loktpEkvS0tFUR
-	 4DHJBCRc5u7gBzgEkLFWIQ8LIHQsaC026PRfA2UzP41Obsig+SkPVH3+YPtyHeSjqd
-	 l/uHGnScjmAePG8TQmXwnYWbS0u5AzOkjx1mTgI7k60MCDwHXdWOXdq3UHJDHqIEDL
-	 Yng6zHMWUvSMban7bGrFAV7nGTg2YRGDCfWRo0ZKQGBMSzvE1c4OAJ0lNQqYxfqcWP
-	 7Xht9dh7mbE2MupK+R/D2Qn2LBIKODoj7iB8UkRjiVBi9iIRyD3ZDwdIbBcojV69SX
-	 YGHE+r9gsEf7w==
-Received: from [194.56.92.2] (helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wk2Oa-00000005OXC-3Yl1;
-	Wed, 15 Jul 2026 16:23:40 +0000
-Date: Wed, 15 Jul 2026 17:25:30 +0100
-Message-ID: <87y0fc43ut.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu
- <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v15 26/37] KVM: arm64: WARN on injected undef exceptions
-In-Reply-To: <ec0f52d4-666d-4b6f-b010-eb0391fa53a7@arm.com>
-References: <20260715142841.80544-1-steven.price@arm.com>
-	<20260715142841.80544-27-steven.price@arm.com>
-	<8733xk5k7v.wl-maz@kernel.org>
-	<ec0f52d4-666d-4b6f-b010-eb0391fa53a7@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="EsnnfkBL"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 84252152B;
+	Wed, 15 Jul 2026 09:31:59 -0700 (PDT)
+Received: from [10.1.25.27] (e122027.cambridge.arm.com [10.1.25.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AAAE93F7B4;
+	Wed, 15 Jul 2026 09:31:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784133123; bh=YEfGwbfCCDQLg/NWb7ORac95kV+EGg+EboFB0vctntM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EsnnfkBLkUlVpcHHNTfvAfYqDrvm/mannNNibJNPyWFan+lyzGNnEwYw7RTUJaujr
+	 mT44hxReEcWVNie5MDgDs9a2HVsuOkycUohPyMHxstT0Dq9sC532UfxFDx7wpnkO4I
+	 0oNFw4lnqb0uYKfNqSDRuJKCtEOW9eIH2Ueclun8=
+Message-ID: <a008d2b9-1eff-4de7-add8-ef8e95efd439@arm.com>
+Date: Wed, 15 Jul 2026 17:31:57 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 194.56.92.2
-X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v15 26/37] KVM: arm64: WARN on injected undef exceptions
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260715142841.80544-1-steven.price@arm.com>
+ <20260715142841.80544-27-steven.price@arm.com> <8733xk5k7v.wl-maz@kernel.org>
+ <ec0f52d4-666d-4b6f-b010-eb0391fa53a7@arm.com> <87y0fc43ut.wl-maz@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <87y0fc43ut.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, 15 Jul 2026 17:15:31 +0100,
-Steven Price <steven.price@arm.com> wrote:
+On 15/07/2026 17:25, Marc Zyngier wrote:
+> On Wed, 15 Jul 2026 17:15:31 +0100,
+> Steven Price <steven.price@arm.com> wrote:
+>>
+>> On 15/07/2026 16:46, Marc Zyngier wrote:
+>>> On Wed, 15 Jul 2026 15:28:28 +0100,
+>>> Steven Price <steven.price@arm.com> wrote:
+>>>>
+>>>> The RMM doesn't allow injection of a undefined exception into a realm
+>>>> guest. Add a WARN to catch if this ever happens.
+>>>>
+>>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>>>> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>> ---
+>>>> Changes since v6:
+>>>>  * if (x) WARN(1, ...) makes no sense, just WARN(x, ...)!
+>>>> ---
+>>>>  arch/arm64/kvm/inject_fault.c | 1 +
+>>>>  1 file changed, 1 insertion(+)
+>>>>
+>>>> diff --git a/arch/arm64/kvm/inject_fault.c b/arch/arm64/kvm/inject_fault.c
+>>>> index 6492397b73d7..613f223bc7a3 100644
+>>>> --- a/arch/arm64/kvm/inject_fault.c
+>>>> +++ b/arch/arm64/kvm/inject_fault.c
+>>>> @@ -327,6 +327,7 @@ void kvm_inject_size_fault(struct kvm_vcpu *vcpu)
+>>>>   */
+>>>>  void kvm_inject_undefined(struct kvm_vcpu *vcpu)
+>>>>  {
+>>>> +	WARN(vcpu_is_rec(vcpu), "Unexpected undefined exception injection to REC");
+>>>>  	if (vcpu_el1_is_32bit(vcpu))
+>>>>  		inject_undef32(vcpu);
+>>>>  	else
+>>>
+>>> No. WARN_ONCE at a push, but even then, this looks dodgy.
+>>
+>> Yep WARN_ONCE() would be better. This function should never be called
+>> for a realm guest.
+>>
+>>> Exceptions must be injectable. Otherwise, how do you respond to, for
+>>> example, a sysreg access for a feature that is hidden from the guest?
+>>
+>> The RMM doesn't allow the host to inject exceptions - with the exception
+>> of SEA after a host-emulated MMIO.
+>>
+>>> Will the RMM perform this in KVM's stead?
+>>
+>> Yes the RMM would have to handle this for the likes of sysreg accesses.
+>> The host doesn't control the trapping of sysreg accesses. There are a
+>> few GIC-related registers which are forwarded to the host ("REC exit due
+>> to system register access") but generally the handling of sysregs is
+>> entirely internal to the RMM.
 > 
-> On 15/07/2026 16:46, Marc Zyngier wrote:
-> > On Wed, 15 Jul 2026 15:28:28 +0100,
-> > Steven Price <steven.price@arm.com> wrote:
-> >>
-> >> The RMM doesn't allow injection of a undefined exception into a realm
-> >> guest. Add a WARN to catch if this ever happens.
-> >>
-> >> Signed-off-by: Steven Price <steven.price@arm.com>
-> >> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> >> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> >> ---
-> >> Changes since v6:
-> >>  * if (x) WARN(1, ...) makes no sense, just WARN(x, ...)!
-> >> ---
-> >>  arch/arm64/kvm/inject_fault.c | 1 +
-> >>  1 file changed, 1 insertion(+)
-> >>
-> >> diff --git a/arch/arm64/kvm/inject_fault.c b/arch/arm64/kvm/inject_fault.c
-> >> index 6492397b73d7..613f223bc7a3 100644
-> >> --- a/arch/arm64/kvm/inject_fault.c
-> >> +++ b/arch/arm64/kvm/inject_fault.c
-> >> @@ -327,6 +327,7 @@ void kvm_inject_size_fault(struct kvm_vcpu *vcpu)
-> >>   */
-> >>  void kvm_inject_undefined(struct kvm_vcpu *vcpu)
-> >>  {
-> >> +	WARN(vcpu_is_rec(vcpu), "Unexpected undefined exception injection to REC");
-> >>  	if (vcpu_el1_is_32bit(vcpu))
-> >>  		inject_undef32(vcpu);
-> >>  	else
-> > 
-> > No. WARN_ONCE at a push, but even then, this looks dodgy.
-> 
-> Yep WARN_ONCE() would be better. This function should never be called
-> for a realm guest.
-> 
-> > Exceptions must be injectable. Otherwise, how do you respond to, for
-> > example, a sysreg access for a feature that is hidden from the guest?
-> 
-> The RMM doesn't allow the host to inject exceptions - with the exception
-> of SEA after a host-emulated MMIO.
->
-> > Will the RMM perform this in KVM's stead?
-> 
-> Yes the RMM would have to handle this for the likes of sysreg accesses.
-> The host doesn't control the trapping of sysreg accesses. There are a
-> few GIC-related registers which are forwarded to the host ("REC exit due
-> to system register access") but generally the handling of sysregs is
-> entirely internal to the RMM.
+> Then the only option is not to just warn, but to mark all realms as
+> dead and refuse to run them any further. If we can't inject an
+> exception and that the RMM isn't doing its job, I can't see how we can
+> continue at all.
 
-Then the only option is not to just warn, but to mark all realms as
-dead and refuse to run them any further. If we can't inject an
-exception and that the RMM isn't doing its job, I can't see how we can
-continue at all.
+You've got a point - I'm not sure whether it's entirely reasonable to
+refuse to run any realm, but it certainly would be sensible to mark the
+guest which triggers this as dead. Would a KVM_BUG() be more appropriate
+here?
 
-	M.
+Thanks,
+Steve
 
--- 
-Jazz isn't dead. It just smells funny.
