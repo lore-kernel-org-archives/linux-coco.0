@@ -1,39 +1,39 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F113B3EDAB3;
-	Wed, 15 Jul 2026 15:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F00C4156CE;
+	Wed, 15 Jul 2026 15:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784130299; cv=none; b=etZHj7mbzUfEbCAh2VMP9b2C9lv/vxCkYiXmtyFw0Yp8kkhgkqkq1R/ziWxJpfdpo6ynlwiEHDwqc05nE6MYqadMlpTtuYBRpH45gYSrnG8PI4CiIPlFQpecBZoj7Wg2fALSrUgLs69rwLK6QElfhkNyEIdD625ol8WXzGsmo38=
+	t=1784131062; cv=none; b=hZerW6icMaXo+jncXB7z98QbtaTHRV1OJgktMZObjHda2YHMW9AuT4z/bvMPDYwWjNjYVz37tjJzdagF30wCjU1Pluw2DtHDbIzCUog9p78jaeydBeJm0+/8RElBZgmrt9xhcguihrzJ9xQ4NYl8zqbb9aQ9dMq9h/ErAv3FrqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784130299; c=relaxed/simple;
-	bh=OV68crIr086whsjEANXs+13UCKCVMq/8FeONoVgg8Dk=;
+	s=arc-20240116; t=1784131062; c=relaxed/simple;
+	bh=Iei6Z4bv03ksicPJdsQKwAsUO5AzQQU72LhtPCF6AAE=;
 	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aJAD+PVh1pssD7r4QjkqcvQEtTKQjBnph1m51Q9lIe3k7SDmkp1kmkPUlGUNJukJBMTPDBbuVXppZT+IK4veeiT3ABdRQlXdldrqkWeyC9dyxB4XczPSoUxqg4babkd3Y9Aem0YUf6quTqtF6xkX5vbEzDp5ewFQhrAM7kVvJH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lsv8Xsar; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=PLF2lA4UWYe8opaNuzG3Y+eW54sILKVsNoXJZQ/PrmAo6H+xXWtQRgb4tRDKvD/SsVAbpKxQKDYSQBBW3VBukQ/CgW6HK0yMBlmfmkwGx/tNsXoIWTjmGezDGEnDgQQdSi+q7GyBFrb95bSxrBNBDeya78fIfbyjV9fnAhV6zvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kwt0wudy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lsv8Xsar"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ACC11F000E9;
-	Wed, 15 Jul 2026 15:44:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kwt0wudy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC961F00A3A;
+	Wed, 15 Jul 2026 15:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784130297;
-	bh=oScIehFNLVV6Ks2K1Q/+8RY9UPPqDbzPiGCzLfB1ONk=;
+	s=k20260515; t=1784131060;
+	bh=XDk0Of4Ii82xYZ6joqOrrIwhzl5iv/e/NSKekosnOY0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Lsv8XsarAjwRmT5pSLAM4xb1jKVASVgI//6qChlF8vms9nalzS+IYOPSadkp231pZ
-	 n14OOb+e1+fDZBasxdyAFtLYFQwZt1Tja85uQMBP5SNG5djGBGnRdhp1KApA3g9PxW
-	 B6MXHob+FpM6M3l0pFN3mwQa1R/TETjfNnuurjVsqkkoSpzECfZtMtAwe5dKHxqLRU
-	 v/ydBeczqHpCCgZVPdTWUFemud7sFswPzBTeaG2gZQUvmvma+KXXbqSymx3VaipF/m
-	 8PwZHALsLm0utsRH5IFDl51iKYHmyu9WeizolTYBTCOSijJfwUQ8tiggmcNpA6ptg7
-	 Q/uy/ua42au1A==
+	b=kwt0wudy3mYXXqfhCr12TM/l479wknYIrDYxMIkO9sP9BH3icQgfDObNvzDUNhVBR
+	 EycTqxzIw5coFW/yIfMyHtfMPvfHivYLxf9JECR4GgDzBRacoX+5l+o1xPFWycOBA1
+	 nZVX80Z6WUud6jPDlk3CahjPIZdmxnM+4wQkvz0pM4EtPOMm0pm1lZYvre5SL+hndr
+	 cjLepI8IY/JT6yt+CJeWSPKhrcdjU+recDjPDZG1TCkSsFVAjfdB1mWD1lw5F1Eazv
+	 lfHXICV2wpdmX5Uw48OKCvGQ5hUiuCPnFlcHMNVZQkkmWcqveiwZSihRH9wVNI3DWg
+	 Ms+BlBkC8NakA==
 Received: from [194.56.92.2] (helo=lobster-girl.misterjones.org)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1wk1n5-00000005NeP-1TpK;
-	Wed, 15 Jul 2026 15:44:55 +0000
-Date: Wed, 15 Jul 2026 16:46:44 +0100
-Message-ID: <8733xk5k7v.wl-maz@kernel.org>
+	id 1wk1zO-00000005Nsf-2dLH;
+	Wed, 15 Jul 2026 15:57:38 +0000
+Date: Wed, 15 Jul 2026 16:59:28 +0100
+Message-ID: <871pd45jmn.wl-maz@kernel.org>
 From: Marc Zyngier <maz@kernel.org>
 To: Steven Price <steven.price@arm.com>
 Cc: kvm@vger.kernel.org,
@@ -60,10 +60,10 @@ Cc: kvm@vger.kernel.org,
 	Vishal Annapurve <vannapurve@google.com>,
 	WeiLin.Chang@arm.com,
 	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v15 26/37] KVM: arm64: WARN on injected undef exceptions
-In-Reply-To: <20260715142841.80544-27-steven.price@arm.com>
+Subject: Re: [PATCH v15 02/37] KVM: arm64: Avoid including linux/kvm_host.h in kvm_pgtable.h
+In-Reply-To: <20260715142841.80544-3-steven.price@arm.com>
 References: <20260715142841.80544-1-steven.price@arm.com>
-	<20260715142841.80544-27-steven.price@arm.com>
+	<20260715142841.80544-3-steven.price@arm.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
  (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -79,41 +79,57 @@ X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, 15 Jul 2026 15:28:28 +0100,
+On Wed, 15 Jul 2026 15:28:04 +0100,
 Steven Price <steven.price@arm.com> wrote:
 > 
-> The RMM doesn't allow injection of a undefined exception into a realm
-> guest. Add a WARN to catch if this ever happens.
+> To avoid future include cycles, drop the linux/kvm_host.h include in
+> kvm_pgtable.h and include the lightweight headers required for the types and
+> inline helpers used there. Additionally provide a forward declaration for
+> struct kvm_s2_mmu as it's only used as a pointer in this file.
+> 
+> Both pgtable.c and kvm_pkvm.h relied on the indirect inclusion of
+> kvm_host.h, so make that explicit.
 > 
 > Signed-off-by: Steven Price <steven.price@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > ---
-> Changes since v6:
->  * if (x) WARN(1, ...) makes no sense, just WARN(x, ...)!
+> New patch in v13
 > ---
->  arch/arm64/kvm/inject_fault.c | 1 +
->  1 file changed, 1 insertion(+)
+>  arch/arm64/include/asm/kvm_pgtable.h | 6 +++++-
+>  arch/arm64/include/asm/kvm_pkvm.h    | 2 +-
+>  arch/arm64/kvm/hyp/pgtable.c         | 1 +
+>  3 files changed, 7 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/arm64/kvm/inject_fault.c b/arch/arm64/kvm/inject_fault.c
-> index 6492397b73d7..613f223bc7a3 100644
-> --- a/arch/arm64/kvm/inject_fault.c
-> +++ b/arch/arm64/kvm/inject_fault.c
-> @@ -327,6 +327,7 @@ void kvm_inject_size_fault(struct kvm_vcpu *vcpu)
->   */
->  void kvm_inject_undefined(struct kvm_vcpu *vcpu)
->  {
-> +	WARN(vcpu_is_rec(vcpu), "Unexpected undefined exception injection to REC");
->  	if (vcpu_el1_is_32bit(vcpu))
->  		inject_undef32(vcpu);
->  	else
+> diff --git a/arch/arm64/include/asm/kvm_pgtable.h b/arch/arm64/include/asm/kvm_pgtable.h
+> index 41a8687938eb..c2e4b29e605f 100644
+> --- a/arch/arm64/include/asm/kvm_pgtable.h
+> +++ b/arch/arm64/include/asm/kvm_pgtable.h
+> @@ -8,9 +8,13 @@
+>  #define __ARM64_KVM_PGTABLE_H__
+>  
+>  #include <linux/bits.h>
+> -#include <linux/kvm_host.h>
+> +#include <linux/kvm_types.h>
+> +#include <linux/rbtree_types.h>
+> +#include <linux/rcupdate.h>
+>  #include <linux/types.h>
+>  
+> +struct kvm_s2_mmu;
+> +
+>  #define KVM_PGTABLE_FIRST_LEVEL		-1
+>  #define KVM_PGTABLE_LAST_LEVEL		3
+>  
+> diff --git a/arch/arm64/include/asm/kvm_pkvm.h b/arch/arm64/include/asm/kvm_pkvm.h
+> index 74fedd9c5ff0..a0f7a699d690 100644
+> --- a/arch/arm64/include/asm/kvm_pkvm.h
+> +++ b/arch/arm64/include/asm/kvm_pkvm.h
+> @@ -9,7 +9,7 @@
+>  #include <linux/arm_ffa.h>
+>  #include <linux/memblock.h>
+>  #include <linux/scatterlist.h>
+> -#include <asm/kvm_host.h>
+> +#include <linux/kvm_host.h>
 
-No. WARN_ONCE at a push, but even then, this looks dodgy.
-
-Exceptions must be injectable. Otherwise, how do you respond to, for
-example, a sysreg access for a feature that is hidden from the guest?
-
-Will the RMM perform this in KVM's stead?
+nit: please keep the include directives in alphabetical order.
 
 	M.
 
