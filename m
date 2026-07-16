@@ -1,143 +1,101 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10EA38D3EC
-	for <linux-coco@lists.linux.dev>; Thu, 16 Jul 2026 14:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC98943A80B
+	for <linux-coco@lists.linux.dev>; Thu, 16 Jul 2026 17:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784213575; cv=none; b=LxrXeDQhr8v3lpvLCeV6lHWkVE7xEo8WtcxZAa9+lRpitCUJGfn42yspxuJMuMqr9EU1w3Afp2oy+7e8Z9WLNSRzB/ClQ6NPHqa9qCTXO6OnmYxHmR0H1rDuZgd4mQsYENUJKXJ31pQikt9ivbXu1nogurICXqe73cdkaZnsNRM=
+	t=1784221785; cv=none; b=MsYiywx45UWaZIKlSi+25WR5BVvcWgFuubNOoMukvzt/ycPxWeX89esDvHivBQaWbmKeaC6MixbqQUBgfqhilVwAGT6XnVIcV7z3k3ZoFF2HUCa54uhhE4oloZffK47dG96LnOJusQ/LTm3gxeWgTDFkr9VoQ60xBiR63YfEMS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784213575; c=relaxed/simple;
-	bh=Kt8BJTiDI+f7OuSjZH0CFB0i0A4B8tJakd1pImozOd4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bVuUA87Zfu2jFI82lZnLmnEAA2oH9k2Fpw/yEestg6MrNzMVA3MM5b9trR1HKGFrgD/6yvh9RDUs8b2ETmHBoHS76Wa57A0W2ckvswwMPFOiYr2eaVZ8OAi0qcLjezjcEm7Jt/mkhiaHKr9UA8NN5CSIdGMUowt20TO9hpV5jgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=fd33zY9+; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1784221785; c=relaxed/simple;
+	bh=E/neM9q45oFk5vumCuNs3BlrBpr2PnvuUZbONFwRIKg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Hs+G0iogwW81MvvMKVsjXBEhJSX5NttrD5OCu5+g/TuP9UTWjobIoB2BPPq56tZr6QGdoJWwPE/aAecX673C4bFtWi1GYvuT2x4Yg0JJYaucqxBWfasqWuUloTyPKfuqAleiCzUNSEJKEoSkmNxmB/4Polgr3tNkFN6OFOM6m9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=Ni9G6ir7; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="fd33zY9+"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51c1805b8a7so69016731cf.3
-        for <linux-coco@lists.linux.dev>; Thu, 16 Jul 2026 07:52:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1784213573; x=1784818373; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=M86Ir7wes1y7r8ERYu4z2fhecNCYpHaDZuovfA+lIDI=;
-        b=fd33zY9+Qs7CAdcEII5iSAMKpFhJVOkSL2vKe7n6wTo6XZpTdEMwBSUOV+EjPkg0l3
-         rIEzoRac/6nfrp7xFODPAk6Gw6MkD+8VBGtqvqE6ZYwu4TWsDWi9alPq1YKqisaLHsd3
-         DAsl1gFPbbtklwWTNEUe8vubJwWrGC91Ze2B0Af5J6T21I1O6xY2sA6LI7qm27ksiDe5
-         Llt+qcl5J5gD5Q1tf5pENNenAiWOgH/6cBzl8Oeq2Jn1X5b88x9O9Inr4FH/zY1Hd/Wh
-         X7nblgJl7z3z/B7GwhZQqJAnK03EBUfVfItRPrVQRNWL+JuIZ+0ACFOizd60e1wT1X6w
-         LNEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784213573; x=1784818373;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=M86Ir7wes1y7r8ERYu4z2fhecNCYpHaDZuovfA+lIDI=;
-        b=mvvnknM4jdPkzWONQdS8ouYOta5lmL/FPGqq32P8ZybLRT7Gk+VHk6LKhTOduB4fL/
-         4xF/nJr1I73Rz3L+nv5D0lTggOiFiNcLZbnYjPDOyCYjBHTRp/sCwzsJrPcrYAk6elJd
-         fcvFGOU+klEpGel0th2ChDL/INEZlpxgrsNHxuZCNsoXNbP3LkdYGzb/gth4sncLIoq+
-         B7WHfw+pLLiRIlKSixXkYCZu6mmNqZCXE7bf/6XogLB7fLQdsWRNjkkQZrQKkWCbL+PC
-         SO+Os5DwTpE/mHJ//KTQC5ohnKlb4NEu+FJFlTspDu2INQFFvOkMp9UmycqlMhBjq7kx
-         GjCQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoUp9YHukfuWWfbM5058AaiQFHB0kI5FjnaVKOJnbs6eHfYJ7yAyRfRGJIiV1CaNOk8J01Arw8MDg77@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy589cw2fnn8Jwsyo9zG0qJx2K6QY+VPTni/Uau5UvrclgD60ds
-	zzUJK740xQ3tUnAgd6ApGmcxh00Ak8BJkeBN3BAYRL3hHt9Lxpcvd4ucTJ53bsUJST8=
-X-Gm-Gg: AfdE7ckoTclBn31bo7b9kJmIPgoLaX3FCnGvXl8IM1DIExQnDUfMA24VIIRAM8vEa/q
-	GuCe0Ie04CVJMIJpabuuvED9drJZtgU+j/WnH5WG4sVOOg028+Fdgzm9y5bCzaNw2rz8SjZyrkj
-	SBLkqsmP99vbIIM/HMTX3YESnQBxFsZXIuv1VNzdu6rhcc29L9/Arsni5oAVIupMJCvaQtwmSc4
-	uuMNRgs7XhLwPMwLJ3R/mi5ZT1KGQLebB/9jEWryr39+Cd62SP9dc4pQKgog2WO4kdmTEinV7pg
-	mdUksukbpbbgsntkTCzaY+PBuSzl3chYRK2Xjk5o468ssLvqg2HmNwJgSkiOjWjS7IawwqzYKQb
-	7h/wUv/3O4HNKpgvzxxc+c+FzTE5pcBVJZ3YNE2zxz1nMj0EmGA==
-X-Received: by 2002:a05:622a:1b88:b0:51c:1811:6eae with SMTP id d75a77b69052e-51e4f0a757dmr78823321cf.47.1784213572745;
-        Thu, 16 Jul 2026 07:52:52 -0700 (PDT)
-Received: from ziepe.ca ([159.2.72.92])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51ec9fef211sm28849141cf.0.2026.07.16.07.52.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 07:52:51 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wkNSF-00000002ZDm-0DPq;
-	Thu, 16 Jul 2026 11:52:51 -0300
-Date: Thu, 16 Jul 2026 11:52:51 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
-	Jiri Pirko <jiri@nvidia.com>, Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH v7 16/22] dma-direct: make dma_direct_map_phys() honor
- DMA_ATTR_CC_SHARED
-Message-ID: <20260716145251.GE210048@ziepe.ca>
-References: <20260701054926.825925-1-aneesh.kumar@kernel.org>
- <20260701054926.825925-17-aneesh.kumar@kernel.org>
- <ak42F240d-53QeFN@arm.com>
- <yq5apl0xgy89.fsf@kernel.org>
- <9d83ec13-3b1e-4c1b-8bab-16ea057cfba0@amd.com>
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="Ni9G6ir7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1784221779;
+	bh=E/neM9q45oFk5vumCuNs3BlrBpr2PnvuUZbONFwRIKg=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Ni9G6ir7X07AFt8GUroRRtE9hkhAZNVOrzMQepnCFH2BcL030i+v9bC1kxvm2nAcT
+	 nBbfHbVv/hBI75X0GZYJLl9tKUrCqPmSJWW3FIN5WIibKGxUoM65IQK9N0kdBRsDF1
+	 ZIUvhnPTAVAJ1lFO1jm81GcoprxerHFvc3XjcNzY=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Subject: [PATCH 0/6] configfs: Allow the registration of const struct
+ configfs_attribute
+Date: Thu, 16 Jul 2026 19:09:25 +0200
+Message-Id: <20260716-configfs-const-base-v1-0-c545a4053cb5@weissschuh.net>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9d83ec13-3b1e-4c1b-8bab-16ea057cfba0@amd.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMyw5AMBCF4VeRWWtSl1Z4FbHQmjIWJR1EIt5ds
+ Tvf4vwXMAZChia5IOBBTIuPyNIE7NT7EQUN0ZDLXMsq08Iu3tHo+B28CdMzCl0rZWRZKC0NxOc
+ a0NH5VdvuN+9mRru9KbjvB7LL58h3AAAA
+X-Change-ID: 20260716-configfs-const-base-6955b043560b
+To: Andreas Hindborg <a.hindborg@kernel.org>, 
+ Breno Leitao <leitao@debian.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Matthew Brost <matthew.brost@intel.com>, 
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Dan Williams <djbw@kernel.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+ linux-coco@lists.linux.dev, linux-acpi@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784221778; l=1356;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=E/neM9q45oFk5vumCuNs3BlrBpr2PnvuUZbONFwRIKg=;
+ b=W8B1eCdzBPF+vX/iGW+KJHE8xAceDD1at4gcqjxGEzdBiqCIOPZrlc1rI1Witb3eC2twB400h
+ B8v+ldzTTnpAVplEdwuXCfW7epvpRYTFvlvmL1bey309UhnH5QkbVcJ
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-On Thu, Jul 16, 2026 at 11:55:20AM +1000, Alexey Kardashevskiy wrote:
-> > > For AMD/SME, on host with memory encryption we now end up setting the C
-> > > bit for DMA_ATTR_MMIO. This is fine for RAM but not sure whether
-> > > some other MMIO bus understands this attribute. Maybe we should stick to
-> > > something like __phys_to_dma() for the !CC_SHARED && MMIO path. Or,
-> > > since this is not universally defined, just use the old dma_addr = phys
-> > > if MMIO and ignore any unlikely DMA offsets.
-> > > 
-> > 
-> > Considering for AMD/SME system an unencrypted dma addr is one without C
-> > bit, will this be good?
-> 
-> Normally both encrypted and unencrypted DMA addresses do not have
-> Cbit, with the only exception of "iommu=pt" (which is not the
-> default afaik). And in this case, having Cbit in DMA handles only
-> makes sense if p2p trafic goes via the root port (== IOMMU in
-> passthrough mode, and I am not sure even about if the root port will
-> convert this Cbit to T=1 MMIO in this mode) but if it goes via some
-> PCI bridge - then Cbit won't mean encryption for sure. But I do not
-> know much about p2p (never touched). But in any case
-> force_dma_unencrypted() seems to make no sense here.
+The attribute structure defined in driver code never need to be
+modified. Allow them to be marked as const.
 
-True p2p through a switch does not call the DMA API at all, it
-directly stuffs the physical MMIO BAR address of the target into the
-dma_addr_t - which won't have a C bit.
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+---
+Thomas Weißschuh (6):
+      rust: configfs: remove mutability from some field initializers
+      configfs: Constify is_visible/is_visible_bin in configfs_group_operations
+      configfs: Treat attribute structures as const internally
+      configfs: Constify configfs_bin_attribute
+      configfs: Allow the registration of const struct configfs_attribute
+      samples: configfs: constify the configfs_attribute structures
 
-The DMA API is only involved if the p2p will transit through the root
-port, so adding the C bit is correct.
+ drivers/acpi/acpi_configfs.c       |  2 +-
+ drivers/gpu/drm/xe/xe_configfs.c   |  4 +--
+ drivers/virt/coco/guest/report.c   |  6 ++--
+ fs/configfs/configfs_internal.h    | 10 +++---
+ fs/configfs/dir.c                  | 10 +++---
+ fs/configfs/file.c                 |  6 ++--
+ fs/configfs/inode.c                |  2 +-
+ include/linux/configfs.h           | 73 ++++++++++++++++++++------------------
+ rust/kernel/configfs.rs            | 20 ++++++-----
+ samples/configfs/configfs_sample.c | 16 ++++-----
+ 10 files changed, 78 insertions(+), 71 deletions(-)
+---
+base-commit: c8d07eca6270b3f41c0e528a470895f1bd42e2b7
+change-id: 20260716-configfs-const-base-6955b043560b
 
-AFAICT it is iommu=!pt that doesn't work at all since the AMD IOMMU
-driver always does __sme_set() even for MMIO when forming the IOPTE,
-which I guess is wrong for MMIO.
+Best regards,
+--  
+Thomas Weißschuh <linux@weissschuh.net>
 
-Jason
