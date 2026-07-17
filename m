@@ -1,102 +1,64 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844E1443E25
-	for <linux-coco@lists.linux.dev>; Thu, 16 Jul 2026 18:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803FF2737E0
+	for <linux-coco@lists.linux.dev>; Fri, 17 Jul 2026 04:31:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784227912; cv=none; b=oMql/AxeLcO06hAucZQKXQ9eDplWNkzzm/v4a0GZkFN4NmdtxCe7gs06YueiOCWf+GgPr+h+o+nVf+MH5PLvctaVcP3wDCsjdc4dXlDUShrXvDLhvUoWWXDebZ5zMNgQlIwkPJLrrLcfMf4H7UJinfK/Wpjt2lBjJrL0XAPTxsM=
+	t=1784262689; cv=none; b=WvNnqnRq5VWQhKO6oJ2b7Oj/I/JRDDS1qGNaOkpiLyURVDJU1DMC9R2rOVe2aKsf1PoG/iHJJk/jfijnXNvMuqjofXZT4jyqY0vVo9FwDAU/waAjj2iBAeH+c2wRVuax7WQS6zIMpiissvhqrFK3Ql5ZT/Z15Ewxent1T3PHCm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784227912; c=relaxed/simple;
-	bh=4bJIgiE3HonejqKK7Vjawe+q2GD14loCayvk2h1zWhc=;
+	s=arc-20240116; t=1784262689; c=relaxed/simple;
+	bh=0TLxB5Uj8bAgOHnXxOgTWLORrSvsV9BvJ+lzpm8vud8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MrA3Q9QBhvH1sfed/7VJXG355vQyKCOgTBM97NKx7mQnTcxOocd1n5j/jawipDxqoM98ZrtAC9tLewmmzE7bzQs+02ZU86tDFaMjSy+Oji01gDOg50s1ZHIHSfTYVdQWOgMOKVhP1V1iU0wn4AEu533DUy1VZFb9K9V8qu5WaoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Ew8fXoUx; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=uFwyn03Gtx5nIf5jp2osXtg9uMjfbRfRilVqfEAi4aq0Lzw08YXafyExCGtkafmLq2YLUc3qJ9IbI+asaI2iMVfTpWjJnH+pEbyYDGK0t+tg4oyxb4TxjzYJtpteCcZZvhv2Ew+WsCmRapDcCKP7oQ1q0VvKEOqCFo2W699g22g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mFZJZyYo; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Ew8fXoUx"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92e99ef0902so487590685a.2
-        for <linux-coco@lists.linux.dev>; Thu, 16 Jul 2026 11:51:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1784227909; x=1784832709; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OAkrfDnB3prGpVSnx0B1oizbRH8N6Nto1hj4Nx1zHR0=;
-        b=Ew8fXoUx8Fvw3+h7LBbPPdpexzDq3xRhxbsRErvjl93F0f80owexEv0aLJaDr3hhqk
-         0Wkn49SJkLLMqRb0vluRX95AXKo+A72YET1ZAajq3u7kjEL0PbkN8cpe5GqbIz8aakGs
-         wvImrAZrXWT2yxQ2eL/E/vgP5SOHC7i6/7OwWuLhDSe5PBLP5YznQccWNdMteyl7jDY+
-         YyTOIoV8GNZyLUclPnl4RjCungM2DmJ5lcwAGCJTYqkOudLkZafvh0AC78ZNC0AuvfMF
-         HK6XYHwcgOXaTEmkb5u3m73wr3UA4wfqSciro9GM63kBLmNjFuTwua8NTIsoQiCuSuyM
-         ZXng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784227909; x=1784832709;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OAkrfDnB3prGpVSnx0B1oizbRH8N6Nto1hj4Nx1zHR0=;
-        b=mZDGbtnDZZlGgLVR3tcZDFWBXob51zSlViouh5//xckUXGvYt3AejQxWv2TXLJL3ne
-         XW1MPrfbamu1UKV9mKQhpnsNmh6fgUcU2N/L8tPZbnx+IGV6RvOQuDZ5jzdAMFM0GEQa
-         D4jKNrd1EiqgIkTIB9sbndxbo7xnycbrlyv4c5e2Olg9GY/HIcBLvcEqnxo0SWpjgt49
-         iekip89lLnggc6ED73AgiefDp+KkW2T4VbAHOfXTGjevhmEcnNw7m6PYfhJw9GMi2xMQ
-         P9/2xQY8RE2CLz8c/qSDjuOoKveEAOpdExFX2tKFnZo7fuVhSRtm4UtP/Pb7CE1BhLcT
-         MxwA==
-X-Forwarded-Encrypted: i=1; AHgh+RoZOfNeR9IUNt/WVCGUe8UfeckD1uQ+cfd1G3FeqCJ0Ec5sydLf1rzi8zPU3cg3aI0Bc5J1SSLoKanm@lists.linux.dev
-X-Gm-Message-State: AOJu0YyEJ4uwOYtoPnXos04JLNVMpAaGHhIxx6Wpdd9aKK63WVWovfmL
-	g5KkRkBFV3YCZlM9i6Lg7jGrNZCn/Sm7FFJIbvLKtl1oLCoD+S9xJCS2uLNQr5dab9w=
-X-Gm-Gg: AfdE7cnU/yML4UBpogyFeh1VwvcFuenMdNV/C10RDsxXU3b6oe9rZPeahxarCHcfikb
-	lDtL5ZLGnQV2F5LIeMabyE6wShkMaZqV1k8NRFGAUJC3raDXhpJNsID7pUgydMxmuj13ir6zfk3
-	KTzWDiNL7uYgl8xFOl5fEtUKX3f89RUljqcLsolxLPd/ugYKGdkIxlHHpVerIlhb9S+QsisGI5E
-	BKdjtpzgO318rke8TpGzHmXDGE0N3PkZvo8bN4dEfmofG7m+Rj4+xljIAyPlGeLAC/ExBl5ANbb
-	vPMCZDfLRPozuLya6XskdtF8GLhBp1l4LQ0mA6Ko83ygFmQGnjvnsAxzqy5i2lt+O+PFvOYm0jm
-	FuZdQHttxAvF6TrDdPO3ikZ+taLtyq/won1wUJOCEoqqPdHbgvjnc0RJerngo
-X-Received: by 2002:a05:620a:4456:b0:92e:c117:5ee6 with SMTP id af79cd13be357-93086c5518bmr1250174485a.82.1784227909170;
-        Thu, 16 Jul 2026 11:51:49 -0700 (PDT)
-Received: from ziepe.ca ([159.2.72.92])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92ee5b93387sm2219740985a.16.2026.07.16.11.51.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 11:51:47 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wkRBT-00000002uUu-0oRt;
-	Thu, 16 Jul 2026 15:51:47 -0300
-Date: Thu, 16 Jul 2026 15:51:47 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: "Dan Williams (nvidia)" <djbw@kernel.org>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, driver-core@lists.linux.dev,
-	ankita@nvidia.com, Aaron Tomlin <atomlin@atomlin.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>, Petr Pavlu <petr.pavlu@suse.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security
- Protocol (TDISP)
-Message-ID: <20260716185147.GA643346@ziepe.ca>
-References: <20260705220819.2472765-1-djbw@kernel.org>
- <20260706125140.GB107792@ziepe.ca>
- <6a4c163072c60_174db6100c4@djbw-dev.notmuch>
- <20260707124321.GF118978@ziepe.ca>
- <6a4d95fcc92c2_2f05d5100f7@djbw-dev.notmuch>
- <20260708143153.GH118978@ziepe.ca>
- <6a4f0b35683b4_353c8910011@djbw-dev.notmuch>
- <20260709133601.GJ118978@ziepe.ca>
- <0cc44c9e-fc2a-4c95-a574-de833117f6dc@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mFZJZyYo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784262687; x=1815798687;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0TLxB5Uj8bAgOHnXxOgTWLORrSvsV9BvJ+lzpm8vud8=;
+  b=mFZJZyYoStYJDOBHY7cMFxxatKKZVSqXa3GcUt8OV6uz0y8CyBhsNgaK
+   7prhOH0N9vawDVXbGqCNI2E6oa71815o7190TUoFDwyjs3eN2YY3P1wVZ
+   Z8XhRFc6FLR9RVRx9A/TvXJAinPYzUasJD9ak5HqfYu/6TONOK5YeCqlA
+   f34KVQYyTuFp+zybWwZH44bZfTqLCaEJaC3r2/JWxQcSzwVitLiOxpnYz
+   Tn4EfDV9RV7bpB/U8JjXwuKWHCFeqvkmOboyXv+dPbCc6r8iiwUNg3V1W
+   syX4rtUtz0QMgJZzMHwLd3w+r4vPsVKRvqaWwARX0lvIHuWULPAuKUia5
+   A==;
+X-CSE-ConnectionGUID: G+miPnPJTq6zQHc8jcFziA==
+X-CSE-MsgGUID: oSSUN0+FSCiX9ydi+IotQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="95288206"
+X-IronPort-AV: E=Sophos;i="6.25,168,1779174000"; 
+   d="scan'208";a="95288206"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 21:31:27 -0700
+X-CSE-ConnectionGUID: 0gumDkw+RbyjZboTDGJKpA==
+X-CSE-MsgGUID: XOJ1CMBgT/anIvaDLWctJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,168,1779174000"; 
+   d="scan'208";a="279981130"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa002.fm.intel.com with ESMTP; 16 Jul 2026 21:31:24 -0700
+Date: Fri, 17 Jul 2026 12:31:23 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com,
+	dave.hansen@linux.intel.com, yilun.xu@intel.com, chao.gao@intel.com,
+	djbw@kernel.org, linux-coco@lists.linux.dev, peter.fang@intel.com,
+	xiaoyao.li@intel.com
+Subject: Re: [PATCH v2] x86/virt/tdx: Formalize SEAMCALL version encoding
+ support
+Message-ID: <almwGwoUzoA96XnG@yilunxu-OptiPlex-7050>
+References: <20260708170330.83850-1-yilun.xu@linux.intel.com>
+ <e8aaca8c-6d88-490b-a3ae-c63a9e9a8b90@intel.com>
+ <alEXflESyo6ndDTY@thinkstation>
+ <f8ef7a94-7824-4d1f-899a-60a0fbd2e2f7@intel.com>
+ <alSxrcseFHNrttoy@thinkstation>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -105,70 +67,99 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0cc44c9e-fc2a-4c95-a574-de833117f6dc@amd.com>
+In-Reply-To: <alSxrcseFHNrttoy@thinkstation>
 
-On Wed, Jul 15, 2026 at 07:04:44PM +1000, Alexey Kardashevskiy wrote:
-> On 9/7/26 23:36, Jason Gunthorpe wrote:
-> > On Wed, Jul 08, 2026 at 07:45:09PM -0700, Dan Williams (nvidia) wrote:
-> > > > force_dma_unencrypted() does not *prevent* device access to private
-> > > > memory and provides no security properties on its own. It's only
-> > > > purpose is to inform the DMA API what the HW restrictions are for
-> > > > doing DMA.
-> > > 
-> > > Right, to be clear, this mode's security properties come from never
-> > > asking the TSM to enable private DMA while the device is in RUN.
-> > 
-> > Ok, that's a twist I hadn't thought about. I don't see a reason to
-> > support a driver probed with RUN but T=1 DMA disabled by the TSM.
+> > struct tdx_module_args {
+> >         union {
+> >                 u64 rax;
+> >                 struct {
+> >                         u16 function_nr;
+> >                         u8  version
+> >                         u8  padding0;
+> >                         u32 flags;
+> >                 };
+> >         };
+> >         u64 rcx;
+> >         u64 rdx;
+> > 	...
+> > }
 > 
-> afaik you cannot have RUN and T=0 DMA at the same time.
-
-Right, that's a great point. The devices we are making simply won't
-do T=0 DMA once they are in RUN, I expect that to be the norm.
-
-So if you disable T=1 DMA at the TSM then the device doesn't work
-anymore because there was no standard way to tell the device it
-shouldn't do T=1.
-
-> I configure my hw to allow "accept" (== T=1 for DMA and MMIO) but
-> still only allow unencrypted guest memory for DMA (set vTOM to 0 to
-> say "all unencrypted) if the driver was loaded with "trust" other
-> than "full" (and this series does not call the enable_dma() hook if
-> not "full", Dan is changing it though) so the module parameter
-> works...
-
-Yeah, this would be an interesting configuration from the TSM -
-support T=1 but change the T=1 translation so that only shared memory
-is mapped. vTOM on AMD and other tricks on other arches.
-
-But AFIAK this isn't generally supported so I'd just leave it out for
-now.
-
-> > I guess
-> >   - The active trust level should be RO visible to the driver, iommu, etc
-> >     It should be stable under a bound driver
-> > 
-> >   - The "dma require unencrypted" property needs to RO visible to the
-> >     DMA API and stable under a bound driver. This would input where
-> >     force_dma_unecrpyted() is in the flow [the name should align with
-> >     all the other per-device DMA API specific properties like seg
-> >     limit, boundary, mask, etc]
-> > 
-> >   - The requested trust policy should be internal to the driver core and
-> >     be converted to the active trust level right before probe
-> > 
-> >   - We should have ways to enable/disable all DMA before/after probe,
+> This union doesn't match the ABI it is supposed to represent.
 > 
-> "echo 1 > unlock" should do that (but also stops encrypted MMIO) or we want a finer knob?
-
-You shouldn't be able to unlock while a driver is bind. I'm aruging we
-should also be able to keep the device in run and block all DMA
-through the TSM.
-
-> > TSM is sensitive to accept, not the trust level
+> RAX is:
 > 
-> This makes the module's "trust" parameter useless, right?
+>   15:0	Leaf number
+>   23:16	Version number
+>   24	INTERRUPT_MODE
+>   62:25	Reserved
+>   63	P-SEAMLDR select
+> 
+> In your layout INTERRUPT_MODE ends up somewhere in padding0 and the
+> P-SEAMLDR bit is BIT(31) of 'flags'. Nothing lines up with the spec.
+> 
+> To describe the format properly the struct would need bitfields, and we
+> generally discourage bitfields for ABI-defined layouts. Without
 
-Yes, ideally it should act based on callbacks I think
+I agree that to describe each part of RAX clearly we need bitfields, and
+bitfields is not good for args.rax.  So args.rax is not generally good
+to me, worse than a separate u64.
 
-Jason
+> bitfields it degrades into masks and shifts on a u64 -- which is
+> exactly what composing 'fn' with a macro is. The union doesn't add
+> anything on top of that, it only hides where the bits are.
+
+[..]
+
+> > The truth of the matter is that 'fn' *IS* the RAX from the TDX ABI.
+> > We're carrying it around the kernel in that format, and it just doesn't
+> > work very well.
+> > 
+> > The alternative is to carry the logical pieces of RAX around the kernel
+> > and them assemble RAX out of them in one (or very few) places. *Not* to
+> > build RAX in the TDX module ABI early far from the TDX module ABI layer
+> > itself.
+> 
+> I don't see what delaying the assembly buys us.
+> 
+> The SEAMCALL helper is where we decide what we want from the call: the
+> leaf, the version, the operands. Nothing below it adds information --
+> sc_retry() and __seamcall_dirty_cache() only retry on entropy failure
+> and track cache state. There is no layer further down that is in a
+> better position to compose RAX than the helper itself.
+> 
+> And it is not "far from the TDX module ABI layer". The tdh_*() helpers
+> are the C representation of the ABI functions. They are the ABI layer.
+
+I wanna advance the progress, so if I have to choose I sort of like
+*args.version*, or even args.interrupt_mode in future. True this does
+not exactly match the registers' layout of TDX module ABI, but I also
+don't see big problems. Using fn instead of args.rax at the first place
+already shows we don't have to be too strictly aligned to ABI. We are
+defining SW APIs.
+
+To me the args.version scheme clearly defines 3 components that we want
+from SW POV:
+
+	the leaf	fn
+	the version	args.version
+	the operands	args.rcx	
+			...
+			args.r15
+
+The TDX module SPEC tells us each value of these components, we simply
+fill them in. No extra bit-or.
+
+> 
+> We also don't carry the pieces "around the kernel" today. The
+> composition already happens in exactly one place -- a macro next to the
+> leaf defines. Call sites don't open-code shifts.
+> 
+> That said, I'm okay with RAX living in the struct as a plain u64
+> instead of a separate 'fn' argument, if you prefer the structure to
+> carry all the registers. But its composition should stay early, in the
+> helper, where the decisions about the call are made:
+> 
+> 	args.rax = TDH_VP_INIT | SEAMCALL_LEAF_VER(1);
+
+This is the scheme that is most aligned with ABI layout. But I assume we
+don't really see it worth the massive code churn, is it?
