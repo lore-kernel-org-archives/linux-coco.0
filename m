@@ -1,161 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991CB3ACA45;
-	Fri, 17 Jul 2026 09:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DB73AC0FB;
+	Fri, 17 Jul 2026 10:57:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784281147; cv=none; b=BppLtsdbXnrvN3EeaWvCdpumpa0i064v7ADu84UoFdYpnNDe540PNeFJ0AgE7hZlw/t7cQaOEg6iTquG5dd/truYzpbuP/Kruoj+vyZ8vJKI8Q08GGvaESbNv2Aa65cEE8sOOe/HLoMrBZ205DJh4kTZNZIWFsTlN3Umq7m+PkM=
+	t=1784285872; cv=none; b=DpEAzk7IIi2gxEeOD7LW+YK5lN4SQRE0eIjf9P6/s2XQQMyPv7WnDRxvjyFVjLDbaHS8rTLLnLMg8gNg4CzCFVlDlqSdAwec2ApJtEPsHjgNNwB9luWqevFvXK24gJzOTlRziI/olC8sI5PvBVF4m5xXwwU3YEUQamAZxNZrKSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784281147; c=relaxed/simple;
-	bh=65klr4rI+ewfuz2XA3kQiuQwXfZjPhKrVWT8lVLWR8I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G0RymUj99nzxLCeDyaYLLyGNWrWq0KIEm6Q/KiGdssx0jPhOwH+7rSQQYUaXdxsS000d3Y4NXf5xpwVlh7XpHk4G5P9uG56DuIKwUAVn/W2/4nWsDo+cDfZEEPdY0wMp/S+4Niwm0tWVkcfu99qfgImihHAnJS1yLAp0JE9auzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SjJUoV11; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784285872; c=relaxed/simple;
+	bh=0QV8OHlMHbs20KiCCXNY7HrNlDmvZ8yQiELqy6wUlbY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZOL0y4GHtCV3bN4A/C7ooQqsJMoDwqbn62FZgT5aTY3KDqIarQSdt46ES7ud4etnc73bfS2t3YCBANexpbKTSLvzcSiPxbtAIrir2FWszwfO3wUYsK7SSKWEdRK3K8srTM+PP0/nz7gY8mDWtpGM9iNMisFk3fD2/cz7a5+28jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=I0isksLf; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SjJUoV11"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 583FD1F00A3A;
-	Fri, 17 Jul 2026 09:38:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784281146;
-	bh=+qglHjGyDrUKXlad/2R3jZv9/pC2LefY+KO7XkEkSko=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SjJUoV11rwuT+5AizqR6Ts6eoKb6FIGre1Dux163GhMlqZlyOXajtWZ4fayfgVpH9
-	 m9cgU5vVhldyF6Xw1Kb8rVhViKflUSonqgQ1XE4NCnm2BVJY+TnbSkh9Z3rIVPhd6s
-	 zU7mHk1ONLaADnjIxp+I5dcB3ZX2ynHffnRRVYklEoaeIIz/ZSYdwAkj3wzibEUx9o
-	 HnS12bG6z8ihRuFocqmHyHuXUYtM9fOcbFkvkQ/W/8UHnOkWe7OeZRKXrCxZZCA9nQ
-	 s6WCpg4YrH/mKvwpz01fi9YDCJ3Uu05lBNYlNAvTtCCufAR6IHv/1e4r2yoFLfOqhY
-	 leqJTK6WbuRqA==
-Date: Fri, 17 Jul 2026 11:38:45 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Juergen Gross <jgross@suse.com>
-Cc: Sean Christopherson <seanjc@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	x86@kernel.org, linux-acpi@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	virtualization@lists.linux.dev, linux-ide@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	"open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-	linux-hyperv@vger.kernel.org, linux-hwmon@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, linux-mtd@lists.infradead.org,
-	platform-driver-x86@vger.kernel.org,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>,
-	"lukasz.luba@arm.com" <lukasz.luba@arm.com>,
-	Jason Baron <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>,
-	Yazen Ghannam <yazen.ghannam@amd.com>, Len Brown <lenb@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Pu Wen <puwen@hygon.cn>, Bjorn Helgaas <bhelgaas@google.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Dave Martin <Dave.Martin@arm.com>,
-	James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>,
-	Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>, Dave Airlie <airlied@redhat.com>,
-	Helge Deller <deller@gmx.de>, linux-geode@lists.infradead.org,
-	Olivia Mackall <olivia@selenic.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Guenter Roeck <linux@roeck-us.net>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Perry Yuan <perry.yuan@amd.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
-	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
-	Artem Bityutskiy <dedekind1@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Ashok Raj <ashok.raj.linux@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
-	David E Box <david.e.box@intel.com>, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH 00/32] x86/msr: Drop 32-bit MSR interfaces
-Message-ID: <aln4JYxRgdpC3Wse@gmail.com>
-References: <20260629060526.3638272-1-jgross@suse.com>
- <d7c1db52-529a-43cc-ac7d-38b52627e8bc@app.fastmail.com>
- <c1608c48-13c2-4290-826b-28b5ca51eaf7@suse.com>
- <7332feff-2649-496c-8e49-b0a19eb54a32@app.fastmail.com>
- <akJUz0kYkEBdLSZ3@gmail.com>
- <akQR9YMtMHReJTfB@google.com>
- <akY4U0jUZm4HOGZ_@gmail.com>
- <99228803-b8b7-47a3-b77c-6fdf3b785730@suse.com>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="I0isksLf"
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66H3BlrB2862211;
+	Fri, 17 Jul 2026 10:57:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=9YN3M1nnkvw+IScH3bnfz7DHnHiMg
+	W1MsLHE9T21g0E=; b=I0isksLf7qOmOEXvMnW3eegysUCpk0IwAFXiefFibWqs/
+	600XpqXKoGhl8UtYK1yXVUTrQ1qHirrIZuTCENlmCqnx0/NLlGLR+5XJe1qlsnu0
+	klTZhXdmcVLaQTa4jzykQfcHDtCQ/itFaedKPMQ891tqV0CcXiBR5DW3ToQF8J8u
+	rUkPPv+41WwnPo2f7+uyutHRUXrHMGRfanC0D2OsuiksTky2OCJg1CRRzEzBaKAg
+	lLuCFWLPK0ZKMI133RMbVGQGfD+Nl85wBiqzCNuP5oDmH7vBgO0zaDVy1jgGUXvE
+	eVzPfDV4uv3f5AQ0T83vBzOJVhwMyJtES1+j5U7zw==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4fdhn0ek73-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 17 Jul 2026 10:57:25 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 66HArBp5032493;
+	Fri, 17 Jul 2026 10:57:24 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4fbc9hevwd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 17 Jul 2026 10:57:24 +0000 (GMT)
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 66HAvNDc005954;
+	Fri, 17 Jul 2026 10:57:23 GMT
+Received: from lmerwick-vm-ol9.osdevelopmeniad.oraclevcn.com (lmerwick-vm-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.253.75])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4fbc9hevvq-1;
+	Fri, 17 Jul 2026 10:57:23 +0000 (GMT)
+From: Liam Merwick <liam.merwick@oracle.com>
+To: stable@vger.kernel.org
+Cc: vasant.hegde@amd.com, joerg.roedel@amd.com, iommu@lists.linux.dev,
+        dheerajkumar.srivastava@amd.com, bp@alien8.de, Michael.Roth@amd.com,
+        sashal@kernel.org, linux-coco@lists.linux.dev, liam.merwick@oracle.com
+Subject: [PATCH linux-6.12.y v1 0/2] Backporting SEV-SNP CVE-2023-20585 to linux-stable
+Date: Fri, 17 Jul 2026 10:49:07 +0000
+Message-ID: <20260717104909.3850331-1-liam.merwick@oracle.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <99228803-b8b7-47a3-b77c-6fdf3b785730@suse.com>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-17_03,2026-07-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ mlxlogscore=999 lowpriorityscore=0 suspectscore=0 adultscore=0 phishscore=0
+ malwarescore=0 mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2606160000 definitions=main-2607170109
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE3MDExMCBTYWx0ZWRfX8silSO2j5NL6
+ it9WPkmIGemMuLTeN6sGg0kOqxtXqzfrEAakDh3oOyk2wf8OtO/UpW+otYU1alDUoYUMlPxUbeP
+ ASjX5Nck2q3izsOARic+esbngq/o1c2SQm25IoV35WjmDtYfdtKG
+X-Proofpoint-GUID: 7alL5ygC0RPWyoKnMciRR_WgFSdlCvWt
+X-Authority-Analysis: v=2.4 cv=ddewG3Xe c=1 sm=1 tr=0 ts=6a5a0a95 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
+ a=BqU2WV_vvsyTyxaotp0D:22 a=zd2uoN0lAAAA:8 a=VwQbUJbxAAAA:8
+ a=Hx8qFWEpdy21kD9xy8sA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE3MDExMCBTYWx0ZWRfX2Iy/SGFiAEQp
+ MoZjRdY2RtAVC17bzglWG8Qfr3uJ/zXTPviYQrtKCZ9JXeqrau7gDP50t7fAgLqYruIi+I2efbT
+ 3DRqNRYtSp6XtMG3vmP2VOlrkLRn4M7hwpBBBdEMy6uWXNovDG6sg6M9OaO2UtLd1n+WTheqRTj
+ e+f8SLEfI9MgYOCJocsvwuGLS2n4Apwh7Mqgg1rl+Rzj5FVYRt1GINrbXRDLKz+To8XP3ylc2Ib
+ jPvDrTym/9xpj5heVJ2tcAhf21s7KqoFq6lImn9EYGzuJOPIfkyyBsSwoyc/NJlgO/1wks5jags
+ ukrdLbPYl1ylA9paAWeaGmiMLQ8Nbs6IYkxRkXva0gr+G3l0ouYwAImjpXPIAAC5MjBthXxzp/9
+ VKj12KJTMpGUZz98zRkcMBqWb9/c0BVWAX70ro8k6yK7u0QqJw7nkgGQGCwb8w0SBrLHVhJcKN6
+ l8/RWPKiHrlvtK6I6AQ==
+X-Proofpoint-ORIG-GUID: 7alL5ygC0RPWyoKnMciRR_WgFSdlCvWt
 
+Two commits from Linux 7.1-rc3 fix CVE-2023-20585 which affects SEV-SNP.
 
-* Juergen Gross <jgross@suse.com> wrote:
+"Insufficient checks of the RMP on host buffer access in IOMMU may allow an
+attacker with privileges and a compromised hypervisor to trigger an out of
+bounds condition without RMP checks, resulting in a potential loss of
+confidential guest integrity." [1]
 
-> On 02.07.26 12:07, Ingo Molnar wrote:
-> > 
-> > * Sean Christopherson <seanjc@google.com> wrote:
-> > 
-> > > > Note that the individual patches are IMO significantly easier to review
-> > > > through the actual 32-bit => 64-bit variable assignment changes done
-> > > > in isolation (which sometimes include minor cleanups), while
-> > > > the Coccinelle semantic patch:
-> > > > 
-> > > >     { a(b,c) => c = a(b) }
-> > > > 
-> > > > which changes both the function signature and the order of terms as
-> > > > well, is just a single add-on treewide patch.
-> > > 
-> > > Is the plan for subsystem maintainers to pick up the relevant patches,
-> > > and then do the treewide change one release cycle later?
-> > 
-> > I'll try to keep the patches in a single tree (tip:x86/msr)
-> > in the hope of not prolonging the pain two cycles - but it's
-> > of course fine for maintainers to pick up the patches too
-> > (most of them are standalone), we'll sort it all out in the end.
-> 
-> Ingo, would you be fine with me posting patch updates just as replies to the
-> original patch emails? This would speed things up, as I wouldn't need to wait
-> for more review input of all the patches before sending out new versions.
+These are suitable candidates for stable branches but stable@vger.kernel.org 
+wasn't CC'ed at the time. 
 
-Sure, that works for me too. I've picked up a couple of -v2 patches
-already.
+1f44aab79bac ("iommu/amd: Use maximum PPR log buffer size when SNP is enabled on Family 0x19") [v7.1-rc3~24^2~2]
+58c0ac6125d8 ("iommu/amd: Use maximum Event log buffer size when SNP is enabled on Family 0x19") [v7.1-rc3~24^2~3]
 
-Thanks,
+The upstream commits apply cleanly to linux-7.0.y and linux-6.18.y
+and an AUTOSEL email[2] was sent (but not pulled so far).
+[ The AI analysis in the AUTOSEL patch said that the patches didn't apply
+ cleanly to linux-6.18.y but that is not my experience. ]
 
-	Ingo
+There are conflicts applying them to linux-6.12.y due to the lack of upstream
+AMD IOMMU kdump buffer reuse code, introduced to v6.18 by commit 
+f32fe7cb0198 ("iommu/amd: Add support to remap/unmap IOMMU buffers for kdump")
+so I have included patches here which address those.
+
+Tested on AMD machines with Zen4 (impacted) and Zen5 (not impacted) CPUs.
+
+[1] https://www.amd.com/en/resources/product-security/bulletin/amd-sb-3016.html
+[2] https://lore.kernel.org/all/20260520111944.3424570-59-sashal@kernel.org 
+
+Vasant Hegde (2):
+  iommu/amd: Use maximum Event log buffer size when SNP is enabled on Family 0x19
+  iommu/amd: Use maximum PPR log buffer size when SNP is enabled on Family 0x19
+
+ drivers/iommu/amd/amd_iommu.h       |  3 +
+ drivers/iommu/amd/amd_iommu_types.h | 21 ++++---
+ drivers/iommu/amd/init.c            | 90 ++++++++++++++++++++++-------
+ drivers/iommu/amd/iommu.c           |  2 +-
+ drivers/iommu/amd/ppr.c             | 10 ++--
+ 5 files changed, 92 insertions(+), 34 deletions(-)
+
+-- 
+2.52.0
+
