@@ -1,62 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC253A0E8E;
-	Sun, 19 Jul 2026 15:00:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFCE3DCDB8;
+	Mon, 20 Jul 2026 10:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784473248; cv=none; b=NwvQu0YJ5ITXOAVtKFev0uA+rHfPrcWzQ4EL9YXIkxZlgjr5fsLkyyLywG2D66XHarbsfM2b0/Z8tMAwkwCOZd316r5VCOc4sE2PxWEXihgkPbdzJKBeEFSqI+BPuKZrwsSjP98k+LvyMihOJQ5AnxqjXb7mRDQ1PkLX0EqrIA0=
+	t=1784542000; cv=none; b=qx15v7gzaLsLIWiHF4JNIov4wz5vLjMOHcBOPOX6zcAvdv2BueSKGJ5cy7VzDsTUFsmtE8JsWOZclcGoqsT2Ma4TBeVNs2EdilDTS3+qZlK8pbdrPjco6jKFxCSonaW6Ghy0SLszqRm3DzO8GgdTg2DjgnNq0KjDHNlPt/8M+wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784473248; c=relaxed/simple;
-	bh=pwGMbGsFKHIo/QOq0WYwNYypdVGJ6zpdbimVeczKZ3c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZvJSN1FMPWR/1KpXnGPGgy+GX7CB6S/b6rKQuB0lQCr0Rc94gwKEIEqYQyA0gUsdzYMSVmy3w0hMVxaCiLtVN30TDGnh89yTc4f8xIss64yaCLY7BWglLJEe8ErHlhX/55ZHeGvh5nhWhjZ20qU4at1J6R+YsRY7GGjQ9cY2dZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cBlrYXeO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784542000; c=relaxed/simple;
+	bh=xzsPxkVinRvTvTcSsnmAG2NMq36ZK+mBlxrrsOk7LlQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K1pJON+trdGPSAR3NdFoWoCn6na0eN0/A9q0n4w6qaaxGxT0zam0V3oCGpqReDM1Jks3pS4yNu14p86a/2x9MHBhhlyDxQhhOeKp+koIqsDM72jk+7Sgqopc31niraphxQe2334cPz3MxN4OOonSiXmy3KrTB6rkHrf1HtfaOe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=NFOWe+Rt; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBlrYXeO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A061F00A3D;
-	Sun, 19 Jul 2026 15:00:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784473247;
-	bh=rCzWimPZ+onC9lTctxP2h8S3r9cHrMbOsnB1/tRqSxc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cBlrYXeOnY6an9SDy8FHY8o6D2+y1o6C5UP43MYdT4czjXdfeZYaruluaoWwSaJTP
-	 BMAG8Cwikv8/XxPfeg0sIOXBBUx9lqLEXvVMbtTbktmx+Bc6zPt+QiJxjJmrYaeVpO
-	 5WWatnAm9fcpwYVe42qYuRm76r+NsjevqpOMllcnkYKzD92Wxf9DG4/gClBERN8Urt
-	 8c/vBt9IQo2ICcjxWlovAYZeGVwW9LhbdoNpBzK1UnDvLJ2pbdwzEukBHb0GdUZRs7
-	 yV0Isy7BanZ0WYhDgz+e0+7QPDD3KMtQZPG8kZYfUW6vpCllqMVHOMJ9V4B6MHa1pi
-	 yAJnKBWSHotQQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	vasant.hegde@amd.com,
-	joerg.roedel@amd.com,
-	iommu@lists.linux.dev,
-	dheerajkumar.srivastava@amd.com,
-	bp@alien8.de,
-	Michael.Roth@amd.com,
-	linux-coco@lists.linux.dev,
-	liam.merwick@oracle.com
-Subject: Re: [PATCH linux-6.12.y v1 0/2] Backporting SEV-SNP CVE-2023-20585 to linux-stable
-Date: Sun, 19 Jul 2026 11:00:20 -0400
-Message-ID: <20260718192718.0006-stable-reply@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260717104909.3850331-1-liam.merwick@oracle.com>
-References: <20260717104909.3850331-1-liam.merwick@oracle.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="NFOWe+Rt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=VrAlCPX0F1OIbDW3QqV5pnMEMC62myW987PYItxT88U=; b=NFOWe+RtK7qZJXlI70Cdw/CUpg
+	WTu4wwTOIboyjm2+F5KSX4mHR+hPTnEsVxMYj91C27VjnUH4KVvOksATaG0jijbROwipaa4WYGG91
+	vk6b/TZhfh6F+eDSQwk3MGN5UyqEdRGZ7awp4LBNiHoi4HNhPYZSjNwwm6QH0/URkUAyC00Y2lJVL
+	nzc4kBjMiHuQBmZTlhHerLzNbp1zIXI9BQEKyQ2cSCIxWBUbieMrYMsZXCIb9HCdpNFVnMe60EsnR
+	1+YVrKkhN4TMId7JcbjQEv152pPWmNc9hkY8JKpZ1m5RI6/ylsFs9fJA/B1kkd74IqBoM9B41uvc/
+	1gqhxigw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wlksm-001MTm-1H;
+	Mon, 20 Jul 2026 10:05:56 +0000
+Date: Mon, 20 Jul 2026 03:05:49 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Dan Williams <djbw@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-coco@lists.linux.dev, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 5/6] configfs: Allow the registration of const struct
+ configfs_attribute
+Message-ID: <al3y8c0bTJu4bq9r@gmail.com>
+References: <20260716-configfs-const-base-v1-0-c545a4053cb5@weissschuh.net>
+ <20260716-configfs-const-base-v1-5-c545a4053cb5@weissschuh.net>
+ <alnrJJNb1hwDrAxI@gmail.com>
+ <91f5e9dc-1ba0-4e20-9f1f-5100aaaf0a88@t-8ch.de>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <91f5e9dc-1ba0-4e20-9f1f-5100aaaf0a88@t-8ch.de>
+X-Debian-User: leitao
 
-> The upstream commits apply cleanly to linux-7.0.y and linux-6.18.y
-> and an AUTOSEL email[2] was sent (but not pulled so far).
+On Fri, Jul 17, 2026 at 05:35:27PM +0200, Thomas Weißschuh wrote:
+> On 2026-07-17 01:43:36-0700, Breno Leitao wrote:
+> > On Thu, Jul 16, 2026 at 07:09:30PM +0200, Thomas Weißschuh wrote:
+> > > The attribute structure defined in driver code never need to be
+> > > modified. Allow them to be marked as const.
+> > > 
+> > > As there are many drivers which use these attributes, prepare for a
+> > > phased transition by using a union of const and non-const attributes.
+> > 
+> > How many drivers need to be migrated? Isn't this a mechanism move?
+> 
+> The actual constification of the attribute will happen with a central
+> change to the CONFIGFS_ATTR* macros. But all users of the macro
+> will need to be prepared to handle the constness.
+> 
+> I have a branch with the full conversion here:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/thomas.weissschuh/linux.git/log/?h=b4/configfs-const
+> 
+>  73 files changed, 241 insertions(+), 248 deletions(-)
+> 
+>  Most driver changes are really trivial. But a few do more interesting
+>  things. My goal is to heavily reduce the amount of patches in this
+>  branch by merging patches to the same subsystem.
+> 
+>  The last four patches will be the finalization going again through
+>  the configfs tree.
 
-Queued the series for 6.12, and picked up the upstream commits for 6.18
-as well, thanks.
+Oh, that makes total sense now.
 
--- 
 Thanks,
-Sasha
+--breno
