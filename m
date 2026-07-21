@@ -1,134 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285C043B6E0;
-	Tue, 21 Jul 2026 22:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784671428; cv=none; b=tWvsXfX6p5sKsMnsSuZa0SuGF9UWpkDQBSfcAjPXz3LnghUyBG1Bk9vrm+/x2O+VEJQ5FJov+SkYPh4CohXhquDU3Bi2/e/Y93YaieLCthHy+ZA+3Ye4PltP73kQM8/lZQgl0SlO17ISPNXAKb7sesEGsfKQ4fnG67+OJ9zz4jI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784671428; c=relaxed/simple;
-	bh=bCxbVfN6V5pHCC3mEwGYgsl5FA2XAsw3WeKrawYV32k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TF+u6LJRes4lbrJFIfski0uwUUw8AEvFeskcEPN8XSN9vPcTBXfLr7Ew7aQfNAnO020mbOIABqflHku6U9+7TCiRiCcQL+1Y92KLck8BN3gdQbZmOYA6MJZOCeE3byx3PXkrW8zRVKsDeEmQK/Jj1WI2wFHVAKUJ3DJwh24VB8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=auTW/WBC; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63F543E06E
+	for <linux-coco@lists.linux.dev>; Tue, 21 Jul 2026 23:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784675272; cv=pass; b=NrdKFEKtJk7sbSK2rouhWT6uHb7hfQShFZtvV3r6LE80Rt8i/Vu0h56twmPQ1mDpUv3IR5VF0mLAKNOAsxBf36yZujDEDAuOQasAqW5OiWMdt8Xfvcn/NKY5irokmzxRLqoE94WQ6Q8j3KlpUCtFtoDOPkC0iKy0xtya6HbMWPU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784675272; c=relaxed/simple;
+	bh=3OQXXVa58whyMEmCorMBVgdW3liv+RGIOlQFgF8uhhs=;
+	h=From:MIME-Version:Date:Message-ID:Subject:To:Content-Type; b=B3Omt+b4Z/JDlvYE2ZjDJbdT2I4VbGOrm8L0uyWyyDAC3po4AWGrbI+LHmsppro3EI3wEtXh8zp/aJYBgjPoHDapVb1Fgu//dLbGQy19Uexm5IZq7bczpS1esaf3y551/dlY/aYBnW/B5ml2eBIXyRdBtBZ1aZhQ84ava77jo74=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vUv+DO75; arc=pass smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="auTW/WBC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69CBE1F000E9;
-	Tue, 21 Jul 2026 22:03:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784671427;
-	bh=6P8NXzkwEgiAM58tQMpUy9Cb9CjVa4MDzbpmorHECA0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=auTW/WBCYQ0i42fuTPQW5kc5UvlmEvZwzOscJ/H5askVmaHpCz5oe7Xc77FDAmBf7
-	 HuSI/X2oAg49afP3BY15c4kYsbK71P2r1sTA+qN5oMF7zXJHZ/+EfpBA48swTG1PU1
-	 GyqDjnCxi1H7ILYAhFUmPLPU8jaRX2p2ajBgZ0NGYTc+c4962eVQ5X1W5mxMGpnm3w
-	 OmUi/MGOMxwuu/5HgzT7mctMXWDq32jVGyihEoZ+IXIWwG/OgeGAM6j78cxpCvwUgh
-	 nMLR9HTw40xcK1muaX5lBIQxaV/V0VdR+JuZeolXGVTr3VsRx80yFn5RLXqMgqMr5x
-	 Ii/qx9fk+Ymng==
-Date: Tue, 21 Jul 2026 23:03:40 +0100
-From: Will Deacon <will@kernel.org>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: Re: [PATCH v5 08/10] arm64: realm: Move Realm memory encryption ops
- to RSI code
-Message-ID: <al_svOwkb5SleTWg@willie-the-truck>
-References: <20260706060432.1375570-1-aneesh.kumar@kernel.org>
- <20260706060432.1375570-9-aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vUv+DO75"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38e42560ebcso5198753a91.1
+        for <linux-coco@lists.linux.dev>; Tue, 21 Jul 2026 16:07:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784675268; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Lw9BVBwxxS6qFJCrvnitruFtrn75Yus9N+EW7Z8R3aqawotxCctqJREoVmMKDgTrMJ
+         n8yUHNHBCx//fp0nzRCX3LtwFXsAYc22Hl+1jYFpPxtxgr4PmplK4D/KIQKP8u6Bcye4
+         60ZGaf8IzhqgYvlEfrR6c/pmV5bmML3sSoQY34Q7iGdEflL121FTvkTchQMqP8jSgDUT
+         GuqWb/YOuAreJXtKpKtifto4VV2R7Qq1S0+IbgHhTbMjzv9zWMISBK4pM5UMDFnwbG7F
+         IBJGc0lnB6A+oo/ngl14sPfYf+0kNu5flrogwh0/aVd5XneC6J6FQYyTdguXZGEozJn9
+         ZZhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:mime-version:from:dkim-signature;
+        bh=3OQXXVa58whyMEmCorMBVgdW3liv+RGIOlQFgF8uhhs=;
+        fh=mfH6UrtgAWUlYfrS9fZnXMZau047Mn71+T7giRJTBOM=;
+        b=r85/kWr+H4x/lboYLmkmVHO+MNDUGNAXaR6SZJKzmjqQPpWq5wJPVnGH/+UGI2AFtj
+         QZgEzCxFNdtFnmtCvXqF9IZw0H5JUp8BoN9julCv+mOd4W8kxQLRpJu7fyy6uWQKvBh1
+         bes0M7oNi6hQx3yq8DAk7NN/7UlAX15nSLazXSpA3nguVASvSAzTe97wUmaEnyE6+7Zl
+         RVY3RpVXYT7zW/ng0gwleI2HbOU+T4eJaG5mPoHzQ/aU5ByRw1/2lo5gnUD341tesL5O
+         j3pcME+H3lHz0eajbsymbYXd6RG8jfqBO237hA8pKfLV9EKiG6GCUq0JWLeYOFEPCEmT
+         X4pw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784675268; x=1785280068; darn=lists.linux.dev;
+        h=content-type:to:subject:message-id:date:mime-version:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=3OQXXVa58whyMEmCorMBVgdW3liv+RGIOlQFgF8uhhs=;
+        b=vUv+DO75W5WzpCOPDSnV2Z4Jy6AEytzYg3XS57yrD3umSJ63KjmpBQt284QCJBXyoS
+         Su1WHOIf6We+tunkzWXbighubREP79U5ajXdCuntggMpYpwfkL8TPLT/QCzslPr/8TKp
+         nfvfln3TOxM5/jAaYREnYVHRQK3d4Z42U78dFXeBNwJB63rqJdfVYlcjUtxhCqYekoQ2
+         XZQHxFB37cGaoWIJIqp5pXIdJxNhJHHv6gZWqHMcJAtHXczeBH/qeBplyFRXyq6KLuxx
+         mkXLcSZXgrOesqqbwJbb3HbqxtLdk2XNCnE84gZBINKdrzPspZILZAt23EgHIr5+fSaa
+         qkbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784675268; x=1785280068;
+        h=content-type:to:subject:message-id:date:mime-version:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3OQXXVa58whyMEmCorMBVgdW3liv+RGIOlQFgF8uhhs=;
+        b=ID3v3/BuMLG2R8ryEo1hwJJxoz/Wswv1KPv87/7pZwraaf/rYRU32fj2jCywJ54Wny
+         lKro6mh3GjiI3L76w9AJqFHHPGR2qTIQEAgAoQ/hRtiHlGw2Tqne5kzLjGRbq0X3ajMr
+         7gpMJQUzeENrMTDB1RFsT8wz+K9mF4Pk9bH7UVBAD2HPjrs6vcXcJRAJ4iF7JPZ6gIKP
+         Qoj8eQd8iVL5XrcEidGxVHOkL3gsR/kp28cHLv2NUrx9IbAd7O1nzAjrxg8psPb6jcjE
+         eR1c1+6xx0VFRqqlWiftVd3Ie7zv2cfl367GRnkTg5rl0Kcmud7ngsG0TOSQpmQsw5NI
+         +Lww==
+X-Gm-Message-State: AOJu0YysumgDk6L8RPqNc8eRADNn3F0W5PL4nDlNMIVQ6+p6l8HE51Bc
+	EDfTmNHgBlNzDqlnzde8H3Unaqd5w2JHhGJ2qdpaAQOhcAhYgRacEkZAXdZCmHj8lhfdjZd5mjK
+	dKf1MVDFSxR4NhRmDvVpwS0o/4tN12liVb2XuTp6RxpuPQ6opWysOZXo/
+X-Gm-Gg: AR+sD10gNHOAMRPDI1dK8+dFVtscvawJbbsAJU4hkODRWPFVGbNMN6vWDCtvmtj3kDg
+	8kDskK95WFusXedUg9ABtzvOT5CJecAeQYFD9L5D1BSwgxKLQlxmVYqR6/DlBys/Hp4TNPt4/5C
+	/uoVIRfw2APncCF18urJwNX3AeK8AqhrHw8LpstBSandBnCPizp4I2JFZxyxQhZlslKUzPyya+H
+	N8+AXOEnTKzcJaFlL0zPirgXCv79SmG1/orW3I4JFc+gctYgnQPeqDzBLSbsFftShHBzR5pdJfc
+	C2YcAnTlHMdDSiCqg1RhQmrHyMMamLVZUK2bXHKS62MfFw==
+X-Received: by 2002:a17:90b:1345:b0:38e:21da:9257 with SMTP id
+ 98e67ed59e1d1-38e4b56ed6amr22248144a91.37.1784675267895; Tue, 21 Jul 2026
+ 16:07:47 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 21 Jul 2026 16:07:46 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 21 Jul 2026 16:07:46 -0700
+From: Ackerley Tng <ackerleytng@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260706060432.1375570-9-aneesh.kumar@kernel.org>
+Date: Tue, 21 Jul 2026 16:07:46 -0700
+X-Gm-Features: AUfX_my9ZoAAGr2xVT-3ET2pTUKEhed6A55b3pp5x-TSu1YG-G0FttRwIwLL4RY
+Message-ID: <CAEvNRgE74GL-pr6=GRpQWriGwXh6zsDP+ULxPd82GkFSQgjJkg@mail.gmail.com>
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-07-23
+To: linux-coco@lists.linux.dev, linux-mm@kvack.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jul 06, 2026 at 11:34:30AM +0530, Aneesh Kumar K.V (Arm) wrote:
-> Realm memory encryption callbacks are CCA-specific. Keep the Realm callback
-> registration with the RSI initialization code instead of pageattr.c, which
-> only needs to provide the low-level page-attribute transition helper.
-> 
-> Export __set_memory_enc_dec() within arm64 so the RSI code can wrap it with
-> the Realm-specific encrypt/decrypt callbacks and warning policy.
-> 
-> No functional changes in this patch.
-> 
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> ---
->  arch/arm64/include/asm/mem_encrypt.h |  3 +--
->  arch/arm64/kernel/rsi.c              | 34 +++++++++++++++++++++++++
->  arch/arm64/mm/pageattr.c             | 38 +---------------------------
->  3 files changed, 36 insertions(+), 39 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/mem_encrypt.h b/arch/arm64/include/asm/mem_encrypt.h
-> index 314b2b52025f..f6325f30e844 100644
-> --- a/arch/arm64/include/asm/mem_encrypt.h
-> +++ b/arch/arm64/include/asm/mem_encrypt.h
-> @@ -15,8 +15,7 @@ int arm64_mem_crypt_ops_register(const struct arm64_mem_crypt_ops *ops);
->  
->  int set_memory_encrypted(unsigned long addr, int numpages);
->  int set_memory_decrypted(unsigned long addr, int numpages);
-> -
-> -int realm_register_memory_enc_ops(void);
-> +int __set_memory_enc_dec(unsigned long addr, int numpages, bool encrypt);
->  
->  static inline bool force_dma_unencrypted(struct device *dev)
->  {
-> diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
-> index 1fb2abd79800..5c566700974c 100644
-> --- a/arch/arm64/kernel/rsi.c
-> +++ b/arch/arm64/kernel/rsi.c
-> @@ -143,6 +143,40 @@ static int realm_ioremap_hook(phys_addr_t phys, size_t size, pgprot_t *prot)
->  	return 0;
->  }
->  
-> +static int realm_set_memory_encrypted(unsigned long addr, int numpages)
-> +{
-> +	int ret = __set_memory_enc_dec(addr, numpages, true);
-> +
-> +	/*
-> +	 * If the request to change state fails, then the only sensible cause
-> +	 * of action for the caller is to leak the memory
-> +	 */
-> +	WARN(ret, "Failed to encrypt memory, %d pages will be leaked",
-> +	     numpages);
-> +
-> +	return ret;
-> +}
-> +
-> +static int realm_set_memory_decrypted(unsigned long addr, int numpages)
-> +{
-> +	int ret = __set_memory_enc_dec(addr, numpages, false);
-> +
-> +	WARN(ret, "Failed to decrypt memory, %d pages will be leaked",
-> +	     numpages);
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct arm64_mem_crypt_ops realm_crypt_ops = {
-> +	.encrypt = realm_set_memory_encrypted,
-> +	.decrypt = realm_set_memory_decrypted,
-> +};
-> +
-> +static int realm_register_memory_enc_ops(void)
-> +{
-> +	return arm64_mem_crypt_ops_register(&realm_crypt_ops);
-> +}
+Hi,
 
-It's good to move these out of pageattr.c but I still don't think any
-of this stuff should be in arch/arm64. This is a firmware interface,
-just like PSCI, so it should live in drivers/firmware/ along with all
-the other Arm firmware interfaces (SDEI, FFA, SCMI, PSCI, SMCCC, ...).
+Our next guest_memfd upstream call is scheduled for Thursday, 2026-07-23
+at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-Will
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
+
+We don't have any scheduled topics as of now, please add topics!
+
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want a Google
+calendar invitation that also covers all future meetings, just write
+Ackerley or David a mail.
+
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
+
+[1] https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+
+Ackerley
