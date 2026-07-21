@@ -1,111 +1,172 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A9746AA6A
-	for <linux-coco@lists.linux.dev>; Tue, 21 Jul 2026 15:33:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FC946AA72;
+	Tue, 21 Jul 2026 15:33:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784647999; cv=none; b=fyUwguv8wm3x5x5+jUPCmrf9IzA5Ges6ihxzIekMxwN8MXjpB9uNtNT92jj9ytEohh8HtvyfB4WQlb+8p3Fn3KN7po6/yWEQC+csjeu5yUzOgvoGiqxs2Vp7RCijPd62GfnmGcu4m0gJUdxCQGmbxbChc/L5fIoI4zSC87WD/8Q=
+	t=1784648009; cv=none; b=jN3kNbo3D/w1o3TlEjL1E+OWJkKszRWshiMi/BeNXvF/C4B7y8BJH4H6RWdA/qT9Kl/VF3pt8ZCumYCJ2L4xZ6AcK6F9PZYAe3aR49Yw4o4WeWxdtRo2Hlinq1teZ4xpzilwfHH3ATp/Np0qADG2dAALFAGU+xMqDZDHX8wteCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784647999; c=relaxed/simple;
-	bh=p42FdDG3W2PcF9gjZDhHjj0UxkMFq9DZNUm9D+Yq2wk=;
+	s=arc-20240116; t=1784648009; c=relaxed/simple;
+	bh=+YZQfaaTiJHIA2ETq/1rzRtmtcZbyzJHfNuMtqgXGws=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GbSYebM/OrHO+auKmbdC/8aQSfQzLF0GOHrzrw9w/dVIx5B4fSbra7BRza8qX3nAV/u9mOqm28mJLaQf0USzuXLWq0NSNIqqgzkZnlwdkcuOAvIMNHlqkdGtMEqzjUPfPQ+MkMx0ryybjJyqWLnWz4Sggu7Yn6bTzD7PkrgGtJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=jBY0WGGL; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=phVlrdVavE6az5nBZiKeV3um1WhhaofsCN8WZ46HwrR90l+otyzWMNE8qtD2x4D487sGb1U7gpU5P2mrQMGPqk7oAr7sK7H0F9r5FaRDknukytFJE5mqNDHqSDK74iURC4c/Y1pjBmcdAn1EvNOBKpl+7wOnoCCy7bBtCGx0sro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RtTlvsgB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="jBY0WGGL"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4362E40E014C;
-	Tue, 21 Jul 2026 15:33:14 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id qlpVAtYpdz8I; Tue, 21 Jul 2026 15:33:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1784647984; bh=gfaFDf5tJQ9koeSUXrEkCo3jxffhhLyj8C7mTBh7tfg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jBY0WGGLmBbXUc5tvnv8754Mv7jBcWHpeYf1hKruMd1drFq4JIuzhweuI6s53xPIZ
-	 THDWkO6QhM1TJpP0kC1GaUTUoJDc1+efHzBZkRnBbknCT0HIeHoCa5xjWuMhV9hkIe
-	 vwq//fHgE+glkom2B8ynImLlecW14X6kkyavBttS51wCVKwJ83euISl+vYLv23ybTU
-	 Yhxoyb+dmW3KJ5Hd4xsWignJDBUH2kPOCXvSAO1PQkTn8nudibkKIMmXoXpk2DbvTI
-	 +ApRx7apy5P1bwBrDwUh9RzVQyfNNz170M8MUvTa8p9P3P/JPm/HI/F7lUzuNlwEyF
-	 n7zOthdykyonRPgjDvnKDpbBzl1lfALFm2yNWjHvTM4AnTjzuk4EYDeCAPapQQDPhP
-	 fpU3fSajZjK+4q7XqhYZPhbS3Is3LoQsihyhST8gSQwnrCi398F8y45f+ERKzPDTBd
-	 qNAv92J1f2LyXY8VLKxgJ9MBqMlnYrHJhdZfWZFQ7PEf4DtTzZncoROp0XsI5jJkXX
-	 62MX0Zj5kQlKhTzCMUa7BmrNR4fhVLyWSUAQtXYH0S96XStojBw+JixsxmouFm/xgb
-	 iPuiZVedPMxu4UNiUA2DJz03dbTF2ZFcktPX/CYSAJEv8m6EjBHgA8gTI2xcu9sU6R
-	 WCxvgaU72GLrUtLFwsgK/M48=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::2b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6E6F340E00E6;
-	Tue, 21 Jul 2026 15:32:29 +0000 (UTC)
-Date: Tue, 21 Jul 2026 08:32:25 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	john.allen@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v10 2/6] x86/sev: Initialize RMPOPT configuration MSRs
-Message-ID: <20260721153225.GFal-RCQdG54tNiPGb@fat_crate.local>
-References: <cover.1782841284.git.ashish.kalra@amd.com>
- <8518e02c46d6edf1f37a180569c708a3cfa7c413.1782841284.git.ashish.kalra@amd.com>
- <20260720221725.GDal6edYI3uHrDruHj@fat_crate.local>
- <5168d3d3-c31c-4f80-be91-c964a5cee674@amd.com>
- <20260721014841.GCal7P-f3ZBHQzR-0_@fat_crate.local>
- <9a183dfc-91fa-4a08-9168-8ea0e53f708c@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RtTlvsgB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E401F000E9;
+	Tue, 21 Jul 2026 15:33:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784648007;
+	bh=0MsfUHsh7/pU0dEmGJ8yQrcxAOBrj57aAW4TYmEgSa4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RtTlvsgBwpvI0cpC2iB7lmnZsJJQS3iN2nxCIQ//4/R7sa6Ddwam0EfjjO67bp+fO
+	 ZUvnFVQCbVdC+rprpImnQ71P/DXiWl4BcNPLzChAK5mZc6IC7Fg7/+u3KpDARDYE48
+	 783F22LzzVw+RaD1DEkOXy6Hmr7sf5hej91oSPVKZPxvUyT34ZcmiF29+aHPPjBQ5I
+	 GQ9xQgSmPNM3x8bNp45OOFOZDKpUwuRY+pw61HJlkyNZZPXHkzn4MuVJl8wAQQncL0
+	 xB0NTm977UpaO8i1yNgz9I7sxcKIQ34Wqb3yHygOtgO5PY3h0RqiM4Fh+NA77y/ggd
+	 u6EVDacyAMw7w==
+Date: Tue, 21 Jul 2026 18:33:21 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
+	stable@vger.kernel.org, Michael Kelley <mhklinux@outlook.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH v8 01/23] dma-direct: return struct page from
+ dma_direct_alloc_from_pool()
+Message-ID: <20260721153321.GO110966@unreal>
+References: <20260717180442.110954-1-aneesh.kumar@kernel.org>
+ <20260717180442.110954-2-aneesh.kumar@kernel.org>
+ <20260721115456.GI110966@unreal>
+ <yq5atsps77c5.fsf@kernel.org>
+ <20260721142921.GN110966@unreal>
+ <yq5ao6g0750v.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9a183dfc-91fa-4a08-9168-8ea0e53f708c@amd.com>
+In-Reply-To: <yq5ao6g0750v.fsf@kernel.org>
 
-On Tue, Jul 21, 2026 at 09:26:48AM -0500, Kalra, Ashish wrote:
-> That's why v7 moved to a runtime check. In v11 (as i mentioned) this will be a small local helper,  it will also handles two things
-> the cap-clear can't:
->   - a contiguous (non-segmented) RMP, where RMPOPT isn't usable even with X86_FEATURE_RMPOPT set.
+On Tue, Jul 21, 2026 at 08:40:08PM +0530, Aneesh Kumar K.V wrote:
+> Leon Romanovsky <leon@kernel.org> writes:
+> 
+> > On Tue, Jul 21, 2026 at 07:50:10PM +0530, Aneesh Kumar K.V wrote:
+> >> Leon Romanovsky <leon@kernel.org> writes:
+> >> 
+> >> > On Fri, Jul 17, 2026 at 11:34:19PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> ....
+> >> >>  static void *dma_direct_alloc_no_mapping(struct device *dev, size_t size,
+> >> >> @@ -247,8 +246,11 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+> >> >>  	 * the atomic pools instead if we aren't allowed block.
+> >> >>  	 */
+> >> >>  	if ((remap || force_dma_unencrypted(dev)) &&
+> >> >> -	    dma_direct_use_pool(dev, gfp))
+> >> >> -		return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
+> >> >> +	    dma_direct_use_pool(dev, gfp)) {
+> >> >> +		page = dma_direct_alloc_from_pool(dev, size, dma_handle,
+> >> >> +						  &ret, gfp);
+> >> >> +		return page ? ret : NULL;
+> >> >
+> >> > Sorry for joining the discussion late, but the line above caught my
+> >> > attention.
+> >> >
+> >> > Why do we need both ret and page? We can derive cpu_addr from page and
+> >> > vice versa. Do we really need the &ret parameter? Or, more generally, do
+> >> > we really need "struct page *"?
+> >> >
+> >> > static struct page *__dma_alloc_from_pool(struct device *dev, size_t size,
+> >> > 		struct gen_pool *pool, void **cpu_addr,
+> >> > 		bool (*phys_addr_ok)(struct device *, phys_addr_t, size_t))
+> >> > {
+> >> > ...
+> >> > 	*cpu_addr = (void *)addr;
+> >> > 	memset(*cpu_addr, 0, size);
+> >> > 	return pfn_to_page(__phys_to_pfn(phys));
+> >> > }
+> >> >
+> >> > Why
+> >> >
+> >> 
+> >> With CONFIG_DMA_DIRECT_REMAP the cpu_addr can be different from
+> >> page_address.
+> >
+> > Can you please point to the code there it can happen?
+> > __dma_alloc_from_pool() has direct connection between physical address
+> > and struct page.
+> >
+> 
+> dma_direct_alloc -> 	remap = IS_ENABLED(CONFIG_DMA_DIRECT_REMAP);
+> 	if ((remap && dma_direct_use_pool(dev, gfp)) {
+> 		page = dma_direct_alloc_from_pool(dev, size,
+> 
+> ..
+> __dma_alloc_from_pool -> 
+> 	addr = gen_pool_alloc(pool, size);
+> 	if (!addr)
+> 
+> 
+> We expand the pool as below..
+> 
+> atomic_pool_expand ->
+> 
+> #ifdef CONFIG_DMA_DIRECT_REMAP
+> 	addr = dma_common_contiguous_remap(page, pool_size,
+> 			pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL)),
+> 			__builtin_return_address(0));
+> 	if (!addr)
+> 		goto free_page;
+> #else
+> 	addr = page_to_virt(page);
+> #endif
 
-That's the point of clearing the flag - to mark it non-usable.
+Right, and nothing prevents you from adding a small DMA helper
+that translates mapped/direct addresses back to struct page.
 
->   - SNP being disabled at runtime (CC_ATTR_HOST_SEV_SNP).
+Something like, but probably void* needs to be phys_addr_t:
 
-Same as RMPOPT being not usable follows from disabled SNP.
+static inline struct page *dma_phys_to_page(void *addr)
+{
+#ifdef CONFIG_DMA_DIRECT_REMAP
+	return vmalloc_to_page(addr);
+#else
+	return virt_to_page(addr);
+#endif
+}
 
->   static bool rmpopt_capable(void)
->   {
->         return cpu_feature_enabled(X86_FEATURE_RMPOPT) &&
->                cc_platform_has(CC_ATTR_HOST_SEV_SNP) &&
->                (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) &&
->                rmp_segment_table;
->   }
+Architecture code already does this throughout the tree.
 
-But yes, this is a local helper so that's good enough.
+Thanks
 
-We can always change it later if needed.
 
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> 
+> 
+> -aneesh
+> 
