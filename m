@@ -1,114 +1,296 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361813EFD30
-	for <linux-coco@lists.linux.dev>; Tue, 21 Jul 2026 01:49:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784598574; cv=none; b=aM7HD/yhEGdnVF2pwvBtuApNzd1PJGNrwWYoXiZbguSCdUMVWINPm3y/YMARtIECXfLNZAvmJV00njwqtvJTsrj91QlgkmevOlahrP7nhKF1/HFD07E50Qxa8xfNlkwGfeTMvlmQy8dHmhbhoYC4ABPeNes6qDo9t0bcKENo5do=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784598574; c=relaxed/simple;
-	bh=mGesBaURCSkK73cNSPDNDbtvQ8PN0fZjtgrnpn68PVY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KCaMG6vpIn9qRQAf3Uy1daj6rEptEo8SVzrI4eTrairva0PoM7QUq8xMniLCOdW61ShRRd/yYAotL5jcxsOwQPV6jNTebgDhvXBoGtSzVAg9lPpfz+2hUxZU7ovAqt5jyJK4JdtsolaB6wfv64XVCO2SEFNoF6hVEUxAX9Zys4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Ooas6kTy reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A67282F31
+	for <linux-coco@lists.linux.dev>; Tue, 21 Jul 2026 06:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784616555; cv=fail; b=j+tb5h1vENlN4Z4gUSXE93A+gW2YIi7e6KMru+kBHPHmLMBpRB+VVybARSBJOmpQUQVCk9XRoOBNByEgbWuUn+QibO0CnmPuXfnmSCAQ9Y3wOjf0fhiEntb5jwqiweTOTTSAv/y/OHV8jA2Xo5FYdFPsAsC6kYoVHOKrLjRyOYw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784616555; c=relaxed/simple;
+	bh=p2ZfysDj4tyuoWzmDoSaeyJ7I9ETm2pLsAhmncNAtY8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=e6UphVeWV54ZhSNCnlRrrTFSzlmpTpzKN1Z2pgt9nW5q1WYIvNwbDsEkdjXNMC9C00GH4MMmD5NRTkkWhaqNIP/gk/P/wGiimQ/xRbeu7xvmeJoTBvjC6L/CGdUUYMFmc4R6HMbBZ6gtX9M+R04xs3rDvwGggHXOEInAtd2z5S4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nxX3UbwI; arc=fail smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Ooas6kTy"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C65E540E00C3;
-	Tue, 21 Jul 2026 01:49:29 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 0jZWPBlYwiYe; Tue, 21 Jul 2026 01:49:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1784598559; bh=6+CHJtCLMfBSzPUlrxDyYfscRk0QokkmTeoDqHNlJ7w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ooas6kTyh5LyKRcWrAbdolUy7U7v1vKPBiMoHUcqAU7eZ2/q2SfrRhwkY2KfmpUsX
-	 OcEM146v/5mP50zADtLNvfo2B3k5Ooilyj8rt7pq5JCU4i/f0PEMQFum4MhdlR5LmK
-	 mOdPw2q4smgwIMv63D3mRPvZFVDJ4Rv/03Vecy0YlTyUXkq2gLsxSM57ppJHvK22DM
-	 v1zG+G/NU7e6NsyVyV2Yy0yrRSL5TGIQ8+736zS3sMlj/OaW2SWG1OsC1UhXHDg4MS
-	 1SkD3pYzhtYuVhb1DK53uD7xQyMetIp0T9t2+IRV0OXLhb9L802FcCaa3cMnww1k41
-	 ZgI3x2bS2rqlpTHt7QanCTdCUJKQF6eC1YSxtl93wbF7FUqOfqKBKA3g9YZKF775t2
-	 tHWKfsmV4LbltFACT4e0f975Jf4ban/yr5hJ4DdhfGU/d7QmX436P79hqGG+3YvLDz
-	 puY3GBypDOOg65KY3WTyqCFSOyxPNMdVi3XzBxCS1h3iY9hUn2iMzoP9cU8KsAVls4
-	 bZgafqPUrNJYtI2XzfztjLX+/OY+JNHfPWbM4gLkOQzUSSDIOnHiv50tAVRsY6lsoI
-	 x1Q/s1A4EpVyDzZVX7rX9ecl95aQG/Fo63i3WlHzmTySpBXjKsT92OBEgk0LTb9D1h
-	 hueEQl7j19pFzng6IZw67EdM=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B318840E00DC;
-	Tue, 21 Jul 2026 01:48:44 +0000 (UTC)
-Date: Mon, 20 Jul 2026 18:48:41 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	john.allen@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v10 2/6] x86/sev: Initialize RMPOPT configuration MSRs
-Message-ID: <20260721014841.GCal7P-f3ZBHQzR-0_@fat_crate.local>
-References: <cover.1782841284.git.ashish.kalra@amd.com>
- <8518e02c46d6edf1f37a180569c708a3cfa7c413.1782841284.git.ashish.kalra@amd.com>
- <20260720221725.GDal6edYI3uHrDruHj@fat_crate.local>
- <5168d3d3-c31c-4f80-be91-c964a5cee674@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nxX3UbwI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784616554; x=1816152554;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=p2ZfysDj4tyuoWzmDoSaeyJ7I9ETm2pLsAhmncNAtY8=;
+  b=nxX3UbwIWrbi4oFkkPLvTkjAtgAPxKvhxTLar7UEJP3Mer1AgJfbppKd
+   KUx98cHTBYDFa9eZwLTXDt9JfH76CFKksCQRrNg/orCPnPeJCdN+7sdHH
+   gx3UIZuR5f2eBB8cjzjOOMK61zayBBeG1jumyPo7vhfS1+yAA6gueRUAU
+   Z4vOWPUKExd+HoFLb2QbExhpSRgc6riztjXwuoDhxF53sxOep6kaysnsn
+   E8PDTef8MIa/298X3HIV9We2pmC6laeVID+5uQZEADefOyz/FiJK4c5KE
+   2Rkd1hmc7ymiVfc4Jg+3uxPiIi4PuurAmRRdDn3rTDIv/xAEZgKRBT086
+   A==;
+X-CSE-ConnectionGUID: ihbdhib8SlKQWd1YoVPy8w==
+X-CSE-MsgGUID: ajQitQpzRnmavrwC3CmxZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="85082732"
+X-IronPort-AV: E=Sophos;i="6.25,176,1779174000"; 
+   d="scan'208";a="85082732"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 23:49:13 -0700
+X-CSE-ConnectionGUID: 7krwV/g7S2qIcXwHgEkf2w==
+X-CSE-MsgGUID: wMoRoB4KTUCUf5Zv1NZygg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,176,1779174000"; 
+   d="scan'208";a="261226583"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 23:49:14 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 20 Jul 2026 23:49:12 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Mon, 20 Jul 2026 23:49:12 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.69) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 20 Jul 2026 23:49:12 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=igqa5hi+bxqZyqLyGHpD8QBJ+WjYt1OFwRRLtdGNaoojF22/e6neYr43zVbVLc+D6kmF/0lsS5RfqRR2VJ5vsT7sdmtgV2I0AqCjg/cmTlnleW4SvOGXOpSgPKc/bkkykLDq0Erqs3lbDrw/dBKG1AKOh9cy3UfKddh2yFGoOeBH6iQ3ivl+XWDsLi0WSIWOjqbtr5ZbhQDmYI6wVRCyTIAyXZsqJB3LTN1lPt2P5eu9ArhXhp8ZYUZDboBlVDnqXzWbmxe49T1qXuN0nWotD0O3HMllF2Y08LQF4Cvf2Tp6aMnuT7sEJVqoHzc8o26aueWesKJbBNFL64m76NkIGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0JElUtLu+PY4qDMfdZL/RYeG6g4EiBodnm7yeaCqa24=;
+ b=UXLzDiiIcukJo02Cm3vjzjZ8lhJyfY5mUhBl5hnVbwe/FksYUV9qsep9OyU474xzUz3IC9eN7ZtZE82eLxVS73Ymaz4sJ5vXm9cPOb5pz4cqxBqJREPbzR8Eh2OK3cZerzkX33IAUdOsOtf/5V7NdmWeeGRDZ/NKSVDZarzOUBj5PZPS4j3M6LOxM5heVdcHD8Srs9YRYL4+0e7W4zWZkT72BR1HIxo1vW47n+BMAxzP9csS5231bfKDm2MG1V9JAXNyzYDzG2FmiLuU9m/rLypMK8sWSfiIFu4r3gGDQ/HP2Ghvlc/CGL5gTDY6pvZUCJsee4/Qw0kGIxSpwY9C9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SJ0PR11MB5645.namprd11.prod.outlook.com (2603:10b6:a03:3b9::19)
+ by SJ0PR11MB6814.namprd11.prod.outlook.com (2603:10b6:a03:483::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Tue, 21 Jul
+ 2026 06:49:09 +0000
+Received: from SJ0PR11MB5645.namprd11.prod.outlook.com
+ ([fe80::fb19:f933:8bb3:b42e]) by SJ0PR11MB5645.namprd11.prod.outlook.com
+ ([fe80::fb19:f933:8bb3:b42e%4]) with mapi id 15.21.0223.017; Tue, 21 Jul 2026
+ 06:49:09 +0000
+Date: Mon, 20 Jul 2026 23:49:07 -0700
+From: Peter Fang <peter.fang@intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+CC: Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau
+	<kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, "Kuppuswamy
+ Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>, Thomas
+ Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+	<linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<kvm@vger.kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu
+	<binbin.wu@linux.intel.com>
+Subject: Re: [PATCH v2 2/2] virt: tdx-guest: Allocate Quote buffer dynamically
+Message-ID: <20260721064907.GG3178326@pedri>
+References: <20260717214349.4075994-1-peter.fang@intel.com>
+ <20260717214349.4075994-3-peter.fang@intel.com>
+ <51059852-9a10-4735-a81d-003b4b1963a6@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <51059852-9a10-4735-a81d-003b4b1963a6@intel.com>
+X-ClientProxiedBy: SJ0PR03CA0062.namprd03.prod.outlook.com
+ (2603:10b6:a03:331::7) To SJ0PR11MB5645.namprd11.prod.outlook.com
+ (2603:10b6:a03:3b9::19)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <5168d3d3-c31c-4f80-be91-c964a5cee674@amd.com>
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR11MB5645:EE_|SJ0PR11MB6814:EE_
+X-MS-Office365-Filtering-Correlation-Id: 63373d07-1462-41b7-fef4-08dee6f429f7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|18002099003|22082099003|4143699003|3023799007|10067099003|56012099006|5023799004|11063799006;
+X-Microsoft-Antispam-Message-Info: 7WbCCBkmaTWgFHos1GQj2mMIcBRDobTtKveGlKnYTvFl6cVz8XTKMLwnA/8NJKqtrSa+6dcC2zL6MBpQGkxxZzrCxxMo2w2r85Ak0WDd0kNsHUqW6+JCUveu5ZasKp1PraJf7OyBBSV8AMNi0IYx9p6LUIfUDix7EQC5WwEq23gKXt8HIN/LRW1eWckTtGjzjOlLDXS3AYwTFZFMrLOygk4BmXGmj5vkNkTA9QnAAnSga/aMUs2nZsd5M2A0qOonZPYYlXfhhWniarjQexWeEhAU1dYX+dGJZwA51/nOnEfn68+ajm2wtGhd/oPhpX3khERcKq+QDZD3K+u52UZHKLWjAopbe+KY+/+YvtJxiLdEzDbw78N3U2Io+6+drILVrc63FTzh7VMQK4k/9Ilgos1yoMB/pw9h+eb3MFXXJDFkxhgSLJhP9nWjfcCVgHdJZv12jodVgJMykG4qCVXhLhe6rRfCLN6F96RZDUwVxPG/LpMnqmk9O4/MaqfSDggyxsp+KJWR4zaP01ktNSQz7zxD/xYajgXRb+hOt2PejXrNG4dCFF7+yi4O8nfJ9nLstxTGiR+szwgqs9e4KU3y+DpJi70p7L0+4MHzTVuIO4g/TQslbCQOXvrX5vJdz07rEvVNmLGeTv5wWT3VU5hD/wJIKEIdpqSx6yP0G8aUCx8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5645.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(18002099003)(22082099003)(4143699003)(3023799007)(10067099003)(56012099006)(5023799004)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3XxQlxFdtkZqLWmcbq4t2yGCaeGoT4S5DhkkMTLRXKR0MRodbtUcWdN6pg2o?=
+ =?us-ascii?Q?6ipU+0nfzXxoh5fLPVVaahs9eQLC0f7j9hCTCxWyY56SdUYwainNahRGI/jP?=
+ =?us-ascii?Q?JWmZlls2n/NLO46vn2PMeuxtWzx1IOYbzXoBS0b2Ir+OzprjZseUpvQUNVTA?=
+ =?us-ascii?Q?P5j+w+gnde1qz1JAHToUt8clcI5eZXjs0SugrB4QmACxVa0eGAo2GkRgjnPX?=
+ =?us-ascii?Q?NqY5QLkyL0l+BRrYBUa2Gm2qS0aiGsdfhnYzrxdT0yuPL7YPtP54DvGCGPQA?=
+ =?us-ascii?Q?QrUJWIAAR4/VjxUrq75zBzVpAKqS2yMCoh5jHGCWOTSPiTNKhjVTZkat+cXF?=
+ =?us-ascii?Q?lwR/vZSRiv7ByMcW1qwc6bH8iuGGetQOOGkU+dwszqdq+bT01X3qvx5KHwna?=
+ =?us-ascii?Q?eTRtmAgWsmc9l1vl2FfBWHmLg5Qf41Ezz70lKg9JwpJMpm6lSTxRWRhcbu1n?=
+ =?us-ascii?Q?1Xv9TfgGOM7FwG4P03gGMtZgXL91aiQySnJWRJnIm2cTSzpQHfuN85aHU30p?=
+ =?us-ascii?Q?icFvm6AdaPtnHsc+5Oo4+FVJ4pUOsJ7Y71r9XLqXDLeHVPjPPY3C43ugoEle?=
+ =?us-ascii?Q?dNT/DZbkPhKy1EaPk7cT/AtoOWsgoq9t9XrsaXwI1XvuP/F7zoj/Vx+l+WFa?=
+ =?us-ascii?Q?h76WR2xpNWRrLeEXYBFKaiJtmAoJ5G3+4vsVpfWzsrDXGiTxpknUZDY9jgnX?=
+ =?us-ascii?Q?6EoPhPIqd6OxfIHfGSuv8yHL6L+38sn55AK1Q2EL0QuY8x9IFRGhQ5XQjNrQ?=
+ =?us-ascii?Q?pgBG1f4wdGGgjmX7PKb827u6OD/LLkwuk/srbqnFrIuoSiVv2SHRI76r0iYB?=
+ =?us-ascii?Q?7TXZX8JaLd2CEEwrjKn51pPwzYhz8hVLlWq375piUy9x3TeeeLvpTsHVF2b4?=
+ =?us-ascii?Q?ghdMirLLsgbJoPHe+fZEKoPbbI26eLw2gS55yb28BiIu/w3ftLG6+zzi8Ai+?=
+ =?us-ascii?Q?nPFpEBoIBsXBz5U1JpoRY+iqobku+soLScx2gTWH1Z55bxl9w+1KFdK97fMy?=
+ =?us-ascii?Q?XCMvvdLL0WegEYiWSu9DmQrDl5GRlODbi/PnNqedbAAw3pQ4I5PcSjBVHg/S?=
+ =?us-ascii?Q?SQZvN7pXYCqXaTcdd0KqU5F0atnSySuncWozSSbDViX8vzg6BS+sRHRlWFXF?=
+ =?us-ascii?Q?oLlhoG14wFbHnkh29vlxvnuWoMFmiDALgGge9KVSSFcYpTfpmkWRAVtGJgZQ?=
+ =?us-ascii?Q?X4pxqT5ZR+OL4L9LIGbXySRp5Q/UqbY5a0SROn13X1B6HJoGArIHRPIw4g+x?=
+ =?us-ascii?Q?DfjGF4h/AbOP0sjWs4uOwlT0pIOrHDRtuxwsXWdL6InQkUCVmfIVl4Zs1XDx?=
+ =?us-ascii?Q?6UbMU7LaW8o2xaSYN73iDnt650oyng+JdmPXLkBYyicfp0AyqWh5IOAc9oNE?=
+ =?us-ascii?Q?TkCb92NuDS39BcrH1rxQJPpe0XyBszO6o863VbFWLc7Van9rHuFRpC29+C3T?=
+ =?us-ascii?Q?5AGOXUOd5PPIIYvXtp/PpWtMSquhNyI4dmYcw2iKSwxNHwRJDQQxF6ZHewPv?=
+ =?us-ascii?Q?aqVvlKTdTpX6/05FUDlBa+k29F9qkT7hrIdOGmNQhK9iXw6KRj2R8bYFwci+?=
+ =?us-ascii?Q?i2s14c+gonbBMV/eY3dH+b4S1k7gw9jeAtQKMFRmDxibmAkqaXtrdMov98m3?=
+ =?us-ascii?Q?yEBhY3CUdQavJvRnsSnirn6fBDwzjC82h7UefkgDIZfSHTbtgFXMUp0HdrcY?=
+ =?us-ascii?Q?ojYq/gzFD418u7EjTTZZdOGx8SHOg+hEbYdECt8nOA/egGZ+6AJ6ZGybpPRf?=
+ =?us-ascii?Q?DWVkhM5eVA=3D=3D?=
+X-Exchange-RoutingPolicyChecked: k9gaQ7p2PMQQJVXNREKolvjkmVSVY0e/h+5r7VOhxQC5q8UNUy0cmdFbfm3RhHIxMWsLe7I1a5njsg2xgEkomxpXtSY5hDJqLyqShrxaUF33XSUZkXWMndn0n9t87DNfLO8kgxjEZK67AIWTUW55FLm0Ud4/TZ+uCR60SOp9bAXn4qeHE8n9RX+6mwl4zA1jcIVSKUnmd1K3WGNAjLbZ1dSwFIi6OsqUT7C8ysaA02E+ldIBjgWDe5dapTCLTTep9qQwnt8WfZDstxPUaUJkt+TLJ0ZeFSE0eFtHNT15Swi6CCH9XXU0+2g5JFmyUdCbf8+oAlgNb2YUdgGEHKmh1g==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63373d07-1462-41b7-fef4-08dee6f429f7
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5645.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2026 06:49:09.3371
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0yEULEtxSfIgKCp51zpjdkZJZEC7A+tu13wNAGODkoLyAzWdRKn+YWl0IJm1O60fF0e2cczmQ8gcI5rd5uDSCA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6814
+X-OriginatorOrg: intel.com
 
-On Mon, Jul 20, 2026 at 05:38:05PM -0500, Kalra, Ashish wrote:
-> Agreed on dropping the bool =E2=80=94 I'll derive it in a local helper.
->=20
-> One issue though: rmp_segment_table !=3D NULL isn't segmented-only. set=
-up_contiguous_rmptable() also allocates rmp_segment_table
-> (the contiguous RMP is stored as a single segment in the same table), s=
-o it's non-NULL for the contiguous case too.
->=20
-> To keep it segmented-only, I'll also need to gate on the segmented-RMP =
-mode, something like:=20
->=20
->   static bool rmpopt_capable(void)
->   {
->         return cpu_feature_enabled(X86_FEATURE_RMPOPT) &&
->                cc_platform_has(CC_ATTR_HOST_SEV_SNP) &&
->                (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) &&
->                rmp_segment_table;
->   }
->=20
-> The CC_ATTR_HOST_SEV_SNP check also handles SNP being disabled at runti=
-me, so snp_clear_rmpopt_capable() and its caller go away as well.
+On Mon, Jul 20, 2026 at 06:35:29AM -0700, Dave Hansen wrote:
+> On 7/17/26 14:43, Peter Fang wrote:
+> > From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> > 
+> > The TDX attestation driver currently uses a fixed 128 KB Quote buffer
+> > shared with the host VMM. This may be too small for Quotes using schemes
+> > such as post-quantum cryptography (PQC), where larger certificate chains
+> > can increase the Quote size significantly.
+> > 
+> > Allocate the Quote buffer based on the size reported by the TDX module
+> > instead of always reserving a fixed-size buffer. This avoids wasting
+> > memory on platforms that do not require larger Quotes. Older platforms
+> > fall back to the default 128 KB buffer.
+> > 
+> > Because the Quote buffer must be physically contiguous, its size is
+> > bound by the buddy allocator's maximum page order (4 MB), which should
+> > be sufficient for current attestation needs.
+> 
+> This is all talking about post-quantum-crypto and all that fancy stuff.
+> 
+> Isn't the important part here that the old TDX module ABI had static
+> quote sizes and now they're dynamic? Now, the reason it changed is all
+> the fancy stuff.
+> 
+> But the ABI changed. Right?
 
-Ok, you can simply do:
+Ah yes... I should call out that the size of
+/sys/kernel/config/tsm/report/$name/outblob will no longer be fixed.
+I'll update this. Thanks.
 
-	setup_clear_cpu_cap(X86_FEATURE_RMPOPT)
+> 
+> > -static void *alloc_quote_buf(void)
+> > +static size_t get_quote_buf_size(void)
+> >  {
+> > -	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
+> > -	unsigned int count = len >> PAGE_SHIFT;
+> > +	size_t buf_size = GET_QUOTE_DEFAULT_BUF_SIZE;
+> > +	u32 quote_size;
+> > +
+> > +	quote_size = tdx_get_max_quote_size();
+> > +
+> > +	if (quote_size)
+> > +		/* Reported size does not include GetQuote header */
+> > +		buf_size = TDX_QUOTE_BUF_LEN(quote_size);
+> > +
+> > +	return PAGE_ALIGN(buf_size);
+> > +}
+> 
+> This code is almost nonsensical on the surface.
+> 
+> It _really_ needs some commenting. Things like:
+> 
+> 	/* Start with the default quote buffer size: */
+> 
+> ...
+> 
+> 	/* Override the default when ... */
+> 
+> 
+> You could even comment the function to say what it is trying to do overall.
 
-and clear our internal representation of RMPOPT support and make it a lot
-simpler.
+Got it. I'll improve this pattern and add more comments.
 
---=20
-Regards/Gruss,
-    Boris.
+> 
+> > +static void *alloc_quote_buf(size_t *buflen)
+> > +{
+> > +	unsigned int count;
+> > +	size_t len;
+> >  	void *addr;
+> >  
+> > -	addr = alloc_pages_exact(len, GFP_KERNEL | __GFP_ZERO);
+> > +	len = get_quote_buf_size();
+> > +
+> > +	/*
+> > +	 * This fails if the requested size exceeds the buddy allocator's
+> > +	 * maximum order. Use __GFP_NOWARN since the size comes from the host
+> > +	 * and should fail quietly rather than warn.
+> > +	 */
+> > +	addr = alloc_pages_exact(len, GFP_KERNEL | __GFP_ZERO | __GFP_NOWARN);
+> 
+> Bad Sashiko. Bad.
+> 
+> The host may be untrusted, but it's also a critical part of the system.
+> Are we sure we want to be completely quiet?
+> 
+> I used to see little dmesg warnings about TCP window shenanigans from
+> random systems on the Internet. Maybe that's not how we do things today,
+> but if a random dude on the Internet can spew one line to dmesg, is it
+> that crazy that a bad VMM be able to spew a warning?
 
-https://people.kernel.org/tglx/notes-about-netiquette
+That makes sense... I actually argued with AI about this but it kept
+saying this is kind of like DoSing the guest. But thinking about it
+more, tainting the guest is probably the right thing to do... At least
+the guest sees a big splat about why attestation is failing. I'll remove
+the __GFP_NOWARN. Thanks.
+
+> 
+> >  	if (!addr)
+> >  		return NULL;
+> >  
+> > +	count = len >> PAGE_SHIFT;
+> > +
+> >  	if (set_memory_decrypted((unsigned long)addr, count))
+> >  		return NULL;
+> >  
+> > +	*buflen = len;
+> > +
+> >  	return addr;
+> >  }
+> 
+> This feels weird to me.
+> 
+> If the upper-layer function needs to know the size, why not have it just
+> call get_quote_buf_size()? Then there's no pass-by-address.
+
+Got it. I'll fix this.
+
+> 
+
+[ ... ]
+
+> 
+> So, yeah, this patch isn't gigantic. But it's also fundamentally not
+> doing a _nice_ refactoring the way we expect them to be done.
+> 
+> 1. Refactor old code to make it nice for adding features
+> 2. Add the feature
+> 
+> If this was doing it the nice way, we would *actually* have something
+> that's really close to s/GET_QUOTE_BUF_SIZE/quote_data_len/. But,
+> instead, this chose to cram the mechanical changes and the new feature
+> together.
+> 
+> Can we do it the right way, please? If for nothing else, for practice.
+
+Yes I'll separate out the refactoring so that the dynamic buffer thing
+is on its own. Thanks for the feedback.
+
