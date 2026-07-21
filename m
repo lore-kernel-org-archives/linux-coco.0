@@ -1,174 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FA946AA75;
-	Tue, 21 Jul 2026 15:35:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A7246A603
+	for <linux-coco@lists.linux.dev>; Tue, 21 Jul 2026 15:59:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784648103; cv=none; b=gk29bsYvyi+EkuxxbZatqSWOsJIbygnjjrMTRPm51G65XWjnSNr9tF7QX+eotu0tlFSs+jMb2HRV9S+MYXLELhNl4r/LEp2ybEWDYqJJfsPG7PcFC4B2UBQWitE3r9F2C5YaL2599ZPcYcaUXTQCgozI2b5ohQROTBXV5eTXVW8=
+	t=1784649570; cv=none; b=Ul2ANjFBc/284cEBvp72jU5YXczR6LzQguvjkEAhjYS+Xxd3638AhyKPdD62sZVPohv2FUQidlB6pR8WwD/ZbOtJf+B9j5VccZYF8/cHiYWpNQ2lCP3x/joIEST9iK5ElWVES5xl/wv5OBNVqlemsnJ3yZ6NMRQleYqO8qf5tsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784648103; c=relaxed/simple;
-	bh=Bqwha5kXvb7TkgwPCF2JnFGEmZ01G6XWlFoe+BlIrTY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eunnHZsQe/CD91dlUCXz3w/kroemd/DkaNvv29mVlbojktKTJ8aOGjMGzhRqduI2r3JUwFlrCGYDVSp8Lk/co55hNVA2HWOAvLmEU+4NZmqCP/xfjcF27I8ickl4OVmHhGfDJEdm57Ti4GXVDGYWCYxRyAapeTAyHtqlHe09/Vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IJiPu+RZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784649570; c=relaxed/simple;
+	bh=kQ6MFm1RcBK5lthrtsS3tKwgEUgIjQSVP8M3aj6hNVQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=ji0Fn4pERE7ldGe400RfsQCpL2yQ8n8PbBJZANJcdY6RETH1myn6mryU0go2JY+IlohqaXe88FwP/3/9Ze+tboKTflMF8dyfD5pMPCxy0bellwbWP8DpBafML/krt19DQaotoq/Ghey+anIimu2Gh+LeadFsKnG0g8q87Gr19lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a0Bz5iwO; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IJiPu+RZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D001F000E9;
-	Tue, 21 Jul 2026 15:35:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784648102;
-	bh=QVePzAEvk/HRAZDkJnNSAQ/f5uWHK1anOdVi7+q3VC8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IJiPu+RZcRhgVPKAHX5VV+zkTpGbxlaIRt8LxXNBYciu1fuMPhhgYPKJQ96TwVCRB
-	 3n+JiLog3a27/oOTINg2GG5gDlhgSmxXdIOL+JxMBbJBKdkjaOmMJ+qUFIRhCQswJt
-	 RyFoKN8CBSq9d43YYEEbCAToMoDtSj2osByB1nu529L9d5iwVIM8Chf46dxyH7IXiF
-	 mv6Mt4mlVUU73mvkDpfQ+y/6Ov42XFQI740FHvBbKbsKR0gJgcOGnQAHeOGj1DRBJo
-	 RVu3b7leBlQogcOqXBk0V9pb/AfRcNa77YB1xLEHV8PPgq6WzgTFVNUdArT+9LHotq
-	 mk+vfcLOSch0w==
-Date: Tue, 21 Jul 2026 18:34:57 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH v8 02/23] dma-pool: fix page leak in atomic_pool_expand()
- cleanup
-Message-ID: <20260721153457.GP110966@unreal>
-References: <20260717180442.110954-1-aneesh.kumar@kernel.org>
- <20260717180442.110954-3-aneesh.kumar@kernel.org>
- <20260721123107.GJ110966@unreal>
- <yq5aqzkw76ch.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a0Bz5iwO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784649568;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=coBt7Zb3aZ3ZG0mTYJhcJ0JzfkK/zs88iplrFlJsbyY=;
+	b=a0Bz5iwOsdFK1TBWd/HQDuJgFNkUHuxb0o0AykmzX6BFTFeBh1j1w09gyRdcJsC6fDOXYv
+	KAsm0D/CRz/t1rI7DyzvNq2wSJUjDrtL7RU1UQM+kBxZWMTie65/d0bPwpiWD58OojCByt
+	07l8MJWQTPdOPaKpaFQA84nqCBHeENc=
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
+ [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-340-EojOQeExOsuTrq4Q3dhNeg-1; Tue, 21 Jul 2026 11:59:27 -0400
+X-MC-Unique: EojOQeExOsuTrq4Q3dhNeg-1
+X-Mimecast-MFC-AGG-ID: EojOQeExOsuTrq4Q3dhNeg_1784649566
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb4cdf95b5aso9170360a12.1
+        for <linux-coco@lists.linux.dev>; Tue, 21 Jul 2026 08:59:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784649566; x=1785254366;
+        h=content-type:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=coBt7Zb3aZ3ZG0mTYJhcJ0JzfkK/zs88iplrFlJsbyY=;
+        b=h0qD8zViTG+ABa3yYqYSro2ZPzYQnTiNbQz0SJTNostBg7E2+vVX4mcMCFfz8Jez5F
+         Fl/U17UuDqoAIv9k8mv2bcHJyvD26jukVodfuQ/zMFjQTEBLGSGrcnIBP1w1qsQcj9Dx
+         fnPJrRfSm3S7TSyC8ppzzRCVzMvPTw4ngVreSn8sLkbCGmL1HPeyILITJlBLoN9M0KA4
+         Ll0qTiXLgqKQfNNiIb3RW9R5R4FN92dniRpPrcop3aaY3XuXx9vCGM0gvpwTxnIXwF+G
+         F6GF/VYSKcMg0DhqwRcjr7Gy52QDYcDfWZUfPrnbX6MQI/lLTGmFCeu1PcUV4/L2AxiK
+         B6WQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr7WAHqEy++VltmyHoP/zXLgXN6rF8Dve2D+MImr2mP1IsWRBPPU3ZmxKk0yXyaYIGVTOrf1CUpdNr8@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz6+yga7VY+POb+np4UEdu01AzLWkg81OswR8supLpZAFnoTGTN
+	IAyrJaiQWEn4dZ1VgWmh2F3/j+Ym+y5aseCnVKhfRNXfou5vGAaaNQGv/N5pOOpnOHnszYe4U/z
+	oYM90892RchqzAbJNiY9+/6UUkCXWGe3AKPxf2lXOLHhEA7ORH3V+E5k010dPk9ESnL4n0JHMgM
+	mh4bs3ktzUOPw10H+YbMYMbEql7MF1hYl1NG3Aj99mQHvjgA==
+X-Gm-Gg: AR+sD10NdR1qXBS/FNbMgEzRn3XJAUZBMpLZaTT5MRaS+hYYHL+aiy83pKGxMLhLVsg
+	jTRhpEmThbM8l1p6+r554yAy4yFKkl0fG65kwZyAL/PgU6ZcQHYlC3kfpzTC37Fy7LmdSHM7JT3
+	RxZ7pm913FL3xCXFGARpE4XvZtDUc8uYehOAVe9Ml2wuWJqablxAYim1A=
+X-Received: by 2002:a05:6a00:886:b0:847:e4c7:8ca1 with SMTP id d2e1a72fcca58-84c294d4d7cmr20505416b3a.43.1784649565604;
+        Tue, 21 Jul 2026 08:59:25 -0700 (PDT)
+X-Received: by 2002:a05:6a00:886:b0:847:e4c7:8ca1 with SMTP id
+ d2e1a72fcca58-84c294d4d7cmr20505389b3a.43.1784649564955; Tue, 21 Jul 2026
+ 08:59:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5aqzkw76ch.fsf@kernel.org>
+References: <CAGxU2F5hP=7pA1rKRvq5sgr0t2y1YoUzYCmH8hzaCS58U4+Y3A@mail.gmail.com>
+ <CAGxU2F6ko6Ojyu138cB7szTszoYkx1AEw5oK6EMMaUoi=m7+sw@mail.gmail.com>
+In-Reply-To: <CAGxU2F6ko6Ojyu138cB7szTszoYkx1AEw5oK6EMMaUoi=m7+sw@mail.gmail.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Tue, 21 Jul 2026 17:59:13 +0200
+X-Gm-Features: AUfX_mycc19fDRYGIXFAJUJP8E2TJYsiUEBl2zVyI5gpeplWRXhlWTC5mJZQRWI
+Message-ID: <CAGxU2F5EtQ7tnF28i3Z3onJYMf30OBCBCz9piTinK013sh+Eig@mail.gmail.com>
+Subject: SVSM Development Call July 22nd, 2026
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: WMtNJraxJXvLUPTeNIzsQMVYFg2qMqe3elu-VC8XNY0_1784649566
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jul 21, 2026 at 08:11:34PM +0530, Aneesh Kumar K.V wrote:
-> Leon Romanovsky <leon@kernel.org> writes:
-> 
-> > On Fri, Jul 17, 2026 at 11:34:20PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> >> atomic_pool_expand() frees the allocated pages from the remove_mapping
-> >> error path only when CONFIG_DMA_DIRECT_REMAP is enabled.
-> >> 
-> >> When CONFIG_DMA_DIRECT_REMAP is disabled, failures after page allocation,
-> >> such as gen_pool_add_virt(), jump to remove_mapping and return without
-> >> freeing the pages.
-> >> 
-> >> Move __free_pages(page, order) out of the CONFIG_DMA_DIRECT_REMAP block so
-> >> that cleanup paths always release the allocation.
-> >> 
-> >> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> >> Tested-by: Michael Kelley <mhklinux@outlook.com>
-> >> Tested-by: Mostafa Saleh <smostafa@google.com>
-> >> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> >> ---
-> >>  kernel/dma/pool.c | 10 +++++++---
-> >>  1 file changed, 7 insertions(+), 3 deletions(-)
-> >> 
-> >> diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
-> >> index 2b2fbb709242..b0303efbc153 100644
-> >> --- a/kernel/dma/pool.c
-> >> +++ b/kernel/dma/pool.c
-> >> @@ -81,6 +81,7 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
-> >>  {
-> >>  	unsigned int order;
-> >>  	struct page *page = NULL;
-> >> +	bool leak_pages = false;
-> >>  	void *addr;
-> >>  	int ret = -ENOMEM;
-> >>  
-> >> @@ -115,8 +116,10 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
-> >>  	 */
-> >>  	ret = set_memory_decrypted((unsigned long)page_to_virt(page),
-> >>  				   1 << order);
-> >> -	if (ret)
-> >> +	if (ret) {
-> >> +		leak_pages = true;
-> >>  		goto remove_mapping;
-> >> +	}
-> >>  	ret = gen_pool_add_virt(pool, (unsigned long)addr, page_to_phys(page),
-> >>  				pool_size, NUMA_NO_NODE);
-> >>  	if (ret)
-> >> @@ -130,14 +133,15 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
-> >>  				   1 << order);
-> >>  	if (WARN_ON_ONCE(ret)) {
-> >>  		/* Decrypt succeeded but encrypt failed, purposely leak */
-> >> -		goto out;
-> >> +		leak_pages = true;
-> >
-> > Instead of doing this dance with temporal variable, change "goto out" to
-> > be "return true".
-> >
-> 
-> 
-> I didn't follow the return true part. A failure in
-> set_memory_encrypted() or set_memory_decrypted() requires the pages to
-> be leaked, so this is not the only call site that sets leak_pages =
-> true. There is a similar case a few lines above.
+Hi,
 
-Comment about "leaked" is enough. There is no need to introduce
-convoluted flow just to check that page != NULL.
+Here is the call for agenda items for this weeks SVSM development
+call. Please send any agenda items you have in mind as a reply to this
+email or raise them in the meeting.
 
-Thanks
+We will use the LF Zoom instance. Details of the meeting can be found
+in our governance repository at:
 
-> 
-> 
-> >
-> >>  	}
-> >>  remove_mapping:
-> >>  #ifdef CONFIG_DMA_DIRECT_REMAP
-> >>  	dma_common_free_remap(addr, pool_size);
-> >>  free_page:
-> >
-> > Remove free_page label, and change leftover of "goto free_page" to be
-> > "goto out"
-> >
-> >> -	__free_pages(page, order);
-> >>  #endif
-> >> +	if (!leak_pages)
-> >> +		__free_pages(page, order);
-> >
-> > Put these checks under out label and rely on page != NULL as a marker.
-> > if (page)
-> >  __free_pages(page, order);
-> >
-> >>  out:
-> >>  	return ret;
-> >>  }
-> >> -- 
-> >> 2.43.0
-> >> 
-> >> 
-> 
-> -aneesh
-> 
+        https://github.com/coconut-svsm/governance
+
+The link to the COCONUT-SVSM calendar is:
+
+        https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
+
+The meeting will be recorded and the recording eventually published.
+
+Regards,
+Stefano
+
