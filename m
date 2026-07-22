@@ -1,113 +1,74 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63F543E06E
-	for <linux-coco@lists.linux.dev>; Tue, 21 Jul 2026 23:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784675272; cv=pass; b=NrdKFEKtJk7sbSK2rouhWT6uHb7hfQShFZtvV3r6LE80Rt8i/Vu0h56twmPQ1mDpUv3IR5VF0mLAKNOAsxBf36yZujDEDAuOQasAqW5OiWMdt8Xfvcn/NKY5irokmzxRLqoE94WQ6Q8j3KlpUCtFtoDOPkC0iKy0xtya6HbMWPU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784675272; c=relaxed/simple;
-	bh=3OQXXVa58whyMEmCorMBVgdW3liv+RGIOlQFgF8uhhs=;
-	h=From:MIME-Version:Date:Message-ID:Subject:To:Content-Type; b=B3Omt+b4Z/JDlvYE2ZjDJbdT2I4VbGOrm8L0uyWyyDAC3po4AWGrbI+LHmsppro3EI3wEtXh8zp/aJYBgjPoHDapVb1Fgu//dLbGQy19Uexm5IZq7bczpS1esaf3y551/dlY/aYBnW/B5ml2eBIXyRdBtBZ1aZhQ84ava77jo74=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vUv+DO75; arc=pass smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1379D33F59D;
+	Wed, 22 Jul 2026 01:20:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784683249; cv=none; b=ftZTFzFBvn/4W7fWmowbOCqFYcyESwCtSXKFnvVC/UHWITeCUe4ENNhOBcJBbYAWdcGKf28Z9V1I9V9vLtKuezbmobi5XeBdSf7JNbF87hAUV2ySgh9Borv7R1EFdnz606FCgJ2jg4ZlXconWsyGp5fAQGxbLuzaApF7hhIHrg8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784683249; c=relaxed/simple;
+	bh=smq4+xak+szqWoadQ8bNslqOH6zhtfHCIoaYy6iL1AA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=s/6OVHeZXVhcDPXUcHwzWvOyDB5asQbg1kdTJNP5eTir4kffd6hIDjBamoN7UKmT4HRErBRjKX04OfjXDV6JtsMwDbNrQGwZ0wAPOs+YaT6NdnaRPCgfK7BD/83B/29cE5L4BG/wE2AspnW1xwSSIjfaRES1i0y2MJQpS+RC85w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aCqEOQ2W; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vUv+DO75"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38e42560ebcso5198753a91.1
-        for <linux-coco@lists.linux.dev>; Tue, 21 Jul 2026 16:07:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784675268; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Lw9BVBwxxS6qFJCrvnitruFtrn75Yus9N+EW7Z8R3aqawotxCctqJREoVmMKDgTrMJ
-         n8yUHNHBCx//fp0nzRCX3LtwFXsAYc22Hl+1jYFpPxtxgr4PmplK4D/KIQKP8u6Bcye4
-         60ZGaf8IzhqgYvlEfrR6c/pmV5bmML3sSoQY34Q7iGdEflL121FTvkTchQMqP8jSgDUT
-         GuqWb/YOuAreJXtKpKtifto4VV2R7Qq1S0+IbgHhTbMjzv9zWMISBK4pM5UMDFnwbG7F
-         IBJGc0lnB6A+oo/ngl14sPfYf+0kNu5flrogwh0/aVd5XneC6J6FQYyTdguXZGEozJn9
-         ZZhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=to:subject:message-id:date:mime-version:from:dkim-signature;
-        bh=3OQXXVa58whyMEmCorMBVgdW3liv+RGIOlQFgF8uhhs=;
-        fh=mfH6UrtgAWUlYfrS9fZnXMZau047Mn71+T7giRJTBOM=;
-        b=r85/kWr+H4x/lboYLmkmVHO+MNDUGNAXaR6SZJKzmjqQPpWq5wJPVnGH/+UGI2AFtj
-         QZgEzCxFNdtFnmtCvXqF9IZw0H5JUp8BoN9julCv+mOd4W8kxQLRpJu7fyy6uWQKvBh1
-         bes0M7oNi6hQx3yq8DAk7NN/7UlAX15nSLazXSpA3nguVASvSAzTe97wUmaEnyE6+7Zl
-         RVY3RpVXYT7zW/ng0gwleI2HbOU+T4eJaG5mPoHzQ/aU5ByRw1/2lo5gnUD341tesL5O
-         j3pcME+H3lHz0eajbsymbYXd6RG8jfqBO237hA8pKfLV9EKiG6GCUq0JWLeYOFEPCEmT
-         X4pw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784675268; x=1785280068; darn=lists.linux.dev;
-        h=content-type:to:subject:message-id:date:mime-version:from:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=3OQXXVa58whyMEmCorMBVgdW3liv+RGIOlQFgF8uhhs=;
-        b=vUv+DO75W5WzpCOPDSnV2Z4Jy6AEytzYg3XS57yrD3umSJ63KjmpBQt284QCJBXyoS
-         Su1WHOIf6We+tunkzWXbighubREP79U5ajXdCuntggMpYpwfkL8TPLT/QCzslPr/8TKp
-         nfvfln3TOxM5/jAaYREnYVHRQK3d4Z42U78dFXeBNwJB63rqJdfVYlcjUtxhCqYekoQ2
-         XZQHxFB37cGaoWIJIqp5pXIdJxNhJHHv6gZWqHMcJAtHXczeBH/qeBplyFRXyq6KLuxx
-         mkXLcSZXgrOesqqbwJbb3HbqxtLdk2XNCnE84gZBINKdrzPspZILZAt23EgHIr5+fSaa
-         qkbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784675268; x=1785280068;
-        h=content-type:to:subject:message-id:date:mime-version:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3OQXXVa58whyMEmCorMBVgdW3liv+RGIOlQFgF8uhhs=;
-        b=ID3v3/BuMLG2R8ryEo1hwJJxoz/Wswv1KPv87/7pZwraaf/rYRU32fj2jCywJ54Wny
-         lKro6mh3GjiI3L76w9AJqFHHPGR2qTIQEAgAoQ/hRtiHlGw2Tqne5kzLjGRbq0X3ajMr
-         7gpMJQUzeENrMTDB1RFsT8wz+K9mF4Pk9bH7UVBAD2HPjrs6vcXcJRAJ4iF7JPZ6gIKP
-         Qoj8eQd8iVL5XrcEidGxVHOkL3gsR/kp28cHLv2NUrx9IbAd7O1nzAjrxg8psPb6jcjE
-         eR1c1+6xx0VFRqqlWiftVd3Ie7zv2cfl367GRnkTg5rl0Kcmud7ngsG0TOSQpmQsw5NI
-         +Lww==
-X-Gm-Message-State: AOJu0YysumgDk6L8RPqNc8eRADNn3F0W5PL4nDlNMIVQ6+p6l8HE51Bc
-	EDfTmNHgBlNzDqlnzde8H3Unaqd5w2JHhGJ2qdpaAQOhcAhYgRacEkZAXdZCmHj8lhfdjZd5mjK
-	dKf1MVDFSxR4NhRmDvVpwS0o/4tN12liVb2XuTp6RxpuPQ6opWysOZXo/
-X-Gm-Gg: AR+sD10gNHOAMRPDI1dK8+dFVtscvawJbbsAJU4hkODRWPFVGbNMN6vWDCtvmtj3kDg
-	8kDskK95WFusXedUg9ABtzvOT5CJecAeQYFD9L5D1BSwgxKLQlxmVYqR6/DlBys/Hp4TNPt4/5C
-	/uoVIRfw2APncCF18urJwNX3AeK8AqhrHw8LpstBSandBnCPizp4I2JFZxyxQhZlslKUzPyya+H
-	N8+AXOEnTKzcJaFlL0zPirgXCv79SmG1/orW3I4JFc+gctYgnQPeqDzBLSbsFftShHBzR5pdJfc
-	C2YcAnTlHMdDSiCqg1RhQmrHyMMamLVZUK2bXHKS62MfFw==
-X-Received: by 2002:a17:90b:1345:b0:38e:21da:9257 with SMTP id
- 98e67ed59e1d1-38e4b56ed6amr22248144a91.37.1784675267895; Tue, 21 Jul 2026
- 16:07:47 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 21 Jul 2026 16:07:46 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 21 Jul 2026 16:07:46 -0700
-From: Ackerley Tng <ackerleytng@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aCqEOQ2W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7792F1F000E9;
+	Wed, 22 Jul 2026 01:20:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784683247;
+	bh=ObPnHJ0MKv4ncqtwpHCsfCD/+7Y5pA2C8huBEdLkio4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=aCqEOQ2WxN3Z/dWhfMtRh3rjkycICB2Lui5fNv3MlJmrI3yNebCPLM32OlBxrzjfm
+	 zKpByMIyrpIjbHe+DyFb32xN531PcX2VxhodcmdTG4YuO3hibcW64+z5ypUZhyvey/
+	 O0a+kGVcHe7/3mtMzY0p+lR+lT2lZiSexIcCKn8i0nR3+MfIwvGBrBvHIsKFtLv0AL
+	 rTm9Ev6Kd4WKmueM49j722ot3qfhkGLIfbxcqx4AA1s/uT3m8MZiPnsxY3srpgpZyx
+	 JaK92FfeMMz0I77WAUblvWmQQQgE5IlYsNCm5w5TILp5RFWW9rfyakqofzsFdCdT//
+	 0cwK7ojN+QxwQ==
+Date: Tue, 21 Jul 2026 18:20:46 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Dan Williams <djbw@kernel.org>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+ driver-core@lists.linux.dev, ankita@nvidia.com, Alistair Francis
+ <alistair.francis@wdc.com>, Lukas Wunner <lukas@wunner.de>, Donald Hunter
+ <donald.hunter@gmail.com>
+Subject: Re: [PATCH 01/15] netlink: specs: Introduce multi-message blobs for
+ SPDM
+Message-ID: <20260721182046.16219426@kernel.org>
+In-Reply-To: <20260705220819.2472765-2-djbw@kernel.org>
+References: <20260705220819.2472765-1-djbw@kernel.org>
+	<20260705220819.2472765-2-djbw@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Tue, 21 Jul 2026 16:07:46 -0700
-X-Gm-Features: AUfX_my9ZoAAGr2xVT-3ET2pTUKEhed6A55b3pp5x-TSu1YG-G0FttRwIwLL4RY
-Message-ID: <CAEvNRgE74GL-pr6=GRpQWriGwXh6zsDP+ULxPd82GkFSQgjJkg@mail.gmail.com>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-07-23
-To: linux-coco@lists.linux.dev, linux-mm@kvack.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On Sun,  5 Jul 2026 15:08:05 -0700 Dan Williams wrote:
+> The SPDM, Security Protocol and Data Model, underpins PCI device security
+> and other use cases. It defines objects that allow for verification of
+> device identity and configuration. These objects can be large in size 16MB.
+> Netlink is otherwise suitable to define the operations, with optional
+> parameters, and notifications for working with these objects. For example,
+> operations like "regenerate evidence with nonce", "mark evidence
+> validated", and "broadcast evidence / security state change events".
+> 
+> A netlink 'blob' is introduced as a way to teach YNL that one instance of a
+> attribute may span multiple messages. It enables netlink to convey all the
+> data needed for verification and manipulation of SPDM transported evidence.
+> 
+> The schema change to allows YNL to infer that an attribute may span
+> multiple messages and interrogate its length to preallocate an
+> appropriately sized receive buffer.
+> 
+> The design direction to extend the netlink schema for a "multi-message
+> object receive" case was the result of this discussion [1].
 
-Our next guest_memfd upstream call is scheduled for Thursday, 2026-07-23
-at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+.. continuing the tradition of creative abuse of Netlink.
 
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
-
-We don't have any scheduled topics as of now, please add topics!
-
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want a Google
-calendar invitation that also covers all future meetings, just write
-Ackerley or David a mail.
-
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
-
-[1] https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
-
-Ackerley
+I don't like this, sorry. You need to come up with something outside
+of netlink or more netlink-y.
