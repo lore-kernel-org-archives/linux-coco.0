@@ -1,56 +1,56 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392AA45D5EC
-	for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 23:14:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7BE466B08
+	for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 23:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784762080; cv=none; b=RY7OBECD9cKRRi6Uvtnr/fDPmGOHmZyXnmRK9LtfgWygniaCnuoXhUGC7NTG4fI6E7WKC6ws9zv4yslzot69M2ZDP+FTlhMMp+imSFgq+ooWJc1vi427QusP2leGUa4fCMGtBWAveB9KyMhotUQhiS4vejVjMNDJbaLhybL97tw=
+	t=1784762089; cv=none; b=lKzPlQBJIs4wrEVzkhighfj1ar/hhxo1RITPHZiXAK4PZSImvkm7GkwF5CIxWO/h6CBun8zK9H82wsamNrFwUexeCwv+k4F0M48hQ7HHQNMHKP1vrmSKtGOMrbylyLVgdKYpByIj4s727w574b7SamgSpFCnmItJMyJYszFCK14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784762080; c=relaxed/simple;
-	bh=C2Lgd2bjrR01cgtK5z0m5n4bvOQy3kz4DS6yFHHKVvY=;
+	s=arc-20240116; t=1784762089; c=relaxed/simple;
+	bh=Mt5Lh8+8kiaK6W3VjPfbBEwiyc60WE+BOpoJvPyUsrE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Gf/w//5Bd3xi6csh6JoOVYsV3mMF3qKvw9Qo0th5HUnuLS4S9ItmvcDHeJRO1b4fBWR4m8PNahZeVPCEXE49gfOosc2AqLXosdpEFI1XxI//oMacnBxAEWyu9YFZCpnmmKF4FdaWhYlYKWiutPTKB9s+9Tv0yJuk/PvhijL88VQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=REGEEjgv; arc=none smtp.client-ip=209.85.214.199
+	 To:Cc:Content-Type; b=MCzu3x5RTlgf3vWL3jM01YTe6vba08y4X6g5Cg/OwkHtiSX7bQcCo3i0bk/BiRDsKpl/FZOvUazmgVd1HiTK3Rj9Tnvb3jdOPQ/K1Qo0rWmvOaqoqa7gXcgTJX3yCV0Pv8bZEkSxVNLiitq8SzT2QFrv9mZGXFr3hUNGQaA6tfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CqDHmwoV; arc=none smtp.client-ip=209.85.214.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="REGEEjgv"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cfa55c9430so530215ad.0
-        for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 16:14:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CqDHmwoV"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cd01a14e81so623385ad.1
+        for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 16:14:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784762076; x=1785366876; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1784762087; x=1785366887; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XNZd91+mo5o4oegz4xZP/Z+TCzb0UFRc92DILYArhCE=;
-        b=REGEEjgvAaTDtiacba7hEpPIruFrNcZwEJKas3XK/QIhQn7UGiHVkd/B1Y28Wo4aq8
-         bWRAITU2PWiKUNa5qScGiskYyn9uTu5zNM0LSVkThFoYGRzZtSkxmk2guebs5SzV3uDM
-         8wqZ7en3gbTyjbQSSEFkOZRE1xHZtrLAKwtSU3b69KLj6aQ2NO/jmJdevPx/uPqve6xY
-         1fyUfpwSSO7OnlB2m3o5UWKYqypPCcxqwEpmbiQEvzelCWwarZtm5Jyea/gr5BEQKiI3
-         /Nf+53PqyJ2+fz7eTshKTw70x8ymSAo708O6pN5wfyQbEOWnyGxy0tnplC5BEAU8Mrdn
-         uKXQ==
+        bh=npQwrp8dxwBrq6gTxtnOVCzjkW4oB/ew6/3QNAsGhNI=;
+        b=CqDHmwoVI+8qcIcVIu/d0PCyuyeRJh/nZSRBTEhF2cEcl4gePGaL5ijWkRCjzs30F0
+         nE1bHtLTwxZB9LaXFIjf5ZqEfsurVCQTRQzbOXEzTY0/gABmTC6HHKjvIbblzPrUsQHy
+         H0Ii2huIsCmCYcnbcoNeUuaUETgSVpU/Iaw5gQ/n6FrkPOQw9HP/rNm9lJYVo5RR5frL
+         QYMpsDKbaaOf8xrl6QRFXU/bo9050WgrFJft4EO0LljSECjbSlL4rVFQrsU0enuKgK2n
+         F6Cb6QzSnfXiA6N70v01o0QzyVpk1U2ACjIe1JId9k4Gy+ihs4nCWEQR+Bv/20gHmywS
+         GTlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784762076; x=1785366876;
+        d=1e100.net; s=20251104; t=1784762087; x=1785366887;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=XNZd91+mo5o4oegz4xZP/Z+TCzb0UFRc92DILYArhCE=;
-        b=lwIiNourlbdytTJQsWrfRJ4iN4mL415lZr/VObX3eNVtl5EoSkKGPj2TAdebAiL59d
-         afQRnWihBvRZt7pO+k/zJJfUzbmrmfki65OWudmXiRusROQr84hOisDm5XOtv5XZghak
-         JQahoydjL1gaT51PxeALkOZzJNPue4/fsH3VqYF3nl0F/sT+3oALmTQT1YuYP8+RpUE/
-         f/7BIInU9pxvLWXevS5nUSbsz/1VN/xJWw/nsLCPSH4mKL3yFsUqFl+DGkWH2Vh2X6nZ
-         LtMSSKhVb5lil22TV384XPVuE44SEWP58kV2IYsM1s+lxAqZyUgQje+XIvDDXkdpio8D
-         O75g==
-X-Forwarded-Encrypted: i=1; AHgh+RoN8BODWwY6DbMmoScg7F+NNpHVBLWGgrGihPC5s3PB7MkjcbQbqqts6Vt3A9SfSyWLpEJWXDvoCg0r@lists.linux.dev
-X-Gm-Message-State: AOJu0YxEHT4PIQQ+Ra1Cdh8iHR02kQVm/c9jLNEAuso9AptEGbHGY85l
-	eZYo45HjgRa0ulcXKGoMO/32U1VgXmPFl5E9XcsoSMcyMbTH4q65+zGdaEWvn/6NBC+pd3shvGf
-	Gm2vLPQ==
-X-Received: from plbmp15.prod.google.com ([2002:a17:902:fd0f:b0:2cf:2c71:64bd])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2c08:b0:2c1:ea95:8297
- with SMTP id d9443c01a7336-2cfa6a560cemr9965915ad.7.1784762075897; Wed, 22
- Jul 2026 16:14:35 -0700 (PDT)
-Date: Wed, 22 Jul 2026 23:13:23 +0000
+        bh=npQwrp8dxwBrq6gTxtnOVCzjkW4oB/ew6/3QNAsGhNI=;
+        b=gwRs7KyDDucR+Uv+ZKKrHXApYdQ/TNQVXJfeAQhFmMtcJnmX6YThozwbOWv8OnD0NA
+         O/k6NXSoA5oISgcT4Xh0X5UzOrtnTJ+o1Fx80Bx8Rt0jehrTStlrWGWtORiyCqEIH2al
+         gJYqhpwPV2rnkp/HL9PhTPKpnIh35leV5A8ofcmelpuJCXm6f7Dq7lpYKG3k9f2rsR/h
+         LcjdzLd5VXz12UCLB24jW+x4VOzXu8AE6zSHl3HXodnaa32P1kjVBuhAo0TJhsa8n9lv
+         oZS5sqRsiPmgMKuUpXYyg+mL8P046wy63q+ClXCLYWB3fU7QjD50t4b+21pHnNPO+998
+         yZLg==
+X-Forwarded-Encrypted: i=1; AHgh+RpLEq50HyjHeb0WGJeH9eiY7OSp2wLi77edYSpb5VV4ONNF48ZW8i38RUkyac8Q4kUFz5iHGwMp5RzF@lists.linux.dev
+X-Gm-Message-State: AOJu0YwfUxbOH9tRnBlyS+NvVe8qYm0x6V6GbAFBlT+tU/tHRa1AkXCJ
+	eIQ4LFKzanNY4IC+SkPzLK+T/FHxxPfMYlsJDVSmI//jzqz5r7ZiHfbivYGTlmQJQkDtcLwZ0MP
+	uq6M6CQ==
+X-Received: from plld11.prod.google.com ([2002:a17:902:728b:b0:2c8:7ed:acf4])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:dac7:b0:2c7:ebfb:618f
+ with SMTP id d9443c01a7336-2cfa6b73a76mr9771635ad.14.1784762078730; Wed, 22
+ Jul 2026 16:14:38 -0700 (PDT)
+Date: Wed, 22 Jul 2026 23:13:26 +0000
 In-Reply-To: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,14 +60,13 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784762054; l=4116;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784762054; l=3287;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=mszFJBolFZ3EeT/w/UfjhdbhJ7NRQ2ZbBHD1RZXRdfA=; b=RWRWEHuu6HLzQSUjkNtKQAU3uFQqOM5gWQjxuE3PUW8aH1xfIjbJfzO6A3P/zXGcuHCDOw3wK
- V4s8uFtQ2A6AkDAyW9OflMI1SPi9f59poJqSKHTDHQ/8Tp7deaDKOef
+ bh=7diizuo3ArwKIH9Jsi5ICyi9zc8nAkbP5tj3yujaUxE=; b=r/IDcKTeYPBvxZo+9sWeP0LiVNW/DOX6AaP68XXLFLG4gDOoC2whw6k/TQoOk3j3a00HlfP8h
+ 0OI5SVbn2efDnVqhQHLtWLQ/eyVISA6/dT0Nlv7T+BBa01oHO7mNOiZ
 X-Mailer: b4 0.14.3
-Message-ID: <20260722-tdx-selftests-v14-18-15ad654a50db@google.com>
-Subject: [PATCH v14 18/22] KVM: selftests: Add helpers to init TDX memory and
- finalize VM
+Message-ID: <20260722-tdx-selftests-v14-21-15ad654a50db@google.com>
+Subject: [PATCH v14 21/22] KVM: selftests: Add ucall support for TDX
 From: Lisa Wang <wyihan@google.com>
 To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
 	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
@@ -86,115 +85,102 @@ Content-Type: text/plain; charset="utf-8"
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-TDX protected memory needs to be measured and encrypted before it can be
-used by the guest. Traverse the VM's memory regions and initialize all
-the protected ranges by calling KVM_TDX_INIT_MEM_REGION.
+Implement TDX ucall using TDCALL-based MMIO to pass the ucall address
+from the VM to the host.
 
-Once all the memory is initialized, the VM can be finalized by calling
-KVM_TDX_FINALIZE_VM.
+In standard KVM selftests, ucall uses a PIO instruction as a trigger
+to exit to the host, which then retrieves the ucall address by reading
+the guest's RDI register. This approach is incompatible with TDX
+because the host cannot access guest registers.
+
+Furthermore, PIO exits only expose 4 bytes of immediate data, which
+is insufficient for a 8-byte ucall address. By using TDCALL-based MMIO,
+the VM can share the full 8-byte address in a single exit without
+refactoring the common ucall framework and other non-x86 architectures.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Co-developed-by: Erdem Aktas <erdemaktas@google.com>
-Signed-off-by: Erdem Aktas <erdemaktas@google.com>
 Co-developed-by: Sagi Shahar <sagis@google.com>
 Signed-off-by: Sagi Shahar <sagis@google.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 Co-developed-by: Lisa Wang <wyihan@google.com>
 Signed-off-by: Lisa Wang <wyihan@google.com>
 ---
- .../selftests/kvm/include/x86/tdx/tdx_util.h       |  2 +
- tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 63 ++++++++++++++++++++++
- 2 files changed, 65 insertions(+)
+ tools/testing/selftests/kvm/include/x86/ucall.h |  6 -----
+ tools/testing/selftests/kvm/lib/x86/ucall.c     | 33 +++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-index 307e2c0bc9c9..35f0b2b7ac40 100644
---- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-+++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-@@ -72,4 +72,6 @@ void tdx_vm_load_common_boot_parameters(struct kvm_vm *vm);
- void tdx_vcpu_load_boot_parameters(struct kvm_vm *vm, struct kvm_vcpu *vcpu);
- void tdx_vcpu_set_entry_point(struct kvm_vcpu *vcpu, void *guest_code);
+diff --git a/tools/testing/selftests/kvm/include/x86/ucall.h b/tools/testing/selftests/kvm/include/x86/ucall.h
+index 0e4950041e3e..7e54ec2c1a45 100644
+--- a/tools/testing/selftests/kvm/include/x86/ucall.h
++++ b/tools/testing/selftests/kvm/include/x86/ucall.h
+@@ -2,12 +2,6 @@
+ #ifndef SELFTEST_KVM_UCALL_H
+ #define SELFTEST_KVM_UCALL_H
  
-+void tdx_vm_finalize(struct kvm_vm *vm);
-+
- #endif /* SELFTESTS_TDX_TDX_UTIL_H */
-diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-index be63d8652a02..831b0e5160df 100644
---- a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-+++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-@@ -1,5 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
+-#include "kvm_util.h"
+-
+ #define UCALL_EXIT_REASON       KVM_EXIT_IO
  
-+#include <linux/align.h>
-+
- #include "processor.h"
- #include "tdx/td_boot.h"
- #include "tdx/tdx_util.h"
-@@ -251,3 +253,64 @@ void tdx_init_vm(struct kvm_vm *vm, u64 attributes)
+-static inline void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
+-{
+-}
+-
+ #endif
+diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/selftests/kvm/lib/x86/ucall.c
+index e7dd5791959b..7a954b2d0bdd 100644
+--- a/tools/testing/selftests/kvm/lib/x86/ucall.c
++++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
+@@ -5,11 +5,35 @@
+  * Copyright (C) 2018, Red Hat, Inc.
+  */
+ #include "kvm_util.h"
++#include "tdx/tdx.h"
++#include "tdx/tdx_util.h"
  
- 	free(init_vm);
- }
+ #define UCALL_PIO_PORT ((u16)0x1000)
+ 
++/* HPET address is guaranteed to be unused for ucall MMIO */
++#define UCALL_MMIO_GPA 0xfed00000
 +
-+static void tdx_init_mem_region(struct kvm_vm *vm, void *source_pages,
-+				u64 gpa, u64 size)
++static u8 vm_type;
++static gpa_t ucall_mmio_gpa;
++
++void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
 +{
-+	u32 flags = KVM_TDX_MEASURE_MEMORY_REGION;
-+	struct kvm_tdx_init_mem_region mem_region = {
-+		.source_addr = (u64)source_pages,
-+		.gpa = gpa,
-+		.nr_pages = size / PAGE_SIZE,
-+	};
-+	struct kvm_vcpu *vcpu;
++	vm_type = vm->type;
++	sync_global_to_guest(vm, vm_type);
 +
-+	vcpu = list_first_entry_or_null(&vm->vcpus, struct kvm_vcpu, list);
-+
-+	TEST_ASSERT(size && IS_ALIGNED(size, PAGE_SIZE),
-+		"Cannot add partial pages to the guest memory.\n");
-+	TEST_ASSERT(IS_ALIGNED((u64)source_pages, PAGE_SIZE),
-+		"Source memory buffer is not page aligned\n");
-+	tdx_vcpu_ioctl(vcpu, KVM_TDX_INIT_MEM_REGION, flags, &mem_region);
-+}
-+
-+static void tdx_load_private_memory(struct kvm_vm *vm)
-+{
-+	struct userspace_mem_region *region;
-+	int ctr;
-+
-+	hash_for_each(vm->regions.slot_hash, ctr, region, slot_node) {
-+		const struct sparsebit *protected_pages = region->protected_phy_pages;
-+		const gpa_t gpa_base = region->region.guest_phys_addr;
-+		const u64 hva_base = region->region.userspace_addr;
-+		const sparsebit_idx_t lowest_page_in_region = gpa_base >> vm->page_shift;
-+		void *source_pages = NULL;
-+		sparsebit_idx_t i, j;
-+
-+		if (!sparsebit_any_set(protected_pages))
-+			continue;
-+
-+		TEST_ASSERT(region->region.guest_memfd != -1,
-+			    "TD private memory must be backed by guest_memfd");
-+
-+		sparsebit_for_each_set_range(protected_pages, i, j) {
-+			const u64 size_to_load = (j - i + 1) * vm->page_size;
-+			const u64 offset =
-+				(i - lowest_page_in_region) * vm->page_size;
-+			const u64 hva = hva_base + offset;
-+			const u64 gpa = gpa_base + offset;
-+
-+			if (!kvm_has_gmem_attributes)
-+				source_pages = (void *)hva;
-+
-+			vm_mem_set_private(vm, gpa, size_to_load);
-+			tdx_init_mem_region(vm, source_pages, gpa, size_to_load);
-+		}
++	if (is_tdx_vm(vm)) {
++		ucall_mmio_gpa = UCALL_MMIO_GPA | vm->arch.s_bit;
++		sync_global_to_guest(vm, ucall_mmio_gpa);
 +	}
 +}
 +
-+void tdx_vm_finalize(struct kvm_vm *vm)
-+{
-+	tdx_load_private_memory(vm);
-+	tdx_vm_ioctl(vm, KVM_TDX_FINALIZE_VM, 0, NULL);
-+}
+ void ucall_arch_do_ucall(gva_t uc)
+ {
++	if (vm_type == KVM_X86_TDX_VM) {
++		tdx_mmio_write(ucall_mmio_gpa, sizeof(gva_t), uc);
++		return;
++	}
++
+ 	/*
+ 	 * FIXME: Revert this hack (the entire commit that added it) once nVMX
+ 	 * preserves L2 GPRs across a nested VM-Exit.  If a ucall from L2, e.g.
+@@ -46,6 +70,15 @@ void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_run *run = vcpu->run;
+ 
++	if (vm_type == KVM_X86_TDX_VM) {
++		if (run->exit_reason == KVM_EXIT_MMIO &&
++		    run->mmio.phys_addr == UCALL_MMIO_GPA &&
++		    run->mmio.len == sizeof(gva_t) &&
++		    run->mmio.is_write)
++			return (void *)(*((gva_t *)run->mmio.data));
++		return NULL;
++	}
++
+ 	if (run->exit_reason == KVM_EXIT_IO && run->io.port == UCALL_PIO_PORT) {
+ 		struct kvm_regs regs;
+ 
 
 -- 
 2.55.0.229.g6434b31f56-goog
