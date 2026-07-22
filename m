@@ -1,112 +1,114 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2926040DFB6
-	for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 19:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CA63B6C1E
+	for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 19:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784748880; cv=none; b=FB/IrRs/fXxXOGh4kZeFrIpfgMrUO+otSTapPZQNWEzqwClvAk0mKtHfHj1IfcggbjfMxNORZ+fmYR/8rhfYL1ueEH+ENenYizCSVaIPvW4ptphotsgHDX+AR/hHAFhG/xPyKsdIx5DvrbJJPQnR9zXQg7Jq6kM7HQnT0XWMZV4=
+	t=1784749232; cv=none; b=pQIFZuqGsa8zGTwc14x1eEM8JGhuHqxns2prknEoKfqEy/X+r7movvEUzOLQuoSToGTYf3ArIIyv6mfRmUd57xTAKlRFkMtO3yUBRVTLHT9zpgtKMsQuxYkcB3glP/tF5pjondbann4jamB1mPuW4AShzO6fdqOv6Hs31Kpm/Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784748880; c=relaxed/simple;
-	bh=1xj0gKyVDg9BPa8UAb1IrHRIih45Z44r20ovKTsMtlA=;
+	s=arc-20240116; t=1784749232; c=relaxed/simple;
+	bh=nyBkYgKwOn4jVc5C8Fouc1FeTmY3h02EMe0OQ5ytqsI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ONA+1TRfg8ieGRbMLTGOqPhrXJ7r9EzgmeMPuEw+GYjYUdz/gX1zdeyGl0ZBzsT2adXOUWUNI7Lgg7fPIs4osHc0+Qjdj3RbOrjhkwcsw80oGZW9ItOZDIB5AufUD6VYkBcgrHow7lP2IOkmYmNMEegGdKHQtcZfZbVWJPkmvHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RHC43LPH; arc=none smtp.client-ip=209.85.214.200
+	 To:Cc:Content-Type; b=XuyQ6tRRRVdp95sE0WsJVsKCUovYhdTLU8DX5kqAWBdP/O7TWbGw1rTozZrXEn2Z2Ks9SfuDKNJPAhSCJ7QsCdocmTBlFxPsWkYSqNidAcatBJSw9FYm4+MHB3Z2ri7lWpPGDYFJ7YGOuPmIUHELeJcOhxnAerUqW3ZSvW8n4eQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dq47rcDK; arc=none smtp.client-ip=209.85.210.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RHC43LPH"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cacd6d37edso175291635ad.0
-        for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 12:34:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dq47rcDK"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84885a4fcabso10548654b3a.3
+        for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 12:40:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784748876; x=1785353676; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1784749229; x=1785354029; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nMWtzkw+88B3doKk+TNewGk3CZeZPu1IQm5Y/qLTIEE=;
-        b=RHC43LPHxSHcQaeYRSye7wf4JlBdkKVqDgdLROZ+m0uRAUXc71tLJzOqQTUc6XyU6g
-         W+U0QkHdvuMMlNECuHCXZLkAtNhinybhtMNwPXl6Azk9xU2xdJjVeZvjGCNqFH6XxMfJ
-         NdvXscZaypGM0pf9AaAWm96zWzK/VddjSZTYLFiphR4pTDiaNxr6WLwmZp2i4Mo011bP
-         rYs1XqQdIRdW1r1hw3yaHO0qPnenXyNRAKYjW0KKjlunjIUQ6cGHUstAqLrAgbh4ARjk
-         ujPwlo4GGO6bRDR0/VxVNIBpJIewuOocZnCGN392xeCPHR6GON7hUn47GXPisRPsF4LZ
-         0Fhg==
+        bh=Ptao9s40NBhMm9qoNoLOa2VZyEW6G4SG8hWVVOs/sao=;
+        b=dq47rcDK1z/NiL3TPq14vl1pk5eCxGnyPnq4CidLeyvC3QkuZ6ymQk+VsppOnjbCQc
+         ROPkvXFTqQiqleROyoK3f4tX1kGqQ/g1bpHl8i+85PNeb6htQHQ4fLqebLW1YFXlA+dY
+         EYkf5qpwXebQkIBEdXKsF12xrRDECiMluL9rLQUG6uAPGUGNV/IfcIaqJHrILB4tpkyS
+         kaBJ8AtDLD/QFsEmST/XUhrc81nwpN05GfpeKfoZVve8+Kk7UyMRpLGwgQ7eeeBFaDt+
+         yW3vCZY0VRnXRsbTL90ZphhDzoumkG3jw51hcjPLo7Fcd3VRl7MyKQktdsWhvxdk0rdT
+         kVKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784748876; x=1785353676;
+        d=1e100.net; s=20251104; t=1784749229; x=1785354029;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nMWtzkw+88B3doKk+TNewGk3CZeZPu1IQm5Y/qLTIEE=;
-        b=IiCY80d8XJna7p5vJrVEH6BH4FmPd5sktwUnWnov4bj56Pe6vvX27bOQStVQyxft/s
-         Nz5vjp1y1pP87BSRffvxA2GJreyb1IicBjSf0/47rL2oizjYpyhrG4yuC80Orq4lEC0U
-         d+p5oXF04p0Sa5kxNsf57LHlrszLrDRD7Dqcz3MEykjzpkmB+8mk1zHsj19aLbP3vX9I
-         /6JVbYxSmJoRRkbaPvi4jFZXUBcocBhoWVaRl9l4oGWeFV60OHMpOPYLAbklUj5R98ec
-         Nn7X+jzy/GGOJoShN66xVkasnCz2XemGkHzYlqC4JwojBa2YQ1Uwzp3SdJh/UR8KjaA/
-         RT3w==
-X-Forwarded-Encrypted: i=1; AHgh+RouBexhH2OYancNx9UaHZ7lkoi16YmzGi0j9vtaHJpK8xK2qCaRt7rpMgcXNBjzWaEJiaQn+Wk02f2t@lists.linux.dev
-X-Gm-Message-State: AOJu0YxEFlCUARE4r9OXsjkbsjZXmr2ep+5+6TXAxdiKfIqbhgF2c3B4
-	87tuOoFO0oprNXssU6W83CR+AxlGX8Dk9HNaLnLGBaQKOQu9hjhDGDPG/S9jxx7wMeg7m0lMMGv
-	V7ml+Yg==
-X-Received: from plbaz1.prod.google.com ([2002:a17:902:a581:b0:2ca:c2f8:a319])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f681:b0:2c9:cf5d:d9bc
- with SMTP id d9443c01a7336-2cfa74b13famr1966725ad.35.1784748875968; Wed, 22
- Jul 2026 12:34:35 -0700 (PDT)
-Date: Wed, 22 Jul 2026 12:34:35 -0700
-In-Reply-To: <4ad035a82ee10dc4645e26a4bd1daf40786a743a.camel@intel.com>
+        bh=Ptao9s40NBhMm9qoNoLOa2VZyEW6G4SG8hWVVOs/sao=;
+        b=m6rVqxCatOT5HdZLsTkLKhxicu1n7rNZtx/iTtIUs0VhXtnKcuDloUySsZQXoHs3c+
+         g1iyhtHSpwD/wywtruOUNKEEeOPntlyNLD7RlglnAE7gol0weefwTRDssDBWTONvYb9l
+         jUfaNcAebx6NCYjfiGd90+ZliCiTUg7iZUKssSkcyXSXDpNyuq0srKJfbGNWTE0+RknQ
+         ANEH5fIgEoQLHk5NWmccMFnioIqrhLMPsHb3QA15jocwVDt9McyxTLVOOFEmA8Qx916F
+         NwjlYnIrwghjx/ag6QOpAwRBniTWTTkQRFgnK5vxm6U2yEID4DFUUpiEDA2jHb0Dem/n
+         eZnA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr+o9fMRTSnV3Auum0UJ5WgjMt75T3wy8Tu0+HBaDSLVjjTyadI5wJew7T97n9xJFNZ9IXE2K/gVhtQ@lists.linux.dev
+X-Gm-Message-State: AOJu0YyFTt6eDZo3Sqd3ZUPdVEVz4fS2zkG6XJzoEM5Nny9KsCbA4PTo
+	hd0To5nfYFBT4pQN6h7Ums+KY5ZE8Wj5u36e9QNUE14FeBha/vMcmSbKD7j6ZOcE1UlEPz8cGYP
+	MOLDTWA==
+X-Received: from pfbhj6.prod.google.com ([2002:a05:6a00:8706:b0:847:840c:ba17])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:299a:b0:845:c6fc:2821
+ with SMTP id d2e1a72fcca58-84e2b8a6521mr317062b3a.22.1784749228959; Wed, 22
+ Jul 2026 12:40:28 -0700 (PDT)
+Date: Wed, 22 Jul 2026 12:40:28 -0700
+In-Reply-To: <20260718014500.2231262-7-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260718014500.2231262-1-rick.p.edgecombe@intel.com>
- <20260718014500.2231262-9-rick.p.edgecombe@intel.com> <20900cd6-6d05-4a20-a21d-2a1d4a6ef5e5@suse.com>
- <4ad035a82ee10dc4645e26a4bd1daf40786a743a.camel@intel.com>
-Message-ID: <amEbS6WDEyrvW72Q@google.com>
-Subject: Re: [PATCH v7 08/11] KVM: TDX: Get/put PAMT pages when (un)mapping
- private memory
+References: <20260718014500.2231262-1-rick.p.edgecombe@intel.com> <20260718014500.2231262-7-rick.p.edgecombe@intel.com>
+Message-ID: <amEcrPzZELfQ4jU9@google.com>
+Subject: Re: [PATCH v7 06/11] KVM: TDX: Allocate PAMT memory for TD and vCPU
+ control structures
 From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Kai Huang <kai.huang@intel.com>, 
-	Dave Hansen <dave.hansen@intel.com>, Yan Y Zhao <yan.y.zhao@intel.com>, 
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>, Binbin Wu <binbin.wu@intel.com>, 
-	"kas@kernel.org" <kas@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"nik.borisov@suse.com" <nik.borisov@suse.com>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"tglx@kernel.org" <tglx@kernel.org>, Vishal Annapurve <vannapurve@google.com>, "bp@alien8.de" <bp@alien8.de>, 
-	Chao Gao <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, dave.hansen@intel.com, hpa@zytor.com, kas@kernel.org, 
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, mingo@redhat.com, nik.borisov@suse.com, 
+	pbonzini@redhat.com, tglx@kernel.org, vannapurve@google.com, x86@kernel.org, 
+	chao.gao@intel.com, yan.y.zhao@intel.com, kai.huang@intel.com, 
+	tony.lindgren@linux.intel.com, binbin.wu@intel.com, 
+	Binbin Wu <binbin.wu@linux.intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Jul 22, 2026, Rick P Edgecombe wrote:
-> On Wed, 2026-07-22 at 16:46 +0300, Nikolay Borisov wrote:
-> > > +static int tdx_topup_external_pamt_cache(struct kvm_vcpu *vcpu, int
-> > > min_nr_spts)
-> > > +{
-> > > +	/*
-> > > +	 * Don't cover the root SPT, but cover a possible 4KB private
-> > > +	 * page in addition to the SPTs. So -1 to exclude the root
-> > > +	 * SPT, and +1 for the guest page cancel out.
-> > > +	 */
-> > 
-> > That comment here doesn't seem to correspond to the code in anyway. 
-> > There are no +-1 adjustments.
+On Fri, Jul 17, 2026, Rick Edgecombe wrote:
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 > 
-> The +1 and -1 cancel each other out. Hmm, how about:
-> 	/*
-> 	 * Don't cover the root SPT, but cover a possible 4KB private
-> 	 * page in addition to the SPTs. The -1 to exclude the root
-> 	 * SPT and +1 for the guest page cancel each other out. So
-> 	 * make no adjustments.
-> 	 */
+> Use control page helpers for allocating and freeing TD control structures,
+> such that these operations can work for Dynamic PAMT.
+> 
+> The TDX module tracks some state for each page of physical memory that it
+> might use. It calls this state the PAMT. It includes separate state for
+> each page size a physical page could be utilized at within the TDX module
+> (1GB, 2MB, 4KB). In Dynamic PAMT, only the 4KB page size state is
+> allocated dynamically. So the kernel must ensure PAMT backing is installed
+> for any 4KB page being gifted to the TDX module, and must tear down the
+> backing when all associated gifted pages are reclaimed.
+> 
+> TD scoped control pages (TDR, TDCS) and vCPU scoped control pages (TDVPR,
+> TDCX) are all handed to the TDX module at 4KB page size and are therefore
+> subject to this requirement. Replace the raw alloc_page()/__free_page()
+> calls for these pages with tdx_alloc/free_control_page().
+> 
+> Switching between special Dynamic PAMT operations or normal page
+> alloc/free operations is handled internally in
+> tdx_alloc/free_control_page(). So don't check for Dynamic PAMT around these
+> calls. Just call them unconditionally. Similarly, drop the NULL checks
+> before freeing, as tdx_free_control_page() handles NULL internally.
+> 
+> No functional change intended when Dynamic PAMT is not in use.
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> [sean: handle alloc+free+reclaim in one patch]
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> [rick: enhance log, reviewing, rebase, with help from AI tooling]
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Reviewed-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> ---
 
-Maybe put it in code?  E.g.
-
-	/*
-	 * Minus one page to exclude the root SPT, but plus one page for a
-	 * possible 4KiB private mapping.
-	 */
-	min_nr_spts += -1 + 1;
-
-	return tdx_topup_pamt_cache(&to_tdx(vcpu)->pamt_cache, min_nr_spts);
+Acked-by: Sean Christopherson <seanjc@google.com>
