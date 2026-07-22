@@ -1,213 +1,281 @@
-Received: from esa9.hc1455-7.c3s2.iphmx.com (esa9.hc1455-7.c3s2.iphmx.com [139.138.36.223])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077263E556B;
-	Wed, 22 Jul 2026 08:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.36.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF1B46A5F1
+	for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 08:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784708938; cv=none; b=nlRRAKEPzJnFiNSEJVSVqecRFx4aW/KSfUp9Hf26/pReJVIQ4JLx8uef4PLR5k2rVmutZQ45JcbkqJg5/1PGqU2D21juEMwVeGWevD6QcDlkQ6+y27y1zL0wwbejLkp8IGkVTZ1PqnJQvBXLAC/TtdLfzywrje4OuK9n3qGvP68=
+	t=1784710003; cv=none; b=u08RsXOGDdR4v0ezfK/uTUwIsLQ0XnU/FFq3w3/fvwXR5pDFwH15W90ZqpWrbN821V4dZDcfopAOXMfTf6hB0xt5oTwW1JiGWGT1ytFGu6BxVFJ7DmREUBgI4zKU1tD2OfGvH3ig3SSFtjqu5Y79Ov3lDS9VYAayTa6hMtbMCOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784708938; c=relaxed/simple;
-	bh=6/Cy2Lm2NZMPaXXZdMdvVBBo9YiQl5f2TUMPmfny+2k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dhFSa9Df1g1kNXoepnuldWxYCUA3vJdseGIwg805m49L9/VKSoWUI7AKW8tZxWpO3rpOl74YFuHcKXiqxDBQrQDhv8O0yh8jxhwFPSxsnecFsIBllO3kG3yMQCVoeWxMUzqOzQTnbxhssIV3WinpDYJog0teq+l01QIM8GsUZw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=N1F5qHqd; arc=none smtp.client-ip=139.138.36.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1784710003; c=relaxed/simple;
+	bh=dJUaZ5iHRq2MQMDO9vHmZWyBATmiIH5ZU5VMsxt/qYo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=k2uZsfdS0s4Z3H/dzsy6J9LQgBdfpqNzRtMX2swANXtxCiSjf8ruYgAO7a/WK08OpdC9RBEuBJuDYHq+cWyD6DKVjeexDRBwwE9o+eU7B6/a443zqRUk6P2KGGwU82kIVXUQ/getWe1u/w58jmi3xyVbGmmhsZm9/svs5T4qZZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RZwESY21; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="N1F5qHqd"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1784708934; x=1816244934;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6/Cy2Lm2NZMPaXXZdMdvVBBo9YiQl5f2TUMPmfny+2k=;
-  b=N1F5qHqdw+cxwi94ut6eClHYmfvrvRooPFuGl2T/2K8ySGV9utVKPmeY
-   OqacK3sG/uW2n4MY4a6L2ryVLGOtavEn3Mw6Lq/Vgpx9KWtz9z83QF4/J
-   L+hO7eT/l7c6i7DPhz59J7XxUIucQkcurRrdthRrK00aKTAkbTBHTXQCS
-   UFENLdD6lVim8d2lyyhLOjaCep9AyYsBzrYCRmWc6L255vHMPjFJBkOle
-   R53w3NJbLpPh2v9oMT/jRz11OvfuKX7j9EEk9VslZtNtNlyhnN9tzydLh
-   lufGJ5Y6yrSkoHbuuTuq3QeB/2UkBnO/+3NmX4OHDfrG/L4uLNrV2u6Ca
-   g==;
-X-CSE-ConnectionGUID: Ww32TV0JTxew8fKYaB3IJQ==
-X-CSE-MsgGUID: PcB72mkpRV2CqrN5lWXmvA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="235641560"
-X-IronPort-AV: E=Sophos;i="6.25,178,1779116400"; 
-   d="scan'208";a="235641560"
-Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
-  by esa9.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 17:27:41 +0900
-Received: from az2uksmgm1.o.css.fujitsu.com (unknown [10.151.22.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id DC9741C1C700;
-	Wed, 22 Jul 2026 08:27:40 +0000 (UTC)
-Received: from az2uksmom4.o.css.fujitsu.com (unknown [10.151.22.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 9345F83286E;
-	Wed, 22 Jul 2026 08:27:40 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.9.69.159])
-	by az2uksmom4.o.css.fujitsu.com (Postfix) with SMTP id 212C0404331;
-	Wed, 22 Jul 2026 08:27:29 +0000 (UTC)
-Date: Wed, 22 Jul 2026 17:27:29 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v15 12/37] KVM: arm64: CCA: Support the VGIC in realms
-Message-ID: <amB-opawGgF6jNHB@FCCLS0092175.localdomain>
-References: <20260715142841.80544-1-steven.price@arm.com>
- <20260715142841.80544-13-steven.price@arm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RZwESY21"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784710000; x=1816246000;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=dJUaZ5iHRq2MQMDO9vHmZWyBATmiIH5ZU5VMsxt/qYo=;
+  b=RZwESY21RxoXoJPs0Ivmx5acwPeYdU+pIS5DvAAOOJPRlyCwj/cJ4iCS
+   JhTVZiNbUiRrNXQwlkJ5qdBpo/OPo0if+4qw3zLtYbf7HyNQatPgNl0ES
+   sr+DUy4i6/xyjzqP13+vSRQ2wzTPlKkVvDKFrvsS1GKkR57I/bcACTCxR
+   wyp+yKJ3qQksPOY/N5wSExj94QHsT/eM5PUWspJ4j58uIgwmt5FBxv3iJ
+   JU4epoXZyNF9oNiBBGmjerm5PF7tVE6+H0hoero3bOaxfbgFqhl3tVagS
+   4JO9d8yWVWuEIm6+2teV9UkhoH62lVSafJYf4wugpA7TnXMKxjV6yLcqv
+   A==;
+X-CSE-ConnectionGUID: aBFxHqiuTdyvN0qY1BnuDA==
+X-CSE-MsgGUID: uDaJiWefTW2P223jPgNZiw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="85430952"
+X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
+   d="scan'208";a="85430952"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 01:46:39 -0700
+X-CSE-ConnectionGUID: 4g5GGgV4Rl2wh3dexkAz5w==
+X-CSE-MsgGUID: fpXWiLw/Teimq3NG+WCfuw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
+   d="scan'208";a="262322462"
+Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
+  by orviesa005.jf.intel.com with ESMTP; 22 Jul 2026 01:46:36 -0700
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: x86@kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: kas@kernel.org,
+	rick.p.edgecombe@intel.com,
+	dave.hansen@intel.com,
+	dave.hansen@linux.intel.com,
+	yilun.xu@linux.intel.com,
+	yilun.xu@intel.com,
+	djbw@kernel.org,
+	linux-coco@lists.linux.dev,
+	chao.gao@intel.com,
+	peter.fang@intel.com,
+	xiaoyao.li@intel.com
+Subject: [PATCH v3] x86/virt/tdx: Formalize SEAMCALL version encoding support
+Date: Wed, 22 Jul 2026 16:46:34 +0800
+Message-Id: <20260722084634.131020-1-yilun.xu@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260715142841.80544-13-steven.price@arm.com>
+Content-Transfer-Encoding: 8bit
 
-On 07/15 15:28, Steven Price wrote:
-> The RMM provides emulation of a VGIC to the realm guest. With RMM v2.0
-> the registers are passed in the system registers so this works similar
-> to a normal guest, but kvm_arch_vcpu_put() need reordering to early out,
-> and realm guests don't support GICv2 even if the host does.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
+SEAMCALL invokes TDX module functions using a function number and
+parameters. To extend the functionality of existing SEAMCALLs while
+keeping backward compatibility, TDX adds more numbered SEAMCALLs of the
+same family. This is just like syscalls, except that TDX defines a
+specific function number encoding pattern: a base function number and a
+version together encode the full function number.
 
-Hi Steven,
+One concern is the compatibility with older TDX modules which don't
+recognize the new SEAMCALLs. The kernel should decide which SEAMCALL
+version to use at runtime, selecting the minimum version number for the
+required functionality. It can't overwrite the function number with a
+new value at compile time.
 
-I've been testing this series and found that when the host CPU doesn't have
-ARM64_HAS_ICH_HCR_EL2_TDIR this series doesn't work as expected.
+Another concern is the obscure usage of the 'fn' parameter for SEAMCALL
+wrappers. An existing caller for TDH.VP.INIT packs the version into the
+'fn' to match the low-level TDX ABI RAX layout. The RAX layout
+interprets some bits differently, such as INTERRUPT_MODE, SEAMLDR flag,
+which are not a good fit for the function number definition.
 
-Since commit 2a28810cbb8b ("KVM: arm64: GICv3: Detect and work around the lack
-of ICV_DIR_EL1 trapping"), when the host CPU doesn't support this feature, KVM
-traps all GIC sysreg accesses in the common group. However, currently trap
-handlers for ICC_{PMR,RPR,CTLR}_EL1 registers are missing [0]. So when Realm
-guests try to access those registers, KVM traps them but just emits the warning
-shown in [1], and Realm guests fail to boot.
+Refactor the SEAMCALL wrappers to allow for version selection. Add a
+version field in struct tdx_module_args [1], so that most existing
+callers get a default "version == 0" behavior without code churn, while
+callers requiring extended functionalities can specify the version
+descriptively. Enforce the 'fn' parameter as the base function number.
+Encode the base function number and tdx_module_args.version in RAX
+before invoking the SEAMCALL instruction in assembly code.
 
-As far as I can tell, the CCA requirements don't require the
-ARM64_HAS_ICH_HCR_EL2_TDIR feature. If that's the case, this seems to be a
-problem. Is there any workaround for this issue, or should we implement trap
-handlers for those registers?
+Link: https://lore.kernel.org/kvm/4f4b0f29-424b-45ed-8cfd-c77da2ea390f@intel.com/ # [1]
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+---
+The main concern in v2 is: should we make 'fn' exactly match the RAX
+layout of TDX module ABI?
 
-Thanks,
-Kohei
+Kiryl's point is that SEAMCALL wrappers are the representation of the
+ABI functions, so make the 'fn' match the RAX and struct tdx_module_args
+match the other CPU registers, compose base leaf number & version into
+'fn'. This saves callers from digging into low-level code to understand
+what happens.
 
-[0]
-static const struct sys_reg_desc sys_reg_descs[] = {
-    ...
-	{ SYS_DESC(SYS_ICC_PMR_EL1), undef_access },
-	{ SYS_DESC(SYS_ICC_RPR_EL1), undef_access },
-	{ SYS_DESC(SYS_ICC_CTLR_EL1), undef_access },
-};
+Dave's point is that the RAX layout is logically unfriendly, we want
+SEAMCALL wrappers to be the logically sound software APIs to the rest of
+the system. So 'fn' only contains the base leaf number, version and
+other RAX fields are in struct tdx_module_args.
 
-[1]
-------------[ cut here ]------------
-Unexpected undefined exception injection to REC
-WARNING: arch/arm64/kvm/inject_fault.c:330 at kvm_inject_undefined+0x100/0x148, CPU#1: kvm-vcpu-0/370
-Modules linked in:
-CPU: 1 UID: 0 PID: 370 Comm: kvm-vcpu-0 Not tainted 7.2.0-rc1-00096-gd6d40e6a3103 #161 PREEMPT(lazy)
-[...]
-Call trace:
- kvm_inject_undefined+0x100/0x148 (P)
- undef_access+0x18/0x30
- perform_access+0x54/0x1d0
- kvm_handle_sys_reg+0xfc/0x308
- rec_exit_sys_reg+0x34/0x168
- handle_rec_exit+0x12c/0x4c8
- kvm_arch_vcpu_ioctl_run+0x7a0/0x9a8
- kvm_vcpu_ioctl+0x180/0xb50
- __arm64_sys_ioctl+0xb4/0x118
- invoke_syscall.constprop.0+0xb8/0x120
- do_el0_svc+0x48/0xc8
- el0_svc+0x44/0x248
- el0t_64_sync_handler+0xa0/0xe8
- el0t_64_sync+0x198/0x1a0
----[ end trace 0000000000000000 ]---
- [...]
+While both options have merits, I chose the latter from a
+software-centric perspective. I sent v3 to invite more discussion.
 
-> ---
-> Changes from v12:
->  * GIC registers are now passed in the system registers rather than via
->    rec_entry/rec_exit which removes most of the changes.
-> Changes from v11:
->  * Minor changes to align with the previous patches. Note that the VGIC
->    handling will change with RMM v2.0.
-> Changes from v10:
->  * Make sure we sync the VGIC v4 state, and only populate valid lrs from
->    the list.
-> Changes from v9:
->  * Copy gicv3_vmcr from the RMM at the same time as gicv3_hcr rather
->    than having to handle that as a special case.
-> Changes from v8:
->  * Propagate gicv3_hcr to from the RMM.
-> Changes from v5:
->  * Handle RMM providing fewer GIC LRs than the hardware supports.
-> ---
->  arch/arm64/kvm/arm.c            | 11 ++++++++---
->  arch/arm64/kvm/vgic/vgic-init.c |  2 +-
->  2 files changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 38fac98cd6a4..2959a1451232 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -791,19 +791,24 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
->  		kvm_call_hyp_nvhe(__pkvm_vcpu_put);
->  	}
->  
-> +	kvm_timer_vcpu_put(vcpu);
-> +	kvm_vgic_put(vcpu);
->  	kvm_vcpu_put_debug(vcpu);
-> +
-> +	vcpu->cpu = -1;
-> +
-> +	if (vcpu_is_rec(vcpu))
-> +		return;
-> +
->  	kvm_arch_vcpu_put_fp(vcpu);
->  	if (has_vhe())
->  		kvm_vcpu_put_vhe(vcpu);
-> -	kvm_timer_vcpu_put(vcpu);
-> -	kvm_vgic_put(vcpu);
->  	kvm_vcpu_pmu_restore_host(vcpu);
->  	if (vcpu_has_nv(vcpu))
->  		kvm_vcpu_put_hw_mmu(vcpu);
->  	kvm_arm_vmid_clear_active();
->  
->  	vcpu_clear_on_unsupported_cpu(vcpu);
-> -	vcpu->cpu = -1;
->  }
->  
->  static void __kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
-> diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
-> index 907057881b26..fd77db35ef02 100644
-> --- a/arch/arm64/kvm/vgic/vgic-init.c
-> +++ b/arch/arm64/kvm/vgic/vgic-init.c
-> @@ -81,7 +81,7 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
->  	 * the proper checks already.
->  	 */
->  	if (type == KVM_DEV_TYPE_ARM_VGIC_V2 &&
-> -		!kvm_vgic_global_state.can_emulate_gicv2)
-> +	    (!kvm_vgic_global_state.can_emulate_gicv2 || kvm_is_realm(kvm)))
->  		return -ENODEV;
->  
->  	/*
-> -- 
-> 2.43.0
-> 
-> 
+Change in v3:
+- Move the RAX encoding in assembly code.
+- Compile-time check that fn only contain base leaf number bits
+- Add the full description of SEAMCALL leaf according to TDX module SPEC
+- Fix the description of struct tdx_module_args.
+
+v2: https://lore.kernel.org/all/20260708170330.83850-1-yilun.xu@linux.intel.com/
+- Drop the C wrapper __seamcall_encode_fn()
+- Rewrite the first paragraph of the changelog
+- Make change log concise
+- Add a link to the thread where this was suggested
+- Move alternative schemes description below the separator
+
+v1: https://lore.kernel.org/all/20260702144614.59464-1-yilun.xu@linux.intel.com/
+---
+ arch/x86/include/asm/shared/tdx.h         | 10 +++++++---
+ arch/x86/virt/vmx/tdx/seamcall_internal.h | 19 +++++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.h               |  8 --------
+ arch/x86/virt/vmx/tdx/tdxcall.S           | 10 ++++++++--
+ arch/x86/kernel/asm-offsets.c             |  1 +
+ arch/x86/virt/vmx/tdx/tdx.c               |  5 +++--
+ 6 files changed, 38 insertions(+), 15 deletions(-)
+
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index f20e91d7ac35..67490c330d91 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -122,9 +122,11 @@
+ #include <linux/compiler_attributes.h>
+ 
+ /*
+- * Used in __tdcall*() to gather the input/output registers' values of the
+- * TDCALL instruction when requesting services from the TDX module. This is a
+- * software only structure and not part of the TDX module/VMM ABI
++ * Used in __tdcall*() to gather the input/output parameters of the TDCALL
++ * instruction when requesting services from the TDX module. 'version' is
++ * encoded in rax along with the Leaf number. Others are raw input/output
++ * registers' values. This is a software only structure and not part of the TDX
++ * module/VMM ABI.
+  */
+ struct tdx_module_args {
+ 	/* callee-clobbered */
+@@ -143,6 +145,8 @@ struct tdx_module_args {
+ 	u64 rbx;
+ 	u64 rdi;
+ 	u64 rsi;
++	/* Leaf ABI version, encoded in rax */
++	u8  version;
+ };
+ 
+ /* Used to communicate with the TDX module */
+diff --git a/arch/x86/virt/vmx/tdx/seamcall_internal.h b/arch/x86/virt/vmx/tdx/seamcall_internal.h
+index be5f446467df..c586ddad072f 100644
+--- a/arch/x86/virt/vmx/tdx/seamcall_internal.h
++++ b/arch/x86/virt/vmx/tdx/seamcall_internal.h
+@@ -11,6 +11,7 @@
+ #ifndef _X86_VIRT_SEAMCALL_INTERNAL_H
+ #define _X86_VIRT_SEAMCALL_INTERNAL_H
+ 
++#include <linux/bitfield.h>
+ #include <linux/printk.h>
+ #include <linux/types.h>
+ #include <asm/archrandom.h>
+@@ -23,9 +24,27 @@ u64 __seamcall_saved_ret(u64 fn, struct tdx_module_args *args);
+ 
+ typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
+ 
++/*
++ * SEAMCALL leaf:
++ *
++ * Bit 15:0	Leaf number
++ * Bit 23:16	Leaf ABI version number
++ * Bit 24	Pending interrupts detection mode
++ * Bit 63	1 for P-SEAMLDR leaf, 0 for TDX module leaf
++ */
++#define SEAMCALL_LEAF_MASK		GENMASK_U64(15, 0)
++#define SEAMCALL_SEAMLDR_MASK		BIT_U64(63)
++
+ static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
+ 						  struct tdx_module_args *args)
+ {
++	/*
++	 * fn contains base leaf number for TDX module calls and P-SEAMLDR
++	 * calls. Other fields in SEAMCALL leaf like leaf ABI version number
++	 * are in struct tdx_module_args.
++	 */
++	BUILD_BUG_ON(fn & ~(SEAMCALL_LEAF_MASK | SEAMCALL_SEAMLDR_MASK));
++
+ 	lockdep_assert_preemption_disabled();
+ 
+ 	/*
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index bdfd0e1e337a..63e3acfb5d0c 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -50,14 +50,6 @@
+ #define TDH_SYS_UPDATE			53
+ #define TDH_SYS_DISABLE			69
+ 
+-/*
+- * SEAMCALL leaf:
+- *
+- * Bit 15:0	Leaf number
+- * Bit 23:16	Version number
+- */
+-#define TDX_VERSION_SHIFT		16
+-
+ /* TDX page types */
+ #define	PT_NDA		0x0
+ #define	PT_RSVD		0x1
+diff --git a/arch/x86/virt/vmx/tdx/tdxcall.S b/arch/x86/virt/vmx/tdx/tdxcall.S
+index 016a2a1ec1d6..a01542c02c36 100644
+--- a/arch/x86/virt/vmx/tdx/tdxcall.S
++++ b/arch/x86/virt/vmx/tdx/tdxcall.S
+@@ -45,8 +45,14 @@
+ .macro TDX_MODULE_CALL host:req ret=0 saved=0
+ 	FRAME_BEGIN
+ 
+-	/* Move Leaf ID to RAX */
+-	mov %rdi, %rax
++	/* Leaf ABI version -> RAX[23:16]. Zero rest of RAX. */
++	movzbl	TDX_MODULE_version(%rsi), %eax
++	shl	$16, %eax
++	/*
++	 * Combine base leaf number arg and leaf ABI version into RAX, they
++	 * don't overlap.
++	 */
++	or	%rdi, %rax
+ 
+ 	/* Move other input regs from 'struct tdx_module_args' */
+ 	movq	TDX_MODULE_rcx(%rsi), %rcx
+diff --git a/arch/x86/kernel/asm-offsets.c b/arch/x86/kernel/asm-offsets.c
+index 081816888f7a..b3c00ff4d819 100644
+--- a/arch/x86/kernel/asm-offsets.c
++++ b/arch/x86/kernel/asm-offsets.c
+@@ -95,6 +95,7 @@ static void __used common(void)
+ 	OFFSET(TDX_MODULE_rbx, tdx_module_args, rbx);
+ 	OFFSET(TDX_MODULE_rdi, tdx_module_args, rdi);
+ 	OFFSET(TDX_MODULE_rsi, tdx_module_args, rsi);
++	OFFSET(TDX_MODULE_version, tdx_module_args, version);
+ 
+ 	BLANK();
+ 	OFFSET(BP_scratch, boot_params, scratch);
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 42df8ea464c4..7a89e29b118c 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1910,10 +1910,11 @@ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
+ 		.rcx = vp->tdvpr_pa,
+ 		.rdx = initial_rcx,
+ 		.r8 = x2apicid,
++		/* apicid requires version == 1. */
++		.version = 1,
+ 	};
+ 
+-	/* apicid requires version == 1. */
+-	return seamcall(TDH_VP_INIT | (1ULL << TDX_VERSION_SHIFT), &args);
++	return seamcall(TDH_VP_INIT, &args);
+ }
+ EXPORT_SYMBOL_FOR_KVM(tdh_vp_init);
+ 
+-- 
+2.25.1
+
