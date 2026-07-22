@@ -1,69 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3484C77D2;
-	Wed, 22 Jul 2026 11:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D079831F9B1;
+	Wed, 22 Jul 2026 12:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784719388; cv=none; b=iQpEnKtEZRu+gtOIt+BHp2HqQdftttgp5fjJbl5r2RE6dstmmLTq+Vp2jz506GZXYJYpvaSf/pzXTrZKltR+fxzC8ta0bHQptf8X7P9OMPRXdUdhHqirWXk31fPBLtRkrcoE/G1s4heMTAD8UbgA3UpWhril5ncB6Mi91pWX/zc=
+	t=1784721639; cv=none; b=BQFzVs+MAmLfVO+QIjSkO27C02bcSjO0A6hjCdt5cgj7vRnuw+A98usThwR4jfFwFEabfuKT4rR/ovaJyNtRNFfv1r25ZCBID06aJdC8YNzYRRcNohXdyaAVBN/7+NRsCTFMOMcx5FeaZBasqN8RdN2Nq+lvlQ+6+2PyWusSxqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784719388; c=relaxed/simple;
-	bh=8+/clJPFOdx4YyMbKk+20/cCk4i/aduLyP/08LG/KnI=;
+	s=arc-20240116; t=1784721639; c=relaxed/simple;
+	bh=9zM4CsvwB3ammwOcYZBu+ACpLNDw2uvPPV0Tq7R8r9Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sTkvP4BxmAbwm4CBN/pF0Z9J0GT30KwFuDXsNBm3uJ7Ce5qkIKxj/3Avx9ILTKJucd+cpNAMCbL8FfQZYu1rgg2pXJvehyQPHa44bHH5zcIi9cIE7iObwmDeFsqG9xw5OM91ZwUN68Fr1f/tvqJMvL2GeuQf3KM1GziyQhXadZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yh4KTmTu; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=JAxreBoqKvuiASZQ168bqiSTJiYFobjP97E08P2SjZzOFoBAPFEiJOQORESGUydNdzY2AAeo444SM4k3nVK/Fb54TP3FIrlonBo8x4IDzuyQPrUp57Rj85hGE1wjA8/DMdI62Gg4f4NAZIz7SN2+A2bekI0+h9ziuFCSWHuSGsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wbiz9VJT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yh4KTmTu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492691F00A3A;
-	Wed, 22 Jul 2026 11:23:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wbiz9VJT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5907C1F00A3D;
+	Wed, 22 Jul 2026 12:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784719386;
-	bh=VoW8e5qYQQ+PMwq5it9LQLgrLirJMylIxUpu0LSkWxA=;
+	s=k20260515; t=1784721638;
+	bh=9A4b1VU0zQdVia5DOx0R5a1QrYj5Dm7uD2Zk8LZbqJE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Yh4KTmTuU913V1+vSYeqvYyAR5Awf2jQQ4d9RTWR39KLRMAPSjhXf0sS1lstMqW50
-	 ji35qprKyryKG9gSCju84GGfvROrV4MTVE7iZUSBfu5Sbon72OO2g3Rlg3hnAK1mbh
-	 ozDzjQhZQaOIl2xZd7xOM5OCs6nsZzgzlcpXjmLpcD7J5bNAC3OYcEfpe5MpHYJLYX
-	 peN/ZnWfTTN23kCz13vI72uNPhaAg0IvTqDGETVJa4ZMsKRtD3dmP4dJSGibLPVD64
-	 1AqhkD4pmC6my8i5ppjqa+mbxZo0tztQ7Xony4WHmW5NuFW4HlcoF2X584Jm3PfgZe
-	 3zGFVY+anK/TA==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 737F5F40072;
-	Wed, 22 Jul 2026 07:23:05 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 22 Jul 2026 07:23:05 -0400
-X-ME-Sender: <xms:GahgasZlJV76SSZLR-KxG-AlFkGbXr5A7pez_yEkvh53qvvqSThv9Q>
-    <xme:Gahgajfq4jLnwvaxyn1pE7d0eAVhjDF4dN3nyQw9ohFbPYXN8jonQnLjsiuckM0-R
-    6GDcdyn7c4f-JFH5841UfbJL1q_ToF6rhUusn4SEQX2ZG85FaZYN-CY>
-X-ME-Received: <xmr:GahgaiQZLn8uCpl1r_s9odfGKi1GMDDmBS1sDOd3rBsXbPyqz7raWRuNUHC6fw>
-X-ME-Proxy-Cause: dmFkZTFDwoAQ73y6MRPJYX+djuSJrxU5QUfgOdT0C5pisrxyRFNHjyYo/OuJnLfBNTikoo
-    EpbfibbCxUhOCLuz2rtwbT1dX1PzPSAFNWvQSep5UvNZTw0XTycbTYVgzgoRVuhcdqQjmJ
-    gLWX2z5iq81zVjQIfbVmE+1izOj01T9MMlh7nPRBal2BasY/OCr8d1t+MtSoaLB+0oibjw
-    QvbMAv8ffgvjb9zDGZjw7TYiJdv72b0Kk/h60R6LHfitb5Te3fzTFlKgNmrXsohM9/room
-    AxdRuTaiGk935qDAtbfxtuVaZPhQQnccTimoZWnerasrsN6Wl2VTBS8Qb2DW0tzLlYs9Ju
-    jVf+0Ab9lglON6iSyldF4z8ePWtvk/hWiG0wyacjv/iALc35v3fXV3RGxXuUZWQg6K9aVF
-    D9hIuz56pGU4HJx8QxBwTzbZYHBE1N3nT/btoDnYGYoymuKCLwZPGunZED1VH9z8mz/Ocr
-    6WLICsFCjBObt7a+fQBNU2+ly1HcDw3QKK9X5V7OUkJ9SiShASmRF/HgAZD6UVVTZonEdB
-    THT/futJRxrl0OZCbIgG0ebDP0UxMqZs1tBuIrmZAaJBRHUGi3BzZGuE65O0n0K3EZ1tnf
-    aCgXPgn6bSbB1eVdVz9S+N/BqxMCD0ChyewnT6EDyP9A6SL0uBLkX4SC/q6w
-X-ME-Proxy: <xmx:Gahgallp0_ofBXu9SxiMUomAwwKW8NvcVKdIV43zKw3wIQfxg-tX8A>
-    <xmx:GahgagtQmCnCKIFfzpKmjFxa6pDjUsGOjEbK3XByxjpW1yqXdVmf7Q>
-    <xmx:Gahgao_9vzhwvMlYb50ZTP4V_NkF2IyzO6857nwyCdVVRELEi5L5_w>
-    <xmx:GahgahwnElH5VYC4iC6np522L3nfD3yz9bvxlnSnbnkXzfM_vE1BcQ>
-    <xmx:Gahgag-kNWAgBp-ZC6C5KEeEOp-Bb0iZYrLXHW2QhaEq_pJVnwYU_6dG>
+	b=Wbiz9VJTv4uZOavwrOpXVSHy7uuxf3M4Fba+TMVnQDp/oiXMWXS+nlCENTFqqNnPb
+	 Kz+zQyxNzrM62VIKH6iu7GqbqPMAuEE/1lypRLDfDmfHDcV1N9mL5ZSz1Qzrl6k/a5
+	 3+sBqdHZvXqAxHC3QiaUdnBA2Q1itCWBz3EvPh3fsCgM/YhLS6AFXv2Bj0JAByrr89
+	 xYVZbdfGDpKre6mEh9bOpXc5mcdiiC3JvnbPeMm305TyYVeeYQ7qTHQesRKPSYCZOk
+	 Yb8ZTvHJwHjKzxIeSS9KaQfoYiGJeStb6fFqTuvj3v+cPqv0c+at26lFdODK3RbfYN
+	 kvdedxdn7rJdA==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 77935F40086;
+	Wed, 22 Jul 2026 08:00:37 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 22 Jul 2026 08:00:37 -0400
+X-ME-Sender: <xms:5bBgahlXR__QtAS9OQtoVhoivp34qwmWNY0ocyOLXOOfPik_VKJ8LA>
+    <xme:5bBgavIvpl_5THVP7Q6EGtZUjVghICr938UrubYJ8aOxQrD1D8quu-tVm-iYByACI
+    eCV8EHpARdsY2qfuTlBA2ZGfVy7Y87pqvgWkls8IqCrZdxTnkslB-A>
+X-ME-Received: <xmr:5bBgamUzwTQHMSbek1yIvE1YvD7HUmW9BYOCnuEGbffu90l6BwjEhER__LAwKQ>
+X-ME-Proxy-Cause: dmFkZTGrWA2P9MoWmY8SVxXUqsmXTjpz/RNS13nSx3eLvnipr3fFDktdiB6rtZC+JU9Pih
+    9CqGeoiv0KaSCYHjGF6kZ8HER2IE9UAI4sUBkCtGv069K/qteEzwU/CacqSLnOTlKLn12A
+    AmzF1NiD2YKeBaNBoCdXTcKST+ETfmaxu1KVgAcVB4JDGpHYYWMxYVRY8ZXkARumZfpiDe
+    b1VaBgEylYjrceizsJ9O9+emXrtHcdkiykwNLiKxdDTH9/LPMjokr03N0ICGodbEKY5qoB
+    Y7pfLMJviCV34XeFyLZytd8hXAhJcY81KuUOo6opff3Qzer3szqXrZbpnUIse7zE8XVEO+
+    OngOf1QA7Sk2ZwZrzrAi/hsXdkdas4kTaDW1BYCxJMZH7ZKOZkFlHFlRjTU5tdurtWoq2V
+    ZQUkL1vFVp8N8kUFz63sxPHmlMTXDUO3Zmn6FHhzoPbk+nXuSnyEV5RPetB7rQeRLI9Fzo
+    v8QnGYXh8XclYXrKV+UyWuqqEtNcEbxCh+M5EQnNnk3y+Lc0DSja/QIwvLjXBjpW4m+TA4
+    q8Ydr9GCtc6dXzeXwObWFOcpdMmdjj3qMldosaJqKhqiCmpIuGsaHy3Y61Br9idtlRkXFx
+    J0xRVmWzMhTQW4yA98KDYr4KyMjnIdbZEgSCxLnVNhgGQjzgVR4SYUpFJELA
+X-ME-Proxy: <xmx:5bBgaui1uHrHObvR4jUBr33QYDkbaDK2CZ1GgB1iVdOKI-NOId8EMg>
+    <xmx:5bBgatcAhbOPOW5hfilQ1QYK_pcQ_ktUH5uArlKklo9glqkMiqI99w>
+    <xmx:5bBgaos1Zla0eLaVHJlSDEsOK9GCN6fG6pYu3lFtOUK8efwYEaRz7w>
+    <xmx:5bBgainEOI6pmmJbRgId1V-_XHHZBgfiv09DBgm_1Z0i_StJPuNQXQ>
+    <xmx:5bBgakNDpZCBYCTC2_t7cNEqBnyFk_1WnK7vmxQ0GFwtna2yRlhVjiHw>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Jul 2026 07:23:04 -0400 (EDT)
-Date: Wed, 22 Jul 2026 12:23:04 +0100
+ 22 Jul 2026 08:00:36 -0400 (EDT)
+Date: Wed, 22 Jul 2026 13:00:35 +0100
 From: Kiryl Shutsemau <kas@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, 
-	rick.p.edgecombe@intel.com, dave.hansen@intel.com, dave.hansen@linux.intel.com, 
-	yilun.xu@intel.com, djbw@kernel.org, linux-coco@lists.linux.dev, chao.gao@intel.com, 
-	peter.fang@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH v3] x86/virt/tdx: Formalize SEAMCALL version encoding
- support
-Message-ID: <amCnuX8XAjxWFlHd@thinkstation>
-References: <20260722084634.131020-1-yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "Hansen, Dave" <dave.hansen@intel.com>, 
+	"Fang, Peter" <peter.fang@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"bp@alien8.de" <bp@alien8.de>, "Li, Xiaoyao" <xiaoyao.li@intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, 
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
+Subject: Re: [PATCH v2 2/2] virt: tdx-guest: Allocate Quote buffer dynamically
+Message-ID: <amCv00f5Q6QlztyY@thinkstation>
+References: <20260717214349.4075994-1-peter.fang@intel.com>
+ <20260717214349.4075994-3-peter.fang@intel.com>
+ <51059852-9a10-4735-a81d-003b4b1963a6@intel.com>
+ <20260721064907.GG3178326@pedri>
+ <d88fe58e-5963-49a5-86a4-6a9779d06109@intel.com>
+ <741eb8b8b83dd10d39f304133a7625f4232ab793.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -72,17 +80,23 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260722084634.131020-1-yilun.xu@linux.intel.com>
+In-Reply-To: <741eb8b8b83dd10d39f304133a7625f4232ab793.camel@intel.com>
 
-On Wed, Jul 22, 2026 at 04:46:34PM +0800, Xu Yilun wrote:
-> While both options have merits, I chose the latter from a
-> software-centric perspective. I sent v3 to invite more discussion.
+On Tue, Jul 21, 2026 at 04:43:57PM +0000, Edgecombe, Rick P wrote:
+> BUT, is this number coming from the untrusted host or the TDX module? I cant
+> find TDCS_QUOTE_MAX_SIZE in the docs.
 
-I still don't see what postponing the encoding to assembly buys us,
-but it is not the hill I want to die on. The result is centralized
-and correct, so let's move on.
+I cannot find it too. Peter, any pointers where it is documented
+publicly?
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> If it is coming from the TDX module then
+> we are not talking about security considerations at all. It's just a functional
+> "do you want to know if things are failing". Not sure why this one would be
+> special in that regard. If we think it will fail so often that we don't want a
+> warning, then we probably need another solution.
+
+Silent makes no sense to me. We are talking about attestation. If
+attestation fails the TD is functionally dead: it cannot obtain secrets.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
