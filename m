@@ -1,71 +1,73 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE064398F8
-	for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 23:14:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC73E459ACC
+	for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 23:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784762058; cv=none; b=tYJwqy9A2Xko8qB+Lvp1JIGQTbLV5vNgW+Q9ICYNt+DSnkm97g8mJ7O3CRBo+2dTIYIk10FRoPxrFm2FvQosbTCO+HZyhuxiiU/09KbW1Xe5hGYKh5XQctsudAO8/BLRHwOQ77DC0O+44UVxK2WyLJ/q7tTcybsUO1MWZPfIBEQ=
+	t=1784762060; cv=none; b=EVmxZpKRdSL7SBftZB8K6LKaQoBqGU8Gk17/mPTxQGaiyCZIDxkbzl7kGW5zQfc6wjkT9Xg+Fhr0jXDQ0pt49e71yEaJPpyzFRzYfETuPjh2GVXmftkTgdX9wtah8Xz9VDyap0q52BYzWaS67RyhZ07rcutAdmzpO8640xLX5mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784762058; c=relaxed/simple;
-	bh=7HIV+3fHpl4kdc8gFiSJABRx56th9p7yjpshKj2Wa5I=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=bnBjW8714BJKvWx5xLtfrOi1IX5L9QSr3wPd3KJVRSRxeCNq+T8d+aZEgsS+z29mw1eTcSr5MJ2NUqRKHGw0XUFdqlLtvcbfAHA/ju+G4JQNJjDJHkw0U77qRNlk+2NjdqH5wICTQ1jPcomzh+EZ4NXXAIiyVSCsBOgaBSmO8Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WvcX46z1; arc=none smtp.client-ip=209.85.210.198
+	s=arc-20240116; t=1784762060; c=relaxed/simple;
+	bh=HSUijWFM1BPOVfLPb88yrHGkaYxU/9q3xS5FLa0HHK4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=fc+cVH2XzaITZT1PBvcy0JENDN7sO0qxoNoxX9YqqkH6QT2PIyeQ0DkDHeuO8kRHxPEfj57vTq1t0Jb4AhuRJaCDjbEZSKeuWIHKTeqIWMvMkYPaBnerGafRz+Lp2YwCrxp+7BAfo+O2TrVGZxhpV0v1iJ2XY+Z2CJnZiWt+V0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lcNqLnhQ; arc=none smtp.client-ip=209.85.214.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WvcX46z1"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84e01a62d99so39286b3a.0
-        for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 16:14:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lcNqLnhQ"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cceabd70f5so1421415ad.1
+        for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 16:14:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784762056; x=1785366856; darn=lists.linux.dev;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=P+klJPR9+I3NtXYh+vSCCr8HtTVr+DNz+MjtC0fTmdQ=;
-        b=WvcX46z130VsL/doJw1g5E1sD44Wb6rpEqg9bAzr59o/qqrWvg1dPs9mcjTtuLBfOQ
-         cToj/BPUcMh4Eg/DaGTvrFmZPWIGGOru1QXx7Vmi9zyKogjuY8x49nXJe46CKYhZfs6j
-         WnuapaaGENq1NrjqtYXyOpuDAdFdHwEwDwuZeZLi8rSoAEatw3pCiKRMaTB6lE7D/2Sv
-         SgFxg4F96oueuGF6vzKVlRBSMX3zlpjfngDNPmRhgVCIQymAiC8xZecFmSuGXRGQY565
-         9oGnkxmo7M4yXbNLW2VBN/fUm2iY1LWrCHY5AwNgWDB1UpqwzzKlFR3wJJtM0er/hasc
-         THiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784762056; x=1785366856;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1784762058; x=1785366858; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=P+klJPR9+I3NtXYh+vSCCr8HtTVr+DNz+MjtC0fTmdQ=;
-        b=T5WAz+NvYKyJuk0jDE3Rfp7i+YebxK8SNBl0JPaLv0nygtkxlLxmjq0p7JtCXz/IEl
-         a0A5WxRv9czvgNheVtVpi/GVABKn+HhsIi729tpCoSuxWUiz1Wrw6ZXzV2gzstSdWPMT
-         IsogzpgozOol9nz651oJQz4OaBE9IaKXTIXNsbjLfA58U3UmHIGq22K8SoXUazxAi4gc
-         hdKWc/U+KK8NdPIlN/1JLKdvsgYSicxzZxJ+BfG9YBADquPCqGXSf7sCgW1eBXuoV30w
-         /5jW5NDl5fVzP0B7zlMOm48isBVNQnG3Eh6zv5b2sP0/y+2lbUebFh4UTKL6DEf9bNcx
-         574g==
-X-Forwarded-Encrypted: i=1; AHgh+Rpf6HjIZ7SFU3CdB9eyqAopiw8mUfMRNpwWL7HCMSmn5fblWwkZ8poC3uHkAWK2hXNtwiUA3YS6DPIc@lists.linux.dev
-X-Gm-Message-State: AOJu0YzI/M3hQwEAqlWGAq1KaXgUg8LKW2Gm/dWfHx2sNTWSNrtC1P8/
-	duHS0OpYqxQ+s7hqnCogVED+zde05BCNtYa36ewQbdpHhcyrfJtCzkgpBmRuHHbNfmfDJeR8JMS
-	DESALkA==
-X-Received: from pfblw5.prod.google.com ([2002:a05:6a00:7505:b0:848:2e05:6161])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a20f:b0:84e:1a9d:d879
- with SMTP id d2e1a72fcca58-84e2bc69cdbmr1016549b3a.28.1784762055790; Wed, 22
- Jul 2026 16:14:15 -0700 (PDT)
-Date: Wed, 22 Jul 2026 23:13:05 +0000
+        bh=56NrxXkv0UVjMvjOx9by9wvi/d3mOyqzIaOMJLt53IU=;
+        b=lcNqLnhQMymK0OfhH8d7D0WZyT1AQMuievD01TUmGO5zbc0llYsHt1kIKgsg8ECORk
+         nYZkPoReaGVqgTh1I/EfMT6lYdJLt+pvcaaq6lzcxq3k9jU9Y7xkw7LsXKSXk6CP+W9b
+         3PG+b4rNmsaVkecxSJB9TfKhXYypTR9U/2UzpZDSsJuxSRgnqkQt0P+Sa4nUG/0nmjQW
+         AlwrdkWdSyn2OQL17SGAsySfud31H6bUiGhAjLkn4mKMHrgPkxMfC+l/8cBJYeiPGCMY
+         JjXjyPVbcMNp3lCazHOev4hsIixOY0RP07eCI1MXXIRzuqq2JPReRpDa7XI3QT3fgwtu
+         s7qQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784762058; x=1785366858;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=56NrxXkv0UVjMvjOx9by9wvi/d3mOyqzIaOMJLt53IU=;
+        b=elCjPzVbij1vCK37MuHYDb5ct8KgfgbTYvUV4IaT2/x04Eqjad671pTjj7kcwsxly5
+         1OUnw7q/D+BPxQPhI00EBZCdUIzsv7I8nvzCdIrSb4Hc3wYD+1A5OjyeQ56mCUmhA4uN
+         6ThCOJiFpwRX+d4iIYDn4PTynxqEKcx9q8abeWhHc/j7zMJfpiiPe+Pr80PURZCtIG8u
+         02a/KJE6qkC68FXKSXwJCmst4oN923XZj5rTG9LZPzwzxMozgB+BHPqfM9+MM6FR9t8I
+         O9Lt4Wvlsx3AlMLLKBqpCtVPK4EigqbtDJL9AFGbG6IbTWHQuWmrvHGPo9BpB3cdBKa8
+         0XSg==
+X-Forwarded-Encrypted: i=1; AHgh+RpXS7X6EUehF20HXBBfNB/VsZG+qAUaJ+XdzCO71oCi67mSeQvfqbzhuEoCJA7aZ+Dvv7rpIQsj5vkw@lists.linux.dev
+X-Gm-Message-State: AOJu0YxshOIi7dsHTHg7m6XaCJ3jo0fmUHCRWkVexQj9t4K+FSk564ch
+	FesfJf7GVx/ZyCO/siESpSLGT5llmRX8tdS+XcIE/UOLDGW4I9ShitSPVjrAvWSnoENn2mfglfx
+	Ah+giHQ==
+X-Received: from pgjf8.prod.google.com ([2002:a63:dc48:0:b0:c85:db34:d7a])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a120:b0:3c3:7d12:a98c
+ with SMTP id adf61e73a8af0-3c44b1e9a44mr575991637.52.1784762058127; Wed, 22
+ Jul 2026 16:14:18 -0700 (PDT)
+Date: Wed, 22 Jul 2026 23:13:07 +0000
+In-Reply-To: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAIFOYWoC/x2MQQqAIBAAvyJ7TjDJjL4SHULXWogKV0IQ/550n
- IGZAoyRkGEWBSK+xHRfDfqhE+CO7dpRkm8CtNKjslrL5LNkPENCTix7vxkzWRfUYKE1T8RA+R8 ua60f+SA8MmAAAAA=
-X-Change-Id: 20260722-tdx-selftests-1da5587cf047
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784762054; l=5919;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784762054; l=2831;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=7HIV+3fHpl4kdc8gFiSJABRx56th9p7yjpshKj2Wa5I=; b=35hxqDyVYOoWigPq3JCWHxzcg53ekafGh2UPBfDigXOEa8G8ueSkYnrNgu6/uRL5/uL8OrADC
- jtQU6j8TvtaB4KWXXw5Yg4lLwHvSTfIkwsTjccw3uO+Oe8ajkAJnI6V
+ bh=nMhWICLdSh2frl7tfIaV4/PZJX0MLcCDKg8/gFmmfRA=; b=DaBxIbGI4Q0JBXmDhiTdq0R4HtbImm2MoSdd8eyphcWciY2zj/Me0FR8j6E77p6MHWfkCdI9m
+ uxtlRF4MdCVArlmm+NgiqHHnt0Vm2NLFNdYXiXh739s5M6YknSSRwMS
 X-Mailer: b4 0.14.3
-Message-ID: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
-Subject: [PATCH v14 00/22] TDX KVM selftests
+Message-ID: <20260722-tdx-selftests-v14-2-15ad654a50db@google.com>
+Subject: [PATCH v14 02/22] KVM: selftests: Update kvm_init_vm_address_properties()
+ for TDX
 From: Lisa Wang <wyihan@google.com>
 To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
 	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
@@ -83,128 +85,86 @@ Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lis
 	Adrian Hunter <adrian.hunter@intel.com>
 Content-Type: text/plain; charset="utf-8"
 
-This patch series focuses on setting up a TDX VM and adding all code
-necessary to run a basic lifecycle test.
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Unlike standard KVM selftests can set up the VM through guest registers,
-TDX module protects TDs' register state from the host. This feature of
-TDX causes problems on VM boot state initialization and the ucall
-implementation.
+Initialize the TDX S-bit and the GPA tag mask in
+kvm_init_vm_address_properties() for TDX VMs, similar to how the C-bit
+is initialized for SEV VMs.
 
-In standard KVM selftests, the host directly initializes the guest state
-by manipulating Special Registers (SREGs) and General Purpose Registers
-(GPRs) via IOCTLs (KVM_SET_SREGS, etc.) before the first KVM_RUN.
+The TDX S-bit is used to distinguish between shared and private guest
+physical addresses. Its position is determined by the guest physical
+address width, which is either 48 or 52 bits for current TDX
+implementations.
 
-To bypass direct register initialization by the host, we utilize the
-standard x86 reset vector as the default entry point.
-
-The mechanism works as follows:
-1. The host places register values into a specific memory region and
-   inserts boot code at the VM's default starting point.
-2. When the VM starts, it executes this boot code to "pull" values from
-   memory and manually set up its own SREGs and GPRs.
-3. Once the environment is ready, the boot code jumps to the guest code.
-
-The standard x86 ucall() implementation uses PIO, but it does not
-actually transmit data through the 4-byte PIO data. Instead, it relies
-on the host reading the ucall address directly from the guest's RDI
-register.
-
-TDX selftests cannot utilize the standard x86 ucall implementation,
-because the host is unable to access the guest's RDI register. Based on
-this restriction, we used TDCALL with an 8-byte MMIO data to implement
-ucall. This method is the cleanest and efficient implementation for the
-overall ucall architecture.
-
-v14 revision for TDX KVM selftests based on kvm/next and guest_memfd:
-In-place conversion support[1]. This series needs some changes from
-in-place conversion v9. For ease of testing, an extra hack commit has
-been added. The complete code is available at:
-https://github.com/googleprodkernel/linux-cc/commits/tdx-selftests-v14
-
-Changes from v13[2]:
-1. Fixed some bugs, including typo and commit messages.
-2. Outlined TDCALL from tdx.c to tdx.S.
-3. Used HPET(0xfed00000) for ucall GPA address.
-4. Supported guest_memfd w/wo in-place conversion support.
-
-Thanks review from Ackerley, Binbin, Chenyi, Sean and Xiaoyao!
-
-Series is organized by:
-1. Patches 1 - 4: Initialize the TDX VM
-2. Patches 5 - 8: Add the TDX boot code
-3. Patches 9 - 13: Set up the boot region
-4. Patches 14 - 17: Set up the vCPU
-5. Patches 18 - 19: Finalize the TDX VM
-6. Patches 20 - 22: Implement the ucall and run the TDX test
-
-[1]: https://lore.kernel.org/all/20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com/T/
-[2]: https://lore.kernel.org/all/20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com/
-
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Co-developed-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Co-developed-by: Sagi Shahar <sagis@google.com>
+Signed-off-by: Sagi Shahar <sagis@google.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Lisa Wang <wyihan@google.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
-Ackerley Tng (2):
-      KVM: selftests: Add helpers to init TDX memory and finalize VM
-      KVM: selftests: Add ucall support for TDX
+ tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h | 14 ++++++++++++++
+ tools/testing/selftests/kvm/lib/x86/processor.c        | 12 ++++++++++--
+ 2 files changed, 24 insertions(+), 2 deletions(-)
 
-Erdem Aktas (2):
-      KVM: selftests: Add TDX boot code
-      KVM: selftests: Implement MMIO WRITE for the TDX VM
+diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+new file mode 100644
+index 000000000000..f647e6ca6b34
+--- /dev/null
++++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef SELFTESTS_TDX_TDX_UTIL_H
++#define SELFTESTS_TDX_TDX_UTIL_H
++
++#include <stdbool.h>
++
++#include "kvm_util.h"
++
++static inline bool is_tdx_vm(struct kvm_vm *vm)
++{
++	return vm->type == KVM_X86_TDX_VM;
++}
++
++#endif /* SELFTESTS_TDX_TDX_UTIL_H */
+diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+index b51467d70f6e..b68ad1dc7e02 100644
+--- a/tools/testing/selftests/kvm/lib/x86/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+@@ -11,6 +11,7 @@
+ #include "smm.h"
+ #include "svm_util.h"
+ #include "sev.h"
++#include "tdx/tdx_util.h"
+ #include "vmx.h"
+ 
+ #ifndef NUM_INTERRUPTS
+@@ -1311,12 +1312,19 @@ void kvm_get_cpu_address_width(unsigned int *pa_bits, unsigned int *va_bits)
+ 
+ void kvm_init_vm_address_properties(struct kvm_vm *vm)
+ {
++	u32 gpa_bits = kvm_cpu_property(X86_PROPERTY_GUEST_MAX_PHY_ADDR);
++
++	vm->arch.sev_fd = -1;
++
+ 	if (is_sev_vm(vm)) {
+ 		vm->arch.sev_fd = open_sev_dev_path_or_exit();
+ 		vm->arch.c_bit = BIT_ULL(this_cpu_property(X86_PROPERTY_SEV_C_BIT));
+ 		vm->gpa_tag_mask = vm->arch.c_bit;
+-	} else {
+-		vm->arch.sev_fd = -1;
++	} else if (is_tdx_vm(vm)) {
++		TEST_ASSERT(gpa_bits == 48 || gpa_bits == 52,
++			    "TDX: bad X86_PROPERTY_GUEST_MAX_PHY_ADDR value: %u", gpa_bits);
++		vm->arch.s_bit = BIT_ULL(gpa_bits - 1);
++		vm->gpa_tag_mask = vm->arch.s_bit;
+ 	}
+ }
+ 
 
-Isaku Yamahata (2):
-      KVM: selftests: Update kvm_init_vm_address_properties() for TDX
-      KVM: selftests: TDX: Use KVM_TDX_CAPABILITIES to validate TDs' attribute configuration
-
-Lisa Wang (2):
-      KVM: selftests: Require guest_memfd for TDX VMs
-      KVM: selftests: Support guest_memfd in-place conversion
-
-Sagi Shahar (13):
-      KVM: selftests: Initialize the TDX VM
-      KVM: selftests: Expose segment definitions to assembly files
-      tools: include: Add kbuild.h for assembly structure offsets
-      KVM: selftests: Introduce structures for TDX guest boot parameters
-      KVM: selftests: Expose functions to get default sregs values
-      KVM: selftests: Set up TDX boot code region
-      KVM: selftests: Set up TDX boot parameters region
-      KVM: selftests: Expose function to allocate vCPU stack
-      KVM: selftests: Call KVM_TDX_INIT_VCPU when creating a new TDX vcpu
-      KVM: selftests: Load per-vCPU guest stack in TDX boot parameters
-      KVM: selftests: Set entry point for TDX guest code
-      KVM: selftests: Finalize TD memory as part of kvm_arch_vm_finalize_vcpus
-      KVM: selftests: Add TDX lifecycle test
-
-Sean Christopherson (1):
-      KVM: selftests: Add macros to simplify creating VM shapes for non-default types
-
- tools/include/linux/kbuild.h                       |  11 +
- tools/testing/selftests/kvm/.gitignore             |   3 +-
- tools/testing/selftests/kvm/Makefile.kvm           |  33 ++-
- tools/testing/selftests/kvm/include/kvm_util.h     |  27 +-
- .../testing/selftests/kvm/include/x86/processor.h  |  44 +++
- .../selftests/kvm/include/x86/processor_asm.h      |  12 +
- tools/testing/selftests/kvm/include/x86/sev.h      |   2 -
- .../selftests/kvm/include/x86/tdx/td_boot.h        |  82 ++++++
- tools/testing/selftests/kvm/include/x86/tdx/tdx.h  |  17 ++
- .../selftests/kvm/include/x86/tdx/tdx_util.h       |  82 ++++++
- tools/testing/selftests/kvm/include/x86/ucall.h    |   6 -
- tools/testing/selftests/kvm/lib/kvm_util.c         |  22 +-
- tools/testing/selftests/kvm/lib/ucall_common.c     |   8 +
- tools/testing/selftests/kvm/lib/x86/processor.c    | 125 +++++---
- tools/testing/selftests/kvm/lib/x86/sev.c          |  16 --
- tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S  |  61 ++++
- .../selftests/kvm/lib/x86/tdx/td_boot_offsets.c    |  21 ++
- tools/testing/selftests/kvm/lib/x86/tdx/tdx.S      |  37 +++
- tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 316 +++++++++++++++++++++
- tools/testing/selftests/kvm/lib/x86/ucall.c        |  33 +++
- tools/testing/selftests/kvm/x86/sev_smoke_test.c   |  40 +--
- tools/testing/selftests/kvm/x86/tdx_vm_test.c      |  33 +++
- 22 files changed, 927 insertions(+), 104 deletions(-)
----
-base-commit: 2145a419fb2a4cdc8eefc8497425d2827f46e660
-change-id: 20260722-tdx-selftests-1da5587cf047
-
-Best regards,
 -- 
-Lisa Wang <wyihan@google.com>
+2.55.0.229.g6434b31f56-goog
 
