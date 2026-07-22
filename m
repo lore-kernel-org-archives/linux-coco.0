@@ -1,33 +1,67 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE9F349CEF;
-	Wed, 22 Jul 2026 13:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA5834CFC3
+	for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 13:47:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784727123; cv=none; b=F37ydgVgLJxVNlsCzxkDj6AnT2PhiB59bqJT0r+oriH0q55iGPA31yyE1PxzokgmsVMmeS6UGvaNbssmTZHM/RRvwT17/VKyjHbl5COTjUJ4PlgVZH/mI7t2r7mu0lUZgR6DI3ohAfdEhfDjJLPC0p/YAphndnquCPbzecrx0Y0=
+	t=1784728025; cv=none; b=b3C76tAgH/iNq53j/KdR8Kc4KmhTlxKa6Nl0XVJBj8EKNOEE7ng6a0BOGBMZcPf58Kc2vsI5r0A0zemeVkFmbTrichqGCTurgCq+SriJboWpyejSgbnxEN29pyn4EZ6BkvQcJLfzZXveA0Kuqx90Vbqw3S4UGq4koZJHSUF7sDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784727123; c=relaxed/simple;
-	bh=6AxZbM3+o8fEzuQd3zgOIISjc+Vr+68x4REjcsi72PY=;
+	s=arc-20240116; t=1784728025; c=relaxed/simple;
+	bh=zi8GItGQ4f216NT/sK0BooRVEaZG3qR8A+cADf6jqeY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MjYyiiG1tgFWVNa1FcWagm+B6Ara3wRUkrODM2byXhIo2BKvbhpvWyAsSD+oG3Ft90Z7Q+aTdjLX4QVNe5bSh3RMegE4jcbW5QtgbW2bskq1Wx4m+4LAJjRaswo2L6XrPl/3TH551z3uCuJ4xTJ++20eX36vhg2niMirK6NrYzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ZVW6ftl+; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 In-Reply-To:Content-Type; b=bOJgZgdGbpbHzGiTdeVXKvGtxYKrd87s0SKShYaTLHOpNaaRmtK1/OyNvH9rWDg/QDnpySZghS42cqJM7WXq/378Cus62AcbwKumZv9ZvNVKTUGVDn41o45qF6BegkcVEPi59caOYFF1ofnrJx1uuvaTXhJOZ1cQZiltD/Ftw/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=cIkjzGbi; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ZVW6ftl+"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 41F5B1595;
-	Wed, 22 Jul 2026 06:31:56 -0700 (PDT)
-Received: from [10.57.86.63] (unknown [10.57.86.63])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 040433F58B;
-	Wed, 22 Jul 2026 06:31:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784727120; bh=6AxZbM3+o8fEzuQd3zgOIISjc+Vr+68x4REjcsi72PY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZVW6ftl+NWzDeteskCjMo4aVNi1XQiZaplBWqUD6PO1uqdcf2vJvElv7Fu9S9IFcp
-	 LH7e1FbyjpMl6pVeztbeRHRFBFnMG4HoJcYxs/VL13MCByX5fjTlo9r2zB/re27opm
-	 M9hCclLQ1h6SwXoQnRJogmfM/3Jz6rRB/cwX3GHY=
-Message-ID: <b71e81ee-372c-4963-a1f7-bd301aee89cb@arm.com>
-Date: Wed, 22 Jul 2026 14:31:52 +0100
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="cIkjzGbi"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4955aa106b1so31976045e9.0
+        for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 06:47:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1784728022; x=1785332822; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=WlO8gzQVRUVu2nU61rp3gHEjSdVPZoP2OzRg7yAI4kI=;
+        b=cIkjzGbi6reEN33rnFYlbJs9LcN5+1HagNQOzmeFnF/0ZPF+lDTmMHb9hxEfxnI5xX
+         f4xCCuLKG5SeFAy1ZSVNSJbyE5Q4+S+PdlY5B30F7B3YUtrU7VIs4qyHznDJf/15sFGt
+         1rf0YzTD+/LEKYEsaedQ+7nWgmuRjSd+JQHM/YX25k/qbijF7WLbHCWr1sFvtsa87SUm
+         yzUuZU6jtZXUEAsP+P33FweoTkZ34eoDGOySYBufH2U4+OaSWg34corl0OtmlBO2RN1l
+         Q9hoEbr7TH05IxpmYJIbJFVh/zErSHrlUjmDb/q/qYaC1SaIMGHphWbtUUDJor9RtEkF
+         Cb4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784728022; x=1785332822;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=WlO8gzQVRUVu2nU61rp3gHEjSdVPZoP2OzRg7yAI4kI=;
+        b=gan34vwbQxNdBZJmPjTx6RuXwAcSUXGQJGcttwfZi6UKw54Ljc6NwFQughiQ53QY1v
+         PeA6B2vKWZlJOkgUURkEzApq68GyWHNeWyB8J8K9oyEWB4j/SHFEd0OYKQhWxMdkqd/F
+         4hvrx90nmTLArrzZn/7w2n07vfPjlW71+DugPgu7pKrUia3RQ7iKjRb8nD67AGXdqFla
+         rA9QY/riysQ+jDhm0mYVlAhJVpLZWYG8PmIemvnPdDkyz5BLYro/LEk9hIEXvMLjFSzW
+         exfoMyfFi7RUzG1M5l0a6ae3i/BOzg1+2X/GeifYkssJiWvLyphNEx0nddtVZN5nEL/R
+         Snlw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq8+TB/+FdHgj2KRvy5bzrXHsTer3l8Za2J2pr/0RRY95fpMN5WYZgmUFf+rH5BL5qCKYeZOzjCEcNu@lists.linux.dev
+X-Gm-Message-State: AOJu0YxUvh6y9lLg3sqscJCZQtr7cSgMBWc47BK7P7yoJpjcGP8jEGr2
+	1aPm4pw9g+seIdxVGj99DaiJRxI27sTlmL5QV+xlgKLpSFkwEms7e95xseouUD254ao=
+X-Gm-Gg: AR+sD10n1fHAHp4cTuPfowtov+XqAd0X3XFXGjSOEd/bwntXs2DIrjA0xQsIhkb7Tep
+	NNVNkxQEGXytGFs3ULxw1Cp8gnfn1I+emZOTCtaoauNZ+g6kiCt30c4DiZKWDXvkZSn3wXG+kap
+	KVbjzyVUIdpxTKZxAoDVDeo+MnZCO8jmwKqUJoE0f5MkeNoUnSZh144pWNxLgDYj4xQPolJa9qz
+	VXcb8fmWH8JsKpRFQaWMWS9PwXvz4KP4XBA82LbPdceMfIr0gIpCYU0jakzYr36V/MgsUSHRzb4
+	rWLxkoRer6RTkD7Bfj/wFuUvLv6vRbx5SLgcSEr73/2uXQ8uV8bStfcryTnpdEQUb/oeO2P6TZc
+	3KaVs01248+hedJAX9mNOjF50PdeyTOOjFKpAbE4d8Qd+LH2XNQi8VwIwlNX2kSsOvyyxQjV1Ht
+	XX+dtV
+X-Received: by 2002:a05:600c:4593:b0:495:3a52:cd7e with SMTP id 5b1f17b1804b1-4954a40e2f3mr271888215e9.25.1784728021940;
+        Wed, 22 Jul 2026 06:47:01 -0700 (PDT)
+Received: from [10.20.4.146] ([149.62.206.101])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956a63fa41sm80105125e9.14.2026.07.22.06.46.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Jul 2026 06:47:01 -0700 (PDT)
+Message-ID: <20900cd6-6d05-4a20-a21d-2a1d4a6ef5e5@suse.com>
+Date: Wed, 22 Jul 2026 16:46:58 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -35,184 +69,195 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 12/37] KVM: arm64: CCA: Support the VGIC in realms
-To: Kohei Enju <enju.kohei@fujitsu.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20260715142841.80544-1-steven.price@arm.com>
- <20260715142841.80544-13-steven.price@arm.com>
- <amB-opawGgF6jNHB@FCCLS0092175.localdomain>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <amB-opawGgF6jNHB@FCCLS0092175.localdomain>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v7 08/11] KVM: TDX: Get/put PAMT pages when (un)mapping
+ private memory
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de,
+ dave.hansen@intel.com, hpa@zytor.com, kas@kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com,
+ seanjc@google.com, tglx@kernel.org, vannapurve@google.com, x86@kernel.org,
+ chao.gao@intel.com, yan.y.zhao@intel.com, kai.huang@intel.com,
+ tony.lindgren@linux.intel.com, binbin.wu@intel.com
+Cc: Binbin Wu <binbin.wu@linux.intel.com>
+References: <20260718014500.2231262-1-rick.p.edgecombe@intel.com>
+ <20260718014500.2231262-9-rick.p.edgecombe@intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20260718014500.2231262-9-rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 22/07/2026 09:27, Kohei Enju wrote:
-> On 07/15 15:28, Steven Price wrote:
->> The RMM provides emulation of a VGIC to the realm guest. With RMM v2.0
->> the registers are passed in the system registers so this works similar
->> to a normal guest, but kvm_arch_vcpu_put() need reordering to early out,
->> and realm guests don't support GICv2 even if the host does.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
+
+
+On 7/18/26 04:44, Rick Edgecombe wrote:
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 > 
-> Hi Steven,
-
-Hi Kohei,
-
-> I've been testing this series and found that when the host CPU doesn't have
-> ARM64_HAS_ICH_HCR_EL2_TDIR this series doesn't work as expected.
-
-Thanks for testing!
-
-> Since commit 2a28810cbb8b ("KVM: arm64: GICv3: Detect and work around the lack
-> of ICV_DIR_EL1 trapping"), when the host CPU doesn't support this feature, KVM
-> traps all GIC sysreg accesses in the common group. However, currently trap
-> handlers for ICC_{PMR,RPR,CTLR}_EL1 registers are missing [0]. So when Realm
-> guests try to access those registers, KVM traps them but just emits the warning
-> shown in [1], and Realm guests fail to boot.
+> Add Dynamic PAMT support to KVM's S-EPT MMU by "getting" a PAMT page when
+> adding guest memory (PAGE.ADD or PAGE.AUG), and "putting" the page when
+> removing guest memory (PAGE.REMOVE).
 > 
-> As far as I can tell, the CCA requirements don't require the
-> ARM64_HAS_ICH_HCR_EL2_TDIR feature. If that's the case, this seems to be a
-> problem. Is there any workaround for this issue, or should we implement trap
-> handlers for those registers?
-
-As Marc has already said in his reply, I'm really surprised you have a
-CPU which implements CCA but doesn't have ARM64_HAS_ICH_HCR_EL2_TDIR.
-Can you give some more details about the platform you are testing on?
-
-Ultimately there are two options here - either don't support CCA (so
-detect the lack of ARM64_HAS_ICH_HCR_EL2_TDIR and bail out early), or
-plumb in the trap handlers - as commit 2a28810cbb8b points out this
-isn't something we really want to support if we can avoid it.
-
-Hence I'm interested to know where this sits between "hacked up test
-system" and "production hardware". E.g. if this is an emulator it might
-be possible to just enable the CPU feature.
-
-Thanks,
-Steve
-
-> Thanks,
-> Kohei
+> To access the per-vCPU PAMT caches without plumbing @vcpu throughout the
+> TDP MMU, begrudgingly use kvm_get_running_vcpu() to get the vCPU, and bug
+> the VM if KVM attempts to set an S-EPT leaf without an active vCPU.  KVM
+> only supports creating _new_ mappings in page (pre)fault paths, all of
+> which require an active vCPU.
 > 
-> [0]
-> static const struct sys_reg_desc sys_reg_descs[] = {
->     ...
-> 	{ SYS_DESC(SYS_ICC_PMR_EL1), undef_access },
-> 	{ SYS_DESC(SYS_ICC_RPR_EL1), undef_access },
-> 	{ SYS_DESC(SYS_ICC_CTLR_EL1), undef_access },
-> };
+> The PAMT memory holds metadata for TDX protected memory. With Dynamic
+> PAMT, PAMT_4K is allocated on demand. The kernel supplies the TDX module
+> with a few pages that cover 2MB of host physical memory.
 > 
-> [1]
-> ------------[ cut here ]------------
-> Unexpected undefined exception injection to REC
-> WARNING: arch/arm64/kvm/inject_fault.c:330 at kvm_inject_undefined+0x100/0x148, CPU#1: kvm-vcpu-0/370
-> Modules linked in:
-> CPU: 1 UID: 0 PID: 370 Comm: kvm-vcpu-0 Not tainted 7.2.0-rc1-00096-gd6d40e6a3103 #161 PREEMPT(lazy)
-> [...]
-> Call trace:
->  kvm_inject_undefined+0x100/0x148 (P)
->  undef_access+0x18/0x30
->  perform_access+0x54/0x1d0
->  kvm_handle_sys_reg+0xfc/0x308
->  rec_exit_sys_reg+0x34/0x168
->  handle_rec_exit+0x12c/0x4c8
->  kvm_arch_vcpu_ioctl_run+0x7a0/0x9a8
->  kvm_vcpu_ioctl+0x180/0xb50
->  __arm64_sys_ioctl+0xb4/0x118
->  invoke_syscall.constprop.0+0xb8/0x120
->  do_el0_svc+0x48/0xc8
->  el0_svc+0x44/0x248
->  el0t_64_sync_handler+0xa0/0xe8
->  el0t_64_sync+0x198/0x1a0
-> ---[ end trace 0000000000000000 ]---
->  [...]
+> Releases are balanced via tdx_pamt_put(): every control-page free goes
+> through tdx_free_control_page(), and guest data pages are put directly on
+> the successful tdh_mem_page_remove() path and in the
+> tdx_mem_page_add/aug() error path.
 > 
->> ---
->> Changes from v12:
->>  * GIC registers are now passed in the system registers rather than via
->>    rec_entry/rec_exit which removes most of the changes.
->> Changes from v11:
->>  * Minor changes to align with the previous patches. Note that the VGIC
->>    handling will change with RMM v2.0.
->> Changes from v10:
->>  * Make sure we sync the VGIC v4 state, and only populate valid lrs from
->>    the list.
->> Changes from v9:
->>  * Copy gicv3_vmcr from the RMM at the same time as gicv3_hcr rather
->>    than having to handle that as a special case.
->> Changes from v8:
->>  * Propagate gicv3_hcr to from the RMM.
->> Changes from v5:
->>  * Handle RMM providing fewer GIC LRs than the hardware supports.
->> ---
->>  arch/arm64/kvm/arm.c            | 11 ++++++++---
->>  arch/arm64/kvm/vgic/vgic-init.c |  2 +-
->>  2 files changed, 9 insertions(+), 4 deletions(-)
->>
->> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->> index 38fac98cd6a4..2959a1451232 100644
->> --- a/arch/arm64/kvm/arm.c
->> +++ b/arch/arm64/kvm/arm.c
->> @@ -791,19 +791,24 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
->>  		kvm_call_hyp_nvhe(__pkvm_vcpu_put);
->>  	}
->>  
->> +	kvm_timer_vcpu_put(vcpu);
->> +	kvm_vgic_put(vcpu);
->>  	kvm_vcpu_put_debug(vcpu);
->> +
->> +	vcpu->cpu = -1;
->> +
->> +	if (vcpu_is_rec(vcpu))
->> +		return;
->> +
->>  	kvm_arch_vcpu_put_fp(vcpu);
->>  	if (has_vhe())
->>  		kvm_vcpu_put_vhe(vcpu);
->> -	kvm_timer_vcpu_put(vcpu);
->> -	kvm_vgic_put(vcpu);
->>  	kvm_vcpu_pmu_restore_host(vcpu);
->>  	if (vcpu_has_nv(vcpu))
->>  		kvm_vcpu_put_hw_mmu(vcpu);
->>  	kvm_arm_vmid_clear_active();
->>  
->>  	vcpu_clear_on_unsupported_cpu(vcpu);
->> -	vcpu->cpu = -1;
->>  }
->>  
->>  static void __kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
->> diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
->> index 907057881b26..fd77db35ef02 100644
->> --- a/arch/arm64/kvm/vgic/vgic-init.c
->> +++ b/arch/arm64/kvm/vgic/vgic-init.c
->> @@ -81,7 +81,7 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
->>  	 * the proper checks already.
->>  	 */
->>  	if (type == KVM_DEV_TYPE_ARM_VGIC_V2 &&
->> -		!kvm_vgic_global_state.can_emulate_gicv2)
->> +	    (!kvm_vgic_global_state.can_emulate_gicv2 || kvm_is_realm(kvm)))
->>  		return -ENODEV;
->>  
->>  	/*
->> -- 
->> 2.43.0
->>
->>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Co-developed-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> [rick: enhance log, reviewing, rebase, with help from AI tooling]
+> Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> ---
+> v7:
+>   - Don't do to_tdx() before NULL check for readability (Binbin, Sean)
+>   - Fixup tags (Sean)
+>   - Export tdx_supports_dynamic_pamt() since it's used in KVM here and no
+>     longer an static inline.
+> v6:
+>   - Don't have topup op take a min param (Yan, Sean)
+>   - Make log match style of the rest of the series
+>   - Adjustments from dropping error helper patches
+> ---
+>   arch/x86/include/asm/kvm-x86-ops.h |  1 +
+>   arch/x86/include/asm/kvm_host.h    |  2 +
+>   arch/x86/kvm/mmu/mmu.c             |  4 ++
+>   arch/x86/kvm/vmx/tdx.c             | 63 ++++++++++++++++++++++++++----
+>   arch/x86/kvm/vmx/tdx.h             |  2 +
+>   arch/x86/virt/vmx/tdx/tdx.c        |  1 +
+>   6 files changed, 65 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+> index 83dc5086138b3..588563dfe88d5 100644
+> --- a/arch/x86/include/asm/kvm-x86-ops.h
+> +++ b/arch/x86/include/asm/kvm-x86-ops.h
+> @@ -98,6 +98,7 @@ KVM_X86_OP_OPTIONAL_RET0(tdp_has_smep)
+>   KVM_X86_OP(load_mmu_pgd)
+>   KVM_X86_OP_OPTIONAL_RET0(set_external_spte)
+>   KVM_X86_OP_OPTIONAL(free_external_spt)
+> +KVM_X86_OP_OPTIONAL_RET0(topup_external_cache)
+>   KVM_X86_OP(has_wbinvd_exit)
+>   KVM_X86_OP(get_l2_tsc_offset)
+>   KVM_X86_OP(get_l2_tsc_multiplier)
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 5f6c1ce9673b7..1c706e2d773b0 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1922,6 +1922,8 @@ struct kvm_x86_ops {
+>   	/* Update external page tables for page table about to be freed. */
+>   	void (*free_external_spt)(struct kvm *kvm, struct kvm_mmu_page *sp);
+>   
+> +	int (*topup_external_cache)(struct kvm_vcpu *vcpu, int min_nr_spts);
+> +
+>   
+>   	bool (*has_wbinvd_exit)(void);
+>   
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 234d0a95abf53..6dab99654f170 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -614,6 +614,10 @@ static int mmu_topup_memory_caches(struct kvm_vcpu *vcpu, bool maybe_indirect)
+>   					       PT64_ROOT_MAX_LEVEL);
+>   		if (r)
+>   			return r;
+> +
+> +		r = kvm_x86_call(topup_external_cache)(vcpu, PT64_ROOT_MAX_LEVEL);
+> +		if (r)
+> +			return r;
+>   	}
+>   	r = kvm_mmu_topup_memory_cache(&vcpu->arch.mmu_shadow_page_cache,
+>   				       PT64_ROOT_MAX_LEVEL);
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index f6c01eab8113b..c3b1d1f056cea 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -681,6 +681,8 @@ int tdx_vcpu_create(struct kvm_vcpu *vcpu)
+>   	if (!irqchip_split(vcpu->kvm))
+>   		return -EINVAL;
+>   
+> +	tdx_init_pamt_cache(&tdx->pamt_cache);
+> +
+>   	fpstate_set_confidential(&vcpu->arch.guest_fpu);
+>   	vcpu->arch.apic->guest_apic_protected = true;
+>   	INIT_LIST_HEAD(&tdx->vt.pi_wakeup_list);
+> @@ -866,6 +868,8 @@ void tdx_vcpu_free(struct kvm_vcpu *vcpu)
+>   	struct vcpu_tdx *tdx = to_tdx(vcpu);
+>   	int i;
+>   
+> +	tdx_free_pamt_cache(&tdx->pamt_cache);
+> +
+>   	if (vcpu->cpu != -1) {
+>   		KVM_BUG_ON(tdx->state == VCPU_TD_STATE_INITIALIZED, vcpu->kvm);
+>   		tdx_flush_vp_on_cpu(vcpu);
+> @@ -1621,6 +1625,16 @@ void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int pgd_level)
+>   	td_vmcs_write64(to_tdx(vcpu), SHARED_EPT_POINTER, root_hpa);
+>   }
+>   
+> +static int tdx_topup_external_pamt_cache(struct kvm_vcpu *vcpu, int min_nr_spts)
+> +{
+> +	/*
+> +	 * Don't cover the root SPT, but cover a possible 4KB private
+> +	 * page in addition to the SPTs. So -1 to exclude the root
+> +	 * SPT, and +1 for the guest page cancel out.
+> +	 */
 
+That comment here doesn't seem to correspond to the code in anyway. 
+There are no +-1 adjustments.
+> +	return tdx_topup_pamt_cache(&to_tdx(vcpu)->pamt_cache, min_nr_spts);
+> +}
+
+<snip>
