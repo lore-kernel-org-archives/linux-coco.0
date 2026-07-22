@@ -1,57 +1,56 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACDF4582CA
-	for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 23:14:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD59C4657E3
+	for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 23:14:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784762067; cv=none; b=tR+sq5IeSF+HXfzpB/AzR1Igck6uNw0g/WW1sr4g/wJ+t5q7J3Mh9jO5WQF1sQUwfggAkkh3GREPc0S8dMPl83kmD4SIWOWa1uJ0Cn0qQhBRXpTb3dof5Pw5n2EVGF1fupjX0Eh4EdHJAZHj9nqyR7GdfUOOMHWJ/+o9VEjJVsM=
+	t=1784762068; cv=none; b=BhDC9aXiMvIMc5uxkunADe/uJvJJ3wJ07Sgq1g3CfmHXozcOsbFMf4JBiyk/SPPgXrSn4XChJUjem0lGSX9LjqFBXxvOEB+norwBmDXvombwXVOB86xailwkoGVZRtPTeGVuycBLdBopi/qg5DjGAqRfceyd0sGqF/6avgg5SfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784762067; c=relaxed/simple;
-	bh=tGPVY6sBJCD5ODqi/JcZObKjVFlIB/iTqLcMXmlR1CQ=;
+	s=arc-20240116; t=1784762068; c=relaxed/simple;
+	bh=nq+rGQSjfz69WWYgD4OukIBKqsD4IMbB46h0B8wIBqw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sBuUXMDXJ4MKX7XO4oG7jIFIYLMYxMATOs95GsU9XVCv0alCvy8u3yrZtYoBKikQNU9/r+HRxv0OeFDz2wAD5zpbeKZM4NlFpp1fPw6j/XTRSdNvqj2JQlOzL7mwm1VeqelmbgqHcJf2rF+wQknrGN4+zLyfousxZSEuuNKJBc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qwxq3JSy; arc=none smtp.client-ip=209.85.214.200
+	 To:Cc:Content-Type; b=kz9oTVUC40BhAPGlGj8mKRLw2qld6csyGkZ7XgRqM3X60PYw++EfW0NXINq4XTU7pbxX6Q5FfLmJ34eXDMPzYJ+LXqry0GGWR7srkRvYIe41JbqN5E0d5VcXtbQcYvwAd3JQI9jbXT4ZtUK12BgRfw0UarEEjOXfeBzUQUhqF2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k6+5nDmR; arc=none smtp.client-ip=209.85.214.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qwxq3JSy"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cae455cf6dso645785ad.2
-        for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 16:14:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k6+5nDmR"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2caf4173b1cso810285ad.3
+        for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 16:14:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784762063; x=1785366863; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ZXtKi3prXzI9bnKg4KG5F9D+G4t68ydomgijLza5cNY=;
-        b=Qwxq3JSy4ndKFeNoRi5FRVdxcWmxSaeHjBK4wUJFpWOjPqyJISPZBTU7lSj0tSgV0c
-         UjOv4/+fCuIlc5CDfW85bgzcMuPSyxZuXzVpREX4VnTu2Ssn1UIeO8DjZ4Ua7Y9v2sPH
-         owHKYrjno7GbGGsc1VV/oc3JHtTBG9+xlqnBrx6bxgossogFM3d9NplLsErftmKCOjD6
-         DHP7xTKpurBHwc0yCJKJR+CkaqkPf8l5Ts0ThYBG4Ogmo9L5YuEQv5apmTv3aGFJWhp7
-         zzjDBdAa/L+NQqufZHpAFNlE/MHZtbVWCBnUXx6PFjKBrd1q5DNWa1oursgYVkZpC8cF
-         n/og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784762063; x=1785366863;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1784762065; x=1785366865; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZXtKi3prXzI9bnKg4KG5F9D+G4t68ydomgijLza5cNY=;
-        b=TuFMt5qLP6r3n1vhd4OsO2vyJilHtiQ03wcK4qb8h9AZ6+vqY3DlWdbVNTj8cH6kVO
-         wW43KCiZLr54cSEAnIVl3Vgs1JYE5w2WaRA+Rahhb0WHAgqqH1QfKbh6Amt1hCQASwI3
-         l9/A9L0j5glYJ5HWKUgrMJuTANPbpSV1ImlO9/H/cqIMKFsxKwzzamV+GB0FH6yK7trn
-         aLyBEUGmE6NcUAhUcGJCOg0KC6i8almoDxtINAE85hnftGBr5Hu7J3iSsEaaSG7hCtWG
-         7yIUp6CvLPh5i/yDmAxv/o0uRzFyVDxF4cir42rnkodfVJEPOHcs8afyBtUkM5RhTVWF
-         4zdw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro4OpGyzMa17tDY8edi3MrzEzfIv/okASedQm7o8sYqk4Hhh123EbBaDYd+IgjNLINUQCrny9xFKLWF@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy/k1QiDw3/xkkoD0pS+rvYoJ4E9e5I0HzIxTCwdeHO8NEhkgOi
-	D2SUNYRh4lGzVTlyUbs/7ebtRtopSlbDjf3RUv/hw5hytvNh/4tHPwXntzxLWFVgit3iIzMs85m
-	JTYphQA==
-X-Received: from plbay4.prod.google.com ([2002:a17:902:8b84:b0:2c7:ec09:a994])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e5ce:b0:2ca:62e:cc4f
- with SMTP id d9443c01a7336-2cfa74906e5mr8381875ad.23.1784762063095; Wed, 22
- Jul 2026 16:14:23 -0700 (PDT)
-Date: Wed, 22 Jul 2026 23:13:12 +0000
+        bh=IBwwN+PCRRt/xqJfZcQgxZJHRiT6JnsNy2fU/hkSPUs=;
+        b=k6+5nDmR+khwqCuVt6mXUWtAX+slXrYNLNu3VdMIgMWc+hsr4Y/kZOi4OITL+DCtA6
+         JIUipmY/cu4o8BO5dzgb3NKuS8mzTXnAhCLL8n1I4t/MRcECrFL74w7Cf67Zk3K6Or4/
+         LMkOQYC3mAqowRV0fVkUtkP6ZQ/XqUVdK+oZTOroePhMddJ0HhQp8QdCdtgckAW26xHo
+         7L2plcrOQYk9Xr5yt+Y5RI/7KfSfuTX60UY+XQSskJ2nko448tWI1YDRmmzhKRhy+xL5
+         U+4iEDhD98vhsTqKlQ97/cmWQhHB8s7farTyS3mPASDTh9Vp+7U2n7a5qpPKipdoTron
+         jC2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784762065; x=1785366865;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IBwwN+PCRRt/xqJfZcQgxZJHRiT6JnsNy2fU/hkSPUs=;
+        b=QxYGGFWyx9DDiAuHZRLozRN3LJGvP7zuni2Qw3qxH2SQ9kshBAcQf30MV+48R/I6F2
+         uVRGAptJvTJ0H8B+1I8chVeap5WwdN+anmEZKWxFkMFS+Tc4mjhl9x0NxTqfTaTVBmm7
+         d1+PdOEGhbMI55Y5FV5ypRKO8EVhq/CDGiEVZjCcvPiuolFe/SPXoyBr4g2vuchnPdWy
+         +bIxh/JN45tjonwdGXaTXN0KpsHnlGsuwX63hUKIbSfcLdAONB575t8VxyJk7N2U+vF8
+         JJnjfBMQvBMHWFvhAXN7h8QkWvhy25FKJT07oOcz/FgMaAI2l14vrZqRobIIhP9yRR9T
+         WbzQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq4LtS21onPYTwSBO9pole237HXO2By9kgtni2Oxxc0jLVWrTgM6XrzhYwN5orBEt4g1YogyfHlGGgH@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywz35rYSIRY6rGyudDL/6buZod0tkJtoDeE3rIU0MdWmnqSFDjk
+	HEua2TvIGnlAQjaskKaDjccXrYcrzM1vsK9q5A5k2VgKhdt6tZKxcyLvwqIyRswxbLZtS/mB386
+	lEVKzFg==
+X-Received: from plgg20.prod.google.com ([2002:a17:902:c394:b0:2cb:14cf:72dc])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1210:b0:2cc:aa36:c046
+ with SMTP id d9443c01a7336-2cfa71d950emr9446725ad.14.1784762065042; Wed, 22
+ Jul 2026 16:14:25 -0700 (PDT)
+Date: Wed, 22 Jul 2026 23:13:14 +0000
 In-Reply-To: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -61,14 +60,14 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784762054; l=8964;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784762054; l=3389;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=5DLFVEwonkGQ01AW+lgmee7VMjb7ZOlGC//SgKMZPcE=; b=BZA+bqe0o8aDGQKDmitMHWk7S+wqKxsR3MfL0QUVoGCVyhiOZtmYNN0oYiQlYhGLFYCLFUSWp
- FxOSymUZnqQBgePDsQ1hPo8abSch7ZsWEXnAct+tygNwV/4g+GQFYZC
+ bh=bhsiRn8lBZBv3P1/M5hjiDEL+wbuc6DIjb+dyuyxMZk=; b=MjwJBpXr5slFqnNqNoqMOAbg5ESdyMWxsErXuis54CiqGGeWsfipYNb7xccaJwXQKWLISTVgd
+ dWxezMqwjNfAHbOaYj52U89ipH/VMVqUmb4NRZY66JG1If0B76bbxuX
 X-Mailer: b4 0.14.3
-Message-ID: <20260722-tdx-selftests-v14-7-15ad654a50db@google.com>
-Subject: [PATCH v14 07/22] KVM: selftests: Introduce structures for TDX guest
- boot parameters
+Message-ID: <20260722-tdx-selftests-v14-9-15ad654a50db@google.com>
+Subject: [PATCH v14 09/22] KVM: selftests: Expose functions to get default
+ sregs values
 From: Lisa Wang <wyihan@google.com>
 To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
 	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
@@ -84,267 +83,113 @@ To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com
 Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, x86@kernel.org, Lisa Wang <wyihan@google.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
 From: Sagi Shahar <sagis@google.com>
 
-Introduce `td_boot_parameters` and `td_per_vcpu_parameters`, and export
-their offsets to assembly via the kbuild infrastructure.
-
-TDX guest registers are private and must be initialized by guest-side
-assembly. These structures allow the assembly code to retrieve boot
-parameters and index into per-vCPU data based on the vCPU ID, while
-keeping host and guest definitions synchronized.
-
-Use kbuild.h to expose the offsets into the structs from c code to
-assembly code.
+TDX can't set sregs values directly using KVM_SET_SREGS. Expose the
+default values of certain sregs used by TDX VMs so they can be set
+manually.
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 Signed-off-by: Sagi Shahar <sagis@google.com>
-Co-developed-by: Lisa Wang <wyihan@google.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Lisa Wang <wyihan@google.com>
 ---
- tools/testing/selftests/kvm/.gitignore             |  3 +-
- tools/testing/selftests/kvm/Makefile.kvm           | 29 +++++++++-
- .../selftests/kvm/include/x86/tdx/td_boot.h        | 66 ++++++++++++++++++=
-++++
- .../selftests/kvm/lib/x86/tdx/td_boot_offsets.c    | 21 +++++++
- 4 files changed, 116 insertions(+), 3 deletions(-)
+ .../testing/selftests/kvm/include/x86/processor.h  | 35 ++++++++++++++++++++++
+ tools/testing/selftests/kvm/lib/x86/processor.c    | 20 ++++---------
+ 2 files changed, 41 insertions(+), 14 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/.gitignore b/tools/testing/selftes=
-ts/kvm/.gitignore
-index 1d41a046a7bf..eef6055242b2 100644
---- a/tools/testing/selftests/kvm/.gitignore
-+++ b/tools/testing/selftests/kvm/.gitignore
-@@ -9,4 +9,5 @@
- !config
- !settings
- !Makefile
--!Makefile.kvm
-\ No newline at end of file
-+!Makefile.kvm
-+include/x86/**/*_offsets.h
-\ No newline at end of file
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selft=
-ests/kvm/Makefile.kvm
-index 3f98d1c6488c..397afebbb34b 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -19,6 +19,8 @@ LIBKVM +=3D lib/userfaultfd_util.c
-=20
- LIBKVM_STRING +=3D lib/string_override.c
-=20
-+LIBKVM_ASM_DEFS +=3D lib/x86/tdx/td_boot_offsets.c
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 76180dfaffea..7e00c9414595 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -29,6 +29,10 @@ extern u64 guest_tsc_khz;
+ #define MAX_NR_CPUID_ENTRIES 100
+ #endif
+ 
++#ifndef NUM_INTERRUPTS
++#define NUM_INTERRUPTS 256
++#endif
 +
- LIBKVM_x86 +=3D lib/x86/apic.c
- LIBKVM_x86 +=3D lib/x86/handlers.S
- LIBKVM_x86 +=3D lib/x86/hyperv.c
-@@ -261,6 +263,10 @@ OVERRIDE_TARGETS =3D 1
- include ../lib.mk
- include ../cgroup/lib/libcgroup.mk
-=20
-+# Enable Kbuild tools.
-+include $(top_srcdir)/scripts/Kbuild.include
-+include $(top_srcdir)/scripts/Makefile.lib
-+
- INSTALL_HDR_PATH =3D $(top_srcdir)/usr
- LINUX_HDR_PATH =3D $(INSTALL_HDR_PATH)/include/
- LINUX_TOOL_INCLUDE =3D $(top_srcdir)/tools/include
-@@ -273,15 +279,24 @@ CFLAGS +=3D -Wall -Wstrict-prototypes -Wuninitialized=
- -O2 -g -std=3Dgnu99 \
- 	-fno-stack-protector -fno-PIE -fno-strict-aliasing \
- 	-I$(LINUX_TOOL_INCLUDE) -I$(LINUX_TOOL_ARCH_INCLUDE) \
- 	-I$(LINUX_HDR_PATH) -Iinclude -I$(<D) -Iinclude/$(ARCH) \
--	-I ../rseq -I.. $(EXTRA_CFLAGS) $(KHDR_INCLUDES)
-+	-I ../rseq -I.. -I$(OUTPUT)/include/$(ARCH) $(EXTRA_CFLAGS) $(KHDR_INCLUD=
-ES)
- ifeq ($(ARCH),s390)
- 	CFLAGS +=3D -march=3Dz10
- endif
-+
- ifeq ($(ARCH),x86)
-+
- ifeq ($(shell echo "void foo(void) { }" | $(CC) -march=3Dx86-64-v2 -x c - =
--c -o /dev/null 2>/dev/null; echo "$$?"),0)
- 	CFLAGS +=3D -march=3Dx86-64-v2
- endif
-+
-+KVM_GEN_HDRS :=3D $(patsubst lib/x86/%.c, $(OUTPUT)/include/x86/%.h, $(fil=
-ter lib/x86/%, $(LIBKVM_ASM_DEFS)))
-+$(shell mkdir -p $(sort $(dir $(KVM_GEN_HDRS))))
-+$(KVM_GEN_HDRS): GUARD =3D $(shell echo $(*F) | tr a-z A-Z | tr '.' '_')
-+$(KVM_GEN_HDRS): $(OUTPUT)/include/x86/%.h: $(OUTPUT)/lib/x86/%.s FORCE
-+	$(call filechk,offsets,__$(GUARD)_H__)
- endif
-+
- ifeq ($(ARCH),arm64)
- tools_dir :=3D $(top_srcdir)/tools
- arm64_tools_dir :=3D $(tools_dir)/arch/arm64/tools/
-@@ -314,6 +329,7 @@ LIBKVM_S :=3D $(filter %.S,$(LIBKVM))
- LIBKVM_C_OBJ :=3D $(patsubst %.c, $(OUTPUT)/%.o, $(LIBKVM_C))
- LIBKVM_S_OBJ :=3D $(patsubst %.S, $(OUTPUT)/%.o, $(LIBKVM_S))
- LIBKVM_STRING_OBJ :=3D $(patsubst %.c, $(OUTPUT)/%.o, $(LIBKVM_STRING))
-+LIBKVM_ASM_DEFS_OBJ +=3D $(patsubst %.c, $(OUTPUT)/%.s, $(LIBKVM_ASM_DEFS)=
-)
- LIBKVM_OBJS =3D $(LIBKVM_C_OBJ) $(LIBKVM_S_OBJ) $(LIBKVM_STRING_OBJ) $(LIB=
-CGROUP_O)
- SPLIT_TEST_GEN_PROGS :=3D $(patsubst %, $(OUTPUT)/%, $(SPLIT_TESTS))
- SPLIT_TEST_GEN_OBJ :=3D $(patsubst %, $(OUTPUT)/$(ARCH)/%.o, $(SPLIT_TESTS=
-))
-@@ -339,7 +355,9 @@ $(SPLIT_TEST_GEN_OBJ): $(OUTPUT)/$(ARCH)/%.o: $(ARCH)/%=
-.c
- 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
-=20
- EXTRA_CLEAN +=3D $(GEN_HDRS) \
-+	       $(KVM_GEN_HDRS) \
- 	       $(LIBKVM_OBJS) \
-+	       $(LIBKVM_ASM_DEFS_OBJ) \
- 	       $(SPLIT_TEST_GEN_OBJ) \
- 	       $(TEST_DEP_FILES) \
- 	       $(TEST_GEN_OBJ) \
-@@ -351,6 +369,9 @@ $(LIBKVM_C_OBJ): $(OUTPUT)/%.o: %.c $(GEN_HDRS)
- $(LIBKVM_S_OBJ): $(OUTPUT)/%.o: %.S $(GEN_HDRS)
- 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
-=20
-+$(LIBKVM_ASM_DEFS_OBJ): $(OUTPUT)/%.s: %.c FORCE
-+	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -S $< -o $@
-+
- # Compile the string overrides as freestanding to prevent the compiler fro=
-m
- # generating self-referential code, e.g. without "freestanding" the compil=
-er may
- # "optimize" memcmp() by invoking memcmp(), thus causing infinite recursio=
-n.
-@@ -359,11 +380,15 @@ $(LIBKVM_STRING_OBJ): $(OUTPUT)/%.o: %.c
-=20
- $(shell mkdir -p $(sort $(dir $(TEST_GEN_PROGS))))
- $(SPLIT_TEST_GEN_OBJ): $(GEN_HDRS)
-+$(LIBKVM_OBJS): $(KVM_GEN_HDRS)
- $(TEST_GEN_PROGS): $(LIBKVM_OBJS)
- $(TEST_GEN_PROGS_EXTENDED): $(LIBKVM_OBJS)
- $(TEST_GEN_OBJ): $(GEN_HDRS)
-=20
--cscope: include_paths =3D $(LINUX_TOOL_INCLUDE) $(LINUX_HDR_PATH) include =
-lib ..
-+FORCE:
-+
-+cscope: include_paths =3D $(LINUX_TOOL_INCLUDE) $(LINUX_HDR_PATH) include =
-lib .. \
-+			$(wildcard $(sort $(dir $(KVM_GEN_HDRS))))
- cscope:
- 	$(RM) cscope.*
- 	(find $(include_paths) -name '*.h' \
-diff --git a/tools/testing/selftests/kvm/include/x86/tdx/td_boot.h b/tools/=
-testing/selftests/kvm/include/x86/tdx/td_boot.h
-new file mode 100644
-index 000000000000..bf2282931d49
---- /dev/null
-+++ b/tools/testing/selftests/kvm/include/x86/tdx/td_boot.h
-@@ -0,0 +1,66 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef SELFTEST_TDX_TD_BOOT_H
-+#define SELFTEST_TDX_TD_BOOT_H
-+
-+#include <linux/compiler.h>
-+#include <linux/types.h>
-+
-+/*
-+ * Layout for boot section (not to scale)
-+ *
-+ *                                   GPA
-+ * _________________________________ 0x1_0000_0000 (4GB)
-+ * |   Boot code trampoline    |
-+ * |___________________________|____ 0x0_ffff_fff0: Reset vector (16B belo=
-w 4GB)
-+ * |   Boot code               |
-+ * |___________________________|____ td_boot will be copied here, so that =
-the
-+ * |                           |     jmp to td_boot is exactly at the rese=
-t vector
-+ * |   Empty space             |
-+ * |                           |
-+ * |=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80|
-+ * |                           |
-+ * |                           |
-+ * |   Boot parameters         |
-+ * |                           |
-+ * |                           |
-+ * |___________________________|____ 0x0_ffff_0000: TD_BOOT_PARAMETERS_GPA
-+ */
-+
-+/*
-+ * The exact memory layout for LGDT or LIDT instructions.
-+ */
-+struct __packed td_boot_parameters_dtr {
-+	u16 limit;
-+	u32 base;
-+};
-+
-+/*
-+ * Allows each vCPU to be initialized with different rip and esp.
-+ */
-+struct td_per_vcpu_parameters {
-+	u32 esp_gva;
-+	u64 guest_code;
-+};
-+
-+/*
-+ * Boot parameters for the TD.
-+ *
-+ * Unlike a regular VM, KVM cannot set registers such as esp, eip, etc
-+ * before boot, so to run selftests, these registers' values have to be
-+ * initialized by the TD.
-+ *
-+ * This struct is loaded in TD private memory at TD_BOOT_PARAMETERS_GPA.
-+ *
-+ * The TD boot code will read off parameters from this struct and set up t=
-he
-+ * vCPU for executing selftests.
-+ */
-+struct td_boot_parameters {
-+	u32 cr0;
-+	u32 cr3;
-+	u32 cr4;
-+	struct td_boot_parameters_dtr gdtr;
-+	struct td_boot_parameters_dtr idtr;
-+	struct td_per_vcpu_parameters per_vcpu[];
-+};
-+
-+#endif /* SELFTEST_TDX_TD_BOOT_H */
-diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/td_boot_offsets.c b/to=
-ols/testing/selftests/kvm/lib/x86/tdx/td_boot_offsets.c
-new file mode 100644
-index 000000000000..7f76a3585b99
---- /dev/null
-+++ b/tools/testing/selftests/kvm/lib/x86/tdx/td_boot_offsets.c
-@@ -0,0 +1,21 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define COMPILE_OFFSETS
-+
-+#include <linux/kbuild.h>
-+
-+#include "tdx/td_boot.h"
-+
-+static void __attribute__((used)) common(void)
+ #define NONCANONICAL 0xaaaaaaaaaaaaaaaaull
+ 
+ /* Forced emulation prefix, used to invoke the emulator unconditionally. */
+@@ -1564,4 +1568,35 @@ u64 *tdp_get_pte(struct kvm_vm *vm, u64 l2_gpa);
+ 
+ bool sys_clocksource_is_based_on_tsc(void);
+ 
++static inline u16 kvm_get_default_idt_limit(void)
 +{
-+	OFFSET(TD_BOOT_PARAMETERS_CR0, td_boot_parameters, cr0);
-+	OFFSET(TD_BOOT_PARAMETERS_CR3, td_boot_parameters, cr3);
-+	OFFSET(TD_BOOT_PARAMETERS_CR4, td_boot_parameters, cr4);
-+	OFFSET(TD_BOOT_PARAMETERS_GDT, td_boot_parameters, gdtr);
-+	OFFSET(TD_BOOT_PARAMETERS_IDT, td_boot_parameters, idtr);
-+	OFFSET(TD_BOOT_PARAMETERS_PER_VCPU, td_boot_parameters, per_vcpu);
-+	OFFSET(TD_PER_VCPU_PARAMETERS_ESP_GVA, td_per_vcpu_parameters, esp_gva);
-+	OFFSET(TD_PER_VCPU_PARAMETERS_GUEST_CODE, td_per_vcpu_parameters,
-+	       guest_code);
-+	DEFINE(SIZEOF_TD_PER_VCPU_PARAMETERS,
-+	       sizeof(struct td_per_vcpu_parameters));
++	return NUM_INTERRUPTS * sizeof(struct idt_entry) - 1;
 +}
++
++static inline u16 kvm_get_default_gdt_limit(void)
++{
++	return getpagesize() - 1;
++}
++
++static inline u64 kvm_get_default_cr0(void)
++{
++	return X86_CR0_PE | X86_CR0_NE | X86_CR0_PG;
++}
++
++static inline u64 kvm_get_default_cr4(int pgtable_levels)
++{
++	u64 cr4 = X86_CR4_PAE | X86_CR4_OSFXSR;
++
++	if (kvm_cpu_has(X86_FEATURE_XSAVE))
++		cr4 |= X86_CR4_OSXSAVE;
++	if (pgtable_levels == 5)
++		cr4 |= X86_CR4_LA57;
++	return cr4;
++}
++
++static inline u64 kvm_get_default_efer(void)
++{
++	return EFER_LME | EFER_LMA | EFER_NX;
++}
++
+ #endif /* SELFTEST_KVM_PROCESSOR_H */
+diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+index 97acc5aaf7b7..ad75e19bb3a2 100644
+--- a/tools/testing/selftests/kvm/lib/x86/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+@@ -15,10 +15,6 @@
+ #include "tdx/tdx_util.h"
+ #include "vmx.h"
+ 
+-#ifndef NUM_INTERRUPTS
+-#define NUM_INTERRUPTS 256
+-#endif
+-
+ gva_t exception_handlers;
+ bool host_cpu_is_amd;
+ bool host_cpu_is_intel;
+@@ -647,17 +643,13 @@ static void vcpu_init_sregs(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
+ 	vcpu_sregs_get(vcpu, &sregs);
+ 
+ 	sregs.idt.base = vm->arch.idt;
+-	sregs.idt.limit = NUM_INTERRUPTS * sizeof(struct idt_entry) - 1;
++	sregs.idt.limit = kvm_get_default_idt_limit();
+ 	sregs.gdt.base = vm->arch.gdt;
+-	sregs.gdt.limit = getpagesize() - 1;
+-
+-	sregs.cr0 = X86_CR0_PE | X86_CR0_NE | X86_CR0_PG;
+-	sregs.cr4 |= X86_CR4_PAE | X86_CR4_OSFXSR;
+-	if (kvm_cpu_has(X86_FEATURE_XSAVE))
+-		sregs.cr4 |= X86_CR4_OSXSAVE;
+-	if (vm->mmu.pgtable_levels == 5)
+-		sregs.cr4 |= X86_CR4_LA57;
+-	sregs.efer |= (EFER_LME | EFER_LMA | EFER_NX);
++	sregs.gdt.limit = kvm_get_default_gdt_limit();
++
++	sregs.cr0 = kvm_get_default_cr0();
++	sregs.cr4 |= kvm_get_default_cr4(vm->mmu.pgtable_levels);
++	sregs.efer |= kvm_get_default_efer();
+ 
+ 	kvm_seg_set_unusable(&sregs.ldt);
+ 	kvm_seg_set_kernel_code_64bit(&sregs.cs);
 
---=20
+-- 
 2.55.0.229.g6434b31f56-goog
 
