@@ -1,281 +1,128 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF1B46A5F1
-	for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 08:46:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C388540D565;
+	Wed, 22 Jul 2026 09:27:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784710003; cv=none; b=u08RsXOGDdR4v0ezfK/uTUwIsLQ0XnU/FFq3w3/fvwXR5pDFwH15W90ZqpWrbN821V4dZDcfopAOXMfTf6hB0xt5oTwW1JiGWGT1ytFGu6BxVFJ7DmREUBgI4zKU1tD2OfGvH3ig3SSFtjqu5Y79Ov3lDS9VYAayTa6hMtbMCOo=
+	t=1784712469; cv=none; b=Hzsp1PH17r5FIXEcT0F9WsYmlV9MZQLMG0Bv9+azdIr1Bf/JCoIp8XRdFTDP6zW1sgCnROVcLJkrz6HRVxIXk2pOOGD7y4AyfFBHRrVo9laz8M+1zgiWTK3bqJjaiEHUyeAMO/fqFTFoJUGzUeRUgNj8RNFq6GUvTquSNpsIdNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784710003; c=relaxed/simple;
-	bh=dJUaZ5iHRq2MQMDO9vHmZWyBATmiIH5ZU5VMsxt/qYo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=k2uZsfdS0s4Z3H/dzsy6J9LQgBdfpqNzRtMX2swANXtxCiSjf8ruYgAO7a/WK08OpdC9RBEuBJuDYHq+cWyD6DKVjeexDRBwwE9o+eU7B6/a443zqRUk6P2KGGwU82kIVXUQ/getWe1u/w58jmi3xyVbGmmhsZm9/svs5T4qZZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RZwESY21; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1784712469; c=relaxed/simple;
+	bh=Mx7r2/SMwr97by1qxjSxW7aoIckxGANeAeNJ1Ot8gaE=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JUKQ5FSDlvL9e5EdOnqtnVnD4lVHs+ECQySRc7aGtBzMi1oQYdw6sXVK3oc3BYkMHWI5r6Awo7IBfMtDy+GXpgDH0b/ptEdqk20xDEalXbGnFgglQ19OJ9h6vfOWs725gXyDbW+s021I+b6ODBZv3ALltSmPay1fCXOXpdGZ1Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZZczb7cn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RZwESY21"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784710000; x=1816246000;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=dJUaZ5iHRq2MQMDO9vHmZWyBATmiIH5ZU5VMsxt/qYo=;
-  b=RZwESY21RxoXoJPs0Ivmx5acwPeYdU+pIS5DvAAOOJPRlyCwj/cJ4iCS
-   JhTVZiNbUiRrNXQwlkJ5qdBpo/OPo0if+4qw3zLtYbf7HyNQatPgNl0ES
-   sr+DUy4i6/xyjzqP13+vSRQ2wzTPlKkVvDKFrvsS1GKkR57I/bcACTCxR
-   wyp+yKJ3qQksPOY/N5wSExj94QHsT/eM5PUWspJ4j58uIgwmt5FBxv3iJ
-   JU4epoXZyNF9oNiBBGmjerm5PF7tVE6+H0hoero3bOaxfbgFqhl3tVagS
-   4JO9d8yWVWuEIm6+2teV9UkhoH62lVSafJYf4wugpA7TnXMKxjV6yLcqv
-   A==;
-X-CSE-ConnectionGUID: aBFxHqiuTdyvN0qY1BnuDA==
-X-CSE-MsgGUID: uDaJiWefTW2P223jPgNZiw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="85430952"
-X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
-   d="scan'208";a="85430952"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 01:46:39 -0700
-X-CSE-ConnectionGUID: 4g5GGgV4Rl2wh3dexkAz5w==
-X-CSE-MsgGUID: fpXWiLw/Teimq3NG+WCfuw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
-   d="scan'208";a="262322462"
-Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
-  by orviesa005.jf.intel.com with ESMTP; 22 Jul 2026 01:46:36 -0700
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: x86@kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: kas@kernel.org,
-	rick.p.edgecombe@intel.com,
-	dave.hansen@intel.com,
-	dave.hansen@linux.intel.com,
-	yilun.xu@linux.intel.com,
-	yilun.xu@intel.com,
-	djbw@kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZZczb7cn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FBD1F00A3D;
+	Wed, 22 Jul 2026 09:27:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784712465;
+	bh=6rLVzkqTuW28t7Xy9m/mIBHPwAtbjdw7U4wk3FR9O6k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ZZczb7cn7HWVcnCRKvotdCu8jCxT5XRWclLr0CTpVX2vqxYJotLelHnBInvGbuYP4
+	 38tMLNHh9vOkHbH+RCCdv/6HEs+z6BI7Wsi93/rJ1BPpLD3s1Y3fludTpcm9P865J/
+	 G0fSCBA4k1Bzjt26QEF2Js2+5+/uRn6vyvRU6/H9HiSWH1VtXgammSHDRerwf4dHaZ
+	 rwacLypcErpw0SC3/bdLCvcN6ykJiluhx71sSi7lao2M/vAXIXbjQ5b5MwZVmhfpk5
+	 63AQDo5Cc/eIp+f52I1Gb1FvPmf4BcY+5p/PIoelAI2IflNMiUdQoqJjyV4dcYm8U4
+	 E6xTMm+Vu0k5A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wmTEt-00000007YqG-2ptG;
+	Wed, 22 Jul 2026 09:27:43 +0000
+Date: Wed, 22 Jul 2026 10:27:43 +0100
+Message-ID: <86cxwfe5m8.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Kohei Enju <enju.kohei@fujitsu.com>
+Cc: Steven Price <steven.price@arm.com>,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
 	linux-coco@lists.linux.dev,
-	chao.gao@intel.com,
-	peter.fang@intel.com,
-	xiaoyao.li@intel.com
-Subject: [PATCH v3] x86/virt/tdx: Formalize SEAMCALL version encoding support
-Date: Wed, 22 Jul 2026 16:46:34 +0800
-Message-Id: <20260722084634.131020-1-yilun.xu@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	WeiLin.Chang@arm.com,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v15 12/37] KVM: arm64: CCA: Support the VGIC in realms
+In-Reply-To: <amB-opawGgF6jNHB@FCCLS0092175.localdomain>
+References: <20260715142841.80544-1-steven.price@arm.com>
+	<20260715142841.80544-13-steven.price@arm.com>
+	<amB-opawGgF6jNHB@FCCLS0092175.localdomain>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: enju.kohei@fujitsu.com, steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-SEAMCALL invokes TDX module functions using a function number and
-parameters. To extend the functionality of existing SEAMCALLs while
-keeping backward compatibility, TDX adds more numbered SEAMCALLs of the
-same family. This is just like syscalls, except that TDX defines a
-specific function number encoding pattern: a base function number and a
-version together encode the full function number.
+On Wed, 22 Jul 2026 09:27:29 +0100,
+Kohei Enju <enju.kohei@fujitsu.com> wrote:
+> 
+> On 07/15 15:28, Steven Price wrote:
+> > The RMM provides emulation of a VGIC to the realm guest. With RMM v2.0
+> > the registers are passed in the system registers so this works similar
+> > to a normal guest, but kvm_arch_vcpu_put() need reordering to early out,
+> > and realm guests don't support GICv2 even if the host does.
+> > 
+> > Signed-off-by: Steven Price <steven.price@arm.com>
+> 
+> Hi Steven,
+> 
+> I've been testing this series and found that when the host CPU doesn't have
+> ARM64_HAS_ICH_HCR_EL2_TDIR this series doesn't work as expected.
 
-One concern is the compatibility with older TDX modules which don't
-recognize the new SEAMCALLs. The kernel should decide which SEAMCALL
-version to use at runtime, selecting the minimum version number for the
-required functionality. It can't overwrite the function number with a
-new value at compile time.
+What modern CPU doesn't support TDIR? The only CPUs I know of that are
+stuck in this mode are old ARMv8.0 CPUs, and anything else was fixed.
 
-Another concern is the obscure usage of the 'fn' parameter for SEAMCALL
-wrappers. An existing caller for TDH.VP.INIT packs the version into the
-'fn' to match the low-level TDX ABI RAX layout. The RAX layout
-interprets some bits differently, such as INTERRUPT_MODE, SEAMLDR flag,
-which are not a good fit for the function number definition.
+> 
+> Since commit 2a28810cbb8b ("KVM: arm64: GICv3: Detect and work around the lack
+> of ICV_DIR_EL1 trapping"), when the host CPU doesn't support this feature, KVM
+> traps all GIC sysreg accesses in the common group. However, currently trap
+> handlers for ICC_{PMR,RPR,CTLR}_EL1 registers are missing [0]. So when Realm
+> guests try to access those registers, KVM traps them but just emits the warning
+> shown in [1], and Realm guests fail to boot.
 
-Refactor the SEAMCALL wrappers to allow for version selection. Add a
-version field in struct tdx_module_args [1], so that most existing
-callers get a default "version == 0" behavior without code churn, while
-callers requiring extended functionalities can specify the version
-descriptively. Enforce the 'fn' parameter as the base function number.
-Encode the base function number and tdx_module_args.version in RAX
-before invoking the SEAMCALL instruction in assembly code.
+This isn't missing. This is handled by the early emulation in
+vgic-v3-sr.c, which of course CCA completely bypasses. Too bad.
 
-Link: https://lore.kernel.org/kvm/4f4b0f29-424b-45ed-8cfd-c77da2ea390f@intel.com/ # [1]
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
----
-The main concern in v2 is: should we make 'fn' exactly match the RAX
-layout of TDX module ABI?
+> 
+> As far as I can tell, the CCA requirements don't require the
+> ARM64_HAS_ICH_HCR_EL2_TDIR feature. If that's the case, this seems to be a
+> problem. Is there any workaround for this issue, or should we implement trap
+> handlers for those registers?
 
-Kiryl's point is that SEAMCALL wrappers are the representation of the
-ABI functions, so make the 'fn' match the RAX and struct tdx_module_args
-match the other CPU registers, compose base leaf number & version into
-'fn'. This saves callers from digging into low-level code to understand
-what happens.
+No. Either you support TDIR, like any modern CPU, or you don't run
+CCA. I'm not adding yet another level of emulation for this.
 
-Dave's point is that the RAX layout is logically unfriendly, we want
-SEAMCALL wrappers to be the logically sound software APIs to the rest of
-the system. So 'fn' only contains the base leaf number, version and
-other RAX fields are in struct tdx_module_args.
+Thanks,
 
-While both options have merits, I chose the latter from a
-software-centric perspective. I sent v3 to invite more discussion.
+	M.
 
-Change in v3:
-- Move the RAX encoding in assembly code.
-- Compile-time check that fn only contain base leaf number bits
-- Add the full description of SEAMCALL leaf according to TDX module SPEC
-- Fix the description of struct tdx_module_args.
-
-v2: https://lore.kernel.org/all/20260708170330.83850-1-yilun.xu@linux.intel.com/
-- Drop the C wrapper __seamcall_encode_fn()
-- Rewrite the first paragraph of the changelog
-- Make change log concise
-- Add a link to the thread where this was suggested
-- Move alternative schemes description below the separator
-
-v1: https://lore.kernel.org/all/20260702144614.59464-1-yilun.xu@linux.intel.com/
----
- arch/x86/include/asm/shared/tdx.h         | 10 +++++++---
- arch/x86/virt/vmx/tdx/seamcall_internal.h | 19 +++++++++++++++++++
- arch/x86/virt/vmx/tdx/tdx.h               |  8 --------
- arch/x86/virt/vmx/tdx/tdxcall.S           | 10 ++++++++--
- arch/x86/kernel/asm-offsets.c             |  1 +
- arch/x86/virt/vmx/tdx/tdx.c               |  5 +++--
- 6 files changed, 38 insertions(+), 15 deletions(-)
-
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index f20e91d7ac35..67490c330d91 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -122,9 +122,11 @@
- #include <linux/compiler_attributes.h>
- 
- /*
-- * Used in __tdcall*() to gather the input/output registers' values of the
-- * TDCALL instruction when requesting services from the TDX module. This is a
-- * software only structure and not part of the TDX module/VMM ABI
-+ * Used in __tdcall*() to gather the input/output parameters of the TDCALL
-+ * instruction when requesting services from the TDX module. 'version' is
-+ * encoded in rax along with the Leaf number. Others are raw input/output
-+ * registers' values. This is a software only structure and not part of the TDX
-+ * module/VMM ABI.
-  */
- struct tdx_module_args {
- 	/* callee-clobbered */
-@@ -143,6 +145,8 @@ struct tdx_module_args {
- 	u64 rbx;
- 	u64 rdi;
- 	u64 rsi;
-+	/* Leaf ABI version, encoded in rax */
-+	u8  version;
- };
- 
- /* Used to communicate with the TDX module */
-diff --git a/arch/x86/virt/vmx/tdx/seamcall_internal.h b/arch/x86/virt/vmx/tdx/seamcall_internal.h
-index be5f446467df..c586ddad072f 100644
---- a/arch/x86/virt/vmx/tdx/seamcall_internal.h
-+++ b/arch/x86/virt/vmx/tdx/seamcall_internal.h
-@@ -11,6 +11,7 @@
- #ifndef _X86_VIRT_SEAMCALL_INTERNAL_H
- #define _X86_VIRT_SEAMCALL_INTERNAL_H
- 
-+#include <linux/bitfield.h>
- #include <linux/printk.h>
- #include <linux/types.h>
- #include <asm/archrandom.h>
-@@ -23,9 +24,27 @@ u64 __seamcall_saved_ret(u64 fn, struct tdx_module_args *args);
- 
- typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
- 
-+/*
-+ * SEAMCALL leaf:
-+ *
-+ * Bit 15:0	Leaf number
-+ * Bit 23:16	Leaf ABI version number
-+ * Bit 24	Pending interrupts detection mode
-+ * Bit 63	1 for P-SEAMLDR leaf, 0 for TDX module leaf
-+ */
-+#define SEAMCALL_LEAF_MASK		GENMASK_U64(15, 0)
-+#define SEAMCALL_SEAMLDR_MASK		BIT_U64(63)
-+
- static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
- 						  struct tdx_module_args *args)
- {
-+	/*
-+	 * fn contains base leaf number for TDX module calls and P-SEAMLDR
-+	 * calls. Other fields in SEAMCALL leaf like leaf ABI version number
-+	 * are in struct tdx_module_args.
-+	 */
-+	BUILD_BUG_ON(fn & ~(SEAMCALL_LEAF_MASK | SEAMCALL_SEAMLDR_MASK));
-+
- 	lockdep_assert_preemption_disabled();
- 
- 	/*
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index bdfd0e1e337a..63e3acfb5d0c 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -50,14 +50,6 @@
- #define TDH_SYS_UPDATE			53
- #define TDH_SYS_DISABLE			69
- 
--/*
-- * SEAMCALL leaf:
-- *
-- * Bit 15:0	Leaf number
-- * Bit 23:16	Version number
-- */
--#define TDX_VERSION_SHIFT		16
--
- /* TDX page types */
- #define	PT_NDA		0x0
- #define	PT_RSVD		0x1
-diff --git a/arch/x86/virt/vmx/tdx/tdxcall.S b/arch/x86/virt/vmx/tdx/tdxcall.S
-index 016a2a1ec1d6..a01542c02c36 100644
---- a/arch/x86/virt/vmx/tdx/tdxcall.S
-+++ b/arch/x86/virt/vmx/tdx/tdxcall.S
-@@ -45,8 +45,14 @@
- .macro TDX_MODULE_CALL host:req ret=0 saved=0
- 	FRAME_BEGIN
- 
--	/* Move Leaf ID to RAX */
--	mov %rdi, %rax
-+	/* Leaf ABI version -> RAX[23:16]. Zero rest of RAX. */
-+	movzbl	TDX_MODULE_version(%rsi), %eax
-+	shl	$16, %eax
-+	/*
-+	 * Combine base leaf number arg and leaf ABI version into RAX, they
-+	 * don't overlap.
-+	 */
-+	or	%rdi, %rax
- 
- 	/* Move other input regs from 'struct tdx_module_args' */
- 	movq	TDX_MODULE_rcx(%rsi), %rcx
-diff --git a/arch/x86/kernel/asm-offsets.c b/arch/x86/kernel/asm-offsets.c
-index 081816888f7a..b3c00ff4d819 100644
---- a/arch/x86/kernel/asm-offsets.c
-+++ b/arch/x86/kernel/asm-offsets.c
-@@ -95,6 +95,7 @@ static void __used common(void)
- 	OFFSET(TDX_MODULE_rbx, tdx_module_args, rbx);
- 	OFFSET(TDX_MODULE_rdi, tdx_module_args, rdi);
- 	OFFSET(TDX_MODULE_rsi, tdx_module_args, rsi);
-+	OFFSET(TDX_MODULE_version, tdx_module_args, version);
- 
- 	BLANK();
- 	OFFSET(BP_scratch, boot_params, scratch);
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 42df8ea464c4..7a89e29b118c 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1910,10 +1910,11 @@ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
- 		.rcx = vp->tdvpr_pa,
- 		.rdx = initial_rcx,
- 		.r8 = x2apicid,
-+		/* apicid requires version == 1. */
-+		.version = 1,
- 	};
- 
--	/* apicid requires version == 1. */
--	return seamcall(TDH_VP_INIT | (1ULL << TDX_VERSION_SHIFT), &args);
-+	return seamcall(TDH_VP_INIT, &args);
- }
- EXPORT_SYMBOL_FOR_KVM(tdh_vp_init);
- 
 -- 
-2.25.1
-
+Without deviation from the norm, progress is not possible.
