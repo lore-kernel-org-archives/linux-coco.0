@@ -1,56 +1,56 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC73E459ACC
-	for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 23:14:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE584582E3
+	for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 23:14:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784762060; cv=none; b=EVmxZpKRdSL7SBftZB8K6LKaQoBqGU8Gk17/mPTxQGaiyCZIDxkbzl7kGW5zQfc6wjkT9Xg+Fhr0jXDQ0pt49e71yEaJPpyzFRzYfETuPjh2GVXmftkTgdX9wtah8Xz9VDyap0q52BYzWaS67RyhZ07rcutAdmzpO8640xLX5mg=
+	t=1784762061; cv=none; b=VP6pcmPJHLiYPKQqS7OZb1qJU3VmFSOPXYDPjo4FK7rXOX3khR6K0hRxBo8/2KwHt3ICAPBoPmCP7v6D9fmSgrTd7Vq1myiPgZ3j2qy3uVTYaGyS+wgQ6Xe/ySqVDYEKOg2WvrO1evdcOqCBjyJEuFHiqzI0oHnVD2PTFjJ07ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784762060; c=relaxed/simple;
-	bh=HSUijWFM1BPOVfLPb88yrHGkaYxU/9q3xS5FLa0HHK4=;
+	s=arc-20240116; t=1784762061; c=relaxed/simple;
+	bh=6xK7BW/lODxtVnPAti2SllMF/rRYhYWlPawQZ6OdvSE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fc+cVH2XzaITZT1PBvcy0JENDN7sO0qxoNoxX9YqqkH6QT2PIyeQ0DkDHeuO8kRHxPEfj57vTq1t0Jb4AhuRJaCDjbEZSKeuWIHKTeqIWMvMkYPaBnerGafRz+Lp2YwCrxp+7BAfo+O2TrVGZxhpV0v1iJ2XY+Z2CJnZiWt+V0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lcNqLnhQ; arc=none smtp.client-ip=209.85.214.200
+	 To:Cc:Content-Type; b=QRJwqFJvFniZdjUmNO+sP5CncC4t+Ca22tXhk+6ylbpHOl03Lu3oPp8h6okxeC/6id3uUanWId2ixUgenPbR31ozzLYAMuad2HyKU8R2/377sUwegs0t7e7aaKjWeHj+OFWwp6L2NrxgvgsHtrouK88puqU5qMWhIMznTliX/sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QzeIpX/2; arc=none smtp.client-ip=209.85.210.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lcNqLnhQ"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cceabd70f5so1421415ad.1
-        for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 16:14:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QzeIpX/2"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84c4cd31b51so2791b3a.0
+        for <linux-coco@lists.linux.dev>; Wed, 22 Jul 2026 16:14:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784762058; x=1785366858; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1784762057; x=1785366857; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=56NrxXkv0UVjMvjOx9by9wvi/d3mOyqzIaOMJLt53IU=;
-        b=lcNqLnhQMymK0OfhH8d7D0WZyT1AQMuievD01TUmGO5zbc0llYsHt1kIKgsg8ECORk
-         nYZkPoReaGVqgTh1I/EfMT6lYdJLt+pvcaaq6lzcxq3k9jU9Y7xkw7LsXKSXk6CP+W9b
-         3PG+b4rNmsaVkecxSJB9TfKhXYypTR9U/2UzpZDSsJuxSRgnqkQt0P+Sa4nUG/0nmjQW
-         AlwrdkWdSyn2OQL17SGAsySfud31H6bUiGhAjLkn4mKMHrgPkxMfC+l/8cBJYeiPGCMY
-         JjXjyPVbcMNp3lCazHOev4hsIixOY0RP07eCI1MXXIRzuqq2JPReRpDa7XI3QT3fgwtu
-         s7qQ==
+        bh=7Nniw3rM0vx5yQvDpQ3gzLadmFEyXkP7wMFQo59ckcE=;
+        b=QzeIpX/2VPVN/8rfuCCf31Pz67rVL2lQzBh7KFlks0h3z6HKHEE/eypI/0nP1hREWT
+         v+XdToA1cKccbf2Kni87Xd7iRqdrAecPFNMwOuijAwqEhfTKE04Fui7qatgFo48GyxIE
+         tMfw9R48BW9O+RvgqO5zzjVzSoLbBpE/GH1Piwyl2MYvY6/9Ym45eY99YZHLbLfoDbwk
+         DDtD/VwP1Y0uI9o6kLkQqNdFVpGVD9ehJLHTWWkWv3vr6SH2GsE+KOOog/AEPZ8RkpfS
+         EC1JTMFABz1SkkN1RASwbwoh21qFQw2a+N6E4ayoPnhFbwG/Yr9Ix8jFxrtGLvIJG/q+
+         8EZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784762058; x=1785366858;
+        d=1e100.net; s=20251104; t=1784762057; x=1785366857;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=56NrxXkv0UVjMvjOx9by9wvi/d3mOyqzIaOMJLt53IU=;
-        b=elCjPzVbij1vCK37MuHYDb5ct8KgfgbTYvUV4IaT2/x04Eqjad671pTjj7kcwsxly5
-         1OUnw7q/D+BPxQPhI00EBZCdUIzsv7I8nvzCdIrSb4Hc3wYD+1A5OjyeQ56mCUmhA4uN
-         6ThCOJiFpwRX+d4iIYDn4PTynxqEKcx9q8abeWhHc/j7zMJfpiiPe+Pr80PURZCtIG8u
-         02a/KJE6qkC68FXKSXwJCmst4oN923XZj5rTG9LZPzwzxMozgB+BHPqfM9+MM6FR9t8I
-         O9Lt4Wvlsx3AlMLLKBqpCtVPK4EigqbtDJL9AFGbG6IbTWHQuWmrvHGPo9BpB3cdBKa8
-         0XSg==
-X-Forwarded-Encrypted: i=1; AHgh+RpXS7X6EUehF20HXBBfNB/VsZG+qAUaJ+XdzCO71oCi67mSeQvfqbzhuEoCJA7aZ+Dvv7rpIQsj5vkw@lists.linux.dev
-X-Gm-Message-State: AOJu0YxshOIi7dsHTHg7m6XaCJ3jo0fmUHCRWkVexQj9t4K+FSk564ch
-	FesfJf7GVx/ZyCO/siESpSLGT5llmRX8tdS+XcIE/UOLDGW4I9ShitSPVjrAvWSnoENn2mfglfx
-	Ah+giHQ==
-X-Received: from pgjf8.prod.google.com ([2002:a63:dc48:0:b0:c85:db34:d7a])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a120:b0:3c3:7d12:a98c
- with SMTP id adf61e73a8af0-3c44b1e9a44mr575991637.52.1784762058127; Wed, 22
- Jul 2026 16:14:18 -0700 (PDT)
-Date: Wed, 22 Jul 2026 23:13:07 +0000
+        bh=7Nniw3rM0vx5yQvDpQ3gzLadmFEyXkP7wMFQo59ckcE=;
+        b=IBrVaSGx3RxWp1T2cWVwWsPHK/mbbMNdESOWDheJS/V1NXplKjc81aUKhTuTNXvi16
+         I7/SI0UJv8xOuwS4S9JBoA1Cb3ThWuKz8TzgpE+mILopSWScRlI1Bp+WlcpKejcMG7vZ
+         du1RB5c0IN49Q3jvpnbun9LZBR9wRol9oLJIx0oSGxJKJ+nN9XlQvAs9p0r2n2Kl8tv+
+         r1Zl74xNBiaXuygHf6kgDrcThMMuMTPAa5WSyhCYonWH3jUKTRsggLEWfB2HcyUsjQfA
+         LrXXgoJ3mpaMII1nVNuHlR6q+0eisZygiknHqr3h+0SagtuG6OyTcX7IXvyal/gylb7F
+         cMWA==
+X-Forwarded-Encrypted: i=1; AHgh+RqW78qofLaMRCv/oH4Rzmr4gni3pJfsBvXS5uBJsN61TJ/Y3i0DVwZTKgwrO2Jiw7tnF3fPhCm4jZQ5@lists.linux.dev
+X-Gm-Message-State: AOJu0Yziq+Yrr8MWeX/rjD6BU4A1eFYguYHzqpbffIPzfVU8o+ECiktq
+	ujgHWsm6s5BNXCo/+mv9a8w2DGf2opDbqc69lJdB1Jt3Yvf+dhXPecaLlmxxjvquZpWQ+APKpok
+	29Hvauw==
+X-Received: from pgc10.prod.google.com ([2002:a05:6a02:2f8a:b0:c80:1fe6:ac57])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:338c:b0:84a:46ec:3b9c
+ with SMTP id d2e1a72fcca58-84e2e957883mr296813b3a.31.1784762056694; Wed, 22
+ Jul 2026 16:14:16 -0700 (PDT)
+Date: Wed, 22 Jul 2026 23:13:06 +0000
 In-Reply-To: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,14 +60,14 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784762054; l=2831;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784762054; l=8466;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=nMhWICLdSh2frl7tfIaV4/PZJX0MLcCDKg8/gFmmfRA=; b=DaBxIbGI4Q0JBXmDhiTdq0R4HtbImm2MoSdd8eyphcWciY2zj/Me0FR8j6E77p6MHWfkCdI9m
- uxtlRF4MdCVArlmm+NgiqHHnt0Vm2NLFNdYXiXh739s5M6YknSSRwMS
+ bh=2W8WgKYZE6tdsrSJhFkV2BZFvYpKlmme9GBgA9yovX0=; b=jhHS5wsQJnyizLbOK2K2wlB3XhUxpwUS1p60BbJqP/qr3hIV33WL3Xg3dNU5RfDldg3a5+5XC
+ rJdS6X8fh21BBiWhV3RGJxoVb1IIlqdHFdT70DlCHXf8tAfPb3BS2Hh
 X-Mailer: b4 0.14.3
-Message-ID: <20260722-tdx-selftests-v14-2-15ad654a50db@google.com>
-Subject: [PATCH v14 02/22] KVM: selftests: Update kvm_init_vm_address_properties()
- for TDX
+Message-ID: <20260722-tdx-selftests-v14-1-15ad654a50db@google.com>
+Subject: [PATCH v14 01/22] KVM: selftests: Add macros to simplify creating VM
+ shapes for non-default types
 From: Lisa Wang <wyihan@google.com>
 To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
 	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
@@ -81,89 +81,248 @@ To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com
 	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
 	Oliver Upton <oupton@kernel.org>
 Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, Lisa Wang <wyihan@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>
+	linux-kernel@vger.kernel.org, x86@kernel.org, Lisa Wang <wyihan@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+From: Sean Christopherson <seanjc@google.com>
 
-Initialize the TDX S-bit and the GPA tag mask in
-kvm_init_vm_address_properties() for TDX VMs, similar to how the C-bit
-is initialized for SEV VMs.
+Add VM_TYPE() and __VM_SHAPE() macros to create a vm_shape structure given
+a type (and mode), and use the macros to define VM_SHAPE_{SEV,SEV_ES,SNP}
+shapes for x86's SEV family of VM shapes.  Providing common infrastructure
+will avoid having to copy+paste vm_sev_create_with_one_vcpu() for TDX.
 
-The TDX S-bit is used to distinguish between shared and private guest
-physical addresses. Its position is determined by the guest physical
-address width, which is either 48 or 52 bits for current TDX
-implementations.
+Use the new SEV+ shapes and drop vm_sev_create_with_one_vcpu().
+
+Opportunistically move the existing VM_SHAPE() (now __VM_SHAPE()) macro
+below the definitions of VM_MODE_DEFAULT so that all of the SHAPE/TYPE
+macros are bundled together.
+
+No functional change intended.
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Co-developed-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Co-developed-by: Sagi Shahar <sagis@google.com>
-Signed-off-by: Sagi Shahar <sagis@google.com>
 Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Lisa Wang <wyihan@google.com>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h | 14 ++++++++++++++
- tools/testing/selftests/kvm/lib/x86/processor.c        | 12 ++++++++++--
- 2 files changed, 24 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kvm/include/kvm_util.h     | 27 ++++++++-------
+ .../testing/selftests/kvm/include/x86/processor.h  |  4 +++
+ tools/testing/selftests/kvm/include/x86/sev.h      |  2 --
+ tools/testing/selftests/kvm/lib/x86/sev.c          | 16 ---------
+ tools/testing/selftests/kvm/x86/sev_smoke_test.c   | 40 +++++++++++-----------
+ 5 files changed, 39 insertions(+), 50 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-new file mode 100644
-index 000000000000..f647e6ca6b34
---- /dev/null
-+++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef SELFTESTS_TDX_TDX_UTIL_H
-+#define SELFTESTS_TDX_TDX_UTIL_H
-+
-+#include <stdbool.h>
-+
-+#include "kvm_util.h"
-+
-+static inline bool is_tdx_vm(struct kvm_vm *vm)
-+{
-+	return vm->type == KVM_X86_TDX_VM;
-+}
-+
-+#endif /* SELFTESTS_TDX_TDX_UTIL_H */
-diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-index b51467d70f6e..b68ad1dc7e02 100644
---- a/tools/testing/selftests/kvm/lib/x86/processor.c
-+++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-@@ -11,6 +11,7 @@
- #include "smm.h"
- #include "svm_util.h"
- #include "sev.h"
-+#include "tdx/tdx_util.h"
- #include "vmx.h"
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index dc70c6da63fa..2a3923dad570 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -221,18 +221,6 @@ struct vm_shape {
  
- #ifndef NUM_INTERRUPTS
-@@ -1311,12 +1312,19 @@ void kvm_get_cpu_address_width(unsigned int *pa_bits, unsigned int *va_bits)
+ kvm_static_assert(sizeof(struct vm_shape) == sizeof(u64));
  
- void kvm_init_vm_address_properties(struct kvm_vm *vm)
+-#define VM_TYPE_DEFAULT			0
+-
+-#define VM_SHAPE(__mode)			\
+-({						\
+-	struct vm_shape shape = {		\
+-		.mode = (__mode),		\
+-		.type = VM_TYPE_DEFAULT		\
+-	};					\
+-						\
+-	shape;					\
+-})
+-
+ extern enum vm_guest_mode vm_mode_default;
+ 
+ #if defined(__aarch64__)
+@@ -270,8 +258,23 @@ extern enum vm_guest_mode vm_mode_default;
+ 
+ #endif
+ 
++#define VM_TYPE_DEFAULT			0
++
++#define __VM_SHAPE(__mode, __type)		\
++({						\
++	struct vm_shape shape = {		\
++		.mode = (__mode),		\
++		.type = (__type),		\
++	};					\
++						\
++	shape;					\
++})
++
++#define VM_SHAPE(__mode)	__VM_SHAPE(__mode, VM_TYPE_DEFAULT)
+ #define VM_SHAPE_DEFAULT	VM_SHAPE(VM_MODE_DEFAULT)
+ 
++#define VM_TYPE(__type)		__VM_SHAPE(VM_MODE_DEFAULT, __type)
++
+ #define MIN_PAGE_SIZE		(1U << MIN_PAGE_SHIFT)
+ #define PTES_PER_MIN_PAGE	ptes_per_page(MIN_PAGE_SIZE)
+ 
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 77f576ee7789..0aa6eecfcbde 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -365,6 +365,10 @@ static inline unsigned int x86_model(unsigned int eax)
+ 	return ((eax >> 12) & 0xf0) | ((eax >> 4) & 0x0f);
+ }
+ 
++#define VM_SHAPE_SEV		VM_TYPE(KVM_X86_SEV_VM)
++#define VM_SHAPE_SEV_ES		VM_TYPE(KVM_X86_SEV_ES_VM)
++#define VM_SHAPE_SNP		VM_TYPE(KVM_X86_SNP_VM)
++
+ #define PHYSICAL_PAGE_MASK      GENMASK_ULL(51, 12)
+ 
+ #define PAGE_SHIFT		12
+diff --git a/tools/testing/selftests/kvm/include/x86/sev.h b/tools/testing/selftests/kvm/include/x86/sev.h
+index 1af44c151d60..944c59dbe510 100644
+--- a/tools/testing/selftests/kvm/include/x86/sev.h
++++ b/tools/testing/selftests/kvm/include/x86/sev.h
+@@ -53,8 +53,6 @@ void snp_vm_launch_start(struct kvm_vm *vm, u64 policy);
+ void snp_vm_launch_update(struct kvm_vm *vm);
+ void snp_vm_launch_finish(struct kvm_vm *vm);
+ 
+-struct kvm_vm *vm_sev_create_with_one_vcpu(u32 type, void *guest_code,
+-					   struct kvm_vcpu **cpu);
+ void vm_sev_launch(struct kvm_vm *vm, u64 policy, u8 *measurement);
+ 
+ kvm_static_assert(SEV_RET_SUCCESS == 0);
+diff --git a/tools/testing/selftests/kvm/lib/x86/sev.c b/tools/testing/selftests/kvm/lib/x86/sev.c
+index 93f916903461..95d8520eea34 100644
+--- a/tools/testing/selftests/kvm/lib/x86/sev.c
++++ b/tools/testing/selftests/kvm/lib/x86/sev.c
+@@ -158,22 +158,6 @@ void snp_vm_launch_finish(struct kvm_vm *vm)
+ 	vm_sev_ioctl(vm, KVM_SEV_SNP_LAUNCH_FINISH, &launch_finish);
+ }
+ 
+-struct kvm_vm *vm_sev_create_with_one_vcpu(u32 type, void *guest_code,
+-					   struct kvm_vcpu **cpu)
+-{
+-	struct vm_shape shape = {
+-		.mode = VM_MODE_DEFAULT,
+-		.type = type,
+-	};
+-	struct kvm_vm *vm;
+-	struct kvm_vcpu *cpus[1];
+-
+-	vm = __vm_create_with_vcpus(shape, 1, 0, guest_code, cpus);
+-	*cpu = cpus[0];
+-
+-	return vm;
+-}
+-
+ void vm_sev_launch(struct kvm_vm *vm, u64 policy, u8 *measurement)
  {
-+	u32 gpa_bits = kvm_cpu_property(X86_PROPERTY_GUEST_MAX_PHY_ADDR);
-+
-+	vm->arch.sev_fd = -1;
-+
- 	if (is_sev_vm(vm)) {
- 		vm->arch.sev_fd = open_sev_dev_path_or_exit();
- 		vm->arch.c_bit = BIT_ULL(this_cpu_property(X86_PROPERTY_SEV_C_BIT));
- 		vm->gpa_tag_mask = vm->arch.c_bit;
--	} else {
--		vm->arch.sev_fd = -1;
-+	} else if (is_tdx_vm(vm)) {
-+		TEST_ASSERT(gpa_bits == 48 || gpa_bits == 52,
-+			    "TDX: bad X86_PROPERTY_GUEST_MAX_PHY_ADDR value: %u", gpa_bits);
-+		vm->arch.s_bit = BIT_ULL(gpa_bits - 1);
-+		vm->gpa_tag_mask = vm->arch.s_bit;
+ 	if (is_sev_snp_vm(vm)) {
+diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+index 1a49ee391586..fe2c438882ae 100644
+--- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
++++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+@@ -104,7 +104,7 @@ static void compare_xsave(u8 *from_host, u8 *from_guest)
+ 		abort();
+ }
+ 
+-static void test_sync_vmsa(u32 type, u64 policy)
++static void test_sync_vmsa(struct vm_shape shape, u64 policy)
+ {
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
+@@ -114,7 +114,7 @@ static void test_sync_vmsa(u32 type, u64 policy)
+ 	double x87val = M_PI;
+ 	struct kvm_xsave __attribute__((aligned(64))) xsave = { 0 };
+ 
+-	vm = vm_sev_create_with_one_vcpu(type, guest_code_xsave, &vcpu);
++	vm = vm_create_shape_with_one_vcpu(shape, &vcpu, guest_code_xsave);
+ 	gva = vm_alloc_shared(vm, PAGE_SIZE, KVM_UTIL_MIN_VADDR,
+ 			      MEM_REGION_TEST_DATA);
+ 	hva = addr_gva2hva(vm, gva);
+@@ -150,13 +150,13 @@ static void test_sync_vmsa(u32 type, u64 policy)
+ 	kvm_vm_free(vm);
+ }
+ 
+-static void test_sev(void *guest_code, u32 type, u64 policy)
++static void test_sev(void *guest_code, struct vm_shape shape, u64 policy)
+ {
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
+ 	struct ucall uc;
+ 
+-	vm = vm_sev_create_with_one_vcpu(type, guest_code, &vcpu);
++	vm = vm_create_shape_with_one_vcpu(shape, &vcpu, guest_code);
+ 
+ 	/* TODO: Validate the measurement is as expected. */
+ 	vm_sev_launch(vm, policy, NULL);
+@@ -201,12 +201,12 @@ static void guest_shutdown_code(void)
+ 	__asm__ __volatile__("ud2");
+ }
+ 
+-static void test_sev_shutdown(u32 type, u64 policy)
++static void test_sev_shutdown(struct vm_shape shape, u64 policy)
+ {
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
+ 
+-	vm = vm_sev_create_with_one_vcpu(type, guest_shutdown_code, &vcpu);
++	vm = vm_create_shape_with_one_vcpu(shape, &vcpu, guest_shutdown_code);
+ 
+ 	vm_sev_launch(vm, policy, NULL);
+ 
+@@ -218,28 +218,28 @@ static void test_sev_shutdown(u32 type, u64 policy)
+ 	kvm_vm_free(vm);
+ }
+ 
+-static void test_sev_smoke(void *guest, u32 type, u64 policy)
++static void test_sev_smoke(void *guest, struct vm_shape shape, u64 policy)
+ {
+ 	const u64 xf_mask = XFEATURE_MASK_X87_AVX;
+ 
+-	if (type == KVM_X86_SNP_VM)
+-		test_sev(guest, type, policy | SNP_POLICY_DBG);
++	if (shape.type == KVM_X86_SNP_VM)
++		test_sev(guest, shape, policy | SNP_POLICY_DBG);
+ 	else
+-		test_sev(guest, type, policy | SEV_POLICY_NO_DBG);
+-	test_sev(guest, type, policy);
++		test_sev(guest, shape, policy | SEV_POLICY_NO_DBG);
++	test_sev(guest, shape, policy);
+ 
+-	if (type == KVM_X86_SEV_VM)
++	if (shape.type == KVM_X86_SEV_VM)
+ 		return;
+ 
+-	test_sev_shutdown(type, policy);
++	test_sev_shutdown(shape, policy);
+ 
+ 	if (kvm_has_cap(KVM_CAP_XCRS) &&
+ 	    (xgetbv(0) & kvm_cpu_supported_xcr0() & xf_mask) == xf_mask) {
+-		test_sync_vmsa(type, policy);
+-		if (type == KVM_X86_SNP_VM)
+-			test_sync_vmsa(type, policy | SNP_POLICY_DBG);
++		test_sync_vmsa(shape, policy);
++		if (shape.type == KVM_X86_SNP_VM)
++			test_sync_vmsa(shape, policy | SNP_POLICY_DBG);
+ 		else
+-			test_sync_vmsa(type, policy | SEV_POLICY_NO_DBG);
++			test_sync_vmsa(shape, policy | SEV_POLICY_NO_DBG);
  	}
  }
  
+@@ -247,13 +247,13 @@ int main(int argc, char *argv[])
+ {
+ 	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SEV));
+ 
+-	test_sev_smoke(guest_sev_code, KVM_X86_SEV_VM, 0);
++	test_sev_smoke(guest_sev_code, VM_SHAPE_SEV, 0);
+ 
+ 	if (kvm_cpu_has(X86_FEATURE_SEV_ES))
+-		test_sev_smoke(guest_sev_es_code, KVM_X86_SEV_ES_VM, SEV_POLICY_ES);
++		test_sev_smoke(guest_sev_es_code, VM_SHAPE_SEV_ES, SEV_POLICY_ES);
+ 
+ 	if (kvm_cpu_has(X86_FEATURE_SEV_SNP))
+-		test_sev_smoke(guest_snp_code, KVM_X86_SNP_VM, snp_default_policy());
++		test_sev_smoke(guest_snp_code, VM_SHAPE_SNP, snp_default_policy());
+ 
+ 	return 0;
+ }
 
 -- 
 2.55.0.229.g6434b31f56-goog
