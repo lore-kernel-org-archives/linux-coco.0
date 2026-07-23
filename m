@@ -1,180 +1,109 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D14F23D7F4
-	for <linux-coco@lists.linux.dev>; Thu, 23 Jul 2026 07:17:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEBB40680F;
+	Thu, 23 Jul 2026 07:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784791054; cv=none; b=MWZVoS7M2dy7cmOyKSBtKhgUXuyGqCTlYeYMLZBeq962V5IHevOytae7in1ZtyAWhZmWoZMdQmnLvxFJWZtkvNbWabN8UarkvmnEymdp0Q1+r8mBusdhnNawhS37Po3oHxSOtf1f+vTJoCyGDEwbeVBpKO1QDk5OW3+gTmPXbp4=
+	t=1784793082; cv=none; b=U9slqFdwyGKPOjA20aTj/yPn5FnQqiXA4xViZIS7dzRWE/h3NmVYlJVnKnJXb+KnWkJf8oZbqcKj9CFVcGvaUAYQgBrI4z73tVb5CN5t74VuZ80pO3unD7nIfoV03wt0Yel+rlijv3nqslT6DokvuonVMFoMMb0Ttni1qPGMl6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784791054; c=relaxed/simple;
-	bh=teeyNIv/JEiwwT3fkLQ0kmcbVKriraNmcjYMJ0UUajQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mJn+qNsaLneCWodMumRxflfqGdMy4gifX5LlFCfUf8VQufEfUfYgrQcCsXHB5TtVazEzj2OOzchWeAiDXYGQ8gu7g7FrpJtQ4Nlc9g/D7TbNhAhOZu/ZVqyNwGO+EJzroRNyIxH0XZVMevkH55J0/INkVJKZaJAKxUaIWGk8UzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=cfSUkqL5; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1784793082; c=relaxed/simple;
+	bh=tDUFO0vLmWrLeoaSVmk16KindEOv1rbAReMd2abxSk8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q8DWsh4CQw/vRP+FyQ31JcJnYilYyzeTPvAHFZddns2+OoKeMVAMU/6zIQXSQZO4LIeyRmRjSSMFNS38Uhr7Y6dkvMJyTGSR7kA+9snrMRMxSkAiG5PtYRnVURI7EIY4iVlZK7paoxZ7tKLBuNE66bZoZCl0nD2sRw6EHqzbJgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C5yVtX07; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="cfSUkqL5"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4953de5be0aso1989745e9.0
-        for <linux-coco@lists.linux.dev>; Thu, 23 Jul 2026 00:17:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1784791046; x=1785395846; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=gTMcinR+9LxGJXRCG8QBuGeJK9HPvbs8Aj0hNum62ZE=;
-        b=cfSUkqL58ipY0HWD19qtAHGXl0e9EkISXAG2O/cdfkfjrwxxIrxqgLt4kLzpurMQze
-         hmRufuXYdNCKHxdTdf4ahjE4uIM3dIMvXxhzB/b+yZgmN1TRBXf3/9uGyvGwYkBiFhXg
-         IjJkZME3+7JmoljE5nQ05/PhJLWXoqUMOsdGqIonjyEc8IzOMsX/xjCyt+BM0EE8iFiT
-         y+O/rOsfvw8Kb3ga72aFLJ77ImxwrBkEzpFaRw5RDQ64q3XASVcaJbKM9z8LKFg4nnau
-         5EZNtUymVpX9G+dumr5GQXU+oI1NucFij4Qsl3ibvHvG+CQ4Hur2Jk0uiXQftQDMskaZ
-         wShA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784791046; x=1785395846;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=gTMcinR+9LxGJXRCG8QBuGeJK9HPvbs8Aj0hNum62ZE=;
-        b=sysT5jPo5klxvV25TorcbYZwSiGTPGukI1y8egF9cv7e0i/XxkL+S9DXspmyn/qCTd
-         /StVIT8aYG6n7qYxRnCJMKbweyydYRPoZ1fkpxEP57G09Igkx2izsne5oky41m+bnXkB
-         zg/TESqSEsdoSWtDc64mF8lQvxdOUxhmGuV10s+hx59/O6f03AlkylghzwrhMlnJ1M1h
-         PoQnZra+Cilw220bbjpESDepfFfx4JRs9qMrHd0EPxOVuNvDACzkOeWVJBqeqvf3VZdD
-         NNC2eX5dZfGWRMJ6+1JCZuR3em7IyBWZd5Yk5gu/SxcYGBnW5aK+JaeNRdUWA2TZHsnk
-         wB8A==
-X-Forwarded-Encrypted: i=1; AHgh+Rpbnh/XLkBV06xFScEAMiyckRqE9iCEF11wfIByyoxrGvDWy4n+1kr6IpV6bfwWdf5AwJbStON3Wqwa@lists.linux.dev
-X-Gm-Message-State: AOJu0YzrCCCaH1mapWp8D/wJc8Ygj+wV9SLf/DD3pyynY7UejKWn5reI
-	YniIBnc46hIo6N8Ouc4yipTS19PO4jJZoTkVeBBy9jNr1W5Y0fsrpqMV05rhG+xFbwM=
-X-Gm-Gg: AR+sD11uiDgHz8RF7f0nv7M9OTjU1hOu6qXOgtF4SlIR5DERzfg6Tn2OkcrIemBJLFI
-	Qh1cwuRxG4aI92767wP0G4N1yo7wNKZnnBpqhhahP9/MsF/S34S53V4PKIQrRuxUtJVXTENi/Ah
-	69bhFSQPPRbJV03lUY5BSf49gVpoLZzvWvj/PSMofZabmedgW9Ffo+JSXxBidhvgtHCqjeZ7yER
-	PHBbWrKvZ9lIFvtqb9zA47MWpJ3IspsPLxLVIUCnZeAtEmKJIVIfMmVLordsxQ0jDiq01el1caw
-	DInhFCmUhsv3SINaZRwT6TGY1F8++H6BEPYFrHvLtADK25pUSVI8jV+CpY+9wHe4szCDYx0l52Z
-	t9Zxp9uzDC7dbCeZE8nAor1j8bEhKPZyk+e6CFKIzGRUrSgl7Kv2dzJyyZQ0Mpj9sfYGxOACoTI
-	hCiH8CtSX3acFqt/E=
-X-Received: by 2002:a05:600c:6a07:b0:493:a613:56b2 with SMTP id 5b1f17b1804b1-49573c8d700mr12326795e9.8.1784791045710;
-        Thu, 23 Jul 2026 00:17:25 -0700 (PDT)
-Received: from [10.20.4.146] ([149.62.206.101])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956a508aa6sm130774115e9.7.2026.07.23.00.17.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jul 2026 00:17:25 -0700 (PDT)
-Message-ID: <3114b501-158f-46f5-b999-68b5896aa3f8@suse.com>
-Date: Thu, 23 Jul 2026 10:17:22 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C5yVtX07"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEBAF1F000E9;
+	Thu, 23 Jul 2026 07:51:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784793081;
+	bh=oS1NMvx865gW2UoErMylGfTUK0dtoB1K+HlWaCkJDOs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=C5yVtX07ZkUJj3b2b+kYtfuR23XpTFRkdHRdENTWAARDLYmTf2IRILt6XAP3lcQ3i
+	 guxWOSpqvbZxIkPudGanZc9oRLKmaWg7jWE5nWdWWffLISp3ZQ+ad4Ihoe02/FYjI0
+	 zawcqNvZ4YMD98rRRw9KmxbnYTZO2a2pevFxO+lic7WvlenUPBRb/qjJSo021Hq+fK
+	 RnJUL29qw9dIMmgyNVWejeSnfUWslCr7nlHO+wb/2jqEuc0/cAk14jRWF5Uc2ySZeT
+	 fSQ5DwAeoStwg7yjuT2gjGQyNTVPQV9uRZe39mcHkbKAqEo5c/lhrEDQ+DHZjlr32v
+	 nL9nveFp0YtMA==
+Date: Thu, 23 Jul 2026 10:51:08 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
+Subject: Re: [PATCH v8 00/23] dma-mapping: Track shared DMA state through
+ direct, pool and swiotlb paths
+Message-ID: <20260723075108.GB110966@unreal>
+References: <20260717180442.110954-1-aneesh.kumar@kernel.org>
+ <20260721124056.GK110966@unreal>
+ <amEglRH3u6UFFnIQ@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 08/11] KVM: TDX: Get/put PAMT pages when (un)mapping
- private memory
-To: Sean Christopherson <seanjc@google.com>,
- Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- Kai Huang <kai.huang@intel.com>, Dave Hansen <dave.hansen@intel.com>,
- Yan Y Zhao <yan.y.zhao@intel.com>,
- "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
- Binbin Wu <binbin.wu@intel.com>, "kas@kernel.org" <kas@kernel.org>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "hpa@zytor.com" <hpa@zytor.com>, "tglx@kernel.org" <tglx@kernel.org>,
- Vishal Annapurve <vannapurve@google.com>, "bp@alien8.de" <bp@alien8.de>,
- Chao Gao <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
-References: <20260718014500.2231262-1-rick.p.edgecombe@intel.com>
- <20260718014500.2231262-9-rick.p.edgecombe@intel.com>
- <20900cd6-6d05-4a20-a21d-2a1d4a6ef5e5@suse.com>
- <4ad035a82ee10dc4645e26a4bd1daf40786a743a.camel@intel.com>
- <amEbS6WDEyrvW72Q@google.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <amEbS6WDEyrvW72Q@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amEglRH3u6UFFnIQ@ziepe.ca>
 
-
-
-On 7/22/26 22:34, Sean Christopherson wrote:
-> On Wed, Jul 22, 2026, Rick P Edgecombe wrote:
->> On Wed, 2026-07-22 at 16:46 +0300, Nikolay Borisov wrote:
->>>> +static int tdx_topup_external_pamt_cache(struct kvm_vcpu *vcpu, int
->>>> min_nr_spts)
->>>> +{
->>>> +	/*
->>>> +	 * Don't cover the root SPT, but cover a possible 4KB private
->>>> +	 * page in addition to the SPTs. So -1 to exclude the root
->>>> +	 * SPT, and +1 for the guest page cancel out.
->>>> +	 */
->>>
->>> That comment here doesn't seem to correspond to the code in anyway.
->>> There are no +-1 adjustments.
->>
->> The +1 and -1 cancel each other out. Hmm, how about:
->> 	/*
->> 	 * Don't cover the root SPT, but cover a possible 4KB private
->> 	 * page in addition to the SPTs. The -1 to exclude the root
->> 	 * SPT and +1 for the guest page cancel each other out. So
->> 	 * make no adjustments.
->> 	 */
+On Wed, Jul 22, 2026 at 04:57:09PM -0300, Jason Gunthorpe wrote:
+> On Tue, Jul 21, 2026 at 03:40:56PM +0300, Leon Romanovsky wrote:
 > 
-> Maybe put it in code?  E.g.
+> > Why don't we continue the effort to remove "struct page" entirely
+> > from the DMA API internals?
+> > 
+> > IMHO, everything not exposed to DMA API users should use
+> > phys_addr_t, including the DMA address pool.
 > 
-> 	/*
-> 	 * Minus one page to exclude the root SPT, but plus one page for a
-> 	 * possible 4KiB private mapping.
-> 	 */
-> 	min_nr_spts += -1 + 1;
+> The alloc interfaces return a struct page, that is why this stuff is
+> organized like this. Look at dma_alloc_pages()
 
-Makes sense
+And I didn't say that we should change dma_alloc_pages(). It is external
+API, which needs to be struct *page. I'm talking about internals.
+
+Even dma_alloc_pages() flow shows how convoluted and non-uniform
+the code underneath which performs translations all the time.
+
+dma_alloc_pages()
+	->  __dma_alloc_pages()
+		-> dma_direct_alloc_pages()
+....
+	ret = page_address(page);             <--- here we need virt address
+	if (dma_set_decrypted(dev, ret, size))
+		goto out_leak_pages;
+	memset(ret, 0, size);
+	*dma_handle = phys_to_dma_direct(dev, page_to_phys(page)); <- and here we need phys address
+	return page;
+
+So my point is that internal flows should not require struct page
+and should not depend on it.
+
 > 
-> 	return tdx_topup_pamt_cache(&to_tdx(vcpu)->pamt_cache, min_nr_spts);
-
+> There is also an API that forms a scatterlist that has to be struct
+> page as well
+> 
+> Jason
+> 
