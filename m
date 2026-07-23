@@ -1,109 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEBB40680F;
-	Thu, 23 Jul 2026 07:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48833E172F;
+	Thu, 23 Jul 2026 07:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784793082; cv=none; b=U9slqFdwyGKPOjA20aTj/yPn5FnQqiXA4xViZIS7dzRWE/h3NmVYlJVnKnJXb+KnWkJf8oZbqcKj9CFVcGvaUAYQgBrI4z73tVb5CN5t74VuZ80pO3unD7nIfoV03wt0Yel+rlijv3nqslT6DokvuonVMFoMMb0Ttni1qPGMl6Y=
+	t=1784793363; cv=none; b=sDs1wgQG/exm1Cm31Imenl2w0gJvwc5zqp9u8XRU5Y6dCU8nD0snSQIai3pesID+mm9Og8rS9MOTOuqmLjWaOehQ+0eNQVXpP7ZvhPByindNdnihilejRu1lp4Oz3o9aTYGzB1/TIZfeeSCo+Z44W+r6wjPpxljuSIh6Ey9k5cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784793082; c=relaxed/simple;
-	bh=tDUFO0vLmWrLeoaSVmk16KindEOv1rbAReMd2abxSk8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q8DWsh4CQw/vRP+FyQ31JcJnYilYyzeTPvAHFZddns2+OoKeMVAMU/6zIQXSQZO4LIeyRmRjSSMFNS38Uhr7Y6dkvMJyTGSR7kA+9snrMRMxSkAiG5PtYRnVURI7EIY4iVlZK7paoxZ7tKLBuNE66bZoZCl0nD2sRw6EHqzbJgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C5yVtX07; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784793363; c=relaxed/simple;
+	bh=WrPrN9cV2PmibleLWI7XuTVzlsJZ0VJtDkclEP6rqXQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=XII65gfYioNasOsr9aQcHmvvkbdkHupE45yKZb9j98TVyhX2PeSNQ7jJIVwMjSovdNxQU2Q06Nsb5A9pBbRPUz0Kd/n0kAmtKowVLDJR/5C/+mqp8fIVUDf4yZg0u+X1Po4/wu4/lON802BZIpOurLjFtKy1HDrLEh5q/XT+xQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lEqG26ST; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C5yVtX07"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEBAF1F000E9;
-	Thu, 23 Jul 2026 07:51:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lEqG26ST"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784001F000E9;
+	Thu, 23 Jul 2026 07:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784793081;
-	bh=oS1NMvx865gW2UoErMylGfTUK0dtoB1K+HlWaCkJDOs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=C5yVtX07ZkUJj3b2b+kYtfuR23XpTFRkdHRdENTWAARDLYmTf2IRILt6XAP3lcQ3i
-	 guxWOSpqvbZxIkPudGanZc9oRLKmaWg7jWE5nWdWWffLISp3ZQ+ad4Ihoe02/FYjI0
-	 zawcqNvZ4YMD98rRRw9KmxbnYTZO2a2pevFxO+lic7WvlenUPBRb/qjJSo021Hq+fK
-	 RnJUL29qw9dIMmgyNVWejeSnfUWslCr7nlHO+wb/2jqEuc0/cAk14jRWF5Uc2ySZeT
-	 fSQ5DwAeoStwg7yjuT2gjGQyNTVPQV9uRZe39mcHkbKAqEo5c/lhrEDQ+DHZjlr32v
-	 nL9nveFp0YtMA==
-Date: Thu, 23 Jul 2026 10:51:08 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	s=k20260515; t=1784793362;
+	bh=WrPrN9cV2PmibleLWI7XuTVzlsJZ0VJtDkclEP6rqXQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=lEqG26STPwmO5CnbjQJ8E9MYTEoMF6Q0RlYzHX4Nl7lhQbyIPIujiRUHYQjir+d/r
+	 B1mUvrIxbGAUNBfgR6NfnqRt4926ESZt3Qv/4JTDflifujpN+scI9OwAjAny/fumqq
+	 j4EEZ/LU+loG0nI4gTL97ef1bUmhzwM5iK6p16Uj/Nf+/MIXuEIVh1TJSf02475CsX
+	 IiKhOaANjC7IAD35rAXrpftJ6WMj661dSOdnuvU9fMhnFw8I+jsx76AZuguSSb/jjo
+	 nrXiLZs8d9TUWYRfr5Vdy1XoEL/lxAM4RS4nzIwNdYLgMkE7uNtEuR8/Ekab8knrKy
+	 7jSLQNu+2Z2xA==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Steven Price <steven.price@arm.com>,
 	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [PATCH v8 00/23] dma-mapping: Track shared DMA state through
- direct, pool and swiotlb paths
-Message-ID: <20260723075108.GB110966@unreal>
-References: <20260717180442.110954-1-aneesh.kumar@kernel.org>
- <20260721124056.GK110966@unreal>
- <amEglRH3u6UFFnIQ@ziepe.ca>
+	Andre Przywara <andre.przywara@arm.com>
+Subject: Re: [PATCH v8 0/6] Switch Arm SMCCC firmware services to an SMCCC bus
+In-Reply-To: <20260707081351.1680209-1-aneesh.kumar@kernel.org>
+References: <20260707081351.1680209-1-aneesh.kumar@kernel.org>
+Date: Thu, 23 Jul 2026 13:25:52 +0530
+Message-ID: <yq5aik666sxj.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amEglRH3u6UFFnIQ@ziepe.ca>
+Content-Type: text/plain
 
-On Wed, Jul 22, 2026 at 04:57:09PM -0300, Jason Gunthorpe wrote:
-> On Tue, Jul 21, 2026 at 03:40:56PM +0300, Leon Romanovsky wrote:
-> 
-> > Why don't we continue the effort to remove "struct page" entirely
-> > from the DMA API internals?
-> > 
-> > IMHO, everything not exposed to DMA API users should use
-> > phys_addr_t, including the DMA address pool.
-> 
-> The alloc interfaces return a struct page, that is why this stuff is
-> organized like this. Look at dma_alloc_pages()
 
-And I didn't say that we should change dma_alloc_pages(). It is external
-API, which needs to be struct *page. I'm talking about internals.
+"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
 
-Even dma_alloc_pages() flow shows how convoluted and non-uniform
-the code underneath which performs translations all the time.
+> As discussed here:
+> https://lore.kernel.org/all/20250728135216.48084-12-aneesh.kumar@kernel.org
+>
+> The earlier CCA guest support used an arm-cca-dev platform device as a pure
+> software anchor for the TSM class device. That platform device did not
+> correspond to a DT/ACPI described device, MMIO range, interrupt, or other
+> platform resource; it existed only to make the CCA guest driver bind and to
+> place the resulting TSM device in the driver model. The same pattern also
+> exists for smccc_trng. Creating separate platform devices for such
+> SMCCC-discovered features is misleading, because those features are not
+> independent platform devices.
+>
+> This series adds an Arm SMCCC bus for services discovered through the SMCCC
+> firmware interface. The bus provides SMCCC device and driver registration
+> helpers, name-based matching, uevent modalias generation, and a sysfs modalias
+> attribute. SMCCC service drivers can use MODULE_DEVICE_TABLE(arm_smccc, ...)
+> to emit arm_smccc:<name> aliases, allowing userspace to autoload service
+> drivers when the SMCCC core registers matching firmware-service devices.
+>
+> The series then moves SMCCC TRNG and the Arm CCA guest RSI service off the
+> platform bus. When the SMCCC core discovers the corresponding firmware
+> service, it registers an arm-smccc device for that service. The hwrng
+> arm_smccc_trng driver and the Arm CCA guest TSM provider are converted to
+> SMCCC drivers that bind to those discovered devices.
+>
+> The old arm-cca-dev platform device has also been used by userspace as a Realm
+> guest indicator. Removing it without a replacement would leave userspace
+> depending on an internal driver-binding device. This series therefore adds
+> /sys/firmware/cca/realm_guest as a stable, architecture-provided ABI for
+> detecting whether the kernel is running as an Arm CCA Realm guest, and then
+> removes the dummy arm-cca-dev platform-device registration.
+>
 
-dma_alloc_pages()
-	->  __dma_alloc_pages()
-		-> dma_direct_alloc_pages()
-....
-	ret = page_address(page);             <--- here we need virt address
-	if (dma_set_decrypted(dev, ret, size))
-		goto out_leak_pages;
-	memset(ret, 0, size);
-	*dma_handle = phys_to_dma_direct(dev, page_to_phys(page)); <- and here we need phys address
-	return page;
 
-So my point is that internal flows should not require struct page
-and should not depend on it.
+Hi Will and Catalin,
 
-> 
-> There is also an API that forms a scatterlist that has to be struct
-> page as well
-> 
-> Jason
-> 
+Gentle ping. Can this be picked up for the next merge window?
+
+-aneesh
