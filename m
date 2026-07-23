@@ -1,200 +1,203 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137133A7F40
-	for <linux-coco@lists.linux.dev>; Thu, 23 Jul 2026 08:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784794803; cv=fail; b=V1YvpRd0Cs6vT8xsfLaPXqbQp6bBCU14HhH+3qAoYuyvtqAtbCcOBnMq2BnBPscIIjx/r3Lvlmt++28VCQaGfabspKiTwdzEGqAAqDj5oyqwa+xM4qY62a/m7Qa1MYb1b6OEDXgoRZzkClNqFf2DllpCUp21zZF6eNq2/mq/vmA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784794803; c=relaxed/simple;
-	bh=VcGn8g5OCu3ecq+SZmdDs+FiJw7ZZbJimylaiQMiRxQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rs+2yQ5zRw/KTkcv7DD9LrA+WlMf23Fy3UgTztIBLu4JZCSrADL80Ubkng2tBB9XSpZvppit04oHWVAkESICsG7l3T+PrjtqvKRS90yP2OQ6mGkpnQWmkKiLSJYH9HhspsWRiYBV70QsZDxeu07sicbJVgtHPbFHl+4NkYBctCA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aeE4usdb; arc=fail smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0E840B0ED
+	for <linux-coco@lists.linux.dev>; Thu, 23 Jul 2026 08:44:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784796260; cv=none; b=VRSZVY9ZphVaWMikt/20bkdbFig/TQNeGM7AIkWmmg8GMB83yxo3qSpZ5lsnAoTrQqLCfELYDZ1SSvKOo5hBs8FeNcTS+cr882IJiTFLiUrncc5GznMwvyZnt8wzdr0FjGPiF3Azw+9yyzw0uPVDHXL/yRlQjlxolsmPiyJbql8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784796260; c=relaxed/simple;
+	bh=ri2R10jI/KZqksjq56uANWgNDteZi/WxIAXPivMhEeI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YrsA+wlY2Qv7m/FBV/sbopbfwCfth6Vh7bvZTh6pUh6fG+xI5e898f1+hiC7ylHwUgZ+F+BZI7+Incg9uekA6qOYoy8s0A5EPVu/0gRyWJuLYE6u7iSX/fclylUhGVgk5PLl15mxD1F/knfoc/R5I0STfyywz0XtcJVE4YxVXD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nLojhgQv; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aeE4usdb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nLojhgQv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784794801; x=1816330801;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=VcGn8g5OCu3ecq+SZmdDs+FiJw7ZZbJimylaiQMiRxQ=;
-  b=aeE4usdbJDXW6HT+fSKUEnl8CfKvx/LV+C4pjY7r+q5tIgLAOv8bU8WF
-   DfS5potXkkksVDGLpYE1gekeLGO1qPT5YnPDL6E8MU0s0dP5BKtmMCQG5
-   U3rO6CeVKoR9cQUjQNDxYgNQ5SeprT5+KIUtkuD6QtliE7qPALM78EBfH
-   I7IwA3v/XuasEF/IgaRBRM4sAGZbhFQrUR/gAPmLp2Jnpkfu06q66oujM
-   RXLuM4KxrNuZE130xVXelqHIWkBJ8wUawapIQHGtRgdl/1CIvY3SJPflX
-   WkTbIh/8aE7L4BnEuVYJz1Az3RqDAeqppwD1SbnpJtDD008XdkGDYfbHu
-   A==;
-X-CSE-ConnectionGUID: S0Cvd1syQyyh/ELdFlqwkg==
-X-CSE-MsgGUID: 0vvvnam7S/Kli31w1q2N5A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85388446"
+  t=1784796257; x=1816332257;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ri2R10jI/KZqksjq56uANWgNDteZi/WxIAXPivMhEeI=;
+  b=nLojhgQvQq2djj8CHkWxubVNPcHJcCGTN+Fqo11cf9gJ0UAd0pxxWlf8
+   1IdAq24GPmzAtamyHK8M32CBiIaRSc3JQXd3K4W++8gbpGRHDAUq86+D8
+   x7rovCMUvGNck5cFDJuFn9o1Uu4xmym6hglNBL1sgC9a0c62ntJqFg7No
+   J/dnVoqtkKhzIwNhXmQxlNTEQq/ymkcPOZTL/C9VvnOuusLRQrHfR1aLi
+   3AKAVzh6TvltxIkEcs/pQF9L5W6EVnKkv5psRFY/SE8MMwJhZHHYnSqnh
+   FCDqGef9Phs654RSQ6esEZBzegkNSIH90WpqIoUrpiO3n4QfxH57BlKH1
+   g==;
+X-CSE-ConnectionGUID: r1vlSzFFSvm+jL3hmTt69A==
+X-CSE-MsgGUID: FEO8Jv7+TU2uPwWYTPjM5g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85206207"
 X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="85388446"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 01:20:00 -0700
-X-CSE-ConnectionGUID: nOPlgroEQgSRoGcQ8iNyLw==
-X-CSE-MsgGUID: 0P6BXMuTTlGTd5uTlbjd7g==
+   d="scan'208";a="85206207"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 01:44:16 -0700
+X-CSE-ConnectionGUID: Fgaspw/+Sm6TCmIKzFvJuA==
+X-CSE-MsgGUID: G+r80SPPRl+y3k/WeL64WQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="260305488"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 01:20:00 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 23 Jul 2026 01:19:59 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Thu, 23 Jul 2026 01:19:59 -0700
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.49)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 23 Jul 2026 01:19:59 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vVBmmawGwkdLISNy/EWUC5WDztB8xioSbYdat6IE+Q74IHcJW8F61qrOXBDArl2Rhp1KELM9B+cX8Q/+VkoPhlKrG1dRg+GLsrB14As92mq8N/dDOkhBuXdEMVuHJO7sWzuJmTr2HrYuB7g28kI3BssGx6UnC/kW6ch9JpZFo6lEAHGFKfIio/1qgWFj6hYAwfn3ItKRW860N0C9t7EDW7ERdjTnQDQWsLdo+HonT5IsbaYGBvFjhtv8kg9hUzHQTk1KdcnZ1wH7U3uYXr0AV+kuQmMifa3hYAsk1FQoh9d2UPMNmZV8wkOzYr+tN4GGvffaZF01N+4sNziF3/j/Kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fZkxRtVwCFIa/W07S0N9wCeux2Tz5pMJW/+odORjJRc=;
- b=dSsi9krLTr19RbPZj7R0PNUk+R2Z63OuvZfb8seVuPP6trtyZggpFx4UDU3AEWPq/znyLfq0ityz9dQwOmKlpJOOkLJLEIy9J2uYeKhEySvttgCUea639QdIh/dcLt07xfEKOuJ/uIcezBDkT8LXC8CkcCA7+IySEig6ahvFothsPpIoxyF1k2UpQ9VcNyYA8viTnPHwaFJ/DqtUka+91VlrD4LmjSYIgHOaD4NjKTuPzHhfPd08MEowb/IpR3436SpumkI6cXwM6SevwAQKo5MfTyoxPNWGs25oCWJ+k1cGooLZYG8yHNKSF0oId1DFn6xQl2pHzBuKBFTzeOuxCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com (2603:10b6:a03:3b9::19)
- by SA1PR11MB6991.namprd11.prod.outlook.com (2603:10b6:806:2b8::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
- 2026 08:19:50 +0000
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e]) by SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e%4]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
- 08:19:50 +0000
-Date: Thu, 23 Jul 2026 01:19:46 -0700
-From: Peter Fang <peter.fang@intel.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-CC: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "Hansen, Dave"
-	<dave.hansen@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"bp@alien8.de" <bp@alien8.de>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com"
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, "mingo@redhat.com"
-	<mingo@redhat.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "hpa@zytor.com"
-	<hpa@zytor.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "binbin.wu@linux.intel.com"
-	<binbin.wu@linux.intel.com>
-Subject: Re: [PATCH v2 2/2] virt: tdx-guest: Allocate Quote buffer dynamically
-Message-ID: <20260723081946.GA482062@pedri>
-References: <20260717214349.4075994-1-peter.fang@intel.com>
- <20260717214349.4075994-3-peter.fang@intel.com>
- <51059852-9a10-4735-a81d-003b4b1963a6@intel.com>
- <20260721064907.GG3178326@pedri>
- <d88fe58e-5963-49a5-86a4-6a9779d06109@intel.com>
- <741eb8b8b83dd10d39f304133a7625f4232ab793.camel@intel.com>
- <amCv00f5Q6QlztyY@thinkstation>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <amCv00f5Q6QlztyY@thinkstation>
-X-ClientProxiedBy: SJ0PR03CA0177.namprd03.prod.outlook.com
- (2603:10b6:a03:338::32) To SJ0PR11MB5645.namprd11.prod.outlook.com
- (2603:10b6:a03:3b9::19)
+   d="scan'208";a="253996784"
+Received: from unknown (HELO [10.238.208.132]) ([10.238.208.132])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 01:44:10 -0700
+Message-ID: <c8b7a800-58ed-4ef7-91bd-31da77763717@intel.com>
+Date: Thu, 23 Jul 2026 16:44:08 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB5645:EE_|SA1PR11MB6991:EE_
-X-MS-Office365-Filtering-Correlation-Id: a5c905aa-2a09-4612-bd45-08dee8932a3c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|18002099003|22082099003|4143699003|10067099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info: OBZgObOFrVxhU3GT8L9HiKpRdw41iCS4Fcai4/WcMmlFrpx7QMS3gd2FV3leyBWsjCIO2s/7qVpCKUqom3wKaq36Qos3q3FJ4i81qU7tZx6EuUYCj/63CCZdhKs5hl9s5juVIxIQN9VVl8r/SDfPFIRIiUA8BNvz1+UM5aEzcRugYjzRy4AH5P8ZPbAweIgb5bQ24i5tSnDBdocjjbR2trJDMESKj/8fxlIPJO+MXgOCJTgXOWETtrB8+pzl3yJtpayGNqlFuCa+KRfgeZ1jsTsbGCOjocjtZinyazk2XO3UYoEMnw4LC+yO3pWW+DzSCvXhIUv31ENpIXlTl7eWaJcG+7ftA4WrN5RQCMsqJDmrpw/G7B/TDN4XawOmxVn0rGEOrv7VhN6FCUBobMb3lP21icaXcdWPKgLcH83HnFHNaHEjPkoDGM/sApNfx5r+ah61yANEqqI2OQg893xkVsKZ3agF2Z4AkBAB6k71MhOBcJJmT3YRsCK+JnEKpiJo2gcbDrRNfJ1ur71W35TDsu18N+g8SbYDAjk8JbH9k7fyUfveVaPcv1jOjpS9PlTlTxtqgdoCdKZbfQ9jtHN8migAn7Dn1yuMn4J02JPndI0wQN/0PflT+cUyh4RN9iBmZtSlKxRUyj0Din20rkOu+8BBbyw11a1YUKMw62NE6cY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5645.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(18002099003)(22082099003)(4143699003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?r3G2MUFwiT+xLADe5zazsvQe8d8hhQz823Nc3T9apU9DZAQ28VjBochfqF4v?=
- =?us-ascii?Q?Lh47bOWhBTMszS3p9OV38VKQeg7OtfDRiKgJpNxGE7v4JRH917iWhYrItqsU?=
- =?us-ascii?Q?VBlnDNa4ScCtYAL9PAeyioUzsanms7XTuV7td5RmTNV8fLYf492E+3O29hzM?=
- =?us-ascii?Q?USq8fmenG5QVjCbcDIgc1bz36FuiSOzHemtDbEKRgMvtLGXYR1qD0m4wSfhJ?=
- =?us-ascii?Q?P2eGNiQZnyH81rqdWxcGdpE3peEfwnbUqBbWEIy23KVCt8y5HWYKXYb1+Y5E?=
- =?us-ascii?Q?ZOYuLzkXbtWkPnE0s1vv8uj5hbPTg5DD2AOZ8DiomeXDLP5af4xzUa+06BF0?=
- =?us-ascii?Q?ugI6ZIlcBiXEGTnf9cf3bhlK06yd7rlPMBAaGDE3XphwEMGtuIxqCMO6AQAw?=
- =?us-ascii?Q?ptDbSLG94iVU6MBTfnlLIbPkAKYn1y712FUzBty3js0BLlTylcEwIcrSt9JL?=
- =?us-ascii?Q?oxB61vIN+4ZxULbEkk35FEEEu888nBj26QB7X5E1bAiAn7qEpMWV2VIXrm7o?=
- =?us-ascii?Q?kfKWQqGMDYu7X820/qN8BwkCbSgJU6WQa34/6QXEw5qD35h/G5J0JJr8/92J?=
- =?us-ascii?Q?468QhuQi5OdDHhVAX0upomDLm1P2GqIBUU5jHvPBbLgBfBr9q9zlFzi1MeZX?=
- =?us-ascii?Q?8ePBJmSb9oyfcvI/7789agZX8h4seYUewMWgvg2ZQnUUwWo64+SP6MI6rMaY?=
- =?us-ascii?Q?aEFa4JK1BNGUztZqe7o1+RYxjjaK4im0VkCJdchPViCRh1ulFAyJzxR+pN87?=
- =?us-ascii?Q?esRHkxUv11HmLK0IaVCWGe+Jys9JNlBuqKZUaxJiazfOif1U6sapW9YzgOmL?=
- =?us-ascii?Q?w/VWD7G+IYPLxhXIFP0+r/JqLeHzagIkuz8uBrjhHP8EJwpEH58sRcrFju+G?=
- =?us-ascii?Q?z9tZ2XyJdQSIu6PThV5XLvOq1PyngtjH7kLpVonI7seA3GbG+4wg4ssP4dnD?=
- =?us-ascii?Q?rZVqj0L8Vc5AnoSt7Emz0hbQ71sp12exfPF+mnjazQrsfh1ISeJ/ipHoEj8h?=
- =?us-ascii?Q?p30dcU0cy4BZBu0XjuOWj9CP/Wu9wOwmdQiyTapl3IHoEHkBc20H8YYTAXqO?=
- =?us-ascii?Q?2vyTXaKdYyat5gkwx71mlinjgo2C4Kr4VfuXNkk6BNegfAueLweTDzEMcbhQ?=
- =?us-ascii?Q?9JSQ/6UJ+cexkbtLmgPS2lO+rWm13AonIPRjodem9diHProf392oIS0pk6/K?=
- =?us-ascii?Q?UBtyR8AJs3FN6JFJxGgJfrsy+QzJtTd2v/aJNXbObIuMcKOLtvuMzF+9EIFz?=
- =?us-ascii?Q?r4+mOFprKIbeawwxgC8HQnTBA2AsOvT4EfXONV4ZYkw9j3IXVEupt557g2da?=
- =?us-ascii?Q?TpOlgBPhhtm5CckgH0wuiJZvUXCO/XKt02/+wQemDQlt7Qq+fwnYUXIvVL9O?=
- =?us-ascii?Q?e+/s0VjnMlhxP82VZ2kFnYyZmkM95ajidlYRxj2yEqaClIg+PTeqMxy2ivnR?=
- =?us-ascii?Q?ecxJmzmh4kl1M5EaP90qPiGdeWnutOUwssaWXNzf/PONkRHkXABeKUW14xN0?=
- =?us-ascii?Q?8lSYUO1wiAFHW/C30XQX5x1/W9QzLzSeVnUOpjzuMhpJIv3G8EG959G9Ni4q?=
- =?us-ascii?Q?mW4cUJdMnFMY+g3/j5/Wkdey/79JAlF6Z7langTPUs8bgWFaPLt8YLJ2j1VT?=
- =?us-ascii?Q?HA8W7k9Tzx9VlJ15zxtBnfopC5aHaDGjuvyzSIeMvqA9YhydhuoPqfwv/jMz?=
- =?us-ascii?Q?CVkJpRoyc9uo4vyg8ay6n7yWElRXSUSYofPT99ii2ZzF4qVFBjN3J+dz1LJd?=
- =?us-ascii?Q?KI+QOIcGhQ=3D=3D?=
-X-Exchange-RoutingPolicyChecked: A6FttBnFv8XVzT+vUjOu8FoHY5d9BAMgnZL++U+RRo1da7Wz2XFmyw6G/VbDYNtPkbdcI7NUuiDPVjzOYMYsEqX54A7pWQy89sREE9CleOAf3C6nEK7K1VUyBBdC3FF6G/e3cEjYANO4iM0aXqUqPWiMVFFDhLgNJTIgYt5qnbZ5D9oQv0nB5ufArFe6CbBoWWNe3gvg3WpnNLaBAOcowJT+A9fz1CxT6wPeTn8FoSn7wzJiczu3kvJDq9/WAW2C5KuFerFt+ffycd577oYnMDecWVhcBEagBSN3+ceq7qfY9np6ezIJPm6qUdwVPhLcQ4hFj6h3/BI9LJuOWgBb9A==
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5c905aa-2a09-4612-bd45-08dee8932a3c
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5645.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 08:19:50.6230
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kQOVJA2q6kcSvcmtwiM0+akvsMSr4BkZAOddGx2/iIhsNgTHPRPkgeost2D9qsdqEUS7lszipuIZDX/S0al7Kw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6991
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 03/22] KVM: selftests: Initialize the TDX VM
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
+ Ackerley Tng <ackerleytng@google.com>, Binbin Wu
+ <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
+ Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
+ <20260722-tdx-selftests-v14-3-15ad654a50db@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260722-tdx-selftests-v14-3-15ad654a50db@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 22, 2026 at 01:00:35PM +0100, Kiryl Shutsemau wrote:
-> On Tue, Jul 21, 2026 at 04:43:57PM +0000, Edgecombe, Rick P wrote:
-> > BUT, is this number coming from the untrusted host or the TDX module? I cant
-> > find TDCS_QUOTE_MAX_SIZE in the docs.
+On 7/23/2026 7:13 AM, Lisa Wang wrote:
+> From: Sagi Shahar <sagis@google.com>
 > 
-> I cannot find it too. Peter, any pointers where it is documented
-> publicly?
-
-Gosh sorry I missed this. Turns out it was not fully published due to
-some internal error. Yikes.
-
-This metadata field is documented in "Intel TDX Module Extension for
-Quoting", Section "TD-Scope Metadata" [1]. But the encoding of this
-field got missed in the June 2026 release of "Intel TDX Module ABI
-Definitions". I just escalated this. I'll come back and give an update
-once it's fixed... Apologies for the oversight.
-
-[1] https://cdrdv2.intel.com/v1/dl/getContent/874303
-
+> Add tdx_init_vm() to handle the mandatory VM-level initialization
+> sequence required for Intel TDX.
 > 
-> > If it is coming from the TDX module then
-> > we are not talking about security considerations at all. It's just a functional
-> > "do you want to know if things are failing". Not sure why this one would be
-> > special in that regard. If we think it will fail so often that we don't want a
-> > warning, then we probably need another solution.
+> For TDX, the guest's CPUID configuration must be "sealed" during
+> KVM_TDX_INIT_VM before any vCPUs are created. This is necessary because
+> the TDX hardware directly virtualizes CPUID and includes the
+> configuration in the guest's initial security measurement.
 > 
-> Silent makes no sense to me. We are talking about attestation. If
-> attestation fails the TD is functionally dead: it cannot obtain secrets.
+> The helper calculates the required CPUID values by filtering the host-
+> supported bits (kvm_get_supported_cpuid) against the "directly
+> configurable" bits reported by KVM_TDX_CAPABILITIES, ensuring
+> compliance with the strict requirements of the TDH.MNG.INIT SEAMCALL.
 
-Yep. I'll remove __GFP_NOWARN in the next version. Thanks.
+<snip>
 
+> +/*
+> + * TDX ioctls
+> + * Use underscores to avoid collisions with struct member names.
+> + */
+> +#define __tdx_vm_ioctl(vm, cmd, _flags, arg)				\
+
+sev uses the name __vm_sev_ioctl, I think we need to keep them consistent.
+
+> +({									\
+> +	u64 r;								\
+> +									\
+> +	union {								\
+> +		struct kvm_tdx_cmd c;					\
+> +		unsigned long raw;					\
+> +	} tdx_cmd = { .c = {						\
+> +		.id = (cmd),						\
+> +		.flags = (u32)(_flags),					\
+> +		.data = (u64)(arg),					\
+> +	} };								\
+> +									\
+> +	r = __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
+> +	r ?: tdx_cmd.c.hw_error;					\
+
+I know it takes the same handling from __vm_sev_ioctl(). But I think the 
+handling for hw_error is not correct, at least for TDX (I didn't check 
+for SEV).
+
+the hw_error is the additional info, to tell the SEAMCALL return code, 
+when the IOCTL fails. KVM requires hw_error to be in the input, and KVM 
+puts the SEAMCALL return code into hw_error when the IOCTL fails due to 
+SEAMCALL failure. That means, when r == 0, the hw_error is always 0.
+
+I think we need to provide hw_error along with r to the caller so that 
+caller can print them together.
+
+> +})
+> +
+> +#define tdx_vm_ioctl(vm, cmd, flags, arg)				\
+> +({									\
+> +	u64 ret = __tdx_vm_ioctl(vm, cmd, flags, arg);			\
+> +									\
+> +	if (ret) {							\
+> +		TEST_ASSERT(!ret,					\
+> +			    "%s failed, rc: 0x%llx errno: %i (%s)",	\
+> +			    #cmd, (unsigned long long)ret,		\
+> +			    errno, strerror(errno));			\
+
+The if() looks silly. Why add it? And why change it from 
+__TEST_ASSERT_VM_VCPU_IOCTL() in the v13?
+
+Considering the suggestion of hw_error above, I think we need to 
+introduce the TEST_ASSERT_TDX_VM_VCPU_IOCTL() which accepts additional 
+hw_error?
+
+<snip>
+> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
+> new file mode 100644
+> index 000000000000..e1ffb67a106c
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
+> @@ -0,0 +1,120 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +#include "processor.h"
+> +#include "tdx/tdx_util.h"
+> +
+> +static struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
+
+make it const, is better.
+
+<snip>
+
+> +
+> +void tdx_init_vm(struct kvm_vm *vm, u64 attributes)
+> +{
+> +	struct kvm_tdx_init_vm *init_vm;
+> +	const struct kvm_cpuid2 *tmp;
+> +	struct kvm_cpuid2 *cpuid;
+> +
+> +	tmp = kvm_get_supported_cpuid();
+> +
+> +	cpuid = allocate_kvm_cpuid2(tmp->nent);
+> +	memcpy(cpuid, tmp, kvm_cpuid2_size(tmp->nent));
+> +	tdx_filter_cpuid(vm, cpuid);
+> +
+> +	init_vm = calloc(1, sizeof(*init_vm) +
+> +			 sizeof(init_vm->cpuid.entries[0]) * cpuid->nent);
+> +	TEST_ASSERT(init_vm, "init_vm allocation failed");
+> +
+> +	memcpy(&init_vm->cpuid, cpuid, kvm_cpuid2_size(cpuid->nent));
+> +	free(cpuid);
+> +
+> +	init_vm->attributes = attributes;
+
+Besides CPUID, it only allows attributes to be configure but leave XFAM 
+as 0. I think the changelog needs to explain why we need to configure 
+attributes.
+
+The rest of the patch looks good to me.
+
+> +
+> +	tdx_vm_ioctl(vm, KVM_TDX_INIT_VM, 0, init_vm);
+> +
+> +	free(init_vm);
+> +}
 > 
-> -- 
->   Kiryl Shutsemau / Kirill A. Shutemov
+
