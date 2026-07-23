@@ -1,84 +1,148 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012069.outbound.protection.outlook.com [40.107.200.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AEC38E5C5
-	for <linux-coco@lists.linux.dev>; Thu, 23 Jul 2026 05:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784785436; cv=none; b=vFUnzsVYL0itBOrs7Qb7wcDFywnBB3d2PMj/1EAluNxJb7LNzahxOjsmZ4OQSzWtJgZiqSDQ7EU6jISzz7Z90XIl4fT/LOyZt2W77Eq5+YO6NPu8+Kda2va/HZ1hDePxTsvRvRWqMWTpjMmWXJI3HZNCW7iRxNJy34f0L9QFc30=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784785436; c=relaxed/simple;
-	bh=A02UVXLHDw+ZkbLlGm+nBaD7lEA4chzRcr/H1crlHQg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JyV4gHS1r0kkjc7Tqp8pmy3fFYR+Eko9Fioy7l5+EUC2eTP7Q05Ya0TJE+U19P03PToZj7aPFr6nYFr0lFqKyvRqtXaKamF1JxJ5xsLE4wGKlI3g8ydJxrM2MfcIVk9J3KS0OM6xBkFKhp4LWU88Db0vaqZ3DH7Pkv2vVbmwTuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ji2R7lMO; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D88C3BCD04
+	for <linux-coco@lists.linux.dev>; Thu, 23 Jul 2026 05:59:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784786356; cv=fail; b=tHWRJpqZkWAx0KNGTr+msAG9YZU8VYjkwicUc1Nh91AWJPPnd5Q3biluWKHdumbpghiU3EB8I0cyQ6AkhRY3bhl3zeBtPX2nGAZAf62Gv+h9couGY2RoimHcT5SvD7L5RWqMxx2y3m1ExrtOautFhULaPWpoxAAG+ddFWAzrAYA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784786356; c=relaxed/simple;
+	bh=7UDuZZ+n2Xny17MWEa0hcAg2AQQD7WCDKBxGQF1I43Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ffe0EqrPCnRbVB3TU0Lno2NfMi8+biU8SYvkGcghvrDoSHj4C+XmXAKueMSz+u4rRJ4A6maYNTW0MSSqqQnBn4vvwwt8F5Q0Sl4VmHrxMLNbij8VaJixEAqf6wRCcYurwGxTOI8z/Rao3trFgp3CvO0HwTIpX3MGpiS0WzkrBc0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UZndAlKs; arc=fail smtp.client-ip=40.107.200.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ji2R7lMO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784785435; x=1816321435;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=A02UVXLHDw+ZkbLlGm+nBaD7lEA4chzRcr/H1crlHQg=;
-  b=ji2R7lMOsvnmgldUxDnBoJePyvuiiwfOZmaL9Kiro3uGb8HOp4lnuKwU
-   0gz3fs+xMBOh4Uc5Bd2saqbJI+uVALc4M+N0WyF+oK854/yTKeW8Fr5ne
-   Cdnw8UNDz68xc1W6kQzmZkV20cOMpy6FhqRD0darp9W28rGLYXT+Aq1SU
-   +SSmpTnf35r1uIfopaSHZgWf2vpDfHuB3enEd9lWJcpl6AcAo43xdjXaL
-   mAT+xeK+FSWQ5QWxj3BASiwds2o/UAnzTu+C9u8CoIC+J0VipYWsLf+7C
-   Cux5metUwt+pYbiyMN3uvIXMbGc8z+xQUMjcjCQtB1d9aDVI30089YdhX
-   A==;
-X-CSE-ConnectionGUID: tAtyGVkTTb+MhEqtaaPubQ==
-X-CSE-MsgGUID: UIXpRz0aSx+xTGKtc9FshA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="96947669"
-X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
-   d="scan'208";a="96947669"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 22:43:55 -0700
-X-CSE-ConnectionGUID: 4MAx3QA0SJmi4y63DOtvrg==
-X-CSE-MsgGUID: FrLszd8/TLCOdaLJaKhJ/w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
-   d="scan'208";a="262629626"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa005.jf.intel.com with ESMTP; 22 Jul 2026 22:43:52 -0700
-Date: Thu, 23 Jul 2026 13:43:51 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
-	rick.p.edgecombe@intel.com, dave.hansen@intel.com,
-	dave.hansen@linux.intel.com, yilun.xu@intel.com, djbw@kernel.org,
-	linux-coco@lists.linux.dev, chao.gao@intel.com,
-	peter.fang@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH v3] x86/virt/tdx: Formalize SEAMCALL version encoding
- support
-Message-ID: <amGqFxt/9DquRGO3@yilunxu-OptiPlex-7050>
-References: <20260722084634.131020-1-yilun.xu@linux.intel.com>
- <amCnuX8XAjxWFlHd@thinkstation>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UZndAlKs"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uN2gB0ucjTSZkGz8b6MYXExzd/dHBT+tFG3LRMHF0A/YSj2Jp91tUi8Mg0rpKKM+h6hdeZm4kF2j5V5vLqUUr/QdJXTflquT3Aq19EJCU1bOFOjvA2sw5F9pK+mwAxqIHVunb3mxEgMt4gHdvs3PxpfZ/qnmtIBpAeyoNh7sx16mH1y+lmNGdLiq8XQuAkr4EbfMSoSND6XU/B3qlwi9luqpU0EQeuBwerrkbuWQ18PnjmyFMk5SAkr+vtBnfay5ZJgGlEiYWbfuILf6LsY1mxxfGu4Z4xvq0+A5JCZW2hkCRd7TkmArMHdY9j/dtSHrzeBKUW6gNcADw1va1e6+Ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9HWhA9nR0K2i3FG7wORrUp4Fol+ryPrkPKYBXXd9lZI=;
+ b=SmA1B0fDNUrkwT9ErkOL5BOq1z9prRb/pWuME0Lxbrejg5XjhkH5Sh2/hvUGgYXCEP2Tq/6GqDbS4uF1FmUgP2UYXzaLA1opdiFkbai3cAZLPsMNMk1FHPcuM+j62N5bp2eM7yQyE0gLK4agOu6ZlyRge7VOO7IkMzT9gmfEKuOw94nnKqf2Xk1xo9T3kxgm2AyU6TP4UIYkPy83HH2d5Ge2F8bhPlU7zpX4cGZK16jyO4JCEY9ERprQgFqWC9AE+kGW68WG/oEDX7WDcLDw5IC42Sp2ylczc2RyRHNLSLNEgF7z9hiQmA50IYrTKB4Z7vdj0esjz7LYlqOopOj3sA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9HWhA9nR0K2i3FG7wORrUp4Fol+ryPrkPKYBXXd9lZI=;
+ b=UZndAlKsSpdM4DoSMyLm5Rg2gpyKB28J2yBY8Kk4bP+fyJ32p/1rxvvwrJtEEIGiJ+lDQB8Y7bGDqbz9NpaXxVasBIT5ZX0mTIKV3Y2uE3xdtqbYBHm1gwwUENc6XxOZywucMd+wCfqY97QfsnT/AZP7RZplckV6uILOH/iBgx8=
+Received: from MW4PR04CA0225.namprd04.prod.outlook.com (2603:10b6:303:87::20)
+ by SJ2PR12MB8717.namprd12.prod.outlook.com (2603:10b6:a03:53d::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
+ 2026 05:59:07 +0000
+Received: from SJ1PEPF00002312.namprd03.prod.outlook.com
+ (2603:10b6:303:87:cafe::61) by MW4PR04CA0225.outlook.office365.com
+ (2603:10b6:303:87::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.10 via Frontend Transport; Thu,
+ 23 Jul 2026 05:59:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF00002312.mail.protection.outlook.com (10.167.242.166) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.5 via Frontend Transport; Thu, 23 Jul 2026 05:59:07 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 23 Jul
+ 2026 00:59:03 -0500
+Received: from [172.31.184.125] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Thu, 23 Jul 2026 00:58:53 -0500
+Message-ID: <70580cfc-8625-4f35-a77b-7154a52e10a5@amd.com>
+Date: Thu, 23 Jul 2026 11:28:47 +0530
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amCnuX8XAjxWFlHd@thinkstation>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 2/6] x86/sev: Initialize RMPOPT configuration MSRs
+To: Borislav Petkov <bp@alien8.de>
+CC: Ashish Kalra <Ashish.Kalra@amd.com>, <tglx@kernel.org>,
+	<mingo@redhat.com>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	<hpa@zytor.com>, <seanjc@google.com>, <peterz@infradead.org>,
+	<thomas.lendacky@amd.com>, <herbert@gondor.apana.org.au>,
+	<davem@davemloft.net>, <ardb@kernel.org>, <pbonzini@redhat.com>,
+	<aik@amd.com>, <Michael.Roth@amd.com>, <Tycho.Andersen@amd.com>,
+	<Nathan.Fontenot@amd.com>, <ackerleytng@google.com>, <jackyli@google.com>,
+	<pgonda@google.com>, <rientjes@google.com>, <jacobhxu@google.com>,
+	<xin@zytor.com>, <pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
+	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
+	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>
+References: <cover.1782841284.git.ashish.kalra@amd.com>
+ <8518e02c46d6edf1f37a180569c708a3cfa7c413.1782841284.git.ashish.kalra@amd.com>
+ <20260723011031.GGamFqB1i4zt4Zlsx6@fat_crate.local>
+ <9cfe76f4-8e16-4b21-a414-126a06859489@amd.com>
+ <20260723051422.GGamGjLhlTqRDcFlee@fat_crate.local>
+Content-Language: en-US
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+In-Reply-To: <20260723051422.GGamGjLhlTqRDcFlee@fat_crate.local>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002312:EE_|SJ2PR12MB8717:EE_
+X-MS-Office365-Filtering-Correlation-Id: b9913147-35b1-4cda-62b3-08dee87f820b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|7416014|376014|1800799024|23010399003|11063799006|56012099006|4143699003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	HR7uTfLoh/LrkGJkftX+qolxkKWth8b4v4HLy/sMakKULfuTNRbLegUtF+pvz6XIG58ux2RXeO9jEdmTt+W6kzyjIxWeZejxCwgR++OLnGuMyHkliWPO/ebILGB4Gloq5qS5AjjDO9avtiNjDQksAaR0w8i1J5c/ReoA/7f9bhA8JdD2RJhBccCXY37n0M+mjCroUmj9BLNF7SOFqfJV4SU96tbEsVciHeaIa+GScDG4eQydmtkN6JNAMr/L7NLkyqE7c9uTLRbjbPgHo2RdFbDhsKtBAdq9JT7TcC5wI3UYuK4lMDjenhwt5ejTdalPtRtBQ7HGP7qYblAzkRUC5yMw/ZN1rtFAWdCE3bs/tu8umnjx5aRh4oFnJbLWkzgP8E8uEBHROmB0iY7L0UpdjQP622JeGumuxZL8TCiBNNhlejKjjY3mYQ1xnig2qSZkvvfIwuXkxBNF1h3haRi4ZGiMjeTtBhPLcBd641IPUDKhdO2ASukh33oxPCSwyNNzq35bIrxXEcJbYSGccB6OSlLo4wtmyLpdkMwpLybplmbRr3F4rclEhD3PySyX1tql/35jHyL/do3lVEurhABN64yVLSBI6uohKGs6I1Gt0xw3Flh/9GNpZCkzkeyXuKUArdtG4OPyXCGPZlNHmRVtjZM3QG4DphZcM98yLJPmx5oNdmwQ63xfMui6Q9q+jx32+/DZld5a8cWECI0B9jCZJw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(7416014)(376014)(1800799024)(23010399003)(11063799006)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	eRJVf0Ixcc4gR0rTZejdQEThRVArvBCqqT3bjzEsOGHgxhRnMThsKd9D73AZmOtO3/cpwQqMN/ggdR7mZtgnwNFWL7zJhc08ZmPDmDJXCsE225Wlsn0KxibI669qoXdHy+AWtwfhX2RWyS8/xAvKnyJoo8tlMCbbUQYI5NcSEdjTvQUNkQna6Ma6jgSgApMXVD5hAVXDLzaGhiMHGsX321NUPSP11rydRwfbO5SQnBJE6pGOvSnVbqH1UsvX69R2vvoFo0a0lTyxrP6YNJw2EPzd2fRIov4B6kLH6E54k5nA42GGLg+cv1NW3SmuQbJL6oVPXZhNKdQlwhbKPUyHMey28RYNxzmGt9zlH3AV9kxZ/FarOnXDSnDdR4/dhS/RMGEd/BXhp1l0ViA6Zq1VgpdnjW6TpICe6F89mlKik/VP78sKyUDPcGvP5NF3lgk0
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 05:59:07.2739
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9913147-35b1-4cda-62b3-08dee87f820b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002312.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8717
 
-On Wed, Jul 22, 2026 at 12:23:04PM +0100, Kiryl Shutsemau wrote:
-> On Wed, Jul 22, 2026 at 04:46:34PM +0800, Xu Yilun wrote:
-> > While both options have merits, I chose the latter from a
-> > software-centric perspective. I sent v3 to invite more discussion.
+Hello Boris,
+
+On 7/23/2026 10:44 AM, Borislav Petkov wrote:
+> On Thu, Jul 23, 2026 at 10:23:56AM +0530, K Prateek Nayak wrote:
+>> The offline cores will remain offline since hotplug is disabled. RMPOPT
+>> is simply a performance optimization for RMP checks and leaving the
+>> offline cores (that will never exit idle) unoptimized should be
+>> acceptable.
 > 
-> I still don't see what postponing the encoding to assembly buys us,
+> What happens if you boot with a subset of cores, the boot flow enables RMPOPT
+> and then you online the rest?
 
-Sorry, I overlooked it. I think this gives us consistent view of what
-'fn' is for all seamcall-related functions.
+RMPOPT happens at __sev_snp_init_locked() for all online cores. Until
+then, SnpEn is still 0 and we don't need RMPOPT because RMP checks
+haven't been enabled yet.
 
-> but it is not the hill I want to die on. The result is centralized
-> and correct, so let's move on.
 > 
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Have we tried that?
 
-Thanks!
+That said, Ashish, should snp_rmptable_init() do a
+snp_rmpopt_all_physmem() (or something equivalent) when it finds SNP_EN
+set in MSR_AMD64_SYSCFG after a kexec?
+
+-- 
+Thanks and Regards,
+Prateek
+
