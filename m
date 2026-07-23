@@ -1,67 +1,50 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FE8421221
-	for <linux-coco@lists.linux.dev>; Thu, 23 Jul 2026 09:35:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717F6435507
+	for <linux-coco@lists.linux.dev>; Thu, 23 Jul 2026 10:19:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784799327; cv=none; b=m8K8Cbj7DFjhb7cSrgzpZAnRVVhc1FT5wOlWQ9/SnTK3vbmbHhF6XewWNft9hTnyeMB/KGpvoheAO+SHq1XDw1CB3rZxFUJ8x0ohHzrXskT+4vgLtanbOFEP6k7cDJLBAC/sYipviiKEeld1/EuyP8a3wbHC6hks0AjnZDfA/fY=
+	t=1784801989; cv=none; b=SVH7PyzeHczXnLFXxD1yOw7Hp8oY2xOG5wI3X3r729cpb5C85zW+yWmboynA9Ap9+OOetNJNL+4ri+FZRn6Q/BEOoUbuer5X425LyvQmO8YubYSEjZVWUa+B0Oe2f4QOKEssD76RAjgU78urBf7rmasNlG3Dyn5Sv4v95r7UUU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784799327; c=relaxed/simple;
-	bh=aE0YbnClVVZc97ih0C53lPoRzJOydGHrwfr3s19Q9Z8=;
+	s=arc-20240116; t=1784801989; c=relaxed/simple;
+	bh=CEcqYpWHXiHeS5g5zOrECeheBpAblVW4Z8EAx0+1+FM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D6dVIPDdU5N3jdFUlP9pFc06EblmaxEh7lH1B8KGNQRt1qsTj1P1TJ1h4E+gp+dD/dxtAiWgX+gi5FAB5+N5KreHqUUlLcFmKyrZFFh/QE+aXb68XFZ7j1a0uGjnL1Jv4qbwaGgVKO5peMUKX3NJYOjlwbck65NWcmsOf72yGks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=cpG0PUD6; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	 In-Reply-To:Content-Type; b=GhWm5HxI63YAg2LUzBNGpzAKMQD3jglTFME1R6WSAHLY40qOQN+0OyW2YfuEzod2ZtM0TbGp+ngQesX06rd7m4Cj0VvxSNstsEO5c816ZFw5YWrl3Ky5jDpL22x7jsmOsVdpHtA8VbqYJNG8kII+4EIabTVgXAb2jSegdQ2pyrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L844R4s/; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="cpG0PUD6"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49554ebb87dso4752175e9.3
-        for <linux-coco@lists.linux.dev>; Thu, 23 Jul 2026 02:35:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1784799322; x=1785404122; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=D3ORQ21gQ254UFesCESfZjdehnzjexHL5976IdG1WZ0=;
-        b=cpG0PUD6k2X2Cdue9uzOfptm2kzuJeaYKgiFwRYuGTDuDNtIz7/pYWnFLMwTDnA4yM
-         pKE9YQUXVM+3QafkMZxtnKx9JM/wgdkSaLtGIEK5PR55prNHgILWZ2JWwM2fa8IEPoSh
-         dUwaqCpPSY/cemJ1ZDdT9CxFYabMC+aloCJzJxY36mRilEEgL5trPtDZjDQ2DgwEh+cF
-         MqW33yZOSCm2j5V87M+gA7VJey8+u+8bL/o17mues0+RSCkMUcKD/ALE1yw2lovqIeiw
-         6Ja67sE43cE0dDMIjMj00p9Y1S9eIU9jpZBI+DIc4wqoy/xOj5nXKITQCm8EyeqQCE/W
-         nJ7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784799322; x=1785404122;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=D3ORQ21gQ254UFesCESfZjdehnzjexHL5976IdG1WZ0=;
-        b=ISm4OxELHL0as0MHGrt2ceISZIGPzP63auXSZoSJtXDGH5vaEaC1eI3eMxH/NHdbYm
-         PNJgyKUlHISST1GLCDMuSdQPkHR0e+282JDTaXrPkRHl15RS/Hn/BoBUlk96CjMveqdG
-         eJO1YnQKSuWfJgiupgw1wFv6xcOYiWijNDExdbAPP6y0n9lohsxSQCuHYrCOkssxT8OZ
-         51NHRn2rEPnpTOs3a2FW3gn25ImQu2mRxTs2iP4U3IKXds83Becx/dTaGusgUMep4mZV
-         yBkyu5VfPP042hWgFWHBk4zO5fM95UNBD/vIyxSQ7wv9bWaZ3CtJhNw5ICiJlOH3WOAh
-         N2Kg==
-X-Forwarded-Encrypted: i=1; AHgh+Rqasxj8PZdBOXwud0OWJSGqjiZfrMJtCeC0Dqm/9s6INMBJQ+dVbUejxygRKmIg6QbnpB2+wQyxZvXO@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw6TRN8O4Tbx4t2i/8DJc0AM6uBejReAQ8bfvtt4kNmR8CM2YfZ
-	ImljeWLre7fWEeAkbWHPkkGAm+brss7MzHiWSzI0K+u8MIXck0nREFXzOY0x/dF2fvY=
-X-Gm-Gg: AR+sD11uFziPsMt92S5OazJATB4iHMaV/YitJguTZK79XEENsFcbGj/U2BxQgSPTU08
-	mmMngyQn5mn1w/XLAPJu4Afpx+V3k8fECR5IBSnhTCSAiVxRcYQ0B3LPMCrXS6hUUpCCI3Ql93Y
-	j7kDj6sZCT1pNzC0bAF/kSO66Bk5OmEJSd9hWnA8VUOUCCXPLsc5HOTq1hR971muUXW57f6xTV7
-	ACkAmzWly4fIXwvBYGMgVg/myZbn3ZCGYh1e9Oy9FZQTMKTDIl5KCu+xZoqWPn9oyZ7YcQkdpYg
-	ht0Lty+dfkq0klDRzlujQ3uH916qm07JwLTSwx/Z2T06uOXN+mA3qsJ91JdS/TQtIPWuYyjnHY+
-	aZ/BMVhYV0TJZKiXMew0IKqzJHD7YcDVH6Az1EHWRbk1pYlvFYYnRo8nrTvbvUOQlv4bP+igtFo
-	swjgf0fXvvDfjRJFA=
-X-Received: by 2002:a05:600c:4f82:b0:493:f0f5:f2d7 with SMTP id 5b1f17b1804b1-49573cbe8c8mr23022375e9.7.1784799322543;
-        Thu, 23 Jul 2026 02:35:22 -0700 (PDT)
-Received: from [10.20.4.146] ([149.62.206.101])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956b043727sm87978315e9.4.2026.07.23.02.35.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jul 2026 02:35:22 -0700 (PDT)
-Message-ID: <d21d1be4-1018-4bfa-9568-50f4630f0a2b@suse.com>
-Date: Thu, 23 Jul 2026 12:35:20 +0300
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L844R4s/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784801986; x=1816337986;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=CEcqYpWHXiHeS5g5zOrECeheBpAblVW4Z8EAx0+1+FM=;
+  b=L844R4s/bvASBm6gDnhNvZVp2iMv8/7yngzaSOhzO+Ih7FC1jmvkDhWK
+   V5Zb/+tXaWtzzuppuZm7h6mcv2MPxAL7XhXk5lt9onpms5nMYDohBTHiW
+   vy0YgJkRrlS2M1taNLGFS8sZnZUL+0jkra6bVVFRu2POJ+64CT6nI3cGj
+   6IksAcp9AuQYrgX9KKtAcI2xaZculEyWQNQJGsbJTd8nbE5RILXGnb6nz
+   zC1fG2pMzaDgpniW87xmAM5demqlNmNMPDURw4Fkl62l2pKP5E1KoaQyk
+   9e97ratFutyj/nbNMQGOeIfNh2pFEYQy5+8zGl6Dv+0/InODWlijVpS0G
+   g==;
+X-CSE-ConnectionGUID: LpVs9OhcSWW0KqRJ3JPDGA==
+X-CSE-MsgGUID: AGLRFZbQQ1+honM/7pA3/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="96043189"
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
+   d="scan'208";a="96043189"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 03:19:45 -0700
+X-CSE-ConnectionGUID: S4szi9cJSqa05o4k3rbpvQ==
+X-CSE-MsgGUID: 4ogazatgQXe1sp80iPmGvA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
+   d="scan'208";a="282885118"
+Received: from unknown (HELO [10.238.208.132]) ([10.238.208.132])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 03:19:38 -0700
+Message-ID: <d9fc2591-d47b-47d1-bf43-edc1425800ce@intel.com>
+Date: Thu, 23 Jul 2026 18:19:35 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,96 +52,139 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] x86/virt/tdx: Formalize SEAMCALL version encoding
- support
-To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-Cc: kas@kernel.org, rick.p.edgecombe@intel.com, dave.hansen@intel.com,
- dave.hansen@linux.intel.com, yilun.xu@intel.com, djbw@kernel.org,
- linux-coco@lists.linux.dev, chao.gao@intel.com, peter.fang@intel.com,
- xiaoyao.li@intel.com
-References: <20260722084634.131020-1-yilun.xu@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
+Subject: Re: [PATCH v14 09/22] KVM: selftests: Expose functions to get default
+ sregs values
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
+ Ackerley Tng <ackerleytng@google.com>, Binbin Wu
+ <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
+ Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
+ <20260722-tdx-selftests-v14-9-15ad654a50db@google.com>
 Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20260722084634.131020-1-yilun.xu@linux.intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260722-tdx-selftests-v14-9-15ad654a50db@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
+On 7/23/2026 7:13 AM, Lisa Wang wrote:
+> From: Sagi Shahar <sagis@google.com>
+> 
+> TDX can't set sregs values directly using KVM_SET_SREGS. Expose the
+> default values of certain sregs used by TDX VMs so they can be set
+> manually.
+> 
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Signed-off-by: Sagi Shahar <sagis@google.com>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Lisa Wang <wyihan@google.com>
 
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-On 7/22/26 11:46, Xu Yilun wrote:
-> SEAMCALL invokes TDX module functions using a function number and
-> parameters. To extend the functionality of existing SEAMCALLs while
-> keeping backward compatibility, TDX adds more numbered SEAMCALLs of the
-> same family. This is just like syscalls, except that TDX defines a
-> specific function number encoding pattern: a base function number and a
-> version together encode the full function number.
-> 
-> One concern is the compatibility with older TDX modules which don't
-> recognize the new SEAMCALLs. The kernel should decide which SEAMCALL
-> version to use at runtime, selecting the minimum version number for the
-> required functionality. It can't overwrite the function number with a
-> new value at compile time.
-> 
-> Another concern is the obscure usage of the 'fn' parameter for SEAMCALL
-> wrappers. An existing caller for TDH.VP.INIT packs the version into the
-> 'fn' to match the low-level TDX ABI RAX layout. The RAX layout
-> interprets some bits differently, such as INTERRUPT_MODE, SEAMLDR flag,
-> which are not a good fit for the function number definition.
-> 
-> Refactor the SEAMCALL wrappers to allow for version selection. Add a
-> version field in struct tdx_module_args [1], so that most existing
-> callers get a default "version == 0" behavior without code churn, while
-> callers requiring extended functionalities can specify the version
-> descriptively. Enforce the 'fn' parameter as the base function number.
-> Encode the base function number and tdx_module_args.version in RAX
-> before invoking the SEAMCALL instruction in assembly code.
-> 
-> Link: https://lore.kernel.org/kvm/4f4b0f29-424b-45ed-8cfd-c77da2ea390f@intel.com/ # [1]
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 > ---
+>   .../testing/selftests/kvm/include/x86/processor.h  | 35 ++++++++++++++++++++++
+>   tools/testing/selftests/kvm/lib/x86/processor.c    | 20 ++++---------
+>   2 files changed, 41 insertions(+), 14 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+> index 76180dfaffea..7e00c9414595 100644
+> --- a/tools/testing/selftests/kvm/include/x86/processor.h
+> +++ b/tools/testing/selftests/kvm/include/x86/processor.h
+> @@ -29,6 +29,10 @@ extern u64 guest_tsc_khz;
+>   #define MAX_NR_CPUID_ENTRIES 100
+>   #endif
+>   
+> +#ifndef NUM_INTERRUPTS
+> +#define NUM_INTERRUPTS 256
+> +#endif
+> +
+>   #define NONCANONICAL 0xaaaaaaaaaaaaaaaaull
+>   
+>   /* Forced emulation prefix, used to invoke the emulator unconditionally. */
+> @@ -1564,4 +1568,35 @@ u64 *tdp_get_pte(struct kvm_vm *vm, u64 l2_gpa);
+>   
+>   bool sys_clocksource_is_based_on_tsc(void);
+>   
+> +static inline u16 kvm_get_default_idt_limit(void)
+> +{
+> +	return NUM_INTERRUPTS * sizeof(struct idt_entry) - 1;
+> +}
+> +
+> +static inline u16 kvm_get_default_gdt_limit(void)
+> +{
+> +	return getpagesize() - 1;
+> +}
+> +
+> +static inline u64 kvm_get_default_cr0(void)
+> +{
+> +	return X86_CR0_PE | X86_CR0_NE | X86_CR0_PG;
+> +}
+> +
+> +static inline u64 kvm_get_default_cr4(int pgtable_levels)
+> +{
+> +	u64 cr4 = X86_CR4_PAE | X86_CR4_OSFXSR;
+> +
+> +	if (kvm_cpu_has(X86_FEATURE_XSAVE))
+> +		cr4 |= X86_CR4_OSXSAVE;
+> +	if (pgtable_levels == 5)
+> +		cr4 |= X86_CR4_LA57;
+> +	return cr4;
+> +}
+> +
+> +static inline u64 kvm_get_default_efer(void)
+> +{
+> +	return EFER_LME | EFER_LMA | EFER_NX;
+> +}
+> +
+>   #endif /* SELFTEST_KVM_PROCESSOR_H */
+> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+> index 97acc5aaf7b7..ad75e19bb3a2 100644
+> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+> @@ -15,10 +15,6 @@
+>   #include "tdx/tdx_util.h"
+>   #include "vmx.h"
+>   
+> -#ifndef NUM_INTERRUPTS
+> -#define NUM_INTERRUPTS 256
+> -#endif
+> -
+>   gva_t exception_handlers;
+>   bool host_cpu_is_amd;
+>   bool host_cpu_is_intel;
+> @@ -647,17 +643,13 @@ static void vcpu_init_sregs(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
+>   	vcpu_sregs_get(vcpu, &sregs);
+>   
+>   	sregs.idt.base = vm->arch.idt;
+> -	sregs.idt.limit = NUM_INTERRUPTS * sizeof(struct idt_entry) - 1;
+> +	sregs.idt.limit = kvm_get_default_idt_limit();
+>   	sregs.gdt.base = vm->arch.gdt;
+> -	sregs.gdt.limit = getpagesize() - 1;
+> -
+> -	sregs.cr0 = X86_CR0_PE | X86_CR0_NE | X86_CR0_PG;
+> -	sregs.cr4 |= X86_CR4_PAE | X86_CR4_OSFXSR;
+> -	if (kvm_cpu_has(X86_FEATURE_XSAVE))
+> -		sregs.cr4 |= X86_CR4_OSXSAVE;
+> -	if (vm->mmu.pgtable_levels == 5)
+> -		sregs.cr4 |= X86_CR4_LA57;
+> -	sregs.efer |= (EFER_LME | EFER_LMA | EFER_NX);
+> +	sregs.gdt.limit = kvm_get_default_gdt_limit();
+> +
+> +	sregs.cr0 = kvm_get_default_cr0();
+> +	sregs.cr4 |= kvm_get_default_cr4(vm->mmu.pgtable_levels);
+> +	sregs.efer |= kvm_get_default_efer();
+>   
+>   	kvm_seg_set_unusable(&sregs.ldt);
+>   	kvm_seg_set_kernel_code_64bit(&sregs.cs);
+> 
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
