@@ -1,65 +1,33 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012025.outbound.protection.outlook.com [40.107.209.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D6146D0A7
-	for <linux-coco@lists.linux.dev>; Thu, 23 Jul 2026 14:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784816967; cv=fail; b=fz6h7YbCfQESelHIXa/MOUwJxwpuKVwQcSIHC72nhbYzT+SUowblVRgzQdjNNFxBSLcWJbmYJIk/af1FXuXbJff0arO/9LeD0jmwepg0Qe0/8qcyifuKErkb3yMgQv7K1a1l9iJDaVGYOFszb0VDjP6Bwqwu5aeDtho7R+Tyvrw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784816967; c=relaxed/simple;
-	bh=CvbTMbrdGJ0HiRIHl+soP8/VPjvGn+yYLSSGT/27s+E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Z5zyG9DummWzkL+IINHqJ/NU9msUPwEBQKKhkscsNJVNU+1qtgrpwyly6qYgoJ/inFFPB6rcokVz4m/9NvyKuvsGxwEUA+Rbe2aakbEojclcYBCartcGakSmEE6RLIZPoxhkzThxvXvwMwnW6xSXTJ+NiqiGDgRcK8QTFSHirTM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HnPWuAM9; arc=fail smtp.client-ip=40.107.209.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21ACC3128D9;
+	Thu, 23 Jul 2026 14:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784818030; cv=none; b=bb4yAtQqGDiQMOODnveTj0+9S4mN0wLrbMwm9bDBASl+YiqJBNgBiEwmhMMtyvIaAqcNdOUJY1OAgr/FiOA841M4vJCA0R/7Yj8djaxxY8/ohFdfRvNAtgi9r7ATIIWSBbs0U2WlQkDdjKIVlS93wczm58AfAdwpr7yoDWU2Ybk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784818030; c=relaxed/simple;
+	bh=6Th78kG6gwLHh+IRkhYaCODZh+oGtao36ZDP9dLMl3Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EiYROh89n7C997uTKYbqwM+5MxgOOmyO9Pjv3AiE9k/KotsibTmd9EPvGMWlcClMB8P3Vl3dojBfGYs7WiJallf/WoZuKz2YrK7EG1/m/cvgm3BbbNn43QIr52Zd77fXmflZMtmVl3SzR8tCogXPHIJtQpzYSVYy/BTAAMXWW8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=LxFG8WRR; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HnPWuAM9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NU10SxLu0Y2pALfbZr6qqkiLjKUadJFhOKPq+M9Mmt/+OU1sQFxrCHnyOyLpbi4VUDXvhQiqpjhVKYjSFiMqcKxXQjwCwZG3YTcev8IyATcU2xKRra4PqzwnU3l4CTmfTGXM0RCGPoC3iE6HfkQCZ88rhbZXY94yc24eU+qgwJ4ZD8OoGtUKUy9OTwk18D1PNTgkbLvR+hkJL+db+1Rxkx/l2goZNz/55vrHfHIlu1aIPqvUolI1wKGVs6APZO8SYfr8DZuwNNB4RQOCQcwCeOqMEHcJY78GtQrbky6q0a54BBHzSdaBXUJdlx83TKI2UOpe500jzPq+xfi9SkT/cw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AatbAmX4wYe+c6XLd2Sbb0+pzdW2CFrKV5uheDWo7VI=;
- b=d99jwXb/L9G8h6PwSk+HHRr515+T4jYOmRqu6qVeUzOpkn8KgBtJdJYtfHPncBg/g6kV8VtTOnHq8wWH5ct3LX/Gmd+9nM2j76Yb/Tjvy4MSEFQdJfg8pkjyFFm+/EjHtkzrsroOozkkTVtf0pbybbdq6i+J8IxqM+Rsv8L9sBfPMCy9Llu6Zgk8ZK6X7nXPXw12QrTL7s0XmgAtFj4qAjmb0W+AlBxjBn5SCk34t8XRSpRxJYoYOaFVWn+j0uO6Bu8MxBuyaxCHx/8q3Ro9IxlcCKx3co5aXFjMLeabVAs9lGiTvcu3fwVDWIl86Ey+0XxMZw5vwLP8TKWVMSjSVQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AatbAmX4wYe+c6XLd2Sbb0+pzdW2CFrKV5uheDWo7VI=;
- b=HnPWuAM9MaGAjb9R5sDooyNyISqvzRVARxDyVIwYLMFg2SuhEuIF/rDG2bHfZu/7Wu/3aXhIwK1X0sGwVTRGbbSuNnSpvnQweoxDUjFPMuMYJpLC6M+U7hJLJCMjGu1OmVpGj5EGaai9fO9rYf4Y4rMBVMs3AOeX21Vdteym9Ww=
-Received: from SJ0PR03CA0120.namprd03.prod.outlook.com (2603:10b6:a03:333::35)
- by DS4PR12MB999100.namprd12.prod.outlook.com (2603:10b6:8:2f9::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
- 2026 14:29:18 +0000
-Received: from SJ1PEPF00002325.namprd03.prod.outlook.com
- (2603:10b6:a03:333:cafe::64) by SJ0PR03CA0120.outlook.office365.com
- (2603:10b6:a03:333::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.10 via Frontend Transport; Thu,
- 23 Jul 2026 14:29:18 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ1PEPF00002325.mail.protection.outlook.com (10.167.242.88) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.270.5 via Frontend Transport; Thu, 23 Jul 2026 14:29:17 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 23 Jul
- 2026 09:29:12 -0500
-Received: from [172.31.184.125] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Thu, 23 Jul 2026 09:29:04 -0500
-Message-ID: <f7bfaa21-a572-428b-9de0-51fb06b5f44a@amd.com>
-Date: Thu, 23 Jul 2026 19:59:03 +0530
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="LxFG8WRR"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D49B01477;
+	Thu, 23 Jul 2026 07:47:01 -0700 (PDT)
+Received: from [10.1.25.28] (e122027.cambridge.arm.com [10.1.25.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B40FC3F59E;
+	Thu, 23 Jul 2026 07:47:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784818026; bh=6Th78kG6gwLHh+IRkhYaCODZh+oGtao36ZDP9dLMl3Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LxFG8WRRK7c9iE7bu37AjLxt1a2HZyFcz184U5VNfybyqKKs4NJEuApklUjnLfzdO
+	 Abo+IkO4lwS7PIRGBwYDDYCIp0Q/0dVX6cc2WGgGTWfp8AQriPZBtjYyNvWg0bqpzA
+	 7KTe8igVy3yHQmAEl8oR5DcTVjve1JJmeqaINrr4=
+Message-ID: <1cd3327c-1eab-4022-9ab1-625ca8641e81@arm.com>
+Date: Thu, 23 Jul 2026 15:46:58 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,103 +35,294 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 2/6] x86/sev: Initialize RMPOPT configuration MSRs
-To: "Kalra, Ashish" <ashish.kalra@amd.com>, Borislav Petkov <bp@alien8.de>
-CC: <tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, <hpa@zytor.com>, <seanjc@google.com>,
-	<peterz@infradead.org>, <thomas.lendacky@amd.com>,
-	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>,
-	<pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
-	<Tycho.Andersen@amd.com>, <Nathan.Fontenot@amd.com>,
-	<ackerleytng@google.com>, <jackyli@google.com>, <pgonda@google.com>,
-	<rientjes@google.com>, <jacobhxu@google.com>, <xin@zytor.com>,
-	<pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
-	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>
-References: <cover.1782841284.git.ashish.kalra@amd.com>
- <8518e02c46d6edf1f37a180569c708a3cfa7c413.1782841284.git.ashish.kalra@amd.com>
- <20260723011031.GGamFqB1i4zt4Zlsx6@fat_crate.local>
- <9cfe76f4-8e16-4b21-a414-126a06859489@amd.com>
- <20260723051422.GGamGjLhlTqRDcFlee@fat_crate.local>
- <5460b946-b511-4060-8951-264d17a2b21b@amd.com>
- <0b471f38-8c96-4d6b-869a-44a3684ebdd7@amd.com>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <0b471f38-8c96-4d6b-869a-44a3684ebdd7@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002325:EE_|DS4PR12MB999100:EE_
-X-MS-Office365-Filtering-Correlation-Id: a0e59956-e51e-4d93-a7b5-08dee8c6c765
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|82310400026|36860700016|1800799024|56012099006|10067099003|5023799004|4143699003|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	NE2MgY6lVpqR/90pw8O8c+o1pdtUTVKBxXhwbUNE2/r4HVnrPUi9lfgBVXRfFyLn8GyBULJS4goDaLL6iIbWIgvH7k3kvugNKWtsxGJgGqwwwS06sS0FPfYXzLcM4Byo0+0olzGDL49c63TCcLShU6rJCM5fTgZ1Kaq5XWdApf8Ga+Hdb+cWPNy18cwXk1bLMsHuGed+q+Heh9wssfINxIU2GZ65Q4loSVUNtTraQHAPO3mbxZEbXmnJEvAh8ma9BcJnGXv4grWuhbFrUcqDPHd5CZ9Rigp6gYufYIRsScZgLybd6Z5INH3Al+hNVm4jHQv0r8hQRRmAygvVPou26LdXINosOS+MGljLpa3grvkv2SpBwKi9tZYG9T6lFWUOL3gxIueQIiV1F5QITYflvIjuaD3kX5bXi3F+jNrcjQzwdTC2pOnKaesIYoLh6wnUOa2fbZ2puanuEz0G6lvT5V+dGMIqvA7IaY+5rINGrAbWZm3GxiVEn705eGfw2/q66F4IatqNkSejqcRggFatTJgysJNs3+ya6SHIdwnnrO0jA4VKJb1XgFHs2eII48YuZmaf53AHnczrkZReHvE1iW21HCbLTmAvECKqT+RfeSmFeif2a1ow0v06JDd0AokxLPaLMLCwL1/pxO5GE3i1nMWe98KpVxikmXoVisTd1FWhYcZSmD4/WA+u9e/r4LCStCYAdHzhNYdyonSNm04yBw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(82310400026)(36860700016)(1800799024)(56012099006)(10067099003)(5023799004)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	oIUAnuyquT48SrISl6y4sxXCQH3M+/G2opQn5HePRHc/URGrsPYSv5rm0i8kiBleibu2Glpdgj+3Q7lLGUuiq5kvnEhcwJ5ptscSNF4P6LZ/YIisSAF9L06z9IlejOR4BVVIXulY0WQei4ajHl8FhXsiAtkwyA0s/TY14fneZ3puuY6LKAI2jJAzt3MLAdoTLREAkuW1JsPlZLJr+CMGZTnpTjPYKIz6fjLyiiyHDw6GOZy1Zbc+nvghT/2wezjpkoEzAR8Z7nCFibJWfr/8hLTM49K8Wz3vzb63JJn5FwE7vCCGgmATlHcA128xXcDMK+bdV71kzLwae5Sg70oLx3+DAAirGhazv24IU/QfHjYYN7CaMMz7PAspYToaltW3YKfMJe8knDzJe0iW2d8m038QOgRcpObJNW+RT3i9m5vPXfqb8L2aSKYa4JRnaVKJ
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 14:29:17.8308
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a0e59956-e51e-4d93-a7b5-08dee8c6c765
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002325.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB999100
+Subject: Re: [PATCH v15 12/37] KVM: arm64: CCA: Support the VGIC in realms
+To: Kohei Enju <enju.kohei@fujitsu.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260715142841.80544-1-steven.price@arm.com>
+ <20260715142841.80544-13-steven.price@arm.com>
+ <amB-opawGgF6jNHB@FCCLS0092175.localdomain>
+ <b71e81ee-372c-4963-a1f7-bd301aee89cb@arm.com>
+ <amG3KHE4Tdd_Nvuz@FCCLS0092175.localdomain>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <amG3KHE4Tdd_Nvuz@FCCLS0092175.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello Ashish,
-
-On 7/23/2026 6:54 PM, Kalra, Ashish wrote:
-> 
-> On 7/23/2026 1:50 AM, Kalra, Ashish wrote:
->> Hello Boris,
->>
->> On 7/23/2026 12:14 AM, Borislav Petkov wrote:
->>> On Thu, Jul 23, 2026 at 10:23:56AM +0530, K Prateek Nayak wrote:
->>>> The offline cores will remain offline since hotplug is disabled. RMPOPT
->>>> is simply a performance optimization for RMP checks and leaving the
->>>> offline cores (that will never exit idle) unoptimized should be
->>>> acceptable.
+On 23/07/2026 07:56, Kohei Enju wrote:
+> On 07/22 14:31, Steven Price wrote:
+>> On 22/07/2026 09:27, Kohei Enju wrote:
+>>> On 07/15 15:28, Steven Price wrote:
+>>>> The RMM provides emulation of a VGIC to the realm guest. With RMM v2.0
+>>>> the registers are passed in the system registers so this works similar
+>>>> to a normal guest, but kvm_arch_vcpu_put() need reordering to early out,
+>>>> and realm guests don't support GICv2 even if the host does.
+>>>>
+>>>> Signed-off-by: Steven Price <steven.price@arm.com>
 >>>
->>> What happens if you boot with a subset of cores, the boot flow enables RMPOPT
->>> and then you online the rest?
+>>> Hi Steven,
+>>
+>> Hi Kohei,
+>>
+>>> I've been testing this series and found that when the host CPU doesn't have
+>>> ARM64_HAS_ICH_HCR_EL2_TDIR this series doesn't work as expected.
+>>
+>> Thanks for testing!
+>>
+>>> Since commit 2a28810cbb8b ("KVM: arm64: GICv3: Detect and work around the lack
+>>> of ICV_DIR_EL1 trapping"), when the host CPU doesn't support this feature, KVM
+>>> traps all GIC sysreg accesses in the common group. However, currently trap
+>>> handlers for ICC_{PMR,RPR,CTLR}_EL1 registers are missing [0]. So when Realm
+>>> guests try to access those registers, KVM traps them but just emits the warning
+>>> shown in [1], and Realm guests fail to boot.
 >>>
->>> Have we tried that?
->>>
+>>> As far as I can tell, the CCA requirements don't require the
+>>> ARM64_HAS_ICH_HCR_EL2_TDIR feature. If that's the case, this seems to be a
+>>> problem. Is there any workaround for this issue, or should we implement trap
+>>> handlers for those registers?
 >>
->>  It can't happen here. snp_prepare() does the following, in order:
->>
->>   1. cpu_hotplug_disable() — freeze the CPU set.
->>   2. fail SNP init (-EOPNOTSUPP) unless every present CPU is online (cpumask_equal(cpu_online_mask, cpu_present_mask).
->>   3. enable SNP.
->>
->>   snp_setup_rmpopt() runs only after snp_prepare() succeeds, so all present CPUs are online and stay online (hotplug is
->>   disabled). No core's primary thread can be offline at this point.
->>
->>   (The kexec path is the one exception — snp_prepare() returns early there — which I'm handling in the other thread.)
->>
->>   Thanks,
->>   Ashish
->>
+>> As Marc has already said in his reply, I'm really surprised you have a
+>> CPU which implements CCA but doesn't have ARM64_HAS_ICH_HCR_EL2_TDIR.
+>> Can you give some more details about the platform you are testing on?
 > 
-> Additionally for kexec considerations: on RMPOPT-capable platforms kexec clears SnpEn (full SNP_SHUTDOWN_EX, x86_snp_shutdown=1),
-> so snp_prepare() re-runs its cpumask_equal() all-online check on the kexec boot exactly as on a normal boot.
+> Thank you for taking a look, Steve.
 > 
-> So no kexec-specific case where RMPOPT gets set up with a partial CPU set.
+> Unfortunately, due to the company's policy, I can't share any details
+> about the platform I'm currently testing on. When the time is right,
+> I'll be happy to do so.
+> 
+>>
+>> Ultimately there are two options here - either don't support CCA (so
+>> detect the lack of ARM64_HAS_ICH_HCR_EL2_TDIR and bail out early), or
+>> plumb in the trap handlers - as commit 2a28810cbb8b points out this
+>> isn't something we really want to support if we can avoid it.
+> 
+> Yes, the former makes perfect sense if there would be no systems that
+> supports CCA without TDIR. However, if such systems do exist, I'd be
+> interested in exploring the latter approach.
+> 
+>>
+>> Hence I'm interested to know where this sits between "hacked up test
+>> system" and "production hardware". E.g. if this is an emulator it might
+>> be possible to just enable the CPU feature.
+> 
+> Again, I can't share that right now, but I'd like to share more when the
+> time comes.
 
-Thank you for clarifying! Much appreciated _/\_
+Given Marc's response for now I'm not going to add support for this. 
+"When the time comes" we can revisit whether it makes sense to have 
+upstream support and what that might look like.
 
+However, I did ask an AI tool to have a go at implementing this, and it 
+came up with the (very lightly tested) patch below. That might at least 
+give you something you can test. It doesn't meet Marc's request that it
+reuses the existing implementation, and it took the AI a few goes at
+getting something that "works" so I suspect it might have bugs - I
+haven't reviewed the code myself.
+
+Thanks,
+Steve
+
+----8<----
+From 7aaaa5089c05f19bf00df2b651fa4bd7d738384c Mon Sep 17 00:00:00 2001
+From: Steven Price <steven.price@arm.com>
+Date: Thu, 23 Jul 2026 11:49:36 +0100
+Subject: [PATCH] KVM: arm64: CCA: Handle GICv3 CPU interface traps for realms
+
+On CPUs that lack ICH_HCR_EL2.TDIR, KVM works around the missing DIR
+trap by setting ICH_HCR_EL2.TC and trapping the GICv3 common CPU
+interface registers. Normal guests handle these traps in hyp via the
+VGIC CPU interface emulation, but realm guests exit through the RMM and
+reach KVM's host-side sysreg emulation instead.
+
+That path only handles ICC_DIR_EL1 and treats the rest of the trapped
+common group as undefined. A realm guest can therefore take an
+unexpected UNDEF when accessing registers such as ICC_PMR_EL1 or
+ICC_CTLR_EL1 on systems that require the TC workaround.
+
+Handle the GICv3 common CPU interface registers directly from the realm
+sysreg exit path. Reads are satisfied from the saved VGIC state and
+writes update the VGIC shadow state. For PMR and CTLR writes, also
+restore the VMCR/APR state to the live GIC CPU interface before
+re-entering the REC, matching the effect a direct guest sysreg write
+would have had.
+
+Signed-off-by: Steven Price <steven.price@arm.com>
+---
+ arch/arm64/kvm/rmi-exit.c | 119 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 119 insertions(+)
+
+diff --git a/arch/arm64/kvm/rmi-exit.c b/arch/arm64/kvm/rmi-exit.c
+index 78d9189fd5ca..0fad8e68d920 100644
+--- a/arch/arm64/kvm/rmi-exit.c
++++ b/arch/arm64/kvm/rmi-exit.c
+@@ -3,17 +3,25 @@
+  * Copyright (C) 2023-2026 ARM Ltd.
+  */
+ 
++#include <linux/bitfield.h>
++#include <linux/irqchip/arm-gic-v3.h>
+ #include <linux/kvm_host.h>
+ #include <kvm/arm_hypercalls.h>
+ #include <kvm/arm_psci.h>
+ 
+ #include <linux/arm-smccc-rmi.h>
+ #include <asm/kvm_emulate.h>
++#include <asm/kvm_hyp.h>
+ #include <asm/kvm_rmi.h>
+ #include <asm/kvm_mmu.h>
++#include <asm/sysreg.h>
++
++#include "vgic/vgic.h"
+ 
+ typedef int (*exit_handler_fn)(struct kvm_vcpu *vcpu);
+ 
++#define GICV3_IDLE_PRIORITY	0xff
++
+ static int rec_exit_reason_notimpl(struct kvm_vcpu *vcpu)
+ {
+ 	vcpu_err(vcpu, "Unhandled exit reason from realm (ESR: %#llx)\n",
+@@ -48,6 +56,114 @@ static int rec_exit_sync_iabt(struct kvm_vcpu *vcpu)
+ 	return -ENXIO;
+ }
+ 
++static int rec_get_gicv3_bpr_min(void)
++{
++	return 8 - (FIELD_GET(ICH_VTR_EL2_PREbits,
++			      kvm_vgic_global_state.ich_vtr_el2) + 1);
++}
++
++static u8 rec_get_gicv3_active_priority(struct kvm_vcpu *vcpu)
++{
++	struct vgic_v3_cpu_if *cpuif = &vcpu->arch.vgic_cpu.vgic_v3;
++	u8 prio = 0;
++
++	for (int i = 0; i <= vgic_v3_max_apr_idx(vcpu); i++) {
++		u32 val = cpuif->vgic_ap0r[i] | cpuif->vgic_ap1r[i];
++
++		if (!val) {
++			prio += 32;
++			continue;
++		}
++
++		return (prio + __ffs(val)) << rec_get_gicv3_bpr_min();
++	}
++
++	return GICV3_IDLE_PRIORITY;
++}
++
++static void rec_restore_gicv3_vmcr_aprs(struct kvm_vcpu *vcpu)
++{
++	preempt_disable();
++	kvm_call_hyp(__vgic_v3_restore_vmcr_aprs,
++		     &vcpu->arch.vgic_cpu.vgic_v3);
++	preempt_enable();
++}
++
++/*
++ * Realm exits are handled after the RMM has returned to the host, so use the
++ * saved VGIC shadow state instead of the hyp-side live sysreg helpers.
++ */
++static bool rec_exit_gicv3_sys_reg(struct kvm_vcpu *vcpu, bool is_write)
++{
++	struct realm_rec *rec = &vcpu->arch.rec;
++	struct vgic_cpu *vgic_cpu = &vcpu->arch.vgic_cpu;
++	struct vgic_vmcr vmcr;
++	unsigned long esr = kvm_vcpu_get_esr(vcpu);
++	int rt = kvm_vcpu_sys_get_rt(vcpu);
++	u32 sysreg = esr_sys64_to_sysreg(esr);
++	u64 val;
++
++	if (!kvm_has_gicv3(vcpu->kvm))
++		return false;
++
++	vgic_get_vmcr(vcpu, &vmcr);
++
++	switch (sysreg) {
++	case SYS_ICC_DIR_EL1:
++		if (!is_write)
++			return false;
++
++		vgic_v3_deactivate(vcpu, rec->run->exit.gprs[rt]);
++		return true;
++	case SYS_ICC_PMR_EL1:
++		if (is_write) {
++			vmcr.pmr = FIELD_GET(ICC_PMR_EL1_MASK,
++					     rec->run->exit.gprs[rt]);
++			vgic_set_vmcr(vcpu, &vmcr);
++			rec_restore_gicv3_vmcr_aprs(vcpu);
++		} else {
++			rec->run->enter.gprs[rt] = FIELD_PREP(ICC_PMR_EL1_MASK,
++							      vmcr.pmr);
++		}
++
++		return true;
++	case SYS_ICC_CTLR_EL1:
++		if (is_write) {
++			val = rec->run->exit.gprs[rt];
++			vmcr.cbpr = FIELD_GET(ICC_CTLR_EL1_CBPR_MASK, val);
++			vmcr.eoim = FIELD_GET(ICC_CTLR_EL1_EOImode_MASK, val);
++			vgic_set_vmcr(vcpu, &vmcr);
++			rec_restore_gicv3_vmcr_aprs(vcpu);
++		} else {
++			val  = FIELD_PREP(ICC_CTLR_EL1_PRI_BITS_MASK,
++					  vgic_cpu->num_pri_bits - 1);
++			val |= FIELD_PREP(ICC_CTLR_EL1_ID_BITS_MASK,
++					  vgic_cpu->num_id_bits);
++			val |= FIELD_PREP(ICC_CTLR_EL1_SEIS_MASK,
++					  FIELD_GET(ICH_VTR_EL2_SEIS,
++						    kvm_vgic_global_state.ich_vtr_el2));
++			val |= FIELD_PREP(ICC_CTLR_EL1_A3V_MASK,
++					  FIELD_GET(ICH_VTR_EL2_A3V,
++						    kvm_vgic_global_state.ich_vtr_el2));
++			val |= FIELD_PREP(ICC_CTLR_EL1_CBPR_MASK,
++					  vmcr.cbpr);
++			val |= FIELD_PREP(ICC_CTLR_EL1_EOImode_MASK,
++					  vmcr.eoim);
++			rec->run->enter.gprs[rt] = val;
++		}
++
++		return true;
++	case SYS_ICC_RPR_EL1:
++		if (is_write)
++			return false;
++
++		rec->run->enter.gprs[rt] = rec_get_gicv3_active_priority(vcpu);
++		return true;
++	default:
++		return false;
++	}
++}
++
+ static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
+ {
+ 	struct realm_rec *rec = &vcpu->arch.rec;
+@@ -59,6 +175,9 @@ static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
+ 	if (is_write)
+ 		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
+ 
++	if (rec_exit_gicv3_sys_reg(vcpu, is_write))
++		return 1;
++
+ 	ret = kvm_handle_sys_reg(vcpu);
+ 	if (!is_write)
+ 		rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
 -- 
-Thanks and Regards,
-Prateek
+2.43.0
+
 
