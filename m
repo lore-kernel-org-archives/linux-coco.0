@@ -1,59 +1,59 @@
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61826476076
-	for <linux-coco@lists.linux.dev>; Thu, 23 Jul 2026 18:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C13305E10
+	for <linux-coco@lists.linux.dev>; Thu, 23 Jul 2026 18:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784831590; cv=none; b=NZIK0Cnz0kyMUU+OBT7Gc3qpuMs/wRZGdIUM/vjJ0g27fkpTFRYLn4NCeQMMr0fiT63JetZHLv3je+NxTJQhAZHNOtXQ1V/oN2W4wsA4W30Lo9r96iCWlgYTkoVg3tEqMWnsBFEGj4YZ+pzv8KRacRbMqnFXfUo5CH+3n8vhcb8=
+	t=1784832864; cv=none; b=ggktl0s9Q2UV/CghotHm4DHzDe3tXr9cVl2lQST8wDcmwQnQ1hrB0x2BPKay89rQAzmrm3ELOcXQnoEZ+U1Z8MJ97WVrSDdKQdgb/2SA2xRHwqcEZkQcD9hqypk1+phP7yH40ZL7MoN7BvUCUkN5tw7or4lPxP5LWkzk4jqIvyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784831590; c=relaxed/simple;
-	bh=KxB6Bf7QrgKpd89cxkInbDnCN4cFE5gwG52mQN8vsVg=;
+	s=arc-20240116; t=1784832864; c=relaxed/simple;
+	bh=h9OtEV4qVHAlX9KQYjihbUFKtfO6sstnIeiFiDgoNVs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N/FkiIEyi1/wD59FXHjHQMH0XYFL8Y5vGlww9YZD0BlbN14xLrX1ySWGXYcKbZKF684aaGQ9FuUGIy75K+jjVLarCFoPN7ffzFgxVGBYBqSUefTAwfnW6Oi0v5FG/4ZeK86oqiMkTZr3+5RQa0yQTHHNqHgFKxOxtHQAQscSJB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=agcbuZkP; arc=none smtp.client-ip=65.109.113.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=a9CRVzSKfA7OMq405ruXyPx9oV1rKW9cAICU3yKezQ1uWAGjrnnxTzqqiwy3YlQyiychJlaHqo/UhHSWbAaFc4e3/DfGFSFESGCBhlsUjuQ5KDfhDTgMIYhthl73bNIgpy5dcJ7fMhC8GSko+8hUBW4VAlrSrw/7FsBTQjK/nZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=JsGnJrZ2; arc=none smtp.client-ip=65.109.113.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="agcbuZkP"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="JsGnJrZ2"
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B7FB140E027F;
-	Thu, 23 Jul 2026 18:32:50 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C153C40E00DC;
+	Thu, 23 Jul 2026 18:54:12 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 6DrCDV76w-Oe; Thu, 23 Jul 2026 18:32:41 +0000 (UTC)
+	with ESMTP id 4AZIU2mSZdwn; Thu, 23 Jul 2026 18:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1784831560; bh=qIGv8+++s5mjyrTvC7H+RqdRK5QUD/XRD6y9Qzv7ozU=;
+	t=1784832841; bh=VjYfDXADIh0xhQ+fjHF1Jv01qoDx2xMCSHhEriUi0Hs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=agcbuZkP+wJ1RYNio1jtpT6SL6H6OPPwG5tFRDveNd7ndNXYW47xGk3uekXf1trni
-	 YYF7MOQQqm3eS+dt+UaJQH4w9YCONlol45UkjsVCH1aJBmRrJ2OPCslXmC+sysxWtd
-	 RVgDodIui4SWL3TQSN4cQIG8u2fiUawRMmKZNk2t4oDvu9K+Km8M4M5VrwKsWVWobA
-	 z7MCqUd9IB1iEBcUfo9ll43edYDXztjLbewb8ICSfwYj/choZs2sRIuxy8RMjqaG5q
-	 wCI6iSDekhpiGdFzA5YFWsdvONoaU2t8rOsyikx271wZHbn9wEOX3/Xy6SXO8gQ1At
-	 z50g4BYNNQUVVQlSqEDpJnbu+iLxGlRTV6OYJyljMPeM6ysp1ZsZgGdt5oW+rr51KR
-	 /NxzjmLSQweq9+JN9UZ0wjKH5CHHDEp8JvW9bHJySQQ01WqdSzS6R4YlkaxaZm0qeC
-	 PjbWazze1JAjO7s4wawy2rXA2FUxlwrjfs6b3QrGVQtIOv1nYht2oaaqwRxYLvWycw
-	 9f2NokNRZb7CXwxSBT749bsrFuXR1u/ll2/RZNYP5OZLUxbFtOvHfIfk5CT7pYaG8e
-	 zLdBx3N/N1Aj7nvQfdIOyjNIfnYHAKCR639tjHsvGd8SFECNCP9y0cqmqVTscnaYuc
-	 5Kew0l3GS9numLrYV5749rBI=
+	b=JsGnJrZ2/7sUYiUCIv2KOCQj1PrDOJvK4e83jLp7okg4LGN5J/RmmLUesfD5fr5I3
+	 Mt5JYFHoNNWR4EzQNU127WyWMP2BGomGxaXMiPzEevVfpeDPrAwp9uZZo/gp12pc4X
+	 wcdpHCT4jZ3XmCmFhpMgl4vTQwwxYyLMrTPTJwArefHleMRep1JN2t0zagEz8SOZDa
+	 78XL3vCkRXRAD6zQPAMPRyS6bvF6/HPAHteaLDXrkojsKYDNbuHQd/0nHVSNHujasT
+	 b3tbg+39biHsy66Q/XN1eHd2/5e7JweFSypSONu5Wt6+SIxcmfigN1xs2SsiyYl6kV
+	 QTqEqq7lAqamE+mWduGefQ326mSlIqq1rToAd+6VDpmivnmtZOwaaEc6H8oCidIKsv
+	 rhbkKvnV3zU+tMT1nFv8OJYnZQX/I2UIUmNL6rEfGLl6hjBsGw68Gf+s7yT/QkCrhf
+	 mhQ/3JZXcGoqWN7FbqGvm5danDFL68OzlDKcHlYQd/rc5QWmqZ80NXwnBGsnRYClza
+	 Wx/jQ9cBJEk+ecJEutmM+DDtRKNNQCu8gM/kMgFndV7N0ibCvRG7rzF+BhhBX1uJbR
+	 QZpcjgYT94C8+FgnhdKdFiRnz+zN7v6Y3YbXOiNk85yBn3lQsA7gVCkLK49M5zjFgY
+	 mOxi5lQM5Gy6jwIH2wOuJJ1M=
 Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BF57540E00E6;
-	Thu, 23 Jul 2026 18:32:05 +0000 (UTC)
-Date: Thu, 23 Jul 2026 11:32:02 -0700
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DE7A340E00E6;
+	Thu, 23 Jul 2026 18:53:26 +0000 (UTC)
+Date: Thu, 23 Jul 2026 11:53:23 -0700
 From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>, tglx@kernel.org,
-	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
-	hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
-	thomas.lendacky@amd.com, herbert@gondor.apana.org.au,
-	davem@davemloft.net, ardb@kernel.org, pbonzini@redhat.com,
-	aik@amd.com, Michael.Roth@amd.com, Tycho.Andersen@amd.com,
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
 	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
 	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
 	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
@@ -61,14 +61,10 @@ Cc: K Prateek Nayak <kprateek.nayak@amd.com>, tglx@kernel.org,
 	john.allen@amd.com, darwi@linutronix.de,
 	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
 	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v10 2/6] x86/sev: Initialize RMPOPT configuration MSRs
-Message-ID: <20260723183202.GAamJeIr1Cey5clsfE@fat_crate.local>
+Subject: Re: [PATCH v10 3/6] x86/sev: Disable CPU hotplug while SNP is active
+Message-ID: <20260723185323.GAamJjI2HoM1gZmExw@fat_crate.local>
 References: <cover.1782841284.git.ashish.kalra@amd.com>
- <8518e02c46d6edf1f37a180569c708a3cfa7c413.1782841284.git.ashish.kalra@amd.com>
- <20260723011031.GGamFqB1i4zt4Zlsx6@fat_crate.local>
- <9cfe76f4-8e16-4b21-a414-126a06859489@amd.com>
- <20260723051422.GGamGjLhlTqRDcFlee@fat_crate.local>
- <5460b946-b511-4060-8951-264d17a2b21b@amd.com>
+ <205a5259f9fd353dc0ca6b00565c8175a96768c7.1782841284.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -77,37 +73,114 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <5460b946-b511-4060-8951-264d17a2b21b@amd.com>
+In-Reply-To: <205a5259f9fd353dc0ca6b00565c8175a96768c7.1782841284.git.ashish.kalra@amd.com>
 
-On Thu, Jul 23, 2026 at 01:50:48AM -0500, Kalra, Ashish wrote:
-> > What happens if you boot with a subset of cores, the boot flow enables RMPOPT
-> > and then you online the rest?
-> > 
-> > Have we tried that?
-> > 
->  It can't happen here. snp_prepare() does the following, in order:
+On Tue, Jun 30, 2026 at 06:11:03PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> While SNP is active, every memory write is checked against the RMP to
+> protect SEV-SNP guest memory.  A core performs these RMP checks only once
+> ...
 
-Then the comment in the code is greatly misleading:
+Use this commit message for your next revision. The idea is to split it into
+smaller paragraphs for easier parsing, do simple formulations and not talk
+about future patches because git history is not always linear:
 
-        /*
-         * The RMPOPT_BASE MSR is per-core, so only one thread per core needs
-         * to set up the RMPOPT_BASE MSR.
-         * 
-         * Note: only online primary threads are included.  If a core's
-         * primary thread is offline, that core is not covered.  CPU hotplug
-         * is not currently supported with SNP enabled.
-         */     
-        scoped_guard(cpus_read_lock) {
-                for_each_online_cpu(cpu)
-                        if (topology_is_primary_thread(cpu))
+"While SNP is active, every memory write is checked against the RMP to
+protect SEV-SNP guest memory.  A core performs these RMP checks only once SNP
+has been initialized via SNP_INIT and the SNP-enable bit in SYSCFG is set on
+that core; the firmware requires the SNP-enable bit to be set on every present
+CPU before SNP initialization.
 
-I'd expect to read there:
+A core that is not SNP-enabled and not SNP-initialized performs no RMP checks
+at all, so there is no valid configuration with SNP active and any CPU exempt
+from RMP checks.
 
-        /*
-         * The RMPOPT_BASE MSR is per-core, so only one thread per core needs
-         * to set up the RMPOPT_BASE MSR. All primary threads are online,
-	 * otherwise SNP would not have been enabled.
-         */
+The firmware determines which CPUs are present from the processor and the
+BIOS/UEFI configuration (e.g. SMT disabled in the BIOS) and enumerates them at
+SNP init; it is not aware of the OS bringing CPUs online or offline
+afterwards.
+
+SNP_INIT fails unless SnpEn is set on all CPUs, so a CPU that is offline when
+SNP_INIT is issued, does not have SnpEn set, SNP_INIT fails, and there can be
+no SNP guest memory.  OS CPU hotplug can thus diverge from the firmware's
+expectations and break SNP.
+
+Tie CPU hotplug to the SNP-enable bit: disable it in snp_prepare() before
+SNP is enabled, and re-enable it in snp_shutdown() once the firmware has
+disabled SNP.
+
+If snp_prepare() fails before enabling SNP it re-enables hotplug itself; once
+SNP is enabled hotplug stays disabled, including across a failed SNP_INIT and
+across the legacy SNP_SHUTDOWN_EX path, both of which leave SNP enabled.
+
+A kexec target that boots with SNP already enabled, disables hotplug once in
+snp_rmptable_init(), since snp_prepare() bails when SNP is already enabled."
+
+> 
+> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  arch/x86/virt/svm/sev.c | 31 +++++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+> 
+> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+> index dab6e1c290bc..04a58ac4339c 100644
+> --- a/arch/x86/virt/svm/sev.c
+> +++ b/arch/x86/virt/svm/sev.c
+> @@ -535,6 +535,15 @@ int snp_prepare(void)
+>  
+>  	clear_rmp();
+>  
+> +	/*
+> +	 * Disable CPU hotplug before enabling SNP, so no CPU can come online
+> +	 * without SnpEn while SNP is enabled; it is re-enabled in snp_shutdown()
+> +	 * once SNP is disabled.  Must be before cpus_read_lock():
+> +	 * cpu_hotplug_disable() takes cpu_add_remove_lock, which nests above
+> +	 * cpu_hotplug_lock.
+> +	 */
+> +	cpu_hotplug_disable();
+> +
+>  	cpus_read_lock();
+
+What's the point of grabbing the hotplug lock if you just disabled hotplug?
+
+>  	if (!cpumask_equal(cpu_online_mask, cpu_present_mask)) {
+> @@ -560,6 +569,10 @@ int snp_prepare(void)
+>  unlock:
+>  	cpus_read_unlock();
+
+ditto.
+
+>  
+> +	/* Re-enable CPU hotplug; SnpEn was never set. */
+
+
+^ Superfluous comment.
+
+> +	if (ret)
+> +		cpu_hotplug_enable();
+> +
+>  	return ret;
+>  }
+>  EXPORT_SYMBOL_FOR_MODULES(snp_prepare, "ccp");
+> @@ -587,6 +600,13 @@ void snp_shutdown(void)
+>  
+>  	rmpopt_cleanup();
+>  
+> +	/*
+> +	 * Re-enable CPU hotplug now that the firmware has disabled SNP; CPU
+> +	 * hotplug is not re-enabled for a legacy SNP shutdown.  After
+> +	 * rmpopt_cleanup() so RMPOPT_BASE is cleared with hotplug still disabled.
+> +	 */
+
+I can't parse that comment.
+
+> +	cpu_hotplug_enable();
+> +
+>  	clear_rmp();
+>  	on_each_cpu(mfd_reconfigure, NULL, 1);
+>  }
 
 -- 
 Regards/Gruss,
