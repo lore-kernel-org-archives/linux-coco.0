@@ -1,95 +1,84 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4130337A83C
-	for <linux-coco@lists.linux.dev>; Thu, 23 Jul 2026 05:15:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AEC38E5C5
+	for <linux-coco@lists.linux.dev>; Thu, 23 Jul 2026 05:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784783719; cv=none; b=LfZlkywZYEN1HTTEwiWlqoB30Pfgmr2UTkGDdL6Gf/8XTOWe90KHkBSWUQAmmpLd3qdZEJwQKgIfbUvHEAnk3TQp41F9Kw5CMMisgaB8ceIETlrOQVSyoSCX3zxaBkolQ0BthktDmSL52iR7/NCp2eO6K2BrduGXd0ZMLEtLxRU=
+	t=1784785436; cv=none; b=vFUnzsVYL0itBOrs7Qb7wcDFywnBB3d2PMj/1EAluNxJb7LNzahxOjsmZ4OQSzWtJgZiqSDQ7EU6jISzz7Z90XIl4fT/LOyZt2W77Eq5+YO6NPu8+Kda2va/HZ1hDePxTsvRvRWqMWTpjMmWXJI3HZNCW7iRxNJy34f0L9QFc30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784783719; c=relaxed/simple;
-	bh=nUFIhy23wPIvcdXKNXP7uW/tn5Gq+I2t9wo+ptAuegg=;
+	s=arc-20240116; t=1784785436; c=relaxed/simple;
+	bh=A02UVXLHDw+ZkbLlGm+nBaD7lEA4chzRcr/H1crlHQg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ml68Lnsw9ag1wuH8N7bJpM9CpKYGc3cI394Ja/330EspYqgL3bAUC/fxgCXS+WtBeSHKJK4n+euM8yazgQiRiC3OnAyM07lUQSMNkNERzcGHe5HexMxj4lSVJkVECmU/CbhmLqQcm+SmeoxWjJXqlMLpfd3hA3PBge0BtENjmuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=B/NZ0b/J; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=JyV4gHS1r0kkjc7Tqp8pmy3fFYR+Eko9Fioy7l5+EUC2eTP7Q05Ya0TJE+U19P03PToZj7aPFr6nYFr0lFqKyvRqtXaKamF1JxJ5xsLE4wGKlI3g8ydJxrM2MfcIVk9J3KS0OM6xBkFKhp4LWU88Db0vaqZ3DH7Pkv2vVbmwTuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ji2R7lMO; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="B/NZ0b/J"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D94DE40E027F;
-	Thu, 23 Jul 2026 05:15:14 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id etzROib32P5O; Thu, 23 Jul 2026 05:15:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1784783701; bh=OQRjjaSbk43bvPbDeB6pyF9tcyG0794hJa78bgjEmrs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B/NZ0b/J0iSmUCpooQTeluxRCzi6OhX3sY1QLGSnPb3eUlfgE/GJlLTEiKZckMeW+
-	 qp/on+sCkiPmDQbKCLxaoPPVXSRA5jjFB7CKPigZV8Mb14rGGP79fQJ4tALydOT6KR
-	 YBKL+bg96Sd9lbpWwbhm/IprgMYE94P9mNwYZIJ9jtAlINda+Ys3f6/BvIMqErXSdu
-	 6hkxTxytEXPWDb/qZgGOUBi3kggv4RybfPqIUizam/QPE5RstodpZn1NmQj9BdtpY9
-	 mDOyL8rLRaw7dDS31EICtKtbY2cQKKlAfdzi8ToUv1nBvV8z7cSAG7X+AStCTxvv3/
-	 LbSNKJOyL+ezJ9KrXza07EteOdzeiKY2HMjNYuspAVxlDHbph5AMCpH8hdGEzqPndV
-	 SHjb8BM1VkNIPj2zbSy97SsUHbtLKtobxSGkmsSyXLSDI3h+hZ5lF408HIBAkwGmw3
-	 LsD82LdzAZr46UAlpZr9KOCeEIUa8jkS2FVnnFw3VLVzTFBcQwdNWFYCYNJNy4ZxOb
-	 7CNzgoTCWt3DkZirO3LD2qt1X2lvneN1KKIH+6d1GRhhI+Y0URmA+hudUWq5PiKg7q
-	 kFJXq4Uh4O6FxAAtV+zgPZmTGNUVTrIp2phvUFKjwZ/n83HIe17i250w7sWBFmfwiY
-	 Qdg36mppiK+O550Ps9Stxumc=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::2b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0800840E00DC;
-	Thu, 23 Jul 2026 05:14:27 +0000 (UTC)
-Date: Wed, 22 Jul 2026 22:14:22 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
-	ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
-	rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
-	pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com,
-	dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
-	darwi@linutronix.de, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v10 2/6] x86/sev: Initialize RMPOPT configuration MSRs
-Message-ID: <20260723051422.GGamGjLhlTqRDcFlee@fat_crate.local>
-References: <cover.1782841284.git.ashish.kalra@amd.com>
- <8518e02c46d6edf1f37a180569c708a3cfa7c413.1782841284.git.ashish.kalra@amd.com>
- <20260723011031.GGamFqB1i4zt4Zlsx6@fat_crate.local>
- <9cfe76f4-8e16-4b21-a414-126a06859489@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ji2R7lMO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784785435; x=1816321435;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=A02UVXLHDw+ZkbLlGm+nBaD7lEA4chzRcr/H1crlHQg=;
+  b=ji2R7lMOsvnmgldUxDnBoJePyvuiiwfOZmaL9Kiro3uGb8HOp4lnuKwU
+   0gz3fs+xMBOh4Uc5Bd2saqbJI+uVALc4M+N0WyF+oK854/yTKeW8Fr5ne
+   Cdnw8UNDz68xc1W6kQzmZkV20cOMpy6FhqRD0darp9W28rGLYXT+Aq1SU
+   +SSmpTnf35r1uIfopaSHZgWf2vpDfHuB3enEd9lWJcpl6AcAo43xdjXaL
+   mAT+xeK+FSWQ5QWxj3BASiwds2o/UAnzTu+C9u8CoIC+J0VipYWsLf+7C
+   Cux5metUwt+pYbiyMN3uvIXMbGc8z+xQUMjcjCQtB1d9aDVI30089YdhX
+   A==;
+X-CSE-ConnectionGUID: tAtyGVkTTb+MhEqtaaPubQ==
+X-CSE-MsgGUID: UIXpRz0aSx+xTGKtc9FshA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="96947669"
+X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
+   d="scan'208";a="96947669"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 22:43:55 -0700
+X-CSE-ConnectionGUID: 4MAx3QA0SJmi4y63DOtvrg==
+X-CSE-MsgGUID: FrLszd8/TLCOdaLJaKhJ/w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
+   d="scan'208";a="262629626"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa005.jf.intel.com with ESMTP; 22 Jul 2026 22:43:52 -0700
+Date: Thu, 23 Jul 2026 13:43:51 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
+	rick.p.edgecombe@intel.com, dave.hansen@intel.com,
+	dave.hansen@linux.intel.com, yilun.xu@intel.com, djbw@kernel.org,
+	linux-coco@lists.linux.dev, chao.gao@intel.com,
+	peter.fang@intel.com, xiaoyao.li@intel.com
+Subject: Re: [PATCH v3] x86/virt/tdx: Formalize SEAMCALL version encoding
+ support
+Message-ID: <amGqFxt/9DquRGO3@yilunxu-OptiPlex-7050>
+References: <20260722084634.131020-1-yilun.xu@linux.intel.com>
+ <amCnuX8XAjxWFlHd@thinkstation>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9cfe76f4-8e16-4b21-a414-126a06859489@amd.com>
+In-Reply-To: <amCnuX8XAjxWFlHd@thinkstation>
 
-On Thu, Jul 23, 2026 at 10:23:56AM +0530, K Prateek Nayak wrote:
-> The offline cores will remain offline since hotplug is disabled. RMPOPT
-> is simply a performance optimization for RMP checks and leaving the
-> offline cores (that will never exit idle) unoptimized should be
-> acceptable.
+On Wed, Jul 22, 2026 at 12:23:04PM +0100, Kiryl Shutsemau wrote:
+> On Wed, Jul 22, 2026 at 04:46:34PM +0800, Xu Yilun wrote:
+> > While both options have merits, I chose the latter from a
+> > software-centric perspective. I sent v3 to invite more discussion.
+> 
+> I still don't see what postponing the encoding to assembly buys us,
 
-What happens if you boot with a subset of cores, the boot flow enables RMPOPT
-and then you online the rest?
+Sorry, I overlooked it. I think this gives us consistent view of what
+'fn' is for all seamcall-related functions.
 
-Have we tried that?
+> but it is not the hill I want to die on. The result is centralized
+> and correct, so let's move on.
+> 
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks!
