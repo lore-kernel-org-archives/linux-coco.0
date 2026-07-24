@@ -1,319 +1,145 @@
-Received: from esa6.hc1455-7.c3s2.iphmx.com (esa6.hc1455-7.c3s2.iphmx.com [68.232.139.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f2.google.com (mail-wr2-f2.google.com [74.125.225.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05C141D239;
-	Fri, 24 Jul 2026 09:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74578392C42
+	for <linux-coco@lists.linux.dev>; Fri, 24 Jul 2026 12:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784886175; cv=none; b=puHHNk6HJEOq0RuNlstP70XTxjk1EAIIm5u2LvgyhvwwPcXsp92XJN1moVRNN78Rs2dryATxpD44SIggUVMfapXg87+3h3l5aHAfER0HgXcLG51EtUjDJIorerFoarg71qiKythViYFr+yHVn0eCy8ZbbBHPFGoeudydXEaf/7s=
+	t=1784897545; cv=none; b=WH3z1C17fR7pjktqCYh0FZeay7MdGvyJGmpfOk9pmcTjLG4kU0xOxuZGef31Omb2kvVL94siRuQFlXDR2UhigwOz04LBlZMDzbz+vLK6TXbm6T6b4RQTzqULkmgJg6CqX0e1Ucrld+WD1kV9ypF7Bh5ynszLkeVVsF31h4ZVCm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784886175; c=relaxed/simple;
-	bh=p1rp+6y9WsV1qwRzPxc+AFIXKMN/BKdCcEqoP5V1DWo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GhEPgwDY9kkWNvyOKQ4S01IWzsNSR0IN8ETNUj8rw2BtKWgwqUs0Zt4A2NNwEJ5UD/Nyk06JW5XroNa94RdY+cvsZtYscGZxHWMY3bKOwR3lrbLjt63D0QDmokC3QCUQoRbTN6erkIZ1JUU5HO3jlAIzeV2xeVeNmTRQ5vukHfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=aYftdanJ; arc=none smtp.client-ip=68.232.139.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1784897545; c=relaxed/simple;
+	bh=mk1BQnZGtudR7XDj42PbREbR3Ki5M0tr3oqDAtI6TZQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sMkK7xsyjLlRa8zJzNrkykxctFS+y5Wq/rpbGQq5R+BWEjS/CxIF9NjQnVppwonQGsdcbzleJn6paiBl9B7MoBXz1crSjvilb/G0n8vYxxDNvM01wELck9vH6xq/5IiJwbx7RABP5GEjUyv0uBLSYDD5Y7OPqP36P4uhg3TlTfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=TPtvp6/6; arc=none smtp.client-ip=74.125.225.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="aYftdanJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1784886174; x=1816422174;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=p1rp+6y9WsV1qwRzPxc+AFIXKMN/BKdCcEqoP5V1DWo=;
-  b=aYftdanJtdFPaOQtU8U5ltwK5mvSzltCAQ4Jcjoa2smm2Q5sDuXdCd9C
-   V/6kqEbmXE0Bz6tw9ME4gZEMjYNLNsXMpWGSZ7A8EXricqg6C/jnKBDxA
-   rnTHtJUlaIsNMNFMzG5zv1w32dxDAKQ5WftQXV9XxhU6hXGIv1UYa6VuG
-   sk8EwItU1HdXF9yvn1hIH3WRkGErdUm/Z0C89tqIVKvluYZuzh5wE71vd
-   qsgONIClGZO2n4h5Uc/4F0AQ9L6kGSju0d2mXOzlJXyGLgHapCo+OweEG
-   aKsDMxaSnQp7nXCY8uotmjd/cfp8G3j8Fa+rbSYUxcuFDHOB3L8uaCoel
-   Q==;
-X-CSE-ConnectionGUID: klB0TaGkSYCnG6QVQeavFA==
-X-CSE-MsgGUID: 4Ca5Klj4SeWP9dHy3vxeIQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="252021175"
-X-IronPort-AV: E=Sophos;i="6.25,182,1779116400"; 
-   d="scan'208";a="252021175"
-Received: from gmgwnl01.global.fujitsu.com (HELO mgmgwnl01.global.fujitsu.com) ([52.143.17.124])
-  by esa6.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 18:41:45 +0900
-Received: from az2nlsmgm4.fujitsu.com (unknown [10.150.26.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mgmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 0E5AD3D1B;
-	Fri, 24 Jul 2026 09:41:45 +0000 (UTC)
-Received: from az2uksmom4.o.css.fujitsu.com (unknown [10.151.22.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm4.fujitsu.com (Postfix) with ESMTPS id B46EC10214F0;
-	Fri, 24 Jul 2026 09:41:44 +0000 (UTC)
-Received: from sm-arm-grace07.ssoft.mng.com (unknown [10.124.178.20])
-	by az2uksmom4.o.css.fujitsu.com (Postfix) with ESMTP id ECB8A405AB7;
-	Fri, 24 Jul 2026 09:41:38 +0000 (UTC)
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	cgroups@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Steven Price <steven.price@arm.com>,
-	Kohei Enju <enju.kohei@fujitsu.com>
-Subject: [RFC PATCH v1 1/2] KVM: arm64: CCA: Add support for configuring the Realm MEC policy
-Date: Fri, 24 Jul 2026 18:40:55 +0900
-Message-ID: <20260724094120.166536-2-enju.kohei@fujitsu.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260724094120.166536-1-enju.kohei@fujitsu.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="TPtvp6/6"
+Received: by mail-wr2-f2.google.com with SMTP id ffacd0b85a97d-4730b8edae6so134280f8f.0
+        for <linux-coco@lists.linux.dev>; Fri, 24 Jul 2026 05:52:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1784897542; x=1785502342; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Mv5tWqGLGkHnf04eMqxVT5ugoOpACtQyu5RJWX4G6Hs=;
+        b=TPtvp6/6Nv47q2BIBF84xV27TA3GvI3QGH3Stb+nrz183ZvnMdYVQtsFxbLcAio6p/
+         72vt1LApP2bQM3H1uNKK13Y9KqTLLe2wa8bCXE+5zF56ON6yywP0L55d1UuH+ISTo/2s
+         pjVeK2lQLFBlvp73P9E1DaOvCB5FOAQmAkjGsQgSmapcyq66IUsXj/j2EHO6bZ0PmADF
+         AOySxIWLOZtQkOxHUbVGgcwRT7L7APPct6dJYnXybeXkMsZxIxDFd/7RmfRmsiBdqIK2
+         rxB2QPWQr3LUl4IEx8+u0ZyWNA7/cIX++tmcBkqf80DMvHSjNpLXCijQuLczMlBBRLNx
+         /THA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784897542; x=1785502342;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Mv5tWqGLGkHnf04eMqxVT5ugoOpACtQyu5RJWX4G6Hs=;
+        b=mfWwS2EixpnHOeE8eOKegVqTRg6gsQgeAqgWxl7sqTa4rZbFIkrOE3NhVEcsClnrMc
+         McEclVT5J6jGq2+wp9Z/A9sHoCA0JvJ5DaNdIG1wcSLQDQ6vaD14OE3XPrL4es7b8abe
+         75lPzvRs+xNLy6zi+0I/oQhslpq/+Cdh7D0a6vhfNrQNSS3LVrzA0nc+8puMtnpPkYu8
+         d0rmIZSKsstzmLJvGC/uOTGBLUuPs8JnUdc88U98Jd3Wy/JeenIdvAZXPShFRGIewedG
+         cMsEvCaZpaFqWGuMO+sYOvyslR1kCU3Pn+ThkIPDnHgnu0oJkZrQjmK1cShacRKZpzbD
+         RMJg==
+X-Forwarded-Encrypted: i=1; AHgh+RrLksytoHS60uEZL7n90v5Z+0JezG6DTaTRSy97L/OJ5cQN1TolpEtYfdm/bvlQ2PueHGiA0eY4qAJv@lists.linux.dev
+X-Gm-Message-State: AOJu0YyHOzeao7/zuqhuPcjIVv8qPwKVicCW3+mxgWHZR2lCUcJx7ZO9
+	57e74mN66gNDgzwhX2G29RAuq3W2QhCV7VrDIXwAiUmUO6AWp/uymy65BruPVeVXjLaLljfCVRG
+	Sk8mvNWNpmP/6
+X-Gm-Gg: AR+sD10RyJhJoeK7/ba0Ozm3TlZo+PRV+l/OHzSOu+P2arCo1cJC5rSHmoi83bk5ugf
+	gg8D6Azg2BIbhATbTUJh21KCxSmArOQ3Z7l6LKObWHwA6DoxlhgQAvAqmgjfiOIJz7ilZcsTzEh
+	nWo4guBdJTG+Dz1ykDAHAnC9YEhs/x7fhRPt9CjpaFlFCjokAqYe9I5YHb8Pjt+W4Ya0mtMDQdM
+	Aj3tRMhTErZHdgjeh6S65SGS/h/+99u9cc82yPlkszgE20sweGiUWHM4gOHihSi6H/ibIbEJUhP
+	5UUrTWnLiVee3qyl385UwhFRMj9j22WnUiSIG7nNyUIREoOObH985n3lLADGoBuhHWxYCUWGHXx
+	BnNzdyEuPwIyv5tqiQ8fw6GNtbZhI9DsbB/NzZArnGAybQad7k8ByCPY1+yCH9gQdyApDQHXE5a
+	N4da7zTA==
+X-Received: by 2002:a05:6000:2287:b0:477:3986:9b54 with SMTP id ffacd0b85a97d-47f8d77c2dbmr9048250f8f.20.1784897541667;
+        Fri, 24 Jul 2026 05:52:21 -0700 (PDT)
+Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c631fdsm23383475f8f.28.2026.07.24.05.52.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 05:52:21 -0700 (PDT)
+Date: Fri, 24 Jul 2026 14:52:19 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Kohei Enju <enju.kohei@fujitsu.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, cgroups@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Steven Price <steven.price@arm.com>
+Subject: Re: [RFC PATCH v1 2/2] cgroup/misc: Add support for Arm CCA MECIDs
+Message-ID: <amNfGkkI5OIBqpmZ@localhost.localdomain>
 References: <20260724094120.166536-1-enju.kohei@fujitsu.com>
+ <20260724094120.166536-3-enju.kohei@fujitsu.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ax7rchmwlrf277f6"
+Content-Disposition: inline
+In-Reply-To: <20260724094120.166536-3-enju.kohei@fujitsu.com>
 
-Introduce the KVM_ARM_RMI_CONFIG ioctl to allow userspace to configure
-Realm VM parameters before the Realm is created.
 
-Currently, ARM_RMI_CFG_MEC_POLICY is the only supported configuration
-item. Its value can be ARM_RMI_MEC_POLICY_SHARED or
-ARM_RMI_MEC_POLICY_PRIVATE. Reject the private policy if the platform
-does not support private MECs.
+--ax7rchmwlrf277f6
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [RFC PATCH v1 2/2] cgroup/misc: Add support for Arm CCA MECIDs
+MIME-Version: 1.0
 
-If userspace does not explicitly configure the MEC policy,
-ARM_RMI_MEC_POLICY_SHARED is used by default.
+Hello Kohei.
 
-Signed-off-by: Kohei Enju <enju.kohei@fujitsu.com>
----
- Documentation/virt/kvm/api.rst   | 29 +++++++++++++++++++++++++++++
- arch/arm64/include/asm/kvm_rmi.h |  4 ++++
- arch/arm64/kvm/arm.c             |  9 +++++++++
- arch/arm64/kvm/rmi.c             | 29 +++++++++++++++++++++++++++++
- drivers/firmware/arm_rmm/rmi.c   |  8 ++++++--
- include/linux/arm-rmi-cmds.h     |  1 +
- include/uapi/linux/kvm.h         | 17 +++++++++++++++++
- 7 files changed, 95 insertions(+), 2 deletions(-)
+On Fri, Jul 24, 2026 at 06:40:56PM +0900, Kohei Enju <enju.kohei@fujitsu.co=
+m> wrote:
+> Arm CCA MECIDs are limited platform resources. Add a misc cgroup
+> resource to allow the system administrator to account for and limit
+> their use.
+>=20
+> The cca_mec resource represents the number of Realm VMs using the
+> private MEC policy. Each such Realm consumes one MECID. Charge the
+> resource when the Realm is created, and uncharge it when the Realm is
+> successfully destroyed.
+>=20
+> Realms using the shared MEC policy don't consume this resource.
+>=20
+> Signed-off-by: Kohei Enju <enju.kohei@fujitsu.com>
+> ---
+>  arch/arm64/include/asm/kvm_rmi.h |  2 ++
+>  arch/arm64/kvm/rmi.c             | 44 +++++++++++++++++++++++++++++++-
+>  drivers/firmware/arm_rmm/rmi.c   |  4 +++
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 85bec9b4f021..e1c660e5eb34 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -6690,6 +6690,35 @@ populated data is hashed and added to the guest's Realm Initial Measurement
- (RIM) stored by the RMM. This can then be retrieved by the guest (using the RSI
- interface) to present to an attestation server.
- 
-+4.147 KVM_ARM_RMI_CONFIG
-+------------------------
-+
-+:Capability: KVM_CAP_ARM_RMI
-+:Architectures: arm64
-+:Type: vm ioctl
-+:Parameters: struct kvm_arm_rmi_config (in)
-+:Returns: 0 on success, < 0 on error
-+
-+::
-+
-+  struct kvm_arm_rmi_config {
-+       __u32 cfg;
-+       union {
-+               /* cfg == ARM_RMI_CFG_MEC_POLICY */
-+               __u8 mec_policy;
-+
-+               /* Fix the size of the union */
-+               __u8 reserved[256];
-+       };
-+  };
-+
-+Configures parameters of a Realm VM before the Realm is created.
-+
-+Currently, `ARM_RMI_CFG_MEC_POLICY` is the only supported configuration item.
-+`mec_policy` must be either `ARM_RMI_MEC_POLICY_SHARED` or
-+`ARM_RMI_MEC_POLICY_PRIVATE`. `ARM_RMI_MEC_POLICY_PRIVATE` is not supported if
-+no private MEC is available on the platform.
-+
- .. _kvm_run:
- 
- 5. The kvm_run structure
-diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-index 420e99fca07e..721033b132e1 100644
---- a/arch/arm64/include/asm/kvm_rmi.h
-+++ b/arch/arm64/include/asm/kvm_rmi.h
-@@ -60,6 +60,7 @@ enum realm_state {
-  * @ia_bits: Number of valid Input Address bits in the IPA
-  * @stage2_unmapped: The Realm stage-2 mappings have been removed
-  * @rtts_destroyed: The non-root RTTs have been torn down
-+ * @mec_policy: MEC policy for the Realm VM
-  */
- struct realm {
- 	void *rd;
-@@ -76,6 +77,7 @@ struct realm {
- 	unsigned int ia_bits;
- 	bool stage2_unmapped;
- 	bool rtts_destroyed;
-+	unsigned int mec_policy;
- };
- 
- /**
-@@ -115,6 +117,8 @@ struct kvm_arm_rmi_populate;
- 
- int kvm_arm_rmi_populate(struct kvm *kvm,
- 			 struct kvm_arm_rmi_populate *arg);
-+struct kvm_arm_rmi_config;
-+int kvm_arm_rmi_config(struct kvm *kvm, struct kvm_arm_rmi_config *arg);
- void kvm_realm_unmap_range(struct kvm *kvm,
- 			   unsigned long ipa,
- 			   unsigned long size,
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 3862db30779f..17302ba2844c 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -2169,6 +2169,15 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
- 			return -EFAULT;
- 		return ret;
- 	}
-+	case KVM_ARM_RMI_CONFIG: {
-+		struct kvm_arm_rmi_config cfg;
-+
-+		if (!kvm_is_realm(kvm))
-+			return -ENXIO;
-+		if (copy_from_user(&cfg, argp, sizeof(cfg)))
-+			return -EFAULT;
-+		return kvm_arm_rmi_config(kvm, &cfg);
-+	}
- 	default:
- 		return -EINVAL;
- 	}
-diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-index 06cc85fb5092..629dea5e8c47 100644
---- a/arch/arm64/kvm/rmi.c
-+++ b/arch/arm64/kvm/rmi.c
-@@ -572,6 +572,9 @@ static int realm_create_rd(struct kvm *kvm)
- 	if (kvm_lpa2_is_enabled())
- 		params->flags0 |= RMI_REALM_PARAM_FLAG_LPA2;
- 
-+	params->flags0 |= FIELD_PREP(RMI_REALM_PARAM_FLAG_MEC_POLICY,
-+				     realm->mec_policy);
-+
- 	r = realm_init_sve_param(kvm, params);
- 	if (r)
- 		goto out_undelegate_tables;
-@@ -1155,6 +1158,30 @@ int kvm_arm_rmi_populate(struct kvm *kvm,
- 	return ret;
- }
- 
-+int kvm_arm_rmi_config(struct kvm *kvm, struct kvm_arm_rmi_config *cfg)
-+{
-+	guard(mutex)(&kvm->arch.config_lock);
-+
-+	if (kvm_realm_state(kvm) != REALM_STATE_NONE)
-+		return -EBUSY;
-+
-+	switch (cfg->cfg) {
-+	case ARM_RMI_CFG_MEC_POLICY:
-+		if (cfg->mec_policy != ARM_RMI_MEC_POLICY_SHARED &&
-+		    cfg->mec_policy != ARM_RMI_MEC_POLICY_PRIVATE)
-+			return -EINVAL;
-+
-+		if (cfg->mec_policy == ARM_RMI_MEC_POLICY_PRIVATE &&
-+		    rmi_mec_count() == 0)
-+			return -EOPNOTSUPP;
-+
-+		kvm->arch.realm.mec_policy = cfg->mec_policy;
-+		return 0;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static void kvm_complete_ripas_change(struct kvm_vcpu *vcpu)
- {
- 	struct kvm *kvm = vcpu->kvm;
-@@ -1474,6 +1501,8 @@ int kvm_init_realm(struct kvm *kvm)
- {
- 	struct realm *realm = &kvm->arch.realm;
- 
-+	realm->mec_policy = ARM_RMI_MEC_POLICY_SHARED;
-+
- 	realm->params = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
- 	realm->sro = kmalloc_obj(*realm->sro);
- 	if (!realm->params || !realm->sro) {
-diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
-index d0c083bdf251..e9632c35e7db 100644
---- a/drivers/firmware/arm_rmm/rmi.c
-+++ b/drivers/firmware/arm_rmm/rmi.c
-@@ -14,8 +14,7 @@
- 
- static bool arm64_rmi_is_available;
- 
--/* Currently only the first 2 registers are used by Linux */
--#define RMI_FEAT_REG_COUNT	2
-+#define RMI_FEAT_REG_COUNT	5
- static __ro_after_init unsigned long rmi_feat_reg_cache[RMI_FEAT_REG_COUNT];
- 
- unsigned long rmi_feat_reg(unsigned long id)
-@@ -27,6 +26,11 @@ unsigned long rmi_feat_reg(unsigned long id)
- }
- EXPORT_SYMBOL_GPL(rmi_feat_reg);
- 
-+u64 rmi_mec_count(void)
-+{
-+	return u64_get_bits(rmi_feat_reg(4), RMI_FEATURE_REGISTER_4_MEC_COUNT);
-+}
-+
- int rmi_delegate_range(phys_addr_t phys,
- 		       unsigned long size,
- 		       phys_addr_t *out_phys)
-diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
-index 138983ab4e3c..5236600421c6 100644
---- a/include/linux/arm-rmi-cmds.h
-+++ b/include/linux/arm-rmi-cmds.h
-@@ -28,6 +28,7 @@ struct rmi_sro_state {
- };
- 
- unsigned long rmi_feat_reg(unsigned long id);
-+u64 rmi_mec_count(void);
- 
- int rmi_delegate_range(phys_addr_t phys, unsigned long size,
- 		       phys_addr_t *out_phys);
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index adee3936d6ae..46e62327957c 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -1704,4 +1704,21 @@ struct kvm_arm_rmi_populate {
- 	__u32 reserved;
- };
- 
-+#define KVM_ARM_RMI_CONFIG     _IOW(KVMIO, 0xd8, struct kvm_arm_rmi_config)
-+
-+#define ARM_RMI_CFG_MEC_POLICY		0
-+#define ARM_RMI_MEC_POLICY_SHARED	0
-+#define ARM_RMI_MEC_POLICY_PRIVATE	1
-+
-+struct kvm_arm_rmi_config {
-+	__u32 cfg;
-+	union {
-+		/* cfg == ARM_RMI_CFG_MEC_POLICY */
-+		__u8 mec_policy;
-+
-+		/* Reserve space for future configuration payloads. */
-+		__u8 reserved[256];
-+	};
-+};
-+
- #endif /* __LINUX_KVM_H */
--- 
-2.43.0
+(mainly for this)
+>  include/linux/misc_cgroup.h      |  4 +++
+>  kernel/cgroup/misc.c             |  4 +++
+>  5 files changed, 57 insertions(+), 1 deletion(-)
 
+Conditional
+Acked-by: Michal Koutn=FD <mkoutny@suse.com>
+(it makes sense along the other arches' miscresurces)
+
+Why? I see this [1] (or followup) needs to be added first.
+
+Thanks,
+Michal
+
+[1] https://lore.kernel.org/r/20260715142739.80398-4-steven.price@arm.com/
+
+--ax7rchmwlrf277f6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCamNf+xsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AhXYAD/aF4cHB3u4Ztw+Epfxt6r
+owvtGiLz50NxCjHVwV+x/xAA/jW6M8nVIZ5COXi3AcXAaZ9Jg4Hbfex1q/uwG0FV
+VjUH
+=szup
+-----END PGP SIGNATURE-----
+
+--ax7rchmwlrf277f6--
