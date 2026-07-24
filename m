@@ -1,358 +1,220 @@
-Received: from esa2.hc1455-7.c3s2.iphmx.com (esa2.hc1455-7.c3s2.iphmx.com [207.54.90.48])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C6937C0FB;
-	Fri, 24 Jul 2026 05:41:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.54.90.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064D43CF976
+	for <linux-coco@lists.linux.dev>; Fri, 24 Jul 2026 08:15:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784871694; cv=none; b=c7rw8RKdc7gzsVz6YxF6RtCM8DFnvQuz3FxfzBkhB2R2mRRe2or//VzaOlNYOWfRqX5LuPaHmiKjJ0XVMmfQl7H+WHwv8L3i9cXhJhspCcGaLuZ1cYMwP3LWCTYCfIX0E8igIFKL6+IXhtmX/1CBaRr+ejGrbFs2p9nAUlP10es=
+	t=1784880988; cv=none; b=I0gL97fSNoJ2HEUiai+oc9PIJZF205ZRmzDs2Kzvp/R3GOLestiTAXikN/+GQUJlkGZ8gU8qmvk9S1ar8BOasRV4RGz07Hsdza+m/CyQolDirfTGar7w8K7GmrBS7z0ZqiYT1MM+KsR8w8nUA17dR2CwOyVV3oKrSRK/mrZim7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784871694; c=relaxed/simple;
-	bh=s0PBxUXRmEF5J+31RfirjYz57+TGUtgffYTiUqpDPnY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ehR+jYJfNq8T0akt/jYert9pA7JAMi50HWTywWRlwBNtBQy3nu7jzwsNqKhVAfFWkW75/p4LG9qBEB7/HB90bz2DYSB6WHVz1Zys3jwHi4+KFZf0Hh+/K3/og1kpKWff9h5G9qtrChdbMjvurRBVt1eaXXmd6fw3kVVwNodpG80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=T5eLTuQ/; arc=none smtp.client-ip=207.54.90.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1784880988; c=relaxed/simple;
+	bh=eg0RbmSqnpanchs9JmzO0r+GsNFi5NOA/CLbL3kiJeo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XcJvAvqF+NcpVlJQnfMfCzsYQR4WTCCyjn+vetqx1BRBT/JDC76KChiFbxfTpgQeMRU3Gx9Kbnd9viXd6g3RpwYcY5hBszkmr8gJEb3jIFRgBuixthu32oQh8LxiEeOcHSb/JBeSo5K0swYe6+K3zNex5zn2ALLKDKlJyNeWqsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XRw2l+HA; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="T5eLTuQ/"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1784871693; x=1816407693;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=s0PBxUXRmEF5J+31RfirjYz57+TGUtgffYTiUqpDPnY=;
-  b=T5eLTuQ/7gKGxk72TrlF7xxPB7IxCZNKKj9XgV24QYyzPIsbihpvNEGt
-   SN6WFXOpXxrdWlRapqba0VKYW6CAoVUSwYYisZUgnTKxrvMyoxj22HFRj
-   ajn3bH8VDs/ewAwuaOZAUVMWMwSOQrGc92pnfUj8aMbfMAtq96CVAnDmV
-   qbzCZBGpsOcW5zvm2Xp9u7rq99ZR0mYlHcRKUO6cA1mF7x5vwHbz6PoyW
-   Ey/6UMRGzfx9byaw+fB8QMXMIrYlVF6rQ2BrKZOvcW7KFtgoGW7aIkdC4
-   tn8ewKSuFsKlyT3jZKtmJt0FuZOyUF0kyTEsT+BbIB5nXnx945RwPcoPe
-   A==;
-X-CSE-ConnectionGUID: aZrTdBm6Swej2/KnzD1mtQ==
-X-CSE-MsgGUID: C/IaaT1LSAikQtKozPdYYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="248459282"
-X-IronPort-AV: E=Sophos;i="6.25,181,1779116400"; 
-   d="scan'208";a="248459282"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa2.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 14:40:22 +0900
-Received: from az2nlsmgm1.o.css.fujitsu.com (unknown [10.150.26.203])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id BB7A310000D4;
-	Fri, 24 Jul 2026 05:40:21 +0000 (UTC)
-Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 71350C021BF;
-	Fri, 24 Jul 2026 05:40:21 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.8.138.162])
-	by az2nlsmom2.o.css.fujitsu.com (Postfix) with SMTP id 7132D1803888;
-	Fri, 24 Jul 2026 05:40:13 +0000 (UTC)
-Date: Fri, 24 Jul 2026 14:40:06 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v15 12/37] KVM: arm64: CCA: Support the VGIC in realms
-Message-ID: <amL5h3XHJN5iA13f@FCCLS0092175.localdomain>
-References: <20260715142841.80544-1-steven.price@arm.com>
- <20260715142841.80544-13-steven.price@arm.com>
- <amB-opawGgF6jNHB@FCCLS0092175.localdomain>
- <b71e81ee-372c-4963-a1f7-bd301aee89cb@arm.com>
- <amG3KHE4Tdd_Nvuz@FCCLS0092175.localdomain>
- <1cd3327c-1eab-4022-9ab1-625ca8641e81@arm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XRw2l+HA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784880961; x=1816416961;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=eg0RbmSqnpanchs9JmzO0r+GsNFi5NOA/CLbL3kiJeo=;
+  b=XRw2l+HAq9LttQk1xZbNWwBF01MMFc3H7LzfiR1gU0bYVKMKXGVUmQ3R
+   cK1AR3/NpKJN23GYlGdbaZsBxYC9RPVtWbc7rMNtMUPHp/o/If8HvWvjZ
+   uaQqxXjNCnZgc2HUH2mdKvzogAZ/a/a+nYcQJsQ/l8+iV0iyBkFUqQrKO
+   yHWueQfkWt7ZRrqI0ojMK63KQf23dRSIziPdSAJc5WnD1Tt9IwmyRP9nT
+   U3YukNgACLySKqI3TukcfDhtm+fh4ZKTymubBnZfNFy+SgPp2H024OD1S
+   dLXeknBNycalNSbEzQrFzq1/SWWtnJSEK9KlUTtlpH16urXA+ebRAYVxb
+   g==;
+X-CSE-ConnectionGUID: aMAUMt1SREuSt78PCYmdLg==
+X-CSE-MsgGUID: bA3IyfVAQvGDoOTk2KJI8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="96692974"
+X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
+   d="scan'208";a="96692974"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 01:15:29 -0700
+X-CSE-ConnectionGUID: hhFMJjWTS2a2Nmzaw6vN5A==
+X-CSE-MsgGUID: O0d9viwGSrKH5CQS1aVXqw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
+   d="scan'208";a="256001656"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.232]) ([10.124.240.232])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 01:15:24 -0700
+Message-ID: <823bf577-51a1-4a8a-b240-ef4a0d5573be@intel.com>
+Date: Fri, 24 Jul 2026 16:15:21 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1cd3327c-1eab-4022-9ab1-625ca8641e81@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
+ module init and update
+To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: djbw@kernel.org, kas@kernel.org, rick.p.edgecombe@intel.com,
+ yilun.xu@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com,
+ kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
+ peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+ dave.hansen@intel.com, dave.hansen@linux.intel.com, seanjc@google.com
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 07/23 15:46, Steven Price wrote:
-> On 23/07/2026 07:56, Kohei Enju wrote:
-> > On 07/22 14:31, Steven Price wrote:
-> >> On 22/07/2026 09:27, Kohei Enju wrote:
-> >>> On 07/15 15:28, Steven Price wrote:
-> >>>> The RMM provides emulation of a VGIC to the realm guest. With RMM v2.0
-> >>>> the registers are passed in the system registers so this works similar
-> >>>> to a normal guest, but kvm_arch_vcpu_put() need reordering to early out,
-> >>>> and realm guests don't support GICv2 even if the host does.
-> >>>>
-> >>>> Signed-off-by: Steven Price <steven.price@arm.com>
-> >>>
-> >>> Hi Steven,
-> >>
-> >> Hi Kohei,
-> >>
-> >>> I've been testing this series and found that when the host CPU doesn't have
-> >>> ARM64_HAS_ICH_HCR_EL2_TDIR this series doesn't work as expected.
-> >>
-> >> Thanks for testing!
-> >>
-> >>> Since commit 2a28810cbb8b ("KVM: arm64: GICv3: Detect and work around the lack
-> >>> of ICV_DIR_EL1 trapping"), when the host CPU doesn't support this feature, KVM
-> >>> traps all GIC sysreg accesses in the common group. However, currently trap
-> >>> handlers for ICC_{PMR,RPR,CTLR}_EL1 registers are missing [0]. So when Realm
-> >>> guests try to access those registers, KVM traps them but just emits the warning
-> >>> shown in [1], and Realm guests fail to boot.
-> >>>
-> >>> As far as I can tell, the CCA requirements don't require the
-> >>> ARM64_HAS_ICH_HCR_EL2_TDIR feature. If that's the case, this seems to be a
-> >>> problem. Is there any workaround for this issue, or should we implement trap
-> >>> handlers for those registers?
-> >>
-> >> As Marc has already said in his reply, I'm really surprised you have a
-> >> CPU which implements CCA but doesn't have ARM64_HAS_ICH_HCR_EL2_TDIR.
-> >> Can you give some more details about the platform you are testing on?
-> > 
-> > Thank you for taking a look, Steve.
-> > 
-> > Unfortunately, due to the company's policy, I can't share any details
-> > about the platform I'm currently testing on. When the time is right,
-> > I'll be happy to do so.
-> > 
-> >>
-> >> Ultimately there are two options here - either don't support CCA (so
-> >> detect the lack of ARM64_HAS_ICH_HCR_EL2_TDIR and bail out early), or
-> >> plumb in the trap handlers - as commit 2a28810cbb8b points out this
-> >> isn't something we really want to support if we can avoid it.
-> > 
-> > Yes, the former makes perfect sense if there would be no systems that
-> > supports CCA without TDIR. However, if such systems do exist, I'd be
-> > interested in exploring the latter approach.
-> > 
-> >>
-> >> Hence I'm interested to know where this sits between "hacked up test
-> >> system" and "production hardware". E.g. if this is an emulator it might
-> >> be possible to just enable the CPU feature.
-> > 
-> > Again, I can't share that right now, but I'd like to share more when the
-> > time comes.
-> 
-> Given Marc's response for now I'm not going to add support for this. 
-> "When the time comes" we can revisit whether it makes sense to have 
-> upstream support and what that might look like.
+On 6/18/2026 4:13 PM, Xu Yilun wrote:
+> In addition to basic TDX functionalities, TDX module provides add-on
+> features that can be progressively enabled as the kernel supports them.
 
-I understand. Thank you for clarifying the current stance.
+"add-on features" looks like a new term introduced by this sereis for 
+TDX. So what is add-on features? all the features defined in 
+TDX_FEATURE0/1? Or only the features needs to be explicitly enabled by 
+R9 and R10 of TDH.SYS.CONFIG? ...
 
-> 
-> However, I did ask an AI tool to have a go at implementing this, and it 
-> came up with the (very lightly tested) patch below. That might at least 
-> give you something you can test. It doesn't meet Marc's request that it
-> reuses the existing implementation, and it took the AI a few goes at
-> getting something that "works" so I suspect it might have bugs - I
-> haven't reviewed the code myself.
+> The kernel should explicitly configure these features at boot or
+> post-update initialization time. 
 
-Thanks for the patch. That's very helpful, and I'll look into it.
+... So the answer is the latter. Then why only these bits are add-on 
+features while the rest in TDX_FEATURES01 are not?
 
-Thanks,
-Kohei
+btw, s/should/needs/ is better?
 
+> Configuring an add-on feature, such as
+> TDX Quoting, that uses extension SEAMCALLs is the prerequisite for
+> initializing TDX module extensions. 
+
+Though the statement is right, it leads to the impression that the 
+reason we are configuring the add-on feature is to initialize the TDX 
+module extensions.
+
+However, the truth is kenrel wants to enable/use an add-on feature and 
+the add-on feature requires the functionalities provided by some TDX 
+module extension. So kernel needs to enable the TDX module extensions.
+
+> TDX Quoting is the target feature to
+> enable but defer it for now until full kernel support is in place.
 > 
-> Thanks,
-> Steve
+> TDX module extends TDH.SYS.CONFIG and TDH.SYS.UPDATE with new bitmap
+> input parameters to specify which add-on features to configure. The
+> bitmap uses the same definitions as TDX_FEATURES0.
 > 
-> ----8<----
-> From 7aaaa5089c05f19bf00df2b651fa4bd7d738384c Mon Sep 17 00:00:00 2001
-> From: Steven Price <steven.price@arm.com>
-> Date: Thu, 23 Jul 2026 11:49:36 +0100
-> Subject: [PATCH] KVM: arm64: CCA: Handle GICv3 CPU interface traps for realms
+> For runtime update, Linux applies a policy that no newer features should
+> be added after update to avoid disrupting live TDX operations. To adhere
+> to this, TDH.SYS.UPDATE must configure the same features as the
+> TDH.SYS.CONFIG. Record the kernel required add-on feature bitmap in a
+> global var so that both phases can use it.
 > 
-> On CPUs that lack ICH_HCR_EL2.TDIR, KVM works around the missing DIR
-> trap by setting ICH_HCR_EL2.TC and trapping the GICv3 common CPU
-> interface registers. Normal guests handle these traps in hyp via the
-> VGIC CPU interface emulation, but realm guests exit through the RMM and
-> reach KVM's host-side sysreg emulation instead.
+> TDX module advances the version of TDH.SYS.CONFIG and TDH.SYS.UPDATE for
+> the change, so use the latest version (v1) for add-on feature enabling.
+> But supporting existing modules which only support v0 is still necessary
+> until they are deprecated. In fact, it is unlikely that TDH.SYS.CONFIG
+> ever needs to change again and the code would stay in v1. So there is
+> little value in worrying about deprecating v0 to save a couple lines of
+> code in 5-7 years when these original TDX platforms sunset.
 > 
-> That path only handles ICC_DIR_EL1 and treats the rest of the trapped
-> common group as undefined. A realm guest can therefore take an
-> unexpected UNDEF when accessing registers such as ICC_PMR_EL1 or
-> ICC_CTLR_EL1 on systems that require the TC workaround.
-> 
-> Handle the GICv3 common CPU interface registers directly from the realm
-> sysreg exit path. Reads are satisfied from the saved VGIC state and
-> writes update the VGIC shadow state. For PMR and CTLR writes, also
-> restore the VMCR/APR state to the live GIC CPU interface before
-> re-entering the REC, matching the effect a direct guest sysreg write
-> would have had.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 > ---
->  arch/arm64/kvm/rmi-exit.c | 119 ++++++++++++++++++++++++++++++++++++++
->  1 file changed, 119 insertions(+)
+>   arch/x86/virt/vmx/tdx/tdx.h |  6 ++++--
+>   arch/x86/virt/vmx/tdx/tdx.c | 28 ++++++++++++++++++++++++++--
+>   2 files changed, 30 insertions(+), 4 deletions(-)
 > 
-> diff --git a/arch/arm64/kvm/rmi-exit.c b/arch/arm64/kvm/rmi-exit.c
-> index 78d9189fd5ca..0fad8e68d920 100644
-> --- a/arch/arm64/kvm/rmi-exit.c
-> +++ b/arch/arm64/kvm/rmi-exit.c
-> @@ -3,17 +3,25 @@
->   * Copyright (C) 2023-2026 ARM Ltd.
->   */
->  
-> +#include <linux/bitfield.h>
-> +#include <linux/irqchip/arm-gic-v3.h>
->  #include <linux/kvm_host.h>
->  #include <kvm/arm_hypercalls.h>
->  #include <kvm/arm_psci.h>
->  
->  #include <linux/arm-smccc-rmi.h>
->  #include <asm/kvm_emulate.h>
-> +#include <asm/kvm_hyp.h>
->  #include <asm/kvm_rmi.h>
->  #include <asm/kvm_mmu.h>
-> +#include <asm/sysreg.h>
-> +
-> +#include "vgic/vgic.h"
->  
->  typedef int (*exit_handler_fn)(struct kvm_vcpu *vcpu);
->  
-> +#define GICV3_IDLE_PRIORITY	0xff
-> +
->  static int rec_exit_reason_notimpl(struct kvm_vcpu *vcpu)
->  {
->  	vcpu_err(vcpu, "Unhandled exit reason from realm (ESR: %#llx)\n",
-> @@ -48,6 +56,114 @@ static int rec_exit_sync_iabt(struct kvm_vcpu *vcpu)
->  	return -ENXIO;
->  }
->  
-> +static int rec_get_gicv3_bpr_min(void)
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+> index fbb520704662..a47e872480c7 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.h
+> +++ b/arch/x86/virt/vmx/tdx/tdx.h
+> @@ -58,9 +58,11 @@
+>   #define TDH_PHYMEM_CACHE_WB		40
+>   #define TDH_PHYMEM_PAGE_WBINVD		41
+>   #define TDH_VP_WR			43
+> -#define TDH_SYS_CONFIG			45
+> +#define TDH_SYS_CONFIG_V0		45
+> +#define TDH_SYS_CONFIG			SEAMCALL_LEAF_VER(TDH_SYS_CONFIG_V0, 1)
+>   #define TDH_SYS_SHUTDOWN		52
+> -#define TDH_SYS_UPDATE			53
+> +#define TDH_SYS_UPDATE_V0		53
+> +#define TDH_SYS_UPDATE			SEAMCALL_LEAF_VER(TDH_SYS_UPDATE_V0, 1)
+>   #define TDH_SYS_DISABLE			69
+>   
+>   /* TDX page types */
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index 2a03152796e6..92305b5ea90d 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -57,6 +57,7 @@ static struct tdx_module_state tdx_module_state;
+>   static u32 tdx_global_keyid __ro_after_init;
+>   static u32 tdx_guest_keyid_start __ro_after_init;
+>   static u32 tdx_nr_guest_keyids __ro_after_init;
+> +static u64 tdx_addon_feature0 __ro_after_init;
+>   
+>   static DEFINE_IDA(tdx_guest_keyid_pool);
+>   
+> @@ -1004,9 +1005,18 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
+>   	return ret;
+>   }
+>   
+> +static __init void set_tdx_addon_features(void)
 > +{
-> +	return 8 - (FIELD_GET(ICH_VTR_EL2_PREbits,
-> +			      kvm_vgic_global_state.ich_vtr_el2) + 1);
+> +	/*
+> +	 * To add DICE-based TDX Quoting feature bit in tdx_addon_feature0 when
+> +	 * kernel is ready.
+> +	 */
 > +}
 > +
-> +static u8 rec_get_gicv3_active_priority(struct kvm_vcpu *vcpu)
-> +{
-> +	struct vgic_v3_cpu_if *cpuif = &vcpu->arch.vgic_cpu.vgic_v3;
-> +	u8 prio = 0;
+>   static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+>   				    u64 global_keyid)
+>   {
+> +	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
+>   	struct tdx_module_args args = {};
+>   	u64 *tdmr_pa_array;
+>   	size_t array_sz;
+> @@ -1032,7 +1042,15 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+>   	args.rcx = __pa(tdmr_pa_array);
+>   	args.rdx = tdmr_list->nr_consumed_tdmrs;
+>   	args.r8 = global_keyid;
+> -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
 > +
-> +	for (int i = 0; i <= vgic_v3_max_apr_idx(vcpu); i++) {
-> +		u32 val = cpuif->vgic_ap0r[i] | cpuif->vgic_ap1r[i];
+> +	set_tdx_addon_features();
+
+Maybe move the set_tdx_addon_features() out of config_tdx_module()? how 
+about putting it after check_features(). config_tdx_module() looks like 
+just a wrapper to invoke TDH.SYS.CONFIG, while the params of it are 
+determined outside of it.
+
+Just my feeling.
+
 > +
-> +		if (!val) {
-> +			prio += 32;
-> +			continue;
-> +		}
-> +
-> +		return (prio + __ffs(val)) << rec_get_gicv3_bpr_min();
+> +	if (tdx_addon_feature0) {
+> +		args.r9 = tdx_addon_feature0;
+> +		seamcall_fn = TDH_SYS_CONFIG;
 > +	}
 > +
-> +	return GICV3_IDLE_PRIORITY;
-> +}
-> +
-> +static void rec_restore_gicv3_vmcr_aprs(struct kvm_vcpu *vcpu)
-> +{
-> +	preempt_disable();
-> +	kvm_call_hyp(__vgic_v3_restore_vmcr_aprs,
-> +		     &vcpu->arch.vgic_cpu.vgic_v3);
-> +	preempt_enable();
-> +}
-> +
-> +/*
-> + * Realm exits are handled after the RMM has returned to the host, so use the
-> + * saved VGIC shadow state instead of the hyp-side live sysreg helpers.
-> + */
-> +static bool rec_exit_gicv3_sys_reg(struct kvm_vcpu *vcpu, bool is_write)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	struct vgic_cpu *vgic_cpu = &vcpu->arch.vgic_cpu;
-> +	struct vgic_vmcr vmcr;
-> +	unsigned long esr = kvm_vcpu_get_esr(vcpu);
-> +	int rt = kvm_vcpu_sys_get_rt(vcpu);
-> +	u32 sysreg = esr_sys64_to_sysreg(esr);
-> +	u64 val;
-> +
-> +	if (!kvm_has_gicv3(vcpu->kvm))
-> +		return false;
-> +
-> +	vgic_get_vmcr(vcpu, &vmcr);
-> +
-> +	switch (sysreg) {
-> +	case SYS_ICC_DIR_EL1:
-> +		if (!is_write)
-> +			return false;
-> +
-> +		vgic_v3_deactivate(vcpu, rec->run->exit.gprs[rt]);
-> +		return true;
-> +	case SYS_ICC_PMR_EL1:
-> +		if (is_write) {
-> +			vmcr.pmr = FIELD_GET(ICC_PMR_EL1_MASK,
-> +					     rec->run->exit.gprs[rt]);
-> +			vgic_set_vmcr(vcpu, &vmcr);
-> +			rec_restore_gicv3_vmcr_aprs(vcpu);
-> +		} else {
-> +			rec->run->enter.gprs[rt] = FIELD_PREP(ICC_PMR_EL1_MASK,
-> +							      vmcr.pmr);
-> +		}
-> +
-> +		return true;
-> +	case SYS_ICC_CTLR_EL1:
-> +		if (is_write) {
-> +			val = rec->run->exit.gprs[rt];
-> +			vmcr.cbpr = FIELD_GET(ICC_CTLR_EL1_CBPR_MASK, val);
-> +			vmcr.eoim = FIELD_GET(ICC_CTLR_EL1_EOImode_MASK, val);
-> +			vgic_set_vmcr(vcpu, &vmcr);
-> +			rec_restore_gicv3_vmcr_aprs(vcpu);
-> +		} else {
-> +			val  = FIELD_PREP(ICC_CTLR_EL1_PRI_BITS_MASK,
-> +					  vgic_cpu->num_pri_bits - 1);
-> +			val |= FIELD_PREP(ICC_CTLR_EL1_ID_BITS_MASK,
-> +					  vgic_cpu->num_id_bits);
-> +			val |= FIELD_PREP(ICC_CTLR_EL1_SEIS_MASK,
-> +					  FIELD_GET(ICH_VTR_EL2_SEIS,
-> +						    kvm_vgic_global_state.ich_vtr_el2));
-> +			val |= FIELD_PREP(ICC_CTLR_EL1_A3V_MASK,
-> +					  FIELD_GET(ICH_VTR_EL2_A3V,
-> +						    kvm_vgic_global_state.ich_vtr_el2));
-> +			val |= FIELD_PREP(ICC_CTLR_EL1_CBPR_MASK,
-> +					  vmcr.cbpr);
-> +			val |= FIELD_PREP(ICC_CTLR_EL1_EOImode_MASK,
-> +					  vmcr.eoim);
-> +			rec->run->enter.gprs[rt] = val;
-> +		}
-> +
-> +		return true;
-> +	case SYS_ICC_RPR_EL1:
-> +		if (is_write)
-> +			return false;
-> +
-> +		rec->run->enter.gprs[rt] = rec_get_gicv3_active_priority(vcpu);
-> +		return true;
-> +	default:
-> +		return false;
+> +	ret = seamcall_prerr(seamcall_fn, &args);
+>   
+>   	/* Free the array as it is not required anymore. */
+>   	kfree(tdmr_pa_array);
+> @@ -1314,10 +1332,16 @@ int tdx_module_shutdown(void)
+>   
+>   int tdx_module_run_update(void)
+>   {
+> +	u64 seamcall_fn = TDH_SYS_UPDATE_V0;
+>   	struct tdx_module_args args = {};
+>   	int ret;
+>   
+> -	ret = seamcall_prerr(TDH_SYS_UPDATE, &args);
+> +	if (tdx_addon_feature0) {
+> +		args.r9 = tdx_addon_feature0;
+> +		seamcall_fn = TDH_SYS_UPDATE;
 > +	}
-> +}
 > +
->  static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
->  {
->  	struct realm_rec *rec = &vcpu->arch.rec;
-> @@ -59,6 +175,9 @@ static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
->  	if (is_write)
->  		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
->  
-> +	if (rec_exit_gicv3_sys_reg(vcpu, is_write))
-> +		return 1;
-> +
->  	ret = kvm_handle_sys_reg(vcpu);
->  	if (!is_write)
->  		rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
-> -- 
-> 2.43.0
-> 
-> 
-> 
+> +	ret = seamcall_prerr(seamcall_fn, &args);
+>   	if (ret)
+>   		return ret;
+>   
+
