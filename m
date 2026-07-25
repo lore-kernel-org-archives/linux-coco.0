@@ -1,74 +1,74 @@
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
+Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AD12BE65F
-	for <linux-coco@lists.linux.dev>; Sat, 25 Jul 2026 14:32:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C1F2DC792
+	for <linux-coco@lists.linux.dev>; Sat, 25 Jul 2026 14:34:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784989961; cv=none; b=rg0yL3m7ORma++U51sZGy+hBSsVQp45COT4VEJrVklvhUpW9gXpk1TIGr3llm6SP7lcqQZIfSAMdkiYsd2wmc+scZoSKplacsW7uUuXKWzChuGSVfAX2/AhOiEr4TiTo3vDwDZqVNZXjB0r7AcAwRgvsbrKcIjq8L+6Jg8pDTNk=
+	t=1784990058; cv=none; b=mKbSARnimIyncvKNpXtAlHJq/EnnYnMPSs4zkE3dhd5R9yxuwzFFNWWwyftnaLD/BRC7TLYEFn+JgVlXfH8Mu1tNv7lYGURQCrJANy3kt/h+helWbYFRhCqJI8HMcZUln1MdkQK92WCkwrcIaAZF2l6SeNDs2UssgraNsw6l2Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784989961; c=relaxed/simple;
-	bh=S27wxW5RiXGSWAyfDHFRMon4Va9e0JZw9F8o+Hg7Llk=;
+	s=arc-20240116; t=1784990058; c=relaxed/simple;
+	bh=YvPY+TLfnAZJLuA11fwmu2rvBC8Nt5tUSqw5kT8WiQI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QnqXidPTTnny7KJawQwWPxmM8WiNJLKbOt3hjmJqQwedAuAQ5AVua9RoIGv5ZHD+uGjUZQ5sxFzTQLehy1d2wMmT/6iOrvbC2T84kKYh0Y1+em5Xty1dnXn840f0pG71WW94/77UTS+wHKaSFL7J4yIoqbShxpAGT4mJ35bsIS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=as6eaP6h; arc=none smtp.client-ip=209.85.222.51
+	 Content-Type:Content-Disposition:In-Reply-To; b=rAzWMN77WtpuQMkJSIqPVo9L1Dq31jraV2s0XprxQrDz8kjR3qfRRperWtZEG5D4TAb12Sl7S3mPFeu1G4l8qioGeMAuWWAy055+bLtvPM7kBxyU0jsaeDuADahdUX8Y3sPkV5rKgTvH4IjLtmZ7vIOQ/Jgfio4o7KR+ujEyaV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=f/jXYrHo; arc=none smtp.client-ip=209.85.222.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="as6eaP6h"
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-9692373e0b1so325225241.3
-        for <linux-coco@lists.linux.dev>; Sat, 25 Jul 2026 07:32:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="f/jXYrHo"
+Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-977310532a7so1662774241.0
+        for <linux-coco@lists.linux.dev>; Sat, 25 Jul 2026 07:34:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1784989958; x=1785594758; darn=lists.linux.dev;
+        d=ziepe.ca; s=google; t=1784990056; x=1785594856; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=MDjgTbE6npl3ZujjcO5BO0pJ+G7Th/Ah/Rj5MPFfgH0=;
-        b=as6eaP6hQhXRTKrB7Rvo/zQE35Yxl8QW+n+pa3Do1ILvkdEWlOinWPzlOUHOmvKTh4
-         WC9kQ8G5EbRT2DgHUWfIJ9VGROOgBbjnitPmb9SX7OulLlL03zmRpOB8M0NdOYTNunN1
-         9kQTcQi+814Ozv3PgrPi+M9FNagl/jTVwza4p/SSqegyND5vLOj3OMPGGdK/VP/i0gJP
-         EvsTF4PPH3V5W0HG3fktubSQBy6yHOZZdDw34lF/mzUI/LCjmTOaB0IY0Jy2E0pvRanq
-         GiCQKwY3wL3Bm1N2jUKXxz+X9dnWKjyyZ4mq+uIuCUREjLvnbp+rT4wP4ypWz/ILzwxa
-         wBTQ==
+        bh=vD91S1DbebApVBCN527t7AaQw07MlhokwGC+vI5FhsI=;
+        b=f/jXYrHoUNwkUo0ysIPduhLyz3ZH+DbFCJMo2MM/B8Z5vfUCfTHLhRqfyMWulpeRNI
+         k2PkAxPsMGLkHu5Ye5rZBEqjADW/h++cK1nHshtoRJ78nmH+dQ31aqeYPshsJnsHRQ/T
+         z/ShW59Bfk8tk5ktu62w1OROSljfKZACpk2B7IMwfQRdThYOX3FJQnp8JGQDXjv/3s6w
+         iIqeWUNSCl3rIwhy+ZUDYUOBlkb5Icv+ZVnnlQ/yi4XSgk9KX1EKWHAYwZtnCDP2vSao
+         5B2aQxYOFkXT4wCrriFnkNKqqUxlT/RGi4XtM2fccm+NMqktPoC4IFg3SmsBTh0X8/qq
+         g4EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784989958; x=1785594758;
+        d=1e100.net; s=20251104; t=1784990056; x=1785594856;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=MDjgTbE6npl3ZujjcO5BO0pJ+G7Th/Ah/Rj5MPFfgH0=;
-        b=JJA1aW0bQx/N3WF1mI0xiw+CWlZsi3oL2yqS++fhA3CvwoSkvxcXkn2Gng1n5TyL7W
-         pjBa0haYx4sDcpSKc26JmGy+SPV9kq+WnMROujzi437M0TQFmqC23DEUtkyIOkOBQY1/
-         f9iOVTG+FOQAM3eRE87nl1hhlK/qwwlFFDGwYUS5aCKRuMZIUzZCK+Ha62jZlfKazMvQ
-         HY0fHBUYd3ZR0Y1R3U9fgzbV3nxuXJqyVxMDzEjlYcr1ydR1eYGNv8+rO8TrpXnZL8UR
-         ZKN6NSFcJbxGC6gJszluOLDRYr7R+VdBxa1kNydOBomIVfYjyyzNwPPxAnIiUOSle0cI
-         brEQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpmRMEOYvjqHivGDmaNeGvYdJ0iF/wosXe4IkPtD1FSFy6g2u+sS2+wMp0eSPS12z9nOyfYx4YxIZRO@lists.linux.dev
-X-Gm-Message-State: AOJu0YzbBRJlEJc4hmQIk2paOOCdrD3KE6rAUgktCxeUI0tOs63vURli
-	vR+We7J5z4tYG54xhPrn/fiL5PMoiuQD6i7s3YpevPULUjGq/TqA4OV4j65SlVDWqZ0=
-X-Gm-Gg: AR+sD10DsAdYt/pE8rtfSsfU47UnthyS7Rr0h+v2Pxv+v2FTm+qMXNQhh0wLadHiB14
-	1G87rPxGuvCC16L38GF9++vP4LjciLHwdo0ZwWoA5hdXn6iQm8OJF9vDNjukyGlBJ3t8pRHEkji
-	80dMTO79/3fGyJgeZvr2pusKcHmzHo/5lK6UPxMmkMq49ipxPCBexAdZxmPHYqQaAECvMG1RyXb
-	9jLB0TnIPach9SULfv/5AWJFdr+Y7fnA6Eidivk5D9WRFm11bJyz5xdtWUG+NgCaa1QILLqMbpt
-	GIO3FQBvTBpaAqMqn4tfgNl2DvOaygevcgWOVxwLIorycUtjJ/xZrJZubpHi/4T2ggSgdX2/fNV
-	XceTEC8rFb8eZErU6L6Dogr27E1Cqf9R2wg92bVHZM0fzbuMCOQJ57GbCSC0lXps=
-X-Received: by 2002:a05:6102:5794:b0:74a:b5e3:e96f with SMTP id ada2fe7eead31-7503e26761cmr1503853137.7.1784989958188;
-        Sat, 25 Jul 2026 07:32:38 -0700 (PDT)
+        bh=vD91S1DbebApVBCN527t7AaQw07MlhokwGC+vI5FhsI=;
+        b=dbqDUVlWsGHU+QtdWlMl0PC7BKz+5OOLyGXQ/zxN8fDWQsWhb4sfgrNAXTCYFdbipV
+         8E+NaMn0SP6wyoUSS4j8Zo55pmNplTH26T1FSW1+Mi0lCei9sFMMKEJMKn0SwrIoLZWN
+         bCxEOm4FqH0xVxaa2iaBlzBIX7gSuccZ3aP/H+YeI4xA3w4k/GbWBV62aL3mCvPVpxy7
+         mZSqbkZO1PyVIarAKsizJjCddpy/aQJwpU5fEHOCvRXjW2n9hmxH4ZsYdObfuoiaRduu
+         9eOltMjO5Gr8nwh0/osvknIyC8sAoquyPBjUu/SYAkdMszrxTUnaKUkLJXnVonpMYR89
+         YoWQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rop4x3/0nZsSaLFAl+DfO2xdOm6O0GceE8DPdQvNu39IfLi847pOoAdP6L98THTLVVGnvf0XVQeNNVj@lists.linux.dev
+X-Gm-Message-State: AOJu0YzAsczztdOB3KTKFCd0S1PBywe/AXZxs8EHS3KiBz2TeDzdRGv/
+	tgzmqNVhswvgyNenI9XbkKh3S9RfhIiMS2OwqQPyU5wPERzfZJ92Hx3BFHNBH/MmTb0=
+X-Gm-Gg: AR+sD11yvgBXQu0N8PI1YTsl4PeeFSVls8LV4eOqTCwZcTB5thQtNgbjAuXsullGDFO
+	BjCdsOrZE+/KZ+mqRaTIIRuA7npILvMDphVKRkjRPvV5/tQxaVjCWyIACCWvu9mVmOMHbSeEBQb
+	2P1mzqg/Z+pB88UL2D6o6GSxUz/BefkquzpAxF1Dhc9wD2y/kx8ae63kAlLCuRxuae+zdn1unp7
+	Nfy5Dba2EWz2UAsZKCiugvp1ywvFBYz1WGfOcRHL+fcEB/37PgKpsEUvTZakXoRZbf3J8oOCV2k
+	Ql4rusek1CtQzKSAiFwITzLIX4Pdr3Y7re6HRIpd0AmOoyyJMD0dqu43rfUCnViSfP0kejJ5K4V
+	tlNhHX8SASiSoO55Bug7O3pU++vleZR0S40q0SUd1pknTgJ18g9EC
+X-Received: by 2002:a67:fd76:0:b0:744:d517:b0b0 with SMTP id ada2fe7eead31-74f9f02b7f2mr2159251137.10.1784990055747;
+        Sat, 25 Jul 2026 07:34:15 -0700 (PDT)
 Received: from ziepe.ca ([12.18.163.234])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-750362e67cfsm1546647137.8.2026.07.25.07.32.37
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-97774f12690sm1878229241.12.2026.07.25.07.34.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Jul 2026 07:32:37 -0700 (PDT)
+        Sat, 25 Jul 2026 07:34:15 -0700 (PDT)
 Received: from jgg by NV-9X0Z6D3.localdomain with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1wndQX-000000000hB-3EP5;
-	Sat, 25 Jul 2026 11:32:33 -0300
-Date: Sat, 25 Jul 2026 11:32:33 -0300
+	id 1wndS7-000000000hU-1YTd;
+	Sat, 25 Jul 2026 11:34:11 -0300
+Date: Sat, 25 Jul 2026 11:34:11 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: Leon Romanovsky <leon@kernel.org>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, iommu@lists.linux.dev,
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
 	Steven Price <steven.price@arm.com>,
 	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
@@ -88,14 +88,20 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	Vasily Gorbik <gor@linux.ibm.com>,
 	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [PATCH v8 00/23] dma-mapping: Track shared DMA state through
- direct, pool and swiotlb paths
-Message-ID: <amTJAXNy9fGFrve6@ziepe.ca>
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
+	stable@vger.kernel.org, Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v8 01/23] dma-direct: return struct page from
+ dma_direct_alloc_from_pool()
+Message-ID: <amTJY_CdE-uDgoGG@ziepe.ca>
 References: <20260717180442.110954-1-aneesh.kumar@kernel.org>
- <20260721124056.GK110966@unreal>
- <amEglRH3u6UFFnIQ@ziepe.ca>
- <20260723075108.GB110966@unreal>
+ <20260717180442.110954-2-aneesh.kumar@kernel.org>
+ <20260721115456.GI110966@unreal>
+ <yq5atsps77c5.fsf@kernel.org>
+ <20260721142921.GN110966@unreal>
+ <yq5ao6g0750v.fsf@kernel.org>
+ <20260721153321.GO110966@unreal>
+ <amEhEKQW0_HJ9cLN@ziepe.ca>
+ <20260723075704.GC110966@unreal>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -104,31 +110,38 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260723075108.GB110966@unreal>
+In-Reply-To: <20260723075704.GC110966@unreal>
 
-On Thu, Jul 23, 2026 at 10:51:08AM +0300, Leon Romanovsky wrote:
-> On Wed, Jul 22, 2026 at 04:57:09PM -0300, Jason Gunthorpe wrote:
-> > On Tue, Jul 21, 2026 at 03:40:56PM +0300, Leon Romanovsky wrote:
+On Thu, Jul 23, 2026 at 10:57:04AM +0300, Leon Romanovsky wrote:
+> On Wed, Jul 22, 2026 at 04:59:12PM -0300, Jason Gunthorpe wrote:
+> > On Tue, Jul 21, 2026 at 06:33:21PM +0300, Leon Romanovsky wrote:
 > > 
-> > > Why don't we continue the effort to remove "struct page" entirely
-> > > from the DMA API internals?
+> > > Something like, but probably void* needs to be phys_addr_t:
 > > > 
-> > > IMHO, everything not exposed to DMA API users should use
-> > > phys_addr_t, including the DMA address pool.
+> > > static inline struct page *dma_phys_to_page(void *addr)
+> > > {
+> > > #ifdef CONFIG_DMA_DIRECT_REMAP
+> > > 	return vmalloc_to_page(addr);
+> > > #else
+> > > 	return virt_to_page(addr);
+> > > #endif
+> > > }
 > > 
-> > The alloc interfaces return a struct page, that is why this stuff is
-> > organized like this. Look at dma_alloc_pages()
+> > I don't like this, we don't know for sure the addr will be in a vmap
+> > and this will fail if it isn't.
 > 
-> And I didn't say that we should change dma_alloc_pages(). It is external
-> API, which needs to be struct *page. I'm talking about internals.
-> 
-> Even dma_alloc_pages() flow shows how convoluted and non-uniform
-> the code underneath which performs translations all the time.
+> Of course we know. The existing "#ifdef CONFIG_DMA_DIRECT_REMAP" is
+> relevant for addresses acquired from pool.
 
-Yeah, but I don't really want to go from phys/virt to page, I'd rather
-see the other direction that is easier to reason about
+Yeah, but I still don't like it :) It is hard to follow if you make
+those kinds of leaps, someone will call this new helper on something
+they shouldn't
 
-Maybe some small wrapper that returned phys or whatever would clean
-this up
+> dma_phys_to_page() is a bad name for some low-level conversion function.
+> It needs to be internal to DMA logic, in the level when we convert from
+> phys to page.
+
+I think we should not convert from phys to page, that's also easy to
+do wrong
 
 Jason
