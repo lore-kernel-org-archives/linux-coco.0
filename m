@@ -1,172 +1,127 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B432F7EF7
-	for <linux-coco@lists.linux.dev>; Sat, 25 Jul 2026 00:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBD92F8E8F;
+	Sat, 25 Jul 2026 07:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784939015; cv=none; b=mo99UOVmxHXyZdxIfsTNfhvotsrOKdKuTqKuvQbCeWX2Us96MoeO2NR207Ef+mT4O5tmxObk0nMcOStBX6Y3bCdOAATrY9hFgim2RlzYBnUqrJaAmFwx3i9B5+S5WMkSpw0sKR13pXdXXPthNSxuJ2bEZTrbi/i0XOUsxD7QDL0=
+	t=1784963366; cv=none; b=FkyQhoOjryiZeUOSMGHdDINE6PSDByhz/cmwzH2MNky+8it29vkU3VpBPyl3DPNyznTqjiV5fRl2ktURo/5zfIYIr3LoCqmZ7VYQzIEpumTfaGAKuOlYoYFpHCPfe2/6UyzPtA/1XiqXkY3L2T6uJ1DhvegEW2P3+EJAKbxkSRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784939015; c=relaxed/simple;
-	bh=yjQIMBRgzGAqNYs3xq8f13yTt3sK4whJmripRIABmoU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GTuC7QRXLeXxAb9SWXCMDCh89BAG4dfz04oCDit5xY4qtvh2MakttK5grCqxds/mvdb0ZVKCSV2M7Hw2OL/U8JTeX3TldxqItn+niqJ3hjqVlJBGd+1QIJO4c6tjPtOfUfBjzCZzEKb/E2HrTT6WmrHwR0ZdxY7oubGu++kN20k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mLBOGodf; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1784963366; c=relaxed/simple;
+	bh=eWusWs1g22nWRtTHqO0ChFU1rsQZo1oLrBl2Wf7xDF8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=B4I+eHV13oY5Agp2OtIlifcJjY23OnbMNRuyrbUkd88q2atr7BV/BjYwJBwD2uIJ7jRWn6OIV6HDobSDas9Vh9nWvZORnxZTxxbermAatfqcPUD8AdJEq9GcsPh1NuFPWx+6dN2KCc0CUKg9iDD0TWc0DWT5yVFpAr3ELpW8CVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UViRD/vP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mLBOGodf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784939008; x=1816475008;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=yjQIMBRgzGAqNYs3xq8f13yTt3sK4whJmripRIABmoU=;
-  b=mLBOGodfvwT4aResiwfa7tqc9vemzE6wZdssDHWI17bl2bopSufRjZb6
-   irewqOk7suqymhS8qj9CSjOWO5HpWk0IZjsgd1suy+v7dREKIrL1Nw0ta
-   Kor7H53NTUV6Di/Ho8jO3GOUsgJYeTdPcFlpXClE3unFVlplc8WsO5mjz
-   aS1zftJT6gtYz4A5klHxfrrV2LALMneEpMpJlDb1L05v5vxf4hnucyk1S
-   vnIdxcoUcxhRpaJ6dDRwzmr2460qfN1LQm1Fsqc2all2MF15kIhFT4Dul
-   QskZiY1Wqun03KgZd8HnwGgNNJt96djljp46v9jr6gnnK3Yl9wDRy0uf5
-   A==;
-X-CSE-ConnectionGUID: PBaRDe/iTRKjkophkYxQUg==
-X-CSE-MsgGUID: LL4DD233TxyQkZ3dcqAyzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11855"; a="85726178"
-X-IronPort-AV: E=Sophos;i="6.25,183,1779174000"; 
-   d="scan'208";a="85726178"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 17:23:11 -0700
-X-CSE-ConnectionGUID: cYyQ38doTQyK6qIqIFjMNw==
-X-CSE-MsgGUID: DfdOpB+5QcKle4Vi/07gww==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,183,1779174000"; 
-   d="scan'208";a="262359277"
-Received: from rpedgeco-desk.jf.intel.com ([10.88.27.135])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 17:23:11 -0700
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
-To: bp@alien8.de,
-	dave.hansen@intel.com,
-	hpa@zytor.com,
-	kas@kernel.org,
-	kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	mingo@redhat.com,
-	nik.borisov@suse.com,
-	pbonzini@redhat.com,
-	seanjc@google.com,
-	tglx@kernel.org,
-	vannapurve@google.com,
-	x86@kernel.org,
-	chao.gao@intel.com,
-	yan.y.zhao@intel.com,
-	kai.huang@intel.com,
-	tony.lindgren@linux.intel.com,
-	binbin.wu@intel.com,
-	sohil.mehta@intel.com
-Cc: rick.p.edgecombe@intel.com,
-	Hongyu Ning <hongyu.ning@linux.intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>
-Subject: [PATCH v8 10/11] Documentation/x86: Add documentation for TDX's Dynamic PAMT
-Date: Fri, 24 Jul 2026 17:23:00 -0700
-Message-ID: <20260725002302.3337017-11-rick.p.edgecombe@intel.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260725002302.3337017-1-rick.p.edgecombe@intel.com>
-References: <20260725002302.3337017-1-rick.p.edgecombe@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UViRD/vP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FF01F000E9;
+	Sat, 25 Jul 2026 07:09:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784963364;
+	bh=hkeoESYmG7m48wiu7DFgnzkgoaFnDkiRgmmBzEi4GuA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=UViRD/vP1cLupXloQti86AXEHd5Oqhs081layDqXo6b+RZ4Y82x9x4afggJK229+a
+	 Z+Yh1HMf6iUyBzHMniRMzOJOjGgX8/rmQVSfmwkUgXZ+kWSvMa1Sgpcojx9SrWMcgB
+	 KcPws98KPcszn5zlm+ZGjTfjdG2IbmfOXkGuIIKxYOCQZnC1J+O/zd6xcvj+NvctrH
+	 GOhr4BGexYASpkNSEDhYVdp4wzEoZLqqAAI00JxT4ZGJQliwuyn0a/tF1jAsMRBUQF
+	 GXMAh2heA1Axq+PkzXqbXUf+5yjbzncmCve2s3LU0TkmEGx25k+AGhlZEcH1i8rD/X
+	 k2xKELi60Uw9w==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
+Subject: Re: [PATCH v8 00/23] dma-mapping: Track shared DMA state through
+ direct, pool and swiotlb paths
+In-Reply-To: <20260717180442.110954-1-aneesh.kumar@kernel.org>
+References: <20260717180442.110954-1-aneesh.kumar@kernel.org>
+Date: Sat, 25 Jul 2026 12:39:10 +0530
+Message-ID: <yq5azezfeeax.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
 
-Expand TDX documentation to include information on the Dynamic PAMT
-feature.
+> This series tracks confidential-computing shared DMA state through the
+> dma-direct, dma-pool, and swiotlb paths so that encrypted and decrypted
+> DMA buffers are handled consistently.
+>
+> Today, the direct DMA path mostly relies on force_dma_unencrypted() for
+> shared/decrypted buffer handling. This series consolidates the
+> force_dma_unencrypted() checks in the top-level functions and ensures
+> that the remaining DMA interfaces use DMA attributes to make the correct
+> decisions.
+>
+> The series separates mapping and allocation state:
+> - DMA_ATTR_CC_SHARED describes the DMA address attribute requested for a
+>   mapping. It tells the DMA mapping path that the DMA address must target
+>   shared/decrypted memory.
+> - __DMA_ATTR_ALLOC_CC_SHARED is an internal DMA-mapping attribute used only
+>   by allocation paths after the DMA core decides that the backing pages
+>   must be allocated as shared/decrypted memory.
+>
+> The series:
+> - moves swiotlb-backed allocations out of __dma_direct_alloc_pages(),
+> - uses __DMA_ATTR_ALLOC_CC_SHARED through the dma-direct alloc/free paths
+> - teaches the atomic DMA pools to track encrypted versus decrypted
+>   state
+> - tracks swiotlb pool encryption state and enforces strict pool
+>   selection
+> - centralizes encrypted/decrypted pgprot handling in dma_pgprot() using
+>   DMA attributes
+> - passes DMA attributes down to dma_capable() so capability checks can
+>   validate whether the selected DMA address encoding matches
+>   DMA_ATTR_CC_SHARED
+> - makes dma_direct_map_phys() choose the DMA address encoding from
+>   DMA_ATTR_CC_SHARED and fall back to swiotlb when a shared DMA request
+>   cannot use the direct mapping, which lets arm64 and x86 CCA guests stop
+>   relying on SWIOTLB_FORCE for DMA mappings
+> - use the selected swiotlb pool state to derive the returned DMA
+>   address
+> - reports CC_ATTR_GUEST_MEM_ENCRYPT for arm64 Realms, powerpc secure
+>   guests, and s390 protected virtualization guests.
+>
+> Dependency:
+> This series depends on the pKVM changes posted at:
+> https://lore.kernel.org/all/20260603110522.3331819-1-smostafa@google.com
+>
+> Please merge this series only after the pKVM changes above are merged.
+> Otherwise pKVM will be broken.
+>
 
-The new section explains PAMT support in the TDX module and how Dynamic
-PAMT affects the kernel memory use.
+pKVM topic branch is now available 
 
-AI was used under supervision to review the docs.
+https://lore.kernel.org/all/178467286876.125042.12010461715645610054.b4-ty@kernel.org/
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-Acked-by: Sohil Mehta <sohil.mehta@intel.com>
----
-v7:
- - Spell out PAMT acronym (Binbin)
- - Drop Assisted-by tag and cover AI use in log (Dave)
- - Add info about kernel parameter
+https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/coco
 
-v6:
- - Add missing word (Binbin)
- - Use "::" instead of ":"
- - Make format of dmesg example accurate
----
- .../admin-guide/kernel-parameters.txt         |  3 ++
- Documentation/arch/x86/tdx.rst                | 28 +++++++++++++++++++
- 2 files changed, 31 insertions(+)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 49bcd7798876c..a0a7670246bc5 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -7519,6 +7519,9 @@ Kernel parameters
- 			Valid parameters: "on", "off"
- 			Default: "off"
- 
-+			For details see:
-+			Documentation/arch/x86/tdx.rst
-+
- 	test_suspend=	[SUSPEND]
- 			Format: { "mem" | "standby" | "freeze" }[,N]
- 			Specify "mem" (for Suspend-to-RAM) or "standby" (for
-diff --git a/Documentation/arch/x86/tdx.rst b/Documentation/arch/x86/tdx.rst
-index 3303499ad4c6f..a1c2309230580 100644
---- a/Documentation/arch/x86/tdx.rst
-+++ b/Documentation/arch/x86/tdx.rst
-@@ -200,6 +200,34 @@ reflects the TCB of the currently running TDX module and therefore
- changes after an update. By contrast, TEE_TCB_SVN reflects the TCB at TD
- launch time and is not affected.
- 
-+Dynamic PAMT
-+------------
-+
-+Physical Address Metadata Table (PAMT) is memory that the TDX module needs
-+to keep data about each page (think like struct page). It needs to be handed
-+to the TDX module for its exclusive use. For normal PAMT, this is installed
-+when the TDX module is first loaded and comes to about 0.4% of system memory.
-+
-+Dynamic PAMT is a TDX module feature that allows VMM to allocate part of the
-+PAMT as needed (the parts for tracking 4KB size pages). The other page sizes
-+(1GB and 2MB) are still allocated statically at the time of TDX module
-+initialization. This reduces the amount of memory that TDX uses while TDs are
-+not in use.
-+
-+When Dynamic PAMT is in use, dmesg shows it like::
-+
-+  [..] virt/tdx: Enable Dynamic PAMT
-+  [..] virt/tdx: 10092 KB allocated for PAMT
-+  [..] virt/tdx: TDX-Module initialized
-+
-+Dynamic PAMT is only enabled when supported and the ``tdx_dpamt=`` kernel
-+parameter is set to "on". The feature is off by default because TDX module
-+internal details prevent Dynamic PAMT from working on all keyid partitioning
-+configurations. When the TDX module is fixed to include these constraints in
-+its enumeration of Dynamic PAMT support, kernel support can be changed to
-+default on. For more information, consult the Intel TDX documentation about
-+Dynamic PAMT.
-+
- TDX Interaction to Other Kernel Components
- ------------------------------------------
- 
--- 
-2.54.0
+-aneesh
 
