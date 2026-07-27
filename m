@@ -1,141 +1,175 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa1.hc1455-7.c3s2.iphmx.com (esa1.hc1455-7.c3s2.iphmx.com [207.54.90.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B56D3BE62A
-	for <linux-coco@lists.linux.dev>; Mon, 27 Jul 2026 04:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FAC3DEFFC;
+	Mon, 27 Jul 2026 08:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.54.90.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785126250; cv=none; b=PNmXwoGuAJRodT5ZRL7CkRVBZJZpBeKkv9Q5AijHagCwdp1pzGt3emWhWYYMeqh7RXetDHu6UXRfmlPfrUd8HLwzYLj7K3lPlve+0vZDUKNoVIZTU697fQnE6mfgzVcGLIh3ixVHCwvCxhNKZ0+wrCi+E0C7Pssr0p/OTAlho4o=
+	t=1785140099; cv=none; b=EKPiaig4gfnTKWpB6KQX0+SyFcG5nHwnVWODIipM91eu/pMeHfPrYdoEu4SiVdegKjxh6ETwM5eY4quCAwBRYSvemja+qeetuQEFGLnxSbYHPKVKUclb8lNnEgETOnVc9aDSG5Usxu3drv4aOtGiLkLPNy3SLyNw4NrZKsZqy/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785126250; c=relaxed/simple;
-	bh=Yy8IISh+FV9cpGipg7vORYQVek5AJgkZkfEGn4HmLng=;
+	s=arc-20240116; t=1785140099; c=relaxed/simple;
+	bh=P7OnimFYQWkAalEgzraoPxXsrblUmypJNwaTPMgMFwo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hC354dPbpabuY1KKOZwFSs8U/6NA0RaI69DPZSuS5sldh5srytvjreutfEyg5ZOsFznfYnLsDJ6P8U9DtSSsF42fIF2Lo8SSOfQ1/4I5mID7to3caaj8V7CpcrD14H+O2do6mMgzVegTb7t6aXMEbn9nHwBra4nC4AYJC+OkLfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Pw1KYJHf; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jm2xjn2RdW4lfBidBdQWa/W7XHBVAqTQn9NrIoUfq/K2ldXkS/YFZX5r/MWV11iqLTCd4dkUk1br3btSCrFa3jOn5RQAl5lXPXFd8HiEHFZzGvBuLMoTvfDUNLN2CjB66N6HUvgpeORlNDI/guEeXTW0YbyShalhvGdcX+r7s68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=IwE/blos; arc=none smtp.client-ip=207.54.90.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Pw1KYJHf"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38dc69c74b8so1861024a91.0
-        for <linux-coco@lists.linux.dev>; Sun, 26 Jul 2026 21:24:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1785126249; x=1785731049; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Yy8IISh+FV9cpGipg7vORYQVek5AJgkZkfEGn4HmLng=;
-        b=Pw1KYJHfdhuaa7Zzdw1pfCwXzNL/74j3UzwHZqbpJgtdJESbOeslLyun2Z5xrY66QP
-         J9Fq+TDu8+f6sWdVdK+eWlZaEmJsJcl3xDGT8UMBE31j7BjhsUlRljZcJNYUwvJj/ZbV
-         45ObXrjsRdzu9Bmtr0oebykxoXgtA1dQ3ZdIHVXrVd7FbwzLbG/LL+ldxfqaEEt9uyHJ
-         sE0x6iHHr8u5pStPK9nqa/S1BdbZ5XE51MzkgZnZojzQ0LxSiBAdCW8VHSLQy48VTmtC
-         yp9UCMt9QsDVrw6VKr42V4CSD1PHjJvXGOdiT7M14e4J3xXEzbXN/lmvn++cPWNZmwWu
-         yVWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785126249; x=1785731049;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Yy8IISh+FV9cpGipg7vORYQVek5AJgkZkfEGn4HmLng=;
-        b=Lm7DPSFuvyXnN3DocmfIuwgTbH/i0j/cYWeGOdBuPIZpgWVJMP/i3ka/9ucsUT6/zq
-         +GUWK1q3ds63KzQzk4LL8Df9m0Bd6QYQDzbSpPZ3LuhxWfIwEiZMxcqkXlbpYBm6Squ4
-         jswWe04A+7uFNQznkkvQmyGbFufTiLCIWr02z+VfFnjtU/0+CEok/hOskjos/ti/sq29
-         sT3JOJO6TNjrAusrUQkGVUNRLyuPTVFoSEeI1RukR1e++vH5FKpvsdts890yQaZ0JrU9
-         2zMpdVmBUDnAxdPvci+K6W1xmnHon+1oMR01WSHtWcAdAUn2X39LSKiLg8ztHFIcmFRc
-         0dDA==
-X-Forwarded-Encrypted: i=1; AHgh+RqC834vSSlALBipXsvJJ1NlRE0HNRDcTZvUAcjJgFMxmeaay68j+Vb1l+cBAWIU5LHzCV8yhUTxJhpz@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz1XR7JsyjTKsOjbi2GI4zI45/zqLC8VYYDPe9YpY7XL7jximii
-	GcIwQFmgFKQWysEqT3HKXJGhdQlgl17Cf9ZOVt00sNleeKxKcEoadDr9kMWcy9u0AJY=
-X-Gm-Gg: AR+sD134YNjj6/yJF3AmytVhf4nG4dMJeUfeGNA1F48HvUHVF760ZebRrfhdjL4c4za
-	1jM/Yeevsy0B0xLL/VG9Qk6Ysi91StKbn13zjS2fUp72GbKg+qqb9eEVExi+ymwde6GoAp0maWW
-	1mLTQx5Tv5axY/a7xbVm2NojRre5V6IvKYiac3svo69HJ1Gy3E/JUMe1H/ElGRm1fifPcWgB1I6
-	o7AYl3wwsLIPemROAoN1jkEcgHCjEyuc46UF5rJFiYLNzyCRJJWJRDAvvrA+1Z8vN64oYTOh9Ix
-	ntZ1+SF282GO2pRuK+reCrcauJrOeA6/nCEhteAq9RXTyRwc3sxiRE2s7B2hE2esoGtSJMYLzjv
-	D99DcDi8j5kmKQUHjR6NwS5C7bWdMcVVkYUglKrLQZOF1j2Z/ZB1ziDfPLKViiQ==
-X-Received: by 2002:a17:90b:5350:b0:37f:be6c:f3f2 with SMTP id 98e67ed59e1d1-38f29399845mr6819950a91.2.1785126248497;
-        Sun, 26 Jul 2026 21:24:08 -0700 (PDT)
-Received: from ziepe.ca ([64.114.68.211])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f041b8be9sm4471929a91.14.2026.07.26.21.24.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 21:24:08 -0700 (PDT)
-Received: from jgg by jggl with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1woCsf-0002Mt-Ls;
-	Mon, 27 Jul 2026 01:23:57 -0300
-Date: Mon, 27 Jul 2026 01:23:57 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
-	stable@vger.kernel.org, Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH v8 01/23] dma-direct: return struct page from
- dma_direct_alloc_from_pool()
-Message-ID: <ambdXXcfgK+cxqxa@ziepe.ca>
-References: <20260717180442.110954-2-aneesh.kumar@kernel.org>
- <20260721115456.GI110966@unreal>
- <yq5atsps77c5.fsf@kernel.org>
- <20260721142921.GN110966@unreal>
- <yq5ao6g0750v.fsf@kernel.org>
- <20260721153321.GO110966@unreal>
- <amEhEKQW0_HJ9cLN@ziepe.ca>
- <20260723075704.GC110966@unreal>
- <amTJY_CdE-uDgoGG@ziepe.ca>
- <20260726081753.GD12003@unreal>
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="IwE/blos"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1785140098; x=1816676098;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=P7OnimFYQWkAalEgzraoPxXsrblUmypJNwaTPMgMFwo=;
+  b=IwE/blosIQ2yZ/csrDIFleLlWQQSCqhwUaNEIilnHNKQRJXC6yZH7553
+   PlDfYmwG0Nm2+iXULqFF/ELxNNxKAg4jt3dw1Iryz9d1KsVAFTy5Uv/P4
+   qhfjUd3JxpCc8kyw1U4ArM2wTDSZr4i3Bag4Trp/fnt3AaezBfse3ENdf
+   GkupbraPMZjjoMizu+Tu4gB08hvneyyVbWSmoXsZFsH/5Q5HeNh7l/OEP
+   lbchemliPvHfUY069NcrOGr3kbY6Aow3a7Dl4OS0UpneezdWRydMkUdNW
+   nZlMKj2ktk2hyvDqG99GNNGnqvBcjuXU8yghbeBSp/NqgebtV5XGa5OuJ
+   Q==;
+X-CSE-ConnectionGUID: Ftif6aueQ86+dEcoK7vj9g==
+X-CSE-MsgGUID: r22+dMvxSk+d9c/1S91pFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11857"; a="248712693"
+X-IronPort-AV: E=Sophos;i="6.25,188,1779116400"; 
+   d="scan'208";a="248712693"
+Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
+  by esa1.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 17:14:50 +0900
+Received: from az2uksmgm2.o.css.fujitsu.com (unknown [10.151.22.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 3117AC00224;
+	Mon, 27 Jul 2026 08:14:50 +0000 (UTC)
+Received: from az2nlsmom1.o.css.fujitsu.com (unknown [10.150.26.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id DD17818002F3;
+	Mon, 27 Jul 2026 08:14:49 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.8.156.208])
+	by az2nlsmom1.o.css.fujitsu.com (Postfix) with SMTP id 9D98B829EFA;
+	Mon, 27 Jul 2026 08:14:41 +0000 (UTC)
+Date: Mon, 27 Jul 2026 17:14:33 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v15 14/37] KVM: arm64: CCA: Handle realm enter/exit
+Message-ID: <amcOp7tpRCkI29vt@FCCLS0092175.localdomain>
+References: <20260715142841.80544-1-steven.price@arm.com>
+ <20260715142841.80544-15-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260726081753.GD12003@unreal>
+In-Reply-To: <20260715142841.80544-15-steven.price@arm.com>
 
-On Sun, Jul 26, 2026 at 11:17:53AM +0300, Leon Romanovsky wrote:
+Hi Steven, I have a comment about rec_exit_sys_reg() below.
 
-> Currently, the phys type universally describes memory and can be
-> reliably translated into any required representation. It is the most
-> fundamental type we have.
+On 07/15 15:28, Steven Price wrote:
+> Entering a realm is done using a SMC call to the RMM. On exit the
+> exit-codes need to be handled slightly differently to the normal KVM
+> path so define our own functions for realm enter/exit and hook them
+> in if the guest is a realm guest.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> ---
+> Changes since v13:
+>  * The RMM is now required to provide an ESR value with the correct
+>    information to emulate MMIO, so we no longer need to hardcode 0s in
+>    rec_exit_sys_reg().
+>  * The PSCI changes mean that there is a potential race when turning on
+>    a VCPU which can cause a RMI_ERROR_REC return. Exit to user space
+>    with -EAGAIN in this case.
+> Changes since v12:
+>  * Call guest_state_{enter,exit}_irqoff() around rmi_rec_enter().
+>  * Add handling of the IRQ exception case where IRQs need to be briefly
+>    enabled before exiting guest timing.
+> Changes since v8:
+>  * Introduce kvm_rec_pre_enter() called before entering an atomic
+>    section to handle operations that might require memory allocation
+>    (specifically completing a RIPAS change introduced in a later patch).
+>  * Updates to align with upstream changes to hpfar_el2 which now (ab)uses
+>    HPFAR_EL2_NS as a valid flag.
+>  * Fix exit reason when racing with PSCI shutdown to return
+>    KVM_EXIT_SHUTDOWN rather than KVM_EXIT_UNKNOWN.
+> Changes since v7:
+>  * A return of 0 from kvm_handle_sys_reg() doesn't mean the register has
+>    been read (although that can never happen in the current code). Tidy
+>    up the condition to handle any future refactoring.
+> Changes since v6:
+>  * Use vcpu_err() rather than pr_err/kvm_err when there is an associated
+>    vcpu to the error.
+>  * Return -EFAULT for KVM_EXIT_MEMORY_FAULT as per the documentation for
+>    this exit type.
+>  * Split code handling a RIPAS change triggered by the guest to the
+>    following patch.
+> Changes since v5:
+>  * For a RIPAS_CHANGE request from the guest perform the actual RIPAS
+>    change on next entry rather than immediately on the exit. This allows
+>    the VMM to 'reject' a RIPAS change by refusing to continue
+>    scheduling.
+> Changes since v4:
+>  * Rename handle_rme_exit() to handle_rec_exit()
+>  * Move the loop to copy registers into the REC enter structure from the
+>    to rec_exit_handlers callbacks to kvm_rec_enter(). This fixes a bug
+>    where the handler exits to user space and user space wants to modify
+>    the GPRS.
+>  * Some code rearrangement in rec_exit_ripas_change().
+> Changes since v2:
+>  * realm_set_ipa_state() now provides an output parameter for the
+>    top_iap that was changed. Use this to signal the VMM with the correct
+>    range that has been transitioned.
+>  * Adapt to previous patch changes.
+> ---
+>
+> [...]
+>
+> +static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
+> +{
+> +	struct realm_rec *rec = &vcpu->arch.rec;
+> +	unsigned long esr = kvm_vcpu_get_esr(vcpu);
+> +	int rt = kvm_vcpu_sys_get_rt(vcpu);
+> +	bool is_write = (esr & ESR_ELx_SYS64_ISS_DIR_MASK) == ESR_ELx_SYS64_ISS_DIR_WRITE;
+> +	int ret;
+> +
+> +	if (is_write)
+> +		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
 
-You cannot go from phys to page reliably unless you make assumptions
-about the phys, that's the whole issue here. If the callchain expects
-and intends to use a page it should really stay in a page and not take
-a side trip to phys.
+When rt is 31 (XZR), does exit.gprs[rt] trigger an out-of-bounds read
+since REC_RUN_GPRS is 31? Although the padding after the gprs means this
+OOB may not cause any practical issue, would it make sense to skip the
+access when rt is 31?
 
-I agree it would help to have some helpers that were more phys based
-for the callchains that want that since we are mixing two fairly
-different activities in these functions..
+if (is_write && rt != 31)
+    vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
 
-But making phys the only output out of the pool isn't going to be an
-improvement.
+> +
+> +	ret = kvm_handle_sys_reg(vcpu);
+> +	if (!is_write)
+> +		rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
 
-BTW how does a struct page even work for decrypted memory? You can't
-actually use it that way right? If you try to access it then you'll
-get the wrong IPA and it should explode?
+The same applies here:
 
-Maybe we should be blocking the struct page path entirely for CC
-shared?
+if (!is_write && rt != 31)
+    rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
 
-Jason
+> +
+> +	return ret;
+> +}
