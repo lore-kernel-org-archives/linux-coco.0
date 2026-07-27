@@ -1,541 +1,296 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D503F8EB9;
-	Mon, 27 Jul 2026 15:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785164503; cv=none; b=DOQ+PASIEdzXr7sSqiDfzOn4TgSKn/rZyODwWukfRJ1l6JMVySESantLhMelHUtNG5roEPbxnHNWv4lXppj+RfoNxoeCF0tMu3MSSTAzfliISGSCQJq/wKBHYScv0OziFTmmwim19agmZYVpf7AhhhhggWV2+GUrclKfiXBWW9g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785164503; c=relaxed/simple;
-	bh=iIP7h/ZQU1m6fwNOXTLafcLCzumyJSUI6UC3vtNiAU8=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Aw4MbC/EZDvxR5N8qiN+SCBwIc6gb+QTGvTq98p+iD1FXe3bWC/+cNBmdFgXbSm9GWmYNx3F925kALz6Rr21WF84d/hvGkfiOFZJj4kcXbaHFZpiC//ugWHOjtJl4kJokEhVGukysUrwOrl4ognzjij6OGg/QtnOdhU6qFtsHpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NMR7km/e; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DB443030C
+	for <linux-coco@lists.linux.dev>; Mon, 27 Jul 2026 17:50:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785174626; cv=fail; b=OiEbYRLVqEtCaLrEua6Fq+JVspvsfMg9Zoj96kaZLMraqlCXMXtrjPScmrtzXgFTXeXCK4HUa1OOSZfouj6vVdE3ic74YpVb6BQwajkiQ/D+u8zE6CjJvMU/bMMI7YMuX+8QC0oaF8xAEajFz61o4j+JJJThFajYtiD2SOMBHvA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785174626; c=relaxed/simple;
+	bh=qT9I3P0p7A/V8FnD/THwW712gxRZI6lBjAcfQUo9jyE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=M1boqMNHpZUQVq9caCvzSBXoDZaX/ex0LLwmJbLWvmrSt9gGIBEACu7Co6X6ytn68q9RblLh9S5RHziEKm7no4f0orHU3fGVfy0PlWF9kfxhYmTggTIUdFKxbmygjGOjtkA0SyA/DQXaCYlD/eCAQNpKnPYec4tTBr9kH4xSK8U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RLC0tuXX; arc=fail smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NMR7km/e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557E81F000E9;
-	Mon, 27 Jul 2026 15:01:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785164500;
-	bh=otQSBXXUSUQAH7kU20rpT4Di3kKgypl8P0guYSgGZKg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=NMR7km/e9KCijb6XWWoiuwZobt8eOTHmamEBjsxLoWYHrLatHYdqiUOqE4oBcocUM
-	 NkpWWmFgKTGvIcXSIcCuTM43CtswBy8SIgb/mvLcpGrcntHg5prmIPI7nLSl6JtLvc
-	 kRep0T//+xjeueHiqPJ9wAccxmKJCEA2SntwT2ThDTnFUsWWZmPKUKnceh7+Cxu2Jm
-	 aF1bZhkV5kkcb8XsYPR14mw/Y9h6tSCFkp7xu6TnPlZH2zBGke356iqu58zT6zHZev
-	 rnwxb15z864Rvcqs30SCspmGyfes3Gvg+LAoD/zJGjPPFXiLTOD2qc1O+vt6qaQRrK
-	 NrcEvG7s9Q9mQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1woMpl-00000009Iv3-3BeV;
-	Mon, 27 Jul 2026 15:01:37 +0000
-Date: Mon, 27 Jul 2026 16:01:37 +0100
-Message-ID: <86zezccw8e.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v15 14/37] KVM: arm64: CCA: Handle realm enter/exit
-In-Reply-To: <20260715142841.80544-15-steven.price@arm.com>
-References: <20260715142841.80544-1-steven.price@arm.com>
-	<20260715142841.80544-15-steven.price@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RLC0tuXX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785174616; x=1816710616;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=qT9I3P0p7A/V8FnD/THwW712gxRZI6lBjAcfQUo9jyE=;
+  b=RLC0tuXX0SQjgJsSd+4KpO0iY4fwyolHy2me7vTdMTEH8AhZqUtdxZhU
+   SDWdXCKJO6+y+Sh+IaVNHFLuaRs1QBsPfarZEWcubuhccSL/tXAS7GHVI
+   rdXrE7GYFaDgmAQydc9D+hIZgO2UJtbu3NKy76bnxOmlv8JePDjL8jFof
+   z8DPFOtHBV9IZx+UYT53/QRT3+ivMjllLTMc3yNeLFoiBcJYSR6ly3hvd
+   zPZxZ1RBUeJnVUpqbvF5CpfxFn31mcVwdXZoY8K6+s7V3GFU0+Xa+HH6j
+   eCtBCOV+IDEZ8WFOgq2CJj+X042F7UXGccent/BAqO88sx1+zDyuW87CM
+   g==;
+X-CSE-ConnectionGUID: iQFgryIvRhKlnfqx2NIE/g==
+X-CSE-MsgGUID: ZCW7llB9TieRm/y4R9wM0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="96903204"
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
+   d="scan'208";a="96903204"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 10:50:12 -0700
+X-CSE-ConnectionGUID: 1dz+4rCDSzqVz6qFw21I9Q==
+X-CSE-MsgGUID: to6F16HfTIiDsI+Y/WrsZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
+   d="scan'208";a="255539185"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 10:50:12 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 27 Jul 2026 10:50:11 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Mon, 27 Jul 2026 10:50:11 -0700
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.17)
+ by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 27 Jul 2026 10:50:11 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w7ejCIENbUcRz13IdE9pKptN7c2KPOjKq12PzVaPzXJBacqpFMegDWoR1FVIeejL8D2aPgmSTWSZ5jrwEyzE0rxdu4+ICkpJItp/J9j9lB0wUK6zchCH9NeoBO3tnNWk0GaSXOWim8lQ1M1N8XZPu/oRAQPX4FouSlY+hgWREUZTeh7q5MIpNchA62dJs++dVHT4L58JQ4Ile8LdWLcSO9sTvwFDSd3N4dCs+Al/PdyCKWUDuvSCnbB57zIpS8IDfRCA26zeUnng3mKwto5Ul+z1GsE3gYnGmlpUFXqYIztHWOQ0o2wWsHMsNC/tJ/Ob4k/epd50XLdM0n8sA1jV6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qT9I3P0p7A/V8FnD/THwW712gxRZI6lBjAcfQUo9jyE=;
+ b=MywvuU3pgrix/KIby1mFN9wrPs8ObIebDLP0wflTjcGMfUAvuoXusduN/aySARtJ7xK0ytQndOsccQxisQM6w2JmqZd/J33voTwnJU0HUmN81N0wlM55C6FLt0XIFHNLsBQIDPfMNqMD+MR09PQQsrBgjFy76HhtA9Czs86r4qvGCPqYKxCmEy/U2kI+q99OCWsbV7S3BCiCIxRZhhT2y0yB0nSYG25mr/Ge/CPsGfylQqeS7ui8uKT2Sb2gdDVD1S2DmrP9Pm/d0Ho+HaRCOSzqbgL+CssXfbOIBbsATdv2EVn7L33so/Srydf1P8GxIF0sorgRUf+sZaF0TotefA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6771.namprd11.prod.outlook.com (2603:10b6:510:1b5::20)
+ by PH8PR11MB7048.namprd11.prod.outlook.com (2603:10b6:510:214::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
+ 2026 17:50:07 +0000
+Received: from PH7PR11MB6771.namprd11.prod.outlook.com
+ ([fe80::effa:162e:c9c9:a1b4]) by PH7PR11MB6771.namprd11.prod.outlook.com
+ ([fe80::effa:162e:c9c9:a1b4%4]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
+ 17:50:07 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "yilun.xu@linux.intel.com"
+	<yilun.xu@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>
+CC: "Xu, Yilun" <yilun.xu@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>, "kas@kernel.org"
+	<kas@kernel.org>, "baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, "Li,
+ Xiaoyao" <xiaoyao.li@intel.com>, "Maloor, Kishen" <kishen.maloor@intel.com>,
+	"djbw@kernel.org" <djbw@kernel.org>, "tony.lindgren@linux.intel.com"
+	<tony.lindgren@linux.intel.com>, "Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>, "Fang, Peter"
+	<peter.fang@intel.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "seanjc@google.com" <seanjc@google.com>
+Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
+ module init and update
+Thread-Topic: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
+ module init and update
+Thread-Index: AQHc/v30KFdak/ZWGk2xzh56glvkdLaB46UA
+Date: Mon, 27 Jul 2026 17:50:07 +0000
+Message-ID: <2d138a8acb685385016e0bb0535e7213952e44e5.camel@intel.com>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+	 <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+In-Reply-To: <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.52.3-0ubuntu1.1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6771:EE_|PH8PR11MB7048:EE_
+x-ms-office365-filtering-correlation-id: 15a49140-db03-4924-d15b-08deec077f40
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|7416014|23010399003|376014|1800799024|38070700021|6133799003|11063799006|4143699003|3023799007|56012099006|10067099003|18002099003|22082099003;
+x-microsoft-antispam-message-info: QaN21kWnZ2O59s+sI4uxby8rTGyugA+OrW9WYuB4JwArZqVtxmDbrOq1sIRPQWqQh4ixZw2ED2wJYyhP5ilDZqo5c2eHhkIJxsmJIbXTHv2hIaSIX9bcAROigOFfsWn+QrgirlGLqGV4ev4wYwRzxkI1NDVOP8DnHftoK2/uzFvwJah1OWHErrq8Bwlqk1W2h5Y0ToKXWJel7tuPPmJEdDa/A6z6yAnSYffBEfX38rAwyQ5EIY6jFragfx2lkk0hwE2Ugn681uWyBV9AjW+Iqz2nq+XbwmryC63CgW/bEfD99zV7oPeB0dqVqY9eD8gr10KHTUZqvTIONCMLAa7XIWTFBqx97NyIl1asjYh1RyhUJvzNrn9V+LroMUtKvtv0qkZlhr70Cq3guV2jO8FtXgcnYtw7RwQBjBGNV0NX4YBso/zbpK1MxrCwhLsQA2Khxf41U+YhcmIcD15ghC0Ez3YS/C4PMcWb8c/ohhGoYxq63A05PD0f2vCvUGJbZ6Dil7/T9EU8e28myxSYXuZ57B8yVqHQ3ieDIkbiwyx5hSPrhqYxvVrpydjR7Eg7r2U0B5xU6MSuVxGqYgLrtC7OBNfzevuxKXj6JJWVYL4uXUQOO3Pjx/J97ao34liIHgNaoIKSyL1zGIbY9PFpysmlG6bXsnSAoo4cC4Bnk6zxEUAbqLq5KDacg5/E6BleBmQhw8MhmYxaUL+h4YFVXxpCeBexIQ9UsL8nx4qegt5WtMc=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6771.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(23010399003)(376014)(1800799024)(38070700021)(6133799003)(11063799006)(4143699003)(3023799007)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NVVSN1Fla3B6MWRoWkdWbU5qTmJQdzFnK3o3eGs2SUhqSkZuNGRLMWhuVTRZ?=
+ =?utf-8?B?cElDZzJjS2RIc0l1UGc0WnIwQmwwSDRxb010WUZJUG5kQ0wycmZyZVQ4WlJW?=
+ =?utf-8?B?WkprNWhBakZ4bjNQcVp2b1ZZVC9HbWNGUVJZRDZLWXBqS2lKOGdPdmhVN1h2?=
+ =?utf-8?B?MHZiRmk3QldOSFg2VDYza29BcGRGa0RidW9JT1JQNmxjRVM1VldhS0loWkU5?=
+ =?utf-8?B?UDhYWjZLa09EdFppa3FpUUVRTGlCeVZKb3pDa1Q3Y0doWEpkZ2pXVTg3Nk51?=
+ =?utf-8?B?VENrRFp6a0NYK2VQRGpBWnY4ajl6NWtRZmVOZlBTQ0Z3WDlsUjFFbEFVbHJs?=
+ =?utf-8?B?aTJFVDV3dUw0RVliNE5yQW5sN21XOEV1bWh3WVB4dWxYSUxpWjFveVpNWmVI?=
+ =?utf-8?B?amJZY05udFF2RTNoNmVXeCtPcHFJeXQ2a0lKa09hUWRRL2pGVTY2VWxBcXl1?=
+ =?utf-8?B?d3NEVlVjc0N4clVjd0FzOWlIUHE0NCtEc3ova1FNU2VWTW1sSWQ0cUsyV1pw?=
+ =?utf-8?B?ME56dXFrZHlEazBPVUFjSHZORURwRzd3eUZGRER2L2pZQkhGaXpGczZaQXFC?=
+ =?utf-8?B?NTRLVG5KY0V4VHBJaEhkMXo1dmRiNy9oT2tYNklRNTFoakoyeUNhSnFDcHYw?=
+ =?utf-8?B?ZkZoM2JvTmZVcno4RXZDbm56b1pLSVFsd1lDYWdsMXV6NTgyU1VWb3NvUkJV?=
+ =?utf-8?B?anhxYU5CcGYrdUxMQTViVUs5WFlZM3hhYVVIdGNURE1BVC9WaEhncWxQd0ZG?=
+ =?utf-8?B?VkZlblh3OUt6R24wcUdLUHk4cjhkcGFYa0FPTzVtRENnMHRIeGU3eVVrTml4?=
+ =?utf-8?B?SnNnTlowU1JZY2s0dVd2VWtST0lSZjY3Vjhoemk4LzUzemZqYUhGVnNGMzlm?=
+ =?utf-8?B?a25OcTNBUGEremxmRGd4ZnYrbi83U1Uyc25MbXRCcHo2MDhDYjNxbU84bm9w?=
+ =?utf-8?B?U0QrUTNNSXQ2WnlxMjlFTC9QVUo5S2dibWxnNFhuTjRiZ1FRQkV2dTZKaklM?=
+ =?utf-8?B?V3lkU0trejFkdjNrQzJGVWtXeC90WWVpTTNxZzBicCtUdUYxTGZZaHdEeU01?=
+ =?utf-8?B?RG5sZGZZM3BVSmxZZkZYdkJkc08xdVpJV1hBUEZTRGhmVnlXMkdIZnZ6K3Rk?=
+ =?utf-8?B?SElPazNzMkh6STNOcFhJY05tMVJpcExMcy9pbFJvZ0lRWXY4SUZ2RTdPTXpu?=
+ =?utf-8?B?MVBlTU5hNStWUlNLZ2R5aFBWdUZHeW4vQkxkbDJNb2tNREFCdXZRZWRjbFZn?=
+ =?utf-8?B?dllaVnlYZTc0aDhFeWtrb0RlWnJ3d2FFZ2VHRmZ4NlBSZjErSjhlOHRiRHlt?=
+ =?utf-8?B?TkZZbWNicnQzRXlyVGthVElDS0VwVkxWVHBtZWpjSnlWOTVlaFZwejJwejRk?=
+ =?utf-8?B?NFlUbkhlVEtRMGJNQTkzZkhzOVpicmxSc1d2cnRycnMveDFWQWJXVk9EVWd0?=
+ =?utf-8?B?OWl4R3l5cGgxdFVHRU4zcHY3U0lWZiswZlBUazhxMmIzbHMzSng3UUhwK2p3?=
+ =?utf-8?B?V295d0R6NlExQUd6aEphaGIvbTBYd0VjYjkxTXNBV2Znajl1aG90b20yTHNP?=
+ =?utf-8?B?UDlPZVpHeU95YU5BQzUyWjRmTkxZdm1lVFhUeXJrelhPU3Faa0FDalJhS3A3?=
+ =?utf-8?B?Q3lVZEZ2c3ZpODc3a2VKcURiSTIzQko2UGNHdXJQWlV0OFVZc29lMWhxaUhK?=
+ =?utf-8?B?MU9oTmVjVlEvYXlwb2tZR2FXS0tHWHkvK0FkOGtaekRvckhqVzBEdlVwaHI1?=
+ =?utf-8?B?ME1qdURIWnlhbW5aUEs3WWhYQkVuYXJDOEcrdlJuM1RhZzJXMEdNM1d2MTM4?=
+ =?utf-8?B?ZExnNHF1c1dkQUQyTjZVUUFEcnArclZ0aGpKNnhDTlRIbzhjV3d0ODZRM3lI?=
+ =?utf-8?B?dFg0VFdvVDc0Y0szckFyYXF2ZW1GNC8wWGpmMTg0ZStvVUZ4YmtIRlIyd09K?=
+ =?utf-8?B?RGJhckc5ODBXa2ZVVWM0SFRQcFRJVTVpZ3NvUGNnaFN0eStXN290MGlLbkVT?=
+ =?utf-8?B?VTFCQkVER3phZmFubEJIcVQyVjNDS2VHZ1I4aWdvSldIR25HU1hpbkVoQVYv?=
+ =?utf-8?B?RmYwWFpIN0h4WERLR2ZNY3ZlMDZKdnZ2dGliTFB0TzV2SUU0cXBSM296L3p1?=
+ =?utf-8?B?R3V3N2ZJbWtXTnp0dGdUTFFES2lRNE1LUWk1WTN4bFdlL1djaHpkb1JwK0JO?=
+ =?utf-8?B?OVJvUTNiK3N0RSs2UlRrWkRFYm9NbGR4dWNqM3RiUWt6dFhieGE5R1ZMYzZU?=
+ =?utf-8?B?M2NKb3E1WmRlVGhMMUwzS0xkMHZuRTNqRjErSjZoY05sQjljVnNIeXBCa1Qz?=
+ =?utf-8?B?NmE4R1FvNytjNUJSSktQd3c1ZTROSERWditaWVU0dTI1clFqdmhVMTUwSGlk?=
+ =?utf-8?Q?jTgWGVu8LMfzb32U=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <45CEC46800CEBA419273A0FBF317D37D@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked: d1i82R/eGYAMjgIPxJKfWCnERG5Hd9cpujGHXJ36Ur6NJHpOwY/8vL8LMx4aExgOiZYRuPv9gz7u9Nw0pheg1rVPJDNP6DWe29klxqEEPcKMNY/zVl7XXTpUwsmuccd/qXMsAeehDebd4i6RoJYhMvuDwrTAkjS4LrZzjsZOXsHZoDF2BWi27msghIvXY/E3onFYipjoK3d205SkiaUOio3JKxkgCHtxtUOOraHLHZOh3Qsrl31kT3A6kkKN7yD3gW94vSrXvyeCwoRmjplMg0z3crDJ6W3o+353yb6YjbcVz7/p/ylojrWZMXNMkH1Z029IQV8OXxjMqtTryjic8A==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6771.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15a49140-db03-4924-d15b-08deec077f40
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jul 2026 17:50:07.6572
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: LstVtpv8S1lCr/X25B8YkGXFEsX8f9lv6DVRRr2NBoQ8FdUCMwt//uZZmUeCTIUB1SdcY2Ik2tcmaH9XobavBu0madp3shRKB/JYNUAr2SY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7048
+X-OriginatorOrg: intel.com
 
-On Wed, 15 Jul 2026 15:28:16 +0100,
-Steven Price <steven.price@arm.com> wrote:
-> 
-> Entering a realm is done using a SMC call to the RMM. On exit the
-> exit-codes need to be handled slightly differently to the normal KVM
-> path so define our own functions for realm enter/exit and hook them
-> in if the guest is a realm guest.
-
-What is so different that you need to reinvent the wheel?
-
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> ---
-> Changes since v13:
->  * The RMM is now required to provide an ESR value with the correct
->    information to emulate MMIO, so we no longer need to hardcode 0s in
->    rec_exit_sys_reg().
->  * The PSCI changes mean that there is a potential race when turning on
->    a VCPU which can cause a RMI_ERROR_REC return. Exit to user space
->    with -EAGAIN in this case.
-> Changes since v12:
->  * Call guest_state_{enter,exit}_irqoff() around rmi_rec_enter().
->  * Add handling of the IRQ exception case where IRQs need to be briefly
->    enabled before exiting guest timing.
-> Changes since v8:
->  * Introduce kvm_rec_pre_enter() called before entering an atomic
->    section to handle operations that might require memory allocation
->    (specifically completing a RIPAS change introduced in a later patch).
->  * Updates to align with upstream changes to hpfar_el2 which now (ab)uses
->    HPFAR_EL2_NS as a valid flag.
->  * Fix exit reason when racing with PSCI shutdown to return
->    KVM_EXIT_SHUTDOWN rather than KVM_EXIT_UNKNOWN.
-> Changes since v7:
->  * A return of 0 from kvm_handle_sys_reg() doesn't mean the register has
->    been read (although that can never happen in the current code). Tidy
->    up the condition to handle any future refactoring.
-> Changes since v6:
->  * Use vcpu_err() rather than pr_err/kvm_err when there is an associated
->    vcpu to the error.
->  * Return -EFAULT for KVM_EXIT_MEMORY_FAULT as per the documentation for
->    this exit type.
->  * Split code handling a RIPAS change triggered by the guest to the
->    following patch.
-> Changes since v5:
->  * For a RIPAS_CHANGE request from the guest perform the actual RIPAS
->    change on next entry rather than immediately on the exit. This allows
->    the VMM to 'reject' a RIPAS change by refusing to continue
->    scheduling.
-> Changes since v4:
->  * Rename handle_rme_exit() to handle_rec_exit()
->  * Move the loop to copy registers into the REC enter structure from the
->    to rec_exit_handlers callbacks to kvm_rec_enter(). This fixes a bug
->    where the handler exits to user space and user space wants to modify
->    the GPRS.
->  * Some code rearrangement in rec_exit_ripas_change().
-> Changes since v2:
->  * realm_set_ipa_state() now provides an output parameter for the
->    top_iap that was changed. Use this to signal the VMM with the correct
->    range that has been transitioned.
->  * Adapt to previous patch changes.
-> ---
->  arch/arm64/include/asm/kvm_rmi.h |   4 +
->  arch/arm64/kvm/Makefile          |   2 +-
->  arch/arm64/kvm/arm.c             |  25 ++++-
->  arch/arm64/kvm/rmi-exit.c        | 182 +++++++++++++++++++++++++++++++
->  arch/arm64/kvm/rmi.c             |  42 +++++++
->  5 files changed, 249 insertions(+), 6 deletions(-)
->  create mode 100644 arch/arm64/kvm/rmi-exit.c
-> 
-> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-> index ccd09d55c69f..b1e4cf0f6803 100644
-> --- a/arch/arm64/include/asm/kvm_rmi.h
-> +++ b/arch/arm64/include/asm/kvm_rmi.h
-> @@ -100,6 +100,10 @@ void kvm_destroy_realm(struct kvm *kvm);
->  int kvm_realm_teardown_stage2(struct kvm *kvm);
->  void kvm_destroy_rec(struct kvm_vcpu *vcpu);
->  
-> +int kvm_rec_enter(struct kvm_vcpu *vcpu);
-> +int kvm_rec_pre_enter(struct kvm_vcpu *vcpu);
-> +int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
-> +
->  static inline bool kvm_realm_is_private_address(struct realm *realm,
->  						unsigned long addr)
->  {
-> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
-> index ed3cf30eb06e..4a2d52fdb6a2 100644
-> --- a/arch/arm64/kvm/Makefile
-> +++ b/arch/arm64/kvm/Makefile
-> @@ -16,7 +16,7 @@ CFLAGS_handle_exit.o += -Wno-override-init
->  kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
->  	 inject_fault.o va_layout.o handle_exit.o config.o \
->  	 guest.o debug.o reset.o sys_regs.o stacktrace.o \
-> -	 vgic-sys-reg-v3.o fpsimd.o pkvm.o rmi.o \
-> +	 vgic-sys-reg-v3.o fpsimd.o pkvm.o rmi.o rmi-exit.o \
->  	 arch_timer.o trng.o vmid.o emulate-nested.o nested.o at.o \
->  	 vgic/vgic.o vgic/vgic-init.o \
->  	 vgic/vgic-irqfd.o vgic/vgic-v2.o \
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 2959a1451232..534d33b7c67a 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -1341,6 +1341,9 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  		if (ret > 0)
->  			ret = check_vcpu_requests(vcpu);
->  
-> +		if (ret > 0 && vcpu_is_rec(vcpu))
-> +			ret = kvm_rec_pre_enter(vcpu);
-> +
-
-What needs to be done at this stage? Why isn't this handled as a
-request? Or similarly to an MMIO return?
-
->  		/*
->  		 * Preparing the interrupts to be injected also
->  		 * involves poking the GIC, which must be done in a
-> @@ -1388,7 +1391,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  		trace_kvm_entry(*vcpu_pc(vcpu));
->  		guest_timing_enter_irqoff();
->  
-> -		ret = kvm_arm_vcpu_enter_exit(vcpu);
-> +		if (vcpu_is_rec(vcpu))
-> +			ret = kvm_rec_enter(vcpu);
-> +		else
-> +			ret = kvm_arm_vcpu_enter_exit(vcpu);
-
-This either sidesteps all the RCU EQS, context management and co, or
-duplicates it. Either way, that's no good.
->  
->  		vcpu->mode = OUTSIDE_GUEST_MODE;
->  		vcpu->stat.exits++;
-> @@ -1434,7 +1440,8 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  		 * context synchronization event) is necessary to ensure that
->  		 * pending interrupts are taken.
->  		 */
-> -		if (ARM_EXCEPTION_CODE(ret) == ARM_EXCEPTION_IRQ) {
-> +		if ((!vcpu_is_rec(vcpu) && ARM_EXCEPTION_CODE(ret) == ARM_EXCEPTION_IRQ) ||
-> +		    (vcpu_is_rec(vcpu) && vcpu->arch.rec.run->exit.exit_reason == RMI_EXIT_IRQ)) {
-
-No. Please adapt the CCA code so that what it returns has the exact
-same format as the non-CCA code, having the vcpu state placed where it
-matters.
-
->  			local_irq_enable();
->  			isb();
->  			local_irq_disable();
-> @@ -1446,8 +1453,13 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  
->  		trace_kvm_exit(ret, kvm_vcpu_trap_get_class(vcpu), *vcpu_pc(vcpu));
->  
-> -		/* Exit types that need handling before we can be preempted */
-> -		handle_exit_early(vcpu, ret);
-> +		if (!vcpu_is_rec(vcpu)) {
-> +			/*
-> +			 * Exit types that need handling before we can be
-> +			 * preempted
-> +			 */
-> +			handle_exit_early(vcpu, ret);
-> +		}
-
-Same thing.
-
->  
->  		kvm_nested_sync_hwstate(vcpu);
->  
-> @@ -1472,7 +1484,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  			ret = ARM_EXCEPTION_IL;
->  		}
->  
-> -		ret = handle_exit(vcpu, ret);
-> +		if (vcpu_is_rec(vcpu))
-> +			ret = handle_rec_exit(vcpu, ret);
-> +		else
-> +			ret = handle_exit(vcpu, ret);
-
-And same thing here as well.
-
->  	}
->  
->  	if (unlikely(!irqchip_in_kernel(vcpu->kvm)))
-> diff --git a/arch/arm64/kvm/rmi-exit.c b/arch/arm64/kvm/rmi-exit.c
-> new file mode 100644
-> index 000000000000..973250563d7b
-> --- /dev/null
-> +++ b/arch/arm64/kvm/rmi-exit.c
-> @@ -0,0 +1,182 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2023-2026 ARM Ltd.
-> + */
-> +
-> +#include <linux/kvm_host.h>
-> +#include <kvm/arm_hypercalls.h>
-> +#include <kvm/arm_psci.h>
-> +
-> +#include <linux/arm-smccc-rmi.h>
-> +#include <asm/kvm_emulate.h>
-> +#include <asm/kvm_rmi.h>
-> +#include <asm/kvm_mmu.h>
-> +
-> +typedef int (*exit_handler_fn)(struct kvm_vcpu *vcpu);
-> +
-> +static int rec_exit_reason_notimpl(struct kvm_vcpu *vcpu)
-> +{
-> +	vcpu_err(vcpu, "Unhandled exit reason from realm (ESR: %#llx)\n",
-> +		 kvm_vcpu_get_esr(vcpu));
-> +	return -ENXIO;
-> +}
-
-This should mark the VM dead.
-
-> +
-> +static int rec_exit_sync_dabt(struct kvm_vcpu *vcpu)
-> +{
-> +	return kvm_handle_guest_abort(vcpu);
-> +}
-> +
-> +static int rec_exit_sync_iabt(struct kvm_vcpu *vcpu)
-> +{
-> +	vcpu_err(vcpu, "Unhandled instruction abort (ESR: %#llx).\n",
-> +		 kvm_vcpu_get_esr(vcpu));
-> +	return -ENXIO;
-> +}
-
-If you can't handle it, why do you specify a handler? isn't the
-default handler enough?
-
-> +
-> +static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	unsigned long esr = kvm_vcpu_get_esr(vcpu);
-> +	int rt = kvm_vcpu_sys_get_rt(vcpu);
-> +	bool is_write = (esr & ESR_ELx_SYS64_ISS_DIR_MASK) == ESR_ELx_SYS64_ISS_DIR_WRITE;
-> +	int ret;
-> +
-> +	if (is_write)
-> +		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
-> +
-> +	ret = kvm_handle_sys_reg(vcpu);
-> +	if (!is_write)
-> +		rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
-> +
-> +	return ret;
-> +}
-> +
-> +static exit_handler_fn rec_exit_handlers[] = {
-> +	[0 ... ESR_ELx_EC_MAX]	= rec_exit_reason_notimpl,
-> +	[ESR_ELx_EC_SYS64]	= rec_exit_sys_reg,
-> +	[ESR_ELx_EC_DABT_LOW]	= rec_exit_sync_dabt,
-> +	[ESR_ELx_EC_IABT_LOW]	= rec_exit_sync_iabt
-> +};
-
-Frankly, none of that should exist. You should simply populate the
-state in the vcpu, and let the normal handlers run.
-
-> +
-> +static int rec_exit_psci(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	int i;
-> +
-> +	for (i = 0; i < REC_RUN_GPRS; i++)
-> +		vcpu_set_reg(vcpu, i, rec->run->exit.gprs[i]);
-> +
-> +	return kvm_smccc_call_handler(vcpu);
-> +}
-> +
-> +static int rec_exit_ripas_change(struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm *kvm = vcpu->kvm;
-> +	struct realm *realm = &kvm->arch.realm;
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	unsigned long base = rec->run->exit.ripas_base;
-> +	unsigned long top = rec->run->exit.ripas_top;
-> +	unsigned long ripas = rec->run->exit.ripas_value;
-> +
-> +	if (!kvm_realm_is_private_address(realm, base) ||
-> +	    !kvm_realm_is_private_address(realm, top - 1)) {
-> +		vcpu_err(vcpu, "Invalid RIPAS_CHANGE for %#lx - %#lx, ripas: %#lx\n",
-> +			 base, top, ripas);
-> +		/* Set RMI_REJECT bit */
-> +		rec->run->enter.flags = REC_ENTER_FLAG_RIPAS_RESPONSE;
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* Exit to VMM, the actual RIPAS change is done on next entry */
-> +	kvm_prepare_memory_fault_exit(vcpu, base, top - base, false, false,
-> +				      ripas == RMI_RAM);
-> +
-> +	/*
-> +	 * KVM_EXIT_MEMORY_FAULT requires an return code of -EFAULT, see the
-> +	 * API documentation
-> +	 */
-> +	return -EFAULT;
-> +}
-> +
-> +static void update_arch_timer_irq_lines(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +
-> +	__vcpu_assign_sys_reg(vcpu, CNTV_CTL_EL0, rec->run->exit.cntv_ctl);
-> +	__vcpu_assign_sys_reg(vcpu, CNTV_CVAL_EL0, rec->run->exit.cntv_cval);
-> +	__vcpu_assign_sys_reg(vcpu, CNTP_CTL_EL0, rec->run->exit.cntp_ctl);
-> +	__vcpu_assign_sys_reg(vcpu, CNTP_CVAL_EL0, rec->run->exit.cntp_cval);
-> +
-> +	kvm_realm_timers_update(vcpu);
-
-Why is that saved to memory? The expectations are that the HW timers
-are live when the guest state is loaded.
-
-> +}
-> +
-> +/*
-> + * Return > 0 to return to guest, < 0 on error, 0 (and set exit_reason) on
-> + * proper exit to userspace.
-> + */
-> +int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_ret)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	u8 esr_ec = ESR_ELx_EC(rec->run->exit.esr);
-> +	unsigned long status, index;
-> +
-> +	status = RMI_RETURN_STATUS(rec_run_ret);
-> +	index = RMI_RETURN_INDEX(rec_run_ret);
-> +
-> +	/*
-> +	 * If a PSCI_SYSTEM_OFF request raced with a vcpu executing, we might
-> +	 * see the following status code and index indicating an attempt to run
-> +	 * a REC when the RD state is SYSTEM_OFF.  In this case, we just need to
-> +	 * return to user space which can deal with the system event or will try
-> +	 * to run the KVM VCPU again, at which point we will no longer attempt
-> +	 * to enter the Realm because we will have a sleep request pending on
-> +	 * the VCPU as a result of KVM's PSCI handling.
-> +	 */
-> +	if (status == RMI_ERROR_REALM) {
-> +		vcpu->run->exit_reason = KVM_EXIT_SHUTDOWN;
-> +		return 0;
-> +	}
-> +
-> +	/*
-> +	 * If a VCPU has been turned on, but the REC state hasn't been updated
-> +	 * we may experience RMI_ERROR_REC. Exit to the userspace with -EAGAIN
-> +	 * for a retry.
-> +	 */
-> +	if (status == RMI_ERROR_REC)
-> +		return -EAGAIN;
-> +	if (rec_run_ret)
-> +		return -ENXIO;
-> +
-> +	vcpu->arch.fault.esr_el2 = rec->run->exit.esr;
-> +	vcpu->arch.fault.far_el2 = rec->run->exit.far;
-> +	/* HPFAR_EL2 is only valid for RMI_EXIT_SYNC */
-> +	vcpu->arch.fault.hpfar_el2 = 0;
-> +
-> +	update_arch_timer_irq_lines(vcpu);
-> +
-> +	/* Reset the emulation flags for the next run of the REC */
-> +	rec->run->enter.flags = 0;
-> +
-> +	switch (rec->run->exit.exit_reason) {
-> +	case RMI_EXIT_SYNC:
-> +		/*
-> +		 * HPFAR_EL2_NS is hijacked to indicate a valid HPFAR value,
-> +		 * see __get_fault_info()
-> +		 */
-> +		vcpu->arch.fault.hpfar_el2 = rec->run->exit.hpfar | HPFAR_EL2_NS;
-> +		return rec_exit_handlers[esr_ec](vcpu);
-> +	case RMI_EXIT_IRQ:
-> +	case RMI_EXIT_FIQ:
-> +	case RMI_EXIT_SERROR:
-> +		return 1;
-> +	case RMI_EXIT_PSCI:
-> +		return rec_exit_psci(vcpu);
-> +	case RMI_EXIT_RIPAS_CHANGE:
-> +		return rec_exit_ripas_change(vcpu);
-> +	}
-> +
-> +	kvm_pr_unimpl("Unsupported exit reason: %u\n",
-> +		      rec->run->exit.exit_reason);
-> +	vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
-> +	return 0;
-> +}
-
--ETOOMUCHCODE. Please rework this so that this is modelled after the
- existing KVM code. Extra handling (such as the other RMI_EXIT*
- reasons) can be treated as if they were an HVC call from the guest.
-
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index aa97ad5fd7e9..430b82c02d15 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-> @@ -203,6 +203,48 @@ int kvm_realm_teardown_stage2(struct kvm *kvm)
->  	return realm_destroy_rtts(kvm);
->  }
->  
-> +/*
-> + * kvm_rec_pre_enter - Complete operations before entering a REC
-> + *
-> + * Some operations require work to be completed before entering a realm. That
-> + * work may require memory allocation so cannot be done in the kvm_rec_enter()
-> + * call.
-> + *
-> + * Return: 1 if we should enter the guest
-> + *	   0 if we should exit to userspace
-> + *	   < 0 if we should exit to userspace, where the return value indicates
-> + *	   an error
-> + */
-> +int kvm_rec_pre_enter(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +
-> +	if (kvm_realm_state(vcpu->kvm) != REALM_STATE_ACTIVE)
-> +		return -EINVAL;
-
-Do you really need to check for this in the run loop?
-
-> +
-> +	switch (rec->run->exit.exit_reason) {
-> +	case RMI_EXIT_HOST_CALL:
-> +		for (int i = 0; i < REC_RUN_GPRS; i++)
-> +			rec->run->enter.gprs[i] = vcpu_get_reg(vcpu, i);
-> +		break;
-
-If this only happens on returning to the guest from a host call, this
-definitely can be done as a request.
-
-> +	}
-> +
-> +	return 1;
-> +}
-> +
-> +int noinstr kvm_rec_enter(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	int ret;
-> +
-> +	guest_state_enter_irqoff();
-> +	ret = rmi_rec_enter(virt_to_phys(rec->rec_page),
-> +			    virt_to_phys(rec->run));
-
-Why don't you keep the PAs around instead? This should be merged into
-kvm_arm_vcpu_enter_exit().
-
-
-> +	guest_state_exit_irqoff();
-> +
-> +	return ret;
-> +}
-> +
->  static int __maybe_unused kvm_create_rec(struct kvm_vcpu *vcpu)
->  {
->  	struct user_pt_regs *vcpu_regs = vcpu_gp_regs(vcpu);
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+T24gVGh1LCAyMDI2LTA2LTE4IGF0IDE2OjEzICswODAwLCBYdSBZaWx1biB3cm90ZToNCj4gSW4g
+YWRkaXRpb24gdG8gYmFzaWMgVERYIGZ1bmN0aW9uYWxpdGllcywgVERYIG1vZHVsZSBwcm92aWRl
+cyBhZGQtb24NCj4gZmVhdHVyZXMgdGhhdCBjYW4gYmUgcHJvZ3Jlc3NpdmVseSBlbmFibGVkIGFz
+IHRoZSBrZXJuZWwgc3VwcG9ydHMgdGhlbS4NCj4gVGhlIGtlcm5lbCBzaG91bGQgZXhwbGljaXRs
+eSBjb25maWd1cmUgdGhlc2UgZmVhdHVyZXMgYXQgYm9vdCBvcg0KPiBwb3N0LXVwZGF0ZSBpbml0
+aWFsaXphdGlvbiB0aW1lLiBDb25maWd1cmluZyBhbiBhZGQtb24gZmVhdHVyZSwgc3VjaCBhcw0K
+PiBURFggUXVvdGluZywgdGhhdCB1c2VzIGV4dGVuc2lvbiBTRUFNQ0FMTHMgaXMgdGhlIHByZXJl
+cXVpc2l0ZSBmb3INCj4gaW5pdGlhbGl6aW5nIFREWCBtb2R1bGUgZXh0ZW5zaW9ucy4gVERYIFF1
+b3RpbmcgaXMgdGhlIHRhcmdldCBmZWF0dXJlIHRvDQo+IGVuYWJsZSBidXQgZGVmZXIgaXQgZm9y
+IG5vdyB1bnRpbCBmdWxsIGtlcm5lbCBzdXBwb3J0IGlzIGluIHBsYWNlLg0KDQpJIHRoaW5rIHRo
+aXMgaXMgdG9vIG11Y2ggcHJvamVjdCBtYW5hZ2VtZW50IHR5cGUgaW5mbyBmb3IgdGhlIGNvbW1p
+dCBsb2cuIFRoaXMNCnBhdGNoIGlzIGdlbmVyaWMgYW5kIGNvdWxkIHN1cHBvcnQgYW55IHR5cGUg
+b2YgZXh0ZW5zaW9uLiBJJ2QganVzdCBsaXN0IGEgZmV3IGFzDQpleGFtcGxlcyBvZiBleHRlbnNp
+b25zLg0KDQo+IA0KPiBURFggbW9kdWxlIGV4dGVuZHMgVERILlNZUy5DT05GSUcgYW5kIFRESC5T
+WVMuVVBEQVRFIHdpdGggbmV3IGJpdG1hcA0KPiBpbnB1dCBwYXJhbWV0ZXJzIHRvIHNwZWNpZnkg
+d2hpY2ggYWRkLW9uIGZlYXR1cmVzIHRvIGNvbmZpZ3VyZS4gVGhlDQo+IGJpdG1hcCB1c2VzIHRo
+ZSBzYW1lIGRlZmluaXRpb25zIGFzIFREWF9GRUFUVVJFUzAuDQoNCkFzc3VtaW5nIHRoZSB2MyBz
+ZWFtY2FsbCB2ZXJzaW9uIHBhdGNoIGlzIHRoZSBmaW5hbCBvbmUsIHRoaXMgc2hvdWxkIGJlIHVw
+ZGF0ZWQNCnRvIHRhbGsgYWJvdXQgdGhpcyB3aXRoIHJlc3BlY3QgdG8gaG93IHRoYXQgcGF0Y2gg
+ZXhwb3NlcyB0aGUgc2VhbWNhbGwgdmVyc2lvbg0KY29uY2VwdC4NCg0KPiANCj4gRm9yIHJ1bnRp
+bWUgdXBkYXRlLCBMaW51eCBhcHBsaWVzIGEgcG9saWN5DQoNCiJhcHBsaWVzIGEgcG9saWN5IiBz
+dGlja3Mgb3V0IHRvIG1lIGhlcmUuIENhbiB3ZSBwdXQgdGhpcyBpbiBzaW1wbGUgdGVybXMgb2Yg
+d2h5DQp0aGlzIGlzbid0IGRvbmUuICJQb2xpY3kiIG1ha2VzIGl0IHNvdW5kIGFyYml0cmFyeSBy
+dWxlIHRoYXQgd2UgYXJlIGJsaW5kbHkNCmZvbGxvd2luZy4NCg0KPiAgdGhhdCBubyBuZXdlciBm
+ZWF0dXJlcyBzaG91bGQNCg0KIm5ld2VyIiBpcyBhbWJpZ3VvdXMgaGVyZS4gSSB0aGluayBpdCBt
+ZWFucyBubyBmZWF0dXJlcyB0aGF0IHdlcmUgbm90IHByZXZpb3VzbHkNCmVuYWJsZWQsIGJ1dCBp
+dCBjb3VsZCBjb21lIG9mZiBhcyBzYXlpbmcgbm8gZmVhdHVyZXMgdGhhdCB3ZXJlIHJlbGVhc2Vk
+IGFmdGVyIGENCmNlcnRhaW4gcG9pbnQuDQoNCj4gYmUgYWRkZWQgYWZ0ZXIgdXBkYXRlIHRvIGF2
+b2lkIGRpc3J1cHRpbmcgbGl2ZSBURFggb3BlcmF0aW9ucy4NCg0KDQoNCj4gIFRvIGFkaGVyZQ0K
+PiB0byB0aGlzLCBUREguU1lTLlVQREFURSBtdXN0IGNvbmZpZ3VyZSB0aGUgc2FtZSBmZWF0dXJl
+cyBhcyB0aGUNCj4gVERILlNZUy5DT05GSUcuIFJlY29yZCB0aGUga2VybmVsIHJlcXVpcmVkIGFk
+ZC1vbiBmZWF0dXJlIGJpdG1hcCBpbiBhDQo+IGdsb2JhbCB2YXIgc28gdGhhdCBib3RoIHBoYXNl
+cyBjYW4gdXNlIGl0Lg0KPiANCj4gVERYIG1vZHVsZSBhZHZhbmNlcyB0aGUgdmVyc2lvbiBvZiBU
+REguU1lTLkNPTkZJRyBhbmQgVERILlNZUy5VUERBVEUgZm9yDQo+IHRoZSBjaGFuZ2UsIHNvIHVz
+ZSB0aGUgbGF0ZXN0IHZlcnNpb24gKHYxKSBmb3IgYWRkLW9uIGZlYXR1cmUgZW5hYmxpbmcuDQo+
+IEJ1dCBzdXBwb3J0aW5nIGV4aXN0aW5nIG1vZHVsZXMgd2hpY2ggb25seSBzdXBwb3J0IHYwIGlz
+IHN0aWxsIG5lY2Vzc2FyeQ0KPiB1bnRpbCB0aGV5IGFyZSBkZXByZWNhdGVkLiBJbiBmYWN0LCBp
+dCBpcyB1bmxpa2VseSB0aGF0IFRESC5TWVMuQ09ORklHDQo+IGV2ZXIgbmVlZHMgdG8gY2hhbmdl
+IGFnYWluIGFuZCB0aGUgY29kZSB3b3VsZCBzdGF5IGluIHYxLg0KDQpIYSwgdGhlc2UgYXJlIGhh
+cmQgdGhpbmdzIHRvIHByZWRpY3QuDQoNCj4gIFNvIHRoZXJlIGlzDQo+IGxpdHRsZSB2YWx1ZSBp
+biB3b3JyeWluZyBhYm91dCBkZXByZWNhdGluZyB2MCB0byBzYXZlIGEgY291cGxlIGxpbmVzIG9m
+DQo+IGNvZGUgaW4gNS03IHllYXJzIHdoZW4gdGhlc2Ugb3JpZ2luYWwgVERYIHBsYXRmb3JtcyBz
+dW5zZXQuDQoNCldlIGNhbid0IGRlcHJlY2F0ZSBpdCB0b2RheSwgc28gd2hhdCBpcyB0aGlzIHNh
+eWluZyBleGFjdGx5Pw0KDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBYdSBZaWx1biA8eWlsdW4ueHVA
+bGludXguaW50ZWwuY29tPg0KPiAtLS0NCj4gwqBhcmNoL3g4Ni92aXJ0L3ZteC90ZHgvdGR4Lmgg
+fMKgIDYgKysrKy0tDQo+IMKgYXJjaC94ODYvdmlydC92bXgvdGR4L3RkeC5jIHwgMjggKysrKysr
+KysrKysrKysrKysrKysrKysrKystLQ0KPiDCoDIgZmlsZXMgY2hhbmdlZCwgMzAgaW5zZXJ0aW9u
+cygrKSwgNCBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9hcmNoL3g4Ni92aXJ0L3Zt
+eC90ZHgvdGR4LmggYi9hcmNoL3g4Ni92aXJ0L3ZteC90ZHgvdGR4LmgNCj4gaW5kZXggZmJiNTIw
+NzA0NjYyLi5hNDdlODcyNDgwYzcgMTAwNjQ0DQo+IC0tLSBhL2FyY2gveDg2L3ZpcnQvdm14L3Rk
+eC90ZHguaA0KPiArKysgYi9hcmNoL3g4Ni92aXJ0L3ZteC90ZHgvdGR4LmgNCj4gQEAgLTU4LDkg
+KzU4LDExIEBADQo+IMKgI2RlZmluZSBUREhfUEhZTUVNX0NBQ0hFX1dCCQk0MA0KPiDCoCNkZWZp
+bmUgVERIX1BIWU1FTV9QQUdFX1dCSU5WRAkJNDENCj4gwqAjZGVmaW5lIFRESF9WUF9XUgkJCTQz
+DQo+IC0jZGVmaW5lIFRESF9TWVNfQ09ORklHCQkJNDUNCj4gKyNkZWZpbmUgVERIX1NZU19DT05G
+SUdfVjAJCTQ1DQo+ICsjZGVmaW5lIFRESF9TWVNfQ09ORklHCQkJU0VBTUNBTExfTEVBRl9WRVIo
+VERIX1NZU19DT05GSUdfVjAsDQo+IDEpDQo+IMKgI2RlZmluZSBUREhfU1lTX1NIVVRET1dOCQk1
+Mg0KPiAtI2RlZmluZSBUREhfU1lTX1VQREFURQkJCTUzDQo+ICsjZGVmaW5lIFRESF9TWVNfVVBE
+QVRFX1YwCQk1Mw0KPiArI2RlZmluZSBUREhfU1lTX1VQREFURQkJCVNFQU1DQUxMX0xFQUZfVkVS
+KFRESF9TWVNfVVBEQVRFX1YwLA0KPiAxKQ0KPiDCoCNkZWZpbmUgVERIX1NZU19ESVNBQkxFCQkJ
+NjkNCj4gwqANCj4gwqAvKiBURFggcGFnZSB0eXBlcyAqLw0KPiBkaWZmIC0tZ2l0IGEvYXJjaC94
+ODYvdmlydC92bXgvdGR4L3RkeC5jIGIvYXJjaC94ODYvdmlydC92bXgvdGR4L3RkeC5jDQo+IGlu
+ZGV4IDJhMDMxNTI3OTZlNi4uOTIzMDViNWVhOTBkIDEwMDY0NA0KPiAtLS0gYS9hcmNoL3g4Ni92
+aXJ0L3ZteC90ZHgvdGR4LmMNCj4gKysrIGIvYXJjaC94ODYvdmlydC92bXgvdGR4L3RkeC5jDQo+
+IEBAIC01Nyw2ICs1Nyw3IEBAIHN0YXRpYyBzdHJ1Y3QgdGR4X21vZHVsZV9zdGF0ZSB0ZHhfbW9k
+dWxlX3N0YXRlOw0KPiDCoHN0YXRpYyB1MzIgdGR4X2dsb2JhbF9rZXlpZCBfX3JvX2FmdGVyX2lu
+aXQ7DQo+IMKgc3RhdGljIHUzMiB0ZHhfZ3Vlc3Rfa2V5aWRfc3RhcnQgX19yb19hZnRlcl9pbml0
+Ow0KPiDCoHN0YXRpYyB1MzIgdGR4X25yX2d1ZXN0X2tleWlkcyBfX3JvX2FmdGVyX2luaXQ7DQo+
+ICtzdGF0aWMgdTY0IHRkeF9hZGRvbl9mZWF0dXJlMCBfX3JvX2FmdGVyX2luaXQ7DQo+IMKgDQo+
+IMKgc3RhdGljIERFRklORV9JREEodGR4X2d1ZXN0X2tleWlkX3Bvb2wpOw0KPiDCoA0KPiBAQCAt
+MTAwNCw5ICsxMDA1LDE4IEBAIHN0YXRpYyBfX2luaXQgaW50IGNvbnN0cnVjdF90ZG1ycyhzdHJ1
+Y3QgbGlzdF9oZWFkDQo+ICp0bWJfbGlzdCwNCj4gwqAJcmV0dXJuIHJldDsNCj4gwqB9DQo+IMKg
+DQo+ICtzdGF0aWMgX19pbml0IHZvaWQgc2V0X3RkeF9hZGRvbl9mZWF0dXJlcyh2b2lkKQ0KPiAr
+ew0KPiArCS8qDQo+ICsJICogVG8gYWRkIERJQ0UtYmFzZWQgVERYIFF1b3RpbmcgZmVhdHVyZSBi
+aXQgaW4gdGR4X2FkZG9uX2ZlYXR1cmUwDQo+IHdoZW4NCj4gKwkgKiBrZXJuZWwgaXMgcmVhZHku
+DQo+ICsJICovDQoNCkNhbiB3ZSBub3QgbWFrZSB0aGlzIERJQ0Ugc3BlY2lmaWM/DQoNCj4gK30N
+Cj4gKw0KPiDCoHN0YXRpYyBfX2luaXQgaW50IGNvbmZpZ190ZHhfbW9kdWxlKHN0cnVjdCB0ZG1y
+X2luZm9fbGlzdCAqdGRtcl9saXN0LA0KPiDCoAkJCQnCoMKgwqAgdTY0IGdsb2JhbF9rZXlpZCkN
+Cj4gwqB7DQo+ICsJdTY0IHNlYW1jYWxsX2ZuID0gVERIX1NZU19DT05GSUdfVjA7DQo+IMKgCXN0
+cnVjdCB0ZHhfbW9kdWxlX2FyZ3MgYXJncyA9IHt9Ow0KPiDCoAl1NjQgKnRkbXJfcGFfYXJyYXk7
+DQo+IMKgCXNpemVfdCBhcnJheV9zejsNCj4gQEAgLTEwMzIsNyArMTA0MiwxNSBAQCBzdGF0aWMg
+X19pbml0IGludCBjb25maWdfdGR4X21vZHVsZShzdHJ1Y3QNCj4gdGRtcl9pbmZvX2xpc3QgKnRk
+bXJfbGlzdCwNCj4gwqAJYXJncy5yY3ggPSBfX3BhKHRkbXJfcGFfYXJyYXkpOw0KPiDCoAlhcmdz
+LnJkeCA9IHRkbXJfbGlzdC0+bnJfY29uc3VtZWRfdGRtcnM7DQo+IMKgCWFyZ3MucjggPSBnbG9i
+YWxfa2V5aWQ7DQo+IC0JcmV0ID0gc2VhbWNhbGxfcHJlcnIoVERIX1NZU19DT05GSUcsICZhcmdz
+KTsNCj4gKw0KPiArCXNldF90ZHhfYWRkb25fZmVhdHVyZXMoKTsNCg0KVGhpcyBpcyBhIGxpdHRs
+ZSBvcGFxdWUuIFdoeSBub3Qgc29tZXRoaW5nIGxpa2UNCg0KdGR4X2FkZG9uX2ZlYXR1cmUwID0g
+VERYX0tFUk5FTF9TVVBQT1JURURfQURET05TICYNCnRkeF9zeXNpbmZvLmZlYXR1cmVzLnRkeF9m
+ZWF0dXJlczA7DQoNCnRkeF9hZGRvbl9mZWF0dXJlMCBjb3VsZCBwcm9iYWJseSBiZSBuYW1lZCBi
+ZXR0ZXIgdG9vLiBJdCBtZWFucyB0aGUgZmVhdHVyZXMNCnRoYXQgdGhlIGtlcm5lbCBoYXMgZGVj
+aWRlZCB0byB1c2UuIEhNbSwgYW55IGlkZWFzPw0KDQo+ICsNCj4gKwlpZiAodGR4X2FkZG9uX2Zl
+YXR1cmUwKSB7DQo+ICsJCWFyZ3MucjkgPSB0ZHhfYWRkb25fZmVhdHVyZTA7DQo+ICsJCXNlYW1j
+YWxsX2ZuID0gVERIX1NZU19DT05GSUc7DQo+ICsJfQ0KDQpUaGlzIGtpbmQgb2YgZmVlbHMgaGFj
+a3kgdG8gbWUuIHRkeF9hZGRvbl9mZWF0dXJlMCBpcyB6ZXJvIGlmIHRoZXJlIGFyZSBub25lDQpz
+dXBwb3J0ZWQuIEl0IHNob3VsZG4ndCBpbnRlcmZlcmUgd2l0aCB0aGUgdjAgY2FsbCB0byBzZXQg
+aXQgdW5jb25kaXRpb25hbGx5Pw0KDQpJIHRoaW5rIHRoZSBjb25uZWN0aW9uIGJldHdlZW4gdGR4
+X2FkZG9uX2ZlYXR1cmUwIGFuZCBUREhfU1lTX0NPTkZJRyBpcyBhIGJpdA0KdGVudW91cyB0b28u
+IEl0IGlzIHNldCBpZiBhIGV4dGVuc2lvbiBpcyBmb3VuZCB0aGF0IHRoZSBrZXJuZWwgc3VwcG9y
+dHMuDQoNCldoYXQgZG8geW91IHRoaW5rIGFib3V0IHdyYXBwaW5nIFRESF9TWVNfQ09ORklHLiBI
+YXZlIHRoZSB3cmFwcGVyIHRha2UgYWxsIHRoZQ0KYXJncyBpbmNsdWRpbmcgdGR4X2FkZG9uX2Zl
+YXR1cmUwLiBUaGVuIGhhdmUgdGhlIHdyYXBwZXIgZGVjaWRlIHdoaWNoIHNlYW1jYWxsDQp0byB1
+c2UuIEhhdmUgYSBuaWNlIGNvbW1lbnQgdGhhdCBzYXlzICJVc2UgdmVyc2lvbiBvZiBzZWFtY2Fs
+bCB0aGF0IHN1cHBvcnRzIGFkZA0Kb25zIGlmIHdlIGhhdmUgYW55LCB1c2UgdGhlIG9sZCBvbmUg
+aWYgbm9uZSBhcmUgc3VwcG9ydGVkIGZvciBiYWNrd2FyZA0KY29tcGF0aWJpbGl0eSIuDQoNCkJU
+VywgbG9va2luZyBhdCB0aGUgdGR4IG1vZHVsZSwgaWYgSSdtIHJlYWRpbmcgdGhpcyByaWdodCwg
+cjkgdXNlZCB0byBiZQ0KaWdub3JlZC4gU28gZGlkIGl0IG5lZWQgYSBuZXcgc2VhbWNhbGwgdmVy
+c2lvbj8gU29tZSBvdGhlciBWTU0gd2FzIHBhc3NpbmcNCmdhcmJhZ2U/DQoNCj4gKw0KPiArCXJl
+dCA9IHNlYW1jYWxsX3ByZXJyKHNlYW1jYWxsX2ZuLCAmYXJncyk7DQo+IMKgDQo+IMKgCS8qIEZy
+ZWUgdGhlIGFycmF5IGFzIGl0IGlzIG5vdCByZXF1aXJlZCBhbnltb3JlLiAqLw0KPiDCoAlrZnJl
+ZSh0ZG1yX3BhX2FycmF5KTsNCj4gQEAgLTEzMTQsMTAgKzEzMzIsMTYgQEAgaW50IHRkeF9tb2R1
+bGVfc2h1dGRvd24odm9pZCkNCj4gwqANCj4gwqBpbnQgdGR4X21vZHVsZV9ydW5fdXBkYXRlKHZv
+aWQpDQo+IMKgew0KPiArCXU2NCBzZWFtY2FsbF9mbiA9IFRESF9TWVNfVVBEQVRFX1YwOw0KPiDC
+oAlzdHJ1Y3QgdGR4X21vZHVsZV9hcmdzIGFyZ3MgPSB7fTsNCj4gwqAJaW50IHJldDsNCj4gwqAN
+Cj4gLQlyZXQgPSBzZWFtY2FsbF9wcmVycihUREhfU1lTX1VQREFURSwgJmFyZ3MpOw0KPiArCWlm
+ICh0ZHhfYWRkb25fZmVhdHVyZTApIHsNCj4gKwkJYXJncy5yOSA9IHRkeF9hZGRvbl9mZWF0dXJl
+MDsNCj4gKwkJc2VhbWNhbGxfZm4gPSBUREhfU1lTX1VQREFURTsNCj4gKwl9DQo+ICsNCj4gKwly
+ZXQgPSBzZWFtY2FsbF9wcmVycihzZWFtY2FsbF9mbiwgJmFyZ3MpOw0KPiDCoAlpZiAocmV0KQ0K
+PiDCoAkJcmV0dXJuIHJldDsNCj4gwqANCg0K
