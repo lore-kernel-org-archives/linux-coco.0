@@ -1,207 +1,210 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B833EB810;
-	Mon, 27 Jul 2026 09:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB2D3F8EB3
+	for <linux-coco@lists.linux.dev>; Mon, 27 Jul 2026 10:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785144078; cv=none; b=dPn3soXWkbBn81fH12urQ66DgUrwRt34zbh/KRjEv0mbPc+Mgsger0WoKda332p//imwdC/pQdHKHdzyx/vs1We/xw3y09GC1EoArtmehM7RIwysj40oGJ9hnMGarzPQipMxsL1CsRPcRi3qUqb2XPZAq2Mv1y2URMF5XDfYLcE=
+	t=1785149326; cv=none; b=cf4a6oBQoRtYgqbRk7UesA4exeBgwPVXcTqrI+OirEyTRts+hwIo41tYzaa/OVM5edNrgF7gXS2RpEzcbzB/VvhDGpVJQcOCX0jlJ4f/XLsuEfVEzcX8fMad+AIFDU6e+BLVekmCsJBFeb7KxxMqYPiaw93xFQog+7SRaRVuWQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785144078; c=relaxed/simple;
-	bh=ADbGw0tGoLc0Gg6rKLnp+K2qMiplgwL6Iw1BbIxdaxM=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lk4KbnM6Qn1G2ba8XwzPasr2Tq3qjuz7vBqrt8G0BpqD/Vl50adKutl/cRrg7+cQNvk9UxHbC9QDTCVlHo6kpSuZjACBlhks1/A5AiwXV29EXtI0PXiTCmfoS6POyLhey3xX8oKfcFSEOWxdI8K8ANb8gLUL2PfIM2VwWLOEAfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kqjq8arZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785149326; c=relaxed/simple;
+	bh=FL8PEeJ6vnuU/NVIWM6q9AZv1YhvI5xh7/FEsDbvS1k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iEvqh0DzNfHb9IH71W+ex45N1rgMWiFG2gk/idCG83KgOmf0Q51EElJP5FaVSz+dcANbq552NSOLzME79cIxOjJm6SUretZa34bEPfsgC7tbKBZi2olpiT9k9hkfviViZZKYBmUwsyByztq5mawtgmCjZlaYTI1rz5oX8BYZAFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iOYLpySU; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kqjq8arZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED521F000E9;
-	Mon, 27 Jul 2026 09:21:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785144077;
-	bh=FuhAGT2SliXe9B/N8fQVPhd+jv0ZqrbmY3LX55yWLPo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Kqjq8arZqZot8Vn0ynnS69jZo3ymclV2N6I0IZq3nSo4mJHi0a2p1po4oim1jRl8I
-	 AQQnmE+d4RwGy8kq6LKokLO1i6gHtg4jktdxvLnHU2XvG7lvbxunP/lqdTSerpma3y
-	 oW0mlrp3QQnVRZbMiD5pQ5TM3QOsQRq7Nk0mju6e5t12JDDzTptIUbw+fv77XJfOAx
-	 vsuY29fh2iMhLUPdS10gYHlwwlXv53KIp4zB1kBAATepQyZWSLrQqxUjNuEreljQ0N
-	 nipozxIHwIQxA1qIJyyLnVstB1dJpQk4A5NEtXYBf1OIvudn8hR/VFQX024vncBivt
-	 sDrm2+e6+f0Cg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1woHWM-00000009B23-39NE;
-	Mon, 27 Jul 2026 09:21:14 +0000
-Date: Mon, 27 Jul 2026 10:21:14 +0100
-Message-ID: <861pcoeqk5.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v15 13/37] KVM: arm64: CCA: Support timers in realm RECs
-In-Reply-To: <20260715142841.80544-14-steven.price@arm.com>
-References: <20260715142841.80544-1-steven.price@arm.com>
-	<20260715142841.80544-14-steven.price@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iOYLpySU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785149324; x=1816685324;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FL8PEeJ6vnuU/NVIWM6q9AZv1YhvI5xh7/FEsDbvS1k=;
+  b=iOYLpySUIZmXdzLLg1YPCjL3A9r21+IJG+Hr+ThUBKGv8FyGpRLTKLw0
+   W9mEqSow+Kl4B/I3dgX5YpxUe7BHRgY7q7RY3JmTrkax0Q1L4WPOMmjKR
+   TKajP1o1xLGzcSlhUd10VE8a914rqB0vx/V+ob7hm9XiHM14reHn3VJ3/
+   KfeVwsye6X7TU6PMOxtUWD3O2iIKbJEkB0Ja1OMtFHIlwlwi8Hg9yjavb
+   cJdeoGSUYtFojXdLjtq3Lz2dlj4IzFch4ksgRqck8Qdc9LR6ijFABOXO3
+   0DCCaiTFG5/zFshNRGlNFqyvJegKrV4x/lGY9ksYgjpJCf97Gk7UM24W0
+   w==;
+X-CSE-ConnectionGUID: dlkuti6aRhGItaD1BY+EIQ==
+X-CSE-MsgGUID: rSA5IXlQTJW135gPLFaklg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11857"; a="73253836"
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
+   d="scan'208";a="73253836"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 03:48:43 -0700
+X-CSE-ConnectionGUID: eZpc649kQau/7g/exXZJsQ==
+X-CSE-MsgGUID: duayf3k6Qeue9hgC8Wsj9g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
+   d="scan'208";a="264377032"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa005.fm.intel.com with ESMTP; 27 Jul 2026 03:48:39 -0700
+Date: Mon, 27 Jul 2026 18:48:38 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, djbw@kernel.org, kas@kernel.org,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	sohil.mehta@intel.com, adrian.hunter@intel.com,
+	kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
+	peter.fang@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, dave.hansen@intel.com,
+	dave.hansen@linux.intel.com, seanjc@google.com
+Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
+ module init and update
+Message-ID: <amc3hgkK0LzJ3i4N@yilunxu-OptiPlex-7050>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+ <823bf577-51a1-4a8a-b240-ef4a0d5573be@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <823bf577-51a1-4a8a-b240-ef4a0d5573be@intel.com>
 
-On Wed, 15 Jul 2026 15:28:15 +0100,
-Steven Price <steven.price@arm.com> wrote:
+On Fri, Jul 24, 2026 at 04:15:21PM +0800, Xiaoyao Li wrote:
+> On 6/18/2026 4:13 PM, Xu Yilun wrote:
+> > In addition to basic TDX functionalities, TDX module provides add-on
+> > features that can be progressively enabled as the kernel supports them.
 > 
-> The RMM keeps track of the timer while the realm REC is running, but on
-> exit to the normal world KVM is responsible for handling the timers.
+> "add-on features" looks like a new term introduced by this sereis for TDX.
+> So what is add-on features? all the features defined in TDX_FEATURE0/1? Or
+> only the features needs to be explicitly enabled by R9 and R10 of
+> TDH.SYS.CONFIG? ...
 > 
-> A later patch adds the support for propagating the timer values from the
-> exit data structure and calling kvm_realm_timers_update().
+> > The kernel should explicitly configure these features at boot or
+> > post-update initialization time.
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v14:
->  * Special case in kvm_timer_vcpu_load()/kvm_timer_vcpu_put() the timer
->    handling.
-> Changes since v12:
->  * Adapt to upstream changes.
-> Changes since v11:
->  * Drop the kvm_is_realm() check from timer_set_offset(). We already
->    ensure that the offset is 0 when calling the function.
-> Changes since v10:
->  * KVM_CAP_COUNTER_OFFSET is now already hidden by a previous patch.
-> Changes since v9:
->  * No need to move the call to kvm_timer_unblocking() in
->    kvm_timer_vcpu_load().
-> Changes since v7:
->  * Hide KVM_CAP_COUNTER_OFFSET for realm guests.
-> ---
->  arch/arm64/kvm/arch_timer.c  | 38 +++++++++++++++++++++++++++++++++---
->  include/kvm/arm_arch_timer.h |  2 ++
->  2 files changed, 37 insertions(+), 3 deletions(-)
+> ... So the answer is the latter. Then why only these bits are add-on
+> features while the rest in TDX_FEATURES01 are not?
+
+I think from TDX arch POV they impact the existing TDX system in some
+ways, either changes the behaviors of the existing features, or impact
+the performance.
+
 > 
-> diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
-> index 4155fe89b58a..fdd68f1f5b7b 100644
-> --- a/arch/arm64/kvm/arch_timer.c
-> +++ b/arch/arm64/kvm/arch_timer.c
-> @@ -482,6 +482,20 @@ static void kvm_timer_update_irq(struct kvm_vcpu *vcpu, bool new_level,
->  			    timer_ctx);
->  }
->  
-> +void kvm_realm_timers_update(struct kvm_vcpu *vcpu)
-> +{
-> +	struct arch_timer_cpu *arch_timer = &vcpu->arch.timer_cpu;
-> +	int i;
-> +
-> +	for (i = 0; i < NR_KVM_EL0_TIMERS; i++) {
-> +		struct arch_timer_context *timer = &arch_timer->timers[i];
-> +		bool status = timer_get_ctl(timer) & ARCH_TIMER_CTRL_IT_STAT;
-> +		bool level = kvm_timer_enabled(timer) && status;
-> +
-> +		kvm_timer_update_irq(vcpu, level, timer);
-> +	}
-> +}
-> +
+> btw, s/should/needs/ is better?
+> 
+> > Configuring an add-on feature, such as
+> > TDX Quoting, that uses extension SEAMCALLs is the prerequisite for
+> > initializing TDX module extensions.
+> 
+> Though the statement is right, it leads to the impression that the reason we
+> are configuring the add-on feature is to initialize the TDX module
+> extensions.
+> 
+> However, the truth is kenrel wants to enable/use an add-on feature and the
 
-Why do we need this? What is so special about CCA that it cannot use
-the existing timer flow?
+mm... yes it is somewhat misleading. Is it better we only talk about the
+add-on features' enabling in the first paragraph, then in next paragraph
+explain why we put the patch at the first one for TDX module Extension
+enabling?
 
->  /* Only called for a fully emulated timer */
->  static void timer_emulate(struct arch_timer_context *ctx)
->  {
-> @@ -888,6 +902,11 @@ void kvm_timer_vcpu_load(struct kvm_vcpu *vcpu)
->  	if (unlikely(!timer->enabled))
->  		return;
->  
-> +	if (vcpu_is_rec(vcpu)) {
-> +		kvm_timer_unblocking(vcpu);
-> +		return;
-> +	}
-> +
->  	get_timer_map(vcpu, &map);
->  
->  	if (static_branch_likely(&has_gic_active_state)) {
-> @@ -923,6 +942,12 @@ void kvm_timer_vcpu_put(struct kvm_vcpu *vcpu)
->  	if (unlikely(!timer->enabled))
->  		return;
->  
-> +	if (vcpu_is_rec(vcpu)) {
-> +		if (kvm_vcpu_is_blocking(vcpu))
-> +			kvm_timer_blocking(vcpu);
-> +		return;
-> +	}
-> +
->  	get_timer_map(vcpu, &map);
->  
->  	timer_save_state(map.direct_vtimer);
-> @@ -1073,7 +1098,7 @@ static void timer_context_init(struct kvm_vcpu *vcpu, int timerid)
->  
->  	ctxt->timer_id = timerid;
->  
-> -	if (!kvm_vm_is_protected(vcpu->kvm)) {
-> +	if (!kvm_vm_is_protected(vcpu->kvm) && !vcpu_is_rec(vcpu)) {
->  		if (timerid == TIMER_VTIMER)
->  			ctxt->offset.vm_offset = &kvm->arch.timer_data.voffset;
->  		else
-> @@ -1104,7 +1129,7 @@ void kvm_timer_vcpu_init(struct kvm_vcpu *vcpu)
->  		timer_context_init(vcpu, i);
->  
->  	/* Synchronize offsets across timers of a VM if not already provided */
-> -	if (!vcpu_is_protected(vcpu) &&
-> +	if (!vcpu_is_protected(vcpu) && !vcpu_is_rec(vcpu) &&
->  	    !test_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, &vcpu->kvm->arch.flags)) {
->  		timer_set_offset(vcpu_vtimer(vcpu), kvm_phys_timer_read());
->  		timer_set_offset(vcpu_ptimer(vcpu), 0);
-> @@ -1600,6 +1625,13 @@ int kvm_timer_enable(struct kvm_vcpu *vcpu)
->  		return -EINVAL;
->  	}
->  
-> +	/*
-> +	 * We don't use mapped IRQs for Realms because the RMI doesn't allow
-> +	 * us setting the LR.HW bit in the VGIC.
-> +	 */
-> +	if (vcpu_is_rec(vcpu))
-> +		return 0;
-> +
+> add-on feature requires the functionalities provided by some TDX module
+> extension. So kernel needs to enable the TDX module extensions.
+> 
+> > TDX Quoting is the target feature to
+> > enable but defer it for now until full kernel support is in place.
+> > 
+> > TDX module extends TDH.SYS.CONFIG and TDH.SYS.UPDATE with new bitmap
+> > input parameters to specify which add-on features to configure. The
+> > bitmap uses the same definitions as TDX_FEATURES0.
+> > 
+> > For runtime update, Linux applies a policy that no newer features should
+> > be added after update to avoid disrupting live TDX operations. To adhere
+> > to this, TDH.SYS.UPDATE must configure the same features as the
+> > TDH.SYS.CONFIG. Record the kernel required add-on feature bitmap in a
+> > global var so that both phases can use it.
+> > 
+> > TDX module advances the version of TDH.SYS.CONFIG and TDH.SYS.UPDATE for
+> > the change, so use the latest version (v1) for add-on feature enabling.
+> > But supporting existing modules which only support v0 is still necessary
+> > until they are deprecated. In fact, it is unlikely that TDH.SYS.CONFIG
+> > ever needs to change again and the code would stay in v1. So there is
+> > little value in worrying about deprecating v0 to save a couple lines of
+> > code in 5-7 years when these original TDX platforms sunset.
+> > 
+> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> > ---
+> >   arch/x86/virt/vmx/tdx/tdx.h |  6 ++++--
+> >   arch/x86/virt/vmx/tdx/tdx.c | 28 ++++++++++++++++++++++++++--
+> >   2 files changed, 30 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+> > index fbb520704662..a47e872480c7 100644
+> > --- a/arch/x86/virt/vmx/tdx/tdx.h
+> > +++ b/arch/x86/virt/vmx/tdx/tdx.h
+> > @@ -58,9 +58,11 @@
+> >   #define TDH_PHYMEM_CACHE_WB		40
+> >   #define TDH_PHYMEM_PAGE_WBINVD		41
+> >   #define TDH_VP_WR			43
+> > -#define TDH_SYS_CONFIG			45
+> > +#define TDH_SYS_CONFIG_V0		45
+> > +#define TDH_SYS_CONFIG			SEAMCALL_LEAF_VER(TDH_SYS_CONFIG_V0, 1)
+> >   #define TDH_SYS_SHUTDOWN		52
+> > -#define TDH_SYS_UPDATE			53
+> > +#define TDH_SYS_UPDATE_V0		53
+> > +#define TDH_SYS_UPDATE			SEAMCALL_LEAF_VER(TDH_SYS_UPDATE_V0, 1)
+> >   #define TDH_SYS_DISABLE			69
+> >   /* TDX page types */
+> > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> > index 2a03152796e6..92305b5ea90d 100644
+> > --- a/arch/x86/virt/vmx/tdx/tdx.c
+> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> > @@ -57,6 +57,7 @@ static struct tdx_module_state tdx_module_state;
+> >   static u32 tdx_global_keyid __ro_after_init;
+> >   static u32 tdx_guest_keyid_start __ro_after_init;
+> >   static u32 tdx_nr_guest_keyids __ro_after_init;
+> > +static u64 tdx_addon_feature0 __ro_after_init;
+> >   static DEFINE_IDA(tdx_guest_keyid_pool);
+> > @@ -1004,9 +1005,18 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
+> >   	return ret;
+> >   }
+> > +static __init void set_tdx_addon_features(void)
+> > +{
+> > +	/*
+> > +	 * To add DICE-based TDX Quoting feature bit in tdx_addon_feature0 when
+> > +	 * kernel is ready.
+> > +	 */
+> > +}
+> > +
+> >   static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+> >   				    u64 global_keyid)
+> >   {
+> > +	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
+> >   	struct tdx_module_args args = {};
+> >   	u64 *tdmr_pa_array;
+> >   	size_t array_sz;
+> > @@ -1032,7 +1042,15 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+> >   	args.rcx = __pa(tdmr_pa_array);
+> >   	args.rdx = tdmr_list->nr_consumed_tdmrs;
+> >   	args.r8 = global_keyid;
+> > -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
+> > +
+> > +	set_tdx_addon_features();
+> 
+> Maybe move the set_tdx_addon_features() out of config_tdx_module()? how
+> about putting it after check_features(). config_tdx_module() looks like just
+> a wrapper to invoke TDH.SYS.CONFIG, while the params of it are determined
+> outside of it.
 
-If you can't set the HW bit, then use the existing infrastructure for
-similarly challenged systems. But I find this restriction hard to
-swallow. What is so special about the HW bit?
+I'm going to take Chao's advice [1] to remove the global var
+tdx_addon_feature0, so will also delete this global step -
+set_tdx_addon_features() - to setup this global var.
 
-As it stands, I don't think this is acceptable, and I really want to
-know why you need to special-case the timer code.
+Instead I'll use a "static u64 get_tdx_addon_features0(void)" for
+TDH.SYS.CONFIG/UPDATE.
 
-	M.
+The reason is that I've found this extra TDX status - tdx_addon_feature0 -
+makes the feature supporting judgement unnecessary complex, so don't
+make it long live.
 
--- 
-Without deviation from the norm, progress is not possible.
+[1]: https://lore.kernel.org/all/ajpHRNaq+z5bdn+R@intel.com/
