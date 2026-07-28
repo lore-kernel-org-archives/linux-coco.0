@@ -1,238 +1,127 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9940E3BB139
-	for <linux-coco@lists.linux.dev>; Tue, 28 Jul 2026 22:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785279378; cv=pass; b=mhDZxpBgYr8CpP8gEF7wvuErY19iJYnZvpcmKkyI/yyNcZ/XCGg8xpL/njJwCt162jvrzhH8H5/nWQvKzTArUGnCiIsAp2GfPP8L5XisGLbj6QOfVF1TIJwTmG/yH6O9DJMveel51sk4M4ekAgAkMPhmcKjiUs8jEU9VsvvjJp0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785279378; c=relaxed/simple;
-	bh=t9KvR2dL1m4zEK1lVjuJI6tVdJ4dqE2a/Rcy64SXybw=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PKHh1QZ0S9UlsO9mXctKp/fcq6Q2nLKnkEQdNqd5KefNFblGG9hnH1SxN0o1vt6IXG3XLgwgVUTB9603oTahOk+J5pd+xzZaf1J6Y2jC5FhoQvgxecrcAqFrubr8047FnrpbEOxKy2kVFAKSBJNADjYc1APT7Pxwl42OfbzWdJU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=weJ/08J7; arc=pass smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAF93191D3
+	for <linux-coco@lists.linux.dev>; Tue, 28 Jul 2026 23:29:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785281378; cv=none; b=fAPjatbdWQ2f3oe2NhxfHmVX6lijtB0HcpO3q2W69ui0UMhpUuWmlByPyRYEOt5SBg5j8M9/1FvVkMh55A5QE7WHYrmDnhDLyiYuS8f5Kah1KxZ6LPPHjrpCh1gHfiOCFWlUrl2PYwMOPf8YxWiB4kdcMfuRyOS2M2VQ4fTSuUc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785281378; c=relaxed/simple;
+	bh=lMzH1GE+iKbOtPjkrcpk63ibuXDoMGMXvQt/koZqnqQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZbIemq3r3vnJNStlKl3t1euxnB61eFIqwSrKMkH+KwKMYxX6ig7Sw748u/LBhA0y9isMi5/v3xdfExspn1SJaDraNAo84sbORN07NARDea9YN1OyrJu/IlAi4QQ4EenQ0Ajdlt97CLuOfVeqZBWe+1Cwq65XSAtPfoDBZjFrKrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=osnYpXxa; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="weJ/08J7"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38101f85591so1381997a91.1
-        for <linux-coco@lists.linux.dev>; Tue, 28 Jul 2026 15:56:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785279376; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MhVDhq8FUSVK73g9QnQncDttL6xbVL9AcqhweLkIxTzrG0oO4f4D6cxIRHpuCCcJKM
-         Go9BWucMj2GLhQ3i6a+oUW9A1Nl3NjnPFoLxLW9ePGUf/ynOaegMGYUYUDoc5fZbyrof
-         SwQCkqlXxPut/HeLbH6mqmKupggpYdyALw0cNE86Q20gnHhLOgtgs4HLNimzw7wPjVDh
-         HN85RO9vSegPO35guxhRq/sU2avDDcYSA+EzQix7Ao+7UsvB26gUgsA5kW5ka9IsvZ6l
-         T+WAXFRPEanm8rYyIClAkSAgRS3FaK+VqlgvHLNe8TfwyFSycTNOtOF8Rgu8/d/WGC++
-         exDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=j0z3e8zTvHIk07OlT0xkJIAxTqUKptSj/yxfg7rVtqA=;
-        fh=9kyat04scbTP+39PjeYBjhQwa8Y+KamyjZ1owMjMDF0=;
-        b=D96xF+0KUyZZnMRw1u1sjPPSiTtbq0S+gyGf6LaQTwzDSGzuaw+Ghhg/d73D6Owf39
-         9+1wUuB+efcomBIwsVvrP4m4f0GbllhowTF3mo8NaWUPXRjhvt5nQrDF1oCR/IktWXvG
-         oURQkYGDJnFDdVUcjEX52sIMlfZBNwY9jqrK3C/WpFZOrJa/0dJIQH9MrM00j9MxugSB
-         32LEoo6p1p1Y8feeKLBrEufNwYvkWFBnW6ZRHpRkACHT4wpju3lfEhhjcs2zywdQCcqB
-         FRwR7N+eU+BmYBXKLAutsFSrhyYLfTYyLPHtp3bgpIC+87qn1D7X9XtVbiid59dsMMM/
-         GM6A==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="osnYpXxa"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38f620399a0so264150a91.2
+        for <linux-coco@lists.linux.dev>; Tue, 28 Jul 2026 16:29:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785279376; x=1785884176; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=j0z3e8zTvHIk07OlT0xkJIAxTqUKptSj/yxfg7rVtqA=;
-        b=weJ/08J7E7dpz6Zrykq4pmbpmFCOwDk1AraYrTt6aSRz5B3f7WkggyN9/vtpoKIZnP
-         /a+eIGdNnuEu5InPomtLKb/n08PusuAl7kjKSnEx920X6URoPCTdskxpQGoONtC7M5ps
-         zZ1oyfec+0jL+DjzvNFxOW9Q1gRTMqQ1a3CxyfrhR2OYl9St5i4iMgyd31+YLP+KbmO7
-         drjkXLB9Eopt1+jr4ZdM5BmZAAF0Ra38JxrrDd0SXBP2apYOom/Q14JPDN+xApn9DKyJ
-         VRVFzDm3NJwbFIBcI47zQiHT3EsJwAS5aafBj8bhQcz7+IfqHYNW/o2EIxGTBQRjl+Zf
-         trMA==
+        d=ziepe.ca; s=google; t=1785281377; x=1785886177; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=TcnuxxaLXXCjqu1rDtFOdNvCOQDXn343+yTz8KiZZQE=;
+        b=osnYpXxacsob18FKPCPRYXY6nG/uxAVkHc0ElNRYRAtD7vh8lSz0cr2q1PuB0QWTbI
+         p53Fo3vtU/h1ggKYxOA8RwiSM5J639eIlEKq2d1x19AbI3tv/kwq1EEnGs/AX49Ltkdz
+         8BPwSEumnecj8PjXofMna+E4dW1MVj9idlx2497SuM+gE0ioQ16cZYZglWOUxe2O1wU7
+         01dcyXQWiUuasoZ9PGF7+MFR2PRah060OkKvnPASk1KRVCJYqEFvKoLUtgwsmJuiFoYb
+         6AuHk1jHAGIkq4lAGGDLFn/GzowWNke4NBtxctip0JlFYZ2M3upQuAa2yzt/yRglN33f
+         bOvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785279376; x=1785884176;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=j0z3e8zTvHIk07OlT0xkJIAxTqUKptSj/yxfg7rVtqA=;
-        b=UhPhVMC1woeiD8Kg9vFVOz8ckxGpvBVBughMtwXIwxmf60cJMQgRS5Ry4dP7jEBN5U
-         UJnMA+WEUVDMyB9mScFhD5nlb5t6n8J/1NBPfWGnO1uRb2zWgchPsG80D32CFIGkUMMo
-         ynJ614D9uUfziGL/vgyixULPuW0MFtLNblKagcdJJ/QgypzlXkMNn8/qbuHvKuw/Yert
-         MCobI2L2kpBQiJSTpwzsvi9Tuw4QlgG95bVZYSFGgB3zryv4oFmWGHmN7OCVSeUChgjn
-         mdOAOKZdpxC03NoQxLPTJKkg8LJq3eMqZoak1u/khi0vMwcdTCFRQpEl9+7PS7Xgb3Mi
-         /tNw==
-X-Forwarded-Encrypted: i=1; AHgh+RqvDwUH/o2EqCa3DcteTQ9+3rHZY+eGycAzK2YJ6h5QN/TTbew7vjaghVAO8Z0LTX9qiFadgmS8ya6y@lists.linux.dev
-X-Gm-Message-State: AOJu0YxXR/Rh+AQrqyns/vF/iMZEYJkseRIGpUWJaGoyHxa6hPB4yzyT
-	7CtGkkzkq1jjLrnFs3W6b9UPpSOoT+BzgEN/Hxn/HM0/gdKPCSCb6KeufDqzwL8t7LASLQZDnGt
-	MvkLxXr2ugDeM2rR3PEvWK8zVvuCnrmEHhz2oJTev
-X-Gm-Gg: AR+sD100WcTLBDFcOwUNnX8OcGaPbTGgQ2tzoGiJP0KZcVoReT+5YQF9BrOxVakIWxH
-	mKxBGdk0yaC/yzDwSNMCktaBV5glHsW0HuGHID07nmlzSvefd/EW8BDrU1cOaql5JBFpyShqo/h
-	vp/n+g11Kwta7YN4beK9tazsw7+c8xzg7T2A1tBtST2SPrqHD4HZNFwavsDMWmek5pgWrOYI7BD
-	Wolx9a6dCWX+WP7dTj3MPxMs5XVE8SXfJUDOgvFDJbNHciZ0si4B2TT3wjOyQtdwcveAmiCmbmQ
-	7jOsQNiCyKk4Y1NpZmWtsNHDIsmwU+kGOUNOyrhUvUiI8QjGa6nLsggShO9Zkj8eaYdgYZb28nH
-	I0mNrlrpAu7WQVwB6NVhWo/MT59n/u+Bvpb0=
-X-Received: by 2002:a17:90b:51c4:b0:38e:a52e:a3c9 with SMTP id
- 98e67ed59e1d1-38f6a2371dfmr4673531a91.8.1785279375292; Tue, 28 Jul 2026
- 15:56:15 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 28 Jul 2026 15:56:13 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 28 Jul 2026 15:56:13 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260722-tdx-selftests-v14-20-15ad654a50db@google.com>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com> <20260722-tdx-selftests-v14-20-15ad654a50db@google.com>
+        d=1e100.net; s=20251104; t=1785281377; x=1785886177;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TcnuxxaLXXCjqu1rDtFOdNvCOQDXn343+yTz8KiZZQE=;
+        b=m90P923F9tV9cAemG3NFFKmFAW+lCvMsx9+dbOgEiOgrK2hmZz6Euw8N0diBQtFnQt
+         tHvLxVQtMpsPy/VG3ncT9LNrzi3pgD8aodedWGd92deRqr0ZyRTSesceSL80WTesBKq0
+         yTkDjA6JYQ5HQOpbSkEBbCP2R2EGpYhtaCz2iEz6XcAurb+jvmtM+p4qSb9hD4a3qqwT
+         5UYfFcretKdH6g7DPG3ECyQvNw3Kb676PFX9oPEFG9biZD5OUjMl07LlIU2JcB9/OpTQ
+         ZKZk2lhy50u+kyymQxTDrUc2W2+AQBMQMuTa/3H4Y9fKSaDb9Hs1vazPpXnzGTfX6Kb4
+         qK+w==
+X-Gm-Message-State: AOJu0Ywus5GwC3/OA1fTKlV3KxR1i83vew93hvFJPcjzUef6XuE36Cig
+	9RPHXltTAbINtuyzMVEc2Exhdcj4GFVUJzkKh7idjlX4nvUTox3cn5Xn29m4hdYwhPo=
+X-Gm-Gg: AR+sD10hcDQHIfa3owJS8wm9wbpEOyyo1yaiHNXbA8T0dGpY03agF+xOxFGSG4yf8hQ
+	x0wFrGTXa66G8j+jgJ5zxLgl5o29Gm+26/40zdB6rcVogJoYmaMPv1sqefSSBYsfDsGwH+LBiAI
+	kUBkZBO8xo/uU5AU+7qI/8lr6pr1E8pRYBvdXStUmEKzOl9PYSOerVe8OU+8Tg4RdneLl58ou+k
+	DXRw60EfymGfAz5P2OUgb1nLf0vdQievKYzjT3R2r3/S/XRnChrC3NfTdIMuoPiipA8K2Ems1En
+	roQAD7DLGSW8+qmRa9MU1uRS1iG9rrULaKhOrh8zS9/IXRH2vJiNfbqUxGgFcO+GncA2mkfa9Au
+	pdS50044OdaIs1ngciiVe5f0LrWfKon5x/b4GUx2h+Yuq2YUThi9adAMX9nDjTNuxRzUCxvNCPZ
+	ZhMz7dzaURVwbwcttb6fCzbRSk6B+RSrYIU7UMwQFuYAZgPaNlN8Umdo8vt27CYW0g
+X-Received: by 2002:a17:90b:3c91:b0:38e:542:6485 with SMTP id 98e67ed59e1d1-38f6a37c1afmr4515935a91.12.1785281376718;
+        Tue, 28 Jul 2026 16:29:36 -0700 (PDT)
+Received: from ziepe.ca (d50-92-54-205.bchsia.telus.net. [50.92.54.205])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f814e523dsm112041a91.2.2026.07.28.16.29.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jul 2026 16:29:36 -0700 (PDT)
+Received: from jgg by jggl with local (Exim 4.95)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1worEt-0001oO-LX;
+	Tue, 28 Jul 2026 20:29:35 -0300
+Date: Tue, 28 Jul 2026 20:29:35 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	driver-core@lists.linux.dev, ankita@nvidia.com,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>, Petr Pavlu <petr.pavlu@suse.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
+	"Fontenot, Nathan" <Nathan.Fontenot@amd.com>
+Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security
+ Protocol (TDISP)
+Message-ID: <amk7Xzm5jmz+6SPJ@ziepe.ca>
+References: <20260705220819.2472765-1-djbw@kernel.org>
+ <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Tue, 28 Jul 2026 15:56:13 -0700
-X-Gm-Features: AUfX_myT2IvN6iidckmuNazEnQKmStOxbwX6QxqpsFhVtfsB_eRaYA9iggDvkuc
-Message-ID: <CAEvNRgF-B6pKMJnFv5xPkSSbz3wj01-LXTHrn+KnD7N1mp-+mQ@mail.gmail.com>
-Subject: Re: [PATCH v14 20/22] KVM: selftests: Implement MMIO WRITE for the
- TDX VM
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
-	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com>
 
-Lisa Wang <wyihan@google.com> writes:
+On Tue, Jul 28, 2026 at 06:20:10PM +1000, Alexey Kardashevskiy wrote:
+> On 6/7/26 08:08, Dan Williams wrote:
+> > Major changes since: "[PATCH v2 00/19] PCI/TSM: TEE I/O infrastructure" [1]
+> 
+> soo with the recent sudden sad news about Dan, I do not know where to start really so I just start...
+> 
+> Here is his unfinished work which I'd really like to see finished to
+> progress with the phase2 of the plan. How do we proceed from now on?
 
-> From: Erdem Aktas <erdemaktas@google.com>
->
-> Implement the tdx_mmio_write() to allow TDX VMs to request MMIO
-> emulation.
->
-> Follow the Intel Guest-Hypervisor Communication Interface (GHCI) spec
-> to the minimum extent that a spec-abiding TDX module will pass the
-> request to KVM. Skip implementing the #VE handler as described in the
-> GHCI spec to reduce selftests dependency.
->
-> To perform emulated I/O, VMs use the TDG.VP.VMCALL instruction to
-> request MMIO.
->
-> Signed-off-by: Erdem Aktas <erdemaktas@google.com>
-> Co-developed-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Co-developed-by: Lisa Wang <wyihan@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> ---
->  tools/testing/selftests/kvm/Makefile.kvm          |  1 +
->  tools/testing/selftests/kvm/include/x86/tdx/tdx.h | 17 +++++++++++
->  tools/testing/selftests/kvm/lib/x86/tdx/tdx.S     | 37 +++++++++++++++++++++++
->  3 files changed, 55 insertions(+)
->
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-> index 645d9aac61db..28b33ed8c2e6 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -33,6 +33,7 @@ LIBKVM_x86 += lib/x86/tdx/tdx_util.c
->  LIBKVM_x86 += lib/x86/ucall.c
->  LIBKVM_x86 += lib/x86/vmx.c
->  LIBKVM_x86 += lib/x86/tdx/td_boot.S
-> +LIBKVM_x86 += lib/x86/tdx/tdx.S
->
->  LIBKVM_arm64 += lib/arm64/gic.c
->  LIBKVM_arm64 += lib/arm64/gic_v3.c
-> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-> new file mode 100644
-> index 000000000000..6355a30bb47f
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-> @@ -0,0 +1,17 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef SELFTEST_KVM_TDX_TDX_H
-> +#define SELFTEST_KVM_TDX_TDX_H
-> +
-> +#include <linux/types.h>
-> +
-> +#define TDG_VP_VMCALL_VE_REQUEST_MMIO    48
-> +#define TDVMCALL_MMIO_WRITE		  1
-> +
-> +u64 __tdcall(u64 leaf, u64 r12, u64 r13, u64 r14, u64 r15);
-> +
-> +static inline u64 tdx_mmio_write(u64 address, u32 size, u64 data_in)
-> +{
-> +	return __tdcall(TDG_VP_VMCALL_VE_REQUEST_MMIO, size,
-> +			TDVMCALL_MMIO_WRITE, address, data_in);
-> +}
-> +#endif /* SELFTEST_KVM_TDX_TDX_H */
-> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx.S b/tools/testing/selftests/kvm/lib/x86/tdx/tdx.S
-> new file mode 100644
-> index 000000000000..dff48a3624a1
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx.S
-> @@ -0,0 +1,37 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +
-> +.globl __tdcall
-> +/*
-> + * u64 __tdcall(u64 leaf, u64 r12, u64 r13, u64 r14, u64 r15)
-> + */
-> +__tdcall:
-> +	push %r12
-> +	push %r13
-> +	push %r14
-> +	push %r15
-> +
-> +	/* Map C ABI fast arguments to TDX GHCI payload registers */
-> +	/* RDI=leaf, RSI=r12, RDX=r13, RCX=r14, R8=r15 */
-> +
-> +	mov %rdi, %r11
-> +	mov %rsi, %r12
-> +	mov %rdx, %r13
-> +	mov %rcx, %r14
-> +	mov %r8,  %r15
-> +
-> +	/* TDCALL boilerplate */
-> +	mov $0, %rax
-> +	mov $0xFC00, %rcx	/* Expose R10-R15 */
-> +	mov $0, %r10
-> +
-> +	/* tdcall instruction */
-> +	.byte 0x66, 0x0f, 0x01, 0xcc
-> +
-> +	/* Extract status */
-> +	mov %r10, %rax
-> +
-> +	pop %r15
-> +	pop %r14
-> +	pop %r13
-> +	pop %r12
-> +	ret
->
-> --
-> 2.55.0.229.g6434b31f56-goog
+Yes, we do, but at least I need some more time before considering what
+to do, sorry.
 
-We've been discussing internally if there's a nicer way to write this
-and let it scale to other tdcall wrappers in future tests, especially
-when we run out of registers for passing parameters (input and output)
-for other tdcalls.
+> The direction appears to be set, imho the immediate TODO list is:
+> - address "not-netlink-y enough" concerns
+> - teach pci_iomap() to map mixed private+shared BARs (ones which contain MSIX for the starter)
+> - always call pci_tsm_ops::enable_dma/disable_dma
+> - ditch the module trust parameter?
+> - add a knob to enable/disable DMA and keep TDI in RUN
 
-Looks like the only way to prevent the compiler from messing up register
-state before the tdcall instruction is to be completely explicit about
-it, and to use assembly in a .S file.
+I somehow suspect we should probably reduce the scope somewhat into
+smaller chunks at a time and try to follow this as a skeleton, but I
+haven't studied it carefully.
 
-I miss how readable it was in v13 [1]. Sean's comments at [1] are also
-echoed in [2].
-
-[1] https://lore.kernel.org/all/ajGUBQ3y8lvwM6_N@google.com/
-[2] https://lore.kernel.org/all/YCFwo5tD3Jad6F69@google.com/
-
-We can figure out how best to extend this when the other tests are
-worked on.
-
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+Jason
