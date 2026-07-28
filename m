@@ -1,226 +1,238 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80F833D6C0
-	for <linux-coco@lists.linux.dev>; Tue, 28 Jul 2026 16:29:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785256172; cv=none; b=tVRr/74xlp65i4vog0Ctd918UN6jRBxeawwYqCBpGCkDlards/TNyAUEolprhIzEyz04/Mmgtx1lRFI9rhBo9drkE2yUWmERDmVrpMpkurtiH0AN53uxCJjaXOTvNGLPmFla7vbdUQq0iE6fmyI6seMZbKvcpjpVwiSx0hnd5Ak=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785256172; c=relaxed/simple;
-	bh=MX0wJV+z6XrmccbfjJp7YafC0P4FALfhwuAFIt/qJyk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RlE3k1mgJNa//SYCx9bGLy1az+VLmB9IOwu/dze2FbDC1+wjYzvR5rpD/f+efoOaIur+jh2T84FsezXrI+lg5il39Eq/FLnW2JLgrI9O366RcFY9/N2aRtWQujHOtXxEBKO/72iFfQOHR8T9XsijWBgYKsUAZiyA8XsISrZIXQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BI7Mrl15; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9940E3BB139
+	for <linux-coco@lists.linux.dev>; Tue, 28 Jul 2026 22:56:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785279378; cv=pass; b=mhDZxpBgYr8CpP8gEF7wvuErY19iJYnZvpcmKkyI/yyNcZ/XCGg8xpL/njJwCt162jvrzhH8H5/nWQvKzTArUGnCiIsAp2GfPP8L5XisGLbj6QOfVF1TIJwTmG/yH6O9DJMveel51sk4M4ekAgAkMPhmcKjiUs8jEU9VsvvjJp0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785279378; c=relaxed/simple;
+	bh=t9KvR2dL1m4zEK1lVjuJI6tVdJ4dqE2a/Rcy64SXybw=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PKHh1QZ0S9UlsO9mXctKp/fcq6Q2nLKnkEQdNqd5KefNFblGG9hnH1SxN0o1vt6IXG3XLgwgVUTB9603oTahOk+J5pd+xzZaf1J6Y2jC5FhoQvgxecrcAqFrubr8047FnrpbEOxKy2kVFAKSBJNADjYc1APT7Pxwl42OfbzWdJU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=weJ/08J7; arc=pass smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BI7Mrl15"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785256169; x=1816792169;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=MX0wJV+z6XrmccbfjJp7YafC0P4FALfhwuAFIt/qJyk=;
-  b=BI7Mrl158dp+qED5uEUqMxNNTfj+r1sCcJ364+Jes1rfrW9EysknCHE0
-   DlJUS9D/H0JDX24i+EhPLUnFswPEEp9ldMtDFpXrUVGUdBpI0V0XH3U04
-   ULtU9qwjlIQhbgUl466PrEhMXeU7IFyIUtXggRYOTWeW5336NtBbTDJKI
-   QTzYzuVkhHgaRt/yYfd6gqaNpjQpjbbJBfX/MrvuV4w+zM+wY2TVBGhyQ
-   1/RjsMWBC+PPkUPzojG1Kg1B4wjRqfqc5cpNTQRpRUan4D0j8OK7qmNt0
-   uy33g0jDey9mEbqCMsGSf01V10vI2/Ry2f6Z5Oj2btefHeaVRiLENeDHd
-   w==;
-X-CSE-ConnectionGUID: yejUU/7ORCKBw5etoekeAQ==
-X-CSE-MsgGUID: /FZn6/UGR3GSMPYHfFnHPg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="96202437"
-X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; 
-   d="scan'208";a="96202437"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2026 09:29:29 -0700
-X-CSE-ConnectionGUID: 2wTNV8oMRL2SmhKicAFurA==
-X-CSE-MsgGUID: WXugfkNNSXqMvNzsilSfGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; 
-   d="scan'208";a="255832189"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa010.fm.intel.com with ESMTP; 28 Jul 2026 09:29:25 -0700
-Date: Wed, 29 Jul 2026 00:29:23 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Maloor, Kishen" <kishen.maloor@intel.com>,
-	"djbw@kernel.org" <djbw@kernel.org>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"Mehta, Sohil" <sohil.mehta@intel.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"Fang, Peter" <peter.fang@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"seanjc@google.com" <seanjc@google.com>
-Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
- module init and update
-Message-ID: <amjY4970g2xCkls0@yilunxu-OptiPlex-7050>
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-3-yilun.xu@linux.intel.com>
- <2d138a8acb685385016e0bb0535e7213952e44e5.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="weJ/08J7"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38101f85591so1381997a91.1
+        for <linux-coco@lists.linux.dev>; Tue, 28 Jul 2026 15:56:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785279376; cv=none;
+        d=google.com; s=arc-20260327;
+        b=MhVDhq8FUSVK73g9QnQncDttL6xbVL9AcqhweLkIxTzrG0oO4f4D6cxIRHpuCCcJKM
+         Go9BWucMj2GLhQ3i6a+oUW9A1Nl3NjnPFoLxLW9ePGUf/ynOaegMGYUYUDoc5fZbyrof
+         SwQCkqlXxPut/HeLbH6mqmKupggpYdyALw0cNE86Q20gnHhLOgtgs4HLNimzw7wPjVDh
+         HN85RO9vSegPO35guxhRq/sU2avDDcYSA+EzQix7Ao+7UsvB26gUgsA5kW5ka9IsvZ6l
+         T+WAXFRPEanm8rYyIClAkSAgRS3FaK+VqlgvHLNe8TfwyFSycTNOtOF8Rgu8/d/WGC++
+         exDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=j0z3e8zTvHIk07OlT0xkJIAxTqUKptSj/yxfg7rVtqA=;
+        fh=9kyat04scbTP+39PjeYBjhQwa8Y+KamyjZ1owMjMDF0=;
+        b=D96xF+0KUyZZnMRw1u1sjPPSiTtbq0S+gyGf6LaQTwzDSGzuaw+Ghhg/d73D6Owf39
+         9+1wUuB+efcomBIwsVvrP4m4f0GbllhowTF3mo8NaWUPXRjhvt5nQrDF1oCR/IktWXvG
+         oURQkYGDJnFDdVUcjEX52sIMlfZBNwY9jqrK3C/WpFZOrJa/0dJIQH9MrM00j9MxugSB
+         32LEoo6p1p1Y8feeKLBrEufNwYvkWFBnW6ZRHpRkACHT4wpju3lfEhhjcs2zywdQCcqB
+         FRwR7N+eU+BmYBXKLAutsFSrhyYLfTYyLPHtp3bgpIC+87qn1D7X9XtVbiid59dsMMM/
+         GM6A==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785279376; x=1785884176; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=j0z3e8zTvHIk07OlT0xkJIAxTqUKptSj/yxfg7rVtqA=;
+        b=weJ/08J7E7dpz6Zrykq4pmbpmFCOwDk1AraYrTt6aSRz5B3f7WkggyN9/vtpoKIZnP
+         /a+eIGdNnuEu5InPomtLKb/n08PusuAl7kjKSnEx920X6URoPCTdskxpQGoONtC7M5ps
+         zZ1oyfec+0jL+DjzvNFxOW9Q1gRTMqQ1a3CxyfrhR2OYl9St5i4iMgyd31+YLP+KbmO7
+         drjkXLB9Eopt1+jr4ZdM5BmZAAF0Ra38JxrrDd0SXBP2apYOom/Q14JPDN+xApn9DKyJ
+         VRVFzDm3NJwbFIBcI47zQiHT3EsJwAS5aafBj8bhQcz7+IfqHYNW/o2EIxGTBQRjl+Zf
+         trMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785279376; x=1785884176;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=j0z3e8zTvHIk07OlT0xkJIAxTqUKptSj/yxfg7rVtqA=;
+        b=UhPhVMC1woeiD8Kg9vFVOz8ckxGpvBVBughMtwXIwxmf60cJMQgRS5Ry4dP7jEBN5U
+         UJnMA+WEUVDMyB9mScFhD5nlb5t6n8J/1NBPfWGnO1uRb2zWgchPsG80D32CFIGkUMMo
+         ynJ614D9uUfziGL/vgyixULPuW0MFtLNblKagcdJJ/QgypzlXkMNn8/qbuHvKuw/Yert
+         MCobI2L2kpBQiJSTpwzsvi9Tuw4QlgG95bVZYSFGgB3zryv4oFmWGHmN7OCVSeUChgjn
+         mdOAOKZdpxC03NoQxLPTJKkg8LJq3eMqZoak1u/khi0vMwcdTCFRQpEl9+7PS7Xgb3Mi
+         /tNw==
+X-Forwarded-Encrypted: i=1; AHgh+RqvDwUH/o2EqCa3DcteTQ9+3rHZY+eGycAzK2YJ6h5QN/TTbew7vjaghVAO8Z0LTX9qiFadgmS8ya6y@lists.linux.dev
+X-Gm-Message-State: AOJu0YxXR/Rh+AQrqyns/vF/iMZEYJkseRIGpUWJaGoyHxa6hPB4yzyT
+	7CtGkkzkq1jjLrnFs3W6b9UPpSOoT+BzgEN/Hxn/HM0/gdKPCSCb6KeufDqzwL8t7LASLQZDnGt
+	MvkLxXr2ugDeM2rR3PEvWK8zVvuCnrmEHhz2oJTev
+X-Gm-Gg: AR+sD100WcTLBDFcOwUNnX8OcGaPbTGgQ2tzoGiJP0KZcVoReT+5YQF9BrOxVakIWxH
+	mKxBGdk0yaC/yzDwSNMCktaBV5glHsW0HuGHID07nmlzSvefd/EW8BDrU1cOaql5JBFpyShqo/h
+	vp/n+g11Kwta7YN4beK9tazsw7+c8xzg7T2A1tBtST2SPrqHD4HZNFwavsDMWmek5pgWrOYI7BD
+	Wolx9a6dCWX+WP7dTj3MPxMs5XVE8SXfJUDOgvFDJbNHciZ0si4B2TT3wjOyQtdwcveAmiCmbmQ
+	7jOsQNiCyKk4Y1NpZmWtsNHDIsmwU+kGOUNOyrhUvUiI8QjGa6nLsggShO9Zkj8eaYdgYZb28nH
+	I0mNrlrpAu7WQVwB6NVhWo/MT59n/u+Bvpb0=
+X-Received: by 2002:a17:90b:51c4:b0:38e:a52e:a3c9 with SMTP id
+ 98e67ed59e1d1-38f6a2371dfmr4673531a91.8.1785279375292; Tue, 28 Jul 2026
+ 15:56:15 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 28 Jul 2026 15:56:13 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 28 Jul 2026 15:56:13 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260722-tdx-selftests-v14-20-15ad654a50db@google.com>
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com> <20260722-tdx-selftests-v14-20-15ad654a50db@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2d138a8acb685385016e0bb0535e7213952e44e5.camel@intel.com>
+Date: Tue, 28 Jul 2026 15:56:13 -0700
+X-Gm-Features: AUfX_myT2IvN6iidckmuNazEnQKmStOxbwX6QxqpsFhVtfsB_eRaYA9iggDvkuc
+Message-ID: <CAEvNRgF-B6pKMJnFv5xPkSSbz3wj01-LXTHrn+KnD7N1mp-+mQ@mail.gmail.com>
+Subject: Re: [PATCH v14 20/22] KVM: selftests: Implement MMIO WRITE for the
+ TDX VM
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
+	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-> >  To adhere
-> > to this, TDH.SYS.UPDATE must configure the same features as the
-> > TDH.SYS.CONFIG. Record the kernel required add-on feature bitmap in a
-> > global var so that both phases can use it.
-> > 
-> > TDX module advances the version of TDH.SYS.CONFIG and TDH.SYS.UPDATE for
-> > the change, so use the latest version (v1) for add-on feature enabling.
-> > But supporting existing modules which only support v0 is still necessary
-> > until they are deprecated. In fact, it is unlikely that TDH.SYS.CONFIG
-> > ever needs to change again and the code would stay in v1.
-> 
-> Ha, these are hard things to predict.
-> 
-> >  So there is
-> > little value in worrying about deprecating v0 to save a couple lines of
-> > code in 5-7 years when these original TDX platforms sunset.
-> 
-> We can't deprecate it today, so what is this saying exactly?
+Lisa Wang <wyihan@google.com> writes:
 
-This paragraph is outdated, at that time the target is to always use the
-latest SEAMCALL version. I'll remove it.
+> From: Erdem Aktas <erdemaktas@google.com>
+>
+> Implement the tdx_mmio_write() to allow TDX VMs to request MMIO
+> emulation.
+>
+> Follow the Intel Guest-Hypervisor Communication Interface (GHCI) spec
+> to the minimum extent that a spec-abiding TDX module will pass the
+> request to KVM. Skip implementing the #VE handler as described in the
+> GHCI spec to reduce selftests dependency.
+>
+> To perform emulated I/O, VMs use the TDG.VP.VMCALL instruction to
+> request MMIO.
+>
+> Signed-off-by: Erdem Aktas <erdemaktas@google.com>
+> Co-developed-by: Sagi Shahar <sagis@google.com>
+> Signed-off-by: Sagi Shahar <sagis@google.com>
+> Co-developed-by: Lisa Wang <wyihan@google.com>
+> Signed-off-by: Lisa Wang <wyihan@google.com>
+> ---
+>  tools/testing/selftests/kvm/Makefile.kvm          |  1 +
+>  tools/testing/selftests/kvm/include/x86/tdx/tdx.h | 17 +++++++++++
+>  tools/testing/selftests/kvm/lib/x86/tdx/tdx.S     | 37 +++++++++++++++++++++++
+>  3 files changed, 55 insertions(+)
+>
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> index 645d9aac61db..28b33ed8c2e6 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -33,6 +33,7 @@ LIBKVM_x86 += lib/x86/tdx/tdx_util.c
+>  LIBKVM_x86 += lib/x86/ucall.c
+>  LIBKVM_x86 += lib/x86/vmx.c
+>  LIBKVM_x86 += lib/x86/tdx/td_boot.S
+> +LIBKVM_x86 += lib/x86/tdx/tdx.S
+>
+>  LIBKVM_arm64 += lib/arm64/gic.c
+>  LIBKVM_arm64 += lib/arm64/gic_v3.c
+> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
+> new file mode 100644
+> index 000000000000..6355a30bb47f
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef SELFTEST_KVM_TDX_TDX_H
+> +#define SELFTEST_KVM_TDX_TDX_H
+> +
+> +#include <linux/types.h>
+> +
+> +#define TDG_VP_VMCALL_VE_REQUEST_MMIO    48
+> +#define TDVMCALL_MMIO_WRITE		  1
+> +
+> +u64 __tdcall(u64 leaf, u64 r12, u64 r13, u64 r14, u64 r15);
+> +
+> +static inline u64 tdx_mmio_write(u64 address, u32 size, u64 data_in)
+> +{
+> +	return __tdcall(TDG_VP_VMCALL_VE_REQUEST_MMIO, size,
+> +			TDVMCALL_MMIO_WRITE, address, data_in);
+> +}
+> +#endif /* SELFTEST_KVM_TDX_TDX_H */
+> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx.S b/tools/testing/selftests/kvm/lib/x86/tdx/tdx.S
+> new file mode 100644
+> index 000000000000..dff48a3624a1
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx.S
+> @@ -0,0 +1,37 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +
+> +.globl __tdcall
+> +/*
+> + * u64 __tdcall(u64 leaf, u64 r12, u64 r13, u64 r14, u64 r15)
+> + */
+> +__tdcall:
+> +	push %r12
+> +	push %r13
+> +	push %r14
+> +	push %r15
+> +
+> +	/* Map C ABI fast arguments to TDX GHCI payload registers */
+> +	/* RDI=leaf, RSI=r12, RDX=r13, RCX=r14, R8=r15 */
+> +
+> +	mov %rdi, %r11
+> +	mov %rsi, %r12
+> +	mov %rdx, %r13
+> +	mov %rcx, %r14
+> +	mov %r8,  %r15
+> +
+> +	/* TDCALL boilerplate */
+> +	mov $0, %rax
+> +	mov $0xFC00, %rcx	/* Expose R10-R15 */
+> +	mov $0, %r10
+> +
+> +	/* tdcall instruction */
+> +	.byte 0x66, 0x0f, 0x01, 0xcc
+> +
+> +	/* Extract status */
+> +	mov %r10, %rax
+> +
+> +	pop %r15
+> +	pop %r14
+> +	pop %r13
+> +	pop %r12
+> +	ret
+>
+> --
+> 2.55.0.229.g6434b31f56-goog
 
-I updated the changelog according to these comments, appended at the
-end.
+We've been discussing internally if there's a nicer way to write this
+and let it scale to other tdcall wrappers in future tests, especially
+when we run out of registers for passing parameters (input and output)
+for other tdcalls.
 
-[...]
+Looks like the only way to prevent the compiler from messing up register
+state before the tdcall instruction is to be completely explicit about
+it, and to use assembly in a .S file.
 
-> > +static __init void set_tdx_addon_features(void)
-> > +{
-> > +	/*
-> > +	 * To add DICE-based TDX Quoting feature bit in tdx_addon_feature0
-> > when
-> > +	 * kernel is ready.
-> > +	 */
-> 
-> Can we not make this DICE specific?
+I miss how readable it was in v13 [1]. Sean's comments at [1] are also
+echoed in [2].
 
-Yes.
+[1] https://lore.kernel.org/all/ajGUBQ3y8lvwM6_N@google.com/
+[2] https://lore.kernel.org/all/YCFwo5tD3Jad6F69@google.com/
 
-> 
-> > +}
-> > +
-> >  static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
-> >  				    u64 global_keyid)
-> >  {
-> > +	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
-> >  	struct tdx_module_args args = {};
-> >  	u64 *tdmr_pa_array;
-> >  	size_t array_sz;
-> > @@ -1032,7 +1042,15 @@ static __init int config_tdx_module(struct
-> > tdmr_info_list *tdmr_list,
-> >  	args.rcx = __pa(tdmr_pa_array);
-> >  	args.rdx = tdmr_list->nr_consumed_tdmrs;
-> >  	args.r8 = global_keyid;
-> > -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
-> > +
-> > +	set_tdx_addon_features();
-> 
-> This is a little opaque. Why not something like
-> 
-> tdx_addon_feature0 = TDX_KERNEL_SUPPORTED_ADDONS &
-> tdx_sysinfo.features.tdx_features0;
+We can figure out how best to extend this when the other tests are
+worked on.
 
-Good to me.
-
-> 
-> tdx_addon_feature0 could probably be named better too. It means the features
-> that the kernel has decided to use. HMm, any ideas?
-
-How about tdx_supported_features0?
-
-BTW: I'm going to take Chao's advice [1] to remove the global var
-tdx_addon_feature0, and use a "static u64 get_tdx_supported_features0(void)"
-for TDH.SYS.CONFIG/UPDATE.
-
-> 
-> > +
-> > +	if (tdx_addon_feature0) {
-> > +		args.r9 = tdx_addon_feature0;
-> > +		seamcall_fn = TDH_SYS_CONFIG;
-> > +	}
-> 
-> This kind of feels hacky to me. tdx_addon_feature0 is zero if there are none
-> supported. It shouldn't interfere with the v0 call to set it unconditionally?
-> 
-> I think the connection between tdx_addon_feature0 and TDH_SYS_CONFIG is a bit
-> tenuous too. It is set if a extension is found that the kernel supports.
-> 
-> What do you think about wrapping TDH_SYS_CONFIG. Have the wrapper take all the
-> args including tdx_addon_feature0. Then have the wrapper decide which seamcall
-> to use. Have a nice comment that says "Use version of seamcall that supports add
-> ons if we have any, use the old one if none are supported for backward
-> compatibility".
-
-I'm good to add the wrapping for TDH_SYS_CONFIG and TDH_SYS_UPDATE.
-
-> 
-> BTW, looking at the tdx module, if I'm reading this right, r9 used to be
-> ignored. So did it need a new seamcall version? Some other VMM was passing
-> garbage?
-
-Yes, I think it prevents possible garbage inputs suddenly take effect.
-
-The updated changelog:
-
-----8<----
-
-    x86/virt/tdx: Set configurable features on TDX module init and update
-
-    TDX module identifies some configurable features that must be
-    explicitly enabled as the kernel supports them. These features affect
-    existing TDX systems: they may change the behaviors of the existing
-    features, reserve more memory, or impact the TDX initialization
-    performance. The kernel needs to explicitly enable these features at
-    boot or post-update initialization time.
-
-    Features such as TDISP, DICE-based quoting and TD migration are among
-    those configurable features. They use preemptible SEAMCALLs so require
-    extra memory and setup time to build a global service environment - the
-    TDX module extensions. Add support for the configurable feature setting
-    as the prerequisite for initializing TDX module extensions.
-
-    TDX module extends TDH.SYS.CONFIG and TDH.SYS.UPDATE with new bitmap
-    input parameters to specify which features to enable. The bitmap uses
-    the same definitions as TDX_FEATURES0. TDX module advances the version
-    of TDH.SYS.CONFIG and TDH.SYS.UPDATE for the enhancement. A previous
-    change [1] adds the 'version' field to struct tdx_module_args to support
-    versioned SEAMCALLs. Assign the version field to 1 if any configurable
-    feature is required.
-
-    Add a get_tdx_addon_features0() helper to return the bitmap of the
-    configurable features that the module & kernel both support. Initially,
-    this helper returns 0. It will be updated to return specific feature
-    bits as full kernel support lands. TDH.SYS.CONFIG consumes this bitmap
-    during TDX initialization.
-
-    Runtime updates keep the reported features unchanged across updates, so
-    that existing TDX users can continue to operate without disruption. To
-    adhere to this, provide TDH.SYS.UPDATE with the same bitmap returned by
-    get_tdx_addon_features0(). The bitmap is guaranteed to match the initial
-    TDH.SYS.CONFIG input because tdx_sysinfo.features.tdx_features0 is
-    cached and not refreshed after update.
-
-    Link: https://lore.kernel.org/all/20260722084634.131020-1-yilun.xu@linux.intel.com/ # [1]
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
