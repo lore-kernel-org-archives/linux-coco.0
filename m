@@ -1,200 +1,122 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E7141C72
-	for <linux-coco@lists.linux.dev>; Wed, 29 Jul 2026 12:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785328231; cv=fail; b=PPHbDcslHhhin71juUhGGrpCS+vBsycIUEKT9V4Qu9b/v+kLqSdxOf5epH006ud/lfIVwN92CIIUxKjyZjc7hwPZeu/q/qg9IRZfWI4XQyIQXUM0gDjJqVOAse9eQVh+P+gq0tRUvO1gBgwIih/wCVMZL0wASds4AT3nqqkcZDc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785328231; c=relaxed/simple;
-	bh=RHsFqqqaRBeTWywcQQJYxeNFgqVGtV07EsRt1tjCyII=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HRBIXF6WUu9S/aFCnuQrzGhc9uocGl+QdNaQCGe1YrsB9YW/ppkg2Yi8LIxF4Lea9t0JbS1XWEOtLzz4DuwKKd3iPH8v0nkEWGhxw3v5Cnj8qtBL6fZZFE/R93gaTS8IgdoRQYiBl37qXGyKzhzOi11XOCXQtxs4OXJCyD2X0tU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k64BRV/d; arc=fail smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F276480DF3;
+	Wed, 29 Jul 2026 12:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785328986; cv=none; b=AxppMETLBPUnsacNBOoj+Yl0lANPyF2ulrwHSUOjhNYrQIE95Xire9u6Vw8xam7ml8Z0BXHw4cIJqX0Oig13J2u3nGkxIGECuJ5WKilfI3A2oDmaI0NfuCvDFM7Q9YMakR2HXnhWc5PYYxfERv9W872xZNhK31IjIGQbgSb7+kU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785328986; c=relaxed/simple;
+	bh=Ia8/vfH7EGUbV4SUqITPF9OFmdFVzi+jxxqYzv7h8FY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=pBcLonfEVpruYRFIiY+Yfop9JtcQiZUZspoKQJQ44O+S3YdrOH7hjvTflDpuPVJ4SU5qxKGiQnooP2gfnJWIKcfAuVV2vkXkpmH56EVPPEZ6PVvCXuyQWBS5PzWSfo2RmJU+xLk2XxvOTiwcBBbg1iS8paivOf2y1hfPuc1Iz3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fk51lgHO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k64BRV/d"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785328227; x=1816864227;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=RHsFqqqaRBeTWywcQQJYxeNFgqVGtV07EsRt1tjCyII=;
-  b=k64BRV/dKw662f6zy1q1UYDSkExrHXBzjXn7lOQxHnjY8XePudjHnnKU
-   HCFhDW6I3yFNIomSxvCpuQn+6GlTPrJGkdU+eRzdafgDQpMdK1Kadpfek
-   TUNKniw5cKCnRIA6X3R1gnH/5zJTnIAfYxy0furg6yEeNMT5/dp0/noaa
-   3wVhTe6zk9OUVDOFfxCAlw2mdaUyXExCoKs5pBKWrP0S0j/N06ShX75T1
-   CwcUQ95A9iAZ+Gh9vXdITnPO+1O20B3ozAQVq8hzcnbN3A2s9bJMfcdf3
-   u+6hU4J0f2sI3E8K/Z7gi5WroCviJEqPxnSOo1i4e7MlFr7hWCh/T/lbl
-   g==;
-X-CSE-ConnectionGUID: XYyDEQAyQY+JO/hsE3nVjg==
-X-CSE-MsgGUID: N2ZvEPtZTCyJf1SZgr5FQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="85877760"
-X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; 
-   d="scan'208";a="85877760"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 05:30:25 -0700
-X-CSE-ConnectionGUID: IeuDj0aOQ5K+qvmO31FfQA==
-X-CSE-MsgGUID: fbO77KWhQYqXmyZAckJ2BQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; 
-   d="scan'208";a="253654914"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 05:30:25 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 29 Jul 2026 05:30:24 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Wed, 29 Jul 2026 05:30:24 -0700
-Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.25) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 29 Jul 2026 05:30:24 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GBR9X7ophmL1zkwdMpUlfTRYGtLXmwAk8ty5NgV/BDJaXpR2XLJ7mDjVzt79AkuZzUYhqmGX0MvgJBiz5AvLlmKsO/l44NCJb9AzsgO2uGIhPsUt0IPrcdKRZ4KZY+A6UG1VbvEzLTemPhVu+Q31uJ0GKdv0pVJTpUzGSke7OTcKY5S2WNOOZqmx5TRquyf8PL35p2IjO1VeNWqI5ok2HYUaIPC10L+Au5N8GIvTYFg2VLBaqm5N+/z9Rn13rXGaQZfBZzSmQc6jHTUliWSzuQOwuAHTNAO2jroST3tIBLypQSp/Ku2FEpxw3ATSgWxMCCxscJVLGllYXdx3GiquVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9yV3DyVSUpuKatDbmLuCDEDRHiJxrfdf3w43uOmm+qM=;
- b=BXgYSZn47vvrf7IH9jFIEb30yHKNbvKKxCcJrrhQHaftYrSyTenkJsMu6dUxw1Ef9Pu61mz7jzVI248+lmmR9TqFsww6xnHkrIv6M6hBqMieMw/OQ01dMAbbDwRzk1LajJgQ8QYIzRXBKa+HpK6QOKgPJy2VLY4uafZWdxBIBCppA9c0MN1ASF2TMYisEkLZKpZUtdb+aic7xgNR/G6/4JI3DgNnPAU5xfFgyGgRb6e7mScv8BGUF0Yik/RuoeGQgQPRN1im6AzE7NJCid3O36M9kSbasdSEZjX8uk3VpcdEInK0MDsvpgwNdb8vh9Piw27vBg8ASJXTdGx0tk/vGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com (2603:10b6:a03:3b9::19)
- by DS0PR11MB7622.namprd11.prod.outlook.com (2603:10b6:8:144::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Wed, 29 Jul
- 2026 12:30:17 +0000
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e]) by SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e%4]) with mapi id 15.21.0270.012; Wed, 29 Jul 2026
- 12:30:17 +0000
-From: Peter Fang <peter.fang@intel.com>
-To: Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau
-	<kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, "Kuppuswamy
- Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>
-CC: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>, <linux-kernel@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>, Xiaoyao Li
-	<xiaoyao.li@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, Peter Fang
-	<peter.fang@intel.com>
-Subject: [PATCH v3 2/4] virt: tdx-guest: Calculate the Quote buffer size safely
-Date: Wed, 29 Jul 2026 05:29:32 -0700
-Message-ID: <20260729122939.1340412-3-peter.fang@intel.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260729122939.1340412-1-peter.fang@intel.com>
-References: <20260729122939.1340412-1-peter.fang@intel.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0179.namprd03.prod.outlook.com
- (2603:10b6:a03:338::34) To SJ0PR11MB5645.namprd11.prod.outlook.com
- (2603:10b6:a03:3b9::19)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fk51lgHO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71AFC1F00A3A;
+	Wed, 29 Jul 2026 12:42:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785328976;
+	bh=Bj9zUQeAnHt3kbxhKKqsrB/Vw/2J1kCjeLL3HysJ+OQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=fk51lgHOMjZ7UJy7rfHUcnROpoZJbqgvZ+c4OYkSOe9jR6EyxJQLtCRvfMrkzVzx/
+	 Rf5/RAEHf7GArTBqQ2VB+DFRw0QyG2ql7V72s/sHnBfMKNLGNkKhrriLiArX2QJ6cx
+	 1qjqorspgFLmPUCGw/ASAMk1xr2Hf3oQaNKGeNdpiutzp0s+nYTRSZ/CF0deF+AX7m
+	 j+0tciNij7lI/yw9EWy9c9F87NR3fNmwd7IBMyco2FdZOP3CL96MBIgHeLxBgXTGUm
+	 RadyiuP8fXfsneErpOdP7H1gRrbUQIP2TUtweQLf125QqSdmlDtS8C9gom80W6A0AG
+	 Isf/jYJgsYTQQ==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Mostafa Saleh <smostafa@google.com>
+Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v8 12/23] dma: swiotlb: pass mapping attributes by
+ reference
+In-Reply-To: <amnRB98ZZIysHuM3@google.com>
+References: <20260717180442.110954-1-aneesh.kumar@kernel.org>
+ <20260717180442.110954-13-aneesh.kumar@kernel.org>
+ <ami_mpd_1pF4Tmdu@google.com> <yq5a5x1ygo7z.fsf@kernel.org>
+ <amnRB98ZZIysHuM3@google.com>
+Date: Wed, 29 Jul 2026 18:12:38 +0530
+Message-ID: <yq5acxw6dl1d.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB5645:EE_|DS0PR11MB7622:EE_
-X-MS-Office365-Filtering-Correlation-Id: 90df64e4-53dc-4a55-2f61-08deed6d2162
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|10067099003|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: TDPMm9Q9rTMLIzMGsHkddy9t9rbl/CbLjV44p9bQyz34HgzeFlkLwOopNZoYD0ySpUbPmaGlPOGupAibqY7FNAI5FgwabWv+T5ZKt4oDBVEq91HM88Ao9BAK4p9n6o7oHdwB/3PdxCbu67ObEsVlhyqrWjJXo4fSru2fWkpEzjNz/R91b+1bZXC+4k5QWwOvw6p/rgvRonX5DxlnF9s8eV6F3V4IabhRJV5261diRqpx9qVapED19ywpbsHqUXN0OY4TiNsBZ1cRjLWlaxf9PWRG4nP3MY1lCNq18fTOz/N9xGH6U2YMm4cVMdBqHNrR/t+YYUipvuP5zznsG6F4IRDGv+2RaJIZrAImITrYeQjCaz3ui5YWX5FlH5zySd2f9pbfG8oSWf0jO6T+72kbVidTbPiLtBIl1QZH7eZk+TbPh7kFXUjGP1fUOjfBzT3cTxF7fB+ilY9oaTc3DSBOaZhDQmPKOhhswyWaFA/9bEzM7dOblLpBE1JRk+t+DnuRBxyg0PnKREVGeLOboHX6W6fqth4WtUvryowjQZYvEOZDpDUwh28ujv/ZIcFuDa3LsTFANBLxjK2/u7bDPcIBsvtrCmX11ehIH40Tp4P8SMM8Ahne7THxUSK035Txw86EDskKT7MWQT/Z4/GsWWHE4+nbbXouASDRNY8RjANI1ZM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5645.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Sr148xHwrCxxsk3Ouz7nkbw9geB/dQZIc7VKbsubYGXfTFhZsNU1BxkXTfL3?=
- =?us-ascii?Q?Hf+yr4lgoIFNlS3jesoTCuXNQ3N3U43Kgumv9bQv0GNjIAjT2TFiQQg5UUhJ?=
- =?us-ascii?Q?wls3gVuHG9VwgTtlXU/1402ySXBwnmAM+8RYzU9ybGOq96tjob8T8QxkSkFw?=
- =?us-ascii?Q?QX2IpS6/pyePf9uAaAyW8Wgum8ZHv/+sZbhp+od75B9G3ulLF8oiYUiCBeFJ?=
- =?us-ascii?Q?M5JT4OVzaVc4aX3GgxZyiIveToA8wdQP2IPIemGvnkdy0z5g4B1cZ+D6GdZe?=
- =?us-ascii?Q?IdCPN24BJ96Vd6kqPXrvpMmZfWfuUaqipIeQ4+gz79BTMAvpRwgsy6dIq2gz?=
- =?us-ascii?Q?r+i7VsAguK3YyLIQIGUej3l+3y/b2Dw6UgM8UZJ5jN3jlOB+9vjRBEg/XS42?=
- =?us-ascii?Q?QUEP06WA2Uxt1RIQrOm1uBkTC17wSUaNudcxjKCu2moLMOm7iEHz5IUUFUHY?=
- =?us-ascii?Q?bwTShsqsX1lICdzz/WWjsBJGbx/vGMi+2qeU2nRLZcYQNJnkW9J3ajZel06R?=
- =?us-ascii?Q?tTPmh0MANC0Crk6nXHZ6iIIfVCJluHN3MagqCLCHxRFYA7ueD0vuoZZ4kz/R?=
- =?us-ascii?Q?B40zJrtLJu1DBUDqE9T7OtA1EbrDUsrM7pL01UIOysP7UtePS+5riZjtc5q6?=
- =?us-ascii?Q?/R00cQl6LUQOgQZuRGLyG520/R8JDceav+kPTZWYdWr4hYhRdNlcvqFbJ84Q?=
- =?us-ascii?Q?cEHZ7jBBnf47gm6cJLVp3rOqipNRJYNQBybJvdGAiIywxYtiDigxq/k+FRR/?=
- =?us-ascii?Q?HnjdCVWJctHujq9DH4WkvIEYGzkYcnqDOlBCB0/ZQYbicirxbDyw+QxVTonj?=
- =?us-ascii?Q?eAzRouIUM9tCN0llndZX4A9GauKJI+MK/NuX2uwhuDu/xdGNFpT0MfU1ioIg?=
- =?us-ascii?Q?xfuARc8klCs26DV5gBVZww9h/L6XndG/G+JUj3c5+b1S/5YVP4Kmk/n99SnD?=
- =?us-ascii?Q?oybcEYz4HBZGFMH6+yZ/PRhwr4+Z1oHEI66MLMmAA0GdhkX8XcX6w3waCwug?=
- =?us-ascii?Q?PS4UcChKsDWiYrTnC/CNP2bNr3BGsdS6e71DuDiUO3978USXqtVwCRH25dyn?=
- =?us-ascii?Q?xTn6hFp9bL1wuJHobpOlwbLR04pcZMbE0Og4k2laOGumM6Axsh0rXxRC+rMK?=
- =?us-ascii?Q?qnRhfIe7LnmnqhlW6PKcoJOw37Fvv1qPO1WoHaR/bV7j3t+qxagin/QkNv4z?=
- =?us-ascii?Q?pBvrQgrj6aMMyKoryZ40VLDRWdURsS4wA07PPtFM+XoYw6IOoDsXRe+IyZbV?=
- =?us-ascii?Q?rVufkZCm2Ut5k1dXWGE8nQgv2vwxLDWdb1cu9rQaXbEOdd/f2YUJFi56F+6d?=
- =?us-ascii?Q?tPGCPKzq3irXS0eEBy76E5CwnrJgHAxsEK1sLPVFL+EKXdpSW/bRafDE5AR1?=
- =?us-ascii?Q?6gy/5YXgmjge/sFZtgqylkyQFeCin/hZlJFuDenfFUhxefQU3KdryGzf/JHS?=
- =?us-ascii?Q?HjowSnLm2rQRc5IUonylIwVWJMf1DTCCDFSqYWKCfXG+ci+1TJyVz64F0MMY?=
- =?us-ascii?Q?mDb4ldPLia6QtWxvwJ2z/8Vf16wVqRaknFfQImslEkAEeq0CFjVPgyTNoGWr?=
- =?us-ascii?Q?1YkMw2iUrd+3WWTkdDhsO6zJeqstR4FEtpLm0J5a7mqjG3zXy1Lc4SsDeZYx?=
- =?us-ascii?Q?g6Quuq0PEQIxhGi4RtP2DQXUBgnR5980gbHzIIHN6f7UzksDeIaSsRo9ho1t?=
- =?us-ascii?Q?XdiC+luQ3FgfaBfWZOyDivV57SHLtJeS71U6Q7NH5EbiRtUdsS4nY93kQqkB?=
- =?us-ascii?Q?RAwSnCoTgw=3D=3D?=
-X-Exchange-RoutingPolicyChecked: nO6Gqd8onH5WCrYysxBihvJAQnuKKibO5qsypFGXwvRXFC8tMzJ5Tg4oB1T8iRo0pPYreAsbSdAQImbxwMqxZMjkb8SEUlJfH8WcPAAXQ88L03W687egc/945f49f2bw3uks0hgWlraKIBtzoSPToe1lhEAxeYPdb3ByjudwLjzi3nE/joJCtc3QjusSuS9zGJJTKZeMq2fCT2u6Pr1X3L4hQS8UPMPQYl5s72KDm6MSC3yxD5H9FMU/7LUTplyi/mG+qMLnn5Y4qZQu7HXGdP99Y9P3pjkJjWAkPOjPsIM+a1ZUZQJsRO2QV6AsXMm7S01P0Zm4APaniYKJNlw4+A==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90df64e4-53dc-4a55-2f61-08deed6d2162
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5645.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 12:30:10.2401
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hu52udlYiLWGUgWkBfJrDmJ/VzwaxfR7s6OwhCe9zpjoqHeUjujhhccnB+ezAHFh91N1S8MMuYTn6OZ7he6vuA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7622
-X-OriginatorOrg: intel.com
+Content-Type: text/plain
 
-struct tdx_quote_buf has a trailing flexible array member.
-struct_size_t() calculates the size of this kind of struct safely. It
-handles overflow, which is an important property since the Quote size
-comes from the host.
+Mostafa Saleh <smostafa@google.com> writes:
 
-Use it in place of the fixed length limit.
+> On Wed, Jul 29, 2026 at 02:35:36PM +0530, Aneesh Kumar K.V wrote:
+>> Mostafa Saleh <smostafa@google.com> writes:
+>> 
+>> > On Fri, Jul 17, 2026 at 11:34:30PM +0530, Aneesh Kumar K.V (Arm) wrote:
+>> >> Change swiotlb_tbl_map_single() to take the DMA mapping attributes by
+>> >> reference and update the direct callers accordingly.
+>> >> 
+>> >> This is a preparatory change for a follow-up patch which updates the
+>> >> attributes based on the selected swiotlb pool. Keeping the signature change
+>> >> separate makes the follow-up patch easier to review.
+>> >> 
+>> >
+>> > I do not understand the point of this, why would
+>> > swiotlb_tbl_map_single() force attrs over the caller which should
+>> > already know the context (whether DMA is shared or not) which case
+>> > would this be useful to force from the SWIOTLB code?
+>> >
+>> 
+>> The mapping request was for private memory, but the device could not use
+>> it because the dma_capable() (force_dma_unencrypted() == true) check
+>> failed. As a result, dma_direct_map_phys() allocated a swiotlb bounce
+>> buffer, which is shared. Since the DMA now targets the shared bounce
+>> buffer rather than the original private memory, the attributes must be
+>> updated to reflect the new shared mapping.
+>> 
+>> dma_addr = phys_to_dma(dev, phys);
+>> if (unlikely(!dma_capable(dev, dma_addr, size, true)))
+>> 	if (is_swiotlb_active(dev))
+>> 		return swiotlb_map(dev, phys, size, dir, attrs);
+>> 
+>> 
+>
+> But it does not make sense to me to have it in such a low level
+> function, and it shouldn't change the attrs that was passed.
+>
+> dma_direct_map_phys() is the right place to do this it should set
+> the correct attrs before calling swiotlb_map().
+>
 
-Signed-off-by: Peter Fang <peter.fang@intel.com>
----
-v3:
- - Split out the use of struct_size_t() for buffer length from the v2
-   "Allocate Quote buffer dynamically" patch to refactor first. [Dave]
- - Drop the Reviewed-by tags from v2 (Kiryl, Binbin) as the patch was
-   reworked.
----
- drivers/virt/coco/tdx-guest/tdx-guest.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+There is a possibility that we may support io_tlb_mem with cc_shared =
+false in the future. As a result, only swiotlb_map() knows which type of
+bounce buffer was used, making it the only place where the attributes
+can be updated correctly.
 
-diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-index d0303e31e816..f47c5429d002 100644
---- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-+++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-@@ -170,7 +170,7 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
- #define GET_QUOTE_SUCCESS		0
- #define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
- 
--#define TDX_QUOTE_MAX_LEN		(GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
-+#define TDX_QUOTE_BUF_LEN(n)		struct_size_t(struct tdx_quote_buf, data, n)
- 
- /* struct tdx_quote_buf: Format of Quote request buffer.
-  * @version: Quote format version, filled by TD.
-@@ -315,7 +315,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
- 
- 	out_len = READ_ONCE(quote_buf->out_len);
- 
--	if (out_len > TDX_QUOTE_MAX_LEN)
-+	if (TDX_QUOTE_BUF_LEN(out_len) > GET_QUOTE_BUF_SIZE)
- 		return -EFBIG;
- 
- 	buf = kvmemdup(quote_buf->data, out_len, GFP_KERNEL);
--- 
-2.53.0
-
+-aneesh
