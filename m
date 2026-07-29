@@ -1,127 +1,332 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAF93191D3
-	for <linux-coco@lists.linux.dev>; Tue, 28 Jul 2026 23:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8B51DED4C;
+	Wed, 29 Jul 2026 00:35:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785281378; cv=none; b=fAPjatbdWQ2f3oe2NhxfHmVX6lijtB0HcpO3q2W69ui0UMhpUuWmlByPyRYEOt5SBg5j8M9/1FvVkMh55A5QE7WHYrmDnhDLyiYuS8f5Kah1KxZ6LPPHjrpCh1gHfiOCFWlUrl2PYwMOPf8YxWiB4kdcMfuRyOS2M2VQ4fTSuUc=
+	t=1785285308; cv=none; b=kL3WZsoHEs9icMGX+zQJsQT5fX75Bob1jRftZLvRgYXGCv3yzS1SFJFl9ZJc5S8jjbwMuB6igH/XcHPFqqyO4vVHVLZDRdGG8x6V5zmT3I4Z2wfBgWZ1PmiV5jkIJBFsJ6jq/La7KdOGRzoqFMOXH1i2rPLhqjXGn/I9+NLNzTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785281378; c=relaxed/simple;
-	bh=lMzH1GE+iKbOtPjkrcpk63ibuXDoMGMXvQt/koZqnqQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZbIemq3r3vnJNStlKl3t1euxnB61eFIqwSrKMkH+KwKMYxX6ig7Sw748u/LBhA0y9isMi5/v3xdfExspn1SJaDraNAo84sbORN07NARDea9YN1OyrJu/IlAi4QQ4EenQ0Ajdlt97CLuOfVeqZBWe+1Cwq65XSAtPfoDBZjFrKrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=osnYpXxa; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1785285308; c=relaxed/simple;
+	bh=rXxVkwP5k266Q2puwDgnSAD4HRNQYoQS8Px70OYC1Ks=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=LKD7a87ndotha2o8TajWTcin7C2/cZpRlSkKpxvxdVG6muIzC0weI7JsJXmcLPXmCXufYaHfEgaLQdpFK0DX9Hvw+2TduPdisGdB9qJsn119ZPy0YDqSnfhDAuhjGhajz1IR8OuKirftwfI8J3G0c+3awPC7086DgRMJn8qVrKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pnlReedl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="osnYpXxa"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38f620399a0so264150a91.2
-        for <linux-coco@lists.linux.dev>; Tue, 28 Jul 2026 16:29:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1785281377; x=1785886177; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TcnuxxaLXXCjqu1rDtFOdNvCOQDXn343+yTz8KiZZQE=;
-        b=osnYpXxacsob18FKPCPRYXY6nG/uxAVkHc0ElNRYRAtD7vh8lSz0cr2q1PuB0QWTbI
-         p53Fo3vtU/h1ggKYxOA8RwiSM5J639eIlEKq2d1x19AbI3tv/kwq1EEnGs/AX49Ltkdz
-         8BPwSEumnecj8PjXofMna+E4dW1MVj9idlx2497SuM+gE0ioQ16cZYZglWOUxe2O1wU7
-         01dcyXQWiUuasoZ9PGF7+MFR2PRah060OkKvnPASk1KRVCJYqEFvKoLUtgwsmJuiFoYb
-         6AuHk1jHAGIkq4lAGGDLFn/GzowWNke4NBtxctip0JlFYZ2M3upQuAa2yzt/yRglN33f
-         bOvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785281377; x=1785886177;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TcnuxxaLXXCjqu1rDtFOdNvCOQDXn343+yTz8KiZZQE=;
-        b=m90P923F9tV9cAemG3NFFKmFAW+lCvMsx9+dbOgEiOgrK2hmZz6Euw8N0diBQtFnQt
-         tHvLxVQtMpsPy/VG3ncT9LNrzi3pgD8aodedWGd92deRqr0ZyRTSesceSL80WTesBKq0
-         yTkDjA6JYQ5HQOpbSkEBbCP2R2EGpYhtaCz2iEz6XcAurb+jvmtM+p4qSb9hD4a3qqwT
-         5UYfFcretKdH6g7DPG3ECyQvNw3Kb676PFX9oPEFG9biZD5OUjMl07LlIU2JcB9/OpTQ
-         ZKZk2lhy50u+kyymQxTDrUc2W2+AQBMQMuTa/3H4Y9fKSaDb9Hs1vazPpXnzGTfX6Kb4
-         qK+w==
-X-Gm-Message-State: AOJu0Ywus5GwC3/OA1fTKlV3KxR1i83vew93hvFJPcjzUef6XuE36Cig
-	9RPHXltTAbINtuyzMVEc2Exhdcj4GFVUJzkKh7idjlX4nvUTox3cn5Xn29m4hdYwhPo=
-X-Gm-Gg: AR+sD10hcDQHIfa3owJS8wm9wbpEOyyo1yaiHNXbA8T0dGpY03agF+xOxFGSG4yf8hQ
-	x0wFrGTXa66G8j+jgJ5zxLgl5o29Gm+26/40zdB6rcVogJoYmaMPv1sqefSSBYsfDsGwH+LBiAI
-	kUBkZBO8xo/uU5AU+7qI/8lr6pr1E8pRYBvdXStUmEKzOl9PYSOerVe8OU+8Tg4RdneLl58ou+k
-	DXRw60EfymGfAz5P2OUgb1nLf0vdQievKYzjT3R2r3/S/XRnChrC3NfTdIMuoPiipA8K2Ems1En
-	roQAD7DLGSW8+qmRa9MU1uRS1iG9rrULaKhOrh8zS9/IXRH2vJiNfbqUxGgFcO+GncA2mkfa9Au
-	pdS50044OdaIs1ngciiVe5f0LrWfKon5x/b4GUx2h+Yuq2YUThi9adAMX9nDjTNuxRzUCxvNCPZ
-	ZhMz7dzaURVwbwcttb6fCzbRSk6B+RSrYIU7UMwQFuYAZgPaNlN8Umdo8vt27CYW0g
-X-Received: by 2002:a17:90b:3c91:b0:38e:542:6485 with SMTP id 98e67ed59e1d1-38f6a37c1afmr4515935a91.12.1785281376718;
-        Tue, 28 Jul 2026 16:29:36 -0700 (PDT)
-Received: from ziepe.ca (d50-92-54-205.bchsia.telus.net. [50.92.54.205])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f814e523dsm112041a91.2.2026.07.28.16.29.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 16:29:36 -0700 (PDT)
-Received: from jgg by jggl with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1worEt-0001oO-LX;
-	Tue, 28 Jul 2026 20:29:35 -0300
-Date: Tue, 28 Jul 2026 20:29:35 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	driver-core@lists.linux.dev, ankita@nvidia.com,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>, Petr Pavlu <petr.pavlu@suse.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
-	"Fontenot, Nathan" <Nathan.Fontenot@amd.com>
-Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security
- Protocol (TDISP)
-Message-ID: <amk7Xzm5jmz+6SPJ@ziepe.ca>
-References: <20260705220819.2472765-1-djbw@kernel.org>
- <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pnlReedl"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D4D33C2BCF6;
+	Wed, 29 Jul 2026 00:35:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1785285307;
+	bh=rXxVkwP5k266Q2puwDgnSAD4HRNQYoQS8Px70OYC1Ks=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=pnlReedljRqBBuX9Lrqh53y9ZLQOr3bh7TFitsXHDbdYN+B6Q1yTQ97ytsaKqK73j
+	 0vasrgNEXgwOtqgHBMw5T5kJ84w/1t+SUQGwQ4+4P/moJgkBgDcY9t9sZv6kZkl9m8
+	 w+/N91ATWwvIFkzLhHhgHqFEa0ZAjuja3EWVpeQzPzPlfThnOfQBE9U+2mPKm2mzvA
+	 3pI2x0dSNdXO8f6JcqY9GTG7ZRl+0sj7iD4kurfQzUxDYYJlLiMgQTXSZpzS5bCnTf
+	 +4W1XAKKP0+a38T8f5GeH6jHVNj/YovkOYHvtB9FkOZ0fSgNg9q9c+3SSY/mxkizF/
+	 2zzIBddFMxFlg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ACB8EC53219;
+	Wed, 29 Jul 2026 00:35:07 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Date: Tue, 28 Jul 2026 17:35:00 -0700
+Subject: [PATCH v9 01/41] KVM: guest_memfd: Introduce per-gmem attributes,
+ use to guard user mappings
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260728-gmem-inplace-conversion-v9-1-35f9aec2aed2@google.com>
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+In-Reply-To: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+ brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+ jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+ oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+ rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+ steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+ wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+ pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+ liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+ Peter Xu <peterx@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ Vlastimil Babka <vbabka@kernel.org>, Baoquan He <baoquan.he@linux.dev>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+ linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=8419;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=5T8jUvAbr4NciGozXeSU2r+HcpXz1T4blTXJYI/48dQ=;
+ b=pVskf3jNWVP/adsuyY144jORlQv6WH07wxNwvPtNz3kZgwNUpGWArB2aau5Y97s1F48yMwGIF
+ iKjyx885QjvDwv2l2M6CRCkkZcB2pZiP5mNfNaHHkQOK9Li4Mn5J9gu
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
 
-On Tue, Jul 28, 2026 at 06:20:10PM +1000, Alexey Kardashevskiy wrote:
-> On 6/7/26 08:08, Dan Williams wrote:
-> > Major changes since: "[PATCH v2 00/19] PCI/TSM: TEE I/O infrastructure" [1]
-> 
-> soo with the recent sudden sad news about Dan, I do not know where to start really so I just start...
-> 
-> Here is his unfinished work which I'd really like to see finished to
-> progress with the phase2 of the plan. How do we proceed from now on?
+From: Sean Christopherson <seanjc@google.com>
 
-Yes, we do, but at least I need some more time before considering what
-to do, sorry.
+Start plumbing in guest_memfd support for in-place private<=>shared
+conversions by tracking attributes via a maple tree.  KVM currently tracks
+private vs. shared attributes on a per-VM basis, which made sense when a
+guest_memfd _only_ supported private memory, but tracking per-VM simply
+can't work for in-place conversions as the shared/private status of a given
+page needs to be per-gmem_inode, not per-VM.
 
-> The direction appears to be set, imho the immediate TODO list is:
-> - address "not-netlink-y enough" concerns
-> - teach pci_iomap() to map mixed private+shared BARs (ones which contain MSIX for the starter)
-> - always call pci_tsm_ops::enable_dma/disable_dma
-> - ditch the module trust parameter?
-> - add a knob to enable/disable DMA and keep TDI in RUN
+Use the filemap invalidation lock to protect the maple tree, as taking the
+lock for read when faulting in memory (for userspace or the guest) isn't
+expected to result in meaningful contention, and using a separate lock
+would add significant complexity (avoiding deadlock is quite difficult).
 
-I somehow suspect we should probably reduce the scope somewhat into
-smaller chunks at a time and try to follow this as a skeleton, but I
-haven't studied it carefully.
+Co-developed-by: Vishal Annapurve <vannapurve@google.com>
+Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+Co-developed-by: Fuad Tabba <tabba@google.com>
+Signed-off-by: Fuad Tabba <tabba@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Tested-by: Shivank Garg <shivankg@amd.com>
+Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+ virt/kvm/guest_memfd.c | 133 ++++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 116 insertions(+), 17 deletions(-)
 
-Jason
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 0bca42a0b346b..3d6547c5ba9a6 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -4,6 +4,7 @@
+ #include <linux/falloc.h>
+ #include <linux/fs.h>
+ #include <linux/kvm_host.h>
++#include <linux/maple_tree.h>
+ #include <linux/mempolicy.h>
+ #include <linux/pseudo_fs.h>
+ #include <linux/pagemap.h>
+@@ -33,6 +34,13 @@ struct gmem_inode {
+ 	struct list_head gmem_file_list;
+ 
+ 	u64 flags;
++	/*
++	 * Every index in this inode, whether memory is populated or
++	 * not, is tracked in attributes. The entire range of indices,
++	 * corresponding to the size of this inode, is represented in
++	 * this maple tree.
++	 */
++	struct maple_tree attributes;
+ };
+ 
+ static __always_inline struct gmem_inode *GMEM_I(struct inode *inode)
+@@ -60,9 +68,25 @@ static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
+ 	return gfn - slot->base_gfn + slot->gmem.pgoff;
+ }
+ 
++static u64 kvm_gmem_interpret_entry(struct inode *inode, void *entry)
++{
++	if (WARN_ON_ONCE(!entry)) {
++		bool initially_shared = GMEM_I(inode)->flags &
++					GUEST_MEMFD_FLAG_INIT_SHARED;
++
++		return initially_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
++	}
++
++	return xa_to_value(entry);
++}
++
+ static bool kvm_gmem_is_private_mem(struct inode *inode, pgoff_t index)
+ {
+-	return !(GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED);
++	struct maple_tree *mt = &GMEM_I(inode)->attributes;
++	void *entry = mtree_load(mt, index);
++
++	return kvm_gmem_interpret_entry(inode, entry) &
++	       KVM_MEMORY_ATTRIBUTE_PRIVATE;
+ }
+ 
+ static bool kvm_gmem_is_shared_mem(struct inode *inode, pgoff_t index)
+@@ -363,10 +387,13 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+ 	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
+ 		return VM_FAULT_SIGBUS;
+ 
+-	if (!kvm_gmem_is_shared_mem(inode, vmf->pgoff))
+-		return VM_FAULT_SIGBUS;
++	filemap_invalidate_lock_shared(inode->i_mapping);
++	if (kvm_gmem_is_shared_mem(inode, vmf->pgoff))
++		folio = kvm_gmem_get_folio(inode, vmf->pgoff);
++	else
++		folio = ERR_PTR(-EACCES);
++	filemap_invalidate_unlock_shared(inode->i_mapping);
+ 
+-	folio = kvm_gmem_get_folio(inode, vmf->pgoff);
+ 	if (IS_ERR(folio)) {
+ 		if (PTR_ERR(folio) == -EAGAIN)
+ 			return VM_FAULT_RETRY;
+@@ -519,6 +546,51 @@ bool __weak kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
+ 	return true;
+ }
+ 
++static int kvm_gmem_init_inode(struct inode *inode, loff_t size, u64 flags)
++{
++	struct gmem_inode *gi = GMEM_I(inode);
++	MA_STATE(mas, &gi->attributes, 0, (size >> PAGE_SHIFT) - 1);
++	u64 attrs;
++	int r;
++
++	inode->i_op = &kvm_gmem_iops;
++	inode->i_mapping->a_ops = &kvm_gmem_aops;
++	inode->i_mode |= S_IFREG;
++	inode->i_size = size;
++	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
++
++	/*
++	 * guest_memfd memory is neither migratable nor swappable: set
++	 * inaccessible to gate off both.
++	 */
++	mapping_set_inaccessible(inode->i_mapping);
++	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
++
++	gi->flags = flags;
++
++	mt_set_external_lock(&gi->attributes,
++			     &inode->i_mapping->invalidate_lock);
++
++	/*
++	 * Store default attributes for the entire gmem instance. Ensuring every
++	 * index is represented in the maple tree at all times simplifies the
++	 * conversion and merging logic.
++	 */
++	attrs = gi->flags & GUEST_MEMFD_FLAG_INIT_SHARED ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
++
++	/*
++	 * Acquire the invalidation lock purely to make lockdep happy.  The
++	 * maple tree library expects all stores to be protected via the lock,
++	 * and the library can't know when the tree is reachable only by the
++	 * caller, as is the case here.
++	 */
++	filemap_invalidate_lock(inode->i_mapping);
++	r = mas_store_gfp(&mas, xa_mk_value(attrs), GFP_KERNEL);
++	filemap_invalidate_unlock(inode->i_mapping);
++
++	return r;
++}
++
+ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+ {
+ 	static const char *name = "[kvm-gmem]";
+@@ -549,16 +621,9 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+ 		goto err_fops;
+ 	}
+ 
+-	inode->i_op = &kvm_gmem_iops;
+-	inode->i_mapping->a_ops = &kvm_gmem_aops;
+-	inode->i_mode |= S_IFREG;
+-	inode->i_size = size;
+-	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
+-	mapping_set_inaccessible(inode->i_mapping);
+-	/* Unmovable mappings are supposed to be marked unevictable as well. */
+-	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
+-
+-	GMEM_I(inode)->flags = flags;
++	err = kvm_gmem_init_inode(inode, size, flags);
++	if (err)
++		goto err_inode;
+ 
+ 	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR, &kvm_gmem_fops);
+ 	if (IS_ERR(file)) {
+@@ -763,9 +828,13 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 	if (!file)
+ 		return -EFAULT;
+ 
++	filemap_invalidate_lock_shared(file_inode(file)->i_mapping);
++
+ 	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, max_order);
+-	if (IS_ERR(folio))
+-		return PTR_ERR(folio);
++	if (IS_ERR(folio)) {
++		r = PTR_ERR(folio);
++		goto out;
++	}
+ 
+ 	if (!folio_test_uptodate(folio)) {
+ 		clear_highpage(folio_page(folio, 0));
+@@ -785,6 +854,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 	else
+ 		folio_put(folio);
+ 
++out:
++	filemap_invalidate_unlock_shared(file_inode(file)->i_mapping);
+ 	return r;
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
+@@ -916,6 +987,15 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
+ 
+ 	mpol_shared_policy_init(&gi->policy, NULL);
+ 
++	/*
++	 * Memory attributes are protected by the filemap invalidation lock, but
++	 * the lock structure isn't available at this time.  Immediately mark
++	 * maple tree as using external locking so that accessing the tree
++	 * before it's fully initialized results in NULL pointer dereferences
++	 * and not more subtle bugs.
++	 */
++	mt_init_flags(&gi->attributes, MT_FLAGS_LOCK_EXTERN | MT_FLAGS_USE_RCU);
++
+ 	gi->flags = 0;
+ 	INIT_LIST_HEAD(&gi->gmem_file_list);
+ 	return &gi->vfs_inode;
+@@ -923,7 +1003,26 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
+ 
+ static void kvm_gmem_destroy_inode(struct inode *inode)
+ {
+-	mpol_free_shared_policy(&GMEM_I(inode)->policy);
++	struct gmem_inode *gi = GMEM_I(inode);
++
++	mpol_free_shared_policy(&gi->policy);
++
++	/*
++	 * Note!  Checking for an empty tree is functionally necessary
++	 * to avoid explosions if the tree hasn't been fully
++	 * initialized, i.e. if the inode is being destroyed before
++	 * guest_memfd can set the external lock, lockdep would find
++	 * that the tree's internal ma_lock was not held.
++	 */
++	if (!mtree_empty(&gi->attributes)) {
++		/*
++		 * Acquire the invalidation lock purely to make lockdep happy,
++		 * the inode is unreachable at this point.
++		 */
++		filemap_invalidate_lock(inode->i_mapping);
++		__mt_destroy(&gi->attributes);
++		filemap_invalidate_unlock(inode->i_mapping);
++	}
+ }
+ 
+ static void kvm_gmem_free_inode(struct inode *inode)
+
+-- 
+2.55.0.508.g3f0d502094-goog
+
+
