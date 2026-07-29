@@ -1,165 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BC745D5C7;
-	Wed, 29 Jul 2026 10:58:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9F745348A
+	for <linux-coco@lists.linux.dev>; Wed, 29 Jul 2026 11:07:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785322706; cv=none; b=eOLRDDe2pOEzGXeEihpAC7m+J/c0OdU3jQs/W66yQItkXx0ORkA1FBRPnPhaprui75trDLjSOSTvfm8X8HFTQQzijBx16TvRAbzolnceWy7/Vh1q81/M4FHeu60h+ntUEOSnOwbSRb9R0yCrhpbdZG+EcCimNB5501Vbrh4qoQM=
+	t=1785323267; cv=none; b=MeBajxrrFYWhqMx75oAbbvj6d7/yHmiFiiptgKuuh/Fr2IhCLdMUO8s1FrsLkcoXYHWTrRVL61PxmKVohwujY/6HPanGKj/bN3SQQCitewf6yAxpPOelUvFm+R/RGoMpoMhFHOcJ6alMeIFLZJFv1AMPEmocNAqeVKYNKxXcdH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785322706; c=relaxed/simple;
-	bh=cA/TyjNainImWoZ1WgoIbtVzLcV/x03gUiUjuYc+ZpQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R3LwA5kigFIweOwF+sNWzgN6eJS5UQGi7eW5dVKj6QyKm/2u0ZiajwmrCUjBZsvsJ6ypjEq5ddbjlupYC2z6a2VB72MJd6yPe07ea+sfmzU2gnZQ/7Be9GkjVZhdqySU5azmT49HvdFtxknmDsF97AEgwMZemeqC+l3QvPUGedE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eIXHdDcy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785323267; c=relaxed/simple;
+	bh=C6k8P7gpW7co/5WMrPa1FIUhudJWsyxTbvgvV44jdjQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LARnromYet6tsO+Xw7a6iqXg//Mva4wakdzVVtOKfAEK57xgB9gG3plbL4+n/ZKYsT/ccga/9T2PTJO9C8hjb9l1nRo7d+uFrr5XKhY0oV3BG627SYhQCuHBMYyHEYAdqogBstTqMiyePsxLx1a7tNs7Xj3FjKPa1dNFfffmdXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D3Pdkfun; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eIXHdDcy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42181F00A3A;
-	Wed, 29 Jul 2026 10:58:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785322704;
-	bh=VyFx2U/VszxvRM92qAy54Y4oL0XsKZy0mURmPScFf8w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=eIXHdDcyltbN2unLeeeA8hK4cDT8x9vCiL57PIRrPd8uu0RllQdrFCsSPV9xq0JOz
-	 2td1zXirKskj7jqLT9/fBwWgLbd0FrsgX120H9v5OdS4JJDGZmc4bFfpUgVWfrcw0j
-	 fa2k7XiTnH2vqPviyLvVAv8n9Wo1xlFJHxdVLNICu3jeIV8jOuN1kY0T+21mllbYuc
-	 kukncjy49nsuNQkxKeSsqYklKJ731WbThmJOBWxKh20tLBkr7NvhdclaFB8YH0WHwF
-	 5HaZgBKQ4P5WgNGbk4ZRjrfM2y/EQcEraqYxDWPap85WhD0TVWsxMJ8oVBD+VHEVNe
-	 8i4uxTOESTYWA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wp1zS-0000000A4TC-1yAO;
-	Wed, 29 Jul 2026 10:58:22 +0000
-Date: Wed, 29 Jul 2026 11:58:21 +0100
-Message-ID: <86qzkmcbaq.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu
- <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v15 13/37] KVM: arm64: CCA: Support timers in realm RECs
-In-Reply-To: <dff2eee7-09cf-4f85-8dec-c7c243f3ba0f@arm.com>
-References: <20260715142841.80544-1-steven.price@arm.com>
-	<20260715142841.80544-14-steven.price@arm.com>
-	<861pcoeqk5.wl-maz@kernel.org>
-	<dff2eee7-09cf-4f85-8dec-c7c243f3ba0f@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D3Pdkfun"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785323265; x=1816859265;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=C6k8P7gpW7co/5WMrPa1FIUhudJWsyxTbvgvV44jdjQ=;
+  b=D3Pdkfun9pev7VGHJVoVWUjyqSNeaRJ4N4rd9yt1k94rIzqEnVV2BnhC
+   qndpulfcTltWzL/q77K4HdJ5MSnEgTZhQERkW6tzSuobN6lXQyAI7F7dl
+   dZgybIaliUhIXHHe9+RuSQxUPTYHpZiwyTrQysq3CYnsoIc/cQ4DZgH2h
+   +6k2U6XFPM5UcoyUoujIlFskG7K8hc6IstQXDDgqthhdKq2uglcmiZEaS
+   BBAa+GSL0fh3qnWrDSsBOiJP+HNCqcHndsG9D3xLjmfT+qVJvtAcxFfoZ
+   YPu1KiWJztS72vOmKfpp4fCzD7XZf9ibOr2Ky4VSuXpHhSTNXgJvlUauy
+   Q==;
+X-CSE-ConnectionGUID: jQ70ClmjRfahHOznH4huQw==
+X-CSE-MsgGUID: /5A80tIORZSO38vs8TqA5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="85049959"
+X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; 
+   d="scan'208";a="85049959"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 04:07:44 -0700
+X-CSE-ConnectionGUID: BLHQ9rCzS76c3vZpzjKRCw==
+X-CSE-MsgGUID: +PW3ZyRRRTGMSnbNIOwY7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; 
+   d="scan'208";a="298197946"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa001.jf.intel.com with ESMTP; 29 Jul 2026 04:07:41 -0700
+Date: Wed, 29 Jul 2026 19:07:39 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>,
+	"djbw@kernel.org" <djbw@kernel.org>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"seanjc@google.com" <seanjc@google.com>
+Subject: Re: [PATCH v2 04/17] x86/virt/tdx: Add extra memory to TDX module
+ for the extensions
+Message-ID: <amne+/6eIDdp0RZk@yilunxu-OptiPlex-7050>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-5-yilun.xu@linux.intel.com>
+ <36d0108950e80c8ac769534fea2d8a6c0907c431.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <36d0108950e80c8ac769534fea2d8a6c0907c431.camel@intel.com>
 
-On Wed, 29 Jul 2026 11:47:03 +0100,
-Steven Price <steven.price@arm.com> wrote:
+> > TDH.EXT.MEM.ADD uses a new parameter type, HPA_LIST_INFO, to provide
+> > this memory. This type represents a list of pages for TDX module to
+> > access. It references an 'hpa_list page' which contains the list of
+> > target HPAs. It collapses the HPA of the hpa_list page and the number
+> > of valid target HPAs into a 64 bit raw value for SEAMCALL parameters.
+> > The hpa_list page is always a medium, TDX module never keeps the
+> > hpa_list page.
 > 
-> On 27/07/2026 10:21, Marc Zyngier wrote:
-> > On Wed, 15 Jul 2026 15:28:15 +0100,
-> > Steven Price <steven.price@arm.com> wrote:
-> >>
-> >> The RMM keeps track of the timer while the realm REC is running, but on
-> >> exit to the normal world KVM is responsible for handling the timers.
-> >>
-> >> A later patch adds the support for propagating the timer values from the
-> >> exit data structure and calling kvm_realm_timers_update().
-> >>
-> >> Signed-off-by: Steven Price <steven.price@arm.com>
-> >> ---
-> >> Changes since v14:
-> >>  * Special case in kvm_timer_vcpu_load()/kvm_timer_vcpu_put() the timer
-> >>    handling.
-> >> Changes since v12:
-> >>  * Adapt to upstream changes.
-> >> Changes since v11:
-> >>  * Drop the kvm_is_realm() check from timer_set_offset(). We already
-> >>    ensure that the offset is 0 when calling the function.
-> >> Changes since v10:
-> >>  * KVM_CAP_COUNTER_OFFSET is now already hidden by a previous patch.
-> >> Changes since v9:
-> >>  * No need to move the call to kvm_timer_unblocking() in
-> >>    kvm_timer_vcpu_load().
-> >> Changes since v7:
-> >>  * Hide KVM_CAP_COUNTER_OFFSET for realm guests.
-> >> ---
-> >>  arch/arm64/kvm/arch_timer.c  | 38 +++++++++++++++++++++++++++++++++---
-> >>  include/kvm/arm_arch_timer.h |  2 ++
-> >>  2 files changed, 37 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
-> >> index 4155fe89b58a..fdd68f1f5b7b 100644
-> >> --- a/arch/arm64/kvm/arch_timer.c
-> >> +++ b/arch/arm64/kvm/arch_timer.c
-> >> @@ -482,6 +482,20 @@ static void kvm_timer_update_irq(struct kvm_vcpu *vcpu, bool new_level,
-> >>  			    timer_ctx);
-> >>  }
-> >>  
-> >> +void kvm_realm_timers_update(struct kvm_vcpu *vcpu)
-> >> +{
-> >> +	struct arch_timer_cpu *arch_timer = &vcpu->arch.timer_cpu;
-> >> +	int i;
-> >> +
-> >> +	for (i = 0; i < NR_KVM_EL0_TIMERS; i++) {
-> >> +		struct arch_timer_context *timer = &arch_timer->timers[i];
-> >> +		bool status = timer_get_ctl(timer) & ARCH_TIMER_CTRL_IT_STAT;
-> >> +		bool level = kvm_timer_enabled(timer) && status;
-> >> +
-> >> +		kvm_timer_update_irq(vcpu, level, timer);
-> >> +	}
-> >> +}
-> >> +
-> > 
-> > Why do we need this? What is so special about CCA that it cannot use
-> > the existing timer flow?
+> I think you are going to need to put the basic concepts up front. Don't lead
+> with the acronyms. The TDX module needs to get a list of pages. It takes them in
+> a PFN array that is encoded like (...). Create a helper for this, and name it
+> the same after the TDX module term for this format, HPA_LIST_INFO.
 > 
-> CCA is a little special because the timer context is owned by the RMM
-> while the realm is executing. It's the RMM which actually loads/saves
-> the timer registers not KVM.
+> Basically there are no exotic concepts here. So you can explain it in normal
+> kernel terms.
+
+OK. My refactored version:
+
+    When adding the memory, the TDX module needs to get a list of pages.
+    It accepts these target pages in a PFN array that is encoded into a
+    single 64-bit SEAMCALL parameter: the PFN of a container page that
+    holds the PFN array, and the number of the pages packed into a single
+    value. Create a helper to encode this format and name it after the TDX
+    module term: HPA_LIST_INFO.
+
+[...]
+
+> >  TDX module extensions consume tens of megabytes memory that
+> > will never be returned to host. Use contiguous page allocation to
+> > isolate these large blocks entirely, avoiding permanent memory
+> > fragmentation and reducing buddy allocator efficiency. Print the
+> > allocation amount on TDX module extensions initialization for
+> > visibility.
 > 
-> The RMM returns some of the timer state on every exit, and the host is
-> responsible for updating the interrupt status (as the host controls the
-> GIC emulation).
+> Hmm. I'm not sure the user will care about the specific category of extension
+> used memory.
 
-But KVM relies on the timers being live when the vcpu is loaded. So
-the first port of call should be for CCA to adapt to KVM, and not the
-other way around.
+Not sure if you suggest removing the print, but this is suggested by Dave:
 
-You can always make sure that the timers are in the registers at the
-point where you reach the KVM code.
+https://lore.kernel.org/all/62bec236-4716-4326-8342-1863ad8a3f24@intel.com/
 
-	M.
+[...]
 
--- 
-Without deviation from the norm, progress is not possible.
+> > +struct tdx_hpa_list {
+> > +	u64 phys[PAGE_SIZE / sizeof(u64)];
+> > +};
+> > +
+> > +static_assert(sizeof(struct tdx_hpa_list) == PAGE_SIZE);
+> 
+> What kind of change are we guarding against here?
+
+I don't expect changes of the format, but this is to ensure the
+container of the PFN array is a page, and also serves as the
+documentation.
+
+[...]
+
+> > +	i = 0;
+> > +	while (i < required_pages) {
+> > +		unsigned int nents = min(required_pages - i,
+> > +					 ARRAY_SIZE(hpa_list->phys));
+> 
+> I think this whole loop could be made clearer. nents is the number of pages we
+> will add for an execution of the seamcall. That is not clear enough either.
+> 
+> > +		unsigned int j;
+> > +
+> > +		for (j = 0; j < nents; j++)
+> > +			hpa_list->phys[j] = page_to_phys(page + i + j);
+> > +
+> > +		ret = tdx_ext_mem_add(virt_to_page(hpa_list), nents);
+> > +		/*
+> > +		 * No SEAMCALLs to reclaim the added pages. For simple error
+> > +		 * handling, leak all pages.
+> > +		 */
+> > +		WARN(ret, "Fatal: TDX module rejected (%d) memory for
+> > extensions, stranded all pages\n",
+> > +		     ret);
+> > +		if (ret)
+> > +			break;
+> 
+> Can we combine the ret checks?
+
+Yes.
+
+> 
+> > +
+> > +		i += nents;
+> 
+> Maybe a full name for i?
+
+Yes, I changed the name of i & nents.
