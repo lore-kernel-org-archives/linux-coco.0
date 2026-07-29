@@ -1,122 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F276480DF3;
-	Wed, 29 Jul 2026 12:42:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0A048CD52
+	for <linux-coco@lists.linux.dev>; Wed, 29 Jul 2026 13:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785328986; cv=none; b=AxppMETLBPUnsacNBOoj+Yl0lANPyF2ulrwHSUOjhNYrQIE95Xire9u6Vw8xam7ml8Z0BXHw4cIJqX0Oig13J2u3nGkxIGECuJ5WKilfI3A2oDmaI0NfuCvDFM7Q9YMakR2HXnhWc5PYYxfERv9W872xZNhK31IjIGQbgSb7+kU=
+	t=1785331714; cv=none; b=ihNsVKQfGddxmON98jmYkikbL9MaFfE3OeDa89cJVcVkFF8hYD9jwWUcQYFQPoBFdm9caLP8TM+UuMG8W7NyGEaHrDacDataN9ECJNR1KkEIFhybM3ZVBugbxhKE9+jeHeI0/xEsQTkvEPMATHRgiCqi5Y8vas8e3l1ISrRYcPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785328986; c=relaxed/simple;
-	bh=Ia8/vfH7EGUbV4SUqITPF9OFmdFVzi+jxxqYzv7h8FY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=pBcLonfEVpruYRFIiY+Yfop9JtcQiZUZspoKQJQ44O+S3YdrOH7hjvTflDpuPVJ4SU5qxKGiQnooP2gfnJWIKcfAuVV2vkXkpmH56EVPPEZ6PVvCXuyQWBS5PzWSfo2RmJU+xLk2XxvOTiwcBBbg1iS8paivOf2y1hfPuc1Iz3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fk51lgHO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785331714; c=relaxed/simple;
+	bh=uVa1dC7xe1aAeUnbgl4sqICBfeNILVt/mq2OEqNA2R0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=K0kBRHaoyJaLVkAo3IyWQsWqE9ksu00GfpdJA4WQsmB5yF5iDvjLyJVq8vuINtC7SvKFS3PJp45cw2IQtT+hJC8hXnEmVV0EqbVG1YI3x56Swnv69H/mP6SLPpXjXYk2NaKLARs0m5vwA0wMgR0cNwag3sNq0iQ7zz7LD+9nzWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ra8Sd0DS; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fk51lgHO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71AFC1F00A3A;
-	Wed, 29 Jul 2026 12:42:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785328976;
-	bh=Bj9zUQeAnHt3kbxhKKqsrB/Vw/2J1kCjeLL3HysJ+OQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=fk51lgHOMjZ7UJy7rfHUcnROpoZJbqgvZ+c4OYkSOe9jR6EyxJQLtCRvfMrkzVzx/
-	 Rf5/RAEHf7GArTBqQ2VB+DFRw0QyG2ql7V72s/sHnBfMKNLGNkKhrriLiArX2QJ6cx
-	 1qjqorspgFLmPUCGw/ASAMk1xr2Hf3oQaNKGeNdpiutzp0s+nYTRSZ/CF0deF+AX7m
-	 j+0tciNij7lI/yw9EWy9c9F87NR3fNmwd7IBMyco2FdZOP3CL96MBIgHeLxBgXTGUm
-	 RadyiuP8fXfsneErpOdP7H1gRrbUQIP2TUtweQLf125QqSdmlDtS8C9gom80W6A0AG
-	 Isf/jYJgsYTQQ==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Mostafa Saleh <smostafa@google.com>
-Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH v8 12/23] dma: swiotlb: pass mapping attributes by
- reference
-In-Reply-To: <amnRB98ZZIysHuM3@google.com>
-References: <20260717180442.110954-1-aneesh.kumar@kernel.org>
- <20260717180442.110954-13-aneesh.kumar@kernel.org>
- <ami_mpd_1pF4Tmdu@google.com> <yq5a5x1ygo7z.fsf@kernel.org>
- <amnRB98ZZIysHuM3@google.com>
-Date: Wed, 29 Jul 2026 18:12:38 +0530
-Message-ID: <yq5acxw6dl1d.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ra8Sd0DS"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c856470fe9fso844451a12.2
+        for <linux-coco@lists.linux.dev>; Wed, 29 Jul 2026 06:28:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785331711; x=1785936511; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Z1Uw7Rea6IolmWTWAWQHNW+WUS1KBbg7Hs/3YV9RZGI=;
+        b=Ra8Sd0DSGLxGk9aueVIB4KIJnYF8YKTAYwIfrmkfEJHkbjchIK0zH+mOa8Rr37mNSi
+         A0SHcFdg+UQDRHnh0S6SNlhBfuetNVXoM3Isa7u5JyW+RF83kWEMyYnDpo2MyQykr5eO
+         u49Lwr23RIFpqRd4r/Pf+llSK0hx7/0jhps3HKfihkpjNpPkHrHFjSRTAeU73iYhEPQe
+         0AV3NcU9hGEtd/JADvihKP9DDUXSlP4fJROBNt5C4GkMHlUe0jmN5hVhiusgBmhs/gZr
+         khsnWobLJdZxat0ojkronyc5jQl3SxIlm3f3XSo3mzdLF3a0t0GjUGZYHG/ErXwcVdCk
+         76Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785331711; x=1785936511;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Z1Uw7Rea6IolmWTWAWQHNW+WUS1KBbg7Hs/3YV9RZGI=;
+        b=X4l+UFShrZdPUnLmxcVGuU+/Kl0YEChc6623ihbk0p3rbp4845pzLtrfMDwrujghtI
+         gWzCWQZi9TkkfSn6TebGYHb7aK1gb9Ht9HUo/t2PYBOsERnPKfGmeaMA0iO4G8tsRueY
+         si7GTedaYC7jutsWYFagvm0AFCtX31f5gzMoHqfIVnPmBCmrjHlAwmKv0BckYkLF1yzO
+         DH0JwinhYr9NEddG6ssMxYJv5egqs6s9GZYyXr1XizFRCsjXv1go5//whSlcU3eQotYB
+         rYZmXTTNB6bdk8o+LswakQBWGemR8mkyG1k34Zeeb4VdEV63vX/3NeYomvtvfBaVPaj9
+         IftQ==
+X-Forwarded-Encrypted: i=1; AHgh+RptoKZ2nNQ68fGYZ5UORr9fuGCb6u4VjXjGunt8sjOGP0JqrbxtzNDZLnW8Y6GY+pBZmt7+6HHwz7IH@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy4Dft5U8qNMMUhz+tCWNEs1/MhMjmTgd60X4KwqO9CpoE6cj8i
+	IC0ThW8wdWPTYOsv4DlWVldNDG6jSzMq1xj3DLHG4szNQX/Mlt6cNuxUhclZQ5Ewa9TvLAsb6rv
+	lsxUz9A==
+X-Received: from pfcf6.prod.google.com ([2002:a05:6a00:2386:b0:847:8e58:df6f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:990:b0:848:2f74:d8d0
+ with SMTP id d2e1a72fcca58-84e934463aemr7142102b3a.65.1785331710486; Wed, 29
+ Jul 2026 06:28:30 -0700 (PDT)
+Date: Wed, 29 Jul 2026 06:28:29 -0700
+In-Reply-To: <20260729085908.21368-1-jirislaby@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20260729085908.21368-1-jirislaby@kernel.org>
+Message-ID: <amn_n5dykcLAHVoz@google.com>
+Subject: Re: [PATCH v2] KVM: x86/tdx: Do not print error message on
+ non-present feature
+From: Sean Christopherson <seanjc@google.com>
+To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Cc: linux-kernel@vger.kernel.org, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
+	Dan Williams <dan.j.williams@intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Mostafa Saleh <smostafa@google.com> writes:
+For the scope:
 
-> On Wed, Jul 29, 2026 at 02:35:36PM +0530, Aneesh Kumar K.V wrote:
->> Mostafa Saleh <smostafa@google.com> writes:
->> 
->> > On Fri, Jul 17, 2026 at 11:34:30PM +0530, Aneesh Kumar K.V (Arm) wrote:
->> >> Change swiotlb_tbl_map_single() to take the DMA mapping attributes by
->> >> reference and update the direct callers accordingly.
->> >> 
->> >> This is a preparatory change for a follow-up patch which updates the
->> >> attributes based on the selected swiotlb pool. Keeping the signature change
->> >> separate makes the follow-up patch easier to review.
->> >> 
->> >
->> > I do not understand the point of this, why would
->> > swiotlb_tbl_map_single() force attrs over the caller which should
->> > already know the context (whether DMA is shared or not) which case
->> > would this be useful to force from the SWIOTLB code?
->> >
->> 
->> The mapping request was for private memory, but the device could not use
->> it because the dma_capable() (force_dma_unencrypted() == true) check
->> failed. As a result, dma_direct_map_phys() allocated a swiotlb bounce
->> buffer, which is shared. Since the DMA now targets the shared bounce
->> buffer rather than the original private memory, the attributes must be
->> updated to reflect the new shared mapping.
->> 
->> dma_addr = phys_to_dma(dev, phys);
->> if (unlikely(!dma_capable(dev, dma_addr, size, true)))
->> 	if (is_swiotlb_active(dev))
->> 		return swiotlb_map(dev, phys, size, dir, attrs);
->> 
->> 
->
-> But it does not make sense to me to have it in such a low level
-> function, and it shouldn't change the attrs that was passed.
->
-> dma_direct_map_phys() is the right place to do this it should set
-> the correct attrs before calling swiotlb_map().
->
+  x86/virt/tdx
 
-There is a possibility that we may support io_tlb_mem with cc_shared =
-false in the future. As a result, only swiotlb_map() knows which type of
-bounce buffer was used, making it the only place where the attributes
-can be updated correctly.
+because this is no longer in KVM's purview.
 
--aneesh
+On Wed, Jul 29, 2026, Jiri Slaby (SUSE) wrote:
+> Before commit 165e77353831 below, the kernel did not print anything
+> during boot if X86_FEATURE_TDX_HOST_PLATFORM was not present, unless TDX
+> enablement was explicitly requested via a module parameter.
+> 
+> After the commit, when attempting to load TDX automatically, this is
+> emitted to the log:
+>   virt/tdx: TDX not supported by the host platform
+> 
+> It is emitted with the "error" level, hence it is disturbing. It is not
+> an error to run CPUs without the feature.
+> 
+> Drop this silent-boot-breaking error message for the automatic
+> initialization path.
+> 
+> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+> Fixes: 165e77353831 ("KVM: x86/tdx: Do VMXON and TDX-Module initialization during subsys init")
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Chao Gao <chao.gao@intel.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Sean Christopherson <seanjc@google.com>
+
+Reviewed-by: Sean Christopherson <seanjc@google.com>
