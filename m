@@ -1,77 +1,29 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9587D407CEF
-	for <linux-coco@lists.linux.dev>; Thu, 30 Jul 2026 11:10:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D177639DBD7;
+	Thu, 30 Jul 2026 13:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785409812; cv=none; b=iuGWTZNedwR8J9rcTFbPNRRDmGgSuMp8E8y8TqM4iDU7ALoVMG7udwGqmbSRrqfRQYN6gPfn31EG2Jv6LwIt7nE10Y+9eoXIAhhdUQgcDl+3W/XvW5l9/dcYr2KVfLZxZrIv5c6nr+fP427hcgj4T+9uGI+w6yaG0DHSxc48Szg=
+	t=1785419281; cv=none; b=uPP5iEueXTdrWcXPr1Scrp2ReEe74Q85+riJV1QVaXVT8SFUv9TKpzKr06cGFChAE6MCJjcSQh29KGHL8mGt/be6fOzE3xahDvHJLX9BDoK3ocP+U5PBpO4WqZsNVY4Q+FNUqVF7d+bTT7REs3j3YKqnig7pk0QLotbyEhKCkyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785409812; c=relaxed/simple;
-	bh=rSQfczpk7571d66YukA7pjed8IEGnSzL5OcKxI/lCio=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oYgC3vyhkctJBc4iJsqm+MEIYbGVrwDmP7Yvtysjd0wcGuV6+b4z95shEC1ypa1M7YqKfmU5Wr25vGDXQiKgmkfYi3gUxLEHO3hijtC+GnqUrzaBHsAsidczR+Mzlbhqpn9JAvrGvg5eW/ah8Cu/BTm21IHkzXymumsWMt+tsxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=foIPquuu; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="foIPquuu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785409808; x=1816945808;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rSQfczpk7571d66YukA7pjed8IEGnSzL5OcKxI/lCio=;
-  b=foIPquuu9OmOB6mbY4aQMVuEuWorHiGry5ZpeANSZshOzZogIvPlc7tq
-   S+Ii7rm35kubuD3ig7PXsymdKbddPwcOUYi26NTFwMlaTxlArRJcq/wmL
-   xGsWePiT1bAY5g10xnwXSwSansQmmp19dzia2cpCQJvjv+eAxbe/mMcRL
-   DeAzVASllCWrVqV3R+Ro82jZzrY17qgo/wohCPejYKZYwbE3WNkZyLdMq
-   VLUGYTJplRYRAydMQpOMAR2oE4Lo+Hl2wX8gxM+hcwJVVxKXrjYkAmqor
-   gNBAXEHyCw3nyKGAVBlpgbBgw7rX37N3jQxAzYFrrn3Hn6/viJwcRWmAe
-   g==;
-X-CSE-ConnectionGUID: P71FQFy/SgydTDwWDVnVYg==
-X-CSE-MsgGUID: g7RB4AZTQlKf7taKZZAb/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="103431771"
-X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; 
-   d="scan'208";a="103431771"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 04:10:07 -0700
-X-CSE-ConnectionGUID: Iwkg0lAlSVONkDIv8VobVQ==
-X-CSE-MsgGUID: 4r2RmdWwQAm4ncITUcJKuA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; 
-   d="scan'208";a="257596193"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa008.fm.intel.com with ESMTP; 30 Jul 2026 04:10:03 -0700
-Date: Thu, 30 Jul 2026 19:10:02 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "Gao, Chao" <chao.gao@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Xu, Yilun" <yilun.xu@intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"Mehta, Sohil" <sohil.mehta@intel.com>,
-	"djbw@kernel.org" <djbw@kernel.org>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"Fang, Peter" <peter.fang@intel.com>,
-	"Maloor, Kishen" <kishen.maloor@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v2 06/17] x86/virt/tdx: Re-initialize the extensions on
- runtime TDX module update
-Message-ID: <amsxCvZUpNwxeDK4@yilunxu-OptiPlex-7050>
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-7-yilun.xu@linux.intel.com>
- <akIo+E5hfQL7C30E@intel.com>
- <603e7857a2036b0fef86dcf8ad0ab97e0232188c.camel@intel.com>
+	s=arc-20240116; t=1785419281; c=relaxed/simple;
+	bh=KQI0VQHt7IofiEPVUGJ+IGaLfUQz6TG2LDvzfcSMzBU=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YeSP+vC/CqUVnx5gekQUqYb+/jw+qeCJAPGSLo6wXPYQ+cXM2gAGpSkjSLmG4Zmu6Mc/Db7ubNLSDmaxfMbLfg3GTwRBq4yxXlEuwjloiSF9HpfIgyFFFBaR0z5h/SygUgzMDWfpgCRkL+DtDWCayCMCcnyv31xWzZqAIP0Ombs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Received: from 8bytes.org (p200300f6af4fc50014f63e0f2a030593.dip0.t-ipconnect.de [IPv6:2003:f6:af4f:c500:14f6:3e0f:2a03:593])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 5DF64240A00;
+	Thu, 30 Jul 2026 15:47:58 +0200 (CEST)
+Date: Thu, 30 Jul 2026 15:47:57 +0200
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: Re: SVSM Development Call July 29th, 2026
+Message-ID: <amtV9TqAZHiksyRo@8bytes.org>
+References: <amjT8oarGUmnYVk_@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -80,130 +32,10 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <603e7857a2036b0fef86dcf8ad0ab97e0232188c.camel@intel.com>
+In-Reply-To: <amjT8oarGUmnYVk_@8bytes.org>
 
-On Mon, Jul 27, 2026 at 06:37:39PM +0000, Edgecombe, Rick P wrote:
-> On Mon, 2026-06-29 at 16:12 +0800, Chao Gao wrote:
-> > Will tdx_ext_init() return an error if more memory is needed?
-> > 
-> > If yes, we can leave this check to the module. And with ext_required
-> > removed (per my earlier comment), this function simplifies to:
-> > 
-> > int update_tdx_module_extensions(void)
-> > {
-> > 	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
-> > 		return 0;
-> > 
-> > 	return tdx_ext_init();
-> > }
-> 
-> Oh, it can be simplified and not share so much with the init side. Please ignore
-> my other question.
+Minutes are posted:
 
-It can't be simplified like that. If extensions are supported but no
-extension feature is configured at boot up time. tdx_ext_init() would
-fail and the runtime update failed.
+	https://github.com/coconut-svsm/governance/pull/117
 
-I've found issue in my implementation. If extensions are required at
-boot up time but somehow not required after update, the code just skip
-tdx_ext_init() and the update succeed, but after that the extension
-features will break.
-
-IOW, we should not update the metadata, we should follow the boot up
-time metadata to ensure no feature changes. We should store the
-extension metadata in global tdx_sysinfo, and that eliminate the
-duplicate code.
-
-----8<----
-
-diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
-index b3442b7c88bb..43b8761c0854 100644
---- a/arch/x86/include/asm/tdx_global_metadata.h
-+++ b/arch/x86/include/asm/tdx_global_metadata.h
-@@ -44,17 +44,18 @@ struct tdx_sys_info_handoff {
-        u16 module_hv;
- };
-
-+struct tdx_sys_info_ext {
-+       u32 memory_pool_required_pages;
-+       bool ext_required;
-+};
-+
- struct tdx_sys_info {
-        struct tdx_sys_info_version version;
-        struct tdx_sys_info_features features;
-        struct tdx_sys_info_tdmr tdmr;
-        struct tdx_sys_info_td_ctrl td_ctrl;
-        struct tdx_sys_info_td_conf td_conf;
--};
--
--struct tdx_sys_info_ext {
--       u32 memory_pool_required_pages;
--       bool ext_required;
-+       struct tdx_sys_info_ext ext;
- };
-
- #endif
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index f03141f51840..90fbd22acb5e 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1304,13 +1304,13 @@ static int tdx_ext_init(void)
-
- static __init int init_tdx_module_extensions(void)
- {
--       struct tdx_sys_info_ext sysinfo_ext;
-+       struct tdx_sys_info_ext *sysinfo_ext = &tdx_sysinfo.ext;
-        int ret;
-
-        if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
-                return 0;
-
--       ret = get_tdx_sys_info_ext(&sysinfo_ext);
-+       ret = get_tdx_sys_info_ext(sysinfo_ext);
-        if (ret)
-                return ret;
-
-@@ -1319,10 +1319,10 @@ static __init int init_tdx_module_extensions(void)
-         * extensions are configured via TDH.SYS.CONFIG. If none, skip the
-         * initialization.
-         */
--       if (!sysinfo_ext.ext_required)
-+       if (!sysinfo_ext->ext_required)
-                return 0;
-
--       ret = tdx_ext_mem_setup(sysinfo_ext.memory_pool_required_pages);
-+       ret = tdx_ext_mem_setup(sysinfo_ext->memory_pool_required_pages);
-        if (ret)
-                return ret;
-
-@@ -1330,23 +1330,14 @@ static __init int init_tdx_module_extensions(void)
- }
-
- /*
-- * Mostly the same flow as init_tdx_module_extensions(), but won't check and
-- * add more memory. Let the extensions re-initialization fail when more memory
-- * is actually needed.
-+ * Don't update the extensions metadata, just follow the requirement originated
-+ * on TDX module initialization. Let the extensions re-initialization fail when
-+ * more memory is needed, or when the ext_required is accidentally flipped after
-+ * update.
-  */
- static int update_tdx_module_extensions(void)
- {
--       struct tdx_sys_info_ext sysinfo_ext;
--       int ret;
--
--       if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
--               return 0;
--
--       ret = get_tdx_sys_info_ext(&sysinfo_ext);
--       if (ret)
--               return ret;
--
--       if (!sysinfo_ext.ext_required)
-+       if (!tdx_sysinfo.ext.ext_required)
-                return 0;
-
-        return tdx_ext_init();
-
+-Joerg
