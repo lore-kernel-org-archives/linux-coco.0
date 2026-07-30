@@ -1,118 +1,117 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F75D3839AA
-	for <linux-coco@lists.linux.dev>; Thu, 30 Jul 2026 03:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D773A7F6F
+	for <linux-coco@lists.linux.dev>; Thu, 30 Jul 2026 08:19:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785382800; cv=none; b=mKowxahRGPfHuF/DG0dz/YLJM3EBkCG+EGxibNkqmvoJBXl4mgYbdJG97e/AqUrdziu3tZF0Z/PUYE9gpPg45fjopVI/sAY67TxY/2Ns614qGbVqKxVsc3nIRXssyvXokM1ugeun8vhJ+J/jDM7iaZ8hXySeZPuCCln9jEAI04E=
+	t=1785399590; cv=none; b=ALs2DgiaxWeK7MBrGbqPpx09Jcq3Yq8bVR8SVzDSPHFguz6M76ZLWNB+hoOmwDiRUGQuEY59brI5sheGq0vK7xSpA+Udg26tVxoiTKbTNHDijuTMi7YmWK+Ay78geE/xL13BCYoX1LWgOcsAcaShNsmyrFCCkx8lP50GkR0BQjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785382800; c=relaxed/simple;
-	bh=pI6dHHb7J0ImYITur1BKCoOjWnnLgWpciKwQLbsDc8c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MvFTelnsejIzjtE8FU56oz5IVLYnsxHBjOVC8Fagejn+GShFFgowgjkqqnLBE2i/D/I5Ax4MI1xi7Py71sIQmZSAWPLmK2XaWYEvbXMwScON73P/+HJpEOBG+SxeRJpo3yDPGRviavmMldjzW95pecz3qkxzGG0Vlq5gWtLnTdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=B+SpsjD9; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1785399590; c=relaxed/simple;
+	bh=wpfIrMcHN8QikkXCKITCLw0AA407+GAAoFiif3VfJc0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e1RILAYFplIkkbfRa009Xugi9dW+FFNA7OjN45E6BLxVtXIeJC5DptMKy9PdC8WpwrfMe1LrLRs7OWYU0IM83XzM0HQviCeb+v4vhFYXYs0mIz/AAiQQUA83z/AZ64DFpzCho9ILsGNsIDUg1U4di6xUHA7DXul5ZsFFyRcS+kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ENGze2sf; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="B+SpsjD9"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8DC0B40E0140;
-	Thu, 30 Jul 2026 03:39:55 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 4CaphDkmoge7; Thu, 30 Jul 2026 03:39:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1785382785; bh=HCL/bk3E2UobBUGwlMQYN8koub9izSikmLau/bwU66s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B+SpsjD9zg8A1QmEKGj3YjxpVKGcVM9I7dPXK9uoC90pmuAoPQbIRSdmcdO/popt5
-	 9uNeDo2e1gnf60GQI/WqCpi6BNTPzLd4I281tPN1HYUxAoWhOMH0IV+8MdKdQoycwf
-	 OZEdDwYqoNWR4DHPz7ULISnSAZ+XjMR0XgwXT4+IS8vXWuJEnE9qpxn7rBaDGl4WAO
-	 xgzpeudfe5zsyv8z9dLr7pA07/BNRhvVwdCV2jVy+YqBoGCGmP/kj0beKrcCl6gr1c
-	 4xx5Ho82QLHDp9BqE+zuBy8x9sOwODb3dQg6CLwrpJcCfahn3FFFWKS8fuB5zJGPQI
-	 zBTR0UtSX56sUDqS1ovYRV4RN5ub+n3ONNeU1DA+YVrnO5go8moqy327w97pJxB4ba
-	 ATCuKI45GRJA2FhQ5f47TzSNJD99nUvgZKvWKw6ydYzNtJoA2MCNlxJvxfP/lMTChX
-	 nDKRTkdRLnEJAYGuPuPDwoyOQ1uP2H+Tv06SYwo4oA/N2QjB/sVet5/ZFe9ED7e5wY
-	 EpqFMEZueVenV/0KPyaVRqmwjGv6k/ew5q+5Zr8Ozq3vgyTDDuLpRIAqGjcExTQQzL
-	 AG5Eah1uEAmmfbE1rNAhW21O0Hzq6WPYs6oi2/PlpZdhET2JB8DwpVd1jJna6C7RWo
-	 Zm0FsjyizfQ3oMn4GtGav7v8=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9A7D640E014C;
-	Thu, 30 Jul 2026 03:39:10 +0000 (UTC)
-Date: Wed, 29 Jul 2026 20:39:07 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
-	ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
-	rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
-	pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com,
-	dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
-	darwi@linutronix.de, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v11 3/6] x86/sev: Initialize RMPOPT configuration MSRs
-Message-ID: <20260730033907.GFamrHW3v3dbb0UmFL@fat_crate.local>
-References: <cover.1784844080.git.ashish.kalra@amd.com>
- <ff346ea1770cf996e1623270a085ac08d21888c6.1784844080.git.ashish.kalra@amd.com>
- <20260730020704.GGamqxyPy5oJAmC5Oy@fat_crate.local>
- <7f837674-786a-42b7-a289-4c048fbec6b8@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ENGze2sf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785399587; x=1816935587;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=wpfIrMcHN8QikkXCKITCLw0AA407+GAAoFiif3VfJc0=;
+  b=ENGze2sfPGngKq0rkLXZgFVDVQpKeFWdTLNd7VVFakLldxEhl3z1aSeY
+   P5ynXV7HY6x7AJYc84XbQXkcELubCuR6VhX2NJTYyb/P2QfBSvqam3edo
+   /SN5QebfKnyySojluXPsh21zNyDjiZ2565bX5JEOg3VeOOADR5gbz45Rk
+   OBj3A/ReoE0cX9uoHoKr92Twwas1rGQ6g8YPmKcObOrQmQyCd41NB/mJ9
+   o6EjJU86Mi1GbTKbHZgXjeXO6XOpIoDUQdRe8NG/kl4nctrrfOYA1D37B
+   06DCEiQu0cyq3NX/nYE4LQWM9v8Qj/S449i7pM50Jz5p/uODebAq5dFgW
+   g==;
+X-CSE-ConnectionGUID: wjuU7PkSRPyoaERVxNylBg==
+X-CSE-MsgGUID: kRqxq0jkTNKavj9XqkA0+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="86091131"
+X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; 
+   d="scan'208";a="86091131"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 01:19:45 -0700
+X-CSE-ConnectionGUID: 0mKvQIstRByDOckKXDh64w==
+X-CSE-MsgGUID: iicRvDLaTO+wZke7z8GHMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; 
+   d="scan'208";a="259664017"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.238.208.132]) ([10.238.208.132])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 01:19:34 -0700
+Message-ID: <df06e0ec-9462-4072-a0c7-054f1978bf89@intel.com>
+Date: Thu, 30 Jul 2026 16:19:30 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <7f837674-786a-42b7-a289-4c048fbec6b8@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 04/41] KVM: Rename memory attribute APIs to prepare for
+ in-place gmem conversion
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-4-35f9aec2aed2@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260728-gmem-inplace-conversion-v9-4-35f9aec2aed2@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 30, 2026 at 08:25:37AM +0530, K Prateek Nayak wrote:
-> I believe there can be cases where CPUID advertises
-> X86_FEATURE_SEGMENTED_RMP but rmf_cfg doesn't set
-> MSR_AMD64_SEG_RMP_ENABLED because otherwise checking rmp_cfg in
-> addition to the feature bit makes no sense.
+On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
+> From: Sean Christopherson<seanjc@google.com>
 > 
-> In that case we should attempt a probe_contiguous_rmptable_info() even
-> for X86_FEATURE_SEGMENTED_RMP.
+> Rename memory attribute APIs to add a "vm_" in the name in anticipation of
+> moving PRIVATE tracking into guest_memfd, to allow in-place conversion
+> between SHARED and PRIVATE.  At that point, there will effectively be two
+> (potential) sources of memory attributes: the VM and guest_memfd.
 > 
-> Essentially drop that "else" and do something like:
+> kvm_vm_set_mem_attributes() already has "vm" in the name to indicate that
+> it is a VM ioctl. Rename it to kvm_set_vm_mem_attributes() to show that it
+> is setting the VM's memory attributes. (Drop the VM-ioctl scoping since it
+> is a helper local to the file.) Update the accompanying trace function to
+> match.
 > 
-> bool snp_probe_rmptable_info(void)
-> {
-> 	if (cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP)) {
-> 		rdmsrq(MSR_AMD64_RMP_CFG, rmp_cfg);
+> No functional change intended.
 > 
-> 		if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED)
-> 			return probe_segmented_rmptable_info();
-> 	}
-> 
-> 	/*
-> 	 * Segmented RMP is either not supported on the platform or
-> 	 * is disabled by the firmware. RMPOPT is not not supported
-> 	 * without segmented RMP.
-> 	 */
-> 	setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
-> 
-> 	return probe_contiguous_rmptable_info();
-> }
+> Signed-off-by: Sean Christopherson<seanjc@google.com>
+> Reviewed-by: Fuad Tabba<tabba@google.com>
+> Tested-by: Shivank Garg<shivankg@amd.com>
+> Signed-off-by: Ackerley Tng<ackerleytng@google.com>
 
-That makes sense.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
