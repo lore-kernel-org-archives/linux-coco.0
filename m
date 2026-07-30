@@ -1,200 +1,178 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011022.outbound.protection.outlook.com [52.101.52.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91923B776F
-	for <linux-coco@lists.linux.dev>; Thu, 30 Jul 2026 20:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCE738DC5B;
+	Thu, 30 Jul 2026 21:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.22
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785444161; cv=pass; b=JpnbeQgkmonRuqKwjo1QgrP2KjdeQAJ/X7Ftof9lZ0pnIuXsFUyPUXxLp5mDNCgArb+fRE1F1SfAfz5lw/rrj1owb/5przW3JWgl76FDJVoDHbYENS9sivMRWjDruwlrbdHLhD4Vu+vFw0aPpqLWJSlIgcm4kUbiTN/8Ej4wIds=
+	t=1785445522; cv=fail; b=kEL22SDIbCuvmdKglm3xNi6GmJFwSJ8xfR5WhBffm8ae2qRQStoH6507eVicVeKsxmw9QPbfIw6pLbxhK3BC8qDBx0/iQy2271gxMVUvmiu7xYs6YWV9A9N8SQLpJYUwCABzIEY4NGGzWLA43gwnuZNoqYY/ElAf5ruEv9XW+/I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785444161; c=relaxed/simple;
-	bh=1jiZYsqBtrcmi7eIwfzyaU0PYhHwikLTB018QmEsrns=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rscvkEnAQutu0Wh/cr65K4/VhJ6Fq1+UVrX/cniAeuZKahKOEUytcSBSddUSZaOaxR0yOcQLywXr6KFYjDzML/Za2KQkMRVly341psoMvKijRFKQK7qrXmM/m+CRB2Ecz4chY5LEiAiiH1LBhNE844Br48/iSxxgkHIxvNeC0x0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oGlMw4LA; arc=pass smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1785445522; c=relaxed/simple;
+	bh=l8ygZA9+by9MkPiBW0njeCA5W1uIUOogJaiq0dn646c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=awj2Kq436ugj7AyigZ8RQt45LOCYQH+ryBs/p2EaSLngufqsELe2Zd8kyC1J32Fr4n+wPein8Uxjz83TkKBSU6HRAp/bBE/17C6XgoPDDGawr8ZNsOcK6QHnCqC1+EHNd9sMwyHCrdDHjzBmsKpjVuhSBWOtbjTqaF7dtvYNELQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bJ01/SLX; arc=fail smtp.client-ip=52.101.52.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oGlMw4LA"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38deea72eebso315755a91.1
-        for <linux-coco@lists.linux.dev>; Thu, 30 Jul 2026 13:42:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785444154; cv=none;
-        d=google.com; s=arc-20260327;
-        b=s87ChiRRw7iaIIguMG9wfZbGAmLTC1nLLbaPwjgW/SoUhwC4plwmgy4jMHQzSLafei
-         zKHaLwAbr+5dIBJc9ow/BE6Pi5RcBuYlq4zlngk4dRkLrl/IOfsxnBc2+9FSg/n4dfwP
-         92CeRaHVlq7yE23IwEoZDqYMWAlZnb3PKhQxgP9l5SGvhbLXDSvv/Py04zHU9KArMjgn
-         uo1pWnAgR3jkKc9FP82h2tBShklzEEhw9xbGtgAKlObs+WQVy6FzSOaMbFaeYoaZzx5b
-         CHv7mJqBlEwGchdVLP6fYH0WHCQNQIE8jlzYZEu3Tz7t4m3qDTv9ZJByRnz/KmgFgR75
-         jjkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=tzyXsfKQYVbe7kXvY8Z4tL4HbFmN3e4/nufnZYtx15c=;
-        fh=ocq+ExwrCobhfBYKq7oBFcc0hcZAPGMLQSvQO49y1eE=;
-        b=e9C84qCCqB5pbVkvdhGfFTCZcbcv6KeubqZbUA5C0hf34db3VTJh0hM6yksIUYUUfS
-         2je4Ef5Rmi3lCYrJU0xiCnW1N2WHP8RbKIdGx7E+dOIQCHmYLSCjH0l7bltHn5k+u7va
-         AF12Uq6COTWP/LGCpg2jTxli7KXf9aJOYPMifTG/9N8v8Ub+cgnm0JkPmBxI0KXdr4Ag
-         HOp8l32z0hfMAtl8VZY8mF8Z1thv2Ln7dyJiGEfeJ18nZ+E1NoSXF2jv6F6iNIuwJMUd
-         FuJRwrfCpYtRPVVbtSTU8hM9NIo94BQF1kvNfhlEmUpl4KS8LURZMQn3gD1utVgcSord
-         7/pg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785444154; x=1786048954; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tzyXsfKQYVbe7kXvY8Z4tL4HbFmN3e4/nufnZYtx15c=;
-        b=oGlMw4LAPjxk8LLZ3TsAd3ljkCj52jRbvZt1PYruXAlbfrQDv/JLXXrM2AS841dkYx
-         qeZriFp0ZfV2HFK6fdh5TcToBUtv8w11Vg9UIy9DViNVIHd+P7wTWV0CX4ZMwcxukblU
-         bnK0YFhyJrHU9rdZVxp5/HJA8K6j3wTuLE16xbtvHBKI9GI614U/enaKZMjU6a5bx2Nw
-         AzpfgPQNUDIj41EDu4Afb+P/sPUBya5zxC5mmEboUh5x4rGEmO97KHKlO2Ep0hlgJSLj
-         mYPPdLNiOboUekpUSHF+et8XfSTXjnqOwtWpnquy8+Rk+9Wx8Tu1WlmORXQ5lzbIhDgA
-         VKUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785444154; x=1786048954;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tzyXsfKQYVbe7kXvY8Z4tL4HbFmN3e4/nufnZYtx15c=;
-        b=GPpFHKLhtApg2kjzP2ZKuyk1wPUWehwtCv1pert/Ne3tz4lNuh2o+LDtt11T2CI+pr
-         uXkhgsF65vUDg/kvFMiI7pJtaSrFJjIk1YCwleb8ZRFOjpfmqEUJNSt+GdWugaRZE6jD
-         7v5+kT4o2lYT7RKQXajK1FZHHq1Tt+RHPKHNWvU+AUMHNBXx0n4eiUKeAxeJ+rxLEW18
-         JD/ArMUzOS+5cjRoRu/3fQOuiQmoOl+5OOmcI60sg5Rxd7PVwCKhCI65sFSoB4LowOOV
-         MmEAT1sGfyyKjG5s5n4mSmzzvMOVMacR+XyCPwuszpFkLDKi2e87bxu6JJJOMXIuCyHS
-         r67g==
-X-Forwarded-Encrypted: i=1; AHgh+Rps0+6KX2nZ5BsB8aXx2bD7F3cO5EcjgNMRbtCLyzZLan5aWlEvLxmqDCRafqrBe+y021MyUmJ3tkdo@lists.linux.dev
-X-Gm-Message-State: AOJu0YzINpehbaPU9UFCayV71+htvRps/X4Q40G4hUaeEsaCKGKxFvXj
-	qBKvRltrKcwCOEtJUvVYcVHjQbslEYU98EUdrYyH1ptvMqE8nVnoKZE4zGp8aQDgd1X1JFadBwb
-	s8kvNpbBMoKBuSfvzOosK6DeIiTzc6in6XO2yYZ2s
-X-Gm-Gg: AR+sD13Z8e+D3LdxoSicgy5fuqQMTdcuxM1JbEBxvg+ao4R2XuEwsHgLB1gJ3UoU8+c
-	+Wg3yhfqHd28MAp1cdN0mwUB3/uwYVlnrz4lNp4+/U4ge8b5kgvR8+AqZIHbuXpO+3BtTQYTsTl
-	bexECX2IKPo/JhziNKRhDDSjRteG2uK2WfCqaGG2jYundN+vUOEdxLVqlswnwFp/3btbyRBH+nr
-	9kTNBL29T654gYFEVtQyxYj0wHFtMUIxCKzyol/ZDmgi/EZ58h27bBJmhZgX1O5PswP/vVN0WWx
-	4q28XAzxMPfh+bEjZeyA0p4w1MqLdirlRwwZlOFbjCuMmgH75xVyQNgJXkgk/3/kB0XBCyQp4r5
-	Njq+niFiljEjopHBt0LhXMUY3UMApxeu+NzY=
-X-Received: by 2002:a17:90a:d88d:b0:36b:bec8:94c5 with SMTP id
- 98e67ed59e1d1-38f9bd790e8mr3699903a91.10.1785444153113; Thu, 30 Jul 2026
- 13:42:33 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 13:42:32 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 13:42:32 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <60d19013-d6d7-4eec-827a-2622e22cec98@intel.com>
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-7-35f9aec2aed2@google.com> <60d19013-d6d7-4eec-827a-2622e22cec98@intel.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bJ01/SLX"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=c3oQ68r/UK4get82mM0qewRqa1cwFdIYh21c7TvP9RJVfpn2oIlEwxU1aG5tUY8wSqJUQiFhxY7Okka82TL9CuyqgVY6CyZsNh8P3whVMlyfHwwzu1zbcmgSDyJe9hHCcnTOYXQL6go367TFYXI4HUXM8tsFrcRJs/WLJDTrSYVWX+7wwNDOFlFMXo49zDK9QaKv149Qy7PBbllogulk3kiMzWd6fzEktDB7DoUHPJErDgnHgA6/mLbYigocQzEzHDgjWs6Sl59ADr55hWL6WpxmwXliUuvM6XTm4S2NUQPxud9OVw2H+gpMZIUANPRZVGWOSncTkUZhNiB4oX+LZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fP/tawnqcMvDolJUYihmY0R6sPFMX1yqtxwSlIbOMYk=;
+ b=eSov1BY3R38ELJd54jXwt2S2VvqmQWsdtC4A1Y3KDmPBqYrgPpKCNlsvwJ0Kh/GLwOSQeVZ6CmodBmPRr776DApl+T2SztakHPNYNyKXaoyX+H1kZJ055R2RX/iPViRcLIzSK6LTZhwJq0qFtfA2Df09NZ/c1h74Tgcn5SSvQ5rfA0NhgUDHnIP4ZWchPn0g4NrMwX4CbMVHnuXhPcXw7xJHcXa9FTFrsVqHojZwFaDbxCb4tagWxJ0ECbajRLuR65t7/qBKooSlxcQpa1GDWp5gYTvAAepV/9usRd0K26jEaVzCYcEwKuj7eZ6YI01wQhgdPtgaOncTQJgIomL+ag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fP/tawnqcMvDolJUYihmY0R6sPFMX1yqtxwSlIbOMYk=;
+ b=bJ01/SLX70pYDcmisUzjreWNai1ECOcg7yJTyqGFax8i0pDO+PXEvwVQagy58qRagberdI2pk1dI7oiKuGthBu+h1kAnjyiOIg2xpHxwDvtBZg5aCcDn3F/0pIO+nOqlcKwPy9XrNZ9S/csiAtiRleAk4AXEjoNmCviqgOlJIawH2dfj/kpFnDqZFh6tw5hgDJBW69M0i56b4543J4f0EhqBYF+JKvTEBZJCxo8zKJ8aSYuSFN4Fl9rbsEobp5/InKB0syEDg5Ctqn3zchYGHYTp4RqjtaI1lP1AXrk+ANPT+qcQmPyUfcRbyaFoMjAzW//NOqwNiASwWXhYVm06jA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CY1PR12MB9601.namprd12.prod.outlook.com (2603:10b6:930:107::16)
+ by CYYPR12MB8962.namprd12.prod.outlook.com (2603:10b6:930:c4::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Thu, 30 Jul
+ 2026 21:05:16 +0000
+Received: from CY1PR12MB9601.namprd12.prod.outlook.com
+ ([fe80::cd76:b497:475f:4de3]) by CY1PR12MB9601.namprd12.prod.outlook.com
+ ([fe80::cd76:b497:475f:4de3%4]) with mapi id 15.21.0270.012; Thu, 30 Jul 2026
+ 21:05:16 +0000
+Date: Thu, 30 Jul 2026 18:05:14 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Mostafa Saleh <smostafa@google.com>, iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>, Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
+	Jiri Pirko <jiri@nvidia.com>, Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v8 15/23] dma-direct: pass attrs to dma_capable() for
+ DMA_ATTR_CC_SHARED checks
+Message-ID: <amu8iiOBR5YspzfI@nvidia.com>
+References: <20260717180442.110954-1-aneesh.kumar@kernel.org>
+ <20260717180442.110954-16-aneesh.kumar@kernel.org>
+ <ami9CIGanuQX3lxb@google.com>
+ <yq5a33x2go23.fsf@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5a33x2go23.fsf@kernel.org>
+X-ClientProxiedBy: MW4P222CA0013.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:303:114::18) To CY1PR12MB9601.namprd12.prod.outlook.com
+ (2603:10b6:930:107::16)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Thu, 30 Jul 2026 13:42:32 -0700
-X-Gm-Features: AUfX_mz2wy3LvLLQqF5XvT23FybAB1M_PJOCVj4Bbwu3P1vsWolBi1Qny-gSolY
-Message-ID: <CAEvNRgF0SxmoMtqq69tUih54A9K7j_wcMFRrq=r9w6TnAGAUQQ@mail.gmail.com>
-Subject: Re: [PATCH v9 07/41] KVM: guest_memfd: Wire up core private/shared
- attribute interfaces
-To: Xiaoyao Li <xiaoyao.li@intel.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY1PR12MB9601:EE_|CYYPR12MB8962:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81eb01ee-6a22-4efa-7e32-08deee7e410d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|23010399003|7416014|1800799024|56012099006|4143699003|5023799004|11063799006|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	bEie4YF39BMPCD+6svrPbTaL0BaSqYGoBP8SC80KeANY60rbIdEIn4TYM9KnIDG3y/y8i6P9WGOGzeC8aZgWmQ2jk0UVPqJzjkYomUXzBrSzihqrBmwHtyBmzOR+72esWxWAoyfCmw6vz5BUwganjpTTf3Tm5G4+dfBCdVDKPSoZ4g1H1uNZAWhIyR4T5t4YQRnOJYXzigylOTr1aRuYTn6E/pIPjyb74Uc7HLdAXW9ewRqTS+8tAdOKIJSKfATmFMNcZXy5hJIAIZ+2FWiDsVFH4AI6vlZQY9ky0kWlaUePjZih2+JriZzNedClHNLOQzaGXqa2d8iDbJTTuoSg3z2rL/PajG7xawIz1RFQwddyL1iPFHV/zF7CxPql32n0ct54X8zRJkQiCbHciMJ87EVwjz66wRIc+suPC0L7jldwP3MkHQs+oKsCTw7LOAktV5rmO2UQHAPn3ad7qbBWrDm0YZxbI+r9V60ayThK97EM0uYpS2ZxHLlwLRliJQkY3SYOMm00IFQctmZj/Jckf4BXMln8u8p4XpctiaOJ6Kp3SF7jeJ2VEq0CU9alNQ9rCM7UEfDbo63FyBDWxk2RmohlFmXS8zN0HAuKRMbmFwAUgiXiWJlV/93hSaNXwjhSeyzx10vy3IRP5guybYPVMu89YXHfDOKyB4uxsJ46sNE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY1PR12MB9601.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(7416014)(1800799024)(56012099006)(4143699003)(5023799004)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bgcwd4SPDJiAMmLE5rq7qpg5+zS3l8ygwKzLXcb03srwU62dhbRWmvKv+cYz?=
+ =?us-ascii?Q?nCM712X4wFSu6KCvXptVtKR3mVjwfYn6YWSo72P5Jowz+d1RlLZHP2ulo+lK?=
+ =?us-ascii?Q?IVwPPJ1L/8blxas0Lh0XfVkF1pvKt0fXtc092PXw9UTDmUo4BO97hPmvEJaj?=
+ =?us-ascii?Q?Wy92us4SFglw4kTgFkbBsAZUMl06MHhyXRMMMX5AQWtVvuyuxKPQahEWPby1?=
+ =?us-ascii?Q?j7Lgyx5fIkBc28WjvgI+IWCBs+oIjXCLpKmZJjt6qjCBWfmc2ttvbTqofQFr?=
+ =?us-ascii?Q?rGUfrRuCAR3WCRtHifGGxEnnDyfyXqf/EL1V10Gx+0aDA5qL23KHdchKtd9j?=
+ =?us-ascii?Q?/30O3+QtttnUu3f827kCvNfyJsmuFZg2AbaO3NWyEEIEfFCvg7DAYe5rtOr+?=
+ =?us-ascii?Q?GIeQ320yVrVJMy3GnQzUljqaiQEzi9yXwrYDqWPjluRR8ZTBuxCVpJcWY8M1?=
+ =?us-ascii?Q?Lo8iZEOi6IbuO1ZjUNLdnYc19Vc1UFltOrDtq4NhRNBQ8o9s+6PvNwBaeEaW?=
+ =?us-ascii?Q?AY5guiysCoA8oTMqrv1T3m+Gwb+guy1D9iYEoHTfsq2Be3K46kTq/0JZWMk8?=
+ =?us-ascii?Q?BsXq4KfaPSqRTthHyonTbGPCOfoWrWkuDJmLf9aji/cO9P2ZmkxlNM0JK5JL?=
+ =?us-ascii?Q?BByq2BobzK+eZaCRwiu+OXm+nISmKKIgaVQQBOZsTO0NozvrjB5o4ajoZSPk?=
+ =?us-ascii?Q?cBOs8uQOlqQVKFssl3qwvNXzEvxZSYlmVRUh2H6E77/cC5qZruR/LG6vo+NP?=
+ =?us-ascii?Q?jmv0z4aqspgM0XsRNqw2a448bbf+oqReUzzdLcseCyztEqM4UW+ixIVrs/sS?=
+ =?us-ascii?Q?4q/qzcO0DHIE6+5TFkA9YN9kam7dx7bM7eouGDRuTanLga4umoR6RcjaG8EN?=
+ =?us-ascii?Q?74dFJvi56pGNIUNASrw5Q5kiK3szFqDca6yNcAifT08oO7QWl9awGNp5GY6L?=
+ =?us-ascii?Q?Kn7k+SNHnJFE6vPiG5gcvQQZTTilNlfmfWQOvt/ZOUGnT/bKnderBIPLxXrx?=
+ =?us-ascii?Q?tTe8OnNvFNXN5UGmUrQUHX/nvdEzaKVflreg9RCQG/T4tiVFm3JmIS1OtmwX?=
+ =?us-ascii?Q?iWb0hMT8eygyVdYWu/uJARJ6k33qPBjpHjexhHFvlAZiCxi7Qq+F+bEhjTRu?=
+ =?us-ascii?Q?BB2ErkIUCtKkfvU01Agt4nW6jL/tbIAa0RJz/3olzSSBOdIQ1xZez9M1TfUw?=
+ =?us-ascii?Q?KdUeH46NKc8l+kyA4GBPWY/yGlwEDTXRPxOz7FAfl37pzgxln4lp9N0Jx79D?=
+ =?us-ascii?Q?UYA6tLCI9c6TIkQB7FrPAAhq+phSGfd+aXVjt1OWR+iEt3ZnpMSPNnylDLp5?=
+ =?us-ascii?Q?xKuq9e0PDcsOjbk2zCpV2r28uxPyXyyxEoN74ZvAyGsaYPXaVvOYkQN+JVKN?=
+ =?us-ascii?Q?pb0mp7VfAgJnOZ7e00U7h6FnhdkCm8kqegudB14tNjxrWI6bB2RNuz+ITaRk?=
+ =?us-ascii?Q?CSJZ2xDXM/VbVvEsPNR1h91yxVqap3DB79nj6zPYYsZCwLwz2FXkuKwCsM0L?=
+ =?us-ascii?Q?CdzKEpoOtKsB1WFdo4RZZJPZ8m7n0690sxp7VZEEXHFIJFx54HYE9XTP/Gl8?=
+ =?us-ascii?Q?q4vxT6HmBnNexunKSFyFv8/hH5/pg8VfaREBLvfEGv13CD1+7p8AX8Sdz1ak?=
+ =?us-ascii?Q?WfcxkQ8jAzvdL6JoTzMYl3WrxPURPk3xQSZllUggMN+gypCg0EDrafBWZHTQ?=
+ =?us-ascii?Q?Q31i40V87qIlanqJDeK9S1tdoIgyxtmUbf096axJKLy/hOaX?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81eb01ee-6a22-4efa-7e32-08deee7e410d
+X-MS-Exchange-CrossTenant-AuthSource: CY1PR12MB9601.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 21:05:15.9773
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0TgSSlFZ+GG5NyHGxa4z9KuvQ+BdXqxoFl130lSXeL4MBISZOAOdTE3DePxVAkOo
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8962
 
-Xiaoyao Li <xiaoyao.li@intel.com> writes:
+On Wed, Jul 29, 2026 at 02:39:08PM +0530, Aneesh Kumar K.V wrote:
+> Mostafa Saleh <smostafa@google.com> writes:
+> 
+> >>  static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size,
+> >> -		bool is_ram)
+> >> +		bool is_ram, unsigned long attrs)
+> >>  {
+> >>  	dma_addr_t end = addr + size - 1;
+> >>  
+> >>  	if (addr == DMA_MAPPING_ERROR)
+> >>  		return false;
+> >> +	/*
+> >> +	 * The DMA address was derived from encrypted RAM, but this device
+> >> +	 * requires unencrypted DMA addresses. Treat it as not DMA-capable
+> >> +	 * so the caller can fall back to a suitable SWIOTLB pool.
+> >> +	 */
+> >> +	if (!(attrs & DMA_ATTR_CC_SHARED) && force_dma_unencrypted(dev))
+> >> +		return false;
+> >> +
+> >
+> > I guess it does not make sense to check the other way? I'd be worried if
+> > some a confidential device uses shared memory which might leak info.
+> >
+> 
+> From the perspective of the dma_capable() check, this should be allowed;
+> that is, a trusted device is permitted to access shared memory.
 
-> On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
->> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
->> index 33c9830190e2e..89cf922232920 100644
->> --- a/virt/kvm/guest_memfd.c
->> +++ b/virt/kvm/guest_memfd.c
->> @@ -893,6 +893,27 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->>   EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
->>
->>   #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
->> +static bool kvm_range_is_private(struct file *file, pgoff_t index,
->> +				 size_t nr_pages, struct kvm *kvm, gfn_t gfn)
->> +{
->> +	struct inode *inode = file_inode(file);
->> +	pgoff_t last = index + nr_pages - 1;
->> +	struct maple_tree *mt;
->> +	void *entry;
->> +
->> +	if (!gmem_in_place_conversion)
->> +		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
->> +							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
->> +							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
->> +
->> +	mt = &GMEM_I(inode)->attributes;
->> +	mt_for_each(mt, entry, index, last) {
->> +		if (kvm_gmem_interpret_entry(inode, entry) !=
->> +		    KVM_MEMORY_ATTRIBUTE_PRIVATE)
->> +			return false;
->> +	}
->> +	return true;
->> +}
->>
->>   static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
->>   				struct file *file, gfn_t gfn, struct page *src_page,
->> @@ -913,9 +934,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
->>
->>   	folio_unlock(folio);
->>
->> -	if (!kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + 1,
->> -						KVM_MEMORY_ATTRIBUTE_PRIVATE,
->> -						KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
->> +	if (!kvm_range_is_private(file, index, 1, kvm, gfn)) {
->
-> It's checking if a single gfn is private.
->
+Right, we have use cases that require confidential devices to use
+shared memory we cannot block it at the DMA layer.
 
-But with huge page support we'd need to check a range of gfns... I guess
-there's the argument of not keeping complexity for the future, but in
-this case it's undoing functionality for this series and probably adding
-it back later.
+It would be a reasonable DMA debugging to block shared memory without
+the DMA ATTR CC SHARED.
 
-> We can just use kvm_mem_is_private()? And it seems can be a separate patch.
->
-
-Do you mean that this refactoring could be a separate patch? I could
-refactor out kvm_range_is_private() in a separate patch, then put in the
-mt_for_each() check in this patch together as part of all the rest of
-the "wiring".
-
-I considered that but it seemed like the refactoring was too small to
-separate out into another patch when the mt_for_each() part is going to
-be in this patch anyway.
-
-Or, I could add an earlier patch to first replace the call to
-kvm_range_has_vm_memory_attributes() with a call to check just 1 gfn,
-then this wiring patch would be simpler.
-
-Let me know what y'all think is best. Thanks!
-
->>   		ret = -EINVAL;
->>   		goto out_put_folio;
->>   	}
+Jason
