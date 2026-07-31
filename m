@@ -1,332 +1,507 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011055.outbound.protection.outlook.com [40.93.194.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A313CC324;
-	Fri, 31 Jul 2026 11:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785499162; cv=none; b=Rwvlko8TMRA4l2NRKgx/yu+xhFSN6D1CAjO0e/w27uQv3zNsFaOaH9ouoAsmIcA6u6506SHVeDhXDssyXuZ9CXdq4oBfPzOoTmmrlwNt9P3ffEajv1xGoOeOeo+okJx4cA4OTrIl2Tk9+O9FRqGf1i6meBS73L1Qo9l0db9e7dA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785499162; c=relaxed/simple;
-	bh=hEFxzcRWstFUAXCBAAUDu40G2TRn32sP14RQkNifo+8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=aunrns/nuGvMBBsRuBpOSwMmnpZHakmBgNBZ/20No7uVBs1vBhNLa6DGm0po8WKB7a59QIsyskM+6HkbwoRJYD65wvTB2fwqVfNcnWVoRUt3ZfIAbs4D3MgVLqbgTnREof1ZXpt/X78Odxdr5wAKM6p3qny5HZTYIBZu7Rz8zBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KvoDkQlu; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BF33EA96A
+	for <linux-coco@lists.linux.dev>; Fri, 31 Jul 2026 12:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785501448; cv=fail; b=lkhcOv2VzysiUM3nxmmQF7DE+cpaVsU4C3wjYdWWKckOINsVKu/ZRNzIHo1SZeLfjySg9dg1eadcTUDllmLj5q65lDEhV0fKWSZrwmUAWmgfvgidpOompWsZp4f/EeBDLERW29ZAZjIJDVJkG97zWAonIN4NrJCXgtT+ii/HWmQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785501448; c=relaxed/simple;
+	bh=baqvbXmykWdcYvnmaTbpzjBQtRrsuAMwy3/9s+ae7Uo=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=uWtW/6ZQ0jYzF9LeVXVqm37xWFZ1a6Fn3QLp6Bbyu+qi7k/ilFMXc+R2ok4JvFpVvT8BjHez/eo+KGrgSjJnWBlyH4FopXjj1UbLTFgaS2tjOC4I/cRvzPIWNDENJZAPxE7BGk6rPh0hYLOEuoA9eCTf9UpxjlcbU3dTcpDYhrE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Qo92x8pG; arc=fail smtp.client-ip=40.93.194.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KvoDkQlu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C541F000E9;
-	Fri, 31 Jul 2026 11:59:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785499160;
-	bh=Nm4XNdosDTkLpy1A2APf3Rq2Y20s3PmQ81LS+20iumM=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=KvoDkQluOqIEZqgpMUedMAAOQZiM8Px+cdim13BhGWGcz0luftftif+Cex6mR4bSV
-	 gn5P+xU2YooQ3Z2SdV7qPHL2pJ7r6g31jBlgtau48sz4n1qgfWJBrdohaEdZwkECTL
-	 Eut9WfJq6LEaJiPWx2qEQ65O0oj9AwH4xpXnDsgw8X8UnhDL05lP4hGQYtH6TRqFpe
-	 kk9qzkt+ptAmYy3WQnFunTrOFyvkt8xnhNdDCTsDboPYvLJgdOzltNvsCWbgbWmPKN
-	 96YXjoNb4IYBa1EkNJapNnEmz+0jyskTAUeQnAHQEAaYszPi1OfZmiDEQ4+18Hd18+
-	 ICAFYfm9QPX1A==
-Message-ID: <edc3566b-370c-41a0-a71d-2e4a0e1a94f7@kernel.org>
-Date: Fri, 31 Jul 2026 13:59:01 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Qo92x8pG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OYHOBIsBJmgo6egEXnJeRADOV+mig+zUaQmO3OenrujQmODTkNgu+hcS8kPOncf7Ph7xx5roulm4sL0q2GZgw4ZvIi45JLxUSWU966vyXuUIsj2+Q6OF1IXEi00i4bO33f9B5ZG78zvHHxxpBV6eCoKXxhOGXeJpYLH/nxBkh98nAA3OqMlM0meZx8v3/tBzUtoGsPztZH6QzxpM7XR28sIEx1dcDND/tJCuIMU0s19bztZFJsn+7+bOPlgyOWy3KsPgvkGFu6Ky0/aQ22dbPh1h08nHiZPBhnFKaS9O3y2o1GcPwz9JCGxpzO0PBO5J5FSYQ6aDAU94EiFdr87GKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uDCRY6PQvC6I38Om+0zdG+0VFkrdKMHzFQfJPRcGWy4=;
+ b=pcCmOl9lgmNHR48DapPaNaPrIDGVaBcY7S64debLnYTag8uJsYOqOMUCBT7lYjL6zg6x2eHkLyxT92I4EQ7+OmpW8j+OEQEa8TWMZVxbT3kBlCTDDlrgrjvBrPHKKUxcszUZ5t81nQ7vr27hQ2PLzsxkZUtFaQBvAoehJwBJDWE/C1fTuHPD+kjxFwoC+7qBCBdfWKlcuwUmKy53gHUWZiTZvjloyDcwmWoREmkCTcoY5eFkIlazXnPZBzWvO5jepFS9Wz/WtGGULFLb7n31SfQ/teZ3Ap3Y9dwZaKytu3DfReFJEU/ZQ0wqMVeqJW9SygB+GGY7JsU4HrnhwQP/7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uDCRY6PQvC6I38Om+0zdG+0VFkrdKMHzFQfJPRcGWy4=;
+ b=Qo92x8pGRUQ7i8OO6ZD5l3J824LoS2K4jd99kk0caiz5o/2dcwe3llF7qxp98NtA49CiOHUvqGdooGHjrMa3OWw0ozuKtfhIh+IH4PHIB73ZhbDBS8yJDF7p9zZHQESqgr7f7PF93NHm6r4oUVUTmNn9y22VbdLfa4xjyEYMQj8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
+ by IA1PR12MB6436.namprd12.prod.outlook.com (2603:10b6:208:3ac::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Fri, 31 Jul
+ 2026 12:37:20 +0000
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad%7]) with mapi id 15.21.0270.015; Fri, 31 Jul 2026
+ 12:37:19 +0000
+Message-ID: <ecd09557-ed93-4d05-9850-d02c31900f87@amd.com>
+Date: Fri, 31 Jul 2026 07:37:15 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 4/6] x86/sev: Add support to perform RMP optimizations
+ asynchronously
+To: Borislav Petkov <bp@alien8.de>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+ x86@kernel.org, hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
+ thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net,
+ ardb@kernel.org, pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
+ rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
+ pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
+ nikunj@amd.com, john.allen@amd.com, darwi@linutronix.de,
+ linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1784844080.git.ashish.kalra@amd.com>
+ <7f582569acea933c3045be604a81975e29b5ee2b.1784844080.git.ashish.kalra@amd.com>
+ <20260731054425.GNamw2OelKuNhVwnrU@fat_crate.local>
+Content-Language: en-US
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+Autocrypt: addr=ashish.kalra@amd.com; keydata=
+ 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
+In-Reply-To: <20260731054425.GNamw2OelKuNhVwnrU@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DSSP221CA0008.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:8:3d5::14) To BL3PR12MB9049.namprd12.prod.outlook.com
+ (2603:10b6:208:3b8::21)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 14/41] mm: swap: Introduce lru_add_drain_progressive()
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
- andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
- chao.p.peng@linux.intel.com, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
- "hughd@google.com" <hughd@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-14-35f9aec2aed2@google.com>
- <4460e252-b6de-4df3-bea8-0368a9d0f4ff@kernel.org>
- <CAEvNRgEUQSju2tW_1zMk2=QmveZNtmkjjCZdqVBgBD2JPh0k4Q@mail.gmail.com>
- <a823e3d2-8acf-49d9-a812-ac1bb2136d7f@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <a823e3d2-8acf-49d9-a812-ac1bb2136d7f@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|IA1PR12MB6436:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9d0f0bac-33b9-42f7-d9d0-08deef007621
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|4143699003|6133799003|5023799004|11063799006|3023799007|56012099006|22082099003|18002099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	yv/DR0Gzq/NfnMJDlVevZ3EijNSms31N3HyefZKeGSwec9l24gNgziJiHHj1NuS+Ru394xl2Amvjdekm8SeoPfjKZYVJAJ4A8Nm3QjxafU+RjS1AwVUu8VCsm1NDKueikE2SZZyD83dltigzdUBeIESaaUwU7EVv+qZqsiC3sG7JARMqKPwSRQy864vD32UQJdkpfpA5sX6jk/BqQPJFjfla6yxN6ZeN7wM/LBLB91kZMADoG0/INOU9w26M2zP064faEWhWbNXOZDbdmbhPGYGIXxm2t80HCDD43J8IHGtCyFIH37YEyIlT2iuvY6z5ywFRQrUvqvIpRbHYhKnFgtf7zybiASk/2OFS1Wf4n28oWP8PAIYe73sHTGhqOl/ePP0zW+gx5QqJl52ss7JjDLbf0lmr2E+uqsJBB9JPz7DxVqWi3X3SjfefItq0hzEUfArMFqb5wzB3E0z7Hq7Z8REre//8ZlEJ5h18aS+yCGj+DyczqGwWcg0/27b9h8b0lX2ySxoqEDOS4hsgxKjXCU6meFfhXJ9KJCdMP+K70UeX/1MVXO1w9MEwrnWQlgvEeb0qltbVJmrEWxcOn84eC4C3V8HoxHkgUhToyNsSgfuElDNhiV5hlBE5DQYpPJE8AzsBS+ZGZ3WZkEliT6+aw85CLBdelCTrHIxFlHzRDPs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(4143699003)(6133799003)(5023799004)(11063799006)(3023799007)(56012099006)(22082099003)(18002099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?KzQ3N3JSOVZYUkVVL3VlNDNQWnFVQmlqWkN3ZldXYjByR3JWelN6alhXWTBj?=
+ =?utf-8?B?ZkUxMXJMNGxpcUhhQ0k3SHJNbnhFcHd3MnNrQmtla09lKzJlelNsT1ZjSFQ1?=
+ =?utf-8?B?RWNGRFlSNnArVlh0Z2ppTzJaWEdka2ViTTJEVkxMQXJxUWl2VVVmNytUcm5p?=
+ =?utf-8?B?Q09RVFRhQ01qeXBNRVRhN2kxK2UxVUFFR2xmd1RmUThSYWlNYW5GLzFPT2Ns?=
+ =?utf-8?B?d3RZaHdmNW9VanRhQndvMWd1UXJHRmVSU1M2d0ZNbmNUZFMvQmlIKzB3emZG?=
+ =?utf-8?B?ditZVHdweWNqL3IyK2RlWTR5K3MrTGlsZzk2dzQ0L3E3YkNWTXV1VmFmWmJx?=
+ =?utf-8?B?MlJHZDU2SGxEbEoxVlkzTE5lT2Z4ZHhYZHBjcnpxRkFDVFNyaWU2YW9Ga1hj?=
+ =?utf-8?B?NDRyM21QMXRjSi9vTDBXOXJ3bm9MbVBlT29sSHZNREtwbitQRnh4cS84R2ta?=
+ =?utf-8?B?YW8wNGI0UWhIQ2M4L01UOHUrcGhCUFltczl3YjF2U3NHN0RMSFFCQ0pyVHp4?=
+ =?utf-8?B?MXRhT2Y3YkxCZFBIL0J6Wk82dVNHYWlnYmc1Z0ZHVVM0Vk5sN3duR0lwY3NE?=
+ =?utf-8?B?WlVNYnJ4Um1Tck41N0hqS092K0pvWnd1Ky8yZVVvckFlVkFEZXppckc4QXYw?=
+ =?utf-8?B?OUpNcG1PMEs2ZlBYYzhGdnNhM0U5eUVMK0M5UWVVYTlyenlXV1V6RUc3NFVC?=
+ =?utf-8?B?N2NwZU1BRUdHRStYUHpVRlFqUzZxMUVoSUU0WElBalpaKzltYitOSm52WHQ3?=
+ =?utf-8?B?dzd6dzNnK0xlZWREbWtlcFhNYjZOcWVxQTN3Mlo0czhDZWN6V1FSVFladkRG?=
+ =?utf-8?B?L2JtMGJIL2xUM3lOZHNMYnN6aGN0bFVTRmtacVBCWm9CM1E5K08wVGVDanN1?=
+ =?utf-8?B?K1lLeHIrcjVnRWpHeGlybzFsUmlBSXNacGVMZ25lTlRTRHpDN3RSSnp2LzZB?=
+ =?utf-8?B?UjBKVVUrNHJDaE1MSGYxbk0rZm01YjFiOC8weTdmWjhMYVlIV1d1dWZ0aXB1?=
+ =?utf-8?B?L3RKbnY0SllyWE1wQmZCWGtORnhEZzBFZ21TVzRzMXZWVUVPY0Z1dHVrZ0ZS?=
+ =?utf-8?B?cHQzY0ZtUjZsSmtKZ1VVbDdmZ1pOaEZGRTVzRk16SnJuNnJoT0x5UTJFRENr?=
+ =?utf-8?B?ZWRtb0RDL1NMMmdOWFhJdWlhM0luL0VpWU5jSWIyUUYreldXem80UHF3VVh3?=
+ =?utf-8?B?QVRBN1ViNElYT0dIaldlL2NicGI1UExSZGJOYTl2OTVMOVdVS2JOczZZdTAy?=
+ =?utf-8?B?elZWd2VWbHVpM1UycGVKZ1lvM0M3ZDZuQ0RQR0JNR2Z0bVZhUThpT1R3S2lu?=
+ =?utf-8?B?TVFtWTl6ZFhJM2VNY2ZaVzVNb2llaGFNaW1TVis5KzY3TW5aNStTQzRNVnl3?=
+ =?utf-8?B?d04vSnp6clF3MExMYnF4bytZYlhxRXB3NDJQbXFZcmx0Sy8wZU1hTnptSUZr?=
+ =?utf-8?B?M0hnejRrdTdpQ1hGcmRXeVNsYzNMWGFPZGtUVWw3TTVPUGlIcWxld2ZvdU56?=
+ =?utf-8?B?YkpsdlAvODBTbk5JVHdxZ3FheEtMUWhqclAvVHdEaFFpMGZUQm94cTBEcFBR?=
+ =?utf-8?B?M0pTaVhqanVFdVNzejhaQzVjcDZ3OHJGVUJscG5RamNlWGM3OEd6N1MyWWhN?=
+ =?utf-8?B?eEhocVpaM0JHVXd6QlBWVWJtWnlUSVY0U0oyVDdZQnpGRi9lNmVSWnVMNkZC?=
+ =?utf-8?B?dzBiRU16NnNNTFB5TThhM3NpUHJiZnJVT2wrUGphOVlmaHp2NkIvQjNrQjNI?=
+ =?utf-8?B?RWJ5a2FuTGF6Sldpa1UxYlVxQWdkcTFnYjMxQ1R1SnZ4ZGQ4ZXZMUGVCM2Fu?=
+ =?utf-8?B?ajlhUUhRcHFUTnVmUHRoRjdXbXZ6UXUvSUxOcTM5Wkg5eDN1eFZ1N2lXem1y?=
+ =?utf-8?B?SDczNzlXckRkNTFNOFg2TFVQQnNtUWgrZGVMZDFaUThkUUJRcEF6ZnNwVm1j?=
+ =?utf-8?B?c2RCTDhpMTZvVXd0c1RVWURIU2liWlRDQVRXZDhEUVg2OWFLV2h3R1lJOW9v?=
+ =?utf-8?B?Tm1YVHVOTkQ5TU9GN1RFVUxCbjdYVURJSGdVTUloQmxyalEvZ1EvemNSVTBE?=
+ =?utf-8?B?MmpiT0F0ODE1SmRZYllFRWpBMDVyaG50R2N5Wi9Gak9EdVdFa1BWaHZRVjdx?=
+ =?utf-8?B?SGE5ZnNYOVlHb3Rlcm15bjVOSEpsU0NqdUNKL3l6M0ZpKzNGYzE0aEEzR0xM?=
+ =?utf-8?B?TnlCdUdjdENJdW1SNFlhVjQ4YUc4QTV1NGJOYXNQaEp4RjZpYVgzVWxvdzB5?=
+ =?utf-8?B?eVo4UkVIR0NSaUlzdEN3dkNUcXlGSEdKZ1lFUXNmWjdZQi9kaHFQVDdKNVVG?=
+ =?utf-8?Q?F6MXnYcl+MNwJUdY8j?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9d0f0bac-33b9-42f7-d9d0-08deef007621
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2026 12:37:19.6697
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CEyJqkrSA58EpkUqYumk8nj5HRDiRQU7zkWvKAWTsYbspS9NfyZCfSxxmWPMpIx1tkk61Ndr73vaYmZ/Lie8TA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6436
 
-On 7/31/26 12:22, David Hildenbrand (Arm) wrote:
+
+On 7/31/2026 12:44 AM, Borislav Petkov wrote:
+> On Mon, Jul 27, 2026 at 07:05:29PM +0000, Ashish Kalra wrote:
+>> From: Ashish Kalra <ashish.kalra@amd.com>
 >>
->> I didn't really like this either, the drain_state thing is really
->> awkward, but in both usages (collect_longterm_unpinnable_folios() and
->> guest_memfd), there's an outer loop where if the draining happened on
->> the local CPU before it should skip straight to just draining on all the
->> other CPUs.
+>> When SEV-SNP is enabled, all writes to memory are checked to ensure
+>> integrity of SNP guest memory. This imposes performance overhead on the
 > 
-> Just nasty :)
+> s/SNP//
 > 
+> The checks are done not only on SNP guest memory but on *all* memory, as your
+> next paragraph suggests.
+
+Yes, the checks are done on *all* memory but for ensuring the integrity of SNP 
+guest memory, so that is what the above paragraph is mentioning.
+
+> 
+>> whole system.
 >>
->>> I was hoping that we could embed more logic in a helper. The history [1] of the
->>> refcount check is rather sad:
->>>
->>> https://lore.kernel.org/all/c5bac539-fd8a-4db7-c21c-cd3e457eee91@google.com/
->>>
->>> ... primarily because of mlock() handling.
->>>
+>> RMPOPT is a new instruction that minimizes the performance overhead of
+>> RMP checks on the hypervisor and on non-SNP guests by allowing RMP
+>> checks to be skipped for 1GB regions of memory that are known not to
+>> contain any SEV-SNP guest memory.
+> 
+> Let's tone down the abbreviations. "SNP guest memory" is enough and let's
+> stick to that.
+> 
+>> Add support for performing RMP optimizations asynchronously using a
+>> dedicated workqueue.
 >>
->> In the original code in collect_longterm_unpinnable_folios(), I couldn't
->> find anything that handles folio_test_mlock(), so I was lost for a while
->> until I realized mlock() doesn't add a refcount to the folio.
+>> Enable RMPOPT optimizations for up to 2TB of system RAM starting from
+>> the lowest physical memory address aligned down to a 1GB boundary at
+>> RMP initialization time. RMP checks can initially be skipped for 1GB
 > 
-> mlocked folios in the mlock cache hold a reference as well.
+> Why "initially"? What are you trying to say here?
+
+"initially" meant the init-time state — before any SNP guests exist, all eligible 1 GB ranges are optimized — and the
+last sentence covers how that changes as guests launch.
+
+The other way i can put it is: "RMP checks are skipped for 1-GB ranges that don't contain SNP guest memory and 
+as SNP guests are launched, RMPUPDATE disables the corresponding optimizations".
+
 > 
+>> memory ranges that do not contain SEV-SNP guest memory (excluding
+>> preassigned pages such as the RMP table and firmware pages). As SNP
+>> guests are launched, RMPUPDATE will disable the corresponding RMPOPT
+>> optimizations.
+> 
+> Because it will add pages to the RMP table?
+> 
+> This paragraph needs clarification.
+
+Not by adding pages — the RMP table already covers all memory. When RMPUPDATE assigns a page to an SNP guest
+(guest-owned state) inside an optimized 1 GB region, the hardware clears that region's RMPOPT optimization, so RMP
+checks resume there to protect the guest memory. I'll reword the paragraph to say that explicitly.
+
+> 
+>> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
+>> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+>> Suggested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+>> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+>> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+>> ---
+>>  arch/x86/virt/svm/sev.c | 160 +++++++++++++++++++++++++++++++++++++++-
+>>  1 file changed, 158 insertions(+), 2 deletions(-)
 >>
->> Are you kind of proposing an optimization to
->> collect_longterm_unpinnable_folios() by adding a check for
->> !folio_test_mlock()? I hope we can put that in a separate patch series,
->> I'm still hoping to get this series in for 7.3!!
+>> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+>> index 8bfd80284836..04b19e64f832 100644
+>> --- a/arch/x86/virt/svm/sev.c
+>> +++ b/arch/x86/virt/svm/sev.c
+>> @@ -19,6 +19,7 @@
+>>  #include <linux/iommu.h>
+>>  #include <linux/amd-iommu.h>
+>>  #include <linux/nospec.h>
+>> +#include <linux/workqueue.h>
+>>  
+>>  #include <asm/sev.h>
+>>  #include <asm/processor.h>
+>> @@ -125,7 +126,18 @@ static void *rmp_bookkeeping __ro_after_init;
+>>  static u64 probed_rmp_base, probed_rmp_size;
+>>  
+>>  static cpumask_var_t rmpopt_cpumask;
+>> -static phys_addr_t rmpopt_pa_start;
+>> +static phys_addr_t rmpopt_pa_start, rmpopt_pa_end;
+>> +
+>> +enum rmpopt_function {
 > 
-> I was trying to avoid messing with the refcount for ordinary LRU cache pages.
-> mlock() should be a corner case for guest_memfd.
+> 	rmpopt_op_type
 > 
-> Relying on the refcount just means that one unconditionally performs a lot of LRU
-> cache draining even though it doesn't make any sense.
+>> +	RMPOPT_FUNC_VERIFY_AND_REPORT_STATUS,
+>> +	RMPOPT_FUNC_REPORT_STATUS
 > 
->>
->>> For guest_memfd(), would mlock() ever apply on a path where you need that check?
->>>
->>
->> For guest_memfd, if a folio were mlocked, unmapping it would fail, and
->> so the refcount on the folio would be elevated. The
->> kvm_gmem_is_safe_for_conversion() check in the patch after this one
->> would fail, correctly.
->>
->> I really wanted the caller of the lru_add_drain_progressive() function
->> to control whether to do the drain (see below), which would solve the
->> mlock problem by not assuming the use of folio_expected_ref_count() to
->> determine whether to do draining.
+> RMPOPT_OP_VERIFY...
 > 
-> Again, the problem is that on *any* raised reference you would drain. I
-> was trying to limit the harm.
+>> +};
+>> +
 > 
-> [...]
-> 
->>> + */
->>> +static void lru_cache_drain_for_folio(const struct folio *folio,
->>> +		enum lru_cache_drained *drained)
->>
->> The main thing I wanted in the proposed version
->> (lru_add_drain_progressive()), was to let the caller determine whether
->> to try or to continue draining.
-> 
-> Why?
-> 
->>
->> I wanted the caller to have full control over whether to drain or not,
->> so I didn't want to pass folio into the function. I thought the caller
->> should first determine whether to drain, then call the function.
-> 
-> Why?
-> 
-> That's literally what the existing refcount check tries to do: figure out if
-> there are LRU caches.
-> 
->>
->> This version assumes that the caller wants to continue draining based on
->> something to do with a folio, and the folio may or may not be on the
->> lru_add fbatch at all, which is a little strange to me.
-> 
-> I really don't understand what you are trying to say.
-> 
-> Draining only makes sense if something is on the LRU cache. And there are
-> better ways of checking that than relying only on even less precise refcounts.
-> 
-> If someone wants to do an early refcount check to abort the overall
-> operation, that's fine.
-> 
->>
->> Also, this version enforces a certain definition of "expected" number of
->> refcounts on the folio. I guess in this case this definition works with
->> guest_memfd, but guest_memfd doesn't support swap so the swapcache check
->> in folio_expected_ref_count() isn't necessary.
-> 
-> ?!
-> 
-> That's why we have the universal definition of expected references and the
-> common helper.
-> 
-> Because pagecache pages commonly don't support the swapcache.
-> 
->> Also, if the definition
->> folio_expected_ref_count() changes, then guest_memfd is implicitly
->> affected. Not sure if the "expected" definition is the same for all
->> callers?
-> 
-> It must, because that is used all over the place. The only thing it
-> cannot deal with is references held by the caller (which could be supplied
-> through and "additional references" parameter like we do elsewhere).
-> 
->>
->> I guess if there was a function named
->> folio_ref_counts_indicate_presence_only_in_the_filemap() instead of
->> folio_expected_ref_count(), then it'd be the perfect function for
-> 
-> You're not seriously proposing such an abomination I hope?
-> 
->> guest_memfd to use. The current definition of folio_expected_ref_count()
->> also includes page table mappings, but in this check guest_memfd really
->> wants to make sure that there are no page table mappings.
-> 
-> You can just check early for mappings.
-> 
-> Remember: this is about LRU draining, *not* about your final
-> "unexpected references" check.
-> 
->>
->> This version folds folio_likely_lru_cached() into the check, and I
->> adopted the check for guest_memfd because it'd help with huge pages,
->> though technically guest_memfd is always 4K now so the check is also
->> pointless.
-> 
-> Who cares if we end up with a common usable helper? We have usless
-> checks *all over the place* in common helpers.
-> 
->>
->> I tried a macro version of this where the macro caller can pass in a
->> full condition, which would look like this:
->>
->>   lru_add_drain_while(folio_may_be_lru_cached(folio) &&
->>                       folio_ref_count(folio) != expected_refcount,
->>                       drain_state);
-> 
-> Yuk.
-> 
->>
->> but I thought that just created something people have to jump to, to
->> first understand how the macro works, so I left it as an explicit while
->> loop instead.
->>
->>> +{
->>> +	if (!folio_likely_lru_cached(folio))
->>> +		return false;
->>> +
->>> +	/* Try local draining first, if not already done previously. */
->>> +	if (*drained == LRU_CACHE_NOT_DRAINED) {
->>> +		lru_add_drain();
->>> +		*drained = LRU_CACHE_DRAINED;
->>> +	}
->>> +	/* Try draining all CPUs next if still not an LRU folio. */
->>> +	if (folio_likely_lru_cached(folio) && *drained == LRU_CACHE_DRAINED) {
->>> +		lru_add_drain_all();
->>> +		*drained = LRU_CACHE_DRAINED_ALL;
->>> +	}
->>> +}
->>> +
->>>  /*
->>>   * Returns the number of collected folios. Return value is always >= 0.
->>>   */
->>> @@ -2266,9 +2316,9 @@ static unsigned long collect_longterm_unpinnable_folios(
->>>  		struct list_head *movable_folio_list,
->>>  		struct pages_or_folios *pofs)
->>>  {
->>> +	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
->>
->> I also considered an enum, but it would be another thing to export. I
->> was thinking to have drain_state just be opaque to the caller and the
->> only thing the caller needs to know is to initialize it to 0.
->>
->> Perhaps there's a better way to "make it opaque"?
-> 
-> Putting an enum into a header is a problem in which universe? :)
-> 
-> Ackerley, please stop making up stuff. Having generic helper is not a problem. Doing
-> checks in common helpers is not a problem. Putting enums in headers is not a problem.
-> 
-> Your version is just bad.
-> 
-> I can later try something that keeps the questionable refcount checks in place,
-> maybe that could do as a temporary solution until Hugh possibly finds a way to
-> remove the need for draining entirely.
+> /*
+>  * This timeout was selected this way because...
+>  */
 > 
 
-And looking at it, the current folio_ref_count() in GUP is entirely wrong
-and always makes us drain local+all.
+The value is a heuristic that came out of review feedback on the series, i can add a comment here
+documenting what the timeout is for (coalescing SNP guest teardowns into one re-optimization pass and
+letting guest pages convert back to shared before the scan).
 
-Let me fix that first, which will also modify this code.
+>> +#define RMPOPT_WORK_TIMEOUT	10000
+>> +
+>> +static struct workqueue_struct *rmpopt_wq;
+>> +static struct delayed_work rmpopt_delayed_work;
+>> +static DEFINE_MUTEX(rmpopt_wq_mutex);
+>>  
+>>  static LIST_HEAD(snp_leaked_pages_list);
+>>  static DEFINE_SPINLOCK(snp_leaked_pages_list_lock);
+>> @@ -565,11 +577,20 @@ static void snp_cleanup_rmpopt(void)
+>>  {
+>>  	int cpu;
+>>  
+>> +	guard(mutex)(&rmpopt_wq_mutex);
+>> +
+>> +	if (!rmpopt_wq)
+>> +		return;
+> 
+> If there's no workqueue, you skip all the rest, including undoing things which
+> are not workqueue-related?
+> 
+> That workqueue pointer must be magical and special. Yet, I don't see anything
+> explaining that.
 
-I'd say, to unblock gmem we could have something minimal that I would clean
-up later, but I think the problem is that lru_add_drain() / lru_add_drain_all()
-is not exported, right?
+I will add a comment spelling that out.
 
--- 
-Cheers,
+> 
+>> +
+>> +	cancel_delayed_work_sync(&rmpopt_delayed_work);
+>> +	destroy_workqueue(rmpopt_wq);
+>> +
+>>  	for_each_cpu(cpu, rmpopt_cpumask)
+>>  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, 0);
+>>  
+>>  	free_cpumask_var(rmpopt_cpumask);
+>> -	rmpopt_pa_start = 0;
+>> +	rmpopt_pa_start = rmpopt_pa_end = 0;
+>> +	rmpopt_wq = NULL;
+>>  }
+>>  
+>>  void snp_shutdown(void)
+>> @@ -599,6 +620,96 @@ static bool rmpopt_capable(void)
+>>  	       cc_platform_has(CC_ATTR_HOST_SEV_SNP);
+>>  }
+>>  
+>> +/*
+>> + * RMPOPT: F2 0F 01 FC
+>> + *   Input:  RAX = system physical address (1GB aligned)
+>> + *           RCX = operation type
+>> + *   Output: CF set if the range was optimized
+>> + */
+>> +static inline bool __rmpopt(u64 pa_start, u64 op_type)
+>> +{
+>> +	bool optimized;
+>> +
+> 
+> 	/*
+> 	 * needs a comment here which says which binutils version
+> 	 * supports the RMPOPT mnemonic.
+> 	 */
+>> +	asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc"
+>> +		     : "=@ccc" (optimized)
+>> +		     : "a" (pa_start), "c" (op_type)
+>> +		     : "memory", "cc");
+>> +
+>> +	return optimized;
+>> +}
+>> +
+>> +static void rmpopt(u64 pa)
+>> +{
+>> +	u64 pa_start = ALIGN_DOWN(pa, SZ_1G);
+>> +	u64 op_type = RMPOPT_FUNC_VERIFY_AND_REPORT_STATUS;
+> 
+> 	enum rmpopt_op_type op = ...
+> 
+>> +
+>> +	__rmpopt(pa_start, op_type);
+> 
+> Looks like the __rmpopt() carve out is not really necessary and you can merge
+> it back into rmpopt().
+> 
+>> +}
+>> +
+>> +/*
+>> + * 'val' is a system physical address.
+>> + */
+>> +static void rmpopt_smp(void *val)
+> 
+> You don't need that one - you can use rmpopt(). But keep on reading...
+> 
+>> +{
+>> +	rmpopt((u64)val);
+>> +}
+>> +
+>> +/*
+>> + * RMPOPT optimizations skip RMP checks at 1GB granularity if this
+>> + * range of memory does not contain any SNP guest memory.
+>> + */
+> 
+> Put that comment above rmpopt().
 
-David
+Will merge __rmpopt() into rmpopt(), drop rmpopt_smp(), and switch the op type to enum rmpopt_op_type. Will move the
+descriptive comment above rmpopt(), and add a note that binutils doesn't support the RMPOPT mnemonic yet, hence the
+.byte encoding. The CF result is unused on this path, so will drop the output operand.
+
+> 
+>> +static void rmpopt_work_handler(struct work_struct *work)
+>> +{
+>> +	cpumask_var_t follower_mask;
+>> +	phys_addr_t pa;
+> 
+> So either phys_addr_t or u64 but not both for a pa.
+
+Ok.
+
+> 
+>> +	int this_cpu;
+>> +
+>> +	pr_info("Attempt RMP optimizations on physical address range @1GB alignment [0x%016llx - 0x%016llx]\n",
+>> +		rmpopt_pa_start, rmpopt_pa_end);
+> 
+> This is going to spam dmesg every time the workqueue runs?
+> 
+> Nope, zap it.
+
+Ok.
+
+> 
+>> +	if (!alloc_cpumask_var(&follower_mask, GFP_KERNEL)) {
+>> +		pr_warn("RMP optimization pass skipped: cpumask allocation failed\n");
+>> +		return;
+>> +	}
+> 
+> Why? Why isn't the follower mask allocated once at init time?
+> 
+
+Will move the follower mask to a one-time allocation at setup (alongside rmpopt_cpumask and freed in
+snp_cleanup_rmpopt()) and just recompute it per pass. The work handler no longer allocates/frees it, which also drops
+the per-run allocation-failure path.
+
+>> +
+>> +	/*
+>> +	 * RMPOPT scans the RMP table, stores the result of the scan in the
+>> +	 * reserved processor memory. The RMP scan is the most expensive
+>> +	 * part. If a second RMPOPT occurs, it can skip the expensive scan
+>> +	 * if they can see a cached result in the reserved processor memory.
+>> +	 *
+>> +	 * Do RMPOPT on one CPU alone. Then, follow that up with RMPOPT
+>> +	 * on every other primary thread. Followers are "designed to"
+>> +	 * skip the scan if they see the "cached" scan results.
+>> +	 *
+>> +	 * Pin the worker to the current CPU for the leader loop so that
+> 
+> Isn't worker == leader here?
+
+Right — the workqueue worker's CPU is the leader. Will reword the comment to use "leader"/"followers" consistently and drop
+the redundant "worker" term.
+
+>> +	 * this_cpu remains valid and the RMPOPT instruction executes on
+>> +	 * the correct CPU. 
+> 
+>> Use migrate_disable() rather than get_cpu() to
+>> +	 * prevent migration while still allowing preemption.
+> 
+> No need to explain that.
+> 
+
+Ok.
+
+>> +	 */
+>> +	migrate_disable();
+>> +	this_cpu = smp_processor_id();
+>> +
+>> +	cpumask_andnot(follower_mask, rmpopt_cpumask,
+>> +		       topology_sibling_cpumask(this_cpu));
+>> +
+>> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
+>> +		rmpopt(pa);
+>> +
+>> +	migrate_enable();
+>> +
+>> +	/*
+>> +	 * Followers: run RMPOPT on the remaining cores.  cpus_read_lock() is
+>> +	 * intentionally not held here: CPU hotplug is disabled for the entire
+>> +	 * time SNP is active (see snp_prepare()), and this work only runs while
+>> +	 * SNP is active, so the follower set stays valid across the whole scan.
+>> +	 */
+>> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
+>> +		on_each_cpu_mask(follower_mask, rmpopt_smp, (void *)pa, true);
+> 
+> An IPI per 1G pa?!?!? On each CPU?!
+> 
+> Instead of IPIing each CPU and inside the handler, doing the loop?
+> 
+> Nope.
+> 
+
+You're right — an IPI per 1 GB is far too many. Will restructure to a single IPI per follower core: a new on_each_cpu()
+callback can loop over the whole range on the CPU it runs on. The leader will call it directly (migrate-disabled) to populate
+the RMP scan cache, then one on_each_cpu_mask() will run it on the remaining cores.
+
+This will also fold nicely with the earlier cleanup:  __rmpopt() getting merged into rmpopt().
+
+One important tradeoff to be aware of: each follower IPI handler will now run a 2048-iteration loop with IRQs disabled — 
+but followers are RMP-scan cache hits (the leader populated the cache), so each rmpopt() there is cheap, and this only runs
+at setup and guest-teardown re-optimization time.
+
+Thanks,
+Ashish
+
+>> +
+>> +	free_cpumask_var(follower_mask);
+>> +}
+> 
+> Ok, enough for this part. Part II coming up later.
+> 
+> Thx.
+> 
