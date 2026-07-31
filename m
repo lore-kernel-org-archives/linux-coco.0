@@ -1,344 +1,146 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CB5261B8A
-	for <linux-coco@lists.linux.dev>; Fri, 31 Jul 2026 05:45:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65803314A1;
+	Fri, 31 Jul 2026 07:34:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785476723; cv=none; b=AVBCL7sM7F0Fbs0IdG0DWvaQD/qfPiRLs2EV0fpQ32F3awO7DvFKMFR8gVe6vZvxSOxnAWaT+Slj4gprQzoQoXXwwg54shVgXindSTkJmFuOfKJvCd1FEowUs2wePYrxpGcfM93V0uc8TkruMp/Cfb19t4jGhcmqcKm7TIPNX0k=
+	t=1785483249; cv=none; b=Dr9roTm6nwJ1hcLy+388mWgPRaPoFjFGgDoW71oa6n/85NzbS+2ynx8jj2zmrvxpWBWVGYEIJ2smGSnPHZ7HjsEzYbgp8UqY9S7ITiirMT57LainGZTUXzIhwR3Jmm7YkHLNr+M5qes+zcLHJIMF1daNHMRLpw6h4dZLCey67HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785476723; c=relaxed/simple;
-	bh=zOOJ8DeOnYEfhyleSa0bO9fdEyUdlWPrWt3by1HgCV8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RhQ3GD47dm8vj17mzlkQfQVHO32yKSMNmf6XcmQZTD5AsD3Wg9pixJKyykbbFXmc5dCecIv3gv5p9XUVcu4WWbl16jx/8SdZbZ7xllhRc3nAdrh5N29G5rehmE0w56dt1JcWWuTFKN3eAPO+8zmK6b14Y/9yl9mdUvH1za8Rlo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Wu6aBahq; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1785483249; c=relaxed/simple;
+	bh=gt/cqMD5KNfHJG+3PoldXcwl4vYWkvMaM5QiMj5ArPQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=ako6pxnKT2QyWVip31FkeNi3qxThvpqkRhamnODzaJzxGI5ffQTsnSbNRd+QuLEuJw356OVVTmSQhUKaEa70xPK5Sc1JSgdeHUZ4obARvelsmpcmOPKJgSjNXw5Jj2Y6ro413atC05u7T0uPcJhcU7AYmM1kRbsDFLNH7eCD83U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=h2vFzdGP; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Wu6aBahq"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id F16C140E01CE;
-	Fri, 31 Jul 2026 05:45:17 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 8_PwlhpFGBNE; Fri, 31 Jul 2026 05:45:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1785476703; bh=G7VWzTnNmnNc6vhXzTYbTJEpS6/d3XUsM+DmxJ+z4VM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wu6aBahqgkgJsXoi5HEueysdb2eC1wxyelov+kGWWcB5Z7bcUFrE1U9XqUfNkUz6q
-	 iezceb1dvqkpxhd7Ywn+0zFzfW6Fdbo/1974qlRlQ+eSfkbzT01O3D9hB+35PEnyQ5
-	 YJ1t41XypyN3Pz8/iNgW3BbdRYu9ciBhaDr0v7t8wW2T2dZxRlYzarWKBWV27W4ufF
-	 lWv+ro9CdLsNud7xPDqkwnp5e3P3Ze4NG+RVAmu5krMgttVLhWXiyufEBUIAGaUFfR
-	 1rRwmheov/iXkrBZn26IS365QaRCjrrqowUaH26xNjhXqBJpiOoG0aYuogZ6Mhvj5P
-	 t+qVdJVniXRpElv1Yq3Z4MYaaUq3wuwprgVE33xzcgcHDOPIQBXTmbseSn/O9ZdQwm
-	 tfLLVSh9wfZIEmyJi+rYeJYGgASEe7Ie61DzgeoOJihRreRipN5T7eGhLhQRxh8UEU
-	 sL0XwnyCZTZJfKWYsMg/bJ6m6hgzLfC/LeOdoE9H2bvqTXP1Icc4gpY+R0VmRrBji2
-	 wMykaVRpj0RwDK5V6j/ywsDEju2FC4N4sPeE3quznsUIrKit1Womtq5dIJJ8XisTHe
-	 BDmoSpIAI7M0o01/HjFjNnjvlUCqX/jMCW1EbVhclczaW7Bz9YYcs80/gN42GJ7yB2
-	 jNyV27vJTuFWw/fpyG4Qe3Bg=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7169340E014C;
-	Fri, 31 Jul 2026 05:44:28 +0000 (UTC)
-Date: Thu, 30 Jul 2026 22:44:25 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	john.allen@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v11 4/6] x86/sev: Add support to perform RMP
- optimizations asynchronously
-Message-ID: <20260731054425.GNamw2OelKuNhVwnrU@fat_crate.local>
-References: <cover.1784844080.git.ashish.kalra@amd.com>
- <7f582569acea933c3045be604a81975e29b5ee2b.1784844080.git.ashish.kalra@amd.com>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="h2vFzdGP"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260731073359euoutp01b326523e6f9dce2fa68dcdf5a4089e5b~HT4vhc6Cs1162311623euoutp01Z;
+	Fri, 31 Jul 2026 07:33:59 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260731073359euoutp01b326523e6f9dce2fa68dcdf5a4089e5b~HT4vhc6Cs1162311623euoutp01Z
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1785483239;
+	bh=N3Jgur6eGpI5uF6i9kwDYaTQ48SNIpZ5QYt0ueN9Z1A=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=h2vFzdGPU5rK6aIg9RL7QWF075tsWv+IJpqYD+rwoehY/vNWBMRBWGrq2fWusmWGk
+	 J790EJlBOERW4eikBs6SJ0XQKF/mLNr0HDnXFmef70VwH7PnAlB0ueKl/8aXpOpDw3
+	 NAWoNOdVoKDxcVtSBMhZr5p81NEbyYPO8PB+QGI0=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260731073359eucas1p2ff8cd0f84dea171a8b4f0061154dc5ae~HT4vTnQXs1993519935eucas1p2y;
+	Fri, 31 Jul 2026 07:33:59 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260731073350eusmtip181b6e9861358d1e9a24ec292d0634e20~HT4nVsXtj0839208392eusmtip1O;
+	Fri, 31 Jul 2026 07:33:50 +0000 (GMT)
+Message-ID: <85be992d-9567-433e-ae2e-64ae5483964d@samsung.com>
+Date: Fri, 31 Jul 2026 09:33:47 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <7f582569acea933c3045be604a81975e29b5ee2b.1784844080.git.ashish.kalra@amd.com>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v8 00/23] dma-mapping: Track shared DMA state through
+ direct, pool and swiotlb paths
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Cc: Robin Murphy <robin.murphy@arm.com>, Will Deacon <will@kernel.org>, Marc
+	Zyngier <maz@kernel.org>, Steven Price <steven.price@arm.com>, Suzuki K
+	Poulose <Suzuki.Poulose@arm.com>, Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>, Jason Gunthorpe <jgg@ziepe.ca>, Mostafa Saleh
+	<smostafa@google.com>, Petr Tesarik <ptesarik@suse.com>, Alexey
+	Kardashevskiy <aik@amd.com>, Dan Williams <dan.j.williams@intel.com>, Xu
+	Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Alexander Gordeev
+	<agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
+	<svens@linux.ibm.com>, x86@kernel.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <yq5azezfeeax.fsf@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20260731073359eucas1p2ff8cd0f84dea171a8b4f0061154dc5ae
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260725070930eucas1p16cbafb514de7a2e7531d0e4ae158acfb
+X-EPHeader: CA
+X-CMS-RootMailID: 20260725070930eucas1p16cbafb514de7a2e7531d0e4ae158acfb
+References: <20260717180442.110954-1-aneesh.kumar@kernel.org>
+	<CGME20260725070930eucas1p16cbafb514de7a2e7531d0e4ae158acfb@eucas1p1.samsung.com>
+	<yq5azezfeeax.fsf@kernel.org>
 
-On Mon, Jul 27, 2026 at 07:05:29PM +0000, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> When SEV-SNP is enabled, all writes to memory are checked to ensure
-> integrity of SNP guest memory. This imposes performance overhead on the
+On 25.07.2026 09:09, Aneesh Kumar K.V wrote:
+> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
+>> This series tracks confidential-computing shared DMA state through the
+>> dma-direct, dma-pool, and swiotlb paths so that encrypted and decrypted
+>> DMA buffers are handled consistently.
+>>
+>> Today, the direct DMA path mostly relies on force_dma_unencrypted() for
+>> shared/decrypted buffer handling. This series consolidates the
+>> force_dma_unencrypted() checks in the top-level functions and ensures
+>> that the remaining DMA interfaces use DMA attributes to make the correct
+>> decisions.
+>>
+>> The series separates mapping and allocation state:
+>> - DMA_ATTR_CC_SHARED describes the DMA address attribute requested for a
+>>   mapping. It tells the DMA mapping path that the DMA address must target
+>>   shared/decrypted memory.
+>> - __DMA_ATTR_ALLOC_CC_SHARED is an internal DMA-mapping attribute used only
+>>   by allocation paths after the DMA core decides that the backing pages
+>>   must be allocated as shared/decrypted memory.
+>>
+>> The series:
+>> - moves swiotlb-backed allocations out of __dma_direct_alloc_pages(),
+>> - uses __DMA_ATTR_ALLOC_CC_SHARED through the dma-direct alloc/free paths
+>> - teaches the atomic DMA pools to track encrypted versus decrypted
+>>   state
+>> - tracks swiotlb pool encryption state and enforces strict pool
+>>   selection
+>> - centralizes encrypted/decrypted pgprot handling in dma_pgprot() using
+>>   DMA attributes
+>> - passes DMA attributes down to dma_capable() so capability checks can
+>>   validate whether the selected DMA address encoding matches
+>>   DMA_ATTR_CC_SHARED
+>> - makes dma_direct_map_phys() choose the DMA address encoding from
+>>   DMA_ATTR_CC_SHARED and fall back to swiotlb when a shared DMA request
+>>   cannot use the direct mapping, which lets arm64 and x86 CCA guests stop
+>>   relying on SWIOTLB_FORCE for DMA mappings
+>> - use the selected swiotlb pool state to derive the returned DMA
+>>   address
+>> - reports CC_ATTR_GUEST_MEM_ENCRYPT for arm64 Realms, powerpc secure
+>>   guests, and s390 protected virtualization guests.
+>>
+>> Dependency:
+>> This series depends on the pKVM changes posted at:
+>> https://lore.kernel.org/all/20260603110522.3331819-1-smostafa@google.com
+>>
+>> Please merge this series only after the pKVM changes above are merged.
+>> Otherwise pKVM will be broken.
+>>
+> pKVM topic branch is now available 
+>
+> https://lore.kernel.org/all/178467286876.125042.12010461715645610054.b4-ty@kernel.org/
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/coco
+I've just got back from my holiday's and I see that there is everything ready to give
+this patchset some tests in linux-next. I hope nothing will break.
 
-s/SNP//
+I've applied this patchset to dma-mapping-for-next, on top of pKVM topic branch with
+patch "[PATCH v8 17/23] dma-direct: make dma_direct_map_phys() honor DMA_ATTR_CC_SHARED"
+rebased onto latest changes in arch/arm64/mm/init.c.
 
-The checks are done not only on SNP guest memory but on *all* memory, as your
-next paragraph suggests.
+The remaining items pointed in the review can be fixed incrementally.
 
-> whole system.
-> 
-> RMPOPT is a new instruction that minimizes the performance overhead of
-> RMP checks on the hypervisor and on non-SNP guests by allowing RMP
-> checks to be skipped for 1GB regions of memory that are known not to
-> contain any SEV-SNP guest memory.
-
-Let's tone down the abbreviations. "SNP guest memory" is enough and let's
-stick to that.
-
-> Add support for performing RMP optimizations asynchronously using a
-> dedicated workqueue.
-> 
-> Enable RMPOPT optimizations for up to 2TB of system RAM starting from
-> the lowest physical memory address aligned down to a 1GB boundary at
-> RMP initialization time. RMP checks can initially be skipped for 1GB
-
-Why "initially"? What are you trying to say here?
-
-> memory ranges that do not contain SEV-SNP guest memory (excluding
-> preassigned pages such as the RMP table and firmware pages). As SNP
-> guests are launched, RMPUPDATE will disable the corresponding RMPOPT
-> optimizations.
-
-Because it will add pages to the RMP table?
-
-This paragraph needs clarification.
-
-> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
-> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Suggested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> ---
->  arch/x86/virt/svm/sev.c | 160 +++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 158 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-> index 8bfd80284836..04b19e64f832 100644
-> --- a/arch/x86/virt/svm/sev.c
-> +++ b/arch/x86/virt/svm/sev.c
-> @@ -19,6 +19,7 @@
->  #include <linux/iommu.h>
->  #include <linux/amd-iommu.h>
->  #include <linux/nospec.h>
-> +#include <linux/workqueue.h>
->  
->  #include <asm/sev.h>
->  #include <asm/processor.h>
-> @@ -125,7 +126,18 @@ static void *rmp_bookkeeping __ro_after_init;
->  static u64 probed_rmp_base, probed_rmp_size;
->  
->  static cpumask_var_t rmpopt_cpumask;
-> -static phys_addr_t rmpopt_pa_start;
-> +static phys_addr_t rmpopt_pa_start, rmpopt_pa_end;
-> +
-> +enum rmpopt_function {
-
-	rmpopt_op_type
-
-> +	RMPOPT_FUNC_VERIFY_AND_REPORT_STATUS,
-> +	RMPOPT_FUNC_REPORT_STATUS
-
-RMPOPT_OP_VERIFY...
-
-> +};
-> +
-
-/*
- * This timeout was selected this way because...
- */
-
-> +#define RMPOPT_WORK_TIMEOUT	10000
-> +
-> +static struct workqueue_struct *rmpopt_wq;
-> +static struct delayed_work rmpopt_delayed_work;
-> +static DEFINE_MUTEX(rmpopt_wq_mutex);
->  
->  static LIST_HEAD(snp_leaked_pages_list);
->  static DEFINE_SPINLOCK(snp_leaked_pages_list_lock);
-> @@ -565,11 +577,20 @@ static void snp_cleanup_rmpopt(void)
->  {
->  	int cpu;
->  
-> +	guard(mutex)(&rmpopt_wq_mutex);
-> +
-> +	if (!rmpopt_wq)
-> +		return;
-
-If there's no workqueue, you skip all the rest, including undoing things which
-are not workqueue-related?
-
-That workqueue pointer must be magical and special. Yet, I don't see anything
-explaining that.
-
-> +
-> +	cancel_delayed_work_sync(&rmpopt_delayed_work);
-> +	destroy_workqueue(rmpopt_wq);
-> +
->  	for_each_cpu(cpu, rmpopt_cpumask)
->  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, 0);
->  
->  	free_cpumask_var(rmpopt_cpumask);
-> -	rmpopt_pa_start = 0;
-> +	rmpopt_pa_start = rmpopt_pa_end = 0;
-> +	rmpopt_wq = NULL;
->  }
->  
->  void snp_shutdown(void)
-> @@ -599,6 +620,96 @@ static bool rmpopt_capable(void)
->  	       cc_platform_has(CC_ATTR_HOST_SEV_SNP);
->  }
->  
-> +/*
-> + * RMPOPT: F2 0F 01 FC
-> + *   Input:  RAX = system physical address (1GB aligned)
-> + *           RCX = operation type
-> + *   Output: CF set if the range was optimized
-> + */
-> +static inline bool __rmpopt(u64 pa_start, u64 op_type)
-> +{
-> +	bool optimized;
-> +
-
-	/*
-	 * needs a comment here which says which binutils version
-	 * supports the RMPOPT mnemonic.
-	 */
-> +	asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc"
-> +		     : "=@ccc" (optimized)
-> +		     : "a" (pa_start), "c" (op_type)
-> +		     : "memory", "cc");
-> +
-> +	return optimized;
-> +}
-> +
-> +static void rmpopt(u64 pa)
-> +{
-> +	u64 pa_start = ALIGN_DOWN(pa, SZ_1G);
-> +	u64 op_type = RMPOPT_FUNC_VERIFY_AND_REPORT_STATUS;
-
-	enum rmpopt_op_type op = ...
-
-> +
-> +	__rmpopt(pa_start, op_type);
-
-Looks like the __rmpopt() carve out is not really necessary and you can merge
-it back into rmpopt().
-
-> +}
-> +
-> +/*
-> + * 'val' is a system physical address.
-> + */
-> +static void rmpopt_smp(void *val)
-
-You don't need that one - you can use rmpopt(). But keep on reading...
-
-> +{
-> +	rmpopt((u64)val);
-> +}
-> +
-> +/*
-> + * RMPOPT optimizations skip RMP checks at 1GB granularity if this
-> + * range of memory does not contain any SNP guest memory.
-> + */
-
-Put that comment above rmpopt().
-
-> +static void rmpopt_work_handler(struct work_struct *work)
-> +{
-> +	cpumask_var_t follower_mask;
-> +	phys_addr_t pa;
-
-So either phys_addr_t or u64 but not both for a pa.
-
-> +	int this_cpu;
-> +
-> +	pr_info("Attempt RMP optimizations on physical address range @1GB alignment [0x%016llx - 0x%016llx]\n",
-> +		rmpopt_pa_start, rmpopt_pa_end);
-
-This is going to spam dmesg every time the workqueue runs?
-
-Nope, zap it.
-
-> +	if (!alloc_cpumask_var(&follower_mask, GFP_KERNEL)) {
-> +		pr_warn("RMP optimization pass skipped: cpumask allocation failed\n");
-> +		return;
-> +	}
-
-Why? Why isn't the follower mask allocated once at init time?
-
-> +
-> +	/*
-> +	 * RMPOPT scans the RMP table, stores the result of the scan in the
-> +	 * reserved processor memory. The RMP scan is the most expensive
-> +	 * part. If a second RMPOPT occurs, it can skip the expensive scan
-> +	 * if they can see a cached result in the reserved processor memory.
-> +	 *
-> +	 * Do RMPOPT on one CPU alone. Then, follow that up with RMPOPT
-> +	 * on every other primary thread. Followers are "designed to"
-> +	 * skip the scan if they see the "cached" scan results.
-> +	 *
-> +	 * Pin the worker to the current CPU for the leader loop so that
-
-Isn't worker == leader here?
-
-> +	 * this_cpu remains valid and the RMPOPT instruction executes on
-> +	 * the correct CPU. 
-
-> Use migrate_disable() rather than get_cpu() to
-> +	 * prevent migration while still allowing preemption.
-
-No need to explain that.
-
-> +	 */
-> +	migrate_disable();
-> +	this_cpu = smp_processor_id();
-> +
-> +	cpumask_andnot(follower_mask, rmpopt_cpumask,
-> +		       topology_sibling_cpumask(this_cpu));
-> +
-> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
-> +		rmpopt(pa);
-> +
-> +	migrate_enable();
-> +
-> +	/*
-> +	 * Followers: run RMPOPT on the remaining cores.  cpus_read_lock() is
-> +	 * intentionally not held here: CPU hotplug is disabled for the entire
-> +	 * time SNP is active (see snp_prepare()), and this work only runs while
-> +	 * SNP is active, so the follower set stays valid across the whole scan.
-> +	 */
-> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
-> +		on_each_cpu_mask(follower_mask, rmpopt_smp, (void *)pa, true);
-
-An IPI per 1G pa?!?!? On each CPU?!
-
-Instead of IPIing each CPU and inside the handler, doing the loop?
-
-Nope.
-
-> +
-> +	free_cpumask_var(follower_mask);
-> +}
-
-Ok, enough for this part. Part II coming up later.
-
-Thx.
-
+Best regards
 -- 
-Regards/Gruss,
-    Boris.
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-https://people.kernel.org/tglx/notes-about-netiquette
