@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184893C2782
-	for <linux-coco@lists.linux.dev>; Fri, 31 Jul 2026 08:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AF43D9DBA
+	for <linux-coco@lists.linux.dev>; Fri, 31 Jul 2026 08:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785487736; cv=none; b=Zp3mvFhLBOIZtkPmr+9O65Z53hgyhLt1hrIKLfn32+SfFzLwK41OUEoRS7MVZ7fp4J008g6ZqmWfYcY9hUFK11gZvdo48pIhSwxcC4DMOq6nw0MDR9lv0sR+I0laN5PVemQD/amtHZvC2bQp6/9saL2CNRC4OD5v06I4qLJRYVA=
+	t=1785487833; cv=none; b=qYCRrqw9r4kElIv4sIkHkrIOjoHy0zU86VGyNRGGXUQTBXYREx3ZyurSDh2iQRThXl2U8jusnmfNME5juTNcahX9j6Pn3cCtncybWoZlxA+FhTrpb566gb9f2HPdroCvOyiDtmWIwZQ4HbVwCkL8id4xEfZh+2N2cqEsIZddRWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785487736; c=relaxed/simple;
-	bh=HUslESBRwUMZ0nIYtDZHqU/vSK5vrxqzYKo2GaPJ8E4=;
+	s=arc-20240116; t=1785487833; c=relaxed/simple;
+	bh=Vv/Cn/5d+0Kxx85L2VsjAbjj1pHoGsVQxFQjE4JSdWI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JW8ZzAwaCmNhXyEdoi8ydHmyq0WatSXPd1i+owXf/ZHSadDQlgcioFTc6iHHlLuPSGERDUp7LUWB5Wwkj66+LDV298HNpLWRn2h5Ir1yaJYX5Ba3zTrvEePeRkoLqcd5MH9IUUAmSpArcRgx5RPiHNYO0YaFsLjv/64KhEi1/Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bVQWvKQJ; arc=none smtp.client-ip=198.175.65.19
+	 In-Reply-To:Content-Type; b=ge2ZjPSZ1pWCYqjruGj9yMdIFIN6oGLvAXR7CF2o2hPA8DOBI5AH6fA9E0xPA/3aBPINknuFbBNIclTIgPiauqgaI38YBa5+Qw4fBELSuzxwE13HnozHfBhgvKFLSci91HVhfhRWQjH6LN61aKuDoIGdbpw4Ob8c/94mBObhWe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RyZiZY93; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bVQWvKQJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RyZiZY93"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785487733; x=1817023733;
+  t=1785487830; x=1817023830;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=HUslESBRwUMZ0nIYtDZHqU/vSK5vrxqzYKo2GaPJ8E4=;
-  b=bVQWvKQJ/9EOM5QWnt56uQ/CdnC/FbpVq7PPfQJdX/FgAdKXWDko2mfq
-   HaJOULV5La10UcitbnHe6ey14V5/pWlf6e4I01KThEZtxLvXwO+rVk/g0
-   kXDZac+6zAUHeCYx+v005Yw3ZNGRmYSY503rzWuOaQU4KcEmylUVDcqHA
-   DfrzZ8kNV9s3FxLf3pa5/Fmh9vjvKoBmAT+kQLF8DlXaWgQMHMF6/RnWe
-   KSzpBu36gxIBtw44HVozyR7HDBDwKpowg3d5ESOzx+tUzRQYaQ9IvXzfQ
-   Jnwv8VRSx3L/JTIwW4wGKrrTrUnKlVCdSiLBeXog3IbPGv5PnEGRcuxh4
-   w==;
-X-CSE-ConnectionGUID: 0lxbZzFZQ7y+s3dsd6qK2A==
-X-CSE-MsgGUID: t0U7FNTxRkGgwkhSJikBMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="86062845"
+  bh=Vv/Cn/5d+0Kxx85L2VsjAbjj1pHoGsVQxFQjE4JSdWI=;
+  b=RyZiZY93/S5X6NvF3mCf8nxM1eYundi14kwnEkB7lcKWMWb3ZaUUVs+/
+   nLYPQiYf5eerXKsmb00TmLS7CbsrC8AzD2/ngqQ2MERE+2riCf+YbwZi4
+   SelpYJPyyzniVIbcTyTnLChi+d8NTPzHVscKH4d1ioeQ5vb5/gHNXZ2u+
+   fkumaxFZKkGh374CoBdaPDpYIWCXb2tTMt/Xc1CyHTHnG1D55NplSr66V
+   7oSYpeMqZ4UwLkbJ+YjJAhmWJds0yAptQbzxd50ViBk/oZhh4Y9tAMHye
+   DqJCQIhSfeuQxQCAlBntspDmxVzBsThj2xkD2Eddv26P0BJ7oZmlafmbr
+   A==;
+X-CSE-ConnectionGUID: LPJLXVBZSLmJYhlwn39GuQ==
+X-CSE-MsgGUID: XfeZCEAoTjGwdjN+O8uvIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="86063041"
 X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; 
-   d="scan'208";a="86062845"
+   d="scan'208";a="86063041"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 01:48:51 -0700
-X-CSE-ConnectionGUID: u7DGKLPZS/eJ51NjhAIFwA==
-X-CSE-MsgGUID: ExP7CWv0QIW+0DfJQgeuiQ==
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 01:50:17 -0700
+X-CSE-ConnectionGUID: A4HFO+S5Tmuuqd/nni8mzQ==
+X-CSE-MsgGUID: Rw54lWB3T+uC2VIA7y6DHA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; 
-   d="scan'208";a="262491487"
+   d="scan'208";a="262491702"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.248]) ([10.124.240.248])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 01:48:35 -0700
-Message-ID: <7f23d149-b7f0-465a-a9c0-5c7484e289d2@intel.com>
-Date: Fri, 31 Jul 2026 16:48:29 +0800
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 01:49:57 -0700
+Message-ID: <9ef8179d-f79d-429c-b841-d23c1e0a0bff@intel.com>
+Date: Fri, 31 Jul 2026 16:49:52 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 20/41] KVM: Let userspace disable per-VM mem
- attributes, enable per-gmem attributes
+Subject: Re: [PATCH v9 16/41] KVM: guest_memfd: Zero page while getting pfn
 To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
  binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
  david@kernel.org, jmattson@google.com, jthoughton@google.com,
@@ -86,150 +85,87 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
  linux-coco@lists.linux.dev
 References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-20-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-16-35f9aec2aed2@google.com>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260728-gmem-inplace-conversion-v9-20-35f9aec2aed2@google.com>
+In-Reply-To: <20260728-gmem-inplace-conversion-v9-16-35f9aec2aed2@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
 > From: Ackerley Tng <ackerleytng@google.com>
 > 
-> Make gmem_in_place_conversion a module parameter so that userspace can
-> configure enable or disable the use of VM-level memory attributes. The
-> module parameter is only available if CONFIG_KVM_VM_MEMORY_ATTRIBUTES is
-> enabled.
+> Move the folio initialization logic from kvm_gmem_get_pfn() into
+> __kvm_gmem_get_pfn() to also zero pages if the page is to be used in
+> kvm_gmem_populate().
 > 
-> To avoid inconsistencies in the way memory attributes are tracked in KVM
-> and guest_memfd, the vm_memory_attributes module_param is made
-> read-only (0444).
+> With in-place conversion, the existing data in a guest_memfd page can be
+> populated into guest memory through platform-specific ioctls.
 > 
-> Since selecting CONFIG_KVM_VM_MEMORY_ATTRIBUTES disables in-place
-> conversion, actually make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable. Make
-> the config only selectable for (CoCo) VM types that might use
-> vm_memory_attributes.
+> Without first zeroing the page obtained using __kvm_gmem_get_pfn(), it
+> might contain uninitialized host memory, which would leak to the guest if
+> the populate completes.
 > 
-> Since memory attributes are trackable in guest_memfd, the concept of having
-> private memory is no longer dependent on
-> CONFIG_KVM_VM_MEMORY_ATTRIBUTES. Define kvm_arch_has_private_mem() based on
-> platform config, so that having private memory is dependent on (CoCo) VM
-> type.
+> guest_memfd pages are zeroed at most once in the page's entire lifetime
+> with guest_memfd, and that is tracked using the uptodate flag.
 > 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Zeroing the page in __kvm_gmem_get_pfn() is chosen over zeroing in
+> kvm_gmem_get_folio() since other flows, such as a future write() syscall,
+> can get a page, write to the page and then set page uptodate without
+> zeroing.
+> 
+> This aligns with the concept of zeroing before first use - the other place
+> where zeroing happens is in kvm_gmem_fault_user_mapping().
+> 
+> Don't mark the page uptodate again after populating, since the page would
+> already be marked uptodate before the post_populate() call.
+> 
 > Reviewed-by: Fuad Tabba <tabba@google.com>
 > Tested-by: Shivank Garg <shivankg@amd.com>
-> [Define module_param only if CONFIG_KVM_VM_MEMORY_ATTRIBUTES is enabled]
-> Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->   arch/x86/include/asm/kvm_host.h |  4 +++-
->   arch/x86/kvm/Kconfig            | 14 ++++++++++----
->   virt/kvm/guest_memfd.c          |  2 ++
->   virt/kvm/kvm_main.c             |  5 ++++-
->   4 files changed, 19 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index ceb2abf43b76f..766eb094eaae6 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1849,7 +1849,9 @@ enum kvm_intr_type {
->   	((vcpu) && (vcpu)->arch.handling_intr_from_guest && \
->   	 (!!in_nmi() == ((vcpu)->arch.handling_intr_from_guest == KVM_HANDLING_NMI)))
->   
-> -#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> +#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||	\
-> +    defined(CONFIG_KVM_INTEL_TDX) ||		\
-> +    defined(CONFIG_KVM_AMD_SEV)
->   #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
->   #endif
->   
-> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-> index abb108886733a..2c3c22aeafa54 100644
-> --- a/arch/x86/kvm/Kconfig
-> +++ b/arch/x86/kvm/Kconfig
-> @@ -81,13 +81,21 @@ config KVM_WERROR
->   	  If in doubt, say "N".
->   
->   config KVM_VM_MEMORY_ATTRIBUTES
-> -	bool
-> +	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
-> +	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
-> +	help
-> +	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
-> +	  memory attributes.  Using per-VM attributes is deprecated in favor of
-> +	  tracking PRIVATE state in guest_memfd.  Select this if you need to run
-> +	  CoCo VMs using a VMM that doesn't support guest_memfd memory
-> +	  attributes.
-> +
-> +	  If unsure, say N.
->   
->   config KVM_SW_PROTECTED_VM
->   	bool "Enable support for KVM software-protected VMs"
->   	depends on EXPERT
->   	depends on KVM_X86 && X86_64
-> -	select KVM_VM_MEMORY_ATTRIBUTES
->   	help
->   	  Enable support for KVM software-protected VMs.  Currently, software-
->   	  protected VMs are purely a development and testing vehicle for
-> @@ -138,7 +146,6 @@ config KVM_INTEL_TDX
->   	bool "Intel Trust Domain Extensions (TDX) support"
->   	default y
->   	depends on INTEL_TDX_HOST
-> -	select KVM_VM_MEMORY_ATTRIBUTES
->   	select HAVE_KVM_ARCH_GMEM_POPULATE
->   	help
->   	  Provides support for launching Intel Trust Domain Extensions (TDX)
-> @@ -162,7 +169,6 @@ config KVM_AMD_SEV
->   	depends on KVM_AMD && X86_64
->   	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
->   	select ARCH_HAS_CC_PLATFORM
-> -	select KVM_VM_MEMORY_ATTRIBUTES
->   	select HAVE_KVM_ARCH_GMEM_CONVERT
->   	select HAVE_KVM_ARCH_GMEM_RECLAIM
->   	select HAVE_KVM_ARCH_GMEM_INVALIDATE
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index ea2752989f8bd..df67a6188aa99 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -1137,10 +1137,12 @@ static bool kvm_range_is_private(struct file *file, pgoff_t index,
->   {
->   	struct inode *inode = file_inode(file);
->   
-> +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
->   	if (!gmem_in_place_conversion)
->   		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
->   							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
->   							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
-> +#endif
->   
->   	return kvm_gmem_range_has_attributes(inode, index, nr_pages,
->   					     KVM_MEMORY_ATTRIBUTE_PRIVATE);
-
-With my suggestion[1] on patch 7, this diff block can be dropped.
-
-[1] 
-https://lore.kernel.org/all/dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com/
-
-The code looks good to me,
 
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index e961cc297ba2a..eb9f433278d2f 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -102,7 +102,10 @@ static bool __ro_after_init allow_unsafe_mappings;
->   module_param(allow_unsafe_mappings, bool, 0444);
+> ---
+>   virt/kvm/guest_memfd.c | 12 +++++-------
+>   1 file changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 505bb6747620b..ea2752989f8bd 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -1078,6 +1078,11 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
+>   		return ERR_PTR(-EHWPOISON);
+>   	}
 >   
->   #ifdef kvm_arch_has_private_mem
-> -bool __ro_after_init gmem_in_place_conversion = false;
-> +bool __ro_after_init gmem_in_place_conversion = !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES);
-> +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> +module_param(gmem_in_place_conversion, bool, 0444);
-> +#endif
->   EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
->   #endif
+> +	if (!folio_test_uptodate(folio)) {
+> +		clear_highpage(folio_page(folio, 0));
+> +		folio_mark_uptodate(folio);
+> +	}
+> +
+>   	*pfn = folio_file_pfn(folio, index);
+>   	if (max_order)
+>   		*max_order = 0;
+> @@ -1107,11 +1112,6 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>   		goto out;
+>   	}
 >   
+> -	if (!folio_test_uptodate(folio)) {
+> -		clear_highpage(folio_page(folio, 0));
+> -		folio_mark_uptodate(folio);
+> -	}
+> -
+>   #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+>   	if (kvm_gmem_is_private_mem(file_inode(file), index))
+>   		r = kvm_arch_gmem_make_private(kvm, gfn, *pfn,
+> @@ -1171,8 +1171,6 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+>   	}
+>   
+>   	ret = post_populate(kvm, gfn, pfn, src_page, opaque);
+> -	if (!ret)
+> -		folio_mark_uptodate(folio);
+>   
+>   out_put_folio:
+>   	folio_put(folio);
 > 
 
