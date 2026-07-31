@@ -1,72 +1,77 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from esa6.hc1455-7.c3s2.iphmx.com (esa6.hc1455-7.c3s2.iphmx.com [68.232.139.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16FB1A262A
-	for <linux-coco@lists.linux.dev>; Fri, 31 Jul 2026 00:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CD82BE65B;
+	Fri, 31 Jul 2026 00:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785456809; cv=none; b=tk7R44LoU1L2/VRTCIWJhl9i5IhnzPvjea2On6kkuCI260F5HDq/B58xWazrEuY3iWzNY0j65w/25EKsNOONDqhW51IENEeOne82TX023KyCRaIv1L24ASxHw/VVcuEYQBmuDlsH2fnyZwpmG0MFkINYgC/hKVdWsHQEuoe6hp8=
+	t=1785459448; cv=none; b=RymxlsFI2WW3m+mzOhoD2pvxG5qoHcAAmW8nLGueojsPsBM7+UaNh4MG4/4rOb9rsbBS+l/JxA9lNaO/s0XxKitWn+++bsIrXu7dMppU8IdbmzttAc6jnSDhqjniQupOAzBjs5bRdr+Yb0tsvfS0wo1KFYj8JpwRDExkYqpOaXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785456809; c=relaxed/simple;
-	bh=bHoKjpRPsU20OfpCgpLdzmTUQpQ734HXDcgDHAbvAdo=;
+	s=arc-20240116; t=1785459448; c=relaxed/simple;
+	bh=CldFfWlOgnf4zC1U/6YI+wfPKxwfum0uI/0Ov2QKXAc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FMnS7TfA42VPjyNuBXJxwi6KHfe8HxEmV85SZKOEVdRCz7FT/y54hYbJYJU1H5LpKfEEvoejqTAals+8GtP80SI2Q559FG7IJn+batBN9bnWTqyG5kJaECUN15jXWJ3LqveV092huuYn65ShRYKTIuKgctZBQ4RN6Gwnem/ZMPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=SDM7RnX1 reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=jx33zKOMDqLe7ABfawYKFX/WLxTUXw4TaF2BgpHlhlC0PN+fcrTH/PnhztVDFy/RxuM13e7c7MKG9Y/oFGVwNHnRzcEMbl7PxwTVtv0sbPAm+SpbHR4CMl8B3ulYy1h/Cv39tiMVH11gE6oTNN5DsC3+qd8+7nHTlsD6v0ZWqOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=i2KnV56X; arc=none smtp.client-ip=68.232.139.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="SDM7RnX1"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 92FAD40E02B7;
-	Fri, 31 Jul 2026 00:13:25 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 7pPvPuiLtB9e; Fri, 31 Jul 2026 00:13:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1785456795; bh=C/SHV9jDMzcbkRlE8+MAQIErFrfbzUMau76TNYPkhG4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SDM7RnX1rp3zqyTBpJnOkspdPTzmAjNzhvgGYuGeaA/yrl650G6/tjb1uKeh+5ESl
-	 GYkJ4/qmjD5twBhUmKOvfxR6wOdTxfaCwnOSwwBVDtla5F5gMmqERvLSO2PQs6hUMZ
-	 9TL1oxkRgqP1nrE65zhPQBq/QG7ep41g2ymrHlq/9W1Eih5DWiVRGiOhNB3yw7Pt4V
-	 jd6Nd3eJa/XUZHTpNtO7DpHXOphYqmfdZCBpAlytmtbclxJXaL6CoM5jcYFZKUewV/
-	 Cajd3SzfCHo4QNMgE+K5t5dgDt9haL9lwxliiPbKk/qFTi58XO454EVPXdKhZGEw3q
-	 KtoEKNfvYFNegD4FPBAfhgnqTmBuwTXPckX5//B+3LSX49emxya+9ghlgqYnZCBIOS
-	 rXRouIEQBRPWy1G4796WjY6zcruLljKQV1dURECZd4CykWDgcA6AbfeSq+a0QDsfMB
-	 uJYGemCGryIM7WzxOcKMiPksnSOLln4eJ4C3EtFZbpDTCtoGCDIiCUdPhjl0eb1aE2
-	 YGMT7c3xVDfhRUqlCvK8uoAPdMPHLhMgQkuTadp2NzIECzmPtaDpfjgyAiHVR/rqDu
-	 Dw3ODzMI8Rnz9QyK49sSpMLKBBubgL/R4MoO88iDUhIS403D67WO6tCqunXb1Mqy+E
-	 gp64ARw5Mas0wYqNRvmCaYg0=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="i2KnV56X"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1785459446; x=1816995446;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CldFfWlOgnf4zC1U/6YI+wfPKxwfum0uI/0Ov2QKXAc=;
+  b=i2KnV56XY1qJt9l6Y4iwi7fidmYNBobdKG3ureq6Q45cFfAWTWj5PEfF
+   O0VWS5bIXX8OVLnTiFv09QKGdJ/A6io1RRogKrsU1OX/W4laIS9chUymC
+   ccMVWRZqnlh/scRywUMa2eFFN+rVLWFrQdVqUXvOjUmVz9/q+Fpwpcxda
+   gzWRPsuClrqRK28lPnvqhNKa6RaPTZZqm2G5N4ZmoKh830li/YCvTnCpW
+   sCuoXuQrH73CIZPxZBUJYZzVKOxwWYszdxlz9qWmT4LMgvM+STSUr6AdB
+   Un6wjA82RayC2Fc/2eN3w2/RwA/ZRok2cOgTxovLAvc9sBeN6w/HVC7jv
+   Q==;
+X-CSE-ConnectionGUID: c8OJpFjwSD2XIQ9PBKnJrg==
+X-CSE-MsgGUID: T/oEe5hDRY+oEmejBYoxdA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="252750413"
+X-IronPort-AV: E=Sophos;i="6.25,195,1779116400"; 
+   d="scan'208";a="252750413"
+Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
+  by esa6.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 09:57:18 +0900
+Received: from az2uksmgm3.o.css.fujitsu.com (unknown [10.151.22.200])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8E59440E00B8;
-	Fri, 31 Jul 2026 00:12:40 +0000 (UTC)
-Date: Thu, 30 Jul 2026 17:12:38 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	john.allen@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v11 3/6] x86/sev: Initialize RMPOPT configuration MSRs
-Message-ID: <20260731001238.GMamvodtFAY7Scdtha@fat_crate.local>
-References: <cover.1784844080.git.ashish.kalra@amd.com>
- <ff346ea1770cf996e1623270a085ac08d21888c6.1784844080.git.ashish.kalra@amd.com>
- <20260730020704.GGamqxyPy5oJAmC5Oy@fat_crate.local>
- <5a980015-c391-4019-8b44-48d1373eaea7@amd.com>
+	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id D0B4C1C01698;
+	Fri, 31 Jul 2026 00:57:18 +0000 (UTC)
+Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgm3.o.css.fujitsu.com (Postfix) with ESMTPS id 882ADC2BABA;
+	Fri, 31 Jul 2026 00:57:18 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.9.24.243])
+	by az2nlsmom2.o.css.fujitsu.com (Postfix) with SMTP id 21DD11800D71;
+	Fri, 31 Jul 2026 00:57:08 +0000 (UTC)
+Date: Fri, 31 Jul 2026 09:57:06 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v15 14/37] KVM: arm64: CCA: Handle realm enter/exit
+Message-ID: <amvx9kxuc6FTkJC4@FCCLS0092175.localdomain>
+References: <20260715142841.80544-1-steven.price@arm.com>
+ <20260715142841.80544-15-steven.price@arm.com>
+ <amcOp7tpRCkI29vt@FCCLS0092175.localdomain>
+ <08599315-2dd3-4602-a902-09b197265b44@arm.com>
+ <763eb5db-e9af-4b3a-b05b-746700cf0304@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -75,32 +80,135 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <5a980015-c391-4019-8b44-48d1373eaea7@amd.com>
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <763eb5db-e9af-4b3a-b05b-746700cf0304@arm.com>
 
-On Thu, Jul 30, 2026 at 03:00:55PM -0500, Kalra, Ashish wrote:
-> No hard dependency =E2=80=94 it only needs SNP initialized (post
-> SNP_INIT_EX/DF_FLUSH), and the initial pass is async anyway, so it's
-> independent of the SEV-TIO block and the panic notifier. So i can move =
-it to
-> the end (after the TIO block so it runs last without touching TIO order=
-ing),
-> but is there a specific reason you want me to move it to the end, as it=
- can
-> just stay here after SNP_INIT.
+On 07/30 15:57, Suzuki K Poulose wrote:
+> On 30/07/2026 14:58, Steven Price wrote:
+> > On 27/07/2026 09:14, Kohei Enju wrote:
+> > > Hi Steven, I have a comment about rec_exit_sys_reg() below.
+> > > 
+> > > On 07/15 15:28, Steven Price wrote:
+> > > > Entering a realm is done using a SMC call to the RMM. On exit the
+> > > > exit-codes need to be handled slightly differently to the normal KVM
+> > > > path so define our own functions for realm enter/exit and hook them
+> > > > in if the guest is a realm guest.
+> > > > 
+> > > > Signed-off-by: Steven Price <steven.price@arm.com>
+> > > > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > > > ---
+> > > > Changes since v13:
+> > > >   * The RMM is now required to provide an ESR value with the correct
+> > > >     information to emulate MMIO, so we no longer need to hardcode 0s in
+> > > >     rec_exit_sys_reg().
+> > > >   * The PSCI changes mean that there is a potential race when turning on
+> > > >     a VCPU which can cause a RMI_ERROR_REC return. Exit to user space
+> > > >     with -EAGAIN in this case.
+> > > > Changes since v12:
+> > > >   * Call guest_state_{enter,exit}_irqoff() around rmi_rec_enter().
+> > > >   * Add handling of the IRQ exception case where IRQs need to be briefly
+> > > >     enabled before exiting guest timing.
+> > > > Changes since v8:
+> > > >   * Introduce kvm_rec_pre_enter() called before entering an atomic
+> > > >     section to handle operations that might require memory allocation
+> > > >     (specifically completing a RIPAS change introduced in a later patch).
+> > > >   * Updates to align with upstream changes to hpfar_el2 which now (ab)uses
+> > > >     HPFAR_EL2_NS as a valid flag.
+> > > >   * Fix exit reason when racing with PSCI shutdown to return
+> > > >     KVM_EXIT_SHUTDOWN rather than KVM_EXIT_UNKNOWN.
+> > > > Changes since v7:
+> > > >   * A return of 0 from kvm_handle_sys_reg() doesn't mean the register has
+> > > >     been read (although that can never happen in the current code). Tidy
+> > > >     up the condition to handle any future refactoring.
+> > > > Changes since v6:
+> > > >   * Use vcpu_err() rather than pr_err/kvm_err when there is an associated
+> > > >     vcpu to the error.
+> > > >   * Return -EFAULT for KVM_EXIT_MEMORY_FAULT as per the documentation for
+> > > >     this exit type.
+> > > >   * Split code handling a RIPAS change triggered by the guest to the
+> > > >     following patch.
+> > > > Changes since v5:
+> > > >   * For a RIPAS_CHANGE request from the guest perform the actual RIPAS
+> > > >     change on next entry rather than immediately on the exit. This allows
+> > > >     the VMM to 'reject' a RIPAS change by refusing to continue
+> > > >     scheduling.
+> > > > Changes since v4:
+> > > >   * Rename handle_rme_exit() to handle_rec_exit()
+> > > >   * Move the loop to copy registers into the REC enter structure from the
+> > > >     to rec_exit_handlers callbacks to kvm_rec_enter(). This fixes a bug
+> > > >     where the handler exits to user space and user space wants to modify
+> > > >     the GPRS.
+> > > >   * Some code rearrangement in rec_exit_ripas_change().
+> > > > Changes since v2:
+> > > >   * realm_set_ipa_state() now provides an output parameter for the
+> > > >     top_iap that was changed. Use this to signal the VMM with the correct
+> > > >     range that has been transitioned.
+> > > >   * Adapt to previous patch changes.
+> > > > ---
+> > > > 
+> > > > [...]
+> > > > 
+> > > > +static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
+> > > > +{
+> > > > +	struct realm_rec *rec = &vcpu->arch.rec;
+> > > > +	unsigned long esr = kvm_vcpu_get_esr(vcpu);
+> > > > +	int rt = kvm_vcpu_sys_get_rt(vcpu);
+> > > > +	bool is_write = (esr & ESR_ELx_SYS64_ISS_DIR_MASK) == ESR_ELx_SYS64_ISS_DIR_WRITE;
+> > > > +	int ret;
+> > > > +
+> > > > +	if (is_write)
+> > > > +		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
+> > > 
+> > > When rt is 31 (XZR), does exit.gprs[rt] trigger an out-of-bounds read
+> > > since REC_RUN_GPRS is 31? Although the padding after the gprs means this
+> > > OOB may not cause any practical issue, would it make sense to skip the
+> > > access when rt is 31?
+> > > 
+> 
+> RMM mandates that the ESR_ELx.ISS.RT == 0 on an exit due to System register
+> access. See "A4.3.4.4 REC exit due to System register access"
+> 
+> So this shouldn't be a problem, but doesn't hurt to defend the host
+> against a malicious RMM ?
 
-The usual reason is, you add new code at the end. I.e., you append it. Th=
-at is
-usually easier for backporting too.
+Ah, I missed that requirement. The changelog and the old RMM
+implementation led me to mistakenly assume tat Rt could be non-zero.
 
-When you put it *NOT* at the end, then the first question I have is, why =
-is
-this thing there? Is there a particular reason for it to be there? Is ord=
-ering
-important all of a sudden?
+Then special-casing Rt == 31 doesn't really make sense. So keeping the
+code as it is seems fine to me:)
 
---=20
-Regards/Gruss,
-    Boris.
+Thanks,
+Kohei
 
-https://people.kernel.org/tglx/notes-about-netiquette
+> 
+> Suzuki
+> 
+> 
+> 
+> > > if (is_write && rt != 31)
+> > >      vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
+> > 
+> > Very true - as you say in practise this isn't a big issue because
+> > vcpu_set_reg() is a no-op, so it's just a read of padding. But
+> > definitely worth fixing.
+> > 
+> > > > +
+> > > > +	ret = kvm_handle_sys_reg(vcpu);
+> > > > +	if (!is_write)
+> > > > +		rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
+> > > 
+> > > The same applies here:
+> > > 
+> > > if (!is_write && rt != 31)
+> > >      rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
+> > 
+> > And the same here - a zero written into the padding.
+> > 
+> > Thanks for the review!
+> > 
+> > Steve
+> > 
+> > > > +
+> > > > +	return ret;
+> > > > +}
+> > 
+> 
