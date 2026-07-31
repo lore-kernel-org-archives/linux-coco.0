@@ -1,73 +1,71 @@
-Received: from esa12.hc1455-7.c3s2.iphmx.com (esa12.hc1455-7.c3s2.iphmx.com [139.138.37.100])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933F83546DC;
-	Fri, 31 Jul 2026 05:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.37.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CB5261B8A
+	for <linux-coco@lists.linux.dev>; Fri, 31 Jul 2026 05:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785474627; cv=none; b=TW8TLTewDNJUGSqg5DLCQNav9S3z/0Rduatmsh16+xvNoFDaOCO6+O1irKk0wtchwQYBWM0+RNDfptNhBRhLeabA8p5aBaehy0B1UV5NAoQ7vGKbS4cZtWnF/lIZFWqhOJSnJe72VGVJGUahtxOE9wSOqjU596vmajHVsdpdA8U=
+	t=1785476723; cv=none; b=AVBCL7sM7F0Fbs0IdG0DWvaQD/qfPiRLs2EV0fpQ32F3awO7DvFKMFR8gVe6vZvxSOxnAWaT+Slj4gprQzoQoXXwwg54shVgXindSTkJmFuOfKJvCd1FEowUs2wePYrxpGcfM93V0uc8TkruMp/Cfb19t4jGhcmqcKm7TIPNX0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785474627; c=relaxed/simple;
-	bh=rrV1ZuArq7jUJFUzuZdIkzToe/yL0yOxpBMWNWx//uc=;
+	s=arc-20240116; t=1785476723; c=relaxed/simple;
+	bh=zOOJ8DeOnYEfhyleSa0bO9fdEyUdlWPrWt3by1HgCV8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tv+CRQbsRfDddkU3ph+Sk8pVlz2Y+bkwQU9vEpwZzchBktLhW7pJzuL9FYhoudNZG9dgFAoHmGedA4sa16pP2UTpC7SoADsl/2R0HWZypQzah+MK+xC+zhZnpOGLECCGB3A7xSfyCHb3uw23AU9XZunCrKGO2okKC5gMDRm7ED8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=mUifQmcx; arc=none smtp.client-ip=139.138.37.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=RhQ3GD47dm8vj17mzlkQfQVHO32yKSMNmf6XcmQZTD5AsD3Wg9pixJKyykbbFXmc5dCecIv3gv5p9XUVcu4WWbl16jx/8SdZbZ7xllhRc3nAdrh5N29G5rehmE0w56dt1JcWWuTFKN3eAPO+8zmK6b14Y/9yl9mdUvH1za8Rlo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Wu6aBahq; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="mUifQmcx"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1785474626; x=1817010626;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rrV1ZuArq7jUJFUzuZdIkzToe/yL0yOxpBMWNWx//uc=;
-  b=mUifQmcxgfZcr35Ush72oHueg0Xk5TzCOhmwDZNU5L7YLBAkWE5QNqmb
-   Ah+JM393+zkI3cBvmwzNCbFdQMcerd8aHeAT5P9DDR7Mn/o1I+u9SM2L4
-   mMCWnvjH27x+Kx3JICZPBFrHTfJOgf5A/T0G+d9rPl1sXq79bOOym1On+
-   FHDVqBpcIHE8bBUnCWWuvOM6g9SIl64TuPz80nZQRRVXCOxTZNeO59gRd
-   IpVGv4eFdQfE2MggenoU3juYDKi46tF9yMb7nlXImUL31ORBLWYl9FodO
-   ZQZTVzdPEwlvDIrETNtzr6MjMqduYjRm4iyxtKvGqpV1k4eDPGuW7GjSu
-   A==;
-X-CSE-ConnectionGUID: MufQl0jPQJiimbp+DTAbSw==
-X-CSE-MsgGUID: rf6iXgj5TRGZDd3SeBF9wA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="226933419"
-X-IronPort-AV: E=Sophos;i="6.25,195,1779116400"; 
-   d="scan'208";a="226933419"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa12.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 14:09:14 +0900
-Received: from az2nlsmgm2.o.css.fujitsu.com (unknown [10.150.26.202])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Wu6aBahq"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id F16C140E01CE;
+	Fri, 31 Jul 2026 05:45:17 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 8_PwlhpFGBNE; Fri, 31 Jul 2026 05:45:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1785476703; bh=G7VWzTnNmnNc6vhXzTYbTJEpS6/d3XUsM+DmxJ+z4VM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Wu6aBahqgkgJsXoi5HEueysdb2eC1wxyelov+kGWWcB5Z7bcUFrE1U9XqUfNkUz6q
+	 iezceb1dvqkpxhd7Ywn+0zFzfW6Fdbo/1974qlRlQ+eSfkbzT01O3D9hB+35PEnyQ5
+	 YJ1t41XypyN3Pz8/iNgW3BbdRYu9ciBhaDr0v7t8wW2T2dZxRlYzarWKBWV27W4ufF
+	 lWv+ro9CdLsNud7xPDqkwnp5e3P3Ze4NG+RVAmu5krMgttVLhWXiyufEBUIAGaUFfR
+	 1rRwmheov/iXkrBZn26IS365QaRCjrrqowUaH26xNjhXqBJpiOoG0aYuogZ6Mhvj5P
+	 t+qVdJVniXRpElv1Yq3Z4MYaaUq3wuwprgVE33xzcgcHDOPIQBXTmbseSn/O9ZdQwm
+	 tfLLVSh9wfZIEmyJi+rYeJYGgASEe7Ie61DzgeoOJihRreRipN5T7eGhLhQRxh8UEU
+	 sL0XwnyCZTZJfKWYsMg/bJ6m6hgzLfC/LeOdoE9H2bvqTXP1Icc4gpY+R0VmRrBji2
+	 wMykaVRpj0RwDK5V6j/ywsDEju2FC4N4sPeE3quznsUIrKit1Womtq5dIJJ8XisTHe
+	 BDmoSpIAI7M0o01/HjFjNnjvlUCqX/jMCW1EbVhclczaW7Bz9YYcs80/gN42GJ7yB2
+	 jNyV27vJTuFWw/fpyG4Qe3Bg=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 474E110000C9;
-	Fri, 31 Jul 2026 05:09:14 +0000 (UTC)
-Received: from az2uksmom3.o.css.fujitsu.com (unknown [10.151.22.205])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id F134C1C1C266;
-	Fri, 31 Jul 2026 05:09:13 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.10.122.81])
-	by az2uksmom3.o.css.fujitsu.com (Postfix) with SMTP id BBE931005AEA;
-	Fri, 31 Jul 2026 05:09:07 +0000 (UTC)
-Date: Fri, 31 Jul 2026 14:09:06 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, cgroups@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Steven Price <steven.price@arm.com>
-Subject: Re: [RFC PATCH v1 1/2] KVM: arm64: CCA: Add support for configuring
- the Realm MEC policy
-Message-ID: <amwrnJ1KhllC-gVu@FCCLS0092175.localdomain>
-References: <20260724094120.166536-1-enju.kohei@fujitsu.com>
- <20260724094120.166536-2-enju.kohei@fujitsu.com>
- <46d78aa2-cacb-4efd-ae62-3026f5fe9b3f@arm.com>
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7169340E014C;
+	Fri, 31 Jul 2026 05:44:28 +0000 (UTC)
+Date: Thu, 30 Jul 2026 22:44:25 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v11 4/6] x86/sev: Add support to perform RMP
+ optimizations asynchronously
+Message-ID: <20260731054425.GNamw2OelKuNhVwnrU@fat_crate.local>
+References: <cover.1784844080.git.ashish.kalra@amd.com>
+ <7f582569acea933c3045be604a81975e29b5ee2b.1784844080.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -76,256 +74,271 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <46d78aa2-cacb-4efd-ae62-3026f5fe9b3f@arm.com>
+In-Reply-To: <7f582569acea933c3045be604a81975e29b5ee2b.1784844080.git.ashish.kalra@amd.com>
 
-On 07/29 12:47, Suzuki K Poulose wrote:
-> Hello
+On Mon, Jul 27, 2026 at 07:05:29PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
-> Thanks for sending the patch. Please find my comments inline below.
-> 
-> 
-> On 24/07/2026 10:40, Kohei Enju wrote:
-> > Introduce the KVM_ARM_RMI_CONFIG ioctl to allow userspace to configure
-> > Realm VM parameters before the Realm is created.
-> 
-> This approach is something we tried in the past. Another option is to
-> add these as kvm_device_attr for the KVM VM, under a new group, e.g.,
-> KVM_ARM_VM_RMI_CTRL and add the following attributes :
-> 
-> KVM_ARM_VM_RMI_CTRL_RPV 		-> Realm Personalization Value
-> KVM_ARM_VM_RMI_CTRL_MEASUREMENT_ALGO	-> Measuerment algo
-> KVM_ARM_VM_RMI_CTRL_MEC_PRIVATE		-> Private MEC Policy. By default to shared
-> ?
+> When SEV-SNP is enabled, all writes to memory are checked to ensure
+> integrity of SNP guest memory. This imposes performance overhead on the
 
-Hi Suzuki, thanks for suggesting another option. That looks good to me,
-and I'd be happy with either approach.
-Anyway I'd like to wait for feedback from the maintainers and other
-reviewers.
+s/SNP//
 
-Thanks,
-Kohei
+The checks are done not only on SNP guest memory but on *all* memory, as your
+next paragraph suggests.
 
+> whole system.
 > 
+> RMPOPT is a new instruction that minimizes the performance overhead of
+> RMP checks on the hypervisor and on non-SNP guests by allowing RMP
+> checks to be skipped for 1GB regions of memory that are known not to
+> contain any SEV-SNP guest memory.
+
+Let's tone down the abbreviations. "SNP guest memory" is enough and let's
+stick to that.
+
+> Add support for performing RMP optimizations asynchronously using a
+> dedicated workqueue.
 > 
-> Marc, Oliver, thoughts ?
+> Enable RMPOPT optimizations for up to 2TB of system RAM starting from
+> the lowest physical memory address aligned down to a 1GB boundary at
+> RMP initialization time. RMP checks can initially be skipped for 1GB
+
+Why "initially"? What are you trying to say here?
+
+> memory ranges that do not contain SEV-SNP guest memory (excluding
+> preassigned pages such as the RMP table and firmware pages). As SNP
+> guests are launched, RMPUPDATE will disable the corresponding RMPOPT
+> optimizations.
+
+Because it will add pages to the RMP table?
+
+This paragraph needs clarification.
+
+> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
+> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Suggested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  arch/x86/virt/svm/sev.c | 160 +++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 158 insertions(+), 2 deletions(-)
 > 
-> Cheers
-> Suzuki
-> 
-> > 
-> > Currently, ARM_RMI_CFG_MEC_POLICY is the only supported configuration
-> > item. Its value can be ARM_RMI_MEC_POLICY_SHARED or
-> > ARM_RMI_MEC_POLICY_PRIVATE. Reject the private policy if the platform
-> > does not support private MECs.
-> > 
-> > If userspace does not explicitly configure the MEC policy,
-> > ARM_RMI_MEC_POLICY_SHARED is used by default.
-> 
-> 
-> 
-> > 
-> > Signed-off-by: Kohei Enju <enju.kohei@fujitsu.com>
-> > ---
-> >   Documentation/virt/kvm/api.rst   | 29 +++++++++++++++++++++++++++++
-> >   arch/arm64/include/asm/kvm_rmi.h |  4 ++++
-> >   arch/arm64/kvm/arm.c             |  9 +++++++++
-> >   arch/arm64/kvm/rmi.c             | 29 +++++++++++++++++++++++++++++
-> >   drivers/firmware/arm_rmm/rmi.c   |  8 ++++++--
-> >   include/linux/arm-rmi-cmds.h     |  1 +
-> >   include/uapi/linux/kvm.h         | 17 +++++++++++++++++
-> >   7 files changed, 95 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> > index 85bec9b4f021..e1c660e5eb34 100644
-> > --- a/Documentation/virt/kvm/api.rst
-> > +++ b/Documentation/virt/kvm/api.rst
-> > @@ -6690,6 +6690,35 @@ populated data is hashed and added to the guest's Realm Initial Measurement
-> >   (RIM) stored by the RMM. This can then be retrieved by the guest (using the RSI
-> >   interface) to present to an attestation server.
-> > +4.147 KVM_ARM_RMI_CONFIG
-> > +------------------------
-> > +
-> > +:Capability: KVM_CAP_ARM_RMI
-> > +:Architectures: arm64
-> > +:Type: vm ioctl
-> > +:Parameters: struct kvm_arm_rmi_config (in)
-> > +:Returns: 0 on success, < 0 on error
-> > +
-> > +::
-> > +
-> > +  struct kvm_arm_rmi_config {
-> > +       __u32 cfg;
-> > +       union {
-> > +               /* cfg == ARM_RMI_CFG_MEC_POLICY */
-> > +               __u8 mec_policy;
-> > +
-> > +               /* Fix the size of the union */
-> > +               __u8 reserved[256];
-> > +       };
-> > +  };
-> > +
-> > +Configures parameters of a Realm VM before the Realm is created.
-> > +
-> > +Currently, `ARM_RMI_CFG_MEC_POLICY` is the only supported configuration item.
-> > +`mec_policy` must be either `ARM_RMI_MEC_POLICY_SHARED` or
-> > +`ARM_RMI_MEC_POLICY_PRIVATE`. `ARM_RMI_MEC_POLICY_PRIVATE` is not supported if
-> > +no private MEC is available on the platform.
-> > +
-> >   .. _kvm_run:
-> >   5. The kvm_run structure
-> > diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-> > index 420e99fca07e..721033b132e1 100644
-> > --- a/arch/arm64/include/asm/kvm_rmi.h
-> > +++ b/arch/arm64/include/asm/kvm_rmi.h
-> > @@ -60,6 +60,7 @@ enum realm_state {
-> >    * @ia_bits: Number of valid Input Address bits in the IPA
-> >    * @stage2_unmapped: The Realm stage-2 mappings have been removed
-> >    * @rtts_destroyed: The non-root RTTs have been torn down
-> > + * @mec_policy: MEC policy for the Realm VM
-> >    */
-> >   struct realm {
-> >   	void *rd;
-> > @@ -76,6 +77,7 @@ struct realm {
-> >   	unsigned int ia_bits;
-> >   	bool stage2_unmapped;
-> >   	bool rtts_destroyed;
-> > +	unsigned int mec_policy;
-> >   };
-> >   /**
-> > @@ -115,6 +117,8 @@ struct kvm_arm_rmi_populate;
-> >   int kvm_arm_rmi_populate(struct kvm *kvm,
-> >   			 struct kvm_arm_rmi_populate *arg);
-> > +struct kvm_arm_rmi_config;
-> > +int kvm_arm_rmi_config(struct kvm *kvm, struct kvm_arm_rmi_config *arg);
-> >   void kvm_realm_unmap_range(struct kvm *kvm,
-> >   			   unsigned long ipa,
-> >   			   unsigned long size,
-> > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> > index 3862db30779f..17302ba2844c 100644
-> > --- a/arch/arm64/kvm/arm.c
-> > +++ b/arch/arm64/kvm/arm.c
-> > @@ -2169,6 +2169,15 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
-> >   			return -EFAULT;
-> >   		return ret;
-> >   	}
-> > +	case KVM_ARM_RMI_CONFIG: {
-> > +		struct kvm_arm_rmi_config cfg;
-> > +
-> > +		if (!kvm_is_realm(kvm))
-> > +			return -ENXIO;
-> > +		if (copy_from_user(&cfg, argp, sizeof(cfg)))
-> > +			return -EFAULT;
-> > +		return kvm_arm_rmi_config(kvm, &cfg);
-> > +	}
-> >   	default:
-> >   		return -EINVAL;
-> >   	}
-> > diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> > index 06cc85fb5092..629dea5e8c47 100644
-> > --- a/arch/arm64/kvm/rmi.c
-> > +++ b/arch/arm64/kvm/rmi.c
-> > @@ -572,6 +572,9 @@ static int realm_create_rd(struct kvm *kvm)
-> >   	if (kvm_lpa2_is_enabled())
-> >   		params->flags0 |= RMI_REALM_PARAM_FLAG_LPA2;
-> > +	params->flags0 |= FIELD_PREP(RMI_REALM_PARAM_FLAG_MEC_POLICY,
-> > +				     realm->mec_policy);
-> > +
-> >   	r = realm_init_sve_param(kvm, params);
-> >   	if (r)
-> >   		goto out_undelegate_tables;
-> > @@ -1155,6 +1158,30 @@ int kvm_arm_rmi_populate(struct kvm *kvm,
-> >   	return ret;
-> >   }
-> > +int kvm_arm_rmi_config(struct kvm *kvm, struct kvm_arm_rmi_config *cfg)
-> > +{
-> > +	guard(mutex)(&kvm->arch.config_lock);
-> > +
-> > +	if (kvm_realm_state(kvm) != REALM_STATE_NONE)
-> > +		return -EBUSY;
-> > +
-> > +	switch (cfg->cfg) {
-> > +	case ARM_RMI_CFG_MEC_POLICY:
-> > +		if (cfg->mec_policy != ARM_RMI_MEC_POLICY_SHARED &&
-> > +		    cfg->mec_policy != ARM_RMI_MEC_POLICY_PRIVATE)
-> > +			return -EINVAL;
-> > +
-> > +		if (cfg->mec_policy == ARM_RMI_MEC_POLICY_PRIVATE &&
-> > +		    rmi_mec_count() == 0)
-> > +			return -EOPNOTSUPP;
-> > +
-> > +		kvm->arch.realm.mec_policy = cfg->mec_policy;
-> > +		return 0;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> > +
-> >   static void kvm_complete_ripas_change(struct kvm_vcpu *vcpu)
-> >   {
-> >   	struct kvm *kvm = vcpu->kvm;
-> > @@ -1474,6 +1501,8 @@ int kvm_init_realm(struct kvm *kvm)
-> >   {
-> >   	struct realm *realm = &kvm->arch.realm;
-> > +	realm->mec_policy = ARM_RMI_MEC_POLICY_SHARED;
-> > +
-> >   	realm->params = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
-> >   	realm->sro = kmalloc_obj(*realm->sro);
-> >   	if (!realm->params || !realm->sro) {
-> > diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
-> > index d0c083bdf251..e9632c35e7db 100644
-> > --- a/drivers/firmware/arm_rmm/rmi.c
-> > +++ b/drivers/firmware/arm_rmm/rmi.c
-> > @@ -14,8 +14,7 @@
-> >   static bool arm64_rmi_is_available;
-> > -/* Currently only the first 2 registers are used by Linux */
-> > -#define RMI_FEAT_REG_COUNT	2
-> > +#define RMI_FEAT_REG_COUNT	5
-> >   static __ro_after_init unsigned long rmi_feat_reg_cache[RMI_FEAT_REG_COUNT];
-> >   unsigned long rmi_feat_reg(unsigned long id)
-> > @@ -27,6 +26,11 @@ unsigned long rmi_feat_reg(unsigned long id)
-> >   }
-> >   EXPORT_SYMBOL_GPL(rmi_feat_reg);
-> > +u64 rmi_mec_count(void)
-> > +{
-> > +	return u64_get_bits(rmi_feat_reg(4), RMI_FEATURE_REGISTER_4_MEC_COUNT);
-> > +}
-> > +
-> >   int rmi_delegate_range(phys_addr_t phys,
-> >   		       unsigned long size,
-> >   		       phys_addr_t *out_phys)
-> > diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
-> > index 138983ab4e3c..5236600421c6 100644
-> > --- a/include/linux/arm-rmi-cmds.h
-> > +++ b/include/linux/arm-rmi-cmds.h
-> > @@ -28,6 +28,7 @@ struct rmi_sro_state {
-> >   };
-> >   unsigned long rmi_feat_reg(unsigned long id);
-> > +u64 rmi_mec_count(void);
-> >   int rmi_delegate_range(phys_addr_t phys, unsigned long size,
-> >   		       phys_addr_t *out_phys);
-> > diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> > index adee3936d6ae..46e62327957c 100644
-> > --- a/include/uapi/linux/kvm.h
-> > +++ b/include/uapi/linux/kvm.h
-> > @@ -1704,4 +1704,21 @@ struct kvm_arm_rmi_populate {
-> >   	__u32 reserved;
-> >   };
-> > +#define KVM_ARM_RMI_CONFIG     _IOW(KVMIO, 0xd8, struct kvm_arm_rmi_config)
-> > +
-> > +#define ARM_RMI_CFG_MEC_POLICY		0
-> > +#define ARM_RMI_MEC_POLICY_SHARED	0
-> > +#define ARM_RMI_MEC_POLICY_PRIVATE	1
-> > +
-> > +struct kvm_arm_rmi_config {
-> > +	__u32 cfg;
-> > +	union {
-> > +		/* cfg == ARM_RMI_CFG_MEC_POLICY */
-> > +		__u8 mec_policy;
-> > +
-> > +		/* Reserve space for future configuration payloads. */
-> > +		__u8 reserved[256];
-> > +	};
-> > +};
-> > +
-> >   #endif /* __LINUX_KVM_H */
-> 
+> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+> index 8bfd80284836..04b19e64f832 100644
+> --- a/arch/x86/virt/svm/sev.c
+> +++ b/arch/x86/virt/svm/sev.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/iommu.h>
+>  #include <linux/amd-iommu.h>
+>  #include <linux/nospec.h>
+> +#include <linux/workqueue.h>
+>  
+>  #include <asm/sev.h>
+>  #include <asm/processor.h>
+> @@ -125,7 +126,18 @@ static void *rmp_bookkeeping __ro_after_init;
+>  static u64 probed_rmp_base, probed_rmp_size;
+>  
+>  static cpumask_var_t rmpopt_cpumask;
+> -static phys_addr_t rmpopt_pa_start;
+> +static phys_addr_t rmpopt_pa_start, rmpopt_pa_end;
+> +
+> +enum rmpopt_function {
+
+	rmpopt_op_type
+
+> +	RMPOPT_FUNC_VERIFY_AND_REPORT_STATUS,
+> +	RMPOPT_FUNC_REPORT_STATUS
+
+RMPOPT_OP_VERIFY...
+
+> +};
+> +
+
+/*
+ * This timeout was selected this way because...
+ */
+
+> +#define RMPOPT_WORK_TIMEOUT	10000
+> +
+> +static struct workqueue_struct *rmpopt_wq;
+> +static struct delayed_work rmpopt_delayed_work;
+> +static DEFINE_MUTEX(rmpopt_wq_mutex);
+>  
+>  static LIST_HEAD(snp_leaked_pages_list);
+>  static DEFINE_SPINLOCK(snp_leaked_pages_list_lock);
+> @@ -565,11 +577,20 @@ static void snp_cleanup_rmpopt(void)
+>  {
+>  	int cpu;
+>  
+> +	guard(mutex)(&rmpopt_wq_mutex);
+> +
+> +	if (!rmpopt_wq)
+> +		return;
+
+If there's no workqueue, you skip all the rest, including undoing things which
+are not workqueue-related?
+
+That workqueue pointer must be magical and special. Yet, I don't see anything
+explaining that.
+
+> +
+> +	cancel_delayed_work_sync(&rmpopt_delayed_work);
+> +	destroy_workqueue(rmpopt_wq);
+> +
+>  	for_each_cpu(cpu, rmpopt_cpumask)
+>  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, 0);
+>  
+>  	free_cpumask_var(rmpopt_cpumask);
+> -	rmpopt_pa_start = 0;
+> +	rmpopt_pa_start = rmpopt_pa_end = 0;
+> +	rmpopt_wq = NULL;
+>  }
+>  
+>  void snp_shutdown(void)
+> @@ -599,6 +620,96 @@ static bool rmpopt_capable(void)
+>  	       cc_platform_has(CC_ATTR_HOST_SEV_SNP);
+>  }
+>  
+> +/*
+> + * RMPOPT: F2 0F 01 FC
+> + *   Input:  RAX = system physical address (1GB aligned)
+> + *           RCX = operation type
+> + *   Output: CF set if the range was optimized
+> + */
+> +static inline bool __rmpopt(u64 pa_start, u64 op_type)
+> +{
+> +	bool optimized;
+> +
+
+	/*
+	 * needs a comment here which says which binutils version
+	 * supports the RMPOPT mnemonic.
+	 */
+> +	asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc"
+> +		     : "=@ccc" (optimized)
+> +		     : "a" (pa_start), "c" (op_type)
+> +		     : "memory", "cc");
+> +
+> +	return optimized;
+> +}
+> +
+> +static void rmpopt(u64 pa)
+> +{
+> +	u64 pa_start = ALIGN_DOWN(pa, SZ_1G);
+> +	u64 op_type = RMPOPT_FUNC_VERIFY_AND_REPORT_STATUS;
+
+	enum rmpopt_op_type op = ...
+
+> +
+> +	__rmpopt(pa_start, op_type);
+
+Looks like the __rmpopt() carve out is not really necessary and you can merge
+it back into rmpopt().
+
+> +}
+> +
+> +/*
+> + * 'val' is a system physical address.
+> + */
+> +static void rmpopt_smp(void *val)
+
+You don't need that one - you can use rmpopt(). But keep on reading...
+
+> +{
+> +	rmpopt((u64)val);
+> +}
+> +
+> +/*
+> + * RMPOPT optimizations skip RMP checks at 1GB granularity if this
+> + * range of memory does not contain any SNP guest memory.
+> + */
+
+Put that comment above rmpopt().
+
+> +static void rmpopt_work_handler(struct work_struct *work)
+> +{
+> +	cpumask_var_t follower_mask;
+> +	phys_addr_t pa;
+
+So either phys_addr_t or u64 but not both for a pa.
+
+> +	int this_cpu;
+> +
+> +	pr_info("Attempt RMP optimizations on physical address range @1GB alignment [0x%016llx - 0x%016llx]\n",
+> +		rmpopt_pa_start, rmpopt_pa_end);
+
+This is going to spam dmesg every time the workqueue runs?
+
+Nope, zap it.
+
+> +	if (!alloc_cpumask_var(&follower_mask, GFP_KERNEL)) {
+> +		pr_warn("RMP optimization pass skipped: cpumask allocation failed\n");
+> +		return;
+> +	}
+
+Why? Why isn't the follower mask allocated once at init time?
+
+> +
+> +	/*
+> +	 * RMPOPT scans the RMP table, stores the result of the scan in the
+> +	 * reserved processor memory. The RMP scan is the most expensive
+> +	 * part. If a second RMPOPT occurs, it can skip the expensive scan
+> +	 * if they can see a cached result in the reserved processor memory.
+> +	 *
+> +	 * Do RMPOPT on one CPU alone. Then, follow that up with RMPOPT
+> +	 * on every other primary thread. Followers are "designed to"
+> +	 * skip the scan if they see the "cached" scan results.
+> +	 *
+> +	 * Pin the worker to the current CPU for the leader loop so that
+
+Isn't worker == leader here?
+
+> +	 * this_cpu remains valid and the RMPOPT instruction executes on
+> +	 * the correct CPU. 
+
+> Use migrate_disable() rather than get_cpu() to
+> +	 * prevent migration while still allowing preemption.
+
+No need to explain that.
+
+> +	 */
+> +	migrate_disable();
+> +	this_cpu = smp_processor_id();
+> +
+> +	cpumask_andnot(follower_mask, rmpopt_cpumask,
+> +		       topology_sibling_cpumask(this_cpu));
+> +
+> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
+> +		rmpopt(pa);
+> +
+> +	migrate_enable();
+> +
+> +	/*
+> +	 * Followers: run RMPOPT on the remaining cores.  cpus_read_lock() is
+> +	 * intentionally not held here: CPU hotplug is disabled for the entire
+> +	 * time SNP is active (see snp_prepare()), and this work only runs while
+> +	 * SNP is active, so the follower set stays valid across the whole scan.
+> +	 */
+> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
+> +		on_each_cpu_mask(follower_mask, rmpopt_smp, (void *)pa, true);
+
+An IPI per 1G pa?!?!? On each CPU?!
+
+Instead of IPIing each CPU and inside the handler, doing the loop?
+
+Nope.
+
+> +
+> +	free_cpumask_var(follower_mask);
+> +}
+
+Ok, enough for this part. Part II coming up later.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
