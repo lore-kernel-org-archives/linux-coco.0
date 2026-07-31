@@ -1,57 +1,57 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCB2222580
-	for <linux-coco@lists.linux.dev>; Fri, 31 Jul 2026 16:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EEC45C708
+	for <linux-coco@lists.linux.dev>; Fri, 31 Jul 2026 16:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785514310; cv=none; b=nXwocyr+D2M4WuOYtX3eSxZjMj0LHIWis6dsvVAXJfgQXl8soYgJ2FYJZqI48TXxBWw+GXSIwsHkqUh83bAs0wGry0zZWciktJlubPzWc9MEy4c0Wxt51RZpjdDXDD16cBSfPlzVRzfFADf54YZJPfSn7UncMXG/uTrLmHesNZM=
+	t=1785515195; cv=none; b=QkHWc0s5R24/yBkawdOtanHld9jVKuCZXWhRjZ2/PGXG8QA2kMmhtjdj7Orezx+r5NfHGm4aIG3gOS4aoKYvIyKlcxNyS9kZPoSd+9np4zuAuI88O5IWOAwU1jG/4kVCP8u47AMof/Svs4wwPKUXk9sLqIOWAFvFMSMhnvF/fKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785514310; c=relaxed/simple;
-	bh=ZHuGxhrJ3MrlsbogF2sbcHpAeby7swdSHdnCo3MZvUM=;
+	s=arc-20240116; t=1785515195; c=relaxed/simple;
+	bh=tmfdgsRNGmMoH53JWSNejad3XkKOScNgIyXixI/ReSE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tqI923bdVrmoB/mInRCOGTusi35zbN7bc5cK9khZxFlbzd9rZ89iZfCmrLqWN3L1TDcTevtzZ895RallqMAaFwhe8rgZ5m4XeUDQJIxfM6p0XPxhGWc0K61XLWK+xdMx7ya4XbBsBOKepX6XHLlKi+7b7Vypqhh2ddd836uDVt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iBLjfjxY; arc=none smtp.client-ip=209.85.215.200
+	 To:Cc:Content-Type; b=d9xSO2uRS+A0YH1OOjAqC8xhyHQKI7myEoVzMM7JDmf338mWF6Yd5WmUjTeu3+XKUrHFoxHGZjbEdK7qwKIq7JG11HCQIsrFrjXqjgIJXIFlyW3Dw3tIhkF/IpISsq5fvIb3J0YAwIxZaPpNWg+urKIPtAYYXD+4QTj2hnaqU7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oQyZUKtt; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iBLjfjxY"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c88cfe287e1so903220a12.1
-        for <linux-coco@lists.linux.dev>; Fri, 31 Jul 2026 09:11:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oQyZUKtt"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ce8a76df2dso18399065ad.2
+        for <linux-coco@lists.linux.dev>; Fri, 31 Jul 2026 09:26:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785514308; x=1786119108; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1785515191; x=1786119991; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bm06E1ea+m3fCfij6trKrrVxSCnF5pTP6S2pONTnQSo=;
-        b=iBLjfjxYxAINCSI+UsCLZzTBeVX3GCPfjFHuRI7/JfGdtL+qh8GtONJdOkjTws4GZG
-         QcePHURO5G5z1cdT4Xgfb+6yuqJHvuhlqcsqbGxPLlYB7ZItcYDBUGg7TLeBa9pPRqLY
-         7LPdku04qdWSm7MtGRigKxk2kJem9ab+ZqtVgg/4m8zBE8GD3+rdUuM0TTXf3DopHbm2
-         o3sEiC++SrDcPQYi0GdUwLbOJVxFajMidWJbFXymR3GhyWbb8rk8x37SdLRElXbyqndz
-         F3rVXj6Fol4+3YxDTjYLvkjWB2h0+RgEb04Wt8tyudnZd/8xzb9nLQ6gD4fCfnOX5L+/
-         SToA==
+        bh=ICGNWuPesT/hzVX75ShCk7Kt8oQvWLyQi/M5mp0efms=;
+        b=oQyZUKttLyBbBQH821ju/gS6QV5upLpyzOrxLIXMQRu1sS3/IK6Lc/Cd4+T6h8VjPl
+         Q+OC7OSaPuvJgexskikjsjN4FjJ+nWCYi2Rd1AjWxKWB7w8xsbYS1IkIRQaga/yrh716
+         t454nL3pMlV5b6dEd4gSqZOViqOe1cRQUT6Z2wDIWdign6abPTAAKExRImPT5H/qhKMx
+         tJp9jT1ut7uolqh4+VJBC1d/Mj/13A9ohpM8Fg43G8DWoKq/sOe/BhGbFll6JVvXR+O1
+         IhlZWgNkyZqUiLPppMekz9t0gNm1wXWkPQLwRsQh0aY36iHaVqs5hE6pYvRk+Y7sCMnz
+         bQ/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785514308; x=1786119108;
+        d=1e100.net; s=20251104; t=1785515191; x=1786119991;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bm06E1ea+m3fCfij6trKrrVxSCnF5pTP6S2pONTnQSo=;
-        b=HDSspIsm9F+gca9xgfovSpQhA1qliNVOC4JXpW3g+DYDtt8l+7JlzzuWNxqXv3PugF
-         8d3KpJSBSuBPsaZM0brlssLTjOXq7IpKtKMRQpwFITL9mHxtqx7JvljtQURehFFn4FN0
-         iTWKDKtAE6odwoc49slWx5D6WQssDN33UWcfOPiI4UFRsQcD9i549RR9J3IE7iVkNSBS
-         CJSq0Ouc/V+VqE3wwHAMfm74E84ZlRmzEDWKgIdwdnc5KQVsnQJWS3yMJj1WPQjzWUhn
-         NMVdwgAhuEdGXa5CUWV7YVp/R9oE5xUBfNmM2ssewOX1OXxy203r0wfirL99/iz3aO1z
-         fy2A==
-X-Forwarded-Encrypted: i=1; AHgh+Rqi/5ng0cnbUAYSpkAI84hmdemXZcZE/SwevKPVPMHenUrHV7quhIqcnWS1LNMv/SCprQ5Xd1l/FrxM@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywezfu6+Iln1iCwoASWbLUUzmBHkbwly56QgkBbko4JsGzVUAk+
-	HJ6vcR3DQT1v+FxvCy6qpIrl6iHFW9yHU3oDLvvn3WiUBgq+xLODlC8XJ14OtBYiPWpAtx2N/4r
-	L1F18Ew==
-X-Received: from pgl1.prod.google.com ([2002:a63:b01:0:b0:c99:7baf:125f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4091:b0:84e:4d6:78fe
- with SMTP id d2e1a72fcca58-84ee47dc3aemr250368b3a.3.1785514308039; Fri, 31
- Jul 2026 09:11:48 -0700 (PDT)
-Date: Fri, 31 Jul 2026 09:11:47 -0700
-In-Reply-To: <d3fef015-0546-4993-b354-a8464d79e48c@intel.com>
+        bh=ICGNWuPesT/hzVX75ShCk7Kt8oQvWLyQi/M5mp0efms=;
+        b=ESvixk/agFck8Z39E9cCl45TqpNt06ek0OJeBGG+N0R477I4UBseVwqki5ct423ry8
+         mSpRJxllfVf6LtTPHlUriZ/lIYg9UWyIXzEMqzeKBRBgmKNsvzxQA3LkUSab2JLiIUwZ
+         cvJu+xBu4jDmKnjhvqLi6QNvtmI3IBgOf6NjzrFe21HZr0eJfKHPUXaHwKVZJ8AesxRG
+         HSqo+N5z+tKISk6gmgDxRb6P8igInZgmmA5dQtl+Z50KMa6+ToZkLi2PBX3JslvEoU0a
+         ItiudOMYlHP6w0xCG03IRQ1QcpWiZ1SAd1hBgVMmrYfBVGK7Pc4R1kxtqJ9KXFT7ksB6
+         iXoQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp8xWiLF6RAvthM6kKRecr1JtpdQlhuZBQBRxH9O/UrSsYcr6TDR6gBuFdZDlYGbHKiS6aDkpWAlpNy@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx0hh1qcc0vn1Ih3OpoaGRZgqv+ga9nSUgDpS3aXUSVIyB1931i
+	URSi07UPqBJXQ/lyy7HtSSY6ydFl605wkKqK5z1R00YRstOSy9w3vcaWiuBMO/8e/0AfU5318Bd
+	tXJJ9tQ==
+X-Received: from plhi11.prod.google.com ([2002:a17:903:2ecb:b0:2cc:5fd1:2d93])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3b8e:b0:2ce:b096:e517
+ with SMTP id d9443c01a7336-2d0521cda4dmr6567475ad.5.1785515190881; Fri, 31
+ Jul 2026 09:26:30 -0700 (PDT)
+Date: Fri, 31 Jul 2026 09:26:30 -0700
+In-Reply-To: <dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -59,12 +59,15 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-18-35f9aec2aed2@google.com> <d3fef015-0546-4993-b354-a8464d79e48c@intel.com>
-Message-ID: <amzJQ8u8I18B4Gdm@google.com>
-Subject: Re: [PATCH v9 18/41] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+ <20260728-gmem-inplace-conversion-v9-7-35f9aec2aed2@google.com>
+ <60d19013-d6d7-4eec-827a-2622e22cec98@intel.com> <CAEvNRgF0SxmoMtqq69tUih54A9K7j_wcMFRrq=r9w6TnAGAUQQ@mail.gmail.com>
+ <dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com>
+Message-ID: <amzMtg4K6qEEsudx@google.com>
+Subject: Re: [PATCH v9 07/41] KVM: guest_memfd: Wire up core private/shared
+ attribute interfaces
 From: Sean Christopherson <seanjc@google.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
 	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
 	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
 	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
@@ -94,85 +97,93 @@ Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
 Content-Type: text/plain; charset="us-ascii"
 
 On Fri, Jul 31, 2026, Xiaoyao Li wrote:
-> On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
-> > From: Ackerley Tng <ackerleytng@google.com>
+> On 7/31/2026 4:42 AM, Ackerley Tng wrote:
+> > Xiaoyao Li <xiaoyao.li@intel.com> writes:
 > > 
-> > Update tdx_gmem_post_populate() to handle cases where userspace requests
-> > "no source page". To handle "no source page", populate (perform
-> > TDH.MEM.PAGE.ADD) using memory in-place at the target PFN.
+> > > On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
+> > > > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > > > index 33c9830190e2e..89cf922232920 100644
+> > > > --- a/virt/kvm/guest_memfd.c
+> > > > +++ b/virt/kvm/guest_memfd.c
+> > > > @@ -893,6 +893,27 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> > > >    EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
+> > > > 
+> > > >    #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
+> > > > +static bool kvm_range_is_private(struct file *file, pgoff_t index,
+> > > > +				 size_t nr_pages, struct kvm *kvm, gfn_t gfn)
+> > > > +{
+> > > > +	struct inode *inode = file_inode(file);
+> > > > +	pgoff_t last = index + nr_pages - 1;
+> > > > +	struct maple_tree *mt;
+> > > > +	void *entry;
+> > > > +
+> > > > +	if (!gmem_in_place_conversion)
+> > > > +		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
+> > > > +							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
+> > > > +							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> > > > +
+> > > > +	mt = &GMEM_I(inode)->attributes;
+> > > > +	mt_for_each(mt, entry, index, last) {
+> > > > +		if (kvm_gmem_interpret_entry(inode, entry) !=
+> > > > +		    KVM_MEMORY_ATTRIBUTE_PRIVATE)
+> > > > +			return false;
+> > > > +	}
+> > > > +	return true;
+> > > > +}
+> > > > 
+> > > >    static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+> > > >    				struct file *file, gfn_t gfn, struct page *src_page,
+> > > > @@ -913,9 +934,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+> > > > 
+> > > >    	folio_unlock(folio);
+> > > > 
+> > > > -	if (!kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + 1,
+> > > > -						KVM_MEMORY_ATTRIBUTE_PRIVATE,
+> > > > -						KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
+> > > > +	if (!kvm_range_is_private(file, index, 1, kvm, gfn)) {
+> > > 
+> > > It's checking if a single gfn is private.
+> > > 
 > > 
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > Tested-by: Shivank Garg <shivankg@amd.com>
-> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> > ---
-> >   Documentation/virt/kvm/x86/intel-tdx.rst | 4 ++++
-> >   arch/x86/kvm/vmx/tdx.c                   | 8 +++++---
-> >   2 files changed, 9 insertions(+), 3 deletions(-)
+> > But with huge page support we'd need to check a range of gfns... I guess
+> > there's the argument of not keeping complexity for the future, but in
+> > this case it's undoing functionality for this series and probably adding
+> > it back later.
+> 
+> let's leave the work for huge page support in the future.
+
+It's not just for hugepage support, the core functionality is used in this series
+by __kvm_gmem_set_attributes() in:
+
+  KVM: guest_memfd: Return early if range already has requested attributes
+
+> > > We can just use kvm_mem_is_private()? And it seems can be a separate patch.
+> > > 
 > > 
-> > diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/virt/kvm/x86/intel-tdx.rst
-> > index 6a222e9d09541..d8d9409120e61 100644
-> > --- a/Documentation/virt/kvm/x86/intel-tdx.rst
-> > +++ b/Documentation/virt/kvm/x86/intel-tdx.rst
-> > @@ -158,6 +158,10 @@ KVM_TDX_INIT_MEM_REGION
-> >   Initialize @nr_pages TDX guest private memory starting from @gpa with userspace
-> >   provided data from @source_addr. @source_addr must be PAGE_SIZE-aligned.
-> > +If guest_memfd in-place conversion is enabled, pass 0 for @source_addr
-> > +to represent "no source page". A source page is required if in-place
-> > +conversion is not enabled or not supported.
-> > +
-> >   Note, before calling this sub command, memory attribute of the range
-> >   [gpa, gpa + nr_pages] needs to be private.  Userspace can use
-> >   KVM_SET_MEMORY_ATTRIBUTES to set the attribute.
-> > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> > index d1af0a752e97e..e890da5f18aed 100644
-> > --- a/arch/x86/kvm/vmx/tdx.c
-> > +++ b/arch/x86/kvm/vmx/tdx.c
-> > @@ -3192,7 +3192,7 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-> >   	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
-> >   		return -EIO;
-> > -	kvm_tdx->page_add_src = src_page;
-> > +	kvm_tdx->page_add_src = src_page ?: pfn_to_page(pfn);
-> >   	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
-> >   	kvm_tdx->page_add_src = NULL;
-> > @@ -3238,7 +3238,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
-> >   	if (copy_from_user(&region, u64_to_user_ptr(cmd->data), sizeof(region)))
-> >   		return -EFAULT;
-> > -	if (!PAGE_ALIGNED(region.source_addr) || !region.source_addr ||
-> > +	if (!PAGE_ALIGNED(region.source_addr) ||
-> > +	    (!gmem_in_place_conversion && !region.source_addr) ||
+> > Do you mean that this refactoring could be a separate patch? I could
+> > refactor out kvm_range_is_private() in a separate patch, then put in the
+> > mt_for_each() check in this patch together as part of all the rest of
+> > the "wiring".
+> > 
+> > I considered that but it seemed like the refactoring was too small to
+> > separate out into another patch when the mt_for_each() part is going to
+> > be in this patch anyway.
+> > 
+> > Or, I could add an earlier patch to first replace the call to
+> > kvm_range_has_vm_memory_attributes() with a call to check just 1 gfn,
+> > then this wiring patch would be simpler.
+> > 
 > 
-> Sorry, I still want to discuss why we only allow in-place PAGE.ADD for
-> gmem_in_place_conversion only. Though Yan raised this opinion[1] in previous
-> v8, I'm not quite following her argument. So let me try again.
+> This is what I meant. An earlier patch to just replace
+> kvm_range_has_vm_memory_attributes() with kvm_mem_is_private(). Then we can
+> drop this 'big' diff in this patch.
 > 
-> I think in-place PAGE.ADD of TDX doesn't need to depend on
-> gmem_in_place_conversion. There are two use cases actually.
-> 
-> 1). Userspace sets the gmem page as private, and invokes the in-place
-> PAGE.ADD by passing a 0 source_addr. Due to patch 16, the target PFN will be
-> ADD'ed to TD as a all-0 page.
-> 
-> 2). Userspace sets the gmem page as shared, and writes the desired content
-> to it. Then converts the page to private, and invokes the in-place PAGE.ADD
-> by passing a 0 source_addr. The target PFN will be ADD'ed to TD with desired
-> content.
-> 
-> For gmem_in_place_conversion == false, only case 1) is possible.
-> For gmem_in_place_conversion == true, both case 1) and 2) are possible.
-> 
-> Basically, this patch is changing the behavior of KVM_TDX_INIT_MEM_REGION.
-> Before, it returns -EINVAL when region.source_addr == 0. Now it wants to
-> allow the "region.source_addr == 0" case. If we can allow it
-> unconditionally, why bother adding the restriction to allow it only when
-> gmem_in_place_conversion == true?
+> If kvm_range_is_private() is useful/required by huge page support, then let
+> the huge page series to introduce it. It has nothing to do with the in-place
+> conversion series.
 
-As I said[*] in that thread:
-
- : Because retroactively adding support for out-of-place conversion is pointless
- : (requires a userspace update for a feature that's being deprecated), KVM can't
- : generally support using the source for out-of-place conversion (it's effectively
- : an obscure zero-page optimization), and IMO rejecting the out-of-place conversion
- : scenario is valuable for KVM developers, e.g. to help newcomers understand what
- : exactly is and isn't possible.
-
-[*] https://lore.kernel.org/all/akMPZePBdwQlD74H@google.com
+If it weren't for the fact that the range-based search is used later in this
+series, I would 100% agree with Xiaoyao.  But since the core logic is used and
+needed elsewhere, and because kvm_range_has_vm_memory_attributes() takes a range,
+my vote is to provide the plumbing now, even though a small portion of it isn't
+strictly necessary.
