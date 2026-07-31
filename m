@@ -1,220 +1,373 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010020.outbound.protection.outlook.com [52.101.56.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E326935C6A0
-	for <linux-coco@lists.linux.dev>; Fri, 31 Jul 2026 20:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785529690; cv=fail; b=kV+g4VwdlGRdJQb3pX29HzQWqZpVbJhvHdQOuumF7jBfx6VUd6tNs+Fg+9HQd6zMNgy9fK1nkh+kglOL/HitGUI3urj7bbqf5Fr3GgmKMKVVgXNAnN8+Hnypdh7J4IAXpKUPGYARXr42fD9mBGjACIBTww4HkZYIGbSYFoateGw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785529690; c=relaxed/simple;
-	bh=0J/6xYZMQVr1pIMLrgTNcKnJciK90Q8HPmOg54ynQn4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=R5cvkvWq1PjTd27HDI4cSRWb6GB/z8kpEGidkPco3J5SCzyyY4F1CsR/rnTy03PA3jtv+WOn2pJWyYS4bWeUKmk+wSR3mp/TmbC/TdMfTAKkbOq9iY/f5Iq+bTu7O55UFtOQ20p/AE6ZExhyBB/Gk4oS0tybfOPMkbe26fC7Uyc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=vPkgKAI8; arc=fail smtp.client-ip=52.101.56.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA74357739;
+	Fri, 31 Jul 2026 21:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785531910; cv=none; b=OmSaSxvU+IHjIl1w/FYX6SRvx1o/G8s4KcJf/se/9zy9GOfIeO1mFzoP8ALoQ2pnqDvJZeNt7zv/xbGW6DUjpboDc1GFT/Ii9pjCuASktHQQdsxIfGcILVmxraQ5qGrpjmrNFOH/ya3GY2/eEsjvML3gpSL31L+15m6QnL+cE5Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785531910; c=relaxed/simple;
+	bh=IB7cjfq/Ti2hStzu97EPkSkIGPTtJMKm6DfaV9MngTk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=bi/iIx7IMJkfxFGdvNWqNV2Z7uXgFj+m8Jb7kCcFePLAewkx/QedIKo8j871ellIVf4k1rk7o16+KJZ4n9URkYwLMGKLhIv5ipdiDDwJ8qvfb5p6Q/Rs+QNS8UW0t9R8pUhUKPqc6cqwqDXo0FaXjot+YmSAXovY2klsXgmhoIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ASz5lEyW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="vPkgKAI8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ix0o/Tqdea5WmlJlz6YlWrl8PBoKkt3ROBnGJNiunEqi0agckDOgbQvA/WH4zCIX5SfQ46U7IamdOAMgyqGDklr+S4sjjCVr3NQePDqfdRYh50Ejt4kJL7+dpUKAlAd1rXn8rFqyKmaeH2c9/SzjZ2dGT8g0FBeWAZGisHsOmDn5CvExoFOXQF7ncr2p+2HXjnqKjj/lJTbCUtiJD/nErAbK7YprrLA8FzBPvhnc/aw4Y2SvZMq0RQxSzUu3CVc2PbYV0RujMu22SI8C5GRandC/ZR5jbiMa/B0NE/1IJmlqDHOg8qRukFUH2x8zJuS8S92xG2KQgus0ZiIZnSCsiA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=f94PhOish6AlUTObITOZllnWAt/nCTGqLC1gwLTGSzU=;
- b=vLqmN9J7Kq2vQCIh1ZzAd5a9eULcnvvwOHiPziM0aVpBJj3E/K1k2k7zh+qVLn5NUf/F4Nol+UwQUYJQr5r304GT/TXIOf1edcGp2cFSHIFSYULvvKNwMPJqQtty74wZG5v+dkOJpzdyXgDN6Xcyl+KozmgJCDpVSMDCJuRbEq5RYTT+XfuQD0JEa8HJFN0P9Z4t7DdI5O/r18LOy/TtTstxdoKIIUcHi2SbKEOwDw7SX1jSxi4o+Js0S4sa5pBeStH5eXrl+cwQIs2ZoitK493aFvxr6Q1qyM5GVJ2Y4LKSgxBF49LeGpiCoe6BPrgqlnqRXQGu/zx9uWoLqMH+UA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f94PhOish6AlUTObITOZllnWAt/nCTGqLC1gwLTGSzU=;
- b=vPkgKAI87GqFiX6P8LyNOwEEKhHGY+MT9v7rzHwuGrT0BJZVkvF/LduO02lT06gYV8IdFOvVYzwDwOvPLkHqJ6tBtHYpm77YYpJgRQmjzxELCcC5ghTP0j6vwxtPhmh7D5KJkZXQ6O2J7pHzTEeN5boKoiXBWY5L5D3snlHB064=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by DS7PR12MB6311.namprd12.prod.outlook.com (2603:10b6:8:94::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.16; Fri, 31 Jul
- 2026 20:28:04 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%7]) with mapi id 15.21.0270.015; Fri, 31 Jul 2026
- 20:28:04 +0000
-Message-ID: <a108bf08-bbf2-4c1d-b74b-c7446587aaea@amd.com>
-Date: Fri, 31 Jul 2026 15:27:58 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 2/6] x86/sev: Disable CPU hotplug while SNP is active
-To: Tom Lendacky <thomas.lendacky@amd.com>, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
- herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
-Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
- ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
- rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
- pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
- nikunj@amd.com, john.allen@amd.com, darwi@linutronix.de,
- linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1784844080.git.ashish.kalra@amd.com>
- <e1631971b3862bcd6043199feba3df51f3ba336c.1784844080.git.ashish.kalra@amd.com>
- <bd67f2e0-312d-4eea-a5ad-009554e3ea93@amd.com>
-Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-Autocrypt: addr=ashish.kalra@amd.com; keydata=
- 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
-In-Reply-To: <bd67f2e0-312d-4eea-a5ad-009554e3ea93@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA1P222CA0030.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:22c::6) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ASz5lEyW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B010E1F00ACF;
+	Fri, 31 Jul 2026 21:04:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785531908;
+	bh=JtMKNzJTI+uCVgkjTRgphz8WNm4MH4HgItmshCKTVcc=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=ASz5lEyWHccui+JC+tz6SUDwa73tWQP3GgCUMoUZt9S0I6PqoePYURwjR2ETqakcn
+	 zc8QOlgVoUfgwLJw0LEk7syZL+DuCwtMJyMHFgVPP2qmx30Uvs6RhY+/aZPdKj4QLT
+	 PfYNMk8CvWJLxUx4SRtDCU71GaiO2qyxGvhEk8HXWdxZRi0OwMFin2/xP5zeExRvip
+	 fjpd6s7z5cQXaFfAE8AcN4+4CBMFc1i8QX50Frh1LdbD6/yMerdN3raQft+ND6WivP
+	 OGMWSXicej38Ppez7fVhPQTIpp9nMCY0xbfUx+htQbbJPIpEo0d0hcCFMgQ9dNqz4V
+	 rdFuHlbk3Rh3w==
+Message-ID: <be77c2cb-6e41-4382-9d2f-cd299f634196@kernel.org>
+Date: Fri, 31 Jul 2026 23:04:50 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|DS7PR12MB6311:EE_
-X-MS-Office365-Filtering-Correlation-Id: 849350d9-515f-4553-3f23-08deef42390f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|921020|10067099003|56012099006|4143699003|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	D/FwQdPqXNEq5AyCDbulzw3Q7Pzm0atcP4yt/1z15ejVWw3gdEuVQavkHyuOk9K2vBRpQZJX9sXCnQwoIpihk5kwsyice4E/+lwTASa0UabG5zK7kpoXcH+UoTWJ/gezY9neNBjZZVoxyMYYQKi5ICHJxqXl/xVHNxg59MMHdhf4jIjWE+sIPjJy9LjiekwunMfTsi1TQujG8P8ysX0D3DQ4/Hgdz9DebgFgqPCNUY6K0pNSWJiAsxJgAEQm0YIyGbhbxJ2eZDDUH81nvP+uj2GvK1rMu0c79WQzTolSoL+xEogJ7DsU+uG8KDcAbe1sEEo0lqAKysH4VtdZ9tr8eADB/iID/6LMvixtLfKdXKQs6OyQNZgeI1UVyCiurtS4et2TPDJAr5cKSqhu0s4+uD5lTEHiQ5XPmmZV2z38f5puMeJnrzR9qq0+vXdKLWuF0BQkPw0g/p/5ZEcX8Y9AbbvLaaM20axPPZm5yq8c6SQuRfadUnYvWWfTWbF1MlnXpH3vmf8ed3Lw8KCrrp+18NXFmaTb1aGoxXopFRbNw5WM8XuyXk7DpqTm06VcFBmY2dS6t/M9bVK21FDfnd69k2vjD9XzZGDSZVL9ZqmHXs9WNd5OpNRQUtXtcfr9VrAePD+SxzYz+P1WtsOGaywE/z3RLyYrchJ8baLSFseElOQgedEMpmhL6yFt9FpCj/nDy1GA18DPdRl1D9lBcZd1Hg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(921020)(10067099003)(56012099006)(4143699003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?U0l0Mm9Lcy9sK1FnekVEZlZoQ05DcHJ3M242dVBRcmJIS09GVVpwRW9jK2pn?=
- =?utf-8?B?RFBvK25jTHBCMmk0YVg4WHNldzRQTXN2L2dTYm95UFFBM0lHTTRyTC85YUxK?=
- =?utf-8?B?RVRVY2x3Nm1BMWxCM3JPYU1Jb3A0NVpkMGhJejFHSlJQQ0Y5L1Vjb3E5MWZO?=
- =?utf-8?B?enQ5QWl2S3N1N2VUclkvck83ZHAxVnR4SjVvZ1NaeGxhOXVCUTVocWN0RkdR?=
- =?utf-8?B?UUhPZFlRbmhpd2Vjd3Y4MW4xL1gyd2lyWms3NkpjQWhrak92a2dlUXAwRm5W?=
- =?utf-8?B?akJ4TGRiRDVlU0htcUhIYUUrczJsbFlPdlNmMXNpNUk1RGlpekhQYTc0T3E3?=
- =?utf-8?B?NlNXTm9paTFwcktCQVpCY3ZiVm42NWpGMmRUUTFTYWUyR21XWnZmK3F5VjN3?=
- =?utf-8?B?SGhTdjZPdW5lWU1tZGxKcnd0ZGFwRWdvVzBHYTNGcjIxU0tzeWY4SUFuaVJu?=
- =?utf-8?B?M0ZRMmxiY1FmdGtIOFBsWGNPTFFDc1lOM0twUkZZQ0h3VU4wWlZXWGNBczRW?=
- =?utf-8?B?anJuQ29DQTQ0ZHVWcEcrVWtXZTc2MUxJMy9SOUY4cTcvTXFjUDFiQ3hYWE5h?=
- =?utf-8?B?cTNXUXlBb3JsY3RybFN5djVDWXA3dGNOemJDUmNBdFh0VlVkeTVkS0gyeEZn?=
- =?utf-8?B?cGJBdFRkTFFjcGllNFpJUDZITjdoZExLL2p1YktycW1DU081UTFiV2hEQzYx?=
- =?utf-8?B?Y09DSzV3Qng0SmZEYll6NUQyaDFpc0JBUXJLUDdDOGI2a2pIQi9UVWhPU1k3?=
- =?utf-8?B?bnRvNnN5TFk2U1lxZWdhRTlTUytpbVF6UWFzcmNRMlIxRVkyVkZJY0pIM28v?=
- =?utf-8?B?YVdlR1RyQkdDSXQ1Qkk0aG5VOWdtMW1NV0VPTEp3cGF5OVQ1WE5wa21ERDFQ?=
- =?utf-8?B?V2k1WWpCS0UzM3B0RTNZZmtadXVSa3AzV2hSbFc4RFYzNlZaZVBuelNmd2Ft?=
- =?utf-8?B?TTBJeFVpdDM3R24xcUdiblhiQ0EyeEZSL1k5YkJBb3kvd1JrV3BJdThXNldE?=
- =?utf-8?B?Q0V6OFRSTFdVNzdIYlR1b1BzaE5uMERRYUhIenZMbjByWVVheFg1Sy91Ujlo?=
- =?utf-8?B?L3ZKb0JQS3ZQRnFFRGh0NzJlZU5ITklWZ3JQMmE0YmZna0Z2T2ZhRnVLYXZH?=
- =?utf-8?B?bkQwR2xqTENNR3JUU2JzMERVNU9rdlZrSFlTaFBzemNYQmVhQTVlYkZrQ1N4?=
- =?utf-8?B?Z3hacVBVRWlsa0JBb1NkaCs0cTV3Q09LMTFmNWV4bm5GY0ZZL3V6MTJPdzVn?=
- =?utf-8?B?RXVvdFdxMys3VlU2ZGdTNjI2R0RmU0xNYTJNalRRcDZGYmxkM1MvNEJPTml0?=
- =?utf-8?B?Rm9XTGVvZnZoQ0lBaWRpRnNadXhsam5QZmpra1RpenJQMHJsbmJxWkhxcjRQ?=
- =?utf-8?B?YlNGV0F3YnFnb0NKTVRyQ1YrSWIrWXBHenQ0dkhJcCtrUWZYYWpRZm93enVh?=
- =?utf-8?B?azBTUi91MlM3NTg5YndMWmhYL2t5M2ttb0lYZzR0VTljMHRGbnZwVmcwbVZy?=
- =?utf-8?B?N2dXSzdaKzB1a29QNldPYnIyczFjaldjR1lwdm9rMkhHWElBdTNYWlJrbDN2?=
- =?utf-8?B?MVhidnRGalQwYzllRlkwYUhGSktoOVhuSzBldmd3N1ZHUVpCR1ZIdDFYdFFz?=
- =?utf-8?B?RW1mSHJyWWRiZ1MzT2VncFJHcGh2Qk1KOGVSVFFxQ0xYSDJzYVdlc1I1bnRw?=
- =?utf-8?B?N25IK0tPdWU3c1BnaWFnMzRjcGVaVkthS3liVGxJbk9mSUZuaUF5TDhKWEsw?=
- =?utf-8?B?N3Rkb2IxOCtjZHAvejdjR1lrNUJVbWtLOXZFRUc5Tk9aVUdTRGdUaWQ0TjZR?=
- =?utf-8?B?OUVEdEFKend4cVZIRGt6Z0JQSDZEcjA3VDcrS2RjYWFhRUR4SGR6RnBUREFu?=
- =?utf-8?B?ZHZ4L0o3dmtCSUFlaGpBSGJXMFM4OUVidXAyTHZjODJZMWRBZ3l2MmhRQmJT?=
- =?utf-8?B?VG5wdjRqcGJiMjRLTU9lRW01R0FnTXdyQStzSmdKSEppMnJQeUJXWU9ZcGVG?=
- =?utf-8?B?YnRicGllYzUzMGcrVjF0Z2FodGJiTndxWitja3FRTkRJLzRCT0VqNWQ4V3hl?=
- =?utf-8?B?UXZPbm5VYU85ZVR0Y3NTVTI2Wkt1VjBaRzJhbU9lODB6c3F3dXhJWFRGeGRB?=
- =?utf-8?B?UGdWSEFUQkwzaHd2dlFmRlpWOUF3eWtpdWlKdlhlZFNEWDY2VFN0NjJqbVRa?=
- =?utf-8?B?dWE5em9EUGJ6UlJnY1h4N0owTktzMVlMTVRzdHFwN1JncStDeDZaMzVORkIv?=
- =?utf-8?B?RkNuMWFodnhFWmk3ZXo4RnVBcEUyOVF0TUZscDZqKzNsRkM5TkxyWXg2S0Rt?=
- =?utf-8?Q?xHyypDzsQhxX7R7N3w?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 849350d9-515f-4553-3f23-08deef42390f
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2026 20:28:03.8864
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZA8OQB43yBXMoS4dU4Zr9gWSWZHr6BcJP6UGmzPfkz/GKN+WN0HCqSPeaSoBCFp1OAT/v9ShOvOJ5ezNJN4lSw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6311
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 14/41] mm: swap: Introduce lru_add_drain_progressive()
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
+ andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
+ "hughd@google.com" <hughd@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-14-35f9aec2aed2@google.com>
+ <4460e252-b6de-4df3-bea8-0368a9d0f4ff@kernel.org>
+ <CAEvNRgEUQSju2tW_1zMk2=QmveZNtmkjjCZdqVBgBD2JPh0k4Q@mail.gmail.com>
+ <a823e3d2-8acf-49d9-a812-ac1bb2136d7f@kernel.org>
+ <edc3566b-370c-41a0-a71d-2e4a0e1a94f7@kernel.org>
+ <CAEvNRgEas_9BEV-cNxXu4_wQx8sR2M4_OaW6DEd4=fszALMV0w@mail.gmail.com>
+ <60552bee-3326-4917-b00f-5fb7ba3b8adb@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <60552bee-3326-4917-b00f-5fb7ba3b8adb@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello Tom,
+On 7/31/26 16:09, David Hildenbrand (Arm) wrote:
+> On 7/31/26 15:03, Ackerley Tng wrote:
+>> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+>>
+>>>
+>>> And looking at it, the current folio_ref_count() in GUP is entirely wrong
+>>> and always makes us drain local+all.
+>>>
+>>> Let me fix that first, which will also modify this code.
+>>>
+>>> I'd say, to unblock gmem we could have something minimal that I would clean
+>>> up later, but I think the problem is that lru_add_drain() / lru_add_drain_all()
+>>> is not exported, right?
+>>>
+>>
+>> My bad, I totally mixed up refcounting to drain with refcounting for the
+>> safe conversion and didn't have a complete understanding of mlock().
+>>
+>> The problem for gmem was that if there was an elevated refcount on some
+>> folio in the range, it might be because the folio was in the lru_add
+>> fbatch.
+> 
+> Right.
+> 
+>>
+>> If it were in the lru_add fbatch, it would be fine to just drain the
+>> lru_add fbatch and proceed with the conversion.
+>>
+>> lru_add_drain() isn't sufficient since the conversion might be handled
+>> on one CPU when the folio is on another CPU's fbatch, so I had to do
+>> lru_add_drain_all(), but lru_add_drain_all() causes IPIs which are
+>> expensive.
+> 
+> Yes.
+> 
+> You should probably do an early
+> 
+> folio_maybe_dma_pinned() || folio_mapped() check and just return -- don't drain.
+> 
+>>
+>> In an earlier revision I exported lru_add_drain_all(). My understanding
+>> of the discussion at guest_memfd biweekly was that Sean didn't want us
+>> to export lru_add_drain_all() now, and then end up exporting some other
+>> function and unexporting lru_add_drain_all(). To avoid exporting and
+>> unexporting, we then said we should refactor now.
+>>
+>> Happy to go with your proposal too.
+> Yeah, I have to look into this more closely. I'm now convinced that we really
+> have to use the refcount for now, but hopefully we can limit it on
+> folio_expected_refcount() internally + additional references
+> from the caller.
+> 
+> I'm quite busy today, but let me flesh something out that actually works.
+> 
 
-On 7/31/2026 2:35 PM, Tom Lendacky wrote:
->>  int __init snp_rmptable_init(void)
->>  {
->> +	u64 val;
->> +
->>  	if (WARN_ON_ONCE(!cc_platform_has(CC_ATTR_HOST_SEV_SNP)))
->>  		return -ENOSYS;
->>  
->> @@ -586,6 +596,15 @@ int __init snp_rmptable_init(void)
->>  	if (!setup_rmptable())
->>  		return -ENOSYS;
->>  
->> +	/*
->> +	 * On a kexec boot SNP may already be enabled (legacy firmware leaves
->> +	 * SnpEn set across shutdown), in which case snp_prepare() bails without
->> +	 * disabling CPU hotplug, so disable it here.
->> +	 */
->> +	rdmsrq(MSR_AMD64_SYSCFG, val);
->> +	if (val & MSR_AMD64_SYSCFG_SNP_EN)
->> +		cpu_hotplug_disable();
->> +
-> Why not just put the cpu_hotplug_disable() at the start of snp_prepare()
-> then? Wouldn't that take care of both situations and only end up with a
-> single disable point?
+Sorry for being rather grumpy previously, I know you only mean good :)
 
-The difference is SnpEn: on normal boot it isn't set until snp_prepare(), so hotplug during that IOMMU init -> ccp load window 
-is harmless and the online == present check refuses to enable SNP if the CPU set is incomplete — detect-and-refuse at the enable moment.
 
-On kexec SnpEn could already be set from the previous kernel, so that same window is now dangerous (there'd be a window from 
-IOMMU-init -> ccp-load where CPU could be offlined/onlined while SnpEn is set) and additionally there's no enable moment to gate — 
-snp_prepare() bails before the check because SNP is already on. So we can't detect-and-refuse and so we have to prevent the window
-by disabling hotplug early, at the IOMMU-init point (snp_rmptable_init()).
+I sent a fix for the GUP code that always makes us drain right now:
 
-Thanks,
-Ashish
+https://lore.kernel.org/r/20260731-check_and_migrate_movable_folios-v1-1-e0002d7b791e@kernel.org
+
+Would the following (agains mm-unstable + fix) work for you?
+
+
+I assume that you'd have to call it as
+
+	lru_cache_drain_for_folio(folio, 0, NULL);
+
+But maybe there are indeed extra references that are not reflected in
+folio_expected_ref_count() that you would have to consider? I doubt it, but please check if
+there would be a problem.
+
+There is a small problem for merging:
+
+(1) The patch depends on the fix.
+
+(2) mm/swap.c was moved to mm/folio.c in the mm tree.
+
+We could write what I have below against Linus' tree and have the conflict be resolved
+when merging. Topic branches are unfortunately not yet a thing in MM land.
+
+
+From 9e8d49ca4e77b1f843cc0113af1cc92274193399 Mon Sep 17 00:00:00 2001
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Fri, 31 Jul 2026 12:08:13 +0200
+Subject: [PATCH] mm/gup: factor out LRU cache draining for folio into
+ lru_cache_drain_for_folio()
+
+KVM with guest_memfd wants to remove any folio references due to LRU
+caches, as it really must only allow to convert folios from shared to
+private when there are no unexpected folio references (e.g., from GUP
+references).
+
+So, to drive the refcount down, it needs a way to flush the LRU caches.
+Let's factor out what we have in lru_cache_drain_for_folio(),
+
+Maybe there is a chance to avoid the draining entirely in the future,
+by avoiding extra references from the LRU cache: Hugh thinks there might
+be a way. But for the time being, this handling is unfortunately
+required.
+
+Make folio_may_be_lru_cached() accept a const pointer so
+lru_cache_drain_for_folio() can accept a const pointer as well.
+
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ include/linux/swap.h |  8 ++++++++
+ mm/folio.c           | 46 ++++++++++++++++++++++++++++++++++++++++++++
+ mm/gup.c             | 15 ++-------------
+ mm/internal.h        |  2 +-
+ 4 files changed, 57 insertions(+), 14 deletions(-)
+
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 0544b2ec4c565..733b84e0bce43 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -298,6 +298,14 @@ void folio_add_lru(struct folio *folio);
+ void folio_mark_accessed(struct folio *folio);
+ void lru_add_drain_all(void);
+
++enum lru_cache_drained {
++	LRU_CACHE_NOT_DRAINED,
++	LRU_CACHE_DRAINED,
++	LRU_CACHE_DRAINED_ALL,
++};
++void lru_cache_drain_for_folio(const struct folio *folio,
++		unsigned int extra_refs, enum lru_cache_drained *drained);
++
+ /* linux/mm/folio-compat.c */
+ void mark_page_accessed(struct page *page);
+
+diff --git a/mm/folio.c b/mm/folio.c
+index d2937600cf726..a41d107b8b28a 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -948,6 +948,52 @@ void lru_add_drain_all(void)
+ }
+ #endif /* CONFIG_SMP */
+
++/**
++ * lru_cache_drain_for_folio() - drain LRU caches if the folio might have
++ *				 references from the caches
++ * @folio: The folio.
++ * @extra_refs: Extra folio references held by the caller.
++ * @drained: Drain status for batch folio processing.
++ *
++ * Drain LRU caches if the folio might be referenced by these caches, such
++ * that e.g., later page migration will not fail due to them. Start with a
++ * local LRU cache drain, to then drain LRU caches on all CPUs if local
++ * draining was insufficient.
++ *
++ * This function detects LRU cache references by comparing the folio refcount
++ * with the sum of the expected folio refcount + extra references held by the
++ * caller. Note that we cannot rely on PG_lru to reliably detect all LRU
++ * cache references.
++ *
++ * If @drained is not NULL, the function will avoid re-draining LRU caches
++ * when processing multiple folios in a row. In that case, the value
++ * @drained points to must be initialized to LRU_CACHE_NOT_DRAINED before
++ * the first invocation, to keep passing @drained to successive invocations.
++ */
++void lru_cache_drain_for_folio(const struct folio *folio,
++		unsigned int extra_refs, enum lru_cache_drained *drained)
++{
++	const int expected_refs = folio_expected_ref_count(folio) + extra_refs;
++
++	if (!folio_may_be_lru_cached(folio))
++		return;
++
++	if (!drained || *drained == LRU_CACHE_NOT_DRAINED) {
++		if (folio_ref_count(folio) == expected_refs)
++			return;
++		lru_add_drain();
++		if (drained)
++			*drained = LRU_CACHE_DRAINED;
++	}
++	if (!drained || *drained == LRU_CACHE_DRAINED) {
++		if (folio_ref_count(folio) == expected_refs)
++			return;
++		lru_add_drain_all();
++		if (drained)
++			*drained = LRU_CACHE_DRAINED_ALL;
++	}
++}
++
+ atomic_t lru_disable_count = ATOMIC_INIT(0);
+
+ /*
+diff --git a/mm/gup.c b/mm/gup.c
+index 41c3317e0f0f4..297e7de81c374 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2266,9 +2266,9 @@ static unsigned long collect_longterm_unpinnable_folios(
+ 		struct list_head *movable_folio_list,
+ 		struct pages_or_folios *pofs)
+ {
++	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
+ 	unsigned long collected = 0;
+ 	struct folio *folio;
+-	int drained = 0;
+ 	long i = 0;
+
+ 	for (folio = pofs_get_folio(pofs, i); folio;
+@@ -2293,18 +2293,7 @@ static unsigned long collect_longterm_unpinnable_folios(
+ 		 * but also to remove any other folio references from LRU
+ 		 * caches.
+ 		 */
+-		if (drained == 0 && folio_may_be_lru_cached(folio) &&
+-				folio_ref_count(folio) !=
+-				folio_expected_ref_count(folio) + pin_refs) {
+-			lru_add_drain();
+-			drained = 1;
+-		}
+-		if (drained == 1 && folio_may_be_lru_cached(folio) &&
+-				folio_ref_count(folio) !=
+-				folio_expected_ref_count(folio) + pin_refs) {
+-			lru_add_drain_all();
+-			drained = 2;
+-		}
++		lru_cache_drain_for_folio(folio, pin_refs, &drained);
+
+ 		if (!folio_isolate_lru(folio))
+ 			continue;
+diff --git a/mm/internal.h b/mm/internal.h
+index f26423de4ca28..7aa787768353a 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -46,7 +46,7 @@ void lru_note_cost_unlock_irq(struct lruvec *lruvec, bool file,
+ void lru_note_cost_refault(struct folio *folio);
+ void folio_add_lru_vma(struct folio *folio, struct vm_area_struct *vma);
+
+-static inline bool folio_may_be_lru_cached(struct folio *folio)
++static inline bool folio_may_be_lru_cached(const struct folio *folio)
+ {
+ 	/*
+ 	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
+-- 
+2.43.0
+
+
+-- 
+Cheers,
+
+David
