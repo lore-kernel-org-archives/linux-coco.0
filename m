@@ -1,146 +1,189 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65803314A1;
-	Fri, 31 Jul 2026 07:34:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE793C1974
+	for <linux-coco@lists.linux.dev>; Fri, 31 Jul 2026 08:26:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785483249; cv=none; b=Dr9roTm6nwJ1hcLy+388mWgPRaPoFjFGgDoW71oa6n/85NzbS+2ynx8jj2zmrvxpWBWVGYEIJ2smGSnPHZ7HjsEzYbgp8UqY9S7ITiirMT57LainGZTUXzIhwR3Jmm7YkHLNr+M5qes+zcLHJIMF1daNHMRLpw6h4dZLCey67HE=
+	t=1785486412; cv=none; b=J/uWCnWUv/c+H3mX8x0UbBPTq+T7rA7bNoo006vYOiz3Zx7KC8PBewVtk1NWbCmEMP55+gsY6ZfFqrHJyv+MeXN42Twy8aFYz8QhGjU3tSu1OYRx0jruaT7D4RqrQX7M+EYU0d/XhrV3jHPGR86QmwBl4E2kn2QQ6oFEN6TzuhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785483249; c=relaxed/simple;
-	bh=gt/cqMD5KNfHJG+3PoldXcwl4vYWkvMaM5QiMj5ArPQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=ako6pxnKT2QyWVip31FkeNi3qxThvpqkRhamnODzaJzxGI5ffQTsnSbNRd+QuLEuJw356OVVTmSQhUKaEa70xPK5Sc1JSgdeHUZ4obARvelsmpcmOPKJgSjNXw5Jj2Y6ro413atC05u7T0uPcJhcU7AYmM1kRbsDFLNH7eCD83U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=h2vFzdGP; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1785486412; c=relaxed/simple;
+	bh=5dNmxu5/DKV/iLc1cxX1Ef3+PAoXGe1Aq8VEZB3JYrg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UCBTsoNegyP4RIUwdovUOwXnRBfFCi8qCRlg9raWrGdkPMSmqjCFMIlc4sxyQnH/MkWb4A/rsoxJsyZbp0H6fgeMoLTs3NUy7/dT2kE6M5BdzL77QTrFqsUsJD1o6ERvintNdKfeKWALLy9gNzsb+2MJF3f2j9S5vQ05qT5m1LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JJNSCuja; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="h2vFzdGP"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260731073359euoutp01b326523e6f9dce2fa68dcdf5a4089e5b~HT4vhc6Cs1162311623euoutp01Z;
-	Fri, 31 Jul 2026 07:33:59 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260731073359euoutp01b326523e6f9dce2fa68dcdf5a4089e5b~HT4vhc6Cs1162311623euoutp01Z
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1785483239;
-	bh=N3Jgur6eGpI5uF6i9kwDYaTQ48SNIpZ5QYt0ueN9Z1A=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=h2vFzdGPU5rK6aIg9RL7QWF075tsWv+IJpqYD+rwoehY/vNWBMRBWGrq2fWusmWGk
-	 J790EJlBOERW4eikBs6SJ0XQKF/mLNr0HDnXFmef70VwH7PnAlB0ueKl/8aXpOpDw3
-	 NAWoNOdVoKDxcVtSBMhZr5p81NEbyYPO8PB+QGI0=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260731073359eucas1p2ff8cd0f84dea171a8b4f0061154dc5ae~HT4vTnQXs1993519935eucas1p2y;
-	Fri, 31 Jul 2026 07:33:59 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260731073350eusmtip181b6e9861358d1e9a24ec292d0634e20~HT4nVsXtj0839208392eusmtip1O;
-	Fri, 31 Jul 2026 07:33:50 +0000 (GMT)
-Message-ID: <85be992d-9567-433e-ae2e-64ae5483964d@samsung.com>
-Date: Fri, 31 Jul 2026 09:33:47 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JJNSCuja"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785486409; x=1817022409;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=5dNmxu5/DKV/iLc1cxX1Ef3+PAoXGe1Aq8VEZB3JYrg=;
+  b=JJNSCujaLNAYg9sOrqHyh4EXx43NgKdywXJL8zcXGpWpDI1KSNbLikn2
+   cAKteGXT/VjNgY/vqz6ALFYvxDDNPs/HZ5YnJdr5e4fv2qKKLZdHCDIZU
+   5jG4gNhIMm6nMHNYnKufJloXuRdPlfWTea+ROu6FW/VWQM4+bJoQmzqgM
+   QQxYM/InPsHid9zuC8lmmUAsPi9dxKDbsDbdbTqGie1oKFFpN67GpCwY5
+   AM7CxSbqFRkhMwL73WJv6SeJQwGNJWEcV7IJ91VMMgLHy+qBrvOoNAwVW
+   P9ZmCdko6MbL/S7oJHXgjBP5sFLbH5eDfwHs+NfC1SrQf0MkAplgUsI+F
+   g==;
+X-CSE-ConnectionGUID: ar0I00VKTQWmLmlW2WpL9g==
+X-CSE-MsgGUID: KaLUBDQ8S6yzidwkQTpUVQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="86126077"
+X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; 
+   d="scan'208";a="86126077"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 01:26:48 -0700
+X-CSE-ConnectionGUID: KbSyPLdZQD6xu1UMvfTcHw==
+X-CSE-MsgGUID: g90yMGrGQQeZJeLvX6Oqmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; 
+   d="scan'208";a="265591573"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.248]) ([10.124.240.248])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 01:26:34 -0700
+Message-ID: <d3fef015-0546-4993-b354-a8464d79e48c@intel.com>
+Date: Fri, 31 Jul 2026 16:26:30 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v8 00/23] dma-mapping: Track shared DMA state through
- direct, pool and swiotlb paths
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Cc: Robin Murphy <robin.murphy@arm.com>, Will Deacon <will@kernel.org>, Marc
-	Zyngier <maz@kernel.org>, Steven Price <steven.price@arm.com>, Suzuki K
-	Poulose <Suzuki.Poulose@arm.com>, Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Jason Gunthorpe <jgg@ziepe.ca>, Mostafa Saleh
-	<smostafa@google.com>, Petr Tesarik <ptesarik@suse.com>, Alexey
-	Kardashevskiy <aik@amd.com>, Dan Williams <dan.j.williams@intel.com>, Xu
-	Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Alexander Gordeev
-	<agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
-	<svens@linux.ibm.com>, x86@kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 18/41] KVM: TDX: Make source page optional for
+ KVM_TDX_INIT_MEM_REGION
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-18-35f9aec2aed2@google.com>
 Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <yq5azezfeeax.fsf@kernel.org>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260728-gmem-inplace-conversion-v9-18-35f9aec2aed2@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20260731073359eucas1p2ff8cd0f84dea171a8b4f0061154dc5ae
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260725070930eucas1p16cbafb514de7a2e7531d0e4ae158acfb
-X-EPHeader: CA
-X-CMS-RootMailID: 20260725070930eucas1p16cbafb514de7a2e7531d0e4ae158acfb
-References: <20260717180442.110954-1-aneesh.kumar@kernel.org>
-	<CGME20260725070930eucas1p16cbafb514de7a2e7531d0e4ae158acfb@eucas1p1.samsung.com>
-	<yq5azezfeeax.fsf@kernel.org>
 
-On 25.07.2026 09:09, Aneesh Kumar K.V wrote:
-> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
->> This series tracks confidential-computing shared DMA state through the
->> dma-direct, dma-pool, and swiotlb paths so that encrypted and decrypted
->> DMA buffers are handled consistently.
->>
->> Today, the direct DMA path mostly relies on force_dma_unencrypted() for
->> shared/decrypted buffer handling. This series consolidates the
->> force_dma_unencrypted() checks in the top-level functions and ensures
->> that the remaining DMA interfaces use DMA attributes to make the correct
->> decisions.
->>
->> The series separates mapping and allocation state:
->> - DMA_ATTR_CC_SHARED describes the DMA address attribute requested for a
->>   mapping. It tells the DMA mapping path that the DMA address must target
->>   shared/decrypted memory.
->> - __DMA_ATTR_ALLOC_CC_SHARED is an internal DMA-mapping attribute used only
->>   by allocation paths after the DMA core decides that the backing pages
->>   must be allocated as shared/decrypted memory.
->>
->> The series:
->> - moves swiotlb-backed allocations out of __dma_direct_alloc_pages(),
->> - uses __DMA_ATTR_ALLOC_CC_SHARED through the dma-direct alloc/free paths
->> - teaches the atomic DMA pools to track encrypted versus decrypted
->>   state
->> - tracks swiotlb pool encryption state and enforces strict pool
->>   selection
->> - centralizes encrypted/decrypted pgprot handling in dma_pgprot() using
->>   DMA attributes
->> - passes DMA attributes down to dma_capable() so capability checks can
->>   validate whether the selected DMA address encoding matches
->>   DMA_ATTR_CC_SHARED
->> - makes dma_direct_map_phys() choose the DMA address encoding from
->>   DMA_ATTR_CC_SHARED and fall back to swiotlb when a shared DMA request
->>   cannot use the direct mapping, which lets arm64 and x86 CCA guests stop
->>   relying on SWIOTLB_FORCE for DMA mappings
->> - use the selected swiotlb pool state to derive the returned DMA
->>   address
->> - reports CC_ATTR_GUEST_MEM_ENCRYPT for arm64 Realms, powerpc secure
->>   guests, and s390 protected virtualization guests.
->>
->> Dependency:
->> This series depends on the pKVM changes posted at:
->> https://lore.kernel.org/all/20260603110522.3331819-1-smostafa@google.com
->>
->> Please merge this series only after the pKVM changes above are merged.
->> Otherwise pKVM will be broken.
->>
-> pKVM topic branch is now available 
->
-> https://lore.kernel.org/all/178467286876.125042.12010461715645610054.b4-ty@kernel.org/
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/coco
-I've just got back from my holiday's and I see that there is everything ready to give
-this patchset some tests in linux-next. I hope nothing will break.
+On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
+> 
+> Update tdx_gmem_post_populate() to handle cases where userspace requests
+> "no source page". To handle "no source page", populate (perform
+> TDH.MEM.PAGE.ADD) using memory in-place at the target PFN.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Tested-by: Shivank Garg <shivankg@amd.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+>   Documentation/virt/kvm/x86/intel-tdx.rst | 4 ++++
+>   arch/x86/kvm/vmx/tdx.c                   | 8 +++++---
+>   2 files changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/virt/kvm/x86/intel-tdx.rst
+> index 6a222e9d09541..d8d9409120e61 100644
+> --- a/Documentation/virt/kvm/x86/intel-tdx.rst
+> +++ b/Documentation/virt/kvm/x86/intel-tdx.rst
+> @@ -158,6 +158,10 @@ KVM_TDX_INIT_MEM_REGION
+>   Initialize @nr_pages TDX guest private memory starting from @gpa with userspace
+>   provided data from @source_addr. @source_addr must be PAGE_SIZE-aligned.
+>   
+> +If guest_memfd in-place conversion is enabled, pass 0 for @source_addr
+> +to represent "no source page". A source page is required if in-place
+> +conversion is not enabled or not supported.
+> +
+>   Note, before calling this sub command, memory attribute of the range
+>   [gpa, gpa + nr_pages] needs to be private.  Userspace can use
+>   KVM_SET_MEMORY_ATTRIBUTES to set the attribute.
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index d1af0a752e97e..e890da5f18aed 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -3192,7 +3192,7 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>   	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+>   		return -EIO;
+>   
+> -	kvm_tdx->page_add_src = src_page;
+> +	kvm_tdx->page_add_src = src_page ?: pfn_to_page(pfn);
+>   	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
+>   	kvm_tdx->page_add_src = NULL;
+>   
+> @@ -3238,7 +3238,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
+>   	if (copy_from_user(&region, u64_to_user_ptr(cmd->data), sizeof(region)))
+>   		return -EFAULT;
+>   
+> -	if (!PAGE_ALIGNED(region.source_addr) || !region.source_addr ||
+> +	if (!PAGE_ALIGNED(region.source_addr) ||
+> +	    (!gmem_in_place_conversion && !region.source_addr) ||
 
-I've applied this patchset to dma-mapping-for-next, on top of pKVM topic branch with
-patch "[PATCH v8 17/23] dma-direct: make dma_direct_map_phys() honor DMA_ATTR_CC_SHARED"
-rebased onto latest changes in arch/arm64/mm/init.c.
+Sorry, I still want to discuss why we only allow in-place PAGE.ADD for 
+gmem_in_place_conversion only. Though Yan raised this opinion[1] in 
+previous v8, I'm not quite following her argument. So let me try again.
 
-The remaining items pointed in the review can be fixed incrementally.
+I think in-place PAGE.ADD of TDX doesn't need to depend on 
+gmem_in_place_conversion. There are two use cases actually.
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+1). Userspace sets the gmem page as private, and invokes the in-place 
+PAGE.ADD by passing a 0 source_addr. Due to patch 16, the target PFN 
+will be ADD'ed to TD as a all-0 page.
+
+2). Userspace sets the gmem page as shared, and writes the desired 
+content to it. Then converts the page to private, and invokes the 
+in-place PAGE.ADD by passing a 0 source_addr. The target PFN will be 
+ADD'ed to TD with desired content.
+
+For gmem_in_place_conversion == false, only case 1) is possible.
+For gmem_in_place_conversion == true, both case 1) and 2) are possible.
+
+Basically, this patch is changing the behavior of 
+KVM_TDX_INIT_MEM_REGION. Before, it returns -EINVAL when 
+region.source_addr == 0. Now it wants to allow the "region.source_addr 
+== 0" case. If we can allow it unconditionally, why bother adding the 
+restriction to allow it only when gmem_in_place_conversion == true?
+
+
+[1] https://lore.kernel.org/all/akI9m02jgKAdi4gX@yzhao56-desk.sh.intel.com/
+
+>   	    !PAGE_ALIGNED(region.gpa) || !region.nr_pages ||
+>   	    region.gpa + (region.nr_pages << PAGE_SHIFT) <= region.gpa ||
+>   	    !vt_is_tdx_private_gpa(kvm, region.gpa) ||
+> @@ -3269,7 +3270,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
+>   			break;
+>   		}
+>   
+> -		region.source_addr += PAGE_SIZE;
+> +		if (region.source_addr)
+> +			region.source_addr += PAGE_SIZE;
+>   		region.gpa += PAGE_SIZE;
+>   		region.nr_pages--;
+>   
+> 
 
