@@ -1,183 +1,106 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D4A47884D
-	for <linux-coco@lists.linux.dev>; Thu, 30 Jul 2026 23:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16FB1A262A
+	for <linux-coco@lists.linux.dev>; Fri, 31 Jul 2026 00:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785455361; cv=none; b=kPfe8N8rj0YKUXaIcV2wN/29eiDtzEqDbkBkI6Muof/162wkU/B76YyY+ar+FUOUUihV/X/pZ/iniCg1wC5Yl9w5igEpSBm7sjtfXHzYa30kCZQQfnmjl178bX4k9X1GNOP7rHZnQK+2MFmu+PcqCneK4MyqgzOmLok06DmFZhY=
+	t=1785456809; cv=none; b=tk7R44LoU1L2/VRTCIWJhl9i5IhnzPvjea2On6kkuCI260F5HDq/B58xWazrEuY3iWzNY0j65w/25EKsNOONDqhW51IENEeOne82TX023KyCRaIv1L24ASxHw/VVcuEYQBmuDlsH2fnyZwpmG0MFkINYgC/hKVdWsHQEuoe6hp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785455361; c=relaxed/simple;
-	bh=EBqRt2FUcludAcZTS+/lEH3JghanKhXyWdirr2aKXZk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HpcYFiJorFJd57uR4u7O/LDftbZg19fyGUEf/dFeXLcHjfkYzLvFG9eweBYzojCMsOSEnypPhjNyd7Hquts+9AuLfwYPhdmeGw5cVhoXjv4agi0tFa/ob2mGtiMBUkNjvtkk0KTSnLCjDX5iUfTiaaqbucUvguOOI7H/9BR1zs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=auUUHpuF; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785456809; c=relaxed/simple;
+	bh=bHoKjpRPsU20OfpCgpLdzmTUQpQ734HXDcgDHAbvAdo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FMnS7TfA42VPjyNuBXJxwi6KHfe8HxEmV85SZKOEVdRCz7FT/y54hYbJYJU1H5LpKfEEvoejqTAals+8GtP80SI2Q559FG7IJn+batBN9bnWTqyG5kJaECUN15jXWJ3LqveV092huuYn65ShRYKTIuKgctZBQ4RN6Gwnem/ZMPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=SDM7RnX1 reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="auUUHpuF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785455359; x=1816991359;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=EBqRt2FUcludAcZTS+/lEH3JghanKhXyWdirr2aKXZk=;
-  b=auUUHpuFzGeVZ72PwoolN8CdqpZPj99EaEsw+S1+P3OVDrVlFGaw58FC
-   qZnzBvE30kFzlDms4X1X/YKjHTmc55l7aDMNagvp3TCvCE4B3gQkJVo1a
-   XoT4f5BswG+9T8TbF8Cb3XBlfSD7MDYZXUU+vKzmy/DtgoXoTVI7WmC2K
-   ggctskMDemlPjr12IVNctzbKjjXX6f3rIQvMyO1oKBU6vPfU/eFtx/doo
-   iPvPE19T3b09NC2bjXsZ0kJrlof32EJQU5HBPtl67DV52vD+6i2NMGx57
-   89X5Xw9A0oNSV8iQ3kEdoymBDnO5xAySwvGEwfe8xZyu2FVCpmNzA5Q5d
-   A==;
-X-CSE-ConnectionGUID: trwNHQ3AQM6c/6sw+6j0zQ==
-X-CSE-MsgGUID: c0HOmNI6S8atB171UVWK1w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="96670041"
-X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; 
-   d="scan'208";a="96670041"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 16:49:18 -0700
-X-CSE-ConnectionGUID: 3hvv/sojQLGAat42r0fN/g==
-X-CSE-MsgGUID: 6mgkoACnRjCJhd9evfHvNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; 
-   d="scan'208";a="298631756"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.248]) ([10.124.240.248])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 16:49:03 -0700
-Message-ID: <dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com>
-Date: Fri, 31 Jul 2026 07:49:00 +0800
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="SDM7RnX1"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 92FAD40E02B7;
+	Fri, 31 Jul 2026 00:13:25 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 7pPvPuiLtB9e; Fri, 31 Jul 2026 00:13:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1785456795; bh=C/SHV9jDMzcbkRlE8+MAQIErFrfbzUMau76TNYPkhG4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SDM7RnX1rp3zqyTBpJnOkspdPTzmAjNzhvgGYuGeaA/yrl650G6/tjb1uKeh+5ESl
+	 GYkJ4/qmjD5twBhUmKOvfxR6wOdTxfaCwnOSwwBVDtla5F5gMmqERvLSO2PQs6hUMZ
+	 9TL1oxkRgqP1nrE65zhPQBq/QG7ep41g2ymrHlq/9W1Eih5DWiVRGiOhNB3yw7Pt4V
+	 jd6Nd3eJa/XUZHTpNtO7DpHXOphYqmfdZCBpAlytmtbclxJXaL6CoM5jcYFZKUewV/
+	 Cajd3SzfCHo4QNMgE+K5t5dgDt9haL9lwxliiPbKk/qFTi58XO454EVPXdKhZGEw3q
+	 KtoEKNfvYFNegD4FPBAfhgnqTmBuwTXPckX5//B+3LSX49emxya+9ghlgqYnZCBIOS
+	 rXRouIEQBRPWy1G4796WjY6zcruLljKQV1dURECZd4CykWDgcA6AbfeSq+a0QDsfMB
+	 uJYGemCGryIM7WzxOcKMiPksnSOLln4eJ4C3EtFZbpDTCtoGCDIiCUdPhjl0eb1aE2
+	 YGMT7c3xVDfhRUqlCvK8uoAPdMPHLhMgQkuTadp2NzIECzmPtaDpfjgyAiHVR/rqDu
+	 Dw3ODzMI8Rnz9QyK49sSpMLKBBubgL/R4MoO88iDUhIS403D67WO6tCqunXb1Mqy+E
+	 gp64ARw5Mas0wYqNRvmCaYg0=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8E59440E00B8;
+	Fri, 31 Jul 2026 00:12:40 +0000 (UTC)
+Date: Thu, 30 Jul 2026 17:12:38 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v11 3/6] x86/sev: Initialize RMPOPT configuration MSRs
+Message-ID: <20260731001238.GMamvodtFAY7Scdtha@fat_crate.local>
+References: <cover.1784844080.git.ashish.kalra@amd.com>
+ <ff346ea1770cf996e1623270a085ac08d21888c6.1784844080.git.ashish.kalra@amd.com>
+ <20260730020704.GGamqxyPy5oJAmC5Oy@fat_crate.local>
+ <5a980015-c391-4019-8b44-48d1373eaea7@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 07/41] KVM: guest_memfd: Wire up core private/shared
- attribute interfaces
-To: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
- andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-7-35f9aec2aed2@google.com>
- <60d19013-d6d7-4eec-827a-2622e22cec98@intel.com>
- <CAEvNRgF0SxmoMtqq69tUih54A9K7j_wcMFRrq=r9w6TnAGAUQQ@mail.gmail.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <CAEvNRgF0SxmoMtqq69tUih54A9K7j_wcMFRrq=r9w6TnAGAUQQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <5a980015-c391-4019-8b44-48d1373eaea7@amd.com>
+Content-Transfer-Encoding: quoted-printable
 
-On 7/31/2026 4:42 AM, Ackerley Tng wrote:
-> Xiaoyao Li <xiaoyao.li@intel.com> writes:
-> 
->> On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
->>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
->>> index 33c9830190e2e..89cf922232920 100644
->>> --- a/virt/kvm/guest_memfd.c
->>> +++ b/virt/kvm/guest_memfd.c
->>> @@ -893,6 +893,27 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->>>    EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
->>>
->>>    #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
->>> +static bool kvm_range_is_private(struct file *file, pgoff_t index,
->>> +				 size_t nr_pages, struct kvm *kvm, gfn_t gfn)
->>> +{
->>> +	struct inode *inode = file_inode(file);
->>> +	pgoff_t last = index + nr_pages - 1;
->>> +	struct maple_tree *mt;
->>> +	void *entry;
->>> +
->>> +	if (!gmem_in_place_conversion)
->>> +		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
->>> +							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
->>> +							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
->>> +
->>> +	mt = &GMEM_I(inode)->attributes;
->>> +	mt_for_each(mt, entry, index, last) {
->>> +		if (kvm_gmem_interpret_entry(inode, entry) !=
->>> +		    KVM_MEMORY_ATTRIBUTE_PRIVATE)
->>> +			return false;
->>> +	}
->>> +	return true;
->>> +}
->>>
->>>    static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
->>>    				struct file *file, gfn_t gfn, struct page *src_page,
->>> @@ -913,9 +934,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
->>>
->>>    	folio_unlock(folio);
->>>
->>> -	if (!kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + 1,
->>> -						KVM_MEMORY_ATTRIBUTE_PRIVATE,
->>> -						KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
->>> +	if (!kvm_range_is_private(file, index, 1, kvm, gfn)) {
->>
->> It's checking if a single gfn is private.
->>
-> 
-> But with huge page support we'd need to check a range of gfns... I guess
-> there's the argument of not keeping complexity for the future, but in
-> this case it's undoing functionality for this series and probably adding
-> it back later.
+On Thu, Jul 30, 2026 at 03:00:55PM -0500, Kalra, Ashish wrote:
+> No hard dependency =E2=80=94 it only needs SNP initialized (post
+> SNP_INIT_EX/DF_FLUSH), and the initial pass is async anyway, so it's
+> independent of the SEV-TIO block and the panic notifier. So i can move =
+it to
+> the end (after the TIO block so it runs last without touching TIO order=
+ing),
+> but is there a specific reason you want me to move it to the end, as it=
+ can
+> just stay here after SNP_INIT.
 
-let's leave the work for huge page support in the future.
+The usual reason is, you add new code at the end. I.e., you append it. Th=
+at is
+usually easier for backporting too.
 
->> We can just use kvm_mem_is_private()? And it seems can be a separate patch.
->>
-> 
-> Do you mean that this refactoring could be a separate patch? I could
-> refactor out kvm_range_is_private() in a separate patch, then put in the
-> mt_for_each() check in this patch together as part of all the rest of
-> the "wiring".
-> 
-> I considered that but it seemed like the refactoring was too small to
-> separate out into another patch when the mt_for_each() part is going to
-> be in this patch anyway.
-> 
-> Or, I could add an earlier patch to first replace the call to
-> kvm_range_has_vm_memory_attributes() with a call to check just 1 gfn,
-> then this wiring patch would be simpler.
->
+When you put it *NOT* at the end, then the first question I have is, why =
+is
+this thing there? Is there a particular reason for it to be there? Is ord=
+ering
+important all of a sudden?
 
-This is what I meant. An earlier patch to just replace 
-kvm_range_has_vm_memory_attributes() with kvm_mem_is_private(). Then we 
-can drop this 'big' diff in this patch.
+--=20
+Regards/Gruss,
+    Boris.
 
-If kvm_range_is_private() is useful/required by huge page support, then 
-let the huge page series to introduce it. It has nothing to do with the 
-in-place conversion series.
-
-> Let me know what y'all think is best. Thanks!
-> 
->>>    		ret = -EINVAL;
->>>    		goto out_put_folio;
->>>    	}
-
+https://people.kernel.org/tglx/notes-about-netiquette
