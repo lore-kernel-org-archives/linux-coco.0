@@ -1,135 +1,259 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4D927707
-	for <linux-coco@lists.linux.dev>; Mon,  3 Aug 2026 12:58:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19DF40F753;
+	Mon,  3 Aug 2026 13:44:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785761919; cv=none; b=mmwXaHckStpad6bt/kedRRFh+eEcl6jYZf0n+GWLO1Vq2DzPvmIQXrrb8ZRHo3PrDL6oMR3ZtLwbCplat3+AaqunFcIeRYzry8z2vMdMzBWTuntPD5Msb7kEQh1NxfOBmbib2cxHijjm+/XWog9y2XjWQYIFzORsESR3N9zY7NQ=
+	t=1785764661; cv=none; b=iji9SbflUPbYnJaCLe5bmSL4y05lWFMh4pD2qUrS8DP9Ufwq+Z8MtXN2Qi+eTqCkD/AJjRqBCPGqGGpuhFvwVPLNhpm0E0r0qzchjl145UM1lLnFFwcgbZWgkKlw5fOQFV16npJawulwFm0cYIeBvtuvH3Jbg2bTbDu90S1Mso8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785761919; c=relaxed/simple;
-	bh=Xfhnt3vX8MDy33WKNvLx/DwOXGmQqO5YRLa2ivNLn+8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CJnONB08mfaRnZ6Y/jN9iStR/dN1ZvI++xW0MU8x0TFOi0yoYF+OJvpCat5quCNjLwM8H3GizGONezOiT/MabCIoNPFAF7JBH3GPAOZ5bQbOlXl3q01ji7QSg+nwSBPgojn4/nVCFIvPKopslkyu4wA8M4TexLpTjCyGaRf0/Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Received: from io.fritz.box (p200300f6af4fc500dcfec4a187edd2e0.dip0.t-ipconnect.de [IPv6:2003:f6:af4f:c500:dcfe:c4a1:87ed:d2e0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 8C82D204179;
-	Mon,  3 Aug 2026 14:58:29 +0200 (CEST)
-From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
-To: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org
-Cc: hpa@zytor.com,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	joro@8bytes.org,
+	s=arc-20240116; t=1785764661; c=relaxed/simple;
+	bh=7gDW+1efL7RasAqDrD/fMjJ3ytid+vo61xlhqQvvQxY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MNVHZw+vuuMWu+1aBnEzcKroVEy3NEjFSjch/stU1gNLIFU2fPB5AZ4Y/VjfusKXqSjAJ5oaAcW/1OiCn17emYBMMIRh7fRMjyBMHbJO25i3SjlWeCtYLXDuk6YVCzj3oQ7VUhnwrijpcZ9hNnGamZ4066zGIbCTNrPSmJO++so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=JzYmqgjX; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="JzYmqgjX"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1BC95143D;
+	Mon,  3 Aug 2026 06:44:14 -0700 (PDT)
+Received: from e122027.cambridge.arm.com (e122027.cambridge.arm.com [10.1.25.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0FC3E3F66F;
+	Mon,  3 Aug 2026 06:44:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785764658; bh=7gDW+1efL7RasAqDrD/fMjJ3ytid+vo61xlhqQvvQxY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JzYmqgjX4z3WBvr551f3ponsOq2UHT+MJAzIJbxuW9HArmH9jX63DI9MDTXt8+TSn
+	 B4UAqam71tvGl3zyKAkzuGjrWNxGBXgGxn0H9Bc6pP2ZJ7lsmUxPt0uzXsXciYaeUJ
+	 /IiKlSXoxqNGznnI6sZddBn7leHog3gPYcWDPESM=
+From: Steven Price <steven.price@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
 	linux-coco@lists.linux.dev,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 2/3] x86/sev: Create /sys/devices/system/cpu/sev/ for all SEV guests
-Date: Mon,  3 Aug 2026 14:58:26 +0200
-Message-ID: <20260803125827.718024-3-joro@8bytes.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260803125827.718024-1-joro@8bytes.org>
-References: <20260803125827.718024-1-joro@8bytes.org>
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	WeiLin.Chang@arm.com,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: [PATCH v16 00/45] arm64: Support for Arm CCA in KVM
+Date: Mon,  3 Aug 2026 14:43:16 +0100
+Message-ID: <20260803134403.80630-1-steven.price@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Joerg Roedel <joerg.roedel@amd.com>
+This series adds support for running protected VMs using KVM under the
+Arm Confidential Compute Architecture (CCA), including the firmware
+support needed to communicate with the Realm Management Monitor (RMM).
 
-The SYSFS directory for SEV is only created for SEV-SNP guests right
-now. Change it to create it for SEV and SEV-ES guests as well so
-attributes available on all versions of SEV have a place.
+For v15 the series was split into a 6-patch generic firmware/RMM series
+and a 37-patch KVM series. The two parts are combined again for v16, as
+requested to allow the complete stack to be tested by Sashiko as a
+single series.
 
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
----
- .../ABI/testing/sysfs-devices-system-cpu      |  5 ++--
- arch/x86/coco/sev/core.c                      | 29 ++++++++++++-------
- 2 files changed, 22 insertions(+), 12 deletions(-)
+The first six patches add the generic firmware layer for talking to the
+RMM, as specified by version 2.0-bet2 of the RMM specification[0]. They
+provide the RMI definitions and wrappers, discover and configure the
+RMM, implement Stateful RMI Operations (SROs), and ensure that the RMM
+has GPT entries for host memory. The remaining patches add the KVM
+support needed to create, populate and run Realm VMs.
 
-diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
-index 82d10d556cc8..63586e299aa8 100644
---- a/Documentation/ABI/testing/sysfs-devices-system-cpu
-+++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
-@@ -694,10 +694,11 @@ Date:		May 2024
- Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
- Description:	Secure Encrypted Virtualization (SEV) information
- 
--		This directory is only present when running as an SEV-SNP guest.
-+		This directory is only present when running as an SEV guest.
- 
- 		vmpl: Reports the Virtual Machine Privilege Level (VMPL) at which
--		      the SEV-SNP guest is running.
-+		      the SEV-SNP guest is running. This file is only present
-+		      when running as an SEV-SNP guest.
- 
- 
- What:		/sys/devices/system/cpu/svm
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index ecd77d3217f3..5770b99feb9b 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -1433,14 +1433,7 @@ static ssize_t vmpl_show(struct kobject *kobj,
- 
- static struct kobj_attribute vmpl_attr = __ATTR_RO(vmpl);
- 
--static struct attribute *vmpl_attrs[] = {
--	&vmpl_attr.attr,
--	NULL
--};
--
--static struct attribute_group sev_attr_group = {
--	.attrs = vmpl_attrs,
--};
-+static struct attribute_group sev_attr_group = {};
- 
- static int __init sev_sysfs_init(void)
- {
-@@ -1448,7 +1441,7 @@ static int __init sev_sysfs_init(void)
- 	struct device *dev_root;
- 	int ret;
- 
--	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
-+	if (!cc_platform_has(CC_ATTR_GUEST_SEV))
- 		return -ENODEV;
- 
- 	dev_root = bus_get_dev_root(&cpu_subsys);
-@@ -1463,9 +1456,25 @@ static int __init sev_sysfs_init(void)
- 
- 	ret = sysfs_create_group(sev_kobj, &sev_attr_group);
- 	if (ret)
--		kobject_put(sev_kobj);
-+		goto drop_kobj;
-+
-+	/* Add SEV-SNP specific attributes */
-+	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP)) {
-+		/* VMPL */
-+		ret = sysfs_add_file_to_group(sev_kobj, &vmpl_attr.attr, NULL);
-+		if (ret)
-+			goto drop_sysfs;
-+	}
-+
-+	return 0;
-+
-+drop_sysfs:
-+	sysfs_remove_group(sev_kobj, &sev_attr_group);
-+drop_kobj:
-+	kobject_put(sev_kobj);
- 
- 	return ret;
-+
- }
- arch_initcall(sev_sysfs_init);
- #endif // CONFIG_SYSFS
+Note that RMM v2.0 Beta 3 specification should be published soon. The
+changes introduced in that are minor and I expect this series to be
+largely compatible with the new spec.
+
+The RMM v2.0 specification introduces SROs, which allow the RMM to
+complete an operation over several SMC calls while requesting or
+returning memory to the host. This allows interrupts to be handled in
+the middle of an operation and lets the RMM dynamically allocate memory
+for internal tracking purposes. For example, RMI_REC_CREATE no longer
+needs auxiliary granules to be provided up front, and can instead
+request memory during the operation.
+
+The main changes since v15 are:
+
+ * Recombine the firmware/RMM and KVM portions into one series. The
+   Realm-specific RMI wrappers remain separate from the generic
+   firmware wrappers, in a new KVM patch.
+
+ * Rewrite Realm entry and exit handling to fit into the generic KVM
+   run loop. Work which cannot be performed in the entry path is now
+   completed through KVM requests, and MMIO, PSCI, RIPAS changes and
+   host calls are adapted to the new flow.
+
+ * Rewrite Realm timer support to use KVM's IRQ-ops infrastructure and
+   software resampling.
+
+ * Improve SRO cancellation and error handling. Ensure a cancelled
+   operation isn't treated as successful, wrapper return values can carry
+   negative Linux errors as well as RMI return values, and those errors
+   are propagated through the KVM users.
+
+ * Check that the RMM supports the host page size before configuring it,
+   and exclude firmware-reserved NOMAP memory when creating GPT entries.
+
+ * Expand the KVM_ARM_RMI_POPULATE documentation to make clear that Arm
+   CCA cannot preserve memory contents during an in-place
+   shared-to-private conversion.
+
+ * Allocate Realm parameters only while creating the Realm descriptor.
+
+ * Document the encoding of the arm64 VM types and require
+   ICH_HCR_EL2.TDIR before advertising or creating Realm VMs.
+
+This series is based on the guest_memfd in-place conversion v9 tree[1],
+which is itself based on kvm-x86/next. It is also available as a git
+repository:
+
+https://gitlab.arm.com/linux-arm/linux-cca cca-host/v16
+
+Work in progress changes for kvmtool are available from the git
+repository below:
+
+https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v13
+
+The TF-RMM branch used for testing this series is available here:
+
+https://git.trustedfirmware.org/TF-RMM/tf-rmm.git topics/rmm-v2.0-poc_3
+
+There is a kvm-unit-test branch updated to support the attestation used
+in RMM v2.0 available here:
+
+https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca cca/v4
+
+[0] https://developer.arm.com/documentation/den0137/2-0bet2/
+One bet2 change, which moves metadata out of the individual address
+range descriptors, has intentionally not been implemented because that
+part of the specification is expected to be reverted.
+
+[1] https://github.com/googleprodkernel/linux-cc/commits/guest_memfd-inplace-conversion-v9
+
+Jean-Philippe Brucker (6):
+  KVM: arm64: CCA: Propagate breakpoint and watchpoint counts to
+    userspace
+  KVM: arm64: CCA: Set breakpoint parameters through SET_ONE_REG
+  KVM: arm64: CCA: Propagate max SVE vector length from the RMM
+  KVM: arm64: CCA: Configure max SVE vector length for a Realm
+  KVM: arm64: CCA: Provide register list for unfinalized RECs
+  KVM: arm64: CCA: Provide an accurate register list
+
+Joey Gouly (2):
+  KVM: arm64: CCA: Allow userspace to inject aborts
+  KVM: arm64: CCA: Support RSI_HOST_CALL
+
+Steven Price (34):
+  firmware: arm_rmm: Add SMC definitions for calling the RMM
+  firmware: arm_rmm: Add wrappers for direct RMI calls
+  firmware: arm_rmm: Check for RMI support at init
+  firmware: arm_rmm: Configure the RMM with the host's page size
+  firmware: arm_rmm: Add support for SRO
+  firmware: arm_rmm: Ensure the RMM has GPT entries for memory
+  arm64: mm: Handle Granule Protection Faults (GPFs)
+  KVM: arm64: Avoid including linux/kvm_host.h in kvm_pgtable.h
+  KVM: arm64: CCA: Add wrappers for realm related RMIs
+  KVM: arm64: CCA: Check for RMI support at KVM init
+  KVM: arm64: CCA: Check for LPA2 support
+  KVM: arm64: CCA: Define the user ABI
+  KVM: arm64: CCA: Add basic infrastructure for creating a realm
+  KVM: arm64: CCA: Allow passing the machine type in KVM creation
+  KVM: arm64: CCA: Tear down RTTs
+  KVM: arm64: CCA: Allocate and free RECs to match vCPUs
+  KVM: arm64: CCA: Support the VGIC in realms
+  KVM: arm64: CCA: Support timers in realm RECs
+  KVM: arm64: CCA: Handle realm enter/exit
+  KVM: arm64: CCA: Handle RMI_EXIT_RIPAS_CHANGE
+  KVM: arm64: CCA: Handle realm MMIO emulation
+  KVM: arm64: Expose support for private memory
+  KVM: arm64: CCA: Create the realm descriptor
+  KVM: arm64: CCA: Activate realms on first vCPU run
+  KVM: arm64: CCA: Allow populating initial contents
+  KVM: arm64: CCA: Set RIPAS of initial memslots
+  KVM: arm64: CCA: Support runtime faulting of memory
+  KVM: arm64: CCA: Handle realm vCPU load
+  KVM: arm64: CCA: Validate register access for Realm VMs
+  KVM: arm64: CCA: Handle Realm PSCI requests
+  KVM: arm64: WARN on injected undef exceptions
+  KVM: arm64: CCA: Prevent Device mappings for realms
+  KVM: arm64: CCA: Require ICH_HCR_EL2.TDIR for realms
+  KVM: arm64: CCA: Enable realms to be created
+
+Suzuki K Poulose (3):
+  KVM: arm64: Include kvm_emulate.h in kvm/arm_psci.h
+  KVM: arm64: CCA: Don't expose unsupported capabilities for realm
+    guests
+  KVM: arm64: CCA: Allow checking SVE on VM instance
+
+ Documentation/virt/kvm/api.rst       |   70 +-
+ arch/arm64/Kconfig                   |    1 +
+ arch/arm64/include/asm/kvm_asm.h     |    2 +
+ arch/arm64/include/asm/kvm_emulate.h |   37 +
+ arch/arm64/include/asm/kvm_host.h    |   12 +-
+ arch/arm64/include/asm/kvm_pgtable.h |    6 +-
+ arch/arm64/include/asm/kvm_pkvm.h    |    2 +-
+ arch/arm64/include/asm/kvm_rmi.h     |  139 +++
+ arch/arm64/include/asm/rmi_cmds.h    |  465 ++++++++
+ arch/arm64/include/asm/virt.h        |    1 +
+ arch/arm64/kernel/cpufeature.c       |    1 +
+ arch/arm64/kvm/Kconfig               |    2 +
+ arch/arm64/kvm/Makefile              |    2 +-
+ arch/arm64/kvm/arch_timer.c          |   34 +-
+ arch/arm64/kvm/arm.c                 |  139 ++-
+ arch/arm64/kvm/guest.c               |   93 +-
+ arch/arm64/kvm/handle_exit.c         |   14 +
+ arch/arm64/kvm/hyp/pgtable.c         |    1 +
+ arch/arm64/kvm/hypercalls.c          |    4 +-
+ arch/arm64/kvm/inject_fault.c        |    5 +-
+ arch/arm64/kvm/mmio.c                |   16 +-
+ arch/arm64/kvm/mmu.c                 |  144 ++-
+ arch/arm64/kvm/reset.c               |   13 +-
+ arch/arm64/kvm/rmi-exit.c            |  178 +++
+ arch/arm64/kvm/rmi.c                 | 1561 ++++++++++++++++++++++++++
+ arch/arm64/kvm/sys_regs.c            |   47 +-
+ arch/arm64/kvm/vgic/vgic-init.c      |    2 +-
+ arch/arm64/mm/fault.c                |   28 +-
+ drivers/firmware/Kconfig             |    1 +
+ drivers/firmware/Makefile            |    1 +
+ drivers/firmware/arm_rmm/Kconfig     |   26 +
+ drivers/firmware/arm_rmm/Makefile    |    2 +
+ drivers/firmware/arm_rmm/rmi.c       |  776 +++++++++++++
+ include/kvm/arm_psci.h               |    2 +
+ include/linux/arm-rmi-cmds.h         |  201 ++++
+ include/linux/arm-smccc-rmi.h        |  493 ++++++++
+ include/uapi/linux/kvm.h             |   20 +-
+ 37 files changed, 4446 insertions(+), 95 deletions(-)
+ create mode 100644 arch/arm64/include/asm/kvm_rmi.h
+ create mode 100644 arch/arm64/include/asm/rmi_cmds.h
+ create mode 100644 arch/arm64/kvm/rmi-exit.c
+ create mode 100644 arch/arm64/kvm/rmi.c
+ create mode 100644 drivers/firmware/arm_rmm/Kconfig
+ create mode 100644 drivers/firmware/arm_rmm/Makefile
+ create mode 100644 drivers/firmware/arm_rmm/rmi.c
+ create mode 100644 include/linux/arm-rmi-cmds.h
+ create mode 100644 include/linux/arm-smccc-rmi.h
+
 -- 
-2.53.0
+2.43.0
 
