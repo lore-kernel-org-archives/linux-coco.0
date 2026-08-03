@@ -1,353 +1,192 @@
-Received: from esa6.hc1455-7.c3s2.iphmx.com (esa6.hc1455-7.c3s2.iphmx.com [68.232.139.139])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED7D22D7A1;
-	Mon,  3 Aug 2026 02:58:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A8033CE88;
+	Mon,  3 Aug 2026 11:09:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785725917; cv=none; b=XkfVs/rAMdbR8w18POSTnJIcIl06uw38ia20H1ZSDdOM7JnRVEzkNy/YLB3H5bJfMpd30vSJljAhwDi0kMVilc45dYu/yCqAX75VdROMgiZWSB1hxXE1GkO59Q1F/ezrFJaqMEGizoLTmT5oVTp6b+yScljE1ZBp0tEwjbp3HYQ=
+	t=1785755352; cv=none; b=PhCdR70o719Q4hl7OLiIFzGV23E4m15BDp4YV81gdaqH7MZ0eIWpX9WpM1O4cODJ1nzyF1t2FiyI0uYsp0V5kU2qE3aZRZ1GWCUvktmOza2GYsIyyHI/3gSFeidVU+tOGmMAjIu9likIhW6cgGI1HqpSZmjJcHA5AL5g2PkNVGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785725917; c=relaxed/simple;
-	bh=csdPmkjxsSkC1o2swlCZEV2MB1nP8nHKszxMfGQKTYs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fxez8vxI7qqrG+eRZcQYuZc2h8pvd/JBgWsqHXdNyG4l95mDrg1dGUDHFpV3H3JvEDRJup99EKsAvu/UNsYjIK6x8/6W9k05u5DM282bWXUSYlB9NHUhJfdRV0m9CdZZCFCM67hjrORYHeyJjO8KbC//A1wkg5Q9kzB2AgxE62w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=mh43EKOE; arc=none smtp.client-ip=68.232.139.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1785755352; c=relaxed/simple;
+	bh=OJcsICDRY+CinBo36U4IsQPkASDJjVzzFRHNfsgflHE=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VVBsYy1agasxgL82Q4tcl+MKtuH9XFNRTMarFzegbZ2pFXAgoWrehrJOmxJTGiZtzwKwESB44SwxUkRDobTbITOE5YnoP284X9m82cC/T/OLWmMaNMcnGOAOVHvWPfYTkjomY12eTy+CGnshOQNnj9QfIdCRgv5dahdcSFI1LPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o1mbL4ei; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="mh43EKOE"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1785725916; x=1817261916;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=csdPmkjxsSkC1o2swlCZEV2MB1nP8nHKszxMfGQKTYs=;
-  b=mh43EKOEDcVAnMIwaSnF/Ukte29PyPJQsMVUhia5iSOFOdK4kspVMg10
-   hjlr6aGptvkSoS6RGnLW1mtRkQEbLA1WsBx1L0D9S6IOsNrlvbdWIpe4L
-   UuhaPQtRkM9LgRCzCru4BDbqMdiuFH6dy9pgh8bMJmFLCB5Ot99nj03Wb
-   OTrM8APD15I4Koxzn4VivdsGbQpDHXlj9iB0QRJ2AoO9aOf9hBP9BIzkA
-   1dSCK3D1Q7Sw45yxrTzozzdYedwi9rwp+egxViI8Ku7BiZJ3Wzz8n5x7u
-   5aqQnYjkiG9zuUmpBGXLGD+nVLUtkE8HNu76sc/Jz9A8ukfqqWHxI1Wh5
-   g==;
-X-CSE-ConnectionGUID: g7pWgZu3RCy7CTFkrL5Jrw==
-X-CSE-MsgGUID: T+KKpzf3RliJg4UfzWvRmQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11863"; a="253024714"
-X-IronPort-AV: E=Sophos;i="6.25,201,1779116400"; 
-   d="scan'208";a="253024714"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa6.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 11:58:28 +0900
-Received: from az2nlsmgm1.o.css.fujitsu.com (unknown [10.150.26.203])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 68EAB42A328;
-	Mon,  3 Aug 2026 02:58:28 +0000 (UTC)
-Received: from az2uksmom4.o.css.fujitsu.com (unknown [10.151.22.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 1CECCC09347;
-	Mon,  3 Aug 2026 02:58:28 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.8.239.116])
-	by az2uksmom4.o.css.fujitsu.com (Postfix) with SMTP id 58CBA4045C9;
-	Mon,  3 Aug 2026 02:58:22 +0000 (UTC)
-Date: Mon, 3 Aug 2026 11:58:15 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o1mbL4ei"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC241F000E9;
+	Mon,  3 Aug 2026 11:09:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785755350;
+	bh=mMVTN/10T8H4LBQ9FAgnWWBLcKEifKWIV8qlFsXTsEQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=o1mbL4eideF0EuPtv8xjBjmNnnNf6QudqwYH+T+Oc7TrLiZytw4FyrSayHSYBt/Pc
+	 F6OfVaiHEvf29w1U4+NLfxQnXfSbooCXYU6IAz+qfDrPxE3GaH/YaSPzzC5jU1Jp22
+	 oeW/l4LQdfnXF/LE/qHJcrKm9pJEjQovjNpflv6YkrtCqurA3fX7j2A7zoLturznk/
+	 rgHc33JX3PlsXsvrPWB5IdOzcIUD06YB0HBf/phur4AOwLCwQ4khoiPyo+17lYHjRQ
+	 9RrDWSVIMvXx1KjymdLVpzbtMj8EXwISoNzsuLbmIeMfhZQP4VKn2+q1NSiJBzjH9a
+	 hsOdAup7l+R6w==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wqqXc-0000000Bj1I-0wpa;
+	Mon, 03 Aug 2026 11:09:08 +0000
+Date: Mon, 03 Aug 2026 12:09:07 +0100
+Message-ID: <865x1rcvfw.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
 To: Steven Price <steven.price@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, cgroups@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-Subject: Re: [RFC PATCH v1 1/2] KVM: arm64: CCA: Add support for configuring
- the Realm MEC policy
-Message-ID: <am_9x46Z7jvvi8xE@FCCLS0092175.localdomain>
-References: <20260724094120.166536-1-enju.kohei@fujitsu.com>
- <20260724094120.166536-2-enju.kohei@fujitsu.com>
- <a3db6519-f76a-433c-8c21-3286a038c584@arm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	WeiLin.Chang@arm.com,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v15 15/37] KVM: arm64: CCA: Handle RMI_EXIT_RIPAS_CHANGE
+In-Reply-To: <20260715142841.80544-16-steven.price@arm.com>
+References: <20260715142841.80544-1-steven.price@arm.com>
+	<20260715142841.80544-16-steven.price@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <a3db6519-f76a-433c-8c21-3286a038c584@arm.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 07/31 11:59, Steven Price wrote:
-> Hi Kohei,
+On Wed, 15 Jul 2026 15:28:17 +0100,
+Steven Price <steven.price@arm.com> wrote:
 > 
-> Thanks for posting this - it looks good to me, but as Suzuki says it
-> would be good to get some maintainer feedback. One bug I spotted below.
-
-Hi Steven,
-Thanks for reviewing!
-
+> The guest can request that a region of its protected address space is
+> switched between RIPAS_RAM and RIPAS_EMPTY (and back) using
+> RSI_IPA_STATE_SET. This causes a guest exit with the
+> RMI_EXIT_RIPAS_CHANGE code. We treat this as a request to convert a
+> protected region to unprotected (or back), exiting to the VMM to make
+> the necessary changes to the guest_memfd and memslot mappings. On the
+> next entry the RIPAS changes are committed by making RMI_RTT_SET_RIPAS
+> calls.
 > 
-> On 24/07/2026 10:40, Kohei Enju wrote:
-> > Introduce the KVM_ARM_RMI_CONFIG ioctl to allow userspace to configure
-> > Realm VM parameters before the Realm is created.
-> > 
-> > Currently, ARM_RMI_CFG_MEC_POLICY is the only supported configuration
-> > item. Its value can be ARM_RMI_MEC_POLICY_SHARED or
-> > ARM_RMI_MEC_POLICY_PRIVATE. Reject the private policy if the platform
-> > does not support private MECs.
-> > 
-> > If userspace does not explicitly configure the MEC policy,
-> > ARM_RMI_MEC_POLICY_SHARED is used by default.
-> > 
-> > Signed-off-by: Kohei Enju <enju.kohei@fujitsu.com>
-> > ---
-> >  Documentation/virt/kvm/api.rst   | 29 +++++++++++++++++++++++++++++
-> >  arch/arm64/include/asm/kvm_rmi.h |  4 ++++
-> >  arch/arm64/kvm/arm.c             |  9 +++++++++
-> >  arch/arm64/kvm/rmi.c             | 29 +++++++++++++++++++++++++++++
-> >  drivers/firmware/arm_rmm/rmi.c   |  8 ++++++--
-> >  include/linux/arm-rmi-cmds.h     |  1 +
-> >  include/uapi/linux/kvm.h         | 17 +++++++++++++++++
-> >  7 files changed, 95 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> > index 85bec9b4f021..e1c660e5eb34 100644
-> > --- a/Documentation/virt/kvm/api.rst
-> > +++ b/Documentation/virt/kvm/api.rst
-> > @@ -6690,6 +6690,35 @@ populated data is hashed and added to the guest's Realm Initial Measurement
-> >  (RIM) stored by the RMM. This can then be retrieved by the guest (using the RSI
-> >  interface) to present to an attestation server.
-> >  
-> > +4.147 KVM_ARM_RMI_CONFIG
-> > +------------------------
-> > +
-> > +:Capability: KVM_CAP_ARM_RMI
-> > +:Architectures: arm64
-> > +:Type: vm ioctl
-> > +:Parameters: struct kvm_arm_rmi_config (in)
-> > +:Returns: 0 on success, < 0 on error
-> > +
-> > +::
-> > +
-> > +  struct kvm_arm_rmi_config {
-> > +       __u32 cfg;
-> > +       union {
-> > +               /* cfg == ARM_RMI_CFG_MEC_POLICY */
-> > +               __u8 mec_policy;
-> > +
-> > +               /* Fix the size of the union */
-> > +               __u8 reserved[256];
-> > +       };
-> > +  };
-> > +
-> > +Configures parameters of a Realm VM before the Realm is created.
-> > +
-> > +Currently, `ARM_RMI_CFG_MEC_POLICY` is the only supported configuration item.
-> > +`mec_policy` must be either `ARM_RMI_MEC_POLICY_SHARED` or
-> > +`ARM_RMI_MEC_POLICY_PRIVATE`. `ARM_RMI_MEC_POLICY_PRIVATE` is not supported if
-> > +no private MEC is available on the platform.
-> > +
-> >  .. _kvm_run:
-> >  
-> >  5. The kvm_run structure
-> > diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-> > index 420e99fca07e..721033b132e1 100644
-> > --- a/arch/arm64/include/asm/kvm_rmi.h
-> > +++ b/arch/arm64/include/asm/kvm_rmi.h
-> > @@ -60,6 +60,7 @@ enum realm_state {
-> >   * @ia_bits: Number of valid Input Address bits in the IPA
-> >   * @stage2_unmapped: The Realm stage-2 mappings have been removed
-> >   * @rtts_destroyed: The non-root RTTs have been torn down
-> > + * @mec_policy: MEC policy for the Realm VM
-> >   */
-> >  struct realm {
-> >  	void *rd;
-> > @@ -76,6 +77,7 @@ struct realm {
-> >  	unsigned int ia_bits;
-> >  	bool stage2_unmapped;
-> >  	bool rtts_destroyed;
-> > +	unsigned int mec_policy;
-> >  };
-> >  
-> >  /**
-> > @@ -115,6 +117,8 @@ struct kvm_arm_rmi_populate;
-> >  
-> >  int kvm_arm_rmi_populate(struct kvm *kvm,
-> >  			 struct kvm_arm_rmi_populate *arg);
-> > +struct kvm_arm_rmi_config;
-> > +int kvm_arm_rmi_config(struct kvm *kvm, struct kvm_arm_rmi_config *arg);
-> >  void kvm_realm_unmap_range(struct kvm *kvm,
-> >  			   unsigned long ipa,
-> >  			   unsigned long size,
-> > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> > index 3862db30779f..17302ba2844c 100644
-> > --- a/arch/arm64/kvm/arm.c
-> > +++ b/arch/arm64/kvm/arm.c
-> > @@ -2169,6 +2169,15 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
-> >  			return -EFAULT;
-> >  		return ret;
-> >  	}
-> > +	case KVM_ARM_RMI_CONFIG: {
-> > +		struct kvm_arm_rmi_config cfg;
-> > +
-> > +		if (!kvm_is_realm(kvm))
-> > +			return -ENXIO;
-> > +		if (copy_from_user(&cfg, argp, sizeof(cfg)))
-> > +			return -EFAULT;
-> > +		return kvm_arm_rmi_config(kvm, &cfg);
-> > +	}
-> >  	default:
-> >  		return -EINVAL;
-> >  	}
-> > diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> > index 06cc85fb5092..629dea5e8c47 100644
-> > --- a/arch/arm64/kvm/rmi.c
-> > +++ b/arch/arm64/kvm/rmi.c
-> > @@ -572,6 +572,9 @@ static int realm_create_rd(struct kvm *kvm)
-> >  	if (kvm_lpa2_is_enabled())
-> >  		params->flags0 |= RMI_REALM_PARAM_FLAG_LPA2;
-> >  
-> > +	params->flags0 |= FIELD_PREP(RMI_REALM_PARAM_FLAG_MEC_POLICY,
-> > +				     realm->mec_policy);
-> > +
+> The VMM may wish to reject the RIPAS change requested by the guest. For
+> now it can only do this by no longer scheduling the VCPU as we don't
+> currently have a usecase for returning that rejection to the guest, but
+> by postponing the RMI_RTT_SET_RIPAS changes to entry we leave the door
+> open for adding a new ioctl in the future for this purpose.
 > 
-> Not your bug, but I realised this could cause problems. If the attempt
-> to create fails (perhaps due to the second patch and the cgroup charge
-> failing) and the VMM then reconfigures the MEC_POLICY then flags0
-> doesn't get reset. 
-
-Oops, good catch. That's an important point.
-I think I should have used FIELD_MODIFY() instead of ORing FIELD_PREP().
-
-> Technically that applies to a couple of other flags,
-> but here (with the following patch) this becomes a way of bypassing the
-> cgroups policy.
-
-Indeed.
-
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v14:
+>  * Use addition rather than bitwise OR for adding the shared_bit in
+>    realm_unmap_shared_range(), this handles the case where the region
+>    includes the last address (which means 'end' already has the bit
+>    set).
+> Changes since v13:
+>  * Switch to the new RMI_RTT_UNPROT_UNMAP range-based API.
+>  * Drop ugly hack for RMM bug which errored when the RIPAS was already
+>    set to the desired value.
+> Changes since v12:
+>  * Switch to the new RMM v2.0 RMI_RTT_DATA_UNMAP which can unmap an
+>    address range.
+> Changes since v11:
+>  * Combine the "Allow VMM to set RIPAS" patch into this one to avoid
+>    adding functions before they are used.
+>  * Drop the CAP for setting RIPAS and adapt to changes from previous
+>    patches.
+> Changes since v10:
+>  * Add comment explaining the assignment of rec->run->exit.ripas_base in
+>    kvm_complete_ripas_change().
+> Changes since v8:
+>  * Make use of ripas_change() from a previous patch to implement
+>    realm_set_ipa_state().
+>  * Update exit.ripas_base after a RIPAS change so that, if instead of
+>    entering the guest we exit to user space, we don't attempt to repeat
+>    the RIPAS change (triggering an error from the RMM).
+> Changes since v7:
+>  * Rework the loop in realm_set_ipa_state() to make it clear when the
+>    'next' output value of rmi_rtt_set_ripas() is used.
+> New patch for v7: The code was previously split awkwardly between two
+> other patches.
+> ---
+>  arch/arm64/include/asm/kvm_rmi.h |   6 +
+>  arch/arm64/kvm/mmu.c             |   8 +-
+>  arch/arm64/kvm/rmi.c             | 457 +++++++++++++++++++++++++++++++
+>  3 files changed, 468 insertions(+), 3 deletions(-)
 > 
-> I'll fix this by allocating realm->params directly in realm_create_rd()
-> so that it always starts off zeroed (and removing the redundant member
-> of the struct). I think in a previous version of the series the params
-> was built piecemeal, but that's not true anymore.
-> 
-> The upshot is you don't need to do anything - it's my bug and I'll fix
-> it in the next version ;)
+> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+> index b1e4cf0f6803..5461c49bea4d 100644
+> --- a/arch/arm64/include/asm/kvm_rmi.h
+> +++ b/arch/arm64/include/asm/kvm_rmi.h
+> @@ -104,6 +104,12 @@ int kvm_rec_enter(struct kvm_vcpu *vcpu);
+>  int kvm_rec_pre_enter(struct kvm_vcpu *vcpu);
+>  int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
+>  
+> +void kvm_realm_unmap_range(struct kvm *kvm,
+> +			   unsigned long ipa,
+> +			   unsigned long size,
+> +			   bool unmap_private,
+> +			   bool may_block);
+> +
+>  static inline bool kvm_realm_is_private_address(struct realm *realm,
+>  						unsigned long addr)
+>  {
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index cd06881c1497..dcc2ab08d0e4 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -319,6 +319,7 @@ static void invalidate_icache_guest_page(void *va, size_t size)
+>   * @start: The intermediate physical base address of the range to unmap
+>   * @size:  The size of the area to unmap
+>   * @may_block: Whether or not we are permitted to block
+> + * @only_shared: If true then protected mappings should not be unmapped
+>   *
 
-Acknowledged. Thank you for addressing this in your series:)
+I don't understand the need for this additional argument. Given that
+CCA imposes that shared and private are in non-overlapping ranges, why
+is it necessary to introduce this at the core of the S2 management
+code?
 
-Thanks,
-Kohei
+I'd expect that the CCA code could simply work out what range it needs
+to run on and keep the API intact.
 
-> 
-> Thanks,
-> Steve
-> 
-> >  	r = realm_init_sve_param(kvm, params);
-> >  	if (r)
-> >  		goto out_undelegate_tables;
-> > @@ -1155,6 +1158,30 @@ int kvm_arm_rmi_populate(struct kvm *kvm,
-> >  	return ret;
-> >  }
-> >  
-> > +int kvm_arm_rmi_config(struct kvm *kvm, struct kvm_arm_rmi_config *cfg)
-> > +{
-> > +	guard(mutex)(&kvm->arch.config_lock);
-> > +
-> > +	if (kvm_realm_state(kvm) != REALM_STATE_NONE)
-> > +		return -EBUSY;
-> > +
-> > +	switch (cfg->cfg) {
-> > +	case ARM_RMI_CFG_MEC_POLICY:
-> > +		if (cfg->mec_policy != ARM_RMI_MEC_POLICY_SHARED &&
-> > +		    cfg->mec_policy != ARM_RMI_MEC_POLICY_PRIVATE)
-> > +			return -EINVAL;
-> > +
-> > +		if (cfg->mec_policy == ARM_RMI_MEC_POLICY_PRIVATE &&
-> > +		    rmi_mec_count() == 0)
-> > +			return -EOPNOTSUPP;
-> > +
-> > +		kvm->arch.realm.mec_policy = cfg->mec_policy;
-> > +		return 0;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> > +
-> >  static void kvm_complete_ripas_change(struct kvm_vcpu *vcpu)
-> >  {
-> >  	struct kvm *kvm = vcpu->kvm;
-> > @@ -1474,6 +1501,8 @@ int kvm_init_realm(struct kvm *kvm)
-> >  {
-> >  	struct realm *realm = &kvm->arch.realm;
-> >  
-> > +	realm->mec_policy = ARM_RMI_MEC_POLICY_SHARED;
-> > +
-> >  	realm->params = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
-> >  	realm->sro = kmalloc_obj(*realm->sro);
-> >  	if (!realm->params || !realm->sro) {
-> > diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
-> > index d0c083bdf251..e9632c35e7db 100644
-> > --- a/drivers/firmware/arm_rmm/rmi.c
-> > +++ b/drivers/firmware/arm_rmm/rmi.c
-> > @@ -14,8 +14,7 @@
-> >  
-> >  static bool arm64_rmi_is_available;
-> >  
-> > -/* Currently only the first 2 registers are used by Linux */
-> > -#define RMI_FEAT_REG_COUNT	2
-> > +#define RMI_FEAT_REG_COUNT	5
-> >  static __ro_after_init unsigned long rmi_feat_reg_cache[RMI_FEAT_REG_COUNT];
-> >  
-> >  unsigned long rmi_feat_reg(unsigned long id)
-> > @@ -27,6 +26,11 @@ unsigned long rmi_feat_reg(unsigned long id)
-> >  }
-> >  EXPORT_SYMBOL_GPL(rmi_feat_reg);
-> >  
-> > +u64 rmi_mec_count(void)
-> > +{
-> > +	return u64_get_bits(rmi_feat_reg(4), RMI_FEATURE_REGISTER_4_MEC_COUNT);
-> > +}
-> > +
-> >  int rmi_delegate_range(phys_addr_t phys,
-> >  		       unsigned long size,
-> >  		       phys_addr_t *out_phys)
-> > diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
-> > index 138983ab4e3c..5236600421c6 100644
-> > --- a/include/linux/arm-rmi-cmds.h
-> > +++ b/include/linux/arm-rmi-cmds.h
-> > @@ -28,6 +28,7 @@ struct rmi_sro_state {
-> >  };
-> >  
-> >  unsigned long rmi_feat_reg(unsigned long id);
-> > +u64 rmi_mec_count(void);
-> >  
-> >  int rmi_delegate_range(phys_addr_t phys, unsigned long size,
-> >  		       phys_addr_t *out_phys);
-> > diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> > index adee3936d6ae..46e62327957c 100644
-> > --- a/include/uapi/linux/kvm.h
-> > +++ b/include/uapi/linux/kvm.h
-> > @@ -1704,4 +1704,21 @@ struct kvm_arm_rmi_populate {
-> >  	__u32 reserved;
-> >  };
-> >  
-> > +#define KVM_ARM_RMI_CONFIG     _IOW(KVMIO, 0xd8, struct kvm_arm_rmi_config)
-> > +
-> > +#define ARM_RMI_CFG_MEC_POLICY		0
-> > +#define ARM_RMI_MEC_POLICY_SHARED	0
-> > +#define ARM_RMI_MEC_POLICY_PRIVATE	1
-> > +
-> > +struct kvm_arm_rmi_config {
-> > +	__u32 cfg;
-> > +	union {
-> > +		/* cfg == ARM_RMI_CFG_MEC_POLICY */
-> > +		__u8 mec_policy;
-> > +
-> > +		/* Reserve space for future configuration payloads. */
-> > +		__u8 reserved[256];
-> > +	};
-> > +};
-> > +
-> >  #endif /* __LINUX_KVM_H */
-> 
+>   * Clear a range of stage-2 mappings, lowering the various ref-counts.  Must
+>   * be called while holding mmu_lock (unless for freeing the stage2 pgd before
+> @@ -326,7 +327,7 @@ static void invalidate_icache_guest_page(void *va, size_t size)
+>   * with things behind our backs.
+>   */
+>  static void __unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t start, u64 size,
+> -				 bool may_block)
+> +				 bool may_block, bool only_shared)
+>  {
+>  	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+>  	phys_addr_t end = start + size;
+
+So what is the *actual* change?
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
