@@ -1,331 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BAC408018;
-	Mon,  3 Aug 2026 12:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD96404BE8
+	for <linux-coco@lists.linux.dev>; Mon,  3 Aug 2026 12:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785761014; cv=none; b=UkX6mEXboZlUE/O8IoKfp+Q5NaUka9ZqWgjdigjwO8+54hwZ521mof0q5GFxFrA6STZ7rk1X+5f7GUIofP/neplVV0EitvxWe46RsKSv/2V9AT1SikXUzFhYsG5CB0vjSw43kMEe45GY/TnjZrwBFxqJk1W8hadwiD4wW3WOuFw=
+	t=1785761918; cv=none; b=YNA4wO+R8JgOA9D3Jby84uApEgBc+HJLjnIzzJtOoHo7uAP2M8eaKwbOfm3F7l9UWj8lfuYG62qfDweXjuNNYHiiJbvWGvQQEzoRj8rWRchXVfo+9Jvw3MdqFkn1qjtyeheEUr7j6geN9aoSzWc2sqvG+I4Q98XosOV0C+8qg9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785761014; c=relaxed/simple;
-	bh=wqeV3O6jw4jJjpFAB6zPpZoy2MDoki69xTY54H38p48=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KWwuZLhXmqxPv8NQ0C40LDlM3+oC8mbMjsYopZx5X818YbtLT92mAEjTwGu+RO4mv9uo/79u3GOlPTT6yFhSVmFE0L5nk3bx2fHuZbfAThxSaZ6m264TQNQ0scf1YkM3C+SzFpkyDfutKd7GfsTZ/tN9su7obk/RYmHLBq7AsD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=llLy1klh; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="llLy1klh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834E51F000E9;
-	Mon,  3 Aug 2026 12:43:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785761012;
-	bh=UDRZIUUjqP4PQ5ZQ4M9g5saLnLT1OJnXTsdja7zsvco=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=llLy1klhed4HhjZzf8WhVOIwrCZVYbRAJF0iMRRlmCjQvcZunWM+7oy6oyYS4VMfp
-	 9gDjtuuJox6qA/bxCofk+fhQ80JHnx/1as8cev1wOoMWgGO3HQrSqUCimdH3vg0iaU
-	 2/j1JVfgNZFsK8B9W6Qt8i1gPoVZncCilTuPNYFnpDXHQBNpfGefAkns8le/eTq+Pa
-	 pFRhzwq6eJv3vIl8HnbNejHjhfGt4w/uPPao5zQO/JiRKHf/2Fp5q1pUBsdX1uYxGD
-	 wLDvWNdpK3AyInswjfxnyCCHrQN/1VinF4WDSDbf5M6EMsrfl/TLJP2v3NqFyjaN4b
-	 G2Ort9vEyswPA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wqs0w-0000000Bkl0-1Ea6;
-	Mon, 03 Aug 2026 12:43:30 +0000
-Date: Mon, 03 Aug 2026 13:43:29 +0100
-Message-ID: <861pcfcr2m.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
+	s=arc-20240116; t=1785761918; c=relaxed/simple;
+	bh=3ouubRflyWbyLzAnUYbvyhOT742fyAencjI54ziiJmY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CLkkrMPZbZTwXzei0XFQnJKYOZlbJmthF9QqGrYxvIjyNZayDj/qQ1Eo3VF3zJ3BTC7TVudEHjI+P3S8xcSOXQWkKCwoLzhQZdgLGZ2DOIT5CBt3u0W58K0TeqxyFzWLtScbYIekUNGZxya2IazcdIenIr87C1gbuf5+xcW41Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Received: from io.fritz.box (p200300f6af4fc500dcfec4a187edd2e0.dip0.t-ipconnect.de [IPv6:2003:f6:af4f:c500:dcfe:c4a1:87ed:d2e0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id AB74320417A;
+	Mon,  3 Aug 2026 14:58:29 +0200 (CEST)
+From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
+To: Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org
+Cc: hpa@zytor.com,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	joro@8bytes.org,
 	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
 	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v15 20/37] KVM: arm64: CCA: Allow populating initial contents
-In-Reply-To: <20260715142841.80544-21-steven.price@arm.com>
-References: <20260715142841.80544-1-steven.price@arm.com>
-	<20260715142841.80544-21-steven.price@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 3/3] x86/coco/sev: Make SEV_STATUS available via SYSFS
+Date: Mon,  3 Aug 2026 14:58:27 +0200
+Message-ID: <20260803125827.718024-4-joro@8bytes.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260803125827.718024-1-joro@8bytes.org>
+References: <20260803125827.718024-1-joro@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed, 15 Jul 2026 15:28:22 +0100,
-Steven Price <steven.price@arm.com> wrote:
-> 
-> The VMM needs to populate the realm with some data before starting (e.g.
-> a kernel and initrd). This is measured by the RMM and used as part of
-> the attestation later on.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v14:
->  * Holding of locks slots_lock and config_lock have been moved up the
->    callstack with lockdesp assertions placed in the lower functions.
->  * Add overflow check into kvm_arm_rmi_populate().
-> Changes since v13:
->  * Rename realm_create_protected_data_page() to realm_data_map_init().
-> Changes since v12:
->  * The ioctl now updates the structure with the amount populated rather
->    than returning this through the ioctl return code.
->  * Use the new RMM v2.0 range based RMI calls.
->  * Adapt to upstream changes in kvm_gmem_populate().
-> Changes since v11:
->  * The multiplex CAP is gone and there's a new ioctl which makes use of
->    the generic kvm_gmem_populate() functionality.
-> Changes since v7:
->  * Improve the error codes.
->  * Other minor changes from review.
-> Changes since v6:
->  * Handle host potentially having a larger page size than the RMM
->    granule.
->  * Drop historic "par" (protected address range) from
->    populate_par_region() - it doesn't exist within the current
->    architecture.
->  * Add a cond_resched() call in kvm_populate_realm().
-> Changes since v5:
->  * Refactor to use PFNs rather than tracking struct page in
->    realm_create_protected_data_page().
->  * Pull changes from a later patch (in the v5 series) for accessing
->    pages from a guest memfd.
->  * Do the populate in chunks to avoid holding locks for too long and
->    triggering RCU stall warnings.
-> ---
->  arch/arm64/include/asm/kvm_rmi.h |   4 ++
->  arch/arm64/kvm/Kconfig           |   1 +
->  arch/arm64/kvm/arm.c             |  13 ++++
->  arch/arm64/kvm/rmi.c             | 119 +++++++++++++++++++++++++++++++
->  4 files changed, 137 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-> index 5cb99c187202..fd0c57594a22 100644
-> --- a/arch/arm64/include/asm/kvm_rmi.h
-> +++ b/arch/arm64/include/asm/kvm_rmi.h
-> @@ -105,6 +105,10 @@ int kvm_rec_enter(struct kvm_vcpu *vcpu);
->  int kvm_rec_pre_enter(struct kvm_vcpu *vcpu);
->  int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
->  
-> +struct kvm_arm_rmi_populate;
-> +
-> +int kvm_arm_rmi_populate(struct kvm *kvm,
-> +			 struct kvm_arm_rmi_populate *arg);
->  void kvm_realm_unmap_range(struct kvm *kvm,
->  			   unsigned long ipa,
->  			   unsigned long size,
-> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-> index 189e8ad78b22..83b95e836b4d 100644
-> --- a/arch/arm64/kvm/Kconfig
-> +++ b/arch/arm64/kvm/Kconfig
-> @@ -37,6 +37,7 @@ menuconfig KVM
->  	select SCHED_INFO
->  	select GUEST_PERF_EVENTS if PERF_EVENTS
->  	select KVM_GUEST_MEMFD
-> +	select HAVE_KVM_ARCH_GMEM_POPULATE
->  	select ARM_RMM
->  	help
->  	  Support hosting virtualized guest machines.
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index df33322b8fea..1558bb12b1b1 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -2153,6 +2153,19 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
->  			return -EFAULT;
->  		return kvm_vm_ioctl_get_reg_writable_masks(kvm, &range);
->  	}
-> +	case KVM_ARM_RMI_POPULATE: {
-> +		struct kvm_arm_rmi_populate req;
-> +		int ret;
-> +
-> +		if (!kvm_is_realm(kvm))
-> +			return -ENXIO;
-> +		if (copy_from_user(&req, argp, sizeof(req)))
-> +			return -EFAULT;
-> +		ret = kvm_arm_rmi_populate(kvm, &req);
-> +		if (copy_to_user(argp, &req, sizeof(req)))
-> +			return -EFAULT;
-> +		return ret;
-> +	}
->  	default:
->  		return -EINVAL;
->  	}
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index 53b5b18f2275..e2b4c64e982d 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-> @@ -590,6 +590,76 @@ void kvm_realm_unmap_range(struct kvm *kvm, unsigned long start,
->  		realm_unmap_private_range(kvm, start, end, may_block);
->  }
->  
-> +static int realm_data_map_init(struct kvm *kvm, unsigned long ipa,
-> +			       kvm_pfn_t dst_pfn, kvm_pfn_t src_pfn,
-> +			       unsigned long flags)
-> +{
-> +	struct realm *realm = &kvm->arch.realm;
-> +	phys_addr_t rd = virt_to_phys(realm->rd);
-> +	phys_addr_t dst_phys, src_phys;
-> +	int ret;
-> +
-> +	lockdep_assert_held(&kvm->slots_lock);
-> +	lockdep_assert_held(&kvm->arch.config_lock);
-> +
-> +	dst_phys = __pfn_to_phys(dst_pfn);
-> +	src_phys = __pfn_to_phys(src_pfn);
-> +
-> +	if (rmi_delegate_page(dst_phys))
-> +		return -ENXIO;
-> +
-> +retry:
-> +	ret = rmi_rtt_data_map_init(rd, dst_phys, ipa, src_phys, flags);
-> +	if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
-> +		/* Create missing RTTs and retry */
-> +		int level = RMI_RETURN_INDEX(ret);
-> +
-> +		KVM_BUG_ON(level >= KVM_PGTABLE_LAST_LEVEL, kvm);
+From: Joerg Roedel <joerg.roedel@amd.com>
 
-Surely you should break here and make it stop, right? The VM is bugged
-anyway, so what's the point in continuing?
+Current user-space tooling which needs access to the SEV_STATUS MSR is
+using the MSR module. The use of this module poses a security risk in
+any trusted execution environment and is generally discouraged.
 
-> +
-> +		ret = realm_create_rtt_levels(realm, ipa, level,
-> +					      level + 1, NULL);
-> +		if (!ret)
-> +			goto retry;
-> +	}
-> +
-> +	if (ret && WARN_ON(rmi_undelegate_page(dst_phys))) {
-> +		/* Leak the page if the undelegate fails */
-> +		get_page(pfn_to_page(dst_pfn));
+Instead, provide an file in SYSFS in the /sys/devices/system/cpu/sev/
+directory to provide the value of the SEV_STATUS MSR to user-space.
 
-Same here. The VM should be dead.
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+---
+ .../ABI/testing/sysfs-devices-system-cpu         |  4 ++++
+ arch/x86/coco/sev/core.c                         | 16 +++++++++++++++-
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-> +	}
-> +
-> +	return ret <= 0 ? ret : -ENXIO;
-> +}
-> +
-> +static int populate_region_cb(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-> +			      struct page *src_page, void *opaque)
-> +{
-> +	unsigned long data_flags = *(unsigned long *)opaque;
-> +	phys_addr_t ipa = gfn_to_gpa(gfn);
-> +
-> +	return realm_data_map_init(kvm, ipa, pfn, page_to_pfn(src_page),
-> +				   data_flags);
-> +}
-> +
-> +static long populate_region(struct kvm *kvm,
-> +			    gfn_t base_gfn,
-> +			    unsigned long pages,
-> +			    u64 uaddr,
-> +			    unsigned long data_flags)
-> +{
-> +	long ret = 0;
-> +
-> +	lockdep_assert_held(&kvm->slots_lock);
-> +	lockdep_assert_held(&kvm->arch.config_lock);
-> +
-> +	if (!uaddr)
-> +		return -EINVAL;
-> +
-> +	ret = kvm_gmem_populate(kvm, base_gfn, u64_to_user_ptr(uaddr), pages,
-> +				false, populate_region_cb, &data_flags);
-> +
-> +	return ret;
-> +}
-> +
->  enum ripas_action {
->  	RIPAS_INIT,
->  	RIPAS_SET,
-> @@ -705,6 +775,55 @@ static int realm_ensure_created(struct kvm *kvm)
->  	return realm_create_rd(kvm);
->  }
->  
-> +int kvm_arm_rmi_populate(struct kvm *kvm,
-> +			 struct kvm_arm_rmi_populate *args)
-> +{
-> +	unsigned long data_flags = 0;
-> +	unsigned long ipa_start = args->base;
-> +	unsigned long ipa_end = ipa_start + args->size;
-> +	long pages_populated;
-> +	int ret;
-> +
-> +	if (args->reserved ||
-> +	    (args->flags & ~KVM_ARM_RMI_POPULATE_FLAGS_MEASURE) ||
-> +	    args->base + args->size < args->base ||
-
-More importantly, what checks that this is within the IPA range?
-
-> +	    !IS_ALIGNED(ipa_start, PAGE_SIZE) ||
-> +	    !IS_ALIGNED(ipa_end, PAGE_SIZE) ||
-> +	    !IS_ALIGNED(args->source_uaddr, PAGE_SIZE))
-> +		return -EINVAL;
-> +
-> +	if (args->flags & KVM_ARM_RMI_POPULATE_FLAGS_MEASURE)
-> +		data_flags |= RMI_MEASURE_CONTENT;
-> +
-> +	mutex_lock(&kvm->slots_lock);
-> +	mutex_lock(&kvm->arch.config_lock);
-> +
-> +	ret = realm_ensure_created(kvm);
-> +	if (ret)
-> +		goto out_unlock;
-> +
-> +	if (args->size == 0)
-> +		goto out_unlock;
-> +
-> +	pages_populated = populate_region(kvm, gpa_to_gfn(ipa_start),
-> +					  args->size >> PAGE_SHIFT,
-> +					  args->source_uaddr, data_flags);
-> +
-> +	if (pages_populated < 0) {
-> +		ret = pages_populated;
-> +		goto out_unlock;
-> +	}
-> +
-> +	args->size -= pages_populated << PAGE_SHIFT;
-> +	args->source_uaddr += pages_populated << PAGE_SHIFT;
-> +	args->base += pages_populated << PAGE_SHIFT;
-> +
-> +out_unlock:
-> +	mutex_unlock(&kvm->arch.config_lock);
-> +	mutex_unlock(&kvm->slots_lock);
-> +	return ret;
-> +}
-> +
->  static void kvm_complete_ripas_change(struct kvm_vcpu *vcpu)
->  {
->  	struct kvm *kvm = vcpu->kvm;
-
-	M.
-
+diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
+index 63586e299aa8..cec413a71491 100644
+--- a/Documentation/ABI/testing/sysfs-devices-system-cpu
++++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
+@@ -690,6 +690,7 @@ Description:	Umwait control
+ 
+ What:		/sys/devices/system/cpu/sev
+ 		/sys/devices/system/cpu/sev/vmpl
++		/sys/devices/system/cpu/sev/sev_status
+ Date:		May 2024
+ Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
+ Description:	Secure Encrypted Virtualization (SEV) information
+@@ -700,6 +701,9 @@ Description:	Secure Encrypted Virtualization (SEV) information
+ 		      the SEV-SNP guest is running. This file is only present
+ 		      when running as an SEV-SNP guest.
+ 
++		sev_status: Reports the value of the SEV_STATUS MSR which
++			    enumerates the enabled features of an SEV
++			    environment.
+ 
+ What:		/sys/devices/system/cpu/svm
+ Date:		August 2019
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index 5770b99feb9b..4532ffc27041 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -1431,9 +1431,23 @@ static ssize_t vmpl_show(struct kobject *kobj,
+ 	return sysfs_emit(buf, "%d\n", snp_vmpl);
+ }
+ 
++static ssize_t sev_status_show(struct kobject *kobj,
++			       struct kobj_attribute *attr, char *buf)
++{
++	return sysfs_emit(buf, "0x%llx\n", sev_status);
++}
++
+ static struct kobj_attribute vmpl_attr = __ATTR_RO(vmpl);
++static struct kobj_attribute sev_status_attr = __ATTR_RO(sev_status);
+ 
+-static struct attribute_group sev_attr_group = {};
++static struct attribute *sev_status_attrs[] = {
++	&sev_status_attr.attr,
++	NULL
++};
++
++static struct attribute_group sev_attr_group = {
++	.attrs = sev_status_attrs,
++};
+ 
+ static int __init sev_sysfs_init(void)
+ {
 -- 
-Without deviation from the norm, progress is not possible.
+2.53.0
+
