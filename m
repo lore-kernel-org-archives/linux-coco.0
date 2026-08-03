@@ -1,334 +1,122 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C98631AABF
-	for <linux-coco@lists.linux.dev>; Mon,  3 Aug 2026 15:33:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3387C3009D6;
+	Mon,  3 Aug 2026 15:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785771201; cv=none; b=k2hvx6x+7iwy+MqxfGVf+xIf3YUAaZLdQ0izuaP9SdKx/XBpPaQjTR+ncG7hgyLYMe12GPakF3LtAbx2OYjqSrrklg9l8GNxT5ZqpVIxVuHHwH9doXXFK+l8Hc+35ga8DXrr26YSHSQlEa0AjfYF0qpA6ogMI1/byBhp8NuynXw=
+	t=1785771933; cv=none; b=SvSf9ODBtzQq38Tlokz0AStrK8BVq2oMJoniFVojUhmdi9UekT2uIN20JgrDqmrco6e57ezILcJsCtyACmTTkKllFIS9Co7FcLi54dfLSBAxKWp5oloik+UhqjWcirDRNJKBdNQfOoSkeZsVKqPYypIlZnR7Mvp5QG6yQdaarEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785771201; c=relaxed/simple;
-	bh=C/XKI47pVb+/uzP4EF5dInlZPLt+EXLYsPrxDNx6SJ8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=W+HSv/BM4cTEe3wnKCpRYIa10PM9fbC8qrv0bhIrguF68TCTnSkbQQYEq/rfIBO4W+OccTV8G1QahGKvzutCF+jZfOYz76/nn4ZRSDo+eJPoLyqTemxhnana3CGcH6xTZScqk8TxBT2aVamA2nVz9G9iDYSZZ8aqHUjH7arhqsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ibrqwki2; arc=none smtp.client-ip=209.85.210.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785771933; c=relaxed/simple;
+	bh=FlSxPZi9ON3WGFAwqN7D6TZRPmH4l3ZVoXYKF5UKdAM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qP4QlL74b8ZFwwaLtdekA3l1NwXDNlUBa1e15P169IIpE2rtMpKOSsOrui031lyy8CCxsmUlctf58DPrNHeL6xvi+CFaYh1UaE3bD/DL+gTcVwsToV6PnvqkPXAlVtI4uTAD2U5nt1uEzxp0KrzlE3p+1uRm9uq0513g+BFTMQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=IguL1cVX; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ibrqwki2"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-848568a6f62so7035326b3a.0
-        for <linux-coco@lists.linux.dev>; Mon, 03 Aug 2026 08:33:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785771196; x=1786375996; darn=lists.linux.dev;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gtEGWO1V/3oKubYEJFYO8Yg77TA8PdsLMD6iXufqvFE=;
-        b=ibrqwki2JrhaijkyFHVB3geBpV3T85dAcCocX/wyyE9nxH5CQjBaSt/3pBN4f6+m8i
-         pgsxMXJiE3Hg7K9v6+9OhUj0zXjVuUSH1YYhgBrIHjFUi16YEpR6YfiT7zsyzJjrpuPx
-         /Px6Wtlbp6BrW8aRzGtBBIMzyoEn5dYlvDEovYhVfLvfvTaM36W4y9EiTr8nZ42WDqrV
-         Hza8g+nSWUSk3odZO2AYhJIliKflez/UCi34ZpHtDCr3cV5lvds1hGauSzfgvmZRRpV1
-         t/s9zoVUVS8/8nlpL75+rVDu+SN0xG5+DqtVuck2Nl61cjUO+kb8hoGxR5EW74lICE/U
-         P0Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785771196; x=1786375996;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gtEGWO1V/3oKubYEJFYO8Yg77TA8PdsLMD6iXufqvFE=;
-        b=Ejt2kzqv6ojghlPFjUDFYmvq4JTOJu9mqW2L2lScgaWfp/aEpeBa992OncRvwwV43h
-         xsO4/Ru7L3ZDYI+ezoUmZnSs9ziQpcwaLpl2cv34pOd6bapXB96021R1ErSFRmDVNH/G
-         rxDQrT8/0Lc50UF9a5TEfXQIjqJvAV1rnbsYChx1+Wu5IPA5KlHPZU4VDHnh9nVFvFhD
-         t30ypvb99XcdzbxLQM2fi/RL3UGNV9EZgvMMfVRVi9p3ijWjks/XHCiwot1XcEJWktRt
-         Z2xo/AETyAXqVG+FS7PyG+fLrkCgSwfJ6QGUSGYzi1lsUlN+RFdVW7OoligIQmDeb7rx
-         sXvA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp0R0xXCqZUjqq9Kr0iTs3hUiKTf5TegzL0B3tpKiaXaT8tat0C7qfNYDcUj6bdrVeFfw8znb0IkBJU@lists.linux.dev
-X-Gm-Message-State: AOJu0YyUHHAG4RfMHww+5FkchASWwQ12YBoObN9Rz9RB6zffYfVqLt5J
-	pq2JLNjLBUduvFv4cTSYnoGvbwMKfYSygRketT/zhXyNeN0n8SIweOJ59ngaXfkoefpI3YVL6Vk
-	X8bS1mQ==
-X-Received: from pfbhw1.prod.google.com ([2002:a05:6a00:8901:b0:848:46e6:1aac])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4613:b0:848:3fe2:c88b
- with SMTP id d2e1a72fcca58-84ee477539amr8885723b3a.6.1785771194900; Mon, 03
- Aug 2026 08:33:14 -0700 (PDT)
-Date: Mon, 3 Aug 2026 08:33:14 -0700
-In-Reply-To: <25ab36cf-888a-4547-b3f7-5bd4e057c1d0@intel.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="IguL1cVX"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 86193143D;
+	Mon,  3 Aug 2026 08:45:27 -0700 (PDT)
+Received: from [10.1.25.28] (e122027.cambridge.arm.com [10.1.25.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 780863F66F;
+	Mon,  3 Aug 2026 08:45:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785771931; bh=FlSxPZi9ON3WGFAwqN7D6TZRPmH4l3ZVoXYKF5UKdAM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IguL1cVXRmCDcxT1A3RGNMAQ4M3tfAzkCMVWpB7evx0IzhWKFj7LI3m5Fpv+kubjC
+	 txI0I9fWDidReTJQ1w8IfzwNBONpqXH0RrVPy/KNDss0Um+BfYFIc4OoPHb5YSQlB5
+	 3Wa6zsc+9gt/9tQT3CvExmW10vCVnBbEp1HyaaK8=
+Message-ID: <643818bc-38b6-46ba-833a-0a5e825328f1@arm.com>
+Date: Mon, 3 Aug 2026 16:45:25 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-7-35f9aec2aed2@google.com>
- <60d19013-d6d7-4eec-827a-2622e22cec98@intel.com> <CAEvNRgF0SxmoMtqq69tUih54A9K7j_wcMFRrq=r9w6TnAGAUQQ@mail.gmail.com>
- <dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com> <amzMtg4K6qEEsudx@google.com>
- <25ab36cf-888a-4547-b3f7-5bd4e057c1d0@intel.com>
-Message-ID: <anC0uuZIrbxlGubN@google.com>
-Subject: Re: [PATCH v9 07/41] KVM: guest_memfd: Wire up core private/shared
- attribute interfaces
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: multipart/mixed; charset="UTF-8"; boundary="t+KByEqIRolqunqf"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 00/45] arm64: Support for Arm CCA in KVM
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <86y0enb64s.wl-maz@kernel.org> <57225daf-4319-406a-8328-e32835e8a980@arm.com>
+ <86wlu7b58z.wl-maz@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <86wlu7b58z.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-
---t+KByEqIRolqunqf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Mon, Aug 03, 2026, Xiaoyao Li wrote:
-> On 8/1/2026 12:26 AM, Sean Christopherson wrote:
-> > On Fri, Jul 31, 2026, Xiaoyao Li wrote:
-> > > On 7/31/2026 4:42 AM, Ackerley Tng wrote:
-> > > If kvm_range_is_private() is useful/required by huge page support, then let
-> > > the huge page series to introduce it. It has nothing to do with the in-place
-> > > conversion series.
-> > 
-> > If it weren't for the fact that the range-based search is used later in this
-> > series, I would 100% agree with Xiaoyao.
-> > But since the core logic is used and needed elsewhere,
+On 03/08/2026 16:20, Marc Zyngier wrote:
+> On Mon, 03 Aug 2026 16:06:24 +0100,
+> Steven Price <steven.price@arm.com> wrote:
+>>
+>> On 03/08/2026 16:01, Marc Zyngier wrote:
+>>> On Mon, 03 Aug 2026 14:43:16 +0100,
+>>> Steven Price <steven.price@arm.com> wrote:
+>>>>
+>>>> This series is based on the guest_memfd in-place conversion v9 tree[1],
+>>>> which is itself based on kvm-x86/next. It is also available as a git
+>>>> repository:
+>>>
+>>> Well done. Series on top of another random series, based on a random
+>>> tree. Unusable. Have you realised there are reasons why we (KVM/arm64)
+>>> ask people to base their series on a *released* tag from Linus' tree?
+>>> This means that Sashiko cannot, once again, provide any feedback on
+>>> this series, as it fails to apply.
+>>>
+>>> Just to avoid any ambiguity: Sashiko reviews, as annoying as they are,
+>>> are not optional. They are very much mandatory, and I wish I could
+>>> turn back the clocks to run it on my own code...
+>>>
+>>> Running it on your own is not enough, because *I* want to see what the
+>>> tool finds. Not to mention that non-Gemini runs of sashiko are much
+>>> less interesting (unsurprisingly).
+>>
+>> Sorry, but I'm not sure what you expect me to do - clearly I want to
+>> base my changes on top of the guest_memfd series which is being worked
+>> on and not just ignore that work. So I've based my changes on top of the
+>> tree that Ackerley published.
 > 
-> I don't see it a problem. Without introducing kvm_range_is_private() in this
-> patch, the core logic of range-based search on gmem can still be introduced
-> as kvm_gmem_range_has_attributes() directly in patch 10 or in a separate
-> patch.
-> 
-> > and because kvm_range_has_vm_memory_attributes() takes a range, my vote is
-> > to provide the plumbing now, even though a small portion of it isn't
-> > strictly necessary.
-> 
-> So my initial feedback was "we can just use kvm_mem_is_private(kvm, gfn)".
-> It makes code simpler.
+> But that completely ignores the way the KVM/arm64 tree is managed. If
+> you base a series on a bunch of unmerged patches, how do you expect
+> people to do a sensible job at reviewing it? Now I need to ingest
+> another pile of random patches just to review this set?
 
-My apologies, I hadn't actually applied v9 to look at the full context.  I agree,
-providing kvm_range_is_private() is completely unnecessary.  It's not even really
-a problem with this patch, it's a pre-existing issue that can and should be
-addressed with a prep patch.
+It's based on the same 'base' as v15 was - it depends on the unmerged
+guest_memfd changes. I've just updated to the latest revision from
+Ackerley. You've been reviewing the changes, and I've attempted to
+update the code based on that valuable feedback.
 
-> And as a bonus, the logic to choose between gmem-based attribute query and
-> vm-based attribute query is hidden from the static call.
+Clearly I'm not expecting this series to be merged yet - we're waiting
+for the guest_memfd changes. If you have a suggestion on how I should
+tackle this in the future then please let me know. I could bombard you
+with an even bigger series with Ackerley's series on the front, but I
+think you'd shout at me even more if I did that.
 
-I don't follow.  What do you mean by "hidden from the static call?"  The whole
-point of using a static call is to select between gmem-based and vm-based private
-memory.  Or are you saying the populate() flow doesn't need to manually check
-gmem_in_place_conversion?
+> Not happening, sorry.
 
-> The second bonus of dropping kvm_range_is_private() is that we can eliminate
-> one more chunk in patch 20.
+Well I'm off on 'holiday' or more accurately to move house. The new
+house's (brand new) hot water cylinder is bust and the plumber is
+currently saying we can't even have cold water, never mind hot, so I'm
+going to spend the next week worrying about things other than this series.
 
-Ya.
+If you provide review comments then I'll look at them when I get back.
 
-Untested, but unless I'm missing something, patches 6 and 7 of this series can
-be replaced with the attached patches (6 and 7 should be squashed together no
-matter what).
+Thanks,
+Steve
 
---t+KByEqIRolqunqf
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment;
-	filename=0001-KVM-guest_memfd-Use-kvm_mem_is_private-when-populati.patch
-
-From 77bd0524535d65d7c6beb4a0cc70a65fbacc9f81 Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Mon, 3 Aug 2026 08:10:09 -0700
-Subject: [PATCH 1/2] KVM: guest_memfd: Use kvm_mem_is_private() when
- populating guest_memfd memory
-
-Using kvm_mem_is_private() when populating guest_memfd instead of using an
-open coded equivalent.  In addition to simplifying the populate code *now*,
-this avoids the need to provide a range-based gmem lookup API in the future
-as well.
-
-No functional change intended.
-
-Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- virt/kvm/guest_memfd.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 8c7709a352cc..48c13d18af15 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -881,9 +881,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
- 
- 	folio_unlock(folio);
- 
--	if (!kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + 1,
--						KVM_MEMORY_ATTRIBUTE_PRIVATE,
--						KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-+	if (!kvm_mem_is_private(kvm, gfn)) {
- 		ret = -EINVAL;
- 		goto out_put_folio;
- 	}
-
-base-commit: 17548ee538ef4f476e16fb5dd3ca8adfd8a852ed
--- 
-2.55.0.508.g3f0d502094-goog
-
-
---t+KByEqIRolqunqf
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment;
-	filename=0002-KVM-guest_memfd-Stub-in-ability-to-enable-in-place-s.patch
-
-From 02db86dc193d969085bbc0c98c6117e59d469cb5 Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Mon, 3 Aug 2026 08:17:34 -0700
-Subject: [PATCH 2/2] KVM: guest_memfd: Stub in ability to enable in-place
- shared<=>private conversion
-
-Stub in global variable to enable in-place guest_memfd private<=>shared
-memory conversion, which will eventually be exposed to userspace via a
-module param, and wire up the __kvm_mem_is_private() static call to the
-guest_memfd version when in-place conversion is enabled, i.e. when gmem is
-the sole authority on private vs. shared memory.
-
-Cc: Fuad Tabba <tabba@google.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- include/linux/kvm_host.h |  6 ++++++
- virt/kvm/guest_memfd.c   | 26 ++++++++++++++++++++++++++
- virt/kvm/kvm_main.c      | 12 +++++++++++-
- 3 files changed, 43 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 65fbce46b63f..9477ecebbbce 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2580,6 +2580,8 @@ static inline bool kvm_vm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- #endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
- 
- #ifdef kvm_arch_has_private_mem
-+extern bool gmem_in_place_conversion;
-+
- typedef bool (kvm_mem_is_private_t)(struct kvm *kvm, gfn_t gfn);
- DECLARE_STATIC_CALL(__kvm_mem_is_private, kvm_mem_is_private_t);
- 
-@@ -2588,6 +2590,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- 	return static_call(__kvm_mem_is_private)(kvm, gfn);
- }
- #else
-+#define gmem_in_place_conversion false
-+
- static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- {
- 	return false;
-@@ -2595,6 +2599,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- #endif /* kvm_arch_has_private_mem */
- 
- #ifdef CONFIG_KVM_GUEST_MEMFD
-+bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn);
-+
- int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
- 		     int *max_order);
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 48c13d18af15..e21c7122539a 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -474,6 +474,32 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
- 	return 0;
- }
- 
-+bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
-+{
-+	struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
-+	struct inode *inode;
-+
-+	if (!slot)
-+		return 0;
-+
-+	CLASS(gmem_get_file, file)(slot);
-+	if (!file)
-+		return 0;
-+
-+	inode = file_inode(file);
-+
-+	/*
-+	 * Rely on the maple tree's internal RCU lock to ensure a stable result.
-+	 * This result can become stale as soon as the lock is dropped, so the
-+	 * caller _must_ protect consumption of private vs. shared either by
-+	 * holding guest_memfd's invalidate lock for the entire duration, or by
-+	 * checking mmu_invalidate_retry_gfn() under mmu_lock to serialize
-+	 * against concurrent attribute updates.
-+	 */
-+	return kvm_gmem_is_private_mem(inode, kvm_gmem_get_index(slot, gfn));
-+}
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_is_private);
-+
- static struct file_operations kvm_gmem_fops = {
- 	.mmap		= kvm_gmem_mmap,
- 	.open		= generic_file_open,
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 081e3309359d..e5654baa8895 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -101,6 +101,10 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_shrink);
- static bool __ro_after_init allow_unsafe_mappings;
- module_param(allow_unsafe_mappings, bool, 0444);
- 
-+#ifdef kvm_arch_has_private_mem
-+bool __ro_after_init gmem_in_place_conversion = false;
-+#endif
-+
- /*
-  * Ordering of locks:
-  *
-@@ -2422,6 +2426,9 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
- static u64 kvm_supported_vm_mem_attributes(struct kvm *kvm)
- {
- #ifdef kvm_arch_has_private_mem
-+	if (gmem_in_place_conversion)
-+		return 0;
-+
- 	if (!kvm || kvm_arch_has_private_mem(kvm))
- 		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
- #endif
-@@ -2633,8 +2640,11 @@ EXPORT_STATIC_CALL_GPL(__kvm_mem_is_private);
- 
- static void kvm_init_memory_attributes(void)
- {
-+	if (gmem_in_place_conversion)
-+		static_call_update(__kvm_mem_is_private, kvm_gmem_is_private);
- #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
--	static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
-+	else
-+		static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
- #endif
- }
- #else
--- 
-2.55.0.508.g3f0d502094-goog
-
-
---t+KByEqIRolqunqf--
