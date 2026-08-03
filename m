@@ -1,177 +1,105 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2614137A2;
-	Mon,  3 Aug 2026 14:57:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567D832AABD;
+	Mon,  3 Aug 2026 15:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785769047; cv=none; b=TkTjwAzL1W70QZfMf28HfHnFsgQdN8n1L+MstccGeribYYlXYzE4ShMZQxxs33ZSbzNuDG8c0wuEBwx/5v5I6e2vOyxdGRtRxpzvn9+Z7eeOK5FdlKlvsj/UMZnjiRKamHp/prp/KUI2ps5MgjaY2MPADh9iIz4vhfXBBzrDjT0=
+	t=1785769271; cv=none; b=e2ktQHvLEJ/LeEwSsVo10Z6eFp/J2L09eygrBuO+BrQB2NXdXjWUtxhzkggs+Rm5AMRUornVqQ3RCXtnyhHESjltbRq23tNhCRorSTlLFx80jFYWTzKuzFc10Yxra2IgDtuNH+fAoDQRaejVkfp+rErig6b4Hg0AM6SrQ3GJylg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785769047; c=relaxed/simple;
-	bh=rH7c4BNoFxNF7N2pE0+MsTz5GUCjv5A99uatFeYJsoY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=raT1sg79PcuT20K1dSlT6wZJEykXxMhNos/S1ePTE1bfxW/4xi8BQahZw552xVPACbu0qOJmwt/rKVKoE7fOqMheMxbtmqJyneoQ81pPEH0IfkvW5HV9CvFuEYQvtaVR4Xv7a2B5vz5exqvCYMlw87NmV03YBm7tDEMsIdploEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=UkPQsTy7; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1785769271; c=relaxed/simple;
+	bh=HvNFWgtky/J8S9XuvaUSeL7E3qUaPi+Fl1YIEa08ONM=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TJwpMUvPIZ9yOGMa4RNgtt7NoluyqeS5G8jLY/0aBYyPrxvNUhYIf6JWt+j0GyHgsSdBKtkCBhNpB/qbE+gNyRYgFMSe2i2umc3keaJ+WY1eZ/IQ4dqNLCIlGzPP6C6k49+E2baCotxxbdE+LPj097dfN8aij/F10N/wtzfJVvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+m1MKC0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="UkPQsTy7"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 82EFE1476;
-	Mon,  3 Aug 2026 07:57:20 -0700 (PDT)
-Received: from [10.1.25.28] (e122027.cambridge.arm.com [10.1.25.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 61D353F632;
-	Mon,  3 Aug 2026 07:57:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785769044; bh=rH7c4BNoFxNF7N2pE0+MsTz5GUCjv5A99uatFeYJsoY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UkPQsTy7F4F7Sw+PcgXQWmJgS0Y0c4+Uc7ju4gI7wygzXEJ9KKWx61VdArwRpiq3Q
-	 5Oy5gbKIDGgRFvvigvX0ICD4BlxWVXXF2AahOCix3X13zUFsjPr3LRIsVNC2pucRCO
-	 mCmv832n0KwGGim8EhxcgDX3QDdr2eIgKqsQt0Rk=
-Message-ID: <babcdee7-3180-4c36-8822-f9d027f432b9@arm.com>
-Date: Mon, 3 Aug 2026 15:57:17 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+m1MKC0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393A31F000E9;
+	Mon,  3 Aug 2026 15:01:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785769270;
+	bh=Qql+Sn0so9VH3FDlsm4xQxQlvxZLHhNzg0nkC68+mhg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=N+m1MKC0pP7b1NtYcGQkMMcOEGB6h8cWxBRkGaLic7ZigSUEph5FS9NB7uY9ehgoR
+	 M0IdlLhywEPm54kVG5/Adm9Q8zQT0DE/RAYN4yZda8bTbTW4iSrWV60he+ZuRD6C/D
+	 lR7HJCVpAZIho+zGqDv8D8AffkKw+ALZJ85ebyaNqK5mabePEpoiaREji0nUNqshZS
+	 y+ljOEOGK9dCHGXaN+SkQkSXmbEcSVHVdVN8/Ngnjy+V/b0ELFKy757VTSFCjj5BV/
+	 71FK83ypryw9z4f0V9ft82Y+dzw0BV2y2JF1klCGNElOf380Mgg98aleqS5i+NSh9r
+	 wZCJdBK1xzkCw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wquA8-0000000Bows-0OK3;
+	Mon, 03 Aug 2026 15:01:08 +0000
+Date: Mon, 03 Aug 2026 16:01:07 +0100
+Message-ID: <86y0enb64s.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	WeiLin.Chang@arm.com,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v16 00/45] arm64: Support for Arm CCA in KVM
+In-Reply-To: <20260803134403.80630-1-steven.price@arm.com>
+References: <20260803134403.80630-1-steven.price@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 16/37] KVM: arm64: CCA: Handle realm MMIO emulation
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20260715142841.80544-1-steven.price@arm.com>
- <20260715142841.80544-17-steven.price@arm.com> <864ihbcul4.wl-maz@kernel.org>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <864ihbcul4.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 03/08/2026 12:27, Marc Zyngier wrote:
-> On Wed, 15 Jul 2026 15:28:18 +0100,
-> Steven Price <steven.price@arm.com> wrote:
->>
->> MMIO emulation for a realm cannot be done directly with the VM's
->> registers as they are protected from the host. However, for emulatable
->> data aborts, the RMM uses GPRS[0] to provide the read/written value.
->> We can transfer this from/to the equivalent VCPU's register entry and
->> then depend on the generic MMIO handling code in KVM.
->>
->> For a MMIO read, the value is placed in the shared RecExit structure
->> during kvm_handle_mmio_return() rather than in the VCPU's register
->> entry.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> Reviewed-by: Gavin Shan <gshan@redhat.com>
->> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> ---
->> Changes since v7:
->>  * New comment for rec_exit_sync_dabt() explaining the call to
->>    vcpu_set_reg().
->> Changes since v5:
->>  * Inject SEA to the guest is an emulatable MMIO access triggers a data
->>    abort.
->>  * kvm_handle_mmio_return() - disable kvm_incr_pc() for a REC (as the PC
->>    isn't under the host's control) and move the REC_ENTER_EMULATED_MMIO
->>    flag setting to this location (as that tells the RMM to skip the
->>    instruction).
->> ---
->>  arch/arm64/kvm/inject_fault.c |  4 +++-
->>  arch/arm64/kvm/mmio.c         | 16 ++++++++++++----
->>  arch/arm64/kvm/rmi-exit.c     | 15 +++++++++++++++
->>  3 files changed, 30 insertions(+), 5 deletions(-)
->>
->> diff --git a/arch/arm64/kvm/inject_fault.c b/arch/arm64/kvm/inject_fault.c
->> index 89982bd3345f..6492397b73d7 100644
->> --- a/arch/arm64/kvm/inject_fault.c
->> +++ b/arch/arm64/kvm/inject_fault.c
->> @@ -228,7 +228,9 @@ static void inject_abt32(struct kvm_vcpu *vcpu, bool is_pabt, u32 addr)
->>  
->>  static void __kvm_inject_sea(struct kvm_vcpu *vcpu, bool iabt, u64 addr)
->>  {
->> -	if (vcpu_el1_is_32bit(vcpu))
->> +	if (unlikely(vcpu_is_rec(vcpu)))
->> +		vcpu->arch.rec.run->enter.flags |= REC_ENTER_FLAG_INJECT_SEA;
->> +	else if (vcpu_el1_is_32bit(vcpu))
->>  		inject_abt32(vcpu, iabt, addr);
->>  	else
->>  		inject_abt64(vcpu, iabt, addr);
+On Mon, 03 Aug 2026 14:43:16 +0100,
+Steven Price <steven.price@arm.com> wrote:
 > 
-> Why don't you let inject_dabt64() do its job and reconcile the REC
-> stuff at run time?
+> This series is based on the guest_memfd in-place conversion v9 tree[1],
+> which is itself based on kvm-x86/next. It is also available as a git
+> repository:
 
-Ok, one wrinkle is the __kvm_adjust_pc() path. But I can skip that and
-leave the PENDING_EXCEPTION flag set on return to user space. That way
-the flag is still set for the next entry and we can handle the RMM
-specific parts there.
+Well done. Series on top of another random series, based on a random
+tree. Unusable. Have you realised there are reasons why we (KVM/arm64)
+ask people to base their series on a *released* tag from Linus' tree?
+This means that Sashiko cannot, once again, provide any feedback on
+this series, as it fails to apply.
 
->> diff --git a/arch/arm64/kvm/mmio.c b/arch/arm64/kvm/mmio.c
->> index e2285ed8c91d..a8c125205695 100644
->> --- a/arch/arm64/kvm/mmio.c
->> +++ b/arch/arm64/kvm/mmio.c
->> @@ -6,6 +6,7 @@
->>  
->>  #include <linux/kvm_host.h>
->>  #include <asm/kvm_emulate.h>
->> +#include <linux/arm-smccc-rmi.h>
->>  #include <trace/events/kvm.h>
->>  
->>  #include "trace.h"
->> @@ -138,14 +139,21 @@ int kvm_handle_mmio_return(struct kvm_vcpu *vcpu)
->>  		trace_kvm_mmio(KVM_TRACE_MMIO_READ, len, run->mmio.phys_addr,
->>  			       &data);
->>  		data = vcpu_data_host_to_guest(vcpu, data, len);
->> -		vcpu_set_reg(vcpu, kvm_vcpu_dabt_get_rd(vcpu), data);
->> +
->> +		if (vcpu_is_rec(vcpu))
->> +			vcpu->arch.rec.run->enter.gprs[0] = data;
->> +		else
->> +			vcpu_set_reg(vcpu, kvm_vcpu_dabt_get_rd(vcpu), data);
-> 
-> This is yet another example of things I do not want to see. KVM works
-> on the GPRs described in the vcpu structure. And that's it.
-> 
-> So let the ESR information be correct for CCA, the data being written
-> back to x0, and once you're ready to enter the guest again, copy
-> whatever you need into the CCA data structure.
-> 
-> But not any of this stuff.
+Just to avoid any ambiguity: Sashiko reviews, as annoying as they are,
+are not optional. They are very much mandatory, and I wish I could
+turn back the clocks to run it on my own code...
 
-Yes this is a bit silly. A while ago the RMM wasn't populating the ESR
-information correctly which is where all these gprs[0] hacks came from.
-That's been fixed and it should be possible to do this on entry.
+Running it on your own is not enough, because *I* want to see what the
+tool finds. Not to mention that non-Gemini runs of sashiko are much
+less interesting (unsurprisingly).
 
->>  	}
->>  
->>  	/*
->>  	 * The MMIO instruction is emulated and should not be re-executed
->>  	 * in the guest.
->>  	 */
->> -	kvm_incr_pc(vcpu);
->> +	if (vcpu_is_rec(vcpu))
->> +		vcpu->arch.rec.run->enter.flags |= REC_ENTER_FLAG_EMULATED_MMIO;
->> +	else
->> +		kvm_incr_pc(vcpu);
-> 
-> Same thing. kvm_incr_pc() sets a flag. Use that to reconcile the state
-> with CCA.
+	M.
 
-It's not an ideal flag for this use (it's set in other places). But I
-think it should be sufficient along with checking other state to
-identify this condition.
-
-Thanks,
-Steve
+-- 
+Without deviation from the norm, progress is not possible.
