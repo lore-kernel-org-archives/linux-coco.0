@@ -1,112 +1,79 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EAE37F8C3
-	for <linux-coco@lists.linux.dev>; Tue,  4 Aug 2026 22:20:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785882046; cv=pass; b=rn5/1GGaqquJWNyNTyeSFmkQPzSdNKq60l9Rc3ddLDTQJwoXoBJ3KNbBhjb/xl9u0bLdUh8iJ9M5kEdMDJporq0svH1ZqcLJwrLin82O4Alalsqwb9MZPM+PwB/hmPIHCFnqQcNa1U7OGX54njq0/xHYqkjRYLTixzBOYkXtoB8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785882046; c=relaxed/simple;
-	bh=p7KpLXDbYWu/mxWpOCbWD2NL3j0JpP9nFMeNwakGxKM=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lEpOTFe3o83XbRKOHq0tSkwoQJW/P6ZklEwKCaAqnwBOtCEbgpkoh7Hk+JpkA/+lJOkA7suvbFagmnp4w2yir8Ah6HYigVeZLkJautcSPWuCwN/UkpVEwvGVd5rz/MWko4Ywd42romVDmDw5UEP+UsI6u6KUduq2qw9mkFjhSsA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dUzN17eC; arc=pass smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203593CB57D
+	for <linux-coco@lists.linux.dev>; Tue,  4 Aug 2026 23:15:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785885354; cv=none; b=XePXi2ShtrZRQcBp1EdTVHWAJhfFPpUdrcaoGBBoQEpjRKIFax+6rRRrF+8rjy3qCzKj9DLs7QL/ug1oO3AdJiD3PQieQwPIGfB8u7Fa1Sb82W6If/MK7vmVvIb/pd3xQ15ab8kc8AZa/6lxtaw5iHdLX0o0F0FxC3bT3riycJE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785885354; c=relaxed/simple;
+	bh=CQxbt8HUW9NzD6kY4dP+QdWUZhtRuWP0yx/1re3yKbQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=s4O1q30iXUI4qEqYBjlQUPUBlp8KKCTAvC89Som1G7QIKfm+MeEiQlqYRuX3sMMlI9nOe4TmqEmW5z1rRmvlEEiliPjyRegy9CSWW+RIbqsh3yaQTlZ6ubmd1m7cXovf4cBMYxALSV1UfOh9D+9XZv3ie7jQ/wuS1cvdA/mvAPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oAjLEYFR; arc=none smtp.client-ip=209.85.210.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dUzN17eC"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38e3617ba36so323991a91.3
-        for <linux-coco@lists.linux.dev>; Tue, 04 Aug 2026 15:20:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785882044; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iRldhRa55UqmMGvUKCj9fFsdVTM8u2sgaAxCPVaxpOBv/puPgIhHXfhYXNgYIoxoHk
-         AqokBnXKxps5JxhYfpVYwHAg0t38oVabUH86BxLZFSLSSYWfwow9btclD0LoXRW+oLHQ
-         weo9yLZkER0HnA15Yao6NwSQtRYnBcKVrSaBy7prdjU98xABprVEfacnKRANxuuYodx3
-         95h3TYHiFTRiGuYtlO6faInqEKEBEbxEFgaBziKrrz+O98pfFvUciHApLtn6nwkD+VfW
-         STs8Idqy7JUbDXyQ/ZtXCEIgcgnexp8rIwHTQL7JhHr4YRDaCq0wUotf+tsI/pvL4I+E
-         BisA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=voJFtdOcDQ3cvv3g0Px6B4YkGP5JAhQ6QCPfp6/emQc=;
-        fh=toSXqer9swhqVEApXDpaDP0J31/hT1DOwQq7/Dsl0Ow=;
-        b=F+kZclUCQLdIGVLsu9D5cHl6Iewlp7sXhBTsEwk6ttxP1+veAtbEnFkOkUWQL+Uhy3
-         7jCjRi+XS+/TO+HLGEr3Op88wNTHrPcizxvnLErmOMx1/0l1oZ8vWzApPh+wU3K9kRem
-         CrOALjBmP/w1Yl8227D4AIHnpnvDW/pvMgydd1gonBP51a50A1pb8Z68dPscTZBm1Iu+
-         ZU25CIXMuNAbVgkDm45370EvaYzbBs9H59g38aaCzLCbCdBBSGk8CbnnAljT7Ekw0f8r
-         to2fClC+twrXyVc+hXLwGkB+itHm6OEDTIffKYPGTffxLMy3qA90v0xOal1llTNe8uK7
-         4JHA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oAjLEYFR"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84865f326efso395800b3a.0
+        for <linux-coco@lists.linux.dev>; Tue, 04 Aug 2026 16:15:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785882044; x=1786486844; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785885350; x=1786490150; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=voJFtdOcDQ3cvv3g0Px6B4YkGP5JAhQ6QCPfp6/emQc=;
-        b=dUzN17eC3arxqPvOGmQrM93Dn78moGySLLwo7uI/nCZ/4FELhmZ2vhKyeiDhcsM2jO
-         NQHq9McNqsl2hnc3AYhLVqc53gUFu6NFXXL8EnnxOBXGlGH8hzvgnsmEv3ZLcOJTPaux
-         AJBfR8qPoyuVrXYsrnWJvj539wU+pos3zN0Nyux+LBWgLX574ACo4BOu61MsTBoQiyuM
-         DXU1L5qU1GVsM8tdhS2cljduZ33Uk6JhRuKNkkD34J0NYRvNUXZl0z/ydD8d4XMXeTwz
-         b0EnpasynYTLtEC4tDu9wtK9sfnrb3cR8n5mUbUM8X3tw8D5eMMiH52n8jNe98a8mjN8
-         w5Ow==
+        bh=lz3QUw22bh8QYe/ZiAsreDFp91isZAPnzZuU7CX+ujA=;
+        b=oAjLEYFR86dNqLPaIognK9DKfIT+EqiqsbXI8i09pxh/1f0d9wvQARV/rLGCHlbTlO
+         Ys5G4whMXBc4sVLQLtmwG4tuhCRGuTRos5f77Nsq80FBV4Etv6RLc03n1be25C10M9rv
+         GScMZs4WiP+vP95ABNyBdMXVj3HYmpCCO4InNvIQPLUNE6tM6CQz7w/9ynJyY/z5VozM
+         Wo333ZdYgnREsrUYYpsO7jAytIFqJxRVxK8t7Q11PH+5YeqvOfV9VD6kvWpSbhe2HTu6
+         z4Zi62LpDI4AvkAT2wJRU1dTsaqnDB/eshRTH2ZSw/XUBpQ8avjIsTioM5aICEepEgPZ
+         +P2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785882044; x=1786486844;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1785885350; x=1786490150;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=voJFtdOcDQ3cvv3g0Px6B4YkGP5JAhQ6QCPfp6/emQc=;
-        b=Bt7GqsN9ndWsXvleOwznPf4Zv/QzRBEV++XZwtwLg60pGPSbvmOG4W5+4DN3RngFtd
-         V5k2Q2FukUaEQ0psJ9dSDWuRzMv26Fx/Gbl0NKbU01yavkcS/PQPM+DfiYlLta0U0+64
-         5PHCTnR9D2fCIqqE3ZyNlo3wekICJ3vsUNRf8+KUwtqos7sg1E1yzDV/AvXdAhQoOqHf
-         vGwC2yqe+MUJSjcSWUs36CrHX1r3u59e8c/D4RohzVzojFwIP5KkCPn7TLQ++gZl0nIX
-         x4j5/0mMhPu2PsFi94uhWhXnztmA0cCXB2uhzkzjZFR/JdClKdnKGfxEaoiBZEhrGVrg
-         tDpw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp16XkNbVrr+I7ZntXO3aO7+BtbWE82GQXQStsS9i9v+S3asl7B8LkAzzabqD4uNW+G9BYely6lTmki@lists.linux.dev
-X-Gm-Message-State: AOJu0YxrQO+wkUU/SRL8QbkNjFfgaB+oa0fFG2BPUfGmHKZjn1Z0b4pn
-	ILv9iCM1qjZDk0n3LKRvoNMwrXX7IIbkMBMakUAEn+CIwQEbnZQEqkYSc+kKVVm/FlyR/FxSSHg
-	s04F5sTsB1j78OUzxCG69li8ld+J3gv+dJ/PWAX3Q
-X-Gm-Gg: AR+sD12nhq6bn6LS+j+1eVRovuCTyvUaLinl5eQO2hYxo1VJXmMNFy+gBklro8yizyS
-	FvGx8/toiqG+LjYCm1SBG0cWCmzUnWIn2QpciHHMkelstOZLCXHk5F4OXuER7d01aVXlgHjE/FJ
-	0gmCyBrtuELcd3dSQVIlSroOorJcMHex5iXHW2pR/nRS328xkSpoJnzuvQO0DT4ibaUj5yA+I79
-	kaD+Kf407ovDbRDrrZwCG4wQSkb4Zac/n/2wNrCdaXoxxQOurpA+wMJ7dMxtjsE6o8cagIZDDR+
-	yYirO9pFcZSijebbN73/zLYOBJRYTqG+HAGU5CWel07+SNJc1REJpS1p5RCof+S1JmNBJet7l2k
-	Yd/oJWCMp8qoLRTxU+8jMSA/e5ptmv3s+Fer1z1sXShLK
-X-Received: by 2002:a17:90b:270e:b0:366:3517:1aa2 with SMTP id
- 98e67ed59e1d1-3903bb0cf61mr2065807a91.0.1785882042841; Tue, 04 Aug 2026
- 15:20:42 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 4 Aug 2026 15:20:41 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 4 Aug 2026 15:20:41 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <de780cc3-8c43-46f8-b8e6-3ddfe93d753d@arm.com>
-References: <4460e252-b6de-4df3-bea8-0368a9d0f4ff@kernel.org>
- <CAEvNRgEUQSju2tW_1zMk2=QmveZNtmkjjCZdqVBgBD2JPh0k4Q@mail.gmail.com>
- <a823e3d2-8acf-49d9-a812-ac1bb2136d7f@kernel.org> <edc3566b-370c-41a0-a71d-2e4a0e1a94f7@kernel.org>
- <CAEvNRgEas_9BEV-cNxXu4_wQx8sR2M4_OaW6DEd4=fszALMV0w@mail.gmail.com>
- <60552bee-3326-4917-b00f-5fb7ba3b8adb@kernel.org> <be77c2cb-6e41-4382-9d2f-cd299f634196@kernel.org>
- <anCtzQrUkFSSq8De@google.com> <99037993-ee13-4160-8c87-b6642faea554@kernel.org>
- <CAEvNRgHYhKACDfx9ZZy4a-TTS4yWzEJt=Jc92=eXxS15LPnTYg@mail.gmail.com>
- <anJbMf5GBe0Pxh_x@google.com> <de780cc3-8c43-46f8-b8e6-3ddfe93d753d@arm.com>
+        bh=lz3QUw22bh8QYe/ZiAsreDFp91isZAPnzZuU7CX+ujA=;
+        b=pvzt6zxL/7Xw3dAAgbP6M8mn4ZQU6aFDzVfaKPjbLPMbtjO7pdTzBEv4ac55PIQl+F
+         CCZ0ECwMZydvMRmBGFFuBbjF7MXE0mFpIpZ5E08uh14HXKUFVtc5Z1IM18ZfDWJN9VQc
+         tQgBLIkdxWqxKAluZlBtzsNt+K4TN4zm1TmdfNyiHRkQLBqbOkdK6UcB5edPcbECAwQm
+         +h8Kd5JUTvs54FpJrHHsYHCF8h4gJ2SfT8ID52NSN+Lm0LyAOLgbIqG+3zgtku9Q0vij
+         eIYDrzKcNB3sbMRfZJLwIKV0Kps2RiWqzSr67cXHPFKbLzeQcAYI5KG77BqGnVsFcozl
+         5/Hg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr4aIQDWmMTFeo6N8aSZ2ntFK/8BzoQ09M6TDTrHBaNOVC8POnaFdjOjccAfYEVGmZgvwxZJrNLbi5l@lists.linux.dev
+X-Gm-Message-State: AOJu0YyPl+f3gUANRMi8emtfzK0nWkho1ko4y5fpVN+Q2vz28gdpBhb1
+	2Dcccpzxdatp/D6LXslUElsuH1hMI/NM3jobBYHSx9eH1MmM7SIRlTg9CarOD85Yr1f/y6rrbTp
+	KKfxJyw==
+X-Received: from pfbbq18.prod.google.com ([2002:a05:6a00:e12:b0:848:5740:db83])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:9517:b0:84e:e809:dd49
+ with SMTP id d2e1a72fcca58-84f2e12d02bmr2017520b3a.36.1785885348892; Tue, 04
+ Aug 2026 16:15:48 -0700 (PDT)
+Date: Tue, 4 Aug 2026 16:15:48 -0700
+In-Reply-To: <CAEvNRgEOE5oeFVRYYucsCGJaFAQYS1oNRXAwGKzRAyqmoHT9OQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Date: Tue, 4 Aug 2026 15:20:41 -0700
-X-Gm-Features: AUfX_mzkFKRHTDQOiQvLQ1e0yQheZQmYXCL22A9YUJawwpQUjT54D9_OoZJNsuw
-Message-ID: <CAEvNRgEOE5oeFVRYYucsCGJaFAQYS1oNRXAwGKzRAyqmoHT9OQ@mail.gmail.com>
+Mime-Version: 1.0
+References: <edc3566b-370c-41a0-a71d-2e4a0e1a94f7@kernel.org>
+ <CAEvNRgEas_9BEV-cNxXu4_wQx8sR2M4_OaW6DEd4=fszALMV0w@mail.gmail.com>
+ <60552bee-3326-4917-b00f-5fb7ba3b8adb@kernel.org> <be77c2cb-6e41-4382-9d2f-cd299f634196@kernel.org>
+ <anCtzQrUkFSSq8De@google.com> <99037993-ee13-4160-8c87-b6642faea554@kernel.org>
+ <CAEvNRgHYhKACDfx9ZZy4a-TTS4yWzEJt=Jc92=eXxS15LPnTYg@mail.gmail.com>
+ <anJbMf5GBe0Pxh_x@google.com> <de780cc3-8c43-46f8-b8e6-3ddfe93d753d@arm.com> <CAEvNRgEOE5oeFVRYYucsCGJaFAQYS1oNRXAwGKzRAyqmoHT9OQ@mail.gmail.com>
+Message-ID: <anJypPblO8ww0IHY@google.com>
 Subject: Re: [PATCH v9 14/41] mm: swap: Introduce lru_add_drain_progressive()
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, Sean Christopherson <seanjc@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, 
+	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
+	chao.p.peng@linux.intel.com, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
 	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
 	pratyush@kernel.org, aneesh.kumar@kernel.org, liam@infradead.org, 
 	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
@@ -127,80 +94,16 @@ Cc: "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, andrew.jones@linu
 	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
 	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
 
-Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+On Tue, Aug 04, 2026, Ackerley Tng wrote:
+> Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+> Sean, for the two attachments you left, did you intend 0001 to be the
+> first patch in the conversions series, or separately handled? 
 
-> On 04/08/2026 22:35, Sean Christopherson wrote:
->> On Tue, Aug 04, 2026, Ackerley Tng wrote:
->>> "David Hildenbrand (Arm)" <david@kernel.org> writes:
->>>> Andrew wants to give it some more time in -next, so I'm expecting it to
->>>> land for 7.3.
->>>>
->>>>> 7.2 or 7.3, then I would strongly prefer to base v10 on linux-next (where
->>>>> the fix will presumably land soonish), and target 7.4 for in-place
->>>>> conversion. Then v10 can be applied against an early 7.3-rcN and we don't
->>>>> need to juggle branches (assuming Andrew is ok taking the proposed patch
->>>>> through the KVM tree).
->>>>
->>>> Agreed. We'd also have to get the actual preparation patch into 7.3. I can
->>>> send it out and coordinate with Andrew.
->>>>
->>>
->>> Thank you!
->>>
->>> When we were discussing this earlier at guest_memfd biweekly, before
->>> deciding to refactor out a function like lru_cache_drain_for_folio(), we
->>> did say that the likelihood of actually draining in practice is low,
->>> especially on a machine with heavy load making allocations all the time.
->>>
->>> I think the threads with Xiaoyao have resolved, I can put v10 out
->>> tomorrow. Would it be okay to go with the following from v8, and then
->>> clean up later when lru_cache_drain_for_folio() is available?
->>
->> No.
->>
->>> I'm hoping not to push this back by a full cycle to 7.4,
->>
->> Sorry, but we've missed 7.3, irrespective of the lru_cache_drain_for_folio() fix.
->> Even if v10 is perfect, applying tomorrow means it will get ~3 business days in
->> linux-next before I send pull requests to Paolo.  That's just not enough soak
->> time for land a 40+ patch series, even if half of those patches are selftests.
->>
->>> and also hold back other series dependent on this one.
->>
->> Eh, I don't think there will be meaningful impact in practice.  If v10 is good
->> to go, I'll get it applied on 7.3-r1, and will also get an early pull request
->> over to Paolo (probably around 7.3-rc4).  I.e. folks can start posting against
->> the landed series shortly after rc1, and I'll have a set-in-stone base on which
->> to apply more stuff around rc4/rc5.
->
-> For the record, Arm CCA KVM support depends on this series and that
-> being a big series (around 40+ patches), it is an inconvenience for the
-> Maintainers to make an effort to review the series.  That said,  we are
-> happy with the way this is progressing and next cycle merge for this
-> series would be perfect for us.
->
+Please include it in this series.  FWIW, it doesn't have to be the very first
+patch, though that probably does make the most sense.
 
-I saw the exchange on v16 of the ARM CCA series.
+> and 0002 will replace these 2 patches (in-place, in terms of order), right?
 
-I'm going to make every effort for the conversions series to get into
-7.3-rc1!!
-
-Sean, for the two attachments you left, did you intend 0001 to be the
-first patch in the conversions series, or separately handled? and 0002
-will replace these 2 patches (in-place, in terms of order), right?
-
-+ "KVM: guest_memfd: Introduce function to check GFN private/shared
-  status"
-+ "KVM: guest_memfd: Wire up core private/shared attribute interfaces"
-
->
->>
->> And if v10 has issues, then *not* rushing it into 7.3 will likely be the fastest
->> path forward.
->
-> Absolutely !Like any work, if it is not ready to merge, it is not.
->
-> Cheers
-> Suzuki
+Yep, thanks!
