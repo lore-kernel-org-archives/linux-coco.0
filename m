@@ -1,48 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926E833BBAF
-	for <linux-coco@lists.linux.dev>; Tue,  4 Aug 2026 23:43:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5C343CEEB
+	for <linux-coco@lists.linux.dev>; Tue,  4 Aug 2026 23:52:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785887029; cv=none; b=L8Y1SKnbtpRZm8Om3Rsarri7DPEenPOGdCR06hB5UKNGt5/E4309V93Sw7zK0lDer7KzJcoalU3VUCWdz/qP8678npMAnbXqV++/PRmeSU6tbQJqFNdNGn8zaMIU5hJyM2iupGQoezeTegmXZ/2hwt3WNpq+VYmIqLQ7g8kX2MY=
+	t=1785887551; cv=none; b=KocrhkW6WGIqqNzTPu2221Kq8qNZI1Anj6c5W4eD8iKsBtAHxYlgVGER3xtGgLz66NRSOJXkr7KnTZBP+CwLcghcAbcKmG2hrXRud+lGviyAM8q4GMUwu3/HSuIJDN9I1W8mjfPxnd3hdBIuHcl1RdwLpx/YPv0otvpDpGAsHUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785887029; c=relaxed/simple;
-	bh=Kzlmampl3B9EuybpZzFLmtBI1ka1Z0J+otMGegc3jaw=;
+	s=arc-20240116; t=1785887551; c=relaxed/simple;
+	bh=gBCQYuhZpbYN+w/FR6gAmqPmV2XpftJjUeBmB+rIDU0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T+8pV1xVwFmvFqQPCqatgtANlIFs6O6TWDoXvO7G6Iwyc2iczpaHdYrr+h4lJeGMb/FqnG/r2TlEHfBLJeMXUcUiHLhyVMBV5K85pH1VOncUDO7trj0/zHSdMqMf8vP7F5Ou+4R0ItdINMXg9QMMOWXeRfGsyfGlfOQMe7zLvd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HA+vtzUR; arc=none smtp.client-ip=198.175.65.12
+	 In-Reply-To:Content-Type; b=ScM/2KtREOsAOSkupasiFzUjJUQOHmLN8C93NqtgaQaZhnj4JPsRpOKDCz6spoEBAcgydyL02/wNqdaQP87yCDzCwXh06S7by+lXKZFHHPp4n/xqrLQdhRARRX21SA9TwGCiBG3XHwrSBt3sX9BUdu/MFVu2r3WhX7vUCr+Z+a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NQlPYsV2; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HA+vtzUR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NQlPYsV2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785887027; x=1817423027;
+  t=1785887549; x=1817423549;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=Kzlmampl3B9EuybpZzFLmtBI1ka1Z0J+otMGegc3jaw=;
-  b=HA+vtzUR3gs3fzAJVAexZ+OmHtp4dCAhv+W00/2LTKnm60E8SHWtEUBO
-   8Ziu7FBiIn5+zrIXn0Fyc2iaXF4cdnPgAzmytPAi6k7qY7sBKxVd46Ueh
-   jX3sB27K7eOLbYIFvKwJcCmIlrLEB2ch6+p8R+tzNT/CR0uDGN6PNizuQ
-   lEI+bODYOXwXwLMNrNk5A8gaWCPKS5IMqKAYfDGOsFf3Q7yfDBEbFQ5RB
-   r0Z+oXp9taHvK1Vhm0/3Y6oL44qhUVyAwQ8cZU31BtJ2PH4Hb/wpFGlB4
-   T/nGy9bVMzL6jeHz621O8twrr/vVOKV7G9NW/or/MLHX4UfYUHlgQN6RT
-   w==;
-X-CSE-ConnectionGUID: yWYDVaJfRKGWL1R5L+4J4A==
-X-CSE-MsgGUID: lzv22+IFRoO0FPlavbEUPg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="97955580"
+  bh=gBCQYuhZpbYN+w/FR6gAmqPmV2XpftJjUeBmB+rIDU0=;
+  b=NQlPYsV2hBeKGR3keR7C0wEpyktpzXtea+IisJCVyhs/2CO2fmRtMhXJ
+   iWrt12YQI9GxHwCg+AAR0Mz1izoUw5aToyFgMbrDXbZlpVg3OAAtglaam
+   1Pc2PVKS/MIwZBVeAuevWIxeKL51tzn6y0mxVBRkeOOrCaAqMNjIJ96gj
+   NUlslAAQhg46kONRWMpOV/PimaQnd0P1/nyiaYD61Nu5DAH4kbkKi8p8I
+   jI4TjykERMuqo2xuBWclWEGJtqS6u+Kli6KDeUd1PJPdC66KiA8xmWK6z
+   BEuOUQRZ+SCG5cLn3kLQZyA3rmdyL0eNHR21S8+CQgwYtLkCliWYOFkPa
+   A==;
+X-CSE-ConnectionGUID: O2DT7CbqROGu53+E4inFUQ==
+X-CSE-MsgGUID: 86gwb9AQS2OVTvTKdcODOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="86482471"
 X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
-   d="scan'208";a="97955580"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:43:47 -0700
-X-CSE-ConnectionGUID: R9t4uPgnRJaLxJTVXYyvYQ==
-X-CSE-MsgGUID: fxIRLV00QPOTRQHEx6tJDA==
+   d="scan'208";a="86482471"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:52:28 -0700
+X-CSE-ConnectionGUID: Z2B8i/oKR1an4l+HwdwzOw==
+X-CSE-MsgGUID: 1ke4eZpMS2aDAJii3ZPlGg==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
+   d="scan'208";a="260380773"
 Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.109.19]) ([10.125.109.19])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:43:46 -0700
-Message-ID: <43bb043e-8a01-484e-905b-41c73ae835d3@intel.com>
-Date: Tue, 4 Aug 2026 16:43:43 -0700
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:52:28 -0700
+Message-ID: <7ecd59df-1bae-487d-a7e4-bf7bc0c45615@intel.com>
+Date: Tue, 4 Aug 2026 16:52:26 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -50,13 +52,13 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/8] x86/virt/tdx: Stop treating tdx_global_metadata.h
- as auto-generated
+Subject: Re: [PATCH v1 2/8] x86/virt/tdx: Name the TDX module global metadata
+ field IDs
 To: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
  linux-coco@lists.linux.dev, kvm@vger.kernel.org
 Cc: rick.p.edgecombe@intel.com, kas@kernel.org, dave.hansen@linux.intel.com
 References: <20260804112941.19894-1-chao.gao@intel.com>
- <20260804112941.19894-2-chao.gao@intel.com>
+ <20260804112941.19894-3-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -102,45 +104,104 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260804112941.19894-2-chao.gao@intel.com>
+In-Reply-To: <20260804112941.19894-3-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 On 8/4/26 04:29, Chao Gao wrote:
 > From: Dave Hansen <dave@sr71.net>
 > 
-> The TDX module exposes its capabilities and limits through "Global
-> Scope Metadata" fields, defined in the Intel TDX Module ABI spec.
-> The kernel mirrors a small subset of those fields in C structures
-> (for example, struct tdx_sys_info_version/features). Those structures
-> are populated by reading each field via the TDH.SYS.RD SEAMCALL.
+> tdx_global_metadata.c currently identifies each field by a bare 64-bit hex
+> literal, extracted from the JSON file by an out-of-tree script:
 > 
-> Today the header that holds these structures is generated by an
-> out-of-tree script from a JSON file listing all of the TDX module's
-> metadata.  That made it trivial to add a new field, but everything
-> else suffered for it:
+> 	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000008, &val)))
+> 		sysinfo_tdmr->max_tdmrs = val;
 > 
->   - The header is opaque to anyone who doesn't have the script and
->     the JSON file handy, and the "Automatically generated" tag tells
->     reviewers their edits will be clobbered.
->   - The script ships outside the tree, so reproducing changes
->     requires fetching it from a mailing list link.
->   - The structures are short and stable; the script's value over
->     a hand-edited header is small.
+> That is unreviewable on its own. Verifying any one line requires the
+> reviewer to cross-reference the JSON file.
 
-Well, and the big one: after we started doing this, the "ABI Definitions
-for Intel® TDX" was declared to be not an ABI. So, even if we code to
-the JSON, there's no guarantee the JSON will be stable.
+I'm looking at "global_metadata.pdf" from this[1]. I see a line with
+"MAX_TDMRS" and "0x9100000100000008". That matches the lines above. That
+seems *FAR* from unreviewable. There's also no JSON in sight.
 
-<sigh>
+What am I missing?
 
-Honestly that's what matters. The script and all the other fluff is just
-noise.
+Listen, I don't like how this turned out. I'm asking for it to be
+changed. But let's not justify it with things that just aren't true.
 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> The hex literals in tdx_global_metadata.c are left alone because that file
+> will be replaced by a table-driven reader in the following patches.
 
-So, I'm curious: What made you feel OK to sign-off on this? I'm not
-judging. I'm open-minded on this. All I know is *I* wasn't ready to
-sign-off on this.
+This part of the changelog is good.
 
-I really want to know what your thought process was.
+> No functional change intended.
+
+This is a bit much. :)
+
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+> index bdfd0e1e337a..5f567cb6c07a 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.h
+> +++ b/arch/x86/virt/vmx/tdx/tdx.h
+> @@ -58,6 +58,57 @@
+>   */
+>  #define TDX_VERSION_SHIFT		16
+>  
+> +/*
+> + * Global Scope Metadata field IDs.
+> + *
+> + * See "Global-Scope (TDX Module) Metadata" in the Intel TDX Module ABI
+> + * spec.
+> + *
+> + * A field ID is a 64-bit value that encodes the metadata "Class"
+> + * (which Linux mirrors in 'struct tdx_sys_info' sub-structures),
+> + * the element size, and a per-class field index. Each ID below
+> + * is paired with the C member that holds its value.
+> + */
+
+This is a bit verbose for my taste.
+
+> +/* Class "TDX Module Version" */
+> +#define MD_FIELD_ID_MINOR_VERSION		0x0800000100000003ULL
+> +#define MD_FIELD_ID_MAJOR_VERSION		0x0800000100000004ULL
+> +#define MD_FIELD_ID_UPDATE_VERSION		0x0800000100000005ULL
+> +
+> +/* Class "TDX Features" */
+> +#define MD_FIELD_ID_TDX_FEATURES0		0x0A00000300000008ULL
+> +
+> +/* Class "TDMR Info" */
+> +#define MD_FIELD_ID_MAX_TDMRS			0x9100000100000008ULL
+> +#define MD_FIELD_ID_MAX_RESERVED_PER_TDMR	0x9100000100000009ULL
+> +#define MD_FIELD_ID_PAMT_4K_ENTRY_SIZE		0x9100000100000010ULL
+> +#define MD_FIELD_ID_PAMT_2M_ENTRY_SIZE		0x9100000100000011ULL
+> +#define MD_FIELD_ID_PAMT_1G_ENTRY_SIZE		0x9100000100000012ULL
+> +
+> +/* Class "TD Control Structures" */
+> +#define MD_FIELD_ID_TDR_BASE_SIZE		0x9800000100000000ULL
+> +#define MD_FIELD_ID_TDCS_BASE_SIZE		0x9800000100000100ULL
+> +#define MD_FIELD_ID_TDVPS_BASE_SIZE		0x9800000100000200ULL
+> +
+> +/* Class "TD Configuration" */
+> +#define MD_FIELD_ID_ATTRIBUTES_FIXED0		0x1900000300000000ULL
+> +#define MD_FIELD_ID_ATTRIBUTES_FIXED1		0x1900000300000001ULL
+> +#define MD_FIELD_ID_XFAM_FIXED0			0x1900000300000002ULL
+> +#define MD_FIELD_ID_XFAM_FIXED1			0x1900000300000003ULL
+> +#define MD_FIELD_ID_NUM_CPUID_CONFIG		0x9900000100000004ULL
+> +#define MD_FIELD_ID_MAX_VCPUS_PER_TD		0x9900000100000008ULL
+> +
+> +/* Class "TDX Module Handoff" */
+> +#define MD_FIELD_ID_MODULE_HV			0x8900000100000000ULL
+
+These are fine on their own.
+
+> +/*
+> + * Base IDs for the configurable-CPUID arrays.  The field ID of leaf
+> + * index @i is BASE + i; for the values array, sub-entry @j of index
+> + * @i is BASE + i*2 + j.
+> + */
+> +#define MD_FIELD_ID_CPUID_CONFIG_LEAVES		0x9900000300000400ULL
+> +#define MD_FIELD_ID_CPUID_CONFIG_VALUES		0x9900000300000500ULL
+
+This is complete jibberish without more context.
+
+1,
+https://www.intel.com/content/www/us/en/content-details/865803/abi-definitions-for-intel-tdx.html
