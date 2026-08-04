@@ -1,158 +1,241 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012052.outbound.protection.outlook.com [52.101.53.52])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AD344CAF5;
-	Tue,  4 Aug 2026 14:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785853264; cv=fail; b=euzbIlkb9dEhNhnYl5qV+W/Mj+RmGACdvDrjMIzVT5Sj2+bFYI7u0TTw8WSIiax58rdH5PI8oy/d9imOoRBf2n/+nF+2JKRKsFfKzkrU/J9zenDINlHOdBqxvS2piIB2jMm11Po1+6ABoCdy63ucoWgUCliAxbKxfwwIcDGNIy8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785853264; c=relaxed/simple;
-	bh=KmPnVVHfOZPqmY6g1632Jsi6cvdnGzZqsiJm2qrLvf0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=IqNxT3uQYWvJGeRFcxnq4riyPiH6s9Ip1B8omGd3QrhbNDHDZbKf4JjifltSzzw2C5CQ+a3gdy+JtWydN8Be3OtpADSDf/7ZK+Aj/7s8u6JvY1Ww/DdPCy2JRS5A0qpDJsdyQYsDFo/EGJS5RUyvXK4lEjqUY78vSLf+YpMS6B0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=b4IgOeA3; arc=fail smtp.client-ip=52.101.53.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7332A3EA960
+	for <linux-coco@lists.linux.dev>; Tue,  4 Aug 2026 14:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785853521; cv=none; b=mZV61gzcvGaCqR8gG9ClOCMtERDgp0O8omxY6+16yVuIzO20XLcDrscwmSX/9GYGcn2iG/CgtX5D7h027yT5ePc0h6cl3006n8v4f5F7DCc+zRYfDEYhHyCKRDlJwBgJwcVjtLivshoQNqDbZyuWa0gJfErhXnJzlDFVy+561ZU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785853521; c=relaxed/simple;
+	bh=QgQ0IcYUI/mtt+y1ANpQvqwtmD6pY6Cq4ZVA2i5QQEg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HdpC8/kHT3kpTZYXDOeYz3WvkRbBBxjXNWujK6ysHdu0KH/HQ3QhNj3dmHyuZPquOx2IFswXp9Mf+d8Hq408vFemR8siMOzg+WPDETejKI5iCF0qN35Aqnfx35nQJlfQdJYCfsTM7LapwY9CM5VYahB2QGW++z0ue3e9IVURaJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Nnxy4KTf; arc=none smtp.client-ip=91.218.175.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="b4IgOeA3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uioQEZlYSV+z1MVt9TpiFghRByMcT2Ch362VGI2cv0dWg2s2VUAmPryw+OEBjS7/w4fJEKy+dnXKXlKIflw1zF1c5seabNAG54O0+tAR4xXbCWKoP+3Y5Pmt0k//gdl9eybS7UcB+xKyoyfd3XSKL5Yx4QU6c3q4511m70hdm2C84grlv/VRyMcAXslbd06ty3ZXA3sSZNR0FLiXg8XUCWXjq3thuIJybw1+pcU6EddSsPL6Sc6qWL3JLzQfoUFAPM/XHlgyAwRux+fgm1IK8+lDcB1ACHkPk+cAn8SEZb2PBytFkoR0wtaDwvrAAYjNR8CzK3tO7Gq8b6FXB/dzTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KmPnVVHfOZPqmY6g1632Jsi6cvdnGzZqsiJm2qrLvf0=;
- b=CqFHzT2sM1spayDCKD0LfiN+DXmqvPsiYVFqBlPjFaXEVyWyLYou+jvO8wL8AAiT23eNqfmD+o4JaiiJ4lfcw1Gx09S7HeUyCbGxiadvbV6GK0rs/2kHTrLk998QOUn0TDlmgkrHVMVE2mXuJ6g3F2vPIAFFArt2nEfwbEEwmUP2lZ34IWRvRxq5giC0O2Bye9MZsyrspxaLWEitmTMAJpOH47+eVgzko7xHYCu+1S/j6hnuWFwG6kw+V+as4ZpWINKDPKMs+2Io5Kzv+c1Ksy5CgC7/nQLRHFkPJbxVELuJ6YAeFD5UZ/GO2Al9lkDdPh4kW/RXqQjfzjXKe69vnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KmPnVVHfOZPqmY6g1632Jsi6cvdnGzZqsiJm2qrLvf0=;
- b=b4IgOeA3hLrfjs/RYLCmO/IT2oaRBLpK8sGzZv5l9GU2VDdctC1gBFgszQcl8olRvxuMlwlD+9MceyLCy2VRpV3NLrgRalNAYTnThTe4IGZa9d55JrCThW20FcBeHpY0dWFzIryuNS99zJN+uRyyU2/nhV6GhsPjwn2ZkNYBB4+joTkVyzCbKxsQeEO8KxI0Gcr/Jck+TL2wP4biDbCAE4RunPK/FNMBJ1MM2tp9fzkT/YoVsO+gDMMUl5KXa+25WHIiNjzS9tyiOsU5XP0+shvCQx1/A5l/InIZX2ZXh6jBoAWGDJGXfFigSKlr66GHf9BKE78orUifQmeP3Vqmjw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by CH3PR12MB8901.namprd12.prod.outlook.com (2603:10b6:610:180::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Tue, 4 Aug
- 2026 14:20:36 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0292.015; Tue, 4 Aug 2026
- 14:20:33 +0000
-Date: Tue, 4 Aug 2026 11:20:32 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Mostafa Saleh <smostafa@google.com>, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
-	Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH v8 12/23] dma: swiotlb: pass mapping attributes by
- reference
-Message-ID: <20260804142032.GC27883@nvidia.com>
-References: <20260717180442.110954-1-aneesh.kumar@kernel.org>
- <20260717180442.110954-13-aneesh.kumar@kernel.org>
- <ami_mpd_1pF4Tmdu@google.com>
- <yq5a5x1ygo7z.fsf@kernel.org>
- <amnRB98ZZIysHuM3@google.com>
- <yq5acxw6dl1d.fsf@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5acxw6dl1d.fsf@kernel.org>
-X-ClientProxiedBy: BL1PR13CA0178.namprd13.prod.outlook.com
- (2603:10b6:208:2bd::33) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Nnxy4KTf"
+X-Forwarded-Encrypted: i=1; AHgh+Rqd63Lz8v2Z/OunymHKW1K5sM/nTOJ5NHxvThaxq4k0x8/DIvPT5Ao6JwfU5x3peg/UWYoRM27yjJnF@lists.linux.dev
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785853505;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HIcOFle/zwz16Xg1hcnb8SPakGcZDbwDo5/3Sec2GL4=;
+	b=Nnxy4KTfQX6Vc+svmhtHKnywppXcO7/ZfdQRdROGDPXsH9PVRUxmIPo7wO5/lIS88I6tMv
+	cUlwLH9ae+1vJZwxmxIcRqljJWTtOITPfRYWK1AIN7yJIA0NaM/QDxpdOFdFwQSJUVfx3a
+	4Xfc8jKAtdbErusMq+qgf0SR6+PD0aw=
+X-Gm-Message-State: AOJu0YygqhjfjCUrMNC7VhignFnFWIdHhyPZGHN1+StZRJEcQCvcoM3R
+	KB6I9Xf1Dop9hpM99luOUkh2JrthnUJLReeHB/atWX0eRoTxBOVboUYD1Cq9eGjAFIoKF775UHq
+	ip8LroBja6BA4ARXWxEe9tMx8xilBkC5LozcuU2so
+X-Received: by 2002:a05:622a:550c:b0:50f:af60:3496 with SMTP id
+ d75a77b69052e-52ce3f651e3mr1750781cf.1.1785853486200; Tue, 04 Aug 2026
+ 07:24:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|CH3PR12MB8901:EE_
-X-MS-Office365-Filtering-Correlation-Id: d933b639-f37f-4973-20ec-08def2338bb0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|366016|1800799024|376014|22082099003|18002099003|4143699003|11063799006|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	y0XzE7i2bktET0P2E4lJqv4vDJV/DalfYt1jt7DmuHZSXdJpkpFqCN1Qcq0HMmJa/3E/Zm7eqVuAqfwzD+lptrqJlGxNj5S39j7VfUtv4Bvq/MfFmB/ffknkTyRRKIit0e8Bv1uHb/QvnXUu2DVLqTzDq5XcyE2w+i6uU+fqR9x93/GKl/OyNNlY9xo1NQ3BYnUkpbTvRnLqbst7VgWxx0kGNJJITq6RpEg1X0xQp1A7dEKkQp79bcSig+ke3UbkwRHjGiu+c0CNLAaDfxWK/eYP0k5MqrZg0XJi+O2iJkE5MeyVuM7sfVNiCbtWOJ/DUf41lxOO55YDiY2WvZZsufd+onoKnmaWa7twn77SS3Yib7pm/qee2YPK59CtCn7wLEunJCggamZ5BsZEK5WDl7guIFKBwUnJb+LEukjVm02AnSLTDguIDfqQ3RFHjYIkb9KgxoSv7717Zq+DawThCKWQGBg5melMc2/WEq+UhQDhVZXSohsDHPOq812p6+DOzIaHv2R1n+VrU1180vfTxosn1CcO8PlXWFoMJUiyfo8K9Qbe30g0mDzzMaNRxI8m1rW9aJ6jEh7zTnXnPIm21R2ASRvcoVNdpqevUhlVeypIK3x3T2+dFeOVm0FfKe4DJcYVDR6zpjil/RUDMyAvsK57hnkHo2/uffWTcInx1Oc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(366016)(1800799024)(376014)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?lmJ62cjpSKqKZL3RGh/L2bTFRteNT2V+AdFaa7l1TJYD3FQICOP9/X6BGLQK?=
- =?us-ascii?Q?tHdy1dUWTwQXX5PPusxa9ze2PvRW1KCGWCQInDkOE0KQzsxiD5rsulYsXNUQ?=
- =?us-ascii?Q?XnYAnUL043WvPaA0aCO6Va6wUsM0A3pV/PWIOiSPKoCriyVB/jza5AHQ4Ddi?=
- =?us-ascii?Q?YYkoe90DAUnKnFw3FKSVQ6EqwQZbhGIjQ6BK0mm9kS+vIEtRX+pQPKcgEaeM?=
- =?us-ascii?Q?VfhuaJAjbo18oqRE3SSrYHvX4LV7daEkPHxOOByVVjRTXYaQbNviOwKDqrYS?=
- =?us-ascii?Q?THf5uMDf0qSXIW4rdX5P8tPvA6aFjE9UH9+OHtNc0xN7tZgGpZ+FLCx/nW1i?=
- =?us-ascii?Q?5RaL7gPYA/MMHN48c2AOqdV0r9krW5I0wZjLlUG1GskymIPqPoEs9nLSGLRl?=
- =?us-ascii?Q?t2jUicjHPxrvKoq8C6VAMPbA3vysw7WEoTfi/URURI/zF3UhDoCYMQIwL50p?=
- =?us-ascii?Q?7OLrSep9sNQjiwIZmSAnUNrZ+6h3rKkgwj+W6f8nYhmF6qrzOXjws6G5l7s+?=
- =?us-ascii?Q?flVMzg1vhKQWIZtno5GEXtuK55GQntucwMzKWMDel5X8eKV9XM0SWoK7kEP9?=
- =?us-ascii?Q?m58R6nluRZLKKmttpR28ZpNwGEWz8TezQ6vOOnQuV+lEZKezuEEdu+NNpTgu?=
- =?us-ascii?Q?+e2p+MCk2d1tFNh8aaOB/Dw9EeEG/q+Fx7mGK8zCtND4MOwwKpyImnzMuSi9?=
- =?us-ascii?Q?+0pdHDapb4+y6ztj8T1gXGG2rPa0a3HJViUBKVv8kQd1GErNZz4zshoi0FwD?=
- =?us-ascii?Q?jvQlFdi0bd7kQvDta8a0Xd5NMt08eoJB6HRDM8DH2erASCsue9T+IjlSqtXh?=
- =?us-ascii?Q?vG025q9RSDohCZLazxSJA60gX81jrjzx2x1iB4uA3Af3xrpp/jkvjBtsKSCJ?=
- =?us-ascii?Q?hC15V8GTutAcN2kaWX39c+SjkidSKIsdh+iW9SJKn/mFpDJpS1SmU15JSEAH?=
- =?us-ascii?Q?y4wWGugEtfRgDyoOIdba8a/lW8dbPf4XxDrWzCTWA8Jgy2f3RXCksgwNRjz3?=
- =?us-ascii?Q?Zs95jDHkRR7Fe4i5qRxC0NUiGzXriIvnjfJplHHg0du7GiqnikBkkywJ5/6w?=
- =?us-ascii?Q?Pk/DX5ovEICRDWJFRtEkZFk6gFKJxcadWRmJ4bFxLl0sgTL1phq9rXMqoIGb?=
- =?us-ascii?Q?+/e9tlYYoIIdygAXNLB7ofCmvUyW5zMqi017GahsHpT4sq02hnBLmd9aeZOT?=
- =?us-ascii?Q?BiPX9iAp79QR7+fnYdVLfC6zzpkZtmd863THFXCUauTFwzCi2XZgAEI7e15g?=
- =?us-ascii?Q?1PWqEgdKaCJcK43sKGY4muRpRuqjKfzCPjnV6J31MtTx7//DbOQlAikmLmka?=
- =?us-ascii?Q?QJbljSgeuWlolNwfxkfH4E+TBcbjewb20Hbh7lqzyKAGO80HdUzim6MKn7DT?=
- =?us-ascii?Q?ulnvk49w2ygHmUqs5mBwCK3PY7jehPObN62uvnXK98LgyJTXRbPemtTC81AQ?=
- =?us-ascii?Q?xcJ/5yq9jRhn/Djx8nzMBvkhu2WAamm68kSL+P3HVIQbhQm/uKdr7jJ4b9GN?=
- =?us-ascii?Q?x3YTnSILdQBRqVsvWDT57Ca2T2JNyiISdo7inIEG/JoOiQzZ3Wy1r0hO/1ja?=
- =?us-ascii?Q?fJrPrPHvyNgl1ctFFN9dpCkvtnR69y92AH1fkdDNH14QoHjM3iFuP/NMoO9h?=
- =?us-ascii?Q?DT9DnRywROtGSBM00M4G9oP52l0lp2dypbtQOa5y+f2uKAvk0LMhNLsvqORB?=
- =?us-ascii?Q?Rf8tjoUeakSdvVYuAM/702B7P4oM16a9tBZ05qyCzbtR8ZCo?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d933b639-f37f-4973-20ec-08def2338bb0
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 14:20:33.6103
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sWMu/91ExHlwUzdUUHGEKGx3KYAHUoiI11dVqLYArwQpcV75mMKbaH+2w6Hxich6
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8901
+References: <20260803134403.80630-1-steven.price@arm.com>
+In-Reply-To: <20260803134403.80630-1-steven.price@arm.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Tue, 4 Aug 2026 15:24:00 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTy4tpv+d7Q0H1Coe4PXAFrvHc8_fiOyv8GXdo7y7CNMdA@mail.gmail.com>
+X-Gm-Features: AUfX_mxdVEoiKGsOFqc7silG1XiAgRiraJnJQa_4blZVDkZkFRMAqMHa_QhDxGw
+Message-ID: <CA+EHjTy4tpv+d7Q0H1Coe4PXAFrvHc8_fiOyv8GXdo7y7CNMdA@mail.gmail.com>
+Subject: Re: [PATCH v16 00/45] arm64: Support for Arm CCA in KVM
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Christoffer Dall <christoffer.dall@arm.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Jul 29, 2026 at 06:12:38PM +0530, Aneesh Kumar K.V wrote:
-> There is a possibility that we may support io_tlb_mem with cc_shared =
-> false in the future. As a result, only swiotlb_map() knows which type of
-> bounce buffer was used, making it the only place where the attributes
-> can be updated correctly.
+Hi Steven,
 
-Yeah, +1, the attribute should be changed at the same effective place
-the source memory is changed away from what the DMA API user
-provided. Only the thing providing the new memory (eg swiotlb) should
-know its properties.
+On Mon, 3 Aug 2026 at 14:44, Steven Price <steven.price@arm.com> wrote:
+...
+>  * Rewrite Realm entry and exit handling to fit into the generic KVM
+>    run loop. Work which cannot be performed in the entry path is now
+>    completed through KVM requests, and MMIO, PSCI, RIPAS changes and
+>    host calls are adapted to the new flow.
 
-Jason
+Reading v16 with pKVM in mind: this rework helps, but the series still
+adds a few kvm_is_realm()/vcpu_is_rec() checks to the core arm64 code,
+and several sit next to, or inside the same condition as, the existing
+pKVM checks (the nommu path in kvm_arch_vcpu_load(), the timer
+offsets, the NISV abort injection). Both checks answer the same
+question: is the guest's state owned by something other than KVM. It
+might be worth a common predicate covering both.
+
+Cheers,
+/fuad
+
+
+
+>
+>  * Rewrite Realm timer support to use KVM's IRQ-ops infrastructure and
+>    software resampling.
+>
+>  * Improve SRO cancellation and error handling. Ensure a cancelled
+>    operation isn't treated as successful, wrapper return values can carry
+>    negative Linux errors as well as RMI return values, and those errors
+>    are propagated through the KVM users.
+>
+>  * Check that the RMM supports the host page size before configuring it,
+>    and exclude firmware-reserved NOMAP memory when creating GPT entries.
+>
+>  * Expand the KVM_ARM_RMI_POPULATE documentation to make clear that Arm
+>    CCA cannot preserve memory contents during an in-place
+>    shared-to-private conversion.
+>
+>  * Allocate Realm parameters only while creating the Realm descriptor.
+>
+>  * Document the encoding of the arm64 VM types and require
+>    ICH_HCR_EL2.TDIR before advertising or creating Realm VMs.
+>
+> This series is based on the guest_memfd in-place conversion v9 tree[1],
+> which is itself based on kvm-x86/next. It is also available as a git
+> repository:
+>
+> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v16
+>
+> Work in progress changes for kvmtool are available from the git
+> repository below:
+>
+> https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v13
+>
+> The TF-RMM branch used for testing this series is available here:
+>
+> https://git.trustedfirmware.org/TF-RMM/tf-rmm.git topics/rmm-v2.0-poc_3
+>
+> There is a kvm-unit-test branch updated to support the attestation used
+> in RMM v2.0 available here:
+>
+> https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca cca/v4
+>
+> [0] https://developer.arm.com/documentation/den0137/2-0bet2/
+> One bet2 change, which moves metadata out of the individual address
+> range descriptors, has intentionally not been implemented because that
+> part of the specification is expected to be reverted.
+>
+> [1] https://github.com/googleprodkernel/linux-cc/commits/guest_memfd-inplace-conversion-v9
+>
+> Jean-Philippe Brucker (6):
+>   KVM: arm64: CCA: Propagate breakpoint and watchpoint counts to
+>     userspace
+>   KVM: arm64: CCA: Set breakpoint parameters through SET_ONE_REG
+>   KVM: arm64: CCA: Propagate max SVE vector length from the RMM
+>   KVM: arm64: CCA: Configure max SVE vector length for a Realm
+>   KVM: arm64: CCA: Provide register list for unfinalized RECs
+>   KVM: arm64: CCA: Provide an accurate register list
+>
+> Joey Gouly (2):
+>   KVM: arm64: CCA: Allow userspace to inject aborts
+>   KVM: arm64: CCA: Support RSI_HOST_CALL
+>
+> Steven Price (34):
+>   firmware: arm_rmm: Add SMC definitions for calling the RMM
+>   firmware: arm_rmm: Add wrappers for direct RMI calls
+>   firmware: arm_rmm: Check for RMI support at init
+>   firmware: arm_rmm: Configure the RMM with the host's page size
+>   firmware: arm_rmm: Add support for SRO
+>   firmware: arm_rmm: Ensure the RMM has GPT entries for memory
+>   arm64: mm: Handle Granule Protection Faults (GPFs)
+>   KVM: arm64: Avoid including linux/kvm_host.h in kvm_pgtable.h
+>   KVM: arm64: CCA: Add wrappers for realm related RMIs
+>   KVM: arm64: CCA: Check for RMI support at KVM init
+>   KVM: arm64: CCA: Check for LPA2 support
+>   KVM: arm64: CCA: Define the user ABI
+>   KVM: arm64: CCA: Add basic infrastructure for creating a realm
+>   KVM: arm64: CCA: Allow passing the machine type in KVM creation
+>   KVM: arm64: CCA: Tear down RTTs
+>   KVM: arm64: CCA: Allocate and free RECs to match vCPUs
+>   KVM: arm64: CCA: Support the VGIC in realms
+>   KVM: arm64: CCA: Support timers in realm RECs
+>   KVM: arm64: CCA: Handle realm enter/exit
+>   KVM: arm64: CCA: Handle RMI_EXIT_RIPAS_CHANGE
+>   KVM: arm64: CCA: Handle realm MMIO emulation
+>   KVM: arm64: Expose support for private memory
+>   KVM: arm64: CCA: Create the realm descriptor
+>   KVM: arm64: CCA: Activate realms on first vCPU run
+>   KVM: arm64: CCA: Allow populating initial contents
+>   KVM: arm64: CCA: Set RIPAS of initial memslots
+>   KVM: arm64: CCA: Support runtime faulting of memory
+>   KVM: arm64: CCA: Handle realm vCPU load
+>   KVM: arm64: CCA: Validate register access for Realm VMs
+>   KVM: arm64: CCA: Handle Realm PSCI requests
+>   KVM: arm64: WARN on injected undef exceptions
+>   KVM: arm64: CCA: Prevent Device mappings for realms
+>   KVM: arm64: CCA: Require ICH_HCR_EL2.TDIR for realms
+>   KVM: arm64: CCA: Enable realms to be created
+>
+> Suzuki K Poulose (3):
+>   KVM: arm64: Include kvm_emulate.h in kvm/arm_psci.h
+>   KVM: arm64: CCA: Don't expose unsupported capabilities for realm
+>     guests
+>   KVM: arm64: CCA: Allow checking SVE on VM instance
+>
+>  Documentation/virt/kvm/api.rst       |   70 +-
+>  arch/arm64/Kconfig                   |    1 +
+>  arch/arm64/include/asm/kvm_asm.h     |    2 +
+>  arch/arm64/include/asm/kvm_emulate.h |   37 +
+>  arch/arm64/include/asm/kvm_host.h    |   12 +-
+>  arch/arm64/include/asm/kvm_pgtable.h |    6 +-
+>  arch/arm64/include/asm/kvm_pkvm.h    |    2 +-
+>  arch/arm64/include/asm/kvm_rmi.h     |  139 +++
+>  arch/arm64/include/asm/rmi_cmds.h    |  465 ++++++++
+>  arch/arm64/include/asm/virt.h        |    1 +
+>  arch/arm64/kernel/cpufeature.c       |    1 +
+>  arch/arm64/kvm/Kconfig               |    2 +
+>  arch/arm64/kvm/Makefile              |    2 +-
+>  arch/arm64/kvm/arch_timer.c          |   34 +-
+>  arch/arm64/kvm/arm.c                 |  139 ++-
+>  arch/arm64/kvm/guest.c               |   93 +-
+>  arch/arm64/kvm/handle_exit.c         |   14 +
+>  arch/arm64/kvm/hyp/pgtable.c         |    1 +
+>  arch/arm64/kvm/hypercalls.c          |    4 +-
+>  arch/arm64/kvm/inject_fault.c        |    5 +-
+>  arch/arm64/kvm/mmio.c                |   16 +-
+>  arch/arm64/kvm/mmu.c                 |  144 ++-
+>  arch/arm64/kvm/reset.c               |   13 +-
+>  arch/arm64/kvm/rmi-exit.c            |  178 +++
+>  arch/arm64/kvm/rmi.c                 | 1561 ++++++++++++++++++++++++++
+>  arch/arm64/kvm/sys_regs.c            |   47 +-
+>  arch/arm64/kvm/vgic/vgic-init.c      |    2 +-
+>  arch/arm64/mm/fault.c                |   28 +-
+>  drivers/firmware/Kconfig             |    1 +
+>  drivers/firmware/Makefile            |    1 +
+>  drivers/firmware/arm_rmm/Kconfig     |   26 +
+>  drivers/firmware/arm_rmm/Makefile    |    2 +
+>  drivers/firmware/arm_rmm/rmi.c       |  776 +++++++++++++
+>  include/kvm/arm_psci.h               |    2 +
+>  include/linux/arm-rmi-cmds.h         |  201 ++++
+>  include/linux/arm-smccc-rmi.h        |  493 ++++++++
+>  include/uapi/linux/kvm.h             |   20 +-
+>  37 files changed, 4446 insertions(+), 95 deletions(-)
+>  create mode 100644 arch/arm64/include/asm/kvm_rmi.h
+>  create mode 100644 arch/arm64/include/asm/rmi_cmds.h
+>  create mode 100644 arch/arm64/kvm/rmi-exit.c
+>  create mode 100644 arch/arm64/kvm/rmi.c
+>  create mode 100644 drivers/firmware/arm_rmm/Kconfig
+>  create mode 100644 drivers/firmware/arm_rmm/Makefile
+>  create mode 100644 drivers/firmware/arm_rmm/rmi.c
+>  create mode 100644 include/linux/arm-rmi-cmds.h
+>  create mode 100644 include/linux/arm-smccc-rmi.h
+>
+> --
+> 2.43.0
+>
