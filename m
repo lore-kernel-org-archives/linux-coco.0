@@ -1,146 +1,144 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A4D363C45
-	for <linux-coco@lists.linux.dev>; Tue,  4 Aug 2026 11:31:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71EE33A6F1;
+	Tue,  4 Aug 2026 12:16:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785843075; cv=none; b=So5qSxEw1anjUSOQpgUzAJB/PbGXjlqgxUnTMFNHAiIiJf+TtHp0+d7jfFp7zZ98/kZp76U6eg314OmVpgbCijZwq1gWyB3gEcVOHpbGYntLCldYuccb70xdJ+P3pw+cNKiLVgdDcJ2o3Rm4J8ibtQ2velkb2BJXoa9GHYJVqMc=
+	t=1785845771; cv=none; b=s2rGgFVqXo7a9ixXNaAA7FcXRUeOBgOvlf4fDcWzVQ5eL6yQlJ09kr7z8/y06M26u6GCCHV1tvWPhNj0uMltKouvYrORsgBMJI3yUsMU3kEZdkOFjM4Pf+sIgKxbSHMtdl3nVZ+leMiV8aXinjXy1P3LLvgUkAU3MzNdHbU/0Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785843075; c=relaxed/simple;
-	bh=Pi5qbVX2SOI5SdGfiFCW/36EzzapHXmkthYgHMyLdi8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R6yoo929iWccxP8r75tuc6CjyavG+35R+FYRdniYT3VXMAfFKfUwgQOvdtOQfT5yI3Ex51EfQEwNcUtw100QMm9dC8yeK2/7PdfbThNeG0bkBT6ytCZIsUmGeCe7+NF/JuRfOq/jIz/ZPMMHTue7mUolpHBG9jJcPdu4mINOY/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zwclr1tB; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785845771; c=relaxed/simple;
+	bh=bcAMhZTiy49tEojqvYK5r5G3B51T0weL1dSTwGIlZwY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PJy26C3b+4UgPc6jjXDDnmrfkr68TPsLqotrRBiS9LxuoDXy5Owc0SSLcxD+XnhYoYg3kV/68bMCXqgEVIp7FlSE6Zcbv42BPxR4LxKLs8QwfBw+4rZpuFLrUfsbhAj+ajtk6S7gGC9T6/caCQND7EX8rurg8d76hoswfzqWd2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=c6UEwA1t; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zwclr1tB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785843073; x=1817379073;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Pi5qbVX2SOI5SdGfiFCW/36EzzapHXmkthYgHMyLdi8=;
-  b=Zwclr1tBRjeahez65IJqakZrUVpZs/ktuRtqZIMrrs95A2N60YOhT4+6
-   CdFxcD/gyNSdy/8BSSQA0guH5ygTxrqnbApaUBdFiyBTowaZt9CrPi1ee
-   4sV/qbZ8Iy1xZQrWC60LMvEaK3XLPESZ6U0cV7+QnlAk6Ak6V7q0NFUug
-   c3GqXkEOHBrA9pxNNLpek3cB9MAAvcoRQ4Dgdd2pB05sx57eu+Tm3QdlF
-   WqNZyYHizpsUdT8Vgj2TU0BcNj/KDWFFSwEiNuQ4LqYueQXkcc8fQCFuy
-   /WRunSsm7aZ8xUr6fBRrPiv8+54nBXWjVdYZ8M7i/l3KxwgrfuieNfm9w
-   A==;
-X-CSE-ConnectionGUID: 43Wgmb/CQcuquTYwj3B6GA==
-X-CSE-MsgGUID: 3LUe5XSRTACQc+cdPqkLLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="86244259"
-X-IronPort-AV: E=Sophos;i="6.25,204,1779174000"; 
-   d="scan'208";a="86244259"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 04:31:09 -0700
-X-CSE-ConnectionGUID: 78mmNRjcQwWp/IN+2fEMVA==
-X-CSE-MsgGUID: tSqKD+oUSMCGaCKujPcEAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,204,1779174000"; 
-   d="scan'208";a="265323118"
-Received: from jf.jf.intel.com (HELO 984fee019967.jf.intel.com) ([10.23.153.244])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 04:31:09 -0700
-From: Chao Gao <chao.gao@intel.com>
-To: linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org
-Cc: rick.p.edgecombe@intel.com,
-	kas@kernel.org,
-	dave.hansen@linux.intel.com,
-	chao.gao@intel.com
-Subject: [PATCH v1 8/8] x86/virt/tdx: Verify the C member size against the metadata field ID
-Date: Tue,  4 Aug 2026 04:29:36 -0700
-Message-ID: <20260804112941.19894-9-chao.gao@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260804112941.19894-1-chao.gao@intel.com>
-References: <20260804112941.19894-1-chao.gao@intel.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="c6UEwA1t"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EF8851476;
+	Tue,  4 Aug 2026 05:16:03 -0700 (PDT)
+Received: from [10.57.44.180] (unknown [10.57.44.180])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E55483F66F;
+	Tue,  4 Aug 2026 05:16:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785845768; bh=bcAMhZTiy49tEojqvYK5r5G3B51T0weL1dSTwGIlZwY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=c6UEwA1tfFd2CmIo6fSWGXXuYEzA2q181oOLDQYEGFGK+6ReJcnh1HF8CmR55UEwS
+	 4KYLjtJBdGc+eGUnk52Cn0Ek0phGnFAEbNgF42/95p8y/PHexLLabxa6ezN6urQQx8
+	 oo4Cl+2TiqW9TB+qhDx/Li/qJmx1beTxD+VNJIHc=
+Message-ID: <c1f0aad2-33cb-4dab-b54d-d09998fed36e@arm.com>
+Date: Tue, 4 Aug 2026 13:16:00 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 17/45] KVM: arm64: CCA: Tear down RTTs
+Content-Language: en-GB
+To: Alper Gun <alpergun@google.com>, Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-18-steven.price@arm.com>
+ <CABpDEun3NPr7Na85pmOvdfYQ1DB-2nCcocsyDESXM15bzJU1og@mail.gmail.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CABpDEun3NPr7Na85pmOvdfYQ1DB-2nCcocsyDESXM15bzJU1og@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Each TDX global metadata field ID encodes the size of that field.
-read_sys_metadata_table() stores each value at the width recorded in
-the table, which TD_SYSINFO_MAP() derives from the destination C member.
-Nothing checks that the two agree.
+Hi there
 
-A table entry naming the wrong field ID, or a struct member declared at
-the wrong width, would silently truncate the value read from the TDX
-module. That is a kernel-side bug rather than a TDX module problem.
+On 03/08/2026 23:29, Alper Gun wrote:
+> On Mon, Aug 3, 2026 at 6:45 AM Steven Price <steven.price@arm.com> wrote:
+>> [...]
+>> +static void realm_unmap_stage2(struct kvm *kvm)
+>> +{
+>> +       struct realm *realm = &kvm->arch.realm;
+>> +
+>> +       lockdep_assert_held(&kvm->arch.config_lock);
+>> +
+>> +       if (realm->stage2_unmapped)
+>> +               return;
+>> +
+>> +       write_lock(&kvm->mmu_lock);
+>> +       kvm_stage2_unmap_range(&kvm->arch.mmu, 0,
+>> +                              BIT(realm->ia_bits - 1), true);
+>> +       write_unlock(&kvm->mmu_lock);
+>> +
+>> +       realm->stage2_unmapped = true;
+>> +}
+>> +
+>> +int kvm_realm_teardown_stage2(struct kvm *kvm)
+>> +{
+>> +       lockdep_assert_held(&kvm->arch.config_lock);
+>> +
+>> +       realm_unmap_stage2(kvm);
+>> +       return realm_destroy_rtts(kvm);
+>> +}
+> 
+> Hi Steven,
+> 
+> I noticed a warning in dmesg when destroying a realm:
+> 
+>    [  158.533495] Call trace:
+>    [  158.535927]  kvm_destroy_realm+0x208/0x218
+>    [  158.540356]  kvm_arch_destroy_vm+0xc8/0xd8
+>    [  158.544439]  kvm_put_kvm+0x324/0x4b0
+>    [  158.548002]  kvm_vm_stats_release+0x1c/0x38
 
-Add macros to extract the encoded size from a field ID, and use them in
-TD_SYSINFO_MAP() to assert that it matches the member size.  Both are
-compile-time constants, so the check costs nothing at runtime.
+Thanks for the report and the detailed analysis.
 
-Note that BUILD_BUG_ON() cannot be used in a structure initializer; use
-BUILD_BUG_ON_ZERO() instead, which yields 0 and so can be folded into the
-.size initializer without changing its value.
+> 
+> I traced this and found the following:
+> 
+> At this point, calling realm_destroy_rtts() may fail destroying the RTTs
+> because RECs are still active and the Realm is not terminated, but the
+> walk finishes and still sets realm->rtts_destroyed = true.
+> 
+> Later, kvm_destroy_realm() calls rmi_realm_terminate() and then calls
+> realm_destroy_rtts(kvm) again. But because realm->rtts_destroyed is already
+> set to true, it exits early without tearing down the RTTs.
+> 
+> Consequently, rmi_realm_destroy() is invoked while the RTT tables still
+> exist in RMM, which fails and triggers WARN_ON(rmi_realm_destroy).
+> 
+> The fix I used was to remove realm_destroy_rtts() from
+> kvm_realm_teardown_stage2():
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -434,7 +434,7 @@ int kvm_realm_teardown_stage2(struct kvm *kvm)
+>    lockdep_assert_held(&kvm->arch.config_lock);
+> 
+>    realm_unmap_stage2(kvm);
+> - return realm_destroy_rtts(kvm);
+> + return 0;
+>   }
+> 
+> I think we don't need RTT destruction here as it will be handled cleanly in
+> kvm_destroy_realm() later.
 
-No functional change intended.
+That sounds sensible to me, I will take a look and fix it locally for 
+the next version.
 
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Chao Gao <chao.gao@intel.com>
----
- arch/x86/virt/vmx/tdx/tdx.c |  9 ++++++++-
- arch/x86/virt/vmx/tdx/tdx.h | 15 +++++++++++++++
- 2 files changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 4bf21848df62..59099cc15f7a 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -357,11 +357,18 @@ struct tdx_sys_field {
- 	u8  size;
- };
- 
-+/*
-+ * The size encoded in the field ID and the size of the destination C
-+ * member must agree; BUILD_BUG_ON_ZERO() enforces this at compile time.
-+ */
- #define TD_SYSINFO_MAP(_field_id, _struct, _member)				\
- 	{									\
- 		.field_id = MD_FIELD_ID_##_field_id,				\
- 		.offset   = offsetof(struct _struct, _member),			\
--		.size     = sizeof_field(struct _struct, _member),		\
-+		.size     = sizeof_field(struct _struct, _member) +		\
-+			    BUILD_BUG_ON_ZERO(					\
-+				sizeof_field(struct _struct, _member) !=	\
-+				MD_FIELD_ID_ELE_SIZE(MD_FIELD_ID_##_field_id)),	\
- 	}
- 
- /*
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 5f567cb6c07a..c612b1cf7c14 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -109,6 +109,21 @@
- #define MD_FIELD_ID_CPUID_CONFIG_LEAVES		0x9900000300000400ULL
- #define MD_FIELD_ID_CPUID_CONFIG_VALUES		0x9900000300000500ULL
- 
-+/*
-+ * Sub-field definitions of MD_FIELD_ID.
-+ *
-+ * See "MD_FIELD_ID (Metadata Field Identifier / Sequence Header)
-+ * Definition" in the Intel TDX Module ABI spec.
-+ *
-+ *  - Bit 33:32: ELEMENT_SIZE_CODE -- log2 of a single metadata
-+ *                                    element's size in bytes
-+ */
-+#define MD_FIELD_ID_ELE_SIZE_CODE(field_id)	\
-+	(((field_id) & GENMASK_ULL(33, 32)) >> 32)
-+
-+#define MD_FIELD_ID_ELE_SIZE(field_id)		\
-+	(1 << MD_FIELD_ID_ELE_SIZE_CODE(field_id))
-+
- /* TDX page types */
- #define	PT_NDA		0x0
- #define	PT_RSVD		0x1
--- 
-2.52.0
+Thanks
+Suzuki
+
+> 
+> Thanks,
+> Alper
 
