@@ -1,50 +1,48 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3214394E80
-	for <linux-coco@lists.linux.dev>; Tue,  4 Aug 2026 23:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926E833BBAF
+	for <linux-coco@lists.linux.dev>; Tue,  4 Aug 2026 23:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785886729; cv=none; b=vB10f6Wsy7qlk+Vo414j5MfhguaObHRsbfo3544DuoOt8uikuf+x4dm7R4hEiPNHCJtY5KcsjWI5XP2GWbVbPGWZ9TpyYaz06biSV4adp6FbD78QInvcKFXmonY3X66BVoWamwn1uhoEniTlWpIX6Uh6t7fbDwelss5TmL+w1uc=
+	t=1785887029; cv=none; b=L8Y1SKnbtpRZm8Om3Rsarri7DPEenPOGdCR06hB5UKNGt5/E4309V93Sw7zK0lDer7KzJcoalU3VUCWdz/qP8678npMAnbXqV++/PRmeSU6tbQJqFNdNGn8zaMIU5hJyM2iupGQoezeTegmXZ/2hwt3WNpq+VYmIqLQ7g8kX2MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785886729; c=relaxed/simple;
-	bh=bxVnLisrrjhyKhSC18hn+pG3orj37aPyARkM+s2ow+8=;
+	s=arc-20240116; t=1785887029; c=relaxed/simple;
+	bh=Kzlmampl3B9EuybpZzFLmtBI1ka1Z0J+otMGegc3jaw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=buyKkEesRD6/4vB041k9Aelu+vKjKot78TY2Vi4SUXbvFhUH0gBea6OiO/NGRZmy133qLzTlLMmnIYyRBpIQBO6yGe08OccaJAbijBdGMagb7EpfbTsV5GyKuJxf8IqDd1p1pMZvB7hOZMnoeVGmywJgnrDexrzqxnXFvynbVxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m17WnRmk; arc=none smtp.client-ip=198.175.65.10
+	 In-Reply-To:Content-Type; b=T+8pV1xVwFmvFqQPCqatgtANlIFs6O6TWDoXvO7G6Iwyc2iczpaHdYrr+h4lJeGMb/FqnG/r2TlEHfBLJeMXUcUiHLhyVMBV5K85pH1VOncUDO7trj0/zHSdMqMf8vP7F5Ou+4R0ItdINMXg9QMMOWXeRfGsyfGlfOQMe7zLvd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HA+vtzUR; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m17WnRmk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HA+vtzUR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785886728; x=1817422728;
+  t=1785887027; x=1817423027;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=bxVnLisrrjhyKhSC18hn+pG3orj37aPyARkM+s2ow+8=;
-  b=m17WnRmkxUio8O50TUgGqScYS68KXDs5qAUmdYNPXbkzkgAsx30loMP0
-   W2yMv3QJTcONYkSjcAOeAdIilXyuFowMzRe4tDjFNh3rwCICckpkkS2il
-   kFcHGzrGNNd+XPhEiT9tW0x82eE7PPEY8XxcAsPYFZAWTq2qKOXvfSVIx
-   YImzQa0UGChtVxTj8OmLsiMDgS7xonj3D+d+1WVQvdsk67B4+dQTBRCn0
-   7MaYdh1ojUCmxPtAyH1Ta0rVuOAZ3C/4FQ7VeCPykv8qg1r97Cgmseob+
-   OMFA8NCDpuxA6JeG+F3SrAh19JTGn1EuD44A9FLKJvZPeVp4PIp424Ni0
+  bh=Kzlmampl3B9EuybpZzFLmtBI1ka1Z0J+otMGegc3jaw=;
+  b=HA+vtzUR3gs3fzAJVAexZ+OmHtp4dCAhv+W00/2LTKnm60E8SHWtEUBO
+   8Ziu7FBiIn5+zrIXn0Fyc2iaXF4cdnPgAzmytPAi6k7qY7sBKxVd46Ueh
+   jX3sB27K7eOLbYIFvKwJcCmIlrLEB2ch6+p8R+tzNT/CR0uDGN6PNizuQ
+   lEI+bODYOXwXwLMNrNk5A8gaWCPKS5IMqKAYfDGOsFf3Q7yfDBEbFQ5RB
+   r0Z+oXp9taHvK1Vhm0/3Y6oL44qhUVyAwQ8cZU31BtJ2PH4Hb/wpFGlB4
+   T/nGy9bVMzL6jeHz621O8twrr/vVOKV7G9NW/or/MLHX4UfYUHlgQN6RT
    w==;
-X-CSE-ConnectionGUID: WN8Uc+5lT/m+NCmCGREyqA==
-X-CSE-MsgGUID: xK1Oud7uTgqeuTdl6OwtKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="103853626"
+X-CSE-ConnectionGUID: yWYDVaJfRKGWL1R5L+4J4A==
+X-CSE-MsgGUID: lzv22+IFRoO0FPlavbEUPg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="97955580"
 X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
-   d="scan'208";a="103853626"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:38:47 -0700
-X-CSE-ConnectionGUID: Fup097ZqRq+r9jNyE3rb5g==
-X-CSE-MsgGUID: wiYnYnAEQCa4G6xx1wvttQ==
+   d="scan'208";a="97955580"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:43:47 -0700
+X-CSE-ConnectionGUID: R9t4uPgnRJaLxJTVXYyvYQ==
+X-CSE-MsgGUID: fxIRLV00QPOTRQHEx6tJDA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
-   d="scan'208";a="266765134"
 Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.109.19]) ([10.125.109.19])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:38:47 -0700
-Message-ID: <89d0fc03-542f-4218-8b6c-f6b0fba0942e@intel.com>
-Date: Tue, 4 Aug 2026 16:38:44 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:43:46 -0700
+Message-ID: <43bb043e-8a01-484e-905b-41c73ae835d3@intel.com>
+Date: Tue, 4 Aug 2026 16:43:43 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,11 +50,13 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/8] TDX: Stop auto-generating the global metadata code
-To: Chao Gao <chao.gao@intel.com>, x86@kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 1/8] x86/virt/tdx: Stop treating tdx_global_metadata.h
+ as auto-generated
+To: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org
 Cc: rick.p.edgecombe@intel.com, kas@kernel.org, dave.hansen@linux.intel.com
 References: <20260804112941.19894-1-chao.gao@intel.com>
+ <20260804112941.19894-2-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -102,22 +102,45 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260804112941.19894-1-chao.gao@intel.com>
+In-Reply-To: <20260804112941.19894-2-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 On 8/4/26 04:29, Chao Gao wrote:
-> This is a long-overdue cleanup of the TDX global metadata, based on work
-> from Dave [1].
+> From: Dave Hansen <dave@sr71.net>
+> 
+> The TDX module exposes its capabilities and limits through "Global
+> Scope Metadata" fields, defined in the Intel TDX Module ABI spec.
+> The kernel mirrors a small subset of those fields in C structures
+> (for example, struct tdx_sys_info_version/features). Those structures
+> are populated by reading each field via the TDH.SYS.RD SEAMCALL.
+> 
+> Today the header that holds these structures is generated by an
+> out-of-tree script from a JSON file listing all of the TDX module's
+> metadata.  That made it trivial to add a new field, but everything
+> else suffered for it:
+> 
+>   - The header is opaque to anyone who doesn't have the script and
+>     the JSON file handy, and the "Automatically generated" tag tells
+>     reviewers their edits will be clobbered.
+>   - The script ships outside the tree, so reproducing changes
+>     requires fetching it from a mailing list link.
+>   - The structures are short and stable; the script's value over
+>     a hand-edited header is small.
 
-I wouldn't say "from Dave". At best, I'd say "AI slop in response to
-Dave's prompt" or "work vibe coded by Dave".
+Well, and the big one: after we started doing this, the "ABI Definitions
+for Intel® TDX" was declared to be not an ABI. So, even if we code to
+the JSON, there's no guarantee the JSON will be stable.
 
-But seriously, all I wanted to do was show my fellow humans that it
-wasn't an insurmountable task.
+<sigh>
 
-> Patches 1-6 keep Dave's authorship -- I only reworded the
-> commit messages and comments, with no significant changes to the code.
-> Note that they are missing Dave's Signed-off-by.
+Honestly that's what matters. The script and all the other fluff is just
+noise.
 
-Yes, and that was intentional.
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+
+So, I'm curious: What made you feel OK to sign-off on this? I'm not
+judging. I'm open-minded on this. All I know is *I* wasn't ready to
+sign-off on this.
+
+I really want to know what your thought process was.
