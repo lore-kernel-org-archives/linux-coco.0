@@ -1,124 +1,118 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E0D2E3FE
-	for <linux-coco@lists.linux.dev>; Wed,  5 Aug 2026 00:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB64821D00A
+	for <linux-coco@lists.linux.dev>; Wed,  5 Aug 2026 00:55:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785891005; cv=none; b=Y8cTVg2Jy9jSXKwRkwbHbaMwp+KIZ3To/eDFkbd7T74zKijwVa3KYM0WaOPJgMwsuw/m6jOzM+cfBYASntywl+Ry0pzivFL/lyoTwtbU4+Ir0r5hyhYMhZOiSI6JAh9jfYyLlDYbd8rYbReDfR+O5Waw6pFiskD/KhiLe/mv16o=
+	t=1785891338; cv=none; b=pDyVbj4oQH3SLW8CulSAdFnPbno/2/kZNnvhkj3IQnxruEN8hG76ED/creXp9hccFPnpfuB9/2on8iFjxJ4lO6EGU5Pu3RFUb9EJXtM22GHr3nIy+oyilL3d8LxTQOkUroJhp68JT2CZq3E7vAjGYPuLjpbNq65+oiSDbVMwQjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785891005; c=relaxed/simple;
-	bh=QlM00SFoLt3SgpwM5yns+MvvMSc3chlByAGXz9p99Sk=;
+	s=arc-20240116; t=1785891338; c=relaxed/simple;
+	bh=L0p0VCpSbh9Cfa3QK1gAYb1bq95q8GTSvQusPpTmsDI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EN9VAmRi4hzhBeIVp1ocqzvIyPJ/PAKAUQYbe/iWVrXMnpERDhKPzP6HqOymLr7dLpqP8zcaaYof14MnI0gebl6SFgGV4W4c7MhOF/F6vNxpn8BLUkVn7Woau9l5DcQHPIY9z08bwN97Atp5rRT+U1lXcuzmwht3/VnC7aj4NRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=VnS3br3T reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=vDKsvHnZ0w36kV91Q41adPWOipVxpcKTLJ/ttKDXgkWlXcmlk/ludOzH6XKX3pV1tp+hT6nGZ9rH4AfT6j0Zk0h4bbFq3bUI5oYsKhb6p3GJnjFliKWs8uRaIkZjSq7OXBbDpDHpiNx7plWxIgSq+5bceuj6IQjpGIUXegTrZGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=BNojs1gS; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="VnS3br3T"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id CAC5540E0031;
-	Wed,  5 Aug 2026 00:50:00 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id xQGTgCeBaw9Q; Wed,  5 Aug 2026 00:49:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1785890990; bh=SwRMflM/G6Wl3HyHAlXjWRPLk8KQM08C1ikUPXNLpnw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VnS3br3TMpVJeA1wPy6Tsy8Hb2w/olsQ56p+I9gLYVYNpHXlUTiIbE2JDG4e9HWci
-	 FcrundY2KMgn3fy46OP+DInemzWUFmXEZhnDQ49h/hHxvqvF7J68VB+IU8gGP6cIOw
-	 kAcP2pcZxD4TQYzu7UWp+foY3YUW2YqjgxwJWXlM7gq8zhquXSBqzI2v3yTXiBrjm8
-	 dKsLg3AY5iIQg8GClCuTJoRNHe5WiTNefyBxZqXcsxJqgVZheYa5PT4JEr5GArToqI
-	 Xn+No8zQaFRrTma140uGjJkYKtgYzsABoTN/prceMpe7fIuV7JZKzrtlty+gPZjDCb
-	 ROL6FCBzUen7RQpyDlkPAM9t7b1o1EdJyyH8KBynsjwmGpokjPTLTKPoqGdykEnSyR
-	 FAT35nrU706FLH0tL6OmqrOIRBHLriQR/LlZbrrlj/cETZv5/Rl5hzUuoW25fD0mUt
-	 FgUojrMdhYBwtxM5yfE8h9TNBjdEMHeQC6LUSYPAdBEfpf7xgRzyri43NlpelIthfI
-	 OR/NgFwdVpj20M8Hh5bvWZnyAlbKJDziWAsTQUytCt72wv32yhjmUYY25YU4HRDera
-	 0JiDUUBbMZC/mQGVMrYLsvB3MtSsSvdLGB/MTP4qk7ecLN41u1SpCWU+CjWX1IO6LM
-	 FEJp0/JoBEGO9z9I6fEA1NBQ=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C1A6440E00B8;
-	Wed,  5 Aug 2026 00:49:15 +0000 (UTC)
-Date: Tue, 4 Aug 2026 17:49:13 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	john.allen@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v11 4/6] x86/sev: Add support to perform RMP
- optimizations asynchronously
-Message-ID: <20260805004913.GBanKIiW-O3pDjIqjH@fat_crate.local>
-References: <748785f1-f176-4f0a-8b8d-eadf46b20960@amd.com>
- <178578506318.2377606.14791252769672870038@Ubuntu-2204-jammy-amd64-base>
- <df5f5f6f-7278-42e7-bc7d-8e56187d1438@amd.com>
- <8DAAEA48-F2FA-4D52-8E56-4B7213155F12@alien8.de>
- <d7a17bde-4af0-45ad-96bc-4717a1fa1545@amd.com>
- <60B4B369-19E7-44DF-BCCF-FC8DD851B2E7@alien8.de>
- <59e8b0cf-0ab0-4b7a-9e05-4de6f83c9a10@amd.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="BNojs1gS"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-9034b6b7674so3049466d6.0
+        for <linux-coco@lists.linux.dev>; Tue, 04 Aug 2026 17:55:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1785891336; x=1786496136; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=L0p0VCpSbh9Cfa3QK1gAYb1bq95q8GTSvQusPpTmsDI=;
+        b=BNojs1gSfvNERvVS71x2+pTbLtKvZo/3vmw4ippGZEkTox7SgaT3aV3034am3nSTiK
+         8X0+NVxQTFcjMz8EJwVPcaakAFdRsdYeTP/kDz2k1VYqlAhLUcvlXnnmhM2x+zepDu3z
+         fwkZbdclkk6GCnIO86cVrNY5Xr1LKD1zlgUGu9l4iShoZY5b5bhAq6HMfzxCwppkLK2R
+         jt26i04sqAj5cxaIL26Vh1dY1P9fK1R7yR55359dPTNEwIQUUQ1LIAXQjehkZ+Y1M0tA
+         pIiylyAYgixWUPrNQs2nwaqRUT8UcK7XgPY3FwOBUKb4cMR2fxUjmIkBLrARjGPlVbV5
+         S8jA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785891336; x=1786496136;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=L0p0VCpSbh9Cfa3QK1gAYb1bq95q8GTSvQusPpTmsDI=;
+        b=Kds8NMrzkkkrEfI02TC6s7xKb43RTQDKu+DR/byeqIIJfKUGvkszZfhPHcaULu/QPO
+         C2ha45rZR8XUkznhs5INi2BX8L9rCOylPVnlSSdszmV/wslHk16OJUYXmq/NwLCoOgtx
+         2sMw8w8AuaWZy1umW4vRGHXtv0utIhTydlADK4EMJBUH9FIvVePsEq7Dbd9sYtuLqiAZ
+         TNH9HB1X5IE+eWo97ydsFc1mihpxf1wrOVqJImcNTmHwe9dx/xVLQQfvl5+dgnV4yRMm
+         NeKfRXdlashWWiQs9q3qVCoR5Qaq8h/ZGVZXx/Jnybz9xSNyCOvu9/6Sbmd94qBrFbs9
+         Y86w==
+X-Forwarded-Encrypted: i=1; AHgh+RpnKHkDnXaYNAx3ga7ROGMgo/w+UbQ1Q6I4hxfjwhxEnZ2rafYC6JbZOiKeKXf60PYiH8d1juCyur28@lists.linux.dev
+X-Gm-Message-State: AOJu0YwtWtq4hO9b4IAWQgFi1I1xKst5hDHGCg8AcCTPKNZWPqOsl5PE
+	2cUQhm9PI9jy/65sPQvjr+344XC+eZ/Sm1WvBgBbZCBIzb3DQMrnbgj35wtuUdC/fck=
+X-Gm-Gg: AR+sD11HuHtT8U8A7iZJf3i08a/yllcxCCpdqZ9Gz3enlmVrnpfDCESIcxDOg+vtXfZ
+	/nZGfIAGUUEc/nNbrfdqLNDhWKIezb1Qg6qTPmOZ7Ssd0F3HRG1c6L+N9gZU+tvcHiiMH9zpG8z
+	F5LSaZ4MidVtEEQGaUYhDiDyF/TlWJqEzRbkp9cvce7y4HnaJgOdJWvGkldN2wBA+TTmu50FTWB
+	zWCcdMFbEokZ2IHPWszamFseuZPgnzYof+QOoKAMyV1Y9mxyPRn0gL9H7vUGx/Vj3ChkGwaHuyQ
+	mjrinQGz7eTfLyoVI6PRrWabdc/FImrKplUQprNXIkmdORD41jc9ZLlY2jWVaAdqEGUT7ZhQSLA
+	b+SW4sfZK1CDt3bBjRyk//27rPIutKNX7J+eIF1iClcPIuMet2cM/5kbL62fIc6eexx8/jeNFYn
+	oRFz5DLyXOsX07ZWjrMc6ERpSy79sduVSfufleuQ==
+X-Received: by 2002:a05:622a:58c7:b0:517:5b2c:6aae with SMTP id d75a77b69052e-52ce5fbdcc4mr38577871cf.13.1785891335649;
+        Tue, 04 Aug 2026 17:55:35 -0700 (PDT)
+Received: from ziepe.ca ([142.166.156.215])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52ce87aa1a3sm6538131cf.6.2026.08.04.17.55.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2026 17:55:34 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wrPuv-00000000Cli-34Ni;
+	Tue, 04 Aug 2026 21:55:33 -0300
+Date: Tue, 4 Aug 2026 21:55:33 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, driver-core@lists.linux.dev,
+	ankita@nvidia.com, Aaron Tomlin <atomlin@atomlin.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>, Petr Pavlu <petr.pavlu@suse.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Will Deacon <will@kernel.org>,
+	"Fontenot, Nathan" <Nathan.Fontenot@amd.com>,
+	rick.p.edgecombe@intel.com
+Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security
+ Protocol (TDISP)
+Message-ID: <20260805005533.GB28508@ziepe.ca>
+References: <20260705220819.2472765-1-djbw@kernel.org>
+ <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com>
+ <amk7Xzm5jmz+6SPJ@ziepe.ca>
+ <anFE7m164AmchTy/@yilunxu-OptiPlex-7050>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <59e8b0cf-0ab0-4b7a-9e05-4de6f83c9a10@amd.com>
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <anFE7m164AmchTy/@yilunxu-OptiPlex-7050>
 
-On Mon, Aug 03, 2026 at 05:22:17PM -0500, Kalra, Ashish wrote:
-> Periodic re-optimization was already considered in an earlier RMPOPT se=
-ries
+On Tue, Aug 04, 2026 at 09:48:30AM +0800, Xu Yilun wrote:
 
-Link?
+> Glad to see you all here to make progress! Intel can also help on this.
+> Can we have a meeting to discuss on these topics? As Alexey mentioned,
+> previously we had a bi-weekly call, perhaps use that for our first
+> meeting? Or what time works best for everyone?
 
-> and dropped because of being too disruptive =E2=80=94 a timer-based sca=
-n would run
-> on all cores every time it fires, even when no memory has been freed.
+I prefer we defer such community discussions till September, that
+seems appropriate given some dates I've seen.
 
-What if it ran very seldomly, say once an hour?
-
-> Running it at guest teardown (batched by the timeout) is a better fit:
-> teardown is when large contiguous regions actually go back to the
-> hypervisor, so the scan only runs when there's real work to do instead =
-of on
-> a fixed timer. The case of a guest freeing a 1 GB region mid-life is th=
-en
-> handled by the 1 GB-hugetlb page-cleanup follow-on, not by a periodic s=
-can.
-
-Are you saying a periodic scan won't handle anything?
-
-Because if it catches something, it will handle that something.
-
-> I will also like to avoid looping on this =E2=80=94 periodic vs teardow=
-n was already
-> worked through in an earlier revision, and this is where we landed. Hap=
-py to
-> revisit if there's a specific new concern, but otherwise I'd prefer to =
-keep
-> the current approach.
-
-Sorry, this is not how upstream review works.
-
---=20
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Jason
