@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FE12DFF3F;
-	Wed,  5 Aug 2026 06:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824403DDDAB;
+	Wed,  5 Aug 2026 06:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785911616; cv=none; b=ukZdo2CRx3FBgr7LWLBiZOvp413/Q2JNbD5RT0mAvlAJz1PMmfg/IQ7q47LBZMWy8OPrmvPPsI8g0Ya84NnDj8jrZ5DURT9MMMx1Z2pSw5iHi6GqsSnrHqKjp9dJSU7ZSVdOOPeNFiBEI24CAqJgAvzo5HvWSY0+8KRFXUOSXFY=
+	t=1785911621; cv=none; b=gIgkgr28bP9g3jw2At5/cEsfSJI+i5pwxBgDefxcjHbI1jD6UhTOeuYsG3QNo9knm6PEjvPqgziee4v264LeuTcRd3oEnuQ1/+4j3ha7J+31UDSIRj8RJPWWJ2Eb96bH+CJAqdtMVFygaWSRQlvnT3qxADyIzMFk40fJ0h6MpDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785911616; c=relaxed/simple;
-	bh=xYTYalb68vEZvvnOrfyXrwHSJ39OpdZtRnoGmX2dOOM=;
+	s=arc-20240116; t=1785911621; c=relaxed/simple;
+	bh=APxQx5dWo+xAcvxP1fewVRbuvrtZKgJKaoenzO4YTa0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Is+bbSwqsNWhaeDAOS6h2uswaSMXV7DHUDx1TMJwJ4GicMQHGgwbyjqGARICUOxLL2tjvrfg8Ni0OgrEcQeJLnPQR3nmEvGlH+zEa/9SmEWloV7FReKcoJq1YKNZa4t3lXI/6eixMrPthk96JynxtN0PgLpjbvrOze4E0dCTNhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=alDRVMTs; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=GZf8h1MOLrBCpfWErhjyHo4QSr5cf9uj08QGyPt6uq06CSzLr7ugn9GaLHqgVAYoz42j5se4Q+Jsu+lA8n8WqV6z/7v4J6lYzMd+NnsDy1/9zTjxTfwrTguzyu1z7pC948DHq7uEpo5DZOQHIwPUg71b1nqdlbsAr2kjxf7cCek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vl28a5tD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="alDRVMTs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B4B91F00A3D;
-	Wed,  5 Aug 2026 06:33:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vl28a5tD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6821F00A3A;
+	Wed,  5 Aug 2026 06:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785911615;
-	bh=2y9Yye4Zg46dJ1CXG1OwGxBDqqwehqDm2yUJntX8svk=;
+	s=k20260515; t=1785911620;
+	bh=Gq3cGAu0BaOnCuHNL8771EcN54SBHzT0LE23CmXIUFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=alDRVMTsjWxSY10GpjGZ6LOP0ffl2JjWAPOtmJ1h5cMw1xlbpgRlk8bfKbJ17WMTt
-	 ik6xu9SOfNQppreDR9XVScTgHQjXIzbVzy4gFhK0UC/T2ap1uHw9sd5JkSLcHpaVF2
-	 zDEhHraVR6DXxUsMr718mOh0Q53miUpO61aZpLY0o3AeREsAaziPzj3NDQJXxAKT3t
-	 Qe3sf1EEfq5rQteGJuF2OyZ9LQFHNeRuvFL5hogXuUwM+WnxRi9DgFWZ5f2b21UzoQ
-	 RokVY6tfuh6IbTrS4reiJ2zkM62EYWcMU3YSFVIn+kOPFtDcirfZsgmFzErNPhzXex
-	 ikZ+RdlhrYlqA==
+	b=Vl28a5tD4rpIAeXzedXYjUFh8icyK8MFNqj7YcU399QtldDQb6hSiiFaLJkkoJyL5
+	 dkWK5amQl2H9624sIooM2S1hbw0sCRWQ7AT+UZHVhQ+tlGx/gX1w/1kftGPKU7r0pL
+	 ZVDvHnkiA9HoP1VEk346LduOgyGVz26VgFGF6VYAuDGwW8r4mhgbJCRwvN3sM3MviC
+	 CsXxFFOnzhl3yB0pKb0+WXcvq9PCeyrNkw7AkJjCr5oQstWPnUViV1lpeH9x7L8oRY
+	 JbzwqNd4aSIquJ4moxo8SjN9NQJ/xiYa3gRgtvwdZazt1S/oEewoRXnb5NBHl2oC9N
+	 610hlugqdkASA==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -42,9 +42,9 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	Steven Price <steven.price@arm.com>,
 	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
 	Andre Przywara <andre.przywara@arm.com>
-Subject: [PATCH v9 3/7] firmware: arm_rmm: Move RSI support out of arch/arm64
-Date: Wed,  5 Aug 2026 12:02:51 +0530
-Message-ID: <20260805063255.1638614-4-aneesh.kumar@kernel.org>
+Subject: [PATCH v9 4/7] arm64: realm: Move Realm memory encryption ops to RSI code
+Date: Wed,  5 Aug 2026 12:02:52 +0530
+Message-ID: <20260805063255.1638614-5-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260805063255.1638614-1-aneesh.kumar@kernel.org>
 References: <20260805063255.1638614-1-aneesh.kumar@kernel.org>
@@ -56,474 +56,137 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The RSI SMCCC function IDs describe a firmware ABI and are not arm64
-architecture specific definitions. Follow-up changes need to use them from
-non-arch code, including drivers/firmware/smccc and the Arm CCA guest
-driver.
+Realm memory encryption callbacks are CCA-specific. Keep the Realm callback
+registration with the RSI initialization code instead of pageattr.c, which
+only needs to provide the low-level page-attribute transition helper.
 
-Move the complete Realm Service Interface (RSI) implementation from
-arch/arm64 to drivers/firmware/arm_rmm. The RSI SMCCC definitions and
-command helpers are also moved to include/linux so they can be shared by
-architecture code and firmware or driver code. This also keeps the
-firmware interface outside architecture code, as requested [1].
+Export __set_memory_enc_dec() within arm64 so the RSI code can wrap it with
+the Realm-specific encrypt/decrypt callbacks and warning policy.
 
-[1] https://lore.kernel.org/all/agsNO9cc7H-b0H8L@willie-the-truck
+No functional changes in this patch.
 
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- arch/arm64/Kconfig                            |  1 +
- arch/arm64/include/asm/io.h                   |  2 +-
- arch/arm64/include/asm/mem_encrypt.h          |  2 +-
- arch/arm64/include/asm/pgtable-prot.h         |  2 +-
- arch/arm64/include/asm/rsi.h                  | 70 -----------------
- arch/arm64/kernel/Makefile                    |  2 +-
- arch/arm64/kernel/setup.c                     |  2 +-
- arch/arm64/mm/init.c                          |  3 +-
- drivers/firmware/Kconfig                      |  1 +
- drivers/firmware/Makefile                     |  1 +
- drivers/firmware/arm_rmm/Kconfig              | 18 +++++
- drivers/firmware/arm_rmm/Makefile             |  2 +
- .../kernel => drivers/firmware/arm_rmm}/rsi.c |  2 +-
- drivers/virt/coco/arm-cca-guest/Kconfig       |  2 +-
- .../virt/coco/arm-cca-guest/arm-cca-guest.c   |  5 +-
- .../linux/arm-rsi-cmds.h                      | 77 +++++++++++++++++--
- .../linux/arm-smccc-rsi.h                     |  6 +-
- 17 files changed, 109 insertions(+), 89 deletions(-)
- delete mode 100644 arch/arm64/include/asm/rsi.h
- create mode 100644 drivers/firmware/arm_rmm/Kconfig
- create mode 100644 drivers/firmware/arm_rmm/Makefile
- rename {arch/arm64/kernel => drivers/firmware/arm_rmm}/rsi.c (99%)
- rename arch/arm64/include/asm/rsi_cmds.h => include/linux/arm-rsi-cmds.h (69%)
- rename arch/arm64/include/asm/rsi_smc.h => include/linux/arm-smccc-rsi.h (98%)
+ arch/arm64/include/asm/mem_encrypt.h |  3 +--
+ arch/arm64/mm/pageattr.c             | 38 +---------------------------
+ drivers/firmware/arm_rmm/rsi.c       | 34 +++++++++++++++++++++++++
+ 3 files changed, 36 insertions(+), 39 deletions(-)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 39eba438dad4..8c5088bfce57 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -38,6 +38,7 @@ config ARM64
- 	select ARCH_HAS_MEMBARRIER_SYNC_CORE
- 	select ARCH_HAS_MEM_ENCRYPT
- 	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
-+	select ARCH_SUPPORTS_RMM
- 	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
- 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
- 	select ARCH_HAS_NONLEAF_PMD_YOUNG if ARM64_HAFT
-diff --git a/arch/arm64/include/asm/io.h b/arch/arm64/include/asm/io.h
-index 49a7002661a9..1620537f0332 100644
---- a/arch/arm64/include/asm/io.h
-+++ b/arch/arm64/include/asm/io.h
-@@ -8,6 +8,7 @@
- #ifndef __ASM_IO_H
- #define __ASM_IO_H
- 
-+#include <linux/arm-rsi-cmds.h>
- #include <linux/types.h>
- #include <linux/pgtable.h>
- 
-@@ -17,7 +18,6 @@
- #include <asm/early_ioremap.h>
- #include <asm/alternative.h>
- #include <asm/cpufeature.h>
--#include <asm/rsi.h>
- 
- /*
-  * Generic IO read/write.  These perform native-endian accesses.
 diff --git a/arch/arm64/include/asm/mem_encrypt.h b/arch/arm64/include/asm/mem_encrypt.h
-index 636f45b4d8af..f03b9d7b83b4 100644
+index f03b9d7b83b4..ef8b8463e52b 100644
 --- a/arch/arm64/include/asm/mem_encrypt.h
 +++ b/arch/arm64/include/asm/mem_encrypt.h
-@@ -2,8 +2,8 @@
- #ifndef __ASM_MEM_ENCRYPT_H
- #define __ASM_MEM_ENCRYPT_H
+@@ -16,8 +16,7 @@ int arm64_mem_crypt_ops_register(const struct arm64_mem_crypt_ops *ops);
  
-+#include <linux/arm-rsi-cmds.h>
- #include <asm/hypervisor.h>
--#include <asm/rsi.h>
+ int set_memory_encrypted(unsigned long addr, int numpages);
+ int set_memory_decrypted(unsigned long addr, int numpages);
+-
+-int realm_register_memory_enc_ops(void);
++int __set_memory_enc_dec(unsigned long addr, int numpages, bool encrypt);
  
- struct device;
+ static inline bool force_dma_unencrypted(struct device *dev)
+ {
+diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+index bbe98ac9ad8c..14b2a3801f40 100644
+--- a/arch/arm64/mm/pageattr.c
++++ b/arch/arm64/mm/pageattr.c
+@@ -275,9 +275,7 @@ int set_direct_map_default_noflush(struct page *page)
+ 				 PAGE_SIZE, set_mask, clear_mask);
+ }
  
-diff --git a/arch/arm64/include/asm/pgtable-prot.h b/arch/arm64/include/asm/pgtable-prot.h
-index 212ce1b02e15..6d4e275ed5ed 100644
---- a/arch/arm64/include/asm/pgtable-prot.h
-+++ b/arch/arm64/include/asm/pgtable-prot.h
-@@ -66,9 +66,9 @@
+-static int __set_memory_enc_dec(unsigned long addr,
+-				int numpages,
+-				bool encrypt)
++int __set_memory_enc_dec(unsigned long addr, int numpages, bool encrypt)
+ {
+ 	unsigned long set_prot = 0, clear_prot = 0;
+ 	phys_addr_t start, end;
+@@ -321,40 +319,6 @@ static int __set_memory_enc_dec(unsigned long addr,
+ 				      __pgprot(PTE_PRESENT_INVALID));
+ }
  
- #ifndef __ASSEMBLER__
- 
-+#include <linux/arm-rsi-cmds.h>
- #include <asm/cpufeature.h>
- #include <asm/pgtable-types.h>
--#include <asm/rsi.h>
- 
- extern bool arm64_use_ng_mappings;
- extern unsigned long prot_ns_shared;
-diff --git a/arch/arm64/include/asm/rsi.h b/arch/arm64/include/asm/rsi.h
-deleted file mode 100644
-index 88b50d660e85..000000000000
---- a/arch/arm64/include/asm/rsi.h
-+++ /dev/null
-@@ -1,70 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--/*
-- * Copyright (C) 2024 ARM Ltd.
-- */
--
--#ifndef __ASM_RSI_H_
--#define __ASM_RSI_H_
--
--#include <linux/errno.h>
--#include <linux/jump_label.h>
--#include <asm/rsi_cmds.h>
--
--#define RSI_PDEV_NAME "arm-cca-dev"
--
--DECLARE_STATIC_KEY_FALSE(rsi_present);
--
--void __init arm64_rsi_init(void);
--
--bool arm64_rsi_is_protected(phys_addr_t base, size_t size);
--
--static inline bool is_realm_world(void)
+-static int realm_set_memory_encrypted(unsigned long addr, int numpages)
 -{
--	return static_branch_unlikely(&rsi_present);
+-	int ret = __set_memory_enc_dec(addr, numpages, true);
+-
+-	/*
+-	 * If the request to change state fails, then the only sensible cause
+-	 * of action for the caller is to leak the memory
+-	 */
+-	WARN(ret, "Failed to encrypt memory, %d pages will be leaked",
+-	     numpages);
+-
+-	return ret;
 -}
 -
--static inline int rsi_set_memory_range(phys_addr_t start, phys_addr_t end,
--				       enum ripas state, unsigned long flags)
+-static int realm_set_memory_decrypted(unsigned long addr, int numpages)
 -{
--	unsigned long ret;
--	phys_addr_t top;
+-	int ret = __set_memory_enc_dec(addr, numpages, false);
 -
--	while (start != end) {
--		ret = rsi_set_addr_range_state(start, end, state, flags, &top);
--		if (ret || top < start || top > end)
--			return -EINVAL;
--		start = top;
--	}
+-	WARN(ret, "Failed to decrypt memory, %d pages will be leaked",
+-	     numpages);
 -
--	return 0;
+-	return ret;
 -}
 -
--/*
-- * Convert the specified range to RAM. Do not use this if you rely on the
-- * contents of a page that may already be in RAM state.
-- */
--static inline int rsi_set_memory_range_protected(phys_addr_t start,
--						 phys_addr_t end)
+-static const struct arm64_mem_crypt_ops realm_crypt_ops = {
+-	.encrypt = realm_set_memory_encrypted,
+-	.decrypt = realm_set_memory_decrypted,
+-};
+-
+-int realm_register_memory_enc_ops(void)
 -{
--	return rsi_set_memory_range(start, end, RSI_RIPAS_RAM,
--				    RSI_CHANGE_DESTROYED);
+-	return arm64_mem_crypt_ops_register(&realm_crypt_ops);
 -}
 -
--/*
-- * Convert the specified range to RAM. Do not convert any pages that may have
-- * been DESTROYED, without our permission.
-- */
--static inline int rsi_set_memory_range_protected_safe(phys_addr_t start,
--						      phys_addr_t end)
--{
--	return rsi_set_memory_range(start, end, RSI_RIPAS_RAM,
--				    RSI_NO_CHANGE_DESTROYED);
--}
--
--static inline int rsi_set_memory_range_shared(phys_addr_t start,
--					      phys_addr_t end)
--{
--	return rsi_set_memory_range(start, end, RSI_RIPAS_EMPTY,
--				    RSI_CHANGE_DESTROYED);
--}
--#endif /* __ASM_RSI_H_ */
-diff --git a/arch/arm64/kernel/Makefile b/arch/arm64/kernel/Makefile
-index d2690c3ec528..21fc3a3d25c9 100644
---- a/arch/arm64/kernel/Makefile
-+++ b/arch/arm64/kernel/Makefile
-@@ -34,7 +34,7 @@ obj-y			:= debug-monitors.o entry.o irq.o fpsimd.o		\
- 			   cpufeature.o alternative.o cacheinfo.o		\
- 			   smp.o smp_spin_table.o topology.o smccc-call.o	\
- 			   syscall.o proton-pack.o idle.o patching.o pi/	\
--			   rsi.o jump_label.o
-+			   jump_label.o
- 
- obj-$(CONFIG_COMPAT)			+= sys32.o signal32.o			\
- 					   sys_compat.o
-diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
-index 23c05dc7a8f2..d36f2f957d00 100644
---- a/arch/arm64/kernel/setup.c
-+++ b/arch/arm64/kernel/setup.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/acpi.h>
-+#include <linux/arm-rsi-cmds.h>
- #include <linux/export.h>
- #include <linux/kernel.h>
- #include <linux/stddef.h>
-@@ -43,7 +44,6 @@
- #include <asm/cpu_ops.h>
- #include <asm/kasan.h>
- #include <asm/numa.h>
--#include <asm/rsi.h>
- #include <asm/scs.h>
- #include <asm/sections.h>
- #include <asm/setup.h>
-diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index 3b9e1b8de6cb..e5586df129d9 100644
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -34,6 +34,8 @@
- #include <linux/acpi_iort.h>
- #include <linux/kmemleak.h>
- #include <linux/execmem.h>
-+#include <linux/arm-rsi-cmds.h>
-+
- 
- #include <asm/boot.h>
- #include <asm/fixmap.h>
-@@ -43,7 +45,6 @@
- #include <asm/kvm_host.h>
- #include <asm/memory.h>
- #include <asm/numa.h>
--#include <asm/rsi.h>
- #include <asm/sections.h>
- #include <asm/setup.h>
- #include <linux/sizes.h>
-diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-index dbaca140a1b0..b35a0d8e2ea3 100644
---- a/drivers/firmware/Kconfig
-+++ b/drivers/firmware/Kconfig
-@@ -322,5 +322,6 @@ source "drivers/firmware/samsung/Kconfig"
- source "drivers/firmware/smccc/Kconfig"
- source "drivers/firmware/tegra/Kconfig"
- source "drivers/firmware/xilinx/Kconfig"
-+source "drivers/firmware/arm_rmm/Kconfig"
- 
- endmenu
-diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
-index be46f1e1dc77..196a650ccf02 100644
---- a/drivers/firmware/Makefile
-+++ b/drivers/firmware/Makefile
-@@ -39,3 +39,4 @@ obj-y				+= samsung/
- obj-y				+= smccc/
- obj-y				+= tegra/
- obj-y				+= xilinx/
-+obj-y				+= arm_rmm/
-diff --git a/drivers/firmware/arm_rmm/Kconfig b/drivers/firmware/arm_rmm/Kconfig
-new file mode 100644
-index 000000000000..1322a1447b56
---- /dev/null
-+++ b/drivers/firmware/arm_rmm/Kconfig
-@@ -0,0 +1,18 @@
-+
-+config ARCH_SUPPORTS_RMM
-+	bool
-+
-+config ARM_RMM
-+	bool "Realm Management Monitor (RMM) Support"
-+	depends on ARCH_SUPPORTS_RMM
-+	default y
-+	help
-+	  Support the Realm Management Monitor (RMM) on Arm systems that
-+	  implement the Realm Management Extension (RME), as defined by the
-+	  Arm Confidential Compute Architecture.
-+
-+	  The RMM provides the Realm Management Interface (RMI) for use by
-+	  the Normal World host and the Realm Service Interface (RSI) for
-+	  use by Realm guests. The RSI is used to negotiate the RSI version
-+	  and Realm configuration with the RMM and manage the protected
-+	  state of memory.
-diff --git a/drivers/firmware/arm_rmm/Makefile b/drivers/firmware/arm_rmm/Makefile
-new file mode 100644
-index 000000000000..3d8181ae94a7
---- /dev/null
-+++ b/drivers/firmware/arm_rmm/Makefile
-@@ -0,0 +1,2 @@
-+
-+obj-$(CONFIG_ARM_RMM)	= rsi.o
-diff --git a/arch/arm64/kernel/rsi.c b/drivers/firmware/arm_rmm/rsi.c
-similarity index 99%
-rename from arch/arm64/kernel/rsi.c
-rename to drivers/firmware/arm_rmm/rsi.c
-index 25ca75ce1a4d..8e716f1c1e31 100644
---- a/arch/arm64/kernel/rsi.c
+ int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
+ {
+ 	unsigned long addr = (unsigned long)page_address(page);
+diff --git a/drivers/firmware/arm_rmm/rsi.c b/drivers/firmware/arm_rmm/rsi.c
+index 8e716f1c1e31..ada139d0e344 100644
+--- a/drivers/firmware/arm_rmm/rsi.c
 +++ b/drivers/firmware/arm_rmm/rsi.c
-@@ -8,11 +8,11 @@
- #include <linux/psci.h>
- #include <linux/swiotlb.h>
- #include <linux/platform_device.h>
-+#include <linux/arm-rsi-cmds.h>
- 
- #include <asm/io.h>
- #include <asm/mem_encrypt.h>
- #include <asm/pgtable.h>
--#include <asm/rsi.h>
- 
- static struct realm_config config;
- 
-diff --git a/drivers/virt/coco/arm-cca-guest/Kconfig b/drivers/virt/coco/arm-cca-guest/Kconfig
-index 3f0f013f03f1..b2c225fd445c 100644
---- a/drivers/virt/coco/arm-cca-guest/Kconfig
-+++ b/drivers/virt/coco/arm-cca-guest/Kconfig
-@@ -1,6 +1,6 @@
- config ARM_CCA_GUEST
- 	tristate "Arm CCA Guest driver"
--	depends on ARM64
-+	depends on ARM_RMM
- 	select TSM_REPORTS
- 	help
- 	  The driver provides userspace interface to request and
-diff --git a/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c b/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
-index 0eeddd1ff05b..b741643d1364 100644
---- a/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
-+++ b/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
-@@ -3,7 +3,8 @@
-  * Copyright (C) 2023 ARM Ltd.
-  */
- 
--#include <linux/arm-smccc.h>
-+#include <linux/arm-rsi-cmds.h>
-+#include <linux/arm-smccc-rsi.h>
- #include <linux/cc_platform.h>
- #include <linux/kernel.h>
- #include <linux/device-id/platform.h>
-@@ -12,8 +13,6 @@
- #include <linux/tsm.h>
- #include <linux/types.h>
- 
--#include <asm/rsi.h>
--
- /**
-  * struct arm_cca_token_info - a descriptor for the token buffer.
-  * @granule:		PA of the granule to which the token will be written
-diff --git a/arch/arm64/include/asm/rsi_cmds.h b/include/linux/arm-rsi-cmds.h
-similarity index 69%
-rename from arch/arm64/include/asm/rsi_cmds.h
-rename to include/linux/arm-rsi-cmds.h
-index c1fab41f671e..13478e14c429 100644
---- a/arch/arm64/include/asm/rsi_cmds.h
-+++ b/include/linux/arm-rsi-cmds.h
-@@ -3,14 +3,36 @@
-  * Copyright (C) 2023 ARM Ltd.
-  */
- 
--#ifndef __ASM_RSI_CMDS_H
--#define __ASM_RSI_CMDS_H
-+#ifndef __LINUX_ARM_RSI_CMDS_H_
-+#define __LINUX_ARM_RSI_CMDS_H_
- 
--#include <linux/arm-smccc.h>
-+#include <linux/arm-smccc-rsi.h>
-+#include <linux/jump_label.h>
- #include <linux/string.h>
- #include <asm/memory.h>
- 
--#include <asm/rsi_smc.h>
-+#define RSI_PDEV_NAME "arm-cca-dev"
-+#ifdef CONFIG_ARM_RMM
-+DECLARE_STATIC_KEY_FALSE(rsi_present);
-+
-+void __init arm64_rsi_init(void);
-+
-+bool arm64_rsi_is_protected(phys_addr_t base, size_t size);
-+
-+static inline bool is_realm_world(void)
-+{
-+	return static_branch_unlikely(&rsi_present);
-+}
-+#else
-+static inline void arm64_rsi_init(void) { }
-+
-+static inline bool arm64_rsi_is_protected(phys_addr_t base, size_t size)
-+{
-+	return false;
-+}
-+
-+static inline bool is_realm_world(void) { return false; }
-+#endif
- 
- #define RSI_GRANULE_SHIFT		12
- #define RSI_GRANULE_SIZE		(_AC(1, UL) << RSI_GRANULE_SHIFT)
-@@ -88,6 +110,51 @@ static inline long rsi_set_addr_range_state(phys_addr_t start,
- 	return res.a0;
+@@ -127,6 +127,40 @@ static int realm_ioremap_hook(phys_addr_t phys, size_t size, pgprot_t *prot)
+ 	return 0;
  }
  
-+static inline int rsi_set_memory_range(phys_addr_t start, phys_addr_t end,
-+				       enum ripas state, unsigned long flags)
++static int realm_set_memory_encrypted(unsigned long addr, int numpages)
 +{
-+	unsigned long ret;
-+	phys_addr_t top;
++	int ret = __set_memory_enc_dec(addr, numpages, true);
 +
-+	while (start != end) {
-+		ret = rsi_set_addr_range_state(start, end, state, flags, &top);
-+		if (ret || top < start || top > end)
-+			return -EINVAL;
-+		start = top;
-+	}
++	/*
++	 * If the request to change state fails, then the only sensible cause
++	 * of action for the caller is to leak the memory
++	 */
++	WARN(ret, "Failed to encrypt memory, %d pages will be leaked",
++	     numpages);
 +
-+	return 0;
++	return ret;
 +}
 +
-+/*
-+ * Convert the specified range to RAM. Do not use this if you rely on the
-+ * contents of a page that may already be in RAM state.
-+ */
-+static inline int rsi_set_memory_range_protected(phys_addr_t start,
-+						 phys_addr_t end)
++static int realm_set_memory_decrypted(unsigned long addr, int numpages)
 +{
-+	return rsi_set_memory_range(start, end, RSI_RIPAS_RAM,
-+				    RSI_CHANGE_DESTROYED);
++	int ret = __set_memory_enc_dec(addr, numpages, false);
++
++	WARN(ret, "Failed to decrypt memory, %d pages will be leaked",
++	     numpages);
++
++	return ret;
 +}
 +
-+/*
-+ * Convert the specified range to RAM. Do not convert any pages that may have
-+ * been DESTROYED, without our permission.
-+ */
-+static inline int rsi_set_memory_range_protected_safe(phys_addr_t start,
-+						      phys_addr_t end)
++static const struct arm64_mem_crypt_ops realm_crypt_ops = {
++	.encrypt = realm_set_memory_encrypted,
++	.decrypt = realm_set_memory_decrypted,
++};
++
++static int realm_register_memory_enc_ops(void)
 +{
-+	return rsi_set_memory_range(start, end, RSI_RIPAS_RAM,
-+				    RSI_NO_CHANGE_DESTROYED);
++	return arm64_mem_crypt_ops_register(&realm_crypt_ops);
 +}
 +
-+static inline int rsi_set_memory_range_shared(phys_addr_t start,
-+					      phys_addr_t end)
-+{
-+	return rsi_set_memory_range(start, end, RSI_RIPAS_EMPTY,
-+				    RSI_CHANGE_DESTROYED);
-+}
-+
- #define RSI_ATTEST_CHALLENGE_MIN_SIZE	32
- #define RSI_ATTEST_CHALLENGE_MAX_SIZE	64
- 
-@@ -170,4 +237,4 @@ static inline unsigned long rsi_attestation_token_continue(phys_addr_t granule,
- 	return res.a0;
- }
- 
--#endif /* __ASM_RSI_CMDS_H */
-+#endif /* __LINUX_ARM_RSI_CMDS_H_ */
-diff --git a/arch/arm64/include/asm/rsi_smc.h b/include/linux/arm-smccc-rsi.h
-similarity index 98%
-rename from arch/arm64/include/asm/rsi_smc.h
-rename to include/linux/arm-smccc-rsi.h
-index e19253f96c94..fddb77986f70 100644
---- a/arch/arm64/include/asm/rsi_smc.h
-+++ b/include/linux/arm-smccc-rsi.h
-@@ -3,8 +3,8 @@
-  * Copyright (C) 2023 ARM Ltd.
-  */
- 
--#ifndef __ASM_RSI_SMC_H_
--#define __ASM_RSI_SMC_H_
-+#ifndef __LINUX_ARM_SMCCC_RSI_H_
-+#define __LINUX_ARM_SMCCC_RSI_H_
- 
- #include <linux/arm-smccc.h>
- 
-@@ -190,4 +190,4 @@ struct realm_config {
-  */
- #define SMC_RSI_HOST_CALL			SMC_RSI_FID(0x199)
- 
--#endif /* __ASM_RSI_SMC_H_ */
-+#endif /* __LINUX_ARM_SMCCC_RSI_H_ */
+ void __init arm64_rsi_init(void)
+ {
+ 	if (arm_smccc_1_1_get_conduit() != SMCCC_CONDUIT_SMC)
 -- 
 2.43.0
 
