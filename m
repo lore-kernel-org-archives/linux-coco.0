@@ -1,73 +1,97 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE38F40D563
-	for <linux-coco@lists.linux.dev>; Wed,  5 Aug 2026 09:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9783D6486
+	for <linux-coco@lists.linux.dev>; Wed,  5 Aug 2026 10:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785923524; cv=none; b=OOmii5Sxnz058Ofpx8k7lTrKD4CW4Xm0cToY4MrU3hBIa8KWy5XKOQJekVlqiWhCqhL+H3I2cpjbVfWBcOvvn8caCMZyNn0yVKHXzjXhYLYGOhxN+cCQaUtiRGL6S2Sw75xatrpmpi9sgtOFYry24BePPeqlvZyZ2+uWV0I4gJY=
+	t=1785927129; cv=none; b=FPq9eB8uZydkXqgJgAczs3j6w6tFL1iARsp+QwQ9glmiR8rQZPCTFT0LlVXVms+X6tJ+uGLZqD6rHuSsgj5KD+36wSj6nVshLEhjCAfwUi5aSv4QPz4VaweVyjYD3KUIbPmPB7Vny/0CbQEn486A18WWjNF8kCYsGBs+RZzCHo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785923524; c=relaxed/simple;
-	bh=FppMoqQb3BS4Kf1KNqMwfV4k8nOttVFmvr6G6hrRElA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A2jF1Dk0SN/gLWQydBYQWRMmQvmzRmVugH1a2NKQCL5azCqHzTgDuPXIxJrduKzBnJm1HMo2LxRVJ0289tWTqgtq8wFkyVFkA+eVLJatOTVbttCf8PxL/iAA1g4BWpszoWMM5dK0iHPjKz8NzjXA7GmAT1uF1kwApyJVlyJmoBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=kYbB2UOA; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1785927129; c=relaxed/simple;
+	bh=osqcgEZrB4tIRuddtFyChcekiAZrXeFH6SN6KLCXUeQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lIh9M3RrXFarv8VT0m5yFW1egIaFSJTbnXLChZBQDmHeyPZ8ucb2XNjXchWGQkl7YdkYtPtBOupMT8EM4mgyin0B3va0KbAIyGbjXn5xcKkZaxigfk8nE3PXtbhA0IJQYwkyKUAUw5h7tBBVfm/l9RtNxMmYCy7Fqso7IEGElNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=MccCTMFj; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="kYbB2UOA"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="MccCTMFj"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CC50E153B;
-	Wed,  5 Aug 2026 02:51:57 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E59393F66F;
-	Wed,  5 Aug 2026 02:51:57 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A7A4153B;
+	Wed,  5 Aug 2026 03:52:02 -0700 (PDT)
+Received: from [10.57.44.180] (unknown [10.57.44.180])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 743203F632;
+	Wed,  5 Aug 2026 03:51:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785923521; bh=FppMoqQb3BS4Kf1KNqMwfV4k8nOttVFmvr6G6hrRElA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kYbB2UOAtU/w+8T0WUapazRtMn6GjaxxiWPzKTHqDxwl79u9u7ObSXVPAad5G2uSJ
-	 todOdUjAG4zwFnnP0uj/RyEzw63v0bh1H5qXpNsDPIx+FpKzHavx6yjnKGQ7ggACrM
-	 r7WF6wYRUTfUutcGeOh2p8HMq1pySbmJTWswVlwA=
-Date: Wed, 5 Aug 2026 10:51:47 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Andre Przywara <andre.przywara@arm.com>
-Subject: Re: [PATCH v9 0/7] Switch Arm SMCCC firmware services to an SMCCC bus
-Message-ID: <anMHs65s6Mk-ZRdT@arm.com>
-References: <20260805063255.1638614-1-aneesh.kumar@kernel.org>
+	t=1785927126; bh=osqcgEZrB4tIRuddtFyChcekiAZrXeFH6SN6KLCXUeQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MccCTMFj2hIMMjW795szcS5FxXktDxGWArGGS9xJv4VDpKX5Fq4pBTHZ+Dqo3dGwn
+	 I3za+Zt5GbrL3mgj2p5MRpqTGbT/okZGd5AlVXHozUBVFgINdiUcI9YZ5TtSpFFehy
+	 9K99FQyL3HUPo3MkG8rpZnXuHfDYEsMZGyYwsLhU=
+Message-ID: <d2584ac3-51c7-4eac-8f37-ae29d899169c@arm.com>
+Date: Wed, 5 Aug 2026 11:51:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260805063255.1638614-1-aneesh.kumar@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 09/41] KVM: guest_memfd: Filter both shared and private
+ when invalidating
+Content-Language: en-GB
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, aneesh.kumar@kernel.org,
+ liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-9-35f9aec2aed2@google.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260728-gmem-inplace-conversion-v9-9-35f9aec2aed2@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 05, 2026 at 12:02:48PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> Changes from v8:
-> https://lore.kernel.org/all/20260707081351.1680209-1-aneesh.kumar@kernel.org
-> * Rebase onto the arm64 for-next/core branch.
+On 29/07/2026 01:35, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
+> 
+> Before conversion, a guest_memfd could be either all shared, or all
+> private, configured at creation time using the INIT_SHARED flag. Hence,
+> when zapping pages from stage 2 page tables, guest_memfd can filter which
+> to zap based on the initial shared/private state.
+> 
+> With conversion, guest_memfd tracks shared/private state on a per-page
+> level, so a range can contain both private and shared pages. Zap both
+> private and shared pages for simplicity.
+> 
+> An alternative would be to iterate guest_memfd attributes and only zap both
+> if shared and private pages exist within the range. Setting both the shared
+> and private filters lets the zapping logic do that iteration instead.
+> 
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-Was there a dependency on anything in for-next/core? We normally apply
-series on their own branch on top of the vanilla kernel (e.g. 7.2-rc3)
-and merge everything together in for-next/core. We (and many other
-maintainers) strongly prefer series posted on top of an -rc kernel
-(typically -rc1 to -rc3) unless there's a dependency on a different
-branch. Never based on -next or -next like branches (which is what
-for-next/core is, as the name implies).
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-> * Move the RSI code from arch/arm64 to drivers/firmware/arm_rmm in patch 3.
-
-Thanks for this.
-
--- 
-Catalin
