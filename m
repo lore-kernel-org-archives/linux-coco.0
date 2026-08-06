@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE369499F03
-	for <linux-coco@lists.linux.dev>; Thu,  6 Aug 2026 22:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6261A3D6CDE
+	for <linux-coco@lists.linux.dev>; Thu,  6 Aug 2026 22:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786054760; cv=none; b=EnkM4Uja3CYxcNy9FXPsuQRWAT/10MhesXcxxgT65mfUETJzsjRygnZv0s28SSxQB7auEKrE4InhZ5v+ejdywPDyIE0DGN2LXDUufpp2e+gz0BQlhHC88msN5s4DnTWRQH94efPCuJrvF2dZGCgLt+FlwMLyDclnm9ALIc8GxeE=
+	t=1786054802; cv=none; b=M0ieDDm+vNEhxKcm95nASVHzalg+nPRs/lQjrXd6b6U7XLC6jA3Vs58mG+DSXNQGEL4GhG7u5siD2jM4JSaTHNUmeISPpfNFuJYDDmipW2hyE/yCGDIaqD3Woni4IzVD8l3uz4j5fdsBnFZBaXc3sOeJZnDkfEAOous8X+8zrYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786054760; c=relaxed/simple;
-	bh=BF2QgNw76r3TX0hEorpEfWDK4/mjLXh6jpLfqC83lpQ=;
+	s=arc-20240116; t=1786054802; c=relaxed/simple;
+	bh=sr3lr4xlsPR5oxoxHr2NhOOdJYR7Qbl2FInx8KOOF8M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oHjNAm9hPVwplRVfQ2UP/fO9NGdqhXdjk9rQuoT0FlX1zNOxu6nMpvG4MV9Fi1MH+fpP3m18kNF7x57ymb2RxnqGoeFaCfJCJUK7M8fN1n4wzis9i2BZoSUnnKq+lYzGMbl9dekES3ZPmh73jGripzxzanqyMotFstMrUXOWd4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WcAGoqUJ; arc=none smtp.client-ip=198.175.65.17
+	 In-Reply-To:Content-Type; b=g1zsFKpDmSiPkwAaRfGrI9d/MwfBZAHiR9uRyzCXWJS2xSOxbH9KEy/I52FOiiruHqEhSQOdMxOj51J68aX6NVbYO1GlG24o5iqQXab8Arh/TtCPE+mQsTPHBgEovYEltbUyRxUCHxJJZ5hJq1A/D8p6FaIVmXLFEdXuJdA17Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fTYssz2Y; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WcAGoqUJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fTYssz2Y"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786054758; x=1817590758;
+  t=1786054800; x=1817590800;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=BF2QgNw76r3TX0hEorpEfWDK4/mjLXh6jpLfqC83lpQ=;
-  b=WcAGoqUJOnQGuRw/JMxxhDt9VZpsjHiZlph/hHz9JHSB9ZQB75z5Idlv
-   l0076tG/WrENxaNbzXfiwYzo07Lrr2cCBezj47naRyMjK+nYEpWXCZ+Bk
-   B/INECC0ZLf9gSvBNFpt8Rvs4T2rH9SzwezEdVBui9ZcKdPWH3tX1k/6a
-   c0tXa1U3odNj7nogCwIrt9Rc7seiyjnzS8+lcJlDZ3VjtWiVbaqbGPlzq
-   WQOZkZXybAMKLp7RWi9J5ql0UbrJFm0sAX/dQCTxEBBIcRHVTwSEO5lOr
-   nbjuudV/QVeMQ2nwKj8o9AVMJ+D0cdr6FeIdl7RyCrBT2d/aJI9qS6z1/
-   A==;
-X-CSE-ConnectionGUID: uDBmpGMrT3eXQnz6YqxaiA==
-X-CSE-MsgGUID: qxmvkn9XSzatp43ft7ykUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="86672604"
+  bh=sr3lr4xlsPR5oxoxHr2NhOOdJYR7Qbl2FInx8KOOF8M=;
+  b=fTYssz2YUTE99GzEaQ44VgKad1E9O40z4wj5Hkks/GxiuHJ26QKTRZPj
+   Uqrfn687ZKvbQWosg28oqMqvA+WsyvSP3/18fkymvpYbg3l/pw9bjKhgb
+   JYnIMUY5OgdnIo1CC2gzOVFC35udywed3h3mwtUn2imBztXSbNgeujVPf
+   yXYCexhf4i/ep33xoRhprPi2e1bJyRncTbaH5tFgzFbib7Oz+icc4tt78
+   1EcasNbaGBzzMlKjQGT0YwiBzHSCtaiTLK/u9W2Txd+49TySgjpPQIBTt
+   qu/MOns9ldOmJwJDcwTZ3h4bkBy1RvKq1JQfz/Rn217+7q7ufranfevwA
+   w==;
+X-CSE-ConnectionGUID: +NRK2lIXS46LzmElotqBiw==
+X-CSE-MsgGUID: VDBJp529TV2UT2SzwvWqQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="86672673"
 X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
-   d="scan'208";a="86672604"
+   d="scan'208";a="86672673"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 15:19:18 -0700
-X-CSE-ConnectionGUID: h9aWC7tKS9ymuwI3Q/I3YQ==
-X-CSE-MsgGUID: AOlljAE+RbWi47mDHwWgxA==
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 15:20:00 -0700
+X-CSE-ConnectionGUID: 1M3fO2HCRvWrdK4AEJBFwA==
+X-CSE-MsgGUID: pKVrrGktQr+xZ4+DNkgSJA==
 X-ExtLoop1: 1
 Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.109.157]) ([10.125.109.157])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 15:19:17 -0700
-Message-ID: <798c0813-80f4-4a60-90f1-14a13e54d8db@intel.com>
-Date: Thu, 6 Aug 2026 15:19:17 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 15:19:59 -0700
+Message-ID: <865bfdba-f9c6-4851-8b36-5e243e85e803@intel.com>
+Date: Thu, 6 Aug 2026 15:19:58 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 06/11] KVM: TDX: Allocate PAMT memory for TD and vCPU
- control structures
+Subject: Re: [PATCH v9 07/11] x86/tdx: Add APIs to support Dynamic PAMT ops
+ from KVM's fault path
 To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
  kas@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com,
@@ -62,7 +62,7 @@ To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
 Cc: Hongyu Ning <hongyu.ning@linux.intel.com>,
  Binbin Wu <binbin.wu@linux.intel.com>
 References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
- <20260806020850.1221381-7-rick.p.edgecombe@intel.com>
+ <20260806020850.1221381-8-rick.p.edgecombe@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -108,12 +108,16 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260806020850.1221381-7-rick.p.edgecombe@intel.com>
+In-Reply-To: <20260806020850.1221381-8-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 8/5/26 19:08, Rick Edgecombe wrote:
-> Use control page helpers for allocating and freeing TD control structures,
-> such that these operations can work for Dynamic PAMT.
+> So don't do these as they all had various problems. Instead just create a
+> small simple data structure to use for handing a pre-allocated list of
+> pages between KVM and arch/x86 code. Model this on KVM's existing MMU
+> memory caches.
+
+The main thing is that the KVM folks are happy with this, so I'm happy too:
 
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
