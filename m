@@ -1,106 +1,148 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85663429803
-	for <linux-coco@lists.linux.dev>; Wed,  5 Aug 2026 22:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0442C340286
+	for <linux-coco@lists.linux.dev>; Thu,  6 Aug 2026 00:43:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785970181; cv=none; b=VbSo28KxJwEZ6S7lqQB6Fmk7zZlfSGRknZvZhDxFDuCK+w9nsKFQHdkjsL17lp9Z1TNY5D6y6r73nGPhhva+d8Nnp60I3MzbkPUvtAF5PpE9c6KfrtP4S09I7OZVJK0FXXrWOy2fNAQ+ibp+CbhE8cvy4bNVOFDPKjhwt6JOxDY=
+	t=1785977033; cv=none; b=rbaAM1kOijonBOtIfsYRttp9AnBkA+WCTUi+Zyy5fGV4J3RaaDp/AJP2ucovpOmzraw0L9EXxE5+TQt64ki7a2nuhpBxuqAhqzko8iROM2xKrMY/pKlJj9if+zTO0IBHDBvQZGB5XZUL4Z2FMZmDF3pgzD+Ibkm/Whm+ozzk2oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785970181; c=relaxed/simple;
-	bh=jfOV2obLipkD+y3jvt4DBvBwYkaZOEFMfwoNYs3XlQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H0xDymbhIC8r2FO2nvJjMCwn07Xvk5lwjfYbfjwckCr8LCMkF3lxAUzTBM2YdOAA/Sh1mQ5EEVVtBepSogmKw2lP+Fkz1dcwZknbIor1gNLm1+zQe6k2/5X0tbssgWQ5HYXzJH5gcWfkYSyUcbOpi9qcD4ZjJWDaXMzAKAKdPpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=WW3mUzgw; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1785977033; c=relaxed/simple;
+	bh=MOBnrAzJHjAXv0busTUd8AQe2wVTRESDC3GYmdGx6Jc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=pqT4YUaYAtv/wZ85y1YOflWK9x/CJvMnt1rBGL8kODlLApVnCrPXDDO/Z57iCuZ9oyUvHkoZsX7pCOYrOFo1TW63jo6E1m9GIQvxYYYRH1mbk6V2kFS9AlxJacTxFxlbPY6ZcFd0LRyqmcb+2oyzzGQb11RN3YDF7mmkl94JIt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eD7xnUVw; arc=none smtp.client-ip=209.85.215.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="WW3mUzgw"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 24B6E40E00C3;
-	Wed,  5 Aug 2026 22:49:36 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id XevHoCsztfrX; Wed,  5 Aug 2026 22:49:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1785970166; bh=11a3rOlS1cYOCSqhdbwbQhgoopQLgWS4fQ0LjBkvf34=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WW3mUzgwjw846piHFFCgM5ltUSssCsDK7wmazWbRmFiLyqM4OY4TfWWS+6+KNZ8iM
-	 vt4AThrjXaNorLh6b+b3mE6CUy/Fv2HzLbwosxw8XdlEixwjDATNhKhx0CIwZ+mhVP
-	 ncC/gp1oUwT5CAX4kdORns6B7NQqnKz9bhBEy3nHZulB57TlaLC9/SGe9Hl1WivVlg
-	 5pWE317oGyK74uM8KJjE+Fj/jIgCbb3q4NvMiH6goYE08ymwg6VjP9zVSKvvvPhvXo
-	 BMtcFGPEIX+ceJR1hLHELKhtzpE4pkpkFksxW8mru5X8AgxR0umsAEB7SVG3W17f9e
-	 C9L2MVzJ0k4Pp0VtyufITUgITfYPb+BCxxP6kdRVoXV4i1Ao64dw2/V0wVYoXck9Zk
-	 lmROqgPdWvZS7MehL5UFRQywvCrSXGJT+lXwNSfERY8lmphY2jZEPSwNphRAUKnT8m
-	 wanax6wrJAiafHdaKiqqinYGPpUmYxlV2u5h8PixPktE5dvZK5/A6b8OSgI1fZcH1h
-	 maTjbSDcYJuf797etD7KuURMzIuFgUYi+k/uNna2+FLDlxbmfW1AVKfTCBRODbDG5C
-	 tkcKFthdkIssHFmkuhbCJNfz+KAz5NNFE75DX+MLAulhw/PZAy8egDZZeu2xT/SVE9
-	 N4tMWPs2t7SQt5UKKUnG1s5g=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 862CD40E0031;
-	Wed,  5 Aug 2026 22:49:10 +0000 (UTC)
-Date: Wed, 5 Aug 2026 15:49:07 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Kim Phillips <kim.phillips@amd.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, x86@kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Naveen Rao <naveen.rao@amd.com>,
-	David Kaplan <david.kaplan@amd.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH v4 01/10] x86/bugs: Only log missing retpoline when it's
- actually the missing mitigation
-Message-ID: <20260805224907.GDanO942iYDbai1kFx@fat_crate.local>
-References: <20260804235611.4053375-1-kim.phillips@amd.com>
- <20260804235611.4053375-2-kim.phillips@amd.com>
- <20260805004441.GAanKHecgJwfAOzZzp@fat_crate.local>
- <65d82937-113d-405b-9399-b70973e84c50@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eD7xnUVw"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb11535e6a1so1394036a12.0
+        for <linux-coco@lists.linux.dev>; Wed, 05 Aug 2026 17:43:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785977031; x=1786581831; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GW1XyS3pE1vmBMrFND4uaqlT60WFAOcGNZed7ARn/tI=;
+        b=eD7xnUVwIR9FvTUHhQk26hogrhtub/CVyvVlyrZwgxf7ott3iRx2QwXXzqq0fXOhY/
+         5K6nVX2w5/x6A9vg/VR2ZCZWFW08bVx1tZElvmP5p1rWim8FvFEjSav1+OQAuA2TgOGP
+         o1IKTdO7FzbQVKcl+AAs0Nm5ellEQc/sqtDKW+4URLmnVRrW293yXxtFNM9P2rFF2TdH
+         DKARr9T/OiF9dUNocHPExe8ZLeafKVnq2marCQCewlrjmD7uE5TCTdX2HATXZG0jze7T
+         V5ZicAJ/bX9qrbKBq/iCnsd0q9LX1c7b2RpYlNYgsK8OsFlwcPKLScbvxCAV3cdlh2Ke
+         Ghgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785977031; x=1786581831;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GW1XyS3pE1vmBMrFND4uaqlT60WFAOcGNZed7ARn/tI=;
+        b=ZfpBC5mHUq4nTwM6zjODAAbayeoN5lqvW1qAE7Gf6Ddq04jqaaTf988MlHsYXwgi/g
+         4/nPgEqH73pwj57FDNP2ats88uFW7/qKCTnVJA4A/nOjE68vqLDr1/VI6CPPqwF0StgZ
+         Kl6fhPwT/wUNZ7LMKI+PlIzpckLOT70Y6240PN0c9PAzFLbkbPQRz7X5I6z/CUQjEfIs
+         U1vIJMn9vIsvsINazRJXZJ2oMSay3Lo5b7zwgE68kNr00EoucJsCFuHJecYqyUJ7wdS0
+         Nah6iY6bHvjd5B3DbMNorEWAQB7jr27nr8YiiFk1xL/tuS46AupeYtIgEh2nc3IIVoF8
+         tIhA==
+X-Forwarded-Encrypted: i=1; AHgh+RqFyly4kMhO8fVov1D0YnWbz+x3Z+Do2GnpJH/mUZ5dvCO/tY2HkFs9UT/xmXURoq3JNfLAiqabdjSe@lists.linux.dev
+X-Gm-Message-State: AOJu0YznKCadaN7DqEeqj/RwweAe/diy9cGrrambMurP90V0vNG4aJZ9
+	DxX7ngcUuLv4wyvqj9nITvS8v1zuPN6vvUk8vTizZ9U55IImkSdYLjANSVcI6DLNbq1mh/kIKK3
+	+hmA+5Q==
+X-Received: from pgki21.prod.google.com ([2002:a63:e455:0:b0:c9e:9c6:a85e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6112:b0:3b4:e4f6:4f15
+ with SMTP id adf61e73a8af0-3cb85e9922cmr13235742637.5.1785977030773; Wed, 05
+ Aug 2026 17:43:50 -0700 (PDT)
+Date: Wed, 5 Aug 2026 17:43:50 -0700
+In-Reply-To: <b9ad1a1d-c167-4adb-980b-90096515a363@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <65d82937-113d-405b-9399-b70973e84c50@amd.com>
+Mime-Version: 1.0
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-3-35f9aec2aed2@google.com>
+ <7dafaa90-f3d4-4be4-a5cc-472163f18040@intel.com> <CAEvNRgG3qXrG2ix2MEcyVo0GXaen-Pte4gFAwEN+9AY=VtGU5w@mail.gmail.com>
+ <b9ad1a1d-c167-4adb-980b-90096515a363@intel.com>
+Message-ID: <anPYxp-LMWaLDbMk@google.com>
+Subject: Re: [PATCH v9 03/41] KVM: Enumerate support for PRIVATE memory iff
+ kvm_arch_has_private_mem is defined
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Aug 05, 2026 at 09:51:11AM -0500, Kim Phillips wrote:
-> So it's saying there are no additional conditions than
-> !IS_ENABLED(CONFIG_MITIGATION_RETPOLINE), when there should be
-> (which this patch adds).
+On Wed, Aug 05, 2026, Xiaoyao Li wrote:
+> On 7/31/2026 4:34 AM, Ackerley Tng wrote:
+> > I think another way to phrase this is that if we don't make this change,
+> > say, on the foo architecture where there's no CoCo and no private mem
+> > support, kvm_supported_mem_attributes() would return true for the !kvm
+> > case, which is over-reporting.
+> 
+> Under the condition that the foo architecture enables
+> CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+> 
+> > How about this, replacing the entire changelog paragraph above:
+> > 
+> >    Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE
+> >    based on kvm_arch_has_private_mem being #defined. This improves
+> >    reporting accuracy by not reporting support for
+> >    KVM_MEMORY_ATTRIBUTE_PRIVATE when kvm_supported_mem_attributes() is
+> >    called with kvm == NULL.
+> 
+> It doesn't help for the case where kvm == NULL, but help for the case where
+> CONFIG_KVM_VM_MEMORY_ATTRIBUTES is defined but kvm_arch_has_private_mem not.
+> 
+> sorry for being picky. I think we can say
+> 
+> This improves the reporting accuracy by avoiding the case where
+> KVM_MEMORY_ATTRIBUTE_PRIVATE is reported when kvm == null even without
+> kvm_arch_has_private_mem being #defined.
 
-Then say that pls.
+How about this?
 
-> This patch corrects code that already cares about RETPOLINE=n kernels, but
-> it's also useful if you know all the target systems for a RETPOLINE=n config have
-> alternatives to RETPOLINE, such as {,e,Auto}IBRS.  This will become more and more
-> true as time goes by.
+Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE based
+on kvm_arch_has_private_mem being #defined in anticipation of tracking
+PRIVATE vs. SHARED state per-guest_memfd, not per-VM (to allow in-place
+conversion).
 
-Why would more and more configs become relevant which disable
-CONFIG_MITIGATION_RETPOLINE?
+guest_memfd support for memory attributes is expected to be unconditional
+to avoid yet more macros (all architectures that support guest_memfd are
+expected to use per-gmem attributes at some point), at which point
+enumerating support KVM_MEMORY_ATTRIBUTE_PRIVATE based solely on memory
+attributes being supported by KVM at-large would result in a system-scope
+check (NULL @kvm) over-reporting support on arm64.
 
-What is the compelling use case which warrants to have this in the upstream
-kernel?
-
-Give me a concrete example pls.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> 
+> >    Give architectures full control over overriding the default definition
+> >    of kvm_arch_has_private_mem() by removing the coupling with
+> >    CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+> > 
+> >    In a later patch, kvm_arch_has_private_mem() will be defined based on
+> >    whether architectural features are compiled in, and made orthogonal to
+> >    CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+> 
