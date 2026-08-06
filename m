@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D33D399368
-	for <linux-coco@lists.linux.dev>; Thu,  6 Aug 2026 17:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B8F47ACD5
+	for <linux-coco@lists.linux.dev>; Thu,  6 Aug 2026 17:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786036666; cv=none; b=oNcsQA0elK/BB3L5k/4iXGovZ2SL19zKAlrTyteziYMCwWiGlSccQqlXL7Cfwh1ct0jG9olhBlU1QikJLnRFG73gLStsBDmBY3avqaJdhzEC1l2NNzSrvngKPukhzXStY33KcMHOS+K6rZC1i1yjAJmEBLDS20uz8yXCu5se8c8=
+	t=1786036815; cv=none; b=qcU3IzQEiCLodopb+OcJF2DK4DbEV3TeFZ4HyqdZLdiXalDhLhacTI9EhOhrhzC09nVfEE7uuxPv+iv/nbZx1WnGzRvCkJZY6eD1fM7vjNEko/mldTpx1IOm6U7YbytNr7D6eSzQgDPEVtleLo+4CSyG/s/1mdXdTOIx2Snj56Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786036666; c=relaxed/simple;
-	bh=K1FnRBiNbYYnsYBbpxCVAZyEDLtZPc793DQLnfKoRgw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TwJzhA0wxtGbtfi0NHip88DsEbbyZgDkP/oG0/huofpUxrhoE5RNWRgj/gSW0yEQZiL+rtQ0ADX6nhgtf2YmPVKlivjLS/A0EraZL3syKZZVEAB/5DlIt5KAHY67sIFYFR6dFT2HX2WQ10KoM1AYp79zDsvsHiWiXqcCG5h+BHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BAOvmCM8; arc=none smtp.client-ip=192.198.163.17
+	s=arc-20240116; t=1786036815; c=relaxed/simple;
+	bh=JWqso0V9FFmCRafCen7mTtcLiMrLRQkaKi3fszOH6BM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=enrlksgBubegR+c2uwvqkoHWmTZMMTJimIj3Jq26+xn4OcGzDni2l4gaCV8dCuLvBjY0WCgOs0CJcJHwI8CZXVYUlm9iPGFCyThkvyB+S8b/5ZzQAQqQQTkPpcJM/Cd+DW7gbTTdwQwJLr+JYHmUvqBAPFKQIjRx0eccUjOfrjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h7JWT9Bu; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BAOvmCM8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h7JWT9Bu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786036664; x=1817572664;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=K1FnRBiNbYYnsYBbpxCVAZyEDLtZPc793DQLnfKoRgw=;
-  b=BAOvmCM8TvE+0DFeP+wHr3KgOFjyeyT6bxQZMAdaLr01f2NGf2L9U5dq
-   6eze1tLWqCtiCees7y2g9eCbOQqpVvUYMhbfdSQwf/sswVTONMHPh7RZ4
-   +TGFBF3WzCYuNG4nDN1BZ4JoSltI8vog5M+gal5xvDxHeolBBAkb3+rd5
-   dPyxmZRiUWFeQeOceTmze6dbJj0KUa6jTn9adn2Q52xdzyzMjjTb0r+Or
-   zkcgJu3OnBGVBZTOxPd5vkjE0xcXwUtrETq5g6B8Nm+3VbR/eCBbG1x7w
-   PuEBLccSAU2Qr0hfj599BRAe8Q7MkSqunvUtzZkgbuprU1akmD32lD2J5
-   w==;
-X-CSE-ConnectionGUID: YxvZ2FVGScm52+AK4i70Ng==
-X-CSE-MsgGUID: OSCYeFadR0aAJG8d7+RPFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="86514627"
+  t=1786036814; x=1817572814;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=JWqso0V9FFmCRafCen7mTtcLiMrLRQkaKi3fszOH6BM=;
+  b=h7JWT9Bu9bmGUjsDx8G05fHvoMcJoTY8MN1iEye8mqngFJSTJmSacdU6
+   NXNhxvrbLXgS8Si1tMARVispIGx3VQ4EKEqt4A2DRQIhJGCpL29xauNRY
+   /UC5I7ednAB31rJdwgosuVpohjSc659vOsyKIq8HC+N04zbeg075WVCKD
+   oTnqMUtKliStJTaQFovOCesUTkGCjFC9/c4Be7VkxDGgeqH4hfCvojAJS
+   1xUe9z6JpzjUlpwBKC35A3agzPbAvDMZ2Pyk0i6ZgaB7a6/WMV3GQNH90
+   5PbplPOATZTMfVV1DYDBR68b71Sx0TEuX1pVYV3tL3djsI9yQjivyMLss
+   A==;
+X-CSE-ConnectionGUID: i0fcTpN9ROu3/m7VMGk6zg==
+X-CSE-MsgGUID: AFUuSiJ9Qj+kuQCVkJJpoA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="97289235"
 X-IronPort-AV: E=Sophos;i="6.25,208,1779174000"; 
-   d="scan'208";a="86514627"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 10:17:43 -0700
-X-CSE-ConnectionGUID: KA7djey7SWOZTkXIQ08b0Q==
-X-CSE-MsgGUID: 5Io8ssLRSk6k0Zlw6AffHQ==
+   d="scan'208";a="97289235"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 10:20:13 -0700
+X-CSE-ConnectionGUID: QpvESexDQFCzHni+EojrcA==
+X-CSE-MsgGUID: hnpoB1xOSLaTl5ZNJVl1tQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,208,1779174000"; 
-   d="scan'208";a="265645903"
+   d="scan'208";a="262790640"
 Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.109.101]) ([10.125.109.101])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 10:17:43 -0700
-Message-ID: <84deae0a-2922-4d69-9e8b-4b1b18968c6a@intel.com>
-Date: Thu, 6 Aug 2026 10:17:42 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 10:20:13 -0700
+Message-ID: <62a45e23-f902-4dfa-bca5-439755474f34@intel.com>
+Date: Thu, 6 Aug 2026 10:20:12 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -54,6 +54,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v9 03/11] x86/virt/tdx: Add tdx_alloc/free_control_page()
  helpers
+From: Dave Hansen <dave.hansen@intel.com>
 To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
  kas@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com,
@@ -65,7 +66,7 @@ Cc: Hongyu Ning <hongyu.ning@linux.intel.com>,
  Binbin Wu <binbin.wu@linux.intel.com>
 References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
  <20260806020850.1221381-4-rick.p.edgecombe@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
+ <84deae0a-2922-4d69-9e8b-4b1b18968c6a@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -110,189 +111,28 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260806020850.1221381-4-rick.p.edgecombe@intel.com>
+In-Reply-To: <84deae0a-2922-4d69-9e8b-4b1b18968c6a@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-> +/*
-> + * Calculate the arg needed for operating on the DPAMT backing for
-> + * a given 4KB page.
-> + */
-> +static u64 pamt_2mb_arg(kvm_pfn_t pfn)
-> +{
-> +	/* Arg value will specify a 2MB region of physical address space. */
-> +	unsigned long hpa_2mb = ALIGN_DOWN(pfn << PAGE_SHIFT, PMD_SIZE);
-> +
-> +	return hpa_2mb | TDX_PS_2M;
-> +}
+On 8/6/26 10:17, Dave Hansen wrote:
+> I know the changelog tried to hand wave this away a bit. But the
+> comments in here need to say something about tdx_pamt_get() being
+> unusable on its own. The normal convention would be to __ it, too.
 
-/* Helper for building dynamic PAMT seamcall() arguments. */
-static u64 pamt_2mb_arg(kvm_pfn_t pfn)
+BTW, here's what I'm looking for. Something like:
+
+/*
+ * Allocate Dynamic PAMT memory for the given page.
+ *
+ * Only call this when the pfn is known not to already have Dynamic
+ * PAMT pages in the TDX module for it.
+ */
+static int __tdx_pamt_get(kvm_pfn_t pfn)
 {
-	/* Find the 2MB-wide DPAMT region for 'pfn':  */
-	unsigned long hpa_2mb = ALIGN_DOWN(pfn << PAGE_SHIFT, PMD_SIZE);
-
-	/* Talk about why the flag is needed... */
-	return hpa_2mb | TDX_PS_2M;
-}
+	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT];
+	u64 tdx_status;
+	...
 
 
-> +/* Add PAMT backing for the 2MB region surrounding the given pfn. */
-> +static u64 tdh_phymem_pamt_add(kvm_pfn_t pfn, struct page **pamt_pages)
-> +{
-> +	struct tdx_module_args args = {
-> +		.rcx = pamt_2mb_arg(pfn),
-> +		.rdx = page_to_phys(pamt_pages[0]),
-> +		.r8 = page_to_phys(pamt_pages[1]),
-
-Super nit:          ^ should be vertically aligned
-
-> +	};
-> +
-> +	return seamcall(TDH_PHYMEM_PAMT_ADD, &args);
-> +}
-> +
-> +/* Remove PAMT backing for the 2MB region surrounding the given pfn. */
-> +static u64 tdh_phymem_pamt_remove(kvm_pfn_t pfn, struct page **pamt_pages)
-> +{
-> +	struct tdx_module_args args = {
-> +		.rcx = pamt_2mb_arg(pfn),
-> +	};
-> +	u64 ret;
-> +
-> +	ret = seamcall_ret(TDH_PHYMEM_PAMT_REMOVE, &args);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Copy PAMT pages out of the struct per the TDX ABI */
-> +	pamt_pages[0] = phys_to_page(args.rdx);
-> +	pamt_pages[1] = phys_to_page(args.r8);
-> +
-> +	return 0;
-> +}
-> +
-> +/* Allocate PAMT memory for the given page */
-> +static int tdx_pamt_get(kvm_pfn_t pfn)
-> +{
-> +	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT];
-> +	u64 tdx_status;
-> +	int ret;
-> +
-> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
-> +		return 0;
-> +
-> +	ret = alloc_pamt_array(pamt_pages);
-> +	if (ret)
-> +		return ret;
-> +
-> +	tdx_status = tdh_phymem_pamt_add(pfn, pamt_pages);
-> +	if (tdx_status != TDX_SUCCESS) {
-> +		ret = -EIO;
-> +		goto out_free;
-> +	}
-> +
-> +	return 0;
-> +
-> +out_free:
-> +	free_pamt_array(pamt_pages);
-> +
-> +	return ret;
-> +}
-> +
-> +/* Free PAMT memory for the given page */
-> +static void tdx_pamt_put(kvm_pfn_t pfn)
-> +{
-> +	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT] = {};
-> +	u64 tdx_status;
-> +
-> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
-> +		return;
-> +
-> +	tdx_status = tdh_phymem_pamt_remove(pfn, pamt_pages);
-> +
-> +	/*
-> +	 * Don't free pamt_pages as it could hold garbage when
-> +	 * tdh_phymem_pamt_remove() fails.  Don't panic/BUG_ON(), as
-> +	 * there is no risk of data corruption, but do yell loudly as
-> +	 * failure indicates a kernel bug, memory is being leaked, and
-> +	 * the dangling PAMT entry may cause future operations to fail.
-> +	 */
-> +	if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS))
-> +		return;0
-
-Whose fault is the bug here? Probably the TDX module?
-
-> +	free_pamt_array(pamt_pages);
-> +}
-> +
-> +/*
-> + * Return a page that can be gifted to the TDX-Module for use as a "control"
-> + * page, i.e. pages that are used for control structures for a given TDX
-> + * guest, and thus obtain TDX protections, including PAMT tracking.
-> + */
-> +struct page *tdx_alloc_control_page(void)
-> +{
-> +	struct page *page;
-> +
-> +	page = alloc_page(GFP_KERNEL_ACCOUNT);
-> +	if (!page)
-> +		return NULL;
-> +
-> +	if (tdx_pamt_get(page_to_pfn(page))) {
-> +		__free_page(page);
-> +		return NULL;
-> +	}
-
-Here's where I start to get lost.
-
-What are the rules around tdx_pamt_get()? tdx_alloc_control_page() is
-obviously for one 4k page. But tdx_pamt_get() does an allocation for 2MB
-regions. So it has to be able to fail to actually add PAMT in some
-cases, gracefully.
-
-Right?
-
-How does that happen?
-
-I know the changelog tried to hand wave this away a bit. But the
-comments in here need to say something about tdx_pamt_get() being
-unusable on its own. The normal convention would be to __ it, too.
-
-> +	return page;
-> +}
-> +EXPORT_SYMBOL_FOR_KVM(tdx_alloc_control_page);
-> +
-> +/*
-> + * Free a page that was gifted to the TDX-Module for use as a control
-
-Nit "TDX Module" for consistency.
-
-> + * page. After this, the page is no longer protected by TDX.
-> + */
-> +void tdx_free_control_page(struct page *page)
-> +{
-> +	if (!page)
-> +		return;
-> +
-> +	tdx_pamt_put(page_to_pfn(page));
-> +	__free_page(page);
-> +}
-> +EXPORT_SYMBOL_FOR_KVM(tdx_free_control_page);
-> +
->  void tdx_sys_disable(void)
->  {
->  	struct tdx_module_args args = {};
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-> index bdfd0e1e337ac..a886c54decaad 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.h
-> +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> @@ -48,6 +48,8 @@
->  #define TDH_SYS_CONFIG			45
->  #define TDH_SYS_SHUTDOWN		52
->  #define TDH_SYS_UPDATE			53
-> +#define TDH_PHYMEM_PAMT_ADD		58
-> +#define TDH_PHYMEM_PAMT_REMOVE		59
->  #define TDH_SYS_DISABLE			69
->  
->  /*
-
+See? Let's talk about the rules around when this can and should be called.
