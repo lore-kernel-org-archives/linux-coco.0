@@ -1,57 +1,57 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834954C8FFC
-	for <linux-coco@lists.linux.dev>; Thu,  6 Aug 2026 23:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC4047F77F
+	for <linux-coco@lists.linux.dev>; Thu,  6 Aug 2026 23:36:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786059397; cv=none; b=rshTrWQv7yoYGLb1BHHOMtyZxDATvdtBCe3JAJlCQaF0irNrGEHxKC0TWPPD3wNCuQ2aI4XUOg5Wq2vw7ZM9TlP/I0/pVNjYfECgHbBKuokdsC8Tq8Xnm1vfJXNsQN/e2wAneN5ijHEdO4ILGusm4S5jp92EYc+OSb/1lDPOjR4=
+	t=1786059396; cv=none; b=jSnQT9L+mDEMhpn7xANNdWZZvgBQG23RGW65y1Lpmzx+4RflPap7PV+T8VDFOD0cyy9Vc5ksgP7c0k/mUp2gtZaNwAV+C62GN1F4q2i5JvSjeN2NkpFAcaKbAk91ufBBZpM4WeIigCzc4sh3AnCgQP1tqJzlLINRrce0PlM0B5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786059397; c=relaxed/simple;
-	bh=uHCr+aGd0IVIljQJaBiD1XMjX+0uHia3XbUwy11kdUQ=;
+	s=arc-20240116; t=1786059396; c=relaxed/simple;
+	bh=Lm8aNsZHGOuUIlXcj3KgaJkbvcxgm3rvJuJfaBGztsM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=c4eJoSwlZi3Y02hrfHbHVDkBIY6cAElMdYarBVa3uvZAE0hTopyebcKEXhA2rWzEhV7IsgnB/aeyd6GlApKL3MVCEzQW3hvRXpZ0PqRhSJi00T6DLHui7EGDUfVK0d8w2tWjGFEBiCEnUnajbYJ3gcTdmMbLsK9EL11+wT2+ul0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d6Doxy7y; arc=none smtp.client-ip=209.85.214.200
+	 To:Cc:Content-Type; b=i8WVl5yL2cpGNQoN3lHj7YLjA26DF5auRFIJBpJzpn0+H43nGR2HBm6rUOkOva+niVFmq0vw8KSpQWrx//DyAXPCGEq021ugZt5A0W7s0w9ieS6WyCdfCGMAsayT9c74t5NVmU/rv5dAHlQK02z1QRed3VJq7/hIFzej28VMgDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KSZanuwi; arc=none smtp.client-ip=209.85.210.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d6Doxy7y"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cfca8558d2so38184795ad.2
-        for <linux-coco@lists.linux.dev>; Thu, 06 Aug 2026 16:36:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KSZanuwi"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-848544a8496so3046765b3a.0
+        for <linux-coco@lists.linux.dev>; Thu, 06 Aug 2026 16:36:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786059393; x=1786664193; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1786059392; x=1786664192; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=AA+qmVUXq1UZoUYGqhY11Guml9As0mrU+L3gWPkVgC8=;
-        b=d6Doxy7yoP+Dqx8hPPQIMQ25koEFuFkpP/P8OlGA/EwZd2NDSx8v+JDiEs4Wo9bQlg
-         1AHJWVmBf3G8yfOjNXiGwj75Hg+xlHfFcJo1W3TTWzRZ1IEPQMHTIZ9g+GqBmPBw3s3W
-         BNX3v5+b0UDE0TGpOzvI5xqG3kEvtlFncDL+r/KW2x3cMXQnYFrHlZYIUvo6RCZd/DCX
-         hasK7vFQE0+nP4gQ5FJmVQCBsJ1fKvJmlfZTjji+AK2yRGmBfo62Xg3HjBaIWZLGsrZW
-         ww1mMbEqND8zYut5/Cww4p4QfOadv8PSeAI9mm9Rdj5Nuv5datK85f0EpGPR3qJ6sPjG
-         0OCQ==
+        bh=tcL8w1SVbwtFzoahyKqy3HGwkprj7A9nnDUrJsX64pM=;
+        b=KSZanuwi0gHw8U+hp9HzfCuBntWZOTuY1cOpT14oIlJKBcZezChAdzVvRfCUzLDXLL
+         eZqfId5Sf7WLLxiOS3GO4CXq1l7EekGBFqE/LWfTSv6m/Q2fkgfQhhqLnu/e5hAL6fNy
+         HuYMlKU2gvS6Pk9p/KgYmIE/28fhSX46zT0Noa22co1GswS2aj8BkR8YEKpxd1tuJWiJ
+         Grg+9P2OSFDTEfCL+ooZ6Br7bJ/Ovx6RfGAiwhUtS5hQwRxjA/eDW+zZ0dIBaYQEh00W
+         lz1t3eEJP+Jl/SSUf14P2/UIZpP/qoHWJCs9DA6l4gk1vpa+fx+sxooI2lyqH/HLtODk
+         j6vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786059393; x=1786664193;
+        d=1e100.net; s=20251104; t=1786059392; x=1786664192;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=AA+qmVUXq1UZoUYGqhY11Guml9As0mrU+L3gWPkVgC8=;
-        b=b/QNuVEc1Ew70QGZlFqQiAmj/hAdyEdZpN+nS/hJUH3r9ZTH+U+hU5dVWWaxb/Rmxw
-         42bHP4ao/Y8ObtcFqOk6enK5+lx+M5gsNhLFitnSRQIIOQ5E5578Ha0hQKONM3iqpVKq
-         sPSP/U1517cExUff/zEu7E7+r4sIX9CH7IUTf0EKtzQTYZb7p1TzbD45G9lpkKkWgYRk
-         5HjckdewaW8gipVX8UFEWb3Qny6RHhWroNLfuhO5JqAq9OkR24rY8WNWMtRvbc/7eeX6
-         sShOczadJUP0Lfekj+p7GMnPiKe2RpBPcy+vXYuRdaTI6Has/O09z8i4Xiavf5Y/DPgK
-         BDRQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoQhmXGh2MRWbNhr196FBIfg8ObgEyFDF8Ov7LQpJ6FPyupo/MEHJ2iFUe6O4asgLf6+lD7dyC6Q4TX@lists.linux.dev
-X-Gm-Message-State: AOJu0YzhIHMXh3IlFpBGh964iTeYTFnWS1b+FRMndDcO7MaF5wYlkblb
-	KTUFFQcOr5A0Tp2CJePnLvEfnQ8Oxr42GtptAfz2keSktvyo/71Eay6XCcoCjUjWUK7fUQD2ZHL
-	l+SB96g==
-X-Received: from plbjc21.prod.google.com ([2002:a17:903:25d5:b0:2ca:d66c:97b2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ef0a:b0:2c9:c517:d070
- with SMTP id d9443c01a7336-2d0ca7afebcmr224927325ad.3.1786059392825; Thu, 06
- Aug 2026 16:36:32 -0700 (PDT)
+        bh=tcL8w1SVbwtFzoahyKqy3HGwkprj7A9nnDUrJsX64pM=;
+        b=YM92PEl00HajsB+NH67mwCy12AFw/eMFQzbU7Fhl7oxZ/Kbpp7Hny4R6bd1kD9CcSX
+         S61h49g5W5GI6Rwav+rg/mcLaYznFDRy81nCpuiiPag4yNj3rxcQgA4PlN7wpq8P/Aiz
+         CwhlvgsB+HjDdLr0Ra7aDCak94HNpMnucb9FvNoAZLraLyTlzNMgX7yLywP8DRbj3bl5
+         8TeNxtjx4O5pbQaffPiIUkMMwPcChc2JL/u3YErMt0eKFKYzrnnwCYL/Xn/Rk84Anq3Y
+         QUHpGZUOcoGc56jaOLy6pFMRvlxWWFNEx9JSZql1iftNopCeY2f4fNHKWhF+PE6Qus/u
+         TAjg==
+X-Forwarded-Encrypted: i=1; AHgh+RqjwZXSGvflZaKCMPcBmaJKGgTnoBmIJTYolQAvrWyUtURfebzgZu93yA7I0iB/Z+cBtRhgw3FhweYZ@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw+qnWs7p55JTH3wmb8FAa3/XGR2WA1bJpfkjJgLwA/bz+Un1kJ
+	dJXgaSgGv+x3tRUjFbMVM+CakTduqcRnchtPTYYq6334StwmGK94mBRDIEhdE5ZfjbPFYNg9z7a
+	MOxQi5w==
+X-Received: from pgmc14.prod.google.com ([2002:a63:1c4e:0:b0:cbb:8a1e:efa4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:10cd:b0:848:8445:6956
+ with SMTP id d2e1a72fcca58-84f4fe9f90emr5350899b3a.18.1786059391731; Thu, 06
+ Aug 2026 16:36:31 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  6 Aug 2026 16:35:24 -0700
+Date: Thu,  6 Aug 2026 16:35:23 -0700
 In-Reply-To: <20260806233609.212337-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -61,8 +61,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260806233609.212337-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260806233609.212337-8-seanjc@google.com>
-Subject: [PATCH v6 07/51] x86/sev: Move check for SNP Secure TSC support to tsc_early_init()
+Message-ID: <20260806233609.212337-7-seanjc@google.com>
+Subject: [PATCH v6 06/51] x86/sev: Don't override CPU frequency calibration
+ for SNP's Secure TSC
 From: Sean Christopherson <seanjc@google.com>
 To: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
 	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -85,50 +86,41 @@ Cc: Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Thomas Gleixner <tglx@linutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 
-Move the check on having a Secure TSC to the common tsc_early_init() so
-that it's obvious that having a Secure TSC is conditional, and to prepare
-for adding TDX to the mix (blindly initializing *both* SNP and TDX TSC
-logic looks especially weird).
+Don't override the kernel's CPU frequency calibration routine when
+registering SNP's Secure TSC calibration routine.  SNP (the architecture)
+provides zero guarantees that the CPU runs at the same frequency as the
+TSC.  The justification for clobbering the CPU routine was:
 
-No functional change intended.
+  Since the difference between CPU base and TSC frequency does not apply
+  in this case, the same callback is being used.
 
+but that's simply not true.  E.g. if APERF/MPERF is exposed to the VM, then
+the CPU frequency absolutely does matter.
+
+While relying on heuristics and/or the untrusted hypervisor to provide the
+CPU frequency isn't ideal, it's at least not outright wrong.
+
+Fixes: 73bbf3b0fbba ("x86/tsc: Init the TSC for Secure TSC guests")
+Cc: Nikunj A Dadhania <nikunj@amd.com>
 Cc: Tom Lendacky <thomas.lendacky@amd.com>
 Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/coco/sev/core.c | 3 ---
- arch/x86/kernel/tsc.c    | 3 ++-
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/coco/sev/core.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 665de1aea0ee..403dcea86452 100644
+index ed0ac52a765e..665de1aea0ee 100644
 --- a/arch/x86/coco/sev/core.c
 +++ b/arch/x86/coco/sev/core.c
-@@ -2025,9 +2025,6 @@ void __init snp_secure_tsc_init(void)
- 	unsigned long tsc_freq_mhz;
- 	void *mem;
+@@ -2046,7 +2046,6 @@ void __init snp_secure_tsc_init(void)
  
--	if (!cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
--		return;
--
- 	mem = early_memremap_encrypted(sev_secrets_pa, PAGE_SIZE);
- 	if (!mem) {
- 		pr_err("Unable to get TSC_FACTOR: failed to map the SNP secrets page.\n");
-diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-index 09bf10f322ba..c710c71a1bdf 100644
---- a/arch/x86/kernel/tsc.c
-+++ b/arch/x86/kernel/tsc.c
-@@ -1509,7 +1509,8 @@ void __init tsc_early_init(void)
- 	if (is_early_uv_system())
- 		return;
+ 	snp_tsc_freq_khz = SNP_SCALE_TSC_FREQ(tsc_freq_mhz * 1000, secrets->tsc_factor);
  
--	snp_secure_tsc_init();
-+	if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
-+		snp_secure_tsc_init();
+-	x86_platform.calibrate_cpu = securetsc_get_tsc_khz;
+ 	x86_platform.calibrate_tsc = securetsc_get_tsc_khz;
  
- 	if (!determine_cpu_tsc_frequencies(true))
- 		return;
+ 	early_memunmap(mem, PAGE_SIZE);
 -- 
 2.55.0.679.g6767b8d81c-goog
 
