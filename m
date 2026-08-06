@@ -1,174 +1,167 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F253A9854
-	for <linux-coco@lists.linux.dev>; Thu,  6 Aug 2026 01:41:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E30386575
+	for <linux-coco@lists.linux.dev>; Thu,  6 Aug 2026 02:09:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785980478; cv=none; b=u33Dy3+FnJLgCoIIVwj5cDWINVbu9dZdu45AJHHQ0/2X0aAbowP74IOJaTd6wflSTKURr+oMzjalv9aSKN8CDtrAGzzPQrzB7QS/aWuXgPJwvSqZZDmOgNmbIwwG0X8EaiHF6MwW4OTlMgLXc5q0B40/MP0XsWKQ6VhAdDR65kk=
+	t=1785982144; cv=none; b=nwuPqaaP5JmI+5f2FUFY0C7OUpJdGrdeFyJYAyFN8QaeEQ7sNCZh814FtPpM5YHFTV4TZ755p67ykhlPrtpVrSK3pAZAzUWpPGv72930o84ginwUNW+KPWfuE7+JYYTgQ6jroic9KI2hBpLjTf//M1H1pL2VUDuquVC8FMWDs6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785980478; c=relaxed/simple;
-	bh=ZnLZ/DOQZzlu7P9MJedwhIePtxgeG0zn9ITPXcqWNF8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XOmoniEjo6kWVKxhZmGolS2RkN4P3i4gmH2dN2euFb6TnjBod2k1NYa1H0C7/rut8moZKng2ZLZvDeF4ysWHiBEucZIInmx/MShyuPLuOE1YfPFkTyITJlTok07iwle/gwj/v8okVlPX2RS4yIGXuliNs8gLyTbMTMa0+0B4BLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NfgkUNh0; arc=none smtp.client-ip=192.198.163.18
+	s=arc-20240116; t=1785982144; c=relaxed/simple;
+	bh=R40l2AV+agPIzV7ZpAddOKlHF0RjlJ4wSlb311zR6+M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=USyW3M2eHxU3KRPgqWNO52VOwCnz6/ghhpJRbe8tUu4s1jIj1Ks4EyWsOYHnHFQeGA5X+eGn/TT7oTlXY7evrt3oFn/RrKjeteNAndJQFfP3agBPtBHQxmcUd21kNgz5aApVYFakoOCJWdqmFxGXJmdHBFgVX+8LQSXf7JIBQqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i0TR/x8W; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NfgkUNh0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i0TR/x8W"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785980477; x=1817516477;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ZnLZ/DOQZzlu7P9MJedwhIePtxgeG0zn9ITPXcqWNF8=;
-  b=NfgkUNh0XFc4GUDxKHhm1wsWGrzsctFB2SfKCeUxqxUqAShx0bEm0A5x
-   7qoTwJw47MtdLNc/0s057XdGQhrm0o7QMxlN3zxpOYtkudRfG5WwE7H5h
-   eXEpYIRByZgMxeJ5Ixb4V4+9XUzwxrseY8AcH8vDcS/GqheN7QytiiPCg
-   BAEqSHHHOmde/yWTQK8kyniGXlsjkinuOCJt6e0VoDxNZUOCkwJ6HIsw8
-   HvCVeLXcv/QlKsY8m8784X0x66LKPD3hmwZArWBIVBH6Itx0mJDaDjwsg
-   gsb0ZVHIPCoapj17M8VEsLQ+iKw92pFcbp/pbO4QJYSMpATMiDP/xev1B
+  t=1785982141; x=1817518141;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=R40l2AV+agPIzV7ZpAddOKlHF0RjlJ4wSlb311zR6+M=;
+  b=i0TR/x8Wgs19tAbLYfTM2KKUDznEOvspCT+pDVyj1RR+PrZc3UCmSQsD
+   6EhNd0t7yIS1jdU12KuoYGUEJXDESm6eb9YRLGdTnGGmfCbKGDsfoeeg2
+   Cr2sDBBRGGGEqxsuJJTzgbH4RYQFTCExJSx304cnCu7iQU3c1ygr/Dp4F
+   g1OcuYNxO/AAkcDSm95NJEi3rNxTHnEAOwGwL5TbUgVjU/m/qheqMEkeA
+   is4OrRjtb8tSSYRat4LTx8xUM9DQ0wVFM0zq7kGOfTD8oBocq87FY8zYS
+   wN69wD82sXQCe0HqrhS5j3oeM9GROpMnC+LmEMMssgHNCYFe7JmC6mp9f
    Q==;
-X-CSE-ConnectionGUID: ivKYsIPzS+aer1lGz51IQA==
-X-CSE-MsgGUID: aKF04EcFR6WgwtURZx4Nhg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="85691166"
+X-CSE-ConnectionGUID: nG7HutBOSy2vjj+YJFqGag==
+X-CSE-MsgGUID: WmsNgiP7TGeCioPTTYlPiw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="86422822"
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="85691166"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 18:41:16 -0700
-X-CSE-ConnectionGUID: 5oIPZ2NyTCqHZV8yl6Tp9w==
-X-CSE-MsgGUID: x7bSvlzdSNGXBVIWi4OGbg==
+   d="scan'208";a="86422822"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:09:00 -0700
+X-CSE-ConnectionGUID: 0oHYLuptRX2RCO2ObbwTvQ==
+X-CSE-MsgGUID: w/nA/piFRIy1YSRaMfNnzw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="260186253"
-Received: from fuxiaogu-mobl1.ccr.corp.intel.com (HELO [10.238.208.47]) ([10.238.208.47])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 18:41:01 -0700
-Message-ID: <fda26964-721d-4a8c-9225-46ca3a5b2785@intel.com>
-Date: Thu, 6 Aug 2026 09:40:58 +0800
+   d="scan'208";a="258639851"
+Received: from rpedgeco-desk.jf.intel.com ([10.88.27.135])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:09:00 -0700
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+To: bp@alien8.de,
+	dave.hansen@intel.com,
+	hpa@zytor.com,
+	kas@kernel.org,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mingo@redhat.com,
+	nik.borisov@suse.com,
+	pbonzini@redhat.com,
+	seanjc@google.com,
+	tglx@kernel.org,
+	vannapurve@google.com,
+	x86@kernel.org,
+	chao.gao@intel.com,
+	yan.y.zhao@intel.com,
+	kai.huang@intel.com,
+	tony.lindgren@linux.intel.com,
+	binbin.wu@intel.com,
+	sohil.mehta@intel.com
+Cc: rick.p.edgecombe@intel.com
+Subject: [PATCH v9 00/11] Dynamic PAMT
+Date: Wed,  5 Aug 2026 19:08:39 -0700
+Message-ID: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 03/41] KVM: Enumerate support for PRIVATE memory iff
- kvm_arch_has_private_mem is defined
-To: Sean Christopherson <seanjc@google.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
- andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-3-35f9aec2aed2@google.com>
- <7dafaa90-f3d4-4be4-a5cc-472163f18040@intel.com>
- <CAEvNRgG3qXrG2ix2MEcyVo0GXaen-Pte4gFAwEN+9AY=VtGU5w@mail.gmail.com>
- <b9ad1a1d-c167-4adb-980b-90096515a363@intel.com>
- <anPYxp-LMWaLDbMk@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <anPYxp-LMWaLDbMk@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/6/2026 8:43 AM, Sean Christopherson wrote:
-> On Wed, Aug 05, 2026, Xiaoyao Li wrote:
->> On 7/31/2026 4:34 AM, Ackerley Tng wrote:
->>> I think another way to phrase this is that if we don't make this change,
->>> say, on the foo architecture where there's no CoCo and no private mem
->>> support, kvm_supported_mem_attributes() would return true for the !kvm
->>> case, which is over-reporting.
->>
->> Under the condition that the foo architecture enables
->> CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
->>
->>> How about this, replacing the entire changelog paragraph above:
->>>
->>>     Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE
->>>     based on kvm_arch_has_private_mem being #defined. This improves
->>>     reporting accuracy by not reporting support for
->>>     KVM_MEMORY_ATTRIBUTE_PRIVATE when kvm_supported_mem_attributes() is
->>>     called with kvm == NULL.
->>
->> It doesn't help for the case where kvm == NULL, but help for the case where
->> CONFIG_KVM_VM_MEMORY_ATTRIBUTES is defined but kvm_arch_has_private_mem not.
->>
->> sorry for being picky. I think we can say
->>
->> This improves the reporting accuracy by avoiding the case where
->> KVM_MEMORY_ATTRIBUTE_PRIVATE is reported when kvm == null even without
->> kvm_arch_has_private_mem being #defined.
-> 
-> How about this?
-> 
-> Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE based
-> on kvm_arch_has_private_mem being #defined in anticipation of tracking
-> PRIVATE vs. SHARED state per-guest_memfd, not per-VM (to allow in-place
-> conversion).
+Hi,
 
-Sorry, maybe I'm stupid. I still don't understand how to connect it to 
-tracking PRIVATE vs. SHARED state per-guest_memfd.
+This another revision of Dynamic PAMT TDX series. Like v7 and v8, it is 
+hopefully the last. Last time it got two non-functional nits from Sashiko 
+and two false positives. After some offlist discussion with Dave, I've
+applied the nits and rebased on v7.2-rc6. There were no conflicts.
+Everything else is the same.
 
-There are two diffs in this patch, and we are talking about the second 
-diff, right?
+Background
+==========
+Dynamic PAMT is a TDX feature that allows saving memory by allocating some 
+of its page tracking metadata dynamically, instead of statically at boot. 
+These static allocations take roughly 0.4% of system memory. The savings 
+are variable depending on system and TDX usage, but could be up to 100x. 
+For more Dynamic PAMT background, please refer to [1]. For more analysis 
+of the savings in different scenarios, see the v6 coverleter[0].
 
-If the kvm_supported_mem_attributes() will be used by gmem, I can buy 
-the justification. But it won't. At least, it won't after this series.
+It occurred to me that since the Dynamic PAMT effort began, RAM has become
+much more expensive. Consequently, this feature is even more valuable now.
+It would be good to enable it for TDX users.
 
-> guest_memfd support for memory attributes is expected to be unconditional
-> to avoid yet more macros (all architectures that support guest_memfd are
-> expected to use per-gmem attributes at some point), at which point
-> enumerating support KVM_MEMORY_ATTRIBUTE_PRIVATE based solely on memory
-> attributes being supported by KVM at-large would result in a system-scope
+Optimization patch
+==================
+The past two revision I mentioned some considerations for whether to 
+include the get/put optimization patch. In v6 Dave had asked whether the 
+"x86/virt/tdx: Optimize tdx_pamt_get/put()" was really needed. Later we 
+discussed offline to keep the patch for the sake of maintaining 
+performance and being kind to KVM's efforts to fault under a shared lock. 
+However, now that the feature requires an opt-in, it could be for limited 
+use and not disturb any kernel upgraders. Then the optimization patch 
+actually does become more optional. So it was moved to the end.
 
-s/memory attributes/CONFIG_KVM_VM_MEMORY_ATTRIBUTES/ ?
+On v7 that patch picked up a RB from Nikolay. I think it is still optional,
+but I'd lean towards recommending it. But I'm ok either way, if we want to 
+discuss it more without holding up the basic support.
 
-> check (NULL @kvm) over-reporting support on arm64.
+Base
+====
+This is based on v7.2-rc6. A branch can be found here: [2].
 
-I think arm64 won't define CONFIG_KVM_VM_MEMORY_ATTRIBUTES? So it seems 
-to have nothing to do with arm64.
+Testing
+=======
+This last version was tested in the usual suite, and also with the 
+optimization patch removed. The validation person who has worked on this 
+series added his Tested-by offlist. He has a special dynamic PAMT specific 
+test suite. Since there were not any changes which would be expected to 
+have functional impact I just did some regression testing with our standard 
+automated testing for this one. I left his Tested-by tags per his 
+preference.
 
-It matters for x86. After patch 20, CONFIG_KVM_VM_MEMORY_ATTRIBUTES is 
-user-configurable. At that time, people can disable 
-CONFIG_KVM_SW_PROTECTED_VM, CONFIG_KVM_INTEL_TDX and CONFIG_KVM_AMD_SEV, 
-but enable CONFIG_KVM_VM_MEMORY_ATTRIBUTES on x86. In this case, 
-kvm_supported_mem_attributes() reports KVM_MEMORY_ATTRIBUTE_PRIVATE for 
-system-scope query which is totally wrong. I think this is the case we 
-want to prevent not something won't happen for arm64?
 
->>
->>>     Give architectures full control over overriding the default definition
->>>     of kvm_arch_has_private_mem() by removing the coupling with
->>>     CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
->>>
->>>     In a later patch, kvm_arch_has_private_mem() will be defined based on
->>>     whether architectural features are compiled in, and made orthogonal to
->>>     CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
->>
+[0] https://lore.kernel.org/lkml/20260526023515.288829-1-rick.p.edgecombe@intel.com/
+[1] https://lore.kernel.org/lkml/20250918232224.2202592-1-rick.p.edgecombe@intel.com/
+[2] https://github.com/intel-staging/tdx/tree/dpamt_v9
+
+
+Kiryl Shutsemau (9):
+  x86/virt/tdx: Allocate page bitmap for Dynamic PAMT
+  x86/virt/tdx: Add tdx_alloc/free_control_page() helpers
+  x86/virt/tdx: Allocate refcounts for Dynamic PAMT memory
+  x86/virt/tdx: Handle multiple callers in tdx_pamt_get/put()
+  KVM: TDX: Allocate PAMT memory for TD and vCPU control structures
+  KVM: TDX: Get/put PAMT pages when (un)mapping private memory
+  x86/virt/tdx: Enable Dynamic PAMT
+  Documentation/x86: Add documentation for TDX's Dynamic PAMT
+  x86/virt/tdx: Optimize tdx_pamt_get/put()
+
+Rick Edgecombe (2):
+  x86/virt/tdx: Simplify PAMT layout calculation
+  x86/tdx: Add APIs to support Dynamic PAMT ops from KVM's fault path
+
+ .../admin-guide/kernel-parameters.txt         |  10 +
+ Documentation/arch/x86/tdx.rst                |  28 ++
+ arch/x86/include/asm/kvm-x86-ops.h            |   1 +
+ arch/x86/include/asm/kvm_host.h               |   1 +
+ arch/x86/include/asm/tdx.h                    |  26 +
+ arch/x86/include/asm/tdx_global_metadata.h    |   3 +
+ arch/x86/kvm/mmu/mmu.c                        |   4 +
+ arch/x86/kvm/vmx/tdx.c                        |  99 ++--
+ arch/x86/kvm/vmx/tdx.h                        |   2 +
+ arch/x86/virt/vmx/tdx/tdx.c                   | 452 +++++++++++++++---
+ arch/x86/virt/vmx/tdx/tdx.h                   |   2 +
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c   |  23 +-
+ 12 files changed, 559 insertions(+), 92 deletions(-)
+
+-- 
+2.54.0
 
