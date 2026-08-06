@@ -1,57 +1,57 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC4047F77F
-	for <linux-coco@lists.linux.dev>; Thu,  6 Aug 2026 23:36:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A087D4DC54C
+	for <linux-coco@lists.linux.dev>; Thu,  6 Aug 2026 23:36:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786059396; cv=none; b=jSnQT9L+mDEMhpn7xANNdWZZvgBQG23RGW65y1Lpmzx+4RflPap7PV+T8VDFOD0cyy9Vc5ksgP7c0k/mUp2gtZaNwAV+C62GN1F4q2i5JvSjeN2NkpFAcaKbAk91ufBBZpM4WeIigCzc4sh3AnCgQP1tqJzlLINRrce0PlM0B5s=
+	t=1786059399; cv=none; b=ijv9oWKE/NMBHDbUKGclUx09eP202O50aR1mqA/4mHALJhuQVK32HcT2HCfAFR2GkBkfDv+nSCrfJY9Hh4/bqssihc7bF79y0B8ilhVzxSPGcZM5LxZE6E05f9qE4x9eXnn9g81k6/yWw1G1h0GkdUPrAVi7CBLi1N2RpkolLs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786059396; c=relaxed/simple;
-	bh=Lm8aNsZHGOuUIlXcj3KgaJkbvcxgm3rvJuJfaBGztsM=;
+	s=arc-20240116; t=1786059399; c=relaxed/simple;
+	bh=Ip3+9AZjdh0bvA2Vl8RDcUNvlhnW8rCYLw17acrPYF0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=i8WVl5yL2cpGNQoN3lHj7YLjA26DF5auRFIJBpJzpn0+H43nGR2HBm6rUOkOva+niVFmq0vw8KSpQWrx//DyAXPCGEq021ugZt5A0W7s0w9ieS6WyCdfCGMAsayT9c74t5NVmU/rv5dAHlQK02z1QRed3VJq7/hIFzej28VMgDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KSZanuwi; arc=none smtp.client-ip=209.85.210.199
+	 To:Cc:Content-Type; b=Z/yq+CgbSi9QQRYZwSzHW5Ou7oepL2ediE0ehUHibIDL2qGoALMh8Cta1aWOFe+WvSDiOqlRh4yXknq2RHIrjynHGc1BEIFCP6IjORlwWgFQ2pPGi4KHlHaD60iEZbBqHog/UhcEGbqISXZvJO9AHcdsYLKYKPZ00nAUwR5oMCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PF0kt/B5; arc=none smtp.client-ip=209.85.216.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KSZanuwi"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-848544a8496so3046765b3a.0
-        for <linux-coco@lists.linux.dev>; Thu, 06 Aug 2026 16:36:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PF0kt/B5"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38ce7fabf76so4358826a91.2
+        for <linux-coco@lists.linux.dev>; Thu, 06 Aug 2026 16:36:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786059392; x=1786664192; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1786059395; x=1786664195; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=tcL8w1SVbwtFzoahyKqy3HGwkprj7A9nnDUrJsX64pM=;
-        b=KSZanuwi0gHw8U+hp9HzfCuBntWZOTuY1cOpT14oIlJKBcZezChAdzVvRfCUzLDXLL
-         eZqfId5Sf7WLLxiOS3GO4CXq1l7EekGBFqE/LWfTSv6m/Q2fkgfQhhqLnu/e5hAL6fNy
-         HuYMlKU2gvS6Pk9p/KgYmIE/28fhSX46zT0Noa22co1GswS2aj8BkR8YEKpxd1tuJWiJ
-         Grg+9P2OSFDTEfCL+ooZ6Br7bJ/Ovx6RfGAiwhUtS5hQwRxjA/eDW+zZ0dIBaYQEh00W
-         lz1t3eEJP+Jl/SSUf14P2/UIZpP/qoHWJCs9DA6l4gk1vpa+fx+sxooI2lyqH/HLtODk
-         j6vw==
+        bh=rOLPH8cbFzmNmyBMg+VXArbJGugFBL/MCFG1XvEwkdc=;
+        b=PF0kt/B58DTIcV0Jzi7cikZ4cLCIY1Nepiz93k5Oejp9CsENB6P6zuFpCfVHZZsaPA
+         hcyYS2wNlLPQSxFb7SeQ7azuesQ/DLhU/zXaPGCF6Tle63swq6r+yWYSY3YVJxVBaU2A
+         7KtqZZdgc1gNE5a7kozdNF7ixW+mzIW6aUHbtpYP+ZQjmvioQEVz3i2Bj6gJA9irvEVh
+         gLOjbonAH4T5fh07X1QrmNbjDMiIzcSsGJnJnlXGxQOu1nVJ2n3W+WU9RsdsheiD8bvN
+         7MZwZWtQ0LQ6RIEI8Vgkwp0fVSi41VScZBFVOOo04bxZVQYULLCh8U16asj1w9m4ITqd
+         WCIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786059392; x=1786664192;
+        d=1e100.net; s=20251104; t=1786059395; x=1786664195;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=tcL8w1SVbwtFzoahyKqy3HGwkprj7A9nnDUrJsX64pM=;
-        b=YM92PEl00HajsB+NH67mwCy12AFw/eMFQzbU7Fhl7oxZ/Kbpp7Hny4R6bd1kD9CcSX
-         S61h49g5W5GI6Rwav+rg/mcLaYznFDRy81nCpuiiPag4yNj3rxcQgA4PlN7wpq8P/Aiz
-         CwhlvgsB+HjDdLr0Ra7aDCak94HNpMnucb9FvNoAZLraLyTlzNMgX7yLywP8DRbj3bl5
-         8TeNxtjx4O5pbQaffPiIUkMMwPcChc2JL/u3YErMt0eKFKYzrnnwCYL/Xn/Rk84Anq3Y
-         QUHpGZUOcoGc56jaOLy6pFMRvlxWWFNEx9JSZql1iftNopCeY2f4fNHKWhF+PE6Qus/u
-         TAjg==
-X-Forwarded-Encrypted: i=1; AHgh+RqjwZXSGvflZaKCMPcBmaJKGgTnoBmIJTYolQAvrWyUtURfebzgZu93yA7I0iB/Z+cBtRhgw3FhweYZ@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw+qnWs7p55JTH3wmb8FAa3/XGR2WA1bJpfkjJgLwA/bz+Un1kJ
-	dJXgaSgGv+x3tRUjFbMVM+CakTduqcRnchtPTYYq6334StwmGK94mBRDIEhdE5ZfjbPFYNg9z7a
-	MOxQi5w==
-X-Received: from pgmc14.prod.google.com ([2002:a63:1c4e:0:b0:cbb:8a1e:efa4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:10cd:b0:848:8445:6956
- with SMTP id d2e1a72fcca58-84f4fe9f90emr5350899b3a.18.1786059391731; Thu, 06
- Aug 2026 16:36:31 -0700 (PDT)
+        bh=rOLPH8cbFzmNmyBMg+VXArbJGugFBL/MCFG1XvEwkdc=;
+        b=k1jbHHudswYpNzpav3vy1B/nFNcM3/n3yBaXiGNSwjB50mz96nvLOfNlJkxz283Wpr
+         xhYhXOU+OG5h+gzFCImd066wExozPEOQybqF1ksGbgL7jrhe+w6iu5vkazzXdIUGcTBx
+         QjYrUVFcz/zsLocGxrDPtnx4jPzKglNzPwI8yNaOLSnL9qLJ0eFLevqalwwUyfFoLckw
+         ihyhoyeglq7qXhZ8LIvp6Gx51pRxojHxxGp+yWIk8slPKlYRuu95+i8CRo+O3UDWPo//
+         TxoSi7rJNvQSX0x5dAYfSqCcCXfH7hwFmSr4wPX4A5si9xF7we9r20gEzuJqWvqldjck
+         cJhQ==
+X-Forwarded-Encrypted: i=1; AHgh+RquGuivVoqYykbvQRnNfD9TBAoOkyk6MxtRPMrDUoekgdE2hUQDgILB52aq7hXiN/JhjoiE2lXETj05@lists.linux.dev
+X-Gm-Message-State: AOJu0YwsrYYi5hUAqya5fgfy3QUKw+X3dkHjuw1WuVK1rwPxL26hWA8X
+	mJjfPd+rSOg1Ax8KZrIgHpvIWAd8h9VqQq7qDW6FMNnadswNGUaroWj1xciv/zNfFJvR4rqXpex
+	IENDAHw==
+X-Received: from pjte20.prod.google.com ([2002:a17:90a:c214:b0:38e:7f69:82cf])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5683:b0:38e:6aa7:68ad
+ with SMTP id 98e67ed59e1d1-3903c54fbc4mr18735745a91.5.1786059395009; Thu, 06
+ Aug 2026 16:36:35 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  6 Aug 2026 16:35:23 -0700
+Date: Thu,  6 Aug 2026 16:35:26 -0700
 In-Reply-To: <20260806233609.212337-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -61,9 +61,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260806233609.212337-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260806233609.212337-7-seanjc@google.com>
-Subject: [PATCH v6 06/51] x86/sev: Don't override CPU frequency calibration
- for SNP's Secure TSC
+Message-ID: <20260806233609.212337-10-seanjc@google.com>
+Subject: [PATCH v6 09/51] x86/tsc: Add a standalone helper for getting TSC
+ info from CPUID.0x15
 From: Sean Christopherson <seanjc@google.com>
 To: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
 	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -86,41 +86,135 @@ Cc: Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Thomas Gleixner <tglx@linutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 
-Don't override the kernel's CPU frequency calibration routine when
-registering SNP's Secure TSC calibration routine.  SNP (the architecture)
-provides zero guarantees that the CPU runs at the same frequency as the
-TSC.  The justification for clobbering the CPU routine was:
+Extract retrieval of TSC frequency information from CPUID into a standalone
+helper so that TDX guest support can reuse the logic.
 
-  Since the difference between CPU base and TSC frequency does not apply
-  in this case, the same callback is being used.
+Opportunistically drop native_calibrate_tsc()'s "== 0" and "!= 0" checks
+in favor of the kernel's preferred style.
 
-but that's simply not true.  E.g. if APERF/MPERF is exposed to the VM, then
-the CPU frequency absolutely does matter.
+No functional change intended.
 
-While relying on heuristics and/or the untrusted hypervisor to provide the
-CPU frequency isn't ideal, it's at least not outright wrong.
-
-Fixes: 73bbf3b0fbba ("x86/tsc: Init the TSC for Secure TSC guests")
-Cc: Nikunj A Dadhania <nikunj@amd.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/coco/sev/core.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/x86/kernel/tsc.c | 61 +++++++++++++++++++++++++++----------------
+ 1 file changed, 38 insertions(+), 23 deletions(-)
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index ed0ac52a765e..665de1aea0ee 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -2046,7 +2046,6 @@ void __init snp_secure_tsc_init(void)
+diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+index 6898584610a7..d405ff4e45e0 100644
+--- a/arch/x86/kernel/tsc.c
++++ b/arch/x86/kernel/tsc.c
+@@ -645,46 +645,62 @@ static unsigned long quick_pit_calibrate(void)
+ 	return delta;
+ }
  
- 	snp_tsc_freq_khz = SNP_SCALE_TSC_FREQ(tsc_freq_mhz * 1000, secrets->tsc_factor);
++struct cpuid_tsc_info {
++	unsigned int denominator;
++	unsigned int numerator;
++	unsigned int crystal_khz;
++};
++
++static int cpuid_get_tsc_info(struct cpuid_tsc_info *info)
++{
++	unsigned int ecx_hz, edx;
++
++	if (boot_cpu_data.cpuid_level < CPUID_LEAF_TSC)
++		return -ENOENT;
++
++	/* CPUID 15H TSC/Crystal ratio, plus optionally Crystal Hz */
++	cpuid(CPUID_LEAF_TSC, &info->denominator, &info->numerator, &ecx_hz, &edx);
++
++	if (!info->denominator || !info->numerator)
++		return -ENOENT;
++
++	/*
++	 * Note: some CPUs provide the multiplier information, but not the core
++	 * crystal frequency.  The multiplier information is still useful for
++	 * such CPUs, as the crystal frequency can be gleaned from CPUID.0x16.
++	 */
++	info->crystal_khz = ecx_hz / 1000;
++	return 0;
++}
++
+ /**
+  * native_calibrate_tsc - determine TSC frequency
+  * Determine TSC frequency via CPUID, else return 0.
+  */
+ unsigned long native_calibrate_tsc(void)
+ {
+-	unsigned int eax_denominator, ebx_numerator, ecx_hz, edx;
+-	unsigned int crystal_khz;
++	struct cpuid_tsc_info info;
  
--	x86_platform.calibrate_cpu = securetsc_get_tsc_khz;
- 	x86_platform.calibrate_tsc = securetsc_get_tsc_khz;
+ 	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
+ 		return 0;
  
- 	early_memunmap(mem, PAGE_SIZE);
+-	if (boot_cpu_data.cpuid_level < CPUID_LEAF_TSC)
++	if (cpuid_get_tsc_info(&info))
+ 		return 0;
+ 
+-	eax_denominator = ebx_numerator = ecx_hz = edx = 0;
+-
+-	/* CPUID 15H TSC/Crystal ratio, plus optionally Crystal Hz */
+-	cpuid(CPUID_LEAF_TSC, &eax_denominator, &ebx_numerator, &ecx_hz, &edx);
+-
+-	if (ebx_numerator == 0 || eax_denominator == 0)
+-		return 0;
+-
+-	crystal_khz = ecx_hz / 1000;
+-
+ 	/*
+ 	 * Denverton SoCs don't report crystal clock, and also don't support
+ 	 * CPUID_LEAF_FREQ for the calculation below, so hardcode the 25MHz
+ 	 * crystal clock.
+ 	 */
+-	if (crystal_khz == 0 &&
+-			boot_cpu_data.x86_vfm == INTEL_ATOM_GOLDMONT_D)
+-		crystal_khz = 25000;
++	if (!info.crystal_khz && boot_cpu_data.x86_vfm == INTEL_ATOM_GOLDMONT_D)
++		info.crystal_khz = 25000;
+ 
+ 	/*
+ 	 * TSC frequency reported directly by CPUID is a "hardware reported"
+ 	 * frequency and is the most accurate one so far we have. This
+ 	 * is considered a known frequency.
+ 	 */
+-	if (crystal_khz != 0)
++	if (info.crystal_khz)
+ 		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
+ 
+ 	/*
+@@ -692,15 +708,14 @@ unsigned long native_calibrate_tsc(void)
+ 	 * clock, but we can easily calculate it to a high degree of accuracy
+ 	 * by considering the crystal ratio and the CPU speed.
+ 	 */
+-	if (crystal_khz == 0 && boot_cpu_data.cpuid_level >= CPUID_LEAF_FREQ) {
++	if (!info.crystal_khz && boot_cpu_data.cpuid_level >= CPUID_LEAF_FREQ) {
+ 		unsigned int eax_base_mhz, ebx, ecx, edx;
+ 
+ 		cpuid(CPUID_LEAF_FREQ, &eax_base_mhz, &ebx, &ecx, &edx);
+-		crystal_khz = eax_base_mhz * 1000 *
+-			eax_denominator / ebx_numerator;
++		info.crystal_khz = eax_base_mhz * 1000 * info.denominator / info.numerator;
+ 	}
+ 
+-	if (crystal_khz == 0)
++	if (!info.crystal_khz)
+ 		return 0;
+ 
+ 	/*
+@@ -716,9 +731,9 @@ unsigned long native_calibrate_tsc(void)
+ 	 * lapic_timer_period here to avoid having to calibrate the APIC
+ 	 * timer later.
+ 	 */
+-	apic_set_timer_frequency_khz(crystal_khz, "CPUID 0x15/0x16");
++	apic_set_timer_frequency_khz(info.crystal_khz, "CPUID 0x15/0x16");
+ 
+-	return crystal_khz * ebx_numerator / eax_denominator;
++	return info.crystal_khz * info.numerator / info.denominator;
+ }
+ 
+ static unsigned long cpu_khz_from_cpuid(void)
 -- 
 2.55.0.679.g6767b8d81c-goog
 
