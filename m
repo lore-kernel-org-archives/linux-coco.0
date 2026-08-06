@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2915499F05;
-	Thu,  6 Aug 2026 22:10:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CD1499F1B
+	for <linux-coco@lists.linux.dev>; Thu,  6 Aug 2026 22:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786054218; cv=none; b=YmoxeM3vtALBnH00arclW+NCjTVzV/h6X9RFKUMXXaQwi1kVUwo6vEnwHo/Ffe479XUDRQchZiDMaZP8vPEPJzf0Za6RPL7DYoOMWbvaRkAaLPu/0HRxym+miorkA6MCKN5xHLa2Jwv803GBSFi3E/QKtEJiYTtGQQu7OAwbw/s=
+	t=1786054634; cv=none; b=TqQ3nZY+kxJ8mTKd5fJjGVjYx6oKmM5z2T3BNif5hEb0u9JAOSeRt67topC74W36Tuq/aPWP4pkwBdnGEYCNtVS/0CfpJmE1YGx7+KgrcSH1xEsDfJ8I4QKFD7BcooQ2X2fDrYLX4rLnfxVpq3g7Q80Yc1a+BY/L6yv0srF887o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786054218; c=relaxed/simple;
-	bh=UDpmH08linf5ZqoXzs9bJ+zEVtMVLI7QKu96Mcu50Hg=;
+	s=arc-20240116; t=1786054634; c=relaxed/simple;
+	bh=iKweYBKWlVh41U7b/9lsPVhe+MkErxQZ9YPMyd+7WKI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EO47YZsbnjqAfYHVY9aawgkVs+BplasYw3kKJeO1qptQAdfLzRHTCfZyDFfvmG7FEMMZzUgQHeoEpyXdMP5tL5EL4orxaehq0RVCUqNPb3YYBV/6QC62dL6cxUetdFd366liO8h3JGcC7UXY/Dxkc9FGRJ3VQYeBee0ivnPsZMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZJzploQ4; arc=none smtp.client-ip=198.175.65.12
+	 In-Reply-To:Content-Type; b=hFY9yJpgaFwnRWAEkaaucHwQYa/crq8RS8q+F5VH+1VpiKCF1Sio5vaLkXGFoUDsYXDQZ7Y3xe9CjVQUZ1Qh00j5NmwHR4L9/XsdyqShwYOrL8ZQvotYfBNRVnBwmm/teY8z3tpuyYmbOkUzkWRfNIIBmmu60X4tC3yqrTVlGF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oED6Ikr6; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZJzploQ4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oED6Ikr6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786054217; x=1817590217;
+  t=1786054633; x=1817590633;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=UDpmH08linf5ZqoXzs9bJ+zEVtMVLI7QKu96Mcu50Hg=;
-  b=ZJzploQ4c6sanqAQ9c2PinqeN9gMhoRB1ZrF51bM6NhcCXHxTQYRvgGG
-   PpByXXXw0xM3naVS3dleoa5YOMDoG4TNnh9GayqPEC5PLoF3GVAK8G6gk
-   Werloqau//3chQKDuYvQnlbXlHwmGKAiD0MCNo0v82silCTeifJK/U1O2
-   o7zPeRB9UQDnbnbsoRxJvK1t2+9v/gGQcgnUnB3B1/CDcMSuGeokY30at
-   d06D121K85pOjbwRBp3jIVvcvWuWttZuHwEvzumevacOkjvNjUa2mv8UP
-   zGl9eqgf/zt5MTF9UGtTLMyDvms7WcRXqmJyNYKXwyQoE5U7jLxH9L0N6
-   w==;
-X-CSE-ConnectionGUID: Vb1bI2ldQVKfXdDMdwQfqw==
-X-CSE-MsgGUID: jH20x2dzRTGoBHahG31+xQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="98170966"
+  bh=iKweYBKWlVh41U7b/9lsPVhe+MkErxQZ9YPMyd+7WKI=;
+  b=oED6Ikr6JD0L1wrm4bxgsvQuu5OLn5VkiCMSieVnc4xe38ki4xiVqY7j
+   5hBgrqOc8JNdkZ7t9GdijKp8JzdxIvUmHfoQ7C5Tf2yfJUXooJbOZ+mcM
+   l3Ozeukjsrzhmc/TbC5+e1aNBWTep0K5b0gPI0AuI0g8lOcKnmNFNt8oU
+   K3J/HupnGFiKKWtxmQW0feVkRBnkm6eJaSSEtdu7o48T/n5IPXCMAtknX
+   tT6/617xpN73dGK9GUX1SYCGKZrBcWSq5ZY8hrNAls+r5FiOak+Z6ASaP
+   nvjnR9qNxFLL6alqJoZPg06S99NEU7ypjgYl0UxmYqJQ4X2vHrg9r6Fp5
+   Q==;
+X-CSE-ConnectionGUID: CBrjdZnGSPeFWUki1YMGFg==
+X-CSE-MsgGUID: 0UUeIXszQW+YnHeMysZr7Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="86537102"
 X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
-   d="scan'208";a="98170966"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 15:10:16 -0700
-X-CSE-ConnectionGUID: 925oNo8JTOudzAsz2RI9PQ==
-X-CSE-MsgGUID: XPEWO+z3QOWYbUAeJG4e7w==
+   d="scan'208";a="86537102"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 15:17:13 -0700
+X-CSE-ConnectionGUID: pgbksiNvQF+0qmnzMV8fkw==
+X-CSE-MsgGUID: 1QZ6d/pCQ6GP1erwZp89QA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
-   d="scan'208";a="255981219"
+   d="scan'208";a="259617270"
 Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.109.157]) ([10.125.109.157])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 15:10:15 -0700
-Message-ID: <61e51e6d-1f41-44a8-ad68-837e1d3b5609@intel.com>
-Date: Thu, 6 Aug 2026 15:09:54 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 15:17:12 -0700
+Message-ID: <dda5f0e4-636d-4106-8780-c82d178986de@intel.com>
+Date: Thu, 6 Aug 2026 15:17:11 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,32 +52,19 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 04/11] x86/virt/tdx: Allocate refcounts for Dynamic
- PAMT memory
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "Huang, Kai" <kai.huang@intel.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>,
- "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
- "Wu, Binbin" <binbin.wu@intel.com>, "kas@kernel.org" <kas@kernel.org>,
- "seanjc@google.com" <seanjc@google.com>, "mingo@redhat.com"
- <mingo@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "hongyu.ning@linux.intel.com" <hongyu.ning@linux.intel.com>,
- "hpa@zytor.com" <hpa@zytor.com>, "tglx@kernel.org" <tglx@kernel.org>,
- "Annapurve, Vishal" <vannapurve@google.com>,
- "Mehta, Sohil" <sohil.mehta@intel.com>, "bp@alien8.de" <bp@alien8.de>,
- "Gao, Chao" <chao.gao@intel.com>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v9 05/11] x86/virt/tdx: Handle multiple callers in
+ tdx_pamt_get/put()
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
+ kas@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com,
+ nik.borisov@suse.com, pbonzini@redhat.com, seanjc@google.com,
+ tglx@kernel.org, vannapurve@google.com, x86@kernel.org, chao.gao@intel.com,
+ yan.y.zhao@intel.com, kai.huang@intel.com, tony.lindgren@linux.intel.com,
+ binbin.wu@intel.com, sohil.mehta@intel.com
+Cc: Hongyu Ning <hongyu.ning@linux.intel.com>,
+ Binbin Wu <binbin.wu@linux.intel.com>
 References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
- <20260806020850.1221381-5-rick.p.edgecombe@intel.com>
- <20260806022158.586A11F000E9@smtp.kernel.org>
- <fd3014be925bc16fb3e1522c8cce00d9149e7808.camel@intel.com>
+ <20260806020850.1221381-6-rick.p.edgecombe@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -123,31 +110,16 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <fd3014be925bc16fb3e1522c8cce00d9149e7808.camel@intel.com>
+In-Reply-To: <20260806020850.1221381-6-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/6/26 15:02, Edgecombe, Rick P wrote:
-> On Thu, 2026-08-06 at 02:21 +0000, sashiko-bot@kernel.org wrote:
->> [Severity: High]
->> Could this vzalloc() call trigger a kernel panic on systems with sparse
->> memory layouts instead of gracefully disabling TDX?
-...
-> I think this is a bit overblown. If there is a lot of memory such that this
-> allocation is large, we can expect it be less likely to fail.
+On 8/5/26 19:08, Rick Edgecombe wrote:
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+> 
+> tdx_pamt_get()/tdx_pamt_put() unconditionally add or remove Dynamic PAMT
+> backing for the 2MB region covering the passed page. However, multiple
+> callers can add or remove 4KB pages that fall within the same 2MB region
+> and in that scenario only a single PAMT entry is required.
 
-Yes, it could trigger a kernel panic. And, yes, sashiko's concern is
-overblown.
-
-This code only runs on the host side, so there's no exotic VM craziness.
-In reality, today, there are not many TDX systems. The ones that do
-exist don't have exotic sparse memory layouts either. TDX also doesn't
-yet support any of the emerging memory technologies like CXL.mem that
-might lead to bare-metal weirdo layouts.
-
-But even in a future with a pathologically evil memory layout, is anyone
-going to miss 8GB of memory on a server? Probably not.
-
-So, yeah, I just don't see the point of going crazy over this. If
-someone hits this in 10 years, we'll fix it then. Oooh, maybe I'll be
-retired in 10 years. One can dream.
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
