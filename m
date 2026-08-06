@@ -1,57 +1,57 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1662142A14C
-	for <linux-coco@lists.linux.dev>; Thu,  6 Aug 2026 23:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2DE47F775
+	for <linux-coco@lists.linux.dev>; Thu,  6 Aug 2026 23:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786059391; cv=none; b=tGTFfsV1EuF+Y9ikz3PjXUDhZM3V6uJFGf7atM8Xcz6EohLNZg70Rpo037z2MXL2Aw9stdW+xQvFz4a33ClNhYE8VvgOGiau74IqdwnPrFWbLVLBidhKDjDWtC/+EGS3kKBn6OiYg2iaVPSUG5iMssdi63vrlyPP3/F9G0ULVLQ=
+	t=1786059393; cv=none; b=C9yP1IXxfeO9urpn5LGd1CquE6DFE4Nx36sfV63wEso+NiPApseoPkzE+K2Lwyh9BWUSjfSJlbjQQCuMyC9R1LKKNz9sMMgKhzmcpcN2Z7qMK3tFWpmkGUpsHqNlyZedFudWV0j5yF1tUdIPf++S2v3lSW0FWZAQNH4GHr0FptQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786059391; c=relaxed/simple;
-	bh=7nJCUtk9B2SvR5o4wifrpms9dp9KqKgrU4RtlPAo6TY=;
+	s=arc-20240116; t=1786059393; c=relaxed/simple;
+	bh=ovqgLwzv9GptZQJnSNvVW0VhM2ENGfkbKgdGmBqtAeI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KVAsE7LYjYOxzS9Z0WvE3adO0Ij6rIAPqCUyJ+6eFCFaiBlY0szZ9hUGSvwZDrTAgLbxiEAvaw/93icavD811zt8XSr1bxXw0ww5qGMwRt5IK8I5w8BhFJ7rHmwrgRZjoEbGhdvVFtgq0+xbHxK6NbSfnzxlJ9nXmgpd097j/Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EhAM3Ahl; arc=none smtp.client-ip=209.85.214.200
+	 To:Cc:Content-Type; b=JvS0RKpoETCDDZzmhDsb9TZsqkT+0I9L5ObUVjitutd60jjDlUy9DvVPf7FxeNmNtlDTC7HLX7MfBoefNpop7xx61h2JGY6zR4/CBB8/IJPt/LwUlg9VvhrdLHED4MC/B0WG1KNFFDwTgLs3K5mINFFdJ1ns5eI5JDXyqNOLMuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HpiYOV/5; arc=none smtp.client-ip=209.85.210.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EhAM3Ahl"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cea6a46766so46517625ad.0
-        for <linux-coco@lists.linux.dev>; Thu, 06 Aug 2026 16:36:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HpiYOV/5"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-848662cd2a1so3352126b3a.2
+        for <linux-coco@lists.linux.dev>; Thu, 06 Aug 2026 16:36:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786059385; x=1786664185; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1786059386; x=1786664186; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=VnGiMJAeWdyvdLpQdGy9NuKyd6BkLuzFrwi8wF2quVo=;
-        b=EhAM3AhlG0vH2DI1oPfBO5HElQmEMM4XN7x5BBCd6H2o/7mu0WsUhlVAsTCLGEpkZ6
-         CaV0O0Nc/+zZLzFbcVfxOwyMEp52TEJrHJEDjnCpkSprpYyDLuKDsnjd463rfjuxx9dk
-         AhxPtJIW9D5S3tDDPbCnNCAlnse13/tdPB4tMYXl90Pn9emuprhRQU/7KGoy2GaKFmxH
-         mRWLiYXjXYwmxm7inslM5ZGD9VwZb/purxeTSJ3bvWB1Iby9Ok52eBY832umssib6R59
-         LlY3Vt+W8GPrf23b5MzLtnKMMkcmKoeo5gifB9n4kUGKyesw742m0ZCMZDqcv2SfP/Jd
-         2u2w==
+        bh=lGVITa15iYf7ywTb6PznrnwE5mV86GVcr9KZACd8UjM=;
+        b=HpiYOV/5J+97xnYz8dq2ocue8YcbghUI5mU0i21uAU2OWA6GVAbp7dqaZyhJir10iP
+         J7BXJQMNcqksICy7tzdlBViQBJbU9CwjHPkvgodCZsZaApPk5k+fCZhf0FPdfyrKpX86
+         XGFzo5yIPoHusQwG+YMtH2Hodw0qrPBy4rW4EbY5erGlL3Df8xJE1jP8U9au4IKD7BUP
+         Uv49qq5ow+RxTMFf5seVzFBxV86Pt48j0ovrXAzMXvlK5NWNCaz/6Xno4mpkFm7Ci5HA
+         MyOrtYtBYhXYDVaoJOntKQWXrQiJw419R0vmmtdmeBu3Y5RyZx+HO+jCXlGYNfGHp28x
+         DApg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786059385; x=1786664185;
+        d=1e100.net; s=20251104; t=1786059386; x=1786664186;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=VnGiMJAeWdyvdLpQdGy9NuKyd6BkLuzFrwi8wF2quVo=;
-        b=oqQUbvS8p/aLLQ1uBDBe69NgYbZsv9Dbm4JyULiwLZbV05GXLuecBatC8YLu/Ajyf/
-         JgKnJrTCyRqvD59EpGDqzEVSM0qUq/jeGRDsOytrT7s8b8lUdQX+IBdGpOhTmhvB92Ke
-         OGVKj8Ug428S7iKw6f6a0l8XBHlITXXz3Uu9a0PkhQOJzdBkLO1DY3kfaMXObCJ9C497
-         ZJD+34RIrF48jwwzEeAVBkw5qEp6jJ+pBwpowdNrtx3pJ/a6ZA+ZL3nKe2CEgjdtHFL1
-         JPD3fOhXomwO8rNK9z8zUxIZXXDHoIBK+j/7bIEuyywL2h35gihJ0SFfgaJTUOMSIwyf
-         LjAw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq4G/8bYqlSKQ1SiMl4T1zPvLf78PAVPMrVcznZg5UqNt5dT9ZoioZ2XsHf9d+gjMx/zJbc9lod4bqN@lists.linux.dev
-X-Gm-Message-State: AOJu0YypFVL86mK1LNLr4QaFUr6x6GPsLzpj570MAdiAzQoj7VtWNA9y
-	JUksiCgDShvEuxOobxHKLD97jkeEp7T++T2Uu2Cz/I+NTdwDUMBMQrPI9i4K4HT7X7ljphMREr3
-	FN502EQ==
-X-Received: from plzw6.prod.google.com ([2002:a17:902:9046:b0:2cc:6ddb:debc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:dac1:b0:2c0:e5ee:f554
- with SMTP id d9443c01a7336-2d0ca71b3d7mr204312595ad.8.1786059384888; Thu, 06
- Aug 2026 16:36:24 -0700 (PDT)
+        bh=lGVITa15iYf7ywTb6PznrnwE5mV86GVcr9KZACd8UjM=;
+        b=mSZOKKeq984WfsJUSEpCVNbrcv6lT0OAZYiX5gLzirvtgGfUFqAyjL14Fx72fN1m6i
+         Cmfzh+kw7ihlWqgQ0svBbW5emHxRxJ4du3RDzmzcaJJ5uI070koS2a8SEJaPjwHJ6SUW
+         ysRrq5O3loRDsSUiRxBPvV+D5wQorMs7OrqNYomfpNRsz0v0E4kV3SEJZFGNiDegDpV+
+         uiwdFpe/ifGHVx5Pv9Id1oZ9hcDSLI/3PNm6rMMpCcpOzfYYUOf5JopeDYNofBljwXUx
+         eIm0gdfjMacpx8y7jVRurjvD6Xjwqcu1BYpR45RsYFSCsTmvoQ/0mApCmwNNcVGBiil6
+         244w==
+X-Forwarded-Encrypted: i=1; AHgh+RqqKeAOKyKwtRQZiIZl5Wjsh5f338ZRCCeXdD7mODcRp2JNorL0sGsi2ubA+ppz/jmzwcLfLIDdNUlJ@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz0tC2Qsc82omgAj2LWEr9Kn8295acr3MvGttvGUJyTfKJMHZ5f
+	+nTdo7WGlOmIHaSJX0CX82M24NzBvE58tJg53gFFuZiBsQ7tQBNHH9RSbiOx5vjV6Yuu3BIpPXK
+	aaJ4S7A==
+X-Received: from pgnc18.prod.google.com ([2002:a63:7252:0:b0:c9e:6c82:64e8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1310:b0:84e:216d:7e52
+ with SMTP id d2e1a72fcca58-84f2e03175emr20642138b3a.14.1786059385989; Thu, 06
+ Aug 2026 16:36:25 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  6 Aug 2026 16:35:18 -0700
+Date: Thu,  6 Aug 2026 16:35:19 -0700
 In-Reply-To: <20260806233609.212337-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -61,9 +61,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260806233609.212337-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260806233609.212337-2-seanjc@google.com>
-Subject: [PATCH v6 01/51] x86/apic: Provide helpers to set local APIC timer
- frequency in hz and khz
+Message-ID: <20260806233609.212337-3-seanjc@google.com>
+Subject: [PATCH v6 02/51] x86/apic: Add CONFIG_X86_LOCAL_APIC=n stubs for APIC
+ timer frequency APIs
 From: Sean Christopherson <seanjc@google.com>
 To: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
 	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -86,168 +86,82 @@ Cc: Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Thomas Gleixner <tglx@linutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 
-Add and use APIs to set the local APIC timer period (given a frequency)
-instead of open coding the subtle HZ math in all external callers, and
-make lapic_timer_period local to apic.c.  Provide APIs to specify the
-frequency in both hertz and kilohertz so that Hyper-V and VMware code
-aren't forced to lose precision.
+Add stubs for the apic_set_timer_frequency_{,k}hz() APIs when the kernel is
+built without support for a local APIC, and drop #ifdefs in callers that
+don't need to check CONFIG_X86_LOCAL_APIC for other reasons.
 
-Opportunistically take the frequency as a u64 to harden against the
-possibility that the frequency (in Khz) is greater than 4294967, i.e. if
-the APIC timer runs at ~4.29 GHz.  As pointed out by Sashiko,
-4294968 * 1000 == 0x1_000002c0, and thus a Khz period of 4294968 would
-silently overflow the 32-bit unsigned integer used by most callers.
+No functional change intended.
 
-Print out who set the period to maintain equivalent Hyper-V and VMware
-functionality, and in general to make it easier to triage/debug issues.
-
-Cc: Michael Kelley <mhklinux@outlook.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/apic.h    |  3 ++-
- arch/x86/kernel/apic/apic.c    | 19 ++++++++++++++++++-
- arch/x86/kernel/cpu/mshyperv.c |  5 +----
- arch/x86/kernel/cpu/vmware.c   |  4 +---
- arch/x86/kernel/jailhouse.c    |  2 +-
- arch/x86/kernel/tsc.c          |  2 +-
- arch/x86/kernel/tsc_msr.c      |  2 +-
- 7 files changed, 25 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/apic.h  | 2 ++
+ arch/x86/kernel/cpu/vmware.c | 2 --
+ arch/x86/kernel/tsc.c        | 2 --
+ arch/x86/kernel/tsc_msr.c    | 2 --
+ 4 files changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index 9cd493d467d4..6946220a6008 100644
+index 6946220a6008..9c5084f3317f 100644
 --- a/arch/x86/include/asm/apic.h
 +++ b/arch/x86/include/asm/apic.h
-@@ -63,7 +63,6 @@ extern int apic_verbosity;
- extern int local_apic_timer_c2_ok;
- 
- extern bool apic_is_disabled;
--extern unsigned int lapic_timer_period;
- 
- extern enum apic_intr_mode_id apic_intr_mode;
- enum apic_intr_mode_id {
-@@ -138,6 +137,8 @@ void register_lapic_address(unsigned long address);
- extern void setup_boot_APIC_clock(void);
- extern void setup_secondary_APIC_clock(void);
- extern void lapic_update_tsc_freq(void);
-+extern void apic_set_timer_frequency_hz(u64 freq_hz, const char *source);
-+extern void apic_set_timer_frequency_khz(u64 freq_khz, const char *source);
- 
- #ifdef CONFIG_X86_64
- static inline bool apic_force_enable(unsigned long addr)
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 90025451ace2..9239dca91c41 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -37,6 +37,7 @@
- #include <linux/smp.h>
- #include <linux/mm.h>
- #include <linux/kvm_types.h>
-+#include <linux/units.h>
- 
- #include <xen/xen.h>
- 
-@@ -176,7 +177,7 @@ static struct resource lapic_resource = {
- };
- 
- /* Measured in ticks per HZ. */
--unsigned int lapic_timer_period = 0;
-+static unsigned int lapic_timer_period;
- 
- static void apic_pm_activate(void);
- 
-@@ -796,6 +797,22 @@ bool __init apic_needs_pit(void)
- 	return lapic_timer_period == 0;
- }
- 
-+void apic_set_timer_frequency_hz(u64 freq_hz, const char *source)
-+{
-+	u32 f_remainder;
-+	u64 f_khz = div_u64_rem(freq_hz, HZ_PER_KHZ, &f_remainder);
-+
-+	lapic_timer_period = div_u64(freq_hz, HZ);
-+
-+	pr_info("Local APIC Timer Frequency set to %llu.%03u KHz (from '%s').\n",
-+		f_khz, f_remainder, source);
-+}
-+
-+void apic_set_timer_frequency_khz(u64 freq_khz, const char *source)
-+{
-+	apic_set_timer_frequency_hz(freq_khz * HZ_PER_KHZ, source);
-+}
-+
- static int __init calibrate_APIC_clock(void)
- {
- 	struct clock_event_device *levt = this_cpu_ptr(&lapic_events);
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index 185d4f677ec0..cadc7f872b4f 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -646,10 +646,7 @@ static void __init ms_hyperv_init_platform(void)
- 		u64	hv_lapic_frequency;
- 
- 		rdmsrq(HV_X64_MSR_APIC_FREQUENCY, hv_lapic_frequency);
--		hv_lapic_frequency = div_u64(hv_lapic_frequency, HZ);
--		lapic_timer_period = hv_lapic_frequency;
--		pr_info("Hyper-V: LAPIC Timer Frequency: %#x\n",
--			lapic_timer_period);
-+		apic_set_timer_frequency_hz(hv_lapic_frequency, "Hyper-V hypervisor");
- 	}
- 
- 	register_nmi_handler(NMI_UNKNOWN, hv_nmi_unknown, NMI_FLAG_FIRST,
+@@ -189,6 +189,8 @@ static inline void disable_local_APIC(void) { }
+ # define setup_boot_APIC_clock x86_init_noop
+ # define setup_secondary_APIC_clock x86_init_noop
+ static inline void lapic_update_tsc_freq(void) { }
++static inline void apic_set_timer_frequency_hz(u64 freq_hz, const char *source) { }
++static inline void apic_set_timer_frequency_khz(u64 freq_khz, const char *source) { }
+ static inline void init_bsp_APIC(void) { }
+ static inline void apic_intr_mode_select(void) { }
+ static inline void apic_intr_mode_init(void) { }
 diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
-index 34b73573b108..22842bf5b59e 100644
+index 22842bf5b59e..2225df67d45f 100644
 --- a/arch/x86/kernel/cpu/vmware.c
 +++ b/arch/x86/kernel/cpu/vmware.c
-@@ -424,9 +424,7 @@ static void __init vmware_platform_setup(void)
+@@ -422,10 +422,8 @@ static void __init vmware_platform_setup(void)
+ 		x86_platform.calibrate_tsc = vmware_get_tsc_khz;
+ 		x86_platform.calibrate_cpu = vmware_get_tsc_khz;
  
- #ifdef CONFIG_X86_LOCAL_APIC
+-#ifdef CONFIG_X86_LOCAL_APIC
  		/* Skip lapic calibration since we know the bus frequency. */
--		lapic_timer_period = ecx / HZ;
--		pr_info("Host bus clock speed read from hypervisor : %u Hz\n",
--			ecx);
-+		apic_set_timer_frequency_hz(ecx, "VMware hypervisor");
- #endif
+ 		apic_set_timer_frequency_hz(ecx, "VMware hypervisor");
+-#endif
  	} else {
  		pr_warn("Failed to get TSC freq from the hypervisor\n");
-diff --git a/arch/x86/kernel/jailhouse.c b/arch/x86/kernel/jailhouse.c
-index f58ce9220e0f..615a1f25c83a 100644
---- a/arch/x86/kernel/jailhouse.c
-+++ b/arch/x86/kernel/jailhouse.c
-@@ -65,7 +65,7 @@ static void jailhouse_get_wallclock(struct timespec64 *now)
- 
- static void __init jailhouse_timer_init(void)
- {
--	lapic_timer_period = setup_data.v1.apic_khz * (1000 / HZ);
-+	apic_set_timer_frequency_khz(setup_data.v1.apic_khz, "Jailhouse hypervisor");
- }
- 
- static unsigned long jailhouse_get_tsc(void)
+ 	}
 diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-index 723347e2cf7f..63e26805f8dd 100644
+index 63e26805f8dd..4392fddd616e 100644
 --- a/arch/x86/kernel/tsc.c
 +++ b/arch/x86/kernel/tsc.c
-@@ -717,7 +717,7 @@ unsigned long native_calibrate_tsc(void)
- 	 * lapic_timer_period here to avoid having to calibrate the APIC
+@@ -710,7 +710,6 @@ unsigned long native_calibrate_tsc(void)
+ 	if (boot_cpu_data.x86_vfm == INTEL_ATOM_GOLDMONT)
+ 		setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
+ 
+-#ifdef CONFIG_X86_LOCAL_APIC
+ 	/*
+ 	 * The local APIC appears to be fed by the core crystal clock
+ 	 * (which sounds entirely sensible). We can set the global
+@@ -718,7 +717,6 @@ unsigned long native_calibrate_tsc(void)
  	 * timer later.
  	 */
--	lapic_timer_period = crystal_khz * 1000 / HZ;
-+	apic_set_timer_frequency_khz(crystal_khz, "CPUID 0x15/0x16");
- #endif
+ 	apic_set_timer_frequency_khz(crystal_khz, "CPUID 0x15/0x16");
+-#endif
  
  	return crystal_khz * ebx_numerator / eax_denominator;
+ }
 diff --git a/arch/x86/kernel/tsc_msr.c b/arch/x86/kernel/tsc_msr.c
-index d74743c8d2a4..4bd5f2ae656b 100644
+index 4bd5f2ae656b..179e3a331ef9 100644
 --- a/arch/x86/kernel/tsc_msr.c
 +++ b/arch/x86/kernel/tsc_msr.c
-@@ -212,7 +212,7 @@ unsigned long cpu_khz_from_msr(void)
+@@ -211,9 +211,7 @@ unsigned long cpu_khz_from_msr(void)
+ 	if (freq == 0)
  		pr_err("Error MSR_FSB_FREQ index %d is unknown\n", index);
  
- #ifdef CONFIG_X86_LOCAL_APIC
--	lapic_timer_period = (freq * 1000) / HZ;
-+	apic_set_timer_frequency_khz(freq, "MSR_FSB_FREQ");
- #endif
+-#ifdef CONFIG_X86_LOCAL_APIC
+ 	apic_set_timer_frequency_khz(freq, "MSR_FSB_FREQ");
+-#endif
  
  	/*
+ 	 * TSC frequency determined by MSR is always considered "known"
 -- 
 2.55.0.679.g6767b8d81c-goog
 
