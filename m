@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1198B481235;
-	Fri,  7 Aug 2026 21:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3009A48167A;
+	Fri,  7 Aug 2026 21:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786139572; cv=none; b=NJqYtWeNw8VZm9sOEEi7hxowcJL57sop8FSzO6laFahuId/o/SD5D6/yMzDOcNrOdGsVtuFm7mZJSXMZ/GZCpeDyD7b6oHCLCNnvGskFiDvEINRPZPKzzU7jGeE7ssD4ZVR7umSo1V3UZfqmJinC2p0c9upBWsVgD/+RZ2IriIc=
+	t=1786139572; cv=none; b=OOZoVkNi+Aj+jkRoWZsIiZiR7f4M7A6KvapKJI5tOKPaW0qOIqLgHamMzMmeATIvs+I6YekpTUk7AXV5DfA65m+DUApVFD4vu7dbhwmin1GvVKeN9QcAlTN2bQWOnhx/Kfu/lb67BfSF7dDhyQsoUHWQSpWfIcue/0jh91C+pfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786139572; c=relaxed/simple;
-	bh=YFbrmMd/qfinectFQbLr654cT8Cy/bdXVL7tUQSmXeI=;
+	bh=vTCEVKZlUYGO1D+z51D5hocvKIebLL912PEubVOUuJY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LEEIqEzWA8ODkpC0zQ/kDX43oR7CdZbfSBnFETdO2mS8+VX0SQ3Z38Cot7OKLS4feQjdQNNLUxxUFmPGwgMlObopjh1yl0BJthwN1IMd9XlgwoygM0wiPwMscvuTjPt4Q69QQmLK6cDoRjnSgjuKT7Mchii+krtERA7ppLXgJIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rVtJqcmq; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=b7T9GCoGby95UUU4yy7a1cIUXlmjoYr2jDTXhbmboacekDE5In/xl739RVXe+zLiagFKoi7ICbPB/58tEH0kiiNQYYyPVRgtNgpMNF2Grj/EXVgwxWFowODH7gp8hma2O+53p626lum7mROEo6kxoi2sbcZSchC52teycIUmbEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6k+aRHy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rVtJqcmq"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 957B3C2BCFA;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6k+aRHy"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D77C2C2BCFF;
 	Fri,  7 Aug 2026 21:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1786139571;
-	bh=YFbrmMd/qfinectFQbLr654cT8Cy/bdXVL7tUQSmXeI=;
+	bh=vTCEVKZlUYGO1D+z51D5hocvKIebLL912PEubVOUuJY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=rVtJqcmq9bkLtwzs/sbn/drAeHqIHXm3CgG9CyTMP5Htt3mSfq15S1I8PqmB9vKEo
-	 Ow1dzTWcEpu0Cr5nMM6bLigDgaGC0RaanxxJpiVq50/OWCDhu7jk+3xSCyEImxYtdY
-	 NXFTIv6GqtiLzIWSnuz+znl9AqxYXTj1HOw29Ie39gRIYM/MDwegThP7KcaZM7JXXy
-	 48dSv30S0hi9PUO6zUhtd/VLAIIxddakQTZgeMACI3fKAWj8Kq79Jtb+PncEmq2/L5
-	 ppGGiLD076WwT6/+CyVWPSM7grVQHZDfDapH3qmrSca0DOmoryB/03OJpCH1hNIlp1
-	 HO8EwfmRbuOLA==
+	b=Q6k+aRHy/8bmQ4Ezu6BObDrvY1H53BJJ932ktoEJCl5oedyReWQGnyPs2KEYHLgFT
+	 WUH+v96gxMjmcsUcrs0vuFYx/KGgKTiJLq2pTJtA1ut42GpTjG9uGqt1/vqL87Wu2p
+	 idOM5kcbg6r+rjFxfHsUZnwrJM6iOWlrxWvyjE8HQtwLTMgCzHeNC5elR1e73WnSjP
+	 Q0XtYxNwDimp50R53tvWS5AvEbzpwYT/h2Wqc55+KVD+0IJhhmsUwryl8tilQ9ULTO
+	 bRsqtlROQ4R0ALCGNyLX4rPcxu5T81v9p2QADwH4HsuxQJID76bqbwXHqvUMy25omK
+	 3/SJc+O28xa7A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B97DC5AD2C;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C0A3EC5AD48;
 	Fri,  7 Aug 2026 21:52:51 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 07 Aug 2026 14:53:17 -0700
-Subject: [PATCH v10 38/41] KVM: selftests: Provide common function to set
- memory attributes
+Date: Fri, 07 Aug 2026 14:53:20 -0700
+Subject: [PATCH v10 41/41] KVM: selftests: Update private memory exits test
+ to work with per-gmem attributes
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260807-gmem-inplace-conversion-v10-38-2fc18ee6d3ba@google.com>
+Message-Id: <20260807-gmem-inplace-conversion-v10-41-2fc18ee6d3ba@google.com>
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
 In-Reply-To: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -77,11 +77,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786139565; l=2853;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786139565; l=3875;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=xdN4ZWQbdwlWeMCPJmORdL69HRo7nJ3JUs6mr0GsFGA=;
- b=J3yaYIhg2jIJJRWFKdwmOsIyDJ+SH+Kn8SuUKsMZFCpJw3ZimQOG+05L/TtwXsEHYGOsRTh0N
- J7xNFvIddtEDnXye5qlJSO8GpoSBijHGfw80dk1AxzUzj6TG56zbHlY
+ bh=lUvT16Y2a9GQsXboRcAXXwS4SVcVvLUE9PQbscannXc=;
+ b=RHgI6k3Qdcn2KcFNrAue0i6g/CNiZUlSD125Ql3KxD4G4Y+EqRZTNa9NXQvYC6mjhDdbURQ1i
+ hreDiZbMWy9BQrYjVxBBA36GyD9KdbNAuCR/uoQvC6duAUACoi+C4L+
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -91,87 +91,89 @@ Reply-To: ackerleytng@google.com
 
 From: Sean Christopherson <seanjc@google.com>
 
-Introduce vm_mem_set_memory_attributes(), which handles setting of memory
-attributes for a range of guest physical addresses, regardless of whether
-the attributes should be set via guest_memfd or via the memory attributes
-at the VM level.
+Skip setting memory to private in the private memory exits test when using
+per-gmem memory attributes, as memory is initialized to private by default
+for guest_memfd, and using vm_mem_set_private() on a guest_memfd instance
+requires creating guest_memfd with GUEST_MEMFD_FLAG_MMAP (which is totally
+doable, but would need to be conditional and is ultimately unnecessary).
 
-Refactor existing vm_mem_set_{shared,private} functions to use the new
-function. Opportunistically update the size parameter to use size_t instead
-of u64.
+Expect an emulated MMIO instead of a memory fault exit when attributes are
+per-gmem, as deleting the memslot effectively drops the private status,
+i.e. the GPA becomes shared and thus supports emulated MMIO.
+
+Skip the "memslot not private" test entirely, as private vs. shared state
+for x86 software-protected VMs comes from the memory attributes themselves,
+and so when doing in-place conversions there can never be a disconnect
+between the expected and actual states.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Reviewed-by: Fuad Tabba <tabba@google.com>
 Tested-by: Shivank Garg <shivankg@amd.com>
-Co-developed-by: Ackerley Tng <ackerleytng@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/include/kvm_util.h | 46 +++++++++++++++++++-------
- 1 file changed, 34 insertions(+), 12 deletions(-)
+ .../selftests/kvm/x86/private_mem_kvm_exits_test.c | 36 ++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-index 795c9eb311071..777fa3dbf88d6 100644
---- a/tools/testing/selftests/kvm/include/kvm_util.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util.h
-@@ -454,18 +454,6 @@ static inline void vm_set_memory_attributes(struct kvm_vm *vm, gpa_t gpa,
- 	vm_ioctl(vm, KVM_SET_MEMORY_ATTRIBUTES, &attr);
- }
+diff --git a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
+index e6d16e9d61200..f7228e0f1ac61 100644
+--- a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
++++ b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
+@@ -62,8 +62,9 @@ static void test_private_access_memslot_deleted(void)
  
--static inline void vm_mem_set_private(struct kvm_vm *vm, gpa_t gpa,
--				      u64 size)
--{
--	vm_set_memory_attributes(vm, gpa, size, KVM_MEMORY_ATTRIBUTE_PRIVATE);
--}
--
--static inline void vm_mem_set_shared(struct kvm_vm *vm, gpa_t gpa,
--				     u64 size)
--{
--	vm_set_memory_attributes(vm, gpa, size, 0);
--}
--
- static inline int __gmem_set_memory_attributes(int fd, u64 offset,
- 					       size_t size, u64 attributes,
- 					       u64 *error_offset)
-@@ -532,6 +520,40 @@ static inline void gmem_set_shared(int fd, u64 offset, size_t size)
- 	gmem_set_memory_attributes(fd, offset, size, 0);
- }
+ 	virt_map(vm, EXITS_TEST_GVA, EXITS_TEST_GPA, EXITS_TEST_NPAGES);
  
-+static inline void vm_mem_set_memory_attributes(struct kvm_vm *vm, gpa_t gpa,
-+						size_t size, u64 attrs)
-+{
+-	/* Request to access page privately */
+-	vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
++	/* Request to access page privately. */
++	if (!kvm_has_gmem_attributes)
++		vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
+ 
+ 	kvm_pthread_create(&vm_thread, NULL,
+ 			   (pthread_fn_t)run_vcpu_get_exit_reason, (void *)vcpu);
+@@ -73,10 +74,26 @@ static void test_private_access_memslot_deleted(void)
+ 	kvm_pthread_join(vm_thread, &thread_return);
+ 	exit_reason = (u32)(u64)thread_return;
+ 
+-	TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
+-	TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
+-	TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
+-	TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
++	/*
++	 * If attributes are tracked per-gmem, deleting the memslot that points
++	 * at the gmem instance effectively makes the memory shared, and so the
++	 * read should trigger emulated MMIO.
++	 *
++	 * If attributes are tracked per-VM, deleting the memslot shouldn't
++	 * affect the private attribute, and so KVM should generate a memory
++	 * fault exit (emulated MMIO on private GPAs is disallowed).
++	 */
 +	if (kvm_has_gmem_attributes) {
-+		gpa_t end = gpa + size;
-+		off_t fd_offset;
-+		gpa_t addr;
-+		size_t len;
-+		int fd;
-+
-+		for (addr = gpa; addr < end; addr += len) {
-+			fd = kvm_gpa_to_guest_memfd(vm, addr, &fd_offset, &len);
-+			len = min(end - addr, len);
-+
-+			gmem_set_memory_attributes(fd, fd_offset, len, attrs);
-+		}
++		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MMIO);
++		TEST_ASSERT_EQ(vcpu->run->mmio.phys_addr, EXITS_TEST_GPA);
++		TEST_ASSERT_EQ(vcpu->run->mmio.len, sizeof(u64));
++		TEST_ASSERT_EQ(vcpu->run->mmio.is_write, false);
 +	} else {
-+		vm_set_memory_attributes(vm, gpa, size, attrs);
++		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
++		TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
++		TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
++		TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
 +	}
-+}
+ 
+ 	kvm_vm_free(vm);
+ }
+@@ -87,6 +104,13 @@ static void test_private_access_memslot_not_private(void)
+ 	struct kvm_vcpu *vcpu;
+ 	u32 exit_reason;
+ 
++	/*
++	 * Accessing non-private memory as private with a software-protected VM
++	 * isn't possible when doing in-place conversions.
++	 */
++	if (kvm_has_gmem_attributes)
++		return;
 +
-+static inline void vm_mem_set_private(struct kvm_vm *vm, gpa_t gpa,
-+				      size_t size)
-+{
-+	vm_mem_set_memory_attributes(vm, gpa, size,
-+				     KVM_MEMORY_ATTRIBUTE_PRIVATE);
-+}
-+
-+static inline void vm_mem_set_shared(struct kvm_vm *vm, gpa_t gpa,
-+				     size_t size)
-+{
-+	vm_mem_set_memory_attributes(vm, gpa, size, 0);
-+}
-+
- void vm_guest_mem_fallocate(struct kvm_vm *vm, gpa_t gpa, u64 size,
- 			    bool punch_hole);
+ 	vm = vm_create_shape_with_one_vcpu(protected_vm_shape, &vcpu,
+ 					   guest_repeatedly_read);
  
 
 -- 
