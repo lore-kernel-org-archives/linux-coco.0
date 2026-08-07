@@ -1,33 +1,33 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98E52D249B;
-	Fri,  7 Aug 2026 10:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B84AA42AF81;
+	Fri,  7 Aug 2026 11:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786100341; cv=none; b=QUncMwt+2lvA8DQlh1zSR7OjYsDEA2dO8POr6tIebzzRW6U6k/AhMD1RRaj0TRkuyhKLVxNX9O3E+ADfJs09oZ68qC+K2E1mHhjTBSDI4FZzbNn6NHApPCI/vNrvDMoDBVOmvyEHlLRb76o3cnvO0xGsfjsZVxCAQRCDICTorFM=
+	t=1786100604; cv=none; b=MPflhDNdWPCuvCqo1IXXwKHMwF0fOfBD0GtE8dosw0pPS5AmXOobRqNEyhGAU2puLd0NMl2234lCaMcY6FfdUckhOhZ7k6JVBjiXSzXD6JYRsZH2a7eYCZ1HeFKhwRmP5qY/TiQu/3DgH5W5+PTOxkr0OFYsz6B7xmYRHC2iUMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786100341; c=relaxed/simple;
-	bh=uuFrFlTnxR2oRESNj+PEN7bA9/kaSqszCUAy8op7WaA=;
+	s=arc-20240116; t=1786100604; c=relaxed/simple;
+	bh=xVUNR7ylOX30B68Mp97+YrCjqIAMylEeu1MoGj3JgSs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XGH7q3jzHwlU0ycMZMfwju4cB4U4pGYleskDzDszlhnXwhVsDrt4XuzSSMhu0X9MZI4v66Wsyqa2f3Cz7HscD3hcZRUK87cDtvsyUb4i/Xw8+FyJpckUUshlVus5wOEruwuRx5WwJcA6nW+qlodGgcn9hgNtuupFxunvqqxAOMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Fw4XtpBk; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=YPrtiJBwa1Bxu1VzyCDXIRkKOmSjTIFSXMngZ+vGRf3MkQ1aLWYKm1NYjwzO/86tg2c7IX7QpInk3edCogzrq9yKl5l+O/KulGbNOaKrKJz/p93LaT4WrrMZGglPB7dglxsF4YcgQ4k/pHhSh4scsNXmMGeVrn2tQf7582sVDVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=J8p7ij5I; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Fw4XtpBk"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="J8p7ij5I"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0F9161516;
-	Fri,  7 Aug 2026 03:58:55 -0700 (PDT)
-Received: from [10.57.40.157] (unknown [10.57.40.157])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 696D93F9A2;
-	Fri,  7 Aug 2026 03:58:55 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 056EA1A9A;
+	Fri,  7 Aug 2026 04:03:18 -0700 (PDT)
+Received: from [10.57.42.104] (unknown [10.57.42.104])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE4F43F86F;
+	Fri,  7 Aug 2026 04:03:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786100339; bh=uuFrFlTnxR2oRESNj+PEN7bA9/kaSqszCUAy8op7WaA=;
+	t=1786100602; bh=xVUNR7ylOX30B68Mp97+YrCjqIAMylEeu1MoGj3JgSs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Fw4XtpBkfkE+rClcmwHAo5bM2jngfqXmIKz5nRrbXwqkxFWonBtCZyjh5ySsiYO5P
-	 3K+Db6dyLygBF4SXRrevtbXTze2H9PA/sTzd7JGyW1vMiQgjj6DC9JamLCDvyoXPYO
-	 50379CxKlYns2w2zd6EOAKlggDYuL8Y78ejrmMl4=
-Message-ID: <7ff49972-a9bf-4d99-9088-3d5e1eaa1608@arm.com>
-Date: Fri, 7 Aug 2026 11:58:53 +0100
+	b=J8p7ij5IxKrp/kurzyHOpL7pNcFvOmaC1o1pKHx1B0H8nD1rs9aRZPjUBxhjjZZCQ
+	 N4wJy56XcfQZ9q6eMGh6OX2azJnBHJkC8guCRYo50qm8khWqqcEcjsfqtXCA71yfRP
+	 ZBj3ot3KvGeWH3bSFFxlac5fB9iAToqsB4eMcWRg=
+Message-ID: <0ce2249d-3a64-4889-b455-0e8fddcc7282@arm.com>
+Date: Fri, 7 Aug 2026 12:03:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -35,185 +35,145 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 27/45] KVM: arm64: CCA: Allow populating initial
- contents
-Content-Language: en-GB
-To: Ackerley Tng <ackerleytng@google.com>, Steven Price
- <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+Subject: Re: [PATCH v8 12/23] dma: swiotlb: pass mapping attributes by
+ reference
+To: Jason Gunthorpe <jgg@nvidia.com>, Mostafa Saleh <smostafa@google.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, rick.p.edgecombe@intel.com,
- yan.y.zhao@intel.com
-References: <20260803134403.80630-1-steven.price@arm.com>
- <20260803134403.80630-28-steven.price@arm.com>
- <CAEvNRgHF-30EwJEprM466+Ag7GSuJWrzMGNAw7kCvXyT7YVucg@mail.gmail.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CAEvNRgHF-30EwJEprM466+Ag7GSuJWrzMGNAw7kCvXyT7YVucg@mail.gmail.com>
+ linux-coco@lists.linux.dev, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ Steven Price <steven.price@arm.com>,
+ Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Jiri Pirko <jiri@resnulli.us>,
+ Petr Tesarik <ptesarik@suse.com>, Alexey Kardashevskiy <aik@amd.com>,
+ Dan Williams <dan.j.williams@intel.com>, Xu Yilun
+ <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
+ Michael Kelley <mhklinux@outlook.com>
+References: <20260717180442.110954-1-aneesh.kumar@kernel.org>
+ <20260717180442.110954-13-aneesh.kumar@kernel.org>
+ <ami_mpd_1pF4Tmdu@google.com> <yq5a5x1ygo7z.fsf@kernel.org>
+ <amnRB98ZZIysHuM3@google.com> <yq5acxw6dl1d.fsf@kernel.org>
+ <20260804142032.GC27883@nvidia.com> <anL9-OrDGqYQAWNV@google.com>
+ <20260805123023.GO27883@nvidia.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260805123023.GO27883@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 06/08/2026 23:43, Ackerley Tng wrote:
-> Steven Price <steven.price@arm.com> writes:
-> 
->> The VMM needs to populate the realm with some data before starting (e.g.
->> a kernel and initrd). This is measured by the RMM and used as part of
->> the attestation later on.
+On 2026-08-05 1:30 pm, Jason Gunthorpe wrote:
+> On Wed, Aug 05, 2026 at 09:10:16AM +0000, Mostafa Saleh wrote:
+>> On Tue, Aug 04, 2026 at 11:20:32AM -0300, Jason Gunthorpe wrote:
+>>> On Wed, Jul 29, 2026 at 06:12:38PM +0530, Aneesh Kumar K.V wrote:
+>>>> There is a possibility that we may support io_tlb_mem with cc_shared =
+>>>> false in the future. As a result, only swiotlb_map() knows which type of
+>>>> bounce buffer was used, making it the only place where the attributes
+>>>> can be updated correctly.
+>>>
+>>> Yeah, +1, the attribute should be changed at the same effective place
+>>> the source memory is changed away from what the DMA API user
+>>> provided. Only the thing providing the new memory (eg swiotlb) should
+>>> know its properties.
 >>
->> Signed-off-by: Steven Price <steven.price@arm.com>
-
-...
-
->> +static int realm_data_map_init(struct kvm *kvm, unsigned long ipa,
->> +			       kvm_pfn_t dst_pfn, kvm_pfn_t src_pfn,
->> +			       unsigned long flags)
->> +{
->> +	struct realm *realm = &kvm->arch.realm;
->> +	phys_addr_t rd = virt_to_phys(realm->rd);
->> +	phys_addr_t dst_phys, src_phys;
->> +	long ret;
->> +
->> +	lockdep_assert_held(&kvm->slots_lock);
->> +	lockdep_assert_held(&kvm->arch.config_lock);
->> +
->> +	dst_phys = __pfn_to_phys(dst_pfn);
->> +	src_phys = __pfn_to_phys(src_pfn);
->> +
->> +	if (rmi_delegate_page(dst_phys))
->> +		return -ENXIO;
->> +
->> +retry:
->> +	ret = rmi_rtt_data_map_init(rd, dst_phys, ipa, src_phys, flags);
->> +	if (ret >= 0 && RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
->> +		/* Create missing RTTs and retry */
->> +		int level = RMI_RETURN_INDEX(ret);
->> +
->> +		KVM_BUG_ON(level >= KVM_PGTABLE_LAST_LEVEL, kvm);
->> +
->> +		ret = realm_create_rtt_levels(realm, ipa, level,
->> +					      level + 1, NULL);
->> +		if (!ret)
->> +			goto retry;
->> +	}
->> +
->> +	if (ret && WARN_ON(rmi_undelegate_page(dst_phys))) {
->> +		/* Leak the page if the undelegate fails */
->> +		get_page(pfn_to_page(dst_pfn));
+>> I will keep the conversation here instead of 2 threads.
+>>
+>> That seems like a big leap, I'd be worried about devices that operate
+>> on confidential data that should not be shared/decrypted.
 > 
-> Is there some way to avoid taking a reference on the page? This would
-> interfere with conversions. There was a similar discussion for TDX as
-> well [1].
-
-Unfortunately, no. The page was transferred to the Realm world (with
-rmi_delegate_page() above the retry: ). If we fail to bring it back,
-that page is still in the Realm PAS and any access to it by the normal
-world would result in a GPF and eventually bring down the system
-if it happens from the kernel.
-
-We don't expect that undelegate to fail. The granule_delegate()
-should fail if the page was already in use by the RMM for some
-purpose (e.g., already mapped at the IPA, because VMM issued
-DATA_MAP_INIT twice. Even with the relaxation coming in the
-RMM, we will mandate that the "populate" cases will request
-strict conditions for granule delegate).
-
-Please note that this is NOT the "unmap" failure, but it is
-"Bring the page back to the NS world" failure that causes
-the WARN_ON and the leaking.
-
+> That seems like something very differnt.
 > 
-> TDX originally incremented folio refounts for these:
+>> One example for this which exists in pKVM (this part is not
+>> upstream yet) is non coherent devices that require bouncing but they
+>> still want to keep the data private. In that case ideally they get
+>> an encrypted SWIOTLB pool, but it's always better to fail than to use
+>> a decrypted pool behind it's back.
 > 
-> + when mapping folios into the Secure EPTs. This one was easier to agree
->    to remove, since TDX can trust guest_memfd to keep pages around on
->    behalf of the guest.
-> + To indicate unmapping failure (IIUC this is the same situation as
->    above). This interferes with conversions.
->      + An alternative discussed was to mark these pages as HWPOISON, but
->        that was eventually rejected as adding unnecessary complexity to
->        make TDX special for code paths that only occur on kernel
->        bugs. (In TDX's case the unmap failures would probably only be for
->        kernel bugs.)
->      + I later worked a bit more on memory failure for guest_memfd
->        HugeTLB and found that because we will need to restructure huge
->        pages for conversions, using the HWPOISON flag would be hard to
->        handle. For TDX since the conclusion was not to use a HWPOISON
->        flag to indicate unmap failures anyway, this turned out to be a
->        non-issue. Nobody wanted to use the HWPOISON flag. (I hope you
->        won't need to either)
+> We don't have any API for a DMA API caller to signal 'must be
+> confidential'. If we want to add one it would be a flag to check
+> before changing the physical address in swiotlb.
 > 
-> So for TDX, on an unmap failure we do a KVM_BUG_ON() and mark the VM as
-> dead, and do nothing about the page, it still gets returned to the
-> system as if nothing happened.
+> As defined today the DMA API expressly copies from private to shared
+> memory, that is baked into it's design and not a bug.
 > 
-> Here's my understanding of why this is okay for TDX (Rick and Yan, could
-> you please help me here):
+> My expectation is all these cases have to be solved by setting up the
+> swiotlb properly so it provides suitable bounce buffers. Yes, this
+> means we will eventually need both private and shared swiotlb pools.
 > 
-> + For unmap failures, the page remains in TDX's Physical Address
->    Metadata Table (PAMT), and the page is still assigned to some TD.
-> + If the page was assigned to some other TD, it would be blocked, since
->    the PAMT shows it as already assigned.
-> + If the page was used by something completely unrelated to TDX, then in
->    the TDX model the host is free to write and read pages. Nothing goes
->    bad until the TD tries to use that same page, but that TD would never
->    use the page again, that TD is already dead and the HKID for the TD
->    was leaked.
+>> I have not been following the work on T=1/T=0 devices, but IIRC, they
+>> required some complexity to handle their stage-2 as these modes will
+>> be emulated differently (for CCA, RMM vs untrusted host).
+>> I was thinking that it might be easier to represent those to the
+>> guest kernel as 2 separate devices (bounded to different groups...)
+>> where one is trusted and the other is not, and that way the DMA-API
+>> can have strict rules about memory sharing.
+> 
+> No way! That's would be a giant disaster for the driver model.
+> 
+> Each struct device will have a flag that shows if it is in T=1 or T=0
+> state. The flag can only change while a driver is not bound, and
+> changing the flag will update the DMA API configuration.
 
-This is not true for CCA. Like I said above, touching the page in Realm
-PAS is going to be disastrous for the Host.
+I see we no longer seem to have the concern of devices in TDISP RUN 
+state being able to send T=0 transactions other than MSI writes, where 
+GICv3 means the host is already going to have to be in on the game to 
+some degree there anyway. There could still be a potential concern of 
+other non-PCIe equivalents wanting such a thing, though. However, even 
+then we don't have support in firmware bindings nor the IOMMU API itself 
+to be able to describe a single device being associated with both the 
+RMM's vSMMU for the T=1 (Realm) VA space, and the NS VMM's vSMMU for the 
+T=0 VA space, even if we did only have to care about using strictly one 
+or the other at any given time based on device state. Having distinct 
+struct devices is indeed clunky, but does at least reduce the problem to 
+a currently-manageable one of the client driver having to wrangle them 
+as a pair. Note that there are other such hardware properties that may 
+also differ between states, such as ITS frames when we do get GICv5, so 
+in fact having separate descriptions of the "shared" and "private" 
+aspects of a device, based on their respective MMIO address aliases, may 
+not be entirely unreasonable for CCA - making OSes understand that seems 
+like it might be easier than having to reinvent swathes of ACPI and 
+Devicetree bindings (and then still having to make OSes understand *those*).
 
+> A T=1 device should have the same issue as you point out for pkvm, it
+> really needs to have a private SWIOTLB pool.
 
+Yes, once device_cc_accepted() is true then we *must not* inadvertently 
+share any DMA buffers, if the caller has not explicitly requested 
+CC_SHARED (tying in to the XT use-case), otherwise we'd be breaking the 
+end-to-end confidentiality that TDISP/IDE/etc. is all about. So until we 
+do have an additional private SWIOTLB, we will have to just fail 
+mappings for an accepted device which would otherwise want bouncing due 
+to DMA mask or alignment limitations.
+
+(And FWIW when we do get there, I'd be inclined to make the default 
+SWIOTLB the "private" one, so all the sharing/decryption stuff can be 
+neatly partitioned off into the CoCo etc. special cases...)
+
+Thanks,
+Robin.
+
+>> Otherwise, SWIOTLB does not seem like the right place to me, as it
+>> does not understand the context the device is operating in, and the
+>> DMA-API should deduce that from the flags passed.
 > 
-> [1] https://lore.kernel.org/all/diqz34bolnta.fsf@ackerleytng-ctop.c.googlers.com/
+> It is exactly the right place because it is the one supplying the new
+> memory. Context is irrelevant, the flag only describes what the new
+> memory actually *IS*, and swiotlb knows 100% if the new memory is
+> shared or private.
 > 
->> +	}
->> +
->> +	return ret <= 0 ? ret : -ENXIO;
->> +}
->> +
->> +static int populate_region_cb(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
->> +			      struct page *src_page, void *opaque)
->> +{
->> +	unsigned long data_flags = *(unsigned long *)opaque;
->> +	phys_addr_t ipa = gfn_to_gpa(gfn);
->> +
->> +	return realm_data_map_init(kvm, ipa, pfn, page_to_pfn(src_page),
->> +				   data_flags);
->> +}
->> +
->> +static long populate_region(struct kvm *kvm,
->> +			    gfn_t base_gfn,
->> +			    unsigned long pages,
->> +			    u64 uaddr,
->> +			    unsigned long data_flags)
->> +{
->> +	long ret = 0;
->> +
->> +	lockdep_assert_held(&kvm->slots_lock);
->> +	lockdep_assert_held(&kvm->arch.config_lock);
->> +
->> +	if (!uaddr)
->> +		return -EINVAL;
->> +
+> For your issue it would be appropriate to add a debugging check that
+> the new memory is not incompatible with the expected policy. eg a T=1
+> device getting decrypted swiotlb memory is a bug in swiotlb setup that
+> should be caught. But that's a debugging check, we expect the swiotlb
+> to have selected the right kind of memory by construction. This isn't
+> done yet since this series doesn't even yet support a T=1 device..
 > 
-> Why not check for !uaddr together with the other checks in
-> kvm_arm_rmi_populate?
+> Jason
 
-Yep, we could move it there.
-
-> 
-> Also would it be okay to inline populate_region into
-> kvm_arm_rmi_populate below?
-
-Ack.
-
-Suzuki
