@@ -1,121 +1,109 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2784841930C;
-	Fri,  7 Aug 2026 10:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20AD3FA5EC;
+	Fri,  7 Aug 2026 10:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786097106; cv=none; b=b59y5LLU5QzjlMNnbpZ9Ehy3bRv6jUIO8o3uts9U0el6nK9gPWaj5VFOP2fNb/jnLG1Nv2+AKzNj8+xUBTKBN4X2PCrxIwGdDDFbiWa8pp9fHvv3vco8fZ2RLnjE2QQXU5uBt6EAnqHwFTORvUk0zfchCRcxiprK3j/RuxGGZ6k=
+	t=1786097570; cv=none; b=F9ecrLhhcT3glagq2WJe9L54+B4DRgnYZ2HSmdvZH+WXDsJ4c9vF1Xk5YKvzig3uzhONyNmLXP9Stp8IGbvzPqPoD991FI3WRzaOBgB5bXRls13pDla+M7znbPwVC5URJnPwy0DptSdA0HxQeC0DGBo2BhNqzffA1jEgwHjgawI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786097106; c=relaxed/simple;
-	bh=MYH7/cXebbl1jnIx9/YRD6DRDQgDAdp6L2LOqbuoEvo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=ELmo2TgXO2O7YpRcYGfGxulwBWrqP4lPEYO2kPs9dwcTzTKwzS+JJX6SXYuHtNwZLY8Id+RSetBOEKmvARSvL250SB7nTAzKnQFBYbjOopYBfuYcEKdKSvTFm/cyYqCnXjPdq9r4YCr6ZNZxHwOj3I6W+ZkulTMfaoqH/zUIQdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=eSgPaohg; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1786097570; c=relaxed/simple;
+	bh=RCjEnEVGvnPhNyVz+L0gppAUU0iJNEMsCr6Uit3ezoM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Zx/AEaq7+TS2YtItD9Or4TSO2eLeZbX65CUXF+dGPDGhRDruMxz+dQgeJ9tATDjTld6oYmawzhQopsZZOUxdhleorOAya9aQgiHFLo31tLRavyQYoFIUfqn19jQWOP63fCYs1ZjyX5yzLQd4nukOCqhIbLaoEB2NcJapAZo3ANQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=RxcFF9v8; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="eSgPaohg"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260807100453euoutp01e08fd1317b5254e81dfe38ab56a7e318~JfdftXfrq0070000700euoutp018;
-	Fri,  7 Aug 2026 10:04:53 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260807100453euoutp01e08fd1317b5254e81dfe38ab56a7e318~JfdftXfrq0070000700euoutp018
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1786097093;
-	bh=tYmr0H9Ny/ow4oRf+kOxKy/va62yVPIOs3FFYDqPiJE=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=eSgPaohg3Ovh0J+b1VIFqfeHKkdgmjpLe5hrSy9TY75XNitr28SV92trUU9PslGo3
-	 GaTZ+DDtA/CkPLguep0RMyOGadNXne7NZjAO0FCPKMjC/pYLr2u2SAbwA0Yp+g9cnq
-	 bhJxJ6mGaKViGjHEGlcRFjpPia7jjmMs+eZr590I=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260807100453eucas1p136aea760b58c932260c5118603636b6a~JfdfRJz5D2159221592eucas1p1t;
-	Fri,  7 Aug 2026 10:04:53 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260807100450eusmtip2cd49a3ac23b36ad2dca8af2eba115dfa~JfdcaVKqS0729607296eusmtip20;
-	Fri,  7 Aug 2026 10:04:49 +0000 (GMT)
-Message-ID: <04c8b1a8-9194-4e63-9d30-11315ea6c1a9@samsung.com>
-Date: Fri, 7 Aug 2026 12:04:49 +0200
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="RxcFF9v8"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9B8FB1516;
+	Fri,  7 Aug 2026 03:12:37 -0700 (PDT)
+Received: from [10.57.40.157] (unknown [10.57.40.157])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 389683F9A2;
+	Fri,  7 Aug 2026 03:12:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786097561; bh=RCjEnEVGvnPhNyVz+L0gppAUU0iJNEMsCr6Uit3ezoM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RxcFF9v8HQg/UXJUre/Po0mVBjk1Q+BuwXj0dOswBiiMFJKfkVMFZdDGim2VLPy7O
+	 yWZcoh7+WGEY+nwEVOJP8ugA5VfOQPBj/xE8od5N9Qzs5CYocAPEZN+wTd4Smy6xHC
+	 xPZb4plN5N3J556tMiN/owCKTPJWfiLp3i/UUA5U=
+Message-ID: <92b81b5a-933b-4b4f-b889-7f9ec68d53a5@arm.com>
+Date: Fri, 7 Aug 2026 11:12:36 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v8 00/23] dma-mapping: Track shared DMA state through
- direct, pool and swiotlb paths
-To: Mostafa Saleh <smostafa@google.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>, Will Deacon
-	<will@kernel.org>, Marc Zyngier <maz@kernel.org>, Steven Price
-	<steven.price@arm.com>, Suzuki K Poulose <Suzuki.Poulose@arm.com>, Catalin
-	Marinas <catalin.marinas@arm.com>, Jiri Pirko <jiri@resnulli.us>, Jason
-	Gunthorpe <jgg@ziepe.ca>, Petr Tesarik <ptesarik@suse.com>, Alexey
-	Kardashevskiy <aik@amd.com>, Dan Williams <dan.j.williams@intel.com>, Xu
-	Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Alexander Gordeev
-	<agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
-	<svens@linux.ibm.com>, x86@kernel.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <anWqq-vjEwwaziaM@google.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260807100453eucas1p136aea760b58c932260c5118603636b6a
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260725070930eucas1p16cbafb514de7a2e7531d0e4ae158acfb
-X-EPHeader: CA
-X-CMS-RootMailID: 20260725070930eucas1p16cbafb514de7a2e7531d0e4ae158acfb
-References: <20260717180442.110954-1-aneesh.kumar@kernel.org>
-	<CGME20260725070930eucas1p16cbafb514de7a2e7531d0e4ae158acfb@eucas1p1.samsung.com>
-	<yq5azezfeeax.fsf@kernel.org>
-	<85be992d-9567-433e-ae2e-64ae5483964d@samsung.com>
-	<anWqq-vjEwwaziaM@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 24/45] KVM: arm64: Expose support for private memory
+Content-Language: en-GB
+To: Ackerley Tng <ackerleytng@google.com>, Steven Price
+ <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-25-steven.price@arm.com>
+ <CAEvNRgE5O4FcNQDHwh+DWsHH7gLs3qzm+L4ZQ9FHkt=WoTV2Hw@mail.gmail.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CAEvNRgE5O4FcNQDHwh+DWsHH7gLs3qzm+L4ZQ9FHkt=WoTV2Hw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 07.08.2026 11:51, Mostafa Saleh wrote:
-> On Fri, Jul 31, 2026 at 09:33:47AM +0200, Marek Szyprowski wrote:
->> On 25.07.2026 09:09, Aneesh Kumar K.V wrote:
->>> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
->>>> This series tracks confidential-computing shared DMA state through the
->>>> dma-direct, dma-pool, and swiotlb paths so that encrypted and decrypted
->>>> DMA buffers are handled consistently.
->>>>
->>>> Today, the direct DMA path mostly relies on force_dma_unencrypted() for
->>>>
-> [...]
->>> pKVM topic branch is now available 
->>>
->>> https://lore.kernel.org/all/178467286876.125042.12010461715645610054.b4-ty@kernel.org/
->>>
->>> https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/coco
->> I've just got back from my holiday's and I see that there is everything ready to give
->> this patchset some tests in linux-next. I hope nothing will break.
+On 05/08/2026 17:02, Ackerley Tng wrote:
+> Steven Price <steven.price@arm.com> writes:
+> 
+>> Select KVM_GENERIC_MEMORY_ATTRIBUTES and provide the necessary support
+>> functions.
 >>
->> I've applied this patchset to dma-mapping-for-next, on top of pKVM topic branch with
-> I was trying to find this tree and it seems the MAINTAINERS file have
-> the wrong address:
-> DMA MAPPING HELPERS
-> M:      Marek Szyprowski <m.szyprowski@samsung.com>
-> R:      Robin Murphy <robin.murphy@arm.com>
-> L:      iommu@lists.linux.dev
-> S:      Supported
-> W:      https://protect2.fireeye.com/v1/url?k=dbfa7485-ba7161ce-dbfbffca-74fe485fb305-800153ec5c55b6a1&q=1&e=ed464763-9bbc-4c24-9629-f9ac5e8f5ef4&u=http%3A%2F%2Fgit.infradead.org%2Fusers%2Fhch%2Fdma-mapping.git
-> T:      git git://git.infradead.org/users/hch/dma-mapping.git
->
-> I believe the corret one is:
-> https://git.kernel.org/pub/scm/linux/kernel/git/mszyprowski/linux.git/
+>> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> Changes since v14:
+>>   * Switch to guest_memfd in-place memory conversion and drop support
+>>     for KVM_VM_MEMORY_ATTRIBUTES.
+>>
+>> [...snip...]
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+>> index 15d42d1993bb..146c52f867c0 100644
+>> --- a/arch/arm64/include/asm/kvm_host.h
+>> +++ b/arch/arm64/include/asm/kvm_host.h
+>> @@ -1510,6 +1510,8 @@ struct kvm *kvm_arch_alloc_vm(void);
+>>
+>>   #define vcpu_is_protected(vcpu)		kvm_vm_is_protected((vcpu)->kvm)
+>>
+>> +#define kvm_arch_has_private_mem(kvm) ((kvm)->arch.is_realm)
+>> +
+> 
+> Perhaps related to Fuad's question about pKVM and CCA state: would
+> conditioning this on is_realm mess up pKVM?
 
-Thanks for pointing this out! It looks that I've forgot to update it.I will send an update soon.
+Not really. The comment is about unifiying the conditions which
+both pKVM and Realm selects. Right now, only CCA uses guest_memfd.
+When pkvm comes along to use guest_memfd, this could be something
+like:
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+kvm->arch.needs_private_mem  (set by both pKVM and Realm) ?
+
+Cheers
+Suzuki
+
+
+> 
+>>   int kvm_arm_vcpu_finalize(struct kvm_vcpu *vcpu, int feature);
+>>   bool kvm_arm_vcpu_is_finalized(struct kvm_vcpu *vcpu);
+>>
+>> --
+>> 2.43.0
 
