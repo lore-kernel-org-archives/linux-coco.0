@@ -1,99 +1,173 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399C743DA49
-	for <linux-coco@lists.linux.dev>; Fri,  7 Aug 2026 05:45:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DF93793DF;
+	Fri,  7 Aug 2026 09:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786081515; cv=none; b=DwclkG4BWIu974NkrzsGH5szewZV3rJdBFRz3dyDQ/keoSRUu5kWIJHpzPsz0vduFhi4Y6oBlsY1iEpOQRm8GghZluJ6ImCQhMvferY5NrnWvnPpN7lyzlp1/OONPOCzonyHgANV3201Ihk4cMx4OzVqJvsUIRI2iB79xgOTpPU=
+	t=1786094510; cv=none; b=doHsOxcAU9OfLCPqbXbs04/ms1FfGy8EPy8p6mqeTTt4vCAKSxxwuj4cmHWyviwVQzJ60zenNy7yeWo867+e5E0YK+h8X3JTvSsWYN9EzflMQzzJHI89lp61st5U1C+Nvz9gCiXZTT2JjrKAx4v6Br4kQw5Bqv3haL/U+2SqiEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786081515; c=relaxed/simple;
-	bh=d/2r2+AhBOWQmP8g+FQLL3It27YL3EbPCm6bJRi8Bi8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YuGo+07hUtNgkjBRQD7GRqUJikxCHR3gbt1EWI1WkI0wHCUaNtRfXl++/npP5g65ZUXxDOsjlHEjcfWnDRBhh9QNzhuW+gZ4LaZgf3nXVQUb0NcbhP0IogCDTR8ZaKuJADahEqve3dp1ULUdrAYdUzG+giJ4IV6v+1igEO8NnLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=S4GrgSuW; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1786094510; c=relaxed/simple;
+	bh=C0dmANKqH39eWG4MQOTvSIOyvTlPYkY0RZOK5DUQdqU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=UBQGnpIOCZJoRF+cz6VX/3tquJG3s6Nzdnw31GMXPPt+3WIapncgyUnUQp1iFo/pxEwdtivpnoI8ZtPDTiXcs/cQGmG8n+1ScLGRf5QzfElyCKO81QFSH+amgefwZxBZABEDKJHZmJqLhKl6TbVFy3loxUO9Y3Ml/KQXUJUK4bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XMQCJ/Gj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="S4GrgSuW"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D8D6640E0171;
-	Fri,  7 Aug 2026 05:45:10 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id vMOQEzDPpw6P; Fri,  7 Aug 2026 05:45:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1786081502; bh=mqLY/IlkJZJ84OtmC0xGmvvUMgSRewGVQtoJ68Bihu0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S4GrgSuW7I5NpAWPwkF4o1WCRTLANkSjGpoX7bnOqSaVH+tLUeGrpW5/t/MVGdD+T
-	 JO4JZdNLcj5igK6SQ20ZWu51wsnGvx1CvSJYChz9h4fwuZ/LFlL+sjUK2VREDX4chN
-	 lGdZWt/fPmgezpyvZqv/b5L16gojieUmqO8bKoH9jxl34nX5xzcpz10/ufQIa6qyas
-	 bxRZHerxMFFHyBNO2MBFOQ4B029YbdHobUyMXZALA6KLKMj4Gm7R38sP72E6sMspPM
-	 z7HJluR2PvxocEhqTV86KS0QMQPk84rB1wB8R0HN9oZ5QQzyB6BAsTh+ykksechb5R
-	 SSX54f+HdgvdziuliL7PMaLhniPsQvJ2gFL/Avm/GTFRDuyMeGppTUMWq9Zm+dAQdK
-	 146zeBGeYYhQY3TGLnlfRGtuxo0pfJ+p5JnSoJGwfHjsa+QZipfBIj/jWVSuTR3Q2m
-	 Z5QuETbWSkkEHlwahsnohbtgIKD1Nkj9OWgzpTmEorv9zqIcwJvlbvni1Y4yJsr8Ey
-	 /QL+t7/MFEjiYD7SpHvexIG7s72wtMtZqj0HBODRFrxD7uJ6lzF+oZUkM65LOLao1O
-	 dzQBXf/ldKeHmGwIlMwuwkP9T5BsCaMHisGpR0womS/zDnuWEfDw0vR8T5PhWjA8O6
-	 slIpcCrF3baKHDHrSnwYjZF4=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AD50040E00C3;
-	Fri,  7 Aug 2026 05:44:46 +0000 (UTC)
-Date: Thu, 6 Aug 2026 22:44:43 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Kim Phillips <kim.phillips@amd.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, x86@kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Naveen Rao <naveen.rao@amd.com>,
-	David Kaplan <david.kaplan@amd.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH v4 01/10] x86/bugs: Only log missing retpoline when it's
- actually the missing mitigation
-Message-ID: <20260807054443.GHanVwy9MnwWZQvfdj@fat_crate.local>
-References: <20260804235611.4053375-1-kim.phillips@amd.com>
- <20260804235611.4053375-2-kim.phillips@amd.com>
- <20260805004441.GAanKHecgJwfAOzZzp@fat_crate.local>
- <65d82937-113d-405b-9399-b70973e84c50@amd.com>
- <20260805224907.GDanO942iYDbai1kFx@fat_crate.local>
- <9e5183be-1f31-4f6a-8b91-0f9a92590241@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XMQCJ/Gj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BAC51F000E9;
+	Fri,  7 Aug 2026 09:21:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786094506;
+	bh=Pneo29ys3hGXogLk2+e1LzC80FrdOftuA2dSFmi144s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=XMQCJ/Gj7Iu0ebVkhN13wsJt7AMBs/hyKYZHipvHCieM6Evyh/O2tF++XsVqENx/W
+	 O4WpssKXAy1yB++mPLwn98gKLPnv8EJJ/xWJsxJdcHW3lvVwqg0WL0zQ3gkXU+TSmf
+	 //VtTLKCKI8L/CclOy9PRdlovmOFa+u7XuDa26ivvRmK9rJgKLrvrxtkUPdmv+dDNU
+	 LtPQ7TYk2UHyko3C2QTCSIU/KvPbS03jl7EOyg7RbatVxdODw0IY3BaCmRDRK3wPX2
+	 Y5kMliqWeBs0luT8yI7Y4mRC+oPOczxGCmhB0P9lrQf7CzQN4ZpwcwEEKQH0dUWYGx
+	 z/ew0497IG91Q==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>, iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Mostafa Saleh <smostafa@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
+Subject: Re: [PATCH v8 00/23] dma-mapping: Track shared DMA state through
+ direct, pool and swiotlb paths
+In-Reply-To: <85be992d-9567-433e-ae2e-64ae5483964d@samsung.com>
+References: <20260717180442.110954-1-aneesh.kumar@kernel.org>
+ <CGME20260725070930eucas1p16cbafb514de7a2e7531d0e4ae158acfb@eucas1p1.samsung.com>
+ <yq5azezfeeax.fsf@kernel.org>
+ <85be992d-9567-433e-ae2e-64ae5483964d@samsung.com>
+Date: Fri, 07 Aug 2026 14:51:35 +0530
+Message-ID: <yq5afr0q2sm8.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9e5183be-1f31-4f6a-8b91-0f9a92590241@amd.com>
+Content-Type: text/plain
 
-On Thu, Aug 06, 2026 at 03:12:12PM -0500, Kim Phillips wrote:
-> If by 'this' you mean this patch, it's because it fixes a bug with
-> RETPOLINE=n kernels that sashiko found when reviewing the rest of the
-> patches in the series.
-> 
-> If by 'this' you mean RETPOLINE=n configurability in general, this patch
-> isn't adding or removing that.
+Marek Szyprowski <m.szyprowski@samsung.com> writes:
 
-Neither of those things warrant to have this patch, *especially* in bugs.c
-which is a nightmare as it is already.
+> On 25.07.2026 09:09, Aneesh Kumar K.V wrote:
+>> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
+>>> This series tracks confidential-computing shared DMA state through the
+>>> dma-direct, dma-pool, and swiotlb paths so that encrypted and decrypted
+>>> DMA buffers are handled consistently.
+>>>
+>>> Today, the direct DMA path mostly relies on force_dma_unencrypted() for
+>>> shared/decrypted buffer handling. This series consolidates the
+>>> force_dma_unencrypted() checks in the top-level functions and ensures
+>>> that the remaining DMA interfaces use DMA attributes to make the correct
+>>> decisions.
+>>>
+>>> The series separates mapping and allocation state:
+>>> - DMA_ATTR_CC_SHARED describes the DMA address attribute requested for a
+>>>   mapping. It tells the DMA mapping path that the DMA address must target
+>>>   shared/decrypted memory.
+>>> - __DMA_ATTR_ALLOC_CC_SHARED is an internal DMA-mapping attribute used only
+>>>   by allocation paths after the DMA core decides that the backing pages
+>>>   must be allocated as shared/decrypted memory.
+>>>
+>>> The series:
+>>> - moves swiotlb-backed allocations out of __dma_direct_alloc_pages(),
+>>> - uses __DMA_ATTR_ALLOC_CC_SHARED through the dma-direct alloc/free paths
+>>> - teaches the atomic DMA pools to track encrypted versus decrypted
+>>>   state
+>>> - tracks swiotlb pool encryption state and enforces strict pool
+>>>   selection
+>>> - centralizes encrypted/decrypted pgprot handling in dma_pgprot() using
+>>>   DMA attributes
+>>> - passes DMA attributes down to dma_capable() so capability checks can
+>>>   validate whether the selected DMA address encoding matches
+>>>   DMA_ATTR_CC_SHARED
+>>> - makes dma_direct_map_phys() choose the DMA address encoding from
+>>>   DMA_ATTR_CC_SHARED and fall back to swiotlb when a shared DMA request
+>>>   cannot use the direct mapping, which lets arm64 and x86 CCA guests stop
+>>>   relying on SWIOTLB_FORCE for DMA mappings
+>>> - use the selected swiotlb pool state to derive the returned DMA
+>>>   address
+>>> - reports CC_ATTR_GUEST_MEM_ENCRYPT for arm64 Realms, powerpc secure
+>>>   guests, and s390 protected virtualization guests.
+>>>
+>>> Dependency:
+>>> This series depends on the pKVM changes posted at:
+>>> https://lore.kernel.org/all/20260603110522.3331819-1-smostafa@google.com
+>>>
+>>> Please merge this series only after the pKVM changes above are merged.
+>>> Otherwise pKVM will be broken.
+>>>
+>> pKVM topic branch is now available 
+>>
+>> https://lore.kernel.org/all/178467286876.125042.12010461715645610054.b4-ty@kernel.org/
+>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/coco
+> I've just got back from my holiday's and I see that there is everything ready to give
+> this patchset some tests in linux-next. I hope nothing will break.
+>
+> I've applied this patchset to dma-mapping-for-next, on top of pKVM topic branch with
+> patch "[PATCH v8 17/23] dma-direct: make dma_direct_map_phys() honor DMA_ATTR_CC_SHARED"
+> rebased onto latest changes in arch/arm64/mm/init.c.
+>
 
-Thx.
+That might need a fix.
 
+From 5a9af89e74e9e2671ed0a572af129ebfa6fd4640 Mon Sep 17 00:00:00 2001
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Date: Fri, 7 Aug 2026 13:14:51 +0530
+Subject: [PATCH] arm64: swiotlb: Keep the default size for protected guests
+
+Realm guests and protected KVM guests may require swiotlb for device DMA
+even when all system RAM is addressable by the DMA zones.
+
+Do not reduce the SWIOTLB buffer to the kmalloc-bouncing size for these
+guests, as the reduced number of slots can be exhausted during CCA guest
+operation.
+
+Fixes: 30c5e45ee2c5 ("dma-direct: make dma_direct_map_phys() honor DMA_ATTR_CC_SHARED")
+Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+---
+ arch/arm64/mm/init.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+index e308a7cabd12..24caaf10e755 100644
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -339,7 +339,8 @@ void __init arch_mm_preinit(void)
+ {
+ 	unsigned int flags = SWIOTLB_VERBOSE;
+ 
+-	if (max_pfn <= PFN_DOWN(arm64_dma_phys_limit)) {
++	if (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) &&
++	    max_pfn <= PFN_DOWN(arm64_dma_phys_limit)) {
+ 		/*
+ 		 * If no bouncing needed for ZONE_DMA, reduce the swiotlb
+ 		 * buffer for kmalloc() bouncing to 1MB per 1GB of RAM.
 -- 
-Regards/Gruss,
-    Boris.
+2.43.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
