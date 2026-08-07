@@ -1,68 +1,71 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C63C377ABC
-	for <linux-coco@lists.linux.dev>; Fri,  7 Aug 2026 18:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFB4377558
+	for <linux-coco@lists.linux.dev>; Fri,  7 Aug 2026 18:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786126442; cv=none; b=ZkeRfHbgwf5CM7LMykCGA24HAL5qAzTcBQuklWVX7mJ+dowdI12yDBXPBUKEf/6HbcAR78J8r823VDJoi7oS0fVa2Npdq0Ndyw/I+eD9V/q1pk5UOGlpI0h5z94WyegzJBTGlkdNcp8H2KNeeFq49lPOPbFRVhmKIJQQrXBb9K4=
+	t=1786126821; cv=none; b=fJmKt8bgrceViIzUviq1F0IFEu3EoWOuThmusmbqu9yJgO0Xl1kzenYOpGgTktifGrghaKdMkaiZnQi8qL5CbHt1hstM7FeBQ/NwVj9UG+TOD2ZKZj1gzg9JZeDIp5TkUSyl5xQZaGsRuIbrIbLVVxQxz4n8rQtQ3Pg/z1L7bjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786126442; c=relaxed/simple;
-	bh=E7Ex4RBUa7IG4kdLmTYk7y3iUle3Rq8qAnZNO/0MU2c=;
+	s=arc-20240116; t=1786126821; c=relaxed/simple;
+	bh=uQJoR9F+JTLHFeALKkUq+Q0MNEImv4dProP3GHVEWS0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lWMxUv9qaimGyQ7x/6sKgX6kcZOJN7OX6WHW+wHKjhsu9PJiZqbTZNudDpsn/wthTnmgHcBsnw5TmmLq6jkWJC27N/3S1GZou7nbZdvGBRe/YfqR73jtY59+rRyPnTg1mPzQBeD8d4bel1Q5z6QqZetKTau+o7RYtsbrGMQNT8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d4buJpdK; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=NzKSZ2abahAHzZQPGuC1lLfKN5ExOW9edV7U4UMdaG9V0/Qc7qhufL2waWubfyfcK8LyHN/Zj+2rgXHIWMkyBvlA4C0KcnVEgCjAffXZ2kXou54RFaqs7xmYIaIFgTvctvnrE7BStPN/DNwP6zhgdgT3yERft9R9oeqEPaukDgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=lZRdemDf; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d4buJpdK"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6a177b2dc8dso1033a12.0
-        for <linux-coco@lists.linux.dev>; Fri, 07 Aug 2026 11:14:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="lZRdemDf"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-92edb12cdf2so245178785a.3
+        for <linux-coco@lists.linux.dev>; Fri, 07 Aug 2026 11:20:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786126438; x=1786731238; darn=lists.linux.dev;
+        d=ziepe.ca; s=google; t=1786126819; x=1786731619; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=NlmgqKiyqc7mU7pAn/JSXJE8TLhKwTlI/zLMMe65kC4=;
-        b=d4buJpdKSIaZJy71IfzT8H/zKheMrtFC9C49c7wYwKeC3w0OFT1prUHFH7un5YwL0t
-         zCIg/J/AjEA3JPBNSOOWeR/0cdnK0D4HSSSXZ55V6P98MnlvyzX8EKe9mjCDo0+6eFo/
-         6tG/WzJWs6tp5nQaXfl0GNAZoPXqMe0wSQJdCt7Uba+/jgSHtTgmGogijx4iSX1GKbAH
-         FurQkuXdES3oHGlRNV5D29VbqQsrEPpSb3PFCf58+dIXa+8KkA464lUR4eVYOFbykm7y
-         Hz7aMXUZ1sT0HNAJGQ4CTIyRb5ahJMZ3FYAZ9pKBEr8WG3bZo+lSyuZnDPR52lbKmudt
-         E47Q==
+        bh=uQJoR9F+JTLHFeALKkUq+Q0MNEImv4dProP3GHVEWS0=;
+        b=lZRdemDfctZTEurXSt5iXUXJTyGLEUMjjmh35H8e0lZ7Phye2X2PpuMsTGNgLBYeex
+         oFlh094w99mCMQDdNxmwI5usgVwIGcEAuY76ZpVJI9i2IeevGbPj506hipvNZAjnjygb
+         gtfrLS2kQ8BYrXTDOul81oXlYUj+AvZ2LF7lSWb2hY+3ypnfdNwjK0d7dSfKJFHeRf99
+         dfeRFpjMmGpH7CfeAF/Bv/Nd5EZUvRopl15d0Vm1l2uncRdy1I5YbQBl/yyAExC4w7tt
+         a2M7HT1RJZ3Zkrnk154PL0wH9szCLqavrcpWcKgA49Ru3MImqJtrSvyzNqFfE+fjbD+H
+         Kytg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786126438; x=1786731238;
+        d=1e100.net; s=20251104; t=1786126819; x=1786731619;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NlmgqKiyqc7mU7pAn/JSXJE8TLhKwTlI/zLMMe65kC4=;
-        b=ZyXGmi7Vnfs0IMON0kp66n6yEn44ofcOaTWCuTgGDzrDS62mwxOkuoy+0Q5DmgGA6w
-         HF6imG9S6ekWIiIX2IKLUrscmM4so7HvJ23xQ7R75yKGywJZ7uAi+Fdtb0nM7fgDdM9i
-         0BM8QiQH49I0b9P9vqbXdkgz+nS2QSu4VtJiIwa4K4NQZCcU2zY3EboE7DjsDavb3BWg
-         YVhlvxpWNudXABMzGqRIZUYcY+PRRV+ojbk7beczdFy0LdAmyZAEle+9fjFe8S+jQFJN
-         AbFtw7HBicxdR/kdmBi4fjXzveiOLKFw2TV5Wol1DQGsUe54pTVaIyvekVL17N56YO1S
-         Es+A==
-X-Forwarded-Encrypted: i=1; AHgh+RphvMrziNyGAhStjdwJAddV3m2Kn64ZMwZfU08SHo2ej5reVfP939Z0UFBHxZeZHmEFzyf5QNOKy4eH@lists.linux.dev
-X-Gm-Message-State: AOJu0YxR0P7umMeZUxwQCmT4OjTqn0AGOG0FnS1qSwfstCgxarOwKJQ+
-	IOxqmGa1qlkzKgRttA5QRwX6BzLr8L9aT5OQCaNK1Ze0r6HwMg/tdWFGsFkcECY45Q==
-X-Gm-Gg: AR+sD10Ouf97quAO5XKpXeUxa/jVSeFox/nmHUJH6ZvynBYWocmUJ+PJRk+aZgyImsn
-	+Np3bn9SPn/QirPM/F+oeSn1w+tvPmeyPCtucoZgM7klODTMVujDX+VdP7+vK+0mLY6+w30qRHY
-	dt8WlX5YphWGncSXkoRqPFfeGHv21Px4V6n4zAUFiVP1PTgi3UA66flGx9XdfgQyeWy5d5MQ3e4
-	aM5paHlXseAcXi7IGomOlZZ8sQjp6t3GEJ7nRdQPeWrjJ9Sa9b8soMXoWJCKgr8/+iykd6wstYU
-	q1x3gBpPgwoKF150jx2lD8kOSEzO46O72Ij9M/GpwaYezwuqpUvEFI54/sPPu7DkTHXhsHC3Ei9
-	iLbKpFu747xQ1mTZi/LfM63552HWyFKDNh4HulS1PGVxnZzWDWskEQMfgglETp4+cIwkR+JTW2y
-	d0xU8Q1HTfJg10luwylWAmvl49mpC1g3QueE5U4ltXzZiP04byXoFeArx+3Y8H+x6zYM5BS3r16
-	3s0XgjZBVs51HNL1lXONHsthz1BGA==
-X-Received: by 2002:aa7:ce06:0:b0:6a1:f26c:ae2d with SMTP id 4fb4d7f45d1cf-6a1f4f438f9mr5439a12.6.1786126433777;
-        Fri, 07 Aug 2026 11:13:53 -0700 (PDT)
-Received: from google.com (250.192.189.35.bc.googleusercontent.com. [35.189.192.250])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2080ab446bsm79186966b.27.2026.08.07.11.13.52
+        bh=uQJoR9F+JTLHFeALKkUq+Q0MNEImv4dProP3GHVEWS0=;
+        b=f2iFWe6H21tnW0b7XQsDCmEWJ14vaCrJAyqU7qE4E91i/Oco8c/8xpce5H6ej8+lb2
+         A9D/77o6hzN6U9kWRtU5Ux+1/wngBwedaZrFeIKPwE+FmqB5UgnakMk1H53/WIbkxNZQ
+         r5fLwmopG6yXLkLPR+3roHTbOeFQiAElk8jQx0yk/gFRtlYCr7vE2wUDMulhXitIBnQ8
+         yUu3pctDkYKdzD4CrER9v5oxdQFcON3uhqtRJAVheT16Xp96RaW1B0qNya1RgJmWogzn
+         isllU9INFHFWjrannYGa96hoFT77SBp8GLRmpr5dCTMHJf0Pa3J7Nv9xquJ+MM7yN/4V
+         h2kQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoXeJ9VqiFugyS6qjyHGQCKkKZE7upZCB1Q0SbIHXDu0+1Qk8jnjxJAnUyOm4/3BH8B+DpbqxX8B0gp@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw/tyu/lf7TsmQUiEnWAtS20P++yWQeyDFDzBW20NoCVI7sw/tA
+	8WtZ9D9lSZjo3L9GA+qnTySfxDQ0mtgMM8olGrPYmSz8vVuBnXiMvkGGVi5N67IO5HQ=
+X-Gm-Gg: AR+sD13W0OG5OvU5NPN4/5WA3ui3LVw4lWX3twBrRqKXsXJtR51yXOlmnrgd3/5h9JA
+	RdMp0Ztmx9fvnzuh5OP4YOPCRl9R/Yn+9wF9thISkNai7BrZdOSAEvphZM+d0YJQrRa57ujiMVR
+	l6IQDVwbYll2NZujmPQ3jvMTJABe77rT2UI/AklqDx33s3k2Jp6h83+ILEpMj8/5NQfcIOlG9X/
+	Be8SNhVJ56XK9NfEYnvBufkexHesx6NFBVgjajobL4plem2BG/LQ/dhsFUceTmyF+SJdzNmUCII
+	0/LoBV8rEIgQ1NAxGUEAQtv6ywWA1+QdqG53noN/K6DEil5wz7ITNUJ806D8cAkCDJcCSpzToef
+	9XSG9pUpDZ5zTG4NaOIQMOHHcNTmzatPtxHpSJk6EjYJspDbZE82uXf8hZjd9ccgaf3SmR9ygC3
+	JINVBO05dqYgt907nFNEeFL0i4p2GzqhCR3PGMVAXcW1F23zjgxJ5OhomprV94
+X-Received: by 2002:a05:620a:628e:b0:930:a38d:4030 with SMTP id af79cd13be357-93671eae149mr628522585a.29.1786126818655;
+        Fri, 07 Aug 2026 11:20:18 -0700 (PDT)
+Received: from ziepe.ca ([142.166.156.215])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9366e02d54esm204051085a.6.2026.08.07.11.20.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 11:13:52 -0700 (PDT)
-Date: Fri, 7 Aug 2026 18:13:49 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
+        Fri, 07 Aug 2026 11:20:18 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wsPB3-00000001Bmx-1xNi;
+	Fri, 07 Aug 2026 15:20:17 -0300
+Date: Fri, 7 Aug 2026 15:20:17 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Mostafa Saleh <smostafa@google.com>
 Cc: Will Deacon <will@kernel.org>,
 	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
@@ -88,7 +91,7 @@ Cc: Will Deacon <will@kernel.org>,
 	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
 Subject: Re: [PATCH] arm64: swiotlb: Keep the default size for protected
  guests
-Message-ID: <anYgXSR4VAi3TpOj@google.com>
+Message-ID: <20260807182017.GH200537@ziepe.ca>
 References: <20260717180442.110954-18-aneesh.kumar@kernel.org>
  <20260807092612.2202005-1-aneesh.kumar@kernel.org>
  <anXIZSh9lq99VG9X@willie-the-truck>
@@ -97,6 +100,7 @@ References: <20260717180442.110954-18-aneesh.kumar@kernel.org>
  <20260807135810.GA200537@ziepe.ca>
  <anX7F7dnKOtAOIIe@google.com>
  <20260807164734.GE200537@ziepe.ca>
+ <anYgXSR4VAi3TpOj@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -105,49 +109,20 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260807164734.GE200537@ziepe.ca>
+In-Reply-To: <anYgXSR4VAi3TpOj@google.com>
 
-On Fri, Aug 07, 2026 at 01:47:34PM -0300, Jason Gunthorpe wrote:
-> On Fri, Aug 07, 2026 at 03:34:47PM +0000, Mostafa Saleh wrote:
-> > On Fri, Aug 07, 2026 at 10:58:10AM -0300, Jason Gunthorpe wrote:
-> > > On Fri, Aug 07, 2026 at 02:18:31PM +0100, Will Deacon wrote:
-> > > 
-> > > > > I was under the impression that there is a possibility of using swiotlb
-> > > > > instead of restricted-dma-pool with pKVM.
-> > > > 
-> > > > Yes, that patch enables swiotlb as a possibility for protected guests
-> > > > but with your patch we avoid shrinking the swiotlb buffer even when
-> > > > restricted dma pools are being used and that's a waste of memory.
-> > > 
-> > > I also thought we switched pkvm to use CC-like swiotlb as part of the
-> > > alignment in this rework? Mostafa ?
-> > 
-> > Yes, now protected VMs can use the SWIOTLB for bouncing. However for
-> > Android (and kvmtool), use restricted DMA. so SWIOTLB is not used.
-> 
-> Oh? Why?
-> 
+On Fri, Aug 07, 2026 at 06:13:49PM +0000, Mostafa Saleh wrote:
 
-The patches are not in Linux yet, when it eventually lands in Android
-it should be possible, I did some initial assessment and did not
-see any regressions.
+> But the whole thing is best effort anyway, the kernel picks
+> IO_TLB_DEFAULT_SIZE which does not depend on the system topology or
+> how many devices or how much DMA they do.
+> SWIOTLB memory is wasted if unused so we should be careful around
+> that as it would be the other way around and users would have to
+> decrease it manually.
 
-> > However, I do not think we should over engineer this in the code,
-> > swiotlb can be set from the cmdline and now through Kconfig also.
-> 
-> That's fine for android, but real users buying a cloud VM and sticking
-> a distro on it shouldn't be expected to have to mess with cmdline just
-> go get a halfway working system
+Yeah, it is why the arch code shouldn't really be sizing it directly,
+it should be done in common code and, yes, we are probably going to
+have to do something alot smarter to have the common code better
+auto-tune this for the CC case..
 
-But the whole thing is best effort anyway, the kernel picks
-IO_TLB_DEFAULT_SIZE which does not depend on the system topology or
-how many devices or how much DMA they do.
-SWIOTLB memory is wasted if unused so we should be careful around
-that as it would be the other way around and users would have to
-decrease it manually.
-
-Thanks,
-Mostafa
-
-> 
-> Jason
+Jason
