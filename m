@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649BD378D72;
-	Mon, 10 Aug 2026 08:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A910817B505;
+	Mon, 10 Aug 2026 08:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786350926; cv=none; b=nbmy/OWM0pD8lIP4FtcujJwSFJUpkBwkeqywjliC2qp4xF2CVO8+pez7PIIYslqGrpgkk7A/DRCoAOLsvtO7Uux3X8vbTwm/Lq0OSNAn0YyeiXI6CDBUqu6X1EweDEH4zfGv1LbtpOZOTvvjzkveRJy/XphPWYEcgwMgQQq3FrU=
+	t=1786351422; cv=none; b=BFGWRYIFFwJmZB7ZvfzfCloqqBA3OidNgILcudHXF5PChlzPpm4Ue663gKo99CMjCPBrUwM7k1Cgm4GwYSPaWNixi0bEN/HqLdlfI8EBG5xKozlzrcEGdZsC0XCkRHCPMfrdAPhmT/1HfyEcXJnVtyb+fmCZ4nZu56fRuzcKcAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786350926; c=relaxed/simple;
-	bh=w9A2FTShQLHfwUNWD7ymY4bBITuVQSoyaugvulauFno=;
+	s=arc-20240116; t=1786351422; c=relaxed/simple;
+	bh=OaBdcE+yZqO1HYKuM72fMIoKip0Nls40njz55Fqutrs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BmHcS2D+2qep0qxigSUzhdwxilI+akXsZ/H4rkkMgEhRJrj8+EZ5xVPTmUSoHFkGgSvTg0BRVbUnJAqrXLjSJj4qeproRzA8YMLRHhycG1ZXPt1LyaQ8lDt1otHexlYMVf15E2Lg3sCSb6KDiG9+V+K17pKizYC2Y4vACQHNv/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TQmWaY/e; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=NUyLBFih8op7NC3M1Cph3nSi7bYXEh8yEHGzkTQ6XFvFJdT5vfNd6pqVrHILkbW9xwsiv4vKuD/98iUhZ8GB4w+3mjQTWOI36g/ggqhIsgEpOCIriguHAlJolI8FNYxSNQAKZ8IbfJ3swKUdldueoln0btrzO4HCkKlkO6mbxAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FImHoxXg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TQmWaY/e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901641F000E9;
-	Mon, 10 Aug 2026 08:35:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FImHoxXg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE561F000E9;
+	Mon, 10 Aug 2026 08:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786350925;
-	bh=Y2FLsoZ1hEB5Du7Ei8cxJVdd7PKne1YvDU/GLmcRPOo=;
+	s=k20260515; t=1786351421;
+	bh=smOt6mZG+PevRoowKw0zUZxXoHsvJYbHF/KUnR1DfrA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=TQmWaY/eJ/3bBk6gG8TZU/y84g0uAlRWwjgXzO3uFjLziwWv6qtrOxq74w4RVQead
-	 nFy1GVDQGRACN7JTwGwGV0fhqyZs6nw8zC/FE1OF1LI6hDDHqjPV6n386IOqpB6xJv
-	 DJIFqitE6qS+ErJjdv0VfhVoURCZ01vn9tSqDk+BzfxmORZoiUHqsAcuMKTkLDBUM+
-	 mK/qYI1NcTvDICGR11N7UctnrdUA34YJ2xIsiv37jMDFEPHxI1BQ0vXevu23qY/W5K
-	 8ZIYKAw+Mn8yyAdDFIcbq8k2g4GmRWmtk9ebvuwD9PEupqgK9sCowzxWKA38MuueII
-	 uw0AbLCKwziXg==
-Message-ID: <98d6b8c9-4c61-41ea-8585-1bfdb3347b7d@kernel.org>
-Date: Mon, 10 Aug 2026 10:35:04 +0200
+	b=FImHoxXgIxwzbVyPu7nfHaTw3qR2eukHNsnftNgcvcDDrlqlqcA4HteQC0p9YmIbC
+	 IYa0UrJmyfRXHxGd+ID4Zr168Qs7C/7IeoKv1E8TcvW5irCGeMMzd9AnedtK/sPrrd
+	 PUpDnXWclVQccNpIUwMrDVvLXtpWakjkH34kIGE32ljzuvrax91OIsyWQJoM5cySLl
+	 8Pg0xMWTSW+nDib6pwUdPqbIOkqLRxasEsrzI1V/P6lBj8+hlRpRpd4tGzb5Tm6hwg
+	 pq+3j65ZLwYWz83rp9pEC9AROYEdQoTJwKJvxQSf2LBKrDEkNS6aI79YDjibbettmQ
+	 g5FdPN5a0AwHg==
+Message-ID: <7b93b756-1c48-407c-a12d-864f0a5bea01@kernel.org>
+Date: Mon, 10 Aug 2026 10:43:20 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -35,8 +35,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 06/41] KVM: guest_memfd: Introduce function to check
- GFN private/shared status
+Subject: Re: [PATCH v10 00/41] guest_memfd: In-place conversion support
 To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
  binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
  jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
@@ -62,13 +61,14 @@ To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
  Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
  Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
  Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Vlastimil Babka <vbabka@kernel.org>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-6-35f9aec2aed2@google.com>
+ linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Fuad Tabba <fuad.tabba@linux.dev>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -115,76 +115,18 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260728-gmem-inplace-conversion-v9-6-35f9aec2aed2@google.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 7/29/26 02:35, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
+
+> Previous versions of this feature, part of other series, are available at:
 > 
-> Introduce a function for KVM to check the private/shared status of guest
-> memory at a given GFN.
-> 
-> This will be used in a later patch.
-> 
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Tested-by: Shivank Garg <shivankg@amd.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->  include/linux/kvm_host.h |  2 ++
->  virt/kvm/guest_memfd.c   | 32 ++++++++++++++++++++++++++++++++
->  2 files changed, 34 insertions(+)
-> 
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 438567e3fa6a1..73f564b87a324 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2594,6 +2594,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->  #endif /* kvm_arch_has_private_mem */
->  
->  #ifdef CONFIG_KVM_GUEST_MEMFD
-> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn);
-> +
->  int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->  		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
->  		     int *max_order);
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 8c7709a352cc7..33c9830190e2e 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -474,6 +474,38 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
->  	return 0;
->  }
->  
-> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
+> + https://lore.kernel.org/all/bd163de3118b626d1005aa88e71ef2fb72f0be0f.1726009989.git.ackerleytng@google.com/
+> + https://lore.kernel.org/all/20250117163001.2326672-6-tabba@google.com/
+> + https://lore.kernel.org/all/b784326e9ccae6a08388f1bf39db70a2204bdc51.1747264138.git.ackerleytng@google.com/
 
-The function name makes is sound like we are testing whether a kvm_gmem instance
-is private. The common code functions are
-
-	kvm_mem_is_private
-
-and
-
-	kvm_vm_mem_is_private
-
-So I would expect this here to be called
-
-	kvm_gmem_mem_is_private
-
-
-But then, it's confusing that there is
-
-	kvm_gmem_is_private_mem()
-
-already, which the new function calls. Maybe we have to indicate for the latter
-that it works on the inode?
-
-	kvm_gmem_inode_mem_is_private()
-
-?
+Sorry, I saw v10 too late and left some tags+comments on v9.
 
 -- 
 Cheers,
