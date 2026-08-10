@@ -1,122 +1,139 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCA13C769B;
-	Mon, 10 Aug 2026 11:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D6C3B05AF;
+	Mon, 10 Aug 2026 12:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786362421; cv=none; b=oVucKmTTnkxxlQVuztF8uJJVaCZpkARpxkBbJ5ORykNpU+GjBumGC/vZSDd0kBxGKCvQic7ydMqWGlIgVmLawaAlcfiq2YbEOvtnKg/WdKZ2fopAZ/Cr7AyspSP7SOPxWHIP9w6UWYlxfcU+WagQCmD1hARoWJ1/9ehyBrsAIkk=
+	t=1786364134; cv=none; b=qWqbJwIDR7w4c/TPorK8o6W4djM6fuHPu3NXAtdXonNSp9uVidniwWjp9dsoZtwD+YlQaMuZY7J/r44jAPCszJcG7yq2EG4zcX8w3PSUN4WGdvRAugV4PcIlYEajQJ83cjz9REQkl/1Tb3C4MJFxIt1jvGEBadgGMquIy03cpyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786362421; c=relaxed/simple;
-	bh=BQbJ5bc2a0t3ZQzMw4ZBOXIyFfTFHGJfHhVg4sJJmjM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fZKjUNnqgTYmiuv/bKA7qFyBYeb4did9gLfIjG1QJUIKIKmiZHMXwlf908M10GO7yzdpbudz+aMHVZkAgfnIbeA9fub3KwyZjYWVuzR8q+yL5gQQIu3duQIatUqNbJa+cOncA8nNahbpUxcUO0z2zKlVH7gzwV+4/xZA9EZvUs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZdqOARlq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786364134; c=relaxed/simple;
+	bh=i3sOs8rJepjdso+MQzQLlWRd8b3yzeuCpzREPSViQ74=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=hlxPrv75nmOA7xWCfuKcM4Ss9Z6VyZf/IUuRFHQV/Y8s9mpGCxUyB6zX+Iu/Ho5pac62OQ40UOytY7zafHM4Jb6s74xWCfpYDa2Rp6qSmp6Jtr+CepV6MrLmCGdFfdRgdme9iLOo/QuMCJ9cV899gR3Si7swYd19JLpKAr2cIkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Un/FAx7j; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZdqOARlq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2455F1F000E9;
-	Mon, 10 Aug 2026 11:46:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Un/FAx7j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49BA21F000E9;
+	Mon, 10 Aug 2026 12:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786362419;
-	bh=fCRqoeWNWtgyOE15SAxF1YS8N0xnzH3d7d2rFiQqAvQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZdqOARlqNVXG2WPdY64KIFiiHy7+iL34WY5SFGKkpbDKTPzoxcrf8GlztQOTzotYK
-	 Kg5HPHwLV+5NhAnFpPy2M0d3tpks7urO5LVdtaYhr6+MuPr6zb4pRlRwSp3hiSM9Aj
-	 vCAxgQFWgzY6cDHelMHj4C/jXVkJj7f+QtrE7Yt3Gg22QfoyAeZM99oD0he866L/DY
-	 F2KZG03kM1xVZJQxLaqFMXnxi4i4KMM/sYLsNWaGEVRErraJAxad6KiDUUDo+NPuEt
-	 O2mzWp+GVkyfqSfgZBJpiQWioD1g/jvLk6/XCtjYgdXIs9llPpIPtA7fDAT8VOn/Ix
-	 ydjL4LdODFn+Q==
-Date: Mon, 10 Aug 2026 12:46:51 +0100
-From: Will Deacon <will@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Mostafa Saleh <smostafa@google.com>,
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>, Marc Zyngier <maz@kernel.org>,
+	s=k20260515; t=1786364133;
+	bh=eyipMtgB4ZyCJEZ0e7KmuMxjF6Di1Z8fq9/5bVP2+K4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Un/FAx7j6a8Tv4Qu69dqE6Obb/zXK2tm191FllFfVmceQt6S/WwdjwVYTLuEGeyvi
+	 qSIHVn40c2QF8K25OCs30fALn3cHCfP5u0AUfugA275ApwRLHQCariclHrM2XtXNL+
+	 Nn+dPPC5Io2XmFZQaFIpJ6CLbiGNHY/W4ORQ9UbfJ5Llf3SHzD6wdyOrqlO2mTgiO5
+	 ++yombrOSzh6N0slpNLX5YU3ajjNhP22F0K74fWXLYQNMMcMbudOpTNsZXgpqjbZHg
+	 TjAUpAe/RjHNAq/RrB5jRNhSiTSojaGD3OxRff8oJkIV65JUJPM6jMOprBXnp4OHv+
+	 +AT1utjlBqA2Q==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [PATCH] arm64: swiotlb: Keep the default size for protected
- guests
-Message-ID: <anm6K2umtx4iKnyZ@willie-the-truck>
-References: <20260807135810.GA200537@ziepe.ca>
- <anX7F7dnKOtAOIIe@google.com>
- <20260807164734.GE200537@ziepe.ca>
- <anYgXSR4VAi3TpOj@google.com>
- <CGME20260807182023eucas1p1f653436207b2b00338e99ea1d8f847df@eucas1p1.samsung.com>
- <20260807182017.GH200537@ziepe.ca>
- <7d22482f-d5fd-4cf4-9d32-6a54e02f2fbb@samsung.com>
- <yq5av79iiard.fsf@kernel.org>
- <anml6lLRERm1Iv-_@willie-the-truck>
- <28442500-1d53-4776-bae5-459c3ffc1cc6@samsung.com>
+	Andre Przywara <andre.przywara@arm.com>
+Subject: Re: [PATCH v9 4/7] arm64: realm: Move Realm memory encryption ops
+ to RSI code
+In-Reply-To: <baa99d81-7979-4654-a030-a550ba57bb58@arm.com>
+References: <20260805063255.1638614-1-aneesh.kumar@kernel.org>
+ <20260805063255.1638614-5-aneesh.kumar@kernel.org>
+ <baa99d81-7979-4654-a030-a550ba57bb58@arm.com>
+Date: Mon, 10 Aug 2026 17:45:24 +0530
+Message-ID: <yq5apkzqi337.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <28442500-1d53-4776-bae5-459c3ffc1cc6@samsung.com>
+Content-Type: text/plain
 
-On Mon, Aug 10, 2026 at 01:37:11PM +0200, Marek Szyprowski wrote:
-> On 10.08.2026 12:20, Will Deacon wrote:
-> > On Mon, Aug 10, 2026 at 02:59:42PM +0530, Aneesh Kumar K.V wrote:
-> >> Marek Szyprowski <m.szyprowski@samsung.com> writes:
-> >>
-> >>> On 07.08.2026 20:20, Jason Gunthorpe wrote:
-> >>>> On Fri, Aug 07, 2026 at 06:13:49PM +0000, Mostafa Saleh wrote:
-> >>>>> But the whole thing is best effort anyway, the kernel picks
-> >>>>> IO_TLB_DEFAULT_SIZE which does not depend on the system topology or
-> >>>>> how many devices or how much DMA they do.
-> >>>>> SWIOTLB memory is wasted if unused so we should be careful around
-> >>>>> that as it would be the other way around and users would have to
-> >>>>> decrease it manually.
-> >>>> Yeah, it is why the arch code shouldn't really be sizing it directly,
-> >>>> it should be done in common code and, yes, we are probably going to
-> >>>> have to do something alot smarter to have the common code better
-> >>>> auto-tune this for the CC case..
-> >>> What about the $subject patch? I assume that it is still needed to
-> >>>
-> >>> restore the behavior that was altered by the "[PATCH v8 00/23]
-> >>>
-> >>> dma-mapping: Track shared DMA state through direct, pool and swiotlb
-> >>>
-> >>> paths?" patchset?
-> >>>
-> >> I would request that we pick this patch to fix the regression described
-> >> in https://lore.kernel.org/all/yq5azeyxyfol.fsf@kernel.org/.
-> > I really don't think we need it. CCA hardware isn't exactly widespread
-> > and the KVM host side patches don't appear close to being merged.
-> 
-> Does this mean that the branch for-next/coco [1] won't go to v7.3-rc1?
+Suzuki K Poulose <suzuki.poulose@arm.com> writes:
 
-Argh, no, I'm definitely planning to send that!
+> On 05/08/2026 07:32, Aneesh Kumar K.V (Arm) wrote:
+>> Realm memory encryption callbacks are CCA-specific. Keep the Realm callback
+>> registration with the RSI initialization code instead of pageattr.c, which
+>> only needs to provide the low-level page-attribute transition helper.
+>> 
+>> Export __set_memory_enc_dec() within arm64 so the RSI code can wrap it with
+>> the Realm-specific encrypt/decrypt callbacks and warning policy.
+>> 
+>> No functional changes in this patch.
+>> 
+>> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+>> ---
+>>   arch/arm64/include/asm/mem_encrypt.h |  3 +--
+>>   arch/arm64/mm/pageattr.c             | 38 +---------------------------
+>>   drivers/firmware/arm_rmm/rsi.c       | 34 +++++++++++++++++++++++++
+>>   3 files changed, 36 insertions(+), 39 deletions(-)
+>> 
+>> diff --git a/arch/arm64/include/asm/mem_encrypt.h b/arch/arm64/include/asm/mem_encrypt.h
+>> index f03b9d7b83b4..ef8b8463e52b 100644
+>> --- a/arch/arm64/include/asm/mem_encrypt.h
+>> +++ b/arch/arm64/include/asm/mem_encrypt.h
+>> @@ -16,8 +16,7 @@ int arm64_mem_crypt_ops_register(const struct arm64_mem_crypt_ops *ops);
+>>   
+>>   int set_memory_encrypted(unsigned long addr, int numpages);
+>>   int set_memory_decrypted(unsigned long addr, int numpages);
+>> -
+>> -int realm_register_memory_enc_ops(void);
+>> +int __set_memory_enc_dec(unsigned long addr, int numpages, bool encrypt);
+>>   
+>>   static inline bool force_dma_unencrypted(struct device *dev)
+>>   {
+>> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+>> index bbe98ac9ad8c..14b2a3801f40 100644
+>> --- a/arch/arm64/mm/pageattr.c
+>> +++ b/arch/arm64/mm/pageattr.c
+>> @@ -275,9 +275,7 @@ int set_direct_map_default_noflush(struct page *page)
+>>   				 PAGE_SIZE, set_mask, clear_mask);
+>>   }
+>>   
+>> -static int __set_memory_enc_dec(unsigned long addr,
+>> -				int numpages,
+>> -				bool encrypt)
+>> +int __set_memory_enc_dec(unsigned long addr, int numpages, bool encrypt)
+>>   {
+>>   	unsigned long set_prot = 0, clear_prot = 0;
+>>   	phys_addr_t start, end;
+>> @@ -321,40 +319,6 @@ static int __set_memory_enc_dec(unsigned long addr,
+>>   				      __pgprot(PTE_PRESENT_INVALID));
+>>   }
+>
+> This calls "rsi_set_memory_range_protected/shared(). Should we add call 
+> backs for those too in the arm64_mem_crypt_ops and take those away too ?
+>
+> something like :
+>
+> 	pre_enc_dec_phys_range(start, end, bool encrypt) ?
+>
+> and implement that in firmware/arm_rmm/rsi.c ?
+>
 
-I'm just saying that this specific fixup patch (which is a PATCH sent
-in reply to another patch in the middle of a series...):
+__set_memory_enc_dec() is a helper that is only used for realms. We do
+have a check:
 
-https://lore.kernel.org/all/20260807092612.2202005-1-aneesh.kumar@kernel.org/
+if (!is_realm_world())
+	return 0;
 
-isn't something we should take for the upcoming merge window. There are
-better, alternative ways to tackle the issue (as discussed in the thread)
-and it's really not as urgent as Aneesh is trying to make it sound.
+(We should probably change the return value to -EINVAL.)
 
-Will
+The only reason it is in arch/arm64/mm/pageattr.c is that it calls
+__change_memory_common(). That function is more of an internal helper
+for the page table update routines. I wasn't sure whether we want to
+expose this API which can also be used for updating linear map
+attributes.
+
+Currently, we restrict such updates to vmap mappings, with the only
+exception being the Realm use case through __set_memory_enc_dec().
+
+-aneesh
