@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BFD2FD69E
-	for <linux-coco@lists.linux.dev>; Mon, 10 Aug 2026 13:57:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2AA3D3334
+	for <linux-coco@lists.linux.dev>; Mon, 10 Aug 2026 14:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786370247; cv=none; b=hWTt1LlLg/gxWz15pc7g8dtW6vlH9qJktiLoh8sLkCWjkKVzY4oSzcpDMdKxJG5pdxgZFUN6UE0HiCACeaY2S9CX7QKW124MWxJImO50YkX/s56gBTtSgxqcbkPZTuQ6jDh16Gr+XSBri9ED5SXqetUh/kfzFMdoGP94E9dU5QA=
+	t=1786370889; cv=none; b=NMvXFZvjvsAA/6utroHEnRV9A1pR8FY6U2inu2vNM736oxic/3SrwneEyiKSLm7Bz0duPmRI9WRkjdasq+lPdgiY0xqTbhetRvrffP6A0Bw+acrbqQw/y7ZubmELlGHibb8hZ2FjeXViHfsxcXtIKS5w4Hagu1G48YPViSAinAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786370247; c=relaxed/simple;
-	bh=9+ngEl73Aw0PLXjoaEbb/fN64l6OAOvN1lSjK1Kn0Z0=;
+	s=arc-20240116; t=1786370889; c=relaxed/simple;
+	bh=fp929i8ZJSwn7AHlDcl8w9pLYLCiXxw0K59jmumxIEs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ASU9LJhlyJUzcs/d8PoBXEy+R3HyJ9OFjZ6E9iidJ34jtZw5emvTeDALL9tI+Mj1fnIihlTalnevaTP/3+5LdenN4mwskSlCqdWwjOtw5i6Gse47L9Z7mOZI2h/VjfCp/tC7so+LOKLMlz0GYJVyz9VS3Wbbl1PK/mhx4ecMrHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TzbOoLtP; arc=none smtp.client-ip=198.175.65.15
+	 In-Reply-To:Content-Type; b=cpVlkxbYBVh9mTa7YidUfhPr41pMwu+1Dh9hM+rpf/FHCkNNY3UIRqVpeMbA1QXxSON2n8nDxmW5gw6rbeu8DArYg+yPVHb+lRcx04muC9MinLRRZwswkbSG7/r8Nx9ZXmHVz/FrXL9DbV/4kMpg6hNcAnm/Ix/t2UPid0BJsFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fSlFnvGO; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TzbOoLtP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fSlFnvGO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786370246; x=1817906246;
+  t=1786370887; x=1817906887;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=9+ngEl73Aw0PLXjoaEbb/fN64l6OAOvN1lSjK1Kn0Z0=;
-  b=TzbOoLtPvAX6YDUxYMJ1rzfzefUiTjGP1eZO2NxwWRXJXuRO6dR40gEu
-   wCeGp8mkm/m2WjkPjH6fIZN9jMST+2Zzop2dqOcJLYsOwBrKnamCaOCNG
-   nYqTk/sY9pwSCBrnGewadA7o65Y93B+x1+b8JWF+mjQ9/4flPEroFgFFs
-   pPlPcwKdqP5jwMkmnDvCfPUS9zQVtVp3fUvkSq98s+iWoIflxLL33+JP+
-   wzN2lwoiwGZqXvpNNvHbdfcwTvzP+e691pBzOQZkaoVcxsi+xvzlLBJxK
-   FVff3wy/ewxsjonowj2JW3ixYFfCj223S6/3sVRMeqz+bRaOp6ZbCRmr5
-   g==;
-X-CSE-ConnectionGUID: cTe/nRYWQPWopoRGg75U0w==
-X-CSE-MsgGUID: PDQ3RMmBSrmBvEc3pokoww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="90563937"
+  bh=fp929i8ZJSwn7AHlDcl8w9pLYLCiXxw0K59jmumxIEs=;
+  b=fSlFnvGONgF6eDyFyCJy88yCcDxCfT/gInzOgfboCsdb6zCsr/EUyDiG
+   yHsDBMCeM+yaUbpgxETtD31wSZBQ9gLuhQLf2fS78m4sD0k//jUPGBOzL
+   /Ll01ZsjUJrHyaHJh0LrXMGAdSyaFuZH0bSwRSF1h7k9HBYHXgoiRINXC
+   Ty11SNrMQDRkIYfpVR3iIYTo9HMkWOdaX4l8BB64kqrU66t2/ByptU/gQ
+   tSSJ5XBRFMU+vxBhsP5mHO2gEWlPyPsMkZG69x8gojhI352zeOicnxEM3
+   kx0d7MjG2j9RhMtkcG8FwsP6tS+x9DGqx967VKsIlXEQaHicMdP3H9ZkR
+   w==;
+X-CSE-ConnectionGUID: LE7MwlaTQ66dyy+Eo2npmQ==
+X-CSE-MsgGUID: V+hZCCUzRWKaedx4OU55ZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="112430533"
 X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
-   d="scan'208";a="90563937"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 06:57:25 -0700
-X-CSE-ConnectionGUID: Va8zIMrSTOmlBgd4tZOn8A==
-X-CSE-MsgGUID: kA38eLyeT5ydnKbffleTqw==
+   d="scan'208";a="112430533"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 07:08:06 -0700
+X-CSE-ConnectionGUID: j69EllATQs+Kr2sneJB2zw==
+X-CSE-MsgGUID: Jc8JHvBiTA+BUh1ndSTzTQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
-   d="scan'208";a="268200229"
+   d="scan'208";a="262535992"
 Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.110.41]) ([10.125.110.41])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 06:57:23 -0700
-Message-ID: <fec4f97c-36e1-4c25-9c4b-6aa2eeed12b2@intel.com>
-Date: Mon, 10 Aug 2026 06:57:22 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 07:08:06 -0700
+Message-ID: <8e40862e-891a-4cad-8bb8-06ad25ad6061@intel.com>
+Date: Mon, 10 Aug 2026 07:08:04 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,7 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 09/11] x86/virt/tdx: Enable Dynamic PAMT
+Subject: Re: [PATCH v9 10/11] Documentation/x86: Add documentation for TDX's
+ Dynamic PAMT
 To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
  kas@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com,
@@ -60,11 +61,12 @@ To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
  tglx@kernel.org, vannapurve@google.com, x86@kernel.org, chao.gao@intel.com,
  yan.y.zhao@intel.com, kai.huang@intel.com, tony.lindgren@linux.intel.com,
  binbin.wu@intel.com, sohil.mehta@intel.com
-Cc: Hongyu Ning <hongyu.ning@linux.intel.com>
+Cc: Hongyu Ning <hongyu.ning@linux.intel.com>,
+ Binbin Wu <binbin.wu@linux.intel.com>
 References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
- <20260806020850.1221381-10-rick.p.edgecombe@intel.com>
-Content-Language: en-US
+ <20260806020850.1221381-11-rick.p.edgecombe@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
  oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
@@ -108,15 +110,42 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260806020850.1221381-10-rick.p.edgecombe@intel.com>
+In-Reply-To: <20260806020850.1221381-11-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/5/26 19:08, Rick Edgecombe wrote:
-> The TDX module exposes whether Dynamic PAMT is supported via a bit in the
-> 'features0' metadata. Unfortunately, the TDX module exposes the feature as
-> supported even when it does not support using it with the number of keyids
-> currently configured in the BIOS.
+> +Dynamic PAMT
+> +------------
+> +
+> +Physical Address Metadata Table (PAMT) is memory that the TDX module needs
+> +to keep data about each page (think like struct page). It needs to be handed
+> +to the TDX module for its exclusive use. For normal PAMT, this is installed
+> +when the TDX module is first loaded and comes to about 0.4% of system memory.
 
-What's the connection between DPAMT and the number of keyids? They seem
-orthogonal to me.
+The Physical Address Metadata Table (PAMT) is metadata in which the TDX
+module keeps data about each physical page (think struct page). Space
+for it is allocated by the VMM, consumes up to about 0.4% of system
+memory and needs to be supplied to the TDX module for the TDX module is
+first loaded.
+
+Dynamic PAMT is an add-on feature that allows a VMM to dynamically
+allocate the part of the PAMT which tracks 4k pages. This reduces the
+amount of memory that TDX consumes while TDs are not in use.
+
+Slight tweaks for those first two paragraphs ^
+
+> +When Dynamic PAMT is in use, dmesg shows it like::
+> +
+> +  [..] virt/tdx: Enable Dynamic PAMT
+> +  [..] virt/tdx: 10092 KB allocated for PAMT
+> +  [..] virt/tdx: TDX-Module initialized
+> +
+> +Dynamic PAMT is only enabled when supported and the ``tdx_dpamt=`` kernel
+> +parameter is set to "on". The feature is off by default because TDX module
+> +internal details prevent Dynamic PAMT from working on all keyid partitioning
+> +configurations. When the TDX module is fixed to include these constraints in
+> +its enumeration of Dynamic PAMT support, kernel support can be changed to
+> +default on. For more information, consult the Intel TDX documentation about
+> +Dynamic PAMT.
+
+
