@@ -1,71 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from esa9.hc1455-7.c3s2.iphmx.com (esa9.hc1455-7.c3s2.iphmx.com [139.138.36.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEEE3E7141;
-	Mon, 10 Aug 2026 14:33:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A383FBEB8;
+	Mon, 10 Aug 2026 14:48:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.36.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786372405; cv=none; b=Tj9OsgU/ulhWskZy+HKFUr/D9yIyb6AUOsJXTtsaMhdiYyI+hMITL2isQOO0O1rCxHwoxNgp6c0ilh2OF3AolQ58b08kIaDt9SW8eL2TSG1It5epSDzZhI8wRniYi/Rizk8TI7czCAiPwOO999OJbhJ/4tjXWdidWQZwwav8u+o=
+	t=1786373293; cv=none; b=awt3Z5hUWvVYB4eM0L9yxfSeONHd0gXi+sB5N4hY92SmdozqSYdRWokmMyHfAMB7gr5Sb0QQhMzXeyVF2QZlrlgjoyXKU2Uy5wFRR0qEWx5UCtvbqNCIr2R8HCDtUl6UK96Bj5/Hpe59MB/l2+XfulnB5Cz8xcLnv1h3m/bWQi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786372405; c=relaxed/simple;
-	bh=7nq4F6eVa+igOyPizq1W0mha35WNgJ79/K+NijHuU08=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=rQI9VJ1TrbK70oMGppJN8BchP/sJ/V1c886GytD+avr9rZuocNB2331N/pqmqe6WEGAH53RvIcLXgFb4+l9XmFqN+kMVng7UAEH2Bbuc+/u6r6DolKaxYMzwvZWtbG2TeGSiZNzTX/62dIVUIi1DB5BnyowHckrHUQN0Cfc7GSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FSEg5P7W; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786373293; c=relaxed/simple;
+	bh=99XkH2IMF7D6nyHbHISy+8bb2LKxW8tAVwIQzhTqFok=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bf1FW2VRQuVv5usqraMyC8ZlZsIJIAixgdnwEMrWbjQzEKQbnXdIzJC4izpkfbjapl4pVAGiUi9EcWlqswCpsjftzeInRMq0Kt3G5gdoIxajnrzz3QsZ7wiwOE6FikBxDqzEduykF2dVRk1oYYex3FKpwZ4lAKZZd6eVRmFFAME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=bLxON1m2; arc=none smtp.client-ip=139.138.36.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FSEg5P7W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694EF1F000E9;
-	Mon, 10 Aug 2026 14:33:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786372403;
-	bh=7nq4F6eVa+igOyPizq1W0mha35WNgJ79/K+NijHuU08=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=FSEg5P7W76NmVIq/uL3ZJ2JQ93MR3s+H6sZ8oMjTjqoQtXHtpU2o8sZMVTuz5+8hg
-	 s/icfW+TbRoP+BIL+Loawx2mDkc39Fga6I40bNBiXUw3nB8b264pGFeY2r4EsV+SQ/
-	 Q48Vqv2S8+JWnnwUTV2LAOB1KEzUy1OtCTc2kDiWMYMhfgicWh6aJLxgocxnjXteXp
-	 Uh7ToRG+nxYY1VwUX4I2D+iq7cDjxmG7Qmo1ULPbcjMYqklUgFlWSNeJqJLZLC9zWi
-	 jGnT9IpWporSvmykehgrhxxupjX8d/mSoeZuCdmoSHpGyNGZ6YcvG7+JV12NxM75p3
-	 1qv9ezVXXbK8w==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>, Will Deacon <will@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Mostafa Saleh <smostafa@google.com>, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [PATCH] arm64: swiotlb: Keep the default size for protected guests
-In-Reply-To: <20260810130818.GN200537@ziepe.ca>
-References: <anX7F7dnKOtAOIIe@google.com> <20260807164734.GE200537@ziepe.ca>
- <anYgXSR4VAi3TpOj@google.com>
- <CGME20260807182023eucas1p1f653436207b2b00338e99ea1d8f847df@eucas1p1.samsung.com>
- <20260807182017.GH200537@ziepe.ca>
- <7d22482f-d5fd-4cf4-9d32-6a54e02f2fbb@samsung.com>
- <yq5av79iiard.fsf@kernel.org> <anml6lLRERm1Iv-_@willie-the-truck>
- <28442500-1d53-4776-bae5-459c3ffc1cc6@samsung.com>
- <anm6K2umtx4iKnyZ@willie-the-truck> <20260810130818.GN200537@ziepe.ca>
-Date: Mon, 10 Aug 2026 20:03:09 +0530
-Message-ID: <yq5amruuhwpm.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="bLxON1m2"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1786373291; x=1817909291;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=99XkH2IMF7D6nyHbHISy+8bb2LKxW8tAVwIQzhTqFok=;
+  b=bLxON1m25lhmqq5s+fq8ZyWgOE28SoKe/4uudolfQ/HOZ0QV4BWKeyqy
+   cz/Lr+SrMW/cUAyQCG2K0MxFssJZ6ENlJzSOnnjVQsgRNFNQPQfJl5W7k
+   /lZwbqnJB8DYsWvRMIvgDvVcTQmkStd9KgX/XsZrCmjAq2MG1lVqPqvU+
+   HZNt1OgXgd1EICFPmcUF+PqJgviVQxy6SPB6A2TtvzfMDpYt/OaW/4lkT
+   BamBKg+TChJcLo2CV+uoTMFjZzWUaoWoNkM2Qp2zSLlyvf02n19fY0X1e
+   2CdX2ra9Po1Qz2bvtI43Q6R0dWe40yJgTSJRVFtkDvE7b1u2UtKJxk3mk
+   A==;
+X-CSE-ConnectionGUID: bf/0rBchSAus2RW8RYT+ZA==
+X-CSE-MsgGUID: lKLUCAGuQAKmzMksAH8CQw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="237901631"
+X-IronPort-AV: E=Sophos;i="6.25,215,1779116400"; 
+   d="scan'208";a="237901631"
+Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
+  by esa9.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 23:47:00 +0900
+Received: from az2nlsmgm1.o.css.fujitsu.com (unknown [10.150.26.203])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 3E6691000340;
+	Mon, 10 Aug 2026 14:47:00 +0000 (UTC)
+Received: from az2uksmom2.o.css.fujitsu.com (unknown [10.151.22.203])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id E906CC09656;
+	Mon, 10 Aug 2026 14:46:59 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.9.24.243])
+	by az2uksmom2.o.css.fujitsu.com (Postfix) with SMTP id 503D314000B0;
+	Mon, 10 Aug 2026 14:46:52 +0000 (UTC)
+Date: Mon, 10 Aug 2026 23:46:50 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v16 30/45] KVM: arm64: CCA: Handle realm vCPU load
+Message-ID: <annfY97FFA8ZuoHE@FCCLS0092175.localdomain>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-31-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,69 +76,147 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <20260803134403.80630-31-steven.price@arm.com>
 
-Jason Gunthorpe <jgg@ziepe.ca> writes:
+On 08/03 14:43, Steven Price wrote:
+> When loading a realm VCPU much of the work is handled by the RMM so only
+> some of the actions are required. Rearrange kvm_arch_vcpu_load()
+> slightly so we can bail out early for a realm guest.
 
-> On Mon, Aug 10, 2026 at 12:46:51PM +0100, Will Deacon wrote:
->> On Mon, Aug 10, 2026 at 01:37:11PM +0200, Marek Szyprowski wrote:
->> > On 10.08.2026 12:20, Will Deacon wrote:
->> > > On Mon, Aug 10, 2026 at 02:59:42PM +0530, Aneesh Kumar K.V wrote:
->> > >> Marek Szyprowski <m.szyprowski@samsung.com> writes:
->> > >>
->> > >>> On 07.08.2026 20:20, Jason Gunthorpe wrote:
->> > >>>> On Fri, Aug 07, 2026 at 06:13:49PM +0000, Mostafa Saleh wrote:
->> > >>>>> But the whole thing is best effort anyway, the kernel picks
->> > >>>>> IO_TLB_DEFAULT_SIZE which does not depend on the system topology=
- or
->> > >>>>> how many devices or how much DMA they do.
->> > >>>>> SWIOTLB memory is wasted if unused so we should be careful around
->> > >>>>> that as it would be the other way around and users would have to
->> > >>>>> decrease it manually.
->> > >>>> Yeah, it is why the arch code shouldn't really be sizing it direc=
-tly,
->> > >>>> it should be done in common code and, yes, we are probably going =
-to
->> > >>>> have to do something alot smarter to have the common code better
->> > >>>> auto-tune this for the CC case..
->> > >>> What about the $subject patch? I assume that it is still needed to
->> > >>>
->> > >>> restore the behavior that was altered by the "[PATCH v8 00/23]
->> > >>>
->> > >>> dma-mapping: Track shared DMA state through direct, pool and swiot=
-lb
->> > >>>
->> > >>> paths?" patchset?
->> > >>>
->> > >> I would request that we pick this patch to fix the regression descr=
-ibed
->> > >> in https://lore.kernel.org/all/yq5azeyxyfol.fsf@kernel.org/.
->> > > I really don't think we need it. CCA hardware isn't exactly widespre=
-ad
->> > > and the KVM host side patches don't appear close to being merged.
->> >=20
->> > Does this mean that the branch for-next/coco [1]=C2=A0won't go to v7.3=
--rc1?
->
-> Let's not make progress on guest support contingent on KVM CCA host
-> side patches please. I expect the CSPs will have VM instance types
-> available based on CCA within quarters, and Linux as a Guest should
-> work in those environments regardless of what KVM is doing. I don't
-> really expect full KVM support for years, frankly, the patchset is
-> massive. Even Intel and AMD don't have full KVM support yet.
->
-> People already have CCA capable HW, are already testing this stuff and
-> the closer upstream can get to being workable as a guest without a
-> mountain of OOT patches the better.
->
-> I agree the thing is not ideal, but it was merged to ARM like this a
-> long time ago, this patch is just fixing a small oopsie (was it a
-> merge conflict?) to put it back. I don't the objection.
->
+Hi Steven,
 
-It was not a merge conflict issue. The change was introduced by an
-incorrect rebase I did when updating the patch series on top of the pKVM
-changes.
+I found that Realm guests can execute WFI/WFE instructions without
+causing a REC exit, ignoring KVM's WFx trap policy.
 
+I'd suggest translating HCR_EL2.TWE/TWI into the corresponding
+run->enter.flags to honor the policy. Below is the patch I tested.
 
--aneesh
+----
+From 8637cd6f818a3c56d8b898a72874e9485eb94e59 Mon Sep 17 00:00:00 2001
+From: Kohei Enju <enju.kohei@fujitsu.com>
+Date: Mon, 10 Aug 2026 22:54:27 +0900
+Subject: [PATCH] KVM: arm64: CCA: Honor WFx trap policy for Realm vCPUs
+
+Propagate KVM's WFx trap policy to the RMM by translating
+HCR_EL2.TWE/TWI into REC_ENTER TRAP_WFE/WFI flags before entering a REC.
+
+Without this, guests can execute WFE/WFI instructions without causing a
+REC exit, ignoring KVM's common trap policy. Configure the REC_ENTER
+flags to honor the policy.
+
+Signed-off-by: Kohei Enju <enju.kohei@fujitsu.com>
+---
+ arch/arm64/include/asm/kvm_rmi.h |  2 ++
+ arch/arm64/kvm/arm.c             |  3 +++
+ arch/arm64/kvm/rmi.c             | 14 ++++++++++++++
+ 3 files changed, 19 insertions(+)
+
+diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+index 2789879b6701..b858c6b4db6a 100644
+--- a/arch/arm64/include/asm/kvm_rmi.h
++++ b/arch/arm64/include/asm/kvm_rmi.h
+@@ -109,6 +109,8 @@ void kvm_destroy_realm(struct kvm *kvm);
+ int kvm_realm_teardown_stage2(struct kvm *kvm);
+ void kvm_destroy_rec(struct kvm_vcpu *vcpu);
+ 
++void kvm_rec_set_wfx_traps(struct kvm_vcpu *vcpu);
++
+ int kvm_rec_enter(struct kvm_vcpu *vcpu);
+ int kvm_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
+ int kvm_rec_handle_request(struct kvm_vcpu *vcpu);
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 7edc572dd8ab..0cba333b4fd2 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -770,6 +770,9 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ 	else
+ 		vcpu->arch.hcr_el2 |= HCR_TWI;
+ 
++	if (vcpu_is_rec(vcpu))
++		kvm_rec_set_wfx_traps(vcpu);
++
+ 	vcpu_set_pauth_traps(vcpu);
+ 
+ 	if (is_protected_kvm_enabled()) {
+diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+index c242dfc2c7a6..c472f3d03234 100644
+--- a/arch/arm64/kvm/rmi.c
++++ b/arch/arm64/kvm/rmi.c
+@@ -1302,6 +1302,20 @@ static void noinstr load_realm_timer_state(struct kvm_vcpu *vcpu)
+ 	write_sysreg_el0(rec_exit->cntp_ctl, SYS_CNTP_CTL);
+ }
+ 
++void kvm_rec_set_wfx_traps(struct kvm_vcpu *vcpu)
++{
++	struct realm_rec *rec = &vcpu->arch.rec;
++
++	rec->run->enter.flags &=
++		~(REC_ENTER_FLAG_TRAP_WFE | REC_ENTER_FLAG_TRAP_WFI);
++
++	if (vcpu->arch.hcr_el2 & HCR_TWE)
++		rec->run->enter.flags |= REC_ENTER_FLAG_TRAP_WFE;
++
++	if (vcpu->arch.hcr_el2 & HCR_TWI)
++		rec->run->enter.flags |= REC_ENTER_FLAG_TRAP_WFI;
++}
++
+ int noinstr kvm_rec_enter(struct kvm_vcpu *vcpu)
+ {
+ 	struct realm_rec *rec = &vcpu->arch.rec;
+-- 
+2.43.0
+
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+>  arch/arm64/kvm/arm.c | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index f1b26b263bf0..96e536d2dda8 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -707,7 +707,7 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+>  	struct kvm_s2_mmu *mmu;
+>  	int *last_ran;
+>  
+> -	if (is_protected_kvm_enabled())
+> +	if (is_protected_kvm_enabled() || kvm_is_realm(vcpu->kvm))
+>  		goto nommu;
+>  
+>  	if (vcpu_has_nv(vcpu))
+> @@ -751,12 +751,6 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+>  	kvm_vgic_load(vcpu);
+>  	kvm_vcpu_load_debug(vcpu);
+>  	kvm_vcpu_load_fgt(vcpu);
+> -	if (has_vhe())
+> -		kvm_vcpu_load_vhe(vcpu);
+> -	kvm_arch_vcpu_load_fp(vcpu);
+> -	kvm_vcpu_pmu_restore_guest(vcpu);
+> -	if (kvm_arm_is_pvtime_enabled(&vcpu->arch))
+> -		kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
+>  
+>  	if (kvm_vcpu_should_clear_twe(vcpu))
+>  		vcpu->arch.hcr_el2 &= ~HCR_TWE;
+> @@ -778,6 +772,17 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+>  			     &vcpu->arch.vgic_cpu.vgic_v3);
+>  	}
+>  
+> +	/* No additional state needs to be loaded on Realmed VMs */
+> +	if (vcpu_is_rec(vcpu))
+> +		return;
+> +
+> +	if (has_vhe())
+> +		kvm_vcpu_load_vhe(vcpu);
+> +	kvm_arch_vcpu_load_fp(vcpu);
+> +	kvm_vcpu_pmu_restore_guest(vcpu);
+> +	if (kvm_arm_is_pvtime_enabled(&vcpu->arch))
+> +		kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
+> +
+>  	if (!cpumask_test_cpu(cpu, vcpu->kvm->arch.supported_cpus))
+>  		vcpu_set_on_unsupported_cpu(vcpu);
+>  
+> -- 
+> 2.43.0
+> 
