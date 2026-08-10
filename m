@@ -1,176 +1,232 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A870395AE9
-	for <linux-coco@lists.linux.dev>; Mon, 10 Aug 2026 06:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786344223; cv=fail; b=DYeQ67Hq1wjHwrMDQ/zwg6/LbY3AhTGwVT3GXm379EAJEzMlq+7kY0bzh5EVL6f+crZI2YCeutBsEV32xfNaZouh+5GU6hciCpBHQ9NY5Q1iRR4ASsSbEOX/INLgTgI0lA2ejYoBeUSezHhGFm2FbIhgZH9aMVcESUlKDPQPh2I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786344223; c=relaxed/simple;
-	bh=Z8pJDuFxO+x80ur8jxbAUygB+B+9BaKGa9jxM54JN8I=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=MKz1cz8z4+hRW/8QIkZrG1sd5tQzvbdiP+HcaZKDNgmElLTFnamExrqKaDGTPpO6S4IemITA1Gr+BZ8UJpxxcxcbVSWN56Av3TOgBiijFCu14ahvE6NpocWufGuc8YJMsjSCcNrwMupXfl9bA/p6P/R/fUB5lXUiWQv8E7UyaxA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GQuyTotv; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E86034DCE4;
+	Mon, 10 Aug 2026 07:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786348270; cv=none; b=ChZ6GMvhaQiEQ3tkC5w40nGI3zlBCb4yMRhqgaWaZptkZKZvZgCM2caXsNFU7av9quqqDGZSdNx5URsUmG58YDjynSM76J8KgBR4FxM+WF+9/xeRchdn+4iglhgUK8/bpl+2IonLbYsGbFGLl0SLGLWGZDbAdpmdfJuQZvtZCVs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786348270; c=relaxed/simple;
+	bh=WpYittFGbe38+Tijb7dCiR0c7d2CZ13R8zo+EwCPt8M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jETVTXkFU6u03YS5TGvDg3eyITOasnT8Y5bQUdhshkuT0Q1IuA2UEUHF3MEEUOiQnuO4zZuDrZR8OTCiAe/kPsJD6lsSbvkJIAqWzKVX08rsdc5nRS48uWYt4A4dmjhLSmjxeVUf2NU2EdgBdXf5aqDGgNTgIIt4xPA33ja0Lv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gnfQ9ms/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GQuyTotv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786344222; x=1817880222;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=Z8pJDuFxO+x80ur8jxbAUygB+B+9BaKGa9jxM54JN8I=;
-  b=GQuyTotvx+uyJA1fhSsu4Kv3TB9aSlRT4SJMBWXVLF4dog7K+b5DH7Er
-   dUDS57BqD6xGv4yVuhdY8uIobRkdJuDN392D7wTHSXFxTsT4jcBdI/RKQ
-   kJESO2i+56Op8oO/0jkfIr7hQF3GJ8ywUug319a+faduRZPJ9OW+9mqxB
-   HkP41J2T5yzNGnZ/AeoTWwUUHtx2AzMH5rF7z1dV/FzK/wgvEiCiK70dx
-   nJIEevITilz8mjUB0cYHYPh8SaZHqnQRGrOaLPPbqi9Y2aRwk5B02vXpy
-   mLaqbUTruEyebyli8jszsBR1ycXT9SgiY+WJqXUoso7jOaohn8s6V9Mc2
-   Q==;
-X-CSE-ConnectionGUID: /VddqrFCSOmzyp6fdaI7Lg==
-X-CSE-MsgGUID: UJJnRlaSSuijMJwM3/Re/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="74385648"
-X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
-   d="scan'208";a="74385648"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2026 23:43:41 -0700
-X-CSE-ConnectionGUID: Qdi0QwyKT8efk6sR5D5Lnw==
-X-CSE-MsgGUID: pVOVX8I4SMu9VahN2uhgvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
-   d="scan'208";a="259094400"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2026 23:43:41 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Sun, 9 Aug 2026 23:43:40 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Sun, 9 Aug 2026 23:43:40 -0700
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.61) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Sun, 9 Aug 2026 23:43:40 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ESLxuKHn9idWGyRhD1P2p2gs2dMEz7E8WVEfkH3C181TsFY1aQB2+d9V1Msu/hx1VgKDXXLfdkVtDCwSl34TkI28Jm6RK7GamCexchcl4H7d+N/eVBM/vvLsv2HxQiWhkX8iqv5g31raCP/NL2eZEJluRtb4h1mxYnlSG39H/Ca5npbfQcso2IAeu+zLRzd/y9RFQp+zAD+N+Yb9XDt17T9yHSwyqEd1szRa5cJOdX50edXGVGK+PXrn7eilbQDCQGkSHpe0Fa/7q2/7xIpJbr4MaDhGcgOJiGkNsEKybi+H4SE5m85srNPQV1BJLAN/eHnQv7C1fvIWsF+WNfzJfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kLg2TYZqgkgHmPkI6w7am64hkzVbXmR23lcjt2vWE7w=;
- b=Z3sJZWduYcWe/LkY3aDZGCz2mTOyH2F4MtmXjLzDKrumT38kEcfk1OYWs2PHn40YqF2FZ8/Bfu+m5x9Wfl77URjBJ7xbdu63ahf6ZUN2kM9cHniV8enrQzCylBM+vFsVV5fYorCJIlpPBxnY27W+ygN8wq8Njj7QmcVDRjMJKrh3yBNzc7J/uw603ItsKnliJWDngnkxQtYq4VD5oN/hFDZebOWGPsVwCbrZnu1miSD+oXHEcSFzAqfPKikDsAR2dG2EmGcYIFsQyt6oT3QthRx3dZzj4lQ82t+8twMdiwsp+BA0bbGwzNnySIrfJtSmPswADjcownvndcvrckWB3A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA0PR11MB8380.namprd11.prod.outlook.com (2603:10b6:208:485::21)
- by SA0PR11MB4544.namprd11.prod.outlook.com (2603:10b6:806:92::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
- 2026 06:43:38 +0000
-Received: from IA0PR11MB8380.namprd11.prod.outlook.com
- ([fe80::ea8e:eec4:f8d3:f95d]) by IA0PR11MB8380.namprd11.prod.outlook.com
- ([fe80::ea8e:eec4:f8d3:f95d%2]) with mapi id 15.21.0292.024; Mon, 10 Aug 2026
- 06:43:38 +0000
-Date: Mon, 10 Aug 2026 14:43:28 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "kas@kernel.org" <kas@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH v1 3/8] x86/virt/tdx: Add a table-driven TDX global
- metadata reader
-Message-ID: <anlzEJrnulnUtMaG@intel.com>
-References: <20260804112941.19894-1-chao.gao@intel.com>
- <20260804112941.19894-4-chao.gao@intel.com>
- <5e0cfa980d9fe53545362acb81e44e8a653301f7.camel@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5e0cfa980d9fe53545362acb81e44e8a653301f7.camel@intel.com>
-X-ClientProxiedBy: KUZPR01CA0011.apcprd01.prod.exchangelabs.com
- (2603:1096:d10:34::13) To IA0PR11MB8380.namprd11.prod.outlook.com
- (2603:10b6:208:485::21)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gnfQ9ms/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A255D1F000E9;
+	Mon, 10 Aug 2026 07:50:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786348268;
+	bh=vFgRE53dFjQ80+ECIKjoyM+QU0baooTcvpeBj0dahws=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=gnfQ9ms/oThb5Ch9veMgNhrTO6RV+Xy8+ko76jeYeDO+7MNWt7ILUr4VOZYJYH7Fu
+	 wmVCF3vqoPq0IqhPjG6f7APbnsF6MnV/j4bQ6a3M03YAOg5IZl5nuPItDjbmWadvOo
+	 QvmASc3lZ+x3DL7GHoC+2d2iJ5CyjDwrc80XZ+1fmlDV6W4rWJZODKBNZL5PcEPCoZ
+	 Syh4S9RULj74wrAJ3Cbuymlm32GvB8hwxv6sGMHUk5eGQyl6R8veZWNKMHl1PNE5bG
+	 aksDlkqqBybU0sP8CFGkGWinj/KCckNtR222zEw9cDtLUaYruayTRszZ35YsJGMBqF
+	 H7J6eu2OWuPJA==
+Message-ID: <0a85b27a-121e-40a3-92b6-3927fc298e4e@kernel.org>
+Date: Mon, 10 Aug 2026 09:50:48 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR11MB8380:EE_|SA0PR11MB4544:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e054ea3-2f3e-4ad0-6204-08def6aab543
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|10067099003|56012099006|11063799006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: dkBh4RnJFjnfTA1WyUSo09AeZx6eIKhbBPF0ZHJuGgsTxfJMWg9FnTnzfId1yI6ttm/0s/ieIuMqZR+9jM4i4OTNYoADUAq5ukdLpfGykAmkqkGAU7v5dhibfmoMnXeVH88Odm7JlAZyKrDl0lnVvWHQIoLYaJTc72R9vMq7GDTSVbFqvf7X13bbjIMTXd7b3pmnOc2Y6AdkizJbG/C9iw68ajzALH+Erv/Gvjip0pm3UJlXp+eJW4NBU3/FCMEorKWTzP3wdSrY0a5DOWW//WUazCwNxvtXFc9PGnLdx1C4bemzar4xX5eL55FAjBZf104u6k1Ef7ASf3om4aJx+zr/7h5t6jQc1krNTqnLGn8TDoWUJkw6dKWUy2jjgAiEYKwdL6fO6/+mrNeBg0/rvQ7duOsuyR4q1Fdm5oVaklsfILk91ii4psSdTg9RJqVdnZX8L7lwMJWYXwjz/uBhpmgvD5TrQXKHqCHtFgYkiMuOMpMarnrC5/FYIwlKaKPMDyZTz23M2NPdeFxQIrZxmswFwIA+RMXRB1d0a3Qv6Cw5j8T1zT/j+8BtHT+3qLl2T5qlqSiTrlZyD+OpFs534GicDGmq6mdHKNlHlT3IbcPMxBuHwYs0fyvy9ahyaj+s7hlgTQe/eZL71tZy1PWldA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB8380.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(10067099003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?kJKy4KRPNn1It9vpAYMynCuy2KQOsEuxlDeiUUWoUlt9L7AJGXVs6hTtlQ?=
- =?iso-8859-1?Q?7Nb+kHTWcj9ZkCmcUdD8KmOaTKA9Y58ShRgBcsQ3qtYim/xZMx8AOB9pHk?=
- =?iso-8859-1?Q?9EdsCmBxC0Ovjxy4bEWbje3/5C1kYNoFwQm0n0vwR3ZPHlv94QgesKDqCG?=
- =?iso-8859-1?Q?J0cEUbzzr7fCcLEEZk5WHPND8s98hQHCHRjU9erBWIMS5jtNcmGm8VyjMK?=
- =?iso-8859-1?Q?YfdscWAG/T3qJRdctPxBFnuH9ELi5WpoajxIy8N/0t7z+EUp/xbRUBXovt?=
- =?iso-8859-1?Q?u/JoTGhg93su3AoqrZxGWivVMZwXsQoBS2L1BdPjonszpxWjFbdD3430R2?=
- =?iso-8859-1?Q?9enEM6xGyeeS1ALAbdVaH1pcbsCuf3hF5b7VkuKhlxecL11utmv9HPOhCm?=
- =?iso-8859-1?Q?PsXB/LdJyDfnJO8uuoLUI8oJMOjjSNSBeRl1OzNiAg1qs+HBgixq2gHJvA?=
- =?iso-8859-1?Q?j8fZo6qyGIr6mqJUbdedDstHoLxLiMoGmRB/UdY41pxFC0/wDq2rqFxy25?=
- =?iso-8859-1?Q?0+aP7gpBj/QRp4DjQR522KNke6E1cU7BeN3BR4JJdeomoCz5Sk2zqUXlwy?=
- =?iso-8859-1?Q?D5Iv9T378mPCoexpnqHjpfKjoSlH6gkEHxGk7TyUeDMri2DNueb2t2bWg6?=
- =?iso-8859-1?Q?+6ZaBsRQ9h1IJM+8veTnxaVNWriM5+Sk4S4eQ2nGAhCBcTQjEdh4dcMov5?=
- =?iso-8859-1?Q?O9GuJ5+fFf+VQt1Ind0PHg8lSb2eCEgRCQYUSjgiFNYp6CNbCHGjz9WZA7?=
- =?iso-8859-1?Q?aBE+gXmDyHSv+FtnCkTGVTVBHtjLWBFwUWlLWkx+8c5WDTjhgHl5bWSo0u?=
- =?iso-8859-1?Q?9dxeHhxjnBr10gDLod5i8nhOWLD+MZ3+CmxuC1x1hDot7cChyrlUOxp++/?=
- =?iso-8859-1?Q?+ps84hfGC0pOGw/KMHfX5s2vQTAgTUFZb6NV6T9Xd5sk0iLYzJF6Qiw1+j?=
- =?iso-8859-1?Q?6Wt0tOu4KqY+uTGzx42OAE7HKCAlTieXtlH3cGvP+S2PIZ3G3C6++luR+n?=
- =?iso-8859-1?Q?PtX9SOhk+oYgmLqEtBjNaRb87r3tVWIZXIeuw6h/QwPkVdzi3JplLwsfgU?=
- =?iso-8859-1?Q?mH/NwXVPCRcYR6C4JMEJizufSXeXVh8+G90LpdtIlDqpjcrS3ib8cIduQc?=
- =?iso-8859-1?Q?9XezBtvEFUE+O1e5g4b0+9bti/VWBx+edNC/1S9cv1y0QPdQ4hrVKExi8O?=
- =?iso-8859-1?Q?wDnnP6CPqTlFG3Z8Uq+OE1ZzT7nA8/UpaCSBmnKiKzbpx40CPsgEy/TzY8?=
- =?iso-8859-1?Q?3Wd+ZztDkf7lLjZVfom4aVIbFAt6Bl4Z7Z0UOV0fGUnqmPlLCt4n9cTVP0?=
- =?iso-8859-1?Q?572LJ49oCKoziIT09RoLvTo+Z6TbsTy1EHOd3e+5/YQueLKTgwaV4GJAD3?=
- =?iso-8859-1?Q?SNXjanRbFd4CKYto0k1xZPOT74YhwlkjTYobpNw4LGT6YpMZv7pCg+aA5D?=
- =?iso-8859-1?Q?SqDjzXHCzHSCwUDo6nhJ8CX7mUHcR/CJCp5bL79S0ZzmsVNwuM2NiSw5ne?=
- =?iso-8859-1?Q?8L7iynUbNs7VQxA2ilnfmH/XbfT9pBDr1KPk6A42MHCzy7eL/ZZAfeKoQQ?=
- =?iso-8859-1?Q?3UifwqvuFSRD+8WfbD2fB6xBDlIh7biaMmZLuETPe+nGcKQ1zGGwrc1Unl?=
- =?iso-8859-1?Q?9XenpP1rf3ilOtJLBJ3d+qRmOpkNpWfTQZcihKjvkE/iO6us/PUHmdm5MA?=
- =?iso-8859-1?Q?TSuu5/U4Dio6gGMKlOg3dXCPklXijS77SeYQAyp3oZGr7a+ppvLb4Y86jg?=
- =?iso-8859-1?Q?V3c9gWbTFxf0EmKzGmM7bcCODsmL199D07u+JW4LuV13YmMjsohy6GODlI?=
- =?iso-8859-1?Q?gfgAv8ns5w=3D=3D?=
-X-Exchange-RoutingPolicyChecked: ZVs2+efCPbqv2DAvLrrZp8wfcU+siM1J+iD89aC6tLKlERA2pvjwVTA011/sBS+evq6RyYuj85kPxaQBJOxuyQQpgOVORGdV0tlAZcOAGnVe0Q8Hu/2IIYe+jdhjNqdFG9kKm0Ep7yD1eUX/pPrOuZaTWeBs5x1UO1tR6mx/+/OFfG+zGI+uetoE1sSdvZagiUQ0vIwp9v4podoqJoO0xUKbZulWWpkZqIQYmWhe7NUIyiXOuYMVNiCQtYK0KH8wPPOMngkixsqL/TS3W56wCDkpnxu12uCn9kjPjIV18ozZCMeFYo8dw/f3Etqenc61Ls3IZF8CiGnLygFtCRqEPw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e054ea3-2f3e-4ad0-6204-08def6aab543
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB8380.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 06:43:38.0615
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XhIw9Za7g6KcTkmN8scQlQwHteHOhRFcqkvYe0LZoLMraizzf+w1ilvug4nJvbbM7ViUDB6xuLiDsIKG433fPQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4544
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 01/41] KVM: guest_memfd: Introduce per-gmem attributes,
+ use to guard user mappings
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
+ oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
+ rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
+ steven.price@arm.com, tabba@google.com, willy@infradead.org,
+ wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com,
+ pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org,
+ liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-1-35f9aec2aed2@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260728-gmem-inplace-conversion-v9-1-35f9aec2aed2@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 06, 2026 at 01:48:11AM +0800, Edgecombe, Rick P wrote:
->On Tue, 2026-08-04 at 04:29 -0700, Chao Gao wrote:
->> +/*
->> + * Mapping between a TDX global metadata field and the C member that
->> + * holds its value. Use TD_SYSINFO_MAP() to populate entries.
->> + */
->> +struct tdx_sys_field {
->> +	u64 field_id;
->> +	u16 offset;
->> +	u8  size;
->
->We are supposed to be able to extract the size from the field id too. We could
->leave the bits out of the field id and have it constructed on the fly, or we
->could do a static assert based on the size matching between field id size and
->struct size. It depends on how we want to have the field ids defines I guess.
+On 7/29/26 02:35, Ackerley Tng via B4 Relay wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> Start plumbing in guest_memfd support for in-place private<=>shared
+> conversions by tracking attributes via a maple tree.  KVM currently tracks
+> private vs. shared attributes on a per-VM basis, which made sense when a
+> guest_memfd _only_ supported private memory, but tracking per-VM simply
+> can't work for in-place conversions as the shared/private status of a given
+> page needs to be per-gmem_inode, not per-VM.
+> 
+> Use the filemap invalidation lock to protect the maple tree, as taking the
+> lock for read when faulting in memory (for userspace or the guest) isn't
+> expected to result in meaningful contention, and using a separate lock
+> would add significant complexity (avoiding deadlock is quite difficult).
+> 
+> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
+> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> Co-developed-by: Fuad Tabba <tabba@google.com>
+> Signed-off-by: Fuad Tabba <tabba@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Tested-by: Shivank Garg <shivankg@amd.com>
+> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+>  virt/kvm/guest_memfd.c | 133 ++++++++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 116 insertions(+), 17 deletions(-)
+> 
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 0bca42a0b346b..3d6547c5ba9a6 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -4,6 +4,7 @@
+>  #include <linux/falloc.h>
+>  #include <linux/fs.h>
+>  #include <linux/kvm_host.h>
+> +#include <linux/maple_tree.h>
+>  #include <linux/mempolicy.h>
+>  #include <linux/pseudo_fs.h>
+>  #include <linux/pagemap.h>
+> @@ -33,6 +34,13 @@ struct gmem_inode {
+>  	struct list_head gmem_file_list;
+>  
+>  	u64 flags;
+> +	/*
+> +	 * Every index in this inode, whether memory is populated or
+> +	 * not, is tracked in attributes. The entire range of indices,
+> +	 * corresponding to the size of this inode, is represented in
+> +	 * this maple tree.
+> +	 */
+> +	struct maple_tree attributes;
+>  };
+>  
+>  static __always_inline struct gmem_inode *GMEM_I(struct inode *inode)
+> @@ -60,9 +68,25 @@ static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
+>  	return gfn - slot->base_gfn + slot->gmem.pgoff;
+>  }
+>  
+> +static u64 kvm_gmem_interpret_entry(struct inode *inode, void *entry)
+> +{
+> +	if (WARN_ON_ONCE(!entry)) {
+> +		bool initially_shared = GMEM_I(inode)->flags &
+> +					GUEST_MEMFD_FLAG_INIT_SHARED;
+> +
+> +		return initially_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
 
-Patch 8 does exactly that -- it pulls the element size from bits 33:32
-of the field ID and static-asserts it against sizeof the destination
-C member.
+We have the calculation of the default attribute here and ...
+
+> +static int kvm_gmem_init_inode(struct inode *inode, loff_t size, u64 flags)
+> +{
+> +	struct gmem_inode *gi = GMEM_I(inode);
+> +	MA_STATE(mas, &gi->attributes, 0, (size >> PAGE_SHIFT) - 1);
+> +	u64 attrs;
+> +	int r;
+> +
+> +	inode->i_op = &kvm_gmem_iops;
+> +	inode->i_mapping->a_ops = &kvm_gmem_aops;
+> +	inode->i_mode |= S_IFREG;
+> +	inode->i_size = size;
+> +	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
+> +
+> +	/*
+> +	 * guest_memfd memory is neither migratable nor swappable: set
+> +	 * inaccessible to gate off both.
+> +	 */
+> +	mapping_set_inaccessible(inode->i_mapping);
+> +	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
+> +
+> +	gi->flags = flags;
+> +
+> +	mt_set_external_lock(&gi->attributes,
+> +			     &inode->i_mapping->invalidate_lock);
+> +
+> +	/*
+> +	 * Store default attributes for the entire gmem instance. Ensuring every
+> +	 * index is represented in the maple tree at all times simplifies the
+> +	 * conversion and merging logic.
+> +	 */
+> +	attrs = gi->flags & GUEST_MEMFD_FLAG_INIT_SHARED ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
+... here.
+
+Worth a helper?
+
+kvm_gmem_default_attribute(struct inode *inode) ?
+
+Nothing else jumped at me, and I agree with the kvm_gmem_get_attributes()
+improvement :)
+
+-- 
+Cheers,
+
+David
