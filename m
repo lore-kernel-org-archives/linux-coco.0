@@ -1,148 +1,141 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF0E3F58E7
-	for <linux-coco@lists.linux.dev>; Mon, 10 Aug 2026 14:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEEE3E7141;
+	Mon, 10 Aug 2026 14:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786372207; cv=none; b=ZyEDzwB3wmFd8r+oDX8MGmfs7KiQbfraJ6dj9iKS6FphYdgxdTXzs2dXC67NUccKgk1sWO9/Bg4AE4n6i7nzFmW/Vs7OdmNlr4NyHOQCsaVTcbgEKltlVqU5aiSqob/FboB5ql3G1q9pP3uStBskEViQ/yu4000wEbGzx7j+LSQ=
+	t=1786372405; cv=none; b=Tj9OsgU/ulhWskZy+HKFUr/D9yIyb6AUOsJXTtsaMhdiYyI+hMITL2isQOO0O1rCxHwoxNgp6c0ilh2OF3AolQ58b08kIaDt9SW8eL2TSG1It5epSDzZhI8wRniYi/Rizk8TI7czCAiPwOO999OJbhJ/4tjXWdidWQZwwav8u+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786372207; c=relaxed/simple;
-	bh=4hkqL67a+abI0W9PGYZV3w1q/c9dy9KBL2UatITOk78=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aulGmc6ssJL1b+rStHMD2t/77VzgniCOs2IZuNIxbnUkQbnWRblHhoZN0hJOI6yYcjedIKjKVfmjm8mXIBR92wRQaKN7YsvbMzKeTXupw06TSChs3Txr/E40YNzt5UMu4tTiSX3NOkmAUFcdZG1kA0HFbddr27quExHeOvvixUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sv4BjeWr; arc=none smtp.client-ip=209.85.210.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786372405; c=relaxed/simple;
+	bh=7nq4F6eVa+igOyPizq1W0mha35WNgJ79/K+NijHuU08=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=rQI9VJ1TrbK70oMGppJN8BchP/sJ/V1c886GytD+avr9rZuocNB2331N/pqmqe6WEGAH53RvIcLXgFb4+l9XmFqN+kMVng7UAEH2Bbuc+/u6r6DolKaxYMzwvZWtbG2TeGSiZNzTX/62dIVUIi1DB5BnyowHckrHUQN0Cfc7GSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FSEg5P7W; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sv4BjeWr"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-848662cd2a1so2297604b3a.2
-        for <linux-coco@lists.linux.dev>; Mon, 10 Aug 2026 07:30:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786372206; x=1786977006; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Pt4y4GsIfgXju50y9aE1V5oqKvyqhzjPLlHBnjvlrwI=;
-        b=sv4BjeWr18W/7i/MwrIwRgIiGdP0pQ73cXftwAehjxzJFaeNotIItAnIwwnPd110zp
-         oTaJhPi2qQilYePccoCdKkezdJCXciB3K6dkbsclDhNdQ5bOBW9OBDhRes1tdIJs89bc
-         0cR92OMhxQyp/gtzMVzVfQFy2j6kV3YBkYk0wEfJAcvXzLheow14Nj7r5O+ntWGhCjOg
-         BIZYGsmT8tw00S3eYnExZ93Eu05YweTYQQMBrdQUVLkNXGG2qeHx/m7KtlBHQLVqlpZH
-         /yuO21Y8gjhVwNUxo917lRgYb+3FfbnKHLJKBo6qk72YItvwLRtUMygkolxi7LVViOzK
-         nE/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786372206; x=1786977006;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Pt4y4GsIfgXju50y9aE1V5oqKvyqhzjPLlHBnjvlrwI=;
-        b=HpVJ/OS9HxPGjlgjd3CAYJXwtvoVK6OcHi/si8e71lOKnSKm+obcyGnvoJmOu+q7L3
-         8q9GXC+8odZx4wM9S4cFhGQIYDzAee1Dda8hL/o12URuMf3SmbtbYyDcRTijqyFwuoUL
-         YbssSACJhBiS6IELKKt5IpfM4yhvXePVkLxt291NWFbJSaknILn9MDPM6+lb5UxyrV4a
-         QtSO3Hyhn8kp1iMqbYxSnB4EX1TjXZxuSWFXBANBKT16n7e+mnBicNGbeZAHdS0hSxho
-         0oQ8ds+TGidKL6kyiNSjtdIm+nfKxwIeVvN2kDKWDrFrRhXevRth3zAe1YDIKm31EZo7
-         gIsQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoS3H4+Ci2fFw+6lJ3i7WufEMBwZRXj1KIwWrwFLOwqbIdDHNLg3HfWASGGr0t8g0ivPtpwIo8y0VWH@lists.linux.dev
-X-Gm-Message-State: AOJu0YyjfgXiu8ZwdvP6GeNa9TqBtligzb/9mTsSiaMSNdGLFvQ0XGMy
-	UuaX54pYuCOFbaneQXZigyV6QPSNHF+ZwbUCwMTFDF1JWqyp2+XHLTn79CoG8bR4bN8qdkoby6D
-	OQ6ZTeg==
-X-Received: from pgmo14.prod.google.com ([2002:a63:5d4e:0:b0:cbe:7df7:35b0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7fa0:b0:3c3:76a8:c0f
- with SMTP id adf61e73a8af0-3cbce6f17b9mr20503675637.4.1786372205374; Mon, 10
- Aug 2026 07:30:05 -0700 (PDT)
-Date: Mon, 10 Aug 2026 07:30:04 -0700
-In-Reply-To: <b8c0e3537904e29f233cbb03f4d3ddb5247e2af7.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FSEg5P7W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694EF1F000E9;
+	Mon, 10 Aug 2026 14:33:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786372403;
+	bh=7nq4F6eVa+igOyPizq1W0mha35WNgJ79/K+NijHuU08=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=FSEg5P7W76NmVIq/uL3ZJ2JQ93MR3s+H6sZ8oMjTjqoQtXHtpU2o8sZMVTuz5+8hg
+	 s/icfW+TbRoP+BIL+Loawx2mDkc39Fga6I40bNBiXUw3nB8b264pGFeY2r4EsV+SQ/
+	 Q48Vqv2S8+JWnnwUTV2LAOB1KEzUy1OtCTc2kDiWMYMhfgicWh6aJLxgocxnjXteXp
+	 Uh7ToRG+nxYY1VwUX4I2D+iq7cDjxmG7Qmo1ULPbcjMYqklUgFlWSNeJqJLZLC9zWi
+	 jGnT9IpWporSvmykehgrhxxupjX8d/mSoeZuCdmoSHpGyNGZ6YcvG7+JV12NxM75p3
+	 1qv9ezVXXbK8w==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Will Deacon <will@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Mostafa Saleh <smostafa@google.com>, iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
+Subject: Re: [PATCH] arm64: swiotlb: Keep the default size for protected guests
+In-Reply-To: <20260810130818.GN200537@ziepe.ca>
+References: <anX7F7dnKOtAOIIe@google.com> <20260807164734.GE200537@ziepe.ca>
+ <anYgXSR4VAi3TpOj@google.com>
+ <CGME20260807182023eucas1p1f653436207b2b00338e99ea1d8f847df@eucas1p1.samsung.com>
+ <20260807182017.GH200537@ziepe.ca>
+ <7d22482f-d5fd-4cf4-9d32-6a54e02f2fbb@samsung.com>
+ <yq5av79iiard.fsf@kernel.org> <anml6lLRERm1Iv-_@willie-the-truck>
+ <28442500-1d53-4776-bae5-459c3ffc1cc6@samsung.com>
+ <anm6K2umtx4iKnyZ@willie-the-truck> <20260810130818.GN200537@ziepe.ca>
+Date: Mon, 10 Aug 2026 20:03:09 +0530
+Message-ID: <yq5amruuhwpm.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260806233609.212337-11-seanjc@google.com> <b8c0e3537904e29f233cbb03f4d3ddb5247e2af7.camel@infradead.org>
-Message-ID: <anngbOavdPam2kKy@google.com>
-Subject: Re: [PATCH v6 10/51] x86/tdx: Force TSC frequency with CPUID-based
- info provided by the TDX-Module
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: kas@kernel.org, rick.p.edgecombe@intel.com, pbonzini@redhat.com, 
-	kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org, 
-	decui@microsoft.com, longli@microsoft.com, ajay.kaher@broadcom.com, 
-	alexey.makhalov@broadcom.com, jan.kiszka@siemens.com, 
-	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org, 
-	jgross@suse.com, daniel.lezcano@kernel.org, tglx@kernel.org, 
-	jstultz@google.com, x86@kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 08, 2026, David Woodhouse wrote:
-> On Thu, 2026-08-06 at 16:35 -0700, Sean Christopherson wrote:
-> > When running as a TDX guest, explicitly set the TSC frequency to a know=
-n
-> > value, using CPUID-based information, instead of potentially relying on=
- a
-> > hypervisor-controlled PV routine.  For TDX guests, CPUID.0x15 is always
-> > emulated by the TDX-Module, i.e. the information from CPUID is more
-> > trustworthy than the information provided by the hypervisor.
-> >
-> > To maintain backwards compatibility with TDX guest kernels that use nat=
-ive
-> > calibration, and because it's the least awful option, retain
-> > native_calibrate_tsc()'s stuffing of the local APIC bus period using th=
-e
-> > core crystal frequency.  While it's entirely possible for the hyperviso=
-r
-> > to emulate the APIC timer at a different frequency than the core crysta=
-l
-> > frequency, the commonly accepted interpretation of Intel's SDM is that =
-APIC
-> > timer runs at the core crystal frequency when that latter is enumerated=
- via
-> > CPUID:
-> >
-> >   The APIC timer frequency will be the processor's bus clock or core
-> >   crystal clock frequency (when TSC/core crystal clock ratio is enumera=
-ted
-> >   in CPUID leaf 0x15).
-> >
-> > If the hypervisor is malicious and deliberately runs the APIC timer at =
-the
-> > wrong frequency, nothing would stop the hypervisor from modifying the
-> > frequency at any time, i.e. attempting to manually calibrate the freque=
-ncy
-> > out of paranoia would be futile.
-> >
-> > Deliberately leave CPU frequency calibration as is, since the TDX-Modul=
-e
-> > doesn't provide any guarantees with respect to CPUID.0x16.
-> >
-> > Expose and use cpuid_get_tsc_info() instead of providing a wrapper to
-> > get the TSC and core crystal frequency, as TDX is the only anticipated
-> > user outside of the TSC code, i.e. adding a helper to dedup the math wo=
-n't
-> > actually dedup anything.  Having TDX use "struct cpuid_tsc_info" also
-> > avoids the temptation of declaring a local "tsc_khz" variable and thus
-> > unintentionally creating a shadow of the global "tsc_khz".
-> >
-> > Cc: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
->=20
-> I don't know if we should set X86_FEATURE_TSC_RELIABLE before bailing
-> out in the case where cpuid_get_tsc_info() fails, or just not care
-> about that because it Can Never Happen=E2=84=A2? Previously it was set
-> unconditionally from tdx_early_init().
->=20
-> Whatever...
+Jason Gunthorpe <jgg@ziepe.ca> writes:
 
-Heh, yeah, "whatever" is about my thought exactly.  I could go either way. =
- I
-would buy an argument that the TSC itself is still reliable even if the fre=
-quency
-isn't known.  On the other hand, the frequency could be computed via calibr=
-ation,
-at which point the frequency is no longer reliable and arguably should be s=
-anity
-checked.
+> On Mon, Aug 10, 2026 at 12:46:51PM +0100, Will Deacon wrote:
+>> On Mon, Aug 10, 2026 at 01:37:11PM +0200, Marek Szyprowski wrote:
+>> > On 10.08.2026 12:20, Will Deacon wrote:
+>> > > On Mon, Aug 10, 2026 at 02:59:42PM +0530, Aneesh Kumar K.V wrote:
+>> > >> Marek Szyprowski <m.szyprowski@samsung.com> writes:
+>> > >>
+>> > >>> On 07.08.2026 20:20, Jason Gunthorpe wrote:
+>> > >>>> On Fri, Aug 07, 2026 at 06:13:49PM +0000, Mostafa Saleh wrote:
+>> > >>>>> But the whole thing is best effort anyway, the kernel picks
+>> > >>>>> IO_TLB_DEFAULT_SIZE which does not depend on the system topology=
+ or
+>> > >>>>> how many devices or how much DMA they do.
+>> > >>>>> SWIOTLB memory is wasted if unused so we should be careful around
+>> > >>>>> that as it would be the other way around and users would have to
+>> > >>>>> decrease it manually.
+>> > >>>> Yeah, it is why the arch code shouldn't really be sizing it direc=
+tly,
+>> > >>>> it should be done in common code and, yes, we are probably going =
+to
+>> > >>>> have to do something alot smarter to have the common code better
+>> > >>>> auto-tune this for the CC case..
+>> > >>> What about the $subject patch? I assume that it is still needed to
+>> > >>>
+>> > >>> restore the behavior that was altered by the "[PATCH v8 00/23]
+>> > >>>
+>> > >>> dma-mapping: Track shared DMA state through direct, pool and swiot=
+lb
+>> > >>>
+>> > >>> paths?" patchset?
+>> > >>>
+>> > >> I would request that we pick this patch to fix the regression descr=
+ibed
+>> > >> in https://lore.kernel.org/all/yq5azeyxyfol.fsf@kernel.org/.
+>> > > I really don't think we need it. CCA hardware isn't exactly widespre=
+ad
+>> > > and the KVM host side patches don't appear close to being merged.
+>> >=20
+>> > Does this mean that the branch for-next/coco [1]=C2=A0won't go to v7.3=
+-rc1?
+>
+> Let's not make progress on guest support contingent on KVM CCA host
+> side patches please. I expect the CSPs will have VM instance types
+> available based on CCA within quarters, and Linux as a Guest should
+> work in those environments regardless of what KVM is doing. I don't
+> really expect full KVM support for years, frankly, the patchset is
+> massive. Even Intel and AMD don't have full KVM support yet.
+>
+> People already have CCA capable HW, are already testing this stuff and
+> the closer upstream can get to being workable as a guest without a
+> mountain of OOT patches the better.
+>
+> I agree the thing is not ideal, but it was merged to ARM like this a
+> long time ago, this patch is just fixing a small oopsie (was it a
+> merge conflict?) to put it back. I don't the objection.
+>
+
+It was not a merge conflict issue. The change was introduced by an
+incorrect rebase I did when updating the patch series on top of the pKVM
+changes.
+
+
+-aneesh
