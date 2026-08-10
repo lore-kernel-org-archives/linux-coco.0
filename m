@@ -1,100 +1,125 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C2136194D;
-	Mon, 10 Aug 2026 16:21:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7968389E04
+	for <linux-coco@lists.linux.dev>; Mon, 10 Aug 2026 17:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786378918; cv=none; b=eVwmYFfJiaWm0pIu9SuOJp3VPj4cyAhGSaSj0GDS0Dw3IRkI/+guDxEXdQUR+63H8Ccw9NnAwyHqsqG71FsdPmQ9vwSH11izjiJjh1AzFQf8C4yLttxeVRCy9oat+1hzVJPGqS+luz1lYHq5gBrJaihY8AWS1i9GJO4ApnldYf8=
+	t=1786383093; cv=none; b=kWCVAHg0ggyh3nO5uodHqQEvufMt0E5ALA1kvjvUp1njILr+AZjxzX1Zy5ZS+sJUlyDtg7uX79huOqUjixsnmGTwSIO9c6P8jIxOyHk6IaW2CHft/BdSVmKDk+wvygV0CaCCf5G+VNv26yy1i9hFJ7/7X0XpM0wXv4DMuVZ/6Ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786378918; c=relaxed/simple;
-	bh=u7lDQ5r1fWCV8TfA8aUHo69CydShqVMlVgOaxbleVmA=;
+	s=arc-20240116; t=1786383093; c=relaxed/simple;
+	bh=jn3DnZ8nSKDEbEhMIKu/snhovwo3ij+JNY3pV7qzriE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kwOI3wjBN6TvMID+aDwG4Ng+bqzrRyyVnOE7Wj3XQPKWJz/hSZT/vgas1h0NDsCcRKqXRwSJuTghtNxWtFJKvbakSFk8Xp+TeWgLab5bSY/853r78lq0mEA2HvqqWRqgaJuzl4ouXgOIV1JdhR6EldKs/qMLymkUkA987F+L+lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=bqTh46Qe; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=cT8vsUGsRnMCFv16Qn6eyHrNoqbWTx1xtEAKc9qtHZQCknjZ3CQ1ZdAYIo7Z2ywyOZVLzEp0wIJNkjv70btZmaPzkK9aRyIKuaSw/LLm8YeGu1kf3AYfSX+aVLo1sBtUCPMBKn1OMRPLi7/QnlDVItPNR36yfGqwlDr1Y+UAgko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Cly4RLit; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="bqTh46Qe"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3CF9E14BF;
-	Mon, 10 Aug 2026 09:21:52 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 940CD3F86F;
-	Mon, 10 Aug 2026 09:21:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786378916; bh=u7lDQ5r1fWCV8TfA8aUHo69CydShqVMlVgOaxbleVmA=;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Cly4RLit"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5AA2E40E0031;
+	Mon, 10 Aug 2026 17:31:28 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 6FhBj5Z8Jten; Mon, 10 Aug 2026 17:31:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1786383072; bh=zXDuxTVzxqJR90PY15cLjqnsPmGMetHAEPwbiwSVHng=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bqTh46QerWY1zlFZ0mKKu44uNBAwm5uhv2fyJoPgLQHiR9ozkJg7mTYyHUIwznQ7F
-	 guNDtKeUBBY1lv05yMvTR0qMAGhhi60tk7oyfdh9cQQs1v5iFNNQQzXGwC7mzs7w/6
-	 vQud/ujNVA4Bg+M33xIYsyHn0bSt/j1WqkiFrAH8=
-Date: Mon, 10 Aug 2026 17:21:50 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Will Deacon <will@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Mostafa Saleh <smostafa@google.com>, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [PATCH] arm64: swiotlb: Keep the default size for protected
- guests
-Message-ID: <ann6noRzoPLL9kDY@arm.com>
-References: <20260807182017.GH200537@ziepe.ca>
- <7d22482f-d5fd-4cf4-9d32-6a54e02f2fbb@samsung.com>
- <yq5av79iiard.fsf@kernel.org>
- <anml6lLRERm1Iv-_@willie-the-truck>
- <28442500-1d53-4776-bae5-459c3ffc1cc6@samsung.com>
- <anm6K2umtx4iKnyZ@willie-the-truck>
- <20260810130818.GN200537@ziepe.ca>
- <annc1ynWUsWQc4JM@willie-the-truck>
- <annx8-HDjTq933vp@arm.com>
- <ann1MnO8bADV9EGe@willie-the-truck>
+	b=Cly4RLitwcF8KLFm/QTZhLgWNJqgzt9r6DUUuq/MmeNikJ6uPYGPQwzDKI5TttE++
+	 illg7iEdWqn0oto0Up2nhqSXnYUe7PQIqf6eQ0N2N0T2OAoKDxlohJxZSBiYrfFoIx
+	 IrAMJTYaimDd5uMSDO261z7KTeHgJBBcNDpWWijJd1rwxqlgYSE75k9ndOLr/bP3NN
+	 o23gMxXho57ZX6kjOJ5XoTiYLksXEuobE9f/v5mOQeW6vYWtrAgHZHBcNIdtZ2JIPd
+	 c07CbSnHFtizfFYUgjg4EWuX3U6YADVPgwq/tYKet5RwhQ/yEWOc4/iE5VuJOC+a9/
+	 9TftgD47g8OcVY6XbRxKAxk8pft67k1mGlalgzAt+ai/ROvqXfZVgvltxlnmnYyk1J
+	 ydHUc/9K6kvdIlBqfPgvX2PG67459aYn0Th2AvHQzBzueQWXytXp/n4fz36HCsr9ne
+	 l3rIRgs9PPJB7s1ac1tM6WqMGu2W43vYgKXTO3tQ/Gb3SeaGy8ogyUzRykyJ/3nlZB
+	 hYsn2S0PfSjPM9vzPRWPTMZzSkW1Hd/9waBWnVtNUX4PUqSoJ4GyyBW2Sg3+wzpPd3
+	 +irK+bGrnWoHzMQCkd64Y+buANPnnsQ71S/PBQtGADUPLvPa/QuB+i2vbTaVopC4MZ
+	 LEtSRN9Z3Z8OBrR+RKCDvi2k=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 959F040E019C;
+	Mon, 10 Aug 2026 17:30:37 +0000 (UTC)
+Date: Mon, 10 Aug 2026 10:30:34 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v11 5/6] x86/sev: Add interface to re-enable RMP
+ optimizations.
+Message-ID: <20260810173034.GAanoKujdd2O4bGfWC@fat_crate.local>
+References: <cover.1784844080.git.ashish.kalra@amd.com>
+ <afc058ce32417dc45e3f7cd9536d0fafafcacb4b.1784844080.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ann1MnO8bADV9EGe@willie-the-truck>
+In-Reply-To: <afc058ce32417dc45e3f7cd9536d0fafafcacb4b.1784844080.git.ashish.kalra@amd.com>
 
-On Mon, Aug 10, 2026 at 04:58:42PM +0100, Will Deacon wrote:
-> On Mon, Aug 10, 2026 at 04:44:51PM +0100, Catalin Marinas wrote:
-> > I can see x86 in mem_encrypt_setup_arch() adjusting the bounce buffer to
-> > 6% of the guest memory. We could make up similar logic for arm64 or we
-> > could just rely on CONFIG_SWIOTLB_DYNAMIC (default off currently for
-> > arm64 I think).
+On Mon, Jul 27, 2026 at 07:05:54PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
-> As Jason said, this should be done outside the arch code.
+> RMPOPT table is a per-CPU table which indicates if 1GB regions of
+> physical memory are entirely hypervisor-owned or not.
+> 
+> When performing host memory accesses in hypervisor mode as well as
+> non-SNP guest mode, the processor may consult the RMPOPT table to
+> potentially skip an RMP access and improve performance.
+> 
+> Normal guest events clear RMP optimizations: pages are converted from
 
-I agree, better in the core code. I'd prefer to go for some dynamic
-resizing than random percentage of guest memory like x86 (but, in the
-absence of dynamic swiotlb, we could pick some default).
+s/clear/disable/
 
-I noticed we still have a small change in behaviour regarding dynamic
-swiotlb. The increment for new allocations is based on default_nslabs
-which is reduced with the new patches. It gets even weirder if one sets
-the same IO_TLB_DEFAULT_SIZE on the kernel command line, it will be
-overridden by swiotlb_adjust_size() anyway.
+or "prevent RMP optimizations". "clear" sounds weird.
 
-I think this core code needs a bit more tidying up.
+> shared to private as SNP guests are launched, and large pages are split
+> and collapsed during guest operation -- both clear the RMPOPT
+> optimizations for the affected 1GB regions.
+
+> Conversely, guest pages are
+
+Not "Conversely" but "When guests are torn down" or something to that effect.
+
+> converted back to shared during SNP guest termination, so those regions
+> may become eligible for RMPOPT optimization again.
+> 
+> Without some intervention, all RMP optimizations would eventually be
+> lost.  Add an interface to re-optimize all of physical memory.
+> 
+> The interface uses mod_delayed_work() instead of queue_delayed_work()
+> so that the delay timer is reset on each call. This provides proper
+> batching semantics: re-optimization runs 10 seconds after the *last*
+> VM termination rather than after the first. mod_delayed_work() also
+> re-queues work that is already in-flight, so a re-scan request
+> during an active scan is not silently dropped.
+
+And I keep wondering what are you even doing here until I saw the next patch.
+Just merge the two into a single patch.
+
+Thx.
 
 -- 
-Catalin
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
