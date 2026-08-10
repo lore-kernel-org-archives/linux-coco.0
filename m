@@ -1,33 +1,50 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC1A3A383C;
-	Mon, 10 Aug 2026 14:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB3A3EC82E
+	for <linux-coco@lists.linux.dev>; Mon, 10 Aug 2026 14:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786370908; cv=none; b=VxCl/EhWwspfwoybrz1zcKWrDeTn5qCK1mfApCw/0O950KElrWngx6yTPXvaKgZz5zRePnwHjKTlgEWyDYLuCnqrM4CCYCNgkjgqu2QFG8Pu9smKSbVKTFbiWd+FL6xYSx3mMwUb4rIs+l4z4coFgG8hEVf9PmZETkhkGdtWFrc=
+	t=1786371065; cv=none; b=eIt/levNy3uC5cH4rjsnyAUZhO98b2pO5BnYEp3Ba9YnErasBE88majXyTgpjKV8hgz5YSZbyP5W5luvOh4H3Wj1p/+oGUmpNtZRfU46fDeDADgAt2oQCqzYpqPuv4adQONxSZlkGerbabAEttHN47pGToWzXLLHil3Q1kHz/qU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786370908; c=relaxed/simple;
-	bh=WIG5gWxWn/Ev2rkfLIG3WmO0JyDYfhFXREH1iOSeZTw=;
+	s=arc-20240116; t=1786371065; c=relaxed/simple;
+	bh=vuh4kbRPUFLbOmtHCicEajya223aTy/mciIy0utSVoo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sPsn5OG1Sc/oAi3Xg/rrmq2TpLesysoFqCcIV2TRXDTZL+Ez1/Od4vUrMjMoKXr6mlm0c1vd4Fnrjps/DgMVx2ak2UBhfZULjn4k5HUe2tK8OcTKuQCqOo1nhIZSmWrD6foF/8rcXOEMNedm41JAwQGyHQKYFAieUQ2J7bXo8pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ZXStNpjX; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 In-Reply-To:Content-Type; b=pk+5iMFz7q1zEL5BYgXBi+nx616KjvkcfCa+PzevlPc7dCl1CGjZYV/txBlygW0jjuLnoJh0095ApASX5tmMJFz0AwZE/ueX81DsC59M92E+UkEkB3bORZ54HEDogYV5rHB7rkxjxpSWgnk4Zg7tzBTlQnwYSHHQc5oircKiW4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LwOJ8PBR; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ZXStNpjX"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4A7941516;
-	Mon, 10 Aug 2026 07:08:22 -0700 (PDT)
-Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CA3DB3F86F;
-	Mon, 10 Aug 2026 07:08:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786370906; bh=WIG5gWxWn/Ev2rkfLIG3WmO0JyDYfhFXREH1iOSeZTw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZXStNpjXVYvpxTBkP3rWmmwVPR479gsTPUbyBMBR8VKOLTsj4ratjHRO92RiDGFax
-	 IG5dbWhAWx0ncg0zwRBfNQKPrft0K+c13K0wFbEYz8ngMLcySRRYMCHpujbZ48aqGf
-	 1iA6qXJ9C3VW4Jm34gws0KQ9bPcSOJKgwmrVFNto=
-Message-ID: <3cccd2d2-b59c-47ec-8a87-f504a5427576@arm.com>
-Date: Mon, 10 Aug 2026 15:08:19 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LwOJ8PBR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786371061; x=1817907061;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=vuh4kbRPUFLbOmtHCicEajya223aTy/mciIy0utSVoo=;
+  b=LwOJ8PBRF5qbGuFMYJ9Q5KlOqj115vaYQqtVdFP9ppk7I5I2EohOLjVS
+   Qc91SP2nnysaUmhaWisPkY58MkuXJv62jWQWDhEPdix30afUPrtJ/RYMA
+   Stkbv7Sk7Mf6/eFWCGgBUPkLX1ca2orzTO1T1fDyeDVM/J3AwAQ5ntYV5
+   J/16WJDDJUQYHutTM7w27jFsRmJuo5IENaS7m8+AdzESJgSNzrfZrfiIT
+   DQQR0uquTX2Ina6PFwGhjV1DpoPtrMPbF3kBIqB0WmQFKOQcckyz8hLCd
+   sKyzjvmySn9ZyDbH+9ruDBb+b/u08mrAKlkLMQDjW4Qfhovq4SDh2NztN
+   Q==;
+X-CSE-ConnectionGUID: AHWrmkxFQR+Qo7yx4Eb4Cw==
+X-CSE-MsgGUID: n+0syJtYT2aQ0EASl6Is6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="74420155"
+X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
+   d="scan'208";a="74420155"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 07:11:00 -0700
+X-CSE-ConnectionGUID: u2clbYScRW6dMcQXpVYwoA==
+X-CSE-MsgGUID: 1jOtyXAARE2rMmszGSwb8Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
+   d="scan'208";a="261759544"
+Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.110.41]) ([10.125.110.41])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 07:11:00 -0700
+Message-ID: <d2f9f52e-66ba-42d9-bbf7-2bf72d958ca4@intel.com>
+Date: Mon, 10 Aug 2026 07:10:59 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -35,109 +52,70 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: swiotlb: Keep the default size for protected
- guests
-To: Jason Gunthorpe <jgg@ziepe.ca>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Mostafa Saleh <smostafa@google.com>, iommu@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
- Steven Price <steven.price@arm.com>,
- Suzuki K Poulose <Suzuki.Poulose@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Jiri Pirko <jiri@resnulli.us>,
- Petr Tesarik <ptesarik@suse.com>, Alexey Kardashevskiy <aik@amd.com>,
- Dan Williams <dan.j.williams@intel.com>, Xu Yilun
- <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-References: <anX7F7dnKOtAOIIe@google.com> <20260807164734.GE200537@ziepe.ca>
- <anYgXSR4VAi3TpOj@google.com>
- <CGME20260807182023eucas1p1f653436207b2b00338e99ea1d8f847df@eucas1p1.samsung.com>
- <20260807182017.GH200537@ziepe.ca>
- <7d22482f-d5fd-4cf4-9d32-6a54e02f2fbb@samsung.com>
- <yq5av79iiard.fsf@kernel.org> <anml6lLRERm1Iv-_@willie-the-truck>
- <28442500-1d53-4776-bae5-459c3ffc1cc6@samsung.com>
- <anm6K2umtx4iKnyZ@willie-the-truck> <20260810130818.GN200537@ziepe.ca>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260810130818.GN200537@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v9 11/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
+ kas@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com,
+ nik.borisov@suse.com, pbonzini@redhat.com, seanjc@google.com,
+ tglx@kernel.org, vannapurve@google.com, x86@kernel.org, chao.gao@intel.com,
+ yan.y.zhao@intel.com, kai.huang@intel.com, tony.lindgren@linux.intel.com,
+ binbin.wu@intel.com, sohil.mehta@intel.com
+Cc: Hongyu Ning <hongyu.ning@linux.intel.com>
+References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
+ <20260806020850.1221381-12-rick.p.edgecombe@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260806020850.1221381-12-rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 10/08/2026 2:08 pm, Jason Gunthorpe wrote:
-> On Mon, Aug 10, 2026 at 12:46:51PM +0100, Will Deacon wrote:
->> On Mon, Aug 10, 2026 at 01:37:11PM +0200, Marek Szyprowski wrote:
->>> On 10.08.2026 12:20, Will Deacon wrote:
->>>> On Mon, Aug 10, 2026 at 02:59:42PM +0530, Aneesh Kumar K.V wrote:
->>>>> Marek Szyprowski <m.szyprowski@samsung.com> writes:
->>>>>
->>>>>> On 07.08.2026 20:20, Jason Gunthorpe wrote:
->>>>>>> On Fri, Aug 07, 2026 at 06:13:49PM +0000, Mostafa Saleh wrote:
->>>>>>>> But the whole thing is best effort anyway, the kernel picks
->>>>>>>> IO_TLB_DEFAULT_SIZE which does not depend on the system topology or
->>>>>>>> how many devices or how much DMA they do.
->>>>>>>> SWIOTLB memory is wasted if unused so we should be careful around
->>>>>>>> that as it would be the other way around and users would have to
->>>>>>>> decrease it manually.
->>>>>>> Yeah, it is why the arch code shouldn't really be sizing it directly,
->>>>>>> it should be done in common code and, yes, we are probably going to
->>>>>>> have to do something alot smarter to have the common code better
->>>>>>> auto-tune this for the CC case..
->>>>>> What about the $subject patch? I assume that it is still needed to
->>>>>>
->>>>>> restore the behavior that was altered by the "[PATCH v8 00/23]
->>>>>>
->>>>>> dma-mapping: Track shared DMA state through direct, pool and swiotlb
->>>>>>
->>>>>> paths?" patchset?
->>>>>>
->>>>> I would request that we pick this patch to fix the regression described
->>>>> in https://lore.kernel.org/all/yq5azeyxyfol.fsf@kernel.org/.
->>>> I really don't think we need it. CCA hardware isn't exactly widespread
->>>> and the KVM host side patches don't appear close to being merged.
->>>
->>> Does this mean that the branch for-next/coco [1] won't go to v7.3-rc1?
-> 
-> Let's not make progress on guest support contingent on KVM CCA host
-> side patches please. I expect the CSPs will have VM instance types
-> available based on CCA within quarters, and Linux as a Guest should
-> work in those environments regardless of what KVM is doing. I don't
-> really expect full KVM support for years, frankly, the patchset is
-> massive. Even Intel and AMD don't have full KVM support yet.
-> 
-> People already have CCA capable HW, are already testing this stuff and
-> the closer upstream can get to being workable as a guest without a
-> mountain of OOT patches the better.
-> 
-> I agree the thing is not ideal, but it was merged to ARM like this a
-> long time ago, this patch is just fixing a small oopsie (was it a
-> merge conflict?) to put it back. I don't the objection.
+On 8/5/26 19:08, Rick Edgecombe wrote:
+> So create a fast and slow path. Check the refcount outside the lock and
+> only take it for the slow path (0->1 and 1->0 transitions).
 
-Yup, it seems pretty clearly like a straightforward bug in this series 
-(or maybe even just the merge resolution), where it should have just 
-removed the use of SWIOTLB_FORCE, but changing the if/else structure 
-inadvertently upset the whole flow in a way that it shouldn't have.
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 
-For a fix patch it might be clearer to restore the "(is_realm_world() || 
-is_protected_kvm_guest())" condition exactly as before, then save any 
-further refactoring for the next round of new development. And if there 
-is a concern that skipping the resizing wastes memory for pKVM, then 
-surely that falls on e62decaf98e7 ("arm64/coco: Add pKVM as a CC 
-platform") which intentionally added that logic.
-
-I do concur that there's not necessarily a mad panic to get this into 
-Marek's 7.3 pull, as folks trying to use linux-next or bleeding-edge 
-mainline for CCA work (or indeed anything) should know the risks, but it 
-should at least be one for the 7.3-rc fixes cycle. Aneesh, FYI generally 
-once things are queued, please just send follow-up fixes as their own 
-thing rather than replies, for maximum clarity.
-
-Thanks,
-Robin.
+Thanks for the thorough description of how you used the LLMs here.
