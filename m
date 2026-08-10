@@ -1,169 +1,148 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2153A3B9D98;
-	Mon, 10 Aug 2026 14:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF0E3F58E7
+	for <linux-coco@lists.linux.dev>; Mon, 10 Aug 2026 14:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786371491; cv=none; b=IfeA2xNLqlAyrdVjunL4f3+glszrkmr7NplKjwleHmuBrAnQs8S5pJZPdbo1wc3ZdKfjFsWVKVYNuMVHQAknI0wW+ts7JMbbRN/fEkGbjiaitHavUIMa8wxI4GC+H2hyHDDfo7CKGYFXDmghAmhq073Wbq2ixG8ZVYF14ammeHI=
+	t=1786372207; cv=none; b=ZyEDzwB3wmFd8r+oDX8MGmfs7KiQbfraJ6dj9iKS6FphYdgxdTXzs2dXC67NUccKgk1sWO9/Bg4AE4n6i7nzFmW/Vs7OdmNlr4NyHOQCsaVTcbgEKltlVqU5aiSqob/FboB5ql3G1q9pP3uStBskEViQ/yu4000wEbGzx7j+LSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786371491; c=relaxed/simple;
-	bh=9IZsYULiK1AGwxTWlN7Ujyjc0tW5fdqucDUHcjUe8vM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ckbXMXXViQbtAwT/2EUlan1r+vjPYPu6TRZy1sAAQcbIp0ztwudym0RJVtA8wSv8/R9feQGhq2VzZg0bMbSC1DB4odh9SvcbDFH2Vi0kqT923J3qIpr2IzEjfw7BKow8+ErR99bDH09Wx1TxNthB9l7VXRKf6/Sxr7RKyvtH6rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=NoEqCvjs; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1786372207; c=relaxed/simple;
+	bh=4hkqL67a+abI0W9PGYZV3w1q/c9dy9KBL2UatITOk78=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=aulGmc6ssJL1b+rStHMD2t/77VzgniCOs2IZuNIxbnUkQbnWRblHhoZN0hJOI6yYcjedIKjKVfmjm8mXIBR92wRQaKN7YsvbMzKeTXupw06TSChs3Txr/E40YNzt5UMu4tTiSX3NOkmAUFcdZG1kA0HFbddr27quExHeOvvixUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sv4BjeWr; arc=none smtp.client-ip=209.85.210.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="NoEqCvjs"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 740071516;
-	Mon, 10 Aug 2026 07:18:05 -0700 (PDT)
-Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 266163F86F;
-	Mon, 10 Aug 2026 07:18:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786371489; bh=9IZsYULiK1AGwxTWlN7Ujyjc0tW5fdqucDUHcjUe8vM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NoEqCvjse7Mrq4aOnrWgAYUVbUD+P6fgX9iChFnY1gjZ5NOopP7tM++y+YQsIJOQe
-	 zL208fDHqvlgnN0I7fyFFWMxgH9JNWDKqLLnsKcgPuSc/GPjAtockiGu16g+N2xXhi
-	 ITkmeOFAd3RzdKnSwAvP8g7QlEZ16KLsURRsNdsg=
-Message-ID: <21813ccf-96e5-4a7e-a3b3-aaaec7e0d23c@arm.com>
-Date: Mon, 10 Aug 2026 15:18:03 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sv4BjeWr"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-848662cd2a1so2297604b3a.2
+        for <linux-coco@lists.linux.dev>; Mon, 10 Aug 2026 07:30:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786372206; x=1786977006; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Pt4y4GsIfgXju50y9aE1V5oqKvyqhzjPLlHBnjvlrwI=;
+        b=sv4BjeWr18W/7i/MwrIwRgIiGdP0pQ73cXftwAehjxzJFaeNotIItAnIwwnPd110zp
+         oTaJhPi2qQilYePccoCdKkezdJCXciB3K6dkbsclDhNdQ5bOBW9OBDhRes1tdIJs89bc
+         0cR92OMhxQyp/gtzMVzVfQFy2j6kV3YBkYk0wEfJAcvXzLheow14Nj7r5O+ntWGhCjOg
+         BIZYGsmT8tw00S3eYnExZ93Eu05YweTYQQMBrdQUVLkNXGG2qeHx/m7KtlBHQLVqlpZH
+         /yuO21Y8gjhVwNUxo917lRgYb+3FfbnKHLJKBo6qk72YItvwLRtUMygkolxi7LVViOzK
+         nE/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786372206; x=1786977006;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Pt4y4GsIfgXju50y9aE1V5oqKvyqhzjPLlHBnjvlrwI=;
+        b=HpVJ/OS9HxPGjlgjd3CAYJXwtvoVK6OcHi/si8e71lOKnSKm+obcyGnvoJmOu+q7L3
+         8q9GXC+8odZx4wM9S4cFhGQIYDzAee1Dda8hL/o12URuMf3SmbtbYyDcRTijqyFwuoUL
+         YbssSACJhBiS6IELKKt5IpfM4yhvXePVkLxt291NWFbJSaknILn9MDPM6+lb5UxyrV4a
+         QtSO3Hyhn8kp1iMqbYxSnB4EX1TjXZxuSWFXBANBKT16n7e+mnBicNGbeZAHdS0hSxho
+         0oQ8ds+TGidKL6kyiNSjtdIm+nfKxwIeVvN2kDKWDrFrRhXevRth3zAe1YDIKm31EZo7
+         gIsQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoS3H4+Ci2fFw+6lJ3i7WufEMBwZRXj1KIwWrwFLOwqbIdDHNLg3HfWASGGr0t8g0ivPtpwIo8y0VWH@lists.linux.dev
+X-Gm-Message-State: AOJu0YyjfgXiu8ZwdvP6GeNa9TqBtligzb/9mTsSiaMSNdGLFvQ0XGMy
+	UuaX54pYuCOFbaneQXZigyV6QPSNHF+ZwbUCwMTFDF1JWqyp2+XHLTn79CoG8bR4bN8qdkoby6D
+	OQ6ZTeg==
+X-Received: from pgmo14.prod.google.com ([2002:a63:5d4e:0:b0:cbe:7df7:35b0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7fa0:b0:3c3:76a8:c0f
+ with SMTP id adf61e73a8af0-3cbce6f17b9mr20503675637.4.1786372205374; Mon, 10
+ Aug 2026 07:30:05 -0700 (PDT)
+Date: Mon, 10 Aug 2026 07:30:04 -0700
+In-Reply-To: <b8c0e3537904e29f233cbb03f4d3ddb5247e2af7.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 12/23] dma: swiotlb: pass mapping attributes by
- reference
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Mostafa Saleh <smostafa@google.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, Marek Szyprowski <m.szyprowski@samsung.com>,
- Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
- Steven Price <steven.price@arm.com>,
- Suzuki K Poulose <Suzuki.Poulose@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Jiri Pirko <jiri@resnulli.us>,
- Petr Tesarik <ptesarik@suse.com>, Alexey Kardashevskiy <aik@amd.com>,
- Dan Williams <dan.j.williams@intel.com>, Xu Yilun
- <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org,
- Michael Kelley <mhklinux@outlook.com>
-References: <ami_mpd_1pF4Tmdu@google.com> <yq5a5x1ygo7z.fsf@kernel.org>
- <amnRB98ZZIysHuM3@google.com> <yq5acxw6dl1d.fsf@kernel.org>
- <20260804142032.GC27883@nvidia.com> <anL9-OrDGqYQAWNV@google.com>
- <20260805123023.GO27883@nvidia.com>
- <0ce2249d-3a64-4889-b455-0e8fddcc7282@arm.com>
- <20260807115500.GA158689@nvidia.com>
- <aefab683-598c-4cca-b5a0-c9081ccf9e1c@arm.com>
- <20260807170104.GB158689@nvidia.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260807170104.GB158689@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260806233609.212337-11-seanjc@google.com> <b8c0e3537904e29f233cbb03f4d3ddb5247e2af7.camel@infradead.org>
+Message-ID: <anngbOavdPam2kKy@google.com>
+Subject: Re: [PATCH v6 10/51] x86/tdx: Force TSC frequency with CPUID-based
+ info provided by the TDX-Module
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: kas@kernel.org, rick.p.edgecombe@intel.com, pbonzini@redhat.com, 
+	kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org, 
+	decui@microsoft.com, longli@microsoft.com, ajay.kaher@broadcom.com, 
+	alexey.makhalov@broadcom.com, jan.kiszka@siemens.com, 
+	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org, 
+	jgross@suse.com, daniel.lezcano@kernel.org, tglx@kernel.org, 
+	jstultz@google.com, x86@kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 07/08/2026 6:01 pm, Jason Gunthorpe wrote:
-> On Fri, Aug 07, 2026 at 04:54:35PM +0100, Robin Murphy wrote:
-> 
->>> We will need to teach GIC to understand if/when the device uses a T=0
->>> translation for MSI and then use a shared physical address for the ITS
->>> IOVA instead of getting an IOVA translation from the iommu. The
->>> hypervisor will setup the S2 for the T=0 SMMU translation to be
->>> identity with all shared memory and the ITS page will be shared
->>> memory.
->>
->> IIRC, for MSI or unlocked MSI-X it should look and work pretty much exactly
->> like regular VFIO, as everything can be mediated by the VMM and host kernel.
-> 
-> Right
-> 
->>> Presumably in future we will have HW to handle a T=1 ITS page access
->>> and some way to negotiate with devices if they should use a T=1 path
->>> for MSI or not.
->>
->> Locked MSI-X would be a pain right now as we cannot intercept the Realm
->> programming the MSI-X cap with a doorbell address and EventID value decided
->> by the ITS driver in the Realm guest, so we'd somehow have to sniff those
->> values out of the VMM's vITS emulation then try to configure an equivalent
->> NS LPI to match, or have a hook in the ITS driver that knows when it's in a
->> Realm and do some RSI handshake to proxy-allocate NS MSI vectors on the host
->> and pass the real values back into the Realm.
-> 
-> Yes, we'd need to move to a model where the guest programs MSI
-> directly and we learn the configuration required to emulate through
-> the vGIC, not through MSI trapping. This broadly is the "righter" way
-> to do interrupt routing but it will be hard to get there, if ever.
-> 
->> I'm still hoping we (both CCA and possibly Linux in general) can get away
->> with just refusing to support Locked MSI-X without GICv5, as once we have
->> proper Realm MSIs with direct injection then all the problems go away (or at
->> least become much smaller RMM problems that remain invisible to the host -
->> the one "big" problem being that the RMM has to begrudgingly implement an
->> entire GIC driver since it now has its own whole GIC to look after).
-> 
-> Yeah, I'm fine with this, if GICv5 can allow direct MSI-X programming
-> then great.
-> 
-> Devices are going to need some way to negotiate if MSI-X is locked, and
-> if MSI is T=1 or not, I don't know if PCI has something for that
-> already..
-> 
->>> There won't be a vSMMU attached to the T=0 instance at all, it is just
->>> wired to be bypass.
->>
->> If that's all anyone will ever want then it does allow some degree of
->> hackery like mirroring the whole of Realm S2 in an equivalent NS IOMMUFD
->> domain, then forcing IOMMU_DOMAIN_IDENTITY for unaccepted devices within the
->> guest. However I was under the impression that folks want to make meaningful
->> use of devices while still in their untrusted pre-acceptance state (but
->> maybe still switch them later), so it seems almost inevitable that
->> eventually someone says "actually, we would like S1 vSMMU for untrusted
->> scatter-gather as well..."
-> 
-> So far almost all VMs today don't use vIOMMU at all, the ones that do
-> are using it for things like PASID (or interrupt remapping on x86),
-> not for translation. The cases where a vIOMMU is deliberately needed
-> for translation seem to be mostly around SVA and PASID which isn't
-> going to meaningfully work out of the box on a T=0 device.
-> 
-> My prediction is this is fine.
-> 
-> At least it is sufficiently hard to make two parallel vSMMU's
-> controlling the same PCI device, and to make the ITS routing also
-> somehow work right, that it isn't worth doing at this point when there
-> is so much other more basic stuff to get done.
+On Sat, Aug 08, 2026, David Woodhouse wrote:
+> On Thu, 2026-08-06 at 16:35 -0700, Sean Christopherson wrote:
+> > When running as a TDX guest, explicitly set the TSC frequency to a know=
+n
+> > value, using CPUID-based information, instead of potentially relying on=
+ a
+> > hypervisor-controlled PV routine.  For TDX guests, CPUID.0x15 is always
+> > emulated by the TDX-Module, i.e. the information from CPUID is more
+> > trustworthy than the information provided by the hypervisor.
+> >
+> > To maintain backwards compatibility with TDX guest kernels that use nat=
+ive
+> > calibration, and because it's the least awful option, retain
+> > native_calibrate_tsc()'s stuffing of the local APIC bus period using th=
+e
+> > core crystal frequency.  While it's entirely possible for the hyperviso=
+r
+> > to emulate the APIC timer at a different frequency than the core crysta=
+l
+> > frequency, the commonly accepted interpretation of Intel's SDM is that =
+APIC
+> > timer runs at the core crystal frequency when that latter is enumerated=
+ via
+> > CPUID:
+> >
+> >   The APIC timer frequency will be the processor's bus clock or core
+> >   crystal clock frequency (when TSC/core crystal clock ratio is enumera=
+ted
+> >   in CPUID leaf 0x15).
+> >
+> > If the hypervisor is malicious and deliberately runs the APIC timer at =
+the
+> > wrong frequency, nothing would stop the hypervisor from modifying the
+> > frequency at any time, i.e. attempting to manually calibrate the freque=
+ncy
+> > out of paranoia would be futile.
+> >
+> > Deliberately leave CPU frequency calibration as is, since the TDX-Modul=
+e
+> > doesn't provide any guarantees with respect to CPUID.0x16.
+> >
+> > Expose and use cpuid_get_tsc_info() instead of providing a wrapper to
+> > get the TSC and core crystal frequency, as TDX is the only anticipated
+> > user outside of the TSC code, i.e. adding a helper to dedup the math wo=
+n't
+> > actually dedup anything.  Having TDX use "struct cpuid_tsc_info" also
+> > avoids the temptation of declaring a local "tsc_khz" variable and thus
+> > unintentionally creating a shadow of the global "tsc_khz".
+> >
+> > Cc: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+>=20
+> I don't know if we should set X86_FEATURE_TSC_RELIABLE before bailing
+> out in the case where cpuid_get_tsc_info() fails, or just not care
+> about that because it Can Never Happen=E2=84=A2? Previously it was set
+> unconditionally from tdx_early_init().
+>=20
+> Whatever...
 
-Cool. So in fact that puts us in an interesting position for now where 
-non-CoCo "untrusted" (i.e. external) devices should have IOMMU 
-translation forced on by default, while CoCo "unaccepted" devices (i.e. 
-those which do have a mechanism to transition into a T=1 or equivalent 
-state) should *not* try to use an associated IOMMU, on the assumption 
-that it may only work for T=1 traffic. All the more reason to sort these 
-abstractions out so we can make the right distinctions clearly :)
-
-(And while untrusted vIOMMUs for purely-untrusted devices in CoCo 
-environments would be pretty straightforward as well, I guess we might 
-need some sort of acceptance status for trusted vIOMMU devices 
-themselves? Hmm...)
-
-Cheers,
-Robin.
-
-> I imagine the ACPI might someday gain a description of the T=0 vSMMU
-> in a way that is invisible to todays Linux and a future Linux could
-> understand how to juggle the two iommu drivers for the same struct
-> device, somehow.
-> 
-> Regards,
-> Jason
-
+Heh, yeah, "whatever" is about my thought exactly.  I could go either way. =
+ I
+would buy an argument that the TSC itself is still reliable even if the fre=
+quency
+isn't known.  On the other hand, the frequency could be computed via calibr=
+ation,
+at which point the frequency is no longer reliable and arguably should be s=
+anity
+checked.
