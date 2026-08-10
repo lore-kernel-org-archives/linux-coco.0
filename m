@@ -1,200 +1,132 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D8E3C2BBE
-	for <linux-coco@lists.linux.dev>; Mon, 10 Aug 2026 11:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710093B14D5;
+	Mon, 10 Aug 2026 11:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786361234; cv=none; b=SHB4w5esELiZuOYqZMmY97GZ1xZgkrU6/x4LxkRf4wg1hvlVN3KWJs2kIBQ+JkGot0vAaF2o99R1EiBzrQudgGDeWeQPgKu5yEwSby8KtWivX/OXGUs1JfYvsuKR5ltj+AL+tnTTAMF6xqJKe2EbOYQbl+jJNuRBa9msn3nL1co=
+	t=1786361838; cv=none; b=M9UZz4o9rcuix/0G6OWxn/p+muZ85INuPJ3zJLePKLj7rqNB8uudniJ8jg5HdA8+8Y2GloW+aRRAG3x0LI2pDI4wPoi7D6UbHPgUVTk89ytrmEQDFmcpFh2whqStQHh/vpiy3E/itQ1lfpunxrOoehP0uiDPa3LF1qsSk2t52e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786361234; c=relaxed/simple;
-	bh=7oufocPuXAZnWw+5/d2lZG/3yy7x1tpophBIYfdEG+c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H7tPVD3pZiTm8XzDmsNMvFv3YOPo8vaFmE9mfVm6v+3PeEvLRyZgAqRnbOy2TivBlDfjWhtNYES6irYk8AvBsgF3NYhdLFGj2WZTab+KU10g9cv9z0cVfOsbmrCvB9aumJVGiml+wZ1TRwN0Z0+5vWg5o/pwO1xVc3FZZWEa7No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MnatcdSF; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786361838; c=relaxed/simple;
+	bh=JILZlLag93tKeGGKVP72PK95/5BhRFdNvP2Z+0HaKE8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=G3eqyo7Q8yd0r7NPVgu4slt20kqDoMqQAh9vnukyL/QZJWlMmmc4QoYjQ4au3uDMEoBqgKffLyBedtQEo/xgBw6hql/pyIhFj3S+4XrYpA5/X68Iv3hHWC6ipqD/mor3md6wTsjqKEhvj49PJsFMHu5InFRyDc7uMj+UBQTej/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=kN3DxXhi; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MnatcdSF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786361232; x=1817897232;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=7oufocPuXAZnWw+5/d2lZG/3yy7x1tpophBIYfdEG+c=;
-  b=MnatcdSFQpHXc9o7WuishxtXMoICGXcU2cMMldIZAW19L9IVbEggMxwf
-   yA3aXPOLGv1kRN+ac2lqgcn5MMK6NQyRF4oiR26/AsmqrY1a5aUdBWxTx
-   2L29FpaJC/ILDWGL8FJREtSh21cjtXae7h6QpgbbGTXxDKh2AjMcx/MEO
-   BssAGP+ubaax+YPwysmaQ8BEDsW9CkWXI9VY+pYb/MPWXWmg/b4ZNMT/2
-   uIY/yXtSLGBfO7JVX4HOgo71rOYKyb4vt1PJDK8NzMMN9xA+/KkDsJUzz
-   Z7C9j/qHeWJ9fieJxiRTaKPy0spaNpX/CtYlTTPI6Vjk5bkv0UnX7Mzd0
-   A==;
-X-CSE-ConnectionGUID: PhFKkWggTKCEwm2j+UKl9A==
-X-CSE-MsgGUID: 7vCkxnozTqKE4aG6Nb4HHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="97221257"
-X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
-   d="scan'208";a="97221257"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 04:27:12 -0700
-X-CSE-ConnectionGUID: 2pIktAnbR92if69p+1zsvg==
-X-CSE-MsgGUID: QE5RHn+lQe6dkgJZX8qQWA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
-   d="scan'208";a="264999209"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.33])
-  by fmviesa004.fm.intel.com with ESMTP; 10 Aug 2026 04:27:10 -0700
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: [PATCH v2 3/3] KVM: TDX: Enable Bus Lock VM exit
-Date: Mon, 10 Aug 2026 19:22:00 +0800
-Message-ID: <20260810112200.2326727-4-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260810112200.2326727-1-xiaoyao.li@intel.com>
-References: <20260810112200.2326727-1-xiaoyao.li@intel.com>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="kN3DxXhi"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260810113713euoutp016f3f4b77a2df3bfdc305d031c6984c9a~Kbp97gzYA2148921489euoutp01h;
+	Mon, 10 Aug 2026 11:37:13 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260810113713euoutp016f3f4b77a2df3bfdc305d031c6984c9a~Kbp97gzYA2148921489euoutp01h
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1786361833;
+	bh=kV5ZYrj5wE4GOEKRMF/gxoB7LU5gFTUJHkhmU9HyjMA=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=kN3DxXhiV6A32AfRhNBQCO8Y9H3rbjoYrVAP4Y+RwnGiaH2R4moCILniw2BNmc07i
+	 qVDB2xKU0IDVgY36eMntlSkuzEBYinOGgCSE0qA/VEzpbfJWamjWYMHLWeJVGM2Q6c
+	 TT41noYxnIJu2mycFyI4SXwKJL3jDjmL5dWuupLA=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260810113713eucas1p1b0aa58555e68eca16ad8962462d5afdd~Kbp9wCQhp2359123591eucas1p1b;
+	Mon, 10 Aug 2026 11:37:13 +0000 (GMT)
+Received: from [106.120.50.46] (unknown [106.120.50.46]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260810113711eusmtip2ac80bb2608e56255c84c347422994fd6~Kbp8OmsY60892908929eusmtip2X;
+	Mon, 10 Aug 2026 11:37:11 +0000 (GMT)
+Message-ID: <28442500-1d53-4776-bae5-459c3ffc1cc6@samsung.com>
+Date: Mon, 10 Aug 2026 13:37:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH] arm64: swiotlb: Keep the default size for protected
+ guests
+To: Will Deacon <will@kernel.org>, "Aneesh Kumar K.V"
+	<aneesh.kumar@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Mostafa Saleh <smostafa@google.com>,
+	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, Robin Murphy
+	<robin.murphy@arm.com>, Marc Zyngier <maz@kernel.org>, Steven Price
+	<steven.price@arm.com>, Suzuki K Poulose <Suzuki.Poulose@arm.com>, Catalin
+	Marinas <catalin.marinas@arm.com>, Jiri Pirko <jiri@resnulli.us>, Petr
+	Tesarik <ptesarik@suse.com>, Alexey Kardashevskiy <aik@amd.com>, Dan
+	Williams <dan.j.williams@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, Madhavan
+	Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
+	<gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily
+	Gorbik <gor@linux.ibm.com>, Christian Borntraeger
+	<borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
+	x86@kernel.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <anml6lLRERm1Iv-_@willie-the-truck>
 Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260810113713eucas1p1b0aa58555e68eca16ad8962462d5afdd
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260807182023eucas1p1f653436207b2b00338e99ea1d8f847df
+X-EPHeader: CA
+X-CMS-RootMailID: 20260807182023eucas1p1f653436207b2b00338e99ea1d8f847df
+References: <yq5acxvu2ict.fsf@kernel.org>
+	<anXbJ2O4DWgPxCeg@willie-the-truck> <20260807135810.GA200537@ziepe.ca>
+	<anX7F7dnKOtAOIIe@google.com> <20260807164734.GE200537@ziepe.ca>
+	<anYgXSR4VAi3TpOj@google.com>
+	<CGME20260807182023eucas1p1f653436207b2b00338e99ea1d8f847df@eucas1p1.samsung.com>
+	<20260807182017.GH200537@ziepe.ca>
+	<7d22482f-d5fd-4cf4-9d32-6a54e02f2fbb@samsung.com>
+	<yq5av79iiard.fsf@kernel.org> <anml6lLRERm1Iv-_@willie-the-truck>
 
-Enable Bus Lock VM exit functionality for TDX guests.
+On 10.08.2026 12:20, Will Deacon wrote:
+> On Mon, Aug 10, 2026 at 02:59:42PM +0530, Aneesh Kumar K.V wrote:
+>> Marek Szyprowski <m.szyprowski@samsung.com> writes:
+>>
+>>> On 07.08.2026 20:20, Jason Gunthorpe wrote:
+>>>> On Fri, Aug 07, 2026 at 06:13:49PM +0000, Mostafa Saleh wrote:
+>>>>> But the whole thing is best effort anyway, the kernel picks
+>>>>> IO_TLB_DEFAULT_SIZE which does not depend on the system topology or
+>>>>> how many devices or how much DMA they do.
+>>>>> SWIOTLB memory is wasted if unused so we should be careful around
+>>>>> that as it would be the other way around and users would have to
+>>>>> decrease it manually.
+>>>> Yeah, it is why the arch code shouldn't really be sizing it directly,
+>>>> it should be done in common code and, yes, we are probably going to
+>>>> have to do something alot smarter to have the common code better
+>>>> auto-tune this for the CC case..
+>>> What about the $subject patch? I assume that it is still needed to
+>>>
+>>> restore the behavior that was altered by the "[PATCH v8 00/23]
+>>>
+>>> dma-mapping: Track shared DMA state through direct, pool and swiotlb
+>>>
+>>> paths?" patchset?
+>>>
+>> I would request that we pick this patch to fix the regression described
+>> in https://lore.kernel.org/all/yq5azeyxyfol.fsf@kernel.org/.
+> I really don't think we need it. CCA hardware isn't exactly widespread
+> and the KVM host side patches don't appear close to being merged.
 
-Userspace can enable KVM_BUS_LOCK_DETECTION_EXIT for TDX guests without
-getting an error, but the feature is not actually enabled because KVM
-does not yet program the TDX execution control or handle the resulting
-exit.
+Does this mean that the branch for-next/coco [1] won't go to v7.3-rc1?
 
-Enable Bus Lock VM exit for TDX guests by programming the
-BUS_LOCK_DETECTION control in the TD VMCS and by adding the exit handler.
-Clear the bus_lock_detected bit to avoid being counted multiple times if
-it needs to return early for wait_for_sept_zap case in tdx_vcpu_run().
-Since the wait_for_sept_zap case is expected to be rare, just do the
-clearing of bus_lock_detected unconditionally.
+I've used it as a base for the mentioned DMA-mapping patchset.
 
-Note, there is no enumeration bit for this feature by TDX module because
-all TDX modules support it, and allow to set the TD VMCS as long as the
-hardware supports the feature.
 
-Fixes: 161d34609f9b ("KVM: TDX: Make TDX VM type supported")
-Cc: stable@vger.kernel.org
-Originally-by: Chenyi Qiang <chenyi.qiang@intel.com>
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
----
-Changes in v2:
-- Don't overwrite the negative return value to 0. (Sashiko)
-- Clear the bus_lock_detected bit when it returns early for
-  wait_for_sept_zap case.
-- Add a note to clarify the feature is always supported by the TDX
-  module, to make Sashiko happy.
----
- arch/x86/kvm/vmx/tdx.c | 28 ++++++++++++++++++++++++++--
- arch/x86/kvm/vmx/vmx.c |  2 +-
- arch/x86/kvm/vmx/vmx.h |  1 +
- 3 files changed, 28 insertions(+), 3 deletions(-)
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/log/?h=for-next/coco
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index a89885d550c9..ac3f71643cd5 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1080,8 +1080,10 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 	 * allowing vCPU entry to avoid contention with tdh_vp_enter() and
- 	 * TDCALLs.
- 	 */
--	if (unlikely(READ_ONCE(to_kvm_tdx(vcpu->kvm)->wait_for_sept_zap)))
-+	if (unlikely(READ_ONCE(to_kvm_tdx(vcpu->kvm)->wait_for_sept_zap))) {
-+		vt->exit_reason.bus_lock_detected = 0;
- 		return EXIT_FASTPATH_EXIT_HANDLED;
-+	}
- 
- 	trace_kvm_entry(vcpu, run_flags & KVM_RUN_FORCE_IMMEDIATE_EXIT);
- 
-@@ -2037,7 +2039,7 @@ int tdx_complete_emulated_msr(struct kvm_vcpu *vcpu, int err)
- }
- 
- 
--int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
-+static int __tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
- {
- 	struct vcpu_tdx *tdx = to_tdx(vcpu);
- 	u64 vp_enter_ret = tdx->vp_enter_ret;
-@@ -2138,6 +2140,8 @@ int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
- 	case EXIT_REASON_NOTIFY:
- 		/* NMI blocking state is handled by TDX module */
- 		return __vmx_handle_notify(vcpu, vmx_get_exit_qual(vcpu));
-+	case EXIT_REASON_BUS_LOCK:
-+		return handle_bus_lock_vmexit(vcpu);
- 	default:
- 		break;
- 	}
-@@ -2147,6 +2151,22 @@ int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
- 	return 0;
- }
- 
-+int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
-+{
-+	int ret = __tdx_handle_exit(vcpu, fastpath);
-+
-+	/* Exit to user space when bus lock was detected */
-+	if (vmx_get_exit_reason(vcpu).bus_lock_detected) {
-+		if (ret > 0) {
-+			vcpu->run->exit_reason = KVM_EXIT_X86_BUS_LOCK;
-+			ret = 0;
-+		}
-+
-+		vcpu->run->flags |= KVM_RUN_X86_BUS_LOCK;
-+	}
-+	return ret;
-+}
-+
- void tdx_get_exit_info(struct kvm_vcpu *vcpu, u32 *reason,
- 		u64 *info1, u64 *info2, u32 *intr_info, u32 *error_code)
- {
-@@ -3173,6 +3193,10 @@ static int tdx_vcpu_init(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *cmd)
- 				vcpu->kvm->arch.notify_window);
- 	}
- 
-+	if (vcpu->kvm->arch.bus_lock_detection_enabled)
-+		td_vmcs_setbit32(tdx, SECONDARY_VM_EXEC_CONTROL,
-+				 SECONDARY_EXEC_BUS_LOCK_DETECTION);
-+
- 	tdx->state = VCPU_TD_STATE_INITIALIZED;
- 
- 	return 0;
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index e53cc96002c7..c429db9b9205 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6265,7 +6265,7 @@ static int handle_encls(struct kvm_vcpu *vcpu)
- }
- #endif /* CONFIG_X86_SGX_KVM */
- 
--static int handle_bus_lock_vmexit(struct kvm_vcpu *vcpu)
-+int handle_bus_lock_vmexit(struct kvm_vcpu *vcpu)
- {
- 	/*
- 	 * Hardware may or may not set the BUS_LOCK_DETECTED flag on BUS_LOCK
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index dc8517f15bc4..8faf04c09721 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -379,6 +379,7 @@ bool __vmx_vcpu_run(struct vcpu_vmx *vmx, unsigned int flags);
- void vmx_ept_load_pdptrs(struct kvm_vcpu *vcpu);
- 
- void vmx_set_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type, bool set);
-+int handle_bus_lock_vmexit(struct kvm_vcpu *vcpu);
- 
- static inline void vmx_disable_intercept_for_msr(struct kvm_vcpu *vcpu,
- 						 u32 msr, int type)
+
+> We have time to fix this properly, rather than papering over it in the
+> arch code.
+>
+> Please consider this a NAK from the arm64 side on this patch.
+
+Best regards
 -- 
-2.43.0
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
