@@ -1,313 +1,434 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from esa6.hc1455-7.c3s2.iphmx.com (esa6.hc1455-7.c3s2.iphmx.com [68.232.139.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3214E8635D
-	for <linux-coco@lists.linux.dev>; Sun,  9 Aug 2026 22:32:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786314768; cv=fail; b=UG9Xe2s5Hi3rzutrdmTdC+9S9GKpxYCBxM0fhh8b+xfjb22YHdbdPbmZAS15zHbfoKvAV0KPQtxEj7GrvVYtj5HTZV/IEAYB6zBspJFwqFeAoMbndkWfpDgudYqXjTzEDs7x2c2HJ+aDTGr7XZ4pbvwBfKQFcVrs2dNjX6RAjPM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786314768; c=relaxed/simple;
-	bh=Z6Nut3JqUkivUkFgfgtxRD98EUotezr0k65ZYhJfie0=;
-	h=Date:From:To:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=KvpRjK62ou+QwM6xKXvkSpVU6OxJ6h0P3NB6oa9V3DaoBI/4lA9ClgyosOVHT0JM1f8GLLc3rloYztcNsR3UPy7an1cs7xqwv+4JCP0ZK6tjVtqrWUEAagvy9r8DWQHGqMFg2JgKg2pSHLTIK3QIZKh8dehYr8V//I0dXAJ5azg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L8eO2Nrb; arc=fail smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6A032D0EE;
+	Mon, 10 Aug 2026 04:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.139
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786337914; cv=none; b=UzMjCVK9Hva0dK27SNxezndr9evprQOxOQpfsPftkLpYsRDWvE8J8ucVj+inAKa1HYvGjXXS6wUEIriQ86/qXalJjA0RVeLjU8z6ETJntGhTyIAfW2DwMOBrZAR7d/44lwsS4cPl+MyRfM7kh8nB+ZQTsZc1Oo1DkPXbWfzqRik=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786337914; c=relaxed/simple;
+	bh=jCOlaum+43iVbWTgaD98C2MyzA+ilU9ycpxmRKx6wBI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=osgIC+VlaryF/3VvhLF61TSPoSWw/UsNoJPEiCMwPmF2Eh3n71S0Y1DmmdeEi/iqk1DOFNmSoCh4GAk5CBdIvxLyVeb5XSJnNvpzsIylW3BFvdYBJzqQymQpD/KPOSCzWZpsdIDKHHjkEesAfzNR/6aHaxxU1SbuccpAEACJ998=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=UhcsgWb3; arc=none smtp.client-ip=68.232.139.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L8eO2Nrb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786314766; x=1817850766;
-  h=date:from:to:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=Z6Nut3JqUkivUkFgfgtxRD98EUotezr0k65ZYhJfie0=;
-  b=L8eO2NrbSBBu88U4abb4ATTspgXtriZt8X/7nkmrm2xLrRoq3aX2HplS
-   AbTYwuvbWD/tIfkp0OY+cH7Wlo3rRHk7MWlQ/gc83hhzQL4KiNPzqopTZ
-   2Se06Q0dcIkMz5Rq8z8kVVhYzqgtr5bekJqQsCSwNVjVecMUihBSrMajO
-   t3QNLBWo3bkEblWeL4Tdd753hONz7vsVBGAaCAgmGRVflvUVILCaBfmch
-   hyFcF7NW/DFlhEqEeL8Lr3tMoWBK9Zu8K+1AyaGdvQLdNFMWpcXvmHPL5
-   Kw6l9SU1i9Qje3cxINthcCS+WRPmAVH90G2hnk99cgZ616obgqguFjbKo
-   w==;
-X-CSE-ConnectionGUID: BVpDxSmmRYOKVv5McXLdGw==
-X-CSE-MsgGUID: j6ojd/5qSJmILC4wgIYunw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="87046362"
-X-IronPort-AV: E=Sophos;i="6.25,214,1779174000"; 
-   d="scan'208";a="87046362"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2026 15:32:45 -0700
-X-CSE-ConnectionGUID: uX1HnpfdSEmoso4seaYnow==
-X-CSE-MsgGUID: eDht+bxPTrCiLJv7lQ0ebQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,214,1779174000"; 
-   d="scan'208";a="259562115"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2026 15:32:44 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Sun, 9 Aug 2026 15:32:43 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Sun, 9 Aug 2026 15:32:43 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.8) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Sun, 9 Aug 2026 15:32:43 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JZ9sMxv9zkuRIdjwLjgeGeAO4gN0gnMlq32eX1uIS6mS9LTLtMGtlDXdV08Vb1zYWFgsbrULI162n5/5/BgJFDIbKEfhcQ0RpeFDDqPWv7EidgvA6sSZjConY4HY9RBo5JbExKohUMJeWAyitU0g3R3erqAaJfAm4ThQtaAJ0ZwUPZtje8CASoLzlgcVkdYCOj4+hehZhJU/evhwCa1AGwk+69SKCCAlXS18zJUeUP5yLhSEezw3kZE+3oOMcWBxRmYIdLUaQ6+l8Pizo49FR10tRC+jY9ONw/1fsUT3MkvSgFA7fHIeYSNhFVtgbZOvkhK1BtUqxb0UQCfh7LUC7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vJ15D2VIsi7yHAUnQtN26vDgyzXtl6Vy9mttyAs9J5s=;
- b=rKq2UK4qUhHRYoxpPgUjbxOlc9PgJfIM3ca49Hf0OZDVfSDFodoHR4Lomo/cyZzbEZJhCzdcZoAVjbLvhyMK+XqknIvdlfckUGVYCrPSJixQTD2Ui88pdo92dHK95gJbKdkxrXcgd//wCD1ItluFWgm83amBLMZc0mD99vtXKAGWUl+TesQyXNIDYrmMq6IBrpOZKpERnC3ThnXdTx01upth8+WsHdbmM45jPAmQ4hsDOHbpkyRzLV1ZUwOvuxkyGlCVapoygV2+GHLQkZhVZ7qOeFnws6ZhSnKIq/LK7qswTU6pUa/aumwPFE5pQ8YQC6iSpWsYQzZ8mTkj1ENMiQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DSVPR11MB9579.namprd11.prod.outlook.com (2603:10b6:8:383::17)
- by SA3PR11MB689426.namprd11.prod.outlook.com (2603:10b6:806:58b::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Sun, 9 Aug
- 2026 22:32:40 +0000
-Received: from DSVPR11MB9579.namprd11.prod.outlook.com
- ([fe80::ab5f:5d0f:fb90:9d]) by DSVPR11MB9579.namprd11.prod.outlook.com
- ([fe80::ab5f:5d0f:fb90:9d%3]) with mapi id 15.21.0292.024; Sun, 9 Aug 2026
- 22:32:40 +0000
-Date: Mon, 10 Aug 2026 05:51:40 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: <ackerleytng@google.com>, <aik@amd.com>, <andrew.jones@linux.dev>,
-	<binbin.wu@linux.intel.com>, <brauner@kernel.org>,
-	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <jmattson@google.com>,
-	<jthoughton@google.com>, <michael.roth@amd.com>, <oupton@kernel.org>,
-	<pankaj.gupta@amd.com>, <qperret@google.com>, <rick.p.edgecombe@intel.com>,
-	<rientjes@google.com>, <shivankg@amd.com>, <steven.price@arm.com>,
-	<tabba@google.com>, <willy@infradead.org>, <wyihan@google.com>,
-	<forkloop@google.com>, <pratyush@kernel.org>, <suzuki.poulose@arm.com>,
-	<aneesh.kumar@kernel.org>, <liam@infradead.org>, Paolo Bonzini
-	<pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, "Thomas
- Gleixner" <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
-	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
- Khan" <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, "Vishal
- Annapurve" <vannapurve@google.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
-	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
-	<nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
-	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
-	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
-	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
-	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
-	<jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
-	<peterx@redhat.com>, <tarunsahu@google.com>, Vlastimil Babka
-	<vbabka@kernel.org>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-trace-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-coco@lists.linux.dev>
-Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
- before conversion
-Message-ID: <anj2bPrGqzZgZWMF@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-11-2fc18ee6d3ba@google.com>
- <anZ4W9o5pTWIEgMY@yzhao56-desk.sh.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <anZ4W9o5pTWIEgMY@yzhao56-desk.sh.intel.com>
-X-ClientProxiedBy: TP0P295CA0046.TWNP295.PROD.OUTLOOK.COM (2603:1096:910:3::9)
- To DSVPR11MB9579.namprd11.prod.outlook.com (2603:10b6:8:383::17)
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="UhcsgWb3"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1786337916; x=1817873916;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jCOlaum+43iVbWTgaD98C2MyzA+ilU9ycpxmRKx6wBI=;
+  b=UhcsgWb3dSvv+M4cgLxDppjhACoPoPRqxQ69fffH2KAeFZLToAxdQv6h
+   9cnOiWS9Ivqd1k3rALjNyLpC5pHWXPE9d77bzDeVFAueBVSNx5CzZku/O
+   v6Kot0l9wn3PT41TMhZyz8/XdknKULEXBmreYq1JPvGJXvMM0E8ylVdDG
+   h8RoDa5u/4FFcmwpCOaHkL1zbaTuS/3g3udEtXYUWKuafFLvWIO7MQvBY
+   NR+kXkQqWz/8bXAAKy8u9wokqDUwLETGNDdN9r3n7aedyBpDCVwTOkhHn
+   OuceiKwEouYU/soU2OxNBtgAxQ6aeyZ3/4E6viBL0Hz5CM3I9ySp/Xezr
+   A==;
+X-CSE-ConnectionGUID: 3l53BIgXQTm8bdQUlV1Yqg==
+X-CSE-MsgGUID: BQ6VvGoZQFGFR59/Wly/sQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="253989912"
+X-IronPort-AV: E=Sophos;i="6.25,215,1779116400"; 
+   d="scan'208";a="253989912"
+Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
+  by esa6.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 13:58:29 +0900
+Received: from az2uksmgm4.o.css.fujitsu.com (unknown [10.151.22.201])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 8D64EC00540;
+	Mon, 10 Aug 2026 04:58:25 +0000 (UTC)
+Received: from az2nlsmom4.fujitsu.com (unknown [10.150.26.201])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgm4.o.css.fujitsu.com (Postfix) with ESMTPS id 444CA14003F5;
+	Mon, 10 Aug 2026 04:58:25 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.8.69.80])
+	by az2nlsmom4.fujitsu.com (Postfix) with SMTP id 7CA0A2000210;
+	Mon, 10 Aug 2026 04:58:17 +0000 (UTC)
+Date: Mon, 10 Aug 2026 13:58:10 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v16 44/45] KVM: arm64: CCA: Require ICH_HCR_EL2.TDIR for
+ realms
+Message-ID: <anlZCIauOq4Lvv0I@FCCLS0092175.localdomain>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-45-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DSVPR11MB9579:EE_|SA3PR11MB689426:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3c2ed973-4574-4cfd-8a6a-08def6661eed
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|4143699003|11063799006|10067099003|6133799003|56012099006|921020|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: kvap3r+n/nZt5B/dC76sUC+VKssvaio9bt6/oT18FaXLkJP1wgSDiHWDlnwLHY3gtB+zYonAH3e+0MZ8x8HfmA51WcqO62rCHAg+jbpPq9gt1FFM7IPaWoPLST3cSP+rVIrfJ8/eQmIrkj86cE9opllCLfQONlcUYT9GVxaEzUAMZBUJ4BAFcwa7F2eplfUPQEpzqbantwWFPsBlyyP3Q90iH78Y76ZPGdSTzKDWpOz0Qmc3NNuJlZPgJTh3mQKqN5S3Om/UiKpTji9C6aunx+9HcljYRThDTN7bZEMDnm63giSfMS150/30/yoX389Fthq7hoxoZXYvaHyj/KMMO/FJ7Io6L0YUV99kt1XUuKMjK43BAF7+8mqN/nvgZUNsvrtOs3pNC1dgUi6t0wIXLbMyfs11FmwCJeB0cMQTnrKwMjXVFAAkjKQ0neXu91+m/0J0QITS9mI43b0wOxI+BHQdI/XxNMJNUXlJ4hj5Ao2YEJegZvZTLF/yLV0lcU/lCe7Q2+ho3DK1EItbIjck7X96MSf2JbvTYai9CXju4n/fV+mNGIzeqP13wkAnkL23M0gqTkFc2r3GzyRdwoAEvxMTdhoaI8wwV/GDhuwV8cwnO2fPaYVUzHOhHRUtx/W7Xr/S6R6tM7jjdOc+utDRCDwRXul0n2Qu/9e5U5/shFPAu12GWBQv8qosTAvuKXJ6Qth7P+s5l7rWZQMWGV7J8g==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DSVPR11MB9579.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(4143699003)(11063799006)(10067099003)(6133799003)(56012099006)(921020)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?quxruQiV8gQjkIoHofjjJPnlSvrEpk8VhYAR1EzEoJ8SaUbW3PI79phPeUPv?=
- =?us-ascii?Q?g+jGFKhsYq18DWU7wnn8jOTqoWZOh54UJIVH+IiKA/++LvUk0Sf1bSBB/pUa?=
- =?us-ascii?Q?HLTzIyjpyYI1a4aUQdAQKBq985U7BqRDigyKQvVGL+tnK6hGyGsiRbgFkTlL?=
- =?us-ascii?Q?k6UzXIqxSfHsf9XeEy3X+1klPGuAnsuU6XZWBT6Ib5zAoREaPs1YAbRDdywD?=
- =?us-ascii?Q?8efKUZ7tOEbRVkrkyBbAHaES0pe9cK1rgDj/dnFqktPgTHqCRw0ELGm4Dcka?=
- =?us-ascii?Q?fgQKaFyF8LWyZz3e8kFh0f+qH2bgyLwVcJU9NrwSKlghMfcjkNEKkxc73XTX?=
- =?us-ascii?Q?bFqL+t2BxQh/I4OAtRfMEsYw0ppu5w5vpZQAEKEts7dDO8LQFCS9nUpxJ4zn?=
- =?us-ascii?Q?nhXyo8p6eVrOZ14gFPmBKmm+Nkjf5+U5zZfX4ZvlDKq+sFHaRa9ZY0LfAgSJ?=
- =?us-ascii?Q?f/b5CX0EENMMR37do2/CuGyfR/JNia4RV74/r/Kbm40IPjiKGHEc63TG2fR1?=
- =?us-ascii?Q?MkAYl/1AI8tmnMFNrW7I6tsVSQM05YJIx8jQu5FQNlRMcCoK/cO6KZXMztkX?=
- =?us-ascii?Q?L3eAci+2Op+5c+6sIukXkA7ZqT/9K6YfcXwrHkU3RIaWKckawhQR+IB8PP+5?=
- =?us-ascii?Q?Bxs1RyWMAg591z81UTK4OdP6bZMbUIW4DO9JHvZXrvWsqrvicVFlF4ODgDFt?=
- =?us-ascii?Q?26ODV0z2nW7rWaf35Gf6iE4S/tlIgOZBs449JmLlWfZY4JP9NSBTadj5XG4B?=
- =?us-ascii?Q?BZ9oXEoveXbJTyUUcghjFrjWN4R3yG5SG6nd03qNGu99IwaiArVqUOiLG61m?=
- =?us-ascii?Q?edZqUQBXqOTm8L7e7dFeRc6y1+W4nRxhoLapYoKL1vEJpv0Qy1JCI9CFTMc0?=
- =?us-ascii?Q?qT5EsPzzXAwnW5jfOitujQNFs4T1T0YgF2TByKPKWrvVPshJOwzWLmg6qiZL?=
- =?us-ascii?Q?+E1dLIC/ERU/zKvcDSvcqWJ5tXg28fZ+281vs2VAUnGxUUJ+X546jeXAHzPB?=
- =?us-ascii?Q?UC3ECW0Q/AelNjwTdIEQFkl8sYY1OJJqh76/P2KhS61EZVtvXfSV3p7n9PZE?=
- =?us-ascii?Q?cYWdM9rlJhTgqNRPrh8KEB/xeJch2exwkvGSSQbp3eC4tg7fVQNFRO69roRs?=
- =?us-ascii?Q?w5nPhUPUwDR6Cub+1mnfL6YKFWdAVdMk3DHFYUXL8vcWR/4xJwiXGTc+81x4?=
- =?us-ascii?Q?r1wlSobqeOqTaw5p95SKdW984Ya4SgRkOI2NVO0d6JcAyQYbSgEd9hiQG3MO?=
- =?us-ascii?Q?EzO1w/aoaxb1bh/HNclujonH/XrStCIDpqTT4nD8BYZq8e2V3XQlIyPGm8og?=
- =?us-ascii?Q?45cR+09lrP1tE4Jdcc2896m496IU/IChYiNQEw+yvprrO9dcQ4zWgbXKiIEM?=
- =?us-ascii?Q?7NPQ66rkquYvFZwaWE+dYcxBdyhGPxdNM4ZLVifgkK5F8B7W6Te60kF9Lbqd?=
- =?us-ascii?Q?RjiKpySjenZikZ8sHE08IP9RHHO5YYtzbzpI96ZEo2BO2RqLeMEsXTaSLduj?=
- =?us-ascii?Q?HMOJy2yB4aa1SlQ1B05g7zZV7jMXXtIU4Of7/dCd5JZ+EsJ3KSDy37PiSj6s?=
- =?us-ascii?Q?jg8wEvg42DbGNr2N2LjNSW1i64txWoWH5D6JPmhUUj31wxBc4an0casp2HyD?=
- =?us-ascii?Q?bii+wkpuSMgY0exPBztZe0n+OibjaOVUUcr8Rgb6hxvA2ltmhIyTgneSpqo1?=
- =?us-ascii?Q?roEQhxz09LC4tM3k9JhJduXS3B2V6KSpPJrCfQchxamk9MT+WpyGVlP6t1xj?=
- =?us-ascii?Q?deJN9GByew=3D=3D?=
-X-Exchange-RoutingPolicyChecked: tOaZFxI0dTKmRT6W8ugHXxxNjcF6c2MvbM1MO6nNgc/xYy1a/t/OhYxWQQiW+n4yn71+MazK2gMCcUxOTBoWhWNbCIdWmVwfN2PiozxIpLkCKGXSxmRwZoJG4skzEgt35uizmHyzGIuN1wSKhcX2N8DhA5nZuRSN0/ve3o3ZxbeX1jyzzaZLdLkhNagmLw/+h+BDm9FsojVldGY16mr42/IPgerBdKxCvp7R/e1HndWk14L2R1ZAmBzFizfF4BLuB8TVNcpXRdCp6ZDE5M+QkT9Xsl825Tf3mLXbBOaQ/fo0nlwUXO3sIc0c9da2Fph8zch4P9yMFUzESw8dSj/6kg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c2ed973-4574-4cfd-8a6a-08def6661eed
-X-MS-Exchange-CrossTenant-AuthSource: DSVPR11MB9579.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2026 22:32:40.0926
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WP4n5Vj0SMv42azTYhd+fRJNo3FK8L0dN0uaAwAYo9De6Q9pxniTt9Lhgo8YMLkwfJdEdBrD1mMKiAgoXyed/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB689426
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260803134403.80630-45-steven.price@arm.com>
 
-On Sat, Aug 08, 2026 at 08:29:15AM +0800, Yan Zhao wrote:
-> On Fri, Aug 07, 2026 at 02:52:50PM -0700, Ackerley Tng via B4 Relay wrote:
-> > +static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
-> > +					    size_t nr_pages, pgoff_t *err_index)
-> > +{
-> > +	struct address_space *mapping = inode->i_mapping;
-> > +	const int filemap_get_folios_refcount = 1;
-> > +	pgoff_t last = start + nr_pages - 1;
-> > +	struct folio_batch fbatch;
-> > +	bool safe = true;
-> > +	pgoff_t next;
-> > +	int i;
-> > +
-> > +	folio_batch_init(&fbatch);
-> > +
-> > +	next = start;
-> > +	while (safe && filemap_get_folios(mapping, &next, last, &fbatch)) {
-> > +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> > +			struct folio *folio = fbatch.folios[i];
-> > +
-> > +			if (folio_ref_count(folio) !=
-> > +			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
-> > +				safe = false;
-> > +				*err_index = max(start, folio->index);
-> > +				break;
-> > +			}
-> > +		}
-> > +
-> > +		folio_batch_release(&fbatch);
-> > +		cond_resched();
-> > +	}
-> > +
-> > +	return safe;
-> > +}
-> > +
-> >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
-> > -				     size_t nr_pages, uint64_t attrs)
-> > +				     size_t nr_pages, uint64_t attrs,
-> > +				     pgoff_t *err_index)
-> >  {
-> >  	bool to_private = attrs & KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> >  	struct address_space *mapping = inode->i_mapping;
-> > @@ -542,8 +576,21 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
-> >  
-> >  	mas_init(&mas, mt, start);
-> >  	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
-> > -	if (r)
-> > +	if (r) {
-> > +		*err_index = start;
-> >  		goto out;
-> > +	}
-> > +
-> > +	if (to_private) {
-> > +		unmap_mapping_pages(mapping, start, nr_pages, false);
-> > +
-> > +		if (!kvm_gmem_is_safe_for_conversion(inode, start, nr_pages,
-> > +						     err_index)) {
-> Note: conversion failures could occur if another vCPU is attempting to map a GFN
-> within this range.
+On 08/03 14:44, Steven Price wrote:
+> KVM advertises realm support when the RMM is available, and allows
+> userspace to create a VM with KVM_VM_TYPE_ARM_REALM on that basis.
 > 
-> CPU 0 (setting attributes)          CPU 1 (attempting to map)
-> --------------------------          --------------------
->                                  A: mmu_invalidate_retry_gfn_unsafe
->                                     filemap_invalidate_lock_shared
->                                     __kvm_gmem_get_pfn ==> folio refcount++
->                                     filemap_invalidate_unlock_shared
+> On CPUs that lack ICH_HCR_EL2.TDIR, KVM uses ICH_HCR_EL2.TC for
+> normal guests so that ICC_DIR_EL1 is still trapped via the common GICv3
+> CPU interface trap. Realms cannot rely on the normal hyp-side trap
+> handling for that fallback, so advertising RMI support on such systems
+> lets userspace create a realm that cannot safely run.
 > 
-> filemap_invalidate_lock
-> filemap_get_folios
-> check folio_ref_count(folio) ==> Not match !!
-> filemap_invalidate_unlock
-> 
->                                  B: read_lock(&vcpu->kvm->mmu_lock);
->                                     is_page_fault_stale
->                                     kvm_mmu_finish_page_fault ==>folio recount--
-> 				    read_unlock(&vcpu->kvm->mmu_lock);
-> 
-> 
-> Retrying in kvm_gmem_is_safe_for_conversion() or moving the invocation of
-> kvm_mmu_invalidate_start() + kvm_mmu_invalidate_range_add() to an earlier
-> position does not help as long as CPU 1 stays at stage A.
-> 
-> So, should we avoid this failure?
-> e.g., by moving filemap_invalidate_unlock_shared() from stage A to after
-> stage B?
+> Require the finalized ARM64_HAS_ICH_HCR_EL2_TDIR capability when
+> reporting KVM_CAP_ARM_RMI and when accepting KVM_VM_TYPE_ARM_REALM.
+> This leaves normal VM creation unchanged on systems that need the TC
+> workaround.
 
-Or what about having KVM always treat gmem page as non-refcounted, and have
-kvm_gmem_get_pfn() put folio refcount before releasing the filemap invalidate
-lock?
-Below patch is applied and tested at the end of this series.
+Hi Steven,
 
-From 8c2f29bc15bceb6a8fa103cf2585ec11354fd74e Mon Sep 17 00:00:00 2001
-From: Yan Zhao <yan.y.zhao@intel.com>
-Date: Mon, 10 Aug 2026 06:24:52 +0800
-Subject: [PATCH] KVM: guest_memfd: Return gmem page as non-refcounted
+Thanks for your work on upstreaming CCA.
 
-Have kvm_gmem_get_pfn() put gmem page refcount before releasing filemap
-invalidate lock and return the gmem page as non-refcounted. This avoids
-gmem memory attribute conversion failure caused by temporarily holding gmem
-page after faulting and before completing mapping.
+In the v15 discussion [0], you asked whether the system I was testing was a
+"hacked up test system" or closer to "production hardware", and I said I would
+share more when the time came. I can now say that this is not a hacked-up test
+system. At Fujitsu, we have real hardware (FUJITSU-MONAKA) which implements CCA
+(FEAT_RME) but does not implement FEAT_GICv3_TDIR. The hardware details are as
+follows:
 
-guest_memfd always holds gmem page in filemap cache. TDX does not increment
-gmem page refcount when having gmem pages mapped in S-EPT. Additionally,
-as gmem pages are not swappable, setting dirty or accessed bit is not
-necessary. Therefore, there's no need to treat gmem pages as refcounted
-pages.
+  - GICv4.2 compliant implementation
+  - Supports FEAT_GICv3, FEAT_GICv3p1, FEAT_GICv4, FEAT_GICv4p1, and FEAT_GICv3_NMI
+  - Does not support FEAT_GICv3_LEGACY (deprecated)
+  - Does not support FEAT_GICv3_TDIR (ICH_VTR_EL2.TDS == 0)
 
-Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+For reference, compared with Arm Neoverse V3, the virtual GIC configuration is
+largely equivalent. The only missing non-deprecated architectural feature is
+FEAT_GICv3_TDIR.
+
+The issue I see is that the CCA KVM code currently does not support a
+configuration (non-TDIR/common-trap) that normal KVM already supports. For
+normal guests, KVM handles systems without TDIR by using ICH_HCR_EL2.TC and the
+existing GICv3 CPU interface emulation path. However, Realm guests currently
+fail because the CCA path bypasses that existing emulation path, as Marc also
+pointed out in [1].
+
+Also, this is not limited to systems that actually lack TDIR. The same failure
+can be reproduced on a TDIR-capable system by booting with:
+  kvm-arm.vgic_v3_common_trap=1
+
+So it seems that the current CCA KVM implementation does not yet cover a
+configuration that normal KVM already supports today, rather than this being a
+limitation of the RMM specification or the underlying hardware.
+
+I've included a patch below which reuses the existing GICv3 early emulation
+path for Realm sysreg exits. This patch does not add any new vGIC emulation
+code, and leaves the existing vGIC emulation code unchanged. So I believe this
+is in line with Marc's request in [1]. With this patch, Realm guests can run
+when the common CPU interface trap path is enabled.
+
+I tested the exact patch both on our real silicon and on QEMU, and
+confirmed that all Realm-related tests in kvm-unit-tests-cca passed.
+
+I'm not attached to this exact implementation, and I'm happy if the solution is
+reworked to better fit into the next revision. 
+
+Given that this configuration can be supported by reusing the existing KVM
+emulation infrastructure, I think it would be reasonable for CCA to support the
+non-TDIR/common-trap configuration rather than requiring ICH_HCR_EL2.TDIR
+unconditionally for Realm support. 
+
+Supporting this configuration would also allow us to validate the upstream CCA
+KVM implementation on real silicon using upstream code paths, and contribute
+additional real-hardware testing coverage as the implementation
+evolves.
+
+I'd be very interested in hearing your thoughts.
+
+Thanks,
+Kohei
+
+[0] https://lore.kernel.org/all/1cd3327c-1eab-4022-9ab1-625ca8641e81@arm.com/
+[1] https://lore.kernel.org/all/86cxwfe5m8.wl-maz@kernel.org/
+
+Below is the patch I tested, and it should be applied on top of this series.
+
+----8<----
+From 11ce6b7e5ee2f21a71f657e9f45f58871d011286 Mon Sep 17 00:00:00 2001
+From: Kohei Enju <enju.kohei@fujitsu.com>
+Date: Tue, 4 Aug 2026 11:45:53 +0900
+Subject: [PATCH] KVM: arm64: CCA: Reuse early vGIC sysreg emulation for Realm
+ exits
+
+Realm vGIC CPU interface sysreg exits currently bypass KVM's early vGIC
+emulation and reach the generic sysreg descriptors. This breaks Realm
+guests when common-trap trapping is enabled, including on systems
+without ICH_HCR_EL2.TDIR.
+
+Prepare REC exits in the state expected by the existing vGIC dispatcher
+and invoke it before KVM synchronizes the vGIC hardware state. Complete
+handled accesses through the REC run structure and re-enter the REC.
+
+This reuses the existing vGIC emulation unchanged and allows Realm
+guests to run with the non-TDIR/common-trap configuration.
+
+Signed-off-by: Kohei Enju <enju.kohei@fujitsu.com>
 ---
- virt/kvm/guest_memfd.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/arm64/kvm/rmi-exit.c |  21 +------
+ arch/arm64/kvm/rmi.c      | 122 ++++++++++++++++++++++++++++++++++----
+ 2 files changed, 112 insertions(+), 31 deletions(-)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 2115e73e455a..e357b4ffa777 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -1332,11 +1332,10 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- #endif
+diff --git a/arch/arm64/kvm/rmi-exit.c b/arch/arm64/kvm/rmi-exit.c
+index 7cde820bb77b..0580433eb335 100644
+--- a/arch/arm64/kvm/rmi-exit.c
++++ b/arch/arm64/kvm/rmi-exit.c
+@@ -22,21 +22,14 @@ static int rec_exit_fatal(struct kvm_vcpu *vcpu, const char *reason,
+ static void rec_exit_sync(struct kvm_vcpu *vcpu)
+ {
+ 	struct realm_rec *rec = &vcpu->arch.rec;
+-	u64 esr = rec->run->exit.esr;
++	u64 esr = kvm_vcpu_get_esr(vcpu);
+ 	u8 ec = ESR_ELx_EC(esr);
  
- 	folio_unlock(folio);
-+	folio_put(folio);
+ 	switch (ec) {
+-	case ESR_ELx_EC_SYS64: {
+-		int rt = ESR_ELx_SYS64_ISS_RT(esr);
+-		bool is_write = (esr & ESR_ELx_SYS64_ISS_DIR_MASK) ==
+-				ESR_ELx_SYS64_ISS_DIR_WRITE;
+-
+-		if (is_write && rt < REC_RUN_GPRS)
+-			vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
+-		else if (!is_write)
++	case ESR_ELx_EC_SYS64:
++		if ((esr & ESR_ELx_SYS64_ISS_DIR_MASK) == ESR_ELx_SYS64_ISS_DIR_READ)
+ 			kvm_make_request(KVM_REQ_RMI, vcpu);
+ 		break;
+-	}
+ 	case ESR_ELx_EC_DABT_LOW:
+ 		/*
+ 		 * The RMM reports the value of an MMIO write in gprs[0],
+@@ -141,14 +134,6 @@ int kvm_rec_exit(struct kvm_vcpu *vcpu, int rec_run_ret)
+ 		return rec_exit_fatal(vcpu, "Unexpected REC_ENTER status",
+ 				      rec_run_ret);
  
- 	if (!r)
--		*page = folio_file_page(folio, index);
--	else
--		folio_put(folio);
-+		*page = NULL;
+-	vcpu->arch.fault.esr_el2 = rec->run->exit.esr;
+-	vcpu->arch.fault.far_el2 = rec->run->exit.far;
+-	/* HPFAR_EL2 is only valid for RMI_EXIT_SYNC */
+-	vcpu->arch.fault.hpfar_el2 = 0;
+-
+-	/* Reset the emulation flags for the next run of the REC */
+-	rec->run->enter.flags = 0;
+-
+ 	switch (rec->run->exit.exit_reason) {
+ 	case RMI_EXIT_SYNC:
+ 		/*
+diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+index c242dfc2c7a6..756281b0054a 100644
+--- a/arch/arm64/kvm/rmi.c
++++ b/arch/arm64/kvm/rmi.c
+@@ -1251,23 +1251,28 @@ static int kvm_rec_complete_psci(struct kvm_vcpu *vcpu)
+ 	return r ?: 1;
+ }
  
- out:
- 	filemap_invalidate_unlock_shared(file_inode(file)->i_mapping);
++static void noinstr kvm_rec_complete_sysreg_access(struct kvm_vcpu *vcpu)
++{
++	struct realm_rec *rec = &vcpu->arch.rec;
++	u64 esr = kvm_vcpu_get_esr(vcpu);
++	int rt;
++
++	if (ESR_ELx_EC(esr) != ESR_ELx_EC_SYS64 ||
++	    (esr & ESR_ELx_SYS64_ISS_DIR_MASK) != ESR_ELx_SYS64_ISS_DIR_READ)
++		return;
++
++	rt = kvm_vcpu_sys_get_rt(vcpu);
++	if (rt < REC_RUN_GPRS)
++		rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
++}
++
+ int kvm_rec_handle_request(struct kvm_vcpu *vcpu)
+ {
+ 	struct realm_rec *rec = &vcpu->arch.rec;
+-	u64 esr;
+ 
+ 	switch (rec->run->exit.exit_reason) {
+ 	case RMI_EXIT_SYNC:
+-		esr = rec->run->exit.esr;
+-		if (ESR_ELx_EC(esr) == ESR_ELx_EC_SYS64 &&
+-		    (esr & ESR_ELx_SYS64_ISS_DIR_MASK) ==
+-				ESR_ELx_SYS64_ISS_DIR_READ) {
+-			int rt = ESR_ELx_SYS64_ISS_RT(esr);
+-
+-			if (rt < REC_RUN_GPRS)
+-				rec->run->enter.gprs[rt] =
+-					vcpu_get_reg(vcpu, rt);
+-		}
++		kvm_rec_complete_sysreg_access(vcpu);
+ 		break;
+ 	case RMI_EXIT_PSCI:
+ 		return kvm_rec_complete_psci(vcpu);
+@@ -1302,14 +1307,105 @@ static void noinstr load_realm_timer_state(struct kvm_vcpu *vcpu)
+ 	write_sysreg_el0(rec_exit->cntp_ctl, SYS_CNTP_CTL);
+ }
+ 
++static void noinstr rec_prepare_exit_state(struct kvm_vcpu *vcpu)
++{
++	struct realm_rec *rec = &vcpu->arch.rec;
++	u64 esr = rec->run->exit.esr;
++	bool is_write;
++	int rt;
++
++	vcpu->arch.fault.esr_el2 = esr;
++	vcpu->arch.fault.far_el2 = rec->run->exit.far;
++	/* HPFAR_EL2 is only valid for RMI_EXIT_SYNC */
++	vcpu->arch.fault.hpfar_el2 = 0;
++
++	/* Reset the emulation flags for the next run of the REC */
++	rec->run->enter.flags = 0;
++
++	is_write = (esr & ESR_ELx_SYS64_ISS_DIR_MASK) ==
++		   ESR_ELx_SYS64_ISS_DIR_WRITE;
++	if (rec->run->exit.exit_reason != RMI_EXIT_SYNC ||
++	    ESR_ELx_EC(esr) != ESR_ELx_EC_SYS64 || !is_write)
++		return;
++
++	rt = kvm_vcpu_sys_get_rt(vcpu);
++	if (rt < REC_RUN_GPRS)
++		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
++}
++
++static int noinstr rec_perform_vgic_cpuif_access(struct kvm_vcpu *vcpu)
++{
++	unsigned long elr, spsr, pc, pstate;
++	int handled;
++
++	elr = read_sysreg_el2(SYS_ELR);
++	spsr = read_sysreg_el2(SYS_SPSR);
++	pc = *vcpu_pc(vcpu);
++	pstate = *vcpu_cpsr(vcpu);
++
++	/*
++	 * RMM has already completed the trapped Realm instruction.
++	 * Install disposable AArch64 exception-return state for
++	 * the PC adjustment made by the existing early VGIC
++	 * dispatcher, and restore both views before returning to
++	 * the Realm plumbing.
++	 */
++	*vcpu_cpsr(vcpu) = PSR_MODE_EL1h;
++	write_sysreg_el2(0, SYS_ELR);
++	write_sysreg_el2(PSR_MODE_EL1h, SYS_SPSR);
++
++	handled = __vgic_v3_perform_cpuif_access(vcpu);
++
++	write_sysreg_el2(elr, SYS_ELR);
++	write_sysreg_el2(spsr, SYS_SPSR);
++	*vcpu_pc(vcpu) = pc;
++	*vcpu_cpsr(vcpu) = pstate;
++
++	return handled;
++}
++
++static bool noinstr rec_handle_vgic_cpuif_exit(struct kvm_vcpu *vcpu)
++{
++	struct realm_rec *rec = &vcpu->arch.rec;
++	u64 esr;
++
++	if (!static_branch_unlikely(&vgic_v3_cpuif_trap))
++		return false;
++
++	esr = kvm_vcpu_get_esr(vcpu);
++	if (rec->run->exit.exit_reason != RMI_EXIT_SYNC ||
++	    ESR_ELx_EC(esr) != ESR_ELx_EC_SYS64)
++		return false;
++
++	if (rec_perform_vgic_cpuif_access(vcpu) != 1)
++		return false;
++
++	kvm_rec_complete_sysreg_access(vcpu);
++
++	/*
++	 * The emulation may have updated ICH_HCR_EL2.EOIcount.
++	 * Synchronize that update before reading ICH_HCR_EL2
++	 * again to enable the CPU interface.
++	 */
++	isb();
++	sysreg_clear_set_s(SYS_ICH_HCR_EL2, 0, ICH_HCR_EL2_En);
++
++	return true;
++}
++
+ int noinstr kvm_rec_enter(struct kvm_vcpu *vcpu)
+ {
+ 	struct realm_rec *rec = &vcpu->arch.rec;
+ 	int ret;
+ 
+-	ret = rmi_rec_enter(rec->rec_phys, rec->run_phys);
+-	if (!ret)
++	do {
++		ret = rmi_rec_enter(rec->rec_phys, rec->run_phys);
++		if (ret)
++			break;
++
+ 		load_realm_timer_state(vcpu);
++		rec_prepare_exit_state(vcpu);
++	} while (rec_handle_vgic_cpuif_exit(vcpu));
+ 
+ 	return ret;
+ }
 -- 
-2.43.2
+2.43.0
+
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> New patch for v16
+> ---
+>  arch/arm64/kvm/arm.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index fd4e13ff17cf..7edc572dd8ab 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -125,6 +125,12 @@ static bool vgic_present, kvm_arm_initialised;
+>  
+>  static DEFINE_PER_CPU(unsigned char, kvm_hyp_initialized);
+>  
+> +static bool kvm_arm_rmi_supported(void)
+> +{
+> +	return static_key_enabled(&kvm_rmi_is_available) &&
+> +	       cpus_have_final_cap(ARM64_HAS_ICH_HCR_EL2_TDIR);
+> +}
+> +
+>  bool is_kvm_arm_initialised(void)
+>  {
+>  	return kvm_arm_initialised;
+> @@ -256,7 +262,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>  		return -EINVAL;
+>  
+>  	if (type & KVM_VM_TYPE_ARM_REALM) {
+> -		if (!static_branch_unlikely(&kvm_rmi_is_available))
+> +		if (!kvm_arm_rmi_supported())
+>  			return -EINVAL;
+>  		kvm_set_realm_state(kvm, REALM_STATE_NONE);
+>  		kvm->arch.is_realm = true;
+> @@ -537,7 +543,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+>  			r = kvm_supports_cacheable_pfnmap();
+>  		break;
+>  	case KVM_CAP_ARM_RMI:
+> -		r = static_key_enabled(&kvm_rmi_is_available);
+> +		r = kvm_arm_rmi_supported();
+>  		break;
+>  
+>  	default:
+> -- 
+> 2.43.0
+> 
