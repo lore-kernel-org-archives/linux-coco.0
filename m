@@ -1,123 +1,164 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31299426438;
-	Tue, 11 Aug 2026 14:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C07B335081;
+	Tue, 11 Aug 2026 14:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786459502; cv=none; b=BoHwciSaAPLAtP6wIcdJ98s2HEPOx3vEHIQALtHdhcgBB7dksx+SH7HwZXYkIR6fobaVbEDu4RjRhLxi6f9pSRBiJx7NhXpa6xd0oBcesllS+1N9+OSqR+dGFqXh3uud3WfuypmYxX8a2Va1Poa1t57ALZgBk7TJwvSg58zzM2Q=
+	t=1786459915; cv=none; b=s0X3IMB4B+ctoyC3OHHWH+3tm/QwKvDPZNJp42nzf2fcXsxYxJYwaZ5nva4RRgp3GM8FNjPGwAZa7X5HhcH8tvVNUYywm15Pwa/EycfV0N2O/BlEMKH3gwyH0rCvGLvKSpCf5cKeJWOrG+EyMJ+JPh49bqDM254EKPNVHxjuqC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786459502; c=relaxed/simple;
-	bh=/LPEH55R6LClPqeXnYARvDZU8XDKgr9ZBtZUHbi7ZdM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tq389bv5KnGt/yxb0BWFgdXHhLDDNKTY2I+QI2XycVRgh491eK6FkHnCnDCUcr8WBX9FhC2pDmXey/kChm++04bezg5it9OJxP8hXOWlyIArjUOha5jCbYVHDST/ZE55af+pxJ6v7KXzcGA2DA0xecpIRbmSP9iGIspeOfl04J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=UhMkyTJN; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1786459915; c=relaxed/simple;
+	bh=1s6ZQV6pRCW5kArfN9tYwqwxGiAeoOQtAZi2wQkdZBI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=RyMK9SRTylaMblfiOYntVOeUQLPYfneVyzozEhu6TnxR/p6G4joajkj9FMwYO/yIXpn+RShX6al9z7uGXu9jCkY5JUQp/8LL658wTUn61fyBjtAc5Cqwim8KucTmxTDDoaJoJb0eVfCE3BvexfmmC/R5wIbz32YBd7Rq8+lMXAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=em6+r3Lb; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="UhMkyTJN"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="em6+r3Lb"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E97BB1682;
-	Tue, 11 Aug 2026 07:44:54 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EF9DA3F86F;
-	Tue, 11 Aug 2026 07:44:55 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 315191516;
+	Tue, 11 Aug 2026 07:51:48 -0700 (PDT)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1F9A13F86F;
+	Tue, 11 Aug 2026 07:51:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786459498; bh=/LPEH55R6LClPqeXnYARvDZU8XDKgr9ZBtZUHbi7ZdM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UhMkyTJN6nwQPPoHojp2Lj90fCxYgfZoPQnlFeUfUA7QykLZDiF4BKo9sc5b4f8Cu
-	 tgVMWQsawjcyUgRgg0Bm7XS/nBDFtj0Sesm5suAVALsIGilMsDyBy47x0YNQEeI5bh
-	 5ONfXUPbgnRx3kWP8wbSZ0K3W95SrAy0Gy8N9cpw=
-Date: Tue, 11 Aug 2026 15:44:53 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v16 07/45] arm64: mm: Handle Granule Protection Faults
- (GPFs)
-Message-ID: <ans1ZSwMEKeT9Gfz@arm.com>
-References: <20260803134403.80630-1-steven.price@arm.com>
- <20260803134403.80630-8-steven.price@arm.com>
+	t=1786459912; bh=1s6ZQV6pRCW5kArfN9tYwqwxGiAeoOQtAZi2wQkdZBI=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=em6+r3LbzTlgSKSNZBdpoHPdVJ/A/9H7tz5lRjUTSTGDXsheQDI/PbhdSWSfCkKD4
+	 OstIRRfmg21tnaS3Sd9Rpb6hUiI3Gno4xMF2mfxA8snZGNYJFPlVzaaCPFUqqiH3/K
+	 kj180dHzcXOEDh3kD4ThESmDXLfT29tXMrD8+mEs=
+Message-ID: <73a03e76-10b1-4e05-b9ea-a2f3b5dc6b3e@arm.com>
+Date: Tue, 11 Aug 2026 15:51:47 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260803134403.80630-8-steven.price@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 17/45] KVM: arm64: CCA: Tear down RTTs
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+To: Alper Gun <alpergun@google.com>, Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-18-steven.price@arm.com>
+ <CABpDEun3NPr7Na85pmOvdfYQ1DB-2nCcocsyDESXM15bzJU1og@mail.gmail.com>
+ <c1f0aad2-33cb-4dab-b54d-d09998fed36e@arm.com>
+Content-Language: en-US
+In-Reply-To: <c1f0aad2-33cb-4dab-b54d-d09998fed36e@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 03, 2026 at 02:43:23PM +0100, Steven Price wrote:
-> If the host attempts to access granules that have been delegated for use
-> in a realm these accesses will be caught and will trigger a Granule
-> Protection Fault (GPF).
+
+
+On 04/08/2026 13:16, Suzuki K Poulose wrote:
+> Hi there
 > 
-> A fault during a page walk signals a bug in the kernel and is handled by
-> oopsing the kernel. A non-page walk fault could be caused by user space
-> having access to a page which has been delegated to the kernel and will
-> trigger a SIGBUS to allow debugging why user space is trying to access a
-> delegated page.
+> On 03/08/2026 23:29, Alper Gun wrote:
+>> On Mon, Aug 3, 2026 at 6:45 AM Steven Price <steven.price@arm.com> wrote:
+>>> [...]
+>>> +static void realm_unmap_stage2(struct kvm *kvm)
+>>> +{
+>>> +       struct realm *realm = &kvm->arch.realm;
+>>> +
+>>> +       lockdep_assert_held(&kvm->arch.config_lock);
+>>> +
+>>> +       if (realm->stage2_unmapped)
+>>> +               return;
+>>> +
+>>> +       write_lock(&kvm->mmu_lock);
+>>> +       kvm_stage2_unmap_range(&kvm->arch.mmu, 0,
+>>> +                              BIT(realm->ia_bits - 1), true);
+>>> +       write_unlock(&kvm->mmu_lock);
+>>> +
+>>> +       realm->stage2_unmapped = true;
+>>> +}
+>>> +
+>>> +int kvm_realm_teardown_stage2(struct kvm *kvm)
+>>> +{
+>>> +       lockdep_assert_held(&kvm->arch.config_lock);
+>>> +
+>>> +       realm_unmap_stage2(kvm);
+>>> +       return realm_destroy_rtts(kvm);
+>>> +}
+>>
+>> Hi Steven,
+>>
+>> I noticed a warning in dmesg when destroying a realm:
+>>
+>>    [  158.533495] Call trace:
+>>    [  158.535927]  kvm_destroy_realm+0x208/0x218
+>>    [  158.540356]  kvm_arch_destroy_vm+0xc8/0xd8
+>>    [  158.544439]  kvm_put_kvm+0x324/0x4b0
+>>    [  158.548002]  kvm_vm_stats_release+0x1c/0x38
 > 
-> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v10:
->  * Don't call arm64_notify_die() in do_gpf() but simply return 1.
-> Changes since v2:
->  * Include missing "Granule Protection Fault at level -1"
-> ---
->  arch/arm64/mm/fault.c | 28 ++++++++++++++++++++++------
->  1 file changed, 22 insertions(+), 6 deletions(-)
+> Thanks for the report and the detailed analysis.
 > 
-> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> index 85e23388f9bb..ea3ae0ca7dba 100644
-> --- a/arch/arm64/mm/fault.c
-> +++ b/arch/arm64/mm/fault.c
-> @@ -909,6 +909,22 @@ static int do_tag_check_fault(unsigned long far, unsigned long esr,
->  	return 0;
->  }
->  
-> +static int do_gpf_ptw(unsigned long far, unsigned long esr, struct pt_regs *regs)
-> +{
-> +	const struct fault_info *inf = esr_to_fault_info(esr);
-> +
-> +	die_kernel_fault(inf->name, far, esr, regs);
-> +	return 0;
-> +}
-> +
-> +static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
-> +{
-> +	if (!is_el1_instruction_abort(esr) && fixup_exception(regs, esr))
-> +		return 0;
-> +
-> +	return 1;
-> +}
+>>
+>> I traced this and found the following:
+>>
+>> At this point, calling realm_destroy_rtts() may fail destroying the RTTs
+>> because RECs are still active and the Realm is not terminated, but the
 
-Is there a valid case for fixup_exception() here? IOW, do we ever have a
-valid user mapping of the pages delegated to a guest? If the above is
-considered a kernel bug, I'd not silently ignore this (like return less
-bytes copied or -EFAULT to user) but rather warn, potentially
-rate-limited.
+May be we should bail out early in the realm_map_ipa() based on the
+state of the Realm (i.e. state != ACTIVE). But looking at this
+I see that we serialize the state of the realm using the config_lock,
+which is a bit odd.
 
-If there is a real use-case for this, what's preventing GUP + memcpy()
-from triggering a similar fault with no fixup available?
+>> walk finishes and still sets realm->rtts_destroyed = true.
+>>
+>> Later, kvm_destroy_realm() calls rmi_realm_terminate() and then calls
+>> realm_destroy_rtts(kvm) again. But because realm->rtts_destroyed is 
+>> already
+>> set to true, it exits early without tearing down the RTTs.
+>>
+>> Consequently, rmi_realm_destroy() is invoked while the RTT tables still
+>> exist in RMM, which fails and triggers WARN_ON(rmi_realm_destroy).
+>>
+>> The fix I used was to remove realm_destroy_rtts() from
+>> kvm_realm_teardown_stage2():
+>> --- a/arch/arm64/kvm/rmi.c
+>> +++ b/arch/arm64/kvm/rmi.c
+>> @@ -434,7 +434,7 @@ int kvm_realm_teardown_stage2(struct kvm *kvm)
+>>    lockdep_assert_held(&kvm->arch.config_lock);
+>>
+>>    realm_unmap_stage2(kvm);
+>> - return realm_destroy_rtts(kvm);
+>> + return 0;
+>>   }
+>>
+>> I think we don't need RTT destruction here as it will be handled 
+>> cleanly in
+>> kvm_destroy_realm() later.
+> 
+> That sounds sensible to me, I will take a look and fix it locally for 
+> the next version.
 
--- 
-Catalin
+On a second look, I think the rtts_destroyed flag may not be saving us
+much. If the RTTs are destroyed, we should complete the second round
+fairly easily.
+
+Suzuki
+
+> 
+> 
+> Thanks
+> Suzuki
+> 
+>>
+>> Thanks,
+>> Alper
+> 
+
