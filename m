@@ -1,33 +1,50 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63EE2F3C18;
-	Wed, 12 Aug 2026 06:04:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EC834C134
+	for <linux-coco@lists.linux.dev>; Wed, 12 Aug 2026 07:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786514675; cv=none; b=MBk1Ymm+BqQBJxN7yg02Gm2MSp40ED2XA7eesGBpGXdSulJV5GjqC9VSwBOxoExnqYExvFq9D9vy7SuNCvRi5ZVJkvUStvIL+1DGv8hBpqLwrnkGVIx3xVYQfyUJeTst/vYR+4cb8fkmRTFjmYeAQqUg4lJkxBXxKWRmmXGr22o=
+	t=1786519796; cv=none; b=A4Kqcx2xe4G+9/o3Sc35e8tn5pWG29hCABc1oOI8HKSBYNU+C38jZ37jY2IcYscFpejAyswFDVsT6d+aLenDvoR+6PEq1IgJawqa/iz/yF3iR96YksSxuR4gJh32vxAB7pKRZNKWjV5TLeT7ZQB22xmA6qDti34b0W0tErQ2iIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786514675; c=relaxed/simple;
-	bh=tmIAlhtUrYkRiVryzRy6E42aPb+KIvoQND5y6DtYj/8=;
+	s=arc-20240116; t=1786519796; c=relaxed/simple;
+	bh=QILAfq3H4DMlFgNLDzMYt4ktWH2ByPq23XNDWJHBSR4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qTDOj2i5qaHNUwRkRC6bniNodB1m/D7Xybzc6w8wMIc+l1wJgNr8UhKsR9H7+CFJTlLFsgLdzDusJuE9mQZBzSW6ROWHEdy+q0OQO+8bHAS5ol62xmiE9kLoYxLDIsJDk4YeZG07mMdV7Pw2VhBiET+lhUdKImNEipHsgIQ2fFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=pr0gPwat; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 In-Reply-To:Content-Type; b=jLsv5RPtn2GdRaQW/DzvI2i5OCLnJT8RUTympOTnWW3EI1XcGMANqMeaPNbW9teMhXSqi/xxaKcKdUSEaU4COoGr+Lq+A+k7Q0eHqzKyw21VYE32mDcIOh83kfmJuMeALTm00IkpDHa0mEhUFBpuLUlb+x+RGRBgRrHLK7T+bzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h5f3YrSX; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="pr0gPwat"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 412751516;
-	Tue, 11 Aug 2026 23:04:22 -0700 (PDT)
-Received: from [10.57.44.219] (unknown [10.57.44.219])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BCA7C3F86F;
-	Tue, 11 Aug 2026 23:04:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786514666; bh=tmIAlhtUrYkRiVryzRy6E42aPb+KIvoQND5y6DtYj/8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pr0gPwatQrinT/xvvxhWSrPY8SQhis1ft5oWWGKpUlOlSsmKBigV7jyKOXWEQXEzR
-	 K6e9O8yEfSfCP1WQAj7dLNjj7jjjol+T3OWtrgsGfFIlHjKeqoi0eVTLj9ioz3iOOg
-	 jfKWBE0aQKAZi9Fpjuq6iyLTeeahfHryAvVN9Ktw=
-Message-ID: <f5d47f5f-5869-4e3a-a176-4fd632567975@arm.com>
-Date: Wed, 12 Aug 2026 07:04:21 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h5f3YrSX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786519795; x=1818055795;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=QILAfq3H4DMlFgNLDzMYt4ktWH2ByPq23XNDWJHBSR4=;
+  b=h5f3YrSX2n/sWBFFulv731a5CVt2EM11SuXSAPfJzSTEIyoKx4fntx/4
+   1trR/yV2+WCAta9dMuqdna1dqAjoaW2rI2w5YFkVekexSSXR69iqzBAt4
+   kRQt25zliTNv6LFwNLexJw+Q68HJsgdQ8Tkpqhlp48nN3YXsRznSzcZ23
+   g4xTyUkJSv7rKRbPSJSk1mWh+vzfMpcE4pWfhd1KIokq0vtiHcRNQ7g68
+   Rd/nF9S+FuUe35eHOaNj+7CSeuKbANYjaPo7PGsR6HeXKBlZuADMAoX91
+   sKqDzIN2R/a/XGWDMiYHszjL6twiDZJzLsVRSIeboZXqwCFUTBs3PRu6V
+   w==;
+X-CSE-ConnectionGUID: L6JeMTVyQ8CyUCtsN40a/w==
+X-CSE-MsgGUID: 8IEXeGM3QjCdnOYveN5B4g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="90940720"
+X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
+   d="scan'208";a="90940720"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 00:29:53 -0700
+X-CSE-ConnectionGUID: NOTMrTxuTo6su0uWtJjW5w==
+X-CSE-MsgGUID: 0h4Qek5MRlONch2ZjsJfTw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
+   d="scan'208";a="267061894"
+Received: from unknown (HELO [10.238.208.98]) ([10.238.208.98])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 00:29:51 -0700
+Message-ID: <1a7bff3b-731b-4990-8267-82d08669c8ee@intel.com>
+Date: Wed, 12 Aug 2026 15:29:49 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -35,146 +52,62 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 00/45] arm64: Support for Arm CCA in KVM
-Content-Language: en-GB
-To: Alper Gun <alpergun@google.com>, Gavin Shan <gshan@redhat.com>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
- Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Javier.AlmansaSobrino@arm.com
-References: <20260803134403.80630-1-steven.price@arm.com>
- <42170467-fe36-4382-867f-49bdc6a7bc9a@arm.com>
- <d0ffbcb5-0cca-4d1e-9788-6b430345fa9b@redhat.com>
- <5e86232a-89ed-40ff-89e2-9e48fbf9554e@arm.com>
- <e2894206-7470-4606-b9ac-eedc8d2bdaf3@redhat.com>
- <CABpDEukGY+ctSi6wHAaC7o4pGmastX_Y18K2_VYDhNME7TF+wQ@mail.gmail.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CABpDEukGY+ctSi6wHAaC7o4pGmastX_Y18K2_VYDhNME7TF+wQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] KVM: TDX: Fix the exit reason handling
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "seanjc@google.com" <seanjc@google.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "kas@kernel.org" <kas@kernel.org>,
+ "nik.borisov@suse.com" <nik.borisov@suse.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260810112200.2326727-1-xiaoyao.li@intel.com>
+ <20260810112200.2326727-3-xiaoyao.li@intel.com>
+ <5dfed336a46329ba39922dcb3a8723116dae9ae4.camel@intel.com>
+ <6bb1328d-e995-4ad7-9744-3ab01d2ae591@intel.com>
+ <0a458dd822e5469068d5dea6aea3dd935b69e963.camel@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <0a458dd822e5469068d5dea6aea3dd935b69e963.camel@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hi Alper, Gavin
-
-On 12/08/2026 04:25, Alper Gun wrote:
-> On Tue, Aug 11, 2026 at 8:08 PM Gavin Shan <gshan@redhat.com> wrote:
->> As the following calltrace indicates, -EAGAIN is returned from tf-rmm::update_ripas()
->> because true is returned from s2tte_drain_pending() for the S2TTE corresponding to
->> IPA 0x80000000. Linux host received error (RMI_ERROR_RTT, level=3) in ripas_change().
->> Upon this specific error and the IPA range [0x80000000 0x90000000], find_map_level()
->> returns level of 2, and realm_create_rtt_levels() returns 0 without populating any
->> RTTs. After that, rmi_rtt_set_ripas() is re-executed and the above loop starts over
->> again.
+On 8/11/2026 11:20 PM, Edgecombe, Rick P wrote:
+> On Tue, 2026-08-11 at 09:32 +0800, Xiaoyao Li wrote:
+>>> We could make this return instead be a goto err; that returns this. Bonus is
+>>> the
+>>> comment on the other one can cover them both. What do you think?
 >>
->>     Linux host
->>     ==========
->>     kvm_arch_vcpu_ioctl_run                     // cca/host-v16
->>       check_vcpu_requests
->>         kvm_check_request
->>           kvm_rec_handle_request
->>             kvm_complete_ripas_change
->>               realm_set_ipa_state
->>                 ripas_change
->>                   rmi_rtt_set_ripas
->>                     SMC_RMI_RTT_SET_RIPAS
->>
->>     TF-RMM
->>     ======
->>     SMC_RMI_RTT_SET_RIPAS                      // tf-rmm/topics/rmm-v2.0-poc_3
->>       smc_rtt_set_ripas
->>         s2tt_walk_lock_unlock
->>         rtt_set_ripas_range
->>           update_ripas
->>             s2tte_drain_pending                // true, returns -EAGAIN
->>
->> The problem is the pending-bit for RTE corresponding IPA address 0x80000000 isn't cleared
->> when SMC_RMI_RTT_SET_RIPAS is invoked. I didn't figure out how this bit is set and why
->> it's not cleared in time.
-
-Thanks for the details.
-
->>
+>> Given 1) this patch is here mainly to avoid the false-positive on
+>> bus_lock_detected after the next patch,
 > 
-> Hi Gavin, Suzuki,
-> 
-> I think I ran into a similar issue on rmm-v2.0-poc_3 last week.
-> This looks like a potential RMM bug: could bit 32 be part of the physical
-> Address (if PA >= 4 GiB)?
-> 
-> It seems s2tte_drain_pending() in lib/s2tt/src/s2tt.c checks bit 32 without
-> checking whether the descriptor is valid or invalid.
-> 
-> In my testing, guarding the drain checks with a check for S2TTE_INVALID seemed
-> to resolve the boot hang:
-> --- a/lib/s2tt/src/s2tt.c
-> +++ b/lib/s2tt/src/s2tt.c
-> @@ -1701,6 +1701,10 @@ unsigned long
-> s2tte_clear_drain_pending(unsigned long s2tte)
-> 
->   bool s2tte_drain_pending(unsigned long s2tte)
->   {
-> + if ((s2tte & S2TT_DESC_VALID_MASK) != S2TTE_INVALID) {
-> + return false;
+> Hmm. Before this patch these are just one line returns. So a "goto err" would be
+> unneeded. After this single line is expanded to be something more elaborate, and
+> a comment is added around one of these more elaborate returns, but not the
+> other. So I consider it a bit of a style regression. Which makes it appropriate
+> to adjust it in the patch IMO.
 
-We should use also consider cases where the entry is INVALID, but
-has HIPAS=ASSIGNED/ASSIGNED_DEV to make it tighter. So, I think
-it is better to use :
+Well, actually the added comment cannot be shared. For the 
+EXIT_REASON_EPT_MISCONFIG case, the reason to return a synthesized 
+invalid Exit Reason is to differentiate with the case of 
+TDVMCALL(ept_violation), where the exit reason is updated to EPT_MISCONFIG.
 
-s2tte_is_unassigned() or in the library stick to :
+In fact, we don't need such trick for real EPT_MISCONFIG, because there 
+is handling for real EPT_MISCONFIG in tdx_handle_exit()
 
-if (!s2tte_has_hipas(s2tte, S2TTE_INVALID_HIPAS_UNASSIGNED))
-	return false;
+	if (unlikely(vp_enter_ret == EXIT_REASON_EPT_MISCONFIG)) {
+		KVM_BUG_ON(1, vcpu->kvm);
+		return -EIO;
+	}
 
-May be we should assert this and make the caller responsible for
-checking the bit. I will leave it to the tf-RMM team to fix.
+before the handling of transformed EPT_MISCONFIG from 
+TDVMCALL(ept_violation)
 
-But for now, please use the above fix.
+	switch (exit_reason.basic) {
+	...
+	case EXIT_REASON_EPT_MISCONFIG:
+		return tdx_emulate_mmio(vcpu);
 
-Cheers
-Suzuki
-
-
-> + }
-> +
->    return (s2tte & S2TTE_SW_DRAIN_PENDING_BIT) != 0UL;
->   }
-> 
-> @@ -1730,11 +1734,19 @@ unsigned long
-> s2tte_clear_tlbi_pending(unsigned long s2tte)
-> 
->   bool s2tte_tlbi_pending(unsigned long s2tte)
->   {
-> + if ((s2tte & S2TT_DESC_VALID_MASK) != S2TTE_INVALID) {
-> + return false;
-> + }
-> +
->    return (s2tte & S2TTE_SW_TLBI_PENDING_BIT) != 0UL;
->   }
-> 
->   unsigned int s2tte_drain_handle(unsigned long s2tte)
->   {
-> + if ((s2tte & S2TT_DESC_VALID_MASK) != S2TTE_INVALID) {
-> + return 0U;
-> + }
-> +
->    return (unsigned int)EXTRACT(S2TTE_SW_HANDLE, s2tte);
->   }
-> 
-
-
-
-
-> Sharing in case it helps.
-> Thanks,
-> Alper
+But it's not urgent to fix it and it's not mandatory to enable Bus Lock 
+VM exit on TDX. Let's leave it to the follow-up series.
 
