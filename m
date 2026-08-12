@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465F537F31F
-	for <linux-coco@lists.linux.dev>; Wed, 12 Aug 2026 03:27:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11895265623
+	for <linux-coco@lists.linux.dev>; Wed, 12 Aug 2026 05:23:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786505274; cv=none; b=Wgv/rLDkdGtcM413YKpDr2acvqbhZfchnNHpbvLW9j90FP9hAaytLuu1rrkZCk77Xm3C2rxeUM2sWEG1CIoVBRYvQTS3b8tn3nw0mHo2FNfGMYKA+dJLDkLiKdulHeJYEAcAPxeQf9sIhHmX9T38HxnHjIYMCN/BEu/6xHZ9ec4=
+	t=1786512217; cv=none; b=HUSCAaB6V2x8oybnfl1Hr9CQB0GtNt6QZjumIjBxLVhg76kD7v3Pw82iSeGRaUkHoh1mm/zVjqCivSpIKdfHKtpUI7R0DJ43vXQIm8X7qZ3Hnwkm37POLP7cFuq1M5JhDf7Qb5h4cAUgL7hPMSGu98MWWWBu1RStiQt/zhqEZno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786505274; c=relaxed/simple;
-	bh=DHngFFMTzobiHwpPz3SjP9y266L3Dd5I1hQOUiek3dg=;
+	s=arc-20240116; t=1786512217; c=relaxed/simple;
+	bh=iE7WD9cC5Zp1jYTzEd47muCzZZ8TB+7wVvVGgHiezK0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eaNjNx8uOd9SEamCax3DX79nZrDxyQdjeNvNQ8u/DBxgaceEsGxJmXf/59lL+953Z69wTWrvERAFofaW7Oo49FdzME88Z5Q1m461oeravVFP2X8/54o8Sb7a5VbDbbFXLxBQn8rFIDdgoBAez5/OO/1gXtkoW0NZYzEK769rUAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bEJ0+Jwj; arc=none smtp.client-ip=192.198.163.13
+	 In-Reply-To:Content-Type; b=uyqYpDzd/dDv5UZcqDnMnXmmvP1JFF2bYUHq534ruqkMzwwRzQDMao/xdezzOyuYaf4OzqYqy7DzFljpejho9Sr0UHoukHM+EYKedx8vXL0VTwtR9JawIJRDTCXOGJyRIsgA2vHmM/MzJs9SplmRBppYBPNMhEMqHoS5B2jwpJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OpukalZq; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bEJ0+Jwj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OpukalZq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786505272; x=1818041272;
+  t=1786512216; x=1818048216;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=DHngFFMTzobiHwpPz3SjP9y266L3Dd5I1hQOUiek3dg=;
-  b=bEJ0+JwjOvw5EvqCWtAkD94ELcligTtzeirx1f6JPxANZRm+WaA8FVwf
-   7qjJl1CZ8Vfwj6PrU9pVCcZ18bOlIc/NmhHNbb1gY12ikmepUavh0Iv8L
-   lWrzuv7950XXR3EFhOtvsh2477UESoW1pE/FytO3aXJpKAs+NZpMtXdHy
-   3NekbZcygExMN/puFS3qScIAGgm0wSwoDBj12slXfN5lsD7Z+3iXljAgh
-   2DwrtnnsJV/r/Bmig5Ua5SpeQ2wfZM3Y6+phn5l8l+hehA4XJDfmX4OD+
-   J7bM1WLkxJJZLVjDuu7gjClgDxy/XPr6morWYAnWBVtznSuh8wGVBiuJc
+  bh=iE7WD9cC5Zp1jYTzEd47muCzZZ8TB+7wVvVGgHiezK0=;
+  b=OpukalZqB99QR2lt9G7Jvp3zYAT49pMhvUi8wyft/VbD+LtwvS3CnCuH
+   a8++2UOLJqD+lNgWaDTVWmW+Ox1nNM0yX4YdyMWwg5yZyf5i6tg1m8Dr8
+   3v3BOP71aSCI6pA9sgRLPPgAjSTeT7QW1EKxT2ZdYpih3Fhcrg4WD87F+
+   E0/MmLMv5ACH6IpKgBvDWP5CmoUY7Rh504JV7uNYA7gYuJz3DKcrzmbHa
+   Hl/yfOecoDVIL2yyUSj8uZz3kRSimAypc6XLJkuAIdkZPV3YQtXNo9fF8
+   LTyYcbACAcqPhlMRLvPjiCHdOiW6fhXbSENYT+x+/0cme1u1p96mskhZy
    g==;
-X-CSE-ConnectionGUID: f9LAS8eHRquGICNP0PPwMQ==
-X-CSE-MsgGUID: LbPRDPfATw6WwQxme1/Xew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="89575909"
+X-CSE-ConnectionGUID: J2+DlJbJQza/ngr+unPKyA==
+X-CSE-MsgGUID: o+IAeteER72d8xgzltiyug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="112600176"
 X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="89575909"
+   d="scan'208";a="112600176"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 20:27:52 -0700
-X-CSE-ConnectionGUID: jXyrUnQUTjijHpNVquEIwg==
-X-CSE-MsgGUID: bUYlg8z2QcKiPLUcckGC1g==
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 22:23:35 -0700
+X-CSE-ConnectionGUID: 1SnU3e7vSsmcahYLs71EJQ==
+X-CSE-MsgGUID: KGD9BSXaRIiKAaUKOK5hpA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="261763974"
+   d="scan'208";a="261785396"
 Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 20:27:38 -0700
-Message-ID: <5d7151af-79a4-4e3b-8d06-949b1dd670ee@linux.intel.com>
-Date: Wed, 12 Aug 2026 11:27:35 +0800
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 22:23:22 -0700
+Message-ID: <3722b4d2-ef2a-4ab8-9a24-7d61a776b05e@linux.intel.com>
+Date: Wed, 12 Aug 2026 13:23:19 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 02/41] KVM: guest_memfd: Introduce per-gmem
- attributes, use to guard user mappings
+Subject: Re: [PATCH v10 05/41] KVM: Rename memory attribute APIs to prepare
+ for in-place gmem conversion
 To: ackerleytng@google.com
 Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
  chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
@@ -87,38 +87,33 @@ Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
  linux-mm@kvack.org, linux-coco@lists.linux.dev,
  Xiaoyao Li <xiaoyao.li@intel.com>
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-2-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-5-2fc18ee6d3ba@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-2-2fc18ee6d3ba@google.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-5-2fc18ee6d3ba@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
 > From: Sean Christopherson <seanjc@google.com>
 > 
-> Start plumbing in guest_memfd support for in-place private<=>shared
-> conversions by tracking attributes via a maple tree.  KVM currently tracks
-> private vs. shared attributes on a per-VM basis, which made sense when a
-> guest_memfd _only_ supported private memory, but tracking per-VM simply
-> can't work for in-place conversions as the shared/private status of a given
-> page needs to be per-gmem_inode, not per-VM.
+> Rename memory attribute APIs to add a "vm_" in the name in anticipation of
+> moving PRIVATE tracking into guest_memfd, to allow in-place conversion
+> between SHARED and PRIVATE.  At that point, there will effectively be two
+> (potential) sources of memory attributes: the VM and guest_memfd.
 > 
-> Use the filemap invalidation lock to protect the maple tree, as taking the
-> lock for read when faulting in memory (for userspace or the guest) isn't
-> expected to result in meaningful contention, and using a separate lock
-> would add significant complexity (avoiding deadlock is quite difficult).
+> kvm_vm_set_mem_attributes() already has "vm" in the name to indicate that
+> it is a VM ioctl. Rename it to kvm_set_vm_mem_attributes() to show that it
+> is setting the VM's memory attributes. (Drop the VM-ioctl scoping since it
+> is a helper local to the file.) Update the accompanying trace function to
+> match.
 > 
-> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> Co-developed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Fuad Tabba <tabba@google.com>
+> No functional change intended.
+> 
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Reviewed-by: Fuad Tabba <tabba@google.com>
 > Tested-by: Shivank Garg <shivankg@amd.com>
 > Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-
-With Sean's fixup in https://lore.kernel.org/kvm/annqex-kBOc0UJvp@google.com/ 
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
