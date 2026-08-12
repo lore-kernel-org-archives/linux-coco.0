@@ -1,36 +1,35 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E73B356A37;
-	Wed, 12 Aug 2026 13:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84E2455175;
+	Wed, 12 Aug 2026 14:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786542698; cv=none; b=qwuBuTA9v8Cfsi/gwe9P1Ux9k/S6dmmORxp6GseWqCCgMn11ubOwRpP6t8IqOJ8AsR+gwfijzb5EgeAgsDXvuO6xnP5cH6cenQNoR2h60bodSMtgv6lWa6NK/w+vmRuxPcAzcmY2SDbozpEWTwQKRbqi6qs2i080gAeyLOipe4Y=
+	t=1786543586; cv=none; b=JxcISHZToWMQSKWuIZXWKI2wJClE/ScaL1yu4KOWDDjNPFkn9o9eitmnqmlTsCG8UZwkHgebx0RBCPIPEYiDOGPvUzQPvIN4i9OqrUVGdMf89s2dk5SF8E4JLfUGTFqEWgq7YwciaBQKqq8CnbJkcDb/UMdQ6cYJxPwlGeJw8iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786542698; c=relaxed/simple;
-	bh=7nCoc+Gd4dBqkVM3L9DgfcWFTtT0Go8fgXf2EaF6ryw=;
+	s=arc-20240116; t=1786543586; c=relaxed/simple;
+	bh=bh0/JnR761VFnEEhRwS/Ugn+kZtVtLwTmHQIRC2e//k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BA20NWmnCBbCOjkVhRwFvM8kSyM36HQSg04VoH75qvkhxC0Q3iIIO1UOtWRIFGS9b2gzeG1GgEK2UdQWUzDCsu6xFZc5WqkPAVeBlQgpyj0ybJCcHAZNDzD5HKsBF2TSu8KZSzx1/xiwa00sc6rjgXwAHwShBMuhH/W8FbIo+vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=mdhIzOxU; arc=none smtp.client-ip=217.140.110.172
+	 Content-Type:Content-Disposition:In-Reply-To; b=bIi4veq5HEDobL2Webfp6RWDN80s6AZrVsHKt6DwzAcA1xKgOxjk+ijE5XdiL0JE0glxC/8YIxixVAxhHPQnKv1Nj0skSzyNnRX3OgWx/yemrAxY8mLMLFYnvwxUalkxeTNZk2aHAbDY8BERUOwn47Oru2hVefZiFXsuIBj7Xlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=klXi/hgw; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="mdhIzOxU"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="klXi/hgw"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 95556153B;
-	Wed, 12 Aug 2026 06:51:31 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9788B153B;
+	Wed, 12 Aug 2026 07:06:17 -0700 (PDT)
 Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6B3253F66F;
-	Wed, 12 Aug 2026 06:51:32 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9496F3F632;
+	Wed, 12 Aug 2026 07:06:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786542695; bh=7nCoc+Gd4dBqkVM3L9DgfcWFTtT0Go8fgXf2EaF6ryw=;
+	t=1786543581; bh=bh0/JnR761VFnEEhRwS/Ugn+kZtVtLwTmHQIRC2e//k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mdhIzOxU4DrVBTfWu9sQVemCRyfbINm+gJGsobbhcHm6RT2xmNZhB26+0R9dosOlZ
-	 xJoZ5cz12TtS+PoAC7Z6fjscj7CPeR3vEFkFy0T4SY9x7smJreqT9+FtH5Fyd4YiTR
-	 1YAp2YSqYL4igzdFr1iNMh6k+hMv25AjPvBXLAdU=
-Date: Wed, 12 Aug 2026 14:51:29 +0100
+	b=klXi/hgwDJSqiXYaTTYHt4fGHZfPB9cFUBse4zbtz/JllaJLWv74AyEABc9GEv5lM
+	 wr4myaJNRgrauF8bckSfgA8l1mnVVsqi8DeYnYNK4XYcrViF0AsXRgFeC7oMW5bLqG
+	 TK2Q71NK4B0cxXcTCDqXglCTD9tMDxwY2OqeYnpw=
+Date: Wed, 12 Aug 2026 15:06:15 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
-To: Pavan Kondeti <pavan.kondeti@oss.qualcomm.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
 	kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
 	Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
 	Oliver Upton <oliver.upton@linux.dev>,
@@ -48,14 +47,13 @@ Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Emi Kisanuki <fj0570is@fujitsu.com>,
 	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
 	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v16 07/45] arm64: mm: Handle Granule Protection Faults
- (GPFs)
-Message-ID: <anx6YbPMVz3OlpA5@arm.com>
+Subject: Re: [PATCH v16 29/45] KVM: arm64: CCA: Support runtime faulting of
+ memory
+Message-ID: <anx9195WR8wokAcL@arm.com>
 References: <20260803134403.80630-1-steven.price@arm.com>
- <20260803134403.80630-8-steven.price@arm.com>
- <ans1ZSwMEKeT9Gfz@arm.com>
- <d4bdecca-517a-4b4b-bf67-cef6b09bc8c1@arm.com>
- <7d4e5920-aa20-40cd-954e-037631bd0d6c@quicinc.com>
+ <20260803134403.80630-30-steven.price@arm.com>
+ <antC5JOxDPs7i876@arm.com>
+ <b512db4b-793b-4dd1-baac-e873b39f5b0b@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -64,94 +62,120 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7d4e5920-aa20-40cd-954e-037631bd0d6c@quicinc.com>
+In-Reply-To: <b512db4b-793b-4dd1-baac-e873b39f5b0b@arm.com>
 
-On Wed, Aug 12, 2026 at 06:12:09PM +0530, Pavan Kondeti wrote:
-> On Tue, Aug 11, 2026 at 04:11:13PM +0100, Suzuki K Poulose wrote:
-> > On 11/08/2026 15:44, Catalin Marinas wrote:
-> > > On Mon, Aug 03, 2026 at 02:43:23PM +0100, Steven Price wrote:
-> > > > If the host attempts to access granules that have been delegated for use
-> > > > in a realm these accesses will be caught and will trigger a Granule
-> > > > Protection Fault (GPF).
-> > > > 
-> > > > A fault during a page walk signals a bug in the kernel and is handled by
-> > > > oopsing the kernel. A non-page walk fault could be caused by user space
-> > > > having access to a page which has been delegated to the kernel and will
-> > > > trigger a SIGBUS to allow debugging why user space is trying to access a
-> > > > delegated page.
-> > > > 
-> > > > Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> > > > Reviewed-by: Gavin Shan <gshan@redhat.com>
-> > > > Signed-off-by: Steven Price <steven.price@arm.com>
-> > > > ---
-> > > > Changes since v10:
-> > > >   * Don't call arm64_notify_die() in do_gpf() but simply return 1.
-> > > > Changes since v2:
-> > > >   * Include missing "Granule Protection Fault at level -1"
-> > > > ---
-> > > >   arch/arm64/mm/fault.c | 28 ++++++++++++++++++++++------
-> > > >   1 file changed, 22 insertions(+), 6 deletions(-)
-> > > > 
-> > > > diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> > > > index 85e23388f9bb..ea3ae0ca7dba 100644
-> > > > --- a/arch/arm64/mm/fault.c
-> > > > +++ b/arch/arm64/mm/fault.c
-> > > > @@ -909,6 +909,22 @@ static int do_tag_check_fault(unsigned long far, unsigned long esr,
-> > > >   	return 0;
-> > > >   }
-> > > > +static int do_gpf_ptw(unsigned long far, unsigned long esr, struct pt_regs *regs)
-> > > > +{
-> > > > +	const struct fault_info *inf = esr_to_fault_info(esr);
-> > > > +
-> > > > +	die_kernel_fault(inf->name, far, esr, regs);
-> > > > +	return 0;
-> > > > +}
-> > > > +
-> > > > +static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
-> > > > +{
-> > > > +	if (!is_el1_instruction_abort(esr) && fixup_exception(regs, esr))
-> > > > +		return 0;
-> > > > +
-> > > > +	return 1;
-> > > > +}
+On Wed, Aug 12, 2026 at 10:01:48AM +0100, Suzuki K Poulose wrote:
+> On 11/08/2026 16:42, Catalin Marinas wrote:
+> > On Mon, Aug 03, 2026 at 02:43:45PM +0100, Steven Price wrote:
+> > > At runtime if the realm guest accesses memory which hasn't yet been
+> > > mapped then KVM needs to either populate the region or fault the guest.
 > > > 
-> > > Is there a valid case for fixup_exception() here? IOW, do we ever have a
-> > > valid user mapping of the pages delegated to a guest? If the above is
-> > > considered a kernel bug, I'd not silently ignore this (like return less
-> > > bytes copied or -EFAULT to user) but rather warn, potentially
-> > > rate-limited.
+> > > For memory in the lower (protected) region of IPA a fresh page is
+> > > provided to the RMM which will zero the contents. For memory in the
+> > > upper (shared) region of IPA, the memory from the memslot is mapped
+> > > into the realm VM non secure.
 > > 
-> > Good question. This shouldn't be a valid case. We expect the VMM to use
-> > guest_memfd and that should prevent any mmaps and thus fixups shouldn't
-> > be required. That said, this series doesn't enforce that the VMM uses
-> > GMEM backed memslots for Guest RAM. We should probably do that while
-> > mapping things in.
+> > Is this still true with in-place guestmem conversion?
 > > 
-> > With that, we could drop that fixup and scream a bit.
+> > > @@ -1693,7 +1709,14 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
+> > >   	kvm_fault_lock(kvm);
+> > >   	if (mmu_invalidate_retry(kvm, mmu_seq)) {
+> > >   		ret = -EAGAIN;
+> > > -		goto out_unlock;
+> > > +		goto out_release_page;
+> > > +	}
+> > > +
+> > > +	if (kvm_is_realm(kvm)) {
+> > > +		prot &= ~KVM_PGTABLE_PROT_X;
+> > > +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn,
+> > > +				    PAGE_SIZE, prot, memcache);
+> > > +		goto out_release_page;
+> > >   	}
+> > 
+> > [...]
+> > 
+> > > +int realm_map_ipa(struct kvm *kvm, phys_addr_t ipa,
+> > > +		  kvm_pfn_t pfn, unsigned long map_size,
+> > > +		  enum kvm_pgtable_prot prot,
+> > > +		  struct kvm_mmu_memory_cache *memcache)
+> > > +{
+> > > +	struct realm *realm = &kvm->arch.realm;
+> > > +
+> > > +	ipa = ALIGN_DOWN(ipa, map_size);
+> > > +	if (!kvm_realm_is_private_address(realm, ipa)) {
+> > > +		return realm_map_non_secure(kvm, ipa, pfn, map_size, prot,
+> > > +					    memcache);
+> > > +	}
+> > > +
+> > > +	/* It's impossible to map protected pages read-only. */
+> > > +	if (WARN_ON(!(prot & KVM_PGTABLE_PROT_W)))
+> > > +		return -EFAULT;
+> > > +	return realm_map_protected(kvm, ipa, pfn, map_size, memcache);
+> > > +}
+> > 
+> > I was trying to understand (with the help of some LLMs) to understand
+> > whether we can end up on the do_gpf() path as a result of VMM actions.
+> > The above kvm_realm_is_private_address() only checks for the IPA but
+> > does not check against guestmem if the page is truly private. I probably
+> > miss something but the scenario would be something like:
+> > 
+> > 1. VMM creates the gmem region with GUEST_MEMFD_FLAG_MMAP |
+> >     GUEST_MEMFD_FLAG_INIT_SHARED, mmap()able and GUP-pinnable
+> > 
+> > 2. VMM starts an O_DIRECT write() from that mapping; the block layer
+> >     FOLL_PINs the shared folio
+> > 
+> > 3. VMM runs a vCPU so the realm touches the protected-IPA alias of the
+> >     same gfn. gmem_abort() delegates the pinned, still-shared page to
+> >     the RMM
+> > 
+> > 4. The in-flight I/O then reads the now-Realm page from the kernel
+> >     linear map. That access takes a GPF at EL1, so do_gpf() ->
+> >     die_kernel_fault()
 > 
-> There is a valid case for fixup_exception() to be needed here in GPF
-> handling.
+> This is correct. The fundamental issue is that we have a disconnect
+> between the "gmem attribute" changes (to private/shared) and the
+> RIPAS and this is something we want to fix.
 > 
-> -000 |load_unaligned_zeropad(inline)
-> -000 |hash_name(inline)
-> -000 |link_path_walk()
-> -001 |path_lookupat()
-> -002 |filename_lookup()
-> -003 |vfs_statx()
-> -004 |vfs_fstatat()
+> e.g., the KVM CCA driver sets the entire DRAM to RIPAS_RAM for
+> the Realm before ACTIVATION and we expect that the VMM changes
+> the gmem to PRIVATE. They both are not in sync. his is something
+> we were discussing the other day with Aneesh.
 > 
-> We observed this in Android running Gunyah when the page is mapped in
-> EL1 but unmapped at EL2. path_lookupat() can actually handle this
-> via fixup_exeption() when a word load crosses the page boundary.
-> However, Gunyah injects a Synchronous External Abort and we have
-> a downstream patch [1] that adds fixup_exception() in do_sea(). pKVM
-> injects [2] such faults back to EL1 and fixup_exception() is taken care.
+> Once they are in sync, we are protected. If the RIPAS=EMPTY
+> (gmem=shared) a stage2 fault doesn't come to the Host.
+> 
+> If the RIPAS=RAM, the gmem is private and there are no usespace
+> mappings.
+> 
+> The reason why it is disconnected at the moment is due to the
+> weird semantics for Guest triggered conversions in CCA
+> i.e., Realm requests via RSI_IPA_STATE_SET, triggering a RIPAS_CHANGE
+> exit to the KVM.
+> 
+> The KVM exits to VMM with MEMORY_FAULT_EXIT and the VMM can service this
+> by invoking GMEM(SET_ATTRIBUTES2).
 
-Ah, good point, completely forgot about load_unaligned_zeropad(). Since
-we don't unmap the linear map for delegated pages, we'll need the
-fixup_exception(). And I guess warning in this case is not desirable
-either. We could limit it to EX_TYPE_KACCESS_ERR_ZERO and
-EX_TYPE_LOAD_UNALIGNED_ZEROPAD, though not sure it's worth it.
+I guess a buggy or malicious VMM may skip the gmem attribute setting and
+simply resume the guest. Currently we can end up with SET_RIPAS
+irrespective of what the VMM did. So at this point maybe we need to
+check that the gmem attribute was actually changed before handling the
+pending RMI requests.
+
+The other place to check the gmem status is when handling the
+gmem_abort().
+
+I wonder whether we can have any races with either of these if multiple
+vCPUs toggle the RIPAS state between RAM and EMPTY and we need both
+places (the RIPAS_CHANGE exit and the actual stage 2 fault).
+
+> But, the KVM needs to invoke the
+> RMI_RTT_SET_RIPAS in the context of the "vcpu", which we don't have
+> from the "kvm" context. I guess we can fix it by running through the
+> vcpus and find the matching one with the "ipa" range and the "ripas".
+
+Or multiple vcpus? Does the spec allow multiple RIPAS_CHANGE requests
+for the same IPA? If yes, we probably need to clear all.
 
 -- 
 Catalin
