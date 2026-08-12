@@ -1,113 +1,103 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EC834C134
-	for <linux-coco@lists.linux.dev>; Wed, 12 Aug 2026 07:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F92322C73
+	for <linux-coco@lists.linux.dev>; Wed, 12 Aug 2026 08:07:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786519796; cv=none; b=A4Kqcx2xe4G+9/o3Sc35e8tn5pWG29hCABc1oOI8HKSBYNU+C38jZ37jY2IcYscFpejAyswFDVsT6d+aLenDvoR+6PEq1IgJawqa/iz/yF3iR96YksSxuR4gJh32vxAB7pKRZNKWjV5TLeT7ZQB22xmA6qDti34b0W0tErQ2iIE=
+	t=1786522056; cv=none; b=lw/zDxmHZz1vSKVkNTefhiJLpg1aT0hxNs8V03Mnlh4A5trXlwov29Rj1fApQ9KTwjzO8jjqSdLlp9rCMCX+pBp2rTolcdISorGYNuoV65QkLTOmvMw0iZkcICFM29TLoPQLO28IjfUKRq1c5H8R9NdMszenuHqXrC0RiDvPvIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786519796; c=relaxed/simple;
-	bh=QILAfq3H4DMlFgNLDzMYt4ktWH2ByPq23XNDWJHBSR4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jLsv5RPtn2GdRaQW/DzvI2i5OCLnJT8RUTympOTnWW3EI1XcGMANqMeaPNbW9teMhXSqi/xxaKcKdUSEaU4COoGr+Lq+A+k7Q0eHqzKyw21VYE32mDcIOh83kfmJuMeALTm00IkpDHa0mEhUFBpuLUlb+x+RGRBgRrHLK7T+bzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h5f3YrSX; arc=none smtp.client-ip=198.175.65.14
+	s=arc-20240116; t=1786522056; c=relaxed/simple;
+	bh=AMz77dxfIwA56MZwT8xeckdbhQKxSTrQA8X3ZSJWp/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VUuPtFcGphfLAUzJ05VMUTwXHt8FcZxunnYTEZ6IjSjydN36V/ANXGEzXtYq8vCV8piJ2j6e7USi3zjGYjOIxkfb94fIv+/A1LkEQfH27RC6cUan4cD7/pTwOF5+oPQPgstFgQ9robVi80imf6nqnZ2seDly5kYc+AQIfQ4qPmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IUrlsChq; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h5f3YrSX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IUrlsChq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786519795; x=1818055795;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=QILAfq3H4DMlFgNLDzMYt4ktWH2ByPq23XNDWJHBSR4=;
-  b=h5f3YrSX2n/sWBFFulv731a5CVt2EM11SuXSAPfJzSTEIyoKx4fntx/4
-   1trR/yV2+WCAta9dMuqdna1dqAjoaW2rI2w5YFkVekexSSXR69iqzBAt4
-   kRQt25zliTNv6LFwNLexJw+Q68HJsgdQ8Tkpqhlp48nN3YXsRznSzcZ23
-   g4xTyUkJSv7rKRbPSJSk1mWh+vzfMpcE4pWfhd1KIokq0vtiHcRNQ7g68
-   Rd/nF9S+FuUe35eHOaNj+7CSeuKbANYjaPo7PGsR6HeXKBlZuADMAoX91
-   sKqDzIN2R/a/XGWDMiYHszjL6twiDZJzLsVRSIeboZXqwCFUTBs3PRu6V
-   w==;
-X-CSE-ConnectionGUID: L6JeMTVyQ8CyUCtsN40a/w==
-X-CSE-MsgGUID: 8IEXeGM3QjCdnOYveN5B4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="90940720"
+  t=1786522056; x=1818058056;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=AMz77dxfIwA56MZwT8xeckdbhQKxSTrQA8X3ZSJWp/M=;
+  b=IUrlsChq9QqK43NpN8zrwoGxk1iYlzFpCkudr+SHV8NeZk16GGcp2MAA
+   ZNUv04XskIbwQFSi0WjFmmNAEpBn4WeqVe598JklrrJ4Xw3hTcxZIcSEH
+   iCNsx6GQOc7vqaldRf1qLAPOCC6JVnMs2XgaH2TugxUh2XXzF50lmfqSH
+   tsj5yytN3OYcMfIJaoU6RqF+X/7JbrHypZJ6QVe0ZYlBO7FRNXjc/I3+a
+   gnAtbyjKLf9FtFQqK/FeLodMBn8+1vMlza8tDB+re2akEBZ3fnYhhc4Oo
+   qc+MfbB+mzfrYZlqOyvYQK0tBcpSiSk1JNcPyQAFRblLRopwKFMvftjEi
+   A==;
+X-CSE-ConnectionGUID: Cswn7tPgQse01EP9pP0LFg==
+X-CSE-MsgGUID: EfTdqK1vTmCWw/qXP7fyrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="97413260"
 X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="90940720"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 00:29:53 -0700
-X-CSE-ConnectionGUID: NOTMrTxuTo6su0uWtJjW5w==
-X-CSE-MsgGUID: 0h4Qek5MRlONch2ZjsJfTw==
+   d="scan'208";a="97413260"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 01:07:35 -0700
+X-CSE-ConnectionGUID: mKh3p91DSrGFWk8QD9JBeA==
+X-CSE-MsgGUID: Ew3n19EYT/K1kHkQBW9zpA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="267061894"
-Received: from unknown (HELO [10.238.208.98]) ([10.238.208.98])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 00:29:51 -0700
-Message-ID: <1a7bff3b-731b-4990-8267-82d08669c8ee@intel.com>
-Date: Wed, 12 Aug 2026 15:29:49 +0800
+   d="scan'208";a="287000358"
+Received: from lxy-clx-4s.sh.intel.com ([10.239.48.33])
+  by fmviesa002.fm.intel.com with ESMTP; 12 Aug 2026 01:07:32 -0700
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	nik.borisov@suse.com,
+	xiaoyao.li@intel.com
+Subject: [PATCH v3 0/4] KVM: TDX: Enable VM-DoS Prevention Features for TDX
+Date: Wed, 12 Aug 2026 16:02:25 +0800
+Message-ID: <20260812080229.2481439-1-xiaoyao.li@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] KVM: TDX: Fix the exit reason handling
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "seanjc@google.com" <seanjc@google.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "kas@kernel.org" <kas@kernel.org>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20260810112200.2326727-1-xiaoyao.li@intel.com>
- <20260810112200.2326727-3-xiaoyao.li@intel.com>
- <5dfed336a46329ba39922dcb3a8723116dae9ae4.camel@intel.com>
- <6bb1328d-e995-4ad7-9744-3ab01d2ae591@intel.com>
- <0a458dd822e5469068d5dea6aea3dd935b69e963.camel@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <0a458dd822e5469068d5dea6aea3dd935b69e963.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/11/2026 11:20 PM, Edgecombe, Rick P wrote:
-> On Tue, 2026-08-11 at 09:32 +0800, Xiaoyao Li wrote:
->>> We could make this return instead be a goto err; that returns this. Bonus is
->>> the
->>> comment on the other one can cover them both. What do you think?
->>
->> Given 1) this patch is here mainly to avoid the false-positive on
->> bus_lock_detected after the next patch,
-> 
-> Hmm. Before this patch these are just one line returns. So a "goto err" would be
-> unneeded. After this single line is expanded to be something more elaborate, and
-> a comment is added around one of these more elaborate returns, but not the
-> other. So I consider it a bit of a style regression. Which makes it appropriate
-> to adjust it in the patch IMO.
+Hi all,
 
-Well, actually the added comment cannot be shared. For the 
-EXIT_REASON_EPT_MISCONFIG case, the reason to return a synthesized 
-invalid Exit Reason is to differentiate with the case of 
-TDVMCALL(ept_violation), where the exit reason is updated to EPT_MISCONFIG.
+This is v3 of the series to enable the Notify VM Exit and Bus Lock VM
+exit for TDX, which fixes the KVM CAP issue related with them and allow
+userspace to actually enable the features.
 
-In fact, we don't need such trick for real EPT_MISCONFIG, because there 
-is handling for real EPT_MISCONFIG in tdx_handle_exit()
+It still tries to keep the series as small as possible because it's
+targeted for being backported to stable kenrels.  This v3 splits the
+patch2 of v2 into two patches (patch2 and patch3 in this v3) to make them
+easier for review.  There are other issues of existing code found during
+previous review but not mandatory for this series. The plan is to address
+them in followup series separately.
 
-	if (unlikely(vp_enter_ret == EXIT_REASON_EPT_MISCONFIG)) {
-		KVM_BUG_ON(1, vcpu->kvm);
-		return -EIO;
-	}
+Please refer to v1 for a full background.
 
-before the handling of transformed EPT_MISCONFIG from 
-TDVMCALL(ept_violation)
+v2: https://lore.kernel.org/all/20260810112200.2326727-1-xiaoyao.li@intel.com/
+v1: https://lore.kernel.org/all/20260805031257.1844914-1-xiaoyao.li@intel.com/
 
-	switch (exit_reason.basic) {
-	...
-	case EXIT_REASON_EPT_MISCONFIG:
-		return tdx_emulate_mmio(vcpu);
 
-But it's not urgent to fix it and it's not mandatory to enable Bus Lock 
-VM exit on TDX. Let's leave it to the follow-up series.
+Xiaoyao Li (4):
+  KVM: TDX: Enable Notify VM exit
+  KVM: TDX: Set bits 31:16 to 0 for the synthesized Exit Reason
+  KVM: TDX: Don't assume exit_reason[31:16] as all-0 in
+    tdx_to_vmx_exit_reason()
+  KVM: TDX: Enable Bus Lock VM exit
+
+ arch/x86/kvm/vmx/common.h | 19 ++++++++++
+ arch/x86/kvm/vmx/tdx.c    | 75 +++++++++++++++++++++++++++++++--------
+ arch/x86/kvm/vmx/vmx.c    | 15 ++------
+ arch/x86/kvm/vmx/vmx.h    |  1 +
+ 4 files changed, 82 insertions(+), 28 deletions(-)
+
+
+base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
+-- 
+2.43.0
 
