@@ -1,94 +1,58 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mta1.migadu.com (out-38.mta1.migadu.com [95.215.58.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323C945199D
-	for <linux-coco@lists.linux.dev>; Wed, 12 Aug 2026 13:35:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786541718; cv=pass; b=QFfVYXJX5A0vgfoCwJOsdiG7VhghDQAAd+XgTojleK9WWDJb8YZgSR0v1ywxPnx82R3zc0povvM+gwf50FXxGYPeACKgu5u4xnskPPEJPfomkQ+VmTp9EQH/gNSGomVBQrVNzNjNZnYEOIQqVpcjV3WJfZKXnFzqhU39OQfdmKc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786541718; c=relaxed/simple;
-	bh=Qd0DA5nheV/pXBjB/+20R2YQSj6wjwSeW68i3S2Fko4=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9024519A1
+	for <linux-coco@lists.linux.dev>; Wed, 12 Aug 2026 13:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.38
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786541785; cv=none; b=U+CGCHkBvruCO7gx3yedvEXvw/F0AV9xxzTY64GYCZyrhxk7/EzbtsnWcH+VkorCCQIdT2BjGI9xCxc8HxtlTRVwTIUnC6y1VxzmpumE4R3xLSy5ipcLfZMP27HvfI3WwW8/cKXXbxo171BsXgm4ebdnRsFpsTsd5/HVZt6+Gg4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786541785; c=relaxed/simple;
+	bh=f598xMR7eSmimv3MnxLaUT+Gq6HxuH8K0zv25XFAJhA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RhigkliLDQG6LDIqpDjPc3UD/2poMquI8xzqs4w0mz2IhEgi46Njn4GAcI3ryAjoL51HgcSEFqH/73dbbMca2tc5d9yz2LRSORP8ofWEC7mEIROXcWyYZlBckTTDo9Dfd7VL+a02qz82hN2/4Pjt6dCU0056/4FxBs1frbbzob0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rK5z05Gw; arc=pass smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=YHNUsOC0GCfZ0QGbJbwj3aRpVNeQM/mPvnur+sznAIYjDPR0X62kOby4QkguF9DBc5p5S4yKN7vQbjTUjKf5E9yPsqjZLBxkIwqLwTyoIZWJXJ1h/dt3dm31YpQyuCPy26YHV2avbT6krKIZ2x1bgn7Uo6NYhsOWIFRWglmeh6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=uKcfGvZ7; arc=none smtp.client-ip=95.215.58.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rK5z05Gw"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51c15a5b265so228031cf.0
-        for <linux-coco@lists.linux.dev>; Wed, 12 Aug 2026 06:35:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786541710; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ICgu4PLOqrR7MG5O9pXkU6sgDW1rYmxTE3i0X55cqgv9s8uPshlAm5lhj12dfPE3mO
-         Mj6+/BNbQ8Q2oEdZqc2yHETfd6BSHpo53WDBsI8TmD1GRwzBI6lVXhdT29nxF7kna8m0
-         EKPlufrVOYqtKPONGYAizMmgfwlq/QMVBk5Y6940+Oz+aCjmHyCl7Famhq9Z/v/F+XtP
-         djkAWwU4WLmQDQ9WETo/6YWL2+T4I4X83PR5MBvhU0bLapYs3myg+Ruq7cngi6t6/gG3
-         SEOruKUIsh+FVAqCHoo4TgeDe0kD6dRMmPL26FhyBJvaX4XQRhh7MFy05FlWWwP7KZOW
-         Onsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=btatRIN/qVx6m6u+kKi9+q5rHWXBFe/go9/mpyrKKkA=;
-        fh=wU1QV2ikxTLnBlh3WPudaIlP882qWtppV8lYNVs2iMI=;
-        b=Pkev53LVtz4wHk2RBqtJaiA5PHgYNXXsGkqlydwqERe9Rv86vrolh9MpYU6ix941bO
-         vAnG23+/Y7yrhyCnRpuOd3V4XsMLYqbQwxa8cwfnJlgXav6vuZkU7U5Cj5Y52qs9Paau
-         fQAq5UzsI8cSi0wm1tmFpxB2PWJbxVv/AQnw1uXlzP+HPH5GGgbXFZjNCMM2oBYH9j62
-         WM1NsUD5H9/3w1euOGUWUC+wFljtyBrf83kB3KJRkhE+dSw+VLaRKS0rqDhUTVwwfDvU
-         rFsNryZTffD0fH24NGxTPzNtnaBn6tpaOoWZSAL0aJRGldDHgybRNpu0e+t/Sl7in56L
-         ENpQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786541710; x=1787146510; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=btatRIN/qVx6m6u+kKi9+q5rHWXBFe/go9/mpyrKKkA=;
-        b=rK5z05GwigfSlNhyqEmZ3iHHPvlDpHpr+wWAoA6gi352CGTydGg723bRXliTmlZwuR
-         zaGc1E4Glm1//7VS5EKIorSYzwV+VMKuSQPh6thiQ9XCsoMXnUiLeWFdag/9yuMTGbAP
-         UrF1oERZQ34Z1t3y3o/ijU0k8WA/ULwpgusJ/3wP0TMn7zKR/hlihRmYwa8MV8V6CAnp
-         jANcO0ERriuXrOt4E+Rxnf0qcL3eCUUYaaComBKvaZZJKdFwSEazB5ohWmmu0Ibi44ea
-         0+qTpX9qT1gNQ4wGt6IeEF7bFrHiyg9tM5JF2esPP1CsncnUqyxyboagWzWNXhdZ/vC6
-         32+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786541710; x=1787146510;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=btatRIN/qVx6m6u+kKi9+q5rHWXBFe/go9/mpyrKKkA=;
-        b=ZVpVo6HIYoUphL2vUNLNJEJ6TGNxXs33N0AYtHGyDRawBjRStk3npmQmYwzvaQfdqG
-         UDjGkc/hGR3ZbC8ajOHTvLzLDTaJEx9wNas58qa4BNtfAz7spEhlqjSyrkyuPJpxs2Pi
-         EfheqljPyylR6dmWFtCX/PxFUgzElKq28nvk9VD9eyj32GOuJTYfgzgSWsDw4m/C8G77
-         dkc1snq4Zmw3ULWz/eTRZhBB3djE4twx/uns4UAH02XvL8n+IRqEVQvZMdhJ3j40OQkk
-         nr0Abq1Jr472voTozrOIEuyOmnEv0trW6Mm1Ip1mS8UZNozYbzuLr6ziGA1Pm9zsyIJi
-         ++NQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpXuf9s80sBioIkjwAp/8767Z1WrqJmy/L/ghkd828MR2dvzJN9zvERXylc4goVSIgx2ZRmkjYbIN49@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx4uIWixVSnd2j5dWtIGMTAspmKaoZ2NPvk3SHhT8b8NJ+3/SI+
-	VXHwcAC1o72tRqTShiG52/NKYn36/64gRb8lWMvjiYk9tZhHi7uzBAgAeW4l88/F9O45/u3zG0m
-	TpycBfSbpKHECFuvws7ukvsbgjgzNkXv8lpYXT5iC
-X-Gm-Gg: AR+sD11RC/q9d6JUeJ1a/CYHZjsFHkfnDPisR3869GJA3MaxlhLHs5LsQ9zf9aRMS8m
-	OqJsFqBQkPD+/TberRflLwSOIwTNnhZhRPBXkiTYh10OrO3gj9an0Rg/NTKvdrORhzr0Wm7WnBw
-	CTsrCCNPIWdB2kCuMso/YY5838c/UeLutDt8Aa/X/W0fOTO3vksxAkHyWXBoI3UqK/BuSWBecBb
-	q3XgXJM95wKxJ2vuZi9DutjVIAas7l6Yydavz7LuU9IXvz1pd2KyE31SC/AuKOib2ThnCYiMwQ1
-	TyybJwFQ8C4if9dcY3F7eksHel4bVWxtRara1ynBBAcRtQ==
-X-Received: by 2002:a05:622a:e198:10b0:50f:af60:3496 with SMTP id
- d75a77b69052e-52d65464646mr13714571cf.1.1786541709957; Wed, 12 Aug 2026
- 06:35:09 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="uKcfGvZ7"
+X-Envelope-To: linux-coco@lists.linux.dev
+DKIM-Signature: a=rsa-sha256; bh=f598xMR7eSmimv3MnxLaUT+Gq6HxuH8K0zv25XFAJhA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786541776; v=1; x=1787146576;
+ b=uKcfGvZ7ctecBvJ0O5kILySa8Nq3Llucg7BI6ueEB9uUGlFpNgj2+tBlr0llTbL+TqjAv5k7
+ 1U7Y+uYw1+/PswuJdfxZZiJxFhgZ6qI/Hr1uOO6K/R3UzIQNktDMx3q6M++gTdApfkRi5zSrbx7
+ 2z7k/ddXov1wb5w+cDAS1H8c=
+X-Envelope-To: linux-coco@lists.linux.dev
+Received: from mail-qt1-f172.google.com (209.85.160.172)
+	by smtp.migadu.com with ESMTPS id ef7101ca33cbe931;
+	Wed, 12 Aug 2026 13:36:06 +0000
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51c10e86e52so229071cf.1
+        for <linux-coco@lists.linux.dev>; Wed, 12 Aug 2026 06:36:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rp/1XkxDasfYbx75ySoUChw9fOztXGF0vHSgDDwl4FHGiNvLr2jbKMoArbP+rAtpGZBWdLx4np4exBR@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxfd4MlLaaP94zj41sX/XaTwiuaDywIj8+ngTGA+14vMLJ+iAbg
+	iRm94PToYTw10VpvMs1gJeTU0Wt6cqZehK8vxn7ST11B0SPaBgf7LODAad2bRuuXBiz5Kq0Uar/
+	fHCx0OSYJW000LnjHuBWCFonQrKIWVx6A2IdNbr7u
+X-Received: by 2002:a05:622a:40cd:b0:52b:4ec6:52ba with SMTP id
+ d75a77b69052e-52d61f23159mr20505891cf.6.1786541765008; Wed, 12 Aug 2026
+ 06:36:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com> <20260807-gmem-inplace-conversion-v10-1-2fc18ee6d3ba@google.com>
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-1-2fc18ee6d3ba@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Wed, 12 Aug 2026 15:34:32 +0200
-X-Gm-Features: AUfX_mzDGNX5m7h-J9AcKRPzqX1cpxh6BaIQgAnDEV-ghyjmfpFsGGynIKZZ1iE
-Message-ID: <CA+EHjTzkOQD0YddPUs=2=yThG6s3=jQR2xwm+CeAedjyFaANZA@mail.gmail.com>
-Subject: Re: [PATCH v10 01/41] KVM: guest_memfd: Use kvm_mem_is_private() when
- populating guest_memfd memory
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com> <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Wed, 12 Aug 2026 15:35:27 +0200
+X-Gmail-Original-Message-ID: <CA+EHjTwn6oyf1vBb+pkBZ5dRgB0EJdSww=sfx2C3t5G-9f_uAQ@mail.gmail.com>
+X-Gm-Features: AUfX_mxpAhCLdhwrsOspZt2G9laal9BYruBiB6OcXXxYLlQN_oMXjpKU5WvMAb8
+Message-ID: <CA+EHjTwn6oyf1vBb+pkBZ5dRgB0EJdSww=sfx2C3t5G-9f_uAQ@mail.gmail.com>
+Subject: Re: [PATCH v10 07/41] KVM: guest_memfd: Stub in ability to enable
+ in-place shared<=>private conversion
 To: ackerleytng@google.com
 Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -124,40 +88,136 @@ On Fri, 7 Aug 2026 at 23:52, Ackerley Tng via B4 Relay
 >
 > From: Sean Christopherson <seanjc@google.com>
 >
-> Using kvm_mem_is_private() when populating guest_memfd instead of using an
-> open coded equivalent.  In addition to simplifying the populate code *now*,
-> this avoids the need to provide a range-based gmem lookup API in the future
-> as well.
+> Stub in global variable to enable in-place guest_memfd private<=>shared
+> memory conversion, which will eventually be exposed to userspace via a
+> module param, and wire up the __kvm_mem_is_private() static call to the
+> guest_memfd version when in-place conversion is enabled, i.e. when gmem is
+> the sole authority on private vs. shared memory.
 >
-> No functional change intended.
->
-> Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Cc: Fuad Tabba <tabba@google.com>
+> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
 Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
 Cheers,
 /fuad
+
+
 > ---
->  virt/kvm/guest_memfd.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+>  include/linux/kvm_host.h |  6 ++++++
+>  virt/kvm/guest_memfd.c   | 26 ++++++++++++++++++++++++++
+>  virt/kvm/kvm_main.c      | 12 +++++++++++-
+>  3 files changed, 43 insertions(+), 1 deletion(-)
 >
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 65fbce46b63f4..9477ecebbbced 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2580,6 +2580,8 @@ static inline bool kvm_vm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>  #endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
+>
+>  #ifdef kvm_arch_has_private_mem
+> +extern bool gmem_in_place_conversion;
+> +
+>  typedef bool (kvm_mem_is_private_t)(struct kvm *kvm, gfn_t gfn);
+>  DECLARE_STATIC_CALL(__kvm_mem_is_private, kvm_mem_is_private_t);
+>
+> @@ -2588,6 +2590,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>         return static_call(__kvm_mem_is_private)(kvm, gfn);
+>  }
+>  #else
+> +#define gmem_in_place_conversion false
+> +
+>  static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>  {
+>         return false;
+> @@ -2595,6 +2599,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>  #endif /* kvm_arch_has_private_mem */
+>
+>  #ifdef CONFIG_KVM_GUEST_MEMFD
+> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn);
+> +
+>  int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>                      gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
+>                      int *max_order);
 > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index b596486d184ca..a11cf6dc785da 100644
+> index 1f1ae61b4878b..75979c885e030 100644
 > --- a/virt/kvm/guest_memfd.c
 > +++ b/virt/kvm/guest_memfd.c
-> @@ -811,9 +811,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+> @@ -475,6 +475,32 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+>         return 0;
+>  }
 >
->         folio_unlock(folio);
+> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
+> +{
+> +       struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
+> +       struct inode *inode;
+> +
+> +       if (!slot)
+> +               return 0;
+> +
+> +       CLASS(gmem_get_file, file)(slot);
+> +       if (!file)
+> +               return 0;
+> +
+> +       inode = file_inode(file);
+> +
+> +       /*
+> +        * Rely on the maple tree's internal RCU lock to ensure a stable result.
+> +        * This result can become stale as soon as the lock is dropped, so the
+> +        * caller _must_ protect consumption of private vs. shared either by
+> +        * holding guest_memfd's invalidate lock for the entire duration, or by
+> +        * checking mmu_invalidate_retry_gfn() under mmu_lock to serialize
+> +        * against concurrent attribute updates.
+> +        */
+> +       return kvm_gmem_is_private_mem(inode, kvm_gmem_get_index(slot, gfn));
+> +}
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_is_private);
+> +
+>  static struct file_operations kvm_gmem_fops = {
+>         .mmap           = kvm_gmem_mmap,
+>         .open           = generic_file_open,
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index a01d336eab18b..0a5a1bee8de0f 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -102,6 +102,10 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_shrink);
+>  static bool __ro_after_init allow_unsafe_mappings;
+>  module_param(allow_unsafe_mappings, bool, 0444);
 >
-> -       if (!kvm_range_has_memory_attributes(kvm, gfn, gfn + 1,
-> -                                            KVM_MEMORY_ATTRIBUTE_PRIVATE,
-> -                                            KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-> +       if (!kvm_mem_is_private(kvm, gfn)) {
->                 ret = -EINVAL;
->                 goto out_put_folio;
->         }
+> +#ifdef kvm_arch_has_private_mem
+> +bool __ro_after_init gmem_in_place_conversion = false;
+> +#endif
+> +
+>  /*
+>   * Ordering of locks:
+>   *
+> @@ -2423,6 +2427,9 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
+>  static u64 kvm_supported_vm_mem_attributes(struct kvm *kvm)
+>  {
+>  #ifdef kvm_arch_has_private_mem
+> +       if (gmem_in_place_conversion)
+> +               return 0;
+> +
+>         if (!kvm || kvm_arch_has_private_mem(kvm))
+>                 return KVM_MEMORY_ATTRIBUTE_PRIVATE;
+>  #endif
+> @@ -2634,8 +2641,11 @@ EXPORT_STATIC_CALL_GPL(__kvm_mem_is_private);
+>
+>  static void kvm_init_memory_attributes(void)
+>  {
+> +       if (gmem_in_place_conversion)
+> +               static_call_update(__kvm_mem_is_private, kvm_gmem_is_private);
+>  #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> -       static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
+> +       else
+> +               static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
+>  #endif
+>  }
+>  #else
 >
 > --
 > 2.55.0.654.g21b8a5bc05-goog
