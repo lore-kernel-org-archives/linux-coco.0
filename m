@@ -1,146 +1,117 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46273478E5E
-	for <linux-coco@lists.linux.dev>; Thu, 13 Aug 2026 14:43:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37A6489871;
+	Thu, 13 Aug 2026 15:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786632218; cv=none; b=I/7sc5imO9Gk+kR8CSWfKaIFOls0AMwFqPDbKQOTS68N8QAFdd0hVk04d/PKU1pY2CxWdWbwGQWkab/wzSw67+apvacagrI0tvCoGJkzwoHqFcbq3U4csgNc8SxpACN0HHySjtmhAXSNjltZ1nyM0yR4X9BD+Y8Dly5IIryBQN0=
+	t=1786634894; cv=none; b=OCg06ONiUX3elIeOigtbiOEzPLBPQJhBf/lzNZS/syOWbKQJLMlJr+iQTFh3xZIPValvQiiMCbTtKFrfceRJqPANaI6E2AvIPYohcc93ZS3pn9jvScqb5XB3l6x+9X/NQbdob4b5SU48yCqvZxemy6RriYRTl6O0l9jCVW3acqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786632218; c=relaxed/simple;
-	bh=mWHX8G1vMtcvD4xBylDXDlohI1gXLpgdVH2pH08gA+Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Xl0QSQA5NoYqc/FY32eEHMGW7ze6vjBYCZxesgI/DAd/+hMxpRxPEmf3KwGFMp7ENYYXz3g8jbLCdG+LoPU9Wq/baDnFl/4tlDeR6p3Na//kNAXXyTt18vNQa3Tp1s10SaJ5l/o8V0wqEx2AAJm6URqrCVKHPFgKGwwtiblx7fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qgsxdeeq; arc=none smtp.client-ip=209.85.214.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786634894; c=relaxed/simple;
+	bh=j9eKaonxGNjSwpS7uKNe5pc+Hh14Qqgfc1SFvDoUHB4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V2UVDLnLorOIrd2n7QEZYTf+p0WytVS48v1S8khkZYXtPah+du/yB+5kanHQKcWFxeCApWBO/iLOTPeti+4URMR1rErk71ZgiosV773S6LqaBPQ8Blo7ks1nShzI8GXgQrAW1IbPjhufzyUpRPIhgmnXxMHiGaXBO42g+IbIzAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yf0QU6fe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qgsxdeeq"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d004f13426so26082195ad.3
-        for <linux-coco@lists.linux.dev>; Thu, 13 Aug 2026 07:43:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786632216; x=1787237016; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=XtnzlHO9m29l9/hpBVjg+n0DEKeFZ76f2zo+ZLPVNMk=;
-        b=qgsxdeeqOtUOkbryihxx7Y27F5/c7P2c/LtoCGv8qH1lhysB5AS7Hq4ySe7/NtjWOj
-         8TSTJ2udh/prPVUUlRaV1kf5ASbndSbQHgaSq3UjmZnuYRVEPvATwPGVK9WI6FntEQWO
-         9mtZ1tcU3kN2kBwU59XpAEFEUV6zzjrYxxjVBWb/RLRteOaKPkVpRWSE2wxp1RxaD2b8
-         TINXoqOV3BcgB+Kv8GupE7kRTrnL0lkL1kHkyaPN6a3DlVfpynivAIf+uRcuBxwpCYRE
-         nt4b5M1EEY3SaVvEx0zSG1D3I+aSRBe+XiGS6BF6JoOgCHtwN4nQo2G8+h0Z/nETRGh7
-         lZCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786632216; x=1787237016;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XtnzlHO9m29l9/hpBVjg+n0DEKeFZ76f2zo+ZLPVNMk=;
-        b=YNcNzEYy9VxRxXtDskpHa/ZNZ/2ghJ0dMgXQ0r6/t7q/1KSufQ60mDTHhiEs1tFCE6
-         JG+ZS4gQeqnnQOo/fWQATDuzqoukgNWErEMbVujT0js3kz2/6v9AbqhjJdmMyFYbtSmT
-         C5ttiUUGz10Y2GFDrwaQra/FTLJ2m5wSLRjYY2R1MAsrlQJmYYswDFleaPAGsRNB+ucc
-         vLbIm+UadWULJE1habYpwk2gjBxV7C3wcYfFKqFjvW+FWRhmETqJsmEE3IRy6iVkecLF
-         3xgQ2BFuC7en6izQsMNG37JHNw6YacxnPsSZUdE0O4I9UjSes47A3NZ2FP4yz93FPbA0
-         EUbg==
-X-Forwarded-Encrypted: i=1; AHgh+Rqk94RuM8LDOibwiq3MztHXW0RQv/cKeTllhfqHMkgGghkRIkqcGRztn39n1xwiXyyUufi0EQpaFq9X@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzv5vvlPK17zfQtiI03M9lOYRlJkhWJt1koOOMy3ket7IoqFgXz
-	tOjXmfTeaD571TZd8a2B05cxy5MPWnYha2iPSHiKIFy07DcvzebaLaRLLd231fM5Hg5FMkq3cpz
-	tHvQlaQ==
-X-Received: from plge13.prod.google.com ([2002:a17:902:cf4d:b0:2ca:f1f8:ea00])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:153:b0:2cf:b68a:2050
- with SMTP id d9443c01a7336-2d37e83cdbemr62702595ad.15.1786632215477; Thu, 13
- Aug 2026 07:43:35 -0700 (PDT)
-Date: Thu, 13 Aug 2026 07:43:34 -0700
-In-Reply-To: <1cf47118-2a19-44d5-ab74-b4c7ffa8890c@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yf0QU6fe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3421F000E9;
+	Thu, 13 Aug 2026 15:28:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786634892;
+	bh=opwS4jjY/2m4RZ1yhCK834dI3mtLkmcqk7P5LYp9Hhc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Yf0QU6fe5CPzdz82xf5Sn0MXv1H917tAlGe/9eWgmjwlgSVDkMZ7B8bhSeavHSAVe
+	 3ClI0cuG6ZRTaXeVrUHXTQn7vv8U3Gh+jXlLbSwNpvbXPnlUPJKl3nRWbHm6v2yXSE
+	 AI+qrnrCx7IphD6+2ny8vgfLgUmokJY58vAJPkx81qBLUkppZhXlAqVsB+uCsG6B5a
+	 Jes3XUgFH86rVrj5rQPPUfHxXuf7wgg8C7Tj5OjKSmDYYA2QttJh1uliF/jl8mU+zb
+	 twuXDmtP4cHPgdXHTbJvH4T+F+fxJbbGfVfSL9dIScRhnyqr5vBe1fDzyh3DCZMpgJ
+	 u78m48ygwuKWA==
+Date: Thu, 13 Aug 2026 16:28:04 +0100
+From: Will Deacon <will@kernel.org>
+To: Pavan Kondeti <pavan.kondeti@oss.qualcomm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v16 07/45] arm64: mm: Handle Granule Protection Faults
+ (GPFs)
+Message-ID: <an3ihGk3znnk8TWV@willie-the-truck>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-8-steven.price@arm.com>
+ <ans1ZSwMEKeT9Gfz@arm.com>
+ <d4bdecca-517a-4b4b-bf67-cef6b09bc8c1@arm.com>
+ <7d4e5920-aa20-40cd-954e-037631bd0d6c@quicinc.com>
+ <anx6YbPMVz3OlpA5@arm.com>
+ <an2YN7kxB7bjCd2s@willie-the-truck>
+ <8db602b8-7fd3-4c11-8fbd-3b8251648eb8@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260812080229.2481439-1-xiaoyao.li@intel.com>
- <20260812080229.2481439-5-xiaoyao.li@intel.com> <868c0d3c792d789347c767031612977c31cc227f.camel@intel.com>
- <1cf47118-2a19-44d5-ab74-b4c7ffa8890c@intel.com>
-Message-ID: <an3YFiDbjRs3PUwn@google.com>
-Subject: Re: [PATCH v3 4/4] KVM: TDX: Enable Bus Lock VM exit
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kas@kernel.org" <kas@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"nik.borisov@suse.com" <nik.borisov@suse.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8db602b8-7fd3-4c11-8fbd-3b8251648eb8@quicinc.com>
 
-On Thu, Aug 13, 2026, Xiaoyao Li wrote:
-> On 8/13/2026 6:58 AM, Edgecombe, Rick P wrote:
-> > On Wed, 2026-08-12 at 16:02 +0800, Xiaoyao Li wrote:
-> > > -	if (unlikely(READ_ONCE(to_kvm_tdx(vcpu->kvm)->wait_for_sept_zap)))
-> > > +	if (unlikely(READ_ONCE(to_kvm_tdx(vcpu->kvm)->wait_for_sept_zap))) =
-{
-> > > +		vt->exit_reason.bus_lock_detected =3D 0;
-> > >  =C2=A0		return EXIT_FASTPATH_EXIT_HANDLED;
-> > > +	}
-> >=20
-> > This still feels hacky to me. It at least deserves a comment I think. I=
-f you
-> > spin another version.
->=20
-> I spent more time on this today and I find there is an existing issue. Wh=
-en
-> the previous Exit Reason is EXIT_REASON_EXTERNAL_INTERRUPT, the early ret=
-urn
-> here can go to the path due to the stale exit_reason.
->=20
-> kvm_x86_call(handle_exit_irqoff)(vcpu)
->   vmx_handle_exit_irqoff()
->     handle_external_interrupt_irqoff()
->=20
-> This makes the host process the external interrupt twice, and maybe more
-> times if the wait_for_sept_zap remains longer.
->=20
-> I think we need an separate fix to set
->=20
-> 	vt->exit_reasons.full =3D TDX_INVALID_EXIT_REASON;
->=20
-> so that if some patch is going to consume the stale Exit Reason, it can b=
-e
-> caught by TDX_INVALID_EXIT_REASON.
+On Thu, Aug 13, 2026 at 07:40:41PM +0530, Pavan Kondeti wrote:
+> On Thu, Aug 13, 2026 at 11:11:03AM +0100, Will Deacon wrote:
+> > On Wed, Aug 12, 2026 at 02:51:29PM +0100, Catalin Marinas wrote:
+> > > On Wed, Aug 12, 2026 at 06:12:09PM +0530, Pavan Kondeti wrote:
+> > > > There is a valid case for fixup_exception() to be needed here in GPF
+> > > > handling.
+> > > > 
+> > > > -000 |load_unaligned_zeropad(inline)
+> > > > -000 |hash_name(inline)
+> > > > -000 |link_path_walk()
+> > > > -001 |path_lookupat()
+> > > > -002 |filename_lookup()
+> > > > -003 |vfs_statx()
+> > > > -004 |vfs_fstatat()
+> > > > 
+> > > > We observed this in Android running Gunyah when the page is mapped in
+> > > > EL1 but unmapped at EL2. path_lookupat() can actually handle this
+> > > > via fixup_exeption() when a word load crosses the page boundary.
+> > > > However, Gunyah injects a Synchronous External Abort and we have
+> > > > a downstream patch [1] that adds fixup_exception() in do_sea(). pKVM
+> > > > injects [2] such faults back to EL1 and fixup_exception() is taken care.
+> > > 
+> > > Ah, good point, completely forgot about load_unaligned_zeropad(). Since
+> > > we don't unmap the linear map for delegated pages, we'll need the
+> > > fixup_exception(). And I guess warning in this case is not desirable
+> > > either. We could limit it to EX_TYPE_KACCESS_ERR_ZERO and
+> > > EX_TYPE_LOAD_UNALIGNED_ZEROPAD, though not sure it's worth it.
+> > 
+> > Alternatively, I think the series to unmap guest memory from the linear
+> > map would solve that for gmem:
+> > 
+> > https://lore.kernel.org/all/20260410151746.61150-1-kalyazin@amazon.com/
+> > 
+> 
+> Thanks Will for sharing this information.
+> 
+> There are use cases outside gmem like FF-A lend to Secure Partition.
+> we may not be enforcing all such memory to be unmapped at EL1, correct?
 
-The more I look at this, the more I'm against shoving garbage into vt->exit=
-_reasons.
-With tdx_is_exit_reason_valid(), this is trivially easy to handle, *and* ex=
-plicitly
-captures the logic instead of subtly rerouting KVM away from meaningful han=
-dling.
+If you leave the cacheable linear alias of memory intact across an
+NS -> S transition, then you're in for a bad time [1].
 
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index 95d89d809c19..a1f5b5dc1fa3 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -157,6 +157,14 @@ static fastpath_t vt_vcpu_run(struct kvm_vcpu *vcpu, u=
-64 run_flags)
-        return vmx_vcpu_run(vcpu, run_flags);
- }
-=20
-+static void vt_handle_exit_irqoff(struct kvm_vcpu *vcpu)
-+{
-+       if (is_td_vcpu(vcpu) && !tdx_is_exit_reason_valid(vcpu))
-+               return;
-+
-+       vmx_handle_exit_irqoff();
-+}
-+
- static int vt_handle_exit(struct kvm_vcpu *vcpu,
-                          enum exit_fastpath_completion fastpath)
- {
-@@ -1071,7 +1079,7 @@ struct kvm_x86_ops vt_x86_ops __initdata =3D {
-        .load_mmu_pgd =3D vt_op(load_mmu_pgd),
-=20
-        .check_intercept =3D vmx_check_intercept,
--       .handle_exit_irqoff =3D vmx_handle_exit_irqoff,
-+       .handle_exit_irqoff =3D vt_op(handle_exit_irqoff),
-=20
-        .update_cpu_dirty_logging =3D vt_op(update_cpu_dirty_logging),
+Will
+
+[1] https://lore.kernel.org/all/20221114110329.68413-1-manivannan.sadhasivam@linaro.org/
