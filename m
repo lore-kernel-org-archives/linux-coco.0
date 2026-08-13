@@ -1,193 +1,178 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802273B71C0;
-	Thu, 13 Aug 2026 15:29:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99D7486E4D
+	for <linux-coco@lists.linux.dev>; Thu, 13 Aug 2026 15:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786634960; cv=none; b=ad6cgnzFehoBZQnshXwcxNX2d+XGbRF/ObJ4MHqMxNfggnNpDUYAhJ2ig6nRBiHQ5nO2AHlOPtc/1Vxh/mAersCq85EPfr+rBXa72BjIuIVTJYtO7bcvy6Sk/u+jlD7osoKPN8FbGi/njd6rNTtYo3RoKUXraAVztLiuEJNxahQ=
+	t=1786636524; cv=none; b=WZwVqEBV7bp/Yh2CZJ83uNd0WcVUb/55EENLz3jcsbTtVwn/hHZ3UiIAag5Kz9p2bykPY8hNMDojVNPERf1e4jPmRRhNj0cZFrPtB18/mgU4Nlip3fPslc5DWtJ/oa8pXfv1VMIXWbbSBE+NKtFwh0jguMnfPvFncZhtWQYnKbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786634960; c=relaxed/simple;
-	bh=XiCbGqpOXXJXofURPwtzJHhcISrABgmJajxK9Ioz9y4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y4fokn6+lFtoK0Uzi7MpfegXf7XU+RzM60kYDA/fflBSM7PQlgKgJiI958PRfNwvhbWljVtfXnXOz2xHMGlzNz9auOcBKI7rhvw3nibQqp8yE6Zq30MOz8y/+pCCyGqzMk2rK4YcK54JFBcjgDDbiut47tsMLdEX1lYGaC/4HK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Wz4RW0h7; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1786636524; c=relaxed/simple;
+	bh=KjvD0FYtibQe8DPB7+KaUJitoRzCPmTVRI1ZUYReScM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=nezSsXToLGhSt258PalT3xtfqXOrLkXMW85/hKUXsiHLWzItkhqUpNEQFJfLm3DTYmyazX8SNkmA8nUrbPLefdHdTNcv8iMXJJu1xKtJ75GpNNZ5OX8iklXZZV7rYPylvicV8PtLONaYDB/ihRHbrfft1BdA1+X3kggoqULetTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gkx4Wopm; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Wz4RW0h7"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ECFD31756;
-	Thu, 13 Aug 2026 08:29:14 -0700 (PDT)
-Received: from [10.1.25.28] (e122027.cambridge.arm.com [10.1.25.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CA5E33F632;
-	Thu, 13 Aug 2026 08:29:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786634958; bh=XiCbGqpOXXJXofURPwtzJHhcISrABgmJajxK9Ioz9y4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Wz4RW0h79cKIdIsdDbdMd8NGAcegqk85VdY1+tdw4yN8gzlnr05Af5QUdIpck76X6
-	 zeiPKM1/qTYrljz4IWISGzv11YICemYUYPJ+cHWftg4mGDfdsKJeLy8eqrrAWIx1MC
-	 Ojrc6+AQac06tJK3Wqj+8qD9p2CTw3puSp/Cy5KE=
-Message-ID: <a36e83e2-8f26-4d68-9b5e-756ca8740abf@arm.com>
-Date: Thu, 13 Aug 2026 15:38:26 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gkx4Wopm"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38dc085b0a7so1663039a91.2
+        for <linux-coco@lists.linux.dev>; Thu, 13 Aug 2026 08:55:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786636515; x=1787241315; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=NWd+efJbNRhMQi4tFuFF6oho5IzekPVE1UiVHSpD6zk=;
+        b=Gkx4WopmrxWQByFJUb9iPph6z2ikin5qxwL0bRgmTk7cQLkh3ENUoTOv0rqlTmCaNG
+         4JzNKVMj8NA8Unu2nKHF8QZ9cUOxe7lnC7wVuSgxclLPSIUqWkeA4ukroeOl2QVfZ0wr
+         kknkdB2S3fSG4LT3QZwyZ2fuJI/AZKPWCKEwL35IczhqIppFtscj/L7CtN3rzhRF4dNs
+         66WmT2nbWgF1CCpEYAPmusPtFGacjlI/maZb6/A/Gci9UDYuEu/GK2Tmnj6H370XeiYQ
+         q5nNcGEIzBjEW2h8eKRAeb1pnw7PJEfPzho1nh11EZhR3kp6QpBxVTuSYGgr18n4yBg1
+         ij/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786636515; x=1787241315;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NWd+efJbNRhMQi4tFuFF6oho5IzekPVE1UiVHSpD6zk=;
+        b=CR2Rz1r8bDz881mXfsNFmPa2OBzTyPFZGUKkNlk1xenfKgnBoT2zljmCz0IhIsdI6Q
+         4sALUgMVwDYuJDg5uClK0/xtfZQ0xAOrwK8wkJ8fLMFRff+c/Wld/0rrWkPbUfluv6lu
+         mCV8o817mXFNLODmai5I6maGEPrS09g5VtNMH2DRFt9uUc19OQyfNo5bdH/jxzroeSek
+         2Dg//0sUhwyuM4qS8Hmppt1LmHbbT+BWN58uX5a5qbxZYpc8gdOi6IqNgGxcsKFZvP0m
+         EFSIVqZ57grT7dAOlNiXKPIekVq1XCPR2sbXA4ctu2qDtKPY05ojFjKAlbi1ot3Tlv4M
+         6HNg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq9tXOxgytmys5S5q+uhfjuL2ipUbdJyEDK5uW5Zg/Qw9sYKOAw6B0RA1ZcchYGyupYHhWJ/R50qZBM@lists.linux.dev
+X-Gm-Message-State: AOJu0YzLx5sputGL05r2ZdzPnSj2YjAsVOTJuJWzO9GnwoiD5l7712Bh
+	t6j0eg6pJNmJsv4F/LF9ctYzaLSOEJSr3ZpHbDVW2lFJZOjgHVdT2VJurMRtisR0JY29lZruG2N
+	1aGZ04Q==
+X-Received: from pjbmr22.prod.google.com ([2002:a17:90b:2396:b0:381:1d7f:b8db])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a8d:b0:36a:8240:2477
+ with SMTP id 98e67ed59e1d1-3931e31a6f4mr7349226a91.19.1786636514937; Thu, 13
+ Aug 2026 08:55:14 -0700 (PDT)
+Date: Thu, 13 Aug 2026 08:55:14 -0700
+In-Reply-To: <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 21/45] KVM: arm64: CCA: Handle realm enter/exit
-To: Kohei Enju <enju.kohei@fujitsu.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20260803134403.80630-1-steven.price@arm.com>
- <20260803134403.80630-22-steven.price@arm.com>
- <anl7EwU9jSig-uQs@FCCLS0092175.localdomain>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <anl7EwU9jSig-uQs@FCCLS0092175.localdomain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com> <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com>
+Message-ID: <an3o4h-E8mj6CUaM@google.com>
+Subject: Re: [PATCH v10 12/41] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
+From: Sean Christopherson <seanjc@google.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, Fuad Tabba <fuad.tabba@linux.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/08/2026 09:03, Kohei Enju wrote:
-> On 08/03 14:43, Steven Price wrote:
->> Entering a realm is done using a SMC call to the RMM. On exit the
->> exit-codes need to be handled slightly differently to the normal KVM
->> path so define our own functions for realm enter/exit and hook them
->> in if the guest is a realm guest.
-> 
-> Hi Steven,
-> 
-> I found that when the host kernel is booting with pseudo-NMI enabled
-> (irqchip.gicv3_pseudo_nmi=1), Realm VMs fail boot successfully and the
-> watchdog reports RCU stalls and soft lockups.
-> 
-> After some investigations, I confirmed that arch_timer interrupts
-> are not being delivered to some CPUs. This appears to be because PMR is
-> 000000c0 (GICV3_PRIO_IRQ), as shown below:
-> 
->   [  248.769692] pmr: 000000c0
-> 
-> For normal VMs, KVM opens PMR before entering the guest, because having
-> IRQs masked via PMR when entering the guest means the GIC will not
-> signal the CPU of interrupts of lower priority, and in the worst case
-> a guest exit may never occur.
-> (See __kvm_vcpu_run in arch/arm64/kvm/hyp/vhe/switch.c)
-> 
-> [  248.756980] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-> [  248.758649] rcu:     3-...0: (113 ticks this GP) idle=d2ec/1/0x4000000000000000 softirq=1631/1633 fqs=297
-> [  248.759413] rcu:     4-...0: (7 ticks this GP) idle=b77c/1/0x4000000000000000 softirq=1589/1589 fqs=297
-> [  248.760101] rcu:     (detected by 7, t=6003 jiffies, g=4553, q=86 ncpus=8)
-> [  248.760731] Sending NMI from CPU 7 to CPUs 3:
-> [  248.766814] NMI backtrace for cpu 3
-> [  248.768285] CPU: 3 UID: 0 PID: 387 Comm: kvm-vcpu-0 Not tainted 7.2.0-rc2-00267-g7326f0114689 #238 PREEMPT(lazy)
-> [  248.768681] Hardware name: QEMU QEMU Virtual Machine, BIOS unknown 02/02/2022
-> [  248.768936] pstate: 61402009 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-> [  248.769021] pc : kvm_rec_enter+0xa0/0xb8
-> [  248.769585] lr : kvm_rec_enter+0x24/0xb8
-> [  248.769655] sp : ffff800084943830
-> [  248.769692] pmr: 000000c0
-> [  248.769757] x29: ffff800084943830 x28: ffff0000079c6c00 x27: 0000000000000000
-> [  248.770441] x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
-> [  248.770536] x23: 0000000080000000 x22: 0000000000000001 x21: 0000000049d99000
-> [  248.770590] x20: 0000000049d9a000 x19: ffff00000e018000 x18: 0000000000000000
-> [  248.770647] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-> [  248.770756] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-> [  248.770863] x11: 0000000000000000 x10: 0000000000000000 x9 : ffff8000812ab1bc
-> [  248.771018] x8 : 0000000000000000 x7 : 0000000000000020 x6 : 0000000000000080
-> [  248.771123] x5 : 0000000000000004 x4 : 0000000000000040 x3 : 0000000000000000
-> [  248.771172] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
-> [  248.771385] Call trace:
-> [  248.771612]  kvm_rec_enter+0xa0/0xb8 (P)
-> [  248.771757]  kvm_arm_vcpu_enter_exit+0x8c/0x218
-> [  248.771796]  kvm_arch_vcpu_ioctl_run+0x274/0x890
-> [  248.771843]  kvm_vcpu_ioctl+0x180/0xb50
-> [  248.771883]  __arm64_sys_ioctl+0xb4/0x118
-> [  248.771920]  invoke_syscall.constprop.0+0xb8/0x120
-> [  248.771954]  do_el0_svc+0x48/0xc8
-> [  248.771982]  el0_svc+0x48/0x280
-> [  248.772012]  el0t_64_sync_handler+0xa0/0xe8
-> [  248.772041]  el0t_64_sync+0x1ac/0x1b0
-> [...]
-> 
->> [...]
->> +int noinstr kvm_rec_enter(struct kvm_vcpu *vcpu)
->> +{
->> +	struct realm_rec *rec = &vcpu->arch.rec;
->> +	int ret;
->> +
->> +	ret = rmi_rec_enter(rec->rec_phys, rec->run_phys);
->> +	if (!ret)
->> +		load_realm_timer_state(vcpu);
->> +
->> +	return ret;
->> +}
-> 
-> In my testing environment, adding local_daif_mask/restore() in line with
-> __kvm_vcpu_run() fixes the issue, and Realm VMs successfully boot
-> without RCU stalls or soft lockups.
+On Thu, Aug 13, 2026, Binbin Wu wrote:
+> On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> > +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, p=
+goff_t end)
+> > +{
+> > +	struct folio_batch fbatch;
+> > +	pgoff_t next =3D start;
+> > +	int i;
+> > +
+> > +	folio_batch_init(&fbatch);
+> > +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch))=
+ {
+> > +		for (i =3D 0; i < folio_batch_count(&fbatch); ++i) {
+> > +			struct folio *folio =3D fbatch.folios[i];
+> > +			pgoff_t start_index, end_index;
+> > +			kvm_pfn_t start_pfn;
+> > +			kvm_pfn_t nr_pages;
+> > +
+> > +			start_index =3D max(start, folio->index);
+> > +			end_index =3D min(end, folio_next_index(folio));
+> > +			/*
+> > +			 * end_index is either in folio or points to
+> > +			 * the first page of the next folio. Hence,
+> > +			 * all pages in range [start_index, end_index)
+> > +			 * are contiguous.
+> > +			 */
+> > +			start_pfn =3D folio_file_pfn(folio, start_index);
+> > +			nr_pages =3D end_index - start_index;
+> > +
+> > +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
+> > +		}
+> > +
+> > +		folio_batch_release(&fbatch);
+> > +		cond_resched();
+> > +	}
+> > +}
+> > +#else
+> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, p=
+goff_t end) {}
+> > +#endif
+> > +
+> >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t star=
+t,
+> >  				     size_t nr_pages, uint64_t attrs,
+> >  				     pgoff_t *err_index)
+> > @@ -599,7 +636,12 @@ static int __kvm_gmem_set_attributes(struct inode =
+*inode, pgoff_t start,
+> > =20
+> >  	filter =3D to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
+> >  	kvm_gmem_invalidate_start(inode, start, end, filter);
+> > +
+> > +	if (!to_private)
+> > +		kvm_gmem_make_shared(inode, start, end);
+>=20
+> If both KVM_AMD_SEV and KVM_INTEL_TDX are enabled, HAVE_KVM_ARCH_GMEM_CON=
+VERT
+> will be enabled and the logic in kvm_gmem_make_shared() introduces unnece=
+ssary
+> overhead for TDX.
+> Not sure about CSPs, but in a standard distribution kernel, it's very lik=
+ely
+> that both are enabled, right=EF=BC=9F
 
-Hi Kohei,
+Yep.
 
-Thanks for the detailed investigation.
+> Should kvm_gmem_make_shared() do some optimization or the overhead is rel=
+ative
+> small in the conversion to shared path so that the optimization is not wo=
+rth it?
 
-> However, I'm not sure if we can safely call local_daif_mask/restore()
-> here, bacause they call trace_hardirqs_off/on(), which presumably cannot
-> be called from noinstr context.
-> 
-> For reference, the VHE hyp path seems to call local_daif_mask/restore()
-> from noinstr context, but I'm not sure why this is considered safe:
->   noinstr kvm_arm_vcpu_enter_exit()
->     kvm_call_hyp_ret(__kvm_vcpu_run, vcpu) <- normal function call for VHE
->       local_daif_mask()
->         trace_hardirqs_off()
->       local_daif_restore()
->         trace_hardirqs_off/on()
-
-Yes I'm not sure if there's an existing VHE bug there. But it's only if
-CONFIG_TRACE_IRQFLAGS is enabled, so perhaps no-one has noticed?
-
-> The following change works in my test environment.
-> Any thoughts on the issue and the proposed fix?
-
-Your proposed fix looks like it matches the VHE behaviour, so I'll go
-for that. If there's an existing VHE bug then hopefully the below will
-work after the fix for that too.
-
-Thanks,
-Steve
-
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index c242dfc2c7a6..dd7cb2d7db88 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-> @@ -1307,7 +1307,13 @@ int noinstr kvm_rec_enter(struct kvm_vcpu *vcpu)
->         struct realm_rec *rec = &vcpu->arch.rec;
->         int ret;
-> 
-> +       local_daif_mask();
-> +       pmr_sync();
-> +
->         ret = rmi_rec_enter(rec->rec_phys, rec->run_phys);
-> +
-> +       local_daif_restore(DAIF_PROCCTX_NOIRQ);
-> +
->         if (!ret)
->                 load_realm_timer_state(vcpu);
-> 
-> Thanks,
-> Kohei
-
+I assume it's relatively small, but it's probably a good idea to gets numbe=
+rs so
+that we can make a semi-informed decision.  E.g. if processing 1GiB work of=
+ 4KiB
+folios is <100 cycles, I think we generally don't care.  But if it's more l=
+ike
+tens of microseconds, then I think we do care enough to optimize the walkin=
+g for
+TDX.
