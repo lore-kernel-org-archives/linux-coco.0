@@ -1,164 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EECE3EAC80;
-	Thu, 13 Aug 2026 05:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192D942F71E
+	for <linux-coco@lists.linux.dev>; Thu, 13 Aug 2026 06:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786599155; cv=none; b=kCiu/a12jZErOffYRKmcPQACC1nFZ6aMax9rnYcY+6OIdVBEj4M47hO0fZga5p4x7/XypMj/esu6ukopfYY5UAFVD+a5C2rG8KMC09T+z/vs+fVbppKqDHnJPHSIFYhT/wRDkagZp8JO7lngF4HJRkfC7S0Flb6pLmsB6v8XUBU=
+	t=1786604191; cv=none; b=aR66/Yb/FpLh6yasMB+zrreB5sZWOTha7GJ1fLS73jfEYMV1Dj9p9nFGgXFO8/V2nAfQMehQWqlkyct1LIQJly4mEutaM/PnsUJfzamq+PhbLXyopzTUyuZwWN4n1qKOrUtTaAD5NUuOqAM7eIjxBWTBvp0hquHKmzthwsQ8v9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786599155; c=relaxed/simple;
-	bh=PDLcwSnTv7PhVg76Tv5W2zcVBlxbUbLw7dv4p4yTRYQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=KJnTzMdSBHjRHzWaJZy0U22c3d0pF4uHIwdDXVGAZ25iQcqLdrxbWTPee+SktNnLR5sd7c3LO/W0b41XBI54vVmuT7AGg2ojutY5opwtbYAFUPlXaPtzLyQaUXN4uVGrJvVp0CcNjOenhdw1nvIVOVCowHSv+7Z3/AF2JMcFIUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QzMCM7a7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786604191; c=relaxed/simple;
+	bh=EiRUT7eibLcdH0tOQiOYhPqjIQxyxShzLvniKf9KyN0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lrErwSUz+inmbBN7aQytfeOC/+3GPPHFB4vW7spnYexe3qCCZNp9P8sWI4CmYXU0XX4eS/w3htRCyXuqLMMUn4bDgyeSxccMO9Gq7F8x5wPkIi+vPpT5VqC2EQQDzCfJoQ75g1WjmOnP7pu2dPUo57NtN/bsbIkrAPYMOJ0Ia8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k3lD0RVh; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QzMCM7a7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE4C71F000E9;
-	Thu, 13 Aug 2026 05:32:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786599150;
-	bh=Q7+1TgLjh64mc8wlI/+wRCUp/0uoB/o0TuwaP6ybUds=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=QzMCM7a7UPs+Up9SpbK9AGgUKNnJcq7JtJt2BxrN8xxedAYAC26wz140VuaR0ttCj
-	 WX0GXl6z9TOj1EBKf+69He9/9QCoTVnrFPKfCLybSPeVU41AxLSKWLoWH2sQ7Znjcl
-	 ScXog++R46Zku5P3HOzNfxdmnmW1RiX6j3Vhxcj5eDDHF8iHqZUAPIX4zAvuvzNPFv
-	 jc6a4ZURfR+w3exZGHROC5GXfdZs9mTmZ5olvt6Wak1wNuVVexb84hpqHJIDbrsLie
-	 HM5+LxMP45QmHLKFLcJCalkAYC2VyoVEAvEe+uOAp8up12PqmH0i/tC4Ji4cAc3zv6
-	 bO8Gu75D+lRQg==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [RFC PATCH] dma: swiotlb: Size shared default pools for memory
- encryption
-In-Reply-To: <anysnQFVTO_RAYxp@arm.com>
-References: <20260811134056.756015-1-aneesh.kumar@kernel.org>
- <anxEc8EHmJQywVI5@arm.com> <yq5ajypvioks.fsf@kernel.org>
- <anysnQFVTO_RAYxp@arm.com>
-Date: Thu, 13 Aug 2026 11:02:17 +0530
-Message-ID: <yq5aecg2io0u.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k3lD0RVh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786604189; x=1818140189;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=EiRUT7eibLcdH0tOQiOYhPqjIQxyxShzLvniKf9KyN0=;
+  b=k3lD0RVhjTMn9skvIarhEnDVJzwqjAuO6Tw+6LRBn/hFhJnAMlpnbolz
+   /V1sH3lVqDRslYH9nxMZMEskc1gN4gVCzad8suKz0ytyybhEDGOw0d+6O
+   SHMnLE73Ayq91XpxnXGiMywCDeAZvJ6MhjuJ9rx13+5NKrAzbeiWaMGIk
+   40v/QSMfEjQmBpOtJYfWr+8aU7ZHd3fK7xLd8gIrFZRcNPHBqWkpE/yQb
+   fbU7CPVENwb3JMAzwvt+EMARH5MH4KUe1kLXrRBC1Ly2FowwzIBrEWaJO
+   wYup1aX6SNiPPLxnkBvR/rJiIBtlIh+ro19mybLcneiZP4QEUCPzd8e8K
+   g==;
+X-CSE-ConnectionGUID: pLMXMpwPSziA5tsQdWvWAw==
+X-CSE-MsgGUID: d7+kVL1fSlaQ0KND6/Eerw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="86290002"
+X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; 
+   d="scan'208";a="86290002"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 23:56:28 -0700
+X-CSE-ConnectionGUID: G3H/IDqNR/ShOWEVvKkhtw==
+X-CSE-MsgGUID: hHyHwXdWQJSEvzpnZYeIQg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; 
+   d="scan'208";a="265841672"
+Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 23:56:14 -0700
+Message-ID: <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com>
+Date: Thu, 13 Aug 2026 14:56:12 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 12/41] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-coco@lists.linux.dev,
+ Fuad Tabba <fuad.tabba@linux.dev>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Catalin Marinas <catalin.marinas@arm.com> writes:
+On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
+> 
+> When memory in guest_memfd is converted from private to shared, the
+> platform-specific state associated with the guest-private pages must be
+> invalidated or cleaned up.
+> 
+> Iterate over the folios in the affected range and call the
+> kvm_arch_gmem_make_shared() hook for each PFN range. This allows
+> architectures to update hardware metadata or encryption states to
+> transition pages to the shared state.
+> 
+> Invoke this helper after indicating to KVM's mmu code that an invalidation
+> is in progress to stop in-flight page faults from succeeding.
+> 
+> Omit support for calling the arch hook to make private, since SNP, the only
+> implementer of the arch make-private hook today, would actually prefer
+> making private only just before faulting memory into the NPTs.
+> 
+> Calling the make-private arch hook would require iterating both bindings
+> and the filemap to find the intersection of bindings and allocated
+> folios. On top of that, SNP would need to figure out whether to actually
+> make private based on whether the memory is about the be faulted, or
+                                                     ^
+the -> to?
 
-> On Wed, Aug 12, 2026 at 04:38:03PM +0530, Aneesh Kumar K.V wrote:
->> Catalin Marinas <catalin.marinas@arm.com> writes:
->> > On Tue, Aug 11, 2026 at 07:10:56PM +0530, Aneesh Kumar K.V (Arm) wrote:
->> >> Systems with memory encryption use swiotlb to provide shared or
->> >> unencrypted buffers for device DMA. Confidential guests may route all
->> >> DMA through these buffers, while SME hosts use them for devices that
->> >> cannot address encrypted memory. The default swiotlb pool can therefore
->> >> be exhausted under I/O-intensive workloads.
->> >> 
->> >> Let architectures mark the default swiotlb pool as shared before
->> >> swiotlb_init().
->> >
->> > I thought we wanted even this decision to be moved out of the arch code.
->> 
->> Architectures may want to use an unencrypted swiotlb pool for different
->> reasons, one of them being CC_ATTR_GUEST_MEM_ENCRYPT. x86 hosts also
->> require unencrypted pool to support SME. We can cover both cases using
->> CC_ATTR_MEM_ENCRYPT.
->
-> Yes but in one case it did not do resizing. With your proposal, it now
-> does swiotlb resizing even for SME.
->
+> whether it is a conversion.
+> 
 
-Isn't that a bug with x86 SME? I would expect both SME and SEV to
-require that swiotlb resize.
+[...]
+
+>  
+> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
+> +{
+> +	struct folio_batch fbatch;
+> +	pgoff_t next = start;
+> +	int i;
+> +
+> +	folio_batch_init(&fbatch);
+> +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
+> +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+> +			struct folio *folio = fbatch.folios[i];
+> +			pgoff_t start_index, end_index;
+> +			kvm_pfn_t start_pfn;
+> +			kvm_pfn_t nr_pages;
+> +
+> +			start_index = max(start, folio->index);
+> +			end_index = min(end, folio_next_index(folio));
+> +			/*
+> +			 * end_index is either in folio or points to
+> +			 * the first page of the next folio. Hence,
+> +			 * all pages in range [start_index, end_index)
+> +			 * are contiguous.
+> +			 */
+> +			start_pfn = folio_file_pfn(folio, start_index);
+> +			nr_pages = end_index - start_index;
+> +
+> +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
+> +		}
+> +
+> +		folio_batch_release(&fbatch);
+> +		cond_resched();
+> +	}
+> +}
+> +#else
+> +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) {}
+> +#endif
+> +
+>  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+>  				     size_t nr_pages, uint64_t attrs,
+>  				     pgoff_t *err_index)
+> @@ -599,7 +636,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+>  
+>  	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
+>  	kvm_gmem_invalidate_start(inode, start, end, filter);
+> +
+> +	if (!to_private)
+> +		kvm_gmem_make_shared(inode, start, end);
+
+If both KVM_AMD_SEV and KVM_INTEL_TDX are enabled, HAVE_KVM_ARCH_GMEM_CONVERT
+will be enabled and the logic in kvm_gmem_make_shared() introduces unnecessary
+overhead for TDX.
+Not sure about CSPs, but in a standard distribution kernel, it's very likely
+that both are enabled, right？ Should kvm_gmem_make_shared() do some
+optimization or the overhead is relative small in the conversion to shared
+path so that the optimization is not worth it? 
 
 
->
->> However, pKVM does not want an unencrypted SWIOTLB
->> pool. So I was thinking it would be much cleaner to let the architecture
->> code drive that decision.
->
-> Let's not single out pKVM but rather the reason it does not want one -
-> it relies heavily on restricted mem. If you started a pKVM guest
-> without rmem in DT, I assume it will need swiotlb to function properly.
-> It's not a great heuristic (devices may not use rmem) but it preserves
-> the current behaviour and can be overridden on the command line.
->
->> > BTW, why does arm64 report CC_ATTR_MEM_ENCRYPT instead of the GUEST
->> > option in realms?
+> +
+>  	mas_store_prealloc(&mas, xa_mk_value(attrs));
+> +
+>  	kvm_gmem_invalidate_end(inode, start, end);
+>  out:
+>  	filemap_invalidate_unlock(mapping);
+> 
 
-
-This is getting fixed in  
-https://lore.kernel.org/all/20260701054926.825925-9-aneesh.kumar@kernel.org/
-
->
-> It's still not clear to me why we went for CC_ATTR_MEM_ENCRYPT instead
-> of CC_ATTR_GUEST_MEM_ENCRYPT.
->
-
-This is done for x86 to handle SME. SME also requires an unencrypted
-swiotlb pool
-
->
->> For the same reason I mentioned above, architectures may have different
->> reasons for setting cc_shared = true. IMHO, it is cleaner to let the
->> architecture code make that decision before swiotlb_init().
->
-> The arch code already reports cc_platform_has(), can we not rely on
-> this in the core code instead of specific is_realm_world() and a new
-> SWIOTLB_INIT_CC_SHARED flag or function call?
->
-> We have three different decisions that shouldn't be driven by a single
-> flag from the arch code:
->
-> 1. allocate default pool
-> 2. make default pool shared
-> 3. resize default pool
->
-> (1) is traditionally driven by arch code and that's fine. For (2), the
-> core code has the information via CC_ATTR_*. For (3), we can enlarge it
-> based on CC_ATTR_GUEST_MEM_ENCRYPT in combination with rmem (but not
-> CC_ATTR_MEM_ENCRYPT to keep the current x86 behaviour).
->
-
-Okay, if the presence of restricted-dma-pool is taken as a hint, we can
-definitely move that to generic code.
-
-I still think not resizing the swiotlb pool on the host for SME is an
-x86 bug. However, I'll keep it compatible with the current behavior and
-use CC_ATTR_GUEST_MEM_ENCRYPT for now. We can handle host SME in a
-separate patch if needed.
-
->
-> I think we should also move the reduction based on
-> CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC into the core code. Riscv copied the
-> same heuristic as arm64, so there's precedent for sharing.
-
-I already have a patch doing that.
-
--aneesh
