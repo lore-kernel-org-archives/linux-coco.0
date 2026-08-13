@@ -1,165 +1,172 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DC0402420
-	for <linux-coco@lists.linux.dev>; Thu, 13 Aug 2026 18:40:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002A2489866
+	for <linux-coco@lists.linux.dev>; Thu, 13 Aug 2026 18:51:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786646452; cv=pass; b=fvCYuihfZKDejIA/WosslZV0quH+fw5DSuuE1o28IpnDXUdWUm4qwBD/xA3UGRTPryuznu7Yvtur78khFzJQLN9a58SbA5XHShgAtkaOOLiMaCZLx02rIWTt0om2QL6rj2OvBj9W5ZUjNDEjFSUOlWl1FtCJDdcsO6dMCp2Z900=
+	t=1786647100; cv=pass; b=Km56ytfhwr8/jCxFBClo8lwAjYM+TuBE1dxBzEpjruGnOvjAY/ZmT079AfKnP6eACSbHrtdKkOsSYPzPIqQ4xKrDzDZDtIR8JB+PqvMFqSkXtD/5nK+hEE4RaAxRABx1/YIF3biKEJe9iWQ7K/wk/LN5OrN48ZOoXwofKx10Nbg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786646452; c=relaxed/simple;
-	bh=SmuHUPl640dUfP/T8wiC16wCTI5Yqb/6dnMHylHeXNU=;
+	s=arc-20240116; t=1786647100; c=relaxed/simple;
+	bh=EePxyuxj/ORuNvnRcTqvK7WSqyTYRaPWHyS7fmka0Cc=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wo8dJsZNV3L1t5L7Te5uPh24XGZ+SP2NHBm3+JU1OLTqIvHqcYaNeOo8J7fdPdvNdOdL3HFxr/FS35JhqIVCtn+Ju43XVRKeh6M48ibiOZzmsY8ER5vQ+0tehLDtxldAk4ydDyCxbAMXYR6uoGUzeeXORsHNtR01LFQoSDz6LuY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RQ2xJDgP; arc=pass smtp.client-ip=209.85.216.42
+	 To:Cc:Content-Type; b=EMuARYE7s/caR9dXTLfCTrnSuxj1p/TUxLNsEjbl2DKm4dFYW79FOOIvpGRIEUwLkqt8xgiX7amfiJ66/Ui2ggCo+/NZob9t7XpudH9GhRCpbgeBY1sZb9OEThlNHJ2/h28nsIqMaD8pkqtEilDeaFJQ70lJa9O6644nXfbwl08=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P1QwXeXu; arc=pass smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RQ2xJDgP"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38e08baf860so155558a91.2
-        for <linux-coco@lists.linux.dev>; Thu, 13 Aug 2026 11:40:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786646450; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P1QwXeXu"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38e3efab7e0so89187a91.0
+        for <linux-coco@lists.linux.dev>; Thu, 13 Aug 2026 11:51:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786647098; cv=none;
         d=google.com; s=arc-20260327;
-        b=hS3Mr30i2OS5LgKKqQ478Ri3gYtd0tf2UE2A3l5sj+1t6SUrRMZ37KRTzQr5F1axHR
-         swwxIeO9CRXFY09+TFRnoWo/l0BkMw+zOua/DJ0opghcOMkmwwhI/5o3T0RxKPhQ5HUO
-         61skZCeDyo4vXrSz6wzMMvf5ZNLoJtRsyAej0eUoCSkbxrYbdhqEArtCOW+RPELU8Clx
-         dz/74+yJMcCt+XYRTxd36sJgstBqGJmOcqVBgPVQRcv9SEE9+vXbFtRhofzWgYKXiiCe
-         rvvfngmp6ZOX49zmGarL2RegCMXPE14MwxLSNFgD/26KaGQP4Tf9cIFYqy0wB8asHkA8
-         UeUA==
+        b=rEashfselj8yDllwdiGq/XdVd7lRE6NoTCReLfhW/3WcjO58YFOWJbbincIC4UVDOH
+         8O3MLevm2cTtvwJiRtuyT8rM6EqsQmzzlkaUbH+ahXY3Tb86cZKZNYMKVHGGkKoM4Enb
+         IGcWqkCga1vfr/Nf0u/G6TlzNqrenj9iRTN+KwKmmcXaubNoqKt6iE0IcdXGdRLzn55D
+         oLX6Xzn2HQSHs5eUNpoPnMUJobmUBLkys4vGGuRZvOCJfoXM03LPZsiRawYZwDG1hUDe
+         JuUfUnsVuo4iSS/oa6bbiSRfjlzE/qUq3tS017dMr/+WjT9vXSYoIwIp7l9wyqpIVH72
+         vQ9A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=FfCarHoh7qSi7mQScz0h/iOmFe8yy6xC72Pgonixm98=;
-        fh=SiDuaybXAcHWyLm6/yDHHR2Dcz/eNAH5kgHuFtVxxyw=;
-        b=BXKZCBGbv8e3w131RmP/3WWU/W3PEOiA9MZrYnYfhLK3NF+fHI1/U7xMJ820n+zoJl
-         ByGvl8ao+wDbyy0WtnjgnYYl3RnfgA0L0duKoBSrnLErQ32BvWHthmipQgyuz6i0Lo3O
-         T9h4l5sCwjusFGVJogZMjXKiJCh/J4BhxTqu4xDIGLYI0Mi9yr8RvqFS6BITzQzEOkQY
-         JMQLuNsGCiocBw373tOIXlECHELde50SAQMbpceULd73Ta7Tn0cO3hQ9zZA9e2I0oWzs
-         skKtjgK1TM34NvUfYuBR0GykqUTjH6Aj/hF6g5d9upLgZt2tr9fs59XMPnFkASOq8U/a
-         7rqw==;
+        bh=EePxyuxj/ORuNvnRcTqvK7WSqyTYRaPWHyS7fmka0Cc=;
+        fh=+oABdlR0b5lVUkhORPEmkH5RSTb/9ri1kEokxzx8SlE=;
+        b=EOt9YC/PeOHYCymKZANsdClc4LxpZcJhmALhkntmigMfBcBEv3aYtSk+vqScWDJdA3
+         4Wb82QAQPbtFeQciWaPZLixamDn5Bb7DGafiWFJMYwJVK5B0QJt6DEe3d07lK4c79zBj
+         ozjtnpxLBSQ0qed+kAY8XulDXwPNJjsRi36ldT5CR/6l1Lz0nSS//EpfhYlpm2lqwjcl
+         Xbh8obDbYuKH5IacUu8pgc9o18y/g3ruOIh8GnuK9p6elhuzqqNIatw/cBdAaDzy0JGa
+         10CJCMiBSC6FKTbZ3v0U1niRYsMPjQqEqiTpCv8eOESSDaaIrhGTAKXIyxxRy7fDnTPL
+         THHg==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786646450; x=1787251250; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1786647098; x=1787251898; darn=lists.linux.dev;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FfCarHoh7qSi7mQScz0h/iOmFe8yy6xC72Pgonixm98=;
-        b=RQ2xJDgPd31eieg8CKzVLCgc3LlyKMtoBt6rkzgCc3QZE7CIRgBpTvp8P6Nn/08+Xc
-         q0Sza6PHkpNM0gXAzydsKkH9yspn9pCuv9iJpIGlwDGGG+tKg3fG3e+yikJCu4QcIWWC
-         DlF9XpTqvyVa+vhPAL3xcYGWzxzvSXJUJgj1lBMaBiMAziw2S7c05boT8J5i9HRISxDR
-         dwMux/LLdeo6PzebTt3GXqJJuzgQGNW9zd9aSi3A6gvm4WfKmgX/c+mZWbCDVmgbgH9A
-         gQkl0QmwzJ4n+KT2c4GODkP69fsDDMqvz8dQs5mUHo1amwTWuQfccuhPTIIXr1/BJgfW
-         exqw==
+        bh=EePxyuxj/ORuNvnRcTqvK7WSqyTYRaPWHyS7fmka0Cc=;
+        b=P1QwXeXu3pt6ZhqJ5BrH4FPvlu0H1CVYOF5cw6rlPo/hDRDVmnmBMcvC4JucwJPar4
+         HaGtGuwI2dubJ86qF7WfhKSZkU8IZE4O0OE88LxNMPK6cNN7Cbpdb93BD50bBhae9b6x
+         QkKFh9gkHnp5tLlzxIVAZfCaGrtYHd4FyfEoRKh6e4t2GdiK9NchCBkbFrRBaL6tC5gp
+         A/NNO/dLyZK17fI2MVyF6vYKA0TulKK2iM8zmQk8CqfTBph5KPSa/NlfLfspc6qzqV4g
+         gKOkGd3SIgLs6ZgZZ7fhgur0SvWi5QlSb3tJu1N0raXA/RFZja/ngHDRSdUoaU8uHwkN
+         9yqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786646450; x=1787251250;
+        d=1e100.net; s=20251104; t=1786647098; x=1787251898;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FfCarHoh7qSi7mQScz0h/iOmFe8yy6xC72Pgonixm98=;
-        b=IBtoqHasz9Ix42JNxA1chH8mb1mhJCh91xBUVv79OxSa3q+EhWawGmYPinyNi9XgKs
-         frKrwRsiote9UcZBSBuizX+dm+2G/CRg51EUA4e8L4tGd0ruxlMpovbacGxhm2o3Sn9j
-         w9YEFZA7MzRGjF0/oJ4FNP0RKEaU1oqAQRsWHggALVaJZNOoMGhWtHtBghSFSmfmAVP5
-         dOcmEFqlj+tXD3khkOsbkm+iUfQMWcKXgn5NRN2NUjnS7zYxoU2BW/Nrme1hd3DCCQZc
-         2Z5AZ+JElIUj261zX9VfHqnNOV9XzhU83bMfWeqWHcQMtPRfCRa6koMhV9YEmM5FFF8O
-         3pzA==
-X-Forwarded-Encrypted: i=1; AHgh+Rql9H43nx6enyBMbXhu6UYwykj2HUfiUZLhD38FjLJWRGKF2+1vBFQ6zWZ0UYiZTOEhJg2RnosA2d8f@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywk1iJUWlvIH6kA0fFpJS7uF3O6oNrVO1awomRrdLGUS0CrMIss
-	jH7zY1Ye08wOTLNmUTlrHxh+NpyTdQpyKG88JBMUxBjieczk2O1536MsjaGNwxn1F2lGDnLvUEa
-	4cm3AFnNv+Sm3xajOAeS7dBJDrLynVcYTZ2gGCK2X
-X-Gm-Gg: AR+sD12NYC636XQpS8FMDQnsw8w5upSkipRR1jNk5yfWGoz2vlzcPburkeBoErnXgsg
-	1qKn+r3MFtB7k+/NRWI5BmuQ7FNXumK/6Zkx+WEVBKlyDBDO74X9Aot+ETEtFdiytqia1ov/34/
-	MFOcdY1wOI3DzENIDtFVxqJAPerDbgYeFFJ+HOPyBL59lUFIs7l0aiXyPbf1Ej8u1aKIYxQjYSF
-	EqwJ0RXCfiZMlm9VUVY9fI0xmAOQMFjWnYWvNKmhUKuAi18aKi+tIVJvGLNSQNI/ZwumzjtBXLe
-	ekTRleqmp2K6IWBMkeQTaspOsj0j5nFQVdbGQL+XSjUjjPeleg8jfyEqF0qPTvStfS4+HdFxnV3
-	SEEcfKEl1yk+8QNrV069VRKKUfwRpnvQ=
-X-Received: by 2002:a17:90b:1c03:b0:38e:2860:253f with SMTP id
- 98e67ed59e1d1-3931e25f24fmr8532991a91.12.1786646449351; Thu, 13 Aug 2026
- 11:40:49 -0700 (PDT)
+        bh=EePxyuxj/ORuNvnRcTqvK7WSqyTYRaPWHyS7fmka0Cc=;
+        b=hQUZEWB2YnxPDw6BjbK0VWTLySS7e6nt4ZOlG3h4j/BdZsDgtmRDkahHKNqLBS+clB
+         uAwNfL+ba/6usRJsVEDylxJdLkpvOy+RIbI9+RDAPFzFQRYTtXVo3a2aIrZHQ8Zon4FB
+         zShtevWoUXE4gkBLFAh9nBoHDz+f1jw8IG8SPDqplZvdrB8KObMYntHkt3Q9+OmzqxEY
+         AjnybgG0bII/HEjOnQrczXWc/fPROlS1KUcR/I7GHhBwI87SZmK8sqTxnP2xe8n/0RQ7
+         e26kSUxqbt/QRF0kWQygh4gmfR314VkHYNVuKVMjJA7v24zebGck91c27Wg1SxSMp/1k
+         d8qg==
+X-Forwarded-Encrypted: i=1; AHgh+RppATb/q9oS2JKebAKYJ/YS5GYNciXAhSjQFMIGh+VuyXvGVEqirKna0oGSxFiSZBddXbS12MIzShjw@lists.linux.dev
+X-Gm-Message-State: AOJu0YwuPL/CpJfXPJZyn/YN10MotLdXWxI9HoRROmLa7OIIaaofS9ki
+	e2N9HKgJGxQ3sq1kzg5BUgW7AO/jBBI6Wjn9cBGLjIBA62Gx4IJCwDam3auLMxLhaZVC9H0vKlb
+	jg44jnCN0g6/GFbMdOQSyA7wh2GiMMfwV4SUgbV+8
+X-Gm-Gg: AR+sD112UjrJ3JK2J5QiF2pcBGfIc+SxwGe3OHwWUGMJUf+fTZr8n3n2qQcteMLPUPG
+	f98g6iI/XO+6AoPfzbBcgN+biTRX2oxjnkg0odN50TS5jEq5vp5y2ZUJG4JR9zis/vV6R39fPYx
+	D8PlsVUhKH8lrn++Wj5YimruyoGTrXu025tLmn7lUHTyGH1d5iHZ4C8f0/kvuUNvJHf45n8EZ0U
+	c+ApNcR5NSkOFRJFZt05X1PhzUwBdCP9RNMJJoplij3yi/X/EAhjNefPpRb/+F98VzRNVdRPDg0
+	ELreAOuQAvqWs3tb9tr8Ec5XzZjNPNLthJ5rsRTFLbkEfQF8nF8TuyPYAcyWukDGodVQzS3H5xo
+	zPUVOEZQ2R7WGelE47E2iqhbH6hfgBNo=
+X-Received: by 2002:a17:90b:288f:b0:380:86d8:8162 with SMTP id
+ 98e67ed59e1d1-3931f5f5fffmr4564862a91.18.1786647097635; Thu, 13 Aug 2026
+ 11:51:37 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 13 Aug 2026 11:40:48 -0700
+ HTTPREST; Thu, 13 Aug 2026 11:51:36 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 13 Aug 2026 11:40:48 -0700
+ HTTPREST; Thu, 13 Aug 2026 11:51:36 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <cc44c9d7-a6cd-40a5-9f68-4822fb9c9d0c@intel.com>
+In-Reply-To: <a71d4fccdffd1f6a12332ddd18fa812542ea2118.camel@intel.com>
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com>
- <ed483d25-d908-4248-b8c7-862dd35dc6d4@kernel.org> <annnrGR1noVuBkCc@google.com>
- <cc44c9d7-a6cd-40a5-9f68-4822fb9c9d0c@intel.com>
+ <20260807-gmem-inplace-conversion-v10-11-2fc18ee6d3ba@google.com>
+ <anZ4W9o5pTWIEgMY@yzhao56-desk.sh.intel.com> <anj2bPrGqzZgZWMF@yzhao56-desk.sh.intel.com>
+ <CAEvNRgFzRj_=GVy8T4P8ehhQjYomYxkngzwtKBF0iEL0Cv6fuQ@mail.gmail.com>
+ <anp1I64K0KeyQuyo@yzhao56-desk.sh.intel.com> <CAEvNRgFWcndQKJE_q+ZATFZEMYd=6uRLygozLvg7L77bPX0cEQ@mail.gmail.com>
+ <anqqKH6kuwpvuwp9@yzhao56-desk.sh.intel.com> <CAEvNRgGWDY_fxbyBM-5sMdYMevMe0HzVP9kbC1cCGLE_dV=_Gw@mail.gmail.com>
+ <a71d4fccdffd1f6a12332ddd18fa812542ea2118.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Thu, 13 Aug 2026 11:40:48 -0700
-X-Gm-Features: AUfX_mwbi2KKm_8JKoJYp71B4rnhRB-DpUSQbtCK9ZlqdFzmBXno1Ngt_qJ6KFA
-Message-ID: <CAEvNRgFd-6-QxR7w8SxPRa0UU+AAF7pDupLP8cPbQ9y3m=2QVw@mail.gmail.com>
-Subject: Re: [PATCH v10 07/41] KVM: guest_memfd: Stub in ability to enable
- in-place shared<=>private conversion
-To: Xiaoyao Li <xiaoyao.li@intel.com>, Sean Christopherson <seanjc@google.com>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, jmattson@google.com, 
-	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
-	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
-	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
-	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
-	aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
+Date: Thu, 13 Aug 2026 11:51:36 -0700
+X-Gm-Features: AUfX_myWEmd6jjOfyL-08bj4iJ8X-_1fqONSad0Pn1FbAvMHKm6jyQidagK1AHQ
+Message-ID: <CAEvNRgHxda6XK_XqWaqqVnA7oW=Fhp_C5gF4vNcL+-HfwfXMqQ@mail.gmail.com>
+Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
+ before conversion
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>
+Cc: "david@kernel.org" <david@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"steven.price@arm.com" <steven.price@arm.com>, "peterx@redhat.com" <peterx@redhat.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "tabba@google.com" <tabba@google.com>, 
+	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "forkloop@google.com" <forkloop@google.com>, 
+	"Annapurve, Vishal" <vannapurve@google.com>, "willy@infradead.org" <willy@infradead.org>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "wyihan@google.com" <wyihan@google.com>, 
+	"pratyush@kernel.org" <pratyush@kernel.org>, "aik@amd.com" <aik@amd.com>, 
+	"jmattson@google.com" <jmattson@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "rientjes@google.com" <rientjes@google.com>, 
+	"andrew.jones@linux.dev" <andrew.jones@linux.dev>, "chrisl@kernel.org" <chrisl@kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, 
+	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
+	"mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>, 
+	"tarunsahu@google.com" <tarunsahu@google.com>, "mhiramat@kernel.org" <mhiramat@kernel.org>, 
+	"baohua@kernel.org" <baohua@kernel.org>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
+	"jthoughton@google.com" <jthoughton@google.com>, "yuanchu@google.com" <yuanchu@google.com>, 
+	"jgg@ziepe.ca" <jgg@ziepe.ca>, "shikemeng@huaweicloud.com" <shikemeng@huaweicloud.com>, 
+	"nphamcs@gmail.com" <nphamcs@gmail.com>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "shivankg@amd.com" <shivankg@amd.com>, 
+	"shuah@kernel.org" <shuah@kernel.org>, "youngjun.park@lge.com" <youngjun.park@lge.com>, 
+	"kasong@tencent.com" <kasong@tencent.com>, "pankaj.gupta@amd.com" <pankaj.gupta@amd.com>, 
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"vbabka@kernel.org" <vbabka@kernel.org>, "weixugc@google.com" <weixugc@google.com>, 
+	"michael.roth@amd.com" <michael.roth@amd.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "qperret@google.com" <qperret@google.com>, 
+	"brauner@kernel.org" <brauner@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "corbet@lwn.net" <corbet@lwn.net>, 
+	"baoquan.he@linux.dev" <baoquan.he@linux.dev>, "liam@infradead.org" <liam@infradead.org>, 
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, 
+	"axelrasmussen@google.com" <axelrasmussen@google.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"qi.zheng@linux.dev" <qi.zheng@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"seanjc@google.com" <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Xiaoyao Li <xiaoyao.li@intel.com> writes:
+"Edgecombe, Rick P" <rick.p.edgecombe@intel.com> writes:
 
-> On 8/10/2026 11:01 PM, Sean Christopherson wrote:
->>> As mentioned in v9, the name is confusing.
->>>
->>> 	kvm_gmem_mem_is_private
->>>
->>> ?
->> Ya, +1 to kvm_gmem_mem_is_private.
+> On Tue, 2026-08-11 at 10:35 -0700, Ackerley Tng wrote:
+>> > > Would like to see what Sean thinks of this. Either way, is it okay to
+>> > > follow up after conversions lands?
+>> > Let's see what Sean thinks of this :)
+>> > I raised this because the issue was encountered by one TDX's stress
+>> > selftest.
+>>
+>> Which stress selftest is this? I can try running this on my side too.
 >
-> So kvm_gmem_mem_is_private() calls kvm_gmem_is_private_mem()
-> internallly. Ummmm.
+> We have some selftests that are built on the basic TDX selftests. One just
+> hammers the MMU stuff with a bunch of zaps and also weird stuff from the guest.
+> It was eventually too much work to try to keep the internal enhancements rebased
 
-How about
+Would like all the comments we can get on TDX selftests v14 [1]!
 
-  kvm_gmem_mem_is_private(kvm, gfn)
-  __gmem_mem_is_private(inode, index)  <== this is a static function
-                                           anyway, though it calls
-                                           kvm_gmem_get_attributes(inode, entry)
+> nicely so we actually just run an old branch's TDX selftests against newer
+> kernels. So the branch is a bit of a pile, and not really suitable for sharing.
+> We plan to clean it and upstream it when the path clears. So it would really
+> help to get those basic ones upstream. We remain happy to help, so please let us
+> know.
 
-or
+I guess at this point I'm hoping y'all and Sean are okay that this
+conversions series merges, and we let this stress test failure be
+handled later. I'll be around to fix things :)
 
-  kvm_gmem_gfn_is_private(kvm, gfn)
-  kvm_gmem_is_private_mem(inode, index)
+I'd say the line of sight to fixing this would be when the KVM MMU only
+gets PFNs (and no pages at all) from guest_memfd.
 
-  (rename the vm stuff with the suffix gfn_is_private())
-
-or (current, it is actually weird)
-
-  kvm_gmem_mem_is_private(kvm, gfn)
-  kvm_gmem_is_private_mem(inode, index)
-
-or
-
-  kvm_gmem_mem_is_private(kvm, gfn)
-  kvm_gmem_index_is_private(inode, index)
+[1] https://lore.kernel.org/all/20260722-tdx-selftests-v14-0-15ad654a50db@google.com/
