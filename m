@@ -1,178 +1,258 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazolkn19010046.outbound.protection.outlook.com [52.103.7.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99D7486E4D
-	for <linux-coco@lists.linux.dev>; Thu, 13 Aug 2026 15:55:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786636524; cv=none; b=WZwVqEBV7bp/Yh2CZJ83uNd0WcVUb/55EENLz3jcsbTtVwn/hHZ3UiIAag5Kz9p2bykPY8hNMDojVNPERf1e4jPmRRhNj0cZFrPtB18/mgU4Nlip3fPslc5DWtJ/oa8pXfv1VMIXWbbSBE+NKtFwh0jguMnfPvFncZhtWQYnKbQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786636524; c=relaxed/simple;
-	bh=KjvD0FYtibQe8DPB7+KaUJitoRzCPmTVRI1ZUYReScM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nezSsXToLGhSt258PalT3xtfqXOrLkXMW85/hKUXsiHLWzItkhqUpNEQFJfLm3DTYmyazX8SNkmA8nUrbPLefdHdTNcv8iMXJJu1xKtJ75GpNNZ5OX8iklXZZV7rYPylvicV8PtLONaYDB/ihRHbrfft1BdA1+X3kggoqULetTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gkx4Wopm; arc=none smtp.client-ip=209.85.216.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20512319617;
+	Thu, 13 Aug 2026 16:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.7.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786639837; cv=fail; b=SuIypEp8W7eNwUP+AqOHkmvatW0bL0QHH+JaBZqKEq09086zIqo4Zvz0v7r2xkpOhTp34glnpU2j2yLmHzgY8l8KYj+rDecahnSWry9p9IwXT2g5j4sYVItXx3DN3eN2AXnbdOKVmxncZi0b7JXLuy86uC8HMO00C9D0CDtKgcs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786639837; c=relaxed/simple;
+	bh=VJOqKFRybWOCZbFFEQzNLnLfFSqbPUu3RgThQ+DYU/o=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=D/ZfiFY5Z0BNmVIIOzh2kNmNF1L2mtPFzguaNukJoWvReWvhyC5wWOUqRxlqytJSVB/B7BTvzXmr7+gbp9JrAHYd+6yx5K7kmQ0NwRj75S7TCU1wqZ5US+F651xChC+7ghQSqlixSJNGhfqBrn7LH4dZ8VNrs8n9GvxnxApHjLw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=c/jvbjQH; arc=fail smtp.client-ip=52.103.7.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gkx4Wopm"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38dc085b0a7so1663039a91.2
-        for <linux-coco@lists.linux.dev>; Thu, 13 Aug 2026 08:55:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786636515; x=1787241315; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=NWd+efJbNRhMQi4tFuFF6oho5IzekPVE1UiVHSpD6zk=;
-        b=Gkx4WopmrxWQByFJUb9iPph6z2ikin5qxwL0bRgmTk7cQLkh3ENUoTOv0rqlTmCaNG
-         4JzNKVMj8NA8Unu2nKHF8QZ9cUOxe7lnC7wVuSgxclLPSIUqWkeA4ukroeOl2QVfZ0wr
-         kknkdB2S3fSG4LT3QZwyZ2fuJI/AZKPWCKEwL35IczhqIppFtscj/L7CtN3rzhRF4dNs
-         66WmT2nbWgF1CCpEYAPmusPtFGacjlI/maZb6/A/Gci9UDYuEu/GK2Tmnj6H370XeiYQ
-         q5nNcGEIzBjEW2h8eKRAeb1pnw7PJEfPzho1nh11EZhR3kp6QpBxVTuSYGgr18n4yBg1
-         ij/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786636515; x=1787241315;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NWd+efJbNRhMQi4tFuFF6oho5IzekPVE1UiVHSpD6zk=;
-        b=CR2Rz1r8bDz881mXfsNFmPa2OBzTyPFZGUKkNlk1xenfKgnBoT2zljmCz0IhIsdI6Q
-         4sALUgMVwDYuJDg5uClK0/xtfZQ0xAOrwK8wkJ8fLMFRff+c/Wld/0rrWkPbUfluv6lu
-         mCV8o817mXFNLODmai5I6maGEPrS09g5VtNMH2DRFt9uUc19OQyfNo5bdH/jxzroeSek
-         2Dg//0sUhwyuM4qS8Hmppt1LmHbbT+BWN58uX5a5qbxZYpc8gdOi6IqNgGxcsKFZvP0m
-         EFSIVqZ57grT7dAOlNiXKPIekVq1XCPR2sbXA4ctu2qDtKPY05ojFjKAlbi1ot3Tlv4M
-         6HNg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq9tXOxgytmys5S5q+uhfjuL2ipUbdJyEDK5uW5Zg/Qw9sYKOAw6B0RA1ZcchYGyupYHhWJ/R50qZBM@lists.linux.dev
-X-Gm-Message-State: AOJu0YzLx5sputGL05r2ZdzPnSj2YjAsVOTJuJWzO9GnwoiD5l7712Bh
-	t6j0eg6pJNmJsv4F/LF9ctYzaLSOEJSr3ZpHbDVW2lFJZOjgHVdT2VJurMRtisR0JY29lZruG2N
-	1aGZ04Q==
-X-Received: from pjbmr22.prod.google.com ([2002:a17:90b:2396:b0:381:1d7f:b8db])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a8d:b0:36a:8240:2477
- with SMTP id 98e67ed59e1d1-3931e31a6f4mr7349226a91.19.1786636514937; Thu, 13
- Aug 2026 08:55:14 -0700 (PDT)
-Date: Thu, 13 Aug 2026 08:55:14 -0700
-In-Reply-To: <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="c/jvbjQH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JFnshT+OWTDHuVL+7Lt1qAsWwL4pNdEz6ONIL11jDuJ4PUWkzkR8citmdDceTeouBZp81DPDcdUOzAsx/6zm2J/zWsu3b81W/+26HudPUwWHm9Qo5/QwkAqOv+UR9Ew/q6wxpSTYpHlaQIdxKHaN6pYkJTqy0Iv3IbxV7jQeu+9zg+oQUod8jGQbOAK+WY8yEGHMZ5ebBr764TW6KPhJKk4XiD5dqdvLd0fR02fijRCzaZAEOR6vL65X4Dq2+Wb/XVbSpk/00A5SCGSKEfEfLwBcQY/dpHvtmJ8WrJTKmrXWTGDdwP+fN5RHGrHO96Voq8heqZAJxFKSIHIE3XX30w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zs4P8vDNTUNtmD/TEiy4Yz1UhbnETWDibx19uQq+C8Q=;
+ b=f6eXM4o2Q2d63kgImN7cU64aCDUzXWxmiGoPv9pieHhlCnqQMPoXYlWzi+Qd82H0UFlJltZP/SyEprHxJJ1JxX9K9Sf+cO6Tc1CAl1FWMhDv+m0fjHRNYH6VkpKV3PKUDaQ3rAOXcb22GfCOPYNVKvsPyBoD3Y1gVateRgiSYakp0vNqY0YKz4jpZCh2QEJKfvX5SBzu0XWTCltH77ywFtJMKFVXx2nCwTAIvdqZc8TUjYjqZb7xnttuXFz6h0uRHHX6isigbVDomU9zMJvLjXItQtqisXuExVYOI5pMNKH4mpdvqmsN+Tfu0pAiv5I4RDZs43737ciTL/NRVevwTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zs4P8vDNTUNtmD/TEiy4Yz1UhbnETWDibx19uQq+C8Q=;
+ b=c/jvbjQHJO2A44eSk3XIpOYBMNwHCSHQS7xLEd2Ux7QuMBWhnmRW2aDCrEnXTlGIQcTfBevmAhBALQn/ooIWnevGk5H7BVJkmpS7fna11bpBYEVS2tJ97Y9AXa5eGTjLiflN4S6s4jFtSkvZaGy8mK+VTJnEKZIzIXuNNYH4gXNQbTWqsSbHrrgA+Ti/yo+ZZlDKiH225xToS9DSDOClwURZw6RU6GMScPLyezqNDY9uUCMyttgOYFFhFNaQIZJqWfps/YFe9q8v2LQ8apyj4yzXs4FIVHS83c4eUDnsE0BQ5U+mnUc6p8kqTY3Sw3Hq1j8ItMKHcw7WsBGb5Inkhw==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by BL3PR02MB8083.namprd02.prod.outlook.com (2603:10b6:208:35c::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.12; Thu, 13 Aug
+ 2026 16:50:29 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::900:1ccf:2b1e:52b6]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::900:1ccf:2b1e:52b6%3]) with mapi id 15.21.0315.011; Thu, 13 Aug 2026
+ 16:50:28 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>
+CC: Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski
+	<m.szyprowski@samsung.com>, Will Deacon <will@kernel.org>, Marc Zyngier
+	<maz@kernel.org>, Steven Price <steven.price@arm.com>, Suzuki K Poulose
+	<Suzuki.Poulose@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, Jiri
+ Pirko <jiri@resnulli.us>, Jason Gunthorpe <jgg@ziepe.ca>, Mostafa Saleh
+	<smostafa@google.com>, Petr Tesarik <ptesarik@suse.com>, Alexey Kardashevskiy
+	<aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
+	<gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, Christian Borntraeger
+	<borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: RE: [RFC PATCH v2 2/2] dma: swiotlb: Initialize and size shared
+ default pools for memory encryption
+Thread-Topic: [RFC PATCH v2 2/2] dma: swiotlb: Initialize and size shared
+ default pools for memory encryption
+Thread-Index: AQFMX0hXOwboEy4POyg7moK7+petGgFejaX5t7LIybA=
+Date: Thu, 13 Aug 2026 16:50:27 +0000
+Message-ID:
+ <SN6PR02MB4157842A03CBC29155F1673CD4DB2@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20260813102521.1367737-1-aneesh.kumar@kernel.org>
+ <20260813102521.1367737-3-aneesh.kumar@kernel.org>
+In-Reply-To: <20260813102521.1367737-3-aneesh.kumar@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|BL3PR02MB8083:EE_
+x-ms-office365-filtering-correlation-id: 7f757abe-79f3-45e5-dc78-08def95afaad
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|51005399006|15080799012|8062599012|25010399006|19110799012|31061999003|8060799015|37011999003|13091999003|55001999006|41001999006|24021099003|40105399003|2607281247196008|102099032|3412199025|440099028;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?M9yz9AbZ1LjrXNG7vYtSAUfu26nMVj31n5apLy+t5HdgM569/5zw9EAFuYQY?=
+ =?us-ascii?Q?cyNuxtgiYce0XnofhhGFaUXrnZ6js5WyA4YddINc8kvelN3gzK7eyi4gKXI3?=
+ =?us-ascii?Q?XPoNvoXrNLyhi0GQeFlL/ooYeH/K1ju1poJK3EtcU+fwGTu/+O4CwAAWzc0g?=
+ =?us-ascii?Q?sOOxEaXBBxv7kgEnmwClv6J6kF8LEdgTbWmsQRrmpzjpFipyqQdKF9l1Lwar?=
+ =?us-ascii?Q?REJQur9vWq1gVEzJAS7p7nqitKNV56DpHxnaGVgCL//lhr7uF+ypbp8zjDRf?=
+ =?us-ascii?Q?+JaI26gxvOxTcyJAx+pi00nOI3RqUUONz01ZdWruVdiB9y7Yp88Ifn5NKPbz?=
+ =?us-ascii?Q?4OWTJXFFTnykMwXjileAOwRuKf8v2MaOQXkzRl5Ac68t14ktULNMDrobMcDT?=
+ =?us-ascii?Q?oxoBYThcIpAbc8PIYFYeh1oiH8uWROEP6me0n1G1weBg4+6JsGN6/8npslYx?=
+ =?us-ascii?Q?nGGBpuQIsuVyUKQR138Q5/HzawY64NIL8xgYrs3dDvov+ckrCBYQU7uoSnPA?=
+ =?us-ascii?Q?xPqacCooKkIxhVpbGuP472yJNlbWv9Pj/KwbWGy8kx3EdF+sk7qaKBmQIGCY?=
+ =?us-ascii?Q?8+cRV89KPYCMFAGdOW4Z3avz5k31MX2z/vpW6pHs3E/98e41O1OJR+z8bHBe?=
+ =?us-ascii?Q?SsmterNrqAATaZXaL5H5b8tSrvSujpp2t6IBYmwOipsiXDV9AGsg0fBQnOVD?=
+ =?us-ascii?Q?QstyD6K20rk0kzUH3IuSMiwpeScB7okR7mWivQ3Nbdsa3g3ylkqVuSlHfgHR?=
+ =?us-ascii?Q?IugSh6i7MCptOTQts9Fnhg0e+r+gNq9pn7TCKQCSpv3QjrGkaJ3kvhowOvZp?=
+ =?us-ascii?Q?W4eocdtUhedCGrEA+y8DVG31SjzOX2Rx3VMmilwNDw6L2q0LxkBZ+tfcJ4ga?=
+ =?us-ascii?Q?0yE+KdqtkKto/ARZg2kUU0oARipg46N2XeCvLVHqYClru/5D8WQeHLgCvtpM?=
+ =?us-ascii?Q?UUCpsQTeFFcLF5tqeolS3MYr0CCmKAqzDSldMs8SohpvJHPZ8grKI+3PDBfd?=
+ =?us-ascii?Q?11ma2uBLCHBh88NChnqlcmtPu9eU9Kv5dpi1E185sIqjzJL7JduWXzkq4Cld?=
+ =?us-ascii?Q?QmG9OmKV?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Zwmv4irhY8F9+Hef9zuGDPRDdG+eAS+0TVNayNN35AJ65zPpOCaBa38H9us6?=
+ =?us-ascii?Q?S121//mU52byhPON1i53KzNnX6uixPY7ImYfFuxY6URjjzPlwL+RQK+Vu547?=
+ =?us-ascii?Q?XGjz5cR8xQlzYxc3Yb7hV3JkmMrX1WyW5i5WMU84TxMi+WiMde8AKBjDInc5?=
+ =?us-ascii?Q?rLM1tYDE+KxLGQHSsJ22XfDSjjjzpFEdfTZbj4lbYXkypWRK4B946NKq/dCi?=
+ =?us-ascii?Q?4Zx6znQGnmZoXdA9YwYqiwclc8InopBFRN5lGgYaK4UWRwfI3XTfS2lzqKai?=
+ =?us-ascii?Q?Bob7M3rKTIgz1MIKnPME+mOBFsmOnGQW0gxxvfe9DWIn4tmMkSmuvzURqj/Z?=
+ =?us-ascii?Q?arqulKQoBmFXHdYWQF2wQ6QINo+i0AVkGByKje5ZrJC68O6uOoJMJx0iYKsm?=
+ =?us-ascii?Q?623x3RV8AQWJJ0aYd3HfX4LOix31j7auzD9JmYxSvXU/ZXuxs4PF7ktePdIc?=
+ =?us-ascii?Q?zhU8BO11RBxrZ12nD4ezXbnLQPtiuA4IHsrIATRq3JiMgS24/y0H7YyrHytd?=
+ =?us-ascii?Q?wYMSUgPRLkNDqlVqtdi32FLWm6iulb28tQJcJSXheNmuYqyswSxxTJhsRxQE?=
+ =?us-ascii?Q?UzfFuzGl1szAdqxkxngM47cVYrqh3wT5F274KGF/xmR4Pl8fxVkDqS/OlTPq?=
+ =?us-ascii?Q?omap8HQRjAjhrkzSEZ2S2T88y7RQ7PzA+8XHKZDmIjPJJr+0RcOpUQaUJToA?=
+ =?us-ascii?Q?zxzoWexEnXMjVaJ8rjQhgUYJQT8j++qt8ybbRwATh5FFBuE3VeivApnbV25G?=
+ =?us-ascii?Q?3a7+v3ZSj2Nh2cmfDtNje8t9/e9EHZ2TWgw4movz8uAMpiHPp9Q3qwUCl4Fm?=
+ =?us-ascii?Q?5xQhCQEZ9AoIM2TTgUesx28EpXHCzyWZ0zMN4PJB5mYZ4ETYfnQUcZRv/KEm?=
+ =?us-ascii?Q?OSTLvyXqSzeeS6EicYK7/oZO/2qRev7lPlReXVfU5wzt7gpUsq3YddDJfyT3?=
+ =?us-ascii?Q?AaagkYf37AumcplytqI662o50rIZUv79jkBfRFpKX2/4tMaiOd8TYnoJ+SMx?=
+ =?us-ascii?Q?nSgfhOVX8xOjuvOlYI1VrVnw91MGwa/kH9wci6GL6uhUROMEj5D9QnkaFNq2?=
+ =?us-ascii?Q?thec3dHIPEUA4uDUKQTxtLSFAkXJlN/06zJROZD0BC/cr1821vIWyyaKly4S?=
+ =?us-ascii?Q?/RDaFzibRIjnvfmkuwOPNpahr7f9rC54xJZmF4yVwTPXKVLLJZr2JIWYM58v?=
+ =?us-ascii?Q?1FRkwThatNoepB50OrFj/ZmUpHCIBlxOQEFVMSbREEHs2+ZUQcKov8lAlbwY?=
+ =?us-ascii?Q?kaNR+yG/sxN9uSkcIR4oovrdJyfJIrA5lg5j0Q80WanI6Y8fIOmHG+yY4+ds?=
+ =?us-ascii?Q?5GLqpxDLinOZu3FBuLi1E1oicf0jZCwtHkULZ9sqIBTy07mlPGA0IlIHzrR+?=
+ =?us-ascii?Q?p4lwesY=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com> <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com>
-Message-ID: <an3o4h-E8mj6CUaM@google.com>
-Subject: Re: [PATCH v10 12/41] KVM: guest_memfd: Call arch make_shared
- callback for to-shared conversion
-From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, Fuad Tabba <fuad.tabba@linux.dev>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7f757abe-79f3-45e5-dc78-08def95afaad
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Aug 2026 16:50:28.0197
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR02MB8083
 
-On Thu, Aug 13, 2026, Binbin Wu wrote:
-> On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
-> > +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, p=
-goff_t end)
-> > +{
-> > +	struct folio_batch fbatch;
-> > +	pgoff_t next =3D start;
-> > +	int i;
-> > +
-> > +	folio_batch_init(&fbatch);
-> > +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch))=
- {
-> > +		for (i =3D 0; i < folio_batch_count(&fbatch); ++i) {
-> > +			struct folio *folio =3D fbatch.folios[i];
-> > +			pgoff_t start_index, end_index;
-> > +			kvm_pfn_t start_pfn;
-> > +			kvm_pfn_t nr_pages;
-> > +
-> > +			start_index =3D max(start, folio->index);
-> > +			end_index =3D min(end, folio_next_index(folio));
-> > +			/*
-> > +			 * end_index is either in folio or points to
-> > +			 * the first page of the next folio. Hence,
-> > +			 * all pages in range [start_index, end_index)
-> > +			 * are contiguous.
-> > +			 */
-> > +			start_pfn =3D folio_file_pfn(folio, start_index);
-> > +			nr_pages =3D end_index - start_index;
-> > +
-> > +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
-> > +		}
-> > +
-> > +		folio_batch_release(&fbatch);
-> > +		cond_resched();
-> > +	}
-> > +}
-> > +#else
-> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, p=
-goff_t end) {}
-> > +#endif
-> > +
-> >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t star=
-t,
-> >  				     size_t nr_pages, uint64_t attrs,
-> >  				     pgoff_t *err_index)
-> > @@ -599,7 +636,12 @@ static int __kvm_gmem_set_attributes(struct inode =
-*inode, pgoff_t start,
-> > =20
-> >  	filter =3D to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
-> >  	kvm_gmem_invalidate_start(inode, start, end, filter);
-> > +
-> > +	if (!to_private)
-> > +		kvm_gmem_make_shared(inode, start, end);
+From: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org> Sent: Thursday, Augu=
+st 13, 2026 3:25 AM
 >=20
-> If both KVM_AMD_SEV and KVM_INTEL_TDX are enabled, HAVE_KVM_ARCH_GMEM_CON=
-VERT
-> will be enabled and the logic in kvm_gmem_make_shared() introduces unnece=
-ssary
-> overhead for TDX.
-> Not sure about CSPs, but in a standard distribution kernel, it's very lik=
-ely
-> that both are enabled, right=EF=BC=9F
+> Systems with memory encryption require shared or unencrypted buffers for
+> device DMA. Confidential guests may route all DMA through SWIOTLB, making
+> the default pool too small for I/O-intensive workloads. Host memory
+> encryption also requires a shared default pool when bouncing is needed,
+> but does not require the guest sizing policy.
+>=20
+> Move the existing x86 sizing policy into the SWIOTLB core. Detect memory
+> encryption before allocating the default pool so that it is initialized
+> and marked shared even without DMA addressing limitations. Increase the
+> pool size to 6% of guest memory, clamped between the default size and
+> 1 GiB, only for confidential guests.
+>=20
+> The core can determine the confidential-computing requirement directly,
+> so remove SWIOTLB_INIT_CC_SHARED and its architecture uses. Keep the
+> pseries secure-guest setup before swiotlb_init() so that the pool is
+> allocated with SWIOTLB_ANY and is not released later.
+>=20
+> A restricted DMA pool already supplies shared bounce buffers for its
+> devices. Record its presence during reserved-memory initialization and
+> avoid initializing or marking the default pool as shared solely because
+> memory encryption is enabled.
+>=20
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>  arch/arm64/mm/init.c      |  6 +---
+>  arch/powerpc/mm/mem.c     |  2 +-
+>  arch/s390/mm/init.c       |  2 +-
+>  arch/x86/mm/mem_encrypt.c | 28 ---------------
+>  include/linux/swiotlb.h   |  2 --
+>  kernel/dma/swiotlb.c      | 72 +++++++++++++++++++++++++++++----------
+>  6 files changed, 57 insertions(+), 55 deletions(-)
+>=20
 
-Yep.
+[snip]
 
-> Should kvm_gmem_make_shared() do some optimization or the overhead is rel=
-ative
-> small in the conversion to shared path so that the optimization is not wo=
-rth it?
+>=20
+> +static void __init swiotlb_adjust_cc_attributes(void)
+> +{
+> +	unsigned long size;
+> +	phys_addr_t total_mem =3D memblock_phys_mem_size();
+> +
+> +	/* Do not resize for host memory encryption. */
+> +	if (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+> +		return;
+> +
+> +	/*
+> +	 * For SEV and TDX and CCA, all DMA has to occur via
+> +	 * shared/unencrypted pages. Kernel uses SWIOTLB to make this
+> +	 * happen without changing device drivers. However, depending on
+> +	 * the workload being run, the default 64MB of SWIOTLB may not be
+> +	 * enough and SWIOTLB may run out of buffers for DMA, resulting in
+> +	 * I/O errors and/or performance degradation especially with high
+> +	 * I/O workloads.
+> +	 *
+> +	 * Adjust the default size of SWIOTLB using a percentage of guest
+> +	 * memory for SWIOTLB buffers. Also, as the SWIOTLB bounce buffer
+> +	 * memory is allocated from low memory, ensure that the adjusted
+> +	 * size is within the limits of low available memory.
+> +	 *
+> +	 * The percentage of guest memory used here for SWIOTLB buffers is
+> +	 * more of an approximation of the static adjustment which 64MB for
+> +	 * <1G, and ~128M to 256M for 1G-to-4G, i.e., the 6%
+> +	 */
+> +	size =3D total_mem * 6 / 100;
+> +	size =3D clamp_val(size, IO_TLB_DEFAULT_SIZE, SZ_1G);
+> +	swiotlb_adjust_size(size);
+> +
+> +	if (!IS_ENABLED(CONFIG_SWIOTLB_DYNAMIC))
+> +		pr_info("Consider enabling CONFIG_SWIOTLB_DYNAMIC for memory-encrypted=
+ systems\n");
 
-I assume it's relatively small, but it's probably a good idea to gets numbe=
-rs so
-that we can make a semi-informed decision.  E.g. if processing 1GiB work of=
- 4KiB
-folios is <100 cycles, I think we generally don't care.  But if it's more l=
-ike
-tens of microseconds, then I think we do care enough to optimize the walkin=
-g for
-TDX.
+I'm not keen on this recommendation. The implementation of
+SWIOTLB_DYNAMIC has two limitations that make it problematic for
+large CoCo VMs. First, when swiotlb is unable to find sufficient space
+in the default pool allocated at boot time, SWIOTLB_DYNAMC creates a
+"transient" swiotlb pool that is allocated from the DMA atomic pool to
+satisfy the immediate request. Growing the overall swiotlb is kicked off
+asynchronously in the background. dma_unmap() frees the transient
+pool and the memory is returned to the DMA atomic pool, but a spike
+in swiotlb allocations in a big system still has substantial potential to
+exhaust the DMA atomic pool. Then you get the same mapping failure
+you'd get without SWIOTLB_DYNAMIC. The fundamental problem has
+only been moved around.
+
+Second, growing the swiotlb in the background adds a new pool, which
+requires allocating contiguous physical memory. That's at most a
+MAX_PAGE_ORDER allocation, so 4 MiB. The new pool is divided into
+"areas" of minimum size 256 KiB so swiotlb allocations can proceed
+in parallel under a per-area spin lock. 16 areas isn't too bad, but might
+still have more contention than the original default pool, which, for
+example, would have 64 areas on a 64 vCPU VM. But if memory is
+fragmented, and you can only get 512 KiB, you'll have only 2 areas,
+and substantially more contention. Contention for the swiotlb
+spin lock at high vCPU counts has been shown to be a substantial
+problem, which is why areas were introduced. But SWIOTLB_DYNAMIC
+often can't preserve the parallelism in the dynamically added pools
+because of the contiguous memory allocation limitations.
+
+Net, in smaller CoCo VMs, there's some marginal value in
+SWIOTLB_DYNAMIC, but that value diminishes as the VM gets
+larger and more swiotlb parallelism is needed. And in either case,
+there's still the potential of exhausting the DMA atomic pool due
+to a spike in demand, in which case you haven't solved anything.
+
+Michael
