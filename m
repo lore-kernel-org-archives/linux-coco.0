@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192D942F71E
-	for <linux-coco@lists.linux.dev>; Thu, 13 Aug 2026 06:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136B733E35C
+	for <linux-coco@lists.linux.dev>; Thu, 13 Aug 2026 08:34:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786604191; cv=none; b=aR66/Yb/FpLh6yasMB+zrreB5sZWOTha7GJ1fLS73jfEYMV1Dj9p9nFGgXFO8/V2nAfQMehQWqlkyct1LIQJly4mEutaM/PnsUJfzamq+PhbLXyopzTUyuZwWN4n1qKOrUtTaAD5NUuOqAM7eIjxBWTBvp0hquHKmzthwsQ8v9c=
+	t=1786610100; cv=none; b=cs7pCQB9K33DiMtyLNE83a0WioHx923fR6gdvAMREmdyO+dKT8/d9sgbUOslcyI4uNPgkD4wZgnaCLWd/dKYShBWQGP9wa8I/deWxVIW97ccCAzD24bchaABooeRiGjD/owOBoJ4XxJjoKDYiXtnk84UEPrE4ayysQULlCnkeP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786604191; c=relaxed/simple;
-	bh=EiRUT7eibLcdH0tOQiOYhPqjIQxyxShzLvniKf9KyN0=;
+	s=arc-20240116; t=1786610100; c=relaxed/simple;
+	bh=P213fFKwryqVvzJ19nn3nrhWgesO88vQtC2xd8VnYzs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lrErwSUz+inmbBN7aQytfeOC/+3GPPHFB4vW7spnYexe3qCCZNp9P8sWI4CmYXU0XX4eS/w3htRCyXuqLMMUn4bDgyeSxccMO9Gq7F8x5wPkIi+vPpT5VqC2EQQDzCfJoQ75g1WjmOnP7pu2dPUo57NtN/bsbIkrAPYMOJ0Ia8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k3lD0RVh; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=sNu1vS2/mzRYa1EIeOaNHZzoQGUChCxkbGn8/58xAXSlwxckgabvUTOOzeEH7dHm/SFlCx+7rtdwTCEhPnaZwAfO4MGEz5cssTu9yU03Ml+lvu3uHntS5p3VH86nftqufChFDsbBbH+/OkVRAQas630VbnSS/3+UFuYyCFiQknI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xjr1oSTI; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k3lD0RVh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xjr1oSTI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786604189; x=1818140189;
+  t=1786610098; x=1818146098;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=EiRUT7eibLcdH0tOQiOYhPqjIQxyxShzLvniKf9KyN0=;
-  b=k3lD0RVhjTMn9skvIarhEnDVJzwqjAuO6Tw+6LRBn/hFhJnAMlpnbolz
-   /V1sH3lVqDRslYH9nxMZMEskc1gN4gVCzad8suKz0ytyybhEDGOw0d+6O
-   SHMnLE73Ayq91XpxnXGiMywCDeAZvJ6MhjuJ9rx13+5NKrAzbeiWaMGIk
-   40v/QSMfEjQmBpOtJYfWr+8aU7ZHd3fK7xLd8gIrFZRcNPHBqWkpE/yQb
-   fbU7CPVENwb3JMAzwvt+EMARH5MH4KUe1kLXrRBC1Ly2FowwzIBrEWaJO
-   wYup1aX6SNiPPLxnkBvR/rJiIBtlIh+ro19mybLcneiZP4QEUCPzd8e8K
-   g==;
-X-CSE-ConnectionGUID: pLMXMpwPSziA5tsQdWvWAw==
-X-CSE-MsgGUID: d7+kVL1fSlaQ0KND6/Eerw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="86290002"
-X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; 
-   d="scan'208";a="86290002"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 23:56:28 -0700
-X-CSE-ConnectionGUID: G3H/IDqNR/ShOWEVvKkhtw==
-X-CSE-MsgGUID: hHyHwXdWQJSEvzpnZYeIQg==
+  bh=P213fFKwryqVvzJ19nn3nrhWgesO88vQtC2xd8VnYzs=;
+  b=Xjr1oSTIg3DGtRCv2/f1VzA4A4iZ3ef3muDPZIskDKULsqNSAd3Szrky
+   BDTGK3bXyOzUtVTSobC2fMJd6uMM8FOIP34wX14Wv9FOleY3vtQRj4ytf
+   LrLRUuutaDIGs804MIzD9z5TiTXa/TeenfWg/RBeHZZTNv4Kij4SDF6oU
+   yjI4VgW8It+GiIL3Q4eDUqU5lZCOHDdWaOE+Eod5NKcj5CDhT3LtHrJt0
+   KDRaLzYBB+1UXSYAklIMbqrRt8XRty/7dnI0M+yyom04jYv+ZCXw9aqIj
+   Sj1jecec2mUWE4n4L1uHG9a1cxiH3cjPF5isqKzLzl2Nl8XeU5v8B6jBc
+   w==;
+X-CSE-ConnectionGUID: s+k0enAbRFeGMCWgbQQI1w==
+X-CSE-MsgGUID: twr9HSdJRyOl9+vuHXglTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="87303374"
+X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; 
+   d="scan'208";a="87303374"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 01:34:51 -0700
+X-CSE-ConnectionGUID: rAO9zl/GS7K22XcaRbqhcg==
+X-CSE-MsgGUID: dwl5pXEaQHKvbnAosnphGA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; 
-   d="scan'208";a="265841672"
-Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 23:56:14 -0700
-Message-ID: <1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com>
-Date: Thu, 13 Aug 2026 14:56:12 +0800
+X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; 
+   d="scan'208";a="264460669"
+Received: from unknown (HELO [10.238.208.98]) ([10.238.208.98])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 01:34:48 -0700
+Message-ID: <d8bfdff4-f380-4a29-b0da-366ffca4dbd3@intel.com>
+Date: Thu, 13 Aug 2026 16:34:42 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,142 +52,79 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 12/41] KVM: guest_memfd: Call arch make_shared
- callback for to-shared conversion
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev,
- Fuad Tabba <fuad.tabba@linux.dev>
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com>
+Subject: Re: [PATCH v2 2/3] KVM: TDX: Fix the exit reason handling
+To: Sean Christopherson <seanjc@google.com>
+Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "kas@kernel.org" <kas@kernel.org>,
+ "nik.borisov@suse.com" <nik.borisov@suse.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260810112200.2326727-1-xiaoyao.li@intel.com>
+ <20260810112200.2326727-3-xiaoyao.li@intel.com>
+ <5dfed336a46329ba39922dcb3a8723116dae9ae4.camel@intel.com>
+ <6bb1328d-e995-4ad7-9744-3ab01d2ae591@intel.com>
+ <an0M-LwrKxLrNC9H@google.com>
 Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-12-2fc18ee6d3ba@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <an0M-LwrKxLrNC9H@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
+On 8/13/2026 8:16 AM, Sean Christopherson wrote:
+> On Tue, Aug 11, 2026, Xiaoyao Li wrote:
+>> On 8/11/2026 8:38 AM, Edgecombe, Rick P wrote:
+>>> On Mon, 2026-08-10 at 19:21 +0800, Xiaoyao Li wrote:
+>>>> ---
+>>>>    arch/x86/kvm/vmx/tdx.c | 35 ++++++++++++++++++++++-------------
+>>>>    1 file changed, 22 insertions(+), 13 deletions(-)
+>>>>
+>>>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+>>>> index 7338ac0af693..a89885d550c9 100644
+>>>> --- a/arch/x86/kvm/vmx/tdx.c
+>>>> +++ b/arch/x86/kvm/vmx/tdx.c
+>>>> @@ -921,10 +921,10 @@ static __always_inline u32 tdcall_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
+>>>>    	return EXIT_REASON_TDCALL;
+>>>>    }
+>>>> -static __always_inline u32 tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
+>>>> +static __always_inline union vmx_exit_reason tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
+>>>>    {
+>>>>    	struct vcpu_tdx *tdx = to_tdx(vcpu);
+>>>> -	u32 exit_reason;
+>>>> +	union vmx_exit_reason exit_reason;
+>>>>    	switch (tdx->vp_enter_ret & TDX_SEAMCALL_STATUS_MASK) {
+>>>>    	case TDX_SUCCESS:
+>>>> @@ -934,23 +934,33 @@ static __always_inline u32 tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
+>>>>    	case TDX_NON_RECOVERABLE_TD_WRONG_APIC_MODE:
+>>>>    		break;
+>>>>    	default:
+>>>> -		return -1u;
+>>>> +		/*
+>>>> +		 * Synthesize an invalid bogus Exit Reason, as the TDX-Module
+>>>
+>>> I think this blurb came from Sean, but can we standardize on "TDX module"? The
+>>> code currently uses "TDX module" and "TDX-module" and "TDX-module" used much
+>>> less. I also don't see why it needs the "-".
 > 
-> When memory in guest_memfd is converted from private to shared, the
-> platform-specific state associated with the guest-private pages must be
-> invalidated or cleaned up.
-> 
-> Iterate over the folios in the affected range and call the
-> kvm_arch_gmem_make_shared() hook for each PFN range. This allows
-> architectures to update hardware metadata or encryption states to
-> transition pages to the shared state.
-> 
-> Invoke this helper after indicating to KVM's mmu code that an invalidation
-> is in progress to stop in-flight page faults from succeeding.
-> 
-> Omit support for calling the arch hook to make private, since SNP, the only
-> implementer of the arch make-private hook today, would actually prefer
-> making private only just before faulting memory into the NPTs.
-> 
-> Calling the make-private arch hook would require iterating both bindings
-> and the filemap to find the intersection of bindings and allocated
-> folios. On top of that, SNP would need to figure out whether to actually
-> make private based on whether the memory is about the be faulted, or
-                                                     ^
-the -> to?
+> FWIW, I like TDX-Module to clearly identify it as _the_ TDX-Module, versus a
+> potential TDX module provided the kernel, i.e. a tdx.ko module.
 
-> whether it is a conversion.
-> 
+# git grep "TDX-Module" | wc -l
+13
 
-[...]
+# git grep "TDX module" | wc -l
+162
 
->  
-> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
-> +{
-> +	struct folio_batch fbatch;
-> +	pgoff_t next = start;
-> +	int i;
-> +
-> +	folio_batch_init(&fbatch);
-> +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
-> +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> +			struct folio *folio = fbatch.folios[i];
-> +			pgoff_t start_index, end_index;
-> +			kvm_pfn_t start_pfn;
-> +			kvm_pfn_t nr_pages;
-> +
-> +			start_index = max(start, folio->index);
-> +			end_index = min(end, folio_next_index(folio));
-> +			/*
-> +			 * end_index is either in folio or points to
-> +			 * the first page of the next folio. Hence,
-> +			 * all pages in range [start_index, end_index)
-> +			 * are contiguous.
-> +			 */
-> +			start_pfn = folio_file_pfn(folio, start_index);
-> +			nr_pages = end_index - start_index;
-> +
-> +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
-> +		}
-> +
-> +		folio_batch_release(&fbatch);
-> +		cond_resched();
-> +	}
-> +}
-> +#else
-> +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) {}
-> +#endif
-> +
->  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->  				     size_t nr_pages, uint64_t attrs,
->  				     pgoff_t *err_index)
-> @@ -599,7 +636,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->  
->  	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
->  	kvm_gmem_invalidate_start(inode, start, end, filter);
-> +
-> +	if (!to_private)
-> +		kvm_gmem_make_shared(inode, start, end);
+#git grep "TDX-Module" | grep kvm | wc -l
+9
 
-If both KVM_AMD_SEV and KVM_INTEL_TDX are enabled, HAVE_KVM_ARCH_GMEM_CONVERT
-will be enabled and the logic in kvm_gmem_make_shared() introduces unnecessary
-overhead for TDX.
-Not sure about CSPs, but in a standard distribution kernel, it's very likely
-that both are enabled, right？ Should kvm_gmem_make_shared() do some
-optimization or the overhead is relative small in the conversion to shared
-path so that the optimization is not worth it? 
+#git grep "TDX module" | grep kvm | wc -l
+42
+
+There are 13 "TDX-Module" vs 162 "TDX module" in the kernel, and
+9 "TDX-Module" vs 42 "TDX module" in KVM files. Given this, I changed to 
+use "TDX module"
 
 
-> +
->  	mas_store_prealloc(&mas, xa_mk_value(attrs));
-> +
->  	kvm_gmem_invalidate_end(inode, start, end);
->  out:
->  	filemap_invalidate_unlock(mapping);
-> 
 
