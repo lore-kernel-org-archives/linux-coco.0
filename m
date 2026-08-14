@@ -1,200 +1,253 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994E63D5640
-	for <linux-coco@lists.linux.dev>; Fri, 14 Aug 2026 21:18:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786742303; cv=fail; b=jyp9879ju7oB8Pfd4lyZPeVq4ywuXPP7p11Hu1u27ix6N8GbQAjjmwgqzBvt0hrTg22cT1dw6fOvS/+YC/NL8PczlOmIbPD18PmnBBqc/i+42GdRefLUn2DfKWLrYK+d+kZcQpS/46IQUm1+PC33wbdA6K/DaCurvriUOSeeUuU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786742303; c=relaxed/simple;
-	bh=qGdEzj2ThNhRFIB6q52e9HwX+LuDM9HGXy0pBBtAK24=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=JoW0juglCsrzJMmD0SGmul9Ku1XB7rfuqWFcCGkgFAKV6Y45WY9Qkrj1Wd2GE+EUxJVV/0O68Xertzv5hdT9P6op9bUeQdvO0eFQ8vO6NEtewqdY+r05S1kU9mfVr+NfaglphPjFKnvv+b75Uy82AoXrXqYHqim5dWFQw7Gjd3o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mRRxiqeE; arc=fail smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F753C10AC
+	for <linux-coco@lists.linux.dev>; Fri, 14 Aug 2026 22:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786747513; cv=none; b=sZgPs0jFrW3waLUVQf1MJX3D2i0blYG0W1U0E5aAAGYHCQukYREm/qPqpudvEylvb7FZ+7ZlmPsS0E4TLsnxA65se68pj8Sj6gOI+RICw655fR3ExgE89DRavspwaDM/C67u7zCfuYYkzWWFKxQ7RWXE2XUdACavRaJRqTGpbPs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786747513; c=relaxed/simple;
+	bh=nw5IvSEB5wpVmf4cVUFFz5inbV7Os9oqLOB+NCiN6UI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=GpwUY1SrGxwAffAclVkZchbWnFct+vulk+mgqfe4aykiDmhKT+znQV0ynA+Ps/VmuaZskJevyOcv6DZW0NtTj1qL0tEqQA/XWeaanYTdQeM19VJ2m/bMo1mEXgcA/PUHjiBVWdCc6ay/uG9n427ku4i4e73wwR0hxGmjLjVy/h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ej8+tfVe; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mRRxiqeE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786742300; x=1818278300;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=qGdEzj2ThNhRFIB6q52e9HwX+LuDM9HGXy0pBBtAK24=;
-  b=mRRxiqeE30ZzZc8qGH1qFeMp6/3ND5TXeiLcGMe++kWlx/UbX/OkIUnp
-   vOGfrwanWeMBrMFGVytQ8U6nitDW7IyLefDfRjq0Da401QA+1NG1WQmu/
-   WBu9host2fZe83JCO2dDjBNNDtAciPi6nrzh84s1aDI11F1aDEKt+P3Dl
-   FwH5yiStQhStAxymYM2YqN9ePZIQr2BS+TbZzeiz4Sy9t1z6xjTb4nWhS
-   tBkADZuHx1cmPluu08PmvjOo0JATOPBm2gYAjELce/X31WhSw/0/9cr3Y
-   jp/TOU6kmWLw8NDYQEK6m1/EzuM3WqT2IiAvW1RxrOhTfgtM7VC21e7xe
-   g==;
-X-CSE-ConnectionGUID: zSIAenqzRIWyLLt6s1QYng==
-X-CSE-MsgGUID: r00ZNkNuQqaKObhON1zwzw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11875"; a="87183864"
-X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
-   d="scan'208";a="87183864"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 14:18:20 -0700
-X-CSE-ConnectionGUID: dDOm4D88RkG68xbFHdHBBw==
-X-CSE-MsgGUID: wu2W8gIkTdWh6yZ/sLy4sQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
-   d="scan'208";a="264940970"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 14:18:20 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 14 Aug 2026 14:18:19 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Fri, 14 Aug 2026 14:18:19 -0700
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.71) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 14 Aug 2026 14:18:19 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Bw2PHFJzc9XVY36mPFFopUvC1HQ794Yjt1Fy/rOV4kfe1pT50mSCqKZVRLlpTejwNxYIkKmfpV+ssIx+3Z4hKtNRINGi/u3IDI188tGTpuYfioSmMTD+XE0fqwcrrykZDsKIf93SJTXJ5EOzXer0OUdqUTiQjXvz8pOlQjAqfzrSNqkvu/dJ6edPt1/hNyyz+EaLQsO9qsMZd1SWljdvKIZwCQ2KZg6/fJc2UfACr5deuM+szPThM2FkQ0VKphrdETpYwbNx6WOajdj7BB1Rc3fC+WiZeM0c6v5tnVbhFClmp5mbfjxBcznIC4ho/gCPh3vLhqBC9bfY/0HSsvlm7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2sMt+gvjZ0vEz3xGurx5m24n5ykX9k2W0GKoY1ulnjY=;
- b=iZvRLPGd1nWmR5SfwKxCENzzGpfvSwienmVhAk6i67VL7kKiVPL9aDMzc46f2dzkQjm+0Elwz9iKFhUzkuvvHR5nBDP0dzNZCp40f2LOSiwxQHO4WKbMqdHg28F/ToQcTV/vcK4mGfBQBdj53lpBR9VaKDoQthj+AU35VFwkzvSdIdQei9s3cZK+kXTdg886TBFTEZqyxOGl4yvZ0F1oqwrTPiISTV1Yprh6/G5zi66qg2nbcA8MaSwRQRMQtLVQFChCUPMNJDq04W/PEguprJo6z3AKKoytknxA23T2KSNf5POsT4QZOYZe0HS9/fSOnppUMSwNxEQdYxtBkamPZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com (2603:10b6:a03:3b9::19)
- by SA0PR11MB4574.namprd11.prod.outlook.com (2603:10b6:806:71::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.16; Fri, 14 Aug
- 2026 21:18:16 +0000
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e]) by SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e%4]) with mapi id 15.21.0315.014; Fri, 14 Aug 2026
- 21:18:16 +0000
-Date: Fri, 14 Aug 2026 14:18:14 -0700
-From: Peter Fang <peter.fang@intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-CC: "Aktas, Erdem" <erdemaktas@google.com>, "Li, Xiaoyao"
-	<xiaoyao.li@intel.com>, "shuah@kernel.org" <shuah@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"afranji@google.com" <afranji@google.com>, "kas@kernel.org" <kas@kernel.org>,
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
-	"ira.weiny@intel.com" <ira.weiny@intel.com>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "Chatre, Reinette" <reinette.chatre@intel.com>,
-	"isaku.yamahata@intel.com" <isaku.yamahata@intel.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>, "seanjc@google.com"
-	<seanjc@google.com>, "pratikrajesh.sampat@amd.com"
-	<pratikrajesh.sampat@amd.com>, "oupton@kernel.org" <oupton@kernel.org>,
-	"wyihan@google.com" <wyihan@google.com>, "sagis@google.com"
-	<sagis@google.com>, "Gao, Chao" <chao.gao@intel.com>, "Wang, Roger"
-	<runanwang@google.com>, "linux-kselftest@vger.kernel.org"
-	<linux-kselftest@vger.kernel.org>, "ajones@ventanamicro.com"
-	<ajones@ventanamicro.com>, "Qiang, Chenyi" <chenyi.qiang@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "jmcrey@google.com" <jmcrey@google.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v14 03/22] KVM: selftests: Initialize the TDX VM
-Message-ID: <20260814211814.GG1013044@pedri>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-3-15ad654a50db@google.com>
- <0706f7fc02ac17d292ada97443ca40a806c0582c.camel@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <0706f7fc02ac17d292ada97443ca40a806c0582c.camel@intel.com>
-X-ClientProxiedBy: SJ0PR13CA0130.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::15) To SJ0PR11MB5645.namprd11.prod.outlook.com
- (2603:10b6:a03:3b9::19)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ej8+tfVe"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cceabd70f5so33381395ad.1
+        for <linux-coco@lists.linux.dev>; Fri, 14 Aug 2026 15:45:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786747511; x=1787352311; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pliuRHo29I6egc2gNeBr49sOpidrbP1eYnD6HzsJLuI=;
+        b=ej8+tfVe9tn+FPe7zKd61Kf/Vd7e/b40jWW05EYmVaHNcuvlW2zzCb5otBwl6YhhqL
+         +SrTNzatl2M/1QK8wNI7HVwQnBChNlorcJtpiM4VM6w3LpWPPqlbOZltW+2LufoIdegw
+         75PkgJ/O2LL6Lads4Adw75MtFxa1G1vY/ysTw+Rz2gjCNT9lEeZwTSjOAiQQltmgVACo
+         Ilr7l2P1lrT9JgmtTfQXjJUS9osUgt0CDH6PvhN/+gJZJBFfauGySe0WtfkF8WaxG66K
+         iOcJ/SpLG+xy/mOcJ8BI/liNXIeunbCKexR/aZwCRZiCDP2Dt6HSBISliHsz2DxaJitQ
+         dsWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786747511; x=1787352311;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=pliuRHo29I6egc2gNeBr49sOpidrbP1eYnD6HzsJLuI=;
+        b=LSYejF2R084qaZuI08ggYh04WGCb5utGCKaYJCpcl2tEqYmDcM+vWR5/ffDzGJr5CW
+         +mzo3VmQHoOtMqxUSbnZIbLy+Ix9+PJRyiLX2bCg6JO1Q0NrPKumIW+i+AocOYYKrjqf
+         JLfQMg2+3RAgLJz6e8VVhycuPEx+sQ7t3wMS9cG0LUNZ66N1tISVf/FpIbQhuWZhAkvb
+         3FO2rR4MkJklY1we630AGuraJeTrrQzrMaZYgunpa6JlgnBhzx9+Fm1P4nn2/4oz5IEK
+         MCqilVxmP2zrCDYLNNUEs0Bii4iz+cYOKfledHVUZKEEKGYMz6iX9Vkvs/x9UUfcvSgl
+         cwvg==
+X-Forwarded-Encrypted: i=1; AHgh+RoqcI+YQ0wfqK3CMWRSMdB0Pacj4Dad1UrEmPLET8dsUbt1Q4l2nJYD4goz7GDrIpf1xjmBPxNJ42e/@lists.linux.dev
+X-Gm-Message-State: AOJu0YzMqVRMMqCRNjyHSADeGhlFeVUt1oNxnluaBbu3O8aH93ol1Yso
+	ArNXtOd1GcQNmaZ07QdFX+Z3dSBiJC2XCRlR/q3RsWcLTIOpgM4LYrkHwJ6b+lh4QN6fIZaAU6x
+	IBt47xQ==
+X-Received: from plhc1.prod.google.com ([2002:a17:903:2341:b0:2d1:1cf0:2039])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:18b:b0:2cf:ccc2:6088
+ with SMTP id d9443c01a7336-2d3b080be2dmr95854275ad.4.1786747510886; Fri, 14
+ Aug 2026 15:45:10 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri, 14 Aug 2026 15:45:09 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB5645:EE_|SA0PR11MB4574:EE_
-X-MS-Office365-Filtering-Correlation-Id: a78ac6d6-2051-4043-df01-08defa498e43
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|4143699003|56012099006|6133799003|10067099003|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: JoAN4K1cHxqGqOiTAHRaYda9RKa1CXGXTxNH/LOE2lSStA4RYW184K8gqlgT+vF7pkS1TjsBemBdX88Lrv6jm/7ECaQP3GCZUemuuwXaQkv/YiuWFjQ9qRc/3jyJzXpcfQqyvDi/Aj2UABAwLfYuucS0pTtIroh+8L6vLo2QlyhljzG1NFDTBHLb7mFwvSJcbDEm0adhSMlZ4p/ZNghUlJ6q4EwiNE2yq4bN3VCRNIfdY6ZdQ+D0YF54whQW16izcWyVb/FRv1iZGHkQVpmYm5qiD8cB3pryM7lak1NXqyuf9tHIlY3MeRzn3HfBglASV3ozDnudAJqdXOCdKN2lwVW/7zwLVTb56wN+/tCUQg+YT27gG3u0OAeuMv3EtmTOu8uCx1yNeW++7qkTVFTNGidsewn8gl0SxrCBQmnngcdjVm27bkLGlib+fJGaqr9g69D6B7K5bdlP6y9eQ0m5IKsfQhBPHnOdLj13Eed70EQrD0Z95Hums6pj0Iw9U4XSOw/4Bv0PfY2n2mvFJb+HGSTMPe5+JGlzgwrHvfpjO2KVQJNv7WGcsZSSy6Wh4ZwxsKNDuD6QOHYZa3f7pgbTzpL6P+NYZimDE9vRQ0RvoP/PtwK7XSyjjceRBuEEYcUa1VrcY721LgtNufwnnkBWHPCQtSoWtQuhVLPbCANYfPY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5645.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(4143699003)(56012099006)(6133799003)(10067099003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ASHZyDtsCi066oW1YhSBMG9R69Yvp2Snwp5L2G129mEvo3WE+AxbnaGNbwAB?=
- =?us-ascii?Q?kG9xBJw+MCNdX2Qj7yiZhDnl6LJb2StGHetSJ1COdbVPx93l8HRACxu6sPSR?=
- =?us-ascii?Q?yEQK/sz8Lp7xrMpxrn96MQSCR1PINdFQAIAluKT1hBBZhn2jgTkGoxCkWG6Z?=
- =?us-ascii?Q?AixYpc3EJOBdFmHkhk3zLLIZfZ/10pci9QcJGyltWa5bgoVDkwXE2kWwS+jX?=
- =?us-ascii?Q?4S99ihtpOG6OcQbYdNDv/3jJKLAms9ae1vON8jGu5zdYbuyIsVKXrjF7NFs8?=
- =?us-ascii?Q?ch43AW/v1Hh6Jgbkw4VWJcTRTDcbvT5msMCYDmvW8yvbxRO7mTO7udv0Lr9Q?=
- =?us-ascii?Q?wfcdGSRuQ+iP9ARvbw8PDpUAVQHiFAmkt71mVoVm0/bbGHNtTVUBdnpIx03G?=
- =?us-ascii?Q?2XWooKAiqnvHfwmvqJeZ89dMfkhlX7IGTW142D7PuNxImJ1LzpcNkuPt+1b/?=
- =?us-ascii?Q?TNf8+RoHCnv/MXQzNKT0cLLmT4r9H5U7lfOKvLhtui7mocdvTPnXY4mA0A96?=
- =?us-ascii?Q?r8BnHM8nn994b7LUSOJEU4eJBInDTezdwKp3Nnhu3sWJccLVaQ9vs/zZebO+?=
- =?us-ascii?Q?ziHlbBxf3VW8Zpv8JRJMfLpUhdIi1SSKKlrjXH1obqmX74nO4pAf2PmcF+iz?=
- =?us-ascii?Q?XU9LWzl3E6pwZHsTwI+UXsExmF8urmcGzQ7O2q0hZptAZqaiLj24eAIZNhIv?=
- =?us-ascii?Q?uCxwS40YYg4tWebncB18GOgW2pQqqZbW0VwwTYsPEqfsWCVhSrOPP8ucnJI3?=
- =?us-ascii?Q?0fBGpx3+1kMxx6uyt97gCOSQd4CiGYIlgP0VIWn9wHfOWkRZRGOz54BTGb8X?=
- =?us-ascii?Q?S7qpcv14oP/6kX4ylUX3IiYC9zqfOCq/HBna05FwSfwQVGo9ycyebfi6KK7K?=
- =?us-ascii?Q?aRs+eVjoVbxjgG2w8xxRuY+W0qGWd20nDdcunLKCfthqOyXrz5eocGfMSVpJ?=
- =?us-ascii?Q?1YXikOzPJXwK6pQgStzBJB8bh+wcj1RBBqfgq75E8PvVwPXWM71PPAvnbzMl?=
- =?us-ascii?Q?6frdzTgX0zzIknJhRWGAaC5qB2jLwt6lKu7046t49+ZTyZ1j7Vo4ynw5r4Ew?=
- =?us-ascii?Q?wjwv9Hp2FwWZu8I5c+38BDJTMHRT7LMtS3H87RO4ppZUfzJ2noRARijNtikC?=
- =?us-ascii?Q?Ykau7Lq2vFHUkB+lbZyQCmLneunOvDPx2+8sLsPe80R2ofubYbYNxgq3WEJe?=
- =?us-ascii?Q?rXoKMPXXYtECRR7ceRP7uHzP1YRqsiZXHy2sTUPLN/G1sSYUQBkfKBrsO3NY?=
- =?us-ascii?Q?qH4NKr4HlzyLfOr5skKdhw/T+qg87ZRiZSEYm06wrclw6R9Jp8Hss1Gx3k8L?=
- =?us-ascii?Q?yBIdvglI/vSaDeDmyBr0WhdKNqnsdykq7prYeTwWVYfifb/WcPmzy3Qo/emA?=
- =?us-ascii?Q?l8zw7qgybu/SHdmEPeOCtGBiyvFxgazJXOlGz9NUgUsRJELdD1UcRQSHdS9x?=
- =?us-ascii?Q?xK9Da2Zj8PrXOTAjXPaRzpmbxWDvo78VMK5YJgwZ3AvX+LCwGKaNAFP4gD7e?=
- =?us-ascii?Q?zz0BYE6YKYS7M8hUydYQZlTbZjFTjNKzpAqpNoktnH7fv9crplaGEYWnM3lK?=
- =?us-ascii?Q?cKa6veEXEoVTkeQn1MyqK1JISNoMGaFnKAqTnfuVIxG5rLAZYPIsHKkkQ8D7?=
- =?us-ascii?Q?1k333A/Cb1e68O8LWA7mTixVv2FP4Ntkvw8NSFcnXa8lCuwymUJBf83kh5Zj?=
- =?us-ascii?Q?6Rjs61fMf8PMZ297FCSLBWYYM4RS4CKtFmhqdMpGo3NsJ7CTvOsc/xSnR8WA?=
- =?us-ascii?Q?jUMD7Bx9Qg=3D=3D?=
-X-Exchange-RoutingPolicyChecked: URs82fmzYONVKaN4oepJ6+CX5l6RGcowzKtJ3hE/EnlAzYlUNt+8OH85Gi2vT7bz3xmZU4H7t5O5BLeKfgy1w52OKqgLck16gb5WjjpwRDCXIZxfv09lyK1DlcEcHeGSRAV4cHQsa/ycD0wHairrj9eumDuVQD3i6YBfUvBKXbu0m4tQ/y8PB3ayZtpg8js8ee6eOeWcVe0kkGD9yctml3eUBYByx/trSGK2iO5qoTIqcYWzSJoRaDcgYd6d4qu/ZRuQwALnDFlv9FOoePFfB0WtJ04GKEK0wZz+72W0WuQ0eHI3mYuA41s5L9AIKUgYzx0KvgMr/KeJEqSwMBYPfA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: a78ac6d6-2051-4043-df01-08defa498e43
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5645.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2026 21:18:16.1338
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YQW9HFMaJfPPEOQ8ATNuSzkkejc7RYGWDQfoPpn27kP60W7byOnsW4qkRghUteH87U7/KJYkSPmLi607iB/sKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4574
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
+Message-ID: <20260814224509.2342760-1-seanjc@google.com>
+Subject: [PATCH] KVM: VMX: Explicitly track TDX VMs' root level instead of
+ guessing it from CPUID
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, kvm@vger.kernel.org, x86@kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Kai Huang <kai.huang@intel.com>, Yan Zhao <yan.y.zhao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Aug 13, 2026 at 04:41:07PM -0700, Edgecombe, Rick P wrote:
-> On Wed, 2026-07-22 at 23:13 +0000, Lisa Wang wrote:
-> > From: Sagi Shahar <sagis@google.com>
-> > 
-> > Add tdx_init_vm() to handle the mandatory VM-level initialization
-> > sequence required for Intel TDX.
-> > 
-> > For TDX, the guest's CPUID configuration must be "sealed" during
-> > KVM_TDX_INIT_VM before any vCPUs are created. This is necessary because
-> > the TDX hardware directly virtualizes CPUID and includes the
-> > configuration in the guest's initial security measurement.
-> 
-> "TDX hardware" should be TDX module. But I'm not sure what it is trying to say
-> about directly virtualizes.
-> 
-> Also, it is not accurate to say that the CPUID configuration is included in the
-> measurement? Is that right Peter? It's not in the report, but is it in the
-> measurement?
+Explicitly track the root level for TDX VMs instead of trying to infer the
+depth of the paging tree based on an individual vCPU's CPUID information.
+Applying KVM's existing logic to select the root level to TDX is flawed as
+nothing *requires* userspace to fill in the correct guest.MAXPHYADDR for a
+vCPU's CPUID.  Guessing at the correct root level is also ridiculous given
+that userspace has already told KVM the root level during TD initialization.
 
-CPUID is not in the report or the TDX module's measurement. TD
-attributes and XFAM are in both the report and initial measurement, and
-some of the bits in there are related to CPUID (e.g. ATTRIBUTES.PKS or
-XFAM.MAXPA_VIRT). Probably better to make a distinction between these
-things.
+Relying on userspace to set the expected/correct CPUID lets a misbehaving
+userspace trip the KVM_BUG_ON() in tdx_load_mmu_pgd() by configuring guest
+CPUID to use an "incorrect" guest.MAXPHYADDR.
 
-> 
-> Or maybe it doesn't really need to be in the log anyway.
-> 
-> > 
+Keep gfn_direct_bits even though it can be trivially derived from
+mirror_root_level as saving a whole eight bytes per VM is meaningless, and
+the value is queried fairly often and in hot paths.
+
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: Kai Huang <kai.huang@intel.com>
+Cc: Yan Zhao <yan.y.zhao@intel.com>
+Fixes: 20d913729c11 ("KVM: x86/mmu: Taking guest pa into consideration when calculate tdp level")
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+
+Compile-tested only, and found by inspection, i.e. I haven't proven that this
+works, or that there's actually a bug.  But I'm pretty sure there's a bug.
+
+Came across this when looking at our out-of-tree intrahost migration code, and
+wanted to assert that could be at most one mirror root per TDX VM.
+
+ arch/x86/include/asm/kvm_host.h |  1 +
+ arch/x86/kvm/cpuid.c            | 14 --------------
+ arch/x86/kvm/cpuid.h            |  1 -
+ arch/x86/kvm/mmu.h              |  9 +++++++++
+ arch/x86/kvm/mmu/mmu.c          | 16 ++++++++--------
+ arch/x86/kvm/vmx/tdx.c          | 12 +++---------
+ 6 files changed, 21 insertions(+), 32 deletions(-)
+
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 283847619ff8..b2a74c69cc4a 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1406,6 +1406,7 @@ struct kvm_arch {
+ 	struct kvm_mmu_memory_cache split_desc_cache;
+ 
+ 	gfn_t gfn_direct_bits;
++	int mirror_root_level;
+ 
+ 	/*
+ 	 * Size of the CPU's dirty log buffer, i.e. VMX's PML buffer. A Zero
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index ddb022cb203a..34c609a60eef 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -483,20 +483,6 @@ int cpuid_query_maxphyaddr(struct kvm_vcpu *vcpu)
+ 	return 36;
+ }
+ 
+-int cpuid_query_maxguestphyaddr(struct kvm_vcpu *vcpu)
+-{
+-	struct kvm_cpuid_entry2 *best;
+-
+-	best = kvm_find_cpuid_entry(vcpu, 0x80000000);
+-	if (!best || best->eax < 0x80000008)
+-		goto not_found;
+-	best = kvm_find_cpuid_entry(vcpu, 0x80000008);
+-	if (best)
+-		return (best->eax >> 16) & 0xff;
+-not_found:
+-	return 0;
+-}
+-
+ /*
+  * This "raw" version returns the reserved GPA bits without any adjustments for
+  * encryption technologies that usurp bits.  The raw mask should be used if and
+diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
+index 8d863f45585d..46bfe8699e67 100644
+--- a/arch/x86/kvm/cpuid.h
++++ b/arch/x86/kvm/cpuid.h
+@@ -68,7 +68,6 @@ void __init kvm_init_xstate_sizes(void);
+ u32 xstate_required_size(u64 xstate_bv, bool compacted);
+ 
+ int cpuid_query_maxphyaddr(struct kvm_vcpu *vcpu);
+-int cpuid_query_maxguestphyaddr(struct kvm_vcpu *vcpu);
+ u64 kvm_vcpu_reserved_gpa_bits_raw(struct kvm_vcpu *vcpu);
+ 
+ static inline int cpuid_maxphyaddr(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index 2ae7f9ed4cf8..cc37e210787c 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -389,6 +389,15 @@ static inline gpa_t kvm_translate_gpa(struct kvm_vcpu *vcpu,
+ 						     exception, pte_access);
+ }
+ 
++static __always_inline void kvm_mmu_set_mirror_root_level(struct kvm *kvm,
++							  int level)
++{
++	BUILD_BUG_ON(level != 4 && level != 5);
++
++	kvm->arch.mirror_root_level = level;
++	kvm->arch.gfn_direct_bits = gpa_to_gfn(BIT_ULL(level == 4 ? 47 : 51));
++}
++
+ static inline bool kvm_has_mirrored_tdp(const struct kvm *kvm)
+ {
+ 	return kvm->arch.vm_type == KVM_X86_TDX_VM;
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index c519e8e8d646..a51a852c1bec 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -5928,19 +5928,19 @@ void __kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
+ 
+ static inline int kvm_mmu_get_tdp_level(struct kvm_vcpu *vcpu)
+ {
+-	int maxpa;
+-
+-	if (vcpu->kvm->arch.vm_type == KVM_X86_TDX_VM)
+-		maxpa = cpuid_query_maxguestphyaddr(vcpu);
+-	else
+-		maxpa = cpuid_maxphyaddr(vcpu);
+-
+ 	/* tdp_root_level is architecture forced level, use it if nonzero */
+ 	if (tdp_root_level)
+ 		return tdp_root_level;
+ 
++	/*
++	 * If the VM has mirror roots, then the root level is fixed as the gfn
++	 * used to select between the normal and mirror root must be covered.
++	 */
++	if (vcpu->kvm->arch.mirror_root_level)
++		return vcpu->kvm->arch.mirror_root_level;
++
+ 	/* Use 5-level TDP if and only if it's useful/necessary. */
+-	if (max_tdp_level == 5 && maxpa <= 48)
++	if (max_tdp_level == 5 && cpuid_maxphyaddr(vcpu) <= 48)
+ 		return 4;
+ 
+ 	return max_tdp_level;
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index b272c20586a7..6d8e9befd9e6 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -56,9 +56,6 @@
+ bool enable_tdx __ro_after_init;
+ module_param_named(tdx, enable_tdx, bool, 0444);
+ 
+-#define TDX_SHARED_BIT_PWL_5 gpa_to_gfn(BIT_ULL(51))
+-#define TDX_SHARED_BIT_PWL_4 gpa_to_gfn(BIT_ULL(47))
+-
+ static const struct tdx_sys_info *tdx_sysinfo;
+ 
+ void tdh_vp_rd_failed(struct vcpu_tdx *tdx, char *uclass, u32 field, u64 err)
+@@ -1609,10 +1606,7 @@ static int handle_tdvmcall(struct kvm_vcpu *vcpu)
+ 
+ void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int pgd_level)
+ {
+-	u64 shared_bit = (pgd_level == 5) ? TDX_SHARED_BIT_PWL_5 :
+-			  TDX_SHARED_BIT_PWL_4;
+-
+-	if (KVM_BUG_ON(shared_bit != kvm_gfn_direct_bits(vcpu->kvm), vcpu->kvm))
++	if (KVM_BUG_ON(pgd_level != vcpu->kvm->arch.mirror_root_level, vcpu->kvm))
+ 		return;
+ 
+ 	td_vmcs_write64(to_tdx(vcpu), SHARED_EPT_POINTER, root_hpa);
+@@ -2823,9 +2817,9 @@ static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
+ 	kvm_tdx->xfam = td_params->xfam;
+ 
+ 	if (td_params->config_flags & TDX_CONFIG_FLAGS_MAX_GPAW)
+-		kvm->arch.gfn_direct_bits = TDX_SHARED_BIT_PWL_5;
++		kvm_mmu_set_mirror_root_level(kvm, 5);
+ 	else
+-		kvm->arch.gfn_direct_bits = TDX_SHARED_BIT_PWL_4;
++		kvm_mmu_set_mirror_root_level(kvm, 4);
+ 
+ 	kvm_tdx->state = TD_STATE_INITIALIZED;
+ out:
+
+base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
+-- 
+2.55.0.691.gc56d675ccc-goog
+
