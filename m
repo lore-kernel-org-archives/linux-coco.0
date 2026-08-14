@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9338733939B
-	for <linux-coco@lists.linux.dev>; Fri, 14 Aug 2026 02:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2183238150
+	for <linux-coco@lists.linux.dev>; Fri, 14 Aug 2026 03:26:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786675014; cv=none; b=B4HLE772faPn2PvCox0s5sAtG0l9yMjSgtpZtGqiwl+Yoh/f9RzLqWLa7GeaK2ml2VlD+V7TB//CSIFNY/W2BVDg4JvdSbrtAerU1G28q2QZ4fOikI+/FEveUn3ljFf559tr1pCgEKd8HVQnO3nnJjXH7iDOKYB5716JqJxiDgE=
+	t=1786677964; cv=none; b=QPSNum13sDYyi5r64rl6sVaiu0yLhcF/QeS75JYwlfcUs7bGO5UsRrBcHasMFL9hlaOZStc9V/Rvb7uaHGKFnSeRRm6gNg/nHYvCZ+N2+qI0nQWdjOiJxPviZIoH0fDt0mv+aPc706iilT5vbgVDt4kHkQbZZS4hIvxDcSM4TL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786675014; c=relaxed/simple;
-	bh=5u2WCyPog3z4h5CcvpUP743luQzWWT+PMRaV8cjoB2s=;
+	s=arc-20240116; t=1786677964; c=relaxed/simple;
+	bh=PMW+3tSZuBZ77kt9zO5BRfNKhdxheMBPxWzy74mRfwk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DE+iLHRqI1P+QpVtDZ4fIyVktudYN5uJYPuS1DcrjIUX17MNoHiAxCwvNp9ITwPdDBUeHTBW94K11ifMGc9EKopFDNpEI5UvdKa/FILEWLgHjT4bOLog3pVxME0WNfuj2NrtOVyvYwyQB3rCnoe7IJvyt5wSuZe91WpzvKyTLRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j2APYGbA; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 In-Reply-To:Content-Type; b=ZIFiVhJ2H7HAlbvJXCrwPtndx10SAL11TGLGYctedqNqj1tMNlvuVUmus6H2FjZ6kZe94ZMmW2/scV/j/YX5QNaS7Tg7V/0SL8YVwKngk1pI87vFLlTLdA/vbHpjofzuG89P6EV4EZKBRyh21kT7X3a4YzdOsCGPDo8Rg7m7o1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eMj3o8k6; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j2APYGbA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eMj3o8k6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786675014; x=1818211014;
+  t=1786677963; x=1818213963;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=5u2WCyPog3z4h5CcvpUP743luQzWWT+PMRaV8cjoB2s=;
-  b=j2APYGbAOhZ1s/CXk6vA7qeOxnKNROvDoS35Z7XZUxFwChtbvcWbPwTQ
-   0Jbg5n6CrFXRwje7cDKmGlTjw3EoylSaDNRrT8CTX6uN2Qt00O5icK2Fo
-   lYOi1fyli3XdxjtWfND7tR3DjMNj2ut41t3qNON74aovaNupT0W2QQzkI
-   G2SZfw2a9qdhkqrJbpQIpUL0htpsQJntFZKrOpgoDEkA1goQn22/yTpo2
-   aD6AJCuoz7R2V0kzyNvXcuf1zFxHKZNa9ysL83uREOgesKBerg6IPMPZZ
-   p2GeFo9I1ZLeVM6AZaTHZ2XyjTnyATvJwCqSptO39T03mz/sowVIubgye
-   A==;
-X-CSE-ConnectionGUID: z/tz+Wf5TVar7J9GRg5weg==
-X-CSE-MsgGUID: oVb7wfLMRoalDEn7RBz40w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="87276722"
+  bh=PMW+3tSZuBZ77kt9zO5BRfNKhdxheMBPxWzy74mRfwk=;
+  b=eMj3o8k6PmGHc0TNTSfWPSGFK8UL8nbFtIPJ3sZO8iZxAltJnIwrEbc0
+   UGDs25+h/DCuX8SQyGgcnD0q1yPZIb843y6Bk2iOBRY8KFG9ykaqmRq+g
+   QyM4w8xikZTFcdAGLf5oikgXDqZfLb9TSc4QiK5Fj5Q4VUpUR/+bK5K7O
+   JTOo8dud66wZ7rfZM48abXXwa+bizjR4VEF2TimNtVg8yIT0L0ZvlMe8J
+   AdVil0nW4t2+l1qo215WTa0r0RPnQbLnrwWIpJ6/eaTT/LIsA/DEOa6xQ
+   H2VtpEd/AuF000JwEngAwBTmxe/RrJt05F06pgvAox9jXphkKDc29j2UK
+   w==;
+X-CSE-ConnectionGUID: RdzwOT08TlmSWF1QgVlg9A==
+X-CSE-MsgGUID: SKsWvFIPRuCuiq6hE05iFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="112801646"
 X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
-   d="scan'208";a="87276722"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 19:36:53 -0700
-X-CSE-ConnectionGUID: twp2HZdETWaBCDN87WccPw==
-X-CSE-MsgGUID: JI8gvfgkRq2nZ8bwI4rGtw==
+   d="scan'208";a="112801646"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 20:26:01 -0700
+X-CSE-ConnectionGUID: OK2WNfvaROqJl2omPhlcUA==
+X-CSE-MsgGUID: cGwfy+bMRAqA7Rf+rV3Kow==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
-   d="scan'208";a="294030900"
-Received: from unknown (HELO [10.238.208.98]) ([10.238.208.98])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 19:36:46 -0700
-Message-ID: <7782f61a-1384-4960-85c3-5613fbf27729@intel.com>
-Date: Fri, 14 Aug 2026 10:36:43 +0800
+   d="scan'208";a="267971704"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 20:25:48 -0700
+Message-ID: <beecf36b-b0eb-4691-918f-fd39f46d5d8f@linux.intel.com>
+Date: Fri, 14 Aug 2026 11:25:46 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,54 +52,130 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 09/22] KVM: selftests: Expose functions to get default
- sregs values
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "Aktas, Erdem" <erdemaktas@google.com>, "shuah@kernel.org"
- <shuah@kernel.org>, "dave.hansen@linux.intel.com"
- <dave.hansen@linux.intel.com>, "afranji@google.com" <afranji@google.com>,
- "kas@kernel.org" <kas@kernel.org>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
- "ira.weiny@intel.com" <ira.weiny@intel.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "Chatre, Reinette" <reinette.chatre@intel.com>,
- "isaku.yamahata@intel.com" <isaku.yamahata@intel.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>,
- "seanjc@google.com" <seanjc@google.com>,
- "pratikrajesh.sampat@amd.com" <pratikrajesh.sampat@amd.com>,
- "oupton@kernel.org" <oupton@kernel.org>,
- "wyihan@google.com" <wyihan@google.com>, "sagis@google.com"
- <sagis@google.com>, "Gao, Chao" <chao.gao@intel.com>,
- "Wang, Roger" <runanwang@google.com>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "ajones@ventanamicro.com" <ajones@ventanamicro.com>,
- "Qiang, Chenyi" <chenyi.qiang@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "jmcrey@google.com" <jmcrey@google.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-9-15ad654a50db@google.com>
- <b7f7ad93360d7e0fe59ab7f3b0ed6fa79375001f.camel@intel.com>
+Subject: Re: [PATCH v10 15/41] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-coco@lists.linux.dev
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-15-2fc18ee6d3ba@google.com>
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <b7f7ad93360d7e0fe59ab7f3b0ed6fa79375001f.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-15-2fc18ee6d3ba@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/14/2026 8:44 AM, Edgecombe, Rick P wrote:
-> On Wed, 2026-07-22 at 23:13 +0000, Lisa Wang wrote:
->>   
->> +#ifndef NUM_INTERRUPTS
->> +#define NUM_INTERRUPTS 256
->> +#endif
->> +
+On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> Is this necessary for this patch? I see why to extract
-> kvm_get_default_idt_limit() because now it's used twice. But why extract this
-> define too?
+> A guest_memfd folio is safe for conversion if guest_memfd holds the last
+> references on it. Any other references on the folio may indicate another
+> user, and guest_memfd cannot convert it to private if there may be an
+> existing host user.
+> 
+> A folio will have extra refcounts if it is present in a per-CPU lru_add
+> fbatch. guest_memfd does not actually participate in LRU, but
+> freshly-allocated folios are still added to the lru_add fbatch for batch
+> LRU statistics processing.
+> 
+> This one known "usage" of the folio is handled by draining the lru_add
+> fbatch. After draining, if the refcount is still elevated, then there's
+> truly some other user of this page, and the page is not safe for
+> conversion.
+> 
+> If the page may be dma pinned, DMA is obviously using it and hence not safe
+> for conversions. If the page is still mapped after guest_memfd tried to
+> unmap it earlier in the conversion process, it is also obviously not safe
+> for conversion. Exit early to avoid unnecessary draining in these 2 cases.
+> 
+> Provide a drain status to only drain once ever while processing a batch of
+> folios.
+> 
+> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-kvm_get_default_idt_limit() uses NUM_INTERRUPTS, and 
-kvm_get_default_idt_limit() is extracted as a helper from .c file to .h 
-file. Shouldn't the define of NUM_INTERRUPTS be moved together?
+With the updated version of change log,
+
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+
+One nit below.
+
+[...]
+
+> +static bool __folio_safe_for_conversion(struct folio *folio,
+> +					enum lru_cache_drained *drained)
+> +{
+> +	const int filemap_get_folios_refcount = 1;
+> +
+
+Nit:
+After adding the helper, the use of filemap_get_folios_refcount seems
+less obvious. It introduces unnecessary tight coupling with the caller,
+though it has only one caller currently.
+
+Is it better to pass the value as extra_refs, similar to what
+lru_cache_drain_for_folio() does? 
+
+
+> +	if (folio_maybe_dma_pinned(folio) || folio_mapped(folio))
+> +		return false;
+> +
+> +	lru_cache_drain_for_folio(folio, filemap_get_folios_refcount,
+> +				  drained);
+> +
+> +	return folio_ref_count(folio) ==
+> +	       folio_nr_pages(folio) + filemap_get_folios_refcount;
+> +}
+> +
+>  static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+>  					    size_t nr_pages, pgoff_t *err_index)
+>  {
+> +	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
+>  	struct address_space *mapping = inode->i_mapping;
+> -	const int filemap_get_folios_refcount = 1;
+>  	pgoff_t last = start + nr_pages - 1;
+>  	struct folio_batch fbatch;
+>  	bool safe = true;
+> @@ -560,9 +576,8 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+>  		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+>  			struct folio *folio = fbatch.folios[i];
+>  
+> -			if (folio_ref_count(folio) !=
+> -			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
+> -				safe = false;
+> +			safe = __folio_safe_for_conversion(folio, &drained);
+> +			if (!safe) {
+>  				*err_index = max(start, folio->index);
+>  				break;
+>  			}
+> 
+
