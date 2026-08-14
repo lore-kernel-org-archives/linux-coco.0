@@ -1,57 +1,57 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D7B36B905
-	for <linux-coco@lists.linux.dev>; Fri, 14 Aug 2026 17:57:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE1C490BED
+	for <linux-coco@lists.linux.dev>; Fri, 14 Aug 2026 18:13:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786730271; cv=none; b=W9/Cp4iPaPb6xLZsV+23pEJtDUqYU6sjbBbOfUp1UcXj/w9493gZoO7blu9dHWVcaY+bHP4vSkrxPzaLCUEJiQXzm/ZKyX1spet5BDoNlH7nMW+ymF9IUTrpKyfKxDn3t7SrxxcGGkfoyUr27skHFpO8zLnjKy6TBu9Hwe+S4+8=
+	t=1786731199; cv=none; b=Gqo4TLi/sk/HX8w1pAfLQ1yLoF/jV+h3OFGa2ZlxkF9s1KHtQMqKAe2+ArvigopikZQd+cA7gk4CozfUzuABs+17vT2DWglPNHyG+lNRR39zQP5xOGxoNYba3tf2PrEXRw0dThjIbekInQTxHPmnQ3vwtOvXPRtsXF3pBOgtCUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786730271; c=relaxed/simple;
-	bh=vfWVk5cbC2alWZ2RcQ2gPFo+PGPYjPxWOtNwHPYXyoc=;
+	s=arc-20240116; t=1786731199; c=relaxed/simple;
+	bh=OGjC4lU1LA7/XzaG6yfv4mKkKwAbvoqsVMSYuVRL2fk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pvrwXakan4yGKsGN1zjhfk8Fbx5EZPFiXDmVjYEQ+pbPVn14k6qzk+Q61Y2F6VIgIFqf5QBCAxBDkLgINYumJwoneBezRb94yRiH/PI2EqLzXcu7hBmOZTY0/wsFfjWDpujMawpPLv+LDfYu5xHWphYJI/mLLGR/NfeHWT5hw6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hsWqsKM2; arc=none smtp.client-ip=209.85.214.197
+	 To:Cc:Content-Type; b=uEj1ZJa5idVEitoarzYsUzCPVeexlc1d/7xP/yeDuyAYtrXjgyVGzumvxJhJS0s1Y84sOkByumE8ZvmuTlzfcwAg/gpUyNt7ek245SF+PN1kNwpYMEg8LNyhI5dP0v3+amvNFwraytCHJjA1b1GosbytdtRsgdfJvLhxIedYpr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u4tL14b0; arc=none smtp.client-ip=209.85.215.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hsWqsKM2"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cea6a46766so20836365ad.0
-        for <linux-coco@lists.linux.dev>; Fri, 14 Aug 2026 10:57:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u4tL14b0"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb5ea36f969so1425921a12.2
+        for <linux-coco@lists.linux.dev>; Fri, 14 Aug 2026 11:13:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786730268; x=1787335068; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1786731197; x=1787335997; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FTRpQbBcuIQQHhR/UQMYNM1PA+jfAXsDHcYqcmWTXOk=;
-        b=hsWqsKM27x6MqfJwyhmLadxAE9d4ZhYmWRRhPZGd6qA3AR8lujQDb91QI2m7dUldL+
-         8eA+LlB6jnNwjw27VzPE0s52O3FjBqPXVb3JEFnzDxuUPrWhQzL3Tp5u+GfLmInDZs97
-         MUdZFESfbnLLcs+lyO/o/47GK2etCujTZmJGSkLi3Oo2ImwrrkLFs6RpTIjvAkzrVJ3d
-         3KezrKXD26lqC7lir9nc2fbvEp7fXnODYj1iRbqBa2gyotvD+90FLZhN6NXSQPcj1ens
-         y5sIc/ZUE+OOqJ3vCNIT4QWB34v5SMNYN4qIRfq6ZpTdOPlQUwV+2DWv0eQaNgRvYZOH
-         37fA==
+        bh=IXgZWbJY+AFNvGsunVK4VPpL85oG6gcjHAIado0UDKw=;
+        b=u4tL14b0VjywgP4MCkZt5sanciUftl23pq8FuwfTCEPgawuMRKsUQcZGbCwGB6eDEo
+         M/zbKWY6D0l082KFCcjYmAdVJ9OwfKnKOUvqhgTNrWE9yChX5dbTQOs0A/ZEh2rDZMW2
+         9edIvTpD8Wq1n5CvFSjxXj7oGRyQJgehQRpk1U0HpViuyedZP5QV/jUt6xV9wPLc5GU3
+         XiGhxDaYX34ja/K+ScUtRPMDbHg0Qx9FG3Xy1jdJm1soGcg1sXzOtUIDQtmf/XWQ5HTb
+         ke2JbrRkkKHrgzc1V80dDnW/TTm2wxA6EX+xjDwJhYvrGB4p/bsSb0D0QBHQ+1r7mmsP
+         FH4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786730268; x=1787335068;
+        d=1e100.net; s=20251104; t=1786731197; x=1787335997;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FTRpQbBcuIQQHhR/UQMYNM1PA+jfAXsDHcYqcmWTXOk=;
-        b=N2sdSgQo6048lx16+/ZPzCMRg7WHj6o73/PGzYJSIXWPnMpwcwJFsdhZfZeOWjJJdJ
-         Szyl7F7yKGqz6blyv4NaJiOntIi9nVZO09Y9fZP8/9XhUICAn7k64VB4NZrgk0C+sNKS
-         GKXm813LSlXVMp0iHxJY7+m8TBbygoplAPQ8kGkT6opjbOf/iMope4FhgXIiu/Dr/H74
-         QeGkhW3Yhk6iXXIp5HGGElVyRSZDvBljag4Zj1w5ObbODdfUQJ5H+WABhKywyYs16Tmx
-         ep0WLWk1lqzkwXDdDYxAF7nkKpLLRyYfvg6P1auyCOSebLj6gloFY1UfInq0koxyqwkD
-         KorQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqfT0GuDKXlbzyfi/4Ah46jV+B6aiaCE0/caqpqn26PGgHWbCyOS/SsBMvjeEFYZvJyYfLURJsowFlN@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz3zD9mMbD+3KGZTUU//KpAPBuGWc5oePoWLiEUmNuqxzK4T2Ix
-	mlAAbcLHPJAN8hJKCEMjiWrch4fNpadgtpWinM/oWfBO5zW7YeuCVAD2RZmobj/8KaJT7vBSv7V
-	Mn5vxWQ==
-X-Received: from plbmt15.prod.google.com ([2002:a17:903:b0f:b0:2ca:5dc9:51d3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:22c6:b0:2c0:db23:4c4
- with SMTP id d9443c01a7336-2d3b0c8852emr91417425ad.16.1786730267363; Fri, 14
- Aug 2026 10:57:47 -0700 (PDT)
-Date: Fri, 14 Aug 2026 10:57:46 -0700
-In-Reply-To: <36baf0ec-0b7c-4ffd-9a1e-dfe9617e057d@linux.intel.com>
+        bh=IXgZWbJY+AFNvGsunVK4VPpL85oG6gcjHAIado0UDKw=;
+        b=Xzy3yAdGe7IuoiQzD11+y3D/CYlFvjB4BQ0v9qTDPv7Vr1+V2+NWlapPOhCYgZ0+Vo
+         xBTdJ6jW6fBm4eESdDzKnBn6X318m/fm9Gjeu4peLgmW9Ljbjj86tI5nHWIEHHx+EgCR
+         wFURBTEZAcKGTgWX72V4v3WJl8KTZTVUSsNDyuD0r+uJyftAtHhx6ygxGMmZeEpnwm9v
+         Eug5ELNnNChheXFWSINxh90/mgCfShiFLLGMbVuozGG/kJjIEaHJgw0/xn3/X/UJLPXz
+         XOqZR835z8girJIlRmX9YNo75cMbLdINqyeRVNdav/LgUtGtLd0CcJHQiPAzmr+Dmp33
+         rOCQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpEfq3q/johCbAnno2vXEQhStxERKyHX/hjqzj5Gz54CqUAHajRhuk8t4EFPQJEksetmAa1IIgE9fOw@lists.linux.dev
+X-Gm-Message-State: AOJu0YzJxLsizG/u/RuxNWLC+vXhjNMJVJvzA5yNs35/03wv60Qaoplc
+	Xqeh6xpN0rOPe6jTnI0vUxnfv1IY3Sp+6San6JFMkdTbtzpHRnC+XeHJ8EGTvlNHQTu7+gtlF6a
+	idqkutg==
+X-Received: from pgkg8.prod.google.com ([2002:a63:fa48:0:b0:c9a:d174:5315])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7316:b0:3c4:de3:816c
+ with SMTP id adf61e73a8af0-3cc71ed56f7mr9388112637.37.1786731196579; Fri, 14
+ Aug 2026 11:13:16 -0700 (PDT)
+Date: Fri, 14 Aug 2026 11:13:15 -0700
+In-Reply-To: <f41624da-8461-45cf-b555-241091faeb63@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -59,9 +59,10 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-18-2fc18ee6d3ba@google.com> <36baf0ec-0b7c-4ffd-9a1e-dfe9617e057d@linux.intel.com>
-Message-ID: <an9XGrcPw3h-ExA9@google.com>
-Subject: Re: [PATCH v10 18/41] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+ <20260807-gmem-inplace-conversion-v10-20-2fc18ee6d3ba@google.com> <f41624da-8461-45cf-b555-241091faeb63@linux.intel.com>
+Message-ID: <an9auxaZBuTJCAr-@google.com>
+Subject: Re: [PATCH v10 20/41] KVM: Let userspace disable per-VM mem
+ attributes, enable per-gmem attributes
 From: Sean Christopherson <seanjc@google.com>
 To: Binbin Wu <binbin.wu@linux.intel.com>
 Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
@@ -90,35 +91,58 @@ Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
 	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
+	linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
 On Fri, Aug 14, 2026, Binbin Wu wrote:
 > On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
 > > From: Ackerley Tng <ackerleytng@google.com>
 > > 
-> > Update tdx_gmem_post_populate() to handle cases where userspace requests
-> > "no source page". To handle "no source page", populate (perform
-> > TDH.MEM.PAGE.ADD) using memory in-place at the target PFN.
+> > Make gmem_in_place_conversion a module parameter so that userspace can
+> > configure enable or disable the use of VM-level memory attributes. The
+> > module parameter is only available if CONFIG_KVM_VM_MEMORY_ATTRIBUTES is
+> > enabled.
 > > 
-> > Allow "no source page" only when gmem_in_place_conversion is enabled,
-> > because retroactively adding support for out-of-place conversion would mean
-> > requiring a userspace update for a feature that's being deprecated.
-> > 
-> > Also, KVM supporting "no source page" without in-place conversion would
-> > effectively be an obscure zero-page optimization that relies on the page
-> > being zeroed when it is allocated by guest_memfd.
-> > 
-> > Rejecting "no source page" without in-place conversion scenario is valuable
-> > for KVM developers since it helps newcomers understand what exactly is and
-> > isn't possible.
-> > 
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > To avoid inconsistencies in the way memory attributes are tracked in KVM
+> > and guest_memfd, the vm_memory_attributes module_param is made
 > 
-> Nit:
-> Is Sean's SoB intentional here?
+> The description is stale, since there is no module_param called
+> vm_memory_attributes?
+> 
+> > read-only (0444).
+> > 
+> > Since selecting CONFIG_KVM_VM_MEMORY_ATTRIBUTES disables in-place
+> > conversion, 
+> 
+> "selecting CONFIG_KVM_VM_MEMORY_ATTRIBUTES" doesn't necessarily disable
+> in-place conversion, it also depends on the setting of
+> gmem_in_place_conversion.
+> To be accurate, maybe add "by default"?
 
-Kinda sorta?  I handed commits to Ackerley after rebasing them locally at one
-point, which is how my SoB got here.  I think it makes sense to just drop them
-from the patches where I'm not listed as the author or Co-developed-by.  In the
-end, I expect to apply this series and so my SoB will get added backon anyways.
++1.
+
+Ackerley, please write changelogs in imperative mood, i.e. state things like this
+as command, not as a passive description of what the code now does.  And I would
+omit the blurb on changing the kvm_arch_has_private_mem() definition, for me that
+falls into the category of giving a play-by-play explanation of the code change.
+I.e. Let the diff speak for itself.
+
+E.g.
+
+  Allow the user to disable KVM_VM_MEMORY_ATTRIBUTES even when KVM supports
+  PRIVATE and SHARED attributes, and expose gmem_in_place_conversion as a
+  module parameter when per-VM attributes are supported.  I.e. let userspace
+  enable in-place PRIVATE<=>SHARED conversion of guest_memfd pages.
+
+  Provide both a Kconfig option and a (conditional) module param so that
+  deployments that use a custom kernel can fully disable per-VM tracking,
+  while not forcing distros to ship two separate kernels in order to provide
+  backwards compatibility for downstream users.
+
+  Don't allow running VMs with mixed tracking for a given instance of KVM,
+  i.e. disallow toggling the module param after KVM is loaded, as the extra
+  complexity needed to handle per-VM behavior far outweighs any potential
+  benefit.  E.g. neither TDX nor SNP supports live migration, so in effect
+  the requirement is that existing deployments that want to support both the
+  old and the new models would need to tell their VMM which flavor of
+  tracking to use.
