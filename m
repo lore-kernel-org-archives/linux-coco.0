@@ -1,237 +1,124 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697D84908DF;
-	Fri, 14 Aug 2026 17:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D7B36B905
+	for <linux-coco@lists.linux.dev>; Fri, 14 Aug 2026 17:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786728891; cv=none; b=hweaA5WPTg6NwHn7y9UzbRIF0tQcyWci21B+Plc440aKA4psneEXLEjxEHLSbaaJhBDKX8pJE+CAOct3juBg8FYprm3I9kCkZD4kEWAmErPy8VauA1EBV9ZDVdwkGD43lc6ZkcJHrHn6IOf5PTc0znykt/jVZ7hxPIa0Gd0lZ+I=
+	t=1786730271; cv=none; b=W9/Cp4iPaPb6xLZsV+23pEJtDUqYU6sjbBbOfUp1UcXj/w9493gZoO7blu9dHWVcaY+bHP4vSkrxPzaLCUEJiQXzm/ZKyX1spet5BDoNlH7nMW+ymF9IUTrpKyfKxDn3t7SrxxcGGkfoyUr27skHFpO8zLnjKy6TBu9Hwe+S4+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786728891; c=relaxed/simple;
-	bh=u3T9edAxlh7yKorxUAb9VAjz6kQdSTTbvHmmGeDDHoU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xaqd3uDAL3bnY+JwDHjgbE4Dg5RFlSx9cyVJ6Y7d52B+NOrsY0YtV8u6pCqVNjqpPeX0JpM7kWA4RGZPE2LYXnedVLZBpZHRB6jsoafc3Iq6hUmC58RRSEPpHSrgpTzpJvJTizKVssgtzkT/ekEB4gUtC2pMB86BcQ3tcPyRy4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ppm7pmp8; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1786730271; c=relaxed/simple;
+	bh=vfWVk5cbC2alWZ2RcQ2gPFo+PGPYjPxWOtNwHPYXyoc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=pvrwXakan4yGKsGN1zjhfk8Fbx5EZPFiXDmVjYEQ+pbPVn14k6qzk+Q61Y2F6VIgIFqf5QBCAxBDkLgINYumJwoneBezRb94yRiH/PI2EqLzXcu7hBmOZTY0/wsFfjWDpujMawpPLv+LDfYu5xHWphYJI/mLLGR/NfeHWT5hw6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hsWqsKM2; arc=none smtp.client-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ppm7pmp8"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7D9611516;
-	Fri, 14 Aug 2026 10:34:42 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3CB4D3F66F;
-	Fri, 14 Aug 2026 10:34:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786728886; bh=u3T9edAxlh7yKorxUAb9VAjz6kQdSTTbvHmmGeDDHoU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ppm7pmp8E9oVikMGpVoQQWvjA2spsMWcUEwM5vXpRx2erTjnP16IFLrGmEifQQ7DC
-	 8sLEvBHanZyBCAqJAEiPNurm8WKYBKyyxL14TwTjEu5odWeJbfPbCk4dKh+9cwcRrg
-	 SHpUIcPXbrmDNJK4N0VK054T4ts//EmbcSpr6RgI=
-Date: Fri, 14 Aug 2026 18:34:39 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, x86@kernel.org
-Subject: Re: [RFC PATCH v2 2/2] dma: swiotlb: Initialize and size shared
- default pools for memory encryption
-Message-ID: <an9RrwoaAsqJQ2vN@arm.com>
-References: <20260813102521.1367737-1-aneesh.kumar@kernel.org>
- <20260813102521.1367737-3-aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hsWqsKM2"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cea6a46766so20836365ad.0
+        for <linux-coco@lists.linux.dev>; Fri, 14 Aug 2026 10:57:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786730268; x=1787335068; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FTRpQbBcuIQQHhR/UQMYNM1PA+jfAXsDHcYqcmWTXOk=;
+        b=hsWqsKM27x6MqfJwyhmLadxAE9d4ZhYmWRRhPZGd6qA3AR8lujQDb91QI2m7dUldL+
+         8eA+LlB6jnNwjw27VzPE0s52O3FjBqPXVb3JEFnzDxuUPrWhQzL3Tp5u+GfLmInDZs97
+         MUdZFESfbnLLcs+lyO/o/47GK2etCujTZmJGSkLi3Oo2ImwrrkLFs6RpTIjvAkzrVJ3d
+         3KezrKXD26lqC7lir9nc2fbvEp7fXnODYj1iRbqBa2gyotvD+90FLZhN6NXSQPcj1ens
+         y5sIc/ZUE+OOqJ3vCNIT4QWB34v5SMNYN4qIRfq6ZpTdOPlQUwV+2DWv0eQaNgRvYZOH
+         37fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786730268; x=1787335068;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=FTRpQbBcuIQQHhR/UQMYNM1PA+jfAXsDHcYqcmWTXOk=;
+        b=N2sdSgQo6048lx16+/ZPzCMRg7WHj6o73/PGzYJSIXWPnMpwcwJFsdhZfZeOWjJJdJ
+         Szyl7F7yKGqz6blyv4NaJiOntIi9nVZO09Y9fZP8/9XhUICAn7k64VB4NZrgk0C+sNKS
+         GKXm813LSlXVMp0iHxJY7+m8TBbygoplAPQ8kGkT6opjbOf/iMope4FhgXIiu/Dr/H74
+         QeGkhW3Yhk6iXXIp5HGGElVyRSZDvBljag4Zj1w5ObbODdfUQJ5H+WABhKywyYs16Tmx
+         ep0WLWk1lqzkwXDdDYxAF7nkKpLLRyYfvg6P1auyCOSebLj6gloFY1UfInq0koxyqwkD
+         KorQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqfT0GuDKXlbzyfi/4Ah46jV+B6aiaCE0/caqpqn26PGgHWbCyOS/SsBMvjeEFYZvJyYfLURJsowFlN@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz3zD9mMbD+3KGZTUU//KpAPBuGWc5oePoWLiEUmNuqxzK4T2Ix
+	mlAAbcLHPJAN8hJKCEMjiWrch4fNpadgtpWinM/oWfBO5zW7YeuCVAD2RZmobj/8KaJT7vBSv7V
+	Mn5vxWQ==
+X-Received: from plbmt15.prod.google.com ([2002:a17:903:b0f:b0:2ca:5dc9:51d3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:22c6:b0:2c0:db23:4c4
+ with SMTP id d9443c01a7336-2d3b0c8852emr91417425ad.16.1786730267363; Fri, 14
+ Aug 2026 10:57:47 -0700 (PDT)
+Date: Fri, 14 Aug 2026 10:57:46 -0700
+In-Reply-To: <36baf0ec-0b7c-4ffd-9a1e-dfe9617e057d@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260813102521.1367737-3-aneesh.kumar@kernel.org>
+Mime-Version: 1.0
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-18-2fc18ee6d3ba@google.com> <36baf0ec-0b7c-4ffd-9a1e-dfe9617e057d@linux.intel.com>
+Message-ID: <an9XGrcPw3h-ExA9@google.com>
+Subject: Re: [PATCH v10 18/41] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+From: Sean Christopherson <seanjc@google.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Aug 13, 2026 at 03:55:21PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-> index 9f5b366d2086..c3188ca878f3 100644
-> --- a/arch/arm64/mm/init.c
-> +++ b/arch/arm64/mm/init.c
-> @@ -338,12 +338,8 @@ void __init arch_setup_zero_pages(void)
->  void __init arch_mm_preinit(void)
->  {
->  	unsigned int flags = SWIOTLB_VERBOSE;
-> -	/* pKVM uses restricted-dma-pool */
-> -	bool cc_guest = is_realm_world();
->  
-> -	if (cc_guest)
-> -		flags |= SWIOTLB_INIT_CC_SHARED;
-> -	else if (max_pfn > PFN_DOWN(arm64_dma_phys_limit))
-> +	if (max_pfn > PFN_DOWN(arm64_dma_phys_limit))
->  		flags |= SWIOTLB_INIT_ADDRESSING_LIMIT;
->  
->  	swiotlb_init(flags);
+On Fri, Aug 14, 2026, Binbin Wu wrote:
+> On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> > From: Ackerley Tng <ackerleytng@google.com>
+> > 
+> > Update tdx_gmem_post_populate() to handle cases where userspace requests
+> > "no source page". To handle "no source page", populate (perform
+> > TDH.MEM.PAGE.ADD) using memory in-place at the target PFN.
+> > 
+> > Allow "no source page" only when gmem_in_place_conversion is enabled,
+> > because retroactively adding support for out-of-place conversion would mean
+> > requiring a userspace update for a feature that's being deprecated.
+> > 
+> > Also, KVM supporting "no source page" without in-place conversion would
+> > effectively be an obscure zero-page optimization that relies on the page
+> > being zeroed when it is allocated by guest_memfd.
+> > 
+> > Rejecting "no source page" without in-place conversion scenario is valuable
+> > for KVM developers since it helps newcomers understand what exactly is and
+> > isn't possible.
+> > 
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> 
+> Nit:
+> Is Sean's SoB intentional here?
 
-This looks fine. As I mentioned on patch 1, we might as well move this
-hunk over there and avoid the flag definition.
-
-> @@ -102,9 +101,6 @@ void __init mem_encrypt_init(void)
->  
->  void __init mem_encrypt_setup_arch(void)
->  {
-> -	phys_addr_t total_mem = memblock_phys_mem_size();
-> -	unsigned long size;
-> -
->  	/*
->  	 * Do RMP table fixups after the e820 tables have been setup by
->  	 * e820__memory_setup().
-> @@ -112,33 +108,9 @@ void __init mem_encrypt_setup_arch(void)
->  	if (cc_platform_has(CC_ATTR_HOST_SEV_SNP))
->  		snp_fixup_e820_tables();
->  
-> -	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
-> -		x86_swiotlb_flags |= SWIOTLB_INIT_CC_SHARED;
-> -
->  	if (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
->  		return;
->  
-> -	/*
-> -	 * For SEV and TDX, all DMA has to occur via shared/unencrypted pages.
-> -	 * Kernel uses SWIOTLB to make this happen without changing device
-> -	 * drivers. However, depending on the workload being run, the
-> -	 * default 64MB of SWIOTLB may not be enough and SWIOTLB may
-> -	 * run out of buffers for DMA, resulting in I/O errors and/or
-> -	 * performance degradation especially with high I/O workloads.
-> -	 *
-> -	 * Adjust the default size of SWIOTLB using a percentage of guest
-> -	 * memory for SWIOTLB buffers. Also, as the SWIOTLB bounce buffer
-> -	 * memory is allocated from low memory, ensure that the adjusted size
-> -	 * is within the limits of low available memory.
-> -	 *
-> -	 * The percentage of guest memory used here for SWIOTLB buffers
-> -	 * is more of an approximation of the static adjustment which
-> -	 * 64MB for <1G, and ~128M to 256M for 1G-to-4G, i.e., the 6%
-> -	 */
-> -	size = total_mem * 6 / 100;
-> -	size = clamp_val(size, IO_TLB_DEFAULT_SIZE, SZ_1G);
-> -	swiotlb_adjust_size(size);
-> -
->  	/* Set restricted memory access for virtio. */
->  	virtio_set_mem_acc_cb(virtio_require_restricted_mem_acc);
->  }
-
-Credit to claude, it noticed a slight change in behaviour for x86 w.r.t.
-the crash kernel reservation. crash_low_size_default() reads the swiotlb
-size but the resizing now happens after arch_reserve_crashkernel().
-Maybe not an issue.
-
-Alternatively, we could build the sizing logic into
-swiotlb_size_or_default() but I haven't checked whether we have the
-right information when this function is called.
-
-> @@ -382,12 +374,54 @@ static void __init *swiotlb_memblock_alloc(unsigned long nslabs,
->  	return tlb;
->  }
->  
-> +static void __init swiotlb_adjust_cc_attributes(void)
-> +{
-> +	unsigned long size;
-> +	phys_addr_t total_mem = memblock_phys_mem_size();
-> +
-> +	/* Do not resize for host memory encryption. */
-> +	if (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-> +		return;
-> +
-> +	/*
-> +	 * For SEV and TDX and CCA, all DMA has to occur via
-> +	 * shared/unencrypted pages. Kernel uses SWIOTLB to make this
-> +	 * happen without changing device drivers. However, depending on
-> +	 * the workload being run, the default 64MB of SWIOTLB may not be
-> +	 * enough and SWIOTLB may run out of buffers for DMA, resulting in
-> +	 * I/O errors and/or performance degradation especially with high
-> +	 * I/O workloads.
-> +	 *
-> +	 * Adjust the default size of SWIOTLB using a percentage of guest
-> +	 * memory for SWIOTLB buffers. Also, as the SWIOTLB bounce buffer
-> +	 * memory is allocated from low memory, ensure that the adjusted
-> +	 * size is within the limits of low available memory.
-> +	 *
-> +	 * The percentage of guest memory used here for SWIOTLB buffers is
-> +	 * more of an approximation of the static adjustment which 64MB for
-> +	 * <1G, and ~128M to 256M for 1G-to-4G, i.e., the 6%
-> +	 */
-> +	size = total_mem * 6 / 100;
-> +	size = clamp_val(size, IO_TLB_DEFAULT_SIZE, SZ_1G);
-> +	swiotlb_adjust_size(size);
-> +
-> +	if (!IS_ENABLED(CONFIG_SWIOTLB_DYNAMIC))
-> +		pr_info("Consider enabling CONFIG_SWIOTLB_DYNAMIC for memory-encrypted systems\n");
-
-I agree with Michael, let's drop this pr_info().
-
-> +}
-> +
->  static bool __init swiotlb_kmalloc_needs_bounce(void)
->  {
->  	return IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
->  	       (dma_get_cache_alignment() > 1);
->  }
->  
-> +static bool __init swiotlb_default_pool_needs_cc_shared(void)
-> +{
-> +	/* A restricted DMA pool provides the shared buffers instead. */
-> +	return cc_platform_has(CC_ATTR_MEM_ENCRYPT) &&
-> +	       !restricted_dma_pool_present;
-> +}
-
-I don't think restricted_dma_pool_present should change the cc_shared
-attribute. The rmem pool is all about sizing the swiotlb, not disabling
-sharing.
-
-Thinking some more, if other archs don't like rmem pool influencing the
-default swiotlb size, we could add a flag (SWIOTLB_SKIP_IF_RMEM_POOL or
-some better name). But only if people dislike the heuristics.
-
-> @@ -437,9 +469,11 @@ void __init swiotlb_init_remap(unsigned int flags,
->  		io_tlb_default_mem.phys_limit = ARCH_LOW_ADDRESS_LIMIT;
->  #endif
->  
-> -	if (!(flags & (SWIOTLB_INIT_ADDRESSING_LIMIT |
-> -		       SWIOTLB_INIT_CC_SHARED)) &&
-> -	    swiotlb_kmalloc_needs_bounce()) {
-> +	if (swiotlb_default_pool_needs_cc_shared()) {
-> +		io_tlb_default_mem.cc_shared = true;
-> +		swiotlb_adjust_cc_attributes();
-> +	} else if (!(flags & SWIOTLB_INIT_ADDRESSING_LIMIT) &&
-> +		   swiotlb_kmalloc_needs_bounce()) {
-
-I think at a high level, we need (i.e. separate attributed from sizing):
-
-	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
-		io_tlb_default_mem.cc_shared = true;
-
-	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
-		if (!restricted_dma_pool_present)
-			swiotlb_adjust_cc_size();	/* 6%, clamped */
-	} else if (!(flags & SWIOTLB_INIT_ADDRESSING_LIMIT) &&
-		   swiotlb_kmalloc_needs_bounce()) {
-		swiotlb_shrink_for_kmalloc();		/* 1MB per 1GB */
-	}
-
--- 
-Catalin
+Kinda sorta?  I handed commits to Ackerley after rebasing them locally at one
+point, which is how my SoB got here.  I think it makes sense to just drop them
+from the patches where I'm not listed as the author or Co-developed-by.  In the
+end, I expect to apply this series and so my SoB will get added backon anyways.
