@@ -1,101 +1,124 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3317338238C
-	for <linux-coco@lists.linux.dev>; Sat, 15 Aug 2026 09:17:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5518C376A01
+	for <linux-coco@lists.linux.dev>; Sat, 15 Aug 2026 11:39:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786785472; cv=none; b=JAm4bfhl5OLlkbo2KWMFvpf42BmTN2W1SW1GzsofxNEUd5xttp1g+j767HlWK8gTdi0m3LJvKDIS9suLEu8Jmt0VAX+K5IHdr/eUUZZCEVTja8FcX5fz+z/CjxbVNwoM/sTnSPX/Pgbxn8RIVyxKCS8avPKSvqdkdr9nFvHHKiY=
+	t=1786793992; cv=none; b=kKAfO+5dUC4EwyOYG/RNTMjNFVV6otHTZ4DhItABSNaBgQmLqv6hl6Pahs1KwOiESJ40y6BVIslXA31ZhDz3dZa0ikLn6ZHhwq4a/70rFei6ZaAL33ZJuqfRmFd+uhelEpMW3Dh0Nzj6uyb3heCL1oaCXIEy074POg8TOeEPRyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786785472; c=relaxed/simple;
-	bh=svRArkOXWyF/IfmglPw4+QW++psuxkU5D4yBGbQ9Q3o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s38+z3nE/EQQcgt1El3fayCWMFXKa3YqwlA+cyfBr5n+gyzGaPqES99cLkCSEefOaIVUkssLK4MJbxLgCYUXiSlap6zjFlrqOVC1xby+SaBWmL1kzwCgZFVz9dooulPGtD3z1PHnKaC0ijHshiJQyrZvxp1MN1IT1YrvpvR2pik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DL732SVg; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786793992; c=relaxed/simple;
+	bh=IR0YYfxxWEISJzS6djOa3HjOjfoYQWVxSn+BVN0rc0c=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VPeFnS5haQdm1Lp+qVFuFdD9b67amGx82SXnslDWTgPJaKB/Q0JFYqVDkmX0P6IJeTY2kCkVJG5ImFMIU5gII20iMPloJPupsTGKrCGEcWeogSnv+WUUwjdaRibR2mmwbQOqZnsZq0n7PIHH7jUnPqJtwFuQFu0vhAEuBbPmCD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fTpQ0sXA; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DL732SVg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786785470; x=1818321470;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=svRArkOXWyF/IfmglPw4+QW++psuxkU5D4yBGbQ9Q3o=;
-  b=DL732SVgATsg5dkqLZL/Y4RyqenJcniYWs2AKn0SaosrZZWgerl7/PWQ
-   /vBVVoCKkMv3yz4Esov5jBikvIBPnmnjHzREepVrqjeOlzp7UcsapImAy
-   1mDgMzv6SNA/imf/musrsLX7q+ir4QLuHoec3/Q/OoQtviRcOaCxhSX/8
-   ZvxXop8sf5IAror6yYSRuFvltyRln8fijSk3/ZLcmozN2nUhJzeuMSgPV
-   fJAgIpFNzQ9vsMNwvmY1pt5puH0RnrzJghXHbJ3KB8OI7mQ87iB9g2jC+
-   ispwmTI5xWjVD/Fi7LRuPt7ngRLh5fU6dLcgp8vdfJS9v9JPmVtoQP50y
-   A==;
-X-CSE-ConnectionGUID: CMAW5Y/wT1q31nBDPyW3Mw==
-X-CSE-MsgGUID: 88YTGJFBQkieaixvfvEbyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11875"; a="91018972"
-X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
-   d="scan'208";a="91018972"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2026 02:17:49 -0700
-X-CSE-ConnectionGUID: wOdvqNPFStKVoyoG04Hffw==
-X-CSE-MsgGUID: ZYM05GKERBKoTMVQsmcX2A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
-   d="scan'208";a="261794215"
-Received: from unknown (HELO [10.238.208.98]) ([10.238.208.98])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2026 02:17:44 -0700
-Message-ID: <93f122d3-38de-40f5-b655-2389ac393d21@intel.com>
-Date: Sat, 15 Aug 2026 17:17:41 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fTpQ0sXA"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-471eeac43bfso1684981f8f.3
+        for <linux-coco@lists.linux.dev>; Sat, 15 Aug 2026 04:39:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786793990; x=1787398790; darn=lists.linux.dev;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=IR0YYfxxWEISJzS6djOa3HjOjfoYQWVxSn+BVN0rc0c=;
+        b=fTpQ0sXAKvmZzzPXFl+8dVmo8n0WuLxJalp1CWnVo1awShWrPmfBTyiXchXgL3Kivn
+         fSV3p8GLE3KIDIljSpk/qGDMO8oEBdKeYEG+DZw1ES5ZIl4HtNwaozWqTA5G89yp8sMs
+         3oTrVWaexjkwSO45qQ5snn6QhLlH2T5woIbk8IXyQqGAA3krVpP9SZVo8XoLwxuGtIaw
+         z6t9hm2bB0AWaLu4hludFeabu603LY7mSkPqaUl80FY7yqxAQ7VyXXVlzK4SJZrTSdaT
+         PYuANXQ3HrDhRZhhkF89mIWYkXQuVtGpwK/vnhehv0UwEqrqumxvDg4nkT+3aXSUZCAk
+         xjfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786793990; x=1787398790;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IR0YYfxxWEISJzS6djOa3HjOjfoYQWVxSn+BVN0rc0c=;
+        b=Xv41QCYIqJD07aNOrFJUHVKl25oR9XOSj+ZGgEjmPutaAXAaxwiFv6oIMeUNTC3Tox
+         sL2HxciCwYO9thXK+1qHyJbQTGNPDcSW6px+qqtwIOcQ/21DL9H75b0B6fX0chqxoK5L
+         wZIL4Y6MWxrcxegwpOd9YHZ/NAbeCvmF2rItf/6QgGG9YvJIfYLemrAPhGjriJOPNEif
+         OFepG1m2bPZI5Ex5CMR0H7sIwUHgEjYj9HDXjMMnwVYQBprV5LEhwD5NdFmw/emAzB5G
+         SsxRxoVDp8IAO6PXSILh+xnkgjMxD7KFVJMVrZiP6hYoEWGo6l7Hnb7dOJwvm+VvduGL
+         PH6g==
+X-Forwarded-Encrypted: i=1; AHgh+RouWGkw/MaF1y62wc9ABhSJXgp46dTC+IL3Uzu1llql1duz8N/rNfUEq9bw58I9yaWZzO6Flf0OvOhu@lists.linux.dev
+X-Gm-Message-State: AOJu0YxOjaJ08wjrZjaXYgmAD0J6Bd8JXeOgBDkxEdpmJYjKjR6iSh1S
+	0rMUgL7vkvzlT6FMr9/uNFzGCto58xGky/JbLdtCX0OsbjXIueK1f4Kj
+X-Gm-Gg: AR+sD13FeJKRYNgaYq0LgNaEkp18wPusyUTaa/KpJxgYokcKiMGHSh0BeMlTDctMNqP
+	YroNtwtN1cnAg+04OCgmmDQn0KMADdnKR24Z6DnPKH2DI+dVCjHwq6qAFyxkxz+gLxzc6SzhSvq
+	YxgiH0dx0Uv9F6CKDQ+/D2sKpSMGSJfdUWZ7qr0Tx85ScU1TYeiaOdC5NKg2bnPwogTyJM25bQ1
+	LO9wdqhhTxoxEaUQ62NjIW/y030wACJvs+REhG7G/dMCnEUbrgwIC1AQagPqSyYef43gZ0idOCw
+	pMO66qXcxwPA7vjEpwbK8CAgu2QtwFxPkSaTFT9NC62oxMVG/RA3LLDQnUowXcYUQ5cg2ZcBWgi
+	cSSyCThdlXfEknCRjw4XlTMYb4s/sAXZOLE5BFOmAkTGV6x6up/j3YUxUen7GW/hVPhhXKyYJs9
+	H/RwuPb3iYXxIMvxNHvS7FhLlkAffD4kfk2PXTB//yfwMgLydnIiJLhOm7h3mZuEnmBWwajOa0
+X-Received: by 2002:a7b:c348:0:b0:499:795a:c60b with SMTP id 5b1f17b1804b1-499879a3c5fmr131538805e9.19.1786793989489;
+        Sat, 15 Aug 2026 04:39:49 -0700 (PDT)
+Received: from [10.245.245.10] ([134.191.227.46])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2cc81csm16430398f8f.34.2026.08.15.04.39.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Aug 2026 04:39:48 -0700 (PDT)
+Message-ID: <498af8d6a5de3ee05e0216ea075c0eebf88c7072.camel@gmail.com>
+Subject: Re: [PATCH v3 0/4] tdx-guest: Make Quote buffer size dynamic
+From: Artem Bityutskiy <dedekind1@gmail.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "seanjc@google.com"
+	 <seanjc@google.com>
+Cc: "tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com"
+ <mingo@redhat.com>,  "x86@kernel.org"	 <x86@kernel.org>, "kas@kernel.org"
+ <kas@kernel.org>,  "binbin.wu@linux.intel.com"	
+ <binbin.wu@linux.intel.com>, "Li, Xiaoyao" <xiaoyao.li@intel.com>, 
+ "linux-kernel@vger.kernel.org"	 <linux-kernel@vger.kernel.org>,
+ "sathyanarayanan.kuppuswamy@linux.intel.com"	
+ <sathyanarayanan.kuppuswamy@linux.intel.com>, "dave.hansen@linux.intel.com"
+	 <dave.hansen@linux.intel.com>, "kvm@vger.kernel.org"
+ <kvm@vger.kernel.org>,  "linux-coco@lists.linux.dev"	
+ <linux-coco@lists.linux.dev>, "hpa@zytor.com" <hpa@zytor.com>,
+ "bp@alien8.de"	 <bp@alien8.de>, "Fang, Peter" <peter.fang@intel.com>
+Date: Sat, 15 Aug 2026 14:39:46 +0300
+In-Reply-To: <21ffbb7b80c0c654c23a97cda55f43c73e49ba25.camel@intel.com>
+References: <20260729122939.1340412-1-peter.fang@intel.com>
+		 <e0a90fba3f8424412387aa08f1fdc708abeedc73.camel@intel.com>
+		 <80b4ea89ebf17398c3bee21d157c7f97ea32aadf.camel@intel.com>
+		 <anxvwV_Pz4UYaxxt@google.com>
+		 <86d532f33816cd4fa3e29c40079a6003abf89324.camel@intel.com>
+		 <anyiwqi9i0NSv0QW@google.com>
+		 <ed4891a59096c59e43a893910c9f17d0ff6086b8.camel@intel.com>
+		 <20260812223707.GD1013044@pedri>
+		 <6191a69559e58e04c8e3f1efa776e9639796af3d.camel@intel.com>
+		 <anz9b6CDkhr5D5RG@google.com>
+		 <c697ff1d97fe62882eaf3bd86a4213bf2e79fc09.camel@intel.com>
+		 <98dcc8a12f117745a1cb9981dc8f0f1548e9c96f.camel@gmail.com>
+		 <4ad451969522eecb445289ca74a88ee73d51336d.camel@intel.com>
+		 <8b432c8731167e97432b2e917d0b1c855fedf47c.camel@gmail.com>
+	 <21ffbb7b80c0c654c23a97cda55f43c73e49ba25.camel@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 03/22] KVM: selftests: Initialize the TDX VM
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "Aktas, Erdem" <erdemaktas@google.com>, "shuah@kernel.org"
- <shuah@kernel.org>, "dave.hansen@linux.intel.com"
- <dave.hansen@linux.intel.com>, "afranji@google.com" <afranji@google.com>,
- "kas@kernel.org" <kas@kernel.org>,
- "Chatre, Reinette" <reinette.chatre@intel.com>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "seanjc@google.com" <seanjc@google.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>,
- "pratikrajesh.sampat@amd.com" <pratikrajesh.sampat@amd.com>,
- "oupton@kernel.org" <oupton@kernel.org>,
- "wyihan@google.com" <wyihan@google.com>, "sagis@google.com"
- <sagis@google.com>, "Wang, Roger" <runanwang@google.com>,
- "Gao, Chao" <chao.gao@intel.com>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "ajones@ventanamicro.com" <ajones@ventanamicro.com>,
- "Qiang, Chenyi" <chenyi.qiang@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "jmcrey@google.com" <jmcrey@google.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-3-15ad654a50db@google.com>
- <c8b7a800-58ed-4ef7-91bd-31da77763717@intel.com>
- <52fa4033cd3ccc4caf0bfd46fccca0bc8aac0dfa.camel@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <52fa4033cd3ccc4caf0bfd46fccca0bc8aac0dfa.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 8/14/2026 7:41 AM, Edgecombe, Rick P wrote:
-> On Thu, 2026-07-23 at 16:44 +0800, Xiaoyao Li wrote:
->>> +	init_vm->attributes = attributes;
->>
->> Besides CPUID, it only allows attributes to be configure but leave XFAM
->> as 0. I think the changelog needs to explain why we need to configure
->> attributes.
->>
->> The rest of the patch looks good to me.
-> 
-> How about directly setting xfam to zero for clarity?
+On Fri, 2026-08-14 at 15:55 +0000, Edgecombe, Rick P wrote:
+> On Fri, 2026-08-14 at 08:45 +0300, Artem Bityutskiy wrote:
+> > But why DICE-based attestation uses 2-flow design? Could TD run a
+> > TDCALL[TDG.GET.QUOTE2] or something directly. No concept of TD report
+> > would be needed. That would be my current vision of "cleanest".
+>=20
+> We discussed this approach internally and in PUCK. The problem is there i=
+s a
+> shared resource, and so something needs to handle locking and fairness be=
+tween
+> the guests. Going to the host keeps all the scheduling type stuff in that
+> domain.
 
-Agreed. It's simple.
+Good point. I did not think about this aspect.
+
+I am curious if today this is an attestation-only problem or a pattern.
+I mean this "many TDs compete for a shared TDX capability, VMM needs to
+be involved to handle fairness".
+
+Thanks, Artem.
