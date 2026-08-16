@@ -1,112 +1,113 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2D53CAA41
-	for <linux-coco@lists.linux.dev>; Sun, 16 Aug 2026 23:02:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16C33E2746
+	for <linux-coco@lists.linux.dev>; Sun, 16 Aug 2026 23:13:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786921339; cv=pass; b=Sz63fejo/pKqPDQY928Kz7v1I0XcLtQcX7ZJNQHG2HaG/asON9MwMqjbg7MdC5DBw5aXXM/KOuQ0axrh6x/CBq51nbQRgQih7ybtGdz1hgZzCUmZwMYaBvX//72Fs1hJLqv8nihNxJCav1E9iY1irt+ln3z3FZaVU4CxdVHbGnY=
+	t=1786922002; cv=pass; b=C/bgq9DJCxcCugkBoMGV3pa20KzncqPnD/v0aj0qoiIFbT209QdsWiJ6WK0cC/OvyadzJGLqMV5EPxM/q4rpZAeVleRNb3COaXJlQI2/Wv2wd3bItv5Z9SumBetrYBTb5U6RO6OdEBIuQAngHWdgFR5s9bGlpJUEaE//wahzdFE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786921339; c=relaxed/simple;
-	bh=TfZcEuGOfr1J68VSYUvGJF5oR+xbrzPMOaOCm+qrrgM=;
+	s=arc-20240116; t=1786922002; c=relaxed/simple;
+	bh=4Q3/0/Vme3NViO+zbdqCGLReJBPhZGfXLLeXqh+3fvo=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nZhBU3R2BBBUgxt2p5r3PqZs/Nqm3GwnqzUGhC+ENND3hxSAg+zo21bqo6aerkp0Y3wJ3sQwM8aXEcMaG6LYl5MSUrBJLvPXvABQ0VBH4ftv2HyDSGu9hggqurA4nl0wL7olsR5WIb7k8wSObaqpE0YbZiagvKRdcgm0dSoKlFE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZOQpl9hj; arc=pass smtp.client-ip=209.85.216.42
+	 To:Cc:Content-Type; b=cD3qq//+I6pOWPRuDOt3n7fVteraaKqebe86+lFjOrjCgaIMmMO4y8Q6QkKtBKfintTSVnjOoc/PAj5bQvNuVPIUKH7jnCOAFZpHGbfdJP4nNZcL3LTKU6iYdHD33tZ1aSTM26EQjNaZ2aGu5aHptNYq5YpdB2a3b4CB55U8yiE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dOrmu861; arc=pass smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZOQpl9hj"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so2222732a91.2
-        for <linux-coco@lists.linux.dev>; Sun, 16 Aug 2026 16:02:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786921338; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dOrmu861"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-381c51fde6bso3407784a91.2
+        for <linux-coco@lists.linux.dev>; Sun, 16 Aug 2026 16:13:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786922000; cv=none;
         d=google.com; s=arc-20260327;
-        b=h/1SHqwKmGNv0+SpFSGirXuk6ZFMVmN/izINMcT+kl0an0FsuC7nWnK1n01gKJtJDw
-         fS6HMNj/HpRwdSIAh1BNP95vApoO676BxAqDRDMUUB1MtTwiYxVieiotKSuJ+Wt4d0Hb
-         o/B8n9lm3/GgwOM/FVOfWH4cuRpjMXk4YvRuZo4Le+gCf2j/8yTPU7b7TCx3ZwFwIUcz
-         ZVRrywFn7FO1yVvPR4kyqjku4VMSr7EHn9Gwt4DBySCTnSP5DZ7MwWTYziyZoDGdjXgj
-         ND6dBE3hw97uRcUUmLQ6PuAuFK1F33aO1YrNuWTaToMH65fUCd4eXJPGbw5c7YFLKP46
-         RPMw==
+        b=Fah/+43MRBcR+3+ck6i8M9IsilLYSd8cQbxbJV+DZD7ajFOAJ9atDoFYpUnp+odif4
+         mo06nA04pBUvV5239hszwL6J30NGr5qckUgQUbyDIc8Xcc9gmQ+5ZGyZKaZ/WUBbPAsN
+         eHKUrIvPHtAyeWy7Dq4Fre7Z9wHRfVSah5vUntT/0tu31pdoKT+BIdqxfo9geDcpDlRQ
+         xkWt1l79yKTLywl/TJIRm+eVVOpbfKT7equ/wqePNbw9TX5EASfNg8pfjFXPD7nsinEL
+         C3XqwAytqBBj6xxO4Cugvy9Xm1IVYVW/+DRHP4BQbT4+JEsOXmFDice5CfcxelkpWQI1
+         iqPA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=5ZNfUxpi7veRTWLY2tYd3MK6swZzgBzgGr9g7FewAwE=;
-        fh=LDM75hiT/WeKs021nd7atISrqw0XsxvswViI9sN7Luo=;
-        b=Q6n3uKS9jJYf6soVKstjmY3yL4TD7w2h1XdeKAqb2Og5FvrUAjw2IpkDgivnvAaBzZ
-         BINKhvrz67at7EKxeQ8veLOqTBuUTta6uJ4OXsA8dd1PL7UOxoSfsOFaKO5SBM2/rSP7
-         ojoRIKkm3jn4IHHMYP+Z10cG1b9zbV4izKISVio5ocPHxJw6xqWenVBWqRgbQi1ciuar
-         gjZbxLcPWhBcn9p/cVYBn27GY8aJ91W6D98j6DJdCHpoD+HgtSgCyNrGRNpJeUTE7Y/Q
-         7AULMYCI/FTIbemGuTkRSXfQt1gpmWZdAdtIqyymEOVeWannTpoob+FMnjoLBYHiHM8H
-         tLgQ==;
+        bh=12JghCh0XcebURQOPBtQP8z7apq3lmuNj5BeBckCdP0=;
+        fh=jXLL+J06T/nwqnRZymTsY+nTeJos3sAOuacviG02/9s=;
+        b=X7OhUNpEcE0JwZujOh3vKgMZuwqOqyOIVIzSp31YAnmNCj5J/Ecm1L3msaG1nMZYmT
+         xjImGjsO9zdiGjMfP5QQwy8k5e0taPmqkQRkK2hlLOwUJ+q/JND7PatoMCkUGiz4pT0Z
+         498lf1Z//cSjMg68KczI4EIo6y01CyORtTIYI2hhI4lfYs12UShiUzippr3F2wKZpwB/
+         DhfcoiWkyxGW1NFMH3+8nmBzlkvxP4Ls3EPnNihmDLKY462ULW2gkKAKOX/LZvGMNFtD
+         SckhrcLRkrMNlZYONnyR4DJ9IEbNKGKrXDHqouUm4+Sy0WNKL+8Vj6UqmF1sKPhQ1X7w
+         XtbQ==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786921338; x=1787526138; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1786922000; x=1787526800; darn=lists.linux.dev;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5ZNfUxpi7veRTWLY2tYd3MK6swZzgBzgGr9g7FewAwE=;
-        b=ZOQpl9hjczS7peRbsLD1Y9gFKRnNOBc8kO07RV22FRSdyBCQIujLaT/AL5ex/mh869
-         NWjmRav2IiOpH+9ff9/plOWaFOdZNX34ZKqZR3/YdT/Rpb2W46HCuFk5dSbQTgf8mtnq
-         eU3WLSeH7UZC08qc4oLPEPQaa6eAFmwXNdRX4VLOahSEXiBsIZ/a9Nx1Axb8SeKlbk6V
-         D6d6iOmZXrWijic5sgB335OcuvKQeIHQeosYEt42GAkmKbuzaGUsOofCkFhpa37peu9K
-         Px9iOtH3aVh3klMYMfH+f59gjvDTGD4kaIvA+pCHSkrhY0ZQA/5hvXLWbrroVmcKR8R+
-         qBNg==
+        bh=12JghCh0XcebURQOPBtQP8z7apq3lmuNj5BeBckCdP0=;
+        b=dOrmu861D3TqgwcMK4k/F6x+WE5LcX0M4gbWbTY2lDJM9mGYpU83BDpYN46ivnQdZg
+         E0WuT5Vb0p+hr2/5VhBh4GN6VDlXE9oFkcwaCdPB1oAy7tSSRVIuXG6nZSANFmD/eIeF
+         OTKvvzYX9QmcpkLH4sBYkzosNaeQlSbRky/U/2mhSSM0WLxdSevwnLSLWJD746jZ4x28
+         Bhsy19zx8BQyTUOdZOLkRHdUUVVNdrOCZaN5Ue0cw1cfUoti45pyMYp2ooZ2WoeDQoHC
+         RQMm9ygqCw9rhFdXkXO2yfe+kxaQi1V9ZCCQOPw1PcoV9LuS7fo/6/x5wbEaS/qMgTFC
+         kwzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786921338; x=1787526138;
+        d=1e100.net; s=20251104; t=1786922000; x=1787526800;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=5ZNfUxpi7veRTWLY2tYd3MK6swZzgBzgGr9g7FewAwE=;
-        b=Wg1x+Pg3DXAjm0gwa2XlsCBb4QI0YIEqCIgW1MpJWtOeYpsfJ6XTU7xvV6fK10wt/S
-         OYIeAo6QRo1MBo4dMF5Egh9CKyxki3J/1JrzSVDPsbigApwGWeoQc1nXEk0x4QT6ejDr
-         QZTwMXGf+dJ0LNSGrIQGLOuHbeSBDudaJXw+fcb0occYXF338t6g037ykUsrx+uuq+lu
-         YrT/MGRnlpu8LN6wLLrH0PUMuUL7U+1qy8dlRi5TXPd0kDVQs7HgDMFtr4X7XAm9QpEi
-         GWxP27jLffEFCgyBA4bxago0pwPr6tZ4zRUVls/BuKLSL86AEztmYjnhwJbJuyuUVKod
-         xSDA==
-X-Forwarded-Encrypted: i=1; AHgh+RqjC6SvnkO/Bd0zH5As4obJmwJwf5k0neCwSxEfq+wA12SVM96qw8iYWojGeDE9cWTp5SSF94p+lBOr@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw8Nf1FvNBsVDLDHxWfc3wP/GbiEba/b5FkJp3HhwGWnT7Kvtaf
-	YZ0ND8RRCcMqve26TERj/pgYebL5q/XwwXrj8MDMrpuQzJQXXhFdpT5H+47p6tZrl9Ht9ms2dXw
-	qvGX5nT20PuBX5VqnDZqUfdOJaovXTBO9dVEkVlrd
-X-Gm-Gg: AR+sD10VpBtpKjMebyVGpcTvZ/36tNiQrlLrZ16JSTTd9dYbyuoEbh8DHFfjApJxRFC
-	68tprHdOEdq8o+qx4jCOcvYx4+ZO4cov9O+sdqlu2OFehc1yW8r+WWN+4EoEPdFDxa+uXykbHY2
-	gzA2r1hFjbbCFDjTJRWNIMR5Rva5IpKXio7ZyRTVBlFZoOtHvwvCP7yx7hXFudy76LQWjpTwynL
-	1+1ljszyVep8SWdjLypiq8n9qVoHj69mZu+yZVx00KRrLpInXwC1KI5Osn3HqrpQIoTahs6ESIi
-	0erWv/YHCFHsy2onOmoWVI5HE9c1XAT6Be2fA8HXBMp1H3/PapWpE9N0J8IELT4bPXjSgXD4nRO
-	fGQ==
-X-Received: by 2002:a17:90a:e7c8:b0:38d:adae:4866 with SMTP id
- 98e67ed59e1d1-3933bd2066dmr20117316a91.21.1786921336732; Sun, 16 Aug 2026
- 16:02:16 -0700 (PDT)
+        bh=12JghCh0XcebURQOPBtQP8z7apq3lmuNj5BeBckCdP0=;
+        b=VzR1ZN+cf8oFPV8+qc8ef9/s/qHQSfqIn3jbCj+vi/pCWl2KoO3lghBqCo+Yw3VTQD
+         t1lYuhIazsrHaN3SPntWpBjgYf23bFlMC12nKChtO4x9SQSICh8e0uQ1+bS438lObRl9
+         2/xuAPhV/ax1WKrVgX34fvsQTF/oRixNCRls2U1yrnsc4acVNyOkFHzowzYLCdMeNPNd
+         C2g+jE45Wq+KaytIf5b2FmOWTnxUjyFNUANsGrF9lmZj5sdiDr8kY4s0DcOIbL7k4VWD
+         yAn6QQbN0AIAY/Vl16Snwjes89TuvqXXsTSxX9Ft9DRjGkQMJ5RFS/1r71gnCILGnyqG
+         FfLg==
+X-Forwarded-Encrypted: i=1; AHgh+RoxunWYG/RjuFcfLLXqtRl265Vu1Jzi6bwVsa4ysVfw4Vmot0zI87Rzht/UcTWQPcti6vNUvBNPIGhq@lists.linux.dev
+X-Gm-Message-State: AOJu0YyVJUeX/hbeHl1XEGwWPjFBEQOTQXbPeVHgo8Ho28DcQScVY5Gb
+	exhC5NRW+puckovuLSR4LTsoWQKEHxuH1Av6BFpdoV8vilfInV0/JtIBvtF6m1Ut8pJ41KbAV/L
+	NvTi5QhGjzqQgVzoU9guyP+iKBR3+0us56eN3wAFC
+X-Gm-Gg: AR+sD11Mm33/XxEW6KECSmfR9UYE+BhGN0T1CJRL3Ng6R0e8EVQWkkGokYnUsx6aL9e
+	jj5ID53t1NnIdmOEPKaOhm1EGmAioSO5/u38JywoiYYG/bDXNaasGt4hOrGJDlmwNUnugDEsts+
+	oSoljVprXJeEwhtB6L+EWM2BwLW2yultfwShnm6K+S4LHHT4H8YnuDW9orOLSszp2+FIR16+Ruf
+	2M4s13zhMVN7dXbX5vvAdZ8d2sHDlkUbkFwENUKaYjWe9NJASUbOIzybSHb5yVrM5P1pMC6Az0P
+	1Gr9jxg/GFeYuQo5GQzjty7wA4u1K8LTjXC8T41/+4xGWnZvTO2QZQDMg4DSo1frXS76iIlD7rO
+	/lA==
+X-Received: by 2002:a17:90b:4a4b:b0:38e:bfe:81e9 with SMTP id
+ 98e67ed59e1d1-3933b6ea12fmr20468357a91.1.1786921998920; Sun, 16 Aug 2026
+ 16:13:18 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 16 Aug 2026 16:02:15 -0700
+ HTTPREST; Sun, 16 Aug 2026 16:13:17 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 16 Aug 2026 16:02:15 -0700
+ HTTPREST; Sun, 16 Aug 2026 16:13:17 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <beecf36b-b0eb-4691-918f-fd39f46d5d8f@linux.intel.com>
+In-Reply-To: <4c638fc5-5a74-43d0-b5bf-d7ef893cb994@kernel.org>
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-15-2fc18ee6d3ba@google.com> <beecf36b-b0eb-4691-918f-fd39f46d5d8f@linux.intel.com>
+ <20260807-gmem-inplace-conversion-v10-11-2fc18ee6d3ba@google.com>
+ <eb1b5763-37bc-4cb3-890c-1e619e5a8ae4@kernel.org> <CAEvNRgHyRdt7rp=5e5FMbTT=fXNfB=np7VWd_GdmJcPOQgps4g@mail.gmail.com>
+ <anpQJvFw9s-XP3pW@google.com> <4c638fc5-5a74-43d0-b5bf-d7ef893cb994@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Sun, 16 Aug 2026 16:02:15 -0700
-X-Gm-Features: AcwNN1Va1JdlpRRtXfl-rgaiOwbgkg6rBN2xjp1zNZlzVot1c-IWzDKRKQ6t494
-Message-ID: <CAEvNRgGtnQfhCkrWah3jNeivbHCQqRSQEXs=uqJhBmS+GVntrA@mail.gmail.com>
-Subject: Re: [PATCH v10 15/41] KVM: guest_memfd: Handle lru_add fbatch
- refcounts during conversion safety check
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com, 
+Date: Sun, 16 Aug 2026 16:13:17 -0700
+X-Gm-Features: AcwNN1X3sou7ibuklgbqVQOQa1awc-4sUeU5l1gDhhG2qaPtSC5Jq-Du8Zaqh3M
+Message-ID: <CAEvNRgGzqYQLC9ThxcHCQ7KJm7rRMvqzGoznCz1d4dxAkiLkxQ@mail.gmail.com>
+Subject: Re: [PATCH v10 11/41] KVM: guest_memfd: Ensure pages are not in use
+ before conversion
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Sean Christopherson <seanjc@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, jmattson@google.com, 
 	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
 	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
 	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
 	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
 	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
 	aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
 	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
 	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
 	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
@@ -125,42 +126,145 @@ Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
 	linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-Binbin Wu <binbin.wu@linux.intel.com> writes:
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
->
-> [...snip...]
->
->> +static bool __folio_safe_for_conversion(struct folio *folio,
->> +					enum lru_cache_drained *drained)
->> +{
->> +	const int filemap_get_folios_refcount = 1;
->> +
->
-> Nit:
-> After adding the helper, the use of filemap_get_folios_refcount seems
-> less obvious. It introduces unnecessary tight coupling with the caller,
-> though it has only one caller currently.
->
-> Is it better to pass the value as extra_refs, similar to what
-> lru_cache_drain_for_folio() does?
->
->
-
-David also suggested [1] something similar, please see
-https://lore.kernel.org/all/4c638fc5-5a74-43d0-b5bf-d7ef893cb994@kernel.org/,
-
-Please add on to that thread if you disagree with the suggestions!
-
->> +	if (folio_maybe_dma_pinned(folio) || folio_mapped(folio))
->> +		return false;
->> +
->> +	lru_cache_drain_for_folio(folio, filemap_get_folios_refcount,
->> +				  drained);
->> +
->> +	return folio_ref_count(folio) ==
->> +	       folio_nr_pages(folio) + filemap_get_folios_refcount;
->> +}
->> +
+>> helps the reader understand what's being checked without having to look at the
+>> details, and also helps communicate the ordering dependency without needing a
+>> comment.
 >>
->> [...snip...]
+>> There are definitely times where the usage of a function bleeds into its name,
+>> but usually that's because the name and the usage are on and the same.  E.g.
+>> get_user() describes both the usage and the "what".  And it's easy/possible to
+>> go too far in the opposite direction, e.g. by giving a play-by-play of what a
+>> function is doing, but that's why we have bikshedding sessions :-)
+>
+> Note that the problem I have with kvm_gmem_is_safe_for_conversion() that it is
+> all about *conversion to private*, not *conversion to shared*. In that sense,
+> the function name is just confusing.
+>
 >>
+>>> Perhaps a little ahead of its time,
+>>
+>> Ya.
+>>
+>>> but later with restructuring for huge pages, we also need no additional
+>>> refcounts other than gmem's own so that restructuring is safe, hence this
+>>> function name was meant to extend there as well.
+>>
+>> Given that I've read that at least five times and still don't understand the
+>> nuance, I think it's safe (ha!) to say we'll need to revisit and review those
+>> changes no matter what. :-)
+>>
+>>
+>>> In this case "unexpected" (especially since the next patch adds checks
+>>> for maybe dma pinned and unmapping), begs the question "unexpected in
+>>> what way"?
+>>
+>> Ya, that's why I like "outstanding", it succinctly captures that one or more
+>> references have been "loaned" but not yet "repaid".
+>>
+>>>>
+>>>> I'd rather add a comment than have this filemap_get_folios_refcount.
+>>
+>> +1, the local variable just made me scratch my head.
+>>
+>>>>
+>>>> /*
+>>>>  * We expect one reference per folio-page in the pagecache and one
+>>>>  * reference from filemap_get_folios().
+>>
+>> Nit, please no pronouns in KVM code.
+>
+> Whatever floats KVM's boat :)
+>
+>>
+>>>>  */
+>>>> if (folio_ref_count(folio) != folio_nr_pages(folio) + 1)
+>>>>
+>>>
+>>> This comment explains what's "unexpected". I can do this and switch it
+>>> to kvm_gmem_mem_has_unexpected_refs() unless people have other
+>>> suggestions.
+>>>
+>>> I wish there was a folio_pagecache_refs(folio) that
+>>> folio_expected_ref_count() can share with this, and also
+>>> folio_swapcache_refs(), to solidify the definition of refcounts taken by
+>>> the pagecache.
+>>
+>> ...
+>>
+>>>>
+>>>> I'd add a comment here for the "why are we unmapping".
+>>>>
+>>>
+>>> Does this sound right:
+>>>
+>>> Unmap here to ensure that userspace page tables have no mappings, which
+>>> also ensures refcounts from those mappings are dropped.
+>>
+>> How about:
+>>
+>> 		/*
+>> 		 * Forcefully unmap the pages from all userspace page tables,
+>> 		 * and then verify there are no outstanding references, e.g.
+>> 		 * acquired via GUP or similar.  Tell userspace to try again if
+>> 		 * there are oustanding references and hope that whatever has
+>> 		 * pinned the page will put its reference "soon".
+>> 		 */
+>> 		unmap_mapping_pages(mapping, start, nr_pages, false);
+>>
+>>                 if (!kvm_gmem_is_safe_for_conversion(inode, start, nr_pages,
+>>                                                      err_index)) {
+>>                         mas_destroy(&mas);
+>>                         r = -EAGAIN;
+>>                         goto out;
+>>                 }
+>
+>
+> Sounds good besides the function still not being clear about *which* kind of
+> conversion.
+>
+
+Circling back to this since Binbin also had a comment about the comment!
+
+I'll drop the use of the const local variable and do
+
+    if (folio_ref_count(folio) != folio_nr_pages(folio) + 1)
+
+, and add a comment rephrased without the pronouns:
+
+    No references outstanding if guest_memfd sees 1 reference per
+    folio-page in the pagecache and 1 reference from
+    filemap_get_folios()
+
+, and then also take the comment and rename the function from
+kvm_gmem_is_safe_for_conversion to kvm_gmem_has_outstanding_references.
+
+	if (to_private) {
+		/*
+		 * Forcefully unmap the pages from all userspace page tables,
+		 * and then verify there are no outstanding references, e.g.
+		 * acquired via GUP or similar.	 Tell userspace to try again if
+		 * there are oustanding references and hope that whatever has
+		 * pinned the page will put its reference "soon".
+		 */
+		 unmap_mapping_pages(mapping, start, nr_pages, false);
+
+		 if (kvm_gmem_has_outstanding_references(inode, start, nr_pages,
+							 err_index)) {
+			mas_destroy(&mas);
+			r = -EAGAIN;
+			goto out;
+		 }
+	}
+
+I think renaming the function from kvm_gmem_is_safe_for_conversion to
+kvm_gmem_has_outstanding_references should be better since it doesn't
+really make a statement on what kind of conversion the outstanding
+references are for.
+
+>
+> --
+> Cheers,
+>
+> David
