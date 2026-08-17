@@ -1,156 +1,110 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CA23EAC74
-	for <linux-coco@lists.linux.dev>; Mon, 17 Aug 2026 14:08:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B0E436361;
+	Mon, 17 Aug 2026 14:56:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786975695; cv=none; b=M8jDm37YyM5VbsDZuRXn2Zw2RnuB/tiptns/DBHCgoNhG/vFV7IHzZOAnkihSt1XuYoywnJ+FX/hpjJkYeLps6FHeg/Vtvw/Oc5IJ7WFOezfp2PGg48RohZk4KIxIusH7P2idoAWk1NT2OlQjnZDztYsry3d//KGEgKqTi95PQA=
+	t=1786978608; cv=none; b=IKqq1VW50inC8RC8vQpdT4eP9NebM43thXbCYL5SyLjd+V0d67jDWxZV0WoJs/KjUYWsneyO+R+EeaZo98FB/hmnFn1f65YN73HgKZA2YwBkzIDgTXcZuyrbbIdx2iJtzlzYSqMJY01qSFQSpO3e+muyjXAF2aqIMcR4q9NrwLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786975695; c=relaxed/simple;
-	bh=Z++qbsFvNFaqswUiDPrL5l0cnunUo2XMhKxY3WDiNMc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qqOPh70pgQD+NzVHeOcYCe/e7e0CLvoYo+fGE8EmosKMexC+8FW3ufa8x5XGzFinBp/lTfqa5SmMcrkC49KvdVWCYwyflokg9NyHbXb4+NmVIjU3UIkk15Bh0x+DjYS49uimiQyN0v0DdBjG9aSukxQl6DwCaFn6b1QHs5LQYc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XbsK/omo; arc=none smtp.client-ip=209.85.214.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1786978608; c=relaxed/simple;
+	bh=7dV1b0+NGUpOKXsz67zjTQC+6a3hvUjM7P7OhPtyxIE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hu2lUvi6p8sW+ncebrN5rZkdhhowAARodDTYDzguneBU5GqKY0TtGmgf9lQ0a6AnVBicdZeoAXblFaLa4Kg0IGgUfoDeHW/4hQyX1OOdqX2PIXZRlBKyWXYniVkz3aAH8VXCa9X6vqlnRigMsSh3bSLfHMenltY+DYJzV9XI5vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=q5wKL9yY; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XbsK/omo"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cacf17c7e0so51834485ad.0
-        for <linux-coco@lists.linux.dev>; Mon, 17 Aug 2026 07:08:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786975693; x=1787580493; darn=lists.linux.dev;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=K+H/tJA5lC7k+sRi7jSoRnwTUnMixNT0suJnv/pAfq4=;
-        b=XbsK/omoCzVvfkeTjKFCatfeK7PYXpGghAkoiOJUtNkhnwDhbpZAeNYF1BefQCrIkp
-         foJuY6N410T6AMYvUAAIN414K+/YaJqEsvNknuYpO6XJUG5Yt85DH8iGyVGrKvsa/z6W
-         lFS52O9V2lTbjPW2eknvani0O7QggFMonHQNpPI6zsqQVLaXWPjuVFRGNnwjLUm5GINC
-         SAPh0KNl/t3q5vbc71vcfm9Fm4UlR4o6NriWuczYppH2M07ZcSqHaMq3yC6edBFPYYrK
-         FwHJZBfUeCfyk7SSt/F7jyjwVOgLHImP/vShyfis6iON+assmCZdYJ+MAx0Y28FnkDdx
-         /8zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786975693; x=1787580493;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=K+H/tJA5lC7k+sRi7jSoRnwTUnMixNT0suJnv/pAfq4=;
-        b=NQ+pVUq5ErEpKLTWSWUgqaxKG0gDZzzLc0yHNM4jLcax2ELMqdEbwkQfR7VMBkxTR9
-         ZASu2C0jK8RKvsOJMSoYbnP9OdPG9o/uRuNu0IAi1f6KYI/ANJyRvidHM8pYS0aPeLrt
-         YwBbI1TPO8m0demyWYixEUutpKQ41bXCfuy+ezb3U6+RSKOUDH+RJ8sRvOZz1IfCH+KF
-         Lg4m0vGdkGDQuc7J9qoCnjGK3yFkhN4JTM3qxJNnarxlKUD+XVTu5xojaHV+qrBqq+4/
-         c4Q38KzLzaDHBs8djMCHqj+kL9rMM/tXzNAx+5GIJ4Y9lB4NFVB3DPmUbnBUvFOMpCZO
-         nxVw==
-X-Forwarded-Encrypted: i=1; AHgh+RroTUg7lOg7kqPfI+cMCTo3rKSahuQINoI9wvC43vgXaVMLsbL5LzHXWYRal05ERPxqyGdDf5p35YZB@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy1TJNYA71v11Sp9SFxR9yl6L40X1vdq76uOZvhXz3IAXpADNVq
-	U55RA+ReBKLVaQNiKORp6qQHXmad5V7fkg0L/HS3YLF9Q92vRG70hjz0FUt7Rya2erpNKzBHgJq
-	ibPd9AA==
-X-Received: from pgcz4.prod.google.com ([2002:a63:7e04:0:b0:c92:29d5:1f29])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:12d2:b0:3c3:9746:1fcb
- with SMTP id adf61e73a8af0-3cc71dc524bmr27787783637.35.1786975692489; Mon, 17
- Aug 2026 07:08:12 -0700 (PDT)
-Date: Mon, 17 Aug 2026 07:08:11 -0700
-In-Reply-To: <ef3b56bf-8df0-4a40-82c7-bd2d65eec71e@yandex-team.ru>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="q5wKL9yY"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7E4E41655;
+	Mon, 17 Aug 2026 07:56:41 -0700 (PDT)
+Received: from [10.57.6.69] (unknown [10.57.6.69])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4FE1C3F85F;
+	Mon, 17 Aug 2026 07:56:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786978605; bh=7dV1b0+NGUpOKXsz67zjTQC+6a3hvUjM7P7OhPtyxIE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=q5wKL9yYbuGRY/uGjrp33K0BjcVaRkndDml2ZllOx/okMsecfi5ciq2H+sGKap3oC
+	 NUkS+R6TSobgrDxcCGygOjo5lWeDdxj0chx0YrvZic/n1ZqD/avNmguzL0ZjzkSjin
+	 PlJZPTCryTIf522sTi+GLdO0M4W/LFndBPB9b6bQ=
+Message-ID: <4e0a7f4d-740f-47df-b601-1cfb0b79090e@arm.com>
+Date: Mon, 17 Aug 2026 15:56:35 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260806233609.212337-1-seanjc@google.com> <20260806233609.212337-22-seanjc@google.com>
- <ef3b56bf-8df0-4a40-82c7-bd2d65eec71e@yandex-team.ru>
-Message-ID: <aoMVy4VB1sq4T-ys@google.com>
-Subject: Re: [PATCH v6 21/51] x86/kvm: Obtain TSC frequency from PV CPUID if present
-From: Sean Christopherson <seanjc@google.com>
-To: Maksim Davydov <davydov-max@yandex-team.ru>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
-	Daniel Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	John Stultz <jstultz@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Miroslav Lichvar <mlichvar@redhat.com>, x86@kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, Michael Kelley <mhklinux@outlook.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
-	David Woodhouse <dwmw@amazon.co.uk>, David Woodhouse <dwmw2@infradead.org>, 
-	Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] firmware: arm_rmm: Add wrappers for direct RMI calls
+To: Will Deacon <will@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260715142739.80398-1-steven.price@arm.com>
+ <20260715142739.80398-3-steven.price@arm.com>
+ <anR1xZrKkrsJhrGe@willie-the-truck>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <anR1xZrKkrsJhrGe@willie-the-truck>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 17, 2026, Maksim Davydov wrote:
-> On 8/7/26 02:35, Sean Christopherson wrote:
-> > diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-> > index 29ca37e9a3bc..f55d0305d1f3 100644
-> > --- a/arch/x86/kernel/kvmclock.c
-> > +++ b/arch/x86/kernel/kvmclock.c
-> > @@ -342,8 +342,10 @@ void __init kvmclock_init(void)
-> >  	flags = pvclock_read_flags(&hv_clock_boot[0].pvti);
-> >  	kvm_sched_clock_init(flags & PVCLOCK_TSC_STABLE_BIT);
-> >  
-> > -	x86_init.hyper.get_tsc_khz = kvmclock_get_tsc_khz;
-> > -	x86_init.hyper.get_cpu_khz = kvmclock_get_tsc_khz;
-> > +	if (!x86_init.hyper.get_tsc_khz)
-> > +		x86_init.hyper.get_tsc_khz = kvmclock_get_tsc_khz;
-> > +	if (!x86_init.hyper.get_cpu_khz)
-> > +		x86_init.hyper.get_cpu_khz = kvmclock_get_tsc_khz;
-> >  	x86_platform.get_wallclock = kvm_get_wallclock;
-> >  	x86_platform.set_wallclock = kvm_set_wallclock;
-> >  #ifdef CONFIG_X86_LOCAL_APIC
+On 06/08/2026 12:53, Will Deacon wrote:
+> On Wed, Jul 15, 2026 at 03:27:33PM +0100, Steven Price wrote:
+>> The wrappers make the call sites easier to read and deal with the
+>> boilerplate of handling the error codes from the RMM.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> Changes from v14:
+>>  * Update to RMM v2.0-bet2 spec.
+>>  * Move SRO related wrappers to a later patch due to dependencies.
+>>  * Common wrappers are split into include/linux/arm-rmi-cmds.h.
+>> Changes from v13:
+>>  * Update to RMM v2.0-bet1 spec including some SRO support (there still
+>>    some FIXMEs where SRO support is incomplete).
+>> Changes from v12:
+>>  * Update to RMM v2.0 specification
+>> Changes from v8:
+>>  * Switch from arm_smccc_1_2_smc() to arm_smccc_1_2_invoke() in
+>>    rmi_rtt_read_entry() for consistency.
+>> Changes from v7:
+>>  * Minor renaming of parameters and updated comments
+>> Changes from v5:
+>>  * Further improve comments
+>> Changes from v4:
+>>  * Improve comments
+>> Changes from v2:
+>>  * Make output arguments optional.
+>>  * Mask RIPAS value rmi_rtt_read_entry()
+>>  * Drop unused rmi_rtt_get_phys()
+>> ---
+>>  arch/arm64/include/asm/rmi_cmds.h | 67 +++++++++++++++++++++++
 > 
-> 
-> I cannot test this right now as I lack two servers with different CPU
-> base frequencies, but it seems that this patch might break something in
-> guests:
-> After migrating a VM (QEMU + KVM) from a host with one base frequency to
-> another host with a different base frequency, the value in CPUID leaf
-> 0x40000010 EAX changes and becomes the same as the destination host base
-> frequency instead of remaining the source base frequency.
+> This doesn't need to be in the arch code. Please work with Aneesh to put
+> this somewhere else.
 
-That's a bug in whatever is orchestrating the migration, and/or QEMU if QEMU is
-handing the upper layers a loaded footgun.
+v16 moved the bulk of these to include/linux/arm-rmi-cmds.h [1] but left
+the KVM related ones in arch/arm64/include/asm/rmi_cmds.h [2].
 
-> The main reason for this behaviour is that setting the TSC frequency via
-> ioctl(KVM_SET_TSC_KHZ) doesn't change the value in CPUID leaf 0x40000010
-> EAX and these two entities are still not connected.
+Do you want me to move the KVM related ones out of arch code also? It
+seemed sensible to me to leave it in arch code because these RMI
+functions are only used by KVM arch code.
 
-And they never will be.  It's userspace's responsibility to fill the correct
-values for 0x40000010.
+Thanks,
+Steve
 
-But AFAICT, QEMU does the right thing.  env->tsc_khz is used for both the CPUID
-leaf and for KVM_SET_TSC_KHZ.
-
-kvm_arch_init_vcpu():
-
-        c = &cpuid_data.entries[cpuid_i++];
-        c->function = KVM_CPUID_SIGNATURE | 0x10;
-        c->eax = env->tsc_khz;
-        c->ebx = env->apic_bus_freq / 1000; /* Hz to KHz */
-        c->ecx = c->edx = 0;
-
-kvm_arch_set_tsc_khz():
-
-    r = set_ioctl ?
-        kvm_vcpu_ioctl(cs, KVM_SET_TSC_KHZ, env->tsc_khz) :
-        -ENOTSUP;
-
-> I saw this behaviour with QEMU 7, but I've checked the code of the
-> latest version and it seems that the described behaviour still exists.
-> So, in that case, it's possible that with these changes a VM will use
-> the wrong TSC frequency from CPUID leaf 0x40000010 EAX if it's migrated
-> and then rebooted.
-> 
-> Putting it all together, after the previous patch ("KVM: x86: Officially
-> define CPUID 0x40000010 as PV Timing Info (TSC and Bus)") a new way to
-> show the guest that CPUID leaf 0x40000010 is valid should be implemented
-> and only then this leaf can be used to get the TSC frequency.
-
-No, there are already non-Linux kernels that consume 0x40000010, e.g. FreeBSD.
-In my very strong opinion, if this problematic for a deployment, then that
-deployment needs to urgently fix their broken setup.
+[1] https://lore.kernel.org/r/20260803134403.80630-3-steven.price@arm.com
+[2] https://lore.kernel.org/r/20260803134403.80630-11-steven.price@arm.com
