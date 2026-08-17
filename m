@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFCB3C1969
-	for <linux-coco@lists.linux.dev>; Mon, 17 Aug 2026 08:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE3D3B0ADB
+	for <linux-coco@lists.linux.dev>; Mon, 17 Aug 2026 08:56:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786955939; cv=none; b=HxLCrUG8TEa1rx1d5H3Y3bUuIwrUWZXlPBFrOAeuiu3FlWX8KBVw8PsPB1nd/QY4FPG8xvuSA0anAoJD1+ik5SYRAwdGzo0m6CgvDXX3SLZvJfO4c+j/EsPIR8WtdQ0xdwnxAunF08DrMeehZt9DUL5UZw0IXwvAgw38PEFT6Vk=
+	t=1786957001; cv=none; b=T2q4YOTuUio6fSL6S/9pPi3Oabnh2tqdORGMheHyFf5Uf6NYAGDD9cyin7DsQejfgAygYQhRwUBWUh1C2+c0tU2staogA4jipj8eJkRnqMiq4h1LbXSOMSDJTh9D0TltH9V0YUkuTFrpjlm6A0rHDotWZ3Mmg8jPHFY48lD9+9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786955939; c=relaxed/simple;
-	bh=ROBv2th78MGCFfWabBK1ufzPRFzh9sp/ZCygz4RvuEY=;
+	s=arc-20240116; t=1786957001; c=relaxed/simple;
+	bh=Oyf77Pklv8oD9GCGBZn6XD0f7eaFIvJwFs0ZGTdzefU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kxkR+qAlnZhdN6qXpvy6ywrdZrTzgYWIjN9CGvQM9ZA5FMYWwIdHcViY9mivWxo7eQ5F83I3Jq08jYd1FqHb8+Ws83Vx0unhrRvgpgzA/wL6wzC/1eqTlQI0GIP1/FRJX2834WTAVxqsnh6+OneLt1432av1R6WcqiLqbM3vCbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JrS1p6Bl; arc=none smtp.client-ip=198.175.65.9
+	 In-Reply-To:Content-Type; b=AKeYx7YUYKbrAy7tNM/dih8YAJUTd5GgKR7UmvQwUU6JC0XMvftAnFqL6JGgi5PYZ8Y0brz8Qv4yxsCKMC8p00eQ9AI4J2Et/5463GVKOp691oMTqRsKjk3aLgUg81GbD9s5EXZjTxSsOFwxTnykJT5L4Z8DNQcbwW5upenl208=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fIXrev89; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JrS1p6Bl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fIXrev89"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786955938; x=1818491938;
+  t=1786957000; x=1818493000;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=ROBv2th78MGCFfWabBK1ufzPRFzh9sp/ZCygz4RvuEY=;
-  b=JrS1p6Blp9I02lotbWU7h9IDa6WkIDndvOZCCuQckwqCw61rvn9eIU+u
-   OO4zF1wgVJfqlDHYF5986VZWq3OuNJ5ZmXYGV739oOjS/rkoxvTZPtClt
-   YiUTY35vLrmd8Qk31cFiVXCUNMSRJ+pJoPhPk/bKnSiNXe3HaMLmPsS9W
-   N9ndlo7Ute/lqyh8DQB0KQndiAjP5YnwRk196sz+NMQujdPh5BJY3SGYB
-   o4/PzdnYIKCxllOCGxHdJcOulDhwO5tJ8lRYaykY+VJVED4n1RzXFT43M
-   MvhgriFmkOS5TfCZrlfFnxQgjfQD7pv1EhVBSqTQ9Nr9xABvsB2OGTl3w
-   g==;
-X-CSE-ConnectionGUID: bU9E5iHxQzKTUzmZ42x2lQ==
-X-CSE-MsgGUID: UK7IybEySaOEREHyKcPhiw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="110209902"
+  bh=Oyf77Pklv8oD9GCGBZn6XD0f7eaFIvJwFs0ZGTdzefU=;
+  b=fIXrev89xPVSJ1GVgyeGSDUCSepZM2e6cUO7YxKTL1fOgTateCy7Uyv8
+   vMsQ+e+XuRwonlenpH+zXBrOwI43KKAA32AHfp7B03lTYPmGGrVU0SH2/
+   Z2szUTF6SE2jan8jM5nYmxc/El9SAofgg43fcyl69ytpaQA82fM1BNVMv
+   OzHR6mMafy/YJSQr9xVULI0vPLGBRdCvqYtEwm6/daIz+bs9zJEzWDDVN
+   rRUZZStM0KWntc56QqY2czl6B5WrqUKwrRoQc2N5g+RfixIX+idZIu9PT
+   fBlp3u1pal1vPhhaLAC+UtXAVfdrf0MIkdvdJZfk0zrbwWplmgNQ6Ex4r
+   w==;
+X-CSE-ConnectionGUID: YPucuhGRRV6c87P3hEfpcg==
+X-CSE-MsgGUID: SyR7NcfRSIKHV/baNPh85A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="87493703"
 X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
-   d="scan'208";a="110209902"
+   d="scan'208";a="87493703"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 01:38:57 -0700
-X-CSE-ConnectionGUID: LxLWBrCVSTatPMboJKUI8Q==
-X-CSE-MsgGUID: 7660VKgXRfmpDn41i44a9Q==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 01:56:39 -0700
+X-CSE-ConnectionGUID: rDrpkQz2T622V7o1lPhTzg==
+X-CSE-MsgGUID: rGIHdk20Q2WuAUiujGUutg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
-   d="scan'208";a="266832796"
+   d="scan'208";a="266835637"
 Received: from unknown (HELO [10.238.208.98]) ([10.238.208.98])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 01:38:52 -0700
-Message-ID: <6f89fc78-0344-4a7e-bbd8-ac201b8f845a@intel.com>
-Date: Mon, 17 Aug 2026 16:38:49 +0800
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 01:56:33 -0700
+Message-ID: <37947172-c6e1-43e9-8cac-770f3f6fcb62@intel.com>
+Date: Mon, 17 Aug 2026 16:56:30 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,7 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 21/22] KVM: selftests: Add ucall support for TDX
+Subject: Re: [PATCH v14 20/22] KVM: selftests: Implement MMIO WRITE for the
+ TDX VM
 To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
  Ackerley Tng <ackerleytng@google.com>, Binbin Wu
  <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
@@ -70,128 +71,146 @@ To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
 Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
 References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-21-15ad654a50db@google.com>
+ <20260722-tdx-selftests-v14-20-15ad654a50db@google.com>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260722-tdx-selftests-v14-21-15ad654a50db@google.com>
+In-Reply-To: <20260722-tdx-selftests-v14-20-15ad654a50db@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 7/23/2026 7:13 AM, Lisa Wang wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
+> From: Erdem Aktas <erdemaktas@google.com>
 > 
-> Implement TDX ucall using TDCALL-based MMIO to pass the ucall address
-> from the VM to the host.
+> Implement the tdx_mmio_write() to allow TDX VMs to request MMIO
+> emulation.
 > 
-> In standard KVM selftests, ucall uses a PIO instruction as a trigger
-> to exit to the host, which then retrieves the ucall address by reading
-> the guest's RDI register. This approach is incompatible with TDX
-> because the host cannot access guest registers.
+> Follow the Intel Guest-Hypervisor Communication Interface (GHCI) spec
+> to the minimum extent that a spec-abiding TDX module will pass the
+> request to KVM. 
+
+I don't get what it wants to say with this.
+
+> Skip implementing the #VE handler as described in the
+> GHCI spec to reduce selftests dependency.
 > 
-> Furthermore, PIO exits only expose 4 bytes of immediate data, which
-> is insufficient for a 8-byte ucall address. By using TDCALL-based MMIO,
-> the VM can share the full 8-byte address in a single exit without
-> refactoring the common ucall framework and other non-x86 architectures.
+> To perform emulated I/O, VMs use the TDG.VP.VMCALL instruction to
+
+To perform emulated MMIO?
+
+> request MMIO.
 > 
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Erdem Aktas <erdemaktas@google.com>
 > Co-developed-by: Sagi Shahar <sagis@google.com>
 > Signed-off-by: Sagi Shahar <sagis@google.com>
 > Co-developed-by: Lisa Wang <wyihan@google.com>
 > Signed-off-by: Lisa Wang <wyihan@google.com>
 > ---
->   tools/testing/selftests/kvm/include/x86/ucall.h |  6 -----
->   tools/testing/selftests/kvm/lib/x86/ucall.c     | 33 +++++++++++++++++++++++++
->   2 files changed, 33 insertions(+), 6 deletions(-)
+>   tools/testing/selftests/kvm/Makefile.kvm          |  1 +
+>   tools/testing/selftests/kvm/include/x86/tdx/tdx.h | 17 +++++++++++
+>   tools/testing/selftests/kvm/lib/x86/tdx/tdx.S     | 37 +++++++++++++++++++++++
+>   3 files changed, 55 insertions(+)
 > 
-> diff --git a/tools/testing/selftests/kvm/include/x86/ucall.h b/tools/testing/selftests/kvm/include/x86/ucall.h
-> index 0e4950041e3e..7e54ec2c1a45 100644
-> --- a/tools/testing/selftests/kvm/include/x86/ucall.h
-> +++ b/tools/testing/selftests/kvm/include/x86/ucall.h
-> @@ -2,12 +2,6 @@
->   #ifndef SELFTEST_KVM_UCALL_H
->   #define SELFTEST_KVM_UCALL_H
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> index 645d9aac61db..28b33ed8c2e6 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -33,6 +33,7 @@ LIBKVM_x86 += lib/x86/tdx/tdx_util.c
+>   LIBKVM_x86 += lib/x86/ucall.c
+>   LIBKVM_x86 += lib/x86/vmx.c
+>   LIBKVM_x86 += lib/x86/tdx/td_boot.S
+> +LIBKVM_x86 += lib/x86/tdx/tdx.S
 >   
-> -#include "kvm_util.h"
-> -
->   #define UCALL_EXIT_REASON       KVM_EXIT_IO
-
-This seems to leave the potential issue for future since x86 now 
-supports different EXIT_REASON for UCALL.
-
-> -static inline void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
-> -{
-> -}
-> -
->   #endif
-> diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/selftests/kvm/lib/x86/ucall.c
-> index e7dd5791959b..7a954b2d0bdd 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/ucall.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
-> @@ -5,11 +5,35 @@
->    * Copyright (C) 2018, Red Hat, Inc.
->    */
->   #include "kvm_util.h"
-> +#include "tdx/tdx.h"
-> +#include "tdx/tdx_util.h"
->   
->   #define UCALL_PIO_PORT ((u16)0x1000)
->   
-> +/* HPET address is guaranteed to be unused for ucall MMIO */
-> +#define UCALL_MMIO_GPA 0xfed00000
+>   LIBKVM_arm64 += lib/arm64/gic.c
+>   LIBKVM_arm64 += lib/arm64/gic_v3.c
+> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
+> new file mode 100644
+> index 000000000000..6355a30bb47f
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef SELFTEST_KVM_TDX_TDX_H
+> +#define SELFTEST_KVM_TDX_TDX_H
 > +
-> +static u8 vm_type;
-> +static gpa_t ucall_mmio_gpa;
+> +#include <linux/types.h>
 > +
-> +void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
+> +#define TDG_VP_VMCALL_VE_REQUEST_MMIO    48
+
+I know it is the name in GHCI spec. But MMIO doesn't have to be invoked 
+by #VE. I think we can directly call it
+
+TDG_VP_VMCALL_MMIO
+
+> +#define TDVMCALL_MMIO_WRITE		  1
+
+So we are defining TDG_VP_VMCALL_* and TDVMCALL_*. We'd better to make 
+it consistent.
+
+
+> +u64 __tdcall(u64 leaf, u64 r12, u64 r13, u64 r14, u64 r15);
+> +
+> +static inline u64 tdx_mmio_write(u64 address, u32 size, u64 data_in)
 > +{
-> +	vm_type = vm->type;
-> +	sync_global_to_guest(vm, vm_type);
-
-It works and it looks simple. But we have the architectural approach to 
-test if a guest is TD guest, by checking the CPUID 0x21.
-
-Since checking CPUID 0x21 is not complex, and as a bonus it can help 
-test if TDX module behaves correctly for CPUID leaf 0x21, I think we 
-should switch to use CPUID 0x21 to check if it is TDX VM in guest code?
-
-> +	if (is_tdx_vm(vm)) {
-> +		ucall_mmio_gpa = UCALL_MMIO_GPA | vm->arch.s_bit;
-
-So the passed-in @mmio_gpa is not used. Why cannot use the mmio_gpa,
-
-   slot0->region.guest_phys_addr + slot0->region.memory_size
-
-chosen by __vm_create()?
-
-> +		sync_global_to_guest(vm, ucall_mmio_gpa);
-> +	}
+> +	return __tdcall(TDG_VP_VMCALL_VE_REQUEST_MMIO, size,
+> +			TDVMCALL_MMIO_WRITE, address, data_in);
 > +}
+> +#endif /* SELFTEST_KVM_TDX_TDX_H */
+> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx.S b/tools/testing/selftests/kvm/lib/x86/tdx/tdx.S
+> new file mode 100644
+> index 000000000000..dff48a3624a1
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx.S
+> @@ -0,0 +1,37 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
 > +
->   void ucall_arch_do_ucall(gva_t uc)
->   {
-> +	if (vm_type == KVM_X86_TDX_VM) {
-> +		tdx_mmio_write(ucall_mmio_gpa, sizeof(gva_t), uc);
-> +		return;
-> +	}
+> +.globl __tdcall
+> +/*
+> + * u64 __tdcall(u64 leaf, u64 r12, u64 r13, u64 r14, u64 r15)
+
+this funtion is specific to TDG.VP.VMCALL. Please just name it 
+tdg_vp_vmcall()
+
+> + */
+> +__tdcall:
+> +	push %r12
+> +	push %r13
+> +	push %r14
+> +	push %r15
 > +
->   	/*
->   	 * FIXME: Revert this hack (the entire commit that added it) once nVMX
->   	 * preserves L2 GPRs across a nested VM-Exit.  If a ucall from L2, e.g.
-> @@ -46,6 +70,15 @@ void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
->   {
->   	struct kvm_run *run = vcpu->run;
->   
-> +	if (vm_type == KVM_X86_TDX_VM) {
-> +		if (run->exit_reason == KVM_EXIT_MMIO &&
-> +		    run->mmio.phys_addr == UCALL_MMIO_GPA &&
-> +		    run->mmio.len == sizeof(gva_t) &&
-> +		    run->mmio.is_write)
-> +			return (void *)(*((gva_t *)run->mmio.data));
-> +		return NULL;
-> +	}
+> +	/* Map C ABI fast arguments to TDX GHCI payload registers */
+> +	/* RDI=leaf, RSI=r12, RDX=r13, RCX=r14, R8=r15 */
+
+/*
+  *
+  */
+
+for multiple-line comments?
+
+> +	mov %rdi, %r11
+> +	mov %rsi, %r12
+> +	mov %rdx, %r13
+> +	mov %rcx, %r14
+> +	mov %r8,  %r15
 > +
->   	if (run->exit_reason == KVM_EXIT_IO && run->io.port == UCALL_PIO_PORT) {
->   		struct kvm_regs regs;
->   
+> +	/* TDCALL boilerplate */
+
+it's not TDCALL boilerplate but TDG.VP.VMCALL since below rax is 
+hardcoded to 0.
+
+> +	mov $0, %rax
+> +	mov $0xFC00, %rcx	/* Expose R10-R15 */
+> +	mov $0, %r10
+> +
+> +	/* tdcall instruction */
+> +	.byte 0x66, 0x0f, 0x01, 0xcc
+> +
+> +	/* Extract status */
+> +	mov %r10, %rax
+> +
+> +	pop %r15
+> +	pop %r14
+> +	pop %r13
+> +	pop %r12
+> +	ret
 > 
 
