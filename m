@@ -1,114 +1,190 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240D143C7B4
-	for <linux-coco@lists.linux.dev>; Mon, 17 Aug 2026 13:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786974555; cv=none; b=pfkdKpYYaNdF0IRN+paTEsRd5vGCQCrkfurp7G19pVLj2Z4T7BptZMzOydIgn0hRv5iRdTgC2ueukcRT6EVal2/96R9iFjI6mEKCzZDqFPOaowxZeJna0nlyc3pqlQTi6id3E6UMrDZxgqY+NICI5nrRKTwFyE58bOYrwb3VPT0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786974555; c=relaxed/simple;
-	bh=RnzOzGFK1YB2l72myPyapEsUaP3t6NWRMrFrNJEQl10=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CItLZ9yjTHDBFnfWp5qX8xClplucGwXzy2Uh9kiam7qcLPTLSCHDJtF6YcjqZMxKTMo5ekoAkGA5PUcSlXhgqLIQmUL5pPN43btd4o2rREHdlx7tQwzkDhRRqxM5hUmZkAc4n+G38VZPeSgLcKdXDZ00qIaVeWTy2Miu26bAfas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qkLz0wHF; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36237296BD3
+	for <linux-coco@lists.linux.dev>; Mon, 17 Aug 2026 13:52:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786974776; cv=pass; b=OWyNEuj8sUTyqX2TM5KTWg/a9bBBwnvg8DvE953LmshlexcqGRbniTgTbKLectM2YNo0cTVMT9hUIOkwAG8oS0fmEVsT1ehaCCXe0VO5A4q68pO618mZanZoxmOq1IRP0BR7aDJCRh4uY8JLPXGmCErMVTQzRVpMjr0H9cG7zZQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786974776; c=relaxed/simple;
+	bh=/NIweOu34CW2pFg29jrI6uvH5WNUNRSHaH/sZYONA68=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e6Q07AJNJNYLvIpnvMBWAyaU95gyQz635J0Jt7fwgotMaTXuUt86bVjNbHSgbF7g6avyPB/6GP94Dm+1Oy1iOZxg/saUq9GGYDuKRY8/DkUcGtBaNCxIqJcFqb2kQoY+KqQp1RJsLXeFZUCM/CEmp7eNH3swY+6i5rFCoxE0gMo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cL78+Wi/; arc=pass smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qkLz0wHF"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cbb92868263so2305395a12.2
-        for <linux-coco@lists.linux.dev>; Mon, 17 Aug 2026 06:49:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cL78+Wi/"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38dcbade417so3442864a91.1
+        for <linux-coco@lists.linux.dev>; Mon, 17 Aug 2026 06:52:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786974769; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AO90avLo4LpZmEnGBTzxx+S/ptoQ8AZQhhjpKZCai2gZGfKY1vnQ/5L3eE38VY67kV
+         IbNSP7sxfENpCrPLllj0mdxhKv1YRmLU3U3+zJi2s4OZyMUKjWpO8Ngem0ZZH3NNy2Nk
+         UowXSrAkxgfTGXGgBAHID6b8Nwy1vc3S78DETnXZ49XNG37O3PhUW0AQNFTZ0DWouGiK
+         hVmghnSdg5OTaNP/ZUNZP7uJyRGZs8zpZvlCkJ7rK5+P3XFqUIv47KMNsTGsRJruKiAT
+         fZFh8entVsfF7r8HLut8rPec5Koc4FSbTIT1YaXVzLbMLOphvTYj7bjgJCyzyyOaHYgj
+         dCEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=IX1KvI43fNPQ1XsnxDVHr/UZAXUksiAOakXpX5TJKNw=;
+        fh=qIJAm/wgRO+ac5oZhSX6I0i94S8AWqU41G4zawIWkFU=;
+        b=pUjImAA4Bl7KMT9njzdVUocxZaQMgUD5bupR8125mhhwwR79sG6V1EORyL5GX/HDWo
+         Q6j4gshQazU0x81PaGvqV8kb8sHxVFLw9Pz/Y0m/BB3HppOoJNKmG9aOzd8SPumVUYu+
+         TJtNn6feHaC/4nA2PniEy6DoIULPpo4QHnP67sXkkAr0+bHFnG+BkhvFh34oQOtOM+Ew
+         F95On09CORvdgKj8ZmKQ3FFIOwXh7o08WEI+ZMtKY2CkVyQeQ1aZeapZU5PEEAC4gHJ4
+         DDgRxtmnskW7Pa1b9zBmAoLmh2S9MPzh9J0oWz4Uv64GCH7GKDDt4hEpvlsH79I/a0rM
+         j2TA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786974550; x=1787579350; darn=lists.linux.dev;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1786974769; x=1787579569; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=v60n69Fh2rc5rSD04kHKtxhuZ7ZKSWjk5+HKb8IHNFo=;
-        b=qkLz0wHFijCt7lzaTc00611nZvd2vsJpioKcsllYo7ISi9foBtQQb4b/fHU7y6SK5N
-         LYStlAQmsxXjKSbOhTa5Z0MzbtJUohKX+4ug1bRDAh6jmHv2FSMFfFLCq8Bw+xZWxFM/
-         PWlmXi8UltOV3JT6MOG8fQBInyH0VukArr/+RFK+waS7ElVY9OFYkCSl+2ZSRL4djaCn
-         1OiOZw9uiA3ZUZChtondjxWgB6vv/eU13KIdkDUmErQQ+YD/1YlR1mmDIfvfKwZybynz
-         qv7MbPubLnA9qiADE821rR6U5SbJkotOW3T8YuVRfZWayl5Z/j5RTLM3XXIajqecIyTw
-         B99g==
+        bh=IX1KvI43fNPQ1XsnxDVHr/UZAXUksiAOakXpX5TJKNw=;
+        b=cL78+Wi/wzSfVdFlo9UMKoPBG0kHOYVHTlMSnTUd25eUeLW8963G6NWBlh6JyLDDE3
+         VmngWLO1u6K1b8JdyjdBynNLNkmmQl8kinVasyas/7LxOBc6q8bxOL3K0B/n/cQ54d5s
+         LtlEQBjDedSDsoxmpA1hzqiLeqkeCPuuc5aFEesml9+dksMUaYn04QUOXxCF167gZ3X4
+         S44O001X1jlp9/wZMR0KrB5/l1p7Qom/pE4o2DsGiEgy8VPzhH0XrLyYtIZVnuMH1BQU
+         vKbnS+UyNzaXqYeFnYq3a1taQUTxuFZo7+tTagmxJNvYLsnqWLaol1jiUSJsXI2iFyOQ
+         pgTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786974550; x=1787579350;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1786974769; x=1787579569;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=v60n69Fh2rc5rSD04kHKtxhuZ7ZKSWjk5+HKb8IHNFo=;
-        b=nO6SLtRWDNipkAozHT+yyxi/JG9Cb1YyiH1oVLsWCTplM2pvbTyuYLJ/2xQYLKkolY
-         vteriLxgGpYPuOOM0PgOYR+eLfNXwTT5aihmsbSI5jnlRO6GcMYSL04IpEO4ZrXTGsFT
-         OyGG36lX/nKXZ5RpDR8k9sW/TSnu5Xw3rvtyJCQCk72+Of7EnemtC90Olv7D7V+9fKkD
-         QlY/AiDELXFvol7vIRo5dJn3gSaOXQQ6ap6OzrNhGe6TGp/qHBKWqHRI2SfH/t1IGjBB
-         gruE44z4Oxf2dC5OHKrxN4IVUx5kJ6wk6dmonK9pZYKkVw8g+J69WQ8Sy/zapyO01e6w
-         3tmg==
-X-Forwarded-Encrypted: i=1; AHgh+RoK/9p5mGomDFZAoE3C7uLcIwgpiFaN0PRuIMFWIRdC3MuZfDYD82idxl46Es8On7Yhlp9d0YZedZMN@lists.linux.dev
-X-Gm-Message-State: AOJu0YxXQMYXmM03thPGDRIK+2ynhRYF2T3zPzLUphUbtGC1Sugl1PkY
-	g7ixO7Q6gSGqbSLXGIH0KvtM0bhbIR+FxUvXbfcuJevlT88Qrodh339Q5217IBTOfdiTtYt/ldO
-	laQl4RA==
-X-Received: from pgbfe12.prod.google.com ([2002:a05:6a02:288c:b0:cbe:dff5:6872])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6194:b0:3cc:3d08:da3e
- with SMTP id adf61e73a8af0-3ccda405874mr474615637.2.1786974549957; Mon, 17
- Aug 2026 06:49:09 -0700 (PDT)
-Date: Mon, 17 Aug 2026 06:49:09 -0700
-In-Reply-To: <e7430468-be26-4f96-a185-a774783d04b6@linux.intel.com>
+        bh=IX1KvI43fNPQ1XsnxDVHr/UZAXUksiAOakXpX5TJKNw=;
+        b=C/OYncUK6BNKni3+NkVdHD/OFD3gDAKTTR6PauAwYovqRf6tR4k/tSPjyhrixrdPed
+         6MgkjkPUMlH2AlDZDmdBLqZA0IbklV34Te/zodKHin7yrUwYmAHENJAlwHcehZTVJfuh
+         C+L6qOtDeHmQ9tpRO53H7gPOgpR9zldyb13TPze+b3yZWsF/SZmPAz48mMYlmZHVuFcc
+         eMomorVKgqu45TrplTfOREwj+RsRmslhyR4o53OS3/802xPuuJSmk48ZZ7QBauIgDIC4
+         1LCA5L64KNVH3X+ahOdotl5Tgpb4NLxdKJkeeDaRZjzCaUMp0SghKjh3cD4pVvMi6x3u
+         x4oA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7f5fU7yvUB1L3Rg5bUkxE12aDVdynLAB8LpbqKrEChl1345STZ6yqcp6dtQfpLXQPTHyP0s70zwAd@lists.linux.dev
+X-Gm-Message-State: AOJu0YzPtsX95gNdYwfuKNNVarmKmK0HSQHY0wr6qTLRiBH/7dUKhlBX
+	6a14NWMlODy09XWiB7tvXdOmMgIx3AjMSzubLUYuT8KN2Ip33eqRCvLq6rHSvEDh7QmFqWlqD68
+	Mhljw476Ax1XXBkqQntaD5DALBpO/7D3S15Izadis
+X-Gm-Gg: AR+sD12qDSHcjJO2frvgtg9l44wlMgNHvhKTNPaoZ0wfTi2XN81bZ/iPf/gUi5IYGFL
+	7RINl5tGWeTotd4gXImomtYhZC4kyO91FAHV+dzMRKnduUdZe1dm3ilCoUeiFqZzGsHXQ8wO2xZ
+	pD1w0l8ul2X9MaUtgNHslOJ31lIRdcON+hC+CvOKksFftzqmUyrVU8ycUpMO5U91u6bEPi3aPZb
+	G3TeNtb28RTmzjekMBXvYmdpmbaCh7d3VfhwjwW2vbYeDOFOPHpyzfsSKq2rFcvurIDi06LdJc1
+	j24w9kWf3eKjEnPFBwGT4gXZ0dnHRWeteS7lfX+esJJSuvD1nz5Q3JQErTYiTLc+cZ5bVFcbErU
+	=
+X-Received: by 2002:a17:90b:274e:b0:38d:dfd1:7c1 with SMTP id
+ 98e67ed59e1d1-3955a3dd549mr974362a91.2.1786974768174; Mon, 17 Aug 2026
+ 06:52:48 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 17 Aug 2026 06:52:47 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 17 Aug 2026 06:52:47 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <befe73e1-3287-440e-90de-6c62f6c19d47@intel.com>
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
+ <20260722-tdx-selftests-v14-18-15ad654a50db@google.com> <befe73e1-3287-440e-90de-6c62f6c19d47@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260814161129.2177118-1-seanjc@google.com> <20260814161129.2177118-2-seanjc@google.com>
- <e7430468-be26-4f96-a185-a774783d04b6@linux.intel.com>
-Message-ID: <aoMRVRYz4V_IRWDp@google.com>
-Subject: Re: [PATCH 1/3] KVM: VMX: Move the shared "IRQs off" exit handler(s)
- to common code
-From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Kai Huang <kai.huang@intel.com>, Yan Zhao <yan.y.zhao@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Date: Mon, 17 Aug 2026 06:52:47 -0700
+X-Gm-Features: AcwNN1UHGhzK4sYy5HwqSRuK05tzBOG6iD052SVLEabdQ5BbvTOapBvBVGicZOU
+Message-ID: <CAEvNRgH00s3NWUH8EGUZq3WWweboBcUaTZs_0Cye5D=3o0OALQ@mail.gmail.com>
+Subject: Re: [PATCH v14 18/22] KVM: selftests: Add helpers to init TDX memory
+ and finalize VM
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Lisa Wang <wyihan@google.com>, 
+	Andrew Jones <ajones@ventanamicro.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Chao Gao <chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
+	Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Aug 17, 2026, Binbin Wu wrote:
-> On 8/15/2026 12:11 AM, Sean Christopherson wrote:
-> > Move vmx_handle_exit_irqoff() and its helpers to common.h / main.c to
-> > capture that it's a common handler and to allow guarding against incorrectly
-> > using to_vmx(), and to allow for
->                                    ^
-> It appears to have been abruptly truncated here?
+Xiaoyao Li <xiaoyao.li@intel.com> writes:
 
-Ya, apparently I saw something shiny and forgot to get back to this.  In hindsight,
-I probably should have spammed v2 right away given how egregious some of these
-goofs were, it probably would have been a net positive.  Anyways, this is what I
-ended up with for a full changelog:
+>
+> [...snip...]
+>
+>> +static void tdx_load_private_memory(struct kvm_vm *vm)
+>> +{
+>> +	struct userspace_mem_region *region;
+>> +	int ctr;
+>> +
+>> +	hash_for_each(vm->regions.slot_hash, ctr, region, slot_node) {
+>> +		const struct sparsebit *protected_pages = region->protected_phy_pages;
+>> +		const gpa_t gpa_base = region->region.guest_phys_addr;
+>> +		const u64 hva_base = region->region.userspace_addr;
+>> +		const sparsebit_idx_t lowest_page_in_region = gpa_base >> vm->page_shift;
+>> +		void *source_pages = NULL;
+>> +		sparsebit_idx_t i, j;
+>> +
+>> +		if (!sparsebit_any_set(protected_pages))
+>
+> sparebit_any_set() doens't check if the input is NULL. So we need to
+> check it here.
+>
+>> +			continue;
+>> +
+>> +		TEST_ASSERT(region->region.guest_memfd != -1,
+>> +			    "TD private memory must be backed by guest_memfd");
+>> +
+>> +		sparsebit_for_each_set_range(protected_pages, i, j) {
+>> +			const u64 size_to_load = (j - i + 1) * vm->page_size;
+>> +			const u64 offset =
+>> +				(i - lowest_page_in_region) * vm->page_size;
+>> +			const u64 hva = hva_base + offset;
+>> +			const u64 gpa = gpa_base + offset;
+>> +
+>> +			if (!kvm_has_gmem_attributes)
+>> +				source_pages = (void *)hva;
+>> +
+>
+>> +			vm_mem_set_private(vm, gpa, size_to_load);
+>
+> So vm_mem_set_private() has to be called at this late stage when run
+> with in-place gmem. But for non in-place gmem, we can actually call
+> vm_mem_set_private() in __vm_phy_pages_alloc().
+>
+> Calling vm_mem_set_private() here instead of in __vm_phy_pages_alloc()
+> looks like a trick to me.
 
-  KVM: VMX: Move the shared "IRQs off" exit handler(s) to common code
-  
-  Move vmx_handle_exit_irqoff() and its helpers to common.h / main.c to
-  capture that it's a common handler and to allow guarding against incorrectly
-  using to_vmx().
-  
-  Opportunistically use a "vt" prefix instead of "vmx" to communicate that
-  it's a shared handler.
-  
-  No functional change intended.
+I thought this is fine because __vm_phy_pages_alloc() seems to be a
+rather low-level function, where the responsibility of the function is
+just to allocate (for find some physical pages). Calling
+vm_mem_set_private() in there seems to be doing too much.
 
-> > Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> > Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-> > Cc: Binbin Wu <binbin.wu@linux.intel.com>
-> > Cc: Kai Huang <kai.huang@intel.com>
-> > Cc: Yan Zhao <yan.y.zhao@intel.com>
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> 
-> [...]
-> 
-> > +
-> > +static void vmx_handle_exit_irqoff(struct kvm_vcpu *vcpu)
-> 
-> Since it's moved to the common code, is it better to rename it
-> to vt_handle_exit_irqoff()?
+> That is, we cannot set the page as private
+> when allocating a guest physical page as protected because if doing so,
+> we cannot write the initial content to it.
+>
 
-Yeah, Sashiko pointed out that I was being dense as well.
+I think calling it here isn't a trick, it's a good way to reuse all the
+existing code that builds up the guest image in place. In-place
+conversion allows you to set stuff up in shared memory and then convert
+everything when you're done and also populate the memory.
+
+> This is the topic about how to implement the infras for in-place gmem,
+> not the issue of this series. Let me go read the selftest patches of
+> gmem in-place series and we can discuss there.
+>
+>> +			tdx_init_mem_region(vm, source_pages, gpa, size_to_load);
+>> +		}
+>> +	}
+>> +}
+>> +
+>> +void tdx_vm_finalize(struct kvm_vm *vm)
+>> +{
+>> +	tdx_load_private_memory(vm);
+>> +	tdx_vm_ioctl(vm, KVM_TDX_FINALIZE_VM, 0, NULL);
+>> +}
+>>
