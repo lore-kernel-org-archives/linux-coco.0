@@ -1,154 +1,123 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D8C357D13
-	for <linux-coco@lists.linux.dev>; Tue, 18 Aug 2026 20:37:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D39037B40E
+	for <linux-coco@lists.linux.dev>; Tue, 18 Aug 2026 23:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787085467; cv=none; b=fXQWZ15dG5Ot2gpi1Wne6pvQ7apfM1ZirD6w9YGtbgsMdGp3lZ8TMEpZbB3bONy6YTOlRiwvE6lBkxHwufCRR6j8c6tWRY13wohjHAJcgFcducld0IJY2rYFaJ9JWvit3E7WhgbM1O7ahg02K4RPWZbehojEPSc7rLl9GFTW9DI=
+	t=1787095361; cv=none; b=KjzNog7UH/ohnP9W/fh6CfbZaZg/0suphK1cwx01uhRGW+YitwDwR+9t5TF2WyndnrpKVTlZMA0tqiGhcfmTWvoSfe210Q9xjDPYJA09sFyml7M6rqxmMlIzfNE/JZbK8tBz/AszeP2PUkwN+25gOmHad5fCTytOD1Wr6s7acXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787085467; c=relaxed/simple;
-	bh=6iPIb/NGfhyw66q8Gzx9C/Hh1IrKPQkJh6eoXaONCgI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZOR+EgYc6pvdOmQzxVrW4BqGi4e5UaNPchFhzcMf9cXAOAohZeRPJVO73NNAEmpHBSWRGfnQoQj4ldJU5kNW6gew2R11aukTym/+1LhaYVVZU+Ba03Y8m3d8fvmidW/Ze48V8CQtYdpEnjyxXVUPj5WWVViYUyGB0TGyzSvNWag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YTgP7Mgc; arc=none smtp.client-ip=209.85.216.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787095361; c=relaxed/simple;
+	bh=V+RPYf5DW2LkIBuQPf0Ys5M8MaI+39ameaXCm3qXI1Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KdZU49tX0kZZrlkC1+QP3Pl4S8TCxDrK0HuCFm4c+tfx228O31shkS4imt1HbG2ok+7tA/iXx+q/9yGqWnOJ4s4gwJLYxa3Hr9GRU66WRlfsdA4jhUnkVJoqAH9NSmz2zC/ir5zwdMcb3nnQhkqIJ3+V6n0/Z7f9l4Or/b5xVS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=IM3hmMoJ; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YTgP7Mgc"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e475f83a2so586885a91.1
-        for <linux-coco@lists.linux.dev>; Tue, 18 Aug 2026 13:37:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787085466; x=1787690266; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=5bvSIbOOi/LGDNWtBrRegseU7kGQ5JA6GPeCKC+/MNs=;
-        b=YTgP7Mgcz1e6E+yVtK64SPvxN2V5GiQ+8eAmOgFW5uZriC38kGz4jML5kt99nIpoqp
-         ABhqOR3UMLeVuweVhbdUxNj7UY9+kDfs6A46MlD8st0S2ZOT2ZVjbO5C7ztz3uzfgtf8
-         7AIkTpWk5YxrSYwMeCXMwaHYU0+IiGj3y6qfcnQw+wmNBLum/E1K8sVMYcE6zM8ECqiZ
-         pcySILTltEac1sasqQq+o+DhMgUOCH47/2LEaEvImPa0zVyQdFZijjOuhKM3fZllYtl1
-         cRYWwRKuT8J3HhrRD07vjZY1Qq9qDOhSe+RSBbNQAZ+5o9j1qmkT+cp66fKy1uxEonn4
-         a/wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787085466; x=1787690266;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5bvSIbOOi/LGDNWtBrRegseU7kGQ5JA6GPeCKC+/MNs=;
-        b=CxPFOAYRdmh42d3SEa4jtS1fB2z7siwZbBPblaTjvrJVDlCwKE/eSLHXLMA1V2ur0d
-         QxVP34xcbvsr4mW5eZ8m3uUtfxMkmU0XyU5+x6c0igPC7T88Jvi4qwk1Q+E1mXZbsh2w
-         3E2xNszsFUxPV9J3zj09Q1iVqg3cD/TTNNg9/DlF3LN2ppkkn4h3Ny5Aibn/G6DtVwmN
-         KqghIj3h8X7AxIU4n93EQFaxf43PDahqCAD3b31WE9iL5kxGObgKDQnvtD11tx3l56rh
-         ZvQmCxTJm+pOATPvnD1JqEyefN53EDQ5K7h5y96PzkfQ4RPvRRf/y71+CrgunyXsqbKt
-         pU+w==
-X-Forwarded-Encrypted: i=1; AHgh+RrRyWp9SRHNYcqLGwGYUWuH7R+ah3huqxQKDMp/stynpW9b8cQjBmqbZUkqjWqqs2GLNDmKrktyCFga@lists.linux.dev
-X-Gm-Message-State: AOJu0YwTPljjEc568u1IHzsczLltBoJOoeTI2gep2iMZ2A6HavcFNJh/
-	UHbzPq1Tw6AhX305q/pjrfeACaVwzB5Wd1bl5qDg2R894gVfSfw3vGqmzxafasooltLyNw/twuW
-	9PbMDdQ==
-X-Received: from pjbga10.prod.google.com ([2002:a17:90b:38a:b0:381:fafe:3071])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3e50:b0:38e:2524:724f
- with SMTP id 98e67ed59e1d1-3957b2d203amr652642a91.12.1787085465373; Tue, 18
- Aug 2026 13:37:45 -0700 (PDT)
-Date: Tue, 18 Aug 2026 13:37:44 -0700
-In-Reply-To: <98dcc8a12f117745a1cb9981dc8f0f1548e9c96f.camel@gmail.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="IM3hmMoJ"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9E6AD40E0406;
+	Tue, 18 Aug 2026 23:22:36 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id jNIFcsukPwEN; Tue, 18 Aug 2026 23:22:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1787095345; bh=6F9NJ06zTaDaftKmfYqFUJhweqBOh2WtQJJmduFwiHw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IM3hmMoJhIWxLzLwhIkDJYhr2RmSU00H8NvctG1QpC67pHMXvTGjuiVs2yA/0jCrt
+	 51/2BKdh39tXU62eprFSompCdqAykUZM2emCkknaemYsBBoOYlTiSsuktP67sVzVfG
+	 GWNRjPUY8SilF58nQwWBPJ0V76pOoHc4WvVgtrnJI8Xlk6Kr8NmwYEZvlMl3k+v2RS
+	 rFA4KUxE+QC6jHv7UsMuvXhgc1H0D6Wj33Bae5DZGDV/Aov+fYMHgp6mRXZ5jC8T5s
+	 q8Pf+qXcnvjoX5xCQz9tazfHiKk70g8al4Ccmk6D8JuDqynV6HWl3tYg7OigcrZaoL
+	 DpNkVG68X8vM3DPhx+r3OFYQtSmQFdBE1nlufJPsEVdyc4eOQZ6Nz2Ppm+FKHYHyI/
+	 ncYb7zuiOn/gmEKeW3P9y9i5joVOuD2GiU57CTGThqKeQaeFHswwhUJ7xMYH8y6Hlp
+	 q0lS+GTFF+Vfn8UOivSR1azSx4PKBb8NhBAFpkmo3gdcu7C9n45oWQXr7/GAvktoJm
+	 fmZW0UfRXetEpWo9x5CPtGDLK8L48IChW3UHdiG0ewsfHV68edloP6QPO0fvMQMe2N
+	 R5Lp6CUnPjqlZZ53qYN7Dmdg/a0oM23WvO1G3Ag5W+nlQN9KdVQIrIsH64kqYq1tVF
+	 UYK7XFORZhv4BS8ePrKXZMHc=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9C08740E03FF;
+	Tue, 18 Aug 2026 23:22:07 +0000 (UTC)
+Date: Tue, 18 Aug 2026 16:22:04 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Kim Phillips <kim.phillips@amd.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, x86@kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Naveen Rao <naveen.rao@amd.com>,
+	David Kaplan <david.kaplan@amd.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, stable@kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v4 02/10] cpu/bugs: Allow forcing Automatic IBRS with SNP
+ active using spectre_v2=eibrs
+Message-ID: <20260818232204.GBaoTpHK8k7wD9mMk4@fat_crate.local>
+References: <20260804235611.4053375-1-kim.phillips@amd.com>
+ <20260804235611.4053375-3-kim.phillips@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <80b4ea89ebf17398c3bee21d157c7f97ea32aadf.camel@intel.com>
- <anxvwV_Pz4UYaxxt@google.com> <86d532f33816cd4fa3e29c40079a6003abf89324.camel@intel.com>
- <anyiwqi9i0NSv0QW@google.com> <ed4891a59096c59e43a893910c9f17d0ff6086b8.camel@intel.com>
- <20260812223707.GD1013044@pedri> <6191a69559e58e04c8e3f1efa776e9639796af3d.camel@intel.com>
- <anz9b6CDkhr5D5RG@google.com> <c697ff1d97fe62882eaf3bd86a4213bf2e79fc09.camel@intel.com>
- <98dcc8a12f117745a1cb9981dc8f0f1548e9c96f.camel@gmail.com>
-Message-ID: <aoTCmJXjQQbXRKqv@google.com>
-Subject: Re: [PATCH v3 0/4] tdx-guest: Make Quote buffer size dynamic
-From: Sean Christopherson <seanjc@google.com>
-To: Artem Bityutskiy <dedekind1@gmail.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"kas@kernel.org" <kas@kernel.org>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, 
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	"mingo@redhat.com" <mingo@redhat.com>, "hpa@zytor.com" <hpa@zytor.com>, "tglx@kernel.org" <tglx@kernel.org>, 
-	Peter Fang <peter.fang@intel.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260804235611.4053375-3-kim.phillips@amd.com>
 
-On Thu, Aug 13, 2026, Artem Bityutskiy wrote:
-> IOW: in the SGX-based design, it is impossible to add TD evidence to
-> the quote. In the DICE-based design, it is possible.
->=20
-> But the question is - OK, it is possible, but why should it be done?
->=20
-> 3. Why freezing TD report size
->=20
-> Linux supports 1024-byte TD reports via the `TDX_CMD_GET_REPORT0`
-> ioctl. It is already full, no more TD evidence fits, and changing TD
-> report size would require a new ioctl.
+On Tue, Aug 04, 2026 at 06:56:03PM -0500, Kim Phillips wrote:
 
-So instead of adding new uAPI for the guest, TDX adds new uAPI to KVM?  Tha=
-t's
-not a very compelling argument.
+Please fix all your subject prefixes: it should be "x86/bugs:"
 
-> Also, as I understand it, based on TDX feature requests from customers, t=
-here
-> may be a need to increase TD report size more often and more significantl=
-y
-> than one would expect.
+The tip tree preferred format for patch subject prefixes is
+'subsys/component:', e.g. 'x86/apic:', 'x86/mm/fault:', 'sched/fair:',
+'genirq/core:'. Please do not use file names or complete file paths as
+prefix. 'git log path/to/file' should give you a reasonable hint in most
+cases.
 
-Who cares?  And I mean that literally, i.e. "who" as in "what chunk of code=
- is
-negatively affected if the TD report size changes".  "GET" ioctls whose pay=
-loads
-have varying size aren't novel, nor are they particularly difficult to impl=
-ement
-or work with.  What's so bad about adding e.g. TDX_CMD_GET_REPORT0_2 to all=
-ow for
-a variable sized payload and any other mistakes we made with TDX_CMD_GET_RE=
-PORT0?
+> spectre_v2=eibrs currently enables retpolines when SNP is enabled,
+> instead of AutoIBRS (EIBRS) because the commit that disabled
+> AutoIBRS if SNP is enabled stopped short of enabling
+> X86_FEATURE_IBRS_ENHANCED.
+> 
+> Change the logic to enable X86_FEATURE_IBRS_ENHANCED, and move the
+> decision to switch to retpolines in the default/"auto" case in
+> spectre_v2_select_mitigation().  This allows the existing
+> spectre_v2=eibrs logic to work as intended.
 
-> Therefore, for DICE-based attestation the TDX module adds new TD
-> evidence in the quote instead of expanding the TD report.
->=20
-> Is this the cleanest approach? Maybe not. A clear separation of
-> concern, with TD evidence in the report and the quote only adding
-> signature and trust material, does feel cleaner.
->=20
-> But on the other hand:
->  - The quote itself is already a per-TD data structure
->  - The it is inherently variable size because it contains
->    cryptographic=C2=A0material and trust data
->  - A fixed-size TD report means that at least one of them is fixed
->    size, not both.
+So this whole hoopla is just to be able to select =eibrs in SNP guests, *and*,
+in doing so, cause a performance loss. I.e., shoot oneself in the foot.
 
-Taking this argument a step further, why even have a TD report?  If DICE-ba=
-sed
-attestation can "add evidence" at quote-time, then just throw away the sepa=
-rate
-report entirely.
+Or is there another, better reason which wants this?
 
-> 4. Migration-specific case
->=20
-> For the normal user attestation path, the TD report is TD-scoped. For
+> Fixes: acaa4b5c4c85 ("x86/speculation: Do not enable Automatic IBRS if SEV-SNP is enabled")
+> Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Cc: Borislav Petkov (AMD) <bp@alien8.de>
+> Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Sean Christopherson <seanjc@google.com>
+> Cc: stable@kernel.org
 
-That's not a TD report.  Call it whatever you want, but it's not a report a=
-bout
-a TD.  If the claim is that "TD" can mean something other than a TDX VM, de=
-pending
-on the context, then that needs to stop, because there is no way anyone is =
-going
-to be able to follow along.
+Definitely not stable material. If at all.
 
-> migration, the report is effectively platform-scoped, just because the
-> migration flow does not need TD-specific evidence.
->=20
-> I would say that clean design is when Linux does not need to know this
-> and care about this specific case: be able to treat all TD reports as
-> per-TD.
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202603121136.bc8zNsHS-lkp@intel.com/
+
+It doesn't close that - that link points to something which is not upstream.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
