@@ -1,226 +1,154 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8030391846;
-	Tue, 18 Aug 2026 17:43:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D8C357D13
+	for <linux-coco@lists.linux.dev>; Tue, 18 Aug 2026 20:37:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787075030; cv=none; b=fX6VidFR0f4dznkY5lRGnr+WKw5WOUBVO7WuWvKqsh5+6I92W3WZLSxJ8jJWEwldQ1I0Yoi1k/esEe221qKssNzjF0yD55Xnc2woPeYBwNq/cGA4wiZqf4csGM9p1RZ/pfFGq0LFPUcxAiaz9qHuncgXxDaZWvVE9IOCHY3s2FM=
+	t=1787085467; cv=none; b=fXQWZ15dG5Ot2gpi1Wne6pvQ7apfM1ZirD6w9YGtbgsMdGp3lZ8TMEpZbB3bONy6YTOlRiwvE6lBkxHwufCRR6j8c6tWRY13wohjHAJcgFcducld0IJY2rYFaJ9JWvit3E7WhgbM1O7ahg02K4RPWZbehojEPSc7rLl9GFTW9DI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787075030; c=relaxed/simple;
-	bh=g9hhg5cPvC+RxRbcs0YvetehpXxMGu9/BaUVLKzNfGE=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=RsJ+jGT+goCkHQHtsurHmj4jOkk44vNuMW4yQ3PkHMI7OAB80aLKVNzTEBpEGqZwHfu+fUASmk57LLj37PzwTmSt3X07FSR9n881Y3yfBcm75XFwGYXUKn3QPZ9WPIC7MDe+S8CYSLHP+2wkhYo6I+Sq2t52gQPh/vDRAVAsO54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=rjX6qxXK; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1787085467; c=relaxed/simple;
+	bh=6iPIb/NGfhyw66q8Gzx9C/Hh1IrKPQkJh6eoXaONCgI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ZOR+EgYc6pvdOmQzxVrW4BqGi4e5UaNPchFhzcMf9cXAOAohZeRPJVO73NNAEmpHBSWRGfnQoQj4ldJU5kNW6gew2R11aukTym/+1LhaYVVZU+Ba03Y8m3d8fvmidW/Ze48V8CQtYdpEnjyxXVUPj5WWVViYUyGB0TGyzSvNWag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YTgP7Mgc; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="rjX6qxXK"
-Received: from [10.4.158.9] (unknown [52.172.102.222])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 05DB820B7168;
-	Tue, 18 Aug 2026 10:43:12 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 05DB820B7168
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1787075000;
-	bh=71NdvjfhSL6mWbXOITNIsCZ1w+IRh7JItVsgMhRpEkI=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=rjX6qxXKPLUrCnMN1McoZtM73mCOfJ4Fn0nGlOK5iJqiMr5ENiHFn2JhekPFkd3vn
-	 4/PLC6kleFnWZZWHFWuW5VOIZYrCJFRDAlbxvTwO+wzbRjsqtIvKBjc2VBHPfqCwCx
-	 Wil1ZKEaNk2swisxYtKsJIM7qyhq/CHngHb8mICU=
-Message-ID: <36877aa6-3f70-4da1-aecb-7209a33f8595@linux.microsoft.com>
-Date: Tue, 18 Aug 2026 10:43:20 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YTgP7Mgc"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e475f83a2so586885a91.1
+        for <linux-coco@lists.linux.dev>; Tue, 18 Aug 2026 13:37:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787085466; x=1787690266; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=5bvSIbOOi/LGDNWtBrRegseU7kGQ5JA6GPeCKC+/MNs=;
+        b=YTgP7Mgcz1e6E+yVtK64SPvxN2V5GiQ+8eAmOgFW5uZriC38kGz4jML5kt99nIpoqp
+         ABhqOR3UMLeVuweVhbdUxNj7UY9+kDfs6A46MlD8st0S2ZOT2ZVjbO5C7ztz3uzfgtf8
+         7AIkTpWk5YxrSYwMeCXMwaHYU0+IiGj3y6qfcnQw+wmNBLum/E1K8sVMYcE6zM8ECqiZ
+         pcySILTltEac1sasqQq+o+DhMgUOCH47/2LEaEvImPa0zVyQdFZijjOuhKM3fZllYtl1
+         cRYWwRKuT8J3HhrRD07vjZY1Qq9qDOhSe+RSBbNQAZ+5o9j1qmkT+cp66fKy1uxEonn4
+         a/wA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787085466; x=1787690266;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5bvSIbOOi/LGDNWtBrRegseU7kGQ5JA6GPeCKC+/MNs=;
+        b=CxPFOAYRdmh42d3SEa4jtS1fB2z7siwZbBPblaTjvrJVDlCwKE/eSLHXLMA1V2ur0d
+         QxVP34xcbvsr4mW5eZ8m3uUtfxMkmU0XyU5+x6c0igPC7T88Jvi4qwk1Q+E1mXZbsh2w
+         3E2xNszsFUxPV9J3zj09Q1iVqg3cD/TTNNg9/DlF3LN2ppkkn4h3Ny5Aibn/G6DtVwmN
+         KqghIj3h8X7AxIU4n93EQFaxf43PDahqCAD3b31WE9iL5kxGObgKDQnvtD11tx3l56rh
+         ZvQmCxTJm+pOATPvnD1JqEyefN53EDQ5K7h5y96PzkfQ4RPvRRf/y71+CrgunyXsqbKt
+         pU+w==
+X-Forwarded-Encrypted: i=1; AHgh+RrRyWp9SRHNYcqLGwGYUWuH7R+ah3huqxQKDMp/stynpW9b8cQjBmqbZUkqjWqqs2GLNDmKrktyCFga@lists.linux.dev
+X-Gm-Message-State: AOJu0YwTPljjEc568u1IHzsczLltBoJOoeTI2gep2iMZ2A6HavcFNJh/
+	UHbzPq1Tw6AhX305q/pjrfeACaVwzB5Wd1bl5qDg2R894gVfSfw3vGqmzxafasooltLyNw/twuW
+	9PbMDdQ==
+X-Received: from pjbga10.prod.google.com ([2002:a17:90b:38a:b0:381:fafe:3071])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3e50:b0:38e:2524:724f
+ with SMTP id 98e67ed59e1d1-3957b2d203amr652642a91.12.1787085465373; Tue, 18
+ Aug 2026 13:37:45 -0700 (PDT)
+Date: Tue, 18 Aug 2026 13:37:44 -0700
+In-Reply-To: <98dcc8a12f117745a1cb9981dc8f0f1548e9c96f.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Kameron Carr <kameroncarr@linux.microsoft.com>
-Subject: Re: [RFC PATCH v4 07/11] coco: guest: arm64: Add guest APIs to read
- host-cached DA objects
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: Alexey Kardashevskiy <aik@amd.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dan Williams <dan.j.williams@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Jonathan Cameron <jic23@kernel.org>, Marc Zyngier <maz@kernel.org>,
- Samuel Ortiz <sameo@rivosinc.com>, Steven Price <steven.price@arm.com>,
- Suzuki K Poulose <Suzuki.Poulose@arm.com>, Will Deacon <will@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>
-References: <20260427082805.931832-1-aneesh.kumar@kernel.org>
- <20260427082805.931832-8-aneesh.kumar@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260427082805.931832-8-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <80b4ea89ebf17398c3bee21d157c7f97ea32aadf.camel@intel.com>
+ <anxvwV_Pz4UYaxxt@google.com> <86d532f33816cd4fa3e29c40079a6003abf89324.camel@intel.com>
+ <anyiwqi9i0NSv0QW@google.com> <ed4891a59096c59e43a893910c9f17d0ff6086b8.camel@intel.com>
+ <20260812223707.GD1013044@pedri> <6191a69559e58e04c8e3f1efa776e9639796af3d.camel@intel.com>
+ <anz9b6CDkhr5D5RG@google.com> <c697ff1d97fe62882eaf3bd86a4213bf2e79fc09.camel@intel.com>
+ <98dcc8a12f117745a1cb9981dc8f0f1548e9c96f.camel@gmail.com>
+Message-ID: <aoTCmJXjQQbXRKqv@google.com>
+Subject: Re: [PATCH v3 0/4] tdx-guest: Make Quote buffer size dynamic
+From: Sean Christopherson <seanjc@google.com>
+To: Artem Bityutskiy <dedekind1@gmail.com>
+Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"kas@kernel.org" <kas@kernel.org>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, 
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "hpa@zytor.com" <hpa@zytor.com>, "tglx@kernel.org" <tglx@kernel.org>, 
+	Peter Fang <peter.fang@intel.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 4/27/2026 1:28 AM, Aneesh Kumar K.V (Arm) wrote:
-> Introduce guest-side helpers to read host-cached DA objects
-> (certificate, VCA, interface report, and measurements).
-> 
-> Add RHI_DA_OBJECT_SIZE and RHI_DA_OBJECT_READ definitions, then implement
-> rhi_read_cached_object() that:
-> - queries object size from host
-> - validates size against MAX_CACHE_OBJ_SIZE
-> - allocates a shared buffer
-> - issues OBJECT_READ into shared memory
-> - copies data into private memory and frees shared pages
-> 
-> Export the helper for later evidence-collection and verification code.
-> 
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> ---
->  arch/arm64/include/asm/rhi.h             |  8 +++
->  drivers/virt/coco/arm-cca-guest/rhi-da.c | 71 ++++++++++++++++++++++++
->  drivers/virt/coco/arm-cca-guest/rhi-da.h |  1 +
->  drivers/virt/coco/arm-cca-guest/rsi-da.h |  2 +
->  4 files changed, 82 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/rhi.h b/arch/arm64/include/asm/rhi.h
-> index 2b56a7760904..dc7a57370945 100644
-> --- a/arch/arm64/include/asm/rhi.h
-> +++ b/arch/arm64/include/asm/rhi.h
-> @@ -48,6 +48,14 @@ unsigned long rhi_get_ipa_change_alignment(void);
->  				 RHI_DA_FEATURE_VDEV_SET_TDI_STATE)
->  #define RHI_DA_FEATURES			SMC_RHI_CALL(0x004B)
->  
-> +#define RHI_DA_OBJECT_VCA			0x0
-> +#define RHI_DA_OBJECT_CERTIFICATE		0x1
-> +#define RHI_DA_OBJECT_MEASUREMENT		0x2
-> +#define RHI_DA_OBJECT_INTERFACE_REPORT		0x3
-> +#define RHI_DA_OBJECT_EXTENSION_EVIDENCE	0x4
-> +#define RHI_DA_OBJECT_SIZE		SMC_RHI_CALL(0x004C)
-> +#define RHI_DA_OBJECT_READ		SMC_RHI_CALL(0x004D)
-> +
->  #define RHI_DA_VDEV_CONTINUE		SMC_RHI_CALL(0x0051)
->  
->  #define RHI_VDEV_MEASURE_HASH	0x0
-> diff --git a/drivers/virt/coco/arm-cca-guest/rhi-da.c b/drivers/virt/coco/arm-cca-guest/rhi-da.c
-> index d0f5ae320f83..73c599802a93 100644
-> --- a/drivers/virt/coco/arm-cca-guest/rhi-da.c
-> +++ b/drivers/virt/coco/arm-cca-guest/rhi-da.c
-> @@ -3,6 +3,8 @@
->   * Copyright (C) 2026 ARM Ltd.
->   */
->  
-> +#include <linux/string.h>
-> +
->  #include "rsi-da.h"
->  #include "rhi-da.h"
->  
-> @@ -283,3 +285,72 @@ int rhi_update_vdev_measurements_cache(struct pci_dev *pdev, const u8 *nonce)
->  		pci_err(pdev, "failed to get device measurement (%d)\n", ret);
->  	return ret;
->  }
-> +
-> +int rhi_read_cached_object(int vdev_id, int da_object_type, void **object, int *object_size)
-> +{
-> +	int ret;
-> +	int data_size;
-> +	void *data_buf_shared;
-> +	struct page *shared_pages;
-> +
-> +	*object_size = 0;
-> +	*object = NULL;
-> +
-> +	struct rsi_host_call *rhicall __free(kfree) =
-> +		kmalloc(sizeof(struct rsi_host_call), GFP_KERNEL);
+On Thu, Aug 13, 2026, Artem Bityutskiy wrote:
+> IOW: in the SGX-based design, it is impossible to add TD evidence to
+> the quote. In the DICE-based design, it is possible.
+>=20
+> But the question is - OK, it is possible, but why should it be done?
+>=20
+> 3. Why freezing TD report size
+>=20
+> Linux supports 1024-byte TD reports via the `TDX_CMD_GET_REPORT0`
+> ioctl. It is already full, no more TD evidence fits, and changing TD
+> report size would require a new ioctl.
 
-"Unused bits of the RsiHostCall structure SBZ"
+So instead of adding new uAPI for the guest, TDX adds new uAPI to KVM?  Tha=
+t's
+not a very compelling argument.
 
-It's best practice to use kzalloc for struct rsi_host_call.
+> Also, as I understand it, based on TDX feature requests from customers, t=
+here
+> may be a need to increase TD report size more often and more significantl=
+y
+> than one would expect.
 
-> +	if (!rhicall)
-> +		return -ENOMEM;
-> +
-> +	rhicall->imm = 0;
-> +	rhicall->gprs[0] = RHI_DA_OBJECT_SIZE;
-> +	rhicall->gprs[1] = vdev_id;
-> +	rhicall->gprs[2] = da_object_type;
-> +
-> +	ret = rsi_host_call(rhicall);
-> +	if (ret != RSI_SUCCESS)
-> +		return -EIO;
-> +
-> +	if (rhicall->gprs[0] != RHI_DA_SUCCESS)
-> +		return -EIO;
-> +
-> +	/* validate against the max cache object size used on host. */
-> +	data_size = rhicall->gprs[1];
-> +	if (data_size > MAX_CACHE_OBJ_SIZE || data_size == 0)
-> +		return -EIO;
+Who cares?  And I mean that literally, i.e. "who" as in "what chunk of code=
+ is
+negatively affected if the TD report size changes".  "GET" ioctls whose pay=
+loads
+have varying size aren't novel, nor are they particularly difficult to impl=
+ement
+or work with.  What's so bad about adding e.g. TDX_CMD_GET_REPORT0_2 to all=
+ow for
+a variable sized payload and any other mistakes we made with TDX_CMD_GET_RE=
+PORT0?
 
-Consider making data_size and object_size size_t (unsigned long) to avoid
-truncation and signed comparison.
+> Therefore, for DICE-based attestation the TDX module adds new TD
+> evidence in the quote instead of expanding the TD report.
+>=20
+> Is this the cleanest approach? Maybe not. A clear separation of
+> concern, with TD evidence in the report and the quote only adding
+> signature and trust material, does feel cleaner.
+>=20
+> But on the other hand:
+>  - The quote itself is already a per-TD data structure
+>  - The it is inherently variable size because it contains
+>    cryptographic=C2=A0material and trust data
+>  - A fixed-size TD report means that at least one of them is fixed
+>    size, not both.
 
-For consistency with cca_verify_digests() and pci_tsm_evidence_object.len,
-I would also change all the sizes in cca_collect_dev_evidence() to be
-size_t.
+Taking this argument a step further, why even have a TD report?  If DICE-ba=
+sed
+attestation can "add evidence" at quote-time, then just throw away the sepa=
+rate
+report entirely.
 
-> +	shared_pages = alloc_shared_pages(NUMA_NO_NODE, GFP_KERNEL, data_size);
-> +	if (!shared_pages)
-> +		return -ENOMEM;
-> +
-> +	data_buf_shared = page_address(shared_pages);
-> +
-> +	rhicall->imm = 0;
-> +	rhicall->gprs[0] = RHI_DA_OBJECT_READ;
-> +	rhicall->gprs[1] = vdev_id;
-> +	rhicall->gprs[2] = da_object_type;
-> +	rhicall->gprs[3] = virt_to_phys(data_buf_shared);
-> +	rhicall->gprs[4] = data_size;
-> +	rhicall->gprs[5] = 0; /* offset to read from */
-> +	ret = rsi_host_call(rhicall);
-> +	if (ret != RSI_SUCCESS || rhicall->gprs[0] != RHI_DA_SUCCESS) {
-> +		free_shared_pages(shared_pages, data_size);
-> +		return -EIO;
-> +	}
-> +
-> +	if (data_size != rhicall->gprs[1]) {
-> +		/* Short read */
-> +		free_shared_pages(shared_pages, data_size);
-> +		return -EIO;
-> +	}
-> +
-> +	void *data_buf_private = kvmemdup(data_buf_shared,
-> +					  data_size, GFP_KERNEL);
-> +	/* free the shared pages irrespective of error condition */
-> +	free_shared_pages(shared_pages, data_size);
-> +	if (!data_buf_private)
-> +		return -ENOMEM;
-> +
-> +	*object = data_buf_private;
-> +	*object_size = data_size;
-> +	return 0;
-> +}
-> diff --git a/drivers/virt/coco/arm-cca-guest/rhi-da.h b/drivers/virt/coco/arm-cca-guest/rhi-da.h
-> index d32ccc48c0d0..f7655d7ecf18 100644
-> --- a/drivers/virt/coco/arm-cca-guest/rhi-da.h
-> +++ b/drivers/virt/coco/arm-cca-guest/rhi-da.h
-> @@ -13,4 +13,5 @@ bool rhi_has_da_support(void);
->  int rhi_vdev_set_tdi_state(struct pci_dev *pdev, enum rhi_tdi_state target_state);
->  int rhi_update_vdev_interface_report_cache(struct pci_dev *pdev);
->  int rhi_update_vdev_measurements_cache(struct pci_dev *pdev, const u8 *nonce);
-> +int rhi_read_cached_object(int vdev_id, int da_object_type, void **object, int *object_size);
->  #endif
-> diff --git a/drivers/virt/coco/arm-cca-guest/rsi-da.h b/drivers/virt/coco/arm-cca-guest/rsi-da.h
-> index 297cb800edc0..88067d2230ab 100644
-> --- a/drivers/virt/coco/arm-cca-guest/rsi-da.h
-> +++ b/drivers/virt/coco/arm-cca-guest/rsi-da.h
-> @@ -10,6 +10,8 @@
->  #include <linux/pci-tsm.h>
->  #include <asm/rsi_smc.h>
->  
-> +#define MAX_CACHE_OBJ_SIZE	SZ_16M
+> 4. Migration-specific case
+>=20
+> For the normal user attestation path, the TD report is TD-scoped. For
 
-Why is the limit 16 MiB? I don't see that limitation in the RHI spec.
-Does the limit come from PCI TSM?
+That's not a TD report.  Call it whatever you want, but it's not a report a=
+bout
+a TD.  If the claim is that "TD" can mean something other than a TDX VM, de=
+pending
+on the context, then that needs to stop, because there is no way anyone is =
+going
+to be able to follow along.
 
-Regards,
-Kameron
-
-> +
->  struct cca_guest_dsc {
->  	struct pci_tsm_devsec pci;
->  };
-
+> migration, the report is effectively platform-scoped, just because the
+> migration flow does not need TD-specific evidence.
+>=20
+> I would say that clean design is when Linux does not need to know this
+> and care about this specific case: be able to treat all TD reports as
+> per-TD.
