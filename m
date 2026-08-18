@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CE63DDB02
-	for <linux-coco@lists.linux.dev>; Tue, 18 Aug 2026 07:47:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6D73845A6
+	for <linux-coco@lists.linux.dev>; Tue, 18 Aug 2026 08:18:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787039274; cv=none; b=clvPkEkRQHoPZ71CRA2xMZkFQVoukpFNCrkXuwt15g5MpP1sZ9Xt/1WykqGMn+tZWa8UHP5KCOCQ1YEAyVvldzVxiCgH59dZzuJif1Q2+K4c5nQLPEkNIaTxxiJh0FRjRhNMVSITRFYtP+m39XiueVQbVigOeVXrETdt8G0dtrg=
+	t=1787041086; cv=none; b=CGFkU7PjgLGuwqo6PgAHNx+4qoufbxAwm3ecXffULhkDeAEe09B9o6KSpaG/ee2I8vgAClF0srSYNqu1aG7t9QyhjX8YSVJF3afFH9UpT6OoJBcrw+SUsLylCbonHL0tCFIWmiSRT4bVQvBBUCagXGg88ZXhtegqe+lYe62Show=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787039274; c=relaxed/simple;
-	bh=SP3aTHO3gdc4XYZoR10qTa3rIZp0gv6pOveceMckfHM=;
+	s=arc-20240116; t=1787041086; c=relaxed/simple;
+	bh=fzBs/v2lX6bjtMxVASfa3Y/bIx0O7kOhrBTzv/t/o9Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eaNDDVAXVS8vGrXbRKds0FjWV5jhlTiuygdhyiPg+uk9hNe/14u09uwN5nWo829D2vfw3xHENLMHr+5h5dXZzNObGmTdcZlgv9T2Vqxy7Bx8CapRzZGcJgAnBOAnB6SJuo9N1CAW3/hqxr14RvHC0/y8v64YfmUjcQYsGO+6IxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YEWpsAKu; arc=none smtp.client-ip=192.198.163.10
+	 In-Reply-To:Content-Type; b=AoWKxWu35ZjG1Q4Rw/jTuOfoP8/OOnYwLi7zu5pvrZNWI/Mkta3bELDZbOTgizsLh0b/H1z/4wQJQk3fb/MIbYDrNap4Qwbpbeac64E6lwCmhoEIDyOuuNYUmhJfxS3axhuCKqJ1Src//Vpl7RoPnsLsxOJ/WS1JuGosucQV34Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QUzkCRBh; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YEWpsAKu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QUzkCRBh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787039273; x=1818575273;
+  t=1787041085; x=1818577085;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=SP3aTHO3gdc4XYZoR10qTa3rIZp0gv6pOveceMckfHM=;
-  b=YEWpsAKuoASY+qIyDoW3BVkWgqb6PjL9mi5a0ytKhN0iWxE2I8fAfnGb
-   E6LxPYmEbj2R/vy6bvOVIPa4Rea9lJ23Fu+F7ROqB78UPpX2HBGXGJDpB
-   QLyHz+tawnknch6YsXz9J4ehVgC+iMfEnPtXEVmCxszhD70klQ/qaY7Bn
-   ykp/8Pklso4sGopMeBGFA4e5cXuqfRNxVHwB6KATSgx/fwgtHUZ73tB4v
-   07//lEfjCnMdYiMhUbmf2c2eGTclTTCCy3vDDeO+W8U+V3+tOUEuvfPT7
-   i6BzPEInBT8AtyxXbqBoD9vM1Q/5reS8kHARCDyLnjlUeEMwazwZlmPVr
+  bh=fzBs/v2lX6bjtMxVASfa3Y/bIx0O7kOhrBTzv/t/o9Q=;
+  b=QUzkCRBhF+vNSf0pvJ8JMQvRyf2CTA0yzdbo6glYMmNp4slobhqxYJSR
+   1ViOkRxvHz+TjGDennOxn3CRMMk28lc+/CfkxOv9Fji8hQ/XOGB1yTq88
+   QuBimZtk0ahqwN68zQm38VBeUUTqIJgZtRkO6qBNdKex5i31qktufQmnx
+   /46JaDPLjGONYIm5CZ4JqQAr7TGpIxty/yNcolQ/jYMXaBg75pWftD3Y5
+   IL5ryH861o6G9nZQcSG2Vc+1gv4JbSDf/xRdVZUwGiFZryeqbNAzWeosO
+   KOadQh9iS+5uv0oXZp1BUqGrC925flienCYc15GbUnZutmV0VNFRNNueR
    w==;
-X-CSE-ConnectionGUID: 3QJ1PkEPQpWk8g494n8Y5A==
-X-CSE-MsgGUID: Jr0bDXNXS1mO6TqazDR3Hw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="98886720"
+X-CSE-ConnectionGUID: +MfEAUYJT4y6nDXxoNkNCQ==
+X-CSE-MsgGUID: lKq1CDrWTyyV2XVYjG5AZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="91208469"
 X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="98886720"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 00:47:52 -0700
-X-CSE-ConnectionGUID: cBCj8741RAKZPl3PHu7JDA==
-X-CSE-MsgGUID: Vh3RwgwdRFOG3y/EPZSxuQ==
+   d="scan'208";a="91208469"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 01:18:05 -0700
+X-CSE-ConnectionGUID: GW7Uc7aNSUmptCHDM+hl0Q==
+X-CSE-MsgGUID: I4skbCsrQlWraST++Eojdw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="265181040"
+   d="scan'208";a="258946082"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.238.208.98]) ([10.238.208.98])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 00:47:49 -0700
-Message-ID: <94990aef-8b17-4bc6-a5d5-e7da5107d001@intel.com>
-Date: Tue, 18 Aug 2026 15:47:44 +0800
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 01:17:59 -0700
+Message-ID: <f7b3a63c-7a1d-445f-b062-4cea5343d266@intel.com>
+Date: Tue, 18 Aug 2026 16:17:55 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,92 +52,73 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] KVM: TDX: Enable Bus Lock VM exit
-To: Sean Christopherson <seanjc@google.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "kas@kernel.org" <kas@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>
-References: <20260812080229.2481439-1-xiaoyao.li@intel.com>
- <20260812080229.2481439-5-xiaoyao.li@intel.com>
- <868c0d3c792d789347c767031612977c31cc227f.camel@intel.com>
- <1cf47118-2a19-44d5-ab74-b4c7ffa8890c@intel.com>
- <an3YFiDbjRs3PUwn@google.com>
- <77567574-d26c-4d2c-b5ce-5da28a7178d6@intel.com>
- <an84cenJjf7EqhVM@google.com>
- <1dcbf1b2-dc89-4624-b98e-d34f40558cfb@intel.com>
- <aoNNiAbZUbkWoZ6t@google.com>
+Subject: Re: [PATCH v14 13/22] KVM: selftests: Support guest_memfd in-place
+ conversion
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
+ Ackerley Tng <ackerleytng@google.com>, Binbin Wu
+ <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
+ Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
+ <20260722-tdx-selftests-v14-13-15ad654a50db@google.com>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <aoNNiAbZUbkWoZ6t@google.com>
+In-Reply-To: <20260722-tdx-selftests-v14-13-15ad654a50db@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 8/18/2026 2:06 AM, Sean Christopherson wrote:
-> On Sat, Aug 15, 2026, Xiaoyao Li wrote:
->> On 8/14/2026 11:46 PM, Sean Christopherson wrote:
->>> On Fri, Aug 14, 2026, Xiaoyao Li wrote:
->>>> On 8/13/2026 10:43 PM, Sean Christopherson wrote:
->>>>> On Thu, Aug 13, 2026, Xiaoyao Li wrote:
->>>>>> On 8/13/2026 6:58 AM, Edgecombe, Rick P wrote:
->>>
->>> ...
->>>
->>>>> The more I look at this, the more I'm against shoving garbage into vt->exit_reasons.
->>>>> With tdx_is_exit_reason_valid(), this is trivially easy to handle, *and* explicitly
->>>>> captures the logic instead of subtly rerouting KVM away from meaningful handling.
->>>>
->>>> tdx_is_exit_reason_valid() doesn't work unless we update the vp_enter_ret to
->>>> one that isn't one of the status code with valid Exit Reason. See below.
->>>
->>> Correct.
->>>
->>>> About the idea, isn't the purpose of setting the Exit Reason to a synthesized
->>>> one is to avoid the undefined Exit Reason causing false-positives when it
->>>> happens to match one of the existing ones?
->>>
->>> Yes.  The nuance is that I'm against clobbering the *full* exit reason.  I am
->>> not against setting exit_reason.basic to something like EXIT_REASON_INVALID_STATE.
->>
->> I'm not sure why you are not OK with setting the bit[31:16] to 0 ...
-> 
-> I'm all for that.  I'm against setting them to 1, which is what using -1u does.
-> 
-> Ah, I'm guessing my use of "clobbering" is confusing.  I was mentally viewing
-> setting them to '1' as clobbering, versus setting them to '0' as "doing the right
-> thing.
-> 
-> E.g. the VM-Exit (that didn't happen) wasn't due to a failed guest consistency
-> check; it certainly wasn't an SMI from VMX Root, nor was an MTF pending at the
-> time of the SMI that didn't happen; the guest wasn't in enclave mode; there was
-> no concident bus lock; all other bits are reserved to zero.
-> 
-> Sorry, I should have clarified that writing the full exit reason is ok, but setting
-> arbitrary bits in a way that isn't consistent with reality is not.
+On 7/23/2026 7:13 AM, Lisa Wang wrote:
+> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+> index 4a48c4b42095..e547ea341ff7 100644
+> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
+> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+> @@ -484,8 +484,10 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+>   	u64 nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
+>   						 nr_extra_pages);
+>   	struct userspace_mem_region *slot0;
+> +	u64 gmem_flags = 0;
+>   	struct kvm_vm *vm;
+> -	int i, flags;
+> +	int flags = 0;
+> +	int i;
+>   
+>   	kvm_set_files_rlimit(nr_runnable_vcpus);
+>   
+> @@ -495,14 +497,20 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+>   	vm = ____vm_create(shape);
+>   
+>   	/*
+> -	 * Force GUEST_MEMFD for the primary memory region if necessary, e.g.
+> -	 * for CoCo VMs that require GUEST_MEMFD backed private memory.
+> +	 * Force GUEST_MEMFD for the primary memory region if necessary, and
+> +	 * initialize it as shared if in-place conversion is support, so the
+> +	 * selftest framework can populate it exactly like other memory
+> +	 * providers.
+>   	 */
+> -	flags = 0;
+> -	if (is_guest_memfd_required(shape))
+> +	if (is_guest_memfd_required(shape)) {
+>   		flags |= KVM_MEM_GUEST_MEMFD;
+> +		if (kvm_has_gmem_attributes)
+> +			gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED |
+> +				      GUEST_MEMFD_FLAG_MMAP;
+> +	}
+>   
+> -	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags);
+> +	vm_mem_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags,
+> +		   -1, 0, gmem_flags);
+>   	for (i = 0; i < NR_MEM_REGIONS; i++)
+>   		vm->memslots[i] = 0;
 
-I will add a separate patch in the next version to set
-
-   vt->exit_reasons.full = TDX_INVALID_EXIT_REASON;
-
-where TDX_INVALID_EXIT_REASON is U16_MAX, i.e. 0x0000FFFF.
-
-
-For change of below, will be in another series
-
-diff --git arch/x86/kvm/x86.c arch/x86/kvm/x86.c
-index 0626e835e9eb..6cace57e45fd 100644
---- arch/x86/kvm/x86.c
-+++ arch/x86/kvm/x86.c
-@@ -8374,7 +8374,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
-         if (vcpu->arch.xfd_no_write_intercept)
-                 fpu_sync_guest_vmexit_xfd_state();
-
--       kvm_x86_call(handle_exit_irqoff)(vcpu);
-+       if (exit_fastpath != EXIT_FASTPATH_EXIT_HANDLED)
-+               kvm_x86_call(handle_exit_irqoff)(vcpu);
-
-         if (vcpu->arch.guest_fpu.xfd_err)
-                 wrmsrq(MSR_IA32_XFD_ERR, 0);
+IMO, this diff belongs to the gmem in-place series.
