@@ -1,147 +1,103 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B193B100A
-	for <linux-coco@lists.linux.dev>; Wed, 19 Aug 2026 19:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E673C98AF;
+	Wed, 19 Aug 2026 20:11:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787168484; cv=none; b=Be/SYLWVrkQR3duqz6vXKtTVWJUPaMPlDdIXodFHHYn+obaQ5DXUoDpfNnO+O7Iqs/DhHE+TnInn+amhrtLSIL1bH8sxyFbjzWtkcAoP7WP11ypQ8WNIUsaYD1FFgP9b7kVDF+LPKsTHY6ohQilqRdZs3FBiPZ6YtAtw07d74C0=
+	t=1787170279; cv=none; b=YDF3xJedV7Lgf/o0Gf6ZAOm3cgiHS4QF+l1CjCLSPYZ3UK8y9V99J+xM8LUaKxiYE4ihYs9w0KN/o4Mm9y11FXWMSk/nfHOeN7kgJIWdp64nyiIR50aIT67NOCXKSutOfGvxChPJP9GrlPEecBxpv0MG9ub97W7J9v47PmtxC7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787168484; c=relaxed/simple;
-	bh=Mq5+V5+ZUmpq7Hw/9XupS65+jzwahk6GhQuhDlgNwE0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fiUBh1JAEV0gyn4euvwCWgB0OXFmXe8Vk93QLKLdzB9exx6OhhmMQ/xRiyfKNxAn0i71KTHIA+J1wK9fbZqAP+oOSCaSPZ25L2r9fKCBLwfZRDO5bn6fRMhD+Hygi5Q7Ouu4kRuQsdUlfpl7o1ghATgSLbH6L/UKdoc4MxhY7t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Nm4p9Ufr; arc=none smtp.client-ip=209.85.210.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787170279; c=relaxed/simple;
+	bh=1r9mVuKpwoDPw/x3Xw2bH12WraDMo4/PU9QvPCLxiW8=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=tFYyrVtmb1VOiKwOzIMlB85WGuUetxvVASNIUDgXVtL0/cuwtPxrocFuDW7YbRt1r2csSCz8Dpw+aodei0vPMhvrYCx74nt58QZj9vqNQtzcIi2DvIda+4bAoTnp6cpz01HqOSJBtHWoDL4C/vA05wmLACrHfMMOjH0hzXyJVOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n9IGv8TD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Nm4p9Ufr"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84e024d2129so2195825b3a.2
-        for <linux-coco@lists.linux.dev>; Wed, 19 Aug 2026 12:41:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787168482; x=1787773282; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=nHPfz+9xnErJIyGrKM7A488aJznVuuAajDljXkIrQvo=;
-        b=Nm4p9UfrHtje0PVJN2ZlU7Bff7yb7Y+mWfbiz2oOLlgYTtmC6nrZOlmP2x78cUQ5J9
-         Z7e1R5zgzeiDfubPnXv4EyBSzJ4j3V3bVoLQCYkmgoemNlLBx4FMldSGtAz2Sb/bIxNh
-         Vv9b977Q18JWdu35+mHfia44yQO8gn03akImY+Zpdz0E4BkvC1BooP5W1dgsBtt2Z9P4
-         vdQpfEj/JOYwzagsUoAhqUExIjPVC2X9gT2nfHHVn8NdnUbxfTVIgBYFHy43mt4OCf/k
-         U/QYG4ThOfwiezRn+Ot/MlcIQbyL7HGeTdrl+ieWkzYF8wXPueWmJfyaG69WzqJ/YvAG
-         vByQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787168482; x=1787773282;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nHPfz+9xnErJIyGrKM7A488aJznVuuAajDljXkIrQvo=;
-        b=rYJJRB/FMTGR8uVhkCRHXm8ylBb6VXbwQ5iUrff7fl04+CP99sE+nTVHpfP8pyTldS
-         2+0IzU76exUez0I7goVQSKzwU5WePjwl0ZtPuttdl++M8ynvC5n8F4ZJHbTXdm2a0p6M
-         C5cLIRJIAAQ3SAKVCYMCoCORtig79UIBunVRPcbdIlOIbvcnY4aIcWVweZMLunqTeJsN
-         3VqLLN8xfsBj25WyNtiyVyw7PEnOSekq2M0h4IAeijdV46d0XzcRorgO80qFF8Vd4t+l
-         Po0OY7JGaByp5gqGS+5ru4LCNtFBSS/Et56d4SoysnSNFr4fka7bPFu4w1xgsGI/fzaN
-         IQPA==
-X-Forwarded-Encrypted: i=1; AHgh+RqpJ2FIpITOwNPiDTKDUAWUWb/J9Uus/jVbVB1ypcT5WHWEgmIJ7Pnz513B3cubU/2RlIazfixN82EL@lists.linux.dev
-X-Gm-Message-State: AOJu0YwhGfhvG1wFkHE5BCLQBWY2vnyNv/1vtoCsNnEQ+VjSWV+6dgjn
-	o4vrICVA4Ch/9A+asYLbvZmvuVawnNrV1H+XTvYIfLtDweEZPm3+y5SBluZMI9ZkMguSCBaGCAj
-	kJ77+wA==
-X-Received: from pgwa2.prod.google.com ([2002:a65:6542:0:b0:c8f:f76a:4b22])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4309:b0:847:8b11:5966
- with SMTP id d2e1a72fcca58-851d38313f0mr12376916b3a.1.1787168481981; Wed, 19
- Aug 2026 12:41:21 -0700 (PDT)
-Date: Wed, 19 Aug 2026 12:41:21 -0700
-In-Reply-To: <e5979a0a4d7c24d88f57981aba0fda6d8a5e2f29.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n9IGv8TD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C891F000E9;
+	Wed, 19 Aug 2026 20:11:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787170276;
+	bh=ZZhL2T4YYI++E1tVweFLTBeajK7qZ+c0uQKy8sqptpw=;
+	h=Date:Subject:From:To:References:In-Reply-To;
+	b=n9IGv8TDEquvik8XmKdwEBGYFzuVFC/qlCVDKejMNQxRcz+P4KqrTcB05tbVV+K79
+	 ca0h1WgWzPBRWe+rV5EEVtI0G1ySLVzB7TYsRuuB29iPtbvMCSGsZGyFlqHFv5mxkl
+	 1r6atirDreIwPec/V8btSstDB10BgLobvzESZwXPh/8cTXvCYfnU4QBLIEc8uR14Oy
+	 Qb875XPMIq4c+oZxum7lpbEC2BG0iiTsTdAxgYarhPr2cgwu4+T07aI8PcDVOJdozm
+	 2nVrnVJ6n8r0eaAubFIdZK8XIIAtK/XNhjFSR6AUrChJygwNwTTfDReagliSQhmvQP
+	 KWao6bKG3xKPw==
+Message-ID: <cc0bc18e-1e16-4d73-afdc-b950914b08da@kernel.org>
+Date: Wed, 19 Aug 2026 22:11:02 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260814224509.2342760-1-seanjc@google.com> <3a622cdb03b553cc9f8ce55b6df3c0091b3b06b9.camel@intel.com>
- <aoT_6cnARCAYTrYG@google.com> <bd8f77eb6605f771fafbcef55a47211ecbb70e19.camel@intel.com>
- <aoXSKH4QLTA5DTXe@google.com> <4f8428e0784224c55a2026eb32d046a2051193ea.camel@intel.com>
- <aoX5sbITQYeB7USY@google.com> <e5979a0a4d7c24d88f57981aba0fda6d8a5e2f29.camel@intel.com>
-Message-ID: <aoYG4XA6pXAXiHlP@google.com>
-Subject: Re: [PATCH] KVM: VMX: Explicitly track TDX VMs' root level instead of
- guessing it from CPUID
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Yan Y Zhao <yan.y.zhao@intel.com>, 
-	Kai Huang <kai.huang@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2026-08-19
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+References: <54d375aa-8362-4e1c-8f76-bae1eb9f4f76@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <54d375aa-8362-4e1c-8f76-bae1eb9f4f76@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 19, 2026, Rick P Edgecombe wrote:
-> On Wed, 2026-08-19 at 11:45 -0700, Sean Christopherson wrote:
-> > Hmm, for defense in depth, I want to explicitly check mirror_root_level=
-,
-> > because returning '0' would likely have dire consequences.=C2=A0 How ab=
-out this?
->=20
-> :) Sure.
->=20
-> Yan and I were discussing what might be a new level of defense on MMU che=
-cking.
-> We were basically trying to work out your thinking on some of the defensi=
-ve
-> patches lately. It seems there has also been a new level of activity on t=
-he bugs
-> front so we want to adapt to any learnings you had. I actually planned to=
- bring
-> it up in PUCK, but...
->=20
-> Can you share any thoughts? Should we be more paranoid in general, or sam=
-e as
-> always? Or more specifically paranoid where issues hit?
+On 8/19/26 18:23, David Hildenbrand (Arm) wrote:
+> Hi,
+> 
+> Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+> 2026-08-19 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-The big learning I've had is that simply detecting bugs doesn't help protec=
-t the
-host unless KVM also takes evasive action when the bug is detected.  E.g. a=
- WARN
-will (hopefully) be super helpful in root causing what went wrong, but it d=
-oesn't
-do anything to mitigate the bug in real time.
+Clarification (thanks David W.): tomorrow is 2026-08-20
 
-A theme common to several (not all, but several) of the recent guest-exploi=
-table
-vulnerabilities is that KVM *did* have relevant sanity checks, but KVM didn=
-'t
-actually do anything meaningful when a check failed and/or an assumption di=
-dn't
-hold true.  It's not always possible/desirable to take evasive action (see =
-below),
-but in most cases it is.
+-- 
+Cheers,
 
-Other than that, I don't think there's anything "new" per se, just a bit mo=
-re of
-a sense of urgency.  E.g. avoid BUG() and BUG_ON() unless there's a *very* =
-high
-probability the alternative is worse (this is why I said above that doing m=
-ore
-than WARNing may not be desirable).  If you fix a bug that could be applica=
-ble to
-other code, look for ways to (practically) eliminate the potential source o=
-f bugs
-(much of the guard() stuff falls into this category; the cleanup behavior m=
-akes
-it a lot hard to end up with deadlock due to forgetting an unlock in a rare=
- path).
-And so on and so forth.
-
-As for this exact sanity check, the reason why I think it's worth keeping i=
-s that
-we've already messed it up once, the code pretty much only runs once per VM=
- boot,
-and if KVM configures the wrong level, the *best* case scenario is probably=
- that
-the host panics.  I.e. my past statements along the lines of "at some point=
- we have
-to not screw up" still hold true, but as with many kernel rules and guidlin=
-es, it
-needs to be applied with a healthy dose of critical thinking.
+David
