@@ -1,179 +1,123 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D363AE194;
-	Wed, 19 Aug 2026 14:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB2B2D7DE9
+	for <linux-coco@lists.linux.dev>; Wed, 19 Aug 2026 14:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787150416; cv=none; b=t59ZvuR6M4un3D2b6pfGJ+3hYVdQpvnPvPFM52XYahiBQdve0w6FmBXmCxkQfVWXHj4Tn34I9hnv8PBpVNcUp8ZkTeK55yIW3u9kuhMnCU8T3eiLHtrV4Oa+XX2AIJZE5hva40loFca956hFV2CT4fzwbRDXBvA6HogZJ2n5GDE=
+	t=1787151477; cv=none; b=kqAJnHOtDitfdsfTmZD9VaQafCF1wGK87t/QYCjPo42ApwiScOY1GUlkH5A6lkC5Wh8owH36hLVL3BUgwrc73U74B92nGxA1YC9jLK+tUq3/gTv9lxIjJiJQP0EScE2D6WsjOi8WsloLojCRxFCBzQO8+b572AdENWvMUTtUg1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787150416; c=relaxed/simple;
-	bh=vymarJZh4YqC2L7NKmpGaLSs+LwWBnjm4Ga1t8pq/Yg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Tk0qRS81CUiOjgvOwgnWe+f39VWhg7EjFUsyVWUeF0L5DFCMwaOWNAoT+9nf18Gsno6HL+TM5NE1+HMWca9QpQnfUK/Z4FgGdMPlL0XQs20tgUF0OvkIk53MttXMLEZwr+QYpa3Qjn2rm+CSBHWknH/pYZ3HYKLUFv5Nbtga0ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pewjlzfq; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1787151477; c=relaxed/simple;
+	bh=zTygHR+bb9tPh+r8pKI2nQZjTF6gmzub3Gf+11ydK2I=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WIn8LG2eVKGoyT+ozeB4GKko7owU0qg0i6g/aQuUNuLjZ4egKqOsgTmR/CL2KOI47/NtB4idE8zImSWsaIlrzOHntLMcYkWiua+6yW0eJwHvNbtbi8YPMtiGRHRU5/HD2ZdKRT6iOq1HpdugHCjPSZPhoCaI9vXRjwWvTvTasX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q9IBmthF; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pewjlzfq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787150415; x=1818686415;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=vymarJZh4YqC2L7NKmpGaLSs+LwWBnjm4Ga1t8pq/Yg=;
-  b=PewjlzfqVvICmM3Y+gzYqT+lnKBDTWNxA6c9IwR+UDi+JCRZq1z+j+xD
-   P6lG4HNHEBpxJo7kqN0SOguxmpKEMbKs6BSEPnlG6Aew8wE6LZ40bh8t6
-   kLMJ2sHoFSg0kOQcb7BCa0gFCbMMs26iJPINMsoliGpXIjNt7blZvuKmy
-   FnOYYjAGi74sn6qeuQgecxWIrC1gH1fJt0snFLRh4G8KKgxdER8lxAcat
-   RkLBPtsnntifFsGsRppmdZuM0wNZfM/S0QLzY39hgxHQ6elMYhHKF2Srl
-   JVhHJnBM8i3f2Dl61S5rOxwxt3A9xLO8Vy9j/U6AvBy7q3XLNduYerUIB
-   g==;
-X-CSE-ConnectionGUID: nFpskmV9Ryylh0dZCTo+dw==
-X-CSE-MsgGUID: 4TUryJTySgGj4gkjBvd4tA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="86787547"
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="86787547"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 07:40:14 -0700
-X-CSE-ConnectionGUID: DLD05uXOSQS3eQ3eQ3POPA==
-X-CSE-MsgGUID: nBdVyMTXSn+BXYA1OEkKQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="261366363"
-Received: from bradocaj-mobl.ger.corp.intel.com (HELO [10.125.111.233]) ([10.125.111.233])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 07:40:10 -0700
-Message-ID: <bd9e5b6e-07f2-459d-bca6-e290585060aa@intel.com>
-Date: Wed, 19 Aug 2026 07:40:09 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q9IBmthF"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6a3819e8be8so2146315a12.0
+        for <linux-coco@lists.linux.dev>; Wed, 19 Aug 2026 07:57:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787151466; x=1787756266; darn=lists.linux.dev;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=RAsntpzptWfAPjVtkOJehjiQ6tiS2RKLcun7ZiRQNR0=;
+        b=q9IBmthFVGaC/oJujDSVH4A8MpeFg8sCyePu/9A8jiSDKgmoa2kkUaTNtwpUMhaiZx
+         Rwo4OvoWpQFqoio4FMQjXMU/kDHAuOk4U0DkZGxCiQlhWa6JnAv+NjgWYM1W83qORZKl
+         Syy69F1/DUoVkapmdRh8eL3XmsDd/jrVOzIzd1Era2ownrnNvOKETSaPf6O+dSgcP8tR
+         L7PgtquftOrgoww6swf7vLrKvwmo+z5NN7lSKjaZGWod4x2cvOQ+c7wMRDUdSK2lTgRk
+         ghvp3dq7gBv8n7zhX6SqYOZJOZhS+irbk2mYxa0uiYhNTNxP/E3ej4yOS3Kh1qKxdWCU
+         Sd5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787151466; x=1787756266;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RAsntpzptWfAPjVtkOJehjiQ6tiS2RKLcun7ZiRQNR0=;
+        b=gJmGGFZ8KwrDoL7XWdPLpLhGGyTsz4Eo1w4NsgcpDdB2TRAcXQER8IcR5rTanyjc2H
+         rqC4HfRUT5vXYcXV0SM2oomjFPK6dvn+C9bqXGsOsjzgrnfHpMUy1jT0ykIIiKOKMWGh
+         fFXQKobP6SZ8fsU5s9+3eoR3Ql4KJYFlo65RlOXPUfER8yJiZ3tdFXFCwjqdnXBf2gUR
+         2CQE7D5LCu6evbuTtk0yh+HzJEcUTvioDWvY1MCJGjv9kvDs7yJ7wlvutEdS7YaejvMV
+         6xceTnHoPJG20jJL21rbpZRr/fDCw1OviACHsLFsLDaJiyCwBGTjk9mxqzvhS8St3j72
+         YszA==
+X-Forwarded-Encrypted: i=1; AHgh+RoagEoSb4jA/Da7XJbyMgNYZt7G95nPhVUYAoxeDi6SIScbGaaK3l8feUKZIITFnAph3A1yQWKMh/Ue@lists.linux.dev
+X-Gm-Message-State: AOJu0YxFS3gaxfvAqc+oTH6CqHWWqJV9fNPhGcauIJikzP25p0pPSnJU
+	/C0N1Ew2lx5tuMZlwv2bgCFXX8xEHws1IaGCHYnqVImX7sZNxGs32aFH
+X-Gm-Gg: AR+sD10I4yfhzxiBzQSz4MQR3e0F64PqUEu4AEpaoO3NDdp3eDxbRWuZgHFENgcFzlu
+	w+3FXa2SDs+mbju3bakpOBh1+xXKoudcKGq9qMudn5cieZS5G0eUW0CWu5r290wveWJrkESr70G
+	qHJTmOigXh9mZhhHXqry0a6mRJ98t5bIjAauIw2h3gTMZgzG571AlydmlO04iiDBWbG/OLN77Ux
+	mnnQNRUOyOlI+Oaidx1g+FtWB4D5CDofnfHuUpQy4tK3rT91s02FmtoWx+FojHJ4Y5eYz/20xYY
+	NP3t1DPGP8PIJnL5xuAOeNzQ6i1V2BnCg8Qx/OVwOayEBrkFDregaccNkt4x1cyWJ8pCtdNf+tD
+	F0qEAKl6eGd0VE/fuiI2fhunkaR+y9pKbjLVIx56evbRQOs+7/ub2Bs+v0ngUi69mlkzAJWuAmD
+	EhOnxrKWwRXiijYsMnMC952uA8AWlmDgRfY3Hx+98zAUPsZGWsIFXBCLtFBf+L1kHG
+X-Received: by 2002:a05:6402:2383:b0:6a1:1742:ac22 with SMTP id 4fb4d7f45d1cf-6a3ff11a4e4mr1047552a12.2.1787151465623;
+        Wed, 19 Aug 2026 07:57:45 -0700 (PDT)
+Received: from [10.245.244.115] ([192.198.151.47])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a3feec9f4asm1124014a12.3.2026.08.19.07.57.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2026 07:57:45 -0700 (PDT)
+Message-ID: <a4149f528734a5deb03664b802939bfe67921149.camel@gmail.com>
+Subject: Re: [PATCH v3 0/4] tdx-guest: Make Quote buffer size dynamic
+From: Artem Bityutskiy <dedekind1@gmail.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "kvm@vger.kernel.org"	
+ <kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org"	
+ <linux-kernel@vger.kernel.org>, "dave.hansen@linux.intel.com"	
+ <dave.hansen@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>,
+ "kas@kernel.org"	 <kas@kernel.org>, "binbin.wu@linux.intel.com"
+ <binbin.wu@linux.intel.com>,  Xiaoyao Li <xiaoyao.li@intel.com>,
+ "sathyanarayanan.kuppuswamy@linux.intel.com"	
+ <sathyanarayanan.kuppuswamy@linux.intel.com>, "mingo@redhat.com"	
+ <mingo@redhat.com>, "hpa@zytor.com" <hpa@zytor.com>, "tglx@kernel.org"	
+ <tglx@kernel.org>, Peter Fang <peter.fang@intel.com>, 
+ "linux-coco@lists.linux.dev"	 <linux-coco@lists.linux.dev>,
+ "x86@kernel.org" <x86@kernel.org>
+Date: Wed, 19 Aug 2026 17:57:41 +0300
+In-Reply-To: <aoTCmJXjQQbXRKqv@google.com>
+References: <80b4ea89ebf17398c3bee21d157c7f97ea32aadf.camel@intel.com>
+	 <anxvwV_Pz4UYaxxt@google.com>
+	 <86d532f33816cd4fa3e29c40079a6003abf89324.camel@intel.com>
+	 <anyiwqi9i0NSv0QW@google.com>
+	 <ed4891a59096c59e43a893910c9f17d0ff6086b8.camel@intel.com>
+	 <20260812223707.GD1013044@pedri>
+	 <6191a69559e58e04c8e3f1efa776e9639796af3d.camel@intel.com>
+	 <anz9b6CDkhr5D5RG@google.com>
+	 <c697ff1d97fe62882eaf3bd86a4213bf2e79fc09.camel@intel.com>
+	 <98dcc8a12f117745a1cb9981dc8f0f1548e9c96f.camel@gmail.com>
+	 <aoTCmJXjQQbXRKqv@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/13] x86/msr: Drop 32-bit MSR interfaces
-To: Juergen Gross <jgross@suse.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, virtualization@lists.linux.dev, linux-ide@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
- kvm@vger.kernel.org, linux-edac@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
- linux-mtd@lists.infradead.org, platform-driver-x86@vger.kernel.org
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
- Alexey Makhalov <alexey.makhalov@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Damien Le Moal
- <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
- David Airlie <airlied@redhat.com>, Helge Deller <deller@gmx.de>,
- linux-geode@lists.infradead.org, Olivia Mackall <olivia@selenic.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, Linus Walleij <linusw@kernel.org>,
- Bartosz Golaszewski <brgl@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Pu Wen <puwen@hygon.cn>,
- Tony Luck <tony.luck@intel.com>, Reinette Chatre
- <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>,
- James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>,
- Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Andy Lutomirski <luto@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Len Brown <lenb@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
- Huang Rui <ray.huang@amd.com>, Mario Limonciello
- <mario.limonciello@amd.com>, Perry Yuan <perry.yuan@amd.com>,
- K Prateek Nayak <kprateek.nayak@amd.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Yazen Ghannam <yazen.ghannam@amd.com>, Guenter Roeck <linux@roeck-us.net>,
- Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
- Artem Bityutskiy <dedekind1@gmail.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Ashok Raj <ashok.raj.linux@gmail.com>, Hans de Goede <hansg@kernel.org>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
- David E Box <david.e.box@intel.com>,
- Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>, xen-devel@lists.xenproject.org
-References: <20260819102314.1499258-1-jgross@suse.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260819102314.1499258-1-jgross@suse.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-Hey Juergen,
+Hi Sean,
 
-These look great. Thanks for doing it!
+This was just discussed off-list, thanks for guidance. I only will
+comment on one thing below.
 
-The only wonky thing is how we're going to actually merge it. We
-obviously can't do patches 10-11 until all the "stop using" patches have
-been applied.
+On Tue, 2026-08-18 at 13:37 -0700, Sean Christopherson wrote:
 
-I obviously 100% realize that it's during the merge window, but any acks
-that the maintainers of 5-9 provide in the next few weeks would be super
-helpful. Or, if any of those maintainers want to cherry pick their
-subsystem's stuff out of this series and apply it, that would be great too.
+> That's not a TD report.  Call it whatever you want, but it's not a report=
+ about
+> a TD.  If the claim is that "TD" can mean something other than a TDX VM, =
+depending
+> on the context, then that needs to stop, because there is no way anyone i=
+s going
+> to be able to follow along.
 
-But, the last time we did some MSR function munging, the tip tree
-carried most of the patches. I would expect we'll have a repeat of that
-here too. I'll pencil in the idea of just merging the lot around -rc1 time.
+Oh, right, Now that you point it out, it seems obvious.
+
+We called it "TD report" because it uses the same data structure as
+the=C2=A0TD report, only without the "TD information" sub-structure.
+But no doubt this is poor terminology.
+
+Thanks,
+Artem.
