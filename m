@@ -1,163 +1,211 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010020.outbound.protection.outlook.com [52.101.56.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9693D4D90D5
-	for <linux-coco@lists.linux.dev>; Wed, 19 Aug 2026 18:16:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787163402; cv=fail; b=GhmJyQ23A6M3Y2PydsckmolpGcbNGEYQLv5yWy6yL953NGWsXJfK+pTf/J/FAZs9rUk4WN0kTerGNWWjwwrwSyvEdwiY79cu6/NZgGzU+VBCe2XqKNr7hASdXOHYXMw4UgCxwtHB+MYKAlyM9oxP2x0HFuOH60CSFXen6q2hbqk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787163402; c=relaxed/simple;
-	bh=aQDctpq6hqcqiqhA/H8qd8VUjSCqY0uhiJ/TWCBwkTQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U41vitg1OgMvEmDUHKbkCI7Rkf0+84Qey34FC+gSpa658PFN8siy8OrK6tkVXRPLKM+5uvo6/ihTUBLgWsVPK8iLiFLH1OOo+csnHVRMJrkyXqzENkf4gkgWpAEAroQcAJezMDWXX4tQK1JfgI2q3shBtfFiRyynY3wtH1l45+o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=fail (1024-bit key) header.d=amd.com header.i=@amd.com header.b=jPx+NSCJ reason="signature verification failed"; arc=fail smtp.client-ip=52.101.56.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8E63D1CAC
+	for <linux-coco@lists.linux.dev>; Wed, 19 Aug 2026 18:45:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787165109; cv=none; b=Sjnm7/M14xOBVAnkUVpE6VJrJOCUVX1+O0H7qS4drpYmcPcZlDx5l6Vis+XnVF+9y9KNgBZL977SOKkySFvLa6gnAaPiYCL8xwLW01gAEn2S+pRTpgPhk2k4/RYRSxAhPRM6MGo0wzRq8WJjMyzLX+5TJmHYMz/cwnIFWz5JlV8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787165109; c=relaxed/simple;
+	bh=yUbh9q4/j0SCopnm9+kqCeIz9+ESUtedgAp9LXSl/3k=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qYe9p0Vbyt7fJfFMvCSJtgI4R5VVwQ6d+eGt08uumnB76rwd5FR1Rzfy8zcIHg81lKLmFUE071/r6ka1HjoLnhyZDrOOOt/+VyFu9heB336i5Nj8CS0kDyJ2SQ7p28MZw5yHLX6jffNAVUIbn9LwT01/3mAap3LbRRIw+o5ABLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fC/yn4xc; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=amd.com header.i=@amd.com header.b="jPx+NSCJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b8CfC/co0EJWRQTKoaGPOggJwqckxpKfBfm9ARPE7CqGMpWNOBFoc2Ir4SYE5N5BNF+vGAGWynbcS1IW8FZ0NAiZZf/1phVbMkiXnHZuO4yTkkj/TfHXBf0F0N21eNNxU4q8JXzqFgEiUY6XsH7UyLBGQWHSocLwFwc9SekQzB4LUX8ElJ6JUeHpYF7tkks6W35JPc8wUi5XC8BR8+0/ttTWdvVN/z5IjRePfyO+CCrwQ9XIyUVu6CtXmJMdJiToZAtEXmchcukf7k/p6P477kXjnVqE+aF0WHiGWTO/uhEmqOziVEXD3/T2BvSk1eTTv71LVeou/AAUmtwqDzdh4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MBA6cOfAnaL9vf5N0E6/R3oGIWi787j422DTstAJOVM=;
- b=PcineZuOqvURnwQOKbYn3l9aF47NGftT1cqdEohlRoLPzGBD/9GpPmBn+Guyi7xgarZssqgVV+FwXg2cOmlFMI5ZRqlJudeFQ6rYOc+u2zMkmK7K/tjkPnfdn6/BqwiTTL30TkBhfORBbjLmGzhM+N0rJ6AUYo9qXwpRbXhUMOgxhghbER3UrApmzhgahYT5Y+cpp2PAMilegzNYbJkYXvCiT4RHENM2lmNfRrCvUr3dU0R/qG1fYpNrm7OqUJGw3dS6K7q5LJOYcIoOwqWgxMFmSzH6WCsm/VPjulZg4SXXofeUpt4HKDD2PIuS/ofXGyEIzYREnDq2RrM4iS59GA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=szeredi.hu smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MBA6cOfAnaL9vf5N0E6/R3oGIWi787j422DTstAJOVM=;
- b=jPx+NSCJFDzfb35nS0CPRRZUWNSy9Q82Fu+vhLNDic1mdYHyHEMCRCDbYbfRsnfN4FnNLjvWdiqnsB4BzH18jpgTb8No+qTqgxZqF2VDzpKomL5Bd6zjw7Fw9izwzFPzFn7vCp1l7xGQzRbcL/9ruGW6w1XlVQbCUiuWNeKfyok=
-Received: from SA0PR11CA0209.namprd11.prod.outlook.com (2603:10b6:806:1bc::34)
- by DS0PR12MB6583.namprd12.prod.outlook.com (2603:10b6:8:d1::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
- 2026 18:16:35 +0000
-Received: from SN1PEPF00036F3E.namprd05.prod.outlook.com
- (2603:10b6:806:1bc:cafe::e) by SA0PR11CA0209.outlook.office365.com
- (2603:10b6:806:1bc::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.17 via Frontend Transport; Wed,
- 19 Aug 2026 18:16:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SN1PEPF00036F3E.mail.protection.outlook.com (10.167.248.22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.339.3 via Frontend Transport; Wed, 19 Aug 2026 18:16:32 +0000
-Received: from localhost (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 19 Aug
- 2026 13:16:32 -0500
-Date: Wed, 19 Aug 2026 13:16:06 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: "Gupta, Pankaj" <pankaj.gupta@amd.com>
-CC: Tom Lendacky <thomas.lendacky@amd.com>, Miklos Szeredi
-	<miklos@szeredi.hu>, Punit Salian <psalian@google.com>,
-	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Stefan
- Hajnoczi" <stefanha@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
-	<linux-coco@lists.linux.dev>, <x86@kernel.org>
-Subject: Re: [PATCH] fuse: mark DAX VMA page protections as decrypted
-Message-ID: <ijwjd4gc5hrowrxntq7dknbuhvotkvpuhrk3gdoorxab4kez2w@ym6mti6jmcmz>
-References: <20260727210718.125872-1-psalian@google.com>
- <CAJfpegvtp3L3FuYd8v1Ox0nZ-fb632jy+_M_+YyBWpMQGJAXug@mail.gmail.com>
- <909ab2ef-b931-4a64-acfc-13096f232a07@amd.com>
- <004afd12-762d-45d6-ab75-037d58e7a359@amd.com>
- <b965c127-08d2-4e57-9396-a2c3f5cf253a@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fC/yn4xc"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-848474825ffso140751b3a.0
+        for <linux-coco@lists.linux.dev>; Wed, 19 Aug 2026 11:45:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787165107; x=1787769907; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=k4p14h0rjsNJW1bNQwRsqWqcvxVCIyueUJIc9pTWh3w=;
+        b=fC/yn4xc+KYB1ftwlzp0oVl0FVl28RM/KkXOShoUJcYqMzt0a3pU+sJ4Z3xngjKx0A
+         DGS58AGZAyrGcGzs6idgkc7wMUsCrsMxBW5ChvSqL+exJ4wPbNsI2vWxCTkq2A/GXZjB
+         VSGQc1lPd87yfinl/KOXjFYmDEPp3YON82bi2keaGTdUed92lBL53zAgOXS8OZoPvtGm
+         OF8uwPjij9X0hd3daDRP6sDnLiI1/7JwAVosX9QZYgN2G1H8B+LKtFA5s/DnnNI915Ry
+         spkJTb4iCObxihYEN3Z5rJQCF8/8bgaXEuPw0ITTsPAHuWIgpQNXfuqCDY50uOGOoPdZ
+         tYBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787165107; x=1787769907;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=k4p14h0rjsNJW1bNQwRsqWqcvxVCIyueUJIc9pTWh3w=;
+        b=HHcM2yDjLZc3SpdPyryrSrDYYvK9YYszHVEhK+jKb+ABZiZb4xxJy5ZRGrDpHJlsP4
+         n/8ba/c1QKJwR1817ulAbqJvziWz9KV3q38qRJ4Th2rLjlGJ5YgEnW+ToYCtYhENmBUa
+         bcbPYHmNVNOf4UHQbwwMc6DNc3uPyBKQ0hRwrxns/OBZ+7LaYn6qZXvc6SzK6z7LwcRq
+         8h1acaD/gur9P282gYit95gy8VWgj7ARsesiZfXDvjN9HYadzhzCnUZCx4Tx/aeW+L5l
+         lJRixqTHdLRJxScUVNiO6FFbV+5yMPrmn+JAEpjp6ESKYP1ee2zDSUZrV+DuI9uoyvtS
+         Qhgg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq1GxbNUIgPksagGh0KbZ4KJpwBj3C1OvEIw7XxAB0hoRphVbbQYsp0ITNOMseEwh4sWMvLHn3homnf@lists.linux.dev
+X-Gm-Message-State: AOJu0YyjF4t4eW9UUiimONMsZCcD6oA0Z28x5DPc9siDH+34w+SCQqoR
+	hHPP1fEB7ZaH3TkrIsImkxqcWLkDGsHz1pN9xrE9s/XHSLEW6LugxsFmDtgOPI3Yk4Coiq7aSLK
+	4TP1zDQ==
+X-Received: from pgbdm4.prod.google.com ([2002:a05:6a02:d84:b0:c79:39f0:12f2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8c2:b0:848:4c3a:a359
+ with SMTP id d2e1a72fcca58-851dfab861bmr893070b3a.19.1787165106725; Wed, 19
+ Aug 2026 11:45:06 -0700 (PDT)
+Date: Wed, 19 Aug 2026 11:45:05 -0700
+In-Reply-To: <4f8428e0784224c55a2026eb32d046a2051193ea.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b965c127-08d2-4e57-9396-a2c3f5cf253a@amd.com>
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3E:EE_|DS0PR12MB6583:EE_
-X-MS-Office365-Filtering-Correlation-Id: f002c6ef-03d0-4de9-15db-08defe1dff9a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|23010399003|1800799024|82310400026|13003099007|6133799003|10067099003|4143699003|11063799006|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Z3Te0nj2STR98usJZ5XBqzCCHR2TAMJBn1+VO81kz0KMyVewLRMmkpv1iwuEmSeeFWj6mnLQd1610DO14AlFQfzjLcsCwwvYsMZFmCAnoZ8TBfBffP9iFhal6A3+OG4Zu3I6lYBZALmZdeeT8ZWkz7LVlKQs4VRoT/wms9DYPiWrvgCRj6EwSyCeQmRn6eUZuw1nCtXKqLiGgkuDj5IyhvtzSuvJGXr3hWgtBMlewlXRJ3L31LeTjSyiE31QwjzQI38qLuprzTivVtQBcFEEahzIuDixOV5m9rKKGFn+5kkyme1OA1CQEQar5eRXxV6a7yCy8zMuA4hFQQTEt+tzo9AEP8X54ufoQjFEf8GJpEWfwsQr+FHzBJyxJg4+dTlfcW0L5xyBjdhneWkfrjWqQSVajWrGaJQ1hssNiiMx0b0bKqL/UMSqE9/stxxv0wl+fJYXOagL4ZKE527Sb2eWLS1HLDrrz77J7o5THlfJpYTTjlCxFlMypv2b45gJ4XPsCLefQxRS3Wd3a+MkeIPcY8SbLQ5k7Fmxa0ezLCml03aLgU37cF5Pxdl+uQWcI2m7nWGL7ezhJ5RPGyecSTw4y5RUoOCPbl50nTkMhljDEM687AK4kILE8cZtgxqkt2G6Ek3+EaRlZEVq+M+j2mhYqL6Hxb4pq3Cu7tX+KBqX074qVvDJ4rWk32T2RzuOtQW3yhwUFWOokYhFTs4ncyrhfA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(23010399003)(1800799024)(82310400026)(13003099007)(6133799003)(10067099003)(4143699003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	JH8B2KUpVxOupUZC9wAF80jl/FXP5K4NSSXSHC3Q/zZIiPxYA2iaWyVjiCL0+/ZCktKZFy2Am3uVdC9vdSC5zQenszpEBSz6Y82Vrb8lC7HJOOSpRWFHNwyvQmCnfC03psPq91fm3Pku7na1cQy+tiHZZLnGUI0qhQ5B03IYvxIXa/dacM29GZ4SySmLzlRHshKbHi6JK8iOvZZjx+vstRgYWfDYeJHSmzeXK//gOmOb8gkja4blDF7ruHxozJ7/hY0Od/ZKMPgQF+ZtX8eIqM2vCY6dhhgSsLHZ58p646E0QhBQqp1uLxsci4CtorNPt2b073VsSkwaW9mZg7NRkjMWsWbPFQmjgERLSJ1tXB80KJkN/tqNszaq9rgwEGK53uzWiX0bPE+wloNT7Ec7RB5NXpbfXrUCmGGC7k6xagco2nXR5jziiPW3eIYH+ftp
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 18:16:32.8291
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f002c6ef-03d0-4de9-15db-08defe1dff9a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF00036F3E.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6583
+Mime-Version: 1.0
+References: <20260814224509.2342760-1-seanjc@google.com> <3a622cdb03b553cc9f8ce55b6df3c0091b3b06b9.camel@intel.com>
+ <aoT_6cnARCAYTrYG@google.com> <bd8f77eb6605f771fafbcef55a47211ecbb70e19.camel@intel.com>
+ <aoXSKH4QLTA5DTXe@google.com> <4f8428e0784224c55a2026eb32d046a2051193ea.camel@intel.com>
+Message-ID: <aoX5sbITQYeB7USY@google.com>
+Subject: Re: [PATCH] KVM: VMX: Explicitly track TDX VMs' root level instead of
+ guessing it from CPUID
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Yan Y Zhao <yan.y.zhao@intel.com>, 
+	Kai Huang <kai.huang@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 19, 2026 at 05:03:10PM +0200, Gupta, Pankaj wrote:
-> Hi Punit,
-> > > > > In confidential computing guest environments (such as AMD SEV-SNP or
-> > > > > Intel TDX), direct memory access (DAX) mappings between the
-> > > > > guest kernel
-> > > > > and host-backed FUSE/virtiofs shared memory regions must be accessed
-> > > > > using shared (decrypted) page protections.
-> > > > > 
-> > > > > Modify fuse_dax_mmap() to apply pgprot_decrypted() to
-> > > > > vma->vm_page_prot
-> > > > > when establishing FUSE DAX memory mappings. This ensures guest page
-> > > > > table entries for shared DAX buffers are explicitly marked
-> > > > > as decrypted,
-> > > > > preventing memory encryption faults when accessing
-> > > > > host-shared DAX memory.
-> 
-> 
-> I started testing this on my AMD system with QEMU and am still working
-> through the configuration details.
-> 
-> Did you happen to test this with QEMU under SEV or SEV-SNP as well? If so,
-> would you mind sharing your setup steps or
-> 
-> the QEMU/virtio-fs configuration you used?
-> 
-> 
-> The error I am facing is: device 'vhost-user-fs-pci' does not support
-> ACCESS_PLATFORM when it is enabled.
-> 
-> But under SEV-SNP ACCESS_PLATFORM(iommu_platform) is globally enabled and
-> when I manually disable it, guest says:
-> 
-> [    8.788217] virtiofs virtio0: device must provide
-> VIRTIO_F_ACCESS_PLATFORM
+On Wed, Aug 19, 2026, Rick P Edgecombe wrote:
+> On Wed, 2026-08-19 at 08:56 -0700, Sean Christopherson wrote:
+> > FWIW, I don't view keying off gfn_direct_bits as being simpler.=C2=A0 I=
+t might be
+> > less code, but conceptually it's more complex when reading
+> > kvm_mmu_get_tdp_level(). E.g. the comment would need to explain the con=
+nection
+> > between "direct bits" and the mirror root level, which most non-TDX rea=
+ders
+> > simply won't care about.
+> >=20
+> > Hmm, but the comment I provided isn't very good either, as it too bleed=
+s in
+> > details about the S-bit pivot, and at the end of the day that's not the=
+ true
+> > reason why the mirror root has/needs a predefined level.=C2=A0 The true=
+ reason is
+> > very simple: KVM needs to mirror the external page tables, and obviousl=
+y that
+> > means using the same number of levels.
+> >=20
+> > 	/*
+> > 	 * If the VM has mirror roots, then the root level is predefined as
+> > the
+> > 	 * mirror root (and by extension the normal root) needs to match the
+> > 	 * root level that was configured for the external page tables that
+> > are
+> > 	 * being mirrored by KVM.
+> > 	 */
+> > 	if (vcpu->kvm->arch.mirror_root_level)
+> > 		return vcpu->kvm->arch.mirror_root_level;
+> >=20
+> > But IMO that's a moot point, because this isn't a matter of simple vs.
+> > complex. Keying of gfn_direct_bits is wrong/flawed, so whether or not i=
+t's
+> > simpler is irrelevant.
+>=20
+> I was just thinking that the patch was kind of doing two things with one =
+change.
 
-I'm not sure what the real solution should be for this, but does this
-hack for QEMU avoid the error?
+Oh, yeah, it kinda is.  More at the bottom.
 
-  https://github.com/AMDESE/qemu/commit/63f103e35f5f3735d10f7618584bd8bb208e2c28
+> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > index c519e8e8d646..c78897510a1e 100644
+> > --- a/arch/x86/kvm/mmu/mmu.c
+> > +++ b/arch/x86/kvm/mmu/mmu.c
+> > @@ -5928,19 +5928,21 @@ void __kvm_mmu_refresh_passthrough_bits(struct
+> > kvm_vcpu *vcpu,
+> > =C2=A0
+> > =C2=A0static inline int kvm_mmu_get_tdp_level(struct kvm_vcpu *vcpu)
+> > =C2=A0{
+> > -	int maxpa;
+> > -
+> > -	if (vcpu->kvm->arch.vm_type =3D=3D KVM_X86_TDX_VM)
+> > -		maxpa =3D cpuid_query_maxguestphyaddr(vcpu);
+> > -	else
+> > -		maxpa =3D cpuid_maxphyaddr(vcpu);
+> > -
+> > =C2=A0	/* tdp_root_level is architecture forced level, use it if nonzer=
+o */
+> > =C2=A0	if (tdp_root_level)
+> > =C2=A0		return tdp_root_level;
+> > =C2=A0
+> > +	/*
+> > +	 * If the VM has mirror roots, then the root level is predefined as
+> > the
+> > +	 * mirror root (and by extension the normal root) needs to match the
+> > +	 * root level that was configured for the external page tables that
+> > are
+> > +	 * being mirrored by KVM.
+> > +	 */
+> > +	if (vcpu->kvm->arch.mirror_root_level)
+>=20
+> Elsewhere we use kvm_has_mirrored_tdp(vcpu->kvm) for these kind of checks=
+. Would
+> be nice to be consistent and not add any uncertainty of whether
+> mirror_root_level can be set without kvm_has_mirrored_tdp() being true.
 
-Thanks,
+Hmm, for defense in depth, I want to explicitly check mirror_root_level, be=
+cause
+returning '0' would likely have dire consequences.  How about this?
 
-Mike
+	if (kvm_has_mirrored_tdp(vcpu->kvm) &&
+	    !WARN_ON_ONCE(!vcpu->kvm->arch.mirror_root_level))
+		return vcpu->kvm->arch.mirror_root_level;
 
-> 
-> Did you observe something similar or there are additional virtiofsd settings
-> i need to use?
-> 
-> Thanks,
-> Pankaj
-> 
-> 
+> > @@ -2760,6 +2754,14 @@ DEFINE_CLASS(tdx_vm_state_guard, tdx_vm_state_gu=
+ard_t,
+> > =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0 if (!IS_ERR(_T)) tdx_release_vm_state_l=
+ocks(_T),
+> > =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0 tdx_acquire_vm_state_locks(kvm), struct=
+ kvm *kvm);
+> > =C2=A0
+> > +static __always_inline void tdx_set_mirror_root_level(struct kvm *kvm,=
+ int
+> > level)
+> > +{
+> > +	BUILD_BUG_ON(level !=3D 4 && level !=3D 5);
+> > +
+> > +	kvm->arch.mirror_root_level =3D level;
+> > +	kvm->arch.gfn_direct_bits =3D gpa_to_gfn(BIT_ULL(level =3D=3D 4 ? 47 =
+:
+> > 51));
+>=20
+> No need to remove TDX_SHARED_BIT_PWL_4/5 in this patch either anymore. Si=
+nce
+> this lives in TDX code.
+
+Killing them off dedups the code, and more importantly makes it all but imp=
+ossible
+for mirror_root_level and the mirror root level to get out of sync.  E.g. w=
+ith this
+
+	if (td_params->config_flags & TDX_CONFIG_FLAGS_MAX_GPAW) {
+		kvm->arch.gfn_direct_bits =3D TDX_SHARED_BIT_PWL_5;
+		tdx_set_mirror_root_level(kvm, 5);
+	} else {
+		kvm->arch.gfn_direct_bits =3D TDX_SHARED_BIT_PWL_4;
+		tdx_set_mirror_root_level(kvm, 4);
+	}
+
+then it's possible we could fat-finger a change and end up with:
+
+
+	if (td_params->config_flags & TDX_CONFIG_FLAGS_MAX_GPAW) {
+		kvm->arch.gfn_direct_bits =3D TDX_SHARED_BIT_PWL_5;
+		tdx_set_mirror_root_level(kvm, 4);
+	} else {
+		kvm->arch.gfn_direct_bits =3D TDX_SHARED_BIT_PWL_4;
+		tdx_set_mirror_root_level(kvm, 5);
+	}
+
+But, as you note above, that can be a separate patch.
