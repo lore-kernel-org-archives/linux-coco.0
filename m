@@ -1,198 +1,777 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC3D2EB5B8
-	for <linux-coco@lists.linux.dev>; Wed, 19 Aug 2026 16:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787157582; cv=fail; b=kgFZ5Hy3MMbB80joQQcoFbj9a/IbpV+dtmQiOYc3QI1pL3OvMne7luPSeNde6PDKWSyUUi613Cs55zP5cZ+bpW7cl9dHYTE+BJixWEhl73ZYwLtJQ/CV6Qq/jYxghDeEAJzaLGjQ+mXx4pUHBHyZTKoqOvJ738GiOjTU+GQD+8I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787157582; c=relaxed/simple;
-	bh=ewDgyvHi+1SbY7EBXOyEac8ATr+Esu8I5q4PQOnM2wk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=rO+j8QXfgAptxLHAmrOQ2rR7RDfEKspVyY/DydP7piIOqAq3azNOrqZ7sn/mS97Gu1wuzA3X261nuH31lglNN2T7AXmy+Jk61Jp+BJ1Rqv+lX/EW8par1vxE2PZZ4Y/YBOPhfAhPOSdvjLD3nNjwwu4SXyzRg3PFEFtnp1gNEoo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AzRDPUzb; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61B547FAF7;
+	Wed, 19 Aug 2026 16:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787157808; cv=none; b=A30rWK2otLnreTNWdk4VwWLG9nXJxDwSF3itmD3Qx6q/oYcd2ED4OiyA7FJ8Lk9s2a0tavaDA6KBHS/Vd/Qqpp2AliyzDLQapBUogYUog8uHsjsfKNQcuUxYZ2CWr7Y8qtkx4P1Gh8Cq9hK1cjdfg76Soe5v2U2UHA+C7cVTyDU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787157808; c=relaxed/simple;
+	bh=VIUkQ94exd0fsWVgtOu9X04fu5O1175raidrFn8JdNQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DDqfqFM6wPT6AWDX01PV04RIK1822HMU4EJkVsagkun1Lp7wcQjcxRFW3wNi001wVmQba2tXQ9+Nny0jDN31u7zzTVdKiGGTLSdVHlQPWKCfST1P2oKSZ+knjrScsJEBRXBotLJgl+NCsJAwbr4usX98WhTzQvQD9lybFTSn4OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Eoz4XMRI; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AzRDPUzb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787157580; x=1818693580;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=ewDgyvHi+1SbY7EBXOyEac8ATr+Esu8I5q4PQOnM2wk=;
-  b=AzRDPUzbt55NKn3f1sAqCnzKckdSg1s9HnJUk/NtQCq7Atav25KgnGYZ
-   WJPIZMMwxXslwZLQw1+2K9mGh7oryeoAbEKboIBrdg+gHUegwoYYKoyoC
-   v7pPRA9eO8Kmc2d+SH6aJvUjY0BNZsd7Ku9hysNUkILYS5RRaexk4Gcy9
-   zX5sHuaSM1K7Ieflam87gs2uNKD5+FasvXufgAiRHTufU5pPigA0VeXzf
-   kxvRSeM7DF1So/BNlFYfT5lRbzPokEt7CzE39Cc4qq1K++VroxzUapijG
-   8u6TENit7v4faL2mq5di+QVLxeeVfAfXAF7/FdT1kARZnm48yd+W7oQJn
-   Q==;
-X-CSE-ConnectionGUID: 4u1Eq1CZQB28x9TgJebUiw==
-X-CSE-MsgGUID: 2CoQqP6PRoKn19kXfHXY1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="105215493"
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="105215493"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 09:39:39 -0700
-X-CSE-ConnectionGUID: DqA9qOtlQHO0EVyBt5FT1w==
-X-CSE-MsgGUID: HOd7e+JaQOioQic/2P59cw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="261392174"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 09:39:33 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 19 Aug 2026 09:39:30 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Wed, 19 Aug 2026 09:39:30 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.44) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 19 Aug 2026 09:39:29 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JxPcI9gguybrbFPWOlnZ14407MO057tc1efASTcYRHD+nBnsh7Mx+ZhjMPcMtKwYmGxRSvPiT7i1DLkVwYA4Q4fDHIODscJEfqixNVW8eAcSPuv1bXTa1/cRD4X/TVqiNU2KZvTchL4ukUtLl1nvdqLLANxz4gxiPkJM1R3+f/GSCEwgTVtJ93EpDslN0rlrUukF+setejpHawDfbBIQUAIq287A8+FOje4pnKsee5/IdVQXcIi5+wnRUVfpK1pBhfSpd1QOWA5/cVBjS0DccMV51jRYTxy5bfjNXb3Oi/1dARfTEpORaClyqeK4zosLkLaD1mtd82tMZhltCAaMHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ewDgyvHi+1SbY7EBXOyEac8ATr+Esu8I5q4PQOnM2wk=;
- b=EqSlMQKrfAl0u6cvqWhGDjAMhGJ7pQsLkKdbyGUUN9NzMj8+2IKFo6dIxD1C4/iZFGYPQFzwJFkMQkktPH+qcDr8NIlgZa4vx5W1kx1TldXJiYBiNemHqa9h+X2w4ycEJKLdZDNAv3I3kLncs2pmk2nwavnPKP0/wbn78TSp2XaLjzREeXxhMh2sLbPErabfdFVg9MyELOmzfVucpHSLYXtOf0gpb9ICp6wdFx9/WQj0GT80aCU+rJnHZK0e/gBvoQWcD6kPq5LysVtHyWZGWeSB50/XA69GmOd7pZoiDy/FGytLEyebNbiQ19hszaZaPw/o11bnQjuuvDtYIYMq+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com (2603:10b6:510:1b5::20)
- by MN0PR11MB6277.namprd11.prod.outlook.com (2603:10b6:208:3c3::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
- 2026 16:39:21 +0000
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4]) by PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4%4]) with mapi id 15.21.0315.014; Wed, 19 Aug 2026
- 16:39:20 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "Li, Xiaoyao" <xiaoyao.li@intel.com>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "seanjc@google.com" <seanjc@google.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "kas@kernel.org" <kas@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>
-Subject: Re: [PATCH v4 2/9] KVM: TDX: Check if there is valid exit infos based
- on vp_enter_ret
-Thread-Topic: [PATCH v4 2/9] KVM: TDX: Check if there is valid exit infos
- based on vp_enter_ret
-Thread-Index: AQHdL8C+BElB90R58EChBP1LxiY/5LallAcA
-Date: Wed, 19 Aug 2026 16:39:20 +0000
-Message-ID: <71de12296f46dec7753f9dec2ac08df97b49e8b8.camel@intel.com>
-References: <20260819094903.3060020-1-xiaoyao.li@intel.com>
-	 <20260819094903.3060020-3-xiaoyao.li@intel.com>
-In-Reply-To: <20260819094903.3060020-3-xiaoyao.li@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3-0ubuntu1.1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6771:EE_|MN0PR11MB6277:EE_
-x-ms-office365-filtering-correlation-id: 4b34578c-ab01-4e18-32fc-08defe106b36
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|22082099003|18002099003|38070700021|10067099003|11063799006|56012099006|4143699003;
-x-microsoft-antispam-message-info: qJ22BV1233yCKb7eghvmhDlSNXJiihq8R2C+dEghSPIqYTMVZDIZymQd9uXavC2szT6zeFvFaj79koMiiCokGBqQSQ7GEN2HFXyb0VLIl6FY/zq+ZCoRJxxP1NY9Uz9BEa+e+K4njtoK3nLPPU2mOoh4uMFeQD5TlYmNeo/Yd6CnafoK5Ytq0UI4B/pDHstY1KS3eYb5znYGr91f6XleJWgmpemj4/J2PX75Oai9KpgF7z/+mWVi0ctZZ3ejzDSqtgxGTRk54hFjE3Z3/lc81rN+UIf1R68Yt+GKmtH5/LnYEkpwDDIZrtf8u7H6vdZ4RjqakbjvCCxdquu4HKDD8yb1qyRnTqjGeqZz6pk3CMBydshQqmZtgh65tcYIO4zhgbh7Dl1I5766O7IkfadmEFPlnqGmQvCZktIHZF1MjmHv0BWdAmFHMJPubwZjSjcDQZ8pizqd36/9beFtC8jNRjMeq98gtnBmVPoETL4rCo1jxBM3jZadkvLWnuWlny2i8/cfmQJi4UCQMQXgcxngP438+Dnrl65z2BwjZR7P6s1qAxzsqCDLugvf4Qxz2Swze8y0yfb8zdCAoO4gJeWR9AR56+gbX53HrFwK2FUUraazE1lxlgVs5HQ28ssNNyyTU876afkPBVrWtR7o+sMwJTC8d3ba+1HyYXhy2+hcvvQk99Pg4ZOcfzLhtUecCn4MMIlqqptwyVFOq6JnPuMHaCQjMEI0iYHexr6V6pd/SpI=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6771.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(22082099003)(18002099003)(38070700021)(10067099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?SVlHVE9IWHZxd0JDK2pEelJTd1hua3ZBSHc4UCs4QXd3bmV0Sjdsc0VKbHZ5?=
- =?utf-8?B?Sks5UlFJZkNzMVp5eUhpTkxDMUxEV1Zla2Q0dXBXQUtYWTlxamxJdTdGN1di?=
- =?utf-8?B?VndBQ09KZXg3MFA0cC9CL1lLQmdpSFhYbndwRVdyRldWVUw5TVhTS0k4OFVY?=
- =?utf-8?B?UTMwMzc5eUkyVGg2Q0pMN2JMcG9iNUFtR0VKYUM4cDZFRlNMaG5uYVN1R1N3?=
- =?utf-8?B?bzlmZzZNK2JvVCtzVkhUeFhPeE1uY3BPbTAwQS9LaFpVbDZVb0NmZWNJVUVE?=
- =?utf-8?B?REJ0QUJla3AvZWpFRWVkT0kwTVZjbzIrMkVQR2hDV3J4MXhNMWs0dG8yZ1V3?=
- =?utf-8?B?eGkyQzZOMTI5cWg5WGV5L3ZFMnIwYU9SQ1B3RGpQaElpWDJmeFZ5UkYyTE9G?=
- =?utf-8?B?bWwvdUN6cW51S2VpNHpsVTFiS3ZvNDZaMUw0a2FweG5jeEwycmVpZ01OSEZV?=
- =?utf-8?B?UEEvZEdERDMyUVpmT3NFWHFBTDJsbHRpQkNlTVF2bVZFNlJkbVZraWZnYWpW?=
- =?utf-8?B?SGtNemtQZnA0TWVWS0xEbmExeG8va0c5ek1jNWx3eWdheHltY3YxSGJrSTJS?=
- =?utf-8?B?OGlnQjYxZlZMZElOQzRoWGo4M1RqWGU1RU40TXZLMjlFUDUxSnk0V0ZNcmFX?=
- =?utf-8?B?YzM1Y2xtTUViSy9hNnp6MXZ0d1dvUFh3Skg0SWFpaTdNYys0ZjliTkUyVWxD?=
- =?utf-8?B?aEFKTndCSkpVeGE1MUF5VjdRQklGWWYzd0Y2NkpXOVNra2J4Sk1panN4THlD?=
- =?utf-8?B?R3gydG5NOVZPK3h0L3ROV3pRNUN3bGcxWFliaEZRNFVtWWxOM0ptVHRvRFdq?=
- =?utf-8?B?bmdybmJ4S1VGcURubkpaeU1ndWNFelIrS3Q2RVNSSk1EOVJQTlRwVkEzcGtR?=
- =?utf-8?B?enQ3NzFldk9wTzQreUNubFdFd09pdDdpcEs2SDZEM0ovOFB5QlZHN05TdHg1?=
- =?utf-8?B?c2pGd3pKQnFSc2RDbFJZbmlSanRSczZ1b2I1UTM5MjZpU3lFVUtianJ2amho?=
- =?utf-8?B?dTlsaXZEMnZDR3g3TDFid01vcVN2SXN5bkhJZVU1L1MveHBBODVxQWdPcVN5?=
- =?utf-8?B?bWV6NXUwanlGMGxKSk0vMkRNblpNSnIrMktDb29ienZSdDJ2NFIyUGtyVUw1?=
- =?utf-8?B?MTl3TU0zZjhRQnJsM3hXUjhXQ0NnT043WUxDMGorditpdkNrdHNLR2dScFJq?=
- =?utf-8?B?TVNka2RiWmE0ZDNZRjY3V0M2RG1oNU5HMzRMQlUzWGlJSkdMazF5aHNKVW9D?=
- =?utf-8?B?UDNZeXlGcFQxWTRNd2NMNDJTd3ZIbzFBbk5XWkVYd1NpbXp0K0JwWlowaGhG?=
- =?utf-8?B?VHFOVFpCazZ2dkxBNzBMUFc3YzRROFlYTHBuYjVhamowdS9IZUlWZ1ZqbTlw?=
- =?utf-8?B?eSsyeFNXTVNvL0plZFpJckdwbVVmWkdLRm9XUXhHRURmZWxJWDhuWUtSc3M2?=
- =?utf-8?B?VXIvRmJXR3ZNRnU0YVU3S1AyRzBoWTE4ODFHTXQ1bUNjYzJiSEh1dHF1bE0r?=
- =?utf-8?B?ZHRSalVZdWlyS3VWMHY0SXdoMVU1a2p2OHhHSE5qN2g2a1VQN1pxY05KT1VQ?=
- =?utf-8?B?R1BYOU9nSVA1L21rc2E5Rk52MEZkWWQydktBYmsyd2Q1Wm5Ud3FXYlhuWmNr?=
- =?utf-8?B?eXZsdnl1NHlkckxjNjE1dGR0ZEJlUDlTd1V6QXVJVWdjQUxRNkFYd2tXQ01Z?=
- =?utf-8?B?d0xIOGZ6WnVuSWczMnJYYmJvVXR6T2taREhhSFZuZ1piZ0M0SHRJcFZWdmdR?=
- =?utf-8?B?Vkc2aGpiTnNUcTBqTFFpaWhUcmhRdFV1R2k5NHl0Z1dOcWJCQ3BKdnVNWFoy?=
- =?utf-8?B?ejg4WG5pZmpETnZoRWkyb3FST29NSk9vZkdJNUkxZjNFU05KWk92bnk0dG9G?=
- =?utf-8?B?aStLc2crdUF1UC9IeEdtdXUrU2FscDBNWERSbEpEZzRnZUo4NWxqK290ZCtI?=
- =?utf-8?B?a3FlT0NLS09wWTZpUXJsa0R3b3RlcEd1dkludFFGRmtJNExWVU05cGZteWtl?=
- =?utf-8?B?ZVFNMWpiNjdoYUVxcW0xTXpZWTVGNDlzRE1ZRXNYSDJuQWQ1NWpVbkJ5NVNY?=
- =?utf-8?B?dlhteU9tc1VJVlJGbE8xTkt4aHRLZkpYK0o0UzljQU5Qb1hxTnBxM0l5RDA2?=
- =?utf-8?B?c2U2bmU5OThpQm5aYlZyelViVHBteVZFTzhmSWhGckhETXErYlBnbVJ0QTNn?=
- =?utf-8?B?dU9TRHMvM2d5Y2JjVHN4SmQzZ3JxZ2NhMzVhSkFMODVVcXdpbjlOajFGSEFS?=
- =?utf-8?B?bEhvbkd6aVlwQks0Ty9BRkZ3VU42TVlvQ2VZVGphQ0M4QnVocFE4b2dGbFc2?=
- =?utf-8?B?Ni9FSzErZnZqMjFoK0F2OCtud2FmMUZ2ekpqU0dVaWcvYU5WUUNORCtWTm9y?=
- =?utf-8?Q?dGI5dYprCTV1FhxI=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C3289D8F31101C4A89AA851D6827DBEE@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Eoz4XMRI"
+Received: from [10.4.158.9] (unknown [4.194.122.162])
+	by linux.microsoft.com (Postfix) with ESMTPSA id E7E1720B710C;
+	Wed, 19 Aug 2026 09:42:50 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E7E1720B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1787157777;
+	bh=OW0dqZF0Tw87jJhKLPZdRY2tzBT8TsRQxLqTUZn7Xtc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Eoz4XMRIHs7rLC1x7d8ewg4RH390Io5QlMETXcWXvchGO9JdwcoSTBPnzmBPIkvPo
+	 1nIMJsgVXKomXL1an6beMl1EH5GvA2non1SBLBrDDvY4Dc4XnSnFoXNFQ+r0zm5+Sm
+	 pEt64EsHYknG0F1zGXisSSqxM7GkeObl3ZRDa77Q=
+Message-ID: <da92b216-e4ee-4392-9a35-de7bc1683f83@linux.microsoft.com>
+Date: Wed, 19 Aug 2026 09:43:21 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: GWF1m2lTqgSlj5z/56lbQrY4N0fWAGnRUcolf7cUhfRrQiIed3tw6s7yR8dkCDj7YaBd5F4+N53boYyzgzTksA3cvpO1CmxQVfwL6bbiA+FKILdtoYvcqb8h/IVR9TDG/rDzQ7h7hZn4LgaH6zkKFS/0qDiiHQY28UTH22BuUjXTIAl8uQ2TgieBpnh0ItoY13tfMwyhlsmsapxtAwRqas36eqOkF/JU6sMqBD+h3v7SkG3uQ7i/QCLMPLdI+VByhCCbslcEDYXH75x1iGZP6vNn3nkxuGIXTVD9HOk6PD4fcrpm5jm9nVOm25EjXxI1FZrHXKvGYrGGpaQRWyZPoQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6771.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4b34578c-ab01-4e18-32fc-08defe106b36
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Aug 2026 16:39:20.4389
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Z9gIMNx/ASAZkXCOPGYpFDa3SAeh/INSn0oI6kkvrWkFTZbeeHm+0XXM4xjmeXMZu+fodrOcqSu7J+iOj3Qpi1ihOdbS96HblRwXalxI7Sc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6277
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v4 08/11] coco: guest: arm64: Verify DA evidence with
+ RSI_VDEV_GET_INFO digests
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dan Williams <dan.j.williams@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Jonathan Cameron <jic23@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ Samuel Ortiz <sameo@rivosinc.com>, Steven Price <steven.price@arm.com>,
+ Suzuki K Poulose <Suzuki.Poulose@arm.com>, Will Deacon <will@kernel.org>,
+ Xu Yilun <yilun.xu@linux.intel.com>
+References: <20260427082805.931832-1-aneesh.kumar@kernel.org>
+ <20260427082805.931832-9-aneesh.kumar@kernel.org>
+Content-Language: en-US
+From: Kameron Carr <kameroncarr@linux.microsoft.com>
+In-Reply-To: <20260427082805.931832-9-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-T24gV2VkLCAyMDI2LTA4LTE5IGF0IDE3OjQ4ICswODAwLCBYaWFveWFvIExpIHdyb3RlOg0KPiBD
-aGVjayBpZiB0aGVyZSBpcyB2YWxpZCBleGl0IGluZm8gYmFzZWQgb24gdnBfZW50ZXJfcmV0IGlu
-c3RlYWQgb2YgcmVseWluZw0KPiBvbiB0aGUgY2xvYmJlcmVkIEV4aXQgUmVhc29uLCBpbiB0ZHhf
-Z2V0X2V4aXRfaW5mbygpLg0KPiANCj4gQ3VycmVudCBLVk0gdXNlcyAiRXhpdCBSZWFzb24gaXMg
-bm90IGVxdWFsIHRvIHRoZSBzeW50aGVzaXplZCBpbnZhbGlkDQo+IEV4aXQgUmVhc29uLCAtMXUs
-IiBhcyB0aGUgY29uZGl0aW9uIHRvIGlkZW50aWZ5IHRoZXJlIGlzIGEgcmVhbCBURCBFeGl0DQo+
-IGFuZCB2YWxpZCBleGl0IGluZm9zLsKgIEhvd2V2ZXIsIHRoZXJlIGlzIG9uZSBpc3N1ZSB3aXRo
-IHRoaXMgYXBwcm9hY2g6DQo+IEtWTSB1cGRhdGVzIHRoZSBFeGl0IFJlYXNvbiB0byB0aGUgc3lu
-dGhlc2l6ZWQgaW52YWxpZCBFeGl0IFJlYXNvbiBmb3INCj4gcmVhbCBFUFQgTUlTQ09ORklHIGFz
-IHdlbGwuwqAgVGhpcyBpcyBhIGZhbHNlIHBvc2l0aXZlIGZvciByZWFsIEVQVA0KPiBNSVNDT05G
-SUcsIHdoaWNoIGhhcyB2YWxpZCBleGl0IGluZm9zLg0KPiANCj4gVGhvdWdoIHRoZSBpc3N1ZSBj
-YW4gYmUgYWRkcmVzc2VkIGJ5IGNoYW5naW5nIHRoZSBoYW5kbGluZyBmb3IgcmVhbCBFUFQNCj4g
-TUlTQ09ORklHIHRvIG5vdCB1cGRhdGUgdGhlIEV4aXQgUmVhc29uIHRvIHRoZSBzeW50aGVzaXpl
-ZCBvbmUsIHJlbHlpbmcNCj4gb24gdGhlIGNsb2JiZXJlZCBFeGl0IFJlYXNvbiBpdHNlbGYgaXMg
-YnJpdHRsZS7CoCBJbnN0ZWFkLCBjaGVjaw0KPiB2cF9lbnRlcl9yZXQgZGlyZWN0bHkgdG8gaWRl
-bnRpZnkgaWYgaXQgaXMgYSB2YWxpZCBFeGl0IFJlYXNvbi4NCj4gDQo+IEZpeGVzOiBkYTQwN2Zl
-NDU5MDggKCJLVk06IFREWDogSGFuZGxlIEVQVCB2aW9sYXRpb24vbWlzY29uZmlnIGV4aXQiKQ0K
-PiBDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZw0KPiBTdWdnZXN0ZWQtYnk6IFNlYW4gQ2hyaXN0
-b3BoZXJzb24gPHNlYW5qY0Bnb29nbGUuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBYaWFveWFvIExp
-IDx4aWFveWFvLmxpQGludGVsLmNvbT4NCj4gLS0tDQoNClRoaXMgc2VyaWVzIGhhcyBncm93biB1
-bmZvcnR1bmF0ZWx5LCBhbmQgSSB3YXNuJ3QgYWJsZSB0byBjYXRjaCB1cCBvbiB0aGUNCnRocmVh
-ZHMgZnJvbSB5ZXN0ZXJkYXkuIENhbiB3ZSByZWFsbHkgbm90IHB1dCB0aGlzIG9uZSBpbiB0aGUg
-bm9uLXN0YWJsZSBwYXRjaGVzDQphdCB0aGUgZW5kPyBPciBtYXliZSB5b3UgY2FuIGV4cGxhaW4g
-d2h5IGl0J3MgbmVlZGVkPw0KDQpBbHNvICJLVk06IFZNWDogUHJlc2VydmUgbmVnYXRpdmUgcmV0
-dXJuIHZhbHVlIGluIHZteF9oYW5kbGVfZXhpdCgpIHdpdGggYnVzDQpsb2NrIGRldGVjdGVkIj8N
-Cg==
+On 4/27/2026 1:28 AM, Aneesh Kumar K.V (Arm) wrote:
+> Add guest-side evidence verification based on RSI_VDEV_GET_INFO and use the
+> verified TDISP interface report to validate Realm MMIO mappings.
+> 
+> During lock:
+> - refresh host caches from device
+> - read certificate/VCA/interface-report/measurement objects from host cache
+> - fetch trusted digest metadata from RSI_VDEV_GET_INFO
+> - verify host-provided objects against RSI digests
+> - initialize and populate PCI TSM evidence objects
+> - preserve lock/meas/report nonces and digests in guest state
+> 
+> Add mapping helpers to walk MMIO entries from the TDISP report and perform
+> RSI_VDEV_VALIDATE_MAPPING on map, or RIPAS destroy on unmap. Reject malformed
+> range progress while validating.
+> 
+> During unlock:
+> - invalidate mappings derived from the evidence report
+> - unlock the device and tear down MMIO bookkeeping
+> 
+> This ensures host-cached DA objects are cryptographically verified before
+> being trusted for mapping and attestation state transitions.
+> 
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>  arch/arm64/include/asm/rsi_cmds.h         |  40 +++
+>  arch/arm64/include/asm/rsi_smc.h          |  60 +++++
+>  drivers/virt/coco/arm-cca-guest/Kconfig   |   2 +
+>  drivers/virt/coco/arm-cca-guest/arm-cca.c | 287 +++++++++++++++++++++-
+>  drivers/virt/coco/arm-cca-guest/rsi-da.c  | 145 +++++++++++
+>  drivers/virt/coco/arm-cca-guest/rsi-da.h  |  22 ++
+>  6 files changed, 545 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/rsi_cmds.h b/arch/arm64/include/asm/rsi_cmds.h
+> index 596bdc356f1a..f72d8e0cd422 100644
+> --- a/arch/arm64/include/asm/rsi_cmds.h
+> +++ b/arch/arm64/include/asm/rsi_cmds.h
+> @@ -186,4 +186,44 @@ static inline unsigned long rsi_features(unsigned long index, u64 *out)
+>  	return res.a0;
+>  }
+>  
+> +static inline long
+> +rsi_vdev_validate_mapping(unsigned long vdev_id,
+> +			  phys_addr_t ipa_base, phys_addr_t ipa_top,
+> +			  phys_addr_t pa_base, phys_addr_t *next_ipa,
+> +			  unsigned long flags, unsigned long lock_nonce,
+> +			  unsigned long meas_nonce, unsigned long report_nonce)
+> +{
+> +	struct arm_smccc_1_2_regs res;
+> +	struct arm_smccc_1_2_regs regs = {
+> +		.a0 = SMC_RSI_VDEV_VALIDATE_MAPPING,
+> +		.a1 = vdev_id,
+> +		.a2 = ipa_base,
+> +		.a3 = ipa_top,
+> +		.a4 = pa_base,
+> +		.a5 = flags,
+> +		.a6 = lock_nonce,
+> +		.a7 = meas_nonce,
+> +		.a8 = report_nonce,
+> +	};
+> +
+> +	arm_smccc_1_2_invoke(&regs, &res);
+> +	*next_ipa = res.a1;
+> +
+> +	if (res.a2 != RSI_ACCEPT)
+> +		return -EPERM;
+> +
+> +	return res.a0;
+> +}
+> +
+> +static inline unsigned long rsi_vdev_get_info(unsigned long vdev_id,
+> +					      unsigned long digest_phys)
+> +{
+> +	struct arm_smccc_res res;
+> +
+> +	arm_smccc_1_1_invoke(SMC_RSI_VDEV_GET_INFO,
+> +			     vdev_id, digest_phys, &res);
+> +
+> +	return res.a0;
+> +}
+> +
+>  #endif /* __ASM_RSI_CMDS_H */
+> diff --git a/arch/arm64/include/asm/rsi_smc.h b/arch/arm64/include/asm/rsi_smc.h
+> index 4af4638fdd49..99b34b37b693 100644
+> --- a/arch/arm64/include/asm/rsi_smc.h
+> +++ b/arch/arm64/include/asm/rsi_smc.h
+> @@ -125,6 +125,9 @@
+>  
+>  #ifndef __ASSEMBLER__
+>  
+> +#define RSI_HASH_SHA_256 0
+> +#define RSI_HASH_SHA_512 1
+> +
+>  struct realm_config {
+>  	union {
+>  		struct {
+> @@ -183,6 +186,63 @@ struct realm_config {
+>   */
+>  #define SMC_RSI_IPA_STATE_GET			SMC_RSI_FID(0x198)
+>  
+> +#define RSI_VDEV_REPORT_FORMAT_TDISP 0x1
+
+You define this but never verify the format_type.
+
+> +struct rsi_vdevice_info {
+> +	union {
+> +		struct {
+> +			u64 flags;
+> +			u64 id_index;
+> +			union {
+> +				u8 hash_algo;
+> +				u64 padding0;
+> +			};
+> +			u64 lock_nonce;
+> +			u64 meas_nonce;
+> +			u64 report_nonce;
+
+Nit:
+I found the name `lock_nonce` confusing. I originally assumed this was the
+nonce passed in when calling RHI_DA_VDEV_GET_MEASUREMENTS. The new RSI spec
+(2.0 beta 3) names these lock_seq, meas_seq, report_seq. Consider matching
+these names since the values represent sequence counters and to
+differentiate them from the nonce used in RHI_DA_VDEV_GET_MEASUREMENTS.
+
+> +			union {
+> +				u8 format_type;
+> +				u64 padding1;
+> +			};
+> +			u64 format_version;
+> +			union {
+> +				u8 state;
+> +				u64 padding2;
+> +			};
+> +
+> +		};
+> +		u8 padding3[0x80];
+> +	};
+> +	union { /* 0x80  */
+> +		struct {
+> +			u8 protocol_data_digest[0x40];
+> +			u8 identity_digest[0x40];
+> +			u8 pubkey_digest[0x40];
+> +			u8 meas_digest[0x40];
+> +			u8 report_digest[0x40];
+> +		};
+> +		u8 padding4[0x1c0 - 0x80];
+> +	};
+> +	union { /* 0x1c0  */
+> +		struct {
+> +			u64 vsmmu_addr;
+> +			u64 vsmu_vsid;
+> +		};
+> +		u8 padding5[0x200 - 0x1c0];
+> +	};
+> +};
+> +
+> +/*
+> + * Get information for a device.
+> + * arg1 == Realm device identifier (vdev id)
+> + * arg2 == IPA to which configuration data will be written
+> + * ret0 == Status / error
+> + */
+> +#define SMC_RSI_VDEV_GET_INFO			SMC_RSI_FID(0x19D)
+> +
+> +#define RSI_DEV_MEM_COHERENT		BIT(0)
+> +#define RSI_DEV_MEM_LIMITED_ORDER	BIT(1)
+> +#define SMC_RSI_VDEV_VALIDATE_MAPPING		SMC_RSI_FID(0x19F)
+> +
+>  struct rsi_host_call {
+>  	union {
+>  		u16 imm;
+> diff --git a/drivers/virt/coco/arm-cca-guest/Kconfig b/drivers/virt/coco/arm-cca-guest/Kconfig
+> index d295146bd92a..8ed4b95df5e4 100644
+> --- a/drivers/virt/coco/arm-cca-guest/Kconfig
+> +++ b/drivers/virt/coco/arm-cca-guest/Kconfig
+> @@ -5,6 +5,8 @@ config ARM_CCA_GUEST
+>  	tristate "Arm CCA Guest driver"
+>  	depends on ARM64
+>  	select PCI_TSM if PCI
+> +	select CRYPTO_LIB_SHA256
+> +	select CRYPTO_LIB_SHA512
+>  	select TSM_REPORTS
+>  	select AUXILIARY_BUS
+>  	help
+> diff --git a/drivers/virt/coco/arm-cca-guest/arm-cca.c b/drivers/virt/coco/arm-cca-guest/arm-cca.c
+> index 0f9cfb329a06..320dd5aa7b9a 100644
+> --- a/drivers/virt/coco/arm-cca-guest/arm-cca.c
+> +++ b/drivers/virt/coco/arm-cca-guest/arm-cca.c
+> @@ -198,39 +198,304 @@ static void unregister_cca_tsm_report(void *data)
+>  }
+>  
+>  #ifdef CONFIG_PCI_TSM
+> +
+> +static int __maybe_unused
+> +cca_update_dev_measurements(struct pci_dev *pdev, const u8 *nonce)
+> +{
+> +	int ret;
+> +	void *measurements;
+> +	int measurements_size;
+> +	int vdev_id = rsi_vdev_id(pdev);
+> +	struct pci_tsm_evidence *evidence;
+> +	struct rsi_vdevice_info *dev_info;
+> +	struct pci_tsm_evidence_object *obj;
+> +	struct cca_guest_dsc *dsc = to_cca_guest_dsc(pdev);
+> +
+> +	/* Regenerate the measurement from the device */
+> +	ret = rhi_update_vdev_measurements_cache(pdev, nonce);
+> +	if (ret) {
+> +		pci_err(pdev, "failed to update device measurements from device (%d)\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = rhi_read_cached_object(vdev_id, RHI_DA_OBJECT_MEASUREMENT,
+> +				     &measurements, &measurements_size);
+> +	if (ret) {
+> +		pci_err(pdev, "failed to get device measurements from the host (%d)\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	dev_info = kmalloc(sizeof(*dev_info), GFP_KERNEL);
+> +	if (!dev_info) {
+> +		ret = -ENOMEM;
+> +		goto free_measurements;
+> +	}
+> +
+> +	if (rsi_vdev_get_info(vdev_id, virt_to_phys(dev_info))) {
+> +		pci_err(pdev, "failed to get device digests (%d)\n", ret);
+> +		ret = -EIO;
+> +		goto free_dev_info;
+> +	}
+> +
+> +	/* Make sure no unexpected lock/unlock operation happened from guest */
+> +	if (dsc->dev_info.lock_nonce != dev_info->lock_nonce) {
+> +		pci_err(pdev, "Unexpected lock/unlock operation from host (%d)\n", ret);
+> +		ret = -EIO;
+> +		goto free_dev_info;
+> +	}
+> +
+> +	/*
+> +	 * Verify that the digests of the provided reports match with the
+> +	 * digests from RMM
+> +	 */
+> +	ret = cca_verify_digest(dev_info->hash_algo, measurements,
+> +				measurements_size, dev_info->meas_digest);
+> +	if (ret) {
+> +		pci_err(pdev, "RMM provided digest mismatch (%d)\n", ret);
+> +		goto free_dev_info;
+> +	}
+> +
+> +	/* fill evidence details */
+> +	evidence = &dsc->pci.base_tsm.evidence;
+> +
+> +	/* Now update the evidence under lock. */
+> +	down_write(&evidence->lock);
+> +	evidence->generation = dev_info->meas_nonce;
+> +
+> +	obj = &evidence->obj[PCI_TSM_EVIDENCE_TYPE_MEASUREMENTS];
+> +	if (obj->data)
+> +		kvfree(obj->data);
+> +	obj->data = measurements;
+> +	obj->len = measurements_size;
+> +
+> +	dsc->dev_info.meas_nonce    = dev_info->meas_nonce;
+> +	memcpy(dsc->dev_info.meas_digest, dev_info->meas_digest, SHA512_DIGEST_SIZE);
+> +	up_write(&evidence->lock);
+> +
+> +	kfree(dev_info);
+> +	return 0;
+> +
+> +free_dev_info:
+> +	kfree(dev_info);
+> +free_measurements:
+> +	kvfree(measurements);
+> +	return ret;
+> +}
+> +
+> +static int cca_collect_dev_evidence(struct pci_dev *pdev, struct cca_guest_dsc *dsc)
+> +{
+> +	int ret;
+> +	int vdev_id = rsi_vdev_id(pdev);
+> +	struct pci_tsm_evidence *evidence;
+> +	struct rsi_vdevice_info *dev_info;
+> +	struct pci_tsm_evidence_object *obj;
+> +	void *certificate, *vca, *interface_report, *measurements;
+> +	int certificate_size, vca_size, interface_report_size, measurements_size;
+> +
+> +	/* Regenerate interface report and measurement from the device */
+> +	ret = cca_update_device_object_cache(pdev, NULL);
+> +	if (ret) {
+> +		pci_err(pdev, "failed to update device objects from device (%d)\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = rhi_read_cached_object(vdev_id, RHI_DA_OBJECT_CERTIFICATE,
+> +				     &certificate, &certificate_size);
+> +	if (ret) {
+> +		pci_err(pdev, "failed to get device certificate from the host (%d)\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = rhi_read_cached_object(vdev_id, RHI_DA_OBJECT_VCA, &vca, &vca_size);
+> +	if (ret) {
+> +		pci_err(pdev, "failed to get device VCA from the host (%d)\n", ret);
+> +		goto free_certificate;
+> +	}
+> +
+> +	ret = rhi_read_cached_object(vdev_id, RHI_DA_OBJECT_INTERFACE_REPORT,
+> +				     &interface_report, &interface_report_size);
+> +	if (ret) {
+> +		pci_err(pdev, "failed to get interface report from the host (%d)\n", ret);
+> +		goto free_vca;
+> +	}
+> +
+> +	ret = rhi_read_cached_object(vdev_id, RHI_DA_OBJECT_MEASUREMENT,
+> +				     &measurements, &measurements_size);
+> +	if (ret) {
+> +		pci_err(pdev, "failed to get device certificate from the host (%d)\n", ret);
+> +		goto free_interface_report;
+> +	}
+> +
+> +	dev_info = kmalloc(sizeof(*dev_info), GFP_KERNEL);
+> +	if (!dev_info) {
+> +		ret = -ENOMEM;
+> +		goto free_measurements;
+> +	}
+> +
+> +	if (rsi_vdev_get_info(vdev_id, virt_to_phys(dev_info))) {
+> +		pci_err(pdev, "failed to get device digests (%d)\n", ret);
+> +		ret = -EIO;
+> +		goto free_dev_info;
+> +	}
+> +
+> +	/* Make sure no unexpected lock/unlock operation happened from guest */
+> +	if (dsc->dev_info.lock_nonce != dev_info->lock_nonce) {
+> +		pci_err(pdev, "Unexpected lock/unlock operation from host (%d)\n", ret);
+> +		ret = -EIO;
+> +		goto free_dev_info;
+> +	}
+> +
+> +	/*
+> +	 * Verify that the digests of the provided reports match with the
+> +	 * digests from RMM
+> +	 */
+> +	ret = cca_verify_digests(dev_info->hash_algo, certificate,
+> +				 certificate_size, vca, vca_size,
+> +				 interface_report, interface_report_size,
+> +				 measurements, measurements_size, dev_info);
+> +	if (ret) {
+> +		pci_err(pdev, "RMM provided digest mismatch (%d)\n", ret);
+> +		goto free_dev_info;
+> +	}
+> +
+> +	/* fill evidence details */
+> +	evidence = &dsc->pci.base_tsm.evidence;
+> +
+> +	/* Now update the evidence under lock. */
+> +	down_write(&evidence->lock);
+> +	evidence->generation = dev_info->meas_nonce;
+> +
+> +	/* we default to slot 0 in pdev_create */
+> +	obj = &evidence->obj[PCI_TSM_EVIDENCE_TYPE_CERT0];
+> +	WARN_ON(obj->data);
+> +	obj->data = certificate;
+> +	obj->len = certificate_size;
+> +
+> +	obj = &evidence->obj[PCI_TSM_EVIDENCE_TYPE_VCA];
+> +	WARN_ON(obj->data);
+> +	obj->data = vca;
+> +	obj->len = vca_size;
+> +
+> +	obj = &evidence->obj[PCI_TSM_EVIDENCE_TYPE_REPORT];
+> +	WARN_ON(obj->data);
+> +	obj->data = interface_report;
+> +	obj->len = interface_report_size;
+> +
+> +	obj = &evidence->obj[PCI_TSM_EVIDENCE_TYPE_MEASUREMENTS];
+> +	WARN_ON(obj->data);
+> +	obj->data = measurements;
+> +	obj->len = measurements_size;
+> +
+> +	dsc->dev_info.meas_nonce    = dev_info->meas_nonce;
+> +	dsc->dev_info.report_nonce  = dev_info->report_nonce;
+> +	memcpy(dsc->dev_info.cert_digest, dev_info->identity_digest, SHA512_DIGEST_SIZE);
+> +	memcpy(dsc->dev_info.vca_digest, dev_info->protocol_data_digest, SHA512_DIGEST_SIZE);
+> +	memcpy(dsc->dev_info.meas_digest, dev_info->meas_digest, SHA512_DIGEST_SIZE);
+> +	memcpy(dsc->dev_info.report_digest, dev_info->report_digest, SHA512_DIGEST_SIZE);
+> +	up_write(&evidence->lock);
+> +
+> +	kfree(dev_info);
+> +	return 0;
+> +
+> +free_dev_info:
+> +	kfree(dev_info);
+> +free_measurements:
+> +	kvfree(measurements);
+> +free_interface_report:
+> +	kvfree(interface_report);
+> +free_vca:
+> +	kvfree(vca);
+> +free_certificate:
+> +	kvfree(certificate);
+> +	return ret;
+> +}
+> +
+>  static struct pci_tsm *cca_tsm_lock(struct tsm_dev *tsm_dev, struct pci_dev *pdev)
+>  {
+>  	int ret;
+> +	enum hash_algo digest_algo;
+> +	struct cca_guest_dsc *cca_dsc;
+> +	int vdev_id = rsi_vdev_id(pdev);
+> +	struct rsi_vdevice_info *dev_info;
+>  
+> -	struct cca_guest_dsc *cca_dsc __free(kfree) =
+> -		kzalloc_obj(struct cca_guest_dsc);
+> +	cca_dsc = kzalloc_obj(struct cca_guest_dsc);
+>  	if (!cca_dsc)
+>  		return ERR_PTR(-ENOMEM);
+>  
+>  	ret = pci_tsm_devsec_constructor(pdev, &cca_dsc->pci, tsm_dev);
+>  	if (ret)
+> -		return ERR_PTR(ret);
+> +		goto free_cca_dsc;
+>  
+>  	ret = cca_device_lock(pdev);
+>  	if (ret)
+> -		return ERR_PTR(ret);
+> +		goto free_cca_dsc;
+>  
+> -	/* collect evidence without nonce */
+> -	ret = cca_update_device_object_cache(pdev, NULL);
+> -	if (ret) {
+> -		cca_device_unlock(pdev);
+> -		return ERR_PTR(ret);
+> +	dev_info = kmalloc_obj(struct rsi_vdevice_info);
+> +	if (!dev_info) {
+> +		ret = -ENOMEM;
+> +		goto dev_unlock;
+> +	}
+> +
+> +	if (rsi_vdev_get_info(vdev_id, virt_to_phys(dev_info))) {
+> +		ret = -EIO;
+> +		goto free_dev_info;
+> +	}
+> +
+> +	/* collect the lock nonce */
+> +	cca_dsc->dev_info.lock_nonce = dev_info->lock_nonce;
+> +
+> +	switch (dev_info->hash_algo) {
+> +	case RSI_HASH_SHA_256:
+> +		digest_algo = HASH_ALGO_SHA256;
+> +		break;
+> +	case RSI_HASH_SHA_512:
+> +		digest_algo = HASH_ALGO_SHA512;
+> +		break;
+> +	default:
+> +		ret = -EIO;
+> +		goto free_dev_info;
+>  	}
+> +	pci_tsm_init_evidence(&cca_dsc->pci.base_tsm.evidence,
+> +			      dev_info->id_index, digest_algo);
+>  
+> -	return &no_free_ptr(cca_dsc)->pci.base_tsm;
+> +	/* collect evidence without nonce */
+> +	ret = cca_collect_dev_evidence(pdev, cca_dsc);
+> +	if (ret)
+> +		goto free_dev_info;
+> +
+> +	kfree(dev_info);
+> +	return &cca_dsc->pci.base_tsm;
+> +
+> +free_dev_info:
+> +	kfree(dev_info);
+> +dev_unlock:
+> +	cca_device_unlock(pdev);
+> +free_cca_dsc:
+> +	kfree(cca_dsc);
+> +	return ERR_PTR(ret);
+>  }
+>  
+>  static void cca_tsm_unlock(struct pci_tsm *tsm)
+>  {
+> -	struct cca_guest_dsc *cca_dsc = to_cca_guest_dsc(tsm->pdev);
+> +	long ret;
+> +	struct pci_dev *pdev = tsm->pdev;
+> +	struct cca_guest_dsc *cca_dsc = to_cca_guest_dsc(pdev);
+> +
+> +	/* invalidate dev mapping based on interface report */
+> +	ret = cca_unmap_evidence_report_range(tsm->pdev);
+> +	if (ret) {
+> +		pci_err(tsm->pdev, "failed to invalidate the interface report\n");
+> +		goto err_out;
+> +	}
+>  
+>  	cca_device_unlock(tsm->pdev);
+> +	pci_tsm_mmio_teardown(cca_dsc->pci.mmio);
+>  
+> +err_out:
+> +	/*
+> +	 * No error handling from this function. Leave the device locked
+> +	 */
+> +	pci_tsm_mmio_free(tsm->pdev, cca_dsc->pci.mmio);
+>  	kfree(cca_dsc);
+>  }
+>  
+> diff --git a/drivers/virt/coco/arm-cca-guest/rsi-da.c b/drivers/virt/coco/arm-cca-guest/rsi-da.c
+> index 9f9e54174813..039138768f8f 100644
+> --- a/drivers/virt/coco/arm-cca-guest/rsi-da.c
+> +++ b/drivers/virt/coco/arm-cca-guest/rsi-da.c
+> @@ -6,6 +6,7 @@
+>  #include <linux/pci.h>
+>  #include <linux/mem_encrypt.h>
+>  #include <asm/rsi_cmds.h>
+> +#include <crypto/hash.h>
+>  
+>  #include "rsi-da.h"
+>  #include "rhi-da.h"
+> @@ -85,3 +86,147 @@ int cca_update_device_object_cache(struct pci_dev *pdev, const u8 *nonce)
+>  
+>  	return rhi_update_vdev_measurements_cache(pdev, nonce);
+>  }
+> +
+> +static inline int
+> +rsi_validate_dev_mapping(unsigned long vdev_id, phys_addr_t start_ipa,
+> +		phys_addr_t end_ipa, phys_addr_t io_pa,
+> +		unsigned long flags, unsigned long lock_nonce,
+> +		unsigned long meas_nonce, unsigned long report_nonce)
+> +{
+> +	unsigned long ret;
+> +	phys_addr_t next_ipa;
+> +
+> +	while (start_ipa < end_ipa) {
+> +		ret = rsi_vdev_validate_mapping(vdev_id, start_ipa, end_ipa,
+> +						io_pa, &next_ipa, flags,
+> +						lock_nonce, meas_nonce, report_nonce);
+> +		if (ret || next_ipa <= start_ipa || next_ipa > end_ipa)
+> +			return -EINVAL;
+> +		io_pa += next_ipa - start_ipa;
+> +		start_ipa = next_ipa;
+> +	}
+> +	return 0;
+> +}
+> +
+> +static inline int rsi_invalidate_dev_mapping(phys_addr_t start_ipa, phys_addr_t end_ipa)
+> +{
+> +	return rsi_set_memory_range(start_ipa, end_ipa, RSI_RIPAS_EMPTY,
+> +				    RSI_CHANGE_DESTROYED);
+> +}
+> +
+> +static int cca_apply_evidence_report_range(struct pci_dev *pdev,
+> +		struct pci_tsm_mmio *mmio, bool map)
+> +{
+> +	int i, ret;
+> +	struct resource *res;
+> +	unsigned long mmio_flags = 0; /* non coherent, not limited order */
+> +	int vdev_id = rsi_vdev_id(pdev);
+> +	struct pci_tsm_mmio_entry *entry;
+> +	struct cca_guest_dsc *dsc = to_cca_guest_dsc(pdev);
+> +
+> +	for (i = 0; i < mmio->nr; i++) {
+
+In the tsm unlock code path cca_tsm_unlock() ->
+cca_unmap_evidence_report_range() -> cca_apply_evidence_report_range()
+there is no null pointer check on mmio / dsc->pci.mmio.
+
+dsc->pci.mmio is only initialized in the tsm accept path, so if the device
+is locked then unlocked without an accept, this will lead to a null pointer
+dereference.
+
+Regards,
+Kameron
+
+> +		entry = pci_tsm_mmio_entry(mmio, i);
+> +		res = &entry->res;
+> +
+> +		if (res->desc != IORES_DESC_ENCRYPTED)
+> +			continue;
+> +
+> +		if (map)
+> +			ret = rsi_validate_dev_mapping(vdev_id, res->start,
+> +						       res->end + 1, entry->tsm_offset,
+> +						       mmio_flags,
+> +						       dsc->dev_info.lock_nonce,
+> +						       dsc->dev_info.meas_nonce,
+> +						       dsc->dev_info.report_nonce);
+> +		else
+> +			ret = rsi_invalidate_dev_mapping(res->start, res->end + 1);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +	return 0;
+> +}
+> +
+> +int cca_map_evidence_report_range(struct pci_dev *pdev, struct pci_tsm_mmio *mmio)
+> +{
+> +	return cca_apply_evidence_report_range(pdev, mmio, true);
+> +}
+> +
+> +int cca_unmap_evidence_report_range(struct pci_dev *pdev)
+> +{
+> +	struct cca_guest_dsc *dsc = to_cca_guest_dsc(pdev);
+> +	struct pci_tsm_mmio *tsm_mmio = dsc->pci.mmio;
+> +
+> +	return cca_apply_evidence_report_range(pdev, tsm_mmio, false);
+> +}
+> +
+> +int cca_verify_digest(u64 hash_algo, uint8_t *report,
+> +		size_t report_size, uint8_t *report_digest)
+> +{
+> +	u8 digest[SHA512_DIGEST_SIZE];
+> +	size_t digest_size;
+> +	void (*digest_func)(const u8 *data, size_t len, u8 *out);
+> +
+> +	switch (hash_algo) {
+> +	case RSI_HASH_SHA_256:
+> +		digest_func = sha256;
+> +		digest_size = SHA256_DIGEST_SIZE;
+> +		break;
+> +	case RSI_HASH_SHA_512:
+> +		digest_func = sha512;
+> +		digest_size = SHA512_DIGEST_SIZE;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	digest_func(report, report_size, digest);
+> +	if (memcmp(report_digest, digest, digest_size))
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +
+> +int cca_verify_digests(u64 hash_algo,
+> +		uint8_t *certificate, size_t certificate_size,
+> +		uint8_t *vca, size_t vca_size,
+> +		uint8_t *interface_report, size_t interface_report_size,
+> +		uint8_t *measurements, size_t measurements_size,
+> +		struct rsi_vdevice_info *dev_info)
+> +{
+> +	int ret;
+> +	struct {
+> +		uint8_t *report;
+> +		size_t size;
+> +		uint8_t *digest;
+> +	} reports[] = {
+> +		{
+> +			certificate,
+> +			certificate_size,
+> +			dev_info->identity_digest
+> +		},
+> +		{
+> +			vca,
+> +			vca_size,
+> +			dev_info->protocol_data_digest
+> +		},
+> +		{
+> +			interface_report,
+> +			interface_report_size,
+> +			dev_info->report_digest
+> +		},
+> +		{
+> +			measurements,
+> +			measurements_size,
+> +			dev_info->meas_digest
+> +		}
+> +
+> +	};
+> +
+> +	for (int i = 0; i < ARRAY_SIZE(reports); i++) {
+> +		ret = cca_verify_digest(hash_algo, reports[i].report,
+> +					reports[i].size, reports[i].digest);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +	return 0;
+> +}
+> diff --git a/drivers/virt/coco/arm-cca-guest/rsi-da.h b/drivers/virt/coco/arm-cca-guest/rsi-da.h
+> index 88067d2230ab..07a044d3e335 100644
+> --- a/drivers/virt/coco/arm-cca-guest/rsi-da.h
+> +++ b/drivers/virt/coco/arm-cca-guest/rsi-da.h
+> @@ -9,11 +9,23 @@
+>  #include <linux/pci.h>
+>  #include <linux/pci-tsm.h>
+>  #include <asm/rsi_smc.h>
+> +#include <crypto/sha2.h>
+>  
+>  #define MAX_CACHE_OBJ_SIZE	SZ_16M
+>  
+> +struct dsm_device_info {
+> +	u64 lock_nonce;
+> +	u64 meas_nonce;
+> +	u64 report_nonce;
+> +	u8 cert_digest[SHA512_DIGEST_SIZE];
+> +	u8 vca_digest[SHA512_DIGEST_SIZE];
+> +	u8 meas_digest[SHA512_DIGEST_SIZE];
+> +	u8 report_digest[SHA512_DIGEST_SIZE];
+> +};
+> +
+>  struct cca_guest_dsc {
+>  	struct pci_tsm_devsec pci;
+> +	struct dsm_device_info dev_info;
+>  };
+>  
+>  static inline struct cca_guest_dsc *to_cca_guest_dsc(struct pci_dev *pdev)
+> @@ -39,5 +51,15 @@ int cca_device_unlock(struct pci_dev *pdev);
+>  int cca_update_device_object_cache(struct pci_dev *pdev, const u8 *nonce);
+>  struct page *alloc_shared_pages(int nid, gfp_t gfp_mask, unsigned long min_size);
+>  int free_shared_pages(struct page *page, unsigned long min_size);
+> +int cca_map_evidence_report_range(struct pci_dev *pdev, struct pci_tsm_mmio *mmio);
+> +int cca_unmap_evidence_report_range(struct pci_dev *pdev);
+> +int cca_verify_digest(u64 hash_algo, uint8_t *report,
+> +		size_t report_size, uint8_t *report_digest);
+> +int cca_verify_digests(u64 hash_algo,
+> +		uint8_t *certificate, size_t certificate_size,
+> +		uint8_t *vca, size_t vca_size,
+> +		uint8_t *interface_report, size_t interface_report_size,
+> +		uint8_t *measurements, size_t measurements_size,
+> +		struct rsi_vdevice_info *dev_info);
+>  
+>  #endif
+
