@@ -1,104 +1,195 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF48647F77A
-	for <linux-coco@lists.linux.dev>; Wed, 19 Aug 2026 16:48:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754263B9931;
+	Wed, 19 Aug 2026 17:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787158100; cv=none; b=M8qJc4z0yAaPnq/Y5MR2vM1zhbEvDB5JQL/0AS6T7U7EXwCbCNwzN57CXWEUur9MeLHsZqXtR3kdROPTM/2TeRaAqux86xZq7zvEI/Fre9Tf+vJ7CrGcBU3QIog8Uqzb1lZbaMaXkHryGXuoLjFzZdwjRUlgbFMmW+gwrM8F9Ls=
+	t=1787159039; cv=none; b=YxFUqYJ4PKSkttaxTOKpWpTFVlVUzGJFs57DBaKV0fN1s8/AmeONIBoOtQriyyfzIeSb6AswRJ1YfaC/3VuD5gHZ7c7+E2P3anm+KhWhk+O+L0clF8Smt3wK5k9bZMGw2yMFfAZmAjbuE9mkKdDUlLQTpuh6oLxX59Cqv89o/Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787158100; c=relaxed/simple;
-	bh=zEi8JJGymPcQVvOxzA2kpvoDzfA1NMEUYegJLldJscU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ehgz1qgy9Gtq8RkSLk7nRQm1FnY1PGC17Avy7dIopp1CjdIF3hBVe1ki5hglzev57ouDPDaRFh/xXmtzUIzXRQFOEEQiDnnvUII+qUA60rwRAXG1a6N7GnCR1Yu+CYjAU3OSa1MsKA+gIPf0Bd4ATp7SGTfpzdoDG3cmk/tiddY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--psalian.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rgfAj7O4; arc=none smtp.client-ip=209.85.215.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--psalian.bounces.google.com
+	s=arc-20240116; t=1787159039; c=relaxed/simple;
+	bh=X2JPIRj5Cm1Euel970r+5c+HZVSWkuYLsHyJPoO4csg=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FvMy1Ak6JHjfS+pobWmJ1XLsyIrMR3VizqNHlahQZM8pjBKu11Hy4PKkXxsKvzqGFR3IazYVNy5GPk+gYuoh/fr+kTtbwkfJKrvG6hiedp8kM+EWtGax8JU0jYAPqTtkt+eWK6tvtSh6VKgUyw2c9W2mVresm41kjNgzaoDD0Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qxGLbODb; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rgfAj7O4"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb6cf425e86so1421885a12.1
-        for <linux-coco@lists.linux.dev>; Wed, 19 Aug 2026 09:48:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787158097; x=1787762897; darn=lists.linux.dev;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FTRjgWQVNasCMKNn3L/Iyu9CdlV8PEC4ul/ivTgPbn0=;
-        b=rgfAj7O4HZNnIYpu/n7fJujvJVwbQuat+/VvqUXHRoCnTs0KyVUGRMBPjVSc5Ma+vR
-         QkH/p8n1oCkLBs7mf0L7r+qXrC6lYYUPtYHvdWu9tY/GUWwrYU+/tMeBPHEdG31IpsSr
-         +0dlxDv55UVrulzoFPemIjBKJ3J//pzY7xjHM2gyVr2CRJEBDRlrzQJ664I+R02i274S
-         Kfz8yJhC4Gvdj7x2x7f3SEqShDqnRm83kIgcMyrpIDFgK/O2wXwC8umdfqfV4e/1EV8N
-         pd+zkhGgTmIb3cxhSm/cLK9lWjMrEsHSoZRLBpyayIhUhxNjWVh58EgrAvxH1gRmsQrh
-         Z4HA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787158097; x=1787762897;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FTRjgWQVNasCMKNn3L/Iyu9CdlV8PEC4ul/ivTgPbn0=;
-        b=myWlXKpdrZWrQyUWp+Pa/Vlk5+A8yDoEYq2l6oRQw22FY/zriVXyGkRMSFV0Nz5RA3
-         wjDBVl5RvGbKeMsdtmEMkPhLX378n0oKYylgXL0jfbbWOk1wnhV39sW4/JWVTACdj9Gd
-         aNDnw07MoWFGkmHKAVq2h5k1k3iTDIZOKBQ0SeDJFXnDEMQ3OPJKYZsmwRyw7aP4TfTg
-         pR/52XgUwF8QYwJ0c4Qlfq9tDtkAnPFGOEKameZ2ho+HvhbIDMs4nJ9OoQO0lgJtzJ9k
-         xSnFQVcqsMBbyRMrKm6xnGwwpCKLqyZzKk6tBSPKGqM+u8N2We/T6DWYNFLIHaTxNYXg
-         bLGw==
-X-Forwarded-Encrypted: i=1; AHgh+RrfSd1aqwquLEOIgFYPtR5NhCYgIN4NDZsFehcjtzPG/EUeTSZUttQhbILfZBWV1bTgqZGnZop0XhLR@lists.linux.dev
-X-Gm-Message-State: AOJu0YxAhGmjQ32YxfiAt1cNUyCNlNSsEGzbAF5KrHs6JcksT4fNGOI+
-	+dEGMy8l0/aewY6SiLvJgUagUPFAFKKDe0kWCep/qj8K3sz5Fm8yIoT7TGFjKJOl3oxI3ubbU20
-	tgkH1iH2+3A==
-X-Received: from pgee6.prod.google.com ([2002:a63:1e06:0:b0:cbe:dc9e:aa41])
- (user=psalian job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:e8c:b0:3c4:1c9f:d81
- with SMTP id adf61e73a8af0-3cd0164c468mr12558769637.7.1787158096830; Wed, 19
- Aug 2026 09:48:16 -0700 (PDT)
-Date: Wed, 19 Aug 2026 16:48:12 +0000
-In-Reply-To: <b965c127-08d2-4e57-9396-a2c3f5cf253a@amd.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qxGLbODb"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=X2JPIRj5Cm1Euel970r+5c+HZVSWkuYLsHyJPoO4csg=; b=qxGLbODb8bUHyyhOXdEevrYVfl
+	5XJEUjT6wwIsRGsmccW2iTOJi7R09FpY3hdHrc5RiXr35f4iHwBtSqONtB7M7Rtyox6HfF5YMaZke
+	SysRoSWKMjSMlayPg3ml2Quu1Bl3rdeb4udJUa/c3od5lWvz2QTcAk/OADBUIYU1i0FllLWdxP5X/
+	rRngdnodoHOiTtqO4xADnNSCe5F7L3T6wsyzByfyJOyJn4gQSjD6mv3kuxXh1nLsJsSZ/EhcfWoFI
+	C8il7bc/XFtgpVncOeA541aQYow3Clmtg9X1nthQSkJNKRh8OUzlK8Obi6XWz6vNjC9fCP6eL0GAh
+	+UN6Ytng==;
+Received: from [2001:8b0:10b:5:f6c4:be10:4885:f95e] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wwjhg-0000000EA2h-1fOQ;
+	Wed, 19 Aug 2026 17:03:52 +0000
+Message-ID: <caf4476c54f0db4b5de8753749c89e5735886b59.camel@infradead.org>
+Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2026-08-19
+From: David Woodhouse <dwmw2@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, 
+ "linux-coco@lists.linux.dev"	 <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM	 <kvm@vger.kernel.org>
+Date: Wed, 19 Aug 2026 18:03:40 +0100
+In-Reply-To: <54d375aa-8362-4e1c-8f76-bae1eb9f4f76@kernel.org>
+References: <54d375aa-8362-4e1c-8f76-bae1eb9f4f76@kernel.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-B+HdHmc5L0yljg7tDt7J"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <b965c127-08d2-4e57-9396-a2c3f5cf253a@amd.com>
-X-Mailer: git-send-email 2.55.0.860.g4b6b3295ed-goog
-Message-ID: <20260819164812.2529919-1-psalian@google.com>
-Subject: Re: [PATCH] fuse: mark DAX VMA page protections as decrypted
-From: Punit Salian <psalian@google.com>
-To: pankaj.gupta@amd.com
-Cc: thomas.lendacky@amd.com, miklos@szeredi.hu, stefanha@redhat.com, 
-	vgoyal@redhat.com, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, x86@kernel.org, 
-	Punit Salian <psalian@google.com>
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-B+HdHmc5L0yljg7tDt7J
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Pankaj,
+On Wed, 2026-08-19 at 18:23 +0200, David Hildenbrand (Arm) wrote:
+> Hi,
+>=20
+> Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+> 2026-08-19 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-Thanks for reviewing and providing the Acked-by!
+Tomorrow is Thursday 20th?
 
-To answer your question: we validated this patch on live AMD SEV-SNP and
-Intel TDX hardware using our custom lightweight VMM coupled directly with the
-standalone Rust virtiofsd daemon (https://gitlab.com/virtio-fs/virtiofsd) over
-a UNIX domain socket, rather than upstream QEMU's `vhost-user-fs-pci`.
+> Note that we will be skipping the meeting in two weeks (2026-09-03) as bo=
+th
+> Ackerley and me will be traveling. So if you have something urgent to dis=
+cuss,
+> please speak up :)
+>=20
+> In this meeting, I think we should sync on the recent developemnts regard=
+ing
+> in-place conversion. I don't know whether David Woodhouse will make this
+> meeting, but if so, we will also talk about guest_memfd+VFIO.
 
-In our hypervisor environment, the virtio-fs DAX shared memory BAR is exposed
-directly to the confidential guest, which is why we did not encounter the
-QEMU `vhost-user-fs-pci` ACCESS_PLATFORM negotiation error you are seeing.
+I should be.
 
-For reference, with this patch applied, our AMD SEV-SNP guest dmesg confirms
-clean initialization and successful virtiofs DAX mounting with zero RMP faults
-during shared-memory access:
+--=-B+HdHmc5L0yljg7tDt7J
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-[    1.322823] Memory Encryption Features active: AMD SEV SEV-ES SEV-SNP
-[    1.323783] SEV: Status: SEV SEV-ES SEV-SNP 
-[    1.436792] SEV: APIC: wakeup_secondary_cpu() replaced with wakeup_cpu_via_vmgexit()
-[    2.368786] SEV: SNP running at VMPL0.
-[    2.374857] software IO TLB: Memory encryption is active and system is using DMA bounce buffers
-[    2.812345] virtiofs virtio0: DAX enabled (window size: 1073741824 bytes)
-[    2.815678] virtiofs: mounted filesystem on /mnt/dax with -o dax
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+qrKGjzwL1k0xQK8kF/RxXcgAAAAAAAA=
 
-I haven't tested the QEMU `vhost-user-fs-pci` + SEV-SNP combination directly,
-so I cannot speak to the specific QEMU device flags needed there, but I can
-confirm the guest kernel DAX mapping change functions as expected on real
-SEV-SNP hardware once the DAX window is mapped.
 
-Thanks,
-Punit
+--=-B+HdHmc5L0yljg7tDt7J--
