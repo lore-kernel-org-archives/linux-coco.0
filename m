@@ -1,386 +1,124 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3BD47A876
-	for <linux-coco@lists.linux.dev>; Wed, 19 Aug 2026 15:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03AC930100E;
+	Wed, 19 Aug 2026 16:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787154989; cv=none; b=BOz1tCG+wWj8cIOQ1FqNMgJdkpaxytz44q4lDPKCFqZyjBRe9fd4XoS2l9rzj7UShZNxbLjJs+wBNkBpN5pOB9vgFkWJP+SEvppEvOAmRGNZ0w+NeYaWmliqkKe7bqgvXRZ5bDbnVI05cLZYNTkedH+YRJ31UygpxqQgMD8+v9g=
+	t=1787156604; cv=none; b=CqEU4ctj74d4RISUUpzwSdNSbeLQTzDiD0XTga4XHqpv18i6mjZvnOYJTHiO4VhFHEsxB7xlfixStTKcQGB3+lcGFpNXWwpQqSLwsbsWxFzw88jOnpGTid/l31dS90EsS5mlAwwsKGBfZ2W4CY4sCxsY9bq2cntWAEd0uEdRzoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787154989; c=relaxed/simple;
-	bh=B8O9H5+dFhr0YZQyboPpZlhg/Dmx7yN13FUOyIt60Os=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Md47veTg3OXBVEl03DphNbFw291/3br0fmXYXbNPkiUFGCxz8a1dVKRI0XRx8WcKQw93U3OWHkcGIsu0g9N+uPOzdDwDpv/LznTg4/IvSrhsyClJ2S1FZeJdjeDFhxLF6jfkO7R3Ohbw9tP6TTLJOHCkqgRJTsk0sFNFLyOYwPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UqYz4271; arc=none smtp.client-ip=209.85.214.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1787156604; c=relaxed/simple;
+	bh=LmWMDPpn1fujXT64EdOwJQHmER8QXmfNrW50d6zxeuo=;
+	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=ZsukcOqkRpl4a0RyRQqLaAlPIbSBBKS9FbwsnqCVZRFFQkE2O44YuYQ7gx60Xi2qj+rBEMsgJecQBMHh6cPQNXp/F3TO1C7QNbpadkadbf/tl5/byBVi10Ne4duApUl51/Xf+7hytLO3thb6Z6kttzBye36wbJzj41HgdymGVI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lBP0ue9a; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UqYz4271"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ccd1958e8fso18039115ad.2
-        for <linux-coco@lists.linux.dev>; Wed, 19 Aug 2026 08:56:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787154986; x=1787759786; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=C3/tUlvf/a0JBJGZcfbwdageufimEuo+Kj8f0saPyZA=;
-        b=UqYz4271LOpNri9nTWJPUraZq/2eaGUvusEabpVFDkPlSG01K5PriIsIF1s2ATkZo3
-         5t1ZTX/nza4kXmAwzwPPnMmsKj/25OhkYMsCyfhRVlNTWsGLcGNz5SYZuEx7BPZJqWlf
-         +k/Oi9K2n2+kDMkVa40ck8To3laJwlZCWhb4GVWrcJmUb1jR7HNqHh08TSqWGqfHFPF3
-         raPGiB6VB+PlFaw96Hmij0lZaJ63nM6EVyRkyYDuG5tc+RMEFJdXkZurReI7Sxwn6/AG
-         bgzHC2AyUhCv1ltQtQ/rF3L/9gzob5HW3rLdeWR4dwiEbCCyY5N2hR1H69O/YF3IUYV4
-         5h6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787154986; x=1787759786;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=C3/tUlvf/a0JBJGZcfbwdageufimEuo+Kj8f0saPyZA=;
-        b=NoTpbwrIteIFRRnx15ih1rxgHRKucjf6OpVKnlumlGVtnp5gK0lEUvj91PpfxA2Il3
-         Y22ysFaZjZPy+fhMFlh9qKApJVP9nfuBuXd3os1bQ+Ob/aSezri33ydFrsLzxfwANBwG
-         F/3VPxB4+hAzVLHLI/CvNCpVj7RthfbkMBkSdk9TIkCvVvKl49YUrmDXEuid5H77czJ1
-         MKsO1amaOHEIhkBp+H7hp9Mao6b+p816uEDbnTJlM/oZNX4Vt5hyKk6CDbdqR6dh+zFi
-         rRwje+mA5FV04D8h5cHc3wxaVvVRk4wjweB8oNNaIILq2knGXRsyH+R9r47dEAruV46b
-         xYfg==
-X-Forwarded-Encrypted: i=1; AHgh+RodUCWkQ7Oe/dNKQl7Iz9+5QVJNCJ4H/ykYIVfHXM0idzsSXHnBZXrFEP95f2Ed368/G4wcoiMi8LiY@lists.linux.dev
-X-Gm-Message-State: AFuF++kexXoN/rBBGCythW+auI++1nRRmrzD1MpxF04/wFmcMNlMwuZk
-	SyBHD3nDeXTyUml+D8ZDZpxUXMf9FQJYFDQ7vGJM1sSKA/Q1MtK4u5iET7j9skp6zChuTM7k9KX
-	AXQU+Mg==
-X-Received: from plbkv11.prod.google.com ([2002:a17:903:28cb:b0:2ce:aea4:5e73])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:fb0:b0:2c2:62ee:5a0d
- with SMTP id d9443c01a7336-2d601e88fabmr106415295ad.14.1787154985585; Wed, 19
- Aug 2026 08:56:25 -0700 (PDT)
-Date: Wed, 19 Aug 2026 08:56:24 -0700
-In-Reply-To: <bd8f77eb6605f771fafbcef55a47211ecbb70e19.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lBP0ue9a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E5C1F000E9;
+	Wed, 19 Aug 2026 16:23:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787156602;
+	bh=Ldb5dOInQjpEK8qwvxT9Fxl21ZWTetKva/zFZH6RD8s=;
+	h=Date:From:To:Subject;
+	b=lBP0ue9ah1+okMOcT36Fha7BZdKb2IlP+/SzvGEBaCA0QksCErIjOZj/cy0EMqKPU
+	 FrKt6tsFzlGjsSwMrayIUZxjiIra7KCfqzVpTL/iSX9MC5murtY5Ul7qr8MuS05UPN
+	 18szLcbk6ml9B+yfJAh29inPNBA+X1MMyW8kT38T8Dncb+hM6ps3RHGd3tjSqzGzcX
+	 FLzzEVL6xnZuu662fwfUXe1HglWjI+GtIgliN9l5D/Lxnml1e6G4iHhMv6bbXwGC4H
+	 yS5NnQ0L5IK66XxrVjasds2fArlqvLiQKPxGFwk6RHW5bAiBUAdejr17flNmArXJeJ
+	 agC9bNzFcz3Iw==
+Message-ID: <54d375aa-8362-4e1c-8f76-bae1eb9f4f76@kernel.org>
+Date: Wed, 19 Aug 2026 18:23:09 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260814224509.2342760-1-seanjc@google.com> <3a622cdb03b553cc9f8ce55b6df3c0091b3b06b9.camel@intel.com>
- <aoT_6cnARCAYTrYG@google.com> <bd8f77eb6605f771fafbcef55a47211ecbb70e19.camel@intel.com>
-Message-ID: <aoXSKH4QLTA5DTXe@google.com>
-Subject: Re: [PATCH] KVM: VMX: Explicitly track TDX VMs' root level instead of
- guessing it from CPUID
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Yan Y Zhao <yan.y.zhao@intel.com>, 
-	Kai Huang <kai.huang@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-08-19
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 19, 2026, Rick P Edgecombe wrote:
-> On Tue, 2026-08-18 at 17:59 -0700, Sean Christopherson wrote:
-> > > Wait, no, this knowledge embeds in kvm_mmu_set_mirror_root_level() an=
-yway.
-> > > So I'd think to just have the below.=20
-> >=20
-> > I started with that, but I didn't like bleeding that level of detail in=
-to the
-> > MMU.=C2=A0 Or rather, I didn't like baking in the assumption that there=
- is exactly
-> > one "direct bits", that the one bit is a pivot between normal and mirro=
-r root,
-> > and that the pivot bit is the most significant bit of the effective GPA=
- space.
-> >=20
-> > On the other hand, the MMU already knows about mirror roots, and needs =
-to know
-> > that mirror roots can have predetermined levels, so explicitly storing =
-that
-> > level doesn't add new assumptions.
->=20
-> Yea.
+Hi,
 
-Hmm, but an argument against this exact patch is that this code:
+Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+2026-08-19 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-static __always_inline void kvm_mmu_set_mirror_root_level(struct kvm *kvm,
-                                                         int level)
-{
-       BUILD_BUG_ON(level !=3D 4 && level !=3D 5);
+Note that we will be skipping the meeting in two weeks (2026-09-03) as both
+Ackerley and me will be traveling. So if you have something urgent to discuss,
+please speak up :)
 
-       kvm->arch.mirror_root_level =3D level;
-       kvm->arch.gfn_direct_bits =3D gpa_to_gfn(BIT_ULL(level =3D=3D 4 ? 47=
- : 51));
-}
+In this meeting, I think we should sync on the recent developemnts regarding
+in-place conversion. I don't know whether David Woodhouse will make this
+meeting, but if so, we will also talk about guest_memfd+VFIO.
 
-completely undermines the argument that exactly how TDX uses gfn_direct_bit=
-s is
-an implementation detail that we don't want to bleed into the MMU.  That's =
-easy
-enough to address though, just move the helper into tdx.c.
+So this meeting could either be extremely short or very long :)
 
-> And with the log as is, the exact reasoning to add a mirror_root_level is=
- not
-> clear. To me at least. So if we want to keep it, some extra justification=
- would
-> help.
 
-How about this (to replace the existing one that talks about gfn_direct_bit=
-s)?
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
 
-    Don't use kvm_gfn_direct_bits() to infer the mirror root level, as the
-    connection between TDX's one and only "direct" bit and the predetermine=
-d
-    root level is a TDX implementation detail.  I.e. avoid baking in the
-    assumption that there is exactly one "direct bits", that the one bit is=
- a
-    pivot between normal and mirror roots, and that the pivot bit is the mo=
-st
-    significant bit of the effective GPA space.  For the same reason, set t=
-he
-    root level and direct bits in TDX code, i.e. don't provide a helper in =
-the
-    MMU, because from the MMU's perspective, they are two separate concepts=
-.
-   =20
-    Keep gfn_direct_bits even though it can be trivially derived from
-    mirror_root_level as saving a whole eight bytes per VM is meaningless,
-    keeping the TDX details buring in TDX would require a kvm_x86_ops hook,=
- and
-    the value is queried fairly often and in hot paths.
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write me
+or Ackerley a mail.
 
-> But for a bug fix, I'd think to keep it simple and then do mirror_root_le=
-vel
-> as a separate change.
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
 
-FWIW, I don't view keying off gfn_direct_bits as being simpler.  It might b=
-e less
-code, but conceptually it's more complex when reading kvm_mmu_get_tdp_level=
-().
-E.g. the comment would need to explain the connection between "direct bits"=
- and
-the mirror root level, which most non-TDX readers simply won't care about.
+[1]
+https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
 
-Hmm, but the comment I provided isn't very good either, as it too bleeds in=
- details
-about the S-bit pivot, and at the end of the day that's not the true reason=
- why the
-mirror root has/needs a predefined level.  The true reason is very simple: =
-KVM
-needs to mirror the external page tables, and obviously that means using th=
-e same
-number of levels.
+-- 
+Cheers,
 
-	/*
-	 * If the VM has mirror roots, then the root level is predefined as the
-	 * mirror root (and by extension the normal root) needs to match the
-	 * root level that was configured for the external page tables that are
-	 * being mirrored by KVM.
-	 */
-	if (vcpu->kvm->arch.mirror_root_level)
-		return vcpu->kvm->arch.mirror_root_level;
+David
 
-But IMO that's a moot point, because this isn't a matter of simple vs. comp=
-lex.
-Keying of gfn_direct_bits is wrong/flawed, so whether or not it's simpler i=
-s
-irrelevant.
-
-All in all, this?
-
-From: Sean Christopherson <seanjc@google.com>
-Date: Fri, 14 Aug 2026 07:50:32 -0700
-Subject: [PATCH] KVM: VMX: Explicitly track TDX VMs' root level instead of
- guessing it from CPUID
-
-Explicitly track the root level for TDX VMs instead of trying to infer the
-depth of the paging tree based on an individual vCPU's CPUID information.
-Applying KVM's existing logic to select the root level to TDX is flawed as
-nothing *requires* userspace to fill in the correct guest.MAXPHYADDR for a
-vCPU's CPUID.  Guessing at the correct root level is also ridiculous given
-that userspace has already told KVM the root level during TD initialization=
-.
-
-Relying on userspace to set the expected/correct CPUID lets a misbehaving
-userspace trip the KVM_BUG_ON() in tdx_load_mmu_pgd() by configuring guest
-CPUID to use an "incorrect" guest.MAXPHYADDR.
-
-Don't use kvm_gfn_direct_bits() to infer the mirror root level, as the
-connection between TDX's one and only "direct" bit and the predetermined
-root level is a TDX implementation detail.  I.e. avoid baking in the
-assumption that there is exactly one "direct bits", that the one bit is a
-pivot between normal and mirror roots, and that the pivot bit is the most
-significant bit of the effective GPA space.  For the same reason, set the
-root level and direct bits in TDX code, i.e. don't provide a helper in the
-MMU, because from the MMU's perspective, they are two separate concepts.
-
-Keep gfn_direct_bits even though it can be trivially derived from
-mirror_root_level as saving a whole eight bytes per VM is meaningless,
-keeping the TDX details buring in TDX would require a kvm_x86_ops hook, and
-the value is queried fairly often and in hot paths.
-
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Kai Huang <kai.huang@intel.com>
-Cc: Yan Zhao <yan.y.zhao@intel.com>
-Fixes: 20d913729c11 ("KVM: x86/mmu: Taking guest pa into consideration when=
- calculate tdp level")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/include/asm/kvm_host.h |  1 +
- arch/x86/kvm/cpuid.c            | 14 --------------
- arch/x86/kvm/cpuid.h            |  1 -
- arch/x86/kvm/mmu/mmu.c          | 18 ++++++++++--------
- arch/x86/kvm/vmx/tdx.c          | 20 +++++++++++---------
- 5 files changed, 22 insertions(+), 32 deletions(-)
-
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_hos=
-t.h
-index 283847619ff8..b2a74c69cc4a 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1406,6 +1406,7 @@ struct kvm_arch {
- 	struct kvm_mmu_memory_cache split_desc_cache;
-=20
- 	gfn_t gfn_direct_bits;
-+	int mirror_root_level;
-=20
- 	/*
- 	 * Size of the CPU's dirty log buffer, i.e. VMX's PML buffer. A Zero
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index ddb022cb203a..34c609a60eef 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -483,20 +483,6 @@ int cpuid_query_maxphyaddr(struct kvm_vcpu *vcpu)
- 	return 36;
- }
-=20
--int cpuid_query_maxguestphyaddr(struct kvm_vcpu *vcpu)
--{
--	struct kvm_cpuid_entry2 *best;
--
--	best =3D kvm_find_cpuid_entry(vcpu, 0x80000000);
--	if (!best || best->eax < 0x80000008)
--		goto not_found;
--	best =3D kvm_find_cpuid_entry(vcpu, 0x80000008);
--	if (best)
--		return (best->eax >> 16) & 0xff;
--not_found:
--	return 0;
--}
--
- /*
-  * This "raw" version returns the reserved GPA bits without any adjustment=
-s for
-  * encryption technologies that usurp bits.  The raw mask should be used i=
-f and
-diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
-index 8d863f45585d..46bfe8699e67 100644
---- a/arch/x86/kvm/cpuid.h
-+++ b/arch/x86/kvm/cpuid.h
-@@ -68,7 +68,6 @@ void __init kvm_init_xstate_sizes(void);
- u32 xstate_required_size(u64 xstate_bv, bool compacted);
-=20
- int cpuid_query_maxphyaddr(struct kvm_vcpu *vcpu);
--int cpuid_query_maxguestphyaddr(struct kvm_vcpu *vcpu);
- u64 kvm_vcpu_reserved_gpa_bits_raw(struct kvm_vcpu *vcpu);
-=20
- static inline int cpuid_maxphyaddr(struct kvm_vcpu *vcpu)
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index c519e8e8d646..c78897510a1e 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5928,19 +5928,21 @@ void __kvm_mmu_refresh_passthrough_bits(struct kvm_=
-vcpu *vcpu,
-=20
- static inline int kvm_mmu_get_tdp_level(struct kvm_vcpu *vcpu)
- {
--	int maxpa;
--
--	if (vcpu->kvm->arch.vm_type =3D=3D KVM_X86_TDX_VM)
--		maxpa =3D cpuid_query_maxguestphyaddr(vcpu);
--	else
--		maxpa =3D cpuid_maxphyaddr(vcpu);
--
- 	/* tdp_root_level is architecture forced level, use it if nonzero */
- 	if (tdp_root_level)
- 		return tdp_root_level;
-=20
-+	/*
-+	 * If the VM has mirror roots, then the root level is predefined as the
-+	 * mirror root (and by extension the normal root) needs to match the
-+	 * root level that was configured for the external page tables that are
-+	 * being mirrored by KVM.
-+	 */
-+	if (vcpu->kvm->arch.mirror_root_level)
-+		return vcpu->kvm->arch.mirror_root_level;
-+
- 	/* Use 5-level TDP if and only if it's useful/necessary. */
--	if (max_tdp_level =3D=3D 5 && maxpa <=3D 48)
-+	if (max_tdp_level =3D=3D 5 && cpuid_maxphyaddr(vcpu) <=3D 48)
- 		return 4;
-=20
- 	return max_tdp_level;
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index b272c20586a7..a0bc9f818f43 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -56,9 +56,6 @@
- bool enable_tdx __ro_after_init;
- module_param_named(tdx, enable_tdx, bool, 0444);
-=20
--#define TDX_SHARED_BIT_PWL_5 gpa_to_gfn(BIT_ULL(51))
--#define TDX_SHARED_BIT_PWL_4 gpa_to_gfn(BIT_ULL(47))
--
- static const struct tdx_sys_info *tdx_sysinfo;
-=20
- void tdh_vp_rd_failed(struct vcpu_tdx *tdx, char *uclass, u32 field, u64 e=
-rr)
-@@ -1609,10 +1606,7 @@ static int handle_tdvmcall(struct kvm_vcpu *vcpu)
-=20
- void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int pgd_level=
-)
- {
--	u64 shared_bit =3D (pgd_level =3D=3D 5) ? TDX_SHARED_BIT_PWL_5 :
--			  TDX_SHARED_BIT_PWL_4;
--
--	if (KVM_BUG_ON(shared_bit !=3D kvm_gfn_direct_bits(vcpu->kvm), vcpu->kvm)=
-)
-+	if (KVM_BUG_ON(pgd_level !=3D vcpu->kvm->arch.mirror_root_level, vcpu->kv=
-m))
- 		return;
-=20
- 	td_vmcs_write64(to_tdx(vcpu), SHARED_EPT_POINTER, root_hpa);
-@@ -2760,6 +2754,14 @@ DEFINE_CLASS(tdx_vm_state_guard, tdx_vm_state_guard_=
-t,
- 	     if (!IS_ERR(_T)) tdx_release_vm_state_locks(_T),
- 	     tdx_acquire_vm_state_locks(kvm), struct kvm *kvm);
-=20
-+static __always_inline void tdx_set_mirror_root_level(struct kvm *kvm, int=
- level)
-+{
-+	BUILD_BUG_ON(level !=3D 4 && level !=3D 5);
-+
-+	kvm->arch.mirror_root_level =3D level;
-+	kvm->arch.gfn_direct_bits =3D gpa_to_gfn(BIT_ULL(level =3D=3D 4 ? 47 : 51=
-));
-+}
-+
- static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
- {
- 	struct kvm_tdx_init_vm __user *user_data =3D u64_to_user_ptr(cmd->data);
-@@ -2823,9 +2825,9 @@ static int tdx_td_init(struct kvm *kvm, struct kvm_td=
-x_cmd *cmd)
- 	kvm_tdx->xfam =3D td_params->xfam;
-=20
- 	if (td_params->config_flags & TDX_CONFIG_FLAGS_MAX_GPAW)
--		kvm->arch.gfn_direct_bits =3D TDX_SHARED_BIT_PWL_5;
-+		tdx_set_mirror_root_level(kvm, 5);
- 	else
--		kvm->arch.gfn_direct_bits =3D TDX_SHARED_BIT_PWL_4;
-+		tdx_set_mirror_root_level(kvm, 4);
-=20
- 	kvm_tdx->state =3D TD_STATE_INITIALIZED;
- out:
-
-base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
---
