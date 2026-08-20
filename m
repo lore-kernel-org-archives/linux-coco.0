@@ -1,88 +1,80 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267AE223DE5
-	for <linux-coco@lists.linux.dev>; Thu, 20 Aug 2026 09:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A30940D58B;
+	Thu, 20 Aug 2026 11:13:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787217418; cv=none; b=fGV2weUpqdNKBH81hVv4+y+Vc9WNCnhClS1JEP5GKZ2qpYQo4kVmxGFhvg5xQ1vyprlbNU/M1/DE3me5evOdpYrovuXlk0aMBLCe0ZvKcVQIdzbz6fG6Kxt2C/rrLXSy+Ml4oFm1633vuweamYpXgRaDfyAk7O6gcYLYHHeakFY=
+	t=1787224422; cv=none; b=g6QTS5M1mdALBSTqYGRDYt0Gx9gXRhFSqjome4dj7XveXN3S6MLSLlrjmW3qYfCASy5czzRP6WkywcG97kbOAdUorRixc3LsdS+LyYWLIcZbXwxr5xTLgN6Vm6bZ0/+OJHfxVbUxRVwlamkvwxvpmO8yNV+SIXomYBuvijrdMk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787217418; c=relaxed/simple;
-	bh=OcK1XeB/oES2jjju8v7YLFTQOGdMXWCoRjtczQaI7pc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OSa+GoHUeIKxqMISDe+At/ZpfmEQ+H/1OtDDzxZbl9q9XWQ4m8Yq3YO6BAdzscCyEZ630pK6nEv5DHtpCdtThVFpMJZarVu/1XuiZFFZgy8+/LzN+EjWANwrMllJgHBeHdLBbDfqLwMB7LQJ1FGoBHsGBhE8MHMRYcPBy0UqmhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B0PweAQh; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1787224422; c=relaxed/simple;
+	bh=KtI5T5Ka930wbyhgmgqkQ4FepflWZdHZnI8uHPdT3NQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Q+fNiJRGcWSzRH6cLi4QQEDcvB7ga0djLb8Cxivmu7q8LbJnHq6wBzrzvGtT+oEIekb3JAJKZMH2CC6NhKoaX8f7tcI8Ep3KkvqBu/GNT1pj6cGphbehW6e5SuLbAA5vRpbo0Bfq3qOe8iwr3yzn9+HCZgDf0G3FkS3LJrtR+wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gSYNUhgr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B0PweAQh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787217416; x=1818753416;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=OcK1XeB/oES2jjju8v7YLFTQOGdMXWCoRjtczQaI7pc=;
-  b=B0PweAQhmsjfJNPzlNQ1nVMSHW1IbFWlZUO8mbLoBj6X2lhtehiY6mVO
-   tM2mEA0YiyaQID8nhCdud92OglnOfCxsvOtFTD/cbEkbt72uPxmTVHJ3n
-   DGRGqPsjLY2y201GLAopGgt0pp/tlKXomKudzpSB8NOQJy2/Mt16zqmWT
-   syWRfGq12Iyptw920ic0ty28SuVuuzMTxMXD0UIBCo8IjW019QCPKF9+A
-   vfHkHOsld9Qbmom1NM0TT0PeHrhSlW3B/nJ4IV8DmF9V6HO4TwySTfcGU
-   LbVd6yPlJ7PojVHwAHPfYCL/ja+tvT1UdVLX8QPNOqJgnutWKSmdS/xRz
-   w==;
-X-CSE-ConnectionGUID: IT0teKXrS3mYo4FUt9mqpg==
-X-CSE-MsgGUID: mMj85rj+QwCxslzZr+OWDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="98081031"
-X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
-   d="scan'208";a="98081031"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 02:16:55 -0700
-X-CSE-ConnectionGUID: uQZSR3OETIql6TbglzUd0Q==
-X-CSE-MsgGUID: /sQQUsjqS8uruyqAssLr4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
-   d="scan'208";a="265957028"
-Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 02:16:53 -0700
-Message-ID: <3898d89d-28af-49c9-bf0a-7cd0b32cc8d5@linux.intel.com>
-Date: Thu, 20 Aug 2026 17:16:50 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gSYNUhgr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C551F000E9;
+	Thu, 20 Aug 2026 11:13:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787224421;
+	bh=bi8kks1t9xNKvGVo/6jcNJzZIGuN6UX788iT+MOzMzA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=gSYNUhgrqzk238wabITHC7PbgxskdNvBkQ8ykYb8gYbi3wBC4TZl4R6bUTv8izpKV
+	 kqPIwwiZtspW6BlEqv9a1P6ZZARrkSzP2n3GzchQVb+zyzQj6Z7WEDwBOpZvQz6unT
+	 Dzmz2+vGr8Pk1MWkENMwDieuYaxT+Ut/6cU3hKMJtUqnxBa0f/9OzdEL2xdJQ0dfw7
+	 w2dOUqXtFFOaQ4ddtKCaFbMV4Ezvz4kSRNOxfeCwyW1bbN98aLSSf4n99HPepvs7nY
+	 MvLV78GOznFSvpsIgXQhNbqzNIIwav8ngBFYVuC8aMBhbKESKLXTkbVjG1IFxqJukA
+	 8DWpK7rnYR4eQ==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Kameron Carr <kameroncarr@linux.microsoft.com>,
+	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: Re: [RFC PATCH v4 07/11] coco: guest: arm64: Add guest APIs to read
+ host-cached DA objects
+In-Reply-To: <36877aa6-3f70-4da1-aecb-7209a33f8595@linux.microsoft.com>
+References: <20260427082805.931832-1-aneesh.kumar@kernel.org>
+ <20260427082805.931832-8-aneesh.kumar@kernel.org>
+ <36877aa6-3f70-4da1-aecb-7209a33f8595@linux.microsoft.com>
+Date: Thu, 20 Aug 2026 16:43:29 +0530
+Message-ID: <yq5ao6exvycm.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/9] KVM: TDX: Set bits 31:16 to 0 for the synthesized
- Exit Reason
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- nik.borisov@suse.com
-References: <20260819094903.3060020-1-xiaoyao.li@intel.com>
- <20260819094903.3060020-4-xiaoyao.li@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260819094903.3060020-4-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 8/19/2026 5:48 PM, Xiaoyao Li wrote:
-> Set bits 31:16 to 0 instead of all-1s for KVM's synthesized Exit Reason.
-> 
-> KVM is going to support Bus Lock VM exit for TDX, after which bit 26 of
-> the Exit Reason becomes meaningful and indicates that a bus lock happened.
-> The existing synthesized Exit Reason, -1u, will cause a false positive in
-> that case.  Change the synthesized Exit Reason from -1u to U16_MAX, so that
-> bits 31:16 are set to 0.  This also avoids the potential issues when other
-> bits in 31:16 become valid in the future.
-> 
-> As a bonus, the check for synthesized Exit Reason in tdx_failed_vmentry()
-> becomes unnecessary.  Just drop it.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Kameron Carr <kameroncarr@linux.microsoft.com> writes:
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+>> diff --git a/drivers/virt/coco/arm-cca-guest/rsi-da.h b/drivers/virt/coco/arm-cca-guest/rsi-da.h
+>> index 297cb800edc0..88067d2230ab 100644
+>> --- a/drivers/virt/coco/arm-cca-guest/rsi-da.h
+>> +++ b/drivers/virt/coco/arm-cca-guest/rsi-da.h
+>> @@ -10,6 +10,8 @@
+>>  #include <linux/pci-tsm.h>
+>>  #include <asm/rsi_smc.h>
+>>  
+>> +#define MAX_CACHE_OBJ_SIZE	SZ_16M
+>
+> Why is the limit 16 MiB? I don't see that limitation in the RHI spec.
+> Does the limit come from PCI TSM?
+>
+
+I based that on the SPDM MeasurementRecordLength, which is 16 MB.
+
+-aneesh
