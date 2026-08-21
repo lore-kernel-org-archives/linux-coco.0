@@ -1,164 +1,96 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B36637BE6E
-	for <linux-coco@lists.linux.dev>; Fri, 21 Aug 2026 03:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C6B30F927;
+	Fri, 21 Aug 2026 03:42:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787282990; cv=none; b=EihFeb6UAkPG0mgSmmuxQe053YKvRpoREj8EftAArdzvo5UVMZEZ2htyhSLP3kaZEyqda5XJFcGOEmCXHFq2PaaRAPQzqjOdAHRAuu6YHORXgQ341X4NH8RCjj/aiX/VzexH37Sund7LjHpiHtGWJYrb77+Q4Go9Sk/KZtH0aSE=
+	t=1787283751; cv=none; b=trI8UIFWIXta7nqm7o55SYRlMa6R70lyzEC5l6ylNFhZ4R92TyT+/rlzEZdnwUwHdULluu+cAgG402YziOKh+c/UC8o+mXohn0iXUecU0TZQXFvUVbZ/d7v4gpC0IH+DIX0GXNkhUy3tLmzAgVbz6Mlw+1Ajb+9hB7Sn5LL71zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787282990; c=relaxed/simple;
-	bh=fzUOMAIqwO0DVyi3x/N/fYS/A72QSG8Go1HWcQQ+AeQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jOsoZ4Zkf9PmuYkor3q+Or2duV/5iS2vQtNImK/qjFKcyeLSUuRs72GFyUX1Wtd31WS3L57vawj06uzgI48cAzbWWLS1Hiccx9EQ3/VYX0v+vNRPSZQGuAlLl4ct23YNUXLIVPhhoGl//dbxMQ/JitC8UVdlxVpneVvDG3GPQjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hlz8q1qm; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1787283751; c=relaxed/simple;
+	bh=iGDLWLBmuHaguIg1fif8pUs+Vwdf6nReTT4xsi+tWYY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QVZax8MWR+5BEv51hk942H6HhGUUG+eZlqBTaffig3VVG4RPdV5dM2x/mU9B7CfZGrHI+Am3LCg8UrrMlLS/YyBfr31APbdPkPErxrvetmN6PyI095xF6bFRv46yN1sFQLheJP7DZvTxpUCTn+KjsfueNwVo2kztMrtjSGFxelc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Y5MrYufB; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hlz8q1qm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787282988; x=1818818988;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=fzUOMAIqwO0DVyi3x/N/fYS/A72QSG8Go1HWcQQ+AeQ=;
-  b=hlz8q1qmVkILA7/Xqrn9rmvljSxfK5yzfEjBGAh+jEKMU9wxq6Qrl+IH
-   tJMjp50MZaU8G67KW3pDBWTqxvmEGMzjHlw2JeidqIh71wFniN+SHmW4X
-   Nmntlyva6wpADwW794F6aO9oRAu6P7l/OGrkue0a5BnWhPk/PXgaNIIdd
-   SsbpZizcX7SAyDjf4ccZ1kfG2uERANoR3BKMrA5M4jqsy4d+sYolwAR3o
-   1MHkBNPM1XzUzHAyiUR3jcXS2U2yxNrfWCgWWmGZVdBWGl82zKXm1JayM
-   a4ThFa2gVMX3o1ivqrBaxo5SuyFXayI0fWsQrtvs6i9GCXMKLi5Xeo7/k
-   Q==;
-X-CSE-ConnectionGUID: VMCO2KhxQcCoTwglXAbPWA==
-X-CSE-MsgGUID: FeR2MVl3RoyPz5zomfEAxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="91640249"
-X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
-   d="scan'208";a="91640249"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:29:48 -0700
-X-CSE-ConnectionGUID: xvuB3YbHTviLia6tARPfSQ==
-X-CSE-MsgGUID: iZHs2rGVTYWm7r4Vac2riA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
-   d="scan'208";a="264451614"
-Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.47.46])
-  by orviesa006.jf.intel.com with ESMTP; 20 Aug 2026 20:29:44 -0700
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: kas@kernel.org,
-	rick.p.edgecombe@intel.com,
-	yilun.xu@linux.intel.com,
-	yilun.xu@intel.com,
-	xiaoyao.li@intel.com,
-	sohil.mehta@intel.com,
-	adrian.hunter@intel.com,
-	kishen.maloor@intel.com,
-	tony.lindgren@linux.intel.com,
-	peter.fang@intel.com,
-	baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com,
-	chao.gao@intel.com,
-	artem.bityutskiy@linux.intel.com,
-	kvm@vger.kernel.org
-Subject: [PATCH 6/6] x86/virt/tdx: Re-initialize the extensions on runtime TDX module update
-Date: Fri, 21 Aug 2026 11:29:20 +0800
-Message-Id: <20260821032920.256225-7-yilun.xu@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260821032920.256225-1-yilun.xu@linux.intel.com>
-References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Y5MrYufB"
+Received: from [192.168.0.15] (unknown [4.194.122.162])
+	by linux.microsoft.com (Postfix) with ESMTPSA id DEE4220B7128;
+	Thu, 20 Aug 2026 20:41:53 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DEE4220B7128
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1787283720;
+	bh=gcge2qUWUjrfLVf+Vom7hfdT2yW5yXg+cm1A2GuzH7Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Y5MrYufBFbdpjXo/97GZO4RQUeLoaCJUpVw5CUkj7N/WoHU9HNnYE3YY4wG0NDsg3
+	 CBCKzJL8Lktrj6nWItyozwo/643jeKgmG3hY32hsODUNhd7DmAv2QbU9uwOK1ipPBQ
+	 TW/TJvLorGp5Y1ILe7gC2vaLePTGxfe/S8Dcucu8=
+Message-ID: <3b019c40-e91f-4670-86bb-10c2cd1047a8@linux.microsoft.com>
+Date: Thu, 20 Aug 2026 20:42:19 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v4 03/11] coco: guest: arm64: Add Realm Host Interface
+ and guest DA helper
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dan Williams <dan.j.williams@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Jonathan Cameron <jic23@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ Samuel Ortiz <sameo@rivosinc.com>, Steven Price <steven.price@arm.com>,
+ Suzuki K Poulose <Suzuki.Poulose@arm.com>, Will Deacon <will@kernel.org>,
+ Xu Yilun <yilun.xu@linux.intel.com>
+References: <20260427082805.931832-1-aneesh.kumar@kernel.org>
+ <20260427082805.931832-4-aneesh.kumar@kernel.org>
+Content-Language: en-US
+From: Kameron Carr <kameroncarr@linux.microsoft.com>
+In-Reply-To: <20260427082805.931832-4-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Runtime TDX module update introduces a mechanism to update the module
-firmware while preserving and restoring TDX operations. As part of the
-restoration process, the host must re-initialize the extensions to
-restore their functionality.
+On 4/27/2026 1:27 AM, Aneesh Kumar K.V (Arm) wrote:
+> - Add  guest-side rhi-da helper that drives the vdev TDI state machine
+>   via RHI host calls and translates the firmware status codes
 
-Linux runs the updates in stop_machine() context, which prevents memory
-allocation. This introduces a hard restriction that the updated TDX
-environment must not consume more memory for the extensions.
+...
 
-The impact of the memory allocation restriction can be mitigated by
-another requirement. Runtime updates should keep the add-on features
-unchanged across updates, so that existing TDX users can continue to
-operate without disruption. This requirement minimizes the chance of
-increased memory demand. As a result, the restriction only affects the
-compatibility rule for choosing the update image.
+> +
+> +bool rhi_has_da_support(void)
+> +{
+> +	int ret;
+> +
+> +	struct rsi_host_call *rhi_call __free(kfree) =
+> +		kmalloc(sizeof(*rhi_call), GFP_KERNEL);
 
-To adhere to these requirements, the post-update initialization for the
-extensions can be simplified as:
+Same comment as before that kzalloc is best practice for struct
+rsi_host_call.
 
-  - Check if the extensions were originally initialized during boot up.
-    If not, skip the re-initialization.
-  - Assume no more memory needed, skip the memory adding step.
-  - Re-initialize the extensions via TDH.EXT.INIT. The SEAMCALL leaf
-    will fail if the updated module requires more memory, or if it drops
-    the extensions initialization entirely, which indicates the update
-    image is not compatible.
+> +	if (!rhi_call)
+> +		return -ENOMEM;
 
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
----
-v1:
- - Don't update the extensions metadata any more, only check the
-   metadata originated at boot time.
- - Remove memory_pool_required_pages check, let TDH.EXT.INIT fail if
-   more memory required.
- - Changelog & code comments
----
- arch/x86/virt/vmx/tdx/tdx.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+Returning an error value in a bool function will evaluate to true. This is
+probably not your intended behavior.
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 873b8393f32f..1ca3996f32dc 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1289,7 +1289,7 @@ static __init int tdx_ext_mem_setup(void)
- 	return ret;
- }
- 
--static __init int tdx_ext_init(void)
-+static int tdx_ext_init(void)
- {
- 	struct tdx_module_args args = {};
- 	u64 ret;
-@@ -1332,6 +1332,19 @@ static __init int init_tdx_module_extensions(void)
- 	return tdx_ext_init();
- }
- 
-+/*
-+ * Don't update the extensions metadata, just follow the requirement originated
-+ * during TDX module initialization. Let the extensions re-initialization fail
-+ * if more memory is needed, or if ext_required is dropped after updates.
-+ */
-+static int update_tdx_module_extensions(void)
-+{
-+	if (!tdx_sysinfo.ext.ext_required)
-+		return 0;
-+
-+	return tdx_ext_init();
-+}
-+
- static __init int init_tdx_module(void)
- {
- 	int ret;
-@@ -1532,6 +1545,10 @@ int tdx_module_run_update(void)
- 	 */
- 	WARN_ON_ONCE(ret);
- 
-+	ret = update_tdx_module_extensions();
-+	if (ret)
-+		return ret;
-+
- 	tdx_module_state.initialized = true;
- 	return 0;
- }
--- 
-2.25.1
+Regards,
+Kameron
 
+> +
+> +	rhi_call->imm = 0;
+> +	rhi_call->gprs[0] = RHI_DA_FEATURES;
+> +
+> +	ret = rsi_host_call(rhi_call);
+> +	if (ret != RSI_SUCCESS || rhi_call->gprs[0] == SMCCC_RET_NOT_SUPPORTED)
+> +		return false;
+> +
+> +	/* For base DA to work we need these to be supported */
+> +	if ((rhi_call->gprs[0] & RHI_DA_BASE_FEATURE) == RHI_DA_BASE_FEATURE)
+> +		return true;
+> +
+> +	return false;
+> +}...
