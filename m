@@ -1,463 +1,118 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9B5387345
-	for <linux-coco@lists.linux.dev>; Fri, 21 Aug 2026 10:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC8F1DDC35
+	for <linux-coco@lists.linux.dev>; Fri, 21 Aug 2026 12:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787309848; cv=none; b=AFR5TnAUtAac41cggsrnchDTu7f0hjzbHJU/8LZvbfBMyl9CpwklI2XmXHrso7qrtm1kg/IubrPUc/yQTnKdxXkEG+MzKb61YdeVtqtnhgnCEKPNVXKCod3AURb2iWzjVWL4YNhLctd89NKMB6LxZ4ua0BHyIjqlFGkuMxXutFg=
+	t=1787315411; cv=none; b=RdJNm0at5f9cLoFaspjKiLZ+2m6A4eOTlb1GDsjDRS6YIedjEGslVQgUK4zdxOCafX+x2VzAbaKn2P/cwNO9RHLe1IApID697s0jGcD1VefOVBFSACjjUobRb6b39rP7+P6ns0G/Aee6qVusoHkmdt6bFncY/dtgsMSp8FALuNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787309848; c=relaxed/simple;
-	bh=gL1MluruJ5upKyj95/l/2E+d2fkvh467H6pWxyaLAi4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WMZEW+szNouDjh3AogI7cqG335W4M7Q6cPrWxL1iTqml3xCdT50Vm7Cb3c8BzfFJMhzxmMdixZAhDgiqX8yjqCaxbpVG/tQBdjzrZBEk6u00Cl4d7K6+dUprsb7NrnvhOvTcLENDT0hT4Jbr1xqFsBomKo3iTpG5q0KCUoUZlCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=A6JuVBn8; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=BdWa8Ox/; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1787315411; c=relaxed/simple;
+	bh=f6YWX4JaKHfoxBtRZia+JZbw071klqQdJimBMOZqknM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=OKO6Fk2HC+bE0tFJTbepgKp/tnvH4Bi7RXN+r2bsZ1g3hOqeQNNVARCc69XoIt2pk0kf1oKtXlUPRszvcVqCdNgNB0viKl2t9mhmGDiAmERbtbBrVp3IzMW9v7lhzTRrocAlnwRJf+rrCZFZIFgGPFvBEM7WKJB3DuEmUS/jw/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X0X6s09M; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="A6JuVBn8";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="BdWa8Ox/"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id BDFAB3EC1;
-	Fri, 21 Aug 2026 10:57:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1787309840; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5T9rrWVYmn/y/C1RYcJS/lb0+erN8NQa2xUIJuUNdRU=;
-	b=A6JuVBn81oQlub3Te8JMGiRRD2jNW8RhKY+/YSLVMayPLRBdRPzWmDUirIN4DMWrQF2yVJ
-	ucpXcgek7VvTUIQTovR2KaIfLCU4z4B4uqxwvOh+ZeVGYmv8BKTCCEC/zWItUi41ju5pGj
-	Z6Iamq06PSBkGn1Yb0CzikS4wEyRirk=
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b="BdWa8Ox/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1787309836; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5T9rrWVYmn/y/C1RYcJS/lb0+erN8NQa2xUIJuUNdRU=;
-	b=BdWa8Ox/1y2upBvtXRobTnrmmlIU3VV3dPW82zT+aQOPvXfhSOB9IDC4dAqMlH2mK0I8pa
-	6pALXOEae/9qiIjyEqQDj/cMQJaCLu7FLpfl63OG7aGJUSvf4tYnxWpks0UwUuEfnr6t0I
-	lvgIaqR2CjLf6/6ufh5QJ1m7wzDB87I=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 113DD26F8;
-	Fri, 21 Aug 2026 10:57:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xAILAwwviGrHAQAAD6G6ig
-	(envelope-from <jgross@suse.com>); Fri, 21 Aug 2026 10:57:16 +0000
-From: Juergen Gross <jgross@suse.com>
-To: linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	linux-perf-users@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Cc: Juergen Gross <jgross@suse.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Michael Kelley <mhklinux@outlook.com>
-Subject: [PATCH v3 13/13] x86/msr: Simplify some rdmsrq() use cases
-Date: Fri, 21 Aug 2026 12:57:09 +0200
-Message-ID: <20260821105709.1671132-1-jgross@suse.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260819102314.1499258-14-jgross@suse.com>
-References: <20260819102314.1499258-14-jgross@suse.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X0X6s09M"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-848860def2cso1015149b3a.2
+        for <linux-coco@lists.linux.dev>; Fri, 21 Aug 2026 05:30:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787315410; x=1787920210; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=C0TDZ3//ZKM374BdreK4yr9CabYhqfPGunU2baHmMPE=;
+        b=X0X6s09MXA7u49rKcPElg6xgUY78yjr9QyBVT9WJCKudi9McsbBKoTxr+W1NzxObSU
+         WraP83axBHcYQozDEfb6BpwJpUPzYrJglLeLmG5tMi0N03oX1IqP4KWq1hgC//R5gSD/
+         1uTQE8kUXTf6gpQrKVZZmMaHZbROeRf4Si5e2bWlDxZmYueAku+nSgKiy5oBVoTX0UN9
+         NtmU9Ynh4N7el9/bJa7rD0WXUwxJ6e6fyEXwYmVIWNZYiO8TxjgiwXOfOPd/KIcE4KQv
+         5yaRDnBQ990qWkEIrWdEeaCHFhXluEr+RYxbNQb3RfsTypd1FLKxZ6rQmVzIpYCypoUw
+         vJ6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787315410; x=1787920210;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=C0TDZ3//ZKM374BdreK4yr9CabYhqfPGunU2baHmMPE=;
+        b=i1MSY0Uj0BVnyOBXBybklQ1thAbDmXBtqvRuR6AZyFb7LCA4qheytikzIwCnrBljrT
+         ZKBEbl/tITyW2Jqt/0WppZaXV6RwOZ3/DPNn5Ka4c6+/mbsaYCakAqI/lcb7if+Qy3Hp
+         t4RSbaV1iIFx3xtVAE7OUjTGaU2n7DynlA0tyQqhQzg+iBQFRkEIMAIcO9dlxTmJDHOx
+         kvLgdku34VCfN7sk/K/CYYKAygG36siDBxSy3dUO13s0oTPtJSQrzqos4o94fH74AuG1
+         rOhRKDA76OPk9bTFpkg7WfgmFtV8T26vyomTms3q89RJiJkhDFnk/WgGpo1iyyKVWj7v
+         tEhA==
+X-Forwarded-Encrypted: i=1; AHgh+Roea53xWYv4xaFFsFLmCs0r2TgVAU/g/jlnOOKSdmnB8+HrTqMl05LjTMKOnVSKm/x53s56+dCONCFE@lists.linux.dev
+X-Gm-Message-State: AFuF++mZM51CYIiRD5qeV1acg7jlMzWz9k5BUisVXF+ujFSP7pPpfBV6
+	v19RKvH9YSD3gTB4+Z7wD4hbqo7q3+myeCuZZA6L7SmyN5kT3Aq/xyUpstqrIN2SRyUGCCG3IV6
+	92s+mmg==
+X-Received: from pgly12.prod.google.com ([2002:a63:180c:0:b0:cb5:f989:9b3e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:ab03:b0:847:8acd:747c
+ with SMTP id d2e1a72fcca58-851fa01e93fmr11460030b3a.13.1787315408882; Fri, 21
+ Aug 2026 05:30:08 -0700 (PDT)
+Date: Fri, 21 Aug 2026 05:30:07 -0700
+In-Reply-To: <fe1c6359-7371-4ccd-9807-1d81c160d12b@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	NEURAL_HAM_SHORT(-0.20)[-0.991];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[31];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_CC(0.00)[suse.com,infradead.org,redhat.com,kernel.org,arm.com,linux.intel.com,google.com,intel.com,linaro.org,alien8.de,zytor.com,microsoft.com,outlook.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,suse.com:email,suse.com:mid,suse.com:dkim];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[outlook.com];
-	FROM_HAS_DN(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	R_RATELIMIT(0.00)[to_ip_from(RLkdkdrsxe9hqhhs5ask8616i6)];
-	DKIM_TRACE(0.00)[suse.com:+]
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Spam-Level: 
-X-Rspamd-Queue-Id: BDFAB3EC1
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
+Mime-Version: 1.0
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-40-2fc18ee6d3ba@google.com> <fe1c6359-7371-4ccd-9807-1d81c160d12b@intel.com>
+Message-ID: <aohEz_1JFVDtlSnE@google.com>
+Subject: Re: [PATCH v10 40/41] KVM: selftests: Update private_mem_conversions_test
+ to mmap() guest_memfd
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-After the conversion of rdmsrq() to an inline function some use cases
-can be simplified by dropping an intermediate variable or by
-eliminating the inline function completely.
+On Fri, Aug 21, 2026, Xiaoyao Li wrote:
+> On 8/8/2026 5:53 AM, Ackerley Tng via B4 Relay wrote:
+> > From: Ackerley Tng<ackerleytng@google.com>
+> > 
+> > Update the private memory conversions selftest to also test conversions
+> > that are done "in-place" via per-guest_memfd memory attributes. In-place
+> > conversions require the host to be able to mmap() the guest_memfd so that
+> > the host and guest can share the same backing physical memory.
+> > 
+> > This includes several updates, that are conditioned on the system
+> > supporting per-guest_memfd attributes (kvm_has_gmem_attributes):
+> > 
+> > 1. Set up guest_memfd requesting MMAP and INIT_SHARED.
+> 
+> If I understand correctly, even with in-place gmem, the model that shared
+> memory comes from the userspace_addr and private memory comes from gmem can
+> still work without passing GUEST_MEMFD_FLAG_MMAP flag.
+> 
+> Since this model is not prohibited by KVM. I think we should keep the
+> testcase for this model to ensure test coverage?
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com> # Hyper-V
----
-V3:
-- eliminate KVM's read_msr() (Sean Christopherson)
----
- arch/x86/events/amd/core.c      |  6 +-----
- arch/x86/events/amd/lbr.c       | 12 ++----------
- arch/x86/events/intel/core.c    |  6 +-----
- arch/x86/events/intel/cstate.c  |  5 +----
- arch/x86/events/intel/knc.c     |  6 +-----
- arch/x86/events/intel/lbr.c     | 17 +++--------------
- arch/x86/events/intel/uncore.c  |  6 +-----
- arch/x86/events/rapl.c          |  4 +---
- arch/x86/events/zhaoxin/core.c  |  6 +-----
- arch/x86/hyperv/hv_apic.c       |  5 +----
- arch/x86/include/asm/apic.h     |  5 +----
- arch/x86/include/asm/debugreg.h |  6 +-----
- arch/x86/include/asm/kvm_host.h | 10 ----------
- arch/x86/kvm/vmx/tdx.c          |  2 +-
- arch/x86/kvm/vmx/vmx.c          |  6 +++---
- 15 files changed, 19 insertions(+), 83 deletions(-)
-
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index 80ed49dba255..3d0e076c1636 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -660,12 +660,8 @@ static __always_inline void amd_pmu_set_global_ctl(u64 ctl)
- 
- static inline u64 amd_pmu_get_global_status(void)
- {
--	u64 status;
--
- 	/* PerfCntrGlobalStatus is read-only */
--	status = rdmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS);
--
--	return status;
-+	return rdmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS);
- }
- 
- static inline void amd_pmu_ack_global_status(u64 status)
-diff --git a/arch/x86/events/amd/lbr.c b/arch/x86/events/amd/lbr.c
-index 29628af6a023..1b4c0ef81485 100644
---- a/arch/x86/events/amd/lbr.c
-+++ b/arch/x86/events/amd/lbr.c
-@@ -74,20 +74,12 @@ static __always_inline void amd_pmu_lbr_set_to(unsigned int idx, u64 val)
- 
- static __always_inline u64 amd_pmu_lbr_get_from(unsigned int idx)
- {
--	u64 val;
--
--	val = rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2);
--
--	return val;
-+	return rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2);
- }
- 
- static __always_inline u64 amd_pmu_lbr_get_to(unsigned int idx)
- {
--	u64 val;
--
--	val = rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2 + 1);
--
--	return val;
-+	return rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2 + 1);
- }
- 
- static __always_inline u64 sign_ext_branch_ip(u64 ip)
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 41ae90b6bbdc..d19ac42b6e8c 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2963,11 +2963,7 @@ static void intel_tfa_pmu_enable_all(int added)
- 
- static inline u64 intel_pmu_get_status(void)
- {
--	u64 status;
--
--	status = rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
--
--	return status;
-+	return rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
- }
- 
- static inline void intel_pmu_ack_status(u64 ack)
-diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
-index 69eb6cf51d3b..c6d9146d8ec8 100644
---- a/arch/x86/events/intel/cstate.c
-+++ b/arch/x86/events/intel/cstate.c
-@@ -322,10 +322,7 @@ static int cstate_pmu_event_init(struct perf_event *event)
- 
- static inline u64 cstate_pmu_read_counter(struct perf_event *event)
- {
--	u64 val;
--
--	val = rdmsrq(event->hw.event_base);
--	return val;
-+	return rdmsrq(event->hw.event_base);
- }
- 
- static void cstate_pmu_event_update(struct perf_event *event)
-diff --git a/arch/x86/events/intel/knc.c b/arch/x86/events/intel/knc.c
-index c4f81215f758..a74caa8280be 100644
---- a/arch/x86/events/intel/knc.c
-+++ b/arch/x86/events/intel/knc.c
-@@ -199,11 +199,7 @@ static void knc_pmu_enable_event(struct perf_event *event)
- 
- static inline u64 knc_pmu_get_status(void)
- {
--	u64 status;
--
--	status = rdmsrq(MSR_KNC_IA32_PERF_GLOBAL_STATUS);
--
--	return status;
-+	return rdmsrq(MSR_KNC_IA32_PERF_GLOBAL_STATUS);
- }
- 
- static inline void knc_pmu_ack_status(u64 ack)
-diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
-index fc05ec3b9a99..70dae299627a 100644
---- a/arch/x86/events/intel/lbr.c
-+++ b/arch/x86/events/intel/lbr.c
-@@ -209,10 +209,7 @@ void intel_pmu_lbr_reset(void)
-  */
- static inline u64 intel_pmu_lbr_tos(void)
- {
--	u64 tos;
--
--	tos = rdmsrq(x86_pmu.lbr_tos);
--	return tos;
-+	return rdmsrq(x86_pmu.lbr_tos);
- }
- 
- enum {
-@@ -311,26 +308,18 @@ static __always_inline u64 rdlbr_from(unsigned int idx, struct lbr_entry *lbr)
- 
- static __always_inline u64 rdlbr_to(unsigned int idx, struct lbr_entry *lbr)
- {
--	u64 val;
--
- 	if (lbr)
- 		return lbr->to;
- 
--	val = rdmsrq(x86_pmu.lbr_to + idx);
--
--	return val;
-+	return rdmsrq(x86_pmu.lbr_to + idx);
- }
- 
- static __always_inline u64 rdlbr_info(unsigned int idx, struct lbr_entry *lbr)
- {
--	u64 val;
--
- 	if (lbr)
- 		return lbr->info;
- 
--	val = rdmsrq(x86_pmu.lbr_info + idx);
--
--	return val;
-+	return rdmsrq(x86_pmu.lbr_info + idx);
- }
- 
- static inline void
-diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
-index ab2c5a962b31..cffbd780a435 100644
---- a/arch/x86/events/intel/uncore.c
-+++ b/arch/x86/events/intel/uncore.c
-@@ -169,11 +169,7 @@ struct intel_uncore_box *uncore_pmu_to_box(struct intel_uncore_pmu *pmu, int cpu
- 
- u64 uncore_msr_read_counter(struct intel_uncore_box *box, struct perf_event *event)
- {
--	u64 count;
--
--	count = rdmsrq(event->hw.event_base);
--
--	return count;
-+	return rdmsrq(event->hw.event_base);
- }
- 
- void uncore_mmio_exit_box(struct intel_uncore_box *box)
-diff --git a/arch/x86/events/rapl.c b/arch/x86/events/rapl.c
-index 180cc18282ca..2d2376c59816 100644
---- a/arch/x86/events/rapl.c
-+++ b/arch/x86/events/rapl.c
-@@ -192,9 +192,7 @@ static inline unsigned int get_rapl_pmu_idx(int cpu, int scope)
- 
- static inline u64 rapl_read_counter(struct perf_event *event)
- {
--	u64 raw;
--	raw = rdmsrq(event->hw.event_base);
--	return raw;
-+	return rdmsrq(event->hw.event_base);
- }
- 
- static inline u64 rapl_scale(u64 v, struct perf_event *event)
-diff --git a/arch/x86/events/zhaoxin/core.c b/arch/x86/events/zhaoxin/core.c
-index 1980e5995e27..9203321c18b4 100644
---- a/arch/x86/events/zhaoxin/core.c
-+++ b/arch/x86/events/zhaoxin/core.c
-@@ -266,11 +266,7 @@ static void zhaoxin_pmu_enable_all(int added)
- 
- static inline u64 zhaoxin_pmu_get_status(void)
- {
--	u64 status;
--
--	status = rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
--
--	return status;
-+	return rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
- }
- 
- static inline void zhaoxin_pmu_ack_status(u64 ack)
-diff --git a/arch/x86/hyperv/hv_apic.c b/arch/x86/hyperv/hv_apic.c
-index 4e30f9a11bc4..52ee8c237c2c 100644
---- a/arch/x86/hyperv/hv_apic.c
-+++ b/arch/x86/hyperv/hv_apic.c
-@@ -36,10 +36,7 @@ static struct apic orig_apic;
- 
- static u64 hv_apic_icr_read(void)
- {
--	u64 reg_val;
--
--	reg_val = rdmsrq(HV_X64_MSR_ICR);
--	return reg_val;
-+	return rdmsrq(HV_X64_MSR_ICR);
- }
- 
- static void hv_apic_icr_write(u32 low, u32 id)
-diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index e028140fac49..993b52b52625 100644
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -231,10 +231,7 @@ static inline void native_x2apic_icr_write(u32 low, u32 id)
- 
- static inline u64 native_x2apic_icr_read(void)
- {
--	unsigned long val;
--
--	val = rdmsrq(APIC_BASE_MSR + (APIC_ICR >> 4));
--	return val;
-+	return rdmsrq(APIC_BASE_MSR + (APIC_ICR >> 4));
- }
- 
- extern int x2apic_mode;
-diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
-index 60a3df32a4d3..e00251c7eb12 100644
---- a/arch/x86/include/asm/debugreg.h
-+++ b/arch/x86/include/asm/debugreg.h
-@@ -174,15 +174,11 @@ static inline unsigned long amd_get_dr_addr_mask(unsigned int dr)
- 
- static inline unsigned long get_debugctlmsr(void)
- {
--	unsigned long debugctlmsr = 0;
--
- #ifndef CONFIG_X86_DEBUGCTLMSR
- 	if (boot_cpu_data.x86 < 6)
- 		return 0;
- #endif
--	debugctlmsr = rdmsrq(MSR_IA32_DEBUGCTLMSR);
--
--	return debugctlmsr;
-+	return rdmsrq(MSR_IA32_DEBUGCTLMSR);
- }
- 
- static inline void update_debugctlmsr(unsigned long debugctlmsr)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 2097602a00a0..74a10e7ffbd6 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -2412,16 +2412,6 @@ static inline void kvm_load_ldt(u16 sel)
- 	asm("lldt %0" : : "rm"(sel));
- }
- 
--#ifdef CONFIG_X86_64
--static inline unsigned long read_msr(unsigned long msr)
--{
--	u64 value;
--
--	value = rdmsrq(msr);
--	return value;
--}
--#endif
--
- static inline void kvm_inject_gp(struct kvm_vcpu *vcpu, u32 error_code)
- {
- 	kvm_queue_exception_e(vcpu, GP_VECTOR, error_code);
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 545b03d9d10b..88f2e137598b 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -793,7 +793,7 @@ void tdx_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
- 	if (likely(is_64bit_mm(current->mm)))
- 		vt->msr_host_kernel_gs_base = current->thread.gsbase;
- 	else
--		vt->msr_host_kernel_gs_base = read_msr(MSR_KERNEL_GS_BASE);
-+		vt->msr_host_kernel_gs_base = rdmsrq(MSR_KERNEL_GS_BASE);
- 
- 	vt->guest_state_loaded = true;
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index bd16bdfc1d61..534e83d857c2 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -1374,8 +1374,8 @@ void vmx_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
- 	} else {
- 		savesegment(fs, fs_sel);
- 		savesegment(gs, gs_sel);
--		fs_base = read_msr(MSR_FS_BASE);
--		vt->msr_host_kernel_gs_base = read_msr(MSR_KERNEL_GS_BASE);
-+		fs_base = rdmsrq(MSR_FS_BASE);
-+		vt->msr_host_kernel_gs_base = rdmsrq(MSR_KERNEL_GS_BASE);
- 	}
- 
- 	wrmsrq(MSR_KERNEL_GS_BASE, vmx->msr_guest_kernel_gs_base);
-@@ -1434,7 +1434,7 @@ static u64 vmx_read_guest_host_msr(struct vcpu_vmx *vmx, u32 msr, u64 *cache)
- {
- 	preempt_disable();
- 	if (vmx->vt.guest_state_loaded)
--		*cache = read_msr(msr);
-+		*cache = rdmsrq(msr);
- 	preempt_enable();
- 	return *cache;
- }
--- 
-2.55.0
-
++1.  Deprecated doesn't mean unsupported.
