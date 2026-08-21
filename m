@@ -1,33 +1,50 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B26333D6F7;
-	Fri, 21 Aug 2026 13:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A72224C9545
+	for <linux-coco@lists.linux.dev>; Fri, 21 Aug 2026 14:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787319562; cv=none; b=RxD6cFHyBR7z587VWDmOrV4pSmo85FX6ab/hnBAAmZeS5WQPzcwIUbJItZ/kzPh2QN4C24FUq1plO2Z47f1neR2n+4RuKmqCKrNTD0WLaEXZwDjkPbrZxKZSEnaHlyHqzj2Jx02bjhfPMYPuVmSF3sLvBsOrsPLqmqi7CkJHbWw=
+	t=1787323128; cv=none; b=hEcdy17kAsD0c3P4rGhKQBGz/oZWSwEBDy9GuAEdkgAAomjPVeraIWdrd9w0nqdJX3YkfByaenapqwVoOmvqOmRdC+HkJublRfo1n99WKTSa4O+tyMNprvsp3P1Mmomq4lVK4wCcB2CeUYgv2JpQ5zDut3bUJJE66qt2MhNhiKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787319562; c=relaxed/simple;
-	bh=mW+78RuS6rn/DHuM8R4YtvA4AQ6N5H0ZocsxdihbEs0=;
+	s=arc-20240116; t=1787323128; c=relaxed/simple;
+	bh=scV2H1hjPWVfeAM7ZyMe3jblNMDJ9BzUdy4/UPPMWBM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RfJ5BjfP7r9xDb9E4t0aoEqUmgbNsbcIx57/SzugwVKday6R6aePGu7+AKUlefmcDQaOvIEr45XzTON+TjXv5dGdTnYKVSKIr6W0qHp30aSJFxv+LWj2z+4ygDcI2BK5PO3Oztjza3PNl6FIxQfAZSg9qxyF7nMCHlWDCeXnJbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oWL/xvv0; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=B255PneUOGBRD9IjmwrIHjKjKQKxM7crPw7DPlSwcxUTtoqHPl/4MPOCN41MBxuS4sT1c2RLlUrgIANJw0wiT6Nu5WQ3PYD6UDlA8jC7K/M+0IYxX8HRNuYDVZhmBkbsNCsPDaqMPcAxoNDPgxNUuUu8ugD1X4f+J8KmmlwrH+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k85D7Ksk; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oWL/xvv0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D851F000E9;
-	Fri, 21 Aug 2026 13:39:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787319560;
-	bh=z5qvxSsmX93GMZIq4o2S4vCyfn1hgCx4th+U3zJS7iQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oWL/xvv0Ecw0+byyi+FYm+YqgpJUQd7rkxhyEU+OqTnezJNJmQTYOXllz0ZfQXurP
-	 HSOb6vFsiHAP6Z2O2N6gcii1eZrWM9e3R7/NPlp2GA752q542z8kFJoOvG/YPzqlqD
-	 iKYKdMfNv8Qk+Z1H+OZTtbTtg4gm5CTl6xxybmYolLtW5+KHj1snAKwa846Rt4HPlT
-	 fWhuMQ78kHGtTKaYABYWhRNt8+R7IUYV92RMOdn/oqFED4BHhaNkczEQGw1fMw7X2E
-	 SYsJoIFjsEZuOmdPYwA/r5KYajK4hPeksolQMdgY83/MMf9mHkcMmqnLgvwtoA6Vy4
-	 icWl+pRjNvuXA==
-Message-ID: <3cdf9ac0-b77c-4624-ad8e-68c10af648ac@kernel.org>
-Date: Fri, 21 Aug 2026 15:39:04 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k85D7Ksk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787323126; x=1818859126;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=scV2H1hjPWVfeAM7ZyMe3jblNMDJ9BzUdy4/UPPMWBM=;
+  b=k85D7KskeU0YOkiESYlDEVHBP8XV9ZI63FTPK9/fVCTeCpfjTAbEW8Vf
+   Eg7mBZ9/KbrboJcuXIc2fw0OLw+SDW8qrw/DJjRz2sCXaUs1bQ1pznvs+
+   GjzRk0Nu23ax0axR/X0hK7VW7CYtOegyYOTgZsgfqONqzsHZfWoJ+Flxk
+   AV9k68eJxG1F+LrKjptOhCfndFps+OcsoD5yhxG6CIKWAipnwNRZRy3+8
+   RukzfsyMdvuCNqY7/XtY7y0ARcVEjlckD5OFomTIUIdG6EllfntUL9S15
+   f3QGrBHF6HKSJ/V3e5UPvHP+9YAnkwl5WqrtBDsZQilQ5STUyjzWywnBW
+   g==;
+X-CSE-ConnectionGUID: h9VL5Rf8SoC0ox87dPQbKg==
+X-CSE-MsgGUID: cguNrBEmQySBQa2LVNNJww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="88000893"
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
+   d="scan'208";a="88000893"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 07:38:46 -0700
+X-CSE-ConnectionGUID: Prf0xlXOQmWTiR56ixwsrA==
+X-CSE-MsgGUID: 2r+WjCkWSv6BiDa7huKSQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
+   d="scan'208";a="264604097"
+Received: from jjgreens-desk24.amr.corp.intel.com (HELO [10.125.108.109]) ([10.125.108.109])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 07:38:45 -0700
+Message-ID: <27321cc1-5428-4590-a88d-b2824659c89a@intel.com>
+Date: Fri, 21 Aug 2026 07:38:42 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -35,188 +52,73 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/9] KVM: guest_memfd: folio migration for
- non-confidential VMs
-To: "Garg, Shivank" <shivankg@amd.com>, "Gupta, Pankaj"
- <Pankaj.Gupta@amd.com>, "Sampat, Pratik Rajesh"
- <PratikRajesh.Sampat@amd.com>,
- "nikita.kalyazin@linux.dev" <nikita.kalyazin@linux.dev>,
- "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
- "patrick.roy@linux.dev" <patrick.roy@linux.dev>,
- "joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "jmattson@google.com" <jmattson@google.com>,
- "hannes@cmpxchg.org" <hannes@cmpxchg.org>, "jack@suse.cz" <jack@suse.cz>,
- "tglx@kernel.org" <tglx@kernel.org>,
- "Dadhania, Nikunj" <nikunj.dadhania@amd.com>,
- "Roth, Michael" <Michael.Roth@amd.com>, "corbet@lwn.net" <corbet@lwn.net>,
- "mhocko@suse.com" <mhocko@suse.com>, "gourry@gourry.net"
- <gourry@gourry.net>, "iweiny@kernel.org" <iweiny@kernel.org>,
- "chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>,
- "byungchul@sk.com" <byungchul@sk.com>, "x86@kernel.org" <x86@kernel.org>,
- "bp@alien8.de" <bp@alien8.de>, "ricarkol@google.com" <ricarkol@google.com>,
- "vannapurve@google.com" <vannapurve@google.com>,
- "shuah@kernel.org" <shuah@kernel.org>, "seanjc@google.com"
- <seanjc@google.com>, "jackmanb@google.com" <jackmanb@google.com>,
- "Kalra, Ashish" <Ashish.Kalra@amd.com>,
- "willy@infradead.org" <willy@infradead.org>,
- "surenb@google.com" <surenb@google.com>,
- "pshier@google.com" <pshier@google.com>,
- "matthew.brost@intel.com" <matthew.brost@intel.com>,
- "fuad.tabba@linux.dev" <fuad.tabba@linux.dev>,
- "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
- "hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
- "rakie.kim@sk.com" <rakie.kim@sk.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>,
- "apopple@nvidia.com" <apopple@nvidia.com>, "ziy@nvidia.com"
- <ziy@nvidia.com>, "vbabka@kernel.org" <vbabka@kernel.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
-Cc: "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "sashiko-bot@kernel.org" <sashiko-bot@kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
-References: <20260805-shivank-gmem-migrate-v3-0-00d8bdec4e1d@amd.com>
- <0a02a6c4f0ee50ca596c4a2673b2ae6c80d4569b.camel@amd.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 2/6] x86/virt/tdx: Configure add-on features on TDX module
+ init and update
+To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: kas@kernel.org, rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+ xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com,
+ kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
+ peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+ chao.gao@intel.com, artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org
+References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
+ <20260821032920.256225-3-yilun.xu@linux.intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <0a02a6c4f0ee50ca596c4a2673b2ae6c80d4569b.camel@amd.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260821032920.256225-3-yilun.xu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/21/26 14:34, Garg, Shivank wrote:
-> On Wed, 2026-08-05 at 06:40 +0000, Shivank Garg wrote:
->> guest_memfd folios are currently always marked unmovable, so the kernel cannot
->> perform memory compaction, offlining, etc. This is unavoidable for
->> confidential VMs (SEV-SNP, TDX), since memory is encrypted and copying it
->> needs firmware assistance. However, for non-confidential VMs (like
->> Firecracker), we can migrate the folios.
->>
->> This series enables folio migration for non-confidential guest_memfd and
->> also lays the groundwork for migrating confidential guest_memfd later.
->> Once firmware-assisted copying support is available, those VMs can be
->> made movable, the confidential folio content can be copied separately,
->> and the destination folio marked with FOLIO_CONTENT_COPIED[4] so
->> __migrate_folio() skips the host-side folio_mc_copy().
->>
->> Testing
->> -------
->> Host: 7.2-rc6+(c21bb419386) + this, AMD EPYC ZEN 3, 2 NUMA nodes
->>
->> - KVM selftest: allocate folios on node 0, migrate them to node 1 and
->>   back and verify resulting NUMA node and the folio contents at each
->>   step.
->>
->> - Firecracker [1]: booted a microVM backed by guest_memfd. While the
->>   guest was running, forced host-side migration of its folios via
->>   migratepages(8) and explicit move_pages(2) of guest_memfd
->>   pages. Verify with /proc/firecracker_pid/numa_maps.
->>
->> Notes
->> -----
->> - Sashiko pointed out a pre-existing ABBA deadlock between
->>   kvm_gmem_error_folio() and truncation. It's being addressed separately
->>   by Hao Zhang. [2][3]
->>
->> [1] https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
->>     In builder.rs, add GUEST_MEMFD_FLAG_MIGRATABLE to bit-2 and pass it instead
->>     of GUEST_MEMFD_FLAG_NO_DIRECT_MAP to vm.create_guest_memfd().
->> [2] https://lore.kernel.org/all/ambEdSPjerZIVN0b@192.168.1.215/
->> [3] https://sashiko.dev/#/patchset/20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95%40amd.com
->> [4] https://lore.kernel.org/all/20260630-shivank-batch-migrate-offload-v6-1-da95d7e8b8a2@amd.com
->>
->> Signed-off-by: Shivank Garg <shivankg@amd.com>
->> ---
->> Changes in v3:
->> - Fix unbalanced mmu_invalidate_in_progress count unbinding dying guest_memfd. (Sashiko)
->> - Fix maxnode handling in xapic_ipi_test selftest.
->> - Add GUEST_MEMFD_FLAG_MIGRATABLE documentation
->> - Replace open-coded sizeof() * 8 calculation with BITS_PER_TYPE()
->> - Add get_numa_mem_nodes() and use  MPOL_F_MEMS_ALLOWED for allowed NUMA ndoes
->>   instead of hardcoded NUMA node IDs. (Sashiko)
->> - Extend migration selftest to verify rejection without MIGRATABLE flag and
->>   move repeated checks into common helpers.
->> - Drop RFC tag.
->> - Link to v2: https://lore.kernel.org/r/20260728-shivank-gmem-migrate-v2-0-269ac1f84e2b@amd.com
->>
->> Changes in v2:
->> - Make folio migration opt-in through GUEST_MEMFD_FLAG_MIGRATABLE,
->>   preserving unmovable behavior if userspace don't explictly ask. (Alexandru, David, Sean)
->> - Add kvm_arch_supports_gmem_migration() so arch can control whether
->>   GUEST_MEMFD_FLAG_MIGRATABLE is advertised.
->> - Allocate movable folios with GFP_HIGHUSER_MOVABLE. (David)
->> - Keep guest_memfd unevictable. (David, Sashiko, Sean)
->> - Split migrate_folio() implementation and enablement as separate patches.
->> - Update selftest with new flag.
->> - Link to v1: https://lore.kernel.org/r/20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com
->>
->> ---
->> Shivank Garg (9):
->>       KVM: guest_memfd: take the invalidate lock when unbinding a dying file
->>       mm: split AS_UNMOVABLE back out of AS_INACCESSIBLE
->>       KVM: guest_memfd: implement folio migration for non-confidential VMs
->>       KVM: guest_memfd: add GUEST_MEMFD_FLAG_MIGRATABLE
->>       KVM: selftests: fix maxnode arguments in xapic_ipi_test
->>       KVM: selftests: use BITS_PER_TYPE() for NUMA masks
->>       KVM: selftests: add get_numa_mem_nodes()
->>       KVM: selftests: use allowed NUMA nodes in guest_memfd_test
->>       KVM: selftests: exercise guest_memfd folio migration
->>
->>
-> 
-> Should I spin the independent patches out of this series for next cycle?
+On 8/20/26 20:29, Xu Yilun wrote:
+>  static __init int tdx_sys_config(struct tdmr_info_pa_array *tdmr_pa_array,
+> -				 u64 nr_tdmr_pa, u64 global_keyid)
+> +				 u64 nr_tdmr_pa, u64 global_keyid,
+> +				 u64 addon_features0)
 
-I'd say, yes :)
+addon_features0 is just a copy of the global, static, not changing
+get_tdx_addon_features0() return code, right?
 
--- 
-Cheers,
-
-David
+Why pass it around as a function argument?
