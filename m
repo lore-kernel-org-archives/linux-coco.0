@@ -1,163 +1,235 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BEC3EDE72;
-	Thu, 20 Aug 2026 11:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213DF35C6B3
+	for <linux-coco@lists.linux.dev>; Fri, 21 Aug 2026 03:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787224720; cv=none; b=NalypPQARQFcKChbXMIXvYKXrPNMVONS45IaCT/Cdw3ayqYg0mNMf/aB5C/zgURaMptyfzBM7j15wEmI7duMG8WD/wvassxCL+FhBXWOLkEIlU5FlG35r105wJbrt4HKtrJ1JwCWKugzRriRZg97lA20oGEq5Xu3nnwG3AlagvE=
+	t=1787281540; cv=none; b=sT19AOpiWl4hM0Dp7b8IJVrh2/SYqlkiV3FhRRXWa2QXdKblNlM8fpTNFqW8DGbmt+frhoinYzWsqSfYskoJNbmpfcVwGpE/co56ypSQQo5XERcnPy6iLd9IZKB4ZAt6PaiZLE/cq0tV7+aJLygnHMdDYLHCLxBz1bCWg8qrq5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787224720; c=relaxed/simple;
-	bh=SdEAhDJE3ceKTkP+KHkZa5VUf6xd31d914SRKQNJZ5c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=MMpnrswTOSlNu+KvfdcP4F/JkVGy+eZ8hQKs8iloeAb6Ge0i5EwSuNsWdPP/YwJj3yWJHo2uGohbm6aNMVYkLdoCplLtl/Xo4FhfuOk7irmmSSb3reZ4Ime5cmbd4mLclyyN8BU1/FWlCLkE4tb+OMFrSYX2wlkYKq3zbmol7fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N4ejpgkc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787281540; c=relaxed/simple;
+	bh=dedcoEmUAKUk7YmPtA3wkGYwA/i32pF22h4YcKAscyg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ji0vESzLvZST0pmwlRRuKXu30ziXnw22B6U2srbTQaT3vdQFSmSzIBqorjbnlCihV+vGMwRcGkWo1ziWJD8AfmDk1GwnFaAQH5QBYyPa5YKWpUTvdnVy2m1Q1jWdMhndUIZL+OubwvZ3cRQVbKuWE8pEGewOeFCuElbBfDrWMs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A7t4ICUk; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N4ejpgkc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A531F000E9;
-	Thu, 20 Aug 2026 11:18:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787224713;
-	bh=kD8M/YKHqWqzGIENajqOC2rY0txazHy/e/Ja7hOOoXE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=N4ejpgkcSr7xuovl0VUw3yUMsE5hXE63S3pSHaRM7XjXdVv/+Brt0GYH7OKMHkg+W
-	 QMy1BeBvHx0o3sXHvln8dA8ma/oYy4+2Zyl0fDHb11veUnnYoAQyUePu6qPwMnxJnc
-	 ljUeDCitQA/l7zP1BsEnJ9QYTBZKypvZ46isguSOlpNj8oZlXo29rpaMuLX73m6B+x
-	 /f6Q5SaTCtcfgXiKmpncrMXtkZE6urbY8H2nenEICEeiNnVuZCcz3V3XWYGQBmuuco
-	 GVnVaCIN85PNKewAUOYrH943fuMrZuVKIPvJZZtdo9fgYiijyrjFoU0MzgkmVv28nm
-	 3dAf1vXRPuUNA==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Kameron Carr <kameroncarr@linux.microsoft.com>,
-	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [RFC PATCH v4 08/11] coco: guest: arm64: Verify DA evidence
- with RSI_VDEV_GET_INFO digests
-In-Reply-To: <da92b216-e4ee-4392-9a35-de7bc1683f83@linux.microsoft.com>
-References: <20260427082805.931832-1-aneesh.kumar@kernel.org>
- <20260427082805.931832-9-aneesh.kumar@kernel.org>
- <da92b216-e4ee-4392-9a35-de7bc1683f83@linux.microsoft.com>
-Date: Thu, 20 Aug 2026 16:48:23 +0530
-Message-ID: <yq5alda1vy4g.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A7t4ICUk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787281537; x=1818817537;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=dedcoEmUAKUk7YmPtA3wkGYwA/i32pF22h4YcKAscyg=;
+  b=A7t4ICUkgdVDKhUfGIk8BP3EehFXW1YrzicX3G70hbPmELVPQI/EwXop
+   K0/nSLQ0kmO/4sHnJjo7sXkqlSeFkj6rx01NqeLQj89zRtf79iwcJXWZd
+   YtYePIEPPWoJYPuL1rq1DsbhYXB6Uzgf88M2zwLT21TtVOlnDFVRTvLIJ
+   KPIbq9b0xuehkjLd3tX8bwluwRzDlnnMOzxJkpHPCI1PfezPxOIf97hJ2
+   nFa2t3p5q+l7A0e9Jvv61FJmQhJmX5ygdIpTfXIOS6v2moyfqnkFDNHiu
+   1vvOyq+7brJaJOHEuRMU4NaxidexaHZZ2JT6zH/enC3ZvlgUm7u+jwsR1
+   Q==;
+X-CSE-ConnectionGUID: cihTKqD8RnGUJr8FBrYACg==
+X-CSE-MsgGUID: jAodzXfBTp6y/RJQ1W3Vdw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="91700466"
+X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
+   d="scan'208";a="91700466"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:05:35 -0700
+X-CSE-ConnectionGUID: 7MhXezB7RU+EV+DHFikReg==
+X-CSE-MsgGUID: YTXbn5W/Q4OQ6BfbzvVtsQ==
+X-ExtLoop1: 1
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:05:17 -0700
+Message-ID: <a410cca6-0776-44af-8353-9b7375e2fd4e@intel.com>
+Date: Fri, 21 Aug 2026 11:05:15 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 07/41] KVM: guest_memfd: Stub in ability to enable
+ in-place shared<=>private conversion
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Kameron Carr <kameroncarr@linux.microsoft.com> writes:
+On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> Stub in global variable to enable in-place guest_memfd private<=>shared
+> memory conversion, which will eventually be exposed to userspace via a
+> module param, and wire up the __kvm_mem_is_private() static call to the
+> guest_memfd version when in-place conversion is enabled, i.e. when gmem is
+> the sole authority on private vs. shared memory.
 
-> On 4/27/2026 1:28 AM, Aneesh Kumar K.V (Arm) wrote:
->
->> +struct rsi_vdevice_info {
->> +	union {
->> +		struct {
->> +			u64 flags;
->> +			u64 id_index;
->> +			union {
->> +				u8 hash_algo;
->> +				u64 padding0;
->> +			};
->> +			u64 lock_nonce;
->> +			u64 meas_nonce;
->> +			u64 report_nonce;
->
-> Nit:
-> I found the name `lock_nonce` confusing. I originally assumed this was the
-> nonce passed in when calling RHI_DA_VDEV_GET_MEASUREMENTS. The new RSI spec
-> (2.0 beta 3) names these lock_seq, meas_seq, report_seq. Consider matching
-> these names since the values represent sequence counters and to
-> differentiate them from the nonce used in RHI_DA_VDEV_GET_MEASUREMENTS.
->
+I find this patch changes the default memory type for a @gfn.
 
-Will switch to that name.
+- When memory attribute is tracked per-VM, the default memory type is 
+always shared.
 
->
->> +			union {
->> +				u8 format_type;
->> +				u64 padding1;
->> +			};
->> +			u64 format_version;
->> +			union {
->> +				u8 state;
->> +				u64 padding2;
->> +			};
->> +
->> +		};
->> +		u8 padding3[0x80];
->> +	};
+- when gmem_in_place_conversion is true,
+   - if the @gfn has no memslot, or the memslot where the @gfn locates
+     doesn't have gmem bound, the default memory type is shared,
+   - otherwise, the default memory type is determined by the
+     GUEST_MEMFD_FLAG_INIT_SHARED flag.
 
-...
+I think we should document this change.
 
->> +static int cca_apply_evidence_report_range(struct pci_dev *pdev,
->> +		struct pci_tsm_mmio *mmio, bool map)
->> +{
->> +	int i, ret;
->> +	struct resource *res;
->> +	unsigned long mmio_flags = 0; /* non coherent, not limited order */
->> +	int vdev_id = rsi_vdev_id(pdev);
->> +	struct pci_tsm_mmio_entry *entry;
->> +	struct cca_guest_dsc *dsc = to_cca_guest_dsc(pdev);
->> +
->> +	for (i = 0; i < mmio->nr; i++) {
->
-> In the tsm unlock code path cca_tsm_unlock() ->
-> cca_unmap_evidence_report_range() -> cca_apply_evidence_report_range()
-> there is no null pointer check on mmio / dsc->pci.mmio.
->
-> dsc->pci.mmio is only initialized in the tsm accept path, so if the device
-> is locked then unlocked without an accept, this will lead to a null pointer
-> dereference.
->
+> Cc: Fuad Tabba <tabba@google.com>
+> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+>   include/linux/kvm_host.h |  6 ++++++
+>   virt/kvm/guest_memfd.c   | 26 ++++++++++++++++++++++++++
+>   virt/kvm/kvm_main.c      | 12 +++++++++++-
+>   3 files changed, 43 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 65fbce46b63f4..9477ecebbbced 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2580,6 +2580,8 @@ static inline bool kvm_vm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>   #endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
+>   
+>   #ifdef kvm_arch_has_private_mem
+> +extern bool gmem_in_place_conversion;
+> +
+>   typedef bool (kvm_mem_is_private_t)(struct kvm *kvm, gfn_t gfn);
+>   DECLARE_STATIC_CALL(__kvm_mem_is_private, kvm_mem_is_private_t);
+>   
+> @@ -2588,6 +2590,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>   	return static_call(__kvm_mem_is_private)(kvm, gfn);
+>   }
+>   #else
+> +#define gmem_in_place_conversion false
+> +
+>   static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>   {
+>   	return false;
+> @@ -2595,6 +2599,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>   #endif /* kvm_arch_has_private_mem */
+>   
+>   #ifdef CONFIG_KVM_GUEST_MEMFD
+> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn);
+> +
+>   int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>   		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
+>   		     int *max_order);
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 1f1ae61b4878b..75979c885e030 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -475,6 +475,32 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+>   	return 0;
+>   }
+>   
+> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
+> +{
+> +	struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
+> +	struct inode *inode;
+> +
+> +	if (!slot)
+> +		return 0;
+> +
+> +	CLASS(gmem_get_file, file)(slot);
+> +	if (!file)
+> +		return 0;
+> +
+> +	inode = file_inode(file);
+> +
+> +	/*
+> +	 * Rely on the maple tree's internal RCU lock to ensure a stable result.
+> +	 * This result can become stale as soon as the lock is dropped, so the
+> +	 * caller _must_ protect consumption of private vs. shared either by
+> +	 * holding guest_memfd's invalidate lock for the entire duration, or by
+> +	 * checking mmu_invalidate_retry_gfn() under mmu_lock to serialize
+> +	 * against concurrent attribute updates.
+> +	 */
+> +	return kvm_gmem_is_private_mem(inode, kvm_gmem_get_index(slot, gfn));
+> +}
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_is_private);
+> +
+>   static struct file_operations kvm_gmem_fops = {
+>   	.mmap		= kvm_gmem_mmap,
+>   	.open		= generic_file_open,
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index a01d336eab18b..0a5a1bee8de0f 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -102,6 +102,10 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_shrink);
+>   static bool __ro_after_init allow_unsafe_mappings;
+>   module_param(allow_unsafe_mappings, bool, 0444);
+>   
+> +#ifdef kvm_arch_has_private_mem
+> +bool __ro_after_init gmem_in_place_conversion = false;
+> +#endif
+> +
+>   /*
+>    * Ordering of locks:
+>    *
+> @@ -2423,6 +2427,9 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
+>   static u64 kvm_supported_vm_mem_attributes(struct kvm *kvm)
+>   {
+>   #ifdef kvm_arch_has_private_mem
+> +	if (gmem_in_place_conversion)
+> +		return 0;
+> +
+>   	if (!kvm || kvm_arch_has_private_mem(kvm))
+>   		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
+>   #endif
+> @@ -2634,8 +2641,11 @@ EXPORT_STATIC_CALL_GPL(__kvm_mem_is_private);
+>   
+>   static void kvm_init_memory_attributes(void)
+>   {
+> +	if (gmem_in_place_conversion)
+> +		static_call_update(__kvm_mem_is_private, kvm_gmem_is_private);
+>   #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> -	static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
+> +	else
+> +		static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
+>   #endif
+>   }
+>   #else
+> 
 
-I already have a fix for it in my development branch.
-
-
-modified   drivers/virt/coco/arm-cca-guest/arm-cca.c
-@@ -489,13 +489,15 @@ static void cca_tsm_unlock(struct pci_tsm *tsm)
- 	}
- 
- 	cca_device_unlock(tsm->pdev);
--	pci_tsm_mmio_teardown(cca_dsc->pci.mmio);
-+	if (cca_dsc->pci.mmio)
-+		pci_tsm_mmio_teardown(cca_dsc->pci.mmio);
- 
- err_out:
- 	/*
- 	 * No error handling from this function. Leave the device locked
- 	 */
--	pci_tsm_mmio_free(tsm->pdev, cca_dsc->pci.mmio);
-+	if (cca_dsc->pci.mmio)
-+		pci_tsm_mmio_free(tsm->pdev, cca_dsc->pci.mmio);
- 	kfree(cca_dsc);
- }
- 
-modified   drivers/virt/coco/arm-cca-guest/rsi-da.c
-@@ -155,7 +155,9 @@ int cca_unmap_evidence_report_range(struct pci_dev *pdev)
- 	struct cca_guest_dsc *dsc = to_cca_guest_dsc(pdev);
- 	struct pci_tsm_mmio *tsm_mmio = dsc->pci.mmio;
- 
--	return cca_apply_evidence_report_range(pdev, tsm_mmio, false);
-+	if (tsm_mmio)
-+		return cca_apply_evidence_report_range(pdev, tsm_mmio, false);
-+	return 0;
- }
- 
- int cca_verify_digest(u64 hash_algo, uint8_t *report,
-
-
--aneesh
