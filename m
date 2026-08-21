@@ -1,217 +1,207 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010029.outbound.protection.outlook.com [52.101.85.29])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010042.outbound.protection.outlook.com [52.101.193.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16AC21D5B0;
-	Fri, 21 Aug 2026 16:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF35D37883C
+	for <linux-coco@lists.linux.dev>; Fri, 21 Aug 2026 20:15:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787328965; cv=fail; b=edQ/pDMK8KGJAcdwYf/BRHQO62lWwNC8AC7+U4wuSfU81rIEajrothJsxF1k2/jwTKbHDoTqqE+JPjGoLDlFJ4LH872JmLIaj4Cf/m4zkWUvz95pKOzi2S8RGzsIwjzgMwG+A2DE82fsPLVqD85qLepbqPAc3+1v7XIO9bgleM0=
+	t=1787343303; cv=fail; b=EB7PxU8RlY9Z/Vg7dEcbl4FKFcZfcxXUsLNeuH8vG86oc/Mzy7x6/VxtcN+8fqmrcbtpjcKACsisWPjzo6hB9q5sFJRYnLcAtsxjWm6qMBrVh+39GJcfseaNpuLl1o774M+BHg8CxeEXv7+mnaY0xbe+48pOElJZOatZImqFHZI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787328965; c=relaxed/simple;
-	bh=ixVpo+4gK30G566oqUb650vlyonYqrkR+Owepfyiigg=;
-	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=gNIdooha0GjP5maKbnGA3ndYn1VsAuCeJ47uWxMLbGlZT4NFoyRWdcljLuyi3C7JUkrqCWv7a/rAdV8ovJ/wa2YtKv56VZ1pdTEYSLFZV9ms1o6NKTdH4kUoK7MLah/qMclnTNldKjoN0/pkwXZ5OBIxtNsRyARGHCOk90HbggA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4CswoQ1w; arc=fail smtp.client-ip=52.101.85.29
+	s=arc-20240116; t=1787343303; c=relaxed/simple;
+	bh=EbDhuLO6YoLgULf3seCo5/8dp4ZQvxiCRakPaU2UTV4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=L0On6E3xp4JGB+adjjTSV826jYohOoOhJPfi2g1jvee3VHxD6KzUnkh+5OlADtRX1Qw2mN8q1MsBB5CaS5NpXYF41wBebSKsoLMW/dSVDuaZ7ADNfaj4cbp1uNWP7t+faeTdodLasct1hAQhd0aoGj88k9IB2YjUSzif+hMx2KQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=KOg/3zq0; arc=fail smtp.client-ip=52.101.193.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4CswoQ1w"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KOg/3zq0"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DPVJHXSsfwGnL3w1VHzpQ1iMhGp/um3jzOv/CatBe1MSP8OssI55ry1r8qu/AcNIOZjsXqaCKvJRDWv2eXKYGVcW3fb3nVVRseFZ61jAjMzcsHp6oOIpih+bPMnoT/lLzK+PDhgY9EBTcZ1H4npxRbVH5DvADx/SNqXIJDYPmrsfH1Z1hley2TP0aM/LGpzY1nYW4zZNNBkGhkrwSexBy+fPwPyCe/szXFZcCRd/tC0ExCryyJmfk/+8TQNTO/zJ66Ha+BRh2gh2aMEhMgC7lh8YtTyqbpCqyg5NNNSul5lTPhXmQHLU7jIgT48BC55x10PIQmtjP0Am1EF0kv3gHw==
+ b=nEJgwJRNiKbH1GRT8BoYK/GhvM/SAMOaSRxeTCbZkr0hyFCs6RJmnDUZJ9VF6o98MMBWripkM6tumDjns++fiusnIHYY9ENRSEzu8ZGUP8MRBApXfn7/oY07zdmUx48eDq9HDnVaZq6WMcxfU3mAquJOk96CGtjF+s0Fc/ERoCe5W7NkzJFN0COHQH4CPH1I9HyrT7bq8Q8Oq2Lin+oeq7AeF84wUei5rn1KZbYQSjZKnJgviBRAplR2FHnJmfBVVPB1hLkNLyI0p5gQQntMY9UNvNiu6P1e2Fldjjd2zUKXwcVzJhjrPrD2jCLpzLqeIae2vc9BBzPw0Ud2nivm/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uqe1E103Ra+MbKN1UbsfRw2+/mRGO1r2RfOgxjT48Cg=;
- b=VOLzv8rBjlZK1JoufX8CgC43yjIq/9EL+jU4mDt/acXt8vtdu8Kng+zO26Y5pAH5F0tYgCM3Uk0nip94CeE8cenGTfw4gfPz7eTgwBigcg1SmBU+Zh2NTcdOZa2VvDh/u32MFta+26nLx5MlFuKzW3IZf1reebDC+Gq4ecr/w6n5LB/LhlUwFy0X65Se0M5tLqMr0Zke/MfqfFHtAINt4HjZZ3haVmgaU1PuAO7q1pOnvdVxqdlHA/M0ygJFtOelCNCu1+XukdBVRTvBBOgpFjb12CsPNXGhNAWdPoQ3zY6h95KOjDqKTXtcM5olZrB2Mmc0r1HZ3y2wjBTOgEqVpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=EutSFLrMlFUYglFfZNbQGnMYLG3FRy1Q8YF37EuQJRU=;
+ b=FNi7NpsnXiLPcFkMf8LTjfmEgIYUdAE3o+GFS3zHBM/DdQBpQyWwXm6zRuhhzoC0MHMZeQohh7AauFTjTJ0jMRLgLVkMtjHni25Zz7IAyxmLMRWZ0t7W5/VfKmbwg8eGfx3lPULkhxj04uAbXaxA/+FVgvlyEPkYhE4d09yjUROa+nehWaKphZEe3x4gc/o7Z7x8xfh264lErVsQbFVmHCw+kweEbY9l1N7vFwcVQ1L9eSLl8mir5sRMU/ajyIuKcdxYjLuYmx4T9iuO6FBcWVzcXQxZNlwu421NcSVEjDCC0ovqdZUB9EVNRAf+EDFY6fvzIf918i8DjOJM1lmG8w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uqe1E103Ra+MbKN1UbsfRw2+/mRGO1r2RfOgxjT48Cg=;
- b=4CswoQ1wM4Rn9KO1HR5ewg7vs2lG6m5qfOyN+cl8dDhwlr1eKt0X8Wd1QCqjApvrI+1N6pPreM9MflkiQjdELrtZS5h/ok7jgNJpVO+WKGaw43Lz8HjJy4UcZswlubysh4gYV8EyUcc69hSzs9VDKR1CxTJ/8LRaWtbP/uEGc9E=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL4PR12MB9505.namprd12.prod.outlook.com (2603:10b6:208:591::16)
- by DM4PR12MB8449.namprd12.prod.outlook.com (2603:10b6:8:17f::19) with
+ bh=EutSFLrMlFUYglFfZNbQGnMYLG3FRy1Q8YF37EuQJRU=;
+ b=KOg/3zq0qTzSzrk1jIBRJKtj4JW9of1t+xsCgvnA9Oc++6/BzdYtU5X2MNDGQgpyJIovPUhlu4ARCU9ylLjHgg+6ZExxLJsWm7u4unkcGft0Gf9W5vHxZQEWbcZrpcwFn/9Jvrrgg2/dAE2965zmY3r5cQh19WEyQTsSZz9MZ1U=
+Received: from SJ0PR03CA0271.namprd03.prod.outlook.com (2603:10b6:a03:39e::6)
+ by IA0PPFF4B476A86.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bea) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Fri, 21 Aug
- 2026 16:15:48 +0000
-Received: from BL4PR12MB9505.namprd12.prod.outlook.com
- ([fe80::73aa:eb8c:a86b:5a83]) by BL4PR12MB9505.namprd12.prod.outlook.com
- ([fe80::73aa:eb8c:a86b:5a83%5]) with mapi id 15.21.0339.010; Fri, 21 Aug 2026
- 16:15:48 +0000
-Message-ID: <bdf29f6c-9f2e-4230-b5f5-5f25827f5b7a@amd.com>
-Date: Fri, 21 Aug 2026 21:45:36 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/7] KVM: SVM: Add support for AMD IOMMU Guest APIC
- Physical Processor Interrupt (GAPPI)
-To: Sairaj Kodilkar <sarunkod@amd.com>, "Borislav Petkov (AMD)"
- <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, "Paul E. McKenney"
- <paulmck@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Breno Leitao <leitao@debian.org>, Christian Brauner <brauner@kernel.org>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Eric Biggers
- <ebiggers@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Jakub Kicinski <kuba@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Kiryl Shutsemau <kas@kernel.org>, Li RongQing <lirongqing@baidu.com>,
- Marco Elver <elver@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Robin Murphy <robin.murphy@arm.com>, Sean Christopherson
- <seanjc@google.com>, Shuah Khan <skhan@linuxfoundation.org>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
- iommu@lists.linux.dev, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260821055611.27138-1-sarunkod@amd.com>
- <20260821055611.27138-7-sarunkod@amd.com>
-Content-Language: en-US
-From: Vasant Hegde <vasant.hegde@amd.com>
-In-Reply-To: <20260821055611.27138-7-sarunkod@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN4PR01CA0095.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:2af::10) To BL4PR12MB9505.namprd12.prod.outlook.com
- (2603:10b6:208:591::16)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Fri, 21 Aug
+ 2026 20:14:52 +0000
+Received: from SJ1PEPF00001CE9.namprd03.prod.outlook.com
+ (2603:10b6:a03:39e:cafe::92) by SJ0PR03CA0271.outlook.office365.com
+ (2603:10b6:a03:39e::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.11 via Frontend Transport; Fri,
+ 21 Aug 2026 20:14:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF00001CE9.mail.protection.outlook.com (10.167.242.25) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.360.3 via Frontend Transport; Fri, 21 Aug 2026 20:14:51 +0000
+Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 21 Aug
+ 2026 15:14:48 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@kernel.org>, "Ingo
+ Molnar" <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>
+CC: "H. Peter Anvin" <hpa@zytor.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>, Srikanth Aithal
+	<Srikanth.Aithal@amd.com>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] x86/sev: Skip DR7 write during kexec when it would trigger an unserviceable #VC
+Date: Fri, 21 Aug 2026 20:14:32 +0000
+Message-ID: <20260821201432.879450-1-Ashish.Kalra@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR12MB9505:EE_|DM4PR12MB8449:EE_
-X-MS-Office365-Filtering-Correlation-Id: b7d516bb-2961-4c47-5216-08deff9f7630
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE9:EE_|IA0PPFF4B476A86:EE_
+X-MS-Office365-Filtering-Correlation-Id: 994413ec-8ad8-4bcf-7ebd-08deffc0dbcb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|10067099003|56012099006|11063799006|4143699003|921020|22082099003|18002099003;
+	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700016|23010399003|3023799007|10067099003|56012099006|11063799006|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	WpcjvDrDQe3U9Cq9GxF7oEwoM7BdZ+XP6LXeIopFDRt901muFzTUPkIw0QDjtjOVjDc3TF9umZJM7dvghL+7g4qjSvoCQIDyiefxB+t0D2dGDYX9MGJPhfkIeR9jC7GfK6ji5nEV2LI50wTRYR5UUWFGM1dDfuIKP4+4ZmY9DASukz2BRGZG60NYcctWf0pHyIdaJCPVl2EHOhqwSvpggd2Vno76glfqaz7CblipeT8fkkZjGVyqN+xYA+z2LCTuqG+bryPVbq3nOFvoqpU/NLeip/xZIMvOLn3jdc9h8A5AeCdq48kWGkn9/IN3270+HHldQjuuDmrHMvMFygNAJCrGrk5aKBNgeRjR9dTOPWj/TernEspIZQP7Ru5g7v0bMnjCKjKb07la1IWpQm0EMOudkX8mfAnrk0loJBknpw3qNJt+Y2oNMPZAqs+FlXD2fXpCLf67zoTSehLO1KJGKrkIFBzaUkQUy/PIAgCp/XHYkwRe0IXcmCZxwm3D95dQzfgTmqHqthB4eyDpQVsVE3BsLo1YC3ba9zrQScKqJWoY3kX9toXx+CSmXkSWScDneV6fRRN0Y/vhSOXhW7sEh7iwJt6gdLoThGyEWaUrHP8DoTAXKsAHOhqyzA1zFrqEX+9yiUpUvYX6le64+1KdVvkdkL9uCQdK/wQQxMi9YYPZ7uKj7Fd8I07x8HaX1Hd2ffO89/Iw77g6zYpkEiCecw==
+	pMhenftYrhzqOo7nzDJ6AhDkiW/SdFGqVv5NyTsqBE1LOuCgP4dLxc/qKbdi6KxOlMhHHxW0X8rjx/Ew1EGMfRQV47FQFSQ5nmMHq7V84u6pgApDYfLQFLUJd9Lq852mN0GyLnkxvUcGOEve3m66IX8F7w/QHH96KUCxnpAm9ieK4c4O79OEwPtBkCf31jI/BaW7IWvW0Ma3fIb/6eLyI+PD7JaoQ9dy75M729su5TPsrt7FxGCh84ltifosLwSGYS3swL1yzXaDGHr+OvbqN2E2T1E8hiOO+t2+jIl3GTq+uSCgis2t6lAzD+wViABQVvt0qCQgCySQIuP/83D/Np5z1qXt/Rd3uQ2SkyyVHPGLzlbVrFyMFURFf3RWvhwGKu91ExgL5yw738bu6KJ0lpQxWvbeZNimQaU1lvVL1SNZpih2bfEuDIMOY60uNENyyRH4Lu7ZzVSsMIwqBiGdw3i6b0lQv1xpXB3uigi7pU0rXgJf4bZbzW7LPQh8a5T9FzUptVTxo9xF6o4Cu/fyMFHyFg7iUs0dRSKfiKrZkoaaBN3LjIRkAuP2MKTe8+JCb4xizK3Tw1QC3bHw/7+Hc8JhdUP24/cZrU29d2WC7IWAnDRKhK/Ik3oknCAFJ3z46NiuOAKKMGWnhq/uw90ghdd786LUbkhtVi1SMM+nRYb7hr4CYe1wyzKBDbIEJr/cJa72pbNIRg39MXlS5DHcvA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR12MB9505.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(10067099003)(56012099006)(11063799006)(4143699003)(921020)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700016)(23010399003)(3023799007)(10067099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VnRsN3duVWlSMzh5Um0xNGNRbGR4MVhOYzFiSEVjbXJoZVZFaVpRMFhDSGc3?=
- =?utf-8?B?WVN2VExtSmplNjJCMzFlYTFmRzFITGx1bE16M1Vha2tDK1VHRjZrSUdnYmd3?=
- =?utf-8?B?SGJ6Z2tscXl3RTBobDRCaWRZM1NkdzhoQXdqMGlucU0vUFJVSEE3am9LMjYz?=
- =?utf-8?B?eHNhR3dGNUVqbnNoWHlZaHJWVGxVOE5jdGE4b21wbXV2b29DVExxQ0dTS1Vx?=
- =?utf-8?B?Mld0cEFOMXNiZDR0b0RMenovQVVmaUxuZkJxMlhkdnZwRmRmQURKcTdJN2xr?=
- =?utf-8?B?ejBRUmF0Z1pYY09SVFJnYmlMWWNFVjRVRWNpbG8wNEU0WU82Z1BlMngyKzdn?=
- =?utf-8?B?eFV1R2FCZU1vVGR3WkdBVnlzbU9iVlJjT0JLTENEYjY4cTQrR0ltWWV2MGlx?=
- =?utf-8?B?enhXanZKclpvb1pDMG1KbW1PVnlZeEdtR1NNZUhkUDJxRk9mNGt1UEs5blkx?=
- =?utf-8?B?U21sRFZyZnVvVWMwbzVKODRnbWh5QzNmcTEzelYyTVVKUmZjSDlFTGZxbVMy?=
- =?utf-8?B?WmtmUzl5OUVEOVRvbUlGbFYzWUJ0SCtLZlltOGczSmxEamRtN0RyWmdvaG5s?=
- =?utf-8?B?N1ZtMmo2aUI1RFFvUmV0SWdzNmE3T1BXaUE5VHNmT0F4TlcxZ1dsYzhYM2xR?=
- =?utf-8?B?bUUwdzFXMmNWU1Z6emZYQ0gwQW84NnJORllYSnViNFY1bGxHSzA0RkhWOEpM?=
- =?utf-8?B?Q3JjbDJ3SmVrV3A2czU1b1luWVBwbEkybUVmZGNhUXdVYWpTc1ZoRDlXRWxD?=
- =?utf-8?B?NWNtTC8xWjZ6NmdjUGdPM3NOSnJud1B3dlo3aERIQnZtV25LZUR1aUZqVTFy?=
- =?utf-8?B?a2xJNGdzNlRxTjRiaXlEWUora1ovUWwvSFV1OVdVUXd3YW5BajVveTNnM2Fn?=
- =?utf-8?B?QjQwV0w3TktkSzFJaWJJT25qTU9xMlVMV3AxNThrSTZLNVhBM2lGUmV5ZXdD?=
- =?utf-8?B?alA0d3RHWmIxT05Lc3BtYk9vLzFaUDNyM05CUlBGQ1dZcDMwdkZIRWt4bE1o?=
- =?utf-8?B?MUZtaU04OHQwSnJJREZweFY4YVlreVA4TUo5Z0NqYlp0aEJPVUFONFNXVzQv?=
- =?utf-8?B?T1ZRTHhzVmd0NW1ZeHJML1czZldrcDExc1MrNEgvT3dOK0xURUNQZVErbFNR?=
- =?utf-8?B?WGZxcGV4dEdieGUzOE1NTit1VGZvVzhYSU9DMEt2cGpvSXdUTVZMTDFNT3Fs?=
- =?utf-8?B?Z3ZPV21zM1JjbjVIcFhrc2dFWXJXR01SWmNPdFpUTzJ6K3MwS1ZvM1V3SXJ5?=
- =?utf-8?B?eERncFBjUm91TUk5TVI1ZW5ySDBJdWttbnJQN2dZeVRxR3pmSlIrLzJnWTZq?=
- =?utf-8?B?bWRDUkR2MTRReHVmcU9JV1F4TjhnMGxWbVVOb3dKUE9iWlRTc3hlbWxNTVlq?=
- =?utf-8?B?NXMwMm4vU3FENG8xRE9FZGU2Q2hWVDI1WGVIWGhCRHNaSTdiek9tOW1ucnYv?=
- =?utf-8?B?dUlBYTBUdWpQZGk4ZytQa3ByNi9PQ2Rya2o4ZEMvR3pqU2RtaHZoalJwZk9z?=
- =?utf-8?B?Z3NOMU9rTG9pR0s5WHBtRTlNQmsxTHo2NngwMjRVVUJmYXg2R2pJdHdQQ1lV?=
- =?utf-8?B?NUNIRXN1WnJwTmJWaEMyVS81U3hMU1pqUUxONkUzdjBWZjBqQzRLM1M2V3Rs?=
- =?utf-8?B?Zlh2STRrSUE0aU1ZU3NyUUUrMWF2b2FVSVBpaEQvSVdLVlE3eDBGTklYOTly?=
- =?utf-8?B?QnV1VExmbWY0TFJ1dGo1V2RacmNnWUFjNUltMi9uU0IyU3NmMGNvWmUwQnY0?=
- =?utf-8?B?V1B0Tld3R1RjQkUxZ1N4bmI5aitIVTM5eURMMlV6VGdhbDYxQTFvVGsvdDNP?=
- =?utf-8?B?ZE9LWVRGRUpyRGJHNGtGaVpZeHRRa2pURjhxYmdOb1hVUHBBY2Fybm0wbDJn?=
- =?utf-8?B?K3J3OGcyMnVaakl2Ynkza1N1c0ZxeDlGSEZkL2FXNTdyalZTb3FYZVMzK281?=
- =?utf-8?B?ZTNFaTZKVGZ2SlBFVEQ4ZnNmcjY5L3BYT0lJdGs4d3dyNUkwd1JRMnl1SHp6?=
- =?utf-8?B?MU5OM1l4WFlITFlVVjZIb0t6SVBRZDQwekRRTTVpWDRaam5VTGJ3bzVjYVph?=
- =?utf-8?B?OFcySE9VOHBveWlld1pNb1FoTUp2Rm5mR2J6L2hFcjNSSHYvQXozM1ZBeGha?=
- =?utf-8?B?RzhtRjdTd2Q2SFVkYkV6UlRQRnkzV1d6WVBPLzRIYXhwR2VIbi9jemZ0U3BS?=
- =?utf-8?B?aVZyVXZXSVVITDR1MlF3SGNZcmFEa1d5S1p5SS9VbUc2M1ZwNXNiZ2Y5cWo3?=
- =?utf-8?B?VEw3QndPbnp0amUrcFVnY2JNQk13OXgvTElXKzVKdllaemRHckFqalF6cFNR?=
- =?utf-8?B?a0pyVUNIaFJoQUI2ZjdpVCtvVkZiZmNiZGtPMWNnSzc3d1BiMlN5QT09?=
+	VCrJTc2Dr4vz5YwUCqrDJka/yv0e/TokVuELI0KSMO9EqwTFi8OC7e2L0eXzsi1iKdf54X0ar/yzeiFobuw8r2yH3LHMHMR3lsa8qVHk/S9pDp1DGnRbIichDtpHvssu1lbLH6LItYlVRpS+A+aE0IwjnVVmRwP1Yx+scPPrpxCqnBcMyKZN/P+rXvxYdCAdK9zXAXX9I5o7DE1dehY1CjNeubnKVscoSMRtjCE3LNPuGGxUf9iOKVstScDh9E5eFCysG21Rx+5sutRoPMGwjaliBk285MbyfvVNdcyIqiw9PK7Bt4vYDPgJ83uPgWDHdez7r0k8fhPbocPKtGz5AigmAcSDZ94fPLiaazZI8tZQgQNRBqPJXhU0zcPvb6SWUSqjtqUSvkEpi/HiX4lk2B0fFJEZLnQGWRRmiwM/hUik50ZjGNNrSoDIgNJWezcg
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b7d516bb-2961-4c47-5216-08deff9f7630
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR12MB9505.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 16:15:48.2278
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 20:14:51.3272
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: 994413ec-8ad8-4bcf-7ebd-08deffc0dbcb
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QuTWxc2f83RtAUVCvTzdZXC4+4K+6rPzISFdFH1t1v0+lzLQS+TWljDxCSzwy69p0BKEETvw4j9hRgK6QG9Mcw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8449
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00001CE9.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPFF4B476A86
 
+From: Ashish Kalra <ashish.kalra@amd.com>
 
+machine_kexec() calls hw_breakpoint_disable(), which writes DR7. On
+SEV-ES/SNP guests that do not have DebugSwap enabled, DR7 accesses are
+intercepted and delivered to the guest as a #VC exception, which must be
+serviced through the GHCB.
 
-On 8/21/2026 11:26 AM, Sairaj Kodilkar wrote:
-> With AVIC guest-mode interrupt remapping, device interrupts are posted into
-> the guest vAPIC backing page by the IOMMU. When the vCPU is not running
-> (IRTE[IsRun] = 0), KVM must still be notified to schedule it. The legacy
-> path uses the GA log.
-> 
-> GAPPI (Guest APIC Physical Processor Interrupt) is an alternative to the
-> GA log mechanism provided by the AMD IOMMU. With GAPPI enabled, the IOMMU
-> still updates the vAPIC backing page IRR, but the host wakeup notification
-> is delivered as a physical APIC interrupt to IRTE[Destination], using
-> IRTE[GATag][7:0] as the vector (POSTED_INTR_WAKEUP_VECTOR).
-> 
-> SVM follows the Intel posted-interrupt wakeup model. Each pCPU maintains
-> a list of blocked vCPUs that may be woken by a GAPPI delivery to that CPU.
-> When a vCPU blocks while waiting for an interrupt, SVM enqueues it on the
-> wakeup list of the pCPU on which it was previously running and passes that
-> same pCPU's physical APIC ID to the IOMMU to program IRTE[Destination].
-> The rationale is that the vCPU is likely to run again on the same pCPU,
-> which is common when vCPUs are pinned; targeting GAPPI notifications there
-> reduces unnecessary VMEXITs from GAPPI deliveries on other CPUs. SVM
-> registers the GAPPI handler via kvm_set_posted_intr_wakeup_handler(). On
-> delivery, it walks the local vCPU list and wakes vCPUs with a pending IRR.
-> 
-> All GAPPI logic is gated on amd_iommu_gappi. Without it, KVM and the IOMMU
-> falls back to the legacy GA log mechanism for vCPU wakeup.
-> 
-> Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
-> ---
->  arch/x86/kvm/svm/avic.c | 72 ++++++++++++++++++++++++++++++++++++-----
->  arch/x86/kvm/svm/svm.c  |  3 ++
->  arch/x86/kvm/svm/svm.h  |  5 +++
->  3 files changed, 72 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-> index dd497530d365..18ac24ef40e1 100644
-> --- a/arch/x86/kvm/svm/avic.c
-> +++ b/arch/x86/kvm/svm/avic.c
-> @@ -874,6 +874,8 @@ int avic_init_vcpu(struct vcpu_svm *svm)
->  	INIT_LIST_HEAD(&svm->ir_list);
->  	raw_spin_lock_init(&svm->ir_list_lock);
->  
-> +	svm->gappi_cpu = -1;
+By the time machine_kexec() runs, snp_kexec_finish() (called from
+native_machine_shutdown()) has already converted the per-CPU GHCBs and
+the boot GHCB back to private and set boot_ghcb to NULL, tearing down the
+GHCB infrastructure. The DR7 write therefore raises a #VC that
+dereferences a NULL GHCB pointer, causing a page fault and the kexec to
+fail.
 
-Can we initialize it to CPU0?
-> +
->  	if (!enable_apicv || !irqchip_in_kernel(vcpu->kvm))
->  		return 0;
->  
-> @@ -886,6 +888,20 @@ int avic_init_vcpu(struct vcpu_svm *svm)
->  	return ret;
->  }
->  
-> +void avic_destroy_vcpu(struct vcpu_svm *svm)
-> +{
-> +	if (amd_iommu_gappi && svm->gappi_cpu != -1) {
+The NULL boot_ghcb pointer is a result of commit 3645eb7e3915 ("x86/fred:
+Fix early boot failures on SEV-ES/SNP guests"): that change makes
+__sev_get_ghcb() return the now-NULL boot_ghcb in this window, turning
+the previously-benign teardown-window #VC (a bogus VMGEXIT the host
+rejected but survived) into a NULL dereference.
 
-Redundant amd_iommu_gappi check?
+Skip the DR7 write in this case. Its value is not needed across kexec
+because the new kernel re-initializes DR7. Guests with DebugSwap enabled
+context-switch DR7 in hardware and do not intercept the write, and
+non-encrypted guests are unaffected, so both continue to call
+hw_breakpoint_disable() as before.
 
-> +		unsigned long flags;
-> +
-> +		local_irq_save(flags);
-> +
-> +		kvm_pi_disable_wakeup_handler(&svm->vcpu, svm->gappi_cpu);
-> +		svm->gappi_cpu = -1;
+Add a CC_ATTR_GUEST_DEBUG_VIRT confidential-computing attribute, so the
+debug-register-virtualization state (AMD DebugSwap) is queried through
+cc_platform_has().
 
-Redundant assignement?
+Reported-by: Srikanth Aithal <Srikanth.Aithal@amd.com>
+Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Tested-by: Srikanth Aithal <Srikanth.Aithal@amd.com>
+---
+ arch/x86/coco/core.c               |  3 +++
+ arch/x86/kernel/machine_kexec_64.c | 11 ++++++++++-
+ include/linux/cc_platform.h        |  8 ++++++++
+ 3 files changed, 21 insertions(+), 1 deletion(-)
 
--Vasant
+diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
+index 989ca9f72ba3..d4c90a2da2bf 100644
+--- a/arch/x86/coco/core.c
++++ b/arch/x86/coco/core.c
+@@ -87,6 +87,9 @@ static bool noinstr amd_cc_platform_has(enum cc_attr attr)
+ 	case CC_ATTR_GUEST_STATE_ENCRYPT:
+ 		return sev_status & MSR_AMD64_SEV_ES_ENABLED;
+ 
++	case CC_ATTR_GUEST_DEBUG_VIRT:
++		return sev_status & MSR_AMD64_SNP_DEBUG_SWAP;
++
+ 	/*
+ 	 * With SEV, the rep string I/O instructions need to be unrolled
+ 	 * but SEV-ES supports them through the #VC handler.
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index c3f4a389992d..60d25ceada03 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -398,7 +398,16 @@ void __nocfi machine_kexec(struct kimage *image)
+ 
+ 	/* Interrupts aren't acceptable while we reboot */
+ 	local_irq_disable();
+-	hw_breakpoint_disable();
++
++	/*
++	 * On SEV-ES/SEV-SNP guests without debug virtualization enabled, DR7
++	 * writes are intercepted and generate a #VC. The GHCBs have already
++	 * been torn down at this point so the #VC cannot be handled. Skip the
++	 * DR7 write as the new kernel re-initializes DR7 during boot.
++	 */
++	if (!cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT) ||
++	    cc_platform_has(CC_ATTR_GUEST_DEBUG_VIRT))
++		hw_breakpoint_disable();
+ 	cet_disable();
+ 
+ 	if (image->preserve_context) {
+diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
+index 559353ad64ac..24ba1000ac94 100644
+--- a/include/linux/cc_platform.h
++++ b/include/linux/cc_platform.h
+@@ -62,6 +62,14 @@ enum cc_attr {
+ 	 */
+ 	CC_ATTR_GUEST_STATE_ENCRYPT,
+ 
++	/**
++	 * @CC_ATTR_GUEST_DEBUG_VIRT: Guest debug register virtualization is active.
++	 *
++	 * The platform/OS is running as a guest/virtual machine and is
++	 * virtualizing the debug register state.
++	 */
++	CC_ATTR_GUEST_DEBUG_VIRT,
++
+ 	/**
+ 	 * @CC_ATTR_GUEST_UNROLL_STRING_IO: String I/O is implemented with
+ 	 *                                  IN/OUT instructions
+-- 
+2.43.0
 
