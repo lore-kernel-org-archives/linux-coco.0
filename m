@@ -1,245 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B16D3F822F
-	for <linux-coco@lists.linux.dev>; Mon, 24 Aug 2026 09:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941EF1A9F90;
+	Mon, 24 Aug 2026 12:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787563122; cv=none; b=bRcogI/kiRX3SrhZulXH8cigtUWjG+j0IHtSMsEI7U18UodsloU8GpxvRVZGD6dbEPB43E0x0g9u0ttfAgx7lu2HlIr6EnjhKdR0PIVsx36diRHM1OJj7ZfPKfIC8JyI1TVxOautoMDL/q4JTf9jmeoCiy15mwlD6UA7NKFSPGo=
+	t=1787573818; cv=none; b=mu/aUJJOw/3ajScFR7jO6ESvIY0or0kkKpThQBSQ4ePhyspfmiMDJDhExGfxdVExkuy7o9Ij4btY/Kd1L8/6S8VhjPTGGB6lQqZb5bjr1sDX711UXcSJBsXyNJe863AvXQwUAtB4OT2ndJSGr9ffiZfw0i63GDx1TA5eGJdlS18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787563122; c=relaxed/simple;
-	bh=6BmFy5jb3jLUCgM6DtkO/km+Rgo/GycIWhXxFsToEN8=;
+	s=arc-20240116; t=1787573818; c=relaxed/simple;
+	bh=fv26KJvzSC/D4S0hDB4EiFM3cNOlC1CniKIpsLgYyaU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TttiOwI0c2NqNBPChxjdKZXd4HYkG+brRVg3HOfxvyfeBYIVMnRVDgu33mHiRamH7qIc9rFNjhzO7BCiK3tNnMIjqSU2Gz1oM6n7OxnA2v65AsyyKlvqNpSmIzex+olKB6C0Xvk21CVuvn460bLGvAvNVi3pBBfgvJkcBxax4Rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dRCbCk06; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=CoUl17TGUnxeubTXFqcFChOtesUQMNGV8xGXMnl1YTDv6F+CpwPWeYUxBBZKXPbWQtLBKQLNR4Ta31TnHs4kAF18NVawVwh+LqPcFfYJs62vmzyOPcGgjSTvGmS7uaB71zqlA1sgdEqM9UCCSlML8Yfyh25mIxg2SlhIThiGEXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YsTGr6Bj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dRCbCk06"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787563115; x=1819099115;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6BmFy5jb3jLUCgM6DtkO/km+Rgo/GycIWhXxFsToEN8=;
-  b=dRCbCk06MADo/H0XrPfz+gXxHTOY4ArEGZW77Uy2qs4PXgWIwTG8U1yo
-   zCybB9I5t0TelcjmPZSdWsuTD9nhBR3rrd0vf9ktRx503RHe3DqjJg6Ku
-   LD6H9XKevMwGMWYtLwQZXhXl6Sy8Snwfyf8EdXmfFFtRsspMfTVfIWlLX
-   gMsEd4s57LWusejR1p2jxhVylfmcy/wbNvRROaOypFTkgBmSrPizOzKim
-   qed4tDHeIGU+rMaZ1A9YQ6vJaKPTZlW8rI/ww6pTDcCDCQCHny9EXrFaR
-   zU/XjiPngDdXEKQSwfROenbV+k3NrTdp9U4cvVKADmVvU6KM6wA9Vxn28
-   g==;
-X-CSE-ConnectionGUID: BCFJwCDoR5apYgb2itAm+A==
-X-CSE-MsgGUID: UyrQfc1LRWyg9Y73wnY4NA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11884"; a="88135216"
-X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
-   d="scan'208";a="88135216"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 02:18:30 -0700
-X-CSE-ConnectionGUID: tzE7G8ZvQ5CtpN3ASW/G8Q==
-X-CSE-MsgGUID: yoLLhoXySwOwiI6xTI0OMg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
-   d="scan'208";a="290467966"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa002.fm.intel.com with ESMTP; 24 Aug 2026 02:18:27 -0700
-Date: Mon, 24 Aug 2026 17:18:25 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com,
-	yilun.xu@intel.com, xiaoyao.li@intel.com, sohil.mehta@intel.com,
-	adrian.hunter@intel.com, kishen.maloor@intel.com,
-	tony.lindgren@linux.intel.com, peter.fang@intel.com,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	chao.gao@intel.com, artem.bityutskiy@linux.intel.com,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH 4/6] x86/virt/tdx: Add extra memory to TDX module for the
- extensions
-Message-ID: <aowMYbHKK4b0O5P6@yilunxu-OptiPlex-7050>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YsTGr6Bj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2405D1F00A3A;
+	Mon, 24 Aug 2026 12:16:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787573817;
+	bh=rO1JIY/JR8fQTf6EMxD6iEg2/IQs89gYCr6B9GDnJSU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YsTGr6BjZL8me1khGkCL4eLppOlDcVx6hGIEuPXkWZ68OwVPHJC35Dhwx60QjtFgA
+	 NEWkF/uuG45nY4z0MV7i89jWqIQuFqljwjvUONOXoHbNMOVR0DBF8aeM+qGNljfX9E
+	 YhFytWpK6YMVi2gahCw2F6T55cmMadlO4Qvma7Wb6S/4smW+wL2v+dr5dFqdr/TX2K
+	 Ser99sOJEilx+lgT0YpxcgkjNkw6/awzQ+ChJaeAhnTLEvi44MjbRxPFoDyNGjmNuv
+	 3ffYPamPsDP46QMZaGOus80elTTaJD50sQ+rEzmNMrpDLghs3gMBtYKGCk7hKWBJcu
+	 35nzD2qfKf77w==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 03F0F1980058;
+	Mon, 24 Aug 2026 08:16:51 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Mon, 24 Aug 2026 08:16:54 -0400
+X-ME-Sender: <xms:MzaMaoAx3pv8QfOC3lvrMSwpt2qMCjNttT1jIN-6l1BHqH7wa8vpDg>
+    <xme:MzaMapy0EP96tWUX7mQJRAPZ9ttxcjKGbpCPaFWciX4BpBF4rwcOVsh7_YQycv9oI
+    G66DoWKlEO_0ImiJt-D20l1cBXCKZllHnniJwG-XweZhNFyCdzBFsc>
+X-ME-Received: <xmr:MzaManyjkaIC-3H8Vi-9ype7h6STGc4J-d_W4uF-jVPezGH1uKrqyUIDVYs>
+X-ME-Proxy-Cause: dmFkZTEjj4ReC66Y/EyJUuxhOgHhKHZBtdIET1jo4T/FwIUPTzTM64HpBSLzTDOZbSskKf
+    0cPy++PwcAV9YW9Hg48bNnzlcdhLm4ESBgrSfPVO8d4Ribbi8O3K3kJrmsGtgDbh9hmdIg
+    WYOt7BRptYu7AJA7OGJJJb7yglZbBxG3FRLH9r+i4fz9Y8dvYMdfZ8fqLpEVCk5PWmtOA/
+    Xpt8ZlVHT9IgfSTHQl258dPGk9tuugCYzLZB3zOiJSuzclj1znPrxkrc1CwDYP6BvWl7kn
+    56XeHUdkV9R+Z+IJbtZYOi1YLxuY8dbO8CDOZSod0d2yhlZWGkyDSzwZTyRt6ntUiRnbkt
+    r0EjV3XJut/k/ju3HftkYOaj1C0d0tvpe4B+tmP6ok6WX58EGwSh4SFdGK7k1OlkP04wLW
+    k2cU2cpHAkremfz06IHUEVWZ9XqTEQ5WLyZtXKR1Ba/msGVobqKcvMUY360IlaXhlWztys
+    E1Kmt6PJUMNopPFYH8iQIDR4V/sbQ619ZZlHUAiO58PD8Nr0ypre1eGJvjmIg8ze6RCvWt
+    HdKd4ZC181nG7hGKaBi2jjvjE/hj/9qMJedv2N9mdlaesB3VvOZc+DB9G+WBNcD9PCsE7p
+    m1z8+40ETL54F6xU3ZM2OAuvp1Mig0uJor0Mt+VHN7Aa8lLNQHKy0Bd47hAw
+X-ME-Proxy: <xmx:MzaMapg8JesLqVlrlyFim-NAZyYHjkCcxH_MWhv3Qas8WtbjoNZKvA>
+    <xmx:MzaMagQJsDx2GXhaDOiZtkBZigGahHEzQpxIm--765QvTjAAEcO1IA>
+    <xmx:MzaMapKN_OQjUEZ6h_yQX8m94quk3ug2w3I4loD6m0Hr-SXDGBuDAg>
+    <xmx:MzaManN5ArJCv1KQdWSkyY8hFtocoPC85E6vnFmcsPDvFcOhhzLCqA>
+    <xmx:MzaMarxPmieHbIHPfrr_6O84H5iSxdakO_sfiUp6qbctInVmVoBzwyC3>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 24 Aug 2026 08:16:50 -0400 (EDT)
+Date: Mon, 24 Aug 2026 13:16:49 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, 
+	"Gao, Chao" <chao.gao@intel.com>, "Xu, Yilun" <yilun.xu@intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Maloor, Kishen" <kishen.maloor@intel.com>, 
+	"Hunter, Adrian" <adrian.hunter@intel.com>, "Mehta, Sohil" <sohil.mehta@intel.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>, 
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>, "Fang, Peter" <peter.fang@intel.com>, 
+	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>
+Subject: Re: [PATCH 3/6] x86/virt/tdx: Detect if the extensions
+ initialization is required
+Message-ID: <aow0zU7mYdpaqBxk@thinkstation>
 References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
- <20260821032920.256225-5-yilun.xu@linux.intel.com>
- <aohvlMO7ehqcVW96@thinkstation>
+ <20260821032920.256225-4-yilun.xu@linux.intel.com>
+ <aohsoZbDBZ8ZIYez@thinkstation>
+ <da4cc53825da8edf29bdaaab8352e1fbb60eea15.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <aohvlMO7ehqcVW96@thinkstation>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <da4cc53825da8edf29bdaaab8352e1fbb60eea15.camel@intel.com>
 
-> > The TDX module accepts the memory in the form of a PFN array. This array
-> > is passed via a single 64-bit SEAMCALL leaf parameter, which encodes two
-> > values: the PFN of the container page holding the array, and the number
-> > of entries in the array. Create a helper to encode this format and name
-> > it after the TDX module term: HPA_LIST_INFO.
-> 
-> The array entries are physical addresses, not PFNs. HPA_LIST_INFO encodes
-> a PFN, the array does not.
-
-OK. I'll change PFN array => HPA array
-
-[...]
-
-> > +#define TDX_HPA_LIST_MAX_NR_PAGES	(PAGE_SIZE / sizeof(u64))
-> > +
-> > +struct tdx_hpa_list {
-> > +	u64 phys[TDX_HPA_LIST_MAX_NR_PAGES];
-> > +};
-> > +
-> > +static_assert(sizeof(struct tdx_hpa_list) == PAGE_SIZE);
-
-[...]
-
-> > +	hpa_list = kzalloc_obj(*hpa_list);
-> > +	if (!hpa_list)
-> > +		return -ENOMEM;
-> 
-> to_hpa_list_info() expects hpa_list to be page-aligned. It happens to
-> work with kmalloc for PAGE_SIZE allocation.
-
-The struct tdx_hpa_list definition follows the TDX ABI and is guarenteed
-to be PAGE_SIZE by:
-
-	static_assert(sizeof(struct tdx_hpa_list) == PAGE_SIZE);
-
-and kmalloc guarentees the page alignment.
-
-	59bb47985c1d ("mm, sl[aou]b: guarantee natural alignment for kmalloc(power-of-two)")
-
-So I think it's OK, not "happen to work".
-
-> 
-> Maybe it is better to allocate it with buddy allocator instead?
-
-It can be, but then we need an extra variable to record the
-struct page *, which seems redundant?
-
-> 
-> > +
-> > +	page = alloc_contig_pages(required_pages, GFP_KERNEL, numa_mem_id(),
-> > +				  &node_online_map);
-> 
-> Why contiguous? TDH.EXT.MEM.ADD takes a list of page addresses and the loop
-> below writes every one of them out separately.
-> 
-> alloc_pages_bulk() fits the chunking that is already here, and a short
-> return can be handled per chunk. alloc_contig_pages() isolates and migrates
-> to get its range and fails TDX init outright when it cannot find one. PAMT
-
-Yeah, this is not the ABI requirement, but the kernel's consideration. A
-brief reasoning in the commit log: avoiding permanent memory fragmentation
-and buddy allocator efficiency loss.
-
-Also there is some discussion:
-
-https://lore.kernel.org/all/167d9540-2d9a-4367-bc68-b96494bc4044@intel.com/
-
-TL;DR
-  - The memory will never return to the kernel.
-  - There is chance that this tens of megabytes will fragment tens of
-    gigabytes of memory forever.
-  - The chance of fragmentation is actually low since at boot up, but
-    let the buddy allocator take care of these never-returned memory
-    is not necessary and lowers its efficiency.
-
-> needs it because the TDMR ABI describes each PAMT as base+size. This does
-> not.
-> 
-> > +	if (!page) {
-> > +		ret = -ENOMEM;
-> > +		goto out_free_hpa_list;
-> > +	}
-> > +
-> > +	added_pages = 0;
-> > +	while (added_pages < required_pages) {
-> > +		unsigned int chunk_pages = min(required_pages - added_pages,
-> > +					       TDX_HPA_LIST_MAX_NR_PAGES);
-> > +		struct page *chunk = page + added_pages;
-> > +		unsigned int i;
-> > +
-> > +		for (i = 0; i < chunk_pages; i++)
-> > +			hpa_list->phys[i] = page_to_phys(chunk + i);
-> > +
-> > +		ret = tdx_ext_mem_add(hpa_list, chunk_pages);
-> > +		if (ret) {
-> > +			/*
-> > +			 * This SEAMCALL leaf shouldn't fail, and if it does,
-> > +			 * things are broken enough that complex error handling
-> > +			 * isn't worth it. Intentionally leak all pages,
-> > +			 * including un-added pages.
-> > +			 */
-> > +			WARN(1, "Fatal: TDX module rejected memory for extensions, stranded all pages\n");
-> > +			break;
-> 
-> It supposed to be
-> 			goto out_free_hpa_list;
-> 
-> No?
-
-The difference is to print the memory amount or not. For simple error
-handling, we stranded all pages, we let users know the cost even if the
-initialization fails.
-
-> 
-> 
-> > +		}
-> > +
-> > +		added_pages += chunk_pages;
-> > +	}
-> > +
-> > +	/*
-> > +	 * Memory for TDX module extensions is never reclaimed and can be tens
-> > +	 * of megabytes. Print the amount so users know the cost.
-> > +	 */
-> > +	pr_info("%lu KB consumed for TDX module extensions\n",
-> > +		required_pages * PAGE_SIZE / 1024);
-> > +
-> > +out_free_hpa_list:
-> > +	kfree(hpa_list);
-> > +
-> > +	return ret;
-> > +}
-> > +
-
-[...]
-
-> > --- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-> > +++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-> > @@ -137,6 +137,12 @@ static __init int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
-> >  	int ret;
-> >  	u64 val;
-> >  
-> > +	ret = read_sys_metadata_field(0x3100000200000000, &val);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	sysinfo_ext->memory_pool_required_pages = val;
-> > +
-> 
-> Why above ext_required read?
-
-I want to sort them in ascending order of the field ID, so reviewers can
-seach them more easily.
-
-> Is it even valid to read it in such case?
-
-It is OK. The two ext metadata are both valid after TDX feature
-configurations.
-
-The ext_required == 0 && memory_pool_required_pages > 0 is highly
-suspicious based on our current understanding, but that's more of a
-module BUG, not caused by metadata reading order.
-
-> 
-> >  	ret = read_sys_metadata_field(0x3100000000000001, &val);
-> >  	if (ret)
-> >  		return ret;
-> > -- 
-> > 2.25.1
+On Fri, Aug 21, 2026 at 10:22:01PM +0000, Edgecombe, Rick P wrote:
+> On Fri, 2026-08-21 at 16:22 +0100, Kiryl Shutsemau wrote:
+> > On Fri, Aug 21, 2026 at 11:29:17AM +0800, Xu Yilun wrote:
+> > >   static __init int init_tdx_module(void)
+> > >   {
+> > >   	int ret;
+> > > @@ -1229,6 +1253,10 @@ static __init int init_tdx_module(void)
+> > >   	if (ret)
+> > >   		goto err_reset_pamts;
+> > >   
+> > > +	ret = init_tdx_module_extensions();
+> > > +	if (ret)
+> > > +		goto err_reset_pamts;
+> > > +
 > > 
+> > Hm. Don't we need TDH.SYS.SHUTDOWN/DISABLE on error?
+> > 
+> > Once TDMRs are initialized the module is functional. Yanking PAMT from
+> > under it is not safe AFAICS.
 > 
-> -- 
->   Kiryl Shutsemau / Kirill A. Shutemov
+> If we reset all the memory, how is it different than bailing halfway when
+> initializing the TDMRs? Some special state changes after the last TDMR is
+> inited?
+
+Hm. Yeah, it is not special. The module gets SYS_READY after
+TDH.SYS.KEY.CONFIG on all CPU. So it is a new problem.
+
+And I think it is not a problem if we never ask TDX module to manipulate
+the memory.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
