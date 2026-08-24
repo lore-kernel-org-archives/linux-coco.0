@@ -1,155 +1,64 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C32737C118
-	for <linux-coco@lists.linux.dev>; Mon, 24 Aug 2026 18:34:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3723D369D45;
+	Mon, 24 Aug 2026 19:18:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787596486; cv=none; b=SI+EtFK4mAUZ7lTVi2OnwXbCuPPdQp74o1zdnBVW2FvszQVtbtWP33syPFfHfzXWiZlHeO24+vWNTBgdCAUv0pvt2HZpF8eOiwnyDnmg21vCRqm2EQKkjZzXhEdRbwhR4Q8UZyqB1ymuMkVKXPM9uXi1jKfa8VRzT40bsge92XM=
+	t=1787599140; cv=none; b=aIQqp459RknX/gpDuUYSxS9ieE5tLHJ8a785ReXIvvKuf7xHvVEO0I5iMHIWnV6Ur9sNV6CIwShTMhgtRCC1rX7jKPb6vmDsV8ZfN2p+J6aUuXC2Dd2Dp+WUwveJFFOgWZmVJM/fXCmvtf7yHW5a4xHL/QWzSp/evT8dw3Xjo2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787596486; c=relaxed/simple;
-	bh=CuZt0Rc9B+EClwRdkLTVpAtCNgLiB4yiFij9GDs5fOQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GT9/d6+yfEDxbr9HrR6wY8KJ4RyqQatzeLHTOcln7ez3gVnriyvXdTzKAwovIcwRINrT5DduqvGid1z8W43yoWZfRQKmxjUCUbsty/R28iipko+Uzn6nQzawDlcfIWnL4FKwISMYXtR137VFd3qegLHhdMyucOB4T1//Bp2LUlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GCog/+TC; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1787599140; c=relaxed/simple;
+	bh=XCvNLW1g/gdkHWVaXKbTdN5cyvbphmVVkEkzIobf9/A=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=PKPn4MUc5/8hy5WN1dRvOXycffFk2O46oZLgL5jqgjiQkbfyHXovfyQrEKykF6+ZOslBE5fSGs38jb67bkgn7hfqlmXFALuYfCa8EqBn6p2lBtcKrz8QYz7gUoCsCCCngmfmNOsoYFvW5IEssl64FR7kVUacxkyHvpKXuKRdL64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Na94BTRF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GCog/+TC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787596484; x=1819132484;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CuZt0Rc9B+EClwRdkLTVpAtCNgLiB4yiFij9GDs5fOQ=;
-  b=GCog/+TCSfJuUy2/OS8K/ZIf8bem3Hj8HHQhX235mtNWoowjAumthjYg
-   ZyLlB/H5iVDXA9VeWKQh2GMNKFzJnKyf/ZhdNyM3xlldbyQ82EouUweEN
-   7a+rt/zatSIBmEw+BEQgicNM67Ej2cjX9l5xvtzpI96BCClpM18+3cV+k
-   PtqFeU7CrRu5JOSTPTw0GLurW5JAyeJKIymlYD32fOF0Q+qdiomfitgJa
-   UC25At825UAIZh82AD/+vjS5j5mjiXBVOYHnj79/Ix4hWHyNwNSvOHXrF
-   YsOL0UFBLQN4BAV/EkdeGE4HUEz6MOmG1epU6o8PPKhzSKsdwMryHo85I
-   g==;
-X-CSE-ConnectionGUID: wcytdnzqT9m7fgWngLwOaw==
-X-CSE-MsgGUID: /XkT+9yRRsOcr0+gkQw6QQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="87930232"
-X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="87930232"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 11:34:44 -0700
-X-CSE-ConnectionGUID: 42OdAisfTsGhwJMmn4G5/A==
-X-CSE-MsgGUID: 4Hozz5qqR/io36bv/Ko0fQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="260927713"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa009.fm.intel.com with ESMTP; 24 Aug 2026 11:34:40 -0700
-Date: Tue, 25 Aug 2026 02:34:39 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kas@kernel.org,
-	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
-	xiaoyao.li@intel.com, sohil.mehta@intel.com,
-	adrian.hunter@intel.com, kishen.maloor@intel.com,
-	tony.lindgren@linux.intel.com, peter.fang@intel.com,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	chao.gao@intel.com, artem.bityutskiy@linux.intel.com,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH 2/6] x86/virt/tdx: Configure add-on features on TDX
- module init and update
-Message-ID: <aoyOv2mJqUyjdO5R@yilunxu-OptiPlex-7050>
-References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
- <20260821032920.256225-3-yilun.xu@linux.intel.com>
- <27321cc1-5428-4590-a88d-b2824659c89a@intel.com>
- <aovmxjpVFqOR3QXm@yilunxu-OptiPlex-7050>
- <22bf174e-788b-4038-84e0-c6bea351830d@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Na94BTRF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA491F00A3A;
+	Mon, 24 Aug 2026 19:18:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787599139;
+	bh=Nd0lEx9hD6ylLpwOU9yD0wtJ3+jV/rg5UBsT4/paZVY=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=Na94BTRF2RKxdkL+GaueRXmE0Ircw2EfbvvwCsLbwOsTjgK3B9rTx/kvlVO0PgzAe
+	 WIiH5041aIY06VghRYSALGmPs7okvNfsZd04XRbTZrfTJPxfa9hUg06HyovG8fQ3lK
+	 6Zi8xpWfQVs7pjFqm3rfO57bFpl38WG8mzRhm30G3eD9yh5AR4l6hOisw8J4Vpf4hc
+	 txiY8o5eIx/AOCVMV7kh6rAf5oY7LhfNuaWnWBZcffF88lwQtpq+4YW0Lwht4HeQ/k
+	 Lfb0GdLZdl4Wlvhux20orhrZVxbL2Ld8QqJhMYEZ2p88S6t9hCkDxz4LoWb0ACv1Qp
+	 NpPOWDCkBXGfA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0D903924A4C;
+	Mon, 24 Aug 2026 19:18:07 +0000 (UTC)
+Subject: Re: [GIT PULL] second dma-mapping update for Linux 7.3
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260824145253.1740671-1-m.szyprowski@samsung.com>
+References: <CGME20260824145300eucas1p10b9c95dddfc11e7847607f9c473b6f38@eucas1p1.samsung.com> <20260824145253.1740671-1-m.szyprowski@samsung.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260824145253.1740671-1-m.szyprowski@samsung.com>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/mszyprowski/linux.git tags/dma-mapping-7.3-2026-08-24-2
+X-PR-Tracked-Commit-Id: 04a19b35dc05354445f0096befad63af885bb77e
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 2f43193b88188b184a967c9427602e019f1b8708
+Message-Id: <178759908641.3075085.6062286800482339777.pr-tracker-bot@kernel.org>
+Date: Mon, 24 Aug 2026 19:18:06 +0000
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, "Aneesh
+ Kumar K . V" <aneesh.kumar@kernel.org>, linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <22bf174e-788b-4038-84e0-c6bea351830d@intel.com>
 
-On Mon, Aug 24, 2026 at 08:15:41AM -0700, Dave Hansen wrote:
-> On 8/23/26 23:37, Xu Yilun wrote:
-> > On Fri, Aug 21, 2026 at 07:38:42AM -0700, Dave Hansen wrote:
-> >> On 8/20/26 20:29, Xu Yilun wrote:
-> >>>  static __init int tdx_sys_config(struct tdmr_info_pa_array *tdmr_pa_array,
-> >>> -				 u64 nr_tdmr_pa, u64 global_keyid)
-> >>> +				 u64 nr_tdmr_pa, u64 global_keyid,
-> >>> +				 u64 addon_features0)
-> >>
-> >> addon_features0 is just a copy of the global, static, not changing
-> >> get_tdx_addon_features0() return code, right?
-> >>
-> >> Why pass it around as a function argument?
-> > 
-> > I thought that we need some place to explicitly see the TDX ABI
-> > definition - what are the inputs the host should provide to the module.
-> > 
-> > The addon_features0 is the *option* the host should provide to the
-> > module according to the ABI. The global, static value for addon_features0
-> > is Linux's policy. So if we need to explicit the policy by the code,
-> > this helper and its arguments are good places to show the boundary.
-> > 
-> > But yes it does add boilerplate to the code, I can drop it.
-> 
-> I'm not arguing that the helper should go away.
-> 
-> What I'm seeing is this pattern:
-> 
-> int helper()
-> {
-> 	return something;
-> }
-> 
-> int func_low_level(int arg)
-> {
-> 	// use arg
-> }
-> 
-> int func()
-> {
-> 	int foo = helper();
-> 
-> 	// use foo
-> 
-> 	func_low_level(foo);	
-> }
-> 
-> When it could use this pattern and just call helper() twice instead of
-> obtaining its return value and passing it around:
-> 
-> int helper()
-> {
-> 	return something;
-> }
-> 
-> int func_low_level()
-> {
-> 	int bar = helper();
-> 	// use bar
-> }
-> 
-> int func()
-> {
-> 	int foo = helper();
-> 
-> 	// use foo
-> 
-> 	func_low_level();	
-> }
-> 
-> So that's what I was asking. Why pass the result of helper() around when
-> you can just call helper() twice?
+The pull request you sent on Mon, 24 Aug 2026 16:52:51 +0200:
 
-Because I thought func_low_level() mirrors the TDX ABI. This SEAMCALL ABI
-is defined to get 4 inputs from the host, while helper() is the Linux's
-policy (enable all add-ons) to generate the 4th input. Embed the Linux
-policy in TDX ABI implementation feels a little off to me.
+> https://git.kernel.org/pub/scm/linux/kernel/git/mszyprowski/linux.git tags/dma-mapping-7.3-2026-08-24-2
 
-But I don't have strong preference. I can drop the addon_features0
-argument.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/2f43193b88188b184a967c9427602e019f1b8708
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
