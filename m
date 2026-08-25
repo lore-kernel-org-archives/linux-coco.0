@@ -1,110 +1,55 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5747344DA0
-	for <linux-coco@lists.linux.dev>; Tue, 25 Aug 2026 16:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D744342524;
+	Tue, 25 Aug 2026 16:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787674447; cv=none; b=OaCgeNa89CNvPfRz0/VnYjTEteU28mQHLSwQqrWgtdjAYY7c9soJW5oVHFe6am11IvHvWfwUNqmr9QTYuME7fILBktnvPm+OuaJqAKfKCA0bkLrMRgAaTAES+sBq0rkLeZEpqFM4pIowOOvQVtZioidwqLFc0CDJLNagJhmzeh0=
+	t=1787676036; cv=none; b=b8oqI4bDyOzZq/w6D/Wip+DfAcr4ammfReUwpNmXjLTMTY6emz15MFrvxmEtGT2HkReNhYlNmFiIGJB1cYkeUYZ/KrFIPSB3sSFt8vqT3JMavWRe3V9yEh1MIq8/1LW1BMSH2uGKYwAUEVYRWYTiVGvEb9btEQpnOLA7att16ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787674447; c=relaxed/simple;
-	bh=TMHDnAbv6B5815V9xDG8AMy+EDrsmT6X7HPtL1sNbf0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WuF3c9f41jSODrtNftk+NS02c8zJJZ8hIZ4ebOMeEdH0lu38IHdXMR9pca8vuERU31BOhaSpPy6AwMrlVwjMkef4hxXdycaWBe+1grcvhhGVYZXRWkYfk+gyGUZZMatQHPi/vvBaZuI4ZQcIbCuBGlDUCDd/ItaWIgGDE7ahxiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OTVwjbQ+; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OTVwjbQ+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787674444; x=1819210444;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=TMHDnAbv6B5815V9xDG8AMy+EDrsmT6X7HPtL1sNbf0=;
-  b=OTVwjbQ+OS9obUI7XB2woy5yohTsyin71UnEY+O49S8bqv3JTZz9nZgP
-   afYyOIwfyDgM2I9wE8y/NEiTWUItjNywEKxgo/I/bZbAi/VzKLPHUdImv
-   75ASY7V9pmifgPXJF4VpMU6NcFhxD0kdwRH2XXd0QNBgg1oyHzb4NRSjQ
-   e73LG4w80B4k3/VlQbkYZCIbPweyszbP3me8V/rDwMiUuiKr0eVV6dlFc
-   QVZrsFueWTDnoy1qb9ZHyg9pbrhrExyb0vlJFG2SqZ0emLQ2Hoe1BlDmW
-   UGf5NbD0bMUWYk/zG9sGIBn+eFMx8oz6YEepQTTuZvCtCpmX4wxfAyF4c
-   w==;
-X-CSE-ConnectionGUID: UxKuYxlMQJGZIjCSs1LUHQ==
-X-CSE-MsgGUID: LSV0R0dIRzO4qZb8wjXMng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="99671140"
-X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; 
-   d="scan'208";a="99671140"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 09:14:03 -0700
-X-CSE-ConnectionGUID: 1Z8oyHIvRaCdZRwP1LfjXw==
-X-CSE-MsgGUID: /mJMl5yPRFOgp7AaoGyB2Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; 
-   d="scan'208";a="265538212"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 09:13:50 -0700
-Message-ID: <7eba513d-cdae-4832-abac-038dcdd88517@intel.com>
-Date: Wed, 26 Aug 2026 00:13:47 +0800
+	s=arc-20240116; t=1787676036; c=relaxed/simple;
+	bh=aTy8W7SgWTy9MJdjHu3wk/HtiWHlpjo1ZfaA7EhmecI=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Ll1356IAgDxmjYlizaFNHAidaIYhxkSJ94NRc0qjcjJ4tlzuZ/MNh+A6/MFMA1lBto6OYNVepf4CRD/n/gI4GYC79F5GR/dmhXHpfFq5idjLjDx8SMXrlMThScpvT+6rMsj7SHOxAR/AsK5zYDCB1dfHenOm29dpvCjKUcV6J28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Received: from 8bytes.org (p200300f6af4fc500741de0bab9f50fdc.dip0.t-ipconnect.de [IPv6:2003:f6:af4f:c500:741d:e0ba:b9f5:fdc])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 29F7220821A;
+	Tue, 25 Aug 2026 18:40:28 +0200 (CEST)
+Date: Tue, 25 Aug 2026 18:40:27 +0200
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: SVSM Development Call August 26th, 2026
+Message-ID: <ao3FKVJEdDyL3Ax4@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 09/41] KVM: guest_memfd: Filter both shared and
- private when invalidating
-To: Sean Christopherson <seanjc@google.com>,
- Ackerley Tng <ackerleytng@google.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com,
- andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
- chao.p.peng@linux.intel.com, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, aneesh.kumar@kernel.org,
- liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-9-2fc18ee6d3ba@google.com>
- <13ca60c6-e154-4397-8092-09f861e90fe0@kernel.org>
- <cbf5f7ca-a960-4fb8-a760-2d2794eb6864@arm.com>
- <CAEvNRgGOyQHnF_b8dk8E0d7_=CcwXtYUdU3ko7Qbep+_O7UC0Q@mail.gmail.com>
- <aoZZMQ3Uc8yQWPNA@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <aoZZMQ3Uc8yQWPNA@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On 8/20/2026 9:32 AM, Sean Christopherson wrote:
-> And vice versa, a PUNCH_HOLE on a SHARED gmem (if userspace is
-> using an INIT_SHARED gmem for the shared branch of a memslot) could invalidate the
-> PRIVATE mappings (of a different gmem instance).
+Hi,
 
-I'm wondering now how this could happen.
+Here is the call for agenda items for this weeks SVSM development call.  Please
+send any agenda items you have in mind as a reply to this email or raise them
+in the meeting.
 
-the requirement for PUNCH_HOLE on gmem to trigger mapping invalidation 
-is the gmem is bound with the memslot. But how can a memslot bound with 
-two gmem instances?
+We will use the LF Zoom instance. Details of the meeting  can be found in our
+governance repository at:
+
+	https://github.com/coconut-svsm/governance
+
+The link to the COCONUT-SVSM calendar is:
+
+	https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
+
+The meeting will be recorded and the recording eventually published.
+
+Regards,
+
+	Jörg
