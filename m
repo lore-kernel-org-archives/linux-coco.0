@@ -1,204 +1,146 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2343F58CA
-	for <linux-coco@lists.linux.dev>; Tue, 25 Aug 2026 10:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0AA471418
+	for <linux-coco@lists.linux.dev>; Tue, 25 Aug 2026 13:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787652403; cv=none; b=W3EKiRzvVkQMakrR8sMUfQlz6BJsrBTYwEzRzYP7zgxKAAdYH6BjD97PKe6Hb4T7J9HjJuPN04H/bm0erdTJBoeqRCcw6jasv6HUfhLnurZo8tWAd+zIgLQ+kI1LVq9pYtahbdV1n4tAgkcSm8kqA1k60FOzG+KHIYzLDuKfPkM=
+	t=1787663823; cv=none; b=h2Aah9fgLD7HqiO+wwisp02vDWu2FPafgss1i6p3DEHyJi7xlA57ARQRlZYGN8h10FEGPJwP26STQBgk+ugA7dmzsqLLeyQxHs1bh9pY67w/hjSpzZNA/RFgJuyXr1+vSnRogNzj/byTTj++w11SW7jTpjzHmhZ1T4XcYfuEN2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787652403; c=relaxed/simple;
-	bh=M9Fm4+dnvq+XgKw9yfXTQV+zqDAuw6hKxuh72y1d/p4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sPtydaIZyT2bQKcRh+sPpnIUFwf7uk/1oIccKgX/qr6e6BrcreIYSoCiW6nF38Rzglsu5JgJ3tYkWpA7rVqcQrfD/qvhNznzMZPEDYFL3T+s8tm00m/N4yEa8M5qD5ZfoxzsLC8XySYna42ScsZyEhDf569i5vl0G7pWvYM032I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C7jilkaT; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1787663823; c=relaxed/simple;
+	bh=BSwRnMlp3n1hal7k25J47rSepqHeT4zWv8jN7OwIqO4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=gKHgUNpySBML+TWaat7iupBzPR6EHWcUp/43Sei+XEoml5AlWqmSO5jtlM4KBczAL23eq0Qx31FjaSWZR9MJd8ConBYPuUuHuAHJjw6c7CNsghy2TZxjwTOzg8OjcIhU4RwJ+hBI4q74BwtSma7LFspsS0Ws4bxpXbuCV2eQvNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AeK3UQyu; arc=none smtp.client-ip=209.85.215.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C7jilkaT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787652403; x=1819188403;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=M9Fm4+dnvq+XgKw9yfXTQV+zqDAuw6hKxuh72y1d/p4=;
-  b=C7jilkaT7PA6u27NLvGxTUv9JHE0Gy7tlU4N9LBef0NgcSaY5NGjWIa+
-   pYp3iSH9jbXw4M0h6FcOoNkgXHTk2tKurWV4QifXJBwUiG/EHmrGb0Q54
-   GIJrFKlzgE2fCgiT798ia+78emrjpFPM5weVX1Kwy7o02Yqd0BwIHKAwy
-   ny5oEijdjg87kjv4JAJlAXkLqrYA0VUoPYn46w4uNk32ht2CU5b3/gzjN
-   WdotuPcJAEter5uPjP2jUCmIGfsa3vAbgHwzNq/xOl6qS4EcWWdDYTwud
-   jBwygOUCgwZZI5wlvo5rTvWaQM7fvwgEe4CCkEfA7mHrxXpuKjGCyngIl
-   w==;
-X-CSE-ConnectionGUID: J55TRUx0Sre1fC53jfbt4w==
-X-CSE-MsgGUID: NzyZ1XBRTbyMmpsbVnkdSw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="91797060"
-X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
-   d="scan'208";a="91797060"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 03:06:42 -0700
-X-CSE-ConnectionGUID: T+xKrRR4SkK84ruPBSE65Q==
-X-CSE-MsgGUID: shDtClh4RZWx8bZXjoSkTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
-   d="scan'208";a="266698413"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 03:06:28 -0700
-Message-ID: <9feadfea-c41c-4105-963a-a3d98421e1c3@intel.com>
-Date: Tue, 25 Aug 2026 18:06:25 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AeK3UQyu"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cbedf6e8a42so5736199a12.1
+        for <linux-coco@lists.linux.dev>; Tue, 25 Aug 2026 06:17:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787663821; x=1788268621; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1TY/LsmF/8fTytR1pzHURVENGerwNjh4wp6cPecJpZ4=;
+        b=AeK3UQyu6Tc6DDY05gwi4M6GwRvq3VUDlsR1IopqKytOhw8VJR3rkilz2PUfuqJIcY
+         s4M5sUokapNwddjiuD2jbg/D/4lSuUrZ7rutoriG1BHAbKCQ207O2QN8pcAO+xJ/3kwq
+         YzaeOLn5UEAUqEHt0VRcluiiiHk9URAh1s54lDHENoIadUnu33SP/6c/+qU0qkVqJ8Ou
+         Hdyz3pFbcFwKJdysf+JsimslHgwNYEP2P9Ma3v04zCd8NxS5v2CchzmWvH9PkNazecjQ
+         u4EvFHQBPDhFPp+HvH27OBPYS6Ef8bWH6MKHiZZLm2UsgtFAMExDQZYuvnPrhv2fVi47
+         kNJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787663821; x=1788268621;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1TY/LsmF/8fTytR1pzHURVENGerwNjh4wp6cPecJpZ4=;
+        b=fEj2a0W/hac1/bO7/EWwy4+Bif2TwWjtNRbD/Zb/jtv4C0KhYWYruBhpUjPxuXJBaW
+         g8jQweUVNk2+17iJfepjwJCybYMosMaVoP4i15T6lL0juHkHu1y0Uz3VF7NQTUP97mR2
+         RjZX2c6wRiEefThnhNcqMktryt2xArw7/3qz67LASVSYtQgJHm79tDcYY63qoAQvsunt
+         a38ytrEfjwhz55ndYkXurndj9GvE1P2B1wEmNyWFoszYOCgsjpOTMlivzXhrBb9X9TrG
+         IhcElcKFIWmsutND1ALDSzlNIQi1xCO8L9mzGlnorlrfWxgxR92QScNOA0w1DFJLeOV3
+         iKCw==
+X-Forwarded-Encrypted: i=1; AHgh+RrdVD/ab8/rdn17v1acNfcrD/D3jsZIFtgLZ2egHrJzLZPd+si65ilCEjF82L61aOoFUt2/qWyKMCBs@lists.linux.dev
+X-Gm-Message-State: AFuF++nB8U+xeuJ6xlOE1fZb1BLEZdWjP2kwaJNt0BzzYcaunXle485U
+	gdamr673EDZrC8F1TvhzlDAjENo3Zguma801B036vK5XItSR8GCaIoAKtYLBSjk0OcxbYze5Idf
+	XlDBlqA==
+X-Received: from pglx3.prod.google.com ([2002:a63:1703:0:b0:cc1:517a:d25])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:600c:b0:3b4:61f:1fec
+ with SMTP id adf61e73a8af0-3cd2fd8e339mr71904446637.2.1787663820348; Tue, 25
+ Aug 2026 06:17:00 -0700 (PDT)
+Date: Tue, 25 Aug 2026 06:16:58 -0700
+In-Reply-To: <5f7b62a1-957b-4a43-9a16-d06b3f916e84@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 40/41] KVM: selftests: Update
- private_mem_conversions_test to mmap() guest_memfd
-To: Ackerley Tng <ackerleytng@google.com>,
- Sean Christopherson <seanjc@google.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
- brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org,
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
- steven.price@arm.com, tabba@google.com, willy@infradead.org,
- wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com,
- pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org,
- liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev
+Mime-Version: 1.0
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-40-2fc18ee6d3ba@google.com>
- <fe1c6359-7371-4ccd-9807-1d81c160d12b@intel.com>
- <aohEz_1JFVDtlSnE@google.com>
- <CAEvNRgF8XE2Xsn-g3qzPxcdfLdvJEc1FZw9LQ+deeXsFpdZsOg@mail.gmail.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <CAEvNRgF8XE2Xsn-g3qzPxcdfLdvJEc1FZw9LQ+deeXsFpdZsOg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <20260807-gmem-inplace-conversion-v10-9-2fc18ee6d3ba@google.com>
+ <13ca60c6-e154-4397-8092-09f861e90fe0@kernel.org> <cbf5f7ca-a960-4fb8-a760-2d2794eb6864@arm.com>
+ <CAEvNRgGOyQHnF_b8dk8E0d7_=CcwXtYUdU3ko7Qbep+_O7UC0Q@mail.gmail.com>
+ <aoZZMQ3Uc8yQWPNA@google.com> <5f7b62a1-957b-4a43-9a16-d06b3f916e84@intel.com>
+Message-ID: <ao2Vyjzq9wdYzQPr@google.com>
+Subject: Re: [PATCH v10 09/41] KVM: guest_memfd: Filter both shared and
+ private when invalidating
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On 8/25/2026 5:32 PM, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
+On Tue, Aug 25, 2026, Xiaoyao Li wrote:
+> On 8/20/2026 9:32 AM, Sean Christopherson wrote:
+> > On Mon, Aug 10, 2026, Ackerley Tng wrote:
+> > > Sean, do you know if looking up attributes in gmem to feed the KVM MMU
+> > > the smallest set of pages to zap will improve performance significantly?
+> > > Or if there's any other reason to do this lookup (more complexity in
+> > > gmem)?
+> > 
+> > While working through this with Ackerley, I realized this patch is buggy.  When
+> > in-place conversion is NOT supported, then as evidenced by the current code,
+> > invalidations are guaranteed to only affect one of SHARED vs. PRIVATE.  And if
+> > we change that to zap both, we risk overzapping.  I.e. it's not just the cost of
+> > the extra MMU walk, it could also be a functional bug.
+> > 
+> > Specifically, if KVM zaps both when SHARED vs. PRIVATE is tracked per-VM, then a
+> > PUNCH_HOLE operation on a PRIVATE guest_memfd will incorrectly zap SHARED mappings
+> > that have nothing to do with that gmem instance (because they're mapped via a VMA,
+> > not a gmem fd).  And vice versa, a PUNCH_HOLE on a SHARED gmem (if userspace is
+> > using an INIT_SHARED gmem for the shared branch of a memslot) could invalidate the
+> > PRIVATE mappings (of a different gmem instance).
+> > 
+> > That latter case in particular would be a functional bug, as spuriously zapping
+> > PRIVATE SPTEs is fatal to TDX (destroys the memory contents).
+
+...
+
+> > Opportunistically rename the helper to capture that it returns the a filter
+> > for all gfns in anticipation of zapping only the previous mapping types on
+> > conversion.  
+
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+> > -static enum kvm_gfn_range_filter kvm_gmem_get_invalidate_filter(struct inode *inode)
+> > +static enum kvm_gfn_range_filter kvm_gmem_get_all_gfns_filter(struct inode *inode)
+> >   {
+> > +	if (gmem_in_place_conversion)
+> > +		return KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
 > 
->> On Fri, Aug 21, 2026, Xiaoyao Li wrote:
->>> On 8/8/2026 5:53 AM, Ackerley Tng via B4 Relay wrote:
->>>> From: Ackerley Tng<ackerleytng@google.com>
->>>>
->>>> Update the private memory conversions selftest to also test conversions
->>>> that are done "in-place" via per-guest_memfd memory attributes. In-place
->>>> conversions require the host to be able to mmap() the guest_memfd so that
->>>> the host and guest can share the same backing physical memory.
->>>>
->>>> This includes several updates, that are conditioned on the system
->>>> supporting per-guest_memfd attributes (kvm_has_gmem_attributes):
->>>>
->>>> 1. Set up guest_memfd requesting MMAP and INIT_SHARED.
->>>
->>> If I understand correctly, even with in-place gmem, the model that shared
->>> memory comes from the userspace_addr and private memory comes from gmem can
->>> still work without passing GUEST_MEMFD_FLAG_MMAP flag.
->>>
->>> Since this model is not prohibited by KVM. I think we should keep the
->>> testcase for this model to ensure test coverage?
->>
->> +1.  Deprecated doesn't mean unsupported.
+> If I understand correctly, above diff is dead code and will change according
+> to
 > 
-> The original test case was for non-in-place conversion, which wasn't
-> removed, it still passes.
+>   And then in the main in-place conversion patch, have the conversion
+>   flow to only zap tap the "previous" types (with prep work as needed).
 
-It only passes when
-
-   /sys/module/kvm/parameters/gmem_in_place_conversion=n
-
-It fails as below when gmem_in_place_conversion=y
-
-./tools/testing/selftests/kvm/x86/private_mem_conversions_test
-Random seed: 0x7eace343
-
-==== Test Assertion Failure ====
-   x86/private_mem_conversions_test.c:46: mem[i] == pattern
-   pid=288745 tid=288747 errno=4 - Interrupted system call
-      1	0x000000000040426a: memcmp_h at private_mem_conversions_test.c:46
-      2	 (inlined by) __test_mem_conversions at 
-private_mem_conversions_test.c:356
-      3	0x00007f2ea2c89c01: ?? ??:0
-      4	0x00007f2ea2d0ec3f: ?? ??:0
-   Host expected 0xaa at gpa 0x100000000, got 0x0
-
-> Is the ask to also test, under kvm_has_gmem_attributes aka
-> gmem_in_place_conversion, to have guest_memfd used as purely for private
-> memory and have shared memory taken from somewhere else completely?
-> 
-> I can rephrase the changelog and change the code to clarify that this
-> patch is meant to specifically test in-place conversion with MMAP, the
-> intended usage of in-place conversions.
-> 
-> The ask to test gmem for private and something else for shared seems
-> like a different test that can be added separately, perhaps in a
-> follow-up series?
-
-I see it as the fix for existing testcase, not another new test. And the 
-fix is simple:
-1. change to use vm_mem_set_memory_attributes() to set memory attribute.
-2. pass GUEST_MEMFD_FLAG_INIT_SHARED to create the gmem because this 
-test expects the initial state of the gfn is shared.
-
----8<----
-diff --git 
-a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c 
-b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-index cf50e9a332c5..fbd6c63d21cf 100644
---- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-+++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-@@ -307,7 +307,7 @@ static void handle_exit_hypercall(struct kvm_vcpu *vcpu)
-                 vm_guest_mem_fallocate(vm, gpa, size, map_shared);
-
-         if (set_attributes)
--               vm_set_memory_attributes(vm, gpa, size,
-+               vm_mem_set_memory_attributes(vm, gpa, size,
-                                          map_shared ? 0 : 
-KVM_MEMORY_ATTRIBUTE_PRIVATE);
-         run->hypercall.ret = 0;
-  }
-@@ -382,6 +382,7 @@ static void test_mem_conversions(enum 
-vm_mem_backing_src_type src_type, u32 nr_v
-         const size_t slot_size = memfd_size / nr_memslots;
-         struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
-         pthread_t threads[KVM_MAX_VCPUS];
-+       u64 gmem_flags = 0;
-         struct kvm_vm *vm;
-         int memfd, i;
-
-@@ -397,7 +398,10 @@ static void test_mem_conversions(enum 
-vm_mem_backing_src_type src_type, u32 nr_v
-
-         vm_enable_cap(vm, KVM_CAP_EXIT_HYPERCALL, (1 << 
-KVM_HC_MAP_GPA_RANGE));
-
--       memfd = vm_create_guest_memfd(vm, memfd_size, 0);
-+       if (kvm_has_gmem_attributes)
-+               gmem_flags = GUEST_MEMFD_FLAG_INIT_SHARED;
-+
-+       memfd = vm_create_guest_memfd(vm, memfd_size, gmem_flags);
-
-         for (i = 0; i < nr_memslots; i++)
-                 vm_mem_add(vm, src_type, BASE_DATA_GPA + slot_size * i,
+No, my thought is to keep the newly named kvm_gmem_get_all_gfns_filter() as-is,
+continue using it flows where KVM needs to zap everything, e.g. PUNCH_HOLE, and
+have the to-PRIVATE conversion flow open code KVM_FILTER_SHARED.
