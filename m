@@ -1,184 +1,191 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503733815E2
-	for <linux-coco@lists.linux.dev>; Tue, 25 Aug 2026 21:18:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787692701; cv=none; b=qKhSpYxNAylHQ83h6gAsMLshq1WdduwX1xYeP78UODmTsIzN06/PQJrBPDq7tzcBySsBaKOSoCnwOVE55oVVFqII0niwo0gOOhnTIAre/6Ohh5ecx5nNwQojM+AlZ+CaRp5lfuTF0wpOI35+GXkndEsWguB+XrMD/9Rr+23QviY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787692701; c=relaxed/simple;
-	bh=5DASDcrdCFVsZOprMrejQ5Q/16NZy+mOibkZO8FKsFA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pDNsqjiQmk5TpU3KwfBVXvkTjC78QpPY1RoDwpu9VsR6IEXzRyBzJ4vsliSipPFjWQk7sDolowmgdrxDLp1z7AGBsH+Ax1iJ0daND1mHTTCkd01QsbiTxpeR5LyO3c8HBDZYlYjmiiD67ZZXrcAP5FDmRopq5VBcAmjABQRnIKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G095k+UJ; arc=none smtp.client-ip=209.85.215.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E2C344040
+	for <linux-coco@lists.linux.dev>; Tue, 25 Aug 2026 21:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787694842; cv=fail; b=UfHdJxbvoJEjEDkQWu8B7FkjPOdaxEbIfTpK64uFKFfEH5eFqhROEt+PpTctkmGIG35TM6Zys0a39c+lzcWfPhHubq7KVLZhCT3Quq4WRlFJx3icp7SDC4qrn8RC8MhbKuLxw3XLhMSCxiCESv8m/R6TvELN6X6FZfrOuK1lLjU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787694842; c=relaxed/simple;
+	bh=anLalQhTr0NMonUcpDSg8H2GJJCUBS3vUwi0cNXXV7w=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=VUVMPKGi8TkvgZzf5+3cqluBjyTn9N4aP+GDx1S1PnmdLESf5DRPIzCxI5H7Ef88lLaIqUkOPcd8Wwjm7Qo3nBscnHx8h0ttcqsZ6os6vfqZiUTyWzLNj2SY6HybHo0fYlNmjV/rUZKuKBTpH0PkkHJoMNbgoqepw9ckvK7dp6o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OtE1JNXT; arc=fail smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G095k+UJ"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc1b8088202so188756a12.3
-        for <linux-coco@lists.linux.dev>; Tue, 25 Aug 2026 14:18:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787692700; x=1788297500; darn=lists.linux.dev;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=96v/IU+xqfPxFBmAPsTHt7ENr2LiLEu2VL8xEjm4RVc=;
-        b=G095k+UJ5IPIE/8/rJfhbTN8+/5xWb9gqR6cDKpqEnSSBPt6LfDTFbTYFEedgwEMQI
-         fj18Da5poEWSSMIHmfcS/3+2gesXQoPWC3Go67IQt8qdWHJGVGJv+u/CdC4p34IkzQJU
-         qky3a83UBkUuATJ8IJKxns9S2QODM/rFztU0vn7rZFWHCYUgTobRUZ3s6SpvxEbgpPr2
-         Fq1XLg8DkLdQvNSfukPs8D/iW6EcG1m84oxXIIRnZf+SeiSh0TjsQg9119ZMEqVVo0MP
-         pYBvps6vFBAcJWgLn6JMS5gHMT0caISM+AQKwcyNwpYbbqryx+zi+Rn5JDKD7dF//da/
-         rxUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787692700; x=1788297500;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=96v/IU+xqfPxFBmAPsTHt7ENr2LiLEu2VL8xEjm4RVc=;
-        b=tV0XgDfaiCxOkM+vmks9TpigXOzwZqP4KaOWWwbpGGS0t2ixRjYqndmqEOm1Fc5sFH
-         KFYVll6ti6ybZaUzUUP2UE2i9c3/yaGapwCBHA+sn5On99+Z0WDs5yIH68O5zXlR+Nk+
-         yrO987kvVJpBsTLrDAR49zw11boeNVUnsDsKYvVbvESHKhio31MnjTaS1xQ9Zi3unho2
-         QfgtH3eWKLRbGoIweprTuZOu0z40T8qf37twUFESP4oXk3EQ4g8oX5Bp3PJCUozvLWYz
-         7tR0mU0o19WfpChs6UiGMAvoEpsnZuTWI7x4PKkN0jKnnbQ6Jor1Q0dkZnRWxCtLn8yA
-         O/qg==
-X-Forwarded-Encrypted: i=1; AHgh+RqO9lVB33htPZgvC0YrtVJKcUK5lF7giM2jmqszzYlbS9GCxfkE+tUe5AWaOFQym55vjGQvPo2uVmB6@lists.linux.dev
-X-Gm-Message-State: AFuF++nh9rfQ/mrAQ3I2ahJm3z4ZQSulAohgqzF/lfoGGz8BWFYYjv1J
-	atVuRpnqdL4ocNOEZt6uEmrFZTF9ILl34IKc5/TGseKih3QpxpZ5tnFUxTuRvinx4pwfz60ahfo
-	8Ob7qdA==
-X-Received: from pgp16-n2.prod.google.com ([2002:a05:6a02:62d0:20b0:c86:5f41:8c94])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:2290:b0:3cc:3d08:da3e
- with SMTP id adf61e73a8af0-3cf76286186mr2809631637.2.1787692699334; Tue, 25
- Aug 2026 14:18:19 -0700 (PDT)
-Date: Tue, 25 Aug 2026 14:18:18 -0700
-In-Reply-To: <CAEvNRgFhjbgC9Ng1qviPx4oE=qihUwiBcsYOgJG3yOU-nLG1hQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OtE1JNXT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787694838; x=1819230838;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=anLalQhTr0NMonUcpDSg8H2GJJCUBS3vUwi0cNXXV7w=;
+  b=OtE1JNXTUdzrrJGHLbWd1XHyWUP2QIXkDEIGb5j6ALuLkIg55HNRFLQG
+   G2pQ/oxvxTNYISx8JEuXjyhrJbdZi4icUbfMbfjA17CjMQPRa+8j1ye8H
+   nJqVBQV1IMo5bOk83UaDpO3lBsuwyby5dSgcSVa4UUqSUBvu0E1rPLa+f
+   5KDXztcRtTzv2FQN5eaUH0or9w4gizs+jL3cOtKBNJo7llse9IIdl0AAJ
+   bxfo8kW8XySjhkaHNZiWUZofyuhPmoviBlAlAqFR98vx7jvH1FFXRv1AH
+   xJ14yvPQFXhYJJCPLfZ15o4nMA7B4/GkjAinXU393cDpw71jT8RV50+Q4
+   g==;
+X-CSE-ConnectionGUID: nJx4twkJQdq1H/xi+Hd6cg==
+X-CSE-MsgGUID: UKTeF2F5TUO0NCOyhoSpBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="99329757"
+X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; 
+   d="scan'208";a="99329757"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 14:53:56 -0700
+X-CSE-ConnectionGUID: QkQwriYsRMKcvTv7WZFfsg==
+X-CSE-MsgGUID: SaUdDTV/RgOQlSRQtI1fgQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; 
+   d="scan'208";a="267974802"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 14:53:56 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 25 Aug 2026 14:53:55 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Tue, 25 Aug 2026 14:53:55 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.31) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 25 Aug 2026 14:53:55 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qSyONoJEFmKO+Q2ov1svbnrDb7E5pNI1SSU79hUR7XUsxhpByuf3pZql8aFl1azAFKML382qCQiDtnSprpmAXN1C6i4ZFJRSXwVi+xK/nKSwwFiCZWzMYcVP7Q/l+UmwM773rOJJWnQFtMdLSXxHVa3InYMrKRZroBN1xxPvRkXA6ZyhYtlDl0Yz8wAI0OsjeQrvq2QaeZba4ixpiki/p4G6jnWjTDoWdGJEhMXglcM2Kc6mN2WHerHyYM40w5lbEKpjoXlRcBlybTOq8CKePAaUHxL4YJN9vAf8I5rpUJGIneWWsYgaC+I0L2GysYPKij7e3kcg8F8P/ZB93MM76A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ph7lcgzbDQ1CECsjfqNtbI6AicHPtTPuJgrrvCKGaU8=;
+ b=Sz4ddJpwqwZJtFQxWdQBP9PguqftZQ6xV7MRSHwiXYmhwjeSPaRdHDYha6F0vWJOOxBu+i7g7uJ8ei75cPRrG1wAcf9zriJ1Ndy1iOt41k57S8UwHwssV1U0rQrytWZVFakBJyfD78yzfbRYBxI+I7XQx0TRQ+iwsUdoNq28FOCPrcKCnGjSzkBgZHMR52FFTgSRC1cOsUpoc9hmFAg8qLvuZSsf0W7ZGZXXr8O4t7LDX0slDX9Oqedk6AkhxZKhDH/89xBgrRakWyn++ZsoVdzH7etsi4XcxtK/IsE+70OzLF0LE/E3fvSPkPYNQS4yaAm/I+joozyKRQHKFRxoVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB435924.namprd11.prod.outlook.com
+ (2603:10b6:610:34a::8) by CY8PR11MB7314.namprd11.prod.outlook.com
+ (2603:10b6:930:9d::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Tue, 25 Aug
+ 2026 21:53:44 +0000
+Received: from CH3PR11MB435924.namprd11.prod.outlook.com
+ ([fe80::1696:c90e:60af:a0cd]) by CH3PR11MB435924.namprd11.prod.outlook.com
+ ([fe80::1696:c90e:60af:a0cd%6]) with mapi id 15.21.0360.005; Tue, 25 Aug 2026
+ 21:53:43 +0000
+Date: Tue, 25 Aug 2026 14:53:40 -0700
+From: Peter Fang <peter.fang@intel.com>
+To: Lisa Wang <wyihan@google.com>
+CC: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng
+	<ackerleytng@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao
+	<chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, Ira Weiny
+	<ira.weiny@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, "Kiryl
+ Shutsemau" <kas@kernel.org>, <linux-kselftest@vger.kernel.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe
+	<rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, Ryan Afranji
+	<afranji@google.com>, Sagi Shahar <sagis@google.com>, Sean Christopherson
+	<seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li
+	<xiaoyao.li@intel.com>, Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds
+	<jmcrey@google.com>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
+Subject: Re: [PATCH v14 13/22] KVM: selftests: Support guest_memfd in-place
+ conversion
+Message-ID: <20260825215340.GC3694338@pedri>
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
+ <20260722-tdx-selftests-v14-13-15ad654a50db@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260722-tdx-selftests-v14-13-15ad654a50db@google.com>
+X-ClientProxiedBy: SJ0PR03CA0389.namprd03.prod.outlook.com
+ (2603:10b6:a03:3a1::34) To CH3PR11MB435924.namprd11.prod.outlook.com
+ (2603:10b6:610:34a::8)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com>
- <a410cca6-0776-44af-8353-9b7375e2fd4e@intel.com> <CAEvNRgGvxMus6pp=xuDYOumH3Ge4oi0=YKjTaFykFHwXuzRDwg@mail.gmail.com>
- <54d1bd0e-c27a-4033-ab97-02cd9579a620@intel.com> <CAEvNRgFhjbgC9Ng1qviPx4oE=qihUwiBcsYOgJG3yOU-nLG1hQ@mail.gmail.com>
-Message-ID: <ao4Gmn5tSZMhl_nX@google.com>
-Subject: Re: [PATCH v10 07/41] KVM: guest_memfd: Stub in ability to enable
- in-place shared<=>private conversion
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB435924:EE_|CY8PR11MB7314:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9f0678bb-53dc-463c-1cba-08df02f354e0
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|23010399003|376014|1800799024|366016|6133799003|10067099003|56012099006|11063799006|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: iVbKwAPZRpxlEjabzTzNHg6GlDnd/9qWUAAvnS4j5XDzlO/WflEUtk0snKeYowAURRfdM/0RIwMkb03YeLwMfxGuaQHhKlhKbkMRcbWezQa4JCRWSJsYLJ1YlBQTnBrcr9Mo2FJpIzD6Rrfl1bpkInPTlwEEL9H0xhAHb33H0eY/Cb9xEOUb5GJjRv60N0IClBpr7JQpRO3h5nDJjURIMnCxSKTr+7G4pnAQiSOyziwABSbUTFP6wfawuX9UAtE1ehBq9Cv0CamHjX2dYrKsvMTBOq3VC/rWbyjGaU5CnbKplvijlRLx58c3ouSxGE8xH7g2Z6lnyTQ6p7X5pCl8blcxokgwUPqILGmN5hZkPZRU7rNJ6CiIgwqq4WnfYplX6rb9hT3DThcVAv8iyqp4jXNkxcwyej1v1cSJ7IhWuhPdBvnI5XuX6BDLYhEvdnqpNoPdsmpFw7/6Pf6mlaMj+0ML9Z0kzLoaDrH5yXTIXLPG0bVD7BwD5cbQuklXxStM182AQjcN0Siot87o6SPtxY1UWnNiOiUYCdzXG4FOq/v2SCFRLZwMxIq9DzJb0M7BCzINx0BvQZNuNPZU/EJXvmguHZFsi5nNbZJCRj1tStsTywQibj1zQh8FIdLb57SYPK1u3DMS7at1nruqhQfVUm9jvZL7EKOU3QMtZUE7eDs=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB435924.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(1800799024)(366016)(6133799003)(10067099003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Amw6CYgWszknyucEYCJtI9gZwewL52afNrbeGH+/MI/HkXduSg9vcPpXStsf?=
+ =?us-ascii?Q?xqzxuFAFV8O8VIWQX3UI8kcURSPX8S10vYnsX+MF9kMXEBN51qCYedipzNWc?=
+ =?us-ascii?Q?oDrCjOhbKJTouPGz8cZG6A+TbhFx0b64inLPf7dtcMvnmfTd6CXtb5YK4wHu?=
+ =?us-ascii?Q?hCdKIDQ/TZhUCaN72rmTM6tLrMPvf3vfOr758zulqQVRG91Mh9N1YX35p+eE?=
+ =?us-ascii?Q?++9qZQfBcPEjfsytBtjVOES7qCm3mEt2jUXhSHEQnBrOctElnZj/9/XqLyme?=
+ =?us-ascii?Q?YMvXEcQPfy70TwEX96hLtf0RU+qoapk5bgKVK8bv+rRSUAKD6erNNFfGds/X?=
+ =?us-ascii?Q?nVonwsVED3csBHRq14Qb5iVN1YVx8XGDkTKur9FKjy7Ulixfa5iL98e5G10W?=
+ =?us-ascii?Q?rEf7bT+Q2GWbOlJWRFUQo0X2lgv7U3CSAWmNPeS2RpjkrkOj9Ba/EvUZ4CJv?=
+ =?us-ascii?Q?fzy6iVzheS7mtfOeafuE6a0v0cym0ld7eHbMSNb2vDP7TO6jade63E/7MiAJ?=
+ =?us-ascii?Q?It3SSIMwcDSpEjNu8ydIbuF6deHOimagJgqTcpsp3cjccDu0CAsFF7Z6P8mL?=
+ =?us-ascii?Q?3YGb4wJCgVT2XUoU4jwfiPnpFlTfh2YilItkJwT+BKxnANi+B2TpVM+pXfbt?=
+ =?us-ascii?Q?7AbO3fuvxeHJxQvgmIsYtBt56OkFJwte93/TyWhDH2UJP8aH+F5IcKUok8lb?=
+ =?us-ascii?Q?J0d1e6vo6hxiTqrW9clZzxY/FzponFn91xYFsyrZ1SFNGs00Rkld9sMPGiRh?=
+ =?us-ascii?Q?TaF5CBR/v/4xeR9gCbdSe7/VgX0xcMLLeCCPYinakuekUYSclE1onUDMA843?=
+ =?us-ascii?Q?weq9Av/m4mIDRLyeiH00xLNX/ZMoAkozrJMOtVaXZv+iZbhaqoO6aBDGc3ya?=
+ =?us-ascii?Q?gqF/ZXPO3z13Cz5ME/E2j+bRjrXj6nTWd+nqln4105jKeYhW/5SAvObfutLx?=
+ =?us-ascii?Q?2Tw7dipToSO/1UW/VmvdyiIZolnx/c61EwBeXBOv9h5c5c7nJGU9eW2emSot?=
+ =?us-ascii?Q?QVsnLy2hhQ4EPg89VDT6M/KkxQllcGdIPIEyBliHSHkoLW0t9oAaZQihlGzJ?=
+ =?us-ascii?Q?MDTI+I0Gnszs2Ppp2UuK2MpYySOe2mZc4reFfM4bM5YLuupzelIY9QG4+E+X?=
+ =?us-ascii?Q?glg0SbQRNUUCiz/uG/J2IJq8yhJfySgpkEm93NSJKjX3KHCvQRESSg6sXiI2?=
+ =?us-ascii?Q?T+ZlXuCbYP6sMMkHR2pr4QodExQZARUaN1T0LLGW1ZPvOtGdZSg579Xdh51L?=
+ =?us-ascii?Q?vASl7jx2ka8yfGN9Ue/hlfZhbVhvAikIUWS9l2jpv5ii7v3Yk7aj6nx11tc/?=
+ =?us-ascii?Q?X4Ys4X7ZYaQlbc8gQWHYKR1jt/OIIeKDuszy+o8toRwQAMIsq9xWOaqr8wwW?=
+ =?us-ascii?Q?EkW6j+ejORSZO1ESIe2cFh4YUxrm+4ie3sdvRa9DnCRpN8DG8U8fOpatU8qu?=
+ =?us-ascii?Q?qYoxoh64Ufs5NdflG2HRt32ZWDQ7Sw3yUD10KhfrmaY7gLb9X6NvH7Eq2kJR?=
+ =?us-ascii?Q?GIWovvxObYq7DU67jPJYQKOriLZH/9SfTeoX84sf6ewGcu1o1JCCTHCjLsGA?=
+ =?us-ascii?Q?ijVdhjc36yTTOA3iEgKZTqC7ddKUv9xda2U3A6MK/6/YHxM5234lzRfZ9RAZ?=
+ =?us-ascii?Q?dqeiT7dk7J5WSaGr61Zbz8SbX4lHsLJCt/++sbUa/yrlXTD9dmYcXYKN0s6/?=
+ =?us-ascii?Q?IM6ek7VOe7Gt6ZNsjDhmncFRae6y+Fkzauqgv3BYUAahd4vnZulfZJs9g+A9?=
+ =?us-ascii?Q?e1AfHT1QbQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked: EUyfQxlTtEww/gla151j/2bkvgxO/a9Ngjz1GJhNFZyFFUbkUn4OU1MKNkRCyKr7+ccLedlVsN6JUkER4zt4PsqUdPvzBz8fk6xMOKf2dUkZqq7HBJ3AV/OBCesYolR/iu6FFFgccDMau6wntY91g+9+Jfeky8qHjFKXLCldlEpDwjKSDhM6RDAaCxsdNcrn8iEU0LLEvYo8m8qRzv+brFwM7jhNtaXctZPFIN5bqk41mx1FkRAQYrqKdSkquPXIjJwA2e8OMhcrpv0+soTf/jor1Ve+/7ZanQllBLLacutnxeYEc229fBt3yOsNnQ7hUlOBA4ij6kcHptD/WEACHg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9f0678bb-53dc-463c-1cba-08df02f354e0
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB435924.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2026 21:53:43.5207
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: I/lTz2OUrcq8RHAenkSgMBaTQKo+cdB36pQAeHGO2qVOklgvwCR3yEB3ob45s3+46Fxe7nlm1MkaC3l0r1zt4Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7314
+X-OriginatorOrg: intel.com
 
-On Mon, Aug 24, 2026, Ackerley Tng wrote:
-> Xiaoyao Li <xiaoyao.li@intel.com> writes:
-> >> 			KVM_SET_MEMORY_ATTRIBUTES2 ioctl on guest_memfd file
-> >> 			descriptors and disables the legacy VM-scoped
-> >> 			KVM_SET_MEMORY_ATTRIBUTES ioctl for private memory state
-> >> 			tracking. Only the KVM_MEMORY_ATTRIBUTE_PRIVATE
-> >> 			attribute moves to per-guest_memfd tracking; other
-> >> 			attributes remain per-VM.
-> >>
-> >> 			This parameter toggles KVM's in-place conversion
-> >> 			capability support.
-> >
-> > I start to think that the term "in-place conversion" seems to read
-> > inaccurate. I think it is describing the shared/private conversion of a
-> > gfn, and in-place means when a gfn is converted between shared/private,
-> > the backend comes from the same gmem page, thus in-place. But KVM
-> > doesn't enforce the "in-place".
-> >
-> > If "in-place conversion" describes the shared/private conversion of a
-> > gmem page, then "in-place" is redundant because the conversion a
-> > specific gmem page is always in-place.
+On Wed, Jul 22, 2026 at 11:13:18PM +0000, Lisa Wang wrote:
+> Set the memory region as shared if guest_memfd in-place conversion is
+> support, so that the KVM selftest framework functions can populate
+  ^^^^^^^ nit: supported
+
+> mmap()-ed guest_memfd memory the same way memory from other memory
+> providers are populated.
 > 
-> Hmm, a few people have raised something related to this
-> gmem_in_place_conversion module param's naming: Xiaoyao, Yan, David, and
-> Sean's response is generally that it is confusing, but can't find a
-> better way out. The main consideration around module param naming is
-> that it should be named for the benefit of the admin. We want some name
-> that admins can understand at a high level (for some definition of "high
-> level") what this does.
 
-Executive decision: use gmem_in_place_conversion.  I hear (and largely agree with)
-the complaints that it's imperfect, but I don't think it's feasible to find a name
-that can perfectly describe the nuances while still being somewhat succint and
-intuitive.  I.e. gmem_in_place_conversion isn't perfect, but everything else I've
-seen is much worse.
+[ ... ]
 
-I'll make sure to call out that gmem_in_place_conversion is imperfect in the pull
-request, to give Paolo a chance to veto my executive decision.
+>  
+> @@ -495,14 +497,20 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+>  	vm = ____vm_create(shape);
+>  
+>  	/*
+> -	 * Force GUEST_MEMFD for the primary memory region if necessary, e.g.
+> -	 * for CoCo VMs that require GUEST_MEMFD backed private memory.
+> +	 * Force GUEST_MEMFD for the primary memory region if necessary, and
+> +	 * initialize it as shared if in-place conversion is support, so the
+                                                             ^^^^^^^
+                                                             same nit
 
-> Do you have a proposal to resolve your concern, considering naming,
-> documentation, comments, code, etc?
-> 
-> >>                       Whether a VMM uses separate backends
-> >> 			or out-of-place memory management is determined by
-> >> 			userspace VMM design.
-> >>
-> >> 			Note, this parameter is only available when
-> >> 			CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y. When
-> >> 			CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set, in-place
-> >> 			conversion is unconditionally enabled.
-> >>
-> >> 			Default is Y (on).
-> >
-> > I'm looking at the doc of KVM_SET_USER_MEMORY_REGION2, which reads
-> >
-> > # When mapping a gfn into the guest, KVM selects shared vs. private, i.e consumes
-> > # userspace_addr vs. guest_memfd, based on the gfn's KVM_MEMORY_ATTRIBUTE_PRIVATE
-> > # state.  At VM creation time, all memory is shared, i.e. the PRIVATE attribute
-> > # is '0' for all gfns.  Userspace can control whether memory is shared/private by
-> > # toggling KVM_MEMORY_ATTRIBUTE_PRIVATE via KVM_SET_MEMORY_ATTRIBUTES as needed.
-> 
-> I'm not sure how this snippet from the documentation connects with what
-> you'd like changed.
-
-It's flat out wrong once in-place conversion lands, because it assumes PRIVATE
-is tracked per-VM.  Something like this?
-
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 4eb7e75a7473..c9769e5e7329 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -6383,9 +6383,12 @@ on-demand.
- 
- When mapping a gfn into the guest, KVM selects shared vs. private, i.e consumes
- userspace_addr vs. guest_memfd, based on the gfn's KVM_MEMORY_ATTRIBUTE_PRIVATE
--state.  At VM creation time, all memory is shared, i.e. the PRIVATE attribute
--is '0' for all gfns.  Userspace can control whether memory is shared/private by
-+state.  If in-place conversion is disabled, i.e. PRIVATE is tracked per-VM,
-+then at VM creation time, all memory is shared, i.e. the PRIVATE attribute is
-+'0' for all gfns.  Userspace can control whether memory is shared/private by
- toggling KVM_MEMORY_ATTRIBUTE_PRIVATE via KVM_SET_MEMORY_ATTRIBUTES as needed.
-+If in-place conversion is enabled, then the starting PRIVATE vs. SHARED state
-+of a gfn is determined by the relevant guest_memfd instance.
- 
- S390:
- ^^^^^
+> +	 * selftest framework can populate it exactly like other memory
+> +	 * providers.
+>  	 */
