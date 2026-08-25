@@ -1,182 +1,120 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD013932FF;
-	Mon, 24 Aug 2026 22:28:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6201F3BAC
+	for <linux-coco@lists.linux.dev>; Tue, 25 Aug 2026 02:55:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787610510; cv=none; b=azfsOHiJ0+KUC61O61q6qtRjRSu2PerBKe5V7eyQmbNFlSxlEfBYbEX5Zu66yBOGpKnETUEipeNT2MzAOu/wx0l5KIqN/iq3GLkS+Qv2vHl5Jp9GfbhKuWdU5iwR7m1RJNOkEXo59XR8cKhVX3akAT5plunHDu6FOjHgfrpmXZM=
+	t=1787626561; cv=none; b=DHWu2V84i4ZrEshI01DQuGooiK0ByXVWqWlx37Y4hWKcvBvQh2PJX4+2saCD6rmMGvN77abm4FPYPPkAbQ0mFjgKFw78guMRXigp7xSKpbfehyzVg73bbkxBSDX2k04Xcl5ue8fkWHtu4wAXhOS7vm6Pro0buo0ZBGQu9YlPzXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787610510; c=relaxed/simple;
-	bh=8YkalDfOLH7ZhauPFHeeoXqmWKKKSNSdp2k35xerf6A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oYleqg3Dvb4a7/ViTGOhDEJpcE87jDGTNncnjZCXmaKXe7D9mdk3zPBURepxUuBi5YSy42bAjt6dlqKp7NwZK8vD6SPzVREayEr/aOOAYu+Pe4+cR/dPoB3tp6hGSlgudOq9xwwkUUOymKoFwmIom+sfFCKLK9mlRl0b8lwrBEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=pUj6NLIf; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1787626561; c=relaxed/simple;
+	bh=PQw6Zis9OqjZytWuzgs/pIEmlrlgQth66BgDqg9m6oA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rUcYF0tFcpdpP3YnTGZLAdRywOg57aXPki0qZ2d9tR/dmuExTh3ENC9DqUS4lNA3cgOMiB9nCk7TvbOVMC+Cv88akczX+oSDVSxMAAJIhFGFv8M6ygVBisD/BQDhfW7705lKA6yPelcaETBomuNYb34kvuJXIR5CwOgyN9b9JGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fIbMun8S; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="pUj6NLIf"
-Received: from [10.4.158.9] (unknown [4.194.122.170])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 51F2E20B7166;
-	Mon, 24 Aug 2026 15:27:49 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 51F2E20B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1787610476;
-	bh=3upJMujWsliLVEDZkldGdb84hlp2TqlRJwjZBbNKU3o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pUj6NLIfVHKUDMIbKK8hykSMwbBvQRxMJ6p1Dzw9v9DBx2eiYgnuw2muTtOd6EGDj
-	 VChyaBkAAiREznAxDKC52ri1zfEoV8q8BeocTJ917idvyBQ+iOzfCMfRBR/vthF0U1
-	 sY5zh2GMezaL1zAxJkh4hHDoxI7YrmiAoTDGcQbs=
-Message-ID: <f086f940-edaa-4bd5-ba11-e52e61fd6cee@linux.microsoft.com>
-Date: Mon, 24 Aug 2026 15:28:19 -0700
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fIbMun8S"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787626557; x=1819162557;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=PQw6Zis9OqjZytWuzgs/pIEmlrlgQth66BgDqg9m6oA=;
+  b=fIbMun8SPYFhjn2rB0b9fHTBzTu1QmPYFU+rSbZ7WRAAWvCRM7pe59nt
+   4WEGnfVtamcl8UJfgddTx2AxLSGZMZXfyRlsBBu7iOEYxwghUXrAJ7q+Z
+   /efDFQ+owPPm5Yh4omhaW+56YRnN5gnhbPUDLY9zfnEBaCOM1+be/0zf2
+   cWYD5zYRyS9X+ahtNt50xrTnBPK8WII6MBNcZ81phUsVTv+g1llM8zA+e
+   pFSbaGa4XSNmviHaMb+LsvYTDiHFFJ6hhvYg/XclsP3/l+ZJ3y/VyFz+m
+   PS/Zms15DJaTOrPOWe/nOgGO4Fmjqz0seau+REMEDDTMOrQDmRGkjLzfI
+   Q==;
+X-CSE-ConnectionGUID: /jBaryliSAGxeekmt2nwvg==
+X-CSE-MsgGUID: EFd7xS2RRIKscBCQjwH2vw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="91903796"
+X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
+   d="scan'208";a="91903796"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:55:57 -0700
+X-CSE-ConnectionGUID: xAnIDxS7SeO0s1q9IIpRcw==
+X-CSE-MsgGUID: /P2OWF9ISbK0KVrkaihM0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
+   d="scan'208";a="267222926"
+Received: from yzhao56-desk.sh.intel.com ([10.239.47.61])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:55:52 -0700
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: kas@kernel.org,
+	dave.hansen@linux.intel.com
+Cc: x86@kernel.org,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	rick.p.edgecombe@intel.com,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	kai.huang@intel.com,
+	yilun.xu@linux.intel.com,
+	vannapurve@google.com,
+	ackerleytng@google.com,
+	sagis@google.com,
+	binbin.wu@linux.intel.com,
+	xiaoyao.li@intel.com,
+	yan.y.zhao@intel.com,
+	Dave Hansen <dave.hansen@intel.com>
+Subject: [PATCH] x86/virt/tdx: Warn on !4K level in tdh_mem_page_aug()
+Date: Tue, 25 Aug 2026 10:55:33 +0800
+Message-ID: <20260825025533.25663-1-yan.y.zhao@intel.com>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v4 09/11] coco: guest: arm64: Hook TSM accept to Realm
- TDISP RUN transition
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: Alexey Kardashevskiy <aik@amd.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dan Williams <dan.j.williams@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Jonathan Cameron <jic23@kernel.org>, Marc Zyngier <maz@kernel.org>,
- Samuel Ortiz <sameo@rivosinc.com>, Steven Price <steven.price@arm.com>,
- Suzuki K Poulose <Suzuki.Poulose@arm.com>, Will Deacon <will@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>
-References: <20260427082805.931832-1-aneesh.kumar@kernel.org>
- <20260427082805.931832-10-aneesh.kumar@kernel.org>
-Content-Language: en-US
-From: Kameron Carr <kameroncarr@linux.microsoft.com>
-In-Reply-To: <20260427082805.931832-10-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 4/27/2026 1:28 AM, Aneesh Kumar K.V (Arm) wrote:
-> Add an accept callback in pci_tsm_ops and implement cca_device_accept() to:
-> - verify evidence generation (lock_nonce)
-> - allocate and register protected MMIO ranges
-> - transition TDI state to RUN
-> 
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> ---
->  drivers/virt/coco/arm-cca-guest/arm-cca.c | 20 +++++++++++
->  drivers/virt/coco/arm-cca-guest/rsi-da.c  | 43 +++++++++++++++++++++++
->  drivers/virt/coco/arm-cca-guest/rsi-da.h  |  1 +
->  3 files changed, 64 insertions(+)
-> 
-> diff --git a/drivers/virt/coco/arm-cca-guest/arm-cca.c b/drivers/virt/coco/arm-cca-guest/arm-cca.c
-> index 320dd5aa7b9a..b29b3948a454 100644
-> --- a/drivers/virt/coco/arm-cca-guest/arm-cca.c
-> +++ b/drivers/virt/coco/arm-cca-guest/arm-cca.c
-> @@ -499,9 +499,29 @@ static void cca_tsm_unlock(struct pci_tsm *tsm)
->  	kfree(cca_dsc);
->  }
->  
-> +static int __cca_tsm_accept(struct pci_dev *pdev, unsigned long lock_nonce)
-> +{
-> +	int ret;
-> +
-> +	ret = cca_device_accept(pdev, lock_nonce);
-> +	if (ret) {
-> +		pci_err(pdev, "failed to transition the device to run state (%d)\n", ret);
-> +		return ret;
-> +	}
-> +	return 0;
-> +}
-> +
-> +static int cca_tsm_accept(struct pci_dev *pdev)
-> +{
-> +	struct cca_guest_dsc *dsc = to_cca_guest_dsc(pdev);
-> +
-> +	return __cca_tsm_accept(pdev, dsc->dev_info.lock_nonce);
-> +}
-> +
->  static struct pci_tsm_ops cca_devsec_pci_ops = {
->  	.lock = cca_tsm_lock,
->  	.unlock = cca_tsm_unlock,
-> +	.accept	 = cca_tsm_accept,
->  };
->  
->  static void cca_devsec_tsm_remove(void *tsm_dev)
-> diff --git a/drivers/virt/coco/arm-cca-guest/rsi-da.c b/drivers/virt/coco/arm-cca-guest/rsi-da.c
-> index 039138768f8f..7c2b28fa43a1 100644
-> --- a/drivers/virt/coco/arm-cca-guest/rsi-da.c
-> +++ b/drivers/virt/coco/arm-cca-guest/rsi-da.c
-> @@ -230,3 +230,46 @@ int cca_verify_digests(u64 hash_algo,
->  	}
->  	return 0;
->  }
-> +
-> +int cca_device_accept(struct pci_dev *pdev, unsigned long lock_nonce)
-> +{
-> +	int ret;
-> +	struct cca_guest_dsc *dsc = to_cca_guest_dsc(pdev);
-> +
-> +	if (lock_nonce != dsc->dev_info.lock_nonce) {
-> +		pci_err(pdev, "Device evidence generation mismatch\n");
-> +		return -EIO;
-> +	}
-> +
-> +	/* Allocation private mmio range based on interface report. */
-> +	struct pci_tsm_mmio *tsm_mmio __free(kfree) = pci_tsm_mmio_alloc(pdev);
-> +	if (!tsm_mmio) {
-> +		pci_err(pdev, "Protected mmio range allocation failure\n");
-> +		return -ENOMEM;
-> +	}
-> +
-> +	/*
-> +	 * Present the private mmio range in the resource hierarchy.
-> +	 * We don't use this for ioremap, ioremap check the RIPAS value.
-> +	 */
-> +	ret = pci_tsm_mmio_setup(pdev, tsm_mmio);
-> +	if (ret) {
-> +		pci_err(pdev, "Protected mmio setup failure\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = cca_map_evidence_report_range(pdev, tsm_mmio);
-> +	if (ret) {
-> +		pci_err(pdev, "failed to validate the interface report\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = rhi_vdev_set_tdi_state(pdev, RHI_DA_TDI_CONFIG_RUN);
-> +	if (ret) {
-> +		pci_err(pdev, "failed to switch the device (%u) to RUN state\n", ret);
-> +		return ret;
-> +	}
+Add a warning on a !4K level to loudly flag the unexpected condition when
+callers pass in a level > 4K before tdh_mem_page_aug() supports huge pages.
 
-After calling pci_tsm_mmio_setup() we have mappings from insert_resource()
-then failures from later return codes never call mmio_teardown() so
-remove_resource() is never called, only kfree on the tsm_mmio.
+The warning makes the unexpected condition more obvious since the SEAMCALL
+TDH_MEM_PAGE_AUG does not necessarily fail when the level is above 4K,
+while tdh_mem_page_aug() only flushes the cache for a 4K page before huge
+page support is added.
 
-Likewise after cca_map_evidence_report_range() the mmio entry memory ranges
-have state RIPAS_DEV. Later failures never restore RIPAS_EMPTY.
+Do not drop the "level" parameter instead, as it will be needed once huge
+page support is added.
 
-Could clean up be handled better? Is there a reason these failures don't
-have a rollback path?
+Do not use a stronger BUG_ON() because the cache flush is only needed when
+the TDX module exposes a CLFLUSH_BEFORE_ALLOC bit, which has not yet been
+observed in any TDX modules.
 
-Regards,
-Kameron
+Reported-by: Kiryl Shutsemau <kas@kernel.org>
+Closes: https://lore.kernel.org/all/abvxiuJfK2eM_1UX@thinkstation
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Suggested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+---
+ arch/x86/virt/vmx/tdx/tdx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> +
-> +	dsc->pci.mmio = no_free_ptr(tsm_mmio);
-> +	return 0;
-> +}
-> diff --git a/drivers/virt/coco/arm-cca-guest/rsi-da.h b/drivers/virt/coco/arm-cca-guest/rsi-da.h
-> index 07a044d3e335..eeb049d374c5 100644
-> --- a/drivers/virt/coco/arm-cca-guest/rsi-da.h
-> +++ b/drivers/virt/coco/arm-cca-guest/rsi-da.h
-> @@ -61,5 +61,6 @@ int cca_verify_digests(u64 hash_algo,
->  		uint8_t *interface_report, size_t interface_report_size,
->  		uint8_t *measurements, size_t measurements_size,
->  		struct rsi_vdevice_info *dev_info);
-> +int cca_device_accept(struct pci_dev *pdev, unsigned long lock_nonce);
->  
->  #endif
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 42df8ea464c4..5c0e91b4aa4f 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1722,6 +1722,8 @@ u64 tdh_mem_page_aug(struct tdx_td *td, u64 gpa, enum pg_level level,
+ 	};
+ 	u64 ret;
+ 
++	/* TODO: handle large pages. */
++	WARN_ON_ONCE(level != PG_LEVEL_4K);
+ 	tdx_clflush_pfn(pfn);
+ 	ret = seamcall_ret(TDH_MEM_PAGE_AUG, &args);
+ 
+
+base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
+-- 
+2.43.2
 
