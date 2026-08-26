@@ -1,67 +1,67 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD053D5660
-	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 09:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84EA38837B
+	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 10:03:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787737902; cv=none; b=Ld+uBXmJMOrr1dEhWxk1T/QyaI0TBEizGMK+2pB1qBsLzZJOpUWrhmI6WalyPzXCw2CH6L/8vue7UZaGHU5mquems9GdRzp0rb6ODo5H9DgEdcFT+Rt55weo6XDRTYhoYwVuaiVPFpRvtI1kacuHKm47mvn/h6zHJhBaxP1xwcI=
+	t=1787738593; cv=none; b=bi/QvcTFiTqiwMRv8D5ZhmbwRIyy0fdlKvJffBPzTwmSgsQDyR3jgaT/t2G0yPp6RTzc/ViRNqLBYNFWJOUOnFcQsWJQSnfIwbM3x3kaHSd45Nvh+0GFjTG0sjLt39VcAqR7VKKAjyrgTyfHKFgY/kLtwFZKDsJd+9P4h5ke8Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787737902; c=relaxed/simple;
-	bh=v9piU18lZ/lb9fnvVLpa9yM8T1ZB0s+iYSi2lwWzsEo=;
+	s=arc-20240116; t=1787738593; c=relaxed/simple;
+	bh=AlfYlEb6WKoIrIEWU9ApASMS98YxtvLdbBvocivgdhs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vDUN6m9enNhW2/n8lCJ5iGZswEElYpIuKYOsgS+JTc5m0qTGlyQX9zPuXrdOH38Vt196HQdVvz/NHjQ5paezzUzyIXHcvzJBoP7LATSrsjOzKneyoa+QbRACwVX2VHaqyEAkCL3fPLFfjFYn1fClcYONvRTuDMFDzT17Qw4/t70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=gyu7SC4o; arc=none smtp.client-ip=209.85.218.53
+	 In-Reply-To:Content-Type; b=B5jsUNyMDIWbnBigjQzAjtZcSY3BzhqUql2tVV4xcxdDe2VjPQ6VxlGxIQi0Jksx3s42rgB1XZNyxfly2vIlfV/tQNop8YSt9jsTsZan7Zbbm7FIt4e+pHrIxW8J8CG4YogT5mmvWrcSxpphqOrtty4YajHKOatdCG7t267ukSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=IpDbRxNK; arc=none smtp.client-ip=209.85.208.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="gyu7SC4o"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c2529b3139fso42634866b.3
-        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 02:51:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="IpDbRxNK"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a374bea882so889924a12.1
+        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 03:03:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787737899; x=1788342699; darn=lists.linux.dev;
+        d=suse.com; s=google; t=1787738590; x=1788343390; darn=lists.linux.dev;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=YHCoJr/FzmfjS/OK2p3bq3ZjrRpL2dhX1kSlnFW6rfk=;
-        b=gyu7SC4osSb4BbkPrTJCcAS1FtIBp0IJmztXuF/CkHgBa3eeSa82SJgtuKtcBwRh4s
-         wVpJOej+ZVsIAC4WN+2LKvpd8V6o2irCzRPHWa5C2UvimLohYXeDc5PsdGJr9J+9tBa5
-         rsMwSBan9FKDAw4exWkMEGUaBbMRwS2N+hfEaFFoBrAbaVxP2Zicf2Df8KqTG36e1/2Y
-         Q9kEG4d6xZWHlWAFQy+QLnXZKUMelC6zCgBLQ4xTdBeFg7oCyOzQpj/YiLkusFsjN2mX
-         DzfYECqM//ZsbiwGuA264KTJGMQ0Xvmao/HD79XulT8HHGf4hw3EoHYzuRcrDQ5/gg4t
-         /tQw==
+        bh=bE7U1SVs1nWjk547BlCoF5e3zoAI9ns9idl/rgWUbu4=;
+        b=IpDbRxNKvVNXTHrgOOXnEGAl0q7OQyDYvUMIHUpl9amuQYT9mb28AaCnyc1rDwKumQ
+         +ZtsH+Fs0EmkWKcEgjTh8R5Yo1FdFfAoeAOMAtMFDggEZInTQSbTu7RqFYOSgJ3j4nXZ
+         5NkS2EzpDgGjOEMJlfytMd7ClA3UiSN3zZPsIVq0s2tGmY+MuMD8wqDozFfsyG4OX4Pt
+         d9ZAcFqpwENqrXeUz8xrDfe7+gvR/7ZqpOyuOzA83xnOC0fQN3aYtyy5Ghn0qlGla/hO
+         /EHJ7WarlmkMMzsLMFn8PGjrGLczwE0FMIsLuhiXAWOoISZjjsVbnRtbFNXzkY9sqLQ4
+         YjIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787737899; x=1788342699;
+        d=1e100.net; s=20251104; t=1787738590; x=1788343390;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=YHCoJr/FzmfjS/OK2p3bq3ZjrRpL2dhX1kSlnFW6rfk=;
-        b=PffkFBBMVFT7T9DT2BZ93FIUifOxq+4gtBICFDy0SFQSyig7E1i/J94gOpl8EkvMOg
-         5Qch6PGOXYCemcUd7+3BcpyWZ3loVBl2e9gyCgdZNT718JhjLjfE1fHNAzXgxQfPfFHX
-         hRs/qo5VMhe585OBHnskRzjy1tcW9Os2pbLL5PiiWSoJMZ5/Yy8pcszCAx+n9UvXNO1H
-         /TLkC+aSyKSR+fRt7IuaIq1oBpEI9O86MNtrxf5eV4U+fGqeCm+WDC55ez4FS7/Tmuhb
-         qy1HST9nmp+yg4YXOfHCGWduYeSpYU6a4kSrEiQ8t1CJX6i3oYNU7g6xj2If4cM/wn6z
-         PPYQ==
-X-Forwarded-Encrypted: i=1; AHgh+RofWpWvd3jQ4tNHXKu21ZEcfLp3xX+MkoOkrMCcEsWWsAorM+sO+6oz6vliZOdMrS+231ltqZb1sL4H@lists.linux.dev
-X-Gm-Message-State: AFuF++k6zKNPAStGXGfN1WckfoV8ikjcM6i7tBlubUEBSfDkbptr1ivX
-	6NdHHxCLV5/4emJMJV+lt0un2mZwWkU4nKtgyA0j4I/rvJamG959WjFROFGQtIaTF30=
-X-Gm-Gg: AR+sD119H2X3xSVuTwE7ZQC6cP8iB0nt+jjaU7oc0Mt3PBajIPTq5+VRQA6fQ9W80TH
-	OGSnSjRc0RTygF8XM1Euk7BpHLQkp4whjPKa4ZJ+Y09EcCDwU3DYBgbPBjYRq21bLsB+SOwrAUQ
-	DS2+V98EED1dmZu3+bMqh8/9lYkEZ4pDJ+GpbZbuaB1DWF3JkWQgoBzfvMcbZeu0syhSCptGm9B
-	IAo6IDGUE3XUkNWVFsl9kuExj1y3XzdBOuwyoXjRcClWFNKHWhxs9Ec9TB/cpQj0bi3nHzmefJY
-	4SVe0ei6v+GjsciN9AzYEfNgiI9DHnMv7wcDBJTDu3EzfyIUm2BYG7vu7nD+WBLwPRo5k4OmZp4
-	ftDQRPJmkHvqQLYEqW3egua/jIh1K0FRHNEvHPBC22YAIL2+5rR2sVKU7vGXzzi0bsajWYlnM0l
-	x/BGO9/qJ1vhapoprKK4Sy0qy5GxPt0BsChwEtB8hCSyihng/sm/2/gAwWWcG+zwY=
-X-Received: by 2002:a17:906:ef0e:b0:c12:e178:9e68 with SMTP id a640c23a62f3a-c250c3292a1mr623262666b.19.1787737898915;
-        Wed, 26 Aug 2026 02:51:38 -0700 (PDT)
+        bh=bE7U1SVs1nWjk547BlCoF5e3zoAI9ns9idl/rgWUbu4=;
+        b=Sf1QJGyitqQNFmEze017oDxledan7JbZ32QkPC691qnJPbdwZnNSsOtyKtqFAcd1FM
+         5S1fX5QtWyygOS3V13HP4IH4yBuGG8HWy5ZlLj7N7aycrTidoaCAcXBBDeeJNGirhEoE
+         bICA12k7ATSPhbd4NkX3UnqpZ3yczeeUOSnsTJkWFt6vTfavhDwqCaqw+s3OIUlcPAX4
+         lvRhfiqsgVflpZTP2qvByiTjLOzyfESAuAlCEn0vooapZXvD5JFP4SFHG5NFHNffusX+
+         E6BccL3a7xhXloI3E6j6xDF15acpWe6pr81RkhCLcLQcMOD36vuoZSc/TkBoVQCrdncJ
+         aH1Q==
+X-Forwarded-Encrypted: i=1; AHgh+RriEc9NaxH+mU5khHarkySOkGFXvYQUHBVW8/QSJyxLcFLyEI151M9eleBdsaFcafncQpT4LZ/KbUVp@lists.linux.dev
+X-Gm-Message-State: AFuF++ln5gb5YL8DVjscW8MU6TQDwUYkvjZq/SzQCuGYEHj6IgopuFKR
+	ebWy1qJqfCpGUxeR/e6PuCPhoHiF6I9/wcAZ0AaqrYQASChWrtBftfb4K07Np/RZ8uk=
+X-Gm-Gg: AR+sD13MKjahz0BQeqwaKzO9OiSErlqOkDsczIOY/j/E7mBSv6tR0LWhXmLVYhkG+jY
+	icRh74Rg3kwt7qd+S3VhuWktvG4uEtErLst0jWRWYJT2kAvmh80m0fTXNYMaEWTuyY41NL3Jxfw
+	73m01lgTGwpKvpOxkrcR/cE4BmpduDWjYAEGG+qe2jv4m+EkeQobAkuadreztQaZpgEWxniUo56
+	M8TFYKBu/pMOl4S+oS5am2fkQWS8lTSqz0pQoZJkZkG2FG6vrMzXOCn56QxWRYmQ718dy1uzqS6
+	pNc+WAa33f2G2+z7vCJpg6sPaH2xLd5CXOoiXlqiTu6Y+DZMy3GjKFIiVAhVJ8YADgTGR7tgzuD
+	TPQS8fqk8FDa6dGHP4nMt2nNuatQFQJVnYTK0DPrEBlrV02xn+2Dp8yBsY5+RP+6oXTQ2hmbzX8
+	kwDQ4+fgkEigNbUZ1HMHBdAMtzOpJR8lXhi5tfCIIO5IpZFXW9AY/yXQpkxETJMuA=
+X-Received: by 2002:a05:6402:5288:b0:6a1:f95b:8ced with SMTP id 4fb4d7f45d1cf-6a5df5fd41dmr8268122a12.4.1787738589521;
+        Wed, 26 Aug 2026 03:03:09 -0700 (PDT)
 Received: from [10.20.4.146] ([149.62.207.128])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c250a704e55sm387662366b.21.2026.08.26.02.51.37
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a5de5f7bb8sm3723194a12.0.2026.08.26.03.03.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Aug 2026 02:51:38 -0700 (PDT)
-Message-ID: <99dd1836-55ca-4302-a81d-545394673702@suse.com>
-Date: Wed, 26 Aug 2026 12:51:36 +0300
+        Wed, 26 Aug 2026 03:03:07 -0700 (PDT)
+Message-ID: <5426d2f6-3e67-45d3-85d6-d0da67edb486@suse.com>
+Date: Wed, 26 Aug 2026 13:03:01 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -136,8 +136,74 @@ On 8/19/26 12:49, Xiaoyao Li wrote:
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > Changes in v4:
 > - new patch.
+> ---
+>   arch/x86/kvm/vmx/main.c | 38 ++++++++++++++++++++++++++++----------
+>   arch/x86/kvm/vmx/tdx.c  | 18 +-----------------
+>   arch/x86/kvm/vmx/vmx.c  | 21 +--------------------
+>   3 files changed, 30 insertions(+), 47 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
+> index 6a813c49ca8a..10df9667d0c0 100644
+> --- a/arch/x86/kvm/vmx/main.c
+> +++ b/arch/x86/kvm/vmx/main.c
+> @@ -154,15 +154,6 @@ static fastpath_t vt_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+>   	return vmx_vcpu_run(vcpu, run_flags);
+>   }
+>   
+> -static int vt_handle_exit(struct kvm_vcpu *vcpu,
+> -			  enum exit_fastpath_completion fastpath)
+> -{
+> -	if (is_td_vcpu(vcpu))
+> -		return tdx_handle_exit(vcpu, fastpath);
+> -
+> -	return vmx_handle_exit(vcpu, fastpath);
+> -}
+> -
+>   static bool vt_unhandleable_emulation_required(struct kvm_vcpu *vcpu)
+>   {
+>   	if (is_td_vcpu(vcpu)) {
+> @@ -887,6 +878,33 @@ int vt_handle_bus_lock_vmexit(struct kvm_vcpu *vcpu)
+>   	return 1;
+>   }
+>   
+> +static int vt_handle_exit(struct kvm_vcpu *vcpu,
+> +			  enum exit_fastpath_completion fastpath)
+> +{
+> +	int ret;
+> +
+> +#ifdef CONFIG_KVM_INTEL_TDX
+> +	if (is_td_vcpu(vcpu))
+> +		ret = tdx_handle_exit(vcpu, fastpath);
+> +	else
+> +#endif
+> +		ret = vmx_handle_exit(vcpu, fastpath);
+> +
+> +	/*
+> +	 * Exit to user space when bus lock detected to inform that there is
+> +	 * a bus lock in guest.
+> +	 */
+> +	if (vmx_get_exit_reason(vcpu).bus_lock_detected) {
+> +		if (ret > 0) {
+> +			vcpu->run->exit_reason = KVM_EXIT_X86_BUS_LOCK;
+> +			ret = 0;
+> +		}
+> +
+> +		vcpu->run->flags |= KVM_RUN_X86_BUS_LOCK;
+> +	}
+> +	return ret;
+> +}
+> +
+>   #define VMX_REQUIRED_APICV_INHIBITS				\
+>   	(BIT(APICV_INHIBIT_REASON_DISABLED) |			\
+>   	 BIT(APICV_INHIBIT_REASON_ABSENT) |			\
+> @@ -960,7 +978,7 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
+>   
+>   	.vcpu_needs_initialization = vt_op_tdx_only(vcpu_needs_initialization),
+>   	.vcpu_run = vt_op(vcpu_run),
+> -	.handle_exit = vt_op(handle_exit),
+> +	.handle_exit = vt_handle_exit,
 
-I created essentially the the same code locally after I read the 
-previous patch as the code duplication was killing!
+nit: Why isn't this vt_op() for the sake of consistency and introduce 
+needless churn ?
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+<snip>
