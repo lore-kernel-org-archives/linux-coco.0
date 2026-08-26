@@ -1,61 +1,61 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010010.outbound.protection.outlook.com [52.101.46.10])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010044.outbound.protection.outlook.com [40.93.198.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978B92FE057
-	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 22:52:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8B63BE650
+	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 23:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787784763; cv=fail; b=B3KYdpxLxXdbtXA64MMrH7Cght+RU5G1bVRURZgr1DRnGOCtJNocV6wFNm4Q65hQc2+6ssRum770toNDUNuTC05fOvlgDEF38I4b3ii+vKM4xWzmMou6culi5TBtd0Ez6nywUieIwT1A19g0GsKJRtqoNxNgaZKlduGmNhmgoPk=
+	t=1787785572; cv=fail; b=F6I97cDW1mr/oEsag3P9jBg0d+tVXLmi1OZJJIelTS0w96bBIUevBi/yL2WLZjJq2VBRXBEs9bMpChLjE+T0e4fNfK38ZJollCxpfNHUZ1VY9RHDm45RBldwgOJJBYb4vKJaWD2Ua74tE54sckHYqMOHmk2cjl46L8tEQspDz+c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787784763; c=relaxed/simple;
-	bh=ADB4JQxfzU5Dky3RxvOda6q3B3ryFlMj/GCsn3RuJns=;
+	s=arc-20240116; t=1787785572; c=relaxed/simple;
+	bh=lgJB+QsdKyKnaxeZ5yZ9jqDc/9S35hCIqyq7zQcIt84=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=XMSlnRM+LsYcR+9yi/B9T1q5fDvciC0X9tOClWZwr+8SfX0GsmbHpjK+Jye7PPWBBm//pEE9JUbdDZ68z5qLHqdRTtXp1fSkddhJRYwi73mUIOO244NVCvXb+zWsh3qhFiEt9e3BTuP7UiXUx46E479BNrReFtr9ijjtlQMfYdA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Dms19mh4; arc=fail smtp.client-ip=52.101.46.10
+	 In-Reply-To:Content-Type; b=M1CHzLgp4fWdrkQ05NN4okM7tB7VGYxFyhS4+RFmATg5JIj+heeuE5Kr/dd2TwymjSL9yFGg/EuLiJwR8XZuqZkduvsBl/84/mCAIeDy27ZHg0MKgtmEK1U9faKoPu8ry+jlS05bZlUdsSYu+6BNyp6Z6j7rJJRFj9fzodk/bGQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=F7IhGDIE; arc=fail smtp.client-ip=40.93.198.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Dms19mh4"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="F7IhGDIE"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CQ4dNgnMHBTR5xdf84YIgzd3Gy50mOB+INnpE3GJCmdh8vCXhG5iQaVgLCHahKGc7uwtCgDs/H5H035KNy2HNHsncgUJdg5Ot1HIEgq7NejL4V82/tflxOYwgHUUMLbjEHEzKn2Qq0zzknEwZB6SsGyAdvld4EAPWA+aoEu6G3JpKtl0vBN3aiyDECZgqqHes6U2mapd1SjGJ6Z/qKlhD18/dgFy0pvNRJVrPZQ9oRUKktH/3J/gffY563rl9WomSZHtF2Lth7FBgYTRx56PpsV3NiVafJVwmQtkP79zaw+O0QkQugpIbbb3IPtLiPNxnQEoJvYghiWzrtdnQVDkAg==
+ b=Wd5fnwt/Ib8v8hmuUni1tutSEoZBgDVB+yQrAsh0BKUiTY3DByvGgpgvSpqi8Asa2Zf5Him3Qb574ZbpKVXsHDfjtI6EmwIb8yeG9yPcb+Pjc2GvP7W9x+8UK67j0xtC+cszXZTpekWC5o6IbcarqPt2Iftmn2mODBVXgn0Gj9BzH04BhbDg+Lc78TGMC3QcNjUkOkVAvYNjH9fiWOX1X1NezdHuBW8BNQ+JVJ9hMMu3adx1EBn1ORc8gHbkeey343CD/ZRLSRYlbXEBQEPHcVqdDS2cx6vwSR9ikzaByVV0AHqPH+taWKbvLDLUZTDHwTqB2/SDXqd3NoJ8GWK6yA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J0sbJO93B4X+/TTz9a/wUcXX6D2HvgNhA+mK6aJegzk=;
- b=ft3P0F5ZnOS7jWf9CmBNVfl8NvMBCwf6rVegUrlDBI3rwJroMMS9VGaZgnVSGxBZxtFArL5mF+awK1eDPYPjyuVfgCE/rgPJEd3X84wZHkMBtQPpF3SYD653ZpnxhAQd0S0q1UQQxDmzl4onYkvy9aOV+qltLhAYloi0bKIfVOm8PwxlhrRMvEMNnOMYyfDrgmmiN+X1Ru2yqpqzjN52T/l2tTWLt+fHNr7tLITkQUEsFO+a+QW+OED4EQKJYkzGBDLCRlvNvUL3jasJhBZSAgqcHvY+YPlA4h9PvHv4HqgF+1Xc59vzGSzRCaYo9ETBoEx8r9k8sEoZ9ObkmDBPqA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=temperror (sender ip
- is 149.199.90.133) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com;
- dmarc=temperror action=none header.from=amd.com; dkim=none (message not
- signed); arc=none (0)
+ bh=DrPvVN4A7VuHXVQYd1XJkp2aiKcqD7B7jIJWHCkZ3Ng=;
+ b=JVT8dnkJcqNifkfJZTixpvtfA7lyZuw4zVRqprYOz8xxsWiw8cs2Kf74fJpuFcvQLO+19lPSs2TsMyHYWOukqlGX2kS+KFHIPBYObXLqRVuLiGh5zljeaX25a4nsyJuskjHPVmrybafHrWvLXtJzlKRr1s/gQOqKC73vH5zWXTjLA7okvXXqHMTHxjyryjgSgh6NM8iaJd1QhxyuCW/vFTEOKTYJ6WVXxoXJKklIhpN9KMU3KVBq0JFmyLVi0DrJ3dXb9vDzpBUcyJ5h6avrftDjt1rOksUO7UI+zNVnlNibax4p2EbReHS+X2ihOtjfaeOXTI5RXjW8ufoe24jzLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 149.199.90.133) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
+ dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J0sbJO93B4X+/TTz9a/wUcXX6D2HvgNhA+mK6aJegzk=;
- b=Dms19mh4FKnFqzCnRgZYAyoQGM2gpr6zuiCxROCTrm/kDCImtMA3Jqx1s2GZzwxnAi08kwFskrvlqdwo6JisIBDMATIH0hAUQRHJmi4MOYcy+nh0Ds8epa+KW1bZH+owrhiO9uxIdYnmQaTfTtBoXowElIxT/TbC/HisCUUC1XA=
-Received: from BN9PR03CA0567.namprd03.prod.outlook.com (2603:10b6:408:138::32)
- by MW4PR12MB7262.namprd12.prod.outlook.com (2603:10b6:303:228::11) with
+ bh=DrPvVN4A7VuHXVQYd1XJkp2aiKcqD7B7jIJWHCkZ3Ng=;
+ b=F7IhGDIEGe5VCkAxcpsyKJqgDYMLLPyEZXJshEufJhFj+GM8Su5AheRTH6sACzj0UfhzGZwUzMXjuu87+pbtgEzbTY/losvPdwztDYS4fZqmBWuazIUn/K9m79yZHIcPSRwYg4Tk8babnDUKrtbTs0mo+7vcDvOFTyGl3FC6zLA=
+Received: from BL1PR13CA0235.namprd13.prod.outlook.com (2603:10b6:208:2bf::30)
+ by MW3PR12MB4393.namprd12.prod.outlook.com (2603:10b6:303:2c::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.6; Wed, 26 Aug
- 2026 22:52:36 +0000
-Received: from BN3PEPF00022BDB.namprd03.prod.outlook.com
- (2603:10b6:408:138:cafe::57) by BN9PR03CA0567.outlook.office365.com
- (2603:10b6:408:138::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.12 via Frontend Transport; Wed,
- 26 Aug 2026 22:52:34 +0000
-X-MS-Exchange-Authentication-Results: spf=temperror (sender IP is
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.21; Wed, 26 Aug
+ 2026 23:06:06 +0000
+Received: from BN3PEPF00022BC6.namprd05.prod.outlook.com
+ (2603:10b6:208:2bf:cafe::9f) by BL1PR13CA0235.outlook.office365.com
+ (2603:10b6:208:2bf::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.7 via Frontend Transport; Wed, 26
+ Aug 2026 23:06:06 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
  149.199.90.133) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=temperror action=none header.from=amd.com;
-Received-SPF: TempError (protection.outlook.com: error in processing during
- lookup of amd.com: DNS Timeout)
+ header.d=none;dmarc=fail action=quarantine header.from=amd.com;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ amd.com discourages use of 149.199.90.133 as permitted sender)
 Received: from satlexmb07.amd.com (149.199.90.133) by
- BN3PEPF00022BDB.mail.protection.outlook.com (10.167.248.106) with Microsoft
+ BN3PEPF00022BC6.mail.protection.outlook.com (10.167.248.219) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.3 via Frontend Transport; Wed, 26 Aug 2026 22:52:33 +0000
+ 15.21.360.3 via Frontend Transport; Wed, 26 Aug 2026 23:06:06 +0000
 Received: from [10.236.30.85] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 26 Aug
- 2026 17:52:28 -0500
-Message-ID: <ef5e8d6e-f1b3-4fe2-a1ba-a93c240b3f36@amd.com>
-Date: Wed, 26 Aug 2026 17:52:28 -0500
+ 2026 18:06:05 -0500
+Message-ID: <f1d8833d-7c7c-473c-baff-62dd2fe54270@amd.com>
+Date: Wed, 26 Aug 2026 18:06:05 -0500
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -63,104 +63,132 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/10] cpu/bugs: Allow forcing Automatic IBRS with SNP
- active using spectre_v2=eibrs
-To: Borislav Petkov <bp@alien8.de>
+Subject: Re: [PATCH v4 04/10] cpu/bugs: Allow spectre_v2=ibrs on x86 vendors
+ other than Intel
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
 	<linux-coco@lists.linux.dev>, <x86@kernel.org>, Sean Christopherson
 	<seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, K Prateek Nayak
 	<kprateek.nayak@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky
-	<thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, Naveen Rao
-	<naveen.rao@amd.com>, David Kaplan <david.kaplan@amd.com>, Pawan Gupta
-	<pawan.kumar.gupta@linux.intel.com>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <stable@kernel.org>, kernel test robot
-	<lkp@intel.com>
+	<thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, "Borislav
+ Petkov" <borislav.petkov@amd.com>, Borislav Petkov <bp@alien8.de>, Naveen Rao
+	<naveen.rao@amd.com>, David Kaplan <david.kaplan@amd.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <stable@kernel.org>
 References: <20260804235611.4053375-1-kim.phillips@amd.com>
- <20260804235611.4053375-3-kim.phillips@amd.com>
- <20260818232204.GBaoTpHK8k7wD9mMk4@fat_crate.local>
+ <20260804235611.4053375-5-kim.phillips@amd.com>
+ <ga63o6nf7xebndlo66qqasjx7axpopyph7ilkwhvx3enfaqs4w@r4qfr6eo6kcw>
 Content-Language: en-US
 From: Kim Phillips <kim.phillips@amd.com>
-In-Reply-To: <20260818232204.GBaoTpHK8k7wD9mMk4@fat_crate.local>
+In-Reply-To: <ga63o6nf7xebndlo66qqasjx7axpopyph7ilkwhvx3enfaqs4w@r4qfr6eo6kcw>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF00022BDB:EE_|MW4PR12MB7262:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2c4d81e9-6071-4635-e931-08df03c4b732
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BC6:EE_|MW3PR12MB4393:EE_
+X-MS-Office365-Filtering-Correlation-Id: ff2b93cb-c947-4e7c-2071-08df03c69bd7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|82310400026|1800799024|23010399003|36860700016|13003099007|6133799003|10067099003|11063799006|5023799004|56012099006|4143699003|22082099003|18002099003;
+	BCL:0;ARA:13230040|82310400026|376014|36860700016|1800799024|7416014|23010399003|18002099003|11063799006|4143699003|3023799007|22082099003|10067099003|56012099006|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	/8nU4/W6Xo2d8nseS3F3LB+1LnKjkKVyDptAY/2aL940S1DAtkz26VToBVJ5V997GDiNPXfeGvWcVh5ge9EMGZ5zb2fiOwuumLZsodvPj6ivCeDTzYhA6EZ6iiaLpmqd75CtOCITp2ri59kCk5toQFZKJbwsyi387Q0FQOPHcIDzgvbV+OI/hSTv38S1a3HIhb2OKOTiCSUduMJGzG9r+SYVoolwBMQcQ/Z7qBbBRLcXZ2q+OPUqdLdoplCCJY6IW/hyccTqVvcS7NTeiN/TFpbe7Q2lEBF643J0FwnE+OKpgnaQgDaCUrKi5bLPxfglGLhnPS505N1Xv0dGLs1vStNyPXm8xX0js57mn3KSPyinIVk68PtCcV/Z6B3zElN/d5E/1ft8et/NaUOvPvbXqipw3k98bH5pOneH6tyObMxuxUEL07hWazxO6c7cfS//uSXLlboGnWdt0NF3BMXTUGox+FUmwDFs5+80ZmQd0Mw6iMV1EGlKX7ONU2+pwdlYQa0KS5XDE5ONP+AhIKuQ8bb2MXVOLp14nNEIQLAngx42iGNr8QMxVddEaio+5fe84OoiwrF2c4Dzs5Jm1wTDzb6WT4hXOeQKvXPYeH1bEuaw1uG8T3Ai+COjoQNL4xUg13B4EnEVWM6J3j8G6aWgiUr5E/wfRjSN2JRTK0GqZ+xfkcSqPrULUG3A8hdy3I+6a2rvfu5tZiK0K/abxsxiBg==
+	jpKW6w/XEp5Xu9NduyREaT3dpYDKFz3kmHqjNHKecjIKp27b7A5sVFEvVJz5zheGHg2Wy7QN00EghHWJaN57Mva3OU6OkXsV9im2Lbannp0AgVDc7G3gZXRGtJcZGn+l5UATfqoZSGjWw3fIOVEy8DJJGOPVWxqM1E40qNdSu3qhG+85/GsATO9lTIQ/KqZx3CZqJ3iGZMayzt500Zt1b33KgQfZj4zTntnaIBJD/PequDF6CHvIAhMiEwYsIbgq7ymMNe08NS9RKPPGywlDp3BgcVfiTfLYVuXmlwnNgKoc8BSl4qipMwHuM6RvzuZ1/ZmRJOi/4KA2lfwfRjPErYX4gAcEGtcCzBimaOmkEa3q0dmfq/2eOYYRIOP7kIy1Z/5uxd1Wx6gq145XVyXyx5jIoyTGZ7QWe5NA540WaPJDgGe/xV5MRJyN9H4LQpcBQnUZzgZ4RdLbPF9TFaTvt4dCt5i++BDydJq3L5jdyS/J0lGdHRGc4AZeWjHBa8QKhxeq+q1cGLP6aS01XmY6tjh6M9H52HFFhLj334ZDjBqkuvP9OdSNMYvU9XPRqzguLz70uw4fbCWKBXbSHDG39/KP9zuKQGqfzamSU0jITS7uryX7DrBtrBZ8fE2R0z3T7+iOtB2IAO5jpfqHoQmMXFDJF6S9MUbrLWLYEVEUhm8BdJoScgWhbxpfsDR/j+3e0BbFw5xz44M4qP95cwse6Q==
 X-Forefront-Antispam-Report:
-	CIP:149.199.90.133;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:unknown-90-133.xilinx.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(1800799024)(23010399003)(36860700016)(13003099007)(6133799003)(10067099003)(11063799006)(5023799004)(56012099006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:149.199.90.133;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:unknown-90-133.xilinx.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700016)(1800799024)(7416014)(23010399003)(18002099003)(11063799006)(4143699003)(3023799007)(22082099003)(10067099003)(56012099006)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	8tZ5GS9Bxk8IHON5nNrAlg7rNGh5ukp/AJu/v0HBvbgbKj+qqzD6tJ2wL3N6jRH1V7+Ad3OCQ0kXhHdyv0J9DHi7u4nupbI7vTMCw1Lg9xYsrGsCvnq6AqffhIAvtfgRV1ewl5cKK+ZnKVEuelcNmmjxJIw7K1/A+5cotiZyAU1SnptucEpmdy81W+haCijihSoww4JnngpvVf3UmsB9qi/XlvxVhfp1NXBAMI9+A7TeBo8U/2zXBnObguB/dWhfAbz14xfLsd0r5NIlCGes8IIa4NthfDSKaL9H7wu3t2JUC70gA3mdz0I9W3wI74o8tecWEozFGkNBJ9I+ufWE1PMRD44RSOceNPbX3gnrvptpam2YN2Mlj6aeOJBz8SSft7orQpXO2wYYgkRDoogmhKgf2hc8hzL+FWz+x6v/I4oOr+jNzVqh7rkCUF1XCOBT
+	r1n0xUjvsBHpBtrGIsNrqWDct23onaHxMKqUB+8XQqpkZPrQ7DOtSvcGNyktbfPo79OBjVvOq5EZ8cnxcUuKT8rca3H+b4kLen5QmaagJU9HjHJZbH64Isd/wbkVo/ThuW7nE2Ocb/1WmckxWq5DIrLWn2Gs0ZIWh97CVmUlHGrknquo4pDFK1UwtOQ9DdTngC5z2JzBUJAlg6nPzCmNar6yDQsfO7dRy8xWlmGPIfIKn7xPsAZqv3Wagh7V6lJKG+cprGD0Z7oQrRJPHrvwTQnRNHv/O8kP/LegGqDojD2ZSYiEDAjmU+RlVfIhue0uU01/dqzzcOx/5f7bDwH2mdqkgNdBLvqxkNNFn9YUYpvzImRF+GwM7H9+EqC3aYnA8Jc5ce9lEQ4TfhEY5EObXIdR0lkpVodBNmbTOyG+yFbD/NmeR/aFJPZLgNrcvP1u
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 22:52:33.0155
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 23:06:06.1154
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c4d81e9-6071-4635-e931-08df03c4b732
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff2b93cb-c947-4e7c-2071-08df03c69bd7
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[149.199.90.133];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF00022BDB.namprd03.prod.outlook.com
+	BN3PEPF00022BC6.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7262
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4393
 
-On 8/18/26 6:22 PM, Borislav Petkov wrote:
-> On Tue, Aug 04, 2026 at 06:56:03PM -0500, Kim Phillips wrote:
+On 8/18/26 8:17 PM, Pawan Gupta wrote:
+> On Tue, Aug 04, 2026 at 06:56:05PM -0500, Kim Phillips wrote:
+> ...
+>> @@ -2297,13 +2299,26 @@ static void __init spectre_v2_apply_mitigation(void)
+>>   	if (spectre_v2_enabled == SPECTRE_V2_EIBRS && unprivileged_ebpf_enabled())
+>>   		pr_err(SPECTRE_V2_EIBRS_EBPF_MSG);
+>>   
+>> -	if (spectre_v2_in_ibrs_mode(spectre_v2_enabled)) {
+>> -		if (boot_cpu_has(X86_FEATURE_AUTOIBRS)) {
+>> +	/*
+>> +	 * head_64.S preserves EFER.AUTOIBRS across boot, so a kexec from a
+>> +	 * kernel that ran in AutoIBRS mode carries the bit into the new kernel.
+>> +	 * Explicitly set or clear it to match the selected mitigation, regardless
+>> +	 * of which mode is in effect.  The boot CPU does this before
+>> +	 * init_real_mode() snapshots EFER for the AP trampoline, so APs inherit
+>> +	 * the correct value too.
+>> +	 */
+>> +	if (boot_cpu_has(X86_FEATURE_AUTOIBRS)) {
+>> +		if (spectre_v2_in_eibrs_mode(spectre_v2_enabled))
+>>   			msr_set_bit(MSR_EFER, _EFER_AUTOIBRS);
+>> -		} else {
+>> -			x86_spec_ctrl_base |= SPEC_CTRL_IBRS;
+>> -			update_spec_ctrl(x86_spec_ctrl_base);
+>> -		}
+>> +		else
+>> +			msr_clear_bit(MSR_EFER, _EFER_AUTOIBRS);
+> Clearing the old kernel state should be done well before the mitigation
+> selection starts, below already does it for the SPEC_CTRL MSR:
 >
-> Please fix all your subject prefixes: it should be "x86/bugs:"
+>    void __init cpu_select_mitigations(void)
+>    {
+>            /*
+>             * Read the SPEC_CTRL MSR to account for reserved bits which may
+>             * have unknown values. AMD64_LS_CFG MSR is cached in the early AMD
+>             * init code as it is not enumerated and depends on the family.
+>             */
+>            if (cpu_feature_enabled(X86_FEATURE_MSR_SPEC_CTRL)) {
+>                    rdmsrq(MSR_IA32_SPEC_CTRL, x86_spec_ctrl_base);
 >
-> The tip tree preferred format for patch subject prefixes is
-> 'subsys/component:', e.g. 'x86/apic:', 'x86/mm/fault:', 'sched/fair:',
-> 'genirq/core:'. Please do not use file names or complete file paths as
-> prefix. 'git log path/to/file' should give you a reasonable hint in most
-> cases.
->
->> spectre_v2=eibrs currently enables retpolines when SNP is enabled,
->> instead of AutoIBRS (EIBRS) because the commit that disabled
->> AutoIBRS if SNP is enabled stopped short of enabling
->> X86_FEATURE_IBRS_ENHANCED.
->>
->> Change the logic to enable X86_FEATURE_IBRS_ENHANCED, and move the
->> decision to switch to retpolines in the default/"auto" case in
->> spectre_v2_select_mitigation().  This allows the existing
->> spectre_v2=eibrs logic to work as intended.
-> So this whole hoopla is just to be able to select =eibrs in SNP guests, *and*,
-> in doing so, cause a performance loss. I.e., shoot oneself in the foot.
->
-> Or is there another, better reason which wants this?
-It's not in guests, it's in the hypervisor, and in addition to making 
-spectre_v2=eibrs work as advertised, it also fixes emitting the 
-misleading "EIBRS selected but CPU doesn't have Enhanced or Automatic 
-IBRS." on AutoIBRS-capable CPUs.
+>                    /*
+>                     * Previously running kernel (kexec), may have some controls
+>                     * turned ON. Clear them and let the mitigations setup below
+>                     * rediscover them based on configuration.
+>                     */
+>                    x86_spec_ctrl_base &= ~SPEC_CTRL_MITIGATIONS_MASK;
+>            }
 
-Shooting oneself in the foot is subjective depending on what performance 
-users want and whether in userspace or not, esp. considering this series 
-also enables spectre_v2=ibrs on SNP hosts.
+Thanks, I've addressed this in v5.
 
->> Fixes: acaa4b5c4c85 ("x86/speculation: Do not enable Automatic IBRS if SEV-SNP is enabled")
->> Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
->> Cc: Borislav Petkov (AMD) <bp@alien8.de>
->> Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
->> Cc: Dave Hansen <dave.hansen@linux.intel.com>
->> Cc: Sean Christopherson <seanjc@google.com>
->> Cc: stable@kernel.org
-> Definitely not stable material. If at all.
->> Reported-by: kernel test robot <lkp@intel.com>
->> Closes: https://lore.kernel.org/oe-kbuild-all/202603121136.bc8zNsHS-lkp@intel.com/
-> It doesn't close that - that link points to something which is not upstream.
+>> +	}
+>> +
+>> +	if (spectre_v2_in_ibrs_mode(spectre_v2_enabled) &&
+>> +	    !(boot_cpu_has(X86_FEATURE_AUTOIBRS) &&
+>> +	      spectre_v2_in_eibrs_mode(spectre_v2_enabled))) {
+>> +		x86_spec_ctrl_base |= SPEC_CTRL_IBRS;
+>> +		update_spec_ctrl(x86_spec_ctrl_base);
+>>   	}
+> Nit, I find this a bit confusing. IIUC when AutoIBRS is supported, you want
+> SPEC_CTRL[IBRS] to be set when legacy IBRS mitigation is deployed. If you
+> move MSR write down after legacy IBRS mode is set(KERNEL_IBRS), you can do:
 >
-These get dropped in v5 - please switch to reviewing v5 now:
+>            if (spectre_v2_in_ibrs_mode(spectre_v2_enabled)) {
+>                   if (boot_cpu_has(X86_FEATURE_AUTOIBRS) &&
+>                       !boot_cpu_has(X86_FEATURE_KERNEL_IBRS)) {    <---- just adding KERNEL_IBRS check to existing code
+>                            msr_set_bit(MSR_EFER, _EFER_AUTOIBRS);
+>                    } else {
+>                            x86_spec_ctrl_base |= SPEC_CTRL_IBRS;
+>                            update_spec_ctrl(x86_spec_ctrl_base);
+>                    }
+>            }
+>
+> Otherwise, a comment explaining the intent would be helpful.
 
-https://lore.kernel.org/lkml/20260826223510.3669875-1-kim.phillips@amd.com/
+Right, also addressed in v5.
+
+Please take another look.
 
 Thanks,
 
 Kim
+
