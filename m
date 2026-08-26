@@ -1,56 +1,56 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C6C3F3279
-	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 09:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38F33BBFDB
+	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 09:19:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787735949; cv=none; b=CDFsTkHstDsJT1gDdE9CJ/4wLqow94CXuTZkPoVzIRwhOVMMuA5mHlmWaDWWsPi/YhNV+j2j7dtWdr7W/XFzk/hGNePJocJstz7jdrUfW+p1FIry9itGmbM1OdU4gHATAcEFXXlcC3sTMz7C0MaXpp+/Mn9CSoax32OnNIGTOGU=
+	t=1787735952; cv=none; b=J211MxIyjzSZAqIbIU1KILZu74KmVfmUKEfctBLp0//7SCjmOGVcc4JG1IUQ4BweVjxP2UJ2722+Jky5dN4zIbq70nJyYk3qR3u7X7Nt4qYlPhxyCT9V+GxGMbEo0KeL/lV/IQe4LzRgZz4i2/si/A+uLjjAQ5GVuMDxozlDDq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787735949; c=relaxed/simple;
-	bh=7w+gDb7QtZnkDWq+h4HUO3ST/UY633rHaNS6m39pYVY=;
+	s=arc-20240116; t=1787735952; c=relaxed/simple;
+	bh=7hWrOiBCNLWR4WmaZsIQ/WiJTqMaoqs3GPpOPxdsIrA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AprbQJK1Kimlbk0vvp8EUE9TfhnlrQmbny+dn+pUeFGjRLBiKAXW6+6rHUTvcDEG6pXhWCyM9pAy0/4SxbzerQ77hcz9f51Vx87KBtOeHd0TGA9ah/2hRKnPX7dPNp9pWU6LtI8w13Bj1LXraWRQe1L0fMePRNWaied6sGPOTS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SnJCOWXC; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=i58QSw/vi6d5TvPAUi7HtKs01HhsJb4RaFrs5HrXHkssrSVR5P/qB4RT8ndSeoJ4N+tCK1pzBJn97D/4+BumB+wIStnkHfk7Xxno2wnpQvC7oIUnVyQ93MdP1kh5n6CCwASqPaeVM3gU+6W/HyQRxnzNNKZIuocQnWlZdvRSVBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k9cRaxz6; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SnJCOWXC"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cfe48ca1efso12950115ad.0
-        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 02:19:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k9cRaxz6"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d6df0a1e18so9989665ad.1
+        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 02:19:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787735942; x=1788340742; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1787735946; x=1788340746; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=89L7E0e7HlFcsWgm0DMydejmixwj8/yVJ5vfC8XlboE=;
-        b=SnJCOWXC5/rOMFA/vx/6nF51iWY0lEnNv7RosxVWTD2u9xB2jn1SnHwEJ5AxOIZvXM
-         MoClmBOVrrKc8Ej93mHp8p182DR4o9p6rM3qU9pEGPgQVL7o+qrhaTRS4b+RD0lGWJN2
-         21i86X2euGhLXnLjKq3nF42t9jlgcs5IgkkhWpMcNm9MNzOrCzj07RI5Ji4I9M9Z6ASC
-         axfS84ILU2w9CQRlTAG8vNxIkzNOe1aIeiNmJdHN6WhVjxLf2PxrFPg+aTZvDRXJOZU5
-         002bJ2pAcfpUzPOgM8y00Kz9JMThW7WuzZP+aQ8w4r1ltTPA8XoS0WoETLf82F24Tt6E
-         u3aQ==
+        bh=QanNPXruSQXVrF67aaQcoGfZbE9UbCtKaKkFHYTWC+U=;
+        b=k9cRaxz64CTexY/SiGC7IvpBlH2TRjk/moH7OmOEdvQVh9H6aH6tZP7y+kFWRibWLQ
+         +cisWBrBoGrKdg/CsluSEDcszHatW/acE0vRELzqwraLIPdXggwSpUx/GWkrv4LVVWuG
+         mBUFPMMySPIbUcoDqj7XPQ3oogTCDHodi8ZVRZgRdcrz8XiAWs9OKW+9ObyOqcMfG3ET
+         8IS7ppwSUMAbZvSMjQ0ezHKotcxN5eKpFhmDN+75+RC0iIkY0mYnDuPm+0MBJJqv3TCJ
+         IZP8Zng5jMVZ817aieB+CITy/CrHd0bJGeTwf/ScLIP89l1rwtLYpQy0SltrRbbNhsPA
+         RoXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787735942; x=1788340742;
+        d=1e100.net; s=20251104; t=1787735946; x=1788340746;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=89L7E0e7HlFcsWgm0DMydejmixwj8/yVJ5vfC8XlboE=;
-        b=tPjaZGSca1Lim8907WBqGXJjtFdRGAXRH0geBW9gBf3Hj1BXko0NH95F0TDRSPDdLN
-         tdNFWR3hEX3jjo67Fss0NQ64Wztb5ItAhabYOGUone/gkXxvlQEVXwVJGsmTAvdHy81k
-         1XaNakG1kviD3dd7NAuhBLBAH+qejBMS+KOEUGyHygkm/ILoI7FqzQV8Eh5TglCPy6yu
-         DPML613ClC31N3mUzetgSju/uEASnIypnV4G5cvD7kLAw3latl9RRoqha2cpKFYMwtDm
-         7WsZ5vmdYGCLAqTGwDzt5Onc7cJ17ck8IkR7/KG+j2u+KMJWlZWOnNUGLO333Kpfw0g7
-         fubA==
-X-Forwarded-Encrypted: i=1; AHgh+RpffSoQvUkqKRvGcRxpYeJE4CQYlOtCkEpSa2alXT6eWXk7AENwiSK14DO16aXly2M+R+q6nkHMYQth@lists.linux.dev
-X-Gm-Message-State: AFuF++lqsEvzL2SbGmlSi7pVbjRN5JbdvE5GaWdZGHtwgsJDCgI00JfI
-	ZRXZ6fQWkCtN+6iVbGc13lH4vc8ufkpKpPCHQL58vaLbKJtRoDFCRANIXW0Xpzaa9YuofLRujxd
-	zsUN8ibfdfONau7qU/n3WkXhzJw==
-X-Received: from plwg14.prod.google.com ([2002:a17:902:f74e:b0:2d5:9dd2:5fc6])
+        bh=QanNPXruSQXVrF67aaQcoGfZbE9UbCtKaKkFHYTWC+U=;
+        b=r5f9OVMIB63F0qm12+TseaZCpv+1X6J07sTmk1rUxLNpuhybon2vFwpjnJ6uGHc0ik
+         B6nKn+d/vk9YQDJoVUnqbtyJST5/xwxG2ok7ktZlIEOrGQEJJDg617e0mqSTRQ9QbmRC
+         LyMMw36PE01Mo3kgRJGYE6KaQmyPYb91i052PF5xm8Ul3Wo5HI7X1cTZ+CfNDXr8SqCE
+         RqM9wEIIXA4IqJDNxEopFpFcK3Pfmmd0lxr/eZOfqniuoKHwxzHHgOS2npmuCamkjQDN
+         xLUuzVZnRw08ZK+xHCowsCmT6mBUjizHaOtDNNef3GfeCpjavs3gvWcxcM2ESthhOOi0
+         Mprg==
+X-Forwarded-Encrypted: i=1; AHgh+RqC1QtY/DaH5CLjZwjDr0Ik+HTibGeiJ/9psTgz2gDHo847M8jZDqVM5e+0TJ9lKUDHyya8QHWeYm/k@lists.linux.dev
+X-Gm-Message-State: AFuF++n9dB3yTYsT/iaZzB4DODG2JyhzXVIJ1+rf7VDH9U6g36+hhzTu
+	AXATu2HQ8yn+udXNqa77zQVmsmr9aGaZxYTy04URxRIjz9UF+Fh8RFSxeXbBhO1axAvrzgQKl0D
+	d9t5SQHva6LGOWN/ZWFCojYgabA==
+X-Received: from plyw15.prod.google.com ([2002:a17:902:d70f:b0:2cc:6206:58ad])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:2283:b0:2d6:fed1:7127 with SMTP id d9443c01a7336-2d70779678cmr89516245ad.0.1787735942070;
- Wed, 26 Aug 2026 02:19:02 -0700 (PDT)
-Date: Wed, 26 Aug 2026 09:18:30 +0000
+ 2002:a17:902:f541:b0:2d3:716e:e2ae with SMTP id d9443c01a7336-2d707ab1407mr81866255ad.6.1787735945585;
+ Wed, 26 Aug 2026 02:19:05 -0700 (PDT)
+Date: Wed, 26 Aug 2026 09:18:32 +0000
 In-Reply-To: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,13 +60,14 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=4642;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=2317;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=7w+gDb7QtZnkDWq+h4HUO3ST/UY633rHaNS6m39pYVY=; b=r4t4S/JNI5hvSCE0TK199jmMLi6mPSfRkQixeoALxuEBJ2SPvehHkS7r4ESdRDawsAmTdhPMz
- yre4PD9BkhTCsEfVE6Y3A1ngu0fOF/kQZRDMogw2uXeBID6J4beusMe
+ bh=7hWrOiBCNLWR4WmaZsIQ/WiJTqMaoqs3GPpOPxdsIrA=; b=H4rkK1YLN75/OUClRsyrNGZ+v8Y0cZ9iPfybDQNGwCS1Lp8udQXVRcUWRxH/i7jKh5B1xjwbI
+ /6yH7SDOMn/C3e0QrzREPxPxypHEsDepGeNaD2wcV8oKFQzOKNmrTyz
 X-Mailer: b4 0.16.0
-Message-ID: <20260826-gmem-inplace-conversion-v11-32-0a15d8a799aa@google.com>
-Subject: [PATCH v11 32/46] KVM: selftests: Test conversion precision in guest_memfd
+Message-ID: <20260826-gmem-inplace-conversion-v11-34-0a15d8a799aa@google.com>
+Subject: [PATCH v11 34/46] KVM: selftests: Convert with allocated folios in
+ different layouts
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -98,127 +99,58 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-The existing guest_memfd conversion tests only use single-page memory
-regions. This provides no coverage for multi-page guest_memfd objects,
-specifically whether KVM correctly handles the page index for conversion
-operations. An incorrect implementation could, for example, always operate
-on the first page regardless of the index provided.
+Add a guest_memfd selftest to verify that memory conversions work
+correctly with allocated folios in different layouts.
 
-Add a new test case to verify that conversions between private and shared
-memory correctly target the specified page within a multi-page guest_memfd.
-
-This test also verifies the precision of memory conversions by converting a
-single page and then iterating through all other pages to ensure they
-remain in their original state.
-
-To support this test, add a new GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED
-macro that handles setting up and tearing down the VM for each page
-iteration. The teardown logic is adjusted to prevent a double-free in this
-new scenario.
+By iterating through which pages are initially faulted, the test covers
+various layouts of contiguous allocated and unallocated regions, exercising
+conversion with different range layouts.
 
 Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Reviewed-by: Fuad Tabba <tabba@google.com>
 Tested-by: Shivank Garg <shivankg@amd.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-
 ---
-
-v10: Update macro GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED to avoid
-     potential macro argument reuse
----
- .../kvm/x86/guest_memfd_conversions_test.c         | 67 ++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+ .../kvm/x86/guest_memfd_conversions_test.c         | 30 ++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
 diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-index 4c20d3d8e9349..a8d89df53e46d 100644
+index f46f1530a94b9..acdff2d154046 100644
 --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
 +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-@@ -61,8 +61,13 @@ static void gmem_conversions_do_setup(test_data_t *t, int nr_pages,
- 
- static void gmem_conversions_do_teardown(test_data_t *t)
- {
-+	/* Use NULL to avoid second free in FIXTURE_TEARDOWN (multipage tests). */
-+	if (!t->vcpu)
-+		return;
-+
- 	/* No need to close gmem_fd, it's owned by the VM structure. */
- 	kvm_vm_free(t->vcpu->vm);
-+	t->vcpu = NULL;
+@@ -282,6 +282,36 @@ GMEM_CONVERSION_TEST_INIT_PRIVATE(before_allocation_private)
+ 	test_convert_to_shared(t, 0, 0, 'A', 'B');
  }
- 
- FIXTURE_TEARDOWN(gmem_conversions)
-@@ -103,6 +108,30 @@ static void __gmem_conversions_##test(test_data_t *t, int nr_pages)		\
- #define GMEM_CONVERSION_TEST_INIT_SHARED(test)					\
- 	__GMEM_CONVERSION_TEST_INIT_SHARED(test, 1)
  
 +/*
-+ * Repeats test over nr_pages in a guest_memfd of size nr_pages, providing each
-+ * test iteration with test_page, the index of the page under test in
-+ * guest_memfd. test_page takes values 0..(nr_pages - 1) inclusive.
++ * Test that when some of the folios in the conversion range are allocated,
++ * conversion requests are handled correctly in guest_memfd.  Vary the ranges
++ * allocated before conversion, using test_page, to cover various layouts of
++ * contiguous allocated and unallocated regions.
 + */
-+#define GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(test, __nr_pages)		\
-+static void __gmem_conversions_multipage_##test(test_data_t *t, int nr_pages,	\
-+						const int test_page);		\
-+										\
-+TEST_F(gmem_conversions, test)							\
-+{										\
-+	const u64 flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED; \
-+	const int nr = (__nr_pages);						\
-+	int i;									\
-+										\
-+	for (i = 0; i < nr; ++i) {						\
-+		gmem_conversions_do_setup(self, nr, flags);			\
-+		__gmem_conversions_multipage_##test(self, nr, i);		\
-+		gmem_conversions_do_teardown(self);				\
-+	}									\
-+}										\
-+static void __gmem_conversions_multipage_##test(test_data_t *t, int nr_pages,	\
-+						const int test_page)
-+
- struct guest_check_data {
- 	void *mem;
- 	char expected_val;
-@@ -201,6 +230,44 @@ GMEM_CONVERSION_TEST_INIT_SHARED(init_shared)
- 	test_convert_to_shared(t, 0, 'C', 'D', 'E');
- }
- 
-+GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(indexing, 4)
++GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(unallocated_folios, 8)
 +{
++	const int second_page_to_fault = 4;
 +	int i;
 +
-+	/* Get a char that varies with both i and n. */
-+#define combine(x, n) (((x) << 4) + (n))
-+#define i_(n) (combine(i, n))
-+#define t_(n) (combine(test_page, n))
-+
 +	/*
-+	 * Start with the highest index, to catch any errors when, perhaps, the
-+	 * first page is returned even for the last index.
++	 * Fault 2 of the pages to test filemap range operations except when
++	 * test_page == second_page_to_fault.
 +	 */
-+	for (i = nr_pages - 1; i >= 0; --i)
-+		test_shared(t, i, 0, i_(0), i_(2));
++	host_do_rmw(t->mem, test_page, 0, 'A');
++	if (test_page != second_page_to_fault)
++		host_do_rmw(t->mem, second_page_to_fault, 0, 'A');
 +
-+	test_convert_to_private(t, test_page, t_(2), t_(3));
-+
++	gmem_set_private(t->gmem_fd, 0, nr_pages * page_size);
 +	for (i = 0; i < nr_pages; ++i) {
-+		if (i == test_page)
-+			test_private(t, test_page, t_(3), t_(4));
-+		else
-+			test_shared(t, i, i_(2), i_(3), i_(4));
++		char expected = (i == test_page || i == second_page_to_fault) ? 'A' : 0;
++
++		test_private(t, i, expected, 'B');
 +	}
 +
-+	test_convert_to_shared(t, test_page, t_(4), t_(5), t_(6));
-+
-+	for (i = 0; i < nr_pages; ++i) {
-+		char expected = i == test_page ? t_(6) : i_(4);
-+
-+		test_shared(t, i, expected, i_(7), i_(8));
-+	}
-+
-+#undef t_
-+#undef i_
-+#undef combine
++	for (i = 0; i < nr_pages; ++i)
++		test_convert_to_shared(t, i, 'B', 'C', 'D');
 +}
 +
  int main(int argc, char *argv[])
