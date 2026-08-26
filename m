@@ -1,56 +1,56 @@
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FE0409277
-	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 09:19:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524563FE645
+	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 09:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787735968; cv=none; b=RjImLr1uh2KSzm6GBXb1upAM85VnpyPoEm3v8g7v842IPLKJqXnj8w+9c0d8ym+st9gKJn6JhrExCFkeP5Nk40PLPf1ADmTNqkflFrpq1wZDwju4cJePFIrcIcI++s0qUMRwBOxvPl98JiYHM3PGneNVYcfrvQ+xhXEwIiZdnJc=
+	t=1787735970; cv=none; b=XkQeZuR/vlKeJytCYvqSb0WzXP8RS+f62DybyJv1fPHFdp5fPrWiUlUT+dHAiblinxpF5kHB+adpW9modMNWJ/UUUsBmCoE96YBJ1qRCVZy2N+XCwCDWiUk/wtT97o02ROW/H0CWU+o39/ghc54+mLdRmss1DSV/Ih6le0/WBwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787735968; c=relaxed/simple;
-	bh=zBxULgvDHXazZ5SMZOlYLubW+VhR2VpJTUrx3o4CGAE=;
+	s=arc-20240116; t=1787735970; c=relaxed/simple;
+	bh=sPZHu6CIw+fRiMalmPEts6Uh4jsHKlHCx6VuhBaSH7g=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=B4LWItPgL5Z5SfiFVVztDOSfK6ZJoE0SeE6EQE9YsZLzDQde2C2SVvNeklImKnttKPm0jKsqaOmCf8uvugowvtdPpdVtNcE6ElWe+YpbmOAhHJOXS4IOrGI2Eb07qQulXpxw2+5rhn8KxaXmnhMBbutS7wAQ5aqnCXUT0P/RycE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o7Gwlm8M; arc=none smtp.client-ip=209.85.216.71
+	 To:Cc:Content-Type; b=T3BPx+ap9zunFqAY/GoTtXk8uLNJxI79/mADdhgNJXRyoWgKoLCcjp08ZITmupWuK/+W12tIDo6uYHoMu+N/RqJMmnI6SAaSdirf5V5jFf9GWvSsgc1cMPZyE7YCnKqP2ePAxsAIkyUeqO4jxq8Dw3a30oNBU5EM2M1uJLLrEsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ABc3n9bI; arc=none smtp.client-ip=209.85.215.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o7Gwlm8M"
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-39533bb224cso1486045a91.3
-        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 02:19:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ABc3n9bI"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb11535e6a1so981427a12.0
+        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 02:19:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787735960; x=1788340760; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1787735963; x=1788340763; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=y+F0RPt2BIQhoyPunxbW8b7PnDA004/ENVxwXm2SdeA=;
-        b=o7Gwlm8M6bCQ17unjNZPIIM4fURJAcRlJ1eGfgHiC2+fFHGXuxpHMoXK4Sb4n52INo
-         bwp+oFrSHjUr/xZ0yEKM9abB27fjuA5c6Ra18gH22EAC+bjOnuPYdLEj/YusuQNYjUCD
-         u/i+beK2HOpKXhqzqHhajmXKe3nxS1X3UOtmNxzjpD/m+Fe/+TSnUx2RqgDBCsJzPzcu
-         9qdru7tCb1CjafNePh37P+3AY6ej+CLQkna2WqWm7+GtOTOPF9lI2pRn5daDG1eE500e
-         kWYdYsaDoINtzPPbpNTZF3yN8MgKJpLnrE8gYzo5OmINZJAWxzLnexTaqBcvnPuD8SI6
-         PN2Q==
+        bh=jz7w3ahlJ2XXJ+zdKH+uz7IHVQmm2wlsntFHCBVHzEo=;
+        b=ABc3n9bI66Exv5GhPTarBYbhTiD1KG8qkHopFKlHCtYHukqQmbeerZuyYNlXpQLDRX
+         KV1hZMKgJVbLQ9+2gZXV6yVnOTUGws2/EnIV5kAwLB9vhID6j4qYjFVd/YjEm8w9rNS8
+         mf+eXlEBsZwhKz+clawKaAGtXjQBb/Wqs/GLPkt+91t6gDKwCp2a0yLJ3+vJjTxibP4R
+         WbBOBvUt98/aMYviYI9sXdlbT+iTZCb4BqDpb40eSbZ+sryAqDro9g5m5lxi8yYlAvWg
+         2rh9XMg7uKPPdClv/4YCf9ktR/NJVGAmUyV694dIK7Ghuw9AOmOrGUL3i6VL8YqSqCMq
+         pxow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787735960; x=1788340760;
+        d=1e100.net; s=20251104; t=1787735963; x=1788340763;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=y+F0RPt2BIQhoyPunxbW8b7PnDA004/ENVxwXm2SdeA=;
-        b=YwC1k+pbUh5uNMP/EoAgl2gRoy7RNToKAPJy90CbG1zCeAm3etwE4u98XIlqURM3rT
-         BYyh75BSBc1MBMPGQ08q3kI1f1a0bUYT23PsEpYMcBModSUIhHbmSUxqa55XNPldYTdI
-         ryGeYXcxXKcI0uSphSP0fPENxFKycZBUNg2Ysk4I6lPy6Ax07l+7HscgwHFuajb4/1kd
-         mHCLWjVJrNqWT0ivpgPJebOi1zrWVAeNjSgu7FCJxcURL08tpdf30a+OkLN/aIL6806o
-         QHDLN4+4dJYDLMcY7CFoTWDRRlLflFFMQvFrzCWHIZDN0XROUgj1HUm22WGyUdko/o1h
-         nF7w==
-X-Forwarded-Encrypted: i=1; AHgh+Rr1sJDojw+yOUaIO7wT63R4NoiT7LQJ9Vki8VCzZbKMuAspqyuH7YNUkzFKc1brpRjdR7WYZ/v6E2/R@lists.linux.dev
-X-Gm-Message-State: AFuF++mZFgpW0LzeFaifP3ZH6jlnKriF2y72p42A+zBY9i64EArdypMP
-	xaRGDjvgXJRb+Nqk4uMD/MyV8SDuIdKVyn7IKkg12zuws2GM7PhXjM2koW94a9oPOwtWGf4DImi
-	xOiAEE12/ir2QQmxZcb/TpdIbrA==
-X-Received: from plbmo14.prod.google.com ([2002:a17:903:a8e:b0:2d7:ffd:f2e1])
+        bh=jz7w3ahlJ2XXJ+zdKH+uz7IHVQmm2wlsntFHCBVHzEo=;
+        b=g7O8quRJnVIHbYuQdt8bwuXuUQ74KvsrhRUNeHn64oGqoHJA+b1RJ9sYnrheAhCywO
+         p3ti+scTWWjhQ7Gjg0naZe8/idqmiyP2CyfrXBHiH4GOhmoVI+GBWNi5uJSp1dYjmBh4
+         yZnhY7GqnATGZYPnEZQ0hv49j2ZHQan9PhmOfiptnmRDmd13h1YFmA/zYKYpILcGGNZq
+         IIxT6PcZrJQ3JUZYL7QYUaaXJeevyJNc2Gwt8FTCJ0HQ0tNSkzd9Nbq2n2CO68Z5TBfK
+         bRfa4nfFpR0Lkwpuy0TS6s7so01efEAxNDjHhijJVdZzOjCa9SvlaH4fkPu4T5tHgM0+
+         Coag==
+X-Forwarded-Encrypted: i=1; AHgh+Rq+dhdSERvnZtHryBdbTUHEdNdN7pHyTwGfC76ruTPEGRVm7CBl/nVX6rbRTXA2O6CKM96gX5XvRJcQ@lists.linux.dev
+X-Gm-Message-State: AFuF++kb2/P90N0pGZAcTeRYILLjAQcOLbiwNwPDtKrcpw4XmvRaLzjL
+	Kjz/Z/GESKkL8JQ6aT9/M4jUcIJ5aG4LmUdRjwC6sERXEB26DNGoC99Y3u8wDIvUXj8yVNYjkN9
+	SumTb6CBkVtuDH2w1zLYqrMqV/g==
+X-Received: from pgbcr9.prod.google.com ([2002:a05:6a02:4109:b0:cbe:e120:3788])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:2341:b0:2c7:ebfb:618f with SMTP id d9443c01a7336-2d707c1020emr84178295ad.14.1787735959205;
- Wed, 26 Aug 2026 02:19:19 -0700 (PDT)
-Date: Wed, 26 Aug 2026 09:18:40 +0000
+ 2002:a05:6a00:bb0e:b0:847:8acd:747c with SMTP id d2e1a72fcca58-85374ebe486mr8878186b3a.13.1787735962670;
+ Wed, 26 Aug 2026 02:19:22 -0700 (PDT)
+Date: Wed, 26 Aug 2026 09:18:42 +0000
 In-Reply-To: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,13 +60,14 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=5392;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=5603;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=zBxULgvDHXazZ5SMZOlYLubW+VhR2VpJTUrx3o4CGAE=; b=+mJZCtE3M/fpif61DFhZWRV1ZVlRrS/x8em+v7Rtj8f6DsVsyejLGAIvq4yHWa8TuuNUlbwVB
- Awqh72Q64bmCf7zIodrA5VJ3FcKFjlgLjcwCp6uM5anzbVnjZMTBAOM
+ bh=sPZHu6CIw+fRiMalmPEts6Uh4jsHKlHCx6VuhBaSH7g=; b=bc/CQRB4ghM7RBxbU4UEgzRadqchF8JqcorHB5X+jTCT4Ow+7Y+I0O0F99fDiLd5s3UobJ854
+ 7jfsBkZtDy0AJ7cv9qPJR7hlIRFbgTbM0OIMWLsXAcqj1brU61YZrtq
 X-Mailer: b4 0.16.0
-Message-ID: <20260826-gmem-inplace-conversion-v11-42-0a15d8a799aa@google.com>
-Subject: [PATCH v11 42/46] KVM: selftests: Make TEST_EXPECT_SIGBUS thread-safe
+Message-ID: <20260826-gmem-inplace-conversion-v11-44-0a15d8a799aa@google.com>
+Subject: [PATCH v11 44/46] KVM: selftests: Set up page size and alignment
+ independently for guest_memfd
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -98,151 +99,140 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-The TEST_EXPECT_SIGBUS macro is not thread-safe as it uses a global
-sigjmp_buf and installs a global SIGBUS signal handler. If multiple threads
-execute the macro concurrently, they will race on installing the signal
-handler and stomp on other threads' jump buffers, leading to incorrect test
-behavior.
+Currently, vm_mem_add derives the backing source page size, alignment
+padding, and mmap size from the backing source type upfront before checking
+if guest_memfd is being mmapped.
 
-Make TEST_EXPECT_SIGBUS thread-safe with the following changes:
+With shared memory also mmap()-ed from guest_memfd, the alignment of the
+mmap-ed address needs to respect guest_memfd's backing page size.
 
-Share the KVM tests' global signal handler. sigaction() applies to all
-threads; without sharing a global signal handler, one thread may have
-removed the signal handler that another thread added, hence leading to
-unexpected signals.
+Refactor the backing store setup to configure the backing source page
+size, alignment, mmap flags, and mmap offset directly for guest_memfd
+when it is mmapped, ignoring the backing source type.
 
-The alternative of layering signal handlers was considered, but calling
-sigaction() within TEST_EXPECT_SIGBUS() necessarily creates a race. To
-avoid adding new setup and teardown routines to do sigaction() and keep
-usage of TEST_EXPECT_SIGBUS() simple, share the KVM tests' global signal
-handler.
+Skip hugepage validation and anonymous memory madvise calls when mmapping
+from guest_memfd, since those are not applicable when mmapping guest_memfd.
 
-Opportunistically rename report_unexpected_signal to
-catchall_signal_handler.
-
-To continue to only expect SIGBUS within specific regions of code, use a
-thread-specific variable, expecting_sigbus, to replace installing and
-removing signal handlers.
-
-Make the execution environment for the thread, sigjmp_buf, a
-thread-specific variable.
-
-As part of TEST_EXPECT_SIGBUS(), assert the prerequisite for this setup,
-that the current signal handler is the catchall_signal_handler.
-
-Reviewed-by: Fuad Tabba <tabba@google.com>
-Tested-by: Shivank Garg <shivankg@amd.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/include/test_util.h | 30 +++++++++++++------------
- tools/testing/selftests/kvm/lib/kvm_util.c      | 18 ++++++++++-----
- tools/testing/selftests/kvm/lib/test_util.c     |  7 ------
- 3 files changed, 29 insertions(+), 26 deletions(-)
+ tools/testing/selftests/kvm/lib/kvm_util.c | 74 ++++++++++++++++++------------
+ 1 file changed, 45 insertions(+), 29 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
-index d5825211f2727..75e98ec14107f 100644
---- a/tools/testing/selftests/kvm/include/test_util.h
-+++ b/tools/testing/selftests/kvm/include/test_util.h
-@@ -83,21 +83,23 @@ do {									\
- 	__builtin_unreachable(); \
- } while (0)
- 
--extern sigjmp_buf expect_sigbus_jmpbuf;
--void expect_sigbus_handler(int signum);
-+extern __thread sigjmp_buf expect_sigbus_jmpbuf;
-+extern __thread volatile sig_atomic_t expecting_sigbus;
-+void catchall_signal_handler(int signum);
- 
--#define TEST_EXPECT_SIGBUS(action)						\
--do {										\
--	struct sigaction sa_old, sa_new = {					\
--		.sa_handler = expect_sigbus_handler,				\
--	};									\
--										\
--	sigaction(SIGBUS, &sa_new, &sa_old);					\
--	if (sigsetjmp(expect_sigbus_jmpbuf, 1) == 0) {				\
--		action;								\
--		TEST_FAIL("'%s' should have triggered SIGBUS", #action);	\
--	}									\
--	sigaction(SIGBUS, &sa_old, NULL);					\
-+#define TEST_EXPECT_SIGBUS(action)					\
-+do {									\
-+	struct sigaction __sa = {};					\
-+									\
-+	TEST_ASSERT_EQ(sigaction(SIGBUS, NULL, &__sa), 0);		\
-+	TEST_ASSERT_EQ(__sa.sa_handler, &catchall_signal_handler);	\
-+									\
-+	expecting_sigbus = true;					\
-+	if (sigsetjmp(expect_sigbus_jmpbuf, 1) == 0) {			\
-+		action;							\
-+		TEST_FAIL("'%s' should have triggered SIGBUS", #action);\
-+	}								\
-+	expecting_sigbus = false;					\
- } while (0)
- 
- size_t parse_size(const char *size);
 diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 1188d0a6c0a5f..cac5624e99774 100644
+index cac5624e99774..3f559f207408f 100644
 --- a/tools/testing/selftests/kvm/lib/kvm_util.c
 +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -2316,13 +2316,20 @@ __weak void kvm_selftest_arch_init(void)
+@@ -1034,11 +1034,12 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
  {
- }
+ 	int ret;
+ 	struct userspace_mem_region *region;
+-	size_t backing_src_pagesz = get_backing_src_pagesz(src_type);
+-	int mmap_flags = vm_mem_backing_src_alias(src_type)->flag;
+ 	size_t mem_size = npages * vm->page_size;
+-	off_t mmap_offset = 0;
+-	size_t alignment = 1;
++	size_t backing_src_pagesz;
++	off_t mmap_offset;
++	bool is_gmem_mmap;
++	size_t alignment;
++	int mmap_flags;
  
--static void report_unexpected_signal(int signum)
-+__thread sigjmp_buf expect_sigbus_jmpbuf;
-+__thread volatile sig_atomic_t expecting_sigbus;
+ 	TEST_REQUIRE_SET_USER_MEMORY_REGION2();
+ 
+@@ -1090,19 +1091,31 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 	/* Allocate and initialize new mem region structure. */
+ 	region = calloc(1, sizeof(*region));
+ 	TEST_ASSERT(region != NULL, "Insufficient Memory");
+-	region->mmap_size = mem_size;
+ 
+-	/*
+-	 * When using THP mmap is not guaranteed to returned a hugepage aligned
+-	 * address so we have to pad the mmap. Padding is not needed for HugeTLB
+-	 * because mmap will always return an address aligned to the HugeTLB
+-	 * page size.
+-	 */
+-	if (src_type == VM_MEM_SRC_ANONYMOUS_THP)
+-		alignment = max(backing_src_pagesz, alignment);
++	is_gmem_mmap = (flags & KVM_MEM_GUEST_MEMFD) &&
++		       (gmem_flags & GUEST_MEMFD_FLAG_MMAP);
 +
-+void catchall_signal_handler(int signum)
- {
-+	switch (signum) {
-+	case SIGBUS: {
-+		if (expecting_sigbus)
-+			siglongjmp(expect_sigbus_jmpbuf, 1);
-+
-+		TEST_FAIL("Unexpected SIGBUS (%d)\n", signum);
++	if (is_gmem_mmap) {
++		backing_src_pagesz = getpagesize();
++		alignment = 1;
++		mmap_flags = MAP_SHARED;
++		mmap_offset = gmem_offset;
++	} else {
++		backing_src_pagesz = get_backing_src_pagesz(src_type);
++		/*
++		 * When using THP mmap is not guaranteed to returned a hugepage aligned
++		 * address so we have to pad the mmap. Padding is not needed for HugeTLB
++		 * because mmap will always return an address aligned to the HugeTLB
++		 * page size.
++		 */
++		alignment = src_type == VM_MEM_SRC_ANONYMOUS_THP ? backing_src_pagesz : 1;
++		mmap_flags = vm_mem_backing_src_alias(src_type)->flag;
++		mmap_offset = 0;
 +	}
- #define KVM_CASE_SIGNUM(sig)					\
- 	case sig: TEST_FAIL("Unexpected " #sig " (%d)\n", signum)
--
--	switch (signum) {
--	KVM_CASE_SIGNUM(SIGBUS);
- 	KVM_CASE_SIGNUM(SIGSEGV);
- 	KVM_CASE_SIGNUM(SIGILL);
- 	KVM_CASE_SIGNUM(SIGFPE);
-@@ -2334,12 +2341,13 @@ static void report_unexpected_signal(int signum)
- void __attribute((constructor)) kvm_selftest_init(void)
- {
- 	struct sigaction sig_sa = {
--		.sa_handler = report_unexpected_signal,
-+		.sa_handler = catchall_signal_handler,
- 	};
  
- 	/* Tell stdout not to buffer its content. */
- 	setbuf(stdout, NULL);
+ 	TEST_ASSERT_EQ(gpa, align_up(gpa, backing_src_pagesz));
  
-+	expecting_sigbus = false;
- 	sigaction(SIGBUS, &sig_sa, NULL);
- 	sigaction(SIGSEGV, &sig_sa, NULL);
- 	sigaction(SIGILL, &sig_sa, NULL);
-diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
-index 4dff72f6bd346..89d6d1b572959 100644
---- a/tools/testing/selftests/kvm/lib/test_util.c
-+++ b/tools/testing/selftests/kvm/lib/test_util.c
-@@ -19,13 +19,6 @@
- #include "test_util.h"
- #include "kvm_syscalls.h"
++	region->mmap_size = mem_size;
+ 	/* Add enough memory to align up if necessary */
+ 	if (alignment > 1)
+ 		region->mmap_size += alignment;
+@@ -1129,10 +1142,8 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 	}
  
--sigjmp_buf expect_sigbus_jmpbuf;
+ 	region->fd = -1;
+-	if (flags & KVM_MEM_GUEST_MEMFD && gmem_flags & GUEST_MEMFD_FLAG_MMAP) {
++	if (is_gmem_mmap) {
+ 		region->fd = kvm_dup(gmem_fd);
+-		mmap_flags = MAP_SHARED;
+-		mmap_offset = gmem_offset;
+ 	} else if (backing_src_is_shared(src_type)) {
+ 		region->fd = kvm_memfd_alloc(region->mmap_size,
+ 					     src_type == VM_MEM_SRC_SHARED_HUGETLB);
+@@ -1141,22 +1152,27 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 	region->mmap_start = __kvm_mmap(region->mmap_size, PROT_READ | PROT_WRITE,
+ 					mmap_flags, region->fd, mmap_offset);
+ 
+-	TEST_ASSERT(!is_backing_src_hugetlb(src_type) ||
+-		    region->mmap_start == align_ptr_up(region->mmap_start, backing_src_pagesz),
+-		    "mmap_start %p is not aligned to HugeTLB page size 0x%lx",
+-		    region->mmap_start, backing_src_pagesz);
 -
--void __attribute__((used)) expect_sigbus_handler(int signum)
--{
--	siglongjmp(expect_sigbus_jmpbuf, 1);
--}
--
- /*
-  * Random number generator that is usable from guest code. This is the
-  * Park-Miller LCG using standard constants.
+ 	/* Align host address */
+ 	region->host_mem = align_ptr_up(region->mmap_start, alignment);
+ 
+-	/* As needed perform madvise */
+-	if ((src_type == VM_MEM_SRC_ANONYMOUS ||
+-	     src_type == VM_MEM_SRC_ANONYMOUS_THP) && thp_configured()) {
+-		ret = madvise(region->host_mem, mem_size,
+-			      src_type == VM_MEM_SRC_ANONYMOUS ? MADV_NOHUGEPAGE : MADV_HUGEPAGE);
+-		TEST_ASSERT(ret == 0, "madvise failed, addr: %p length: 0x%lx src_type: %s",
+-			    region->host_mem, mem_size,
+-			    vm_mem_backing_src_alias(src_type)->name);
++	if (!is_gmem_mmap) {
++		TEST_ASSERT(!is_backing_src_hugetlb(src_type) ||
++			    region->mmap_start ==
++			    align_ptr_up(region->mmap_start, backing_src_pagesz),
++			    "mmap_start %p is not aligned to HugeTLB page size 0x%lx",
++			    region->mmap_start, backing_src_pagesz);
++
++		/* As needed perform madvise */
++		if ((src_type == VM_MEM_SRC_ANONYMOUS ||
++		     src_type == VM_MEM_SRC_ANONYMOUS_THP) && thp_configured()) {
++			int advice = src_type == VM_MEM_SRC_ANONYMOUS ?
++				     MADV_NOHUGEPAGE : MADV_HUGEPAGE;
++
++			ret = madvise(region->host_mem, mem_size, advice);
++			TEST_ASSERT(ret == 0, "madvise failed, addr: %p length: 0x%lx src_type: %s",
++				    region->host_mem, mem_size,
++				    vm_mem_backing_src_alias(src_type)->name);
++		}
+ 	}
+ 
+ 	region->backing_src_type = src_type;
 
 -- 
 2.55.0.887.g758fc8c411-goog
