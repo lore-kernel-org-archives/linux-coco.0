@@ -1,165 +1,113 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93DB7427FB9
-	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 13:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A3E427FB9
+	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 13:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787752633; cv=none; b=Z13WYhCuRmynLEV54kqsQkycUpec1rToBEKjroYYA5NCPb+w2xtwAHhXpS9fc0t8cfzbQJ++PuIyGodU8cbB8sIAsoM8/b7i5OXMO7ccTQkgqITuZdJnU7Gmn/nKadQjWI1WpeChkEaGSF9ZKonbeUilE56K2+Ro8EPT8xqHmH0=
+	t=1787752797; cv=none; b=cfJ27Ftjhe5HrU5LDs/mD19crjSFT2ORhOzOX5xQA+RNNDrMLXXs9OgNgzPYO2tayCNeorlPYBHA0mRctGxun5gavnlT1B59DLdO9Qoznn/hbPwN8TjxvgY/5fK4oaimMxqF20maWDO2iZ1iPCbgJ3x9EcU1o4uGwM1UBtxdleo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787752633; c=relaxed/simple;
-	bh=t+OEjDwIunpqVOnbDXkVoH6xLQrzgAaRW9ZMUYdvpsk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NHsXz5cGbX3aYX7FLnVCARWd55OzjUrlmBEKfcI6jjwc1tDpiBrOA1nouDfbxpPri1MiGTpObulTbjzZu4GCIpTqnp9kKnGl9BcjVyGnTrpyopV1QA52UnPQVP/jDJL59SEkJVACPKtCfRWjewKD3qDEL+DueDxon60AgOAt6Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=cUcQGQR+; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1787752797; c=relaxed/simple;
+	bh=BmbalL68ZikUuh25rRQGobzDqe2QcSShbOPYwfY2XDo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=YD7Lo6k3gLgUOLsMfqCYnw6t0nUhiO8PQ/Fj+L0iT9/nTyuuXVfbvTUyz/JBmQv9hNeMp32+0Q6U87c8RK4kN/CGM81oS/LLR6xz4CTN2yqfK6GH5H+JorXhqxK0ZiEygSRMrVAwZ1wHV4rhIUGbbrI6SNbcN6RBZr7e4p6ieBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Yuw+JAS6; arc=none smtp.client-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="cUcQGQR+"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c2020421077so150304666b.3
-        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 06:57:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Yuw+JAS6"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d70d8839f0so9942925ad.0
+        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 06:59:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787752628; x=1788357428; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=fOvJ5L5msgiM0CBERBT0U46KkGHdEod8CtevSmc1gXQ=;
-        b=cUcQGQR+aWYzZ8YmQ1m9C23VegfttH90aIorlyUJd+pVVqBruKTW4PPwTng7EYXsUX
-         t6RG/jZ06w4MJFqGijwKWdspDbp4MVCzOKqrX9VjJKbtSWyUclhBt1Wo3PqvW2MsOLq/
-         KwzdFoAQ2tzsEkiypU2zMc1r/rVM+U6uJrApDk5xgY4noYBVvHDSBgQrcKcY8MJR8RAa
-         1g9h9TDO+75GxMZ+dTL5hLyNDJvi9Em5Z7TyfEf8WNIQ/1nn6pEOjR0zLbxsr1/bhSI7
-         jJOdsUSfzW6M7CYeV7nVw9I6t3+T7nwWTCMDBAAs7GaksQlJmx4MDi13jU9MdXAfZ9nj
-         sbXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787752628; x=1788357428;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+        d=google.com; s=20251104; t=1787752786; x=1788357586; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=fOvJ5L5msgiM0CBERBT0U46KkGHdEod8CtevSmc1gXQ=;
-        b=jNKTbDEvJc26Qtwm4h2RhHkjayTOAKOawrFiRVpr4qx/wUEimP1hXRB5EDjfYldma+
-         WHGiQDUqar8+EPIBzJH2oF7rJcWODGBSjDZObh8FYDNNeP9+XMU92EvmVZvn/A9RlJin
-         Pc/wwr8WLVz665+BX3YpHSq0HbmePgIMz6MCczIAC6JzjtaB1CeRncrDWqo6RCrnltx8
-         oSfS0qP8TyHNbu7LoBC8+Ug83AijafRfgtQVJJ+nB7rhOJSU8BLxO4sfGzsUmDlnhcAY
-         KzS74hafpX0HCLCkMtZYYuhhYbB+9kLDYez2XzXbNW71VrVJDQJXqnh9gVDYaGyitGqW
-         NATA==
-X-Forwarded-Encrypted: i=1; AHgh+RqlVzYWaFhH1e+yqG8cJLFEpYsLrYJ9DDfSRSWTnqg57iUP2EJJ9V7JwH8Ja/urRdkJPYYLPg3bh+up@lists.linux.dev
-X-Gm-Message-State: AFuF++n4fre0bISxbP8BA6wzbd0hwnLV+jZekCOqJ8JuJ3tqE80Nfs8V
-	ISyUg157wvJENTF3pwHYwH8VO4TJESQesakUR5199penITBZHYi7UMYkcVBNR2ITMtxtgfaQTdn
-	VnmdAnMI=
-X-Gm-Gg: AR+sD13YhJ9NSBsT8X76lMs/5CmMNKwP5AsextYgMyHjCz1/OlkhymZ0qXyq1nrzfYD
-	BEA0fj37GWCqFtYibodki5WuV0ZKqfWhtRmsT3YbKvGNeMnPzLSw3xKnb253sOtx2vaQ1ewOwou
-	blEX1z/ZZPgdoPMLG9c9TX6QU9to7M+KglqnKHDe/qDaR8tDYxtc0fyhRSIwmTel7wmnJoN7ftc
-	G/7P6CjR+5Rh05gKLPJ/RJnnsUvelsuXjZHoiu/XK/b/jg5wjNv5R7KBcGe01uyHzrcsx6wREoR
-	6Fuo0X2UM0xsnrwemqO9qVWYLOQJxCNY2UTYo6uBnUeHVAN2/0gU7RzeQjDi1zKfmyqp2iIrnNK
-	nXwe/bYfeVgDX7+iOnpFLT/cs8mACnl2einvE9756xYDN1Ivz1Ig83ej5wHB1/4Pq0zszJJqvF2
-	y7wSZ2j1nS941/V/7IcTy6ocqUUmf72t2cFfrEfk7Y92v0/I19f0KBjhoQxewR/TI=
-X-Received: by 2002:a17:906:628b:b0:c16:66dc:3ab7 with SMTP id a640c23a62f3a-c250c4f025fmr802637466b.10.1787752627642;
-        Wed, 26 Aug 2026 06:57:07 -0700 (PDT)
-Received: from [10.20.4.146] ([149.62.207.128])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c250a7303casm680099266b.25.2026.08.26.06.57.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Aug 2026 06:57:07 -0700 (PDT)
-Message-ID: <1a720dbf-7500-4a35-a069-3561a9f08c0d@suse.com>
-Date: Wed, 26 Aug 2026 16:57:03 +0300
+        bh=sJ5J4VsXiOuMp2dajzmF8XaYnCQzq6t9gwVoLisuj/k=;
+        b=Yuw+JAS62nkdMElhwgQ6ce+GNJCFi0ezqzGVT7ryLcgm5s+DKJG43BpEP4K3Ae7XJu
+         fQaZOsS0gmSjMb9WLLvHDWpVCWulIbi908wTESMFEtxcIuJJeVYlRYwnD93duzvSv/Fv
+         3sr4ks5eoUgmiEAnUiCovHQ+5/kuVxYWV+qeTilThPFUMRNh2OmOXc4fffv/nXk+4g9m
+         Woq0MrBMPmYyybu2Ae5RP0gwLzepJEvoIs29HVm29utuf9nTObHF4Hxgzf2/dEOrFfKW
+         BpChvZhsUor2hKsVgyVINiGwidxJp4MiFxstwvOG89dO0iJqS4VJkY8hOZ/wQ9Iq864F
+         DqUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787752786; x=1788357586;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sJ5J4VsXiOuMp2dajzmF8XaYnCQzq6t9gwVoLisuj/k=;
+        b=mHbT2NFeTDdfl+zSrgztFJeqOpY1OMm4Akgbrrv4mAnD7aQSWnxEnVC4KJJEkbHVi1
+         6mznPmEFHqmFsxx5ODtwr3w5nASVACE7QA/CVu6K7gDqwjtYNVO9vgKZoBzOPTdc/t9L
+         GY3g7gRUQbOwcIztPwG8JKJIG2rIogu5MsOVFMpeaAuQXMj8vtBLBVqyheVb8Z6ZAv1I
+         NnhJotJITJQg2O+/vdLm84mf+tlghU+3N0H+DuOljaHsjORWpWcYu7nhRfIQt8KCUQ6W
+         cxm1CkOBO5tSuKyC7o+jYsc9uCoC4Zdvax2/7fbJ5VZfmwHHFHsaopWwUCgOVeY56pJM
+         dPnA==
+X-Forwarded-Encrypted: i=1; AHgh+RrPm0ukNhl7qHvOjzXrHD+JKicEhcmMKzT3Y24w/fELdrn3dD7+wu2rQANwVpblC4fxqt+MxNdTRpUX@lists.linux.dev
+X-Gm-Message-State: AFuF++k2o9pSLjqsgAhW6OkxEe20sDjTnhUPtSNWoPEykPbjjjZbLgOY
+	NuWxAMvElfc2qZlBnfMJtZCGHY1cc/C8UBYGx0lZc49XtFcJEouQ+8WDTGUOMrjZk8Z+UNeEp3y
+	jEBrUNA==
+X-Received: from plht13.prod.google.com ([2002:a17:903:2f0d:b0:2c0:a516:2c2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1246:b0:2d1:1f73:3667
+ with SMTP id d9443c01a7336-2d707a04385mr106575235ad.1.1787752785793; Wed, 26
+ Aug 2026 06:59:45 -0700 (PDT)
+Date: Wed, 26 Aug 2026 06:59:45 -0700
+In-Reply-To: <d9d4264f-eb8f-4407-951b-245d144b3ec8@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] x86/virt/tdx: Wrap TDH.SYS.CONFIG/UPDATE operations
- in helpers
-To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: kas@kernel.org, rick.p.edgecombe@intel.com, yilun.xu@intel.com,
- xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com,
- kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
- peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
- chao.gao@intel.com, artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org
-References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
- <20260821032920.256225-2-yilun.xu@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20260821032920.256225-2-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260819094903.3060020-1-xiaoyao.li@intel.com>
+ <20260819094903.3060020-10-xiaoyao.li@intel.com> <5426d2f6-3e67-45d3-85d6-d0da67edb486@suse.com>
+ <34161383-a382-411b-9278-098dab6587d8@intel.com> <d9d4264f-eb8f-4407-951b-245d144b3ec8@suse.com>
+Message-ID: <ao7xUc88m1fopax7@google.com>
+Subject: Re: [PATCH v4 9/9] KVM: VMX: Consolidate the exit handler for VMX and TDX
+From: Sean Christopherson <seanjc@google.com>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Aug 26, 2026, Nikolay Borisov wrote:
+>=20
+>=20
+> On 8/26/26 13:43, Xiaoyao Li wrote:
+> > On 8/26/2026 6:03 PM, Nikolay Borisov wrote:
+> > > > @@ -960,7 +978,7 @@ struct kvm_x86_ops vt_x86_ops __initdata =3D {
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .vcpu_needs_initialization =3D
+> > > > vt_op_tdx_only(vcpu_needs_initialization),
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .vcpu_run =3D vt_op(vcpu_run),
+> > > > -=C2=A0=C2=A0=C2=A0 .handle_exit =3D vt_op(handle_exit),
+> > > > +=C2=A0=C2=A0=C2=A0 .handle_exit =3D vt_handle_exit,
+> > >=20
+> > > nit: Why isn't this vt_op() for the sake of consistency and
+> > > introduce needless churn ?
+> >=20
+> > I didn't see how to make vt_op() still work here while dedupping the
+> > code. Do you have a better idea?
+>=20
+> Indeed, I saw that vt_op is actually different for the TDX/!TDX case. I
+> guess that function is always bound to have some quirk - i.e it has an
+> #ifdef guard inside even though is_td_vcpu() is defined for the !TDX case
+> but tdx_handle_exit() isn't. It's named VT, even though it's defined  in =
+the
+> "vmx section" ...
 
+Because the name and the implementation are two separate things.  The scope=
+ is
+"vt_" to communicate that the operation is common to all flavors of VT, i.e=
+. to
+both VMX and TDX.  But when support for TDX is disabled, there's no need to
+trampoline through the routing code and so the vt_op() implementation wires=
+ the
+hooks up directly to the VMX functions.
 
-On 8/21/26 06:29, Xu Yilun wrote:
-> As part of the TDX module initialization, the kernel configures the TDX
-> module with several information, such as TDX-usable memory regions
-> (TDMRs) and the global KeyID for protecting TDX metadata. During the
-> configuration, the kernel does 2 operations: constructing kernel data
-> types for the SEAMCALL leaf arguments and turning these data types into
-> u64's according to TDX ABI.
-> 
-> Both operations are implemented in one function - config_tdx_module().
-> This blurs the boundary between kernel managed structures and TDX ABI
-> definitions. Moreover, future kernel change will need to add more
-> nuances mandated by TDX ABI, such as setting the TDH.SYS.CONFIG leaf
-> version to allow configuring add-on features. Keeping these operations
-> tangled would further clutter the code.
-> 
-> Just like other SEAMCALL leaf helpers, wrap the invocation of
-> TDH.SYS.CONFIG in a helper. Introduce a more descriptive kernel data
-> type for the physical address array of TDMR information. This data type
-> is similar to struct seamldr_params in that it is the container of the
-> PA array layout which is an in-memory ABI. So the previous u64 * type
-> for the array is not wrong, but a named structure provides better type
-> safety and self-documentation. Use the data type as the argument of the
-> TDH.SYS.CONFIG helper.
-> 
-> Future kernel change will also need to set the TDH.SYS.UPDATE leaf
-> version for the same purpose. Add a similar helper to prepare for the
-> change.
-> 
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+.handle_exit doesn't use vt_op() because the implementation of vt_handle_ex=
+it()
+itself is completely common to VMX and TDX, i.e. there is no routing code a=
+nd
+thus no need to define a wrapper via vt_op().
