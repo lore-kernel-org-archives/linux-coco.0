@@ -1,216 +1,166 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013036.outbound.protection.outlook.com [40.93.201.36])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010010.outbound.protection.outlook.com [52.101.46.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98AC36D9E7
-	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 22:37:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978B92FE057
+	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 22:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787783855; cv=fail; b=K6BNoaHKhhVuMkVvf63U1QRNiHZSZ71zuYSo+k6/TTeUsDRnVHL0rzrZkbAlRx1kpO8ZuYAO2H32HcggQo91NO5XCcJYWvW+Neza0GHaBnUUqtFggoYFoPTJnfE++vs3jntlc7lLUkOHlwhuDAi5hm471sRaa4u64Zr9GIlyooY=
+	t=1787784763; cv=fail; b=B3KYdpxLxXdbtXA64MMrH7Cght+RU5G1bVRURZgr1DRnGOCtJNocV6wFNm4Q65hQc2+6ssRum770toNDUNuTC05fOvlgDEF38I4b3ii+vKM4xWzmMou6culi5TBtd0Ez6nywUieIwT1A19g0GsKJRtqoNxNgaZKlduGmNhmgoPk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787783855; c=relaxed/simple;
-	bh=asezm175rtd01o9eZITQjJI7P91atktw+cHQyRAyrs4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k1qJI7k8dBseDx+fMaIwS6c0slqTwDmsA0PYtLH2JNJ//iiCnUDxajZewYh7jbs6O65cfOxcmX54TcVviiOgmLeab86eBR4fEytRBd+BE0zNzc/lFX3I6OgdfUNhi2HJqA4CAD49l3+7QuEHWcgqvqpt92T7XEPCEASKKq0kUXo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0N0AMXJq; arc=fail smtp.client-ip=40.93.201.36
+	s=arc-20240116; t=1787784763; c=relaxed/simple;
+	bh=ADB4JQxfzU5Dky3RxvOda6q3B3ryFlMj/GCsn3RuJns=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=XMSlnRM+LsYcR+9yi/B9T1q5fDvciC0X9tOClWZwr+8SfX0GsmbHpjK+Jye7PPWBBm//pEE9JUbdDZ68z5qLHqdRTtXp1fSkddhJRYwi73mUIOO244NVCvXb+zWsh3qhFiEt9e3BTuP7UiXUx46E479BNrReFtr9ijjtlQMfYdA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Dms19mh4; arc=fail smtp.client-ip=52.101.46.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0N0AMXJq"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Dms19mh4"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p/BC3CaVlSmCTfS+B9DUfq/ZmOPtnEHBCCxCcn/nenC+qz5C62d4WxJ58o3hZR25oHxmibEE10eWohNUqIzfPeQVFv0x3zCC8H7Fj5qu3AfqRLWG2O5EbKJlUe8J1vDzQJq9uPxZX8yaAzKfzgt1aOYtnwfWb4b3DOfA+Rc0wrKf0cjB8Sr8nRh30+xg78SDkvjGUOHFcK6IMb4qIBpYIHVFRFlnstDe5x1f+Fc3cPj2zWit9IRthu7rDpuKKojJ1tA1AtEeRaBormvPg/XUWEN58Say/uykpswAB8pcdYiUDJz3OfNxDbUAzoeBCevx1uYTwNFGRGMZpAMH7FzhNA==
+ b=CQ4dNgnMHBTR5xdf84YIgzd3Gy50mOB+INnpE3GJCmdh8vCXhG5iQaVgLCHahKGc7uwtCgDs/H5H035KNy2HNHsncgUJdg5Ot1HIEgq7NejL4V82/tflxOYwgHUUMLbjEHEzKn2Qq0zzknEwZB6SsGyAdvld4EAPWA+aoEu6G3JpKtl0vBN3aiyDECZgqqHes6U2mapd1SjGJ6Z/qKlhD18/dgFy0pvNRJVrPZQ9oRUKktH/3J/gffY563rl9WomSZHtF2Lth7FBgYTRx56PpsV3NiVafJVwmQtkP79zaw+O0QkQugpIbbb3IPtLiPNxnQEoJvYghiWzrtdnQVDkAg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Cy3YV3tMRp0D9ZfksLXoCCJQ9M3ffgSV5ZXq58HbhKc=;
- b=vfDpM6Nxx00ruMcvOVq9hiFAtbLuWf4amT3Za1RkyrgU0ocX1/LKSOolYsh2EUietQnI03YTndenZjOUIjUm1YRlO4RDEEvj1tS6GCliACWbcQbkL84APeChjx8lcOMT+u5S5e73p4SJPd2bqQEJd+sxhdLqUSLZtCWPrTOQL0MMdHm1jyssernhBOqEKRlanHPPB+aAnQCeuvW6dvnL1HN/Mna/dZ8cknmFNVzVycOrkRuNMbEPipREmsI0hvvxjzu2cDjL/zdAxwje92rIU/tlBVjVn19jbkhn19BPdPYf9uZf+20hcZak1ZOMkRaBm1LxCghHpUlzvwUMqShl4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
- is 149.199.90.133) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
+ bh=J0sbJO93B4X+/TTz9a/wUcXX6D2HvgNhA+mK6aJegzk=;
+ b=ft3P0F5ZnOS7jWf9CmBNVfl8NvMBCwf6rVegUrlDBI3rwJroMMS9VGaZgnVSGxBZxtFArL5mF+awK1eDPYPjyuVfgCE/rgPJEd3X84wZHkMBtQPpF3SYD653ZpnxhAQd0S0q1UQQxDmzl4onYkvy9aOV+qltLhAYloi0bKIfVOm8PwxlhrRMvEMNnOMYyfDrgmmiN+X1Ru2yqpqzjN52T/l2tTWLt+fHNr7tLITkQUEsFO+a+QW+OED4EQKJYkzGBDLCRlvNvUL3jasJhBZSAgqcHvY+YPlA4h9PvHv4HqgF+1Xc59vzGSzRCaYo9ETBoEx8r9k8sEoZ9ObkmDBPqA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=temperror (sender ip
+ is 149.199.90.133) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com;
+ dmarc=temperror action=none header.from=amd.com; dkim=none (message not
+ signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Cy3YV3tMRp0D9ZfksLXoCCJQ9M3ffgSV5ZXq58HbhKc=;
- b=0N0AMXJqY7v9TcmDdt/VemhsrEJG5ueyHNV7VqzK1LvmfrTsqbjpSjdgTMYN1tH9nGyrQnbII1ANRvd5QGUPupBy5SiO61GAj19MfUwKRSMogxqdUgdwFpurFCYv/A9a82HOBydG0BDa3FQyRq7VarB/c+z/P2wiMM+3fhixbJU=
-Received: from MN2PR22CA0017.namprd22.prod.outlook.com (2603:10b6:208:238::22)
- by SA5PPF7D510B798.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8d0) with
+ bh=J0sbJO93B4X+/TTz9a/wUcXX6D2HvgNhA+mK6aJegzk=;
+ b=Dms19mh4FKnFqzCnRgZYAyoQGM2gpr6zuiCxROCTrm/kDCImtMA3Jqx1s2GZzwxnAi08kwFskrvlqdwo6JisIBDMATIH0hAUQRHJmi4MOYcy+nh0Ds8epa+KW1bZH+owrhiO9uxIdYnmQaTfTtBoXowElIxT/TbC/HisCUUC1XA=
+Received: from BN9PR03CA0567.namprd03.prod.outlook.com (2603:10b6:408:138::32)
+ by MW4PR12MB7262.namprd12.prod.outlook.com (2603:10b6:303:228::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.6; Wed, 26 Aug
- 2026 22:37:11 +0000
-Received: from BN3PEPF00022BBA.namprd04.prod.outlook.com
- (2603:10b6:208:238:cafe::c) by MN2PR22CA0017.outlook.office365.com
- (2603:10b6:208:238::22) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 22:52:36 +0000
+Received: from BN3PEPF00022BDB.namprd03.prod.outlook.com
+ (2603:10b6:408:138:cafe::57) by BN9PR03CA0567.outlook.office365.com
+ (2603:10b6:408:138::32) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.12 via Frontend Transport; Wed,
- 26 Aug 2026 22:37:10 +0000
-X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
+ 26 Aug 2026 22:52:34 +0000
+X-MS-Exchange-Authentication-Results: spf=temperror (sender IP is
  149.199.90.133) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=quarantine header.from=amd.com;
-Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
- amd.com discourages use of 149.199.90.133 as permitted sender)
+ header.d=none;dmarc=temperror action=none header.from=amd.com;
+Received-SPF: TempError (protection.outlook.com: error in processing during
+ lookup of amd.com: DNS Timeout)
 Received: from satlexmb07.amd.com (149.199.90.133) by
- BN3PEPF00022BBA.mail.protection.outlook.com (10.167.248.116) with Microsoft
+ BN3PEPF00022BDB.mail.protection.outlook.com (10.167.248.106) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.3 via Frontend Transport; Wed, 26 Aug 2026 22:37:10 +0000
-Received: from dryer.amd.com (10.180.168.240) by satlexmb07.amd.com
+ 15.21.360.3 via Frontend Transport; Wed, 26 Aug 2026 22:52:33 +0000
+Received: from [10.236.30.85] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 26 Aug
- 2026 17:37:09 -0500
-From: Kim Phillips <kim.phillips@amd.com>
-To: <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
-CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Nikunj A
- Dadhania" <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, "Michael
- Roth" <michael.roth@amd.com>, Borislav Petkov <borislav.petkov@amd.com>,
-	Borislav Petkov <bp@alien8.de>, Naveen Rao <naveen.rao@amd.com>, David Kaplan
-	<david.kaplan@amd.com>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	"Dave Hansen" <dave.hansen@linux.intel.com>, Kim Phillips
-	<kim.phillips@amd.com>, Nathan Fontenot <nathan.fontenot@amd.com>
-Subject: [PATCH v5 8/8] KVM: SEV: Add support for SNP BTB Isolation
-Date: Wed, 26 Aug 2026 17:35:10 -0500
-Message-ID: <20260826223510.3669875-9-kim.phillips@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260826223510.3669875-1-kim.phillips@amd.com>
-References: <20260826223510.3669875-1-kim.phillips@amd.com>
+ 2026 17:52:28 -0500
+Message-ID: <ef5e8d6e-f1b3-4fe2-a1ba-a93c240b3f36@amd.com>
+Date: Wed, 26 Aug 2026 17:52:28 -0500
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 02/10] cpu/bugs: Allow forcing Automatic IBRS with SNP
+ active using spectre_v2=eibrs
+To: Borislav Petkov <bp@alien8.de>
+CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <x86@kernel.org>, Sean Christopherson
+	<seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, K Prateek Nayak
+	<kprateek.nayak@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, Naveen Rao
+	<naveen.rao@amd.com>, David Kaplan <david.kaplan@amd.com>, Pawan Gupta
+	<pawan.kumar.gupta@linux.intel.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <stable@kernel.org>, kernel test robot
+	<lkp@intel.com>
+References: <20260804235611.4053375-1-kim.phillips@amd.com>
+ <20260804235611.4053375-3-kim.phillips@amd.com>
+ <20260818232204.GBaoTpHK8k7wD9mMk4@fat_crate.local>
+Content-Language: en-US
+From: Kim Phillips <kim.phillips@amd.com>
+In-Reply-To: <20260818232204.GBaoTpHK8k7wD9mMk4@fat_crate.local>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF00022BBA:EE_|SA5PPF7D510B798:EE_
-X-MS-Office365-Filtering-Correlation-Id: 42cb55a5-6f07-463d-99c0-08df03c2916c
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BDB:EE_|MW4PR12MB7262:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c4d81e9-6071-4635-e931-08df03c4b732
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|1800799024|23010399003|82310400026|10067099003|56012099006|5023799004|11063799006|6133799003|3023799007|22082099003|18002099003;
+	BCL:0;ARA:13230040|7416014|376014|82310400026|1800799024|23010399003|36860700016|13003099007|6133799003|10067099003|11063799006|5023799004|56012099006|4143699003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	owjGQTRPl18prqow93c9lLw3IeUc2ykmYzQuKZti8GSgGs6rHb5oUVnH0OyaVuQ+k32LFYUjE1FzOw+GuyLNud5Tm4Ka5l2kkqr3zj/nh4cxoVGfXgi01vHv8xfvc641srRBVRScBK+CcOGIYS5tsYqpEyZFoUDOtX9XeuK/qwoM6JIN3WDCpvHnwL4Al1R+TzbN/a+UqJ11PwJxFrtnVDTslwYE0ukGZsllBvRxAvokKC3Zr7yM07ZL8CWUs7sDp9T2PmzmkRksVR/gPK568yv8UbzqAOLJ8tt6eHrtqGvxN1S+dBIwnGnQtCJ4rUKt7teRBTMDfO+DpZTkSYWlFhSShj52PeQnNkWyXnU9buBQ3tZzltwkALZDLgGRqRNMxHoWIE/6uB39BcyKK2claIVWSmyN35F/qthfb08tQuDuw3YCLTaWJUS7wsk0PQlnl5COeagRUXpCmI46viXmPo/S9biw9YlsteO+5fJIP3g5D1GqcL97dX4Bkha+uRO/e6Jqgz/qT5/Om7QdGzhHoH9biTR8yYEfNCXbJg3IWLNfOmR20AQuMtiIF94qpdDCCGOnVYamXLaKERzKlaJcPfKg9FPr8Z6+zVFCyoPhhHcISwbWj64ikNyZSo9B0RwCKz2iX9B92WM4qJQb3apuYQ==
+	/8nU4/W6Xo2d8nseS3F3LB+1LnKjkKVyDptAY/2aL940S1DAtkz26VToBVJ5V997GDiNPXfeGvWcVh5ge9EMGZ5zb2fiOwuumLZsodvPj6ivCeDTzYhA6EZ6iiaLpmqd75CtOCITp2ri59kCk5toQFZKJbwsyi387Q0FQOPHcIDzgvbV+OI/hSTv38S1a3HIhb2OKOTiCSUduMJGzG9r+SYVoolwBMQcQ/Z7qBbBRLcXZ2q+OPUqdLdoplCCJY6IW/hyccTqVvcS7NTeiN/TFpbe7Q2lEBF643J0FwnE+OKpgnaQgDaCUrKi5bLPxfglGLhnPS505N1Xv0dGLs1vStNyPXm8xX0js57mn3KSPyinIVk68PtCcV/Z6B3zElN/d5E/1ft8et/NaUOvPvbXqipw3k98bH5pOneH6tyObMxuxUEL07hWazxO6c7cfS//uSXLlboGnWdt0NF3BMXTUGox+FUmwDFs5+80ZmQd0Mw6iMV1EGlKX7ONU2+pwdlYQa0KS5XDE5ONP+AhIKuQ8bb2MXVOLp14nNEIQLAngx42iGNr8QMxVddEaio+5fe84OoiwrF2c4Dzs5Jm1wTDzb6WT4hXOeQKvXPYeH1bEuaw1uG8T3Ai+COjoQNL4xUg13B4EnEVWM6J3j8G6aWgiUr5E/wfRjSN2JRTK0GqZ+xfkcSqPrULUG3A8hdy3I+6a2rvfu5tZiK0K/abxsxiBg==
 X-Forefront-Antispam-Report:
-	CIP:149.199.90.133;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:unknown-90-133.xilinx.com;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(23010399003)(82310400026)(10067099003)(56012099006)(5023799004)(11063799006)(6133799003)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:149.199.90.133;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:unknown-90-133.xilinx.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(1800799024)(23010399003)(36860700016)(13003099007)(6133799003)(10067099003)(11063799006)(5023799004)(56012099006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	0l1i/xHntxIXJYVqc8AWVGpimRD8nft91oSiiDbVXm3Q7i/6pibFhDNtoM21/2ZKZeRt9JY96CfzMSJFKf6QZ5dEOpa119FUdnLV7eVTD7Ug5jSb0990fOMvPfY6vJZUe+wLdq/L0aAv6+PtuW9qP/NnpUPkAusz09qGdeZZ7XrCsogEtJSTaE9sLjLoC8f/f/Ov4cYW8gKlWLXgbI66Qa/kWFOk7wDZJQPgnEDPqcYjPhHkA9CZFTqgEEsQuPGhlDbS9d81arODQHGy5CkelWG+Yvkutluiux6Knfsp1wjZqtHHuUgAa+BqZp5/YmvzentiK+oL5Mt30TRQ+eN5cHHgXtU/jGpUquD+DtFZQdE0EhcJEd0Md6WCdvw3j1sgjFAGfyreCf37ln2+Ixm7uBx7fbswGDRfshHx5wqqoN7y1RoAw0PygRvRNvgPQwFH
+	8tZ5GS9Bxk8IHON5nNrAlg7rNGh5ukp/AJu/v0HBvbgbKj+qqzD6tJ2wL3N6jRH1V7+Ad3OCQ0kXhHdyv0J9DHi7u4nupbI7vTMCw1Lg9xYsrGsCvnq6AqffhIAvtfgRV1ewl5cKK+ZnKVEuelcNmmjxJIw7K1/A+5cotiZyAU1SnptucEpmdy81W+haCijihSoww4JnngpvVf3UmsB9qi/XlvxVhfp1NXBAMI9+A7TeBo8U/2zXBnObguB/dWhfAbz14xfLsd0r5NIlCGes8IIa4NthfDSKaL9H7wu3t2JUC70gA3mdz0I9W3wI74o8tecWEozFGkNBJ9I+ufWE1PMRD44RSOceNPbX3gnrvptpam2YN2Mlj6aeOJBz8SSft7orQpXO2wYYgkRDoogmhKgf2hc8hzL+FWz+x6v/I4oOr+jNzVqh7rkCUF1XCOBT
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 22:37:10.6482
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 22:52:33.0155
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 42cb55a5-6f07-463d-99c0-08df03c2916c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c4d81e9-6071-4635-e931-08df03c4b732
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[149.199.90.133];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF00022BBA.namprd04.prod.outlook.com
+	BN3PEPF00022BDB.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF7D510B798
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7262
 
-Advertise support for BTB Isolation via SEV_VMSA_FEATURES when SNP is
-enabled.  BTB Isolation is an optional feature that can be enabled by the
-guest to ensure its guest Branch Target Buffers (BTBs) are not affected
-by any context outside that guest.
+On 8/18/26 6:22 PM, Borislav Petkov wrote:
+> On Tue, Aug 04, 2026 at 06:56:03PM -0500, Kim Phillips wrote:
+>
+> Please fix all your subject prefixes: it should be "x86/bugs:"
+>
+> The tip tree preferred format for patch subject prefixes is
+> 'subsys/component:', e.g. 'x86/apic:', 'x86/mm/fault:', 'sched/fair:',
+> 'genirq/core:'. Please do not use file names or complete file paths as
+> prefix. 'git log path/to/file' should give you a reasonable hint in most
+> cases.
+>
+>> spectre_v2=eibrs currently enables retpolines when SNP is enabled,
+>> instead of AutoIBRS (EIBRS) because the commit that disabled
+>> AutoIBRS if SNP is enabled stopped short of enabling
+>> X86_FEATURE_IBRS_ENHANCED.
+>>
+>> Change the logic to enable X86_FEATURE_IBRS_ENHANCED, and move the
+>> decision to switch to retpolines in the default/"auto" case in
+>> spectre_v2_select_mitigation().  This allows the existing
+>> spectre_v2=eibrs logic to work as intended.
+> So this whole hoopla is just to be able to select =eibrs in SNP guests, *and*,
+> in doing so, cause a performance loss. I.e., shoot oneself in the foot.
+>
+> Or is there another, better reason which wants this?
+It's not in guests, it's in the hypervisor, and in addition to making 
+spectre_v2=eibrs work as advertised, it also fixes emitting the 
+misleading "EIBRS selected but CPU doesn't have Enhanced or Automatic 
+IBRS." on AutoIBRS-capable CPUs.
 
-SNP-active guests may choose to enable the Branch Target Buffer
-Isolation mode through SEV_FEATURES bit 7 (BTBIsolation).
+Shooting oneself in the foot is subjective depending on what performance 
+users want and whether in userspace or not, esp. considering this series 
+also enables spectre_v2=ibrs on SNP hosts.
 
-Unlike the sibling features advertised here (Secure TSC, IBPB-on-Entry),
-BTB Isolation is advertised unconditionally.  This is deliberate, not an
-oversight: the AMD64 APM (Vol. 2, Section 15.36.17 "Side-Channel
-Protection") defines BTB Isolation as architecturally present on every
-SEV-SNP-capable processor.  There is therefore no host enumeration bit
-for it (no CPUID leaf or MSR capability), by design -- unlike
-IBPB-on-Entry, whose host support is enumerated via
-CPUID Fn8000_001F[IbpbOnEntry] bit 31 precisely because it is not
-universal.  A per-feature host gate is thus neither possible nor
-meaningful; if SNP is supported, BTB Isolation is present.
+>> Fixes: acaa4b5c4c85 ("x86/speculation: Do not enable Automatic IBRS if SEV-SNP is enabled")
+>> Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
+>> Cc: Borislav Petkov (AMD) <bp@alien8.de>
+>> Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+>> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+>> Cc: Sean Christopherson <seanjc@google.com>
+>> Cc: stable@kernel.org
+> Definitely not stable material. If at all.
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Closes: https://lore.kernel.org/oe-kbuild-all/202603121136.bc8zNsHS-lkp@intel.com/
+> It doesn't close that - that link points to something which is not upstream.
+>
+These get dropped in v5 - please switch to reviewing v5 now:
 
-Nor does the guest have to take the host's word for it.  SEV_FEATURES is
-written into the VMSA by sev_es_sync_vmsa() and measured by
-SNP_LAUNCH_UPDATE with SNP_PAGE_TYPE_VMSA, so bit 7 is covered by the
-launch measurement and appears in the attestation report.  At runtime the
-guest can additionally read the active state from SEV_STATUS bit 9
-(MSR_AMD64_SNP_BTB_ISOLATION, dumped as "BTBIsol" by
-sev_status_feat_names[] in arch/x86/coco/sev/core.c).  A guest requiring
-BTB Isolation can therefore confirm it is active rather than trusting what
-the host advertised.
+https://lore.kernel.org/lkml/20260826223510.3669875-1-kim.phillips@amd.com/
 
-Also add SVM_SEV_FEAT_BTB_ISOLATION to the sev_init2 selftest's
-SNP_ONLY_FEATURES and KNOWN_FEATURES to validate it is accepted
-for SNP guests and rejected for SEV-ES.
+Thanks,
 
-For more info, refer to page 615, Section 15.36.17 "Side-Channel
-Protection", AMD64 Architecture Programmer's Manual Volume 2: System
-Programming Part 2, Pub. 24593 Rev. 3.42 - March 2024 (see Link).
-
-Link: https://bugzilla.kernel.org/attachment.cgi?id=306250
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Kim Phillips <kim.phillips@amd.com>
-Assisted-by: ClaudeCode:claude-opus-4-7
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
----
- arch/x86/include/asm/svm.h                        | 2 ++
- arch/x86/kvm/svm/sev.c                            | 8 ++++++++
- tools/testing/selftests/kvm/x86/sev_init2_tests.c | 2 ++
- 3 files changed, 12 insertions(+)
-
-diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index 9d8107824d10..0da2234b71c6 100644
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -309,10 +309,12 @@ static_assert((X2AVIC_4K_MAX_PHYSICAL_ID & AVIC_PHYSICAL_MAX_INDEX_MASK) == X2AV
- #define SVM_SEV_FEAT_RESTRICTED_INJECTION		BIT_ULL(3)
- #define SVM_SEV_FEAT_ALTERNATE_INJECTION		BIT_ULL(4)
- #define SVM_SEV_FEAT_DEBUG_SWAP				BIT_ULL(5)
-+#define SVM_SEV_FEAT_BTB_ISOLATION			BIT_ULL(7)
- #define SVM_SEV_FEAT_SECURE_TSC				BIT_ULL(9)
- #define SVM_SEV_FEAT_IBPB_ON_ENTRY			BIT_ULL(21)
- 
- #define SVM_SEV_FEAT_SNP_ONLY_MASK	(SVM_SEV_FEAT_SNP_ACTIVE | \
-+					 SVM_SEV_FEAT_BTB_ISOLATION | \
- 					 SVM_SEV_FEAT_SECURE_TSC | \
- 					 SVM_SEV_FEAT_IBPB_ON_ENTRY)
- 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 20a761cf3491..53cc6d043883 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -3260,6 +3260,14 @@ void __init sev_hardware_setup(void)
- 	if (sev_snp_enabled) {
- 		sev_supported_vmsa_features |= SVM_SEV_FEAT_SNP_ACTIVE;
- 
-+		/*
-+		 * Unlike Secure TSC and IBPB-on-Entry below, BTB Isolation has
-+		 * no host enumeration bit to gate on: the APM defines it as
-+		 * architecturally present on every SEV-SNP-capable processor.
-+		 * If SNP is supported, BTB Isolation is available.
-+		 */
-+		sev_supported_vmsa_features |= SVM_SEV_FEAT_BTB_ISOLATION;
-+
- 		if (tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
- 			sev_supported_vmsa_features |= SVM_SEV_FEAT_SECURE_TSC;
- 
-diff --git a/tools/testing/selftests/kvm/x86/sev_init2_tests.c b/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-index f2f97dca3935..3f592e245a66 100644
---- a/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-+++ b/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-@@ -15,11 +15,13 @@
- 
- #define SVM_SEV_FEAT_SNP_ACTIVE		BIT_ULL(0)
- #define SVM_SEV_FEAT_DEBUG_SWAP		BIT_ULL(5)
-+#define SVM_SEV_FEAT_BTB_ISOLATION	BIT_ULL(7)
- #define SVM_SEV_FEAT_SECURE_TSC		BIT_ULL(9)
- #define SVM_SEV_FEAT_IBPB_ON_ENTRY	BIT_ULL(21)
- 
- /* Features valid only for SNP guests, rejected for SEV-ES and below. */
- #define SNP_ONLY_FEATURES		(SVM_SEV_FEAT_SNP_ACTIVE | \
-+					 SVM_SEV_FEAT_BTB_ISOLATION | \
- 					 SVM_SEV_FEAT_SECURE_TSC | \
- 					 SVM_SEV_FEAT_IBPB_ON_ENTRY)
- 
--- 
-2.43.0
-
+Kim
