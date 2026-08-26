@@ -1,67 +1,67 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84EA38837B
-	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 10:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594A33C1F43
+	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 10:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787738593; cv=none; b=bi/QvcTFiTqiwMRv8D5ZhmbwRIyy0fdlKvJffBPzTwmSgsQDyR3jgaT/t2G0yPp6RTzc/ViRNqLBYNFWJOUOnFcQsWJQSnfIwbM3x3kaHSd45Nvh+0GFjTG0sjLt39VcAqR7VKKAjyrgTyfHKFgY/kLtwFZKDsJd+9P4h5ke8Iw=
+	t=1787740689; cv=none; b=RjZEeuZ7DJqeDOCqxm4UvH5LdbawWczheWwGOIglb+zV6XuqBrTB0tlvgw/LefjSKfMRQ52Au7YgXS+/8LhUoV1wOmfyxMHTqZDFJNhlzQ/yovXmmlveST3Ys73aN3h6PU07W0ju99qnSOPBDhyt9nE78l8vGDgb2Cjqq4TicXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787738593; c=relaxed/simple;
-	bh=AlfYlEb6WKoIrIEWU9ApASMS98YxtvLdbBvocivgdhs=;
+	s=arc-20240116; t=1787740689; c=relaxed/simple;
+	bh=FirHhg80SM2Cy3E16gU/PTYMf8PSKE8oZZXWjAxfTyM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B5jsUNyMDIWbnBigjQzAjtZcSY3BzhqUql2tVV4xcxdDe2VjPQ6VxlGxIQi0Jksx3s42rgB1XZNyxfly2vIlfV/tQNop8YSt9jsTsZan7Zbbm7FIt4e+pHrIxW8J8CG4YogT5mmvWrcSxpphqOrtty4YajHKOatdCG7t267ukSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=IpDbRxNK; arc=none smtp.client-ip=209.85.208.50
+	 In-Reply-To:Content-Type; b=YJtjojXytUtiHJ2GOnJBfb6N/p0sZPOMUcnIQTUmRy1UD+Lvujh08h2fAjvlAACrt/IFLSTNHC+bGW3tYKlmcSgIJorTc57kpNAA4pCuoBsuUjxvZTkiXXwYG1lCTR5BbF6BvsEh8kLZBYjUKcuK53bYtNq+gju7+drtFwhoVMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=eAitPXC+; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="IpDbRxNK"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a374bea882so889924a12.1
-        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 03:03:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="eAitPXC+"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c15d3cd51b2so111012466b.3
+        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 03:38:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787738590; x=1788343390; darn=lists.linux.dev;
+        d=suse.com; s=google; t=1787740684; x=1788345484; darn=lists.linux.dev;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=bE7U1SVs1nWjk547BlCoF5e3zoAI9ns9idl/rgWUbu4=;
-        b=IpDbRxNKvVNXTHrgOOXnEGAl0q7OQyDYvUMIHUpl9amuQYT9mb28AaCnyc1rDwKumQ
-         +ZtsH+Fs0EmkWKcEgjTh8R5Yo1FdFfAoeAOMAtMFDggEZInTQSbTu7RqFYOSgJ3j4nXZ
-         5NkS2EzpDgGjOEMJlfytMd7ClA3UiSN3zZPsIVq0s2tGmY+MuMD8wqDozFfsyG4OX4Pt
-         d9ZAcFqpwENqrXeUz8xrDfe7+gvR/7ZqpOyuOzA83xnOC0fQN3aYtyy5Ghn0qlGla/hO
-         /EHJ7WarlmkMMzsLMFn8PGjrGLczwE0FMIsLuhiXAWOoISZjjsVbnRtbFNXzkY9sqLQ4
-         YjIA==
+        bh=2ulPxX+xAmNAkYxhHD7oUU3uVjuocDi4uCbS4PhtOo0=;
+        b=eAitPXC+JjQqu+fE+sB+kEAehYIv44Sw9V2/S+YeVJQut9F1n0U++1g1czoANrsGud
+         7oSjWaLHm8bAkwxqyMuQr5ja3yevhxRPTmt6lwwG4BjWHmQfXdomaCaczGCtfcGr+ySL
+         UXvz5/36+0dTuBFYn5RKiU8t6XdkfJJQlxItykjQM6jHLkk26d0vWo0GvCQXAv71vJ8Z
+         pCzUOlX0LOzdJpUEhusPmL9P8XbPgp9hbFz2sl4bYCZ/MzDGKQzsgshwqoqo0eh9LnzS
+         XrWnJzFA9C/lITUm01pam2/mygrk/8mghIY/4AFhdSldfMKm4tYANlOKGnWuB1Gn+Fk2
+         OIvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787738590; x=1788343390;
+        d=1e100.net; s=20251104; t=1787740684; x=1788345484;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=bE7U1SVs1nWjk547BlCoF5e3zoAI9ns9idl/rgWUbu4=;
-        b=Sf1QJGyitqQNFmEze017oDxledan7JbZ32QkPC691qnJPbdwZnNSsOtyKtqFAcd1FM
-         5S1fX5QtWyygOS3V13HP4IH4yBuGG8HWy5ZlLj7N7aycrTidoaCAcXBBDeeJNGirhEoE
-         bICA12k7ATSPhbd4NkX3UnqpZ3yczeeUOSnsTJkWFt6vTfavhDwqCaqw+s3OIUlcPAX4
-         lvRhfiqsgVflpZTP2qvByiTjLOzyfESAuAlCEn0vooapZXvD5JFP4SFHG5NFHNffusX+
-         E6BccL3a7xhXloI3E6j6xDF15acpWe6pr81RkhCLcLQcMOD36vuoZSc/TkBoVQCrdncJ
-         aH1Q==
-X-Forwarded-Encrypted: i=1; AHgh+RriEc9NaxH+mU5khHarkySOkGFXvYQUHBVW8/QSJyxLcFLyEI151M9eleBdsaFcafncQpT4LZ/KbUVp@lists.linux.dev
-X-Gm-Message-State: AFuF++ln5gb5YL8DVjscW8MU6TQDwUYkvjZq/SzQCuGYEHj6IgopuFKR
-	ebWy1qJqfCpGUxeR/e6PuCPhoHiF6I9/wcAZ0AaqrYQASChWrtBftfb4K07Np/RZ8uk=
-X-Gm-Gg: AR+sD13MKjahz0BQeqwaKzO9OiSErlqOkDsczIOY/j/E7mBSv6tR0LWhXmLVYhkG+jY
-	icRh74Rg3kwt7qd+S3VhuWktvG4uEtErLst0jWRWYJT2kAvmh80m0fTXNYMaEWTuyY41NL3Jxfw
-	73m01lgTGwpKvpOxkrcR/cE4BmpduDWjYAEGG+qe2jv4m+EkeQobAkuadreztQaZpgEWxniUo56
-	M8TFYKBu/pMOl4S+oS5am2fkQWS8lTSqz0pQoZJkZkG2FG6vrMzXOCn56QxWRYmQ718dy1uzqS6
-	pNc+WAa33f2G2+z7vCJpg6sPaH2xLd5CXOoiXlqiTu6Y+DZMy3GjKFIiVAhVJ8YADgTGR7tgzuD
-	TPQS8fqk8FDa6dGHP4nMt2nNuatQFQJVnYTK0DPrEBlrV02xn+2Dp8yBsY5+RP+6oXTQ2hmbzX8
-	kwDQ4+fgkEigNbUZ1HMHBdAMtzOpJR8lXhi5tfCIIO5IpZFXW9AY/yXQpkxETJMuA=
-X-Received: by 2002:a05:6402:5288:b0:6a1:f95b:8ced with SMTP id 4fb4d7f45d1cf-6a5df5fd41dmr8268122a12.4.1787738589521;
-        Wed, 26 Aug 2026 03:03:09 -0700 (PDT)
+        bh=2ulPxX+xAmNAkYxhHD7oUU3uVjuocDi4uCbS4PhtOo0=;
+        b=tTdxydFUZLvyLSHJANOUACMmTOor50J/NLfTam4jvsx9pkt0+3am06GkJirxxZnNgn
+         /CmGegtUqYmbE68psZxSejr7Fg2D1+PxAXx/eaQm6zhOD1Nv66h0b9gOJKR2z9DajVp6
+         VwQZQwKHZf4nZSYqFJbt2ekpoUF18fP4ywt8M515T19YYTNEk4F0stfrKUUT/5rcM9Xy
+         kdRv/waxhGBRzw/Z2XJVnl1xRw+zx0m+89zv8+rHY3QQ5gR3JnqyRfw25MnISQ0WmUPm
+         VsHgsPMFdU5sRGLTE9iM3maDxNzRKVG41IBIhJEnQGaE5huHogIqlgy4iymyMKvDgyZV
+         tKnw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr80iB+Nut9hQ6P/+wyFfXQEdYj5Vpgh+tJ5qrVWkWQZBpdi44KdfurAbz45lA8ic6dFJBhuwKp4szX@lists.linux.dev
+X-Gm-Message-State: AFuF++m3N/xmk4uWbfWvthYHARmAnO/Sm1ZR0ug5PbfcXba9xFl15T65
+	jVUOHqBe6ZnwDbnjhoSYDwzM4B/AaKQSiQCokJaZv4D6YIWQvx7l91LZ0dVG0A85HWs=
+X-Gm-Gg: AR+sD10IgHfX9Yn1DbaYcCLel1AIky4fuWNYCJU0RqFmit2eSWyKuoixPxEu6eS5wE2
+	hHRNE2lTLQyUkKHIcbL7fIfq9ZkgbAT5k89YdyCz655eNeNKZDL2S6gYskkjsrnq081fwMmIr11
+	E3DTYUUZHJIZUMAImQCuAJmTRPUxDkp+VOlDsVRlROupIQe1IxGjr9EAjB1RPOhm+eLuiqP0QFK
+	vtvqQZSew6P+o1onBJcCwe6WUG79B6rg7qouk5nSUGTis2/JIiE9LZZixbnNcyvx7xUeeoq8NNw
+	JZoHXJBA08MWq8bJqVTAhgtKZZeiDWlst5p/caDtprsY1NYH2roiB5xjV0+cDkwV1rs3yligcUk
+	VEpv3F3DGZS6UiKcorUYPR4c7ME9KOKu8/q6zXllisBu9UfG78/RR9spB7bpk4cGImfEKE8eGHT
+	mZvCM7iseFRwELMkschp1Ujkwq6ng467tflcbjjPAMphjaHyqH+KJUF7QN/GV0Ycc=
+X-Received: by 2002:a17:906:ef04:b0:c20:af9d:454a with SMTP id a640c23a62f3a-c250c36aa50mr709758766b.16.1787740683782;
+        Wed, 26 Aug 2026 03:38:03 -0700 (PDT)
 Received: from [10.20.4.146] ([149.62.207.128])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a5de5f7bb8sm3723194a12.0.2026.08.26.03.03.03
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a5de8b6412sm3539135a12.2.2026.08.26.03.38.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Aug 2026 03:03:07 -0700 (PDT)
-Message-ID: <5426d2f6-3e67-45d3-85d6-d0da67edb486@suse.com>
-Date: Wed, 26 Aug 2026 13:03:01 +0300
+        Wed, 26 Aug 2026 03:38:02 -0700 (PDT)
+Message-ID: <55105419-bd0e-458c-ae47-90859fd78da0@suse.com>
+Date: Wed, 26 Aug 2026 13:38:00 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,15 +69,15 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 9/9] KVM: VMX: Consolidate the exit handler for VMX and
- TDX
+Subject: Re: [PATCH v4 7/9] KVM: VMX: Make handle_bus_lock_vmexit() a shared
+ helper
 To: Xiaoyao Li <xiaoyao.li@intel.com>, Sean Christopherson
  <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: Kiryl Shutsemau <kas@kernel.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
 References: <20260819094903.3060020-1-xiaoyao.li@intel.com>
- <20260819094903.3060020-10-xiaoyao.li@intel.com>
+ <20260819094903.3060020-8-xiaoyao.li@intel.com>
 From: Nikolay Borisov <nik.borisov@suse.com>
 Content-Language: en-US
 Autocrypt: addr=nik.borisov@suse.com; keydata=
@@ -123,87 +123,19 @@ Autocrypt: addr=nik.borisov@suse.com; keydata=
  JDjakbdjBoYDWVoaPbp5KAQ2VQRiR54lir/inyqGX+dwzPX/F4OHfB5RTiAFLJliCxniKFsM
  d8eHe88jWjm6/ilx4IlLl9/MdVUGjLpBi18X7ejLz3U2quYD8DBAGzCjy49wJ4Di4qQjblb2
  pTXoEyM2L6E604NbDu0VDvHg7EXh1WwmijEu28c/hEB6DwtzslLpBSsJV0s1/jE=
-In-Reply-To: <20260819094903.3060020-10-xiaoyao.li@intel.com>
+In-Reply-To: <20260819094903.3060020-8-xiaoyao.li@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
 On 8/19/26 12:49, Xiaoyao Li wrote:
-> The exit handlers for VMX and TDX have the similar pattern. Consolidate
-> them into a single vt_handle_exit() helper.
+> Move handle_bus_lock_vmexit() from vmx.c to main.c to make it a shared
+> helper so that TDX can use it for Bus Lock VM exit handling as well.
+> Rename it to add vt_ prefix to reflect that it is a helper for both VMX
+> and TDX.
 > 
+> Cc: stable@vger.kernel.org
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Changes in v4:
-> - new patch.
-> ---
->   arch/x86/kvm/vmx/main.c | 38 ++++++++++++++++++++++++++++----------
->   arch/x86/kvm/vmx/tdx.c  | 18 +-----------------
->   arch/x86/kvm/vmx/vmx.c  | 21 +--------------------
->   3 files changed, 30 insertions(+), 47 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-> index 6a813c49ca8a..10df9667d0c0 100644
-> --- a/arch/x86/kvm/vmx/main.c
-> +++ b/arch/x86/kvm/vmx/main.c
-> @@ -154,15 +154,6 @@ static fastpath_t vt_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
->   	return vmx_vcpu_run(vcpu, run_flags);
->   }
->   
-> -static int vt_handle_exit(struct kvm_vcpu *vcpu,
-> -			  enum exit_fastpath_completion fastpath)
-> -{
-> -	if (is_td_vcpu(vcpu))
-> -		return tdx_handle_exit(vcpu, fastpath);
-> -
-> -	return vmx_handle_exit(vcpu, fastpath);
-> -}
-> -
->   static bool vt_unhandleable_emulation_required(struct kvm_vcpu *vcpu)
->   {
->   	if (is_td_vcpu(vcpu)) {
-> @@ -887,6 +878,33 @@ int vt_handle_bus_lock_vmexit(struct kvm_vcpu *vcpu)
->   	return 1;
->   }
->   
-> +static int vt_handle_exit(struct kvm_vcpu *vcpu,
-> +			  enum exit_fastpath_completion fastpath)
-> +{
-> +	int ret;
-> +
-> +#ifdef CONFIG_KVM_INTEL_TDX
-> +	if (is_td_vcpu(vcpu))
-> +		ret = tdx_handle_exit(vcpu, fastpath);
-> +	else
-> +#endif
-> +		ret = vmx_handle_exit(vcpu, fastpath);
-> +
-> +	/*
-> +	 * Exit to user space when bus lock detected to inform that there is
-> +	 * a bus lock in guest.
-> +	 */
-> +	if (vmx_get_exit_reason(vcpu).bus_lock_detected) {
-> +		if (ret > 0) {
-> +			vcpu->run->exit_reason = KVM_EXIT_X86_BUS_LOCK;
-> +			ret = 0;
-> +		}
-> +
-> +		vcpu->run->flags |= KVM_RUN_X86_BUS_LOCK;
-> +	}
-> +	return ret;
-> +}
-> +
->   #define VMX_REQUIRED_APICV_INHIBITS				\
->   	(BIT(APICV_INHIBIT_REASON_DISABLED) |			\
->   	 BIT(APICV_INHIBIT_REASON_ABSENT) |			\
-> @@ -960,7 +978,7 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
->   
->   	.vcpu_needs_initialization = vt_op_tdx_only(vcpu_needs_initialization),
->   	.vcpu_run = vt_op(vcpu_run),
-> -	.handle_exit = vt_op(handle_exit),
-> +	.handle_exit = vt_handle_exit,
 
-nit: Why isn't this vt_op() for the sake of consistency and introduce 
-needless churn ?
-
-<snip>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
