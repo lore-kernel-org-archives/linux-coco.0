@@ -1,56 +1,56 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746C53D6673
-	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 09:18:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773463D75D3
+	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 09:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787735917; cv=none; b=V097qmfAHh7qkmrOeZxZ/ygUTK1JKbDI/RkqmzZd6arw0HKyh/0kyR9YjeDsckzxa98aBn1gd6mKhg8Q7PlwEpKW3sGK5NAefoodKnp6Ux204WbzQEnRxNH3UnJowQtAXmrG/wBKFyliyG68clZE4069/3uDc3CJDdgS+Gb/BXc=
+	t=1787735922; cv=none; b=kUmbl+gfjCkMilEsVO0G0Iqa8h/hueMU+i3Syp1Af6n0BIFfpg2d6WTOzQa/A6MdFhlmH6h6vvcxfwcCoNbqCFeXAjpKyJDA2fY3G4zfT/fwAigfBQSEIPj9ZfDGqiPRV4xr07wg/OpKdIxkF36UfQLKdY2YIINMw5V+jw6xVQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787735917; c=relaxed/simple;
-	bh=cfKDOJ7DvEwyC5tuG3+q7zNHiwlxy7Kdncb8W2kXAdk=;
+	s=arc-20240116; t=1787735922; c=relaxed/simple;
+	bh=e4S0ntw6a4F+aKPymVSCxm2tk+SUEZ6S7wIWlorrhEQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OtW//MziZuTftWcESoZNX3KYvlsZztYiRuIqh+kOFyxAU6uW+xtcEPL8gnn/I/fRoZZ9IW6Pndz1mxIiXwqYGVpRd8wglgB+NIgfEYZyKr1YiPXmM7kwRqqjlrL7TOtWnEIsGFjy0YRoaCsvyUTcqNtMK74GlMl6sTffVwPZYxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XWcV7Kjh; arc=none smtp.client-ip=209.85.215.199
+	 To:Cc:Content-Type; b=B6ciGrqdX72S4QvXJ582BPIWz4g9MZgMe4tMOz6U6FIa+mpGpcEBCh94hcIQkxJJ+EtyDCSrPLceAaKtt9OAy/9OS0vhYAeCvoSW/DhHhnP+DeBF1I7HG2sGckvzYtrclh9drDT5gFstVBfNoj8XhI6uFX/tITXg48Gn3KGjs6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AxON7Pui; arc=none smtp.client-ip=209.85.215.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XWcV7Kjh"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cbb92868263so591803a12.2
-        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 02:18:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AxON7Pui"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c89704da8c7so1323543a12.0
+        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 02:18:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787735913; x=1788340713; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1787735917; x=1788340717; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=63KksNRMPLdKIK2ffHPVavSJlAIn7eLDeJF6HOKSRZE=;
-        b=XWcV7Kjh3g66dUJYluylEyMGBHuLchlTdBDUdXlEC9nstdEpSb7jebtIWv1bjuE0rx
-         uUji9uNDDESPQWpxXagKwkM3pW+efvkiiLG4l3jn9A2MNA7cu+bj79DibFpxCbE6UVDI
-         gYNGeVygsc8TH0PMZ+pzZFoGCcmMMbeaVgOf4U1pipOT38wHJ+bdy5As92rCayO/XZ1c
-         frKqwCwaNM0xQepJ1ADm5brX77Wjx8/b3BTh05zLq5ZGWX2g2p5kg1WqwR29YTRuR9x4
-         8b8h6d4FmFZnE6sEyorYWrRDNKSjRtueoRk3mkYzvYWItkD9ClcxL7bhvqaAax7f9dds
-         BLYw==
+        bh=wc3a2+OEtllLGwqS/G4AFzAVkgMCaAbj12kGjFWNwhs=;
+        b=AxON7PuiUuRh2QGmgCwAGlukPsdTpu73QVydK5hZenTQpiqUE4vNyZl1JjhrRk8yqQ
+         WRpx0yFVaEzQjApB1WMXpHY/Go/lFsI8EdKDVvD2NmkoUxGlI8UXJwtNSwLCBauiSFXr
+         HsTe4vFSQsKP5081ZPkNnnnTlEwsasyEUsvqVMsXp+XePY2HNpEO+BUTXJIDP9UkZv6B
+         Md4spu4x+dzcoB1iwfqmau+Klsl5bmNbmWM5VHOp8vmegXjhwf6VuN+i4ei7d+qEre9E
+         ehfWKrByoBKurjIkT7nA1+iSGhUTTDr1uLrVkJdHMyFZnnBldnya7MY/AMyevD8RBGKF
+         hZuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787735913; x=1788340713;
+        d=1e100.net; s=20251104; t=1787735917; x=1788340717;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=63KksNRMPLdKIK2ffHPVavSJlAIn7eLDeJF6HOKSRZE=;
-        b=B0AF8+siujDY0sWYqaFcj17Ci/hT0skFZ4t5RH6sE5Tx1O1FxSM5VWDTZGIM4fcLEO
-         W7XV5FYRliwhOVFK+ZFFwU54NkNEWaxe27AM9ynGfiNUW7jnIejcl3Nob5qTyT7VFJw0
-         iys8rBiFaizMUWkde8nMhUjOuszWswimQkpSvt7gbtt2IvMzhKsZBVQDmMZhf7C49y2g
-         d/w1rukepZaNBplWKxDqDg0f6eostFTMKGzCQE/bwFkG1ajcKlyvZuIUHG4cYmX/VIwW
-         hsQDOPJtFvi2i7F4UPgW/vvYUaUjNZqToing2CE+OymQ+C7rpyvaikPrpj85S65FQn/b
-         9yoA==
-X-Forwarded-Encrypted: i=1; AHgh+RrvHL3IX1VxSjyJXfOJkA4Yu71vaz111OJoLqXHwEkSzzPF3orlmLWGO3/B768tsVFEf9XeGZ91ddC2@lists.linux.dev
-X-Gm-Message-State: AFuF++lM8/bgQhX7pROK+sTrlMdjZPQ9kUPZoePlIsCppid+UKn5n9Ui
-	9es1SLi53J+5CeA8nuxMvUjW1FmHYpk2Lskevw0Fwq2xLaI/CbL3pMFBpPrmQekP0Apd4yCuZWp
-	flDf5hqixxrpAdRL2BgIMBH0Qpw==
-X-Received: from pgcz13.prod.google.com ([2002:a63:7e0d:0:b0:c86:2164:967d])
+        bh=wc3a2+OEtllLGwqS/G4AFzAVkgMCaAbj12kGjFWNwhs=;
+        b=IHqJVFMMT/6m6GLD/f3jxgUfQGTIMdXap2hN4I7T5TcRFaQBXPhwHZgt9TN0ZZhyj6
+         llZZJSrcemvD8ahPKilWIdDs/kKw7OGOtRIfNZcLp1Nl4x/yBLa4atK7xfJJhQpsjqTx
+         PfdqNOE9AqYTYndo+D4InwfVooR+RdzCaqIftdNtRYCc/vySRA1x/xUy1aLCV1hXIE+O
+         SEW4fiVqWkqkcrL68yhnGHm1XI51Jt3K3ei208ZuhW0dwToGN05Y8gI97IUhL6WcrdE+
+         KaWa9S5HicQqHbPoeM9B9sgHeh0pGpamOhriRmIun28bYNfi714w5P1fA9ok5HHwcIeE
+         yc6A==
+X-Forwarded-Encrypted: i=1; AHgh+RpUi/3cxaeJqJtXa8pba527VeRECWDdvMS8Dl18rAuN/sllY6k/Pkti2xjO9MbioFJU8ZVa8PFg1JD6@lists.linux.dev
+X-Gm-Message-State: AFuF++lkd7+XU6KMT9BHFulLpTcfGkBzQ69M/tAopibmAaP7QMj69X5S
+	a22FN0ToRs33LeCkB//kSLewZ5Mrq7e/+GwneWTV8+s/P0uJjl2Rdcdc/qAL9d2YUb93ialDH49
+	Zj2yRqtqLZfqh3VcfFuH5sHSW8A==
+X-Received: from plbcp5.prod.google.com ([2002:a17:902:e785:b0:2ca:b48c:5a92])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:8986:b0:3d0:868d:8ccb with SMTP id adf61e73a8af0-3d0868d974amr686524637.13.1787735913113;
- Wed, 26 Aug 2026 02:18:33 -0700 (PDT)
-Date: Wed, 26 Aug 2026 09:18:13 +0000
+ 2002:a17:903:324f:b0:2cc:f5b8:4c2e with SMTP id d9443c01a7336-2d707b45a87mr94906615ad.9.1787735916498;
+ Wed, 26 Aug 2026 02:18:36 -0700 (PDT)
+Date: Wed, 26 Aug 2026 09:18:15 +0000
 In-Reply-To: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,14 +60,14 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=6544;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=5838;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=cfKDOJ7DvEwyC5tuG3+q7zNHiwlxy7Kdncb8W2kXAdk=; b=MMZaGAECpxklCf2BKRBYFhvWtCwjdKJ8nlLlIDN+BD1CFA4tZxsvWwbrbFHu/A54MMIyO+isw
- yfuQGoiyfH3Bt4RFA1hwR5XmAFrKGC9Lj6QAvTwtAmzCBhMn2uA7O3f
+ bh=GtZbHtkgKKmD1ykIZ1T+aJT4kkhlUaxT1aZ4xCvFTqw=; b=31p44BxawoGJ9r8IPJTTeLYxIv5u9shr6L2B0Osy/+Cr+0UKzzsl7/FoRJOIg3vjXE6Tkm2yX
+ UgwpvmnCSctDh5OfgPRHQt5miKkx2TMsXdZLvmxNKBAoutH51xOD2oC
 X-Mailer: b4 0.16.0
-Message-ID: <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com>
-Subject: [PATCH v11 15/46] KVM: guest_memfd: Call arch make_shared callback
- for to-shared conversion
+Message-ID: <20260826-gmem-inplace-conversion-v11-17-0a15d8a799aa@google.com>
+Subject: [PATCH v11 17/46] mm/gup: factor out LRU cache draining for folio
+ into lru_cache_drain_for_folio()
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -96,169 +96,167 @@ To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
-	Fuad Tabba <fuad.tabba@linux.dev>
+	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-When memory in guest_memfd is converted from private to shared, the
-platform-specific state associated with the guest-private pages must be
-invalidated or cleaned up.
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 
-Iterate over the folios in the affected range and call the
-kvm_arch_gmem_make_shared() hook for each PFN range. This allows
-architectures to update hardware metadata or encryption states to
-transition pages to the shared state.
+KVM with guest_memfd wants to remove any folio references due to LRU
+caches, as it really must only allow to convert folios from shared to
+private when there are no unexpected folio references (e.g., from GUP
+references).
 
-Invoke this helper after indicating to KVM's mmu code that an invalidation
-is in progress to stop in-flight page faults from succeeding. Calling the
-invalidation helper also calls the arch invalidate hook. For SNP, this
-kicks any vCPU with a registered VMSA within the range being converted out
-of the guest. This ensures that make_shared never fails due to the VMSA
-page being in-use and is important because if make_shared fails, the RMP
-table would track the page as private while guest_memfd is unaware and
-tracks the page as shared.
+So, to drive the refcount down, it needs a way to flush the LRU caches.
+Let's factor out what we have in lru_cache_drain_for_folio(). Document
+it, and also mention that concurrent folio (un)mapping might, in theory,
+miss detecting LRU cache references. Keep obtaining the expected refcount
+twice to minimize the possibility. For the current and future user that
+should work, and we don't really have a better alternative: we could
+detect if the mapcount changed, but it would still be racy and add more
+complexity with questionable benefit.
 
-Omit support for calling the arch hook to make private, since SNP, the only
-implementer of the arch make-private hook today, would actually prefer
-making private only just before faulting memory into the NPTs.
+Maybe there is a chance to avoid the draining entirely in the future,
+by avoiding extra references from the LRU cache: Hugh thinks there might
+be a way. But for the time being, this handling is unfortunately
+required.
 
-Calling the make-private arch hook would require iterating both bindings
-and the filemap to find the intersection of bindings and allocated
-folios. On top of that, SNP would need to figure out whether to actually
-make private based on whether the memory is about to be faulted, or
-whether it is a conversion.
+Make folio_may_be_lru_cached() accept a const pointer so
+lru_cache_drain_for_folio() can accept a const pointer as well.
 
-Calling the make-shared arch hook and not the make-private arch hook does
-leak SNP-specific details into guest_memfd (as in, why only make-shared
-during conversions but not make-private?), but the additional complexity is
-not worth taking on until guest_memfd has a user actually requiring an arch
-make-private call.
-
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |  2 +-
- arch/x86/include/asm/kvm_host.h    |  2 +-
- arch/x86/kvm/x86.c                 |  5 +++++
- include/linux/kvm_host.h           |  1 +
- virt/kvm/guest_memfd.c             | 42 ++++++++++++++++++++++++++++++++++++++
- 5 files changed, 50 insertions(+), 2 deletions(-)
+ include/linux/swap.h | 11 ++++++++++-
+ mm/gup.c             | 20 +++++++-------------
+ mm/swap.c            | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 63 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index e213c9ae3e301..67b43c167045b 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -150,7 +150,7 @@ KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
- KVM_X86_OP_OPTIONAL_RET0(gmem_make_private)
- #endif
--#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
-+#if defined(CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT) || defined(CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM)
- KVM_X86_OP_OPTIONAL(gmem_make_shared)
- #endif
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 744c1f6ff03ed..83e26ce45fb79 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1732,7 +1732,7 @@ struct kvm_x86_ops {
- 	int (*gmem_make_private)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 				 kvm_pfn_t nr_pages);
- #endif
--#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
-+#if defined(CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT) || defined(CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM)
- 	void (*gmem_make_shared)(kvm_pfn_t pfn, kvm_pfn_t nr_pages);
- #endif
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 29e41d334cedf..147b3e529cd26 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10653,6 +10653,11 @@ int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 8f0f68e245baa..e625d64c9e13d 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -317,7 +317,7 @@ void folio_add_lru_vma(struct folio *, struct vm_area_struct *);
+ void mark_page_accessed(struct page *);
+ void folio_mark_accessed(struct folio *);
+ 
+-static inline bool folio_may_be_lru_cached(struct folio *folio)
++static inline bool folio_may_be_lru_cached(const struct folio *folio)
  {
- 	return kvm_x86_call(gmem_make_private)(kvm, gfn, pfn, nr_pages);
+ 	/*
+ 	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
+@@ -344,6 +344,15 @@ extern void lru_add_drain(void);
+ extern void lru_add_drain_cpu(int cpu);
+ extern void lru_add_drain_cpu_zone(struct zone *zone);
+ extern void lru_add_drain_all(void);
++
++enum lru_cache_drained {
++	LRU_CACHE_NOT_DRAINED,
++	LRU_CACHE_DRAINED,
++	LRU_CACHE_DRAINED_ALL,
++};
++void lru_cache_drain_for_folio(const struct folio *folio,
++		unsigned int extra_refs, enum lru_cache_drained *drained);
++
+ void folio_deactivate(struct folio *folio);
+ void folio_mark_lazyfree(struct folio *folio);
+ extern void swap_setup(void);
+diff --git a/mm/gup.c b/mm/gup.c
+index 0692119b79043..fb0995dc495fc 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2266,9 +2266,9 @@ static unsigned long collect_longterm_unpinnable_folios(
+ 		struct list_head *movable_folio_list,
+ 		struct pages_or_folios *pofs)
+ {
++	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
+ 	unsigned long collected = 0;
+ 	struct folio *folio;
+-	int drained = 0;
+ 	long i = 0;
+ 
+ 	for (folio = pofs_get_folio(pofs, i); folio;
+@@ -2287,18 +2287,12 @@ static unsigned long collect_longterm_unpinnable_folios(
+ 			continue;
+ 		}
+ 
+-		if (drained == 0 && folio_may_be_lru_cached(folio) &&
+-				folio_ref_count(folio) !=
+-				folio_expected_ref_count(folio) + 1) {
+-			lru_add_drain();
+-			drained = 1;
+-		}
+-		if (drained == 1 && folio_may_be_lru_cached(folio) &&
+-				folio_ref_count(folio) !=
+-				folio_expected_ref_count(folio) + 1) {
+-			lru_add_drain_all();
+-			drained = 2;
+-		}
++		/*
++		 * We drain not only to make the folio_isolate_lru() succeed,
++		 * but also to remove any other folio references from LRU
++		 * caches.
++		 */
++		lru_cache_drain_for_folio(folio, 1, &drained);
+ 
+ 		if (!folio_isolate_lru(folio))
+ 			continue;
+diff --git a/mm/swap.c b/mm/swap.c
+index 588f50d8f1a8c..8e965c8ce9aa9 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -950,6 +950,52 @@ void lru_add_drain_all(void)
  }
-+
-+void kvm_arch_gmem_make_shared(kvm_pfn_t pfn, kvm_pfn_t nr_pages)
+ #endif /* CONFIG_SMP */
+ 
++/**
++ * lru_cache_drain_for_folio() - drain LRU caches if the caches might hold
++ *				 folio references
++ * @folio: The folio.
++ * @extra_refs: Extra folio references held by the caller.
++ * @drained: Drain status for batch folio processing.
++ *
++ * Drain LRU caches if the caches might hold folio references. Start
++ * with a local LRU cache drain, to then drain LRU caches on all CPUs if
++ * local draining was insufficient.
++ *
++ * This function detects LRU cache references by comparing the folio refcount
++ * with the sum of the expected folio refcount + extra references held by the
++ * caller. Note that we cannot rely on PG_lru to reliably detect all LRU
++ * cache references, and there are rare scenarios (concurrent folio (un)mapping)
++ * where this function might miss detecting LRU cache references.
++ *
++ * If @drained is not NULL, the function will avoid re-draining LRU caches
++ * when processing multiple folios in a row. In that case, the variable
++ * @drained points at must be initialized to LRU_CACHE_NOT_DRAINED before
++ * the first invocation by the caller.
++ */
++void lru_cache_drain_for_folio(const struct folio *folio,
++		unsigned int extra_refs, enum lru_cache_drained *drained)
 +{
-+	kvm_x86_call(gmem_make_shared)(pfn, nr_pages);
-+}
- #endif
- 
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index ab87effdd221f..485f18454eb45 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2610,6 +2610,7 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
- 
- int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 			       kvm_pfn_t nr_pages);
-+void kvm_arch_gmem_make_shared(kvm_pfn_t pfn, kvm_pfn_t nr_pages);
- #ifndef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
- #define kvm_arch_has_gmem_convert() false
- #endif
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index e4722eb6405b6..d1134b23576e4 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -575,6 +575,43 @@ static bool kvm_gmem_has_outstanding_references(struct inode *inode,
- 	return has_outstanding;
- }
- 
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-+static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
-+{
-+	struct folio_batch fbatch;
-+	pgoff_t next = start;
-+	int i;
++	if (!folio_may_be_lru_cached(folio))
++		return;
 +
-+	folio_batch_init(&fbatch);
-+	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
-+		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-+			struct folio *folio = fbatch.folios[i];
-+			pgoff_t start_index, end_index;
-+			kvm_pfn_t start_pfn;
-+			kvm_pfn_t nr_pages;
-+
-+			start_index = max(start, folio->index);
-+			end_index = min(end, folio_next_index(folio));
-+			/*
-+			 * end_index is either in folio or points to
-+			 * the first page of the next folio. Hence,
-+			 * all pages in range [start_index, end_index)
-+			 * are contiguous.
-+			 */
-+			start_pfn = folio_file_pfn(folio, start_index);
-+			nr_pages = end_index - start_index;
-+
-+			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
-+		}
-+
-+		folio_batch_release(&fbatch);
-+		cond_resched();
++	if (!drained || *drained == LRU_CACHE_NOT_DRAINED) {
++		if (folio_ref_count(folio) ==
++		    folio_expected_ref_count(folio) + extra_refs)
++			return;
++		lru_add_drain();
++		if (drained)
++			*drained = LRU_CACHE_DRAINED;
++	}
++	if (!drained || *drained == LRU_CACHE_DRAINED) {
++		if (folio_ref_count(folio) ==
++		    folio_expected_ref_count(folio) + extra_refs)
++			return;
++		lru_add_drain_all();
++		if (drained)
++			*drained = LRU_CACHE_DRAINED_ALL;
 +	}
 +}
-+#else
-+static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) {}
-+#endif
 +
- static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
- 				     size_t nr_pages, uint64_t attrs,
- 				     pgoff_t *err_index)
-@@ -624,7 +661,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+ atomic_t lru_disable_count = ATOMIC_INIT(0);
  
- 	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
- 	kvm_gmem_invalidate_start(inode, start, end, filter);
-+
-+	if (!to_private && kvm_arch_has_gmem_convert())
-+		kvm_gmem_make_shared(inode, start, end);
-+
- 	mas_store_prealloc(&mas, xa_mk_value(attrs));
-+
- 	kvm_gmem_invalidate_end(inode, start, end);
- out:
- 	filemap_invalidate_unlock(mapping);
+ /*
 
 -- 
 2.55.0.887.g758fc8c411-goog
