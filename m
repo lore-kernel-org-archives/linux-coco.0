@@ -1,245 +1,143 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0226B409286
-	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 09:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD053D5660
+	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 09:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787735973; cv=none; b=BTsy4J854ztTKiPgwL8yTlz1TP/X18IaegHsDm1OCjFG8VVbAl/2Smh/zjPvwhr5+uPyEDCKyvlNL6HPq4mvPSGX3EQvfCEwZ4/ElRm2XBSBM+4qQRtGE6QP/4hhmKiaqX2NMwnrxSzljiuhOz+BhYtQsBZ7rqWzP5omwOZo/Qg=
+	t=1787737902; cv=none; b=Ld+uBXmJMOrr1dEhWxk1T/QyaI0TBEizGMK+2pB1qBsLzZJOpUWrhmI6WalyPzXCw2CH6L/8vue7UZaGHU5mquems9GdRzp0rb6ODo5H9DgEdcFT+Rt55weo6XDRTYhoYwVuaiVPFpRvtI1kacuHKm47mvn/h6zHJhBaxP1xwcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787735973; c=relaxed/simple;
-	bh=xH/AetAOiAVfkVCScjPegESZvTMnvecRQ5W1mdHVya8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IK7/pyROZPqtui2mUUG6Ug2H9nDbAkIZkvOqcz2j8BZJPj90/2J7UKcBF4B+e3NFmOlwGTZeYHlOdQVBvjQZp8nQl1R/saimw6hwiW+qUKgoFfLnpLVsalJtYREG4f9EC2dTZqHSGcgMBpwaw9NDOobrWlxEx+6toEukNsyXSxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BdDj/BPr; arc=none smtp.client-ip=209.85.214.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+	s=arc-20240116; t=1787737902; c=relaxed/simple;
+	bh=v9piU18lZ/lb9fnvVLpa9yM8T1ZB0s+iYSi2lwWzsEo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vDUN6m9enNhW2/n8lCJ5iGZswEElYpIuKYOsgS+JTc5m0qTGlyQX9zPuXrdOH38Vt196HQdVvz/NHjQ5paezzUzyIXHcvzJBoP7LATSrsjOzKneyoa+QbRACwVX2VHaqyEAkCL3fPLFfjFYn1fClcYONvRTuDMFDzT17Qw4/t70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=gyu7SC4o; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BdDj/BPr"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d6c166bafcso13240565ad.2
-        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 02:19:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="gyu7SC4o"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c2529b3139fso42634866b.3
+        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 02:51:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787735965; x=1788340765; darn=lists.linux.dev;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LbRUvfXufo/53FByarAgnrpLej2qb+vPYL1z/tXSG2A=;
-        b=BdDj/BPrLPg1ed6uE2u+vrQP/J/tpX860v6XRUmrZgbSj2+DhLgm7AAbF1OxhRCMCM
-         GC+Hxf0BJCp9qk55EcdQUez1hm6/5aSP7MIkNi/AXL8ao3TcYH0RBQR7F5nwVCl0lESh
-         fuc26Qy5K3BFY5lfT3xMufLZaIeyendWDvTOPvPLuo9pNlmpmj/TctyZEZmF53L5SQyD
-         4CgD4/QPXYPm8iaj4a2EUvd7eXJXZK+UisWXsYIKkUIE02XhTF9dXbCYY+zddfC8OxYw
-         fE3B0/Rgp6tafKvXNTCCK+CeO7/ycER+9lw6SkJg0GYcpt42fVBZO1CO+ZHyYy/l2mnj
-         XQUQ==
+        d=suse.com; s=google; t=1787737899; x=1788342699; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=YHCoJr/FzmfjS/OK2p3bq3ZjrRpL2dhX1kSlnFW6rfk=;
+        b=gyu7SC4osSb4BbkPrTJCcAS1FtIBp0IJmztXuF/CkHgBa3eeSa82SJgtuKtcBwRh4s
+         wVpJOej+ZVsIAC4WN+2LKvpd8V6o2irCzRPHWa5C2UvimLohYXeDc5PsdGJr9J+9tBa5
+         rsMwSBan9FKDAw4exWkMEGUaBbMRwS2N+hfEaFFoBrAbaVxP2Zicf2Df8KqTG36e1/2Y
+         Q9kEG4d6xZWHlWAFQy+QLnXZKUMelC6zCgBLQ4xTdBeFg7oCyOzQpj/YiLkusFsjN2mX
+         DzfYECqM//ZsbiwGuA264KTJGMQ0Xvmao/HD79XulT8HHGf4hw3EoHYzuRcrDQ5/gg4t
+         /tQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787735965; x=1788340765;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LbRUvfXufo/53FByarAgnrpLej2qb+vPYL1z/tXSG2A=;
-        b=e3gi7vs+i9/MCro6FOKzJ0zAs9kux3tT32Ms0HObQfJgEHjOdyKTnffgAU8BYlKIw2
-         SD/Z3/l8U49RSleVwlky9CEKaJg4ftoy4Sgmj0WaHqXYomhYdm1uACkorHiBIAIsZFPh
-         tolmWxbKhO3IgaBQSQI8hi2gO0F/uONNwTjoQ3aQGZdPNXqyY4yO4KpIrucbNWuPDF38
-         6npWKEYDzVnAYaoWU4P8360EyABBFvxTiI8hId+AKMNcWDYGxaNjYQnMTygVTQzKhba+
-         5oa9O+KFRM+FF/Y637bDzIbRt0XAD5I8MspPq98i8CfXERBo9POmcMJ+/0MnpoKhkPyA
-         YbUQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqh1ZQkiYjgg4V4X2rZcOxMtCnMbqT56yaDd9shXMbmhzwq0tWnCN4YSjwuyCXQwsChdA3chRBuX1jq@lists.linux.dev
-X-Gm-Message-State: AFuF++l9x8j4elfNhC/AbFE1zktBIJI1P+PJdKDkOZj+zzDTrRzWFys0
-	wcONilk3a89SXmo3kEm7/j1O6Daq0HFwVbmsffh8gQrO5k+RdUxFvxZPwswEguyyZFF+xZikuT9
-	dB2lAqR3UNGCR9u0o2Jil5J/VHg==
-X-Received: from plbmo15.prod.google.com ([2002:a17:903:a8f:b0:2cf:bf3e:41f0])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:e54f:b0:2c0:a555:80d6 with SMTP id d9443c01a7336-2d707a2f08bmr89613835ad.2.1787735964425;
- Wed, 26 Aug 2026 02:19:24 -0700 (PDT)
-Date: Wed, 26 Aug 2026 09:18:43 +0000
-In-Reply-To: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
+        d=1e100.net; s=20251104; t=1787737899; x=1788342699;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=YHCoJr/FzmfjS/OK2p3bq3ZjrRpL2dhX1kSlnFW6rfk=;
+        b=PffkFBBMVFT7T9DT2BZ93FIUifOxq+4gtBICFDy0SFQSyig7E1i/J94gOpl8EkvMOg
+         5Qch6PGOXYCemcUd7+3BcpyWZ3loVBl2e9gyCgdZNT718JhjLjfE1fHNAzXgxQfPfFHX
+         hRs/qo5VMhe585OBHnskRzjy1tcW9Os2pbLL5PiiWSoJMZ5/Yy8pcszCAx+n9UvXNO1H
+         /TLkC+aSyKSR+fRt7IuaIq1oBpEI9O86MNtrxf5eV4U+fGqeCm+WDC55ez4FS7/Tmuhb
+         qy1HST9nmp+yg4YXOfHCGWduYeSpYU6a4kSrEiQ8t1CJX6i3oYNU7g6xj2If4cM/wn6z
+         PPYQ==
+X-Forwarded-Encrypted: i=1; AHgh+RofWpWvd3jQ4tNHXKu21ZEcfLp3xX+MkoOkrMCcEsWWsAorM+sO+6oz6vliZOdMrS+231ltqZb1sL4H@lists.linux.dev
+X-Gm-Message-State: AFuF++k6zKNPAStGXGfN1WckfoV8ikjcM6i7tBlubUEBSfDkbptr1ivX
+	6NdHHxCLV5/4emJMJV+lt0un2mZwWkU4nKtgyA0j4I/rvJamG959WjFROFGQtIaTF30=
+X-Gm-Gg: AR+sD119H2X3xSVuTwE7ZQC6cP8iB0nt+jjaU7oc0Mt3PBajIPTq5+VRQA6fQ9W80TH
+	OGSnSjRc0RTygF8XM1Euk7BpHLQkp4whjPKa4ZJ+Y09EcCDwU3DYBgbPBjYRq21bLsB+SOwrAUQ
+	DS2+V98EED1dmZu3+bMqh8/9lYkEZ4pDJ+GpbZbuaB1DWF3JkWQgoBzfvMcbZeu0syhSCptGm9B
+	IAo6IDGUE3XUkNWVFsl9kuExj1y3XzdBOuwyoXjRcClWFNKHWhxs9Ec9TB/cpQj0bi3nHzmefJY
+	4SVe0ei6v+GjsciN9AzYEfNgiI9DHnMv7wcDBJTDu3EzfyIUm2BYG7vu7nD+WBLwPRo5k4OmZp4
+	ftDQRPJmkHvqQLYEqW3egua/jIh1K0FRHNEvHPBC22YAIL2+5rR2sVKU7vGXzzi0bsajWYlnM0l
+	x/BGO9/qJ1vhapoprKK4Sy0qy5GxPt0BsChwEtB8hCSyihng/sm/2/gAwWWcG+zwY=
+X-Received: by 2002:a17:906:ef0e:b0:c12:e178:9e68 with SMTP id a640c23a62f3a-c250c3292a1mr623262666b.19.1787737898915;
+        Wed, 26 Aug 2026 02:51:38 -0700 (PDT)
+Received: from [10.20.4.146] ([149.62.207.128])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c250a704e55sm387662366b.21.2026.08.26.02.51.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Aug 2026 02:51:38 -0700 (PDT)
+Message-ID: <99dd1836-55ca-4302-a81d-545394673702@suse.com>
+Date: Wed, 26 Aug 2026 12:51:36 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=5438;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=xH/AetAOiAVfkVCScjPegESZvTMnvecRQ5W1mdHVya8=; b=rBjdK8/qbBIySb4GV8EG74eZYYgnmFDHuYJd/UqCRYD0UNnjEq1/oCm1vlkEqhjZzxSbXcN7L
- +83jZ96iK2MDTs6i5y0XZawZfieoRqtZqJPahiBUo5v1PNUnNYnk+8w
-X-Mailer: b4 0.16.0
-Message-ID: <20260826-gmem-inplace-conversion-v11-45-0a15d8a799aa@google.com>
-Subject: [PATCH v11 45/46] KVM: selftests: Test in-place conversions in private_mem_conversions_test
-From: Ackerley Tng <ackerleytng@google.com>
-To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 9/9] KVM: VMX: Consolidate the exit handler for VMX and
+ TDX
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Sean Christopherson
+ <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+References: <20260819094903.3060020-1-xiaoyao.li@intel.com>
+ <20260819094903.3060020-10-xiaoyao.li@intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20260819094903.3060020-10-xiaoyao.li@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Test in-place conversions by setting up the guest with a single backing,
-using the same guest_memfd for both private and shared memory.
 
-Make testing single backing the default when per-guest_memfd memory
-attributes are supported (kvm_has_gmem_attributes). Continue to support
-testing of double-backing by accepting a -2 flag.
 
-When testing single-backing, don't use src_type to determine alignment for
-rounding up per-cpu test memory size, since guest_memfd's backing page size
-is always the system PAGE_SIZE.
+On 8/19/26 12:49, Xiaoyao Li wrote:
+> The exit handlers for VMX and TDX have the similar pattern. Consolidate
+> them into a single vt_handle_exit() helper.
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Changes in v4:
+> - new patch.
 
-To test in-place conversions, set up guest_memfd with
-GUEST_MEMFD_FLAG_MMAP and GUEST_MEMFD_FLAG_INIT_SHARED so that both host
-and guest access the same backing physical memory.
+I created essentially the the same code locally after I read the 
+previous patch as the code duplication was killing!
 
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- .../kvm/x86/private_mem_conversions_test.c         | 55 +++++++++++++++++-----
- 1 file changed, 44 insertions(+), 11 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-index 0c94e36575a5e..8f03eea9e2fb6 100644
---- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-+++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-@@ -26,6 +26,8 @@
- #define BASE_DATA_GPA		((u64)(1ull << 32))
- #define PER_CPU_DATA_SIZE	((u64)(SZ_2M + PAGE_SIZE))
- 
-+static bool use_double_backing;
-+
- /* Horrific macro so that the line info is captured accurately :-( */
- #define memcmp_g(gpa, pattern,  size)								\
- do {												\
-@@ -355,8 +357,15 @@ static void *__test_mem_conversions(void *__vcpu)
- 				size_t nr_bytes = min_t(size_t, vm->page_size, size - i);
- 				u8 *hva = addr_gpa2hva(vm, gpa + i);
- 
--				/* In all cases, the host should observe the shared data. */
--				memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
-+				/*
-+				 * When using double backing, the host should
-+				 * always observe shared data, since the shared
-+				 * memory is a separate page.
-+				 */
-+				if (use_double_backing)
-+					memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
-+				else if (uc.args[0] == SYNC_PRIVATE)
-+					TEST_EXPECT_SIGBUS(READ_ONCE(*hva));
- 
- 				/* For shared, write the new pattern to guest memory. */
- 				if (uc.args[0] == SYNC_SHARED)
-@@ -372,15 +381,23 @@ static void *__test_mem_conversions(void *__vcpu)
- 	}
- }
- 
-+/* Align each vCPU's chunk of memory naturally to the size of the backing store. */
-+static size_t compute_per_cpu_size(enum vm_mem_backing_src_type src_type)
-+{
-+	size_t alignment;
-+
-+	if (use_double_backing)
-+		alignment = get_backing_src_pagesz(src_type);
-+	else
-+		alignment = getpagesize();
-+
-+	return align_up(PER_CPU_DATA_SIZE, max_t(size_t, SZ_2M, alignment));
-+}
-+
- static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_vcpus,
- 				 u32 nr_memslots)
- {
--	/*
--	 * Allocate enough memory so that each vCPU's chunk of memory can be
--	 * naturally aligned with respect to the size of the backing store.
--	 */
--	const size_t alignment = max_t(size_t, SZ_2M, get_backing_src_pagesz(src_type));
--	const size_t per_cpu_size = align_up(PER_CPU_DATA_SIZE, alignment);
-+	const size_t per_cpu_size = compute_per_cpu_size(src_type);
- 	const size_t memfd_size = per_cpu_size * nr_vcpus;
- 	const size_t slot_size = memfd_size / nr_memslots;
- 	struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
-@@ -404,6 +421,8 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_v
- 	gmem_flags = 0;
- 	if (kvm_has_gmem_attributes)
- 		gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED;
-+	if (!use_double_backing)
-+		gmem_flags |= GUEST_MEMFD_FLAG_MMAP;
- 
- 	memfd = vm_create_guest_memfd(vm, memfd_size, gmem_flags);
- 
-@@ -448,7 +467,9 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_v
- static void usage(const char *cmd)
- {
- 	puts("");
--	printf("usage: %s [-h] [-m nr_memslots] [-s mem_type] [-n nr_vcpus]\n", cmd);
-+	printf("usage: %s [-2] [-h] [-m nr_memslots] [-s mem_type] [-n nr_vcpus]\n", cmd);
-+	puts("");
-+	puts(" -2: use double backing (guest_memfd for private, src_type for shared)");
- 	puts("");
- 	backing_src_help("-s");
- 	puts("");
-@@ -461,16 +482,22 @@ static void usage(const char *cmd)
- int main(int argc, char *argv[])
- {
- 	enum vm_mem_backing_src_type src_type = DEFAULT_VM_MEM_SRC;
-+	const char *backing_src_str = NULL;
- 	u32 nr_memslots = 1;
- 	u32 nr_vcpus = 1;
- 	int opt;
- 
- 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
- 
--	while ((opt = getopt(argc, argv, "hm:s:n:")) != -1) {
-+	use_double_backing = !kvm_has_gmem_attributes;
-+
-+	while ((opt = getopt(argc, argv, "2hm:s:n:")) != -1) {
- 		switch (opt) {
-+		case '2':
-+			use_double_backing = true;
-+			break;
- 		case 's':
--			src_type = parse_backing_src_type(optarg);
-+			backing_src_str = optarg;
- 			break;
- 		case 'n':
- 			nr_vcpus = atoi_positive("nr_vcpus", optarg);
-@@ -485,6 +512,12 @@ int main(int argc, char *argv[])
- 		}
- 	}
- 
-+	if (backing_src_str) {
-+		TEST_ASSERT(use_double_backing,
-+			    "src_type is only configurable when testing using double backing.");
-+		src_type = parse_backing_src_type(backing_src_str);
-+	}
-+
- 	test_mem_conversions(src_type, nr_vcpus, nr_memslots);
- 
- 	return 0;
-
--- 
-2.55.0.887.g758fc8c411-goog
-
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
