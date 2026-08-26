@@ -1,56 +1,56 @@
 Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297B03DBD54
-	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 09:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422F13DE425
+	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 09:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787735936; cv=none; b=SH40LGPqLGIaPq1cvDTGXDjLCcLbbmKT3WH2GEnlCa2Xz3M8JIFcN/09UIQBl2xirDfoiXe9aSzqliUYCyQLqAJf83uFlUnHLRmaBF05nJliMdJCl/13o8eTvRNPtUREXTXPavGDO0kj6O6OQxGIvKpf2K6MoaEm1pICzUpXqco=
+	t=1787735936; cv=none; b=FAgTczRHq5ZAyNBfdsSHpakMFuToVkedRSWBz0CIUIW1tofudIxL2OAAwS4iB9LmoKX2RGKo0iMSfkSRpeRV/ePwm2y4HNIW3n53CQS/fNYv1fXLq0268yyhhbsgLu91tX7eIvSXiE0ESOGCJxQ8AwRgCmIoVRGY0/bz0ZuAbHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1787735936; c=relaxed/simple;
-	bh=coen2YTr1jMY7N8jgQMR4KIO1rvqehu9jtUhjuViG0w=;
+	bh=tMdiXviK1wZX5Gu5mkLKJd0vddbMyb0Df5lYz3OBLic=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fsYEXVjUcXBk5XFUgxvk8LCVrkFhPDlY5NVnHwE3rDG3Mui5n1wxTZ9QOUXLxVXicxLnjUeLomsc7LqsVITGJ+o/t3M84GrnHZOtlt3CTVRJvB2mWO6L7rcmKXft8wB/jEOEFpVf1tUEPpwgLDTQqf8OqrwIjxomage7PW+QTS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jn5GEqq+; arc=none smtp.client-ip=209.85.214.199
+	 To:Cc:Content-Type; b=D68r/M1tULjs7Dyjjx82BWq8etjyn+cuLlgaIz/DS1r+Kk+R/m9eIW+j9NtHgRrCt7se7eWPIDMD6a7isPTbjjNibajXWS0ldnCcP2XUUbRLCm0kZeUP9mpKQIFKO/U1/ppsaodXqrXf1xorkY+NCboXypyfSPjPesG/+5eYcZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EzMhEdof; arc=none smtp.client-ip=209.85.214.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jn5GEqq+"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cee894b3d8so13666375ad.2
-        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 02:18:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EzMhEdof"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d6c166bafcso13236005ad.2
+        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 02:18:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787735925; x=1788340725; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1787735927; x=1788340727; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1PoPcctCxCU9xeD6IUV2UNVUEFjzWLV4ASul8wcFVUE=;
-        b=jn5GEqq+ksz1Hi5qYRHsW/YRuFmkWw5OfTEwGu+yu1CM9+Fixj0rQgxbkESJh2qeyM
-         ggIHFEOOp+EEGgzDpVc4QyAYFxnGww5k5MveJs70yYI+lQMEIDgE0Cw29ffH//060ayn
-         FxqFu1qJn4YWnzK3f7CsZKsHjFIOCQezay/+tnC4/Knak/sP0Xc8NmWBlLV+vbxnBLct
-         giretk78F53GIBda5KGxVWo5B3m3C142woYAHIhBISePguy0ushJq8n6iv65bq1lozkK
-         bFipVBtlYTZOJuRdJgan70kk2C8BXq/ckAQCp19f4YbAbWCRBqxMs5OoBQyoVKWtElLf
-         ceHQ==
+        bh=P2MYy9xCCsRh/a0/MTuFJqGfvDDDTtCK5nvSZnRDqWg=;
+        b=EzMhEdof7IQEon9+/Bvl3ElXiPWyhVXSoWYoUrpl+ussiRaHStEth0cOseBxzpMJGt
+         h6q5jAxs3GJAKOTqYm+E5SwqZ6ihmN9yDAHXOtTK3HPqzfqlnJAww71gjS01V89GVZJB
+         c/AJMJl6nRwGmwYITB+u+VTyPU1gOK60RnYsJTinqjYHVKCuxYqECjrI13jTjIG0MoRf
+         g2XhO3kMaQYKFSQjiU18+pYyxSAruWo3w7L+Ui9WkDuySMtZKxhXs0hQhgBQbJl2r1fA
+         vO2DQeou0I+b//ZN2aAEAKTPOTwHXDgTYIOZtIFw5yZGRCZHiqIK12XsOpXcG4VKC6AK
+         lKrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787735925; x=1788340725;
+        d=1e100.net; s=20251104; t=1787735927; x=1788340727;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=1PoPcctCxCU9xeD6IUV2UNVUEFjzWLV4ASul8wcFVUE=;
-        b=pakmBIcrbaM7FWY5Lo2pOPpn6PleRcuDZSsEmg+rt5lEhiE3rn4IMX3lUoEvrG0uS2
-         rKpGyH5INR5Iu8IA4r/q6Ede74ViWSbLrlKbOeOXLOW+fpUR/h3yfv6LoJ68SCltqKnh
-         M9CEmfEN3UucKf1jsMt/W9s8sAmLh1pmSrs2ge4fOEMzIbd01z6vap5m50/NcbsGMDAS
-         Jd6hV4l3OoBpOEn2QJgkchl4NVcIcCoC1ktimJtx4wnQsOpDF/t40QOK5S4uiih+bM4G
-         nyD7C+hbprX6yVqaMJ/L6xCIWt8umMTRTfX6141XUF0Nk1JT/QkKtaJjUxFrOKPJdOg4
-         xheQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro4sOJoPzFirKNxCH7VHtcqIr1pCmWzGvf3M83Tkd+zLyoybcWGz7Gxg/07sLEkKymUJOnEPQgzfrrB@lists.linux.dev
-X-Gm-Message-State: AFuF++kntjhjf5Ar+IriuweQhXqy/0f8xrjTSWiUQ8A5ubV/UtfjVprV
-	BU30vs6/hE2/ZTX2EOLsDSLgvhzWLlTbjKoQBlpmsH1sVgm+atmHhZoSYPFtOTiobXs9RWynlGV
-	scYsabjm6x5vHY4i35A44k6k1qA==
-X-Received: from plri12.prod.google.com ([2002:a17:903:32cc:b0:2cc:7709:3bc8])
+        bh=P2MYy9xCCsRh/a0/MTuFJqGfvDDDTtCK5nvSZnRDqWg=;
+        b=kJTKmAerPwzF5XZ4uTu4dtpUiki5pNytwVAKsFxkyWidOOD5tuyJY8TJcAVFQLTUbr
+         pGpVJdrRNyc2g567JB2u/dQy+TCvYBwzawqr3DmeUMqZJCVJyR4JbTTq1o97OJzXYaO+
+         wDeIDIeCsi3DOqzsE8cmg5ZgwOJExcjtBWNneHrMbegAfMaACXEGjd3uYWYtKg9nDYYy
+         5CHbjmK6oDkSqfSbF5NfZZtwtgh8520635IWYXSe6hftLcJNidQ21lfrYrXdpKZn6DJw
+         C7pF09mxDfmOeg5dO6merMSU3bos908ifeMtgHH5dxYdrc5GJisMOsBADLe1WaVTk4yE
+         jAHA==
+X-Forwarded-Encrypted: i=1; AHgh+RoDvoTSlH7g3ajOrsEL60yTJYyrupeXJW0Dx1kJmeZGx5ZDJzrjrU8zrLyj4VBONqayjo8QXl32Hq+p@lists.linux.dev
+X-Gm-Message-State: AFuF++kunO24UrHuQv6KLTAIgMsluuLGwJi76XE0x27iD7gI5qzJhPiP
+	BAQWrFj9Ly1C3g8R0F8dubw6xOC33YScUL6MpJ92BEYwSZ7vxj+8/hVaugeBx/BZnN94IyQsbJL
+	poCPfnqrNUBlsR/WgQ14rcfhZaw==
+X-Received: from plio3.prod.google.com ([2002:a17:903:46c3:b0:2d6:3009:ccc2])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:1a45:b0:2cc:d6de:d597 with SMTP id d9443c01a7336-2d707a9fecbmr93422125ad.7.1787735924909;
- Wed, 26 Aug 2026 02:18:44 -0700 (PDT)
-Date: Wed, 26 Aug 2026 09:18:20 +0000
+ 2002:a17:903:2283:b0:2d6:7409:7145 with SMTP id d9443c01a7336-2d707a2edd0mr90965095ad.1.1787735926573;
+ Wed, 26 Aug 2026 02:18:46 -0700 (PDT)
+Date: Wed, 26 Aug 2026 09:18:21 +0000
 In-Reply-To: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,14 +60,14 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=2002;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=7437;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=5+fsxDOXBXvxtjSmr4LTesZGOQ7aAAqTF+3X7TBXdZA=; b=Rx5ixHeP0JEHh6BXcEuohPdB+7Rs9tkd/Cq94uHcIXinftxcsawhYkswrSTC+BPLDcx78kRwU
- vASNv9iu4SlANU6cEaBK5QarVqaCef2nf28MCtJrwSE8k7ohH/iAF11
+ bh=erBMg+vYNKFmnIk1EALqLuAs5vQ8G8lIJWnAQEPGhMk=; b=rvsxDqasKEC9y24pJL6GBixd0VO6ms1BpDtgqU2vfiPjwfeBV4W2WWC2J5Xrl4izaS+xS4TWP
+ bS2O2g3q2UYCaaj4SuKQQVw+wKicDiRXtr4U+uVmHBd3z9x3HPMjVOo
 X-Mailer: b4 0.16.0
-Message-ID: <20260826-gmem-inplace-conversion-v11-22-0a15d8a799aa@google.com>
-Subject: [PATCH v11 22/46] KVM: Move KVM_VM_MEMORY_ATTRIBUTES config
- definition to x86
+Message-ID: <20260826-gmem-inplace-conversion-v11-23-0a15d8a799aa@google.com>
+Subject: [PATCH v11 23/46] KVM: Let userspace disable per-VM mem attributes,
+ enable per-gmem attributes
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -102,60 +102,170 @@ Content-Type: text/plain; charset="utf-8"
 
 From: Sean Christopherson <seanjc@google.com>
 
-Bury KVM_VM_MEMORY_ATTRIBUTES in x86 to discourage other architectures
-from adding support for per-VM memory attributes, because tracking private
-vs. shared memory on a per-VM basis is now deprecated in favor of tracking
-on a per-guest_memfd basis, and while RWX memory attributes are on the
-horizon, they too are expected to be x86-only.
+Allow the user to disable KVM_VM_MEMORY_ATTRIBUTES even when KVM supports
+PRIVATE and SHARED attributes, and expose gmem_in_place_conversion as a
+module parameter when per-VM attributes are supported.  I.e. let userspace
+enable in-place PRIVATE<=>SHARED conversion of guest_memfd pages.
 
-This will also allow modifying KVM_VM_MEMORY_ATTRIBUTES to be
-user-selectable (in x86) without creating weirdness in KVM's Kconfigs.
-Now that guest_memfd supports in-place conversions, it's entirely possible
-to run x86 CoCo VMs without support for KVM_VM_MEMORY_ATTRIBUTES.
+Provide both a Kconfig option and a (conditional) module param so that
+deployments that use a custom kernel can fully disable per-VM tracking,
+while not forcing distros to ship two separate kernels in order to provide
+backwards compatibility for downstream users.
 
-Leave the code itself in common KVM so that it's trivial to undo this
-change if new per-VM attributes do come along.
+Don't allow running VMs with mixed tracking for a given instance of KVM,
+i.e. disallow toggling the module param after KVM is loaded, as the extra
+complexity needed to handle per-VM behavior far outweighs any potential
+benefit.  E.g. neither TDX nor SNP supports live migration, so in effect
+the requirement is that existing deployments that want to support both the
+old and the new models would need to tell their VMM which flavor of
+tracking to use.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Reviewed-by: Fuad Tabba <tabba@google.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Tested-by: Shivank Garg <shivankg@amd.com>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+[Define module_param only if CONFIG_KVM_VM_MEMORY_ATTRIBUTES is enabled]
+Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Co-developed-by: Ackerley Tng <ackerleytng@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- arch/x86/kvm/Kconfig | 3 +++
- virt/kvm/Kconfig     | 3 ---
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt | 25 +++++++++++++++++++++++++
+ Documentation/virt/kvm/api.rst                  |  7 +++++--
+ arch/x86/include/asm/kvm_host.h                 |  4 +++-
+ arch/x86/kvm/Kconfig                            | 14 ++++++++++----
+ virt/kvm/kvm_main.c                             |  5 ++++-
+ 5 files changed, 47 insertions(+), 8 deletions(-)
 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 1069806616b94..0ac44e1bccd28 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3114,6 +3114,31 @@ Kernel parameters
+ 	kvm.enable_vmware_backdoor=[KVM] Support VMware backdoor PV interface.
+ 				   Default is false (don't support).
+ 
++	kvm.gmem_in_place_conversion=
++			[KVM] Controls whether KVM enables in-place conversion
++			support for guest_memfd and tracks the private/shared
++			state of memory per guest_memfd instead of per VM.
++
++			If enabled, KVM enables the KVM_SET_MEMORY_ATTRIBUTES2
++			ioctl on guest_memfd file descriptors and disables the
++			legacy VM-scoped KVM_SET_MEMORY_ATTRIBUTES ioctl for
++			private memory state tracking. Only the
++			KVM_MEMORY_ATTRIBUTE_PRIVATE attribute moves to
++			per-guest_memfd tracking; other attributes remain
++			per-VM.
++
++			This parameter toggles KVM's in-place conversion
++			capability support. Whether a VMM uses separate backends
++			or out-of-place memory management is determined by
++			userspace VMM design.
++
++			Note, this parameter is only available when
++			CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y. When
++			CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set, in-place
++			conversion is unconditionally enabled.
++
++			Default is Y (on).
++
+ 	kvm.nx_huge_pages=
+ 			[KVM] Controls the software workaround for the
+ 			X86_BUG_ITLB_MULTIHIT bug.
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index f88d65b78c504..d976f8ec2e2dc 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -6383,9 +6383,12 @@ on-demand.
+ 
+ When mapping a gfn into the guest, KVM selects shared vs. private, i.e consumes
+ userspace_addr vs. guest_memfd, based on the gfn's KVM_MEMORY_ATTRIBUTE_PRIVATE
+-state.  At VM creation time, all memory is shared, i.e. the PRIVATE attribute
+-is '0' for all gfns.  Userspace can control whether memory is shared/private by
++state.  If in-place conversion is disabled, i.e. PRIVATE is tracked per-VM,
++then at VM creation time, all memory is shared, i.e. the PRIVATE attribute is
++'0' for all gfns.  Userspace can control whether memory is shared/private by
+ toggling KVM_MEMORY_ATTRIBUTE_PRIVATE via KVM_SET_MEMORY_ATTRIBUTES as needed.
++If in-place conversion is enabled, then the starting PRIVATE vs. SHARED state
++of a gfn is determined by the relevant guest_memfd instance.
+ 
+ S390:
+ ^^^^^
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 83e26ce45fb79..e840418427a1d 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1851,7 +1851,9 @@ enum kvm_intr_type {
+ 	((vcpu) && (vcpu)->arch.handling_intr_from_guest && \
+ 	 (!!in_nmi() == ((vcpu)->arch.handling_intr_from_guest == KVM_HANDLING_NMI)))
+ 
+-#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
++#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||	\
++    defined(CONFIG_KVM_INTEL_TDX) ||		\
++    defined(CONFIG_KVM_AMD_SEV)
+ #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
+ #endif
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
 diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index 2f8e1b5a8a72c..abb108886733a 100644
+index abb108886733a..2c3c22aeafa54 100644
 --- a/arch/x86/kvm/Kconfig
 +++ b/arch/x86/kvm/Kconfig
-@@ -80,6 +80,9 @@ config KVM_WERROR
- 
+@@ -81,13 +81,21 @@ config KVM_WERROR
  	  If in doubt, say "N".
  
-+config KVM_VM_MEMORY_ATTRIBUTES
-+	bool
+ config KVM_VM_MEMORY_ATTRIBUTES
+-	bool
++	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
++	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
++	help
++	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
++	  memory attributes.  Using per-VM attributes is deprecated in favor of
++	  tracking PRIVATE state in guest_memfd.  Select this if you need to run
++	  CoCo VMs using a VMM that doesn't support guest_memfd memory
++	  attributes.
 +
++	  If unsure, say N.
+ 
  config KVM_SW_PROTECTED_VM
  	bool "Enable support for KVM software-protected VMs"
  	depends on EXPERT
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index df575449d97b5..a0678ef8ee3f5 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -100,9 +100,6 @@ config KVM_ELIDE_TLB_FLUSH_IF_YOUNG
- config KVM_MMU_LOCKLESS_AGING
-        bool
+ 	depends on KVM_X86 && X86_64
+-	select KVM_VM_MEMORY_ATTRIBUTES
+ 	help
+ 	  Enable support for KVM software-protected VMs.  Currently, software-
+ 	  protected VMs are purely a development and testing vehicle for
+@@ -138,7 +146,6 @@ config KVM_INTEL_TDX
+ 	bool "Intel Trust Domain Extensions (TDX) support"
+ 	default y
+ 	depends on INTEL_TDX_HOST
+-	select KVM_VM_MEMORY_ATTRIBUTES
+ 	select HAVE_KVM_ARCH_GMEM_POPULATE
+ 	help
+ 	  Provides support for launching Intel Trust Domain Extensions (TDX)
+@@ -162,7 +169,6 @@ config KVM_AMD_SEV
+ 	depends on KVM_AMD && X86_64
+ 	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
+ 	select ARCH_HAS_CC_PLATFORM
+-	select KVM_VM_MEMORY_ATTRIBUTES
+ 	select HAVE_KVM_ARCH_GMEM_CONVERT
+ 	select HAVE_KVM_ARCH_GMEM_RECLAIM
+ 	select HAVE_KVM_ARCH_GMEM_INVALIDATE
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 05c518c9b8078..929fd3e1a01e6 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -103,7 +103,10 @@ static bool __ro_after_init allow_unsafe_mappings;
+ module_param(allow_unsafe_mappings, bool, 0444);
  
--config KVM_VM_MEMORY_ATTRIBUTES
--       bool
--
- config KVM_GUEST_MEMFD
-        select XARRAY_MULTI
-        bool
+ #ifdef kvm_arch_has_private_mem
+-bool __ro_after_init gmem_in_place_conversion = false;
++bool __ro_after_init gmem_in_place_conversion = !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES);
++#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
++module_param(gmem_in_place_conversion, bool, 0444);
++#endif
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
+ #endif
+ 
 
 -- 
 2.55.0.887.g758fc8c411-goog
