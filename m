@@ -1,306 +1,207 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012020.outbound.protection.outlook.com [40.107.209.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DB12472A2
-	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 22:17:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E156440DB4B
+	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 22:17:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787782651; cv=fail; b=aitT7me87ZzBqLfX8bE+PXd3Al2t8+4zt8MlsoCuVkoeZnqzyiqVrYGYFy2Sxk9c63Sg6XiV2p1YmToeTpdO1gPPobI1eYc8KzEcWcRCGJnzbmtQFfezClmNNjHrBdre+qoqcyG3/huY0BQ6Eae0OKW+9hqfnO+NU+FW2kyVtU0=
+	t=1787782660; cv=fail; b=YEUt4+eiGCPqHgo3Uhab6nPAOK+K9kkkuAt7H4rH9egwaCHE8aRg5uxT1v8/dmQ2dcZ03w+TFXnioV71NFiB7KC4cUh6EJR79N+IQXf9beD/3rREFvEKDDi0z/rRNz99VWc/YeC5x65veHcEsWy8DBMekJ4Ae7pvT+uyK14fXLI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787782651; c=relaxed/simple;
-	bh=RJRQFq2zgha/B1pwCNUsP9I0I50lSXyTgjZp+StE0NY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gaGs7B+r75YenNsE1CwMPkGHaF5vqeQh8IA18Z0Euc7gj1QXDU8upSmqwvXnCW7yaMua90XhbjLFKpV9YkZSdv4LS3RsdHpX3ij8QYysLElp8HyaM48K7eWVakOV3QKRWwHX9rXfoJepDXwIT12pF4rfifBNadvNSmvQqUqikGc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ltjjZ+v/; arc=fail smtp.client-ip=40.107.209.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1787782660; c=relaxed/simple;
+	bh=0qD9vsGSJiUbG7NDdUSE/o6LsUSwjljSQ73GIN4nVG0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=sMMNZI1L9OoqDFBYwc1n4TeKkXS2FkQSjn2oR5/YsQDeVL9Q8LL9uRRzqwkBaHlX0Ka4n3keqGkCCV7C/di2TNslN8dAvrr8GPPM4UYzwnFhbIrzUfDBV4YyRERILjwuFgDyatKSZnlIdLTwU3dwmdpo3ltvIzcD91wqYqN3o8k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HLSYJzJW; arc=fail smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ltjjZ+v/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HLSYJzJW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787782658; x=1819318658;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=0qD9vsGSJiUbG7NDdUSE/o6LsUSwjljSQ73GIN4nVG0=;
+  b=HLSYJzJWgwPTPck6WG5VvwCPNUiq4BGrmgtGQSViP1upEzLOBA8hldQg
+   78uGwmeASGplbVaxfmFaJ6N9wD7KkKJ2pSSpPqEKRxiAgYbYJyEc7AmvV
+   ESxnWx5KaXQzzmzysgnlqAUzVnhqZz1fSz3Md23FNizATWTNwXhwH0ATb
+   B6UhH7IWHxScoESvqzbfXuOZb2kD/EMxptUc+ud69/vXD0QaBkSDLwoIc
+   lBopXHuzkDgRck4rNIZdJPT1mNaKkSA0mnxhJhYRuf0+Ee9J067d7Q0lg
+   095gXpbNC+WUa3iA0p4NwZmYtNUd5TaSLhMGYiRrjHDTSP1TMUWhuSM/+
+   w==;
+X-CSE-ConnectionGUID: HA9XxJnSQjCPh9j8BTLl0A==
+X-CSE-MsgGUID: zytKZ0BhSv6BOttQXD3bmg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="92137919"
+X-IronPort-AV: E=Sophos;i="6.25,245,1779174000"; 
+   d="scan'208";a="92137919"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 15:17:37 -0700
+X-CSE-ConnectionGUID: HP3qYQwhQGyxXpf1Dvq1MQ==
+X-CSE-MsgGUID: CP1BnohaSHinITQ71gHeBw==
+X-ExtLoop1: 1
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 15:17:36 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 26 Aug 2026 15:17:36 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Wed, 26 Aug 2026 15:17:36 -0700
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.69) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 26 Aug 2026 15:17:36 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PwSHp7bohqzFyowJKX+2b9FKUPm5KlwYHHxbollJobMhaPrceWaBwqd19KTzwwXlg9yd9osq/YRLtjvBuK/bKShDVb0fCzdhZQd7BLpIIirUZhDCCYFE+mol68eQWpu1zIJW/WF0aNpGoUPM8vS/kMc6avZwjOsDzPOk1O7dhEjuRgugr3QN/leRUuUMJk/ul3nCPi4dmUefv1LyHpfMTO2AYwV8Svg4Cm6KAd+7U8rNJ57gqUFM5Kl1KzHzaUrkRu1GY6r7KKPfYongKC1NaevpXi5LhWVvDZfVmktG8rXNHE0D9A/Eo4NQJ9no9qnX+bcVyIoNsCyhPW+kmp52Ow==
+ b=UObQoDeijRfTWM3tst/J1WRTJ0jjHM3kWLMrB3MYNdcFhOhRuWyuZ836NafJ5SN1NDu16BQeJ5EBw2roxVjfloX6zIIt/lyi2h2o7TQidopHEVSgM7IQA85hF8kd/mNvzw8Oo0MOPuwuhftRKGeEEo5YJFs7gGQx3t3zBKSf2jOxffGloupujEWpWzL/4WDfSOF4NFMXFuIYEOVO7IH+0sea905arI0Qkl9Rs7ukYy2+f29BzcGwx2T/lnw1wFzQnCHd2z+fHoT7rzQfolgvG4VAgIlr7v0j1bbxpm65t8nj9tf6Qt+E/BWy/9KeUsh3/oinIFOjD4XdBLxEa+NaUQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tCXjL6wviLhhXmLFX/1ji0v98He7HXMnq3WlETaV1LE=;
- b=afWGQwZvH4sfDqfirZNx+PRHM23JVlWJTRp2vPTUMKpFOfWcP8alWGGC+rB3Fr5OiOuV19iWGmTOq5OBUcY/RMldRHOolv11DjSh4VFn7/G2x1whv2Iqi0qKkc/wgIjWG71/bKy87Zz2T9wAF2xlQHCjfM1K0Cfc8uWoIaHnd7TN20dXaEXSBsEe9lrnIHbepB5RtuoTVyrb1JLQ29C+CDotheRTYQjduZ92aMdFK6Cv87abT7yc8fTo97EaK/kDr7td1b+8ElJC5saOe3N62J8UygfrpR/nQM+nTQg5I9UvcPMBRUZ0ySBa6Sv47+7B+S5lUNQmjFFR/tS1F2Xkog==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
- is 149.199.90.133) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com;
- dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tCXjL6wviLhhXmLFX/1ji0v98He7HXMnq3WlETaV1LE=;
- b=ltjjZ+v/Df/OYSwqGQI9u0jB4rRu8gzSnkqlKVycOu68aYrv/Sy8JtYHdx+vfOR9MN7Iwo74iET36q/TQF0Cb3vGai9GwgRsai5vMTa23AR9f8ZASxoEHcsgygZYZST1YasGwYvt4/KjRzOR0aobw7iVKeomynaNdy/x4E/EPUU=
-Received: from CH5P221CA0018.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:1f2::13)
- by CH1PPFF5B95D789.namprd12.prod.outlook.com (2603:10b6:61f:fc00::62a) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.7; Wed, 26 Aug
- 2026 22:17:19 +0000
-Received: from CH2PEPF00000146.namprd02.prod.outlook.com
- (2603:10b6:610:1f2:cafe::2d) by CH5P221CA0018.outlook.office365.com
- (2603:10b6:610:1f2::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.10 via Frontend Transport; Wed,
- 26 Aug 2026 22:17:19 +0000
-X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
- 149.199.90.133) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=quarantine header.from=amd.com;
-Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
- amd.com discourages use of 149.199.90.133 as permitted sender)
-Received: from satlexmb07.amd.com (149.199.90.133) by
- CH2PEPF00000146.mail.protection.outlook.com (10.167.244.103) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.3 via Frontend Transport; Wed, 26 Aug 2026 22:17:19 +0000
-Received: from localhost (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 26 Aug
- 2026 17:17:16 -0500
-Date: Wed, 26 Aug 2026 17:17:01 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: Ackerley Tng <ackerleytng@google.com>, <aik@amd.com>,
-	<andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>, <brauner@kernel.org>,
-	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <jmattson@google.com>,
-	<jthoughton@google.com>, <oupton@kernel.org>, <pankaj.gupta@amd.com>,
-	<qperret@google.com>, <rick.p.edgecombe@intel.com>, <rientjes@google.com>,
-	<shivankg@amd.com>, <steven.price@arm.com>, <willy@infradead.org>,
-	<wyihan@google.com>, <yan.y.zhao@intel.com>, <forkloop@google.com>,
-	<pratyush@kernel.org>, <suzuki.poulose@arm.com>, <aneesh.kumar@kernel.org>,
-	<liam@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner
-	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
-	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
- Khan" <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, "Vishal
- Annapurve" <vannapurve@google.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
-	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
-	<nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
-	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
-	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
-	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
-	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
-	<jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
-	<peterx@redhat.com>, <tarunsahu@google.com>, Fuad Tabba
-	<fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-trace-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-coco@lists.linux.dev>
-Subject: Re: [PATCH v11 15/46] KVM: guest_memfd: Call arch make_shared
- callback for to-shared conversion
-Message-ID: <mtbqvvvpwbzybgy6z47lwui6ag53kyubub3hkczui7u72zxesl@lnwsglrgwl5p>
-References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
- <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com>
- <ao9CKMXAX-hScRSa@google.com>
+ bh=AVXd5m5BcccHvKc01Zol+IAtvq4Fi3reWNj7R5lZyq4=;
+ b=WYT4Gooj1t1+wL1mCR/Qe6DRPZp4CTD1HUOu5b9ywd9WZTmr4TiYY/gQD95/nkaUZQz3t2SkyG5DqkXqorf139UJMmizOgAH86suFE8HbGDnGrKkEFu0SbjD6jQs7aRergd/VdzenjBHIFOGAXa8FclTvXnAKkYVAdy4cjqJll8ckFVEu6DefGo9tytkivtrvHGeoJLZF+QMQB+kqsTFBO9CuF2ZRNBtETOr/vU9QxkYfLDDcJz73+4cgGvqK4wa/vdFhdWU96bDhAo/qqQbmditPK70rRfA7X+kcA68yAkQ2u7LQzHjJF0K0Jtq3zVbHFPY3x0zECEsj3b7yCOcqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB435924.namprd11.prod.outlook.com
+ (2603:10b6:610:34a::8) by CY2PR11MB387948.namprd11.prod.outlook.com
+ (2603:10b6:930:114::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Wed, 26 Aug
+ 2026 22:17:33 +0000
+Received: from CH3PR11MB435924.namprd11.prod.outlook.com
+ ([fe80::1696:c90e:60af:a0cd]) by CH3PR11MB435924.namprd11.prod.outlook.com
+ ([fe80::1696:c90e:60af:a0cd%6]) with mapi id 15.21.0360.008; Wed, 26 Aug 2026
+ 22:17:33 +0000
+Date: Wed, 26 Aug 2026 15:17:30 -0700
+From: Peter Fang <peter.fang@intel.com>
+To: Lisa Wang <wyihan@google.com>
+CC: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng
+	<ackerleytng@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao
+	<chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, Ira Weiny
+	<ira.weiny@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, "Kiryl
+ Shutsemau" <kas@kernel.org>, <linux-kselftest@vger.kernel.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe
+	<rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, Ryan Afranji
+	<afranji@google.com>, Sagi Shahar <sagis@google.com>, Sean Christopherson
+	<seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li
+	<xiaoyao.li@intel.com>, Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds
+	<jmcrey@google.com>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
+Subject: Re: [PATCH v14 16/22] KVM: selftests: Load per-vCPU guest stack in
+ TDX boot parameters
+Message-ID: <20260826221730.GB33657@pedri>
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
+ <20260722-tdx-selftests-v14-16-15ad654a50db@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260722-tdx-selftests-v14-16-15ad654a50db@google.com>
+X-ClientProxiedBy: SJ0PR03CA0206.namprd03.prod.outlook.com
+ (2603:10b6:a03:2ef::31) To CH3PR11MB435924.namprd11.prod.outlook.com
+ (2603:10b6:610:34a::8)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <ao9CKMXAX-hScRSa@google.com>
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF00000146:EE_|CH1PPFF5B95D789:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8a271f5a-c65c-4069-01b6-08df03bfcb27
+X-MS-TrafficTypeDiagnostic: CH3PR11MB435924:EE_|CY2PR11MB387948:EE_
+X-MS-Office365-Filtering-Correlation-Id: f789a71e-459f-4917-d306-08df03bfd3a0
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|36860700016|23010399003|1800799024|82310400026|10067099003|56012099006|4143699003|6133799003|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	GvbEPnHGbk3m6zx2TFicCQAzZX3vfIV25qhgZIyfzbnmOsVOQ8IWGUsUlVOyBcGmS25efMLqYWgEly7Sp3MyRDlqBlYSehrXvkjyyzDCWeQV3hhO3H3ngOIJkjGqiGOGjS4e3qATv8s0KmDsfFywnm4sCOZZAV5VM9Fk8Tjh6AIudoWI5DjNXIld0DJZWy+JAAPqoVZZGJXjQHKmw+mbM+5EWyVgbLVyyC/Rc+PyaBpVXbBnp4k11s2mGWrZKvs+Kx9JvvfMYYLiUjV13K+nlErfNYSiwj8wrMrUGB0IhGsmfWaWqiSlb0kT44K31KhJHkkD1R6MZNj7rrQU+BftV1ZOC//CJ9rw8PxC0nT5NO9tzw4Fd6bda9I9I1B2TlgbmPE8af5P0QodRTAuwA0mvmEDHY35PTCVBscklO1DOMuJFjY2Qb0kUJcIhWJ4rDU2KohfnslbA5ecLOkRLFg21jWCV8WdEQNqTvgstIni4gXOUfH0QwTTKBxDMQn1adWdppKFhDu/bG6YSRbKE5oJPh/BASh46JZTAB4DeCwr1NjJ7dzDRXUK8oAexhoAag/wbm9kQuxNZRQ+JpEm/GsYMbQBDoOZ4eCStRkAkGamyc34BcoQYMmz7l2SYiavFgtBINikzgmRqqs4hUfnFgBIbxsC4HVrqvOrIkcDdiHK3q59qHnrLhKpDhDTVAt8WbXaTguBpIRMIEJk3lBoaz43zw==
-X-Forefront-Antispam-Report:
-	CIP:149.199.90.133;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:unknown-90-133.xilinx.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700016)(23010399003)(1800799024)(82310400026)(10067099003)(56012099006)(4143699003)(6133799003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|23010399003|1800799024|376014|366016|6133799003|3023799007|22082099003|10067099003|56012099006|11063799006|4143699003|18002099003;
+X-Microsoft-Antispam-Message-Info: MO5AOrbQHcBrnBXTW5XU5beHAAaI0MWaFNRj+jPKlFdl6afg4E2H+CDAxChrQXXUyRfl0W3wN5vdgII9r4gidCCTGNDT0DU/uBiE5tmmXEL+pO7Qs9qqu01tn7MJD3UktlMH01QBf/wjcPAlD3IPHzMj/Gdr7GoJq1uVgNr+iozqV7EZohOrDOmjiJ1OE958DVwEvotLHxtTfoAuvltk+WhCw5BbqGuu9hnx6H3iFfFnLAkVoY9qhZDPxECuqFx70zv8z+FIwwdWgzUt/nQ9qNOynDH/tim5zTAQrxOUj+ekB7gNicL4BryfCVigkJR0Du4v3164ptwwX3bYbqAmmvNCSUacckFgB3MWNpbtREtBS0ZHi83E51la/8e3/He8/4OJWnNlvYg+2P/h5T1kkaMuLROCw84oT0iEIfqA/n+SaBs7nKe+VUpoT3pycmzUuS6vjejlu+UrkkkfNAoeLFAgw4xL1RWLlgVRvH4x33mmlm1sOwcyS89tOTTY73JKR93/Kihnh8Sm1kapbPvFRTXg1fjpaaPJ6pna8NHQ2E8KFgMuV2QI6muDZwR7brCxkLz09XMs//pZ4aJTPWjR54ALpz7z+D8RLKGgltJrcjIN1KwV5sQPhoXDXCASTifhs4w5O0j9VZ+GjwWbSdqGkcR+5lsYK2s3Prf57BBPZF8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB435924.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(1800799024)(376014)(366016)(6133799003)(3023799007)(22082099003)(10067099003)(56012099006)(11063799006)(4143699003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	ttyRbOGGvgsMKUmgLArQ39vmk40u9L4bEiphl+3pJZKnFJv0yxOC3phiq/hHz4QlKiUrE4aYSILGSL6aDhpL6kK2S4z5gfAxcO5FyXMFrX1Pyz7KrofbV0AATVOIK0J9DosP6PIbTBhi0s4C3zRRgriMMbPv5jsZBCXfVBbtyrsoPMSYZ9obua0x3mmAQ2jTFx/Io8igr7jmnJ5lA/d2VBPcbTg6LjZXI6pKTOC4vttRb8RF7dudIrb2h/HQeod2tsD88zLNjYRRep+Ay67FcN3JFtjjUm9XUUeMCNTt7GbTAyM3QBXKcmdCiyv0QprCYzasLKV+m2u4bGQYiCeYM/0gAh3oyAmcLrrCSyeDTnU8n0pNgfTbOmLnpJjiJb3rW5yPQ5SbBgp9dFGXe6cqbV30+hd2HjgkZys54APmsuKkQzwnMVBiLD6UJwVBlvAp
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 22:17:19.0694
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?IxkKClSydc4Fdxu18FFN6YWa01nCx9jFLrHV8FmK/xzmfbncrP1SipLvQ/3o?=
+ =?us-ascii?Q?1kLAHhlguWCQ7kaPwI5Tqqi3Z+QH9cmXG0dOHUfEJzfATfbw0gC9tdhbEkqp?=
+ =?us-ascii?Q?GeoA+h8+mzVqufR7KU5Qx1TItLiEclhOZRxgCsBuI9DZC7UJKGbEzCfkRH/Y?=
+ =?us-ascii?Q?Ub5RqOQP6VH9B8B4PcMS1OaqyW7Fhdw75DyHejpsuNxO4H1Qff79gp+YWywS?=
+ =?us-ascii?Q?ZnzIgMAHK/WlOaeLWEEKDGC5i9Ll8A3vsOIbA14ziVhjP6z/MBNV6PKydnBL?=
+ =?us-ascii?Q?A3ZSoi4Vz2/3syi3UxdvB+jwIclVFzfTd/t/iU1rt4O2i+pSZsnRnzfffG+0?=
+ =?us-ascii?Q?+6DckRmAWIszaVXsGEo6WIVx7ldwhDZ+mcNRjLyTCixXQhYtgj9pcZbt8xXE?=
+ =?us-ascii?Q?w+YBQWeYonO4SZaCWtgiUE8K5GCcfgO0w5sBwuF3GLqU8c1kg4soqJyYqbDh?=
+ =?us-ascii?Q?s8uUU0AIoTIQNeqzXbx0NP+RZDH05y/vqcLxXhyW9PEXg9D2wmbj5hqI0YDi?=
+ =?us-ascii?Q?edpLCQ5fUZZ6J8ZhMKTM6bqpEMSiOE5npkVMcglmxVJLcz+vx3sQ3+s6EvMV?=
+ =?us-ascii?Q?cdBO+DXJGC+fQ52625sYzGB93WoBFAMLhTIuaZtw8R2LrD515sKbLkEEapZr?=
+ =?us-ascii?Q?IBecxcmOH+qv7Fi5ru4WcVFoH/cnuOfoCyZ0F2zO5DLI4JCMYrl771PqVT4Y?=
+ =?us-ascii?Q?7gEgUvBWd+ehOEKDg6vHWuVHI5a2YDsGbNeF2ZyX4BtEsYFtPOZwfYWIEYME?=
+ =?us-ascii?Q?QnTOlDyHkxWWxSZcC0JATpqMXsKX+R/aR4X29xlVzPF1ZJuUBXdREUETgAnx?=
+ =?us-ascii?Q?9FtXx+hprdvosoAbU5G2DFw5gKVA6gQPrrTO/Y31P/xFRFucd8J11YlW0X+Y?=
+ =?us-ascii?Q?FbNwkdkG/3g/1NsFDXVcvLlAkJVA78bwU4cZ1+I/f2NFWKxEXYJ3qhGUf5Wi?=
+ =?us-ascii?Q?lfss05bKbUgtZNFL3u4uxRweBVvpv5ojuJ93TLy4wPmnJIkO2x1Cnfu5as4f?=
+ =?us-ascii?Q?tBmwhGPgp42VRriIOvr6Gll/UAn639Gq9NGwv231O4ns7IRJrhXLr+usrfgm?=
+ =?us-ascii?Q?Xr82c2e8zQa4NYyu/PNI7+Ntwrce7mkILvSD1qm7gVa09VTjSgI658Luyv7F?=
+ =?us-ascii?Q?wrLxpnqemvrN3dXik5+jRQ8m+3ntitXgmt7bDUztRzBVq9t2KVjLytCeuGV2?=
+ =?us-ascii?Q?k/FWL28sTgMJPWo/o3+t3H4dmQaIhqWFzwoIDVXNBVFlLuX5D3h4Of+t/xIX?=
+ =?us-ascii?Q?oLUJ1K3zy/2zNRWtagTGDMYeDQiyE0NbSSCs8103D0ySKU5HN9qngneNLk+5?=
+ =?us-ascii?Q?m1BAJAX6i718pjOYtyQBviKJ8lGJbEd6JE+eTE50Uh+SG6K6q6tUIlIWZD6F?=
+ =?us-ascii?Q?03y575gGx6uZCBKR24TG6iyOSSDBkNWaFvaJyM9Ro3xr4a1bmLwtrmJDvK9q?=
+ =?us-ascii?Q?kbmALmCmJ9XasJhCzTWovwxkFdKmWQU3zOLixzn+X2Bv+306ehCjZVFXedso?=
+ =?us-ascii?Q?KK7ITgm9hnpEySazFTV2vPugWXSSulcCq5TMMz1g+FRt7JcMea5LgYH0wZFF?=
+ =?us-ascii?Q?YNQGCJk7gK1mb3HYoqJwGFCJvsrz+Lnl3wZ4Attsi1eMxcD5LfqGvkfTpXWI?=
+ =?us-ascii?Q?9Yg+k8KkZPJKSCpWkJPCumeVjfnyjvktNDUW8/wX3VV2rHlYerW53ARgbOp7?=
+ =?us-ascii?Q?SmvlLScQ5cwP4Lay/U6Xa5ZRkI9hJpggB9LgNrsX9jICMKxmh4PyJZsT9pyK?=
+ =?us-ascii?Q?HmaxwxiMoA=3D=3D?=
+X-Exchange-RoutingPolicyChecked: VcnvtcMR8WvgImRntaJKJYATc32+PodvPw87hx9rrdsLGJ6z2CE3c+1U6S21oytrG3IckahbNoCNu8m3ZVv6RoHzVl0Ju+SV1yGENgdREJ+ODQTWRSzRXKKKkF6sKklir5rSxwRlGMkFblk7M8fA6PoKQP+hMWfHHmHcKlAQYGLwtT7rh/5vqMxSV2qTvABpsJdln+v0r47aj0VAt2GjNtjRXDvAFEbzgVmmBeBHSTnLNjjAsKvks0tiAEjLDHNpzLNVUR7FWVONFwqVU9VsXZp+PN8qovs8V+WCy22BzDWojMYMQZa7fDb1HvaILzKQkCCmiSR37aw5QEYdKhoe4g==
+X-MS-Exchange-CrossTenant-Network-Message-Id: f789a71e-459f-4917-d306-08df03bfd3a0
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB435924.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 22:17:33.5005
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8a271f5a-c65c-4069-01b6-08df03bfcb27
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[149.199.90.133];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF00000146.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPFF5B95D789
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rwRMsH1pWidyPj0LycXKZnPIvXyhHKMtm5py7lTNSD4oFTYqPMJEImXTkxtooJ5VJxNnZJUtgMjB++qMUppFHQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY2PR11MB387948
+X-OriginatorOrg: intel.com
 
-On Wed, Aug 26, 2026 at 12:44:40PM -0700, Sean Christopherson wrote:
-> On Wed, Aug 26, 2026, Ackerley Tng wrote:
-> > Omit support for calling the arch hook to make private, since SNP, the only
-> > implementer of the arch make-private hook today, would actually prefer
-> > making private only just before faulting memory into the NPTs.
-> > 
-> > Calling the make-private arch hook would require iterating both bindings
-> > and the filemap to find the intersection of bindings and allocated
-> > folios.
+On Wed, Jul 22, 2026 at 11:13:21PM +0000, Lisa Wang wrote:
+> From: Sagi Shahar <sagis@google.com>
 > 
-> Why would KVM need to iterate over the bindings?  Only the RMP needs to be updated,
-> whether or not the RMP is currently reachable is irrelevant, no?
+> Allocate a guest stack for each vCPU and record the GVA in the TDX boot
+> parameters region to allow proper vCPU initialization.
 > 
-> Subsequent calls to kvm_arch_gmem_make_private() from kvm_gmem_get_pfn() would be
-> superfluous, but that's already possible, e.g. if an NPT mappings is removed for
-> whatever reason.
+> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Sagi Shahar <sagis@google.com>
+> Signed-off-by: Lisa Wang <wyihan@google.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> ---
+>  tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h |  1 +
+>  tools/testing/selftests/kvm/lib/x86/processor.c        |  2 ++
+>  tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c     | 10 ++++++++++
+>  3 files changed, 13 insertions(+)
 > 
-> > On top of that, SNP would need to figure out whether to actually
-> > make private based on whether the memory is about to be faulted, or
-> > whether it is a conversion.
-> 
-> This is a non-issue, no?  As above, sev_gmem_make_private() already bails early
-> if the page is already assigned in the RMP.
-> 
-> I don't care terribly about how SNP handles this, but I do want accurate reasoning
-> and justification so that if/when we revisit any of this in the future, we can make
-> informed decisions.  Because unless I'm missing something, this is an optimization
-> choice (eager vs. lazy to-private conversions), not a complexity tradeoff, and it's
-> not clear to me how we decided the lazy approach would provide better performance.
 
-I'm not sure it was discussed in this context, but there was some past
-discussion around preallocation (i.e. "should we call make-private arch
-hooks at allocation time to allow for faster boot for prealloc guests"
-and then that ran into the TDX side of things where that would
-necessarily entail pre-mapping into the sEPT as well, so
-KVM_PRE_FAULT_MEMORY ended up being the interface we adopted for this
-purpose.
+[ ... ]
 
-Since then, KVM_PRE_FAULT_MEMORY was added on the QEMU side and gets
-called after all conversions for both SNP/TDX, and even without
-preallocation it's a decent performance boost to SNP. If we were to
-switch to pre-calling the make-private arch hook then the
-KVM_PRE_FAULT_MEMORY call because partly redundant and in practice we'd
-probably see a small performance loss.
-
-So there's real performance differences here but it's sort of been
-addressed through a solution that offers additional performance
-benefits on top so there's no longer as much to be gained here I think.
-
-But I guess that's a moot point...
-
-> 
-> > Calling the make-shared arch hook and not the make-private arch hook does
-> > leak SNP-specific details into guest_memfd (as in, why only make-shared
-> > during conversions but not make-private?), but the additional complexity is
-> > not worth taking on until guest_memfd has a user actually requiring an arch
-> > make-private call.
-> 
-> ...
-> 
-> > +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
-> > +{
-> > +	struct folio_batch fbatch;
-> > +	pgoff_t next = start;
-> > +	int i;
-> > +
-> > +	folio_batch_init(&fbatch);
-> > +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
-> > +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> > +			struct folio *folio = fbatch.folios[i];
-> > +			pgoff_t start_index, end_index;
-> > +			kvm_pfn_t start_pfn;
-> > +			kvm_pfn_t nr_pages;
-> > +
-> > +			start_index = max(start, folio->index);
-> > +			end_index = min(end, folio_next_index(folio));
-> > +			/*
-> > +			 * end_index is either in folio or points to
-> > +			 * the first page of the next folio. Hence,
-> > +			 * all pages in range [start_index, end_index)
-> > +			 * are contiguous.
-> > +			 */
-> > +			start_pfn = folio_file_pfn(folio, start_index);
-> > +			nr_pages = end_index - start_index;
-> > +
-> > +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
-> > +		}
-> > +
-> > +		folio_batch_release(&fbatch);
-> > +		cond_resched();
-> > +	}
-> > +}
-> > +#else
-> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) {}
-> > +#endif
-> > +
-> >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
-> >  				     size_t nr_pages, uint64_t attrs,
-> >  				     pgoff_t *err_index)
-> > @@ -624,7 +661,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
-> >  
-> >  	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
-> >  	kvm_gmem_invalidate_start(inode, start, end, filter);
-> > +
-> > +	if (!to_private && kvm_arch_has_gmem_convert())
-> > +		kvm_gmem_make_shared(inode, start, end);
-> > +
-> >  	mas_store_prealloc(&mas, xa_mk_value(attrs));
-> > +
-> >  	kvm_gmem_invalidate_end(inode, start, end);
-> 
-> The real reason I responded...
-> 
-> Thinking about the Secure AVIC mess made me realize zapping NPTs for SNP VMs isn't
-> strictly necessary in this path.  The PFN isn't changing, just the attributes, and
-> that's (obviously) tracked in the RMP.  KVM doesn't need to zap SPTEs to induce a
-> fault, because the mismatched C-bit vs. RMP status will cause an #NPF(RMP), and
-> AFAICT kvm_mmu_page_fault() will do the right thing.  A misbehaving guest could
-> continue to access the shared data (assuming we stick with lazy conversions), but
-> that should be fine?  E.g. it's not really any different than implicit conversions.
-
-I think this should work in theory...
-
-zapping NPTs means the vCPUs will keep retrying until they get the page first
-vCPU that faulted is trying to grab from gmem. If we don't zap, then they will
-instead be racing with the first vCPU, and if they lose they will be
-generating implicit page faults that trigger conversions back to shared,
-and most likely the first vCPU will re-trigger an implicit shared->private
-conversion when it does PVALIDATE. Worst case, the guest fails PVALIDATE
-due to racing with itself.
-
-It's a bit chaotic, but it shouldn't break anything other than the guest, and
-it's only something we'd generally expect for buggy/malicious guests anyway.
-
-However...
-
-> 
-> In other words, couldn't we do this (as an on-top optimization)?  The only wrinkle
-> I can think of is that it could delay reconstituion of a hugepage, especially if
-> we opted for eager conversion (because the guest wouldn't hit #NPFs to trigger the
-> hugepage promotion).
-> 
-> diff --git arch/x86/kvm/mmu/mmu.c arch/x86/kvm/mmu/mmu.c
-> index 62f751952ad8..61f3e270ab61 100644
-> --- arch/x86/kvm/mmu/mmu.c
-> +++ arch/x86/kvm/mmu/mmu.c
-> @@ -1670,6 +1670,7 @@ static bool __kvm_rmap_zap_gfn_range(struct kvm *kvm,
 >  
->  bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
->  {
-> +       unsigned long shared_private =  KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
->         bool flush = false;
->  
->         /*
-> @@ -1683,6 +1684,10 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
->         lockdep_assert_once(kvm->mmu_invalidate_in_progress ||
->                             lockdep_is_held(&kvm->slots_lock));
->  
-> +       if (gmem_in_place_conversion && !kvm_has_mirrored_tdp(kvm) &&
-> +           ((range->attr_filter & shared_private) != shared_private))
-> +               return false;
+> +void tdx_vcpu_load_boot_parameters(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
+> +{
+> +	struct td_boot_parameters *params =
+> +		addr_gpa2hva(vm, TD_BOOT_PARAMETERS_GPA);
+> +	struct td_per_vcpu_parameters *vcpu_params =
+> +		&params->per_vcpu[vcpu->id];
 > +
+> +	vcpu_params->esp_gva = kvm_allocate_vcpu_stack(vm);
 
-This path would also trigger for hole-punching, where we would want to
-zap the NPT entries. So we might need to adjust the logic for more than
-just shared vs. private to account for that.
+Just flagging that there is a subtle truncation here. The TDX boot code
+sets esp in 32-bit mode so it has the same visibility constraint as CR3,
+which has an explicit check ("vm->mmu.pgd < (1ULL << 32)").
 
--Mike
-
->         if (kvm_memslots_have_rmaps(kvm))
->                 flush = __kvm_rmap_zap_gfn_range(kvm, range->slot,
->                                                  range->start, range->end,
+> +}
+> +
+>  static struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
+>  {
+>  	static struct kvm_tdx_capabilities *tdx_cap;
+> 
+> -- 
+> 2.55.0.229.g6434b31f56-goog
+> 
+> 
