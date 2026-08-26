@@ -1,56 +1,56 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCB43D9555
-	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 09:18:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D683BBFAB
+	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 09:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787735926; cv=none; b=bIUc7rQUCTnrxJt0avKZzm9aTV6bpy9Zf23dbzaNUHfwLGrPco8BFhehbmKLqISTWgPv724TXnkAIm6WUjNs3YOJALjK+YloWZ5YiRy4XeAFN4E7Waul1/wtZTDmDE0JnFwXSaCi0upiLSmVgLppw1VbL//vN/aFWB9EwvcMd+k=
+	t=1787735926; cv=none; b=VHU7v3xysVwuAIdL2lHyu+ZYbRomrPj+8vYNdVnWhepB3YR+l2t3ckHkTb1Pg07H6MgcFlGBoXkIyJDzsU84jUG7WxHIEKiEWw/FGW8hlUbBKNEPWjZR67tBy2tsAJunuO3rbGb/liBIEuqsbd8VFS3QQPA3MD+b95dHR8caPuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1787735926; c=relaxed/simple;
-	bh=5Zy0wgRHoYXULlg01g6F2vvkEu14R8QvWTtrIAn8XBM=;
+	bh=ZTwn4UyMShrGZfEU90otJVup2JEojFMgiToKCnnSVVE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gUdzeqCb1RNu5QNofrQNWB9craAT0wI/PE35oCIgcnDt3ZFctwGSo7SQiirEFGoDtdBCIMG7Tb4XYeKH6/ZWX3klP/emShRd3j1wbz/dKK3DM66UCj1eOy9Al3JH1IGlb7aG+Z9ABfplmWE0GxzkRFVP/RGkgaVnRIagK4tEthI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vXQ5NF+0; arc=none smtp.client-ip=209.85.214.199
+	 To:Cc:Content-Type; b=dOSfNGliHsllhdit428dXLcTPcx5CwroOIInVKa1BRjEKIpq9V1sx5BDboSWrqOR62fcsLhGQq1tHXuZnifPVGdLz+jW5aLyQZxs9Fw3s0vLwnLqDRZVnjbgynPqrjEQ7KpzzjlToLANNHtAHyKiyYLJ97Cfo+IOp9Hx3tQUyoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cTfr9TBD; arc=none smtp.client-ip=209.85.215.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vXQ5NF+0"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d6f80c76e6so10325845ad.3
-        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 02:18:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cTfr9TBD"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cbb467e56aaso608917a12.1
+        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 02:18:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787735915; x=1788340715; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1787735919; x=1788340719; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=D9viyxfvYsSlaAuG4kZ9V8QlGv88Bbdqdj5aKht9VSg=;
-        b=vXQ5NF+0GhQ3TodMHtEgTaBXMx+kgfzaDWD1ELxEpuWDUmg3Rn39I1zmuY1wKkAcP5
-         EV1ZS2jsC6egrmBVLShU2+C4qCksjDq3q2qYGMuVjBqkSuB4+tqql9YYSfvUTnWmH2WB
-         ffbrrXueRHRvcF/lpdufwQw5rY7tSglJm1oL6AZU3w6Afy3cKXFyzx6/4deLK9MUvJgj
-         sTgDd0sIXEJ5Zahc1k1Gj7mezH2n34c8DR1r2QjciIM08NXGUrY7nseXyjCgAui3I7yx
-         JKpkqrlbi5s3Uk0Sm/AwSBIEgOGf11rcJyJKGTSIwRmIwLXwReQ1FFSrGABDu8QJz+77
-         kC9g==
+        bh=S/nf3e4536rn08VcIwbRdla3FrzM9D86FJQTH62XB18=;
+        b=cTfr9TBDdfKLNt/2juYqIFpkHTDGxA8kmZ7zkZPHDtrEYbxn4Ugot6rH9U55lXnCZM
+         wlVbG5VSGlklNCB4GxoWVyl581McemmnbUgvsP6ABLiMTDYVj3fhtuxNmSz5OOia13y1
+         79F7Ab1HCGfuTH6+ru5hLjGdUz9e4JLxvlLHp4Vrj6J5vgjHMjU1TeDsU4WplVb+zbU0
+         3d73gop3Z6lcM2pAft3p+PAxBTvt8KossX60JNvKtjV1wKU5J2oHcdvG6frYRcmWs1Rm
+         KokcbAVwKxDsJPZ9htucxOHiPGT7qU8Ft0Ha7LoSONQfK1cUq51uAqUD8hH/5CHq0ctD
+         bikA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787735915; x=1788340715;
+        d=1e100.net; s=20251104; t=1787735919; x=1788340719;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=D9viyxfvYsSlaAuG4kZ9V8QlGv88Bbdqdj5aKht9VSg=;
-        b=ahcQY1T6FbpwN4YqooTBA53Lm5ru1590KXp5wwAUcBVMLCtF8ZYrbD/DHIFEOkXsBB
-         B1wu9ASm/uEGP2fsgf+6Mosj0gAiCQXcncN6aaa61eLd7rS7d+OZ2ZzcmnUxANGsIJFH
-         qvcypgmFa4Z8dmeH28gFkLrHY2IGgFBLpqcs3N4qtmFyeOK6ivujRTRcmAvq9b/EHavC
-         Ua85NSm6DoorkcGsyNd6+MzqNIeyIISmfU/qAqatY15PZX8UbMaKQMcwJ0UAwXGZUGyJ
-         ADXM6Kbf+0Uaq1UbkQzzBbEQKtHMtR717hH5QEPLpsQvNKbVCRNqPGx2Gge4AwrSs8uN
-         tvHQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp5MgHanXPQZFl9B1q9hKrDVzGcs47udLGhPTvK2uv6WIToezaS9MLQhvzacYTbjXhwJOsCWnjIipVu@lists.linux.dev
-X-Gm-Message-State: AFuF++nTjAW8kdAyBdlaOj5cM3s2OTVft1YMoPczxiQbQW6oYZ2z8phJ
-	vBa0Ikh10L5bOMfBOVB5h3msq5cuY2M1c4Gpia55bn7Fcpwc98CCZzdv9yr2OHUSElqBu76Z5Av
-	Tvk3wNtndUVQkOw+xoqq7+msQvA==
-X-Received: from plmt11.prod.google.com ([2002:a17:903:3d4b:b0:2d0:34d:e973])
+        bh=S/nf3e4536rn08VcIwbRdla3FrzM9D86FJQTH62XB18=;
+        b=hAK7UI0IJRLyDnlP1oPks8GuOtdSDoaglDX7NXLUa69QNxqPMV82Zr9voQM/TVUCIx
+         pUmPS/3s2GSW1/Rqf7ou50ylRb+5R5NLri5/0IJKG3MBbRYpPeBftfVLKhXX0Undf0xs
+         FMGAWAYYMZWM/AIJds9RIaNyjOdZj5fH1NiOH3Q5vtIG9tg1f0dGKJHkQjNLKSgJKiKz
+         qz7DsCRMn1+4Y+7/VQhIXcVYnbJtXMoli81G8wHLTVyt6HfSLxQ3EazR5mu9rf8kH28c
+         t6rkRanlMDU7upQFWiV2udelgYli15ikfqPztkjaUWVrct1uuYxo4pVvXLAzgmzr0v10
+         fGxA==
+X-Forwarded-Encrypted: i=1; AHgh+RrKpnd12HHagdWYrV0yLR5mV9Vm9I1U0/b2kM/E1sPJx+3Xw8lWMeAtpF2pic0llNuvb0WUoI+qW5lk@lists.linux.dev
+X-Gm-Message-State: AFuF++kbjPaV5zWTrHIxOGoLfUux2G+5XNhevi+6/rayoCEbOX0kpxbV
+	yRwNqZZ6h76QAUl1P0mHGB5wfhk/BlsA3QXQZKbcb8/aO15DUBrbi4BdOJWaU6XIiYrcoRKTIzB
+	Wnd/o/BHS5jPLPcXLjlMTO//nQQ==
+X-Received: from pgig7.prod.google.com ([2002:a63:f407:0:b0:cc1:c7d3:7c7b])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:22ca:b0:2d6:fd55:3a9d with SMTP id d9443c01a7336-2d707a55a21mr87392135ad.3.1787735914764;
- Wed, 26 Aug 2026 02:18:34 -0700 (PDT)
-Date: Wed, 26 Aug 2026 09:18:14 +0000
+ 2002:a05:6a21:a383:b0:3cd:8d15:895e with SMTP id adf61e73a8af0-3cf84b53689mr11572460637.12.1787735918168;
+ Wed, 26 Aug 2026 02:18:38 -0700 (PDT)
+Date: Wed, 26 Aug 2026 09:18:16 +0000
 In-Reply-To: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,14 +60,14 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=1963;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=4708;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=5Zy0wgRHoYXULlg01g6F2vvkEu14R8QvWTtrIAn8XBM=; b=hJwcYJYD3aQhvV9hZ30dJZ8oFevxPiomh64e9F++PWR61XHxRgbkXw3b9UE+Q/itDtGXtMPp4
- zJhf3vH1eeDAA7nHPjekSt0TG32A8zYAxjhuYb571OlL26p5daTs2K6
+ bh=ZTwn4UyMShrGZfEU90otJVup2JEojFMgiToKCnnSVVE=; b=dDBRMblwUg6UwX2I1hz2Tpxt+EI3WovENt6hqBknKpraB0X285GZYRtS86E6IMk5svSgepv73
+ EfxqI68rjF/CyC9ce+QdXDFmPsPxg8E1UYpFu6gAUyL8f5QVEBtho9j
 X-Mailer: b4 0.16.0
-Message-ID: <20260826-gmem-inplace-conversion-v11-16-0a15d8a799aa@google.com>
-Subject: [PATCH v11 16/46] KVM: guest_memfd: Return early if range already has
- requested attributes
+Message-ID: <20260826-gmem-inplace-conversion-v11-18-0a15d8a799aa@google.com>
+Subject: [PATCH v11 18/46] KVM: guest_memfd: Handle lru_add fbatch refcounts
+ during conversion safety check
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -97,69 +97,132 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
 	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>
 Content-Type: text/plain; charset="utf-8"
 
-Provide a function to check that a range has given attributes.
+A guest_memfd folio has no outstanding references if guest_memfd holds the
+only references on it. Any other references on the folio may indicate
+another user, and guest_memfd cannot convert it to private if there may be
+an existing host user.
 
-Optimize setting memory attributes by returning early if all pages in the
-requested range already have the requested attributes.
+A folio will have outstanding references if it is present in a per-CPU
+lru_add fbatch. guest_memfd does not actually participate in LRU, but
+freshly-allocated folios are still added to the lru_add fbatch for batch
+LRU statistics processing.
 
-Reviewed-by: Fuad Tabba <tabba@google.com>
-Tested-by: Shivank Garg <shivankg@amd.com>
+A folio may also have extra refcounts if it is on the mlock fbatch.
+
+These two known "usages" of the folio are handled by calling
+lru_cache_drain_for_folio, which drains both the lru_add and mlock
+fbatches. After draining, if the refcount is still elevated, then there are
+truly outstanding references.
+
+If the page may be dma pinned, DMA is using it and hence there are
+outstanding references. folio_maybe_dma_pinned() can have false positives,
+but that's only with a significant number of refcounts, at which point
+draining LRU is not going to move the needle - it can still be concluded
+that the folio has outstanding references.
+
+If the page is still mapped after guest_memfd tried to unmap it earlier in
+the conversion process, it also has outstanding references.
+
+Return true and exit early to avoid unnecessary draining in these 2 cases.
+
+Provide a drain status to only drain once ever while processing a batch of
+folios.
+
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Suggested-by: David Hildenbrand <david@kernel.org>
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- virt/kvm/guest_memfd.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ mm/swap.c              |  2 ++
+ virt/kvm/guest_memfd.c | 30 ++++++++++++++++++++++--------
+ 2 files changed, 24 insertions(+), 8 deletions(-)
 
+diff --git a/mm/swap.c b/mm/swap.c
+index 8e965c8ce9aa9..9f511b97ab110 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -37,6 +37,7 @@
+ #include <linux/page_idle.h>
+ #include <linux/local_lock.h>
+ #include <linux/buffer_head.h>
++#include <linux/kvm_types.h>
+ 
+ #include "internal.h"
+ 
+@@ -995,6 +996,7 @@ void lru_cache_drain_for_folio(const struct folio *folio,
+ 			*drained = LRU_CACHE_DRAINED_ALL;
+ 	}
+ }
++EXPORT_SYMBOL_FOR_KVM(lru_cache_drain_for_folio);
+ 
+ atomic_t lru_disable_count = ATOMIC_INIT(0);
+ 
 diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index d1134b23576e4..6dc199be0eb87 100644
+index 6dc199be0eb87..4912f90567fe8 100644
 --- a/virt/kvm/guest_memfd.c
 +++ b/virt/kvm/guest_memfd.c
-@@ -98,6 +98,24 @@ static bool kvm_gmem_is_shared_mem(struct inode *inode, pgoff_t index)
- 	return !kvm_gmem_is_private_mem(inode, index);
+@@ -8,6 +8,7 @@
+ #include <linux/mempolicy.h>
+ #include <linux/pseudo_fs.h>
+ #include <linux/pagemap.h>
++#include <linux/swap.h>
+ 
+ #include "kvm_mm.h"
+ #include "guest_memfd.h"
+@@ -556,10 +557,28 @@ static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
+ 	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
  }
  
-+static bool kvm_gmem_range_has_attributes(struct inode *inode,
-+					  pgoff_t index, size_t nr_pages,
-+					  u64 attributes)
++static bool __folio_has_outstanding_references(struct folio *folio,
++					       enum lru_cache_drained *drained)
 +{
-+	struct maple_tree *mt = &GMEM_I(inode)->attributes;
-+	pgoff_t end = index + nr_pages - 1;
-+	void *entry;
++	if (folio_maybe_dma_pinned(folio) || folio_mapped(folio))
++		return true;
 +
-+	lockdep_assert(mt_lock_is_held(mt));
++	/* 1 reference held by filemap_get_folios() in the folio batch. */
++	lru_cache_drain_for_folio(folio, 1, drained);
 +
-+	mt_for_each(mt, entry, index, end) {
-+		if (kvm_gmem_get_attributes(inode, entry) != attributes)
-+			return false;
-+	}
-+
-+	return true;
++	/*
++	 * Outstanding references are anything other than those from the page
++	 * cache, plus 1 temporary reference held by filemap_get_folios() in the
++	 * folio batch.
++	 */
++	return folio_ref_count(folio) != folio_nr_pages(folio) + 1;
 +}
 +
- /*
-  * Returns a locked folio on success.  The caller is responsible for
-  * setting the up-to-date flag before the memory is mapped into the guest.
-@@ -623,12 +641,15 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
- 	pgoff_t end = start + nr_pages;
- 	struct maple_tree *mt;
- 	struct ma_state mas;
--	int r;
-+	int r = 0;
+ static bool kvm_gmem_has_outstanding_references(struct inode *inode,
+ 						pgoff_t start, size_t nr_pages,
+ 						pgoff_t *err_index)
+ {
++	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
+ 	struct address_space *mapping = inode->i_mapping;
+ 	pgoff_t last = start + nr_pages - 1;
+ 	bool has_outstanding = false;
+@@ -570,17 +589,12 @@ static bool kvm_gmem_has_outstanding_references(struct inode *inode,
+ 	folio_batch_init(&fbatch);
  
- 	mt = &gi->attributes;
+ 	next = start;
+-	while (has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
++	while (!has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
+ 		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+ 			struct folio *folio = fbatch.folios[i];
  
- 	filemap_invalidate_lock(mapping);
- 
-+	if (kvm_gmem_range_has_attributes(inode, start, nr_pages, attrs))
-+		goto out;
-+
- 	mas_init(&mas, mt, start);
- 	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
- 	if (r) {
+-			/*
+-			 * Outstanding references are anything other than those
+-			 * from the page cache, plus 1 temporary reference held
+-			 * by filemap_get_folios() in the folio batch.
+-			 */
+-			if (folio_ref_count(folio) != folio_nr_pages(folio) + 1) {
+-				has_outstanding = true;
++			has_outstanding = __folio_has_outstanding_references(folio, &drained);
++			if (has_outstanding) {
+ 				*err_index = max(start, folio->index);
+ 				break;
+ 			}
 
 -- 
 2.55.0.887.g758fc8c411-goog
