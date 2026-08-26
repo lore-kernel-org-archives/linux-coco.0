@@ -1,56 +1,56 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0F93FADFA
-	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 09:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608BE400988
+	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 09:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787735959; cv=none; b=ImOvFty9PSjDdEEv1B8dmYIIKim0KyzR94HqS5nBDPIrQpDBrtXDn6sVugkIArJd8DBmYSa0xEkei47iCjQqTJMeJ00+aZBnt1yfyNbStgtZePqC9LJU8QzyHcDDjNzzxqgRUSsYR83Yt1JIEM3btgrAWU4+NoNQFWPfzJ+hxQ8=
+	t=1787735961; cv=none; b=SoDbPljcrI604zt4KDn7CX6nqw/o7+wKSmerwVP5Z0Dk2VAQ++3tTP8avMIKhW+zN60NaVtIWe2xblg3rla7BtY1i04GYCxv9DXIYkrdMKehpyZyqXlE/ZOuAj506nLm2FKfSg2z5TgRywwzMG8jGghhE5qzrWgiBNcAZjtzfgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787735959; c=relaxed/simple;
-	bh=oKhUk7AQ/XVnJUDFQGQ0T3PCQ/fs9vSttvSiNTvu8TA=;
+	s=arc-20240116; t=1787735961; c=relaxed/simple;
+	bh=Z2tr8qvCMQ6vCwWclEIKVEn4lsWDwgpi8MEvWzFtaCI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hdaXxHY9SxKa/CBWbGdV6umRsOgIlRYdio94lR9x7wvrIJI+03LjquQwtPu4NjGpanaa+0RmB3WgXMxSjas9zn0Zsi5bfSfEfB62RC6o3E6PrGUfLapsDZfE3UbNqqchdvAZZ3v/p8+E21nN/fJFhDh+XqGaa6H8uTMfqFkgJr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ClK+iqX9; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=UDBRoGgSCtRLUVA6zVc7fFZSPVMyuNaANQ8ycEgeD98X84iFvgnEIzVmspmhR2q6cyPnK2B3YYeEAyvZR6DSUrN+WPaM/y3uHOAJ93NLoxaTjQRkr510daTb7x+P41uK5+zAxp1MxcfQYtCISZXb677VzQZLYO8y4ExXu1djjwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nlcsNn3h; arc=none smtp.client-ip=209.85.215.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ClK+iqX9"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cec4226c70so10277115ad.1
-        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 02:19:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nlcsNn3h"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cbedb8673ceso761224a12.0
+        for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 02:19:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787735951; x=1788340751; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1787735955; x=1788340755; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=L7znZB4+fu5SSeJJtVXjdDiNwNEk+mtdzszQFSpw4D4=;
-        b=ClK+iqX93+fQOlUqGgDiMLhukG7ApDVG5JqITd2j3VpliBxDe0jLMtHcGs4QPSHImj
-         bhaZ/0kJyypYNoDl2Y9k80acP9iqznPP/kIqEpiOULG8qyAIWq/Csn5N4/EhS0bo958Y
-         u7hNLLI/dGW+HWgqxoLQ7r38IF1VTjyIasGBq/ddLgGTKE6nw5JXa5S+LMdMoBKpY36z
-         ylneBJrCOVPdk+pJgkZ1cbWtdr9qc6qIIzd4TbaCopq1Wp6BlgLzM++7P3u/4glpuDKp
-         FymLVBllYFNDjl8roNvh7YrplG81SzYqYQoHtDDlkBpl5AYLM6aEfvuYITk/OzwN3kkx
-         gizg==
+        bh=bLTz+QoAp4yNZ1r8wY9Xq6qZeJQ57AOaVsGWHTn9ANY=;
+        b=nlcsNn3heldMl/eAYh2seqidLCyQcDPa5h0Z52jhm1KZCbBnDM2IeoAnhW//egfuSY
+         OhiosVfF/DDn778L0LRYuMNfZjWasAJRyp7RIhjHrEtyEpBhUd8ZBJTZDY1P+ClnF9Cj
+         PDZ0eEzZHZqtFhdHXDl76CT7R0T28FubJqkXGM1IWotH6Fctwmx2Rg9dq20HGAJOX5Q5
+         QKqfjdXtYcL6PI1ywBn/ZYKDwao5O66sNdJ6I+/nDXVtZyLHxcptp91pGegB+ShQFuBk
+         3Ur/5hs3Pi2DB0QsCb97CxlQv74yMaTq2KMA9oBjlqq4M0t5tG4vj08damGdAUgu+qcE
+         FuSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787735951; x=1788340751;
+        d=1e100.net; s=20251104; t=1787735955; x=1788340755;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=L7znZB4+fu5SSeJJtVXjdDiNwNEk+mtdzszQFSpw4D4=;
-        b=sbcxYTb926CySdOJCZd+D/njn/Hbl1o7zxipD4OLwGQPWd5Om04TbInOqqEo7Rja6w
-         TxshxLPyI/6cgGfw6+jS3g3R1Q9cj9B3JkUl+v5npU5ARdvwaynzonmmAUFKQDJ/HjcH
-         sgs0YQzwtUn1857FoJEyOzcvCrn2MH7itnROlBe8zI3j2Q8b5rNgv4OKzckjT+T5dftQ
-         tf7Nqv4XnJm3BFtXHIs01dFgZ1ntFyOm2L+YSW3vhjnbhf5e4LeoIVl89+T6AURK6K/D
-         j50OfwSpUUWJRiWJ6hZIOc0a/Rh6XIr5TQrLhcVRPOj2fzQWnOl1NhmrJ2Kc4PcqpmcJ
-         NWiA==
-X-Forwarded-Encrypted: i=1; AHgh+RorLTIS1n4vam6sGS5fE6JbAv2HHpRHgxoKmL9Je5wr4qxk7ZEcXSd7Ru+DCHRHa6wAJRnrIjhiv9Eq@lists.linux.dev
-X-Gm-Message-State: AFuF++m6C8NKnan+MaB3oss8RfuovmznXw84cdoQo/CHB+NBolE4c5HF
-	GZXtbzi66/4or0CQqT1+2jSmJWaQtKFsujyOFnCHix5PyFpsTPL+TWXGxkD0w8qmScNldIJA0h4
-	KlsThh8iyTs6qQ8C8siwa5eQsuA==
-X-Received: from plbkb13.prod.google.com ([2002:a17:903:338d:b0:2d3:768a:b66c])
+        bh=bLTz+QoAp4yNZ1r8wY9Xq6qZeJQ57AOaVsGWHTn9ANY=;
+        b=Zuqty+HrXZPI6gDbHWHDyW7h6C0M4zzAqJsxYLNhWddDoCGbIqyAuiL3N2BT381R6O
+         toPuEZL5grWuRV138wwEIRfCFoIpZtVaKUeF3wVh8y+/tO/d5Ms/V5fE8doRnvL1/K+Z
+         k8xwrEghiYuR0PAVmqRtcuGvkCa0Hmm8NT6hnGf0vZ593Jg8Ul51EWlBp2i/sHsZKYbS
+         HAGwjgHO74S0qerZAaVNA6ZRNzUGSD4a1IHbxmHvhD6v0b8sKHPnbW3pBJlfIb4ocMCW
+         xln99wQDpZW0H4fr1EcyajublAwgbkI5Zz3nocL6vM0s2DMTuyaS4CVlWBXtZO/xSv0p
+         lUBA==
+X-Forwarded-Encrypted: i=1; AHgh+RoujUcGjWZCPAuLwy4+Tikj++K+bOF/gFoIaoshu0xvq9Y6omgXiOLZjIb6xSHJgLJVGLz6J/vLzcmw@lists.linux.dev
+X-Gm-Message-State: AFuF++n5eIxNN7H6pcazvqEMJCVRtFAUdtE/5hTTjrDxe9WdNeO/mXZd
+	pwahpNp3DQDmOudWRx/5TQGf5YryqK0BoyZLQmDOTIKaHZaaDh5SIrRpVXw9uS0m7vwyYDfS5T6
+	XKpTEh8+P+W/JQuBHt1CcxoZuCg==
+X-Received: from pgcq30.prod.google.com ([2002:a63:751e:0:b0:c9b:2759:d240])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:e550:b0:2ca:1479:d9dc with SMTP id d9443c01a7336-2d707b64aecmr85060725ad.12.1787735950795;
- Wed, 26 Aug 2026 02:19:10 -0700 (PDT)
-Date: Wed, 26 Aug 2026 09:18:35 +0000
+ 2002:a05:6300:6681:b0:3cc:9288:99aa with SMTP id adf61e73a8af0-3cf6673e199mr11680996637.0.1787735954249;
+ Wed, 26 Aug 2026 02:19:14 -0700 (PDT)
+Date: Wed, 26 Aug 2026 09:18:37 +0000
 In-Reply-To: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,13 +60,13 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=2738;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=2579;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=oKhUk7AQ/XVnJUDFQGQ0T3PCQ/fs9vSttvSiNTvu8TA=; b=E3s7CyKmuQ7u5Mqr0j0RmOVbgjxJwnqa6vu50TWR1xpcdjjO+0Nj9vghzwKHhtDd1aD8uPwMQ
- 5K1FBJ/M+TkCu5I+2+SMQWquWdJ3o1KIoWaNX0et7JTlybJ0RWLUVFk
+ bh=Z2tr8qvCMQ6vCwWclEIKVEn4lsWDwgpi8MEvWzFtaCI=; b=uYPyckNcYtbmNIce6USQWE2ZQN3yzQ5s9PRlHn/kQiqauAVRj01fYWLdGSn4JUn4Y8ICRU4i5
+ SrOFy7IMtVFANbmMI9ps1KJiTpkrRcJ6bBbcMXjogb2zUhXxCkElfSO
 X-Mailer: b4 0.16.0
-Message-ID: <20260826-gmem-inplace-conversion-v11-37-0a15d8a799aa@google.com>
-Subject: [PATCH v11 37/46] KVM: selftests: Add helpers to pin pages with CONFIG_GUP_TEST
+Message-ID: <20260826-gmem-inplace-conversion-v11-39-0a15d8a799aa@google.com>
+Subject: [PATCH v11 39/46] KVM: selftests: Reset shared memory after hole-punching
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -98,82 +98,63 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Add helper functions to allow KVM selftests to pin memory using
-CONFIG_GUP_TEST. This is useful for creating test scenarios where some page
-has an increased refcount, such as when testing guest_memfd in-place
-conversion.
+private_mem_conversions_test used to reset the shared memory that was used
+for the test to an initial pattern at the end of each test iteration. Then,
+it would punch out the pages, which would zero memory.
 
-The helpers open /sys/kernel/debug/gup_test and invoke the
-PIN_LONGTERM_TEST_START and PIN_LONGTERM_TEST_STOP ioctls. Since this
-functionality depends on the kernel being built with CONFIG_GUP_TEST,
-provide stub implementations that trigger a test failure if the
-configuration is missing.
+Without in-place conversion, the resetting would write shared memory, and
+hole-punching will zero private memory, hence resetting the test to the
+state at the beginning of the for loop.
 
+With in-place conversion, resetting writes memory as shared, and
+hole-punching zeroes the same physical memory, hence undoing the reset
+done before the hole punch.
+
+Move the resetting after the hole-punching, and reset the entire
+PER_CPU_DATA_SIZE instead of just the tested range.
+
+With in-place conversion, this zeroes and then resets the same physical
+memory. Without in-place conversion, the private memory is zeroed, and the
+shared memory is reset to init_p.
+
+This is sufficient since at each test stage, the memory is assumed to start
+as shared, and private memory is always assumed to start zeroed. Conversion
+zeroes memory, so the future test stages will work as expected.
+
+Fixes: 43f623f350ce1 ("KVM: selftests: Add x86-only selftest for private memory conversions")
 Reviewed-by: Fuad Tabba <tabba@google.com>
 Tested-by: Shivank Garg <shivankg@amd.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/include/kvm_util.h |  3 +++
- tools/testing/selftests/kvm/lib/kvm_util.c     | 25 +++++++++++++++++++++++++
- 2 files changed, 28 insertions(+)
+ tools/testing/selftests/kvm/x86/private_mem_conversions_test.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-index 575032e9791d2..3cfe243d7c8b0 100644
---- a/tools/testing/selftests/kvm/include/kvm_util.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util.h
-@@ -1206,6 +1206,9 @@ static inline int pin_self_to_any_cpu(void)
- 	return pin_task_to_any_cpu(pthread_self());
+diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
+index f3de2a4ab0551..cf50e9a332c5b 100644
+--- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
++++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
+@@ -202,15 +202,18 @@ static void guest_test_explicit_conversion(u64 base_gpa, bool do_fallocate)
+ 		guest_sync_shared(gpa, size, p3, p4);
+ 		memcmp_g(gpa, p4, size);
+ 
+-		/* Reset the shared memory back to the initial pattern. */
+-		memset((void *)gpa, init_p, size);
+-
+ 		/*
+ 		 * Free (via PUNCH_HOLE) *all* private memory so that the next
+ 		 * iteration starts from a clean slate, e.g. with respect to
+ 		 * whether or not there are pages/folios in guest_mem.
+ 		 */
+ 		guest_map_shared(base_gpa, PER_CPU_DATA_SIZE, true);
++
++		/*
++		 * Hole-punching above zeroed private memory. Reset shared
++		 * memory in preparation for the next GUEST_STAGE.
++		 */
++		memset((void *)base_gpa, init_p, PER_CPU_DATA_SIZE);
+ 	}
  }
  
-+void pin_pages(void *vaddr, uint64_t size);
-+void unpin_pages(void);
-+
- void kvm_print_vcpu_pinning_help(void);
- void kvm_parse_vcpu_pinning(const char *pcpus_string, u32 vcpu_to_pcpu[],
- 			    int nr_vcpus);
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index cd468b2bb8343..b1456ed76e27e 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -19,6 +19,8 @@
- #include <unistd.h>
- #include <linux/kernel.h>
- 
-+#include "../../../../../mm/gup_test.h"
-+
- #define KVM_UTIL_MIN_PFN	2
- 
- u32 kvm_random_seed;
-@@ -645,6 +647,29 @@ int __pin_task_to_cpu(pthread_t task, int cpu)
- 	return pthread_setaffinity_np(task, sizeof(cpuset), &cpuset);
- }
- 
-+static int gup_test_fd = -1;
-+
-+void pin_pages(void *vaddr, uint64_t size)
-+{
-+	const struct pin_longterm_test args = {
-+		.addr = (uint64_t)vaddr,
-+		.size = size,
-+		.flags = PIN_LONGTERM_TEST_FLAG_USE_WRITE,
-+	};
-+
-+	gup_test_fd = __open_path_or_exit("/sys/kernel/debug/gup_test", O_RDWR,
-+					  "Is CONFIG_GUP_TEST enabled?");
-+
-+	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args), 0);
-+}
-+
-+void unpin_pages(void)
-+{
-+	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_STOP), 0);
-+
-+	kvm_free_fd(gup_test_fd);
-+}
-+
- static u32 parse_pcpu(const char *cpu_str, const cpu_set_t *allowed_mask)
- {
- 	u32 pcpu = atoi_non_negative("CPU number", cpu_str);
 
 -- 
 2.55.0.887.g758fc8c411-goog
