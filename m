@@ -1,379 +1,149 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012006.outbound.protection.outlook.com [52.101.53.6])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628141632E7
-	for <linux-coco@lists.linux.dev>; Wed, 26 Aug 2026 23:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787788075; cv=fail; b=lbwBnM2GxTvPYVqWp65e9Qim9BNkOTsqH+EL3POjsumri4gY2A3DE118wN8ICbOUAgyM0BlIux9Ogoitst43RFNszRecOJDKwlOPdN23pE3JTfZt+I0V8ELkBnPrgn2KuSVff0qrd9F6h/xK0NRo6DI11l9NYOS/Hh/8t45le7s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787788075; c=relaxed/simple;
-	bh=LWYGXEjxCn5c1wabHZYZl8IN6fQRStpFDOx9yxGPMOw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QjeRGiednR9BiuD/VBvLp0nl8+RCgb4Sr0ebKmp2UjDbu78to+oKjxT7sr5fU48yK4YwP3ba6dyh2g/2zu3wJZMgYlSTvV0K+wWuj6yYVVXVSivBuLuxtdtUVKuW6K/on8Sn6zFMsHQgLjThQgTTPSmPlZjHoEwPr2i9v/QrMXQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gqgj54Tv; arc=fail smtp.client-ip=52.101.53.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B61637DE99
+	for <linux-coco@lists.linux.dev>; Thu, 27 Aug 2026 02:06:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787796419; cv=none; b=dDWQFO8DL/fi6UGBQbXdAZQsuVZQ1TconYOzMFa0mGoBVGMiaSyMMR5ZBzbaapniDmb4oIC0jwuUfI6D+tM3Zy+s/vI09P4qTQLOwUDL+cftK//aHHIjlIk87Ny4Y/9/9Evr0DKoSOc2RFHa85yqCLl1rqG6VQm6AcaUlrPV2E8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787796419; c=relaxed/simple;
+	bh=gL0phxzVoVhVemXwWCd4xZC1JDHdiO9EhSL9gt+YRbk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lX7KkchheBw4rCiXNo0lThmunK4PbpX0LF7iAA0YybHuVONzKhU37m1GUl8beADe9kPxZ9FbpmAES76lkLPPoKdATBQIYxpTTRzBUms/0oXLF3Tu6gX9Z9PeXF68cxdwN3ahDuClqbWSEwHe1ofsfHM8nsA8D7W2ZVEVovTpa9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=bsrMXhAq; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gqgj54Tv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=k4J/V5gkeGUavS86YJ1T9xiJ51vThv2EwlPenwdDOUVPJiWy++dxjJPLXPcTpZIUMbuQVOHomTR5ytES2x5e0m8RuynY+Fs55UWII38wmPgNJ0mSerAWJIZNJW8o3I45hKbMAqC/8Pbern4R7/Ip0lnfOt++kru87F5ET74aMAqPrkOJfRZH4ETzURU+iXEJ+KMRdrp1a65gqo5fu+AFSojJ06oIPRDBIzRqp6Cjyw2hEWVRhjj0KswFa5L9N918h2vvT1NRgn3Ptsz0ZkMp3bd0QQeHtxDBwmP5cbh3MeQoC0+TRv+v7v4dvfUkPTulQrTqe76u1yOBn8iOifQjVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w/LB5u9HnbSWzaAtAvaqkHg4Fpr0yIoYgthxH10Y4ko=;
- b=eC6PAdZ95r0qTEaMap8PXTdlDQCXXnVXWSxQ8XgyLkhgUQ/UU+W4oST9+8O8vCmR6imIK6ik1F9kMWgge817usRt87TKGlC/joVTjktYjsOc+/5NUmBPWBjFvUcYLhfnHrp73RNeUvAH6yXYLvxhb5sd/kC5lP/nxodpI7/otqEEIXhn8cDGvZWhQKcMr1VnsdmP4fWZaHDq6UJuCpdu35/dzCAUEA8t0/9x2SrzRNQfPSgSgdIVH4DTF38s+KVRZNJqVzC+uReUK74ki+zE9Xtpzx08xhX7XJRCRZxToBWSxW6hOthHG7/yeLYGjwcWHNNdOT3pMHirocO5Us8UvA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
- is 149.199.90.133) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com;
- dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w/LB5u9HnbSWzaAtAvaqkHg4Fpr0yIoYgthxH10Y4ko=;
- b=gqgj54TvCGRRaotBr6UC6bDFWysdMRR/NeuYxSFbuRsslNoslmqlTYrAI6D5O7RoNNmBKf352qJkQP1ATVTrr9ibFYy9GK5jhwsnyw2sxuDQ4HM/3yKnnPl+KVAKzja/5IRIpMhA48Coif6km6Skt7aOMi1QnqO8T1mvSnCQ8Sc=
-Received: from BY1P220CA0003.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:59d::10)
- by SJ5PPF183341E5B.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::98c) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.8; Wed, 26 Aug
- 2026 23:47:44 +0000
-Received: from CO1PEPF00012E7F.namprd03.prod.outlook.com
- (2603:10b6:a03:59d:cafe::a2) by BY1P220CA0003.outlook.office365.com
- (2603:10b6:a03:59d::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.10 via Frontend Transport; Wed,
- 26 Aug 2026 23:47:44 +0000
-X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
- 149.199.90.133) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=quarantine header.from=amd.com;
-Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
- amd.com discourages use of 149.199.90.133 as permitted sender)
-Received: from satlexmb07.amd.com (149.199.90.133) by
- CO1PEPF00012E7F.mail.protection.outlook.com (10.167.249.54) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.3 via Frontend Transport; Wed, 26 Aug 2026 23:47:44 +0000
-Received: from localhost (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 26 Aug
- 2026 18:47:43 -0500
-Date: Wed, 26 Aug 2026 18:47:30 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: Ackerley Tng <ackerleytng@google.com>, <aik@amd.com>,
-	<andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>, <brauner@kernel.org>,
-	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <jmattson@google.com>,
-	<jthoughton@google.com>, <oupton@kernel.org>, <pankaj.gupta@amd.com>,
-	<qperret@google.com>, <rick.p.edgecombe@intel.com>, <rientjes@google.com>,
-	<shivankg@amd.com>, <steven.price@arm.com>, <willy@infradead.org>,
-	<wyihan@google.com>, <yan.y.zhao@intel.com>, <forkloop@google.com>,
-	<pratyush@kernel.org>, <suzuki.poulose@arm.com>, <aneesh.kumar@kernel.org>,
-	<liam@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner
-	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
-	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
- Khan" <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, "Vishal
- Annapurve" <vannapurve@google.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
-	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
-	<nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
-	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
-	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
-	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
-	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
-	<jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
-	<peterx@redhat.com>, <tarunsahu@google.com>, Fuad Tabba
-	<fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-trace-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-coco@lists.linux.dev>
-Subject: Re: [PATCH v11 15/46] KVM: guest_memfd: Call arch make_shared
- callback for to-shared conversion
-Message-ID: <ztufznh6v5md5cn56t7pvokubvbpc3yki6dhiilgebb5uq3ju3@aa4xc6wwte5r>
-References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
- <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com>
- <ao9CKMXAX-hScRSa@google.com>
- <mtbqvvvpwbzybgy6z47lwui6ag53kyubub3hkczui7u72zxesl@lnwsglrgwl5p>
- <ao9px1j7CLYXMiGP@google.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="bsrMXhAq"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7D74840E01A2;
+	Thu, 27 Aug 2026 02:06:54 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id jd_fD0SB0TYW; Thu, 27 Aug 2026 02:06:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1787796402; bh=tvL5rKHzTbVYhzBl9qHb4PL59PMigbMXonEm7pq5+dQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bsrMXhAqesv5sWmU7bf5gApE2BR3rfOLkTFEj+daNgpEHVhRDtPz52LPifWUHlz3d
+	 DWBoKQT5Erwzv6MflMnL56czhzDNHWkoN40OPRdksiWLYPM6FY8iR4W+X0e1DCXQUL
+	 21E2Co0g+5FwhMBH5qIi4z1Z1bhlsTQyb0OrPRSIFKoKXQ5WIlLl7tAA/t0A3R6g2u
+	 5sJcuPSDYSvTF/TwAf5FARD2yEqH+G6Dy5sLa1LiQk8uVLgjmUws2Pbf3qAv5gYbV7
+	 vHqROTqRwdk2TTg4uig9vrhhtXBLinhrTUQPYl3BAdCVNZ8oeSW7lNoozEvzjSEnzL
+	 nQ+KhebLPX0iqv0E+1nozmQa1Wgb3duLUIWrxKFPOE43/pp23F4zpLOMwbmrJ4hsrI
+	 lp3O7hPL7Few4odcG4CzdpbLF2IbMuV9BZl3kyWQ7hTyEwrFRkdUX4cYoMaoC+MVnY
+	 iyPRtekgxShMRzfHmRfp44HFnIh3bCXEQcIax8+L33R/vTjRWXWP5INu6jsvcXCOOR
+	 bMGV2JG/uPOPzTxQRDJLrnIbHQ6lpoV3qY2Kkd4TjMo/o++XGeo0BrXEzGt2vfjlae
+	 UO6QA4P8YwJChK9R+9xFTsHRqAuzMs1AgId4IWKpYAX4KOtwH0upE3buqlYXV3gJaJ
+	 B6Yxn6S89nIktwbdRXcxN02Q=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BDAEA40E00E6;
+	Thu, 27 Aug 2026 02:06:07 +0000 (UTC)
+Date: Wed, 26 Aug 2026 19:06:04 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v12 3/5] x86/sev: Initialize RMPOPT configuration MSRs
+Message-ID: <20260827020604.GCao-bjMkHGnQlAWnL@fat_crate.local>
+References: <cover.1786389115.git.ashish.kalra@amd.com>
+ <19b316f26a145646c521943f5fdd5dfc4b2d1e84.1786389115.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ao9px1j7CLYXMiGP@google.com>
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF00012E7F:EE_|SJ5PPF183341E5B:EE_
-X-MS-Office365-Filtering-Correlation-Id: 423b2555-ef3e-4819-d00f-08df03cc6d12
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|7416014|376014|23010399003|36860700016|11063799006|6133799003|4143699003|10067099003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	8l5FF3LbJE9olur0dvcSTHVeAJf8qAZoDXGPyZtiW3UYkD7Ki+JK6XcEDAefWFgKc2/fYpZEw9tyYhJDLs/lMTSsv2niW61J1rHrhWz8zYPNvO4WaES1+5Td9m9zo+v73i4uj00Of+bRZnBIvVyuxqS7DdfgqeatCPHP00pw4k/fjKDjGG21ESbX0pFETi12ZR3Ky3blMs3oYIIRmJlWjCuXZ5+Eud7ADqw3Au3w3CaEsLcwtgc0+pk075WzAPN5NvbWGyB+2ANgV19uAjWw+NpTo5Ba9zbQrl4+ML7kcJOPB+JmvUyc1KRB925UzMG5XZz+8v79VOzC3dMYAVJWxUouCrpCVdMcC0miD8pP2AjeFGZnQyf83nuRA0xtAzRB8zEbZmsCq26ybEpYOuZxVrA7LM5hSCxiiZYdiO4jszoJvhygcM9cu3Spa3pMGP9XBWKBgprnsdkT8o49tgE+NTtodZ+vZwORSDsMZ1EZSI9MIo5rQ3rP87C8/1NRYfT51v1MRuPzVK3M48jL1E8qvn9Kf9P8Ld5zADajjHq0gKhCEsNsobO0QwdJmv3pqh4+80h598lttp1m5n55w/BJIyhGaSPVuO92sx1B3eRn3UlCZIxUcNNSP2VukkdOfiOul0XQbGfo+AN4Jmgawd0fR0JtYQKRSvMKsfGkv7gWVUGE87rqQF9wB4InWtkZDyojojKohZMaymo2xdOhrg7P2Q==
-X-Forefront-Antispam-Report:
-	CIP:149.199.90.133;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:unknown-90-133.xilinx.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(23010399003)(36860700016)(11063799006)(6133799003)(4143699003)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	NysA57+XV03ryJZgYUKpVdKgsgr4tDGi4zBHUeNsKl8zF4KHY1X0bMcDzx2K6phhCrUHRzDEerlHkGtGijGGihpe02RKBuqJqqAKuowoT+c1u038Oht59wTzD/rgXfuuaymTIRx314hswzz0idXxVc3gSfdhhn7F53NAqYy7F7muYgYxERbWsYG/21Lu8dt0FXOLrBzqBxwVA67F1UJnEbDmOu8Y7ZPiiEe1h+pMIFUrWs16AOewOE5gqBDfWwKmK/N8cvE58fi90B2XOp7EIYggS+1Y0W+m9D5gQSEfmunf73Rsfjb76YSeLPaBCmKbYVU0OIRUQaUSFVhUM4dD9iaFlscimeVLVSEjXUvZGgtvgWExo7VJ4jlDslrsErV/SyHWYWGtpc4JM40pWusiEXj4jKTYOVS2Bp6WfPiozeTK0SVIK9u3EKSz8MU00HZX
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 23:47:44.6774
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 423b2555-ef3e-4819-d00f-08df03cc6d12
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[149.199.90.133];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF00012E7F.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF183341E5B
+In-Reply-To: <19b316f26a145646c521943f5fdd5dfc4b2d1e84.1786389115.git.ashish.kalra@amd.com>
 
-On Wed, Aug 26, 2026 at 03:33:43PM -0700, Sean Christopherson wrote:
-> On Wed, Aug 26, 2026, Michael Roth wrote:
-> > On Wed, Aug 26, 2026 at 12:44:40PM -0700, Sean Christopherson wrote:
-> > > On Wed, Aug 26, 2026, Ackerley Tng wrote:
-> > > > Omit support for calling the arch hook to make private, since SNP, the only
-> > > > implementer of the arch make-private hook today, would actually prefer
-> > > > making private only just before faulting memory into the NPTs.
-> > > > 
-> > > > Calling the make-private arch hook would require iterating both bindings
-> > > > and the filemap to find the intersection of bindings and allocated
-> > > > folios.
-> > > 
-> > > Why would KVM need to iterate over the bindings?  Only the RMP needs to be updated,
-> > > whether or not the RMP is currently reachable is irrelevant, no?
-> > > 
-> > > Subsequent calls to kvm_arch_gmem_make_private() from kvm_gmem_get_pfn() would be
-> > > superfluous, but that's already possible, e.g. if an NPT mappings is removed for
-> > > whatever reason.
-> > > 
-> > > > On top of that, SNP would need to figure out whether to actually
-> > > > make private based on whether the memory is about to be faulted, or
-> > > > whether it is a conversion.
-> > > 
-> > > This is a non-issue, no?  As above, sev_gmem_make_private() already bails early
-> > > if the page is already assigned in the RMP.
-> > > 
-> > > I don't care terribly about how SNP handles this, but I do want accurate reasoning
-> > > and justification so that if/when we revisit any of this in the future, we can make
-> > > informed decisions.  Because unless I'm missing something, this is an optimization
-> > > choice (eager vs. lazy to-private conversions), not a complexity tradeoff, and it's
-> > > not clear to me how we decided the lazy approach would provide better performance.
-> > 
-> > I'm not sure it was discussed in this context, but there was some past
-> > discussion around preallocation (i.e. "should we call make-private arch
-> > hooks at allocation time to allow for faster boot for prealloc guests"
-> > and then that ran into the TDX side of things where that would
-> > necessarily entail pre-mapping into the sEPT as well, so
-> > KVM_PRE_FAULT_MEMORY ended up being the interface we adopted for this
-> > purpose.
-> > 
-> > Since then, KVM_PRE_FAULT_MEMORY was added on the QEMU side and gets
-> > called after all conversions for both SNP/TDX, and even without
-> > preallocation it's a decent performance boost to SNP. If we were to
-> > switch to pre-calling the make-private arch hook then the
-> > KVM_PRE_FAULT_MEMORY call because partly redundant and in practice we'd
-> > probably see a small performance loss.
-> > 
-> > So there's real performance differences here but it's sort of been
-> > addressed through a solution that offers additional performance
-> > benefits on top so there's no longer as much to be gained here I think.
+On Mon, Aug 10, 2026 at 07:21:53PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
-> Or another way to look at it, eager conversion would allow QEMU to drop its
-> workaround.
-
-True, for SNP at least, but pre-map is nice too, and not really gmem's
-place, so most likely KVM_PRE_FAULT_MEMORY would remain regardless.
-
+> The new RMPOPT instruction helps manage per-CPU RMP optimization
+> structures inside the CPU. It takes a 1GB-aligned physical address
+> and either returns the status of the optimizations or tries to enable
+> the optimizations.
 > 
-> To be clear, I'm a-ok with the code as-is, I just want to make sure we document
-> exactly why we're choosing this implementation.
-
-Agreed. My understanding of the current design choice is basically that
-it doesn't *need* to happen here, since kvm_gmem_get_pfn() will already
-trigger it on-demand when it is actually needed (or not), and that tends
-to happen at fault time when other platforms like TDX handle it. To handle
-it differently would be to go out of our way to make SNP special in this
-flow in exchange for performance, but KVM_PRE_FAULT_MEMORY already offers
-a robust solution for folks that want to optimize conversion path or
-prealloc host resources prior to guest boot.
-
+> Per-CPU RMPOPT tables support at most 2 TB of addressable memory for
+> RMP optimizations.
 > 
-> > But I guess that's a moot point...
-> > 
-> > > 
-> > > > Calling the make-shared arch hook and not the make-private arch hook does
-> > > > leak SNP-specific details into guest_memfd (as in, why only make-shared
-> > > > during conversions but not make-private?), but the additional complexity is
-> > > > not worth taking on until guest_memfd has a user actually requiring an arch
-> > > > make-private call.
-> > > 
-> > > ...
-> > > 
-> > > > +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> > > > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
-> > > > +{
-> > > > +	struct folio_batch fbatch;
-> > > > +	pgoff_t next = start;
-> > > > +	int i;
-> > > > +
-> > > > +	folio_batch_init(&fbatch);
-> > > > +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
-> > > > +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> > > > +			struct folio *folio = fbatch.folios[i];
-> > > > +			pgoff_t start_index, end_index;
-> > > > +			kvm_pfn_t start_pfn;
-> > > > +			kvm_pfn_t nr_pages;
-> > > > +
-> > > > +			start_index = max(start, folio->index);
-> > > > +			end_index = min(end, folio_next_index(folio));
-> > > > +			/*
-> > > > +			 * end_index is either in folio or points to
-> > > > +			 * the first page of the next folio. Hence,
-> > > > +			 * all pages in range [start_index, end_index)
-> > > > +			 * are contiguous.
-> > > > +			 */
-> > > > +			start_pfn = folio_file_pfn(folio, start_index);
-> > > > +			nr_pages = end_index - start_index;
-> > > > +
-> > > > +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
-> > > > +		}
-> > > > +
-> > > > +		folio_batch_release(&fbatch);
-> > > > +		cond_resched();
-> > > > +	}
-> > > > +}
-> > > > +#else
-> > > > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) {}
-> > > > +#endif
-> > > > +
-> > > >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
-> > > >  				     size_t nr_pages, uint64_t attrs,
-> > > >  				     pgoff_t *err_index)
-> > > > @@ -624,7 +661,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
-> > > >  
-> > > >  	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
-> > > >  	kvm_gmem_invalidate_start(inode, start, end, filter);
-> > > > +
-> > > > +	if (!to_private && kvm_arch_has_gmem_convert())
-> > > > +		kvm_gmem_make_shared(inode, start, end);
-> > > > +
-> > > >  	mas_store_prealloc(&mas, xa_mk_value(attrs));
-> > > > +
-> > > >  	kvm_gmem_invalidate_end(inode, start, end);
-> > > 
-> > > The real reason I responded...
-> > > 
-> > > Thinking about the Secure AVIC mess made me realize zapping NPTs for SNP VMs isn't
-> > > strictly necessary in this path.  The PFN isn't changing, just the attributes, and
-> > > that's (obviously) tracked in the RMP.  KVM doesn't need to zap SPTEs to induce a
-> > > fault, because the mismatched C-bit vs. RMP status will cause an #NPF(RMP), and
-> > > AFAICT kvm_mmu_page_fault() will do the right thing.  A misbehaving guest could
-> > > continue to access the shared data (assuming we stick with lazy conversions), but
-> > > that should be fine?  E.g. it's not really any different than implicit conversions.
-> > 
-> > I think this should work in theory...
-> > 
-> > zapping NPTs means the vCPUs will keep retrying until they get the page first
-> > vCPU that faulted is trying to grab from gmem. If we don't zap, then they will
-> > instead be racing with the first vCPU, and if they lose they will be
-> > generating implicit page faults that trigger conversions back to shared,
+> Initialize the per-CPU RMPOPT table base to the starting physical
+> address. This enables RMP optimization for up to 2 TB of system RAM on
+> all CPUs.
 > 
-> Why would they trigger conversions back to shared?  Assuming the guest isn't
-> being silly and accessing the memory with C-bit=0, the #NPF will be tagged ENC
-
-I wasn't meaning the normal flow for a well-behaved guest, but when you
-mentioned "mismatched C-bit vs. RMP status will cause an #NPF(RMP)" I
-thought you were considering the case of multiple vCPUs accessing the
-same GPA in various ways (that may or may not make sense) and whether not
-zapping before conversion would cause any issues with the handling of that
-scenario. In that scenario there is potential for any mix of mismatches
-between C-bits and RMP tables.
-
-The silly case with C=0 is the specific scenario I was thinking of. E.g.
-one vCPU is trying to due memory acceptance/PVALIDATE of a GPA that's
-somehow still being used by some other vCPU for some shared memory
-workload.
-
-> and KVM will treat it as a private access.
+> Additionally, add support to setup and enable RMPOPT once SNP is
+> enabled and initialized.
 > 
-> 	if (is_sev_snp_guest(vcpu) && (error_code & PFERR_GUEST_ENC_MASK))
-> 		error_code |= PFERR_PRIVATE_ACCESS;
-> 
-> kvm_mmu_faultin_pfn() will see "fault->is_private == kvm_is_private_gfn()" as
-> true, i.e. won't kick out to userspace.  Same for __kvm_mmu_faultin_pfn(), which
-> will call into kvm_mmu_faultin_pfn_gmem() => kvm_gmem_get_pfn(), see that the
-> gfn is private, and call kvm_arch_gmem_make_private() as needed.
+> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
+> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Suggested-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Suggested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+> Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  arch/x86/include/asm/msr-index.h |  3 ++
+>  arch/x86/include/asm/sev.h       |  2 +
+>  arch/x86/virt/svm/sev.c          | 75 +++++++++++++++++++++++++++++---
+>  drivers/crypto/ccp/sev-dev.c     |  2 +
+>  4 files changed, 77 insertions(+), 5 deletions(-)
 
-Yes I don't see any issue with the normal/well-behaved path, it's just
-the funky edge-cases that seem bring about some new considerations, but
-it seems like those would be handled okay.
+Some cleanups ontop:
 
-> 
-> I don't see how #NPFs due to the RMP being SHARED would be handled differently
-> than !PRESENT #NPFs.
-> 
-> > and most likely the first vCPU will re-trigger an implicit shared->private
-> > conversion when it does PVALIDATE. Worst case, the guest fails PVALIDATE
-> > due to racing with itself.
-> > 
-> > It's a bit chaotic, but it shouldn't break anything other than the guest, and
-> > it's only something we'd generally expect for buggy/malicious guests anyway.
-> > 
-> > However...
-> > 
-> > > 
-> > > In other words, couldn't we do this (as an on-top optimization)?  The only wrinkle
-> > > I can think of is that it could delay reconstituion of a hugepage, especially if
-> > > we opted for eager conversion (because the guest wouldn't hit #NPFs to trigger the
-> > > hugepage promotion).
-> > > 
-> > > diff --git arch/x86/kvm/mmu/mmu.c arch/x86/kvm/mmu/mmu.c
-> > > index 62f751952ad8..61f3e270ab61 100644
-> > > --- arch/x86/kvm/mmu/mmu.c
-> > > +++ arch/x86/kvm/mmu/mmu.c
-> > > @@ -1670,6 +1670,7 @@ static bool __kvm_rmap_zap_gfn_range(struct kvm *kvm,
-> > >  
-> > >  bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
-> > >  {
-> > > +       unsigned long shared_private =  KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
-> > >         bool flush = false;
-> > >  
-> > >         /*
-> > > @@ -1683,6 +1684,10 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
-> > >         lockdep_assert_once(kvm->mmu_invalidate_in_progress ||
-> > >                             lockdep_is_held(&kvm->slots_lock));
-> > >  
-> > > +       if (gmem_in_place_conversion && !kvm_has_mirrored_tdp(kvm) &&
-> > > +           ((range->attr_filter & shared_private) != shared_private))
-> > > +               return false;
-> > > +
-> > 
-> > This path would also trigger for hole-punching, where we would want to
-> > zap the NPT entries. So we might need to adjust the logic for more than
-> > just shared vs. private to account for that.
-> 
-> No, because PUNCH_HOLE uses kvm_gmem_get_all_gfns_filter(), which does:
-> 
-> 	if (gmem_in_place_conversion)
-> 		return KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
+diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+index 923b7869acd1..982753002a3c 100644
+--- a/arch/x86/virt/svm/sev.c
++++ b/arch/x86/virt/svm/sev.c
+@@ -558,7 +558,7 @@ int snp_prepare(void)
+ }
+ EXPORT_SYMBOL_FOR_MODULES(snp_prepare, "ccp");
+ 
+-static void snp_cleanup_rmpopt(void)
++static void rmpopt_disable(void)
+ {
+ 	int cpu;
+ 
+@@ -577,8 +577,7 @@ void snp_shutdown(void)
+ 	if (syscfg & MSR_AMD64_SYSCFG_SNP_EN)
+ 		return;
+ 
+-	/* Disable RMPOPT while CPU hotplug is disabled. */
+-	snp_cleanup_rmpopt();
++	rmpopt_disable();
+ 
+ 	clear_rmp();
+ 	on_each_cpu(mfd_reconfigure, NULL, 1);
+@@ -612,8 +611,7 @@ void snp_setup_rmpopt(void)
+ 	}
+ 
+ 	/*
+-	 * The RMPOPT_BASE MSR is per-core, so only one thread per core needs
+-	 * to set up the RMPOPT_BASE MSR.  All primary threads are online,
++	 * The RMPOPT_BASE MSR has core scope. All primary threads are online,
+ 	 * otherwise SNP would not have been enabled.
+ 	 */
+ 	for_each_online_cpu(cpu)
 
-Doh, helps if I actually have the right branch checkout out when looking at
-code. That does look to be covered.
+-- 
+Regards/Gruss,
+    Boris.
 
-I'll give this patch a spin on my end as well and report back if I notice
-any crazyness.
-
-Thanks,
-
-Mike
-
-> 
-> i.e. won't get short-circuited.  Though I agree with the implication that this
-> is super fragile/subtle.
-> 
+https://people.kernel.org/tglx/notes-about-netiquette
