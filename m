@@ -1,240 +1,293 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770334252D6
-	for <linux-coco@lists.linux.dev>; Thu, 27 Aug 2026 09:20:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787822411; cv=fail; b=DOuDD9625FUL1xtOW0sbWlwxEBJNsEEHii4/L6eidyVgYqW1NgzZOtEANkcEECfPyhmydunXDgm6n+pnBppZh4s0cDrKL3KXrp2oJTmS6umH74vB40+6L2Xo98bg2zU8MvOf3+rf/yY16nNIsFReXLqJgN8vigUfz0fi9lb9Kv0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787822411; c=relaxed/simple;
-	bh=QQJoMgYWjVXyKP/Ysj9GLKxilLeNoqUsXoAMaRb9aJs=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=dJFTpvfVGwTtQsfqWCaqRTKbGoL68MO4g3Pe993l0Gsi3G/IINjXHBF/LMStmGyJHDcrAXzivA8ylE4hyAH6Gw0LlvUCebF/VL8J5pOkR12rqL5H1iUi5lV7G4D4NO4BTsD6dRV9i+ulFHSSKc2maWIZA8+KdcoMus3pjIpw5RQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a/A1Ixw3; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059A72F7AD2;
+	Thu, 27 Aug 2026 11:29:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787830169; cv=none; b=GIliT4I7QkVt5ReBp6VfTnTZsz0sYJ5VSN/dcqCMTVcHR3DLjeCc85mN6oAE0TttLNMuWc7kEMFhXaVhH8c5Nq55FcUifW4a9CYrKOjsaNJ13BiPUii3cDdwlZ5eJ1d0ix1fvJdfXltnnmdPeDHNk08RWHxRpWqrUL1TtZl5bPw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787830169; c=relaxed/simple;
+	bh=UzLVCE0USUwFgPcRQvUNA0WrLO8yQI5v2E2NhqpPlWI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p5pby0vPt2LUT1UxYr2W7aMwshD3qogmknhG2GzCaekWE/cAiB/XQ4MPRTkE+q0pN5d2a7oy151lxT11LWU3jJ4TMm5drE8Df94fp79tC9dFK36NTiTyCfZJv8XgYIi3PcwBMK5jDDX5INJsKe7a+N+v+DMquTjXXo0j16vS2oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lrRC3ueL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a/A1Ixw3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787822403; x=1819358403;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=QQJoMgYWjVXyKP/Ysj9GLKxilLeNoqUsXoAMaRb9aJs=;
-  b=a/A1Ixw3aegkXU/5AzgPzA+dQrWBWmwfsueSY5OIv3VM/sJxdEnr8eR7
-   S/ENZlAgovmDRrhuczFG5LIkA3u8ygGxajvFrod0tmYsNLPR23C0TDfzD
-   u8agS1IeM71Z7N26In8rUcbio7vInnT48hXZlbqZ3bDjvDzkrzr0VtQaD
-   dEqtS0BO5oqiChv5Njh66IMnp5o2ZEDE993Z/h7fr1rLGaVUhf969Shnf
-   Tfwz0yYRqCRjMJwvIXPbbCJQlz0EUtn8UsOGnKZbYWzy3wKglIurJ8L4t
-   V51EEll6RJP9+S2dNay9T2CX81XvmbDO8fFw/Lqa1R0fuuBAvM5rPcdi7
-   A==;
-X-CSE-ConnectionGUID: C943JkV6Sc61Zsaz5t6Dtg==
-X-CSE-MsgGUID: MPPBR6uzQK24KgC9hNyPiQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="92134427"
-X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; 
-   d="scan'208";a="92134427"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 02:19:59 -0700
-X-CSE-ConnectionGUID: 8j1ggn65S9CEK7HQxOWGmQ==
-X-CSE-MsgGUID: ImVMRxhhSFaA0l3vyfJBBQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; 
-   d="scan'208";a="269766572"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 02:19:59 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 27 Aug 2026 02:19:59 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Thu, 27 Aug 2026 02:19:59 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.57) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 27 Aug 2026 02:19:58 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MSR/36a7FJ0t8/F/pKzoxF6RlLQqp2mWCqwj5nN/hka8u69PnRsrNTF7Ayei7T2i2K2BuzSdrWamx8c9jTmxgTb6TR55mDXR2jwMCBrayJb6QHCCqM0vmVcuoQVkakjnmzmTVgHwlk43nMGq96X2WlSNP88s3LT9WNONh0JflCujZIJ9jHo1gAZeH6o5xXdYqtGlrBURkAT99RP89C7fxu8izmn/YdBU2k+Cf/wmG1LWdVJDkPNNntO6RikQNQ1A4FZg0V3cDZi44NNDpqcpw+nlYAFWxuNbJkTHFi3R24C1VKwWwcJxYY3BQABXAM6M6YVYSImLckymzTQaKMGzHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eNxY8gAfVKsBY3xoSKHZ6hMJ2O8L/6u3uLCAfMAc33E=;
- b=xaR2Cizd7SR5qIGIeBnb33AnQZxWsiar5MDcOgPKZtVaku77ZaI4i0BxSiBlWn7gJ2HyKleCmtO2m09xVLnFCCVff7zgloCkwEjs0Zs4RfpgfXG/kuZtiaywqwT8v5gRa7P/D+I/PxPA+KconV+/1UDzKMqMmYc7yMSfNwM61m9kqNJ0yFscuXbZJaJK+Buq/1zFer5RnN//ipIusIfNlty/yhUezgtIVe+BCeoqx7tFV/I/9KJWnHdFCEOXWE/urrDQws7w1X+9P2GTDajuFi+1wDfBETGc2DCdS1USPjIhsNIw+yROCg+RKkNJFeY1eWhtGRGtC4+JM79QpMVqkg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB435924.namprd11.prod.outlook.com
- (2603:10b6:610:34a::8) by CH3PR11MB8562.namprd11.prod.outlook.com
- (2603:10b6:610:1b8::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Thu, 27 Aug
- 2026 09:19:51 +0000
-Received: from CH3PR11MB435924.namprd11.prod.outlook.com
- ([fe80::1696:c90e:60af:a0cd]) by CH3PR11MB435924.namprd11.prod.outlook.com
- ([fe80::1696:c90e:60af:a0cd%6]) with mapi id 15.21.0360.008; Thu, 27 Aug 2026
- 09:19:50 +0000
-Date: Thu, 27 Aug 2026 02:19:47 -0700
-From: Peter Fang <peter.fang@intel.com>
-To: Lisa Wang <wyihan@google.com>
-CC: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng
-	<ackerleytng@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao
-	<chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen
-	<dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, Ira Weiny
-	<ira.weiny@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, "Kiryl
- Shutsemau" <kas@kernel.org>, <linux-kselftest@vger.kernel.org>, Paolo Bonzini
-	<pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
-	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe
-	<rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, Ryan Afranji
-	<afranji@google.com>, Sagi Shahar <sagis@google.com>, Sean Christopherson
-	<seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li
-	<xiaoyao.li@intel.com>, Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds
-	<jmcrey@google.com>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
-Subject: Re: [PATCH v14 20/22] KVM: selftests: Implement MMIO WRITE for the
- TDX VM
-Message-ID: <20260827091947.GD33657@pedri>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-20-15ad654a50db@google.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260722-tdx-selftests-v14-20-15ad654a50db@google.com>
-X-ClientProxiedBy: SJ0PR13CA0181.namprd13.prod.outlook.com
- (2603:10b6:a03:2c3::6) To CH3PR11MB435924.namprd11.prod.outlook.com
- (2603:10b6:610:34a::8)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lrRC3ueL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C41F1F000E9;
+	Thu, 27 Aug 2026 11:29:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787830166;
+	bh=xeCezXT+fdicRh/I2V+IQNhaMWKU48C1cfcJ7s7KGYc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=lrRC3ueLyhJ3LRaloBMYLclOIjbVXfyBIHRnUE0mLPM7vmtbyJvEXiRaj+esLmtFn
+	 eprGIkPruSToMk0rv6vlJE2QvvTHFAeo1rX7TSYVFmRNkFglR6vfFYxwzgEqc8n6Xb
+	 bwo/tlRMX2NWcVnn7WZ2sHA70Znc/H0z1n2uXmX0+VKWb4nCh6nFaAdvQpOw6JiIBr
+	 xDipBitts4YcgjxV4Db72XMMrYszf2A4ZHyrFnRINp1Cvn8i0mwuXnPY4lmtFrg2zc
+	 L8G4BpDiqoZHlIGWYYDC2vvtwenM4MOGwlWtGTKDO+sC6K2nKFvPu/dHzEjnip1zCb
+	 dNXVfgouIeD+A==
+Message-ID: <9c2b7a50-0128-4026-9033-f5c92216da07@kernel.org>
+Date: Thu, 27 Aug 2026 13:29:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB435924:EE_|CH3PR11MB8562:EE_
-X-MS-Office365-Filtering-Correlation-Id: 794662fc-a8f8-43fa-8b39-08df041c58dd
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|4143699003|6133799003|3023799007|11063799006|56012099006|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: dc9Z3N/zEsuPH0G2BlmxZxICT2gpkOVStomqXjRhj1xR10qdqGpxudVU4lTR1VwgTkbXe6UH0+0gwwgs3nn2aeXOhGBFzXboqat0hQMoqjj5HCzZtpsJ4NpZatBQ4kLHBdX9NkgSal4FDWIBC+qoh7LBdfGBMptM7EhvsIhlUpnKY2OeFkQBYcsJTyl/1LjfFKDn4HAAt9qnSBv+rrPeNUI3Udgg8Kt2mr5g6jMVzYrh8tnRLMfgZfk8OVi0naD45E6KEF8PDqFYZT9PAjS9XYInyc+2UyPuRyf2hILSeCacldWT8QV0B8o04eMHAAYIvRKyynmbzB9lpBxy+1F7NLJR/QhonidJmcCPaKpf3sHGs1RMlPzdKHelQFV9dZ7osgO64t/5rhTpLOkrwrdAB4VJ5kVLtioy2PRjvd3piKnt3uuXY3D244fIRHTFb1tLzXSmo079Fl1OZWj9bYXUX8Hf7zSJijcEMb/v/k/o216JNEm1xLpLEJi6A+epfLAR+kaHHkdT3iVwT0uCLFaewNZzbii725o9chWhjIgU2qQ1sJsu0b0TIecfjYR1tKdWVUuumxAVAaK2NOSN0NvLYlBbv44L8ENIj4Ig/KnTZaFMYjsmUI9DvZSQ2qAWKo+aFAxELRy2nCEgcHdOcXuZ8FKxOQfeeIsfK/ixsrLQDMg=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB435924.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(4143699003)(6133799003)(3023799007)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Mo5saedK/zPnArUcyDKmdxzRqjj2U6RI2TbjPQvCWgIoHHuPfig+EQPUH098?=
- =?us-ascii?Q?CyBRyal9EUZ6rbnopKs/Hf7j+tIfthm/3Tk2OOsGYuVVGPLC2RqVPh287Foo?=
- =?us-ascii?Q?KcFwQK712hRhKrFElzmOzY029WlbmwGm73CSnSHuPTeXaj8LvT8x+uUlI+vH?=
- =?us-ascii?Q?+2NwwgMTKKNFKyly8gBHfrh3T7osB2HFfgas8dED6gyOaV0k8UYarc1zjt3q?=
- =?us-ascii?Q?cmFlJG5d4X2IKj1p2oobvXMNpgXfzv1If+Ch2p/+dmz6DtWPA5Atmc7imInr?=
- =?us-ascii?Q?4HBkyF0E0hMqEmnqD9d6Lbfr+RLJTuZxiArYFNmekLC1ck3y52WG/UgLTAYQ?=
- =?us-ascii?Q?11E0IgHYa7T9PFffB7NbeNYRu2ONz/rhZ1qrx3yfASyN9bN684j4YPKZU2hj?=
- =?us-ascii?Q?dwClC7rLWqmCmoldRfPJvl2bzJ76jMgq6KaVxJcLbhywgN+jkwp0jWByY3ef?=
- =?us-ascii?Q?a2Vai/I0aazvjSW7vm6hjmcRwDzlqeYp16TIrJ4EbgyQCSvZbQdh0fd4mp1p?=
- =?us-ascii?Q?0UTsKrqn6KuzihWFKHSAFID1utuWXs7dMCLu6Fdzuq5sG4mWtXnb4Fsy2vfA?=
- =?us-ascii?Q?57PxhJuGNfVQbTENwcS8UoXp/CHLQOjqtYLKt0vmCwHITpBhq2NMAuE2lxYM?=
- =?us-ascii?Q?ZKwCKyi3tLF9ZI31NQ28ySLUFlY7En+Fa1o762jh3t8j3Oq3oPDj9dPZyEiM?=
- =?us-ascii?Q?BhnOY6c8ROQvxZX33ZWkZho97b+zwMmh/wD+lLgpsTX2T1UY/277V8I9APgZ?=
- =?us-ascii?Q?1zH3IpWGjdLPMDvd2fN+8hxZB3gEV2n8LbFhWqvyStTuYA0JiSSToJAh3J0H?=
- =?us-ascii?Q?L5+GrJ2V01V1YdPG9rz/T7l1LpMAWFiDw0MDJ2M/Td4wmAmY/gRWNFgOEUPV?=
- =?us-ascii?Q?wON8F8kLi/MNYdB7Qr9t8eY/YfTL0Bc5nC6nc4bFIgvk94PjG2vcEJrX630K?=
- =?us-ascii?Q?9Jm+N4eTNbbn85c/gLcpv9dArcTZi8wOUP3u9aoHxfKJC6xo3SR6Lgb3EK+T?=
- =?us-ascii?Q?oeDu7KzPyUx3Y0mg3gptufitch+Bu5OGwsOyhzEe+SA1mgg+rFpmpZn21/s3?=
- =?us-ascii?Q?w4a0UtL0e+ha1M2M/DJQqyKFh6+w3Ri92oEpWDsRQrI0AZJpIo960k6Tg8ua?=
- =?us-ascii?Q?l2fgKHo0rO+LhQ7hfz7QteqN0VIbvanr9qtwkYeznRDUGikQErsoohBP9sNF?=
- =?us-ascii?Q?JLLvMbBV4CC10ZWFgn4W+HPUxbBjVlts89+n4FibP5yazRy4I45qJad2QGTo?=
- =?us-ascii?Q?lrmby3uTJ4LQEUo1isVaIeYfOSbPflP7V3fYSuS7WrfzNLMj4nooJLoATynq?=
- =?us-ascii?Q?yXuyFcZOnzEFYBZ3zciulGiM9Ovl16FI1x9w7o6okzhdSwVQ8fA05aem1gP1?=
- =?us-ascii?Q?89mzKEY8Ng9hBDM5h0GNR7tUa2bS4vo6t62K5KYnB9cSHFN5RShTunuZ9nRn?=
- =?us-ascii?Q?Q+RGZRbukH/tyS9LL4YdWDB55ts2/ccUMmrdtP9Zq/oazdVu0+udFIO0vusJ?=
- =?us-ascii?Q?pbTZcOEzbRAVgguPRIwhG8ZrDr3N6jY9jqfhQGLKaX/wtyS/KGjU4yhRUxAS?=
- =?us-ascii?Q?94Rsj94a5QKEF7jRZ5AlVSDbpADaaJrBbY/m2MTYIiqlBVYz7gIaKRoCDsCg?=
- =?us-ascii?Q?H/yNBewd1QP9ySeqi19nsbS8dapBLzL5xD1ZJIwj6rZx5FTGqqcClIUn3YJy?=
- =?us-ascii?Q?mPSSGFoXqVp8xVnG+GCNlA9XZX5JMSDGOvMrQXkgDPRC7SXiIH0J17d4RhmH?=
- =?us-ascii?Q?hF1SURvIqQ=3D=3D?=
-X-Exchange-RoutingPolicyChecked: DJfB8WtJ2qsRa8QwUOqbVT8ma+dHMFGWVUytpA0R7SOxxr5jvUQCgVur2fH1vgxTlsS9mRzRgrlBwWBDXMO8JeENxxN6ltliDzigfCaKP/k73cPXxHPNoHSoDXUvPtsXkAk3JxI7EQzC5BFRC0JUEaeCMDYZz6H76i1ZpBEIYGfgX7ZXKY1XhLfh3XvGLruM8HJevf/nVFPqNNSxXADCW9sjAO7OngrYNZUhvyOOt2ydDX1wIoOOIjD9VP1eDanavJsOalT7c5jexsN34zdqOUxavlZf2puH6mX3HekIM0Pkz67O+UP3crDS2ZZFCun9qcksgCuuHKONU5e+yLmbXA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 794662fc-a8f8-43fa-8b39-08df041c58dd
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB435924.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 09:19:50.7310
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 30mpXjaAyoeXLqrfVMZGjUYpLPWGvy2De9iL2dVUhgUUzLgU20aj4v5eWvq0hdYjllPSjsZDyAYMvMAKlfprkg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8562
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFCv2 PATCH 0/6] Support memory hotplug/unplug for TDX CoCo
+ guests
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "marcandre.lureau@redhat.com" <marcandre.lureau@redhat.com>,
+ "kas@kernel.org" <kas@kernel.org>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "prsampat@amd.com" <prsampat@amd.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "mst@redhat.com"
+ <mst@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
+ "Qiang, Chenyi" <chenyi.qiang@intel.com>,
+ "Reshetova, Elena" <elena.reshetova@intel.com>,
+ "michael.roth@amd.com" <michael.roth@amd.com>,
+ "ackerleytng@google.com" <ackerleytng@google.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
+ "x86@kernel.org" <x86@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
+ "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>
+References: <20260623101739.79695-1-zhenzhong.duan@intel.com>
+ <5921ace1-219d-4947-99d9-13b56e1ec6fa@kernel.org>
+ <IA3PR11MB91365F3F771C43C4BA7E61B392AD2@IA3PR11MB9136.namprd11.prod.outlook.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <IA3PR11MB91365F3F771C43C4BA7E61B392AD2@IA3PR11MB9136.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 22, 2026 at 11:13:25PM +0000, Lisa Wang wrote:
-> From: Erdem Aktas <erdemaktas@google.com>
-> 
-> Implement the tdx_mmio_write() to allow TDX VMs to request MMIO
-> emulation.
-> 
-> Follow the Intel Guest-Hypervisor Communication Interface (GHCI) spec
-> to the minimum extent that a spec-abiding TDX module will pass the
-> request to KVM. Skip implementing the #VE handler as described in the
-> GHCI spec to reduce selftests dependency.
-> 
-> To perform emulated I/O, VMs use the TDG.VP.VMCALL instruction to
-> request MMIO.
-> 
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-> new file mode 100644
-> index 000000000000..6355a30bb47f
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-> @@ -0,0 +1,17 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef SELFTEST_KVM_TDX_TDX_H
-> +#define SELFTEST_KVM_TDX_TDX_H
-> +
-> +#include <linux/types.h>
-> +
-> +#define TDG_VP_VMCALL_VE_REQUEST_MMIO    48
-> +#define TDVMCALL_MMIO_WRITE		  1
-
-The indentation in these two lines is off. 
-
-> +
-> +u64 __tdcall(u64 leaf, u64 r12, u64 r13, u64 r14, u64 r15);
-
-As Xiaoyao already pointed out, this function name is misleading. This
-is a TDG.VP.VMCALL (or a TDVMCALL), and r11 is a subfunction (the guest
-kernel simply calls it "fn").
-
-> +
-> +.globl __tdcall
-> +/*
-> + * u64 __tdcall(u64 leaf, u64 r12, u64 r13, u64 r14, u64 r15)
-> + */
-> +__tdcall:
-> +	push %r12
-> +	push %r13
-> +	push %r14
-> +	push %r15
-> +
-> +	/* Map C ABI fast arguments to TDX GHCI payload registers */
-> +	/* RDI=leaf, RSI=r12, RDX=r13, RCX=r14, R8=r15 */
-
-[ ... ]
-
-> +
-> +	pop %r15
-> +	pop %r14
-> +	pop %r13
-> +	pop %r12
-> +	ret
-
-This is probably more of a nit... td_boot.S has:
-
-  .section .note.GNU-stack,"",%progbits
-
-...to disable executable stack. 
-
-> 
-> -- 
-> 2.55.0.229.g6434b31f56-goog
+On 8/27/26 10:18, Duan, Zhenzhong wrote:
 > 
 > 
+>> -----Original Message-----
+>> From: David Hildenbrand (Arm) <david@kernel.org>
+>> Subject: Re: [RFCv2 PATCH 0/6] Support memory hotplug/unplug for TDX CoCo
+>> guests
+>>
+>> On 6/23/26 12:17, Zhenzhong Duan wrote:
+>>> This RFCv2 series implements comprehensive support for virtio-mem and ACPI
+>>> DIMM memory hotplug/unplug in Intel TDX confidential computing guests.
+>>> It explores the start-private memory approach utilizing the native
+>>> TDG.MEM.PAGE.RELEASE API.
+>>>
+>>> We are seeking feedback from Kiryl on the CoCo guest implementation, MM
+>>> experts on DIMM & virio-mem memory hotplug integration and broader
+>>> virtio/CoCo community input on the overall approach. We are not seeking
+>>> x86 maintainer review at this stage.
+>>>
+>>> == Changes from RFC v1 ==
+>>>
+>>> - Eliminated callback infrastructure: Dropped plug callback and replaced
+>>>   unplug callback with platform-level unaccept function into core MM
+>>>   hotplug and virtio-mem subsystems.
+>>> - Added comprehensive bitmap tracking: Introduced a "plugged" bitmap
+>>>   alongside the unaccepted bitmap to track populated hotplug memory
+>>>   states to support load_unaligned_zeropad().
+>>> - Enhanced SRAT parsing: Extended the EFI stub to parse ACPI SRAT tables
+>>>   early, ensuring hotpluggable ranges are tracked from initial boot.
+>>>
+>>> For more introduction about the background or other efforts in community,
+>>> please check the RFCv1 cover letter [1].
+>>>
+>>> == Technical Approach ==
+>>>
+>>> - Early SRAT Integration: A lightweight EFI stub parser scans ACPI SRAT
+>>>   tables to identify hotpluggable ranges and adjust bitmap boundaries
+>>>   early, avoiding the overhead of the full ACPI subsystem.
+>>> - Comprehensive Bitmap Tracking: Introduces a "plugged" bitmap right
+>>>   after the unaccepted bitmap. Both static and hotplugged memory are
+>>>   tracked, allowing the guest to map which ranges are populated by the
+>>>   VMM. This prevents acceptance beyond plugged memory boundaries due to
+>>>   load_unaligned_zeropad() operations.
+>>> - Platform Extensibility: Exposes generic CoCo memory interfaces. Other
+>>>   confidential platforms (like AMD SEV-SNP) can easily adopt this by
+>>>   hooking their specific mechanisms into arch_unaccept_memory().
+>>> - Hotplug & Guest Control: Integrates platform-level unaccept logic
+>>>   into ACPI hotplug and virtio-mem handlers. Uses TDG.MEM.PAGE.RELEASE
+>>>   for TDX to explicitly set memory to the "unaccepted" state during
+>>>   unplug, removing host hole-punching dependencies.
+>>> - Kexec Handover: Leverages existing EFI mechanisms to seamlessly hand
+>>>   over both the extended unaccepted bitmap and the new plugged bitmap
+>>>   across kexec boundaries.
+>>>
+>>> == Testing ==
+>>>
+>>> - dimm and virtio-mem memory hotplug/unplug
+>>> - lazy and eager accept
+>>> - kexec/kdump with hotplugged memory
+>>>
+>>> This is tested with Marc-André Lureau's newest qemu series [2]
+>>
+>> What's the status of this?
+> 
+> Marc's QEMU series is merged.
+> For this series, following feedback from Kirill and Pratik, the preferred approach
+> is updating the UEFI spec for hotplug memory ranges rather than parsing SRAT
+> at the EFI stage. Pratik is already pushing this forward, I am currently waiting on
+> his RFCs. If he hasn't taken over the entire implementation, I can rebase my
+> remaining patches on top of his work.
+> 
+> Hi Pratik, have you sent your UEFI RFC out yet? Just wanted to make sure
+> I didn't miss your thread.
+> 
+>>
+>> I am still not sure whether we shouldn't perform acceptance from
+>> move_pfn_range_to_zone() and from memory notifiers / generic_online_page.
+> 
+> My understanding is that we already have full support for lazy and eager acceptance
+> in generic_online_page() for static memory. We should be able to reuse that for
+> hotplug memory and avoid adding acceptance logic in other places.
+> 
+> All we need is extending unaccept_bitmap and adding new plugged_bitmap to support
+> hotplug memory. I updated accept_memory() to check both bitmaps to determine
+> which memory should be accepted.
+
+The plugged bitmap is a very odd beast. I hate it, but I can see why it might
+currently be required. I wonder if there is a better name for it because
+
+	"plugged"
+
+is an overloaded term. What are the real semantics we want to express?
+
+IIUC, unplug for virtio-mem requires prior conversion to shared memory. We
+should have an intuitive mechanism for virtio-mem to just do the right thing
+when unplugging memory (IOW, preparing for handback to the hypervisor).
+
+> 
+>>
+>> In particular, it's unclear to me how virtio-mem (which uses interfaces to
+>> add/remove memory) interacts with unaccept_memory / coco bitmap.
+> 
+> It works the same way as a physical DIMM: when memory is plugged, the
+> corresponding bits in plugged_bitmap are set, and vice versa.
+
+Well, no. When adding a Linux memory block through add_memory_resource() you do
+coco_set_plugged_bitmap(). And in virtio_mem_send_plug_request() you do
+coco_set_plugged_bitmap().
+
+That's just super inconsistent and messy.
+
+
+(coco_set_plugged_bitmap() and memory acceptance should *definitely not* be
+open-coded like that in virtio_mem. There must be a clear abstraction layer with
+clear, well documented semantics that virito-mem can iuse)
+
+
+> 
+> Memory acceptance is already handled in generic_online_page(), so we 
+> do not need to do it inside virtio-mem. However, we do need to call
+> unaccept_memory() during a memory unplug event in virtio-mem.
+
+Again, I think we really need an abstraction that can just naturally be extended
+for platforms that have to perform some work when returning memory to the
+hypervisor. Open-coding x86's unaccept_memory() is not the way to go.
+
+> 
+> Currently, tdx_unaccept_memory() can act as a no-op since QEMU handles 
+> hole-punching the private memory. That said, we still need to invoke 
+> unaccept_memory() to properly update the unaccept_bitmap bits.
+> 
+>>
+>> Can we have an overall design view on what happens at which stage when adding
+>> /
+>> removing memory through virtio-mem?
+> 
+> I have put together a design view summary for virtio-mem below.
+> Please let me know if this looks correct or if we should adjust the framing.
+> 
+> Design Overview
+> ---------------
+> We maintain system stability and state safety using two metadata tracking
+> layers during dynamic memory resizing operations:
+> 1. plugged_bitmap: Explicitly tracks blocks plugged into the guest.
+>    This protects load_unaligned_zeropad() from reading omitted memory
+>    holes, preventing catastrophic guest crashes.
+
+I hate load_unaligned_zeropad() so much at this point. We should finally rip it
+out. I wish I would have more spare time to look into that.
+
+The plugged bitmap is a clear sign that load_unaligned_zeropad() just has to go
+instead of us hacking around it.
+
+> 2. unaccept_bitmap: Explicitly tracks the secure page initialization state.
+
+I didn't fully grasp the level of hackery we have to apply to make
+load_unaligned_zeropad() not do stupid things.
+
+Am I correct that we have to accept more memory, possibly falling into unplugged
+virtio-mem ranges? What is the effect of that?
+
+> 
+> Step-by-Step Lifecycle Stages
+> -----------------------------
+> Using sub-block hotplug of a new memory block with eager acceptance
+> as an example:
+> 
+> 1. Memory Addition (Plug) Stage
+>    a. Host notifies guest -> virtio-mem driver handles the plug event.
+>    b. Driver marks the allocated memory ranges in 'plugged_bitmap' by
+>       calling coco_set_plugged_bitmap(addr, size, true). During this stage,
+>       a plug request is also sent to the VMM.
+>    c. Driver adds memory blocks via add_memory_resource().
+
+Assume you hotplug a single device block (e.g., 2M). virtio-mem will set the
+plugged bitmap of that one block. But add_memory_resource() will set the plugged
+bitmap of the entire Linux memory block.
+
+That seems completely broken?
+
+
+-- 
+Cheers,
+
+David
