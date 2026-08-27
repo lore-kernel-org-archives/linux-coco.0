@@ -1,235 +1,160 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011038.outbound.protection.outlook.com [52.101.62.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D96E489898;
-	Thu, 27 Aug 2026 18:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.38
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787854998; cv=fail; b=XdLcFVCYdbF4TjBhp93OM8nT5X52Ei6/m7UqPjKqxzAcsdrEwozlnxmW+UbnALOmTShrB593+MIpm47Jxl3kBll4lqvVJhafbr05QbY3MfJwC68xkIZgft8wpgej0Pz4B6TNsVwwHivUijhXHfhw7TECRwEqRhvLsSDPUpPVfqU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787854998; c=relaxed/simple;
-	bh=FdEk7frQx0hn+3nHHTL/Y//NGhbuOWz5zkqZfhdRlJ4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=CN1J5ek/jkzr0b+c9ut19xN0wa+6ItF+XZSJe3iScW8WBeONMBltqu1adF6WY8mTL0sj8o3NdBEJYYVp0Ie02LgzhfZchZeK2qG6afBdEKHz2WT7q5uo8xRSdvIz9nE6gHs+7RXn0La7tkqJ6WFtWhxJtF9hy81hm2uIAX6BqpU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=btf2CsFz; arc=fail smtp.client-ip=52.101.62.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B02434E5F
+	for <linux-coco@lists.linux.dev>; Thu, 27 Aug 2026 19:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787857690; cv=none; b=MA21H3KQyc4lREMys4pufL/3pqxkbKHQ6bh6bUeqeyI00LKVoSR1q8hY748WKADLUUDLneMcQqUxn1bGnpb5D3eMypY/2KdeA+7/28+YLAe/FMBda5CHLjkGCqPn7xlC2OBG9e5eiTHS3azEToc22MnxmRgNpy6um0Zw4WG6q/M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787857690; c=relaxed/simple;
+	bh=YAu1i5AWtB/mdPrcibBFB5fs0b8x5YEB+6wjvbVTug4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Gk/VXp3YPa3Vyg/WC43VWB/IamKmBxfFkYYoS2LqDktdUIECbzSmRpdyeSacf58YUnWF4izRIlFQ6OZg+kSPQQlkjrqDaO0BGNlZiRnqIO6j/pXxDcXJW6TBWsxGWvlQKH2HkC9jdyHQEhIsC2OSRozFjPWn36T3ojwIWz/SYdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QXhanJ+k; arc=none smtp.client-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="btf2CsFz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OiYMfSlXvBQJEbcyrc+TX6CP+jvzhE4b8K2TcIxnd+NDtagX3SDoQdCBfwreqd5QiSs7zw0mhnutPKXleYI+7rzvhRZ/zWxCIg9lpdt/TPr1XTN4jS+MsU7BS7slUQ4BfzX+Trur80g/DmUy1bAWRTi4+lGDRV7yF4tt2Bq98OV+e5WwPGlqoUpAqQ3qnilmP4SatlJ50B1Panm3dGwmfAb7vYOtHteOFoCAiOIJcPD2+0oSDubgPqTHar30KYeYX9sX+aPkZLi/ZJqAS2ze1Xmrt1CKXW5sWsLhYezp29piJ58szztW+UzQGj53GeDkfQNyAWGvKXsAevLn0XaqEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mNQg8BaFnyqFpd0L1a9ZkY1AyDwUG32xXiZIE3sNeTw=;
- b=JzUW6NJM706rvmTRUgwKWpMbap8A6eEUt1V1HhOtVkHJemYjynA5voB5WZOJgQznmdLPNx/0HJMrPc2l15jDn/7dFQD8B4qRFOh/joeuAQb9cxmOxFEY0ufZC3iLJ98UB5BhfLJhv6ORVkAKroJcS3qUowYcB6G449yol3le2fX/GuYBIMKWlHyNzWVLiYw44GHsAk2TzPRwt7vmZOMI25CyhMNEpubmKhyG28jElBnoyJU/6xn3yQg/XPTiUcUinPlsGTXhXflVU971JtrmQKqr12fE6Z/mBK8z2XULe+iJ5YP/cUBbqHaMC2N0owHs+NBp2iDpQwGOHt1gs8dpqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mNQg8BaFnyqFpd0L1a9ZkY1AyDwUG32xXiZIE3sNeTw=;
- b=btf2CsFzDlrS+7wPDcv20t4h2RhIzAaKhKDHLRq9M5moZ+e2MfHMjKuB6iMER0KW9qcartwUUW0N5w6Cxo1Y0iHHExL620Qe+1Bf0fT81zc5fZ2ud9dRA9AeoLjuoQtcQXgmg7VkKpFRSbrMpwPcSHLGSDkJh7kVcxATGp+N8Rc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB8660.namprd12.prod.outlook.com (2603:10b6:610:177::5)
- by MW4PR12MB6874.namprd12.prod.outlook.com (2603:10b6:303:20b::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.14; Thu, 27 Aug
- 2026 18:23:10 +0000
-Received: from CH3PR12MB8660.namprd12.prod.outlook.com
- ([fe80::87aa:52e5:4b72:d5f3]) by CH3PR12MB8660.namprd12.prod.outlook.com
- ([fe80::87aa:52e5:4b72:d5f3%5]) with mapi id 15.21.0360.008; Thu, 27 Aug 2026
- 18:23:10 +0000
-Message-ID: <9e97bdc4-6940-41a4-ab8a-2150162eb0f8@amd.com>
-Date: Thu, 27 Aug 2026 14:23:06 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFCv2 PATCH 0/6] Support memory hotplug/unplug for TDX CoCo
- guests
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- "marcandre.lureau@redhat.com" <marcandre.lureau@redhat.com>,
- "kas@kernel.org" <kas@kernel.org>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "mst@redhat.com"
- <mst@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
- "Qiang, Chenyi" <chenyi.qiang@intel.com>,
- "Reshetova, Elena" <elena.reshetova@intel.com>,
- "michael.roth@amd.com" <michael.roth@amd.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
- "x86@kernel.org" <x86@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
- "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>
-References: <20260623101739.79695-1-zhenzhong.duan@intel.com>
- <5921ace1-219d-4947-99d9-13b56e1ec6fa@kernel.org>
- <IA3PR11MB91365F3F771C43C4BA7E61B392AD2@IA3PR11MB9136.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: "Pratik R. Sampat" <prsampat@amd.com>
-In-Reply-To: <IA3PR11MB91365F3F771C43C4BA7E61B392AD2@IA3PR11MB9136.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH5P221CA0008.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:610:1f2::24) To CH3PR12MB8660.namprd12.prod.outlook.com
- (2603:10b6:610:177::5)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QXhanJ+k"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cee1ec30f2so1639915ad.3
+        for <linux-coco@lists.linux.dev>; Thu, 27 Aug 2026 12:08:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787857687; x=1788462487; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JWGZwnfyNQRYCnM1UqJIynPGxtHIQDoEVfaq/bKW7II=;
+        b=QXhanJ+kgVlAyjRTPcT7z4UCUffKnyF1hevuE+7C7OL85FY7SbdS1y0yJVvNOy9n0d
+         M13EYd5Ivyx8WJaafheVponCIvdzxUUWC6ny5mzKCHuHpZwmm92Smioi8PdEW7X8MthU
+         ndc8+u5Wga51+5OmnHhJCBO28Oq0tG9CdbfySEbbY5/pkOKZIgQG/asV8pKbHvOtC79w
+         Gng9YQ87M2WH8QU2m2hUD+DPFIhtGIy5CHC0fF4KdtWJkBK1+zKiqIEQnF5sNGwAw8+G
+         DnreRd7hrTJyVlVLBP1iQQ2FG3KgcAJhd2xVONl+8YEGDDXB+FQN3T65HP9MBe2RKq5T
+         mIIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787857687; x=1788462487;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JWGZwnfyNQRYCnM1UqJIynPGxtHIQDoEVfaq/bKW7II=;
+        b=B9N2ZU6cfpEE7CzOLb1CB/FXMdQZnYd0H1rn4EDgnreO2uWitMgaIvyRLir3r+jI3z
+         5Y7f1hgHhOKgdofqN8iTMciMZM2xsso673ieEv1cyTPJN90jiqzVa92aE26JfswRChLr
+         CwpEGBprS359JDlQJVEIrIgcRe76IS2sZclGoA6Onn3UU6eO4MogClJaeS0xhY7TmSzE
+         pZChxNwBIQMT9DY/hf+7vRzbii/GtwBbhPilMhpsPXmMM1ls/883gulrZdJ2vW6sUd8i
+         S6aunGjSoMtQ3nQjMQa9zsSuua9k3qwDwrqA3AEUu2ZQ3chAokcWa8G1+LuLB2Xg8IO7
+         60kw==
+X-Forwarded-Encrypted: i=1; AHgh+RoSwF0H89Ylkn5uxzuEa+PfFmy9dP8EGM91sTcKeVb/Q2VrIK0zhooG+7lj/QfdtAtHJMzDtcniwTk4@lists.linux.dev
+X-Gm-Message-State: AFuF++nGjBYpuYgvpkSi+zbAegyojxQ3iT6b2uXgGWx72y0VjNh9HLGS
+	Vd/N6jje61miuypkY1LFPZ5pwZRn8aQFkNA6dW6CIaToTtMH8AF09Tu1kURqOPWCJsPsvsVWdug
+	eXE/hxQ==
+X-Received: from plblq15.prod.google.com ([2002:a17:903:144f:b0:2d6:e58f:8e81])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:15cf:b0:2d7:1aeb:739
+ with SMTP id d9443c01a7336-2d74e1295c2mr19606415ad.13.1787857686248; Thu, 27
+ Aug 2026 12:08:06 -0700 (PDT)
+Date: Thu, 27 Aug 2026 12:08:05 -0700
+In-Reply-To: <a151b52d-0afb-4b32-a871-4da67210f416@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8660:EE_|MW4PR12MB6874:EE_
-X-MS-Office365-Filtering-Correlation-Id: c4b931c8-9a7f-4b90-fefe-08df04683f96
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|23010399003|22082099003|18002099003|10067099003|56012099006|6133799003|4143699003|11063799006|921020;
-X-Microsoft-Antispam-Message-Info:
-	78AWM9u1KucGCD5KX4CE1hMlurJInDX3W/DgGDljPvzO4OkpqeiH+ofrxlagW+PpsFBcrn4w+EcD2FY4Khu8jxfjRZ/h8vi2SuSwHPvZ2xbbYvYKpSUsv5xVxMStCLXLvTntC7RTJ4X8RbWXLU5CYHR2jKD/hGEoPwCJOXvDo0AABmbbspdopM/hltETmem+ZTCsskz16STRv2wsOEQu3+iC6YDKOkjrWSAa74Jm+vjO9/dENYdAljv5xzKW0Cs2/iMATkNRQBFF6izK5cZaoBfTabuHgMjjc4/m4lBesaVUyxw7KYH2JwPczEp8bNa/VmhSu4erkRDGXgRoJSDSt9D0mPSkz8tsc0E/zFPpADDHK9L+Ylk2oU8mUD/4bsEgj7wxL7ikMgoo67tXvAY51MY84vVeKF4ZbW7kbKD+fuf+kP5BgQzdoLmUlFMNJduWUdsfERqjNxwvWoI2T4gFzFp99TNmUbKP9U/MhTaysTU7mL59deC1N8NzuCIcbVUtao+OUuYjcKx7Hwk/bhR+wVdzz/KlL/KrwYMq/Fyc8JN0VwazHCF4tksxg9Hy5riS3Qh5djoYgfzQ5f7/QHj9dUYGXZIq0nLLg3v3GSk+fVovv4FW8qOEfg3z5VkPTic605okBtjEg984v2kbsqwXx1+zLswKJwCLyp81/NfJKtGIQQMh8uEE5c/UhSU0uY6Hx2xwhjHw+GDhmwJn0rBcQA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8660.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(23010399003)(22082099003)(18002099003)(10067099003)(56012099006)(6133799003)(4143699003)(11063799006)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M1ZvVmJKQzhyQUx0aUxWYTNzcXJzSTZWQTVsRnVtRVFIbFVGcjMrNUprWUtG?=
- =?utf-8?B?MHRlYjl6ajRMTW1lQ21Gd0RwcG1MZXo1OGVJS0RxMXpLZUp5enR4Z2gvMTRI?=
- =?utf-8?B?TmI3Yml3b0hEazJldWNLR2RSYXJLMUJQalRsMGhlQXdrdUdKRTViWkswcFJX?=
- =?utf-8?B?UkdDYUVkaWVVMUZ1WjZZWnNHajNVOFU2NzdRTWF6RWFsQW80NTAyekZ4SHRu?=
- =?utf-8?B?Zy9oMXhyVDhjVkZwandhNGtWYUNzWVRKTXY2OXNnUUVxbHR3Si9MU3ZjY1c5?=
- =?utf-8?B?RWRXdE15dFk4Snc4WGxqNERnVEx5dDNjZWtTeE5vVFVseEZxMzdDYkJTSEJj?=
- =?utf-8?B?OWpKVFlucDh6d3podTNBditTVFppT3A3MkNNeUY1RnZvRU9JMjdNR1Y0TG9s?=
- =?utf-8?B?RC9JS0RwbXpUazJxeHJadS83RzhLSFNJMk9aVGxrdEE2QVRMQ0hmS00yakY2?=
- =?utf-8?B?ZjFzY1ZMbmpXT0J4Q2tRL1pXMUpzL0x2TmdLbE82cnVHRGRxT1dibytqVmVz?=
- =?utf-8?B?Z3l5bGE5dExYajQ5L1RVaU0xOEYxYTh4azdzM09Temk4NEFKV3VWUVYvQ1F2?=
- =?utf-8?B?QWRwWG83SGJ3UlBNMEF2UzBTVVJPY1JTT25QNDR1SzNZa3FEUWZraW1oMzlq?=
- =?utf-8?B?STVYN2Nrc0l2enRndGlHd2h6R25CT29JeUhCQUFaZFhHOWlLc0c4YTBUV2RS?=
- =?utf-8?B?YnExb05vQ3VFWFB4RUZ5OFJNL1pZZm44dzdKMVF4eW5YK0htMDYvcnZ5MldN?=
- =?utf-8?B?VFVPc1RiRDk3SHV5ZmdoWGo0VnJGcHd2bVVsQm1POFhtWWtEU21Pd2hheklG?=
- =?utf-8?B?WERWOUc1NTRuSURoRXBDL2V6S0RGT3BITTNKaVE1NDBuc0FGSjRTNUN5Nmhj?=
- =?utf-8?B?Tmd2bisvRTFrcG1mb0kxSy9KSld4UHViLzNZemtzenMzOC9tVzFYRTZHZ3Zl?=
- =?utf-8?B?UFFyU2NNNHVLc1dSa3Q1Y05HUkpvQ0dBV29uWE4vbkV0WkZJWCtmUEJIWHNL?=
- =?utf-8?B?MG43dkxKYTFwcGtPZ0V4NE9xVjFXV3phWlNWZlh2OC9KZzRsVW5tcllCdFM1?=
- =?utf-8?B?Vk9JNmJRZ2J6U1lmamJDbjdFcDlNNmNxbXRyb201NXhaWkloeWhjc0VZdVM4?=
- =?utf-8?B?MVo3bWVVb3R4ZjArZ3d4a2ROMGFGL3Q0SWRtby8vVE9rNmI2cXNGYkFWWHlk?=
- =?utf-8?B?NnFNMDlENHJ0MnB4MVNBN3VEVy9nQmpVL0dwYzBvM2JTa05sOCtMS1Y4SU96?=
- =?utf-8?B?VnpnRk9pVndoOHd4Z2RxeXJTRTJSSG0wSU1IS1QyZ012VmU2NTYrWnRlUncr?=
- =?utf-8?B?OERKRU12eWhsNmkwTHBJTFQ0NjRoOFZUVTdYRldTanB5RFRDR1JQV0c5SWY4?=
- =?utf-8?B?eHp2eGRnWkZQbll4N2NNQ04rYzVxVWlUd2FrUXE4Q0ExeHVNeG54T2l1VkI2?=
- =?utf-8?B?MHEyUDFsaC9IemFCVHUvU2lCdDROK0ptOXNPa3I2eGdZR2RtejlYSEJ1d2NM?=
- =?utf-8?B?SkJIQVAycUc2ZUswVUprYjQ4MDNBSERjS1RISTV5MWtjZUJrakdCMXZGVTVV?=
- =?utf-8?B?OGtvRUZJWUdodFZaYUVHdDJsbnlnTituQnJIdlA0eUNMcUl6aWhIajVtZjFj?=
- =?utf-8?B?R1ZDUnJHcExoTmZDZHhvSFpMTHpQZGVNalVJbHpCQ0tUZW5pZ2J1YThNUHFU?=
- =?utf-8?B?K05zbVkxM3dSVEtqWE5RMFQzT01YejVNK01Oa2J4UVRsb1hMQnZjcTlEQnJD?=
- =?utf-8?B?QklMWXRMazAxZHhOK1dWQWliSHIva0IwUFNlb0d0NmtLNkg5R1o0WlcrYkMr?=
- =?utf-8?B?TzZQcUp3QjlVTVJFNkpZREY2R09XWTg3Rmh3cExPWC83K2hUL0t5UkFrYlVS?=
- =?utf-8?B?UGQyUXZwNHFORHc2NEs3dGNpZXRsWld6VDBIbFlxeWQ3YldUVWx5azFYdTJ6?=
- =?utf-8?B?Q0Y1NGJhVHZLcnAwcDdaZ3hDUW10K2pOSU43U2RaY2JweGpBY0xoVW9UZVdC?=
- =?utf-8?B?djZTcTgvS3lBVzZhay9DYnBoMjduOFd1ZklCN0hmYVVKWTU1MGFWNk1RcVVn?=
- =?utf-8?B?MlpwTDBVKzU4TFQ2c1p2Yk5IQ0hqZ2tqQWJhMHAxNDM3endEM2pmSEViNU9k?=
- =?utf-8?B?bXpjK0RBc3NxZ1pwemNLN1JnbmczRmdiUmJ4SjVMcm9JRVVNQVBUSzFobXdM?=
- =?utf-8?B?OGl0cndzeXcvSmovS1R5MDVmTmV6ZXZEZ0VISDFOa2ttV2F4dU5sKzF6RmpE?=
- =?utf-8?B?eFRxNjViL2FzM0tJbGltbm1KNmRrbWhkLzIzU3QvWjdUQkxWUk1UbithZURn?=
- =?utf-8?B?V2Q1eVkrMGxTc01UTnpHV21kU0xiZmF2SU05Y25ubFdWL01GQlRqdz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c4b931c8-9a7f-4b90-fefe-08df04683f96
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8660.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 18:23:10.2246
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0KDdUhVrgh5gJGy+3Vg/E0q2HX9gdIrRieiJRd+LsMmFxmLrFzmBakmKgjEzHOjXwL/PYnvJcnFzaEbhGMsC4w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6874
+Mime-Version: 1.0
+References: <cbf5f7ca-a960-4fb8-a760-2d2794eb6864@arm.com> <CAEvNRgGOyQHnF_b8dk8E0d7_=CcwXtYUdU3ko7Qbep+_O7UC0Q@mail.gmail.com>
+ <aoZZMQ3Uc8yQWPNA@google.com> <7eba513d-cdae-4832-abac-038dcdd88517@intel.com>
+ <meww2a2uf3yeevsfpicyrlg3hch2x4bsdqv2lsv3vfjxg4qzes@co5eogmhkxrk>
+ <ao3lOu8-wpGTs2wd@google.com> <ba8d0441-b52f-4357-b2e7-1e352aa385a2@intel.com>
+ <CAEvNRgFXJbV78ktsg=b4srFp1OFjtQWQGuNPjr_MmWD-wOvjgw@mail.gmail.com>
+ <ao7vwx3nMqCjCHZU@google.com> <a151b52d-0afb-4b32-a871-4da67210f416@intel.com>
+Message-ID: <apCLFSbj8sq2biJp@google.com>
+Subject: Re: [PATCH v10 09/41] KVM: guest_memfd: Filter both shared and
+ private when invalidating
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, Michael Roth <michael.roth@amd.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, 
+	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
+	chao.p.peng@linux.intel.com, jmattson@google.com, jthoughton@google.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-
-
-On 8/27/26 4:18 AM, Duan, Zhenzhong wrote:
+On Thu, Aug 27, 2026, Xiaoyao Li wrote:
+> On 8/26/2026 9:53 PM, Sean Christopherson wrote:
+> <snip>
+> > > Is this just a case of user error? That with gmem_in_place_conversion,
+> > > userspace should not use userspace_addr from something other than the
+> > > gmem for the same memslot?
+> > 
+> > Yes.  It's not just invalidations that will go sideways,
 > 
+> > KVM accesses to guest
+> > memory won't hit the same physical page as actual guest accesses.
 > 
->> -----Original Message-----
->> From: David Hildenbrand (Arm) <david@kernel.org>
->> Subject: Re: [RFCv2 PATCH 0/6] Support memory hotplug/unplug for TDX CoCo
->> guests
->>
->> On 6/23/26 12:17, Zhenzhong Duan wrote:
->>> This RFCv2 series implements comprehensive support for virtio-mem and ACPI
->>> DIMM memory hotplug/unplug in Intel TDX confidential computing guests.
->>> It explores the start-private memory approach utilizing the native
->>> TDG.MEM.PAGE.RELEASE API.
->>>
->>> We are seeking feedback from Kiryl on the CoCo guest implementation, MM
->>> experts on DIMM & virio-mem memory hotplug integration and broader
->>> virtio/CoCo community input on the overall approach. We are not seeking
->>> x86 maintainer review at this stage.
->>>
->>> == Changes from RFC v1 ==
->>>
->>> - Eliminated callback infrastructure: Dropped plug callback and replaced
->>>   unplug callback with platform-level unaccept function into core MM
->>>   hotplug and virtio-mem subsystems.
->>> - Added comprehensive bitmap tracking: Introduced a "plugged" bitmap
->>>   alongside the unaccepted bitmap to track populated hotplug memory
->>>   states to support load_unaligned_zeropad().
->>> - Enhanced SRAT parsing: Extended the EFI stub to parse ACPI SRAT tables
->>>   early, ensuring hotpluggable ranges are tracked from initial boot.
->>>
->>> For more introduction about the background or other efforts in community,
->>> please check the RFCv1 cover letter [1].
->>>
->>> == Technical Approach ==
->>>
->>> - Early SRAT Integration: A lightweight EFI stub parser scans ACPI SRAT
->>>   tables to identify hotpluggable ranges and adjust bitmap boundaries
->>>   early, avoiding the overhead of the full ACPI subsystem.
->>> - Comprehensive Bitmap Tracking: Introduces a "plugged" bitmap right
->>>   after the unaccepted bitmap. Both static and hotplugged memory are
->>>   tracked, allowing the guest to map which ranges are populated by the
->>>   VMM. This prevents acceptance beyond plugged memory boundaries due to
->>>   load_unaligned_zeropad() operations.
->>> - Platform Extensibility: Exposes generic CoCo memory interfaces. Other
->>>   confidential platforms (like AMD SEV-SNP) can easily adopt this by
->>>   hooking their specific mechanisms into arch_unaccept_memory().
->>> - Hotplug & Guest Control: Integrates platform-level unaccept logic
->>>   into ACPI hotplug and virtio-mem handlers. Uses TDG.MEM.PAGE.RELEASE
->>>   for TDX to explicitly set memory to the "unaccepted" state during
->>>   unplug, removing host hole-punching dependencies.
->>> - Kexec Handover: Leverages existing EFI mechanisms to seamlessly hand
->>>   over both the extended unaccepted bitmap and the new plugged bitmap
->>>   across kexec boundaries.
->>>
->>> == Testing ==
->>>
->>> - dimm and virtio-mem memory hotplug/unplug
->>> - lazy and eager accept
->>> - kexec/kdump with hotplugged memory
->>>
->>> This is tested with Marc-André Lureau's newest qemu series [2]
->>
->> What's the status of this?
+> Side topic.
 > 
-> Marc's QEMU series is merged.
-> For this series, following feedback from Kirill and Pratik, the preferred approach
-> is updating the UEFI spec for hotplug memory ranges rather than parsing SRAT
-> at the EFI stage. Pratik is already pushing this forward, I am currently waiting on
-> his RFCs. If he hasn't taken over the entire implementation, I can rebase my
-> remaining patches on top of his work.
+> If KVM enforces KVM_MEMSLOT_GMEM_ONLY when gmem_in_place_conversion is true
+> like below proposal, should we update KVM's guest memory accessors to access
+> gmem directly?
+
+No, because routing KVM accesses through uaccess means we just have to ensure
+PRIVATE memory isn't mapped into userspace, which we already have to do anyways.
+
+Now, that doesn't preclude future work from optimizing certain flows to avoid
+GUP, or to harden KVM in other ways.  But as a first step, bypassing uaccess is
+actively dangerous.
+
+> If still use the existing code of accessing userspace_addr of the memslot, I
+> think KVM needs to document clearly that when
+> KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES is enumerated, if configuring the
+> guest_memfd for a memslot, the userspace_addr passed in needs to be the
+> mmaped address of the guest_memfd.
+
+Ya.
+
+> > Huh.  But that isn't strictly guaranteed, because userspace could bind to a
+> > memslot that isn't configured with GUEST_MEMFD_FLAG_MMAP, in which case SHARED
+> > faults will go through the VMA, not kvm_mmu_faultin_pfn_gmem().  It's a bit early
+> > in the morning, but off the top of my head, I can't think of any reason we need
+> > to support such a setup.  If userspace really, really wants to use a separate
+> > mapping, they could DELETE+CREATE an equivalent memslot without the guest_memfd
+> > file descriptor.
+> > 
+> > So I think we should do this?
+> > 
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index 9c2d52bdf25e..86f53e53a136 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -1013,7 +1013,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >   	 */
+> >   	WRITE_ONCE(slot->gmem.file, file);
+> >   	slot->gmem.pgoff = start;
+> > -	if (kvm_gmem_supports_mmap(inode))
+> > +	if (gmem_in_place_conversion || kvm_gmem_supports_mmap(inode))
+> >   		slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
 > 
-> Hi Pratik, have you sent your UEFI RFC out yet? Just wanted to make sure
-> I didn't miss your thread.
+> I like this idea. It makes gmem_in_place_conversion a step closer to what
+> its name implies, though in-place conversion is not truly 100%
+> guaranteed[*].
 > 
-
-Yes, the RFC has been out for a bit: https://github.com/tianocore/edk2/pull/12811
-
-The general feedback I've received is that folks are wary of adding yet another
-attribute to support hotplug memory (beyond EFI_MEMORY_SP and
-EFI_MEMORY_HOT_PLUGGABLE), and that they're waiting for more community input
-before moving forward.
-
-In hindsight, I should probably have pinged here as well since folks on this
-thread are more adept to review.
-
-Thanks,
---Pratik 
-
+> [*] https://lore.kernel.org/all/akUbz_kJvYulaboo@google.com
