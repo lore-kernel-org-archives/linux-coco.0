@@ -1,129 +1,148 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BD086341
-	for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 18:30:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787941809; cv=none; b=lpM0bbidPJ0gvaFaV2PW9Fo8pUN0W1zkr8JtR503Wx4ds9m1j32fVfwTp7DCfQC9hdRxmsqG3CGxscg684qUpJ9UvTLlBhOmpcUcBcTagv68BGK0UC/BkPy7494CJ70Aycz7nR8S/LNMcNg9P2GkaZYbKdCcuvwlE7db6MnVw+E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787941809; c=relaxed/simple;
-	bh=vKhe6i3FkAFwErgQ+z+E/6b1UcU6MpKf/+QS8ZIRiqs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c2GlvcT/Hjz9bGqVfEa3cv6pZTt0IEkudy0vgrnfrlGHkzpzLd3AwI+kANhed7vmAYaSlnsDIH54lVguGK++bMisPzUOimj1lKTwWu653wdSAMfA6pJ8CsXmhsxrprI02H64GP9ozlF7UZDX62qy4PputSQpPWgfFf+AI5m68VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NCfACnMn; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BBF3CB2FD
+	for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 19:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787945339; cv=pass; b=eaKQ9Puru40A8cq1bbZlnpn09jVRwg0qxIbk7/IoDs3pTYiSc5F17/momAdvuH6Gsx5Um0s44pzyHtTsC5Ozc+8UZ2/cuEJ7J9iI1KrATm+NCWudYunw/Sun6IDwV2K58aU5Kd8UZa8fhOUDQIfhEmDDxkugXKi7+FuNT5xC6fQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787945339; c=relaxed/simple;
+	bh=fHmMOkDnc0DAMDW7+UXClup/98JMmn4tO04WF2LBRAo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J+buFRZCpIt3ZRhGLvNyrrpOL82ArvUZoH6cgLXQyXIX2ScNWjQWeg1n9Pm6V3ZU3lVS72Kq3NIMBY6Yu6DUS6cqdN7vN+aVN3ewbzRugbiD4QXJa+jIHVT5XzMNCaPyh/lKXiKGtDd/hdIT46JZ4WZWqwzrNMHKe1DbLLnkGic=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SYfs6joO; arc=pass smtp.client-ip=209.85.160.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NCfACnMn"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ccdf36f63dso12025ad.0
-        for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 11:30:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SYfs6joO"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-52faa58bff5so40651cf.0
+        for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 12:28:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787945337; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JOeVW3LbRLOFY/HDQksLHJ2AxU+Tp+4IO8tld8NR1hiT2dqskkwTqvzvOAEsn3JNgf
+         PAV7NG3HoObgiS8txqhqyWJDqtk/BrriwouY3cKjq8FvKPniIVzep0LFwpWGHBTZOsxC
+         Oy3mdzSHJD4UIiSvJm7cODe2Nfk4p/l0C3+h8U60jn1T7db/ONQih9LWfs/Ryci+E+wW
+         zmRfYGU0htq5c0b8IJVKtnfk4Jh6sIe5PU2gjH7pxcZp/fj2CL+nI/IaXndBbL+hiiSC
+         Dg4f70KGSnj31sBReyVbobNyAR3MwqgCo/QBEIhiXH2KXtbkpuuM/VzSVcsgSG/QO9it
+         ZGpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fHmMOkDnc0DAMDW7+UXClup/98JMmn4tO04WF2LBRAo=;
+        fh=S5hTqRAybCFPiHejg56u97qNLrHCc29FVtwjEyUzUyI=;
+        b=Jk+Js+oE/2kItDuwxWok2cR1Lyc4pMy81dmxz+arSZVd9b2Bwtc+25jcirwphfrM1b
+         SVjj2B60Uc7f2n4o1wqTYWO1hCs0CEIKlHACrDLg/CF2a2mE4en/sgkPfqCo6TAR/+uz
+         m05cECPgj4SP3oTg6LQQxFVbXkMfrEnTDmeDzq9b9gfIGrfgYpPTL8YnvF9w15gNVY47
+         qEt36+FMzvwXPpfrYPa+mAl/wjrbhvQfrN5Qm1XGsEt688873j6mEv7Vwfug84Q4KEgV
+         Wn0+qcOdSQZfd1vCOXmoBg0DzkeMSyTyY2vDVqkBdzc3S2ZGVhVNlvclWGq5B41z6hww
+         1HEA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787941808; x=1788546608; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1787945337; x=1788550137; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ILzvij1drwo7+iGNKuxy4V2qVsnhp5pYEXxx5p1BgD0=;
-        b=NCfACnMnb7spHggH+U6/wgrn4uTikM6JjmOSCh7RuiYq3xwx7eE6MlxV/DePKH5N+M
-         KY+aF2JBblYAMMf8bv8j/E2W/lWaHip503f55OriYhqwYpcKteUb81taAT3GcHhRPdeH
-         SVP24llxiQUv/g/QjAm6XPTz0NY0V3JfEwIyMfKMJEQzPUE+sKa481/HXmKlOuQuPAzW
-         C9n7HZYMc99Ddnx2aaqKz112ykgnH/E1CyT+dInaM1dZe4dde3BtCYaRVVaJYDrYWm0n
-         XNMtDYOwlywwuu8DSsbmZHZX76GltSKXsnLNV/suBiq6ygfF2/wog+lHMjfy9n/vbz04
-         k1Fw==
+        bh=fHmMOkDnc0DAMDW7+UXClup/98JMmn4tO04WF2LBRAo=;
+        b=SYfs6joONZZbARdb1vlq/qsZnjHAj8VOByvpwZMcJtTV8gxRjll+QKAgph9Dy0P2T7
+         I8srTlimOe1qUu23uC0b7eQOahhbZVmGKeAugqQSxmtkdyROJSm8VO9jrZMtxzX8RRRP
+         9oHPFnGkZ+Hi7GAFBpSLWLG3J3mEmmdmKSaORCuBzLVlSiZ38w1IUyKw2edSM4IQC6vm
+         NZvqiJhOR6SteBQsJc1CF5/vKorTx+3d998N4Qy9X15Jgn6qa5W1g9bc9wa88wgyhky8
+         6AgW7xt+ts8jmlP89uM6VAeQBLFUjvu7N6banqBZSS12IVSlnBoXCuO/XD54F3vXI5DC
+         ZrZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787941808; x=1788546608;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1787945337; x=1788550137;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ILzvij1drwo7+iGNKuxy4V2qVsnhp5pYEXxx5p1BgD0=;
-        b=QmI5OSouhwWxDg3+kacSq48KXIS0aphDQwGeLEhq4XY+f/9VVgtA23BdoG46BCTJ0b
-         Ark7Y8H/pTV0c36g1MPCTYs0m7K/3jrT8oJec17sPtgkz3M2eMkFTvHwuo98hbJgru8g
-         s9kRp5RWJDW93KvHpBHlTaCFIcPsfqjPoWfrimcG2P2NE4PjppxLE8eEe6y/BZAZYduc
-         YBYa2V1j/PbLLQ3KeLtGzNIxmfM+lZrpc2MVM8y0Q8vre2IuUoz1TUHnh/lWhoYdRxSm
-         3vFrBxKu/6jBMvwdqQ1jBFqRxSTKhMZz+9r1GOqTwHKQ/OPIYX2wKb0I4uKJOUT1aat7
-         N6Iw==
-X-Forwarded-Encrypted: i=1; AKwUvBxYBfRVdxzmfPS9XBBYcw12z5+fPLuTJpkr62GmWzXr4J8n5Hael8kvj6a/UWQofUtBJmPgo8804V+v@lists.linux.dev
-X-Gm-Message-State: AFuF++nf1j9sw6+HIS8qnzmBiOFxn4VM876YG6fvaTFzF+F6ZJGM2PBv
-	oLEGInGIcECQ+7lZFyEDFxDla8Up6EX03nwqfJhj2fXaiss9GkrcIS+u33dOlW/9LA==
-X-Gm-Gg: AYBFou1CCM9SVs+7mK6kMT3QU+h8bPPResHwCXRkc6yyUoMeGg0UFPw89K1we07pJ1o
-	9QvoyelqMo1STblUz0XClxx+kJSDOIm5dzwbxnCrDnFnF1Iidvl5X6CaWf248F9MCv8pbZjgiFj
-	EV+YpGsO5amMo+B4xfLei8Ver93CGj7rqBBjXcWsSgWEetqVWt/2a23uSW87fe9GyZyZYaUDl0b
-	wnSTJY7N+6YCcU2WHzweIooVwhmRgT3vJdRkC4gUfEACWj7lvYaM4vy8/A+P/nbJWkXQj7OTzc4
-	KIiNhfq8aAz1b+pF8SThCo8RVZwYXdR0V7zyRfYFahGBBC1We6IcM6kfq1BD96tZWdn7MMd/+Xg
-	Cz/xXD4k1+jNt+UeCdoYIcmU4ZS98Ocgog01DZ+DixOBMrV7Wa3rS8xhMnYVPXa2vebn9X8LFQl
-	MpSQqrMfPyuD/bp6nza1Dv/IHaKjE2vJs0dK5Lle01GuBntzATotQDTKMMLzwaldCmI+CeJa5tt
-	zPhZ9N8hapd5Cks7mcQFWiq
-X-Received: by 2002:a17:903:988:b0:2c9:d89f:fd98 with SMTP id d9443c01a7336-2d8dfb0b68dmr662305ad.1.1787941807055;
-        Fri, 28 Aug 2026 11:30:07 -0700 (PDT)
-Received: from google.com (139.58.247.35.bc.googleusercontent.com. [35.247.58.139])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396d2309637sm1500859a91.0.2026.08.28.11.30.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 11:30:05 -0700 (PDT)
-Date: Fri, 28 Aug 2026 18:30:01 +0000
-From: Lisa Wang <wyihan@google.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "Aktas, Erdem" <erdemaktas@google.com>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"shuah@kernel.org" <shuah@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"afranji@google.com" <afranji@google.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
-	"ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"Chatre, Reinette" <reinette.chatre@intel.com>,
-	"isaku.yamahata@intel.com" <isaku.yamahata@intel.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"pratikrajesh.sampat@amd.com" <pratikrajesh.sampat@amd.com>,
-	"oupton@kernel.org" <oupton@kernel.org>,
-	"sagis@google.com" <sagis@google.com>,
-	"Gao, Chao" <chao.gao@intel.com>,
-	"Wang, Roger" <runanwang@google.com>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"ajones@ventanamicro.com" <ajones@ventanamicro.com>,
-	"Qiang, Chenyi" <chenyi.qiang@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"jmcrey@google.com" <jmcrey@google.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v14 00/22] TDX KVM selftests
-Message-ID: <apHTqWg1hDXpvhgE@google.com>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <5a44a6925715e1edbd379ac0ea5526ec990eb819.camel@intel.com>
- <4828f8e29801adb29a4d48b8980d3b3a0a813e06.camel@intel.com>
+        bh=fHmMOkDnc0DAMDW7+UXClup/98JMmn4tO04WF2LBRAo=;
+        b=muy4XsdjjJ4s6kXOirq3f3w2s3VAUF0HXVe6Cf67i0pr1C2Gmx9IqfTqWuWCZCVa/q
+         EFcZ8XOolhi5ni5n0kBeoi0N2Uy7L8IATSpx5YR/xE2QrTLRSVTRhQpTRxsIhJOSVxkG
+         /mXNzjbKu44AClq6+QVmC6Ga8VBBtbd7/stnDBLwEo2EFE0gRE5tr3x1K/9U1icO2l8a
+         s/bCLGUHlb2u9Pvjy9eIdaCamfg1k8qrY7lTYjFCy1ifsmC8wdNjkG+63y22jcAv9BvT
+         YjpYO0RH5O+lTS+oRmhsw8J0N4PCmnoAwFSHUY9qbaVOI5hqFv/4on3MVhHcmC/UMiHF
+         bJ9Q==
+X-Forwarded-Encrypted: i=1; AHgh+RoQTYvafvnx/OSbUd01GenPE+oquBPNPPzhB+L/4Z3kO+WWXKQlVoTaW01UmikesAUq03/jmP3yItrY@lists.linux.dev
+X-Gm-Message-State: AFuF++lV8lFml0iU1Ee1ixDgSa/7A8L16LHdYtlDaO2S/wNSQ4Z2tb+/
+	Bz/QthjmM/xi9dZKzI5vdd5uDmGxrGoqePhlXMEyC28Ci4J7rKJ5RHEgelp/65kA6Ba+UzZ8l81
+	BfPZChhrUgKsL/GHeUYXgHGUnn8B6PQn27SoDlaga
+X-Gm-Gg: AR+sD10A3VWVEk86DLLf3FSMRZiklQJNqBSKKDoDd731Ds223kA3FJXscKKiWfpjIPP
+	yNTvMR/Oiy7Fkn5vOBSY4KuYZb5e++5k9fTKG13TRwMhBX/VSyS6YLX7/dlZRdOg36d4G+umN3I
+	QQlctti1SkOL9NWs4v3e1xcJ+Of/2ObXzqbVR+1AJBgdeBbTNE7Gr6BPxV0n9ROiXq5skfYPt5V
+	LRuMWzL9xOWPnsOSTZSu+nL+aUg0kdYrduTDLVD1a7oZbIcHg/uxRBdiqBZ+2R6ivd9Qo5OYrp7
+	7sa3ov3gI0OrEn4waFDMDfhP56RKne14TpcnqZQeHf6KwOrblkrvRcyCAQ2wdhxRPK7ihJSrI78
+	=
+X-Received: by 2002:a05:622a:c18:b0:51c:ae6:a57 with SMTP id
+ d75a77b69052e-52ff715be0cmr2273411cf.11.1787945336495; Fri, 28 Aug 2026
+ 12:28:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4828f8e29801adb29a4d48b8980d3b3a0a813e06.camel@intel.com>
+References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com> <20260806020850.1221381-2-rick.p.edgecombe@intel.com>
+In-Reply-To: <20260806020850.1221381-2-rick.p.edgecombe@intel.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Fri, 28 Aug 2026 12:28:45 -0700
+X-Gm-Features: AcwNN1Vl_L43jPWnHgUrkMtGPi--G2PYnVYEwuFbR2C4J7lwt5ES-sPxDWtK__4
+Message-ID: <CAGtprH8JLx886qA4rVg5vCKg4M3u9sdEfPig_CtL1kbfvj5B9w@mail.gmail.com>
+Subject: Re: [PATCH v9 01/11] x86/virt/tdx: Simplify PAMT layout calculation
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, dave.hansen@intel.com, hpa@zytor.com, kas@kernel.org, 
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, mingo@redhat.com, nik.borisov@suse.com, 
+	pbonzini@redhat.com, seanjc@google.com, tglx@kernel.org, x86@kernel.org, 
+	chao.gao@intel.com, yan.y.zhao@intel.com, kai.huang@intel.com, 
+	tony.lindgren@linux.intel.com, binbin.wu@intel.com, sohil.mehta@intel.com, 
+	Hongyu Ning <hongyu.ning@linux.intel.com>, Binbin Wu <binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 13, 2026 at 11:05:17PM +0000, Edgecombe, Rick P wrote:
-> --- a/tools/testing/selftests/kvm/lib/x86/tdx/td_boot_offsets.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/td_boot_offsets.c
-> @@ -5,7 +5,7 @@
->  
->  #include "tdx/td_boot.h"
->  
-> -static void __used common(void)
-> +static void __attribute__((used)) common(void)
->  {
->         OFFSET(TD_BOOT_PARAMETERS_CR0, td_boot_parameters, cr0);
->         OFFSET(TD_BOOT_PARAMETERS_CR3, td_boot_parameters, cr3);
+On Wed, Aug 5, 2026 at 7:09=E2=80=AFPM Rick Edgecombe
+<rick.p.edgecombe@intel.com> wrote:
 >
-Thanks for testing this! The patch series posted here on the mailing
-list is correct, but I made the mistake when pushing the code to the
-branch.
+> For each memory region that the TDX module might use (called TDMR), three
+> separate traditional PAMT allocations are needed. There is one for each
+> supported page size (1GB, 2MB, 4KB). These store information on each page
+> in the TDMR. In Linux, they are allocated out of one physically contiguou=
+s
+> block, in order to more efficiently use some internal TDX module
+> bookkeeping resources. So some simple math is needed to break the single
+> large allocation into three smaller allocations for each page size.
+>
+> There are some commonalities in the math needed to calculate the base and
+> size for each smaller allocation, and so an effort was made to share logi=
+c
+> across the three. Unfortunately doing this turned out unnaturally torture=
+d,
+> with a loop iterating over the three page sizes, only to call into a
+> function with case statements for each page size. In the future Dynamic
+> PAMT will add more logic that is special to the 4KB page size, making the
+> benefit of the math sharing even more questionable.
+>
+> Three is not a very high number, so get rid of the loop and just duplicat=
+e
+> the small calculation three times. In doing so, setup for future Dynamic
+> PAMT changes.
+>
+> Since the loop that iterates over it is gone, further simplify the code b=
+y
+> dropping the array of intermediate size and base storage. Just store the
+> values to their final locations.
+>
+> AI was used under supervision to collect/apply feedback, review code and
+> workshop logs.
+>
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Reviewed-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> Acked-by: Sohil Mehta <sohil.mehta@intel.com>
 
-I have just force-pushed the fix to the branch. It should compile
-correctly now. Could you please pull the latest version and give it
-another try?
-
-Lisa
+Reviewed-by: Vishal Annapurve <vannapurve@google.com>
