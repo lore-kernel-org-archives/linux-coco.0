@@ -1,371 +1,204 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47130329E5D
-	for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 14:18:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969A646D562
+	for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 14:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787926733; cv=none; b=U8X3VxGrlcm31GtEhb7jP1oO05rV8c/HV3anL6RHZIPVomCQLZ5lmoBzs28d4jD5qFOqG1oKqI5SQZf8Ai+pHrLBTgaFP/JZHUnZbHWujbL0VKzmHA/JXJHzqhPQjc7HE2nKnvKoOEFkaaU+LVGZhtX2mSO9Eic3JHWY7Wy5dlA=
+	t=1787929025; cv=none; b=msypcUxYlaFpMJLtjiWU/nOTT4DhqLRIaYWkoqbUsFNd9iNESnYf93AlOzYd9CmTxRo4ALgc8rfEquo/yUgah7ubiwdpDNo+/EXDiUtSUc8LniLXdI6++1TI0BbIjnljgyPMLrrtrv1jDGWb6dSmdRbgNo159yg6/kJLuuQFWAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787926733; c=relaxed/simple;
-	bh=tOIayJ92xrw6pvO0WbOfaDSneoKGHjWYUfTGAkwGxd0=;
+	s=arc-20240116; t=1787929025; c=relaxed/simple;
+	bh=LZpPvS21SRGUjRRQo9YMu2uphCB+Yb/O1WCRXm1EFjc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pWIFaqKLf9Du2A9mx1b3nONOIz/IfMP41qK6qoVVfvaqvPbrPILlljAAkr6hUCDjlwUkI5ZwILfOec85wpKGXt+ctZVmt9dqBoD9cYwQhLHLonboDDwDK5W36ipDkRO/2Q0UWQ4rlUD5KfQqXOB3Fa4uBxnKFuHAD6RbtL1R5/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vVe6zYU6; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=b+4Q34gfA+TG5LU2oh0NALWQPhA+iA+Oa4nqfQ0LIuyRcG/D44QcxpV2EINAbDXuezqwT3lFuqwqqhlvDF0BHgwWOVDqVD8fZI4qn82z8XqloV5kiqw6ZnnCpmRuMC5gcLqeTrOlSgWdAse/HdRwi+p0nhVuJyYyaQGxZl7m2e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i0Ce7ddX; arc=none smtp.client-ip=209.85.214.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vVe6zYU6"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cfa4e4684bso22510095ad.2
-        for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 07:18:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i0Ce7ddX"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cec4226c70so13798175ad.1
+        for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 07:57:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787926729; x=1788531529; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1787929023; x=1788533823; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=lk1PtauESgfcOmIWGAdMCfx87NYe0QEmwPgHNpnVCRk=;
-        b=vVe6zYU6T1wTI12Z8uU6RimAXsYVpGV1+xR2l5m2yw61GUB1i5qny4XLxylfJir0eJ
-         4sFNSv6HrIOO1wIdqQ4qpqbtU5fBUEfMibEJDIpN6xpCTMV5KPZILFXI/h2+v0kE9lZG
-         LW4Sq2VFZ7nq05iJp6eZOP4pGHxSl6C27cDNQoEWLsxP5yP6aJ6t1LeyqxgoEYX4cEu0
-         dq1gZcp2BxiGPQkL9gaU6yHjRhZbAoj5XLd/It4WzXvadZ6lYXe9y2bAvegweBiMEqfg
-         cRWsYCF0oF8V4PQFFu4iXbXo9qNpODhtZVFItVkFV09sSvEWFsIyr66evUB1RT8b1ZHM
-         9zyQ==
+        bh=rKyTv2j02zbnlF+PSfGKNUB7r5AsnRVQJaAhKBT0UgU=;
+        b=i0Ce7ddXIIGOtLBMgMs9sZralsAbRLJXR3HwIYfs8zC54jU6gNjQqty1wQAkmz+35o
+         52B+gX6gkHl/SgUMP115A/Hzs10jWsUhsiLJLrkCAlLslFgRKvHbxwkppz+cAobdtbkY
+         UqBmScWxrJVt8wormxHYAy0nW7Nif/n3Q2pmcsegAXtYpFJqBQElu1kbWeTaZ9FBg6Bi
+         f2Cnn8nPJoni/ROzO1ZFzed05L0fQNeVf7tpvo8zQQ2zAhJUYkBk34Ksa9bU2DRkopJM
+         qp1j0RdyPtQ6wWRowf+0thzxx1Yr1aMTI0GG+haiNDVacfFh3z0zwbsExPehB6bHQl09
+         +lEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787926729; x=1788531529;
+        d=1e100.net; s=20251104; t=1787929023; x=1788533823;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=lk1PtauESgfcOmIWGAdMCfx87NYe0QEmwPgHNpnVCRk=;
-        b=VQIfVjoapmw4nvbDVMq9qKjokUB+Zj97WruckO3lSQD+wd/aAVZvOOnWL9OjS+PT0Y
-         2VYW9c1xsttIMax7WoJHqZLD5nbFndGJa+anLAWJn77LKA8Oc+3sBz2MGFNHS6v/FTkV
-         zvPX0ydp3jVsuPLeQp9b5uMv6xpGjodE2GtEY5ljCECtA7J8dADEGFJ/WuJ9Re+VmtDJ
-         /EuV+v4G7XxV20sDwlldjn0wgOdzDFEGeUGYtNBU9t0cTKcit5e9LHXDSh0v/JVjDbtw
-         Sz/+40f7Ec1fd7LnqGZ3ElVo44QuKwo4d+Fy2MprGydZt34ru5ExvdPz7Uwli/6V5qMr
-         SH4Q==
-X-Forwarded-Encrypted: i=1; AHgh+RpE7Yx/q7nZeQBbhWMtgTKB/1p/fOviUbWpV3BVs0x8t5hSRBudOdLEgwD6ehxJLEDKTVkR2S38zmql@lists.linux.dev
-X-Gm-Message-State: AFuF++nKJ4V4tskSatNXTBO5vZPqkfUelapq0bFF1CkAenUC7NzkZj2T
-	Snfs2IAO32d5pFujI7xtBMmqjcjDlXGptR/gBFK+Zw3DkvMpGSfeuXwK1xyBxCfmII84HZgykDS
-	LjCDzWg==
-X-Received: from plbmq14.prod.google.com ([2002:a17:902:fd4e:b0:2d7:3fb9:fada])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ec91:b0:2d7:4f55:f40c
- with SMTP id d9443c01a7336-2d74f55f6edmr103578625ad.6.1787926728323; Fri, 28
- Aug 2026 07:18:48 -0700 (PDT)
-Date: Fri, 28 Aug 2026 07:18:47 -0700
-In-Reply-To: <20260828042044.GG33657@pedri>
+        bh=rKyTv2j02zbnlF+PSfGKNUB7r5AsnRVQJaAhKBT0UgU=;
+        b=jv1jbUzH8rSIVTcuOVwPFhIRXT8Z9LdvdRXtVqQe+iEkailv94Jea3vfzR3nZpSq67
+         r7JDrYSwpHT2RkaD61qMxzYj7A3WBEItBJguFN92BOO/4TmRDZCzP5Zp23dEdlF/Sm+1
+         EawDrOa0HU9rOcJmIUd6z0hR3Qyh7OVlKPL6O4PatT3KzFFiCOJIWgL+iSFOm/hofvEu
+         zWOZviBx1Og+WkJ+VNaZ1chqSw01SIO+/QN+p1MIiARwd6DVeOKOFeV0eCPWxIfbTOQR
+         SIUs8nU+R07BmE9tDLy1RjjK2zgHCwvUFei8fP8IpjT0aLnPzy0yLJYYljpDEUYlBlHq
+         87vA==
+X-Forwarded-Encrypted: i=1; AHgh+RqKmY6iTqObp4P/agUqtrZoQ4NxGV2MLnSSzRhnqv8hDZwuL2eCt8RvNhEkHdAIf5r+6Livo4E//9E8@lists.linux.dev
+X-Gm-Message-State: AFuF++nyF8CJSA5pC6M9gTkNkXhMaxcIMgbb73woL7avPd1ZDjcpE0y7
+	9PKsqGalxB7fIv7JZsH5my7RKu9GFg02gihHaXziR1a/VsF1Cmex8oUhf2PkDJ3g40CQuJx7jcT
+	6N7HnWA==
+X-Received: from plbkz13.prod.google.com ([2002:a17:902:f9cd:b0:2ca:ed29:ea82])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1984:b0:2d8:d4d3:da4f
+ with SMTP id d9443c01a7336-2d8d4d3db7dmr6783485ad.19.1787929022578; Fri, 28
+ Aug 2026 07:57:02 -0700 (PDT)
+Date: Fri, 28 Aug 2026 07:57:01 -0700
+In-Reply-To: <CAEvNRgG7n6F=dW9V_QqQPDDgLiZ7x08uLDanJgSzerNtN8sqBQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-21-15ad654a50db@google.com> <6f89fc78-0344-4a7e-bbd8-ac201b8f845a@intel.com>
- <20260828020612.GF33657@pedri> <b4cffa34-864d-4fd0-9fc7-a7d4514075b2@intel.com>
- <20260828042044.GG33657@pedri>
-Message-ID: <apGYxwdCSuC-X732@google.com>
-Subject: Re: [PATCH v14 21/22] KVM: selftests: Add ucall support for TDX
+References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
+ <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com>
+ <ao9CKMXAX-hScRSa@google.com> <CAEvNRgG7n6F=dW9V_QqQPDDgLiZ7x08uLDanJgSzerNtN8sqBQ@mail.gmail.com>
+Message-ID: <apGhvboNAlExQFsK@google.com>
+Subject: Re: [PATCH v11 15/46] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
 From: Sean Christopherson <seanjc@google.com>
-To: Peter Fang <peter.fang@intel.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Lisa Wang <wyihan@google.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-Content-Type: multipart/mixed; charset="UTF-8"; boundary="D8ScZ73OZF7fi6Cd"
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Fuad Tabba <fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-
---D8ScZ73OZF7fi6Cd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Thu, Aug 27, 2026, Peter Fang wrote:
-> On Fri, Aug 28, 2026 at 10:31:14AM +0800, Xiaoyao Li wrote:
-> > > 
-> > > Hmm... This makes me wonder if vm->arch.s_bit below could be replaced
-> > > with the same architectural approach. GPAW is available through
-> > > TDG.VP.INFO or the initial RBX value. This does require a bit more
-> > > plumbing though.
-> > 
-> > I'm afraid not. Because below is host code, and vm->arch.s_bit is not used
-> > in guest code.
-> > 
-> > Or are suggesting something like dropping the
-> > 
-> > 	if (is_tdx_vm(vm)) {
-> > 		ucall_mmio_gpa = UCALL_MMIO_GPA | vm->arch.s_bit;
-> > 		sync_global_to_guest(vm, ucall_mmio_gpa);
-> > 	}
-> > 
-> > entirely and use below hardcoded value instead in guest code?
-> > 
-> > 	UCALL_MMIO_GPA | 1 << (GPAW - 1)
+On Thu, Aug 27, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
 > 
-> Yeah this is what I meant. Just drop sync_global_to_guest() entirely and
-> do things like a normal TDX guest would.
+> > On Wed, Aug 26, 2026, Ackerley Tng wrote:
+> >> Omit support for calling the arch hook to make private, since SNP, the only
+> >> implementer of the arch make-private hook today, would actually prefer
+> >> making private only just before faulting memory into the NPTs.
+> >>
+> >> Calling the make-private arch hook would require iterating both bindings
+> >> and the filemap to find the intersection of bindings and allocated
+> >> folios.
+> >
+> > Why would KVM need to iterate over the bindings?  Only the RMP needs to be updated,
+> > whether or not the RMP is currently reachable is irrelevant, no?
+> >
+> > Subsequent calls to kvm_arch_gmem_make_private() from kvm_gmem_get_pfn() would be
+> > superfluous, but that's already possible, e.g. if an NPT mappings is removed for
+> > whatever reason.
+> >
+> 
+> make_private takes a gfn and pfn, so __kvm_gmem_set_attributes() would
+> need to iterate bindings to get gfns and filemap to find folios to get
+> pfns.
 
-Blech.  Every time I come back to this series we're still discussing ucall crud,
-and "doing thing like a normal TDX guest".  Selftests aren't normal guests.
+Oooh, right, unassigned a page in the RMP only needs the PFN, but assigned a page
+needs the ASID and GFN.
 
-I know I suggested using the HPET base, but I only did so very begrudgingly as I
-couldn't come up with a better alternative to emulated MMIO, and the end result
-is quite gross.  Not only does the code ignore @mmio_gpa but still obviously use
-emulated MMIO, it requires synchronizing data to the guest because KVM disallows
-"private" MMIO.
+> > I don't care terribly about how SNP handles this, but I do want accurate reasoning
+> > and justification so that if/when we revisit any of this in the future, we can make
+> > informed decisions.  Because unless I'm missing something, this is an optimization
+> > choice (eager vs. lazy to-private conversions), not a complexity tradeoff, and it's
+> > not clear to me how we decided the lazy approach would provide better performance.
+> >
+> 
+> How's this, to replace the entire commit message? I hope it captures
+> points from this discussion:
+> 
+>   When memory in guest_memfd is converted from private to shared, the
+>   platform-specific state associated with the guest-private pages must
+>   be invalidated or cleaned up.
+> 
+>   Iterate over the folios in the affected range and call the
+>   kvm_arch_gmem_make_shared() hook for each PFN range. This allows
+>   architectures to update hardware metadata or encryption states to
+>   transition pages to the shared state, instead of leaving hardware
+>   state as private while guest_memfd tracks it as shared. Transitioning
+>   hardware state ensures that guest_memfd upholds the guarantee that
+>   userspace only maps shared memory.
 
-  void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
-  {
-         vm_type = vm->type;
-         sync_global_to_guest(vm, vm_type);
+Nit, don't reference functions by name when it's easy-ish to avoid doing so.  And
+don't give a play-by-play: the patch makes it pretty obvious the code is iterating
+over folios, what isn't obvious is *why* the code does that.
 
-         if (is_tdx_vm(vm)) {
-                 ucall_mmio_gpa = UCALL_MMIO_GPA | vm->arch.s_bit;
-                 sync_global_to_guest(vm, ucall_mmio_gpa);
-         }
-   }
+>   Invoke this helper after indicating to KVM's mmu code that an
+>   invalidation is in progress to stop in-flight page faults from
+>   succeeding. Calling the invalidation helper also calls the arch
+>   invalidate hook. For SNP, this kicks any vCPU with a registered VMSA
+>   within the range being converted out of the guest. This ensures that
+>   make_shared never fails due to the VMSA page being in-use and is
+>   important because if make_shared fails, the RMP table would track the
+>   page as private while guest_memfd is unaware and tracks the page as
+>   shared.
 
-Retrieving GPA via TDG.VP.INFO isn't any better, it's still an absurd amount of
-"work" for something that should be trivial.
+Exaclty what SNP does isn't relevant.  Or rather, it's but on example of how this
+needs to work.  I.e. the conversion needs to happen within the invalidtion sequence
+because thems the rules for KVM.
 
-Can't we just abuse TDVMCALL_REPORT_FATAL_ERROR?  AFAICT, there's no restriction
-on the data payload, and there's enough space to all but guarantee we'll never get
-a false positive.
+>   Omit support for calling the arch hook to make private during
+>   to-private conversions. Making private lazily at fault time aligns
+>   with how it works on other platforms like TDX.
 
-Pulling in Xiaoyao's idea about using CPUID...
+To me, this isn't a valid argument.  We've fully committed to relying on vendor
+specific behavior, and SNP can't truly work like TDX because the underlying
+implementations are so different.
 
-> > +void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
-> > +{
-> > +     vm_type = vm->type;
-> > +     sync_global_to_guest(vm, vm_type);
->
-> It works and it looks simple. But we have the architectural approach to
-> test if a guest is TD guest, by checking the CPUID 0x21.
->
-> Since checking CPUID 0x21 is not complex, and as a bonus it can help
-> test if TDX module behaves correctly for CPUID leaf 0x21, I think we
-> should switch to use CPUID 0x21 to check if it is TDX VM in guest code?
+>   Furthermore, making pages shared only requires PFNs, which are
+>   obtained by iterating folios in the filemap. In contrast, making pages
+>   private in the RMP also requires the GFN, which would require
+>   iterating bindings to get GFNs and the filemap to get PFNs from
+>   allocated folios. Deferring the transition to fault time avoids this
+>   additional complexity.
 
-Absolutely not.  It will require at least one an extra VM-Exit for TDX and non-TDX
-guests alike, and thanks to Intel's wonderful CPUID behavior of having unsupported
-leaves return the last supported leaf, the guest would have to check CPUID.0x0 and
-then CPUID.0x21 on modern hardware, i.e. would incur two extra VM-Exits.  I don't
-care about the performance, but from a debug perspective that's going to be awful,
-as what should be a super simple operation will be polluted with unwanted data.
+It's not just complexity, it's that the bindings might not even exist.  I.e. for
+all intents and purposes, doing on-demand updates is mandatory, because that's the
+only time a relevant memslot binding is guaranteed to exist.
 
-Stop trying to reinvent the wheel and just use a virtual function table.
+All in all, this?
 
-I've verified the attached patches don't break non-TDX selftests, someone just
-needs to test the TDX changes.
+   When doing in-place conversion from PRIVATE to SHARED, immediately inform
+   arch code of the conversion for all allocated pages/folios, e.g. so that
+   arch code can put hardware metadata tables in the correct state.  Eagerly
+   updating the table for to SHARED conversions avoids having to implement
+   on-demand updates, e.g. when faulting in host userspace mappings.  Skip
+   the entire flow if the arch doesn't implement conversion callbacks, as
+   getting folios from the filemap is noticeably expensive, especially when
+   converting large chunks of memory.
 
---D8ScZ73OZF7fi6Cd
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment;
-	filename=0001-KVM-selftests-Add-support-for-per-VM-ucall-ops-on-x8.patch
+   Deliberately don't eagerly update the metadata table on conversions from
+   SHARED to PRIVATE, because assigning a page to a VM (versus "returning" it
+   to the host) requires the exact GFN associated with the page, i.e would
+   require walking the memslot bindings.  And because KVM *must* do on-demand
+   metadata updates when getting a PFN for KVM-internal usage, as that's the
+   only time a relevant memslot binding is guaranteed to exist.
 
-From 659487e0a9862900b052836229e3ac366c602f59 Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Fri, 28 Aug 2026 06:46:51 -0700
-Subject: [PATCH 1/3] KVM: selftests: Add support for per-VM ucall ops on x86
-
-Add a layer of indirection to x86's ucall infrastructure to allow wiring up
-a different set of {do,get}_ucall() operations for TDX VMs.  TDX can't use
-port I/O (at least, not robustly), as the TDX ABI doesn't allow the guest
-to share arbitrary register state with the host on a PIO exit, and the PIO
-data payload is limited to 4 bytes, i.e. would potentially truncate the
-address of the per-ucall structure.
-
-No functional change intended, as the ops are still hardwirte to the common
-x86 ucall functions.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- .../testing/selftests/kvm/include/x86/ucall.h |  6 +----
- tools/testing/selftests/kvm/lib/x86/ucall.c   | 27 +++++++++++++++++--
- 2 files changed, 26 insertions(+), 7 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/include/x86/ucall.h b/tools/testing/selftests/kvm/include/x86/ucall.h
-index 0e4950041e3e..3639f03a4da9 100644
---- a/tools/testing/selftests/kvm/include/x86/ucall.h
-+++ b/tools/testing/selftests/kvm/include/x86/ucall.h
-@@ -2,12 +2,8 @@
- #ifndef SELFTEST_KVM_UCALL_H
- #define SELFTEST_KVM_UCALL_H
- 
--#include "kvm_util.h"
-+#include "linux/kvm.h"
- 
- #define UCALL_EXIT_REASON       KVM_EXIT_IO
- 
--static inline void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
--{
--}
--
- #endif
-diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/selftests/kvm/lib/x86/ucall.c
-index e7dd5791959b..444d0f0ba138 100644
---- a/tools/testing/selftests/kvm/lib/x86/ucall.c
-+++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
-@@ -8,7 +8,7 @@
- 
- #define UCALL_PIO_PORT ((u16)0x1000)
- 
--void ucall_arch_do_ucall(gva_t uc)
-+static void ucall_x86_do_ucall(gva_t uc)
- {
- 	/*
- 	 * FIXME: Revert this hack (the entire commit that added it) once nVMX
-@@ -42,7 +42,7 @@ void ucall_arch_do_ucall(gva_t uc)
- 		     HORRIFIC_L2_UCALL_CLOBBER_HACK);
- }
- 
--void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
-+static void *ucall_x86_get_ucall(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_run *run = vcpu->run;
- 
-@@ -54,3 +54,26 @@ void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
- 	}
- 	return NULL;
- }
-+
-+static struct {
-+	void (*do_ucall)(gva_t uc);
-+	void *(*get_ucall)(struct kvm_vcpu *vcpu);
-+} ucall_x86_ops = {
-+	.do_ucall = ucall_x86_do_ucall,
-+	.get_ucall = ucall_x86_get_ucall,
-+};
-+
-+void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
-+{
-+	sync_global_to_guest(vm, ucall_x86_ops);
-+}
-+
-+void ucall_arch_do_ucall(gva_t uc)
-+{
-+	return ucall_x86_ops.do_ucall(uc);
-+}
-+
-+void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
-+{
-+	return ucall_x86_ops.get_ucall(vcpu);
-+}
-
-base-commit: 8ab7454faa8be2d6c1fc29c857b9f9611ddb174b
--- 
-2.55.0.897.gb25b4bd76c-goog
-
-
---D8ScZ73OZF7fi6Cd
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment;
-	filename=0002-KVM-selftests-Add-support-for-TDX-ucalls-via-TDVMCAL.patch
-
-From 60f3e988c65048c63217ec157e9ec228a4c484b7 Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Fri, 28 Aug 2026 06:52:56 -0700
-Subject: [PATCH 2/3] KVM: selftests: Add support for TDX ucalls, via
- TDVMCALL_REPORT_FATAL_ERROR
-
-Add support for doing ucalls on TDX by abusing TDVMCALL_REPORT_FATAL_ERROR
-to pass the address of the payload to the host.  The "fatal error" TDVMCALL
-is perfectly suited for passing information to host userspace, is both the
-TDX Module and KVM allow the guest to pass (almost) all registers to the
-host, i.e. provide enough of a data payload to make a collision with a real
-fatal error practically impossible.
-
-TDX can't use port I/O, as the TDX ABI doesn't allow the guest to share
-arbitrary register state with the host on a port I/O exit, and the port I/O
-data payload is limited to 4 bytes, i.e. would potentially truncate the
-ucall address.
-
-Alternatively, TDX could use MMIO, but using a magic emulated MMIO address
-is fragile (see the TODO in __vm_create()), especially for TDX since TDX
-doesn't support read-only memslots, i.e. doesn't have line of sight towards
-addressing the TODO.  E.g. TDX could hardcode the address to something that
-is all but guaranteed to be unused on x86, e.g. the I/O APIC base address
-or the HPET address, but that doesn't truly address the fragility concerns,
-and it's ugly because ucall_arch_init() would completely ignore the passed
-in @mmio_gpa despite obviously utilizing emulated MMIO.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- .../selftests/kvm/include/x86/tdx/tdx.h       |  7 +++++
- tools/testing/selftests/kvm/lib/x86/ucall.c   | 27 ++++++++++++++++++-
- 2 files changed, 33 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-index 6355a30bb47f..6582e6c99697 100644
---- a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-+++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-@@ -4,6 +4,13 @@
- 
- #include <linux/types.h>
- 
-+/* TDX hypercall Leaf IDs */
-+#define TDVMCALL_GET_TD_VM_CALL_INFO		0x10000
-+#define TDVMCALL_MAP_GPA			0x10001
-+#define TDVMCALL_GET_QUOTE			0x10002
-+#define TDVMCALL_REPORT_FATAL_ERROR		0x10003
-+#define TDVMCALL_SETUP_EVENT_NOTIFY_INTERRUPT	0x10004
-+
- #define TDG_VP_VMCALL_VE_REQUEST_MMIO    48
- #define TDVMCALL_MMIO_WRITE		  1
- 
-diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/selftests/kvm/lib/x86/ucall.c
-index 444d0f0ba138..93686e1dd3f3 100644
---- a/tools/testing/selftests/kvm/lib/x86/ucall.c
-+++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
-@@ -5,8 +5,28 @@
-  * Copyright (C) 2018, Red Hat, Inc.
-  */
- #include "kvm_util.h"
-+#include "tdx/tdx.h"
-+#include "tdx/tdx_util.h"
- 
--#define UCALL_PIO_PORT ((u16)0x1000)
-+#define UCALL_PIO_PORT		((u16)0x1000)
-+#define UCALL_TDX_MAGIC		0xabacadabaULL
-+
-+static void ucall_tdx_do_ucall(gva_t uc)
-+{
-+	__tdcall(TDVMCALL_REPORT_FATAL_ERROR, UCALL_TDX_MAGIC, uc, 0, 0);
-+}
-+
-+static void *ucall_tdx_get_ucall(struct kvm_vcpu *vcpu)
-+{
-+	struct kvm_run *run = vcpu->run;
-+
-+	if (run->exit_reason == KVM_EXIT_SYSTEM_EVENT &&
-+	    run->system_event.type == KVM_SYSTEM_EVENT_TDX_FATAL &&
-+	    run->system_event.data[12] == UCALL_TDX_MAGIC)
-+		return (void *)(run->system_event.data[13]);
-+
-+	return NULL;
-+}
- 
- static void ucall_x86_do_ucall(gva_t uc)
- {
-@@ -65,6 +85,11 @@ static struct {
- 
- void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
- {
-+	if (is_tdx_vm(vm)) {
-+		ucall_x86_ops.do_ucall = ucall_tdx_do_ucall;
-+		ucall_x86_ops.get_ucall = ucall_tdx_get_ucall;
-+	}
-+
- 	sync_global_to_guest(vm, ucall_x86_ops);
- }
- 
--- 
-2.55.0.897.gb25b4bd76c-goog
-
-
---D8ScZ73OZF7fi6Cd--
+   Note!  Inform arch code of the conversion within the protection of the
+   invalidation sequence, to ensure that any existing mappings are dropped
+   before hardware is updated, and to ensure that new mappings can't be
+   established until after the conversion is complete.
