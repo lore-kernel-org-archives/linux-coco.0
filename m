@@ -1,204 +1,129 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969A646D562
-	for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 14:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BD086341
+	for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 18:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787929025; cv=none; b=msypcUxYlaFpMJLtjiWU/nOTT4DhqLRIaYWkoqbUsFNd9iNESnYf93AlOzYd9CmTxRo4ALgc8rfEquo/yUgah7ubiwdpDNo+/EXDiUtSUc8LniLXdI6++1TI0BbIjnljgyPMLrrtrv1jDGWb6dSmdRbgNo159yg6/kJLuuQFWAY=
+	t=1787941809; cv=none; b=lpM0bbidPJ0gvaFaV2PW9Fo8pUN0W1zkr8JtR503Wx4ds9m1j32fVfwTp7DCfQC9hdRxmsqG3CGxscg684qUpJ9UvTLlBhOmpcUcBcTagv68BGK0UC/BkPy7494CJ70Aycz7nR8S/LNMcNg9P2GkaZYbKdCcuvwlE7db6MnVw+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787929025; c=relaxed/simple;
-	bh=LZpPvS21SRGUjRRQo9YMu2uphCB+Yb/O1WCRXm1EFjc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=b+4Q34gfA+TG5LU2oh0NALWQPhA+iA+Oa4nqfQ0LIuyRcG/D44QcxpV2EINAbDXuezqwT3lFuqwqqhlvDF0BHgwWOVDqVD8fZI4qn82z8XqloV5kiqw6ZnnCpmRuMC5gcLqeTrOlSgWdAse/HdRwi+p0nhVuJyYyaQGxZl7m2e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i0Ce7ddX; arc=none smtp.client-ip=209.85.214.200
+	s=arc-20240116; t=1787941809; c=relaxed/simple;
+	bh=vKhe6i3FkAFwErgQ+z+E/6b1UcU6MpKf/+QS8ZIRiqs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c2GlvcT/Hjz9bGqVfEa3cv6pZTt0IEkudy0vgrnfrlGHkzpzLd3AwI+kANhed7vmAYaSlnsDIH54lVguGK++bMisPzUOimj1lKTwWu653wdSAMfA6pJ8CsXmhsxrprI02H64GP9ozlF7UZDX62qy4PputSQpPWgfFf+AI5m68VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NCfACnMn; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i0Ce7ddX"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cec4226c70so13798175ad.1
-        for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 07:57:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NCfACnMn"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ccdf36f63dso12025ad.0
+        for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 11:30:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787929023; x=1788533823; darn=lists.linux.dev;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rKyTv2j02zbnlF+PSfGKNUB7r5AsnRVQJaAhKBT0UgU=;
-        b=i0Ce7ddXIIGOtLBMgMs9sZralsAbRLJXR3HwIYfs8zC54jU6gNjQqty1wQAkmz+35o
-         52B+gX6gkHl/SgUMP115A/Hzs10jWsUhsiLJLrkCAlLslFgRKvHbxwkppz+cAobdtbkY
-         UqBmScWxrJVt8wormxHYAy0nW7Nif/n3Q2pmcsegAXtYpFJqBQElu1kbWeTaZ9FBg6Bi
-         f2Cnn8nPJoni/ROzO1ZFzed05L0fQNeVf7tpvo8zQQ2zAhJUYkBk34Ksa9bU2DRkopJM
-         qp1j0RdyPtQ6wWRowf+0thzxx1Yr1aMTI0GG+haiNDVacfFh3z0zwbsExPehB6bHQl09
-         +lEQ==
+        d=google.com; s=20251104; t=1787941808; x=1788546608; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ILzvij1drwo7+iGNKuxy4V2qVsnhp5pYEXxx5p1BgD0=;
+        b=NCfACnMnb7spHggH+U6/wgrn4uTikM6JjmOSCh7RuiYq3xwx7eE6MlxV/DePKH5N+M
+         KY+aF2JBblYAMMf8bv8j/E2W/lWaHip503f55OriYhqwYpcKteUb81taAT3GcHhRPdeH
+         SVP24llxiQUv/g/QjAm6XPTz0NY0V3JfEwIyMfKMJEQzPUE+sKa481/HXmKlOuQuPAzW
+         C9n7HZYMc99Ddnx2aaqKz112ykgnH/E1CyT+dInaM1dZe4dde3BtCYaRVVaJYDrYWm0n
+         XNMtDYOwlywwuu8DSsbmZHZX76GltSKXsnLNV/suBiq6ygfF2/wog+lHMjfy9n/vbz04
+         k1Fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787929023; x=1788533823;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rKyTv2j02zbnlF+PSfGKNUB7r5AsnRVQJaAhKBT0UgU=;
-        b=jv1jbUzH8rSIVTcuOVwPFhIRXT8Z9LdvdRXtVqQe+iEkailv94Jea3vfzR3nZpSq67
-         r7JDrYSwpHT2RkaD61qMxzYj7A3WBEItBJguFN92BOO/4TmRDZCzP5Zp23dEdlF/Sm+1
-         EawDrOa0HU9rOcJmIUd6z0hR3Qyh7OVlKPL6O4PatT3KzFFiCOJIWgL+iSFOm/hofvEu
-         zWOZviBx1Og+WkJ+VNaZ1chqSw01SIO+/QN+p1MIiARwd6DVeOKOFeV0eCPWxIfbTOQR
-         SIUs8nU+R07BmE9tDLy1RjjK2zgHCwvUFei8fP8IpjT0aLnPzy0yLJYYljpDEUYlBlHq
-         87vA==
-X-Forwarded-Encrypted: i=1; AHgh+RqKmY6iTqObp4P/agUqtrZoQ4NxGV2MLnSSzRhnqv8hDZwuL2eCt8RvNhEkHdAIf5r+6Livo4E//9E8@lists.linux.dev
-X-Gm-Message-State: AFuF++nyF8CJSA5pC6M9gTkNkXhMaxcIMgbb73woL7avPd1ZDjcpE0y7
-	9PKsqGalxB7fIv7JZsH5my7RKu9GFg02gihHaXziR1a/VsF1Cmex8oUhf2PkDJ3g40CQuJx7jcT
-	6N7HnWA==
-X-Received: from plbkz13.prod.google.com ([2002:a17:902:f9cd:b0:2ca:ed29:ea82])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1984:b0:2d8:d4d3:da4f
- with SMTP id d9443c01a7336-2d8d4d3db7dmr6783485ad.19.1787929022578; Fri, 28
- Aug 2026 07:57:02 -0700 (PDT)
-Date: Fri, 28 Aug 2026 07:57:01 -0700
-In-Reply-To: <CAEvNRgG7n6F=dW9V_QqQPDDgLiZ7x08uLDanJgSzerNtN8sqBQ@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1787941808; x=1788546608;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ILzvij1drwo7+iGNKuxy4V2qVsnhp5pYEXxx5p1BgD0=;
+        b=QmI5OSouhwWxDg3+kacSq48KXIS0aphDQwGeLEhq4XY+f/9VVgtA23BdoG46BCTJ0b
+         Ark7Y8H/pTV0c36g1MPCTYs0m7K/3jrT8oJec17sPtgkz3M2eMkFTvHwuo98hbJgru8g
+         s9kRp5RWJDW93KvHpBHlTaCFIcPsfqjPoWfrimcG2P2NE4PjppxLE8eEe6y/BZAZYduc
+         YBYa2V1j/PbLLQ3KeLtGzNIxmfM+lZrpc2MVM8y0Q8vre2IuUoz1TUHnh/lWhoYdRxSm
+         3vFrBxKu/6jBMvwdqQ1jBFqRxSTKhMZz+9r1GOqTwHKQ/OPIYX2wKb0I4uKJOUT1aat7
+         N6Iw==
+X-Forwarded-Encrypted: i=1; AKwUvBxYBfRVdxzmfPS9XBBYcw12z5+fPLuTJpkr62GmWzXr4J8n5Hael8kvj6a/UWQofUtBJmPgo8804V+v@lists.linux.dev
+X-Gm-Message-State: AFuF++nf1j9sw6+HIS8qnzmBiOFxn4VM876YG6fvaTFzF+F6ZJGM2PBv
+	oLEGInGIcECQ+7lZFyEDFxDla8Up6EX03nwqfJhj2fXaiss9GkrcIS+u33dOlW/9LA==
+X-Gm-Gg: AYBFou1CCM9SVs+7mK6kMT3QU+h8bPPResHwCXRkc6yyUoMeGg0UFPw89K1we07pJ1o
+	9QvoyelqMo1STblUz0XClxx+kJSDOIm5dzwbxnCrDnFnF1Iidvl5X6CaWf248F9MCv8pbZjgiFj
+	EV+YpGsO5amMo+B4xfLei8Ver93CGj7rqBBjXcWsSgWEetqVWt/2a23uSW87fe9GyZyZYaUDl0b
+	wnSTJY7N+6YCcU2WHzweIooVwhmRgT3vJdRkC4gUfEACWj7lvYaM4vy8/A+P/nbJWkXQj7OTzc4
+	KIiNhfq8aAz1b+pF8SThCo8RVZwYXdR0V7zyRfYFahGBBC1We6IcM6kfq1BD96tZWdn7MMd/+Xg
+	Cz/xXD4k1+jNt+UeCdoYIcmU4ZS98Ocgog01DZ+DixOBMrV7Wa3rS8xhMnYVPXa2vebn9X8LFQl
+	MpSQqrMfPyuD/bp6nza1Dv/IHaKjE2vJs0dK5Lle01GuBntzATotQDTKMMLzwaldCmI+CeJa5tt
+	zPhZ9N8hapd5Cks7mcQFWiq
+X-Received: by 2002:a17:903:988:b0:2c9:d89f:fd98 with SMTP id d9443c01a7336-2d8dfb0b68dmr662305ad.1.1787941807055;
+        Fri, 28 Aug 2026 11:30:07 -0700 (PDT)
+Received: from google.com (139.58.247.35.bc.googleusercontent.com. [35.247.58.139])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396d2309637sm1500859a91.0.2026.08.28.11.30.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Aug 2026 11:30:05 -0700 (PDT)
+Date: Fri, 28 Aug 2026 18:30:01 +0000
+From: Lisa Wang <wyihan@google.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "Aktas, Erdem" <erdemaktas@google.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"shuah@kernel.org" <shuah@kernel.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"afranji@google.com" <afranji@google.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
+	"ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"Chatre, Reinette" <reinette.chatre@intel.com>,
+	"isaku.yamahata@intel.com" <isaku.yamahata@intel.com>,
+	"ackerleytng@google.com" <ackerleytng@google.com>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"pratikrajesh.sampat@amd.com" <pratikrajesh.sampat@amd.com>,
+	"oupton@kernel.org" <oupton@kernel.org>,
+	"sagis@google.com" <sagis@google.com>,
+	"Gao, Chao" <chao.gao@intel.com>,
+	"Wang, Roger" <runanwang@google.com>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"ajones@ventanamicro.com" <ajones@ventanamicro.com>,
+	"Qiang, Chenyi" <chenyi.qiang@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"jmcrey@google.com" <jmcrey@google.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v14 00/22] TDX KVM selftests
+Message-ID: <apHTqWg1hDXpvhgE@google.com>
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
+ <5a44a6925715e1edbd379ac0ea5526ec990eb819.camel@intel.com>
+ <4828f8e29801adb29a4d48b8980d3b3a0a813e06.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
- <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com>
- <ao9CKMXAX-hScRSa@google.com> <CAEvNRgG7n6F=dW9V_QqQPDDgLiZ7x08uLDanJgSzerNtN8sqBQ@mail.gmail.com>
-Message-ID: <apGhvboNAlExQFsK@google.com>
-Subject: Re: [PATCH v11 15/46] KVM: guest_memfd: Call arch make_shared
- callback for to-shared conversion
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4828f8e29801adb29a4d48b8980d3b3a0a813e06.camel@intel.com>
 
-On Thu, Aug 27, 2026, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> 
-> > On Wed, Aug 26, 2026, Ackerley Tng wrote:
-> >> Omit support for calling the arch hook to make private, since SNP, the only
-> >> implementer of the arch make-private hook today, would actually prefer
-> >> making private only just before faulting memory into the NPTs.
-> >>
-> >> Calling the make-private arch hook would require iterating both bindings
-> >> and the filemap to find the intersection of bindings and allocated
-> >> folios.
-> >
-> > Why would KVM need to iterate over the bindings?  Only the RMP needs to be updated,
-> > whether or not the RMP is currently reachable is irrelevant, no?
-> >
-> > Subsequent calls to kvm_arch_gmem_make_private() from kvm_gmem_get_pfn() would be
-> > superfluous, but that's already possible, e.g. if an NPT mappings is removed for
-> > whatever reason.
-> >
-> 
-> make_private takes a gfn and pfn, so __kvm_gmem_set_attributes() would
-> need to iterate bindings to get gfns and filemap to find folios to get
-> pfns.
+On Thu, Aug 13, 2026 at 11:05:17PM +0000, Edgecombe, Rick P wrote:
+> --- a/tools/testing/selftests/kvm/lib/x86/tdx/td_boot_offsets.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/td_boot_offsets.c
+> @@ -5,7 +5,7 @@
+>  
+>  #include "tdx/td_boot.h"
+>  
+> -static void __used common(void)
+> +static void __attribute__((used)) common(void)
+>  {
+>         OFFSET(TD_BOOT_PARAMETERS_CR0, td_boot_parameters, cr0);
+>         OFFSET(TD_BOOT_PARAMETERS_CR3, td_boot_parameters, cr3);
+>
+Thanks for testing this! The patch series posted here on the mailing
+list is correct, but I made the mistake when pushing the code to the
+branch.
 
-Oooh, right, unassigned a page in the RMP only needs the PFN, but assigned a page
-needs the ASID and GFN.
+I have just force-pushed the fix to the branch. It should compile
+correctly now. Could you please pull the latest version and give it
+another try?
 
-> > I don't care terribly about how SNP handles this, but I do want accurate reasoning
-> > and justification so that if/when we revisit any of this in the future, we can make
-> > informed decisions.  Because unless I'm missing something, this is an optimization
-> > choice (eager vs. lazy to-private conversions), not a complexity tradeoff, and it's
-> > not clear to me how we decided the lazy approach would provide better performance.
-> >
-> 
-> How's this, to replace the entire commit message? I hope it captures
-> points from this discussion:
-> 
->   When memory in guest_memfd is converted from private to shared, the
->   platform-specific state associated with the guest-private pages must
->   be invalidated or cleaned up.
-> 
->   Iterate over the folios in the affected range and call the
->   kvm_arch_gmem_make_shared() hook for each PFN range. This allows
->   architectures to update hardware metadata or encryption states to
->   transition pages to the shared state, instead of leaving hardware
->   state as private while guest_memfd tracks it as shared. Transitioning
->   hardware state ensures that guest_memfd upholds the guarantee that
->   userspace only maps shared memory.
-
-Nit, don't reference functions by name when it's easy-ish to avoid doing so.  And
-don't give a play-by-play: the patch makes it pretty obvious the code is iterating
-over folios, what isn't obvious is *why* the code does that.
-
->   Invoke this helper after indicating to KVM's mmu code that an
->   invalidation is in progress to stop in-flight page faults from
->   succeeding. Calling the invalidation helper also calls the arch
->   invalidate hook. For SNP, this kicks any vCPU with a registered VMSA
->   within the range being converted out of the guest. This ensures that
->   make_shared never fails due to the VMSA page being in-use and is
->   important because if make_shared fails, the RMP table would track the
->   page as private while guest_memfd is unaware and tracks the page as
->   shared.
-
-Exaclty what SNP does isn't relevant.  Or rather, it's but on example of how this
-needs to work.  I.e. the conversion needs to happen within the invalidtion sequence
-because thems the rules for KVM.
-
->   Omit support for calling the arch hook to make private during
->   to-private conversions. Making private lazily at fault time aligns
->   with how it works on other platforms like TDX.
-
-To me, this isn't a valid argument.  We've fully committed to relying on vendor
-specific behavior, and SNP can't truly work like TDX because the underlying
-implementations are so different.
-
->   Furthermore, making pages shared only requires PFNs, which are
->   obtained by iterating folios in the filemap. In contrast, making pages
->   private in the RMP also requires the GFN, which would require
->   iterating bindings to get GFNs and the filemap to get PFNs from
->   allocated folios. Deferring the transition to fault time avoids this
->   additional complexity.
-
-It's not just complexity, it's that the bindings might not even exist.  I.e. for
-all intents and purposes, doing on-demand updates is mandatory, because that's the
-only time a relevant memslot binding is guaranteed to exist.
-
-All in all, this?
-
-   When doing in-place conversion from PRIVATE to SHARED, immediately inform
-   arch code of the conversion for all allocated pages/folios, e.g. so that
-   arch code can put hardware metadata tables in the correct state.  Eagerly
-   updating the table for to SHARED conversions avoids having to implement
-   on-demand updates, e.g. when faulting in host userspace mappings.  Skip
-   the entire flow if the arch doesn't implement conversion callbacks, as
-   getting folios from the filemap is noticeably expensive, especially when
-   converting large chunks of memory.
-
-   Deliberately don't eagerly update the metadata table on conversions from
-   SHARED to PRIVATE, because assigning a page to a VM (versus "returning" it
-   to the host) requires the exact GFN associated with the page, i.e would
-   require walking the memslot bindings.  And because KVM *must* do on-demand
-   metadata updates when getting a PFN for KVM-internal usage, as that's the
-   only time a relevant memslot binding is guaranteed to exist.
-
-   Note!  Inform arch code of the conversion within the protection of the
-   invalidation sequence, to ensure that any existing mappings are dropped
-   before hardware is updated, and to ensure that new mappings can't be
-   established until after the conversion is complete.
+Lisa
