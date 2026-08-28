@@ -1,141 +1,210 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9819322A4E1
-	for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 02:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787884288; cv=none; b=fQ/dWUsSiVWIvlDwJUrzVQEZRTg5fjC/e6svVXbu5EMfDTFhhnvNGDypus3QF5K+GXvi/RwYcFtB8RtIBUrdbKdrXbdE77+JzUXtTCNhcb0hDvEYeXHzT1F0U9NW24wjgZIWSF6jL3gIeI9uvkqgDF7qW14ySHYpx+ADMIo3ktc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787884288; c=relaxed/simple;
-	bh=AmiWvQK4BjI6lzNZRrFr0LIfvy0ZFnT1ZUrg4z7d7Vc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gAotC5g9LiRsqq+MqsveIvuVrfNTZ0Hoo15LgKNKXiaivKyuxH3VeUd0caQn/9xlmAl3BdlOQ/D3gtmqwyPFmLHlcvyETsydrEGK1sw5+7k5c/85pcfGWMsBmFiQRNDkCra3r/JhY14O+qxaFKEec8HI/IQVVBg9y1g5h7+/euM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BqDyjhTi; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC023AEF35
+	for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 04:19:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787890801; cv=pass; b=bK8VG4LBh+DF7Mmrsf1uMaNDLehs4md4QlKqr3A5yffuxZZ097VroZAekx34L0u/F7ugbAZhCk3kBgsRNSO1LUMvkms5e/QHBl9zGnZ7QerauoceOjgV4BsV/3W8qCpXkLYhb+nJTZI67tC13Rg129awuO2I6H6i9CEp9+hsvj0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787890801; c=relaxed/simple;
+	bh=mTQhz7RgMxAC3d9Zq6Msa7p3Wk1sBx7SdhDb5OizNys=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n/4euj5Zv7UOsXIOOoJPZCWOeUjSb0EyPO7b4Tdh3xwSDZBB1Rj5122tL102eGASTFLxZXOI1yQpu8PI50VAt5BQ5eyGKqQWYW/whN/ki4s+PYjFCMw5ulnG4bL/dIZeD12mcgdaGsu4khUQVr/Q018H4M1SPD9287kWNMl7/Ss=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HneIGgGB; arc=pass smtp.client-ip=209.85.219.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BqDyjhTi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787884287; x=1819420287;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=AmiWvQK4BjI6lzNZRrFr0LIfvy0ZFnT1ZUrg4z7d7Vc=;
-  b=BqDyjhTiThYleq1oUr11ehq4QgOeL0hxsgCjPnmdv2DmZuzPIROywhL6
-   TGj5JT1s/KIq+ogq7ZRQ3uGh8gH2AIWgwqDVO+HpjQd98b7w+uDV4/38z
-   EQZPfWpfVSb+kM5vA2woehTPqJc2oDXMCSW0oNHe9It4Xsv71tVZ52+ee
-   qkd0krWSv3sd3ks+rksxFPhJD03Ef+Q0ahbhwZnDYIowzvigx2XAB3iqQ
-   3nBi837vnx79LZo9d89DSyDihBrrImwLkFycztgdbgxX+tgiDW6q3ZAUx
-   7iknEQOM4V39lrtjfXZUaQm0GjS56xR0tyAZcLO9A8+9Mcrw1G4W7aGcO
-   A==;
-X-CSE-ConnectionGUID: RgL5aFVxSDO418tSdBOKGQ==
-X-CSE-MsgGUID: 3qO2gyBoQxKuV28pYQabmg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="88268024"
-X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; 
-   d="scan'208";a="88268024"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 19:31:26 -0700
-X-CSE-ConnectionGUID: vqL3zOR/R32niEzjQE5kCA==
-X-CSE-MsgGUID: F34iZPKWSFatSuLeRGc7VA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; 
-   d="scan'208";a="292851178"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 19:31:19 -0700
-Message-ID: <b4cffa34-864d-4fd0-9fc7-a7d4514075b2@intel.com>
-Date: Fri, 28 Aug 2026 10:31:14 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HneIGgGB"
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-90cc39e06bdso2807456d6.0
+        for <linux-coco@lists.linux.dev>; Thu, 27 Aug 2026 21:19:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787890799; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TMPpJ14XOMGabG0TsL0k+wMLHF/Dr9RhJ50mqhBsYl7zZ7Rl57zK2kmavSW4nXEbEF
+         EASncJs98nYrUZY7AgF2P0iGalSSpY/shz+VfplLXJQejDPcmIcLvh+d6jdvXDXQ5bx2
+         XwGo//9dEj/Nws88ooaSKXA62mHimw+GX1lalJfxMEmwNjKJkkFCLcv7NBH67f880Xlp
+         vFoD+vu2rarpOLubk0Q0mM0DVQX4gCrtXdRcJizRWBFYFBc59zSH2mZRMhluXw/23Jbg
+         M5HNEF4apAb1wahEciQggmFxc/YEMnafXQcN8OUNKTRuYkxYiiSHlxXWsIA3PhXtKfo5
+         vBrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=QCDy9v0wvCJe6b4tDkyj5x2hkmiUIAeHKOf5Q690ANY=;
+        fh=kM7ayeZNx4yD/sNJoFx2BwWsrbgA4AozhnFtPxaoKSg=;
+        b=g4Y68EHXVplNKQQ1OoKec9n9z7AO4fadvLHPagdG8fr10U/KV0YLxqvIlWLKuJkQF3
+         x0akGMu7rYM2gaBQJ23CKoLCZSyVGmyuiMJ0R6gwrpfZopK4Ssd7iFHxodBYN3pibCqg
+         fHpyhoGZM4Gq8o39hkYQOPRMkuyVgUNfM38/nCD82GNfIZ7rk2icoP1ONhU1xAyHZsN3
+         tB7GDRuOtyNj6jUoGO9JIKJ9CjLKnRLXzs2Ylr/smEqpR54+/WpvzEgao0wzwXTEli1R
+         QHkHB4OvW6CkodReF2C4wHRYIi6CBGpA+nEn/gV6JZQd7nT6LauD5sjVz6Py83KU3Fvw
+         hF8Q==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787890799; x=1788495599; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QCDy9v0wvCJe6b4tDkyj5x2hkmiUIAeHKOf5Q690ANY=;
+        b=HneIGgGBCUzEe7mua3PUd1f8ZvtPgyWrTXjLWd7jB9xcAoGrbul0DYkwOOLxeCFB1G
+         5xE9oZ7ErY6We/o93jGBTU/LpuaPs0RBS0nGi7NZhuaag4iF+NpKNk9LKpqn1gOD6Y1I
+         q4JVLNYMy8F0AgfNbi20iMspy9r618FE4Z1B8NCYQEi1HmjYA0wlPlGV3KS90jgKtJEu
+         GJFQckCNBvvinX+6wqPqjuiCASfC8MRAEnX7qU5uYYrF/eEE368qdT9vR9cVOMswI9Hv
+         ONdCkJhQaQqXDHXEwi+vi4oy6al+yi/58T/H5PCz4H9IIAuIdg4FUdedHc/uCj5QTA//
+         LkhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787890799; x=1788495599;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QCDy9v0wvCJe6b4tDkyj5x2hkmiUIAeHKOf5Q690ANY=;
+        b=YQpYCJjGyeOXBN8MmZ6tFxd4WTEH+m1PFPG3eSw/rjVRqnuaadB66HtMNkorY0b/e/
+         l/0sBvL2nPUCxIiXp5wd/XWX0kC7T/cUxOG55X3GLZhYy+EPi9rjizv4w0baV+3+Py6X
+         T3fka3z8owruLQp0lWR7Tp5220fsTs+wNCxX//tbjyCehW6PRkHvJMUbC14+5MiBH0fY
+         u8JytInOHEFhQXXJhx0do1/Kspr062bdiF7D7XtHF5LaMusnAbXeq8vwKqpSABXaGUG6
+         udv6iL+qC6dnzoOGwll3XMGQ11bVPPW4FmPpHpyIQAIMaNI/Fb+2OgdGFcTqWdH1Q95+
+         SA9A==
+X-Forwarded-Encrypted: i=1; AHgh+RoWWnivXoHtbIRljqjZm9YAoTC4QRpcKhD1kDVzNzcGDWqg8X+zSbFpv1dKxg0tGwDDcbJBxlMqaOg0@lists.linux.dev
+X-Gm-Message-State: AFuF++n33S8Quond4vAouZyiDEEoyHMU3cdYGcDqWPYRQCNWenE/uDSL
+	bqiwQ97FQJ8q1vvBbM3DRpmo5MF6SIdj66AbclvtooQpxfioBnTlHlRtD495+1vhEzdDZRtpQmL
+	A6jq1sy1aSpF/TDnXBqV12ExmDO/645iicVB+7ZB0
+X-Gm-Gg: AR+sD12RYI3yvioMhKgGrxfTBK8FPTgjBn34HYFag/FfXexo1tas56GjBsNWuLMZuId
+	WZyZxjq4m4rgQ7o+4IkG50ZRwug9tb2pY848tWMidowm7jFbf9PCkKf6KidJQBVto1n6amRNphD
+	HjTDfJbH6ei5/tj7AX6JeYV4TC6iiyE87lPbaCbO+3x78tCYgQvg/VVhhVkzPtK1j4oEf0SQP8Y
+	epnr2wg0hFdKSWkU6fCdhSHGkOWUYFUiq1Q3GmbuoOpEJVzYQWS0rxWPtAVjwH2Pz5V0vCRY/uV
+	0VwbBmZSH49OEUq9urrM7P7fwg8j0a4UG6ZZelLQ17Ze5GSFiPpPsFr2N8JJWJ6a+CNzYSTv9Ad
+	Fn/pROWGiKhJIX5TAQnEbwFltfjUE2pwuRAfnY69NlA==
+X-Received: by 2002:a05:6214:212b:b0:90c:4e5e:754b with SMTP id
+ 6a1803df08f44-90ce0f45ea4mr46165856d6.28.1787890797765; Thu, 27 Aug 2026
+ 21:19:57 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 27 Aug 2026 21:19:56 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 27 Aug 2026 21:19:56 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ao9CKMXAX-hScRSa@google.com>
+References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
+ <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com> <ao9CKMXAX-hScRSa@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 21/22] KVM: selftests: Add ucall support for TDX
-To: Peter Fang <peter.fang@intel.com>
-Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
- Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-21-15ad654a50db@google.com>
- <6f89fc78-0344-4a7e-bbd8-ac201b8f845a@intel.com>
- <20260828020612.GF33657@pedri>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260828020612.GF33657@pedri>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Date: Thu, 27 Aug 2026 21:19:56 -0700
+X-Gm-Features: AcwNN1UAGJ-fGOM9zD_UvTf06ZrP54h7-np3dJjD_6mMPjXqsGS1LGYTBF7LEzg
+Message-ID: <CAEvNRgG7n6F=dW9V_QqQPDDgLiZ7x08uLDanJgSzerNtN8sqBQ@mail.gmail.com>
+Subject: Re: [PATCH v11 15/46] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
+To: Sean Christopherson <seanjc@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Fuad Tabba <fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 8/28/2026 10:06 AM, Peter Fang wrote:
-> On Mon, Aug 17, 2026 at 04:38:49PM +0800, Xiaoyao Li wrote:
->>> +
->>> +static u8 vm_type;
->>> +static gpa_t ucall_mmio_gpa;
->>> +
->>> +void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
->>> +{
->>> +	vm_type = vm->type;
-> 
-> vm_type is u8 but vm->type is unsigned long
-> 
->>> +	sync_global_to_guest(vm, vm_type);
+Sean Christopherson <seanjc@google.com> writes:
+
+> On Wed, Aug 26, 2026, Ackerley Tng wrote:
+>> Omit support for calling the arch hook to make private, since SNP, the only
+>> implementer of the arch make-private hook today, would actually prefer
+>> making private only just before faulting memory into the NPTs.
 >>
->> It works and it looks simple. But we have the architectural approach to test
->> if a guest is TD guest, by checking the CPUID 0x21.
->>
->> Since checking CPUID 0x21 is not complex, and as a bonus it can help test if
->> TDX module behaves correctly for CPUID leaf 0x21, I think we should switch
->> to use CPUID 0x21 to check if it is TDX VM in guest code?
-> 
-> Hmm... This makes me wonder if vm->arch.s_bit below could be replaced
-> with the same architectural approach. GPAW is available through
-> TDG.VP.INFO or the initial RBX value. This does require a bit more
-> plumbing though.
+>> Calling the make-private arch hook would require iterating both bindings
+>> and the filemap to find the intersection of bindings and allocated
+>> folios.
+>
+> Why would KVM need to iterate over the bindings?  Only the RMP needs to be updated,
+> whether or not the RMP is currently reachable is irrelevant, no?
+>
+> Subsequent calls to kvm_arch_gmem_make_private() from kvm_gmem_get_pfn() would be
+> superfluous, but that's already possible, e.g. if an NPT mappings is removed for
+> whatever reason.
+>
 
-I'm afraid not. Because below is host code, and vm->arch.s_bit is not 
-used in guest code.
+make_private takes a gfn and pfn, so __kvm_gmem_set_attributes() would
+need to iterate bindings to get gfns and filemap to find folios to get
+pfns.
 
-Or are suggesting something like dropping the
+>> On top of that, SNP would need to figure out whether to actually
+>> make private based on whether the memory is about to be faulted, or
+>> whether it is a conversion.
+>
+> This is a non-issue, no?  As above, sev_gmem_make_private() already bails early
+> if the page is already assigned in the RMP.
+>
 
-	if (is_tdx_vm(vm)) {
-		ucall_mmio_gpa = UCALL_MMIO_GPA | vm->arch.s_bit;
-		sync_global_to_guest(vm, ucall_mmio_gpa);
-	}
+I'll remove this, you're right.
 
-entirely and use below hardcoded value instead in guest code?
+> I don't care terribly about how SNP handles this, but I do want accurate reasoning
+> and justification so that if/when we revisit any of this in the future, we can make
+> informed decisions.  Because unless I'm missing something, this is an optimization
+> choice (eager vs. lazy to-private conversions), not a complexity tradeoff, and it's
+> not clear to me how we decided the lazy approach would provide better performance.
+>
 
-	UCALL_MMIO_GPA | 1 << (GPAW - 1)
+How's this, to replace the entire commit message? I hope it captures
+points from this discussion:
 
->>
->>> +	if (is_tdx_vm(vm)) {
->>> +		ucall_mmio_gpa = UCALL_MMIO_GPA | vm->arch.s_bit;
->>
->> So the passed-in @mmio_gpa is not used. Why cannot use the mmio_gpa,
->>
->>    slot0->region.guest_phys_addr + slot0->region.memory_size
->>
->> chosen by __vm_create()?
-> 
-> Looks like this was discussed previously [1]. Maybe at least a comment
-> here would help?
+  When memory in guest_memfd is converted from private to shared, the
+  platform-specific state associated with the guest-private pages must
+  be invalidated or cleaned up.
 
-yeah. A comment surely will help.
+  Iterate over the folios in the affected range and call the
+  kvm_arch_gmem_make_shared() hook for each PFN range. This allows
+  architectures to update hardware metadata or encryption states to
+  transition pages to the shared state, instead of leaving hardware
+  state as private while guest_memfd tracks it as shared. Transitioning
+  hardware state ensures that guest_memfd upholds the guarantee that
+  userspace only maps shared memory.
 
-> [1] https://lore.kernel.org/all/ajGaMb6Lrk3OS8B4@google.com/
-> 
->>
+  Invoke this helper after indicating to KVM's mmu code that an
+  invalidation is in progress to stop in-flight page faults from
+  succeeding. Calling the invalidation helper also calls the arch
+  invalidate hook. For SNP, this kicks any vCPU with a registered VMSA
+  within the range being converted out of the guest. This ensures that
+  make_shared never fails due to the VMSA page being in-use and is
+  important because if make_shared fails, the RMP table would track the
+  page as private while guest_memfd is unaware and tracks the page as
+  shared.
 
+  Omit support for calling the arch hook to make private during
+  to-private conversions. Making private lazily at fault time aligns
+  with how it works on other platforms like TDX.
+
+  Furthermore, making pages shared only requires PFNs, which are
+  obtained by iterating folios in the filemap. In contrast, making pages
+  private in the RMP also requires the GFN, which would require
+  iterating bindings to get GFNs and the filemap to get PFNs from
+  allocated folios. Deferring the transition to fault time avoids this
+  additional complexity.
+
+>> Calling the make-shared arch hook and not the make-private arch hook does
+>> leak SNP-specific details into guest_memfd (as in, why only make-shared
+>> during conversions but not make-private?), but the additional complexity is
+>> not worth taking on until guest_memfd has a user actually requiring an arch
+>> make-private call.
+>
+> [...snip...]
+>
