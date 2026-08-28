@@ -1,141 +1,157 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C6B3A1A38
-	for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 22:54:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C974E3644BC
+	for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 23:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787957682; cv=pass; b=cipXOB6re+zL/Ey1DJnCZIKJPRIAe9c3hDIB4ml8VyiV1UletLI13KVpWDk0By8Age/Ls9jG4dp38L4v4dCtQdcxCS/HinOpXt/uXXv+A1UtRNSnnkZAFYmO+mrCFwFsVpqZMXue14CHy9y6/3Y4mnWXYk2TKx+rq2gA9kG9KZg=
+	t=1787958061; cv=pass; b=VBaeBqp9mRaznFehwOPTmE5iORq8FTPw3ZyKZr0yo6CvSudY/cxwS5HQ+KhCG+Uh9T/x1dr1YR8ktTBt0TXhU9yXRLRjqjIzv+mWYj1XCBtOwbHlOydTzkZpXDK2LTVssYxr+H+V0BE6tR9o6MGy5q9BIF8a+MHkDYVrsLNqBbE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787957682; c=relaxed/simple;
-	bh=4unzX+NMpOtBviw882dRQzRaeXOD1/xti/3UhI1UIHc=;
+	s=arc-20240116; t=1787958061; c=relaxed/simple;
+	bh=6T0r+7hZ2bdIBBi+tmMfu3lgh+SjUf2cA/8NWF9EmJY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kNA9HJgsFXTiTK5sWXiuUvnOgePjbh95WXqKQ5tgKKjMSZNQ6zz4JCJrZ4QBKxswLqL5fU4gWx5pEXJMOWkFZEi+EG8n4aTN1m2Y0a+WCOkUyEaYtuiIFCaIR4b8eT39X3QvTADtryiTM6I6nU+AGVUzwCG9Vhu9tl1OUYhkwSo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DRxBlytQ; arc=pass smtp.client-ip=209.85.160.175
+	 To:Cc:Content-Type; b=AjOprG8knMgGGr0oY1OczLYkdUOQR5auJcEE9204IbyhCypFhvo9nlyKdfsHRjR5dq2BAZnCbjSmtr4elmwfO2v2XBOe7Ef9vVmrBiRhB4Gk74uEZm2b12CVPvFaJ997VeIhBi28/BKEdsGjUOCeQyo3EWgjpnXHT8jNKmio+cg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wSdJS/HJ; arc=pass smtp.client-ip=209.85.160.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DRxBlytQ"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-52fac937235so45261cf.1
-        for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 15:54:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787957680; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wSdJS/HJ"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-52fac937235so46331cf.1
+        for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 16:00:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787958059; cv=none;
         d=google.com; s=arc-20260327;
-        b=kTH22HCRGYEIly0nric/27SVLPA+0VYdLezlXeO6fl8y028iALAeS9naC1apke5smm
-         N7YI9Y2950weQLiu2l7BY0q45IGY0qfNQ5Y64Gnlz2bsYlGkDMfW3rO+Exu84VKPVSRk
-         Om1uMnvfhNUsYvQDGlR5tTXh4C7Z5XLN3uX8iIKlOv7lEAqY/FqubMP4RsaCSoiRLhwH
-         0bGuJzX5kwjKySLQfIe6V7rd7hAtOfX9U6/GMJYyqJvcs8uw5ru+t7MKODZAlxOOoPFQ
-         oUJeXvWKmPQaKjoRqUU/YwYiZWnaWBMGfCaWmZ2KMNjyKD+j0OoX0M9YgLekiDbV/ZR/
-         eS/w==
+        b=C3JO9Z4EmfCDbsea4Ql250hIWxYiBTX3JJCXtZ5UktemOg7aN4wMZ4Xderg1nJXG6Q
+         OtgfpZmIcEE3xcqb3M5+iD74654IQ/08jnBPoyFmHzw+bmq8m1Y+0l3JSl+LPq20jd0a
+         q0c7dYa43yM+ePM5YHMoR5NNrKOMDh7PCtp0znzQ2pDBqX03n552WBSwWCYPsNQRF4Vs
+         e8sKx47ZONdyytZG5RLad3QCcOvc/sC69O13DaWL5pelCe9dzmQiXXZgSxlXMXt/+HGe
+         phr8G1ipjwKSmd1eSWdJZtctMadX7Q+x6NlGJ8o7zO/FAjCoyA8FIaAxENmiknuByR+5
+         KjGg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=4unzX+NMpOtBviw882dRQzRaeXOD1/xti/3UhI1UIHc=;
-        fh=I/1Aw4cK6vhZKoKE0el106p+2Upck+u7DEciD9Xx2qs=;
-        b=gMjJfZDh5VkZf+mSVVMPBEVTAeKxQgCmpogbT+GIFWr9LEFDNwdKDZJcS/gnlq4pCJ
-         8I9x4CKlJo9sLouP+Q4g7P/YgCEBDHGs1Vr2lR2fW1aVY9TfRPCUh0oqOmkhFLapkXTt
-         wMGY6QmtmNuBEiTidG8ToziNmXOrGic0Px0ResMvWNPq3CSnPNlCdwTSpb0tSYztU0pB
-         /nxEaXiwXjluFhD1yZI+EFPzkxNfoMRAP9Br2KjVDEGvjX4JPGGbMH7DWK3UQ3zFp2Hw
-         8dQoCIhfjY9L8PCumQhTQ/AcDnNoCM5zcszNs7hFU1KdpTNtE9HdUnR4nduLwNRCCcFE
-         0NaA==;
+        bh=6T0r+7hZ2bdIBBi+tmMfu3lgh+SjUf2cA/8NWF9EmJY=;
+        fh=zbDVXGW5Fl/8Nfqq14PQ7fJUmylhKnUmk37ew0BTezk=;
+        b=KF9Y67BY118fx6m8uJPCWb+nvpSRsK5wNHOcTwwV016LyrKO/37Me22lv+xYnXgdOv
+         Rd6/yvGZ2NMhex0u/cb3JqRnAVxas9yvowrQ0iK7Sl9Jxe6gCACJAsxSuFwGNvoENTi6
+         BBRONpjTpawp9lXT9+bMYYrHiVgefgpDaL+LZIec75+9T7jbHSD34TxXljuVjxNZ4mdl
+         PlKdQy+O1xTfEXtpLcLrme66eNMx+YIUdHorSDYSWrFDJHpfEpkpC8+wtK4otx54DdE4
+         JvvP9s2CH2CE/gqqHXoc7MSf7EnhEjV27HTAE5KinbRBx51A24kUVNjGfYuTnnGtFlqr
+         OeZg==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787957680; x=1788562480; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1787958059; x=1788562859; darn=lists.linux.dev;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=4unzX+NMpOtBviw882dRQzRaeXOD1/xti/3UhI1UIHc=;
-        b=DRxBlytQJwchczOiJqs68txP/ibLlmJBc2E1GyASBSTy1LgwiNfEkxsOU6VCDBc3Xy
-         3uXgAm8un/L8XlMDwy0XbyziD2f//X5u4qVfnXv1I5PXZvdIScjajYbTTfHZQ0LnehAj
-         a7aW7alW4WZwRse6HkQj//v+vLG6jkFoHNnm725neFbHcaHOqidC/rgw2xqjBaDlFSG8
-         tCdiES0gnyVrJl9JLlkLmC2lmnxAHabf6RIDMe5cKiccoIBZryRxGqMkXo5VRD6U0Bod
-         qEa7dkuCMUDldJsdzYZFhJSN56z6d7Z+hVgfqIuWWPCINb9YkrroGhEQwrZGwVlzkMpb
-         JMFg==
+        bh=6T0r+7hZ2bdIBBi+tmMfu3lgh+SjUf2cA/8NWF9EmJY=;
+        b=wSdJS/HJ/D5Md9o0Z9aDAB8Rtii3PftDZdqVsmvlDfgJUT4FvaTMY0d/UUUDds8rwk
+         pdKUlwtKU+gBhW0uK62EovyBEfrjjt8VJbbqSvlLL9rsalklB/AwIiaaJ6Iszmsr6vLy
+         X209DjybkdEm7SBU1OELhC5IwBk9YL/JfxKo8MTsguwlx4xovjuXd+WnyrYQ3hgVMNWu
+         Ya1mzfp5f0v4ABNK07TtgLJR1sw7dQbK55DhnpB/R2vygra2fmKF/Jl+uEO4HzDTFaMZ
+         NMMpb5HckXz/cAMih8PngUJQcG/xK8jbd0OG4FC0LAuFJvsxIDbmh0jxAiD7WHdEOXw+
+         otOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787957680; x=1788562480;
+        d=1e100.net; s=20251104; t=1787958059; x=1788562859;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4unzX+NMpOtBviw882dRQzRaeXOD1/xti/3UhI1UIHc=;
-        b=gEMdwRYObiefus+usU5eVb9F7KZW9qvbU4x0yywXkWu0pqGvsFL0aT6HDJooxK598q
-         uWzSPpaFDkZORRnYdVbjUOAx4lMkW9AeYcTyBMlWgjyfaHdfn+krgSVHdl6848DmK8Q5
-         KfNsKTvQJgf8M50T3wX2ynPUj2C9aQSH7ZSZIe3vsBwd7vUbuTB2Fh9b2e1j+RnjxoLy
-         M5Br5aGZ6YbYAid0F8awgXBIoshLV4YXEgu9h6hWI5PdDu8zUQ5M9VXE8YPcmC1z8HVE
-         UzFy4y/WocjAWS4V+ORe0ICjjv7/BSMTKSDNCDoZ8hf8S0OGkRMWJlTiwEY16p3xS/3E
-         kjkw==
-X-Forwarded-Encrypted: i=1; AHgh+RpvVDkcfTzZdh+GrpcAHQoGIcA/PQinHjIesYdBr4xVHYDVZf9r9pCTqPf73TXIaSoi4n0MtbcwuUxi@lists.linux.dev
-X-Gm-Message-State: AFuF++mHu0FgyN2K9FWD6O+bg8Zg4/aBOCUzfgP8tU1IDh/e49ASnJn+
-	zF/+o+s4DHXhU7rGi7T/ahQLC5bv8Rl/GdRg8k0RGMd2sOlT+zclNaSPt5Au7Vxk7duMZJBbvNP
-	RIzaoFPGirM1OgDJO1ZJD8I5A4UvIEOF0gN5/w/zGnSvKpNCzj5iBWbnM
-X-Gm-Gg: AR+sD13+YJTSxxuEol/rsaUsgz1ORE64HiHWfQ8teyImsYkKOwQ/zIuGBFiMlcPKaTi
-	pdGAsQF//zrsYVbksPth0fBbUEplkyXFNgu4+Il1SVvo5M6pArpKszkdTq80Tp6K96X1J0oLvKx
-	gcsALjw4y5I8CoXRQBiBh1Jt7bNiRe3ktn8pbsUBryYIiLzN6dNfRSjDFmgRLXOdTfLdJWd78w0
-	Zo1z9QXQXDSgVoaJliBYAYerV3GlTUj/Vvhz/xrhfacdrrBSL21eLVoTajbNeme6xzd5kuSNsvM
-	VohG4LqnEQpzN5v56Rf2x5XOSvZNOmDtFsY4lr7IHB4rAsadWKbKhkvjjOoX68zIeMXdx5C3I9t
-	c
-X-Received: by 2002:a05:622a:5a14:b0:51c:6b7:d3de with SMTP id
- d75a77b69052e-52ff716a2admr5298061cf.5.1787957679730; Fri, 28 Aug 2026
- 15:54:39 -0700 (PDT)
+        bh=6T0r+7hZ2bdIBBi+tmMfu3lgh+SjUf2cA/8NWF9EmJY=;
+        b=VEuonQokWvsG5hSp0Is4P+RGUK5J/zw1IJkZfj9VE1k7CfKVBB4DRmu0mjUL6m9lBm
+         Vs8uWPVeuND40Z+X6WphXD27WfgRTPXFQ3aQF1xBe+6jTRsiJVuvXfo8gK9uzzThd+eb
+         wfhHtHuZBTC8XHDJqqYq3RGOCntnOe85BgCTx7qPLH0W3q1T1tUjBeAt4dHFP9QZfD2F
+         EUilVYJucar6BDusmVX0Cz8x0NLJJtIFZ4qlEwCCxcyntRIkvpMFMchCjxt12Xg2DjcG
+         IpZPsk5TgpBNBwJqxmSjLOcJLJ2FVhPeZ2hZwWRsZgM98brTIE1nS+DOk3UBgmMXWDuF
+         e/4g==
+X-Forwarded-Encrypted: i=1; AHgh+Rom/zvABkHWSVUYya3hN+tEN0MFIKG2owcjp2a6Q5jQ1W16kZLjyTCz2q1TIsZsNBnH9NHIyZtJFWJt@lists.linux.dev
+X-Gm-Message-State: AFuF++l7AP2mg6PoOCV+BYVzNcXBrHeschu5q6VVkvIdrPpnJIOXtfHl
+	Bxc86py0/NxsCj8zc5HuTI4+NimBFw/yy6RnScZHkr9BTDyO+611fekIoIe9qjlpkHPS6IGWGc7
+	4QAZ/9sHXprlVc67Cq+hlsiWIbcOp2EC0lhdwSHPU
+X-Gm-Gg: AR+sD12+gHTyQXM6N7BRhUEbbqM7PZ3ZJ99cImy1QScjAjYxxvm4OP/40SnzYtkESKu
+	Xdvb7SPm5s9e/EfCimqJo2MZdPJ9qZXiEGc0SqUKivXmfWr4YvB9WTg5iukhJTZ1Sol9/ev0eiC
+	PyBAZKC43ThQifPF5rZEgN2AMweQ2GGCwvxxrOupjQr+BxqWPmKq3sngKBIyaWAa2jALQ9qWtgK
+	eO2S9D2vxOM7cYxz6GVM+FNAafy4gYfTD50yK2b3xVZh9NPtBoISfjgJCozYe2jaaPe/82pODV+
+	dT0rd34tgdmEH5opLoa18Y24kLmS4XA7xxVLDAojuOHNonWgDzSEXxeuPtX66wapL/lAWf+OktY
+	=
+X-Received: by 2002:a05:622a:e3d1:10b0:51b:ff0a:2048 with SMTP id
+ d75a77b69052e-52ff716ce29mr3942111cf.3.1787958057424; Fri, 28 Aug 2026
+ 16:00:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com>
- <20260806020850.1221381-4-rick.p.edgecombe@intel.com> <CAGtprH9ERb_fFG-4JYR1Bjxyyvnk3Ys4q=9ioQz0Cq6QCXtVBw@mail.gmail.com>
- <9c0048b72834e7e88cb278476ad8d19f57373aa9.camel@intel.com>
-In-Reply-To: <9c0048b72834e7e88cb278476ad8d19f57373aa9.camel@intel.com>
+References: <20260806020850.1221381-1-rick.p.edgecombe@intel.com> <20260806020850.1221381-12-rick.p.edgecombe@intel.com>
+In-Reply-To: <20260806020850.1221381-12-rick.p.edgecombe@intel.com>
 From: Vishal Annapurve <vannapurve@google.com>
-Date: Fri, 28 Aug 2026 15:54:28 -0700
-X-Gm-Features: AcwNN1UEyg9LUIjstN53o3MhfwwMAKPLjXkthRuE3vRI8Rovt7_F8Pac_E2pZ8A
-Message-ID: <CAGtprH870raS09USeB=Ec_TAY8Vke6-nV_LcX6dYZVn=wEhjNg@mail.gmail.com>
-Subject: Re: [PATCH v9 03/11] x86/virt/tdx: Add tdx_alloc/free_control_page() helpers
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Huang, Kai" <kai.huang@intel.com>, 
-	"Hansen, Dave" <dave.hansen@intel.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>, 
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>, "Wu, Binbin" <binbin.wu@intel.com>, 
-	"kas@kernel.org" <kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>, 
-	"mingo@redhat.com" <mingo@redhat.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"nik.borisov@suse.com" <nik.borisov@suse.com>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"hongyu.ning@linux.intel.com" <hongyu.ning@linux.intel.com>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "Mehta, Sohil" <sohil.mehta@intel.com>, 
-	"Gao, Chao" <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>
+Date: Fri, 28 Aug 2026 16:00:46 -0700
+X-Gm-Features: AcwNN1X97irb4_j1CgiMkl1NpgrTMyQT9MylOIwj136cEwhgsDcXkqEaEWN4fto
+Message-ID: <CAGtprH8-7_C_CQhKUj816oYyEH_RBPMCu+yPQwhvoAkSkWXapg@mail.gmail.com>
+Subject: Re: [PATCH v9 11/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, dave.hansen@intel.com, hpa@zytor.com, kas@kernel.org, 
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, mingo@redhat.com, nik.borisov@suse.com, 
+	pbonzini@redhat.com, seanjc@google.com, tglx@kernel.org, x86@kernel.org, 
+	chao.gao@intel.com, yan.y.zhao@intel.com, kai.huang@intel.com, 
+	tony.lindgren@linux.intel.com, binbin.wu@intel.com, sohil.mehta@intel.com, 
+	Hongyu Ning <hongyu.ning@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 28, 2026 at 3:23=E2=80=AFPM Edgecombe, Rick P
+On Wed, Aug 5, 2026 at 7:09=E2=80=AFPM Rick Edgecombe
 <rick.p.edgecombe@intel.com> wrote:
 >
-> On Fri, 2026-08-28 at 12:50 -0700, Vishal Annapurve wrote:
-> > Reviewed-by: Vishal Annapurve <vannapurve@google.com> for the
-> > SEAMCALLs and the get/put helpers, assuming your are still thinking to
-> > shift things a bit between the current and the next patch.
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 >
-> I looked at moving tdx_alloc/free_control_page() to the next patch. But D=
-ave's
-> comment was more along the lines of just commenting the limitations. So r=
-ather
-> than disturb the already reviewed patches at this point, I'm just comment=
-ed the
-> limitations clearly. And then removing the comments when the limitations =
-are
-> fixed.
+> The Dynamic PAMT get/put helpers use a global spinlock to serialize all
+> refcount updates and SEAMCALL invocations. This gives correct behavior fo=
+r
+> concurrent callers, but leads to contention. It is especially bad from th=
+e
+> KVM side, which is designed to allow faulting in EPT under a shared lock.
+> With the global spinlock, not only is the lock an exclusive one, but it i=
+s
+> for all TDs instead of just a single one.
 >
-> So the only only code change here is temporarily prepending the limited
-> functions with __.
-
-Sounds good.
-
+> But taking the global lock each time is actually unnecessary. Only the 0-=
+>1
+> and 1->0 refcount transitions actually need the lock (to pair with
+> SEAMCALLs that actually add and remove with the Dynamic PAMT pages). The
+> common case of incrementing or decrementing a non-zero refcount can be
+> done locklessly.
 >
-> Do you want to keep your RBs?
-
-Yeah.
-
+> So create a fast and slow path. Check the refcount outside the lock and
+> only take it for the slow path (0->1 and 1->0 transitions).
 >
-> Rick
+> On the put side make the refcount adjustment and lock taking atomic so if
+> a 'get' happens between them, it doesn't cause the Dynamic PAMT to be
+> freed incorrectly. On the get side there is no technique for doing the
+> refcount adjustment and lock atomically, so check the refcount again
+> inside the lock.
+>
+> AI was used under supervision to collect/apply feedback, review code and
+> workshop logs. It assisted in identifying/evaluating the stale
+> conditionals for the races resolved from the atomic_dec_and_lock() change=
+.
+> Separate from atomic_dec_and_lock() fallout, it suggested to change
+> atomic_inc() to atomic_set(pamt_refcount, 1) in the put error path for th=
+e
+> sake of being more precise, which Kiryl had also suggested in the past.
+> The model also suggested updated comments following the
+> atomic_dec_and_lock() change based on some directed prompting. The
+> comments were subsequently edited or further prompted for fine tuning.
+>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
+> Reviewed-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+> Acked-by: Sohil Mehta <sohil.mehta@intel.com>
+> ---
+
+Reviewed-by: Vishal Annapurve <vannapurve@google.com>
