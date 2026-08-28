@@ -1,220 +1,371 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922B43DCDA7;
-	Fri, 28 Aug 2026 12:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787920476; cv=none; b=ChKvyNGVZ0oGqFes/wg18uiN9Fglr2QdGC1Cv7ozb1XlJzZS5l/EYmGy1+sO/r+i7S71f/4OHEsGFNeySSgSuqAz70hqWhBfIysefuv09eD8nZzuJv+0A72cP/Bv39v0YmWxkRfV0g4nszRYYxmRJB9bUwm6wNBRXjniIbczNkE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787920476; c=relaxed/simple;
-	bh=eH7sRyB+LzwsPCiJ/Te7a/qWmI6L4dZxZDQCRv0ZQ3U=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=sEselVUcdPcW/HaFz49u7wNp7qF00/B/iGsOx9TULz5KwGhzaUDWq2roWAw5IzMKbDB7iHHFETymyWgO0o6No0C5Lf3D+Vw2QwgO9KyT0SIsG1n5bI9xO8qn6S6Kg0sUbJ8D55QMyh1q+8NvVgJYsl4gVOuoA5C8Quc/NG8+1/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Received: from 8bytes.org (p200300f6af4fc500e5563a60c846e803.dip0.t-ipconnect.de [IPv6:2003:f6:af4f:c500:e556:3a60:c846:e803])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id E190B208433;
-	Fri, 28 Aug 2026 14:34:18 +0200 (CEST)
-Date: Fri, 28 Aug 2026 14:34:17 +0200
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Subject: COCONUT-SVSM Development Release v2026.08-devel
-Message-ID: <apGASdsdel62hae2@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47130329E5D
+	for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 14:18:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787926733; cv=none; b=U8X3VxGrlcm31GtEhb7jP1oO05rV8c/HV3anL6RHZIPVomCQLZ5lmoBzs28d4jD5qFOqG1oKqI5SQZf8Ai+pHrLBTgaFP/JZHUnZbHWujbL0VKzmHA/JXJHzqhPQjc7HE2nKnvKoOEFkaaU+LVGZhtX2mSO9Eic3JHWY7Wy5dlA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787926733; c=relaxed/simple;
+	bh=tOIayJ92xrw6pvO0WbOfaDSneoKGHjWYUfTGAkwGxd0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=pWIFaqKLf9Du2A9mx1b3nONOIz/IfMP41qK6qoVVfvaqvPbrPILlljAAkr6hUCDjlwUkI5ZwILfOec85wpKGXt+ctZVmt9dqBoD9cYwQhLHLonboDDwDK5W36ipDkRO/2Q0UWQ4rlUD5KfQqXOB3Fa4uBxnKFuHAD6RbtL1R5/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vVe6zYU6; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vVe6zYU6"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cfa4e4684bso22510095ad.2
+        for <linux-coco@lists.linux.dev>; Fri, 28 Aug 2026 07:18:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787926729; x=1788531529; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lk1PtauESgfcOmIWGAdMCfx87NYe0QEmwPgHNpnVCRk=;
+        b=vVe6zYU6T1wTI12Z8uU6RimAXsYVpGV1+xR2l5m2yw61GUB1i5qny4XLxylfJir0eJ
+         4sFNSv6HrIOO1wIdqQ4qpqbtU5fBUEfMibEJDIpN6xpCTMV5KPZILFXI/h2+v0kE9lZG
+         LW4Sq2VFZ7nq05iJp6eZOP4pGHxSl6C27cDNQoEWLsxP5yP6aJ6t1LeyqxgoEYX4cEu0
+         dq1gZcp2BxiGPQkL9gaU6yHjRhZbAoj5XLd/It4WzXvadZ6lYXe9y2bAvegweBiMEqfg
+         cRWsYCF0oF8V4PQFFu4iXbXo9qNpODhtZVFItVkFV09sSvEWFsIyr66evUB1RT8b1ZHM
+         9zyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787926729; x=1788531529;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lk1PtauESgfcOmIWGAdMCfx87NYe0QEmwPgHNpnVCRk=;
+        b=VQIfVjoapmw4nvbDVMq9qKjokUB+Zj97WruckO3lSQD+wd/aAVZvOOnWL9OjS+PT0Y
+         2VYW9c1xsttIMax7WoJHqZLD5nbFndGJa+anLAWJn77LKA8Oc+3sBz2MGFNHS6v/FTkV
+         zvPX0ydp3jVsuPLeQp9b5uMv6xpGjodE2GtEY5ljCECtA7J8dADEGFJ/WuJ9Re+VmtDJ
+         /EuV+v4G7XxV20sDwlldjn0wgOdzDFEGeUGYtNBU9t0cTKcit5e9LHXDSh0v/JVjDbtw
+         Sz/+40f7Ec1fd7LnqGZ3ElVo44QuKwo4d+Fy2MprGydZt34ru5ExvdPz7Uwli/6V5qMr
+         SH4Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpE7Yx/q7nZeQBbhWMtgTKB/1p/fOviUbWpV3BVs0x8t5hSRBudOdLEgwD6ehxJLEDKTVkR2S38zmql@lists.linux.dev
+X-Gm-Message-State: AFuF++nKJ4V4tskSatNXTBO5vZPqkfUelapq0bFF1CkAenUC7NzkZj2T
+	Snfs2IAO32d5pFujI7xtBMmqjcjDlXGptR/gBFK+Zw3DkvMpGSfeuXwK1xyBxCfmII84HZgykDS
+	LjCDzWg==
+X-Received: from plbmq14.prod.google.com ([2002:a17:902:fd4e:b0:2d7:3fb9:fada])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ec91:b0:2d7:4f55:f40c
+ with SMTP id d9443c01a7336-2d74f55f6edmr103578625ad.6.1787926728323; Fri, 28
+ Aug 2026 07:18:48 -0700 (PDT)
+Date: Fri, 28 Aug 2026 07:18:47 -0700
+In-Reply-To: <20260828042044.GG33657@pedri>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Mime-Version: 1.0
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
+ <20260722-tdx-selftests-v14-21-15ad654a50db@google.com> <6f89fc78-0344-4a7e-bbd8-ac201b8f845a@intel.com>
+ <20260828020612.GF33657@pedri> <b4cffa34-864d-4fd0-9fc7-a7d4514075b2@intel.com>
+ <20260828042044.GG33657@pedri>
+Message-ID: <apGYxwdCSuC-X732@google.com>
+Subject: Re: [PATCH v14 21/22] KVM: selftests: Add ucall support for TDX
+From: Sean Christopherson <seanjc@google.com>
+To: Peter Fang <peter.fang@intel.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Lisa Wang <wyihan@google.com>, 
+	Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: multipart/mixed; charset="UTF-8"; boundary="D8ScZ73OZF7fi6Cd"
+
+
+--D8ScZ73OZF7fi6Cd
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 
-Hi,
+On Thu, Aug 27, 2026, Peter Fang wrote:
+> On Fri, Aug 28, 2026 at 10:31:14AM +0800, Xiaoyao Li wrote:
+> > > 
+> > > Hmm... This makes me wonder if vm->arch.s_bit below could be replaced
+> > > with the same architectural approach. GPAW is available through
+> > > TDG.VP.INFO or the initial RBX value. This does require a bit more
+> > > plumbing though.
+> > 
+> > I'm afraid not. Because below is host code, and vm->arch.s_bit is not used
+> > in guest code.
+> > 
+> > Or are suggesting something like dropping the
+> > 
+> > 	if (is_tdx_vm(vm)) {
+> > 		ucall_mmio_gpa = UCALL_MMIO_GPA | vm->arch.s_bit;
+> > 		sync_global_to_guest(vm, ucall_mmio_gpa);
+> > 	}
+> > 
+> > entirely and use below hardcoded value instead in guest code?
+> > 
+> > 	UCALL_MMIO_GPA | 1 << (GPAW - 1)
+> 
+> Yeah this is what I meant. Just drop sync_global_to_guest() entirely and
+> do things like a normal TDX guest would.
 
-I am happy to anounce the next development release of COCONUT-SVSM. The
-community worked hard as usual and so the August 2026 release brings some very
-exciting new features. The release contains 118 commits of which 30 are merges
-and 88 non-merge commits.
+Blech.  Every time I come back to this series we're still discussing ucall crud,
+and "doing thing like a normal TDX guest".  Selftests aren't normal guests.
 
-The most exciting new feature is support for vTPM NV state persistence, but
-there is more in this release. The highlights are:
+I know I suggested using the HPET base, but I only did so very begrudgingly as I
+couldn't come up with a better alternative to emulated MMIO, and the end result
+is quite gross.  Not only does the code ignore @mmio_gpa but still obviously use
+emulated MMIO, it requires synchronizing data to the guest because KVM disallows
+"private" MMIO.
 
-  - Added an experimental persistence subsystem backed by CocoonFs with support
-    to store vTPM NV state across machine boots.
+  void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
+  {
+         vm_type = vm->type;
+         sync_global_to_guest(vm, vm_type);
 
-  - Replaced fw_cfg-based virtio-MMIO discovery with a Flattened Device Tree
-    supplied through a new IGVM parameter.
+         if (is_tdx_vm(vm)) {
+                 ucall_mmio_gpa = UCALL_MMIO_GPA | vm->arch.s_bit;
+                 sync_global_to_guest(vm, ucall_mmio_gpa);
+         }
+   }
 
-  - Strengthened guest-memory access handling with a GuestPtr cleanup/rewrite
-    and fault-safe slice support.
+Retrieving GPA via TDG.VP.INFO isn't any better, it's still an absurd amount of
+"work" for something that should be trivial.
 
-  - Two security fixes:
-    - PVALIDATE requests now reject grants for non-writable pages.
-    - Improved SNP guest-request error handling, including invalidating VMPCK0
-      after unrecoverable send failures.
+Can't we just abuse TDVMCALL_REPORT_FATAL_ERROR?  AFAICT, there's no restriction
+on the data payload, and there's enough space to all but guarantee we'll never get
+a false positive.
 
-  - Adoption of the new cpufeature crate to enumerate CPU features.
+Pulling in Xiaoyao's idea about using CPUID...
 
-  - Wait queues now support multiple simultaneous waiters.
+> > +void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
+> > +{
+> > +     vm_type = vm->type;
+> > +     sync_global_to_guest(vm, vm_type);
+>
+> It works and it looks simple. But we have the architectural approach to
+> test if a guest is TD guest, by checking the CPUID 0x21.
+>
+> Since checking CPUID 0x21 is not complex, and as a bonus it can help
+> test if TDX module behaves correctly for CPUID leaf 0x21, I think we
+> should switch to use CPUID 0x21 to check if it is TDX VM in guest code?
 
-  - Userspace components now use the Rust log facade; direct userspace console access was removed.
+Absolutely not.  It will require at least one an extra VM-Exit for TDX and non-TDX
+guests alike, and thanks to Intel's wonderful CPUID behavior of having unsupported
+leaves return the last supported leaf, the guest would have to check CPUID.0x0 and
+then CPUID.0x21 on modern hardware, i.e. would incur two extra VM-Exits.  I don't
+care about the performance, but from a debug perspective that's going to be awful,
+as what should be a super simple operation will be polluted with unwanted data.
 
-These and more changes were contributed by 13 people. The full shortlog is
-attached.
+Stop trying to reinvent the wheel and just use a virtual function table.
 
-Happy testing!
+I've verified the attached patches don't break non-TDX selftests, someone just
+needs to test the TDX changes.
 
-Best,
+--D8ScZ73OZF7fi6Cd
+Content-Type: text/x-diff; charset=us-ascii
+Content-Disposition: attachment;
+	filename=0001-KVM-selftests-Add-support-for-per-VM-ucall-ops-on-x8.patch
 
-	Joerg
+From 659487e0a9862900b052836229e3ac366c602f59 Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Fri, 28 Aug 2026 06:46:51 -0700
+Subject: [PATCH 1/3] KVM: selftests: Add support for per-VM ucall ops on x86
 
-Carlos López (19):
-      Merge pull request #1137 from tanish111/cpufeature_impl
-      Merge pull request #1093 from osteffenrh/toml-formatting
-      kernel: protocols/core: require CAA GPA to be 4K-aligned
-      kernel: address: introduce checked align_up() variants
-      kernel: mm/ptguards: remove PerCPUPageMappingGuard::create_4k_pages()
-      kernel: mm/ptguards: guard against physical address overflows
-      kernel: mm/ptguards: keep track of physical region in mapping guard
-      kernel: mm/guestmem: rename GuestPtr to TryPtr
-      kernel: mm/guestmem: unify write() / write_ref() methods
-      kernel: mm/guestmem: check UserPtr bounds at construction
-      kernel: mm/guestmem: add slice support for TryPtr
-      kernel: mm/guestmem: add slice support to UserPtr
-      kernel: mm/guestmem: (re)introduce GuestPtr
-      kernel: boot_params: use TryPtr slice methods
-      kernel: protocols/core: replace TryPtr with GuestPtr
-      kernel: error: translate faults to SysCallError::EFAULT
-      kernel: syscall: use UserPtr slice methods
-      kernel: test: do not force-exclude vtpm and uefivars
-      Merge pull request #1197 from n-ramacciotti/guestmem/slice_borrow_write
+Add a layer of indirection to x86's ucall infrastructure to allow wiring up
+a different set of {do,get}_ucall() operations for TDX VMs.  TDX can't use
+port I/O (at least, not robustly), as the TDX ABI doesn't allow the guest
+to share arbitrary register state with the host on a PIO exit, and the PIO
+data payload is limited to 4 bytes, i.e. would potentially truncate the
+address of the per-ucall structure.
 
-Joerg Roedel (9):
-      scripts: Add script to run all fuzzers
-      CONTRIBUTING.md: Update wording and formatting
-      CONTRIBUTING.md: Add bisectability section
-      CONTRIBUTING.md: Update warnings policy
-      CONTRIBUTING.md: Create a CONTRIBUTING.md in the repository root
-      AGENTS.md: Link to CONTRIBUTING.md
-      kernel/address: Fix cargo-verify issue
-      kernel/greq: Handle all possible send() errors in send_request()
-      COCONUT-SVSM Release 2026.08-devel
+No functional change intended, as the ops are still hardwirte to the common
+x86 ucall functions.
 
-Jon Lange (1):
-      Merge pull request #1006 from luigix25/dtc
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ .../testing/selftests/kvm/include/x86/ucall.h |  6 +----
+ tools/testing/selftests/kvm/lib/x86/ucall.c   | 27 +++++++++++++++++--
+ 2 files changed, 26 insertions(+), 7 deletions(-)
 
-Jörg Rödel (19):
-      Merge pull request #1173 from stefano-garzarella/release-testplan-fixes
-      Merge pull request #1165 from n-ramacciotti/userspace/remove_direct_console_access
-      Merge pull request #1177 from stefano-garzarella/fix-vsock-tests
-      Merge pull request #1176 from stefano-garzarella/release-testplan-attestation-tpm
-      Merge pull request #806 from nicstange/cocoonfs-persistence
-      Merge pull request #1114 from mvanhorn/fix/1104-waitqueue-multiple-waiters
-      Merge branch 'main' into bump_dep
-      Merge pull request #1185 from luigix25/bump_dep
-      Merge pull request #1187 from ziqiaozhou/restore-verified-refil-page
-      Merge pull request #1186 from 00xc/protocols/fix-gpa-align
-      Merge pull request #1188 from ziqiaozhou/fix-ghcb-drop-tlb-flush
-      Merge pull request #1189 from ziqiaozhou/add-dirty-bit-parent-flags
-      Merge pull request #1192 from joergroedel/contributing
-      Merge pull request #1193 from stefano-garzarella/inode-16
-      Merge pull request #1191 from 00xc/mm/safeptr-v3
-      Merge pull request #1199 from stefano-garzarella/inode-namespace
-      Merge pull request #1195 from stefano-garzarella/vtpm-state-cocoonfs
-      Merge commit from fork
-      Merge commit from fork
+diff --git a/tools/testing/selftests/kvm/include/x86/ucall.h b/tools/testing/selftests/kvm/include/x86/ucall.h
+index 0e4950041e3e..3639f03a4da9 100644
+--- a/tools/testing/selftests/kvm/include/x86/ucall.h
++++ b/tools/testing/selftests/kvm/include/x86/ucall.h
+@@ -2,12 +2,8 @@
+ #ifndef SELFTEST_KVM_UCALL_H
+ #define SELFTEST_KVM_UCALL_H
+ 
+-#include "kvm_util.h"
++#include "linux/kvm.h"
+ 
+ #define UCALL_EXIT_REASON       KVM_EXIT_IO
+ 
+-static inline void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
+-{
+-}
+-
+ #endif
+diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/selftests/kvm/lib/x86/ucall.c
+index e7dd5791959b..444d0f0ba138 100644
+--- a/tools/testing/selftests/kvm/lib/x86/ucall.c
++++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
+@@ -8,7 +8,7 @@
+ 
+ #define UCALL_PIO_PORT ((u16)0x1000)
+ 
+-void ucall_arch_do_ucall(gva_t uc)
++static void ucall_x86_do_ucall(gva_t uc)
+ {
+ 	/*
+ 	 * FIXME: Revert this hack (the entire commit that added it) once nVMX
+@@ -42,7 +42,7 @@ void ucall_arch_do_ucall(gva_t uc)
+ 		     HORRIFIC_L2_UCALL_CLOBBER_HACK);
+ }
+ 
+-void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
++static void *ucall_x86_get_ucall(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_run *run = vcpu->run;
+ 
+@@ -54,3 +54,26 @@ void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
+ 	}
+ 	return NULL;
+ }
++
++static struct {
++	void (*do_ucall)(gva_t uc);
++	void *(*get_ucall)(struct kvm_vcpu *vcpu);
++} ucall_x86_ops = {
++	.do_ucall = ucall_x86_do_ucall,
++	.get_ucall = ucall_x86_get_ucall,
++};
++
++void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
++{
++	sync_global_to_guest(vm, ucall_x86_ops);
++}
++
++void ucall_arch_do_ucall(gva_t uc)
++{
++	return ucall_x86_ops.do_ucall(uc);
++}
++
++void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
++{
++	return ucall_x86_ops.get_ucall(vcpu);
++}
 
-Luigi Leonardi (12):
-      igvm: add device tree support
-      kernel/types: add SVSM_VMPL constant
-      virtio/mmio: switch device discovery from fw_cfg to device tree
-      fw_cfg: remove virtio-MMIO device discovery
-      fw_cfg: remove module and remaining references
-      docs: add device tree binding specification
-      kernel/virtio: update safe-mmio to version 0.3.1
-      Cargo: bump intrusive-collections to 0.10.0
-      cargo: bump bitfield-struct to 0.13.0
-      cargo: update bindgen to 0.72
-      kernel/svsm: enable attestation unit tests
-      tools: simplify target cfg in Cargo.toml files
+base-commit: 8ab7454faa8be2d6c1fc29c857b9f9611ddb174b
+-- 
+2.55.0.897.gb25b4bd76c-goog
 
-Matt Van Horn (1):
-      task: support multiple waiters in WaitQueue
 
-Mehul Sardana (1):
-      svsm/core: refuse PVALIDATE grant on non-writable pages
+--D8ScZ73OZF7fi6Cd
+Content-Type: text/x-diff; charset=us-ascii
+Content-Disposition: attachment;
+	filename=0002-KVM-selftests-Add-support-for-TDX-ucalls-via-TDVMCAL.patch
 
-Nicola Ramacciotti (9):
-      makefile: Remove broken DISABLE_CONSOLE_LOG
-      kernel/log: Remove redundant immut after init
-      userlib/test: Reintroduce $crate in macro definitions
-      userlib: Use $crate in declare main macro
-      userlib: Introduce log crate
-      userspace: Use log crate
-      kernel/log: Remove userspace console handler
-      user/log: Remove console handler
-      kernel/guestmem: Support references in slice index writes
+From 60f3e988c65048c63217ec157e9ec228a4c484b7 Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Fri, 28 Aug 2026 06:52:56 -0700
+Subject: [PATCH 2/3] KVM: selftests: Add support for TDX ucalls, via
+ TDVMCALL_REPORT_FATAL_ERROR
 
-Nicolai Stange (13):
-      Upgrade cocoon-tpm-utils-common, -tpm2-interface + -crypto deps
-      kernel: make cocoon-tpm-crypto dep unconditional
-      crypto: manage crypto RNGs at a central place
-      attest: use get_svsm_rng()
-      locking: implement get_mut() for RawSpinLock + RawRWLock
-      locking: implement From<T> for RawSpinLock<T> + RawRWLock<T>
-      Add and integrate cocoon-tpm-utils-async dependency
-      async: implement busy-polling Rust async task executor
-      Add cocoon-tpm-storage dep and wire it up to SVSM's BlockDriver
-      persistence: implement persistence_init() to open CocoonFs storage
-      persistence: implement inode read + write primitives
-      persistence: implement a demo
-      Documentation: add developer doc for persistence functionality
+Add support for doing ucalls on TDX by abusing TDVMCALL_REPORT_FATAL_ERROR
+to pass the address of the payload to the host.  The "fatal error" TDVMCALL
+is perfectly suited for passing information to host userspace, is both the
+TDX Module and KVM allow the guest to pass (almost) all registers to the
+host, i.e. provide enough of a data payload to make a collision with a real
+fatal error practically impossible.
 
-Nihal (2):
-      kernel/attest: add unit tests for pre-boot attestation
-      kernel/protocols/attest: add unit tests for attestation protocol
+TDX can't use port I/O, as the TDX ABI doesn't allow the guest to share
+arbitrary register state with the host on a port I/O exit, and the port I/O
+data payload is limited to 4 bytes, i.e. would potentially truncate the
+ucall address.
 
-Oliver Steffen (2):
-      Add TOML format style (Taplo)
-      Reformat all TOML files with new style
+Alternatively, TDX could use MMIO, but using a magic emulated MMIO address
+is fragile (see the TODO in __vm_create()), especially for TDX since TDX
+doesn't support read-only memslots, i.e. doesn't have line of sight towards
+addressing the TODO.  E.g. TDX could hardcode the address to something that
+is all but guaranteed to be unused on x86, e.g. the I/O APIC base address
+or the HPET address, but that doesn't truly address the fragility concerns,
+and it's ugly because ucall_arch_init() would completely ignore the passed
+in @mmio_gpa despite obviously utilizing emulated MMIO.
 
-Stefano Garzarella (24):
-      scripts/test-in-svsm: replace ncat with a python vsock server
-      kernel/vsock: fix flaky double_connect test
-      Merge pull request #1179 from joergroedel/fuzzing
-      Merge pull request #1166 from n-ramacciotti/userspace/introduce_log_crate
-      docs/RELEASE-TESTPLAN: fix typo in TPM test
-      docs/RELEASE-TESTPLAN: add install step for verus
-      docs/RELEASE-TESTPLAN: add commands to execute in boot tests
-      docs/RELEASE-TESTPLAN: replace individual fuzzer sections
-      docs/RELEASE-TESTPLAN: extend TPM test section
-      docs/RELEASE-TESTPLAN: add attestation tests for vsock and serial
-      Merge pull request #1184 from luigix25/bump_safe_mmio
-      kernel/persistence: update usable inode start to 16
-      Merge pull request #1190 from ziqiaozhou/verus-clean-spec
-      Merge pull request #1183 from luigix25/test_attest
-      Merge pull request #1196 from 00xc/test/feature-excl
-      Revert "persistence: implement a demo"
-      kernel/persistence: introduce InodeNamespace for inode allocation
-      kernel/persistence: add inode namespace for vTPM service
-      kernel/persistence: add inode namespace for UEFI service
-      Merge pull request #1200 from luigix25/fix_cargo_comments
-      kernel/vtpm: simplify and harden TPM manufacturing
-      kernel/vtpm: add CFileBuffer and wire up C file I/O API
-      kernel/vtpm: enable persistent NV state
-      docs: add security caveats for persistence and attestation
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ .../selftests/kvm/include/x86/tdx/tdx.h       |  7 +++++
+ tools/testing/selftests/kvm/lib/x86/ucall.c   | 27 ++++++++++++++++++-
+ 2 files changed, 33 insertions(+), 1 deletion(-)
 
-Ziqiao Zhou (5):
-      kernel/alloc.verus: reenable verification in refill_page_list
-      kernel/sec/ghcb: add missing tlb flush in GhcbPage::drop.
-      kernel/pagetable: add Dirty in alloc_pte to prevent future hardware mutations
-      verus: remove unused vars in verus spec.
-      verus: remove unused spec functions
+diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
+index 6355a30bb47f..6582e6c99697 100644
+--- a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
++++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
+@@ -4,6 +4,13 @@
+ 
+ #include <linux/types.h>
+ 
++/* TDX hypercall Leaf IDs */
++#define TDVMCALL_GET_TD_VM_CALL_INFO		0x10000
++#define TDVMCALL_MAP_GPA			0x10001
++#define TDVMCALL_GET_QUOTE			0x10002
++#define TDVMCALL_REPORT_FATAL_ERROR		0x10003
++#define TDVMCALL_SETUP_EVENT_NOTIFY_INTERRUPT	0x10004
++
+ #define TDG_VP_VMCALL_VE_REQUEST_MMIO    48
+ #define TDVMCALL_MMIO_WRITE		  1
+ 
+diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/selftests/kvm/lib/x86/ucall.c
+index 444d0f0ba138..93686e1dd3f3 100644
+--- a/tools/testing/selftests/kvm/lib/x86/ucall.c
++++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
+@@ -5,8 +5,28 @@
+  * Copyright (C) 2018, Red Hat, Inc.
+  */
+ #include "kvm_util.h"
++#include "tdx/tdx.h"
++#include "tdx/tdx_util.h"
+ 
+-#define UCALL_PIO_PORT ((u16)0x1000)
++#define UCALL_PIO_PORT		((u16)0x1000)
++#define UCALL_TDX_MAGIC		0xabacadabaULL
++
++static void ucall_tdx_do_ucall(gva_t uc)
++{
++	__tdcall(TDVMCALL_REPORT_FATAL_ERROR, UCALL_TDX_MAGIC, uc, 0, 0);
++}
++
++static void *ucall_tdx_get_ucall(struct kvm_vcpu *vcpu)
++{
++	struct kvm_run *run = vcpu->run;
++
++	if (run->exit_reason == KVM_EXIT_SYSTEM_EVENT &&
++	    run->system_event.type == KVM_SYSTEM_EVENT_TDX_FATAL &&
++	    run->system_event.data[12] == UCALL_TDX_MAGIC)
++		return (void *)(run->system_event.data[13]);
++
++	return NULL;
++}
+ 
+ static void ucall_x86_do_ucall(gva_t uc)
+ {
+@@ -65,6 +85,11 @@ static struct {
+ 
+ void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
+ {
++	if (is_tdx_vm(vm)) {
++		ucall_x86_ops.do_ucall = ucall_tdx_do_ucall;
++		ucall_x86_ops.get_ucall = ucall_tdx_get_ucall;
++	}
++
+ 	sync_global_to_guest(vm, ucall_x86_ops);
+ }
+ 
+-- 
+2.55.0.897.gb25b4bd76c-goog
 
-tanish111 (1):
-      kernel: use cpufeature crate for CPUID feature descriptors
 
+--D8ScZ73OZF7fi6Cd--
