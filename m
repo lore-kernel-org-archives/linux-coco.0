@@ -1,204 +1,304 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013027.outbound.protection.outlook.com [40.93.201.27])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763EA2EFD9B;
-	Sat, 29 Aug 2026 20:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788033674; cv=fail; b=A/eF7+yhnytKaAN7DeYOFMDAJq8SoOIcrim1H11fGZzcLkFLfT9CK29OVYD2l7M4okIAaPYimArzGK/rDN2BhK5eoiEG8yoIm0WKcvLYU6cxZmNHfavaADdylFbAoZyoWy5d/da+CdJcQPttBxgDjWtZUkdgBEHm2vdDiiwmvvg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788033674; c=relaxed/simple;
-	bh=xrGO+E+I/OcyzAMgAI3/ynR9AfyogNlX3BTQ1+Szf/s=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gnx3WywDhV9gDTYL34y34i+n8sae6Kr2L6TQ4eLRuveMY6EVvoZD3uPiRIz4K26eJxFFCwBRJ6sGgLzfyxKvv8l8P2Qb6S+nhqu8QDenL4xH4i2IKQQ+JIpbXTWW447mSRyT8moBhKk2i8jpRoHv8QKI0oAt1m0N7ZqR1O232I0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=sn1mNuhx; arc=fail smtp.client-ip=40.93.201.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FC734D385
+	for <linux-coco@lists.linux.dev>; Sat, 29 Aug 2026 20:52:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788036783; cv=none; b=YT5v7pbl1nLK8zCuD4Hay62jFQnlE6EPdPwR9UwPckJSGv/Mcq2FLGE1LdyzzYFrwC+P/zJ3pW4dPJlAjy1Rm88QCNn1ysGfnKVm99MtAlnl50Fw45ERNnP2khkeUkiKp8mv6PHd56qct7PdbFtoPHE+o075q7ny1rhQR9s1TtM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788036783; c=relaxed/simple;
+	bh=B4zSGLdJ2v1MrTTIuygmOZOntoAOMbC/y04ayaQhSvQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o5nWFUjfsfHdhIGG1KXd5kFinMkbjcIiVljnpD4NspjeXQgcPR7fO5xC1RsDeBREQCRDS/iIi+QdVp8sPoj7nEPVSCgbCg18LnmV+ri7WRg2qvQL+Gia0r3MZDt1TqcaM3YnuOP90od+32GOe84gro07MN3B95CFaqE9LgpaJlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=U4cuRQLV; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="sn1mNuhx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sQSv7tgouWFCUOwdKqT/ZbCK0eoML9PGFSNCHqp92YvRdRzcNlTSZbxWjRDu8Ar/4u/UtGN1KMc+YxcodlpP0eZcXdAYJTHwdtd1uX9tIjtXve04vQ6EEcuzY0YCQvC4Rm4s7i70Q7Q4yOBd8Dzw1X50n/mOc2Q+SDGB48MlfabmQRb0DDIAoVe4fLCah7C1J2gZ4RJps3QAm+SyE33Xvad7Az5WOangcbMttEhEnVeq5vM8eH83F3NZUN8vwuBp9lMH6X36PohUkrpVhQm3wNkGZnunjFu+Z4p9zhaT+ZCcG7qBinCnDR+1FogcXiWGw6emQshN8wnHROfZYlKoSA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1KyyGb35nAAS4oA4Irll3Sa8Tk2Bw+6AdEssgThZrGY=;
- b=dhsUkG14sp6fYMa/rI5U7SkxEbGno5WuCr7TspkJr/nQGbR9WHbfCsLsjPbPGzppQuTZL1VWFWCGDT3yqb7qbMRz3rDpZ49JufAp7XwUJ9YIDPhyL7jkE5MWs6PGNTppErbyVtVmUjNrRf69+xd/+bIbCuTbW9fNoJcMn6H8hFF5/pREHbeVh9h3ZbrCIFYL2KH5At/oOooaJXz9NvUTyEqsQxvNRmpjUHQG/8DYOv3RqJm1PNKQziofsW1Bj+YTk0fTAOwz9heRMwPhzZLmUDmDswpmF3Qi5ojU0CUihIaDaxnbVDYwrn7z1OwpokbS6lci+YFKW4DmjRKTi3lqCA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1KyyGb35nAAS4oA4Irll3Sa8Tk2Bw+6AdEssgThZrGY=;
- b=sn1mNuhxxP27HrG9eE0OgT2VA9FIQnxhb1Sg+odFt0sHJ7gdhP8heI1suzhQlqzFJJVEh7Dg/8csvsV5113BfYcw73RELxb0jgZZ7QaZi8OToEiAK+xHd/RpHctVqJw9oX3tJOwZZAOGDYyK6UI+d38s9eUOjlcp6NCazEH3P8nWdAUJlRa8Z4Ougf88VirhWupsViOx7aUDt8yLm0BvPmwBYPaVAUphxHoTvNSiLkiaveRS23emjg1vLsOFMhcadDcxhMv+/6xeLck0783DXOC2Qhqe8XvIGRzHF0yGaJvnfl+r4TWkcGMgFdslFgXrwzViuwF+AoK4DhMjoAwurg==
-Received: from PH0PR07CA0018.namprd07.prod.outlook.com (2603:10b6:510:5::23)
- by IA1PR12MB8408.namprd12.prod.outlook.com (2603:10b6:208:3db::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.12; Sat, 29 Aug
- 2026 20:01:08 +0000
-Received: from SA2PEPF0000150A.namprd04.prod.outlook.com
- (2603:10b6:510:5:cafe::72) by PH0PR07CA0018.outlook.office365.com
- (2603:10b6:510:5::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.12 via Frontend Transport; Sat,
- 29 Aug 2026 20:01:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SA2PEPF0000150A.mail.protection.outlook.com (10.167.242.42) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.382.8 via Frontend Transport; Sat, 29 Aug 2026 20:01:07 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Sat, 29 Aug
- 2026 13:00:54 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Sat, 29 Aug
- 2026 13:00:53 -0700
-Received: from nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46 via Frontend
- Transport; Sat, 29 Aug 2026 13:00:52 -0700
-Date: Sat, 29 Aug 2026 13:00:52 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-CC: <linux-coco@lists.linux.dev>, <kvmarm@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, Dan Williams <dan.j.williams@intel.com>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>, Jonathan Cameron
-	<jic23@kernel.org>, Marc Zyngier <maz@kernel.org>, Pranjal Shrivastava
-	<praan@google.com>, Robin Murphy <robin.murphy@arm.com>, Samuel Ortiz
-	<sameo@rivosinc.com>, Steven Price <steven.price@arm.com>, Suzuki K Poulose
-	<Suzuki.Poulose@arm.com>, Will Deacon <will@kernel.org>, Xu Yilun
-	<yilun.xu@linux.intel.com>
-Subject: Re: [RFC PATCH v4 03/16] iommu/arm-smmu-v3: Add initial pSMMU realm
- viommu plumbing
-Message-ID: <apM6dOHcEI2ztWS0@nvidia.com>
-References: <20260427085344.941627-1-aneesh.kumar@kernel.org>
- <20260427085344.941627-4-aneesh.kumar@kernel.org>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="U4cuRQLV"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8889640E039E;
+	Sat, 29 Aug 2026 20:52:56 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id NNr9zwtt48Ym; Sat, 29 Aug 2026 20:52:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1788036766; bh=RXU+41X6N0UK5DI5Zk12OSxGRdbePYrhCOq4AMtWKbc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=U4cuRQLVzGJ+NTHQdYb273h+HBXCKwR2cC06XI9/4n/9QbsCPyFSiOF0/cVJbowOp
+	 EHHIuDv63tyNaN2mJ9ne5qcEQ3Jtm1HS8A2s9MvAvCb5f0B0yYAiiGPQohc1c1OQa/
+	 zBMtNu06C6XLNBTMarq4H2RjD6aMUyPSTA+wFzdpDjd+3Ol3ZMc7hEp32oEsFSYokx
+	 uoMG92Xop7mSFq/oFfKSECU1x/91eUFSI+SpuCpZo7tk1E2zZpio7dxXOlKJb2oW1h
+	 8787xuggW9V9CHkLmCVPg/03HZY55Pkk6Q9zW6v78xWF5QqKMkKWhUhoYmsABZWceA
+	 1eeeFqigi/sNvS/I0tYJMNKJ7Q4Csx8h/L3DPv8v8cV40bU9pIr4nkCzBipxAbTCs1
+	 Z8cY6LBWmw9vmvZ0OvAIHGFvN+KM9hXls8gEM8c3yNW989IRXgEufD3PRzaWh/3TTU
+	 J9VT9/EXDmjJdWKHEjnIzfco7bmeBXoezU5zMHLxZo57XyqZIJwM1bBILVySmmSwZR
+	 KzLfYcjiKc07Q9fAuBISkKGgQO02tZjjpn0tynmGmtWAUoNbFjJmqHdR2m83czQ9sh
+	 DJtpzqLo7oo2/xFdQOEakh0Cjb3VB7t0GgpOJJuPGOpT0x2DUPRYw04IeoHpiavuwn
+	 J4663te3s3uSVnrMCxhSVi5Y=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7504240E02C2;
+	Sat, 29 Aug 2026 20:52:11 +0000 (UTC)
+Date: Sat, 29 Aug 2026 13:52:08 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v12 4/5] x86/sev: Add support to perform RMP
+ optimizations asynchronously
+Message-ID: <20260829205208.GDapNGeGMOs02IrkGS@fat_crate.local>
+References: <cover.1786389115.git.ashish.kalra@amd.com>
+ <9c9502278f68af9da19f0dd583ba303d0e6d66d2.1786389115.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260427085344.941627-4-aneesh.kumar@kernel.org>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF0000150A:EE_|IA1PR12MB8408:EE_
-X-MS-Office365-Filtering-Correlation-Id: af804dde-6e1c-4184-2dfa-08df060843ba
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|1800799024|23010399003|7416014|376014|22082099003|18002099003|56012099006|3023799007|6133799003|11063799006|4143699003|5023799004|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	7oL0aYKYjVbpbk4U+IPrP9pFnIYkvRcEGI8e7L6xJ97rn2ZUFdMX7VRXsusQXvI9HemNYji4Vsy9EDjRaMJCYKPyHLUzvEBYNInMze8333EAoZV4grhBQnDuEwTHpbOGiSrODIQ6dk5TaUuYoZv63WwI1OfEUbmC3VvUp4G1Edz9dIxxd6ORzDoGlULV5nDD9+YBd6/Nfx9PuHpUQ3eBw1s4SUGfb8hk63gQH55sJc6j3Dmn7YJGJ3yieNfwiT04lgwXelZ4Zz76GXr7i2nKRzE2h51caAgjwxQbT1AhHcD651TjEeDoJWg2pEAvGzeIsHvYt0WXwQwkwA65gaMjgTmJPoUXCehPq6/N1Nbhj1O58UXoPtQg0jfjngL2hMpDrCQRVMkI3wY5bpdimQzpMP53/pjwCpfwQSh6q9TpmVlsp6P6ayARrg4Ra7lHccIXcYWX21R2vz9jj4RYf7KcsX49b5yN3GzEdXuG8D5vxP0I4Dx3oSYQzUybxGq9BHNzIss+10DhVMhHvxHeLnJRdWOffSQ+I9bQlaGI4/GlWIwz7EhelSWg6F7DhVWMLzIDsH0LGJzG2fV/gZI+zi1GLA0TnTjtg61oEpJ++Ct7ldfW+t1lBQ+wcyKkPCgOykmszZzGTioN600P5wBu86a3Th4ceWDqvDHvaPenk1QhgdsIACjTFbPr0OI3i0EaCosHFD7PYAQFJHDcZrqiYZHPdw==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(1800799024)(23010399003)(7416014)(376014)(22082099003)(18002099003)(56012099006)(3023799007)(6133799003)(11063799006)(4143699003)(5023799004)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	KxE7Juy99ISE9fS7HIlwicdhr1SY1i0HaOCM6OzaCy1GUBwDJQX6Z+Ma3xheHUVfggeBlCd4OxXiOKPbLcyrG646BMqKdnciFsAfsMNl5DBlZ4JQMb9kEd8VVdFIoKn2BaVFozixM9fC5GzAzIlQoa/xOH4Wz/aXRQXyzAuYYaweTTbBFX1AO2yTru/4wjdbo8zubkp/3MFUASkvys5Ht7DOL9e522Tx+SyAV1TAhes93IzSMSN+wrMvrIxc9YF6k9oLhksgUqpj/NAA0+NE67Q3xgLZz+cmVpDQclBlIfoEJQUS3H1HLYUcPpRc7SGuzbz/BjmfbkTH6XFFJTya/79F10weERLn+vnYp0i+tUzA8eLRDJslmC+G4dUtDpzF1YoZaxW0zA7dy8XUCM0+skLnruoVTDF8Ufue9KHyq2+CRNO+1PlFpijV9Ysoir8p
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2026 20:01:07.4211
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: af804dde-6e1c-4184-2dfa-08df060843ba
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF0000150A.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8408
+In-Reply-To: <9c9502278f68af9da19f0dd583ba303d0e6d66d2.1786389115.git.ashish.kalra@amd.com>
 
-On Mon, Apr 27, 2026 at 02:23:31PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> +static const struct iommufd_viommu_ops arm_realm_smmu_v3_ops = {
-> +	.destroy = arm_realm_smmu_v3_destroy,
-> +	.alloc_domain_nested = arm_vsmmu_alloc_domain_nested,
-> +	.cache_invalidate = arm_vsmmu_cache_invalidate,
-
-I don't think realm vsmmu should include NS nested domain ops. I
-wonder if adding here is for some covert reason that prevents us
-from registering viommu/vdevice objects?
-
-> +static int arm_realm_smmu_v3_vdevice_init(struct iommufd_vdevice *vdev)
+On Mon, Aug 10, 2026 at 07:22:10PM +0000, Ashish Kalra wrote:
+> +/*
+> + * RMPOPT optimizations skip RMP checks at 1GB granularity if this range of
+> + * memory does not contain any SNP guest memory.
+> + *
+> + * @pa is a system physical address; RMPOPT operates on the containing 1GB.
+> + */
+> +static void rmpopt(u64 pa)
 > +{
-> +	struct device *dev = iommufd_vdevice_to_device(vdev);
-> +	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
-> +	// fixme which stream to pick
-> +	/* At this moment, iommufd only supports PCI device that has one SID */
-> +	struct arm_smmu_stream *stream = &master->streams[0];
-> +	struct arm_smmu_device *smmu = master->smmu;
-> +	unsigned long rmi_ret = 0;
-> +	int ret;
+> +	u64 pa_start = ALIGN_DOWN(pa, SZ_1G);
+> +	enum rmpopt_op_type op = RMPOPT_OP_VERIFY_AND_REPORT_STATUS;
 > +
-> +	if (!smmu->realm_initialized)
-> +		return -EINVAL;
+> +	/*
+> +	 * RMPOPT (F2 0F 01 FC): RAX = 1GB-aligned SPA, RCX = op type, CF set if
+> +	 * the range was optimized (result unused on this path).
+> +	 *
+> +	 * Binutils does not support the RMPOPT mnemonic yet, so the instruction
+> +	 * is encoded with .byte.
+> +	 */
+
+I don't know whether you've checked the binutils sources but this should have
+the version of binutils which supports it and I think there is no such version
+yet - I've pinged binutils team to see what their plans are.
+
+> +	asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc"
+> +		     :: "a" (pa_start), "c" (op)
+> +		     : "memory", "cc");
+> +}
 > +
-> +	ret = rmi_psmmu_st_l2_create(smmu->base_phys,
-> +				     ALIGN_DOWN(stream->id, STRTAB_NUM_L2_STES),
-> +				     &rmi_ret);
-
-The "vdevice" is for a PSMMU stream table allocation..
-
-> +int arm_realm_smmu_v3_init(struct iommufd_viommu *viommu,
-> +			   const struct iommu_user_data *user_data)
+> +/* on_each_cpu() callback: optimize the whole RMPOPT range on this CPU. */
+> +static void rmpopt_scan_range(void *arg)
 > +{
-[...]
-> +psmmu_activate:
-> +	ret = rmi_psmmu_activate(smmu->base_phys, virt_to_phys(params),
-> +				 &rmi_ret);
+> +	u64 pa;
+> +
+> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
+> +		rmpopt(pa);
+> +}
+> +
+> +static void rmpopt_work_handler(struct work_struct *work)
+> +{
+> +	int this_cpu;
+> +
+> +	/*
+> +	 * RMPOPT scans the RMP table, stores the result of the scan in the
+> +	 * reserved processor memory. The RMP scan is the most expensive
+> +	 * part. If a second RMPOPT occurs, it can skip the expensive scan
+> +	 * if they can see a cached result in the reserved processor memory.
+> +	 *
+> +	 * Run RMPOPT on one CPU first (the leader), then on every other primary
+> +	 * thread (the followers).  A follower skips the expensive RMP scan by
+> +	 * reusing the cached scan results the leader produced.
+> +	 *
+> +	 * migrate_disable() pins this work to the current CPU so it stays the
+> +	 * leader for the whole leader loop: this_cpu remains valid and the
+> +	 * RMPOPT instruction runs on it.
+> +	 */
+> +	migrate_disable();
+> +	this_cpu = smp_processor_id();
+> +
+> +	cpumask_andnot(rmpopt_follower_mask, rmpopt_cpumask,
+> +		       topology_sibling_cpumask(this_cpu));
+> +
+> +	rmpopt_scan_range(NULL);
+> +
+> +	migrate_enable();
+> +
+> +	/*
+> +	 * Followers: one IPI per remaining core, each optimizing the whole
+> +	 * range.  Each runs with interrupts disabled, but only issues cache-hit
+> +	 * RMPOPTs (the leader populated the scan cache above), so the window is
+> +	 * short.  cpus_read_lock() is intentionally not held: CPU hotplug is
+> +	 * disabled the entire time SNP is active (see snp_prepare()), and this
+> +	 * work only runs while SNP is active, so the follower set stays valid.
+> +	 */
+> +	on_each_cpu_mask(rmpopt_follower_mask, rmpopt_scan_range, NULL, true);
 
-.. and the "viommu" is also for PSMMU activation...
+If the leader ran once and the results are cached, then does it matter if
+I run RMPOPT on it again? IOW, what's stopping me from doing
 
-> +++ b/include/uapi/linux/iommufd.h
-> @@ -1055,6 +1055,7 @@ enum iommu_viommu_type {
->  	IOMMU_VIOMMU_TYPE_DEFAULT = 0,
->  	IOMMU_VIOMMU_TYPE_ARM_SMMUV3 = 1,
->  	IOMMU_VIOMMU_TYPE_TEGRA241_CMDQV = 2,
-> +	IOMMU_VIOMMU_TYPE_ARM_REALM_SMMUV3 = 3,
+	on_each_cpu_mask(rmpopt_cpumask, rmpopt_scan_range, NULL, true);
 
-.. and we demand userspace (VMM) to use IOMMU_VIOMMU_ALLOC ioctl,
-even if VMM does not actually expose a guest-level SMMU instance.
-Thus, no user_data.
+and don't care about leaders and followers at all?
 
-I can get the reasoning behind the flow using this viommu/vdevice.
+Also, rmpopt_mask is cpu_primary_thread_mask and you don't need any of those
+gymnastics.
 
-But, on the other hand, I can imagine that a Realm VSMMU would add
-a new flag with a user_data to this VIOMMU. Then, this flow would
-give some troubles to VMM (QEMU for example):
+IOW, this is how my cleanup ontop looks like so far:
 
- - For VM with a guest-level SMMU, QEMU creates a realm instance
-   where IOMMU_VIOMMU_TYPE_ARM_REALM_SMMUV3 (with vsmmu) can be
-   allocated.
- - For VM w/o a guest-level SMMU, QEMU won't create such a realm
-   instance, while still required to invoke the ioctl (w/o vsmmu). 
+diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+index 55a6e2319899..a1f6f3111517 100644
+--- a/arch/x86/virt/svm/sev.c
++++ b/arch/x86/virt/svm/sev.c
+@@ -125,7 +125,6 @@ static void *rmp_bookkeeping __ro_after_init;
+ 
+ static u64 probed_rmp_base, probed_rmp_size;
+ 
+-static cpumask_var_t rmpopt_cpumask, rmpopt_follower_mask;
+ static u64 rmpopt_pa_start, rmpopt_pa_end;
+ 
+ enum rmpopt_op_type {
+@@ -587,11 +586,9 @@ static void rmpopt_disable(void)
+ 	cancel_delayed_work_sync(&rmpopt_delayed_work);
+ 	destroy_workqueue(rmpopt_wq);
+ 
+-	for_each_cpu(cpu, rmpopt_cpumask)
++	for_each_cpu(cpu, cpu_primary_thread_mask)
+ 		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, 0);
+ 
+-	free_cpumask_var(rmpopt_cpumask);
+-	free_cpumask_var(rmpopt_follower_mask);
+ 	rmpopt_pa_start = rmpopt_pa_end = 0;
+ 	rmpopt_wq = NULL;
+ }
+@@ -632,16 +629,9 @@ static bool rmpopt_capable(void)
+  */
+ static void rmpopt(u64 pa)
+ {
+-	u64 pa_start = ALIGN_DOWN(pa, SZ_1G);
+ 	enum rmpopt_op_type op = RMPOPT_OP_VERIFY_AND_REPORT_STATUS;
++	u64 pa_start = ALIGN_DOWN(pa, SZ_1G);
+ 
+-	/*
+-	 * RMPOPT (F2 0F 01 FC): RAX = 1GB-aligned SPA, RCX = op type, CF set if
+-	 * the range was optimized (result unused on this path).
+-	 *
+-	 * Binutils does not support the RMPOPT mnemonic yet, so the instruction
+-	 * is encoded with .byte.
+-	 */
+ 	asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc"
+ 		     :: "a" (pa_start), "c" (op)
+ 		     : "memory", "cc");
+@@ -656,43 +646,22 @@ static void rmpopt_scan_range(void *arg)
+ 		rmpopt(pa);
+ }
+ 
+-static void rmpopt_work_handler(struct work_struct *work)
++static void do_rmpopt_work(struct work_struct *work)
+ {
+ 	int this_cpu;
+ 
+ 	/*
+-	 * RMPOPT scans the RMP table, stores the result of the scan in the
+-	 * reserved processor memory. The RMP scan is the most expensive
+-	 * part. If a second RMPOPT occurs, it can skip the expensive scan
+-	 * if they can see a cached result in the reserved processor memory.
+-	 *
+-	 * Run RMPOPT on one CPU first (the leader), then on every other primary
+-	 * thread (the followers).  A follower skips the expensive RMP scan by
+-	 * reusing the cached scan results the leader produced.
+-	 *
+-	 * migrate_disable() pins this work to the current CPU so it stays the
+-	 * leader for the whole leader loop: this_cpu remains valid and the
+-	 * RMPOPT instruction runs on it.
++	 * RMPOPT caches the results of a RMP table scan in reserved processor
++	 * memory, allowing future invocations to skip such costly operations.
+ 	 */
+ 	migrate_disable();
+ 	this_cpu = smp_processor_id();
+ 
+-	cpumask_andnot(rmpopt_follower_mask, rmpopt_cpumask,
+-		       topology_sibling_cpumask(this_cpu));
+-
+ 	rmpopt_scan_range(NULL);
+ 
+ 	migrate_enable();
+ 
+-	/*
+-	 * Followers: one IPI per remaining core, each optimizing the whole
+-	 * range.  Each runs with interrupts disabled, but only issues cache-hit
+-	 * RMPOPTs (the leader populated the scan cache above), so the window is
+-	 * short.  cpus_read_lock() is intentionally not held: CPU hotplug is
+-	 * disabled the entire time SNP is active (see snp_prepare()), and this
+-	 * work only runs while SNP is active, so the follower set stays valid.
+-	 */
+-	on_each_cpu_mask(rmpopt_follower_mask, rmpopt_scan_range, NULL, true);
++	on_each_cpu_mask(cpu_primary_thread_mask, rmpopt_scan_range, NULL, true);
+ }
+ 
+ void snp_setup_rmpopt(void)
+@@ -729,30 +698,7 @@ void snp_setup_rmpopt(void)
+ 		return;
+ 	}
+ 
+-	INIT_DELAYED_WORK(&rmpopt_delayed_work, rmpopt_work_handler);
+-
+-	if (!zalloc_cpumask_var(&rmpopt_cpumask, GFP_KERNEL)) {
+-		pr_err("Failed to allocate RMPOPT cpumask\n");
+-		destroy_workqueue(rmpopt_wq);
+-		rmpopt_wq = NULL;
+-		return;
+-	}
+-
+-	if (!zalloc_cpumask_var(&rmpopt_follower_mask, GFP_KERNEL)) {
+-		pr_err("Failed to allocate RMPOPT follower cpumask\n");
+-		free_cpumask_var(rmpopt_cpumask);
+-		destroy_workqueue(rmpopt_wq);
+-		rmpopt_wq = NULL;
+-		return;
+-	}
+-
+-	/*
+-	 * The RMPOPT_BASE MSR has core scope. All primary threads are online,
+-	 * otherwise SNP would not have been enabled.
+-	 */
+-	for_each_online_cpu(cpu)
+-		if (topology_is_primary_thread(cpu))
+-			cpumask_set_cpu(cpu, rmpopt_cpumask);
++	INIT_DELAYED_WORK(&rmpopt_delayed_work, do_rmpopt_work);
+ 
+ 	rmpopt_pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
+ 	rmpopt_base = rmpopt_pa_start | MSR_AMD64_RMPOPT_ENABLE;
+@@ -761,7 +707,7 @@ void snp_setup_rmpopt(void)
+ 	 * Per-CPU RMPOPT tables cover at most 2 TB.  Program each core's
+ 	 * RMPOPT_BASE with the start of RAM to optimize up to 2 TB.
+ 	 */
+-	for_each_cpu(cpu, rmpopt_cpumask)
++	for_each_cpu(cpu, cpu_primary_thread_mask)
+ 		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
+ 
+ 	rmpopt_pa_end = ALIGN(PFN_PHYS(max_pfn), SZ_1G);
 
-Taking a step back, I wonder if we really need to use iommufd for
-PSMMU activation and its stream table allocations?
+-- 
+Regards/Gruss,
+    Boris.
 
-Here are some facts:
-  - An iommufd has a ctx, that's one per VM. Similarly, a Realm
-    has an RD.
-  - For an RMI command that needs an RD, it makes sense to be per
-    iommufd ctx, e.g. RMI_VSMMU_* or RMI_VDEV_* commands.
-  - PSMMU commands are global; they don't need RD. So they don't
-    seem necessary to tie to an iommufd ctx.
-
-Instead, could the PSMMU activation be done after RMI_PSMMU_INFO
-check? Is there any reason not to do that? A safer timing might
-be at the device assignment stage?
-
-Speaking of which, RMI_PSMMU_ST_L2_CREATE doesn't seem necessary
-to be invoked in a vdevice context either. Maybe it should align
-with iommufd idev's lifecycle?
-
-Nicolin
+https://people.kernel.org/tglx/notes-about-netiquette
