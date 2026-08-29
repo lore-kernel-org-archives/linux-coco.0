@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734B54C6D;
-	Sat, 29 Aug 2026 05:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8711A38F9;
+	Sat, 29 Aug 2026 06:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787983109; cv=none; b=T0QF27L1eIEUaF0CRNv6pQp7XIe4STrsLJa2EpWuJJ4S6IqhmZSkMFaugWtBm3Gva/y/rcNbV4HaMJl9FUADGCiJlQOHIiEhJ3R/IqAQdwrtU6vlnXAfblkXe5qVQueD743E+Lo+hqGdxTaqxRge545SxCet4OO/DUg5sBxxEKY=
+	t=1787983355; cv=none; b=KfCrwp/FX5vI7ijpgZ8xrJsdgLL5mIjNE9XC+8wOOv8xYFAfIyVf0U0ZDLZzbdadUW16enX/dr38JUCvh8WNcCpmCjdrgmhvc3KVB4jYQLhDv9wW+JM3OsPukWA7oAYOW6kdO1TPbfYGsdR+vK1jSUeTg3NaWGJeXvs582OVGNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787983109; c=relaxed/simple;
-	bh=yjFsnsGM/joZbue18klTP0WJxnikjuFxSRnv6W9xMsg=;
+	s=arc-20240116; t=1787983355; c=relaxed/simple;
+	bh=MQ4pvSvjLsVP3x7VdT5CeXKSlpni/9XtijdZYznEYcc=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=C3bfAwTXNa7k1A4hnC0dudn+cPvt94Fqj2sc9s+jbfo1QikNCziLGBxRp/cIztkhA893W/jG1ZYQvKTvEQlHY1ECiYWHYwFikDHk49hfvAHZ2nBYSS3gAXPATpmALnrjwLAEp2+VWzhRZy8HElLBU0R9cPklHMWv+mEfxXHt6ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P6DfBeoR; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=rr+L2DJFmt7ZxX0tfwDyvtzYWeqksJPJZJ6QT3l2S8iFcaRnLQnz6XFSZBQvFRkIu3SUiEA710eLkclfJXFJsxf/p2h8FuGt7LLB15tDmf2OVqBtSEN0aYtY8qVQr/42o3FBfH10NucN+uFBCIuJXth2fZ76Yqu6auuhVDd6mu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IOq8adNU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P6DfBeoR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB491F000E9;
-	Sat, 29 Aug 2026 05:58:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IOq8adNU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F2871F000E9;
+	Sat, 29 Aug 2026 06:02:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787983108;
-	bh=dkQIWOOSi9dZ5y0ttPxRnwaYK9TXWapOZX1UUbuCJaA=;
+	s=k20260515; t=1787983353;
+	bh=Gmo29pYEms2+Q4Cr8/V2qBTEL01TPuCLhDnBuX4g4LY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=P6DfBeoRGodPEVPTGXHpQLPo5+qSYlVpvByt0WAmHDa7xGmzwW8XdijVdUaKpisvR
-	 BtpDH+snGhdGV7Dnq8/py0ERpsoWERnBogLU2PZAfjyAs1v+MYwYt8aCPkl+DmQfGr
-	 YMYu1esguiJNg0/0AUc1/LxqA8Nzfi/zFq7gIoJA2phUcMfYQEGQ19+5aa4YOsmYA/
-	 Pr21jz/qYDkOhgQQ/5o/EFMk1RLXK8bx0xHc2iIImp69sJRZ1eGAyGJowbi2VUoaje
-	 jXXIIhY+opLNsBol1mq6HpDVHJ09Kg2o17Oi5R+/kZ0mGQpOksDbtoaX1L5NleXqQD
-	 N1HiWIU4/ZDpQ==
+	b=IOq8adNUVKyS9MvFAKnNOl5jXgUJq+rvuPyYjO+aYorZpj3EN4Vw9mQDoN5dJR6+d
+	 i4Xu5zDr/rJVcPD71YaZxI0DnQ+jCNa0fhBHTSlpdWBZmaFhxjWhbHrB8pPfiKltqP
+	 W8IQ46DKkSKT9EDTwUK1dF2nPf+BHR0JYKzWnP5YuERGDe0Sn0kCBLupOQKP5H0Qqc
+	 w8bxHP8hLouUV2LYxk5LZuAlBL6y9W04nltSwEM8KSxSmwZTnV7odvqfvIhVGSgWA2
+	 yEWLz/gN6Gx100DqgoSAJV1WqxWl/Us3Y6JZcUuPP0tAQIjnfEKLPjbM3I7frZBY7g
+	 rUw9Bz1HwsU8w==
 X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
 From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
 To: Jason Gunthorpe <jgg@nvidia.com>
@@ -42,14 +42,14 @@ Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	Steven Price <steven.price@arm.com>,
 	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
 	Andre Przywara <andre.przywara@arm.com>
-Subject: Re: [PATCH v9 3/7] firmware: arm_rmm: Move RSI support out of
- arch/arm64
-In-Reply-To: <178794567779.4159892.7755943757427570192.b4-review@b4>
+Subject: Re: [PATCH v9 5/7] virt: coco: arm-cca-guest: Rename TSM report
+ source file
+In-Reply-To: <178794567779.4159892.13554089762527571548.b4-review@b4>
 References: <20260805063255.1638614-1-aneesh.kumar@kernel.org>
- <20260805063255.1638614-4-aneesh.kumar@kernel.org>
- <178794567779.4159892.7755943757427570192.b4-review@b4>
-Date: Sat, 29 Aug 2026 11:28:19 +0530
-Message-ID: <yq5aqzjhtqmc.fsf@kernel.org>
+ <20260805063255.1638614-6-aneesh.kumar@kernel.org>
+ <178794567779.4159892.13554089762527571548.b4-review@b4>
+Date: Sat, 29 Aug 2026 11:32:23 +0530
+Message-ID: <yq5ao6eltqfk.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -60,48 +60,32 @@ Content-Type: text/plain
 
 Jason Gunthorpe <jgg@nvidia.com> writes:
 
->> The RSI SMCCC function IDs describe a firmware ABI and are not arm64
->> architecture specific definitions. Follow-up changes need to use them from
->> non-arch code, including drivers/firmware/smccc and the Arm CCA guest
->> driver.
+>> The Arm CCA guest driver currently only implements TSM report support, but
+>> follow-up changes will add more TSM-related functionality to the same
+>> module.
 >> 
->> Move the complete Realm Service Interface (RSI) implementation from
->> arch/arm64 to drivers/firmware/arm_rmm. The RSI SMCCC definitions and
->> command helpers are also moved to include/linux so they can be shared by
->> architecture code and firmware or driver code. This also keeps the
->> firmware interface outside architecture code, as requested [1].
->> 
->> [1] https://lore.kernel.org/all/agsNO9cc7H-b0H8L@willie-the-truck
->> 
->> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+>> Rename arm-cca-guest.c to arm-cca.c and build it as an object of the
+>> arm-cca-guest module. This leaves room for the module to grow additional
+>> source files.
 >
-> The sashiko remarks don't look useful
+> That's pretty confusing, the module is called arm-cc-guest.ko but it
+> has host items too?
 >
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> I would have more expected the module to be named arm-cca and this
+> file to be guest and a future file to be host or something like that?
 >
->> [ ... 321 lines skipped ... ]
->> -#include <asm/rsi_smc.h>
->> +#define RSI_PDEV_NAME "arm-cca-dev"
+> It is annoying to change module names but we do it, and I think it
+> should be no problem in this case since there are no users..
 >
-> This name shows up on the smccc bus as a device, '-dev' doesn't seem
-> to make sense as a device name to me, I'd drop it.
+> But maybe this patch should be in another series..
 >
 
-I will drop the -dev from the name. The final name is "arm-rsi"
+We have two modules, arm-cca-guest.ko and arm-cca-host.ko, located in
+their respective directories:
 
->
-> And is this arm-cca or should it be called arm-rsi with a different SMCC device for
-> arm-rmi ?
->
+drivers/virt/coco/arm-cca-guest/
+drivers/virt/coco/arm-cca-host/
 
-We do that in patch 6. This patch deals with only code movement.
-
-+++ b/include/linux/arm-smccc-rsi.h
-@@ -8,6 +8,8 @@
-
- #include <linux/arm-smccc.h>
-
-+#define RSI_DEV_NAME "arm-rsi-dev"
-+
+They also have separate Kconfig symbols, ARM_CCA_GUEST and ARM_CCA_HOST.
 
 -aneesh
