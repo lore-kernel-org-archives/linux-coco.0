@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEF232AAB5;
-	Mon, 31 Aug 2026 00:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41DC02EEE60;
+	Mon, 31 Aug 2026 00:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788135922; cv=none; b=dn00upj/iaBhinPAFP+laMkUqVWQQr/ZSTUhsCMJdLMxEfA1MYDfq3ACAyiANBSkEseJKVsb8fETgTNxZ4eh1IDxIYnoHvLg2wgcAKeDhyNvXxoBKM3m4mOSxaq68CUChij2WvarFQpKomBD1WXiQ2OmMg6+ew0uGv/6ziZ1Y/E=
+	t=1788135922; cv=none; b=ZuvDwUH+L8iUA909dl9fjmxsrMZrpIST0VsVHqvoOfWPMkiG7q2kNUe4BYWKCv00iyHf4XSwh3fzps4crwriqU3COrOYDdMHPaCOsZFRaw2sVEIgNLrn6lGxcOzd4PeqMoZt/uKkwRROoGy5ErmB+fydrPNS4QffwTMauwv1Euk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788135922; c=relaxed/simple;
-	bh=NxJXoL+hsz4bVjsKWlEJSpWxkSslYL/LfQ9olC8zRh8=;
+	bh=wJ0HFZ639XCyCJUINstQYMk/aJO14np7PyBQNhcLW4c=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iiEyAPOoj6DzfobIowqhHNEabbKBvlAvkpCWbfTzJWVptrrlH26FZYVUYWTZfwGPnn4DMQ8rs2vzPt3jcXzy5a0v35yexmE0wNsFTElkQoHrcfppLdn91UpwFy2qZOXviOzGE1ZhhLzUDmKNSZqLL5jUkIxRsVE58wLFy4fQFIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ALKGmRAL; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=YWbG128XDzlB0bJnjyAK2U85Db3YxI9y7dwh/sgagt/QgfoUw7bczYmsqv4EV1qjVntlJVg5b8YetcTFogah6UVlGsX5olgFgks3PjP9+YA3I15hrPEAHLCXhbVuWRe74yjIPzU9seq1mfeONmlVf34NF6R2vTuNg7UFJfCQ1ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KMKT7i65; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ALKGmRAL"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CF3FDC2BCC7;
-	Mon, 31 Aug 2026 00:25:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KMKT7i65"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 23065C32782;
+	Mon, 31 Aug 2026 00:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788135921;
-	bh=NxJXoL+hsz4bVjsKWlEJSpWxkSslYL/LfQ9olC8zRh8=;
+	s=k20201202; t=1788135922;
+	bh=wJ0HFZ639XCyCJUINstQYMk/aJO14np7PyBQNhcLW4c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ALKGmRAL+Na46FxAZrk8zkS3oFn3FIKadNwnytZlryYVryhIdPqtHjGK2JrqnucJj
-	 zggqoWSjCFmxU/BX8cHOYaRbUI3TYrWvKUKzZFYUkAkDdezTGp9Rx7UNBQsEAOEuLq
-	 pmTPmMbPNPt0Y0SN2r7VqlcpOU0dnG2kg9eTaL/qjKXbbzIT27U7YyF5ht/+JlEA/D
-	 BuGctEQ7WZ5GPmMkSDKEjSTPSoNQJOvB+fxVbeynXshf4OtjMsJoi+15iUhEBklvfG
-	 0x+3bUgIHvP/ptLb7zg8de5dCmpfmPJkYPhnGCdeHkMKIxlb7xPLvco+Fj98wYapyx
-	 jJtT7RIsI7OXQ==
+	b=KMKT7i65k/WsFlmyDROAB+p2TxV5AT2YqWmFO8F/kkNy+psOVgqFQSuMVDQHUCcAE
+	 w0nRpVO0OuvNRxZrMB3QmECirZwuZ3H+MC4v0aobw5RjZLjg+Bv/g5qhF7Zh/cU5t3
+	 UIgreUwECiomF/jxbrlJG+RRoY/xRBph+8P9LUa6CIUjFE+LlrNf10vRtCO5XDw3xd
+	 EvbMRfxV1gdAxI5Fpvediv6wX3A3jMwyXM8emEwHhQalNJmBTvSa3HDwDSZGayOozW
+	 PTMwxI0E81BxWaAJe9HYOVGjm9hS0y+21MLEWR/pD+I3v4RXbJTsV4IpguLH/6JQUD
+	 YKpwUpDff+pew==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7A27C61DE4;
-	Mon, 31 Aug 2026 00:25:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CC78C61DE2;
+	Mon, 31 Aug 2026 00:25:22 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Sun, 30 Aug 2026 17:25:23 -0700
-Subject: [PATCH v12 22/45] KVM: Move KVM_VM_MEMORY_ATTRIBUTES config
- definition to x86
+Date: Sun, 30 Aug 2026 17:25:26 -0700
+Subject: [PATCH v12 25/45] KVM: selftests: Create gmem fd before "regular"
+ fd when adding memslot
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260830-gmem-inplace-conversion-v12-22-85e5fd25252a@google.com>
+Message-Id: <20260830-gmem-inplace-conversion-v12-25-85e5fd25252a@google.com>
 References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
 In-Reply-To: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -78,14 +78,13 @@ To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
- linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
- Xiaoyao Li <xiaoyao.li@intel.com>
+ linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788135915; l=2002;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788135915; l=2916;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=LaDn2CsI38OBZyS6stNAkFJkoZdaUfE8YC0Rnt/13Oo=;
- b=5ojShQdxW/ITFZ0NQyVogZ4ru4lAf3wNfSGMZhvme6tF3hgOkZs2drAVgwLc05VWwGcoPekF7
- TjjTBYl+XCtCB93l/Nax9ptE7IrsyxW78rE0iJUz2HiE05VWEHJBTfT
+ bh=FzqOYqjoRqio5Tf5GMzyqkhVO+XY7bfbFLlkq3H6LaQ=;
+ b=JKi9QkjIbWgmEZutF4Q114HPVnpKdnnCJthVjkvj3BeW4MpXotZ/Lfvs9fsNMGSQfuVR1qof0
+ Ju2ph/EWKJQAF3XVOFrleCZghv14OwSSWO0BT/UqKjcOhAk++RFTpts
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -95,60 +94,82 @@ Reply-To: ackerleytng@google.com
 
 From: Sean Christopherson <seanjc@google.com>
 
-Bury KVM_VM_MEMORY_ATTRIBUTES in x86 to discourage other architectures
-from adding support for per-VM memory attributes, because tracking private
-vs. shared memory on a per-VM basis is now deprecated in favor of tracking
-on a per-guest_memfd basis, and while RWX memory attributes are on the
-horizon, they too are expected to be x86-only.
-
-This will also allow modifying KVM_VM_MEMORY_ATTRIBUTES to be
-user-selectable (in x86) without creating weirdness in KVM's Kconfigs.
-Now that guest_memfd supports in-place conversions, it's entirely possible
-to run x86 CoCo VMs without support for KVM_VM_MEMORY_ATTRIBUTES.
-
-Leave the code itself in common KVM so that it's trivial to undo this
-change if new per-VM attributes do come along.
+When adding a memslot associated with a guest_memfd instance, create/dup
+the guest_memfd before creating the "normal" backing file.  This will allow
+dup'ing the gmem fd as the normal fd when guest_memfd supports mmap(),
+i.e. to make guest_memfd the _only_ backing source for the memslot.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Reviewed-by: Fuad Tabba <tabba@google.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Tested-by: Shivank Garg <shivankg@amd.com>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- arch/x86/kvm/Kconfig | 3 +++
- virt/kvm/Kconfig     | 3 ---
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/kvm/lib/kvm_util.c | 45 +++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
 
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index 2f8e1b5a8a72c..abb108886733a 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -80,6 +80,9 @@ config KVM_WERROR
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index 9ddc047d5c275..3413d45e34faf 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -1077,6 +1077,29 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 	if (alignment > 1)
+ 		region->mmap_size += alignment;
  
- 	  If in doubt, say "N".
- 
-+config KVM_VM_MEMORY_ATTRIBUTES
-+	bool
++	if (flags & KVM_MEM_GUEST_MEMFD) {
++		if (guest_memfd < 0) {
++			u32 guest_memfd_flags = 0;
 +
- config KVM_SW_PROTECTED_VM
- 	bool "Enable support for KVM software-protected VMs"
- 	depends on EXPERT
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index df575449d97b5..a0678ef8ee3f5 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -100,9 +100,6 @@ config KVM_ELIDE_TLB_FLUSH_IF_YOUNG
- config KVM_MMU_LOCKLESS_AGING
-        bool
++			TEST_ASSERT(!guest_memfd_offset,
++				    "Offset must be zero when creating new guest_memfd");
++			guest_memfd = vm_create_guest_memfd(vm, mem_size, guest_memfd_flags);
++		} else {
++			/*
++			 * Install a unique fd for each memslot so that the fd
++			 * can be closed when the region is deleted without
++			 * needing to track if the fd is owned by the framework
++			 * or by the caller.
++			 */
++			guest_memfd = kvm_dup(guest_memfd);
++		}
++
++		region->region.guest_memfd = guest_memfd;
++		region->region.guest_memfd_offset = guest_memfd_offset;
++	} else {
++		region->region.guest_memfd = -1;
++	}
++
+ 	region->fd = -1;
+ 	if (backing_src_is_shared(src_type))
+ 		region->fd = kvm_memfd_alloc(region->mmap_size,
+@@ -1106,28 +1129,6 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
  
--config KVM_VM_MEMORY_ATTRIBUTES
--       bool
+ 	region->backing_src_type = src_type;
+ 
+-	if (flags & KVM_MEM_GUEST_MEMFD) {
+-		if (guest_memfd < 0) {
+-			u32 guest_memfd_flags = 0;
+-			TEST_ASSERT(!guest_memfd_offset,
+-				    "Offset must be zero when creating new guest_memfd");
+-			guest_memfd = vm_create_guest_memfd(vm, mem_size, guest_memfd_flags);
+-		} else {
+-			/*
+-			 * Install a unique fd for each memslot so that the fd
+-			 * can be closed when the region is deleted without
+-			 * needing to track if the fd is owned by the framework
+-			 * or by the caller.
+-			 */
+-			guest_memfd = kvm_dup(guest_memfd);
+-		}
 -
- config KVM_GUEST_MEMFD
-        select XARRAY_MULTI
-        bool
+-		region->region.guest_memfd = guest_memfd;
+-		region->region.guest_memfd_offset = guest_memfd_offset;
+-	} else {
+-		region->region.guest_memfd = -1;
+-	}
+-
+ 	region->unused_phy_pages = sparsebit_alloc();
+ 	if (vm_arch_has_protected_memory(vm))
+ 		region->protected_phy_pages = sparsebit_alloc();
 
 -- 
 2.55.0.897.gb25b4bd76c-goog
