@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793E130F533;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A384F311C1D;
 	Mon, 31 Aug 2026 00:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788135921; cv=none; b=VjEpQ/H528Rl87F7LNmie9RquYSOvykdwB5RJ7u513ywkcpqmJDRPj9SKnJKZRapJ+p7+aYj7fQr7A+/hUSN34Uscyth05HIAzFawiB7GenSZr1NQUXp8cda7EDVD02jD0CiTLbuyDJEL3XsAbbHvSXULQiINOXu4B8Ovhxv8u4=
+	t=1788135921; cv=none; b=JlgXF8dOczLfiB6Xfs+WBj4FgEJluJNBDVXjdxh3IKDHd399vXcYGYrfngcmRxtcV+9tXImc1EWrI/X3BBgv8S5CAjw9ldQcol8yw5rmD+0AvQjM42mLq39lmY/CYs4qhPTJW3MIQnFMkNVWiDwU1xClAic4k0aZ89tt7Bf7s6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788135921; c=relaxed/simple;
-	bh=0u7TejSHMad9bYL2p6sJmzMrRCXcgVnE5lch746jIL0=;
+	bh=EXsOSFV1vU8DO2BOHPz/Ce8cakRIbhdqPxZFrapJwFs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KV7vkG7xM8t7r2kWsQZCUUz2agw5MTSRGN/QFv1vBUwfSOU7dPfQTteiGrA3cNgcLsRFbVUpa/8djCJohLvTt6Jt8C7ElGZ7aRfUuchkwx3FO2/sXBKJm/PlAKQPD+l4RJdCKPex0oEAr550Pqiq/H0mX+oDWz/FZyBxPfiPdEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q4XDKKI9; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=J43Y0wxIe5Jn7jE2jSefYoXuT17Na0gcW/vLSK8yIqRGmuQIs1CCwfxHBXKqO4N28jckMZ9TzQ5P+Xre1nH14vHpVfsFZdt8RvWhafwz1m4ji1G07azzY496CRnzJP4vr2ogFNfyJUlSdpnM+ZplrNba7/+Cd9N+8opZDTAx0Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6Zn/gCf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q4XDKKI9"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5A0A7C2BD01;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6Zn/gCf"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 82D06C2BCC7;
 	Mon, 31 Aug 2026 00:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788135921;
-	bh=0u7TejSHMad9bYL2p6sJmzMrRCXcgVnE5lch746jIL0=;
+	bh=EXsOSFV1vU8DO2BOHPz/Ce8cakRIbhdqPxZFrapJwFs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Q4XDKKI970cDwrlLeOUyPXzL41fHU8ixKdjKvqGjaArmtm3P47QWIbAtRhaNOzqyb
-	 +1i/fJnnXYIf3u/mZ8lMtWzBTvlYBxs9+ErohCEzzYLLMjA/3yE66N1ASko4Gq81dG
-	 pndUl+FiJaAZRQTFsTP7SBd7DYFlV48y28KYOklloq6f51TTC+9J2A3EmaY6+s4AWv
-	 60p1/q0rVQTJQn8RTpTCqKxMrJZc/MCnwzHODOapdLD+Fg3Vrg5zvFwPxLP7NMKIeN
-	 h1TH9DbipEWqk0soO5LzCrkaHmA6OmlViW/Ze8+jBEntG4wkOCmDMddn5bnkIfTXFY
-	 MXvuZUpRMzEQw==
+	b=R6Zn/gCf/axP6nr1BaengQ/HEwKUXk8Cq6jD0GwrDYmNy59fv6L18Ccf+xAvZbxd2
+	 z53c5te2jZ88oxW7EYusMTkvM4Oz1lkt2N7Qt7QJE5VeQ3jwISbpaw/SD1jKsEsKrs
+	 EzgOlbKj0EQyJ+RU1TnYadGVrY/x+BwRtx6UMqTrCLLHi4EZpFyWj1afFRSWXu++M5
+	 mtx4k8LGgMkC0M7p42WjHBkRnXIoVwLnLq/fVDRNOeR6KcRRQK7WrU4NGHNr1s/DUS
+	 ppr27tO+OozYMgdK6vqEcA3D+Vv/3EKbE6DSdwSAEI8DTa6dXZWMZKCDP5dd7qCCEk
+	 uo2qvO66eQIow==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38934C61DE4;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CF2AC61DFF;
 	Mon, 31 Aug 2026 00:25:21 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Sun, 30 Aug 2026 17:25:18 -0700
-Subject: [PATCH v12 17/45] KVM: guest_memfd: Return early if range already
- has requested attributes
+Date: Sun, 30 Aug 2026 17:25:20 -0700
+Subject: [PATCH v12 19/45] KVM: guest_memfd: Zero page while getting pfn
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -41,7 +40,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260830-gmem-inplace-conversion-v12-17-85e5fd25252a@google.com>
+Message-Id: <20260830-gmem-inplace-conversion-v12-19-85e5fd25252a@google.com>
 References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
 In-Reply-To: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -81,11 +80,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
  Xiaoyao Li <xiaoyao.li@intel.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788135915; l=1963;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788135915; l=3028;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=9VNi9pEuvRkZvdOHV26sDWiemmZK8/yVnQLh7gIYUDA=;
- b=CFxkPT3CEVpS6OYk5q/nJQbCjkiuG38jxjI0AEn8ybxQssVnDPdSR4CXvx5zB8nUH7yz3IHXZ
- FIdLJl85tJiBVhY6bcB+H02CGuqGFpIwiDvHRM0IWlde4lr2+MEuRAp
+ bh=cUGg+sf4DufBRW7+H+nQruNnSYvplZ5+HPGnat0Z7N0=;
+ b=iaUEix/boqWHf265FiFwo3RPtQTjSrXq4zSJrf1krBwQQG7RpimowPl9GrMH5wwiWvEnLTWM6
+ eoZpOCymVXPCpSEDnOsDrQzfSoTA27VtGyKj0i0A3pUg0T40KvmIX/V
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -95,66 +94,86 @@ Reply-To: ackerleytng@google.com
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Provide a function to check that a range has given attributes.
+Move the folio initialization logic from kvm_gmem_get_pfn() into
+__kvm_gmem_get_pfn() to also zero pages if the page is to be used in
+kvm_gmem_populate().
 
-Optimize setting memory attributes by returning early if all pages in the
-requested range already have the requested attributes.
+With in-place conversion, the existing data in a guest_memfd page can be
+populated into guest memory through platform-specific ioctls.
+
+Without first zeroing the page obtained using __kvm_gmem_get_pfn(), it
+might contain uninitialized host memory, which would leak to the guest if
+the populate completes.
+
+guest_memfd pages are zeroed at most once in the page's entire lifetime
+with guest_memfd, and that is tracked using the uptodate flag.
+
+Zeroing the page in __kvm_gmem_get_pfn() is chosen over zeroing in
+kvm_gmem_get_folio() since other flows, such as a future write() syscall,
+can get a page, write to the page and then set page uptodate without
+zeroing.
+
+There may be some performance penalty due to redundant zeroing, but this
+would pale in comparison to the cost of actually assigning the page to the
+VM.
+
+This aligns with the concept of zeroing before first use - the other place
+where zeroing happens is in kvm_gmem_fault_user_mapping().
+
+On populate failure, the page is not re-zeroed, since on SNP, if firmware
+rejects a CPUID page, the expected CPUID values provided by firmware are
+returned to userspace via page contents. More generally, page contents may
+be modified on populate failure.
+
+Don't mark the page uptodate again after populating, since the page would
+already be marked uptodate before the post_populate() call.
 
 Reviewed-by: Fuad Tabba <tabba@google.com>
 Tested-by: Shivank Garg <shivankg@amd.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- virt/kvm/guest_memfd.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ virt/kvm/guest_memfd.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index d14a7024bdc7b..ac8e0c6d6e942 100644
+index 1fe935aaef36f..5db578fdce6af 100644
 --- a/virt/kvm/guest_memfd.c
 +++ b/virt/kvm/guest_memfd.c
-@@ -98,6 +98,24 @@ static bool kvm_gmem_is_shared_mem(struct inode *inode, pgoff_t index)
- 	return !kvm_gmem_is_private_mem(inode, index);
- }
+@@ -1105,6 +1105,11 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
+ 		return ERR_PTR(-EHWPOISON);
+ 	}
  
-+static bool kvm_gmem_range_has_attributes(struct inode *inode,
-+					  pgoff_t index, size_t nr_pages,
-+					  u64 attributes)
-+{
-+	struct maple_tree *mt = &GMEM_I(inode)->attributes;
-+	pgoff_t end = index + nr_pages - 1;
-+	void *entry;
-+
-+	lockdep_assert(mt_lock_is_held(mt));
-+
-+	mt_for_each(mt, entry, index, end) {
-+		if (kvm_gmem_get_attributes(inode, entry) != attributes)
-+			return false;
++	if (!folio_test_uptodate(folio)) {
++		clear_highpage(folio_page(folio, 0));
++		folio_mark_uptodate(folio);
 +	}
 +
-+	return true;
-+}
-+
- /*
-  * Returns a locked folio on success.  The caller is responsible for
-  * setting the up-to-date flag before the memory is mapped into the guest.
-@@ -623,12 +641,15 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
- 	pgoff_t end = start + nr_pages;
- 	struct maple_tree *mt;
- 	struct ma_state mas;
--	int r;
-+	int r = 0;
+ 	*pfn = folio_file_pfn(folio, index);
+ 	if (max_order)
+ 		*max_order = 0;
+@@ -1133,11 +1138,6 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 		goto out;
+ 	}
  
- 	mt = &gi->attributes;
+-	if (!folio_test_uptodate(folio)) {
+-		clear_highpage(folio_page(folio, 0));
+-		folio_mark_uptodate(folio);
+-	}
+-
+ 	if (kvm_arch_has_gmem_convert() &&
+ 	    kvm_gmem_is_private_mem(file_inode(file), index))
+ 		r = kvm_arch_gmem_make_private(kvm, gfn, *pfn,
+@@ -1179,8 +1179,6 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 	}
  
- 	filemap_invalidate_lock(mapping);
+ 	ret = post_populate(kvm, gfn, pfn, src_page, opaque);
+-	if (!ret)
+-		folio_mark_uptodate(folio);
  
-+	if (kvm_gmem_range_has_attributes(inode, start, nr_pages, attrs))
-+		goto out;
-+
- 	mas_init(&mas, mt, start);
- 	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
- 	if (r) {
+ out_put_folio:
+ 	folio_put(folio);
 
 -- 
 2.55.0.897.gb25b4bd76c-goog
