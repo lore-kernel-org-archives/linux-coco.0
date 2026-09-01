@@ -1,58 +1,57 @@
-Received: from mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from mta1.migadu.com (out-235.mta1.migadu.com [95.215.58.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AA013FEE
-	for <linux-coco@lists.linux.dev>; Tue,  1 Sep 2026 08:39:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F25472080
+	for <linux-coco@lists.linux.dev>; Tue,  1 Sep 2026 08:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788251988; cv=none; b=qhZE+/Rf3rZmdgbQPQRBLnVefwE5tgmbJ6Z9uzC4LOrzrXuD18gjvV/YBOY3+N1HscMmVS0JOznXfE8xBChGM0kqsG9zdjzgYoVdH7a2QDGqgdUlXObA5hM+SvvMbzZs736kvomITopXOjWN7CB/BaxQZz6Sz9oSaZ3UkTuArZc=
+	t=1788252172; cv=none; b=WMp0b0nMp50XWX2AiRJ61d3l4UlJBWlbOBLEUmtEw+itd9gxjCmp1AOWllQzyXZOFTnQLuEqmEXulDUTGbyHhD7/qtxancKSd4DR485vtP1oma8Ofnmzlj7ViNFzB4E3+qQ9vt5WfWLqSg8XuQYUs9nkwCVL1ZR2xMx30ivTcTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788251988; c=relaxed/simple;
-	bh=MFd6QQcIiVNo4d+5OnfkjHu0LYEIxCoAHDswhin9sq8=;
+	s=arc-20240116; t=1788252172; c=relaxed/simple;
+	bh=NDRSGPV+38awmoPvP+Bzb90MiKF5Z4x3dNbI2Yyn7Pg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QFKX4aIgp74WHQtlXWO+VrZB2hT3G2126nsDWI9qWtcC6uFHsTv/GHHsjU4gy1v0JymxFFE/qcRdf3ottB8a1xtKSyY+QtRbgJtTuGaZN4sZZKymtVgrJrJk+JWD8D57U+XYNexGO0jHDggcg+OnVVk12DR0981OE5y/aLzdybw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fS+xiwsz; arc=none smtp.client-ip=95.215.58.179
+	 To:Cc:Content-Type; b=efWf7yiuMtRF+j5UQPdocOTSTm0uNBgJqOVTw+z3bvYa8IyJzFa9PIIp7m4mjxPFVP/bK/BeZHjwQvS8iBLtaFuPipQo9q+PFNwJX7PfzzRHgrL31ntOIUR2/Gr3+eLkYWgyQ6fv0lw9lmQQV73q07BYic1GJOJgwP7ZY57M2/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=eAuZu+o4; arc=none smtp.client-ip=95.215.58.235
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fS+xiwsz"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eAuZu+o4"
 X-Envelope-To: linux-coco@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=MFd6QQcIiVNo4d+5OnfkjHu0LYEIxCoAHDswhin9sq8=;
+DKIM-Signature: a=rsa-sha256; bh=NDRSGPV+38awmoPvP+Bzb90MiKF5Z4x3dNbI2Yyn7Pg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788251984; v=1; x=1788856784;
- b=fS+xiwsznBHNw9CrQACKqbGUcekGL34YMDoRXIWrv1D+DMhY2EwMM4G2CH10plM3n109acU3
- AJsaskjuGYOXIYywiCc1KtK4IfdWvDrIiQzxbkzzLWtXnfWG3FZb15ffY46376+yyN6TufdbgoU
- +TGEXNiKFMdXXNZnQn9aMe54=
+ t=1788252168; v=1; x=1788856968;
+ b=eAuZu+o4XqExpzd4ECSzHJZgZWO58SYk8MHuFjyQZuhv1Q/rVIu1IX3lvbJ3JE2vKdudfEOf
+ G5xPd0sVAtlxcohyvBRcaFoBusgSrT/fDmR6wHLM1neklZNiQ4va/6jDiuSXKpKS11YlVHcqxBA
+ 3z/r/zsW1NT277wIs9HNQNXE=
 X-Envelope-To: linux-coco@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id 23a281d42f7f83fe;
-	Tue, 01 Sep 2026 08:39:44 +0000
-X-Mizu-Trace-ID: 23a281d42f7f83fe
+Received: by smtp.migadu.com with ESMTPS id c8fb78368f7674b2;
+	Tue, 01 Sep 2026 08:42:48 +0000
+X-Mizu-Trace-ID: c8fb78368f7674b2
 X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5b5e5aaf7deso5937e87.0
-        for <linux-coco@lists.linux.dev>; Tue, 01 Sep 2026 01:39:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzYoZqsEjuZGk25ByhKI+CQbJdfuQJt5uVBWfq7/30c7PcZi3sylFnR+01UmzhskDJE1u6T49G34ZTq@lists.linux.dev
-X-Gm-Message-State: AFuF++kHbNNz0qokrZ8qwQF2MRMEBiNfua1PF+aFDyRCJIMBLC0M9+wp
-	P4Bd/1hHajOtGilyIw6ldpgQ7o3XQO+pXA4h7fbcq2YUapqRFBWRuIlVRrbVLU+Q2y/NCzXMnKI
-	rZEDjF4fG9IIEgWmwqHmzcXC/mGBGzrHrKPCkMOII
-X-Received: by 2002:ac2:5689:0:b0:5b4:4c8a:abef with SMTP id
- 2adb3069b0e04-5b5ff29d7ccmr116639e87.10.1788251981891; Tue, 01 Sep 2026
- 01:39:41 -0700 (PDT)
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5b2a8173142so3676e87.1
+        for <linux-coco@lists.linux.dev>; Tue, 01 Sep 2026 01:42:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxT1VSeB/8q3AeKlYljBaFHjJbYbz1aOl1uWon/n6UQHbnoavzpcSGgckEdejyk150qrwCgVDDIUryG@lists.linux.dev
+X-Gm-Message-State: AFuF++m0eDlhXi4wdPKs14fyO5UWkzMmd+p0/1y/AL/hMrL7mD9omjlf
+	zhbZcN7st+uSrXfvpQfUqb88d917AG1WuFP+F4OVWjh6oKnm6Pg9poKVYNHiZuN5xH+LcvHLnQW
+	cwoDKPeSgHu1nAJihD78oQ4/ImN5SDcgL2nNQwPk3
+X-Received: by 2002:a05:6512:ac6:b0:5b5:e890:1953 with SMTP id
+ 2adb3069b0e04-5b5ff29f4efmr129910e87.12.1788252166683; Tue, 01 Sep 2026
+ 01:42:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-1-85e5fd25252a@google.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-1-85e5fd25252a@google.com>
+References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-7-85e5fd25252a@google.com>
+In-Reply-To: <20260830-gmem-inplace-conversion-v12-7-85e5fd25252a@google.com>
 From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 1 Sep 2026 09:39:05 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTytLWsa9-boURuumSFC8yNWDwvz_+WNN-aEz_cA9OkcdA@mail.gmail.com>
-X-Gm-Features: AcwNN1XCAyPPlQdujvTs-aL1UBkQHfHgNLA1ozg5F-aaAoV8bE_sbTlT0O7ALBU
-Message-ID: <CA+EHjTytLWsa9-boURuumSFC8yNWDwvz_+WNN-aEz_cA9OkcdA@mail.gmail.com>
-Subject: Re: [PATCH v12 01/45] KVM: guest_memfd: Optimize away conversion
- overheads via dead-code elimination
+Date: Tue, 1 Sep 2026 09:42:10 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTyRqnXDwFTcA7k2e-CXe1zdZ674F0mXSDFsn4PuwK+0zw@mail.gmail.com>
+X-Gm-Features: AcwNN1WsZWoWKD6AG_hFPG5SzyReAqSBKWje84PPAdwPIk5UDZum7IDo5_qmIa4
+Message-ID: <CA+EHjTyRqnXDwFTcA7k2e-CXe1zdZ674F0mXSDFsn4PuwK+0zw@mail.gmail.com>
+Subject: Re: [PATCH v12 07/45] KVM: Rename kvm_mem_is_private() to kvm_is_private_gfn()
 To: ackerleytng@google.com
 Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -88,26 +87,17 @@ Content-Type: text/plain; charset="UTF-8"
 On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
 <devnull+ackerleytng.google.com@kernel.org> wrote:
 >
-> From: Sean Christopherson <seanjc@google.com>
+> From: Ackerley Tng <ackerleytng@google.com>
 >
-> Add and use kvm_arch_has_gmem_convert() to guard guest_memfd's invocation
-> of arch hooks related to converting memory between private and shared, as
-> only one half of the x86 CoCo duo needs the runtime hooks (any pre-work is
-> pure overhead for TDX).  At this exact moment, the overhead is negligible,
-> but that will change when in-place conversion comes along, at which point
-> to-shared conversions will "need" to find all affected folios prior to
-> calling into arch code.  In quotes because very technically that work could
-> be pushed to arch code, but that would bleed guest_memfd details into arch
-> code and would be far worse than adding yet another kvm_arch_has... hook.
+> Rename kvm_mem_is_private() to kvm_is_private_gfn() to prepare for in-place
+> conversion, where there will be two lookup functions,
+> kvm_vm_is_private_gfn() and kvm_gmem_is_private_gfn().
 >
-> Opportunistically provide the kvm_arch_gmem_make_private() declaration, and
-> rely on dead-code elimination to eliminate the call to non-existent code
-> when CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT=n.
+> This renaming allows consistent prefixing of "vm" vs "gmem" for
+> kvm_*_is_private_gfn(), as opposed to kvm_gmem_mem_is_private(), which
+> looks like a typo.
 >
-> Reported-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Closes: https://lore.kernel.org/all/1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com
-> Suggested-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Suggested-by: Sean Christopherson <seanjc@google.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
 Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
@@ -116,59 +106,113 @@ Cheers,
 /fuad
 
 > ---
->  arch/x86/include/asm/kvm_host.h | 3 +++
->  include/linux/kvm_host.h        | 3 ++-
->  virt/kvm/guest_memfd.c          | 5 ++---
->  3 files changed, 7 insertions(+), 4 deletions(-)
+>  arch/x86/kvm/mmu/mmu.c   | 12 ++++++------
+>  arch/x86/kvm/svm/sev.c   |  2 +-
+>  include/linux/kvm_host.h |  4 ++--
+>  virt/kvm/guest_memfd.c   |  2 +-
+>  4 files changed, 10 insertions(+), 10 deletions(-)
 >
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 683bb8bf43a94..6beddd8a0c749 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1854,6 +1854,9 @@ enum kvm_intr_type {
->  #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
->  #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
->  #endif
-> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> +#define kvm_arch_has_gmem_convert() (!!kvm_x86_ops.gmem_make_private)
-> +#endif
->
->  #define kvm_arch_has_readonly_mem(kvm) (!(kvm)->arch.has_protected_state)
->
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 502465119ca0c..b7516e19ef419 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2597,9 +2597,10 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
->  }
->  #endif /* CONFIG_KVM_GUEST_MEMFD */
->
-> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
->  int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
->                                kvm_pfn_t nr_pages);
-> +#ifndef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> +#define kvm_arch_has_gmem_convert() false
->  #endif
->
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 798d91df69537..2190e4d6b6bea 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -772,11 +772,10 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->                 folio_mark_uptodate(folio);
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 10e59507d252f..62f751952ad8a 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -3421,7 +3421,7 @@ int kvm_mmu_max_mapping_level(struct kvm *kvm, struct kvm_page_fault *fault,
+>                 is_private = fault->is_private;
+>         } else {
+>                 max_level = PG_LEVEL_NUM;
+> -               is_private = kvm_mem_is_private(kvm, gfn);
+> +               is_private = kvm_is_private_gfn(kvm, gfn);
 >         }
 >
-> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> -       if (kvm_gmem_is_private_mem(file_inode(file), index))
-> +       if (kvm_arch_has_gmem_convert() &&
-> +           kvm_gmem_is_private_mem(file_inode(file), index))
->                 r = kvm_arch_gmem_make_private(kvm, gfn, *pfn,
->                                                (kvm_pfn_t)1 << *max_order);
-> -#endif
+>         max_level = min(max_level, max_huge_page_level);
+> @@ -3634,13 +3634,13 @@ static bool page_fault_can_be_fast(struct kvm *kvm, struct kvm_page_fault *fault
+>          * guest spinning on a #PF indefinitely, so don't attempt the fast path
+>          * in this case.
+>          *
+> -        * Note that the kvm_mem_is_private() check might race with an
+> +        * Note that the kvm_is_private_gfn() check might race with an
+>          * attribute update, but this will either result in the guest spinning
+>          * on RET_PF_SPURIOUS until the update completes, or an actual spurious
+>          * case might go down the slow path. Either case will resolve itself.
+>          */
+>         if (kvm->arch.has_private_mem &&
+> -           fault->is_private != kvm_mem_is_private(kvm, fault->gfn))
+> +           fault->is_private != kvm_is_private_gfn(kvm, fault->gfn))
+>                 return false;
+>
+>         /*
+> @@ -4708,7 +4708,7 @@ static int kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
+>          * Now that we have a snapshot of mmu_invalidate_seq we can check for a
+>          * private vs. shared mismatch.
+>          */
+> -       if (fault->is_private != kvm_mem_is_private(kvm, fault->gfn)) {
+> +       if (fault->is_private != kvm_is_private_gfn(kvm, fault->gfn)) {
+>                 kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
+>                 return -EFAULT;
+>         }
+> @@ -5111,7 +5111,7 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+>
+>         direct_bits = 0;
+>         if (kvm_arch_has_private_mem(vcpu->kvm) &&
+> -           kvm_mem_is_private(vcpu->kvm, gpa_to_gfn(range->gpa)))
+> +           kvm_is_private_gfn(vcpu->kvm, gpa_to_gfn(range->gpa)))
+>                 error_code |= PFERR_PRIVATE_ACCESS;
+>         else
+>                 direct_bits = gfn_to_gpa(kvm_gfn_direct_bits(vcpu->kvm));
+> @@ -6584,7 +6584,7 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
+>         if (IS_ENABLED(CONFIG_KVM_SW_PROTECTED_VM) &&
+>             !(error_code & PFERR_RSVD_MASK) &&
+>             vcpu->kvm->arch.vm_type == KVM_X86_SW_PROTECTED_VM &&
+> -           kvm_mem_is_private(vcpu->kvm, gpa_to_gfn(cr2_or_gpa)))
+> +           kvm_is_private_gfn(vcpu->kvm, gpa_to_gfn(cr2_or_gpa)))
+>                 error_code |= PFERR_PRIVATE_ACCESS;
+>
+>         r = RET_PF_INVALID;
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 0a887f8e05d3a..dff684b88f153 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -5030,7 +5030,7 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
+>          * userspace via KVM_EXIT_MEMORY_FAULT events, however, so RMP faults
+>          * for shared pages should not end up here.
+>          */
+> -       if (!kvm_mem_is_private(kvm, gfn)) {
+> +       if (!kvm_is_private_gfn(kvm, gfn)) {
+>                 pr_warn_ratelimited("SEV: Unexpected RMP fault for non-private GPA 0x%llx\n",
+>                                     gpa);
+>                 return;
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 6ca81f5349db8..9b97266f61ec8 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2573,12 +2573,12 @@ bool kvm_arch_pre_set_vm_memory_attributes(struct kvm *kvm,
+>  bool kvm_arch_post_set_vm_memory_attributes(struct kvm *kvm,
+>                                             struct kvm_gfn_range *range);
+>
+> -static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+> +static inline bool kvm_is_private_gfn(struct kvm *kvm, gfn_t gfn)
+>  {
+>         return kvm_get_vm_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
+>  }
+>  #else
+> -static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+> +static inline bool kvm_is_private_gfn(struct kvm *kvm, gfn_t gfn)
+>  {
+>         return false;
+>  }
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index e32ac2c28cbef..ce5efcacda36e 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -879,7 +879,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
 >
 >         folio_unlock(folio);
->         folio_put(folio);
+>
+> -       if (!kvm_mem_is_private(kvm, gfn)) {
+> +       if (!kvm_is_private_gfn(kvm, gfn)) {
+>                 ret = -EINVAL;
+>                 goto out_put_folio;
+>         }
 >
 > --
 > 2.55.0.897.gb25b4bd76c-goog
