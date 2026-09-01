@@ -1,189 +1,143 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011028.outbound.protection.outlook.com [52.101.57.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74350389106;
-	Tue,  1 Sep 2026 13:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788268087; cv=fail; b=W85HjHnYTQ5ImjgelFpDr68cubv5jy9YmKO0At9NzgmlLF2BynspptWPKTmhhBTLi3EEG4U0EuYNuzlpazEe7PJ9YAETfdtRjtRvv7AhbcS/u2OEsIG3vYmabN+CJL8E0rG25afXMPn9YrFupdy3mQPAn4btFbQD6j1oXNFncak=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788268087; c=relaxed/simple;
-	bh=JxxO+mtpU3tFsAABXrKrRbxTulQSaFofwkwRYhN4qTk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=nVM6pLMyusVlpz6zOA7V4JqTYH8hdvMHoyuB9c7r1jED95o+4bmbunKc3vu1cTj5PNJnL38OXg8lBaFU53JKIbYhnTpSPNyWNX/arHTpymBS9crj4EP6rO2CGUW51L02dNLxwnhbJHAFn826zyEJLVOrQJsYspb2j50/feJQi3A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BbzQhd9X; arc=fail smtp.client-ip=52.101.57.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3FD39A04A
+	for <linux-coco@lists.linux.dev>; Tue,  1 Sep 2026 14:32:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788273149; cv=none; b=uvVCgo1xu5fxI0WJUSFbObwi8GHYXQNLYFtIwSNy5cae6v1vha0kCuOfwNSwTtk06B0vpk7FMK0DVuT4oajbz0Oxwt+i99XHOTn/ZaGyrC3ZGpkKCAbI7I1kLTm8GM9sFOkwjQNs9pLK/5d2niym2yisgWGH3q4AqSBdgfSEEDA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788273149; c=relaxed/simple;
+	bh=Epea1SJtx0b5eyI7MQ/aNcrxf6TZYklQq7AcTHGfVa4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gG2lmo4SjwTiwrAKy7Oh+AHeOtNZZMtJov1O+WBPzkqi6lqQQFAlBjgcSJwkTm4pVXHn8wVGcRmGX998eCUNkJneSv7ubVNiRtJIaRAmWvq48gG7z2NqUdkcu5G/QLQLEeL7IHddMUDUnLvvfIcpTdmQ0xynff1DCTZkhlb1aD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=QULNW11w; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BbzQhd9X"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U1QdYQIIJPtwZmH3iKRuFdLqox9nYnYHf5Yi5sk2Uwbgln71xQlQbBgclvMwBkVxWqxkrQPMaL/FVGPyQDjDiqSmA4oEuq0SthofW0zolAMbPQT2aERsJy7JG4kE9/ruL/dcIx+HyzB7WZNxJVVpYCVCIZr4Fc6gBi90aZGXzHTCZx/IWEfPxwB6BBgbIoCa1Lo92QPKOfYOZPuNrRTkhaz6VEQ/6RfCV5TUfhWdDA786vgTIJtumoYIn+ZiZ7tFxS2rWaFntsIGfsHbfdKywhPb5T6gUgkg7C65INh3CqGOv/DgOjUrUsjsMSz/X6BISoCmQ3iFSj+I5Ly4j/M0sw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GLv5J+zaKgX2+9oTiEGdUDDck5Vysi88oHfFzxFGDpw=;
- b=ZoLKB1E/J8DWb7x3yOrRvf4SBIdnptnPkBRBauheANNUi8Oj90XklK5lQQi9uC2kbOr0E0KYgVHxcNDDmJMkxojbf9dKLcGbeh1mErtBWXWZErORzJvAmDmf4nPgd/x66W5po5MSWISzu2bklIDTrvaSK1MM7DuDjQNuy52EZ6uLtCTKAYZMSaIh5dtl+ZQXRz6cFOcSShOTa9dyX+cymIrsULuZEH5JN2jGRUVnAu4Z8FhP8dNH1FsqIaIYzzT6bfsyg7gnItKkQLf2UFFr83mSpq9qyEnDwL3rM/WGG6lLdl8tcEY7CyJLPI+sSthkIljFNAmyZddKJHnv0Ig7RQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GLv5J+zaKgX2+9oTiEGdUDDck5Vysi88oHfFzxFGDpw=;
- b=BbzQhd9X3rm9kDlHD0zDxvQWuBjR0X2OY2A9fSC58GyvdleowEqvaPYnYbkK3jwuZrDalMNQjC8fXfEBFCPJiL7n56oHaR1uVu+QHVvfJpYGRX1xdflu5fyONdjQdVtk72W0uGEr3Iv2bN+bgydn7eMq/o1c33J6P+8jpuHiELZBMIOA0qjMLUYky9LQfolI4zm+akSkEg9UhsyaKbT7qKeeVD2+1Zj5CaPibo5BjBn/YnhfPtCGzz/sSC4uH8Im7Rr6Zz7TFthMwpmrxONOR+6B1nfedzPJkewYrEHeNC0KnNv5VBF+SievNEKgpjR5r2zLXO8VRKo3UGx8qAAboA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by DM4PR12MB6422.namprd12.prod.outlook.com (2603:10b6:8:b9::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
- 2026 13:07:52 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0360.008; Tue, 1 Sep 2026
- 13:07:52 +0000
-Date: Tue, 1 Sep 2026 10:07:49 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="QULNW11w"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-530187593e0so13416311cf.1
+        for <linux-coco@lists.linux.dev>; Tue, 01 Sep 2026 07:32:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1788273146; x=1788877946; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BSVwyibyFfIHGL0TlXMcUmW3kV25Hg4l49RcXdnb+4E=;
+        b=QULNW11wAUo1BtBBTjFrvggxpwU2z+pe8KZ9722l44l71B5Gu/y3l1gkRtktSnaR0e
+         I/Fh58PQVEqoeM1BTpr5jxhOrrGObo1pXZ3GvCyIucp/4pMm9Z5dP/PqxKUzsWlzEU9U
+         5ogcsEOVuBH5uuNffU+wgF2XkPXNYulHpG9zhROcN4NVCATBxsOuYZpZZrusoJqmJK96
+         MD88h/sd9FwSzivcCPNqYwCbJsQiaHFDwQKnO4fHoBsgwGXUFMrxmDWZ6lh/l/UkI3uG
+         hoJk3YP01WZFu4bAgH3NSbK+n4uhp8NMomzl2JwEZqZdIQoFfEn/gfcHfYwAgd4EHOGx
+         kXGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788273146; x=1788877946;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BSVwyibyFfIHGL0TlXMcUmW3kV25Hg4l49RcXdnb+4E=;
+        b=K65oGZdl57JHS4aFtE2j7IEY5pv+q5ltwaDQzvALtQXDjbnxelNg2+zBqUDqs/Mbcw
+         fbTOpNzH23ECDA5d2BPSp/boHENeJ4f+IEip0MIIhLvB6YcxQVFO2bjMks0k/MclapwI
+         07N456718qmM4z1uDWdOG2W0P0GhH969Wf6q9Hxnbo5JG8dbGyrjl/yi2QKxMlhTGfrh
+         mQKf+s7iooPKi5m0Zhb+2KJeJ9L5CDgSJxH7lJu0cn4zLUf7sNIDyDSu21OP/8UECYP3
+         aHGKeN1NLGv1d8XQFqVeFpwyRryV7SS+1SJ7RhzGGw2geG3UxlqThlSomAnNPzil3ZO8
+         n8aA==
+X-Forwarded-Encrypted: i=1; AHgh+RrvuhJ52tA27sSzpnmlATXkBKKHI5C4wktNs3K7T5rycBY9jNAmFxvXsVntlkHphy16tWIfZPhZWRJw@lists.linux.dev
+X-Gm-Message-State: AFuF++kdLO2ymIMnoqeuxOsSKEKKHjkyh2YEtgNs2/7Ute383b43yYs6
+	j6FJdXD5l9SwY5uH4O0AquFjDL1PjnrqY7N6UkT2GjfPpS4o/5HpihGdIJ+YeoSCOlo=
+X-Gm-Gg: AR+sD13LvrlyEZwpOIIzlPFouTIiq2/Fiz4tXvQLSmo1D1re82q4sTSi6P49v0Y/UfG
+	8GXVCwJAn4Y20R4juG0ilg3SPyKMdveWd69mVhRaN30qZTuZKJqIhWLtGjDcfk08K6lSjYKVHo0
+	n3Cj6h3R9JnvREMw3dFuDFeUv1riRxkGMYDpo9/L/dmk6ZkiLSkcdnyOeZw5mnYl84sgz0bDjWS
+	vrX15pYZBkkS//gWuGqv//eR0O1Wphx6d2wSV503z9oq497aTjbq7BIdhjtOGKvWOlQjubgfZYP
+	k6EX3QN4sxtWyNSmJVsX53sgZeyzmoJo50lY5/U6HXnx9gl+rQootAK7Nt/iL/r8h/fwrufPbau
+	pD3XamenINvIcxo/evgJeGtEyi8mCBd6pseZWr4+IcFZuwG/SNVDHxDHrrdN4c4v1dFCWJhxOEw
+	M7YhJIDmbp88KH2YTZmXG8clsG81Aub/FR87UxxY97DfthjolhI5n2IXwqb7VBB9YIJlf4zw1R3
+	K2yIvCN7M3/bIDM7h1jMBRsdVNK1kqKI8E7rEsNREBCihJFxqbL2cxV
+X-Received: by 2002:a05:622a:948:20b0:530:2ded:eb32 with SMTP id d75a77b69052e-5302dedececmr22533091cf.2.1788273142344;
+        Tue, 01 Sep 2026 07:32:22 -0700 (PDT)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52fbe7fbe06sm96855001cf.17.2026.09.01.07.32.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 07:32:21 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1x1PXA-0000000BhaA-3wav;
+	Tue, 01 Sep 2026 11:32:20 -0300
+Date: Tue, 1 Sep 2026 11:32:20 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
 To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Alexey Kardashevskiy <aik@amd.com>,
+Cc: Nicolin Chen <nicolinc@nvidia.com>, linux-coco@lists.linux.dev,
+	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Alexey Kardashevskiy <aik@amd.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Dan Williams <dan.j.williams@intel.com>,
 	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
-	Marc Zyngier <maz@kernel.org>, Nicolin Chen <nicolinc@nvidia.com>,
+	Marc Zyngier <maz@kernel.org>,
 	Pranjal Shrivastava <praan@google.com>,
 	Robin Murphy <robin.murphy@arm.com>,
 	Samuel Ortiz <sameo@rivosinc.com>,
 	Steven Price <steven.price@arm.com>,
 	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
 	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [RFC PATCH v4 00/16] coco/TSM: Implement host-side support for
- Arm CCA TDISP setup
-Message-ID: <20260901130749.GH4157646@nvidia.com>
+Subject: Re: [RFC PATCH v4 01/16] iommu/arm-smmu-v3: Discover RME support and
+ realm IRQ topology
+Message-ID: <20260901143220.GB56830@ziepe.ca>
 References: <20260427085344.941627-1-aneesh.kumar@kernel.org>
- <20260831180855.GA2171358@nvidia.com>
- <yq5aa4q1nnto.fsf@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5aa4q1nnto.fsf@kernel.org>
-X-ClientProxiedBy: BN1PR10CA0026.namprd10.prod.outlook.com
- (2603:10b6:408:e0::31) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+ <20260427085344.941627-2-aneesh.kumar@kernel.org>
+ <apMjUSbxcnlAKjks@nvidia.com>
+ <yq5aik4pnyul.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|DM4PR12MB6422:EE_
-X-MS-Office365-Filtering-Correlation-Id: c7f4d060-6c52-48c8-c178-08df082a07bc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|1800799024|7416014|366016|11063799006|56012099006|4143699003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	YyWzU+oV1koF0RULoX5/0MbC3mvh7wysmmHkL+VqWcolArBqYvqoK8IT0rAl+VM2Ck4W48bJPGfKq2B5FJqZQ3uwslyajy+IDu+KefppcQQZh8WcTeS+5XJd1etS/8fJ0VVSoY2FG3crI/QtaRcjUoC+63os4g5Ntaz56RQ5ORLdVKEMmHE6YC2gXRyHaKBHDlLr1B74PAjKVO2ZqZCKvJ7y7qFZrG9wijxRwVaJ6NKA3J+gz0bfr0Nor8r3kub1Fl2gelPBCeeeBI8O4BCPeBeMsjWqlvJru5JUwMty9t4RnSk/vnbmVRm/qYHD9NDZeSiyOsQLtuDeH+0cQT3OhSHpc4nga8gVQSD+Xh6K6u12B1iBB4uC/We9rFC3LET/14+ZlPh4/FCVgmD4ULeNf7wP09dNkqjpFKOkQY7YZXD5ixmigEJ+Tr/JUknFcyWVrnfmr8AkrOnZx735tPJdl5bXbDPrO0YhE/4FMpOkWG+paEJTFYN41ewh9PfthjWLs4pc4oIpa/mb2oB3anmqR8UW6BFq5LemLJnNtUirWHUfMVEK4/cjwTXyij8fevoPMdAWFnvzP1PVL4s2ZIET/n6PEg4r/hl1Z4nOymXAxBSVksVt0yYBlDoqiaRv1po8kg6+O7GVct0NtQutKW1zE4VTs/qGxKxycjNxP0k36ns=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(7416014)(366016)(11063799006)(56012099006)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?UbWS06WW0i8RIfKNm3SjcbUHF/IsZWLG+qjEW0rh/VKiNwWsfU8laqFao44G?=
- =?us-ascii?Q?vorHBA3cpsdZoEW2Dt+NWPOxkquuvweIr5QK9d1gVDEwcbAtErJzU+RM7qpP?=
- =?us-ascii?Q?eulxOvIov6aR9aMy9bCHLCpysB8gDwTVBnoJISCkrbvylsPBMyQ8Fm+ggcWg?=
- =?us-ascii?Q?cVHhFNDVMiDZBnt2Elts4D1aNXv1RIaJSZlLR7I6FpnqlDBxYDiGOuldfjcW?=
- =?us-ascii?Q?QwZ+ZjOhLqGloDEBY7HN60jI8jjC7LjQLAsP3XiqAET2zK4XnD4F7qJLOFHX?=
- =?us-ascii?Q?9CJTzgf00wrAditE0LtEPkoauQpxZR69ibqw9Ihv2YYf0bw8UQoASxLIsuit?=
- =?us-ascii?Q?0pGCoG35OoZaME0n6oqkSFGAD9dcKCq/bxOW9fn7BEKjpY3hLiWq6LSvQjur?=
- =?us-ascii?Q?WCj4+TQY/HTTDjTtDYrAJvAJvDcFYCMKeRjb+SFIAEzu0lvGjaeAa2C8qBB/?=
- =?us-ascii?Q?ult6yJaDVTj1YrMjRIs6jayg8QSg5IkWAXCWx9h4gzxl2HciKSzk4e2d+uMx?=
- =?us-ascii?Q?8K0qQw8kDJHSO0vc5t9rhG8S/oiNxaPdegJYL689xBOqKlyqW0G/ywBarvzX?=
- =?us-ascii?Q?UMUvRRWlOojjaEteHfub2gRyCLpXq3ZVkVoBwPKhPd5ZiLOR+IigddKbuHyv?=
- =?us-ascii?Q?Xpu/m+iMPzP0ex4YYN9+1fVY9AuHKXRhpr2SV6UPWwpqOq5aJ68XXfgoVjE9?=
- =?us-ascii?Q?hgWErPyjqLtBbAKu7u42W8fRex7692CrygTsEYrsZTVZTruMMfwZreTH2sFN?=
- =?us-ascii?Q?r107hye8yOYEaJhanfxvuneO4cxAHBDWMwJmZI27hX3zbuv/I5P9EGK2gC98?=
- =?us-ascii?Q?osx9ploNC9ITqVVZorzvF6XxwS/omiTfewJ911kpdHqUxcbUEtpRv457o5Ux?=
- =?us-ascii?Q?MdRhdzT7nbSMAmlsoIjJF10iNLf+W79E6HA18JIvBJmVrNXATDqTb5kM9dWO?=
- =?us-ascii?Q?eBvXGoWZb4MEpfGSef0sdaPPBSBZawcuyUZH3czxpjjiC3cKlaLgwpzDnczF?=
- =?us-ascii?Q?2tpp1HTfsxzAITiorMtPZp/8e11J5XQ+LNUD2OPljKdXhKbykE4RXpUXWK5z?=
- =?us-ascii?Q?N0842AMcDzAV/4TX4oZlEl0CnyH9IqhN5/FmuzL32cdMUN539YxOj2Bh323/?=
- =?us-ascii?Q?s3ZPn/2C9gn63x47SZj0QniHI/gJ9jHRQraDPwdpZClEy4u/2x6qxJjGo6IB?=
- =?us-ascii?Q?OJEH+7zYMx867rTlPCE1yfIq64rAFeARt6SnBOUn+VSIgQdMDtpj57pkEM+w?=
- =?us-ascii?Q?/HoX8yZ8vf+FjayIuTjJBUYrRQJgbyQftSWsqfdJnuyb65hUQTRyO/N42JW6?=
- =?us-ascii?Q?zE5V6rgWwbLTR8ZxdO9aHywbbqnKyNEqUzQDKpGJ6kEocaxJRYHIyVRR52Uz?=
- =?us-ascii?Q?6w7CFq1J0Hj3qVwDQcE10F1TxxHsya9pY32Qd7KFdKrJwEOlJeTdhHKd4Z8H?=
- =?us-ascii?Q?954QcPI1JYaakxwc2UPJ7H0pv4p3yORIB4XPcWL+bIH4g2FvFItPsFButWKO?=
- =?us-ascii?Q?KbnRhcc7lxnLD7WZX5NQtuYFfUwvp//d8yadqZOhpH8rq7UfNbRIeIv8BcG5?=
- =?us-ascii?Q?UMgf2vw1zJc9Iy816YWxmJjyJoju1qb0EKLtS55pH8Udv56T4NzqKn0Qg4Ad?=
- =?us-ascii?Q?TRveFHUtqGd0bx5mXLE2r4gTcqv/Pe+SHsKmyQlqsulTUGjPDK7zkhSo7Kaj?=
- =?us-ascii?Q?RBh144Ir6UICiapX5GMyf/LM6kjpxb+EqgA3QrfmOxrMPsiO?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c7f4d060-6c52-48c8-c178-08df082a07bc
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 13:07:52.3152
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EmxHJrSpCY/v+hfN1WTHcYcBo4Wt2MLEg51F5BI4QB5m1qfcdvjG+Ry9CrF6Vdm6
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6422
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5aik4pnyul.fsf@kernel.org>
 
-On Tue, Sep 01, 2026 at 06:14:19PM +0530, Aneesh Kumar K.V wrote:
-> > It is really weird to see a viommu for a case where there is no
-> > viommu..
-> 
-> We ended up with a viommu despite having no stage-1 SMMU or vSMMU
-> because it held the KVM reference needed by item (3) above [1]. With the
-> recent changes in that series [2], we now inherit the KVM details from
-> VFIO through iommufd_device_bind. I can possibly look at using the idev
-> for this instead.
+On Tue, Sep 01, 2026 at 02:16:10PM +0530, Aneesh Kumar K.V wrote:
+> +static struct irq_domain *arm_smmu_get_wired_irq_domain(struct arm_smmu_device *smmu)
+> +{
+> +	int irqs[] = {
+> +		smmu->combined_irq,
+> +		smmu->evtq.q.irq,
+> +		smmu->gerr_irq,
+> +		smmu->priq.q.irq,
+> +	};
+> +	struct irq_domain *domain = NULL;
+> +	struct irq_data *irq_data;
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(irqs); i++) {
+> +		if (irqs[i] <= 0)
+> +			continue;
+> +
+> +		irq_data = irq_get_irq_data(irqs[i]);
+> +		if (!irq_data || !irq_data->domain)
+> +			return ERR_PTR(-EINVAL);
+> +
+> +		if (domain && domain != irq_data->domain)
+> +			return ERR_PTR(-EINVAL);
+> +
+> +		domain = irq_data->domain;
+> +	}
+> +
+> +	return domain ?: ERR_PTR(-ENXIO);
 
-Okay, that's a good reason, but the whole thing just doesn't seem
-split right. There is code in arm-cca-guest and code in the viommu
-that are all working on the same thing. I don't think it makes logical
-sense split like this.
+I'm not excited to see code like this in a driver. Please put a helper
+function someplace else to translate whatever the RMM value is into a
+normal linux irq number?
 
-The viommu should be creating the vdev at the logical point in its
-flow, when the it creates its vdevice. It shouldn't be disjoint and
-separated.
+But this feels wrong to me, interrupts need to come through the FW
+side, ACPI or DT. Having RMM pass the value outside that
+infrastructure is going to be painful. None of this is trusted, why is
+it working like this vs just adding more interrupt lines to the FW
+description?
 
-> > It doesn't do anything except manage memory for the RMM..
-> >
-> > It feels wrong that the arm-cca-guest module is calling
-> > RMI_PDEV_CREATE and RMI_VDEV_CREATE while the viommu is allocating STE
-> > memory for the PDEV. That doesn't make alot of sense? The STE is
-> > needed before VDEV_CREATE, right? So why not place it there in the
-> > flow?
-> >
-> > If that's changed then the only thing the viommu does is manage the
-> > PSMMU, which again, seems like something VDEV_CREATE needs, so why is
-> > a viommu involved at all?
->
-> We do not have a separate vdev-create operation; instead, we have
-> tsm_bind. The required iommufd objects (idev/viommu) are set up before
-> tsm_bind.
-
-You end up with *two* "vdev creation" operations, one through the new
-bind iommufd call and another through the actual vdevice create
-iommufd call, and they go do different modules. That seems like a
-messy flow.
-
-If we are commited to a viommu then lets use the viommu for everything
-and have less code in arm-cca-guest. Get rid of bind as a tsm
-operation. Have the smmu driver do it when it creates the vdevice.
-
-You can't call RMI_VDEV_CREATE outside the viommu anyhow as the
-vdev_id comes from the iommufd vdevice object's vsid.
-
-This is probably going to work better long term anyhow as we can
-construct the vsmmu with exactly the same API surface, and a non-vsmmu
-case is really just some special variation of the viommu object that
-doesn't create do a RMI_VSMMU_CREATE.
-
-Also, is it really OK to setup the psmmu after creating the pdev? RMM
-spec explicitly says that order is allowed? It is a litle bit counter
-intuitive.
+A naked integer is not enough to describe an interrupt in the system,
+and guessing that it is connected to other interrupts in the psmmu
+seems like an uncomfortable leap to me.
 
 Jason
