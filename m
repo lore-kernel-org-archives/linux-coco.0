@@ -1,99 +1,150 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-13.mta1.migadu.com [95.215.58.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0770549E5FF
-	for <linux-coco@lists.linux.dev>; Tue,  1 Sep 2026 19:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCBDA45C6E1
+	for <linux-coco@lists.linux.dev>; Tue,  1 Sep 2026 22:23:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788290480; cv=none; b=tH2JB+dskSsnPDxdvPIgd5e4mDq2gEB0cBCg/hNEnbmmgOB2S8ah8vP9okzDA/CaTFGHLfTEZcSS0it+qrqhIKsDrSqgAm6nhvcUMrIn4QF832wbbkD31+v3NXWuYjFB9ju3BXMYRebSO4eH+OFexylXOdgmn9+aDVltIINSXUo=
+	t=1788301386; cv=none; b=CqA0aUMCkheszOJz7CnbvA5oUnAQK0wFslvxCy2dcgQkFD7n0nerG9LfQrXnEkA3KcXYlZjL7Tyviq1iR8CQOvgi0V2zlJ/qnV9x2TV483OXOzuqPmAbXMtniJsWHayxScRJ2g82CSAlw4cREA/onoaxnrTFT5nDU+6wAtGBdMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788290480; c=relaxed/simple;
-	bh=rFCR4wvJPqtoOsLRqFRiTraJfKJOCvUH3Vowulw0ArM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pmdLCBQmO7TaUK4sSbym+yx0TJKFQQ10Of4zMvOXW50QpMXlDchrTGN7ufXFkbPizg8dI+3bqo1F1IR2SxWd9qz3OD+wOqN+adVW9okbhrtF3aiuau9wnhbxO9M3CdhPMixmsSI6uUXswQgAyCu4pG35Yw9Uxdwq5XZDLYaTzaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=JOO1+1L2; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1788301386; c=relaxed/simple;
+	bh=CJv9ej77YKh7SqREZUkX1b/9RiHCVq3kJXFgGW0/pcE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RP5KpOHfAtm17nyGgu1uss+HyGZUR/y3+cNmFndBTt6HAfhXlGUaRyFSEvOf7AO/5bfX0o/0hgu5F/lUYnqZUhVjNaeWjOtxfh6TvA5hCuYAHpa/k6MQtvd30uC54YX4iQ9Rniqh/DeNmkRlyTBLM8ePJxP+sbc5xSbaFB2bmMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HDuGC9KP; arc=none smtp.client-ip=95.215.58.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="JOO1+1L2"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D31DA40E01DD;
-	Tue,  1 Sep 2026 19:21:13 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 42J7P_o6H5Nz; Tue,  1 Sep 2026 19:21:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1788290463; bh=RnB4UBwIEU5ra0mwZ01BUCuLPy+58IVs4ew37pEMoXc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JOO1+1L273NyqfcFGwz2MT94SkwUY+b8uVgDoJa653eT5gtWzVONMMzv+jX3TL0QK
-	 DQnQ1yJgZDcxC2tOpBvs1nRWJ8ymnlElQZruVLAJQm4PazrZPgQepckG7RcltsVl8V
-	 BuZfc5wfOkZ49YdT8GpN69T5jtUrDID6WbiCmzORwtXRAZVd3DjlGCWkoYiZ8dYbYt
-	 llHUv/QtmuDgnr38XOSvF5OazHwO+dq0CEVUc24j5nvvkc2TlugkxKGwWuFe/+GppP
-	 Vq1A5SoJxK7qDyytsvsepZ4Q+MdSgqX2L/xm5sAvDbTjabHYNh0mbtnizA615wYU74
-	 mNnUPQE17VxdwaHDbzEE2ZRPOADmraP7VF/10NsKy5hEZN7FSnTwB78Pxjg4A7PEmg
-	 fk6LBPgj36NvAo3jOYO6HNQ7+sZ1Sph9tEzExKoBfZ0+8IqECTzz/VgMz3F9V28m4L
-	 o+uSE7S0TEU+K9mLOb79Qh7RXIccMC7tKxbewNLSrz0k6JjWM07GACH1vf1H4xBFGF
-	 ha1kCJjMcTGmfm/101WrWNpsG92FTbxQHADRecgAxHi6n5T2H04SM/0I3Nfl6sxBo2
-	 L3TDgOkyJTZS+UmOlYk6CU4GLAwqZdemIvs8It0MMpWW8i0Lf3XEdMfIpeZ3Q4IM8s
-	 g4XXoiThC2RTKS3y5TOVozmc=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CD76340E01E1;
-	Tue,  1 Sep 2026 19:20:28 +0000 (UTC)
-Date: Tue, 1 Sep 2026 12:20:25 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	john.allen@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v12 4/5] x86/sev: Add support to perform RMP
- optimizations asynchronously
-Message-ID: <20260901192025.GHapcleQABEDuwZc3I@fat_crate.local>
-References: <cover.1786389115.git.ashish.kalra@amd.com>
- <9c9502278f68af9da19f0dd583ba303d0e6d66d2.1786389115.git.ashish.kalra@amd.com>
- <20260829205208.GDapNGeGMOs02IrkGS@fat_crate.local>
- <c699a686-dab2-4e7b-af6e-3ea89cbed202@amd.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HDuGC9KP"
+X-Envelope-To: linux-coco@lists.linux.dev
+DKIM-Signature: a=rsa-sha256; bh=CJv9ej77YKh7SqREZUkX1b/9RiHCVq3kJXFgGW0/pcE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788301382; v=1; x=1788906182;
+ b=HDuGC9KPePMh+cCS7/Pi65gxb04cR17xcUE3OZ0yOfxvP/BGgT5OnYXZWrpkWcTkAQKteCge
+ +QBwOJCzOa7rZ0C6e6sullG8T3xw0aKj+dxz7QqReVEgzrfner2nbRBJHt2hS6qBzrbG4pMkdJ8
+ +XNrZx7L13ywu/TojmFWZot0=
+X-Envelope-To: linux-coco@lists.linux.dev
+Received: by smtp.migadu.com with ESMTPS id 7dbd8bbdc6a3404c;
+	Tue, 01 Sep 2026 22:22:52 +0000
+X-Mizu-Trace-ID: 7dbd8bbdc6a3404c
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5b2a73da7e1so3198e87.0
+        for <linux-coco@lists.linux.dev>; Tue, 01 Sep 2026 15:22:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwP81wEGqgdGugG8iw82D7HdrqhOENsAHSQ3BCN4Og0SdzkL+AIdes4NZMz/gc996blNCxY4jiGLGnC@lists.linux.dev
+X-Gm-Message-State: AFuF++nh2GD+odmMG5dVgSU8ia9UFCXzaTO2FmuxE0zxfFi6BrFQw9rB
+	u/AfES2soeBH2xri/69v67tTkaKEHb7LXVad2uj+g8FiEChW3nOoTWIUQXHkWv9Qor3AWNArASZ
+	GK3O/x5vt4HQ591r+pT0goLNnfq8HxzcJ2SJxYdhs
+X-Received: by 2002:a05:6512:3d0f:b0:5b6:4ad:d6ba with SMTP id
+ 2adb3069b0e04-5b609eeb230mr13703e87.15.1788301371454; Tue, 01 Sep 2026
+ 15:22:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <c699a686-dab2-4e7b-af6e-3ea89cbed202@amd.com>
+References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
+ <20260830-gmem-inplace-conversion-v12-23-85e5fd25252a@google.com>
+ <CA+EHjTzALzghuG5J-LFuG5pXJ4WgEfrMHgwkMHnq1U-D6yS7Pg@mail.gmail.com> <apcY5b2o5k04XffH@google.com>
+In-Reply-To: <apcY5b2o5k04XffH@google.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Tue, 1 Sep 2026 23:22:15 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTyUke815MNgCh7kEKw7JEprRG754gHi3UJ6R5RdbuUhyA@mail.gmail.com>
+X-Gm-Features: AcwNN1XG2R0freerIjVIIorEq648d7QWyFSXRnqa21AMKowGv086HSc-AbV0xtQ
+Message-ID: <CA+EHjTyUke815MNgCh7kEKw7JEprRG754gHi3UJ6R5RdbuUhyA@mail.gmail.com>
+Subject: Re: [PATCH v12 23/45] KVM: Let userspace disable per-VM mem
+ attributes, enable per-gmem attributes
+To: Sean Christopherson <seanjc@google.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev, 
+	Xiaoyao Li <xiaoyao.li@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Aug 31, 2026 at 03:00:25PM -0500, Kalra, Ashish wrote:
-> And we drop the leader/follower bookkeeping, but the warm-up stays.
-> 
-> Minor nit with the patch below : with the andnot gone, this_cpu is now unused, so please drop it.
+On Tue, 1 Sept 2026 at 19:26, Sean Christopherson <seanjc@google.com> wrote:
+>
+> On Tue, Sep 01, 2026, Fuad Tabba wrote:
+> > Hi Sean, Ackerley,
+> >
+> > On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
+> > <devnull+ackerleytng.google.com@kernel.org> wrote:
+> > ...
+> > > +       kvm.gmem_in_place_conversion=
+> > > +                       [KVM] Controls whether KVM enables in-place conversion
+> > > +                       support for guest_memfd and tracks the private/shared
+> > > +                       state of memory per guest_memfd instead of per VM.
+> > > +
+> > > +                       If enabled, KVM enables the KVM_SET_MEMORY_ATTRIBUTES2
+> > > +                       ioctl on guest_memfd file descriptors and disables the
+> > > +                       legacy VM-scoped KVM_SET_MEMORY_ATTRIBUTES ioctl for
+> > > +                       private memory state tracking. Only the
+> > > +                       KVM_MEMORY_ATTRIBUTE_PRIVATE attribute moves to
+> > > +                       per-guest_memfd tracking; other attributes remain
+> > > +                       per-VM.
+> > > +
+> > > +                       This parameter toggles KVM's in-place conversion
+> > > +                       capability support. Whether a VMM uses separate backends
+> > > +                       or out-of-place memory management is determined by
+> > > +                       userspace VMM design.
+> > > +
+> > > +                       Note, this parameter is only available when
+> > > +                       CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y. When
+> > > +                       CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set, in-place
+> > > +                       conversion is unconditionally enabled.
+> > > +
+> > > +                       Default is Y (on).
+> >
+> > The parameter is only settable when CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y, and
+> > in that config gmem_in_place_conversion initialises to
+> > !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES), i.e. N, not Y. Is the doc line
+> > wrong, or is N-by-default not what was intended here?
+>
+> The doc is wrong.  The intent is to maintain backwards compatibility with existing
+> deployments if KVM_VM_MEMORY_ATTRIBUTES=y.
 
-Ok, these changes mean, the previous patch "x86/sev: Initialize RMPOPT
-configuration MSRs" needs to be redone too so that it doesn't add
-rmpopt_cpumask at all.
+That explains it. Thanks.
+/fuad
 
-So please take all the cleanups from this thread and send a new revision
-after integrating and testing them.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+>
+> > > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > > index 05c518c9b8078..929fd3e1a01e6 100644
+> > > --- a/virt/kvm/kvm_main.c
+> > > +++ b/virt/kvm/kvm_main.c
+> > > @@ -103,7 +103,10 @@ static bool __ro_after_init allow_unsafe_mappings;
+> > >  module_param(allow_unsafe_mappings, bool, 0444);
+> > >
+> > >  #ifdef kvm_arch_has_private_mem
+> > > -bool __ro_after_init gmem_in_place_conversion = false;
+> > > +bool __ro_after_init gmem_in_place_conversion = !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES);
+> > > +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> > > +module_param(gmem_in_place_conversion, bool, 0444);
+> > > +#endif
+> > >  EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
+> > >  #endif
