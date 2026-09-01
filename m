@@ -1,58 +1,58 @@
-Received: from mta0.migadu.com (out-92.mta0.migadu.com [91.218.175.92])
+Received: from mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1198384228
-	for <linux-coco@lists.linux.dev>; Tue,  1 Sep 2026 08:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AA013FEE
+	for <linux-coco@lists.linux.dev>; Tue,  1 Sep 2026 08:39:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788250817; cv=none; b=EYjpsYodwi4MqPv/5BHb1zoQX6tLZ3UOP4YFa+FhnOgSTHWchO582ByR/GAvVCqZOGvUZ/7p8Ms3hew/R68rlvSn48SlXwvyNghg/wl5IJbibBpxHOhV3P79sDhNu2N7kao23n7fJJ0tl8tf7JljmFeU+kBB/bAU3nHc3uaMvds=
+	t=1788251988; cv=none; b=qhZE+/Rf3rZmdgbQPQRBLnVefwE5tgmbJ6Z9uzC4LOrzrXuD18gjvV/YBOY3+N1HscMmVS0JOznXfE8xBChGM0kqsG9zdjzgYoVdH7a2QDGqgdUlXObA5hM+SvvMbzZs736kvomITopXOjWN7CB/BaxQZz6Sz9oSaZ3UkTuArZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788250817; c=relaxed/simple;
-	bh=dPSr56z5rAs+SkiIx0/dU1tmsjqb2fO0/em7DI52Cpg=;
+	s=arc-20240116; t=1788251988; c=relaxed/simple;
+	bh=MFd6QQcIiVNo4d+5OnfkjHu0LYEIxCoAHDswhin9sq8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KPhos74Lf2/tM45NQ9H+xSbH906lMB0BW04AptkD3TOWvO1ptpXTjSO2UdCvgL3J/eK3ZjaWHmfqWJWdamJBBHm8pKz75FppzS6lezvKbxMJwwbYl81Hq/OjIepbOX441VryHQ889JvVYe4NJgRrnXXKanaF2q2uW1xUbp2xkM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=paj0EtmS; arc=none smtp.client-ip=91.218.175.92
+	 To:Cc:Content-Type; b=QFKX4aIgp74WHQtlXWO+VrZB2hT3G2126nsDWI9qWtcC6uFHsTv/GHHsjU4gy1v0JymxFFE/qcRdf3ottB8a1xtKSyY+QtRbgJtTuGaZN4sZZKymtVgrJrJk+JWD8D57U+XYNexGO0jHDggcg+OnVVk12DR0981OE5y/aLzdybw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fS+xiwsz; arc=none smtp.client-ip=95.215.58.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="paj0EtmS"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fS+xiwsz"
 X-Envelope-To: linux-coco@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=dPSr56z5rAs+SkiIx0/dU1tmsjqb2fO0/em7DI52Cpg=;
+DKIM-Signature: a=rsa-sha256; bh=MFd6QQcIiVNo4d+5OnfkjHu0LYEIxCoAHDswhin9sq8=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788250813; v=1; x=1788855613;
- b=paj0EtmSVacoEcS3+vfFsYSNX6rTYWIsaTQ3sx1pn5M/sp742MNB0h3wvf3fezicxxvwBTeZ
- MhzerZxd0BeLvg4WClysGROX+wCwsuaYR0o+wXWciRa5TPQcUwy1GcJSIGg37mVxZ3ka0S5ZRg8
- zq1e73xthzGtIB0k4pXJg29w=
+ t=1788251984; v=1; x=1788856784;
+ b=fS+xiwsznBHNw9CrQACKqbGUcekGL34YMDoRXIWrv1D+DMhY2EwMM4G2CH10plM3n109acU3
+ AJsaskjuGYOXIYywiCc1KtK4IfdWvDrIiQzxbkzzLWtXnfWG3FZb15ffY46376+yyN6TufdbgoU
+ +TGEXNiKFMdXXNZnQn9aMe54=
 X-Envelope-To: linux-coco@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id 08bee827d2c702eb;
-	Tue, 01 Sep 2026 08:20:13 +0000
-X-Mizu-Trace-ID: 08bee827d2c702eb
+Received: by smtp.migadu.com with ESMTPS id 23a281d42f7f83fe;
+	Tue, 01 Sep 2026 08:39:44 +0000
+X-Mizu-Trace-ID: 23a281d42f7f83fe
 X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5b2a8173142so3526e87.1
-        for <linux-coco@lists.linux.dev>; Tue, 01 Sep 2026 01:20:13 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBweKvLcGZ+nJ/on47Px8rCR0jlzQqjFDwoUJHThb/7ximp02iDWgXCqOf40c82SWGeoQSEXrgaccUyT@lists.linux.dev
-X-Gm-Message-State: AFuF++nAxUI4FKrJ6f81ZF2fwNb9zv9Qi8Jnq6S5pbUq8/JnwJ8r6z/q
-	vieKzHRqg2AGCIqYGTGNvEn3tN7FXEX/0wq/VNm6Tt/l5Sp9IGkYGVD+vIvHd9KdcYnmgmpKQYp
-	7AEWp036gaI1I1BRmtsEaLPFexXvPoRnJTUU4r15b
-X-Received: by 2002:a05:6512:3416:b0:5b1:5141:9156 with SMTP id
- 2adb3069b0e04-5b600a4e6c1mr82007e87.9.1788250812101; Tue, 01 Sep 2026
- 01:20:12 -0700 (PDT)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5b5e5aaf7deso5937e87.0
+        for <linux-coco@lists.linux.dev>; Tue, 01 Sep 2026 01:39:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzYoZqsEjuZGk25ByhKI+CQbJdfuQJt5uVBWfq7/30c7PcZi3sylFnR+01UmzhskDJE1u6T49G34ZTq@lists.linux.dev
+X-Gm-Message-State: AFuF++kHbNNz0qokrZ8qwQF2MRMEBiNfua1PF+aFDyRCJIMBLC0M9+wp
+	P4Bd/1hHajOtGilyIw6ldpgQ7o3XQO+pXA4h7fbcq2YUapqRFBWRuIlVRrbVLU+Q2y/NCzXMnKI
+	rZEDjF4fG9IIEgWmwqHmzcXC/mGBGzrHrKPCkMOII
+X-Received: by 2002:ac2:5689:0:b0:5b4:4c8a:abef with SMTP id
+ 2adb3069b0e04-5b5ff29d7ccmr116639e87.10.1788251981891; Tue, 01 Sep 2026
+ 01:39:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-23-85e5fd25252a@google.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-23-85e5fd25252a@google.com>
+References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-1-85e5fd25252a@google.com>
+In-Reply-To: <20260830-gmem-inplace-conversion-v12-1-85e5fd25252a@google.com>
 From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 1 Sep 2026 09:19:35 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTzALzghuG5J-LFuG5pXJ4WgEfrMHgwkMHnq1U-D6yS7Pg@mail.gmail.com>
-X-Gm-Features: AcwNN1VEd61L_O2SZt1wLXP8U1ZnnNtTHeRYFc82-Kw9mTwcloJaTFPGEc_5sR8
-Message-ID: <CA+EHjTzALzghuG5J-LFuG5pXJ4WgEfrMHgwkMHnq1U-D6yS7Pg@mail.gmail.com>
-Subject: Re: [PATCH v12 23/45] KVM: Let userspace disable per-VM mem
- attributes, enable per-gmem attributes
+Date: Tue, 1 Sep 2026 09:39:05 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTytLWsa9-boURuumSFC8yNWDwvz_+WNN-aEz_cA9OkcdA@mail.gmail.com>
+X-Gm-Features: AcwNN1XCAyPPlQdujvTs-aL1UBkQHfHgNLA1ozg5F-aaAoV8bE_sbTlT0O7ALBU
+Message-ID: <CA+EHjTytLWsa9-boURuumSFC8yNWDwvz_+WNN-aEz_cA9OkcdA@mail.gmail.com>
+Subject: Re: [PATCH v12 01/45] KVM: guest_memfd: Optimize away conversion
+ overheads via dead-code elimination
 To: ackerleytng@google.com
 Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -82,127 +82,93 @@ Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
 	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev, 
-	Xiaoyao Li <xiaoyao.li@intel.com>
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-
-Hi Sean, Ackerley,
 
 On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
 <devnull+ackerleytng.google.com@kernel.org> wrote:
-...
-> +       kvm.gmem_in_place_conversion=
-> +                       [KVM] Controls whether KVM enables in-place conversion
-> +                       support for guest_memfd and tracks the private/shared
-> +                       state of memory per guest_memfd instead of per VM.
-> +
-> +                       If enabled, KVM enables the KVM_SET_MEMORY_ATTRIBUTES2
-> +                       ioctl on guest_memfd file descriptors and disables the
-> +                       legacy VM-scoped KVM_SET_MEMORY_ATTRIBUTES ioctl for
-> +                       private memory state tracking. Only the
-> +                       KVM_MEMORY_ATTRIBUTE_PRIVATE attribute moves to
-> +                       per-guest_memfd tracking; other attributes remain
-> +                       per-VM.
-> +
-> +                       This parameter toggles KVM's in-place conversion
-> +                       capability support. Whether a VMM uses separate backends
-> +                       or out-of-place memory management is determined by
-> +                       userspace VMM design.
-> +
-> +                       Note, this parameter is only available when
-> +                       CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y. When
-> +                       CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set, in-place
-> +                       conversion is unconditionally enabled.
-> +
-> +                       Default is Y (on).
+>
+> From: Sean Christopherson <seanjc@google.com>
+>
+> Add and use kvm_arch_has_gmem_convert() to guard guest_memfd's invocation
+> of arch hooks related to converting memory between private and shared, as
+> only one half of the x86 CoCo duo needs the runtime hooks (any pre-work is
+> pure overhead for TDX).  At this exact moment, the overhead is negligible,
+> but that will change when in-place conversion comes along, at which point
+> to-shared conversions will "need" to find all affected folios prior to
+> calling into arch code.  In quotes because very technically that work could
+> be pushed to arch code, but that would bleed guest_memfd details into arch
+> code and would be far worse than adding yet another kvm_arch_has... hook.
+>
+> Opportunistically provide the kvm_arch_gmem_make_private() declaration, and
+> rely on dead-code elimination to eliminate the call to non-existent code
+> when CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT=n.
+>
+> Reported-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Closes: https://lore.kernel.org/all/1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com
+> Suggested-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-The parameter is only settable when CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y, and
-in that config gmem_in_place_conversion initialises to
-!IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES), i.e. N, not Y. Is the doc line
-wrong, or is N-by-default not what was intended here?
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
 Cheers,
 /fuad
 
-> +
->         kvm.nx_huge_pages=
->                         [KVM] Controls the software workaround for the
->                         X86_BUG_ITLB_MULTIHIT bug.
+> ---
+>  arch/x86/include/asm/kvm_host.h | 3 +++
+>  include/linux/kvm_host.h        | 3 ++-
+>  virt/kvm/guest_memfd.c          | 5 ++---
+>  3 files changed, 7 insertions(+), 4 deletions(-)
+>
 > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 83e26ce45fb79..e840418427a1d 100644
+> index 683bb8bf43a94..6beddd8a0c749 100644
 > --- a/arch/x86/include/asm/kvm_host.h
 > +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1851,7 +1851,9 @@ enum kvm_intr_type {
->         ((vcpu) && (vcpu)->arch.handling_intr_from_guest && \
->          (!!in_nmi() == ((vcpu)->arch.handling_intr_from_guest == KVM_HANDLING_NMI)))
->
-> -#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> +#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||     \
-> +    defined(CONFIG_KVM_INTEL_TDX) ||           \
-> +    defined(CONFIG_KVM_AMD_SEV)
+> @@ -1854,6 +1854,9 @@ enum kvm_intr_type {
+>  #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
 >  #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
 >  #endif
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-> index abb108886733a..2c3c22aeafa54 100644
-> --- a/arch/x86/kvm/Kconfig
-> +++ b/arch/x86/kvm/Kconfig
-> @@ -81,13 +81,21 @@ config KVM_WERROR
->           If in doubt, say "N".
->
->  config KVM_VM_MEMORY_ATTRIBUTES
-> -       bool
-> +       bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
-> +       depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
-> +       help
-> +         Enable support for tracking PRIVATE vs. SHARED memory using per-VM
-> +         memory attributes.  Using per-VM attributes is deprecated in favor of
-> +         tracking PRIVATE state in guest_memfd.  Select this if you need to run
-> +         CoCo VMs using a VMM that doesn't support guest_memfd memory
-> +         attributes.
-> +
-> +         If unsure, say N.
->
->  config KVM_SW_PROTECTED_VM
->         bool "Enable support for KVM software-protected VMs"
->         depends on EXPERT
->         depends on KVM_X86 && X86_64
-> -       select KVM_VM_MEMORY_ATTRIBUTES
->         help
->           Enable support for KVM software-protected VMs.  Currently, software-
->           protected VMs are purely a development and testing vehicle for
-> @@ -138,7 +146,6 @@ config KVM_INTEL_TDX
->         bool "Intel Trust Domain Extensions (TDX) support"
->         default y
->         depends on INTEL_TDX_HOST
-> -       select KVM_VM_MEMORY_ATTRIBUTES
->         select HAVE_KVM_ARCH_GMEM_POPULATE
->         help
->           Provides support for launching Intel Trust Domain Extensions (TDX)
-> @@ -162,7 +169,6 @@ config KVM_AMD_SEV
->         depends on KVM_AMD && X86_64
->         depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
->         select ARCH_HAS_CC_PLATFORM
-> -       select KVM_VM_MEMORY_ATTRIBUTES
->         select HAVE_KVM_ARCH_GMEM_CONVERT
->         select HAVE_KVM_ARCH_GMEM_RECLAIM
->         select HAVE_KVM_ARCH_GMEM_INVALIDATE
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 05c518c9b8078..929fd3e1a01e6 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -103,7 +103,10 @@ static bool __ro_after_init allow_unsafe_mappings;
->  module_param(allow_unsafe_mappings, bool, 0444);
->
->  #ifdef kvm_arch_has_private_mem
-> -bool __ro_after_init gmem_in_place_conversion = false;
-> +bool __ro_after_init gmem_in_place_conversion = !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES);
-> +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> +module_param(gmem_in_place_conversion, bool, 0444);
+> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> +#define kvm_arch_has_gmem_convert() (!!kvm_x86_ops.gmem_make_private)
 > +#endif
->  EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
+>
+>  #define kvm_arch_has_readonly_mem(kvm) (!(kvm)->arch.has_protected_state)
+>
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 502465119ca0c..b7516e19ef419 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2597,9 +2597,10 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
+>  }
+>  #endif /* CONFIG_KVM_GUEST_MEMFD */
+>
+> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+>  int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>                                kvm_pfn_t nr_pages);
+> +#ifndef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> +#define kvm_arch_has_gmem_convert() false
 >  #endif
 >
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 798d91df69537..2190e4d6b6bea 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -772,11 +772,10 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>                 folio_mark_uptodate(folio);
+>         }
+>
+> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> -       if (kvm_gmem_is_private_mem(file_inode(file), index))
+> +       if (kvm_arch_has_gmem_convert() &&
+> +           kvm_gmem_is_private_mem(file_inode(file), index))
+>                 r = kvm_arch_gmem_make_private(kvm, gfn, *pfn,
+>                                                (kvm_pfn_t)1 << *max_order);
+> -#endif
+>
+>         folio_unlock(folio);
+>         folio_put(folio);
 >
 > --
 > 2.55.0.897.gb25b4bd76c-goog
