@@ -1,245 +1,162 @@
-Received: from mta1.migadu.com (out-139.mta1.migadu.com [95.215.58.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F01376A19
-	for <linux-coco@lists.linux.dev>; Tue,  1 Sep 2026 11:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B603A7F54;
+	Tue,  1 Sep 2026 12:44:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788261132; cv=none; b=rSU+AAWGzgtwKK/JUqX0koulXHLB6/8mOFGumZMSELPpfNHPCRla73jozE4ilL7ISzqj2rN/JCpKSD8boSU0fij6wJ/ABc0DrZkCWng5E/sgeNehK7iO6Fdpbkkn8Ph3+mxiL+S7kReT4QLQ3uDKcMSyyOmtWeKWeWzqmDGG9Lw=
+	t=1788266671; cv=none; b=tbNe0gK/j1MvN+bGR7+EcAQyij7EqcfNuStbAbLijCeP1GPKUsgJ+8y8vh/pDsXfU12mexaRkuS3U1Z6YC1O++nuAByDz+mu3gjeo+RzX9ROxY6Elx9l5YpOFtqgrmW3cp15h4JuV0p41HWrHoNKuOnhH3B8XV3OIp4joXikOUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788261132; c=relaxed/simple;
-	bh=CsioD9lZ+yh5tHGXfu+MRuQR2cyaW3t4YdYHU6hudFc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cXSm3IR7PpMhdxESNyCTAUE6lV2uckTYnbpFhNXr+TX0l681W4/LqWPXywfdi3lL0mKRMHtC7v7JV3bFyuuy+6zX+buL2nS7AXnp6nsRulQGwWpT5YTOI/dhw1GTVbKYZ8Y3+VHKHgmYBGhnSC+PCIapcM2w4/sQ3Uy7bSyZKVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NLbjeJOs; arc=none smtp.client-ip=95.215.58.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788266671; c=relaxed/simple;
+	bh=lTIFVCbT44JWdCl33pIqGx6hasmFSd29i4Fq3DTtYzM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=qzxrNbm5tZgjPH16m/1oQhHOhvnulZuzLvVUQN32Apyx/68nCPrVVCkZEs9RBlDsohUNh7ibtiFQdvmf6Ikth27rRVZQrzjhMLGRrW7n0kJv9GihAucsGCY7bnIcFIyeHLu41Ed5Jxud7SmlSS746nSAo0dTlpU+790FPFNVXng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RwhOO1V9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NLbjeJOs"
-X-Envelope-To: linux-coco@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=CsioD9lZ+yh5tHGXfu+MRuQR2cyaW3t4YdYHU6hudFc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788261127; v=1; x=1788865927;
- b=NLbjeJOsJ4qDouuFlN/y5SLMpcRNtCK5Flug9/dOf66fxNnBgTk44GRRRfN6G5+WIdCniWiG
- jE9GaSWrgmNVIaaNpcDp62stJTRpizF4X5JAYjs86fMFUUKUNoYb6lxZ/ZS6NZAGA8lVi3B20fb
- My5mbttsG+LPwydsJMueWq28=
-X-Envelope-To: linux-coco@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id 38b70cc37e2700b8;
-	Tue, 01 Sep 2026 11:12:07 +0000
-X-Mizu-Trace-ID: 38b70cc37e2700b8
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5b5e5aaf7deso7313e87.0
-        for <linux-coco@lists.linux.dev>; Tue, 01 Sep 2026 04:12:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz9U8Q1+pQdBkH5FGqPtDrQcNPs3xyWqzLEdr5AnviyAn69150D8gYnCGc287/UY5hGpRUGMmSGp0II@lists.linux.dev
-X-Gm-Message-State: AFuF++khz+IvrX93ULsuFwovpnElvMSBiC6+ePOomKVT+XXmNtkynxFR
-	oDq1J2zQwGYwzTSUZkvtMsZSw3f+JilYMRgm9RFMVNZJXMjYy5h0hTjHHLETL/mJt679YjAeHMe
-	VSCoG9Mfhcbd0WNGNEPqi+phtfk6XEggQluEbl0Bg
-X-Received: by 2002:a05:6512:b8d:b0:5aa:79d6:b559 with SMTP id
- 2adb3069b0e04-5b5fefc86c9mr146222e87.0.1788261126243; Tue, 01 Sep 2026
- 04:12:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RwhOO1V9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24501F000E9;
+	Tue,  1 Sep 2026 12:44:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788266670;
+	bh=CR096vE5bRSe+2pGq3qMqD4kNPXWT2kota8/MmZ+zdM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=RwhOO1V9niebNzIBzf1GvUNR1CzWvh4/WjqQebvqF3FWtC5HvBfKszwHDrpLqG2w8
+	 xJGmLuZqdoscJgf10Vox5kEQC/57oeCFDXCL+sKG7dcs/2Yn1yN9RCTS38JlKx5jq5
+	 Aoz6nm1cXhRzBviRz0gxqcB8OI6drxsMENHk3Ize9ihVMmRnuLu2/eCDmYAjqhekvK
+	 qi/E0VXw5db1xVSPOnv5PtNwBOxabMiIVjDI+vRnQ3/Ima0jyRbHQYEs+OdRCz/eM+
+	 7Sf/O1Gts3gjcnSGfp6DnQrn0ll3+mCB+3NYAUI4V4tyxwu0fnp7r2AMPniOFG9JPC
+	 YTvpgD7hbHWMA==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: Re: [RFC PATCH v4 00/16] coco/TSM: Implement host-side support for
+ Arm CCA TDISP setup
+In-Reply-To: <20260831180855.GA2171358@nvidia.com>
+References: <20260427085344.941627-1-aneesh.kumar@kernel.org>
+ <20260831180855.GA2171358@nvidia.com>
+Date: Tue, 01 Sep 2026 18:14:19 +0530
+Message-ID: <yq5aa4q1nnto.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-44-85e5fd25252a@google.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-44-85e5fd25252a@google.com>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 1 Sep 2026 12:11:00 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTz+nwFCn66MG2QjiB84_OyOoJowTHr-Ru2uSEpvO+yLCg@mail.gmail.com>
-X-Gm-Features: AcwNN1Ub9J3hFyuS9Dks6Hz8-OwxznQ12Dvlx31FuOxfKnRbAtrjNgxw2UfRugY
-Message-ID: <CA+EHjTz+nwFCn66MG2QjiB84_OyOoJowTHr-Ru2uSEpvO+yLCg@mail.gmail.com>
-Subject: Re: [PATCH v12 44/45] KVM: selftests: Update private_mem_conversions_test
- for in-place conversions
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Ackerley Tng <ackerleytng@google.com>
->
-> Update private_mem_conversions_test for in-place conversions. In-place
-> conversions support is detected in selftests with kvm_has_gmem_attributes.
->
-> With in-place conversions, specifying userspace_addr from some other memory
-> provider that is not the guest_memfd associated with the memslot is a user
-> error, since KVM will only use both shared and private memory from the
-> guest_memfd.
->
-> Hence, when kvm_has_gmem_attributes, only test in-place conversions with
-> single backing, where guest_memfd provides both shared and private memory.
->
-> For single backing, guest_memfd must be created with
-> GUEST_MEMFD_FLAG_MMAP. Initialize the guest_memfd as shared to align with
-> how memory would default to shared when shared/private state was tracked at
-> the VM level (the test expects this, it was written for
-> non-in-place-conversions).
->
-> When handling a hypercall to set attributes, use
-> vm_mem_set_memory_attributes() to send the ioctl to the guest_memfd instead
-> of the VM.
->
-> When testing in-place conversions (single-backing), don't allow the user to
-> configure src_type, since src_type will be ignored. Don't use src_type to
-> determine alignment for rounding up per-cpu test memory size, since
-> guest_memfd's backing page size is always the system PAGE_SIZE.
->
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+> On Mon, Apr 27, 2026 at 02:23:28PM +0530, Aneesh Kumar K.V (Arm) wrote:
+>> 
+>> This patch series implements the host-side changes needed for end-to-end
+>> Arm CCA TDISP setup. It adds the RMI/RHI plumbing required to create and
+>> manage Realm vdev objects, service device-attestation object requests, and
+>> complete the KVM/RMM flows needed for device run-time transitions.
+>
+> So this is enough for the realm to see a physical PCI device inside it
+> without any vSMMU inside the realm?
+>
 
-Cheers,
-/fuad
+There are multiple series, and this is the final one:
+
+1. arm-cca-guest series
+2. arm-cca-host IDE setup series
+3. iommufd interface for TSM operations
+4. arm-cca-host TDISP support (this series)
+
+>
+> It is really weird to see a viommu for a case where there is no
+> viommu..
+>
+
+We ended up with a viommu despite having no stage-1 SMMU or vSMMU
+because it held the KVM reference needed by item (3) above [1]. With the
+recent changes in that series [2], we now inherit the KVM details from
+VFIO through iommufd_device_bind. I can possibly look at using the idev
+for this instead.
+
+[1] https://lore.kernel.org/all/20260309111704.2330479-2-aneesh.kumar@kernel.org
+[2] https://lore.kernel.org/all/20260525154816.1029642-1-aneesh.kumar@kernel.org
 
 
-> ---
->  .../kvm/x86/private_mem_conversions_test.c         | 57 +++++++++++++++++-----
->  1 file changed, 44 insertions(+), 13 deletions(-)
+> It doesn't do anything except manage memory for the RMM..
 >
-> diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> index cf50e9a332c5b..33b610383693b 100644
-> --- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> +++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> @@ -306,9 +306,12 @@ static void handle_exit_hypercall(struct kvm_vcpu *vcpu)
->         if (do_fallocate)
->                 vm_guest_mem_fallocate(vm, gpa, size, map_shared);
+> It feels wrong that the arm-cca-guest module is calling
+> RMI_PDEV_CREATE and RMI_VDEV_CREATE while the viommu is allocating STE
+> memory for the PDEV. That doesn't make alot of sense? The STE is
+> needed before VDEV_CREATE, right? So why not place it there in the
+> flow?
 >
-> -       if (set_attributes)
-> -               vm_set_memory_attributes(vm, gpa, size,
-> -                                        map_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE);
-> +       if (set_attributes) {
-> +               u64 attrs = map_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> +
-> +               vm_mem_set_memory_attributes(vm, gpa, size, attrs);
-> +       }
-> +
->         run->hypercall.ret = 0;
->  }
+> If that's changed then the only thing the viommu does is manage the
+> PSMMU, which again, seems like something VDEV_CREATE needs, so why is
+> a viommu involved at all?
 >
-> @@ -352,8 +355,21 @@ static void *__test_mem_conversions(void *__vcpu)
->                                 size_t nr_bytes = min_t(size_t, vm->page_size, size - i);
->                                 u8 *hva = addr_gpa2hva(vm, gpa + i);
+
+We do not have a separate vdev-create operation; instead, we have
+tsm_bind. The required iommufd objects (idev/viommu) are set up before
+tsm_bind.
+
+Currently, the primary reason for having a viommu is to obtain the KVM
+reference. Now that the KVM details are inherited from VFIO through
+iommufd_device_bind(), I can look at using the idev instead and dropping
+the viommu requirement.
+
 >
-> -                               /* In all cases, the host should observe the shared data. */
-> -                               memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
-> +                               if (kvm_has_gmem_attributes &&
-> +                                   uc.args[0] == SYNC_PRIVATE) {
-> +                                       TEST_EXPECT_SIGBUS(READ_ONCE(*hva));
-> +                               } else {
-> +                                       /*
-> +                                        * If not testing in-place conversion
-> +                                        * (dual backing), the host should
-> +                                        * always observe shared data, since the
-> +                                        * shared memory is a separate page.
-> +                                        *
-> +                                        * For SYNC_SHARED, test that the host
-> +                                        * can see shared memory.
-> +                                        */
-> +                                       memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
-> +                               }
+> The smmu driver involvment would be much smaller if it was only the
+> interrupt routing and some helper to return the psmmu addr for a
+> struct device that the arm-cc-guest module can call to manage the
+> psmmu?
 >
->                                 /* For shared, write the new pattern to guest memory. */
->                                 if (uc.args[0] == SYNC_SHARED)
-> @@ -369,20 +385,29 @@ static void *__test_mem_conversions(void *__vcpu)
->         }
->  }
+
+I designed this so that the PSMMU details are managed by the arm-smmu
+driver, with minimal involvement from arm-cca-host. If the arm-smmu
+driver does not set up the PSMMU correctly, tsm_bind, which is handled
+by arm-cca-host, can fail.
+
+
+> But I'm also sitting here scratching my head a bit, did the tsm_ops
+> design go the wrong way? Should we have run more of that through a
+> viommu instead of tsm_ops? Bind is sort of an illogical operation
+> without a viommu, even if it is a nop viommu.
 >
-> +/* Align each vCPU's chunk of memory naturally to the size of the backing store. */
-> +static size_t compute_per_cpu_size(enum vm_mem_backing_src_type src_type)
-> +{
-> +       size_t alignment;
-> +
-> +       if (kvm_has_gmem_attributes)
-> +               alignment = getpagesize();
-> +       else
-> +               alignment = get_backing_src_pagesz(src_type);
-> +
-> +       return align_up(PER_CPU_DATA_SIZE, max_t(size_t, SZ_2M, alignment));
-> +}
-> +
->  static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_vcpus,
->                                  u32 nr_memslots)
->  {
-> -       /*
-> -        * Allocate enough memory so that each vCPU's chunk of memory can be
-> -        * naturally aligned with respect to the size of the backing store.
-> -        */
-> -       const size_t alignment = max_t(size_t, SZ_2M, get_backing_src_pagesz(src_type));
-> -       const size_t per_cpu_size = align_up(PER_CPU_DATA_SIZE, alignment);
-> +       const size_t per_cpu_size = compute_per_cpu_size(src_type);
->         const size_t memfd_size = per_cpu_size * nr_vcpus;
->         const size_t slot_size = memfd_size / nr_memslots;
->         struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
->         pthread_t threads[KVM_MAX_VCPUS];
->         struct kvm_vm *vm;
-> +       u64 gmem_flags;
->         int memfd, i;
+> I suppose it depends what it looks like when a real vsmmu is
+> created.. That probably needs a special viommu object, and do we get
+> into order problems if the lifecylce becomes split to tsm and viommu?
 >
->         const struct vm_shape shape = {
-> @@ -397,12 +422,16 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_v
+>> RHI v1.0 BET1 specification [5].
+>> 
+>> At a high level, the series adds support for:
+>> - host-side vdev communication and lifecycle management
+>> - host handling of RHI DA object read/size requests
+>> - host-side fetching and caching of interface reports and measurements
+>> - KVM handling of vdev request/complete exits
+>> - KVM handling of map/validation exits and teardown on granule destroy
+>> - vdev transition to TDISP RUN state
+>> - enabling DA in Realm create parameters
+>> 
+>> The series builds upon the TSM framework patches posted at [2] and depends on
+>> the KVM CCA patchset [3]. A git repository containing all related changes is
+>> available at [4]. kvmtool repo is at [6]
 >
->         vm_enable_cap(vm, KVM_CAP_EXIT_HYPERCALL, (1 << KVM_HC_MAP_GPA_RANGE));
+> It looks like it also needs the series that adds bind to iommufd too
 >
-> -       memfd = vm_create_guest_memfd(vm, memfd_size, 0);
-> +       gmem_flags = 0;
-> +       if (kvm_has_gmem_attributes)
-> +               gmem_flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
-> +
-> +       memfd = vm_create_guest_memfd(vm, memfd_size, gmem_flags);
->
->         for (i = 0; i < nr_memslots; i++)
->                 vm_mem_add(vm, src_type, BASE_DATA_GPA + slot_size * i,
->                            BASE_DATA_SLOT + i, slot_size / vm->page_size,
-> -                          KVM_MEM_GUEST_MEMFD, memfd, slot_size * i, 0);
-> +                          KVM_MEM_GUEST_MEMFD, memfd, slot_size * i, gmem_flags);
->
->         for (i = 0; i < nr_vcpus; i++) {
->                 gpa_t gpa =  BASE_DATA_GPA + i * per_cpu_size;
-> @@ -462,6 +491,8 @@ int main(int argc, char *argv[])
->         while ((opt = getopt(argc, argv, "hm:s:n:")) != -1) {
->                 switch (opt) {
->                 case 's':
-> +                       TEST_ASSERT(!kvm_has_gmem_attributes,
-> +                                   "src_type is only configurable when testing without in-place conversion");
->                         src_type = parse_backing_src_type(optarg);
->                         break;
->                 case 'n':
->
-> --
-> 2.55.0.897.gb25b4bd76c-goog
->
->
+> Jason
+
+-aneesh
