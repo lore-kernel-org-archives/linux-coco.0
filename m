@@ -1,160 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D18247798B;
-	Tue,  1 Sep 2026 09:17:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E862471244
+	for <linux-coco@lists.linux.dev>; Tue,  1 Sep 2026 09:19:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788254234; cv=none; b=R6cAk+8zVEEiWAsP5CGYs+kjKRtX2ikhG2utAVONJyxogtpcefZ9QRM5xgLnZ/rc0N3tAMacE5SZa4AuwBq8UksLKS+4d34yerqPvC0ksqQwmxCdHR0Wp+UPBFZ0JoSKclqZcb2Awr9m/iPAwc5TJkhJQtCV4H9On0Cy6HX+bPc=
+	t=1788254358; cv=none; b=LvF8OPO7XtuF7o2exQ+mPVs+2NVU6NSoDoN9TgKAMmSZIj4jo/26aen+8SeUhfdESGqS02cbIywQ537j0oNUDNjIsMgCFOpIx6IYkLmtekUzxijrm1ZgyTx3p0/U+0jBO27+LCKg3AES2fhwTe1lWfaPm6g/j7w02ZGH7derbzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788254234; c=relaxed/simple;
-	bh=SEvxqsLXA5gPmTU0Dj4YKtTfRCn4/vTp5S4oMrM7tGk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=BJKM/XJRTx1Bm2jdEKprB4xv+tnajlO+MDPkfDN4+czk8XIz8NHFsCnPCmyDKbldp+hyE6iba0YDwckprMli1Cz28IJ4LJwoN/9Qrrhk9EtWr6qRoJhbybMd37PRLeLMIMh1czos4LK3leGktlelWxDEZ38xWc3rIsTLntLwEW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XROMNIUm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788254358; c=relaxed/simple;
+	bh=ybzLPBq1Kqmn0Fx88mmu2PUfpGn2KPU3cTB0rl4kSD8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YgS+l6gwsmVCoekKfHgfAjKmFqYhLcbxP1K1fyQP2lNoU9U56Bru93XZPUD454JMtOlmltEBw+XinYWsyxscst6oknV9LEXQR44DVR+MFlmBF1e1YENe4zWW4APjr2Bvo6xfNJnBC7REbvm/sQxp3unAFVUDy6uCFh5KBTEBato=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ljghrvx0; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XROMNIUm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4EB61F000E9;
-	Tue,  1 Sep 2026 09:17:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788254232;
-	bh=mITZlxCGGk5dvksU48UBQe0WaGaTY/+s4dpeJMto630=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=XROMNIUmyhA7M/dbxKK8Imo86dz2L5j/zRFqHXNrxib/St5Bz1Wb45NtmhWOw5fJy
-	 1u3rgOng700Q/MQ7vgjnccFx73xrQm/I7XQ3n67GRnFhDKxJ/VFmyX48m+SserSxs+
-	 Tj82D7pJJMB26AvoXAgxRVqAW3LgHXg+Khq3BxBKr9/K3b1pItu8VaSk4UULn1gG//
-	 8C8f2gKAHAI74TDde4b39ZA0HPi0d9Z3mFhPd6KgiQH0aY3Zq0mWuwzTsGSVTSS7ZE
-	 jUydPyVjl+1VTyXdmpr4NjgMXIHt/C0EyY7NN9kjEfZOHNqNA5Ed9dbgxa4YiD6AJE
-	 VftVrjb3WsNrg==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [RFC PATCH v4 03/16] iommu/arm-smmu-v3: Add initial pSMMU realm
- viommu plumbing
-In-Reply-To: <apM6dOHcEI2ztWS0@nvidia.com>
-References: <20260427085344.941627-1-aneesh.kumar@kernel.org>
- <20260427085344.941627-4-aneesh.kumar@kernel.org>
- <apM6dOHcEI2ztWS0@nvidia.com>
-Date: Tue, 01 Sep 2026 14:47:04 +0530
-Message-ID: <yq5a8q5lz5yn.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ljghrvx0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788254356; x=1819790356;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ybzLPBq1Kqmn0Fx88mmu2PUfpGn2KPU3cTB0rl4kSD8=;
+  b=Ljghrvx0qKX/GX3NbUV92o0bLGBzPeKvhqYQ7HgmgoDIw/6eierH90qB
+   1TReQrggGxz7ueaL0IyN3dTWXKvdt/UBzUsQtTJgJuTnnn2VqQeN3BlTZ
+   hyWYK5lm54U+yxMP1CgAjgo6GsVaDvjN+24ybnh5u/4NWSScAb4WtPL1b
+   l64FKIyILR9Y/wcDLIe92owOKQ8QxOKAUfwtNwUL864gXSYzmFWN/xy0k
+   LadlEiTH2hH7V7eFT9aGr2bkOlnRXGK4cHmnkSZ+/b2KCi69kUQEljR10
+   c65X4/BsZ8xQZ2Ue2fsAqs6AV5GdkRR7VDZmu+cGmK3bHI6UUNzJW018x
+   Q==;
+X-CSE-ConnectionGUID: cbi0+ZRsRhaeMP2wlxW3mg==
+X-CSE-MsgGUID: dyACyD7dSYqhiK90Sl13uw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="92493090"
+X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
+   d="scan'208";a="92493090"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 02:19:15 -0700
+X-CSE-ConnectionGUID: dk4Yv7r8QdSTMtXqf1bkOA==
+X-CSE-MsgGUID: phpUd5YHQ8+X4qWG9ERdUQ==
+X-ExtLoop1: 1
+Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 02:18:59 -0700
+Message-ID: <ad5ff907-d468-4556-bfb3-d930b97b2c2c@linux.intel.com>
+Date: Tue, 1 Sep 2026 17:18:57 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 07/45] KVM: Rename kvm_mem_is_private() to
+ kvm_is_private_gfn()
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-coco@lists.linux.dev
+References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
+ <20260830-gmem-inplace-conversion-v12-7-85e5fd25252a@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260830-gmem-inplace-conversion-v12-7-85e5fd25252a@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Nicolin Chen <nicolinc@nvidia.com> writes:
-
-> On Mon, Apr 27, 2026 at 02:23:31PM +0530, Aneesh Kumar K.V (Arm) wrote:
->> +static const struct iommufd_viommu_ops arm_realm_smmu_v3_ops = {
->> +	.destroy = arm_realm_smmu_v3_destroy,
->> +	.alloc_domain_nested = arm_vsmmu_alloc_domain_nested,
->> +	.cache_invalidate = arm_vsmmu_cache_invalidate,
->
-> I don't think realm vsmmu should include NS nested domain ops. I
-> wonder if adding here is for some covert reason that prevents us
-> from registering viommu/vdevice objects?
->
->> +static int arm_realm_smmu_v3_vdevice_init(struct iommufd_vdevice *vdev)
->> +{
->> +	struct device *dev = iommufd_vdevice_to_device(vdev);
->> +	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
->> +	// fixme which stream to pick
->> +	/* At this moment, iommufd only supports PCI device that has one SID */
->> +	struct arm_smmu_stream *stream = &master->streams[0];
->> +	struct arm_smmu_device *smmu = master->smmu;
->> +	unsigned long rmi_ret = 0;
->> +	int ret;
->> +
->> +	if (!smmu->realm_initialized)
->> +		return -EINVAL;
->> +
->> +	ret = rmi_psmmu_st_l2_create(smmu->base_phys,
->> +				     ALIGN_DOWN(stream->id, STRTAB_NUM_L2_STES),
->> +				     &rmi_ret);
->
-> The "vdevice" is for a PSMMU stream table allocation..
->
->> +int arm_realm_smmu_v3_init(struct iommufd_viommu *viommu,
->> +			   const struct iommu_user_data *user_data)
->> +{
-> [...]
->> +psmmu_activate:
->> +	ret = rmi_psmmu_activate(smmu->base_phys, virt_to_phys(params),
->> +				 &rmi_ret);
->
-> .. and the "viommu" is also for PSMMU activation...
->
->> +++ b/include/uapi/linux/iommufd.h
->> @@ -1055,6 +1055,7 @@ enum iommu_viommu_type {
->>  	IOMMU_VIOMMU_TYPE_DEFAULT = 0,
->>  	IOMMU_VIOMMU_TYPE_ARM_SMMUV3 = 1,
->>  	IOMMU_VIOMMU_TYPE_TEGRA241_CMDQV = 2,
->> +	IOMMU_VIOMMU_TYPE_ARM_REALM_SMMUV3 = 3,
->
-> .. and we demand userspace (VMM) to use IOMMU_VIOMMU_ALLOC ioctl,
-> even if VMM does not actually expose a guest-level SMMU instance.
-> Thus, no user_data.
->
-> I can get the reasoning behind the flow using this viommu/vdevice.
->
-> But, on the other hand, I can imagine that a Realm VSMMU would add
-> a new flag with a user_data to this VIOMMU. Then, this flow would
-> give some troubles to VMM (QEMU for example):
->
->  - For VM with a guest-level SMMU, QEMU creates a realm instance
->    where IOMMU_VIOMMU_TYPE_ARM_REALM_SMMUV3 (with vsmmu) can be
->    allocated.
->  - For VM w/o a guest-level SMMU, QEMU won't create such a realm
->    instance, while still required to invoke the ioctl (w/o vsmmu). 
->
-> Taking a step back, I wonder if we really need to use iommufd for
-> PSMMU activation and its stream table allocations?
->
-> Here are some facts:
->   - An iommufd has a ctx, that's one per VM. Similarly, a Realm
->     has an RD.
->   - For an RMI command that needs an RD, it makes sense to be per
->     iommufd ctx, e.g. RMI_VSMMU_* or RMI_VDEV_* commands.
->   - PSMMU commands are global; they don't need RD. So they don't
->     seem necessary to tie to an iommufd ctx.
->
-> Instead, could the PSMMU activation be done after RMI_PSMMU_INFO
-> check? Is there any reason not to do that? A safer timing might
-> be at the device assignment stage?
->
-
-One of the reasons I added IOMMU_VIOMMU_TYPE_ARM_REALM_SMMUV3 was to
-avoid creating a psmmu object when we are not using a PCI passthrough
-VM. That is also the reason for all the refcounting around the psmmu
-objects.
-
-If we are okay with creating psmmu objects early, then I guess we can go
-with the above approach.
-
->
-> Speaking of which, RMI_PSMMU_ST_L2_CREATE doesn't seem necessary
-> to be invoked in a vdevice context either. Maybe it should align
-> with iommufd idev's lifecycle?
->
-
--aneesh
+On 8/31/2026 8:25 AM, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
+> 
+> Rename kvm_mem_is_private() to kvm_is_private_gfn() to prepare for in-place
+> conversion, where there will be two lookup functions,
+> kvm_vm_is_private_gfn() and kvm_gmem_is_private_gfn().
+> 
+> This renaming allows consistent prefixing of "vm" vs "gmem" for
+> kvm_*_is_private_gfn(), as opposed to kvm_gmem_mem_is_private(), which
+> looks like a typo.
+> 
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
