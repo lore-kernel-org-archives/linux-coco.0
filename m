@@ -1,216 +1,254 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-235.mta0.migadu.com [91.218.175.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E173439478C;
-	Tue,  1 Sep 2026 08:46:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB79F360EC6
+	for <linux-coco@lists.linux.dev>; Tue,  1 Sep 2026 09:11:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788252381; cv=none; b=CpDBI//BQSnMZh8fkchLijaXa9n4vT4jRzOp2qh837lyjETLEh9QPEJp/Yzrp5AXoWqsKffKHcz/n3TF323IVat+ycN48cGu0yxfxaF+pCNbcObTrdveV7XtGrAcd6cThYAGSbBknHCkCVfLXJDkCgfNQVX6qIfmPrnI/amrTLM=
+	t=1788253891; cv=none; b=hgWZ/5HznNasJ6m04s7bc1IMJyD4ipeBZFkGj/exV8ZnlVJ+RmHSWaIQqPYWLb/cQgnUH1oklg1061C0RLJCrJxgL5r0boXt8Gb6g63UL8wY7BzL6/WtOIJNtlac6XiFgPETzqvYOdUJ3EUvbdYB9gBU7s1LReJyr4igxtj7VU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788252381; c=relaxed/simple;
-	bh=nOYr2/5KGhcoHzBT8RYwc4mrQKvfZhsOsi6k5J/+YeQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=T4JMR2SRwCtXIYw7FjJK31Nn1bJXDbT7MkAw4MeO2YYRheS5pLcBTCpw/EL4+cg55uGlFPy/sey+eEbgYMYKaBqwLvaOwfA6zIs/vHxwW2OeybpQ2SEPRQF4jFdIgnF8urjmw8uzL0S+agT1AtKF+LAY43rfTX19HG9Tm6csXww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kghze7x3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788253891; c=relaxed/simple;
+	bh=ME/aZcaXqImZ67gDzlYdShBgA2J/tOz88/5XcEiSBwk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e4zKr19oWgHzggMAfzbCgspUgckqDuN+V4fx8m7EBnfgmjWtBRgkY6skx2CAWBrYeWZYtLfvoEPme84h6P9mkkApjOZxPKnmbaUcCTDp2IbhChmvr95HTX1q8h6fR5G6stfcwaieMc8pUyXfh6P0N831C987xN+kmwdmFCFqn6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BNyBD0fm; arc=none smtp.client-ip=91.218.175.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kghze7x3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3216B1F000E9;
-	Tue,  1 Sep 2026 08:46:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788252379;
-	bh=sSZ+W+gpyvva9DOkNjE72UDAxg//MujBrcnUpMW/QcY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=kghze7x3MwDDqCvHjx3ZgTrJRLG41aro+Xm0FE6b6M6N87BFrqfJiFQjdaNbyLjei
-	 /a0OGIdZv30zvjAUQNX00VUKHQKXCR2agw7Z3sq1Iz3YSvNGyKEtzmzcCh7n4KUmXG
-	 uz1hIO1S1ln18PVcx9PsArwCn61NTGEDT+6ibg3Jp48OI2ZzhY5p17nMoy8ky5yUg0
-	 KyGbFbwiDzGSs0LfbmSaPYcAZYNf4/wtrGpomumjEMkz6mpyTmY7z84nicptr3WT/8
-	 RxgbatJmc0fP+5PEruglqmQNsVmlcvcYnePVLmcPF5rhWlw9iSwFakTC14vEGovfKN
-	 zUZN80YOsQ3XA==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [RFC PATCH v4 01/16] iommu/arm-smmu-v3: Discover RME support
- and realm IRQ topology
-In-Reply-To: <apMjUSbxcnlAKjks@nvidia.com>
-References: <20260427085344.941627-1-aneesh.kumar@kernel.org>
- <20260427085344.941627-2-aneesh.kumar@kernel.org>
- <apMjUSbxcnlAKjks@nvidia.com>
-Date: Tue, 01 Sep 2026 14:16:10 +0530
-Message-ID: <yq5aik4pnyul.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="BNyBD0fm"
+X-Envelope-To: linux-coco@lists.linux.dev
+DKIM-Signature: a=rsa-sha256; bh=ME/aZcaXqImZ67gDzlYdShBgA2J/tOz88/5XcEiSBwk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788253887; v=1; x=1788858687;
+ b=BNyBD0fmyMcc8ExPcKhWGL3KFYeI4ZxVII1XArI/rE325dfj80gbW+IlZIaAeJBoleMuft6B
+ T9WRdSoEQOC8M7JwLgLnAMUuz670lTFgiFQHVuJxpmCE9r2iipcfhwfMcon5xB3h7GUA4eo5YQV
+ +4Qf7SUo3G+h3BMdGKCZsy5w=
+X-Envelope-To: linux-coco@lists.linux.dev
+Received: by smtp.migadu.com with ESMTPS id 7d64f118811ebe4c;
+	Tue, 01 Sep 2026 09:11:27 +0000
+X-Mizu-Trace-ID: 7d64f118811ebe4c
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5b5e5aaf7deso6257e87.0
+        for <linux-coco@lists.linux.dev>; Tue, 01 Sep 2026 02:11:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxkhAWDB5oknljBxu+mOk9hoWel8kHrZlMsjl8zVxlTby7QQUFoc/Z49gETO6tTYYGMWHDtHqLUYxA3@lists.linux.dev
+X-Gm-Message-State: AFuF++lpC9A+Uzh+8Dkws2vFTVd9WrHUfoMvi+hSfMyCWpe9aD0x8oV+
+	nQi1CooHe0PF9hoj7ZM7o57cN8sMpuAJdBUpQLbozfstsBtNnAqUBovJfo+Mo10/crjIfInelVJ
+	dX9dsKeM3rd130dvEVMWu23c19j6bAL7sZE4ECmPc
+X-Received: by 2002:a05:6512:3993:b0:5b4:9dba:4ecf with SMTP id
+ 2adb3069b0e04-5b600a4e61cmr98369e87.13.1788253884152; Tue, 01 Sep 2026
+ 02:11:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-9-85e5fd25252a@google.com>
+In-Reply-To: <20260830-gmem-inplace-conversion-v12-9-85e5fd25252a@google.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Tue, 1 Sep 2026 10:10:47 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTwd507PaNQN9uHCgwftqSiVfhKhxSA7QnZVsNGqpNfGKg@mail.gmail.com>
+X-Gm-Features: AcwNN1XJVfII0wEJT_6-zHDSSBrs5LG5QpKVzgnh0CqKXLcS-fmuDvdFlehw5YE
+Message-ID: <CA+EHjTwd507PaNQN9uHCgwftqSiVfhKhxSA7QnZVsNGqpNfGKg@mail.gmail.com>
+Subject: Re: [PATCH v12 09/45] KVM: guest_memfd: Stub in ability to enable
+ in-place shared<=>private conversion
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev, 
+	Xiaoyao Li <xiaoyao.li@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Nicolin Chen <nicolinc@nvidia.com> writes:
-
-> On Mon, Apr 27, 2026 at 02:23:29PM +0530, Aneesh Kumar K.V (Arm) wrote:
->> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-realm.c
->> @@ -0,0 +1,124 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * Copyright (C) 2026 ARM Ltd.
->> + */
->> +
->> +#include <linux/interrupt.h>
->> +#include <asm/rmi_smc.h>
->> +#include <asm/rmi_cmds.h>
->> +
->> +#include "arm-smmu-v3.h"
->> +
->> +#define	RMI_PSMMU_IRQ_GERROR	BIT(0)
->> +#define	RMI_PSMMU_IRQ_EVENTQ	BIT(1)
->> +#define	RMI_PSMMU_IRQ_PRIQ	BIT(2)
->> +#define	RMI_PSMMU_IRQ_CMDQ	BIT(3)
-> [...]
->> +	if (irq == smmu->realm_evtq_irq)
->> +		notify_flags =  RMI_PSMMU_IRQ_EVENTQ;
->> +	else if (irq == smmu->realm_gerr_irq)
->> +		notify_flags =  RMI_PSMMU_IRQ_GERROR;
->> +	else if (irq == smmu->realm_pri_irq)
->> +		notify_flags =  RMI_PSMMU_IRQ_PRIQ;
+On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
+<devnull+ackerleytng.google.com@kernel.org> wrote:
 >
-> These are defined as BIT(x)...
+> From: Sean Christopherson <seanjc@google.com>
 >
->> +		if (rmi_psmmu_irq_notify(smmu->base_phys,
->> +					 notify_flags, &event)) {
-> [...]
->> +			rmi_psmmu_event_consume(smmu->base_phys, notify_flags);
+> Stub in global variable to enable in-place guest_memfd private<=>shared
+> memory conversion, which will eventually be exposed to userspace via a
+> module param, and wire up the __kvm_is_private_gfn() static call to the
+> guest_memfd version when in-place conversion is enabled, i.e. when gmem is
+> the sole authority on private vs. shared memory.
 >
-> .. and passed to RMI_PSMMU_IRQ_NOTIFY and RMI_PSMMU_EVENT_CONSUME.
+> Cc: Fuad Tabba <tabba@google.com>
+> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+
+Cheers,
+/fuad
+
+
+> ---
+>  Documentation/virt/kvm/api.rst |  7 +++++++
+>  include/linux/kvm_host.h       |  6 ++++++
+>  virt/kvm/guest_memfd.c         | 26 ++++++++++++++++++++++++++
+>  virt/kvm/kvm_main.c            | 12 +++++++++++-
+>  4 files changed, 50 insertions(+), 1 deletion(-)
 >
-> RMI_PSMMU_IRQ_NOTIFY takes RmiPsmmuIrqSet type, which is a 4-bit
-> field that has a range of [BIT(0), BIT(3)]. So this is correct.
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index e0430cc750c9e..90a29424c54c8 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -6382,6 +6382,11 @@ KVM_SET_USER_MEMORY_REGION2, e.g. shared memory can be lazily mapped/allocated
+>  on-demand.
 >
-> However, RMI_PSMMU_EVENT_CONSUME takes RmiPsmmuIrq type, which is
-> a 2-bit field that has a range of [0x0, 0x3]. So this seems wrong.
+>  When mapping a gfn into the guest, KVM selects shared vs. private, i.e consumes
+> +userspace_addr vs. guest_memfd, based on the state in guest_memfd, which is the
+> +sole authority on private vs. shared memory.  See :ref:`KVM_CREATE_GUEST_MEMFD`
+> +to find out more about the creation-time shared/private status.
+> +
+> +If in-place conversion is disabled, KVM selects shared vs. private, i.e consumes
+>  userspace_addr vs. guest_memfd, based on the gfn's KVM_MEMORY_ATTRIBUTE_PRIVATE
+>  state.  At VM creation time, all memory is shared, i.e. the PRIVATE attribute
+>  is '0' for all gfns.  Userspace can control whether memory is shared/private by
+> @@ -6429,6 +6434,8 @@ the state of a gfn/page as needed.
 >
-
-Updated that to
-
-#define	RMI_PSMMU_IRQ_PEND_GERROR	BIT(0)
-#define	RMI_PSMMU_IRQ_PEND_EVENTQ	BIT(1)
-#define	RMI_PSMMU_IRQ_PEND_PRIQ		BIT(2)
-#define	RMI_PSMMU_IRQ_PEND_CMDQ		BIT(3)
-
-
-#define	RMI_PSMMU_IRQ_GERROR	0
-#define	RMI_PSMMU_IRQ_EVENTQ	1
-#define	RMI_PSMMU_IRQ_PRIQ	2
-#define	RMI_PSMMU_IRQ_CMDQ	3
-
-
-and 
-	if (irq == smmu->realm.evtq_irq) {
-		notify_flags =  RMI_PSMMU_IRQ_PEND_EVENTQ;
-		psmmu_irq = RMI_PSMMU_IRQ_EVENTQ;
-	} else if (irq == smmu->realm.gerr_irq) {
-
-...
-	rmi_psmmu_event_consume(smmu->base_phys, psmmu_irq);
-
+>  The "flags" field is reserved for future extensions and must be '0'.
 >
->> +void arm_smmu_setup_realm_irqs(struct arm_smmu_device *smmu)
->> +{
->> +	int irq, ret;
->> +
->> +	irq = smmu->realm_evtq_irq;
->> +	if (irq) {
->> +		ret = devm_request_threaded_irq(smmu->dev, irq, NULL,
->> +						arm_smmu_realm_notify_thread,
->> +						IRQF_ONESHOT,
->> +						"arm-smmu-v3-realm-evtq",
->> +						smmu);
+> +.. _KVM_CREATE_GUEST_MEMFD:
+> +
+>  4.142 KVM_CREATE_GUEST_MEMFD
+>  ----------------------------
 >
-> These IRQ numbers are raw numbers forwarded by firmware and then
-> returned by RMI_PSMMU_INFO:
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 3579feb631775..b0110143d2ff8 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2580,6 +2580,8 @@ static inline bool kvm_vm_is_private_gfn(struct kvm *kvm, gfn_t gfn)
+>  #endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
 >
-> +		if ((psmmu_info->flags & RMI_PSMMU_IRQCFG_MASK) ==
-> +		    RMI_PSMMU_IRQCFG_IRQ_WIRED) {
-> +			smmu->realm_gerr_irq = psmmu_info->gerror_intr_num;
-> +			smmu->realm_evtq_irq = psmmu_info->eventq_intr_num;
-> +			smmu->realm_pri_irq = psmmu_info->priq_intr_num;
+>  #ifdef kvm_arch_has_private_mem
+> +extern bool gmem_in_place_conversion;
+> +
+>  typedef bool (kvm_is_private_gfn_t)(struct kvm *kvm, gfn_t gfn);
+>  DECLARE_STATIC_CALL(__kvm_is_private_gfn, kvm_is_private_gfn_t);
 >
-> Should they be converted to Linux IRQ numbers before forwarded to
-> devm_request_threaded_irq?
+> @@ -2588,6 +2590,8 @@ static inline bool kvm_is_private_gfn(struct kvm *kvm, gfn_t gfn)
+>         return static_call(__kvm_is_private_gfn)(kvm, gfn);
+>  }
+>  #else
+> +#define gmem_in_place_conversion false
+> +
+>  static inline bool kvm_is_private_gfn(struct kvm *kvm, gfn_t gfn)
+>  {
+>         return false;
+> @@ -2595,6 +2599,8 @@ static inline bool kvm_is_private_gfn(struct kvm *kvm, gfn_t gfn)
+>  #endif /* kvm_arch_has_private_mem */
 >
-
-Yes, that needs conversion. I guess we can use the irq_domain associated
-with the non-Realm IRQ number to create the mappings?
-
-Something like:
-
-
-+static struct irq_domain *arm_smmu_get_wired_irq_domain(struct arm_smmu_device *smmu)
-+{
-+	int irqs[] = {
-+		smmu->combined_irq,
-+		smmu->evtq.q.irq,
-+		smmu->gerr_irq,
-+		smmu->priq.q.irq,
-+	};
-+	struct irq_domain *domain = NULL;
-+	struct irq_data *irq_data;
-+	unsigned int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(irqs); i++) {
-+		if (irqs[i] <= 0)
-+			continue;
-+
-+		irq_data = irq_get_irq_data(irqs[i]);
-+		if (!irq_data || !irq_data->domain)
-+			return ERR_PTR(-EINVAL);
-+
-+		if (domain && domain != irq_data->domain)
-+			return ERR_PTR(-EINVAL);
-+
-+		domain = irq_data->domain;
-+	}
-+
-+	return domain ?: ERR_PTR(-ENXIO);
-+}
-
+>  #ifdef CONFIG_KVM_GUEST_MEMFD
+> +bool kvm_gmem_is_private_gfn(struct kvm *kvm, gfn_t gfn);
+> +
+>  int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>                      gfn_t gfn, kvm_pfn_t *pfn, int *max_order);
+>  #else
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index ce5efcacda36e..cd966eef45b69 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -478,6 +478,32 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+>         return 0;
+>  }
 >
->> @@ -782,6 +787,9 @@ struct arm_smmu_device {
->>  
->>  	int				gerr_irq;
->>  	int				combined_irq;
->> +	int				realm_gerr_irq;
->> +	int				realm_evtq_irq;
->> +	int				realm_pri_irq;
+> +bool kvm_gmem_is_private_gfn(struct kvm *kvm, gfn_t gfn)
+> +{
+> +       struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
+> +       struct inode *inode;
+> +
+> +       if (!slot)
+> +               return 0;
+> +
+> +       CLASS(gmem_get_file, file)(slot);
+> +       if (!file)
+> +               return 0;
+> +
+> +       inode = file_inode(file);
+> +
+> +       /*
+> +        * Rely on the maple tree's internal RCU lock to ensure a stable result.
+> +        * This result can become stale as soon as the lock is dropped, so the
+> +        * caller _must_ protect consumption of private vs. shared either by
+> +        * holding guest_memfd's invalidate lock for the entire duration, or by
+> +        * checking mmu_invalidate_retry_gfn() under mmu_lock to serialize
+> +        * against concurrent attribute updates.
+> +        */
+> +       return kvm_gmem_is_private_mem(inode, kvm_gmem_get_index(slot, gfn));
+> +}
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_is_private_gfn);
+> +
+>  static struct file_operations kvm_gmem_fops = {
+>         .mmap           = kvm_gmem_mmap,
+>         .open           = generic_file_open,
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 78278730b2ae4..46d2e123448c2 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -102,6 +102,10 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_shrink);
+>  static bool __ro_after_init allow_unsafe_mappings;
+>  module_param(allow_unsafe_mappings, bool, 0444);
 >
-> Nit: this series adds a few realm-specific things in the top SMMU
-> structure. Maybe a "struct arm_realm_psmmu" can make them clearer.
+> +#ifdef kvm_arch_has_private_mem
+> +bool __ro_after_init gmem_in_place_conversion = false;
+> +#endif
+> +
+>  /*
+>   * Ordering of locks:
+>   *
+> @@ -2423,6 +2427,9 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
+>  static u64 kvm_supported_vm_mem_attributes(struct kvm *kvm)
+>  {
+>  #ifdef kvm_arch_has_private_mem
+> +       if (gmem_in_place_conversion)
+> +               return 0;
+> +
+>         if (!kvm || kvm_arch_has_private_mem(kvm))
+>                 return KVM_MEMORY_ATTRIBUTE_PRIVATE;
+>  #endif
+> @@ -2634,8 +2641,11 @@ EXPORT_STATIC_CALL_GPL(__kvm_is_private_gfn);
 >
-
-Added
-
-struct arm_smmu_realm {
-	int				gerr_irq;
-	int				evtq_irq;
-	int				pri_irq;
-	struct mutex			mutex;
-	refcount_t			users;
-};
-
--aneesh
+>  static void kvm_init_memory_attributes(void)
+>  {
+> +       if (gmem_in_place_conversion)
+> +               static_call_update(__kvm_is_private_gfn, kvm_gmem_is_private_gfn);
+>  #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> -       static_call_update(__kvm_is_private_gfn, kvm_vm_is_private_gfn);
+> +       else
+> +               static_call_update(__kvm_is_private_gfn, kvm_vm_is_private_gfn);
+>  #endif
+>  }
+>  #else
+>
+> --
+> 2.55.0.897.gb25b4bd76c-goog
+>
+>
