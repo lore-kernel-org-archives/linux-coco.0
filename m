@@ -1,252 +1,426 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D47433D6D6;
-	Tue,  1 Sep 2026 00:58:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788224324; cv=fail; b=UXtCXZ/RXBgWHyWYChpNxg0r1e/EdgKzkFD/aDd+6BJVaPNqAAKCKTWBIXwZmDLbAUIF4EoPFfciv47zokuBh5j6pTid12Ulz5+1AJVxqlXU0NEKnwQJMvJy+avnIv56YpCr1+IzQ9/IHTu62gNozpEf+DEEqBUqkoqWo3gewLY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788224324; c=relaxed/simple;
-	bh=LaV4aJfRojC67+6OdV44XnltwHFlWZEgnzy8Ukonk3E=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=jDGaSiei/b6b0mKOMIsxovDIoTMKnLmUGDALQDT14Yj5fCPSaB+ky4aoflHDCpVovUhj+y4UftSeHPmfxEd955YXsXyQxHwaTWtM6KvBqtBTGBbjVZsDno+y1UjwSMCfNKEjzL7V8AFncVRixPWrFfha13D7r/Nih7MoSamKmfA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=k7yrnTeQ; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=Nht376C6; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEEA1372B5E
+	for <linux-coco@lists.linux.dev>; Tue,  1 Sep 2026 04:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788235642; cv=none; b=FB/SON+9NxIwcN/gz7ngVElbS76sGO/5ame5jlD0W/3vlTSwG1QFe7ztH/g5UXwNjTjX/QOXVImUm9g+CLiJD0J9G1RA9nCObez6FlwxV+p+Z2mFEL7fRAftf9+DDNxIvJBHGuAZfZFHCIhad8dP0fFcP2pXgSaiosrab7+1L14=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788235642; c=relaxed/simple;
+	bh=O/Ubhju6/CMfMzweAqgcy04r843jfVN4o87C1rotyes=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HkZna3K9+94wa67/s3noPeZ1XBmEth0AbbXRqO7LNmn1x8VtP5WBL4UvlO/VgF/zXcMesVbfYiJyvbeYtPJjAJV9ETy/Ce/6aTYwNSn3vw5W1hlRFEPoCOOo3MTBdmv1V61+xxiZtxshIq87iXo+FR3y7HQnnQskvw9QCAfUeuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TZY6inJX; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="k7yrnTeQ";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="Nht376C6"
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67VLBlsr2311041;
-	Tue, 1 Sep 2026 00:58:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=h6iF8Tph7QMnKfaPOFFSRCWstyREJymQUQ+qiE3DIXI=; b=
-	k7yrnTeQbXZkwEq5txTIpDckVLItheXdTGbGHDD2lbAkMPLLDirBn21bV9WfMnGJ
-	pTDsms108UibOqbQQ3mAfo+BqCHAWUAjxfZas7E9Ah0v0Wiobft+InR7LCvqc8U1
-	H3F4AGFT0ljbbks0nObyp+1js/rVWl8alGXoncoOo4zatr3/cr5wgAxf5gI1R8LM
-	L75sDzdpTgQFiOGKxgm7MvaqG1UXiuSB96zoMkHFTE8jN71nLqKPAzlJiQjvCH5r
-	DpyalJnVJoBJeokAPyP+AwZffUJHRGYyrBMm7AcrQ2cgc/fkkIfw0hMBgIP/2LYd
-	0YrvJdVrADJNRJ9u2sMABA==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4gbq1sknmd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 01 Sep 2026 00:58:39 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 6810swqL014376;
-	Tue, 1 Sep 2026 00:58:38 GMT
-Received: from ph0pr06cu001.outbound.protection.outlook.com (mail-westus3azon11011012.outbound.protection.outlook.com [40.107.208.12])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4gbnvdfmmn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 01 Sep 2026 00:58:38 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HedFfXSZh2MZ5VYV1JQmNpMYfLSQnxDZY1c9jVTkuuh7JZaGltIlzqJtax3JM5E90mumJ2RDDVjQPy8l6MuYHPmW2N99t/rI4d0gBGIKvYaAKKRHljKyPGwxwjRBOLibAFN/TCaNEvoCw4gBfvAWl1zwlkyQ0Kw0TiOYqmZTzthTjVSGmCoSYmzaq2hpqkoNfE/yKTxbn59fsAr4I1XgbyIrbbAgMGcUO4jkGa/wyr7HR5duV1rYVTexGSc5I0iHHdx7Ul59LWvnWhh52219x3Rlm25vbrn9amCFywRgPg2RBvu+6M/jjIdcBZhx/SY59WPQJ+xuYbcaJnuWRpkmEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h6iF8Tph7QMnKfaPOFFSRCWstyREJymQUQ+qiE3DIXI=;
- b=yJn7EK3brH9pNh9SOxk627bMvwOcJdmqv/2hmAj9f82/+QzY/La5r12f9BuVkMcEVmvboHpXoDz3dXJBs3Hi7Rnb4EjMrhEXEdzpU3PZaZozTAk0bfoxqkzaEOztMIvbax+Un8BDkE1Qnx8C4Rv4CPYl26j4ybfkVV475cxGx/r3i8r1t7qW8hMPLr20i2oFtnqeHffs7zeh6Djw0G9cDhxf3nob07+dpDuFuI1+ZGXWkDqnOIT3B0gsMrBQ08S2bhjfydouHiB7TJNQBKaNdTUWHR2aobQkxbjyvI6ztBUugxYYNQRfG8oABA2z4WDBc+JzbGQ7sNAbRU3+jA802Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h6iF8Tph7QMnKfaPOFFSRCWstyREJymQUQ+qiE3DIXI=;
- b=Nht376C6qC1zmf2AfQjrEEgcNXRAMCgIX9N4hDb9dn94ImfDHlTYrRT/s0P1AFbNptTPV0Yzfcdxj6itQYyCmJSE1/Ph5HvDfNI4f5xsKnPFOCzGR+xgEOY9yJjDQbokxXcSCTlgWreEDowpcUnX7OHqTyh1nF4S87i4073ZQTE=
-Received: from BLAPR10MB5380.namprd10.prod.outlook.com (2603:10b6:208:333::14)
- by DSVPR10MB997960.namprd10.prod.outlook.com (2603:10b6:8:3ad::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Tue, 1 Sep
- 2026 00:58:36 +0000
-Received: from BLAPR10MB5380.namprd10.prod.outlook.com
- ([fe80::a93f:a5f1:22ab:bd68]) by BLAPR10MB5380.namprd10.prod.outlook.com
- ([fe80::a93f:a5f1:22ab:bd68%6]) with mapi id 15.21.0382.007; Tue, 1 Sep 2026
- 00:58:36 +0000
-Message-ID: <cc95e357-00da-456b-a41a-357ddc857d17@oracle.com>
-Date: Tue, 1 Sep 2026 01:58:34 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: SVSM: Updated Linux and QEMU branches available for testing
-To: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-Cc: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-References: <apBelv6Ev-lCQ64J@8bytes.org>
- <b1cfe9d8-4f29-42f0-b3ac-312724250d0c@oracle.com>
- <apWcYdRjTeZF5vtH@8bytes.org>
-From: Liam Merwick <liam.merwick@oracle.com>
-Content-Language: en-GB
-In-Reply-To: <apWcYdRjTeZF5vtH@8bytes.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO4P123CA0158.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:188::19) To BLAPR10MB5380.namprd10.prod.outlook.com
- (2603:10b6:208:333::14)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TZY6inJX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788235639;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hYyUlGRd8/lofFSDDasZjeN19936R0gqWjSIRl9W7sM=;
+	b=TZY6inJXtufUDirg+x+51ymihnc+pbOal/pKbc/2x0MRxfQhEbZF1ldqm3t14gioFdHlIU
+	5zv3benBONPRE951d937zC7vtUn/0IB3tEcsd74bDCbrwdfTT7frKBdXE6F/eiU9M4sUy/
+	leFwlUADfQwSMvTV75v1okV9A/hoXng=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-152-5ftJifNqP1a-mEujciU9qg-1; Tue, 01 Sept 2026 00:07:16 -0400
+X-MC-Unique: 5ftJifNqP1a-mEujciU9qg-1
+X-Mimecast-MFC-AGG-ID: 5ftJifNqP1a-mEujciU9qg_1788235635
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e8e864ef0so7990228a91.0
+        for <linux-coco@lists.linux.dev>; Mon, 31 Aug 2026 21:07:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788235635; x=1788840435;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hYyUlGRd8/lofFSDDasZjeN19936R0gqWjSIRl9W7sM=;
+        b=FIfBuMt89zKpg7eBTi/euFtdVsyvENWsTQmw4RgB/U/6yAcYYb+ArxkFZQpC+W4ucu
+         q1sIJ5ZPlm6Ygc3Y0vDb62eZhjVOo562UQom5bCPEWYYZtxMSjCV+VuanACCOXxdGjZn
+         IiNiD3sCsCAbJNpEMh30apY5SHSD0Td2JgqAvIfcZIAuoMtWLAEvSOOnE9xu3XiBDW5L
+         mReoftPcWv8Wbmsg2bVyXT309bHCQKxFFQe+N3kPAmoXXJMGCOPpNg/sGDyYV1O7eoTj
+         sdSQJM+MvIuHpiMJaIqtkAeFWVjr/C7kbGoszuC9kIWREuvKMbOaKKoafFGqy9loERBB
+         HKNw==
+X-Forwarded-Encrypted: i=1; AKwUvBwDE/CvUqayt+0/OwNwqTeoJS1aLdNaFbOraOwcIC/wCyw1+ZoAyhzGBy9yV5mZS+k42i2bFvN3jMUT@lists.linux.dev
+X-Gm-Message-State: AFuF++ngkrJFIgICVZVeyU8b1CVMpu6VUDtGuyhJL5C7mSJ86o3d3egY
+	Q9Da7R+B59292iXbBRgjqs34piypzZc4OWexBrEA91uoyBhkXCHMDCiRJV2KGIKKtEvIgW+Lqzm
+	B/zuwRHWcaywoHd0VBOSSbGITcxj98nfkhBso8Naty40dSRvTsEmY4yO6uvK0/Ls=
+X-Gm-Gg: AYBFou31FseLk866Ej/CHkDIFqN1G5bQz11q7dnNm3763jk+ihoLiiVPM84yMf33B0F
+	GGGSVMeiX2wozs/e1GOrlmgVKg8udm203J4q9nbxBbvCIcOEbeRYU+psojVQqeDSkNNfyrCed0a
+	RQ5KvTxZrl1tSOLJGb4hTtE4AIcUwmaV8I//FHWACr4Wk/qA3OdoyYOPuXC8Uh9/3Mz18l3Fhol
+	R+qZP/nrJewLu2yYieXehthmPzHyd+R0isBNuEmX4ruOtERoNDQUwVtNJX6UF+BE6ObeQtxBqTo
+	7wHgJ2TvZTTcTTEtfgR/6PoLVzkoCJJyp4uDmBvQMKBQYfPB938XpYm5A8GEDC1uPbrqbtlIn8L
+	INFpL6ttb+8fowiikjvhyC57+rNkcXVEmj9xGP2FnRg==
+X-Received: by 2002:a17:90b:1a85:b0:398:9be8:ea68 with SMTP id 98e67ed59e1d1-39907e96b11mr7101582a91.21.1788235634831;
+        Mon, 31 Aug 2026 21:07:14 -0700 (PDT)
+X-Received: by 2002:a17:90b:1a85:b0:398:9be8:ea68 with SMTP id 98e67ed59e1d1-39907e96b11mr7101454a91.21.1788235634155;
+        Mon, 31 Aug 2026 21:07:14 -0700 (PDT)
+Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0d2e465sm50184750c88.4.2026.08.31.21.07.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Aug 2026 21:07:13 -0700 (PDT)
+Message-ID: <c9608c82-d4ff-4c0f-8f7b-1793ed205566@redhat.com>
+Date: Tue, 1 Sep 2026 14:07:01 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BLAPR10MB5380:EE_|DSVPR10MB997960:EE_
-X-MS-Office365-Filtering-Correlation-Id: ddfa2f1c-814a-42c0-2b99-08df07c426fc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|23010399003|6133799003|18002099003|22082099003|56012099006|10067099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	XVVk0oDd6RlyE+2RSr7LrrZKSmxawNsb6NBVP9GRv5GgXEpXxZP19M6VE342l0DNs1qOrBgAVWXNTQzniodCSYSheRO4fC2JpshITtZX9/exg+29su7IpCpiOTP27uEZtGpJOK+3GwEkQrm0z+pW85hSFd/53X8va5GBx50HLoBplYiQY3CtXWaBgqp9dKNHvyVj/QXP4MpHgZ0gKCpUOXJT4aR+rAUlhm06bVVlRYn1JlKqFWPsvG25YNfAMmZBVcYyw3Sl50eOQX4I9uN+72wttqB9nXuxQefiWKG5suEeMQ0NxBS0v1uaH+v96LbGW4vKTNCIGObIgqj3ZeCLFDqZ5j4Q6DP/R6OKfDHZ/vAy5GBOBoBiZva1XzNRiPl6MrUfTMpNoF6LFLwutCUxJ/7L8f6QcPFO0fbLHtg7GoTUDUYjvOZSVQHCpBQGbD8BwOTqDcypeSZ+89cmnVOoMarnmkkb/7tr0rw6oSAk0DXhwF1RYs0dR+k1L71mTWYScIQckhcuyXYwgpjlUXLJCOC0G2fGE/Cfggp6BFWOSh8/AeiW6cM4jMYu17H1v3E5Ks+osTjf0gjoqNxrf79TQ4hIrhJsoRZ5sgWZVdNq633A4sYi9PlUWII9ietNsADZRIfCkgo6eyaYmszUJaNi8y9VlmQMMKoAx2FQOfMfXQQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BLAPR10MB5380.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(6133799003)(18002099003)(22082099003)(56012099006)(10067099003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SzZxWXVXeDhWTmIrcGU4eEZ0YkdZY3NMWTJTY2dYQ0orNlprd1FOS3IwVHhw?=
- =?utf-8?B?QWplMmt1OWlmZ2ZEMGZ1Um13SmR2bDJOTU00Qklhb1RoUkVKSFNGS3JOdEcz?=
- =?utf-8?B?RjZwNG5ZTE8xWVlxUDlvRFpzYnBmUHpxeGpLQ2tYTVVYQUtWZ1NTa0t0YXAw?=
- =?utf-8?B?TWFsamFNaXJOYVhpM2x5Q1BNd2cvN0toL2gvS1VuMkFPNFE4bFVCL1czODNI?=
- =?utf-8?B?MWtBVGNWTUNzNzJicEhBeTNhNVlSTFRudXFqcDZaR0s4TWo4YVlraWFtQmFl?=
- =?utf-8?B?a1hBcUxGbWlpUjNSekNZdFVZUTlqQ2xJOStLUlU5R2tqTjJwQXBtcjRYc2tR?=
- =?utf-8?B?T1ZmSHBOTndsZzc2cTZ0Tk1rZUU4QWhRQXRsTFhaWGJVV3NWOEFVejRvaUN3?=
- =?utf-8?B?ZzJtMEVoYmIwcEJ2M25IKzFIdDk4czVuOWRSU0swQ1NpcjRrU1RkYjh2eFlR?=
- =?utf-8?B?OFFrLzJTUEhacXF4cXdKSE1vck82ZDBNc2Zmd3JpZVkxU1QxdEtQZmtjYWpM?=
- =?utf-8?B?ZnYzd3FRSTVnWW1PTGxvb1VyVXk2TElhK3VYSjBGdDdpaXFRSlBxOWxKYVIz?=
- =?utf-8?B?ZU1lQWptSVp0dklrMXJCdC9YWS90MC9Sb1Z2UE9KbEVzSVlWNmxRbWswc3Nj?=
- =?utf-8?B?SzVBUmJNZGZsd2FRc2Rjc1ZpSGkyc2h0dmpyU29JMUNHNjh2WGpHUTJ4Ykx5?=
- =?utf-8?B?eXU0K0Z1bUErZFJQTnlReW1NeWgzYzB3ZVJWN0RCaUQvZm9KdGtpcCtoTnAx?=
- =?utf-8?B?TUJEQ29hVVhJNWVkZHpqUi9XWDhwMTNneHlzMGdZdTRaOXVGWTY4VEZRMGhm?=
- =?utf-8?B?TmhvMldheU1vekJlSmV1OVgzOEVuUEJhTEVTOTNJTi9VdzBOTlkwT096aUQ2?=
- =?utf-8?B?MTYzeU5GUEE4VFc0enJsT3VlRTlGdm1qaEJOVUF3TEdsNHRnK0JBd3JPakRo?=
- =?utf-8?B?bDlUaWpkOUhRZlVBbEhHeCszWXJxVEpsQ1N4MWx1bnFUSHJiUkFYcE8rTVJO?=
- =?utf-8?B?RldPaG56VGZBbm84NzJiTmxPRFFXc01TV0dxYklscmF1NGFaT2RvWlhRbXRt?=
- =?utf-8?B?Um1Gd2gyMFJYM0prZ3labEhFWFpJTGd5VzlzRWd0ek42SElPQ0FIcStqNUR3?=
- =?utf-8?B?QXJQaSthWE9SejRsQy9TRkk5aU94dFhsQzVqaFNjbFU1SDlFRktHKzZNMDRq?=
- =?utf-8?B?LzFKcjhtQ0VWWG1wam82OW12WVBUN2labDNoWnR5c2VGM0dZNHBuQ3M2eGNp?=
- =?utf-8?B?Tm0yMlV4VFR6MXZIMENRcWw0bTl0Ti8zc0xNSm5Cc0draVRLRjVHc0IzT2h5?=
- =?utf-8?B?L0Y3aHdsSitmUkxFNkVuN1VseTNHc1poOEVMUXdYelUvdllreGg2WWdBY2VQ?=
- =?utf-8?B?UzR1K3FSZkwwZkY1NUVDdWh0bkJIM2ZMa2pWTmhha1NQbS9HQ1R0eGl2OTdq?=
- =?utf-8?B?NHBieDBTVFljZWtvQ2pwOW9PWGtYdUN2RjlDRE43MFIyUVM5UkgzU21vU1VP?=
- =?utf-8?B?UlBLc2g1b21VWE5sQkVnTUF0YzdneW9vVFNGWWZaakVWYzdmZDhoeUM0dml3?=
- =?utf-8?B?NG9rNG4xTmJGUFZBa21VbGdSaHhIKzZJM28rRjdYcWN5ekFmcCtiZTZJMWNY?=
- =?utf-8?B?NjUrY1lNODl3ai9mK2IyU2VwZ081KzY3SVNpbHF3TnNCdmRPbmpONnZkYkYw?=
- =?utf-8?B?SWpDTml6czBxeFhHZkxRUEhYeDNNRXBnWGxySWJvcmNzMzFockh3N2ZKNzZI?=
- =?utf-8?B?UUp3WnNvd0VVVEt1L3Uvc3JTTWxyZmZIZnIyRi9DUGZZQzJhZTNOem1WcVlI?=
- =?utf-8?B?anV3UjdUQzByMmtvTXJlY0l4eW13dVBQVmRiK1graGNWcktTeS83M0Y0T1ZP?=
- =?utf-8?B?TG1NaVFGblc4SkkxRkRsK0NseXgyemVmR3dqSFR0cWxYVmZpMkRnL1FHcWw2?=
- =?utf-8?B?RUJkSUdoYTJYUTNhTTlWbS9vam9oaWM0YkowK212b25nWnJhWW9vQXdybHda?=
- =?utf-8?B?aWRYbG5JcEl4OXlSMkR3Ry9zMWNZbjdRaERqU0ZGbmhycmlaNHJKaGNWMnR0?=
- =?utf-8?B?TWpqNkJyRnE4V3FCTW1mL1grOUlnN3d6T0szU044ckpyemR0MGtnc3JnN2lx?=
- =?utf-8?B?MUlmalZUdEFEeGhNOGZ2Wko0UDBRRTBDcjN2eUg2NDc3M3BPM0FVdGMxWUo1?=
- =?utf-8?B?eEVycExjR1I3TFNiM0RhMnlEK1o2eTQ3SEV3cml4Tit4cFBWKzBoZEhZa3lE?=
- =?utf-8?B?L3BpWlhINDVqY2pheVJLWHJPZzlUZEVJc1VSWFRkanFGVnp0TXlSaFM3dzg2?=
- =?utf-8?B?Vk9aNlBYd04vcVhrY1VYeVhyU1pDT1JSSW1uRDFyV1NiNWo2MHQrTzdlUWZk?=
- =?utf-8?Q?3XuLHjhj4oHUeJRU=3D?=
-X-Exchange-RoutingPolicyChecked:
-	2RzISzLDFsFDH7yPtosn5daxuRcFreJAww9YUTZnoTtfYJmTkPkOZRji0T/fu8tQc7WOQQB5eWVtdbJBTaCd/WVEdLbezudMLfgLVru6yXmJf/e1eSyh42P4lw8SZb6/8cWdiD4hYpcA9smO62fh7xdMm72KjC0iKXLNt7jW0HOmsS9SjGYK4Hx+xmcO4LTVl2IT2EhB/mppveXeJMlmqlFXHebsmHnrUpn8AZsDjXFCgS+rYjrKi/rGhiX+uaR4tbD+v4ah5oecwNiqfPX8ph0hrZPs/N40cwfvdqWvn1Z1YXvCgrdfiLmmsjC4oho3sryj+v/u+H6ctfXtifcsdQ==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	DrQnmSHRd8j3qhGxfXXi/Wkea5etq+tV2Ie4Aj8+FU4olM5dnbcE+lP+R/McVcGcoh9BfudHOhJjw9GaYkSjqV26NNwSaqmmYjut5y2kNMf9idnY1gdd7kFhlunnt/G6FJ5iJwUQz8qHqgZRfyyPoBJqsMSoUmKBDYvAinCYlRZDzSMK/bY15jtadc3OUowiMt6HnUS9DQ64myyqgLKlrVHlFHbl8KDNS7yF8HMciKMxMv56dSvob7OsQXZsPgR5tA0qXghUZkP7MwpFmllHr0WunlHCOaTD6d1NDhQfZCd9bHEkRW4BCHSy2RxTYgBoy1wexlzMds7zBgN/CVrMEl5zSgwnFP9liaU6CtukmqHx6Z9mow+k5kUjJvTr+3Id6nWvx6YChWzUnm+Eao7jyhvb+hGxOap5R/1YEmOCBpPfA43byCcG2U+YQs0r3BJlvP8vN1qGZItRO6QskJW4TErxEIyvW9FeoFInav31AQLB/U02G3PqRR8yo+/E0GCAcf8qWS53W47OzfqSfOD+CF5w3XxFFbHoorBqlnH75OE3lWb9tNHsrureKBjo6jHVrBXT/WWOHK1V2cdgo1qB2jpNZ1UIJNFS6ARWX/Ajqmo=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ddfa2f1c-814a-42c0-2b99-08df07c426fc
-X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB5380.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 00:58:36.0360
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wMF2U+lUKzE1n8t8pwsebZNfpVNJwcXsvPL7YTotDxlep4HvTk7TLQItubn9MeXJVsI7sPLaghwabL3GbAD6Jg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSVPR10MB997960
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-01_01,2026-08-31_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- mlxscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0 adultscore=0
- spamscore=0 malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2606160000 definitions=main-2609010005
-X-Authority-Analysis: v=2.4 cv=Vp0Txe2n c=1 sm=1 tr=0 ts=6a96233f cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=VdqzKS8jKosA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=3I1J8UUJPc9JN9BFgKH3:22 a=fxJcL_dCAAAA:8
- a=NEAV23lmAAAA:8 a=fkjzEZ2C6J5I9qX_XaAA:9 a=PRpDppDLrCsA:10 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAxMDAwNiBTYWx0ZWRfX0M1J+5YrtrZo
- 7EnefJccKRQnDKiB9Q/p41VyBH2Okt3dCWi3lTREFPJa+aHmG9Vxc+14FywUc43XOP2CSPQU2Dj
- rO8gOMA4QIWWNTY1PHb/tm2gomskLYRJ9wFFa1MV7cBJqNPf/YOEMGMw/48gJ/jS2b6yHgaZgvg
- /sEKv1M9ISFvG8/zvPYWdxryIxt3Sm1LdVOQvTXWrOqOEvhoPfSizSY7ny7pkVDT+7SADIVLnxF
- 8rkmSVL+Qu5uXj2ucUUkvvUEMYKlxB/XV7j/MyAcI49NTCVPgu9BvI6T1NIKW2k4OcquCLFIBEN
- /V4pVIqJ81Z3ZDJpT5XMv6zaxYD5Lr9N4u1GqqxM8HyRZndehz59zogq4PolrraivnnKuVadQdt
- kVkF5xtjSGftoMrKTXARt7VmmEm48RGliMf+yuOLVDfi5YXKDZLhfFTCWpVSiWP2h/xUqcvN+i3
- LQpcQK0zBEdxbxpZJdQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAxMDAwNiBTYWx0ZWRfX52cCY598Dggk
- kWW+xCD8RRqFCrXfgSyfp1pnw493JzS1NvADXJV2d1w4aAbA/cvu+qK4udpXDwASURDUF+SWITx
- cmSIgKZJE7PjbZwf2UTyikPvtWW3VlhkrdZmWdmrbUJfsl5LqRKr
-X-Proofpoint-ORIG-GUID: iwi1K-610OW_DJYhzZFT_ihQ3m_ONESd
-X-Proofpoint-GUID: iwi1K-610OW_DJYhzZFT_ihQ3m_ONESd
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 14/45] KVM: arm64: CCA: Add basic infrastructure for
+ creating a realm
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-15-steven.price@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20260803134403.80630-15-steven.price@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Thntmd15_On_AW-NEG6kJrRCcRbgFInbk0b8GSLSlZ4_1788235635
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Jörg,
+Hi Steve,
 
-On 31/08/2026 16:24, Jörg Rödel wrote:
-> Hi Liam, On Mon, Aug 31, 2026 at 09: 41: 13AM +0100, Liam Merwick wrote: 
->  > > On 27/08/2026 17: 17, Jörg Rödel wrote: > > Hi, I just pushed out 
-> new branches for COCONUT-SVSMs downstream Linux > > and QEMU changes. 
-> The new branches
+On 8/3/26 11:43 PM, Steven Price wrote:
+> Introduce the skeleton functions for creating and destroying a realm.
+> The IPA size requested is checked against what the RMM supports.
 > 
-> Hi Liam,
+> The actual work of constructing the realm will be added in future
+> patches.
 > 
-> On Mon, Aug 31, 2026 at 09:41:13AM +0100, Liam Merwick wrote:
->> 
->> On 27/08/2026 17:17, Jörg Rödel wrote:
->> > Hi, I just pushed out new branches for COCONUT-SVSMs downstream Linux
->> > and QEMU changes. The new branches need to be used together, as there
->> > have been rebases which changed parts of the user-space interface. For
->> > Linux the branch is:
->> > https: //github. com/coconut-svsm/linux/tree/svsm-v7. 2
->> > 
->> 
->> 
->> On a system that was running the 7.1 branches, I've upgraded the host
->> kernel and qemu to the 7.2 branches and am now getting CPU stalls in
->> the guest (and eventual boot hang).
->> 
->> I'm using ./scripts/launch_guest.sh (and 2026.08-devel)
->> 
->> One thing I've noticed with kvm_stat is that the top host functions are
->> 
->>  Event                                         Total %Total CurAvg/s
->>  kvm_set_irq                                 2304824   22.2     2095
->>  kvm_ioapic_set_irq                          2304824   22.2     2095
->>  kvm_pic_set_irq                             2304768   22.2     2095
->>  kvm_exit                                     626814    6.0      159
->>  kvm_entry                                    626814    6.0      159
->>  kvm_vmgexit_exit                             299778    2.9      105
->>  kvm_vmgexit_enter                            299777    2.9      105
->>  (...)
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v15:
+>   * Remove realm->params and only temporarily allocate the page when the
+>     realm is being created.
+
+[...]
+
+> ---
+>   arch/arm64/include/asm/kvm_emulate.h | 24 +++++++++++
+>   arch/arm64/include/asm/kvm_rmi.h     | 63 ++++++++++++++++++++++++++++
+>   arch/arm64/kvm/arm.c                 | 12 ++++++
+>   arch/arm64/kvm/mmu.c                 | 18 +++++++-
+>   arch/arm64/kvm/rmi.c                 | 56 +++++++++++++++++++++++++
+>   5 files changed, 171 insertions(+), 2 deletions(-)
 > 
-> Thanks for testing the new branches. Can you please share your exact
-> launch_guest.sh command line? Also, what type of guest image are you running,
-> something I can download as well?
-> 
-In a svsm repo, at tag v2026.08-devel where I've built svsm with
-FW_FILE pointing to the svsm edk2 repo at tag
-db97fa0a4b29 ("OvmfPkg/PlatformPei: Initialize 
-PcdConfidentialComputingGuestAttr early")
-[ I tried both DEBUG and RELEASE builds ] and qemu is built from
-the svsm-v7.2 branch.
+> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+> index 5bf3d7e1d92c..e26d6755279f 100644
+> --- a/arch/arm64/include/asm/kvm_emulate.h
+> +++ b/arch/arm64/include/asm/kvm_emulate.h
+> @@ -688,4 +688,28 @@ static inline void vcpu_set_hcrx(struct kvm_vcpu *vcpu)
+>   			vcpu->arch.hcrx_el2 |= HCRX_EL2_EnASR;
+>   	}
+>   }
+> +
+> +static inline bool kvm_is_realm(struct kvm *kvm)
+> +{
+> +	if (static_branch_unlikely(&kvm_rmi_is_available))
+> +		return kvm->arch.is_realm;
+> +	return false;
+> +}
+> +
+> +static inline enum realm_state kvm_realm_state(struct kvm *kvm)
+> +{
+> +	return READ_ONCE(kvm->arch.realm.state);
+> +}
+> +
+> +static inline void kvm_set_realm_state(struct kvm *kvm,
+> +				       enum realm_state new_state)
+> +{
+> +	WRITE_ONCE(kvm->arch.realm.state, new_state);
+> +}
+> +
+> +static inline bool kvm_realm_is_created(struct kvm *kvm)
+> +{
+> +	return kvm_is_realm(kvm) && kvm_realm_state(kvm) != REALM_STATE_NONE;
+> +}
+> +
+>   #endif /* __ARM64_KVM_EMULATE_H__ */
+> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+> index 57d24b244c95..cefd00b76806 100644
+> --- a/arch/arm64/include/asm/kvm_rmi.h
+> +++ b/arch/arm64/include/asm/kvm_rmi.h
+> @@ -6,12 +6,75 @@
+>   #ifndef __ASM_KVM_RMI_H
+>   #define __ASM_KVM_RMI_H
+>   
+> +#include <linux/arm-smccc-rmi.h>
+> +
+> +/**
+> + * enum realm_state - State of a Realm
+> + *
+> + * Mirrors the RMM's Realm lifecycle states where they are meaningful to KVM,
+> + * with REALM_STATE_DYING being a KVM-internal state used to prevent further
+> + * requests while teardown is in progress. KVM does not track REALM_SYSTEM_OFF
+> + * or REALM_ZOMBIE separately as they naturally lead to teardown.
+> + */
+> +enum realm_state {
+> +	/**
+> +	 * @REALM_STATE_NONE:
+> +	 *      Realm has not yet been created. rmi_realm_create() has not
+> +	 *      yet been called.
+> +	 */
+> +	REALM_STATE_NONE,
+> +	/**
+> +	 * @REALM_STATE_NEW:
+> +	 *      Realm is under construction, rmi_realm_create() has been
+> +	 *      called, but it is not yet activated. Pages may be populated.
+> +	 */
+> +	REALM_STATE_NEW,
+> +	/**
+> +	 * @REALM_STATE_ACTIVE:
+> +	 *      Realm has been created and is eligible for execution with
+> +	 *      rmi_rec_enter(). Pages may no longer be populated with
+> +	 *      rmi_data_create().
+> +	 */
+> +	REALM_STATE_ACTIVE,
+> +	/**
+> +	 * @REALM_STATE_DYING:
+> +	 *      Realm is in the process of being destroyed or has already been
+> +	 *      destroyed.
+> +	 */
+> +	REALM_STATE_DYING,
+> +	/**
+> +	 * @REALM_STATE_DEAD:
+> +	 *      Realm has been destroyed.
+> +	 */
+> +	REALM_STATE_DEAD
+> +};
+> +
+>   /**
+>    * struct realm - Additional per VM data for a Realm
+> + *
+> + * @rd: Kernel mapping of the RMM-managed Realm Descriptor (RD) granule
+> + * @sro: Preallocated SRO state context for Realm MMU operations
+> + * @state: The lifetime state machine for the realm
+> + * @ia_bits: Number of valid Input Address bits in the IPA
+>    */
+>   struct realm {
+> +	void *rd;
+> +	/*
+> +	 * Reused by RTT map/unmap SRO commands. Those commands are only
+> +	 * issued from Realm stage-2 map/unmap paths while kvm->mmu_lock is
+> +	 * held for write, including Realm fault handling where
+> +	 * kvm_fault_lock() takes the write side, so concurrent use is
+> +	 * serialized.
+> +	 */
+> +	struct rmi_sro_state *sro;
+> +	enum realm_state state;
+> +	unsigned int ia_bits;
+>   };
+>   
+>   void kvm_init_rmi(void);
+> +u32 kvm_rmm_ipa_limit(void);
+> +
+> +int kvm_init_realm(struct kvm *kvm);
+> +void kvm_destroy_realm(struct kvm *kvm);
+>   
+>   #endif /* __ASM_KVM_RMI_H */
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index b961c22fce3d..c4d906861736 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -266,6 +266,13 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>   
+>   	bitmap_zero(kvm->arch.vcpu_features, KVM_VCPU_MAX_FEATURES);
+>   
+> +	/* Initialise the realm bits after the generic bits are enabled */
+> +	if (kvm_is_realm(kvm)) {
+> +		ret = kvm_init_realm(kvm);
+> +		if (ret)
+> +			goto err_uninit_mmu;
+> +	}
+> +
+>   	return 0;
+>   
+>   err_uninit_mmu:
+> @@ -328,6 +335,8 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+>   	kvm_unshare_hyp(kvm, kvm + 1);
+>   
+>   	kvm_arm_teardown_hypercalls(kvm);
+> +	if (kvm_is_realm(kvm))
+> +		kvm_destroy_realm(kvm);
+>   }
+>   
+>   static bool kvm_has_full_ptr_auth(void)
+> @@ -488,6 +497,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+>   		else
+>   			r = kvm_supports_cacheable_pfnmap();
+>   		break;
+> +	case KVM_CAP_ARM_RMI:
+> +		r = static_key_enabled(&kvm_rmi_is_available);
+> +		break;
+>   
+>   	default:
+>   		r = 0;
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 6c941aaa10c6..8b9efa8a3539 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -904,10 +904,14 @@ static struct kvm_pgtable_mm_ops kvm_s2_mm_ops = {
+>   
+>   static int kvm_init_ipa_range(struct kvm_s2_mmu *mmu, unsigned long type)
+>   {
+> +	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+>   	u32 kvm_ipa_limit = get_kvm_ipa_limit();
+>   	u64 mmfr0, mmfr1;
+>   	u32 phys_shift;
+>   
+> +	if (kvm_is_realm(kvm))
+> +		kvm_ipa_limit = kvm_rmm_ipa_limit();
+> +
+>   	phys_shift = KVM_VM_TYPE_ARM_IPA_SIZE(type);
+>   	if (is_protected_kvm_enabled()) {
+>   		phys_shift = kvm_ipa_limit;
 
+get_kvm_ipa_limit() and variable 'kvm_ipa_limit' have been exposed through
+KVM_CAP_ARM_VM_IPA_SIZE for both normal and realm VMs in this series. However,
+the IPA limit determined by the feature-register-0 in TF-RMM, which is returned
+by kvm_rmm_ipa_limit(), can be different from 'kvm_ipa_limit'.
 
-./scripts/launch_guest.sh --qemu 
-/root/src/coconut/qemu/build/qemu-system-x86_64 -i bin/coconut-qemu.igvm 
---image ./resolute-server-cloudimg-amd64.img
+This brings confusion to VMM like qemu, where the request to create a realm VM is
+rejected if the requested IPA size exceeds the limit, exposed by the host through
+KVM_CAP_ARM_VM_IPA_SIZE. So the host needs to return correct IPA limit through
+KVM_CAP_ARM_VM_IPA_SIZE for realm VM somewhere in this series?
 
-Initially I was using OL9 in the guest but I reproduced it with an 
-unmodified Ubuntu 26.04 [1]
+Thanks,
+Gavin
 
-Regards,
-Liam
-
-[1] 
-https://cloud-images.ubuntu.com/resolute/current/resolute-server-cloudimg-amd64.img
+> @@ -957,9 +961,18 @@ static void stage2_destroy_range(struct kvm_pgtable *pgt, phys_addr_t addr,
+>   
+>   static void kvm_stage2_destroy(struct kvm_pgtable *pgt)
+>   {
+> +	struct kvm *kvm = kvm_s2_mmu_to_kvm(pgt->mmu);
+>   	unsigned int ia_bits = VTCR_EL2_IPA(pgt->mmu->vtcr);
+>   
+> -	stage2_destroy_range(pgt, 0, BIT(ia_bits));
+> +	/*
+> +	 * Realm RTTs are inaccessible to the host and may contain stale data
+> +	 * after the RMM has released them. The non-root RTTs are explicitly
+> +	 * destroyed through RMI before the RD is destroyed; only the root PGD
+> +	 * pages remain to be freed here.
+> +	 */
+> +	if (!kvm_is_realm(kvm))
+> +		stage2_destroy_range(pgt, 0, BIT(ia_bits));
+> +
+>   	KVM_PGT_FN(kvm_pgtable_stage2_destroy_pgd)(pgt);
+>   }
+>   
+> @@ -1001,6 +1014,8 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+>   		return -EINVAL;
+>   	}
+>   
+> +	mmu->arch = &kvm->arch;
+> +
+>   	err = kvm_init_ipa_range(mmu, type);
+>   	if (err)
+>   		return err;
+> @@ -1009,7 +1024,6 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+>   	if (!pgt)
+>   		return -ENOMEM;
+>   
+> -	mmu->arch = &kvm->arch;
+>   	err = KVM_PGT_FN(kvm_pgtable_stage2_init)(pgt, mmu, &kvm_s2_mm_ops);
+>   	if (err)
+>   		goto out_free_pgtable;
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> index 247c4f033945..528b01d5d71d 100644
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -5,6 +5,8 @@
+>   
+>   #include <linux/kvm_host.h>
+>   
+> +#include <asm/kvm_emulate.h>
+> +#include <asm/kvm_mmu.h>
+>   #include <asm/kvm_pgtable.h>
+>   #include <asm/rmi_cmds.h>
+>   #include <asm/virt.h>
+> @@ -14,6 +16,60 @@ static bool rmi_has_feature(int reg, unsigned long feature)
+>   	return !!u64_get_bits(rmi_feat_reg(reg), feature);
+>   }
+>   
+> +u32 kvm_rmm_ipa_limit(void)
+> +{
+> +	return u64_get_bits(rmi_feat_reg(0), RMI_FEATURE_REGISTER_0_S2SZ);
+> +}
+> +
+> +void kvm_destroy_realm(struct kvm *kvm)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
+> +
+> +	if (!kvm_realm_is_created(kvm)) {
+> +		kfree(realm->sro);
+> +		realm->sro = NULL;
+> +		return;
+> +	}
+> +
+> +	kvm_set_realm_state(kvm, REALM_STATE_DYING);
+> +
+> +	if (realm->rd) {
+> +		phys_addr_t rd_phys = virt_to_phys(realm->rd);
+> +
+> +		if (WARN_ON(rmi_realm_terminate(rd_phys, realm->sro)))
+> +			return;
+> +
+> +		if (WARN_ON(rmi_realm_destroy(rd_phys, realm->sro)))
+> +			return;
+> +		free_delegated_page(rd_phys);
+> +		realm->rd = NULL;
+> +	}
+> +
+> +	if (WARN_ON(rmi_undelegate_range(kvm->arch.mmu.pgd_phys,
+> +					 pgd_size)))
+> +		return;
+> +
+> +	kvm_set_realm_state(kvm, REALM_STATE_DEAD);
+> +
+> +	/* Now that the realm is destroyed, free the entry-level RTTs. */
+> +	kvm_free_stage2_pgd(&kvm->arch.mmu);
+> +
+> +	kfree(realm->sro);
+> +	realm->sro = NULL;
+> +}
+> +
+> +int kvm_init_realm(struct kvm *kvm)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +
+> +	realm->sro = kmalloc_obj(*realm->sro);
+> +	if (!realm->sro)
+> +		return -ENOMEM;
+> +
+> +	return 0;
+> +}
+> +
+>   static int rmm_check_features(void)
+>   {
+>   	if (kvm_lpa2_is_enabled() &&
 
