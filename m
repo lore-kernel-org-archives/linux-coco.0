@@ -1,177 +1,297 @@
-Received: from mta1.migadu.com (out-206.mta1.migadu.com [95.215.58.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9DD4756AE
-	for <linux-coco@lists.linux.dev>; Tue,  1 Sep 2026 10:35:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E66B431E4A
+	for <linux-coco@lists.linux.dev>; Tue,  1 Sep 2026 10:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788258905; cv=none; b=E3qnpQKqGZhNx4Nrg26LPK2nht8aUwHVkqn58KTcm8ri2pLuYbTsuAF14njGrqYCHZLlEtSPw4RL4WHokb/MY1+4A06CMZ9iVmIluFeNQV3UZ2PiZXpUvhzPVLoHCoaLY7DI0+UJXmkC3MS7wc2z1aHKbEq3gaR+QBaAdovrU48=
+	t=1788260082; cv=none; b=YY+B9XGcQrQDlcAaat0A6j6UqoHQeCQzX362s9xQ6kyJxyoPVHvNy9rygbCgAwpQ2D1/MxeV9UK5TMf/nQQ5zusTb/W7DIzaTJzwTT71dsTxNWOHZW9KN6Mq8qCwrJOA6FozUCHa5gLBpkYOlUqZE6F9VGXTRT9BDzl3r4gKrxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788258905; c=relaxed/simple;
-	bh=hGwrqJibjsI979lLLZMh7q1FzrzRBk6jSe5g0u5F2Qc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bzo5TGOrciQmk7rCLYeRwwn00QrXsA630Qgq2vsybqLermo0cN/NFo0PGQKoLs4Bh/HfI+JzSF00O2+6tCtDD1qS18nEB+dVDwMo5F35uN4JVTp7OtFcKyXOxtJRsukqx4cXVMhQUXrL48DMzcVcNhfHpQL1VEj8p6v8bEcqsLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DJeyrI6T; arc=none smtp.client-ip=95.215.58.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788260082; c=relaxed/simple;
+	bh=+J6Q7qsRuWPPPL8zYyuGnWQZgjlDkpNpBaf7b+0kSx8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WsilkA+Lhj/737f6Jb8otprc1tS3spQ9u9rbPlxX0ba8CI2hDfFXoiuqxzZypfRGZ5bgEKGSeRgVsqPI7H4POvVZF6g84SpGciP9EM/kTYbht/CIkxlAu1Y94etvwSH2MXzjPJV8gwQx73rcr/SuKpubvBke77Y42GeQmvHQFAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a71Q+gV0; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DJeyrI6T"
-X-Envelope-To: linux-coco@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=hGwrqJibjsI979lLLZMh7q1FzrzRBk6jSe5g0u5F2Qc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788258901; v=1; x=1788863701;
- b=DJeyrI6ToUeD+bp7pHh7omNcbGQChzTVw+f8zKYnU+pHNm7wLg+k845R7bmGIg6wItepiaAY
- V4Dt/35b6i0Vc7pAeTjHeqe4AQOU55ZhRt9V9i2vfzY0tkq502nczrT25Ak2YN6dEjuidywUJxg
- geUPXQBMNAM6C6i8Ggb02e4k=
-X-Envelope-To: linux-coco@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id d7b411ba6efaa79b;
-	Tue, 01 Sep 2026 10:34:51 +0000
-X-Mizu-Trace-ID: d7b411ba6efaa79b
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5aeb688ae83so4643e87.1
-        for <linux-coco@lists.linux.dev>; Tue, 01 Sep 2026 03:34:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz1lZJ19XPI3b9TiVdMUgb9SkuquK9Rp646PLPPHz6id4Tj7+qXhrBG61Fzz2bQrVvgOZIgMoHNTsP9@lists.linux.dev
-X-Gm-Message-State: AFuF++mBpVGGd6Ntd5SDsS9LK7CZodHc71ZzV47PDuGVuygXn/688B+f
-	/6JBLW7olxa5oLC9jqgqueqQ8WwsVohOsoyLZM7HKW3JUUHXyVLCQVbTSiTVWHXO7pfvBk1z+dF
-	xFYRInoHosUij4OxSHikEDqH7f3iDZxZmI+TSAWAO
-X-Received: by 2002:a05:6512:ac4:b0:5a8:6646:d7b4 with SMTP id
- 2adb3069b0e04-5b600a0b6f4mr114181e87.1.1788258889928; Tue, 01 Sep 2026
- 03:34:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a71Q+gV0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788260080; x=1819796080;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+J6Q7qsRuWPPPL8zYyuGnWQZgjlDkpNpBaf7b+0kSx8=;
+  b=a71Q+gV0w8Od85LStl63IIkwl02kDwEDazYOlgUNvo7DXMcFFxT76a/L
+   /7mJwrdS8fAqszpmhfHUzuIjXBGN1iqdb/wgs5+KRfi8dZct0XRNWxL7g
+   2m8n0wW8xceQv1fP8ZuuR4VQQHnBYSmDm9WDu1Se8aeKUQRLNrxG5E9Tx
+   295A8fot8N49QsICmXH58WaetssH6Z8/zRWXyXrBSg+dDG8rrmhXlXV/5
+   i1N6/Xhg8v2AbLlgEgHo68L7E+wLes1f4zndWtkFElEyyKAO11Q+ruapz
+   qwWkaIHSwy6WhizbysQBb+xzxuBrfuoxt884+mKGVd8kyuIjZzLMOyci2
+   Q==;
+X-CSE-ConnectionGUID: 7T9B0iQXQgSKC03wIJKfHw==
+X-CSE-MsgGUID: OlHoDz5zQCyxQphdOlmV9g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="88560826"
+X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
+   d="scan'208";a="88560826"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 03:54:39 -0700
+X-CSE-ConnectionGUID: xRvoaqisTGiCOdkijPZsuw==
+X-CSE-MsgGUID: ULz65LsBQlmq8Hcb+s9pxQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
+   d="scan'208";a="307284990"
+Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.47.46])
+  by orviesa001.jf.intel.com with ESMTP; 01 Sep 2026 03:54:37 -0700
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: dave.hansen@intel.com,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: kas@kernel.org,
+	nik.borisov@suse.com,
+	rick.p.edgecombe@intel.com,
+	yilun.xu@linux.intel.com,
+	yilun.xu@intel.com,
+	linux-coco@lists.linux.dev
+Subject: [PATCH v5] x86/virt/tdx: Formalize SEAMCALL leaf version encoding support
+Date: Tue,  1 Sep 2026 18:54:36 +0800
+Message-Id: <20260901105436.461823-1-yilun.xu@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-13-85e5fd25252a@google.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-13-85e5fd25252a@google.com>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 1 Sep 2026 11:33:00 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTxdJmjBu8vJqbZks3ANP7QFZzGvp4J7kqxvTNR-fKMmJA@mail.gmail.com>
-X-Gm-Features: AcwNN1W_H4CnVusKniYHLtrTvE9k4_Zq5YT-PzaJWqqbnOmAYps19c1F8GBPWTQ
-Message-ID: <CA+EHjTxdJmjBu8vJqbZks3ANP7QFZzGvp4J7kqxvTNR-fKMmJA@mail.gmail.com>
-Subject: Re: [PATCH v12 13/45] KVM: guest_memfd: Pass mapping type filter to
- invalidation helper
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Ackerley Tng <ackerleytng@google.com>
->
-> Accept the mapping type filter as a parameter in the invalidation start
-> helper instead of querying it internally. This allows callers to specify
-> which mappings (shared, private, or both) should be invalidated.
->
-> In the next patch, the conversion process will use this new parameter to
-> invalidate mappings only when they're different from the target state of
-> the conversion, i.e. invalidate only shared mappings on a shared to private
-> conversion and not both.
->
-> No functional change intended.
->
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+The TDX architecture includes a syscall-like ABI for OSes to communicate
+with SEAM mode software. This ABI has the concept of a "leaf". Each leaf
+is roughly analogous to a Linux syscall: it has a set of register
+arguments and does one logical thing like adding a page of memory to a
+VM or running a VM. The TDX architecture refers to this interface
+function as a "SEAMCALL leaf".
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+Just like syscalls, the TDX architecture wants to evolve the ABI to
+extend functionality while keeping compatibility. But unlike syscalls,
+which do this by picking a totally new syscall number, the ABI encodes
+the "version" number directly into the bits of a register argument. So
+instead of openatN being whatever the next free number is, the SEAMCALL
+leaf number and version number are encoded into certain bits in how the
+RAX register is defined in the ABI.
 
-Cheers,
-/fuad
+In Linux, several seamcall*() wrappers have been introduced to invoke
+SEAMCALL leafs. They all take a u64 "fn" argument for the leaf number
+which eventually get set in the register. As above, the version number
+lives in the same register as the leaf number. So callers that want to
+select a specific version of the leaf, can jam it in the right place in
+the register by passing it in the "fn" argument. Today only the caller
+of TDH.VP.INIT does this hack, but future kernel changes will need to
+select versions for more SEAMCALL leafs, so a less hacky solution is
+needed.
 
+Explicitly define the arguments for seamcall*() wrappers:
 
-> ---
->  virt/kvm/guest_memfd.c | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
->
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index e41802944756b..e19de803149c2 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -192,13 +192,13 @@ static void __kvm_gmem_invalidate_start(struct gmem_file *f, pgoff_t start,
->  }
->
->  static void kvm_gmem_invalidate_start(struct inode *inode, pgoff_t start,
-> -                                     pgoff_t end)
-> +                                     pgoff_t end,
-> +                                     enum kvm_gfn_range_filter filter)
->  {
-> -       enum kvm_gfn_range_filter attr_filter = kvm_gmem_get_all_gfns_filter(inode);
->         struct gmem_file *f;
->
->         kvm_gmem_for_each_file(f, inode)
-> -               __kvm_gmem_invalidate_start(f, start, end, attr_filter);
-> +               __kvm_gmem_invalidate_start(f, start, end, filter);
->  }
->
->  static void __kvm_gmem_invalidate_end(struct gmem_file *f, pgoff_t start,
-> @@ -224,6 +224,7 @@ static void kvm_gmem_invalidate_end(struct inode *inode, pgoff_t start,
->
->  static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
->  {
-> +       enum kvm_gfn_range_filter filter = kvm_gmem_get_all_gfns_filter(inode);
->         pgoff_t start = offset >> PAGE_SHIFT;
->         pgoff_t end = (offset + len) >> PAGE_SHIFT;
->
-> @@ -233,7 +234,7 @@ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
->          */
->         filemap_invalidate_lock(inode->i_mapping);
->
-> -       kvm_gmem_invalidate_start(inode, start, end);
-> +       kvm_gmem_invalidate_start(inode, start, end, filter);
->
->         truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
->
-> @@ -522,6 +523,8 @@ static int kvm_gmem_migrate_folio(struct address_space *mapping,
->
->  static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *folio)
->  {
-> +       struct inode *inode = mapping->host;
-> +       enum kvm_gfn_range_filter filter;
->         pgoff_t start, end;
->
->         filemap_invalidate_lock_shared(mapping);
-> @@ -529,7 +532,8 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
->         start = folio->index;
->         end = start + folio_nr_pages(folio);
->
-> -       kvm_gmem_invalidate_start(mapping->host, start, end);
-> +       filter = kvm_gmem_get_all_gfns_filter(inode);
-> +       kvm_gmem_invalidate_start(inode, start, end, filter);
->
->         /*
->          * Do not truncate the range, what action is taken in response to the
->
-> --
-> 2.55.0.897.gb25b4bd76c-goog
->
->
+  - Add a build-time assertion to ensure "fn" only contains valid
+    SEAMCALL leaf number bits. Note the P-SEAMLDR selector bit (bit 63)
+    is part of the leaf number for SEAM loader calls, so it is allowed.
+    This also means the "fn" can't be a narrower type, such as u16, to
+    exclude unrelated bits.
+
+  - Add a "version" field in struct tdx_module_args [1], so most
+    existing callers get a default "version == 0" behavior without code
+    churn. Update the TDH.VP.INIT caller to specify the version
+    descriptively.
+
+Encode the leaf number and tdx_module_args.version into RAX in assembly,
+because this is the place where the "fn" and struct tdx_module_args
+fields are marshaled into registers.
+
+AI was used under supervision to review code and workshop logs. In
+particular, it helped evaluate the assembly changes.
+
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: https://lore.kernel.org/kvm/4f4b0f29-424b-45ed-8cfd-c77da2ea390f@intel.com/ # [1]
+---
+Two alternative schemes were considered:
+
+ 1. Define versioned macros like TDH_VP_INIT_V0, TDH_VP_INIT_V1, etc.
+    Then callers could use them without encoding RAX bits themselves.
+    However, this would break naming consistency unless all existing
+    stable function macros are changed to TDH_XXX_V0.
+
+ 2. Add an explicit "version" parameter to seamcall*() wrappers. This
+    would unnecessarily force all stable seamcall*() wrappers to pass a
+    meaningless '0' argument. Additionally, the magic '0' or '1' values
+    at caller sites are not descriptive.
+
+v5:
+- Refactor the changelog. Retained the Reviewed-by tags, please let me
+  know if you object.
+- Rebase to v7.3-rc1
+
+v4: https://lore.kernel.org/all/20260804085054.190847-1-yilun.xu@linux.intel.com/
+- Add Reviewed-by tags
+
+v3: https://lore.kernel.org/all/20260722084634.131020-1-yilun.xu@linux.intel.com/
+- Move the RAX encoding in assembly code.
+- Compile-time check that fn only contain base leaf number bits
+- Add the full description of SEAMCALL leaf according to TDX module SPEC
+- Fix the description of struct tdx_module_args.
+
+v2: https://lore.kernel.org/all/20260708170330.83850-1-yilun.xu@linux.intel.com/
+v1: https://lore.kernel.org/all/20260702144614.59464-1-yilun.xu@linux.intel.com/
+---
+ arch/x86/include/asm/shared/tdx.h         | 10 +++++++---
+ arch/x86/virt/vmx/tdx/seamcall_internal.h | 19 +++++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.h               |  8 --------
+ arch/x86/virt/vmx/tdx/tdxcall.S           | 10 ++++++++--
+ arch/x86/kernel/asm-offsets.c             |  1 +
+ arch/x86/virt/vmx/tdx/tdx.c               |  5 +++--
+ 6 files changed, 38 insertions(+), 15 deletions(-)
+
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index f20e91d7ac35..12675c48402b 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -122,9 +122,11 @@
+ #include <linux/compiler_attributes.h>
+ 
+ /*
+- * Used in __tdcall*() to gather the input/output registers' values of the
+- * TDCALL instruction when requesting services from the TDX module. This is a
+- * software only structure and not part of the TDX module/VMM ABI
++ * Used in __tdcall*() to gather the input/output parameters of the TDCALL
++ * instruction when requesting services from the TDX module. "version" is
++ * encoded in RAX along with the leaf number. Others are raw input/output
++ * registers' values. This is a software only structure and not part of the TDX
++ * module/VMM ABI.
+  */
+ struct tdx_module_args {
+ 	/* callee-clobbered */
+@@ -143,6 +145,8 @@ struct tdx_module_args {
+ 	u64 rbx;
+ 	u64 rdi;
+ 	u64 rsi;
++	/* leaf ABI version, encoded in rax */
++	u8  version;
+ };
+ 
+ /* Used to communicate with the TDX module */
+diff --git a/arch/x86/virt/vmx/tdx/seamcall_internal.h b/arch/x86/virt/vmx/tdx/seamcall_internal.h
+index be5f446467df..051ad2d45cab 100644
+--- a/arch/x86/virt/vmx/tdx/seamcall_internal.h
++++ b/arch/x86/virt/vmx/tdx/seamcall_internal.h
+@@ -11,6 +11,7 @@
+ #ifndef _X86_VIRT_SEAMCALL_INTERNAL_H
+ #define _X86_VIRT_SEAMCALL_INTERNAL_H
+ 
++#include <linux/bitfield.h>
+ #include <linux/printk.h>
+ #include <linux/types.h>
+ #include <asm/archrandom.h>
+@@ -23,9 +24,27 @@ u64 __seamcall_saved_ret(u64 fn, struct tdx_module_args *args);
+ 
+ typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
+ 
++/*
++ * SEAMCALL leaf:
++ *
++ * Bit 15:0	Leaf number
++ * Bit 23:16	Leaf ABI version number
++ * Bit 24	Pending interrupts detection mode
++ * Bit 63	1 for P-SEAMLDR leaf, 0 for TDX module leaf
++ */
++#define SEAMCALL_LEAF_MASK		GENMASK_U64(15, 0)
++#define SEAMCALL_SEAMLDR_MASK		BIT_U64(63)
++
+ static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
+ 						  struct tdx_module_args *args)
+ {
++	/*
++	 * fn contains leaf number for TDX module calls and P-SEAMLDR calls.
++	 * Other fields in SEAMCALL leaf like leaf ABI version number are in
++	 * struct tdx_module_args.
++	 */
++	BUILD_BUG_ON(fn & ~(SEAMCALL_LEAF_MASK | SEAMCALL_SEAMLDR_MASK));
++
+ 	lockdep_assert_preemption_disabled();
+ 
+ 	/*
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index bdfd0e1e337a..63e3acfb5d0c 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -50,14 +50,6 @@
+ #define TDH_SYS_UPDATE			53
+ #define TDH_SYS_DISABLE			69
+ 
+-/*
+- * SEAMCALL leaf:
+- *
+- * Bit 15:0	Leaf number
+- * Bit 23:16	Version number
+- */
+-#define TDX_VERSION_SHIFT		16
+-
+ /* TDX page types */
+ #define	PT_NDA		0x0
+ #define	PT_RSVD		0x1
+diff --git a/arch/x86/virt/vmx/tdx/tdxcall.S b/arch/x86/virt/vmx/tdx/tdxcall.S
+index 016a2a1ec1d6..a194e83613e7 100644
+--- a/arch/x86/virt/vmx/tdx/tdxcall.S
++++ b/arch/x86/virt/vmx/tdx/tdxcall.S
+@@ -45,8 +45,14 @@
+ .macro TDX_MODULE_CALL host:req ret=0 saved=0
+ 	FRAME_BEGIN
+ 
+-	/* Move Leaf ID to RAX */
+-	mov %rdi, %rax
++	/* Leaf ABI version -> RAX[23:16]. Zero rest of RAX. */
++	movzbl	TDX_MODULE_version(%rsi), %eax
++	shl	$16, %eax
++	/*
++	 * Combine leaf number arg and leaf ABI version into RAX, they don't
++	 * overlap.
++	 */
++	or	%rdi, %rax
+ 
+ 	/* Move other input regs from 'struct tdx_module_args' */
+ 	movq	TDX_MODULE_rcx(%rsi), %rcx
+diff --git a/arch/x86/kernel/asm-offsets.c b/arch/x86/kernel/asm-offsets.c
+index 081816888f7a..b3c00ff4d819 100644
+--- a/arch/x86/kernel/asm-offsets.c
++++ b/arch/x86/kernel/asm-offsets.c
+@@ -95,6 +95,7 @@ static void __used common(void)
+ 	OFFSET(TDX_MODULE_rbx, tdx_module_args, rbx);
+ 	OFFSET(TDX_MODULE_rdi, tdx_module_args, rdi);
+ 	OFFSET(TDX_MODULE_rsi, tdx_module_args, rsi);
++	OFFSET(TDX_MODULE_version, tdx_module_args, version);
+ 
+ 	BLANK();
+ 	OFFSET(BP_scratch, boot_params, scratch);
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 1b9ff749dd8e..1668f8615607 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1912,10 +1912,11 @@ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
+ 		.rcx = vp->tdvpr_pa,
+ 		.rdx = initial_rcx,
+ 		.r8 = x2apicid,
++		/* apicid requires version == 1. */
++		.version = 1,
+ 	};
+ 
+-	/* apicid requires version == 1. */
+-	return seamcall(TDH_VP_INIT | (1ULL << TDX_VERSION_SHIFT), &args);
++	return seamcall(TDH_VP_INIT, &args);
+ }
+ EXPORT_SYMBOL_FOR_KVM(tdh_vp_init);
+ 
+
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+-- 
+2.25.1
+
