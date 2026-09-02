@@ -1,208 +1,208 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012014.outbound.protection.outlook.com [40.93.195.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604F730649C;
-	Wed,  2 Sep 2026 02:21:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788315679; cv=fail; b=ZepVzTiKODVyEtpUKNCVEiQc3LLLScRVT2zG92KL07LVc5jUQwPkRjBFSLMClZbuh+88YiZeVgTOxulfhA2Ye67GdQW1lyuFyW4ZTQt03evUOMFxTu7kMTVEV2tF9JAS9T04ZpIKC2iamw+9zbibjGa4PykXZBEgrpDplDyij1s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788315679; c=relaxed/simple;
-	bh=bC2QwGLLyDhx++DktdR4ykD40Q2lHEQqPvgjmlOCKbE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Hty8okr+ZcAyWjsDmJIrSIpnDipQow1liIuRsajyw0Kc2J7nlfw2sbRw/MlIgsVp91WPmxXRaeU+5LUJtGCYlOd+YEI61L2eEZ8NHemY2uzDBdPuDxcbsHduy9N47mS7NntuXGLxPYCbSyuQM+8hr+h8ft9EglDU9jmP25nyUn4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=5AIYXNW2; arc=fail smtp.client-ip=40.93.195.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C82361DC3
+	for <linux-coco@lists.linux.dev>; Wed,  2 Sep 2026 02:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788315686; cv=none; b=flb/jw/j5w1h7j3JAKPXdsPtkLlaSXmlPkQGYacMMwhtiNTk/naTWswQttQoqMIBCl1nZJ/AUIpr2NGV9xtMyqadxGw/2Fc1qK5MlreSgjBTRmTrZ5OnpzSSNrLedAjMOfG7q4MJwIdE+SlVRq7W1wGHdcuhhGHdDP5/yKRJupA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788315686; c=relaxed/simple;
+	bh=dMv4nlHu8Y249mLMfP00bq7DYL6IzUHigBCjVTtONZg=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=PSpXQf5ck6E+y22mdu7P8sEqpO5Pn0Yuq2rDGIAYENsZooNeGgDbw6xe3nrM8jgJgUbEvqzvvgW9J5t/tZeLMQcwpVF32sagw0Vrd+XUhnx/psAY79G20f9Qn9af0mnjYBXvuiKts4SFFm97uLkRlmLmbMRLYqQC0riq3E9te9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TaOpbtqD; arc=none smtp.client-ip=209.85.128.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="5AIYXNW2"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XmU9tv9rVjYnLCNpXjzzXFUhTyoU1+/hdkamZSfRdgkyBiaTzHfB6BdGZwJ7XMvwOPuXHHXC5cWNVYDvww2+maVlrQi6P6TJ9iFCKCcAwThVU7fzcUzhtca9nZdpJ4emozHoMchR1Z/uJqwzng48KChAk5ALezvvpE2B5w1pvwa1b0HRVS5PD+G6rk8NyQzDFi0S6RYghwQ1iwPHsmfLbmy5zvcJl/A7A6VGxmOfUPuqAH3wi+i5ymWRnCdbZe9Xh+OtJAZPo61gDhbReNnFoEzCOFqVbPGWjDhacBP6P+msjewHdACgQ5QrH8G30qeM0K04UOgrttD3Ay0UnvZdXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Hrfbk9SDAqm4Y2pkC0W3w6FfDlqzlB8wHe4nyN5xpKg=;
- b=NcAB1dNM0ULaE+fgHJEj3DRo+C9lxbW4uFm7xZDrnkrtJjUYBAIed8uxt8L3jUFFxLiHMVKKbUf8EoEO13ZaJMRlaNRuFjtv59lLbU5tPci32IrwUarzECVQo6l3EIC2J5fVHI3aQ5HK3Nz1zoqQTH3qPtsP3xbNeHI4XdvacFOAj/nlP08ufC0q8pJvjk2TPL+u0JfTifzrmLkZ0duFu1iKYlQ8URZSe57Aprbdfl+dolv244TWkNqazCG+RI0qWSBSG7F/qVr/jpkbneOJtCGd/h3tDGogOCJTPVJZ2FYSOZz/acT7No1dVQMYjiCTqZsth1PLzb9TeXdegEGblA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Hrfbk9SDAqm4Y2pkC0W3w6FfDlqzlB8wHe4nyN5xpKg=;
- b=5AIYXNW2srFE7+ysMHHAsjTQeIIDmSQ6ys3e6GwmCi50uZ/bKOp3GeBS4vUn7M/eBnbJeuioDKDYFh/nRP17m3i8gTi2cBKf+3qe36pUXzqaWBpgceyN0f8+sLg3zEjsFODDdoMaW8qvJDDVfPbu5VlyJYU2F5yNayaXXzHSCt4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10) by MN0PR12MB6368.namprd12.prod.outlook.com
- (2603:10b6:208:3d2::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
- 2026 02:21:02 +0000
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3%5]) with mapi id 15.21.0360.008; Wed, 2 Sep 2026
- 02:21:02 +0000
-Message-ID: <2e721509-0aee-47ee-b17a-688876e02f74@amd.com>
-Date: Wed, 2 Sep 2026 12:20:51 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security Protocol
- (TDISP)
-To: Xu Yilun <yilun.xu@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- ankita@nvidia.com
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
- driver-core@lists.linux.dev, Aaron Tomlin <atomlin@atomlin.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Bjorn Helgaas <bhelgaas@google.com>, Daniel Gomez <da.gomez@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Dexuan Cui <decui@microsoft.com>,
- Donald Hunter <donald.hunter@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jakub Kicinski <kuba@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
- Lukas Wunner <lukas@wunner.de>, Petr Pavlu <petr.pavlu@suse.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Robin Murphy
- <robin.murphy@arm.com>, Sami Tolvanen <samitolvanen@google.com>,
- Samuel Ortiz <sameo@rivosinc.com>, Saravana Kannan <saravanak@google.com>,
- Will Deacon <will@kernel.org>, "Fontenot, Nathan" <Nathan.Fontenot@amd.com>,
- rick.p.edgecombe@intel.com, yilun.xu@intel.com,
- Ankit Agrawal <ankita@nvidia.com>
-References: <20260705220819.2472765-1-djbw@kernel.org>
- <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com> <amk7Xzm5jmz+6SPJ@ziepe.ca>
- <anFE7m164AmchTy/@yilunxu-OptiPlex-7050> <20260805005533.GB28508@ziepe.ca>
- <apeF/peEzdxvKeWR@yilunxu-OptiPlex-7050>
-From: Alexey Kardashevskiy <aik@amd.com>
-Content-Language: en-US
-In-Reply-To: <apeF/peEzdxvKeWR@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SY8P282CA0022.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:29b::21) To SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TaOpbtqD"
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-867a943b149so11920927b3.1
+        for <linux-coco@lists.linux.dev>; Tue, 01 Sep 2026 19:21:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788315684; x=1788920484; darn=lists.linux.dev;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GP2nihoXTh44eq0onDqBGjACptMCLq276d/ZwwaKLtA=;
+        b=TaOpbtqDcIItrhNQYB4kMcAumzzKWhvtRVRuP8z+a28ub7lnNYl7x6bNCZAj6Pe8Iy
+         4NuaZhWOVe1mevBJ70wiTCYEhtgPd9KHeUKyxr7rXTZSK48vqjV9BxITXou+bQLojP30
+         dj0TKuA1znFkIrD+qlnJiqyU+Rodu/62JmNba7JudUvYYIaqsQXbmWeB0rn5Me8CwtSz
+         4EMuhOpCsaH1+xMDwmreUbWssygoJKFBaULWqerHArsaoDlnwM0WjgxSw/ZNrvpmwE6G
+         X+3nohsGVxd78GkSK0UwdTS989Z9mTcMUpFPQYHdZuR75Di/sAKc1/BiT5hbTeC3YYDp
+         3xxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788315684; x=1788920484;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GP2nihoXTh44eq0onDqBGjACptMCLq276d/ZwwaKLtA=;
+        b=NPAAIfuKurAryKaJU0YJsxCV5EY3vS1TZxIx0DSd+01owp+aMLS9yFgusgbBk2QFjs
+         d2FZ7xO+IzRESA41784saJE6btO90IoPRiWL+yEd7QTQc/JJT5wYmf4fE3DgfC4/yb+M
+         H3Eog2dq7IegBhfselHYgng8vFYr42jiqvv2YCwFc0+HBH1zWGyPn++EOvsYzpBOpq5u
+         rMVFpIAyXBHVGDsXQmkxOIiSiBNKZCo7LpQDM4chztKnoOCe9J+fKW8vE3is3Yhp1u6h
+         9uHilIPXGETzGOY4r6EUHniRipXxg1Y46TJ+89Q02bEDea6W4QpSmw/cr2ypd2OPduAL
+         g8tA==
+X-Forwarded-Encrypted: i=1; AKwUvByklRwFr5+05DnCflo/YJ0qWD6aITqBx3xI4cdKoTkousGBqRkSiz3ndZSLYWIKipvmSkt+VT93G6pN@lists.linux.dev
+X-Gm-Message-State: AFuF++nRO0Z5bz7W9EauxENZIMLJDDCdkWZ2lzNtPXUhsMmlzu2bjHL1
+	Na3NbFsCR7J5gY3TN10NNk5BXr50LG/3ghuhWGCWKLpqDT0CAlWGG+KaZe/bqlhVyA==
+X-Gm-Gg: AYBFou28GAaCdZt7oaiX0iLllAIbEakVmsvkd2eJPXGMjIjXPQYdmjA24vz585H1Bt5
+	eLXRBGwJclTgOVSl68rtKw5ejHSbJCRgeu6NoWzkarkymQzMQz8bfvDY2Vq0Kb5U6MS9iePvQ7U
+	smoI2wOBSdawIwwsbDm/TemTniJ9SLiKp7psvPMygMorRSTiQMZO3EdngSGR7gt8Ux0fynIy5v0
+	4AU428QocVDnAXgQAhnhCLTEOhASuJ3gp+hf17dVk7ecH/UDBBW9NnjoHhm+D6ndQP3F/qylv4R
+	dKn/OhS+AfzIQIN3vZGhkob2niWA3kpH1A4Qa3Dnbz+TbgoMIF1gOdunAzqpYqbw4/iEZkpZmdz
+	cKR9/R+V4fvNOarQwje+wEaeo5SrEWJF1oIVS42OJeruhLkJUtSLDu+zcj/kVvZd+Hb6efaEbMV
+	saTofpG2+WH0hG9Ot42IPu0fNm4+wlSR3tpihqA1jATm6hcYddiZdL4KC7gbAoPQ3y3RkPCkvsB
+	45733NAD4QlP15wfSHSV5sVo5TFNQt6p/HNkfGd6KyVThJz
+X-Received: by 2002:a05:690e:4419:b0:66f:7d51:b5ef with SMTP id 956f58d0204a3-66f9b90a9d6mr365005d50.3.1788315681539;
+        Tue, 01 Sep 2026 19:21:21 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66f986b612esm893663d50.21.2026.09.01.19.21.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 19:21:20 -0700 (PDT)
+Date: Tue, 1 Sep 2026 19:21:05 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Ackerley Tng <ackerleytng@google.com>, 
+    Andrew Morton <akpm@linux-foundation.org>
+cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+    brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+    jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+    oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+    rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+    steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+    yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+    suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+    Paolo Bonzini <pbonzini@redhat.com>, 
+    Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+    Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+    Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+    "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+    Masami Hiramatsu <mhiramat@kernel.org>, 
+    Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+    Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+    Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+    Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+    Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+    Axel Rasmussen <axelrasmussen@google.com>, 
+    Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+    Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
+    Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+    Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+    John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+    tarunsahu@google.com, Randy Dunlap <rdunlap@infradead.org>, 
+    Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+    Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+    Michal Hocko <mhocko@suse.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
+    kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+    linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+    linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+    linux-coco@lists.linux.dev
+Subject: Re: [PATCH v12 18/45] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
+In-Reply-To: <20260830-gmem-inplace-conversion-v12-18-85e5fd25252a@google.com>
+Message-ID: <bd6c9c74-e374-a9d3-ba1f-8b6f430894fc@google.com>
+References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-18-85e5fd25252a@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|MN0PR12MB6368:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7fef1839-d8ee-4b61-9240-08df0898d578
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|4143699003|11063799006|18002099003|22082099003|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	1SV3WEciVcjaZ445D0kg1JoV6J0pTc17J9rXZvuJGY3h0FTbl/QZ8vvnQP074ck+D4QLFM9zP1W+YCr2Ub4E33E4PtZxdC0Giml9ymEVm6lAk9LMjRBIw/IpfWlSN9Ji7eNQDr69ZJwAWzyeHsi3zLnEKoLTyCumSoBD4BmzBbEASWw/i0uC1v7UzAQMn3zxJcaC9k06+22dqfvAHMynZbTKNgID/ZsrYrIgkJaUGJBPAq4wZrQKmoujQIpPGtxOku2T7EYjDYHt03LkdrCdMXHma8hyYwhE0DkcUqlJ0mBzklXpnVz88A6VgSHIuU2dgzSb7CYyC0YMrgS37F+20afUxZYoQF+F6HKJF11QJdR8cimRa56cEE9Fm2Em0j5VKpx58Yc+/CwK0Xm6PrFib0Cx/badHk4GnWhMuExoYx1JjhATfwqEJ+NuknZARMu0rWKUrcnd1hDw28CHsXqa1EtaUBkBJMTU7XLtDEr2hYAzRV1X+XSErQdvb+NjALcHtueG0C2++uRIG0dQrvkVsuS/3DSE3WyDgj71XE79cQLK8ymtktpm2+y+i1Hz9ah2NXSGFM18cmEgD/JlRNhJSBD6Gm/nEi1ZpnmyiW34E+Ls104EruLQUaZPlK5uUou5wUemj1KZ/w2gv9EHSUgrmRttNTvFfd6CimE4qT4FlH0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(4143699003)(11063799006)(18002099003)(22082099003)(56012099006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MHRlZUpnZTNwcWxvU2szWkxxL3FDVUQ0UEhHVVlOdUdOdkxDeVZGUTdOdjE2?=
- =?utf-8?B?NFo2djRLZHkzTm9JdVZLMkJkYzB0clIrK29zc0xXM21BeUpnMmY1N2pyTjBi?=
- =?utf-8?B?MVFpdUYzRFZzVGF4QzZHWkNtQmpUbEJNVTBmeDU1T1V3TEJtZmlveHF0QmxI?=
- =?utf-8?B?bHhRMzRvRXAwa24rWThna0t2Mkpadi84bWU5SUtJamZjUFhMQjNiZFFrbHk3?=
- =?utf-8?B?SEFlTVFyUlBwMXBvYk0xelY4SEZXZTYrWS96VnozZVV4bEYyRFEwY2dJcFUx?=
- =?utf-8?B?VjM4TEdjMXJIOG9CYkk2d1dRK25tdktUWnQ3aExtbXhoK1hmQjZydkc2ZlJj?=
- =?utf-8?B?N2cydU1oQjNKcmw1QmVjZnI1QWdGbEcyWGs4MVlCeTZidndMRmRXTHB3dk9M?=
- =?utf-8?B?dmZVZWVMWGQvb2xEeDh1eVgzWEt1TzVRVHNZNWZieEJJNFRXK0NkRnZabVBn?=
- =?utf-8?B?R0tUTURIK1hUTE8wbTFvcFpSVGU1KzRxbkNicWwwZVFJdS9lNDBjMW9UVUl0?=
- =?utf-8?B?bzNzNjlYNXd4NnMxWk9ERjFZbHVBM0YvdXN0UTFIeFdwdFltMXUvdFMxV08y?=
- =?utf-8?B?Zys0U25UMTN1UUY2SU1oUEFMSHZrNzdJWDdGa3BaRy9uUUV3RzU5ZHVBTFhR?=
- =?utf-8?B?a0RVR1YrQ0JJclRYd3JIeEFXWGxicmc1RlVBR0lNRWNPVkVWVGVkOTd5SGlI?=
- =?utf-8?B?K3ErRFhsK1Z3b0ZCSWhSM2ZYajRtTnMwS25Sekw1RlBTNnhDZG5yU2ZwY0JD?=
- =?utf-8?B?YksyY0gxb04rby8xS3A3cUUzaWcyRmpZSlVxTTM5UDVyamhlTFZWUUM5UkxV?=
- =?utf-8?B?Ym9vVys5dXpHQVhXMExXSnc0a3Vrek5IMEM4RTI3YXNVY1JnYVlIbHRTZzFK?=
- =?utf-8?B?VjVmaTJ0N0J0M1Y0YU5rUEJVd1kyZGszWitkYlpmd3VPQnRQQk8yVWNWVlk1?=
- =?utf-8?B?RFR6NmlMVDBCd2FXNms4VjRRMFRXV092V2RoZGNvVWRIWVVWZ3haTmtzcUgy?=
- =?utf-8?B?b0l4STlySW9pUFJmNzVWZHhDT3FCcnpyS08vLzN2L2ZTeUZZY29ENjNxK3Nt?=
- =?utf-8?B?dUdzTEhEQ2FjQTl4dUVSQ0hxc2dYZGNNZmQ4dUpaaUUzYmVHUFFVMWh2SGhu?=
- =?utf-8?B?bFhhWEFneUxHZEszNUF6Z3Q5NGk5d1FpNTVNQ3dya1VOdlg2VUQvWktHb2g4?=
- =?utf-8?B?Vy9hbGtyU3R1aEZkb0FiZUFnQ0phbk85RDZwYWpxUFV5V1JtdlZmb2hBcmkw?=
- =?utf-8?B?TW5ya3NyNDNyNXdKR0xDMXl5U09rV3lwRmpkNmUyamw0R2lNWWpkaUh0L2JS?=
- =?utf-8?B?QkRKZU9aMmdPOEpsMFVLYk81NVFtWVhkRVpEbFBaaHMwQm9QaHdoMEhJSDRQ?=
- =?utf-8?B?N3VXVU1iTHIrQUpLMVlhd251amMwZjJtSllNVU9PM0pVRUZzbFMrOHFTblhT?=
- =?utf-8?B?ZTRlZFkyUWRFM2NQVVpnZHV2b0t6TlFzekpxSHlVSGwwU1R3VmpycmdlS01G?=
- =?utf-8?B?ZEN6NThlaktFSTZQTEs1ektEQ1BrZGFMMHhrZjNGeHJjSlRIaGV6RVBzOFgz?=
- =?utf-8?B?L1Bkbml5T2xjcWZMNXRheUFhUWRuRVBSWjhVUXJObElFWnh5YmhQdDkzNW5j?=
- =?utf-8?B?R2N3Z3g3bXdqMTFTS1hab000WmVsa25nenRmOGJ4bzRmV1gwSGhtbWlYRTQy?=
- =?utf-8?B?OE9nS1YzR25SOFhMK3N0SzNwdWNxVE9DTDJ1bXFrZlR2SlJsb2l5U2hLUU5n?=
- =?utf-8?B?MlhDY3k1ZXFpUXlXVGx5Sm9Na1lKRWRTaFhYeGVRUFJNbmszUThSL1hOWU5F?=
- =?utf-8?B?TWp1STVmSGtMTmVnMEhHR2Vhd3pCQWlmOTU1WUlrN243dTYwM1BzSlcrYWts?=
- =?utf-8?B?ME94aHpiL210VVJpQWpJMXR0cXp0Qis4eVVxd0lXWjN2N3FoR0RIdFEwd09l?=
- =?utf-8?B?VjdCZUFpcGxucTZrdnZaazlsSFRiVDVRWkNlY2hBQmZEVTVoRWRpTTBGRkdv?=
- =?utf-8?B?a2tJcWVqQ0hMT0U2bWFkM3VDbVBBbU5QTm5xSlM2b0ttSUVpZVJmNEJabTBC?=
- =?utf-8?B?dHlWeHdYNXlIVVRoaHdablRHdmxqaHF3ZjFaemlVZDhqN1orOE83NzY0a09k?=
- =?utf-8?B?b3RQRWY4T20vdFlFR0t6QWcvbEk4dFJBdkFSUTFVZ1BTek5yVmVpRDdBZHZh?=
- =?utf-8?B?VU02cXFqMDNvOHZ5amZRb3lvcmtFRDN2dkxETllwb1hsN1IzYUlGK0NiQ2Ny?=
- =?utf-8?B?Q2p2aE9TU0pIUkNScnJTRHFGU01tTmdvN3B0UGljYWtHSHg5QnB1c0JFQUhY?=
- =?utf-8?B?TzRWUFVRRG9hN2t2NTRWbzJhUmxnLzdQRlhYWElUN2VNdDlzbndEQT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7fef1839-d8ee-4b61-9240-08df0898d578
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 02:21:02.0202
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: THOx9USPLqICUpCHhdNnf7Zw1rsqHFRyRgfPTpbo7ErAKJBHH6EzYYlTXlDJM4Y7y9BS7nkSDCt/i2YXI5Kr3w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6368
+Content-Type: text/plain; charset=US-ASCII
 
+On Sun, 30 Aug 2026, Ackerley Tng via B4 Relay wrote:
 
-
-On 2/9/26 12:12, Xu Yilun wrote:
-> On Tue, Aug 04, 2026 at 09:55:33PM -0300, Jason Gunthorpe wrote:
->> On Tue, Aug 04, 2026 at 09:48:30AM +0800, Xu Yilun wrote:
->>
->>> Glad to see you all here to make progress! Intel can also help on this.
->>> Can we have a meeting to discuss on these topics? As Alexey mentioned,
->>> previously we had a bi-weekly call, perhaps use that for our first
->>> meeting? Or what time works best for everyone?
->>
->> I prefer we defer such community discussions till September, that
->> seems appropriate given some dates I've seen.
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> Hi Ankit & Jason,
+> A guest_memfd folio has no outstanding references if guest_memfd holds the
+> only references on it. Any other references on the folio may indicate
+> another user, and guest_memfd cannot convert it to private if there may be
+> an existing host user.
 > 
-> Do we have a plan to schedule a meeting to discuss next steps?
+> A folio will have outstanding references if it is present in a per-CPU
+> lru_add fbatch. guest_memfd does not actually participate in LRU, but
+> freshly-allocated folios are still added to the lru_add fbatch for batch
+> LRU statistics processing.
 > 
-> If so, we can figure out a specific time on the Discord channel.
-> https://discord.gg/KKqC438c
+> A folio may also have extra refcounts if it is on the mlock fbatch.
+> 
+> These two known "usages" of the folio are handled by calling
+> lru_cache_drain_for_folio, which drains both the lru_add and mlock
+> fbatches. After draining, if the refcount is still elevated, then there are
+> truly outstanding references.
+> 
+> If the page may be dma pinned, DMA is using it and hence there are
+> outstanding references. folio_maybe_dma_pinned() can have false positives,
+> but that's only with a significant number of refcounts, at which point
+> draining LRU is not going to move the needle - it can still be concluded
+> that the folio has outstanding references.
+> 
+> If the page is still mapped after guest_memfd tried to unmap it earlier in
+> the conversion process, it also has outstanding references.
+> 
+> Return true and exit early to avoid unnecessary draining in these 2 cases.
+> 
+> Provide a drain status to only drain once ever while processing a batch of
+> folios.
+> 
+> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+>  mm/folio.c             |  2 ++
+>  virt/kvm/guest_memfd.c | 30 ++++++++++++++++++++++--------
+>  2 files changed, 24 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/folio.c b/mm/folio.c
+> index c02dcea9c03c2..50a6dbe55998e 100644
+> --- a/mm/folio.c
+> +++ b/mm/folio.c
+> @@ -33,6 +33,7 @@
+>  #include <linux/page_idle.h>
+>  #include <linux/local_lock.h>
+>  #include <linux/buffer_head.h>
+> +#include <linux/kvm_types.h>
+>  
+>  #include "internal.h"
+>  #include "page_alloc.h"
+> @@ -926,6 +927,7 @@ void lru_cache_drain_for_folio(const struct folio *folio,
+>  			*drained = LRU_CACHE_DRAINED_ALL;
+>  	}
+>  }
+> +EXPORT_SYMBOL_FOR_KVM(lru_cache_drain_for_folio);
+>  
+>  atomic_t lru_disable_count = ATOMIC_INIT(0);
+>  
 
+I don't mind about the virt/kvm/guest_memfd.c part of it, but I'm finding
+a KVM patchset modifying mm/folio.c there hard to deal with: and notice
+Sean also suggesting to separate this part out.
 
-So I've been trying to find a time slot. Say, keep it on Thursdays (USA) (kinda short notice), bi-weekly, we can do:
+As you know, I've worked up a patchset "mm/fbatch: drain lru_add_drain()
+and _all()" which finally removes the problem lru_cache_drain_for_folio()
+works around. In the initial version posted a week ago, there was no
+lru_cache_drain_for_folio() in the tree. Now 7.3-rc1 has it, so I
+intended a replacement 13/25 in my series, giving you just an empty
+inline lru_cache_drain_for_folio() stub (and enum lru_cache_drained)
+in linux/swap.h.
 
-Scenario A:
-Seattle (PDT, UTC-7)		07:00 – 08:00	Day 1
-Atlantic Time (ADT, UTC-3)	11:00 – 12:00	Day 1
-Berlin (CEST, UTC+2)		16:00 – 17:00	Day 1
-India (IST, UTC+5:30)		19:30 – 20:30	Day 1
-China (CST, UTC+8)		22:00 – 23:00	Day 1
-Sydney (AEST, UTC+10)		00:00 – 01:00	Day 2 (I can do it once in 2 weeks)
+But that won't work for you, if you're adding an EXPORT_SYMBOL_FOR_KVM()
+in mm/folio.c, and of course conflicts with my removals (in context both
+above and below your EXPORT line). It's easy for me to remove what's in
+mm/gup.c and mm/folio.c, but I cannot remove what is not yet there.
 
-Scenario B:
-Seattle (PDT, UTC-7)		18:00 – 19:00	Day 1
-Atlantic Time (ADT, UTC-3)	22:00 – 23:00	Day 1
-Berlin (CEST, UTC+2)		03:00 – 04:00	Day 2
-India (IST, UTC+5:30)		06:30 – 07:30	Day 2
-China (CST, UTC+8)		09:00 – 10:00	Day 2
-Sydney (AEST, UTC+10)		11:00 – 12:00	Day 2
+I've wasted hours on this, hoping not to trouble either of you; but
+seeing now that I shall have to rebase anyway (an unrelated mlock fix),
+I'm electing to take the only clean way out: I'm going to submit this
+mm/folio.c part of your patch to Andrew tonight (with a shorter Cc list!),
+in the hope that it can be accelerated into 7.3-rc2 (or at least get an
+mm-stable stable base-commit id) which we can both work off independently.
 
-Scenario C (which is the current schedule):
-Seattle (PDT, UTC-7)		20:00 – 21:00	Thursday, Sep 3
-Atlantic Time Zone (ADT, UTC-3)	00:00 – 01:00	Friday, Sep 4
-Berlin (CEST, UTC+2)		05:00 – 06:00	Day 2
-India (IST, UTC+5:30)		08:30 – 09:30	Friday, Sep 4
-China (CST, UTC+8)		11:00 – 12:00	Friday, Sep 4
-Sydney (AEST, UTC+10)		13:00 – 14:00	Friday, Sep 4
+Whether that's acceptable to Ackerley and to Andrew, I don't know
+(just as we don't know when either of our patchsets will go further),
+but let me try.
 
-The link is:
-https://zoom-lfx.platform.linuxfoundation.org/meeting/93219227394?password=80705486-101a-4e19-8f11-0baaf92104be
-
-but if we want to change the time - who do we contact? Or set up a new call (again, how)?
-
-Please, comment. I find these calls pretty productive syncups. So far we were not having Europe in these calls.
-
-Alternatively, wait until the LPC in a month but I suspect not everybody is going to be there.
-
--- 
-Alexey
-
+Thanks,
+Hugh
