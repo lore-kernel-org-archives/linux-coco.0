@@ -1,115 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CAC386C3F
-	for <linux-coco@lists.linux.dev>; Wed,  2 Sep 2026 06:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5256D3DAAC3;
+	Wed,  2 Sep 2026 07:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788328972; cv=none; b=I1EAcOvEcJairj0BECGmk/fm99w9uIutePnRQN454N/y2BNiAi5ivW4mfzQXdhsapPZ/u3fcMdtC4rcwTgGapp0jDNWaUf7KYqU+wwKb0l2y41iUIuYsFgxziPTyeK0W2xwOHx79Bl/eXWzP0GM1rJrvCkxq0wgqPPRNs05klmY=
+	t=1788334141; cv=none; b=mebSPKsbAolcnUaC9e5TKKaYLRngDL3EuYijCAZBcAngDBvMka4PKgruv0GsHuYpLoE0dX7mh//1R4xoNWeC05zsrKxBN70sS/BI5pMyD5QqVUiF2wqlUvdBTjLdLpkJGr++JD1o9Z+wTwJonU2J6Lw6uf6G2dOvHznQ8CKsyG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788328972; c=relaxed/simple;
-	bh=ZsQIcqiHQLyH2DKVUpBoYLA6XTARs4g/JsX3IormNF8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TWPwhDrMHKrD6z1tumPl8BJKb0bk9u4rhjDB2OAy2q3ysVWM6qPq480BIgzu8IwpWYmX9a5uMbahVSOUjm/bH2C7ibx/9j6tQOb8vrvIpPlFLRXkuEUwSbC6hflpsMHcNDso8CTMlu45F05PezkPuRRSiILBdI1eW7j+7uiF6I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VlsAmqAo; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1788334141; c=relaxed/simple;
+	bh=pAfaN+jDCA2d0gxsMNOU7J3a/OQIiXUBd3dXX/RakV4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nP9uSp6A0g6SNlrcAyyvpvnZ1JgVMPqCKTvccgb2/tlDNCeoOr4EO2a0XG0iaswaH2ba+P6aDTUZn7YjNNYNV2elO+WP9FHuXJzOJWRvntyXvuLN5cyY46XK7NpHGPy/vx/GNv9o3aGFTL9AnC3Hly7P2wolwG4rsbBs//drISo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AOIpN1l8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VlsAmqAo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788328972; x=1819864972;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ZsQIcqiHQLyH2DKVUpBoYLA6XTARs4g/JsX3IormNF8=;
-  b=VlsAmqAoh/TyFjHM5pn3gWBv4y0I+8uJhwihw5puaeFdwV3RvXpmwoMi
-   VE6zss0VC958Y+avrdRYScs850ivRieAr6w5iavQlbQ1UV6OUPVc5840a
-   lmgfM6m8mDSGYzqYKeKlLlijc3wH6B9jEMDkXtjKPm1OVx4aa5OYwjkO/
-   Dz9Jr3QyZf3+vJ+YNDRh9f0L8OM/Q+Nqb8xF9MT5VfFR15MDLpkPtaenT
-   pvHhb9PHwhQLKeaPjbGpoxT5/VlxxRmtldwVBunpvWp8li/9kTzarrJJS
-   xLWTVPwBJGp6In/E6qV9wspsgpxnQ3Mi5Weiucp0WxVKmDFj4gI+JnjX8
-   A==;
-X-CSE-ConnectionGUID: 176rdXtYTuSbLrSRoJyUvQ==
-X-CSE-MsgGUID: KFFGqEnLS6yKTyi+kVOThw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="99373020"
-X-IronPort-AV: E=Sophos;i="6.25,257,1779174000"; 
-   d="scan'208";a="99373020"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 23:02:51 -0700
-X-CSE-ConnectionGUID: ZHqX8Es0SsC3RVfgs1tTNg==
-X-CSE-MsgGUID: waXhBzDUS2CbO17ipdXqoA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,257,1779174000"; 
-   d="scan'208";a="269881790"
-Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 23:02:36 -0700
-Message-ID: <64acdf25-de17-42fc-a51c-726485f2b9fb@linux.intel.com>
-Date: Wed, 2 Sep 2026 14:02:34 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AOIpN1l8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587161F000E9;
+	Wed,  2 Sep 2026 07:28:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788334139;
+	bh=nsm2e+vuYYkeIEUmf/SuK3uUkXGDYr8hmbsdJyez/v4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AOIpN1l8+aTzQhC8rel45G1zUGjtyGXOCxC5bYbgvc/bOa8S8YFQRzPz+T9+qsuaF
+	 Xr7JdWKsgy9N0XHyiexLxOCoDNsxX7sQjxNIF6UrrrafPyUKdOPdQVRYJ06j32JSbq
+	 TAoa8d/lRfbqpFBPOvvhp02FT9SJjBHt7aVhc0CB2GQXN5Cowd/3pYZzb8Gitt5qts
+	 YX4VcrEQYyeJ+C0QiADCSS/HjstbBzIvtnyfPmr3rnIrLvcQQOiUrICvPU8hAAlnGy
+	 LlAlSzCxS4UmqPLyYYFHEgXHUg54H5lrbLxfESv91Si5Mgoze6TxpDI+dUcRHNxChr
+	 9me3BKcmitrvg==
+Date: Wed, 2 Sep 2026 10:28:56 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	ankita@nvidia.com, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, driver-core@lists.linux.dev,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>, Petr Pavlu <petr.pavlu@suse.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Will Deacon <will@kernel.org>,
+	"Fontenot, Nathan" <Nathan.Fontenot@amd.com>,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com
+Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security
+ Protocol (TDISP)
+Message-ID: <20260902072856.GQ24140@unreal>
+References: <20260705220819.2472765-1-djbw@kernel.org>
+ <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com>
+ <amk7Xzm5jmz+6SPJ@ziepe.ca>
+ <anFE7m164AmchTy/@yilunxu-OptiPlex-7050>
+ <20260805005533.GB28508@ziepe.ca>
+ <apeF/peEzdxvKeWR@yilunxu-OptiPlex-7050>
+ <2e721509-0aee-47ee-b17a-688876e02f74@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 13/45] KVM: guest_memfd: Pass mapping type filter to
- invalidation helper
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-13-85e5fd25252a@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-13-85e5fd25252a@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2e721509-0aee-47ee-b17a-688876e02f74@amd.com>
 
-On 8/31/2026 8:25 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
+On Wed, Sep 02, 2026 at 12:20:51PM +1000, Alexey Kardashevskiy wrote:
 > 
-> Accept the mapping type filter as a parameter in the invalidation start
-> helper instead of querying it internally. This allows callers to specify
-> which mappings (shared, private, or both) should be invalidated.
 > 
-> In the next patch, the conversion process will use this new parameter to
-> invalidate mappings only when they're different from the target state of
-> the conversion, i.e. invalidate only shared mappings on a shared to private
-> conversion and not both.
+> On 2/9/26 12:12, Xu Yilun wrote:
+> > On Tue, Aug 04, 2026 at 09:55:33PM -0300, Jason Gunthorpe wrote:
+> > > On Tue, Aug 04, 2026 at 09:48:30AM +0800, Xu Yilun wrote:
+> > > 
+> > > > Glad to see you all here to make progress! Intel can also help on this.
+> > > > Can we have a meeting to discuss on these topics? As Alexey mentioned,
+> > > > previously we had a bi-weekly call, perhaps use that for our first
+> > > > meeting? Or what time works best for everyone?
+> > > 
+> > > I prefer we defer such community discussions till September, that
+> > > seems appropriate given some dates I've seen.
+> > 
+> > Hi Ankit & Jason,
+> > 
+> > Do we have a plan to schedule a meeting to discuss next steps?
+> > 
+> > If so, we can figure out a specific time on the Discord channel.
+> > https://discord.gg/KKqC438c
 > 
-> No functional change intended.
 > 
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> So I've been trying to find a time slot. Say, keep it on Thursdays (USA) (kinda short notice), bi-weekly, we can do:
+> 
+> Scenario A:
+> Seattle (PDT, UTC-7)		07:00 – 08:00	Day 1
+> Atlantic Time (ADT, UTC-3)	11:00 – 12:00	Day 1
+> Berlin (CEST, UTC+2)		16:00 – 17:00	Day 1
+> India (IST, UTC+5:30)		19:30 – 20:30	Day 1
+> China (CST, UTC+8)		22:00 – 23:00	Day 1
+> Sydney (AEST, UTC+10)		00:00 – 01:00	Day 2 (I can do it once in 2 weeks)
+> 
+> Scenario B:
+> Seattle (PDT, UTC-7)		18:00 – 19:00	Day 1
+> Atlantic Time (ADT, UTC-3)	22:00 – 23:00	Day 1
+> Berlin (CEST, UTC+2)		03:00 – 04:00	Day 2
+> India (IST, UTC+5:30)		06:30 – 07:30	Day 2
+> China (CST, UTC+8)		09:00 – 10:00	Day 2
+> Sydney (AEST, UTC+10)		11:00 – 12:00	Day 2
+> 
+> Scenario C (which is the current schedule):
+> Seattle (PDT, UTC-7)		20:00 – 21:00	Thursday, Sep 3
+> Atlantic Time Zone (ADT, UTC-3)	00:00 – 01:00	Friday, Sep 4
+> Berlin (CEST, UTC+2)		05:00 – 06:00	Day 2
+> India (IST, UTC+5:30)		08:30 – 09:30	Friday, Sep 4
+> China (CST, UTC+8)		11:00 – 12:00	Friday, Sep 4
+> Sydney (AEST, UTC+10)		13:00 – 14:00	Friday, Sep 4
+> 
+> The link is:
+> https://zoom-lfx.platform.linuxfoundation.org/meeting/93219227394?password=80705486-101a-4e19-8f11-0baaf92104be
+> 
+> but if we want to change the time - who do we contact? Or set up a new call (again, how)?
+> 
+> Please, comment. I find these calls pretty productive syncups. So far we were not having Europe in these calls.
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Berlin (CEST, UTC+2)            03:00 – 04:00   Day 2
+No wonder that you don't have Europe :)
+
+Thanks
