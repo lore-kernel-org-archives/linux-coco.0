@@ -1,98 +1,82 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EE8356748
-	for <linux-coco@lists.linux.dev>; Wed,  2 Sep 2026 01:51:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C90352031;
+	Wed,  2 Sep 2026 02:12:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788313907; cv=none; b=GpZ0ML7gyYzSWzSF+BdaEqSiszDVpJzLc2eQW7M2OrjTrl3q4PmiwoJX21Q38RkZ+JfPe3yImsYnxrLT+iwFW/55cHQ3XPFL3re8Nk93RObnX7dyqBh1Nw2OByUeyJ0KKAQKUu8VqM041TVXwatnCPqw0TR+GNUsuCzF8IqTxQ8=
+	t=1788315148; cv=none; b=LH24IhtcAwip/aC2c+kwEefjTAi3c83FIk07TDO9qRTmWkO9vTGcWL/TwcYb4kfCZFxoX2Mk//y4uJK28pyu3q8lhBEyq3Y2SnCmksRCw0bzOHYeeJoOe+XXtAOx2IaEC7ZVNvNyynW4g4fk+/y+bIIVw3ky4VU/GFBYljHY6G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788313907; c=relaxed/simple;
-	bh=E+oXMdrF2sleLVDXDyRpoFuZgDFkHIlL9VN1wy6t690=;
+	s=arc-20240116; t=1788315148; c=relaxed/simple;
+	bh=M99JmKWcrLHU0r0FrIqPbA2I/sj6H0qv2/5vaRniUQQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PknIR0tO3CWOW+gDO2+aNyl5OnLlwHGBRljoD2iTnYf3n5LpcY4XTnLshF3AxEF+/UpV7ZompSvZPOW1ha/RFvf9nYOpsnfqOqbmJQKfPnG3lVCQZBMuELU/jZsYKpXWfQoB8BFGZa6OHG5V0IQq/rZuw9gd+3pXJCmRCpNWUdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Cokh/1k8; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=cYP8ifKtdEo89zimhk6gAYqHwqxSW9K/0xftYsCthtyah1RakW6j5qAnH6bHvlROhtvgC9EEz0rJt6g6+VOgOwLqG64C2+A/7wYbXRasTT+V17INGmbrYZTjAo+usFb73qGJMWhySKXTZXjzuZmCBgDvZGv986X6bszY75W+5QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GfOYIZoW; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Cokh/1k8"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-90ccb6102a1so4603576d6.3
-        for <linux-coco@lists.linux.dev>; Tue, 01 Sep 2026 18:51:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1788313900; x=1788918700; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=E+oXMdrF2sleLVDXDyRpoFuZgDFkHIlL9VN1wy6t690=;
-        b=Cokh/1k85vJ4CHgv5xK2B6hIC0TBeuhQwpiDPs/T6jzFx4j3tSi7FxhK/fuEvlQJpV
-         PgJwRJPA29geLfVJFt9nIH/L/Ep+i9sendCwtO27hjtPQJe/Q9ddQRyIAPkwcfg4jZ5w
-         lIMAtNsKQ26s64ofj9UIYqkeXP9QFuEtUoYpfxdijkLiZHG+VvmcTe9JmBvIdJbg91rh
-         DSxOusKi5yjI2HL9XBTXqNEJRuHLGevNFEgCv+Hkk7NE0pXnvTwRxr8XJiL8pZCoICgp
-         OxNZ7S3Kd5fjQITLcgeixgJEVstV/UKqf67D7/AOutS/eCV5TM5/kU1mIy9mJLBior2o
-         xFAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788313900; x=1788918700;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=E+oXMdrF2sleLVDXDyRpoFuZgDFkHIlL9VN1wy6t690=;
-        b=R49BlbakAHGOQKVdBNcNw7CKPxMPaT3mOWL9Rx2zGGl48yCqxRo28KNgHk8RpWxbnp
-         p9UvX7vmazLyRT5/KpVWc1Yy4/RywBpI/LnjrRuS41hBzvgRaNrBp9FV4QprEV7h5NPH
-         haCCO76KTsYM91AvjS9dvTGbhYScFILmXs26KtfKfAz5ESRIxyMKf7G4Cnzg/J4DOdWl
-         uuy5sxd2OxMvPogAJ7MrpvuwlFKgqIbfKNSZT2ZZ549yxj+i0HcMSpoQxVvsoNApesFu
-         KFxremPqSSw6cTsb4K6jNKIvLBwOrI6xWvEAKKJnnyArmmnM0LwY+r4m4ZG6VnrPOZ/z
-         J2Aw==
-X-Forwarded-Encrypted: i=1; AKwUvBy/1ihJjJn6OFbDG0UQ0dk0TB+xSFLQummcWS3KgFH+pb1zcMIm8AJToNRmqbaWK1p5FeH79j7FAYfj@lists.linux.dev
-X-Gm-Message-State: AFuF++mZg/YCzBkOITAxQwOQv7vB99tbycR1Y9SuT0rZ0RUmGentlCDa
-	ZQSqucuyv/75zPFgghdSSYmwzwcGi4n4j4IlizIgv638hEQyn3W2/IvuikklcHNInU0=
-X-Gm-Gg: AR+sD11L3Wt0mTdn/yl8YMbkQtlRfWmlJquoR4pyp7ylMFWeMcRTEy0Q5vv+COzkX1g
-	pp3d3KnDJGB9+zhfGM1D9pQDmfAeos3sSFny09b8VkhmSto7kwFzXeVXm1L+jRgUMTpobjAdPEP
-	9Wk01lu0TFJok+j2OI9xrf6z0+A9ffXlz2sWwKFcPpD/Ij8xJ8rut0AZ4PKGezX2EZiOqGYyeA+
-	MmmGMPnV++WrKQOQ57xU3+EP7b/sZQPY1DbuMV7dLyUOmh1H/jtagWo18xQpMPfyjkSaaW5I3nY
-	Lh2NTVZtlVjv3+hDVVvQHestuJZIBVVTV+zJ6SMyXjYJbIixD0mYRfZuA8cDT9BOLwfEI83xy/e
-	ftKiYjlbilEVb/tB4bt83RCbq71agUbVExdOCv40h7pYeF7Dh5ZXfZ1r5gDZgj3m1XcVeCS5Hsv
-	aUCSq6y0m67ZEQD9j79sEsiem71srvLblbRT667IQO2/jm0fdO6Tu2fgB3igyq1K/Xti4WNKBNY
-	JMv1oGswSxyfjeusP2DEAeUGkFQ4JpzYkzZIGjdNUnH7g==
-X-Received: by 2002:a05:6214:2584:b0:90c:c53c:a032 with SMTP id 6a1803df08f44-90ebabce888mr24156306d6.25.1788313899587;
-        Tue, 01 Sep 2026 18:51:39 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9eef4f20sm7284946d6.41.2026.09.01.18.51.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 18:51:38 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x1a8X-0000000Czw5-2tb4;
-	Tue, 01 Sep 2026 22:51:37 -0300
-Date: Tue, 1 Sep 2026 22:51:37 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Pranjal Shrivastava <praan@google.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GfOYIZoW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788315145; x=1819851145;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=M99JmKWcrLHU0r0FrIqPbA2I/sj6H0qv2/5vaRniUQQ=;
+  b=GfOYIZoWXt/bgw1K9hbXf6ENqELGtyq2b4QXUlc8teSk+8ZD3lJrYwRp
+   xTIm33S47G6oAJA65l9avClzRUSEnnbF5qaFFEtPEvHRIfNxwc5otbxit
+   9GJKHtgPFmrFDYPKwSCUwAbmtWQ2h5GINTxUn2fvGDwNTan/51TkaRYNr
+   1yq1OkPd6TODzGN6N5MPCLZCl1WBz1UUSFZX1UDVUpZFDVT559mXCuZUG
+   ZJ5sHrCjzHimy1M/wpxT51YVP6EdGrCQnbWvbGlSZQhg+n31pOL3RMdIs
+   Z5UlWiI/2t50zTGETpu6pVD4+z9TyqIPkTWeMVCQQvaf2SdWs/1adMezk
+   w==;
+X-CSE-ConnectionGUID: NvWSshJHQJi6Q488XOd9Ow==
+X-CSE-MsgGUID: ZHXu6Y0CRKuEW5tntGBPIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="76313674"
+X-IronPort-AV: E=Sophos;i="6.25,257,1779174000"; 
+   d="scan'208";a="76313674"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 19:12:22 -0700
+X-CSE-ConnectionGUID: 4Xe6dTtPSSy7EjngLXTjow==
+X-CSE-MsgGUID: cuOZuHybSh6IscNsR27guA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,257,1779174000"; 
+   d="scan'208";a="264978348"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa006.fm.intel.com with ESMTP; 01 Sep 2026 19:12:15 -0700
+Date: Wed, 2 Sep 2026 10:12:14 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>, ankita@nvidia.com
+Cc: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, driver-core@lists.linux.dev,
+	ankita@nvidia.com, Aaron Tomlin <atomlin@atomlin.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>, Petr Pavlu <petr.pavlu@suse.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Robin Murphy <robin.murphy@arm.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
 	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [RFC PATCH v4 03/16] iommu/arm-smmu-v3: Add initial pSMMU realm
- viommu plumbing
-Message-ID: <20260902015137.GA2890729@ziepe.ca>
-References: <20260427085344.941627-1-aneesh.kumar@kernel.org>
- <20260427085344.941627-4-aneesh.kumar@kernel.org>
- <apM6dOHcEI2ztWS0@nvidia.com>
- <yq5a8q5lz5yn.fsf@kernel.org>
- <yq5aecfdnv4i.fsf@kernel.org>
- <20260901143445.GC56830@ziepe.ca>
- <apcHoHKGoI7WNFXp@nvidia.com>
- <20260901174230.GA2847102@ziepe.ca>
- <apcitkpASOREamQs@nvidia.com>
+	Saravana Kannan <saravanak@google.com>,
+	Will Deacon <will@kernel.org>,
+	"Fontenot, Nathan" <Nathan.Fontenot@amd.com>,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	yilun.xu@linux.intel.com
+Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security
+ Protocol (TDISP)
+Message-ID: <apeF/peEzdxvKeWR@yilunxu-OptiPlex-7050>
+References: <20260705220819.2472765-1-djbw@kernel.org>
+ <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com>
+ <amk7Xzm5jmz+6SPJ@ziepe.ca>
+ <anFE7m164AmchTy/@yilunxu-OptiPlex-7050>
+ <20260805005533.GB28508@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -101,24 +85,25 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <apcitkpASOREamQs@nvidia.com>
+In-Reply-To: <20260805005533.GB28508@ziepe.ca>
 
-On Tue, Sep 01, 2026 at 12:08:38PM -0700, Nicolin Chen wrote:
+On Tue, Aug 04, 2026 at 09:55:33PM -0300, Jason Gunthorpe wrote:
+> On Tue, Aug 04, 2026 at 09:48:30AM +0800, Xu Yilun wrote:
+> 
+> > Glad to see you all here to make progress! Intel can also help on this.
+> > Can we have a meeting to discuss on these topics? As Alexey mentioned,
+> > previously we had a bi-weekly call, perhaps use that for our first
+> > meeting? Or what time works best for everyone?
+> 
+> I prefer we defer such community discussions till September, that
+> seems appropriate given some dates I've seen.
 
-> The viommu object here is an empty vehicle that almost has no use
-> but to allow another vehicle (vdevice) on top to forward vBDF. It
-> makes VMM code a bit awkward: there is no iommu instance, so VMM
-> doesn't enable iommu driver, then there is no good place to alloc
-> the viomu object for VIOMMU_TYPE_ARM_REALM_SMMUV3.
+Hi Ankit & Jason,
 
-It would have to allocate singletons viommu for each psmmu as part of
-setting up the vdevices.
+Do we have a plan to schedule a meeting to discuss next steps?
 
-Somehow I'd rather the vmm deal with that then invent a whole new set
-of uapis and flows..
+If so, we can figure out a specific time on the Discord channel.
+https://discord.gg/KKqC438c
 
-At best maybe we can invent a kernel side helper to create the
-singletons like the auto domains, but IDK if it is really so hard for
-the VMM (especially compared with how hard everything else is in CC)
-
-Jason
+Thanks,
+Yilun
