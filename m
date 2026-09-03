@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAC7339360
-	for <linux-coco@lists.linux.dev>; Thu,  3 Sep 2026 01:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0933093A6
+	for <linux-coco@lists.linux.dev>; Thu,  3 Sep 2026 01:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788400298; cv=none; b=neuNjFPd5heA3R2PAYcJ2udjVse9GDxowkqy3QTwZZCWC500WMhi5W9mXXZ8VB5fxzKG1U/uaN9Z15/ZqPCSJb6TW3cbdMx2TCWawns4uMKImB6+uyxrwwnDFTrbAo8MJ3F0FcXdWNJfEWRV+K7B1pK/beeb9NQ+dagvZwap8Ko=
+	t=1788400301; cv=none; b=dhh/buC4MRXtVNQF/vxtybeV+sEeRrZ3DcP0wX6X2Bl+s4Pjq43J85gTcS7+5McQxgpBQ9O8OemfkTKHqSKvYg3TLyOwGgAU6unUpWJuTyqj9wMgfsXeggcP48CFKpewuNNUKAvz3gLoYPj5WbG0VVKO4kC7/rpES1sWfP0G+60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788400298; c=relaxed/simple;
-	bh=dtu1ggg5VIypqWoDzB4J7tyX0oD/kIqG7vXK2qDzpJE=;
+	s=arc-20240116; t=1788400301; c=relaxed/simple;
+	bh=/CB9ippxrpOsGJgcDiFoqTZKAywhBcGUCX3drlUDM9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=smakK/7tnf1OUsRT1EOE3Ozbw/17XhEzruekWk4tlaLhrG4vJIIRtxGi3XCs3Ay2RkBEK/nRwE8jFk9ycTTvfGEB5PiMD2MHMODbWbce5DHdNFYEIcAZF8XJMO4esqWv/HsgJwjzGMV3CCxBfKh29P7oR4g4djDz9p9roe7oEN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E2o4STzz; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=dadA7aYE9orfuGBY6nKLqFDLxxp7uaA6KCaIB8uaJn/+/rxn1tEeOQ8zTjmxKaKIeXGR5XiU7vyQJFh559z9o2+KuX4Jsp95YrLcRWPLyRG4+bGIM77s77NEcHlH/84krpUMcQf2xo9u8aRzFjXQhpDvJDWbCpny9vrmJQyfgws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RLviGLe2; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E2o4STzz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RLviGLe2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788400295; x=1819936295;
+  t=1788400298; x=1819936298;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=dtu1ggg5VIypqWoDzB4J7tyX0oD/kIqG7vXK2qDzpJE=;
-  b=E2o4STzzKELYv3gBOj2AXeKIIYbdZXbShOnttq/cuLFKRHMWkL1U6ktu
-   6t4J8tZfnyhx8RiFvo9Dg9o80Srh7FJqHTGAhbp77mQdpqH8EhFqnGlXW
-   7gB7LGZA/GlpmExW+cwcfa0gPpTYPbUHOZZXs4/2kerbR/knTLkLUc5ue
-   mPgRQCXDI3BABLRSEmXbOadHt91+5NVRtqhX8uq7HBhN337WQyWeR0dmt
-   sP+C9DdwZ3BxSsnABug35SQw3vJd0HhdY3vAS0XkKU03U4PNhowj77ZVl
-   bbxm+kHu+zSDtpBSOJBz72Wz3Oeyx26srEbPxQqQE6COqZlCKO0HlIUAC
-   g==;
-X-CSE-ConnectionGUID: Y1KcWxZFTyeq4LCRForwAQ==
-X-CSE-MsgGUID: KTN3N4vQT2mS4ZgTJW4VjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="99469152"
+  bh=/CB9ippxrpOsGJgcDiFoqTZKAywhBcGUCX3drlUDM9o=;
+  b=RLviGLe2VpIKX28mZrWcTXg1lE0X/8BopAWcfwI3jgcfHYw8VpA3nL10
+   vkxTubu9zuhMB/VTaWLRrriVC26b+LpxAryhYDd5P4dJsr3mmYnvWXl7u
+   j16RNSUWgwKjnh6LoRkZ8DJ6Rp9rfNw9u0+lL219RXr8BJMgYe/kadXV5
+   72MCjto7DiIeCy6lPYT+oAOUq9DRpFwXqOUpx5QAzpXn4IYGVBRQzdjAx
+   SPN+93NTOCPOGfHaKsdupP0JcZyU310o9UqMEvMBatgse+rxeCN72kzXP
+   M18ShplCndeDpeTAeK8lo7se9T2tas+yklIBQIvTDYVqiaGV8K9UD01Sa
+   A==;
+X-CSE-ConnectionGUID: 66DXcUY+SDG65DFZ+JSV3A==
+X-CSE-MsgGUID: NWR+GI/dS6OxMeYHA+QomQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="99469160"
 X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
-   d="scan'208";a="99469152"
+   d="scan'208";a="99469160"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 18:51:23 -0700
-X-CSE-ConnectionGUID: S0y2GxwPSI6AMG6uNKS59g==
-X-CSE-MsgGUID: fVqLM6QtTWq1a7Bjr3cajQ==
+X-CSE-ConnectionGUID: IDGYm3eoThaIO9Cc5yXNNw==
+X-CSE-MsgGUID: YVKeJmFjRyicB83AcbjztA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
-   d="scan'208";a="307770238"
+   d="scan'208";a="307770242"
 Received: from rpedgeco-desk.jf.intel.com ([10.88.27.135])
   by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 18:51:22 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
@@ -66,10 +66,11 @@ To: bp@alien8.de,
 	binbin.wu@intel.com,
 	sohil.mehta@intel.com
 Cc: rick.p.edgecombe@intel.com,
-	Hongyu Ning <hongyu.ning@linux.intel.com>
-Subject: [PATCH v10 09/11] x86/virt/tdx: Enable Dynamic PAMT
-Date: Wed,  2 Sep 2026 18:51:11 -0700
-Message-ID: <20260903015113.93343-10-rick.p.edgecombe@intel.com>
+	Hongyu Ning <hongyu.ning@linux.intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>
+Subject: [PATCH v10 10/11] Documentation/x86: Add documentation for TDX's Dynamic PAMT
+Date: Wed,  2 Sep 2026 18:51:12 -0700
+Message-ID: <20260903015113.93343-11-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260903015113.93343-1-rick.p.edgecombe@intel.com>
 References: <20260903015113.93343-1-rick.p.edgecombe@intel.com>
@@ -81,150 +82,94 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The Physical Address Metadata Table (PAMT) holds TDX metadata for
-physical memory and must be allocated by the kernel during TDX module
-initialization. Dynamic PAMT (DPAMT) is a TDX module feature that can
-reduce this memory use by allocating part of the PAMT dynamically.
+Expand TDX documentation to include information on the Dynamic PAMT
+feature.
 
-The TDX module exposes whether DPAMT is supported via a bit in the
-'features0' metadata. Unfortunately, the TDX module exposes the feature as
-supported even when it does not support using it with the number of keyids
-currently configured in the BIOS. Since no TDX modules exist today with
-that issue fixed, make the feature default off to prevent users from
-upgrading their kernel and encountering TDX erroring out when trying to
-enable DPAMT.
+The new section explains PAMT support in the TDX module and how Dynamic
+PAMT affects the kernel memory use.
 
-For the decision of whether to make it a boot time option and/or compile
-time option, consider that DPAMT's memory savings are significant enough
-to make it a good default configuration. That is most TDX users should
-want it unless they have strange keyid configurations.
-
-The feature increases the kernel size by 2KB (when TDX is configured in the
-build).
-
-All pieces are in place to enable DPAMT if it is supported and the user
-passes a kernel parameter.
-
-AI was used to review code. It made a style suggestion.
+Some of the docs verbiage was provided by Dave Hansen (see link). AI was
+used under supervision to review the docs.
 
 Based on a patch originally by Kiryl Shutsemau.
 
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-Reviewed-by: Vishal Annapurve <vannapurve@google.com>
 Acked-by: Sohil Mehta <sohil.mehta@intel.com>
+Link: https://lore.kernel.org/all/8e40862e-891a-4cad-8bb8-06ad25ad6061@intel.com/
 ---
 v10:
- - Change "Dynamic PAMT" to "DPAMT" at the second reference in the
-   logs. (Dave)
- - Adjust tdx_supports_dynamic_pamt() to check multiple conditions in a
-   more tip style. (AI nit checker)
-v8:
- - Order tdx_dpamt in kernel-parameters.txt (Sohil)
- - Make tdx_enable_dpamt static (Sashiko)
+ - Updated verbiage from Dave, but unify 4k to 4KB to be consistent with
+   the rest of the series.
 
 v7:
- - Add kernel parameter following some twists and turns, deriving
-   originally from a comment by (Chao)
+ - Spell out PAMT acronym (Binbin)
+ - Drop Assisted-by tag and cover AI use in log (Dave)
+ - Add info about kernel parameter
+
+v6:
+ - Add missing word (Binbin)
+ - Use "::" instead of ":"
+ - Make format of dmesg example accurate
 ---
- .../admin-guide/kernel-parameters.txt         |  7 ++++++
- arch/x86/include/asm/tdx.h                    |  1 +
- arch/x86/virt/vmx/tdx/tdx.c                   | 23 +++++++++++++++++--
- 3 files changed, 29 insertions(+), 2 deletions(-)
+ .../admin-guide/kernel-parameters.txt         |  3 +++
+ Documentation/arch/x86/tdx.rst                | 27 +++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
 diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 68647ff4bdd24..f32aa58f744a1 100644
+index f32aa58f744a1..e7558b8382acf 100644
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -7582,6 +7582,13 @@ Kernel parameters
+@@ -7589,6 +7589,9 @@ Kernel parameters
+ 			Valid parameters: "on", "off"
+ 			Default: "off"
  
- 	tdfx=		[HW,DRM]
- 
-+	tdx_dpamt=
-+			[X86] Controls whether TDX will use Dynamic PAMT
-+			to save memory, when supported.
-+
-+			Valid parameters: "on", "off"
-+			Default: "off"
++			For details see:
++			Documentation/arch/x86/tdx.rst
 +
  	test_suspend=	[SUSPEND]
  			Format: { "mem" | "standby" | "freeze" }[,N]
  			Specify "mem" (for Suspend-to-RAM) or "standby" (for
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 8c7839d61296d..e186dfe5bf885 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -36,6 +36,7 @@
- /* Bit definitions of TDX_FEATURES0 metadata field */
- #define TDX_FEATURES0_TD_PRESERVING	BIT_ULL(1)
- #define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
-+#define TDX_FEATURES0_DYNAMIC_PAMT	BIT_ULL(36)
+diff --git a/Documentation/arch/x86/tdx.rst b/Documentation/arch/x86/tdx.rst
+index 3303499ad4c6f..de09967ce8d8c 100644
+--- a/Documentation/arch/x86/tdx.rst
++++ b/Documentation/arch/x86/tdx.rst
+@@ -200,6 +200,33 @@ reflects the TCB of the currently running TDX module and therefore
+ changes after an update. By contrast, TEE_TCB_SVN reflects the TCB at TD
+ launch time and is not affected.
  
- #ifndef __ASSEMBLER__
- 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index ff00ee6d5705a..3daa8c63f9c51 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -50,6 +50,8 @@
- /* Number of DPAMT pages to be provided to TDX module per 2MB region of PA */
- #define TDX_DPAMT_ENTRY_PAGE_CNT 2
- 
-+static bool tdx_enable_dpamt __ro_after_init;
++Dynamic PAMT
++------------
 +
- struct tdx_module_state {
- 	bool initialized;
- 	bool sysinit_done;
-@@ -1031,6 +1033,8 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
- 	return ret;
- }
++The Physical Address Metadata Table (PAMT) is metadata in which the TDX
++module keeps data about each physical page (think struct page). Space
++for it is allocated by the VMM, consumes up to about 0.4% of system
++memory and needs to be supplied to the TDX module when the TDX module is
++first loaded.
++
++Dynamic PAMT is an add-on feature that allows a VMM to dynamically
++allocate the part of the PAMT which tracks 4KB pages. This reduces the
++amount of memory that TDX consumes while TDs are not in use.
++
++When Dynamic PAMT is in use, dmesg shows it like::
++
++  [..] virt/tdx: Enable Dynamic PAMT
++  [..] virt/tdx: 10092 KB allocated for PAMT
++  [..] virt/tdx: TDX-Module initialized
++
++Dynamic PAMT is only enabled when supported and the ``tdx_dpamt=`` kernel
++parameter is set to "on". The feature is off by default because TDX module
++internal details prevent Dynamic PAMT from working on all keyid partitioning
++configurations. When the TDX module is fixed to include these constraints in
++its enumeration of Dynamic PAMT support, kernel support can be changed to
++default on. For more information, consult the Intel TDX documentation about
++Dynamic PAMT.
++
+ TDX Interaction to Other Kernel Components
+ ------------------------------------------
  
-+#define TDX_SYS_CONFIG_DYNAMIC_PAMT	BIT(16)
-+
- static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
- 				    u64 global_keyid)
- {
-@@ -1059,6 +1063,12 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
- 	args.rcx = __pa(tdmr_pa_array);
- 	args.rdx = tdmr_list->nr_consumed_tdmrs;
- 	args.r8 = global_keyid;
-+
-+	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
-+		pr_info("Enable Dynamic PAMT\n");
-+		args.r8 |= TDX_SYS_CONFIG_DYNAMIC_PAMT;
-+	}
-+
- 	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
- 
- 	/* Free the array as it is not required anymore. */
-@@ -2046,8 +2056,10 @@ EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
- 
- bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
- {
--	/* To be enabled when kernel is ready. */
--	return false;
-+	if (!tdx_enable_dpamt)
-+		return false;
-+
-+	return sysinfo->features.tdx_features0 & TDX_FEATURES0_DYNAMIC_PAMT;
- }
- EXPORT_SYMBOL_FOR_KVM(tdx_supports_dynamic_pamt);
- 
-@@ -2308,6 +2320,13 @@ void tdx_free_control_page(struct page *page)
- }
- EXPORT_SYMBOL_FOR_KVM(tdx_free_control_page);
- 
-+static int __init tdx_dpamt_setup(char *str)
-+{
-+	return kstrtobool(str, &tdx_enable_dpamt) == 0;
-+}
-+
-+__setup("tdx_dpamt=", tdx_dpamt_setup);
-+
- void tdx_sys_disable(void)
- {
- 	struct tdx_module_args args = {};
 -- 
 2.55.0
 
