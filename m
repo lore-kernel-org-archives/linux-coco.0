@@ -1,239 +1,135 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012064.outbound.protection.outlook.com [40.107.209.64])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C92E329C6B;
-	Thu,  3 Sep 2026 02:21:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788402080; cv=fail; b=FdoMgczhK1uo8i2kOTGq1OsI/Gt1yN/VXd9It7C/+QRrIRJtp0w7p+5ld52cRzrMSMndGRuR1GpQFfQ+dXtBbIcyLKPM2X6QhfnsJHKPg+cbIlHk+ziwvQi4ymtSI+wi3vz9ks5cP1IcEQjt4SBa/aDuQpmshb69UY811aAdml8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788402080; c=relaxed/simple;
-	bh=blNLCiiHHPh8jcP32ITz1tCGwzLNsKZWrqbAyE0g8HY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=lfsjWPqujP9pfP49hHD2nwWuDoJDfyHty774bNu/ojkQRGobI3lBiI+apbLN+UYzDMAHK2Rj9htt4CxTmVHTw51e6IFAVaVL8HfcWG61aqYwA65jpdQrbkPi6MNNRr3gEdpibGnHfI5fBC7d3Vxq/DIohZ30mU1bAx5wWbqVyN0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=TT57mFJH; arc=fail smtp.client-ip=40.107.209.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B4328D831
+	for <linux-coco@lists.linux.dev>; Thu,  3 Sep 2026 04:04:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788408245; cv=none; b=kkDypGN9ent9DNBEKoGdMRHwzHQQR6Znilpkni2xNaer1y+zkJu8bliGD+wA03fvYkN/dv7X9s2EK9nbztuny4UMRF6NKs+0cvl9VAIopWpp9UMDhQxtGvJgAVjXpYe+zKeeLGXGGN1a0wEA2jd0af+YPVqm5zuKVxAvQpMkV0A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788408245; c=relaxed/simple;
+	bh=LUmXoc1C67fDi5VJnp4KcInKxgyiVD2SdZpN/nz8eXw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t7fqMxJXlpQGY+w30VrKA6AozvVvT9xuEjZXSCe4/rVnSK70mZKSuxckswIxem314kLMRFaKskJpm3wMTJnfAmrgfJ5xqzS51egLT/aGbHHla+H3av+FtO+pEVteOUwdwyVMltniuj21vkUpecE16aPMhkxCBPPtQRHvQpiTGK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Pzsv5fSt; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="TT57mFJH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=baADZyXs+URfta11ygXU9Jke+pfglxNmV2CpfkYWNK9dGl1aeURxxe241ffNeNG5jsExK5FztiEpqkxbwuUu09xDtmCINRZUQUskfoBQsULggpnKoDmpT5BgDqlVenBIobrJaJDCtXp9UdeaL7F3wyGoy6TOJMXWjKo5INJ/R1DM8J4y+SAmNKQscqJrBIAfBjuCE1JXidHcbgnJ/B8C8eCddIu3s8ApscxSbnSSjd9gfvuOB8BHiwW4fToYknQmgYgnz/ILlyRHqRYJzSuec/I1Tgdxp1zkXL8sgI2SV7HMOCeybyHReeTeYAV5Ck7F2h+oKIqY8sH78W369gvH0Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9gqSN9GYR0breL9W9U36X2KDuDcnd26vaEAhpEYiA2o=;
- b=Lpjc80hJjBMnEfbLl2u0fEWebFFgpTOEf9rVcig1WsOxL2tpMpSRCctDUqXoFFotxjk61giFXAvXzMe3US91JpJ4pJ5801H9ALEpPBxBVHrlT8alAV3Qokwv0yQ9IITVFeSs40banLFgXxnmjm+WqGaDLMSOfXWsCa9pj9yrAHnNsvBKLVV5P3WKvtlWgS8Qch2bp5SJxpNWZCZ856tSPYXpUTco5sLBg2ks5lXHNGzl+FYEwPwCaH+UsbqAoxY4rpXzbn70YAU3pPQ1U30dulWABzaKvwwV7Grrz0zW9wWw8NGRPOilEmk3/wzlnjI3RQfwtWDAegoi3gxxQTe4vA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9gqSN9GYR0breL9W9U36X2KDuDcnd26vaEAhpEYiA2o=;
- b=TT57mFJHID8wIRUeiJHtl07HhApdbb3xG8J2OzuS+lYdpY2kds2qWHGHP1fp8thB/c1ePxh0OMFU1npwRrFkIJ/i7uEhDz61LPhqyQw8fPLRQHpr/bhytov0v2T5VBUpUCQiGrtwINLVyBQ8gOrynhQ1amrK8UcCaBQtTXjt0N0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10) by PH7PR12MB6586.namprd12.prod.outlook.com
- (2603:10b6:510:212::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
- 2026 02:21:10 +0000
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3%5]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
- 02:21:10 +0000
-Message-ID: <80df7fbc-8c9b-4d2a-a9c3-b5ce5cd0363a@amd.com>
-Date: Thu, 3 Sep 2026 12:21:01 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security Protocol
- (TDISP)
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, ankita@nvidia.com,
- linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
- driver-core@lists.linux.dev, Aaron Tomlin <atomlin@atomlin.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Bjorn Helgaas <bhelgaas@google.com>, Daniel Gomez <da.gomez@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Dexuan Cui <decui@microsoft.com>,
- Donald Hunter <donald.hunter@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jakub Kicinski <kuba@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
- Lukas Wunner <lukas@wunner.de>, Petr Pavlu <petr.pavlu@suse.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Robin Murphy
- <robin.murphy@arm.com>, Sami Tolvanen <samitolvanen@google.com>,
- Samuel Ortiz <sameo@rivosinc.com>, Saravana Kannan <saravanak@google.com>,
- Will Deacon <will@kernel.org>, "Fontenot, Nathan" <Nathan.Fontenot@amd.com>,
- rick.p.edgecombe@intel.com, yilun.xu@intel.com, Jiri Pirko
- <jiri@resnulli.us>, Leon Romanovsky <leon@kernel.org>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>
-References: <20260705220819.2472765-1-djbw@kernel.org>
- <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com> <amk7Xzm5jmz+6SPJ@ziepe.ca>
- <anFE7m164AmchTy/@yilunxu-OptiPlex-7050> <20260805005533.GB28508@ziepe.ca>
- <apeF/peEzdxvKeWR@yilunxu-OptiPlex-7050>
- <2e721509-0aee-47ee-b17a-688876e02f74@amd.com>
- <20260902150125.GD2890729@ziepe.ca>
-From: Alexey Kardashevskiy <aik@amd.com>
-Content-Language: en-US
-In-Reply-To: <20260902150125.GD2890729@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SY5PR01CA0056.ausprd01.prod.outlook.com
- (2603:10c6:10:1fc::7) To SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10)
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Pzsv5fSt"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 424E240E02C2;
+	Thu,  3 Sep 2026 04:04:01 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id zdy0ZbA16YNR; Thu,  3 Sep 2026 04:03:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1788408231; bh=7XeV0mEuifcWbEdGvyLniuY9lvwKVyb6NFjoKuT33/g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Pzsv5fSt9JkXsNLJu0vTswJkI/xvbqkqe9TrIugbanXEUow8ZxV3l2dMCwmKWzpRz
+	 ZIX+/PAUh6bm+rrwgtn3MSA3V5aG6liI+jJX3HPcKGhNVV6NPcC8p4zVr6RU04yZJo
+	 IxORvXpYm+YeDG+y3c87sOYx2XZtKUr2AsXkIEXPcvUiTJYmlPSGtSPnCl7MCH8XPB
+	 QM8NvCw7h9JKXXPXu28Mm9IsKALo+24mS0gr7vnAmzdoACg4kUd/avG8bhhb5GtnmW
+	 OKxtdRNhqvS8n/3dUT6M0A8iQsEbslABiUE3w/uk3x1vk3FRfEf1Vw5Zt6hsb3NBX7
+	 YTkjWdk7YApAX9QuS7Zv/kHs9a3g9SkcHsbOCfUP88TXAljqdAnsPWyr7c1FLfcOX8
+	 5BRT8MqVd3kzpJoRNlujwrmp5fxx2cczEqQFVuKstNXqZ9oVZBp5KNg3xzbXvBpTw9
+	 Yp7foHCimYfMUsQ4YjPxVi6ChjGXSltmCaSGFQrfUaiKkOurx8G5IqRK+gEaDkHgNR
+	 Ap0JqfuUU/EnPdzR0CoKR/vA/MdGBgbj2YsK7Y85dnzX1pFZogdUFB02um5Rys5LIn
+	 Jz99PqpOMUlBmaVnXtAsyD+FSKSgk28eBGZpB7KNJcy/yae9JlMZHvoDXb4XpRloJL
+	 gzmIRwTcaHY1qPUFwn9YA9QE=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8037740E024B;
+	Thu,  3 Sep 2026 04:03:34 +0000 (UTC)
+Date: Wed, 2 Sep 2026 21:03:30 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Kim Phillips <kim.phillips@amd.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Naveen Rao <naveen.rao@amd.com>,
+	David Kaplan <david.kaplan@amd.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Nathan Fontenot <nathan.fontenot@amd.com>
+Subject: Re: [PATCH v5 1/8] x86/bugs: Allow forcing Automatic IBRS with SNP
+ active using spectre_v2=eibrs
+Message-ID: <20260903040330.GNapjxkgMd2Ey38egR@fat_crate.local>
+References: <20260826223510.3669875-1-kim.phillips@amd.com>
+ <20260826223510.3669875-2-kim.phillips@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|PH7PR12MB6586:EE_
-X-MS-Office365-Filtering-Correlation-Id: 10ce4357-da05-42ae-e14e-08df096204e0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|7416014|376014|22082099003|18002099003|10067099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	4zZDhGHrpAisp/HGCpSDNC3t/cqpeND2xu6PdwrQ6LXULwWyGRShiyMZu3GIziNyoHdMC+SxH9WIL782cTwY7Mbd6hpVGf8mxXwOmqoWWNc4DPJCyJOHEhFIPxemtuijGPBaygjiyko5kxp8PCgivGIYhcPM5KMnkR8bKgVWh7qCY+c3wDU8TrTxgFocNiBoKcxL1m+wQGzorJlqmtP8FpxHIA6vLv3FOVZFMhVoXwx3t3pR+ZMqsjKMtaMRIGbL66KfgvY5rLy/Z1wOKmPSKg26OHtyRm0JQoQW6KCyxEFlXxBJFh3J2dvRcIYnRrb19nCzOM0mcaUpM/GZKBRbbgFxT7CyslbhvyF0ngNCBN1c98bMJUKYPURzOcOSC+qbUkPpp933BriI35IL8YJT563KbqqBguDILvMOS8wzujt3cwb6rQISpGfIvkUnEZThUGq7Sh1u7QQA15J3UkXHYXLgEXUB6fmzCMS+fvsDvx7rU9O8j2lh4D4aqaPSQACeeDbM8B2kmOxfRs4RmC2eD/z1AIBwGg+nGZ0bZAu8Ukw6gaj8JSYhE00UcxDsurVks2oQ9R3T0m+lT7vZPrInJQcRkZtAZqMUADrfH/FxUSdeLkwo99a0uDslTg9fGw+C
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(7416014)(376014)(22082099003)(18002099003)(10067099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dzF2QnU4Q3ZOYlJ3YnJKUk5GbThJV0RUUjI0Z1JUb0FCREkzcENvTmtxWFNF?=
- =?utf-8?B?d2t1Kzk1Q1BqWHE2MGh6aEw2dFBsMzVscHI1Yys2Wm50bzMrV1VYV0tTYmU1?=
- =?utf-8?B?WUQxZGdSZXU5Q2xEZkNENFJXVmpkRVpCa2VZMEFLQkR3L2N0d2YzTk9nYUVG?=
- =?utf-8?B?eGhqR0lQdTQ0dExwcmViL25ienhXWDRGSnVqQU1oUkFtSWs2TERIOER3aElx?=
- =?utf-8?B?Sjgzc0hDd21CcmhpNjhSaHlISVU1TWVvR1V1ZmlySzFNRXF2RktCS01tSXpm?=
- =?utf-8?B?UktxNks3SXRTNmtTbUt1c01Mem5JN3RoOUdEbHJJRHNtb0FId2VUMkx0Mk1L?=
- =?utf-8?B?YUIyZDhTbGRzQTh4YXVOT0pjM0NreXEzcStKV2h4STR0VGtNazBEcnFWaXZG?=
- =?utf-8?B?NjZvK2VUWk9GYnl2RlcydG42VS8rUEl0NGxNQkl6ZE9jRjVHR3ZZdWZsZksw?=
- =?utf-8?B?Vno0WlRzbTE2Zk10OHQzem43Qng4VVVaekZJRnpIQml2b2pKYy9uV2lWZ01E?=
- =?utf-8?B?S3dxb1hDamJLUm0xSmlweko1emRwbUhENHZ0MXdyNy9tT2dqZTFZTnVNTEtr?=
- =?utf-8?B?Q25IcU5KVDRhTGRMMFVRVnplZ3BMVU1MVFNkdVltdkpycE44K2ZtNWx2aWlj?=
- =?utf-8?B?N2VSWkZZSTFHbzhzdEE0K1NhbVRIY2FER0FXc1ZzeHBwek0zSkw1UUdSNjJD?=
- =?utf-8?B?UjlxdnA5azdIejJiVnllV2pJbzlXNE9xSURXU3B4cjNJMDk0c01JK0VTZEFR?=
- =?utf-8?B?bGxCY2dpNnd1bGE2MXkzRGs2YlFMMDNVWmdLNTRpaUl3QmtmQ1RMTC95RVlq?=
- =?utf-8?B?WkhyRUFhOHo2Q0ZNU0o2OEdUUkk3WGNYbHQ5V3lNemZlUFRFRjNJblY1VlM4?=
- =?utf-8?B?ZWYzZkJYYkwzaElWNjRGdFlJSlBPQktFaGt4bFgrYjE1NmtlaGZNNmJUamtF?=
- =?utf-8?B?Mm4vb2pPbUtFTjREUnQvV3ZXQStHOXNUK3RFZU1lVU9JMVpvUldTbjJQUUpk?=
- =?utf-8?B?Wnk4YVA5Rjd1bEltQnNnS3NYVUpGTW5WdDI4S0h6M2pnVXp6ejJIU3EyTDAr?=
- =?utf-8?B?K216MUlNZ1VnVk9SV1NyV2lweWJaZUJ0RURHYU9rZi9EZFU4eE1qaHdiZk15?=
- =?utf-8?B?cjBrK1RHWWV3c055TzdSaXhWWCt3SXlXV0o3WjFYVVo2QjBOYms1TWNxUk05?=
- =?utf-8?B?WWJvNy9WMmVwUkZHWE9ha2ZBa0ZvdHdPQjdOMEFiaFVUVy9SUzJmWjdUZTJ6?=
- =?utf-8?B?K2xsYjVILzNDOWtsbGsyRjhqQlpPZ2J3T01xd3hhOEdqenYzazk4M0dIb2w5?=
- =?utf-8?B?cmFkbk5vYVNGUEZkVTJMMCtaeENXY1p3WHNWaytyWmpLcWYvVUFYOVVWVFM0?=
- =?utf-8?B?bURhVVFRUmxEaDJMN2VSOU9yL0NZZUxxZ3JDQkFnTWxGellPVFVXditRN1lR?=
- =?utf-8?B?d3ZzdGMzckpGa1hxWitrdU9PanN3UmtZNTY0dGFtbVdab1owYXJWRWNCSXdI?=
- =?utf-8?B?b0pTd0o3OWRZdXllbWNIRWVBamRGTXdjOWtyRlJPQlZ2ZHl5QUJuNytFLzJv?=
- =?utf-8?B?M0dYM3MvT1A0YjdlRlQxVEgrckkrK1AzQWJpeURuQU9ST0tpNFVqMzlHV1Zt?=
- =?utf-8?B?RUE1dklCZnBSYUxrQTVWb0NjV2FJaTR1ZlVwUWY1QURvOU1MazJIcHJTQThM?=
- =?utf-8?B?MTNwTW1ReHdDSENGTnFoVGVJNjdNRE14OHlNU3B2dHNadE4xKzVXbSsrMzRS?=
- =?utf-8?B?cjFiTSs0VWpCVkZZODQwWHp1d2pHTkUzcGZQWHZtMjRIUjJRRkMzNnFlRkc4?=
- =?utf-8?B?RlQvRGR4MTdEU0x3YnQ5SVpUYTJROXU4em9IWXJCU3pjY2ZSMlY0STFCYXRC?=
- =?utf-8?B?c0JuZld3cVFNVW0xdkcxb2FRbU41clp2TmQ0SFhla2Y3bTVDT0VhTTNyZDA4?=
- =?utf-8?B?dndRWHRocCs2SnN3QzljUTJtL1ArZE4vTk8xdHB5b0wwV3pNTG1Xdi9YS29J?=
- =?utf-8?B?QjBuYnpuOXVURCtKeE5ISDdKWXQxVS94VGxGY3BkS1RrZDRwcG4zQ0JUaFlq?=
- =?utf-8?B?V1hlZnlsbk02YVgxWmUzMGtaTFVMa2VTTVo5bysvcEROTmIxNUQyT2NzQkE5?=
- =?utf-8?B?NDBSM0VBUUxiRVJTOWlJcVRWSEtvQlNsSTBkSzA3U0h5NmVTK3UzYW9saStX?=
- =?utf-8?B?c0daR0libUdJUFo1RDRWMmpIbHBJSDVSem8zcmRmQVpPUm9qN3JtMmVUVDVR?=
- =?utf-8?B?NmJxeEdxTG9HWDFMUGlrR2M3K2o4Wmk5RkZpSmhwY1NaUHRyZFBDVDZDQm9i?=
- =?utf-8?B?bEgxejNHa3ZSaW5BcE9tTm8vSlFKMlhEcE9Fc2hiR05iMGJmcExMQT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 10ce4357-da05-42ae-e14e-08df096204e0
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 02:21:10.4073
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nrrQ0tT/b5gxXYNAF5ATwchu/bp0zZrGrj6jzK1vOGMPOATarwYE/FshFQpAnPzdYQ0hk9W6aZ9cJ2l9pCDbIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6586
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260826223510.3669875-2-kim.phillips@amd.com>
 
+On Wed, Aug 26, 2026 at 05:35:03PM -0500, Kim Phillips wrote:
+> spectre_v2=eibrs currently enables retpolines when SNP is enabled,
+> instead of AutoIBRS (EIBRS) because the commit that disabled
+> AutoIBRS if SNP is enabled stopped short of enabling
+> X86_FEATURE_IBRS_ENHANCED.
 
+This and the comment below in spectre_v2_select_mitigation() is somewhat
+hinting on what you're trying to do here, and I can only guess. But
+I shouldn't be guessing. Rather, the text should explain it clearly.
 
-On 3/9/26 01:01, Jason Gunthorpe wrote:
-> On Wed, Sep 02, 2026 at 12:20:51PM +1000, Alexey Kardashevskiy wrote:
->> On 2/9/26 12:12, Xu Yilun wrote:
->>> On Tue, Aug 04, 2026 at 09:55:33PM -0300, Jason Gunthorpe wrote:
->>>> On Tue, Aug 04, 2026 at 09:48:30AM +0800, Xu Yilun wrote:
->>>>
->>>>> Glad to see you all here to make progress! Intel can also help on this.
->>>>> Can we have a meeting to discuss on these topics? As Alexey mentioned,
->>>>> previously we had a bi-weekly call, perhaps use that for our first
->>>>> meeting? Or what time works best for everyone?
->>>>
->>>> I prefer we defer such community discussions till September, that
->>>> seems appropriate given some dates I've seen.
->>>
->>> Hi Ankit & Jason,
->>>
->>> Do we have a plan to schedule a meeting to discuss next steps?
->>>
->>> If so, we can figure out a specific time on the Discord channel.
->>> https://discord.gg/KKqC438c
+> Change the logic to enable X86_FEATURE_IBRS_ENHANCED, and move the
+> decision to switch to retpolines in the default/"auto" case in
+> spectre_v2_select_mitigation().  This allows the existing
+> spectre_v2=eibrs logic to work as intended.
 > 
->> So I've been trying to find a time slot. Say, keep it on Thursdays
->> (USA) (kinda short notice), bi-weekly, we can do:
+> Condition that switch on CONFIG_MITIGATION_RETPOLINE being built in.
+> Otherwise spectre_v2_select_retpoline() returns SPECTRE_V2_NONE and an
+> SNP host with AutoIBRS available would be left completely unmitigated
+> against Spectre v2 in the default/auto case, which is worse than the
+> userspace indirect branch performance loss AutoIBRS costs.
 > 
-> I've asked several people in Europe to help on parts of this series,
-> and combined with China/Aus someone is going to end up left out.
-> 
-> I know people are anxious about their projects. In the short term I
-> will volunteer to send patches (ie bug fixes!) to Linus in the CC area
-> Dan was responsible for. Please email me if something needs some
-> attention and we can figure it out.
-> 
-> To fully move forward we need to establish a new TSM maintainer
-> team. In my past experience a consensus has emerged off list, I
-> suggest we try that here as well. Several people should be
-> recruited. I will also volunteer to help train and launch a new team.
+> Also emit a performance loss warning for using AutoIBRS with SNP
+> enabled.  AutoIBRS is activated for all three eIBRS modes via
+> spectre_v2_in_eibrs_mode(), so use that helper to cover
+> spectre_v2=eibrs, spectre_v2=eibrs,lfence, and
+> spectre_v2=eibrs,retpoline uniformly.  Word the warning in terms of the
+> eIBRS mitigation enabling AutoIBRS, rather than naming AutoIBRS as the
+> selected mitigation, so it reads correctly for the ,lfence and
+> ,retpoline variants where another component is also active.
 
-I would learn a thing or two.
+This whole text is explaining the diff. Never write about the "what" - but the
+"why". Why does this patch exist?
 
-> I can say that several people from NVIDIA are working on the ideas in
-> this patch series. Ankit is setting up a team to focus on upstream
-> patches for all of CC inside NVIDIA. I've asked Jiri Pirko to work on
-> the PCI evidence uAPI based on his deep netlink experience, and Leon
-> Romanovsky to work on the binding problem/adversarial/trust level
-> driver core idea. They will share their approaches for solving these
-> problems as seperate proposals.
-Sounds good!
+Please structure your commit message something like this:
 
->> Scenario A:
->> Seattle (PDT, UTC-7)		07:00 – 08:00	Day 1
->> Atlantic Time (ADT, UTC-3)	11:00 – 12:00	Day 1
->> Berlin (CEST, UTC+2)		16:00 – 17:00	Day 1
->> India (IST, UTC+5:30)		19:30 – 20:30	Day 1
->> China (CST, UTC+8)		22:00 – 23:00	Day 1
->> Sydney (AEST, UTC+10)		00:00 – 01:00	Day 2 (I can do it once in 2 weeks)
-> 
-> This is the only time Europe could reasonably participate in,
-> obviously it is not OK for China and Aus.
+1. Prepare the context for the explanation briefly.
 
-What range would be reasonable? I prefer midnight to 6am, for example. At least for now, Yilun (China) and myself (Australia) are ok with these times.
+2. Explain the problem at hand.
 
-Let's use a tool: https://crab.fit/iommufd-tsm-call-593432
-Please vote.
+3. "It happens because of <...>"
 
-And later on, Australia goes into DST, the nothern hemisphere - off DST (but not the same weekend, of course), and we'll start this all over again, may be.
+4. "Fix it by doing X"
 
-We'll still have the tomorrow call at the old time. Thanks,
+5. "(Potentially do Y)."
 
->> Please, comment. I find these calls pretty productive syncups. So
->> far we were not having Europe in these calls.
-> 
-> Calls are undoutably useful!
-> 
->> Alternatively, wait until the LPC in a month but I suspect not
->> everybody is going to be there.
->   
-> LPC is not that far away, I think we should have a goal of having a
-> consensus for or at LPC
-> 
-> Regards,
-> Jason
+And some of those above are optional depending on the issue being
+explained.
 
+But do not explain the patch. If there are questions about it, I will ask.
+
+Thx.
 
 -- 
-Alexey
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
