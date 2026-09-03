@@ -1,170 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB82393DC8;
-	Thu,  3 Sep 2026 05:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1744396D09
+	for <linux-coco@lists.linux.dev>; Thu,  3 Sep 2026 05:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788415160; cv=none; b=SPIPkqQWlVAatBJm4YrVLwkWhKfVHjg3lXDH7Ojbo+PZZXlQWv29+cVzUAl0iJm3XiXoOoq0BVOxht6c7K0BxcQKVqTqsu2vPW2kqgGWiC0swhZK+oRRv0YEgKn9zDYB7rQ5LblsPiFxrZtb2+n4EmzVBMvw8EOEJMV2hK1hDro=
+	t=1788415182; cv=none; b=Qg1SPzju9z0GbVO5HQkonNBY6I84fHmb3eMqFdun81GuYk3pfDB+QNEeabIMDnhceXmYHp8R7OLKtpY65PfinewQS4IhtivxPOt7vkwFEZfy0f6Vl2JKLUSqoSsFSk6pmOOWKM6R13qm/Rx79fPFWaEc1ix4tsyjpABANsNWcJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788415160; c=relaxed/simple;
-	bh=BqY7EpA/2zO+um0W7g4AtC0Mwe1AhFXongtHJmVYN9M=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=TVsYanId6sq1uGdaEcQfJ1fkFpZQt+8JLrRhNgJTx+beiTH0RmyLhahE+XhHeWrz/k1uY5uyrbsfj6YRQF/S7VpZn3ZAAYO1Fyq9AYznBkCBKel/jcVJ6nHi4uSzW3IWz1JRs2kDyXat1XheHxsnEGhPF0ktMMtLA0mib4sTwhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CLqlbf4g; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788415182; c=relaxed/simple;
+	bh=FfxYG0CZyWtxZUhsaC3BQ6+9g8CCmMqS+gpG7CSvN6Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=seYVRB8VKX8ZvOR2kaPCX2jnuFw+gT908JzrKRhrQXXpGeA+mqx+bbA/0DAV2AoN6KtB6PtW9jOHJn9KVRVlhbfKELZ9qo/ZyxgyfLPRaFnLH5tm6dCW4LxWlpHtCVyu/S8hAhQD9jm6Phd7L6yaSkv66obONMW67xmCAgUuzBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HMLW8bYH; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CLqlbf4g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D811F000E9;
-	Thu,  3 Sep 2026 05:59:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788415158;
-	bh=GokYarLn2do1OOdi3YtEFsV3SbdTFKOFfI6VuO3FkaQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=CLqlbf4gc1V7KqQLo6NWAGVg4DDHyF4AAeQYjUOxAJvZJJkUSAJJWe/qwB7pSqHXu
-	 syLNrM+YtPTVr0PYb7EdPpAQljIUOSHfA1YBXFU1P1rYDe8VZqzTg1lty93JsJXLd3
-	 k9jcZvQqXi3pHDIQn6RY8FOjjjx4cRkzp43rzoWT3NfuEPmI2D+ayt+X6ZtP6VUh6e
-	 dWQNtjqX+KTyOhXCYH8fln3KtNp/HiKGEx6ioX8HT6/6qkSAZIioIqvfM2w1/W2SXO
-	 Qn5xeCGeMzbMc1tjPyRpeUR0pCcZBbU7WY0DBqW9L7r8DNzyYajsF8x2vNEZ0qbVMQ
-	 tLkhygfGuBi3w==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>,
-	Alexey Kardashevskiy <aik@amd.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, ankita@nvidia.com,
-	linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Will Deacon <will@kernel.org>, "Fontenot,
-	Nathan" <Nathan.Fontenot@amd.com>, rick.p.edgecombe@intel.com,
-	yilun.xu@intel.com, Jiri Pirko <jiri@resnulli.us>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security
- Protocol (TDISP)
-In-Reply-To: <20260902150125.GD2890729@ziepe.ca>
-References: <20260705220819.2472765-1-djbw@kernel.org>
- <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com> <amk7Xzm5jmz+6SPJ@ziepe.ca>
- <anFE7m164AmchTy/@yilunxu-OptiPlex-7050> <20260805005533.GB28508@ziepe.ca>
- <apeF/peEzdxvKeWR@yilunxu-OptiPlex-7050>
- <2e721509-0aee-47ee-b17a-688876e02f74@amd.com>
- <20260902150125.GD2890729@ziepe.ca>
-Date: Thu, 03 Sep 2026 11:29:04 +0530
-Message-ID: <yq5a5x0mzxhz.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HMLW8bYH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788415175; x=1819951175;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=FfxYG0CZyWtxZUhsaC3BQ6+9g8CCmMqS+gpG7CSvN6Q=;
+  b=HMLW8bYHK0B8MgU24YFUVNTWpVBERz+H2FjFte/rC+y6MYSQrvt2j/87
+   X43QmKeIa5ELNL2bhNAvEPThsu2VcrjTZ9mwPcWjK46cRz6fdtVUcRfq1
+   ydMFXQPscQWZvE/1AejasVBRZCH4Y2SePP6LAWtQ1+T/foRMYhPjHlgnf
+   1BUHneq9TmdeLjkOgb+ZI40vav+ugJSXbiTcXgZ7CT5erfp4ViPI9AKSk
+   4lrmirXH2uZP2Iqo2YGQXrlhxXAlneHJgSIwUx+2D18hkJ+zrLT455cVW
+   YmEnNdp3x0d0zJnp4b8XmiUJJVF/Af/mhQMPFoasjnWUITWL8tOsn3cNk
+   g==;
+X-CSE-ConnectionGUID: vTgefpYoS02l2nCiNzqMNQ==
+X-CSE-MsgGUID: J5FbBnL6Qj6F6StwvLS8uQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="92586133"
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="92586133"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 22:59:33 -0700
+X-CSE-ConnectionGUID: SPhLGJ/LReSeuEdcucE+GQ==
+X-CSE-MsgGUID: xhaZAg/dQ7S+U423fKUGtQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="269626375"
+Received: from unknown (HELO [10.238.208.122]) ([10.238.208.122])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 22:59:30 -0700
+Message-ID: <e6121cf3-83eb-4cc8-919e-2557fbcab3c9@intel.com>
+Date: Thu, 3 Sep 2026 13:59:25 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/4] virt: tdx-guest: Use a variable to store the Quote
+ buffer size
+To: Peter Fang <peter.fang@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, Binbin Wu <binbin.wu@linux.intel.com>
+References: <20260729122939.1340412-1-peter.fang@intel.com>
+ <20260729122939.1340412-4-peter.fang@intel.com>
+ <af483218-5c87-4ce1-b4a3-06132dcc3c49@linux.intel.com>
+ <apit+fXmapCA2qlc@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <apit+fXmapCA2qlc@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Jason Gunthorpe <jgg@ziepe.ca> writes:
+On 9/3/2026 7:15 AM, Peter Fang wrote:
+> You are also dropping PAGE_ALIGN() in alloc and free calls. You can
+> mention it in commit log.
 
-> On Wed, Sep 02, 2026 at 12:20:51PM +1000, Alexey Kardashevskiy wrote:
->> On 2/9/26 12:12, Xu Yilun wrote:
->> > On Tue, Aug 04, 2026 at 09:55:33PM -0300, Jason Gunthorpe wrote:
->> > > On Tue, Aug 04, 2026 at 09:48:30AM +0800, Xu Yilun wrote:
->> > >=20
->> > > > Glad to see you all here to make progress! Intel can also help on =
-this.
->> > > > Can we have a meeting to discuss on these topics? As Alexey mentio=
-ned,
->> > > > previously we had a bi-weekly call, perhaps use that for our first
->> > > > meeting? Or what time works best for everyone?
->> > >=20
->> > > I prefer we defer such community discussions till September, that
->> > > seems appropriate given some dates I've seen.
->> >=20
->> > Hi Ankit & Jason,
->> >=20
->> > Do we have a plan to schedule a meeting to discuss next steps?
->> >=20
->> > If so, we can figure out a specific time on the Discord channel.
->> > https://discord.gg/KKqC438c
->
->> So I've been trying to find a time slot. Say, keep it on Thursdays
->> (USA) (kinda short notice), bi-weekly, we can do:
->
-> I've asked several people in Europe to help on parts of this series,
-> and combined with China/Aus someone is going to end up left out.
->
-> I know people are anxious about their projects. In the short term I
-> will volunteer to send patches (ie bug fixes!) to Linus in the CC area
-> Dan was responsible for. Please email me if something needs some
-> attention and we can figure it out.
->
-> To fully move forward we need to establish a new TSM maintainer
-> team. In my past experience a consensus has emerged off list, I
-> suggest we try that here as well. Several people should be
-> recruited. I will also volunteer to help train and launch a new team.
->
-> I can say that several people from NVIDIA are working on the ideas in
-> this patch series. Ankit is setting up a team to focus on upstream
-> patches for all of CC inside NVIDIA. I've asked Jiri Pirko to work on
-> the PCI evidence uAPI based on his deep netlink experience, and Leon
-> Romanovsky to work on the binding problem/adversarial/trust level
-> driver core idea. They will share their approaches for solving these
-> problems as seperate proposals.
->
+I think it's better to keep the PAGE_ALIGN() when assign quote_data_len,
+although GET_QUOTE_BUF_SIZE is aligned already. This makes it super clear
+we want to page size align the buffer.
 
+And in next patch, we can make it
 
-I can also help with the device trust and iommufd interfaces, as well as
-the CCA DA pieces. We need to find someone to take on dma-buf, as that is
-one area we have not yet integrated with the full TDISP flow.
-
->
->> Scenario A:
->> Seattle (PDT, UTC-7)		07:00 =E2=80=93 08:00	Day 1
->> Atlantic Time (ADT, UTC-3)	11:00 =E2=80=93 12:00	Day 1
->> Berlin (CEST, UTC+2)		16:00 =E2=80=93 17:00	Day 1
->> India (IST, UTC+5:30)		19:30 =E2=80=93 20:30	Day 1
->> China (CST, UTC+8)		22:00 =E2=80=93 23:00	Day 1
->> Sydney (AEST, UTC+10)		00:00 =E2=80=93 01:00	Day 2 (I can do it once in =
-2 weeks)
->
-> This is the only time Europe could reasonably participate in,
-> obviously it is not OK for China and Aus.
->
-
-I'm based in India, and all the proposed times work for me. Who is based
-in Europe?
-
-Jason -> Canada ?
-Yilun -> China
-Alexey -> Australia
-Ankit Agarwal -> US ?
-Aneesh -> India
-
->
->> Please, comment. I find these calls pretty productive syncups. So
->> far we were not having Europe in these calls.
->
-> Calls are undoutably useful!
->
->> Alternatively, wait until the LPC in a month but I suspect not
->> everybody is going to be there.
->=20=20
-> LPC is not that far away, I think we should have a goal of having a
-> consensus for or at LPC
->
-> Regards,
-> Jason
-
--aneesh
+  quote_data_len = PAGE_ALIGN(get_quote_buf_size());
