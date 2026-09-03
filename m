@@ -1,125 +1,97 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325214C77A2
-	for <linux-coco@lists.linux.dev>; Thu,  3 Sep 2026 15:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204EB4CA286;
+	Thu,  3 Sep 2026 15:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788447954; cv=none; b=n42TdGxoTBN7my5J2FMCUTb5kD4vOK2jRoewLt9k5EI3ZVHbbIVeE6rM5ob9VNR+z1eAhn6ivE59tvdroSCernHGP7M/sCEtviVNuST22MTuitv5IeDUot/DzUavJVB2H6QrCpAc0nqo3pEzU/+SyUhoZsu7h5h0jeKla+haZ3Q=
+	t=1788448406; cv=none; b=T0DbNBEHjS41RUqljzKu7MnNubs4SBxiHyoFF19HjA389OqMrwhRcTQ5+ru9+1AKzLwXwd+8eOjuW6PcqrErcZLo5Qw9f2SMUbPmqPD1U11Eaq0kTmiUtP48K3PSavE4TXUeZPoIfwco6BZ1hCt+sGPQJH9/7OpVZ4XMTuFhjw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788447954; c=relaxed/simple;
-	bh=eazYFU1WdrM+maaWAMQSZUR5F1W/1naSEK3ISWsJw9g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ed4dahbEhPsqtVv0XScjfDQZpX+0ht73ADeuZt+bNyA8xyOzuwGon33rx/YiL0/sYwD+n0WXHBsDooGSqnHAtt41tGvbgDoGOOvyssUZncYR4ZvNcmm57Z6vg4B+abbRM+MBBbCGRlIGdXV1zAVmyF4wdMZ07TeRSMIlzKAS9iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nkunYjW4; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1788448406; c=relaxed/simple;
+	bh=57j47RyZeNUjgjXsnOt5hbGdiXiuODI5u3NMZr+QVkM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s8VSz759juu3ZvSiJ+y37rhWvbIdRc6vbTxiHzVFOdjNh6BCViHpEqvreg0v7L6+ZwMQvS0h+ywqKFQqhWRItSOH7kVt1DICadHAE41w+XZ+qIhkVOp9ll3feJnV01pc/b9jt+zn7NZA+XXJCWzQxnbrsaEaVYp8GGi6kHLey1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=qJGrtaLe; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nkunYjW4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788447953; x=1819983953;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=eazYFU1WdrM+maaWAMQSZUR5F1W/1naSEK3ISWsJw9g=;
-  b=nkunYjW4ZXrMXFoA3qHRxctlymXH74swhnXAWzC8bs5jOQ1JsbMU042F
-   akGlisa/rq71bx9/Zs4poHO+v79luQP0Cc23iYmuy2/E92tX1bYsz6PtG
-   LD2rVUl32Gey4F7Yhuxl/VtOPq1fwmjrP8ugsKG3L2u/8ul3/Jx881rIr
-   ja2iFFFmxZgDry8slIXQmd3BcKP+nq+Dbj7wMNJBg9E0KrE9Yhu+IFgVX
-   2hJDUw4pfM/MZHtex0H4ZLjA/0EbYuUAtwxy/KumSHWxUnIVsml5rRVlD
-   pKHgenbznEpK5KTPe6uTjsQPBlTIl1+/3aMPKo3lUY7Z1/+mCOJGu0Q6R
-   A==;
-X-CSE-ConnectionGUID: nu133IyJQ3eM9UIhBLtaTg==
-X-CSE-MsgGUID: PathHZ90QOG6PC0BioZEhA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="91444128"
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="91444128"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 08:05:52 -0700
-X-CSE-ConnectionGUID: b9clsSjjR3Sg112bFYiWDg==
-X-CSE-MsgGUID: AFsP3Y7ZSLW+/Fjlausx/A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="268443987"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by orviesa010.jf.intel.com with ESMTP; 03 Sep 2026 08:05:48 -0700
-Date: Thu, 3 Sep 2026 23:05:47 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: david@kernel.org, linux-mm@kvack.org, x86@kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
-	xiaoyao.li@intel.com, sohil.mehta@intel.com,
-	adrian.hunter@intel.com, kishen.maloor@intel.com,
-	tony.lindgren@linux.intel.com, peter.fang@intel.com,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	chao.gao@intel.com, artem.bityutskiy@linux.intel.com,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH 4/6] x86/virt/tdx: Add extra memory to TDX module for the
- extensions
-Message-ID: <apmMy9610sunPJeE@yilunxu-OptiPlex-7050>
-References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
- <20260821032920.256225-5-yilun.xu@linux.intel.com>
- <aohvlMO7ehqcVW96@thinkstation>
- <aowMYbHKK4b0O5P6@yilunxu-OptiPlex-7050>
- <apE8yHrGx/bfifV9@yilunxu-OptiPlex-7050>
- <apf6WFKun8z4ejG8@thinkstation>
- <aplOhHWvaxqUJDqu@yilunxu-OptiPlex-7050>
- <aplSf00ESix5s6Ak@thinkstation>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="qJGrtaLe"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE4CA1596;
+	Thu,  3 Sep 2026 08:13:20 -0700 (PDT)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2D3613F7D8;
+	Thu,  3 Sep 2026 08:13:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788448404; bh=57j47RyZeNUjgjXsnOt5hbGdiXiuODI5u3NMZr+QVkM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qJGrtaLeOoudxOSt6YMXpLod14VkO5FrCtOCsE2Dn8K58P/B81zn9hbERHErZ3jeR
+	 8WjlLFYel7f7Nzl+7B1xo8+I5RRJUOn5yL8rQTfD6QbnGGXlvB2Y6ENK7T4FbjAMSN
+	 Itb4FzT/1cl3e5v34OcabChJ7cxRRhnfL/UHKLq8=
+Message-ID: <39c8cec6-002f-456e-9e5e-7af2158047fa@arm.com>
+Date: Thu, 3 Sep 2026 16:13:20 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aplSf00ESix5s6Ak@thinkstation>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v4 03/16] iommu/arm-smmu-v3: Add initial pSMMU realm
+ viommu plumbing
+To: Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar K.V"
+ <aneesh.kumar@kernel.org>
+Cc: Nicolin Chen <nicolinc@nvidia.com>, linux-coco@lists.linux.dev,
+ kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Alexey Kardashevskiy <aik@amd.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dan Williams <dan.j.williams@intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Jonathan Cameron <jic23@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ Pranjal Shrivastava <praan@google.com>, Robin Murphy <robin.murphy@arm.com>,
+ Samuel Ortiz <sameo@rivosinc.com>, Steven Price <steven.price@arm.com>,
+ Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>
+References: <20260427085344.941627-4-aneesh.kumar@kernel.org>
+ <apM6dOHcEI2ztWS0@nvidia.com> <yq5a8q5lz5yn.fsf@kernel.org>
+ <yq5aecfdnv4i.fsf@kernel.org> <20260901143445.GC56830@ziepe.ca>
+ <yq5a8q5kkoz3.fsf@kernel.org> <20260902121700.GC2890729@ziepe.ca>
+ <yq5aik4nztdt.fsf@kernel.org> <20260902193014.GF2890729@ziepe.ca>
+ <yq5abjaezyxl.fsf@kernel.org> <20260903144729.GJ2890729@ziepe.ca>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260903144729.GJ2890729@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> > > What matters for fragmentation is not contiguity, it is how many
-> > > pageblocks are left partially occupied by unmovable pages that are never
-> > > freed.
-> > > 
-> > > So you can ask one pageblock at a time with
-> > > 
-> > > 	page = alloc_pages(GFP_KERNEL | __GFP_NOWARN, order);
-> > > 
-> > > with fallback to lower order if you must.
-> > > 
-> > > It also fits the ABI: pageblock_order is 9 on x86, i.e. 512 pages, which
-> > > is exactly TDX_HPA_LIST_MAX_NR_PAGES. One allocation is one full HPA list
-> > > is one TDH.EXT.MEM.ADD, so the allocation loop and the chunking loop
-> > > become the same loop.
-> > > 
-> > > But alloc_contig_pages() might be a good enough approximation for
-> > > per-pageblock allocation if we do it during the boot when fragmentation
-> > > is low.
-> > 
-> > IIUC, you mean alloc_contig_pages() also gives good de-fragmentation
-> > that we need. But it would be slightly easier to fail cause it requires
-> > extra contiguity that we don't need.
+On 03/09/2026 15:47, Jason Gunthorpe wrote:
+> On Thu, Sep 03, 2026 at 10:58:06AM +0530, Aneesh Kumar K.V wrote:
+>>> Do you mean the SMMUv3 driver triggers RD creation? That feels
+>>> wrong. Did you mean the VMM just does it earlier?
+>>
+>> Currently, CCA creates the realm lazily as part of another operation.
+>> Realm creation is triggered by kvm_arm_rmi_populate() or
+>> kvm_arch_vcpu_run_pid_change()
 > 
-> alloc_contig_pages() can be more expensive than needed (or fail) since
-> you ask for the full allocation size to be contiguous, where you should
-> be okay with a set of pageblocks regardless where they are relative to
-> each other.
+> Okay, that's not what I would have guessed. But critically is there
+> some way for userspace to specify any realm creation parameters (like
+> rpv, ats_plane and so one) prior to the lazy creation?
 
-I see.
+There would be, eventually. Based on the feedback from KVM arm64
+maintainers, we are trying to keep the ABI as generic as possible as the
+normal VMs. Thus, for now we have not included the Realm specific
+parameter configuration (which was present in the earlier versions)
+in the latest version of the KVM support.
 
-> 
-> > Multiple alloc_pages(order-9) meets our requirement exactly but the
-> > falling back to lower order may create more fragments. And we can do
-> > this because of the ABI definition - an HPA_LIST could happen to hold
-> > an entire pageblock.
-> > 
-> > If I have to choose, I prefer alloc_contig_pages(). It doesn't have to
-> > depend on HPA_LIST ABI details.
-> 
-> As I said before, as long as you do it once during the boot, it should
-> be good enough.
+We have some ideas on how to do the configuration step. e.g. for MEC,
+see the following thread :
 
-Yes. Thanks for your detailed explanation!
+https://lore.kernel.org/all/46d78aa2-cacb-4efd-ae62-3026f5fe9b3f@arm.com/
+
 
 > 
-> -- 
->   Kiryl Shutsemau / Kirill A. Shutemov
+> Why lazy? Why not just have userspace provide the creation parameters
+> and create the RD right then?
+
+Cheers
+Suzuki
+
+> 
+> Jason
+
