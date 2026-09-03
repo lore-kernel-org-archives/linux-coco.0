@@ -1,66 +1,29 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D162C38A715
-	for <linux-coco@lists.linux.dev>; Thu,  3 Sep 2026 06:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7059B3F4829;
+	Thu,  3 Sep 2026 06:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788417208; cv=none; b=SY8ognhJJnHUq7OiBiAc9ns7CM/N4uJGvmnpOR3h4EQbPx6eRnoafqSs+W+OO/LTOmu+edhXnPzaFCanNdo8+6GAH1ZuKzjPVNWc6EZzvDJlYNaR42RUk1wLm8nv/K9SzE6eGWFhgeoYDbeIr135PZNRzAhN5/mq0yuV+LLwKjM=
+	t=1788417536; cv=none; b=OipEIzrsN9IQsVQQkkXxM3sVDNGX4yrC9mniqYYOyhWVMMG6f1podd7hNxobj1uHhdA0GIiKGk4PzX9e4FRoEnPvPXF12TN0lZqN05teAELDuL9Y8rrE7S6bXQFsuXocj664knys3XrJAONG8QvhgaJwwED/9FAXvsAv8Vsra/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788417208; c=relaxed/simple;
-	bh=l67HJQJWW8LGIUTo0j/VFo9QduDcCzK1yZJbhIpMIRI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FJdlXOrw/Y3FDgTcWaeA6/vqybIifeqK4LrWF5jzOelahSIlCEQwTpfcHbcN7y+y00XK2decxv2e2GuigJjXnhT9/+t4cm1Hwy2C5uwLf8tcclg3BTHujx3S1CBQHWeprD7Hr7xq7/QcW/OrAOuWNkTB7J8tDINQfUowy3YdylA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nrneCZDe; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nrneCZDe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788417205; x=1819953205;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=l67HJQJWW8LGIUTo0j/VFo9QduDcCzK1yZJbhIpMIRI=;
-  b=nrneCZDebtxu43Nj0uVp6Ac0y2/s2hn7YSJAL8zQ7UTgI6AtEl+SxDVZ
-   xOf458yn/xLHiQqtDyurYuM4KA8HkOAZzQR744FflHiBepzdtFpqaoUUL
-   fg6sfQqTTmOA77Tgh53O4GjTzNrYdboSxYeiZm5acgWqxw/5U9c1H+Zw3
-   WoT66K2pTC8KiD751WEl/p2qJNMIQLmK/z4a2vXyVCZKUI3BSUGuw2EUI
-   pqRv1qJl8pBPsHhWlrDa7v5eip9+IGxTRAs54sJLfBn4dmbhaSJwda70R
-   NieL4utRrruk+0ga+CUzKjKANEaPEqmbIi8s6rAcHRsUd7c+xGYdGyilJ
-   Q==;
-X-CSE-ConnectionGUID: KH+hVUqcQpSCyzktgc/bUQ==
-X-CSE-MsgGUID: gFlfZjjoRtOczs1nqQylbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="100244140"
-X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
-   d="scan'208";a="100244140"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 23:33:24 -0700
-X-CSE-ConnectionGUID: /8HGsM6USGaBpEFm2lGPBg==
-X-CSE-MsgGUID: lvzr3SXxT3Kk77OQduz6TQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
-   d="scan'208";a="266377190"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.231])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 23:33:20 -0700
-Date: Thu, 3 Sep 2026 09:33:17 +0300
-From: Tony Lindgren <tony.lindgren@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Peter Fang <peter.fang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
-	Binbin Wu <binbin.wu@linux.intel.com>
-Subject: Re: [PATCH v3 4/4] virt: tdx-guest: Allocate Quote buffer dynamically
-Message-ID: <apkUrXh4FJJua4mN@tlindgre-MOBL1>
-References: <20260729122939.1340412-1-peter.fang@intel.com>
- <20260729122939.1340412-5-peter.fang@intel.com>
- <bf51e3d3-cf28-4155-9915-683bf6c848a4@intel.com>
+	s=arc-20240116; t=1788417536; c=relaxed/simple;
+	bh=sGMDLzV5qnr/QJ/L/uehN68r9Wy5nMcdl84FVlqOJUs=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h1xPvWvSkZV5u+34GYnSRtzbPDdPnZ5JLTO/MrQcmerGysorZ7U/r6++BUgPV7c0LKvw8C3HiGUlxCRsJKUu7F37wc6mgsIBeAYDK+1SWCY3EbIzGDJNccMdN2IV9dlFFjlxdfVIBQC13WC9XTkHEJVHypHMjtEUpnLYw3rMCu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Received: from 8bytes.org (p200300f6af4fc5007e661e52f11cc49a.dip0.t-ipconnect.de [IPv6:2003:f6:af4f:c500:7e66:1e52:f11c:c49a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id BBF5F2098BD;
+	Thu,  3 Sep 2026 08:38:52 +0200 (CEST)
+Date: Thu, 3 Sep 2026 08:38:51 +0200
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: Re: SVSM Development Call September 2nd, 2026
+Message-ID: <apkV694P17VUQ06j@8bytes.org>
+References: <apblv5ak3DL1szvR@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,35 +32,10 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bf51e3d3-cf28-4155-9915-683bf6c848a4@intel.com>
+In-Reply-To: <apblv5ak3DL1szvR@8bytes.org>
 
-On Thu, Sep 03, 2026 at 02:21:35PM +0800, Xiaoyao Li wrote:
-> On 7/29/2026 8:29 PM, Peter Fang wrote:
-> > A new TDX module ABI reports the TD Quote size limit in a metadata
-> > field. This size used to be fixed at 128 KB.
-> > 
-> > The guest driver's Quote buffer is shared with the host VMM. The current
-> > fixed size may be too small for Quotes using schemes such as
-> > post-quantum cryptography (PQC), where larger certificate chains can
-> > increase the Quote size significantly.
-> > 
-> > Allocate the Quote buffer based on the reported limit. This avoids
-> > wasting memory on platforms that do not require larger Quotes. Older
-> > platforms fall back to the default 128 KB buffer.
-> 
-> I think we need to justify why using the value reported by TDX module
-> (i.e., QUOTE_MAX_SIZE) is safe.
-> 
-> From "Intel TDX Module Extension for Quoting" spec,
-> 
->   QUOTE_MAX_SIZE that specifies the maximum size of the buffer that must be
->   allocated to contain the Intel TDX Quote received from Intel TDX Module.
-> 
-> So, TDX module only guarantees that QUOTE_MAX_SIZE is big enough to hold
-> the quote that is generated by the TDX module. But for the current tdx
-> guest driver, it doesn't know how host will generate the quote. Host can
-> generate the SGX-based quote and we need to justify the QUOTE_MAX_SIZE will
-> be enough for such case.
+Meeting Minutes are posted:
 
-And can we assume the TDX module provided size does not change after init
-with a TDX module update?
+	https://github.com/coconut-svsm/governance/pull/122
+
+-Joerg
