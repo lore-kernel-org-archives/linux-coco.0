@@ -1,216 +1,176 @@
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1413ED5A6
-	for <linux-coco@lists.linux.dev>; Wed,  2 Sep 2026 23:56:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967271FF7C8
+	for <linux-coco@lists.linux.dev>; Thu,  3 Sep 2026 01:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788393377; cv=none; b=hFURUNWYfI5XCByIPjSV87CW08OE+fs10lKZyGKXHDiGHqgOKpq84M28CS0xZWSK31HOW2Q+kSkz8nCorIOPPMbg4du9GOMLqIe12RgAae3eMGOuHA4mJAMVBlpPCNl3p17CSI961WPymaEgDrdcrcXigeYrFkNrUx0PA4iKkEc=
+	t=1788400284; cv=none; b=m8SYuY6eAkGV8GMV/gC4oz5gVllm0nSEyZV/n+fvQoac28gqjX9zzDK3gujvkKKNYKSph4NCfasBdghiaqrslOyjW68qJOcgueXYCUeidG/Rtupj8Si09umZxhIyaPztbfZk2gAhl+GhdXu+SqNmijwoAmWUECAu464/a5/KpnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788393377; c=relaxed/simple;
-	bh=oGFB4tUe4uIiJbL6QZtviPmqaClzJ2Rpq67zK1xKdQU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AfnkWOjW2lJeESSovupxj66VABtuGwm7SAT8Qof3PW1ZXk016c9Ul2zGMi+WaHU1zbnWrbyS4mdKmhDETwFd/aGNJLVM2sdc+q+r/lXHa1IYdL1g3rxqq1Ip5Y4x5WFCyzVxL2FaE5iuOJT40e5KzDlqxDHmYvtvJhm5Jxv3p14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=iSzURWR1; arc=none smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1788400284; c=relaxed/simple;
+	bh=8RaIWadECS+2y7/yh9MkgYmB0nbRAz+aqhhQmiSe6xE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sTsPIjqPAtPWZs/1WA94pPbSmMXWkoWVU6MZC9uinV2QbXrDxVaopgiwWxELpy4Q22npGJk4iexyNYZp44ekJd44qWo1OFDGgzDITQxUUcIRN3i0objrwPtcdwdh1HWBicoColL3d8jmlNbt8MVgfDuz+xNHTsHKALnS52V+6NA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C2qoS9GY; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="iSzURWR1"
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-93905b1dc65so153130185a.1
-        for <linux-coco@lists.linux.dev>; Wed, 02 Sep 2026 16:56:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1788393371; x=1788998171; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=JHkE0KygFhIS9HXgLrJJS0y5ES5oOeyv4LpvZ/FUmdg=;
-        b=iSzURWR1QQFXKc79Dw+fS8617rh+lSRMLV9Uk0r0TTt0LXXT05h9xcotHrXWd072jF
-         pkCHbTiA7631VtVjmJ/R9mw0QEnYBJO5vZpw0V9iVuINkYxQUtk56t5LX4R2jwGbFRq+
-         T7e68pssXK/dxGgddK6v3MZoCxwgyH9O5jaGDNdFTNGnrkAmo68QW0VZ1MTsujfkfZ3r
-         MHc94rNdJj1DlpjoXPV6QvQeh5qD2MovMm/1XJHNuoRYu4PIRuh6Fx94noOaWXHlmseY
-         Q+z0E3gf7XJAnjgmmyLiLs/Yu2qVvCY7rTSVHFMa3wWDtyxjBzXN994n2QqE2adeywpM
-         v9qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788393371; x=1788998171;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JHkE0KygFhIS9HXgLrJJS0y5ES5oOeyv4LpvZ/FUmdg=;
-        b=JEKk25hIcHmNOv2xg6kvzcIhJWy34RN/nz5eiFYiiQ0uC8ncSsBf8ylKOZWjdFhVad
-         XB1PZIFNOKcX2dCSZ0iKFAQUlsLeFYs79jRtTN2OTsnp4p7z4afYU8/VaqheWfdg911X
-         BOrvTMhcmI5FmI+jQB6XS6OGGaiNVR02m0qIb5VntZ7xm11L7YvrzTRd1EBNs/6jx4kF
-         Z6ItwW5JXVJQMlNH1xzJCKCl+xhuF6pDSza91zqdZtV8Quv6We9h2kkm5olPqUz7n7tG
-         owHl+Y0MWB0OGDEvWhxlPBiada12LC61xE7ShR4CGHG/347z5RSz2VgAKj/QxVuWYMG2
-         7h9Q==
-X-Forwarded-Encrypted: i=1; AKwUvBygl2ruCycvWOTcmyCzxBr36W895YRHPOtCc1bRNOPSnluJazuA5tXldJzc0pyWjl58MK8fPlrzlfr6@lists.linux.dev
-X-Gm-Message-State: AFuF++lOvZ9N2KaXI5b/yat/E4Ib0SfLKWHeT4oKIQA7q4i7DRVSnJ9M
-	E2it120TIzJcPHbDDndx1KCN1jnwIOH1ereoAt3H6BeECe1NUQRTaCbzO+w1b7+II5A=
-X-Gm-Gg: AYBFou0+AssScFKHsBODxTH/2rujZNCMwE1sapfYVCBf4A4i7cvkc3S77tf8hn8RRuq
-	vLbZuszJW2PnH6030YPIaoWOGRF9/6Tz8nAajeRjd7hDkYakbvReAX4dN2FS5b+VSYVl4uW7qJw
-	wrHnyLXqvFyI0eGNpNerDCFqwNOaJ3ZUh4M9uuZsKlV76gm1A99U7/Yro3mBlls6Mp1Qqo1pHhp
-	aBWnQ3XmejEfggGTlEbIpCh68xXWaQBrgPoOdr9mJGxYd9NgT6M1vpauJ883WAVcuZf146QnI2z
-	g5juTQeEaLRRs+qQKrh3Q+MKuls8nlE6CYVsnxoNX7n0w3G7P5CsEfv1hbuOukGGD6QMrjaej2M
-	Pr4Kxrt/pO5nKmEAutXoNThvrwNeW8IjPu8I4r9NnzIQm2TuE+3S3d9U+2aaOE/I+KgJsFYKFov
-	M8iusdIvjnfJJX6MjcRWDA+ncU/rqDIBEArwbe7xLyet/rcveoWvGTfzTVu6nDZybpCvBEw97zl
-	ZezQ2LEuAwijeASxaJWiiOU0VHNuHR92QanNpJHVEDshg==
-X-Received: by 2002:a05:620a:8c98:b0:92e:7ba3:73e5 with SMTP id af79cd13be357-939610139b3mr758596785a.42.1788393370920;
-        Wed, 02 Sep 2026 16:56:10 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9395f3dd7easm362448885a.45.2026.09.02.16.56.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 16:56:10 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x1uoL-0000000FTW5-1KK8;
-	Wed, 02 Sep 2026 20:56:09 -0300
-Date: Wed, 2 Sep 2026 20:56:09 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Nicolin Chen <nicolinc@nvidia.com>, linux-coco@lists.linux.dev,
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [RFC PATCH v4 03/16] iommu/arm-smmu-v3: Add initial pSMMU realm
- viommu plumbing
-Message-ID: <20260902235609.GG2890729@ziepe.ca>
-References: <20260427085344.941627-1-aneesh.kumar@kernel.org>
- <20260427085344.941627-4-aneesh.kumar@kernel.org>
- <apM6dOHcEI2ztWS0@nvidia.com>
- <yq5a8q5lz5yn.fsf@kernel.org>
- <yq5aecfdnv4i.fsf@kernel.org>
- <20260901143445.GC56830@ziepe.ca>
- <yq5a8q5kkoz3.fsf@kernel.org>
- <20260902121700.GC2890729@ziepe.ca>
- <yq5aik4nztdt.fsf@kernel.org>
- <yq5aecfbzjyk.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C2qoS9GY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788400283; x=1819936283;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=8RaIWadECS+2y7/yh9MkgYmB0nbRAz+aqhhQmiSe6xE=;
+  b=C2qoS9GYOHF0a3DqXkRxVUwYU78zgLbl1K8G587A5G8k1X/GveeEXcMH
+   lvgzdoO57/zOR2LywhN3YrEiIGTNBdTcFpdAR2Wj3aVbgpSHofjn2s31+
+   q7rnBGSoCeIao+i+ijrYIKGAIPNWLI25bFfWE/QxYto6schDa2Nfq57nr
+   M/jarOgamc2kgKK3x57veTsBxKydzc+T2x9jpSIHuj4ForyfmWXgBsS5N
+   rMLOOHep3vC8X+5BDL+SVFD2pjJZ3YEgQSrYSRZlX9r1IBWxfa1aIRwFE
+   ucLT++m/4GgI0c6QzDS8zs1qOjWEjlrct9KycGYVxKiDgS/dP8Ovq6Uuj
+   A==;
+X-CSE-ConnectionGUID: hN4Cg/w/RYySr/I4E7Yj+Q==
+X-CSE-MsgGUID: rOV0zobxTn2nOvMGMFyHXw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="99469091"
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="99469091"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 18:51:22 -0700
+X-CSE-ConnectionGUID: opMajHb+QL6pkd5gLvIcQw==
+X-CSE-MsgGUID: sP1z4fy4SBGVXX4gA4hX6w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="307770208"
+Received: from rpedgeco-desk.jf.intel.com ([10.88.27.135])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 18:51:21 -0700
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+To: bp@alien8.de,
+	dave.hansen@intel.com,
+	hpa@zytor.com,
+	kas@kernel.org,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mingo@redhat.com,
+	nik.borisov@suse.com,
+	pbonzini@redhat.com,
+	seanjc@google.com,
+	tglx@kernel.org,
+	vannapurve@google.com,
+	x86@kernel.org,
+	chao.gao@intel.com,
+	yan.y.zhao@intel.com,
+	kai.huang@intel.com,
+	tony.lindgren@linux.intel.com,
+	binbin.wu@intel.com,
+	sohil.mehta@intel.com
+Cc: rick.p.edgecombe@intel.com
+Subject: [PATCH v10 00/11] Dynamic PAMT
+Date: Wed,  2 Sep 2026 18:51:02 -0700
+Message-ID: <20260903015113.93343-1-rick.p.edgecombe@intel.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5aecfbzjyk.fsf@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 02, 2026 at 10:09:15PM +0530, Aneesh Kumar K.V wrote:
-> static int arm_realm_smmu_v3_vdevice_init(struct iommufd_vdevice *vdev)
-> {
-> 	struct device *dev = iommufd_vdevice_to_device(vdev);
-> 	struct kvm *kvm = vdev->viommu->kvm_file->private_data;
-> 	struct arm_smmu_device *smmu;
-> 	struct arm_smmu_stream *stream;
-> 	struct arm_smmu_master *master;
-> 	unsigned long rmi_ret = 0;
-> 	unsigned long l2_sid;
-> 	int ret;
-> 
-> 	if (!tsm_is_configured(dev))
-> 		return 0;
-> 
-> 	master = dev_iommu_priv_get(dev);
-> 	/* FIXME which stream to pick */
-> 	/* At this moment, iommufd only supports PCI device that has one SID */
-> 	stream = &master->streams[0];
-> 	smmu = master->smmu;
-> 
-> 	l2_sid = ALIGN_DOWN(stream->id, STRTAB_NUM_L2_STES);
-> 
-> 	{
-> 		guard(mutex)(&smmu->realm.mutex);
-> 
-> 		if (!arm_realm_smmu_active(smmu))
-> 			return -EINVAL;
-> 
-> 		ret = rmi_psmmu_st_l2_create(smmu->base_phys, l2_sid,
-> 					     &rmi_ret);
-> 		if (ret || rmi_ret) {
-> 			if (!ret)
-> 				return -EIO;
-> 			if (RMI_RETURN_STATUS(rmi_ret) != RMI_ERROR_PSMMU_ST ||
-> 			    RMI_RETURN_INDEX(rmi_ret) != 2) {
-> 				dev_warn(dev, "failed to create realm stream mapping\n");
-> 				return -EIO;
-> 			}
-> 			/* The L2 stream table already exists. */
-> 		}
-> 	}
-> 
-> 	vdev->destroy = arm_realm_smmu_v3_vdevice_destroy;
-> 	return tsm_bind(dev, kvm, vdev->virt_id);
+Hi,
 
-I think we should drop tsm_bind() as an abstraction. It doesn't make
-sense to take that round about path when we are calling RMIs directly
-above. It was intended to be an abstraction, but it isn't working out
-with this viommu based abstraction.
+This is another revision of the Dynamic PAMT TDX series. The biggest 
+change from the last version resulted from a request from Dave to more 
+clearly comment and name things *DPAMT* in the DPAMT specific parts of the 
+code, rather than PAMT. Discretion was used, and I left some of the PAMT 
+names (the API names previously agreed with KVM were not updated, and the 
+names associated with the TDX ABI itself were left matching the spec, 
+etc). Comments were also strengthened around the earlier get/put patches 
+to clarify their temporary limitations. There were no functional changes. 
+To help if anyone wants to scrutinize the diff, a rebased branch of v9 is 
+pushed here [0].
 
-> @@ -513,10 +514,16 @@ static ssize_t cca_tsm_guest_req(struct pci_tdi *tdi,
->  		if (copy_from_user((void *)&req_obj, req.user, req_len))
->  			return -EFAULT;
->  
-> -		if (req_obj.tdi_state != RHI_DA_TDI_CONFIG_RUN)
-> +		switch (req_obj.tdi_state) {
-> +		case RHI_DA_TDI_CONFIG_UNLOCKED:
-> +			return cca_vdev_device_unlock(pdev);
-> +		case RHI_DA_TDI_CONFIG_LOCKED:
-> +			return cca_vdev_device_lock(pdev);
-> +		case RHI_DA_TDI_CONFIG_RUN:
-> +			return cca_vdev_device_start(pdev);
-> +		default:
->  			return -EINVAL;
-> -
-> -		return cca_vdev_device_start(pdev);
-> +		}
->  	}
+Our CI AI system has gained some extra checks, which I thought were better
+to apply. So that was done too. The changes were all trivial.
 
-This stuff cannot flow through sysfs. The VMM must support running in
-a sandbox so it cannot easially call out to sysfs while the VM is
-running. That makes the sandboxing more complex and ugly. The flow we
-have now relies on fd passing from the launcher into the sandbox to
-get things like vfio and iommufd into the VMM.
+Lastly, based on offlist discussion with Dave and Kiryl, I author flipped 
+the arch/x86 patches to me and updated them to have a single Intel 
+signoff. I left the KVM patches as they were, based on my best expectation 
+of Sean's preference.
 
-So these actions really should work the same way unless there is a
-strong reason to do otherwise.
 
-Given these are all acting on bound devices, and those can only be
-created by iommufd, it makes more sense to feed the operations through
-iommufd into the viommu and vdevice ops. AMD wanted to create such
-general command ops anyhow for their viommu emulation (non cc).
+We have a ton of RBs at this point (8 different people, thanks!), which I 
+left in place due to the trivial depth of the changes. All KVM patches 
+have Sean's ack. The following escaped Dave's RB last time:
+[PATCH 03/11] x86/virt/tdx: Add __tdx_pamt_get/put() helpers
+[PATCH 04/11] x86/virt/tdx: Allocate refcounts for Dynamic PAMT memory
+[PATCH 09/11] x86/virt/tdx: Enable Dynamic PAMT
+[PATCH 10/11] Documentation/x86: Add documentation for TDX's Dynamic PAMT
 
-And.. then you don't need struct pci_tdi. The vdevice is effectively
-the tdi and the existing locking scheme in iommufd for vdevice takes
-care of everything the tsm code was trying to do, except in a way that
-applies to every viommu out there.. This actually makes a lot of sense
-because the tdi is not really separable from vfio. You cannot have a
-tdi without a kvm and you cannot link a pci dev to a kvm without vfio.
+This should be in pretty good shape, Dave please strongly consider 
+applying.
 
-Finally, there is really nothing about the viommu_ops that has much to
-do with smmuv3. It would be fairly straightforward for the tsm_ops to
-be able to create the viommu and provide the viommu_ops. We can get
-there based on the IOMMU_VIOMMU_TYPE_ARM_REALM_SMMUV3.
+Background
+==========
+Dynamic PAMT is a TDX feature that allows saving memory by allocating some 
+of its page tracking metadata dynamically, instead of statically at boot. 
+These static allocations take roughly 0.4% of system memory. The savings 
+are variable depending on system and TDX usage, but could be up to 100x. 
+For more Dynamic PAMT background, please refer to [1]. For more analysis 
+of the savings in different scenarios, see the v6 coverleter[2].
 
-This then would open up a much nicer split where arm-cca-guest.ko can
-provide a realm smmuv3, and inside those viommu_ops are all the realm
-& tdi related ops, psmmu, vsmmu, vdevice, "guest req".
+It occurred to me that since the Dynamic PAMT effort began, RAM has become
+much more expensive. Consequently, this feature is even more valuable now.
+It would be good to enable it for TDX users.
 
-The arm-cca-guest can just make a simple function call to SMMUv3 to
-get the phys and interrupts. Somehow I think Will would like this
-better than adding to SMMUv3.
+Base
+====
+This is based on v7.3-rc1. A branch of this series can be found here: [3].
 
-Now that the viommu stuff is more developed on the iommufd end, and
-the RMM spec is more complete with vsmmu, I think this arrangement
-becomes visible.
+Testing
+=======
+Since there were not any changes which would be expected to have 
+functional impact, I just did some regression testing with our standard 
+automated testing for this one. I left Tested-by tags per Hongyu's
+preference.
 
-What do you think?
 
-Jason
+[0] https://github.com/intel-staging/tdx/tree/dpamt_v9_on_v7.3-rc1
+[1] https://lore.kernel.org/lkml/20250918232224.2202592-1-rick.p.edgecombe@intel.com/
+[2] https://lore.kernel.org/lkml/20260526023515.288829-1-rick.p.edgecombe@intel.com/
+[3] https://github.com/intel-staging/tdx/tree/dpamt_v10
+
+
+Kiryl Shutsemau (2):
+  KVM: TDX: Allocate PAMT memory for TD and vCPU control structures
+  KVM: TDX: Get/put PAMT pages when (un)mapping private memory
+
+Rick Edgecombe (9):
+  x86/virt/tdx: Simplify PAMT layout calculation
+  x86/virt/tdx: Allocate page bitmap for Dynamic PAMT
+  x86/virt/tdx: Add __tdx_pamt_get/put() helpers
+  x86/virt/tdx: Allocate refcounts for Dynamic PAMT memory
+  x86/virt/tdx: Handle multiple callers in tdx_pamt_get/put()
+  x86/virt/tdx: Add APIs to support Dynamic PAMT ops from KVM's fault
+    path
+  x86/virt/tdx: Enable Dynamic PAMT
+  Documentation/x86: Add documentation for TDX's Dynamic PAMT
+  x86/virt/tdx: Optimize tdx_pamt_get/put()
+
+ .../admin-guide/kernel-parameters.txt         |  10 +
+ Documentation/arch/x86/tdx.rst                |  27 +
+ arch/x86/include/asm/kvm-x86-ops.h            |   1 +
+ arch/x86/include/asm/kvm_host.h               |   1 +
+ arch/x86/include/asm/tdx.h                    |  23 +
+ arch/x86/include/asm/tdx_global_metadata.h    |   9 +-
+ arch/x86/kvm/mmu/mmu.c                        |   4 +
+ arch/x86/kvm/vmx/tdx.c                        |  99 ++--
+ arch/x86/kvm/vmx/tdx.h                        |   2 +
+ arch/x86/virt/vmx/tdx/tdx.c                   | 460 +++++++++++++++---
+ arch/x86/virt/vmx/tdx/tdx.h                   |   2 +
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c   |  23 +-
+ 12 files changed, 566 insertions(+), 95 deletions(-)
+
+-- 
+2.55.0
+
