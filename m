@@ -1,121 +1,135 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500374B203C
-	for <linux-coco@lists.linux.dev>; Thu,  3 Sep 2026 14:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960A74C0402;
+	Thu,  3 Sep 2026 15:05:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788446854; cv=none; b=PCQZyOvuAu5u+lN68tEIY2obXQPHTJ7oHUoAwvB6Y+3tpCINvd4g+JAHA4BykOfTRVWUp0A8pMVqICzqg64BibseB2xwJu2u/QYdWso1Hy7uPy7CSi5F1cxH7B4uQgcH7zbNnAQAcxLKiXa0+JgONc3Tf6AijPts/qqPAtt3nfg=
+	t=1788447908; cv=none; b=cQ0uh+yCd56A/3qMnx0x8002s1PDTDWx52gXdAEQTJA5zGw793CJ3PTDHdAGAu3ZGOnygoYDd3krr4UAkwWlDAqDfXc6PYOH9ZDDMH7E+9WmeIZdGKPJ6npMpwwxe4kqN1VIEc3gorsJFxK5HCLZlIm9pHo4oC+Hj4EnbItygSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788446854; c=relaxed/simple;
-	bh=s35i71g40sE6NNYFzd2cEk81BylAH6qoa2XMtwsVrmA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=trM2sjN6lDS9C9jdqZHw9RttAwVBUnrcnuPKmXTP2qe9XA163Y6E2NjDYr80hseTs6j8xpjo5Bl4zvVb7WBltdWpks4VzkgDkBpeVgR4O426qnUpBDANBoE4dvm824XXE15a+4mOUqsd6cpWT+1iFryCqIpVbEtbc6QxVrGgsS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=kXVKO7Df; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1788447908; c=relaxed/simple;
+	bh=BVwMizXOAaPj64RW4Cs9oYps0aGR871CM+iucW94CBw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DlvuT9n9wbSf3tiCtJgTMxqJ2c8Bl5pK1pwZD1eSLYgeiei7xAFftX/Ic0p8a8/Dlizie0S5PvmbVycivmTEwsVGviGIKcAa2AXhRoqz3pfPHdVL32NBoqJNH3lpKsb1ogJ1BnDSy137XiOJaetclnTZTSyolZWP2pYmxqPBxGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V80fLU2M; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="kXVKO7Df"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-52ff0b7c98aso41081cf.0
-        for <linux-coco@lists.linux.dev>; Thu, 03 Sep 2026 07:47:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1788446851; x=1789051651; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4QmS2bFUIAw9Owot8+v10VgE/MAeq6BqPd7i1PWMP/Q=;
-        b=kXVKO7DfzVL9uDGPD++GZMZ49i/iLmUzigR5xouxRPebKRkp0YOLMFD3/1kHe/5wBN
-         LYVuZvDSDZIHF39lhGC5ukcdfGLRMC+zQ8W1gSOad+KVSl71aWQEK0JIwksJUvCI7JPC
-         HsZa83YvR+A2S/qswtpfkI29sarf22uD8Fd5/UuGSzEOZH4t3nxqEUtUrNS8yQVmvIG8
-         cH7mL7FGOxvDzA66uFra9v00k5kbL4IEsXthF+Mdx6IuvSmGG4+034IPOLMGSb42KiLJ
-         HU4A1Ay65AjfZw2IJSbE+FQV4D2xFSkkeLhT1fXD9MbFsigWzRnysUTLzsyTABLDioOQ
-         nohw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788446851; x=1789051651;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4QmS2bFUIAw9Owot8+v10VgE/MAeq6BqPd7i1PWMP/Q=;
-        b=aDsrVsKD9Rh9l+r9GHOdyEAMBNUbbqRRavqUyue91d04gha8S543R2Do1gHQtrJsNR
-         GhSTf68Ja7xldxQ9qugWi2OEhuhHkjbpfFyzVcG47fkS2XfWuqRumZcmCQOglJRV5dsj
-         tea/ra261E6zpDQq/3N9tcyR3dWQlDh0JXTx6qGMKvoD3FtEbz4UIQd5AEBm2/4I/xvB
-         bV9D2Uz7s++kZ92p0mS1t2p+72T//A28iveANQjlqmsDHS+fCJvAEx9caJ4dbk6B6OvE
-         z9tJMCc35zVWIdrqH+MGxuyNn0hjFUy1rK/3Q/qq9mYMMj924Jty7e06D8fJPBWbvL13
-         cLFw==
-X-Forwarded-Encrypted: i=1; AKwUvBx9pNvbOUB1DVHlYNwIkZTln+QUdBp1XBgd4TRhXI3bbxprWHGAHDhVrz8VXyhwSjRTudw8QdD/hArE@lists.linux.dev
-X-Gm-Message-State: AFuF++myQY0CpzgwdvWdUCUwIygW8CVIErHRs1/ZIO57GU/fSwOeVdYf
-	m6o1Dbk2V6+zSb541763myqW5AT5g6798w7tL7TkqK0ipjus2lf7Zs4XEdPlHQIt6qo=
-X-Gm-Gg: AYBFou2EkI9+tbuqTgampfi140jGMT5zZ17XBDuVlKUsPD1U9aINqebg3iiQByjYMlA
-	4YBxgpMFbB8COVink8rcJLW5sjczhGyyxHHrecqxVlGyl8cMUH+/1sHTMFBnXy0aqIe4paLE9N0
-	exP+vPrPL7szdF+rtdTrUZ74zlkwDRC8NRUM/HimQCizF1VRjakXFCZUglecEIVS/lNzxpm0AcS
-	tiI7+oVYIDcoEmMw1WYH3G/Gv+469syczvKaE92/j39JY56KStpq2ReuLtqj8/JSuNxmrRVyF69
-	diVCedn8xLKmkH0bU2vxfE9GGGygcv7tFo/JrlQOz6s1UeTIEGhfSkYUDeRs8ABuowjo8ZDX/+Q
-	gT4x0QyApYX5r+zecTVcMGPgSEZYQYnppU/NAZDQ60qB/a6+PYqSIqncQS85RThTrxfUPtP2mL6
-	jXsiANRdsNzJkSdI9+9H8+IYJ76qynvZ+am4q74IlwhYy8/cVLMlbLIiecfK/0AgU/eCr/BwDAN
-	MrMOHsTTfLssS6u+zbYzrwh7HZNEHKlyR0bhj/VEn6nPmx3cADeSBw7
-X-Received: by 2002:a05:622a:1455:b0:51b:f40b:2fb3 with SMTP id d75a77b69052e-53036be6a5cmr143516721cf.9.1788446850990;
-        Thu, 03 Sep 2026 07:47:30 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5303301ddcdsm44166831cf.9.2026.09.03.07.47.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 07:47:30 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x28iv-0000000HFle-2ikl;
-	Thu, 03 Sep 2026 11:47:29 -0300
-Date: Thu, 3 Sep 2026 11:47:29 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Nicolin Chen <nicolinc@nvidia.com>, linux-coco@lists.linux.dev,
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [RFC PATCH v4 03/16] iommu/arm-smmu-v3: Add initial pSMMU realm
- viommu plumbing
-Message-ID: <20260903144729.GJ2890729@ziepe.ca>
-References: <20260427085344.941627-4-aneesh.kumar@kernel.org>
- <apM6dOHcEI2ztWS0@nvidia.com>
- <yq5a8q5lz5yn.fsf@kernel.org>
- <yq5aecfdnv4i.fsf@kernel.org>
- <20260901143445.GC56830@ziepe.ca>
- <yq5a8q5kkoz3.fsf@kernel.org>
- <20260902121700.GC2890729@ziepe.ca>
- <yq5aik4nztdt.fsf@kernel.org>
- <20260902193014.GF2890729@ziepe.ca>
- <yq5abjaezyxl.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V80fLU2M"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788447905; x=1819983905;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=BVwMizXOAaPj64RW4Cs9oYps0aGR871CM+iucW94CBw=;
+  b=V80fLU2MMN4Qlrwcg10B2431JL4ToNgOslgq05ABnEzR/S3zrKD2Dheo
+   vlAiOH4SOox3jKo6pWdm34KNQllo1eW5YWaOflNk4EwfnGphbPdBOSd0c
+   DptWj/MwfL8nd4+8RjOKyeKraI4xprA1hHcAY4Rj8Nxzjn0am6F2AbFI4
+   vjgJv5TTunx7ax8cUMLo6n0pofDN3d5KnDwKkt5Ea2lAyMsqmmjNywZB4
+   p5L/rKIyrZ4EZf/wovl24xKHDZzPViAwyBtLKUVoDxxKq1AgMSgGqF1B+
+   zoe/eV4xreWbNP5R70mp2y6n0d+2gDh3h977kAn7NE17Mg+vtRT9TXV4b
+   w==;
+X-CSE-ConnectionGUID: 2c1SneKdSyCVLBWUEy2xrg==
+X-CSE-MsgGUID: wLsO/edBTa6/nucyOjvDnA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="100290817"
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
+   d="scan'208";a="100290817"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 08:05:04 -0700
+X-CSE-ConnectionGUID: mL97OFkSTe2mrKFxZs4n2Q==
+X-CSE-MsgGUID: HzKpb9tbTuKbXbQ+quhxLg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
+   d="scan'208";a="273525514"
+Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.110.172]) ([10.125.110.172])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 08:05:05 -0700
+Message-ID: <5463b216-4b5c-43dc-a629-b5c002c3289c@intel.com>
+Date: Thu, 3 Sep 2026 08:05:04 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5abjaezyxl.fsf@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security Protocol
+ (TDISP)
+To: Lukas Wunner <lukas@wunner.de>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Alexey Kardashevskiy <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+ ankita@nvidia.com, linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+ driver-core@lists.linux.dev, Aaron Tomlin <atomlin@atomlin.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Bjorn Helgaas <bhelgaas@google.com>, Daniel Gomez <da.gomez@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+ Donald Hunter <donald.hunter@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jakub Kicinski <kuba@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
+ Petr Pavlu <petr.pavlu@suse.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Sami Tolvanen
+ <samitolvanen@google.com>, Samuel Ortiz <sameo@rivosinc.com>,
+ Saravana Kannan <saravanak@google.com>, Will Deacon <will@kernel.org>,
+ "Fontenot, Nathan" <Nathan.Fontenot@amd.com>, rick.p.edgecombe@intel.com,
+ yilun.xu@intel.com, Jiri Pirko <jiri@resnulli.us>,
+ Leon Romanovsky <leon@kernel.org>, Jonathan Cameron <jic23@kernel.org>
+References: <20260705220819.2472765-1-djbw@kernel.org>
+ <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com> <amk7Xzm5jmz+6SPJ@ziepe.ca>
+ <anFE7m164AmchTy/@yilunxu-OptiPlex-7050> <20260805005533.GB28508@ziepe.ca>
+ <apeF/peEzdxvKeWR@yilunxu-OptiPlex-7050>
+ <2e721509-0aee-47ee-b17a-688876e02f74@amd.com>
+ <20260902150125.GD2890729@ziepe.ca> <apl39vOiMPP7VloW@wunner.de>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <apl39vOiMPP7VloW@wunner.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 03, 2026 at 10:58:06AM +0530, Aneesh Kumar K.V wrote:
-> > Do you mean the SMMUv3 driver triggers RD creation? That feels
-> > wrong. Did you mean the VMM just does it earlier?
-> 
-> Currently, CCA creates the realm lazily as part of another operation.
-> Realm creation is triggered by kvm_arm_rmi_populate() or
-> kvm_arch_vcpu_run_pid_change()
-
-Okay, that's not what I would have guessed. But critically is there
-some way for userspace to specify any realm creation parameters (like
-rpv, ats_plane and so one) prior to the lazy creation?
-
-Why lazy? Why not just have userspace provide the creation parameters
-and create the RD right then?
-
-Jason
+On 9/3/26 06:36, Lukas Wunner wrote:
+> I've suggested a celebration of life for Dan at LPC, to complement
+> the service organized by his family last Sunday.
+We are absolutely going to do something at Plumbers. Anyone interested
+should keep an eye on the Plumbers schedule. Or, send me an email and
+I'll keep you in the loop.
