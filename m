@@ -1,188 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011001.outbound.protection.outlook.com [40.93.194.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C4B407CD0;
-	Thu,  3 Sep 2026 11:01:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788433268; cv=none; b=Dmrw+Eq9xPlqjHpeppUf0lTrroZsIedv97O5141zHlHBKRs50RTMNBKmiOhrlVE1JxEeswHhvULHuIQ+SRJVVt3RWKWK4HZkLvQ/JL9he9Rs16WUvvdM5L4jAGEv9n0uLIaO7lnITpyzP23UpL3reC/vP6JR3XMY3F3DOtj+TLg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788433268; c=relaxed/simple;
-	bh=r7A1kvKO2SQv4yeh3/zQcOd3vYkhr2SYhg3DzKbXOSw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XDTpFHbHSg5Wto/iugf6UfYlVgYYDKyThZwUqmIuvs8dcna8gg5bo3TOC0Vz1kGmSdu/L5tqpnBUBJ3gPagOEM4X/Owp4RzLxv6FQyyUn7D+5V17YF4T/EJvGj1cZUpMf02295UHykKBkSHPnaFGgtIjVtiSzbAEhKeyUsxp2ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bqrYkZ3N; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D44421A08;
+	Thu,  3 Sep 2026 11:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788433465; cv=fail; b=TQWMTy2EL14Coa0SBpOhZ4bEMVIsxbKA5Thi8Dg9vHYDw9vlST17xuauC9aSroE4M2SPofNg6Bqw4609fcRw1Vm8lFEvr3GT847soXnHKSoYZpNhSYJYK8oK0EmgY/nTNePoaTuCRdT+h7onq7x917I+oCD7nx2/avjDOPQGyF8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788433465; c=relaxed/simple;
+	bh=+HqFoxkBFsRs0mqC7Yk6o/E7MBL+bkHqToGENa+PTqA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=DbaHcNCNSvdf/pmgp/WTSX98rP6WaANE0oIaA2LgCqHnkWNlmPQ8mEK1baaTa29ueMycp/PbXiOKGMYbj5TeO9UjunUEBXtiAZvA83EirbVQn/Svtaqm0tgQjFTg/+54tq6L1R4HdslBL3zYjTBEjN1SwcpWXCJhKnaAMycnc44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ssuw6Zv1; arc=fail smtp.client-ip=40.93.194.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bqrYkZ3N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5BF1F00A3D;
-	Thu,  3 Sep 2026 11:01:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788433266;
-	bh=6Co2h1oEZ5U60JdWzSyZd4v6op5yvcq3/jaM5LDdEc4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bqrYkZ3Nuw2gSLzszRw4YSlg6dKKxUPWaMlOky6DmbP60AtoxI9haiEb1BEG/cUys
-	 MvSnMfLyNr3Jj3oymkmI6cfhHLYT/xh/xcNKZ7brcdjrBsLRHdnI/AnQOH1r+xLkz9
-	 9Z9PN8+DTluhqg5FdNjDMXPjsBnsWXJ/0DgOH2RGHOsgfJE6iSj0O7+pvc8c/0x/EK
-	 kAgFpz6gkk/nRJq6iE6AN1oiahgO3kGq5rdGF1UMAGrQNpMDp0x8Up5hbK3KVO7pBj
-	 kmTMZYsllTsJO5w4moTUr95uHfcT60BBs0GdrKAw/iJ3FStM6xyZqGQHFtN8pANR96
-	 +SrxWQ7wdg4fw==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 2563F1980045;
-	Thu,  3 Sep 2026 07:01:00 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Thu, 03 Sep 2026 07:01:03 -0400
-X-ME-Sender: <xms:a1OZagmAG7j6VJirCeLTtNlue7pwBrkSTkNDG1L0AHAced1WMB_iYw>
-    <xme:a1OZal99lOxvPIW37ltyjZ5CDjkygiX2gs8yEhLn4ZOK61JRm_Ex_nA1PIcBtSxuC
-    gGJ2AbfiYNgFRCa6BQlPNk3mES0ezTXT0fvA4UC-UPSzZkAkuKMmvAu>
-X-ME-Received: <xmr:a1OZalJtouO_vCEz8ZS-MbtcARM_QkhQ0eOZ4xO5UDT6heGIXk1ork5aMv4>
-X-ME-Proxy-Cause: dmFkZTEA/cNC+NRqgQfaBumMDDx1mWc7P9YPky+3YOsSOYpGncfsqXqvxUA1lnV3kGc/D3
-    nfOMOv5iJRrDNZEb09Wp6Ci+GCE7RpVSA3F2mIFsP6RdaiwnBx7IJnP6HoupX2jLRKa/TZ
-    RHWVjGVFVcLQ5umGIm9LqN16c9sxkd4fbfAJ17Y8BO62MwR1mfEbTKE7OTpRbSAE423FhH
-    1wZe6iEVIVXmzj+nEyY0eFv9NPWvKwGpH42i1EBHMQ0Fnlu5vhtmpgFMcKf9mV/vkNiR5F
-    Md8PLn6dXbf8r4GlIyIfgffW2VSbl74YFgeMWBBcvk9pbvm2hbOekd/flPpcE186mETXH9
-    E4In0uv/GYYJZvZDaU87LNCpRSOgxbnjGmiHkdURa4yWx4pWsx3RNmU0uHfWRqliWUrUtY
-    ncCmY2Pzw2TWJ8CmI3cAt2ndDzmWrLoHqWurpNRuXeDqZPrvLdEjIlNknECYBWGkhGPExm
-    09kXZb9OR2/tSNt6VDH6lcw28H/Q/IVMHwhal4Ar7k7lWmko7M5X/Pz4rwFOOSW1aE7dRw
-    D0K0U1LmhVL/cxL7LiW10qwOSENDvOZ7owE28K1RnfodxvrrRipHVJu8sNYI1QxKw5QMeX
-    13tglXTgeAO2W3uXGKKGA3z9yzuzluKWopB1RFC/JLCz8GpCM99Cs0XgRpUw
-X-ME-Proxy: <xmx:a1OZamnNkI7bJ4yHxV_1gbYtdW6lYGZCTdWuQcI8ngcYBYFEuGljGA>
-    <xmx:a1OZaifrBgq1pS-hD0AD94xwucHAvw-8_JaecTlb_XtKV0Y8oX1L5Q>
-    <xmx:a1OZanWSnlogF2uZ8z_IOgPQc2LYK-7F_M3Kyj-M3TgL_DrKtcsz7g>
-    <xmx:a1OZap4goxnawmH5a9t5G5-czWl6DZSL8SdM9LBCIq6RjG987MFPyw>
-    <xmx:a1OZaq7H_dHtDDbxfvlsULJW5edviCU_LhOJl498HowvdcN2H7WFxPAo>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 3 Sep 2026 07:00:58 -0400 (EDT)
-Date: Thu, 3 Sep 2026 12:00:57 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: david@kernel.org, linux-mm@kvack.org, x86@kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com, 
-	yilun.xu@intel.com, xiaoyao.li@intel.com, sohil.mehta@intel.com, 
-	adrian.hunter@intel.com, kishen.maloor@intel.com, tony.lindgren@linux.intel.com, 
-	peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
-	chao.gao@intel.com, artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org
-Subject: Re: [PATCH 4/6] x86/virt/tdx: Add extra memory to TDX module for the
- extensions
-Message-ID: <aplSf00ESix5s6Ak@thinkstation>
-References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
- <20260821032920.256225-5-yilun.xu@linux.intel.com>
- <aohvlMO7ehqcVW96@thinkstation>
- <aowMYbHKK4b0O5P6@yilunxu-OptiPlex-7050>
- <apE8yHrGx/bfifV9@yilunxu-OptiPlex-7050>
- <apf6WFKun8z4ejG8@thinkstation>
- <aplOhHWvaxqUJDqu@yilunxu-OptiPlex-7050>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ssuw6Zv1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Wmr3qW5gh3z+JKT30UpPb8akKc//luKW93wtBiDofW8two+2tWrJJ1PpbjrFt5vLoncHS0UZ6sWltY6EQYcyane7HYwD6CEfWjIMAJx80GDhhLZsLHfoYe1f+AekUSSol8Uwq+RY7M1Bk8dEi4I6x29cuVkEB4htABrNLDpyev05qmI3yjg0DYLpmztwESRvmuCmqHfEygEik7lUW3Ow20+Tk6IR4/PRhMTS2HGMrhoArnE0PxYrBPDQgtcYqF2YxUP5zXOJgJVZDURPtl5nTDrEzDJA/exkIN3DvoxtmHhaHPMcVhI48yo6s08mfspa8NwrYoGIIW+w5V//UVUMTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+HqFoxkBFsRs0mqC7Yk6o/E7MBL+bkHqToGENa+PTqA=;
+ b=s/9FTtPdmEPJoeBWMl5Sl9hgiUsZO4QBaBf2n/WvHCiRN4nzurGnP9/B6hh9BF+HDO7iw4s0ilDquiKKUWoksms6hO6YptE9LA13Q6T7G3hf0qVLsjcwxDRxu6kwAPEhK/69Ar7iehkAfgkV20T1yg6/TsIeZtOgVLCoykNGK4HDYCWusNnZVeztBAHzLNmHTw7IcL431QGVQy1OQ6rky6Frsd+TZA2csNSFCSs9ADsvAKVI3sFzTmnMw6fVNscT3CKz3X9Hw0xS6+xnPVR38P79MGsqcQkDZNHKnEh9o2/j2rlbz4JkIztsS4SIU1W+qV1M43yX8ba8/XJjtcXtPw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+HqFoxkBFsRs0mqC7Yk6o/E7MBL+bkHqToGENa+PTqA=;
+ b=ssuw6Zv1l4YEXDNV+tBPhlrOcJ7vcjFUZjUAGODqhpnRwqDGCCLXds6GutCQGDv1rmvuj538Gjj59CbaYAwkccYZ5ZO/HyvI8iRp6iVHczNuU7po1YiIc8CgX9dDwzOK/LyAnCR8RgYvcNTbvWkVZpHQYGtL9kT/KT5F90bpwpmXQH3qPiuCaTZ5JrgW2L5jwabkGPynTp4poTsZLNniMoQ+emKveAtFFriZsJjngNPvTNjCc2vFb/exA6T+rXbZiAFGb/YCyoZ4YIZZ9WRNm6FsrImhGx45DcSAy9CewysHJ88zdhPATVQ4wkvECyIS2tXoiMaEyd2hJOT5Fl3xag==
+Received: from SAWPR12MB999267.namprd12.prod.outlook.com
+ (2603:10b6:806:55f::17) by DM6PR12MB4105.namprd12.prod.outlook.com
+ (2603:10b6:5:217::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Thu, 3 Sep
+ 2026 11:04:15 +0000
+Received: from SAWPR12MB999267.namprd12.prod.outlook.com
+ ([fe80::fe35:8a00:d9eb:40f9]) by SAWPR12MB999267.namprd12.prod.outlook.com
+ ([fe80::fe35:8a00:d9eb:40f9%6]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
+ 11:04:15 +0000
+From: Ankit Agrawal <ankita@nvidia.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Alexey Kardashevskiy <aik@amd.com>
+CC: Xu Yilun <yilun.xu@linux.intel.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, "driver-core@lists.linux.dev"
+	<driver-core@lists.linux.dev>, Aaron Tomlin <atomlin@atomlin.com>, Alistair
+ Francis <alistair.francis@wdc.com>, "Aneesh Kumar K.V"
+	<aneesh.kumar@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas
+	<bhelgaas@google.com>, Daniel Gomez <da.gomez@kernel.org>, Danilo Krummrich
+	<dakr@kernel.org>, Dexuan Cui <decui@microsoft.com>, Donald Hunter
+	<donald.hunter@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jakub Kicinski <kuba@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Lukas
+ Wunner <lukas@wunner.de>, Petr Pavlu <petr.pavlu@suse.com>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Sami
+ Tolvanen <samitolvanen@google.com>, Samuel Ortiz <sameo@rivosinc.com>,
+	Saravana Kannan <saravanak@google.com>, Will Deacon <will@kernel.org>,
+	"Fontenot, Nathan" <Nathan.Fontenot@amd.com>, "rick.p.edgecombe@intel.com"
+	<rick.p.edgecombe@intel.com>, "yilun.xu@intel.com" <yilun.xu@intel.com>, Jiri
+ Pirko <jiri@resnulli.us>, Leon Romanovsky <leon@kernel.org>
+Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security Protocol
+ (TDISP)
+Thread-Topic: [PATCH 00/15] Device Evidence and Trust for PCI Security
+ Protocol (TDISP)
+Thread-Index:
+ AQHdDMrOwfwmCkkN7EeGRZV1a3LRYbaCujkAgAD+F4CACZTNAIABg4qAgCwWtACAAAJogIAA1ICAgAFKU/g=
+Date: Thu, 3 Sep 2026 11:04:15 +0000
+Message-ID:
+ <SAWPR12MB999267C6FBF531A0DCA843600BB0B62@SAWPR12MB999267.namprd12.prod.outlook.com>
+References: <20260705220819.2472765-1-djbw@kernel.org>
+ <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com> <amk7Xzm5jmz+6SPJ@ziepe.ca>
+ <anFE7m164AmchTy/@yilunxu-OptiPlex-7050> <20260805005533.GB28508@ziepe.ca>
+ <apeF/peEzdxvKeWR@yilunxu-OptiPlex-7050>
+ <2e721509-0aee-47ee-b17a-688876e02f74@amd.com>
+ <20260902150125.GD2890729@ziepe.ca>
+In-Reply-To: <20260902150125.GD2890729@ziepe.ca>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SAWPR12MB999267:EE_|DM6PR12MB4105:EE_
+x-ms-office365-filtering-correlation-id: 241f9116-a231-4a02-7f93-08df09ab1808
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|23010399003|7416014|376014|1800799024|38070700021|10067099003|56012099006|11063799006|4143699003|18002099003|22082099003;
+x-microsoft-antispam-message-info:
+ Pb9s+0ARL6sH2gxoOTwkA8fSL2nt07yGSCgyS4662f8LRuVNw3LRsYUneBJ91LmB8pt1Q4W45bcdx35LyvK/I+I037qHPjx8c5HbuDvCoXKm/aG3CmWmdO3vPkOTRXukLcLaB88In8L4yS+BSHhj93KhpXHltuLR6UnEVlzjvSVBYeO+y1tKzPIvOE66edHammKQ/GH/5ryZh/bMQsFKA5FQqEYlulhOifQ19bM45dCBstxDvoWQZGsTHYJChtnCukniypI9odEDTSzRnCEc5abRcB3gfyHVdCXztZSSH5o8K5XcPws086DnMZ0epSCVCIo5kYLvliLEdYDmCK4Bc9zIVtLkwOg645tfzubRJJhZEsIWvXRZdp+CDtlcN2H5G/Z4Gz6Ov5UzAh9yv4CI+Sbk1vPGw0WBQ42Hs+LE/cO1O9KiRVFwMh3N3wAXYKFBPOp20r7UwSQQVEEEiVgRQaOZKhq/gX8t03uKPX4NWL4SxE7r/bkg66GGoV7I4MEaY42X+QxQbYWwVGYFhFRTzudFySbjQ9hv0qcl3ji77C1P8yiBG6G/mr/lhHvo0SMovC8eLkelDZwuIFjZKTzoW8ZY9JnVaebMnDkF1PphqdSmBdO2u3nqhzGPtB02IB0vw3YHPNlrYgMD4lp3NHXyHAMX25xZMCQ8zPznuuufAlANQZ3lcW6tMH1EFZPi7TZpL84FyVgKMxifzSE85g2/zzVGRRxEN+6U3ar1J7Prgz8=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SAWPR12MB999267.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(1800799024)(38070700021)(10067099003)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?oXKKCQPGNYLrx6cyHrCNX97AM3di4hrx10+cBfxrEeZndVesSUq3OFch0h?=
+ =?iso-8859-1?Q?MO67eIyvwhAhOtsFfXsdXYJEPdw1oYPAzcaGQm7inDnkpysn5bhT/gMdkj?=
+ =?iso-8859-1?Q?9HXRO9D3X0kdxMy+xYYW9RX6MhGgdqdWUsGwALbJhKsF0hdWIly1lp0xOS?=
+ =?iso-8859-1?Q?uAymzch97J3fzz4zVhIhMOIk9Z7+q2taVGhxva50EqEebSn8dqYvjeRFnt?=
+ =?iso-8859-1?Q?eagK2ttl41BrvAdVOJeGcNfT8e+vnhP1MauTODbebPi1EpzKlMivgN/pI9?=
+ =?iso-8859-1?Q?1lknJxjtM7xnjilBKA/e9dTyp7lmKD+HyOwX4PBOBmiNOiIyiXt18WxGTd?=
+ =?iso-8859-1?Q?w9epQGOrPoIntfMPMbsRSMMHux8ceyrXTjgGHZSv3MO/r0+ne+cKXf2jIJ?=
+ =?iso-8859-1?Q?OXoBPbMk3sjBUErJDjB5nAd4cGCes9VdTNsU5WIFh6Z4W7AteahRRM7N+V?=
+ =?iso-8859-1?Q?0gR40IQfvAF5AFvHEahamS/em5UlnjbCSYWkv6WohAy4QxnvP+CWdK0evJ?=
+ =?iso-8859-1?Q?PJfjYWN9Ly5+ICLuw0zcM4RSXiUydo/Ptz9aP9WQgls5hOXbHBNyJhIeAe?=
+ =?iso-8859-1?Q?VpdDEHudmU+pZ0MsxYCsKVeTWm+xYToyMVpHPZqzlvBXN3XFzFiYHBFwK/?=
+ =?iso-8859-1?Q?AFoiNbg/An8Gqka7eVSlVJUNPWxXgEsUFQTMZBDNfTWkiIhaFsndmQUHHt?=
+ =?iso-8859-1?Q?5MzP+K8OVvk5kxhOQsGEyHS1iLyZaYAZ8NvMQAcQmpruimTmHcSx9O8x3I?=
+ =?iso-8859-1?Q?9uRxJfXmUNt78f6No2MZrCHQnLURUTRiHaRSYm0A8Im8jMo2uXI3V72SM9?=
+ =?iso-8859-1?Q?dRVGSBSiecb+iqllUNpaTOOMWLdy/fGLtJiEYd7IUJkxVAdY4sYXWOacSJ?=
+ =?iso-8859-1?Q?irCdW2E/V7geVZPIm8QBnB5Wdl0k9jv1FrsWwsiKJEnmStNRbvkEb/eX4b?=
+ =?iso-8859-1?Q?kohlKwzGHDS+g9mExyc/ZCVyDZdYKq9ui7EsontJLnxB5XAREFuKXotcRv?=
+ =?iso-8859-1?Q?T5IEIo+vQifJpdf5+aqhQX6AZ7FjPEgMlhdhzN3uDCDiokPQp4/OmFSJOT?=
+ =?iso-8859-1?Q?SPJ14slenuWzKUD0yzrUIBRnEuqYQlutlWWy3oI2/oJrheCgO3xbm6YUgv?=
+ =?iso-8859-1?Q?gZglpziNFwJx140O/KrhI6DjRrptcXyuxyKG2nezbFZQBVq/rAXOY/6zqg?=
+ =?iso-8859-1?Q?WhHYvnFL2PiCUsGt8Tu2VDJ1O4tasVmq2I31mvJ/hrmzIuUF/aSBK7kUld?=
+ =?iso-8859-1?Q?gYyEL5BZbVoLup70WXas/G8xQuBGgMaBb/SDHlnV6e6WAwHUjJ8rOHgCEA?=
+ =?iso-8859-1?Q?cMklalqkWrpSw+FZxAZcH+xsfxJFzcWYgig8qPhHiNIgZtDeG0qMuOMJGH?=
+ =?iso-8859-1?Q?yQS0QWh9V1EQJxi0POzJ3vT8RZF44FWkn3EbzYps48jpcuH7ZAR4/EkbSS?=
+ =?iso-8859-1?Q?50UMA3oazMSwjL5YM3MGLVR75+cpXJdQnjbhxqgWZg42YBWwY2lYdA4Lb2?=
+ =?iso-8859-1?Q?I2W9Y8Qw3DABb6FBih6HiNrGTfdJMv48ZoLD+PPUYVIPiM8XTIG5jTpEVm?=
+ =?iso-8859-1?Q?0JL+oDbukZw2bhP0bk7QNUUQ0PUCEVWb1vzii+5/i3uQPEaW63KmKjSFj1?=
+ =?iso-8859-1?Q?k+fN7E158g9s9lCglLvI0p2/uGI/+O6P5QpMwii9QpF8xPfjDwrdUgIa0j?=
+ =?iso-8859-1?Q?E1skPfxwejoUKs67Ug9xrnrS9DEohdyg+YTm8SRDYDuBWi0Lp4N9oFNrGH?=
+ =?iso-8859-1?Q?b1UP/JskrUy8xpsh1nhysXiVfZlz5jnZLAlQPyhLDvv9gN?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aplOhHWvaxqUJDqu@yilunxu-OptiPlex-7050>
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SAWPR12MB999267.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 241f9116-a231-4a02-7f93-08df09ab1808
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Sep 2026 11:04:15.6575
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: fIB8S2OH2/yIBjvDPamx3OrpT0IF9lgyBR4lVGp8lAOl+hRwEfQyCsowpb80S002+p2rfqNdQ4j3F4KdLoVDow==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4105
 
-On Thu, Sep 03, 2026 at 06:40:04PM +0800, Xu Yilun wrote:
-> On Wed, Sep 02, 2026 at 11:54:25AM +0100, Kiryl Shutsemau wrote:
-> > On Fri, Aug 28, 2026 at 03:46:16PM +0800, Xu Yilun wrote:
-> > > > > > +	page = alloc_contig_pages(required_pages, GFP_KERNEL, numa_mem_id(),
-> > > > > > +				  &node_online_map);
-> > > > > 
-> > > > > Why contiguous? TDH.EXT.MEM.ADD takes a list of page addresses and the loop
-> > > > > below writes every one of them out separately.
-> > > > > 
-> > > > > alloc_pages_bulk() fits the chunking that is already here, and a short
-> > > > > return can be handled per chunk. alloc_contig_pages() isolates and migrates
-> > > > > to get its range and fails TDX init outright when it cannot find one. PAMT
-> > > > 
-> > > > Yeah, this is not the ABI requirement, but the kernel's consideration. A
-> > > > brief reasoning in the commit log: avoiding permanent memory fragmentation
-> > > > and buddy allocator efficiency loss.
-> > > > 
-> > > > Also there is some discussion:
-> > > > 
-> > > > https://lore.kernel.org/all/167d9540-2d9a-4367-bc68-b96494bc4044@intel.com/
-> > > > 
-> > > > TL;DR
-> > > >   - The memory will never return to the kernel.
-> > > >   - There is chance that this tens of megabytes will fragment tens of
-> > > >     gigabytes of memory forever.
-> > > >   - The chance of fragmentation is actually low since at boot up, but
-> > > >     let the buddy allocator take care of these never-returned memory
-> > > >     is not necessary and lowers its efficiency.
-> > > 
-> > > Hi Kiryl & David:
-> > > 
-> > > I see there is another suggestion that the whole memory adding process
-> > > could be a little simpler if we allocate & add pages 4k by 4k [1],
-> > > rather than one-time pre-allocation. The concern of this alternative is,
-> > > as said above, memory fragmentation.
-> > > 
-> > > [1] https://lore.kernel.org/lkml/f48b83feb2ee1d3c88b5a1627cf35b4b282d3f90.camel@intel.com/
-> > > 
-> > > And I've realized the memory fragmentation discussion is not actually
-> > > closed in previous thread [2]. We need more input.
-> > > 
-> > > [2] https://lore.kernel.org/all/167d9540-2d9a-4367-bc68-b96494bc4044@intel.com/
-> > > 
-> > > Let me give a brief overview of the problem:
-> > > 
-> > > Intel TDX (Trust Domain Extensions) is a feature for confidential
-> > > computing. A secure firmware called "TDX module" runs in an isolated
-> > > environment to provide services about security.
-> > > 
-> > > In Linux, the host initializes TDX module at boot up time
-> > > (subsys_initcall()). During the initialization, the host must donate
-> > > tens of mega bytes physical memory (35M ~ 110M in the forseeable
-> > > future) to the TDX module. These memory will *never be revoked* cause
-> > > the TDX Module initialization is a one way path.
-> > > 
-> > > The TDX Module doesn't require this memory be physically contiguous. But
-> > > the kernel side concern is if we do PAGE_SIZE allocation, it may
-> > > permanently fragment memory regions, stop them from allocating 2M huge
-> > > pages. In worst case, ~50G (110M * 512) memory regions affacted.
-> > > 
-> > > So is the physically contiguous allocation really a better choice here?
-> > > We appreciate inputs from mm folks. Thanks!
-> > 
-> > What matters for fragmentation is not contiguity, it is how many
-> > pageblocks are left partially occupied by unmovable pages that are never
-> > freed.
-> > 
-> > So you can ask one pageblock at a time with
-> > 
-> > 	page = alloc_pages(GFP_KERNEL | __GFP_NOWARN, order);
-> > 
-> > with fallback to lower order if you must.
-> > 
-> > It also fits the ABI: pageblock_order is 9 on x86, i.e. 512 pages, which
-> > is exactly TDX_HPA_LIST_MAX_NR_PAGES. One allocation is one full HPA list
-> > is one TDH.EXT.MEM.ADD, so the allocation loop and the chunking loop
-> > become the same loop.
-> > 
-> > But alloc_contig_pages() might be a good enough approximation for
-> > per-pageblock allocation if we do it during the boot when fragmentation
-> > is low.
-> 
-> IIUC, you mean alloc_contig_pages() also gives good de-fragmentation
-> that we need. But it would be slightly easier to fail cause it requires
-> extra contiguity that we don't need.
-
-alloc_contig_pages() can be more expensive than needed (or fail) since
-you ask for the full allocation size to be contiguous, where you should
-be okay with a set of pageblocks regardless where they are relative to
-each other.
-
-> Multiple alloc_pages(order-9) meets our requirement exactly but the
-> falling back to lower order may create more fragments. And we can do
-> this because of the ABI definition - an HPA_LIST could happen to hold
-> an entire pageblock.
-> 
-> If I have to choose, I prefer alloc_contig_pages(). It doesn't have to
-> depend on HPA_LIST ABI details.
-
-As I said before, as long as you do it once during the boot, it should
-be good enough.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> I can say that several people from NVIDIA are working on the ideas in=0A=
+> this patch series. Ankit is setting up a team to focus on upstream=0A=
+> patches for all of CC inside NVIDIA. I've asked Jiri Pirko to work on=0A=
+> the PCI evidence uAPI based on his deep netlink experience, and Leon=0A=
+> Romanovsky to work on the binding problem/adversarial/trust level=0A=
+> driver core idea. They will share their approaches for solving these=0A=
+> problems as seperate proposals.=0A=
+=0A=
+I can volunteer for updating and refreshing the TDISP state machine=0A=
+part of this patch series based on the Jiri's uAPI.=
