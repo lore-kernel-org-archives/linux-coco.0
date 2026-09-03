@@ -1,67 +1,54 @@
-Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68424AE120;
-	Thu,  3 Sep 2026 13:37:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE984B2CDE;
+	Thu,  3 Sep 2026 14:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788442637; cv=none; b=Y38WuCZVc+9RgCsCS8tKTtFNsgz8LCAN7wGUQKYFI0JVRrUYseHvbNlA9zhBtyIkHG2Bw7s9zptoUr06ZMTiHMctowbhAZ5hpeq8nAB9FBVUgusPD9hyZXwbwTh9lLW0H0aPUuHQutnwhMcJdD+qwRQ1fGtBo3t4PdyflwVg4KI=
+	t=1788444846; cv=none; b=iJHvNUQw2zuoIVpNIA5+Lce9YGKKAUBz66rnxlHdrt7rSumFtGN0FpxqvPyHB3jFub91cVxetjcg1FLpzQdEy/jmKK1rh//OCh7fPa+TcbjZVE2zOFKzClDv+A3GsymO/zH4lMWbj9Eb8FWL+PLlZIoI08O6sVMLPrzqsi6cJfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788442637; c=relaxed/simple;
-	bh=/ApVbgGpPkQ7jmrXNkec4xKjkgmOYiJG2kztu+4FFkA=;
+	s=arc-20240116; t=1788444846; c=relaxed/simple;
+	bh=6ycPb0MDs+0BC6sS5YbYZNBMPwbVziAJpVdopwJpy70=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DwSjwcsRWb/LUYDrvFej4p/BMWxX4S8ypzVs/CsG+HpfMIWLzW3v/kwo8U/HMFhQT31aT9O6HhDPJ5dEbLzUK3j6gLNdFMXxuF6lVkCiIAT5ZL0moHCxhUznKiemQjOjFKcFieUhpl97HVDqbPrO1Xcv4DzGva8NJUn5AKbKhik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
-	 client-signature ECDSA (secp384r1) client-digest SHA384)
-	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
-	by mailout2.hostsharing.net (Postfix) with ESMTPS id 20CCC1062A;
-	Thu, 03 Sep 2026 15:36:55 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 054806004A96; Thu,  3 Sep 2026 15:36:54 +0200 (CEST)
-Date: Thu, 3 Sep 2026 15:36:54 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Alexey Kardashevskiy <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>,
-	ankita@nvidia.com, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, driver-core@lists.linux.dev,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Will Deacon <will@kernel.org>,
-	"Fontenot, Nathan" <Nathan.Fontenot@amd.com>,
-	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
-	Jiri Pirko <jiri@resnulli.us>, Leon Romanovsky <leon@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security
- Protocol (TDISP)
-Message-ID: <apl39vOiMPP7VloW@wunner.de>
-References: <20260705220819.2472765-1-djbw@kernel.org>
- <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com>
- <amk7Xzm5jmz+6SPJ@ziepe.ca>
- <anFE7m164AmchTy/@yilunxu-OptiPlex-7050>
- <20260805005533.GB28508@ziepe.ca>
- <apeF/peEzdxvKeWR@yilunxu-OptiPlex-7050>
- <2e721509-0aee-47ee-b17a-688876e02f74@amd.com>
- <20260902150125.GD2890729@ziepe.ca>
+	 Content-Type:Content-Disposition:In-Reply-To; b=uyKnXaMadgRexOI8Nupteem2uBnXqRU2Tnn1jJnrtDiPoGTDKpD0ce52UIuhWC2ICZ0wgB3vsV92OtmEFgKuyPnlyQ7XM6vAJEfhYCa8EehcLCMqiiQYPhaaIiG2T0JPyoaIadknHDvJDfV6SPghkBJpg+e/v6lZ9uJd6RNeNJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gpG5mfyH; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gpG5mfyH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5211F00A3A;
+	Thu,  3 Sep 2026 14:13:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788444830;
+	bh=8X9GwG70UHNRj33Xkhsz17g3PyiEIZVcdUidNwrtGYA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gpG5mfyH6G7y3dW3qwtCJq/N6sA2Wh378+wkUXiHC+B58GxdCkEbH4SJ5uMPBU2Kr
+	 A7mXBWYFlJWsTak8dnr2iroIZnRwK1a2ntHKCCMF+73bsiU5WGfUMIl2NT2DrdawTz
+	 mz6s7CqKO5DvHpphXyGYkcXrRFuY9C0BdcaZMjT1qokTbYnbFMpwpecwBoKQadXxqp
+	 jVUfyLfWhMAS6jr9p0waXe3CJMwk6UQN7q1BX1dKFjTwF1rHcv6MXfsAyrE6a1Qhkv
+	 /uNi6OA1V53au6xKA7w/KOdM2QXTICKocfQatkHC0U8aLXOhNAk6dtPSNPkECbfDmc
+	 8RKw2gJX3t42g==
+Date: Thu, 3 Sep 2026 15:13:45 +0100
+From: Sudeep Holla <sudeep.holla@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Andre Przywara <andre.przywara@arm.com>
+Subject: Re: [PATCH v9 1/7] firmware: smccc: Add an Arm SMCCC bus
+Message-ID: <20260903-pistachio-tiger-of-sufficiency-eaadcf@sudeepholla>
+References: <20260805063255.1638614-1-aneesh.kumar@kernel.org>
+ <20260805063255.1638614-2-aneesh.kumar@kernel.org>
+ <178794567779.4159892.8785590655735217125.b4-review@b4>
+ <yq5ay0diyavw.fsf@kernel.org>
+ <20260903125718.GI4157646@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -70,103 +57,31 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260902150125.GD2890729@ziepe.ca>
+In-Reply-To: <20260903125718.GI4157646@nvidia.com>
 
-[+cc Jonathan, start of thread is here:
-https://lore.kernel.org/all/20260902150125.GD2890729@ziepe.ca/
-]
-
-On Wed, Sep 02, 2026 at 12:01:25PM -0300, Jason Gunthorpe wrote:
-> In the short term I
-> will volunteer to send patches (ie bug fixes!) to Linus in the CC area
-> Dan was responsible for. Please email me if something needs some
-> attention and we can figure it out.
+On Thu, Sep 03, 2026 at 09:57:18AM -0300, Jason Gunthorpe wrote:
+> On Thu, Sep 03, 2026 at 02:22:51PM +0530, Aneesh Kumar K.V wrote:
 > 
-> To fully move forward we need to establish a new TSM maintainer
-> team.
+> > I have updated the bus to match devices using func_id.
+> 
+> Did you have any thoughts on how to handle ARM's versioning scheme
+> too?
+> 
+> I'm not sure what the rules are but it seems like if the major changes
+> then the API is incompatible? So shouldn't every driver advertise a
+> supported major, and the major be in the modalias and checked by match
+> too?
+> 
 
-I created the "devsec" group on git.kernel.org a few years back
-to host trees related to device security.  The first repository
-of that group was spdm.git for the in-kernel SPDM implementation
-and native PCI device authentication, with Jonathan and I as
-co-maintainers:
+Just curious as how this should work with any v1.x firmwares in the wild
+once the driver updates the supported major version to say v2.0
 
-https://git.kernel.org/pub/scm/linux/kernel/git/devsec/spdm.git/
+Is there a way to set the supported major version in the driver via
+some module parameter that the old systems then can make use of. Just
+random thoughts/queries to understand how they all fit it eventually for
+the wild variety of f/w we need to support irrespective of what is the
+supported max major version the driver advertises.
 
-Dan was added as third devsec maintainer to host tsm.git:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm.git/
-
-Jonathan and I retain access to both repositories.  I cannot speak
-for Jonathan but I would be available to apply patches to tsm.git
-and forward them to Linus.  It would also be possible of course to
-add additional maintainers to the group.
-
-> I've asked Jiri Pirko to work on
-> the PCI evidence uAPI based on his deep netlink experience
-
-netlink isn't well suited to transport large blobs because the nlattr
-len is u16.  (The len of the enclosing nlmsg is u32, which is sufficient.)
-
-Previous approaches, including the one proposed by Dan in this series,
-work around the problem by splitting the blob into a sequence of nlattrs.
-I think we should instead extend the netlink protocol with 32-bit "jumbo"
-attributes.
-
-I suggest we reserve bit 13 of nla_type as NLA_F_JUMBO and use the
-the first 4 bytes after the struct nlattr header as length (if the
-jumbo flag is set).
-
-
-A second problem is that the size of a socket buffer's linear data
-is limited.  Also, copying the blob into the nlmsg is a bit wasteful
-and we'd want zero copy instead.  The solution I've come up with is
-to attach the pages backing the blob as fragments to the skb.
-It's very simple, overcomes the skb size limitation and allows for
-zero-copy:
-
-https://github.com/l1k/linux/commit/6e73bb999128
-
-That commit is from January and the time I've been able to devote
-to this has since been limited as my employer prioritized various
-AER feature gaps and fixes.
-
-I worked on this for native PCI device authentication, which faces
-the same netlink blob issue as TSM-mediated authentication.
-Both should use the same uABI for evidence exposure.  Additionally,
-native device authentication may be used by non-PCI buses such as
-ATA or SCSI.  The uABI should work for those use cases as well.
-
-> This is the only time Europe could reasonably participate in,
-> obviously it is not OK for China and Aus.
-
-FWIW, I'm likewise based in Europe, as is Jonathan.
-
-> > I find these calls pretty productive syncups. So
-> > far we were not having Europe in these calls.
-
-There is a CCC call at a US/Europe friendly time but the meeting
-is usually canceled.  There was a single occasion in June when it
-wasn't canceled but very few people showed up and in particular no
-moderator showed up.  Dan said that someone at Google is responsible
-for the meeting, I don't know who that is:
-
-https://youtu.be/_cNgyfYlDGo?t=501
-
-
-Obviously, one cannot separate discussing Dan's work from Dan.
-It is still difficult to talk about either for people who were
-close to him, and he was close to many.  Anyone who has lost
-somebody dear to them knows that grieving and eventually
-accepting loss is a process that can take years.
-We're only at the beginning.
-
-I've suggested a celebration of life for Dan at LPC, to complement
-the service organized by his family last Sunday.  I am happy that
-the organizers reacted positively:
-
-https://lwn.net/Articles/1084564/
-
-See you there!
-
-Lukas
+-- 
+Regards,
+Sudeep
