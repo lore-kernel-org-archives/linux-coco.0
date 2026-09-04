@@ -1,173 +1,221 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F7C4457BA;
-	Fri,  4 Sep 2026 09:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025DB445AF6
+	for <linux-coco@lists.linux.dev>; Fri,  4 Sep 2026 09:52:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788515459; cv=none; b=sSReBN7T5QYHQ2Oiozk7gNiBmbwCOSSRNMVgnSJXIRgl8g7fxh8erH7LuTiKvEc1esxjdzqyli7zweB2UgXr+g3+99dXR3gUuZqODRCGwQAeVK0PwXJttuDkaJhTOc3d3o0L4Ig83WznF5bZ9rM8M+6GMgVm01Qq9dlGkLuvAz8=
+	t=1788515543; cv=none; b=THKes61vrudAa6Ye5/yR2qpsmeGxg2iMNTsqC/GFFG5H01fTYYTfeN72fLsRBRgXewDrhxHpv65fCJf3yOSf4e9V2K9fyda6sMtj+9CUweC2HzMrL787ezCmv+zUNknMlRPSQcVnZWxumiKTYfvDfhOHd36XN341QSKJg2tEues=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788515459; c=relaxed/simple;
-	bh=todRMWUJlESo5qEetZdEOKlf5JFTKmSCTtM7rRgsh7I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=neS8sCB1UQtBdH18Cps8pfZco3+e5jGtsQL7pf15BPIYr/rG+8zmgvKKIVAug9kOJJg+pDqgPVc7bJPjBNUYDHUIewNxMYfbV9phq/VoJ/sE6+pCQfzg+i/PEF9e9RJ7hDryhp5xt6VWbr+vKGH6WmXC32yXBYWGUyeJNdJe9rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RXdDjHn0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788515543; c=relaxed/simple;
+	bh=FV9meUjcd+Nqh9yYKyKTeLGtwlXv49QbwrjqM4mX/Z8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ijH6/oB7URv2xxu9H4YtdqsocfCLHk5yvc4GQVP6XBtwVzNE/VMlhNy7u72l1JnW2m2vClV232TC5WReAmEORBgHY2ig6THMxzPedfRPyIzMkTUCWclxzIwU9DSePJInmktfycd7jZ8m/5e0r/9pTd4fnZXOLVGnICEpcs4+g8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=XNbhDRBX; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RXdDjHn0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C152C1F00A3D;
-	Fri,  4 Sep 2026 09:50:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788515457;
-	bh=NAK3nenxl8/lkQikMYBT8aGckfKPiX6I+mNkqAzdPYU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RXdDjHn0J2SJWYDvUUBjITIowmyckFIjfAqEanYQel5kk/RhoCzPpNoFyS4NIuR3t
-	 fx1int7KdwkJ74bcEWciDuCrnx8dLlTsHvN2FhVwBuLZiCR1/S2d9em4vG9zeozMeJ
-	 Fof/Gz+vFLEhtZ4VgyF5moliszAAyxSZ2s2mOl6/VWwpiFvn3QsBV+2IjRUdz627ev
-	 SVlXDm7MbewiBIy+iR7i2bs35x8S1vAfOdhVIJ+S4hpws71rWX0tKVKuAxgVrvCpit
-	 aga+k9j5ABNgbMf+RVLr/suPJVNfW6a+UeoSW/Uto2rmFT6BzAVr77jVBiTeisIkRi
-	 aD0git0y+oqzg==
-From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-To: linux-coco@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Andre Przywara <andre.przywara@arm.com>
-Subject: [PATCH v10 7/7] coco: guest: arm64: Replace dummy CCA device with sysfs ABI
-Date: Fri,  4 Sep 2026 15:20:00 +0530
-Message-ID: <20260904095000.1184861-8-aneesh.kumar@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260904095000.1184861-1-aneesh.kumar@kernel.org>
-References: <20260904095000.1184861-1-aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="XNbhDRBX"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6a68279dd86so956851a12.3
+        for <linux-coco@lists.linux.dev>; Fri, 04 Sep 2026 02:52:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1788515537; x=1789120337; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3TRln1//k3zoErYU+/B3z5hgnprP+i8NqFQiEQFbYg4=;
+        b=XNbhDRBXTaqC0Rm9RPdsQRkFFO8b77RLwYVMz3nb48fyF3duSGevm9e1TjCZFzWc/J
+         nsGezck8niuuhro6tAjymnLnEYnCRu7sYoDpN6vZ4kDPKp2YrndTEsMc7EXAKHl9i2cV
+         VdNxcUDEXm+XMgploB2a04mVWfDq6VTTIWSXJ8EdtVOfY1Z+Sobr53tViwUiZAR1jJBM
+         3D3Ko/oTe/DTCnNxPVytLNPxAuBi9G/+CSYdgn6FHEjMA7YJLWjyuu7rLlKKkeoV0zae
+         CBXfmdjk6Qr0yddPYRsBjdQpBzemd8Jm9tTW2kPCDSsJF5eKWp2iXpmv7Zj2ibyPq6qt
+         T2JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788515537; x=1789120337;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3TRln1//k3zoErYU+/B3z5hgnprP+i8NqFQiEQFbYg4=;
+        b=XlBN9wTB5sDwJxSHdPJ4EB4YHU6FJBI0MOIF3eT9gcnHuIijhWGJNFEZZ+Vya6tf0E
+         EEWMjaDu0AWTWTaS3aLRk7+ZlHuf52jRqDJbs9/BDuqR0GzFUzV4lWeRtuH2ZK7JD0Hq
+         NVLffDcawTKHHnfdIX6fqO/agiOx/IesPruzn1NZZ8fgPQRXDgV8lXdeHPKvkXrqngVO
+         THnu5ntX+uFKp+2ZU5e0rRjnJFihg62jVN1wGe0XJRC8mH9QXaVk5Td9GdXCJGDU+WLW
+         2rWEj49FPdZB9eMth5cT2PBWgCTd3k4rYjuWbCi9sqevBS0xtehwq/9AAVzcfcCLWvpY
+         oaoA==
+X-Forwarded-Encrypted: i=1; AKwUvBxaUNYihefrrdDESah0VJfdvyY4ytCvCJZBQlZQUoAXX0tqLwCu8Zmng2JdoTwSmF8EijCQmL8ZCrRG@lists.linux.dev
+X-Gm-Message-State: AFuF++nskmuAXsaa+ZIPZA8I71J9WUgWEY+k+W2oeA+ZFHa581OFkrZO
+	x3g1yEqHBFm3yU9IveySpGCJgiC2GDY+gbDczSOja+NuGS9hPglS8utWQXis3AmjBDI=
+X-Gm-Gg: AYBFou3ct7w+YoXmEx8M6j3d8/5jR4dSKXcJTjOGCJEBLJvxIjOnNOWyxHHPJro6voC
+	n7zd3LDbvNh48EnIqDWVtz8zC85fVYIZ77YTgxJtSGjJZaA6Vt5/u6EY7Dd6+HkQ5adcnp53H6G
+	puDp8woTgJZ9XOP49Yx7jihchmS1dIGwVz/uG3HFXEB9ToWqQavbJgruBqFLfPuA/gXR9+E3l7B
+	KdY6q+BWVlxRAQh3OcLhWnfuwix9DXrb27f+hLMhj9j9mRwVzHPl49a9uqoKpOO4INW3kPWpEEr
+	Ib52JdGre4KDgqou5EZp8fCB1pWYWn55L09xzpYdv5zP4GCe/HmYkTjd1q2awksTf4EnST9CcJY
+	GcDk/mRSXJsy62SBO1Lq/7z0/zeA9qihDHHvuiVE0u/Qnc8AC8WNupukrh8wK7mJ2Yv+ibx0OjV
+	Ng/vN+nxuHasSCel/kAUoh0MfNZ+JB4Z51zsY6ec8qeR7en0hyQpTjAfrkYhz3oz2mSIsLdEMEs
+	R5GpNyIMNspBaxqGG4=
+X-Received: by 2002:a05:6402:51d0:b0:6a1:2400:baea with SMTP id 4fb4d7f45d1cf-6a7e8d8ded1mr1586216a12.10.1788515536608;
+        Fri, 04 Sep 2026 02:52:16 -0700 (PDT)
+Received: from localhost ([208.127.45.21])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a7e6bee8e8sm1003148a12.23.2026.09.04.02.52.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 02:52:16 -0700 (PDT)
+Date: Fri, 4 Sep 2026 11:52:12 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Alexey Kardashevskiy <aik@amd.com>, 
+	Xu Yilun <yilun.xu@linux.intel.com>, ankita@nvidia.com, linux-coco@lists.linux.dev, 
+	linux-pci@vger.kernel.org, driver-core@lists.linux.dev, Aaron Tomlin <atomlin@atomlin.com>, 
+	Alistair Francis <alistair.francis@wdc.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Daniel Gomez <da.gomez@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Donald Hunter <donald.hunter@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Samuel Ortiz <sameo@rivosinc.com>, 
+	Saravana Kannan <saravanak@google.com>, Will Deacon <will@kernel.org>, 
+	"Fontenot, Nathan" <Nathan.Fontenot@amd.com>, rick.p.edgecombe@intel.com, yilun.xu@intel.com, 
+	Leon Romanovsky <leon@kernel.org>, Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security
+ Protocol (TDISP)
+Message-ID: <apqSAQykEK3MF9AO@FV6GYCPJ69>
+References: <20260705220819.2472765-1-djbw@kernel.org>
+ <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com>
+ <amk7Xzm5jmz+6SPJ@ziepe.ca>
+ <anFE7m164AmchTy/@yilunxu-OptiPlex-7050>
+ <20260805005533.GB28508@ziepe.ca>
+ <apeF/peEzdxvKeWR@yilunxu-OptiPlex-7050>
+ <2e721509-0aee-47ee-b17a-688876e02f74@amd.com>
+ <20260902150125.GD2890729@ziepe.ca>
+ <apl39vOiMPP7VloW@wunner.de>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <apl39vOiMPP7VloW@wunner.de>
 
-The SMCCC firmware driver now creates the arm-smccc platform device and
-instantiates the CCA RSI auxiliary devices once the RSI ABI is discovered.
-The arm64-specific arm-cca-dev platform device stub is therefore no longer
-needed.
+Thu, Sep 03, 2026 at 03:36:54PM +0200, lukas@wunner.de wrote:
+>[+cc Jonathan, start of thread is here:
+>https://lore.kernel.org/all/20260902150125.GD2890729@ziepe.ca/
+>]
+>
+>On Wed, Sep 02, 2026 at 12:01:25PM -0300, Jason Gunthorpe wrote:
 
-However, userspace has used the arm-cca-dev platform device to detect Arm
-CCA Realm guests [1]. Removing it without a replacement would break that
-detection and would also leave userspace depending on kernel device-model
-details.
 
-Add /sys/firmware/cca/realm_guest as a stable, architecture-provided ABI
-for detecting whether the kernel is running as an Arm CCA Realm guest. The
-file returns 1 in Realm world and 0 otherwise, similar to the existing s390
-/sys/firmware/uv/prot_virt_guest interface for protected virtualization
-guests.
+[..]
 
-Remove the dummy arm-cca-dev registration now that userspace has a
-dedicated CCA Realm guest indicator, and document the new ABI in
-Documentation/ABI/testing/sysfs-firmware-cca.
 
-[1] https://lore.kernel.org/all/4a7d84b2-2ec4-4773-a2d5-7b63d5c683cf@arm.com
+>
+>> I've asked Jiri Pirko to work on
+>> the PCI evidence uAPI based on his deep netlink experience
+>
+>netlink isn't well suited to transport large blobs because the nlattr
+>len is u16.  (The len of the enclosing nlmsg is u32, which is sufficient.)
+>
+>Previous approaches, including the one proposed by Dan in this series,
+>work around the problem by splitting the blob into a sequence of nlattrs.
+>I think we should instead extend the netlink protocol with 32-bit "jumbo"
+>attributes.
+>
+>I suggest we reserve bit 13 of nla_type as NLA_F_JUMBO and use the
+>the first 4 bytes after the struct nlattr header as length (if the
+>jumbo flag is set).
+>
+>
+>A second problem is that the size of a socket buffer's linear data
+>is limited.  Also, copying the blob into the nlmsg is a bit wasteful
+>and we'd want zero copy instead.  The solution I've come up with is
+>to attach the pages backing the blob as fragments to the skb.
+>It's very simple, overcomes the skb size limitation and allows for
+>zero-copy:
+>
+>https://github.com/l1k/linux/commit/6e73bb999128
+>
+>That commit is from January and the time I've been able to devote
+>to this has since been limited as my employer prioritized various
+>AER feature gaps and fixes.
+>
+>I worked on this for native PCI device authentication, which faces
+>the same netlink blob issue as TSM-mediated authentication.
+>Both should use the same uABI for evidence exposure.  Additionally,
+>native device authentication may be used by non-PCI buses such as
+>ATA or SCSI.  The uABI should work for those use cases as well.
 
-Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
----
- Documentation/ABI/testing/sysfs-firmware-cca | 10 +++++
- drivers/firmware/arm_rmm/rsi.c               | 42 +++++++++++++++-----
- 2 files changed, 42 insertions(+), 10 deletions(-)
- create mode 100644 Documentation/ABI/testing/sysfs-firmware-cca
+Not sure if netlink as actually the best fit for this purpose,
+for large blob transfers ioctl-based iface is probably much more
+convenient. I'm working on a uapi framework that make the best of
+netlink and takes it over to a fd-based ioctl. I call it CTLV, here's
+a link to an early pre-RFC draft:
 
-diff --git a/Documentation/ABI/testing/sysfs-firmware-cca b/Documentation/ABI/testing/sysfs-firmware-cca
-new file mode 100644
-index 000000000000..bf177d636b92
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-firmware-cca
-@@ -0,0 +1,10 @@
-+What:		/sys/firmware/cca/realm_guest
-+Date:		May 2026
-+Contact:	Linux ARM Kernel Mailing list <linux-arm-kernel@lists.infradead.org>
-+Description:	Read-only. Indicates whether the kernel is running as an
-+		Arm Confidential Compute Architecture (CCA) Realm guest.
-+
-+		The value is one of:
-+
-+		0: the kernel is not running as a Realm guest
-+		1: the kernel is running as a Realm guest
-diff --git a/drivers/firmware/arm_rmm/rsi.c b/drivers/firmware/arm_rmm/rsi.c
-index 2dd69febedbd..52f40256bd78 100644
---- a/drivers/firmware/arm_rmm/rsi.c
-+++ b/drivers/firmware/arm_rmm/rsi.c
-@@ -9,12 +9,15 @@
- #include <linux/swiotlb.h>
- #include <linux/platform_device.h>
- #include <linux/arm-rsi-cmds.h>
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
- 
- #include <asm/io.h>
- #include <asm/mem_encrypt.h>
- #include <asm/pgtable.h>
- 
- static struct realm_config config;
-+static struct kobject *cca_kobj;
- 
- unsigned long prot_ns_shared;
- EXPORT_SYMBOL(prot_ns_shared);
-@@ -182,17 +185,36 @@ void __init arm64_rsi_init(void)
- 	static_branch_enable(&rsi_present);
- }
- 
--static struct platform_device rsi_dev = {
--	.name = "arm-cca-dev",
--	.id = PLATFORM_DEVID_NONE
-+static ssize_t cca_is_realm_guest(struct kobject *kobj,
-+		struct kobj_attribute *attr, char *buf)
-+{
-+	return sysfs_emit(buf, "%d\n", is_realm_world());
-+}
-+
-+static struct kobj_attribute cca_realm_guest =
-+	__ATTR(realm_guest, 0444, cca_is_realm_guest, NULL);
-+
-+static const struct attribute *cca_realm_attrs[] = {
-+	&cca_realm_guest.attr,
-+	NULL,
- };
- 
--static int __init arm64_create_dummy_rsi_dev(void)
-+static int __init realm_sysfs_init(void)
- {
--	if (is_realm_world() &&
--	    platform_device_register(&rsi_dev))
--		pr_err("failed to register rsi platform device\n");
--	return 0;
--}
-+	int ret;
- 
--arch_initcall(arm64_create_dummy_rsi_dev)
-+	if (!static_branch_unlikely(&rsi_present))
-+		return 0;
-+
-+	cca_kobj = kobject_create_and_add("cca", firmware_kobj);
-+	if (!cca_kobj)
-+		return -ENOMEM;
-+
-+	ret = sysfs_create_files(cca_kobj, cca_realm_attrs);
-+	if (!ret)
-+		return 0;
-+
-+	kobject_put(cca_kobj);
-+	return ret;
-+}
-+device_initcall(realm_sysfs_init);
--- 
-2.43.0
+https://github.com/jpirko/linux_mlxsw/commits/wip_ctlv_pre_rfc_draft1/
 
+What are the benefits over generic netlink:
+
+- No networking in the dependency chain. No netlink sockets,
+  no CAP_NET_ADMIN, and no network namespace semantics to reason about
+  for a device that has none.
+
+- One character device per registered instance, not one global family.
+  Access control is the file: udev rules, ACLs, an fd passed into
+  a container.
+
+- Events per open file description, not a multicast group.
+  Each descriptor has its own subscriptions and queue, and an overflow
+  is reported in-band: the next read returns an event-overflow record
+  naming the first and last sequence lost and how many.
+
+- Large payloads are referenced, not copied. A blob attribute carries
+  a user VA, a memfd and offset, or a dma-buf fd. Nothing big travels
+  through the message.
+
+- One YAML specification, everything generated from it: kernel metadata,
+  UAPI headers, userspace bindings and the reference documentation.
+  Introspection is answered out of the same metadata the validator
+  enforces, so a device cannot advertise an operation it will refuse.
+  A checked-in ABI snapshot makes any wire change a reviewable diff.
+
+- Family inheritance. A family inherits another's operations and fills
+  declared extension points. The effective schema is resolved per
+  device and the chain is exposed to user. A shared core with
+  per-driver extensions is declared once, and both attributes and
+  operations can be extended.
+
+- Introspection is per-device and live. The framework answers three
+  queries on every device: the family chain, one entry per published
+  operation, and any operation's full attribute tree with its bounds
+  and limits.
+
+  The answer is what this device accepts right now, including what
+  a vendor extension added to an inherited operation and whether an op
+  is currently disabled, and op-changed events carry the generation
+  ops-dump reports, so a dump can be ordered against a change.
+  GETFAMILY and GETPOLICY describe a family statically - there is
+  no device in that model to ask.
+
+- Fragmented queries are built in, with a consistency check.
+  A continuation carries the generation it started from, and if
+  the answer changed underneath it is refused with ESTALE,
+  reporting the expected and the current generation instead of
+  reassembling a torn reply.
+
+- Attributes are 8-byte aligned. CTLV_ALIGNTO is 8, so
+  a 64-bit payload is naturally aligned and there is no per-family
+  padding to remember - netlink's 4-byte alignment is why
+  nla_put_64bit() needs an explicit NOP pad attribute.
+
+- Cheaper round trip. A one-attribute query measured 2.6x cheaper
+  than a genetlink one in the same guest - a debug kernel.
+
+- Async operations using io_uring are planned as a follow-up extension.
+
+The framework owns validation, schema resolution, blob acquisition,
+reply serialization and the event queues. All getters and putters
+are generated helpers. A family implements semantics only, and
+the aim is to make that hard to get wrong.
+
+[..]
