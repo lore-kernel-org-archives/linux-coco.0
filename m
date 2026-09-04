@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB15A422556
-	for <linux-coco@lists.linux.dev>; Fri,  4 Sep 2026 21:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9E23B95F9
+	for <linux-coco@lists.linux.dev>; Fri,  4 Sep 2026 22:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788559203; cv=none; b=FzJ4uZDF42jNP4SaHa69CCArX2hsdp6LsjRNlD2h6TZm2y0766oNSpV+ehYbHZfXbRbDSD7FgxIB8ar3lLXdBsT8sCklKcX4sxfVuGszDgkr3AXso0p5YJtGXBPgd2L5Xssu1rNeFjFODwt6U5AH31ETIpYoqRD8EqDkK+rzEWQ=
+	t=1788559212; cv=none; b=Nxuqwv6GmMzStGs8bSNrJtHWhKupqDzlTSdaox93/YtSdA9I+TNI7vlp+Z36Qlw6mGuz4h6SvzInVeCv0JaEClaixSzpigZkEgNgINyFp111KtG6up4Au88kQlUw8L0LYAfprsTCza+4qB76OsV5B8SfKIf74yrN4z05fkW9Vi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788559203; c=relaxed/simple;
-	bh=1IbG4LD9mi4GQBxkBOPKkSIHANKh6JaOLeeR3c2M9/w=;
+	s=arc-20240116; t=1788559212; c=relaxed/simple;
+	bh=rFBjumOEfR3sI+SrOouN6uOyXLX1L3bxGoKNn3A0B08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=clRTAh2UsQRmlziXQGe/mHOt1OGJnXV54Leuyupt5+9sIceRA5VTMhGup5oE35RpuoLX7GBcOVbce1J+oHj00xBlW5OYanXqd/4rt/53QkvBVAZ57N99s5SG1DwJEPXMDuOti+TR0HImeXQOmNh7AiYrq9blOFzUt7j2pUHuBYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jETkHPjr; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=Ce3SS45VM4vr7scuh34sZotDuzyNUgKUrkKg6hfN8ykTL7w++vBXzr7mpNmZeTgJ41wL/to6T8W4T3f+LcOO4t0nwsiutLhuU3BuVBDgveVZxk1GknGkPlROg6kS1T3bmUOULWDCM6o2NTlvOnKMpJOHqZ34XUPiULHDhk4SK3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LkDJqk35; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jETkHPjr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LkDJqk35"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788559192; x=1820095192;
+  t=1788559203; x=1820095203;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=1IbG4LD9mi4GQBxkBOPKkSIHANKh6JaOLeeR3c2M9/w=;
-  b=jETkHPjr8+5HAZG5xwy0b0sSwS6Qgb2sO44RWDnV9a2CrrcYYrns3owI
-   JM2PxisYWdJG8HeyTF48T/tghFBx6Zmv8K4XGDgYUbk4y83R1v559haNZ
-   sZAZ+un77UTX2BfITxfK3uk40wGm0gRRUjx0dTL6bMHEkiVMbqlsyo75P
-   y4qmitBLIT/yMuMEbngGU3WBMC8kN5VqhKe6ZVIFxMZx3/1FTaLFJdnSk
-   1XXLA6nVgCymRD4lW8ULpNd3iE+G4IpwRvZgtIfeekmH4SJp742KhJEdo
-   7A9pPZ/3mSryOLAIRKLkuBCFp3b8bKRhK4GJauhys2pNDW9IftTTY234H
-   Q==;
-X-CSE-ConnectionGUID: O8ec5NFQTcKtt2JnedjuHw==
-X-CSE-MsgGUID: V4LfwvhcQki26pc7lmh5YQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11896"; a="100224875"
+  bh=rFBjumOEfR3sI+SrOouN6uOyXLX1L3bxGoKNn3A0B08=;
+  b=LkDJqk35gAhHZi/Tc1yORq9RYTLeBaSI8zm1DcSiW70eX5Ob4khz/Zu3
+   Deq3J4EH5PEQ87bhw95P0PwfrFYHJktc84dEgbpvxt77y+mOoadgWnwCm
+   LdxHa9ioo63QqYGKA760uw9QkuTiwmrkrX0J69/ESOFmOJYR/PRvjLMLk
+   fKgf/bdxtgbl/oaU66mA1fJGHP/KqHzFxltdcd04GJS4Vjpn0DZUQMsjP
+   ZPMGFYP6n0Erll+uxdVf9cnuUDQMpfYsyoT0VgNtQXer3cwsrXHs+HxQv
+   ycASD/NAFW7z5MdTRORbnDibOYFl162C9xjnZewHmbRGN32kuZNskOYHA
+   A==;
+X-CSE-ConnectionGUID: vyaGBtdwQby4R93hm0MydA==
+X-CSE-MsgGUID: 4OOoDY+2SlSA+DebZhhNAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11896"; a="100224883"
 X-IronPort-AV: E=Sophos;i="6.25,262,1779174000"; 
-   d="scan'208";a="100224875"
+   d="scan'208";a="100224883"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
   by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 14:59:24 -0700
-X-CSE-ConnectionGUID: HBvbopqNQAOupvHx5CbDpA==
-X-CSE-MsgGUID: oEwJIpP9SVqFk7+4+5aUSw==
+X-CSE-ConnectionGUID: 7Osb9NKzRouxTvfOXDAo2A==
+X-CSE-MsgGUID: sarni4mRSA6WuEfF9Xm9ew==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,262,1779174000"; 
-   d="scan'208";a="270675052"
+   d="scan'208";a="270675056"
 Received: from rpedgeco-desk.jf.intel.com ([10.88.27.135])
   by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 14:59:24 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
@@ -67,10 +67,10 @@ To: bp@alien8.de,
 	sohil.mehta@intel.com
 Cc: rick.p.edgecombe@intel.com,
 	Hongyu Ning <hongyu.ning@linux.intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>
-Subject: [PATCH v11 10/11] Documentation/x86: Add documentation for TDX's Dynamic PAMT
-Date: Fri,  4 Sep 2026 14:58:40 -0700
-Message-ID: <20260904215841.303070-11-rick.p.edgecombe@intel.com>
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH v11 11/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
+Date: Fri,  4 Sep 2026 14:58:41 -0700
+Message-ID: <20260904215841.303070-12-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260904215841.303070-1-rick.p.edgecombe@intel.com>
 References: <20260904215841.303070-1-rick.p.edgecombe@intel.com>
@@ -82,71 +82,162 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Expand TDX documentation to include information on the Dynamic PAMT
-feature.
+The Dynamic PAMT (DPAMT) get/put helpers use a global spinlock to
+serialize all refcount updates and SEAMCALL invocations. This gives correct
+behavior for concurrent callers, but leads to contention. It is especially
+bad from the KVM side, which is designed to allow faulting in EPT under a
+shared lock. With the global spinlock, not only is the lock an exclusive
+one, but it is for all TDs instead of just a single one.
 
-The new section explains PAMT support in the TDX module and how Dynamic
-PAMT affects the kernel memory use.
+But taking the global lock each time is actually unnecessary. Only the 0->1
+and 1->0 refcount transitions actually need the lock (to pair with
+SEAMCALLs that actually add and remove with the DPAMT pages). The common
+case of incrementing or decrementing a non-zero refcount can be done
+locklessly.
 
-Some of the docs verbiage was provided by Dave Hansen (see link). AI was
-used under supervision to review the docs.
+So create a fast and slow path. Check the refcount outside the lock and
+only take it for the slow path (0->1 and 1->0 transitions).
+
+On the put side make the refcount adjustment and lock taking atomic so if
+a 'get' happens between them, it doesn't cause the DPAMT to be freed
+incorrectly. On the get side there is no technique for doing the refcount
+adjustment and lock atomically, so check the refcount again inside the
+lock.
+
+AI was used under supervision to collect/apply feedback, review code and
+workshop logs. It assisted in identifying/evaluating the stale
+conditionals for the races resolved from the atomic_dec_and_lock() change.
+Separate from atomic_dec_and_lock() fallout, it suggested to change
+atomic_inc() to atomic_set(pamt_refcount, 1) in the put error path for the
+sake of being more precise, which Kiryl had also suggested in the past.
+The model also suggested updated comments following the
+atomic_dec_and_lock() change based on some directed prompting. The
+comments were subsequently edited or further prompted for fine tuning.
 
 Based on a patch originally by Kiryl Shutsemau.
 
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
 Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Vishal Annapurve <vannapurve@google.com>
 Acked-by: Sohil Mehta <sohil.mehta@intel.com>
-Link: https://lore.kernel.org/all/8e40862e-891a-4cad-8bb8-06ad25ad6061@intel.com/
 ---
-v11:
- - Drop docs about kernel arg since arg itself was removed. (Dave)
-
 v10:
- - Updated verbiage from Dave, but unify 4k to 4KB to be consistent with
-   the rest of the series.
+ - Change "Dynamic PAMT" to "DPAMT" in comments. (Dave)
 
 v7:
- - Spell out PAMT acronym (Binbin)
- - Drop Assisted-by tag and cover AI use in log (Dave)
- - Add info about kernel parameter
----
- Documentation/arch/x86/tdx.rst | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ - Drop Assisted-by tag and cover AI use in log. (Dave)
+ - Move to end of the series.
+ - Use atomic_inc_not_zero() in this patch inside the spin_lock(), as
+   suggested on the non-optimized patch by (Dave).
 
-diff --git a/Documentation/arch/x86/tdx.rst b/Documentation/arch/x86/tdx.rst
-index 3303499ad4c6f..a36ea2bd4301d 100644
---- a/Documentation/arch/x86/tdx.rst
-+++ b/Documentation/arch/x86/tdx.rst
-@@ -200,6 +200,27 @@ reflects the TCB of the currently running TDX module and therefore
- changes after an update. By contrast, TEE_TCB_SVN reflects the TCB at TD
- launch time and is not affected.
+v6:
+ - Fix "tdx_pamt_add()" typo to "tdx_pamt_get()" in lost-race comment
+ - Fix error path bug: set ret = -EIO and use WARN_ON_ONCE() instead of
+   pr_err() for unexpected PAMT.ADD failures (Sean)
+ - Use "set the refcount 0->1" wording to match atomic_set() usage
+ - Wrap comments to 80 columns
+ - Switch to atomic_dec_and_lock() and remove handling of races that are
+   no longer needed as a result. Adjust comments as appropriate. (Dave)
+ - Adjustments from dropping error helper patches
+---
+ arch/x86/virt/vmx/tdx/tdx.c | 44 ++++++++++++++++++++++++-------------
+ 1 file changed, 29 insertions(+), 15 deletions(-)
+
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 063574ed86254..7891e42b27508 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -2171,28 +2171,41 @@ int tdx_pamt_get(kvm_pfn_t pfn, struct tdx_pamt_cache *cache)
+ 	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
+ 		return 0;
  
-+Dynamic PAMT
-+------------
-+
-+The Physical Address Metadata Table (PAMT) is metadata in which the TDX
-+module keeps data about each physical page (think struct page). Space
-+for it is allocated by the VMM, consumes up to about 0.4% of system
-+memory and needs to be supplied to the TDX module when the TDX module is
-+first loaded.
-+
-+Dynamic PAMT is an add-on feature that allows a VMM to dynamically
-+allocate the part of the PAMT which tracks 4KB pages. This reduces the
-+amount of memory that TDX consumes while TDs are not in use.
-+
-+When Dynamic PAMT is in use, dmesg shows it like::
-+
-+  [..] virt/tdx: Enable Dynamic PAMT
-+  [..] virt/tdx: 10092 KB allocated for PAMT
-+  [..] virt/tdx: TDX-Module initialized
-+
-+Dynamic PAMT is enabled automatically if supported.
-+
- TDX Interaction to Other Kernel Components
- ------------------------------------------
+-	ret = alloc_pamt_array(pamt_pages, cache);
+-	if (ret)
+-		return ret;
+-
+ 	dpamt_refcount = tdx_find_dpamt_refcount(pfn);
  
+-	spin_lock(&dpamt_lock);
+-
+ 	/*
+ 	 * If the DPAMT entry is already added (i.e. refcount >= 1),
+ 	 * then just increment the refcount.
+ 	 */
++	if (atomic_inc_not_zero(dpamt_refcount))
++		return 0;
++
++	ret = alloc_pamt_array(pamt_pages, cache);
++	if (ret)
++		return ret;
++
++	spin_lock(&dpamt_lock);
++
++	/*
++	 * Unlike tdx_pamt_put() which uses atomic_dec_and_lock() to
++	 * atomically handle the 1->0 transition, the get side has no
++	 * equivalent combined primitive for 0->1. Recheck under the
++	 * lock since another get may have already done the 0->1
++	 * transition after both saw atomic_inc_not_zero() fail.
++	 */
+ 	if (atomic_inc_not_zero(dpamt_refcount))
+ 		goto out_free;
+ 
+-	/* Try to add the PAMT page and take the refcount 0->1. */
+ 	tdx_status = tdh_phymem_pamt_add(pfn, pamt_pages);
+ 	if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS)) {
+ 		ret = -EIO;
+ 		goto out_free;
+ 	}
+ 
++	/*
++	 * The refcount is zero, and this locked path is the
++	 * only way to increase it from 0->1.
++	 */
+ 	atomic_set(dpamt_refcount, 1);
+ 	spin_unlock(&dpamt_lock);
+ 	return 0;
+@@ -2217,17 +2230,13 @@ void tdx_pamt_put(kvm_pfn_t pfn)
+ 
+ 	dpamt_refcount = tdx_find_dpamt_refcount(pfn);
+ 
+-	spin_lock(&dpamt_lock);
+ 	/*
+ 	 * If there is more than 1 reference on the DPAMT entry, don't
+ 	 * remove it yet. Just decrement the refcount.
+ 	 */
+-	if (atomic_read(dpamt_refcount) > 1) {
+-		atomic_dec(dpamt_refcount);
+-		goto out_unlock;
+-	}
++	if (!atomic_dec_and_lock(dpamt_refcount, &dpamt_lock))
++		return;
+ 
+-	/* Try to remove the pamt page and take the refcount 1->0. */
+ 	tdx_status = tdh_phymem_pamt_remove(pfn, pamt_pages);
+ 
+ 	/*
+@@ -2237,10 +2246,15 @@ void tdx_pamt_put(kvm_pfn_t pfn)
+ 	 * failure indicates a kernel bug, memory is being leaked, and
+ 	 * the dangling DPAMT entry may cause future operations to fail.
+ 	 */
+-	if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS))
++	if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS)) {
++		/*
++		 * atomic_dec_and_lock() already decremented it to 0,
++		 * but the DPAMT entry still exists since REMOVE failed.
++		 */
++		atomic_set(dpamt_refcount, 1);
+ 		goto out_unlock;
++	}
+ 
+-	atomic_set(dpamt_refcount, 0);
+ 	spin_unlock(&dpamt_lock);
+ 	free_pamt_array(pamt_pages);
+ 	return;
 -- 
 2.55.0
 
