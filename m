@@ -1,148 +1,204 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB61446859;
-	Fri,  4 Sep 2026 10:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1452D445AC6;
+	Fri,  4 Sep 2026 10:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788516183; cv=none; b=hUX0zzrBpkXbK9diRSRMuUqqA/pxi/SPtuulTcLWWr64nX34TbI1Z4OJ6FpuJv5oLxQ9xFHSGQxu1+2x150uXMQVETpge9+ceyTXBGT6ibD4ynhRTp/Ee/3+BIy+OFFYVEb6St05yv272h5JoJU/BUO1FH0jfTPoqV1bknhSIdo=
+	t=1788518103; cv=none; b=s9LU4DN6J6eugbuKGxynp3SypZxujqmYnwRSqjOgskca7CF8p4rpNxlEBBRovJw1vsdnE+sSBnTZBTyvEE+87QRAWF2Rq+P8OeNtyfds4I1CsjEA7M7o4+t70y8N1QUf3D+EQn7deq6TemCKlorcnLZ1WQQRSMek/jmeEFN1gts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788516183; c=relaxed/simple;
-	bh=loaZ+JFcG+YDWiyKv2pV3XAW34Bn6DrPjvPw7FukFis=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kLiOR2Ds22I6QCk/TvZuxmCsT3grvoffIqgQ63M1i96xVDRXULqk8y88mIaBuqihxxl2u1qg710CvJWI3f/8SZfZ/rEV/uprQurYlAUFekThU2IU95G3zU/RgsUG534HVoEBkp4Wr8EJuj69VarZY7SlcP/AlQZ487DygqFqu68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hjDjaDYV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788518103; c=relaxed/simple;
+	bh=IiqIIXpFTZchANpAN7BLielx1XgzcWqLsJ7ouGx+x/4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g/ne5rb6IGnvwuTRtbykMvsMXXedWAcUJUS9ZXZbV1MNwgcJhvpiiRjAk9WfwVOpwLTDGet17Wi7r436F6uc5/AV+vmez7sNO8F8ULL5vEktZjwyDWpvgJnnZUh9rojk2WhvSWuj6TSXgs1L7p74zBVjPt60dm5zC5Pfb3hynkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nvvEVimK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hjDjaDYV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289D31F00A3E;
-	Fri,  4 Sep 2026 10:02:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nvvEVimK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56471F00A3D;
+	Fri,  4 Sep 2026 10:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788516181;
-	bh=tie3/C0PVrS1CpLSqsIk6C5A879AcuKONm6oB8gQBfs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hjDjaDYVxdvm9qd40cjkEQwK/pP/t1zPYfE7eGdI877A2/idGoHsau16XMRI2lmH/
-	 FRvP/V1xzlPzY6KHbC9F/PS6glRTXp8eQsaMaB3Mi9nZXiBsSC/EZby9z/ZIe+HN8z
-	 hV8FB6e2OKbuqOfHwI8B3A9ppxlxxwql9PeLMqNmdEq27OCgqS4p0GrM9P7Btya5ji
-	 eTgH3LcPK9S9iac+Z8dQmDMgi+eXKosOxMCx4aWrPngZRnjOpcVWeO3jed4XCMqW97
-	 7HBuABzUBQyssJ7+PcRfG7h4+Dqom+tZ7rnzFYr3bNM3DCm72vXZ9E2ybCOAG7I3H+
-	 PX6OzaYr+d6AQ==
-Date: Fri, 4 Sep 2026 11:02:56 +0100
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Sudeep Holla <sudeep.holla@kernel.org>, linux-coco@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	s=k20260515; t=1788518102;
+	bh=tyPYU1f1yklcgFnqxEkox2QMD90Yx5NyCT5BxOVddLo=;
+	h=From:To:Cc:Subject:Date;
+	b=nvvEVimKQovlw/06o8Odf76g8c0JNyjUfG4n7w7PaFjLWkNhGidX2u5aPBzTUcMYz
+	 R/qSFbRTY1SGFNlueur5Bp2XcbNRc85DbCODRU2U/z/dggMgISZ6rzScgh1wlGlxJC
+	 EbmgDEqK4GXtCH6NAVFVdFU4rA0BWsgecf93Ly6B9yYXVPsXxlRAoqoiKedrONN+s4
+	 +4qwUEk5HnDcpy3v1jkH9hMrhMbISi+nANzgwLn8xhR95uYthQx3SODQ0dm8TBO5g+
+	 w5yJtg64+01BGOoBm0pt31v7xiAVCRDnWuP25zqvz8Pk0VjJ3ZEmLkwlMRzqTYcuEK
+	 ZSgMltNl1yLOw==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	Catalin Marinas <catalin.marinas@arm.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Marc Zyngier <maz@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
 	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Andre Przywara <andre.przywara@arm.com>
-Subject: Re: [PATCH v9 1/7] firmware: smccc: Add an Arm SMCCC bus
-Message-ID: <20260904-keen-fiery-fulmar-702fb3@sudeepholla>
-References: <20260805063255.1638614-1-aneesh.kumar@kernel.org>
- <20260805063255.1638614-2-aneesh.kumar@kernel.org>
- <178794567779.4159892.8785590655735217125.b4-review@b4>
- <yq5ay0diyavw.fsf@kernel.org>
- <20260903125718.GI4157646@nvidia.com>
- <yq5av78mxv0j.fsf@kernel.org>
- <20260903154626.GL4157646@nvidia.com>
- <20260903-nonchalant-capable-parrot-539c8b@sudeepholla>
- <20260903182152.GN4157646@nvidia.com>
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH v6 0/9] coco: guest: Enforce host page-size alignment for shared buffers
+Date: Fri,  4 Sep 2026 16:04:43 +0530
+Message-ID: <20260904103452.1197239-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903182152.GN4157646@nvidia.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 03, 2026 at 03:21:52PM -0300, Jason Gunthorpe wrote:
-> On Thu, Sep 03, 2026 at 05:18:16PM +0100, Sudeep Holla wrote:
-> 
-> > Oh yes, we need this whatever you term as "duplication". I would argue
-> > against terming it as duplications as if you look at the various SMCCC
-> > based specification, we have zero consistency in how the VERSION command
-> > is expected to work.
-> 
-> Okay, then that pretty much settles it. Nothing to do
-> 
-> > > Missing a check means FW upgrades might become Linux breaking. 
-> > 
-> > Are you referring to the SMCCC bus code or RSI in particular above. I don't
-> > see any issue with SMCCC bus code check as that is the least we can do and
-> > must not change with future versions of the firmware as well.
-> 
-> Just in general, SMCCC drivers have to do something smart with the
-> version.
-> 
-> Like, is this OK:
-> 
-> #define ARM_SMCCC_TRNG_MIN_VERSION	0x10000UL
-> 
-> static inline bool smccc_probe_trng(void)
-> {
-> 	struct arm_smccc_res res;
-> 
-> 	arm_smccc_1_1_invoke(ARM_SMCCC_TRNG_VERSION, &res);
-> 	if ((s32)res.a0 < 0)
-> 		return false;
-> 
-> 	return res.a0 >= ARM_SMCCC_TRNG_MIN_VERSION;
-> }
-> 
-> ?
-> 
+Hi,
 
+This series tightens the alignment requirements for buffers that are shared
+between confidential-computing guests and the host.
 
-So it will be specific to each FID range, then what is smart about
-generic SMCCC logic then ?
+When a guest runs with private memory, buffers shared with the hypervisor
+are not only accessed by the guest. They are also accessed by the host
+kernel, and the host may manage the corresponding shared/private state at a
+granularity larger than the guest page size.
 
-We already have
-	if (ret != SMCCC_RET_NOT_SUPPORTED)
-		arm_smccc_device_register(..)
+This matters for CCA systems where the Realm stage-2 mappings managed by
+the RMM can still operate at 4K granularity, while the non-secure host may
+manage the IPA state change at a larger page size, for example 64K. In that
+case, allowing a guest to convert and share only a 4K subrange of a
+host-managed granule is unsafe.
 
-Not sure what else can be done.
+Architectures such as Arm can detect incorrect accesses to Realm physical
+address space PFNs through GPC faults. However, relying on that as the only
+line of defence is fragile and can still lead to kernel crashes. The risk
+is especially visible for shared buffers that are later mmapped into
+userspace, such as guest_memfd or dma-buf backed allocations. Once
+userspace can access the mapping, the kernel cannot guarantee that
+applications will only touch the intended 4K region rather than the whole
+host page mapped into their address space. Those userspace addresses may
+also be passed back into the kernel and accessed through the linear map,
+resulting in a GPC fault.
 
-> It means you can never publish a version 2 that is ABI breaking
-> because linux doesn't check for that. Was that ARM's intention with
-> the version API? It's basically a completely pointless check that
-> doesn't effectively do anything.
+To avoid this, shared buffers must satisfy two constraints:
 
-I didn't get that. The example above checks for minimum TRNG version,
-so it won't break in any way for v2. What am I missing ?
+  - the address must be aligned to the CoCo shared-granule size
+  - the size must be a multiple of that granule size
 
-> 
-> My broader, more general point is that if SMCC is being made into a
-> discoverable bus, that's great, but it would be even better if ARM
-> could find a way to progmatically enumerate all the ABIs present on
-> the SMCC interface to populate the bus. That would necessarily include
-> some consistent treatment of versioning for consistent
-> interoperability.
+The series adds generic helpers for this:
 
-Sure, it can be tried for future SMCCC based specs. We can't ignore the
-inconsistency that exists in the currently used SMCCC based specs. So it
-can't be ideal as you prefer I am afraid.
+  - mem_cc_shared_granule_size()
+  - mem_cc_align_to_shared_granule()
 
-> 
-> > If lower is also set at v3.0, then I would argue it is firmware upgrade
-> > issue expecting old kernel with old RSI version supported to work. If
-> > that returns v2.0, the driver must work IIUC. Aneesh, hopefully I got this
-> > right ?
-> 
-> There was many long conversations about this and I think the
-> conclusion was RSI will broadly not use versions for any kind of ABI
-> control. It is too coarse to really work in the real world and we must
-> have strong forward/backwards interoperability inside VMs forever.
-> 
+The generic implementation defaults to PAGE_SIZE. arm64 CCA overrides this
+by querying the host IPA state change granule size through RHI and exposing that
+value through the arm64 memory-encryption operations.
 
-OK, I wasn't ware of that.
+The patche series update the main shared-buffer allocation paths that can
+be used by private-memory guests:
+
+  - arm64 set_memory_encrypted()/set_memory_decrypted() now reject unaligned
+    addresses or sizes.
+  - GIC ITS shared allocations are rounded to the shared granule size.
+  - dma-direct and atomic DMA pool allocations use aligned allocation and
+    conversion sizes.
+  - SWIOTLB pools, including dynamic pools, are allocated and converted at the
+    shared granule size.
+  - restricted-dma-pool regions are checked and rejected if firmware did not
+    provide a base and size aligned to the shared granule size.
+  - dma-buf system heap cc-shared allocations require aligned sizes and use at
+    least the required allocation order.
+
+Hyper-V users of set_memory_encrypted() and set_memory_decrypted() are not
+changed by this series. Those paths are not currently used by the arm64 CCA
+code path, and therefore are not part of the arm64 CCA IPA state change alignment
+problem addressed here.
+
+The series is based on:
+  - https://lore.kernel.org/all/20260904095000.1184861-1-aneesh.kumar@kernel.org
+
+Changes from v5:
+https://lore.kernel.org/all/20260706060432.1375570-1-aneesh.kumar@kernel.org
+* Rebased to latest kernel
+* Drop patch arm64: realm: Move Realm memory encryption ops to RSI code
+
+Changes from v4:
+https://lore.kernel.org/all/20260427063108.909019-1-aneesh.kumar@kernel.org
+* Rename the helpers to use CoCo terminology
+  (mem_cc_shared_granule_size() / mem_cc_align_to_shared_granule() instead of
+  mem_decrypt_granule_size() / mem_decrypt_align()).
+* Use __DMA_ATTR_ALLOC_CC_SHARED to pass CoCo shared allocation requirements
+  down to CMA-based allocation helpers.
+* Add validation for restricted DMA pools to reject pools that are not aligned
+  to the shared granule size.
+* Add dma-buf system heap handling for cc-shared buffers.
+* Split the previous combined DMA/SWIOTLB/ITS change into smaller subsystem
+  patches covering ITS, DMA direct, SWIOTLB, restricted DMA pools, dma-buf
+  system heap, and arm64 Realm support.
+* Rework arm64 Realm support by moving Realm memory encryption ops into RSI
+  code and exposing the CCA shared granule size through arm64_mem_crypt_ops.
+
+Changes from v3:
+https://lore.kernel.org/all/20260309102625.2315725-1-aneesh.kumar@kernel.org
+* Fix build error reported by kernel test robot <lkp@intel.com>
+
+Changes from v2:
+https://lore.kernel.org/all/20251221160920.297689-1-aneesh.kumar@kernel.org
+* Rebase to latest kernel
+* Consider swiotlb always decrypted and don't align when allocating from swiotlb.
+
+Changes from v1:
+* Rename the helper to mem_encrypt_align
+* Improve the commit message
+* Handle DMA allocations from contiguous memory
+* Handle DMA allocations from the pool
+* swiotlb is still considered unencrypted. Support for an encrypted swiotlb pool
+  is left as TODO and is independent of this series.
+
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Thomas Gleixner <tglx@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+
+Aneesh Kumar K.V (Arm) (9):
+  mm/mem_encrypt: Add helpers for shared-buffer alignment
+  irqchip/gic-v3-its: Align shared ITS allocations to the CoCo shared
+    granule size
+  dma-mapping: Pass allocation attrs to contiguous allocation helpers
+  dma-direct: Align CoCo shared DMA allocations to the shared granule
+    size
+  swiotlb: Align shared IO TLB pools to the shared granule size
+  swiotlb: Reject misaligned restricted DMA pools for CoCo guests
+  dma-buf: system_heap: Enforce shared-granule alignment for cc-shared
+    buffers
+  arm64: realm: Add RHI helper to query IPA state change alignment
+  arm64: realm: Expose the CCA shared granule size through mem_encrypt
+    ops
+
+ arch/arm64/include/asm/mem_encrypt.h |  4 ++
+ arch/arm64/mm/mem_encrypt.c          | 32 ++++++++++++++--
+ drivers/dma-buf/heaps/system_heap.c  | 50 +++++++++++++++++++-----
+ drivers/firmware/arm_rmm/rsi.c       | 57 ++++++++++++++++++++++++++++
+ drivers/iommu/dma-iommu.c            |  2 +-
+ drivers/irqchip/irq-gic-v3-its.c     |  6 ++-
+ include/linux/arm-rsi-cmds.h         | 10 +++++
+ include/linux/arm-smccc-rhi.h        | 25 ++++++++++++
+ include/linux/arm-smccc-rsi.h        |  7 ++++
+ include/linux/dma-map-ops.h          |  5 ++-
+ include/linux/mem_encrypt.h          | 14 +++++++
+ kernel/dma/contiguous.c              | 13 ++++++-
+ kernel/dma/direct.c                  | 27 +++++++++----
+ kernel/dma/ops_helpers.c             |  3 +-
+ kernel/dma/pool.c                    |  4 +-
+ kernel/dma/swiotlb.c                 | 36 ++++++++++++++----
+ 16 files changed, 260 insertions(+), 35 deletions(-)
+ create mode 100644 include/linux/arm-smccc-rhi.h
 
 -- 
-Regards,
-Sudeep
+2.43.0
+
