@@ -1,94 +1,57 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025DB445AF6
-	for <linux-coco@lists.linux.dev>; Fri,  4 Sep 2026 09:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB61446859;
+	Fri,  4 Sep 2026 10:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788515543; cv=none; b=THKes61vrudAa6Ye5/yR2qpsmeGxg2iMNTsqC/GFFG5H01fTYYTfeN72fLsRBRgXewDrhxHpv65fCJf3yOSf4e9V2K9fyda6sMtj+9CUweC2HzMrL787ezCmv+zUNknMlRPSQcVnZWxumiKTYfvDfhOHd36XN341QSKJg2tEues=
+	t=1788516183; cv=none; b=hUX0zzrBpkXbK9diRSRMuUqqA/pxi/SPtuulTcLWWr64nX34TbI1Z4OJ6FpuJv5oLxQ9xFHSGQxu1+2x150uXMQVETpge9+ceyTXBGT6ibD4ynhRTp/Ee/3+BIy+OFFYVEb6St05yv272h5JoJU/BUO1FH0jfTPoqV1bknhSIdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788515543; c=relaxed/simple;
-	bh=FV9meUjcd+Nqh9yYKyKTeLGtwlXv49QbwrjqM4mX/Z8=;
+	s=arc-20240116; t=1788516183; c=relaxed/simple;
+	bh=loaZ+JFcG+YDWiyKv2pV3XAW34Bn6DrPjvPw7FukFis=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ijH6/oB7URv2xxu9H4YtdqsocfCLHk5yvc4GQVP6XBtwVzNE/VMlhNy7u72l1JnW2m2vClV232TC5WReAmEORBgHY2ig6THMxzPedfRPyIzMkTUCWclxzIwU9DSePJInmktfycd7jZ8m/5e0r/9pTd4fnZXOLVGnICEpcs4+g8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=XNbhDRBX; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	 Content-Type:Content-Disposition:In-Reply-To; b=kLiOR2Ds22I6QCk/TvZuxmCsT3grvoffIqgQ63M1i96xVDRXULqk8y88mIaBuqihxxl2u1qg710CvJWI3f/8SZfZ/rEV/uprQurYlAUFekThU2IU95G3zU/RgsUG534HVoEBkp4Wr8EJuj69VarZY7SlcP/AlQZ487DygqFqu68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hjDjaDYV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="XNbhDRBX"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6a68279dd86so956851a12.3
-        for <linux-coco@lists.linux.dev>; Fri, 04 Sep 2026 02:52:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1788515537; x=1789120337; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3TRln1//k3zoErYU+/B3z5hgnprP+i8NqFQiEQFbYg4=;
-        b=XNbhDRBXTaqC0Rm9RPdsQRkFFO8b77RLwYVMz3nb48fyF3duSGevm9e1TjCZFzWc/J
-         nsGezck8niuuhro6tAjymnLnEYnCRu7sYoDpN6vZ4kDPKp2YrndTEsMc7EXAKHl9i2cV
-         VdNxcUDEXm+XMgploB2a04mVWfDq6VTTIWSXJ8EdtVOfY1Z+Sobr53tViwUiZAR1jJBM
-         3D3Ko/oTe/DTCnNxPVytLNPxAuBi9G/+CSYdgn6FHEjMA7YJLWjyuu7rLlKKkeoV0zae
-         CBXfmdjk6Qr0yddPYRsBjdQpBzemd8Jm9tTW2kPCDSsJF5eKWp2iXpmv7Zj2ibyPq6qt
-         T2JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788515537; x=1789120337;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3TRln1//k3zoErYU+/B3z5hgnprP+i8NqFQiEQFbYg4=;
-        b=XlBN9wTB5sDwJxSHdPJ4EB4YHU6FJBI0MOIF3eT9gcnHuIijhWGJNFEZZ+Vya6tf0E
-         EEWMjaDu0AWTWTaS3aLRk7+ZlHuf52jRqDJbs9/BDuqR0GzFUzV4lWeRtuH2ZK7JD0Hq
-         NVLffDcawTKHHnfdIX6fqO/agiOx/IesPruzn1NZZ8fgPQRXDgV8lXdeHPKvkXrqngVO
-         THnu5ntX+uFKp+2ZU5e0rRjnJFihg62jVN1wGe0XJRC8mH9QXaVk5Td9GdXCJGDU+WLW
-         2rWEj49FPdZB9eMth5cT2PBWgCTd3k4rYjuWbCi9sqevBS0xtehwq/9AAVzcfcCLWvpY
-         oaoA==
-X-Forwarded-Encrypted: i=1; AKwUvBxaUNYihefrrdDESah0VJfdvyY4ytCvCJZBQlZQUoAXX0tqLwCu8Zmng2JdoTwSmF8EijCQmL8ZCrRG@lists.linux.dev
-X-Gm-Message-State: AFuF++nskmuAXsaa+ZIPZA8I71J9WUgWEY+k+W2oeA+ZFHa581OFkrZO
-	x3g1yEqHBFm3yU9IveySpGCJgiC2GDY+gbDczSOja+NuGS9hPglS8utWQXis3AmjBDI=
-X-Gm-Gg: AYBFou3ct7w+YoXmEx8M6j3d8/5jR4dSKXcJTjOGCJEBLJvxIjOnNOWyxHHPJro6voC
-	n7zd3LDbvNh48EnIqDWVtz8zC85fVYIZ77YTgxJtSGjJZaA6Vt5/u6EY7Dd6+HkQ5adcnp53H6G
-	puDp8woTgJZ9XOP49Yx7jihchmS1dIGwVz/uG3HFXEB9ToWqQavbJgruBqFLfPuA/gXR9+E3l7B
-	KdY6q+BWVlxRAQh3OcLhWnfuwix9DXrb27f+hLMhj9j9mRwVzHPl49a9uqoKpOO4INW3kPWpEEr
-	Ib52JdGre4KDgqou5EZp8fCB1pWYWn55L09xzpYdv5zP4GCe/HmYkTjd1q2awksTf4EnST9CcJY
-	GcDk/mRSXJsy62SBO1Lq/7z0/zeA9qihDHHvuiVE0u/Qnc8AC8WNupukrh8wK7mJ2Yv+ibx0OjV
-	Ng/vN+nxuHasSCel/kAUoh0MfNZ+JB4Z51zsY6ec8qeR7en0hyQpTjAfrkYhz3oz2mSIsLdEMEs
-	R5GpNyIMNspBaxqGG4=
-X-Received: by 2002:a05:6402:51d0:b0:6a1:2400:baea with SMTP id 4fb4d7f45d1cf-6a7e8d8ded1mr1586216a12.10.1788515536608;
-        Fri, 04 Sep 2026 02:52:16 -0700 (PDT)
-Received: from localhost ([208.127.45.21])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a7e6bee8e8sm1003148a12.23.2026.09.04.02.52.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 02:52:16 -0700 (PDT)
-Date: Fri, 4 Sep 2026 11:52:12 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Alexey Kardashevskiy <aik@amd.com>, 
-	Xu Yilun <yilun.xu@linux.intel.com>, ankita@nvidia.com, linux-coco@lists.linux.dev, 
-	linux-pci@vger.kernel.org, driver-core@lists.linux.dev, Aaron Tomlin <atomlin@atomlin.com>, 
-	Alistair Francis <alistair.francis@wdc.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Donald Hunter <donald.hunter@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Sami Tolvanen <samitolvanen@google.com>, Samuel Ortiz <sameo@rivosinc.com>, 
-	Saravana Kannan <saravanak@google.com>, Will Deacon <will@kernel.org>, 
-	"Fontenot, Nathan" <Nathan.Fontenot@amd.com>, rick.p.edgecombe@intel.com, yilun.xu@intel.com, 
-	Leon Romanovsky <leon@kernel.org>, Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security
- Protocol (TDISP)
-Message-ID: <apqSAQykEK3MF9AO@FV6GYCPJ69>
-References: <20260705220819.2472765-1-djbw@kernel.org>
- <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com>
- <amk7Xzm5jmz+6SPJ@ziepe.ca>
- <anFE7m164AmchTy/@yilunxu-OptiPlex-7050>
- <20260805005533.GB28508@ziepe.ca>
- <apeF/peEzdxvKeWR@yilunxu-OptiPlex-7050>
- <2e721509-0aee-47ee-b17a-688876e02f74@amd.com>
- <20260902150125.GD2890729@ziepe.ca>
- <apl39vOiMPP7VloW@wunner.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hjDjaDYV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289D31F00A3E;
+	Fri,  4 Sep 2026 10:02:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788516181;
+	bh=tie3/C0PVrS1CpLSqsIk6C5A879AcuKONm6oB8gQBfs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hjDjaDYVxdvm9qd40cjkEQwK/pP/t1zPYfE7eGdI877A2/idGoHsau16XMRI2lmH/
+	 FRvP/V1xzlPzY6KHbC9F/PS6glRTXp8eQsaMaB3Mi9nZXiBsSC/EZby9z/ZIe+HN8z
+	 hV8FB6e2OKbuqOfHwI8B3A9ppxlxxwql9PeLMqNmdEq27OCgqS4p0GrM9P7Btya5ji
+	 eTgH3LcPK9S9iac+Z8dQmDMgi+eXKosOxMCx4aWrPngZRnjOpcVWeO3jed4XCMqW97
+	 7HBuABzUBQyssJ7+PcRfG7h4+Dqom+tZ7rnzFYr3bNM3DCm72vXZ9E2ybCOAG7I3H+
+	 PX6OzaYr+d6AQ==
+Date: Fri, 4 Sep 2026 11:02:56 +0100
+From: Sudeep Holla <sudeep.holla@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Sudeep Holla <sudeep.holla@kernel.org>, linux-coco@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Andre Przywara <andre.przywara@arm.com>
+Subject: Re: [PATCH v9 1/7] firmware: smccc: Add an Arm SMCCC bus
+Message-ID: <20260904-keen-fiery-fulmar-702fb3@sudeepholla>
+References: <20260805063255.1638614-1-aneesh.kumar@kernel.org>
+ <20260805063255.1638614-2-aneesh.kumar@kernel.org>
+ <178794567779.4159892.8785590655735217125.b4-review@b4>
+ <yq5ay0diyavw.fsf@kernel.org>
+ <20260903125718.GI4157646@nvidia.com>
+ <yq5av78mxv0j.fsf@kernel.org>
+ <20260903154626.GL4157646@nvidia.com>
+ <20260903-nonchalant-capable-parrot-539c8b@sudeepholla>
+ <20260903182152.GN4157646@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -97,125 +60,89 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <apl39vOiMPP7VloW@wunner.de>
+In-Reply-To: <20260903182152.GN4157646@nvidia.com>
 
-Thu, Sep 03, 2026 at 03:36:54PM +0200, lukas@wunner.de wrote:
->[+cc Jonathan, start of thread is here:
->https://lore.kernel.org/all/20260902150125.GD2890729@ziepe.ca/
->]
->
->On Wed, Sep 02, 2026 at 12:01:25PM -0300, Jason Gunthorpe wrote:
+On Thu, Sep 03, 2026 at 03:21:52PM -0300, Jason Gunthorpe wrote:
+> On Thu, Sep 03, 2026 at 05:18:16PM +0100, Sudeep Holla wrote:
+> 
+> > Oh yes, we need this whatever you term as "duplication". I would argue
+> > against terming it as duplications as if you look at the various SMCCC
+> > based specification, we have zero consistency in how the VERSION command
+> > is expected to work.
+> 
+> Okay, then that pretty much settles it. Nothing to do
+> 
+> > > Missing a check means FW upgrades might become Linux breaking. 
+> > 
+> > Are you referring to the SMCCC bus code or RSI in particular above. I don't
+> > see any issue with SMCCC bus code check as that is the least we can do and
+> > must not change with future versions of the firmware as well.
+> 
+> Just in general, SMCCC drivers have to do something smart with the
+> version.
+> 
+> Like, is this OK:
+> 
+> #define ARM_SMCCC_TRNG_MIN_VERSION	0x10000UL
+> 
+> static inline bool smccc_probe_trng(void)
+> {
+> 	struct arm_smccc_res res;
+> 
+> 	arm_smccc_1_1_invoke(ARM_SMCCC_TRNG_VERSION, &res);
+> 	if ((s32)res.a0 < 0)
+> 		return false;
+> 
+> 	return res.a0 >= ARM_SMCCC_TRNG_MIN_VERSION;
+> }
+> 
+> ?
+> 
 
 
-[..]
+So it will be specific to each FID range, then what is smart about
+generic SMCCC logic then ?
 
+We already have
+	if (ret != SMCCC_RET_NOT_SUPPORTED)
+		arm_smccc_device_register(..)
 
->
->> I've asked Jiri Pirko to work on
->> the PCI evidence uAPI based on his deep netlink experience
->
->netlink isn't well suited to transport large blobs because the nlattr
->len is u16.  (The len of the enclosing nlmsg is u32, which is sufficient.)
->
->Previous approaches, including the one proposed by Dan in this series,
->work around the problem by splitting the blob into a sequence of nlattrs.
->I think we should instead extend the netlink protocol with 32-bit "jumbo"
->attributes.
->
->I suggest we reserve bit 13 of nla_type as NLA_F_JUMBO and use the
->the first 4 bytes after the struct nlattr header as length (if the
->jumbo flag is set).
->
->
->A second problem is that the size of a socket buffer's linear data
->is limited.  Also, copying the blob into the nlmsg is a bit wasteful
->and we'd want zero copy instead.  The solution I've come up with is
->to attach the pages backing the blob as fragments to the skb.
->It's very simple, overcomes the skb size limitation and allows for
->zero-copy:
->
->https://github.com/l1k/linux/commit/6e73bb999128
->
->That commit is from January and the time I've been able to devote
->to this has since been limited as my employer prioritized various
->AER feature gaps and fixes.
->
->I worked on this for native PCI device authentication, which faces
->the same netlink blob issue as TSM-mediated authentication.
->Both should use the same uABI for evidence exposure.  Additionally,
->native device authentication may be used by non-PCI buses such as
->ATA or SCSI.  The uABI should work for those use cases as well.
+Not sure what else can be done.
 
-Not sure if netlink as actually the best fit for this purpose,
-for large blob transfers ioctl-based iface is probably much more
-convenient. I'm working on a uapi framework that make the best of
-netlink and takes it over to a fd-based ioctl. I call it CTLV, here's
-a link to an early pre-RFC draft:
+> It means you can never publish a version 2 that is ABI breaking
+> because linux doesn't check for that. Was that ARM's intention with
+> the version API? It's basically a completely pointless check that
+> doesn't effectively do anything.
 
-https://github.com/jpirko/linux_mlxsw/commits/wip_ctlv_pre_rfc_draft1/
+I didn't get that. The example above checks for minimum TRNG version,
+so it won't break in any way for v2. What am I missing ?
 
-What are the benefits over generic netlink:
+> 
+> My broader, more general point is that if SMCC is being made into a
+> discoverable bus, that's great, but it would be even better if ARM
+> could find a way to progmatically enumerate all the ABIs present on
+> the SMCC interface to populate the bus. That would necessarily include
+> some consistent treatment of versioning for consistent
+> interoperability.
 
-- No networking in the dependency chain. No netlink sockets,
-  no CAP_NET_ADMIN, and no network namespace semantics to reason about
-  for a device that has none.
+Sure, it can be tried for future SMCCC based specs. We can't ignore the
+inconsistency that exists in the currently used SMCCC based specs. So it
+can't be ideal as you prefer I am afraid.
 
-- One character device per registered instance, not one global family.
-  Access control is the file: udev rules, ACLs, an fd passed into
-  a container.
+> 
+> > If lower is also set at v3.0, then I would argue it is firmware upgrade
+> > issue expecting old kernel with old RSI version supported to work. If
+> > that returns v2.0, the driver must work IIUC. Aneesh, hopefully I got this
+> > right ?
+> 
+> There was many long conversations about this and I think the
+> conclusion was RSI will broadly not use versions for any kind of ABI
+> control. It is too coarse to really work in the real world and we must
+> have strong forward/backwards interoperability inside VMs forever.
+> 
 
-- Events per open file description, not a multicast group.
-  Each descriptor has its own subscriptions and queue, and an overflow
-  is reported in-band: the next read returns an event-overflow record
-  naming the first and last sequence lost and how many.
+OK, I wasn't ware of that.
 
-- Large payloads are referenced, not copied. A blob attribute carries
-  a user VA, a memfd and offset, or a dma-buf fd. Nothing big travels
-  through the message.
-
-- One YAML specification, everything generated from it: kernel metadata,
-  UAPI headers, userspace bindings and the reference documentation.
-  Introspection is answered out of the same metadata the validator
-  enforces, so a device cannot advertise an operation it will refuse.
-  A checked-in ABI snapshot makes any wire change a reviewable diff.
-
-- Family inheritance. A family inherits another's operations and fills
-  declared extension points. The effective schema is resolved per
-  device and the chain is exposed to user. A shared core with
-  per-driver extensions is declared once, and both attributes and
-  operations can be extended.
-
-- Introspection is per-device and live. The framework answers three
-  queries on every device: the family chain, one entry per published
-  operation, and any operation's full attribute tree with its bounds
-  and limits.
-
-  The answer is what this device accepts right now, including what
-  a vendor extension added to an inherited operation and whether an op
-  is currently disabled, and op-changed events carry the generation
-  ops-dump reports, so a dump can be ordered against a change.
-  GETFAMILY and GETPOLICY describe a family statically - there is
-  no device in that model to ask.
-
-- Fragmented queries are built in, with a consistency check.
-  A continuation carries the generation it started from, and if
-  the answer changed underneath it is refused with ESTALE,
-  reporting the expected and the current generation instead of
-  reassembling a torn reply.
-
-- Attributes are 8-byte aligned. CTLV_ALIGNTO is 8, so
-  a 64-bit payload is naturally aligned and there is no per-family
-  padding to remember - netlink's 4-byte alignment is why
-  nla_put_64bit() needs an explicit NOP pad attribute.
-
-- Cheaper round trip. A one-attribute query measured 2.6x cheaper
-  than a genetlink one in the same guest - a debug kernel.
-
-- Async operations using io_uring are planned as a follow-up extension.
-
-The framework owns validation, schema resolution, blob acquisition,
-reply serialization and the event queues. All getters and putters
-are generated helpers. A family implements semantics only, and
-the aim is to make that hard to get wrong.
-
-[..]
+-- 
+Regards,
+Sudeep
