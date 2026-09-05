@@ -1,243 +1,290 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9E23B95F9
-	for <linux-coco@lists.linux.dev>; Fri,  4 Sep 2026 22:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9C42D592D
+	for <linux-coco@lists.linux.dev>; Sat,  5 Sep 2026 01:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788559212; cv=none; b=Nxuqwv6GmMzStGs8bSNrJtHWhKupqDzlTSdaox93/YtSdA9I+TNI7vlp+Z36Qlw6mGuz4h6SvzInVeCv0JaEClaixSzpigZkEgNgINyFp111KtG6up4Au88kQlUw8L0LYAfprsTCza+4qB76OsV5B8SfKIf74yrN4z05fkW9Vi8=
+	t=1788571839; cv=none; b=SN67eEL3nbxjfQ9kArR2KEMCYjkDVG/4DSDaozdFal2ysOTeqUKqFHc6Wp8i03OaiME0R66YZecxqrJ5buEH/3p0BC3ui1u9+vbwTjxSX0wrJ+OACLTbSfb5Mv8llErMjHDHwXLCQbd3iuAx8XWNlap0/48octkeuV7hGSDuueM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788559212; c=relaxed/simple;
-	bh=rFBjumOEfR3sI+SrOouN6uOyXLX1L3bxGoKNn3A0B08=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ce3SS45VM4vr7scuh34sZotDuzyNUgKUrkKg6hfN8ykTL7w++vBXzr7mpNmZeTgJ41wL/to6T8W4T3f+LcOO4t0nwsiutLhuU3BuVBDgveVZxk1GknGkPlROg6kS1T3bmUOULWDCM6o2NTlvOnKMpJOHqZ34XUPiULHDhk4SK3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LkDJqk35; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788571839; c=relaxed/simple;
+	bh=d/CBhLFjbPlAhNAItDfQ/4uJXM2tKA1e3jC+k9LNt3g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rRNBtrMoXBcnyHWNVqOU4HMZaMr70xiAdTrw1WOHjclfp6ApQk3hdQ6S6dlQK98uWyJ98f/gAmvsi1d7duDRhM654gJXA0ZEoxJ7+ngnny5bGhyQAENvrmPxPb1eSljGgllqhTL/tth17EeXuMXTl4f2tnqNj8/bWrS8On5ZU/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=kULah2Ng; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LkDJqk35"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788559203; x=1820095203;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=rFBjumOEfR3sI+SrOouN6uOyXLX1L3bxGoKNn3A0B08=;
-  b=LkDJqk35gAhHZi/Tc1yORq9RYTLeBaSI8zm1DcSiW70eX5Ob4khz/Zu3
-   Deq3J4EH5PEQ87bhw95P0PwfrFYHJktc84dEgbpvxt77y+mOoadgWnwCm
-   LdxHa9ioo63QqYGKA760uw9QkuTiwmrkrX0J69/ESOFmOJYR/PRvjLMLk
-   fKgf/bdxtgbl/oaU66mA1fJGHP/KqHzFxltdcd04GJS4Vjpn0DZUQMsjP
-   ZPMGFYP6n0Erll+uxdVf9cnuUDQMpfYsyoT0VgNtQXer3cwsrXHs+HxQv
-   ycASD/NAFW7z5MdTRORbnDibOYFl162C9xjnZewHmbRGN32kuZNskOYHA
-   A==;
-X-CSE-ConnectionGUID: vyaGBtdwQby4R93hm0MydA==
-X-CSE-MsgGUID: 4OOoDY+2SlSA+DebZhhNAA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11896"; a="100224883"
-X-IronPort-AV: E=Sophos;i="6.25,262,1779174000"; 
-   d="scan'208";a="100224883"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 14:59:24 -0700
-X-CSE-ConnectionGUID: 7Osb9NKzRouxTvfOXDAo2A==
-X-CSE-MsgGUID: sarni4mRSA6WuEfF9Xm9ew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,262,1779174000"; 
-   d="scan'208";a="270675056"
-Received: from rpedgeco-desk.jf.intel.com ([10.88.27.135])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 14:59:24 -0700
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
-To: bp@alien8.de,
-	dave.hansen@intel.com,
-	hpa@zytor.com,
-	kas@kernel.org,
-	kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	mingo@redhat.com,
-	nik.borisov@suse.com,
-	pbonzini@redhat.com,
-	seanjc@google.com,
-	tglx@kernel.org,
-	vannapurve@google.com,
-	x86@kernel.org,
-	chao.gao@intel.com,
-	yan.y.zhao@intel.com,
-	kai.huang@intel.com,
-	tony.lindgren@linux.intel.com,
-	binbin.wu@intel.com,
-	sohil.mehta@intel.com
-Cc: rick.p.edgecombe@intel.com,
-	Hongyu Ning <hongyu.ning@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH v11 11/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
-Date: Fri,  4 Sep 2026 14:58:41 -0700
-Message-ID: <20260904215841.303070-12-rick.p.edgecombe@intel.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260904215841.303070-1-rick.p.edgecombe@intel.com>
-References: <20260904215841.303070-1-rick.p.edgecombe@intel.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="kULah2Ng"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5AA9940E00E6;
+	Sat,  5 Sep 2026 01:30:34 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Z7EqV71p49rx; Sat,  5 Sep 2026 01:30:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1788571822; bh=YtdiCM8T6f78OsecQ90guY/JrJBZ0tS0yXbieswmS08=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kULah2NgfTSLlX2Udor074ue9WpiuYORPvPvOS85ijeG26D6s8FyHKB7u0BJs7LpF
+	 ZWpGJpQ1DjFUPJ/WwN3oiOJxs4AsiExWIcivL9TTkfOrVp1QU6pRvUX9Nx7oKyH7z5
+	 UbMPUy4QVBTQhpkLcU6M4rNYjcyarjoL5Ex1QAoGlM/TiId4cFdao22W8s+JJufISC
+	 F4esj/j3RCyOwQWJHRKClQIZ7yxDAtgGuQ+sjRR1SDklAohN+mnGLVnnRTbk8xJ05Y
+	 n7ngBSKqN0HwlsBGXie9J6B8c6gaET8pb5R1FS26rCrPr0YyBAcFVh/8pq1jkcQca9
+	 DMET8/9OhsqNssYHnIM8CNpttwy5+EQy6CQkJ3aW+0P1nms/9zMcwNeT/8YHDC2nQm
+	 MjjcWy0gl+nemC0RHkl9qYP+MA2YQnM3dueO3eYfv3KwZI1wFgby7gcIqwB3A2Ze5O
+	 WXwrLr2J4JIERVKVc+Ls75QFb22TILUZt8WRosY9E7V/abD4P0L3IMY8hfUS8iQyoX
+	 SgCMfbXcCyYOjlx7moNJCAezN3KQ2rrSDrGuMqIOYfpb1Gvs0oAoxDgzf+/ClVVy0f
+	 8MT0YqACHgwJf3sUyBTvH35+S9/FGS2UOlW+5rZiLW6Gs7UjWhd1RLIrAj4I/jonR4
+	 6dbFLY9/i9KALy34IeIIRxQ8=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::2a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 652B840E016C;
+	Sat,  5 Sep 2026 01:29:48 +0000 (UTC)
+Date: Fri, 4 Sep 2026 18:29:45 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	darwi@linutronix.de, linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH v13 4/5] x86/sev: Add support to perform RMP
+ optimizations asynchronously
+Message-ID: <20260905012945.GPaptwicVjJ-SwXYzl@fat_crate.local>
+References: <cover.1788296083.git.ashish.kalra@amd.com>
+ <a31fc8c6d3f6c6bbe50dc4542c7091b0899d3e1b.1788296083.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <a31fc8c6d3f6c6bbe50dc4542c7091b0899d3e1b.1788296083.git.ashish.kalra@amd.com>
 
-The Dynamic PAMT (DPAMT) get/put helpers use a global spinlock to
-serialize all refcount updates and SEAMCALL invocations. This gives correct
-behavior for concurrent callers, but leads to contention. It is especially
-bad from the KVM side, which is designed to allow faulting in EPT under a
-shared lock. With the global spinlock, not only is the lock an exclusive
-one, but it is for all TDs instead of just a single one.
+On Wed, Sep 02, 2026 at 09:28:57PM +0000, Ashish Kalra wrote:
+> Subject: Re: [PATCH v13 4/5] x86/sev: Add support to perform RMP optimizations asynchronously
 
-But taking the global lock each time is actually unnecessary. Only the 0->1
-and 1->0 refcount transitions actually need the lock (to pair with
-SEAMCALLs that actually add and remove with the DPAMT pages). The common
-case of incrementing or decrementing a non-zero refcount can be done
-locklessly.
+s/Add support to perform/Perform/
 
-So create a fast and slow path. Check the refcount outside the lock and
-only take it for the slow path (0->1 and 1->0 transitions).
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> When SNP is enabled, all writes to memory are checked to ensure memory
+> integrity. This imposes performance overhead on the whole system.
+> 
+> RMPOPT is a new instruction that minimizes the performance overhead of
+> RMP checks on the hypervisor and on non-SNP guests by allowing RMP
+> checks to be skipped for 1GB regions of memory that are known not to
+> contain any SNP guest memory.
+> 
+> Add support for performing RMP optimizations asynchronously using a
+> dedicated workqueue.
+> 
+> At RMP initialization time, run an optimization pass over all physical
+> memory (up to 2TB of system RAM, starting from the lowest physical
+> memory address aligned down to a 1GB boundary), skipping RMP checks for
+> 1GB regions that do not contain SNP guest memory (excluding preassigned
+> pages such as the RMP table and firmware pages).
+> 
+> As SNP guests are launched, RMPUPDATE assigns their private pages to
+> guest-owned state; when such a page falls within an optimized 1GB
+> region, the hardware clears that region's RMPOPT optimization and RMP
+> checks resume there to protect the guest memory.
+> 
+> Since launching SNP guests clears these optimizations, perform them
+> again asynchronously using the dedicated workqueue.
+> 
+> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
+> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Suggested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+> Suggested-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 
-On the put side make the refcount adjustment and lock taking atomic so if
-a 'get' happens between them, it doesn't cause the DPAMT to be freed
-incorrectly. On the get side there is no technique for doing the refcount
-adjustment and lock atomically, so check the refcount again inside the
-lock.
+R-by's need to get dropped when a patch changes in more or less significant
+way.
 
-AI was used under supervision to collect/apply feedback, review code and
-workshop logs. It assisted in identifying/evaluating the stale
-conditionals for the races resolved from the atomic_dec_and_lock() change.
-Separate from atomic_dec_and_lock() fallout, it suggested to change
-atomic_inc() to atomic_set(pamt_refcount, 1) in the put error path for the
-sake of being more precise, which Kiryl had also suggested in the past.
-The model also suggested updated comments following the
-atomic_dec_and_lock() change based on some directed prompting. The
-comments were subsequently edited or further prompted for fine tuning.
+> @@ -561,10 +571,26 @@ static void rmpopt_disable(void)
+>  {
+>  	int cpu;
+>  
+> +	guard(mutex)(&rmpopt_wq_mutex);
+> +
+> +	/*
+> +	 * rmpopt_wq is non-NULL only after RMPOPT has been fully set up: the
+> +	 * workqueue is allocated and the RMPOPT_BASE MSRs are programmed.
+> +	 * snp_setup_rmpopt() resets it to NULL if any of those steps fail, so a
+> +	 * NULL rmpopt_wq means nothing was set up and there is nothing to tear
+> +	 * down.
+> +	 */
+> +	if (!rmpopt_wq)
 
-Based on a patch originally by Kiryl Shutsemau.
+Now take your patch and rip all that gunk which destroys the setup work done
+by snp_setup_rmpopt(). Instead, you init things once and do not touch them
+even if RMP optimizations are disabled.
 
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Vishal Annapurve <vannapurve@google.com>
-Acked-by: Sohil Mehta <sohil.mehta@intel.com>
----
-v10:
- - Change "Dynamic PAMT" to "DPAMT" in comments. (Dave)
+In case they get enabled again later, you simply reactivate them instead of
+doing useless setup work all over again.
 
-v7:
- - Drop Assisted-by tag and cover AI use in log. (Dave)
- - Move to end of the series.
- - Use atomic_inc_not_zero() in this patch inside the spin_lock(), as
-   suggested on the non-optimized patch by (Dave).
+> +		return;
+> +
+> +	cancel_delayed_work_sync(&rmpopt_delayed_work);
+> +	destroy_workqueue(rmpopt_wq);
+> +
+>  	for_each_cpu(cpu, cpu_primary_thread_mask)
+>  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, 0);
+>  
+> -	rmpopt_pa_start = 0;
+> +	rmpopt_pa_start = rmpopt_pa_end = 0;
+> +	rmpopt_wq = NULL;
+>  }
+>  
+>  void snp_shutdown(void)
+> @@ -595,6 +621,44 @@ static bool rmpopt_capable(void)
+>  	       cc_platform_has(CC_ATTR_HOST_SEV_SNP);
+>  }
+>  
+> +/*
+> + * RMPOPT optimizations skip RMP checks at 1GB granularity if this range of
+> + * memory does not contain any SNP guest memory.
+> + *
+> + * @pa is a system physical address; RMPOPT operates on the containing 1GB.
+> + */
+> +static void rmpopt(u64 pa)
+> +{
+> +	enum rmpopt_op_type op = RMPOPT_OP_VERIFY_AND_REPORT_STATUS;
+> +	u64 pa_start = ALIGN_DOWN(pa, SZ_1G);
+> +
 
-v6:
- - Fix "tdx_pamt_add()" typo to "tdx_pamt_get()" in lost-race comment
- - Fix error path bug: set ret = -EIO and use WARN_ON_ONCE() instead of
-   pr_err() for unexpected PAMT.ADD failures (Sean)
- - Use "set the refcount 0->1" wording to match atomic_set() usage
- - Wrap comments to 80 columns
- - Switch to atomic_dec_and_lock() and remove handling of races that are
-   no longer needed as a result. Adjust comments as appropriate. (Dave)
- - Adjustments from dropping error helper patches
----
- arch/x86/virt/vmx/tdx/tdx.c | 44 ++++++++++++++++++++++++-------------
- 1 file changed, 29 insertions(+), 15 deletions(-)
+	/* Supported by binutils 2.48+ */
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 063574ed86254..7891e42b27508 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -2171,28 +2171,41 @@ int tdx_pamt_get(kvm_pfn_t pfn, struct tdx_pamt_cache *cache)
- 	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
- 		return 0;
- 
--	ret = alloc_pamt_array(pamt_pages, cache);
--	if (ret)
--		return ret;
--
- 	dpamt_refcount = tdx_find_dpamt_refcount(pfn);
- 
--	spin_lock(&dpamt_lock);
--
- 	/*
- 	 * If the DPAMT entry is already added (i.e. refcount >= 1),
- 	 * then just increment the refcount.
- 	 */
-+	if (atomic_inc_not_zero(dpamt_refcount))
-+		return 0;
-+
-+	ret = alloc_pamt_array(pamt_pages, cache);
-+	if (ret)
-+		return ret;
-+
-+	spin_lock(&dpamt_lock);
-+
-+	/*
-+	 * Unlike tdx_pamt_put() which uses atomic_dec_and_lock() to
-+	 * atomically handle the 1->0 transition, the get side has no
-+	 * equivalent combined primitive for 0->1. Recheck under the
-+	 * lock since another get may have already done the 0->1
-+	 * transition after both saw atomic_inc_not_zero() fail.
-+	 */
- 	if (atomic_inc_not_zero(dpamt_refcount))
- 		goto out_free;
- 
--	/* Try to add the PAMT page and take the refcount 0->1. */
- 	tdx_status = tdh_phymem_pamt_add(pfn, pamt_pages);
- 	if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS)) {
- 		ret = -EIO;
- 		goto out_free;
- 	}
- 
-+	/*
-+	 * The refcount is zero, and this locked path is the
-+	 * only way to increase it from 0->1.
-+	 */
- 	atomic_set(dpamt_refcount, 1);
- 	spin_unlock(&dpamt_lock);
- 	return 0;
-@@ -2217,17 +2230,13 @@ void tdx_pamt_put(kvm_pfn_t pfn)
- 
- 	dpamt_refcount = tdx_find_dpamt_refcount(pfn);
- 
--	spin_lock(&dpamt_lock);
- 	/*
- 	 * If there is more than 1 reference on the DPAMT entry, don't
- 	 * remove it yet. Just decrement the refcount.
- 	 */
--	if (atomic_read(dpamt_refcount) > 1) {
--		atomic_dec(dpamt_refcount);
--		goto out_unlock;
--	}
-+	if (!atomic_dec_and_lock(dpamt_refcount, &dpamt_lock))
-+		return;
- 
--	/* Try to remove the pamt page and take the refcount 1->0. */
- 	tdx_status = tdh_phymem_pamt_remove(pfn, pamt_pages);
- 
- 	/*
-@@ -2237,10 +2246,15 @@ void tdx_pamt_put(kvm_pfn_t pfn)
- 	 * failure indicates a kernel bug, memory is being leaked, and
- 	 * the dangling DPAMT entry may cause future operations to fail.
- 	 */
--	if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS))
-+	if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS)) {
-+		/*
-+		 * atomic_dec_and_lock() already decremented it to 0,
-+		 * but the DPAMT entry still exists since REMOVE failed.
-+		 */
-+		atomic_set(dpamt_refcount, 1);
- 		goto out_unlock;
-+	}
- 
--	atomic_set(dpamt_refcount, 0);
- 	spin_unlock(&dpamt_lock);
- 	free_pamt_array(pamt_pages);
- 	return;
+> +	asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc"
+> +		     :: "a" (pa_start), "c" (op)
+> +		     : "memory", "cc");
+> +}
+
+
+
+> +
+> +/* on_each_cpu() callback: optimize the whole RMPOPT range on this CPU. */
+> +static void rmpopt_scan_range(void *arg)
+> +{
+> +	u64 pa;
+> +
+> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
+> +		rmpopt(pa);
+> +}
+> +
+> +static void do_rmpopt_work(struct work_struct *work)
+> +{
+> +	/*
+> +	 * RMPOPT caches the results of a RMP table scan in reserved processor
+> +	 * memory, allowing future invocations to skip such costly operations.
+> +	 */
+
+We know already. Drop this comment.
+
+> +	migrate_disable();
+> +	rmpopt_scan_range(NULL);
+> +	migrate_enable();
+> +
+> +	on_each_cpu_mask(cpu_primary_thread_mask, rmpopt_scan_range, NULL, true);
+> +}
+> +
+>  void snp_setup_rmpopt(void)
+>  {
+>  	u64 rmpopt_base;
+> @@ -603,6 +667,34 @@ void snp_setup_rmpopt(void)
+>  	if (!rmpopt_capable())
+>  		return;
+>  
+> +	guard(mutex)(&rmpopt_wq_mutex);
+> +
+> +	/*
+> +	 * On re-initialization after a legacy SNP shutdown (SNP_SHUTDOWN_EX
+> +	 * with x86_snp_shutdown=0), snp_shutdown() and thus rmpopt_disable() are
+> +	 * skipped, so the workqueue, delayed work and per-CPU RMPOPT_BASE MSRs
+> +	 * are still set up and valid (SnpEn stayed set and CPU hotplug stayed
+> +	 * disabled).  Rather than re-doing the setup, which would leak the
+> +	 * existing state, just re-queue the optimization pass to re-optimize any
+> +	 * memory the previous SNP session de-optimized.
+> +	 */
+> +	if (rmpopt_wq) {
+> +		queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
+> +		return;
+> +	}
+> +
+> +	/*
+> +	 * Create an RMPOPT-specific workqueue to avoid scheduling
+> +	 * RMPOPT workitem on the global system workqueue.
+> +	 */
+
+Why?
+
+> +	rmpopt_wq = alloc_workqueue("rmpopt_wq", WQ_UNBOUND, 1);
+> +	if (!rmpopt_wq) {
+> +		pr_err("Failed to allocate RMPOPT workqueue\n");
+> +		return;
+> +	}
+> +
+> +	INIT_DELAYED_WORK(&rmpopt_delayed_work, do_rmpopt_work);
+> +
+>  	rmpopt_pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
+>  	rmpopt_base = rmpopt_pa_start | MSR_AMD64_RMPOPT_ENABLE;
+>  
+> @@ -612,6 +704,23 @@ void snp_setup_rmpopt(void)
+>  	 */
+>  	for_each_cpu(cpu, cpu_primary_thread_mask)
+>  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
+> +
+> +	rmpopt_pa_end = ALIGN(PFN_PHYS(max_pfn), SZ_1G);
+> +
+> +	/* Limit memory scanning to 2TB of RAM */
+
+No need for that comment - we know.
+
+> +	if ((rmpopt_pa_end - rmpopt_pa_start) > SZ_2T) {
+> +		pr_info("RMPOPT coverage limited to 2TB; memory above 0x%llx not optimized\n",
+
+No need for that print - nothing we can do about it anyway.
+
+> +			rmpopt_pa_start + SZ_2T);
+> +		rmpopt_pa_end = rmpopt_pa_start + SZ_2T;
+> +	}
+> +
+> +	/*
+> +	 * Once all per-CPU RMPOPT tables have been configured, enable RMPOPT
+> +	 * optimizations on all physical memory.
+> +	 */
+
+Drop this comment too.
+
+> +	queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
+> +
+> +	pr_info("RMPOPT optimizations enabled\n");
+>  }
+>  EXPORT_SYMBOL_FOR_MODULES(snp_setup_rmpopt, "ccp");
+>  
+> -- 
+> 2.43.0
+> 
+
 -- 
-2.55.0
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
