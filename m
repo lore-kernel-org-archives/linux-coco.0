@@ -1,119 +1,92 @@
-Received: from esa10.hc1455-7.c3s2.iphmx.com (esa10.hc1455-7.c3s2.iphmx.com [139.138.36.225])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FDD44BCB8;
-	Mon,  7 Sep 2026 11:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.36.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF31B46DFF7
+	for <linux-coco@lists.linux.dev>; Mon,  7 Sep 2026 11:20:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788779584; cv=none; b=X0heOZQ21srNtjj9oyLr73YDvsXlesfj2o7WbVrYCMiwt8KHasCHkxFvsxsLpdksDJeA1+FikjzP1ZlhyI9cfjqsgw2zCUzZaXevsyTGkrfuk9NVR5eb79JqpWEDqG3GPs4aCNQz49iQziXf2jvQTfOtL5zql3Dw+0HKDMBQfW4=
+	t=1788780061; cv=none; b=QJhaNWlVEUZ3P+9QVn/2aFiyh+v5aZqsCd1/gUqPeXoPhuyk1HQ5cJpP0Itt5O/WYLwdo9pU6WP5T4Xc5Oh1SoZv0PnbckLKaMAEir2lzpRYLyYUgtJA5Tfl+Pt8/cr3siaNyiaVwm7uXQ7+eZS4s8wCHJ48ecnP4SUH5cqnATg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788779584; c=relaxed/simple;
-	bh=EpBWm7l/SMvIb6B8I2VN3Q1p/tlU23eIdQVaFpkHoJY=;
+	s=arc-20240116; t=1788780061; c=relaxed/simple;
+	bh=3xYwyiFqI+oPMMxVQR36OSf5t9Nu6Dp63Jwgu+jol4c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M8tQitWKD7OHfVLZanluEIhp5aC12oA9AXph2GjVxm5QKuijjU5SNmBl47aFRP6C/2wyOaAy7Ncjk+wbCzf2XpV7u2InUmiUs/8n3MQitcmGnbwjBvre+anNhZG9RF/6u0IRz61RV7oEM4H7bqx8azo0k+W6Gv9IXNUDNpt9ihg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=d+dCKFCI; arc=none smtp.client-ip=139.138.36.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=h0e1g+EMBqv3KEK8pcJQLrr/Qnzlpo4xCi6NQNYFZ0zOZe/ou34BOAUWN7IL26kMHpkL6zGc5Alo8f9J2ocrJ0qaXs9PYN7ORiUSKch3ZQCIv5unSdua+xeav6W7GYEZj02JdJmy2EqqLRi2sfp4OaLQq/6sO55ImkIGhWfplZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AMOy++Vz; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="d+dCKFCI"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1788779582; x=1820315582;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AMOy++Vz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788780056; x=1820316056;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=EpBWm7l/SMvIb6B8I2VN3Q1p/tlU23eIdQVaFpkHoJY=;
-  b=d+dCKFCIya3BdKpYQvYIya+mZSPrdpZgPAKwBfXMmsbZDkm23V9C5ec+
-   Obr4iz8fXGzKbmlKDfn5YGtEYtKUZxJlSI/qUMtJ4QRiXcCTZco+ZF6+u
-   M6kz1zXh1EqVudWfKIEngRP9S4zR9bGC4TbTojJpUzryk4cOZurXvJ4r/
-   QpHuNhjJQovuS9TaK6IgRgLDai0Neyp/WnKq3W59FUH5EgI6SBoX79k0/
-   pf8iEC+xxory9UU7OhqlA0vcE5VtrkPxrb2I5TZZ69LVgw6S28jdc77mO
-   7D4fPNsYgbBo3KoVrtUoL9bhm+BBdcvARw03apyRdm/00Y+5Tobd12Bco
+  bh=3xYwyiFqI+oPMMxVQR36OSf5t9Nu6Dp63Jwgu+jol4c=;
+  b=AMOy++VzeeNPqoSiwo7AszF81+5kItua8nFiq1UzG0KtY7oCfSJGWexy
+   Iko4rEtxMQKzIrhrAKO2EfPJ6qtBTjCn6oDMxEwLujUPrBidZhZ8QAVPe
+   OEo6B3BIIwaf/Hsbd4O5q+DBwCESvJOYR9Sk9syuDnVEj+I7Gfq3Shq1u
+   Wp84yDpg2IkNkHHR0+vOBNZIWfJ7xr8uOZmJ4Zeno8dsWcNgugOrU+RrI
+   lIq+s+hgucxuk75+SrnaL0YeGOwbKHZKEtjLXO5MSWGzq3f/K/ds1mxvK
+   BKBOXHMyR4iuT6VqeMM9z17+KjFSIPjffOIBeso91Co7PHpMMnGjVJP+4
    A==;
-X-CSE-ConnectionGUID: 61tSc0qGSO+1Ay8o4lFrNw==
-X-CSE-MsgGUID: p44XsvEgQ0yefrzJJQGViw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11898"; a="240390761"
-X-IronPort-AV: E=Sophos;i="6.25,267,1779116400"; 
-   d="scan'208";a="240390761"
-Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
-  by esa10.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 20:12:53 +0900
-Received: from az2uksmgm3.o.css.fujitsu.com (unknown [10.151.22.200])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id B6139820711;
-	Mon,  7 Sep 2026 11:12:53 +0000 (UTC)
-Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgm3.o.css.fujitsu.com (Postfix) with ESMTPS id 6607DC0043D;
-	Mon,  7 Sep 2026 11:12:53 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.8.144.219])
-	by az2nlsmom2.o.css.fujitsu.com (Postfix) with SMTP id AC6E01800102;
-	Mon,  7 Sep 2026 11:12:44 +0000 (UTC)
-Date: Mon, 7 Sep 2026 20:12:36 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v16 22/45] KVM: arm64: CCA: Handle RMI_EXIT_RIPAS_CHANGE
-Message-ID: <ap6YrZiCdS6FI83p@FCCLS0092175.localdomain>
-References: <20260803134403.80630-1-steven.price@arm.com>
- <20260803134403.80630-23-steven.price@arm.com>
- <ap49Orng5-oehc6J@FCCLS0092175.localdomain>
- <86fqzl4biu.wl-maz@kernel.org>
+X-CSE-ConnectionGUID: D+SJ8tnDQ/KdzL06NCnA2g==
+X-CSE-MsgGUID: hgxGmvYZTcmp0Oe9h8I81w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11898"; a="89200834"
+X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; 
+   d="scan'208";a="89200834"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 04:20:53 -0700
+X-CSE-ConnectionGUID: 0etPjfBVRy2LZBwfgJq9cg==
+X-CSE-MsgGUID: fMzm8kKRQwi0is0pY2vqPg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; 
+   d="scan'208";a="274836654"
+Received: from bradocaj-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.57])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 04:20:50 -0700
+Date: Mon, 7 Sep 2026 14:20:46 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: dave.hansen@intel.com, dave.hansen@linux.intel.com, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kas@kernel.org, nik.borisov@suse.com,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH v5] x86/virt/tdx: Formalize SEAMCALL leaf version
+ encoding support
+Message-ID: <ap6eDuCtcQ_GjTbI@tlindgre-MOBL1>
+References: <20260901105436.461823-1-yilun.xu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <86fqzl4biu.wl-maz@kernel.org>
+In-Reply-To: <20260901105436.461823-1-yilun.xu@linux.intel.com>
 
-Hi Marc,
+On Tue, Sep 01, 2026 at 06:54:36PM +0800, Xu Yilun wrote:
+> --- a/arch/x86/include/asm/shared/tdx.h
+> +++ b/arch/x86/include/asm/shared/tdx.h
+> @@ -122,9 +122,11 @@
+>  #include <linux/compiler_attributes.h>
+>  
+>  /*
+> - * Used in __tdcall*() to gather the input/output registers' values of the
+> - * TDCALL instruction when requesting services from the TDX module. This is a
+> - * software only structure and not part of the TDX module/VMM ABI
+> + * Used in __tdcall*() to gather the input/output parameters of the TDCALL
+> + * instruction when requesting services from the TDX module. "version" is
+> + * encoded in RAX along with the leaf number. Others are raw input/output
+> + * registers' values. This is a software only structure and not part of the TDX
+> + * module/VMM ABI.
+>   */
 
-On 09/07 11:10, Marc Zyngier wrote:
-> On Mon, 07 Sep 2026 06:05:29 +0100,
-> Kohei Enju <enju.kohei@fujitsu.com> wrote:
-> 
-> [...]
-> 
-> > Although the root cause is an RMM bug, should we also guard RIPAS_SET
-> > against this no-progress case?
-> 
-> No. We really should *prevent* the kernel from using a known broken
-> RMM. 
+For better readability and a few less lines of changes, you could just
+add a one-liner to the existing comments:
 
-I understand.
+Note that "version" gets encoded into RAX along with the leaf number.
 
-> Which brings me to one of my long standing request: how to we
-> enforce the minimum version of RMM that KVM is willing to work with?
-> 
-> We absolutely need to have a hard deprecation mechanism in place
-> before day-1.
+Anyways, I'm happy with the current version without changes. The patch
+cleans up the version encoding issue nicely, so:
 
-Agreed. Such a mechanism is clearly necessary.
-
-Is there any ongoing work to address this that you are aware of? This
-seems like a fairly broad topic that may require a separate discussion.
-
-Thanks,
-Kohei
-
-> 
-> 	M.
-> 
-> -- 
-> Without deviation from the norm, progress is not possible.
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
