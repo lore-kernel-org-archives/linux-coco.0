@@ -1,151 +1,126 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2FE4CA272
-	for <linux-coco@lists.linux.dev>; Mon,  7 Sep 2026 12:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A553624A8
+	for <linux-coco@lists.linux.dev>; Mon,  7 Sep 2026 14:35:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788785553; cv=none; b=ccwbe9S2uygGuBS3HH6vTIRs4QgkdnrTiUuAOFFt5K0gRLU6aWgM9iibFJTjDmz/7QgHK2WIsRCZJwnRELNYp31XdnUvX4ZoKQSbBDLzCvlzaOi1blmYBLonPJleBXzSTx3TyUONGTd2fCq821MlllNJhCOeMy5D35WubiVUsJs=
+	t=1788791735; cv=none; b=gu6ST/+maPq3i1P2NbI7NSZNnTW5jeJm/Jrb6/MHXwvTwFSvTNMH3MzNy/5ErRkJ+an4vNpbKxYMuIrtdgcthPb4Maof46t5Puebrap37tGdTVKBi+65rDJw6EZ3oy4QXRICzjVVgkw8cfColGK5q9WZjPZgm0brtu0cda78+ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788785553; c=relaxed/simple;
-	bh=CgrQA9S1BOTEaFZVDiNZT9Jb/LSdMZymbY+ZFIFj53A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MmfuZJWC8OF/BE1ibaeHi3KxbVA2OINTxIAtrOevwIf3g6ASe00+s7fBaA6wHAKMbKqmK18XHVe1NzpyyJ0bRghXxPK8KP9McXDCDkXJPgigKkGvFkSnCg6nlWeJ+S/Bohs9s7VjDdAVVmnxXi6Me36lnOrNDUNMJHezcXHcSzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=IBromfFw; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1788791735; c=relaxed/simple;
+	bh=jxXo5DsfyeLjv1OjbjWtVtQ47KUYD4jAJc12PsYCAng=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WArwrHZp3QzoRBvIxoffYvcVbQp2qYfsWWagZjfNdzu1T/q7vjjFilpGik9pGa0P67DGio0FW/TnGkz8EsNWs2P/Zado8wYFRo/gGATIwhJQd22d26QZ83ulF+5gf5A8ESHVX9VH6W+EotGby9G4KQs7kEuyf1P3NEnZ17Pq/gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UhYP577x; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="IBromfFw"
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-90cc0ebbf4bso32775776d6.3
-        for <linux-coco@lists.linux.dev>; Mon, 07 Sep 2026 05:52:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1788785550; x=1789390350; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=iapkYXlIeb7+hecWmdI0rbQoSearWcjPGJwbmVo5xUM=;
-        b=IBromfFwyzYPQXbxz/H9yY8ph+Lni6CFu1nS5fdLaYWWU8dUgXnfWzRd4545WJ2hmv
-         iqQ7KOgfgRh7hEt9Z0BaFnzOuVW/pWk6tR4he2gEhxajG4GhgMYaj4hsCeCqZUWFHYGq
-         SEQ2R6TBAMg/HzEYdGn0gROJ87l1J1rQMI5pAX7s4Eb1YEpT0+OiVGaElERRSik4Hyve
-         bdthzSRLbSplHXhOxXq3NJdkEbNvbUNd4HM3L/jLTvBgeGRgocbnPyfRVylZ0S+AkfgL
-         s2gRGoTp4aHqyuRHllwPcIjcXfULPlUJzIJTGUxdoNwA8gkf/ZW9DNjk8wUCexVHVZnd
-         sJAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788785550; x=1789390350;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iapkYXlIeb7+hecWmdI0rbQoSearWcjPGJwbmVo5xUM=;
-        b=r3bCLDEhVoq5GSmAU3Q6U1MzDCjh4kgW5KtdWFwL5P7XaNjR6NtZNdJja1kh6IGKvG
-         5b9Au2haQuFvRf3S1k9d52OPLmw/jSBb/08E2VolLV1ZBDuqRJjInTstFaRKRFmXsgyQ
-         PUGHoN1sN0aLZcE5IQB+MXvo5uMFZkxLtz1GOyjTAVqbJbuuyZ3/HUB0Qd35CzUDc+3C
-         PURYOlzubEdMdsJhAblQAwKabb4/tOyDsS4xWYcT26lIHR28x4/sTBP3AhNOl5WSZ36z
-         NDdeZftE9Q0mYPJYTTTzeAZknck/+5Wka9mrLU9BL8iidALJNBMn7zNcPr32qn2XGn/j
-         bSrQ==
-X-Forwarded-Encrypted: i=1; AKwUvByvp3OcIXD/o7yF8LEoynC0mYyjkXKolxYxUpq4/nE9ZV0PMo7E/MYKPeyUwJK4pUeJqfFIFAbwSgsS@lists.linux.dev
-X-Gm-Message-State: AFuF++mKzVwl0/WbpdAJXpAEuBMrIkCAOU4Sfog0a5UI7v9nHekjgFYl
-	Kjbv3a3ysbnYZdiNti1sgg/CKN6aPAfqS853ncWJia07twlIPB2vx9EPvScDI02Tgyk=
-X-Gm-Gg: AYBFou20FdHst5eUNyAibecLGPIA1/cybNBcN6QD5IfIJa+ZB/GCWhz7XmzX2wvo8ew
-	gx5AbCG0O5Be+nEduKPCG+NBX+g5+EL9+cdW0rvMRuWQ0EVHMxDIlVx+l828gUabYxuDqNyQcY1
-	NsSfmihZ1EcCY2+6I2mS0FN3uY1zwVodISXZjIst5LZKUqhykASudSbm6i2Dj0xMeJzDRHXTnzM
-	AKYtmLXCUYMMvDnHuVgP1NS9qnsR2l9zO/uXwmxWZXm8bAAiwpDDcc5Km9/rJ3G4NFCQaSSLVwI
-	WnP7cVOphjLQRQxqliLuaHYy5rUH4d6yVY/30hRRQbOcgS3ALq2yDy1A8jrxQNgL5ru+g6EJ/Ty
-	NF7/x7QSX3egkKpoDhgOt4k5dv7eSr7gBZ2E5WC9Az1VN0fdEB5M1HwDPULundVlMcQEu/imygk
-	IiKA776TXt/WyPjoAXet4TtcspNFwGFbv/G12uuvrKgqkjkyCyBa2rDZ5zpDYKJZgScJqOvjwz2
-	W8ctsSLEQqDMZlBbXnVcpdi+Hr3ur3pOb/AE4Kf5c0aUw==
-X-Received: by 2002:a05:6214:3d8b:b0:910:479a:f7a7 with SMTP id 6a1803df08f44-910479af8camr173644776d6.30.1788785550029;
-        Mon, 07 Sep 2026 05:52:30 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91048476220sm62621416d6.31.2026.09.07.05.52.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 05:52:29 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x3Ypo-0000000AfMt-2MmF;
-	Mon, 07 Sep 2026 09:52:28 -0300
-Date: Mon, 7 Sep 2026 09:52:28 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Nicolin Chen <nicolinc@nvidia.com>, linux-coco@lists.linux.dev,
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Subject: Re: [RFC PATCH v4 03/16] iommu/arm-smmu-v3: Add initial pSMMU realm
- viommu plumbing
-Message-ID: <20260907125228.GB667892@ziepe.ca>
-References: <yq5aecfdnv4i.fsf@kernel.org>
- <20260901143445.GC56830@ziepe.ca>
- <yq5a8q5kkoz3.fsf@kernel.org>
- <20260902121700.GC2890729@ziepe.ca>
- <yq5aik4nztdt.fsf@kernel.org>
- <yq5aecfbzjyk.fsf@kernel.org>
- <20260902235609.GG2890729@ziepe.ca>
- <yq5a8q5izxz4.fsf@kernel.org>
- <20260903171704.GK2890729@ziepe.ca>
- <yq5acxupjsy2.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UhYP577x"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788791733; x=1820327733;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=jxXo5DsfyeLjv1OjbjWtVtQ47KUYD4jAJc12PsYCAng=;
+  b=UhYP577x7caoYEGr18Jk+vZNI6QPBXmm+qAcARTspmeHWQ/midAYloD+
+   M1F6xiwXdlRxT9JqlYmyAXnnj2BHCmciAxFT+MgXocBHKAaWxzGkMSjhE
+   37XcUGPq0GZ2z+rt6BJ5DMlU9gXziHr/iB7e88XmFl37LOI6SnO98u1Gh
+   Sl7jXB5QvlwEIykGOlzSnhWgBr71izraozYL3rKsKvUAxgsPeUPYO153H
+   SXkfLu+raWnHHk0hLW0edmUAwdLoegmrVIo6R3NX8kyzEvMNc0pRc+Ug/
+   AsT7XWvAvbwxTjaCImvDut55f8rGDPUc9panr/0j5zqXYURs4Lp0o8lpd
+   A==;
+X-CSE-ConnectionGUID: wFvZbCzlT9GrGLkEEJwAmg==
+X-CSE-MsgGUID: S5AVTtGdSEON1q4eU3gvzg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="89040719"
+X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; 
+   d="scan'208";a="89040719"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 07:35:32 -0700
+X-CSE-ConnectionGUID: wJZ1ig3ARNq13mtTGg5k2Q==
+X-CSE-MsgGUID: VL4mwGL7Sd6Wt2g3t3dFRA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; 
+   d="scan'208";a="274878549"
+Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.111.75]) ([10.125.111.75])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 07:35:32 -0700
+Message-ID: <2ef38e83-dacc-4e2f-9b22-b02381664d9e@intel.com>
+Date: Mon, 7 Sep 2026 07:35:31 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5acxupjsy2.fsf@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] x86/virt/tdx: Formalize SEAMCALL leaf version encoding
+ support
+To: Tony Lindgren <tony.lindgren@linux.intel.com>,
+ Xu Yilun <yilun.xu@linux.intel.com>
+Cc: dave.hansen@linux.intel.com, x86@kernel.org,
+ linux-kernel@vger.kernel.org, kas@kernel.org, nik.borisov@suse.com,
+ rick.p.edgecombe@intel.com, yilun.xu@intel.com, linux-coco@lists.linux.dev
+References: <20260901105436.461823-1-yilun.xu@linux.intel.com>
+ <ap6eDuCtcQ_GjTbI@tlindgre-MOBL1>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <ap6eDuCtcQ_GjTbI@tlindgre-MOBL1>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 07, 2026 at 03:15:25PM +0530, Aneesh Kumar K.V wrote:
+On 9/7/26 04:20, Tony Lindgren wrote:
+>  /*
+> - * Used in __tdcall*() to gather the input/output registers' values of the
+> - * TDCALL instruction when requesting services from the TDX module. This is a
+> - * software only structure and not part of the TDX module/VMM ABI
+> + * Used in __tdcall*() to gather the input/output parameters of the TDCALL
+> + * instruction when requesting services from the TDX module. "version" is
+> + * encoded in RAX along with the leaf number. Others are raw input/output
+> + * registers' values. This is a software only structure and not part of the TDX
+> + * module/VMM ABI.
+>   */
 
-> I looked into this, and it becomes fairly complicated. We can move all
-> vdev/TDI-related code to arm-smmu-realm-v3.c, but that would result in:
-
-I was going for the opposite, you'd move everything out of arm-smmu-v3
-and into the arm-cca-host and obtain the viommu through tsm_ops not
-through iommu_ops.
-
-I guess I pointed to that in another email.
-
-The only thing arm-smmu-v3 should provide is a simple function to give
-the pdev phys and irq parameters. arm-cca-host calls that when it
-creates an viommu object.
-
-> 1. Adding more CCA-specific code to the SMMU driver.
-> 2. arm-cca-host continuing to own the TSM link setup (IDE).
-> 3. Adding callbacks from the device communication helpers back into
->    arm-cca-host, since device communication still goes through DOE.
-> 4. Moving the device communication helpers to firmware/arm-rmm and adding
->    something like:
-
-With the above change you don't need to do any of this.
-
-> The locking also becomes more complex. Unlocking a vdev can trigger a
-> stream key refresh, which is owned by arm-cca-host. Currently, the locking
-> is simpler, using pci_tsm_rwsem and pci_tsm_pf0::lock. With the SMMU driver
-> owning the vdev/TDI, we would have:
-
-You can't really avoid something, the vdev *IS* the TDI and the ops to
-effect it come in through the iommufd path. The ideal version is the
-tdi is never used outside the iommufd path so you don't need to mesh
-the locking quite as carefully.
-
-> - pci_tsm_rwsem protecting the lifetime and registration state of
->   pdev->tsm.
-> - pci_tsm::tdi_lock protecting the function's pci_tdi pointer.
-
-Like here, why is there a pci_tdi linked to pci_tsm? Anything coming
-in outside the iommufd locking is very suspect.
-
-And the iommufd locking should spill over to the TSM, you should not
-be able to remove a tsm while a viommu object exists.
-
-Jason
+It's a wee bit silly to talk about "version" in here. If you need to
+comment on "version" specifically, then put a comment *on* that variable.
