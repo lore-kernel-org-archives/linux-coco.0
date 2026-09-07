@@ -1,98 +1,133 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688DD471414;
-	Mon,  7 Sep 2026 11:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49258481647;
+	Mon,  7 Sep 2026 12:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788782310; cv=none; b=bauTITarg4jIaCjVZ+Nw0yN18Fo4PJCtdYRQ4EelaN5zys2dnUfI7xVMVNvDHV3J7TtuP4KmSLf2Jo1YUOXPgWwoLAMEFt3uSkrw7eDaeFjg3cxU+F/K0/Oy5UnSg6EmOQiP8UBxi9zBPQDMePtDiRzgKyeTx3Hn0VPaA0vk7UU=
+	t=1788783224; cv=none; b=JfRMh0X8lXvwGDYFFqg0cLCS4CPdMm6iTZuZa5H/tHNwD65Al32LinAFiHJzgQbVNP+cMwgp2AK4UtQMGt8qp4gM0skpCm5Wt4f0GNWPFg+W4UgXZbMBYZ5ey0mVEg4IAjnjv8O+JSsryeHb1LFcetlf/xL7268/87rLPzk8SSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788782310; c=relaxed/simple;
-	bh=gHwRph0Z5WbvmGMENEbvpJ0xv8gch4+5KPFj4oIECLs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A4JmLWnh4PLRwxt5Qct0pzE+gJuftpastPaRW6EtXwKlZT+LeRvdNrtaZ/PSUSNxsNLdiGZxnCH7zojDItihnAcSUEkT3mySDU0tBdwVC9guYJsvRfywYXoJjdQGPdUYqrMkjBOYmrk8godrBUWDyFCE8yeMXWe3V6fLjMnxPxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=s0dj+247; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1788783224; c=relaxed/simple;
+	bh=OeCMYh2ct58YutWsNhvBSg6WQ7qg9AOBy+1MXwsc/uI=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OXBU5kdyQqHo9G08rQH/VjsOhgVy60MLU7W9CezyjE2RtO0BGHpVztXVH+sGwE5mRHZ10J8DG8ZIH1o1/XGvrjL+UWl3C2ZkbVRH4jV9k0oViKlKF7feMqwlDHX1sQhRAuZKckMmToqttUlS8Zat1LuB8IKWUBXZ1AsgQLryTl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IIBugRBA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="s0dj+247"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C60F61476;
-	Mon,  7 Sep 2026 04:58:23 -0700 (PDT)
-Received: from [10.57.49.168] (unknown [10.57.49.168])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 19F283F7D8;
-	Mon,  7 Sep 2026 04:58:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788782307; bh=gHwRph0Z5WbvmGMENEbvpJ0xv8gch4+5KPFj4oIECLs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=s0dj+247ZGrYRAJTtXRI8Mg3u9DU79+m+Ys2NgoXAglWLE1feLSkomIwC2zA5A5ge
-	 GJPItChzLznQD61LkUo/IXNotgwIpZb3y09ZXWvl3IEnl/PvOECdXuLkcRCKyRf9pa
-	 Knr4lxm9X2/ZziKIjE+LsKu7ai1sEcwkMLIHh/1I=
-Message-ID: <30b4137b-1445-49c0-bd1c-98dbac5d70f6@arm.com>
-Date: Mon, 7 Sep 2026 12:58:22 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IIBugRBA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06FD1F00A3A;
+	Mon,  7 Sep 2026 12:13:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788783222;
+	bh=NecDGqlvwJfi+txz+jbfiLJQsG0Fh5Rj2eIZtOMxuME=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=IIBugRBA+PkC18oj9xBLFEzHli+iSNVYmSt7tIk1kQ1+XsUR6GiZ6dINOKxPmH8jR
+	 jRvmNqEEvz2nDcID7OimfgpAFd722XO4m7mymmTq35MP3LTel0gd/mU3c4/rNqge4x
+	 +M+gdtUn3t5FYykZZnJyvXYcb4OpnjSLblVv9ymySRe5BG5kWL5rWQD5Aq1HwPSxqA
+	 MJGm5mqIktY3l4/7o9OaIjGbeRg0+k4TQtaEjbt8LsVbT8Gk31bzirSnZan/v5n5EB
+	 AwVBb4EQnTOizOQnSq3hMhcNFTeB6xBn+K5ZCv/IqwYRvV3/7+Jlqm7SWXiRX0cU+o
+	 FpTdspeyt7XcQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1x3YEF-00000005kyX-1fLo;
+	Mon, 07 Sep 2026 12:13:40 +0000
+Date: Mon, 07 Sep 2026 13:13:38 +0100
+Message-ID: <86cxup45u5.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Kohei Enju <enju.kohei@fujitsu.com>,
+	Steven Price <steven.price@arm.com>,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei
+ <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	WeiLin.Chang@arm.com,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v16 22/45] KVM: arm64: CCA: Handle RMI_EXIT_RIPAS_CHANGE
+In-Reply-To: <30b4137b-1445-49c0-bd1c-98dbac5d70f6@arm.com>
+References: <20260803134403.80630-1-steven.price@arm.com>
+	<20260803134403.80630-23-steven.price@arm.com>
+	<ap49Orng5-oehc6J@FCCLS0092175.localdomain>
+	<86fqzl4biu.wl-maz@kernel.org>
+	<30b4137b-1445-49c0-bd1c-98dbac5d70f6@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 22/45] KVM: arm64: CCA: Handle RMI_EXIT_RIPAS_CHANGE
-Content-Language: en-GB
-To: Marc Zyngier <maz@kernel.org>, Kohei Enju <enju.kohei@fujitsu.com>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20260803134403.80630-1-steven.price@arm.com>
- <20260803134403.80630-23-steven.price@arm.com>
- <ap49Orng5-oehc6J@FCCLS0092175.localdomain> <86fqzl4biu.wl-maz@kernel.org>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <86fqzl4biu.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: suzuki.poulose@arm.com, enju.kohei@fujitsu.com, steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 07/09/2026 11:10, Marc Zyngier wrote:
-> On Mon, 07 Sep 2026 06:05:29 +0100,
-> Kohei Enju <enju.kohei@fujitsu.com> wrote:
+On Mon, 07 Sep 2026 12:58:22 +0100,
+Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
 > 
-> [...]
+> On 07/09/2026 11:10, Marc Zyngier wrote:
+> > On Mon, 07 Sep 2026 06:05:29 +0100,
+> > Kohei Enju <enju.kohei@fujitsu.com> wrote:
+> > 
+> > [...]
+> > 
+> >> Although the root cause is an RMM bug, should we also guard RIPAS_SET
+> >> against this no-progress case?
+> > 
+> > No. We really should *prevent* the kernel from using a known broken
+> > RMM. Which brings me to one of my long standing request: how to we
+> > enforce the minimum version of RMM that KVM is willing to work with?
 > 
->> Although the root cause is an RMM bug, should we also guard RIPAS_SET
->> against this no-progress case?
+> (1) Do you mean the RMM ABI version ?
+> (2) Or the particular build version of a given RMM firmware
+> implementation ?
 > 
-> No. We really should *prevent* the kernel from using a known broken
-> RMM. Which brings me to one of my long standing request: how to we
-> enforce the minimum version of RMM that KVM is willing to work with?
-
-(1) Do you mean the RMM ABI version ?
-(2) Or the particular build version of a given RMM firmware 
-implementation ?
-
-As far as (1) is considered, the kernel already sticks to a single
-version, v2.0 and doesn't support anything else. And we are fine with
-KVM/Linux supporting a single version of RMM and deprecating the
-support for older RMM versions as we decide to move on.
-
-As for (2), the RMM ABI doesn't provide any information about the
-build/fix version for a given implementation. I will raise this
-within Arm.
-
-Suzuki
-
-
+> As far as (1) is considered, the kernel already sticks to a single
+> version, v2.0 and doesn't support anything else. And we are fine with
+> KVM/Linux supporting a single version of RMM and deprecating the
+> support for older RMM versions as we decide to move on.
 > 
-> We absolutely need to have a hard deprecation mechanism in place
-> before day-1.
-> 
-> 	M.
-> 
+> As for (2), the RMM ABI doesn't provide any information about the
+> build/fix version for a given implementation. I will raise this
+> within Arm.
 
+But it appears that only checking for RMM v2.0 wouldn't be sufficient
+in the case that Kohei faces. Nothing distinguishes a vanilla RMM from
+a fixed one, as we can only check for the ABI.
+
+We need a way to identify *implementations* so that we can refuse to
+use one that is known to be broken. And given that each and every
+vendor already have their own toy RMM, each with their own "added
+value", it cannot be a simple "build number" identifier.
+
+This is not the first time I ask for this.
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
