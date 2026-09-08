@@ -1,157 +1,206 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D1756C634
-	for <linux-coco@lists.linux.dev>; Tue,  8 Sep 2026 19:06:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2C659E322
+	for <linux-coco@lists.linux.dev>; Tue,  8 Sep 2026 19:18:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788894376; cv=pass; b=FEsJBHzIJ12Fb4nArHrg2MEd89yJyDIMa7jmhVj3TxDJ117bZc5+zZ2nT2vKOxh04q94qy15QnYxPtX36bwi5k3AAmELhagZv4iDH4WPtDtO4jQ3L0u2D1lANeoeskQxsvhqBLKq+BwvcM+J9jQzqDIp7QeMt18PI/LDH8GQsL8=
+	t=1788895129; cv=pass; b=X1ACBkVVaHVBxvPOFrlYVYbj+IYBF+wdsFnY8LqHqACBQ0x+m1s1CWooMUq3NFjFX3gyCPHMX/+myTEOoKvA3KOJFE6BjTEc30ehvYweUIRLOIbYNnT7FqLEAMvONNuWshJfnG8oFp4Ff2xHlz6RLlF9L/1vaFYfAKS3Kh5cbR0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788894376; c=relaxed/simple;
-	bh=JxAv9A35o8tRcwxKjZO94SBS9xDo9RgjGVk4mfstMJQ=;
+	s=arc-20240116; t=1788895129; c=relaxed/simple;
+	bh=iF8wAwPOdw5l+3Cf+6kzkcaY9d4H9emgCFQIITZ4gH8=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m082W5D3cqktyPubtPvZXQyzrqFkCD18Xq3I81wL0EM0i6G4oaweN0uCzg+9/orXNV6e2verZPDcqLfaTB7+QJhgapi+Qj1F+Q2umwn2IvckJB3lc47EL7O8ySzZtnuncgNh/zGUSVteWhwzjPBVaIRsJpO19UvKouG1CCMmwGg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=od1y/m4v; arc=pass smtp.client-ip=209.85.128.169
+	 To:Cc:Content-Type; b=bqLjOpDSYdYh4Q6SbrIP3bbycG3otwwnwMWmfVQUQkrh47zcvaGfnYwaw8uQNEFjlHMNHd4p0dE3ePSsnFmeYC45lSA1D9m5v2aKdRk+sYm5xt7P0NJefEoKDsRIlZBGRnWtlJJ6ytjXTzHgwpHfH59B1hxJ7x7IH5u5Ak5VW7A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=THpp++E+; arc=pass smtp.client-ip=209.85.219.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="od1y/m4v"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-85a50f6a7f7so69377887b3.2
-        for <linux-coco@lists.linux.dev>; Tue, 08 Sep 2026 12:06:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788894374; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="THpp++E+"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-90cc0ebbf4bso43885946d6.3
+        for <linux-coco@lists.linux.dev>; Tue, 08 Sep 2026 12:18:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788895121; cv=none;
         d=google.com; s=arc-20260327;
-        b=bTjcUds0sfORiCKVBH9cGSF/VBxw3gds59gSEC7PUrbHsKw+4AFB8GWy4Uos0r/GuR
-         u3ufh/LzILMQmtMInPFYNhrRtk92O2PBGGWmHd6dLyBn0a2nnyvgvhdJjED2Bu3VXZxj
-         w8K91JjVZ7FfwMfzAjaGU3ynSK8h4F9sjTAZrJRbxBQN9Za4C9wj61x0YDVTnKSbiaeJ
-         yS+Tf4KoebnuDkqNTtSpO3yPjS/1kae0QFZhWNeuuSTDp1MBV6JB58sopdzwTOpzl6Q3
-         ww2Hp65wqLTMqK00/adKPWFIuDOudo+enopTLHNzqn1xzrVru8diO0+GQuv37EoB9okf
-         +gUA==
+        b=aYAr8KW6AuM1cYVmvWi+xE1eACLCRJvy/byiGaH/Enetuw+Qbah/CqkbZvCfXVe+YG
+         XBUkfrKzhidJ/H6QP0mm27/jq31g1WqR8aj/5RQTDbxoWPk6RWSqL6BAoHumUlLOiIc3
+         zCyC6q+v4wHoQmgZNpRjDppc0ogy3TIBn94eGSBF62C5rEJdyeSFflTQ/MsJYQKrDZvN
+         x29zCVgmRPTQCtwxeNvNr3vI+bzExLmiL6C1DQvxNdg7XFjZzLlC3B6WX3uL3VxujAjc
+         1XOpIC5j2IdnvLauqqIa/Ze9yHpdzESSK6jZ7iCKNWKHZCv8AOeUTpFj0X736jT1eKYV
+         y2MQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:dkim-signature;
-        bh=hhSMn73HXnZUeqqhpj5wjt1oII0fZ8bLb8+fuULddR0=;
-        fh=0aHgiLn4+lp05szV2ltsnmssujOsSots6QqL72EluJI=;
-        b=eC4SPtqx+igzGDRLszy4KytxP1eOjdJq3L1SfF0nGxYB3U5xDR2P8awMKhZGE92xRK
-         HR2PGmstj6HW4heyT0IpAu77QcldWisvExiPPURUKRPNXW8LW/QnRKszqpW9xtwZ+eDT
-         VpLOwxX1txzcmBAXNFDF7JcqpO4md2GUdqXB3hZYvMGFGGl8t2S7shIGryvbodTqxHZ+
-         i+I5tXxS6zYMlQuOMIFoO0lpkizHZ1dBKYLQjy1g/rGEQuZ3OmC0ZnPlTWHs1xLCfEuF
-         g01QFns0yIc/k7wOJL+RtEfOphkTrsdq4oK41h0HB1TJXLV4MeSSlANM0wKb4JEEq4SR
-         v33Q==;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=X8Qt7g6L7Ojilnm+sGhiq7WuzC+eIMrDfW/7+fmIyko=;
+        fh=UiMaM5KB1SqIX12rP3HgPVylNej2tHxm4w/nuOOnxnw=;
+        b=l/Q1R0COJPHOuEw9p34h3GsExn/OrsC5BTTlVQyBtpeDBsfXjW+85xBDubkIndEJ5K
+         o1scT/yL/RaFzNc4Kx2baYggr9OtN9WpCpMigOkudwTekswhyDehPIln7SOAroxe5VXG
+         HgqY1CFTGSfRRDK4KHapR4/rjtDJF6H6iVKhGwGZEaUVIqm6/6gmPCjnpLXoVrZTVCRY
+         8nSZoQMhs977W0GqJ3PWQh0lrRKxXxm4GE9N4IzU+UM4xUX4OwranMIZcme+biEl/FW0
+         rVkfsivYEjfmZ1EUuFGVE2RiacgDDPU23rLlPdxOFhle+f2L2+LgsHi3OewVY7WNtRo3
+         rmFw==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788894374; x=1789499174; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:mime-version:references:in-reply-to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hhSMn73HXnZUeqqhpj5wjt1oII0fZ8bLb8+fuULddR0=;
-        b=od1y/m4vWdUY2qRaCbSxsmk2f1WZIn9bpGPqNh94xN5ftt4rA/5ICXqdRywYWTFK4a
-         sLgW2BDjjaIVEbiXavpiSV925VRjCznv1zlNcvhJ216Ei8nQAc6fUnneT13vlRW51Sj8
-         p239aEnP/YQp13OuOgeLc7/mkRXm+/UsKXHxqX3bz938oPcC7h739VppGDILqR6/eCeh
-         FNKvRRaGEe0KrK9AWrlhwmXVDX7yBLHeIExFQqBVi26VZvbMGQouXE3l9dcWTjg5qZUR
-         lKY8f2B+m0fMyuhzcz3fQt43uMeCLXGTD/nVqDxo0G05CFyNzI1sIj48uzRAzF32skwM
-         8fkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788894374; x=1789499174;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:mime-version:references:in-reply-to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1788895121; x=1789499921; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hhSMn73HXnZUeqqhpj5wjt1oII0fZ8bLb8+fuULddR0=;
-        b=saR1q5fJSH3Y0p8WfYUvd+JnHaphZb9hxhHu+XnBT5S5Dxw5Q600E6HPELXZt+jxjc
-         tyxzkUN1px1b/FtbnnZag06f+nhisiMCWNNJZw295FQo9MTaNKJnUM747izQLF4Mw9fI
-         0HNTZj/ICH4Kp9DVU7gZ17waQ7kMUEbwr5luRpiINC0+/KFAMbDv36u0+w5Hg1HcwR0U
-         HQpgDoI8q9UlG2EAGjGHr5UosaVkj/WnQP6mqm0EexeZiQAc1MOwQdZ+6Z53FcpO9qyb
-         PUbqgB59GTrFBwZ8IkYgei8xG5JrWeqUqG1FHAH1Yu7h7lpdjC4Sh1e5+w/XXbQI2w/5
-         B9pg==
-X-Forwarded-Encrypted: i=1; AKwUvByfWJ5X/EJtvq4iAsn9qFgaF7vyrZdH0Sm1ZrboBhW8VAyo4mcgtjTnHe1eMnKopjXV/MuyEc0XjEtN@lists.linux.dev
-X-Gm-Message-State: AFuF++lWHtWFlVilYrffC+pKR6s2csqubaRgwQfdQOLk0caEBPHaoomq
-	fdgjniS5x11DvzSO1RQddii1+YZTOL71xX/61Lq1Ptn+txtvYhz12GzQna8WoODHYzA5aldHMsA
-	fPjx7GZWOjdS73qiAZ5dX7cFrbQcg8hM4kcRfLwtF
-X-Gm-Gg: AYBFou2IgxaDrATBK8OZDuAz0qGlPp9LQXidsjg3tF0Jl/PwZsQ/c3fry/AqZ4VrIMS
-	HaNXF8wTnYWqwTAj88u6MsOT3UjIxDDLY1UNvqxRfk6dNa746A42QpkQBbiZz9dexI+t4L+bqUk
-	EouKiBLOVnmMcqb9C9GyEbr0wMDaeUe+S4W/czdkd4NaBPf5hmd87voVvFZx01A+aU+UVC3ZPlC
-	+2a5I/ng2dVH7tjQiD2+vbCMBYvABh66tAqNp08ffMIlt85ueMyeeOmFQAhzkz+KrbZuwWuhurc
-	vE5kgqGe8XDGCjiV8bkz1LP0CLmzZQVdcUarxlyLS/yyq9oPR6kiOYN9xaCv35IkbiEIJ73noQz
-	xUBvYdANSBcGzCOgMcpybQeLXWR1bc4vhcGrEVkC0EA==
-X-Received: by 2002:a05:690e:4143:b0:668:42d:95e5 with SMTP id
- 956f58d0204a3-66fb58f1410mr10675130d50.4.1788894372039; Tue, 08 Sep 2026
- 12:06:12 -0700 (PDT)
+        bh=X8Qt7g6L7Ojilnm+sGhiq7WuzC+eIMrDfW/7+fmIyko=;
+        b=THpp++E+AuADv/wtbPn3GaMNTzrY3FNHWySxR/eU0zF/w+IHvmrBcmjrsL917vE2pN
+         eLVNJasZ3F2l51wzRB2DA+xP8QnAadUwn15EC5pLoCYMkCGCiO5Ls18p0cJnQkYiVkXx
+         jSBQL/XDSmld7Mu5Bz9UFqle1H6qaxdKgwyScVEkVbhmFHZ+rofXYY4gbNtMyhAFhK5J
+         ux16mG07cFGljxUBfo5AlYwANQR9w8jtPcyx6hv9sdSWFiTnumrsBAelfaGWn+dCQxH/
+         DDZ4fijAqTbVx6aIOOmqKdND2/qoi65hzp5kcI58upJLILfKwAK6OwBimNFl6L0vpqrW
+         EKyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788895121; x=1789499921;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=X8Qt7g6L7Ojilnm+sGhiq7WuzC+eIMrDfW/7+fmIyko=;
+        b=qjH4OCr9ch0ACcXc1iFpGEjwap5HGhB9PPr2iwBN6UMf4LC8F2wvtLY7wni6Fi/QC/
+         L0Q30+gF4bDh1g4SzLA/tdpvgbaFW9aUIUIu9joXKnRv6JyBqcPyVwVwUnQPAdpD8rjC
+         ruLov9f2YbZMEinHzIPufj+1fK88xaifcnDlcFe4vfNb/8jB6gLQMZF/5IQd0QnOcvtp
+         9oZ3nBG1aOZQZ8ijkTtDGDHCCmPExkT61DyXP+czbvZzuofWU744TYF4To1BHh3jW6ll
+         D4QQbv5zbbDVLrG9elnZsKqLv78L5RMIQvv4tdJd+JV1FBYmGgwHMBeR+ozdyyA9Cxbj
+         Fk4Q==
+X-Forwarded-Encrypted: i=1; AKwUvBw1cOEFIrbwY2as94lKYpRLaukiFNn5z7LZe+edOnjwGDtNopeIsSwIGrP2a1r81SzZ4SpCA/LAyvF4@lists.linux.dev
+X-Gm-Message-State: AFuF++lFYT3IULJuoLB6vVvvKFPAY4/6CG8lj4Bi3OxrKO50cSIPMnkH
+	vKwOAZA0h42nmmiFWSbacgJKbBTN/0VmSMrf5+fpOPNdbMNr/vOBulRRedFRsQ5bHAQVfyu+80J
+	7cPGS0kXDQT0+fKK+Uk5pKlbny9p+VQUBVoJNJI6N
+X-Gm-Gg: AYBFou2q30wkd1JiYrUundQ2v5sEIhtSZvAvFgd0v8xOgCMP+0qMOPcfJX4GQZ7+Ws2
+	LnFoKTNa1hkz/lyMOn+FOeBscGLQf72bXXC34aYzOAax56Dhvk8F4zGa4WzQafbFY3UnOfRy3Xi
+	T5fnimG7Bfj2LHVEiNGAZn8SLLnESLfZYPhtEpYuhq+OFJ0FEOhnmLI9Iu8P1osQ2l50Fodn6P/
+	+NhcMz7ZtJ2qls8/yqiScciiporBFvVqYPcoJWgO3URYCt1RinvkmmIGhO29K8W2vNIFWW32aid
+	EQCjnIW6iDSdCvDvTgnH3G2TYvwO+zPCqmEaT48RJl1mC2+Lk5ESUDt+nN7dxNn6u5rund4FZBE
+	KER1i96DkHHKiwiMaNgW5NKHym/KNYso=
+X-Received: by 2002:a05:6214:8110:b0:90e:8d49:1ca2 with SMTP id
+ 6a1803df08f44-9103ef006e4mr328434076d6.2.1788895119795; Tue, 08 Sep 2026
+ 12:18:39 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 8 Sep 2026 12:06:11 -0700
+ HTTPREST; Tue, 8 Sep 2026 12:18:39 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 8 Sep 2026 12:06:11 -0700
+ HTTPREST; Tue, 8 Sep 2026 12:18:38 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <ae783977c1eaa34d2910f76dac1437c7aad47d93.camel@intel.com>
+In-Reply-To: <20260825081448.GB3694338@pedri>
 References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-4-15ad654a50db@google.com> <ae783977c1eaa34d2910f76dac1437c7aad47d93.camel@intel.com>
+ <20260722-tdx-selftests-v14-11-15ad654a50db@google.com> <20260825081448.GB3694338@pedri>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Tue, 8 Sep 2026 12:06:11 -0700
-X-Gm-Features: AcwNN1XsGt_fUaARpEZcGvQCOF1lLG5Qg2IcdgK2WB2r0fv2QH8UPnIsl3MEqiA
-Message-ID: <CAEvNRgHB9Vhwe4kOGYUn3piw3dw8zqSgVQX2VonoWCYPw-TaWA@mail.gmail.com>
-Subject: Re: [PATCH v14 04/22] KVM: selftests: TDX: Use KVM_TDX_CAPABILITIES
- to validate TDs' attribute configuration
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "Aktas, Erdem" <erdemaktas@google.com>, 
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>, "shuah@kernel.org" <shuah@kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "afranji@google.com" <afranji@google.com>, 
-	"kas@kernel.org" <kas@kernel.org>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"ira.weiny@intel.com" <ira.weiny@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"Chatre, Reinette" <reinette.chatre@intel.com>, 
-	"isaku.yamahata@intel.com" <isaku.yamahata@intel.com>, "seanjc@google.com" <seanjc@google.com>, 
-	"pratikrajesh.sampat@amd.com" <pratikrajesh.sampat@amd.com>, "oupton@kernel.org" <oupton@kernel.org>, 
-	"wyihan@google.com" <wyihan@google.com>, "sagis@google.com" <sagis@google.com>, "Gao, Chao" <chao.gao@intel.com>, 
-	"Wang, Roger" <runanwang@google.com>, 
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, 
-	"ajones@ventanamicro.com" <ajones@ventanamicro.com>, "Qiang, Chenyi" <chenyi.qiang@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "jmcrey@google.com" <jmcrey@google.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>
+Date: Tue, 8 Sep 2026 12:18:38 -0700
+X-Gm-Features: AcwNN1X5p6qITiCXmMYSZPSPB-N20ut6cFscoALs2WRbCQrztSKzH7k_if4I128
+Message-ID: <CAEvNRgHiQ5g94SQ8S6CTyTmEOguQqY9GmQUu1K8ff9L1pALpQA@mail.gmail.com>
+Subject: Re: [PATCH v14 11/22] KVM: selftests: Set up TDX boot parameters region
+To: Peter Fang <peter.fang@intel.com>, Lisa Wang <wyihan@google.com>
+Cc: Andrew Jones <ajones@ventanamicro.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Chao Gao <chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
+	Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Oliver Upton <oupton@kernel.org>, 
+	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-"Edgecombe, Rick P" <rick.p.edgecombe@intel.com> writes:
+Peter Fang <peter.fang@intel.com> writes:
 
-> On Wed, 2026-07-22 at 23:13 +0000, Lisa Wang wrote:
->> +static void tdx_check_attributes(struct kvm_vm *vm, u64 attributes)
+> On Wed, Jul 22, 2026 at 11:13:16PM +0000, Lisa Wang wrote:
+>> From: Sagi Shahar <sagis@google.com>
+>>
+>> Allocate memory for TDX boot parameters and define the utility functions
+>> necessary to fill this memory with the boot parameters.
+>>
+>> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+>> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+>> Signed-off-by: Sagi Shahar <sagis@google.com>
+>> Signed-off-by: Lisa Wang <wyihan@google.com>
+>> ---
+>>  .../selftests/kvm/include/x86/tdx/tdx_util.h       |  2 +
+>>  tools/testing/selftests/kvm/lib/x86/processor.c    |  2 +
+>>  tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 51 ++++++++++++++++++++++
+>>  3 files changed, 55 insertions(+)
+>>
+>
+> [ ... ]
+>
+>> +
+>> +void tdx_vm_load_common_boot_parameters(struct kvm_vm *vm)
 >> +{
->> +	struct kvm_tdx_capabilities *tdx_cap;
+>> +	struct td_boot_parameters *params =
+>> +		addr_gpa2hva(vm, TD_BOOT_PARAMETERS_GPA);
+>> +	u32 cr4;
 >> +
->> +	tdx_cap =3D tdx_read_capabilities(vm);
+>> +	cr4 = kvm_get_default_cr4(vm->mmu.pgtable_levels);
 >> +
->> +	/* Make sure all the attributes are reported as supported */
->> +	TEST_ASSERT_EQ(attributes & tdx_cap->supported_attrs, attributes);
+>> +	/* TDX spec 11.6.2: CR4 bit MCE is fixed to 1 */
+>> +	cr4 |= X86_CR4_MCE;
+>> +
+>> +	/* TDX spec 11.6.2: CR4 bit VMXE and SMXE are fixed to 0 */
 >
-> I think this patch actually does nothing because attributes is passed in =
-as 0?
-> So 0 & supported =3D=3D 0. It does exercise KVM_TDX_CAPABILITIES as claim=
-ed, but so
-> does tdx_filter_cpuid(). So for a minimal support, we could probably drop=
- this
-> patch.
+>         This is now out of date (11.9.2 as of today)...
+>         I wonder if it's better to just say something like: "Per the TDX
+>         spec, ..."
 >
 
-For more context, Isaku suggested this in [1], but after all the changes
-tdx_read_capabilities() is already used in the tdx_init_vm() so I think
-we're good to drop this patch.
+Makes sense, thanks!
 
-[1] https://lore.kernel.org/all/20220901012853.GF2711697@ls.amr.corp.intel.=
-com/
+>> +	cr4 &= ~(X86_CR4_VMXE | X86_CR4_SMXE);
+>> +
+>> +	/* Set parameters! */
+>> +	params->cr0 = kvm_get_default_cr0();
+>> +	TEST_ASSERT(vm->mmu.pgd < (1ULL << 32),
+>> +		    "PGD must be within 32-bit address space for 32-bit boot code");
+>> +	params->cr3 = vm->mmu.pgd;
+>> +	params->cr4 = cr4;
+>> +	params->idtr.base = vm->arch.idt;
+>> +	params->idtr.limit = kvm_get_default_idt_limit();
+>> +	params->gdtr.base = vm->arch.gdt;
+>
+>         vm->arch.{idt,gdt} must also be 32-bit addressable here, just
+>         like vm->mmu.pgd.
+>
+
+Something like this?
+
+    TEST_ASSERT(params->gdtr.base < (1ULL << 32),
+            "gdt must be within 32-bit address space for 32-bit boot code");
+
+
+>> +	params->gdtr.limit = kvm_get_default_gdt_limit();
+>> +
+>> +	TEST_ASSERT(params->cr0 != 0, "cr0 should not be 0");
+>> +	TEST_ASSERT(params->cr3 != 0, "cr3 should not be 0");
+>> +	TEST_ASSERT(params->cr4 != 0, "cr4 should not be 0");
+>> +	TEST_ASSERT(params->gdtr.base != 0, "gdt base address should not be 0");
+>> +	TEST_ASSERT(params->idtr.base != 0, "idt base address should not be 0");
+>
+>         Making sure that cr0/cr4 are simply non-zero feels kind of odd
+>         to me. And cr3/gdtr/idtr all came from memory allocators with
+>         non-zero minimum addresses.
+>
+
+I guess I intended these to be sanity checks that the caller didn't
+leave these unset (defaulting to 0), for an early warning to the
+selftest writer if something went wrong. I'd prefer to keep something
+that would retain this early warning for the writer.
+
+What would you replace this with, to provide the early warning, or would
+you rather just remove it?
+
 >> +}
 >> +
->> =C2=A0void tdx_init_vm(struct kvm_vm *vm, u64 attributes)
->> =C2=A0{
->> =C2=A0	struct kvm_tdx_init_vm *init_vm;
->> @@ -112,6 +122,8 @@ void tdx_init_vm(struct kvm_vm *vm, u64 attributes)
->> =C2=A0	memcpy(&init_vm->cpuid, cpuid, kvm_cpuid2_size(cpuid->nent));
->> =C2=A0	free(cpuid);
+>>  static struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
+>>  {
+>>  	static struct kvm_tdx_capabilities *tdx_cap;
 >>
->> +	tdx_check_attributes(vm, attributes);
->> +
->> =C2=A0	init_vm->attributes =3D attributes;
+>> --
+>> 2.55.0.229.g6434b31f56-goog
 >>
->> =C2=A0	tdx_vm_ioctl(vm, KVM_TDX_INIT_VM, 0, init_vm);
+>>
