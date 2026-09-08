@@ -1,114 +1,160 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48A052378C
-	for <linux-coco@lists.linux.dev>; Tue,  8 Sep 2026 09:43:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5FB84A2614;
+	Tue,  8 Sep 2026 09:49:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788860632; cv=none; b=c1HXZxM99bXUPLTDN7b5h3nDyW4Ft3eqxiaMork/aAWkmFq+8CtLT7HZZvo+pMbJCYcRhCldqDvAAXfNvZNHNiBSyQcdk2s54Ax2y1MSmWi25rnYH1YcnKYyMN61tt5x5cxsxP0aG/BA/UfTr+LbygFoy5PBt7QmZOYbGcjKqzk=
+	t=1788860981; cv=none; b=Bhm1rXxHIttpBQsGyL3XdwMUKwmf4baeuKhnuLGS2cPUg1xOfa6RUsDi0CEe9MsovWY9414HeyTJnElBgFyATr10eN8GMuyWH+atSuKVyVNkK9Oh7zMQHkr3c+u1E64xmsVE9hlha5QiQE1VCYvbwVJpSQlEjn7LJrZD4DHGCBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788860632; c=relaxed/simple;
-	bh=O/RU7XTNP0iwtgCnZcCsut02WHgg8KAIIJ0b3lZIwQs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kErB6L2/uaCBSlXwYzLoESp/93lI/SSwz8y1N8G3ucboVi1XCsZBYgcpkb/Sz/9GBYMfER7FJyteMGoF+A+hIk1EZNWzGhdP4IQlt94LMJzHiVZreUVFC77UxoH5sEZWDMKDD9q36p+B6nN9oTnC5N6f9lqLdQqbZd2ZDgSeEjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=deyQbRX5; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1788860981; c=relaxed/simple;
+	bh=kJteEwoT3OdITFopCoesbDyojoKuGSBp7kslVKQdQY0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pP6NtgRRq9TtGSCt9K+I7w86GwHeY007YOQeKCK1VXy48n70HIi8HQAgg3ikMZAVu1IWT6MvCqWc2unnjZ8EZZTHKQCBHzH/9+HC5FUKDtr86B2H5pFprWdezf9eCDdi1RaafQVUn0QulPuhvoxFYIS2XPdJhu4XYzyqxrYDzJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=bnEijS8U; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="deyQbRX5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788860631; x=1820396631;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=O/RU7XTNP0iwtgCnZcCsut02WHgg8KAIIJ0b3lZIwQs=;
-  b=deyQbRX5IB+9KTDbsEvWWyQSHbzUNfAQni85muOoa5Pu39wgb3ldW6ak
-   7sRqSoEtaH1QCYqvXS30c6HHbvS5ThcWBh5dolsPTVBSefY7VMK8tBm8q
-   juSlpDpLSiC6RKg/ZKRVyrljwKfuvfvsvnO+y5+nAjdsti4P44vPlPrih
-   uLqEHwIrgoyIp1i18pgxXlS1hTE2WeDxrBSzdgrgk34x63EwvT7CB2+H6
-   VI+denoHFY9XTYv/u97sI0ZiUOYb9bKZjle2opDpJdCutobFDGk7xsVby
-   GgALKdLJoiJnHSA6vGT1sPKA1ku8tTDJwwDQ6jS2j9hhhAVA3nYP3ChcG
-   A==;
-X-CSE-ConnectionGUID: kJd5/hx4SwS4a6CXie/guw==
-X-CSE-MsgGUID: d6/7AApERwqOlgd0Gs9wKg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="114797453"
-X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
-   d="scan'208";a="114797453"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 02:43:42 -0700
-X-CSE-ConnectionGUID: GW81OCrSS3q00qRL3iFtvA==
-X-CSE-MsgGUID: vs9FiQI+RX+B1xVqxPlyjA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
-   d="scan'208";a="271459358"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by orviesa009.jf.intel.com with ESMTP; 08 Sep 2026 02:43:40 -0700
-Date: Tue, 8 Sep 2026 17:43:39 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: dave.hansen@intel.com, dave.hansen@linux.intel.com, x86@kernel.org,
-	linux-kernel@vger.kernel.org, kas@kernel.org, nik.borisov@suse.com,
-	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v5] x86/virt/tdx: Formalize SEAMCALL leaf version
- encoding support
-Message-ID: <ap/Yy0uNp+78/wjv@yilunxu-OptiPlex-7050>
-References: <20260901105436.461823-1-yilun.xu@linux.intel.com>
- <d2a198a8-cba9-4773-94b6-1513b8b718c5@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="bnEijS8U"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5AE741476;
+	Tue,  8 Sep 2026 02:49:33 -0700 (PDT)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 685AE3F7B4;
+	Tue,  8 Sep 2026 02:49:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788860977; bh=kJteEwoT3OdITFopCoesbDyojoKuGSBp7kslVKQdQY0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bnEijS8UoORGgws4/gA0W4HiONlIvwJMlSXD8OSU/r3dg/eT6i8+aRl9HfVheUaUS
+	 jvbmdRo2tL2vQpBZlOOwEVT3bN917GE2o282Fo2hN0lkk+zG8H03BMgZ26A3d4piwM
+	 cNK8rOVVEt5zZV461cpirSw+FvdQcp6Aynp4+T4M=
+Message-ID: <7c8b3430-e233-486e-b4fd-3c1f5d05d97d@arm.com>
+Date: Tue, 8 Sep 2026 10:49:32 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d2a198a8-cba9-4773-94b6-1513b8b718c5@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v17 2/7] firmware: arm_rmm: Check for RMI support at init
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
+ <20260907095942.1140734-3-suzuki.poulose@arm.com>
+ <25894d08-0fec-4dcd-9d5e-e8270ff9d26c@redhat.com>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <25894d08-0fec-4dcd-9d5e-e8270ff9d26c@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 08, 2026 at 02:26:39PM +0800, Binbin Wu wrote:
-> On 9/1/2026 6:54 PM, Xu Yilun wrote:
-> > The TDX architecture includes a syscall-like ABI for OSes to communicate
-> > with SEAM mode software. This ABI has the concept of a "leaf". Each leaf
-> > is roughly analogous to a Linux syscall: it has a set of register
-> > arguments and does one logical thing like adding a page of memory to a
-> > VM or running a VM. The TDX architecture refers to this interface
-> > function as a "SEAMCALL leaf".
-> > 
-> > Just like syscalls, the TDX architecture wants to evolve the ABI to
-> > extend functionality while keeping compatibility. But unlike syscalls,
-> > which do this by picking a totally new syscall number, the ABI encodes
-> > the "version" number directly into the bits of a register argument. So
-> > instead of openatN being whatever the next free number is, the SEAMCALL
-> > leaf number and version number are encoded into certain bits in how the
-> > RAX register is defined in the ABI.
-> > 
-> > In Linux, several seamcall*() wrappers have been introduced to invoke
-> > SEAMCALL leafs. They all take a u64 "fn" argument for the leaf number
-> > which eventually get set in the register. As above, the version number
-> > lives in the same register as the leaf number. So callers that want to
-> > select a specific version of the leaf, can jam it in the right place in
-> > the register by passing it in the "fn" argument.
+On 08/09/2026 07:46, Gavin Shan wrote:
+> Hi Suzuki,
 > 
-> Do you think it's worth explaining how callers determine the versions
-> supported by the TDX module,
+> On 9/7/26 7:59 PM, Suzuki K Poulose wrote:
+>> From: Steven Price <steven.price@arm.com>
+>>
+>> Query the RMI version number and check if it is a compatible version.
+>> The first two feature registers are read and exposed for future code to
+>> use.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-Yeah I described this in v4 [1]. Generally it is "selecting the minimum
-workable version number for the required functionality".
+...
 
-But I feel it distracts people from the problem this patch wants to
-solve, so I removed it. This patch actually involves no runtime version
-selection. The future change for TDH.SYS.CONFIG does. Better we add the
-explaination in that patch?
+>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/ 
+>> arm_rmm/rmi.c
+>> new file mode 100644
+>> index 0000000000000..008a783407b4e
+>> --- /dev/null
+>> +++ b/drivers/firmware/arm_rmm/rmi.c
+>> @@ -0,0 +1,101 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Copyright (C) 2023-2026 ARM Ltd.
+>> + */
+>> +
+>> +#include <linux/cpufeature.h>
+>> +#include <linux/memblock.h>
+>> +#include <linux/arm-rmi-cmds.h>
+>> +#include <linux/slab.h>
+>> +
+>> +#include <asm/memory.h>
+>> +#include <asm/pgtable-hwdef.h>
+>> +
+>> +/* Currently only the first 2 registers are used by Linux */
+>> +#define RMI_FEAT_REG_COUNT    2
+>> +static __ro_after_init unsigned long 
+>> rmi_feat_reg_cache[RMI_FEAT_REG_COUNT];
+>> +
+> 
+> I would drop RMI_FEAT_REG_COUNT and use ARRAY_SIZE(rmi_feat_reg_cache) 
+> in the code.
+> Besides, __ro_after_init is usually put at the last the declaration.
+> 
+> static unsigned long rmi_feat_reg_cache[RMI_FEAT_REG_COUNT] 
+> __ro_after_init;
+> 
+>> +unsigned long rmi_feat_reg(unsigned long id)
+>> +{
+>> +    if (WARN_ON(id >= RMI_FEAT_REG_COUNT))
+>> +        return 0;
+>> +
+>> +    return rmi_feat_reg_cache[id];
+>> +}
+>> +EXPORT_SYMBOL_GPL(rmi_feat_reg);
+>> +
+> 
+> I would suggest to rename 'id' to 'index' since it represents the feature
+> register index instead of feature register ID.
+> 
+> unsigned long rmi_feat_reg(unsigned long index)
+> {
+>     :
+> }
+> EXPORT_SYMBOL_GPL(rmi_feat_reg);
+> 
 
-[1]: https://lore.kernel.org/all/20260804085054.190847-1-yilun.xu@linux.intel.com/
 
-> and what happens if the specified version
-> is not supported by the TDX module?
+>> +/*
+>> + * Note arm64_init_rmi() must be called before kvm_init_rmi() 
+>> otherwise KVM
+>> + * will not support realm guests. subsys_initcall() is called before
+>> + * module_init() (used for KVM) so this is OK.
+>> + */
+>> +subsys_initcall(arm64_init_rmi);
+>> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
+>> new file mode 100644
+>> index 0000000000000..2fb1f7f86d71e
 
-I think it should not happen. This means the kernel is trying to enable a
-functionality that the module doesn't support. Either there is a problem
-on feature enumeration, or people are using a deprecated module. Anyway
-don't runtime check if a SEAMCALL version is supported.
+>> +static inline int rmi_features(unsigned long index, unsigned long *out)
+>> +{
+>> +    struct arm_smccc_res res;
+>> +
+>> +    arm_smccc_1_1_invoke(SMC_RMI_FEATURES, index, &res);
+>> +
+>> +    if (res.a0 == RMI_SUCCESS && out)
+>> +        *out = res.a1;
+>> +
+>> +    return res.a0;
+>> +}
+>> +
+> 
+> We needn't expose rmi_features() through include/linux/arm-rmi-cmds.h 
+> since it's
+> used for once in rmi.c::rmi_read_features(). I would suggest to drop it 
+> by combining
+> the code with that function.
 
-Thanks,
-Yilun
+Thanks for the review, I will address them in the next version.
+
+Cheers
+Suzuki
+
+
