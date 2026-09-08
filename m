@@ -1,99 +1,99 @@
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2F059D62A
-	for <linux-coco@lists.linux.dev>; Tue,  8 Sep 2026 19:01:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0C552E04D
+	for <linux-coco@lists.linux.dev>; Tue,  8 Sep 2026 19:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788894108; cv=pass; b=HSl/P3qHuESySdeJrPgpT2687kKqnqNgznffrm1rn61olmhMCvmIDPp4nO2IAKwF4L+DWxdpwFPvTyKvnJ7ohQMXna3IlRBEtiSOnZ7IlE0UkjAM1DYKNV2NPcbrWLWxFoLGfmQct5KB0Ac4nvhdI2dBTikG6+eK7T4FMgtTiRc=
+	t=1788894198; cv=pass; b=XvFul0GJk7Qwuw7qdxXeJSzbCJMYELz3D+jDCqMnO5inYGNHBtVqEx63WjcnVFGluYsuq7OSC12LeBMYhuQNh8ZHD+UaMm53hzFki0K60J6W+5RXRwYknXh03kLPYahQzxfVgHn2C++s9Ai3HYMRwjHJl1yznIOqAlF96/zBhDg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788894108; c=relaxed/simple;
-	bh=QhYlL6j553P0EUMnVDTNvdPvx8/iDvuOHmYwBLPXEvo=;
+	s=arc-20240116; t=1788894198; c=relaxed/simple;
+	bh=SirRPd8MEjuE0M+o4ZIQ6nFLVuzs+EvDMR2q6/kdoLg=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YzMRiKHzYAVvrO/vqyzpW6q89s0D7KDvwi/+erst3JQdwTz6PQVrbKaydqoU/6esjMYg2Ns2w+rcsPKmgZaoMoSoXYKAX7USA+uAGUv4MiNluzTdv6JG5HdyWN4Nn0d8hJgexP2ULKnicuHlcSuSwkR0BJYVvD149NpJ9tTFD/o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gsC/bZr4; arc=pass smtp.client-ip=74.125.224.52
+	 To:Cc:Content-Type; b=g7CDayzEOtLRpfbQvQGrqgrIBECMik+5FDb7lNdw/gRPahVn7gvpesTB2oEiFbnE8xe3O5s0+ArCgGJHzcS16tl6L5NwCKxZRwqCmAU4xn7OK+1FI7LStfAHZkPAzYwzfYcibprPJp37jVUaxLRYmEttR4N2xGUvVxTB9TSBrkg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RbVQrX9E; arc=pass smtp.client-ip=209.85.219.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gsC/bZr4"
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-66fa10f35caso4558341d50.3
-        for <linux-coco@lists.linux.dev>; Tue, 08 Sep 2026 12:01:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788894104; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RbVQrX9E"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-90cbff85fa9so57383336d6.2
+        for <linux-coco@lists.linux.dev>; Tue, 08 Sep 2026 12:03:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788894196; cv=none;
         d=google.com; s=arc-20260327;
-        b=qVTQxwBYcyn/cTwBCeTZTD81DfevMR+Uv96r5ElY1+CIU7JjvYhcTTqxXCU4Fkoqvt
-         3/zLqIJ1vfzHSJScnjmwmPNBzYKrxt61Me4oHDP9b/v3F3RNzx2z1zZ/npWBlM4YAN0W
-         fbTf9GBr19BUs+URdqWTIVdtLh6Ynwq4rzStN+Pmo7GzVucZygMewvN4DboRCfA1yvKU
-         gyb7KKZykJi/vwBxgMjSLgLb8eocnMprxlkuPrTASsWhjEflxShQxn8VxZWehbQhHn81
-         PrQyA6PsMgfF2Nt2C4wapI4gCyBdWHa8ZSUHczCBGsqjpjQ5O2aEEQvVn7QWcF5mdoJ1
-         u5uw==
+        b=oo8uybihTe4V56XDY6dfkUowW7+Du1Ydfyemvu7T+tIDHcnpNjbgcO1zJQDqMEYt3d
+         Mb8CLlSvZXaIH7f29HNc8QkAP91wNJ38bTJcY1srXXOavypsI9pqro39vIut4nGoKmC+
+         SVQTgKCOZOR+QnF+VsvBHGj2bQQOnTu+NWv2joqiw/4QqyJb/S23wZG6CKyPNgeC/MzI
+         gsDZjyH1Ak9ltnq71mVMATksuo+Zg12ZNmsHLujc002JYrTru+58Dbr5tXwmUCecEe2P
+         9T+ZZPWBhvIkFX24qW66SGpTHuYmvTTbZS0+7cKGpEUeNiDCTTnndRjeH0ycGBJwFjXC
+         aD4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=gj+VTCLaPatIDzN3Ce73g2FVjGbSlVQNZ2BBXiEP5gY=;
-        fh=RDzf4SRqBRSWn5CSKsV/hgCtsqM/jq4XMjY5IhM+Ogo=;
-        b=rDckD0tCWAcKK/ZMxquqTExZKAAPbhO5anL/y2ZHR5nteSxvS6kSj0D7TFodurY08N
-         1ESzfuSHbd/1LDV1MPohnasEz8JVXGmL4ml4d+yITdfV42LrPCzS/CkceKPdpLbEnRJ/
-         G4sWXXBmUq+FKk02zg7Y/Ni3fycdZ8kXnZrTETkMzykwx9aMKGQQToWq22B7+RdFWPPX
-         RteSSKm/Jf55TOkvig+sY4w7fg21E8wzloOHNTwhCA1iF6iuYEpmfFdajX8EJDti2mso
-         wauFzS5i7l2a/PUDtf7mcdAa7AQfMSXDhWa1H0v15SvfTPIl4KjzNMiRopuouG7JGgIU
-         Dx6w==;
+        bh=CCBQFS/NlhUte57G9Iz7jkmENxjPMvZ6ht3E4pgVgq4=;
+        fh=5JB1WNw9aDkFw6QKqJ4rZFnfYcrE8W/0ouuMLLsDpHk=;
+        b=Cgmf4nrp9ga0ZWsGMdAuUzqhg/A7JpSKevtaBO3Oxhqvc0nV7aTmNALUhhn0MrXJEi
+         fxCF0/skvh0ggwfCdy7dGdxRhWjA6C4f4aRlV0SlQcEGUE0wQaZ8MbQNmAgN10TtIRxX
+         gCRLtPr2RqSTsQDPPA/kFZVUzJtEeGKUj4g1EE2+7lQnex4rV8kl06SPbd2IbSXR+Bi6
+         lbsSNIzSRB/WD/MHw/W2Yf6JJnRbQdDGcNZJNRUvY9itpL6V1dY5SAqYIU8J7CAxCUnX
+         LuCVL3LhzqXBQrGbM1ECFIRd1046Y0gajZqYiXSQL76A1PmKrBL3GDKlSUqC7comH63Z
+         lxiQ==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788894104; x=1789498904; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1788894196; x=1789498996; darn=lists.linux.dev;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gj+VTCLaPatIDzN3Ce73g2FVjGbSlVQNZ2BBXiEP5gY=;
-        b=gsC/bZr4nsqCdebZmFGKM7eYelGpHudRziDHSq+wreKLwN9gK8Ryd6HrVtqoDu1I+k
-         oiFU7ceBOcNVesXU86/ctghxoyRknU8omsJ6ugxE61yfB0UP9TmE85Ja47e/zhOho7MD
-         59d4JTe5T6LZgN2uCV4jZt1ctnoktHiprbkdZpzsoSaFYeFRqPkZ4dkcrddYVXY/vf8g
-         1i2q19JTQQvTlC3WebG2ObfWqaqTt2Vo97NUI/Zzj2XM5t9TjUFyP1Pgzi0pLV9/PxQ2
-         9WVjHypJz8WXol2v/z4CqlfE/MHTwBQI1dVfStdaMyr4lIAj6fXSS5BxxwWOUGjtabSq
-         D4HQ==
+        bh=CCBQFS/NlhUte57G9Iz7jkmENxjPMvZ6ht3E4pgVgq4=;
+        b=RbVQrX9Egjl1Jqc859i86fuKvb2O4IupV0tAXV0cnpZLu81uo8lnB+h/m8ng0t2EpJ
+         FQ7Mp3bZ9iVL8XdKRfj2cBj8KQSMxjPfszw47qaITyE8xgl7qv8uj+wp9ukxFW+rs7tr
+         DZOnqUYsuQXFRLkrPZnu7L4V1kiswMem2AvZlQ93C7Afc7ccyxnGKlFW8jRpT0bbyGCA
+         BTtPA5Jz82vtrYrnYY6ovHn6EA+6LT3BlDEMNjmoEmTKoftM4Q8DBX0nBAx7n0FpZcqy
+         IFSFQOiZvH8M3wgYWaWQfQ2JDFQl8m/p5Ml5CBYCJO1sN9mnTfYwGkE/EdpdLF4l7ZPm
+         Y8Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788894104; x=1789498904;
+        d=1e100.net; s=20251104; t=1788894196; x=1789498996;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=gj+VTCLaPatIDzN3Ce73g2FVjGbSlVQNZ2BBXiEP5gY=;
-        b=oLjY/2hDFgCkgCqPHfg3lNXvG/q4IZGHOIrsTJ+zReOhtGhJ6uo48VgVnWbHbkwXxP
-         hV/HiVV6wlN6Jz6HRQKytSUvS4sAdHnSZ/jQW+UTgvjWEhKhbRvahcK41QxGwKMpQg7F
-         az2JcuZoglqv0FRvoXUHCikLbGuctw+MRzjEWeIRW9F/oKaPNuRZHGEnAncUs/mgNVcf
-         spPG9/tMm7hH4hCRZzOZr7S2w+b12/84d57TbwT7FpqPd4FqcLm9tNpgIfvFChjWPlTz
-         ne8LG5Gs0xMoShYpnAoWt9AqbMgQ3BXw302DIj52SYffOlUB2yO/A0+UAEasz2u8Vxnq
-         iruw==
-X-Forwarded-Encrypted: i=1; AKwUvBw6j7TrArA7MzW8KYIxEZ3L4TEX5hLbwzI2sUAD8df2eTMY2DKR/jjCi+aSBjfoZUx6beJQFZX/OeP5@lists.linux.dev
-X-Gm-Message-State: AFuF++m2ZyLLMiB2En7s6tJ6LcBsgriMJLaleGVT8UIZyGmI8TV5gYzT
-	07bUuvIGQxx84ky104aCvvwlMEJ7LmN2La1Qm2CoLNgpq5h6l9+B34TjbD2rz4iWdEORQYDF5XL
-	zHIQglQFW0yTWRWC6dUPofpuw9ciWXxQKNa9p0p8C
-X-Gm-Gg: AYBFou3otVvDkW4jhjuDYPEWkzgLHRWdBcUwT2PyKy4kdZh3iauXKAqAVVEwW7AN3P/
-	/P2niAMUzx8BL8457Nf10wDDvv1RDkRiePScQgzC4wnVNM0UTjDSvIgRvOls/ySu3OlMyxOMLqI
-	y72AdMLJWi6RzdjwXNzNMEl6+KmLy7Cp4yK0xzdKLd/88fDLtS61Q1G+IqVG4llI3/DiD6j0nlw
-	ViMgSkHytXqDZFhGdcWANWoVVLI3CmsGmJ36GNdiS6jKypMrbBxX3RXVRNvjsdCT7/aYlgo/1Hw
-	FkbKqrbDoMvj5LOoVcqVqu69Osyg9Ovc1Bzun5o/29K1vcdZ8XtsP/mN/7nssBjgLKy0MHbg37R
-	FeX48j+qFnLHbXyN/2aQ1GS5QNshYsr8=
-X-Received: by 2002:a53:ac99:0:b0:66e:3e9a:9e30 with SMTP id
- 956f58d0204a3-66fb5a0f620mr9359683d50.24.1788894103467; Tue, 08 Sep 2026
- 12:01:43 -0700 (PDT)
+        bh=CCBQFS/NlhUte57G9Iz7jkmENxjPMvZ6ht3E4pgVgq4=;
+        b=cZz3P/pt0iEm1JKLrj7d1H31ahN8HUoVoUf7V83AwoN4sH9Klt16a5XvNBn6lPDAUT
+         eG2+B/IXscpogeytJGfalRirJoj+XnPF8SX3Yx9bgYRvjlahINvQOiKzhTxrK+ZU4xId
+         ly8oHEBilIa/uwiZBDljzzcbEPS6pLxvdYAZ91RH2+J/YNe8gp8hB2wyYBafOuE+KdYU
+         RJsvCcJvB0lOgJqY7akb7Ccp3OI5diEP+do/G99jpnL+FJVj53pslm/Q9lHI2IPjjqKS
+         CoSSUsjsKT4M54gYeQrV02wo/awOeCrh6NEhDulNuuup/HWZXoCw7ExNwqeL4KyL4/sP
+         zQCg==
+X-Forwarded-Encrypted: i=1; AKwUvByLC+tlFAVUlkfvAgg+dx8hJJKp8bOqva/IqBsLZ2KUgWUQWIhwPnrwSQQNqmo9dJIVybIE7P8FuVLR@lists.linux.dev
+X-Gm-Message-State: AFuF++mc0YdPpcekdK3f1M3kFhDdnkwmnmoaveSJRDkX954YQtZ0ZS/b
+	9Ysp9SKUgHSYmon4IF+iv56ojnkQ8AKQpuLrpp/UqJ9AJEbtazNdlZIZnVlyVLfYW/snLj9r8Mm
+	fCGAY+iCwjzxeJcFINZp7qsQPqHB2jBYsdL9d1Qlf
+X-Gm-Gg: AYBFou2QU8CSsRZeY+BlyZwv7cZWMdBT/BcuF2Hy+9zndrgG2q3Sjq9PmqopAu7IVgp
+	wg6ExsX0dwYrYdJ9B4U/VWKRTnBFpgpPxbFsL+H0GfWdKgClRKMIQzQE18661ncL7Cpee+u0iqG
+	QVsrHpK3N8mMOGnBdVe1WylKhqGQ1tGgwUDnUWibagU9Eoe31V10Z0YkFrqHa9Ppk/vz16DK+9S
+	b+B2tSiHQt5n6Ip2+32XKZPEiUM9hSMoSP7ln2pBXz8qgk+VV9dg6nnL6ABOL4BXi27xK9sYMjF
+	/wXj5rN+71cUPcIbrgo1EcYxIF7xL6FbJJEDWUOpntAe3zXqO5XOoQK8A/OZ/fELvfw1WCRXtmw
+	d43VbNMcljw9n16FV9nSMl1+NSWbWj7U=
+X-Received: by 2002:a05:6214:4287:b0:90e:7bee:9a6c with SMTP id
+ 6a1803df08f44-9103ef88de7mr407562466d6.19.1788894194840; Tue, 08 Sep 2026
+ 12:03:14 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 8 Sep 2026 12:01:42 -0700
+ HTTPREST; Tue, 8 Sep 2026 12:03:13 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 8 Sep 2026 12:01:42 -0700
+ HTTPREST; Tue, 8 Sep 2026 12:03:13 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260722-tdx-selftests-v14-6-15ad654a50db@google.com>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com> <20260722-tdx-selftests-v14-6-15ad654a50db@google.com>
+In-Reply-To: <20260722-tdx-selftests-v14-5-15ad654a50db@google.com>
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com> <20260722-tdx-selftests-v14-5-15ad654a50db@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Tue, 8 Sep 2026 12:01:42 -0700
-X-Gm-Features: AcwNN1WPZ2uU8GfQmCXhnm2Xzg5FSQlgtEqA3NyC-GefYugQL38hpysVtSVZrlQ
-Message-ID: <CAEvNRgGifoMQNRFMzmuGpChUD3YE6iUZbfsHAxaFEeTGfNfeEg@mail.gmail.com>
-Subject: Re: [PATCH v14 06/22] tools: include: Add kbuild.h for assembly
- structure offsets
+Date: Tue, 8 Sep 2026 12:03:13 -0700
+X-Gm-Features: AcwNN1V9Kl5cU_xU1Qz969rvQ0JujFNCbBSW6jqcW2Xx-zikXZHSBnXLwAN1H4g
+Message-ID: <CAEvNRgFiMWb_n4nL8E2HBfkQ247GEhGQ3us_cfoQG4-JBiD2aA@mail.gmail.com>
+Subject: Re: [PATCH v14 05/22] KVM: selftests: Expose segment definitions to
+ assembly files
 To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
 	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
 	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
@@ -113,44 +113,60 @@ Lisa Wang <wyihan@google.com> writes:
 
 > From: Sagi Shahar <sagis@google.com>
 >
-> Add the Kbuild macros needed to enable the filechk_offsets mechanism to
-> generate C header files containing structure member offset information.
+> Move kernel segment definitions to a separate file which can be included
+> from assembly files.
 >
-> Tools depending on assembly code that operate on structures have to
-> hardcode the offsets of structure members. The Kbuild infrastructure
-> can instead generate C header files with these offsets automatically,
-> allowing them to be included in assembly code as symbolic constants.
->
-> For example, the TDX guest boot code requires access to parameters
-> passed in the C structure (struct td_boot_parameters). This header
-> provides the macros needed to extract these offsets from C code and
-> expose them to assembly, ensuring the two remain synchronized.
->
-> Signed-off-by: Sagi Shahar <sagis@google.com>
 > Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
 > Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Signed-off-by: Sagi Shahar <sagis@google.com>
+> Signed-off-by: Lisa Wang <wyihan@google.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > ---
->  tools/include/linux/kbuild.h | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+>  tools/testing/selftests/kvm/include/x86/processor_asm.h | 12 ++++++++++++
+>  tools/testing/selftests/kvm/lib/x86/processor.c         |  5 +----
+>  2 files changed, 13 insertions(+), 4 deletions(-)
 >
-> diff --git a/tools/include/linux/kbuild.h b/tools/include/linux/kbuild.h
+> diff --git a/tools/testing/selftests/kvm/include/x86/processor_asm.h b/tools/testing/selftests/kvm/include/x86/processor_asm.h
 > new file mode 100644
-> index 000000000000..957fd55cd159
+> index 000000000000..713b6bc0aeb7
 > --- /dev/null
-> +++ b/tools/include/linux/kbuild.h
-> @@ -0,0 +1,11 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef __TOOLS_LINUX_KBUILD_H
-> +#define __TOOLS_LINUX_KBUILD_H
+> +++ b/tools/testing/selftests/kvm/include/x86/processor_asm.h
+> @@ -0,0 +1,12 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Used for storing defines used by both c and assembly code.
+> + */
+> +#ifndef SELFTEST_KVM_PROCESSOR_ASM_H
+> +#define SELFTEST_KVM_PROCESSOR_ASM_H
 > +
-> +#define DEFINE(sym, val) \
-> +	asm volatile("\n.ascii \"->" #sym " %0 " #val "\"" : : "i" (val))
+> +#define KERNEL_CS	0x8
+> +#define KERNEL_DS	0x10
+> +#define KERNEL_TSS	0x18
 > +
-> +#define OFFSET(sym, str, mem) \
-> +	DEFINE(sym, __builtin_offsetof(struct str, mem))
-> +
-> +#endif /* __TOOLS_LINUX_KBUILD_H */
+> +#endif  /* SELFTEST_KVM_PROCESSOR_ASM_H */
+> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+> index 7d23344854cc..97acc5aaf7b7 100644
+> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+> @@ -8,6 +8,7 @@
+>  #include "kvm_util.h"
+>  #include "pmu.h"
+>  #include "processor.h"
+> +#include "processor_asm.h"
+>  #include "smm.h"
+>  #include "svm_util.h"
+>  #include "sev.h"
+> @@ -18,10 +19,6 @@
+>  #define NUM_INTERRUPTS 256
+>  #endif
+>
+> -#define KERNEL_CS	0x8
+> -#define KERNEL_DS	0x10
+> -#define KERNEL_TSS	0x18
+> -
+>  gva_t exception_handlers;
+>  bool host_cpu_is_amd;
+>  bool host_cpu_is_intel;
 >
 > --
 > 2.55.0.229.g6434b31f56-goog
