@@ -1,250 +1,158 @@
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216A759B668
-	for <linux-coco@lists.linux.dev>; Tue,  8 Sep 2026 18:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2F059D62A
+	for <linux-coco@lists.linux.dev>; Tue,  8 Sep 2026 19:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788890923; cv=pass; b=DkuuB+ArllZ5hXj25Oy381bOkLm0/iUQ5H5c1PPuk7nMzdnS6vjRGHv+stDiODhSTSEorax20hBiV+k/MFW1242OOSIqidfHVXLyVCn/3cnMkLNwKSB9uS7dus4M/AzG0l4Spl4/XdIrpL2SiOA9TwGtxsvsK4TXInm4a4KDSb4=
+	t=1788894108; cv=pass; b=HSl/P3qHuESySdeJrPgpT2687kKqnqNgznffrm1rn61olmhMCvmIDPp4nO2IAKwF4L+DWxdpwFPvTyKvnJ7ohQMXna3IlRBEtiSOnZ7IlE0UkjAM1DYKNV2NPcbrWLWxFoLGfmQct5KB0Ac4nvhdI2dBTikG6+eK7T4FMgtTiRc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788890923; c=relaxed/simple;
-	bh=ctxwmMZG56iPJS4J71g6McGGkHju65sE/xDpcDOUvZM=;
+	s=arc-20240116; t=1788894108; c=relaxed/simple;
+	bh=QhYlL6j553P0EUMnVDTNvdPvx8/iDvuOHmYwBLPXEvo=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AM8m2wtCNy+9u1VoIHI8JHquHTS+nJdMP3lAYB17Y4QTQMV8qaHY2Pewlhptxq7odzRKXusM8sLohuT0AbbhQmYxidhxZquXC7dRFKmeTf3RKxBJLvRCEVH7NseWOlzJ8DoVYNDPVntLlCCrtcWMyrpiOOhrWZSCCkIrcv6w8xQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CY0HsjKt; arc=pass smtp.client-ip=209.85.219.49
+	 To:Cc:Content-Type; b=YzMRiKHzYAVvrO/vqyzpW6q89s0D7KDvwi/+erst3JQdwTz6PQVrbKaydqoU/6esjMYg2Ns2w+rcsPKmgZaoMoSoXYKAX7USA+uAGUv4MiNluzTdv6JG5HdyWN4Nn0d8hJgexP2ULKnicuHlcSuSwkR0BJYVvD149NpJ9tTFD/o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gsC/bZr4; arc=pass smtp.client-ip=74.125.224.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CY0HsjKt"
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-90ce08834feso70202246d6.0
-        for <linux-coco@lists.linux.dev>; Tue, 08 Sep 2026 11:08:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788890920; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gsC/bZr4"
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-66fa10f35caso4558341d50.3
+        for <linux-coco@lists.linux.dev>; Tue, 08 Sep 2026 12:01:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788894104; cv=none;
         d=google.com; s=arc-20260327;
-        b=TZp0apJ4apPC26ialNYw+CEmVC9xmf0IBNHg14IA5V16E/1jZUuWwPCjtWlONcL0Q2
-         PLsDBFbps4qJieBvpbl6+HQbwJT0CFSc/+o90tiF0m+bbzDbBpj+2yHUPCdzJMzwxnFo
-         ilnDU1MmSmCpgLT+tGFSGS5jlegI4BPGqkVYZ2hp0mPDdwD7ICyJQekKYC0H3Ilay8WR
-         gAVoU3+al8fJFYbPH7iGOaBPmCm9qd+Mlms8sq+DHWAQ09HsKP7OsGEXVF9QI7DXZTlY
-         xfpDgKUO3pTXDl14bBNysqPbgBZ9QY/MTi5hgFknQ7GTUB1tqmXGljfKB3hoUsX7tbW3
-         jytA==
+        b=qVTQxwBYcyn/cTwBCeTZTD81DfevMR+Uv96r5ElY1+CIU7JjvYhcTTqxXCU4Fkoqvt
+         3/zLqIJ1vfzHSJScnjmwmPNBzYKrxt61Me4oHDP9b/v3F3RNzx2z1zZ/npWBlM4YAN0W
+         fbTf9GBr19BUs+URdqWTIVdtLh6Ynwq4rzStN+Pmo7GzVucZygMewvN4DboRCfA1yvKU
+         gyb7KKZykJi/vwBxgMjSLgLb8eocnMprxlkuPrTASsWhjEflxShQxn8VxZWehbQhHn81
+         PrQyA6PsMgfF2Nt2C4wapI4gCyBdWHa8ZSUHczCBGsqjpjQ5O2aEEQvVn7QWcF5mdoJ1
+         u5uw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=XkkCs0H0gi8/nvDnbQ0GVT3d+JJdjCr4VH0ja1Y149M=;
-        fh=WTYzV80rk7777+tpWX+cmjgyNDnsydlOy/V/QAH3dN0=;
-        b=q5AnmW0SnsCo6TcOjunakosLUMTJSvfaNZnSjsSsp9kZBetU6yV+EnTeFQtK2RYWMw
-         lcP8uWFe3zDDBiY+3X+gZdzFTpdkIb6ZF+/j/gbSrFuZaRH9PtSKIxHIXxLfkNYkT+KA
-         nvKPWEzuW/tS7tFTBJqdYWIFN/yVan4FhyB75XFYY/b6XxdmCcL1nxlDlaPkge8vgW4O
-         sE4/Rw4TYm3rQQeyo4cGoLko5FdKErcXIpX20mkxp2B7nUKC1XpU5GlL6X3MmF7KpnKs
-         yntl21O230i4AUH4ITLIyrnSeGNl6ija9KRKzb5WbBsEJ7wg9KZPrIM1mAI7tL4VuolN
-         +ErA==;
+        bh=gj+VTCLaPatIDzN3Ce73g2FVjGbSlVQNZ2BBXiEP5gY=;
+        fh=RDzf4SRqBRSWn5CSKsV/hgCtsqM/jq4XMjY5IhM+Ogo=;
+        b=rDckD0tCWAcKK/ZMxquqTExZKAAPbhO5anL/y2ZHR5nteSxvS6kSj0D7TFodurY08N
+         1ESzfuSHbd/1LDV1MPohnasEz8JVXGmL4ml4d+yITdfV42LrPCzS/CkceKPdpLbEnRJ/
+         G4sWXXBmUq+FKk02zg7Y/Ni3fycdZ8kXnZrTETkMzykwx9aMKGQQToWq22B7+RdFWPPX
+         RteSSKm/Jf55TOkvig+sY4w7fg21E8wzloOHNTwhCA1iF6iuYEpmfFdajX8EJDti2mso
+         wauFzS5i7l2a/PUDtf7mcdAa7AQfMSXDhWa1H0v15SvfTPIl4KjzNMiRopuouG7JGgIU
+         Dx6w==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788890920; x=1789495720; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1788894104; x=1789498904; darn=lists.linux.dev;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XkkCs0H0gi8/nvDnbQ0GVT3d+JJdjCr4VH0ja1Y149M=;
-        b=CY0HsjKtAvYhkOitXr1omQdyhYjvLJkYBFWBhpsHqybqcauhm7cI4apREBZMJJngUE
-         yGiuNGfG34HSN9pwA4Iz3H9sEtPk03gBh1fBbq1yNF1erzNmoQg+P+0VdwOh+JsBxIvc
-         DR1pho+XhIIHL9xxxA1MJZl8zJYwOlz/PPcb4BKNvxP5bCd61w3S4YFLLLbaFPcmx0r0
-         LJo7/qRC0VaZfBT1YpQ/gBiGrN75ULGtFYuJxpe6tNQxxXw6fNg9+iHKUjlf8h0qY7v7
-         I3wsRGHkA0c8mIUn4qWMnNbpM6WsCFQeWt74plaj3uNHwLhK6Dn4goU0fzYnzpuymkhM
-         SbjQ==
+        bh=gj+VTCLaPatIDzN3Ce73g2FVjGbSlVQNZ2BBXiEP5gY=;
+        b=gsC/bZr4nsqCdebZmFGKM7eYelGpHudRziDHSq+wreKLwN9gK8Ryd6HrVtqoDu1I+k
+         oiFU7ceBOcNVesXU86/ctghxoyRknU8omsJ6ugxE61yfB0UP9TmE85Ja47e/zhOho7MD
+         59d4JTe5T6LZgN2uCV4jZt1ctnoktHiprbkdZpzsoSaFYeFRqPkZ4dkcrddYVXY/vf8g
+         1i2q19JTQQvTlC3WebG2ObfWqaqTt2Vo97NUI/Zzj2XM5t9TjUFyP1Pgzi0pLV9/PxQ2
+         9WVjHypJz8WXol2v/z4CqlfE/MHTwBQI1dVfStdaMyr4lIAj6fXSS5BxxwWOUGjtabSq
+         D4HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788890920; x=1789495720;
+        d=1e100.net; s=20251104; t=1788894104; x=1789498904;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=XkkCs0H0gi8/nvDnbQ0GVT3d+JJdjCr4VH0ja1Y149M=;
-        b=JHuK+PJbAwDZiebuBZXvLruG3oACqiJIqD+510UAb4NjnHEOz5NmzZg2IUzPqjrqFc
-         FawK3KJLRuFNXpyUH1U7UCOVaIJfEGQL9yOhPnvdOqVoisR66+ZiMAVay+LotBJmwhDr
-         nWb0dvUSP+mM6uK5z7hECNAfyahImuDE1KftmSQb8P6YREDAfRKmUJW42HkngBOOel2g
-         fKbllKtdOaTW2o4U8+mmAmfqOcKXxBk6budTi7g/6i2yx4nBB9qQy71lCemw4x+17iE7
-         hd2hxXmRpmTI2SLlTi8+Fcy5dOzk6Pg1V6jh0py2ajRgKuXsYt6nXEuTBQFzOdSPa29Y
-         I62Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxHnPp2RRqMddUp98W0aMi7PN1vyOTvG/FPcTTcBgIh2a3eMNMvb7R/V5u2Lxq//tdKG2bFWZEolfN/@lists.linux.dev
-X-Gm-Message-State: AFuF++kRBHc9W0DKyV2IznULVM74TWJQ6EuRoLvVMP6RE8RfMqm2h2yQ
-	hV220Mz8hrDVf7dvI0zNID7XS2s1Y/EZn2+B8F2YxdGxCSA3DMYwkgR9kw13f6k6UPivQIURQ3e
-	f2b7mfctqUuNipbH8BlLzaFqzg2iy8PiPVLJj4O6d
-X-Gm-Gg: AYBFou3pLSDLAn3WO8Q/8Fyl1jtfzW4LwH3/vJiBM4nbfSDwxNd+QUhuu4Hb1c1kJ31
-	RcWQ5QGfxrdileRKa7YrZjsrvudrLB3Rr/uZ8PNW52yWjSlNeXL8Uitw1NCSZJ43hCUuY79ThAF
-	6zresU8ox6Sx9jCCsLHD7q2Ue/DwRIX3MfwsoAqDqN2Qxsf5VtwVachxzoPSBI4hRbvWYYOsM7+
-	vijlV+uVjNtis5OEi7qaqfzpcn9KfotcxnZ+wAM2ToXD3fvTWJypqkbY+ojQe0eKorL1YiqvfVo
-	mGzsEuNC/WSP6U3JA68RTuyvyvUNyt0xH5s01iIsWzAsJeJIFeJecFbG7ZqgDovRBtqJpbUGUby
-	3kXicqU96aJResfpuDcIuHPJDZCFKj5jF
-X-Received: by 2002:a05:6214:c26:b0:910:5235:14f9 with SMTP id
- 6a1803df08f44-91052351570mr213426586d6.21.1788890918818; Tue, 08 Sep 2026
- 11:08:38 -0700 (PDT)
+        bh=gj+VTCLaPatIDzN3Ce73g2FVjGbSlVQNZ2BBXiEP5gY=;
+        b=oLjY/2hDFgCkgCqPHfg3lNXvG/q4IZGHOIrsTJ+zReOhtGhJ6uo48VgVnWbHbkwXxP
+         hV/HiVV6wlN6Jz6HRQKytSUvS4sAdHnSZ/jQW+UTgvjWEhKhbRvahcK41QxGwKMpQg7F
+         az2JcuZoglqv0FRvoXUHCikLbGuctw+MRzjEWeIRW9F/oKaPNuRZHGEnAncUs/mgNVcf
+         spPG9/tMm7hH4hCRZzOZr7S2w+b12/84d57TbwT7FpqPd4FqcLm9tNpgIfvFChjWPlTz
+         ne8LG5Gs0xMoShYpnAoWt9AqbMgQ3BXw302DIj52SYffOlUB2yO/A0+UAEasz2u8Vxnq
+         iruw==
+X-Forwarded-Encrypted: i=1; AKwUvBw6j7TrArA7MzW8KYIxEZ3L4TEX5hLbwzI2sUAD8df2eTMY2DKR/jjCi+aSBjfoZUx6beJQFZX/OeP5@lists.linux.dev
+X-Gm-Message-State: AFuF++m2ZyLLMiB2En7s6tJ6LcBsgriMJLaleGVT8UIZyGmI8TV5gYzT
+	07bUuvIGQxx84ky104aCvvwlMEJ7LmN2La1Qm2CoLNgpq5h6l9+B34TjbD2rz4iWdEORQYDF5XL
+	zHIQglQFW0yTWRWC6dUPofpuw9ciWXxQKNa9p0p8C
+X-Gm-Gg: AYBFou3otVvDkW4jhjuDYPEWkzgLHRWdBcUwT2PyKy4kdZh3iauXKAqAVVEwW7AN3P/
+	/P2niAMUzx8BL8457Nf10wDDvv1RDkRiePScQgzC4wnVNM0UTjDSvIgRvOls/ySu3OlMyxOMLqI
+	y72AdMLJWi6RzdjwXNzNMEl6+KmLy7Cp4yK0xzdKLd/88fDLtS61Q1G+IqVG4llI3/DiD6j0nlw
+	ViMgSkHytXqDZFhGdcWANWoVVLI3CmsGmJ36GNdiS6jKypMrbBxX3RXVRNvjsdCT7/aYlgo/1Hw
+	FkbKqrbDoMvj5LOoVcqVqu69Osyg9Ovc1Bzun5o/29K1vcdZ8XtsP/mN/7nssBjgLKy0MHbg37R
+	FeX48j+qFnLHbXyN/2aQ1GS5QNshYsr8=
+X-Received: by 2002:a53:ac99:0:b0:66e:3e9a:9e30 with SMTP id
+ 956f58d0204a3-66fb5a0f620mr9359683d50.24.1788894103467; Tue, 08 Sep 2026
+ 12:01:43 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 8 Sep 2026 11:08:37 -0700
+ HTTPREST; Tue, 8 Sep 2026 12:01:42 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 8 Sep 2026 11:08:36 -0700
+ HTTPREST; Tue, 8 Sep 2026 12:01:42 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <ap_Bpe7dZm_eWsJ2@google.com>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-3-15ad654a50db@google.com> <c8b7a800-58ed-4ef7-91bd-31da77763717@intel.com>
- <ap_Bpe7dZm_eWsJ2@google.com>
+In-Reply-To: <20260722-tdx-selftests-v14-6-15ad654a50db@google.com>
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com> <20260722-tdx-selftests-v14-6-15ad654a50db@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Tue, 8 Sep 2026 11:08:36 -0700
-X-Gm-Features: AcwNN1VP_qB0f4TJcoKYWPiMzrCml_G_3zCXJ48132tpYvgvUSaM73PgQ25Ao6s
-Message-ID: <CAEvNRgFHTAPYTVQ8a_PVdFLqQ8z07Uep2XhA9r_Ypw+D0WAC8w@mail.gmail.com>
-Subject: Re: [PATCH v14 03/22] KVM: selftests: Initialize the TDX VM
-To: Lisa Wang <wyihan@google.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Chao Gao <chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
-	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
-	Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+Date: Tue, 8 Sep 2026 12:01:42 -0700
+X-Gm-Features: AcwNN1WPZ2uU8GfQmCXhnm2Xzg5FSQlgtEqA3NyC-GefYugQL38hpysVtSVZrlQ
+Message-ID: <CAEvNRgGifoMQNRFMzmuGpChUD3YE6iUZbfsHAxaFEeTGfNfeEg@mail.gmail.com>
+Subject: Re: [PATCH v14 06/22] tools: include: Add kbuild.h for assembly
+ structure offsets
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
+	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
 Lisa Wang <wyihan@google.com> writes:
 
-> On Thu, Jul 23, 2026 at 04:44:08PM +0800, Xiaoyao Li wrote:
->> > + */
->> > +#define __tdx_vm_ioctl(vm, cmd, _flags, arg)				\
->>
->> sev uses the name __vm_sev_ioctl, I think we need to keep them consistent.
+> From: Sagi Shahar <sagis@google.com>
 >
-> While __vm_tdx_ioctl matches SEV, the TDX selftest follows a tdx_<scope>_*
-> naming convention (1. TDX prefix, 2. Scope: VM or vCPU). I named it
-> __tdx_vm_ioctl to keep the TDX codebase internally consistent.[1]
+> Add the Kbuild macros needed to enable the filechk_offsets mechanism to
+> generate C header files containing structure member offset information.
 >
-> Do you think we should align with SEV's naming convention instead of
-> sticking with the internal TDX pattern?
+> Tools depending on assembly code that operate on structures have to
+> hardcode the offsets of structure members. The Kbuild infrastructure
+> can instead generate C header files with these offsets automatically,
+> allowing them to be included in assembly code as symbolic constants.
 >
-> [1]: https://lore.kernel.org/kvm/489f3c7b-db03-43dc-bb64-910a0fcba31e@intel.com/
+> For example, the TDX guest boot code requires access to parameters
+> passed in the C structure (struct td_boot_parameters). This header
+> provides the macros needed to extract these offsets from C code and
+> expose them to assembly, ensuring the two remain synchronized.
 >
+> Signed-off-by: Sagi Shahar <sagis@google.com>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Lisa Wang <wyihan@google.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> ---
+>  tools/include/linux/kbuild.h | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+>
+> diff --git a/tools/include/linux/kbuild.h b/tools/include/linux/kbuild.h
+> new file mode 100644
+> index 000000000000..957fd55cd159
+> --- /dev/null
+> +++ b/tools/include/linux/kbuild.h
+> @@ -0,0 +1,11 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef __TOOLS_LINUX_KBUILD_H
+> +#define __TOOLS_LINUX_KBUILD_H
+> +
+> +#define DEFINE(sym, val) \
+> +	asm volatile("\n.ascii \"->" #sym " %0 " #val "\"" : : "i" (val))
+> +
+> +#define OFFSET(sym, str, mem) \
+> +	DEFINE(sym, __builtin_offsetof(struct str, mem))
+> +
+> +#endif /* __TOOLS_LINUX_KBUILD_H */
+>
+> --
+> 2.55.0.229.g6434b31f56-goog
 
-Given that __vm_sev_ioctl and __tdx_vm_ioctl aren't likely to appear
-next to each other, I think it's better to have the tdx prefix earlier
-to keep the TDX code consistent. To move things along, I think we could
-continue as-is and not swap to align with sev.
-
-(The sev functions actually look kind of inconsistent in sev.h, but
-that's a discussion for another series.)
-
->> > +({									\
->> > +	u64 r;								\
->> > +									\
->> > +	union {								\
->> > +		struct kvm_tdx_cmd c;					\
->> > +		unsigned long raw;					\
->> > +	} tdx_cmd = { .c = {						\
->> > +		.id = (cmd),						\
->> > +		.flags = (u32)(_flags),					\
->> > +		.data = (u64)(arg),					\
->> > +	} };								\
->> > +									\
->> > +	r = __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
->> > +	r ?: tdx_cmd.c.hw_error;					\
->>
->> I know it takes the same handling from __vm_sev_ioctl(). But I think the
->> handling for hw_error is not correct, at least for TDX (I didn't check for
->> SEV).
->>
->> the hw_error is the additional info, to tell the SEAMCALL return code, when
->> the IOCTL fails. KVM requires hw_error to be in the input, and KVM puts the
->> SEAMCALL return code into hw_error when the IOCTL fails due to SEAMCALL
->> failure. That means, when r == 0, the hw_error is always 0.
->>
->> I think we need to provide hw_error along with r to the caller so that
->> caller can print them together.
->
-> I think the value of r is not important, because the ioctl failure
-> is already captured in errno.
->
-> We only need to fix the return values for SEV and TDX and have
-> TEST_ASSERT_* print formatted error logs with errno and hw_error.
->
-> - r ?: {tdx, sev}_cmd.c.hw_error;
-> + r ? {tdx, sev}_cmd.c.hw_error : 0;
->
-
-I didn't look in detail, perhaps Lisa could look into these:
-
-+ What are the possible values of r? Is it always going to be 1 on
-  error?
-+ Is r always positive or negative?
-+ Is tdx_cmd.c.hw_error always positive or negative? It's probably not
-  one of the standard Linux errors, right?
-
-Perhaps squashing hw_error together with a retval conflates the two.
-
-In the lower-level __tdx_vm_ioctl() we could pass a hw_error and have
-the macro set hw_error? That will allow the caller to print both.
-
->> > +})
->> > +
->> > +#define tdx_vm_ioctl(vm, cmd, flags, arg)				\
->> > +({									\
->> > +	u64 ret = __tdx_vm_ioctl(vm, cmd, flags, arg);			\
->> > +									\
->> > +	if (ret) {							\
->> > +		TEST_ASSERT(!ret,					\
->> > +			    "%s failed, rc: 0x%llx errno: %i (%s)",	\
->> > +			    #cmd, (unsigned long long)ret,		\
->> > +			    errno, strerror(errno));			\
->>
->> The if() looks silly. Why add it? And why change it from
->> __TEST_ASSERT_VM_VCPU_IOCTL() in the v13?
->>
->> Considering the suggestion of hw_error above, I think we need to introduce
->> the TEST_ASSERT_TDX_VM_VCPU_IOCTL() which accepts additional hw_error?
->
-> The reason we could not use __TEST_ASSERT_VM_VCPU_IOCTL() directly[2] is
-> because it formats ther return value as %i (32-bit), whereas
-> __tdx_vm_ioctl might return a u64 hardware error code.
->
-> I agree with your suggestion to introduce a new
-> TEST_ASSERT_TDX_VM_VCPU_IOCTL() macro to print out u64 hardware error
-> code properly.
->
-> [2]: https://lore.kernel.org/all/a58e2941-77f9-43cf-a54d-023506dd7eb0@linux.intel.com/
->
-
-Is tdx_vm_ioctl() the only place where TEST_ASSERT_TDX_VM_VCPU_IOCTL()
-is going to be used though? If so, maybe we should defer introducing
-TEST_ASSERT_TDX_VM_VCPU_IOCTL() till later.
-
-I think the issue with if (ret) is just that TEST_ASSERT(!ret) already
-does that same check, and so we can drop the if (ret) part.
-
->> <snip>
->> > diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
->> > new file mode 100644
->> > index 000000000000..e1ffb67a106c
->> > --- /dev/null
->> > +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
->> > @@ -0,0 +1,120 @@
->> > +// SPDX-License-Identifier: GPL-2.0-only
->> > +
->> > +#include "processor.h"
->> > +#include "tdx/tdx_util.h"
->> > +
->> > +static struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
->>
->> make it const, is better.
->
-> Thanks, noted.
->
->> > +	init_vm->attributes = attributes;
->>
->> Besides CPUID, it only allows attributes to be configure but leave XFAM as
->> 0. I think the changelog needs to explain why we need to configure
->> attributes.
->
-> Thanks, noted.
->
->> The rest of the patch looks good to me.
->
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
