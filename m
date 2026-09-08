@@ -1,92 +1,60 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4CC3859D7
-	for <linux-coco@lists.linux.dev>; Tue,  8 Sep 2026 08:05:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48A052378C
+	for <linux-coco@lists.linux.dev>; Tue,  8 Sep 2026 09:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788854705; cv=none; b=cyPDxl4AYoEt2mdAV9uB2JzwB31MCpYbOWUNNvDGuB5h3QUzb0ugicLJzdiG+wqah1lp3xYwMXIJktCj8Xyb7whzOg1AIs6nN7zNmcicvR4okWvC6Yz3mpzWUS/WW7w8/h+qgdWGOONgXPpJvopcWiJu7N84CEwOUdo02hpoVJQ=
+	t=1788860632; cv=none; b=c1HXZxM99bXUPLTDN7b5h3nDyW4Ft3eqxiaMork/aAWkmFq+8CtLT7HZZvo+pMbJCYcRhCldqDvAAXfNvZNHNiBSyQcdk2s54Ax2y1MSmWi25rnYH1YcnKYyMN61tt5x5cxsxP0aG/BA/UfTr+LbygFoy5PBt7QmZOYbGcjKqzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788854705; c=relaxed/simple;
-	bh=A2d081V5u9O9db2fGR1Uw/LCtJvvhhWQH/7b76K7e9M=;
+	s=arc-20240116; t=1788860632; c=relaxed/simple;
+	bh=O/RU7XTNP0iwtgCnZcCsut02WHgg8KAIIJ0b3lZIwQs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bl0VIio3dZWvU5bZyhSZbZ+VNDpNq7FGROkqXx0lx7PpKiLtLoPILdytgjNPybduMMCUoIr6DcN+Xo1GIIVnhoVFJkf4rgbofIy1x892wE1SFvrECiE34x+s+Fa9DpqJAiOyAQFvBWnbgu3I8SunFgSmX+qB0UtSdvs500T8WgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g+oVlp9R; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=kErB6L2/uaCBSlXwYzLoESp/93lI/SSwz8y1N8G3ucboVi1XCsZBYgcpkb/Sz/9GBYMfER7FJyteMGoF+A+hIk1EZNWzGhdP4IQlt94LMJzHiVZreUVFC77UxoH5sEZWDMKDD9q36p+B6nN9oTnC5N6f9lqLdQqbZd2ZDgSeEjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=deyQbRX5; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g+oVlp9R"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d6ff3aca07so205705ad.1
-        for <linux-coco@lists.linux.dev>; Tue, 08 Sep 2026 01:05:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788854702; x=1789459502; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=N6N0od/sVrug4dpoGO2TXWMVX/OvNe36xacdNRKZ9rU=;
-        b=g+oVlp9RaJOgf2EneMqbprH79BIs7435271/Rn8HpMxpcDZazxGj4FdAV+qZVilhE1
-         LJT4LSSbXNsP/Q+PVZd7kdfB1K9NeRTIKhy8QLaA3uGoEZE5uuCjwFBHd3y8RNjacAUU
-         oNOdYE+R788DQlxScWTVezBE22EJ0pv8Kt0Nlcop/b6yC1mlZV8rs4A7ilEqMUy0LinB
-         R+sDT4yevvM+/9/QfWWvelenLO0DmGmlpEy3d6Q9n3oDJREhFYfxxJ0c1e1XARq5T6Ru
-         4pZnEFOBg5mQmGeQSKPaKnhyEjckQ3r+4+65PUgKJQ1gNCklkdV8e3tr8Ml8YfK77zQ4
-         wwBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788854702; x=1789459502;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=N6N0od/sVrug4dpoGO2TXWMVX/OvNe36xacdNRKZ9rU=;
-        b=RjUX5T2w6bXk15ZQcypJdSAWHlU8vr0Oilna2CzfALw45Ud0mvx9TCLs/gylfI3phr
-         JtLnV238iRtQqMr/iRr1PjO1GrnO55aCrtd++i+QKOTPQWCzutbUwepLawufPji5vhUj
-         Ys7EYuKLxXxR1WdpMp1Yj6053gQ5iuKm1AR+LdkG+62D4hAG6NwKpfazn+G7PXk+3u+T
-         BR2FK5gLFq2gRzwi3g3jjVVfAlbeMAGcaVbX+HDlvdMpLmUUg1eZIRR9CAvcU9DCJkW3
-         DpjDFbdA/05VQM7yFQd6rfzbsFGnr14AlRYDCkjH4oNdTL3O4oBhVNzfmfFEg+fNGwBb
-         q8Fw==
-X-Forwarded-Encrypted: i=1; AKwUvByNQqVe2Trt4PExymaIfTAZKUEer8WxlIp7g/dN8uikFrfn3ojZGA3DSqFjFyBxdaYlmPbhQlI5TRfG@lists.linux.dev
-X-Gm-Message-State: AFuF++nsfaTV/J+BF97dWQ0DmMGLj9JFOeBf9PQuslL/fdgtOwsfFDhv
-	yb2TCmFQYOSOLpCZpGnx9v/emKzzQtypHs5Qcnu9o9Rw6smP04HhIqFoCyPfnURy4A==
-X-Gm-Gg: AYBFou1/8pFLoHpjT//Qh8rM0fAE7X1U8efXFQYOdtiKxhfus0OSI+706f6fkzsx9yD
-	aIDv7VWZg5UFyhQ4SLvbp+tQm8CIALB4a66Ov4k8x8Xp+mOVYopQqp2EbpEF3UddfDcOnuMfcTc
-	4kTEtHe3bt5ym8XTqb9sSO341VdaCZO6M19H8Ptn1aDtM6oCV3et6fJGm/DUMM+YMoOTI2qzB+p
-	vrMc4AmvBSeeakFcAldxUkk0JziTzil9ywe6b1Hv7Zs2m5ehJjgXXJU3Zhqxvp7QXEhs/1AjWni
-	asc9pMR55D2jMQfosGevlfdp3ZDOLFT0sKpTjpKgHIwkAt5zfiwHRRrZnzBL1N/RaMZKDNXgjPj
-	E0vuPU7yzcHS1eygcW5LjVMkpdvkI7jSCNFhHx2TKG6FnuNzRgppOCr/xbPgXGEhWIZqkk+2wk2
-	zC6wn0+3l0ocQcjwBkxw7REichxXlUnPcrft0SrBLPzOS0MvHuXb4dSWCInm0feHtaKKUGfuzG2
-	zyOwQseP1uemVKgrwuuFw==
-X-Received: by 2002:a17:903:1968:b0:2d5:db38:8013 with SMTP id d9443c01a7336-2db290965e6mr13546505ad.18.1788854701219;
-        Tue, 08 Sep 2026 01:05:01 -0700 (PDT)
-Received: from google.com (195.5.127.34.bc.googleusercontent.com. [34.127.5.195])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db1499d92dsm54262635ad.52.2026.09.08.01.04.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 01:04:56 -0700 (PDT)
-Date: Tue, 8 Sep 2026 08:04:53 +0000
-From: Lisa Wang <wyihan@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Chenyi Qiang <chenyi.qiang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Roger Wang <runanwang@google.com>,
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	x86@kernel.org
-Subject: Re: [PATCH v14 03/22] KVM: selftests: Initialize the TDX VM
-Message-ID: <ap_Bpe7dZm_eWsJ2@google.com>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-3-15ad654a50db@google.com>
- <c8b7a800-58ed-4ef7-91bd-31da77763717@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="deyQbRX5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788860631; x=1820396631;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=O/RU7XTNP0iwtgCnZcCsut02WHgg8KAIIJ0b3lZIwQs=;
+  b=deyQbRX5IB+9KTDbsEvWWyQSHbzUNfAQni85muOoa5Pu39wgb3ldW6ak
+   7sRqSoEtaH1QCYqvXS30c6HHbvS5ThcWBh5dolsPTVBSefY7VMK8tBm8q
+   juSlpDpLSiC6RKg/ZKRVyrljwKfuvfvsvnO+y5+nAjdsti4P44vPlPrih
+   uLqEHwIrgoyIp1i18pgxXlS1hTE2WeDxrBSzdgrgk34x63EwvT7CB2+H6
+   VI+denoHFY9XTYv/u97sI0ZiUOYb9bKZjle2opDpJdCutobFDGk7xsVby
+   GgALKdLJoiJnHSA6vGT1sPKA1ku8tTDJwwDQ6jS2j9hhhAVA3nYP3ChcG
+   A==;
+X-CSE-ConnectionGUID: kJd5/hx4SwS4a6CXie/guw==
+X-CSE-MsgGUID: d6/7AApERwqOlgd0Gs9wKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="114797453"
+X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
+   d="scan'208";a="114797453"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 02:43:42 -0700
+X-CSE-ConnectionGUID: GW81OCrSS3q00qRL3iFtvA==
+X-CSE-MsgGUID: vs9FiQI+RX+B1xVqxPlyjA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
+   d="scan'208";a="271459358"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by orviesa009.jf.intel.com with ESMTP; 08 Sep 2026 02:43:40 -0700
+Date: Tue, 8 Sep 2026 17:43:39 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: dave.hansen@intel.com, dave.hansen@linux.intel.com, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kas@kernel.org, nik.borisov@suse.com,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH v5] x86/virt/tdx: Formalize SEAMCALL leaf version
+ encoding support
+Message-ID: <ap/Yy0uNp+78/wjv@yilunxu-OptiPlex-7050>
+References: <20260901105436.461823-1-yilun.xu@linux.intel.com>
+ <d2a198a8-cba9-4773-94b6-1513b8b718c5@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -95,112 +63,52 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c8b7a800-58ed-4ef7-91bd-31da77763717@intel.com>
+In-Reply-To: <d2a198a8-cba9-4773-94b6-1513b8b718c5@linux.intel.com>
 
-On Thu, Jul 23, 2026 at 04:44:08PM +0800, Xiaoyao Li wrote:
-> > + */
-> > +#define __tdx_vm_ioctl(vm, cmd, _flags, arg)				\
+On Tue, Sep 08, 2026 at 02:26:39PM +0800, Binbin Wu wrote:
+> On 9/1/2026 6:54 PM, Xu Yilun wrote:
+> > The TDX architecture includes a syscall-like ABI for OSes to communicate
+> > with SEAM mode software. This ABI has the concept of a "leaf". Each leaf
+> > is roughly analogous to a Linux syscall: it has a set of register
+> > arguments and does one logical thing like adding a page of memory to a
+> > VM or running a VM. The TDX architecture refers to this interface
+> > function as a "SEAMCALL leaf".
+> > 
+> > Just like syscalls, the TDX architecture wants to evolve the ABI to
+> > extend functionality while keeping compatibility. But unlike syscalls,
+> > which do this by picking a totally new syscall number, the ABI encodes
+> > the "version" number directly into the bits of a register argument. So
+> > instead of openatN being whatever the next free number is, the SEAMCALL
+> > leaf number and version number are encoded into certain bits in how the
+> > RAX register is defined in the ABI.
+> > 
+> > In Linux, several seamcall*() wrappers have been introduced to invoke
+> > SEAMCALL leafs. They all take a u64 "fn" argument for the leaf number
+> > which eventually get set in the register. As above, the version number
+> > lives in the same register as the leaf number. So callers that want to
+> > select a specific version of the leaf, can jam it in the right place in
+> > the register by passing it in the "fn" argument.
 > 
-> sev uses the name __vm_sev_ioctl, I think we need to keep them consistent.
+> Do you think it's worth explaining how callers determine the versions
+> supported by the TDX module,
 
-While __vm_tdx_ioctl matches SEV, the TDX selftest follows a tdx_<scope>_*
-naming convention (1. TDX prefix, 2. Scope: VM or vCPU). I named it
-__tdx_vm_ioctl to keep the TDX codebase internally consistent.[1]
+Yeah I described this in v4 [1]. Generally it is "selecting the minimum
+workable version number for the required functionality".
 
-Do you think we should align with SEV's naming convention instead of
-sticking with the internal TDX pattern?
+But I feel it distracts people from the problem this patch wants to
+solve, so I removed it. This patch actually involves no runtime version
+selection. The future change for TDH.SYS.CONFIG does. Better we add the
+explaination in that patch?
 
-[1]: https://lore.kernel.org/kvm/489f3c7b-db03-43dc-bb64-910a0fcba31e@intel.com/
+[1]: https://lore.kernel.org/all/20260804085054.190847-1-yilun.xu@linux.intel.com/
 
-> > +({									\
-> > +	u64 r;								\
-> > +									\
-> > +	union {								\
-> > +		struct kvm_tdx_cmd c;					\
-> > +		unsigned long raw;					\
-> > +	} tdx_cmd = { .c = {						\
-> > +		.id = (cmd),						\
-> > +		.flags = (u32)(_flags),					\
-> > +		.data = (u64)(arg),					\
-> > +	} };								\
-> > +									\
-> > +	r = __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
-> > +	r ?: tdx_cmd.c.hw_error;					\
-> 
-> I know it takes the same handling from __vm_sev_ioctl(). But I think the
-> handling for hw_error is not correct, at least for TDX (I didn't check for
-> SEV).
-> 
-> the hw_error is the additional info, to tell the SEAMCALL return code, when
-> the IOCTL fails. KVM requires hw_error to be in the input, and KVM puts the
-> SEAMCALL return code into hw_error when the IOCTL fails due to SEAMCALL
-> failure. That means, when r == 0, the hw_error is always 0.
-> 
-> I think we need to provide hw_error along with r to the caller so that
-> caller can print them together.
+> and what happens if the specified version
+> is not supported by the TDX module?
 
-I think the value of r is not important, because the ioctl failure
-is already captured in errno.
+I think it should not happen. This means the kernel is trying to enable a
+functionality that the module doesn't support. Either there is a problem
+on feature enumeration, or people are using a deprecated module. Anyway
+don't runtime check if a SEAMCALL version is supported.
 
-We only need to fix the return values for SEV and TDX and have
-TEST_ASSERT_* print formatted error logs with errno and hw_error.
-
-- r ?: {tdx, sev}_cmd.c.hw_error;
-+ r ? {tdx, sev}_cmd.c.hw_error : 0;
-
-> > +})
-> > +
-> > +#define tdx_vm_ioctl(vm, cmd, flags, arg)				\
-> > +({									\
-> > +	u64 ret = __tdx_vm_ioctl(vm, cmd, flags, arg);			\
-> > +									\
-> > +	if (ret) {							\
-> > +		TEST_ASSERT(!ret,					\
-> > +			    "%s failed, rc: 0x%llx errno: %i (%s)",	\
-> > +			    #cmd, (unsigned long long)ret,		\
-> > +			    errno, strerror(errno));			\
-> 
-> The if() looks silly. Why add it? And why change it from
-> __TEST_ASSERT_VM_VCPU_IOCTL() in the v13?
-> 
-> Considering the suggestion of hw_error above, I think we need to introduce
-> the TEST_ASSERT_TDX_VM_VCPU_IOCTL() which accepts additional hw_error?
-
-The reason we could not use __TEST_ASSERT_VM_VCPU_IOCTL() directly[2] is
-because it formats ther return value as %i (32-bit), whereas
-__tdx_vm_ioctl might return a u64 hardware error code.
-
-I agree with your suggestion to introduce a new
-TEST_ASSERT_TDX_VM_VCPU_IOCTL() macro to print out u64 hardware error
-code properly.
-
-[2]: https://lore.kernel.org/all/a58e2941-77f9-43cf-a54d-023506dd7eb0@linux.intel.com/
-
-> <snip>
-> > diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> > new file mode 100644
-> > index 000000000000..e1ffb67a106c
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> > @@ -0,0 +1,120 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +
-> > +#include "processor.h"
-> > +#include "tdx/tdx_util.h"
-> > +
-> > +static struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
-> 
-> make it const, is better.
-
-Thanks, noted.
-
-> > +	init_vm->attributes = attributes;
-> 
-> Besides CPUID, it only allows attributes to be configure but leave XFAM as
-> 0. I think the changelog needs to explain why we need to configure
-> attributes.
-
-Thanks, noted.
-
-> The rest of the patch looks good to me.
- 
+Thanks,
+Yilun
