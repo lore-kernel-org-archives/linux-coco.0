@@ -1,464 +1,370 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012056.outbound.protection.outlook.com [40.107.209.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C033AE189
-	for <linux-coco@lists.linux.dev>; Tue,  8 Sep 2026 20:21:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788898905; cv=fail; b=CdN9r8Kks7IPLemk2g50tQrjAYIqJdo4TVJfi17FNX9P7RNEPFgiLvZgVPywurMabJJi4TcYs09tJiDdVgVEBja8EllKI47iiDNWDU13r3qR4dIcVQo6zPVjy92oCHB0CcJf1ZrbRFlXeBu14UsxkYKMOSo1mZjkfNQoSuIbfWY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788898905; c=relaxed/simple;
-	bh=7pD6pARJdIJRZ00pL/L2SyWQaomwFg6znBtY5rXtcm0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=tbNq02V7Y3sbRX3XF1cna16HFJJRMbFWQmHGoVxM4l9SozOi8D5SV5JX17IFCsCFJUeUy+xSUPI54y3ZV0WDVVI4wfaDPxG/tp0f5HAvtHbpcEK/+sGEPB0hcj7l/h4/lzaKPYQZaHXIXLoWZMt7Q+nrxCym2DohLAvmZ4xn+uk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Wy0Xh/aj; arc=fail smtp.client-ip=40.107.209.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205264A49A7
+	for <linux-coco@lists.linux.dev>; Tue,  8 Sep 2026 22:41:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788907310; cv=none; b=qMlMIQvnRQJG9JNzbCcqOc3eW9GVUQOpT8BXDtkmZZe1/dr+4iD3Lma6/p4DwTPiwNxfBcMnKjeBHBWGnw1RrDCHZMjYE1rWn8Jyk5U9PZ1AIpvQ2yFZVvpwzVWuNhphTSl+dzTgIVGgOYb7mjLc49WWPMCzEqZiKWo09THslyQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788907310; c=relaxed/simple;
+	bh=ZN6cWP/Yb/IvBfN4GQTD664at/DhRbeG7MzN5RUyw4Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hx0Zgaps/saOdrVbI2o+DxYhCi0aqYmJFHI+AFZ2z6tuBnA1lNeD+NTxZ2VPr/qFpdfZ226TwQhGiwl8BKMn5DAPKf+d4PpV1E6SQj6vJ0xUbOU1lFZ0kf5KIP4d24SgrjaaER+BhqS+wn9/rhfIL9jBP06VVw21WBJ53bwoKy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h3OHbzGm; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Wy0Xh/aj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nlSCTG2UuxYbJGGnIpc38Mpbtx/7p30Itt4CQqq6Qc0s3mbOHhsLipNYp7fxGQuknbByLf8FHdOq9rnmzfJxLtajwqchgNMDjatI1AQIrNHTN//e413ZWT+EURMzmfLZbULKjZeZvJsfc9ihvYqB9OomCXU5Rm+YEKSlIqdYvMuknSsj4nK3oG8jGsx3bk3RQt0KM24e9zR0C/qucguVEjfawwQkYtQB2FPFX8i+is6yyQyFKEy/PRAmEeVANp+a6YkUfVzr7slkb+bqhGWIFD7779JWk1fPhasvGlIhOAljqNgzTUXqMvl3Tqq5I+iPcUgl09qhL3Ua/ui/kg5sxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sR0EvDNjwTTfEJKUyvoPK03o+jSk5eldygJpyXob21U=;
- b=cCQO56iPsPR4F8EtKh2Ih1+2/isGII3oq8ZUXW+Z49J0TYc6uk2us820udKNzmDrqbZHiMaXLqnEg7MkeBL9QuCipUikxfwJ2iwp0CJXJW9jdLmJBxK9Mojjl1y+Vfh6D+MAxJ2DyGKhOoJuiNoJUvYt0DULptBAHBySrZnsr0i/Goeq5vrfwA9m5aG0z/75sRW32pyGZ75fwVaMgIc5cYS6Rpi4CF1k7lPIq8fDnQNP/gA7sj0lDqdkokflKI+g+rBS3u5tGj4Ibvu9+Gn3cXhPuI7bVXfo3UJeH7Uyz6mRWx3lVHtGNeSbNY+9INxXOTkHvPfnT/ArP3uwl8F52Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sR0EvDNjwTTfEJKUyvoPK03o+jSk5eldygJpyXob21U=;
- b=Wy0Xh/ajal8bsQqHy/RV4YGzjDMN7EBDdNPTwssKe7YURi11FPQsLz03Bq1boFCR2X+RHuoT4vd4kG8sQSEwiuicRaq+XayJpudzfpWPXOFaWld1giVTPXvE9qEtd1pJIP8rd8a3bAHBZA6eMMXKCZq6cUv1GriYZlP/dh2e+oU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by DM6PR12MB4283.namprd12.prod.outlook.com (2603:10b6:5:211::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Tue, 8 Sep 2026
- 20:21:35 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%5]) with mapi id 15.21.0406.005; Tue, 8 Sep 2026
- 20:21:35 +0000
-Message-ID: <4b940989-1c27-49a5-8112-d9f991ad1d48@amd.com>
-Date: Tue, 8 Sep 2026 15:21:31 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 4/5] x86/sev: Add support to perform RMP optimizations
- asynchronously
-To: Borislav Petkov <bp@alien8.de>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
- x86@kernel.org, hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
- thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net,
- ardb@kernel.org, pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
- ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
- rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
- pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
- nikunj@amd.com, darwi@linutronix.de, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1788296083.git.ashish.kalra@amd.com>
- <a31fc8c6d3f6c6bbe50dc4542c7091b0899d3e1b.1788296083.git.ashish.kalra@amd.com>
- <20260905012945.GPaptwicVjJ-SwXYzl@fat_crate.local>
-Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-Autocrypt: addr=ashish.kalra@amd.com; keydata=
- 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
-In-Reply-To: <20260905012945.GPaptwicVjJ-SwXYzl@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH0PR03CA0233.namprd03.prod.outlook.com
- (2603:10b6:610:e7::28) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h3OHbzGm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788907303;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LbRygIjj1UISKx3LvtxKvIim7ExfCkLiZ8qAFUjhHAw=;
+	b=h3OHbzGmuB+iP3ZtwaVK1PJyt2f/KQhrl1UL7YkrWdrzY2QzqsbuGU1p3yYiWCDGS9a2mS
+	TQ4CoOioJaXuTIxj21IDXvT5IBYdpGI5+84MRjBfFa+smwofmuK9eflUIFy48DvomSCPT3
+	EPwPCUtVwRUEPMK7z1Fl8QD/0Hs54W8=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-156-rCahmzD2MB6o7quf-U0rzQ-1; Tue, 08 Sep 2026 18:41:40 -0400
+X-MC-Unique: rCahmzD2MB6o7quf-U0rzQ-1
+X-Mimecast-MFC-AGG-ID: rCahmzD2MB6o7quf-U0rzQ_1788907299
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc1c18c775eso6108398a12.0
+        for <linux-coco@lists.linux.dev>; Tue, 08 Sep 2026 15:41:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788907299; x=1789512099;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LbRygIjj1UISKx3LvtxKvIim7ExfCkLiZ8qAFUjhHAw=;
+        b=mjt/f4d4r81VfRqHJXsfiJxxwWHim3ON3sA+epgGBA1oQCLivcdQIjWet5I4hn95Ue
+         cX4tygNByZZHQGMlB6EJIU9UguTL8eKdgXLK4/5wi2BQxIs0ot54cG80JYPxmpzAgDDn
+         ZvjT7/61JchXoCJCgRvlmqS6csms5foKFPsj6uEyE7DJcv9jkLtgYZkm3l29Iz2uMr8o
+         HgNmqTgOw3hOAtEuGIastrwtosyLFsblrsAdiuLffijcsMBBOqJ0TiSnVuKVoPxdHyN8
+         Yj8k0CbxR1Q8CyZ41jvLQCqiYirht7w4umkI0wkk99g7mU5hODcPNT/JqnK6vREOP1+L
+         Ny7Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzQhtMZGuEGf7tzfNQ5/piA9KKcW1XLMlFi0ZXjzB1woxRI2c4/IdjmHY5ajHrnCsInheAQE26h5B0d@lists.linux.dev
+X-Gm-Message-State: AFuF++lPHu/zyhN5eG/wmPWEOSgqt7mUtKODGaiBAERrRYjEpKywcJEd
+	A+K+Ot2dtRT+vy6YK249j6sqjrP/NeOuPOtxm5a5AN676I5iLfGCIRI0VjMAgVMNGG2t4o3bE9y
+	Zoe4yIWZWZU5hQ8FnFSSAbYP6hreYwUbbLrhE+HoWhr7P0TRwCUx2w5o2pGu0YAM=
+X-Gm-Gg: AYBFou0SkEmezq0Ul2/X3PgxZBfUVNubfjzbI3kDl6TEZsMwnlfRh4Ec8/EI2Vr9MW7
+	RZJHio8jzxA52kznOxZ2dL77+M10vAf9Puw/dKBZlSkMAyH9xUdjtGfGNBAfe7j2Kr4eEjgVHRb
+	7pZWOSB1N+kDnkLJqIXBtrYXU+DfGnEQ/H55zj4T8i+KPoUcy2Cft/aW7cuOAgor3v7OC54r+8F
+	uQFyFH0JlAXT6zLVdV7o5SVaVXMTNVTYmQUVCThXEs9kohTaz0YIhhn/PHiFsfb4ZkZnX1iXeqa
+	Ppbh1n6UYWWCytSrWfFuWxB3O3ZF7HHRFJshwrui6D1EMLIlQgCpjJ8SnPKKKh9IsZRI1Ht2mmw
+	5OvD+qRnpHU0QUCDnOOuaC1B/TRHlLvmxC92+crECDw==
+X-Received: by 2002:a17:90b:5743:b0:38e:c232:9d2c with SMTP id 98e67ed59e1d1-39b8bc9422emr7157579a91.2.1788907298736;
+        Tue, 08 Sep 2026 15:41:38 -0700 (PDT)
+X-Received: by 2002:a17:90b:5743:b0:38e:c232:9d2c with SMTP id 98e67ed59e1d1-39b8bc9422emr7157553a91.2.1788907298136;
+        Tue, 08 Sep 2026 15:41:38 -0700 (PDT)
+Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39cd20641e2sm204402a91.3.2026.09.08.15.41.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Sep 2026 15:41:36 -0700 (PDT)
+Message-ID: <52e58930-8fa4-4c75-981c-25be42d83f2d@redhat.com>
+Date: Wed, 9 Sep 2026 08:41:23 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|DM6PR12MB4283:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9f573d8-7b8c-40f2-aafa-08df0de6c78c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|6133799003|3023799007|10067099003|4143699003|56012099006|11063799006|5023799004|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	Q2FfnsftOyWoIPgu7CulPRE9uzRDA/lgPQX7cBOiJO1O1et3Qq6BIO6xvZzIPwtMvOBprqsDjRIvdNfn6xG1cEMZrSADbbhM5jcbTKszUx/7iuTQe/T8GzKE2ZPNf7gy/mxm8JnsiOH6wL+xkE27tteM2se+rGvWKlirFsxkaYI3tOZ+7f12MRfpW1WfU+fGOTSApkDTXoOmJOrN1VCpjXXgKe/59oMtYE4EX5chmCQYh1i+8Po93qmKMWGQGqIQGyq2KsNbGO3bT3HAnETYzFmSnWV6X4+wdzFxI6Kr1ae8QzZs2NMlL7KB72tdNs6/TL1fDlhyVb+e0RzUMki/bsre6KVZ8TrDlJfr5X8AIAOsucutGKEWiQSmBoftale6eEeelDqIJyYZCKzeYKTiv17Mp2qvF7Mz60RmFzeUITPPmI59NGOlKnBTbWtOcDSL+UIZ7zQXnyY4xNMjXSf4hEeyw61v9vZb8MI6sPzMyhZ0IRqci4JWegYYs7jHFcrrl9ydwdm9QkzsEU+gtS44UQWYDALpnk6jgJPt+eyPrMyqIHiWoJCIWnSAQvX0+3odnLvtNU8GutTbDLxJbgJFc0HaV5mXwakFhG83PyzCA93FlM/FAqGbYrjdd2lQH8cJ2ho6XDmORhpDi+nvRVt/Yi9l6beWYrrAu1mImK7R4ms=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(6133799003)(3023799007)(10067099003)(4143699003)(56012099006)(11063799006)(5023799004)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MlkvQ1VaVWhBWUJDM0dLcXlNdHFWQkFYVzN6dE1vSVBwdUtqV3ZFaUowZHRj?=
- =?utf-8?B?QWdXcTRoY1VSYlk3ODNDRno1ZktvR3BDM0xueU1PaU1mTjFvRE56QU90OGxo?=
- =?utf-8?B?cmczajljOFlpUmM1MXllMlJQbFExUFA4RWpmQUY5bU96U2p3SFhhV1hHNGQ2?=
- =?utf-8?B?b3R5VytUblpQMG1MdE9SbW4veEZ4L3k0YVRLU1I5dTZnNXlXWlpuWTlYY0pw?=
- =?utf-8?B?YVlKUWh4b3FXWlhhVytneEtsSEYvUUpNaEJBWFNvZlMzamwveDl0b0N6Y2Fa?=
- =?utf-8?B?czN5TVVBNE9NMU1qVlE2SndicTZ6Z1VCSVU0V2JRRFRHRHFHZWNYd1hLOTNn?=
- =?utf-8?B?Nkg5NHBiSmhEWXgwSnZaSkMrY0txdHZJREtvQklGQTdSOFNJLy94RmYvVWFn?=
- =?utf-8?B?WXFLSjBOZ1U2cXdFM3dWN25POEZaUGNTOFVxQkd1V0RaZ045Y2Mxa016a014?=
- =?utf-8?B?TEFYb2hITXFvajhQcnpLOFRvKzBjaTMxMW1yOEdjMlFqR0wwSzdBUVlRU0pt?=
- =?utf-8?B?cTk1VWdjS2R5Vmk3MXozUGloNVY3M3k3M1V3ZDFsZmZybGlEV3JsMVlKbG1h?=
- =?utf-8?B?UlJqQkdBdEN5WERTRDlXbkF2bC9Pa2kxeFpwUkN5VVVIc1pGZ1Vsb1ZReXZ4?=
- =?utf-8?B?allTWVRRdUwwcjlydjlSUEZ2Ykc5RmN4UWlQckZYdWdia3JYMks5RnFwT0g1?=
- =?utf-8?B?QUhFTDRIc1o5R3hJandHSUFCUHBXUmh2UUVibE5mWWRBRnYvUGp0UjVGR2lt?=
- =?utf-8?B?VkFBQUtTY2hXUXpOck4rVXQ2MW82OFV1emxYT1V5K3o3R2hoTEFSaXo3dmx3?=
- =?utf-8?B?amJ2Z0llNXBKek1Ob1E4Q2lWeHQ4VlpkbnFBeHUrajNEQzRnN3JZRkQ4MnUw?=
- =?utf-8?B?YlhFVjFuK3ArYlprUVg0Mi9aMFBtWXZlVHhFVUpZN2UrUnA0U3JaNVFGNHlK?=
- =?utf-8?B?QTVpa2daU3czLzBmSG1oTDNlZ0c0d2pPa0ZOK3lvMXQwT3hvaU1JMk1TY0c2?=
- =?utf-8?B?NVZzVjBmbUNZODdBVmRuU1dUQXFERmsrbUJtMThtVHQwUUYydk9HZFFNYUJV?=
- =?utf-8?B?WVhQeldMQjlLK0VSRnN6M21DZEZ2dnBDYnZlR0ZabG9JTWdtMS81VElqcWRV?=
- =?utf-8?B?LzlzMzZNRk0zMjl4Q251OTZxdWFaVVEyVVVHYm5oSm9VTUhOTGcwT0FkVDY2?=
- =?utf-8?B?d2g1NzZBejNWUmlnc1hYWWlGMm0zS3hOaWZtUmo2R0VOb2tacmNwOU9QOE10?=
- =?utf-8?B?YlVUZUlmbjNQa1l3M3RYRG5WYWRYaFYwZ2NUZzNud0xBTE9HL3JtaSsvbTBO?=
- =?utf-8?B?STJtb0dhcjRON1F3ZUhobndrUk0vQW1lcThLSDhkV2Nmb0NnaWJqL2N1ZVlJ?=
- =?utf-8?B?QVBKZ0ZZZUFsYzFHMGNuOWc4dFlYL3ZBS3Z1dE9kUENNYlRCZ1JvSzVod3Uy?=
- =?utf-8?B?Z2lwcVcvWU1qdXd3Mm1zTWIrZXVQRXNhREJLWE5Pb041dFJNcGJlRkpJQlZy?=
- =?utf-8?B?VkNwMnZzZjFUMGhZZjRDY1MvV3piUkEzMDc0cEN2OUsrYUVHNjE5M0VMWGNZ?=
- =?utf-8?B?dUdWVHJrSnI1QUhEV1hPTjRpcmRDc2tRbzlUOWpwVXZlbkh1Sk9VZ1l0RWtF?=
- =?utf-8?B?WlNpcnFvdEJ2eGdpTm8vaUVWUnNrOWVBdEZOcHljbXNmNjFDYTRvKzYxWU41?=
- =?utf-8?B?ck4yYk00WlNzSEJyQUp3QU0zVktUUDYrTTJtNnNPaHo3S3lLL2tDS0pqRVZq?=
- =?utf-8?B?eklwNXhWYnBBMFdPS1VBcUhmUXVBSWpIZ3lPc0RycUYxb2NnbHJHMnNoTXZO?=
- =?utf-8?B?aU1ZMzdiQXJlVTdFelYveFFIb2Zta3E4NmRWT3lVejh1akRhbWZyOTRnU1Vh?=
- =?utf-8?B?cVhRbTUvbnl4aXVwaktLbU0yRVp4SUc3WTR2dUZXWmxYTXRJMzBIblIrbUNp?=
- =?utf-8?B?QkZZODc5L0V0RFdaTFByMk8xMnZPeDEzZW8rdytGWFgvMDBlekFhSGkwMFBC?=
- =?utf-8?B?cVVWWWtJNUsyWmw1YkZmRVViM2NOVW9xTW84eERkdWhVNDJVaytzdmI5NEpJ?=
- =?utf-8?B?YUgvZjRReS82SjlMUzVlRHJyUGZIelRhcFc3bnNjb2xRSjZWRGhyNytBY1NR?=
- =?utf-8?B?QkxDTXBNUC9qckNJT3hoNWZVakdhNU12YndHZzl3MmpvVEhuNkpoVUI0TEVQ?=
- =?utf-8?B?Q0ovSUduUlRON1o0dWcvTWVyUWJhdWl2a2RSUTY1cG92clBxUCtNWHQ4NDNQ?=
- =?utf-8?B?MXdGZTlaTldqMU1uUXRGUy9PM3k4Ly9JSVA2MUFobG9LWmhYV1kxQitZaG1y?=
- =?utf-8?Q?efPk05Kc5CE30GmYc6?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9f573d8-7b8c-40f2-aafa-08df0de6c78c
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 20:21:35.3986
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hREltv1bIz4/USJqgncg8L4+YHayY6SBoTBXaBWLPoXb5PoZOU+lIrQ2jopP2w2eWTfCryQsZ+LTrMwBmNqi8w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4283
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v17 1/7] firmware: arm_rmm: Add SMC definitions for
+ calling the RMM
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
+ <20260907095942.1140734-2-suzuki.poulose@arm.com>
+ <c9990440-acab-4c6c-b67f-8bde17feddce@redhat.com>
+ <aca629b2-27a0-4c47-acac-87edb3b0d3d9@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <aca629b2-27a0-4c47-acac-87edb3b0d3d9@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: sjGS207s4-YriSM4H4LTs1DnKrhogddGnRQ_rEpPdgQ_1788907299
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hello Boris,
-
-On 9/4/2026 8:29 PM, Borislav Petkov wrote:
-> On Wed, Sep 02, 2026 at 09:28:57PM +0000, Ashish Kalra wrote:
->> Subject: Re: [PATCH v13 4/5] x86/sev: Add support to perform RMP optimizations asynchronously
+On 9/8/26 8:37 PM, Suzuki K Poulose wrote:
+> On 08/09/2026 07:19, Gavin Shan wrote:
+>> On 9/7/26 7:59 PM, Suzuki K Poulose wrote:
+>>> From: Steven Price <steven.price@arm.com>
+>>>
+>>> The RMM (Realm Management Monitor) provides functionality that can be
+>>> accessed by SMC calls from the host.
+>>>
+>>> The SMC definitions are based on DEN0137[1] version 2.0-bet3
+>>>
+>>> [1] https://developer.arm.com/documentation/den0137/2-0bet3/
+>>>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > 
-> s/Add support to perform/Perform/
+> ...
 > 
->> From: Ashish Kalra <ashish.kalra@amd.com>
+>>> ---
+>>>   include/linux/arm-smccc-rmi.h | 494 ++++++++++++++++++++++++++++++++++
+>>>   1 file changed, 494 insertions(+)
+>>>   create mode 100644 include/linux/arm-smccc-rmi.h
+>>>
 >>
->> When SNP is enabled, all writes to memory are checked to ensure memory
->> integrity. This imposes performance overhead on the whole system.
+>> Some nitpicks below, please pick up the commits that look reasonable :)
 >>
->> RMPOPT is a new instruction that minimizes the performance overhead of
->> RMP checks on the hypervisor and on non-SNP guests by allowing RMP
->> checks to be skipped for 1GB regions of memory that are known not to
->> contain any SNP guest memory.
+> 
+> 
+>>> +
+>>> +#define RMI_RETURN_STATUS_MASK        (0xFFUL)
+>>> +#define RMI_RETURN_INDEX_MASK        (0xFFUL << 8)
+>>> +#define RMI_RETURN_MEMREQ_MASK        (0x3UL << 8)
+>>> +#define RMI_RETURN_CAN_CANCEL_MASK    (0x1UL << 10)
+>>> +
+>>> +#define RMI_RETURN_STATUS(ret) FIELD_GET(RMI_RETURN_STATUS_MASK, ret)
+>>> +#define RMI_RETURN_INDEX(ret)        FIELD_GET(RMI_RETURN_INDEX_MASK, ret)
+>>> +#define RMI_RETURN_MEMREQ(ret) FIELD_GET(RMI_RETURN_MEMREQ_MASK, ret)
+>>> +#define RMI_RETURN_CAN_CANCEL(ret) FIELD_GET(RMI_RETURN_CAN_CANCEL_MASK, ret)
+>>> +
 >>
->> Add support for performing RMP optimizations asynchronously using a
->> dedicated workqueue.
+>> If I'm correct enough, RMI_RETURN_{STATUS, INDEX, MEMREQ, CAN_CANEL} _MASK are used
+>> for once in this header file. So we needn't explicitly expose them and combine their
+>> definitions with users to fetch the corresponding fields, as below.
 >>
->> At RMP initialization time, run an optimization pass over all physical
->> memory (up to 2TB of system RAM, starting from the lowest physical
->> memory address aligned down to a 1GB boundary), skipping RMP checks for
->> 1GB regions that do not contain SNP guest memory (excluding preassigned
->> pages such as the RMP table and firmware pages).
+>> #define RMI_RETURN_STATUS(ret)        FIELD_GET(GENMASK(7, 0), ret)
+>> #define RMI_RETURN_INDEX(ret)        FIELD_GET(GENMASK(15, 8), ret)
+>> #define RMI_RETURN_MEMREQ(ret)        FIELD_GET(GENMASK(10, 8), ret)
+>> #define RMI_RETURN_CAN_CANCEL(ret)    FIELD_GEt(GENMASK(10, 10), ret)
+> 
+> I belive the header files were generated from a tool (by Steven) and
+> these would make it easier to compare with the generated header file for
+> any deviation from the spec. So, I am a bit reluctant make these
+> changes.
+> 
+> That said, I am happy to convert the mask definitions to GENMASK() for
+> consistency and readability. i.e., something like:
+> 
+> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc-rmi.h
+> index 3eb88caf40964..078197284415e 100644
+> --- a/include/linux/arm-smccc-rmi.h
+> +++ b/include/linux/arm-smccc-rmi.h
+> @@ -139,10 +139,10 @@
+>   #define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
+>   #define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
+> 
+> -#define RMI_RETURN_STATUS_MASK         (0xFFUL)
+> -#define RMI_RETURN_INDEX_MASK          (0xFFUL << 8)
+> -#define RMI_RETURN_MEMREQ_MASK         (0x3UL << 8)
+> -#define RMI_RETURN_CAN_CANCEL_MASK     (0x1UL << 10)
+> +#define RMI_RETURN_STATUS_MASK         GENMASK(7, 0)
+> +#define RMI_RETURN_INDEX_MASK          GENMASK(15, 8)
+> +#define RMI_RETURN_MEMREQ_MASK         GENMASK(10, 8)
+> +#define RMI_RETURN_CAN_CANCEL_MASK     BIT(10)
+> 
+
+Ok.
+
 >>
->> As SNP guests are launched, RMPUPDATE assigns their private pages to
->> guest-owned state; when such a page falls within an optimized 1GB
->> region, the hardware clears that region's RMPOPT optimization and RMP
->> checks resume there to protect the guest memory.
+>>> +#define RMI_SUCCESS            0
+>>> +#define RMI_ERROR_INPUT            1
+>>> +#define RMI_ERROR_REALM            2
+>>> +#define RMI_ERROR_REC            3
+>>> +#define RMI_ERROR_RTT            4
+>>> +#define RMI_ERROR_NOT_SUPPORTED        5
+>>> +#define RMI_ERROR_DEVICE        6
+>>> +#define RMI_ERROR_RTT_AUX        7
+>>> +#define RMI_ERROR_PSMMU_ST        8
+>>> +#define RMI_ERROR_DPT            9
+>>> +#define RMI_BUSY            10
+>>> +#define RMI_ERROR_GLOBAL        11
+>>> +#define RMI_ERROR_TRACKING        12
+>>> +#define RMI_INCOMPLETE            13
+>>> +#define RMI_BLOCKED            14
+>>> +#define RMI_ERROR_GPT            15
+>>> +#define RMI_ERROR_GRANULE        16
+>>> +
+>>> +#define RMI_CONTINUE_KEEP_GOING        0
+>>> +#define RMI_CONTINUE_STOP        1
+>>> +
+>>> +#define RMI_OP_MEM_REQ_NONE        0
+>>> +#define RMI_OP_MEM_REQ_DONATE        1
+>>> +#define RMI_OP_MEM_REQ_RECLAIM        2
+>>> +
+>>> +#define RMI_DONATE_SIZE_MASK        3UL
+>>> +#define RMI_DONATE_COUNT_MASK        GENMASK(15, 2)
+>>> +#define RMI_DONATE_CONTIG_MASK        BIT(16)
+>>> +#define RMI_DONATE_STATE_MASK        GENMASK(18, 17)
+>>> +
+>>> +#define RMI_DONATE_SIZE(req)        FIELD_GET(RMI_DONATE_SIZE_MASK, req)
+>>> +#define RMI_DONATE_COUNT(req)        FIELD_GET(RMI_DONATE_COUNT_MASK, req)
+>>> +#define RMI_DONATE_CONTIG(req) FIELD_GET(RMI_DONATE_CONTIG_MASK, req)
+>>> +#define RMI_DONATE_STATE(req)        FIELD_GET(RMI_DONATE_STATE_MASK, req)
+>>> +
 >>
->> Since launching SNP guests clears these optimizations, perform them
->> again asynchronously using the dedicated workqueue.
+>> As above, RMI_DONATE_{SIZE, COUNT, CONTIG, STATE}_MASK are used for once in this
+>> header file. So their definitions can be dropped by modifying the followup macros,
+>> as below. Some enhancements are also applicable: (a) Use 'BLOCK' to indicate the
+>> unit encoded in the request. (b) The macros are put into order from MSB to LSB.
 >>
->> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
->> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
->> Suggested-by: K Prateek Nayak <kprateek.nayak@amd.com>
->> Suggested-by: Borislav Petkov (AMD) <bp@alien8.de>
->> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
->> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+>> #define RMI_DONATE_STATE(req)        FIELD_GET(GENMASK(18, 17), req)
+>> #define RMI_DONATE_CONTIG(req)        FIELD_GET(GENMASK(16, 16), req)
+>> #define RMI_DONATE_BLOCK_COUNT(req)    FIELD_GET(GENMASK(15, 2), req)
+>> #define RMI_DONATE_BLOCK_SIZE(req)    FIELD_GET(GENMASK(1, 0), req)
 > 
-> R-by's need to get dropped when a patch changes in more or less significant
-> way.
-
-Tom and Dave gave their R-by's on v12/v13 series, so probably i will keep their
-R-b's.
-
-> 
->> @@ -561,10 +571,26 @@ static void rmpopt_disable(void)
->>  {
->>  	int cpu;
->>  
->> +	guard(mutex)(&rmpopt_wq_mutex);
->> +
->> +	/*
->> +	 * rmpopt_wq is non-NULL only after RMPOPT has been fully set up: the
->> +	 * workqueue is allocated and the RMPOPT_BASE MSRs are programmed.
->> +	 * snp_setup_rmpopt() resets it to NULL if any of those steps fail, so a
->> +	 * NULL rmpopt_wq means nothing was set up and there is nothing to tear
->> +	 * down.
->> +	 */
->> +	if (!rmpopt_wq)
-> 
-> Now take your patch and rip all that gunk which destroys the setup work done
-> by snp_setup_rmpopt(). Instead, you init things once and do not touch them
-> even if RMP optimizations are disabled.
-> 
-> In case they get enabled again later, you simply reactivate them instead of
-> doing useless setup work all over again.
+> Same as above.
 > 
 
-So, you want me to set up once, never tear down, on re-enable just reactivate. 
+Please rename RMI_DONATE_{SIZE, COUNT} to RMI_DONATE_BLOCK_{SIZE, COUNT} if possible.
 
-So rmpopt_disable() should stop destroying the workqueue, clearing the RMPOPT_BASE MSRs, and resetting pa_start/pa_end.
-
-One thing i need to handle here: The current rmpopt_disable() clears the MSRs for a reason: it runs only on a full SNP
-shutdown (SnpEn cleared), right before cpu_hotplug_enable(). Once hotplug is back on, a primary thread can offline -> online
-and lose its RMPOPT_BASE (reset to 0, no cpuhp callback - which is only safe because hotplug is disabled while SNP is active).
-If we simply stop clearing MSRs but keep the current re-init fast-path that skips MSR programming, a re-init after such a cycle 
-could run rmpopt() on a core with RMPOPT_BASE=0.
-
-So the fix is: keep the setup allocated once, but make setup always (re)program RMPOPT_BASE — then we never need to clear it on
-disable, and the cycle case is covered on re-init. Proposed fix: 
-
-  /* full shutdown: just stop a pending pass; leave the setup intact */
-  static void rmpopt_disable(void)
-  {
-        guard(mutex)(&rmpopt_wq_mutex);
-        cancel_delayed_work_sync(&rmpopt_delayed_work);
-  }
-
-  void snp_setup_rmpopt(void)
-  {
-        ...
-        if (!rmpopt_capable())
-                return;
-        guard(mutex)(&rmpopt_wq_mutex);
-
-        /* allocate the workqueue exactly once, keep it for the kernel's life */
-        if (!rmpopt_wq) {
-                rmpopt_wq = alloc_workqueue(...);   /* or use system_unbound_wq, see below */
-                if (!rmpopt_wq) { pr_err(...); return; }
-                INIT_DELAYED_WORK(&rmpopt_delayed_work, do_rmpopt_work);
-        }
-
-        /* always (re)program MSRs + range, so a hotplug cycle across a full
-           shutdown can't leave a core with a stale RMPOPT_BASE */
-        rmpopt_pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
-        rmpopt_base = rmpopt_pa_start | MSR_AMD64_RMPOPT_ENABLE;
-        for_each_cpu(cpu, cpu_primary_thread_mask)
-                wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
-        rmpopt_pa_end = ALIGN(PFN_PHYS(max_pfn), SZ_1G);
-        if ((rmpopt_pa_end - rmpopt_pa_start) > SZ_2T)
-                rmpopt_pa_end = rmpopt_pa_start + SZ_2T;
-
-        queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
-        pr_info("RMPOPT optimizations enabled\n");
-  }
-
-
->> +		return;
->> +
->> +	cancel_delayed_work_sync(&rmpopt_delayed_work);
->> +	destroy_workqueue(rmpopt_wq);
->> +
->>  	for_each_cpu(cpu, cpu_primary_thread_mask)
->>  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, 0);
->>  
->> -	rmpopt_pa_start = 0;
->> +	rmpopt_pa_start = rmpopt_pa_end = 0;
->> +	rmpopt_wq = NULL;
->>  }
->>  
->>  void snp_shutdown(void)
->> @@ -595,6 +621,44 @@ static bool rmpopt_capable(void)
->>  	       cc_platform_has(CC_ATTR_HOST_SEV_SNP);
->>  }
->>  
->> +/*
->> + * RMPOPT optimizations skip RMP checks at 1GB granularity if this range of
->> + * memory does not contain any SNP guest memory.
->> + *
->> + * @pa is a system physical address; RMPOPT operates on the containing 1GB.
->> + */
->> +static void rmpopt(u64 pa)
->> +{
->> +	enum rmpopt_op_type op = RMPOPT_OP_VERIFY_AND_REPORT_STATUS;
->> +	u64 pa_start = ALIGN_DOWN(pa, SZ_1G);
->> +
+>>
+>>> +#define RMI_OP_MEM_DELEGATED        0
+>>> +#define RMI_OP_MEM_UNDELEGATED        1
+>>> +#define RMI_OP_MEM_CONDITIONAL        2
+>>> +
+>>
+>> B4.6.40 RmiOpMemContig type is missed here and they should be used in the c code.
+>>
+>> #define RMI_OP_MEM_NON_CONTIG    0
+>> #define RMI_OP_MEM_CONTIG    1
+>>
+>> In the c code, we shall have:
+>>
+>> if (RMI_DONATE_CONTIG(req) == RMI_OP_MEM_CONTIG)) {
+>>     ...
+>> } else {
+>>     ...
+>> }
+>>
 > 
-> 	/* Supported by binutils 2.48+ */
+> Does it make much sense though ? I prefer
 > 
->> +	asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc"
->> +		     :: "a" (pa_start), "c" (op)
->> +		     : "memory", "cc");
->> +}
+> if (RMI_DONATE_CONTIG(req))
+> 
+> to
 > 
 > 
+> if (RMI_DONATE_CONTIG(req) == RMI_OP_MEM_CONTIG)) {
 > 
->> +
->> +/* on_each_cpu() callback: optimize the whole RMPOPT range on this CPU. */
->> +static void rmpopt_scan_range(void *arg)
->> +{
->> +	u64 pa;
->> +
->> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
->> +		rmpopt(pa);
->> +}
->> +
->> +static void do_rmpopt_work(struct work_struct *work)
->> +{
->> +	/*
->> +	 * RMPOPT caches the results of a RMP table scan in reserved processor
->> +	 * memory, allowing future invocations to skip such costly operations.
->> +	 */
 > 
-> We know already. Drop this comment.
-> 
->> +	migrate_disable();
->> +	rmpopt_scan_range(NULL);
->> +	migrate_enable();
->> +
->> +	on_each_cpu_mask(cpu_primary_thread_mask, rmpopt_scan_range, NULL, true);
->> +}
->> +
->>  void snp_setup_rmpopt(void)
->>  {
->>  	u64 rmpopt_base;
->> @@ -603,6 +667,34 @@ void snp_setup_rmpopt(void)
->>  	if (!rmpopt_capable())
->>  		return;
->>  
->> +	guard(mutex)(&rmpopt_wq_mutex);
->> +
->> +	/*
->> +	 * On re-initialization after a legacy SNP shutdown (SNP_SHUTDOWN_EX
->> +	 * with x86_snp_shutdown=0), snp_shutdown() and thus rmpopt_disable() are
->> +	 * skipped, so the workqueue, delayed work and per-CPU RMPOPT_BASE MSRs
->> +	 * are still set up and valid (SnpEn stayed set and CPU hotplug stayed
->> +	 * disabled).  Rather than re-doing the setup, which would leak the
->> +	 * existing state, just re-queue the optimization pass to re-optimize any
->> +	 * memory the previous SNP session de-optimized.
->> +	 */
->> +	if (rmpopt_wq) {
->> +		queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
->> +		return;
->> +	}
->> +
->> +	/*
->> +	 * Create an RMPOPT-specific workqueue to avoid scheduling
->> +	 * RMPOPT workitem on the global system workqueue.
->> +	 */
-> 
-> Why?
+> than having a field for a single bit values. I am happy to change
+> this if there is strong preference to the other.
 > 
 
-A full‑physmem RMPOPT pass is a warm‑up scan plus an IPI fan‑out over up to 2TB. The default system_wq is per‑CPU and concurrency‑managed,
-a long‑running item there runs on the queueing CPU's worker pool and can stall (or be stalled by) other work on that pool. So we wanted it
-off system_wq and use a dedicated RMPOPT specific workqueue.
+The point is RMM-v2.0-bet3 expose RMI_OP_{MEM, MEM_NON}_CONTIG instead of true/false
+to indicate if the requested memory blocks are physically contiguous or not. So the
+expression 'if (RMI_DONATE_CONTIG(req) == RMI_OP_MEM_CONTIG)' is consistent to the
+RMM-v2.0-bet3 spec.
 
-Another thing i looked at is for long-running unbound work, probably the standard shared queue is system_unbound_wq, which is probably built
-for this use case and won't clog the per-CPU system_wq.
+  
+>> Similarly, B4.6.39 RmiOpCanCancel type is missed here and they should be used in
+>> the c code.
+>>
+>> #define RMI_OP_CANNOT_CANCEL    0
+>> #define RMI_OP_CAN_CANCEL    1
+>>
+>> In the c code, we shall have:
+>>
+>> if (RMI_RETURN_CAN_CANCEL(ret) == RMI_OP_CAN_CANCEL) {
+>>      ...
+>> } else {
+>>      ...
+>> }
+>>
+> 
+> Same as above.
+> 
 
-If we switch to it, there's no workqueue to allocate or free — the setup/teardown "gunk" disappears entirely (static
-DECLARE_DELAYED_WORK, queue/mod_delayed_work(system_unbound_wq, …)), which satisfies your "init once, don't touch." 
+Please see above explanation.
 
-Additionally, with system_unbound_wq and a static delayed_work there's no pointer to guard, and queue/mod/cancel are already
-synchronized by the workqueue core, so rmpopt_wq_mutex can also be dropped.
+>>> +#define RMI_ADDR_TYPE_NONE        0
+>>> +#define RMI_ADDR_TYPE_SINGLE        1
+>>> +#define RMI_ADDR_TYPE_LIST        2
+>>> +
+>>> +#define RMI_ADDR_RANGE_SIZE_MASK    GENMASK(1, 0)
+>>> +#define RMI_ADDR_RANGE_COUNT_MASK    GENMASK(PAGE_SHIFT - 1, 2)
+>>> +#define RMI_ADDR_RANGE_ADDR_MASK    (PAGE_MASK & GENMASK(51, 0))
+>>> +#define RMI_ADDR_RANGE_STATE_MASK    GENMASK(63, 62)
+>>> +
+>>> +#define RMI_ADDR_RANGE_SIZE(ar) (FIELD_GET(RMI_ADDR_RANGE_SIZE_MASK, \
+>>> +                           (ar)))
+>>> +#define RMI_ADDR_RANGE_COUNT(ar) (FIELD_GET(RMI_ADDR_RANGE_COUNT_MASK, \
+>>> +                           (ar)))
+>>> +#define RMI_ADDR_RANGE_ADDR(ar)        ((ar) & RMI_ADDR_RANGE_ADDR_MASK)
+>>> +#define RMI_ADDR_RANGE_STATE(ar) (FIELD_GET(RMI_ADDR_RANGE_STATE_MASK, \
+>>> +                           (ar)))
+>>> +
+>>
+>> I guess it wouldn't a bad idea to explictly indicate 'BLOCK' in the definitions, as
+>> below. Some improvements are applicated either: (a) 'ar' is renamed to 'r'; (b) The
+>> excessive parentheses are dropped to follow the patterns we already had; (c) For
+>> RMI_ADDR_RANGE_ADDR(r), FIELD_GET() is used.
+>>
+>> #define RMI_ADDR_RANGE_BLOCK_SIZE_MASK        GENMASK(1, 0)
+>> #define RMI_ADDR_RANGE_BLOCK_COUNT_MASK        GENMASK(PAGE_SHIFT - 1, 2)
+>> #define RMI_ADDR_RANGE_ADDR_MASK        (PAGE_MASK & GENMASK(51, 0))
+>> #define RMI_ADDR_RANGE_STATE_MASK        GENMASK(63, 62)
+>>
+>> #define RMI_ADDR_RANGE_BLOCK_SIZE(r) FIELD_GET(RMI_ADDR_RANGE_SIZE_MASK, r)
+>> #define RMI_ADDR_RANGE_BLOCK_COUNT(r) FIELD_GET(RMI_ADDR_RANGE_COUNT_MASK, r)
+>> #define RMI_ADDR_RANGE_ADDR(r) FIELD_GET(RMI_ADDR_RANGE_ADDR_MASK, r)
+>> #define RMI_ADDR_RANGE_STATE(r) FIELD_GET(RMI_ADDR_RANGE_STATE_MASK, r)
+> 
+> Ack
+> 
+>>
+>>> +enum rmi_ripas {
+>>> +    RMI_EMPTY = 0,
+>>> +    RMI_RAM = 1,
+>>> +    RMI_DESTROYED = 2,
+>>> +    RMI_DEV = 3,
+>>> +};
+> 
+>>> +#define RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_4KB    BIT(0)
+>>> +#define RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_16KB    BIT(1)
+>>> +#define RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_64KB    BIT(2)
+>>> +#define RMI_FEATURE_REGISTER_1_HASH_SHA_256    BIT(3)
+>>> +#define RMI_FEATURE_REGISTER_1_HASH_SHA_384    BIT(4)
+>>> +#define RMI_FEATURE_REGISTER_1_HASH_SHA_512    BIT(5)
+>>> +#define RMI_FEATURE_REGISTER_1_MAX_RECS_ORDER    GENMASK(9, 6)
+>>> +#define RMI_FEATURE_REGISTER_1_L0GPTSZ        GENMASK(13, 10)
+>>> +#define RMI_FEATURE_REGISTER_1_PPS        GENMASK(16, 14)
+>>> +
+>>> +#define RMI_FEATURE_REGISTER_2_DA        BIT(0)
+>>> +#define RMI_FEATURE_REGISTER_2_DA_COH        BIT(1)
+>>> +#define RMI_FEATURE_REGISTER_2_VSMMU        BIT(2)
+>>> +#define RMI_FEATURE_REGISTER_2_ATS        BIT(3)
+>>> +#define RMI_FEATURE_REGISTER_2_PDEV_MAX_VDEVS_ORDER    GENMASK(7, 4)
+>>> +#define RMI_FEATURE_REGISTER_2_VDEV_KROU    BIT(8)
+>>> +#define RMI_FEATURE_REGISTER_2_NON_TEE_STREAM    BIT(9)
+>>> +#define RMI_FEATURE_REGISTER_2_REALM_MAX_VDEVS_ORDER    GENMASK(14, 10)
+>>> +
+>>> +#define RMI_FEATURE_REGISTER_3_MAX_NUM_AUX_PLANES    GENMASK(3, 0)
+>>> +#define RMI_FEATURE_REGISTER_3_RTT_PLANE        GENMASK(5, 4)
+>>> +#define RMI_FEATURE_REGISTER_3_RTT_S2AP_INDIRECT    BIT(6)
+>>> +
+>>> +#define RMI_FEATURE_REGISTER_4_MEC_COUNT        GENMASK(63, 0)
+>>> +
+>>
+>> We would reorder those feature register definitions from MSB ro LSB :-)
+> 
+> Ack
+> 
+> Thanks for your review.
+> 
+> Cheers
+> Suzuki
+> 
 
 Thanks,
-Ashish
+Gavin
 
->> +	rmpopt_wq = alloc_workqueue("rmpopt_wq", WQ_UNBOUND, 1);
->> +	if (!rmpopt_wq) {
->> +		pr_err("Failed to allocate RMPOPT workqueue\n");
->> +		return;
->> +	}
->> +
->> +	INIT_DELAYED_WORK(&rmpopt_delayed_work, do_rmpopt_work);
->> +
->>  	rmpopt_pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
->>  	rmpopt_base = rmpopt_pa_start | MSR_AMD64_RMPOPT_ENABLE;
->>  
->> @@ -612,6 +704,23 @@ void snp_setup_rmpopt(void)
->>  	 */
->>  	for_each_cpu(cpu, cpu_primary_thread_mask)
->>  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
->> +
->> +	rmpopt_pa_end = ALIGN(PFN_PHYS(max_pfn), SZ_1G);
->> +
->> +	/* Limit memory scanning to 2TB of RAM */
-> 
-> No need for that comment - we know.
-> 
->> +	if ((rmpopt_pa_end - rmpopt_pa_start) > SZ_2T) {
->> +		pr_info("RMPOPT coverage limited to 2TB; memory above 0x%llx not optimized\n",
-> 
-> No need for that print - nothing we can do about it anyway.
-> 
->> +			rmpopt_pa_start + SZ_2T);
->> +		rmpopt_pa_end = rmpopt_pa_start + SZ_2T;
->> +	}
->> +
->> +	/*
->> +	 * Once all per-CPU RMPOPT tables have been configured, enable RMPOPT
->> +	 * optimizations on all physical memory.
->> +	 */
-> 
-> Drop this comment too.
-> 
->> +	queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
->> +
->> +	pr_info("RMPOPT optimizations enabled\n");
->>  }
->>  EXPORT_SYMBOL_FOR_MODULES(snp_setup_rmpopt, "ccp");
->>  
->> -- 
->> 2.43.0
->>
-> 
