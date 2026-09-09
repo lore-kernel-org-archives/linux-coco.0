@@ -1,100 +1,101 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C40655C312
-	for <linux-coco@lists.linux.dev>; Wed,  9 Sep 2026 14:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5457B5650F4
+	for <linux-coco@lists.linux.dev>; Wed,  9 Sep 2026 15:25:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788965568; cv=pass; b=oerBKcn3z9nSWXP+tUgAJvQcjoGMmnG/4tiqXyLC3waashQKYgx+Kpi+Lj5SM6kVW8MhTeb5u+7rjwI+gaTxLHZUVBQ9qUZeA1pHa597/FwsTUM/chXN+KNlStTS8wqgVgcsvml6Dq+m1+10D+2UsGXc+RBAU1o8ikLmzkQugPw=
+	t=1788967522; cv=pass; b=YiDAuyMe7UNO4KYv2Ll1SgLCjvf7qGvty0AXQ8SakVS6Xlw8eRRPfuh7a1O3eH8TBieLHgdA97vqeHFGThxcSfCkih/OGPyf3smCvJBgKecDpBrQUENfkbTjaisoDLcxZhGYlyRS7SuWTP9UjKIVXYdlJ960WWUvo7CBRgms4wk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788965568; c=relaxed/simple;
-	bh=nlL495Rwgq5pTxpggaWR4Kyh0bctH6OQcmcJP4kB+LI=;
+	s=arc-20240116; t=1788967522; c=relaxed/simple;
+	bh=uTvLvNOiD2VaPyg22uQpYQwhoB6nWQlo6kn+/rYg9tw=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pwr2wtXcaVMQYjOzsTRWg2d2xfuVp2HnLmQJityZy5+JNyH730Z74fDDL+mEPrQDF/ddCqkVrTqvRJId5IA3pAVUeVeNnyTU6T3NqhPOfQNg35gi7mvaVic4tB/mLtpmiElJ7mZS0TE4NnRWUoNyJ/b/qXj35UF6VHu8MBI2KKo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bK7zucCE; arc=pass smtp.client-ip=209.85.128.179
+	 To:Cc:Content-Type; b=WdHob9cktfrtf4ye5BHiux7nzxqmyhxrBguzglWsqE681O6/0UD+zBMpUxQPTt+Sry/+AIoMhGwiZ9Nt0hU1PZVH8T2o5YK9VPg1YQeWhMH7V9B7p2bPs2jaF67dbsCTE5KzLZTS8XO4tbT+iV/bDoentQizs6/o7VExWAqGpAY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RiSbt1Em; arc=pass smtp.client-ip=74.125.224.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bK7zucCE"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-866e57f63a3so68405217b3.3
-        for <linux-coco@lists.linux.dev>; Wed, 09 Sep 2026 07:52:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788965565; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RiSbt1Em"
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-671061b015eso1218454d50.1
+        for <linux-coco@lists.linux.dev>; Wed, 09 Sep 2026 08:25:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788967520; cv=none;
         d=google.com; s=arc-20260327;
-        b=e65J4rqB8wgRe689g8ssRXGR+86jyk3+ByGoFJXS07/nlrBZaMX52U0WvNRspVfP/7
-         vqDGkt9V4f7PRH1HTow4/02nje5T6zy0MCf4oTQuQLH/COn7PNWMvrDNvvpxCkqIe2/7
-         /Hx1A+PwZHwe77g5ctQNMt2N/kflGbIFdMPkuYzCvhaMMoZRLUzHiTavSER4NEtL5IMN
-         w1TCmMex6tp2RBkpWLuyXufoGra0jaLAc0sVwy/KHVHzRue+gDoV73FlnVCkwKqCQjab
-         mlmOr9WERAnHDZ69UyQI8wRfWy9hqWdP0nkvhHSSoEmjDzq2+5eOkMGrsx92Dbthus76
-         s3Tw==
+        b=F2w1DGzQUByAK6w3VjL5UDT6pXsYUEqdOt88V1a3w+DC1ImAZSWKfFZ5sqFgfxK9Kp
+         D6h5gUNVnnJ16MvfXa6pGq0m5uWJpAONrWXh7CsDhbg/V1T49+GYIUMqgfwaMYFvYcPS
+         eBuk/+GSYxwCaATr8AOjV0EslOYJSkLPMmQwXjXxjZA+E/bFGpVpc22fhZ9K/G5VU4d0
+         kVg8EnE60uILNsnsErx6YhcIYPpjV614uqMSt9HQ+arENYl0WZsDoEJwT9hdUT/pINvO
+         JJFZoa9N4Am30KCOAlIwsi8Sy/zis8Bwc2v9JTY3DyMsz9xTbhOjNR3T0bm2yejYwZVA
+         /K1A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=QRvd1Tt7kpHM/AxQHBaJz2yfsVBadJLI9GFkxk7vpJA=;
-        fh=/xBcK1K0dcjA8LHKyJpiZD6j/CEdqHQL9IvSTjn3i+Q=;
-        b=rA8fbANBQLxJcrOIFjr+3oyU9r5j/EoMppBKnYuq1fRq6iId16ejAs+YTP69pDB7ZO
-         +L0FTGtkE7nrqAfSTLAu9gKhlOYOWOkuAyKwNawSSthUVVPGDA2JQHNF4XZICJpFhw1H
-         482gwM6R5atlerlIaLEn3ndvUqV7TGGtje+52WVIaq1Uczzt+Rp04YjO7GyzMCcAVe0s
-         YWKgHMiLzEd5f/Uj5C/uEDlW+/lXQoDG1xGMp0vTPZuI9vTJMv9oPusSpyJQfFtd+Jn6
-         fhkrrck4aDfcOg387l+CFKrbBByyJsj6Mb2rcq0odTyeIKnPhCdLN/jRRUwHshi2eRU2
-         DgpA==;
+        bh=m4jJh3TX4gx98qaUfn3Q4oVt1KTvxUkS7IflLLQjx2I=;
+        fh=uHA1qjIHnyWe7d73L6ZT74NtfRtf83R+Cce8njXeF2k=;
+        b=EAneQaYX8W3JIKSqCzPnuqkXqscz2Qj6ueaHoVuc+KurWK2rtdzpJkVgmG4nA39RMx
+         GtYH1XuYjEM+aREQiGoC3IsA+BIsTpshFAwBwvs3ImZYgulXwldloLGWUSYtYl34ZbTU
+         +Kmg1iJl87qC6xn75eagUN/bH59yLFwdLKZEAn65/NRTwv6jis997OV3zxQDY3N24fwU
+         3haMR5jK/neA690zciSH5TT8VZ0NdNDly/jKn7anh5NseRLSlliHdpWuwFUgwUM6iVpq
+         2nLOPAGX3aVDBfGW2tswhqe07NLMWBfkXn/ZN7OosayffW9RHviKL2K+w5Hu16Ftq005
+         aMFA==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788965565; x=1789570365; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1788967520; x=1789572320; darn=lists.linux.dev;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QRvd1Tt7kpHM/AxQHBaJz2yfsVBadJLI9GFkxk7vpJA=;
-        b=bK7zucCEuFicqUJhHaC7yEI9sNAH6SuIGbL0IeBL3E2cCSvEWjC8FnSq51MwmezZHI
-         O+CY6UjkVXPCJ4xFpguQubaagFq3V2SarAMGXBmjl6NRBg6Xl2Ibt3RBh3pIpVQZGoyz
-         0KmkUA/xOB7ogMuz+h9ARvDsM0IpuoTdMhdH0z1NeMXanupzw29NJLI74XFi46/75lhm
-         aai/7op7vVN+zdd2bSQ9/x11lD87uQo5owGAQZKKif53cLdEyNPj9MHVAN8hYrougjG0
-         6ouRegIiDBdmkkbIjD1KPkUymYyt8WryKVKgNZWeldW1hNor5Q+C9GHOwzt3u7sqCToV
-         Hs4w==
+        bh=m4jJh3TX4gx98qaUfn3Q4oVt1KTvxUkS7IflLLQjx2I=;
+        b=RiSbt1Em+cRBlEYq2UH55uY5Nd2+EjUsLPvDqCSKIpA0mFc3XjKxnSXpTQCEYmljDj
+         gMXQC0alUXN4ynOgwZ0QHLm+FmYuAGn8W0vLCI1p0D0CP/W4R/q0iHSAFpsQH502XDeI
+         7JqYlKzvil3RiijOAM7d5PERa7amQJLO1hTV/mMXXPUPdyU/okX7Xww0Mcc234UP8EDd
+         AfooDubLRL8As8R4UhQBmJcUeYBVXf+6EKwTiAFU/ex7/11mCy6shs7wsV5ch3Nn/fJh
+         /aBNXeAjiZVKR8WUapnjTIzyjWdhhg8XzyHDU7uO5YY87TzuWReHsyOtomPDsr2GjbJT
+         U3xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788965565; x=1789570365;
+        d=1e100.net; s=20251104; t=1788967520; x=1789572320;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=QRvd1Tt7kpHM/AxQHBaJz2yfsVBadJLI9GFkxk7vpJA=;
-        b=KV0bo+XBkQpxzj8+QTtfzomRZFowtKZmpUm1hFResYWZnZI77DHgdtBIGYfTYQcMqt
-         qgYesmeslgp/iNeXYhO9E36o92ZH+DZJFhmMNJSIpz0e7q8ZRFxjmsVk7eal7SR8sdsN
-         nNhPZQAkW5fQsDVKr1uVpzr8ILUEEo3QXkDPCl4o7ncfEf3JkN0vSNwD6z6dfn9Adgav
-         ZZpv1GpvCfu9tc2XjGPbE4Y12ZfMFG0XOA7b2OQH+c0721lfT0tILPJ0j5SAEhWRdail
-         wJbGUs55/8bEGEQ4Iu47nAVccRBcWZ0hdVPBvbZWG0kn0IZrZSQKSHQY2GwMN4W/XdHd
-         O1Og==
-X-Forwarded-Encrypted: i=1; AKwUvBx9Sa8ZEgCp4ZslNHMGjtkP0yM3YQcYHB6m0Khlkhjz0gjrctN6b4vAhY9917sqAMU2KYa7dw3j0Vv7@lists.linux.dev
-X-Gm-Message-State: AFuF++n0XRL3szdlu4Ao6INpPn4wkIgD7Silr0dH85x3gHkgiRNkY11e
-	EhRokmoCw+N6f31RH+X0uQbn7XxzJKXaUKubNnaraWhWBM6AOzPbEF0495ExsUDdKz6UWGo3fwf
-	6At2714YYZyN2rg3oWzXm5LnOnYIC/NOF4bZ1WfWv
-X-Gm-Gg: AYBFou2A0osS9O5yYy1fvg7WaXvRlAaoA8QP8gD9GLTfeTRnvIpZHlzJbhlKONT43d7
-	tW20v9BNSnU6mtfNXsq/j5Lk/muiYFVFoR31XuZNhn5dCVwaBMCBy69DJjd3dvF+dprfWsTfdh8
-	D6zrNbr62Z8+8ON92GIJ9ayRaD2gvDiGuTd4BqaLJfLh0uhSii3F3iIKoaZ3hXoqRR6LqFjcu5V
-	SwwmUx/tv2QB3pMqTXQ8tkTH/83gBM5bLSh16rVjPpMHxToMskDrFxNhvPNAI2XG/zloi27597I
-	6WR32FmL6hGgZqjr4Jwx+w2Z5fWvLAMo7qDUeCUpe7HY9GE4mWhQOgQA+v759JRIIYIFK8VOpbd
-	ArlHpapgHzBk=
-X-Received: by 2002:a05:690c:6b88:b0:845:ddf4:a3a7 with SMTP id
- 00721157ae682-87126aa77dcmr145268997b3.16.1788965563207; Wed, 09 Sep 2026
- 07:52:43 -0700 (PDT)
+        bh=m4jJh3TX4gx98qaUfn3Q4oVt1KTvxUkS7IflLLQjx2I=;
+        b=rGcRI9lg43G+w1fQqpjo+rtFQY2ZLJU4t4IDhuUyTd5svQ85GQ40MppkM/P5A3Klwm
+         bA8KOzzHkEUSjOtV4U08BHYNOFdfLAose0gPxp3I/QIvcTq8Bhb70re5QXR15Cg0mVPi
+         oxOWlihHdS5nqcAM/jKhxEpQ41Tzmqfc6mzVeoDuT6tkiwKzZt6VNx60LSYkmta7doB0
+         HCguwOEleiF/X/oke5k7ek56yXQgIW1Mzo05Y4ijJtRu4FzcDpQ2NR8WTlRUm1fxK9Hg
+         /6kOhZS9rRSCYGqzbfBElifcD4jhSHkEamYNKCc15OXHeMDvXplvaV+9nILTkiCiJEX5
+         2zOQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwoo0QPYeRE6zkRPHd7DqCSFEO8LZ6aLpnzBDZi6w6d7HMjUKQqYowWnmhiRu33oWLsze1fCLSPX2wM@lists.linux.dev
+X-Gm-Message-State: AFuF++mPW6gQ9PvHOFStvARWutpTuYf5zR5vVBIYzu7JLMGBhBy5/xxh
+	lCfs8zNFb8278z41p3RaYk4vbBqywMMrobwHCGMZEDqfgvJ1uB6+YpgNJKC1JlfdCCQDupXC8H1
+	z2/QoEUqYgyh17w5Gi2YDsc+BrE+X52T1Q9mEVlWA
+X-Gm-Gg: AYBFou2bTvMyDMf/qq8PHxgwupn8xY5kx5aoexmVKLeVr2qt7KnH0q0S9Wx0SbmnPTk
+	TDy4SmP7RFpypxe2VrkxL/guHVzPXDv6F5vkb/uKd/kInZD5fQgV5aAOjxrCtu/2r8ZPmQb2hWz
+	4rcAC0WGq+eyb+PABf8QNc+/+HS8UtQaMigVIYTAk4sPQ5j47de/PduLZOC+BmJ+Syyr6kFIH55
+	2TzvBALaowoH0rmciLw5F0p26IbvrSpvtqF0jnuKQwN4H36vwcseNHqD+x+MGt+HJy5fMYPCCNR
+	rE8kjvwkVkbvIvoqYBV4+6zCtW74pGrr27V+GbOrl9jhhy5ZtFT6DxGZF9qpX5IRWh80IsWkR5v
+	ogMbcWiKdw/nP
+X-Received: by 2002:a05:690e:d0c:b0:66c:c7e4:2ff1 with SMTP id
+ 956f58d0204a3-66fb59519a7mr10665340d50.15.1788967513698; Wed, 09 Sep 2026
+ 08:25:13 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 9 Sep 2026 07:52:42 -0700
+ HTTPREST; Wed, 9 Sep 2026 08:25:12 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 9 Sep 2026 07:52:42 -0700
+ HTTPREST; Wed, 9 Sep 2026 08:25:12 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <CA+EHjTyU1Ldbw-qqdQOx_P8jrt85QEcKSGae2h+AahsDQdbmLw@mail.gmail.com>
+In-Reply-To: <bd6c9c74-e374-a9d3-ba1f-8b6f430894fc@google.com>
 References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-14-85e5fd25252a@google.com> <CA+EHjTyU1Ldbw-qqdQOx_P8jrt85QEcKSGae2h+AahsDQdbmLw@mail.gmail.com>
+ <20260830-gmem-inplace-conversion-v12-18-85e5fd25252a@google.com> <bd6c9c74-e374-a9d3-ba1f-8b6f430894fc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Wed, 9 Sep 2026 07:52:42 -0700
-X-Gm-Features: AcwNN1XhqWHW23-sQN5ajMsWY1WhBdcubAUAi4IgbeOekiJ8g-YJ7YTjJ4UYzFA
-Message-ID: <CAEvNRgG36aXk8UW=Mi7ey-6vUe1EOKnkgNRNzdSUz-QJih4uAw@mail.gmail.com>
-Subject: Re: [PATCH v12 14/45] KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
-To: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Wed, 9 Sep 2026 08:25:12 -0700
+X-Gm-Features: AcwNN1XO0ky4otDKucsugFRBan2HEERm69mRZ8ScY2_txSdjnOuds0rILhuqOBo
+Message-ID: <CAEvNRgEkkvk11_atVj9=+OBym-7SbSMB7MpHcoN6-Q5KS3Lb_A@mail.gmail.com>
+Subject: Re: [PATCH v12 18/45] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
+To: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>
 Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
 	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
@@ -109,8 +110,7 @@ Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
 	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
 	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
 	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, Chris Li <chrisl@kernel.org>, 
 	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
 	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
 	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
@@ -120,35 +120,57 @@ Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
 	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
 	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
 	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-Fuad Tabba <fuad.tabba@linux.dev> writes:
+Hugh Dickins <hughd@google.com> writes:
 
-> Hi Ackerley,
 >
-> On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
-> <devnull+ackerleytng.google.com@kernel.org> wrote:
+> [...snip...]
+>
+>> @@ -926,6 +927,7 @@ void lru_cache_drain_for_folio(const struct folio *folio,
+>>  			*drained = LRU_CACHE_DRAINED_ALL;
+>>  	}
+>>  }
+>> +EXPORT_SYMBOL_FOR_KVM(lru_cache_drain_for_folio);
 >>
->> From: Ackerley Tng <ackerleytng@google.com>
-> ...
->> +.. _KVM_SET_MEMORY_ATTRIBUTES2:
->> +
->> +4.145 KVM_SET_MEMORY_ATTRIBUTES2
+>>  atomic_t lru_disable_count = ATOMIC_INIT(0);
+>>
 >
-> This section number collides with the existing 4.145 (KVM_PPC_GET_COMPAT_CAPS)
-> below, so api.rst ends up with two 4.145 sections. One of them needs
-> renumbering.
+> I don't mind about the virt/kvm/guest_memfd.c part of it, but I'm finding
+> a KVM patchset modifying mm/folio.c there hard to deal with: and notice
+> Sean also suggesting to separate this part out.
 >
-> ...
+> As you know, I've worked up a patchset "mm/fbatch: drain lru_add_drain()
+> and _all()" which finally removes the problem lru_cache_drain_for_folio()
+> works around. In the initial version posted a week ago, there was no
+> lru_cache_drain_for_folio() in the tree. Now 7.3-rc1 has it, so I
+> intended a replacement 13/25 in my series, giving you just an empty
+> inline lru_cache_drain_for_folio() stub (and enum lru_cache_drained)
+> in linux/swap.h.
+>
+> But that won't work for you, if you're adding an EXPORT_SYMBOL_FOR_KVM()
+> in mm/folio.c, and of course conflicts with my removals (in context both
+> above and below your EXPORT line). It's easy for me to remove what's in
+> mm/gup.c and mm/folio.c, but I cannot remove what is not yet there.
+>
+> I've wasted hours on this, hoping not to trouble either of you; but
+> seeing now that I shall have to rebase anyway (an unrelated mlock fix),
+> I'm electing to take the only clean way out: I'm going to submit this
+> mm/folio.c part of your patch to Andrew tonight (with a shorter Cc list!),
+> in the hope that it can be accelerated into 7.3-rc2 (or at least get an
+> mm-stable stable base-commit id) which we can both work off independently.
+>
 
-I'll add KVM_SET_MEMORY_ATTRIBUTES2 as 4.146 below
-KVM_PPC_GET_COMPAT_CAPS. Thanks, good catch!
+Thank you! Will use this in the next revision of this series.
 
->>  4.145 KVM_PPC_GET_COMPAT_CAPS
+> Whether that's acceptable to Ackerley and to Andrew, I don't know
+> (just as we don't know when either of our patchsets will go further),
+> but let me try.
 >
-> Cheers,
-> /fuad
+> Thanks,
+> Hugh
