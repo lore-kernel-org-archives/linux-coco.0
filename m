@@ -1,173 +1,147 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6203E40F8
-	for <linux-coco@lists.linux.dev>; Wed,  9 Sep 2026 10:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788951569; cv=none; b=o/rZOkfg92m6QPPeJ+JbYPg/lhld0UFWYkWKdVoomMNw3vcYNYJG1lIJLgEBcTAv/pR+RdlKWyf07RIIEoXvZd2f/gRX8bdcncRvD32MYi2CtQrIpO2k4oGfLKKJP/CjMrTrAtbQ12mRkKaNbP2TOipVFpkzN6p5nTde2bNX+I0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788951569; c=relaxed/simple;
-	bh=+Tu/O72827ZSBH3csRuI89G55OIjDCt8XGGxw+E2AAU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dBwoEyuSN0bX5PDYv1iTe/3dPwfr7uMJulbI4qlpPdVifUIFXudXkCCqQtXAaXk0ngM9gCsnq0nWbFyetwCEYYW07tLg3P1soxVQ/3Eqbyk6ReiFmvBHwJoDbutRVCToLVyIT+/yaLR5nDjvUrtMsHSnV5FtfnyAanur/uyO1yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NaQUav9U; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AC9538D7A
+	for <linux-coco@lists.linux.dev>; Wed,  9 Sep 2026 11:20:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.204
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788952850; cv=pass; b=flxoycu9qJEBdiagBzPfxWpKH30EkJG5HCQkrcnp+4W/2+HWu+DLuQxRrtj84o8VW+qalMHYSMvWLmDhFeF5g78GjsStCvplddJlM9CICQEgyhN0U+8GtoGeRaTZQU+RYx2bhhmrdMXQqedCrA713uIldNoxuK/Io/54pBZh1s4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788952850; c=relaxed/simple;
+	bh=DGJNGDyqk/L8FuMkKQ9UZ8lh0gD+ZC6OA/bClDuW/zs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a5Vkm9C5z7SmfJSS8cFMHxlIkCK0NQ75A9OQYyyTdY/jMnNp+7Iuo1jxQ5T7bz1ebVCA3SCbsDL5Twsmtlx8R1iW3+9xXDkdAePN9qixowczRNrxSgbjl9QKLnL2vQAJ26/r6xrn3BlhUyxGiOMbP8LvE59hG6JZdG4aXQTy1TQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aLST6P6s; arc=pass smtp.client-ip=74.125.229.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NaQUav9U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788951566; x=1820487566;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=+Tu/O72827ZSBH3csRuI89G55OIjDCt8XGGxw+E2AAU=;
-  b=NaQUav9UjWZrZDmXjkAmAjnhPN5xtNUzf6Ow+Dh6jSWPgUr83ecKu98D
-   NTxk6mxJuQC5/qrOEGw8eG5Nd2y5lKX2SXWXNKUr88o2WtMljL2pai/hi
-   mummWNVgRnXfsj1nzaUBxTGwfn0J/6VDByUst0jDnczSNJp1OIGTxf615
-   3qPSWtIZlnxPaWCQCVjtfWziNU8uUymmKlw7IdI7LqzMmLWdq0zsb5Gds
-   tucAFA2HjwCglKgS1Q6G75B645tbApdEQwYYaORbJFx363kCzB7f72qKd
-   jM5inbO5BnFkN350PZuMeXVid+f8usquTDBl9E8MunA4HzHn506IcU+1S
-   g==;
-X-CSE-ConnectionGUID: z4U2DJJxTjq5GPFnlBwvAg==
-X-CSE-MsgGUID: R4W1Mz/jTsuXwVL6vQE67w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="89298544"
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
-   d="scan'208";a="89298544"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 03:59:23 -0700
-X-CSE-ConnectionGUID: 9Byf6zvYR8OU4EXO2+AkNQ==
-X-CSE-MsgGUID: QRSdUOmUTxuJX9zEK3/LHw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
-   d="scan'208";a="267001320"
-Received: from unknown (HELO [10.238.208.122]) ([10.238.208.122])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 03:59:17 -0700
-Message-ID: <f16e1c13-b959-4085-bf4a-9e583d149e93@intel.com>
-Date: Wed, 9 Sep 2026 18:59:14 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aLST6P6s"
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b4a0b384b7so5824e87.0
+        for <linux-coco@lists.linux.dev>; Wed, 09 Sep 2026 04:20:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788952846; cv=none;
+        d=google.com; s=arc-20260327;
+        b=OjAbK9A/fKKRfI4A6XxmSTRPiSklqAmgWwnao8CC2yU9D+sABeghuWEQWFJR7TnKAk
+         kMGwcgte0+8ofnkLmmxNyxIcmvrovMyojEcAQkEbzuGkNyDgEF+UOKdeoS8e699XnzZ8
+         e2jhKPPDH44kkVzb2fcfUjCGDGWmd3lQGI0n8KUyUCmwPqeCk9xhxii/GiaccK+RMQXj
+         n5pLHJ4DbUT0IX++TFMFrEBIqdBvU9/XRP+WCPD6rsb58hTHuganpdjwTJw+2Hmun78A
+         ubMhg49hLxp6b5OaSjGO1IQKonXJnjeyH50VcuzLh8iiNBbH5tQO5uRIxh81zPhkyWGC
+         YMew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=crDfVMRTURCJ2kMvoxcTffnKsS81n5x7VpWJfYEfCY0=;
+        fh=aTUsltASsomUWolYTvDHEEYeMDZwpS8x//2uwbcA9ZQ=;
+        b=a52VuBXYDRXptMAOklCxSgYZ2zuo66v9jy6AGVdvFhgNtv3AGjdjFCe2QoHhLqnJqN
+         8ew6Z72+7wriZe73Cfdjvj8pAVIXMlPkJ0obWO0m+qfMGPZ8LRBgTMYKbLXvEVdRDH+e
+         xe1WBwsYrXkNWO5GCpRTgEj3FR/TsBCGWjs8+eaKN/RsRqCbRdb+Wnx9zNypLeJlihV/
+         Vhi+JeFNAwyL0ed1FUNgoBKGAaxXbtVybEkhf/jiEbgq7vayU0o52/b7nii6CYehCrfw
+         dafRienKDafoFsTmsR8i5i1Vr3W2nC7/r1O8PBdWoWHVADVzQ4ev4k/WjobY/Ba/SF0a
+         w4hg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788952846; x=1789557646; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=crDfVMRTURCJ2kMvoxcTffnKsS81n5x7VpWJfYEfCY0=;
+        b=aLST6P6sDSJfMaEsNYNMWQ84M56STSofyFPZSALAILd3NlLX4/6Qo3uD7B7cX/B5Q8
+         g+WYDJrf/Kq3/s9/uiIb0C6EahhOVzKvlBfutZ+J0iD6bjWl9oAaUe2CdAOdYGQkHvUM
+         Pggzo8jC3IamvfmiBWXbXZwQ8h3lHbEnR0qm9mOkwyPnr0EOlBtUjgO4DcuPzPZgQo36
+         qVVZBv78p7cLVG9CQmTXZL/QxtXvg9csCY5BPRWWKqiKMF6JoTJUCSKvNih8if4zLdJP
+         NPJgVwDn5g8EgjjYeys0yL17/UUQAZvyv13hznEkdtVc/q4XeejhXltuvHG5PAGVFRXe
+         QM6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788952846; x=1789557646;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=crDfVMRTURCJ2kMvoxcTffnKsS81n5x7VpWJfYEfCY0=;
+        b=LN6YxUYVnk0D1MKQIIbQrLXMmD5oAIbg4E+UJbOLenyuAxcVCPWDbWsR+DMGlUBPJR
+         W57w7ZRGo9qZOlKgngPvTV8o7lMpVRtRrlU0B558eBlrkIDJcEr0i0fcFubbZIk5IAVL
+         izrzX1Kq6Nm1KIxGiHWjrDHudspxjmY114DvnFxipWG3D8/8QrNCtEfFCQ29UFMKBQe9
+         bbdnk6Yyju36eNOy6LNJL8txLLH2u1XP1fagFv9RMvg5DuGa8df+np0ENjr4CDtwqK9g
+         P8uwmcZN1h+u9LpC75P8J0BT/awfUM8bsr8n3A7leF4pnoJpiHxtlSvHLXoT0JMzCHr4
+         H6EQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxBJuTGXS1Iotf4DH0t4A6x7GpZOEpP4an+8XvfFq4HAi5W5dUrtp/v5Yzaqv4zkSQEvFEKlbGPy/LP@lists.linux.dev
+X-Gm-Message-State: AFuF++nwigq1wDGFHnc8vsiVUAo0sKzO6HWJBg/4npNNoL9IPNyBcSE5
+	Hztc5lPOyuGBbOQruDjSvS9+gmOBI8K5rEC5DntGEx5ckvKwULcsouJHgsEXI1vOtm8MY1eyL4O
+	KPPFSprwt6dcMGmWGnHcwP+DErbtM5gAyEh0Ljnh+
+X-Gm-Gg: AYBFou2mx9uykhiksA69opnv47i00L8e55ZZrpWHx5GwqvPZ5GjtIrxd0V2Ms+Xcqie
+	nTP8YeEmGWkGdUd3HFFRMflrUis8EYZ62AjqeIXc7xMSslphY0Mix/w5TkMNgAF4qXr7s1p7miN
+	hoys4/RLn3e+frT7umwjsatgXJdcqHumHUjcX3wNdEqSJ7RV0PtVn0lgfOkfpEIIQ2uUtm1n+5M
+	4vLWIkTxfu1u3m26e7GY/NH4mGSakbzE6+trL6vvWVXJ5MxiUNtIF6ZGsz5HfZtl8DH5Ad0UoJz
+	lWs8KzWdSPIPrrhiIkpyMaYGW6SdzqQRswQUHJi6Kh64NxI94lL99cXWab9SGhsxH2Q0Dk3fXQD
+	yhYddZHCN+gw=
+X-Received: by 2002:a05:6512:3f22:b0:5b5:e890:1953 with SMTP id
+ 2adb3069b0e04-5b764bcde12mr149151e87.12.1788952845618; Wed, 09 Sep 2026
+ 04:20:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 21/22] KVM: selftests: Add ucall support for TDX
-To: Sean Christopherson <seanjc@google.com>, Peter Fang <peter.fang@intel.com>
-Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>,
- Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-21-15ad654a50db@google.com>
- <6f89fc78-0344-4a7e-bbd8-ac201b8f845a@intel.com>
- <20260828020612.GF33657@pedri>
- <b4cffa34-864d-4fd0-9fc7-a7d4514075b2@intel.com>
- <20260828042044.GG33657@pedri> <apGYxwdCSuC-X732@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <apGYxwdCSuC-X732@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260908162223.1683432-1-suzuki.poulose@arm.com> <20260908162223.1683432-2-suzuki.poulose@arm.com>
+In-Reply-To: <20260908162223.1683432-2-suzuki.poulose@arm.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Wed, 9 Sep 2026 12:20:09 +0100
+X-Gm-Features: AcwNN1UBL7PwhavrAXm1ihvLqEvgnaWmqxzjHA3KjiWz2CvXQREmUKFugkp-B-A
+Message-ID: <CA+EHjTwSwGUGT=6GWaOyav7kBQey0+xpL0kJ03ABtp23ZgD6RA@mail.gmail.com>
+Subject: Re: [PATCH v17 01/20] KVM: arm64: Include kvm_emulate.h in kvm/arm_psci.h
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
+	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
+	joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, 
+	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
+	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/28/2026 10:18 PM, Sean Christopherson wrote:
-> On Thu, Aug 27, 2026, Peter Fang wrote:
->> On Fri, Aug 28, 2026 at 10:31:14AM +0800, Xiaoyao Li wrote:
->>>>
->>>> Hmm... This makes me wonder if vm->arch.s_bit below could be replaced
->>>> with the same architectural approach. GPAW is available through
->>>> TDG.VP.INFO or the initial RBX value. This does require a bit more
->>>> plumbing though.
->>>
->>> I'm afraid not. Because below is host code, and vm->arch.s_bit is not used
->>> in guest code.
->>>
->>> Or are suggesting something like dropping the
->>>
->>> 	if (is_tdx_vm(vm)) {
->>> 		ucall_mmio_gpa = UCALL_MMIO_GPA | vm->arch.s_bit;
->>> 		sync_global_to_guest(vm, ucall_mmio_gpa);
->>> 	}
->>>
->>> entirely and use below hardcoded value instead in guest code?
->>>
->>> 	UCALL_MMIO_GPA | 1 << (GPAW - 1)
->>
->> Yeah this is what I meant. Just drop sync_global_to_guest() entirely and
->> do things like a normal TDX guest would.
-> 
-> Blech.  Every time I come back to this series we're still discussing ucall crud,
-> and "doing thing like a normal TDX guest".  Selftests aren't normal guests.
-> 
-> I know I suggested using the HPET base, but I only did so very begrudgingly as I
-> couldn't come up with a better alternative to emulated MMIO, and the end result
-> is quite gross.  Not only does the code ignore @mmio_gpa but still obviously use
-> emulated MMIO, it requires synchronizing data to the guest because KVM disallows
-> "private" MMIO.
-> 
->   void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
->   {
->          vm_type = vm->type;
->          sync_global_to_guest(vm, vm_type);
-> 
->          if (is_tdx_vm(vm)) {
->                  ucall_mmio_gpa = UCALL_MMIO_GPA | vm->arch.s_bit;
->                  sync_global_to_guest(vm, ucall_mmio_gpa);
->          }
->    }
-> 
-> Retrieving GPA via TDG.VP.INFO isn't any better, it's still an absurd amount of
-> "work" for something that should be trivial.
-> 
-> Can't we just abuse TDVMCALL_REPORT_FATAL_ERROR?  AFAICT, there's no restriction
-> on the data payload, and there's enough space to all but guarantee we'll never get
-> a false positive.
-> 
-> Pulling in Xiaoyao's idea about using CPUID...
-> 
->>> +void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
->>> +{
->>> +     vm_type = vm->type;
->>> +     sync_global_to_guest(vm, vm_type);
->>
->> It works and it looks simple. But we have the architectural approach to
->> test if a guest is TD guest, by checking the CPUID 0x21.
->>
->> Since checking CPUID 0x21 is not complex, and as a bonus it can help
->> test if TDX module behaves correctly for CPUID leaf 0x21, I think we
->> should switch to use CPUID 0x21 to check if it is TDX VM in guest code?
-> 
-> Absolutely not.  It will require at least one an extra VM-Exit for TDX and non-TDX
-> guests alike, and thanks to Intel's wonderful CPUID behavior of having unsupported
-> leaves return the last supported leaf, the guest would have to check CPUID.0x0 and
-> then CPUID.0x21 on modern hardware, i.e. would incur two extra VM-Exits.  I don't
-> care about the performance, but from a debug perspective that's going to be awful,
-> as what should be a super simple operation will be polluted with unwanted data.
+On Tue, 8 Sept 2026 at 17:22, Suzuki K Poulose <suzuki.poulose@arm.com> wro=
+te:
+>
+> Fix a potential build error (like below, when asm/kvm_emulate.h gets
+> included after the kvm/arm_psci.h) by including the missing header file
+> in kvm/arm_psci.h:
+>
+> ./include/kvm/arm_psci.h: In function =E2=80=98kvm_psci_version=E2=80=99:
+> ./include/kvm/arm_psci.h:29:13: error: implicit declaration of function
+>    =E2=80=98vcpu_has_feature=E2=80=99; did you mean =E2=80=98cpu_have_fea=
+ture=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+>    29 |         if (vcpu_has_feature(vcpu, KVM_ARM_VCPU_PSCI_0_2)) {
+>                  |             ^~~~~~~~~~~~~~~~
+>                                |             cpu_have_feature
+>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
 
-As you said, "Selftests aren't normal guests". So the guest code doesn't
-need to check CPUID.0x0 to get maximum supported leaf before CPUID.0x21.
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-And for TDX, the CPUID doesn't cause VM-Exit to KVM, it only exits to TDX
-module, which is transparent to KVM.
-
-Anyway, if we go with the TDVMCALL_REPORT_FATAL_ERROR as you proposed, we
-don't need the logic to check if it is a TDX VM in the guest.
-
-> Stop trying to reinvent the wheel and just use a virtual function table.
-> 
-> I've verified the attached patches don't break non-TDX selftests, someone just
-> needs to test the TDX changes.
-
-I test it and it works.
+Cheers,
+/fuad
+> ---
+>  include/kvm/arm_psci.h | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/include/kvm/arm_psci.h b/include/kvm/arm_psci.h
+> index f86a006d67136..06c20612e9e7d 100644
+> --- a/include/kvm/arm_psci.h
+> +++ b/include/kvm/arm_psci.h
+> @@ -10,6 +10,8 @@
+>  #include <linux/kvm_host.h>
+>  #include <uapi/linux/psci.h>
+>
+> +#include <asm/kvm_emulate.h>
+> +
+>  #define KVM_ARM_PSCI_0_1       PSCI_VERSION(0, 1)
+>  #define KVM_ARM_PSCI_0_2       PSCI_VERSION(0, 2)
+>  #define KVM_ARM_PSCI_1_0       PSCI_VERSION(1, 0)
+> --
+> 2.43.0
+>
