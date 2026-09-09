@@ -1,196 +1,197 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C67A326D4A
-	for <linux-coco@lists.linux.dev>; Wed,  9 Sep 2026 04:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788928166; cv=none; b=QCHzeNQBitbyL6kVKcM/5Geyv5HPu2nCCT3kaEEl1dVsG7HmsldteYw5FRRhnEeHR97Sgo7F1DodUfZ+Cpb32PwtJgnt4irdXkOYtoX4BNmxdAbqU6sgSjLUushi3CKggk0ipqP27WYoDlx0ZQwhiZJ3dB4ETdWQP8EvG50+j2Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788928166; c=relaxed/simple;
-	bh=WTn05/4QycXhxqRWks5EqAjlR8e86BCzz+vfMc6TDRE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=odjKCBvWg52/2bR6Zv8JoADfunF3epcrAYgA2+3n3YC2zMrS0b2eCxApeX/5WfMbhuURtfxa2h/aNp1kxbiy42Ic9BUyxN0pclmJtl/FEB7D40F/rQAF1tOUB6OMcytAuC+ApEGBnC8W/DINELFEOpJF9mG4Cxt7JV72Zc/xDno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LGUi96nV; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3193C33D4F3
+	for <linux-coco@lists.linux.dev>; Wed,  9 Sep 2026 06:21:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788934877; cv=fail; b=cm46cSoc/H6T77qVJApdwoan2CrM7uH2XnpZRe7APyFHuIrtLNRCrsXLLaAFkpZMGQvWEni79lW9W5CxGcwhstPVt2vjPOZGMBC7YJC2jDu/7Ljn/0kUoWcmjSpaUEROuQGaHge/87O0vJ7MXou2/0rJTcMhIXGds9XLruPFcKo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788934877; c=relaxed/simple;
+	bh=HfQUNa92FH9bdrVt5BrsCQujVLFENhgfBeLwZGLyqNg=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ZRWdMLk5yfltsawXkl2hXmGcrvevFVW5rewOQUizrEoR6cpXL71fuvNeGmEqqBgxOXh4bJlw8qSIwdFQ5HKU/jM+Y3+muMilIgTZvdKXb+0EZ2XEExXbVeJkAbrno9880h5MEqcD2os+009Qh6vFoJNXb+eK5JHJor/sguS6RSM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F1gcLUuY; arc=fail smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LGUi96nV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788928163;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nh6M4VZCYgC4q2LdczwdgMA5ELYVwccRqILicmGF2f4=;
-	b=LGUi96nVVP5ewTjOaQk1h7clWnXbVLTE6Wnzm1CS76i3AATFVCPI9brEI3jny+hL4fwGNs
-	KMuAnmHtQXEcG4zxcSMKPWSaUYM8VXPq4Cm/LZ45eRK5eD+o2goVDYpon3QlivOoUYiain
-	fz/fL1+RztXS+a9SVnLI5LQIyd26Z8g=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-633-D3rDkhn6MKurJ5amKgKYXA-1; Wed, 09 Sep 2026 00:29:22 -0400
-X-MC-Unique: D3rDkhn6MKurJ5amKgKYXA-1
-X-Mimecast-MFC-AGG-ID: D3rDkhn6MKurJ5amKgKYXA_1788928161
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-398ba5404d2so1057065a91.1
-        for <linux-coco@lists.linux.dev>; Tue, 08 Sep 2026 21:29:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788928161; x=1789532961;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Nh6M4VZCYgC4q2LdczwdgMA5ELYVwccRqILicmGF2f4=;
-        b=JWdu00aBAhZi7b0OL9HZGm9kSMByaH1ROj42FamcrPMx9aXPnc1l5liiMV2QRk1svi
-         GEJCC01SC/7mIyXy5zdEcDhUAnMn+KsutosecUTiTzDdzVdRcBocpQviRjgMj/EJj+Uo
-         yL6VeCwG+0CfBNViEO0v+LhDoLSPq92+ocnKGSikB+VyCeoMMRbHpPrz+aX9+bzrm+D7
-         J9NAW06cHc/0a0y8t4qYF36iEMe3G3Wmz8HkyBSbGRjJVFbGoYasBWiYKlf7xgGKDgX0
-         j/1KYZ4bEqhUkxsDT/sdJrHLGhb3WA4ibmLy8jgpbjnCrpZptVJ/2wfb05z9p/CQc49e
-         L0Ug==
-X-Forwarded-Encrypted: i=1; AKwUvBwjD9bD89zm3qMlLZnopXMpHDrPeol6gG/zeWdgsNDTJUie6Y859wTBgX7+BvqkWhTk+oQUNUNB5edg@lists.linux.dev
-X-Gm-Message-State: AFuF++muPFraVQwMPsJo+pt8L6etfFOZPQyCJmosROj2gWSwrG1SDotX
-	flMoHfGf7XnTxJhIppzdvBvqfomuTYdufeCByr/gRnBEtyLP5J+1vbNecuzVCtRc1GxXMFGwEW9
-	VIy4kzglpFics2kBH0cafX6roqObsjllT5tN4VJvN+r1xmlQuPRZVK8Ni2xVs71w=
-X-Gm-Gg: AYBFou1hJ/c6+1tbBBkTHWKAo07FHSSBxoPPONRIqqrE85juRRJqayHUTcUpsiUGz7v
-	aDgiMI70lt6SteuS2ur+Ip5rGb4rhDbSobNkLxmRmqucJ9UvNzwNLYdHURcwVEgk47iSTU/Hllj
-	wA1IGJIenk4ihCCwMVe/qMfDxGt7H5WGIw22ysYhIUYuWWA1IZTGUcnnydkWMfUjALX98jHsL1j
-	tPdMc8PMoFsl4HT/zneq8jZSFLkjhde0tNoJr1rujQMacJqt28qitaI+wUR7a2AgLdz2GCznRdJ
-	ZAbMSX7P3mGDgLSKJWsPrnE8pXVXinD0XobHqQaaysZZFDFeZd7uZQe5l1mDljvGRH0FmvrU0N7
-	ejPTOEldWFNTmYKgNWVVKGvzIZkzcv7fZIaHJsjS7Fg==
-X-Received: by 2002:a17:90b:564c:b0:37f:e326:6557 with SMTP id 98e67ed59e1d1-39b2612338dmr54737950a91.4.1788928160883;
-        Tue, 08 Sep 2026 21:29:20 -0700 (PDT)
-X-Received: by 2002:a17:90b:564c:b0:37f:e326:6557 with SMTP id 98e67ed59e1d1-39b2612338dmr54737906a91.4.1788928160430;
-        Tue, 08 Sep 2026 21:29:20 -0700 (PDT)
-Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ba0a7b2c3sm5544813a91.0.2026.09.08.21.29.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Sep 2026 21:29:19 -0700 (PDT)
-Message-ID: <aac304fa-a371-4210-8703-74281c9748f8@redhat.com>
-Date: Wed, 9 Sep 2026 14:29:08 +1000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F1gcLUuY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788934875; x=1820470875;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=HfQUNa92FH9bdrVt5BrsCQujVLFENhgfBeLwZGLyqNg=;
+  b=F1gcLUuYcb2jXMQorGMHle+k1MPvMeFNi8qeCca9ZzN6tD3z4IPzUM37
+   FaFcyfOEK85LjOx9TNQNnSMUGS4sMpvUZq4Ep9/tHorkGQReUojz+FLOc
+   rqBz+gDb0rs2d4ddvRLts+8A/NtYvmFBL2ak/f8Mu00yS9KSmbzWe+ogc
+   H01p/V/6RFpyt6ob0dc6GKwBy7nzvv/G40ORuBA0s+JyKE/UdlwIBn6Q8
+   4GSfCSQnJG5cQ/SalMwiuuHFTw3c3Kr+JyYynXYRrhyx9JAEA30aiCR9J
+   Mt9aYIxAzOg1W5om8RBD2k8PASytJw1Aw21bhdVLtfnBQoLo7H9FKsecf
+   g==;
+X-CSE-ConnectionGUID: /Kg6w56MTwyc6Hj6kqRrhw==
+X-CSE-MsgGUID: VeXT7hJGRSCjHQP9TjoW9w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="88285532"
+X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
+   d="scan'208";a="88285532"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 23:21:12 -0700
+X-CSE-ConnectionGUID: 2nXG2ifQTriopSysY8VBrg==
+X-CSE-MsgGUID: 7NMElcW1RK62XPSdeFdewA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
+   d="scan'208";a="269472193"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 23:21:12 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 8 Sep 2026 23:21:12 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Tue, 8 Sep 2026 23:21:12 -0700
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.26) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 8 Sep 2026 23:21:11 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HKwZdCCarTMwkODGuDB94mTf478JalV9JK67PI9yZAXrp9z0uOkpUv3HKBVvL96jJLPwTqWCi5fi0nQITCdTaGc/o1xh8rodBnwbm2rhLuucdYmnfnKkVt8FcApIyyhOAG/N+3sDIF3D21/x8Xb6R9mwdc8r+Lv+0jD7caE2/4MTFTUdE6SwV8dpWy5GA4y56AVTtKSFrYdUVjVtnOf0xyOVg2bCwkHVNKzv+HfWyRcWDxs3D6CbOLa0klqVFIMyD6ZueD5xzjv/vc6ynFENG/tafFHYxG0rlxBgVUluxDCwcASq+bh+QxKu8LZq3R6wd0/NW51/W5Ks5UV3VCuZaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VREMmq3oWJPr1nbPj+rM0djPygSnnJP4G05c2OyerQY=;
+ b=lIoZBPzByyyF6PrRlVk0a3VbKMEGysUNWU27oR8pXbIttSrGFTebImYTPK5tMDWi/D2Frzqwhycc6OGavdl2JIYb83cZ0Wk+1tPNXUXopXcLC++sJSvBXHk637e9gfIvms+qoE6NLWKaIrKTpB1091br9StCqB44IIopFtyGtIX8FGVgj4XLDDdmhTszZEXXa7wzH8DDdBODRpXjVFUZybNs4IW/XHmBlPrlJhY1NweEe7u8z18aCwq8EgY37zfDBq/HfIYzf9OxIv4UfuZO9Qtv52GL7nRpzisBZMKvNSgAr20dsrmAu9ELEqh5fxW7A5dvT0ZJXk5dpjffkh40vg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB435924.namprd11.prod.outlook.com
+ (2603:10b6:610:34a::8) by CY8PR11MB6818.namprd11.prod.outlook.com
+ (2603:10b6:930:62::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.6; Wed, 9 Sep 2026
+ 06:21:04 +0000
+Received: from CH3PR11MB435924.namprd11.prod.outlook.com
+ ([fe80::1696:c90e:60af:a0cd]) by CH3PR11MB435924.namprd11.prod.outlook.com
+ ([fe80::1696:c90e:60af:a0cd%6]) with mapi id 15.21.0406.005; Wed, 9 Sep 2026
+ 06:21:04 +0000
+Date: Tue, 8 Sep 2026 23:21:01 -0700
+From: Peter Fang <peter.fang@intel.com>
+To: Kiryl Shutsemau <kas@kernel.org>
+CC: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "Hansen, Dave"
+	<dave.hansen@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"bp@alien8.de" <bp@alien8.de>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "mingo@redhat.com"
+	<mingo@redhat.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "hpa@zytor.com"
+	<hpa@zytor.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "binbin.wu@linux.intel.com"
+	<binbin.wu@linux.intel.com>
+Subject: Re: [PATCH v2 2/2] virt: tdx-guest: Allocate Quote buffer dynamically
+Message-ID: <aqD6zcjUDeUnOVBJ@intel.com>
+References: <20260717214349.4075994-1-peter.fang@intel.com>
+ <20260717214349.4075994-3-peter.fang@intel.com>
+ <51059852-9a10-4735-a81d-003b4b1963a6@intel.com>
+ <20260721064907.GG3178326@pedri>
+ <d88fe58e-5963-49a5-86a4-6a9779d06109@intel.com>
+ <741eb8b8b83dd10d39f304133a7625f4232ab793.camel@intel.com>
+ <amCv00f5Q6QlztyY@thinkstation>
+ <20260723081946.GA482062@pedri>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260723081946.GA482062@pedri>
+X-ClientProxiedBy: SJ2P220CA0003.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:5da::6) To CH3PR11MB435924.namprd11.prod.outlook.com
+ (2603:10b6:610:34a::8)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 5/7] firmware: arm_rmm: Activate the RMM
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
- <20260907095942.1140734-6-suzuki.poulose@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20260907095942.1140734-6-suzuki.poulose@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: l6ikwy0wzaj8JVJlBXsgKaGkRCjlDHmxFctZBy6kea0_1788928161
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB435924:EE_|CY8PR11MB6818:EE_
+X-MS-Office365-Filtering-Correlation-Id: 140cb85c-7484-4883-3a9e-08df0e3a8696
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|10067099003|4143699003|56012099006|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: xD2l9cE+0fQ9Ql2s7ETOcAat7aWSxGjJAz4dM9ayCLGp8gZTPTaQeWioOLcUu7O4951Bz1ntGO+qaLDuArfTyCj21qX84wF3A2Pb794VE4uvgfhWbChEfFelHwWcEoDe8DYHbERbGVjPXBxLV9PaDJXO7kgym16XsyEKlkfUU5EfVJTJwMb0TnUfgf4ADLSJlCDwH1Kv4CLLIBJsItBzLKJhABbO9m8T5qTnBz3mssgT8Su1r2E+cWq4YK83lP4+3SN2/nuJp0ryMUNr0TmPz3czeWuIKAxP/jruJuInRJjfFu6fXpZbN8XGc9RzW+6b1PZhSfXV+US1nEfcYuWlKDcOQuKAcIMyugpba1dseWw5v8TU6cmvKv0+ztIJMWtc8006yaiKxcOHyN9JTxpgkUZyYEmPSmpkQG7IGnnxZIGLYu71kFLYoEf8OmD/QY0VLuC/3XmzQrRRGc4J+s6nqpn0wBRCA7Vj6QaWTLr2GNu7zvnpvIcuK4DjoF3E7hhZ9NphYxK6TyZzOO4szsRmpHd7wwhmx6kwtSGVXnwbQr+xMJ25fr4ARpCR7TzLfLc5T1QRw6cqXG9QQ1t7KLhrwM62GyOQvifLypmFphJ3JGNidXHANBRfuVMepcywLsYyGpaKk1YAgpcJ/wCBpWjsReB3vb8Gd5ARRCK9KvOz1dA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB435924.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(10067099003)(4143699003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TA7HRQTIDo35qyiySNgzKgfMhYz/RDuKf9xm6Q4wd5GQ4wx/kRxVWQFgeLK3?=
+ =?us-ascii?Q?NMKiAGJ4rZgtfUiPNbNEGGmNgbzWqQSm09GDb7anmXfzdYGyH9cNnuCVvwkc?=
+ =?us-ascii?Q?2UNnYbfxEB6M2bXvcFpqq0/EJAOAHvI6WGE5MgG33mRrjaLcrEulVYNYOkG7?=
+ =?us-ascii?Q?7Qc7kY0jO0AGMgyL7bS/U89WliSMKnXScnozVVSU00JX/eQxs/jWLLh/rueF?=
+ =?us-ascii?Q?BFKVOYqYLVCLV4dJdbTvfkexYAOIpc+XON0nwjUV3QGSEAsMuGn4GQSSy1gf?=
+ =?us-ascii?Q?452hpsGV+K9g3sTMYCUIR2u7Zq4EFOIdmCZNBB7ZCIlbUPSrtBCjWU607eMp?=
+ =?us-ascii?Q?Kyrc45YjuivdWN9L48ofJg/5U0zH85eSgpzf7gC/2+nj9Y9xvU+HVdd9Np5C?=
+ =?us-ascii?Q?If8i5/pBnjzKAYSI+sG81k8YwJcF6fYuU3x5L0iI+zUelaEmk0/NPQ5bAZrw?=
+ =?us-ascii?Q?ltEiOY3Ycrd4F0IYMoILS/3jqjs0AwIssIs6e6mV7tt3WP1A8SWGRvki1bTx?=
+ =?us-ascii?Q?FtcILB6OX5DQ88FTqk6OPm5DFgHozrayH+12pN+/yxvFEVyku1plMP00o+f/?=
+ =?us-ascii?Q?N7i+QJYFp7//7ayvgBLazINsLpG4jdFuGIax8uqQPwA4pFuPbEvGh0qJ/Kzd?=
+ =?us-ascii?Q?LozIjOzDz2CPUYx5MsP3D+5+mKBDM6xT52ICeGew4xfbX0zHnsS+FLaGG+df?=
+ =?us-ascii?Q?yJHux9f1SpW4ke42/5nL+Fi/UYEvma8rInWbzhrgQPfJm8U4MSSt3TvhvUiS?=
+ =?us-ascii?Q?CcWpgHKZiVsP7rAZ+NHxtz9j86khayGTr1yspXpFYX1d4gaNkcoYxqjx5AOJ?=
+ =?us-ascii?Q?zIS+TWVHczEaeeM5hhmuLlWlW1ExI+cHgZxOrv0JpS7ArD/QrVXH9mWymwFL?=
+ =?us-ascii?Q?3cw27Fbu2+xciiGj7Oh07F/uzKOZNPSWiBIAaKmVw2kAWjUVHQeqYPeOnbMJ?=
+ =?us-ascii?Q?XGOFJAx0FCf3VXw5tzwvO3Gx/dplTq5uL8uiuo0yvzZFc/fy2VybtLI0TAvG?=
+ =?us-ascii?Q?Rqr6J+HmssB+8fxfZXGz/VHTVw7r0rsp1im6PkWrpc4G/3bYGh7kICF06Ivv?=
+ =?us-ascii?Q?9RNlKb2A+mH6eDaUrCb/u4ycO+JJpOPSzbMWCe5EuwWjrB6iqtWofakgC6qA?=
+ =?us-ascii?Q?RlgsUqmh7aO9plN4h7nRMDRl1/xWemSs6tZJ+ok/wCgD7ETXSpqF98bFD2ah?=
+ =?us-ascii?Q?tCm23+BwfNMF44qhLrtlg7GUrAmb+W9IScSFevh+Au4wA43GdwOKFLEJWMa/?=
+ =?us-ascii?Q?3BL2Gyglg/JUKZNzvr3InZFGFptyV2G378YRXiRqP0yHPKkyIk4bIJVJw24+?=
+ =?us-ascii?Q?LSzV1NPhMHgT4k+EbEfjZGJW069VMPAyGWxaiDwd2yNvEiYxK0UQ/i58sNfd?=
+ =?us-ascii?Q?Yz/k36+r3CuzKaVJKlwimJVAqJIOp28MRfce5sQbFqP4j4G976KzIw8GTZBc?=
+ =?us-ascii?Q?bpYTKL7rsudrGUVOXwgKX6ZeH3JrAsJYv5GhI4+v9aFvCqEsrGl9Wbdhx4o+?=
+ =?us-ascii?Q?rWRVAMCY+TFlu57fdguhdyQFUVdHK0MACicJH8fZguicASdfWv7QC/FdHOGr?=
+ =?us-ascii?Q?tCCLNS2zzHMjxd5blfzqdps3KNkVwxAqQYHK2Sy+p3Tl2UR7rTJPgWXvGSmt?=
+ =?us-ascii?Q?kDDCC2EWOYtOX1jkuwWb+vZdwnlGuIsaVFcr0uakibDkfhzK7AS08NMousK0?=
+ =?us-ascii?Q?c35OXxIApsLXCHa+A3DUfWQ06YCkEduvQ2lugTJjwlaU3UBw6YYjrWyUMk3Z?=
+ =?us-ascii?Q?o3Ym8FAjFA=3D=3D?=
+X-Exchange-RoutingPolicyChecked: HAsPmgf4gzgMbJknbmohTEuntfBGIPsCL4bXtIwuEMrI2BUFg9jUFhod8nIdcYKDlX7HZBLtxlGhpr5Hx0kKQNck1Ov83kjHHjhtjTo+TDEIvxBpXP/re1Bfy+NuRJRfO79/6FzPAUW5YqiNrJjcsEx9AdZnrDgAIiHWKZaSiZVD/S9t0+eFxfp9Qdq98KqCaYkOdcq0Lluk0eStQykNYajNZX/POeM60Qi/lOSSzActN1rCVwowzZbPm8VTqYiUcN5McZqw1/njxRHzqCuJGBfrpUgo4WaEDLo28utgNf8DvKbnL1DHsDthRMhwuHIrTmIoV4Hl21mcB1AKJL9Jgg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 140cb85c-7484-4883-3a9e-08df0e3a8696
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB435924.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 06:21:03.9599
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xMKBTkdSag098VOiE9pnhs5hCdzz1khbp7L6gFQuApB/vQiCG0x0QI/sinRmA3NiJAvaDJNBp0L+muuzcSlDOA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB6818
+X-OriginatorOrg: intel.com
 
-Hi Suzuki,
-
-On 9/7/26 7:59 PM, Suzuki K Poulose wrote:
-> From: Steven Price <steven.price@arm.com>
+On Thu, Jul 23, 2026 at 01:19:46AM -0700, Peter Fang wrote:
+> On Wed, Jul 22, 2026 at 01:00:35PM +0100, Kiryl Shutsemau wrote:
+> > On Tue, Jul 21, 2026 at 04:43:57PM +0000, Edgecombe, Rick P wrote:
+> > > BUT, is this number coming from the untrusted host or the TDX module? I cant
+> > > find TDCS_QUOTE_MAX_SIZE in the docs.
+> > 
+> > I cannot find it too. Peter, any pointers where it is documented
+> > publicly?
 > 
-> Activate the RMM after the basic configuration. This is a memory transferring,
-> stateful operation.
+> Gosh sorry I missed this. Turns out it was not fully published due to
+> some internal error. Yikes.
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> ---
-> Changes since v16:
->   * Split into a new patch
-> ---
->   drivers/firmware/arm_rmm/rmi.c | 17 +++++++++++++++--
->   include/linux/arm-rmi-cmds.h   | 11 +++++++++++
->   2 files changed, 26 insertions(+), 2 deletions(-)
+> This metadata field is documented in "Intel TDX Module Extension for
+> Quoting", Section "TD-Scope Metadata" [1]. But the encoding of this
+> field got missed in the June 2026 release of "Intel TDX Module ABI
+> Definitions". I just escalated this. I'll come back and give an update
+> once it's fixed... Apologies for the oversight.
 > 
-> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
-> index 42c973c3a98bb..d969c8738efde 100644
-> --- a/drivers/firmware/arm_rmm/rmi.c
-> +++ b/drivers/firmware/arm_rmm/rmi.c
-> @@ -641,7 +641,8 @@ static int rmi_configure(void)
->   
->   static int __init arm64_init_rmi(void)
->   {
-> -	int ret;
-> +	int ret = 0;
-> +	struct rmi_sro_state *sro = NULL;
+> [1] https://cdrdv2.intel.com/v1/dl/getContent/874303
+> 
 
-Why we need to initialize those local variables ('ret' and 'sro')? :-)
-Also, we can use the scope-based cleanup function supported by cleanup.h
-for @sro.
+The latest (August 2026) release of "Intel TDX Module ABI Definitions"
+[2] now includes the encoding of TDCS_QUOTE_MAX_SIZE. There were some
+internal design changes that updated the encoding from
+0x9010000200000008 to 0x9010000200000007, so the next version of this
+series will reflect this change.
 
-	struct smi_sro_state *sro __free(kfree) = NULL;
+[2] https://cdrdv2.intel.com/v1/dl/getContent/917473
 
-With the scope-based cleanup in place, we needn't explict 'kfree(sro)' at
-end of this function.
-
->   
->   	/* Continue without realm support if we can't agree on a version */
->   	ret = rmi_check_version();
-> @@ -656,7 +657,19 @@ static int __init arm64_init_rmi(void)
->   	if (ret)
->   		return ret;
->   
-> -	return 0;
-> +	/* Activate the RMM */
-> +	sro = kmalloc_obj(*sro);
-> +	if (!sro)
-> +		return -ENOMEM;
-
-	if (!sro) {
-		pr_err("Unable to alloc SRO object for RMM activation\n");
-		return -ENOMEM;
-	}
-
-> +
-> +	ret = rmi_rmm_activate(sro);
-> +	if (ret) {
-> +		pr_err("RMM activate failed\n");
-> +		ret = ret < 0 ? ret : -ENXIO;
-> +	}
-> +
-> +	kfree(sro);
-> +	return ret;
->   }
->   
->   /*
-> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
-> index fed0f3421895d..dea7c7004d35f 100644
-> --- a/include/linux/arm-rmi-cmds.h
-> +++ b/include/linux/arm-rmi-cmds.h
-> @@ -64,6 +64,17 @@ static inline int rmi_rmm_config_set(unsigned long cfg_ptr)
->   	return res.a0;
->   }
->   
-> +/**
-> + * rmi_rmm_activate() - Activate the RMM
-> + * @sro: Preallocated SRO context to be used
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rmm_activate(struct rmi_sro_state *sro)
-> +{
-> +	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_RMM_ACTIVATE);
-> +}
-> +
-
-rmi_rmm_acvivate() would be used for once by rmi.c::arm64_init_rmi(). Lets
-not expose the function by combining the logic to rmi.c::arm64_init_rmi().
-
->   /**
->    * rmi_features() - Read feature register
->    * @index: Feature register index
-
-Thanks,
-Gavin
-
+> > 
