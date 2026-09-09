@@ -1,147 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC67579820;
-	Wed,  9 Sep 2026 16:04:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7091A35F19D
+	for <linux-coco@lists.linux.dev>; Wed,  9 Sep 2026 17:12:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788969900; cv=none; b=MCfzkMqJlA1zy0N678/pJdSMFgeJiD6k42JBQs5nQ1A+3g77RoKSy1AQA3vEq6yURKW+Flcx9jAjkjiEEr5sSxP72dpan5vNbQPQkXHM2BiCDXag38hUHvgudi3wg4gfkixLRISx70W7dhuz8sJA3dqVIBtvspGkwsYHf2Uli5Q=
+	t=1788973965; cv=none; b=oVXpyKAMUSJWsQTONduh+w65Hx6hwJZu1CZlwhIooKRtxvRh59LGed+k7v9kXjJaALdSHPeU+EMuZvpIRsM6V957eRyTMAcMGKKhtjX5iElNyyFyQxZyquKHZQ9iCLaA4kgsVtmhcS6rL76rkXFiaML8aZoP6ekTFHVGgHPwGa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788969900; c=relaxed/simple;
-	bh=p1apJEXp31TKeLeR3ttjxNEVSD0Zt9qM4dWFKQrlCkU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fb7zOgJXRGmWojqSjZBBbWBB4t/ys1AzMUHnWgUyjNwSnD4bqt6Jqhrq6uj41pJaht8cT8dhXYYHSNEyWpNqGhTY2YEOxRBVzeS/yDTdM9M3fnSVYsUa0Dj0ch93vWY5ujuvI8mHgmI997dOSAgoLGgtJJK5C8o2gGWgb2jMUoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YSJrAWqA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788973965; c=relaxed/simple;
+	bh=9o4o22e82xeRV4/C50H+nCGHWlKygWlRszvQ/fhXfCE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SlR0tFCTubEoWjShx8Y1Dt5fl498opKqfjAW+rnWGNz6umEYQC1qXHXI1bE6lyXeCjYOvKBsgIt20BHRZRjMUp7abW6ahkPbJAmXZ3hIeC7bYilKenrNgchvT4fyCsfVPhtFX7J9JSO77c6FScHyG+mPJhd0Xq88faN9br0vIvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fbUIzdHs; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YSJrAWqA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A801F00A3A;
-	Wed,  9 Sep 2026 16:04:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788969899;
-	bh=rF99J4DPqDZwvdeRAV2rOWG+wx4Fr7bIPdeKiooYGDs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YSJrAWqAgJ4HGitZJW/Kp2bBGS/9k+MWEQUyLrU5a/vKIVLec54gy6J8nnSmFsYy1
-	 7zv+juF2wgV6znk6KQgyrRCPrrM5nqbwN3F1BCrPybqz2ebJiprekwharnVG0Ik0nH
-	 8Uugm3KWR64rZ0btW5ETHAks8KNlbq7rO2fI35bKigqAZfmcfaiKV/j9TSJapiMyLo
-	 1Ipcqs2HIktnksREgspscY41vI+XGNNNt+8rkfeEUdKfomDE3xBG/bZXFcmcpA55B/
-	 FNWMs8srNW2Y6NwRE4mP6KupjgiBwlYkzXnlz1dgrxbjvhksbmxalogLCp1BoyUwwv
-	 +lbd5OkgZtKTA==
-Message-ID: <7f85c47c-10ff-49f3-bc88-096d3e433650@kernel.org>
-Date: Wed, 9 Sep 2026 18:04:38 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fbUIzdHs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788973962;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mEQXR8PSW2iE6aOhl0o/YMVFqT7ViqqXgU8XSWBw99s=;
+	b=fbUIzdHsVHiGJ7K2mwzDm4QGhfJEHDWaqv811vJ/O0kSHMM6IvKa0Ta17pQVhjdp12YZOf
+	OuIF3MLRIC6UfZxLY1QaYG/Zcu/Ko/pnreyhWOmZVuBv+wtNEHEr9zGYnJxIGS2f7ExR2y
+	xmZTnMcRpvmeUnEUCKykKdx7t0WL/qg=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-277-YRsHY8I2N1ewl28SQlhaiQ-1; Wed, 09 Sep 2026 13:12:40 -0400
+X-MC-Unique: YRsHY8I2N1ewl28SQlhaiQ-1
+X-Mimecast-MFC-AGG-ID: YRsHY8I2N1ewl28SQlhaiQ_1788973960
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84a67b16217so5090891b3a.3
+        for <linux-coco@lists.linux.dev>; Wed, 09 Sep 2026 10:12:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788973960; x=1789578760;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mEQXR8PSW2iE6aOhl0o/YMVFqT7ViqqXgU8XSWBw99s=;
+        b=MMsCE9q2ugbKcSIKji7EnlVzvlub+A4rwMk2FDHlakJ1qzjAHGlNMujTkaB6J/zOGq
+         ugGlf3t85+K8F6p4+F4MZHFewvZ2deLFhNdbFGMUW//4JqUEeW3IjMPNjpPQFA+F3xh7
+         FgUP7zEHgfXFc2a+s92h0sMAScFDFksOcJjzB/r8rviaS80OX6//iCf38/P4noZM0f0g
+         rbf1o1Amnc+068qXwQ9AEeKaDi0Y0GZLeDnPC8smgE94M8bmb43NJ7Y+mcJvoQVmoOH4
+         q431hHHH5/U2GIJIDMZfYNINy2b8T3OSxH/OICDERx5gD1R5Gl7Pg/Z2jq8tIsHzgGam
+         4SGA==
+X-Forwarded-Encrypted: i=1; AKwUvBwbUjhiWd2Ke6T58aq1a+Iu6GPGOumwp71M0bDrwJ3CND72mNo65NE/eCdcO79IZRXO7zU5sYQtEprP@lists.linux.dev
+X-Gm-Message-State: AFuF++nvgY8PoKSmI88ps6C7lMg4xJ4LiRY+j5Y+vlA92pCl80ipG0BR
+	r4zeZua46uXI7edbyS/iYW3nq7UmrJjOLmi0vzFnqarRMUu7Fg2wWjdnA74ofu5fPZlqSGmY7SU
+	oJYmD1yG32oEq+JKjCYf8jvo+ALpRoArfxReyKenU2/1FiTSg3ze7oOCjDIgin7s6lvHXvdd7sd
+	fExBT1eJChH8t/QNFNVwXnhJRF8VIJQceJ/IZ/TsSEUzK1ikrs
+X-Gm-Gg: AYBFou0rAfPU3Axw/s/m3oXMoap1bqFwEZbOshNmf4LlOI1fwQhKyzlvBaS+7Yb8aIn
+	l336TXPFKD0d/3GU/lVFGqK1ZQDfKx9IPhM0Wv/g4ndbl5ahOT8u0xliNUy8FiWTJYK6HgWlW6K
+	YOpbPlK1o1TW9TDPGJlyjQmcWedkWRMhmO+mrBP8+PJBSBPNu0q42bFQ==
+X-Received: by 2002:a05:6a00:349a:b0:848:56ff:6ced with SMTP id d2e1a72fcca58-8616819d66fmr53020086b3a.8.1788973959452;
+        Wed, 09 Sep 2026 10:12:39 -0700 (PDT)
+X-Received: by 2002:a05:6a00:349a:b0:848:56ff:6ced with SMTP id
+ d2e1a72fcca58-8616819d66fmr53019969b3a.8.1788973958567; Wed, 09 Sep 2026
+ 10:12:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 13/45] KVM: guest_memfd: Pass mapping type filter to
- invalidation helper
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
- steven.price@arm.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Fuad Tabba <fuad.tabba@linux.dev>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-13-85e5fd25252a@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-13-85e5fd25252a@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <apBelv6Ev-lCQ64J@8bytes.org>
+In-Reply-To: <apBelv6Ev-lCQ64J@8bytes.org>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Wed, 9 Sep 2026 19:12:27 +0200
+X-Gm-Features: AcwNN1UUyUote_j9E23jQccZzgZ2RDyc0Q2FPjbhM-jeZb4yprO6y362-qLFDLY
+Message-ID: <CAGxU2F5nDauu+RyS4AA+NWVY=cjQVG5Ry0CmftYBUeFqU8GC-Q@mail.gmail.com>
+Subject: Re: SVSM: Updated Linux and QEMU branches available for testing
+To: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+Cc: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: embvWsfxmmxskyzUr6u-4RPkDda4uObRH1S5Hihu55E_1788973960
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/31/26 02:25, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> Accept the mapping type filter as a parameter in the invalidation start
-> helper instead of querying it internally. This allows callers to specify
-> which mappings (shared, private, or both) should be invalidated.
-> 
-> In the next patch, the conversion process will use this new parameter to
-> invalidate mappings only when they're different from the target state of
-> the conversion, i.e. invalidate only shared mappings on a shared to private
-> conversion and not both.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+On Thu, 27 Aug 2026 at 18:24, J=C3=B6rg R=C3=B6del <joro@8bytes.org> wrote:
+>
+> Hi,
+>
+> I just pushed out new branches for COCONUT-SVSMs downstream Linux and QEM=
+U
+> changes. The new branches need to be used together, as there have been re=
+bases
+> which changed parts of the user-space interface. For Linux the branch is:
+>
+>         https://github.com/coconut-svsm/linux/tree/svsm-v7.2
+>
+> For QEMU:
+>
+>         https://github.com/coconut-svsm/qemu/tree/svsm-v7.2
+>
+> These new branches bring a set of changes and new features:
+>
+>         - KVM planes patches rebased to v7.2
+>
+>         - QEMU patches rewritten on v11.1.0
+>
+>         - Support for KVM planes with in-kernel IOAPIC/PIC/PIT/RTC
+>
+>         - Support for PCI device assignment with KVM planes
+>
+>         - Use of version 2 of the direct-VMSA patch-set
+>
+> The last point deserves closer attention, as it will lead to a breaking c=
+hange
+> going forward. The new version of the direct-VMSA patch-set requires a va=
+lid
+> VMSA GPA to be passed to KVM. The currently used GPA (0xFFFF_FFFF_F000) i=
+s NOT
+> a valid GPA.
+>
+> For now QEMU will fall back to legacy behavior when it finds an invalid G=
+PA in
+> the IGVM file, so everything keeps booting as ususal, except that the lau=
+nch
+> measurement will not match anymore.
+>
+> This can be easily fixed in the SVSM and I have a draft-PR open for that:
+>
+>         https://github.com/coconut-svsm/svsm/pull/1209
+>
+> This PR moves the VMSA page into guest memory for QEMU, just like it is o=
+n
+> Hyper-V. The problem with that PR is that is breaks all existing Linux/QE=
+MU
+> combinations, as they all have strict checks for the VMSA GPA to be a
+> 0xFFFF_FFFF_F000.
+>
+> My plan forward here is to switch to the new 7.2-based branches after eve=
+ryone
+> had enough time to test them. After switching there will be even more tim=
+e for
+> everyone else to switch over to the new downstream code. And only after t=
+hat we
+> will merge PR #1209.
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+I just tested everything and enabling `attest` without #1209 it fails
+as expected with a launch measurement mismatch.
 
--- 
-Cheers,
+With #1209 everything works, just a note, using `igvmmeasure
+--check-kvm` fails, not sure if we should fix it as well in that PR:
 
-David
+$ igvmmeasure --check-kvm $SVSM/bin/coconut-qemu.igvm measure -b
+Error: The GPA for the VMSA (0x0000000008FFF000) does not match the
+address hardcoded in KVM. KVM will always populate the VMSA at GPA
+0xFFFFFFFFF000. The IGVM file must set the GPA for the VMSA to this
+address.
+
+BTW skipping the check, it worked well (I was following
+https://github.com/coconut-svsm/svsm/blob/main/Documentation/docs/developer=
+/RELEASE-TESTPLAN.md#start-the-kbs-test-server)
+
+Other than that, everything is working fine here.
+
+Thanks,
+Stefano
+
