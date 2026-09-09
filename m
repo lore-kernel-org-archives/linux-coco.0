@@ -1,323 +1,258 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011039.outbound.protection.outlook.com [52.101.57.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0387B563FB9
-	for <linux-coco@lists.linux.dev>; Wed,  9 Sep 2026 13:55:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B769568FB4
+	for <linux-coco@lists.linux.dev>; Wed,  9 Sep 2026 14:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788962125; cv=fail; b=L0mUrTc3ohWo74DiIQsMVu4tyjwmA8zu/e003KpuD40EOB/NL8bpjTmt/4pW6ZVutXMXS0ST0LVOOgpaJM+TSjMUbC54aB9/AtIjmp42zzato6rX2QElEcIkmOr94KJeiglZPKizgQbhetsQe3XQt5h2vNzo53K9wC2phpUJI3k=
+	t=1788964586; cv=pass; b=Szht8AY8+AaiHQvpAQywahHZwkf1PgyS728z1K45y/11YnAKieA1JWkERqML2z1iZQzHgC5CnyMRwOM4hao1zM44O6pEI2mzZr3p/vGVdgTY+vGepUeCuH1BG6DoASMoRiqiXy6VfxTsnoodr+XjPhg+x9wwlQa3Yo6bqHYj6sU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788962125; c=relaxed/simple;
-	bh=ADSHUauvMNxiW2ns6gHMiNUOc7Jo2XfqCR8n7Cz+jYU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=pJmL9m8stnRsGIN5sRqsYhZXhpNspgOfJqYwq9vc4f8uNI3YiaJyNuElhlF22RPp5kG17KoyYmsagT27/WuCj4NVCB0ZKqZOvJLp7sgfu/AuTwAmreCkmdx8uRcVIvKSQ3zRIY/kvfSmHN+vbpN2GqEJjp3omIFxLLjuFi4o0/8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZUcD6XZm; arc=fail smtp.client-ip=52.101.57.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1788964586; c=relaxed/simple;
+	bh=7AyHAWTKyqNTciVM9XLOxi3jtsvJfGFJongziGZ+beM=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B8D9OCL3AAxQ0Dgx/gxIOepHhY/WTeyB+u9iTWUXUfXJIKpmHFlGmj4R9TYT6e4DHwbBPZbGaWvyMfX+VwfOtq1IrRoI2ghfXritQGPFdDMpbkQZCsuwcwYIC9/svDRl7VvCNF68pXV1EgPk0UVTkrlf78HRpkkTVADHuGqdpbw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B3Up0+1y; arc=pass smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZUcD6XZm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qTGUs11TlmgAbnrRKb5bh/nsauWGcUcUw/ZpCGDoXXRXYgB9TDVB//TtRwFI74B0MeNtnbW923nlTwxNP/Fvfl2AXAgKnKq6XheMgJfSgnWPkv2HiBlc1v1Icb9tvoqXT+6uWiyWzGxXTO1lftEP3qs4UENpNQr+zqA5wgDc1J6HGOiw2kkcP6F6lpVaM9pa4mc+klXeUnTZie8qQzZp5SAC4kd29G892z50FFs0r1kxdD9Nf3HErq8WpAdca+0f2U1WdKDhEhzNPmLV1jIoJPFV6AGUuVxMISfq8A8rd6w/CzVIo9Yqx5kJkw+Pdz0cHn2YCPNVH3s3yqKkZvqakA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t/66H6DxMk/GCGpZp1ZXDrbDZTZTLdH3h1fZMppmi9s=;
- b=AjM91xTCYNDpDf12ItlJMhW5x6JVL73Fqr7Ufa9eXJghUhSC8sGJn1HYuJdCddHmvIwx7O8P4XESxxeJKqZwW/2m8jQVXOu+6CGvkjmQt98WPFzg7Sruu7Lz2aZPUHK9w6B4xJX8pyT/Ok+8HZC8w3tlyeFifXLP1qxHPao7U5edMUVOgxp87MkMGdLndJpt/yC/56X6bCdOLi1WE2jJ/8c2cnlRBRzJr0/eUe8uNAJ9qx4lGfBcJQ4QZEW33jIWWmgSW1UF7h9raVxpDLpUuHXIWA2BLu/haT7YXoP6x09BkL9zdNK9/h/PpRvNDYUieUzNeRDRHrRW4F8pPqfPvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t/66H6DxMk/GCGpZp1ZXDrbDZTZTLdH3h1fZMppmi9s=;
- b=ZUcD6XZmXwqpiwREhl117ndbvsS57ZS4AFXVUROxYoDlCsopulzatvvAvSHLjhY7IJwgrxLmxzE6BSwa9BZRdp3oGtIabHblrFy+fddmSScf/EsqNYD1fZfVRXCo4GdMXAeOCVT16gt6vE9Nc4Y9RPqFgik0kxmQ279CO6VDv5c=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by CY8PR12MB7564.namprd12.prod.outlook.com (2603:10b6:930:97::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.8; Wed, 9 Sep 2026
- 13:55:18 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%5]) with mapi id 15.21.0406.007; Wed, 9 Sep 2026
- 13:55:18 +0000
-Message-ID: <84497e1a-7e07-4c56-8996-45d2e897af38@amd.com>
-Date: Wed, 9 Sep 2026 08:55:14 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 4/5] x86/sev: Add support to perform RMP optimizations
- asynchronously
-To: Borislav Petkov <bp@alien8.de>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
- x86@kernel.org, hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
- thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net,
- ardb@kernel.org, pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
- ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
- rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
- pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
- nikunj@amd.com, darwi@linutronix.de, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1788296083.git.ashish.kalra@amd.com>
- <a31fc8c6d3f6c6bbe50dc4542c7091b0899d3e1b.1788296083.git.ashish.kalra@amd.com>
- <20260905012945.GPaptwicVjJ-SwXYzl@fat_crate.local>
- <4b940989-1c27-49a5-8112-d9f991ad1d48@amd.com>
- <20260909015228.GBaqC73LJDUow_Xu6v@fat_crate.local>
-Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-Autocrypt: addr=ashish.kalra@amd.com; keydata=
- xsFNBGnyeG8BEADrp4EWc3KHI3tz7Lnw4HgRJRG6U+IJKAp6EBnQA5uimlJspSAr+jf23I2a
- T0mr1uiTnZG0JkfgFpTgwBYcR+d8J96WP9LDeId9z6R7b5jyB64fhYqX8Hpich3lon2Woijn
- azEZ++sSUtAU75m2j9ZE6lkkPM2Ti9YWSBsSg92KDVVROXLO9n6U80lzudJrKAKHE0/PagzV
- D5gjV/s7lb9PX8khKVK3ockGRuy97lw2mAcw17EV8GE5cuToOOzpP8ESXBt1g7xoXVcbHYol
- yuX1ljHEfqy7cCtTsBk1+LzPuhZ7532MIfVmFtDcNUSwCGeGgwNRZno7lAJ9xd6fLkZPTEZ4
- UNsaViyzmJ22P7xMiZqXWQWSk1LohnGhZZdTaIwidWT12c8RX+qVUCzesaFXGqKt0PNTipTp
- L39iEZO8m/+lC1BmTo0EoYtsNfrlngwNPsSU7rtd/t00RuW4YHhXALT2JUbulLCHGK1w9isH
- E7dJXprYjUiZRVF3SaeTF4zg5AzkWRB+0yL2KzWQPumDx1gscLNFev8J1EbdrYClcpUuNxKG
- MMG95wPqWtZm/HaNyG08alXDZcnq8hhxA7AbJLnPYpqWd108p0qp3Vr0UrvuekBKZ6Y7be+m
- Hb4A1xRX3hE2kB971lsVp0lXSEGFHB9TJw7FH/S8paITH58y4wARAQABzSNBc2hpc2ggS2Fs
- cmEgPGFzaGlzaC5rYWxyYUBhbWQuY29tPsLBkQQTAQoAOxYhBOnNssdBmZnznITYhaE6KKJw
- lji/BQJp8nhvAhsDBQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEKE6KKJwlji/q7AP
- +wfg5wOWq+f7eB3uh0agX5Ax/o5r5hlK0EMyl+srJ4jc+NmNKKuVPwx0EwZEpuEcbDLlQuO3
- JIyi13wm6n6FvIBOCfWjvndpaci1QGTMtZDnxueXM8UeFST3KjIEWFXbvgiAyiZBE+lHaSBp
- 7UfAL19icIomKdCVCRtnqOsTvv7mcyPL8qs+OAOu8akvp3NlGsqLrkSB/YTEBKmh8oOR0aXz
- 4VBIHpfTIppIu+F5l5PxOQGwNv/AfQ/oN+Aeo+o8i3s57gViqP8uVlVcI/vi1S4hngmc87Ah
- 3p7KdbrxxPzahD+p1fMXsCwEf0dyJIRduDgAkpktmSLoRzBGkjtOX5nvs75QgA3r0WsvcfxF
- zly+nnhu2GsptY+uu/ZzW6PCz6p0pHMiDfPAL1cfizY8eTMFJN5fnOW9rwXvKbM+DHbowfkw
- NtF0DecH3qjmqAzGg2srE9XJxwOotS1JgeBp1TZsah8pXBaY+Z7s1iaY58H2TrdiDbz88DD+
- TGX4ZHPjocpqeUuwxn7gTCKQq3K1fjt6IKY0A1ocxQEK33pjQMRTJ8lwy4z37V6EohmvCs9w
- 5qyvI9D1gnMnFrqpbry1Jz7z1HB4sFFYxIxyMh86uOcUxGmHRrCiII3YqiSmzizvq4aUmHxd
- YE1Wy+pKx2HVobhnuKIKoSJj2JgYV0+O5dk6zsFNBGnyeG8BEAC+BGciGUt4ODNq38ouK/6E
- jlkJPpnxlksBhlhwce/p1vvARFceifVbawkM8ePHyIXrzxho0PUDjteGFFDjP1o/N0rQzgbf
- 0INfkbJpHME+SYETxrkm+j9oe8DiHXZhdatY5rupZoypodNQJDD1G/HoT7bBQxPj6xDBgHWH
- OyZbg1jjQXSWESgVX118uiQ5M9RdO+gc/YGLt5FDvN892uWs8899QBm804SdSlwkZGMKXZXv
- 12qKw+swQoVzBdCqSLOOtIhGevkl6Ul5+N8iT7xeKMVZffAxkz7DF1yDovhJhrYtgKyUMQqW
- qCINhtp9wHvPt+wfutzYsCLVJvVLMIj3fPtfYBSPXQu2FP0z2Nx6oUxQR/LjilP4UezSdXt9
- WWpb+mvDLmelNuoA7WUxRauQBKu6tR1zoFl3zTdW4ZiSqZRgKInSfaVhINUMv8gqcLlAzkVS
- seOwRrwNDUosSW3gVwj28m/T9JSfGR62i58WmH0sFQG42yuIbq/uE4crf2oQDrpFNzTJgx6+
- Ede711weViGHEQz5vsgERmQrJDddRTgl/SlGtkAYNpVFJgYV2N/jYjiz98hgE2MYgZ2Kd8WL
- T8dvswsQguvkDMpWJZ2BunYhRLGIpyVDhepu05qyFuNYA50GX/qcj7POBSEx/6mBaIQC7oXI
- ffsirWGyL5WEVQARAQABwsF2BBgBCgAgFiEE6c2yx0GZmfOchNiFoTooonCWOL8FAmnyeG8C
- GwwACgkQoTooonCWOL/tdA//RIcNr6dB4ZZaKWDe5SSw0KD7hKExIIiBkxIv5XILcazPK21x
- LlDbXUHxWWaG+9wezceRRBe3GjRo2aKEpQzuAOgR5Ix5tRe5yJAFozO/CCGixiBzQ2I2TGIv
- rp8xZqqvmgogckqz3RE9Rx5VF7bqKriuGbF+WciPU6+YSuN1rH+esS40yoFu2skbYAMfm+Av
- AvEMDAmkR1o+weVZZAZMjm+2ZpCm2xXk5bjAqPQ+GoH70x/kPVv+TXjTN68xIjmP6gwA7c1P
- qozwWzaA2Q2HO5D76clT3tmHbtzMuYt3cfwbWbCpNaqycaHvktATiRjy60Bz9FvRL8cMt0+4
- jumtJoa0nAEmx88QzaMOK3QDW6KoDKzV8bqAHBPtrwH+jhOKId07yHmWCZxIGJAkhwqsdEx8
- bXpP3nTer40r1tvds54lxhKxOlVvf5iBoxa3kC8f6cTNJeGm5ettvD5iFSR+fwAUDEyZEtxQ
- f3Brs3CLkBfijS0zCw9rWqlZJGSst5xwV8UdfppsPWkU9lAUR8UZFsO+g1xCxtBc0nucygzh
- O+mvU01WFeZGTnW7INdP+eDIvj4XYmVSjwCSNvDphJkPccAn2KFcPxYh8PJAqCDw++nfNDrc
- BXA1uh2XzCnnzbc62A+AjwXB89wvlctBLptKlnKBVtrsKEFIoLugtmfIsa4=
-In-Reply-To: <20260909015228.GBaqC73LJDUow_Xu6v@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA1PR04CA0011.namprd04.prod.outlook.com
- (2603:10b6:806:2ce::18) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B3Up0+1y"
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-90cc0ebbf4bso51086356d6.3
+        for <linux-coco@lists.linux.dev>; Wed, 09 Sep 2026 07:36:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788964582; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lc0JIOIaiNCaTQPQa3+HDOJzDYKqtr4v4pDsAsBrd9cttpiOsIc+AYDL4nHpPTjEqO
+         HJY7sl/pPNhUYEqUuckxGxgYBaOrIAvYQSLogGBG4c1vhsDJlqfHc3AahQ0YsLwjzDMf
+         mdn2TtYcrF4vumZYqL8WRTK9QSD63ZehJxntLIJN/wCLHup9hwMBboYENwT185NOIpfl
+         cG3NMsc6M24QCPaHjFAStEG+MFY4gkSFokQGLvvCwrUip2zo1Ec5Lwc0Wl8L4ZV83AQm
+         Llm7K4gikyWYqUhA4LmvQr2WguvM1FFW3zjKrK3BspkBiqnlW6Si4e9Uo60p4bSovTfh
+         S9tA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=WOdNfCxlVFqMCNwG5WAXrbnbeG8MIfsFEPI5I8fCsWw=;
+        fh=23x0WavGlssfWDWpNJ63AanIt43wSrBia3tSeRzSAXI=;
+        b=nba/KJBde0sPQuStgbfXYsLdTjB1xaBllqP3RY0ggZh+WRBMzjOo+d5s5u+lIKvand
+         ujJLEOMWnKA7Jolievso3hPfq3uUxz3MxicF6ugbMj3GNGfWp/buohfrif8OFaVVGvkA
+         2ZUDA4H33HdCxMgWln/2NCb/Iye+Znp4AlHxpgVuJ9gH0EenoG+lmQTmIyFjdyepWT0N
+         mYTNLLxBvgOEWtm0uzm5a6n0NjjRIa16RTM62XmzWIlYZHxv2kk0HLw3OmUOX7dr/77A
+         JNHcmKLH1JiZ239HKMPx9/nLENl/j58w1uE+Vz8ey6cCbSwXhq38ZWrXhst82H3RfFQm
+         PdKA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788964582; x=1789569382; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WOdNfCxlVFqMCNwG5WAXrbnbeG8MIfsFEPI5I8fCsWw=;
+        b=B3Up0+1yEnScaEJ4i6EmGQ1kqQBT6/ipaCMWHzV/Qp1ilp7xD5vVhjRr4DoDwNdGff
+         EhZchFwTGhcuqdWXEPhHPUp4oXZNPo7bpZW2FTMgvd/zn07DGFx8oNPJcL0retD7OpSc
+         BHZxf/a38sLUGzRDsbVkGi4jGXKwgg/7KUgRqOPmbp1k/HdGeuQTin42Pzhrq/88hmas
+         +09gUVjI+HKrgll6zhqmh2+BJwv06le6JK6KM9aUarxg0dKYHjwT4ooZd/i5OhrgzRwX
+         sSKNkw5yhWih4iQchbZER0sLYLcU1czqXyh2teFy3V99hM8UusDOAkKPXh1kMJdCz4uu
+         HueQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788964582; x=1789569382;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WOdNfCxlVFqMCNwG5WAXrbnbeG8MIfsFEPI5I8fCsWw=;
+        b=WyAtEZtsNJbwoU+kcGfS7+Y56bs7rApv4aCGcZWPKwJA4CYEjyy89sbjyjQotl2tNs
+         QtxF9qNDRouCZGZtjnuEb9cSiRCeFGra1m3f6M1fajsVgzgCYHPL3QvfNCj4wwgMtwrM
+         e32a4+TvXIsfo/MfEJy0mINKIN7oRuzoAqhkOGMiJMfpGS8bSJjj+78zZnZ1LkmxBXmq
+         bZHIXcxYGvKLM4GBIUR1QImHTNcEP8+YZDt6lkhXnQxXnF1I64AxU9iLaFGiND9fsz7q
+         H+ek9BeCRxUEVN58IM6r3lhOapxF38yWHvdaMJe8ahlKq1HdqwoAYP6gEXjp4r23uwXy
+         GwHw==
+X-Forwarded-Encrypted: i=1; AKwUvBz/fdNlfl366w5IEu8CY3DEQH/bkTGnwstJlsIsnTJV+Nk+DN/tYQ9gtkN05ojg5jCKDLY5IvVGZ/8s@lists.linux.dev
+X-Gm-Message-State: AFuF++kjRHweuNUHopQOLekghHdpuNa0gHKiSjOKIdn1QI2/T/wkuk3R
+	x7gZ8Zk51mQPuuP9PLg3SITn22K4NfEmMlLgBONahj5vnCIUnsv6IrHe4Tl08Cw4no7XuJAJ2Ot
+	TWmk6//JmEM3HXB7UiTuCui0egcp5S+jcDJdHtAbe
+X-Gm-Gg: AYBFou2CvuKyaVM3pVpMGa20/FMz9m4O9KZzq+p0roEGt//9hS6QdWiltIu4rLFesgK
+	r4G4qPMcqO2iE1fXW3vEU5PoV8tL1OHvS0HfcHk3615IHpX0vZHq9b5CNSxM4is3IywCEbo0Gl8
+	AOHOSChK+t3iW1tKxqncH/pRfaAMehabbWv3/Bhd5HR6aQTGy2qoF+nS21SUN8mdqyFDpTRZe8o
+	JG+sTE21wbkpQcblYeIbQdEzalo8xmmqFaskZbxfU6sj9lcRXehPp93bz7fu1fyei/fDzhVH9dQ
+	3pGuaplLOeD3YBaM67bwBbgzoE9bKn9s2TSDvWGxX9+nTlmQT3D1LI7KluWhcE4lnc47MaJxv4+
+	LZFRN06984bU=
+X-Received: by 2002:a05:6214:2f8c:b0:910:3451:341 with SMTP id
+ 6a1803df08f44-9103efb48afmr490270826d6.32.1788964580576; Wed, 09 Sep 2026
+ 07:36:20 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 9 Sep 2026 07:36:19 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 9 Sep 2026 07:36:19 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <apetw3aqXSawLBt0@yzhao56-desk.sh.intel.com>
+References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
+ <20260830-gmem-inplace-conversion-v12-12-85e5fd25252a@google.com> <apetw3aqXSawLBt0@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|CY8PR12MB7564:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7b20ea89-fd67-4cca-9674-08df0e79fb69
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|7416014|366016|11063799006|56012099006|4143699003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	g4xyY91F2+ujkDXBfAVF6hjvbkUuZ/qwKXg9qPeWIKenEGeVHN67gfrfi8I9YJX9Msne6HKgw77z+fkSso3WhOUh28ZU+hLN+Hb+E5lYsg79r1aHBldHqRzXIn8JvJMObhBh95JsGPCir6rx14oaD+t4T8IG32KQ8XOvFeKtDE6Kod5WjqBXr0/NLDRIYlB9XhzuPq4VRazLumeTLjEIS8vVYvD7oN6OLfHDZhhDhK6n7MX9LAqZCZdXA85WS4JtmJAklC2rAsmTEZLnPMMYzQtDc7vHhyFL0Ql3MLjWFQifsOAyhbHIBtRQ72BFSIxhRTjSCOIQ8VGdsDTUgU3FAV0pZJ8LzAw2KYUGXHZ7BLB+oj8mGILlt908N5ptsVFX01J1I317cCruV4/foLcyVCR6M0mtpo+Wa1kQNva6fuzjSs0Dme91OtTAbiRRXIYWTIYS9P9zU6xMWFyA8O+FKQl1sT6E/bAUncQfS9pUdft6Qy9/++URsvidTDWs+0oODpbSDmr/PM0AMqFofIzc+iR3JXNn/I6G5OSnjemxHlT6Yv9AwF8nAlVQ/IRVpJs9cf21q1c8zMvL5cFPbK2G2GCKs+N+W00NXPaDOdT5umSub+jnWbIb9blaRPvlGL5+
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(7416014)(366016)(11063799006)(56012099006)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MFlWM0puUDZJV0dKQ0JmcURGcXpBSlFrVEcyWEFoYjRCRlk1Mk5HazZ2RTlH?=
- =?utf-8?B?SUhzOEdXYlp3aVp1MWQveE51L2NQUXkvMEFMQXBid2luN2RmNDJieHZoSDRU?=
- =?utf-8?B?eTU4UExvSFhCbDUrNTRjZklNRnBrY3VLdW1raUtvSkNzWGxVbUZ0b3k5Ri85?=
- =?utf-8?B?enkybE1HSkthN0F4LzBmUnpvQmZZanBkeERnVG9LODhOZGlIdFBhMUY2T3VW?=
- =?utf-8?B?T1pmaWh0WHcxN1VhRnpFakpkb2tjM0JqNk1TNnhzaXd0SmQva0JHKzB1ODFK?=
- =?utf-8?B?L0c1dGJQMnlzUFIybytGTmZjQ1pHVG1qY0oxT255UTJ2WWVXLzdQWHUrSG5O?=
- =?utf-8?B?U1p2Nkh3N2FFQ0pKcURsaEd0TEZIZDBpcTRCNnk2SnlObFEvVnJLeFJ0VUdV?=
- =?utf-8?B?SFFhOXhFbU5tdC9vaTNQUEdtdnhqTm5tRUN2cEtxbkxpMS9tMm1GeUFXU1N3?=
- =?utf-8?B?cHZRdFl4bVExbU5JTDhVQ2xIMVQvQUxHSWtuOWQzTll4UnFoUGZxOVBYc2VP?=
- =?utf-8?B?dllXS3NkNkNCdkNLTCszNm5Cb21kS2JXcmVhSkQ1RWJJVmFOTEJtd0ZGdi9J?=
- =?utf-8?B?MzJRbE1VYzR6bi84cXlnSlRTbTlsaFZETVlmRUpFZU1HbTNYMVkwN1JJYlkr?=
- =?utf-8?B?WUIrRkxPRU9Vc0xqeWxMZnNVR1Qyem4rRm1udFhkSThBWFUvcEtiRkhpems0?=
- =?utf-8?B?MWdPUTd3SHBJd0JDeGQyNitLbkd3YkxucksvOUhTVmxoK3FJNkdaZ1JDSHdU?=
- =?utf-8?B?Unh5NUFFVExjd0FxbTFTOXF1cTlqSFV6bFZWd3Q2WlYwT3ZJZ3NxdlVPUWEz?=
- =?utf-8?B?UWVKL3lhcVJwaWxJMHpqTHkvTS9PN01YdjZ2bFdZeUJ2RzJkQ2pOZHJQRWdE?=
- =?utf-8?B?Qzg0SUFEZm5lUm5DaDNuSkc5M0doV3ZTRno5L2Z5UmdPNkdJMnl1azJ1bDQz?=
- =?utf-8?B?T3N6eFlkT0ZPSjk4dkd5WTFsVnArenpXZHUwUlBjNVY3VFpLWDR0SEl2TnNk?=
- =?utf-8?B?bld2Ri9hdTBaUlJuNUZQWU5aS1hEMkFiaXFQc0dPTExwRHF4MVBic1BOSGZr?=
- =?utf-8?B?N3I4MEszaHJ0bWVNWmk0VlJ0NnJOdmVhS29uaXpTc09yQk5kTmljbHhoVGhP?=
- =?utf-8?B?VkhSQmRCWHhTdVNrUWt4aGxNcEs0aE1udGZGVGtlSWVSS0ZaYlZJc3JNa2py?=
- =?utf-8?B?dkoyOU5pb3p5RjludVM1Qkl1VGlXaEFlNThDOStWZ0R5U1pla09rNzZ4WGV6?=
- =?utf-8?B?eGllYjB1SDY4WnVjNjNYR2VBMTh6M2U3WGtwbXRzbnQrVHFBbVdZUXdWbGJX?=
- =?utf-8?B?V2dreWdwamdmbzNuTzRxeC92ZjBaZ0NqR2J5R0Fpa1ZZYjlhcHF4bUFvMGtL?=
- =?utf-8?B?Ti81c0pPR3FEdURRL3Zsa2ZvM0JIUzRsVTJobjhwTCtPVExQNHZXR3JlOEJk?=
- =?utf-8?B?VkE4TXVrMTJNdzNLZkNFVlNaYWFBeG52cndaSDJ0RWdQQUJlUjZuVW5ydS9a?=
- =?utf-8?B?bjZmZnJjcWdVRGRvT2ZLaS9nSGY5OHc4b1dyWTZBMDBKb2dlRExSM0FFczYz?=
- =?utf-8?B?MVF6VlVtMDdLQm4za3AvZFBGb1l4TWpETTd0UVdWL3R2alRZczVUWjVMREdr?=
- =?utf-8?B?VlZXUU1QSnBSNlBIZzR2bEs4Qy9HSjdVeTVOQ0t1VEVtRW55M2paZEoxYlBn?=
- =?utf-8?B?N01YaWkvMnJ3RjJVOEhDN2p3cHA4d3hiVDhyVDUyVExHcUdBMElCRVFDRUF5?=
- =?utf-8?B?KzFlTVBwaDdhSThPWGFJKy96cFFxRXBtSnhId20xaElNN3NXSndNOFJkd1BY?=
- =?utf-8?B?cS96UFM4RzFWNU1OVVhISmhmSHlZcy9PSEZxc1NyWjNsOGlaS0hDV1gvVFN3?=
- =?utf-8?B?a0hLSHJyZGYxMjJoN1Iyd2hjYmZEN2o2TlE3NHRwcHdRZEFXRi85M2UvM21m?=
- =?utf-8?B?MGxGSG9LTWpiaDZOUXU1Zm4wM3dkY1VneHBOaXJGTE5kV0kzaEh6Q3VQYkxI?=
- =?utf-8?B?M2szb3M2WlRXVWlkdjJ4bEJQWjBTeEtmWm1PZ2JBSDBONlRVTWZVNUFXTmZq?=
- =?utf-8?B?Nnc1WHZJcE1leFlGZWtBbGI5NmpoVUgzRkJ4WDRpMWF5ZzFlRlBOSURESTh6?=
- =?utf-8?B?MW5kSmJyQmt5NGJ0bmNMSHZ4Z3QxY1Y4Z3JkVit1TW9oNnN1RkpHdDBRWGNl?=
- =?utf-8?B?VVIxTnRMZmlqbVE3eXE3clhhMkJCRTRoWlVoZGcvL211OEVydHkxVDZGeHJx?=
- =?utf-8?B?OEVQaEQ5M0UyZS9MZHpEMHlHaHhGMEp4dk1GMDcyaGxhKzNobjFyalFjUTA0?=
- =?utf-8?B?N2tVKzBmL2lRbzlQalVjMlNhLzNBMjVGZXcyL2Y1ZkxuaVgvMzIwQT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b20ea89-fd67-4cca-9674-08df0e79fb69
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 13:55:18.3734
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: osurUqZ5undI2Y098eokxCKp9UwZS3xyScA6iGm/+dKRtXmJHw9ZXbn63qdUb8LWCGZkD9HzmIn63rGTuj4R/A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7564
+Date: Wed, 9 Sep 2026 07:36:19 -0700
+X-Gm-Features: AcwNN1VdQII_SBwvozqnLJxonm84Qmsr9AHJ5M73oMtr5q_ETKWllQrAhks6iFI
+Message-ID: <CAEvNRgEmO-R35susJd+U+k-nB_yFE_gfh+ACrnaOR=ECJdWGuA@mail.gmail.com>
+Subject: Re: [PATCH v12 12/45] KVM: guest_memfd: Always fault from guest_memfd
+ if in-place conversion is enabled
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
+	aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
-On 9/8/2026 8:52 PM, Borislav Petkov wrote:
-> On Tue, Sep 08, 2026 at 03:21:31PM -0500, Kalra, Ashish wrote:
->>>> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
->>>> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
->>>> Suggested-by: K Prateek Nayak <kprateek.nayak@amd.com>
->>>> Suggested-by: Borislav Petkov (AMD) <bp@alien8.de>
->>>> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
->>>> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
->>>
->>> R-by's need to get dropped when a patch changes in more or less significant
->>> way.
+> On Sun, Aug 30, 2026 at 05:25:13PM -0700, Ackerley Tng via B4 Relay wrote:
+>> From: Ackerley Tng <ackerleytng@google.com>
 >>
->> Tom and Dave gave their R-by's on v12/v13 series, so probably i will keep their
->> R-b's.
-> 
-> Tom gave you a R-by on v12 before I asked you to axe off a bunch of stuff from
-> that patch. Dave gave you a R-by to this revision which is still under
-> discussion and you wanna keep it regardless.
-> 
-> There's a R-by Ackerley which you carry at least since v5:
-> 
-> https://lore.kernel.org/r/6f1ec3d8ebcf3aaceccc099c07d0deb545dd4ab9.1779133590.git.ashish.kalra@amd.com
-> 
-> to which Ackerley is STILL GIVING YOU review feedback ON THAT SAME THREAD:
-> 
-> https://lore.kernel.org/r/CAEvNRgGfyb7zvZ1u1j7YLomD%2BJdAxnVW36gtvNG9gxgZ80vMyQ@mail.gmail.com
-> 
-> and yet you're still debating.
-> 
-> From where I'm standing, it looks like you don't understand how those tags
-> should be used.
-> 
-> Do you need to go refresh up on the docs:
-> 
-> "Both Tested-by and Reviewed-by tags, once received on mailing list from tester
-> or reviewer, should be added by author to the applicable patches when sending
-> next versions.  However if the patch has changed substantially in following
-> version, these tags might not be applicable anymore and thus should be removed.
-> Usually removal of someone's Acked-by, Tested-by or Reviewed-by tags should be
-> mentioned in the patch changelog with an explanation (after the '---'
-> separator)."
-> 
-> ?
-> 
-> You're using Suggested-by tags also willy-nilly:
-> 
-> "A Suggested-by: tag indicates that the patch idea is suggested by the person
-> named and ensures credit to the person for the idea: if we diligently credit
-> our idea reporters, they will, hopefully, be inspired to help us again in the
-> future. Note, this is one of only three tags you might be able to use without
-> explicit permission of the person named (see 'Tagging people requires
-> permission' below for details)."
-> 
-> So all 4 people have suggested this patch?
-> 
-> No, ofc not. You have simply received review comments from them which you've
-> decided to integrate into your patch. This doesn't need a Suggested-by tag.
-> This is normal patch review process. You should try it sometimes.
-> 
-> And this is damn well documented but you're still debating.
-> 
-> Well, you can debate all you want - those patches are not going anywhere until
-> you do them right. This is solely your call.
-
-Thanks, Boris for the explanation and for quoting the documentation, I'll get these right in v14.
-
-Tags: you're right, I was crediting reviewers as if they'd suggested the approach, when they were just reviewing.
-
-I'll drop the Reviewed-by tags that no longer apply to this patch -Tom's (from v12, before the rework you asked for) and Ackerley's
-and note the removals in the changelog under the '---'. 
-
-On Suggested-by, I'll keep it only where the approach was actually proposed and drop the ones that
-were really just review comments, including my mis-tagging of your own feedback. 
-
-I'll apply the same cleanup across the rest of the series.
-
-> 
->> So the fix is: keep the setup allocated once, but make setup always
->> (re)program RMPOPT_BASE — then we never need to clear it on disable, and the
->> cycle case is covered on re-init. Proposed fix: 
-> 
-> Yes, you basically do the *minimal* work that is absolutely necessary and
-> leave everything else untouched because it is unnecessary complication to all
-> the code and if one is going to toggle SNP and hotplug, then one has bigger
-> problems than some leftover facilities.
-
-Re-init / hotplug: agreed - I'll do only the minimal work that's
-necessary and leave the rest untouched. Setup programs RMPOPT_BASE once
-and simply re-arms the pass on re-init; the disable path only cancels
-the pending work - no tearing down the queue or clearing MSRs/state.
-And I'll drop the re-init reprogramming I was defending: as you say, if
-SNP and hotplug are being toggled underneath this, that's a bigger
-problem than some leftover facilities.
-
-> 
->> A full‑physmem RMPOPT pass is a warm‑up scan plus an IPI fan‑out over up to 2TB. The default system_wq is per‑CPU and concurrency‑managed,
->> a long‑running item there runs on the queueing CPU's worker pool and can stall (or be stalled by) other work on that pool. So we wanted it
->> off system_wq and use a dedicated RMPOPT specific workqueue.
+>> If a guest_memfd memslot is created but the guest_memfd does not have the
+>> GUEST_MEMFD_FLAG_MMAP set, KVM still fulfils guest faults by looking up the
+>> memslot's userspace_addr.
 >>
->> Another thing i looked at is for long-running unbound work, probably the standard shared queue is system_unbound_wq, which is probably built
->> for this use case and won't clog the per-CPU system_wq.
-> 
-> You can't:
-> 
-> system_unbound_wq = alloc_workqueue("events_unbound", WQ_UNBOUND | __WQ_DEPRECATED, WQ_MAX_ACTIVE);
-> 								   ^^^^^^^^^^^^^^^
-> 
-> 	__WQ_DEPRECATED         = 1 << 19, /* internal: workqueue is deprecated */
-> 
-> So if you do an unbound workqueue and then block migration around it, you're
-> basically doing a WQ_PERCPU one. So why don't you do one of those and drop the
-> migration toggles around it?
-> 
-> All this talking is to get you to get the hint that *whatever* you do, it
-> needs to have a good comment above it explaining why it has been chosen this
-> way. Or put that info in the commit message.
-> 
-> So that people who look at that code in the future, can change it after
-> knowing why.
-> 
-> And you should not do excessive commenting - it suffices if you put a couple
-> of key comments which explain non-trivial things only. The rest people can
-> figure out by simply reading the code.
-> 
+>> Set KVM_MEMSLOT_GMEM_ONLY if in-place conversion is enabled so that the
+>> guest_memfd's memory will be used for both shared and private memory. With
+>> in-place conversion, guest_memfd will be the only backing memory for the
+>> memslot.
+>>
+>> No validation is performed to require userspace_addr to be a mapping from
+>> the associated guest_memfd because even after validation, userspace is free
+>> to remap something else at the provided userspace_addr.
+>>
+>> userspace_addr will still be used by functions like kvm_read_guest(), and
+>> if userspace_addr does not match up with the corresponding memory in the
+>> memslot's guest_memfd (whether userspace_addr points to the wrong offset or
+>> some non-guest_memfd memory, etc), that is a user error.
+>>
+>> Requiring both shared and private memory to come from the only associated
+>> guest_memfd simplifies invalidation in stage 2 page tables. On a PUNCH_HOLE
+>> operation on a guest_memfd, the invalidation is now guaranteed to be
+>> invalidating only memory mapped from the given guest_memfd.
+>>
+>> Suggested-by: Sean Christopherson <seanjc@google.com>
+>> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+>> ---
+>>  Documentation/virt/kvm/api.rst | 22 ++++++++++++++--------
+>>  virt/kvm/guest_memfd.c         |  2 +-
+>>  2 files changed, 15 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+>> index 90a29424c54c8..668886f50024d 100644
+>> --- a/Documentation/virt/kvm/api.rst
+>> +++ b/Documentation/virt/kvm/api.rst
+>> @@ -6381,10 +6381,16 @@ mapping for userspace_addr is not required to be valid/populated at the time of
+>>  KVM_SET_USER_MEMORY_REGION2, e.g. shared memory can be lazily mapped/allocated
+>>  on-demand.
+>>
+>> -When mapping a gfn into the guest, KVM selects shared vs. private, i.e consumes
+>> -userspace_addr vs. guest_memfd, based on the state in guest_memfd, which is the
+>> -sole authority on private vs. shared memory.  See :ref:`KVM_CREATE_GUEST_MEMFD`
+>> -to find out more about the creation-time shared/private status.
+>> +When mapping a gfn into the guest, guest faults are always serviced from
+>> +guest_memfd regardless of whether memory is shared or private.  KVM determines
+>> +shared vs. private based on the state in guest_memfd, which is the sole
+>> +authority on private vs. shared memory.  See :ref:`KVM_CREATE_GUEST_MEMFD` to
+>> +find out more about the creation-time shared/private status.
+>> +
+>> +userspace_addr is expected to be the mmap()-ed address corresponding to the
+>> +right offset within the guest_memfd. Any mismatch between userspace_addr and
+>> +guest_memfd is not validated and is a user error. userspace_addr is only used
+>> +for host-side guest accesses such as kvm_read_guest().
+>>
+>>  If in-place conversion is disabled, KVM selects shared vs. private, i.e consumes
+>>  userspace_addr vs. guest_memfd, based on the gfn's KVM_MEMORY_ATTRIBUTE_PRIVATE
+>> @@ -6490,10 +6496,10 @@ specified via KVM_CREATE_GUEST_MEMFD.  Currently defined flags:
+>>                                 page tables. Private memory cannot.
+>>    ============================ ================================================
+>>
+>> -When the KVM MMU performs a PFN lookup to service a guest fault and the backing
+>> -guest_memfd has the GUEST_MEMFD_FLAG_MMAP set, then the fault will always be
+>> -consumed from guest_memfd, regardless of whether it is a shared or a private
+>> -fault.
+>> +When the KVM MMU performs a PFN lookup to service a guest fault, the fault will
+>> +always be consumed from guest_memfd, regardless of whether it is a shared or a
+>> +private fault (unless in-place conversion is disabled and the backing
+>> +guest_memfd does not have the GUEST_MEMFD_FLAG_MMAP flag set).
+>>
+>>  See KVM_SET_USER_MEMORY_REGION2 for additional details.
+>>
+>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+>> index 0afe1468d2d9d..e41802944756b 100644
+>> --- a/virt/kvm/guest_memfd.c
+>> +++ b/virt/kvm/guest_memfd.c
+>> @@ -746,7 +746,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>  	 */
+>>  	WRITE_ONCE(slot->gmem.file, file);
+>>  	slot->gmem.pgoff = start;
+>> -	if (kvm_gmem_supports_mmap(inode))
+>> +	if (gmem_in_place_conversion || kvm_gmem_supports_mmap(inode))
+>>  		slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
+> I like this change, which actually enforces in-place conversion -- when
+> gmem_in_place_conversion is true, if userspace sets slot->userspace_addr to a
+> different backend, the host and guest will no longer be able to access the same
+> backend.
+>
+> However, since gmem_in_place_conversion is globally and statically specified, it
+> essentially disables the coexistence of VMs using out-of-place conversions when
+> gmem_in_place_conversion is true. Previously, VMs using out-of-place conversions
+> could still boot successfully as long as they switched to using per-gmem memory
+> attributes. Is this change intended?
+>
 
-Workqueue: As you indicated system_unbound_wq is __WQ_DEPRECATED, so I
-won't use it. And you're right that migrate_disable() around the local
-scan makes an unbound queue pointless, so I'll switch to a WQ_PERCPU
-workqueue and drop the migration toggles. I'll add a short comment on
-why it's per-CPU (the warm-up scan runs pinned and primes the shared
-RMPOPT table so the on_each_cpu_mask() fan-out is only cache hits), and
-trim the redundant comments rather than over-commenting.
+Yes, this is intended. gmem_in_place_conversion is intended to be global
+for the entire host.
 
-Will respin with all of this.
+> On a separate note, is kvm_gmem_supports_mmap() still a necessary requirement
+> for setting KVM_MEMSLOT_GMEM_ONLY? When gmem_in_place_conversion is false, if
+> userspace mmap()s the gmem but sets slot->userspace_addr to a different backend,
+> should the KVM_MEMSLOT_GMEM_ONLY flag still be set?
+>
 
-Thanks,
-Ashish
+Before this patch, requesting an MMAP-able gmem will set
+KVM_MEMSLOT_GMEM_ONLY, so if we change that behavior, we'd be breaking
+the existing contract.
+
+If userspace requests an MMAP-able gmem and then sets up
+slot->userspace_addr to something else, I think that should be
+considered user error? MMAP-able => use gmem for all faults has been a
+thing since before this patch.
+
+Just like how there's no good way to check and maintain the validity of
+the mapped memory behind slot->userspace_addr in relation to the
+provided guest_memfd, the mapping can't be used to determine whether to
+set KVM_MEMSLOT_GMEM_ONLY either.
+
+>>
+>>  	xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
+>>
+>> --
+>> 2.55.0.897.gb25b4bd76c-goog
+>>
+>>
