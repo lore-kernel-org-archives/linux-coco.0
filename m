@@ -1,211 +1,166 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A503A874F
-	for <linux-coco@lists.linux.dev>; Wed,  9 Sep 2026 10:01:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05824B2CBD;
+	Wed,  9 Sep 2026 10:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788948063; cv=none; b=dfAItVhyHdwhnZ4YA8Bd0WcLWgvcQDg2Zib0eioiFfimpESSWfReAJB8qn2nNgEkH1N+hV0iksLPic3PRSCoyyDasf/qwWId+ugVFgWrOf3zaT94UxQsRcwXrQw5vBpctAjI3yspDvXSbbH+uZsAlRZDIMuP7OVgruMh7QikGwI=
+	t=1788948583; cv=none; b=dVc+ZhQ5/eFXAjthSMeShyoSANsodwoORglaq8Hlo7IlYMoCTIKleEcUut3T63EVNgyCfaudsHdBfW51Vs0DA4mEzIrtt8ANaHf/k1yyiCE5dNKW0qhFfAcfn0NbZFpQ6f+96q2pztpjIpvkx/Y3N200cj4+3fPifGWqBmjFiMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788948063; c=relaxed/simple;
-	bh=B6Qt25OuTqtkuGvzWvj8Twbkq9CimBvAvLdJgqS40FM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LM6FBqEQtuQB7EMhNC4A1rQjdNGdYv0cQK5O0txnzYGwHQou/bKqntv/BFQlx+jduWvm2SjTKRQ4L581dCr0VzvWkHIN4AdBDmsaaH5iAl36l8IDuk83ovIb67tmjHcqB5U003EQaVVdSt4mWg/Ew4Ggcr5ZeJBFKrpabeFxx7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PXQ1fCUc; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788948583; c=relaxed/simple;
+	bh=PRi9lqc8pogN77KOIMjGVdF0rVg9ebU0q7ETmQ1r7yo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=dp9dMy+t1YpBlpPOM45eCTCNGDX6VQvDMj7/nP3DbzUavaGOLAxso74+08VGeaZJ7Wyr6Ftyfz1dfyqEHCIvBthJRoqMwegJ54+UVtCaV4sQyHo22j3h0TcmA5XZhyj8aFgqblXSqIylQwe+m9PQzmI+3rMIj/ilks91leMqAys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VeJPs6Mc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PXQ1fCUc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788948062; x=1820484062;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=B6Qt25OuTqtkuGvzWvj8Twbkq9CimBvAvLdJgqS40FM=;
-  b=PXQ1fCUcVX0iFx11SGn+B1B1x/PzkDXvFKFpHy7SHV+vZRq7mMDfKKdb
-   AA2yBkxVsJ98wynZvKH1jMLAh74hCLItslnJebZmaYSVn/mDzqn5fTmoH
-   ICwx3xtsrHamFrgjyiifPrn/F4Yl5lMUCLWwRT54GpTqMTdwxT343i+1q
-   WuYi7xHQ6HIVKI/D+yLkR6FTT+PVXBwNl+jkqgpwuAal1k3q+QeEhWqZB
-   GgZjQRmrzF1zHSmVA/73Ct1qEzQ1htno5lQY9VTWE5TieAnGq0RGpc54h
-   5bhibWnm6TCWJ9q2mVa2sXugEZ32gVxHz1A6x03L/G9vJGgP4PLes8cAF
-   A==;
-X-CSE-ConnectionGUID: Ynl5dfstSSqSiQ5f5l0i0Q==
-X-CSE-MsgGUID: bXAmMY2KQiWxErIu4IVrog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="89237241"
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
-   d="scan'208";a="89237241"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 03:01:01 -0700
-X-CSE-ConnectionGUID: WRGhmTRgTD6KrriTyAUNvQ==
-X-CSE-MsgGUID: QefQ/gXsSpu454ncGvo6XQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
-   d="scan'208";a="269519407"
-Received: from unknown (HELO [10.238.208.122]) ([10.238.208.122])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 03:00:56 -0700
-Message-ID: <07cf5761-48fe-40b7-9310-b64712f5e314@intel.com>
-Date: Wed, 9 Sep 2026 18:00:53 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VeJPs6Mc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE581F00A3D;
+	Wed,  9 Sep 2026 10:09:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788948581;
+	bh=HfjgJeFpXM7grjwxJfO9iaFDcmusZnd9R05IdvkkszY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=VeJPs6McjFgTz/IiwdZe50yyfTdbdVtvaH6gF5gv/T/x86fxjvRe+A/K4vPgm3VSE
+	 lfKfhw97jMEtSumkA8PvJD1Z1TdnuwlPiBRHcMk2KdeE4Hyca3oSLDRmd1fs/n/YUt
+	 U3MmezgBgYg7oBD/V7aQY8WHM8NUhQgZLSGoeo65zlqnu5Zh7zrshGYPe5NeY9sEVW
+	 a7SOWrGlQpwUHancrAQKHS8xwE/X33ENjhn/KoxUAcHqW7upatus/oFeRXX2AIAsFz
+	 ZRVSMXlOOQ3RKspRQZ9kzV6lsfcQ0//E2HjAZLMk60VQVSBjQFGqpq6M/2QbNwEOHz
+	 AsHZ+b3dfH+JA==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Nicolin Chen <nicolinc@nvidia.com>, linux-coco@lists.linux.dev,
+	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Pranjal Shrivastava <praan@google.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Subject: Re: [RFC PATCH v4 03/16] iommu/arm-smmu-v3: Add initial pSMMU realm
+ viommu plumbing
+In-Reply-To: <20260907125228.GB667892@ziepe.ca>
+References: <yq5aecfdnv4i.fsf@kernel.org> <20260901143445.GC56830@ziepe.ca>
+ <yq5a8q5kkoz3.fsf@kernel.org> <20260902121700.GC2890729@ziepe.ca>
+ <yq5aik4nztdt.fsf@kernel.org> <yq5aecfbzjyk.fsf@kernel.org>
+ <20260902235609.GG2890729@ziepe.ca> <yq5a8q5izxz4.fsf@kernel.org>
+ <20260903171704.GK2890729@ziepe.ca> <yq5acxupjsy2.fsf@kernel.org>
+ <20260907125228.GB667892@ziepe.ca>
+Date: Wed, 09 Sep 2026 15:39:31 +0530
+Message-ID: <yq5atsnyag84.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 03/22] KVM: selftests: Initialize the TDX VM
-To: Ackerley Tng <ackerleytng@google.com>, Lisa Wang <wyihan@google.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
- Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
- Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-3-15ad654a50db@google.com>
- <c8b7a800-58ed-4ef7-91bd-31da77763717@intel.com>
- <ap_Bpe7dZm_eWsJ2@google.com>
- <CAEvNRgFHTAPYTVQ8a_PVdFLqQ8z07Uep2XhA9r_Ypw+D0WAC8w@mail.gmail.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <CAEvNRgFHTAPYTVQ8a_PVdFLqQ8z07Uep2XhA9r_Ypw+D0WAC8w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 9/9/2026 2:08 AM, Ackerley Tng wrote:
-> Lisa Wang <wyihan@google.com> writes:
-> 
->> On Thu, Jul 23, 2026 at 04:44:08PM +0800, Xiaoyao Li wrote:
->>>> + */
->>>> +#define __tdx_vm_ioctl(vm, cmd, _flags, arg)				\
->>>
->>> sev uses the name __vm_sev_ioctl, I think we need to keep them consistent.
->>
->> While __vm_tdx_ioctl matches SEV, the TDX selftest follows a tdx_<scope>_*
->> naming convention (1. TDX prefix, 2. Scope: VM or vCPU). I named it
->> __tdx_vm_ioctl to keep the TDX codebase internally consistent.[1]
->>
->> Do you think we should align with SEV's naming convention instead of
->> sticking with the internal TDX pattern?
->>
->> [1]: https://lore.kernel.org/kvm/489f3c7b-db03-43dc-bb64-910a0fcba31e@intel.com/
->>
-> 
-> Given that __vm_sev_ioctl and __tdx_vm_ioctl aren't likely to appear
-> next to each other, I think it's better to have the tdx prefix earlier
-> to keep the TDX code consistent. To move things along, I think we could
-> continue as-is and not swap to align with sev.
-> 
-> (The sev functions actually look kind of inconsistent in sev.h, but
-> that's a discussion for another series.)
+Jason Gunthorpe <jgg@ziepe.ca> writes:
 
-Yeah, either adjusting this patch to follow SEV or renaming existing SEV
-MACROs is OK.
+> On Mon, Sep 07, 2026 at 03:15:25PM +0530, Aneesh Kumar K.V wrote:
+>
+>> I looked into this, and it becomes fairly complicated. We can move all
+>> vdev/TDI-related code to arm-smmu-realm-v3.c, but that would result in:
+>
+> I was going for the opposite, you'd move everything out of arm-smmu-v3
+> and into the arm-cca-host and obtain the viommu through tsm_ops not
+> through iommu_ops.
+>
+> I guess I pointed to that in another email.
+>
+> The only thing arm-smmu-v3 should provide is a simple function to give
+> the pdev phys and irq parameters. arm-cca-host calls that when it
+> creates an viommu object.
+>
 
-Keep the patch as-is and leave the SEV work to future are OK.
 
->>>> +({									\
->>>> +	u64 r;								\
->>>> +									\
->>>> +	union {								\
->>>> +		struct kvm_tdx_cmd c;					\
->>>> +		unsigned long raw;					\
->>>> +	} tdx_cmd = { .c = {						\
->>>> +		.id = (cmd),						\
->>>> +		.flags = (u32)(_flags),					\
->>>> +		.data = (u64)(arg),					\
->>>> +	} };								\
->>>> +									\
->>>> +	r = __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
->>>> +	r ?: tdx_cmd.c.hw_error;					\
->>>
->>> I know it takes the same handling from __vm_sev_ioctl(). But I think the
->>> handling for hw_error is not correct, at least for TDX (I didn't check for
->>> SEV).
->>>
->>> the hw_error is the additional info, to tell the SEAMCALL return code, when
->>> the IOCTL fails. KVM requires hw_error to be in the input, and KVM puts the
->>> SEAMCALL return code into hw_error when the IOCTL fails due to SEAMCALL
->>> failure. That means, when r == 0, the hw_error is always 0.
->>>
->>> I think we need to provide hw_error along with r to the caller so that
->>> caller can print them together.
->>
->> I think the value of r is not important, because the ioctl failure
->> is already captured in errno.
->>
->> We only need to fix the return values for SEV and TDX and have
->> TEST_ASSERT_* print formatted error logs with errno and hw_error.
->>
->> - r ?: {tdx, sev}_cmd.c.hw_error;
->> + r ? {tdx, sev}_cmd.c.hw_error : 0;
->>
+So ended up with
 
-No. It is not correct because hw_error can be 0 when r != 0.
+static const struct tsm_viommu_ops cca_tsm_viommu_ops = {
+	.owner = THIS_MODULE,
+	.type = IOMMU_VIOMMU_TYPE_ARM_REALM_SMMUV3,
+	.get_size = cca_viommu_get_size,
+	.init = cca_viommu_init,
+};
 
-> I didn't look in detail, perhaps Lisa could look into these:
-> 
-> + What are the possible values of r? Is it always going to be 1 on
->   error?
-> + Is r always positive or negative?
-> + Is tdx_cmd.c.hw_error always positive or negative? It's probably not
->   one of the standard Linux errors, right?
-> 
-> Perhaps squashing hw_error together with a retval conflates the two.
-> 
-> In the lower-level __tdx_vm_ioctl() we could pass a hw_error and have
-> the macro set hw_error? That will allow the caller to print both.
+struct cca_viommu {
+	struct cca_psmmu *psmmu;
+	struct iommu_viommu_provider *iommu_provider;
+	const struct iommufd_viommu_ops *iommu_ops; // backing SMMU ops
+};
 
-yeah. This idea can work.
 
->>>> +})
->>>> +
->>>> +#define tdx_vm_ioctl(vm, cmd, flags, arg)				\
->>>> +({									\
->>>> +	u64 ret = __tdx_vm_ioctl(vm, cmd, flags, arg);			\
->>>> +									\
->>>> +	if (ret) {							\
->>>> +		TEST_ASSERT(!ret,					\
->>>> +			    "%s failed, rc: 0x%llx errno: %i (%s)",	\
->>>> +			    #cmd, (unsigned long long)ret,		\
->>>> +			    errno, strerror(errno));			\
->>>
->>> The if() looks silly. Why add it? And why change it from
->>> __TEST_ASSERT_VM_VCPU_IOCTL() in the v13?
->>>
->>> Considering the suggestion of hw_error above, I think we need to introduce
->>> the TEST_ASSERT_TDX_VM_VCPU_IOCTL() which accepts additional hw_error?
->>
->> The reason we could not use __TEST_ASSERT_VM_VCPU_IOCTL() directly[2] is
->> because it formats ther return value as %i (32-bit), whereas
->> __tdx_vm_ioctl might return a u64 hardware error code.
->>
+// backing ops are mostly used for
 
-Since we cannot simply use hw_error to replace ret, there will be not 32bit
-vs 64bit issue. But ...
+static struct iommu_domain *
+cca_viommu_alloc_domain_nested(struct iommufd_viommu *viommu, u32 flags,
+			       const struct iommu_user_data *user_data)
+{
+	struct cca_viommu *cca = viommu->provider_data;
 
->> I agree with your suggestion to introduce a new
->> TEST_ASSERT_TDX_VM_VCPU_IOCTL() macro to print out u64 hardware error
->> code properly.
+	return cca->iommu_ops->alloc_domain_nested(viommu, flags, user_data);
+}
 
-... if we want to print hw_error as well, we still need a new macro.
+static int cca_viommu_cache_invalidate(struct iommufd_viommu *viommu,
+				       struct iommu_user_data_array *array)
+{
+	struct cca_viommu *cca = viommu->provider_data;
 
->> [2]: https://lore.kernel.org/all/a58e2941-77f9-43cf-a54d-023506dd7eb0@linux.intel.com/
->>
-> 
-> Is tdx_vm_ioctl() the only place where TEST_ASSERT_TDX_VM_VCPU_IOCTL()
-> is going to be used though? If so, maybe we should defer introducing
-> TEST_ASSERT_TDX_VM_VCPU_IOCTL() till later.
+	return cca->iommu_ops->cache_invalidate(viommu, array);
+}
 
-I think tdx_vcpu_ioctl() will use it as well?
 
-> I think the issue with if (ret) is just that TEST_ASSERT(!ret) already
-> does that same check, and so we can drop the if (ret) part.
-> 
+struct cca_vdevice {
+	struct iommufd_vdevice core;
+	struct pci_tsm_context *tsm_context;
+	struct cca_host_tdi host_tdi;
+	u32 l2_sid;
+};
+
+static const struct iommufd_viommu_ops cca_viommu_ops = {
+	.destroy = cca_viommu_destroy,
+	.alloc_domain_nested = cca_viommu_alloc_domain_nested,
+	.cache_invalidate = cca_viommu_cache_invalidate,
+	.vdevice_size = VDEVICE_STRUCT_SIZE(struct cca_vdevice, core),
+	.vdevice_init = cca_vdevice_init,
+	.vdevice_tsm_req = cca_vdevice_tsm_req,
+};
+
+
+and on iommu side
+
+struct iommu_viommu_provider {
+	size_t size;
+	int (*init)(struct iommufd_viommu *viommu, struct device *dev,
+		    enum iommu_viommu_type type,
+		    struct iommu_domain *parent_domain,
+		    const struct iommu_user_data *user_data);
+	int (*get_params)(struct iommu_viommu_provider *provider,
+			  struct device *dev, enum iommu_viommu_type type,
+			  void *params, size_t params_size);
+	void (*release)(struct iommu_viommu_provider *provider);
+	void *data;
+};
+
+
+The TSM disconnect path will now fail while any vdevice is alive or
+active. Destroying a vdevice will unlock and destroy the VDEV. I think
+we can also unmap its MMIO mappings at that point, provided we track the
+mapping requests in a list alongside the vdevice details.
+
+All CCA operations will use pci_tsm_pf0::lock, though I think the
+locking can be made more fine-grained.
+
+I will send a cleaned-up series so that we can review the code changes.
+
+-aneesh
