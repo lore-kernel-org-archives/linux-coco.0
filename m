@@ -1,96 +1,94 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF93A568552
-	for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 19:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354D04562B0
+	for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 19:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789067194; cv=pass; b=raqHhzKWnOx+j2v9tjiEC+JI/pNXwd/X06NUMLZdSqcXRsZtHQu2L/Vshtt1+93Uc5IzICfUv+tWYU5fq1AeCxZY0tjSriBPkohxL5zV1eL+kLNsjT1RctXU1bmucZgOl0M9zoM3PFQEM+Sw3Zixy2vvWmY3/57FY9RqvLWRBlc=
+	t=1789068026; cv=pass; b=AyGC3eDCX4rhkyBe/VlONikJGXuge4vkyUIxQCggkDUEH3t/8yGq8bn+oYoS7YnAn8X/h1rWZqvSNBkLM0Mvi4tGbI9EBcX+dGwIXRLYucOFOkQ/WlB51klHwaVvYQheDXFmyLo/ivtwTrOE5fTuz7BWV1GJ0y5EMLhdILpDKD8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789067194; c=relaxed/simple;
-	bh=p7RzuJYGdHnY3mqs80U7yu9Qn6ww9UEb3p+WQH1n6P0=;
+	s=arc-20240116; t=1789068026; c=relaxed/simple;
+	bh=fiGuXF8pnYZgt9VLhaHvZD8ERe5p+iX/cvkRE6nZgx0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XDrPBpHQWtZa84LsYFhjsTcuivPKjRQe4daAOsvHyQKZNQxdxQJIvbi+ZORAXsYm7U4wNMBLv03YRbOId8NaqJvqooNsB3SbMerDqZppq1Z0gp8YvauVnciVLvt0Q20Vq6pLhYBWYY3IJxb+3IhWWq4Vws2EaFVWFFX61nMLgD4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rZw2tdKy; arc=pass smtp.client-ip=209.85.128.180
+	 To:Cc:Content-Type; b=HtZ12fWQCNiaRUCKwfkMdFmOG3cEANrqVTbRC4GayMFr9wzXNH4UrIPlbeOqKEGK1xuaarSsABmq5QhZJWaDaUjmzVECP8ub+UFdyf0oGtdDbVySfLhVSExZAahBqaiLrDbEwW3PjwZMBRIJw7T4STpJ+0RRoTn2OsFmXYyqtF8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Rexn4DnL; arc=pass smtp.client-ip=74.125.224.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rZw2tdKy"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-87ffa98d4a9so203557b3.3
-        for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 12:06:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789067192; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Rexn4DnL"
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-67124ad7615so67048d50.0
+        for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 12:20:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789068024; cv=none;
         d=google.com; s=arc-20260327;
-        b=OrOaI1Qrd8LXz8tPWuF3lgH5ZRcHrPZtjE7eUHtp0GRsa9OP3clDlWEdUyd7YpZfCZ
-         QhG3WGcm/vq8N1AiDP0NpK19xAtru8JehIKsILKTB+r7174tLJTIV6Co0fucXWnRmzGV
-         nhqNT6EAI/nUYPZIj3t3eOtcYv5sey1qq/gq6n+ckETIJZ87b7Gi/sNFNSJi9s7o0pa8
-         9G+y0bXQv9j4oadfhEq5T3Dmbv9NW4h1D5xsq2fDkcFtjZ8Z3/JJj8rZMf2/YTYvjj8r
-         GTjjawrelCPvwej1aYuMedIMZutl3wjGCYhGOlcI/Sxhssowy4XLzLzqsGHMmhMs12x7
-         GGxA==
+        b=o478QkdEZBiZ2FVG6g2sfYkqLyD6ge50Vi+iigvn3NthiyVHh3rCeTYDYxCPs6Tpw0
+         70XtRLQD+erXME6vYQVOjaURhXv4pd5R3rQ8a8XdRNzFAMUv3PRJ0ZlyTbwws/3q2LR9
+         hjUiIogOOXS9Xd3KNdSjyty2iEwZUO+FRdWTKZh7AtLk+wvtUf1sexqIh6XFzF/0U7PC
+         hidQfJPpm8upNVEqBQ6+Icf1zjxs8tNA/5JNYKj7SubUVM2jkoP77RKUB1GcChBPqmWL
+         McdMxmM6IbkxUzKpxBHp8HHW4kKAh1FMSvIrjM6wSrEJjh9Onty3Pt736k5hcxFub9kr
+         R5GQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=hhbPkWTyvpq7C4VmKx5074Xp8YIC7XsOu3FWGtgnxq8=;
-        fh=E9HyKHKcmdFBpF/r7EYS2bRmGrqiMQF0aFpIJhz/aGA=;
-        b=dW3QZ90FFhP+vacmTyZDDfVfvV1uKIas/2IFlQpEdA3Bpo9bdCZm3aYfyYZMMYjYnB
-         Gu0RbV9fi0bwMeIblCYRSu/2eTO7KBbGiJEcyIuTItY+Ua75U6uMa+7P+mfQvbpHEXPk
-         TjdGqazYikh8cnRu924K7NAXVhWIOq8bPNCL/xPqLZQ6FvicDgnrRO/ypXJObKBjhLr+
-         IZ6zEw2VMk/4p5hhHoYNJgI2a/yYYv49cbyKjs5bpIh+9OD6wh1vtKSzop8jE0BVlhD7
-         bTvxQJmQ4bfpWCyjhXRRxBx6N+F0iMFXm+cz/dF0FDoOBUcxjdph4qF38I5dT80q9OEd
-         S9mw==;
+        bh=b6AZ6dwl+nPhR9lRn8ryaNJ3HAjOQF7wNnV4eGAN9b4=;
+        fh=a77WNBuolaW/GFRctDJisNxBYAL8mwoAtti2Xqr1naY=;
+        b=actm/q4e6t0LeK311QCah4xyOjjOme3qxIkfMvL8jPIif2bLtQNUa2azFKILLbEE2u
+         fSqLaEQ5H+wkqsr8StEpTVOBHqn3eecVzAH7sTVqUy2UCWvicoXlExhnyvoTWWeyeLrB
+         REQY2f1BJ2pXa4wJL6MEQjHvy2LFYQEhLeKcBw6BUddpzkv/1d866CWBHpnjUqeOTrMX
+         LKuIEsqbTOFL/0boY3pWNF3nfmhK5GuynPdDyDGcGVR5m0pRsNgSsXXPtDO3t6wBQm3r
+         8/63vy29f3eBuB+wBL/YjJaSHG+bXbnsD9ls/mqq4ucFzKQm5uejiltqs2fNyU/FURHA
+         f4+A==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789067192; x=1789671992; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1789068024; x=1789672824; darn=lists.linux.dev;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hhbPkWTyvpq7C4VmKx5074Xp8YIC7XsOu3FWGtgnxq8=;
-        b=rZw2tdKyMqYbns9mFayDBUvcqPvLnvNJT1OsYOJ1DPqWkpevLHz4GgPALiyPoVfyun
-         uSsWSx2NlAmqbpHPl2r/bzEzr6eAbM+p4BLFeAwhRjxNum+1Ud/PwZ/qpfReoXN7wjHP
-         irf+nQwL9hAo987KjbZyzV+glQ7nnLbedkfXu3WYD+UbDi61ABcqPg/xJXHbKSdZjY7w
-         SWeXDIUmVME//3x/hG6Y4P8RtHPgzRRP8XH12nom4bjf55XSo8MDJPVCNWQMHZ/z4xoU
-         eJ0x/9idIcdEBA9YqwX7UcYMhBZ5c7I5FxMqa0VZQc2n9unf1fucce+yApVh8VL9IdZr
-         EakQ==
+        bh=b6AZ6dwl+nPhR9lRn8ryaNJ3HAjOQF7wNnV4eGAN9b4=;
+        b=Rexn4DnLn4o9a3Rd+9ZhbUtHYy/SSVOl2VnyYy9UY6q6jZKYiTwUIDG6IjvAagfFkP
+         41TpfZQN5sItQp6GVW+IUfa1FDJTyoQKbxihBaMXhnzl/ZXToUXeS4MZachG+UNlM6Jo
+         Lrb0GJckRhWiEbDHwP77F6nWuBaunM+1H+hnXExV5LYvYqqVAwUdfkEQ68WFaEoROe4u
+         07Yt5hv0c+CY8fRDlKzc7C/U3eT+7pMS3bnZ3TCd9dFV73HrF3oHSJZckPV+qJXJXBi7
+         /CaoNIjogGEvcBznzMYFDQmH7bx+/ZRu1/YfgNwclCSFnFBi/rQ0U2Bo5+Mq8zmDniYo
+         2Liw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789067192; x=1789671992;
+        d=1e100.net; s=20251104; t=1789068024; x=1789672824;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=hhbPkWTyvpq7C4VmKx5074Xp8YIC7XsOu3FWGtgnxq8=;
-        b=QW75uY/EE67ofkflMQ6V7DPt4e2/d0WHlWvLVA9KCq3vl6nsYVya7ub6pj8DBvrsNl
-         jBl/S9gpHNih+i1b1Z/kAOZDpWErgJlLcCcTf8lBMsL7zbeFfViy+6fPtrGJTcoO91RU
-         b24XuK1cGsCUK2AYwz3NFBN7vJJ9sIepc5B4bVUrIj6TLKRld/yOdRNrKUs5EplGKkcs
-         yhRoBRrMqOhQs/smrZs0204+KaO3TAoxT3/CU9UL+/Sii/zbLse8OwsxxnHQNGoj1jjB
-         eTtPbFRrmLqDNa+GhqD7bfiwx9a0sl1axP3f0IHZ/vnf7Wc91cm/wOtGL3Q8VD8mSV5L
-         riaA==
-X-Forwarded-Encrypted: i=1; AKwUvBzG3JK9TX23Ybs0hZjsh76NVteKmpMHns8Gcj8V3dL5qR3r0q+aMq2fcR14XWrotAznuZm3i2i3iyWQ@lists.linux.dev
-X-Gm-Message-State: AFuF++kS984pG8eBH7UZx/P9Iwslu4CadaQxrZwwuYcZVXujhp3VxfaC
-	uPJeCbArteCW9S9kcUU3HFhQNagJVRHyujeswNAG1E4dAaz6YOlFxGluYUD7RMqniICBLGvMH5i
-	LnSIgaiL5upxpi/PQjons8pXYLtEdbAUVN7NpvWFo
-X-Gm-Gg: AYBFou1LZA5FLvqB2w8yzX++0fjUQAxeJwn7VFo38+3gtZtjheqG1Ga+39vkavB9xFh
-	F8Jrir5bV7jWzRjR8Us+0gdO81V1nG6+IqyfsPvZqWDN0+nZbF/3lN+GnVWsXujA70FljFpZhl9
-	pq9XxO9XXaotHGeca3wNcC2PnwxxC0xllGdS0uXGbP7Y5MdyG3F1wmTev6mhsEAmHamwWg/3Iiy
-	XtxZsroJi+gouj7dCyWIzKewRfSAMNrI6/9wGsI47wXO+J/VZEe4OqHHV8pNKygojkUqhTzak6t
-	W1hj2G89wDJLKx1dTRwkwFXzL499WwOFA9LZo98yymFOkoVoTDuz7i4+jiOzfKYXcnJY5NH7Nja
-	4WlSRwo23Xg==
-X-Received: by 2002:a05:690c:3347:b0:874:894:9a52 with SMTP id
- 00721157ae682-884b5d8d588mr3519787b3.40.1789067191005; Thu, 10 Sep 2026
- 12:06:31 -0700 (PDT)
+        bh=b6AZ6dwl+nPhR9lRn8ryaNJ3HAjOQF7wNnV4eGAN9b4=;
+        b=j4pKzqfnNU3GY3qPouPxcBjws2rZ6CFj6I0akmMkp6Nq3x9674BfHJlr24WMlCqOvw
+         5teGq70utLU7tzqusan+QjXz26ZaqtUhpuJQbdPUan16+A1rUzg++L8q4iM/OrXXOZ9K
+         hZ7Och0s8yM/NEmKAgfyZL3EvXqQ0MLOriKc7J19yHDhq0ITnnZo+bOkig6O6ggxhPcr
+         tfa139rPYCmokKsDFOvfDbjh2QgYxSgJFy0cClHY9+ukovFf0ySiiZRmQB/8UPM1tgoR
+         eAW4BfmvR3uVGpokopfBZT4aoRUWJQk+66jlck/OP526RguWBZBrQKCdsb2nNpQQQMQo
+         ObCA==
+X-Forwarded-Encrypted: i=1; AKwUvBxphmkJQDOUiM7oxGnYhhHABzKbz60v1VJfxfoqcBk6u+GKMhNO+v4QMyeln2oUKOnvy+U3ag4ycM/O@lists.linux.dev
+X-Gm-Message-State: AFuF++mIPgesuC2RwxEwu0iGESeISbHIj78cibzu94vPV5HHLqNd6qE6
+	fcqO8Vr7OyrRBQjQ3XxyjbkvhTsm1LYVTgjj81b4+pIYRQ96g2OpfTl0BPZh0dnpS7lOIZECzWw
+	XL6lBdGE0JAHCghTuzYa4fkbDXclV4L40iV9t81jB
+X-Gm-Gg: AYBFou2pcyJF0O/iY6NMg6arCBuiY4Z6WOskqqP3OpB/1RoiksVhPY7n11tXWwoBpAs
+	g0mw22oUlY+nuEooqOyPJtSp388CFGNgAkf1elx8TCmcuR/Xwb9NOEhMIqaf1PkpD/pftczNzpI
+	PLEVAsM4D9KaLHislcroxjqFvg7rDEl24yglySqOIFqypkNeNsvcLKCxouAdnfspVwqMbiQHoi7
+	/6AkBHLrkNdKb6o0VFXOVmAJD+cqPV5naIaCUMVd4Fpwq/mUuvJT66uU69HzYJsYZQz7YgLjWUq
+	Vat9hQUt69zh/LC/di8OWHusE0dZJt0/wNkL73hz0vmbwE1891bF8PJqy3/equRK8WxrtPAAi0F
+	uXYCaTLEsmdw=
+X-Received: by 2002:a05:690e:80b:10b0:66f:c1bc:c097 with SMTP id
+ 956f58d0204a3-6712476c288mr382065d50.95.1789068023584; Thu, 10 Sep 2026
+ 12:20:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260910162343.4092060-1-elver@google.com> <20260910162343.4092060-3-elver@google.com>
- <aqLbHvD5lqQP8PRd@google.com> <CANpmjNOZPFQ9FcaA6+GH9PZ8DRyEMYW3+FKBO9B3d2CY+2C-5w@mail.gmail.com>
- <aqLuZ9gGzK07R_Ei@google.com>
-In-Reply-To: <aqLuZ9gGzK07R_Ei@google.com>
+References: <20260910162343.4092060-1-elver@google.com> <aqLhHOrXsa30PBVU@google.com>
+In-Reply-To: <aqLhHOrXsa30PBVU@google.com>
 From: Marco Elver <elver@google.com>
-Date: Thu, 10 Sep 2026 21:05:52 +0200
-X-Gm-Features: AcwNN1V0oYbeLDh86sT0uPw3XpZ9Y8gnfB3S8ZdXuCAMO68mt6oSE3z_9GgR0M4
-Message-ID: <CANpmjNMn-i3ZgQgRC8JhhDt5-RFTXCsBrf47MzfXjKG8H1c2sA@mail.gmail.com>
-Subject: Re: [PATCH RFC 02/10] KVM: Allow reading memslots while holding slots_arch_lock
+Date: Thu, 10 Sep 2026 21:19:46 +0200
+X-Gm-Features: AcwNN1XEJG4HFWxM40HlnJmqF0_xrl9dxVW2S0hyaOIau8OztfJYTNDdG5jUhc0
+Message-ID: <CANpmjNNF44Y_k-Jbx6TikXgTnhE3G_aRDFXAABosZexOkn0jeg@mail.gmail.com>
+Subject: Re: [PATCH RFC 00/10] KVM: Enable Clang Context Analysis
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
 	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -99,68 +97,52 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo
 	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 10 Sept 2026 at 19:52, Sean Christopherson <seanjc@google.com> wrote:
+On Thu, 10 Sept 2026 at 18:55, Sean Christopherson <seanjc@google.com> wrote:
 > On Thu, Sep 10, 2026, Marco Elver wrote:
-> > On Thu, 10 Sept 2026 at 18:30, Sean Christopherson <seanjc@google.com> wrote:
-> > >
-> > > On Thu, Sep 10, 2026, Marco Elver wrote:
-> > > > kvm_swap_active_memslots() updates kvm->memslots[as_id] while holding both
-> > > > kvm->slots_lock and kvm->slots_arch_lock. Holding either lock guarantees
-> > > > that memslots cannot be concurrently modified.
-> > >
-> > > Sure, but that's irrelevant.  The goal of the srcu_dereference_check() is to
-> > > ensure that readers see a stable view of the VM's overall memory, not simply that
-> > > kvm->memslots can't be written.
+> > Enable compiler-based static context analysis [1] for x86 KVM, along with
+> > prerequisite lock annotations in virt/kvm.
 > >
-> > Functionally, this is irrelevant for readers. But under lockdep it
-> > isn't for writers: srcu_dereference_check() (with lockdep) asserts
-> > that the srcu reader-lock is held, or the condition 'c' holds, which
-> > here is holding any of the writer locks.
->
-> No, the rules for writing kvm->memslots is that *both* are held.
-
-Right. But the condition 'c' is only the srcu-less fallback for reads,
-which is "any".
-
-> > > > Allow reading memslots in __kvm_memslots() when kvm->slots_arch_lock is
-> > > > held.
-> > >
-> > > Why?
+> > During the initial annotation pass, context analysis uncovered a missing
+> > SRCU read-side critical section in x86 PMU filter lookups; patch 1 fixes
+> > this bug.
 > >
-> > Holding any of the writer locks guarantees no concurrent modification;
-> > therefore, if any writer lock is held, it's not required that the srcu
-> > reader-lock is held. There are few places where only either slots_lock
-> > or slots_arch_lock is held, which is sufficient for reading.
+> > The remainder of the series is strictly non-functional: it establishes
+> > basic function annotations, guarded_by annotations on core structs, and
+> > straightforward refactorings in hva/gfn range walks and guest_memfd to
+> > eliminate conditional locking patterns that cannot be tracked statically.
+> >
+> > Annotating the MMU (mmu/mmu.c, mmu/tdp_mmu.c), i8259, and Xen requires
+> > more invasive changes and is deferred to follow-ups.
+> >
+> > [1] https://docs.kernel.org/next/dev-tools/context-analysis.html
 >
-> Yes, but with caveats.  And more importantly, pure readers really shouldn't be
-> taking slots_arch_lock, because either it's overkill and will generate unnecessary
-> lock content, or the alleged reader is doing more than just reading.
-
-Pure readers never should, and not what this patch suggested. But
-writers (or those about to become writers if they only hold one lock)
-can read w/o the srcu reader-lock held.
-
-> Holding just slots_arch_lock *could* be fine, depending on the usage, but those
-> details matter, which is why I asked "why".  I want to know exactly why we should
-> relax the locking rules.
+> ...
 >
-> Ah, poking around the code, I suspect that the motivation is
-> kvm_enable_external_write_tracking()?  Which grabs __kvm_memslots() but only
-> holds slots_arch_lock, i.e. would get a lockdep splat if someone with KVMGT ran
-> with lockdep enabled.
-
-Right.
-
-> That thing isn't a pure reader.  It only reads the actual kvm->memslots pointer,
-> but it writes to each of the slots metadata.
+> >  43 files changed, 745 insertions(+), 236 deletions(-)
 >
-> So, allowing __kvm_memslots() to be called with just slot_arch_lock is ok in
-> this situation, and if my guess is right, necessary to fix a false positive.  But
-> I'm on the fence as to whether or not we generally want to allow that, versus
-> taking kvm->srcu in kvm_enable_external_write_tracking() even though strictly
-> speaking it's unnecessary.
+> For me, there needs to be a _lot_ more explanation of what this buys us to justify
+> the extra annotations and ongoing maintenance burden.  And to a lesser extent, why
+> we should rework code to play nice with context analysis
 
-Clarification here would be good. In building up the locking
-annotations, this was one inconsistency I found vs. what
-srcu_dereference_check() said, so the conclusion was that the fallback
-condition 'c' was outdated (or there was a bug).
+Patch 1 is an example of what this buys: static checking shifts left
+and prevents bugs from actually being committed. Context analysis can
+be seen as an extension of kernel C, improving its safety, and the
+nice thing is it can be enabled incrementally (no rewrites in other
+languages needed, though yielding modest safety gains at a fraction of
+the cost). A side-effect is compiler-checked documentation
+(annotations), which helps humans and robots reading & writing kernel
+code.
+
+The question is simple: is the cost of ongoing maintenance with
+context analysis greater than the cost of the bugs it prevents?
+
+> (I assume we can simply
+> opt-out on a per-function basis if we don't want to play nice?).
+
+Yes with __context_unsafe(/* explanation */) attribute, or
+context_unsafe(...) expressions.
+
+> I'd also like to see what the MMU changes look like before committing to supporting
+> this.
+
+If you're not entirely opposed, a v2 can include that.
