@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C87C3BBFD4;
-	Thu, 10 Sep 2026 23:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABCE3D4137;
+	Thu, 10 Sep 2026 23:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789084539; cv=none; b=BbTizUMdf+JWPqqwMm0ZGlgtMuREqfFL6jKMDIb9UPwcLwCs5TsdyGcvDC995Yiyw7mlUbpdBs1yngTwrQpBYmRBIkmVRc2be/NM6UYpBNDt5n2Z5XgqqbU8DuGineEdygCzEMiwZ1fuusSFEuYQNs43gSVI1OornJ1WXIk54tE=
+	t=1789084541; cv=none; b=a3RXvsj8yYXv2EctACkUK3ojh2JcgtByJC3RN8VNcqk53PFw8bmFgNKIRP+UqpQYxvBCl538P3uje/9hZNCEhcS6FjQeSHA0wAlG9auUtg55ezajFl5ExWIoTTxSncmMhYmFKLSF77l+FsVcqeJxuLH5ga2dKVDJFd1e7c7To7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789084539; c=relaxed/simple;
-	bh=6C2augXz8GBviFeBgLjwH0PLN0m7BtLjKuqfJSUI3Sg=;
+	s=arc-20240116; t=1789084541; c=relaxed/simple;
+	bh=BXwrfirqmnSn98dMM/5nslyDbd1DGRMDj3O/ov8B2CA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=isQ6KS7BQYBLmnMqWLDZj8ATe2qAD3I66VML6QlP8Ga+F2awFHt4Sh+S+ov32F9c/z/7l/WcDcP0wDHTa0K2ur7u81IeDuqBeXdgeyUcyepZ/CYRSvpMtynFqPkxNUK4PAQ1PcSfKB0Gu6JGlmudCyP+nGn0wwk+arTAPUcTHXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lkPHukJT; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=KQjceqm3rCk8nmyYC1QsblKqpZvXFn/UXxORVIBl0Pg53U9psRbIZYAcP6WtraDGowfRv9rjY3COFOpgTQqoLT4X+bxi2e9FA3qEakgJODu034GQpNPS8CnO3TZsJOFWRsLF6GCpJsy1UeN+bk993N53k+eSZh9XzwhAnJq5H48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VJeHiaO6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lkPHukJT"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F180BC2BCFB;
-	Thu, 10 Sep 2026 23:55:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VJeHiaO6"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CA85FC4AF50;
+	Thu, 10 Sep 2026 23:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1789084539;
-	bh=6C2augXz8GBviFeBgLjwH0PLN0m7BtLjKuqfJSUI3Sg=;
+	s=k20201202; t=1789084540;
+	bh=BXwrfirqmnSn98dMM/5nslyDbd1DGRMDj3O/ov8B2CA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=lkPHukJTePkrsSRwNhKmBl4cswbb3CW4KnifSAredV+Mn7VDFVYRMEkHd6GfTPYe+
-	 cp1Ru3lsfzKrPwhV7tKERbL5YUdPpzrE7szxdKUlkBZyfHOADcpJE7xRxuOIK0cRMx
-	 XSAWovDNi6eWZ54/FzicoKj4TKF5V+eZovgYJWUlpphc2jvoJsSC9BrnHn5aPc4OQ8
-	 8VsUTIW6ExB87pfU7dqWDMFXuqPaSaPWlZtLvoTNGX35FQzQvNCdbWbj24+CTA5fve
-	 vn90I5EOHZc6vNBp/D3JRlUlIfbA9k13ZbKlvbJ0GZOPPB9ikeIG5+5LV71dvQ3a/2
-	 AeoDlulLdQ0CQ==
+	b=VJeHiaO6x0X3+fUI+TxEV+PAefAPVhmLMWXwt5QthIiNMM+VrNYwg1O7O5y0Pj+CU
+	 hYY482yGS/4wpIUq4/Pq0UHoDjBA1QXOaXhGNmKHv2ZmInIbYOU+2BZ87N7JdedLDo
+	 6EwZNK1kSm6TiHWbCLIoxJdqVhLQmGk89wmTSH85AUr0XB6oQbD1xaHnYBIK9SjOrx
+	 q6g1N9Mq1GvorYgJ8uJ5yfsOg8UwcJkO4ANXdZfd9zpgnJxRjlphwnG5UVuGxZ2mHy
+	 +IgAq061Kdg27iXOkNIAJdvu6hhN6K0Ws/4+EIh5vM9SAInevyGWH0TINrYUHkpsT9
+	 /uSn7gRFWFngA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9650C88E49;
-	Thu, 10 Sep 2026 23:55:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B316AC88E41;
+	Thu, 10 Sep 2026 23:55:40 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 10 Sep 2026 16:55:48 -0700
-Subject: [PATCH v13 22/44] KVM: Let userspace disable per-VM mem
- attributes, enable per-gmem attributes
+Date: Thu, 10 Sep 2026 16:56:07 -0700
+Subject: [PATCH v13 41/44] KVM: selftests: Make TEST_EXPECT_SIGBUS
+ thread-safe
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-gmem-inplace-conversion-v13-22-dd6fbf94f4e1@google.com>
+Message-Id: <20260910-gmem-inplace-conversion-v13-41-dd6fbf94f4e1@google.com>
 References: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com>
 In-Reply-To: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -78,14 +78,13 @@ To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
- linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
- Xiaoyao Li <xiaoyao.li@intel.com>
+ linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789084533; l=6402;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789084533; l=5395;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=70iSyqg/mTnfLo3ttGKfAuj6ZuDf0WvNDgZDQmBtTdY=;
- b=l0+VuLVeyBboOwY8llw8NkrAe9rbHoo2o6bold91sNzbU5b1vsR/hdAaVMYrZry5krqMlg8cB
- 4ls/eREGlIgDSuswWQVkA2pydIkxiUgbhsRQzzmuv2GL/nGUCYv2Qpa
+ bh=lL6XuWobxlZyT5n/HD9nSN/LyxB1opZ2ycahz8ojWB0=;
+ b=0yBfdTkaFeVrMv+nS8bJqqt75egmcwMmDIfNvh0Qgr2DTvoOdBAUJf4VnVYM+D08ZekZvq0GJ
+ aIuznjxCNhbCtRKO42oFAru9P27Sc+CwJLxUi+xwArLi3TeAigmEGF0
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -93,154 +92,154 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ackerley Tng <ackerleytng@google.com>
 
-Allow the user to disable KVM_VM_MEMORY_ATTRIBUTES even when KVM supports
-PRIVATE and SHARED attributes, and expose gmem_in_place_conversion as a
-module parameter when per-VM attributes are supported.  I.e. let userspace
-enable in-place PRIVATE<=>SHARED conversion of guest_memfd pages.
+The TEST_EXPECT_SIGBUS macro is not thread-safe as it uses a global
+sigjmp_buf and installs a global SIGBUS signal handler. If multiple threads
+execute the macro concurrently, they will race on installing the signal
+handler and stomp on other threads' jump buffers, leading to incorrect test
+behavior.
 
-Provide both a Kconfig option and a (conditional) module param so that
-deployments that use a custom kernel can fully disable per-VM tracking,
-while not forcing distros to ship two separate kernels in order to provide
-backwards compatibility for downstream users.
+Make TEST_EXPECT_SIGBUS thread-safe with the following changes:
 
-Don't allow running VMs with mixed tracking for a given instance of KVM,
-i.e. disallow toggling the module param after KVM is loaded, as the extra
-complexity needed to handle per-VM behavior far outweighs any potential
-benefit.  E.g. neither TDX nor SNP supports live migration, so in effect
-the requirement is that existing deployments that want to support both the
-old and the new models would need to tell their VMM which flavor of
-tracking to use.
+Share the KVM tests' global signal handler. sigaction() applies to all
+threads; without sharing a global signal handler, one thread may have
+removed the signal handler that another thread added, hence leading to
+unexpected signals.
 
-[ Xiaoyao: Define module_param only if CONFIG_KVM_VM_MEMORY_ATTRIBUTES is enabled ]
+The alternative of layering signal handlers was considered, but calling
+sigaction() within TEST_EXPECT_SIGBUS() necessarily creates a race. To
+avoid adding new setup and teardown routines to do sigaction() and keep
+usage of TEST_EXPECT_SIGBUS() simple, share the KVM tests' global signal
+handler.
 
-Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+Opportunistically rename report_unexpected_signal to
+catchall_signal_handler.
+
+To continue to only expect SIGBUS within specific regions of code, use a
+thread-specific variable, expecting_sigbus, to replace installing and
+removing signal handlers.
+
+Make the execution environment for the thread, sigjmp_buf, a
+thread-specific variable.
+
+As part of TEST_EXPECT_SIGBUS(), assert the prerequisite for this setup,
+that the current signal handler is the catchall_signal_handler.
+
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
 Tested-by: Shivank Garg <shivankg@amd.com>
 Reviewed-by: Fuad Tabba <tabba@google.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt | 25 +++++++++++++++++++++++++
- arch/x86/include/asm/kvm_host.h                 |  4 +++-
- arch/x86/kvm/Kconfig                            | 14 ++++++++++----
- virt/kvm/kvm_main.c                             |  5 ++++-
- 4 files changed, 42 insertions(+), 6 deletions(-)
+ tools/testing/selftests/kvm/include/test_util.h | 32 +++++++++++++------------
+ tools/testing/selftests/kvm/lib/kvm_util.c      | 18 ++++++++++----
+ tools/testing/selftests/kvm/lib/test_util.c     |  7 ------
+ 3 files changed, 30 insertions(+), 27 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 68647ff4bdd24..a6d7a8109aa79 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3156,6 +3156,31 @@ Kernel parameters
- 	kvm.enable_vmware_backdoor=[KVM] Support VMware backdoor PV interface.
- 				   Default is false (don't support).
+diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
+index d5825211f2727..75e98ec14107f 100644
+--- a/tools/testing/selftests/kvm/include/test_util.h
++++ b/tools/testing/selftests/kvm/include/test_util.h
+@@ -83,21 +83,23 @@ do {									\
+ 	__builtin_unreachable(); \
+ } while (0)
  
-+	kvm.gmem_in_place_conversion=
-+			[KVM] Controls whether KVM enables in-place conversion
-+			support for guest_memfd and tracks the private/shared
-+			state of memory per guest_memfd instead of per VM.
+-extern sigjmp_buf expect_sigbus_jmpbuf;
+-void expect_sigbus_handler(int signum);
+-
+-#define TEST_EXPECT_SIGBUS(action)						\
+-do {										\
+-	struct sigaction sa_old, sa_new = {					\
+-		.sa_handler = expect_sigbus_handler,				\
+-	};									\
+-										\
+-	sigaction(SIGBUS, &sa_new, &sa_old);					\
+-	if (sigsetjmp(expect_sigbus_jmpbuf, 1) == 0) {				\
+-		action;								\
+-		TEST_FAIL("'%s' should have triggered SIGBUS", #action);	\
+-	}									\
+-	sigaction(SIGBUS, &sa_old, NULL);					\
++extern __thread sigjmp_buf expect_sigbus_jmpbuf;
++extern __thread volatile sig_atomic_t expecting_sigbus;
++void catchall_signal_handler(int signum);
 +
-+			If enabled, KVM enables the KVM_SET_MEMORY_ATTRIBUTES2
-+			ioctl on guest_memfd file descriptors and disables the
-+			legacy VM-scoped KVM_SET_MEMORY_ATTRIBUTES ioctl for
-+			private memory state tracking. Only the
-+			KVM_MEMORY_ATTRIBUTE_PRIVATE attribute moves to
-+			per-guest_memfd tracking; other attributes remain
-+			per-VM.
-+
-+			This parameter toggles KVM's in-place conversion
-+			capability support. Whether a VMM uses separate backends
-+			or out-of-place memory management is determined by
-+			userspace VMM design.
-+
-+			Note, this parameter is only available when
-+			CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y. When
-+			CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set, in-place
-+			conversion is unconditionally enabled.
-+
-+			Default is N (off).
-+
- 	kvm.nx_huge_pages=
- 			[KVM] Controls the software workaround for the
- 			X86_BUG_ITLB_MULTIHIT bug.
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 83e26ce45fb79..e840418427a1d 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1851,7 +1851,9 @@ enum kvm_intr_type {
- 	((vcpu) && (vcpu)->arch.handling_intr_from_guest && \
- 	 (!!in_nmi() == ((vcpu)->arch.handling_intr_from_guest == KVM_HANDLING_NMI)))
++#define TEST_EXPECT_SIGBUS(action)					\
++do {									\
++	struct sigaction __sa = {};					\
++									\
++	TEST_ASSERT_EQ(sigaction(SIGBUS, NULL, &__sa), 0);		\
++	TEST_ASSERT_EQ(__sa.sa_handler, &catchall_signal_handler);	\
++									\
++	expecting_sigbus = true;					\
++	if (sigsetjmp(expect_sigbus_jmpbuf, 1) == 0) {			\
++		action;							\
++		TEST_FAIL("'%s' should have triggered SIGBUS", #action);\
++	}								\
++	expecting_sigbus = false;					\
+ } while (0)
  
--#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-+#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||	\
-+    defined(CONFIG_KVM_INTEL_TDX) ||		\
-+    defined(CONFIG_KVM_AMD_SEV)
- #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
- #endif
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index abb108886733a..2c3c22aeafa54 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -81,13 +81,21 @@ config KVM_WERROR
- 	  If in doubt, say "N".
+ size_t parse_size(const char *size);
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index 1188d0a6c0a5f..cac5624e99774 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -2316,13 +2316,20 @@ __weak void kvm_selftest_arch_init(void)
+ {
+ }
  
- config KVM_VM_MEMORY_ATTRIBUTES
--	bool
-+	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
-+	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
-+	help
-+	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
-+	  memory attributes.  Using per-VM attributes is deprecated in favor of
-+	  tracking PRIVATE state in guest_memfd.  Select this if you need to run
-+	  CoCo VMs using a VMM that doesn't support guest_memfd memory
-+	  attributes.
+-static void report_unexpected_signal(int signum)
++__thread sigjmp_buf expect_sigbus_jmpbuf;
++__thread volatile sig_atomic_t expecting_sigbus;
 +
-+	  If unsure, say N.
++void catchall_signal_handler(int signum)
+ {
++	switch (signum) {
++	case SIGBUS: {
++		if (expecting_sigbus)
++			siglongjmp(expect_sigbus_jmpbuf, 1);
++
++		TEST_FAIL("Unexpected SIGBUS (%d)\n", signum);
++	}
+ #define KVM_CASE_SIGNUM(sig)					\
+ 	case sig: TEST_FAIL("Unexpected " #sig " (%d)\n", signum)
+-
+-	switch (signum) {
+-	KVM_CASE_SIGNUM(SIGBUS);
+ 	KVM_CASE_SIGNUM(SIGSEGV);
+ 	KVM_CASE_SIGNUM(SIGILL);
+ 	KVM_CASE_SIGNUM(SIGFPE);
+@@ -2334,12 +2341,13 @@ static void report_unexpected_signal(int signum)
+ void __attribute((constructor)) kvm_selftest_init(void)
+ {
+ 	struct sigaction sig_sa = {
+-		.sa_handler = report_unexpected_signal,
++		.sa_handler = catchall_signal_handler,
+ 	};
  
- config KVM_SW_PROTECTED_VM
- 	bool "Enable support for KVM software-protected VMs"
- 	depends on EXPERT
- 	depends on KVM_X86 && X86_64
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	help
- 	  Enable support for KVM software-protected VMs.  Currently, software-
- 	  protected VMs are purely a development and testing vehicle for
-@@ -138,7 +146,6 @@ config KVM_INTEL_TDX
- 	bool "Intel Trust Domain Extensions (TDX) support"
- 	default y
- 	depends on INTEL_TDX_HOST
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	select HAVE_KVM_ARCH_GMEM_POPULATE
- 	help
- 	  Provides support for launching Intel Trust Domain Extensions (TDX)
-@@ -162,7 +169,6 @@ config KVM_AMD_SEV
- 	depends on KVM_AMD && X86_64
- 	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
- 	select ARCH_HAS_CC_PLATFORM
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	select HAVE_KVM_ARCH_GMEM_CONVERT
- 	select HAVE_KVM_ARCH_GMEM_RECLAIM
- 	select HAVE_KVM_ARCH_GMEM_INVALIDATE
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 05c518c9b8078..929fd3e1a01e6 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -103,7 +103,10 @@ static bool __ro_after_init allow_unsafe_mappings;
- module_param(allow_unsafe_mappings, bool, 0444);
+ 	/* Tell stdout not to buffer its content. */
+ 	setbuf(stdout, NULL);
  
- #ifdef kvm_arch_has_private_mem
--bool __ro_after_init gmem_in_place_conversion = false;
-+bool __ro_after_init gmem_in_place_conversion = !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES);
-+#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-+module_param(gmem_in_place_conversion, bool, 0444);
-+#endif
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
- #endif
++	expecting_sigbus = false;
+ 	sigaction(SIGBUS, &sig_sa, NULL);
+ 	sigaction(SIGSEGV, &sig_sa, NULL);
+ 	sigaction(SIGILL, &sig_sa, NULL);
+diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
+index 4dff72f6bd346..89d6d1b572959 100644
+--- a/tools/testing/selftests/kvm/lib/test_util.c
++++ b/tools/testing/selftests/kvm/lib/test_util.c
+@@ -19,13 +19,6 @@
+ #include "test_util.h"
+ #include "kvm_syscalls.h"
  
+-sigjmp_buf expect_sigbus_jmpbuf;
+-
+-void __attribute__((used)) expect_sigbus_handler(int signum)
+-{
+-	siglongjmp(expect_sigbus_jmpbuf, 1);
+-}
+-
+ /*
+  * Random number generator that is usable from guest code. This is the
+  * Park-Miller LCG using standard constants.
 
 -- 
 2.55.0.1007.g17ff1f9808-goog
