@@ -1,67 +1,67 @@
 Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16DC4AA1CC
-	for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 16:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3704A3DD86F
+	for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 16:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789058322; cv=none; b=Wpy2Kz1kcDeh0uH6OmuKJ1+W5Snj56mVbP3FQJoGkOFPpTn7SavdNhkh7AJ+JfJLHYR65PnsPcb3xW78zZ+Pc3usDL1/yNks36d81KEF9Y5HPg9U97B0XUF1PBW1lbRVubEr3smUm00z6MFdn8e9IOyPs8xCHptjC8XxXcbkiL4=
+	t=1789058802; cv=none; b=Ujvd26rsGIpxGrSOkL3aKCsQaU1OSAaVEsGGlj6clL1YRXndSkN1lqP2mHvzoGIDxbvliI3HoOCjuF7/INlN2qsLh91lUEiQ9UI0XH3uAoeC1RBFeEiHOnkCeamMDvM8NRLJcmzAYBaNQPfAE63kRI9jo70Tw8P45JJ7SgBkBHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789058322; c=relaxed/simple;
-	bh=cRUce6TKrSWMsa9ZsOkBFnWjOLHEVLQY4P6V2RCGZLU=;
+	s=arc-20240116; t=1789058802; c=relaxed/simple;
+	bh=MtoWeA55Bs2YjWy/YgwYvBdXP31YZOiX0PTrX4B18d8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aF5Jjv4VU+SO8UV1Nl68m4vz8ukqq2OFLJKd8WbtNUcaGm5s5DtSLp8ZFC/E9u7LGDVIFSfrcu/lnOUDcEBEyB7KoYYRzmwzkZpBGce7JjJws97VPbkl5GrnvgWh10r66+ntAh3tFQZ+GU/oNLdD41x8kJHXyJKlE4YrPGUHsgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GQrWrpt6; arc=none smtp.client-ip=209.85.215.197
+	 To:Cc:Content-Type; b=gdgnM2WA6CzaKcUBgf/VSS2A5uMem7N8Zei3GMijDZEOncJVTjxeBIJNcsMQwpuLFPsDijbzNtkHAxbYtrO8PxsH60R9ua49IO/Hx5tDG5xjbRmfLbF52bIwfhLC4i1Jf0K6+6swJjubyccgBAKvUDmtHEcFGeuykb12/jHcWQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G7tIJB52; arc=none smtp.client-ip=209.85.215.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GQrWrpt6"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1eb205d31so25336a12.2
-        for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 09:38:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G7tIJB52"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1a439db36so33097a12.2
+        for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 09:46:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789058318; x=1789663118; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1789058793; x=1789663593; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pLO/yg2gAb4tQ7ZA84YrrqYOhPHyp8iAfdCQyiFWl6A=;
-        b=GQrWrpt6fPxKTeO2B2EON91nvs9Z76fEEs4uBwy02onE1sTpfT+8gjXOC03jt37keo
-         EC4nW2vz0g2KnGzh5UM66LFVzBcF2pOMFXI1pSC53WE/cCYkaA/ZRE0v6ig7EWcgsYpv
-         Hjw2MDc1dWqGnFbrmbIFlf+aTYWxVBSy2rUrYpli7bPjMkRWPG/NA72lRTeH7KNiXOoy
-         vVjL2a0AiZVjG5S4pguP/KROSKezZ/EDNguzWUIhbc+KMu4cEJXfPl9wnQYz/1RUK5EC
-         VQAZhNmSIghhUMwzfRNb7LDqWKlGXTo6ciQVB0V+V63Fr83d1+UOEZzc2uFgqg8VUgMg
-         6qqw==
+        bh=jsW6Qm+aSslCH5e3RaevgVxgzzrweE8oFKyJCoFEERE=;
+        b=G7tIJB52YllwW/Pc6P3pEsnkkcMeW2CBYGE2YoaSBtBSoWww48W8tKIJvZ0hnCMlt4
+         VpJ2SDPGrKxlElYezLzcnebGWMBjyL1xhrQ/4Q8CgLDjWpJccuO8aY8rMJOGTKVOPQ3S
+         +BltiOzhUnXfqHIanGQ/e+8yhX/xDfi95tLcF+Yx58T+Pw6GfAU16TFU7P7tdLB+j5jf
+         SMie8mgiAODES1NGJ6NfZZpQymh3M3h811A7qNW9slyQyz+3NSyTrBqBbr3WYjALMX6I
+         hQbCqSCHECXnOUzJ3rbkBD1iAVBsCcHdUVVUk8QiACHV/NpeAtO4OCG2NWLD2Jjkjlei
+         77NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789058318; x=1789663118;
+        d=1e100.net; s=20251104; t=1789058793; x=1789663593;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pLO/yg2gAb4tQ7ZA84YrrqYOhPHyp8iAfdCQyiFWl6A=;
-        b=JxRnDdS+htbyuEWsMnPpgw3g0DS/ffPCAgek/ESxf/amXdxegSnFqZi5OfuYfkeFY+
-         yqjuV+CpRmGJwmFAyFbV+ILd88rGKTpZO6rOHRKLTDuziAn/AxmJeLn4krlfj5eTHe0F
-         T4yVMf6Wnvq4B4bBZvBVMRsqVeGiRvIvQdAmBDosdAFNLf5SuM3j22TEh/asGxF4ASBE
-         PXFRSn4cSh5SJfC40V7/0W6gFVZMInCq6zR8xTrv9F0p3bfFHPIj0V4SDaYyr5IrGfUG
-         oCy9z6pw2ckLhpYgZsiVqO9UNBcorf5NVU8ENUu4OZ2saIPiXPnF0OFZVXzj01YBLPs5
-         1X0Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxj6GSjUz8n/ijbM3EUdlsf6WTFA8VTyseMIBqmCrUjJrmrMAunwZsgeZJGtF/xf43ywHGDtg5Fmt+J@lists.linux.dev
-X-Gm-Message-State: AFuF++kYFt1ByZIpROz24tmZe35KgMqdHPzVt7iiCxIHaWvcTx8EE1mm
-	i7Snvnye23ZLlz1Sj821pIcF22+IZPDHkYwM3il339YytJmCLfomB2TP2K8FHdlvwhXXfOi5ln4
-	5GSrkyw==
-X-Received: from pgmo17.prod.google.com ([2002:a63:5d51:0:b0:cc2:7a40:4d51])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9397:b0:3c3:a3f4:5485
- with SMTP id adf61e73a8af0-3da39cff434mr71061363637.6.1789058317301; Thu, 10
- Sep 2026 09:38:37 -0700 (PDT)
-Date: Thu, 10 Sep 2026 09:38:36 -0700
-In-Reply-To: <20260910162343.4092060-5-elver@google.com>
+        bh=jsW6Qm+aSslCH5e3RaevgVxgzzrweE8oFKyJCoFEERE=;
+        b=jIj01kaSfHFk51RDRk/7KxErzDWHE42VCPbKShjr2lsB0ZUZIvz4RvTUmvwJaboEGp
+         HTDyDU1IJzAU0up4J0EfWWyFxGUjFAOZzZjx9A7ffnY+wZpUzuXHXlJvee0oB/Rhi0+z
+         pI87+jnDH0lMWHZG2Cq6EM6pUxtSkjr5yQJi8uKDouYsHfMaK0xnQHeokhoMGOP0GYst
+         T4BFisyO0UKz6Xacce8QfkWPPaR7/bnG9v2b79e/VT4uWTHw1tCi/l/6ZEUwQjNyVGG8
+         sDJgXOVHQlBhdTWqd6skGClzG54sxTcDfE7T3FoDKH+s5MA8rOc8Eig+hQr5k1A7eNqx
+         USTg==
+X-Forwarded-Encrypted: i=1; AKwUvBy/PJU6urcYeAA51afGlbO3FpXvkElJzl5CEa4pRmYJoXOBHr0FL5cwLcimzaw/pX9q1sY4dR2T6JcT@lists.linux.dev
+X-Gm-Message-State: AFuF++mjSlw3eh2JvQ7EkDUyXP4FkRB0/KDljwOY+BHVSoMjcn4LfuFV
+	oZqgk51Yfxpg6t3bV6jCYfPzCrH8OmYmJZmBJSokXfvNtBS6XtzsS3Uukq5oWL6rR3XrU9J8Nhb
+	1Dl/0Ng==
+X-Received: from pgte26.prod.google.com ([2002:a65:689a:0:b0:cc4:bede:3dc7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:b40a:b0:3d3:ae1f:d7f3
+ with SMTP id adf61e73a8af0-3da3a0763d2mr68289720637.19.1789058792902; Thu, 10
+ Sep 2026 09:46:32 -0700 (PDT)
+Date: Thu, 10 Sep 2026 09:46:32 -0700
+In-Reply-To: <20260910162343.4092060-2-elver@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260910162343.4092060-1-elver@google.com> <20260910162343.4092060-5-elver@google.com>
-Message-ID: <aqLdDIGPaclTYpjU@google.com>
-Subject: Re: [PATCH RFC 04/10] KVM: Refactor kvm_handle_hva_range() to avoid
- conditional mmu_lock
+References: <20260910162343.4092060-1-elver@google.com> <20260910162343.4092060-2-elver@google.com>
+Message-ID: <aqLe6FcPZIgj2RA6@google.com>
+Subject: Re: [PATCH RFC 01/10] KVM: x86/pmu: Acquire SRCU in
+ pmc_is_event_allowed() to protect filter lookup
 From: Sean Christopherson <seanjc@google.com>
 To: Marco Elver <elver@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
@@ -72,152 +72,121 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo
 Content-Type: text/plain; charset="us-ascii"
 
 On Thu, Sep 10, 2026, Marco Elver wrote:
-> Refactor kvm_handle_hva_range() to check for overlapping memslots
-> upfront via interval_tree_iter_first() instead of tracking found
-> memslots inside the range iteration with a 'found_memslot' flag and
-> conditionally acquiring and releasing mmu_lock.
+> Dereferencing kvm->arch.pmu_event_filter via srcu_dereference() requires
+> holding kvm->srcu to guard against concurrent filter replacement and
+> freeing by kvm_vm_ioctl_set_pmu_event_filter().
 > 
-> This simplifies the control flow by cleanly decoupling the search for
-> overlapping memslots from the subsequent walk. It also separates the
-> lockless path from the serialized path into distinct branches,
-> eliminating the conditional locking, which subsequently enables Clang
-> context analysis to validate locking in this function.
-
-At the cost of duplicating code and adding overhead when there is a relevant
-memslot.  I'm not wedded to the exact implementation, but IMO this is not at all
-an improvement.  Without a clear explanation of what value is added by enabling
-Clang to "validate locking", I don't see any justificatoin for the change.
-
-> No functional change intended.
+> Counter reprogramming can reach pmc_is_event_allowed() without holding
+> kvm->srcu. Specifically, on AMD SVM, toggling EFER.SVME via KVM_SET_SREGS
+> or KVM_SET_SREGS2 triggers synchronous counter reprogramming outside of
+> any SRCU read-side critical section:
 > 
+>   kvm_vcpu_ioctl(KVM_SET_SREGS{,2})
+>     kvm_vcpu_ioctl_x86_set_sregs{,2}()
+>       __set_sregs_common()
+>         kvm_x86_call(set_efer)()
+>           svm_set_efer()
+>             svm_pmu_handle_nested_transition()
+>               __svm_pmu_handle_nested_transition(..., defer=false)
+>                 __kvm_pmu_reprogram_counters()
+>                   kvm_pmu_handle_event()
+>                     reprogram_counter()
+>                       pmc_is_event_allowed()
+>                         srcu_dereference(kvm->arch.pmu_event_filter, &kvm->srcu)
+> 
+> If userspace concurrently updates the filter (KVM_SET_PMU_EVENT_FILTER),
+> a concurrent free and subsequent use-after-free is possible.
+> 
+> Protect filter lookups directly in pmc_is_event_allowed():
+> 1. check rcu_access_pointer() first for the common fast path;
+> 2. acquire guard(srcu)(&kvm->srcu) only when a filter is present;
+> 3. drop redundant outer srcu_read_lock() in kvm_pmu_trigger_event().
+> 
+> Found with Clang context analysis.
+> 
+> Fixes: a02a25a65246 ("KVM: x86/pmu: Reprogram Host/Guest-Only counters on nested transitions")
 > Signed-off-by: Marco Elver <elver@google.com>
 > ---
->  virt/kvm/kvm_main.c | 94 ++++++++++++++++++++++++++++-----------------
->  1 file changed, 58 insertions(+), 36 deletions(-)
+>  arch/x86/kvm/pmu.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
 > 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 65eb26a0520d..f7bfa2d32507 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -558,31 +558,14 @@ static void kvm_null_fn(void)
->  	     node;							     \
->  	     node = interval_tree_iter_next(node, start, last))	     \
+> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+> index a7d60c8785cd..3ad1e696edca 100644
+> --- a/arch/x86/kvm/pmu.c
+> +++ b/arch/x86/kvm/pmu.c
+> @@ -536,6 +536,11 @@ static bool pmc_is_event_allowed(struct kvm_pmc *pmc)
+>  	struct kvm_x86_pmu_event_filter *filter;
+>  	struct kvm *kvm = pmc->vcpu->kvm;
 >  
-> -static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
-> -							 const struct kvm_mmu_notifier_range *range)
-> +static __always_inline bool __kvm_handle_hva_range_walk(struct kvm *kvm,
-> +							const struct kvm_mmu_notifier_range *range)
->  {
-> -	struct kvm_mmu_notifier_return r = {
-> -		.ret = false,
-> -		.found_memslot = false,
-> -	};
->  	struct kvm_gfn_range gfn_range;
->  	struct kvm_memory_slot *slot;
->  	struct kvm_memslots *slots;
+> +	if (!rcu_access_pointer(kvm->arch.pmu_event_filter))
+> +		return true;
+> +
+> +	guard(srcu)(&kvm->srcu);
+> +
+>  	filter = srcu_dereference(kvm->arch.pmu_event_filter, &kvm->srcu);
+>  	if (!filter)
+>  		return true;
+> @@ -1132,7 +1137,7 @@ static void kvm_pmu_trigger_event(struct kvm_vcpu *vcpu,
+>  	DECLARE_BITMAP(bitmap, X86_PMC_IDX_MAX);
+>  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+>  	struct kvm_pmc *pmc;
 > -	int i, idx;
-> -
-> -	if (WARN_ON_ONCE(range->end <= range->start))
-> -		return r;
-> -
-> -	/* A null handler is allowed if and only if on_lock() is provided. */
-> -	if (WARN_ON_ONCE(IS_KVM_NULL_FN(range->on_lock) &&
-> -			 IS_KVM_NULL_FN(range->handler)))
-> -		return r;
-> -
-> -	/* on_lock will never be called for lockless walks */
-> -	if (WARN_ON_ONCE(range->lockless && !IS_KVM_NULL_FN(range->on_lock)))
-> -		return r;
-> -
-> -	idx = srcu_read_lock(&kvm->srcu);
-> +	bool ret = false;
 > +	int i;
 >  
->  	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
->  		struct interval_tree_node *node;
-> @@ -620,28 +603,67 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
->  			gfn_range.slot = slot;
->  			gfn_range.lockless = range->lockless;
+>  	BUILD_BUG_ON(sizeof(pmu->global_ctrl) * BITS_PER_BYTE != X86_PMC_IDX_MAX);
 >  
-> -			if (!r.found_memslot) {
-> -				r.found_memslot = true;
-> -				if (!range->lockless) {
-> -					KVM_MMU_LOCK(kvm);
-> -					if (!IS_KVM_NULL_FN(range->on_lock))
-> -						range->on_lock(kvm);
-> +			ret |= range->handler(kvm, &gfn_range);
-> +		}
-> +	}
-> +
-> +	return ret;
-> +}
+> @@ -1145,14 +1150,12 @@ static void kvm_pmu_trigger_event(struct kvm_vcpu *vcpu,
+>  			     (unsigned long *)&pmu->global_ctrl, X86_PMC_IDX_MAX))
+>  		return;
 >  
-> -					if (IS_KVM_NULL_FN(range->handler))
-> -						goto mmu_unlock;
-> -				}
-> -			}
-> -			r.ret |= range->handler(kvm, &gfn_range);
-> +static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
-> +							 const struct kvm_mmu_notifier_range *range)
-> +{
-> +	struct kvm_mmu_notifier_return r = {
-> +		.ret = false,
-> +		.found_memslot = false,
-> +	};
-> +	struct kvm_memslots *slots;
-> +	int i, idx;
-> +
-> +	if (WARN_ON_ONCE(range->end <= range->start))
-> +		return r;
-> +
-> +	/* A null handler is allowed if and only if on_lock() is provided. */
-> +	if (WARN_ON_ONCE(IS_KVM_NULL_FN(range->on_lock) &&
-> +			 IS_KVM_NULL_FN(range->handler)))
-> +		return r;
-> +
-> +	/* on_lock will never be called for lockless walks */
-> +	if (WARN_ON_ONCE(range->lockless && !IS_KVM_NULL_FN(range->on_lock)))
-> +		return r;
-> +
-> +	idx = srcu_read_lock(&kvm->srcu);
-> +
-> +	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
-> +		slots = __kvm_memslots(kvm, i);
-> +		if (interval_tree_iter_first(&slots->hva_tree, range->start, range->end - 1)) {
-> +			r.found_memslot = true;
-> +			break;
->  		}
+> -	idx = srcu_read_lock(&vcpu->kvm->srcu);
+>  	kvm_for_each_pmc(pmu, pmc, i, bitmap) {
+>  		if (!pmc_is_event_allowed(pmc) || !cpl_is_matched(pmc))
+>  			continue;
+>  
+>  		kvm_pmu_incr_counter(pmc);
 >  	}
+> -	srcu_read_unlock(&vcpu->kvm->srcu, idx);
+>  }
+
+I would very strongly prefer to fix this in __set_sregs_common():
+
+diff --git a/arch/x86/kvm/regs.c b/arch/x86/kvm/regs.c
+index 8f66438989e4..2ce16e96d796 100644
+--- a/arch/x86/kvm/regs.c
++++ b/arch/x86/kvm/regs.c
+@@ -571,9 +571,10 @@ static bool kvm_is_valid_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
+ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
+ 			      int *mmu_reset_needed, bool update_pdptrs)
+ {
+-	int idx;
+ 	struct desc_ptr dt;
+ 
++	guard(srcu)(&vcpu->kvm->srcu);
++
+ 	if (!kvm_is_valid_sregs(vcpu, sregs))
+ 		return -EINVAL;
+ 
+@@ -605,13 +606,9 @@ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
+ 	*mmu_reset_needed |= kvm_read_cr4(vcpu) != sregs->cr4;
+ 	kvm_x86_call(set_cr4)(vcpu, sregs->cr4);
+ 
+-	if (update_pdptrs) {
+-		idx = srcu_read_lock(&vcpu->kvm->srcu);
+-		if (is_pae_paging(vcpu)) {
+-			load_pdptrs(vcpu, kvm_read_cr3(vcpu));
+-			*mmu_reset_needed = 1;
+-		}
+-		srcu_read_unlock(&vcpu->kvm->srcu, idx);
++	if (update_pdptrs && is_pae_paging(vcpu)) {
++		load_pdptrs(vcpu, kvm_read_cr3(vcpu));
++		*mmu_reset_needed = 1;
+ 	}
+ 
+ 	kvm_set_segment(vcpu, &sregs->cs, VCPU_SREG_CS);
+
 >  
-> -	if (range->flush_on_ret && r.ret)
-> -		kvm_flush_remote_tlbs(kvm);
-> +	if (!r.found_memslot)
-> +		goto out;
-> +
-> +	if (range->lockless) {
-> +		r.ret = __kvm_handle_hva_range_walk(kvm, range);
-> +		if (range->flush_on_ret && r.ret)
-> +			kvm_flush_remote_tlbs(kvm);
-> +	} else {
-> +		KVM_MMU_LOCK(kvm);
-> +		if (!IS_KVM_NULL_FN(range->on_lock))
-> +			range->on_lock(kvm);
-> +
-> +		if (!IS_KVM_NULL_FN(range->handler))
-> +			r.ret = __kvm_handle_hva_range_walk(kvm, range);
-> +
-> +		if (range->flush_on_ret && r.ret)
-> +			kvm_flush_remote_tlbs(kvm);
->  
-> -mmu_unlock:
-> -	if (r.found_memslot && !range->lockless)
->  		KVM_MMU_UNLOCK(kvm);
-> +	}
->  
-> +out:
->  	srcu_read_unlock(&kvm->srcu, idx);
->  
->  	return r;
+>  void kvm_pmu_instruction_retired(struct kvm_vcpu *vcpu)
 > -- 
 > 2.55.0.1003.g10538fe699-goog
 > 
