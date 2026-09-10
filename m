@@ -1,210 +1,179 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94F7489FBC
-	for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 12:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82ADF4963BB;
+	Thu, 10 Sep 2026 14:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789044398; cv=none; b=oSWx/Az2O7qd88ilw17V+oIg8Nc38jNSYCIQL9pQ/EQMJAfDF1jXS0O1oWk1FU+V0g2MsJRbWPmq5zotRs7kuTn5ZE4si8SMv5Ds/xOQehJa1Qq2NwvsxfpkA365mnW23pOJIGhKRZeHrLEn7ym1xozSR/IDoSpmP6t7BJe4y08=
+	t=1789049120; cv=none; b=GBqZf2NHZGe2Ahsgr58orNZOBSaCpG7Es69szmZPeoqlp9L2s+zISg5XzZNTGFxwQm29/r0h9AxkdWqSb7KF1mIJ7l7bZY9C2nd2Nzu/N6T9M8ocJsYP3ioRkBjorGvT0QQdLBGRFKDEGkQK5huPn8h93Qx+9A88sY9pQe74Eug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789044398; c=relaxed/simple;
-	bh=BHjSrs+Mxio25cWIAgxeq9qg9MSFeun0di9yy9+Eyro=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WfjLP5bE+7aA5eSDNjPcldhMBKXC5apSR/z9K//tnkcrBS4wfHCjCrnI8ZnmLwU26K7K09zuLlsbWrg2eovfMIpJswXbedeyS7QS6YrICMDHXe1ziV8tk+iClc+n9bOM4QNO+y2GoL/aiot2gEEfsFRdr8KGKT2kRHTEVcgpDB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=lttFIk6j; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1789049120; c=relaxed/simple;
+	bh=zMV+qyA/nD7/k7XNzwyL+15jHutScUr0r4Xmr3HVn/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KKccO9ee43h+L8K/ba2VIthq3NqPQJl+Ckq/cLO39hQoKh0NuHEdQ8BPCumgW4HVZjBH4/HJYjkQr+UNB5YjldncXeP+RAWCXhBPPHzIKr3t+2yO589tYllmXAG4Ajl+kuMnvqCPRFmkLI1LXzcyggi9JF9so+OZxMQHeNyC5T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TDfF6pb2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="lttFIk6j"
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-90e7fd978beso112966706d6.1
-        for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 05:46:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1789044395; x=1789649195; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Y0IKNLxM5TSX9mM0DsyrNhze53zUnc7LA/ctMt4Lh+M=;
-        b=lttFIk6j3BiKlafEl4QBzeTid+9h+vSYiBYgKMpnZR5aGNmaewjAUJ5MGcxeROXjhp
-         wEkbVMk5hSqZwmyzVBYNOsUOdHGrHffkYUkIxrzDK4jBcVda+unv+F4dqIIUvr4Oe/w3
-         oGw6T6KU44/SviDEklm4u0UT7wctspwADioOZQs4rHa+85vyAxi0yRwgqkE4+Vdr/SSj
-         jCk7czi+n3+lu1qBKi4h40WG8MF9ZkpVY9ulMSE5hOM7hYszmabl3jb9gdDk8iOD0zDQ
-         G/CENJcnakdWOhg6M53O4TzD9YwH9WY22woHXXfnArvpbKXnAbjqB+eTFKPYMwDEE7BU
-         JT2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789044395; x=1789649195;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Y0IKNLxM5TSX9mM0DsyrNhze53zUnc7LA/ctMt4Lh+M=;
-        b=Fta1TkavOUldYmHFjMZxKrrOgw9mulkHa9TgQoP7aIAgMfYa62BtDiLNs87x7OLile
-         TM7BEehMlVSwyuQ9qoX3eisBr0gZE+K7WbkEyYdfVoW/tWcyiMVDDYK+KpCMSJVU45Gf
-         2nB96mu5DXlwkwWnVOUWGAkGhV7ugeK6QyyYcJVXUsTmW2eo3oN29Cgrf6Qc5iV4jzzQ
-         mxR6ojMff73cGi5DDLP1z9D+V56+rM9NJrOxg+LgWGC7suEuAJYpfbDqzMlep6reJsrs
-         TsKp/MWPR2UuvWm7JJLG7Tq822eM++1w5kG2sd0JE6DUMBhqBc258gqEZ2OXzAbOHphy
-         j6KA==
-X-Forwarded-Encrypted: i=1; AKwUvBxE3cOYt3uIEpKNHv5IKRRgxqfmSzcTy5wGullppCZUKFy+mrCYhmgnE0WxehjL43G5t3eb7w3C2Kh5@lists.linux.dev
-X-Gm-Message-State: AFuF++lwiRHOcRhaPRzQKfTox1PshEE8jO1DEzxlUVX+A6FCpO9g1j9J
-	ji4m6Ik8EiI5zoVO1Wn2lZ+VNB3jt68mH72tX5/RNrrhpAqXdwl4m0koL5PJGA60zow=
-X-Gm-Gg: AYBFou0x+UNoUHDzY8TuqOmCfwo9iG8Ayn7A3cXosh1kmZhfESXrQj4RI0FlwD6JHrx
-	4DBXZpHoNTiPAdI5v17D9ykJh3EVbjPiWPW28g8s6vsj+4zykdL6crWInUtFMPf4hLE+Yrismsu
-	iidAs0MSrB2M0Krh79mPHW8t0yGEkCV2fJ3nuEsJW+idnf6JCQsRy8OLbX0P3yF15LPh5WEuyRv
-	gFV4cPjnX3Y4d4PQghEad6jFhxVjV4owhUOFQFIUKAQXMuGuZnplV9BpRwFn0W137Tl3gansRZf
-	Q+pvaYoBC7/OKSuVFPvs5ZM9l3Iv7997qy6LtJzQ1RMj1BVx6Md4dYoDlfhnc6Qa9oZX3T5JU2U
-	ZYp9VfVDZ1MMjXa92zczesvwZflTVswapMMxrzqbOgP2GUsA0gJHQW41dTXb/RLlTShy2z57U5x
-	qc5EyndJs3easTt4M4Yx8KdOwWFAhiZPAuhSA3yGbK2x3IyZedowxTA1GkAGPlKcmEFt+N617Yl
-	iiaLOA0rjmGpVpCIl8GF4uSzNq1RpdjaUICmLzCuIkllWFKy+or9gmJaXm7iajyNI4=
-X-Received: by 2002:a05:6214:d89:b0:910:4b85:a298 with SMTP id 6a1803df08f44-9104b85a587mr381394946d6.26.1789044394511;
-        Thu, 10 Sep 2026 05:46:34 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9104059615dsm168922596d6.3.2026.09.10.05.46.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 05:46:33 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x4eAi-00000002O5s-42fb;
-	Thu, 10 Sep 2026 09:46:32 -0300
-Date: Thu, 10 Sep 2026 09:46:32 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TDfF6pb2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5771F000FF;
+	Thu, 10 Sep 2026 14:05:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789049119;
+	bh=jQdUjWIHK+A1yjvk1aL2MsPIRhofTuFYBLfM+UnkHho=;
+	h=From:To:Cc:Subject:Date;
+	b=TDfF6pb2+sJVIQr5mEovOo6DcmyF/sUL8zSsTk01dzrXxtZrBRnrM/8r+MDw/+L3H
+	 53Ez4zxuTcsZUdK6i6rq0Ih4CfwCB2DiflFBSilsOm2w1MqO9GeWJDQI2hWzxM6bWe
+	 MEodZ39FQlqr0O7BEkDaxkOga3bgI4eB+IMpIBuYPBIJZP2+macukfHvcTbr8IlMTf
+	 5d6WrMxvs9vuv7p0tlZn5WLbQ1coUc0nSd4lT4inSdI247sc5Czf9lK/07Yb5d5X0T
+	 /o3AwcaNLGkU2HMD0NtflRyfm4KkCJORncMiF4GksS8yv3biLXekuk9ObVhbGNsfYc
+	 2M5qKnRV/OoTQ==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	Alexey Kardashevskiy <aik@amd.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Dan Williams <dan.j.williams@intel.com>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Cameron <jic23@kernel.org>,
 	Marc Zyngier <maz@kernel.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Robin Murphy <robin.murphy@arm.com>,
 	Samuel Ortiz <sameo@rivosinc.com>,
 	Steven Price <steven.price@arm.com>,
 	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Subject: Re: [RFC PATCH v4 03/16] iommu/arm-smmu-v3: Add initial pSMMU realm
- viommu plumbing
-Message-ID: <20260910124632.GB4083318@ziepe.ca>
-References: <yq5aik4nztdt.fsf@kernel.org>
- <yq5aecfbzjyk.fsf@kernel.org>
- <20260902235609.GG2890729@ziepe.ca>
- <yq5a8q5izxz4.fsf@kernel.org>
- <20260903171704.GK2890729@ziepe.ca>
- <yq5acxupjsy2.fsf@kernel.org>
- <20260907125228.GB667892@ziepe.ca>
- <yq5atsnyag84.fsf@kernel.org>
- <20260909124628.GH2543240@ziepe.ca>
- <CO1PR11MB4835512E374074A5F4AD0A6C8CBF2@CO1PR11MB4835.namprd11.prod.outlook.com>
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [PATCH v5 00/15] coco/TSM: Host-side Arm CCA IDE setup via connect/disconnect callbacks
+Date: Thu, 10 Sep 2026 19:34:53 +0530
+Message-ID: <20260910140509.868402-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CO1PR11MB4835512E374074A5F4AD0A6C8CBF2@CO1PR11MB4835.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 10, 2026 at 09:52:12AM +0000, Tian, Kevin wrote:
-> > The mmio is owned by vfio, there should be a handshake in VFIO to
-> > remove mmio when it becomes private, otherwise I don't think we need
-> > to do anything more?
-> 
-> for TDX a callback in VFIO is invoked to revoke the dmabuf.
-> 
-> btw I didn't see any dmabuf related in this series (even in a hackish
-> way as Yilun sent out last year). Is it not required by CCA or just
-> skipped now waiting for the framework to be settled?
 
-I think just one step at a time :\ I think CCA needs it as well, you
-also cannot safely leave private MMIO floating around the host
-userspace on CCA.
+This patch series implements the TSM ->connect() and ->disconnect() callbacks
+required for the Arm CCA IDE setup as per the RMM 2.0bet3 specification [1].
 
-> So viommu will become the abstraction point for tsm operations and
-> directly talks to the tsm driver instead of going through the merged 
-> tsm_ops (bind/unbind/guest_req).
+This patchset includes the host-side flow needed by connect/disconnect,
+including:
+- DA feature detection helpers
+- host TSM callback wiring and IDE stream allocation support
+- creation/registration of RMM pdev descriptors
+- RMM pdev communication helpers
+- pdev stop and teardown helpers for disconnect
+- pdev instantiation from the connect path
+- public key registration with RMM
 
-More precisely for what was being called the TDI - ie it is the
-abstraction point for the host side of a guest virtual PCI device.
+To support public-key handling from the device certificate chain, the series
+also includes the required X.509 parser updates.
 
-iommufd vdevice already represents this, so we use it again.
- 
-> currently what tsm_ops provides additionally is more about synchronization
-> with connect/disconnect, otherwise just calls into underlying tsm driver. As
-> long as viommu creation holds a reference to tsm then disconnection is
-> blocked then it's safe.
+Testing / Usage
 
-Yes, this already has to be true or our lifecylce model is
-nonsense. Once the iommufd creates the vdevice the guest is running
-and we cannot disconnect it without unplugging it from the guest. Thus
-the locking can rely on that. Within an iommufd ioctl context the vdev
-and underlying connection must be stable.
+To initiate the IDE setup:
+	echo tsm0 > /sys/bus/pci/devices/$DEVICE/tsm/connect
 
-> and IOMMU_VDEVICE_TSM_BIND will be removed. 
+To disconnect:
+	echo tsm0 > /sys/bus/pci/devices/$DEVICE/tsm/disconnect
 
-Replaced, the same logical operations should flow through the viommu
-command ioctl
+The series is based on:
+  - https://lore.kernel.org/all/20260904095000.1184861-1-aneesh.kumar@kernel.org
+  - https://lore.kernel.org/all/20260907095942.1140734-1-suzuki.poulose@arm.com
 
-> Seems originally this series
-> does SMC_RMI_VDEV_CREATE and SMC_RMI_VDEV_LOCK both in tsm
-> bind op. Then the proposal is moving them all to vdevice creation time so
-> no separate bind step is required.
+Changes from v4:
+https://lore.kernel.org/all/20260427065121.916615-1-aneesh.kumar@kernel.org
+* Update rmi_set_pub_key() based on the latest specification.
+* Rename structure members to match the specification.
+* Rebase on top of the latest dependent series.
 
-Hmm, lock still should be guest visible on CCA, and the device has to
-start up in the guest as TDISP unlocked. I'm not 100% on the RMI side
-of the flow, but this does not look right.
+Changes from v3:
+https://lore.kernel.org/all/20260312080129.3483585-1-aneesh.kumar@kernel.org
+* updated the patches to follow the RMM 2.0bet1 specification
+* reworked the host-side pdev lifecycle to better match the RMM 2.0bet1 flow,
+  including common pdev state, root-port pdev support, and non-coherent stream
+  setup and teardown
+* split PF0 setup into identity collection and conditional public-key
+  installation, and gate DA enablement on RMI_FEATURE_REGISTER_2_DA
+* added coordinated handling for RMI_DEV_COMM_EXIT_STREAM_WAIT, along with
+  stream connect/disconnect and stream key refresh/purge support during vdev
+  teardown
 
-VDEV create should be done before the realm is started. We need this
-setup right because Linux VM is going to validate the vdev during boot
-if it is affiliated to a vSMMU. lock should be done only when
-requested by the guest. The guest must start with a normal unlocked
-T=0 PCI device.
+Changes from v2:
+rfc-v2 https://lore.kernel.org/all/20251027095602.1154418-1-aneesh.kumar@kernel.org
+* rebase to latest kernel and core TSM changes
+* Address review feedback.
 
-> Does it mean that ARM CCA is essentially an early-bind model i.e. the TDI
-> starts in locked state from guest p.o.v.?
+v1:
+rfc-v1 https://lore.kernel.org/all/20250728135216.48084-1-aneesh.kumar@kernel.org
 
-No
+[1] https://developer.arm.com/documentation/den0137/2-0bet3/
+[2] https://lore.kernel.org/all/20260303000207.1836586-1-dan.j.williams@intel.com
+[3] https://lore.kernel.org/all/20260318155413.793430-1-steven.price@arm.com
+[4] https://gitlab.arm.com/linux-arm/linux-cca.git cca/topics/cca-tdisp-upstream-rfc-v4
 
-> but https://lore.kernel.org/all/yq5aecfbzjyk.fsf@kernel.org/ seems to indicate
-> that guest_req() still handles the bind request from the guest:
-> 
-> "
-> - cca_tsm_guest_req() now handles TSM_REQ_SET_TDI_STATE requests for
->    the unlocked, locked, and running states.
-> "
+Cc: Alexey Kardashevskiy <aik@amd.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Samuel Ortiz <sameo@rivosinc.com>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>
 
-Right the guest side request to lock should come that way.
+Aneesh Kumar K.V (Arm) (12):
+  coco: host: arm64: Prepare host TSM plumbing for IDE streams
+  coco: host: arm64: Create RMM pdev objects for PCI endpoints
+  coco: host: arm64: Add RMM pdev communication plumbing
+  coco: host: arm64: Add RMM pdev stop and destroy helper
+  coco: host: arm64: Register device public key with RMM
+  coco: host: arm64: Initialize RMM pdev state for TDISP IDE connect
+  coco: host: arm64: Coordinate peer stream waits during pdev
+    communication
+  coco: host: arm64: Connect RMM pdev streams for IDE devices
+  coco: host: arm64: Refcount root-port pdevs used by IDE streams
+  PCI/TSM: Move CMA DOE mailbox discovery out of
+    pci_tsm_pf0_constructor()
+  coco: host: arm64: Add NCOH_SYS stream support for RC endpoints
+  coco: host: arm64: Enable PCI TSM connect callbacks
 
-> 
-> a bit confusing, but maybe due to stale info cited from different timing...
-> 
-> for TDX we're currently pursuing a late-bind model (i.e. TDI starts in shared
-> state in guest), so a separate bind interface is still necessary. We could look
-> at whether it should be an explicit @bind viommu op or carried by 
-> @guest_req (say, if most preparation works can be moved to vdevice creation).
+Lukas Wunner (3):
+  X.509: Make certificate parser public
+  X.509: Parse Subject Alternative Name in certificates
+  X.509: Move certificate length retrieval into new helper
 
-It should go over the viommu command ioctl. It looked like there was
-alway some iommu specific format to the command in the tsm version of
-this, so that is the appropriate way.
+ crypto/asymmetric_keys/x509_cert_parser.c |   9 +
+ crypto/asymmetric_keys/x509_loader.c      |  38 +-
+ crypto/asymmetric_keys/x509_parser.h      |  42 +-
+ drivers/crypto/ccp/sev-dev-tsm.c          |  13 +
+ drivers/firmware/arm_rmm/rmi.c            |   4 +-
+ drivers/firmware/smccc/smccc.c            |   6 +
+ drivers/pci/tsm.c                         |  13 +-
+ drivers/virt/coco/Kconfig                 |   2 +
+ drivers/virt/coco/Makefile                |   1 +
+ drivers/virt/coco/arm-cca-host/Kconfig    |  26 +
+ drivers/virt/coco/arm-cca-host/Makefile   |   5 +
+ drivers/virt/coco/arm-cca-host/main.c     | 461 ++++++++++++
+ drivers/virt/coco/arm-cca-host/rmi-da.c   | 859 ++++++++++++++++++++++
+ drivers/virt/coco/arm-cca-host/rmi-da.h   | 217 ++++++
+ include/keys/asymmetric-type.h            |   2 +
+ include/keys/x509-parser.h                |  57 ++
+ include/linux/arm-rmi-cmds.h              |  85 +++
+ include/linux/arm-smccc-rmi.h             | 161 ++++
+ 18 files changed, 1940 insertions(+), 61 deletions(-)
+ create mode 100644 drivers/virt/coco/arm-cca-host/Kconfig
+ create mode 100644 drivers/virt/coco/arm-cca-host/Makefile
+ create mode 100644 drivers/virt/coco/arm-cca-host/main.c
+ create mode 100644 drivers/virt/coco/arm-cca-host/rmi-da.c
+ create mode 100644 drivers/virt/coco/arm-cca-host/rmi-da.h
+ create mode 100644 include/keys/x509-parser.h
 
-> btw per past discussions VFIO should block some operations (reset, etc.)
-> while a TDI is locked. Do we expect a callback into VFIO to notify the locked
-> state, or require VFIO's own interface to place a cdev into a special state
-> which prevents sensitive operations even before binding it to iommufd
-> (and allow creating TDI vdevice only on such idevice)?
+-- 
+2.43.0
 
-At a minimum I think we have to synchronize with vfio, somehow, that
-when the device enforces its private MMIO so it can unmap it. Thay may
-be an argument we need a few standard viommu ops so the core code can
-capture lock/unlocks and do this prep work. Or maybe a special cdev
-state is simpler.
-
-This should be figured out before any uapi is settled.
-
-I don't know about reset, that sounds like something the pci core
-should deal with?
-
-Jason
