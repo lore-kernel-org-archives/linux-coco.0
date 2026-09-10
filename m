@@ -1,72 +1,72 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835BD2E0B5C
-	for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 03:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B79E3659F9
+	for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 04:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789011628; cv=none; b=GUKN0Bta+MM7/JNGH869i1TovDqoqYh7QnDR5XpWADLchQ5hSCvUggL63CZuxNt4JcGUjZVsoB+S4T2+tyYS/VPrJU1lMra4ugadY6T52JSunwxWaRaJPlNZ0gLS4AIjRODby3nS4vhD3WXpep0890wtEh9u2saRgIpKNWKtHnE=
+	t=1789012826; cv=none; b=kaa2MwA/91Xjub0VB2UJK0TI1wnccfw/XiGHX2Sfztu2sFFGS+R3x4p7jnR5eqqRzOuaMiE9kDQoJkdYQfGgEe4cTYVxWA+49vNvA4PHlarbxHarflo1ULm2sSk3Dh1bZ1gn0SoQnoEtlRKLTuJ87diSBDWU5p7D8Fw+a0bHhmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789011628; c=relaxed/simple;
-	bh=IkdLP5CMbNSeQcg1JlhjuFap/uVykSyWKF1wsJxcwHM=;
+	s=arc-20240116; t=1789012826; c=relaxed/simple;
+	bh=pBqbGbHdUjToyCWJUAd59537eBPwlH2Z0Zl7h1xavv8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iSRGnKFRwR/GVJP0zs4MkwPBI9Gmfq+WWkruOAxYEVhN+7qC/YE13VuL2QB3CBNc1jV2k02sJEK2MVwp1oxI41AQ3UBsQx7bDWwcD3I5AmFYFT+dHw+YoFGFQ0xy2YgcmGYcJecfqPUGrrYOuEJC9II8UumvsV7qVSLcSVRUFuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RyD3kQyP; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=uk0ExyFNbWd3OIpZmlSst27xu+l8FLtnuWMXy6aD2TLKHWRMfT7eQmuhvMsSPPc3S1hXsQY+qqpqiGapfypcBRt2qY0vrdYXOk7ucq8wgHmcCP/lDhL4GFdeYIWTCJZfLc57Ta/Y68j2kLsEPVa9kT1s1K1LjZmXPArYw2WYufo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PgJO8g4k; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RyD3kQyP"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PgJO8g4k"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789011625;
+	s=mimecast20190719; t=1789012824;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/RRjDlW0kox/juFkyRROqpQ/BAv5W8k8xAzyOIl9/BY=;
-	b=RyD3kQyPq+QsUEFEVzhy5adF8PtlPWFDvGro5Gjb2Z1IoHUf4VCiFqIL3CFKdtDiprIYM2
-	O5PKVwciGBjxcclrY+pE0t75I4jWZHvsCQ95tVtD8z4wuc0MP3VN975pnuexZUS5HBklFz
-	I7eV0UpUQ6js+BxK/l/299VKyl8iKDo=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=4MZLtSduN3n4DstPQZClxNsj5BwxMrrkDzTkcMmPEOA=;
+	b=PgJO8g4k9Kwp37taSXnrg+WgBFSP5sWU57lJU8LHFc8FgsyQelodqfuEw0immwdSXH2XpD
+	cXUAoO3CQvp3c30Rqi1Rreh1ypqn6OmBxFoKc5IHAwbnq8sjuYjfa3ob7oFvA9Cdn5mLIA
+	Ro3q8k8a3qs/VTmExFEcZVaddsj2b3s=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-fzMZdIIoPKGNJe5-LolIAQ-1; Wed, 09 Sep 2026 23:40:24 -0400
-X-MC-Unique: fzMZdIIoPKGNJe5-LolIAQ-1
-X-Mimecast-MFC-AGG-ID: fzMZdIIoPKGNJe5-LolIAQ_1789011623
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c89704da8c7so8659962a12.0
-        for <linux-coco@lists.linux.dev>; Wed, 09 Sep 2026 20:40:23 -0700 (PDT)
+ us-mta-550-9E0kWT81Pi-_UcSleGNeng-1; Thu, 10 Sep 2026 00:00:20 -0400
+X-MC-Unique: 9E0kWT81Pi-_UcSleGNeng-1
+X-Mimecast-MFC-AGG-ID: 9E0kWT81Pi-_UcSleGNeng_1789012819
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2db8e9fe9c7so26800155ad.0
+        for <linux-coco@lists.linux.dev>; Wed, 09 Sep 2026 21:00:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789011623; x=1789616423;
+        d=1e100.net; s=20251104; t=1789012819; x=1789617619;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/RRjDlW0kox/juFkyRROqpQ/BAv5W8k8xAzyOIl9/BY=;
-        b=PYYGSSGvOZr3n7i6L0HkZQHistibdTdvtJUhesUYtzYSblMitLV+8k03Im0x80mQLS
-         UU8SrOAs++Wenbg5/Z+I+NtdJZ9hnHGk21tEdjOtkdsbVE6Q70bIlRXIFaqwbE6Z/vwJ
-         3rlFL/XAwUScD2T/JrEbLbRmbUqD2bKHLKkf2VZy3GxckX34toAy9gxPTSyMrL06MZl4
-         9Hq/Zo5+OFaDf2IQWcjgTZywNrrUZhdmTBIUWfamfq/s3Pkm2PfByp7psZC5HACGY+l8
-         dRo3N5zJUxK+ESUlSmGUpAEQtw6mZq6f9VJ/SQz8noGz3CJYB3OZmULDmgKXIkDbYm9G
-         hO0A==
-X-Forwarded-Encrypted: i=1; AKwUvBwRWTmxBnrommDNUfaoOPvr7ThxSMxQZVApYojQ0wCPMGLplaajPF69yOt8SWq56tmO1vfF5DF5yMHC@lists.linux.dev
-X-Gm-Message-State: AFuF++mKixZ+7ND5HU92XyKh9URPYXsfUiDK7FeITYaTXj4JVASrpfB8
-	5xn/G7oFoV8IjhOboR9AgF1MgcgMiGKS5x9pbVgdtQcH3AY5w51UiWPMbon0AYWi1yziMnapL5t
-	k4FbGkSTQ5068V12bJw+zZXfl8fJOrbPDNL59Abm6ncZGKjMOzWyVOmisciZLIvo=
-X-Gm-Gg: AYBFou0m8xtWyhnGjHUBj3WmSu0zWZsMtIOq19CmZiqrC22l7p9nExkY3Gme42etxUT
-	yzVFsvvOr+8hWWfMqq3K5ZmKXaV5QZDQntSUe8b+iS/NDwm1oY+RvFkZnmWip/3+1RVDZLiVXq0
-	Zv11TahxqkkBgMNUSIQ7L31AftHIuO9lbNpDbC+5E2OvgjRAziqz9IkGfwLA4jnNLkIHcRnQiNS
-	pAMsrqYjiyHsSbCSyOBeCp75us53YtdS1/pOegtX5IW0EWWMDk+aSFhda+n63qDiGa6N37Fyx56
-	b2NPl7o0P1cO+8vuE6VdjE2f904EE6zRQ+HbpYKFlXnaSLB2ZE8EKzqd/kA2aGP+9EqnjlPAUpz
-	uh65w41DEKAtMj6F4puKYag1oor/feGog5UOiYK0blA==
-X-Received: by 2002:a05:6300:85:b0:398:8870:b58f with SMTP id adf61e73a8af0-3dacbeed903mr8426017637.14.1789011622913;
-        Wed, 09 Sep 2026 20:40:22 -0700 (PDT)
-X-Received: by 2002:a05:6300:85:b0:398:8870:b58f with SMTP id adf61e73a8af0-3dacbeed903mr8425945637.14.1789011622523;
-        Wed, 09 Sep 2026 20:40:22 -0700 (PDT)
+        bh=4MZLtSduN3n4DstPQZClxNsj5BwxMrrkDzTkcMmPEOA=;
+        b=eFZWn8QRXD9XuiCXbxqJCQS6thwdK/vanpsSBGAJWcYBTfTqT7nthznyBnXlFd/oi5
+         HI7JqQIp27pZClSDCUSC5I3Axlb01YN5ic9ipufEH6Zg5ALqHoGTi4ZBxMMo4wPj5muQ
+         iyo2WcxYkZEQnnYOHBFQNcVTAq8MIjIOYCHyhUQLwzG0vm0MkTzf9xpXAK/r0eDH/q0P
+         zkgPChENDdcTvQc1NrElL108+ozor9TWztfxrlarofddQHWEtfgI6sPoR6qCJEzkwJeV
+         PVXHjqc3sTyLN1S7D7gcNpjm6JtwlsnWfdku7WQG/BFjlE98vFb9+HXKeXuobJOdnlY3
+         Uq4Q==
+X-Forwarded-Encrypted: i=1; AKwUvByoCResXj5XO30L0bh9ttCCM8/4EBzOxGtFpsfcDZu9RqU2oubNt5psUFD1bPkM99ZxfrOhntA27K8w@lists.linux.dev
+X-Gm-Message-State: AFuF++mUH0xf1uYwRB+41MFhMYtE22q0RnbzwzSyDPEXUnYc74ikwcC5
+	qYrGixZG7nww2MvYOaUeD8EYKifZA8DoPCNS1RZ6Hq8MloL6mI2KlGQF9Eey2sHQk8aQmuJWZdK
+	afi57QU38UFkOq86mvxDfIbIv5iTzfj5tRVWl3u/sZGw0KffzkKr3ETD/saFH8zo=
+X-Gm-Gg: AYBFou008/C7PJHzasfvkC6+rX0QUjBVoFAQG/aGVnZAits+KU5QqL8N+4xCrBseAC+
+	iOLuqCgvWIaTM7VZ2u96JddDexMmY3QFrBYeyq0i+j1aayZTC7lH7YMHwDsks8PrcZBYESXVXRh
+	J65N+QR5tdWdrV5oCYjohBEPvPSR04GtETLhDGa+ygqbkJ3h0dHPhE3mZiGC6HS1yYLWE6Yh9vI
+	Y9bBXXkj4iFmLOc1wv1IxDc6DoQf4IZN9l5Bs8HE3lVHSzld9DetaMiGT2/vRPxvwM5AjZ99wmW
+	vnqT6apXzw9B+AfADdJW12P+KWczDlYkfEK1xfwgpIWI7MLc9RfMXNyBgRuCDm16yLSxW+d0KcL
+	WMXSgUNZxr5X0A8SNJa290HN6OWpErv7eHxthAzRiqA==
+X-Received: by 2002:a17:902:ef44:b0:2cc:6018:f030 with SMTP id d9443c01a7336-2db1259d1f8mr542225215ad.14.1789012819316;
+        Wed, 09 Sep 2026 21:00:19 -0700 (PDT)
+X-Received: by 2002:a17:902:ef44:b0:2cc:6018:f030 with SMTP id d9443c01a7336-2db1259d1f8mr542224465ad.14.1789012818867;
+        Wed, 09 Sep 2026 21:00:18 -0700 (PDT)
 Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc4aa39f605sm1053235a12.21.2026.09.09.20.40.12
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db149ccf2esm82468805ad.73.2026.09.09.21.00.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Sep 2026 20:40:22 -0700 (PDT)
-Message-ID: <f24104a3-fe2a-4a71-acbc-a4c3d2d416d7@redhat.com>
-Date: Thu, 10 Sep 2026 13:40:10 +1000
+        Wed, 09 Sep 2026 21:00:18 -0700 (PDT)
+Message-ID: <a0c5c373-b5c2-4ad2-9e53-ede58c392972@redhat.com>
+Date: Thu, 10 Sep 2026 14:00:06 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -74,8 +74,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 02/20] KVM: arm64: Avoid including linux/kvm_host.h in
- kvm_pgtable.h
+Subject: Re: [PATCH v17 04/20] KVM: arm64: Refactor the vcpu_load to allow for
+ VM specific callbacks
 To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
@@ -86,36 +86,131 @@ Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
  sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
  WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
 References: <20260908162223.1683432-1-suzuki.poulose@arm.com>
- <20260908162223.1683432-3-suzuki.poulose@arm.com>
+ <20260908162223.1683432-5-suzuki.poulose@arm.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20260908162223.1683432-3-suzuki.poulose@arm.com>
+In-Reply-To: <20260908162223.1683432-5-suzuki.poulose@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: xHYQFlUn9Hdi2cCCHj4a_adgNig45tL3v3F-8i_xofA_1789011623
+X-Mimecast-MFC-PROC-ID: n3Nmtt469epNPQsf8rWpNXnPd5yOvaCXlnKGYz-u5_k_1789012819
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
+Hi Suzuki,
+
 On 9/9/26 2:22 AM, Suzuki K Poulose wrote:
-> From: Steven Price <steven.price@arm.com>
+> Based on a work by Marc Zyngier
 > 
-> To avoid future include cycles, drop the linux/kvm_host.h include in
-> kvm_pgtable.h and include the lightweight headers required for the types
-> and inline helpers used there. Additionally provide a forward
-> declaration for struct kvm_s2_mmu as it's only used as a pointer in this
-> file.
+> To keep the VCPU load/put handling cleaner with the different kinds of VM types,
+> we are about to introduce VM specific callbacks to do just the right thing.
+> In preparation for that, make some refactoring to add the change easier.
 > 
-> Both pgtable.c and kvm_pkvm.h relied on the indirect inclusion of
-> kvm_host.h, so make that explicit.
+> No functional changes intended.
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > ---
-> New patch in v13
-> ---
->   arch/arm64/include/asm/kvm_pgtable.h | 6 +++++-
->   arch/arm64/include/asm/kvm_pkvm.h    | 2 +-
->   arch/arm64/kvm/hyp/pgtable.c         | 1 +
->   3 files changed, 7 insertions(+), 2 deletions(-)
+>   arch/arm64/kvm/arm.c | 46 +++++++++++++++++++++++++++-----------------
+>   1 file changed, 28 insertions(+), 18 deletions(-)
 > 
+
+Nitpicks below, none of them are introduced by this patch itself. In either way:
+
 Reviewed-by: Gavin Shan <gshan@redhat.com>
+
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 67f1ff9bc4fbe..51fc651267157 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -683,14 +683,11 @@ static bool kvm_vcpu_should_clear_twe(struct kvm_vcpu *vcpu)
+>   	return single_task_running();
+>   }
+>   
+> -void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+> +static void vcpu_prepare_mmu(struct kvm_vcpu *vcpu)
+>   {
+>   	struct kvm_s2_mmu *mmu;
+>   	int *last_ran;
+>   
+> -	if (is_protected_kvm_enabled())
+> -		goto nommu;
+> -
+>   	if (vcpu_has_nv(vcpu))
+>   		kvm_vcpu_load_hw_mmu(vcpu);
+>   
+> @@ -720,10 +717,33 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+>   		kvm_call_hyp(__kvm_flush_cpu_context, mmu);
+>   		*last_ran = vcpu->vcpu_idx;
+>   	}
+> +}
+> +
+> +static void vcpu_set_wfx_traps(struct kvm_vcpu *vcpu)
+> +{
+> +	if (kvm_vcpu_should_clear_twe(vcpu))
+> +		vcpu->arch.hcr_el2 &= ~HCR_TWE;
+> +	else
+> +		vcpu->arch.hcr_el2 |= HCR_TWE;
+> +
+> +	if (kvm_vcpu_should_clear_twi(vcpu))
+> +		vcpu->arch.hcr_el2 &= ~HCR_TWI;
+> +	else
+> +		vcpu->arch.hcr_el2 |= HCR_TWI;
+> +}
+> +
+
+It seems FIELD_MODIFY() can be applied here if no visible constraints exist:
+
+	FIELD_MODIFY(HCR_TWE, vcpu->arch.hcr_el2, !kvm_vcpu_should_clear_twe(vcpu));
+	FIELD_MODIFY(HCR_TWI, vcpu->arch.hcr_el2, !kvm_vcpu_should_clear_twi(vcpu));
+
+> +static void vcpu_load_pvtime(struct kvm_vcpu *vcpu)
+> +{
+> +	if (kvm_arm_is_pvtime_enabled(&vcpu->arch))
+> +		kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
+> +}
+> +
+> +void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+> +{
+> +	if (!is_protected_kvm_enabled())
+> +		vcpu_prepare_mmu(vcpu);
+>  
+
+I think we probably try to depend on kvm->arch.vm_flavor instead
+of !is_protected_kvm_enabled().
+
+	struct kvm *kvm = vcpu->kvm;
+
+	if (kvm_vm_is_protected(kvm) || kvm_vm_flavor_eq(kvm, VM_PKVM))
+		vcpu_prepare_mmu(vcpu);
+  
+> -nommu:
+>   	vcpu->cpu = cpu;
+> -
+>   	/*
+>   	 * The timer must be loaded before the vgic to correctly set up physical
+>   	 * interrupt deactivation in nested state (e.g. timer interrupt).
+> @@ -736,19 +756,9 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+>   		kvm_vcpu_load_vhe(vcpu);
+>   	kvm_arch_vcpu_load_fp(vcpu);
+>   	kvm_vcpu_pmu_restore_guest(vcpu);
+> -	if (kvm_arm_is_pvtime_enabled(&vcpu->arch))
+> -		kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
+> -
+> -	if (kvm_vcpu_should_clear_twe(vcpu))
+> -		vcpu->arch.hcr_el2 &= ~HCR_TWE;
+> -	else
+> -		vcpu->arch.hcr_el2 |= HCR_TWE;
+> -
+> -	if (kvm_vcpu_should_clear_twi(vcpu))
+> -		vcpu->arch.hcr_el2 &= ~HCR_TWI;
+> -	else
+> -		vcpu->arch.hcr_el2 |= HCR_TWI;
+>   
+> +	vcpu_load_pvtime(vcpu);
+> +	vcpu_set_wfx_traps(vcpu);
+>   	vcpu_set_pauth_traps(vcpu);
+>   
+>   	if (is_protected_kvm_enabled()) {
+
+Thanks,
+Gavin
 
