@@ -1,67 +1,66 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3704A3DD86F
-	for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 16:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F1736194B
+	for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 16:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789058802; cv=none; b=Ujvd26rsGIpxGrSOkL3aKCsQaU1OSAaVEsGGlj6clL1YRXndSkN1lqP2mHvzoGIDxbvliI3HoOCjuF7/INlN2qsLh91lUEiQ9UI0XH3uAoeC1RBFeEiHOnkCeamMDvM8NRLJcmzAYBaNQPfAE63kRI9jo70Tw8P45JJ7SgBkBHc=
+	t=1789059359; cv=none; b=CpUlY/ZWAhmsteUIVFNcJFM+IB6nidKAugWCjbgo2nDjRvZKX3Lg7cupKtL5VRH9TpgEnyAA5+pCy+LqiH7sJVmw5TPJ8h/lUL0leXPejlw6ZcC92vygK9wtptk0mQfb+Azsjj6PNw50b+cKax3xMEDLd1dum2I+KlmQKY0T5dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789058802; c=relaxed/simple;
-	bh=MtoWeA55Bs2YjWy/YgwYvBdXP31YZOiX0PTrX4B18d8=;
+	s=arc-20240116; t=1789059359; c=relaxed/simple;
+	bh=3q7AREPOaZq8eHFLknAyC8rvdthg1/rx0t4Di3tOzXU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gdgnM2WA6CzaKcUBgf/VSS2A5uMem7N8Zei3GMijDZEOncJVTjxeBIJNcsMQwpuLFPsDijbzNtkHAxbYtrO8PxsH60R9ua49IO/Hx5tDG5xjbRmfLbF52bIwfhLC4i1Jf0K6+6swJjubyccgBAKvUDmtHEcFGeuykb12/jHcWQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G7tIJB52; arc=none smtp.client-ip=209.85.215.197
+	 To:Cc:Content-Type; b=bpC9w3aCcKB3wjt55y2NMsIQX0BblE9sPrche2jvlYOEQRApIADoQtyNlUGi/0EhG0Ff8kLCG+IKJ8xfANFPxPOcyIEoU5ZjPrKlhq7lNIMEP+zQf8fcam09cNxBexFTyEq4nvtgHRMj3W6D24aVzjsJDAbORnOSPqXYtYYkCjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YxCMtL3S; arc=none smtp.client-ip=209.85.210.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G7tIJB52"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1a439db36so33097a12.2
-        for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 09:46:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YxCMtL3S"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-86a880e91f0so884797b3a.2
+        for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 09:55:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789058793; x=1789663593; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1789059357; x=1789664157; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=jsW6Qm+aSslCH5e3RaevgVxgzzrweE8oFKyJCoFEERE=;
-        b=G7tIJB52YllwW/Pc6P3pEsnkkcMeW2CBYGE2YoaSBtBSoWww48W8tKIJvZ0hnCMlt4
-         VpJ2SDPGrKxlElYezLzcnebGWMBjyL1xhrQ/4Q8CgLDjWpJccuO8aY8rMJOGTKVOPQ3S
-         +BltiOzhUnXfqHIanGQ/e+8yhX/xDfi95tLcF+Yx58T+Pw6GfAU16TFU7P7tdLB+j5jf
-         SMie8mgiAODES1NGJ6NfZZpQymh3M3h811A7qNW9slyQyz+3NSyTrBqBbr3WYjALMX6I
-         hQbCqSCHECXnOUzJ3rbkBD1iAVBsCcHdUVVUk8QiACHV/NpeAtO4OCG2NWLD2Jjkjlei
-         77NA==
+        bh=/J3Sv6JQvipgYTteUBVvbZbSYCIK0V8XgdKXZh7npQU=;
+        b=YxCMtL3SsjTWWzPYG1EnB3Ir16VePcmAImp/Cz9tu/mkVQJZYgUxSjxuppl1pPogEB
+         /lIKEoPmlZBpmz0DdRgTNZdqnd7ee7TL72l6jyMw6lOoTVWg2QS7Mlu0ypPWTb8SAGPd
+         jA+OFsDGA93NA586Y167cJoN+va4hZMY6ft3mG0FHXgvk5ZoqEw6D8t4/wWup6J2bz5H
+         RSnddwTPzCfCZnX6fVHEHok559tPB8EQrn6M9pGoANoTZgqs82xnKzTavHnrM1+90WII
+         3QvVEKLLt02HBioqYiZ8rW+KqkNnoBjLJZg0yVG+8K/OSJcsDSxd40gSG3P1vp7NNYIe
+         huqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789058793; x=1789663593;
+        d=1e100.net; s=20251104; t=1789059357; x=1789664157;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=jsW6Qm+aSslCH5e3RaevgVxgzzrweE8oFKyJCoFEERE=;
-        b=jIj01kaSfHFk51RDRk/7KxErzDWHE42VCPbKShjr2lsB0ZUZIvz4RvTUmvwJaboEGp
-         HTDyDU1IJzAU0up4J0EfWWyFxGUjFAOZzZjx9A7ffnY+wZpUzuXHXlJvee0oB/Rhi0+z
-         pI87+jnDH0lMWHZG2Cq6EM6pUxtSkjr5yQJi8uKDouYsHfMaK0xnQHeokhoMGOP0GYst
-         T4BFisyO0UKz6Xacce8QfkWPPaR7/bnG9v2b79e/VT4uWTHw1tCi/l/6ZEUwQjNyVGG8
-         sDJgXOVHQlBhdTWqd6skGClzG54sxTcDfE7T3FoDKH+s5MA8rOc8Eig+hQr5k1A7eNqx
-         USTg==
-X-Forwarded-Encrypted: i=1; AKwUvBy/PJU6urcYeAA51afGlbO3FpXvkElJzl5CEa4pRmYJoXOBHr0FL5cwLcimzaw/pX9q1sY4dR2T6JcT@lists.linux.dev
-X-Gm-Message-State: AFuF++mjSlw3eh2JvQ7EkDUyXP4FkRB0/KDljwOY+BHVSoMjcn4LfuFV
-	oZqgk51Yfxpg6t3bV6jCYfPzCrH8OmYmJZmBJSokXfvNtBS6XtzsS3Uukq5oWL6rR3XrU9J8Nhb
-	1Dl/0Ng==
-X-Received: from pgte26.prod.google.com ([2002:a65:689a:0:b0:cc4:bede:3dc7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:b40a:b0:3d3:ae1f:d7f3
- with SMTP id adf61e73a8af0-3da3a0763d2mr68289720637.19.1789058792902; Thu, 10
- Sep 2026 09:46:32 -0700 (PDT)
-Date: Thu, 10 Sep 2026 09:46:32 -0700
-In-Reply-To: <20260910162343.4092060-2-elver@google.com>
+        bh=/J3Sv6JQvipgYTteUBVvbZbSYCIK0V8XgdKXZh7npQU=;
+        b=A2EScuATFb7P8M/o0DRw0eP/YMT6RQKiS2tqtgH42Ys38SXwRte077j+LXQLXYPgKb
+         xQ7LfTVu0M/yh3ITfhRt44XE5G0UA2lg1jCdKDtLNy7BjgWLHxdx+jugh0HgWshrxL+3
+         kts9cAcTVFkqShmnMDGiXO4e53e8pzUTYN1UJ62xFyYzc7sIudHj6EY/MdH+li9sGOC0
+         QWrP6autA0IT4yB+ciLFz3kOe/brH6tHyoj4JGT2ObCqC6ckLp1eFwz94OPsBBDqQa8Z
+         ledg50CKNP44Te5ExIwfWmoQA0y8QA3ryAkoy4Ix0tO+EexkmYXxgan7VOsNYxDGnVPY
+         sx9Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxwjFHeKSnULAeK5m2Ux4WAO/Pa8IalwJ1Wots+lHF5tbNxyc2Jqlz98nxwVZErxNJG8Yuj+71ukokZ@lists.linux.dev
+X-Gm-Message-State: AFuF++kQSz4VNP/nQr1qE9UpkNUzhvabW1GyPLwPhpMo/zHrUPAIPcud
+	YRemW1cTGf2gh+8HFOS4ln+IWF582SkqtBRYP5+jJZ3WNkwOKJF/6kGLJXM3dpEH6r9D5KlfnPl
+	0p3UVbQ==
+X-Received: from pfbmu28.prod.google.com ([2002:a05:6a00:6e9c:b0:86a:873e:7d2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:813:b0:857:726d:2e9c
+ with SMTP id d2e1a72fcca58-86948a2d790mr8939284b3a.25.1789059356930; Thu, 10
+ Sep 2026 09:55:56 -0700 (PDT)
+Date: Thu, 10 Sep 2026 09:55:56 -0700
+In-Reply-To: <20260910162343.4092060-1-elver@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260910162343.4092060-1-elver@google.com> <20260910162343.4092060-2-elver@google.com>
-Message-ID: <aqLe6FcPZIgj2RA6@google.com>
-Subject: Re: [PATCH RFC 01/10] KVM: x86/pmu: Acquire SRCU in
- pmc_is_event_allowed() to protect filter lookup
+References: <20260910162343.4092060-1-elver@google.com>
+Message-ID: <aqLhHOrXsa30PBVU@google.com>
+Subject: Re: [PATCH RFC 00/10] KVM: Enable Clang Context Analysis
 From: Sean Christopherson <seanjc@google.com>
 To: Marco Elver <elver@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
@@ -72,121 +71,31 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo
 Content-Type: text/plain; charset="us-ascii"
 
 On Thu, Sep 10, 2026, Marco Elver wrote:
-> Dereferencing kvm->arch.pmu_event_filter via srcu_dereference() requires
-> holding kvm->srcu to guard against concurrent filter replacement and
-> freeing by kvm_vm_ioctl_set_pmu_event_filter().
+> Enable compiler-based static context analysis [1] for x86 KVM, along with
+> prerequisite lock annotations in virt/kvm.
 > 
-> Counter reprogramming can reach pmc_is_event_allowed() without holding
-> kvm->srcu. Specifically, on AMD SVM, toggling EFER.SVME via KVM_SET_SREGS
-> or KVM_SET_SREGS2 triggers synchronous counter reprogramming outside of
-> any SRCU read-side critical section:
+> During the initial annotation pass, context analysis uncovered a missing
+> SRCU read-side critical section in x86 PMU filter lookups; patch 1 fixes
+> this bug.
 > 
->   kvm_vcpu_ioctl(KVM_SET_SREGS{,2})
->     kvm_vcpu_ioctl_x86_set_sregs{,2}()
->       __set_sregs_common()
->         kvm_x86_call(set_efer)()
->           svm_set_efer()
->             svm_pmu_handle_nested_transition()
->               __svm_pmu_handle_nested_transition(..., defer=false)
->                 __kvm_pmu_reprogram_counters()
->                   kvm_pmu_handle_event()
->                     reprogram_counter()
->                       pmc_is_event_allowed()
->                         srcu_dereference(kvm->arch.pmu_event_filter, &kvm->srcu)
+> The remainder of the series is strictly non-functional: it establishes
+> basic function annotations, guarded_by annotations on core structs, and
+> straightforward refactorings in hva/gfn range walks and guest_memfd to
+> eliminate conditional locking patterns that cannot be tracked statically.
 > 
-> If userspace concurrently updates the filter (KVM_SET_PMU_EVENT_FILTER),
-> a concurrent free and subsequent use-after-free is possible.
+> Annotating the MMU (mmu/mmu.c, mmu/tdp_mmu.c), i8259, and Xen requires
+> more invasive changes and is deferred to follow-ups.
 > 
-> Protect filter lookups directly in pmc_is_event_allowed():
-> 1. check rcu_access_pointer() first for the common fast path;
-> 2. acquire guard(srcu)(&kvm->srcu) only when a filter is present;
-> 3. drop redundant outer srcu_read_lock() in kvm_pmu_trigger_event().
-> 
-> Found with Clang context analysis.
-> 
-> Fixes: a02a25a65246 ("KVM: x86/pmu: Reprogram Host/Guest-Only counters on nested transitions")
-> Signed-off-by: Marco Elver <elver@google.com>
-> ---
->  arch/x86/kvm/pmu.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-> index a7d60c8785cd..3ad1e696edca 100644
-> --- a/arch/x86/kvm/pmu.c
-> +++ b/arch/x86/kvm/pmu.c
-> @@ -536,6 +536,11 @@ static bool pmc_is_event_allowed(struct kvm_pmc *pmc)
->  	struct kvm_x86_pmu_event_filter *filter;
->  	struct kvm *kvm = pmc->vcpu->kvm;
->  
-> +	if (!rcu_access_pointer(kvm->arch.pmu_event_filter))
-> +		return true;
-> +
-> +	guard(srcu)(&kvm->srcu);
-> +
->  	filter = srcu_dereference(kvm->arch.pmu_event_filter, &kvm->srcu);
->  	if (!filter)
->  		return true;
-> @@ -1132,7 +1137,7 @@ static void kvm_pmu_trigger_event(struct kvm_vcpu *vcpu,
->  	DECLARE_BITMAP(bitmap, X86_PMC_IDX_MAX);
->  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
->  	struct kvm_pmc *pmc;
-> -	int i, idx;
-> +	int i;
->  
->  	BUILD_BUG_ON(sizeof(pmu->global_ctrl) * BITS_PER_BYTE != X86_PMC_IDX_MAX);
->  
-> @@ -1145,14 +1150,12 @@ static void kvm_pmu_trigger_event(struct kvm_vcpu *vcpu,
->  			     (unsigned long *)&pmu->global_ctrl, X86_PMC_IDX_MAX))
->  		return;
->  
-> -	idx = srcu_read_lock(&vcpu->kvm->srcu);
->  	kvm_for_each_pmc(pmu, pmc, i, bitmap) {
->  		if (!pmc_is_event_allowed(pmc) || !cpl_is_matched(pmc))
->  			continue;
->  
->  		kvm_pmu_incr_counter(pmc);
->  	}
-> -	srcu_read_unlock(&vcpu->kvm->srcu, idx);
->  }
+> [1] https://docs.kernel.org/next/dev-tools/context-analysis.html
 
-I would very strongly prefer to fix this in __set_sregs_common():
+...
 
-diff --git a/arch/x86/kvm/regs.c b/arch/x86/kvm/regs.c
-index 8f66438989e4..2ce16e96d796 100644
---- a/arch/x86/kvm/regs.c
-+++ b/arch/x86/kvm/regs.c
-@@ -571,9 +571,10 @@ static bool kvm_is_valid_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
- static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
- 			      int *mmu_reset_needed, bool update_pdptrs)
- {
--	int idx;
- 	struct desc_ptr dt;
- 
-+	guard(srcu)(&vcpu->kvm->srcu);
-+
- 	if (!kvm_is_valid_sregs(vcpu, sregs))
- 		return -EINVAL;
- 
-@@ -605,13 +606,9 @@ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
- 	*mmu_reset_needed |= kvm_read_cr4(vcpu) != sregs->cr4;
- 	kvm_x86_call(set_cr4)(vcpu, sregs->cr4);
- 
--	if (update_pdptrs) {
--		idx = srcu_read_lock(&vcpu->kvm->srcu);
--		if (is_pae_paging(vcpu)) {
--			load_pdptrs(vcpu, kvm_read_cr3(vcpu));
--			*mmu_reset_needed = 1;
--		}
--		srcu_read_unlock(&vcpu->kvm->srcu, idx);
-+	if (update_pdptrs && is_pae_paging(vcpu)) {
-+		load_pdptrs(vcpu, kvm_read_cr3(vcpu));
-+		*mmu_reset_needed = 1;
- 	}
- 
- 	kvm_set_segment(vcpu, &sregs->cs, VCPU_SREG_CS);
+>  43 files changed, 745 insertions(+), 236 deletions(-)
 
->  
->  void kvm_pmu_instruction_retired(struct kvm_vcpu *vcpu)
-> -- 
-> 2.55.0.1003.g10538fe699-goog
-> 
+For me, there needs to be a _lot_ more explanation of what this buys us to justify
+the extra annotations and ongoing maintenance burden.  And to a lesser extent, why
+we should rework code to play nice with context analysis (I assume we can simply
+opt-out on a per-function basis if we don't want to play nice?).
+
+I'd also like to see what the MMU changes look like before committing to supporting
+this.
