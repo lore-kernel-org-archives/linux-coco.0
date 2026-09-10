@@ -1,72 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BE035202C
-	for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 09:40:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453D23EA97E
+	for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 09:47:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789033234; cv=none; b=bMWAFk/Oq/hP/Z0/6dasBWC9jzC6WnA18Tlvht0vNxA6TdyIxXTUbcBrah0+fJUZn1YGdLqJ2YwrXMojbSmyBcmbtkP1qd7fpril6Mj7p45GbTRqEFJHs418ELz5K2ghboYCY6SRtExNh4ziEL3p29Qr0HnV09Amupk+RzLz1Lo=
+	t=1789033641; cv=none; b=VUQjF9KAZRD3ThiX59Z6rwXat2Lv7ScNBX0WUM0NoQdLUSwfTwb9VeScjKjhriJ2SfzE3sqrIdTQsf/6CK4vDu7dFrRiSrAIinUhof3HcDDK7NBtZrRUwsk3jmUVr5/r2jQVkGJACSL/1KCPZrDZA/gKh1an044CV6w2GsSYXIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789033234; c=relaxed/simple;
-	bh=2U05edltdc65w78+ZV5IWr4TVwXUEOtUfX+tKTehz0M=;
+	s=arc-20240116; t=1789033641; c=relaxed/simple;
+	bh=nx37oD+VATwTuapBTy48FxaEmdAgPeVuza1ezw/8JFk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B05am/rnSPP8he2jU27sb6kyn77J3tEzflEk/bofnHeHA5/2tnmoxiF4TH3wcvgeS+8GYZHDCDZ2c15zd7OrciKQtmKQh9Y/qEGArFCe37HHzI9JYDoALe4HYrxib2kkuUzSROabvcYkpTLC5PSNhDu4kinmuUXpQ6GHVTfPOYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZGJO44Io; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=p/3/A+OZZXzvIUZ/T5kOH44l3bUkZvQWEzlgMZDfrAtv/w4oFjudP9csrzLHwXbu4Ho0bz1PTq1gfiKQRmOpzqDXg/N03VtO2BuWxofWGFyUpO0LS2UnGa7uqWpk3iWdpHv0TJCb8/VsQ3IUs0wrjl91rO7aIGN9pnaxXQii8Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a75py5Pv; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZGJO44Io"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a75py5Pv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789033230;
+	s=mimecast20190719; t=1789033636;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=J/H7/x7jrZUwe3gjvxEalG5iN9U5i6+Y9YANROw43qY=;
-	b=ZGJO44IoGli0HFlpAhcx0E69xg+EVUw9NlR0hdrC1sqGigkvL/nzQ1awTTUEgDm2T5EJAZ
-	Yh01foWG88StMMbtr8N9AREBMQ67XrI8i19RCV5drhfYHwrf47dSBaF9uSb7qoOuRhAxfR
-	HZKQYvGMuY4Maw9Iz8hoSCEt1d9Rsw0=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=2yXvhB+OP5CUFg1TBMcZH6iusQjFBNo5HCOtIhY7hZE=;
+	b=a75py5PvGOgEDM3Na0n9HWs1C91WwUMBEPsBEi94oydAILLOaCJY0/edvQ2OCh5EOdFEUm
+	1k0IB9Uc+Y12Q4zow8LesFCS+7eWnXA3b6Y6120bsO4no1Uf01h+BT0AJ0xBXCYJj/p6ub
+	al+F8eT+HsUnzf9ngA+0GO6h2sm0zPY=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-57-1bkv7sXtMc-4n4u1FYbzww-1; Thu, 10 Sep 2026 05:40:29 -0400
-X-MC-Unique: 1bkv7sXtMc-4n4u1FYbzww-1
-X-Mimecast-MFC-AGG-ID: 1bkv7sXtMc-4n4u1FYbzww_1789033228
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2db050d469fso12266785ad.0
-        for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 02:40:29 -0700 (PDT)
+ us-mta-522-YX61hca1NGmO3s7Wknt5pw-1; Thu, 10 Sep 2026 05:47:15 -0400
+X-MC-Unique: YX61hca1NGmO3s7Wknt5pw-1
+X-Mimecast-MFC-AGG-ID: YX61hca1NGmO3s7Wknt5pw_1789033634
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cc73f47bdcso88887585ad.3
+        for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 02:47:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789033228; x=1789638028;
+        d=1e100.net; s=20251104; t=1789033634; x=1789638434;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=J/H7/x7jrZUwe3gjvxEalG5iN9U5i6+Y9YANROw43qY=;
-        b=BT7jCaU91c320VUK54EKjiL0oa/PsLOxsf/K1gny1tlXcwHWVpUylSuQY36dKHNTMG
-         AkqPIK6/JoBAvuipqO/JT0aNFFtf7EJbiMBHvzZzpG+ZhmmJ1UxXEj/9dAuzmi5iaEsv
-         2R0QgeLfVfRknCtK50pAaOnkRRqR07iXV/aBPB7KJ5jWkBMpgVUtkMfRpITLnCybypxr
-         sBEK+keFAVpJfGdZLn8g8EyNxobXpnDcFbRFl1Abbx6MDQOn+F2SzTlhLb/uFOqS8UeL
-         /v+afLdWF64tBsJp2nvqzzxuX1/RRFIPQ7H+RA5ODFgAnOQduYd6C0SrSLMZUO03hYhR
-         G8hA==
-X-Forwarded-Encrypted: i=1; AKwUvBwwWtcPMVkMHD0uC3wvUmf17lWYLxvbCsyoxygKqE+T3wJCXLozY0sOBh5yg8180MH/INfc7lKIVsvS@lists.linux.dev
-X-Gm-Message-State: AFuF++nmfcWWh2mFT5wubFpd1FLf6msZe1p44MZZD8gZBG4iEn0U0R9I
-	/Z3WrOhXHAcZdxtFxWRtHEnA+jcmbToiOj2rF/UntzAxRfZkVwT8DjbPaFElaB6QfWSdCDcubmG
-	/0M+fBeWREmHITihSbC7y44Yr1tRHqUJ7OBur9s1ek6vfAyfkDqSRn6BRKnFewbI=
-X-Gm-Gg: AYBFou1O9kPam++Xq3KCwdbMMxHoP6OhAYvvcljIqZKywj5i6XP2oFT7bYV7CpXFjrY
-	g3EBoMhvV9/Hq1LTqTL2rKHkwmw1yBD1fKdS3hYsjCD+biYqPBDFil4jmmy3RsI4dv91WBDzJQ5
-	xnViKcODokARFPKblIoJtvscX6yqS8L1U4iOrcDv/Muxvbrg6AyAd83cWH18XtUwSQ9GCOzqlU4
-	ruwRlz+lcskJS93P6PfIoWH3QYUXiMgx/2UdqoNGt2C6D7PsjTi4KCafm77XZCC2GAZmPFpXjin
-	Bu69jsBzLeMsmiiOzu+EqaJI60e/nVELR0cnAqiRQwCoHHqbStyooGaorvnkaz1bK7dC6e56g8v
-	hOvoouh68Nmr1LwD/YInSZ/PjJMal65t/FYlnZX8aaw==
-X-Received: by 2002:a17:90b:4490:b0:398:baa7:4c2f with SMTP id 98e67ed59e1d1-39d77a08755mr3066649a91.5.1789033228090;
-        Thu, 10 Sep 2026 02:40:28 -0700 (PDT)
-X-Received: by 2002:a17:90b:4490:b0:398:baa7:4c2f with SMTP id 98e67ed59e1d1-39d77a08755mr3066617a91.5.1789033227578;
-        Thu, 10 Sep 2026 02:40:27 -0700 (PDT)
+        bh=2yXvhB+OP5CUFg1TBMcZH6iusQjFBNo5HCOtIhY7hZE=;
+        b=mBx7I5CfYRcTY6W7CJ8fF9RDWL/gXiQdLK1oziC4FHeH27YxoANupF3nIVK/hbWpTY
+         pvh+tLPZDmUH/n5ZsfBWBWAXLODn0NnTaTv3IR7gxsMSj/nq9B+tpfVvjRDYku99T+AL
+         Hw5HzGB17x71dUJNA+ZA6Nf0GvhooqHE+UkUUnSk3g4wcupNwHJ5sMcfl/Ud4faeN6mB
+         OJyWiez4FGxI9HBH2GXVlZt/yLdiWgRlRul7b07diL7fPJevYtKaULiL4g+BSAwS29Qz
+         yUqsZD7cHA6iNEclnm7nZ7x5EbHRqA63oS5okthTiPbGZSfkuQ0A2swJqzXvwQ4HK/gn
+         ATTw==
+X-Forwarded-Encrypted: i=1; AKwUvBxaIRyXoreOQNu5cfzDARdITdyE3ZW/JRltbgKrWldovng9Yi+2FWTDae4zogzjxlfm9aMPNd1Uun5m@lists.linux.dev
+X-Gm-Message-State: AFuF++lkvGWMGV15mlLkvI02iDFoHMPa0Liliy4APW5PFabyhagiWQbt
+	3K8Ila9NZCPB2ntpeUu9KrveuPa1rCPrPow47i8jFrQrvSvZzdFcC8yA3GbR+ynFRD33Az3W/YK
+	l5MEWS4Nkqn5rsv2oqIf+1FFRKNtQ/RAjCjAD/VnOFUtUWHvr99g91bvvVavf9ng=
+X-Gm-Gg: AYBFou3IN+a2XNpw4fyEfDms+A/qgRH/hpYX7mAvoyjh0oGp3W/VpxaMuMaxtcSyQ7q
+	mq9s+MzJcLKPkeg7p+VKAsVxriKItx/h1zCfww3nMlCxxQCcv4IbyKjAg+8t13eXMyodZMzMmjo
+	DQkWRtdZSm9AoH639iuNyQdOIV8AS3gp6Iy+HjjtNlmKgExyh34SCShxATpdIMbY4FDBEInANc2
+	1KTWi8n9RicfbF0Qi9FRLSnEdbp3me9XJJK8hG5ZuqAHf3dvt+KM6tT18FQCecOz2AgREhZ7bFD
+	PCM/rMp2YtDksNoEqZoLVc0Xl1SJWKmpR64UbWoUifUclIqEEgRNNl9kb5USBn6L6aG4H6QphX/
+	Cv/zySVuPZQ0ACRucee824I5CPNs9g3CsCcBZDSDEgQ==
+X-Received: by 2002:a17:903:1a26:b0:2ca:9d5a:8b6c with SMTP id d9443c01a7336-2dd0780d5cdmr98391475ad.5.1789033633855;
+        Thu, 10 Sep 2026 02:47:13 -0700 (PDT)
+X-Received: by 2002:a17:903:1a26:b0:2ca:9d5a:8b6c with SMTP id d9443c01a7336-2dd0780d5cdmr98390555ad.5.1789033633331;
+        Thu, 10 Sep 2026 02:47:13 -0700 (PDT)
 Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d80f0068esm3343502a91.10.2026.09.10.02.40.17
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db1495acf7sm86197935ad.25.2026.09.10.02.47.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Sep 2026 02:40:26 -0700 (PDT)
-Message-ID: <472daa5d-19e5-41f1-9650-44e0245bc1f0@redhat.com>
-Date: Thu, 10 Sep 2026 19:40:13 +1000
+        Thu, 10 Sep 2026 02:47:11 -0700 (PDT)
+Message-ID: <7223aeec-b269-4ef5-b5b9-693d4d12afd1@redhat.com>
+Date: Thu, 10 Sep 2026 19:47:00 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -74,8 +74,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 06/20] KVM: arm64: CCA: Add a new mode for supporting
- Realm guests
+Subject: Re: [PATCH v17 1/7] firmware: arm_rmm: Add SMC definitions for
+ calling the RMM
 To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
@@ -85,61 +85,211 @@ Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
  linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
  sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
  WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260908162223.1683432-1-suzuki.poulose@arm.com>
- <20260908162223.1683432-7-suzuki.poulose@arm.com>
- <e66698e1-e582-4ff8-9881-4ddda5bc1d94@redhat.com>
- <40d3312a-c695-44ed-857a-fc6bf293f3e6@arm.com>
+References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
+ <20260907095942.1140734-2-suzuki.poulose@arm.com>
+ <c9990440-acab-4c6c-b67f-8bde17feddce@redhat.com>
+ <aca629b2-27a0-4c47-acac-87edb3b0d3d9@arm.com>
+ <52e58930-8fa4-4c75-981c-25be42d83f2d@redhat.com>
+ <44f02c8c-db52-4f3e-b5d9-f25c1c8c5f0b@arm.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <40d3312a-c695-44ed-857a-fc6bf293f3e6@arm.com>
+In-Reply-To: <44f02c8c-db52-4f3e-b5d9-f25c1c8c5f0b@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 2H_gEzMZw0xeyw3G1VzmqFKU89m8J5tjd8xQGW76xSo_1789033228
+X-Mimecast-MFC-PROC-ID: Haw0RRXdAwqb0je8WWxib_e0SuZpqbtv6M-IJc-EwOE_1789033634
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 9/10/26 6:43 PM, Suzuki K Poulose wrote:
-> On 10/09/2026 06:53, Gavin Shan wrote:
->> Hi Suzuki,
+On 9/9/26 6:39 PM, Suzuki K Poulose wrote:
+> On 08/09/2026 23:41, Gavin Shan wrote:
+>> On 9/8/26 8:37 PM, Suzuki K Poulose wrote:
+>>> On 08/09/2026 07:19, Gavin Shan wrote:
+>>>> On 9/7/26 7:59 PM, Suzuki K Poulose wrote:
+>>>>> From: Steven Price <steven.price@arm.com>
+>>>>>
+>>>>> The RMM (Realm Management Monitor) provides functionality that can be
+>>>>> accessed by SMC calls from the host.
+>>>>>
+>>>>> The SMC definitions are based on DEN0137[1] version 2.0-bet3
+>>>>>
+>>>>> [1] https://developer.arm.com/documentation/den0137/2-0bet3/
+>>>>>
+>>>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>
+>>> ...
+>>>
+>>>>> ---
+>>>>>   include/linux/arm-smccc-rmi.h | 494 ++++++++++++++++++++++++++++++ ++++
+>>>>>   1 file changed, 494 insertions(+)
+>>>>>   create mode 100644 include/linux/arm-smccc-rmi.h
+>>>>>
+>>>>
+>>>> Some nitpicks below, please pick up the commits that look reasonable :)
+>>>>
+>>>
+>>>
+>>>>> +
+>>>>> +#define RMI_RETURN_STATUS_MASK        (0xFFUL)
+>>>>> +#define RMI_RETURN_INDEX_MASK        (0xFFUL << 8)
+>>>>> +#define RMI_RETURN_MEMREQ_MASK        (0x3UL << 8)
+>>>>> +#define RMI_RETURN_CAN_CANCEL_MASK    (0x1UL << 10)
+>>>>> +
+>>>>> +#define RMI_RETURN_STATUS(ret) FIELD_GET(RMI_RETURN_STATUS_MASK, ret)
+>>>>> +#define RMI_RETURN_INDEX(ret) FIELD_GET(RMI_RETURN_INDEX_MASK, ret)
+>>>>> +#define RMI_RETURN_MEMREQ(ret) FIELD_GET(RMI_RETURN_MEMREQ_MASK, ret)
+>>>>> +#define RMI_RETURN_CAN_CANCEL(ret) FIELD_GET(RMI_RETURN_CAN_CANCEL_MASK, ret)
+>>>>> +
+>>>>
+>>>> If I'm correct enough, RMI_RETURN_{STATUS, INDEX, MEMREQ, CAN_CANEL} _MASK are used
+>>>> for once in this header file. So we needn't explicitly expose them and combine their
+>>>> definitions with users to fetch the corresponding fields, as below.
+>>>>
+>>>> #define RMI_RETURN_STATUS(ret)        FIELD_GET(GENMASK(7, 0), ret)
+>>>> #define RMI_RETURN_INDEX(ret)        FIELD_GET(GENMASK(15, 8), ret)
+>>>> #define RMI_RETURN_MEMREQ(ret)        FIELD_GET(GENMASK(10, 8), ret)
+>>>> #define RMI_RETURN_CAN_CANCEL(ret)    FIELD_GEt(GENMASK(10, 10), ret)
+>>>
+>>> I belive the header files were generated from a tool (by Steven) and
+>>> these would make it easier to compare with the generated header file for
+>>> any deviation from the spec. So, I am a bit reluctant make these
+>>> changes.
+>>>
+>>> That said, I am happy to convert the mask definitions to GENMASK() for
+>>> consistency and readability. i.e., something like:
+>>>
+>>> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc- rmi.h
+>>> index 3eb88caf40964..078197284415e 100644
+>>> --- a/include/linux/arm-smccc-rmi.h
+>>> +++ b/include/linux/arm-smccc-rmi.h
+>>> @@ -139,10 +139,10 @@
+>>>   #define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
+>>>   #define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
+>>>
+>>> -#define RMI_RETURN_STATUS_MASK         (0xFFUL)
+>>> -#define RMI_RETURN_INDEX_MASK          (0xFFUL << 8)
+>>> -#define RMI_RETURN_MEMREQ_MASK         (0x3UL << 8)
+>>> -#define RMI_RETURN_CAN_CANCEL_MASK     (0x1UL << 10)
+>>> +#define RMI_RETURN_STATUS_MASK         GENMASK(7, 0)
+>>> +#define RMI_RETURN_INDEX_MASK          GENMASK(15, 8)
+>>> +#define RMI_RETURN_MEMREQ_MASK         GENMASK(10, 8)
+>>> +#define RMI_RETURN_CAN_CANCEL_MASK     BIT(10)
+>>>
 >>
->> On 9/9/26 2:22 AM, Suzuki K Poulose wrote:
->>> Add an explicit mode to support Arm CCA guests.
+>> Ok.
+>>
+>>>>
+>>>>> +#define RMI_SUCCESS            0
+>>>>> +#define RMI_ERROR_INPUT            1
+>>>>> +#define RMI_ERROR_REALM            2
+>>>>> +#define RMI_ERROR_REC            3
+>>>>> +#define RMI_ERROR_RTT            4
+>>>>> +#define RMI_ERROR_NOT_SUPPORTED        5
+>>>>> +#define RMI_ERROR_DEVICE        6
+>>>>> +#define RMI_ERROR_RTT_AUX        7
+>>>>> +#define RMI_ERROR_PSMMU_ST        8
+>>>>> +#define RMI_ERROR_DPT            9
+>>>>> +#define RMI_BUSY            10
+>>>>> +#define RMI_ERROR_GLOBAL        11
+>>>>> +#define RMI_ERROR_TRACKING        12
+>>>>> +#define RMI_INCOMPLETE            13
+>>>>> +#define RMI_BLOCKED            14
+>>>>> +#define RMI_ERROR_GPT            15
+>>>>> +#define RMI_ERROR_GRANULE        16
+>>>>> +
+>>>>> +#define RMI_CONTINUE_KEEP_GOING        0
+>>>>> +#define RMI_CONTINUE_STOP        1
+>>>>> +
+>>>>> +#define RMI_OP_MEM_REQ_NONE        0
+>>>>> +#define RMI_OP_MEM_REQ_DONATE        1
+>>>>> +#define RMI_OP_MEM_REQ_RECLAIM        2
+>>>>> +
+>>>>> +#define RMI_DONATE_SIZE_MASK        3UL
+>>>>> +#define RMI_DONATE_COUNT_MASK        GENMASK(15, 2)
+>>>>> +#define RMI_DONATE_CONTIG_MASK        BIT(16)
+>>>>> +#define RMI_DONATE_STATE_MASK        GENMASK(18, 17)
+>>>>> +
+>>>>> +#define RMI_DONATE_SIZE(req)        FIELD_GET(RMI_DONATE_SIZE_MASK, req)
+>>>>> +#define RMI_DONATE_COUNT(req) FIELD_GET(RMI_DONATE_COUNT_MASK, req)
+>>>>> +#define RMI_DONATE_CONTIG(req) FIELD_GET(RMI_DONATE_CONTIG_MASK, req)
+>>>>> +#define RMI_DONATE_STATE(req) FIELD_GET(RMI_DONATE_STATE_MASK, req)
+>>>>> +
+>>>>
+>>>> As above, RMI_DONATE_{SIZE, COUNT, CONTIG, STATE}_MASK are used for once in this
+>>>> header file. So their definitions can be dropped by modifying the followup macros,
+>>>> as below. Some enhancements are also applicable: (a) Use 'BLOCK' to indicate the
+>>>> unit encoded in the request. (b) The macros are put into order from MSB to LSB.
+>>>>
+>>>> #define RMI_DONATE_STATE(req)        FIELD_GET(GENMASK(18, 17), req)
+>>>> #define RMI_DONATE_CONTIG(req)        FIELD_GET(GENMASK(16, 16), req)
+>>>> #define RMI_DONATE_BLOCK_COUNT(req)    FIELD_GET(GENMASK(15, 2), req)
+>>>> #define RMI_DONATE_BLOCK_SIZE(req)    FIELD_GET(GENMASK(1, 0), req)
 >>>
->>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>> ---
->>>   Documentation/admin-guide/kernel-parameters.txt | 3 +++
->>>   arch/arm64/include/asm/kvm_host.h               | 1 +
->>>   arch/arm64/kvm/arm.c                            | 5 +++++
->>>   3 files changed, 9 insertions(+)
->>>
->>> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/ Documentation/admin-guide/kernel-parameters.txt
->>> index 68647ff4bdd24..1afe3df3b923e 100644
->>> --- a/Documentation/admin-guide/kernel-parameters.txt
->>> +++ b/Documentation/admin-guide/kernel-parameters.txt
->>> @@ -3256,6 +3256,9 @@ Kernel parameters
->>>               nested: VHE-based mode with support for nested
->>>                   virtualization. Requires at least ARMv8.4
->>>                   hardware (with FEAT_NV2).
->>> +            rmm: Support for running confidential guests in Realm
->>> +                 world using RMM, as defined by Arm Confidential
->>> +                 Compute Architecture (CCA)
+>>> Same as above.
 >>>
 >>
->> I'm not sure, but 'realm' would be more appropriate name. rmm (Real Management Monitor) is
->> the term limited to the firmware to me. Besides, we have been using 'realm' broadly in this
->> series like kvm_vm_is_realm(), kvm_realm_state() and so on.
+>> Please rename RMI_DONATE_{SIZE, COUNT} to RMI_DONATE_BLOCK_{SIZE, COUNT} if possible.
 > 
-> May be. But we use the "mode" of the hypervisor in question here, mostly. e.g., nvhe, vhe, protected etc. So, I went with RMM (in favor
-> of CCA). Does that make sense ? Also, we rely on firmware/arm_rmm for
-> the support. So, it kind of make sense to keep it "rmm" ?
+> Sorry, forgot to add that, I have renamed RMI_{DONATE,ADDR_RANGE}_SIZE
+> => RMI_{*}_BLOCK_SIZE, left  the _COUNT as it is.
 > 
 
-Ok, lets keep 'rmm' unless somebody else has better suggestion.
+It's ok to me. The point is to have "BLOCK", indicating it's related to
+a block. In rmi.c, 'unit' is also used and needs to be replaced with 'block',
+consistent with the spec.
 
-> Cheers
-> Suzuki
+>>
+>>>>
+>>>>> +#define RMI_OP_MEM_DELEGATED        0
+>>>>> +#define RMI_OP_MEM_UNDELEGATED        1
+>>>>> +#define RMI_OP_MEM_CONDITIONAL        2
+>>>>> +
+>>>>
+>>>> B4.6.40 RmiOpMemContig type is missed here and they should be used in the c code.
+>>>>
+>>>> #define RMI_OP_MEM_NON_CONTIG    0
+>>>> #define RMI_OP_MEM_CONTIG    1
+>>>>
+>>>> In the c code, we shall have:
+>>>>
+>>>> if (RMI_DONATE_CONTIG(req) == RMI_OP_MEM_CONTIG)) {
+>>>>     ...
+>>>> } else {
+>>>>     ...
+>>>> }
+>>>>
+>>>
+>>> Does it make much sense though ? I prefer
+>>>
+>>> if (RMI_DONATE_CONTIG(req))
+>>>
+>>> to
+>>>
+>>>
+>>> if (RMI_DONATE_CONTIG(req) == RMI_OP_MEM_CONTIG)) {
+>>>
+>>>
+>>> than having a field for a single bit values. I am happy to change
+>>> this if there is strong preference to the other.
+>>>
+>>
+>> The point is RMM-v2.0-bet3 expose RMI_OP_{MEM, MEM_NON}_CONTIG instead of true/false
+>> to indicate if the requested memory blocks are physically contiguous or not. So the
+>> expression 'if (RMI_DONATE_CONTIG(req) == RMI_OP_MEM_CONTIG)' is consistent to the
+>> RMM-v2.0-bet3 spec.
 > 
+> Agree, but the values are intuitively assigned to indicate whether it is
+> 1/0. I personally think if (RMI_DONATE_CONTIG(req)) is good enough. But
+> to be consistent with the spec, I will change them.
+> 
+
+Ok.
 
 Thanks,
 Gavin
+
+> 
+> Cheers
+> Suzuki
+> 
 
