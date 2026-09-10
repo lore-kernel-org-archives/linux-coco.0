@@ -1,56 +1,56 @@
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E158851993C
-	for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 16:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9E64BE435
+	for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 16:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789057447; cv=none; b=eqQ595GsNVSkiQnLMhsPq5lfpHfDKCRIx6zQrIOVBlS5iram2m7h7DwUdJ/NSIwwNMBdbxiFknsPjv3gd/GCIx9dQlDZ45gGgfU3fXWfEPgdN9DYPv/OThMJnK92GTXfTd+FeYS4Gxr4X/QVyQFZh7M5rHbYB6XHhx/24WI63jk=
+	t=1789057450; cv=none; b=jPSNtObip9vXYRFsHF6gq6QCVYlDrJ0ukye0GqjY/idw6f9QGRR5RdlrnSPthj/gDQeml2WRuGmJdjULzRuTAnQn60v4u673WZC4tR5/DU7okyYnbOuovDHgbBtgwbDYJdyR4fawfHANtx7JP7kJvDUy+XGVI4Ly1b1evdGRISY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789057447; c=relaxed/simple;
-	bh=Dwq4yWxNTOPewjvgBHCVt6k8PpiEcRg1OwsQvoXmnaE=;
+	s=arc-20240116; t=1789057450; c=relaxed/simple;
+	bh=AHvgtIL5obyEkQeMJj9TEFvDUyBEEuMsjvgCq4Ntp70=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=d9l82IUDBecID/3xDO0k7pWlpbdqRl1aSBWChZiVd/tj7VpdcPn9iNQeNGjcSul1dCdOQHlsWXKXzGsQz6QspjaWOh5/puAouD6POReXhocQRNJPObxvjYvsavrbuOc5f5RGHzSe27zPUmyXNXjAd7jP5PyVbFzcGb0c/JKyoC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elver.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YSwI6Cbe; arc=none smtp.client-ip=209.85.221.72
+	 To:Cc:Content-Type; b=Lf38vxsDboYuBXGsrATKssImphlzr4xQEeJRL0T6aRgN9CjZ9yTQswc3tmRbQDrcgkhEYRXpAppma6SgYWyLtrFt94G6fmMQcVjO5PciEs+QIiV8eKFdyJfYmnWcaKEik5JOHwd7C/qXQoPPXkCVfggBMgnWepCrfvQ7Yi54a9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elver.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=evJS0+Ex; arc=none smtp.client-ip=209.85.128.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--elver.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YSwI6Cbe"
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48439ef42d8so5944353f8f.2
-        for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 09:24:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="evJS0+Ex"
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4955e865174so16555e9.3
+        for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 09:24:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789057441; x=1789662241; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1789057445; x=1789662245; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=uC0obBsMpYIPwDDLkx/VVIyvnyMYMqgtwKGzNKgjqas=;
-        b=YSwI6CbeWYOnSV/u3Yjyw4Ml97hs/j9Y8TUb2AFf08IXrw0pymtMUuXd+BxsMO9h6o
-         deS8DnHGoQVOwgxZgbXZ2HQ6lkwu4Zlb0ov/bpfsajOWjM+uqt4YYRZgPCo4O6qQGcFt
-         oUreu02r4gA34uiQvGc95wAZgfNY1h8jAAjfazFYBCTeVSpndULtnaySFX+M5vGyufx/
-         Wc5shUForOc5Ad+hswPa+CmNsuFlZ5SPlSl+j1sTICXLhYyl5q+XiKEPU0mgt+uzjCr4
-         oFyzZhGkC6X5VVKmObN03PpWVsXtvcup6RPgcKD7+YMVHq7oyEvLmDgGrkgPgA9OyamE
-         2Cqg==
+        bh=3WjqNYFOMqEwxR4wUCekRhwd9RX45J94sJ1enbo8buA=;
+        b=evJS0+ExlFgPVHJvr64gQaAiVoaEYI8pmpUGzO5QA8Rq5+O5RaPShfXVT4B3WGlbPE
+         2YMcfehhpzFhsKsuKm38sZ0DPRTn0TeCXCrnW4KBskWjIR8wAvzZco0va0vH+Gr4N96H
+         wERjLGfHsvrg+kHNLXwFeohzoJC0HW7AzNSFSv7y7Wo5c9tAeDNWNzGiqCGwVJSC8xjK
+         FourrL5Yf7YLiNapYZV3+s7nWFcfO3khbb9UxXupZpr9Rmw7E/F0XgsmKzD92bKVRbJR
+         g6n4QR/qmuuSQVHCmHif7ALa6d5GhwhezsAQzyWhonE5PIi7KmAXFEUfv2F0bpLWfrHg
+         W6ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789057441; x=1789662241;
+        d=1e100.net; s=20251104; t=1789057445; x=1789662245;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=uC0obBsMpYIPwDDLkx/VVIyvnyMYMqgtwKGzNKgjqas=;
-        b=rkQRA9BOLUghx8vecJg1Pa8pCefi6nZuC0+jDmyIbGjUKVNSrmh5w3hNBFJoW10lLC
-         zhGLxAhuKkO+QDA8xWQfCm2j4/ZlHVwlgFKzOPsji1um/IYg6EP161Q87dWJkujmqu+C
-         fBpozQ3R7CrtMiK07Y/22cyhw/I9SI9ToKz/IR3FVLdhfru1DZARCuQekuDEZBTOvmxJ
-         Y4ovkumkzh6bRYPnwVL8tfLHmKP0tOnnnSyeY/Fk2I/+0PKBmGNxs4OIyLGtye41iqEt
-         EkiqVkH8qvYtKP+BrPX/Ryb6M3ejKZlrQ25wsgwiWU+PgOp89GbWjbc3RNWYsJSw/Doc
-         Eieg==
-X-Forwarded-Encrypted: i=1; AKwUvBxikBpLnHcCvs+VsumYyynYnKa4MhC6muW/WVuzqZFEhh0HAktZXb97H6f6nnkCtajy/CPX6DTre8Kn@lists.linux.dev
-X-Gm-Message-State: AFuF++n4m2KdX/rRiNjPQSSIVekZfPImZYLdeUlEF8E4NhTYuF47HmWh
-	lPAh94D7Q989OtOd1sqoCBPp/BLbx4OA9Per5UMG/8IUtz0j7vde+sADLYwJKuvLlLhwxr4KpNW
-	hPA==
-X-Received: from wmht20.prod.google.com ([2002:a05:600c:41d4:b0:49d:659:548e])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:198d:b0:49c:fa21:1c7c
- with SMTP id 5b1f17b1804b1-49d1ed0b452mr135146635e9.17.1789057441100; Thu, 10
- Sep 2026 09:24:01 -0700 (PDT)
-Date: Thu, 10 Sep 2026 16:21:38 +0000
+        bh=3WjqNYFOMqEwxR4wUCekRhwd9RX45J94sJ1enbo8buA=;
+        b=S92x+QgP3zxwh8jjYnsWvWT6QHMlbtJISdlBV6e02fAD/hiXD8Dh3gBiBIBDk/Cp97
+         1Kiw1R21sESL9BMSv+/JfhBncWsOnJZW/8hM9TvI8QF+/utLHHbGUXD6bw65sqgL0NVZ
+         EHxslvHvhiUdNrtFRUf42PYTN89n0O9XxYJRQWlWSwxlRlDgeIO/x9vhrse4J0ARxmeJ
+         WqgF42VDLp33mqnkl04z+21f3sInuvTpFXMX+oII33sLjOrdXqJQBvI4B4v4BnBv9pu2
+         +ZMTmLIysZcXDe9qZl7kcGT0AXMZpZ9JSH11FO5mNYbRmFSFop354FdiMLbmvi36S5YH
+         tLWg==
+X-Forwarded-Encrypted: i=1; AKwUvByzsoenZnbkDlszS7ArDHpO68FU5jIL1SU4J2iccju47QOBFczI9M3qpDL687PZku/U1VHcXli1hnCL@lists.linux.dev
+X-Gm-Message-State: AFuF++meXlJaRsApa21IELSP2h4IX44sM/v0ItIAJoh0O7pQB4KmDLUg
+	jITaFQV7/8mE1BBKx7OjMqM2Osuq3DTgylRHTdmk9hQzuXguHVeUdnWwj5bRkC02tJ6171xUsly
+	MLw==
+X-Received: from wmbb26.prod.google.com ([2002:a05:600c:589a:b0:49e:5ffd:edcc])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:5493:b0:49b:8f18:714a
+ with SMTP id 5b1f17b1804b1-49cf824a6c5mr440314875e9.12.1789057444629; Thu, 10
+ Sep 2026 09:24:04 -0700 (PDT)
+Date: Thu, 10 Sep 2026 16:21:41 +0000
 In-Reply-To: <20260910162343.4092060-1-elver@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260910162343.4092060-1-elver@google.com>
 X-Mailer: git-send-email 2.55.0.1003.g10538fe699-goog
-Message-ID: <20260910162343.4092060-6-elver@google.com>
-Subject: [PATCH RFC 05/10] KVM: Refactor kvm_handle_gfn_range() to avoid
- conditional mmu_lock
+Message-ID: <20260910162343.4092060-9-elver@google.com>
+Subject: [PATCH RFC 08/10] KVM: Add guarded_by to members in struct kvm
 From: Marco Elver <elver@google.com>
 To: elver@google.com
 Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -73,100 +72,111 @@ Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Refactor kvm_handle_gfn_range() to check for overlapping memslots
-upfront via kvm_for_each_memslot_in_gfn_range() instead of tracking
-found memslots inside the range iteration with a 'found_memslot' flag
-and conditionally acquiring and releasing mmu_lock.
-
-This simplifies the control flow by cleanly decoupling the search for
-overlapping memslots from the subsequent walk, eliminating the
-conditional locking and establishing a clean, unconditional lock scope
-for mmu_lock, which subsequently enables Clang context analysis to
-validate locking in this function.
+Add __guarded_by annotations to a subset of members in struct kvm where
+the protecting locks reside in the same struct scope. Members protected
+by locks across nested or parent struct boundaries are omitted due to C
+lexical scoping limitations.
 
 No functional change intended.
 
 Signed-off-by: Marco Elver <elver@google.com>
 ---
- virt/kvm/kvm_main.c | 46 +++++++++++++++++++++++++++++++++------------
- 1 file changed, 34 insertions(+), 12 deletions(-)
+ include/linux/kvm_host.h | 12 ++++++------
+ virt/kvm/eventfd.c       |  4 ++--
+ virt/kvm/kvm_main.c      |  3 +++
+ 3 files changed, 11 insertions(+), 8 deletions(-)
 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 12f241304228..36edf0a59107 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -771,7 +771,7 @@ struct kvm {
+ 	/* The two memslot sets - active and inactive (per address space) */
+ 	struct kvm_memslots __memslots[KVM_MAX_NR_ADDRESS_SPACES][2];
+ 	/* The current active memslot set for each address space */
+-	struct kvm_memslots __rcu *memslots[KVM_MAX_NR_ADDRESS_SPACES];
++	struct kvm_memslots __rcu *memslots[KVM_MAX_NR_ADDRESS_SPACES] __guarded_by(&srcu, &slots_lock, &slots_arch_lock);
+ 	struct xarray vcpu_array;
+ 	DECLARE_BITMAP(vcpu_ids, KVM_MAX_VCPU_IDS);
+ 	/*
+@@ -787,7 +787,7 @@ struct kvm {
+ 
+ 	/* For management / invalidation of gfn_to_pfn_caches */
+ 	spinlock_t gpc_lock;
+-	struct list_head gpc_list;
++	struct list_head gpc_list __guarded_by(&gpc_lock);
+ 
+ 	/*
+ 	 * created_vcpus is protected by kvm->lock, and is incremented
+@@ -801,11 +801,11 @@ struct kvm {
+ 	int last_boosted_vcpu;
+ 	struct list_head vm_list;
+ 	struct mutex lock;
+-	struct kvm_io_bus __rcu *buses[KVM_NR_BUSES];
++	struct kvm_io_bus __rcu *buses[KVM_NR_BUSES] __guarded_by(&srcu, &slots_lock);
+ #ifdef CONFIG_HAVE_KVM_IRQCHIP
+ 	struct {
+ 		spinlock_t        lock;
+-		struct list_head  items;
++		struct list_head  items __guarded_by(&lock);
+ 		/* resampler_list update side is protected by resampler_lock. */
+ 		struct list_head  resampler_list;
+ 		struct mutex      resampler_lock;
+@@ -826,9 +826,9 @@ struct kvm {
+ 	/*
+ 	 * Update side is protected by irq_lock.
+ 	 */
+-	struct kvm_irq_routing_table __rcu *irq_routing;
++	struct kvm_irq_routing_table __rcu *irq_routing __guarded_by(&irq_srcu, &irq_lock);
+ 
+-	struct hlist_head irq_ack_notifier_list;
++	struct hlist_head irq_ack_notifier_list __guarded_by(&irq_srcu, &irq_lock);
+ #endif
+ 
+ 	struct mmu_notifier mmu_notifier;
+diff --git a/virt/kvm/eventfd.c b/virt/kvm/eventfd.c
+index 6701390336f6..6051fec5ec90 100644
+--- a/virt/kvm/eventfd.c
++++ b/virt/kvm/eventfd.c
+@@ -1046,8 +1046,8 @@ void
+ kvm_eventfd_init(struct kvm *kvm)
+ {
+ #ifdef CONFIG_HAVE_KVM_IRQCHIP
+-	spin_lock_init(&kvm->irqfds.lock);
+-	INIT_LIST_HEAD(&kvm->irqfds.items);
++	scoped_guard(spinlock_init, &kvm->irqfds.lock)
++		INIT_LIST_HEAD(&kvm->irqfds.items);
+ 	INIT_LIST_HEAD(&kvm->irqfds.resampler_list);
+ 	mutex_init(&kvm->irqfds.resampler_lock);
+ #endif
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index f7bfa2d32507..f86e690a1798 100644
+index 2f22d5439d39..871acc3aebbd 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -2485,14 +2485,13 @@ bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
- 	return true;
- }
- 
--static __always_inline void kvm_handle_gfn_range(struct kvm *kvm,
--						 struct kvm_mmu_notifier_range *range)
-+static __always_inline bool __kvm_handle_gfn_range_walk(struct kvm *kvm,
-+							struct kvm_mmu_notifier_range *range)
+@@ -1111,6 +1111,7 @@ void __weak kvm_arch_create_vm_debugfs(struct kvm *kvm)
+ /* Called only on cleanup and destruction paths when there are no users. */
+ static inline struct kvm_io_bus *kvm_get_bus_for_destruction(struct kvm *kvm,
+ 							     enum kvm_bus idx)
++	__context_unsafe(/* destruction */)
  {
- 	struct kvm_gfn_range gfn_range;
- 	struct kvm_memory_slot *slot;
+ 	return rcu_dereference_protected(kvm->buses[idx],
+ 					 !refcount_read(&kvm->users_count));
+@@ -1120,6 +1121,7 @@ static int kvm_enable_virtualization(void);
+ static void kvm_disable_virtualization(void);
+ 
+ static struct kvm *kvm_create_vm(unsigned long type, const char *fdname)
++	__context_unsafe(/* constructor */)
+ {
+ 	struct kvm *kvm = kvm_arch_alloc_vm();
  	struct kvm_memslots *slots;
- 	struct kvm_memslot_iter iter;
--	bool found_memslot = false;
- 	bool ret = false;
- 	int i;
- 
-@@ -2519,22 +2518,45 @@ static __always_inline void kvm_handle_gfn_range(struct kvm *kvm,
- 			if (gfn_range.start >= gfn_range.end)
- 				continue;
- 
--			if (!found_memslot) {
--				found_memslot = true;
--				KVM_MMU_LOCK(kvm);
--				if (!IS_KVM_NULL_FN(range->on_lock))
--					range->on_lock(kvm);
--			}
--
- 			ret |= range->handler(kvm, &gfn_range);
- 		}
- 	}
- 
-+	return ret;
-+}
-+
-+static __always_inline void kvm_handle_gfn_range(struct kvm *kvm,
-+						 struct kvm_mmu_notifier_range *range)
-+{
-+	struct kvm_memslot_iter iter;
-+	struct kvm_memslots *slots;
-+	bool found_memslot = false;
-+	bool ret;
-+	int i;
-+
-+	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
-+		slots = __kvm_memslots(kvm, i);
-+		kvm_for_each_memslot_in_gfn_range(&iter, slots, range->start, range->end) {
-+			found_memslot = true;
-+			break;
-+		}
-+		if (found_memslot)
-+			break;
-+	}
-+
-+	if (!found_memslot)
-+		return;
-+
-+	KVM_MMU_LOCK(kvm);
-+	if (!IS_KVM_NULL_FN(range->on_lock))
-+		range->on_lock(kvm);
-+
-+	ret = __kvm_handle_gfn_range_walk(kvm, range);
-+
- 	if (range->flush_on_ret && ret)
- 		kvm_flush_remote_tlbs(kvm);
- 
--	if (found_memslot)
--		KVM_MMU_UNLOCK(kvm);
-+	KVM_MMU_UNLOCK(kvm);
+@@ -1276,6 +1278,7 @@ static void kvm_destroy_devices(struct kvm *kvm)
  }
  
- static bool kvm_pre_set_memory_attributes(struct kvm *kvm,
+ static void kvm_destroy_vm(struct kvm *kvm)
++	__context_unsafe(/* destructor */)
+ {
+ 	int i;
+ 	struct mm_struct *mm = kvm->mm;
 -- 
 2.55.0.1003.g10538fe699-goog
 
