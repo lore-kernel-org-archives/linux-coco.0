@@ -1,165 +1,131 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D00E364059
-	for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 22:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E8129B20A
+	for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 22:50:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789079669; cv=none; b=UeKPH5wpeoo/58wE2isyFQ7i9ANdmF+uObZUQvEBRs1Xx4Quz8AUjJWqTh3w0pQTDI9pMJiiUFgcpBa9Q1HRHXUKUHkxaPXgXVjElfQJqfpu21HAZutJIg+vbGvdohoJmLfd/XMDVWC7cL7t2+DnBaAIkFhwnfwsXjshLRUsctU=
+	t=1789080647; cv=none; b=uzmM9NAzgxMTrkBJmZWzbxdHGwR4DrKYTTz7a8u1jCrv0EFwzKEK/uXbPM5oEf85QZGQO/igvi1CIh89mNYhktv8WsnO3XBR5ZwMJK3I2lmvMSAhlg4PEkgWvQhXEBzrXrvoBID2x8ARrVcjeWSDFEo7AtqdycWWccwqWbHwa+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789079669; c=relaxed/simple;
-	bh=AaborA1YqhltsyazAzMXTF21qWXPXv//Ui1djDJE8Fs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qSoYP2pfA4LnI/hBrIIohhypigPYtGh5S6ZAr5MGTm1vpmloGo0P8U+dw9PCLPrncfKHHc9cMLAmvrP4HGc7JvinyXIQX30PsVkX3wVNx3KVefzv7RkX4MGS1HDP1Y7+nOfZKzZmk295CcxUgjGKBbTDeMWAnl3ue+aUPlI7Ajo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U+I7yEMo; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1789080647; c=relaxed/simple;
+	bh=C7V7Fqm2GnPpsjDlmS5uYNFCxnY5rCJDt1LyTBKpO3g=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=MyV6vYxWQFEz7Gjh3lWdqeQ/kiJdrlwhsI04z2OXhmgW4EvmFBDuV/6gV0y0EeDq6op3fk/HpWhVF9Wm/xRBJUyNjkTHEBCpcJE5Wcx+Rg8vzUxbuUPlGb1cz9jTnBf1iUCP0t1j9qE08Kl8ePeZEgPNreaD8CcSK/RyO6S2Kmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TOpK8nSI; arc=none smtp.client-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U+I7yEMo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789079667; x=1820615667;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=AaborA1YqhltsyazAzMXTF21qWXPXv//Ui1djDJE8Fs=;
-  b=U+I7yEMo015r0WtQpaS0ZvvxWjYDXcP3dkx0xVu+U7p9O7EVvJCduFFj
-   SBFHCFaNWRIuGutFm3/eIkYOEndD6gDk3igGabApptb+LALOBpr4YQp6Z
-   djbHVt/dodrZQ9hM/b+kAtBurC5hLxk2UqGujrtYNd5lo8zqCGvQ33tsH
-   chpR4ICPuVoIcY6FfkNhxtx1u5pjYYDgmC/fnJ7SIUEGEUHg6CH9fJS5l
-   rRy4iZBc9glOTsXX1IEXJp5p0gTIrHX9JameJm+duKohgIpE+6iaMlXFw
-   eB5yM0tHeVsg0tnh8if9aJfWi0a8vGnMeI1+Bfgr9LRqJIuyhRTk05rkV
-   w==;
-X-CSE-ConnectionGUID: XLtI4jijQRaJHekxanT2Wg==
-X-CSE-MsgGUID: z43RVmYYTC2Gf6t6SCGs4A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="93407826"
-X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
-   d="scan'208";a="93407826"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 15:34:25 -0700
-X-CSE-ConnectionGUID: m46k88v2T020yUiLz3uBLg==
-X-CSE-MsgGUID: Wt5imkNhRoW5I82HZ+WggQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
-   d="scan'208";a="301647428"
-Received: from vverma7-desk1.amr.corp.intel.com (HELO [192.168.1.200]) ([10.125.111.227])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 15:34:25 -0700
-From: Vishal Verma <vishal.l.verma@intel.com>
-Date: Thu, 10 Sep 2026 16:34:08 -0600
-Subject: [PATCH 1/2] x86/tdx: Move port I/O definitions to a shared header
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TOpK8nSI"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e1118e4abso438354a91.0
+        for <linux-coco@lists.linux.dev>; Thu, 10 Sep 2026 15:50:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789080646; x=1789685446; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7CLmrfb7NXI5qaK2erHQxMEAI4CCcSkomEkbhr63psE=;
+        b=TOpK8nSIVFPXNNNPkOYc6bzIohgHo0Q+ytOCROOoykg71qWiRgBaDnQ9lixxJHA6et
+         JAEbPej8zVjwecitf3OMMncFiPjdOcYMhB8shXQBX5lnI7NerJhVncz/mTdVfv/Emhfn
+         Fpoz/bAcYCpfkl7nb8mIZbBB954NDBVIkZAD5uB0ZcVn9Y7imBQ1xYHpefhSkGpRmdBT
+         JY9EpP0OWAhJuqEQG3Rmp87HVK3/Zb8IvW/OTkoKdU40OJNvwY7+Qw3iCp4gIMKK7r5w
+         5ozyPieaENYzpVcxBZ4frbEGOoJHwfCKQzFVdX2zlXaVLYX6bSM+wVkixE2jJT7R+8P7
+         X5Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789080646; x=1789685446;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7CLmrfb7NXI5qaK2erHQxMEAI4CCcSkomEkbhr63psE=;
+        b=K5cnUudUSu+ZDDOotXPGa0VdNQcRF74K5+08JoJ22CzSuDEwr0Z99kBuc9ab7MynyF
+         azzlqJ+x7UuK2z2ObYYpe0hAveTd/NLifsJDtvydixWk0iVUUq+av4gmfwZCK8+vp9t5
+         AmH0RV+5Q24RGMjI7VlhyF2Qct+gXtQG+RN0NKfCEuVFGq0SmEPZMl/EBPSekLFh+KA3
+         sUJh3gu8tPe4t/9cuKwVsTMAAVi604qpxnTPVkWBtwlXl8/vntZWjESUAF5BR+fdMAqD
+         eRX9c41PHpfILG5iGfBFfC9s7kTydwKHKueNIraBVJqA6m3te3mIt+ZnspJIILSaqfEI
+         a4iQ==
+X-Forwarded-Encrypted: i=1; AKwUvByUrr4/oY1D1Dkt9mPhrHwrNmtjjhcrKRDo5vlpxGM1cTk/YPl4hMiSphjCCgvKh0lCiNHdXg4FOs5b@lists.linux.dev
+X-Gm-Message-State: AFuF++nugstmxZpzYkb6t1GGeDxHdcXgMQjDbO5PwIP8ot6+tBDHZ+Z0
+	o2Bk1ctspH5llLHB1HxNMoTcCgREwmXnevftW1xDR2ZMuYDuwnrqU0+pt5C+LvvBdm8+ZqCIJNI
+	ugtNk4Q==
+X-Received: from pjqo12.prod.google.com ([2002:a17:90a:ac0c:b0:39b:9ef7:a6f6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:574c:b0:38e:9045:babe
+ with SMTP id 98e67ed59e1d1-39d9bd99cb7mr1730684a91.7.1789080645505; Thu, 10
+ Sep 2026 15:50:45 -0700 (PDT)
+Date: Thu, 10 Sep 2026 15:50:44 -0700
+In-Reply-To: <20260910-snp-invalid-input-v1-1-fb2e03da614b@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-b4-tdx_earlyprintk_tdcalls-v1-1-4b2b1bf9001b@intel.com>
-References: <20260910-b4-tdx_earlyprintk_tdcalls-v1-0-4b2b1bf9001b@intel.com>
-In-Reply-To: <20260910-b4-tdx_earlyprintk_tdcalls-v1-0-4b2b1bf9001b@intel.com>
-To: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
- Kiryl Shutsemau <kas@kernel.org>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
- kvm@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>
-X-Mailer: b4 0.16-dev-62088
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3016;
- i=vishal.l.verma@intel.com; h=from:subject:message-id;
- bh=AaborA1YqhltsyazAzMXTF21qWXPXv//Ui1djDJE8Fs=;
- b=owGbwMvMwCXGf25diOft7jLG02pJDFmLDfL9t0zLSRDlZVBOLAgXmlQlUCTLPk/huN6TqIuTv
- XTWC/p2lLIwiHExyIopsvzd85HxmNz2fJ7ABEeYOaxMIEMYuDgFYCKRNowMHx2+fD18NHV7gsSH
- yN3L/boe8R8TeD05qH/eXpPSda6yaxj++0y1Y1Ffofv9UMJSd43zBd+8bKcFfNy5XDJ9xq89OtG
- HWQE=
-X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp;
- fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
+Mime-Version: 1.0
+References: <20260910-snp-invalid-input-v1-1-fb2e03da614b@google.com>
+Message-ID: <aqM0RIiLVqvwit-w@google.com>
+Subject: Re: [PATCH] KVM: SEV: Return INVALID_INPUT on SNP req/resp buffer
+ access failure
+From: Sean Christopherson <seanjc@google.com>
+To: Jacky Li <jackyli@google.com>
+Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, 
+	Ashish Kalra <ashish.kalra@amd.com>, Jacob Xu <jacobhxu@google.com>, 
+	Supraja Sridhara <suprajasri@google.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-In preparation for switching early_printk to use direct TDVMCALLs for
-I/O, factor out the PORT_READ and PORT_WRITE definitions from
-arch/x86/coco/tdx/tdx.c into arch/x86/include/asm/shared/tdx.h, and
-namespace them with 'TDVMCALL_'.
+On Thu, Sep 10, 2026, Jacky Li wrote:
+> Currently, snp_handle_(ext_)guest_req() returns -EIO when
+> kvm_{read/write/clear}_guest() fails while accessing guest-provided
+> buffers. Returning -EIO causes KVM_RUN to exit to userspace, likely
+> killing the VM.
+> 
+> Fix this by returning GHCB_HV_RESP_MALFORMED_INPUT with sub-error code
+> GHCB_ERR_INVALID_INPUT to the guest and resuming the vCPU.
+> 
+> Per the GHCB specification, guest-provided GPA buffers that cannot
+> be accessed by the hypervisor (e.g. private pages) should be treated
+> as guest input errors. Because kvm_{read/write/clear}_guest() only
+> returns -EFAULT on failure, treating this failure as an invalid input
+> aligns with the definition of -EFAULT ("Bad address").
+> 
+> Returning GHCB_ERR_INVALID_INPUT also matches existing SNP handling
+> in KVM, which already returns this error code for unaligned or
+> overlapping buffers. It also aligns with other hypercall implementations
+> in KVM (e.g. Hyper-V returning INVALID_HYPERCALL_INPUT on
+> kvm_read_guest() failures in kvm_hv_flush_tlb()).
+> 
+> Performing upfront validation (e.g. via kvm_mem_is_private()) is
+> avoided because it is prone to TOCTOU races with concurrent Page State
+> Changes.
 
-The decompressor also used 0/1 literals in its tdx_io_{in,out} helpers -
-switch those to use the new definitions.
+When stating what a patch does (or doesn't) do, phrase everything as commands.
+Passively describing the patch, as done above, is problematic as it's not clear
+if the changelog is talking about what the patch itself is (not) doing, or if
+it's talking about the side effects of the changes.  Whereas this:
 
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
----
- arch/x86/include/asm/shared/tdx.h | 4 ++++
- arch/x86/boot/compressed/tdx.c    | 4 ++--
- arch/x86/coco/tdx/tdx.c           | 8 ++------
- 3 files changed, 8 insertions(+), 8 deletions(-)
+  Don't try to validate guest-provide ahead of time, as such checks are prone
+  to TOCTOU races, e.g. with Page State Changes, memslot updates, etc.
 
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index f20e91d7ac35..25429d515cc5 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -84,6 +84,10 @@
- #define TDVMCALL_STATUS_ALIGN_ERROR	0x8000000000000002ULL
- #define TDVMCALL_STATUS_SUBFUNC_UNSUPPORTED	0x8000000000000003ULL
- 
-+/* TDG.VP.VMCALL<Instruction.IO> direction, passed in R13 */
-+#define TDVMCALL_PORT_READ		0
-+#define TDVMCALL_PORT_WRITE		1
-+
- /*
-  * Bitmasks of exposed registers (with VMM).
-  */
-diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
-index 8451d6a1030c..ed278bac3c93 100644
---- a/arch/x86/boot/compressed/tdx.c
-+++ b/arch/x86/boot/compressed/tdx.c
-@@ -22,7 +22,7 @@ static inline unsigned int tdx_io_in(int size, u16 port)
- 		.r10 = TDX_HYPERCALL_STANDARD,
- 		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
- 		.r12 = size,
--		.r13 = 0,
-+		.r13 = TDVMCALL_PORT_READ,
- 		.r14 = port,
- 	};
- 
-@@ -38,7 +38,7 @@ static inline void tdx_io_out(int size, u16 port, u32 value)
- 		.r10 = TDX_HYPERCALL_STANDARD,
- 		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
- 		.r12 = size,
--		.r13 = 1,
-+		.r13 = TDVMCALL_PORT_WRITE,
- 		.r14 = port,
- 		.r15 = value,
- 	};
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index f904a636d449..7d1a93ee2534 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -24,10 +24,6 @@
- #define EPT_READ	0
- #define EPT_WRITE	1
- 
--/* Port I/O direction */
--#define PORT_READ	0
--#define PORT_WRITE	1
--
- /* See Exit Qualification for I/O Instructions in VMX documentation */
- #define VE_IS_IO_IN(e)		((e) & BIT(3))
- #define VE_GET_IO_SIZE(e)	(((e) & GENMASK(2, 0)) + 1)
-@@ -691,7 +687,7 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
- 		.r10 = TDX_HYPERCALL_STANDARD,
- 		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
- 		.r12 = size,
--		.r13 = PORT_READ,
-+		.r13 = TDVMCALL_PORT_READ,
- 		.r14 = port,
- 	};
- 	bool success;
-@@ -720,7 +716,7 @@ static bool handle_out(struct pt_regs *regs, int size, int port)
- 	 * "TDG.VP.VMCALL<Instruction.IO>".
- 	 */
- 	return !_tdx_hypercall(hcall_func(EXIT_REASON_IO_INSTRUCTION), size,
--			       PORT_WRITE, port, regs->ax & mask);
-+			       TDVMCALL_PORT_WRITE, port, regs->ax & mask);
- }
- 
- /*
+is more obviously talking about the patch.
 
--- 
-2.55.0
+> Fixes: 88caf544c930 ("KVM: SEV: Provide support for SNP_GUEST_REQUEST NAE event")
+> Fixes: 74458e4859d8 ("KVM: SEV: Provide support for SNP_EXTENDED_GUEST_REQUEST NAE event")
+> Signed-off-by: Jacky Li <jackyli@google.com>
+> ---
+>  arch/x86/kvm/svm/sev.c | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 5705723f1f41..d07562310519 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -4228,8 +4228,10 @@ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
+>  
+>  	guard(mutex)(&sev->guest_req_mutex);
+>  
+> -	if (kvm_read_guest(kvm, req_gpa, sev->guest_req_buf, PAGE_SIZE))
+> -		return -EIO;
+> +	if (kvm_read_guest(kvm, req_gpa, sev->guest_req_buf, PAGE_SIZE)) {
 
+I don't love that userspace VMM goofs will bleed into the guest, but on the other
+hand, KVM already uses this pattern for Hyper-V hypercalls (and worse patterns
+for KVM-defined PV features), and practically speaking this is better behavior
+than returning -EIO.  So I'm good with this.
