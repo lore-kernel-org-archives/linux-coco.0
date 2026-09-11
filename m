@@ -1,108 +1,129 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781AB39EF35;
-	Fri, 11 Sep 2026 15:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E6C2BDC0E;
+	Fri, 11 Sep 2026 16:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789140564; cv=none; b=UV3MCCqZiX5aOvD9IGtkS3xLRo+jlJo/brmSMIZ1dXhQEU9MIS8kJcudrKXqmyzleW/JEIRLI62Ry8L8fETgy0aiHNf5Vr+gLv0sTEwoH10RmzExAE1BKKHCuu79HqhaUvTqVYbXGSor65kumGITjnQ+8gKiOia7g+dvUyLZ0LY=
+	t=1789142835; cv=none; b=fW0Fn3DTv22TmKdtFRiXFP+rBa0gpHqiMYeSKubo2w4CNZhhbMIY5W4t4GhDgGym41j8ZczRQWjJKXQfm9JkqTY1sgnVlSTqqdNnpTZCSkE9AGRdykb4iNgiYGttpnQajDqz3cRBe7rAUrw0YxNnGXY5JCB4hD/rUn+ew5KBOFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789140564; c=relaxed/simple;
-	bh=/xb0Nb16G9yyks+ml9kb/BhM51LigV9IcfIjYK9Rc4E=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=fBsQwNhuQ+UQqRPXJU0q38EOAz0I9r3Hi7Es4H64OxOa+rmicrdIsnEN21OdZQt8ssWj35Yv1sEG2n/Bisw2v4POeYcdv6LsvxnoG26v6TqOpU/AJEFMx9lNFA+J52cgjRJ7ykhL3xKM1q1T+o1frZSNQec4bq2fxJMPkwrAfN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=p3fqa3Vd; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1789142835; c=relaxed/simple;
+	bh=nuPrr44xoLc5kroY0NPcpA+oexmOZCCdbxfk5MsRnDo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NTTQDr9wQ8HZpUpZlx1B1tdUAhVTj4QGRA3PzkpIpiHzMrZ2YnF/sBeRpibuXmfsOgHqdXY+T662UCJBGwNn4bm5fCpGxt2mRAva3WyogxpIEoEXNnXej/5mgNIvBsy5zFY2T9mjAYFe46BvBIww1Ishk0wJdjjVSltLQEYMHm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PiGWeHLH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="p3fqa3Vd"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 30BB516A3;
-	Fri, 11 Sep 2026 08:29:18 -0700 (PDT)
-Received: from [10.0.129.245] (unknown [10.0.129.245])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E56723F8C6;
-	Fri, 11 Sep 2026 08:29:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789140561; bh=/xb0Nb16G9yyks+ml9kb/BhM51LigV9IcfIjYK9Rc4E=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=p3fqa3VdOpYwaS6o072jyxRYETcjmQ17Q9gq4SbokoxOYB4jszQP5QyKIJNk9qBUf
-	 N7TzV2DrG9fefESFhJVXKTizxlIGa7ubjd7dXFEs5w/ZSuhRionnydRPs08XlUjDEY
-	 94VHRvvW3Xm9TflxDf6eS8Hz6n50gvndA0MZoJAU=
-Message-ID: <89da8c52-9dd5-4ca3-81c6-1bf390029dc4@arm.com>
-Date: Fri, 11 Sep 2026 16:29:17 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PiGWeHLH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65861F00893;
+	Fri, 11 Sep 2026 16:07:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789142833;
+	bh=7yntamAm4HFt+Ol6oW5LWlb7ORis3DGYSxiR5vOlA6o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PiGWeHLHijq0oj8loday66evISa5m/DyZA71+lGPHf+m15EJCKkIVpd/QaGLjEVmD
+	 qmPV4uAHENRGCR9KNHzLimClSEBfxnp2aBdNZNA/gJoHzshIoHTry9xUEKs/uTQofm
+	 WFS3WgU3NNV3/4+YsNZv+gI0SOKyCHMSxlBUFW0ISrf6nZn/lHi0nwLPR0KR7KmYKQ
+	 dsfAYVUuLMooN8xtQBQF+fxL/ucmRjXBxFfyAQJGOm+1cqoknaPWw/VYm3zXV1Pzad
+	 g/R25P+pW+6Dh+xlosDY/toMQhblGNHT2YSqcDeDUJQ2MvJcLtemhv3QyuF0KkWG1E
+	 wZhFsf9cLkjWQ==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.ams.internal (Postfix) with ESMTP id E7BBD1980058;
+	Fri, 11 Sep 2026 12:07:09 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 11 Sep 2026 12:07:11 -0400
+X-ME-Sender: <xms:LSekaqfOOgdUAUHe_Opc04lUpxM9CYQD3_5SMMzprsELWwjlVCcD6g>
+    <xme:LSekas-i0NrLNxBRElPMwbVM3wSO-veTVfYOkoZdSO_llr8f0EZTTepuAs4Faudmq
+    tO8UdVJPljEysJNGzvTF281-NYSjZUhVLSWWeG2nQls5IOkUrrqnzt6>
+X-ME-Received: <xmr:LSekaqNrjoB7WzL3ERPr30A-IjMV-AsPRuKwQDYQhgnnaAqpCPDNNYy3ac4>
+X-ME-Proxy-Cause: dmFkZTEPuk0FYyYX5UeRrgeA9QObt28HeMOiTkxCK5r8Pm5mtPalFZB2LAGwFWc2RIJttg
+    GIcbMwkaDwxinkh4hr4VhDlnc6+H9gUFMNlvck0zocxFnTQz5FA88BLQeTtC0tYarXx7vr
+    wNyJZoxXwbuzvbPWn4Qiwuf2zUU5hY6CrDN3KkYSvA0X0NqWnXeHVFRPGiVYaT9U/C7Tev
+    jICeUzM5dF7TbpWScaOI0GjVbKlIHKF7FfaFBLH5pdHh1hGEf3vv+h216Ez6rHJNjYnYbg
+    JPMqYvHkB13D5O52II8d6N9iaz1fWTuHrXsQ2TDjTdsePreSFlYF+kVfg99EdRC9HkCWiV
+    jR42Ipdw8wUtH4pgw+3yhbUjaFw76Bk0d/vX1LPebwNCHcBz+o6zSGmgCSkl7q+2iLg3xm
+    YzTdSyt98+K8pZaLNjPvL3SpMTZ8YiwB14zkDAEUF3g9Z4d2ntTQWzz0CW/6+THclx6g66
+    4nz3xNO97fggwr3cOybpFpP1lmKxjQwdNbv640T+dslVM00pyNv/uQAoalwvYeuDtjEMvZ
+    6SOISttLdcJg7rXq2vhoGkGWXt9PdT08LX0OivX+eSYl5pwRqgUFBMa0KRbSxqlgu5ZNL1
+    t9K36ACvCXjSU/oDttzTy9mr5SXM8+kwLMN5NvbKmmCfQ6dj4c1rE/+2HTXQ
+X-ME-Proxy: <xmx:LSekaqXdtqfWZr0DzYbXei2R6Kh-pnG78pYw_dvVZchKAtoY3mTH8A>
+    <xmx:LSekaqhc0bnkamGSsjh7bPhlyWeQ819kuMQGP-DunJqF_bqbnLzNPA>
+    <xmx:LSekai8aOlbB4KsglDjECC6TJH2GurieEY8lcnGS4n55ossZNwH9BQ>
+    <xmx:LSekapRpPeUkLs_Mr43uRsFQlrOWX5gX4sygGyynwBEO6u2J-XtYNg>
+    <xmx:LSekaptJVIl1nSekvmisoraIM91RUe-yf7AM-zVgR0lYWKjRMMAgUpiQ>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 11 Sep 2026 12:07:08 -0400 (EDT)
+Date: Fri, 11 Sep 2026 17:07:07 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Verma, Vishal L" <vishal.l.verma@intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "ak@linux.intel.com" <ak@linux.intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH] x86/tdx: Remove the early #VE handler
+Message-ID: <aqQmNeXQv05SK86g@thinkstation>
+References: <20260910-b4-tdx_remove_early_ve_handler-v1-1-bf47a4d360c5@intel.com>
+ <b41da075607d1eaa9d96eddbf3acc24502edd604.camel@intel.com>
+ <aqPTIyi--7f2Fzxm@thinkstation>
+ <93b41dce8d7a9b4f28bfed2a51f919eebec9b7f5.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 4/7] firmware: arm_rmm: Add support for SRO
-Content-Language: en-GB
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
- <20260907095942.1140734-5-suzuki.poulose@arm.com>
- <50d19bb3-6a08-462a-9c01-2eac8a8e286e@redhat.com>
- <603b2de8-7636-4eb8-a378-21be986f4e44@arm.com>
-In-Reply-To: <603b2de8-7636-4eb8-a378-21be986f4e44@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <93b41dce8d7a9b4f28bfed2a51f919eebec9b7f5.camel@intel.com>
 
-On 10/09/2026 10:51, Suzuki K Poulose wrote:
-> Hi Gavin
+On Fri, Sep 11, 2026 at 03:24:34PM +0000, Edgecombe, Rick P wrote:
+> On Fri, 2026-09-11 at 11:37 +0100, Kiryl Shutsemau wrote:
+> > > Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> > 
+> > Rick, could you actually test it?
 > 
-> Thank you for the the review, much appreciated. Responses inline.
+> I didn't test it myself, but discussed with Vishal his testing.
 > 
+> > 
+> > Are we sure there's no other port I/O in before idt_setup_early_traps()?
 > 
-> On 09/09/2026 05:10, Gavin Shan wrote:
->> Hi Suzuki,
->
->>
->>> +
->>> +Â Â Â  sro->addr_count = 0;
->>> +}
->>> +EXPORT_SYMBOL_GPL(rmi_sro_free);
->>> +
->>> +long rmi_sro_memxfer_execute(struct rmi_sro_state *sro, gfp_t gfp)
->>> +{
->>> +Â Â Â  unsigned long sro_handle;
->>> +Â Â Â  struct arm_smccc_1_2_regs *regs = &sro->regs;
->>> +Â Â Â  bool cancelled = false;
->>> +
->>> +Â Â Â  rmi_smccc_invoke(regs, regs);
->>> +
->>> +Â Â Â  sro_handle = regs->a1;
->>> +
->>> +Â Â Â  while (RMI_RETURN_STATUS(regs->a0) == RMI_INCOMPLETE) {
->>> +Â Â Â Â Â Â Â  bool can_cancel = RMI_RETURN_CAN_CANCEL(regs->a0);
->>> +Â Â Â Â Â Â Â  int ret = 0;
->>> +
->>
->> Strictly speaking, we need to refresh the SRO handle after every RMI 
->> call.
->>
->> Â Â Â Â Â Â Â Â  bool can_cancel = RMI_RETURN_CAN_CANCEL(regs->a0);
->> Â Â Â Â Â Â Â Â  unsigned long sro_handle = regs->a1;
->> Â Â Â Â Â Â Â Â  int ret = 0;
->>
+> It was a concern that some other feature besides early printk might use port io.
+> But none were found. Andi's recollection was that he hit something that needed
+> this, but this may have been with some older changed early printk behavior.
 > 
-> Ack for both instances
+> > 
+> > I don't see anything direct, but exception path is different story.
+> > 
+> > native_machine_emergency_restart() does port I/O for BOOT_KBD which
+> > seems to be reachable and leads to #VE with the patch:
+> > 
+> > machine_emergency_restart()
+> >   __machine_emergency_restart(1)
+> >     machine_ops.emergency_restart()
+> >       native_machine_emergency_restart()
+> >         reboot_type == BOOT_ACPI (default)
+> > 	acpi_reboot()
+> > 	reboot_type = BOOT_KBD
+> >   	  kb_wait()
+> >             inb(0x64) --> #VE
+> 
+> Is BOOT_KBD something that you think could be hit from a TDX guest?
 
-This is not correct. e.g., after RMI_OP_MEM_DONATE and 
-RMI_OP_MEM_RECLAIM, the regs->a1 is the number of granules consumed or 
-reclaimed. The SRO handle once provided by an SRO triggering operation,
-is invalidated by the RMI_OP_CONTINUE() running to completion.
-i.e., RMI_OP_CONTINUE either completes with RMI_SUCCESS
+It is the first fallback from default BOOT_ACPI failure. But it is just
+an example of port I/O I found.
 
-OR
+> > Could you check if the patch changes panic() behaviour in the window
+> > before idt_setup_early_traps()?
+> 
+> Can you describe more what you are imagining? panic() doing early printk or some
+> other port io? Wondering if you have some more specific hunch.
 
-completes with a status other than RMI_BUSY or RMI_INCOMPLETE.
+I don't see panic() triggering early printk, but I see potential path to
+other port I/O as pointed above.
 
-Thanks
-Suzuki
+I have vague recollection that I tried to remove it before, but
+something stopped me.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
