@@ -1,199 +1,261 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973BD25B09D
-	for <linux-coco@lists.linux.dev>; Sat, 12 Sep 2026 01:54:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1AB35C1BD
+	for <linux-coco@lists.linux.dev>; Sat, 12 Sep 2026 06:50:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789178069; cv=none; b=jn4vVbyLmvkb9cyUXnF+4OIQY9b6M8yWHRdauu462evi2XOuIMfwfI3VntWlyfScRzsWNsrPj4QugHkYHfM6gNPakKvyHgVws36gqMjnFsmzxUYghoPK95/ded6pOJqhitDPeWeaeP0aZSZRn5a4IeFdLaDtYFVjaUz89+X5yTI=
+	t=1789195807; cv=none; b=pwh3gv9MCK6qUm1YLFSQZ8V3piCwu74KfW1Q6HD5PCQkhwfN3qi0oFiwuufmtOOOTuRZT260i6KaS7rcng25F4obYeULL2X0nN49BQSlXVQnXExhclE7WdnEgCptgkEZvE1QN6n25YYaxzpxHysK4YaLoMUBIMPddaRYzWmduyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789178069; c=relaxed/simple;
-	bh=t6dgR5XfqJ0LsltNbLwKaLG/YP51jLxudDTfG9Vn5+0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D8QTya0kY9MasqEvF5HTw96EKEtLGqGIgFRwOq2NdNhd1sohnl4YIwUsWO8pXpzxhJNDIexC16k3LL/yojZRVOxH/d7+z32aN7nNPHxiHooJWRnLxR31s79HAlTwzLTtAhciTGsVOkXFj9dxEiNdkM5q9pYY2bce495eZSM2qfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=lMOrdW7F; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1789195807; c=relaxed/simple;
+	bh=sCdpZe2i/QHdtW679jX9SdR4a7+kZzZrKxfkIQPem7s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QjlorKV1xvF9z/TzmZ0fTkFFOo/bI7R3DfB7nd5hY0FfXB4+3xzuH6MrS3gfeDEZUQ/pXwHeOIGtjPcsv8g/jqq3xbFL3QNMN/xXXj7UYuK9sUNgcE/eNCP/orkiqWQWLKqIdp546tR9K8xMrSTQ9OkpfkQBRjbQlvZNjp1YylA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=PUDDSB90; arc=none smtp.client-ip=74.125.228.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="lMOrdW7F"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id CE3BC40E00B8;
-	Sat, 12 Sep 2026 01:54:23 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id L3BtR2rSBdQj; Sat, 12 Sep 2026 01:54:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1789178053; bh=E4RlSrzg6+x+KQPg9VIPKMj8UpFsQcBzm8LnjlJfedo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lMOrdW7F5Dg6yRxHpiWee8ljes06YDidY7lRkB4S6Mp8B2wp/k+FfiBjWOJJQwOch
-	 3bII5XSBuVbiin6Obf7co5Vht5XQ1gELOXlfvI8J38tsxfBM+jM+kH0aG8/JrCVaVa
-	 AG4KO24Po0OUvS2cudXhP5SuklXtm9vVtivvAnKWS2lOZQcztNgvWEbIFjt4c1g798
-	 tt1+6sAposoAOKZodPCtTO8L+oSJOUvQf1b5RX1Fer9DbcxZ2Bx7rd00X86LsHNX+7
-	 LEAN3SkEQ4VEdlIWF8ASTCcGr7owv5PXP4IukBlboX/jkIYA1IdYU3UqV6+rLNTCrG
-	 tH53U64r5LJc7EvLRSacL40FEAZE64PFkYAhzCn1DUBSpieQnvjqUnNAyrwuwWEO0h
-	 SlByQOq3sJX+sgCBJPPcizKKGG3gG7itKNoc7aJCuZMbATmpMsoNImA2dLYGWvaTRO
-	 4a8HY0yQiDXXVGVv5Emxcy3uvIPe2hEKkOuMqXbufnocnq5rs9ufd1ipPBti1ab+e5
-	 CnUMOaiLCRjTy31/mXIjoHSCYAP5HM/tJFOiJvxHpl2PBE3v+DGx91kRR+tg1F3vsL
-	 rDpBlDLi7Vy8PHlxcMirIcUil/7jkS3WKMSasMxwSBtmJyeSjzOPqFpIMxB+6lpRc2
-	 bKUepEeNNVb3aB21PA+BGjCQ=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EA01B40E016C;
-	Sat, 12 Sep 2026 01:53:39 +0000 (UTC)
-Date: Fri, 11 Sep 2026 18:53:36 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	darwi@linutronix.de, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v14 4/5] x86/sev: Perform RMP optimizations asynchronously
-Message-ID: <20260912015336.GJaqSwoBGnp4Zl-jC4@fat_crate.local>
-References: <cover.1788984053.git.ashish.kalra@amd.com>
- <1e3d0edb6b275e33fa6f76b0c31db9e999d9a270.1788984053.git.ashish.kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="PUDDSB90"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9f0b1eso112797566b.1
+        for <linux-coco@lists.linux.dev>; Fri, 11 Sep 2026 23:50:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1789195804; x=1789800604; darn=lists.linux.dev;
+        h=content-type:in-reply-to:autocrypt:from:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=sCdpZe2i/QHdtW679jX9SdR4a7+kZzZrKxfkIQPem7s=;
+        b=PUDDSB90xYiqtM47FxP4Scw5byw4+TzBPXXhAhgFCp3fUFC6gOSHPHz+/X4dWZS9wl
+         I3ceEg5FKc3IBiAGIYZwfazANNjIkpBESLZKBRRnh9tObUOzUPC1A+8/f+N50Fp80Bob
+         ruAlTelkb54khST0vSANFXOG1YDomAjeTpz19sOHaAthAs3/gJYECwjknup3apiVhAZU
+         Kaqhl8QMzRmMIbp3lr2Lj232Dzv/t1ohZu2IYYrpm177rbPjzP5LdW7+b6vJfmFOZGA2
+         ZQHorZw5dkP3qt4Q1PyHgra/S4U6XTu/pdp8rdVEi2/hDC0s9Foue4OC6PaJ4wYJpqaI
+         51ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789195804; x=1789800604;
+        h=content-type:in-reply-to:autocrypt:from:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sCdpZe2i/QHdtW679jX9SdR4a7+kZzZrKxfkIQPem7s=;
+        b=loI3I1r6kwLfQuwtWaDTIedJxiemz0JjTKY2iR+Lew2Dh/EFG2iLUnrr6wXGYNP30m
+         Y8nWA4iUx4wz9GmOG4pa/3fL0Kp5LIkeKImN6rzcaxJhq+vwsr3rbHa0nd8BkeQrgk+I
+         a7ikywP5qbID2n2hwPz5BKlBmUIJs30FhBmr2vKjpvioHoOjvNYv5qRWrFNevO/fIFr/
+         OMJZK+yOex5yMVYavQCOTy1bfaQrxnlqrIpFHKHdTY7tSBpdmqUcJckMGasEA9aQnr73
+         niuMjTLaX5vh0ivlKA5EMywJRa3qYzF1nOoFr2FB4c5kx6vEzTeVFxVEepWoqFUKI2gq
+         DB9A==
+X-Forwarded-Encrypted: i=1; AKwUvBwu0Y9kckmVJxvgoWR0JFdeYAbCFCMiHVfzMAm8DNHGhR38HBT97I93UFSFSrvB4S59zuV+lJFgD5I6@lists.linux.dev
+X-Gm-Message-State: AFuF++lRRH1058UNVjPqflF+5EuoO/5HabrI+kfyTqidyvRP7bozJ/47
+	4InOrwJbxPhabBQo/ET6tB71X2kuqodgIhXk5Om5GLHoK1scZz+wkSXDBP8/nQxlqsw=
+X-Gm-Gg: AYBFou1oHTicpBg28sa5lPsFUP3QaMBYCa38aamHofMDqTUebxp3qpDYJf6Iscf5krL
+	suhTRPyFzqpdmofoCHj8tLXozVWl78/r+iEhjEkZI9HC+r1TFNx5sVykN/Lv8EWyhc8PDgI3tyZ
+	RySa+RSzOzH6ta01YOglwlIthxvu9BTOBSh4nmWdbmsGnqOp1cERLhUkPANBV4txOBZdQ5ozZu9
+	nFz+xN2sOdlTEqvjzHHQ2NlZN+ATahAXWR17W/Ld5Y97HFtq11You1/x/zKvd8gSkrWv1E8GvsS
+	OhR25BW8L2VtmwYR2sNDgnhtl30/tBognG+dhDQvk0EBIt1g4k3oD4eEPPlM6Mc7Aw+LqtO20Xs
+	+dmL99JnQTcYCtolV5BHaj4df8gz1jlTWhooCUj4K+XjT25T+ED3RB0FbHnmilk/7/7OCb2NGbL
+	nT6IoE12f0PD0C94lCHkw3L2f0FKtf9VocYeXdlmw1Px+SVIboyZtpsmlaQ84nvFJCgjxAFZnFm
+	ISI1HCMJLuTnf6AOiCPB1P0vEdObyw+b9sqTstilb4UDc/GzHYyR6U2BiYmyIVBakdqUxdwifyS
+	LNC1/Jw9qBg3p988yAwiFXtF
+X-Received: by 2002:a17:906:f591:b0:c29:462b:f917 with SMTP id a640c23a62f3a-c29666f739cmr698707866b.14.1789195804064;
+        Fri, 11 Sep 2026 23:50:04 -0700 (PDT)
+Received: from ?IPV6:2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112? (2a00-12d0-af5d-ad01-5d3f-14e6-9bcb-5112.ip.tng.de. [2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2965c4e1ffsm159761166b.7.2026.09.11.23.50.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Sep 2026 23:50:03 -0700 (PDT)
+Message-ID: <1e2adc53-87f4-42f3-8eda-cce828009e88@suse.com>
+Date: Sat, 12 Sep 2026 08:50:02 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1e3d0edb6b275e33fa6f76b0c31db9e999d9a270.1788984053.git.ashish.kalra@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 13/13] x86/msr: Simplify some rdmsrq() use cases
+To: Shreshth Srivastava <shreshth.srivastava@intel.com>,
+ linux-kernel@vger.kernel.org, x86@kernel.org,
+ linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Cc: acme@kernel.org, adrian.hunter@intel.com,
+ alexander.shishkin@linux.intel.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, decui@microsoft.com, haiyangz@microsoft.com,
+ hpa@zytor.com, irogers@google.com, james.clark@linaro.org, jolsa@kernel.org,
+ kas@kernel.org, kys@microsoft.com, longli@microsoft.com,
+ mark.rutland@arm.com, mhklinux@outlook.com, mingo@redhat.com,
+ namhyung@kernel.org, pbonzini@redhat.com, peterz@infradead.org,
+ rick.p.edgecombe@intel.com, seanjc@google.com, tglx@kernel.org,
+ wei.liu@kernel.org
+References: <20260821105709.1671132-1-jgross@suse.com>
+ <20260911213310.381839-1-shreshth.srivastava@intel.com>
+Content-Language: en-US
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <20260911213310.381839-1-shreshth.srivastava@intel.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------faqU8D6UM6LZgyWtdNphe2F6"
 
-On Thu, Sep 10, 2026 at 10:00:08PM +0000, Ashish Kalra wrote:
->  void snp_setup_rmpopt(void)
->  {
->  	u64 rmpopt_base;
-> @@ -591,6 +648,30 @@ void snp_setup_rmpopt(void)
->  	if (!rmpopt_capable())
->  		return;
->  
-> +	guard(mutex)(&rmpopt_wq_mutex);
-> +
-> +	/*
-> +	 * Set up once: the workqueue and RMPOPT_BASE MSRs are left in place on
-> +	 * shutdown, so a later re-initialization just re-queues the optimization
-> +	 * pass rather than redoing the setup.
-> +	 */
-> +	if (rmpopt_wq) {
-> +		queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
-> +		return;
-> +	}
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------faqU8D6UM6LZgyWtdNphe2F6
+Content-Type: multipart/mixed; boundary="------------dL8jxm9dVU7kKr5WHApU9RgD";
+ protected-headers="v1"
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+To: Shreshth Srivastava <shreshth.srivastava@intel.com>,
+ linux-kernel@vger.kernel.org, x86@kernel.org,
+ linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Cc: acme@kernel.org, adrian.hunter@intel.com,
+ alexander.shishkin@linux.intel.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, decui@microsoft.com, haiyangz@microsoft.com,
+ hpa@zytor.com, irogers@google.com, james.clark@linaro.org, jolsa@kernel.org,
+ kas@kernel.org, kys@microsoft.com, longli@microsoft.com,
+ mark.rutland@arm.com, mhklinux@outlook.com, mingo@redhat.com,
+ namhyung@kernel.org, pbonzini@redhat.com, peterz@infradead.org,
+ rick.p.edgecombe@intel.com, seanjc@google.com, tglx@kernel.org,
+ wei.liu@kernel.org
+Message-ID: <1e2adc53-87f4-42f3-8eda-cce828009e88@suse.com>
+Subject: Re: [PATCH v3 13/13] x86/msr: Simplify some rdmsrq() use cases
+References: <20260821105709.1671132-1-jgross@suse.com>
+ <20260911213310.381839-1-shreshth.srivastava@intel.com>
+In-Reply-To: <20260911213310.381839-1-shreshth.srivastava@intel.com>
 
-No, this is not how this is done. This is a *setup* function but you also use
-it to start the workqueue if it has been allocated already. So it should
-either setup or start but not both.
+--------------dL8jxm9dVU7kKr5WHApU9RgD
+Content-Type: multipart/mixed; boundary="------------VU1m0sOTKOmOlXUOKddZrxGl"
 
-So what you do is, you try to allocate the workqueue. If it fails, you clear
-X86_FEATURE_RMPOPT so that rmpopt_capable() is false and that can be your
-start_workqueue function.
+--------------VU1m0sOTKOmOlXUOKddZrxGl
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-This way you get rid of all that
+T24gMTEuMDkuMjYgMjM6MzMsIFNocmVzaHRoIFNyaXZhc3RhdmEgd3JvdGU6DQo+IEhpIEp1
+ZXJnZW4sDQo+IA0KPiBJJ20gd29ya2luZyBvbiBhIHYzIG9mIERhdmUncyAieDg2L21zcjog
+Q29uc29saWRhdGUgbmF0aXZlL3BhcmF2aXJ0IE1TUg0KPiBmdW5jdGlvbnMiIHNlcmllcyBv
+biB0b3Agb2YgeW91cnMsIHNvIEkgdHJpZWQgdGVzdGluZyB0aGlzIHBhdGNoLg0KDQpZb3Ug
+c2hvdWxkIGxvb2sgYXQgWzFdIGFuZCBbMl0gYXMgd2VsbC4NCg0KPiANCj4gV2hpbGUgSSdt
+IGhlcmU6IHlvdSBtZW50aW9uZWQgeW91J2Qgc2VuZCBhIFYzIGFmdGVyIHJjMSBpZiBjb25m
+bGljdHMNCj4gdHVybmVkIHVwLiBJcyB0aGF0IHN0aWxsIHRoZSBwbGFuPyBJIHdhc24ndCBz
+dXJlIHdoZXRoZXIgdG8gYmFzZSBvbiB2Mg0KPiBwbHVzIHRoZSByZXNwaW5zIG9mIDQgYW5k
+IDEzLCBvciB3YWl0Lg0KDQpJIGRpZCBzZW5kIG91dCBWMyB5ZXN0ZXJkYXkgWzNdLg0KDQo+
+IA0KPiBNb3N0IG9mIHRoZSBjb2RlIHRoaXMgdG91Y2hlcyBjYW4ndCBydW4gb24gbXkgYm94
+LCBzbyBJIGNvbXBhcmVkIGNvbXBpbGVkDQo+IG91dHB1dCBpbnN0ZWFkLiBCdWlsdCBwYXRj
+aGVzIDEtMTIsIHRoZW4gMS0xMywgd2l0aCB0aGUgc2FtZSAuY29uZmlnIGFuZA0KPiBjb21w
+aWxlciwgYW5kIGRpZmZlZCAib2JqZHVtcCAtZCIgb3V0cHV0IGZvciBldmVyeSAubyBpbiBi
+b3RoIHRyZWVzLiBBbGwNCj4gOTM5NiBvYmplY3RzIGNhbWUgb3V0IGlkZW50aWNhbC4gVGhl
+IDEtMTMga2VybmVsIGJvb3RzIGZpbmUgdW5kZXIgS1ZNLg0KPiANCj4gT25seSB0cmllZCB0
+aGUgb25lIGNvbmZpZzogeDg2XzY0LCBnY2MgMTEuNS4wLA0KPiBDUFVfU1VQX3tJTlRFTCxB
+TUQsWkhBT1hJTn09eSwgSFlQRVJWPXksIEtWTV9JTlRFTD15LCBLVk1fSU5URUxfVERYPXku
+DQo+IA0KPiBUZXN0ZWQtYnk6IFNocmVzaHRoIFNyaXZhc3RhdmEgPHNocmVzaHRoLnNyaXZh
+c3RhdmFAaW50ZWwuY29tPg0KDQpUaGFua3MuDQoNCg0KSnVlcmdlbg0KDQpbMV06IGh0dHBz
+Oi8vbG9yZS5rZXJuZWwub3JnL2xrbWwvMjAyNjA5MTEwNzUyMTYuMzE0MjMwOS0xLWpncm9z
+c0BzdXNlLmNvbS9ULyN0DQpbMl06IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xrbWwvMjAy
+NjA5MTEwODQyMTEuMzE0OTk1Ny0xLWpncm9zc0BzdXNlLmNvbS9ULyN0DQpbM106IGh0dHBz
+Oi8vbG9yZS5rZXJuZWwub3JnL2xrbWwvMjAyNjA5MTEwNzQ1MzAuMzE0MDgzMC0xLWpncm9z
+c0BzdXNlLmNvbS9ULyN0DQo=
+--------------VU1m0sOTKOmOlXUOKddZrxGl
+Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
-	if (rmpopt_wq) 
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-sprinkles everywhere.
+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
+kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
+=3DeeAB
+-----END PGP PUBLIC KEY BLOCK-----
 
-> +
-> +	/*
-> +	 * Use a dedicated per-CPU workqueue so the potentially lengthy warm-up
-> +	 * scan does not tie up a shared workqueue worker.
-> +	 */
-> +	rmpopt_wq = alloc_workqueue("rmpopt_wq", WQ_PERCPU, 1);
-> +	if (!rmpopt_wq) {
-> +		pr_err("Failed to allocate RMPOPT workqueue\n");
-> +		return;
-> +	}
-> +
-> +	INIT_DELAYED_WORK(&rmpopt_delayed_work, do_rmpopt_work);
-> +
->  	rmpopt_pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
->  	rmpopt_base = rmpopt_pa_start | MSR_AMD64_RMPOPT_ENABLE;
->  
-> @@ -600,6 +681,15 @@ void snp_setup_rmpopt(void)
->  	 */
->  	for_each_cpu(cpu, cpu_primary_thread_mask)
->  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
-> +
-> +	rmpopt_pa_end = ALIGN(PFN_PHYS(max_pfn), SZ_1G);
-> +
-> +	if ((rmpopt_pa_end - rmpopt_pa_start) > SZ_2T)
-> +		rmpopt_pa_end = rmpopt_pa_start + SZ_2T;
-> +
-> +	queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
-> +
-> +	pr_info("RMPOPT optimizations enabled\n");
->  }
->  EXPORT_SYMBOL_FOR_MODULES(snp_setup_rmpopt, "ccp");
+--------------VU1m0sOTKOmOlXUOKddZrxGl--
 
-There is no ccp driver patch calling this so this export needs to happen when
-you're actually adding the ccp code.
+--------------dL8jxm9dVU7kKr5WHApU9RgD--
 
-Same thing for the snp_rmpopt_all_physmem() export to kvm-amd.
+--------------faqU8D6UM6LZgyWtdNphe2F6
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-Looking at this more, I would like to get rid of the snp_setup_rmpopt() export
-and have this function do the necessary setup stuff from an initcall in this
-file. This way you set up the stuff at kernel init time and have everything
-ready to go.
+-----BEGIN PGP SIGNATURE-----
 
-Then the ccp will *only* call a function which is called snp_enable_rmpopt()
-after it has enabled SNP. That function simply enables the workqueue.
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmqk9hsFAwAAAAAACgkQsN6d1ii/Ey/S
+1wf/QTQ5woUenjuZ7QkJEXIuWDT7pJrQQt4dQPrJUah9M9GRZ1uIegM3263zRi5Yv09bbadrYuM3
+oLSnH3FWqDCembBNmlwXTlL+fkoRnIoAZZUApZHUyVZDqQZmyfjPpogjHlUhDfwnKZMJYRX5P/rH
+AilfznPtW63O4zPeeCDF/q803mUv3UBxtP9PA4+Bhta4b9zcRpSHouBFVgOj/Eq6uj4bs9YPdYvE
+jUpqgPbVXQzL6HUq79PPAUxs/Is+2tusB7d/OwA4UzeY0VN8Ky6zeJNAOv7xMxiFZeVh8RZ5Dk5w
+ak4YEaJmufWhu4w8Bgx3uV5J/SvArlMv2MnItpdDew==
+=kgkG
+-----END PGP SIGNATURE-----
 
-And then kvm-amd can call that function too so we end up with one export.
-
-Oh, and you can zap those comments while at it:
-
-diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-index ca99617142be..c8ba71431a5e 100644
---- a/arch/x86/virt/svm/sev.c
-+++ b/arch/x86/virt/svm/sev.c
-@@ -619,7 +619,6 @@ static void rmpopt(u64 pa)
- 		     : "memory", "cc");
- }
- 
--/* on_each_cpu() callback: optimize the whole RMPOPT range on this CPU. */
- static void rmpopt_scan_range(void *arg)
- {
- 	u64 pa;
-@@ -632,7 +631,7 @@ static void do_rmpopt_work(struct work_struct *work)
- {
- 	/*
- 	 * Warm up the RMPOPT cache on this pinned per-CPU worker with interrupts
--	 * on, so the IRQ-disabled fan-out below only issues cache-hit RMPOPTs.
-+	 * enabled, so the IRQ-disabled fan-out below only issues cache-hit RMPOPTs.
- 	 */
- 	rmpopt_scan_range(NULL);
- 
-@@ -649,11 +648,6 @@ void snp_setup_rmpopt(void)
- 
- 	guard(mutex)(&rmpopt_wq_mutex);
- 
--	/*
--	 * Set up once: the workqueue and RMPOPT_BASE MSRs are left in place on
--	 * shutdown, so a later re-initialization just re-queues the optimization
--	 * pass rather than redoing the setup.
--	 */
- 	if (rmpopt_wq) {
- 		queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
- 		return;
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+--------------faqU8D6UM6LZgyWtdNphe2F6--
