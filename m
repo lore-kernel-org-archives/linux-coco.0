@@ -1,33 +1,33 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E938A43A7F5
-	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 14:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE3348D893
+	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 15:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789397466; cv=none; b=shX8pvVATugJQG6qEKGSJiZgGORxwBUwBligGd5drC2cIQau3GQjCcGJFu34CnoNYPfzaD7WHXYZzVSfvOYFcfIUtb2WhNa6BKUyfWzbnGg8OuuQ51Abn2IYJdyt0fOtQqYbz9MswMHByivIMOwwkQib1Nxssuet6ZLm8RkkEzQ=
+	t=1789398424; cv=none; b=Gn7Ug8L1vvRJESOPaK9wCVEJgmG5mzYdFKKwe/JBT2ks+92UPjucPcYfRl5+bvQcrAceGRYnFzTAH05L9GKI0wGTrLJ2lRwThayo87n3cOL5+JgpwgkyOUcEgAZ2yexqJrP/kpXM1K/R/CSYsI7N++Netjyp2HX+M//mvG8YrHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789397466; c=relaxed/simple;
-	bh=fDxs3RSMgLMHYM2xJnti/dp16e+QGBfMd1fd6wVbCsM=;
+	s=arc-20240116; t=1789398424; c=relaxed/simple;
+	bh=XzETh458EMmHv/nebgcl7LJ0C1wpe+M5WrH2ESXepO0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PQpBWO5HhpmgeIGrRyGzy3ueSaGiqhJ+/58nOPnFOZ3I6rS8OvQ5CCBC3w0qf8GT/lYpxjNRQ4pFM02TmoWLystzyPWZCQShHExhGjhYdCO0DL1Xeo1cTo1lDBbr7zUIyTYdbyBS8x1YMZvnYNSygur4YZGxTkx22iF2NMaVjB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Fq7v4RIB; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=bFLPOUTy4PuXtPcAnM2qX/uAwpZ3n9ldODD0XYCNrZ18vyFWgzFA9sLpQoS2pf3BX75yPgfeBkXoO4MnQCi4ijOSub+zds1OCExERKkwcu13+a8N4W37Z+/TuJHCNm0ESjLVmRg5LlGkjynPPxMswGQaTSy8TrC+ICYQgn+Bsy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=I1NHMIEF; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Fq7v4RIB"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="I1NHMIEF"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ED021153B;
-	Mon, 14 Sep 2026 07:50:51 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CBAF3153B;
+	Mon, 14 Sep 2026 08:06:57 -0700 (PDT)
 Received: from [10.0.128.139] (unknown [10.0.128.139])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 646E33F9A2;
-	Mon, 14 Sep 2026 07:50:53 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4CFE73F882;
+	Mon, 14 Sep 2026 08:06:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789397455; bh=fDxs3RSMgLMHYM2xJnti/dp16e+QGBfMd1fd6wVbCsM=;
+	t=1789398421; bh=XzETh458EMmHv/nebgcl7LJ0C1wpe+M5WrH2ESXepO0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Fq7v4RIBTyW6Flh4cvLImhdyoMuZXe+QwP6fHOBIcZXAcK1B74ZfU928xjBU/apV0
-	 Y3AHQ1ZplqMPJqRTc8XUo+GxwnDEjFAJFtUG57N1UJHTV3vK30CYEyJCXP1QZKc9zz
-	 k1RPSf9O1PwTqyptUlSYNVa34PEihESyl2auRgKU=
-Message-ID: <db219147-e2b5-43ce-9e14-a01ca65c52c7@arm.com>
-Date: Mon, 14 Sep 2026 15:50:51 +0100
+	b=I1NHMIEFhs72nShHbOJbu59UNuDa1T8JkI2LuKQLFINojMBKusl12ZE7kvP1bfh3z
+	 kvdSyTO/mLUw995M/YcRXqAMImpCWXwbOc+htPifPVTQ+saYZ3Huit2NAlxfPuY/z/
+	 0FqOopLmbUIsDJXXJoocSW1HHbVHb2HhDiuomoWQ=
+Message-ID: <af71bc16-a6ca-4c67-a515-0ba64e8b697e@arm.com>
+Date: Mon, 14 Sep 2026 16:06:57 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -35,13 +35,14 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 4/7] arm64: realm: Move Realm memory encryption ops to
- RSI code
+Subject: Re: [PATCH v11 5/7] virt: coco: arm-cca-guest: Rename TSM report
+ source file
 Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>,
- "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
  Greg KH <gregkh@linuxfoundation.org>, Jeremy Linton <jeremy.linton@arm.com>,
  Jonathan Cameron <jic23@kernel.org>,
  Lorenzo Pieralisi <lpieralisi@kernel.org>,
@@ -49,30 +50,24 @@ Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  Will Deacon <will@kernel.org>, Steven Price <steven.price@arm.com>,
  Andre Przywara <andre.przywara@arm.com>
 References: <20260914060511.277948-1-aneesh.kumar@kernel.org>
- <20260914060511.277948-5-aneesh.kumar@kernel.org> <aqf0lyf6dQRc4eDR@arm.com>
+ <20260914060511.277948-6-aneesh.kumar@kernel.org>
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <aqf0lyf6dQRc4eDR@arm.com>
+In-Reply-To: <20260914060511.277948-6-aneesh.kumar@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 14/09/2026 14:20, Catalin Marinas wrote:
-> On Mon, Sep 14, 2026 at 11:35:08AM +0530, Aneesh Kumar K.V (Arm) wrote:
->> Realm memory encryption callbacks are CCA-specific. Keep the Realm callback
->> registration with the RSI initialization code instead of pageattr.c, which
->> only needs to provide the low-level page-attribute transition helper.
->>
->> Export __set_memory_enc_dec() within arm64 so the RSI code can wrap it with
->> the Realm-specific encrypt/decrypt callbacks and warning policy.
+On 14/09/2026 07:05, Aneesh Kumar K.V (Arm) wrote:
+> The Arm CCA guest driver currently only implements TSM report support, but
+> follow-up changes will add more TSM-related functionality to the same
+> module.
 > 
-> Suzuki commented on v9 I think not to expose this function but I don't
-> see a nice way around since we now moved the realm_crypt_ops out of
-> pageattr.c (so we'd have to export something out of that file).
-
-Yep, you are right. Thats the conclusion we reached to.
-
+> Rename arm-cca-guest.c to main.c and build it as an object of the
+> arm-cca-guest module. This leaves room for the module to grow additional
+> source files.
 > 
-> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 
-Thanks
-Suzuki
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+
 
