@@ -1,175 +1,328 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5CB3DB323;
-	Mon, 14 Sep 2026 06:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC7735FF5B;
+	Mon, 14 Sep 2026 06:23:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789365974; cv=none; b=m8ngowAZpWZeRJDYwRUytCta0ButcvhvUu+GhiX4SKHO6HCVJCsFo/zWkP/+axRgJN2Oe5TUPDvO1EZdN/UdVPDkxYjkLKVmQAzNBDZ6sLsKNavpQYv+dYFMK443/p/4TGlGX+2I3tInlkXdbQ6Bh/ZlOEaL9//EnkphNYB18yk=
+	t=1789366985; cv=none; b=Fo4fNOFGSFle+tV3pW/34HZIaH3esmqrKH9JGajrJ9Am4EQCBzZJs35OyG8mp6fP5XqPNp8aBuZvljd/TSnbbT0/tApUvdQhPkBO7MbdoTjwVy49IByL6AlA+Pd7q7Y+CUATO107AGsTSJR6yqft8SMU5JcJGgNminxJfbEXht0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789365974; c=relaxed/simple;
-	bh=WVhEo6SeEQqP+QvIKbU+21Y16Dfk6SYNjbB2vqoqLF8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yp0RzKxJFJF1QLyJ8T12ahaMF9j/tKCj6CZLLtusdBoVSFVxbJN1c8EoykwN1fkb8xvqRFmSUszcm6LHe8bBUhvEnA+hSANi3CCVR/Tagv6p3F+RQYB/t/wIi4aGT8R13kZ3iI6+ov31EpKMeG17nf5AGwKz2gs5//KNBqzW3x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CzoYt5Vg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789366985; c=relaxed/simple;
+	bh=A33RJV2D0AN0N24mCbcvU4G5DcOAvXGh3mPfTyTsEU8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IKUDHpzunTltQAb5D50VV/IHq6o7NZ03aVJNUvi1pHoNx+pX2Aidhfo4F5ZuMi4b5cnyLQPEcNW7PxfxezkKkJZq0rJymX7/Ypcyw6OVASg0466y9KOLsZZ66DlZP3R5+c8UnW1J0Janmtr+bIYvWeH0BDPlQDBuwD/IKuTK8sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=op48qBzZ; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CzoYt5Vg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40CAB1F00893;
-	Mon, 14 Sep 2026 06:06:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789365966;
-	bh=zQhmhJMTXwneX/RqH3DzVF+nOtJL2DGWLLD8wsqyKPs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CzoYt5VgNmseKdHJScMgJ8A7M8ysbwdkORR7hRm7LXrvSVI3h/67n0xvtBU/aPYNW
-	 8mmsqszPwekSJGVQJZdFUmrSGpRp8jBuvLq29DvAOs3d/h+Yen4iUYv7QxV9Lfjdy0
-	 pxJ6VBuvl/wVhJ2f3zxLH8Z0HkKBzm+uniWMzDcTgVJZ2Q+TfQoGzcfO4x7IlhAVGk
-	 x1R7MqIXgSiSApdrLEu4j2LL5fl2S9lakRjkFtmRhqQ78MyeseWSwKXi/0u70cvSt9
-	 KirrPdP720sKVFcrvwCJlDG+xP9gZ0RZs/YFkPzlFxQc9On7xC+cnWturF8FMZlHNy
-	 yzPcqWSRdUGOw==
-From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-To: linux-coco@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Andre Przywara <andre.przywara@arm.com>
-Subject: [PATCH v11 7/7] coco: guest: arm64: Replace dummy CCA device with sysfs ABI
-Date: Mon, 14 Sep 2026 11:35:11 +0530
-Message-ID: <20260914060511.277948-8-aneesh.kumar@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260914060511.277948-1-aneesh.kumar@kernel.org>
-References: <20260914060511.277948-1-aneesh.kumar@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="op48qBzZ"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EF8FD1570;
+	Sun, 13 Sep 2026 23:22:56 -0700 (PDT)
+Received: from [10.57.10.40] (unknown [10.57.10.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AEF083F7B4;
+	Sun, 13 Sep 2026 23:22:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789366980; bh=A33RJV2D0AN0N24mCbcvU4G5DcOAvXGh3mPfTyTsEU8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=op48qBzZwgyfzF0VPAvSFLZzpF+trv27JNawXFVF37FvxQcTi/T7McDrcQdOOdqnR
+	 82revSNtVjf5WuXwOqH8296xhdLN6t0a4jwy5DE4u9ztN6VUJH0fqQjATMhu26amVa
+	 gYrvzph+gXtKvfYuEiUsh3aj1Dh1G/kspPvLWsWY=
+Message-ID: <4f18aa66-2296-4b63-87f5-6ab493faecbc@arm.com>
+Date: Mon, 14 Sep 2026 07:22:56 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 4/7] firmware: arm_rmm: Add support for SRO
+Content-Language: en-GB
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
+ <20260912083611.2513845-5-suzuki.poulose@arm.com>
+ <f00d01d1-8df0-4865-8e52-c85171cf4ca5@redhat.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <f00d01d1-8df0-4865-8e52-c85171cf4ca5@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-The SMCCC firmware driver now creates the arm-smccc platform device and
-instantiates the CCA RSI auxiliary devices once the RSI ABI is discovered.
-The arm64-specific arm-cca-dev platform device stub is therefore no longer
-needed.
+Hi Gavin
 
-However, userspace has used the arm-cca-dev platform device to detect Arm
-CCA Realm guests [1]. Removing it without a replacement would break that
-detection and would also leave userspace depending on kernel device-model
-details.
+Thank you for the review, I will address most of them. Responses inline.
 
-Add /sys/firmware/cca/realm_guest as a stable, architecture-provided ABI
-for detecting whether the kernel is running as an Arm CCA Realm guest. The
-file returns 1 in Realm world and 0 otherwise, similar to the existing s390
-/sys/firmware/uv/prot_virt_guest interface for protected virtualization
-guests.
+On 14/09/2026 06:04, Gavin Shan wrote:
+> On 9/12/26 6:36 PM, Suzuki K Poulose wrote:
+>> RMM v2.0 introduces the concept of "Stateful RMI Operations" (SRO). This
+>> means that an SMC can return with an operation still in progress. The
+>> host is expected to continue the operation until it reaches a conclusion
+>> (either success or failure). During this process the RMM can request
+>> additional memory ('donate') or hand memory back to the host
+>> ('reclaim'). The host can request an in progress operation is cancelled,
+>> but still continue the operation until it has completed (otherwise the
+>> incomplete operation may cause future RMM operations to fail).
+>>
+>> The SRO is tracked using a struct rmi_sro_state object which keeps track
+>> of any memory which has been allocated but not yet consumed by the RMM
+>> or reclaimed from the RMM. This allows the memory to be reused in a
+>> future request within the same operation. It will also permit an
+>> operation to be done in a context where memory allocation may be
+>> difficult (e.g. atomic context) with the option to abort the operation
+>> and retry the memory allocation outside of the atomic context. The
+>> memory stored in the struct rmi_sro_state object can then be reused on
+>> the subsequent attempt.
+>>
+>> Wrappers for SRO RMI commands are also provided here because they depend
+>> on the rmi_sro_execute() implementation added by this patch.
+>> Delegate/undelegate handles are also added here because they now use the
+>> SRO/stateful command infrastructure and are also used for the memory
+>> DONATE/RECLAIM flows.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Co-Developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-Remove the dummy arm-cca-dev registration now that userspace has a
-dedicated CCA Realm guest indicator, and document the new ABI in
-Documentation/ABI/testing/sysfs-firmware-cca.
 
-[1] https://lore.kernel.org/all/4a7d84b2-2ec4-4773-a2d5-7b63d5c683cf@arm.com
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
----
- Documentation/ABI/testing/sysfs-firmware-cca | 10 +++++
- drivers/firmware/arm_rmm/rsi.c               | 42 +++++++++++++++-----
- 2 files changed, 42 insertions(+), 10 deletions(-)
- create mode 100644 Documentation/ABI/testing/sysfs-firmware-cca
+>> ---
+>>   drivers/firmware/arm_rmm/rmi.c | 586 +++++++++++++++++++++++++++++++++
+>>   include/linux/arm-rmi-cmds.h   |  41 +++
+>>   2 files changed, 627 insertions(+)
+>>
+>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/ 
+>> arm_rmm/rmi.c
+>> index 5b0e342ce3d58..4f9898ece7547 100644
+>> --- a/drivers/firmware/arm_rmm/rmi.c
+>> +++ b/drivers/firmware/arm_rmm/rmi.c
 
-diff --git a/Documentation/ABI/testing/sysfs-firmware-cca b/Documentation/ABI/testing/sysfs-firmware-cca
-new file mode 100644
-index 000000000000..bf177d636b92
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-firmware-cca
-@@ -0,0 +1,10 @@
-+What:		/sys/firmware/cca/realm_guest
-+Date:		May 2026
-+Contact:	Linux ARM Kernel Mailing list <linux-arm-kernel@lists.infradead.org>
-+Description:	Read-only. Indicates whether the kernel is running as an
-+		Arm Confidential Compute Architecture (CCA) Realm guest.
-+
-+		The value is one of:
-+
-+		0: the kernel is not running as a Realm guest
-+		1: the kernel is running as a Realm guest
-diff --git a/drivers/firmware/arm_rmm/rsi.c b/drivers/firmware/arm_rmm/rsi.c
-index 2dd69febedbd..52f40256bd78 100644
---- a/drivers/firmware/arm_rmm/rsi.c
-+++ b/drivers/firmware/arm_rmm/rsi.c
-@@ -9,12 +9,15 @@
- #include <linux/swiotlb.h>
- #include <linux/platform_device.h>
- #include <linux/arm-rsi-cmds.h>
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
- 
- #include <asm/io.h>
- #include <asm/mem_encrypt.h>
- #include <asm/pgtable.h>
- 
- static struct realm_config config;
-+static struct kobject *cca_kobj;
- 
- unsigned long prot_ns_shared;
- EXPORT_SYMBOL(prot_ns_shared);
-@@ -182,17 +185,36 @@ void __init arm64_rsi_init(void)
- 	static_branch_enable(&rsi_present);
- }
- 
--static struct platform_device rsi_dev = {
--	.name = "arm-cca-dev",
--	.id = PLATFORM_DEVID_NONE
-+static ssize_t cca_is_realm_guest(struct kobject *kobj,
-+		struct kobj_attribute *attr, char *buf)
-+{
-+	return sysfs_emit(buf, "%d\n", is_realm_world());
-+}
-+
-+static struct kobj_attribute cca_realm_guest =
-+	__ATTR(realm_guest, 0444, cca_is_realm_guest, NULL);
-+
-+static const struct attribute *cca_realm_attrs[] = {
-+	&cca_realm_guest.attr,
-+	NULL,
- };
- 
--static int __init arm64_create_dummy_rsi_dev(void)
-+static int __init realm_sysfs_init(void)
- {
--	if (is_realm_world() &&
--	    platform_device_register(&rsi_dev))
--		pr_err("failed to register rsi platform device\n");
--	return 0;
--}
-+	int ret;
- 
--arch_initcall(arm64_create_dummy_rsi_dev)
-+	if (!static_branch_unlikely(&rsi_present))
-+		return 0;
-+
-+	cca_kobj = kobject_create_and_add("cca", firmware_kobj);
-+	if (!cca_kobj)
-+		return -ENOMEM;
-+
-+	ret = sysfs_create_files(cca_kobj, cca_realm_attrs);
-+	if (!ret)
-+		return 0;
-+
-+	kobject_put(cca_kobj);
-+	return ret;
-+}
-+device_initcall(realm_sysfs_init);
--- 
-2.43.0
+> 
+> I would drop rmi_granule_range_{delegate, undelegate}() by combining 
+> their logics to
+> their only callers rmi_{delegate, undelegate}_range(). More details are 
+> provided for
+> rmi_{delegate, undelegate}_range() in the below.
+
+Ack
+
+
+> 
+>> +int rmi_delegate_range(phys_addr_t phys,
+>> +               unsigned long size,
+>> +               phys_addr_t *out_phys)
+>> +{
+>> +    long ret = 0;
+>> +    unsigned long top = phys + size;
+>> +    unsigned long out_top;
+>> +
+>> +    while (phys < top) {
+>> +        ret = rmi_granule_range_delegate(phys, top, &out_top);
+>> +
+>> +        if (ret == RMI_SUCCESS) {
+>> +            /* Buggy RMM ? */
+>> +            if (WARN_ON(out_top <= phys)) {
+>> +                rmi_undelegate_range(top - size, size);
+> 
+> [top - size, size] is incorrect because we may be delegating a sub-range 
+> of the
+> range of granules. It's actually the caller's responsibility to 
+> undelegate the
+> graunles that have been delegated.
+> 
+>              if (WARN_ON(out_top <= phys)) {
+>                  ret = -ENXIO;
+>                  break;
+>              }
+
+Agree, I have done this already based on Sashiko review, and added a 
+comment too.
+
+
+
+> 
+>> +/*
+>> + * Convert the RmiAddrBlockSize to actual size. This is used in 
+>> RmiDonateReq
+>> + * and RmiAddrRangeDesc*.
+>> + */
+>> +static unsigned long rmi_addr_block_size_to_bytes(unsigned long 
+>> block_size_fld)
+>> +{
+>> +    return BIT(ARM64_HW_PGTABLE_LEVEL_SHIFT(3 - block_size_fld));
+>> +}
+>> +
+>> +/*
+>> + * free_addr_range: Free memory described by the address range entry, 
+>> which may
+>> + *            be partially consumed by RMM.
+>> + *
+>> + * @entry: RMI_ADDR_RANGE descriptor
+>> + * @consumed_size: Page aligned size consumed by the RMM from the 
+>> address range.
+>> + *
+>> + * If the state of the address is DELEGATED, undelegate it back, 
+>> before freeing.
+>> + * Leaks the memory if we cannot undelegate the range.
+>> + */
+>> +static void free_addr_range(unsigned long entry, unsigned long 
+>> consumed_size)
+>> +{
+>> +    unsigned long phys = RMI_ADDR_RANGE_ADDR(entry);
+>> +    unsigned long block_size_fld = RMI_ADDR_RANGE_BLOCK_SIZE(entry);
+>> +    unsigned long count = RMI_ADDR_RANGE_COUNT(entry);
+>> +    unsigned long state = RMI_ADDR_RANGE_STATE(entry);
+>> +    unsigned long size = rmi_addr_block_size_to_bytes(block_size_fld) 
+>> * count;
+>> +
+>> +    WARN_ON(!PAGE_ALIGNED(phys) || !PAGE_ALIGNED(consumed_size));
+>> +
+>> +    /* Adjust the address and size for partially consumed entry */
+>> +    phys += consumed_size;
+>> +    size -= consumed_size;
+>> +    /*
+>> +     * Undelegate the pages back if required. If we can't
+>> +     * change them back, leak the pages.
+>> +     */
+>> +    if (state == RMI_OP_MEM_DELEGATED &&
+>> +        WARN_ON(rmi_undelegate_range(phys, size)))
+>> +        return;
+>> +    free_pages_exact(phys_to_virt(phys), size);
+>> +}
+>> +
+>> +static void rmi_op_continue(unsigned long sro_handle, unsigned long 
+>> flags,
+>> +                struct arm_smccc_1_2_regs *out_regs)
+>> +{
+>> +    *out_regs = (struct arm_smccc_1_2_regs) {
+>> +        SMC_RMI_OP_CONTINUE, sro_handle, flags
+>> +    };
+>> +
+>> +    rmi_smccc_invoke(out_regs);
+>> +}
+>> +
+> 
+> The pattern 'regs' is used in some of the 'struct arm_smccc_1_2_regs' 
+> arguments
+> or variables in this series, which is incosistent to the existing 
+> patterns which
+> is either 'args' or 'res' by searching the source files using 'git grep 
+> arm_smccc_1_2_regs'.
+> So I would suggest we have the fixed the pattern 'args' :-)
+
+
+I would prefer to keep it "regs" as, unlike the smccc_1_1 calls, we
+pass "arm_smccc_1_2_regs" for both arguments and results. In this case
+we are using a single structure, so, to avoid the confusion, I
+intentionally used regs
+
+> 
+
+>> +
+>> +int rmi_free_delegated_page(phys_addr_t phys)
+>> +{
+>> +    if (WARN_ON_ONCE(rmi_undelegate_page(phys))) {
+>> +        /* Undelegate failed: leak the page */
+>> +        return -EBUSY;
+>> +    }
+>> +
+>> +    free_page((unsigned long)phys_to_virt(phys));
+>> +
+>> +    return 0;
+>> +}
+>> +EXPORT_SYMBOL_GPL(rmi_free_delegated_page);
+>> +
+> 
+> I would move rmi_free_delegated_page() right after rmi_undelegate_range().
+
+Ack
+
+
+>> +
+>> +static int rmi_sro_donate_noncontig(struct rmi_sro_state *sro,
+>> +                    unsigned long sro_handle,
+>> +                    unsigned long donatereq,
+>> +                    struct arm_smccc_1_2_regs *out_regs,
+>> +                    gfp_t gfp)
+>> +{
+>> +    unsigned long block_size_fld = RMI_DONATE_BLOCK_SIZE(donatereq);
+>> +    unsigned long block_size = 
+>> rmi_addr_block_size_to_bytes(block_size_fld);
+>> +    unsigned long count = RMI_DONATE_COUNT(donatereq);
+>> +    unsigned long state = RMI_DONATE_STATE(donatereq);
+>> +    unsigned long found = 0;
+>> +    unsigned long donated_granules;
+>> +    unsigned long granules_per_block = block_size >> PAGE_SHIFT;
+>> +    unsigned long consumed_blocks;
+>> +    int addr_list_start = sro->addr_count;
+>> +
+>          ^^^^^^
+> 
+> Unecessary blank line.
+
+Removed
+
+...
+
+>> +
+>> +void rmi_sro_free(struct rmi_sro_state *sro)
+>> +{
+>> +    /* Handle the worse */
+>> +    if (WARN_ON(sro->addr_count < 0))
+>> +        return;
+>> +
+>> +    if (WARN_ON(sro->addr_count > RMI_MAX_ADDR_LIST))
+>> +        sro->addr_count = RMI_MAX_ADDR_LIST;
+>> +
+>> +    for (int i = 0; i < sro->addr_count; i++)
+>> +        free_addr_range(sro->addr_list[i], 0);
+>> +
+>> +    sro->addr_count = 0;
+>> +}
+>> +EXPORT_SYMBOL_GPL(rmi_sro_free);
+>> +
+>> +long rmi_sro_memxfer_execute(struct rmi_sro_state *sro, gfp_t gfp)
+>> +{
+>> +    struct arm_smccc_1_2_regs *regs = &sro->regs;
+>> +    bool cancelled = false;
+>> +    unsigned long sro_handle;
+>> +
+>> +    rmi_smccc_invoke(regs);
+>> +
+>> +    sro_handle = regs->a1;
+>> +    while (RMI_RETURN_STATUS(regs->a0) == RMI_INCOMPLETE) {
+>> +        bool can_cancel = RMI_RETURN_CAN_CANCEL(regs->a0) == 
+>> RMI_OP_CAN_CANCEL;
+>> +        int ret = 0;
+>> +
+>> +        switch (RMI_RETURN_MEMREQ(regs->a0)) {
+>> +        case RMI_OP_MEM_REQ_NONE:
+>> +            rmi_op_continue(sro_handle, RMI_CONTINUE_KEEP_GOING,
+>> +                    regs);
+>> +            break;
+>> +        case RMI_OP_MEM_REQ_DONATE:
+>> +            ret = rmi_sro_donate(sro, sro_handle, regs->a2, regs,
+>> +                         gfp);
+>> +            break;
+>> +        case RMI_OP_MEM_REQ_RECLAIM:
+>> +            ret = rmi_sro_reclaim(sro, sro_handle, regs);
+>> +            break;
+>> +        default:
+>> +            ret = WARN_ON_ONCE(1);
+>> +            break;
+> 
+> "ret = WARN_ON_ONCE(1)" is same to "ret = true". I guess we would return
+> -EINVAL here.
+> 
+>              WARN_ON_ONCE(1);
+>              ret = -EINVAL;
+>              break;
+
+Ack, this should be -ENXIO
+
+Cheers
 
