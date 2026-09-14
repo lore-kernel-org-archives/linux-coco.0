@@ -1,616 +1,219 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0982735E1D5
-	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 05:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C58386568;
+	Mon, 14 Sep 2026 06:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789364787; cv=none; b=AuCy242OscriYorUbwvYri00tl27sXkvFZ1kDrKHTy/ao5CAdI7czlp+pgq23WWEiJeB8YgyxKH43JkTTuNCyqoNS7TdsOMJ8LmkefHhJHfWYqaqscXwxFTYhBHd51bmOsY88cJDf6Gha0cmnm70a/D6GARCS8XwLmY6dfv9d9Y=
+	t=1789365925; cv=none; b=uTqLK12zZphE96OXQuV8nh1HJdMBXBVtYRuzbP25YnvKZ42aZJ9kttRc3XtVWyFRS352F1/nzfpoFtooo0NMQ/4RsJ58wQerN8evsl4g8G3Uty43DXV1QAIdQvzJzjhoewmpFN0OOV2C/yBVf90lCzYLrl2VomSguzldUiwEP+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789364787; c=relaxed/simple;
-	bh=5QhzlNik2vb8WTv+Whr0AIXM6Glk/gD+Fu1duuDW/RM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H2OaraqiJrZL9Y2ZLQVLYMivpe1w6p9VaMp7eOtl99MEoH6ysZ9stsEK8/YW9r+vYKJmwYePVAOcBa08vXGiNezmzrbaD/g9V9wQHnGr1G3KhKOYen21hg7LL8fsR4YwCIldPVP1r9I7pvP+ZtCDog5tM4klJmOIKNCXyWmYLfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Nz8hr/vb; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789365925; c=relaxed/simple;
+	bh=SYXr3v6rNpzInFw3vzjRrtjnbMKUOX/lELSBggtoZBI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MwvQB5GlJEa0fTD/cTHSLUfZpvs37pLl2CF1pcuG60ULplxT3LBxCwCeC+q9G3cE+1sN6lezjGUsyKk9+uYs3zfPkcQl4N2gmHIUdyVZXGrn4xpRJhUlyBACJbPMcatdKxB8wWRN+dPeBqQHHuEIMdXUyS3f7jhBc5zNbZ10Oeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SgPMKeXL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Nz8hr/vb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789364784;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4YoZj7ULUnXFEUqLzayKbTSzQn3c5hbr/5knd21qzAo=;
-	b=Nz8hr/vbX6GlW05sSfvgZ6pyGNgOenlO5x7HoQY0tQJEWV0KoHyAaCVVS3bFi3WIphjDPB
-	ZO5RfFuH5H8ccS5PcOOngU5vNYs7T3j73EJQVsrBHjCR+RUxFHse3SpXtVB0WzaMV7EnqY
-	fj9BJKAcfrVQlbDDYd1kolWuzhnCGSU=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-147-8d5Pugd1NhmPl9RX3ASrhQ-1; Mon, 14 Sep 2026 01:46:20 -0400
-X-MC-Unique: 8d5Pugd1NhmPl9RX3ASrhQ-1
-X-Mimecast-MFC-AGG-ID: 8d5Pugd1NhmPl9RX3ASrhQ_1789364780
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-399311947f6so5608556a91.0
-        for <linux-coco@lists.linux.dev>; Sun, 13 Sep 2026 22:46:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789364779; x=1789969579;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4YoZj7ULUnXFEUqLzayKbTSzQn3c5hbr/5knd21qzAo=;
-        b=DmuHtqwPunaFHvk1QaAcbiPUuM1qhghqsMjNJkiY/31zWE/sDWNQ2kburpcy1ZRvfA
-         s64soBZ5JBHFmwW4Men0dTRuF6GEfMr2xMfKN0tOUqneCDfc7bvGxgrctxtrK+sRWyQk
-         G0v6cnO4Wtb9sMIsFkBOrR9UYqjAx48g0Iwa3l1CKz4mccvwMzinQNNvVYq9gv8rld7w
-         kdCP1G0nJHl8/07HVXd97T7UkIJa/0CcEv13CC8UvWZbWRsQdQTZYzluamsiyHx/6sDO
-         Ag4nvAXiayQHYOv7CueJeRcdmVVvLHWTRuW8NkUqSj03CdYaX11IFglK6ezaNB3oTcoW
-         FWeQ==
-X-Forwarded-Encrypted: i=1; AKwUvBydO47TnjoB3m1aXUYElz51iRUg8SucTKFS9KarY/jFiJgyjm8Omcglz3F58wOKl+ewONGfMB6gsarh@lists.linux.dev
-X-Gm-Message-State: AFuF++lX8WlDUzhWxmaydh4LY62l1IpgF55ej54apCCdfXlCoPcolwu+
-	Ur2Bq8fUCCUU3O/pTx/rfUJIXlg5TMnSGlUU7UMDGNlMdAy8/BoWe/tFHncuRe8zFb32wmSzNsl
-	UnYxzVAVAeASUIoZ4LKnjX5+juOit/abpuyLi0EmjhsFTBfx5l+ti9v5GJds4V3I=
-X-Gm-Gg: AYBFou1mEHMn5Pk/Ef1Ca/orI6F2pm5+VviPoaDS/UAZS+ZpV0tMTd1V3KhVxaeHemK
-	sQs+PIB4qXZ1237InhcFH6wHmFITRymmYzZHhQJ2o9vjOr9mjpIihBU1dxwH5dTLH9hsv/pj7Tn
-	h88yQ2oce3BDNG5m7RwlLvFBQTqBjtGhLvX4An1AF3h3oBzDAI9haXcbZfqBbig3SRF3EYm6Lpi
-	5EfqiS/ybBJiSvFF2nr/wFyy7rbpkqJDOI2poGd7RxmJ3nVMtLd4yXekPvzxs2+4kJf/Tjhtnem
-	y2Dy6jCE3Y3r7Zk0XL1Gq15WtLl3/CJfb8DruxQy7181Ye07/julwWifNcV20/fivXUPRbmbYUk
-	Mf3pjHAoxUkf9b4m6nnzEfw9pWDmz7VPSR4H0PzvDAA==
-X-Received: by 2002:a17:90b:39cc:b0:39d:b769:3067 with SMTP id 98e67ed59e1d1-39debdffe17mr2617512a91.0.1789364779260;
-        Sun, 13 Sep 2026 22:46:19 -0700 (PDT)
-X-Received: by 2002:a17:90b:39cc:b0:39d:b769:3067 with SMTP id 98e67ed59e1d1-39debdffe17mr2617413a91.0.1789364778584;
-        Sun, 13 Sep 2026 22:46:18 -0700 (PDT)
-Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d9d8aa131sm5474141a91.2.2026.09.13.22.46.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 13 Sep 2026 22:46:17 -0700 (PDT)
-Message-ID: <54ac0609-f111-45fb-9c82-3095ddbed006@redhat.com>
-Date: Mon, 14 Sep 2026 15:46:06 +1000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SgPMKeXL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941491F000FF;
+	Mon, 14 Sep 2026 06:05:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789365922;
+	bh=B5zIRBsJq6iQL3X+P2GGrZuJeAwviBSya5l0KqfhnHY=;
+	h=From:To:Cc:Subject:Date;
+	b=SgPMKeXL1kKUhB4vKYSP6NmqhQ5x3v84ssV0eSqkTjgcHP6h5vMs68UPCRUpCIvJ8
+	 2P13PTIMoR1FkgM5w6FSz9G99Ua/yCLWkRbrCj/xztBYARfzDh3lDoI44ni+JjYJO7
+	 CLdvQJjoplfHJv48RV5NM4t5VH9O13L8OhPYf5B18Fyi8urdQkPVwg83H5Yrgi05yz
+	 ABqdXZWOvHNPaa4sOO9axRy/cB3uKG5Mam1h3hG+0vs0EaX2BMr8PSHNTU71e0qwll
+	 9MjAxlNQ6EaF10lVp4b91qFl/xkl2o3A44366jtWSvSCaxawfb5SsOfTG2cy1moyeU
+	 y/IkLsRAMdrvg==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Andre Przywara <andre.przywara@arm.com>
+Subject: [PATCH v11 0/7] Switch Arm SMCCC firmware services to an SMCCC bus
+Date: Mon, 14 Sep 2026 11:35:04 +0530
+Message-ID: <20260914060511.277948-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 7/7] firmware: arm_rmm: Add wrappers for Realm related
- RMI commands
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
- <20260912083611.2513845-8-suzuki.poulose@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20260912083611.2513845-8-suzuki.poulose@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: CpvW1fN8Aq9ItOtWdSTTjYeUq-s3SXpiS1CiHqLyI18_1789364780
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/12/26 6:36 PM, Suzuki K Poulose wrote:
-> From: Steven Price <steven.price@arm.com>
-> 
-> Introduce wrappers for the RMI functions needed for creating and
-> managing realm guests. This will be used by the KVM to manage the
-> Realms
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> ---
-> Changes since v17:
->    * Avoid nesting if conditions for output populating RMI calls
->    * Clean up comments
->    * Always use arm_smccc_1_2_invoke() for RMI calls.
-> Changes since v16:
->    * Split into a separate patch and move away from arch/arm64 to
->      include/linux/.
->    * Also moved into the firmware_rmm series from the KVM CCA support.
->      This is done in a hope to reduce the merge conflicts and make
->      the KVM CCA upstreaming in independent parallel chunks
-> ---
->   include/linux/arm-rmi-cmds.h | 461 +++++++++++++++++++++++++++++++++++
->   1 file changed, 461 insertions(+)
-> 
+As discussed here:
+https://lore.kernel.org/all/20250728135216.48084-12-aneesh.kumar@kernel.org
 
-One nitpick for rmi_rtt_data_unmap() below. With it addressed:
+The earlier CCA guest support used an arm-cca-dev platform device as a pure
+software anchor for the TSM class device. That platform device did not
+correspond to a DT/ACPI described device, MMIO range, interrupt, or other
+platform resource; it existed only to make the CCA guest driver bind and to
+place the resulting TSM device in the driver model. The same pattern also
+exists for smccc_trng. Creating separate platform devices for such
+SMCCC-discovered features is misleading, because those features are not
+independent platform devices.
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+This series adds an Arm SMCCC bus for services discovered through the SMCCC
+firmware interface. The bus provides SMCCC device and driver registration
+helpers, SMCCC function id based matching, uevent modalias generation, and
+a sysfs modalias attribute. SMCCC service drivers can use
+MODULE_DEVICE_TABLE(arm_smccc, ...) to emit arm_smccc:f<functionid>
+aliases, allowing userspace to autoload service drivers when the SMCCC core
+registers matching firmware-service devices.
 
-> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
-> index 27a0c56944976..fd7ef7e82b246 100644
-> --- a/include/linux/arm-rmi-cmds.h
-> +++ b/include/linux/arm-rmi-cmds.h
-> @@ -76,4 +76,465 @@ long rmi_sro_execute(struct arm_smccc_1_2_regs *regs);
->   	__ret;								\
->   })
->   
-> +/**
-> + * rmi_rtt_data_map_init() - Create a mapping at protected IPA, copying contents
-> + *			     from a given non-secure source granule.
-> + * @rd: PA of the RD
-> + * @data: PA of the target granule mapped in the guest
-> + * @ipa: IPA at which the granule @data will be mapped in the guest
-> + * @src: PA of the source granule with contents
-> + * @flags: RMI_MEASURE_CONTENT if the contents should be measured
-> + *
-> + * Create a mapping from Protected IPA space to conventional memory, copying
-> + * contents from a Non-secure Granule provided by the caller.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_data_map_init(unsigned long rd, unsigned long data,
-> +					 unsigned long ipa, unsigned long src,
-> +					 unsigned long flags)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_DATA_MAP_INIT, rd, data, ipa, src, flags
-> +	};
-> +
-> +	return rmi_sro_execute(&regs);
-> +}
-> +
-> +/**
-> + * rmi_rtt_data_map() - Create mappings in protected IPA range with unknown contents
-> + * @rd: PA of the RD
-> + * @base: Base of the target IPA range
-> + * @top: Top of the target IPA range
-> + * @flags: Flags
-> + * @oaddr: Output address set descriptor
-> + * @out_top: Top address of range which was processed.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_data_map(unsigned long rd,
-> +				    unsigned long base,
-> +				    unsigned long top,
-> +				    unsigned long flags,
-> +				    unsigned long oaddr,
-> +				    unsigned long *out_top)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_DATA_MAP, rd, base, top, flags, oaddr
-> +	};
-> +	long ret;
-> +
-> +	ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret == RMI_SUCCESS && out_top)
-> +		*out_top = regs.a1;
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * rmi_rtt_data_unmap() - Remove mappings to conventional memory at a protected
-> + *			  IPA range
-> + * @rd: PA of the RD
-> + * @base: Base of the target IPA range
-> + * @top: Top of the target IPA range
-> + * @flags: Flags
-> + * @oaddr: Output address set descriptor
-> + * @out_top: Returns top IPA of range which has been unmapped
-> + * @out_range: Output address range
-> + * @out_count: Number of entries in output address list
-> + *
-> + * Removes mappings to convention memory with a target Protected IPA range.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_data_unmap(unsigned long rd,
-> +				      unsigned long base,
-> +				      unsigned long top,
-> +				      unsigned long flags,
-> +				      unsigned long oaddr,
-> +				      unsigned long *out_top,
-> +				      unsigned long *out_range,
-> +				      unsigned long *out_count)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_DATA_UNMAP, rd, base, top, flags, oaddr
-> +	};
-> +	long ret;
-> +
-> +	ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret == RMI_SUCCESS) {
-> +		if (out_top)
-> +			*out_top = regs.a1;
-> +		if (out_range)
-> +			*out_range = regs.a2;
-> +		if (out_count)
-> +			*out_count = regs.a3;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
+The series then moves SMCCC TRNG and the Arm CCA guest RSI service off the
+platform bus. When the SMCCC core discovers the corresponding firmware
+service, it registers an arm-smccc device for that service. The hwrng
+arm_smccc_trng driver and the Arm CCA guest TSM provider are converted to
+SMCCC drivers that bind to those discovered devices.
 
-The unnecessary if statements could be avoided by:
+The old arm-cca-dev platform device has also been used by userspace as a Realm
+guest indicator. Removing it without a replacement would leave userspace
+depending on an internal driver-binding device. This series therefore adds
+/sys/firmware/cca/realm_guest as a stable, architecture-provided ABI for
+detecting whether the kernel is running as an Arm CCA Realm guest, and then
+removes the dummy arm-cca-dev platform-device registration.
 
-	if (ret != RMI_SUCCESS)
-		return ret;
+Changes from v10:
+https://lore.kernel.org/all/20260904095000.1184861-1-aneesh.kumar@kernel.org
+* Collect Reviewed-by tags.
+* Add the missing linux/types.h include.
+* Update the arm_smccc_1_1_invoke() call to pass 0 as the input value for x1-x7.
 
-	if (out_top)
-		*out_top = regs.a1;
-	if (out_range)
-		*out_range = regs.a2;
-	if (out_count)
-		*out_count = regs.a3;
+Changes from v9:
+https://lore.kernel.org/all/20260805063255.1638614-1-aneesh.kumar@kernel.org
+* Rename CONFIG_ARM_RMM to CONFIG_ARM_RMM_RSI to make the Kconfig option RSI-specific.
+* Update the modalias to use the SMCCC function ID.
+* Don't issue SMC64 SMCCC calls on arm32.
+* Drop the IDA usage.
 
-	return RMI_SUCCESS;
+Changes from v8:
+https://lore.kernel.org/all/20260707081351.1680209-1-aneesh.kumar@kernel.org
+* Rebase onto the arm64 for-next/core branch.
+* Move the RSI code from arch/arm64 to drivers/firmware/arm_rmm in patch 3.
+* Add a new patch to move the Realm memory-encryption operations to the RSI code.
+* Drop the Reviewed-by tag from patch 3.
 
-> +/**
-> + * rmi_psci_complete() - Complete pending PSCI command
-> + * @calling_rec: PA of the calling REC
-> + * @status: Status of the PSCI request
-> + *
-> + * Completes a pending PSCI command.
-> + *
-> + * Return: RMI return code
-> + */
-> +static inline long rmi_psci_complete(unsigned long calling_rec,
-> +				     unsigned long status)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_PSCI_COMPLETE, calling_rec, status,
-> +	};
-> +
-> +	rmi_smccc_invoke(&regs);
-> +	return regs.a0;
-> +}
-> +
-> +/**
-> + * rmi_realm_activate() - Activate a realm
-> + * @rd: PA of the RD
-> + *
-> + * Mark a realm as Active, signalling that creation is completed, allowing
-> + * execution of the realm.
-> + *
-> + * Return: RMI return code
-> + */
-> +static inline long rmi_realm_activate(unsigned long rd)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_REALM_ACTIVATE, rd,
-> +	};
-> +
-> +	rmi_smccc_invoke(&regs);
-> +	return regs.a0;
-> +}
-> +
-> +/**
-> + * rmi_realm_create() - Create a realm
-> + * @rd: PA of the RD
-> + * @params: PA of realm parameters
-> + * @sro: Preallocated SRO context
-> + *
-> + * Create a new realm using the given parameters.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_realm_create(unsigned long rd, unsigned long params,
-> +				    struct rmi_sro_state *sro)
-> +{
-> +	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL,
-> +				   SMC_RMI_REALM_CREATE, rd, params);
-> +}
-> +
-> +/**
-> + * rmi_realm_terminate() - Terminate a realm
-> + * @rd: PA of the RD
-> + * @sro: Preallocated SRO context
-> + *
-> + * Terminates a realm, moving it into a ZOMBIE state
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_realm_terminate(unsigned long rd,
-> +				       struct rmi_sro_state *sro)
-> +{
-> +	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL,
-> +				   SMC_RMI_REALM_TERMINATE, rd);
-> +}
-> +
-> +/**
-> + * rmi_realm_destroy() - Destroy a realm
-> + * @rd: PA of the RD
-> + * @sro: Preallocated SRO context
-> + *
-> + * Destroys a realm, all objects belonging to the realm must be destroyed first.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_realm_destroy(unsigned long rd,
-> +				     struct rmi_sro_state *sro)
-> +{
-> +	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL,
-> +				   SMC_RMI_REALM_DESTROY, rd);
-> +}
-> +
-> +/**
-> + * rmi_rec_create() - Create a REC
-> + * @rd: PA of the RD
-> + * @rec: PA of the target REC
-> + * @params: PA of REC parameters
-> + * @sro: Allocated SRO context to be used
-> + *
-> + * Create a REC using the parameters specified in the struct rec_params pointed
-> + * to by @params.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rec_create(unsigned long rd,
-> +				  unsigned long rec,
-> +				  unsigned long params,
-> +				  struct rmi_sro_state *sro)
-> +{
-> +	long ret;
-> +
-> +	sro->addr_count = 0;
-> +	sro->regs = (struct arm_smccc_1_2_regs) {
-> +		SMC_RMI_REC_CREATE, rd, rec, params
-> +	};
-> +	ret = rmi_sro_memxfer_execute(sro, GFP_KERNEL);
-> +	rmi_sro_free(sro);
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * rmi_rec_destroy() - Destroy a REC
-> + * @rec: PA of the target REC
-> + * @sro: Allocated SRO context to be used
-> + *
-> + * Destroys a REC. The REC must not be running.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rec_destroy(unsigned long rec,
-> +				   struct rmi_sro_state *sro)
-> +{
-> +	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_REC_DESTROY, rec);
-> +}
-> +
-> +/**
-> + * rmi_rec_enter() - Enter a REC
-> + * @rec: PA of the target REC
-> + * @run_ptr: PA of RecRun structure
-> + *
-> + * Starts (or continues) execution within a REC.
-> + *
-> + * Return: RMI return code
-> + */
-> +static inline long rmi_rec_enter(unsigned long rec, unsigned long run_ptr)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_REC_ENTER, rec, run_ptr,
-> +	};
-> +
-> +	rmi_smccc_invoke(&regs);
-> +	return regs.a0;
-> +}
-> +
-> +/**
-> + * rmi_rtt_create() - Creates an RTT
-> + * @rd: PA of the RD
-> + * @rtt: PA of the target RTT
-> + * @ipa: Base of the IPA range described by the RTT
-> + * @level: Depth of the RTT within the tree
-> + *
-> + * Creates an RTT (Realm Translation Table) at the specified level for the
-> + * translation of the specified address within the realm.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_create(unsigned long rd, unsigned long rtt,
-> +				  unsigned long ipa, long level)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_CREATE, rd, rtt, ipa, level
-> +	};
-> +
-> +	return rmi_sro_execute(&regs);
-> +}
-> +
-> +/**
-> + * rmi_rtt_destroy() - Destroy an RTT
-> + * @rd: PA of the RD
-> + * @ipa: Base of the IPA range described by the RTT
-> + * @level: RTT level
-> + * @out_rtt: Pointer to write the PA of the RTT which was destroyed
-> + * @out_top: Pointer to write the top IPA of non-live RTT entries, from entry
-> + * at which the RTT walk terminated.
-> + *
-> + * Destroys an RTT. The RTT must be non-live, i.e. none of the entries in the
-> + * table are in ASSIGNED or TABLE state.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code.
-> + */
-> +static inline long rmi_rtt_destroy(unsigned long rd,
-> +				   unsigned long ipa,
-> +				   long level,
-> +				   unsigned long *out_rtt,
-> +				   unsigned long *out_top)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_DESTROY, rd, ipa, level
-> +	};
-> +	long ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret != RMI_SUCCESS)
-> +		return ret;
-> +
-> +	if (out_rtt)
-> +		*out_rtt = regs.a1;
-> +	if (out_top)
-> +		*out_top = regs.a2;
-> +
-> +	return RMI_SUCCESS;
-> +}
-> +
-> +/**
-> + * rmi_rtt_fold() - Fold an RTT
-> + * @rd: PA of the RD
-> + * @ipa: Base of the IPA range described by the RTT
-> + * @level: Depth of the RTT within the tree
-> + * @out_rtt: Pointer to write the PA of the RTT which was destroyed
-> + *
-> + * Folds an RTT. If all entries with the RTT are 'homogeneous' the RTT can be
-> + * folded into the parent and the RTT destroyed.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_fold(unsigned long rd, unsigned long ipa,
-> +				long level, unsigned long *out_rtt)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_FOLD, rd, ipa, level
-> +	};
-> +	long ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret == RMI_SUCCESS && out_rtt)
-> +		*out_rtt = regs.a1;
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * rmi_rtt_init_ripas() - Set RIPAS for new realm
-> + * @rd: PA of the RD
-> + * @base: Base of target IPA region
-> + * @top: Top of target IPA region
-> + * @out_top: Top IPA of range whose RIPAS was modified
-> + *
-> + * Sets the RIPAS of a target IPA range to RAM, for a realm in the NEW state.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_init_ripas(unsigned long rd, unsigned long base,
-> +				      unsigned long top, unsigned long *out_top)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_INIT_RIPAS, rd, base, top
-> +	};
-> +	long ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret == RMI_SUCCESS && out_top)
-> +		*out_top = regs.a1;
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * rmi_rtt_unprot_map() - Map unprotected granules into a realm
-> + * @rd: PA of the RD
-> + * @base: Base IPA of the mapping
-> + * @top: Top of the target IPA range
-> + * @flags: Flags
-> + * @oaddr: Output address set descriptor
-> + * @out_top: Top IPA of range which has been mapped
-> + *
-> + * Create mappings to memory within a target unprotected IPA range.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_unprot_map(unsigned long rd,
-> +				      unsigned long base,
-> +				      unsigned long top,
-> +				      unsigned long flags,
-> +				      unsigned long oaddr,
-> +				      unsigned long *out_top)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_UNPROT_MAP, rd, base, top, flags, oaddr
-> +	};
-> +	long ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret == RMI_SUCCESS && out_top)
-> +		*out_top = regs.a1;
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * rmi_rtt_set_ripas() - Set RIPAS for an running realm
-> + * @rd: PA of the RD
-> + * @rec: PA of the REC making the request
-> + * @base: Base of target IPA region
-> + * @top: Top of target IPA region
-> + * @out_top: Pointer to write top IPA of range whose RIPAS was modified
-> + *
-> + * Completes a request made by the realm to change the RIPAS of a target IPA
-> + * range.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_set_ripas(unsigned long rd, unsigned long rec,
-> +				     unsigned long base, unsigned long top,
-> +				     unsigned long *out_top)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_SET_RIPAS, rd, rec, base, top
-> +	};
-> +	long ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret == RMI_SUCCESS && out_top)
-> +		*out_top = regs.a1;
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * rmi_rtt_unprot_unmap() - Remove mappings within an unprotected IPA range
-> + * @rd: PA of the RD
-> + * @base: Base IPA of the mapping
-> + * @top: Top of the target IPA range
-> + * @flags: Flags
-> + * @oaddr: Output address set descriptor
-> + * @out_top: Top IPA which has been unmapped
-> + * @out_range: Output address range
-> + * @out_count: Number of entries in output address list
-> + *
-> + * Removes mappings to memory within a target unprotected IPA range.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_unprot_unmap(unsigned long rd,
-> +					unsigned long base,
-> +					unsigned long top,
-> +					unsigned long flags,
-> +					unsigned long oaddr,
-> +					unsigned long *out_top,
-> +					unsigned long *out_range,
-> +					unsigned long *out_count)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_UNPROT_UNMAP, rd, base, top, flags, oaddr
-> +	};
-> +	long ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret != RMI_SUCCESS)
-> +		return ret;
-> +
-> +	if (out_top)
-> +		*out_top = regs.a1;
-> +	if (out_range)
-> +		*out_range = regs.a2;
-> +	if (out_count)
-> +		*out_count = regs.a3;
-> +
-> +	return RMI_SUCCESS;
-> +}
-> +
->   #endif
+Changes from v7:
+https://lore.kernel.org/all/20260611130429.295516-1-aneesh.kumar@kernel.org
+* Rebase to latest kernel
+* Add id_table check in arm_smccc_driver_register
+* Add smccc device name check in arm_smccc_device_register
+* Drop driver_data from struct arm_smccc_device_id
 
-Thanks,
-Gavin
+Changes from v6:
+https://lore.kernel.org/all/20260527100233.428018-1-aneesh.kumar@kernel.org
+* Move SMCCC bus-related code to bus.c.
+* Remove CONFIG_ARM64 #ifdefs and switch device creation to use the generic function-ID support framework.
+* Move version-specific checks and other conditionals to the device driver probe routines.
+* Move RSI definitions to include/linux/arm-smccc-rsi.h.
+* Split the file and variable renames into a separate patch.
+
+Changes from v5:
+https://lore.kernel.org/all/20260514094030.42495-1-aneesh.kumar@kernel.org
+* Replace the arm-smccc platform-device plus auxiliary-child model with a
+  dedicated Arm SMCCC bus.
+* Add SMCCC module alias support so SMCCC service drivers can use
+  MODULE_DEVICE_TABLE(arm_smccc, ...) and autoload through arm_smccc:<name>
+  aliases.
+* Convert smccc_trng from a platform driver to an SMCCC driver.
+* Convert the Arm CCA guest TSM provider from the arm-cca-dev platform device
+  to an SMCCC driver bound to the discovered RSI service.
+* Add /sys/firmware/cca/realm_guest before removing the old arm-cca-dev dummy
+  platform device.
+
+Changes from v4:
+https://lore.kernel.org/all/20260427061615.905018-1-aneesh.kumar@kernel.org
+* Add /sys/firmware/cca/realm_guest for detecting realm guest
+* Convert smccc_trng to auxiliary device from platform device
+
+Changes from v3:
+https://lore.kernel.org/all/20260309100507.2303361-1-aneesh.kumar@kernel.org
+* Rebased onto the latest kernel
+* Drop pr_fmt() from drivers/firmware/smccc/rmm.c
+
+Cc: Jason Gunthorpe <jgg@nvidia.com> 
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Jeremy Linton <jeremy.linton@arm.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Cc: Andre Przywara <andre.przywara@arm.com>
+
+Aneesh Kumar K.V (Arm) (7):
+  firmware: smccc: Add an Arm SMCCC bus
+  firmware: hwrng: arm_smccc_trng: Register as an SMCCC device
+  firmware: arm_rmm: Move RSI support out of arch/arm64
+  arm64: realm: Move Realm memory encryption ops to RSI code
+  virt: coco: arm-cca-guest: Rename TSM report source file
+  firmware: smccc: arm-cca-guest: Bind the TSM provider to an SMCCC
+    device
+  coco: guest: arm64: Replace dummy CCA device with sysfs ABI
+
+ Documentation/ABI/testing/sysfs-firmware-cca  |  10 ++
+ arch/arm/include/asm/archrandom.h             |   2 +-
+ arch/arm64/Kconfig                            |   1 +
+ arch/arm64/include/asm/archrandom.h           |   2 +-
+ arch/arm64/include/asm/io.h                   |   2 +-
+ arch/arm64/include/asm/mem_encrypt.h          |   5 +-
+ arch/arm64/include/asm/pgtable-prot.h         |   2 +-
+ arch/arm64/include/asm/rsi.h                  |  70 --------
+ arch/arm64/kernel/Makefile                    |   2 +-
+ arch/arm64/kernel/setup.c                     |   2 +-
+ arch/arm64/mm/init.c                          |   3 +-
+ arch/arm64/mm/pageattr.c                      |  38 +----
+ drivers/char/hw_random/arm_smccc_trng.c       |  32 ++--
+ drivers/firmware/Kconfig                      |   1 +
+ drivers/firmware/Makefile                     |   1 +
+ drivers/firmware/arm_rmm/Kconfig              |  17 ++
+ drivers/firmware/arm_rmm/Makefile             |   2 +
+ .../kernel => drivers/firmware/arm_rmm}/rsi.c |  78 +++++++--
+ drivers/firmware/smccc/Makefile               |   2 +-
+ drivers/firmware/smccc/bus.c                  | 151 ++++++++++++++++++
+ drivers/firmware/smccc/smccc.c                |  68 ++++++--
+ drivers/virt/coco/arm-cca-guest/Kconfig       |   3 +-
+ drivers/virt/coco/arm-cca-guest/Makefile      |   2 +
+ .../arm-cca-guest/{arm-cca-guest.c => main.c} |  55 +++----
+ .../linux/arm-rsi-cmds.h                      |  76 ++++++++-
+ include/linux/arm-smccc-bus.h                 |  48 ++++++
+ .../linux/arm-smccc-rsi.h                     |   6 +-
+ include/linux/device-id/arm_smccc.h           |  19 +++
+ include/linux/mod_devicetable.h               |   1 +
+ scripts/mod/devicetable-offsets.c             |   3 +
+ scripts/mod/file2alias.c                      |   8 +
+ 31 files changed, 523 insertions(+), 189 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-firmware-cca
+ delete mode 100644 arch/arm64/include/asm/rsi.h
+ create mode 100644 drivers/firmware/arm_rmm/Kconfig
+ create mode 100644 drivers/firmware/arm_rmm/Makefile
+ rename {arch/arm64/kernel => drivers/firmware/arm_rmm}/rsi.c (70%)
+ create mode 100644 drivers/firmware/smccc/bus.c
+ rename drivers/virt/coco/arm-cca-guest/{arm-cca-guest.c => main.c} (82%)
+ rename arch/arm64/include/asm/rsi_cmds.h => include/linux/arm-rsi-cmds.h (69%)
+ create mode 100644 include/linux/arm-smccc-bus.h
+ rename arch/arm64/include/asm/rsi_smc.h => include/linux/arm-smccc-rsi.h (98%)
+ create mode 100644 include/linux/device-id/arm_smccc.h
+
+
+base-commit: 704340f1cd0dcef829eb62f5b48ae95a2ce17bdf
+-- 
+2.43.0
 
