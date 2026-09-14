@@ -1,79 +1,181 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6348C4457CF
-	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 13:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321C42FF675;
+	Mon, 14 Sep 2026 14:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789393748; cv=none; b=jusqpJIIt60kgTg8jSxUKRwAn3v2gnLoAB75DFIBZjyUT3tcof8pOFgVARNaZZsj1p4q5gZb8hXre188i2SaOk4s+CTRA+wxQ0lcU7hrFC/BFVpf6RUhA4hvt2rxgRNzpgLRwzPvGByBixc23sWkO1yWhJCxSgdXH28QK0StVPA=
+	t=1789394559; cv=none; b=fD+SWYx/I7wDem19nSHdtoIe8ugiP/JRUtYzaeVzVIzUL9VYhzAxe19xkj1rBlzN6vCB1BhBI71M/OzYgCRFmsmoB0B1limweMMuIp3c8asxaSIgYaMzo/+LEBIpjwJ5odzol3F/8QMIJUrQsj0WoCIOOT8ChE4OpdQbWrfQnpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789393748; c=relaxed/simple;
-	bh=yvGmcSwid2FCTbXP5Uf/xb5RvxMjo4RD4diMW2HJq/I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AH3DUidW0qhbR/vAUOd1U2JCfEeb6XZpMXUo76p5HEIFV9BWjRtgxru/xqW7WV6yEcA9ht3eY6a5kn98ufuE4YUaAA2td6kKJs3pe5m7ld/1ums24mDz56xVfePbwY+QWdiZcZpBcOp7xZwcHUDiiYoycNNSK5sVkzHCMJIFiUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=CA67/Kby; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1789394559; c=relaxed/simple;
+	bh=DFYtcB/Oi+25lkKqGHoqBfdSqnw6tByCRDZwTC/jjuI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MudTkFx9rufgmon/UmKGuSlUhzUB4fPjdrjIsOqZ+/8B2VwUxnO3WVZok/gBw61ZmTttPJELzOqQ4rOkQJC00b1OrP2qPGsP5JY4kqqxsxMhmIh4TtpFebUI1do2cpEPPhKuo3vcK7UDliL9j/R+Yus+xlfAoxuk8pGCb9iArW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=J2DNkFqm; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="CA67/Kby"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="J2DNkFqm"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2331B1570;
-	Mon, 14 Sep 2026 06:49:02 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1FB7D3F882;
-	Mon, 14 Sep 2026 06:49:01 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DE99B1570;
+	Mon, 14 Sep 2026 07:02:31 -0700 (PDT)
+Received: from [10.0.128.139] (unknown [10.0.128.139])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 46F533F882;
+	Mon, 14 Sep 2026 07:02:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789393745; bh=yvGmcSwid2FCTbXP5Uf/xb5RvxMjo4RD4diMW2HJq/I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CA67/KbytAoqlBWscm0VmXJ9Jj8tm8EW8t7A73nylnoZl2hJBUQPBwpOl7PeH7Dpb
-	 g1Ji2wSR+YOzc2jTe747Vti4pM3pvB2q3ErSh0WGMvDu1Gq3fDet6l7MQL+Eh6IbBJ
-	 LyxZNAEvMN54N25TiURLa4b/ZSKlAUOu+eWeYZ/4=
-Date: Mon, 14 Sep 2026 14:48:58 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Andre Przywara <andre.przywara@arm.com>
-Subject: Re: [PATCH v11 7/7] coco: guest: arm64: Replace dummy CCA device
- with sysfs ABI
-Message-ID: <aqf7Sr2VvzV3lLhN@arm.com>
-References: <20260914060511.277948-1-aneesh.kumar@kernel.org>
- <20260914060511.277948-8-aneesh.kumar@kernel.org>
+	t=1789394555; bh=DFYtcB/Oi+25lkKqGHoqBfdSqnw6tByCRDZwTC/jjuI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=J2DNkFqmdAiXns7yDGCaFHwY8+MPmxxjgt9Snm1UwvQlYakyn6BB2oxIq1rBTjCIH
+	 FdEDRRxKwxS1Jcc6S1Sxuh21VJWfmDFFXBO9vsG8aT15x4/yCn7US+Qkxxo0jiZqy4
+	 Y2hcEdw0cSqvDxWgRPcZlKLynkxxaLcdLy5rGLfY=
+Message-ID: <657e69c2-d0e9-433a-b0d2-4f16bc94ee2c@arm.com>
+Date: Mon, 14 Sep 2026 15:02:30 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260914060511.277948-8-aneesh.kumar@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 4/7] firmware: arm_rmm: Add support for SRO
+Content-Language: en-GB
+To: Sudeep Holla <sudeep.holla@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
+ <20260912083611.2513845-5-suzuki.poulose@arm.com>
+ <20260914-talkative-healthy-pogona-334c03@sudeepholla>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260914-talkative-healthy-pogona-334c03@sudeepholla>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 14, 2026 at 11:35:11AM +0530, Aneesh Kumar K.V (Arm) wrote:
-> The SMCCC firmware driver now creates the arm-smccc platform device and
-
-Nit: we now have devices on an arm_smccc bus, so this first line doesn't
-make sense.
-
-> instantiates the CCA RSI auxiliary devices once the RSI ABI is discovered.
-> The arm64-specific arm-cca-dev platform device stub is therefore no longer
-> needed.
+On 14/09/2026 13:50, Sudeep Holla wrote:
+> On Sat, Sep 12, 2026 at 09:36:07AM +0100, Suzuki K Poulose wrote:
+>> RMM v2.0 introduces the concept of "Stateful RMI Operations" (SRO). This
+>> means that an SMC can return with an operation still in progress. The
+>> host is expected to continue the operation until it reaches a conclusion
+>> (either success or failure). During this process the RMM can request
+>> additional memory ('donate') or hand memory back to the host
+>> ('reclaim'). The host can request an in progress operation is cancelled,
+>> but still continue the operation until it has completed (otherwise the
+>> incomplete operation may cause future RMM operations to fail).
+>>
+>> The SRO is tracked using a struct rmi_sro_state object which keeps track
+>> of any memory which has been allocated but not yet consumed by the RMM
+>> or reclaimed from the RMM. This allows the memory to be reused in a
+>> future request within the same operation. It will also permit an
+>> operation to be done in a context where memory allocation may be
+>> difficult (e.g. atomic context) with the option to abort the operation
+>> and retry the memory allocation outside of the atomic context. The
+>> memory stored in the struct rmi_sro_state object can then be reused on
+>> the subsequent attempt.
+>>
+>> Wrappers for SRO RMI commands are also provided here because they depend
+>> on the rmi_sro_execute() implementation added by this patch.
+>> Delegate/undelegate handles are also added here because they now use the
+>> SRO/stateful command infrastructure and are also used for the memory
+>> DONATE/RECLAIM flows.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Co-Developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > 
-> However, userspace has used the arm-cca-dev platform device to detect Arm
-> CCA Realm guests [1]. Removing it without a replacement would break that
-> detection and would also leave userspace depending on kernel device-model
-> details.
+> [...]
+> 
+>> +static int rmi_sro_donate_noncontig(struct rmi_sro_state *sro,
+>> +				    unsigned long sro_handle,
+>> +				    unsigned long donatereq,
+>> +				    struct arm_smccc_1_2_regs *out_regs,
+>> +				    gfp_t gfp)
+>> +{
+>> +	unsigned long block_size_fld = RMI_DONATE_BLOCK_SIZE(donatereq);
+>> +	unsigned long block_size = rmi_addr_block_size_to_bytes(block_size_fld);
+>> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+>> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+>> +	unsigned long found = 0;
+>> +	unsigned long donated_granules;
+>> +	unsigned long granules_per_block = block_size >> PAGE_SHIFT;
+>> +	unsigned long consumed_blocks;
+>> +	int addr_list_start = sro->addr_count;
+>> +
+>> +	int ret;
+>> +
+>> +	for (int i = 0; i < addr_list_start && found < count; i++) {
+>> +		unsigned long entry = sro->addr_list[i];
+>> +
+>> +		if (RMI_ADDR_RANGE_BLOCK_SIZE(entry) == block_size_fld &&
+>> +		    RMI_ADDR_RANGE_COUNT(entry) == 1 &&
+>> +		    RMI_ADDR_RANGE_STATE(entry) == state) {
+>> +			addr_list_start--;
+>> +			swap(sro->addr_list[addr_list_start],
+>> +			     sro->addr_list[i]);
+>> +			found++;
+>> +			i--;
+>> +		}
+>> +	}
+>> +
+>> +	ret = rmi_sro_ensure_capacity(sro, count - found);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	while (found < count) {
+>> +		unsigned long addr_range;
+>> +		void *virt = alloc_pages_exact(block_size, gfp);
+>> +		phys_addr_t phys;
+>> +
+>> +		if (!virt)
+>> +			return -ENOMEM;
+>> +
+>> +		phys = virt_to_phys(virt);
+>> +
+>> +		if (state == RMI_OP_MEM_DELEGATED) {
+> 
+> Based on my understanding, rmi_sro_memxfer_execute() is an exported function
+> and can be invoked by any module. The donatereq argument appears to accept one
+> of three operations:
+> 
+> RMI_OP_MEM_DELEGATED
+> RMI_OP_MEM_UNDELEGATED
+> RMI_OP_MEM_CONDITIONAL
 
-Well, removing it would break the ABI even if you replace it with
-something else. But I think we agreed it wasn't great for systemd to
-depend on the old interface either. Assuming systemd can be fixed (and
-the fix backported) and no production deployments are affected, I'm fine
-with this.
+Ack
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> 
+> Currently, the check confirming the state is RMI_OP_MEM_DELEGATED occurs
+> relatively late in the function execution. It seems this function is
+> explicitly designed to handle only RMI_OP_MEM_DELEGATED.
+
+No, that is not correct. The function handles both OP_MEM_DELEGATED and
+OP_MEM_UNDELEGATED. In the former case, we explicitly "delegate" the
+pages before donating. The "UNDELEGATED" case doesn't need to do that
+extra step.
+
+> 
+> Given that this is an exported interface, would it make sense to
+> fail-fast by moving this validation to the very beginning of the function?
+> Even if RMI_OP_MEM_CONDITIONAL is intended for future use, it should
+
+Yep, agree. We can rejec the CONDITIONAL ones.
+
+> probably be rejected as invalid for now. Also, it is not clear why the
+> current check is inside the loop while the state itself doesn't get
+> modified.
+
+As above, that check is additionally preparing the memory for RMM
+consumption.
+
+
+> 
+> If this is a valid concern, the same architectural pattern should likely be
+> applied to rmi_sro_donate_contig().
+> 
+
+Ack, we can reject the CONDITIONAL ones.
+
+Suzuki
+
