@@ -1,132 +1,114 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8BE26A0D5;
-	Mon, 14 Sep 2026 06:34:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FAA3E5A30
+	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 07:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789367664; cv=none; b=J3RxK2MnI1eNL/SBmC1Qp11g8E5jjure0fxttO4HNr5wqNBOrsX/aeKWmbSPgutwQUtlao5mQ4m7Qho9tPF3xjc6tYlrzh3LJVsCtyySIIHCrij54EfAJBuFb+UNalmxPXre07kTpzIkUd1PZt1xMUv5WR7goj5RRktRJSzCXmw=
+	t=1789372112; cv=none; b=ozbDRipF6//ABDmyvfmLZmFCkysuWGlijERn66v4tLnJPAdgXOGGmUwPivH3c54CgapECfYYQdkm2xg/TI+2eoZyMEBx+soZr4iLTvIK9z3Q38mXcWBEbGrftxV+lGSzqewBC5l9cU+G3I+hICrf7KnJCZfyOA9jC7JOL5MpUNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789367664; c=relaxed/simple;
-	bh=3UFhIq4QHq9TytrWQywRZzXOkkTaNlRDCVMLHz/qIj0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m1cFxjEHMYW+JwnhdTChF4wTwHfCgqEiPgiybAd4ztRA0q7q7fMSt9Zo00CKEOs+1YC94sNh0f9ypeGiWfINE2mvoy0l11GwWW7v4n0t09BP1xTAWl32aP5NL/DH7sOW9ymvfehOCf6bAZaVwwimV6GnNJyMqoJVyIEE9EBap6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=MK8BiM95; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1789372112; c=relaxed/simple;
+	bh=wKoOL5nGwvWozMw0aY7lItnriOnICvJoe9c+seOUmB8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=YHiIq7/emFvaHerIHb06gQwE4DociZlUsyScVrZnFRVpgXMi4BIvWW2SsXADiEQqWDvm+yxS1uIxVzUURgtKAco65BD/yRn3w6Zjc+IEbU0ia8x8qufM9IELxsr5gTRwGsGIkT5L+UA5p5W7gc7A5mCYpOfoPAfV/NPlhs2Q82Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bunCMjrt; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="MK8BiM95"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09A641570;
-	Sun, 13 Sep 2026 23:34:18 -0700 (PDT)
-Received: from [10.57.10.40] (unknown [10.57.10.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C28623F7B4;
-	Sun, 13 Sep 2026 23:34:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789367661; bh=3UFhIq4QHq9TytrWQywRZzXOkkTaNlRDCVMLHz/qIj0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MK8BiM95/KvV+tBcwk8Ima8+QslWVJKy2xivHr6522TXYYXfDNC/qhggcF5gATKdR
-	 TrrjiHONVKxa17sth4M+XYpVIG6qhwn4cZl8lIPEQxa9SjrixubT0ENswtzTlv5p5Y
-	 PaCRo9aJG3WP7tak+IsS8z2yN/Q22Li8OhMIbb3s=
-Message-ID: <a9587df6-b866-4d3b-880e-638537a96e3a@arm.com>
-Date: Mon, 14 Sep 2026 07:34:17 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bunCMjrt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789372109;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BijyvVrhoJUaETUvFP/LOF7qCF9MBMWOVmuhNk2So8s=;
+	b=bunCMjrtEOh2zIWIANd6mg/uKvAlmAYNX3eZOmJaZzvVvuCuf9CwSOOp9zvmhLKfQ6MYIg
+	GTimvLHk+yL/IbEOv2j3hqmZS173c8zGCfeLznWiA8sdlcME+43gdjGihcIDpiD/4JIoBJ
+	gUDE3eGARUuy88cg/KqUYn/bkLs8w3k=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-440-MxW1h27lNMueLiIhU7YFtQ-1; Mon, 14 Sep 2026 03:48:28 -0400
+X-MC-Unique: MxW1h27lNMueLiIhU7YFtQ-1
+X-Mimecast-MFC-AGG-ID: MxW1h27lNMueLiIhU7YFtQ_1789372107
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49cf4cc2125so11576335e9.2
+        for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 00:48:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789372107; x=1789976907;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BijyvVrhoJUaETUvFP/LOF7qCF9MBMWOVmuhNk2So8s=;
+        b=WP+BBQQNxUbEjJtDTBww4VWA0EoY9sHWvCcn49oDdYsRLtqtHMf/dF6Pi40bfoblyq
+         njw/XiVANe29Sj+t37tSUTtep3T2iA+SBlREXXVpMXQBKrW0ORFcsgL+GcQOXfzVfQg3
+         Qs9MHRuV+i89zHrEAusFqUHKxvYDVwZkMc86lGgcWiayPtX6YiPFQubZ3Fs7JlDcJrEx
+         LsiEXg1BXQ9OSh4rA+iFzVBGpoTFURZKzCMx7vsbT0xpbB324pWNztY08hqYJJFDrQJV
+         s3XI7x2xwlAs9fMhOpJ1iuGd/Wy50wNcAcahAKXjulkjxcwJo8ZKvZcHvySfNsMI4fE0
+         4mAA==
+X-Forwarded-Encrypted: i=1; AKwUvByMOq0pmNelA4qkLQE7DWI7QaEn4+g8XRtcQ9o3HfP5MDjU+zuO3Ysp2IVphOFOg9UYNjaNLNgdrG0T@lists.linux.dev
+X-Gm-Message-State: AFuF++kvMRgewW4H7y/Ifa+GoS25svt4fO3YY8cTXr8h4G3x+27Iy2Jx
+	1mQDCPxQ+V31FC1P0GolGa+D3kP/riA4ywPpZyyRcjklx1C9V4XMxCeUi7IDzFuBbSntC/TtSSy
+	nxuf+dK5KhSwK2IwLUV8VERJMquarcbM5OCLNeaeoahUEUL2+x2+lmKK+Y/49JtE13+7Z0XY=
+X-Gm-Gg: AYBFou2CnVEgxuEyrEW+4XDalF2IIFddNtW0mpliST8nrIP5hzPYclaArh3Y+VNQiht
+	gTJEQK/sl6f7yyt+xi4X4/J+OMEDHkyVi1et7TkYT2Vt7zeOpTTpXv+cMeVP3+YgQFP2D6lUX9I
+	s3orqQgcf3r650OyyB2Sr3Ji1n7YvrdokT6xXUp5IKnSJ6H0syllZFsit7ywGyGsx3gKMnsnLm3
+	KnZj0kzNd1wMxjXvtlHWCtWMU+KXgFWl1o+Q7b/9H5lslPfSEt1nSuRpEvxKDWWkKNT/BFa6Kmk
+	FeUDJJGKVOi1xAKISvyQRYQSwPif6ndJ67S0Umk3XxZsx2qLIOf86jV430GQxZkHggOkapovB9t
+	mwez0yoIJQB3M2m3qDObNtC2ZFXcfpw+yEC8/XDVBSOljSA==
+X-Received: by 2002:a05:600c:6309:b0:49e:65ac:eb5f with SMTP id 5b1f17b1804b1-49e7a67eb3emr27530815e9.10.1789372107210;
+        Mon, 14 Sep 2026 00:48:27 -0700 (PDT)
+X-Received: by 2002:a05:600c:6309:b0:49e:65ac:eb5f with SMTP id 5b1f17b1804b1-49e7a67eb3emr27530205e9.10.1789372106622;
+        Mon, 14 Sep 2026 00:48:26 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb3602eesm23908521f8f.34.2026.09.14.00.48.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 00:48:25 -0700 (PDT)
+Date: Mon, 14 Sep 2026 09:48:20 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Gokul K <gokul02k@gmail.com>
+Cc: Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Thomas Gleixner <tglx@kernel.org>, Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org
+Subject: Re: [PATCH] x86/sev: Do not fail SNP platform init if the vTPM
+ cannot be registered
+Message-ID: <aqekSpzm14h6fEJr@sgarzare-redhat>
+References: <20260821053411.1215497-1-gokul02k@gmail.com>
+ <aqJoJBNEpyKpKKix@sgarzare-redhat>
+ <20260912182454.2292590@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 3/7] firmware: arm_rmm: Configure the RMM with the
- host's page size
-Content-Language: en-GB
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
- <20260912083611.2513845-4-suzuki.poulose@arm.com>
- <6d204c05-1338-4ee5-9ac9-5d9447e329ee@redhat.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <6d204c05-1338-4ee5-9ac9-5d9447e329ee@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260912182454.2292590@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: V6DEfRQ2a2HjvztFr2wJYL1m7BZmou72FqC2zirhxpo_1789372107
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
 
-On 14/09/2026 02:21, Gavin Shan wrote:
-> On 9/12/26 6:36 PM, Suzuki K Poulose wrote:
->> From: Steven Price <steven.price@arm.com>
->>
->> RMM v2.0 brings the ability to set the RMM's granule size. Check the
->> feature registers and configure the RMM so that it matches the host's
->> page size. This means that operations can be done with a granularity
->> equal to PAGE_SIZE.
->>
->> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> ---
->>   Changes since v17:
->>    * Move rmi_config_set() out of the header file.
->>    * Print the error message for rmi_config_set if it fails
->>   Changes since v15:
->>    * Actually check the feature register for the host's page-size 
->> support.
->>   Changes since v14:
->>    * Move the implementation into drivers/firmware/arm_rmm.
->>   Changes since v13:
->>    * Moved out of KVM.
->> ---
->>   drivers/firmware/arm_rmm/rmi.c | 79 ++++++++++++++++++++++++++++++++++
->>   1 file changed, 79 insertions(+)
->>
->> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/ 
->> arm_rmm/rmi.c
->> index 2fd538c937dca..5b0e342ce3d58 100644
->> --- a/drivers/firmware/arm_rmm/rmi.c
->> +++ b/drivers/firmware/arm_rmm/rmi.c
->> @@ -35,6 +35,25 @@ static int rmi_features(unsigned long index, 
->> unsigned long *out)
->>       return args.a0;
->>   }
->> +/**
->> + * rmi_rmm_config_set() - Configure the RMM
->> + * @cfg_ptr: PA of a struct rmm_config
->> + *
->> + * Sets configuration options on the RMM.
->> + *
->> + * Return: RMI return code
->> + */
->> +static int rmi_rmm_config_set(unsigned long cfg_ptr)
->> +{
->> +    struct arm_smccc_1_2_regs regs = {
->> +        SMC_RMI_RMM_CONFIG_SET, cfg_ptr,
->> +    };
->> +
->> +    rmi_smccc_invoke(&regs);
->> +
->> +    return regs.a0;
->> +}
->> +
-> 
-> The comments for rmi_rmm_config_set() can be dropped since its logic is 
-> simply enough and
-> the code is self-explainning. Besides, I would move this right before 
-> its only caller
-> rmi_configure().
+On Sat, Sep 12, 2026 at 11:54:54PM +0530, Gokul K wrote:
+>> I'm opposed convert to an error message, but honestly I don't understand
+>> which problem we are fixing.
 
-Ack
+Sorry, of course I meant "I'm NOT opposed to"!
 
-> 
-> I would suggest drop this function by combining its logics into the only 
-> caller
-> rmi_configure(), seeing below for more details.
+>
+>Only an inconsistency: no vTPM returns 0, a failed registration returns
+>-ENODEV, both leave sev-guest registered, and nothing reads the return
+>value.  The failure itself should not happen in practice and I am not
+>arguing otherwise.
+>
+>Happy to drop this if you would rather keep the -ENODEV.
 
-That looks a bit odd in the middle of a function, given the argument 
-setting. I have moved it closer to the configure().
+Up to the maintainers. I'm fine with both, but TBH if SVSM tells us it 
+has a TPM device and we can't register the device in the system, 
+something is seriously wrong, so returning an error seems fine to me, 
+since we were not able to properly configure the SNP platform.
 
-Cheers
-Suzuki
-
+Thanks,
+Stefano
 
