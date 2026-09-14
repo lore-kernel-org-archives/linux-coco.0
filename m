@@ -1,218 +1,192 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011028.outbound.protection.outlook.com [52.101.57.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134DC2E7379
-	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 21:00:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789419633; cv=none; b=Jfs+V2RfG1udrsf+0hCW36oqZIvY/B335jYRpuzOS9gAlre7bzQhfQgBXqoLUFv3T9wkf4R7TqqpTz8lyWoJMZoWLwv8sQdo5ebpxuVY1E49fKRGK3Yvs6XIoC/1tSlvFSU46GgqLEz505HIV/iBbmxa2QJCEb84DIcSBc3u44w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789419633; c=relaxed/simple;
-	bh=CvFmbia3F+M8TdZTi0OKy/W/j30H2oa04JwaJ3sFhDU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CGxwqt9TlzFhgC3XnXVgI1MIJdqbIxcqJmONZud3eKoCmH9JT6V0LoWE4zbW4kIq6ixSmLmOt6nkb+4MORGG8IPY9idnPObSfepI3xuEtrU/UXIdzCYll39022J/QMvqBGwuBjYzogxMXJ8wJ8ToI8cwva/G+9mULXDr0O52TCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ADqzTKda; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TCy81wAW; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C754854EC
+	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 22:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789424927; cv=fail; b=jy8aCZvqiaILIR5UNWxBOhTazZVTUGPE2Nh7Sj5RkjMt9qGJPAKJjB86BCKt/QbDLlVKqvIZCJSHlFZ2rClOPmr9M86LYotrSSHjrzEc984GeuC1kCbsn7QtjMRj2SYFFjez4tiDFh+mwxLXIXWDg60/WORRTy5LYwX9FVrkBOg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789424927; c=relaxed/simple;
+	bh=HCljXYdZpL4rKsAjtzhXsyR4nNFW5OYhjx6r+7R1VMg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=XIULdP7nXAHt8nLo7FmKM1BCupYEoX2WrsRm1k2OrMvnnGbqejmCiICHzfYs1xeVYbNqKK4NeBJRMvkGmCMg4yASXX8A/kb6Rh1gTJAvfodLRCjFyIyOjzSrUmphKHNszLhlihAhM9FdIlnPoQjautHOdgl5jFwlheXOMkMM9ug=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=AImkHJKU; arc=fail smtp.client-ip=52.101.57.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ADqzTKda";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TCy81wAW"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68EJYNIJ1702483
-	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 21:00:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ZAYEJxdeFjAwVE5L3W7h6pCWtSz8H6kR2tHLO5oA3V8=; b=ADqzTKdaK1WkT0OO
-	CUcqr5Mq88hxvRB1ZxCocDO92SEb/w5sRiOWWdgG/KyIvF+kSvDr0iNN1pe6XL0M
-	/61AhcKgIbDw6Hc2H9LSpm8fPQJH4aIS4OycV8d3v+koSlh4f5fJTCsRAGf9kZ7N
-	uITo0CHQYtotv8qpKt3CTFafGIPsiCXcodB3lQhsXWJDjhSqqxbnpZ/46tCilJhp
-	n5ZoCgX0/kScPmCJZEaTzf6U3kJRYr2yEp4+kPFQZYYKPWH2/o3GwZRTx3r2W62+
-	9Zk47d7IV7SF7rnRjC7icOQ0yXZdlLlVAExAFABmr0PkB5kpitVHF0R6ghWUyrMi
-	yYHdkg==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gpmx9ruy3-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 21:00:30 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2db3b126c9fso45057185ad.0
-        for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 14:00:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789419630; x=1790024430; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:organization
-         :references:in-reply-to:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=ZAYEJxdeFjAwVE5L3W7h6pCWtSz8H6kR2tHLO5oA3V8=;
-        b=TCy81wAWF7yr4C4mUihAE2R5GoHth9o0raT1QyKtIFQyXBA5k0SX9h5lC7sADHyoEy
-         mEGDm0VvheRT8JBr0fxGJaHKmZkCYHE1ubtWiQkzY0XUxSDkHlwCjuUynWFfTMvWBzC2
-         X23+Z5Iq/JUhi037lFwz3sBv+AqJr0m3NXrUMXu551DT7McaOYI2H8bBOKxBWHXUrUhZ
-         8D06QGOPZvM+6+fWA3NCc++/2ngA7bWrveh+hPo79FEkF65kdFL42iC3JF3abWLvwJ24
-         nInkTKnkddBiMJJVcwKjxUc7tFo3z+M74rGzk1UDdoxaG/iNTveeRHBV3K2LlLYfYGNv
-         2JAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789419630; x=1790024430;
-        h=content-transfer-encoding:content-type:mime-version:organization
-         :references:in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZAYEJxdeFjAwVE5L3W7h6pCWtSz8H6kR2tHLO5oA3V8=;
-        b=A9WeoMHWimBVaytYcQPOsLqUPRcSL6CpkzbKcgC3o4hgF950DEpP+0sRW+RlxBZPuo
-         FNL5jNO5+Zc/LTk5VLDcp8kdYb7/NXiGH0BqXaq2v93zNI9PBZFR2jsKSBRM5U+N7398
-         BRXbKPL2iDHGav3yQ6Y2BUICPWOYq94PnUTXbNtvQ0QYp+9TbnYdtazKK0mmWbPuhzx+
-         WoFOkM3d0RPi6wDYHX3S5tDsNtkekJnn2AewB5N7Fvk8eViEouiSEuxMUvYDgX2zDV/F
-         Z7qHV8kxWHyJFkHAJ/cniz05McRx4PYK3nLKHqbkHfBy7UhIkDG4+nnWpEYvmzsBNWGh
-         k9Kg==
-X-Gm-Message-State: AFuF++mWDNVNMj0L7sdspRK3MrNO684aevlPxnzuF9luD16TM3JOmqLJ
-	TOj6ADDf5jEKqjMrXVhknt2H/zYd/lp3HGpEu9DisQ5+dJcwnQmNzdy9LG5z05PbtRkglxEDwQs
-	2rGfVI38fSSRDbFX4HQPuoGQUntjjednYQ+a2HSg+tXBWd1j0iFkwFg/vvVC9NKcw
-X-Gm-Gg: AYBFou0+mZiuvqThq20D7hhHBZR6cY3HWbTS0sV91vOifMffPmj2rvItX7WQIfgPFS9
-	aAtFS5CnZdZwDmbzIvrNSuKf0gSG/MIDfc7Rcxy45z5Z4lJ7Q1eAIJ+yZFWD9x+wSQNn4W2bIX/
-	FTeKKTAySqJzMD43hsSHl4MvC0tvOFC8Zs07HVlXHFaqNM5zOYdgMtnnAiCH/EDFaFZxeoVb3oR
-	U0UkoDegSBPLu0pACqZot5kRCwxyXBY+jPGkYUm6NoOdaNApqnQ9St1XNhVxuIKddiNfTVmqfAc
-	9dJdVbztID6eRJ+1GmzGypKpaTVr75sERf0jyZVpFhjVhgiSfS3D/BFJv9MMcoTW5jo151qKTVO
-	6TvpfM3TYPtwJejAJBTawK7EsIv8=
-X-Received: by 2002:a17:902:e801:b0:2db:331b:e187 with SMTP id d9443c01a7336-2dd6c5f3c7fmr81467595ad.8.1789419629489;
-        Mon, 14 Sep 2026 14:00:29 -0700 (PDT)
-X-Received: by 2002:a17:902:e801:b0:2db:331b:e187 with SMTP id d9443c01a7336-2dd6c5f3c7fmr81465905ad.8.1789419628575;
-        Mon, 14 Sep 2026 14:00:28 -0700 (PDT)
-Received: from localhost ([50.35.44.179])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4cf72dbsm30638408eec.3.2026.09.14.14.00.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 14:00:28 -0700 (PDT)
-Date: Mon, 14 Sep 2026 14:00:24 -0700
-From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
-        Catalin
- Marinas <catalin.marinas@arm.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mark Rutland
- <mark.rutland@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>, Will Deacon
- <will@kernel.org>,
-        Steven Price <steven.price@arm.com>,
-        Suzuki K Poulose
- <Suzuki.Poulose@arm.com>,
-        Andre Przywara <andre.przywara@arm.com>
-Subject: Re: [PATCH v11 7/7] coco: guest: arm64: Replace dummy CCA device
- with sysfs ABI
-Message-ID: <20260914140024.00002024@oss.qualcomm.com>
-In-Reply-To: <20260914060511.277948-8-aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="AImkHJKU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HNLdeyVDXvsFi1bwBrYav0mGmxtMbjQv5WOt692vC37H0x31AnUi1lX9FsUdkEPAGmKwWjnilQiunXPowdVQjmnA9fYwwJ5fxuxhU4zueooldJ4i31nmHR4SwWiA6Wwlf9gbfyo4WmVqiNGmtYyFhrnptfXLY5vKFmU67n9wXA54ys85Erv9SzCibdy82d39QJijMS9BTKyC+0qKZminwyJ4dO8dy2tdxFqXrQczV+yGBj1DTOpqGxtbrcZD+pQG+C6fYZJO8McW6Ukpt45YRW6n348Zz/CBcs0RNgUOjqUOCjE3YeZpRNl3+0anVwzj6T8GEccWUVQAHZpMAoxmfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BO+nbHSwrA02c1j3fvUwjIXr+2X/OQXfqmxgnArEusA=;
+ b=DKkxR9i6puetiirqrQLnDFn1G0KDi+b3+pJpKgWtpAZZME/KJtMyid5nCeYDNkr80++yhAqj3usXvNSMrZ/IrX22AsPuUo316q6CyocXffxTBg16jyF/F/bSg+yLkAGDrcf0OOvdsIK3clnyhrJmmrkBVOhaIIJRU7N9lmjhvSqKbR4UEoasyHUoPFs5pLbHQ8QCxESCXV4HZy40OBNswXUSgMsxSq2QiEj3CXg94jZUzJkR0oaQsFWjzk/ybeKsT9uWhuMqV5hFxyGD/jGzwX+au0HsOJpd+GbjtpFPIgyMnEhvsGgRLl3HktVoW7HvBPI/AokTofsbWm5/R2R7iA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BO+nbHSwrA02c1j3fvUwjIXr+2X/OQXfqmxgnArEusA=;
+ b=AImkHJKUMy5vsLJO+x7bo2SDimTtm8DfP6Q3T/J/SxoKosCe4Arv5TSFqyGO5hqSrvXmwVAaG3+n+BJwQuIaTEHMe5h4XfT/XNMaaIs333O3OwOueFKz42sxi3as1rX+fbXw3o6h2sk0OhSXac4uK1Iw3FyVy4dOPfM83WjWSi93GTnPqMF/DakYKQCMKHlcv87E2sst+DFypbFbp0wz6x3yPg/eUDIho5goRHI0LH1tonbAiYPAGGgZ0L+Mjc8xShew+AEY8EkLDK3vSZolvbdJ6wpFpVWiYVt+WyyiI/rbtO/Er6bLeKDQo3P8pm/AXmILGLzstwsEQpZHBA8J3Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LY0PR12MB325698.namprd12.prod.outlook.com
+ (2603:10b6:408:3bb::14) by SA1PR12MB8164.namprd12.prod.outlook.com
+ (2603:10b6:806:338::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
+ 2026 22:28:38 +0000
+Received: from LY0PR12MB325698.namprd12.prod.outlook.com
+ ([fe80::b65f:1548:5b35:e2b5]) by LY0PR12MB325698.namprd12.prod.outlook.com
+ ([fe80::b65f:1548:5b35:e2b5%5]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
+ 22:28:38 +0000
+Date: Mon, 14 Sep 2026 19:28:36 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>
+Subject: Re: [PATCH v11 1/7] firmware: smccc: Add an Arm SMCCC bus
+Message-ID: <20260914222836.GO3968357@nvidia.com>
 References: <20260914060511.277948-1-aneesh.kumar@kernel.org>
-	<20260914060511.277948-8-aneesh.kumar@kernel.org>
-Organization: Qualcomm
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
+ <20260914060511.277948-2-aneesh.kumar@kernel.org>
+ <20260914133249.00007d35@oss.qualcomm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260914133249.00007d35@oss.qualcomm.com>
+X-ClientProxiedBy: MN2PR16CA0054.namprd16.prod.outlook.com
+ (2603:10b6:208:234::23) To LY0PR12MB325698.namprd12.prod.outlook.com
+ (2603:10b6:408:3bb::14)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=G+KJgNk5 c=1 sm=1 tr=0 ts=6aa8606e cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=aNnz9XPx1a4JIXSYt2cE/A==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=VwQbUJbxAAAA:8 a=7CQSdrXTAAAA:8 a=Ikd4Dj_1AAAA:8 a=EUspDBNiAAAA:8
- a=JfrnYn6hAAAA:8 a=RSa_GfCpIaWGdN_FLdYA:9 a=CjuIK1q_8ugA:10
- a=GvdueXVYPmCkWapjIL-Q:22 a=a-qgeE7W1pNrGK8U0ZQC:22 a=1CNFftbPRP8L7MoqJWF3:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE0MDMwMCBTYWx0ZWRfX2RXe2Eq/rYBQ
- ILkTENQpm6Injs+pL7MOeHxVyGqTP7ZQJgnLaGzyZym9kutVvGfyQoE+Iuv3h5HMlCWec8wjsiv
- aDn1S3XBjVZS4QmrgxT9vvtELDDFU2TThwsD7pPcj10FdwelQ96BRzMlUnNQhvkpiCpI+1CGt03
- hhUQt27y67ekus7rtuA9k6vEHSeLw/rafYuFEcoUA8/UrpnpZ+9jnvIknAOaW3Ee/TI8nJdQfoN
- Nn7jxjl+YaI80cIVAUdAW+kDy7MTZSJFDGksQdbMCgP5rRkYD8eapYIMJJ28v9xsH/Q7tT4rWSC
- vndSRuX+n9+UesZQwoRFeyPMGR9X2qjjuQetto8Opo3iOcrk9rn9dDCi5ut8K0OpNrYEWbbj5jY
- dsq5mXuqPbREhNlFVJVMUAzEY9uCtQOkXiT4yw2VtdQka53t3p6Cqk+vaokvdd18fezf4OMrvEm
- zoKx14eg83Nr32oc5IA==
-X-Proofpoint-GUID: q_T9n-_vJwxf9Ng1InfXUME46q74u_8q
-X-Proofpoint-ORIG-GUID: q_T9n-_vJwxf9Ng1InfXUME46q74u_8q
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE0MDMwMCBTYWx0ZWRfX9gtxvqZGj63M
- sGhjbKhbmZlou1FQDucVAqUIosKWrdL7wXNzfXS9EDyUvyxj0Y9xrtBcQ7x095YI9RIRCmtCNKZ
- z/1I7F6jNDm04xsvsJleQcKPIpfRjGc=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-14_04,2026-09-14_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 impostorscore=0 malwarescore=0 clxscore=1015
- lowpriorityscore=0 phishscore=0 adultscore=0 priorityscore=1501 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609140300
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LY0PR12MB325698:EE_|SA1PR12MB8164:EE_
+X-MS-Office365-Filtering-Correlation-Id: ae3404d4-8de7-4594-c21b-08df12af85aa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|22082099003|18002099003|4143699003|10067099003|56012099006|11063799006|5023799004;
+X-Microsoft-Antispam-Message-Info:
+	Z4osGj3NNvu5Ptq3fcsWJQRRAVXuVlEd8MxUf4V3Fh7iHRzvCF4pMgNHTYjLjmSVqmv3H7mh1UFuLfcCuY2T9qSX3LOxkunneE2IVcmpJnlWzJghSlq9myA5IFkSYU0LTdsKU7YUk6M9f/7oGbv7iAJISqcLcelQmQ4x5PzK59oY9/+YqK0F/UkIDU2sdZVDzvdkzqlAqAWWNcBfYecgYci9hlRs3p2D22bzIVZakUzYmt+9XWCU3GuStglyprug2lUneDyjHcbhtpxpmZLFTE+WJ03+xPkCSVPVSo92irT+W59rID+c6EAj/CRoyTQBsNJl1lTR9oYFelG1dPQNcfSQEej+Q4NJM2twXo/aLYKLcms7PRVIErGaP9vqihbfwCUNZNYVl7CrX8dEJg53wT8dIpeyhuIu1+r8eHXFUZkdJdSbWgGsvNx9nmBHGkuqZalGwfGvJGCySp5M/NvWfjEtFcSYyhfKo/6MqF4Y2m3V8W2VKCp0jyC5lzgJIwJjf8/PMXc0Zh+F2VcEJ9wf97HPPayOm4s4/vQ5VdV9pkL3iPUhCAZI4l/2T+MreL3D7rcOtysts1A5KnL1wMSMhZcD0fReuiJJjJgF6KzL8MmQbCDs5u9XhaM8wt+kOORWu1jJO5yOJZL4sWs1lfKcjF8lRB1IyJ+z0U3AXztqBlc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LY0PR12MB325698.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(22082099003)(18002099003)(4143699003)(10067099003)(56012099006)(11063799006)(5023799004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?exT/qc1zrOSOYUOAyDeEDoepJhuJHpPUVixPd6IlgKF4TsYbdNtfTV7X/bMn?=
+ =?us-ascii?Q?rJogauabKOVE1ecAxpUIOilUWGZlwrDNwIfTJxicpZuwiJ4njepfWEU5xdYC?=
+ =?us-ascii?Q?OejLflUy9zJFJxBFPZdwpjg1lKxttHxNpwC1+tmcVjiEtHkqaBf72n+9WKM2?=
+ =?us-ascii?Q?pYOmrZIEo2FZTfAuLvwo0NqhEhssA7ZPaUJAtX0ZCFjzuvR8zEgc/CLv0ML5?=
+ =?us-ascii?Q?L10MvMyYlIj6TL6VmnHPbfAH/oG9R3eqAeaEMc+tVNfZQaeAac8z4+ZWnIYw?=
+ =?us-ascii?Q?jiysqUe2V69LBrxB12qFlEEE4liVArGcvfAj7IXp/+RTdK8OawzSdcN87JnR?=
+ =?us-ascii?Q?Xrw5GL3UVRB2mw8KQyqkSFV2qi1hwJNRrJv6FnL+Yr19uYERsBbFiCSWF7za?=
+ =?us-ascii?Q?QIvz28obLl6Qco4x+BXAQKnp0QMIcNv7SwqUNQxVp6FtDVXiWSnzRiQmoNFh?=
+ =?us-ascii?Q?y19sCredtnZQOwDzMz52HWv2bnAONUA/fJ5TkQ8CuAVpHXn8jEPsgaR4w0oW?=
+ =?us-ascii?Q?wxRvtc7JWuVkO/lJ3MD+KybpN1a8PCOJC7Ite+sfSz0Ao4JSFWOqrQNlp1d0?=
+ =?us-ascii?Q?L9agB0hsaFPW5xVKShJJvKVkQAtD8/BW9/FT8fXeCSr4HtpBVxd2UHvgCxvU?=
+ =?us-ascii?Q?ENz9j3DF+HovrabKHzydcmcorirwlrBI3tAtbCuUxvZJkfv4inbWH6KSi5R0?=
+ =?us-ascii?Q?URRBUfcygMC5rC/QD3YoE45K66TR+h0IDeHuk0kZ3sNDa343sfYhBexUaM5H?=
+ =?us-ascii?Q?lVr/x1/gmLbFUhJPb/f+TWE1hddZciuT1a3YaJhMUQQM3qi07XzxhqPMzfio?=
+ =?us-ascii?Q?jfW9sK1VaT5+m8lLpPrE390dQrUpvpWXh3/B5mOqOGGLfXZYOoIo0Lx7mDRn?=
+ =?us-ascii?Q?SQfi4ZnX4CPTkeZozl+qZcnkW3GanhLwIfRSmz9/nljmMbL5LZzexQPkSkAo?=
+ =?us-ascii?Q?Qjma+LMTiLQX0/dworT5MexaKgIjyiTPQ8WDKKc55P8eaZ90DTj+lKuHYE98?=
+ =?us-ascii?Q?rwN6qseOYb08v7vfLmLAxqhiaMonp3wLXiADze7w93+ElkE7971ocAPDKnsj?=
+ =?us-ascii?Q?m+7PKIAoTNgLXmxaPYrZDQyqoGIA8M7IsCO+Uqt6dLptbnlkmphx8QmwWH1e?=
+ =?us-ascii?Q?Ii8SckDQAWsylnV17Gah9ETJ4c/alqHp+Nb3QIt1s5lehqwRSZTrEHwMkH6F?=
+ =?us-ascii?Q?tV+sLWH+lsNfSBXeXvVWQ7VDS6yptus/QF8OPGvGzB6ij7TixKWkXeCWS99F?=
+ =?us-ascii?Q?0nnNsoYpz6NCWS19PWLNDye0wcnMpF7IAig/cafmZ2Ct2CCLZ757c12daj+E?=
+ =?us-ascii?Q?D5gP4pLv3H2t5Rd7DzRQkdsL2XWGS7c34a3VV0VlQaM62jNMrcrWJO5VA/gE?=
+ =?us-ascii?Q?dG5Ck0JcZa7izrnC0BENh3CABhfLa7fv55LW9X5Ys1S42lBwHVv8/Vhx8uTu?=
+ =?us-ascii?Q?yS3PXlb4fBgh/62HjUfgGvIdwLLg1crhFJpvhZIng8jQ6xJFuwjTrHgKmewR?=
+ =?us-ascii?Q?0dAj3YAwvbETsbd9zC3y7aPEqXK7c3WXogN+LLFDRcuKY4ViLonBm8dnCNTT?=
+ =?us-ascii?Q?Z4OdiSwOq/pbps0oo4gEI/vtlJKr+bflK9ilGkdrUtuPOsVUYeC4iM39rpbs?=
+ =?us-ascii?Q?Em7neMCQPKuyqpjT+ikhIK972vW6zAXQiyXKPpJnf6PxygzmtsTm0uZchITn?=
+ =?us-ascii?Q?Y6UD1BgqbEFpOvQSy0rCvnghDVK4L1qY2aT/9d74OacXEQAJ?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ae3404d4-8de7-4594-c21b-08df12af85aa
+X-MS-Exchange-CrossTenant-AuthSource: LY0PR12MB325698.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 22:28:38.1844
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bKvL/W51MOOQS6hEQlgJLkPZ+2iQ8BzCac1p38x9DWeFnDLB0mMyLUlqVGpcUFQ+
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8164
 
-On Mon, 14 Sep 2026 11:35:11 +0530
-"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
-
-> The SMCCC firmware driver now creates the arm-smccc platform device and
-> instantiates the CCA RSI auxiliary devices once the RSI ABI is discovered.
-> The arm64-specific arm-cca-dev platform device stub is therefore no longer
-> needed.
+On Mon, Sep 14, 2026 at 01:32:49PM -0700, Jonathan Cameron wrote:
+> > +struct arm_smccc_device *arm_smccc_device_register(const char *name, u32 func_id)
+> > +{
+> > +	int ret;
+> > +	struct arm_smccc_device *smccc_dev;
+> > +
+> > +	if (!name)
+> > +		return ERR_PTR(-EINVAL);
+> > +
+> > +	smccc_dev = kzalloc_obj(*smccc_dev);
+> > +	if (!smccc_dev)
+> > +		return ERR_PTR(-ENOMEM);
+> > +
+> > +	smccc_dev->func_id = func_id;
+> > +	smccc_dev->dev.bus = &arm_smccc_bus_type;
+> > +	smccc_dev->dev.release = arm_smccc_release_device;
+> > +
+> > +	ret = dev_set_name(&smccc_dev->dev, "%s", name);
 > 
-> However, userspace has used the arm-cca-dev platform device to detect Arm
-> CCA Realm guests [1]. Removing it without a replacement would break that
-> detection and would also leave userspace depending on kernel device-model
-> details.
+> Does protecting the string defeat the nice underlying const handling?
+> e.g.
+> 	ret = dev_set_name(&smccc_dev->dev, name);
+> might be better.
+
+Pedenatically the %s is better as it doesn't restrict name to not
+include % characters. 
+
+> you'd often see this between an device_initialize() and device_add()
+> and then we'd be relying on the device_put() to clean it up.
 > 
-> Add /sys/firmware/cca/realm_guest as a stable, architecture-provided ABI
-> for detecting whether the kernel is running as an Arm CCA Realm guest. The
-> file returns 1 in Realm world and 0 otherwise, similar to the existing s390
-> /sys/firmware/uv/prot_virt_guest interface for protected virtualization
-> guests.
+> So as this stands this is fragile as any error paths that later
+> get added...
+
+Yes, but as written it is OK, and this is a common pattern in the
+kernel. I agree it is fragile tricky..
+
+Still it isn't an urgent reason to change it around, but the best
+pattern is to put the allocate, dev.release=, and device_initialize()
+in one 'alloc' function. Then the other function calls it and always
+unwinds with put_device. Use device_add().
+
+This avoids mixing the different kfree/put_device error unwind regimes
+into the same function..
+
+> > +	if (ret) {
+> > +		kfree(smccc_dev);
+> > +		return ERR_PTR(ret);
+> > +	}
+> > +
 > 
-> Remove the dummy arm-cca-dev registration now that userspace has a
-> dedicated CCA Realm guest indicator, and document the new ABI in
-> Documentation/ABI/testing/sysfs-firmware-cca.
+> here can't free the name allocation.
 
-My gut feeling would be to split this in to the new stuff in first patch
-and the removal in second. That would make a revert simpler should it
-turn out that someone has userspace that will actually notice and can't
-be easily updated.  I'm not that bothered though as it will be your problem
-not mine (hopefully!) ;)
+The funky reasoning is since name failed there is no name allocation
+to free
 
-> 
-> [1] https://lore.kernel.org/all/4a7d84b2-2ec4-4773-a2d5-7b63d5c683cf@arm.com
+And then device_register() failure must always be done with
+put_device, so it will capture the name. As long as name/register are
+a pair with nothing between it is "fine".
 
-Could make that a link tag.
- Link: https://lore.kernel.org/all/4a7d84b2-2ec4-4773-a2d5-7b63d5c683cf@arm.com #[1]
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-One trivial thing inline.
-Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-
-> ---
->  Documentation/ABI/testing/sysfs-firmware-cca | 10 +++++
->  drivers/firmware/arm_rmm/rsi.c               | 42 +++++++++++++++-----
->  2 files changed, 42 insertions(+), 10 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-firmware-cca
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-firmware-cca b/Documentation/ABI/testing/sysfs-firmware-cca
-> new file mode 100644
-> index 000000000000..bf177d636b92
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-firmware-cca
-> @@ -0,0 +1,10 @@
-> +What:		/sys/firmware/cca/realm_guest
-> +Date:		May 2026
-> +Contact:	Linux ARM Kernel Mailing list <linux-arm-kernel@lists.infradead.org>
-> +Description:	Read-only. Indicates whether the kernel is running as an
-> +		Arm Confidential Compute Architecture (CCA) Realm guest.
-> +
-> +		The value is one of:
-> +
-> +		0: the kernel is not running as a Realm guest
-> +		1: the kernel is running as a Realm guest
-> diff --git a/drivers/firmware/arm_rmm/rsi.c b/drivers/firmware/arm_rmm/rsi.c
-> index 2dd69febedbd..52f40256bd78 100644
-> --- a/drivers/firmware/arm_rmm/rsi.c
-> +++ b/drivers/firmware/arm_rmm/rsi.c
-
-> +static const struct attribute *cca_realm_attrs[] = {
-> +	&cca_realm_guest.attr,
-> +	NULL,
-
-Given we don't want anything added after this, no comma ideally.
-
->  };
-
+Jason
