@@ -1,114 +1,120 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FAA3E5A30
-	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 07:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68871371D05;
+	Mon, 14 Sep 2026 08:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789372112; cv=none; b=ozbDRipF6//ABDmyvfmLZmFCkysuWGlijERn66v4tLnJPAdgXOGGmUwPivH3c54CgapECfYYQdkm2xg/TI+2eoZyMEBx+soZr4iLTvIK9z3Q38mXcWBEbGrftxV+lGSzqewBC5l9cU+G3I+hICrf7KnJCZfyOA9jC7JOL5MpUNQ=
+	t=1789373976; cv=none; b=dka2qd+33V6RTQzZ3SiGeakTYiNZ3WBs68TPdEn8DDPg+RSPkJ9cTKKSSt3cMyvhGQq6OpwzeFe5UAd3bjuWjvcmZPiu6q09dNRNCdxX4q7IiuzmnWnvmRNDPo7G73LDPMti5J3t1pHdywFskD14wUoV+j0RPBfVeka0KyeOiS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789372112; c=relaxed/simple;
-	bh=wKoOL5nGwvWozMw0aY7lItnriOnICvJoe9c+seOUmB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=YHiIq7/emFvaHerIHb06gQwE4DociZlUsyScVrZnFRVpgXMi4BIvWW2SsXADiEQqWDvm+yxS1uIxVzUURgtKAco65BD/yRn3w6Zjc+IEbU0ia8x8qufM9IELxsr5gTRwGsGIkT5L+UA5p5W7gc7A5mCYpOfoPAfV/NPlhs2Q82Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bunCMjrt; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789373976; c=relaxed/simple;
+	bh=m0ynvs3ASpXg1FC+68FV0PXhWfrNCCs02XWVdpFI/DQ=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=LCbHDmn5Mokbs0SvnuYbCd5tCkWPMx5Gq5SFin9P1x4I4fZqJqbqPpQ7D8OtqVXzYYSyPqazEpf1BSyvIzK/8t3939CIkE/Mpert9ltS9cJsZJqwVNBE10kZsKqZDSw17LRNdDQosoaGVzyJnVeOD7iywzl9ZnQ0XsiJ70P00xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=qn7Y86S7; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bunCMjrt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789372109;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BijyvVrhoJUaETUvFP/LOF7qCF9MBMWOVmuhNk2So8s=;
-	b=bunCMjrtEOh2zIWIANd6mg/uKvAlmAYNX3eZOmJaZzvVvuCuf9CwSOOp9zvmhLKfQ6MYIg
-	GTimvLHk+yL/IbEOv2j3hqmZS173c8zGCfeLznWiA8sdlcME+43gdjGihcIDpiD/4JIoBJ
-	gUDE3eGARUuy88cg/KqUYn/bkLs8w3k=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-440-MxW1h27lNMueLiIhU7YFtQ-1; Mon, 14 Sep 2026 03:48:28 -0400
-X-MC-Unique: MxW1h27lNMueLiIhU7YFtQ-1
-X-Mimecast-MFC-AGG-ID: MxW1h27lNMueLiIhU7YFtQ_1789372107
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49cf4cc2125so11576335e9.2
-        for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 00:48:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789372107; x=1789976907;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BijyvVrhoJUaETUvFP/LOF7qCF9MBMWOVmuhNk2So8s=;
-        b=WP+BBQQNxUbEjJtDTBww4VWA0EoY9sHWvCcn49oDdYsRLtqtHMf/dF6Pi40bfoblyq
-         njw/XiVANe29Sj+t37tSUTtep3T2iA+SBlREXXVpMXQBKrW0ORFcsgL+GcQOXfzVfQg3
-         Qs9MHRuV+i89zHrEAusFqUHKxvYDVwZkMc86lGgcWiayPtX6YiPFQubZ3Fs7JlDcJrEx
-         LsiEXg1BXQ9OSh4rA+iFzVBGpoTFURZKzCMx7vsbT0xpbB324pWNztY08hqYJJFDrQJV
-         s3XI7x2xwlAs9fMhOpJ1iuGd/Wy50wNcAcahAKXjulkjxcwJo8ZKvZcHvySfNsMI4fE0
-         4mAA==
-X-Forwarded-Encrypted: i=1; AKwUvByMOq0pmNelA4qkLQE7DWI7QaEn4+g8XRtcQ9o3HfP5MDjU+zuO3Ysp2IVphOFOg9UYNjaNLNgdrG0T@lists.linux.dev
-X-Gm-Message-State: AFuF++kvMRgewW4H7y/Ifa+GoS25svt4fO3YY8cTXr8h4G3x+27Iy2Jx
-	1mQDCPxQ+V31FC1P0GolGa+D3kP/riA4ywPpZyyRcjklx1C9V4XMxCeUi7IDzFuBbSntC/TtSSy
-	nxuf+dK5KhSwK2IwLUV8VERJMquarcbM5OCLNeaeoahUEUL2+x2+lmKK+Y/49JtE13+7Z0XY=
-X-Gm-Gg: AYBFou2CnVEgxuEyrEW+4XDalF2IIFddNtW0mpliST8nrIP5hzPYclaArh3Y+VNQiht
-	gTJEQK/sl6f7yyt+xi4X4/J+OMEDHkyVi1et7TkYT2Vt7zeOpTTpXv+cMeVP3+YgQFP2D6lUX9I
-	s3orqQgcf3r650OyyB2Sr3Ji1n7YvrdokT6xXUp5IKnSJ6H0syllZFsit7ywGyGsx3gKMnsnLm3
-	KnZj0kzNd1wMxjXvtlHWCtWMU+KXgFWl1o+Q7b/9H5lslPfSEt1nSuRpEvxKDWWkKNT/BFa6Kmk
-	FeUDJJGKVOi1xAKISvyQRYQSwPif6ndJ67S0Umk3XxZsx2qLIOf86jV430GQxZkHggOkapovB9t
-	mwez0yoIJQB3M2m3qDObNtC2ZFXcfpw+yEC8/XDVBSOljSA==
-X-Received: by 2002:a05:600c:6309:b0:49e:65ac:eb5f with SMTP id 5b1f17b1804b1-49e7a67eb3emr27530815e9.10.1789372107210;
-        Mon, 14 Sep 2026 00:48:27 -0700 (PDT)
-X-Received: by 2002:a05:600c:6309:b0:49e:65ac:eb5f with SMTP id 5b1f17b1804b1-49e7a67eb3emr27530205e9.10.1789372106622;
-        Mon, 14 Sep 2026 00:48:26 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb3602eesm23908521f8f.34.2026.09.14.00.48.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 00:48:25 -0700 (PDT)
-Date: Mon, 14 Sep 2026 09:48:20 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Gokul K <gokul02k@gmail.com>
-Cc: Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Thomas Gleixner <tglx@kernel.org>, Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org
-Subject: Re: [PATCH] x86/sev: Do not fail SNP platform init if the vTPM
- cannot be registered
-Message-ID: <aqekSpzm14h6fEJr@sgarzare-redhat>
-References: <20260821053411.1215497-1-gokul02k@gmail.com>
- <aqJoJBNEpyKpKKix@sgarzare-redhat>
- <20260912182454.2292590@gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="qn7Y86S7"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2155F1570;
+	Mon, 14 Sep 2026 01:19:30 -0700 (PDT)
+Received: from [10.0.128.139] (unknown [10.0.128.139])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 347C73F7B4;
+	Mon, 14 Sep 2026 01:19:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789373973; bh=m0ynvs3ASpXg1FC+68FV0PXhWfrNCCs02XWVdpFI/DQ=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=qn7Y86S79uT/YwzISi20g2289oLffqODkAmnxFgB2/f7TGFSQH0pkD3Flpjb9goCV
+	 JVxc5wzSGZPvwfsvk8giDVPvJZb6nSQiZf9vHgvAswACRxWTw5hI/Q8OEqEP2oUPT0
+	 WdpXR2joVP3TKazZtFh5ODPYF2WekqdLue2DS+xI=
+Message-ID: <1fca136f-5802-449a-81f1-3a76c31a2f74@arm.com>
+Date: Mon, 14 Sep 2026 09:19:29 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20260912182454.2292590@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: V6DEfRQ2a2HjvztFr2wJYL1m7BZmou72FqC2zirhxpo_1789372107
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 4/7] firmware: arm_rmm: Add support for SRO
+Content-Language: en-GB
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
+ <20260912083611.2513845-5-suzuki.poulose@arm.com>
+ <f00d01d1-8df0-4865-8e52-c85171cf4ca5@redhat.com>
+ <4f18aa66-2296-4b63-87f5-6ab493faecbc@arm.com>
+In-Reply-To: <4f18aa66-2296-4b63-87f5-6ab493faecbc@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, Sep 12, 2026 at 11:54:54PM +0530, Gokul K wrote:
->> I'm opposed convert to an error message, but honestly I don't understand
->> which problem we are fixing.
+On 14/09/2026 07:22, Suzuki K Poulose wrote:
+> Hi Gavin
+> 
+> Thank you for the review, I will address most of them. Responses inline.
+> 
+> On 14/09/2026 06:04, Gavin Shan wrote:
+>> On 9/12/26 6:36 PM, Suzuki K Poulose wrote:
+>>> RMM v2.0 introduces the concept of "Stateful RMI Operations" (SRO). This
+>>> means that an SMC can return with an operation still in progress. The
+>>> host is expected to continue the operation until it reaches a conclusion
+>>> (either success or failure). During this process the RMM can request
+>>> additional memory ('donate') or hand memory back to the host
+>>> ('reclaim'). The host can request an in progress operation is cancelled,
+>>> but still continue the operation until it has completed (otherwise the
+>>> incomplete operation may cause future RMM operations to fail).
+>>>
+>>> The SRO is tracked using a struct rmi_sro_state object which keeps track
+>>> of any memory which has been allocated but not yet consumed by the RMM
+>>> or reclaimed from the RMM. This allows the memory to be reused in a
+>>> future request within the same operation. It will also permit an
+>>> operation to be done in a context where memory allocation may be
+>>> difficult (e.g. atomic context) with the option to abort the operation
+>>> and retry the memory allocation outside of the atomic context. The
+>>> memory stored in the struct rmi_sro_state object can then be reused on
+>>> the subsequent attempt.
+>>>
+>>> Wrappers for SRO RMI commands are also provided here because they depend
+>>> on the rmi_sro_execute() implementation added by this patch.
+>>> Delegate/undelegate handles are also added here because they now use the
+>>> SRO/stateful command infrastructure and are also used for the memory
+>>> DONATE/RECLAIM flows.
+>>>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> Co-Developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> 
+> 
+> 
+>>> ---
+>>>   drivers/firmware/arm_rmm/rmi.c | 586 +++++++++++++++++++++++++++++++++
+>>>   include/linux/arm-rmi-cmds.h   |  41 +++
+>>>   2 files changed, 627 insertions(+)
+>>>
+>>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/ 
+>>> arm_rmm/rmi.c
+>>> index 5b0e342ce3d58..4f9898ece7547 100644
+>>> --- a/drivers/firmware/arm_rmm/rmi.c
+>>> +++ b/drivers/firmware/arm_rmm/rmi.c
+> 
+>>
+>> I would drop rmi_granule_range_{delegate, undelegate}() by combining 
+>> their logics to
+>> their only callers rmi_{delegate, undelegate}_range(). More details 
+>> are provided for
+>> rmi_{delegate, undelegate}_range() in the below.
+> 
+> Ack
 
-Sorry, of course I meant "I'm NOT opposed to"!
+I have moved them closer, but kept the logic separate, since this is not
+a simple RMI call.
 
->
->Only an inconsistency: no vTPM returns 0, a failed registration returns
->-ENODEV, both leave sev-guest registered, and nothing reads the return
->value.  The failure itself should not happen in practice and I am not
->arguing otherwise.
->
->Happy to drop this if you would rather keep the -ENODEV.
-
-Up to the maintainers. I'm fine with both, but TBH if SVSM tells us it 
-has a TPM device and we can't register the device in the system, 
-something is seriously wrong, so returning an error seems fine to me, 
-since we were not able to properly configure the SNP platform.
-
-Thanks,
-Stefano
+Cheers
+Suzuki
 
