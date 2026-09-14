@@ -1,72 +1,60 @@
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C51B414402
-	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 23:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116CC397AF2
+	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 23:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789427802; cv=none; b=j9vm7hVUR8x7OuN5K+S/FYcfHAEO/MpPkt9o2dRCTSsosvgJvCxHvExROTWwlewVN7MGwClziUFhDnGioXUVhiroE0+BfMrbmiV7YV53X+V6H+DHcUC/zlqD+T2KJOmqmSbdzqRqU/z87+P8KEesJsssj7LyO3+V5CjnSScdAbs=
+	t=1789428446; cv=none; b=GGSun3vOtATlIojx5XoSkFnkTuL6s8e8AGGWOX+MBt3/eUNtsjhhc5CHIkorjpCFi/FUyWiXe2jWI6yBpnkwvsCTTdVkVBzp08ktg3kNTV7y87qD/Ke4YIdw9kQeVv7JEfD5S5U32e+aWV7L3EVTRFCA5/0+2p8XS0R124MDGbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789427802; c=relaxed/simple;
-	bh=DldnhjZ1oz2ZNjDXbZgrA14LZ4lTulHoXSh3SDUsCvs=;
+	s=arc-20240116; t=1789428446; c=relaxed/simple;
+	bh=szujVo5dGjMwau5lO3V8Ko7qA5dX74h9/P2Aqs+6iKU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z+eJaTnkFE3d6CeS57M7xCL44M9VUf0CPId6RIcXLckJ1G59QnF+GC10lKXsnbmGPNehBFTFhJ0uQ+Ji0HI5KzNNUJTg6D/9yx/H2mVKCCAP7jdQ1e1mQIDvm/sAQfsEURe+vZEne7BNLrOTz0bhQFpT5sDDPiitvLI6pl/zTIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=EfRTl9LS reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=X+640t/GP/VfnfeVPKbBzz97hP+e2M2BDxdn69IjD7+n1a7JoE1pjiVixHL4aJpeWYDiPJqoNGv11n+FziSc9LODOE8KaWV66pUdMNu4J5K6KEliYcqfoBrvucIG8rKOAO2ZolLlUvFgzYlQ2WaCmeRhXkye3Wsr0lKXjc4/9Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=SA16P+ze; arc=none smtp.client-ip=65.109.113.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="EfRTl9LS"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="SA16P+ze"
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E65AA40E015D;
-	Mon, 14 Sep 2026 23:16:33 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 754A540E01DD;
+	Mon, 14 Sep 2026 23:27:20 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id dS8Go-A5k39i; Mon, 14 Sep 2026 23:16:24 +0000 (UTC)
+	with ESMTP id OnKcrYgxZEM1; Mon, 14 Sep 2026 23:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1789427783; bh=B/FgpwwWwn0BpGvjJbRiA/JDYUnnW8VL4awVzObb4os=;
+	t=1789428429; bh=PUYY/jgMXk7820/qpoGN0zvwLGgfCUXovR7y++xId08=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EfRTl9LS/ZA0kGklknMkvMkiK5IFWIQ+pNjIlWYRw82UO39vRuumwUthaFpRgw2bX
-	 pzPsNe1Y1rctn5e0+YT1KaGWT1eLKQ02eknazzQEvApG4JoLfjpI+gkocoA1KdBxAw
-	 IpQ8+TmS3odLTOlH7pMY8KAVQPfxBZW8H4ddmJJLSFgrz9jDF2pV24kRoeNu1Omrvx
-	 lASgMcCRwhTKWEwIy+z/Vd1EivKyIDi6XQoZihOGX7B+NOCHeiRArUM+J+3efqxHSX
-	 vYYIl7svHbaV/1trRS1SaULuacybbktXD6siSHAiNs6QyteA6NFjxd4lC2cg1KioWV
-	 RqJCXxht9zN1O3usvdTcmiGkY3/oPJmKCqcKCW8jDa+KS8+OvypbL0en6XXKHS3gOi
-	 ZX9PoLonNdbO7i5EcolPu6+3bewJZX06SGTmDxyitSGgsT1/7VcBvOWn0nvX01aw97
-	 I2y7s9yp2k/moabmDf2Ads/SLR6mCrmJjtmOVEGqqhp3d3imlsX+2uxCU+MsaaTe5U
-	 gDCNMWul2vByKC2P+El0UlQGy518S3+iqVR9x4wGpLwyvuB+YU0KZC0PZO0fgBc8hr
-	 x9UVlrsY0+7yh7X/5KONwocAzYuWzwxYewKHor3PkZmDQwqBZlrmkMwQjV/asY10LX
-	 ZmkK0SLXC3IbnAV6tjY23QZg=
+	b=SA16P+zejLsGFE2kaIC8CqrFkHsKFS42TeGhlqtSrLre1SzJZ9MN15V44mPtpkQcw
+	 pHdYyGLbwZCyLLIxodJdfsrWb14AtD+f3Yoy/V+OGYSgyAQp4EMmN7UrUz3rsuPIu5
+	 H90pYBaDQvExhaKvUUdb2NWRlrVYHU/sZIFmoUig/hjUz3eqNrmEzGz6CzbQ7pTyPX
+	 Grgpu+pQOTvq3rxT+cpKiAT2rmfcxsHcpJoqp71GzSgN1NBilKZq0kAScw4W+ES9Zi
+	 qsQMQwqcKrPp+aQbLmkJDYLV6QwmNqXJXn6GcpzjmLs2T5K0cunAJFOmYvcBQF0CHT
+	 tqghhT0CRENjMH+rflFRzN5aaxLHEta3kWm+Bo1OwfgFSGv9p4OHdpWgXdKYLLbUVB
+	 49tfPjiU4yxD0KRF8ehnTnr0WGqUR7x48g7Jj4xfgz1dav/y+mmJ4XmqCEiPty23B3
+	 swSTkYC7vl64SWarGKTcwGjqDE/66FmEf1l8OSegpRqTzf3ybwhoV2tbqoSHbTRzEo
+	 6PIh3/t3cN7YpS+XpRpzs0qPPT78yTJzyo9Wnh+CEUM87U4fHE+WlFoc20VPVAAC/E
+	 mUzPcP7zDs/UNbH1mXS1Ie2g4XpNcBYr+5uB3ctxNnLYznZWBoqC5BnBO/mDmXxzGL
+	 4IWEA+Vykc8L1/+oKOUehr3Q=
 Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C7B1640E022C;
-	Mon, 14 Sep 2026 23:15:49 +0000 (UTC)
-Date: Mon, 14 Sep 2026 16:15:46 -0700
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1AB6C40E0173;
+	Mon, 14 Sep 2026 23:27:02 +0000 (UTC)
+Date: Mon, 14 Sep 2026 16:26:59 -0700
 From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	darwi@linutronix.de, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
 	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v14 4/5] x86/sev: Perform RMP optimizations asynchronously
-Message-ID: <20260914231546.GAaqiAIsjGUdsK3MAq@fat_crate.local>
-References: <cover.1788984053.git.ashish.kalra@amd.com>
- <1e3d0edb6b275e33fa6f76b0c31db9e999d9a270.1788984053.git.ashish.kalra@amd.com>
- <20260912015336.GJaqSwoBGnp4Zl-jC4@fat_crate.local>
- <279595c8-30bb-4c01-8203-95619bab3d47@amd.com>
+Subject: Re: [PATCH 0/3] Move memory acceptance x86 arch code into EFI stub
+Message-ID: <20260914232659.GBaqiCwyPTxm5wL0Ay@fat_crate.local>
+References: <20260914183745.37538-5-ardb@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -75,90 +63,52 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <279595c8-30bb-4c01-8203-95619bab3d47@amd.com>
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260914183745.37538-5-ardb@kernel.org>
 
-On Mon, Sep 14, 2026 at 03:00:04PM -0500, Kalra, Ashish wrote:
-> Thanks, Boris. Splitting setup from start and collapsing to a single ex=
-port makes sense =E2=80=94 a couple of constraints from the RMPOPT
-> spec shape how it has to be done.
->=20
-> RMPOPT_BASE can only be written (RMPOPT_EN set) when SYSCFG[SnpEn] and =
-RMP_CFG[SegmentedRmpEn] are both 1; otherwise the access
-> #GP(0)s. So the MSR programming can't run from an init=E2=80=91time ini=
-tcall =E2=80=94 SnpEn is 0 then and it would #GP. The software setup can,
-> though, so the split becomes:
->=20
->   - an initcall in this file does the software setup =E2=80=94 allocate=
- the workqueue and INIT_DELAYED_WORK(), no export;
->   - snp_enable_rmpopt() (the single export) programs RMPOPT_BASE on the=
- primary threads and queues the pass. ccp calls it after it
->   has enabled SNP, and kvm=E2=80=91amd calls it on teardown.
++ Rick and linux-coco
 
-This programming sure sounds like something we don't need to repeat each =
-time
-we enable RMPOPT...
+On Mon, Sep 14, 2026 at 08:37:46PM +0200, Ard Biesheuvel wrote:
+> This is a follow-up to [0].
+> 
+> Move arch_accept_memory(), which is only called by the EFI stub and
+> never by the decompressor on a non-EFI boot, into the EFI stub, and
+> avoid relying directly on decompressor APIs such as error().
+> 
+> Instead, call tdx_panic() on a failure to accept memory in a TDX guest.
+> 
+> This makes the decompressor's implementation of panic() obsolete, and
+> allows it to be removed. This is a prerequisite for dropping the
+> implementation of snprintf() from the EFI stub entirely, which is what
+> the series containing [0] implements.
+> 
+> [0] http://lore.kernel.org/r/20260909115530.1924665-13-ardb+git@google.com
+> 
+> Cc: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Cc: Borislav Petkov <bp@alien8.de>
+> 
+> Ard Biesheuvel (3):
+>   x86/tdx: Share tdx_panic() with the EFI stub
+>   x86/boot: Move unaccepted memory handling out of the decompressor
+>   x86/boot: Drop unused implementation of panic()
+> 
+>  arch/x86/boot/compressed/error.c        | 19 ---------
+>  arch/x86/boot/compressed/error.h        |  1 -
+>  arch/x86/boot/compressed/mem.c          | 42 --------------------
+>  arch/x86/boot/compressed/sev.h          |  2 -
+>  arch/x86/coco/tdx/tdx-shared.c          | 35 ++++++++++++++++
+>  arch/x86/coco/tdx/tdx.c                 | 35 ----------------
+>  arch/x86/include/asm/sev.h              |  2 +
+>  arch/x86/include/asm/shared/tdx.h       |  1 +
+>  drivers/firmware/efi/libstub/x86-stub.c | 40 +++++++++++++++++++
+>  9 files changed, 78 insertions(+), 99 deletions(-)
+> 
+> 
+> base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+> -- 
+> 2.47.3
+> 
 
-rmpopt_pa_start is practically static so I'd love it if those MSRs are wr=
-itten
-once and that's it. The question is, do they keep their value when we dis=
-able
-SNP?
-
-And I can basically imagine the answer from hw folks: "yeah, yeah, maybe,=
- but
-to be on the safe side, you should always write them after having enabled
-SNP."
-
-Because if not, I'd be perfectly fine with us setting them on the *first*=
- SNP
-init and not touching them again.
-
-IOW, this pseudo:
-
-	if (!rdmsr(RMPOPT_BASE))
-		wrmsr(RMPOPT_BASE, ...):
-
-This should probably be in the snp_enable_rmpopt() function anyway as it
-should do what we want.
-
-> The same spec text makes that single entry point safe to call repeatedl=
-y: RMPOPT_BASE_ADDR is read=E2=80=91only once RMPOPT_EN is 1 (and
-> RMPOPT_EN can't be cleared while SnpEn is 1), so a later call's write i=
-s a probably a no=E2=80=91op rather than a reprogram. If we want
-> to avoid even the redundant IPIs, snp_enable_rmpopt() can read RMPOPT_B=
-ASE and skip programming when RMPOPT_EN is already set =E2=80=94 a
-> hardware=E2=80=91state check instead of an if (rmpopt_wq).
-
-Yap, or that. Sounds ok to me if it works.
-
-> On clearing X86_FEATURE_RMPOPT when the allocation fails: that hits the=
- problem we ran into in earlier revisions =E2=80=94 the workqueue
-> allocation is at initcall time, after alternatives are patched, where s=
-etup_clear_cpu_cap() isn't reliable (static_cpu_has() is
-> already baked in), so clearing the cap won't flip rmpopt_capable(). The=
- setup/enable split removes most of the if (rmpopt_wq)
-> checks anyway; the only one left is a single guard in snp_enable_rmpopt=
-() for the (rare) allocation=E2=80=91failure case, which I will
-> probably like to keep rather than rely on clearing the feature.
-
-Or, you can introduce that bool rmpopt_enabled and clear it and test it i=
-n
-rmpopt_capable(). As long as it stays a static var, only visible in this
-compilation unit and not exported, that's good enough.
-
-> I'll respin as v15 with the setup/enable split once we settle the featu=
-re=E2=80=91clear question and the RMPOPT_BASE MSR programming
-> question (i.e., skipping it if RMPOPT_EN is already set).
-
-Thx.
-
-Btw, you can respin the last two patches only and send them as a reply to=
- that
-thread - I have applied the first 3 already so no need to resend them aga=
-in.
-
---=20
+-- 
 Regards/Gruss,
     Boris.
 
