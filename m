@@ -1,84 +1,84 @@
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635A549EC78
-	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 20:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838E949F103
+	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 20:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789417978; cv=none; b=oPfyGwSpHedWtqo3Q+gwb1pGXU9BQ0C7VlJ+vHpptaqxaiDNud/fmK6C9z6yAdQIu04jOcQ5yfAXnPtiDelstEMNyNgVOdDtmi51m7J/+TJNJYozN2AOLbRSty5nkPKBml1roMoTcSrByYSyJ5KENuL/fckvcANnk4Ym1tqYcZI=
+	t=1789418375; cv=none; b=uQ170gfYm1x7vbb2eUQt7y8EKD5csMEXFtoGwwo9lH43/iKF6DC3LQW+L+uaVjQTRqeEFKWTVQ/E52noE08B3hWuE1XIs2vWtmTimACG9HjDN0FmlHLkd1BBvKzLHoJA/BlX8hDnleoN66tXSPb/2rX/v3bKCQ1zPe6SBmy5oOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789417978; c=relaxed/simple;
-	bh=8+65nKi9I0MXjIV/W1tBCtNfo2RvTPk2JzGldsDp5Pw=;
+	s=arc-20240116; t=1789418375; c=relaxed/simple;
+	bh=89nldO+YQsi2DhvH1cafWv+EXMkOYKi6Wr3uymu5UCA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OUXB6vYpp5PeZba72aZZYjsPm89pi3RPECsCspw2bwuwhXMC4kJtyUE4bOc1dUr+/5FPvHIpmtpbN2GDd5HecDLpo83dRgNWwzb3hmlFHnvykQDYSNR40E7EK5vyIxnnQXQVcX07Qx4AogxV1j4oYGRaXg2YYpNqw2tjNBlNPds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=iuDe0Imd; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Ht/VIdGi; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=M6zcEmZODq2sbqrS+8WxXav2XtmEPCePOVko2ndrW0/BKacitBf09S4xGdc9okDqfhAj47ZvNFEI50S9Kj8roexfYjk3uPzC106HxD7RZI1nLI8vOfQQOyqjRsuEBDquLv38OYijUY8A75PpuLP8nYRzxLQm8Szm3XSSdjvTsfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=OVTjlI6+; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=hQdwI0LX; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="iuDe0Imd";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Ht/VIdGi"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68EJYP841702494
-	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 20:32:55 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="OVTjlI6+";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="hQdwI0LX"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68EJYQ7M1485156
+	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 20:39:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	2SVZ2YLsBB6VGQtK8NxlN3Z4ynzgoiLnBiZCMpH7eJk=; b=iuDe0ImdpagSJSP8
-	pcUICe1qwK2Nh6qBJ/n705GYvPYKqd4woeaWEtiWJh4d+mzUXzHf2ap2wZqe69jg
-	NzRkqhu1inSazJPrho8zX2foQZfcpIbbFzC4whh0BYQ+syYQaKpvVNctGXvfQoJZ
-	/UsG6WQkn2VWEkdOIlLlINOieiLQqS6Yesu06YYSHOw3XaSz9ALy5stbDFRzelBT
-	Xm48hCmKEyY5LbG5z+0aI/2juTAJIu9yb2PlQPRm0rqlJFCANJVdNdsEFq2dbo81
-	fGNahXW67MzAmKPcdcEPgNlZStKCvOERD+F7XDFzkh5iaJ4yO1pOjwTAUrADu3Z9
-	Zwb2fg==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gpmx9rr82-1
+	UPZ0u6hxp+hAJlhrzqqD7XJhS0h3R8VCtazFK73+Pv8=; b=OVTjlI6+q919IrN8
+	HWmJfMuqhD6af9p6Alllzrv71c5BiW0nGOMwOfTAi1ho12BQp5D3kiL4sjk5QK3F
+	RuJ1tngn/AD6YVH3E0B3e3TIGa6mpAHMCH7krO5xb6l5AMAWGDE5r6/xjPHT5l9B
+	E541GwSoMdoCws20sOm9HvB/IK1qwa+rsI4UpdIFpPIvEELIX9KeGHTygqcPzqZR
+	ONtmMXgnSxxaWyDnF7Y9aMARlRI8JDXjdTPFLnjUy1d5vzRv0KiSwxB0NHpCVeX6
+	werzNw49eEu42KM7gvTwgisUhDI9r7E8e3OW/8flf+6Lng7l0Db/0YFJGyD0+2zH
+	FlNXYQ==
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gpg2kt7xt-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 20:32:54 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39aee9b4cf2so6399258a91.0
-        for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 13:32:54 -0700 (PDT)
+	for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 20:39:32 +0000 (GMT)
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39deda201bcso1587871a91.2
+        for <linux-coco@lists.linux.dev>; Mon, 14 Sep 2026 13:39:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789417974; x=1790022774; darn=lists.linux.dev;
+        d=oss.qualcomm.com; s=google; t=1789418371; x=1790023171; darn=lists.linux.dev;
         h=content-transfer-encoding:content-type:mime-version:organization
          :references:in-reply-to:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=2SVZ2YLsBB6VGQtK8NxlN3Z4ynzgoiLnBiZCMpH7eJk=;
-        b=Ht/VIdGin84axTkZlVSoWQuS9/T7YA8Jkh6bid+snfXCZk56LQLgAnZQseJCL6527f
-         UsE3WX1Uld+Cy37s1LJtp985YmVuoPe85qvg+JoPKOqRG6rhzvXV59Z6p9Bwa8yW7eUP
-         2s7fXpP7bVDrXm4jdnP6tR21GUh2KQMA2gJhWAcF6LzCE/MqP+XHfTqovOniGolOd7L7
-         L6bSDyhggECCkj/SjcOP796XJSbmvD2AC7XJmGoaU6WtSzVSMWfHdHbl7H25ARt5iueR
-         l++HLAGOv7YT7K5iJEfOXggSh8ELuHU72WNREYuGYzCgTIjH7uheziYzFrOAsbhsrXHK
-         7YKg==
+        bh=UPZ0u6hxp+hAJlhrzqqD7XJhS0h3R8VCtazFK73+Pv8=;
+        b=hQdwI0LX94vfxcc4xFgTCmUYT9ynSmzUm1Z37M6uNpn87BUwRQ/NqpQDpI0BCht0Kw
+         ZyHR9PdW+PR3TATv6MNnTo3/lObRxgmZQ0/rh1GCI2WGoPmhlnzWZ614MmHPWE3Sc4ll
+         gTPuDckengAyJGZSNVnRLV2y5kjBoa8WJdYUPkkxRdGa7+nFP/9aHX+99Jr5by6dcAyS
+         zYR7b/31bxdL25WmKkqFqXnLtPN55CVf/f0OZyUSrzDotb4kD1XBMu7UtaBNH70QbPlJ
+         ScDtpJCTUR7SoNghuXvqaiTnDh2pP5yaKl8c0pB72SPCGrUCUay2O5Q1szx/JMKPGVxw
+         c1/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789417974; x=1790022774;
+        d=1e100.net; s=20260707; t=1789418371; x=1790023171;
         h=content-transfer-encoding:content-type:mime-version:organization
          :references:in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2SVZ2YLsBB6VGQtK8NxlN3Z4ynzgoiLnBiZCMpH7eJk=;
-        b=V5cEBENHZYM5x9J9Q7JM1D5aFwNrdc19G9rlv+akqQN9bfRaVx/0Is1GZ3tQ8XqpzO
-         b+WtOarkvDtwU2YrbnzrbgY331rjQLcvDgA1ZUiHBnGjsb9fMR7SU4sh6qcakuBbsnFG
-         kulMRoeN7y/mBuGuip/voYzhBcekb6FvPcu5NFtnwhUd5YK/eWaHqxNXe2bQ4pmtWElH
-         fSnLQXwOAtKD3tNN/f9V7ODdU0YpyYZ/VF1WXJtz/JNTxBz/epn85ddDLUoRgcj7fRi7
-         TBHgsBHFo3xfDSkXCxfxSrCTOB6XNVid85QxJy4iS1pzbtOrXJirZyoabw8y5ujVqRXW
-         rnqQ==
-X-Gm-Message-State: AFuF++mQqIEiJUfBRbCKxBDU7d19nNY8feB2oCwp+JqJdwPhNtvaVx7F
-	1j0AT0o/iASWCWKuZmJl+eVxSjQw9EQ7JazUnicKHOhGw/Vu6u3k1Y5Broc3XvjkmvUeS32gEWL
-	WkRovLd7XTNj6WOjXiTdBB8ovoSUeLvw3Zbt9fqlFFkqPYdqSD8cRfrBqAJt7NzH/
-X-Gm-Gg: AYBFou0E0zigzcjkZsCJd/k6Tyqwy9ArXZ0QWoB5Pvv2S7bJV7d5LgZUdpbsjihJGxZ
-	4hmLZc1NbNLcGy1UnMmDgzPXf1oIhSVzKaEimVm9BYqxXsVcd0CCpUvQFeG3nGlXRF/pKlWWRS/
-	hrGIlKlJ3B6Wtd4Fdx95kc4pu0/bLMM7+VlO5EpRmU7lLDeVO0qPQsJ2tY816+JzuM7UMVdxIyx
-	3M30zbg50cpva+ao5wiegjoLz5kqlXYwqJeSLJ0yJ08UWx2FDj+1CC5TLeYpVGkbzuEagBLiMHi
-	b6T4W2zba4xVSk7OUYGMaD55Gtedo8cFp/rJfCaMIttBjt7ZeBM6lTzPFBMulk4rxRSd+SowpqR
-	gRgAoR2dnRsKERBieul7zX1kflxo=
-X-Received: by 2002:a17:90b:57e7:b0:38e:57a3:f218 with SMTP id 98e67ed59e1d1-39dec05d7femr8511337a91.13.1789417973929;
-        Mon, 14 Sep 2026 13:32:53 -0700 (PDT)
-X-Received: by 2002:a17:90b:57e7:b0:38e:57a3:f218 with SMTP id 98e67ed59e1d1-39dec05d7femr8511268a91.13.1789417973397;
-        Mon, 14 Sep 2026 13:32:53 -0700 (PDT)
+        bh=UPZ0u6hxp+hAJlhrzqqD7XJhS0h3R8VCtazFK73+Pv8=;
+        b=QiQ4LZDDLdu2W13zqYS0zGXryM6YiB/Wqz+hSBuhEvN2vN4WBLwcNGKs+9XJUB9Y9B
+         xL3MEYQmblLntT2aGeEH+7piWwLNwiv4CoObv1FmaFmgJSLe05dxRxXXbk8/Qo46m68D
+         6r7VsPlElYNXsAJ2Dv+qeVJeYzAUZH9OIY6yFQDXIJxtsnPGjC2HA8SzVYoAn6qcO5k6
+         VlIji4fnzOz54BzJFTUed75klymbKEPF509lqh52hBNXsNMSmM9rhR6NKy9k37Z/nIcI
+         XxT1NFLHB9i3IUNN+qQY0zwliJIfkz507ft8xsasYQ8jC4zxSPGzRfX7Hnn6IxEfqzWh
+         6azg==
+X-Gm-Message-State: AFuF++nnoGKpesW4Kkvf3z1Ylk/uhCKM8zA/AhihiY/RNo/ZapTrXMFB
+	WoddzZTFVGDxw3nsRYENWjkGVKOtZfMv1a37m/IB8DKZcGvPxk5FI2Q19A6Aal9ytVrm3w7JOCs
+	b02olyF4vaXAyooUfBpfygb1Sj2ii+9X4Mk6ZXLrtZiYQDRsla36IfjTlNKwDVKga
+X-Gm-Gg: AYBFou304qwHg6GTYQWX29K6bhP62cE+tL9j/5wHWet0sMYKKN0Qp3ziyhky2fNT2rE
+	75m5YovY0J5FbKrcLYFvjYEAkaHGTJtKIQazr3yNXIXF4iFrnMoERvY7dgYvMDwIIVuTj0u+SUM
+	l9iboZoyI1yvRlL8BXRhvE5KqgCinON95S+jI+Q57TJfNbukX8sG99oFlnky3NtLyBaaIjGN7qt
+	+PIUgDf0iKrQXsW6ng+6sa7fxR7Wz3vkk05mWaONQ2e7rLtw8FZH/lXfnSSOXImKNNxUjOhdzov
+	KXItGj06WKdRg+X+8QQ1A6aRqkbuF43xpORpOZeuypOmqY5ZlnzwoStRM0rnebdqlNwlGVa5pit
+	V9NOCdb2XkVa7A1GFm19r4SpTWHs=
+X-Received: by 2002:a17:90b:5806:b0:39d:f024:c7e2 with SMTP id 98e67ed59e1d1-39df024c8d5mr6541282a91.4.1789418370990;
+        Mon, 14 Sep 2026 13:39:30 -0700 (PDT)
+X-Received: by 2002:a17:90b:5806:b0:39d:f024:c7e2 with SMTP id 98e67ed59e1d1-39df024c8d5mr6541236a91.4.1789418370475;
+        Mon, 14 Sep 2026 13:39:30 -0700 (PDT)
 Received: from localhost ([50.35.44.179])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33bd8ad03ccsm9880610eec.2.2026.09.14.13.32.51
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14365b759d0sm28514523c88.7.2026.09.14.13.39.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 13:32:53 -0700 (PDT)
-Date: Mon, 14 Sep 2026 13:32:49 -0700
+        Mon, 14 Sep 2026 13:39:30 -0700 (PDT)
+Date: Mon, 14 Sep 2026 13:39:27 -0700
 From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
 To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
@@ -96,14 +96,13 @@ Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
         Steven Price <steven.price@arm.com>,
         Suzuki K Poulose
  <Suzuki.Poulose@arm.com>,
-        Andre Przywara <andre.przywara@arm.com>,
-        Sudeep
- Holla <sudeep.holla@kernel.org>
-Subject: Re: [PATCH v11 1/7] firmware: smccc: Add an Arm SMCCC bus
-Message-ID: <20260914133249.00007d35@oss.qualcomm.com>
-In-Reply-To: <20260914060511.277948-2-aneesh.kumar@kernel.org>
+        Andre Przywara <andre.przywara@arm.com>
+Subject: Re: [PATCH v11 2/7] firmware: hwrng: arm_smccc_trng: Register as an
+ SMCCC device
+Message-ID: <20260914133927.0000479a@oss.qualcomm.com>
+In-Reply-To: <20260914060511.277948-3-aneesh.kumar@kernel.org>
 References: <20260914060511.277948-1-aneesh.kumar@kernel.org>
-	<20260914060511.277948-2-aneesh.kumar@kernel.org>
+	<20260914060511.277948-3-aneesh.kumar@kernel.org>
 Organization: Qualcomm
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
 Precedence: bulk
@@ -114,163 +113,132 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=G+KJgNk5 c=1 sm=1 tr=0 ts=6aa859f6 cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=aNnz9XPx1a4JIXSYt2cE/A==:17
+X-Proofpoint-ORIG-GUID: VkGJDKRXE1npXAWzBf6jKiFoevPOXV8W
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE0MDI5NSBTYWx0ZWRfX+PKtfhuQxYTo
+ zKTkmSYnqKAGyb69n8hMm1GGqQwuN+X3zFiMmCaHCdNHRhS6IWo4fX8w8gipW036s68+1rCTUXz
+ usLsdrTcIaYXwHJ6oKJqZwe9UGDca0VV+uLnlFPGN5oJibj+72eg3x9bG/gdQ8xSUk1mpCWyJ4O
+ 0ziHDgHFDD6O1Qme12l+2zVBUOTA3rZ278Zek5z0L3NHfdJa9CWvi8XV9PuO9BM6M2KNc/bAXcH
+ ARuU2JXfs03L5aNhlkTTngmVMyo0UpXtq+lMJiMnYt2YMMdRPHgSGW/W9mwteKzPzZdD7/HjgF9
+ BfL8IkoNQVNIXuxndB5tSIyy7CuglATfD4nLEaCVUw21z88ySb1WV5Dt8J0awi+raHu2Ta3+2Pf
+ K04O/rtBOOrMQyH4APLE7G1jnSKowd0E6roClk/kuff5m0sPbAH/FIsieIrKcnt9BWZ+2Nhg/zj
+ K1tEcnok5zDfzrRej7w==
+X-Proofpoint-GUID: VkGJDKRXE1npXAWzBf6jKiFoevPOXV8W
+X-Authority-Analysis: v=2.4 cv=M7TYuCws c=1 sm=1 tr=0 ts=6aa85b84 cx=c_pps
+ a=0uOsjrqzRL749jD1oC5vDA==:117 a=aNnz9XPx1a4JIXSYt2cE/A==:17
  a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=VwQbUJbxAAAA:8 a=Ikd4Dj_1AAAA:8 a=EUspDBNiAAAA:8 a=rWZSSP1HmsjXzHu-GLMA:9
- a=CjuIK1q_8ugA:10 a=iS9zxrgQBfv6-_F4QbHw:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE0MDI5MyBTYWx0ZWRfXzbmgym4X5bmP
- vt4RkoEPm6yQaI4Bx8cqJUfW0MsoC8FSPkBct4AR9iF7noaUwX22gaXVO9dDKfnfFYiayC+rFby
- GwUp/TgRg0yRNuPXBXjhndxc3DC+eOM31V2U11y8Ka0qx0ffnz3u97o72ONQF3trRzZkeiInT4H
- ulGs74EkNvHuvon+Kk+Gcis4v7hWA5bffEBAysrBRF+j97AGAP8jo22+BtY7EaE2laBzaDMyIRR
- MRMhIKIiNVL9rzGUKovkhc+wfBFMDfNn/JOGAVIqlVC9E9VBGOhGoXBdLw17Wi5IJ7xhPbiDy3j
- n0wF9ja60kEFR8K/4QlvLXfGVDcgy36Ig8NUdN6Z5Vt/hmczI5sffzZEJhqo5MdLWYibIDqsHZk
- kOuK6ZZ8xwzIMPm6MfZTXm49IgnOIoEuQKNm2AnfIXtx9umorBHr72kqfRWtr1686sLxbu1DkNr
- k8XjQ/xJEpKQLXeL8Kg==
-X-Proofpoint-GUID: r-8GHgID-JL8TLqzIW6YvJh062mVhxEK
-X-Proofpoint-ORIG-GUID: r-8GHgID-JL8TLqzIW6YvJh062mVhxEK
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE0MDI5MyBTYWx0ZWRfX+ctyEU/70em1
- JqNkFjKi1dSJ07MYN+z2KJI1Q/L2oZT7lQJ/SLT9wsYbI65KSm/e5ZV/U5J9XJgTSLSv0wbI/Dc
- Z6JnNyWAEgHLkcUJDZOXs4c7E7+2fhk=
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
+ a=VwQbUJbxAAAA:8 a=Ikd4Dj_1AAAA:8 a=7CQSdrXTAAAA:8 a=EUspDBNiAAAA:8
+ a=hwAxrWSPLhvteNngLDwA:9 a=CjuIK1q_8ugA:10 a=mQ_c8vxmzFEMiUWkPHU9:22
+ a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE0MDI5NSBTYWx0ZWRfX0oQD7K67u7C3
+ qAtrxOCcoOLuvVRIGS/3+Mlp1EeYBvnLhzc4OEtSVL66a27Xjtq2DzCegVZmK3vEMXQNneDShqG
+ 5H1zsS5JQcSdeY2vYYC+anW/JbhjC00=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-14_04,2026-09-14_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 impostorscore=0 malwarescore=0 clxscore=1011
- lowpriorityscore=0 phishscore=0 adultscore=0 priorityscore=1501 spamscore=0
+ phishscore=0 clxscore=1011 bulkscore=0 impostorscore=0 suspectscore=0
+ malwarescore=0 adultscore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609140293
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609140295
 
-On Mon, 14 Sep 2026 11:35:05 +0530
+On Mon, 14 Sep 2026 11:35:06 +0530
 "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
 
-> SMCCC-discovered firmware services are currently represented by separate
-> platform devices, such as smccc_trng and arm-cca-dev. Those devices do not
-> represent independent DT/ACPI-described platform resources; they are
-> features of the SMCCC firmware interface.
+> The SMCCC TRNG interface is a firmware-provided SMCCC service rather than a
+> standalone platform device. Now that the SMCCC core has an SMCCC bus,
+> create an arm-smccc-trng device for the discovered TRNG service and convert
+> the hwrng driver to an SMCCC driver.
 > 
-> Add an Arm SMCCC bus for services discovered through the SMCCC firmware
-> interface. The bus provides SMCCC device and driver registration helpers,
-> name-based matching, modalias generation, and a sysfs modalias attribute so
-> SMCCC service drivers can bind to discovered firmware services and autoload
-> as modules.
+> The SMCCC id table preserves module autoloading for systems where the TRNG
+> driver is built as a module.
 > 
-> Follow-up changes can then register SMCCC firmware services as arm-smccc
-> devices instead of creating independent per-feature platform devices.
-> 
-> Based on arm_ffa code
-
-That code has the same issue as below and for bonus points doesn't check
-if dev_set_name() succeeds or not.
-
+> The sysfs device path changes from the old smccc_trng platform-device path
+> to an arm-smccc device path. No known userspace dependency on the old path
+> was found; a Debian Code Search lookup for the existing platform-device
+> name/path did not find any users.
 > 
 > Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> Reviewed-by: Sudeep Holla <sudeep.holla@kernel.org>
+> Tested-by: Andre Przywara <andre.przywara@arm.com>
 > Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 
-On tiny bit of fragility inline that I'd suggestion avoiding now rather than
-later.  Down to dev_set_name() doing allocations in some cases under the hood
-that are tricky to tidy up with device_register() being used.
-
-With that tidied up
-
+Trivial stuff inline - nothing that needs changes
 Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
 
-> diff --git a/drivers/firmware/smccc/bus.c b/drivers/firmware/smccc/bus.c
-> new file mode 100644
-> index 000000000000..caba1a03c997
-> --- /dev/null
-> +++ b/drivers/firmware/smccc/bus.c
+
+> diff --git a/drivers/firmware/smccc/smccc.c b/drivers/firmware/smccc/smccc.c
+> index bdee057db2fd..756c79204e44 100644
+> --- a/drivers/firmware/smccc/smccc.c
+> +++ b/drivers/firmware/smccc/smccc.c
 
 > +
-> +struct arm_smccc_device *arm_smccc_device_register(const char *name, u32 func_id)
+> +static const struct smccc_device_info smccc_devices[] __initconst = {
+
+Ah. With __init_const I suspect the string constant stuff I mentioned in
+previous patch won't work anyway.
+
+> +	{
+> +		.func_id        = ARM_SMCCC_TRNG_VERSION,
+> +		.requires_smc   = false,
+> +		.device_name    = "arm-smccc-trng",
+> +	},
+> +};
+> +
+> +static bool __init smccc_probe_smccc_device(const struct smccc_device_info *smccc_dev)
 > +{
 > +	int ret;
-> +	struct arm_smccc_device *smccc_dev;
+> +	struct arm_smccc_res res = {};
 > +
-> +	if (!name)
-> +		return ERR_PTR(-EINVAL);
+> +	if (smccc_conduit == SMCCC_CONDUIT_NONE)
+> +		return false;
 > +
-> +	smccc_dev = kzalloc_obj(*smccc_dev);
-> +	if (!smccc_dev)
-> +		return ERR_PTR(-ENOMEM);
+> +	if (smccc_dev->requires_smc && smccc_conduit != SMCCC_CONDUIT_SMC)
+> +		return false;
 > +
-> +	smccc_dev->func_id = func_id;
-> +	smccc_dev->dev.bus = &arm_smccc_bus_type;
-> +	smccc_dev->dev.release = arm_smccc_release_device;
+> +	if (IS_ENABLED(CONFIG_ARM) && ARM_SMCCC_IS_64(smccc_dev->func_id))
+> +		return false;
 > +
-> +	ret = dev_set_name(&smccc_dev->dev, "%s", name);
+> +	arm_smccc_1_1_invoke(smccc_dev->func_id,
+> +			     0, 0, 0, 0, 0, 0, 0, &res);
 
-Does protecting the string defeat the nice underlying const handling?
-e.g.
-	ret = dev_set_name(&smccc_dev->dev, name);
-might be better.  Not particular important - I only noticed because
-you'd often see this between an device_initialize() and device_add()
-and then we'd be relying on the device_put() to clean it up.
+Fits on one line. Up to you though as maybe it's cleaner to have all the numbers
+start on a new row.
 
-So as this stands this is fragile as any error paths that later
-get added...
-
-
-> +	if (ret) {
-> +		kfree(smccc_dev);
-> +		return ERR_PTR(ret);
-> +	}
+> +	ret = res.a0;
 > +
-
-here can't free the name allocation.
-
-So I'd just switch this to a split device setup - something like...
-
-	smccc_dev = kzalloc_obj(*smccc_dev);
-	if (!smccc_dev)
-		return ERR_PTR(-ENOMEM);
-
-	smccc_dev->func_id = func_id;
-	smccc_dev->dev.bus = &arm_smccc_bus_type;
-	smccc_dev->dev.release = arm_smccc_release_device;
-
-	device_initialize(&smccc_dev->dev);
-	ret = dev_set_name(&smccc_dev->dev, "%s", name);
-
-//up to you whether you care about const string handling.
-
-	if (ret) {
-		put_device(&smcc_dev->dev);
-		return ret;
-	}
-
-	ret = device_register(&smccc_dev->dev);
-	if (ret) {
-		put_device(&smccc_dev->dev);
-		return ERR_PTR(ret);
-	}
-
-	return smccc_dev;
-
-> +	ret = device_register(&smccc_dev->dev);
-> +	if (ret) {
-> +		put_device(&smccc_dev->dev);
-> +		return ERR_PTR(ret);
-> +	}
+> +	if (ret == SMCCC_RET_NOT_SUPPORTED)
+> +		return false;
 > +
-> +	return smccc_dev;
+> +	return true;
 > +}
-> +EXPORT_SYMBOL_GPL(arm_smccc_device_register);
 > +
-> +void arm_smccc_device_unregister(struct arm_smccc_device *smccc_dev)
-> +{
-> +	if (!smccc_dev)
-> +		return;
+>  static int __init smccc_devices_init(void)
+>  {
+> -	struct platform_device *pdev;
+> -
+> -	if (smccc_trng_available) {
+> -		pdev = platform_device_register_simple("smccc_trng", -1,
+> -						       NULL, 0);
+> -		if (IS_ERR(pdev))
+> -			pr_err("smccc_trng: could not register device: %ld\n",
+> -			       PTR_ERR(pdev));
+> +	struct arm_smccc_device *sdev;
+> +	const struct smccc_device_info *smccc_dev;
 > +
-> +	device_unregister(&smccc_dev->dev);
-> +}
-> +EXPORT_SYMBOL_GPL(arm_smccc_device_unregister);
+> +	for (int i = 0; i < ARRAY_SIZE(smccc_devices); i++) {
+> +		smccc_dev = &smccc_devices[i];
 > +
-> +static int __init arm_smccc_bus_init(void)
-> +{
-> +	return bus_register(&arm_smccc_bus_type);
-> +}
-> +subsys_initcall(arm_smccc_bus_init);
+> +		if (!smccc_probe_smccc_device(smccc_dev))
+> +			continue;
+> +
+> +		sdev = arm_smccc_device_register(smccc_dev->device_name, smccc_dev->func_id);
+> +		if (IS_ERR(sdev))
+> +			pr_err("%s: could not register device: %ld\n",
+> +			       smccc_dev->device_name, PTR_ERR(sdev));
+
+Could be friendly to anyone reading this and use %pe.  Up to you.
+
+>  	}
+>  
+>  	return 0;
 
