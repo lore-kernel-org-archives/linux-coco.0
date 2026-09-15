@@ -1,177 +1,87 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4953D9DAA
-	for <linux-coco@lists.linux.dev>; Tue, 15 Sep 2026 13:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B211367B6F
+	for <linux-coco@lists.linux.dev>; Tue, 15 Sep 2026 14:07:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789479803; cv=none; b=q63NA9Pfcnbxjo9OLRMPuXeisXn0ccNiyasti4P1HjgdSWVr41VEOkl1sdw/W7oU1catiD2hkq5IdN3OWzFmFWWOTOXghbHfwHE072pk0Jf3/OuCH0TtmrRcNwxFFR9Whn/yccXCO8ShD+kbYFuv5cEtfkS6uDeAQzWDl1+rcfI=
+	t=1789481235; cv=none; b=DqL+4o0Am5H9X5SW/qrfh5rZh7GhJvtJnMxrquUEA8umjgXkK1+/jNfEgW7NQKmuVdws3rcDdfbaFEprzl161o5ZF85cwJ/++fN65VAbElEUx2Ypf4Gidnmp8t7LnbyqGCOEWtygdnQ3+QuEJi0sSDbTwC31NoLCNxGsemaYwDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789479803; c=relaxed/simple;
-	bh=fW074i0HkgvCy5bvA0+X/e729P0Fz+Gm4Rjq7TMc70g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e0rm0UR6DHORBAMSKM+U5QfS9DNfuz1F8Gj1hOtnj8XF62wfq8gyW9pE8Pg1mmDTDCiDH6PnLxNhGrcTJxx3hTYGeqwsoahtggBpbzcfIvfFHQL40ha0jZc2oPrzQR+QFhzFdVCvDxZtimNv8x3llHWC+yshVJ7L9O5yzXjTqhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=DXO1voxI; arc=none smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1789481235; c=relaxed/simple;
+	bh=dUjR5VVk2wCNrZ1Ap0wm0ypuZi/AZCH+XXIJOu8WIFk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=u0fp1NbuLtb40amNLcIMrf+VYFB6zn7UEK4bOYcfAflk4ece5MWrcHrje/M7yU+3H8pWRYhRUDF1yDkp71UoqpD8nlPEqb08vlWFbZoWTuyibpX0KVTBgdAlZSgNwu6Uts8lDzP2dWP2EfI6gWZxWTnwFm4VO1Tq5nSH71yF0fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QykTQwg7; arc=none smtp.client-ip=209.85.210.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="DXO1voxI"
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530301ff353so33184101cf.2
-        for <linux-coco@lists.linux.dev>; Tue, 15 Sep 2026 06:43:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QykTQwg7"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-86a2639398cso7142820b3a.3
+        for <linux-coco@lists.linux.dev>; Tue, 15 Sep 2026 07:07:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1789479800; x=1790084600; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bSXuxco/xIMIgeK0msm6noQ0z/sdWL5ZlVJapMHGK5U=;
-        b=DXO1voxIC0HTEmjvOjbLzCNI9SLesSm6yNBU7RDbXjkFhH3r71KBx9w4fSZLP5UeXo
-         eO5CZa54jy0C4z+iQ3KQxfSYmC5Ri83KCZwdcqqkgnkaeIqwJ50xvOpPThIjGEFGtz92
-         2BLvBxAcmVWOlcPbTqdTJwPH2nzG6URWRDyvcoWt+7fcQX3p+RqVWQ4grP3pe7BfNiS0
-         mGrZhIGSNnVGh8u4Y0hEuBsOBtTmjM3/HJmJNdRjfwvN2alMucTEp/lMnJu4ZllPvLFe
-         qyB3qWnLwgsIVx57Rbjxiooer0mPvM9CgPs+CyLovaOUotsgIBhEov6X555ZyKzF48xm
-         YFZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789479800; x=1790084600;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1789481234; x=1790086034; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bSXuxco/xIMIgeK0msm6noQ0z/sdWL5ZlVJapMHGK5U=;
-        b=NhwDUUYOapUtfivVX32rUfjtvdpugKwj8JmbMNhMWv2SFCQpi/D5eYHnoJ0DjbbDLz
-         6XTDGcM6+GoJp8nVYClGyExXHJyDXbkYLKqLE0Tq+5MxlgCTSxKt6moAzzkvslrPkAEz
-         EQ0uteSyV+buTnou37qWUVI0K8dvlzUbGmypTsclbGVut410BScR8ClZoL+Q/DgS+uNr
-         n3WTiHhc/FdlYDTV+fX2gwRE3nBMrDY1YAUBgPxITAV3EP4brRaCRYq+gs3ijfdH9lbP
-         ppOj3I3PzKHQUa22u1b+XXen/OZw7WcNgEWB6H7OlRnxuEqECinvJOzNU6n8V9yaUs4N
-         V1kA==
-X-Forwarded-Encrypted: i=1; AKwUvByv3Dh5tSswsh5nIB44605MBJXzifs1X7eD+sCwe475RXuD/9GiiHjRCqlPm3Z9lTO9JuHm5dyENWcA@lists.linux.dev
-X-Gm-Message-State: AFuF++kTdZjmly//WTursAdzaDukFf/p6VrbL/O+kjR6J8kd9Dtyx81l
-	pGHzAKft9wQMeYi3y4PYo8pTwjNWIugqm9RBKf3S7qbxslVq4GsP4NVnlivMrz91ZJ4=
-X-Gm-Gg: AYBFou2V62j8XzM6yDppZHiUwmD66ms/QEJ4pKV774ma++XJF5GJNXB5o7sdEDwtn8i
-	JlviwrovrNftnTua49UFejKlbI/zYCpjaW3GVyFIUxrqspAo8JlUd1WdYLu2p5avc/WM2buXviQ
-	Pbcw2sDtzxjoajtvUPFqGoN2ZffLfDympjj8dlLh6hMdjc7UTFPZ1MCht8Ry2VWdM++05/PkOpX
-	PsCT4Jib99qwMsa6q/FV+3oeq+S4rxidtKFun2JZSktbJYyopVUkRWsid85nkQK3HHlzRuwIXEW
-	KmFg87V2XJpyWDq5y4ubzTVtU7HI//a5squ9130RwEhWn63xR88UthOIOBYIKG6zu21DTZg8hMk
-	nNIajYW9FnX0xJS/IXaXVtqWqE8IFs66aOfBgURNhp+nRs7lGBlmHuHfhayteA8VSe4eGfahGA8
-	2JngxuKt03HK9wmls1zFhrYmFfZIuQShDcNb/MYhlSflJMC+6PaDsGh3zMYaYJhYVpIekKnQfZw
-	C3apslVmga3prB1Vej36ryy16873vc9GLnGU4pSpnocCyTnOAhFqjXO
-X-Received: by 2002:a05:6214:4986:b0:90c:d6fc:e284 with SMTP id 6a1803df08f44-9122e54a861mr120216456d6.17.1789479799946;
-        Tue, 15 Sep 2026 06:43:19 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9120f4d51ffsm124036106d6.45.2026.09.15.06.43.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 06:43:19 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x6TRO-00000004bnd-23bE;
-	Tue, 15 Sep 2026 10:43:18 -0300
-Date: Tue, 15 Sep 2026 10:43:18 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Subject: Re: [RFC PATCH v4 03/16] iommu/arm-smmu-v3: Add initial pSMMU realm
- viommu plumbing
-Message-ID: <20260915134318.GB3196566@ziepe.ca>
-References: <20260902235609.GG2890729@ziepe.ca>
- <yq5a8q5izxz4.fsf@kernel.org>
- <20260903171704.GK2890729@ziepe.ca>
- <yq5acxupjsy2.fsf@kernel.org>
- <20260907125228.GB667892@ziepe.ca>
- <yq5atsnyag84.fsf@kernel.org>
- <20260909124628.GH2543240@ziepe.ca>
- <CO1PR11MB4835512E374074A5F4AD0A6C8CBF2@CO1PR11MB4835.namprd11.prod.outlook.com>
- <20260910124632.GB4083318@ziepe.ca>
- <CO1PR11MB4835FF972283C09D7D683DAE8CBA2@CO1PR11MB4835.namprd11.prod.outlook.com>
+        bh=ocV24YaOpEhXgOxf7ysBfgsFY4XTMXobXdtS4MklkkQ=;
+        b=QykTQwg7sKQpiBQNLdiMkYTrLaK2kfBcyiniBGyCqL9FI7THKtFp55LgM6sMuNoD51
+         La+iOscYLOG1iq/TxjjsguiyzX3TZqJc9xikega6XIroG+GPIIq2K8tlrz/betSTvH1t
+         aZsu5E562v3Yit/a2AvuzlleVnAUVrGGAO97CqWJ5am4d3U1MxgIIFFuiFEgeSnkZ5R3
+         nl+GtH7jDpHVdOh+DCM1mx/Cy0d0PHclRodbIGDLL+MIgXioJqhRU8lB5K47DJOE1PI0
+         GstF/Aj6lFFrP/t0NPlfVUkAtEY/8G9Xx4oEUBE7aCdl/YAWtZuW0NvSuBYr+UMZu4Ap
+         5/7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789481234; x=1790086034;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ocV24YaOpEhXgOxf7ysBfgsFY4XTMXobXdtS4MklkkQ=;
+        b=pD9adAKI3Nqo9uZj9suuLJN+WrKy/ubFRSK1v3nKnkYTCfu03UP/ZVIiz4wkR+p1w6
+         tUJwLbdSiiKL9nrTLKiQteY1kjRq9TtJfQp3j15dAZj3cQqpMGtEfUNioyDK4Gf/lbki
+         0eku/2xOX7CZBD1OJ5FIO9JYxhNkBYRNKb+TvWu+Mgf7xB800ufrSYJc4pnZbslVl026
+         /+eLkQ41EHelPN/ACW0MMWk73QSnZMGP0t4aAYavwQ3HPqrioT4C9qk5XFK7AEHNqRmM
+         gDJlgA9g3qRbAgZeRfOKEzbALjf6s9US5kJNpa830nV/fk9UDNIgwKBGquC0dxGIfq4R
+         Vi9w==
+X-Forwarded-Encrypted: i=1; AKwUvBxcYk8I+FYGtT4E6f2IV+X/iyUX3Qs1F57wzkgzwqew5RB5+tMihqQtPPqJ8HRpN1qjeTll6WwCpQrK@lists.linux.dev
+X-Gm-Message-State: AFuF++md4CSneps4NKi0sk1Fh8ycaCFH6zRasGVTbHyZmJxuisKGpAq2
+	RqAFyc+kv+wrmkFTplJMxRVz+Q/LS5wR5V7vpseAdRW8R5LK6tG1nVbNzLIJ1/DvuCR3MaDmG6w
+	dDr5JpQ==
+X-Received: from pfch11.prod.google.com ([2002:a05:6a00:170b:b0:86a:72b7:1388])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:e86:b0:86d:117e:5dd0
+ with SMTP id d2e1a72fcca58-86f83055846mr14705977b3a.5.1789481233641; Tue, 15
+ Sep 2026 07:07:13 -0700 (PDT)
+Date: Tue, 15 Sep 2026 07:07:13 -0700
+In-Reply-To: <20260915092632.2822169-1-peter.fang@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CO1PR11MB4835FF972283C09D7D683DAE8CBA2@CO1PR11MB4835.namprd11.prod.outlook.com>
+Mime-Version: 1.0
+References: <20260915092632.2822169-1-peter.fang@intel.com>
+Message-ID: <aqlRETiO58SWjFLF@google.com>
+Subject: Re: [PATCH v4 0/4] tdx-guest: Make Quote buffer size dynamic
+From: Sean Christopherson <seanjc@google.com>
+To: Peter Fang <peter.fang@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Tony Lindgren <tony.lindgren@linux.intel.com>, 
+	Artem Bityutskiy <artem.bityutskiy@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Sep 15, 2026 at 07:13:48AM +0000, Tian, Kevin wrote:
-> > Yes, this already has to be true or our lifecylce model is
-> > nonsense. Once the iommufd creates the vdevice the guest is running
-> > and we cannot disconnect it without unplugging it from the guest. Thus
-> > the locking can rely on that. Within an iommufd ioctl context the vdev
-> > and underlying connection must be stable.
+On Tue, Sep 15, 2026, Peter Fang wrote:
+> Hi,
 > 
-> btw looks a related suggestion is having the tsm driver (arm-cca-host
-> here) implement the viommu ops while leaving the original smmu driver
-> largely intact, and "obtain the viommu through tsm_ops not through
-> iommu_ops".
-> 
-> It's not super clear to me about the implication behind after reading
-> related discussions and what the "obtain" part means. 
-> 
-> Could you help elaborate this part?
-> 
-> The old way is kind of:
-> 
-> vdevice_tsm_ops -> tsm_ops -> tsm driver -> iommu driver
-> 
-> then it will become:
-> 
-> viommu_ops (tsm related) -> tsm_driver
-> 
-> where tsm driver will fully handle tsm related viommu_ops?
+> This is v4 of the series to make the TDX guest driver's Quote buffer
+> size dynamic. The only functional change since v3 is an updated
+> TDCS_QUOTE_MAX_SIZE encoding. The rest is documentation, changelogs, and
+> stronger page alignment for the Quote buffer size. It also collected RB
+> tags from several reviewers. Dave, Kiryl and Rick your review would be
+> much appreciated.
 
-At least for ARM there is effectively no entanglement with the actual
-host iommu driver. The viommu is entirely provided by software in the
-RMM world, so it can have its own dedicated driver. In ARM T=1
-transactions are alwayus routed to the RMM's iommu and there is no
-relation to the host.
-
-I am interested how Intel works here, but I thought it was similar.
-
-AMD is different and I suspect AMD will have to continue to use the
-viommu from the AMD iommu driver, but I am not sure.
-
-> btw I held the impression of blocked operations from past discussion [1].
-> Initial attempt tried to proactively unbind the TDI upon any operations 
-> which may transit the TDI to the ERROR state. Then the suggestion at
-> the moment was:
-
-With this construction the iommufd vdev is created and permanently
-exist as long as the VM and viommu exist.
-
-How/when the tsm driver links this to a arch specific "bind/unbind"
-operation is more up to that driver, but I would expect what is
-thought of as "bind" should be the affiliation of the device's T=1
-stream with the viommu and the target VM. It should not be sensitive
-to the TDISP state.
-
-That is not prohibited, the TSM driver could do some auto
-"bind/unbind" whatever that means triggered by ops or tdisp state
-changing under the covers. But this cannot leak out as some kind of
-asynchronous vdev destruction.
-
-> " But now the suggestion is never let VFIO do unbind, instead VFIO
-> should block these operations when device is bound. "
-> 
-> [1] https://lore.kernel.org/all/aEFmPaYorqaYCKBY@yilunxu-OptiPlex-7050/
-
-IDK, if the host wants to put a device into error I don't see why the
-kernel should block it? There are many reasons a device can reach
-error, that needs to be handled.
-
-Jason
+Where is the breakdown of why "generating quotes entirely within the TDX-Module
+is too complex" I was promised?
