@@ -1,86 +1,153 @@
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lr2-f12.google.com (mail-lr2-f12.google.com [74.125.230.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735C935E1A8
-	for <linux-coco@lists.linux.dev>; Tue, 15 Sep 2026 19:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789500528; cv=none; b=YX7CWLVZfw2PShVNuTyRahnoUyJP5TWvn5ScvkEA9q+A/AcgzoftOmaDQ4ZZhXRjfwEL+HocdvKyzk6k2f7e0hLE7KKXCCO7U2ALZQE+FqQkdfFrEQ15tvaXVxAhTY2tBsxUkyQ8tT0eixeHS+R9/w5TuA/ZxSPD48m4iZE0K3w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789500528; c=relaxed/simple;
-	bh=wCkqkQXMa8sVgJQBZjlhAvSqQEwNwJOLJ2Nu8xKLLec=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=aX4ErBs9zeWAuGXmqvJJpOMjRytWZOj2jrnTtWuspWhVf8QM+O1uGMeULoOVN5AuIcVV8ZascKTJ7F4QJy7eFKtDY0MpD02BqPiD6niZEsp3m8eV8xg+j1iS5Ue4mSFeuCxu9W/kNEVFbXAN6sonriX+/uxmMgikls9db74jD6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=kmQweSt8; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D29449B06
+	for <linux-coco@lists.linux.dev>; Tue, 15 Sep 2026 19:35:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789500938; cv=pass; b=G7tJexZipovRD2R0lOkFu0GK4avz8WrY0sGAnsJUeQLepVJVTE0KsApmz9gE2FVWCLVooMMC9ZXPk3pisikXIsJ1rfvVwVQXBAI/tIRHFRPT9NzooDEI2X5J8z9E6TkFJ/A/AmBPqRyEklIyLqm2D/m9ouZfbv5BlRCslaAbBTc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789500938; c=relaxed/simple;
+	bh=9iP5wCDaS9EpQ+gfjMA3+Yk2v+5OOuRQACmgXFd/pac=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NHPddgnt3DTfT07nzHT1hR5qXiYimbAedRYN9qkMJeuaqpHC604IVNIAcMM5Wcczif0Dm6Z0hMQgU+ZyKWBZgUURmzxyp53YyinvMAa9Ewjfj5miDPzm4j4Y2MbTx9m+1K4eBHwufWcwE0JjH0cxCgFqdwFXSZ5wNWAdizJMtDM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AkyjGoGt; arc=pass smtp.client-ip=74.125.230.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="kmQweSt8"
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 902FE4090B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1789500526; bh=6YHzUD+wsB8DLUyn7slUCY+23u08dP+WzLoIhAnZePI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=kmQweSt8yUsKG/xe71sHy1NG7VKv6lZVbDA9eLiueusd4sIWsH6hHxSulgLgTF7nj
-	 JsTD+dyF+N0uyGc8Tx9ssMEgxDxeTxUrKyQk8dePHcpxl3JUpHatK9RQuBSj7GJd0h
-	 s1t0c0h+w0cqvvltMxe0xS2nOvDX3SWtGoNI/NjPhK2ziA98i95kupPhJtC3Za8FkS
-	 PGJf3ZPiwi+CN8RVOpRPUz6r5xxkdv8/fCWjwmyi/pU00vPew5MtIWGNN3eZ6racj6
-	 M/0jjN1dX3M29AeuMKXp6OslJuTKPkLuj7B8IHqZI+EJo6yfB187zWGBrJh/BsP+YO
-	 YbnCfN2wPvQ5Q==
-Received: from localhost (unknown [IPv6:2601:280:4600:814::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 902FE4090B;
-	Tue, 15 Sep 2026 19:28:46 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Karl Mehltretter <kmehltretter@gmail.com>, Tom Lendacky
- <thomas.lendacky@amd.com>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>, Ashish Kalra
- <ashish.kalra@amd.com>, linux-coco@lists.linux.dev,
- linux-doc@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>, Randy
- Dunlap <rdunlap@infradead.org>, Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH] Documentation: virt: Fix the struct
- snp_guest_request_ioctl name in sev-guest.rst
-In-Reply-To: <20260905092942.41558-1-kmehltretter@gmail.com>
-References: <20260905092942.41558-1-kmehltretter@gmail.com>
-Date: Tue, 15 Sep 2026 13:28:45 -0600
-Message-ID: <878q528gb6.fsf@trenco.lwn.net>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AkyjGoGt"
+Received: by mail-lr2-f12.google.com with SMTP id 38308e7fff4ca-3a2ff174422so1451061fa.3
+        for <linux-coco@lists.linux.dev>; Tue, 15 Sep 2026 12:35:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789500934; cv=none;
+        d=google.com; s=arc-20260327;
+        b=nVwtJZdMmrU1/b+WlAODSue9CraVJ6tzJlyk/tHTKuLcV8CqnRm2LZA/NmP6jx0TTv
+         QhptczHo0TG8Oq6lQqMP+pTk/Esu7fCOjKFNWifmT1rXw3ERl2Tx/ehwgGtymUn1hMbJ
+         7uNlWvWHA45NNrv/gYJtoz3XHFrdW9XP2VhB0MB+CeBdTqpW3dqO5a7N2NdwkCV+1byY
+         Jmn5tpZh/N9sO8uceX1YuH16T6/O8g279fV7wPDaOiywkGyA66xVSIe2Ui6v2PoodujE
+         tfedkxg6fAzM/rDlz/5zQ1HfRjmTsF8EfHT2+xQFB4zoJJD4BYqHU3mENmJ60x5X5a5+
+         F5Aw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3sluWAJ7si51ldKO+IEOlj7IVd+xFNM1gnjjRPbQIZI=;
+        fh=WgA7/luG/6wMJqvCPjYcpv1szOae6Q1d/11m0nHgJ3U=;
+        b=CjgGLQd4GtRAq9SVFSCoTgEN0/VRhpAorVf2F0JaqnJZowXPEYhWpGJiqKzCePLgQB
+         E5Uh7BU86Pu1BGHuc3zuSYjL5q9ht5M8CCUycogw3YhcRrbdaG/I5NzC/fjFeln1bj1t
+         YV7HLRwGrZ44cl4c03Je6G8Ah0fQW807akCOGobENoX9Xnz7a6UU7d/NtBaSaztF9xTy
+         D0VJGi67ivA9qxt9OhonDhod8QdLmanKOyx8gPBNMHMT1pz8snc0ZM7JbwMh6vFR17+4
+         JuIxfn6Gq9wsocImIAgErmnne8e3V6FzsL0qw4zM3ldEQgWl0zdlHErz6/xmzHF47NOU
+         PnmQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789500934; x=1790105734; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3sluWAJ7si51ldKO+IEOlj7IVd+xFNM1gnjjRPbQIZI=;
+        b=AkyjGoGteUSBLUq33mfpaEwYHWAgdL4oCPO/H+BoaTyoYco1BK7TZchyuwRQ7Kseco
+         /a4Ros/+fGG016h0ee9wN1/CEh1vmcg2VqKpbsNKwIQk/ra2gQLN/+Fdci8053oWZKcG
+         GmTKc53PzK7lsmc1W23zhehOH83ibgJsMveNLsuHwbhKxyJEwQa6iCVFpQ1PL1l16kSp
+         0K69Cl/Q8SWhOMvKBNHfehCPi1aa6zEkjC9PPGGfQ6ThbE9R9FTz6Y5ceTXJ4MS4LrQm
+         m/LTRDaOjvExbngU/Do9M6aKNo9RN0sw5PJMNx2UPzVuF9aYNrZWN+y88ZddB8CYJwcu
+         XzZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789500934; x=1790105734;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3sluWAJ7si51ldKO+IEOlj7IVd+xFNM1gnjjRPbQIZI=;
+        b=A2jBXRbOrwN30NIgh2CJGRhaorPC3yYkeVfAInwvgn/4qTjSbudfMZutmulWnCcW0/
+         viINSBR6V4e42r/VCoQhuwyrr05E1QpJ3s/IxQGE8xR/IRWLglKk2PG3Qb2aSx+5Yh9k
+         EUgkUvTx9Vj134ubMVa/k+xvzeozkNmRHaY4iLiHFMusO9cNWckf8GkxB5VuX8EEgNUW
+         g3MMYNTxt9f8IVK+o/NvnsAnbHZvlCKQ2Zi+TuqWLbEVC+wF1W9AjdAqCnNxhlybTTfU
+         D5vF0Dc3bDrdpUbWNlAiKQa64J88UNb/gngje6oG/yAqPbCkv6EUtr+wUiUkLbBfiwhn
+         Yi1g==
+X-Forwarded-Encrypted: i=1; AKwUvBxd/Jpc5LHbUFe6D4Z01ummKO3j0J/G7L5tSgpczOXwkXFdEMC+EaEc7BrNrUIlJY+2CIri02hvhSgr@lists.linux.dev
+X-Gm-Message-State: AFuF++lOqZPu0Khc3+lDXMA+cwWtvkSvXUDhlDHyUUQsjoxTbKGziHCI
+	Hn5GhC2qlH2aq9M78CMNAIicXFGtqpysT0H94eYQN7M1toTa9v5zu8B4lEmba216+OSbZYLnIjn
+	znQZuVgeH7ba1svkpduceS6xBQUYsQbRshMZKeALC
+X-Gm-Gg: AYBFou0swWKYx9w84+EQSw7ZPGG1LJ+4D5wfxCHCnAV1Zo3T+7qbmKtBMIo6zrOZJHF
+	t5j0MHA/etj2kGAWuRyjIhx/EIxWEcZQkI9Or3UYLdfFgu0kj009Cq9K62V5/C0C3L138N6duwC
+	xoqsTFG4kGyAuTsx8V30b2M020iSzs2S6SRcjW81UIjvQt3gQz1LVdIcwXXqPB1/b3XgKMqh2Sb
+	VulpB8bnTBh96LtUA2Tk79L40hP5GWpoRiLiyvAGDj3QX6aGArFeKHZqk6f7Pbg75K3rtISsEug
+	wRQbG8WbQrEadGrsBo/hXjWV5J8WDeW8qyZv1XCoUxVE9mGKEnW+KC9AvWebJu3b
+X-Received: by 2002:a05:651c:a114:20b0:3a4:9e46:235c with SMTP id
+ 38308e7fff4ca-3a5c89b031emr21060911fa.14.1789500933920; Tue, 15 Sep 2026
+ 12:35:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com> <20260912083611.2513845-8-suzuki.poulose@arm.com>
+In-Reply-To: <20260912083611.2513845-8-suzuki.poulose@arm.com>
+From: Alper Gun <alpergun@google.com>
+Date: Tue, 15 Sep 2026 12:35:22 -0700
+X-Gm-Features: AcwNN1VS3YvKKCCRg1vDnBVkoWj-7p2fofNqSox_wrQ014s5kEA5YUvjF8gr3LY
+Message-ID: <CABpDEukTAc1m=g+rZRPPqaTwrvhUJPsFRWpFd0PxZsyWw5mR=Q@mail.gmail.com>
+Subject: Re: [PATCH v18 7/7] firmware: arm_rmm: Add wrappers for Realm related
+ RMI commands
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
+	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
+	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, 
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, 
+	sdonthineni@nvidia.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Karl Mehltretter <kmehltretter@gmail.com> writes:
+On Sat, Sep 12, 2026 at 1:37=E2=80=AFAM Suzuki K Poulose <suzuki.poulose@ar=
+m.com> wrote:
+[...]
+> +/**
+> + * rmi_rtt_destroy() - Destroy an RTT
+> + * @rd: PA of the RD
+> + * @ipa: Base of the IPA range described by the RTT
+> + * @level: RTT level
+> + * @out_rtt: Pointer to write the PA of the RTT which was destroyed
+> + * @out_top: Pointer to write the top IPA of non-live RTT entries, from =
+entry
+> + * at which the RTT walk terminated.
+> + *
+> + * Destroys an RTT. The RTT must be non-live, i.e. none of the entries i=
+n the
+> + * table are in ASSIGNED or TABLE state.
+> + *
+> + * Return: 0 on success, positive RMI result code or negative Linux erro=
+r code.
+> + */
+> +static inline long rmi_rtt_destroy(unsigned long rd,
+> +                                  unsigned long ipa,
+> +                                  long level,
+> +                                  unsigned long *out_rtt,
+> +                                  unsigned long *out_top)
+> +{
+> +       struct arm_smccc_1_2_regs regs =3D {
+> +               SMC_RMI_RTT_DESTROY, rd, ipa, level
+> +       };
+> +       long ret =3D rmi_sro_execute(&regs);
+> +
+> +       if (ret !=3D RMI_SUCCESS)
+> +               return ret;
+> +
+> +       if (out_rtt)
+> +               *out_rtt =3D regs.a1;
+> +       if (out_top)
+> +               *out_top =3D regs.a2;
+> +
+> +       return RMI_SUCCESS;
+> +}
 
-> struct snp_user_guest_request does not exist; the name is struct
-> snp_guest_request_ioctl.
->
-> Use the real name.
->
-> Fixes: fce96cf04430 ("virt: Add SEV-SNP guest driver")
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-> ---
->  Documentation/virt/coco/sev-guest.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/Documentation/virt/coco/sev-guest.rst b/Documentation/virt/coco/sev-guest.rst
-> index 93debceb6eb0..3371ebc29e8b 100644
-> --- a/Documentation/virt/coco/sev-guest.rst
-> +++ b/Documentation/virt/coco/sev-guest.rst
-> @@ -38,7 +38,7 @@ along with a description:
->        are not detailed, but errors with specific meanings are.
->  
->  The guest ioctl should be issued on a file descriptor of the /dev/sev-guest
-> -device.  The ioctl accepts struct snp_user_guest_request. The input and
-> +device.  The ioctl accepts struct snp_guest_request_ioctl. The input and
->  output structure is specified through the req_data and resp_data field
->  respectively. If the ioctl fails to execute due to a firmware error, then
->  the fw_error code will be set, otherwise fw_error will be set to -1.
+Doesn't out_top (regs.a2) need to be populated on RMI_ERROR_RTT as well?
+realm_tear_down_rtt_level() checks next_addr > addr under case
+RMI_ERROR_RTT: to determine whether the RTT is missing or has child tables
+that need recursive teardown.
 
-Applied, thanks.
-
-jon
+Thanks,
+Alper
