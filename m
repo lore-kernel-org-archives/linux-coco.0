@@ -1,87 +1,133 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B211367B6F
-	for <linux-coco@lists.linux.dev>; Tue, 15 Sep 2026 14:07:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBB13B584F
+	for <linux-coco@lists.linux.dev>; Tue, 15 Sep 2026 14:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789481235; cv=none; b=DqL+4o0Am5H9X5SW/qrfh5rZh7GhJvtJnMxrquUEA8umjgXkK1+/jNfEgW7NQKmuVdws3rcDdfbaFEprzl161o5ZF85cwJ/++fN65VAbElEUx2Ypf4Gidnmp8t7LnbyqGCOEWtygdnQ3+QuEJi0sSDbTwC31NoLCNxGsemaYwDU=
+	t=1789482683; cv=none; b=iW1IiuXr6GS8nE/IUICkTR8jsSLpFBUE9TKcrGVrTKndt6bPf01iKIPKFWrwg7Jmj/PhZOL+MeU96y1k8nZvaY0Hz1dblVaA9+jC+zh72qaQ4SVxlTQmtflKjJADKuFRpIc9++k4zxs857Ds1ELrFQ9r5DkK+r+Vh3dP2QfPnjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789481235; c=relaxed/simple;
-	bh=dUjR5VVk2wCNrZ1Ap0wm0ypuZi/AZCH+XXIJOu8WIFk=;
+	s=arc-20240116; t=1789482683; c=relaxed/simple;
+	bh=wgiHkbU+yT0wAsLAa4BYS1bLM7Wzx46WXTyUlhOUfAM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=u0fp1NbuLtb40amNLcIMrf+VYFB6zn7UEK4bOYcfAflk4ece5MWrcHrje/M7yU+3H8pWRYhRUDF1yDkp71UoqpD8nlPEqb08vlWFbZoWTuyibpX0KVTBgdAlZSgNwu6Uts8lDzP2dWP2EfI6gWZxWTnwFm4VO1Tq5nSH71yF0fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QykTQwg7; arc=none smtp.client-ip=209.85.210.198
+	 To:Cc:Content-Type; b=sBnGME3fBYXJYnu6RLGJUKE6nNTCRKFlr8BtDtsWfyBkKoh22zq2/e71f98vG9Hx26RYBPknHep17rdoijLfqwSiqwBjVULWD6pVKy36tWr/98TymhzZq0bBlYyO1SSINgBJFODn4aj3NzwEd6yxPWHd+gPVzeukM7rYLGHatR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jrwU1/2g; arc=none smtp.client-ip=209.85.216.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QykTQwg7"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-86a2639398cso7142820b3a.3
-        for <linux-coco@lists.linux.dev>; Tue, 15 Sep 2026 07:07:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jrwU1/2g"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39dc5d85a9cso3641858a91.2
+        for <linux-coco@lists.linux.dev>; Tue, 15 Sep 2026 07:31:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789481234; x=1790086034; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1789482681; x=1790087481; darn=lists.linux.dev;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ocV24YaOpEhXgOxf7ysBfgsFY4XTMXobXdtS4MklkkQ=;
-        b=QykTQwg7sKQpiBQNLdiMkYTrLaK2kfBcyiniBGyCqL9FI7THKtFp55LgM6sMuNoD51
-         La+iOscYLOG1iq/TxjjsguiyzX3TZqJc9xikega6XIroG+GPIIq2K8tlrz/betSTvH1t
-         aZsu5E562v3Yit/a2AvuzlleVnAUVrGGAO97CqWJ5am4d3U1MxgIIFFuiFEgeSnkZ5R3
-         nl+GtH7jDpHVdOh+DCM1mx/Cy0d0PHclRodbIGDLL+MIgXioJqhRU8lB5K47DJOE1PI0
-         GstF/Aj6lFFrP/t0NPlfVUkAtEY/8G9Xx4oEUBE7aCdl/YAWtZuW0NvSuBYr+UMZu4Ap
-         5/7g==
+        bh=UxCVdsnW3ZSI7KLXQLXPZOQXUZHRc3cqhqBZH7/A718=;
+        b=jrwU1/2gtbTikbTZNFy48TrSVAYi7X3s6l6DRFaHCYuRjCwngwTId0soOYAf8l/O0F
+         C9UDVUjCoqXUXI1+CgJvyg55aEVYIOBz1yC4xHindZFGc5QzYI19lZJKcQlb63zXgGdI
+         HuDTa3WFKeIa0pn9mYuYtGcnK/lPNb14FVWgqBioWBFultW+1MjHZGFc/llv7XKy1GPr
+         iAsZvAdTW37wPGHqTLRb4NKtllHeupM+si51PQN1VNjzIv10t259pcxjPkDxoAmIB/mF
+         8OZEcIPwgeJp181A4Z1ZC3KAuWUmjsH5poYLnMs6bpLMLY7x6NsKkP8BANp6IpWVyy/n
+         i40Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789481234; x=1790086034;
+        d=1e100.net; s=20260707; t=1789482681; x=1790087481;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ocV24YaOpEhXgOxf7ysBfgsFY4XTMXobXdtS4MklkkQ=;
-        b=pD9adAKI3Nqo9uZj9suuLJN+WrKy/ubFRSK1v3nKnkYTCfu03UP/ZVIiz4wkR+p1w6
-         tUJwLbdSiiKL9nrTLKiQteY1kjRq9TtJfQp3j15dAZj3cQqpMGtEfUNioyDK4Gf/lbki
-         0eku/2xOX7CZBD1OJ5FIO9JYxhNkBYRNKb+TvWu+Mgf7xB800ufrSYJc4pnZbslVl026
-         /+eLkQ41EHelPN/ACW0MMWk73QSnZMGP0t4aAYavwQ3HPqrioT4C9qk5XFK7AEHNqRmM
-         gDJlgA9g3qRbAgZeRfOKEzbALjf6s9US5kJNpa830nV/fk9UDNIgwKBGquC0dxGIfq4R
-         Vi9w==
-X-Forwarded-Encrypted: i=1; AKwUvBxcYk8I+FYGtT4E6f2IV+X/iyUX3Qs1F57wzkgzwqew5RB5+tMihqQtPPqJ8HRpN1qjeTll6WwCpQrK@lists.linux.dev
-X-Gm-Message-State: AFuF++md4CSneps4NKi0sk1Fh8ycaCFH6zRasGVTbHyZmJxuisKGpAq2
-	RqAFyc+kv+wrmkFTplJMxRVz+Q/LS5wR5V7vpseAdRW8R5LK6tG1nVbNzLIJ1/DvuCR3MaDmG6w
-	dDr5JpQ==
-X-Received: from pfch11.prod.google.com ([2002:a05:6a00:170b:b0:86a:72b7:1388])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:e86:b0:86d:117e:5dd0
- with SMTP id d2e1a72fcca58-86f83055846mr14705977b3a.5.1789481233641; Tue, 15
- Sep 2026 07:07:13 -0700 (PDT)
-Date: Tue, 15 Sep 2026 07:07:13 -0700
-In-Reply-To: <20260915092632.2822169-1-peter.fang@intel.com>
+        bh=UxCVdsnW3ZSI7KLXQLXPZOQXUZHRc3cqhqBZH7/A718=;
+        b=EcrRn3HSnn65hHkYR9nuIFDx8QUjqzoc5JHeX9OTkRkU16wJThpIq2HUbLafntB2ZO
+         +yg9Fg5y4ENjlcUt//pHkis+sPULwjd4E8S2sI6BTXJT1VIixCBmIVMAr0exJx+GPdtp
+         VfTTt66FlxooZyl9QIvT67k7Ej06zy1VFgCWdf/RYf8CqrUFeJUQu5glsY2tDhWtlg4u
+         vZws+AshlV7t56npisEsejr1N7+lUMIQtLYwkteVtgK/meoUtTYZOmsbTyEjnMnWxSPm
+         5LKnv0b8q99Yra6YFdMFfwGXY0gSvPLWQsTXMFCO4xVzekj54Va2b1Ih7/bpcua4mroc
+         k0fg==
+X-Forwarded-Encrypted: i=1; AKwUvBwR0WVj/rQaQTADrihVLeYtWBtJkKYjqUGUjrFL3K6DMAxC6JJ3KmAmmsC3orW7+vllWbaixYT01rb0@lists.linux.dev
+X-Gm-Message-State: AFuF++nUxQy0mBNvmeZFZOvenC7OlvlRAEfo75aCRdkspykB/IPBmEJP
+	Hh3K4Q8HovmSCBA7tD/kPVNIYc4QpBmklOlu6e6mxDr0MOWsUG3eXDwiLbVo0z2GSjHHNXFxZdm
+	rCRZIBA==
+X-Received: from pjyt2.prod.google.com ([2002:a17:90a:e502:b0:39d:94c4:375f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:1697:b0:39e:1310:cb36
+ with SMTP id 98e67ed59e1d1-39e1310d234mr1156057a91.20.1789482680587; Tue, 15
+ Sep 2026 07:31:20 -0700 (PDT)
+Date: Tue, 15 Sep 2026 07:31:19 -0700
+In-Reply-To: <0b2d8858-b361-4a64-986a-4c179210fbec@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260915092632.2822169-1-peter.fang@intel.com>
-Message-ID: <aqlRETiO58SWjFLF@google.com>
-Subject: Re: [PATCH v4 0/4] tdx-guest: Make Quote buffer size dynamic
+References: <20260910-snp-invalid-input-v1-1-fb2e03da614b@google.com> <0b2d8858-b361-4a64-986a-4c179210fbec@amd.com>
+Message-ID: <aqlWt4jb4CSPnecN@google.com>
+Subject: Re: [PATCH] KVM: SEV: Return INVALID_INPUT on SNP req/resp buffer
+ access failure
 From: Sean Christopherson <seanjc@google.com>
-To: Peter Fang <peter.fang@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Tony Lindgren <tony.lindgren@linux.intel.com>, 
-	Artem Bityutskiy <artem.bityutskiy@intel.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Jacky Li <jackyli@google.com>, kvm@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>, 
+	Ashish Kalra <ashish.kalra@amd.com>, Jacob Xu <jacobhxu@google.com>, 
+	Supraja Sridhara <suprajasri@google.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Sep 15, 2026, Peter Fang wrote:
-> Hi,
+On Mon, Sep 14, 2026, Tom Lendacky wrote:
+> On 9/10/26 16:06, Jacky Li wrote:
+> > Currently, snp_handle_(ext_)guest_req() returns -EIO when
+> > kvm_{read/write/clear}_guest() fails while accessing guest-provided
+> > buffers. Returning -EIO causes KVM_RUN to exit to userspace, likely
+> > killing the VM.
+> > 
+> > Fix this by returning GHCB_HV_RESP_MALFORMED_INPUT with sub-error code
+> > GHCB_ERR_INVALID_INPUT to the guest and resuming the vCPU.
+> > 
+> > Per the GHCB specification, guest-provided GPA buffers that cannot
+> > be accessed by the hypervisor (e.g. private pages) should be treated
+> > as guest input errors. Because kvm_{read/write/clear}_guest() only
+> > returns -EFAULT on failure, treating this failure as an invalid input
+> > aligns with the definition of -EFAULT ("Bad address").
+> > 
+> > Returning GHCB_ERR_INVALID_INPUT also matches existing SNP handling
+> > in KVM, which already returns this error code for unaligned or
+> > overlapping buffers. It also aligns with other hypercall implementations
+> > in KVM (e.g. Hyper-V returning INVALID_HYPERCALL_INPUT on
+> > kvm_read_guest() failures in kvm_hv_flush_tlb()).
+> > 
+> > Performing upfront validation (e.g. via kvm_mem_is_private()) is
+> > avoided because it is prone to TOCTOU races with concurrent Page State
+> > Changes.
 > 
-> This is v4 of the series to make the TDX guest driver's Quote buffer
-> size dynamic. The only functional change since v3 is an updated
-> TDCS_QUOTE_MAX_SIZE encoding. The rest is documentation, changelogs, and
-> stronger page alignment for the Quote buffer size. It also collected RB
-> tags from several reviewers. Dave, Kiryl and Rick your review would be
-> much appreciated.
+> I'm ok with this approach overall, but will we run into a sequence
+> number problem now?
+> 
+> If the kvm_write_guest() in snp_handle_guest_req() fails, invalid input
+> is going to be returned, but we will have successfully called
+> SEV_CMD_SNP_GUEST_REQUEST. The sequence number will have advanced in the
+> firmware, but I think the guest will not think that it has and not
+> increment the sequence number causing subsequent requests to fail. At
+> that point the guest will need to zero out the associated VMPCK used and
+> move to the next one (there are a max of 4). If this continues happening
+> the guest will eventually not be able to make guest requests anymore.
+> But, I guess, if the kvm_write_guest() is failing, we're probably
+> already in a bad situation, so maybe it is fine.
 
-Where is the breakdown of why "generating quotes entirely within the TDX-Module
-is too complex" I was promised?
+Oof, "fine" is definitely not ideal though.  
+
+> > @@ -4244,8 +4246,10 @@ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
+> >  	if (ret && !fw_err)
+> >  		return ret;
+> >  
+> > -	if (kvm_write_guest(kvm, resp_gpa, sev->guest_resp_buf, PAGE_SIZE))
+> > -		return -EIO;
+> > +	if (kvm_write_guest(kvm, resp_gpa, sev->guest_resp_buf, PAGE_SIZE)) {
+> > +		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
+> > +		return 1;
+> > +	}
+
+What if we keep this one as -EIO (or better, change it to -EFAULT in a separate
+patch?), but add a comment explaning why KVM needs to exit to userspace in this
+particular case?  That would be a good compromise; if the guest is attempting to
+access non-existent memory, the initial READ will fail, i.e. we still get most
+of the behavior Jacky wants.  The only fatal case would be where either userspace
+really did screw up, or the guest managed to find read-only memory (though I
+would probably argue that's likely also a userspace bug?).
