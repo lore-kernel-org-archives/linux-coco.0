@@ -1,226 +1,328 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010070.outbound.protection.outlook.com [52.101.201.70])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A1C395AF2
-	for <linux-coco@lists.linux.dev>; Tue, 15 Sep 2026 02:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4352644C50B;
+	Tue, 15 Sep 2026 07:14:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789438047; cv=fail; b=ZFOJm5VBvX9qCqcWjzTsvNAQ+Jh7TJdTWGo+92YX33ANs+jq+Ft4L28p0k/7yjQ+MisT0BGZR4rCrqf6LJFTjCNj5lujjYHb1nXWZEdClsWOlchFZxLjL2aLJW3zRUAyi4Q5PK/XrlCPm542dyQi2a+fcFxE4LhXloeZAeEVLis=
+	t=1789456448; cv=fail; b=lGVj+AbqxXVkc20QGseftcR6GGkaLobqQjvO7qCp01udgbzTv92jpETGNqJETBR/ZaYXdVHtsk51YkwoI5ugU6JloSPGcDIgiOSe3GA+zHTmn/hMNF6yP0zBDcixrIfyW+xZzgJKzrTphVzvbSh1rRtbKap+L4d6E8q0TgdRo98=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789438047; c=relaxed/simple;
-	bh=unoj/ZphlOQPTLE7f7RtVhKlw9kUH1BSuX6AUPb2UPo=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Emq1z6IQQkd/7ma90GKbv8oFZHh8GwFYKcYDM2foXojq6c3mxUJXmfT/TmbfG/BQipR8LIRL3l4elBgVL8mUaJUkS4EjkTWJTAef6M9Ku4kUt+tTjQJRvbGj72f5lY82osk3FKY4JYUXdSD97QDz9Bkw4uHUL4l9tSMEO0jinwI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=mLFEl0pX; arc=fail smtp.client-ip=52.101.201.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1789456448; c=relaxed/simple;
+	bh=8+eZ/YcGjovkIDASQZhIV6LCWucQifmNex0NP1WaIOU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ceX+XcM+tntJ0Vx9639epNVVZUEgbrHvoVOg5+IC+MubOQATdiB43Z0gFpep0yDpnP9BXyEfGz3g8g8YzitBiTVw/MiSIfyBhOkmN6AdiA8dGyl2tP1Rc/i2fBhzk+1/AU5zl8dojgMA6Bkdx+Vhrizun0dClXZ0Xc2ELXOykyE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jLrOvCWB; arc=fail smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="mLFEl0pX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jLrOvCWB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789456445; x=1820992445;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=8+eZ/YcGjovkIDASQZhIV6LCWucQifmNex0NP1WaIOU=;
+  b=jLrOvCWBML/uWMWe2CDjaYo9wbf/J3yYhDvQYUKptWyHNWAhhKXqiTsB
+   i7+JffeUFcRKgolAVKe02G3r1oKUZEnspeZMiBWoaZcl28j9XwXz4x0S9
+   mQnXQ7PXlH8tA57Wgo2iSPjlf7Gb5tMfifXKM/bmv3zYzwAzvg77WlO5A
+   /SnR40kBjYYqnqblAnSp4GECgvaJglpJlLS3xz/3HzvJ5tyaiSiOvSPEp
+   4nE974eT+7NXWbCf34bCxUDDx8GNpKIp0gTCg6lnQ8blQB1MNW0kdi/5k
+   3Dz/OftdGoXul5k7V63qUipeZmdq7QAr9cdFNDKkiWAIqL23qvuKTMPJ9
+   A==;
+X-CSE-ConnectionGUID: S6ok09eCQF2I+4f8GZQaIw==
+X-CSE-MsgGUID: wTVlTcyXQgSsBW664I5luw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="90017515"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="90017515"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 00:13:53 -0700
+X-CSE-ConnectionGUID: ZpkBgf0MRFuxtSRCvuPYxQ==
+X-CSE-MsgGUID: VawudWrPSFSeU3qtrKcjPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="1265136"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa013.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 00:13:52 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 15 Sep 2026 00:13:52 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Tue, 15 Sep 2026 00:13:52 -0700
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.16) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 15 Sep 2026 00:13:51 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y76GSfFY9ulIKpfIpX2lQHeh5zJuAKhREbaJPEq8CA8Qxyxw7Fn+4gYy93f1Q9QHv8qTYHkh2BsmbUDHtE5Np4OSl8pNja8RnqETdZPysXOQOEvFxRw7HgXVRt8XKiRX9goWSwgGznrhfCoNbin8E8Y2C/I11M8P/6i3AmQuGm0hxFpRwCd6TuzEh9zgmj29O0vnDN8De+zJ0RCr5RuoVSb2H8hVGbWslU77I0+YewUUe/CDJe2b1Zfk4CTNNZisgivy8EEM8Ow7MKgOnRaidS8CeN5PmbpPr/OBue7eTWuqKVAAcenZueD7bvQexOrXtECgJgd3/n6h7tG1eOYgPQ==
+ b=hfgn/vWMZCPvxPzDDO/OEdoqfko6/oEapKDLKXCEABgkp7kZOWwfqmo7lz76Vfd6AyjMqJy0mqw6kLz5ns80cwrgf/+W2Xq6AMte80nZRprTnjpQDvrHuKA1C0lu6/IY2fCiFD5xunUN68mLD5kbPD4WYl0+6Kig0pIcfrnU15i0Qyb4srJfr8V8EsNsSlnfEa2KNm+8Bd9ojXtwyD5OSVpWNNQN2+K+Ht9f9zPCdqPQ+uxJ0iYNF95lWxe9KJZK628E62zh1g6TiUV6JDZlTSOeXngdOdRA0GW5/ldp3To7epPEB4f3siSp/XojLQ5I7Q+gKnXlTNxXnxQrdbNA0Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oNNZJ9amsThXMjs+dI1euaBJFEmNSHsRK4WthKn/4mk=;
- b=RUPKBfaB+um1bxRHunSP0b5pxv2bgMTPYKomJVPUtSR8bm4nrAMEuJMFHV/6PRr2qhRrzietJXw8wMfIaZratslKfEuoCJraU7RpK78r7BV/QePDRcOQRfev3s7yQt+N6pLjCtk3dl5B4jUPQyMAiQgnpA8Mp0uZRtcT60BN2D93wxwBdMDg7qRdIHmxIqszUWexcpx4vOfE3u1wJ7UdUh/kQ0ZpyW4/yKdtn0Iau07FudHIag3JLpNFIy7leIVdxDsQWjcgrXN0hhpMQdv+2kL2ZTIgaFZDZ0UKVLn0lC1yXoqa9aFwoA2hzbS9Tm9xQNfw1Txab8W7j6D5B/6xpg==
+ bh=KbNOasXWbzPkkqmxbT65HMNUahAEOPSbzU0f+llInqk=;
+ b=Ch269PDuufUL4PCeQFLxPTMDcHRPwBk4GxLaWX8ql2X6WcIwYPZty1Dlu6eOmaBpJv3WsiQT0tnqNtWGm4NV8TPmh6OOQgevJGNvfhDwF2gd/w52dDLLX2hLxSZ/FpVcgYDNbQ6Xvm6vKJrEKnnYkmN2aZU/gCw/JJLmy0gdJyraS73O9x7xMLTPzDzhEBpwYcuE9uFwvf5KYwEmmUb7ibJALN/PhISxntMbaOyaEdAcw1V2ndOW0PL1AP28zWJr7/Wd+7o68pjqiV0eUR/Joz2J519Y82YnNa/iRYacMTYD3JWUaETqtFaKIxxPZGXal7zBW7+k398cy/3qdUOv4Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oNNZJ9amsThXMjs+dI1euaBJFEmNSHsRK4WthKn/4mk=;
- b=mLFEl0pXmKEHggjgQbHDKdoj5kEcGRd5KbhmOaAEZMBVOM8KsML31Fg5wigSZgTed4Lj0WmQh1MVZPS4I/ENLcW93y6w07EnJlxKXXq9RWIXBQC+ctimuhCdo1WjqoDRNgDmRPfj0IILe8gNY0m30nbQSh2NMrfLBm0gFAjcs7A=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10) by CY0PR12MB825472.namprd12.prod.outlook.com
- (2603:10b6:930:130::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Tue, 15 Sep
- 2026 02:07:23 +0000
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3%6]) with mapi id 15.21.0406.007; Tue, 15 Sep 2026
- 02:07:23 +0000
-Message-ID: <cd7a7dd5-1aba-4986-8430-ca535fb34f22@amd.com>
-Date: Tue, 15 Sep 2026 12:07:17 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/15] Device Evidence and Trust for PCI Security Protocol
- (TDISP)
-To: "Quigley, David" <david.quigley@intel.com>,
- Xu Yilun <yilun.xu@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- ankita@nvidia.com, aneesh.kumar@kernel.org
-Cc: linux-coco@lists.linux.dev
-References: <20260705220819.2472765-1-djbw@kernel.org>
- <4c43da3e-c598-48cf-8491-cb958e574c9c@amd.com> <amk7Xzm5jmz+6SPJ@ziepe.ca>
- <anFE7m164AmchTy/@yilunxu-OptiPlex-7050> <20260805005533.GB28508@ziepe.ca>
- <apeF/peEzdxvKeWR@yilunxu-OptiPlex-7050>
- <2e721509-0aee-47ee-b17a-688876e02f74@amd.com>
- <612371b6-955b-40f0-89f6-7c8bc936093d@intel.com>
-From: Alexey Kardashevskiy <aik@amd.com>
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CO1PR11MB4835.namprd11.prod.outlook.com (2603:10b6:303:9e::22)
+ by IA1PR11MB6539.namprd11.prod.outlook.com (2603:10b6:208:3a1::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Tue, 15 Sep
+ 2026 07:13:48 +0000
+Received: from CO1PR11MB4835.namprd11.prod.outlook.com
+ ([fe80::d051:d948:c209:9225]) by CO1PR11MB4835.namprd11.prod.outlook.com
+ ([fe80::d051:d948:c209:9225%4]) with mapi id 15.21.0406.007; Tue, 15 Sep 2026
+ 07:13:48 +0000
+From: "Tian, Kevin" <kevin.tian@intel.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+CC: Aneesh Kumar K.V <aneesh.kumar@kernel.org>, Nicolin Chen
+	<nicolinc@nvidia.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Alexey Kardashevskiy <aik@amd.com>, "Catalin
+ Marinas" <catalin.marinas@arm.com>, Dan Williams <dan.j.williams@intel.com>,
+	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>, "Marc
+ Zyngier" <maz@kernel.org>, Pranjal Shrivastava <praan@google.com>, "Robin
+ Murphy" <robin.murphy@arm.com>, Samuel Ortiz <sameo@rivosinc.com>, "Steven
+ Price" <steven.price@arm.com>, Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>, Suravee
+ Suthikulpanit <suravee.suthikulpanit@amd.com>
+Subject: RE: [RFC PATCH v4 03/16] iommu/arm-smmu-v3: Add initial pSMMU realm
+ viommu plumbing
+Thread-Topic: [RFC PATCH v4 03/16] iommu/arm-smmu-v3: Add initial pSMMU realm
+ viommu plumbing
+Thread-Index: AQHdN/EwiLvbaU+6lE2MX0oxJV5il7a5dWsAgAAN2ICAAErrgIABNM4AgAA3CgCAABBnAIAAON+AgAB6EYCAAGKGgIAAwE4AgAXLI4CAADRDAIAC9yOAgAAr2QCAAS/H0IAAYpMAgAdUwAA=
+Date: Tue, 15 Sep 2026 07:13:48 +0000
+Message-ID: <CO1PR11MB4835FF972283C09D7D683DAE8CBA2@CO1PR11MB4835.namprd11.prod.outlook.com>
+References: <yq5aik4nztdt.fsf@kernel.org> <yq5aecfbzjyk.fsf@kernel.org>
+ <20260902235609.GG2890729@ziepe.ca> <yq5a8q5izxz4.fsf@kernel.org>
+ <20260903171704.GK2890729@ziepe.ca> <yq5acxupjsy2.fsf@kernel.org>
+ <20260907125228.GB667892@ziepe.ca> <yq5atsnyag84.fsf@kernel.org>
+ <20260909124628.GH2543240@ziepe.ca>
+ <CO1PR11MB4835512E374074A5F4AD0A6C8CBF2@CO1PR11MB4835.namprd11.prod.outlook.com>
+ <20260910124632.GB4083318@ziepe.ca>
+In-Reply-To: <20260910124632.GB4083318@ziepe.ca>
+Accept-Language: en-US
 Content-Language: en-US
-In-Reply-To: <612371b6-955b-40f0-89f6-7c8bc936093d@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SY0PR01CA0005.ausprd01.prod.outlook.com
- (2603:10c6:10:1bb::16) To SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10)
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CO1PR11MB4835:EE_|IA1PR11MB6539:EE_
+x-ms-office365-filtering-correlation-id: 1ab2c4d4-4d77-4d86-9b2f-08df12f8e358
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|38070700021|56012099006|4143699003|5023799004|6133799003|11063799006|18002099003|22082099003|10067099003;
+x-microsoft-antispam-message-info: jW9RvOIAfKRESQuSIfKSVLX7FiyXKUwD17CzdvUAT3UhrzEz9Rx+XLmltelOClF7/1t7HH4U9b63PisfMepEOTTmuQ6r5IL1PwrBFEx9QKB2R3kKxUe1D+l8mvyi0mZIifoROoZ6njLzjUs4GFksGN/+S8MGBKCSpygKi6ml0zZlbF+/XRUbj86MtGAsqj6BaunfVIjhC4BG5zudNpjrAj0HdI3qQbSY3OiZHRBohlCXhiBun1K/NNxxSw7YTo3ntgqAk1Vw5DdBwJ17pdw0/mxydRHWzYmhmTt84jL5cZKOn2s8cJ0pSNpII9rMgdVQB1B04HWDPZDyMZ608+b8X0BSdcH1TyTjuolEz981kxdVZYSa0UNszGjHUJZoKHSFSjHmz/gSrFUt/RABVX+PBSi9SIStkYBufmow+HXSExvZ79858gWMSJgQTGRoBVe5MdVs1wbLIy+yO4yBcvTsHbd07qskCSV5l110/SkprDZYx/WFSqAqUfQzRv6+WFtSNh6zCVY1y8yciZuZkTpGf+OBSt8aVmZWMJrLilNz1bO+7pTgjXnGHPO9sTY3T/cAGJNU6dMeFGjA9YGOnN7OHHwNMy1IW7Fd+j1Mq9OiZZjVdQaiCqJZEW9G0i3YgMsjn+WEyXL+jy7PSr6jnKqOyagDtK0RjYUjvQ9wkyGpK1jbjbqYOYCp7+hePCZFbtMEs38f/Hs/L5Xt0ZciIVb6Z4Euq8/Kq3EI9uB2+pwVog4=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB4835.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(38070700021)(56012099006)(4143699003)(5023799004)(6133799003)(11063799006)(18002099003)(22082099003)(10067099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?OvMLBsY/LsoyS0XRUHvdhURXJuQAUbXLVivyUQ9osXS9C7XL8TQQufva+sgR?=
+ =?us-ascii?Q?2ifAHv1V5bZsgrbpzIEujHgEWv/uwomRa8yOWqMlUjvhUMaWYEvap+xxR1jM?=
+ =?us-ascii?Q?yC7WHx9ljh1lZzpcad9yVNq44TVCYNI9kkwMtWDs+OVmu3MUm7s1ZqSPxuUq?=
+ =?us-ascii?Q?FdoWZSttWLT2Ne4i9FB7yxXfsMr3SzVKLjfPwqV8fNiaxBKqPpgPJ5obLArp?=
+ =?us-ascii?Q?egHqeIKxc5xeTvLs6vkyGwe29oXg80dsTl/xorCclO7ejoO+nQCObftDbkOD?=
+ =?us-ascii?Q?Ah/bPejjJP79BqaFkwfpMUaxEBI6oKDHWCBLRroZ56lBqozSwx8TxRDpdTzs?=
+ =?us-ascii?Q?+uEvxJQOg6AcOG8pZtDSY8nhbgByjH07WLfBvt2vzlcnvu7IwDOBV52by+yJ?=
+ =?us-ascii?Q?NFP0MEIIzAIJp9FX6r1R1TN4nGAhbgqWBRD+1eggdOXuwFT83v/IFJYms7Hb?=
+ =?us-ascii?Q?gjxv/hnqXxFdV+VBR73xWv+A716r1WGIJQvRIlQ3djG7xpoUn2Pw51jOPFzD?=
+ =?us-ascii?Q?2qGNTbv8HVkE6wOrzMX+VlDNRKpAm/x2saw/QmK4tCwMeBRUsPQrGIsOgD9z?=
+ =?us-ascii?Q?rEkkdD4G8KqyqMjfHdEneh92phwu8OtnhitZJsYsj8TCKl+nkjej5x0s1N4V?=
+ =?us-ascii?Q?UqZA8HG6arTKa/JsNaMUcm1BfJeL8vyL3NRHShY/vta+J02hW8Vylin5nyCj?=
+ =?us-ascii?Q?YEthfysAO8IMnMRft4EElbQ1JNco8cMGgPjJm/SmgHrJSq0bCtMzrg8pyllu?=
+ =?us-ascii?Q?POfY0ND/Pa3U3tktO8xsYivWgnCzOl7e8c8/pKi/A5EO5m4+mASq2b2nR7b8?=
+ =?us-ascii?Q?jnKj629bny4lh8FAXwymSFH0AYwIJHN/OTEZhbdI7NQhjPUxFulUvSPQglmP?=
+ =?us-ascii?Q?ZAAjiYf38gjjcoOLL22Y0XZvr6rFIDgNoECPqV4CNlStfzYSjPr5zS7i6fM9?=
+ =?us-ascii?Q?IFJ8DNrSEP6lr8Zq7Xlfj6qZUluYGIgsJBwgK5IETWntwAWtVjB8y43oEY5W?=
+ =?us-ascii?Q?fGOtnSXdmKwxzyz2jwbbVjeoYVoYpKOJwZwSn5Lm81bdTVZ8FZCvVCfJr7/3?=
+ =?us-ascii?Q?nrriUVktZ8u8d8MozRIR9uLE51+/Bsa4KZ/FmnSh5mhn8BLjmM/OHWwGdZux?=
+ =?us-ascii?Q?6LBiJuEIJrAXpDJNbo/cr4MRm/uW/6xWzATq2DTVmFN0EygAi5Fa99TXuRAP?=
+ =?us-ascii?Q?r9cR1hcMNONpKXtLs2B5cecxEes1t16+ox5C0G8bS3VuMfem1GefYAxnh+Nk?=
+ =?us-ascii?Q?OwB15YYSjveJf/ssPOKFFIVcF5H2a53jsG/JeKQj7FPDLgaZ8yRG3v2uhHmU?=
+ =?us-ascii?Q?Y3pqpBzu2Ol/+uiqYK2uR7d/kyEDOSXjVFPXQWpFweOcPKLZDveAti1mDDVJ?=
+ =?us-ascii?Q?nQNx+oEytql2KdQ9KseWmsEOuYlxhTCj5ka2FHDZDacnielwh3z7CpLZYB8v?=
+ =?us-ascii?Q?35oa7BBw9Xsy+qYOJFxwskDMSxOFIDh+oEnIjn4qOEmgInpKb+9eMgWTA78y?=
+ =?us-ascii?Q?to0kzirImgH6UXC3SDq4j6Jg5eJI4KtQ1noXSgifOchOCPHVBjvMLARjIhgJ?=
+ =?us-ascii?Q?ag8ONFUS8Gumtxq+kIDp2O55M3lWPdr7/Ekjj2ewg6abXCGFkIIL54khsUG5?=
+ =?us-ascii?Q?JlPl1tQH/Cm0VC7DTKXjWtgNyRJHjtLrzSCVFRbJjnOnxt5ljbYSHssouQmQ?=
+ =?us-ascii?Q?BSbkyKbO2Qt7NL1aykJ8FpNGHt4CHvKC5pxTARADG5B+Zp3jh/YXUWonZvhi?=
+ =?us-ascii?Q?yDcJjYhCnA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|CY0PR12MB825472:EE_
-X-MS-Office365-Filtering-Correlation-Id: 054193e0-9e9a-43f2-eaaf-08df12ce1499
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|18002099003|22082099003|10067099003|4143699003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	7F66lSBl7c1TbFK4Wx08XIK9z7XRORQERReGPfkBCtPPYwH0LOk9KtykT1+Lz4T7/wzLRYndFDZGPbfd8MBGM9wYwLr4GcZOooMNRixjGgdFUla0kFQWT9oGFMNaKGvz4p3dVPWmGnwsj/UFMJM9qHe8v01sk9QfI2tF6vqWTe3JTtTTq8hcnpeVdICP0VeuUGFav4B3j4oKZWgCLZxOXu1SnpXKVuh+4iK7TMGWJwMpL57UojEhDUdYi60w0f+yb8/nsaQLUDxUefGPA0aBU+R/BK4S3JfiFCwG8Khshd3JIgSgDsjqHAO3o8ng36E9PBxeFiuu9oszxPDAEo1RBCCvCJwACI8JEsaa1DCiSpLZ1Qsx/Ko/E4rr5MWACsh2dnPyz3D1La3UUba4UoB2JE0hTmuAcwpKEcndS1cBVxL9BShDHVoDD6aeB3jgp5D0Fn/yCuDJTuAcWbxF4TlpWVCjJu3acO3pFuDOHBrwddVpJTxyRT4kf8f7i962vY+mNKLOIJvCE8TxDr4Ahr4y/hyoJEF4uBH844FWxLFKdnWC+ZKqphs51ATeYnTrV5DEJ/0ksIapUm2STLdqKWXCwdsU3Xl4hs7MPHDSx2yLCNY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(18002099003)(22082099003)(10067099003)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UFYza3hBRXpYa1dpaFptNkRwSUhBMWVKN1Z0Nkk5eUkrK1ZaK251WVlJQi9r?=
- =?utf-8?B?Smt0L1FZeS9SRGtUdDBna1ZuUi9KZTVMaWVnUnlqS2RzRzVkS2ZRSG95dE9p?=
- =?utf-8?B?KzhQV08yRVE0N245b2xscHdpdzhmZTI0dGk5UDlWNisyTUl4NHYyNXorL3VF?=
- =?utf-8?B?U2pHbVBudU1ZVlVTZFhvMC9YVzMwQS9jQVZtK2ZwVTNHTWJDOENHTTZGNGVq?=
- =?utf-8?B?QisrbWdkTytBUEh1Nm5RWkpGWUNHbU1jRnVvOGdMYTBnTk9EaXlPNHR6ekFW?=
- =?utf-8?B?dEM2amZRVUtYWEt1WlRXKytvSVBpNjV6MEVvck9IUnRGOEwyTVdFNGFsbWpB?=
- =?utf-8?B?Sk1lUDF0a0hPRnc1dFFzS09sSGY4bHIzczFiWkR2SGJOQUFveEo0T0Q2MUEr?=
- =?utf-8?B?cWhJMEcxb2ZqTVNhV3lidkYycnlkRC9jNHpJZ09RTnJVSUFzSXdlZmRieWlT?=
- =?utf-8?B?aFlSM3pWbXhYd0MyL2J1ZFRoTDZCTUU2c29vVitJYUp6MzJ4RTRqM0M4U0FH?=
- =?utf-8?B?c1BGRWlVdm83M0JVTytLMVJCTStqVGFkcElITTAybFVhNFB2cHBub3RlU3Zn?=
- =?utf-8?B?SUMvMy9ZWC9VU01DVCtTSkVnT0tyK1lIUXpMVFVCcGlwTVdlUEovV0hJbVZB?=
- =?utf-8?B?NnR5eFNPUEFtdVBaeHFsRGZXeC9jNEZFbVRQV1JzcEJzQ1A2bUk1NkJYanRO?=
- =?utf-8?B?bzk5NFRYVlVEb0FvMUZiSW1DZjhDRnk3dENTQVU5d1JudXp0aXkvWThXcWVU?=
- =?utf-8?B?ay91N1BDRjkyVXZVc1Z5a3owOTFXcTJLNVZuS3ViUTdOYmxMN0VKNEVYWmdo?=
- =?utf-8?B?N0RaNnNkYjBZL01mZHJrK2EzWm94QUpFQ0dLY2Y3a2U1Tlp1aldhZEN0WGR0?=
- =?utf-8?B?c3lhQlBQTXVWWExHYWtROTQ3U2xoMmoyMmJZTVJpbkNLaWJjQVEwbkp0Tk5C?=
- =?utf-8?B?QUNpaHJQWHNHWmxOVkNGUWVNMWlNTmw0a0FJYmJHS3A0dWM1RHBHamIwUWtp?=
- =?utf-8?B?V1JhQ1IrbWQwakJ2RGxQNXpSZENLeTlzb0tQV2xPZ2dMOTRIOTZLY2JRbGVY?=
- =?utf-8?B?ZkRZWEFYZVVoaUxnMk5WYkdvd2JPYUpEczF3ekFNOW9EV3FWZ0pFZGd5U01N?=
- =?utf-8?B?bEZaSzA2Z0VLUmRWSktzR3d1dytMVzRQZnNQalBLV2kreEdHZjZYai81ZjdV?=
- =?utf-8?B?VUo0NXkvTTFYelAvSkVVdW1BTVZzNG1SUmtxeGpGNXZZbkdHRWFQYUZ0Y1FE?=
- =?utf-8?B?K05Ub3ZHV1dzYmtNWUlLMExQNUtndWo1cnkrWVE3T1dxTlZhTTVRVm5vRmd2?=
- =?utf-8?B?NXZxdDBnT0l4ck9kK2NWeU1pTXFrUGc1NVJOdXpHbjBnMkJ1RjVlLzFEVFE1?=
- =?utf-8?B?SXpJK1B1RTA5UStWb3JJd0pDT1plb1pGVDBwRlRlNHp3cXBma1FyU1lqeC9L?=
- =?utf-8?B?ZmEyYkFIV3ZlcFNJTXFYQ3hGMWYwTHh1SWFYNW5WYzlJUUlPZTdFYytDMSty?=
- =?utf-8?B?Q24xQmNzbDFreW5UeEdLcHJraUR3UmgrV3Fiem9zcmVuS0F2YnFVNjFNYTQv?=
- =?utf-8?B?aTlONnhBRFNHVThhejQwS2xSZUxITjdaUkxKc1U1RE5nYWJ3SWl5alZ6QkMr?=
- =?utf-8?B?eG5BeUY0dGRkTUl1SytRV2YrQWZWdnZlSTgvNjRaSmZ4Q0I3ejl0YWs2d2Uv?=
- =?utf-8?B?M1FuSFVNaWNMa0czZFhuZjlPVXVzUUlLaG1Kb3pDbTRUMS9LUkRyMzZMTWpY?=
- =?utf-8?B?UlRXV1o4ZGNLVkI0MU5XYlNYQm9WUy81YnZGbjljNlpiZTJ5RUxsLzk2K2dX?=
- =?utf-8?B?YVFrOTFxZkNlWmg1b2pSNmRDeUpKUXZSemlUaHE4TGdiS3dBSE1xM2wvV0h1?=
- =?utf-8?B?ei9NMTJxWEZvT2VuSy9xVnBlY1VVVVNUM3N4T3pmaklrUXhwUXFjbHZvZmZY?=
- =?utf-8?B?L2w0ZFhvNWlQK1R4Z2dvQmkrdW1PUzVIZEQzNEJvWUY5RnJBWjlYbEEyNmFl?=
- =?utf-8?B?MzFGQUxGZGY3MmYyTk9DMU1oT3p1UmpuOGx1cmpnSmJla3lENGRwQlRjQmpG?=
- =?utf-8?B?WGloSXFGWnBFVFZEYzBZUFNrZmwxTWhlY1JzS1hHNmJrTDRRM2hyT2hOSGFz?=
- =?utf-8?B?N28raVZTdkY1OXJJK0wzQ2xkMlZTUE0ydlByUndxSGtIdDhhSmEzTVVndTN1?=
- =?utf-8?B?bnZvWG0zYytqaWRyZ0FMdE1Nd2ZDY0pZUE0vaDJlejcyVEkxbTdjTGxSUWdu?=
- =?utf-8?B?aFdjSUp0SkFKMEhtckQwZ0dFU0s2VVBFL1lML1MyNFE2NElkUkdTeFdPMVVK?=
- =?utf-8?B?K0JoVDNPbGhUUWtuNjNnWGRJem1NMUtmOGhTZmFmRkdtV0ROSTRuZz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 054193e0-9e9a-43f2-eaaf-08df12ce1499
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
+X-Exchange-RoutingPolicyChecked: QYWppZFPlArYJn9+M5ibNha+GPBsG9lx7ABlNUgcAccfIBkc7G868/SxHtAWOZ2O2vug+trhAAMJehwX0AyGte5ZGtEelROTEKR8GbcDHOFyshaHFC5cRbnv07PNcHbmxiBPnGdX1XY4zP9P4ni3lzSn0hBZPVhnLlEhvAncHqrQX5nAogeQQyM+APV+hspOkLz5B8Uc00ojVw1O/+ti4iyeD9vF3gIRD1V3DqA9z0MFFKZhtYKwgPgzeR4wGAUxLwChfZTRNQ6oeAXM/ze/ouNbKQ3GMrartIIvjDXAekzzm6uusIarVaCbMDvJ7mJuKjVE14VFLOysOEdKHFwq4A==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2026 02:07:23.0314
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4835.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1ab2c4d4-4d77-4d86-9b2f-08df12f8e358
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Sep 2026 07:13:48.5267
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RJiMQaN/BEuBiC++fx+Cr9gnHjuxKp31n1of/GshuI4VsCW3VgaXhZPXoqyY0APX4iLY/ZzCcWtovmfGasaqTg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY0PR12MB825472
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: A/V80wFltYLe+yoAirVFo72m5XQhdi3bm/2FCtXobPzAJI6NJiIPN6fEJi2rO55iNOd7KjEx/7h+TeE/F4ginw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6539
+X-OriginatorOrg: intel.com
 
+> From: Jason Gunthorpe <jgg@ziepe.ca>
+> Sent: Thursday, September 10, 2026 8:47 PM
+>=20
+> On Thu, Sep 10, 2026 at 09:52:12AM +0000, Tian, Kevin wrote:
+> > > The mmio is owned by vfio, there should be a handshake in VFIO to
+> > > remove mmio when it becomes private, otherwise I don't think we need
+> > > to do anything more?
+> >
+> > for TDX a callback in VFIO is invoked to revoke the dmabuf.
+> >
+> > btw I didn't see any dmabuf related in this series (even in a hackish
+> > way as Yilun sent out last year). Is it not required by CCA or just
+> > skipped now waiting for the framework to be settled?
+>=20
+> I think just one step at a time :\ I think CCA needs it as well, you
+> also cannot safely leave private MMIO floating around the host
+> userspace on CCA.
 
+Good to know
 
-On 15/9/26 05:29, Quigley, David wrote:
-> [You don't often get email from david.quigley@intel.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> Was there a decision made for a new meeting time? If not are we still
-> going to be meeting this week at Dan's original meeting time?
+>=20
+> > So viommu will become the abstraction point for tsm operations and
+> > directly talks to the tsm driver instead of going through the merged
+> > tsm_ops (bind/unbind/guest_req).
+>=20
+> More precisely for what was being called the TDI - ie it is the
+> abstraction point for the host side of a guest virtual PCI device.
+>=20
+> iommufd vdevice already represents this, so we use it again.
+>=20
+> > currently what tsm_ops provides additionally is more about synchronizat=
+ion
+> > with connect/disconnect, otherwise just calls into underlying tsm drive=
+r. As
+> > long as viommu creation holds a reference to tsm then disconnection is
+> > blocked then it's safe.
+>=20
+> Yes, this already has to be true or our lifecylce model is
+> nonsense. Once the iommufd creates the vdevice the guest is running
+> and we cannot disconnect it without unplugging it from the guest. Thus
+> the locking can rely on that. Within an iommufd ioctl context the vdev
+> and underlying connection must be stable.
 
-No new decision is made yet.
+btw looks a related suggestion is having the tsm driver (arm-cca-host
+here) implement the viommu ops while leaving the original smmu driver
+largely intact, and "obtain the viommu through tsm_ops not through
+iommu_ops".
 
-I dislike the idea of 2 separate calls, unlikely that both times are outside of my 00:00-06:00 so I am going to miss one of them constantly.
+It's not super clear to me about the implication behind after reading
+related discussions and what the "obtain" part means.=20
 
-Here we voted: https://crab.fit/iommufd-tsm-call-593432
+Could you help elaborate this part?
 
-7/7 - no overlap. 6/7 - there are 2 options, 1hr each but I'll need Lu Baolu or Xu Yilun to cooperate :)
+The old way is kind of:
 
-So this friday call is likely to happen at the same old time. Thanks,
+vdevice_tsm_ops -> tsm_ops -> tsm driver -> iommu driver
 
+then it will become:
 
-> Dave
-> 
-> On 9/1/2026 8:20 PM, Alexey Kardashevskiy wrote:
->>
->>
->> On 2/9/26 12:12, Xu Yilun wrote:
->>> On Tue, Aug 04, 2026 at 09:55:33PM -0300, Jason Gunthorpe wrote:
->>>> On Tue, Aug 04, 2026 at 09:48:30AM +0800, Xu Yilun wrote:
->>>>
->>>>> Glad to see you all here to make progress! Intel can also help on
->>>>> this.
->>>>> Can we have a meeting to discuss on these topics? As Alexey mentioned,
->>>>> previously we had a bi-weekly call, perhaps use that for our first
->>>>> meeting? Or what time works best for everyone?
->>>>
->>>> I prefer we defer such community discussions till September, that
->>>> seems appropriate given some dates I've seen.
->>>
->>> Hi Ankit & Jason,
->>>
->>> Do we have a plan to schedule a meeting to discuss next steps?
->>>
->>> If so, we can figure out a specific time on the Discord channel.
->>> https://discord.gg/KKqC438c
->>
->>
->> So I've been trying to find a time slot. Say, keep it on Thursdays
->> (USA) (kinda short notice), bi-weekly, we can do:
->>
->> Scenario A:
->> Seattle (PDT, UTC-7)        07:00 – 08:00    Day 1
->> Atlantic Time (ADT, UTC-3)    11:00 – 12:00    Day 1
->> Berlin (CEST, UTC+2)        16:00 – 17:00    Day 1
->> India (IST, UTC+5:30)        19:30 – 20:30    Day 1
->> China (CST, UTC+8)        22:00 – 23:00    Day 1
->> Sydney (AEST, UTC+10)        00:00 – 01:00    Day 2 (I can do it once
->> in 2 weeks)
->>
->> Scenario B:
->> Seattle (PDT, UTC-7)        18:00 – 19:00    Day 1
->> Atlantic Time (ADT, UTC-3)    22:00 – 23:00    Day 1
->> Berlin (CEST, UTC+2)        03:00 – 04:00    Day 2
->> India (IST, UTC+5:30)        06:30 – 07:30    Day 2
->> China (CST, UTC+8)        09:00 – 10:00    Day 2
->> Sydney (AEST, UTC+10)        11:00 – 12:00    Day 2
->>
->> Scenario C (which is the current schedule):
->> Seattle (PDT, UTC-7)        20:00 – 21:00    Thursday, Sep 3
->> Atlantic Time Zone (ADT, UTC-3)    00:00 – 01:00    Friday, Sep 4
->> Berlin (CEST, UTC+2)        05:00 – 06:00    Day 2
->> India (IST, UTC+5:30)        08:30 – 09:30    Friday, Sep 4
->> China (CST, UTC+8)        11:00 – 12:00    Friday, Sep 4
->> Sydney (AEST, UTC+10)        13:00 – 14:00    Friday, Sep 4
->>
->> The link is:
->> https://zoom-lfx.platform.linuxfoundation.org/meeting/93219227394?password=80705486-101a-4e19-8f11-0baaf92104be
->>
->>
->> but if we want to change the time - who do we contact? Or set up a new
->> call (again, how)?
->>
->> Please, comment. I find these calls pretty productive syncups. So far
->> we were not having Europe in these calls.
->>
->> Alternatively, wait until the LPC in a month but I suspect not
->> everybody is going to be there.
->>
+viommu_ops (tsm related) -> tsm_driver
 
--- 
-Alexey
+where tsm driver will fully handle tsm related viommu_ops?
 
+>=20
+> > and IOMMU_VDEVICE_TSM_BIND will be removed.
+>=20
+> Replaced, the same logical operations should flow through the viommu
+> command ioctl
+>=20
+> > Seems originally this series
+> > does SMC_RMI_VDEV_CREATE and SMC_RMI_VDEV_LOCK both in tsm
+> > bind op. Then the proposal is moving them all to vdevice creation time =
+so
+> > no separate bind step is required.
+>=20
+> Hmm, lock still should be guest visible on CCA, and the device has to
+> start up in the guest as TDISP unlocked. I'm not 100% on the RMI side
+> of the flow, but this does not look right.
+>=20
+> VDEV create should be done before the realm is started. We need this
+> setup right because Linux VM is going to validate the vdev during boot
+> if it is affiliated to a vSMMU. lock should be done only when
+> requested by the guest. The guest must start with a normal unlocked
+> T=3D0 PCI device.
+
+Okay then this part is aligned cross all vendors. Thanks for clarification!
+
+>=20
+> > Does it mean that ARM CCA is essentially an early-bind model i.e. the T=
+DI
+> > starts in locked state from guest p.o.v.?
+>=20
+> No
+>=20
+> > but https://lore.kernel.org/all/yq5aecfbzjyk.fsf@kernel.org/ seems to
+> indicate
+> > that guest_req() still handles the bind request from the guest:
+> >
+> > "
+> > - cca_tsm_guest_req() now handles TSM_REQ_SET_TDI_STATE requests for
+> >    the unlocked, locked, and running states.
+> > "
+>=20
+> Right the guest side request to lock should come that way.
+>=20
+> >
+> > a bit confusing, but maybe due to stale info cited from different timin=
+g...
+> >
+> > for TDX we're currently pursuing a late-bind model (i.e. TDI starts in =
+shared
+> > state in guest), so a separate bind interface is still necessary. We co=
+uld look
+> > at whether it should be an explicit @bind viommu op or carried by
+> > @guest_req (say, if most preparation works can be moved to vdevice
+> creation).
+>=20
+> It should go over the viommu command ioctl. It looked like there was
+> alway some iommu specific format to the command in the tsm version of
+> this, so that is the appropriate way.
+>=20
+> > btw per past discussions VFIO should block some operations (reset, etc.=
+)
+> > while a TDI is locked. Do we expect a callback into VFIO to notify the =
+locked
+> > state, or require VFIO's own interface to place a cdev into a special s=
+tate
+> > which prevents sensitive operations even before binding it to iommufd
+> > (and allow creating TDI vdevice only on such idevice)?
+>=20
+> At a minimum I think we have to synchronize with vfio, somehow, that
+> when the device enforces its private MMIO so it can unmap it. Thay may
+> be an argument we need a few standard viommu ops so the core code can
+> capture lock/unlocks and do this prep work. Or maybe a special cdev
+> state is simpler.
+>=20
+> This should be figured out before any uapi is settled.
+
+Agree
+
+>=20
+> I don't know about reset, that sounds like something the pci core
+> should deal with?
+>=20
+
+yes the pci core sounds a better place to handle it.
+
+btw I held the impression of blocked operations from past discussion [1].
+Initial attempt tried to proactively unbind the TDI upon any operations=20
+which may transit the TDI to the ERROR state. Then the suggestion at
+the moment was:
+
+" But now the suggestion is never let VFIO do unbind, instead VFIO
+should block these operations when device is bound. "
+
+[1] https://lore.kernel.org/all/aEFmPaYorqaYCKBY@yilunxu-OptiPlex-7050/
