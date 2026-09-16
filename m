@@ -1,277 +1,495 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012004.outbound.protection.outlook.com [40.93.195.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E27411660
-	for <linux-coco@lists.linux.dev>; Wed, 16 Sep 2026 19:23:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789586608; cv=none; b=NQUHGwiTVEMoDhvaD/szfCrc0d9jbD91XsqmXSbOZ9l1mbwP4pVaGWpSDIKHVnnQmVx3/CXQkE2QSAkMvvOKgmvuNTB6zZDs5ITxoAXmfjvUZGJW+je/NDryATDMqlhlVosE8Jxz2z+th9cg2CQ/HZ1PGXPH9OH8W9rym+Why+I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789586608; c=relaxed/simple;
-	bh=tSqxziaVU7DF5FuLYqcx5CH3tkgUzOouCbPF5goNxT4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JBakiE5ZC0YpeG6K/nk9jPRTFVBXZv0xx9VaZRI15YLl3kOXs4wwuGlwtU3zzQudTx/YKeZSWVkEF0/h10rW7vwMBk4aBRA10jt7HV8pfFZFKHaNbPc9UkzM6n9aWvCybz8jIGU/lZdCOmMO5k4zNtlWHUqOxIGGxS76CJ4iTDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WCMp/Brk; arc=none smtp.client-ip=74.125.227.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E04446C18
+	for <linux-coco@lists.linux.dev>; Wed, 16 Sep 2026 19:52:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.4
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789588383; cv=fail; b=S5u92rnEwzj7pwToAlhdBbSpsfcDJI9LVzyZdm2DoqBJrYvHBLX+0ZS260g3odgxlOvHx9gB5bq5Bwctp/wR4OLVCHl/8N45ubHuMKdgzrazEy2laKTGX0o7Z/XON0nnZab5hTK1l0gjVebr5zdZt8OUzTYr18m2/dO93olkipQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789588383; c=relaxed/simple;
+	bh=80ZKW19C5pvtVoswP+HdlYbQvsiCichEixeYDVLJ4AE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kiRUYYmfcftDUT786T9SkLP1qEsK9YmT5MLVxAgjcT8kIDiLnA5Pk3NLGfE35pvZXtzWghqnxCl3M5V9MblPTMHGv5f6VrvqiF3m2925x75SUATnuVXH+YOpIJlXTLkaflwr2OLmmZf8rmLPHqMzyNagXpheMck44nvs5h0SSGM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=iSkL1KKn; arc=fail smtp.client-ip=40.93.195.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WCMp/Brk"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39b31b4281eso26355a91.2
-        for <linux-coco@lists.linux.dev>; Wed, 16 Sep 2026 12:23:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1789586589; x=1790191389; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kiFVEsh+I4WNKTfJT4Epj9n55iRRTRrDI5RnRhBGvK8=;
-        b=WCMp/BrkJ3dChMEZ56QZhmPVrDSD1bvCL7dKwdMB4ClgedS6nQsQ2Av4nt+8KQys2L
-         j6Z13jpR9rXup5u3x1fr2bFDgzrsZKuU0yScBIFhzIwjowFltHrDPAi6LydzVsx2Xujp
-         OOYZCx/qh1WRKD9xpqNbSU1jlPPw98fhxMzKVdrC3vhTPWeDHiWr3sNgbxfpYe9fhIir
-         y2ceMGSslZYmdqm7A4OLqQlvwNqVU0TM2cEPUYRlRtn9r/1wdtQCq3GCmC+EPdLyFrMo
-         C8p01kE/eSvG444pdcuaCMBiSW3eRGJ+1vNQKF+g2TXqIcBORfq5MTxX9tA9gq9vPwOt
-         zGng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789586589; x=1790191389;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kiFVEsh+I4WNKTfJT4Epj9n55iRRTRrDI5RnRhBGvK8=;
-        b=wR8Feg51ChoE43ju9oEZutRA1T6P+1YgbnDdICiNgdVsZlngTkPKwQLya8uLSlWHmF
-         LhDoWx4ZrtyFg22bCrqvm3a43TAl1MM3K6YqiYmxkg2DtBKdRAo/WSX+Wz/WsGiIdJWp
-         MNvx033bJk/LwAhGL+/OEwAqVHfZJbo+OtQf7tW8iDI8hqbJxwnPVTh8epNnfYXasRck
-         qPNicME0Jl1z0it2kQy5S0P19k0aJS6pyqaTovNHRSvGdBddUtMWIKNNitmiWXhX/qQm
-         U2UePkQPrUEyo4lYAIwPeO33TXCsajhBpTbYlAoshplpGgXELJLcfrba20FQl8Gt7d1+
-         YE5g==
-X-Forwarded-Encrypted: i=1; AKwUvBwQcer6AuyfXTuT1cijN9BXUypjBcIdV28uKFt9o7Pgcb1mdI8UNMu7RiOZ9S3HjvQkLqrw/apKAVv8@lists.linux.dev
-X-Gm-Message-State: AFuF++ladMWXnd8BHxNzzLDj24/SQHhoZtzYLUP71CM10yFRV20Z4k3t
-	IdexJ+bFrAkBlYZeo4SwUa5KnQWXFKe4KM5TilEsjiiklzD/OWfW5lBLffSggOT1nbs=
-X-Gm-Gg: AYBFou1V+RFMhG+eJ7czAM9PRzPu5wOnm5FDiMXP2xXQGYAQzx4mSOaTGxTZkvkhZYQ
-	s9Gg6vq1XUisvMhOaDdQPscdqpdzLyshs15aWZ91nVFqlaAf7i+d6annSf5EPErqGf8Q4DDgGrI
-	UWWfdVQgYj7eM9P49dBKfeJzagi1EnsJysbzVx1OqxUH3x556RlfyjsxrjKPQXqHCA1efNcALUj
-	bZaUF4tlV08eqTsy9JFNKe8x5SJvKuXQi15i1CS41knhRZtVKsDRBKH4jLx3NgBVoTtIsUrIVr/
-	/H7ahK5QHGdJjUR5IqS87MGLE9y/gv0ctNmtVtsuOsAqtKBMU8g/mJ8fEy0GUQ84iEKEMDJ6dAS
-	F2FFeYPVksro+BMCnCcwOZWTk5uqSGuRvECHSMQeQ0ASksVOcTbI9Tc/zeXwvk3LirU+IlWGJlS
-	fvx+qHsuycytZjQqdpsVW9aWeraXT18xM/qPYhhwELmrbNQDrefJu1fg4lOQoIJJwynnM0U2Mbu
-	oc=
-X-Received: by 2002:a17:90b:548f:b0:39d:f731:e5f3 with SMTP id 98e67ed59e1d1-39e1e4d2ce0mr8977702a91.24.1789586588851;
-        Wed, 16 Sep 2026 12:23:08 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:5703:e05c:9814:52a1])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e362f0f07sm931459a91.17.2026.09.16.12.23.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 12:23:08 -0700 (PDT)
-Date: Wed, 16 Sep 2026 13:23:05 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
-	will@kernel.org, catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
-	gshan@redhat.com, joey.gouly@arm.com, tabba@google.com,
-	yuzenghui@huawei.com, linux-coco@lists.linux.dev,
-	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
-	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org, enju.kohei@fujitsu.com
-Subject: Re: [PATCH v18 00/23] KVM: arm64: CCA: Add basic plumbing for Realms
-Message-ID: <aqrsmUTxDVbKJn8k@p14s>
-References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="iSkL1KKn"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QwpNeh2zHCze7uGFaX4QXyZi3GMjzo3Yx1hs7C+1jYt8y88Sf87uu3dWcjktmBc6bv9cdRv8YJQJrFxgW3UTrRn+3/SQ3HoUv/1a6uuYT/YlQPhE2XzCBj9QkURMP/yxzxwHJBlj+vrCe2iXxtgnbXw5B0g1749VKrU5x3P9orbKjGD5kmppfDvnIL4HL4ayVdKjyqiwuMNRzHSqLjaq73J4iNKnin/hU5gjoCWUAdjq40XbAXOGt7ML3ynApXpM0A5SqVEGLIOMuft4ckzsTMA0zJYsf/A4VboBWqwlq+fliuZ0lgI7MDg/bFDmcu0ztdKAC22FpI0tplLI9CyQRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=907+KCkd+H+heMc8uemiWs3FN44Nr+7nMeX5jNaI7Kc=;
+ b=vwOBuoJUG+D6xdQiV/DJBLWpt9KFtD85S5x6n+kcsTVdUgkbyaWJwcUzNy0VlCnlU3QyP6Q2B5CGmESEKcJM++AkLAnbDuobecuq7Rr/nCefumBNT7DlZPWGzKUl4jcuA54hAK269uBi+bLLUOpt+bnXjWEsDFWIiexNATsG1vYoY009ys5jDNRg0oMrBuc20ygKe0UZ2ijT2fxwJ0mo9I2Q4pv2POCJvcz2mPmtN5fz+SZb1AubnaNKUwuBd08qxeNEx7MnPghtoAkkf6n/Otzcg/LmwIGmpNnvbk8Mc4xm0pTOzklYBoVe4eCraTS3ak0igCD3HizvnKBXT/+9CA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=907+KCkd+H+heMc8uemiWs3FN44Nr+7nMeX5jNaI7Kc=;
+ b=iSkL1KKnzlhBirXED9LepBjPhG1S/TDYVdsfZpYdS909bjABi9FkWjgjK+3AkGCT5y/+XeidzFqgW+j8JuQVZY88OA1Ae/LYQ9439NMSR7QGBW7/rn7iv6q2uRKwZLMLYK7JnhMDuwhUaq1Z+yLq20Hs5r77tjKTo+Hdl35ZhJQ=
+Received: from CH2PR18CA0048.namprd18.prod.outlook.com (2603:10b6:610:55::28)
+ by DM6PR12MB4057.namprd12.prod.outlook.com (2603:10b6:5:213::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Wed, 16 Sep
+ 2026 19:52:29 +0000
+Received: from CH2PEPF0000009B.namprd02.prod.outlook.com
+ (2603:10b6:610:55:cafe::23) by CH2PR18CA0048.outlook.office365.com
+ (2603:10b6:610:55::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.10 via Frontend Transport; Wed,
+ 16 Sep 2026 19:52:29 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH2PEPF0000009B.mail.protection.outlook.com (10.167.244.23) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 19:52:29 +0000
+Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 16 Sep
+ 2026 14:52:23 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+	<seanjc@google.com>, <peterz@infradead.org>, <thomas.lendacky@amd.com>,
+	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
+CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
+	<KPrateek.Nayak@amd.com>, <Tycho.Andersen@amd.com>,
+	<Nathan.Fontenot@amd.com>, <ackerleytng@google.com>, <jackyli@google.com>,
+	<pgonda@google.com>, <rientjes@google.com>, <jacobhxu@google.com>,
+	<xin@zytor.com>, <pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
+	<dyoung@redhat.com>, <nikunj@amd.com>, <darwi@linutronix.de>,
+	<linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>
+Subject: [PATCH v15 0/5] Add RMPOPT support.
+Date: Wed, 16 Sep 2026 19:52:07 +0000
+Message-ID: <cover.1789586444.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915160141.3543048-1-suzuki.poulose@arm.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000009B:EE_|DM6PR12MB4057:EE_
+X-MS-Office365-Filtering-Correlation-Id: 59b1d7a2-1a9c-4d88-dd15-08df142c0a5f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|36860700016|376014|23010399003|1800799024|82310400026|921020|3023799007|10067099003|5023799004|56012099006|11063799006|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	9sKOGEWH1Y1qx7/eWiNbQf1F9EG3idhruv+aUuITnLD1iyIJ74lfM2hd209d/J87uKrOMooPXY/UyDIyp5Qllua6gYZR3971rg6Jj8QQG9R8M+veIP3bk32wPNTOY+Gy6i5UstVgCu++TDoub7lTGOK9IKTivRr75z//eyx/ZEfx82344ioWgC+jHM+KTeRJh7kz93H2gnwZDz2GkKDRlng6gRMqjmZvu2iG50gaS4AyjESrIQ7X/CNTmqEDOpmdXvhITbHW/blC2LuYCxhPkbNihmxaUMWEDw3/ZbxZMsczJwmr5KTBF8i9pXkYZZ0L9eIy0UJ4HBohCGA7QVJumBQgTFu6v9toO+aLFoNtuyRImbxBbkxU/r5jn2+SL4Q7Zl2QIHYEMpd6mskOJEgpPx7O14xzk2aaUn+RrRjW4ULVpBsLneEvr0aOm3xepgR4mor5ZKJxipIKbVsUtZqRALJ3EP2BWY91rw8A1VGIkLj7cslzCm9GToDht6zn0nCm2EXR7SlZPQ0uZPkYUUeeEqfY+I31W2QhAiNnjw3budg8iZNf8TYs16YSXVryUz+MOocUC6U3zuO1CjZAgCVd0Yb0ZgU2xK71ph2qiRTQ6+bGQv4tDXU2KRkY3epwUDf0cG5/80BN7t5g3Li9Mkf/Y+P/XZEVdquXRU5/K8a5tFUHr+GjieIkTgofEJ6BRkn9UVEL4jq1rbeRYjm9KhKfGs24j4qvgYk8kMk1oGfLEGu+yhhcOzBZOJ5GKsVf3KRO
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(36860700016)(376014)(23010399003)(1800799024)(82310400026)(921020)(3023799007)(10067099003)(5023799004)(56012099006)(11063799006)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	o3sg16MHXTBIn0jOUvuGL3BhLEW9hATjdy4HTlNUNkeFlUr5Nt1BWv/3teGTzgUVufYbf102rBoANOrlzKzH6Jt0A1ktmE3a5h8Vr3p36juyjoBY9exMounS0b7yvbWP8WXC7LwBkTOtVTjlA65Gswegd58Yh5ml0RucsL7K2X4HT7t4t/SjW/A2lWvfOX5jU6mE3E0w0aS2y//5tnsAsjkBE7428sCJd35/XBcm9xiwxSN/KgLu5QZu3WJWEa/Xi7oucGioOoJ9DinR3/WT0HWfA5uXRyHBLMfZCWkA+TxGXSqs8Rf6Xr6YKvt4vvc/dGvpXd8oSN07VCrEpwV7yK9oqxnewuTUR6nLrNkdp6PJ+5luNX8s27TVb2zU7MHaVlbzpdi0PwnOEWPexOMpYc25KP3eqL+H+52JU+/3KCy/60dIBfm7iUipWskwJv3K
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 19:52:29.4509
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59b1d7a2-1a9c-4d88-dd15-08df142c0a5f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF0000009B.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4057
 
-Hi Suzuki,
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-On Tue, Sep 15, 2026 at 05:01:18PM +0100, Suzuki K Poulose wrote:
-> This series is a trimmed down version of the Arm CCA KVM support, previously
-> posted here [0]. Like in the v17, we have tried to split the entire series
-> into the following chunks.
-> 
->  1) Base RMM RMI support under drivers/firmware/arm_rmm -> [1]
->  2) Linux Host support for handling GPFs - [2]
->  3) NEW: Enlighten KVM arm64 about the different VM types and use call
->     backs for the VM type, rather than spilling the is_this_type_of_vm()
->     everywhere. Adds VCPU and Stage2 MMU related callbacks with support
->     for the existing VM types. There are other places where we may be
->     able to abstract, but those need careful performance evaluations
->     to make sure they are fit (e.g., vcpu_run)
-> 
->    Later in the series, we generalise the predicate "kvm_vm_is_protected()"
->    to cover all  "Confidential" VMs (which includes Protected VM and Realms),
->    which allows us to handle common themes without having to do things like :
->      if (kvm_vm_is_protected() || kvm_vm_is_realm()),
->      instead:
->      if (kvm_vm_is_confidential())
->    Also replaces the code with precise check for a given VM type to
->    avoiding combination of if (). e.g,, kvm_vm_is_unprotected_pkvm(kvm).
->    The checks under arch/arm64/kvm/{nvhe,pkvm} still retain the vm_is_protected()
->    check as pVMs are the only possible protected VMs there.
->    
->  4) Bare minimal Realm VM support without the actual functionality to
->     run a Realm. This would help the maintainers to review the series in
->     smaller chunks. This doesn't depend on [1] and can be independently
->     merged, without being "functional".
->     This series includes vcpu operations and the s2 vm operations, which
->     do need the RMI driver backend to be meaningful. But the KVM handler
->     is in the right shape. The remaining changes would be added once the
->     RMI firmware library lands.
->  5) Core implementation of the RMI driver for KVM and actual enablement of the
->     Realm support. This depends on (1), (2) and the guest-memfd-in-place
->     conversion series v12 from Ackerley. This is available here at the integration
->     branch [3]
-> 
-> This series is comprised of (3) and (4) above.
-> 
-> The integration branch has been tested with the following components:
->   tf-RMM:   main branch (commit 5e6e2acd) compliant to RMM-v2.0-beta3 [4]
->   kvmtool: git@git.gitlab.arm.com:linux-arm/kvmtool-cca.git cca/kvm-v18
-> 
-> [0] Arm CCA KVM Support v16 : https://lore.kernel.org/all/20260803134403.80630-1-steven.price@arm.com
-> [1] Linux firmware RMI https://lore.kernel.org/all/20260912083611.2513845-1-suzuki.poulose@arm.com
-> [2] Linux GPF Host https://lore.kernel.org/all/20260913070459.2547407-1-suzuki.poulose@arm.com
-> [3] https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/kvm-v18/integration
-> [4] https://support.arm.com/documentation/den0137/2-0bet3/
+In the SEV-SNP architecture, hypervisor and non-SNP guests are subject
+to RMP checks on writes to provide integrity of SEV-SNP guest memory.
 
-When testing on the FVP model with the above baselines, I get the following
-error messagaes in a loop, preventing the system from reaching the command line:
+The RMPOPT architecture enables optimizations whereby the RMP checks
+can be skipped if 1GB regions of memory are known to not contain any
+SNP guest memory.
 
-[    3.112577] Freeing unused kernel memory: 3520K
-[    3.115398] Run /sbin/init as init process
-[    3.142926] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-total 512 (slots), used 511 (slots)
-[    3.150111] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-total 512 (slots), used 511 (slots)
-[    3.177190] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-total 512 (slots), used 511 (slots)
-[    3.197194] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-total 512 (slots), used 511 (slots)
-[    3.217188] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-total 512 (slots), used 511 (slots)
-[    3.237194] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-total 512 (slots), used 511 (slots)
-[    3.257181] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-total 512 (slots), used 511 (slots)
-[    3.277189] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-total 512 (slots), used 511 (slots)
-[    3.297193] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-total 512 (slots), used 511 (slots)
-[    3.317188] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-total 512 (slots), used 511 (slots)
-[    8.157185] swiotlb_tbl_map_single: 241 callbacks suppressed
+RMPOPT is a new instruction designed to minimize the performance
+overhead of RMP checks for the hypervisor and non-SNP guests.
 
-I get the same result with v17.  Have you seen this before?  Perhaps a kernel
-option that needs to be adjusted?
+RMPOPT instruction currently supports two functions. In case of the
+verify and report status function the CPU will read the RMP contents,
+verify the entire 1GB region starting at the provided SPA is HV-owned.
+For the entire 1GB region it checks that all RMP entries in this region
+are HV-owned (i.e, not in assigned state) and then accordingly updates
+the RMPOPT table to indicate if optimization has been enabled and
+provide indication to software if the optimization was successful.
 
-Thanks,
-Mathieu
+In case of report status function, the CPU returns the optimization
+status for the 1GB region.
 
-> 
-> Changes since v17:
-> https://lore.kernel.org/all/20260908162223.1683432-1-suzuki.poulose@arm.com 
-> 
->  - Add a patch to fix pKVM handling of SYS_CNTVCT/CNTPCT to override the counter
->    offset (Patch1)
->  - Restrict Realms to VGIC v3 only - New patch
->  - Add kvm_vm_is_unprotected() to replace is_protected_kvm_enabled() &&
->    !kvm_vm_is_protected() - New patch
->  - Use macro to initialize the per-flavor vcpu, s2_vm ops
->  - Add a wrapper to initialise vcpu and s2_vm ops with a BUILD_BUG_ON()
->    for the array size checks against VM flavour types
->  - Drop forward decalaration of the vcpu, s2_vm operations that spoiled the
->    fun ;-)
->  - Remove irrelevant comment about the order of timer loading for !VHE
->  - Use the explicti kvm_call_hyp_nvhe for pKVM specific ops
->  - Don't call nvhe_vcpu_put from pkvm_vcpu_put, open code them
->  - Drop cpu argument for vcpu_load() callback. We set the cpu
->    before the callbacks are invoked
->  - Drop kvm_vm_is_confidential(), instead widen the scope of kvm_vm_is_protected()
->    to cover pVMs and Realms. Add an explicit helper kvm_vm_is_protected_pkvm()
->    for the cases where we need to check for a "pVM on pKVM"
->  - Add kvm_vm_hyp_is_pkvm() for checking if the VM is running on pKVM.
->    covers both unprotected and pvms. But really uses is_protected_kvm_enabled()
->    under the hood
->  - Add kvm_vm_hyp_is_distrusting() to cover pKVM guests (both protected and
->    unprotected) and Realms. Use this for preventing the vgic v2 mapping into
->    Stage2 for a guest
->  - Drop superfluous !kvm check from kvm_vm_ioctl_enable_cap() - Sashiko
->  - Drop KVM_CAP_CREATE_IRQCHIP, as we don't support VGIC_V2 for Realms
->  - Filter out the vm_ioctls that are based on blocked cap.
->  - Repurpose the pkvm plumbing for filtering the caps and ioctl to generic
->    and plumb the Realm support in
->  - s/PKVM/pKVM for the comments
->  - Drop type argument for pkvm_init_host_vm and also drop protected variable,
->    now that we have the vm_flavor to check.
->  - Use kvm_vm_hyp_is_pkvm() to replace is_protected_kvm_enabled() with valid
->    kvm instance
->  - CCA: Merge the GET/SET REG handling patches into a single patch
->  - CCA: Reword the commit description for SVE VL access handling
->  - Reordered the patches to group the Realm realted to changes to the rear end
-> 
-> Jean-Philippe Brucker (2):
->   KVM: arm64: CCA: Expose SVE VL register before VCPU finalization
->   KVM: arm64: CCA: Control user register access for Realms
-> 
-> Steven Price (3):
->   KVM: arm64: Avoid including linux/kvm_host.h in kvm_pgtable.h
->   KVM: arm64: CCA: Support timers in realm RECs
->   KVM: arm64: CCA: WARN on injected undef exceptions
-> 
-> Suzuki K Poulose (18):
->   KVM: arm64: protected VM: Handle set_one_reg CNTVCT_EL0/CNTPCT_EL0
->   KVM: arm64: Disable Steal time accounting for protected guests
->   KVM: arm64: Include kvm_emulate.h in kvm/arm_psci.h
->   KVM: arm64: Track the type of VM in kvm_arch
->   KVM: arm64: Refactor the vcpu_load to allow for VM specific callbacks
->   KVM: arm64: Add vcpu load/put call backs for flavors
->   KVM: arm64: Reuse kvm_stage2_unmap_range in kvm_unmap_gfn_range
->   KVM: arm64: Add VM specific callback for S2 MMU operations
->   KVM: arm64: Abstract out memory abort handling
->   KVM: arm64: Use kvm_vm_is_unprotected() for !kvm_vm_is_protected()
->   KVM: arm64: Widen the scope of "protected" VMs
->   KVM: arm64: Add a helper for VMs running on hyp that don't trust the
->     host
->   KVM: arm64: CCA: Add a new mode for supporting Realm guests
->   KVM: arm64: CCA: Add VCPU load/put for Realms
->   KVM: arm64: CCA: Add bare minimal S2 operations for Realm
->   KVM: arm64: CCA: Introduce Realms
->   KVM: arm64: CCA: Mandate VGIC_V3 for Realms
->   KVM: arm64: CCA: Don't expose unsupported capabilities for realm
->     guests
-> 
->  .../admin-guide/kernel-parameters.txt         |   3 +
->  arch/arm64/include/asm/kvm_emulate.h          |  16 +
->  arch/arm64/include/asm/kvm_host.h             |  63 +++-
->  arch/arm64/include/asm/kvm_pgtable.h          |   6 +-
->  arch/arm64/include/asm/kvm_pkvm.h             |  25 +-
->  arch/arm64/include/asm/kvm_rmi.h              |  61 ++++
->  arch/arm64/include/asm/virt.h                 |   1 +
->  arch/arm64/kvm/Makefile                       |   2 +-
->  arch/arm64/kvm/arch_timer.c                   |  37 +-
->  arch/arm64/kvm/arm.c                          | 330 +++++++++++++++---
->  arch/arm64/kvm/guest.c                        |  73 +++-
->  arch/arm64/kvm/handle_exit.c                  |   2 +-
->  arch/arm64/kvm/hyp/nvhe/pkvm.c                |  28 +-
->  arch/arm64/kvm/hyp/pgtable.c                  |   1 +
->  arch/arm64/kvm/hypercalls.c                   |   4 +-
->  arch/arm64/kvm/inject_fault.c                 |   1 +
->  arch/arm64/kvm/mmu.c                          | 210 ++++++++---
->  arch/arm64/kvm/pkvm.c                         |   6 +-
->  arch/arm64/kvm/pvtime.c                       |  14 +-
->  arch/arm64/kvm/rmi.c                          |  18 +
->  arch/arm64/kvm/sys_regs.c                     |  29 +-
->  arch/arm64/kvm/vgic/vgic-init.c               |   3 +
->  include/kvm/arm_arch_timer.h                  |   3 +-
->  include/kvm/arm_psci.h                        |   2 +
->  24 files changed, 758 insertions(+), 180 deletions(-)
->  create mode 100644 arch/arm64/include/asm/kvm_rmi.h
->  create mode 100644 arch/arm64/kvm/rmi.c
-> 
-> -- 
-> 2.43.0
-> 
-> 
+The RMPOPT table is managed by a combination of software and hardware.
+Software uses the RMPOPT instruction to set bits in the table,
+indicating that regions of memory are entirely HV-owned.  Hardware
+automatically clears bits in the RMPOPT table when RMP contents are
+changed during RMPUPDATE instruction.
+
+For more information on the RMPOPT instruction, see the AMD64 RMPOPT
+technical documentation.
+
+As SNP is enabled by default the hypervisor and non-SNP guests are
+subject to RMP write checks to provide integrity of SNP guest memory.
+
+This patch-series adds support to enable RMP optimizations for up to
+2TB of system RAM across the system and allow RMPUPDATE to disable
+those optimizations as SNP guests are launched.
+
+Support for RAM larger than 2 TB will be added in follow-on series.
+
+This series also adds support to disable CPU hotplug while SNP is
+active, as the SEV firmware enumerates CPUs at SNP initialization and is
+not aware of the OS bringing CPUs online or offline afterwards.  This
+also keeps the set of CPUs stable for the asynchronous RMPOPT scan, so
+the per-core RMPOPT_BASE MSRs programmed during setup remain valid.
+
+This series also introduces support to re-enable RMP optimizations
+during SNP guest termination, after guest pages have been converted
+back to shared.
+
+RMP optimizations are performed asynchronously by queuing work on a
+dedicated workqueue after a 10 second delay.
+
+Delaying work allows batching of multiple SNP guest terminations.
+
+Once 1GB hugetlb guest_memfd support is merged, support for
+re-enabling RMPOPT optimizations during 1GB page cleanup will be added
+in follow-on series.
+
+v15:
+- 3/5 (Initialize RMPOPT MSRs): rename snp_setup_rmpopt() to
+  snp_enable_rmpopt(); program each core's RMPOPT_BASE only when it is not
+  already set.
+- 4/5 (async RMPOPT): split setup from enable -- an initcall allocates the
+  workqueue and computes the (fixed) optimization range once, and
+  snp_enable_rmpopt() programs the RMPOPT_BASE MSRs and queues the
+  optimization pass.  Gate rmpopt_capable() on a static rmpopt_enabled bool
+  instead of an if (rmpopt_wq) check and drop rmpopt_wq_mutex.  Queue both
+  the initial and the teardown pass with mod_delayed_work().
+- 5/5 (Re-enable on guest shutdown): call snp_enable_rmpopt() on guest
+  teardown instead of a separate snp_rmpopt_all_physmem().
+
+  This is a full resend rather than a 4/5-5/5 reply because patch 3 changed
+  as part of the setup/enable split.
+
+  Review feedback from Borislav Petkov.
+
+v14:
+- 3/5 (Initialize RMPOPT MSRs): remove rmpopt_disable() and the RMPOPT_BASE
+  teardown from this patch.  RMPOPT is now set up once and not torn down, so the
+  RMPOPT_BASE MSRs are left in place on shutdown; the (now minimal) disable path
+  moves to 4/5.
+- 4/5 (async RMPOPT): rework the setup/teardown -- initialize once and do not
+  tear it down.  rmpopt_disable() now only cancels the pending re-optimization
+  pass.  Use a dedicated per-CPU workqueue (WQ_PERCPU) and drop the
+  migrate_disable()/migrate_enable() around the local warm-up scan.  Add a
+  binutils-version comment above the RMPOPT .byte encoding and trim redundant
+  comments and the 2 TB pr_info().  Reword the subject to "Perform RMP
+  optimizations asynchronously".
+- 5/5 (Re-enable on guest shutdown): move the call-site comment onto the
+  snp_rmpopt_all_physmem() definition and simplify the RMPOPT_WORK_TIMEOUT
+  comment.
+- Correct the Suggested-by/Reviewed-by tags across the series.
+
+  Review feedback from Borislav Petkov.
+
+v13:
+- 3/5 (Initialize RMPOPT MSRs): use cpu_primary_thread_mask directly instead of
+  building a local rmpopt_cpumask -- all primary threads are online while SNP is
+  active, so the two are equivalent.  Rename snp_cleanup_rmpopt() to
+  rmpopt_disable().
+- 4/5 (async RMPOPT): drop the leader/follower bookkeeping.  Warm the RMP scan
+  cache once, then fan the RMPOPT out to cpu_primary_thread_mask; re-running
+  RMPOPT on the warm-up CPU is a cache hit, so the separate follower cpumask and
+  the cpumask_andnot() are no longer needed.  Rename rmpopt_work_handler() to
+  do_rmpopt_work() and drop the now-unused this_cpu.
+- Add Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com> to the series.
+
+  Review feedback from Borislav Petkov.
+
+v12:
+- Merged the former "Add interface to re-enable RMP optimizations" and
+  "KVM: SEV: Perform RMP optimizations on SNP guest shutdown" patches into a
+  single patch (now 5/5), since the interface has no user without the KVM
+  caller.  The series is now 5 patches.
+- 2/5 (Disable CPU hotplug): drop a stray reference to later patches from the
+  commit message and trim the snp_prepare() comment.  Move cpu_hotplug_enable()
+  to the end of snp_shutdown(), after clear_rmp() and the mfd_reconfigure() IPI,
+  so no all-CPU operation runs after hotplug is re-enabled.
+- 3/5 (Initialize RMPOPT MSRs): restructure snp_probe_rmptable_info() so the
+  contiguous probe (which clears X86_FEATURE_RMPOPT) is the common fall-through,
+  also covering X86_FEATURE_SEGMENTED_RMP advertised but disabled by firmware.
+  Move snp_setup_rmpopt() to the end of __sev_snp_init_locked().  Give
+  snp_cleanup_rmpopt() its own short comment in snp_shutdown().
+- 4/5 (async RMPOPT): document the optimization trigger points in the commit
+  message.  Rename enum rmpopt_function to rmpopt_op_type.  Merge __rmpopt() into
+  rmpopt() and replace rmpopt_smp() with a new rmpopt_scan_range() that loops as
+  the on_each_cpu() callback, so the follower scan issues one IPI per core rather
+  than one per 1GB.  Use u64 for physical addresses.  Allocate the follower
+  cpumask once at setup.  Document rmpopt_wq as the setup sentinel.  Move the
+  RMPOPT_WORK_TIMEOUT define to the guest-shutdown patch (its only user) as
+  (10 * MSEC_PER_SEC).  Remove a spammy pr_info() and reword comments.
+- 5/5 (Re-enable RMP optimizations on SNP guest shutdown): document why
+  re-optimization is driven by guest teardown (the only event that returns
+  guest memory to hypervisor ownership); reword the commit message
+  (s/clear/disable/ for optimizations, drop "Conversely").
+
+  Review feedback from Borislav Petkov.
+
+v11:
+- Reordered so "Disable CPU hotplug while SNP is active" (2/6) precedes
+  "Initialize RMPOPT configuration MSRs" (3/6): the RMPOPT setup/cleanup code is
+  then introduced with CPU hotplug already disabled and never takes
+  cpus_read_lock().
+- 1/6 (cpufeatures): drop the tools/arch/x86/include/asm/cpufeatures.h change and
+  adopt the commit message as applied by Boris.
+- 2/6 (Disable CPU hotplug): reword the commit message.  Drop the redundant
+  cpus_read_lock()/cpus_read_unlock() in snp_prepare() in this same patch -- with
+  hotplug disabled the online CPU mask is stable, so the read lock is not needed
+  and hotplug handling has no hole when bisecting.
+- 3/6 (Initialize RMPOPT MSRs): replace the rmpopt_capable bool with a small
+  helper local to arch/x86/virt/svm/sev.c --
+  cpu_feature_enabled(X86_FEATURE_RMPOPT) && cc_platform_has(CC_ATTR_HOST_SEV_SNP)
+  -- clearing X86_FEATURE_RMPOPT for a contiguous (non-segmented) RMP in
+  snp_probe_rmptable_info() (runs at BSP init, before alternatives).  Rename
+  rmpopt_cleanup() to snp_cleanup_rmpopt() to match snp_setup_rmpopt().  Both are
+  introduced without cpus_read_lock() (hotplug is already disabled by 2/6).
+  Simplify the RMPOPT_BASE comments.  Drop the now-unused <asm/sev.h> include from
+  core.c.
+- 4/6 (async RMPOPT): the follower scan is likewise introduced without
+  cpus_read_lock().  Drop the cond_resched() calls (nops on x86).  On
+  re-initialization after a legacy SNP shutdown, re-queue the optimization pass
+  instead of skipping it.  pr_warn() on cpumask allocation failure.
+
+  Review feedback from Borislav Petkov and K Prateek Nayak.
+
+v10:
+- Rework the CPU-hotplug patch (3/6): disable CPU hotplug in
+  snp_prepare(), before SnpEn is set, instead of late in
+  __sev_snp_init_locked(), so no CPU can come online without SnpEn during
+  SNP initialization (per upstream review).  Tie hotplug to SnpEn: it
+  stays disabled while SnpEn is set -- including across a failed SNP_INIT
+  and across the legacy SNP_SHUTDOWN_EX path -- and is re-enabled only
+  once the firmware clears SnpEn on the x86_snp_shutdown path.  Drop the
+  separate idempotent flag: snp_prepare() re-enables hotplug on its own
+  early failure, and a kexec target that boots with SnpEn already set
+  disables hotplug once in snp_rmptable_init().  Reword the commit log and
+  comments accordingly.
+- Emit a pr_warn() in rmpopt_work_handler() (4/6) when the follower
+  cpumask allocation fails, instead of silently skipping the optimization
+  pass.
+
+  Sashiko AI upstream review identified several of the above issues.
+
+v9:
+- Rename rmpopt_configured to rmpopt_capable.
+- Make rmpopt_cpumask a cpumask_var_t (allocated/freed at setup/cleanup)
+  instead of a static cpumask_t.
+- Drop the v8 WARN_ON_ONCE() on the RMPOPT_BASE writes; use a plain
+  wrmsrq_on_cpu(), matching the SNP MSR-write convention in this file.
+- Disable CPU hotplug with cpu_hotplug_disable()/cpu_hotplug_enable()
+  (per tglx); re-enable only on the full x86_snp_shutdown path.
+- Simplify rmpopt_work_handler() to a single leader-then-followers path:
+  with CPU hotplug disabled while SNP is active and snp_prepare()
+  requiring all CPUs online when RMPOPT_BASE is programmed, every core is
+  always programmed, so the explicit-leader fallback is now unreachable.
+  Drop it along with the v8 work_on_cpu()/rmpopt_leader_fn() helper.
+- Drop the debugfs interface (was patch 7/7) and its report-only
+  plumbing; observability will be revisited after this series is merged.
+- Restrict snp_rmpopt_all_physmem()'s export to the kvm-amd module.
+- Use scoped_guard(cpus_read_lock) for the per-CPU MSR and follower
+  loops.
+
+  Sashiko AI upstream review identified several of the above issues.
+
+v8:
+- Add a new patch to disable CPU hotplug while SNP is active, keeping
+  the CPU set stable for the RMPOPT work handler.
+- Drop the setup_clear_cpu_cap(X86_FEATURE_RMPOPT) calls; the
+  rmpopt_configured bool is the runtime guard.
+- WARN_ON_ONCE() on the RMPOPT_BASE MSR writes that previously ignored
+  their return value.
+- Simplify rmpopt_work_handler() by removing the explicit-leader
+  fallback: with CPU hotplug disabled while SNP is active and
+  snp_prepare() requiring all CPUs online when RMPOPT_BASE is programmed,
+  every core is always programmed, so the running CPU can always be the
+  leader.  This drops the smp_call_function_single() fallback (and with
+  it the AB-BA deadlock and IRQ-latency concerns) and collapses the
+  leader selection into a single leader-then-followers path.
+- Use mod_delayed_work() in snp_rmpopt_all_physmem() so the batching
+  delay tracks the last SNP guest termination.
+
+  Sashiko AI code review identified several of the above issues.
+
+v7:
+- Sync tools/arch/x86/include/asm/cpufeatures.h to mirror the kernel
+  header for X86_FEATURE_RMPOPT.
+- Fix commit title to use X86_FEATURE_RMPOPT to match the code
+  (was X86_FEATURE_AMD_RMPOPT).
+- Add static bool rmpopt_configured, set only when segmented RMP setup
+  succeeds in setup_rmptable().  Check rmpopt_configured alongside
+  cpu_feature_enabled(X86_FEATURE_RMPOPT) in snp_setup_rmpopt() and
+  snp_rmpopt_all_physmem(), because setup_clear_cpu_cap() is unreliable
+  after alternatives are patched.  Add snp_clear_rmpopt_configured()
+  called from amd_cc_platform_clear() when CC_ATTR_HOST_SEV_SNP is
+  cleared.  Do not use __ro_after_init on rmpopt_configured since the
+  writer snp_clear_rmpopt_configured() is not __init.
+- Add cond_resched() to all three leader loops in rmpopt_work_handler()
+  to prevent soft lockups on systems with up to 2TB of RAM.
+- Add comment above __rmpopt() documenting the RMPOPT instruction
+  encoding (F2 0F 01 FC) and register interface (RAX = system physical
+  address input, RCX = operation type input, RFLAGS.CF = output).
+  Note: RMPOPT does not modify RAX unlike PVALIDATE/RMPUPDATE, so
+  the existing "a" (input-only) constraint is correct.
+
+  Sashiko AI code review identified several of the above issues.
+
+v6:
+- Drop wrmsrq_on_cpus() helper; use for_each_cpu() with wrmsrq_on_cpu()
+  instead, as RMPOPT_BASE MSR programming is not performance-critical.
+- Rewrite rmpopt_work_handler() leader selection to use a local
+  follower_mask copy instead of modifying the global rmpopt_cpumask.
+  This eliminates the current_cpu_cleared tracking and the restore at
+  the end, and removes the need for synchronization comments about
+  transient cpumask inconsistency.
+- Add three-way leader selection in rmpopt_work_handler():
+  1. Current CPU is a primary thread in cpumask: run leader locally.
+  2. Current CPU is a sibling thread whose primary is in cpumask:
+     run leader locally (RMPOPT_BASE MSR is per-core), remove the
+     primary from followers via cpumask_andnot(topology_sibling_cpumask).
+  3. Current CPU's core has no RMPOPT_BASE MSR programmed: pick an
+     explicit leader via cpumask_first() + smp_call_function_single()
+     to avoid #UD, with cpus_read_lock() around the IPI loop.
+- Add WARN_ON_ONCE guard for empty cpumask in the explicit leader
+  fallback path, with migrate_enable() before goto out.
+- Add .llseek = seq_lseek to rmpopt_table_fops for consistency with
+  other seq_file-based debugfs files and to support tools like "less".
+- Change debugfs file permissions from 0444 to 0400 to restrict access
+  to root only.
+- Add comment in rmpopt_table_seq_show() explaining why cpu_online_mask
+  is safe: RMPOPT_BASE MSR is per-core and snp_prepare() ensures all
+  CPUs are online when the MSR is programmed.
+
+  Sashiko AI code review identified several of the above issues.
+
+v5:
+- Introduce rmpopt_cleanup() to tear down workqueue, debugfs, cpumask,
+  and MSR state, called from snp_shutdown().
+- Introduce rmpopt_wq_mutex to serialize snp_setup_rmpopt(),
+  snp_rmpopt_all_physmem(), and rmpopt_cleanup().
+- Introduce rmpopt_show_mutex to serialize debugfs reporting of
+  rmpopt_report_cpumask.
+- Move snp_rmpopt_all_physmem() call after SNP DECOMMISSION during
+  guest shutdown.
+- Use migrate_disable()/migrate_enable() for CPU pinning in the
+  rmpopt_work_handler() leader loop to maintain CPU affinity without
+  disabling preemption for the entire RMPOPT scan.
+- Add cpus_read_lock()/cpus_read_unlock() around the follower
+  on_each_cpu_mask() loop in rmpopt_work_handler().
+- Guard snp_setup_rmpopt() against re-initialization when
+  SNP_SHUTDOWN_EX with x86_snp_shutdown=0 skips rmpopt_cleanup()
+  but clears snp_initialized, preventing workqueue and resource
+  leaks on repeated init/shutdown cycles.
+- Replace setup_clear_cpu_cap() with pr_err() on alloc_workqueue()
+  failure in snp_setup_rmpopt(), as setup_clear_cpu_cap() cannot be
+  used after alternatives are patched; callers check rmpopt_wq != NULL
+  as the runtime guard instead.
+- Add pr_info() when RMPOPT coverage is capped at 2TB.
+- Add comments noting CPU hotplug is not supported with SNP enabled
+  and only online primary threads are covered by rmpopt_cpumask.
+- Add comment in setup_rmptable() noting Segmented RMP must be
+  enabled to enable RMPOPT.
+- Simplify cpumask setup loop to set if primary thread rather than
+  skip if not primary.
+- Improve grammar and clarity in snp_setup_rmpopt() comments.
+- Added Reviewed-by's.
+
+  Sashiko AI code review identified several of the above issues.
+
+v4:
+- Add new wrmsrq_on_cpus() helper to write same u64 value to a
+  per-CPU MSR across a cpumask without per-cpu struct allocation
+  overhead.
+- Rename configure_and_enable_rmpopt() to snp_setup_rmpopt().
+- Use wrmsrq_on_cpus() instead of wrmsrq_on_cpu() loop for
+  programming RMPOPT_BASE MSRs.
+- Add setup_clear_cpu_cap(X86_FEATURE_RMPOPT) if segmented RMP
+  setup fails or workqueue allocation fails.
+- Add X86_FEATURE_RMPOPT feature clear logic in amd_cc_platform_clear()
+  for CC_ATTR_HOST_SEV_SNP.
+- All of the above allow checking for only X86_FEATURE_RMPOPT for both
+  RMPOPT setup/enable and RMP re-optimizations.
+- Rename snp_perform_rmp_optimization() to snp_rmpopt_all_physmem().
+- Split rmpopt() into rmpopt() and rmpopt_smp() for SMP callback use.
+- Introduce separate rmpopt_report_cpumask for debugfs reporting,
+  distinct from rmpopt_cpumask used for primary thread tracking.
+- Remove snp_perform_rmp_optimization() call from __sev_snp_init_locked()
+  and instead setup and enable RMPOPT after SNP is enabled and
+  initialized.
+
+v3:
+- Drop all RMPOPT kthread support and introduce adding custom and
+  dedicated workqueue to schedule delayed and asynchronous RMPOPT work.
+- Drop the guest_memfd inode cleanup interface and add support to
+  re-enable RMP optimizations during guest shutdown using the
+  asynchronous and delayed workqueue interface.
+- Introduce new __rmpopt() helper and rmpopt() and
+  rmpopt_report_status() wrappers on top which use rax and rcx
+  parameters to closely match RMPOPT specs.
+- Use new optimized RMPOPT loop to issue RMPOPT instructions on all
+  system RAM upto 2TB and all CPUs, by optimizing each range on one CPU
+  first, then let other CPUs execute RMPOPT in parallel so they can skip
+  most work as the range has already been optimized.
+- Also add support for running the optimized RMPOPT loop only on
+  one thread per core.
+- Replace all PUD_SIZE references with SZ_1G to conform to 1GB regions
+  as specified by RMPOPT specifications and not be dependent on PUD_SIZE
+  which makes the RMPOPT patch-set independent of x86 page table sizes.
+- Use wrmsrq_on_cpu() to program the RMPOPT_BASE MSR registers on
+  all CPUs that removes all ugly casting to use on_each_cpu_mask().
+- Fix inline commits and patch commit messages
+
+
+v2:
+- Drop all NUMA and Socket configuration and enablement support and
+  enable RMPOPT support for up to 2TB of system RAM.
+- Drop get_cpumask_of_primary_threads() and enable per-core RMPOPT
+  base MSRs and issue RMPOPT instruction on all CPUs.
+- Drop the configfs interface to manually re-enable RMP optimizations.
+- Add new guest_memfd cleanup interface to automatically re-enable
+  RMP optimizations during guest shutdown.
+- Include references to the public RMPOPT documentation.
+- Move debugfs directory for RMPOPT under architecuture specific
+  parent directory.
+
+Ashish Kalra (5):
+  x86/cpufeatures: Add X86_FEATURE_RMPOPT feature flag
+  x86/sev: Disable CPU hotplug while SNP is active
+  x86/sev: Initialize RMPOPT configuration MSRs
+  x86/sev: Perform RMP optimizations asynchronously
+  x86/sev: Re-enable RMP optimizations on SNP guest shutdown
+
+ arch/x86/include/asm/cpufeatures.h |   2 +-
+ arch/x86/include/asm/msr-index.h   |   3 +
+ arch/x86/include/asm/sev.h         |   2 +
+ arch/x86/kernel/cpu/scattered.c    |   1 +
+ arch/x86/kvm/svm/sev.c             |   2 +
+ arch/x86/virt/svm/sev.c            | 181 ++++++++++++++++++++++++++---
+ drivers/crypto/ccp/sev-dev.c       |   2 +
+ 7 files changed, 177 insertions(+), 16 deletions(-)
+
+-- 
+2.43.0
+
