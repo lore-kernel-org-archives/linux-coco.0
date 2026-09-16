@@ -1,144 +1,224 @@
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4188C4A7CB6
-	for <linux-coco@lists.linux.dev>; Wed, 16 Sep 2026 18:23:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.204
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789583029; cv=pass; b=uqtoxtvD6BylnPqEUvjeTXO5wBe34+DwQbHmJS/RtU4Cb+mZYB3xPLwNhDf4+W+jQ/IF/PPRJYioLR72BsEO4g7a8ZA3N+8+14FmVTRfGH8j3np+Wq5cwb2UP5OHWmdSSjbRXsZMmF9j/ayuKUNmlXnLx/VlQIa+ZZgXJ6ZSvIQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789583029; c=relaxed/simple;
-	bh=K1VkZN9Ax/ivqRQhY6l3VgzDLSp6+7t77YixSnLTILA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h3Fn8IGZciJ2rewYL2gElYY1UAuGEmPaubeRIYiwwAr8Jbkh18fJ/plSzkX+LAKYT+MvasU1Y1ISVuj8+Qak2Y0rUEVitTih/1HdmR1mOBQ+sO52VYUj9i7gmzUMaAbLQNpejJA/XUZFTmJxn2g/pZMh2g/FyYUIeH9MDsoYE8c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JDPChipd; arc=pass smtp.client-ip=74.125.229.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8290A4C33C6
+	for <linux-coco@lists.linux.dev>; Wed, 16 Sep 2026 18:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789583664; cv=none; b=iW8paXKS6Vr8N1rUVTI0nuI3RErqzAXSmlSuTWmcjxTmCk1DTKdJD0Sr1nHl+wH/SQ8r7yOskr8toC5ZdHAAsyNemV+dKM2eAkaXRKnYL2pMzrAN9zbOo2kylvwHwquVxvyB1KA9u88sYjebj6/9MSsi8aWPeBWxw6C0mkG5EgA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789583664; c=relaxed/simple;
+	bh=Ykk92tDV9M7kvVoJsqecVU31W9ystDedudQnlhM9OB8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=oBMzYJ2WwvQFb/dAkuJspuma70AF7cqAzv5LoYV0vlOUHXjPvZvftuoaG2TbTthm48kPubUFagxP4yupXtoIyxwyKZCP/p3suYkO408ohmraKLNIPbNI5a66hcCabt+SlxGnirZyk4V/cK+/ltJCe+QguN+MqIKo4y4or4gMgNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xcfqsq5J; arc=none smtp.client-ip=209.85.215.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JDPChipd"
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b5e4f1b845so1241504e87.1
-        for <linux-coco@lists.linux.dev>; Wed, 16 Sep 2026 11:23:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789583011; cv=none;
-        d=google.com; s=arc-20260327;
-        b=r1ip5rrXl2jku60Qmc5DbZJjWDZDGvMel02kK1P8uI65rbpMBfqFswB+mhegVmOjvb
-         tOGSHnqyTAYzRUkkzXEm5/+Upb6Nih5dU99wEbGhOwZFVLdiedgqQmeck8eow29gu5t9
-         lfXYdIAtmAVAFlKIXL/SrTCb1VlH/UOBKb9W6AmC30zyHy6feh0xn4+5a7R72CcuB64Q
-         QsYN7bb+Hbmgc4fJnLfIWGjGCwoNMw47QETveEJ+g2GrJq2BMEAYIZvyt35iCC3MuG9r
-         1y1EKgJKuo7mKhqxllmjxNJvA40M/velghvVFJgPdSa8Ciwa3jtkXVj1OE4mfaiLlNVZ
-         6Z6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=iA6WOY7U5Hpnzgqa3cIbAuP1d1sT3cNwxEh5sU4xF5Y=;
-        fh=o3543LnceJjduAXUlTMinMUsR1hbqj+SaOEC5CT36Qg=;
-        b=o8GAwjS7E7yzO15iRKzYnjBFmbWPlHXdGu0Um9vo/OeKxBQ/TBMoyuasIyVWkHJbWq
-         If3BJeU9gCudqNyjbkJNndzb4xfSLzCgsC1VJdy05iFdaEyjZMM7Ni45R84Sr/RHGPtS
-         CqnhQxz87mngJph9ciBPBZo1AO5pSh3ZSyiLtg6BjSle/PtTIXVUohfzAwnyJPGUwZCm
-         Lb/FY9m9zLayT3W/nSz7TUrzg8Xbpr+wKM0/dNCX8+qKl9zlLDI//n4VkJ2Ua/mcrt+w
-         PXUd6rlq7Jk3WzayHV3V2sf8pMvhqn+Qcr62jvU+uwKt+0Gvsz3p94+d3ZCCEFK7Que5
-         M9EQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xcfqsq5J"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1b8088202so5346574a12.3
+        for <linux-coco@lists.linux.dev>; Wed, 16 Sep 2026 11:34:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789583011; x=1790187811; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=iA6WOY7U5Hpnzgqa3cIbAuP1d1sT3cNwxEh5sU4xF5Y=;
-        b=JDPChipduRYrBvPo4aR28TNSvEdUz7CQX3aOqzKMBUu8nUv/A6WIzWUOnHRAVqv1Kl
-         6WJG8I5KOtcWTuit0h0R8WpHELpIGT3ZPeFYYm9bo71wOGaEVzRI27MYoSAQPimJThwz
-         j7V0m36C+jXei/RgjYHdcOUUsrwqB0YnzKoyhtIsTvEl0ClIgrlZ1q1ar0Fyuod7RyCt
-         CRyU0EjdhcmAbxNiieNvprkory5j63zXzQVMNrlzt6bt39N2BWEmbC24f2M2qVsdx1Br
-         a4ld038GxHBPW6OYqGQ3PxbZCVtVbFNSjnZ4ETbr8SQR1MX0ur2ZTsSxdYfjrW+ktvuF
-         fAiA==
+        d=google.com; s=20251104; t=1789583639; x=1790188439; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=1/boOQor9JLExDk92cynKiJhAwGiEff2rVhXxeRxqi4=;
+        b=Xcfqsq5JpQdxnN2t7ud08v0nzmPVIxf1g4nFw6QpQUyWRWokO7nxOTn+n155sdL7iq
+         yRKiTaTxFOHKi2RN+/Swnor4A60lgaBs7y7Wyk7OI0adDfzIa83DFcC9rN31/v9MyDrh
+         w1mTBGV6CJaOTDtFzytpM463nfHTuJWN4GMMkpZWQPAs5+9bsIQ0XLk34mKU2EN1F3ZV
+         oMRchWaZ2EdvLP1mWaGxX7P5qhz0L1VR3ZAggPzNQWpoW2915JCvAnHW0UvWmdaTb2Z9
+         4wu+BZ82FSwoYBYipCY0Ge9jVRuxSPd9aVKSwrypQ/TSsmiUXue+YaJ+F7gmk/oHOje7
+         TdIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789583011; x=1790187811;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1789583639; x=1790188439;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=iA6WOY7U5Hpnzgqa3cIbAuP1d1sT3cNwxEh5sU4xF5Y=;
-        b=CcP1J7v/9y+2+Qogy9uqdHwBDS9BDD6UVdcFb70JnkfxcB/IAmytcFB++qmVkrjcFv
-         1WbLsLulLxn7Nl6Y9r2T6EX5D/SuitdFVQLdYgtdON5mh0c6vgRINpQvkZ9o4wEnp70V
-         3muD7VopVrBqoRW7olura0mAvUFfCj0icf6SA0dqKtG76Ltl9K0944sQuHERp2mHkbyT
-         CYGV9VXsveO1KMXo8KuKGzm93gX8pNC+grVNp0yujRjV4XQA4UDCgOtmqSEuyQNUp8Zd
-         12duZMLgPSRWF0MnBgN9FAZjryvXMG5jNIyb8nHVAHDTNmOIC2JYL/NTEWerr5RsTFzk
-         hMOA==
-X-Forwarded-Encrypted: i=1; AKwUvBweLmzvaJ2KjO6PIGcqjMf70dDjqFrobtVpZFNNqNxDv1X6sV0rz75nP948gBEKUyOi28bZd1vtEa6S@lists.linux.dev
-X-Gm-Message-State: AFuF++mIOha0V/HzNUGs6Lqm34R62XF59aVmmeLg/dA1bkxGDOdsYcJD
-	j9YQVNJ17ofrZL9HaOIJ4/0/XK6V+6+SJRat/YnDH9ZXpq2iJJ7vwiKhzBV21YkVi8XAsrr8gko
-	tH6/NrnKxbbd8SsUAf4PMyqUt5sqExMgwkUK8aMkJ
-X-Gm-Gg: AYBFou3zWkCU7o2l9TTt9jtD/jIbsadjONX+YYh7lZJt5KZeaZpxoydffmTP6YV96Rk
-	sVqZX7jfO7bzKWp8qv6pOnTTKAfhElluZ4uA3cSjLCJHS/PmzHW/hTDhllYJ8Ege7YO5vSQkJzy
-	l0FvC96h0YFRiPMtf2KH5p5Vqk65F0kGjeM08sG3dA4+wvXhz3ZRkRbgLyFdFE4cG76+nN6Gjsv
-	yfYauZci+LqmDytZxxUdm3gfSMYNtIzYljvhN2q4ldf5mPg1jCNJF2iGuOF34yzCWWlBel9NhFD
-	gkzXXqUXg4E/1LRoQ6ndar5phB2B9bjsB1RxHHfI33PNR135kT4giA==
-X-Received: by 2002:a05:6512:1293:b0:5b6:1a7c:aa13 with SMTP id
- 2adb3069b0e04-5b8b6640be1mr1009695e87.43.1789583011057; Wed, 16 Sep 2026
- 11:23:31 -0700 (PDT)
+        bh=1/boOQor9JLExDk92cynKiJhAwGiEff2rVhXxeRxqi4=;
+        b=FtjODYftuezZ+jJJ+bJDGCS9yxHvpcWm/nSsix8P/MkrJ1cez/GUBb4ZEm5cDsv59w
+         lVfzvtaj5RUkWyuCGP5HzBBp+56UwpvL/3/LdkCNSQEQVYoCRzEg4PSh6WR3OmV1s/Ca
+         6GwRX5xFjiXfYnDWb74dusRxgCZfqlQfJqEXFvxbE4DlbzcVRvsZjMjn9ClW6K6BYpZT
+         vgYIEUdDPPMSyz/JNPv6wC424xvvmzxaQHRxnA7J4KRN4cWaFnFsryBj3IHBk2ZLBfbj
+         hd2jSayo2FCSbXKe08vAyRu7AjGf+/OuDZg0KXXwtklea4MfiM8bY/KVYZpULdi1M7m9
+         0L/g==
+X-Forwarded-Encrypted: i=1; AKwUvBy6d0/rHs1+ld6ipFdYq89YblfKkz8dQmgs5bvELmf7zDDJT7okXy+SDEshVqqpmYKDS3Q2zkWkXD3Q@lists.linux.dev
+X-Gm-Message-State: AFuF++nQkjrKC4OH0MVxpn1Mh0Lv8ZQWbYNPe4fYiuYZJ1zx1LHxMp+7
+	pBaSs5US2ZjNaPgExxxUWBSTtSivhbufqBeT9+SAT4/eXodz37lNQDtMgUx3Fsho3NO1kfov42l
+	khG76fg==
+X-Received: from pffj7-n2.prod.google.com ([2002:a05:6a00:c2c7:20b0:86b:491c:9006])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:f8b:b0:871:e76a:2a35
+ with SMTP id d2e1a72fcca58-87238f95cf6mr8223777b3a.19.1789583638744; Wed, 16
+ Sep 2026 11:33:58 -0700 (PDT)
+Date: Wed, 16 Sep 2026 11:33:58 -0700
+In-Reply-To: <CAJxe5ctcVxmhRSw3Gt0POQTzRKoxXo7+Y3CPDe7cUZvC0QPK+g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20260912083611.2513845-1-suzuki.poulose@arm.com> <20260912083611.2513845-7-suzuki.poulose@arm.com>
-In-Reply-To: <20260912083611.2513845-7-suzuki.poulose@arm.com>
-From: Alper Gun <alpergun@google.com>
-Date: Wed, 16 Sep 2026 11:23:19 -0700
-X-Gm-Features: AcwNN1Xa9rZlSKbZ1HJXqNvz676wwtG0Dzc3HxbzhCyZpg8GXZHTQsxrOGLMh6o
-Message-ID: <CABpDEum16ZzLSjd7Yg2Ge6VjwL8S8xxtSs_AsqOeNT9-9FNKKQ@mail.gmail.com>
-Subject: Re: [PATCH v18 6/7] firmware: arm_rmm: Ensure the RMM has GPT entries
- for memory
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
-	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
-	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
-	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, 
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, 
-	sdonthineni@nvidia.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
-	lpieralisi@kernel.org, enju.kohei@fujitsu.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260910-snp-invalid-input-v1-1-fb2e03da614b@google.com>
+ <0b2d8858-b361-4a64-986a-4c179210fbec@amd.com> <aqlWt4jb4CSPnecN@google.com>
+ <d6179d34-a4b0-4548-8298-b790b333d22f@amd.com> <CAJxe5ctcVxmhRSw3Gt0POQTzRKoxXo7+Y3CPDe7cUZvC0QPK+g@mail.gmail.com>
+Message-ID: <aqrhFvwFJsQTaEkz@google.com>
+Subject: Re: [PATCH] KVM: SEV: Return INVALID_INPUT on SNP req/resp buffer
+ access failure
+From: Sean Christopherson <seanjc@google.com>
+To: Jacky Li <jackyli@google.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>, 
+	Ashish Kalra <ashish.kalra@amd.com>, Jacob Xu <jacobhxu@google.com>, 
+	Supraja Sridhara <suprajasri@google.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 12, 2026 at 1:37=E2=80=AFAM Suzuki K Poulose <suzuki.poulose@ar=
-m.com> wrote:
-[...]
-> +static int rmi_init_metadata(void)
-> +{
-> +       phys_addr_t start, end;
-> +       struct memblock_region *r;
-> +
-> +       for_each_mem_region(r) {
-> +               int ret;
-> +
-> +               /* Firmware-reserved NOMAP regions are not usable system =
-RAM */
-> +               if (memblock_is_nomap(r))
-> +                       continue;
-> +
-> +               start =3D memblock_region_memory_base_pfn(r) << PAGE_SHIF=
-T;
-> +               end =3D memblock_region_memory_end_pfn(r) << PAGE_SHIFT;
-> +
-> +               ret =3D rmi_prepare_memory(start, end);
-> +               if (ret)
-> +                       return ret;
-> +       }
+On Tue, Sep 15, 2026, Jacky Li wrote:
+> On Tue, Sep 15, 2026 at 8:21=E2=80=AFAM Tom Lendacky <thomas.lendacky@amd=
+.com> wrote:
+> >
+> > On 9/15/26 09:31, Sean Christopherson wrote:
+> > > What if we keep this one as -EIO (or better, change it to -EFAULT in =
+a separate
+> > > patch?), but add a comment explaning why KVM needs to exit to userspa=
+ce in this
+> > > particular case?  That would be a good compromise; if the guest is at=
+tempting to
+> > > access non-existent memory, the initial READ will fail, i.e. we still=
+ get most
+> > > of the behavior Jacky wants.  The only fatal case would be where eith=
+er userspace
+> > > really did screw up, or the guest managed to find read-only memory (t=
+hough I
+> > > would probably argue that's likely also a userspace bug?).
+> >
+> > That sounds good to me.
+>=20
+> Thinking through the sequence number and VMM bug concerns, I'd still argu=
+e
+> that returning INVALID_INPUT on kvm_write_guest() failure is preferable t=
+o
+> exiting to userspace:
+>=20
+> 1. req_gpa and resp_gpa are two independent guest inputs, so a guest can =
+pass
+>    a valid req_gpa and a resp_gpa that isn't backed by any memslot to sai=
+l
+>    through the initial read and fail only on the write.  Exiting to users=
+pace
+>    on write failure therefore still lets a guest kill the VM at will.
 
-Hi Suzuki,
+Drat, I missed that.
 
-What happens if a system has memory regions in memblock that are not
-tracked by RMM (e.g. CXL memory)?
+> 2. Comparing the two outcomes after a kvm_write_guest() failure:
+>=20
+>    - Case 1 (exit to userspace with -EFAULT/-EIO): unrecoverable.  The PS=
+P's
+>      response is lost, and userspace can't rewind the PSP's sequence numb=
+er,
+>      so retrying KVM_RUN would just fail that check.  There is nothing
+>      userspace can do other than kill the VM.
+>=20
+>    - Case 2 (return INVALID_INPUT to the guest): the guest disables the V=
+MPCK
+>      and moves on to the next one, as Tom mentioned.  The worst case, onc=
+e all
+>      four VMPCKs are exhausted, is that the guest can no longer issue gue=
+st
+>      requests, but the VM keeps running.
+>=20
+>    Neither is ideal, but Case 2 seems to be better: a localized loss of
+>    functionality instead of the entire VM dying over a single bad request=
+.
+>    It also leaves the decision to the guest, which can carry on with what=
+ever
+>    doesn't depend on attestation, wind down cleanly, and shut itself down=
+ on
+>    its own terms instead of being killed abruptly.
 
-Currently, rmi_verify_memory_tracking() returns -ENODEV for untracked
-regions, causing rmi_init_metadata() to abort and disable CCA
-system-wide.
+The problem is, I don't see how the guest can know when it needs to discard=
+ the
+VMPCK (post-request failures) versus when the VMPCK is still "fine" (pre-re=
+quest
+errors).=20
 
-Shouldn't rmi_init_metadata() skip untracked regions (continue) with a
-warning/info log instead of aborting? That would allow Realm support
-for conventional DRAM while leaving untracked memory for the host.
+> 3. More generally, when KVM can't tell a guest error apart from a VMM bug=
+ at a
+>    hypercall boundary, reporting the error to the guest seems to be the s=
+afer
+>    default: failing the guest request degrades one service while keeping =
+the
+>    VM alive and debuggable, whereas exiting to userspace turns a single f=
+ailed
+>    request into a dead VM, and hands an untrusted guest a way to terminat=
+e it.
 
-Thanks,
-Alper
+Well, ideally KVM never has to make a choice.
+
+>    And in the context of SNP the guest doesn't trust the VMM anyway, so a=
+ VMM
+>    that fails to deliver a response is indistinguishable from one that re=
+fuses
+>    to, and the guest already deals with that by disabling the VMPCK on a
+>    VMGEXIT error.  Letting a host problem bleed into the guest is arguabl=
+y
+>    "fine" here, since the guest is designed to cope with it regardless.
+
+FWIW, I'm not terribly concerned about bleeding host issues into the guest,=
+ I'm
+more concerned about ending up with deferred fatalities and a mess of an "A=
+BI"
+between the guest and KVM with respect to handling failures.
+
+What if we "tickle" the resp_gpa before doing the request?  Similar to how =
+CPUs
+probe bytes early in XSAVE/XRSTOR to avoid having to unwind later on.  In t=
+his
+case, the response is restricted to a single page, so we only need to tickl=
+e a
+single byte.  E.g.
+
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 2da61843a6f2..b2e74a407c2b 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4207,6 +4207,7 @@ static int snp_handle_guest_req(struct vcpu_svm *svm,=
+ gpa_t req_gpa, gpa_t resp_
+ 	struct kvm *kvm =3D svm->vcpu.kvm;
+ 	struct kvm_sev_info *sev =3D to_kvm_sev_info(kvm);
+ 	sev_ret_code fw_err =3D 0;
++	u8 tickle =3D 0;
+ 	int ret;
+=20
+ 	if (!is_sev_snp_guest(&svm->vcpu))
+@@ -4219,6 +4220,11 @@ static int snp_handle_guest_req(struct vcpu_svm *svm=
+, gpa_t req_gpa, gpa_t resp_
+ 		return 1;
+ 	}
+=20
++	if (kvm_write_guest(kvm, resp_gpa, &tickle, sizeof(tickle))) {
++		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
++		return 1;
++	}
++
+ 	data.gctx_paddr =3D __psp_pa(sev->snp_context);
+ 	data.req_paddr =3D __psp_pa(sev->guest_req_buf);
+ 	data.res_paddr =3D __psp_pa(sev->guest_resp_buf);
+@@ -4232,10 +4238,9 @@ static int snp_handle_guest_req(struct vcpu_svm *svm=
+, gpa_t req_gpa, gpa_t resp_
+ 	if (ret && !fw_err)
+ 		return ret;
+=20
+-	if (kvm_write_guest(kvm, resp_gpa, sev->guest_resp_buf, PAGE_SIZE)) {
+-		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
+-		return 1;
+-	}
++	/* Comment goes here. */
++	if (kvm_write_guest(kvm, resp_gpa, sev->guest_resp_buf, PAGE_SIZE))
++		return -EIO;
+=20
+ 	/* No action is requested *from KVM* if there was a firmware error. */
+ 	svm_vmgexit_no_action(svm, SNP_GUEST_ERR(0, fw_err));
+
