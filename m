@@ -1,59 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4972E4F30D6
-	for <linux-coco@lists.linux.dev>; Wed, 16 Sep 2026 12:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337184EC66B;
+	Wed, 16 Sep 2026 12:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789561834; cv=none; b=nFjqpa7hEBK/OGhStZrmuV5pIeAjpNK/iHUxT8JPDGUcMbsMIQ8GIBCnFsOiA7nzAvgQB+aM79ZXHSejCFxPd1NBgqg6gQHy1EZpF/9U9CCRsecuIWhnARlU5hk5lJVNZtP1LVgQouj5ZI06SCOMQKHzaRxfA86MMCED/emXxDQ=
+	t=1789561879; cv=none; b=oAngiZj7VflNerJ02U+7ukwNotBfhmHLTXEeuVVELxDvzRvhGlnlIHD89q3gupv078czE/rueFWSXnELONNfeGKM+JbAaDxg93ObDl2KXkhFoPs0jd5OZm3lS+fBXSi5h3Racj1d9Llb2+PYK7rBfPik97fByd3wZw6clSYfaII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789561834; c=relaxed/simple;
-	bh=cvP/RsiOaR0zMNbZjYjx4ZEbNDCN8zOgu1toEbYhi+Y=;
+	s=arc-20240116; t=1789561879; c=relaxed/simple;
+	bh=NQyn7xnCW2kOyOTszqYsFf4/IwEShE2xbk0rOecXvZg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=clU33Z57i2UirWf1JHNuZmD7HHheIfJnw4fpuT+9IKEahTSM8gux1P+nBrg5/mmmRUZN6aQAth/GuW5Ep4f7Q26H0Dmf6wNVE76QEBg5Pk6Vvb72EawQLMlIo2hewQbTYar/nQRR0/Q6+4tpK28V0TGH3szPDFhlUKfo/xwBzr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jOCnYdIk; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=s3A5A3U7mvwpKeUz8/7XOY1Mpd6q99NCzRIXXVurEOwmPtWbCDVd2It7WqqORnOvvh3V/+l2Gap4ju6z3t2i8q9zKNK/EXtlc07jt6o+ZdoJ0v0XfBEBlrbaO1jnn9aEqGzUNM1UyM5Nu+sQDkyY8MspTqHnStI9jZV+cEpmi8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h14U3BC+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jOCnYdIk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1C41F00898;
-	Wed, 16 Sep 2026 12:30:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h14U3BC+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AD71F000FF;
+	Wed, 16 Sep 2026 12:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789561833;
-	bh=J5smoL6jvTdR654OVuf3f2KumFBR4groIFahylWHxZc=;
+	s=k20260515; t=1789561874;
+	bh=zUK8acdC54iLgP1wZLTv3kmWmHfOWNMJRPSZykmGE0s=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jOCnYdIkND9jVZqBCeY6hLpTTbb8hgCiV/hUAOQXrBW6OJQAqwUiY+IkAXbjxj3UY
-	 kY5oocdALc5s2dTuS3xZiO/sxPHLWCXFUmueGGK3zNOTX9tv2bqVkJx4xGB9IK8ceM
-	 8bB2EDuZFmYK2ZnJOEj8p3CBtfOIHEpb50vrgYr1p2bb6P9FIOVUA7rkHOedEW/KDg
-	 jRj+4CIJMT6hGdPEI/ns0ieMxPyieiD2zSqE5JfvoicpS9qqoHvpDWC+xIN4jCEzfQ
-	 XQ5Y3leDutfJtH8oN13/WncK8OtXDLLrZwAlTDQcWQJeDuAiigp0RN0Adph1E51jfv
-	 6hvxM/3/eT7ow==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 221341980047;
-	Wed, 16 Sep 2026 08:30:28 -0400 (EDT)
+	b=h14U3BC+BhW5anDkEGTScLBkddRPDlDT4jJcpagnKIKbKZlCIIGY48ZH6HWk2LRDr
+	 kY7AZR24QBMiaxzmDkYFA/XfXeFLu+hdQtI+5RMCcFJMBQGNXSd3+zMgA0M9Q69m76
+	 s00FTSAPLVf3frOLe3kvvpWm12jctNkMR2ia5emKnoEBRdDEyD9lM4Ti0wKFMXVbDf
+	 bFLFai8sTMWSP52cvNOSAifiCd5DJ8WY65HrIconZSvIsrCSHr0wU03kZXcKpouOp2
+	 z+iaaoz39EF9r1jgo1UuqRENkkuh92Bewzfck1RJp1/clIRxVti6tv5DnNDbcdAHdu
+	 Pxabf1hHnnOvQ==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 3AF8D198003A;
+	Wed, 16 Sep 2026 08:31:09 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 16 Sep 2026 08:30:30 -0400
-X-ME-Sender: <xms:44uqavrjIJBu4FWSFaLnKvWYggpA1dB8ov5uREfuMDyi4-DMzRNKTg>
-    <xme:44uqao5OSEA61y8b8rlRnmXTjnvmLZm1N7hUc9y2wvrNKMrqlL4kPpwPZcAaK5nhR
-    33LJSrdWD_ceZHRFnsgzjhV1GpdobYD5z6JeuSy3N8OW96d_tdKtTX0>
-X-ME-Received: <xmr:44uqaoabpSIMY6-2d4EiQAQnLCsr3SCKOmHzXg2U7hELLN5yUDKppHmvLBc>
-X-ME-Proxy-Cause: dmFkZTFq6odZDDV1MbWatV/ogB8xNp9I0LZXqD9XYhLxfYbKOKS8UmtQu9jik/YJw5+uDe
-    IQ6yOJ08HjDRPvYi9QFt1jq0pHGSfYW6nwxE+Sm7yr9nKcBmi5RUalxcvapJTiUZkcarzc
-    Altx5IaL1NPrtSorlwPUW9SMwDvZR/9hNrEX1CWPEvmZJDDv27xZOM6Inb5XPJLhAbLlhk
-    CcFHRQ1NHECVdbI0qiw3RFSyKV9nCbqC0DillmW/DW7U11KmKmJu9FpAeasYtIEcLsZ/VX
-    fguKYmbKr3ea2GVW7GZmUiPj4seG2XhlkZtj5DvqTtNjjQkLAf9OUw31q4uYXd9/ZONdI1
-    qilSP1JLzIB5juM4aAmsOYOuFreOUeRLaOA05n2XyojmpZUw4z8Qoj7FYkU4ivv4KPmKqg
-    IppZcuQ4qXZTdlo3f/Zxj/WjD+NqW7FY9zyKdwSZjwg1qJCe20oNJ10CYs8fN9skNQiwcl
-    zuFwrR9i+jrFpxCCI45E/uL4g0KMwhWo9lRzXN1hfFHZcXeE0XC5yIbJD6WTu17DVOavhr
-    PfuNI6Ou6DoB46PHAgjjQxCqLWNFgk1f46q7jSddisFDKEIHE8gKwdxEl1pFcgBzc/koqt
-    4Ggl+H/gfVqXesUjghBY5ZnV1eHm3aFGFXEZ2N2fPK0YSx4cnZU/BRjGaZ1w
-X-ME-Proxy: <xmx:44uqatrUtrnCoVecgnfJXi-sDQTaS5U105AfiZEAP8Phb9q_ipZ7MQ>
-    <xmx:44uqah4pUZjzsCiGW5p2eREmaWZbLbjbRUgmpFK4j3BrdeQcuJUwTA>
-    <xmx:44uqaqSUZs_ZCPdO4VMlNdEHeNk-C5E-toxGWcnq62lAgT83Hn4FZw>
-    <xmx:44uqah2oGeSSKcPoK3fWFlfNKvEJhKqfvQxtXpjC1SZC4dfNc7V8Mg>
-    <xmx:44uqah7qHcBlWHOcnkGkmfqzCu55F0gpz_dDddg1o8rR75Q8sV4DGkf6>
+  by phl-compute-04.internal (MEProxy); Wed, 16 Sep 2026 08:31:11 -0400
+X-ME-Sender: <xms:DIyqaio0TRUQSabjoM5AMoDIOWpgHtjGFB4SEwN8RaS3RpjNVjmqwQ>
+    <xme:DIyqav6ScVC8f4BamGmSQH0_n6C-_WGQDXmJ-ag4Jj3Sb0gG_K-sffDNoKiQ8HBlM
+    Py_WOYYNwnhEgokxws6UKU9gAhK847fvk1svlEq7dbaIrZKiZf9U31OXw>
+X-ME-Received: <xmr:DIyqajZf9E5j1_codcnvChlOtksQxgZksKhQp0i7JIVcqQTJQecMVmBsYew>
+X-ME-Proxy-Cause: dmFkZTGq+HgZ5fIHRs1lwXL79bYGzqK9qEPPO5xkwezZpnZ+b7WRlipjHVnZLJAb4KlQUS
+    hIMlKvGH0XEIA9ZeF+C/Z/Qmq4OtCnR8dDtlLK14MCY0jDi1fxFBc+6UTaUCjbmAugoWLS
+    n0/O1WLIiMxY1F2qQj+HhA4JJBUqekx9DO6evdBJVtzpWaKZ2y6HbchvhEgnWlOX2V+61V
+    6bADL+syu3oE5pulEJaoZg0lXiP10Sn+/aadjKSgnLscEJHUXdgkZJJKg0zDPF388FcCID
+    EbEkIzf5peZvXp7LeUGhnzwIcRxM1dnBV8nhi+fAE5fdOWbmg84F7Hq6jpStUBK3x2qBt6
+    QAf0cNT0BJcy+3Ymw2eGzbXVR7qPitp5MLibg+WuKQva1RAscP5DyuzyWtLcm6XG7IC9Tp
+    /MuuTlDZZnhLR3dkegV2QpSGIuqd5DkFNOeCyAf4ENFGgACupkVtlFTkcz48Ayr2vV8i5W
+    5Awa+dnrS7RKsTd3Epn93Yl7KA9qua6nDlkFIch3nckuEn9KzMUYc5VsEKBKzuvSiTCLOK
+    d/KwlVsG6yfA4ro0c0ycttg74zoGqddQctyXTidc+yNz9Ccf+3J+iJbwajYKqIj4no/YaC
+    n2XiI46e2o52pUIY9EB33Ru7aivsLY3KUqyjdgozlzMCBm5X7ZC3/RDwbV8A
+X-ME-Proxy: <xmx:DIyqaspGUGHbKOenR4cAj7obkInI8wjqeCFYYJV1uSnOF_iNayB6LA>
+    <xmx:DIyqak5MRPokJOzkzt3UIsXc1UoCNDN6PuANaMIUHDoZKQx0pAnAbA>
+    <xmx:DIyqahSwyQXHw96EJT3qevfTC7uNi6hFLRD7ZXF0y3MA4xU7oca_1w>
+    <xmx:DIyqas32MoK6EtWAnLPm7mxphkMQJVajjswLpf0OprTD-pQMd5ssmg>
+    <xmx:DIyqag6L1vfd10Jye5u0Jr39RDyHxw-NVVUw3XCP4daZAeL7llZWj8EW>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 16 Sep 2026 08:30:27 -0400 (EDT)
-Date: Wed, 16 Sep 2026 13:30:26 +0100
+ 16 Sep 2026 08:31:08 -0400 (EDT)
+Date: Wed, 16 Sep 2026 13:31:07 +0100
 From: Kiryl Shutsemau <kas@kernel.org>
 To: Peter Fang <peter.fang@intel.com>
 Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
@@ -64,11 +64,10 @@ Cc: Dave Hansen <dave.hansen@linux.intel.com>,
 	kvm@vger.kernel.org, Xiaoyao Li <xiaoyao.li@intel.com>, 
 	Binbin Wu <binbin.wu@linux.intel.com>, Tony Lindgren <tony.lindgren@linux.intel.com>, 
 	Sean Christopherson <seanjc@google.com>, Artem Bityutskiy <artem.bityutskiy@intel.com>
-Subject: Re: [PATCH v4 3/4] virt: tdx-guest: Use a variable to store the
- Quote buffer size
-Message-ID: <aqqLv6Nw9jaj_duX@thinkstation>
+Subject: Re: [PATCH v4 4/4] virt: tdx-guest: Allocate Quote buffer dynamically
+Message-ID: <aqqL8uUxfIYhN8b8@thinkstation>
 References: <20260915092632.2822169-1-peter.fang@intel.com>
- <20260915092632.2822169-4-peter.fang@intel.com>
+ <20260915092632.2822169-5-peter.fang@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -77,19 +76,33 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260915092632.2822169-4-peter.fang@intel.com>
+In-Reply-To: <20260915092632.2822169-5-peter.fang@intel.com>
 
-On Tue, Sep 15, 2026 at 02:26:02AM -0700, Peter Fang wrote:
-> In preparation for dynamic Quote buffer size, replace the fixed size
-> constant with a variable.
+On Tue, Sep 15, 2026 at 02:26:03AM -0700, Peter Fang wrote:
+> From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 > 
-> The constant is sprinkled across several places. Read the size from the
-> variable instead.
+> A new TDX module ABI reports the Quote size limit in a metadata field.
+> Prior to this, the guest driver uses a fixed 128KB buffer. Intel derived
+> this number from current Quote types, but that is not sustainable as
+> Quotes evolve. 128KB may be too small for Quotes using schemes such as
+> post-quantum cryptography (PQC), where larger certificate chains can
+> increase the Quote size significantly. With this ABI, the guest no
+> longer has to rely on some empirical number.
 > 
+> Allocate the Quote buffer based on the reported limit. This avoids
+> wasting memory on platforms that do not need larger Quotes. Older
+> platforms fall back to the default 128KB buffer.
+> 
+> As a result, the maximum size of the "outblob" file in configfs-tsm now
+> depends on the TDX module.
+> 
+> Because the Quote buffer must be physically contiguous, its size is
+> bound by the buddy allocator's maximum page order (4MB), which should be
+> sufficient for current attestation needs.
+> 
+> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 > Signed-off-by: Peter Fang <peter.fang@intel.com>
-> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 > Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
 Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
