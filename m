@@ -1,214 +1,146 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B77B4C226B;
-	Wed, 16 Sep 2026 16:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB19E356771;
+	Wed, 16 Sep 2026 16:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789575478; cv=none; b=pj0rNx3uMgHUNFePwXWbgs188h3pSgIV+HSXIHBytj/2hFRS0j+WO/6ppuZ25b7ydjAPoPepxNs+vQzB64QosxERM5SmIGqNXG0ih6kTq8CuVr3lG6DL1XfYTBcLphA68ebS2M8MYmbQohZUE3/rwPvWRK9NkjmX4bpxCNeqgXk=
+	t=1789576776; cv=none; b=mh1xvf5diWJ3FoZZen3TpSMD5/CIE3QWMB2mlB3MwdMlym4rJKdw7UExhKJApXcj6fiHOUv77kKmwMFSNGYVyrFmomxZNgZZnN/e9C4j9/FV9/l0s1GneS8TZ3FmVPPeysaHm4ibQKNuu62VdPIrMbhXsQdAT3JJbTu6+cjw4LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789575478; c=relaxed/simple;
-	bh=p3tHar0dLjbf4nNwS6ekOIUqzn63ULh+WZ3W0oLTGoo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uCD6DhCU9jDBWXIb5mmxYB4pQ9Ob0XA+4uv9UOWyFjFE0hdeRQktickcE+SuhFZ2T/uFMRk5gEY1YHkuKSd8IhSM7AB7IvvudhpciGybM6Mfx05F67+hY1zGIDW7H/BLfGXldeS3iJmeTBLAL6/Sme8fWfPFKn6eOECNxIIldYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=cn6Vo8NC; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1789576776; c=relaxed/simple;
+	bh=tpRIZijp9OVz8xJ1EeL+tPf3ChFeQoiLXmvmWlNF4Eg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S+OJo4wK+JYkSEtkdb6zszgCzFrco5ks89wjZClt7oFoP1LzTpStFDLApe4LUaTEmuR+k5DlaXE1IGwQcZDBjeJ8LDcFI3avb2tIx2eQV8yZcONlkF9v3nLs2FwWPze7V/d9V9mDFb6KuPgU/kJEe5/W34PBFI/kBtWxNyTduIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=VTTpRpO/; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="cn6Vo8NC"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="VTTpRpO/"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BCF451516;
-	Wed, 16 Sep 2026 09:17:51 -0700 (PDT)
-Received: from [10.57.8.14] (unknown [10.57.8.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 76BF43F7B4;
-	Wed, 16 Sep 2026 09:17:53 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8B9A41516;
+	Wed, 16 Sep 2026 09:39:26 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8E2973F7B4;
+	Wed, 16 Sep 2026 09:39:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789575475; bh=p3tHar0dLjbf4nNwS6ekOIUqzn63ULh+WZ3W0oLTGoo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cn6Vo8NCPcegLEUNK1RPA8H5PEILXVRQTJQ0cZ22KykkzbVPmh3J4vOId9XA0Z+Rc
-	 kQVHuuBeJR4G+Z4A3QZ5PHT0nng89xsb+GtY1WCGoGnODFg4yXAbRUtfTx4ZRskudM
-	 CY59agMktmzbpubX7yNFseXn1IiE4HaasgegGCpc=
-Message-ID: <05239c7a-bdee-4d24-9375-c5b3497a4f78@arm.com>
-Date: Wed, 16 Sep 2026 17:17:51 +0100
+	t=1789576770; bh=tpRIZijp9OVz8xJ1EeL+tPf3ChFeQoiLXmvmWlNF4Eg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VTTpRpO/bXvOGdJEE2whk8i4bgjlyM4Oe4CK8N8HAJRuPmsS+tN8MXN42RXbgm3Sc
+	 f6K3/OxKnrKjaSuMPpqKf/X+YxnbfWi+9aQ4r9mef1QEHKjGlliCtpz9+wMnNi2U8l
+	 fztfrqPEyKMI4cNjC0OP4zktopb5mSoOGIwd3hPw=
+Date: Wed, 16 Sep 2026 17:39:24 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+	will@kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
+Message-ID: <aqrGPK0lFBFXL2qY@arm.com>
+References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 9/9] arm64: realm: Expose the CCA shared granule size
- through mem_encrypt ops
-Content-Language: en-GB
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Jason Gunthorpe
- <jgg@ziepe.ca>, Marc Zyngier <maz@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>, Steven Price <steven.price@arm.com>,
- Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>
-References: <20260904103452.1197239-1-aneesh.kumar@kernel.org>
- <20260904103452.1197239-10-aneesh.kumar@kernel.org>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260904103452.1197239-10-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260913070459.2547407-1-suzuki.poulose@arm.com>
 
-On 04/09/2026 11:34, Aneesh Kumar K.V (Arm) wrote:
-> CCA guests must align shared/private memory transitions to the size
-> reported by the host for IPA state changes. This size can be larger than
-> PAGE_SIZE, so allowing a guest to convert only a PAGE_SIZE-sized subrange
-> can leave the remaining part of that host-sized range in the wrong state.
+On Sun, Sep 13, 2026 at 08:04:58AM +0100, Suzuki K Poulose wrote:
+> From: Steven Price <steven.price@arm.com>
 > 
-> Cache the RHI-reported IPA sate change alignment during Realm
-> initialization and expose it through a new arm64 mem_encrypt callback. Use
-> PAGE_SIZE as the default shared granule size when no backend callback is
-> registered.
+> If the host attempts to access granules that have been delegated for use
+> in a realm these accesses will be caught and will trigger a Granule
+> Protection Fault (GPF).
 > 
-> Validate both the address and byte size passed to set_memory_encrypted()
-> and set_memory_decrypted() against mem_cc_shared_granule_size() before
-> calling into the backend. This prevents callers from converting only part
-> of a host-managed page.
+> A fault during a page walk signals a bug in the kernel and is handled by
+> oopsing the kernel. A non-page walk fault could be caused by user space
+> having access to a page which has been delegated to the kernel and will
+> trigger a SIGBUS to allow debugging why user space is trying to access a
+> delegated page.
 > 
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-
-
+> There is work in progress to unmap the guest_memfd backed private pages from the
+> linear map. Until we get that support, we could get spurious GPFs from within
+> the kernel, e.g., load_unaligned_zeropad(). So, try to fix them up for now.
+> 
+> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > ---
->   arch/arm64/include/asm/mem_encrypt.h |  4 ++++
->   arch/arm64/mm/mem_encrypt.c          | 32 ++++++++++++++++++++++++----
->   drivers/firmware/arm_rmm/rsi.c       | 13 ++++++++++-
->   3 files changed, 44 insertions(+), 5 deletions(-)
+> Changes since v17:
+>  * Pass untagged address to die_kernel_fault() - Sashiko
+>  * Explicitly check !user_mode() for fixups - Catalin
+>  * Switch to BUS_OBJERR for si_code from SI_KERNEL - Catalin
+>  * Clarify the commit description about the upcoming work on
+>    unmapping guest_memfd backed pages from linear map
+> Changes since v16:
+>  * Update the commit description to indicate why we try to fixup GPFs
+> Changes since v10:
+>  * Don't call arm64_notify_die() in do_gpf() but simply return 1.
+> Changes since v2:
+>  * Include missing "Granule Protection Fault at level -1"
+> ---
+>  arch/arm64/mm/fault.c | 30 ++++++++++++++++++++++++------
+>  1 file changed, 24 insertions(+), 6 deletions(-)
 > 
-> diff --git a/arch/arm64/include/asm/mem_encrypt.h b/arch/arm64/include/asm/mem_encrypt.h
-> index ef8b8463e52b..890faeed0eb3 100644
-> --- a/arch/arm64/include/asm/mem_encrypt.h
-> +++ b/arch/arm64/include/asm/mem_encrypt.h
-> @@ -10,6 +10,7 @@ struct device;
->   struct arm64_mem_crypt_ops {
->   	int (*encrypt)(unsigned long addr, int numpages);
->   	int (*decrypt)(unsigned long addr, int numpages);
-> +	size_t (*cc_shared_granule_size)(void);
->   };
->   
->   int arm64_mem_crypt_ops_register(const struct arm64_mem_crypt_ops *ops);
-> @@ -18,6 +19,9 @@ int set_memory_encrypted(unsigned long addr, int numpages);
->   int set_memory_decrypted(unsigned long addr, int numpages);
->   int __set_memory_enc_dec(unsigned long addr, int numpages, bool encrypt);
->   
-> +#define mem_cc_shared_granule_size mem_cc_shared_granule_size
-> +size_t mem_cc_shared_granule_size(void);
-> +
->   static inline bool force_dma_unencrypted(struct device *dev)
->   {
->   	return is_realm_world() || is_protected_kvm_guest();
-> diff --git a/arch/arm64/mm/mem_encrypt.c b/arch/arm64/mm/mem_encrypt.c
-> index ee3c0ab04384..69783c6a3c08 100644
-> --- a/arch/arm64/mm/mem_encrypt.c
-> +++ b/arch/arm64/mm/mem_encrypt.c
-> @@ -17,8 +17,7 @@
->   #include <linux/compiler.h>
->   #include <linux/err.h>
->   #include <linux/mm.h>
-> -
-> -#include <asm/mem_encrypt.h>
-> +#include <linux/mem_encrypt.h>
->   
->   static const struct arm64_mem_crypt_ops *crypt_ops;
->   
-> @@ -33,18 +32,43 @@ int arm64_mem_crypt_ops_register(const struct arm64_mem_crypt_ops *ops)
->   
->   int set_memory_encrypted(unsigned long addr, int numpages)
->   {
-> -	if (likely(!crypt_ops) || WARN_ON(!PAGE_ALIGNED(addr)))
-> +	unsigned long size = (unsigned long)numpages << PAGE_SHIFT;
-> +
-> +	if (likely(!crypt_ops))
->   		return 0;
->   
-> +	if (WARN_ON(!IS_ALIGNED(addr, mem_cc_shared_granule_size())))
-> +		return -EINVAL;
-> +
-> +	if (WARN_ON(!IS_ALIGNED(size, mem_cc_shared_granule_size())))
-> +		return -EINVAL;
-> +
->   	return crypt_ops->encrypt(addr, numpages);
->   }
->   EXPORT_SYMBOL_GPL(set_memory_encrypted);
->   
->   int set_memory_decrypted(unsigned long addr, int numpages)
->   {
-> -	if (likely(!crypt_ops) || WARN_ON(!PAGE_ALIGNED(addr)))
-> +	unsigned long size = (unsigned long)numpages << PAGE_SHIFT;
-> +
-> +	if (likely(!crypt_ops))
->   		return 0;
->   
-> +	if (WARN_ON(!IS_ALIGNED(addr, mem_cc_shared_granule_size())))
-> +		return -EINVAL;
-> +
-> +	if (WARN_ON(!IS_ALIGNED(size, mem_cc_shared_granule_size())))
-> +		return -EINVAL;
-> +
->   	return crypt_ops->decrypt(addr, numpages);
->   }
->   EXPORT_SYMBOL_GPL(set_memory_decrypted);
-> +
-> +size_t mem_cc_shared_granule_size(void)
+> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> index 75c3e463df2ef..dc3a87902a60c 100644
+> --- a/arch/arm64/mm/fault.c
+> +++ b/arch/arm64/mm/fault.c
+> @@ -914,6 +914,24 @@ static int do_tag_check_fault(unsigned long far, unsigned long esr,
+>  	return 0;
+>  }
+>  
+> +static int do_gpf_ptw(unsigned long far, unsigned long esr, struct pt_regs *regs)
 > +{
-> +	if (likely(!crypt_ops) || !crypt_ops->cc_shared_granule_size)
-> +		return PAGE_SIZE;
+> +	const struct fault_info *inf = esr_to_fault_info(esr);
+> +	unsigned long addr = untagged_addr(far);
 > +
-> +	return crypt_ops->cc_shared_granule_size();
-> +}
-> +EXPORT_SYMBOL_GPL(mem_cc_shared_granule_size);
-> diff --git a/drivers/firmware/arm_rmm/rsi.c b/drivers/firmware/arm_rmm/rsi.c
-> index 2cd53f82432f..eeb797c6c2c7 100644
-> --- a/drivers/firmware/arm_rmm/rsi.c
-> +++ b/drivers/firmware/arm_rmm/rsi.c
-> @@ -19,6 +19,7 @@
->   
->   static struct realm_config config;
->   static struct kobject *cca_kobj;
-> +static unsigned long ipa_state_change_granule_size;
->   
->   unsigned long prot_ns_shared;
->   EXPORT_SYMBOL(prot_ns_shared);
-> @@ -155,9 +156,17 @@ static int realm_set_memory_decrypted(unsigned long addr, int numpages)
->   	return ret;
->   }
->   
-> +static size_t realm_cc_shared_granule_size(void)
-> +{
-> +	if (is_realm_world())
-> +		return ipa_state_change_granule_size;
-> +	return PAGE_SIZE;
+> +	die_kernel_fault(inf->name, addr, esr, regs);
+> +	return 0;
 > +}
 > +
->   static const struct arm64_mem_crypt_ops realm_crypt_ops = {
->   	.encrypt = realm_set_memory_encrypted,
->   	.decrypt = realm_set_memory_decrypted,
-> +	.cc_shared_granule_size = realm_cc_shared_granule_size,
->   };
->   
->   static int realm_register_memory_enc_ops(void)
-> @@ -167,7 +176,7 @@ static int realm_register_memory_enc_ops(void)
->   
->   /* we need an aligned struct for rsi_host_call. slab is not yet ready */
->   static struct rsi_host_call hostconf_call __initdata;
-> -static unsigned long __maybe_unused __init get_ipa_state_change_alignment(void)
-> +static unsigned long __init get_ipa_state_change_alignment(void)
->   {
->   	long ret;
->   	unsigned long shared_granule_size;
-> @@ -218,6 +227,8 @@ void __init arm64_rsi_init(void)
->   		return;
->   	if (WARN_ON(rsi_get_realm_config(lm_alias(&config))))
->   		return;
+> +static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
+> +{
+> +	if (!user_mode(regs) && !is_el1_instruction_abort(esr) &&
+> +	    fixup_exception(regs, esr))
+> +		return 0;
 > +
-> +	ipa_state_change_granule_size = get_ipa_state_change_alignment();
->   	prot_ns_shared = __phys_to_pte_val(BIT(config.ipa_bits - 1));
->   
->   	if (arm64_ioremap_prot_hook_register(realm_ioremap_hook))
+> +	return 1;
+> +}
 
+We discussed briefly offline. With the latest patches around, would we
+ever end up with private memory mapped in the VMM and hence the GPF? If
+not, I would still keep this handling but add a
+WARN_ON_ONCE(user_mode(regs)).
+
+However, can we end up delegating a non-guest_memfd memslot page as
+protected?
+
+I played a bit with codex and it reckons it's possible if a guest_memfd
+memslot is deleted after its IPA range has been initialised with
+RIPAS=RAM. Removing the memslot unmaps and undelegates any data pages
+but leaves the RMM state as RAM. The VMM can then install an ordinary
+memslot over the same GPA range.
+
+A subsequent private-IPA S2 fault sees the non-guest_memfd slot, takes
+user_mem_abort(), GUPs the user page and passes it to
+realm_map_protected(). The userspace mapping remains present, so a later
+EL0 access can generate a GPF.
+
+What's worse, I think it can even trick the kernel into doing a memcpy()
+access (via GUP). Hmm, does such ordinary slot page even remain pinned?
+There are other kernel parts that could access it.
+
+I don't think it changes this patch but if the above is possible, we
+should definitely get it tightened on the other series (and here we can
+add the warning).
+
+-- 
+Catalin
