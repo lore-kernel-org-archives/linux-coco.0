@@ -1,181 +1,96 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F88736F8EB
-	for <linux-coco@lists.linux.dev>; Wed, 16 Sep 2026 12:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D08402BAB;
+	Wed, 16 Sep 2026 14:10:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789562933; cv=none; b=athJWgAh0L9Qn8GeUgRNGnUtjHcgossZfKPf2Y+cNl3YZD+qm8W9rKD/KxVD48ZLJf3AmH3f78wFKKF05At1ZiN4ve+MwgNd23Oskl6QNQrZgHaYfIDqXX+UlC5N9GXvMIFJk2IqpUbr9u9p9dovt22nRvI4JDXfjeWCiDfCVTk=
+	t=1789567810; cv=none; b=ALMcnrFh06o17z5rij05ij/0S3QBjAOG4ORJ2LXx95+GjxDEU5IAxolvc02TcDr2frT9sROoYVsZKQlygnfUnCY6CsMB8yhrSm2Bx9m9PJbAKDCt9BX2YcADzUIDRqSdE5ytz4pkXS+EmS1ut5sbsJHttF1KPtFvPKMfp2DoojI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789562933; c=relaxed/simple;
-	bh=H34k7SsIUJ0nZ0sEaZhQtlZ3Kbira6446GXQ2UQYvlA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nH4JumJTchjdTE3euHzILLMzWU7iSJXtqndHbPIgYH4ILJVFzFxXkhQoQ0Lxy8yelMBinzE8czzoKPBNtDEZzGmzGSA81c0so/lMsDBgzrNQtNlCwEIFoJYHLxpfOZ6FxUvYg0G1F+EUETht4dLhp7me8wXDs2grAsCQB35cRTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=j+h9SWdl; arc=none smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1789567810; c=relaxed/simple;
+	bh=zke2Jbnju74YwXiS4owNn2TyZgM3iYNnDNS2JQ6KN64=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=UNscukxrRwxVSfgbrC4/Q9/9spjreaG25nBN/3fEksSOrT++V30v5sMzSWg8zciSn9gG2CgJ4ZIkV0F1LdiM5H077uN7+e/dUBYBScm4z067S37JvELHoCtYuxHR08Jbjy35/Evq7m0CmYN1VimfWRt88W2A58KVyyBAAMJctBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C5z2dP/s; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="j+h9SWdl"
-Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93910c9ff1cso75977685a.3
-        for <linux-coco@lists.linux.dev>; Wed, 16 Sep 2026 05:48:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1789562930; x=1790167730; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VzaI7ZYbqdoJC4coFReri2t1Bm12kg0MhPi/KYFxqXI=;
-        b=j+h9SWdlK2Z6ME1GZ8zRpvBpjLkJjmk6p8L7SV43zYg+enVuxt3QkeTdHyPQmO5x/D
-         EpVsf22y28tjHjUqbClse47tQcTrbeKi+oh4yy2hl/NniN1+ur+aK6NPfPzrSX7pG7yE
-         J5xAIgj7mUsy3Isvtau9wlC2xE3jkPmt4hAJXQYmtTc43eR3ueTWX6toE9xsdyTkugko
-         beCcZh4AEYGFG02tS4xEtokmKLdyNaWBUGiv/QVrTJFBhdW6AKjUOyM89lNbd1vJpyNg
-         z2gR3QyIMwawoauQXtx/PLcsPnCeQLP1B4k/kNxMF+spm7Fc5fkxtfLyQ9ux47LvRZ2b
-         jDVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789562930; x=1790167730;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VzaI7ZYbqdoJC4coFReri2t1Bm12kg0MhPi/KYFxqXI=;
-        b=NEANglgiTZRwYnSKNhBShNYznMbUcM6++JE34GZ8NnjqaWQc7593rI+Ks2DaIZRDZl
-         FaxNWeruvIo8pZEjgOXDyLeKxtE8A9tKSV9juTAxIBpUIifyuOlX6hsc0UBXCKQonrwc
-         V6reI5CoOe/UPCzfw1eeMFl9of3wmVEY1ksQVP0+/rzijfXayaiQeUStRBrhnWELmJZM
-         7+uuJ9Z47nyyCM6JTetep0yWbe3SZ4XU7E/4cb5WDtSuI1Q668sdEmYRxoy0oDaszbdz
-         sqoIqA62ZkwPbMj3dzR191Bt94lEKUdVS/gYg8zWOI/y782TUDxNndFKSyqk0dZQiAge
-         21lg==
-X-Forwarded-Encrypted: i=1; AKwUvBzLWkENqeyr2KFN6TO+q4vR9rhuB0Gx4vh9rlXNM+BODV4XdyH/oazKRzlFVeJyrPrjFdWGLpYfRxyw@lists.linux.dev
-X-Gm-Message-State: AFuF++natxM5xkhIVYYPILFD4BOPM7n+CSnZ9Db4XdkqQRkEmCt8ynXT
-	VruKUGguWeObLLK5eZWpkQioVew0Ai/ZleOoQ8zWmC+xjo/xNOwXqaKni8AWY5RilOQ=
-X-Gm-Gg: AYBFou37nNuuhvPNDX1AoFpB9WFPlgPkoPVlHzdU6wr+YFFZr8ORrRQUJnjKV51tBOM
-	txIhalkX5X/U5yYHxOwYB89FFen2KcUzQ2SDCg1Pa/P0KqlVPxId5JC+XEHC50ZI1ktVinOb9oR
-	j5Aa19dCvIXigss0JcQfknn4h67g6XUZmVuvC/FqhpCKGMjiDCsOvoeyrdQs4GyvUqP1nOgJCFQ
-	USOZ2zWsAKwG7Hu8yZCAs38q+qwWM98NnFLicFdJkYeb45R/J4WcZtGi7bDBFiDm9IBwYCmMMQZ
-	CwXcWMnYF59/rLxxc01iqjVkqGQOk2NR+irKHe4hjqxFnzy0/W1CD2pl2DX+d9EW76bqCj8Q//u
-	nREBqhcEOiIJPLrLYlB+g1EFrxdcUQ5K4UhR1SIofWq3xFRqBtRrNv4juORjbpkGtwZIDtVRfkR
-	u1xWhC9muh7kEeNm2JA0OxSQsngKcFtmLXhhyhJKL3vf553wjrHArVIN++EWi8+gh/xzaFGTl8T
-	YAYbdwA1V1O++sYH54NcuSMRbmzsgylkZrlsUq2J+TXOi8p9AtaIqgqQg==
-X-Received: by 2002:a05:620a:d8e:b0:939:6de9:4cff with SMTP id af79cd13be357-93bb7907fecmr386232885a.45.1789562930363;
-        Wed, 16 Sep 2026 05:48:50 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93b7821dcfesm208481285a.18.2026.09.16.05.48.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 05:48:49 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x6p4D-000000099Zm-0Jbp;
-	Wed, 16 Sep 2026 09:48:49 -0300
-Date: Wed, 16 Sep 2026 09:48:49 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jini Susan George <jinisusan.george@amd.com>,
-	Kees Cook <kees@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Kim Phillips <kim.phillips@amd.com>, Joerg Roedel <jroedel@suse.de>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	"Tycho Andersen (AMD)" <tycho@kernel.org>,
-	Liam Merwick <liam.merwick@oracle.com>,
-	Michael Kerrisk <mtk.manpages@gmail.com>,
-	Suresh Siddha <suresh.b.siddha@intel.com>,
-	Xiaotian Feng <dfeng@redhat.com>,
-	Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
-	Andi Kleen <ak@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Tony Luck <tony.luck@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Carlos =?utf-8?B?TMOzcGV6?= <clopez@suse.de>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C5z2dP/s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC8D1F00899;
+	Wed, 16 Sep 2026 14:10:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789567809;
+	bh=9wkSkC3ghOPH7GbBKWRGiMYDHI1khZ1B7DAF4kPwM+Y=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=C5z2dP/s3qv/3Cdw4aENJeNEDMCznZMWR6yD4F70/z77sFaVzAYu6gL4DaE/I4Ab4
+	 Fd8XrSowrTOxKVo1DQEgDfK1154oCdFWuars9hJY5LUiMsIvTGXe/4tzcLwf/Tfgtc
+	 jEo942aygEPooDXWirDAtNGgUX+nYSMcdSDvme4G5wGKj/tUOlqS9Qp9cKICaFAkpI
+	 BvVcCi8toeL4FmwJklDNGpuRypSaZfLrzNAH0FVoKfewx7rUTVguQ+ejAJMTWxoOMx
+	 EJ7gnYJwrGjmKCJq59UQlAg43Wtn6bdAOGBPXz7kU3vipgB+YGbUA+9QA2m1iwSHeF
+	 tKU9ynqkCWJ5w==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
 	Jonathan Cameron <jic23@kernel.org>,
-	Jori Koolstra <jkoolstra@xs4all.nl>,
-	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Ian Campbell <ian.campbell@citrix.com>,
-	Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	David Howells <dhowells@redhat.com>,
-	Haavard Skinnemoen <hskinnemoen@atmel.com>,
-	Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Ilias Stamatis <ilstam@amazon.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Toshi Kani <toshi.kani@hp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Jiang Liu <jiang.liu@linux.intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Palmer Dabbelt <palmerdabbelt@google.com>,
-	linux-coco@lists.linux.dev, xen-devel@lists.xenproject.org,
-	iommu@lists.linux.dev, linux-mm@kvack.org, aik@ozlabs.ru,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	"Pratik R . Sampat" <prsampat@amd.com>,
-	Scott Soule Cheloha <scott.cheloha@amd.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [RFC PATCH kernel 10/17] x86, dma: Allow accepted devices to map
- private memory
-Message-ID: <20260916124849.GD3196566@ziepe.ca>
-References: <20260916115159.1938195-1-aik@amd.com>
- <20260916115159.1938195-11-aik@amd.com>
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Andre Przywara <andre.przywara@arm.com>
+Subject: Re: [PATCH v11 7/7] coco: guest: arm64: Replace dummy CCA device
+ with sysfs ABI
+In-Reply-To: <aqp2DRInEhzpEqAc@arm.com>
+References: <20260914060511.277948-1-aneesh.kumar@kernel.org>
+ <20260914060511.277948-8-aneesh.kumar@kernel.org>
+ <aqp2DRInEhzpEqAc@arm.com>
+Date: Wed, 16 Sep 2026 19:39:59 +0530
+Message-ID: <yq5ald911e4o.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916115159.1938195-11-aik@amd.com>
+Content-Type: text/plain
 
-On Wed, Sep 16, 2026 at 09:51:50PM +1000, Alexey Kardashevskiy wrote:
->  bool force_dma_unencrypted(struct device *dev)
->  {
->  	/*
-> -	 * For SEV, all DMA must be to unencrypted addresses.
-> +	 * Require unencrypted DMA unless the device has been "accepted",
-> +	 * enabled by a TSM driver to DMA to private encrypted memory.
->  	 */
->  	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-> -		return true;
-> +		return !__device_cc_accepted(dev);
+Catalin Marinas <catalin.marinas@arm.com> writes:
 
-I want this out of arch code, after Aneesh's recent rework Nicolin is trying
-this approach:
+> On Mon, Sep 14, 2026 at 11:35:11AM +0530, Aneesh Kumar K.V (Arm) wrote:
+>> diff --git a/Documentation/ABI/testing/sysfs-firmware-cca b/Documentation/ABI/testing/sysfs-firmware-cca
+>> new file mode 100644
+>> index 000000000000..bf177d636b92
+>> --- /dev/null
+>> +++ b/Documentation/ABI/testing/sysfs-firmware-cca
+>> @@ -0,0 +1,10 @@
+>> +What:		/sys/firmware/cca/realm_guest
+>> +Date:		May 2026
+>> +Contact:	Linux ARM Kernel Mailing list <linux-arm-kernel@lists.infradead.org>
+>> +Description:	Read-only. Indicates whether the kernel is running as an
+>> +		Arm Confidential Compute Architecture (CCA) Realm guest.
+>> +
+>> +		The value is one of:
+>> +
+>> +		0: the kernel is not running as a Realm guest
+>> +		1: the kernel is running as a Realm guest
+>
+> Does this file ever read as 0? It is created only if rsi_present and
+> always reads as 1. That's fine by me but we shouldn't document 0 as a
+> value. More like if present, it always reads 1 and RSI is present.
+>
 
-https://lore.kernel.org/all/abddd433493324a6bfdf8ba9710e96d90f0d1ccc.1789010941.git.nicolinc@nvidia.com/
+For now, that is correct. However, the two checks could diverge if Realm
+guest support is enabled only after additional checks, such as version
+compatibility.
 
-Jason
+In that case, is_realm_world() and static_branch_unlikely(&rsi_present)
+could return different results.
+
+I assume that any error when reading the file, including -ENOENT, can be
+treated as indicating that the kernel is not running as a Realm guest.
+Do we need to document that?
+
+-aneesh
