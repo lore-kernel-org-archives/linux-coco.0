@@ -1,285 +1,282 @@
-Received: from mail-ot1-f98.google.com (mail-ot1-f98.google.com [209.85.210.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B357D3A9622
-	for <linux-coco@lists.linux.dev>; Wed, 16 Sep 2026 05:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.98
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789535168; cv=none; b=UGLcLkhUiy4W9d5rts5L4WaCfEEdNolQ3no6NeLRAAxwA3A9J5um3UWUGtKE8HW0WC00hKKa/KyoYV+q6qFNlsW5xM0KpyDttFxA6Ga4U5ZJw5uqg/pdyA63Yazc5dmZcLNjvE6hUiOaBE3dxtLqwv2YmGLKJgQcj3YdUJn41vo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789535168; c=relaxed/simple;
-	bh=ZCYsk3b8be7YzwPtZc9AlEHE3JpuvSauytIqzViEWP8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GxyJJen0v5aSiNNa01X6ZzaIdoL2aWHE7gpi91kHer0siLGmLs28jXnmhmUyPeWdxsy5Dk0N/cNe7Pqyi8yfDTt4IyqxyLAvWNPB9Vt65HGQ8/igTiTiKQu3gEcVJw6LxICzaMKh1X7/Ejag9d1XO68mobp3b2A8v2M3J7bjgUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=J1pHa7xn; arc=none smtp.client-ip=209.85.210.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0040037B023;
+	Wed, 16 Sep 2026 05:56:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789538215; cv=fail; b=O3+cDWwpeQ8HKRag87j3pY+Yioaqm/tJg+oktI77cNA/cAgQlt6MqxNsx69nRG8zrxt6ST1swI7GKfZ8OsPW3EZT9CJufJdjknbRWZhdW9QI+SVt9sOIze4xvAIzwUwMNXzlvkUTIVDLbL9C3MMzLR45LJ+fPYEtOi6dYWIewjw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789538215; c=relaxed/simple;
+	bh=Iibnl9Gx8bg2D0RZHMkY6qWr84bIb2wX5A2pNri/rB0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=QsmWFls/Y2M/PcmJ3HmA96vD3Fgfa3Vd+g/W6QZIGXV491gQo7Dk1US8HwwMhF1+kJv5Pyy+lsrx71bIAW4323xHQ/OB0GXZehUQmMn6OcbvU9Pc5+uF9c2yiOFRJuYm/gbY1vuINQl1uhZkEFKo7lobqk5yEGT9pcCr8/t5UE0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Db63nIGj; arc=fail smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="J1pHa7xn"
-Received: by mail-ot1-f98.google.com with SMTP id 46e09a7af769-80576d65d8eso3784734a34.1
-        for <linux-coco@lists.linux.dev>; Tue, 15 Sep 2026 22:06:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789535165; x=1790139965;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qEqGUwhuGtd/IQ00br0ru4/E+DR8RR02AnrUv6Zwxpk=;
-        b=PpLK9HaYHqcb5VLfUVBFM047Lsw2DGYjoNGbTRno8RJ7Bo6W97YdosQ4zgN7HXzGGZ
-         +a6MUw9LoATpW2GrdDpbqqy4o9vm+c6uyDru+62y9mXHNz4CtII75yV++oki5DGGfD91
-         dNWuBrbuxJLrYM2NVL5kRr2SSaV6VmLwRIDOo4dQGKpd4bTOS+GtgEY5/X6Xh3mnQd8o
-         NkZUzn2eYOqmhlIEslY4uRb0IP7Iv/5JlM99DcJyz0tfR9kHftpv9y9HV3ZmS9OS0HSW
-         3x5KoHOrkbyRZ6e4wC92rcOx6Kd8dlEghkuR7hBr8N+h4be2dRgMBd8hT6sPTXNMZ4JN
-         7mZw==
-X-Forwarded-Encrypted: i=1; AKwUvBxLjSduZzFNWxVVzYBBPs0WkL36yAT+vyRV3GL9sVgY9+KlggvCN1DyowJ/lao7NVFjw/ri3MLPbe3S@lists.linux.dev
-X-Gm-Message-State: AFuF++lGRBBAfWDd8n3H3I+LWt3IDbV9TOyBudhYN+EjH87Oqy2RKJxx
-	h8A3lX5DvP5hPKSN657q6ewhb20fgywLfLSBI2awLNWauAJRp4isn6twyANpjx5LzvfrUdlA2m9
-	ez/tXjpME/UCqd1wO+q/HFXCKGLaMoHbp4gPcMAdxNgs068BMNELWwc82LHFKThLhnWqcfCFrEK
-	gFfrnnVJ1sHnj8GUChonVqIFxYBuORGIIUSZ6EIR4Uxs2nB98Y3XBcrB09ABK/MWQWTRChMcIQG
-	QNjMpVh+wV4Uw==
-X-Gm-Gg: AYBFou143OtMPplRFhwWwiEY3lhu7/59JfSsuH2Jt+f2bNtAs7ZVzoJwm+pubQnwG53
-	fIZcpCRxLdJgP4yoV4bYd05Mk1hNT8q/R2mMLmMldoUI1qdX5/1mcGSyH6sEZINm0g9scC5eAJN
-	SRaPorsp0weUBFZP/lzY89n2b4P3vzUnAdJCcNDpfg/HJIpAwOtR+bkLEJbu5kZFXQOzzUPE4c3
-	9cXZTgJ/ZwCPraOEMq/7ivaynRFSi0c0f/IP2Hz3mrPV1xK8/h8tt70MmrgadqM/0a6S5NPVYuz
-	0Pd0BXNj42EPTmq+z/dH/U8p1OkYr1wK/RVKzxyVh6ErjQ/PnCFfTn+Yh5xVRmJDzGB/ui5HJHo
-	+Wn1zASR7dlmkIJ9bc46WBqOwicrncWV/U+kHlYUC9al4t7v1WJv92Xc99EvjHtiFsq6WNr82xg
-	Odm+2l67rYf+h4+2UF8kwK57oMcR+AWq86
-X-Received: by 2002:a05:6830:6f86:b0:7dc:4a43:fb5c with SMTP id 46e09a7af769-80b2c28f168mr1506677a34.11.1789535165527;
-        Tue, 15 Sep 2026 22:06:05 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-29.dlp.protect.broadcom.com. [144.49.247.29])
-        by smtp-relay.gmail.com with ESMTPS id 46e09a7af769-80b072b8363sm744872a34.5.2026.09.15.22.05.59
-        for <linux-coco@lists.linux.dev>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 15 Sep 2026 22:06:05 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc4fc935a11so1682440a12.0
-        for <linux-coco@lists.linux.dev>; Tue, 15 Sep 2026 22:05:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1789535158; x=1790139958; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qEqGUwhuGtd/IQ00br0ru4/E+DR8RR02AnrUv6Zwxpk=;
-        b=J1pHa7xnFtPUTNL5Oo6JQsMSofBg4QerzraB1Rg5408vil3iDkKKBFglAqTCtYB04r
-         /t08w5sSEM89bco4AwaSuWELFzbsSbkvszHFoguez/ZbdrErzZgT3JGvb6uhaG/51UU6
-         iDTQoDAcDaViRVhUx1PEl19WpJlTJhiRWtcLY=
-X-Forwarded-Encrypted: i=1; AKwUvByZDIH7UshVmKaHn6/REasLAE0ronxiScW4QWsZaQm6HaljKTrtrShFCA4d4kNu1n4HE4j+7gDXQTHY@lists.linux.dev
-X-Received: by 2002:a05:6a21:1343:b0:3da:80a1:f2f with SMTP id adf61e73a8af0-3dd5f5dfd69mr2927541637.14.1789535158371;
-        Tue, 15 Sep 2026 22:05:58 -0700 (PDT)
-X-Received: by 2002:a05:6a21:1343:b0:3da:80a1:f2f with SMTP id adf61e73a8af0-3dd5f5dfd69mr2927490637.14.1789535157892;
-        Tue, 15 Sep 2026 22:05:57 -0700 (PDT)
-Received: from vertex.localdomain ([192.19.144.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33bf5e40494sm3951386eec.15.2026.09.15.22.05.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 22:05:56 -0700 (PDT)
-From: Zack Rusin <zack.rusin@broadcom.com>
-To: Borislav Petkov <bp@alien8.de>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	x86@kernel.org,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	virtualization@lists.linux.dev,
-	bcm-kernel-feedback-list@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	Christoph Lameter <cl@gentwo.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Bo Gan <bo.gan@broadcom.com>,
-	linux-mm@kvack.org,
-	linux-arch@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org,
-	Zack Rusin <zack.rusin@broadcom.com>
-Subject: [PATCH v1 2/2] x86/vmware: Decrypt steal-time storage before sharing it
-Date: Wed, 16 Sep 2026 01:05:40 -0400
-Message-ID: <bbdb89067cd07d07fe4963ad229932faf87b0ef9.1789488039.git.zack.rusin@broadcom.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1789488039.git.zack.rusin@broadcom.com>
-References: <cover.1789488039.git.zack.rusin@broadcom.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Db63nIGj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789538214; x=1821074214;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=Iibnl9Gx8bg2D0RZHMkY6qWr84bIb2wX5A2pNri/rB0=;
+  b=Db63nIGjryfx7QZcUex8zGZfLObicUpXZs/c4SjCo1opYGXTURw2QNtU
+   XxIsfkxBXaxb5RnE/PV72Ni7F7TO5l9SOZqWer9uGjBvSa/xQQ81GmXZz
+   EdzeW62Ri5bsZ5FXav4yTfbN9dkx9a69PCF358e0/L6O3A6EKkWhlLuN/
+   xu/WqgL2knPfgnfX1eXbaTwwNKSrl5jVW67Yi1IpD6UBJMMKPHvVI0Arl
+   yYzz9/P2M1SlGhEOi93RALNfIvRrTUGM2Fl5tgVU+oTIHyLTH5CplTT+I
+   hghIAudzSDafn2Wf89ASc7f3WJJVvizgImqQP9sGpZxz6v8hm36bERFH4
+   w==;
+X-CSE-ConnectionGUID: CN9T1+nfSoWYBnD8Zh2vIg==
+X-CSE-MsgGUID: bXWES8PNRtK+fOlMvksoqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="88846923"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="88846923"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 22:56:50 -0700
+X-CSE-ConnectionGUID: Za9oZDdASUWDK9P4hgXpNA==
+X-CSE-MsgGUID: y/oT4OVCTdKFQSYutaqu5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="268961119"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 22:56:50 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 15 Sep 2026 22:55:03 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Tue, 15 Sep 2026 22:55:03 -0700
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.69) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 15 Sep 2026 22:55:00 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nuCd7MkxVuPbyk+nfaKxMexpsawBCSFlCJTK7dImjkOxB3Y+9in4D+k+T5uPAgwMyTTfPk40sFJdIQicJxEoa2AOrGNdDN4ilSpIZfQ1vvMIdayhRt6dg5nl0lj14LMa6A3iJgBHBzGXtd1KL1yN8t5b5lXZrK1fR3RUx1Tf7QiOAl39rQQc5c0FvcOEDcyZxMGEy+JO8iovaUKehaW+xWpZcARY232dJLVw/vR6lTd6+LBtFSb29PkiWFIA/Qzi7/N3GJvPvj/FXnHhXiuptH8wCWnz1gWqEup2zU8XpLcdKav5QT4CO8ovDa+3vsLjaeJ0FHHGsP2Otnx8g9Azvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Iibnl9Gx8bg2D0RZHMkY6qWr84bIb2wX5A2pNri/rB0=;
+ b=AP0SKwo6TiyyHQ584smIcqhNjvGO5w1z7gPgz9DX1KCh0Hun6bKqLp8cMH29jMwwMrIYkZEBnqqKKlK6PtIlQ3LONNvW9FSWQZ2Y3Lsq26tVdf6sXpb5cR3AJm/gqLpvUzTtNYXzvjY1WdOJJMQtgDmbxBgs8TnrbZjJobVcYHHidyhOv9Koh2dKnravm8fJqQr9/ecIYA1wSQtEh3yIr5xS4FzuYVfrIJxN9o6FY93fNdXUPsG6oZR+OTmikvmMkQ12EWJZoS+wcsHZ2dx8rz3BAzKAbqMmXpxDh5I8xm756aP9aluVYWStQz8EeZ2p0XMklxVX+4aKfr5YYq2XGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CO1PR11MB4835.namprd11.prod.outlook.com (2603:10b6:303:9e::22)
+ by SJ0PR11MB6741.namprd11.prod.outlook.com (2603:10b6:a03:47a::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Wed, 16 Sep
+ 2026 05:54:57 +0000
+Received: from CO1PR11MB4835.namprd11.prod.outlook.com
+ ([fe80::d051:d948:c209:9225]) by CO1PR11MB4835.namprd11.prod.outlook.com
+ ([fe80::d051:d948:c209:9225%4]) with mapi id 15.21.0406.007; Wed, 16 Sep 2026
+ 05:54:57 +0000
+From: "Tian, Kevin" <kevin.tian@intel.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+CC: Aneesh Kumar K.V <aneesh.kumar@kernel.org>, Nicolin Chen
+	<nicolinc@nvidia.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Alexey Kardashevskiy <aik@amd.com>, "Catalin
+ Marinas" <catalin.marinas@arm.com>, Dan Williams <dan.j.williams@intel.com>,
+	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>, "Marc
+ Zyngier" <maz@kernel.org>, Pranjal Shrivastava <praan@google.com>, "Robin
+ Murphy" <robin.murphy@arm.com>, Samuel Ortiz <sameo@rivosinc.com>, "Steven
+ Price" <steven.price@arm.com>, Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>, Suravee
+ Suthikulpanit <suravee.suthikulpanit@amd.com>
+Subject: RE: [RFC PATCH v4 03/16] iommu/arm-smmu-v3: Add initial pSMMU realm
+ viommu plumbing
+Thread-Topic: [RFC PATCH v4 03/16] iommu/arm-smmu-v3: Add initial pSMMU realm
+ viommu plumbing
+Thread-Index: AQHdN/EwiLvbaU+6lE2MX0oxJV5il7a5dWsAgAAN2ICAAErrgIABNM4AgAA3CgCAABBnAIAAON+AgAB6EYCAAGKGgIAAwE4AgAXLI4CAADRDAIAC9yOAgAAr2QCAAS/H0IAAYpMAgAdUwACAAJbEAIABAFjw
+Date: Wed, 16 Sep 2026 05:54:57 +0000
+Message-ID: <CO1PR11MB4835562E7714F368E669D3B48CB92@CO1PR11MB4835.namprd11.prod.outlook.com>
+References: <20260902235609.GG2890729@ziepe.ca> <yq5a8q5izxz4.fsf@kernel.org>
+ <20260903171704.GK2890729@ziepe.ca> <yq5acxupjsy2.fsf@kernel.org>
+ <20260907125228.GB667892@ziepe.ca> <yq5atsnyag84.fsf@kernel.org>
+ <20260909124628.GH2543240@ziepe.ca>
+ <CO1PR11MB4835512E374074A5F4AD0A6C8CBF2@CO1PR11MB4835.namprd11.prod.outlook.com>
+ <20260910124632.GB4083318@ziepe.ca>
+ <CO1PR11MB4835FF972283C09D7D683DAE8CBA2@CO1PR11MB4835.namprd11.prod.outlook.com>
+ <20260915134318.GB3196566@ziepe.ca>
+In-Reply-To: <20260915134318.GB3196566@ziepe.ca>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CO1PR11MB4835:EE_|SJ0PR11MB6741:EE_
+x-ms-office365-filtering-correlation-id: b1819bc7-ce43-497a-0371-08df13b709d7
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|23010399003|366016|18002099003|22082099003|38070700021|4143699003|10067099003|56012099006|11063799006|6133799003;
+x-microsoft-antispam-message-info: gIewZjaP+g4q/XLD0uJ0qNU5Z7/Uvcf344kiBz8xE+WDQvmmdb/UhOpbGtfVZ5rfwdQ8HbJ5YGUU8Nk0x3ilN+7HBqUMpTVE85h/DFB46yVmNR9+iLeUBKIqozSZLt64F/1z7kSss6I1A62bNVgDRhQQoYNv2RmJycaHGZ7RuwTNR0Kk7SYT69pSmQRcF1M9LFTrzjtD+XmKJRjJvjdc7+AAaxaJg7FKJ6yfqBpv/kk/kjbi27nX1oL6JaUknPp4IsjBLrRxEZqYk4sM73kbcx0Am9voHjViFT6YKKaNwznSBlC5APvKQesyB721dN7KBbIehYG+pHoNWh24aQcOpr0qjicdEhpDQTht6QdrmiNrGyKO3Im7PR6TZN9mpuORzygbx/2Tj4G8cJrKr7nJsRKGo7KxuqKzzo9qrlTaZFFzJAJD2TiJy5OcLW5BbDkzFb9FWBA1NyDLeKvEoYOrW2N//8wtF08amJOtLzhwM2I6ffdF4PN53aQ3aTfDiVjsD+pjqHRZ8VIeT+yoe3Go71fx+njFNOSPGtFzb7ekWaX9sKHtFux8vW4PtjjjAqh0+XnbGz4yiZqz0z2GnPumPDl/RQZsTaU6eR6pvouOgBeDTMaMax33HUDVxl7sreDUD6S7vhecywE0iueTJhHtR0wbu/FzXZkizXUdg8XjwMC3uPHbi/AinSqGO/p3gzVG4F2fuy0MiR753bRrcvutAdpX4nhjHiQImoz7UdJUwtA=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB4835.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(23010399003)(366016)(18002099003)(22082099003)(38070700021)(4143699003)(10067099003)(56012099006)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?qHkE88RudTQHcftwqOZM38e1v2HmWYSFTbEdeWIBsZGRqyeRamP5Y04uhI8g?=
+ =?us-ascii?Q?yLaWyyZYM1na/gE3Jd8M/4+MgIr5Logsd91BxX9mBIPryrkkpHyRptiQL7aY?=
+ =?us-ascii?Q?I4FDddj4tvWFY2bGqv+hIMmOO+Xdw2KDhCKZnNR7ntJeamVZHYk+opIIVhtm?=
+ =?us-ascii?Q?OnOU27UsNnwB5xpIFe/H2RtenXyYCoga4VBNffQEJgexqgTcfoQIkrM7jLa2?=
+ =?us-ascii?Q?Fh/uJ04mfOYUk8TLD7A0nQiPMpCiw/wEWyP/1gsKCW9zgT5h5tmMDF8amGD0?=
+ =?us-ascii?Q?7n584piITtlpTEeI7/xpWxaV+oaAVCykLtkEMKmawddC6U57zjjV+Y9kK5op?=
+ =?us-ascii?Q?9JS24Pe7XpuWb9ob0wABXnkP4X1LPcaLffmiN/ZkxtWvweof/g71AjD98GLq?=
+ =?us-ascii?Q?E7dAkNt5SyM9AQxmXo8txzE6xmHUU7Lecj+8Hy2zLRAH0MY/2ZqiGoxL8PJt?=
+ =?us-ascii?Q?S3+d7DU0hPbUyzzipCImAopz4Pg+DmsidDORvD5T758jWrMQxImKqLumW6e+?=
+ =?us-ascii?Q?kXmfB4/iQoUjxwGD1A2B35ooRmHvKAronb23UVfCfoWWVviclIcVMwl0qOSq?=
+ =?us-ascii?Q?GgRB4OXvqPCDLGWVOYQBi2GZqP1d3dWz07/pOY+qAQhJQjSMGg88hN295bRh?=
+ =?us-ascii?Q?T2+R9XvZC1BQ3TsuYhOATAn1Atvq2QHa5nRGM5SdFlflBTux1trMK/HjwVP3?=
+ =?us-ascii?Q?3Q3ev9G72OHni82uHiQ7so6chv2uwit/2RIcX5PgklxDbq+bJ4aTdQN8eZuU?=
+ =?us-ascii?Q?N+JSzwrWJZH3yoAWINv+V1kmB6EWglI8Hw+bFCWw0zgVhBya7kOemhxT/Yp5?=
+ =?us-ascii?Q?GGaI0hZ68PYiLKC52HcrKtf/SezyIGLxkS50L0GAVAtQz99igf4LKSN1TRJw?=
+ =?us-ascii?Q?QRKR9K9ZJrGebYWiZuhdXh0kNc/oPEvch/NJNTPBElX04TyvUhwwWULqhipE?=
+ =?us-ascii?Q?Dl1IC1xBEIDMtiwKbKn7Ud5JH+IMZzG1vVetWa48l07/FFr/6ZyouKhBARkK?=
+ =?us-ascii?Q?PCca2/CD8qBtWwPLhkIggrFj5kfVFoYVmlHEDfwQZK2MpH1+WcgiJrQw5htp?=
+ =?us-ascii?Q?ORvicCNZ+e8Quxq1h73IZ+BSOX2S/mVcaCYm5RozWFpMl9jcZZ1yDsAD4bDb?=
+ =?us-ascii?Q?dO/8tRE4m2BZKwesJJLu2ZtV1OFXB5jA9sh//ikL/GcUOStsE0eukwmi6RPH?=
+ =?us-ascii?Q?YkP/OFxJs65I5qTpofgMozxgFfAbLQsnS37E6rtZxjO4DxkSZQHlUnoJFIDZ?=
+ =?us-ascii?Q?qMA4X+5c6BA1kcSS1WhTopfmRo62xMiHTIdVuJs0HJhuCTo0Doe2vYQvuxhn?=
+ =?us-ascii?Q?l6GmwQFyJp+ChlPirbHn9lWOkSq2hnx4RR40EAiNpqHjVhozbsnu4qu2f+9o?=
+ =?us-ascii?Q?MpIhf5SLpvCXEmOBXechHnRYdUvJO4hrKqDkYKVAhjyqFOZ0p9v+AqVvC/D5?=
+ =?us-ascii?Q?SrywJDs5YlHQB1ALDgAqWoaru6AZR46/63iQAOWUMlQsIUSOeA5Gjwp/pT28?=
+ =?us-ascii?Q?IzZ7jIWhqUs7gQKqkSVLDOX5bBubzFcZWoyuc2tLBijGDVZWT3LUyS9HlDPq?=
+ =?us-ascii?Q?BoryBMklZq349didIrsDoQyV9BB057cHHGdociAMzag0uy1D/+uoMYvgdjz0?=
+ =?us-ascii?Q?7s28DeBOEvPWmg4KNxA5W2ML61I3RIWc0FOiaFoBebnsRbxEhFXd4rlYoQ3d?=
+ =?us-ascii?Q?kXuQES/NnkUz+ICkw2uvmuWZLE7k6/er0qZj7fyXi0a5QYqKyeIvD/zqkqaF?=
+ =?us-ascii?Q?VS/K1jGMyQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-Exchange-RoutingPolicyChecked: mrrwv01V7I5EM7MHcoq5+pwDQpoGY582NHYBHLWs1iQpoBfhLkVB060A+B6wOvPqfH/d8R3plAixPGMORtVLIkjAAsWrn368Vro4tdA4VfIPIh0+QLVqXYUTfPjIyUkEVNZZ1AxWeNqGstP445LTrxm1gqI7P1rc4HWoWR2mbvKPG1gu5gfp1YK921u6RFyucoXzZaiddyvdJE+jCc4hLYAcvCdGYO5y7o2MB5GnU/AjIee9Rn2rIxhp02EHiKCpWcSRWeoVa2P8su3iT5AxaY4CtVP8Fo7y4Cbr60AI95Th2XHxRGNjITqR09VAB7Hx8Hf+34q9zbGnQ2AOMsRU+Q==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4835.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b1819bc7-ce43-497a-0371-08df13b709d7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Sep 2026 05:54:57.4322
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: UnmN6Ww9RAYQ+rGGlgP+bAfmZv5kxtzcqhm5uYhixaoGRh0726owISPvWDJXg0vO4H+TpL9qBwjtkQLrdKBdDA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6741
+X-OriginatorOrg: intel.com
 
-VMware's steal-time counter must be in shared memory so the host can
-update it. Encrypted guests currently register its address without
-decrypting the storage. Move their setup to an early initcall, when the
-memory allocator is available for page-table splitting, but before
-secondary CPUs start. Leave ordinary guests' setup unchanged.
+> From: Jason Gunthorpe <jgg@ziepe.ca>
+> Sent: Tuesday, September 15, 2026 9:43 PM
+>=20
+> On Tue, Sep 15, 2026 at 07:13:48AM +0000, Tian, Kevin wrote:
+> > > Yes, this already has to be true or our lifecylce model is
+> > > nonsense. Once the iommufd creates the vdevice the guest is running
+> > > and we cannot disconnect it without unplugging it from the guest. Thu=
+s
+> > > the locking can rely on that. Within an iommufd ioctl context the vde=
+v
+> > > and underlying connection must be stable.
+> >
+> > btw looks a related suggestion is having the tsm driver (arm-cca-host
+> > here) implement the viommu ops while leaving the original smmu driver
+> > largely intact, and "obtain the viommu through tsm_ops not through
+> > iommu_ops".
+> >
+> > It's not super clear to me about the implication behind after reading
+> > related discussions and what the "obtain" part means.
+> >
+> > Could you help elaborate this part?
+> >
+> > The old way is kind of:
+> >
+> > vdevice_tsm_ops -> tsm_ops -> tsm driver -> iommu driver
+> >
+> > then it will become:
+> >
+> > viommu_ops (tsm related) -> tsm_driver
+> >
+> > where tsm driver will fully handle tsm related viommu_ops?
+>=20
+> At least for ARM there is effectively no entanglement with the actual
+> host iommu driver. The viommu is entirely provided by software in the
+> RMM world, so it can have its own dedicated driver. In ARM T=3D1
+> transactions are alwayus routed to the RMM's iommu and there is no
+> relation to the host.
+>=20
+> I am interested how Intel works here, but I thought it was similar.
 
-Convert every possible CPU's storage before registering any address.
-Zero each object after conversion, since its contents may not survive
-conversion and the host initializes only the counter. Register the boot
-CPU with preemption disabled; the existing hotplug callbacks handle the
-others. If conversion or boot-CPU registration fails, attempt to re-encrypt
-all affected ranges, including a partially converted failing range, and
-disable steal time.
+Largely yes. Main difference at Intel side is that TDX still relies on the
+host to initiate iotlb invalidation (upon notification from KVM on S-EPT
+change). Currently we put this logic in intel-iommu driver but it's more
+about wrapping invalidation info and passing it to the firmware. Moving
+it into the tsm driver should be straightforward.
 
-TDX's conversion path requires directly mapped memory. Check all per-CPU
-objects before converting anything, and disable steal time if a TDX guest
-uses the page per-CPU allocator, which supplies vmalloc mappings. This
-also covers automatic fallback from the embedded allocator. AMD guests
-are unaffected by this restriction because their conversion path supports
-those mappings.
+Maybe there'll be other subtle connections to host iommu driver but
+it doesn't sound a hard problem to solve.
 
-Link: https://lore.kernel.org/r/20260309235250.2611115-5-alexey.makhalov@broadcom.com
-Co-developed-by: Bo Gan <bo.gan@broadcom.com>
-Signed-off-by: Bo Gan <bo.gan@broadcom.com>
-Co-developed-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
-Signed-off-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
----
- arch/x86/kernel/cpu/vmware.c | 96 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 95 insertions(+), 1 deletion(-)
+>=20
+> AMD is different and I suspect AMD will have to continue to use the
+> viommu from the AMD iommu driver, but I am not sure.
 
-diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
-index 34b73573b108..f49898275d87 100644
---- a/arch/x86/kernel/cpu/vmware.c
-+++ b/arch/x86/kernel/cpu/vmware.c
-@@ -25,14 +25,19 @@
- #include <linux/init.h>
- #include <linux/export.h>
- #include <linux/clocksource.h>
-+#include <linux/cc_platform.h>
- #include <linux/cpu.h>
- #include <linux/efi.h>
-+#include <linux/mm.h>
-+#include <linux/preempt.h>
- #include <linux/reboot.h>
-+#include <linux/set_memory.h>
- #include <linux/static_call.h>
- #include <linux/sched/cputime.h>
- #include <asm/div64.h>
- #include <asm/x86_init.h>
- #include <asm/hypervisor.h>
-+#include <asm/cpufeature.h>
- #include <asm/cpuid/api.h>
- #include <asm/timer.h>
- #include <asm/apic.h>
-@@ -147,6 +152,7 @@ static struct cyc2ns_data vmware_cyc2ns __ro_after_init;
- static bool vmw_sched_clock __initdata = true;
- static DEFINE_PER_CPU_DECRYPTED(struct vmware_steal_time, vmw_steal_time) __aligned(64);
- static bool has_steal_clock;
-+static bool vmw_steal_time_ready;
- static bool steal_acc __initdata = true; /* steal time accounting */
- 
- static __init int setup_vmw_sched_clock(char *s)
-@@ -280,7 +286,9 @@ static void vmware_disable_steal_time(void)
- 
- static void vmware_guest_cpu_init(void)
- {
--	if (has_steal_clock)
-+	if (has_steal_clock &&
-+	    (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) ||
-+	     vmw_steal_time_ready))
- 		vmware_register_steal_time();
- }
- 
-@@ -325,6 +333,92 @@ static int vmware_cpu_down_prepare(unsigned int cpu)
- }
- #endif
- 
-+static void __init vmware_steal_time_range(int cpu, unsigned long *start,
-+					   int *numpages)
-+{
-+	unsigned long addr = (unsigned long)per_cpu_ptr(&vmw_steal_time, cpu);
-+
-+	*start = addr & PAGE_MASK;
-+	*numpages = DIV_ROUND_UP(offset_in_page(addr) +
-+				 sizeof(struct vmware_steal_time), PAGE_SIZE);
-+}
-+
-+static int __init vmware_decrypt_steal_time(void)
-+{
-+	int cpu, failed_cpu, numpages, ret;
-+	unsigned long start;
-+
-+	if (!has_steal_clock ||
-+	    !cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-+		return 0;
-+
-+	/*
-+	 * TDX's conversion callback derives the physical range with __pa(),
-+	 * so the storage must live in the direct map. The page per-CPU
-+	 * allocator, which is also the automatic fallback when the embedding
-+	 * allocator fails, hands out vmalloc addresses instead. Reject those
-+	 * before converting anything, so no page is left converted.
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
-+		for_each_possible_cpu(cpu) {
-+			if (!is_vmalloc_addr(per_cpu_ptr(&vmw_steal_time, cpu)))
-+				continue;
-+
-+			pr_warn("steal time disabled: TDX requires a direct mapping\n");
-+			has_steal_clock = false;
-+			return 0;
-+		}
-+	}
-+
-+	for_each_possible_cpu(cpu) {
-+		vmware_steal_time_range(cpu, &start, &numpages);
-+		ret = set_memory_decrypted(start, numpages);
-+		if (ret) {
-+			failed_cpu = cpu;
-+			goto rollback;
-+		}
-+
-+		/*
-+		 * Conversion need not preserve the zeroes. The host
-+		 * initializes only the counter on enable, so the guest
-+		 * must initialize the reserved words itself.
-+		 */
-+		memset(per_cpu_ptr(&vmw_steal_time, cpu), 0,
-+		       sizeof(struct vmware_steal_time));
-+	}
-+
-+	vmw_steal_time_ready = true;
-+	preempt_disable();
-+	vmware_guest_cpu_init();
-+	preempt_enable();
-+	if (!has_steal_clock) {
-+		pr_warn("failed to register boot CPU steal-time memory\n");
-+		failed_cpu = nr_cpu_ids;
-+		goto rollback_pages;
-+	}
-+	return 0;
-+
-+rollback:
-+	pr_warn("failed to decrypt steal-time memory for CPU %d: %d\n",
-+		failed_cpu, ret);
-+
-+rollback_pages:
-+	for_each_possible_cpu(cpu) {
-+		vmware_steal_time_range(cpu, &start, &numpages);
-+		ret = set_memory_encrypted(start, numpages);
-+		if (ret)
-+			pr_warn("failed to re-encrypt steal-time memory for CPU %d: %d\n",
-+				cpu, ret);
-+		if (cpu == failed_cpu)
-+			break;
-+	}
-+
-+	vmw_steal_time_ready = false;
-+	has_steal_clock = false;
-+	return 0;
-+}
-+early_initcall(vmware_decrypt_steal_time);
-+
- static __init int activate_jump_labels(void)
- {
- 	if (has_steal_clock) {
--- 
-2.53.0
+ARM/Intel may support guest viommu in the future. So AMD's case is
+a good reference. Maybe for ARM/Intel we'll stay with two or more
+viommu ops: one from tsm driver (TDI w/o guest viommu), 2nd from
+the host iommu driver (legacy w/ guest viommu), 3rd from the host
+iommu driver (TDI w/ guest viommu), etc. We'll see...
+
+>=20
+> > btw I held the impression of blocked operations from past discussion [1=
+].
+> > Initial attempt tried to proactively unbind the TDI upon any operations
+> > which may transit the TDI to the ERROR state. Then the suggestion at
+> > the moment was:
+>=20
+> With this construction the iommufd vdev is created and permanently
+> exist as long as the VM and viommu exist.
+>=20
+> How/when the tsm driver links this to a arch specific "bind/unbind"
+> operation is more up to that driver, but I would expect what is
+> thought of as "bind" should be the affiliation of the device's T=3D1
+> stream with the viommu and the target VM. It should not be sensitive
+> to the TDISP state.
+
+Not sure about this part.
+
+Each arch has its own definition about the binding flow (about 'how'),
+but sharing a common step by sending TDISP message to transit the
+TDI into the CONFIG_LOCKED state upon guest request (i.e. 'when').
+
+According to the TDISP spec, memory reads/writes with T bit set is
+accepted only when the TDI is in RUN state (except MSI/MSI-X writes
+are allowed with T bit set in LOCKED but I don't think any arch supports
+it yet).
+
+So your definition of 'bind' essentially affiliate it to the RUN state?
+
+>=20
+> That is not prohibited, the TSM driver could do some auto
+> "bind/unbind" whatever that means triggered by ops or tdisp state
+> changing under the covers. But this cannot leak out as some kind of
+> asynchronous vdev destruction.
+
+Maybe it'd be clearer using an example e.g. ARM to clarify the
+suggested split. Or wait for Aneesh's next version...
+
+>=20
+> > " But now the suggestion is never let VFIO do unbind, instead VFIO
+> > should block these operations when device is bound. "
+> >
+> > [1] https://lore.kernel.org/all/aEFmPaYorqaYCKBY@yilunxu-OptiPlex-7050/
+>=20
+> IDK, if the host wants to put a device into error I don't see why the
+> kernel should block it? There are many reasons a device can reach
+> error, that needs to be handled.
+>=20
+
+hmm that's a good point!
