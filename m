@@ -1,190 +1,191 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011047.outbound.protection.outlook.com [52.101.62.47])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66880476CDA
-	for <linux-coco@lists.linux.dev>; Wed, 16 Sep 2026 22:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789596996; cv=fail; b=sBHOuARHz5qJc7JuIxC2pI5lfPRHEoFpUUaCKryfxMHNLgAonSGJ49WT0EhZeR5LPWKYNA0vwrn4YPgJhCn3S7bbnLdUXPGK9UEnPuLtpYuofuxsuSzW79fyrC+sQVzAHEgMyT2soDdsLmgdU+vEYrNeFwFuWCo9y0l11lqczmE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789596996; c=relaxed/simple;
-	bh=JiEsn2nFiNy96AhW93+Ovn5MdyQxmZ6vj4Z/C/JnbRU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kW141GpUuXAgLpqyc529/ye4AQoZs8/lovxqdnbURl4TqyMxFcfGDSmALfwH2lI4IkGkHsX9wwNdn2T/b30gZQk4+CzS/FKoNhtI9CJlkPJxvlvYmUQdWxizuydjuo7tLAYAX+j9oG8xeijAT54JFdHwpbnvD4oICnoDsbfn/sI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=kENMo65b; arc=fail smtp.client-ip=52.101.62.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4C7384CD6;
+	Thu, 17 Sep 2026 02:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789611637; cv=none; b=X6BlNPayR/fFPEbRyVxpUMaEqTa8AgwcuoMRCTFlZKNMrdxQ4U30/ct14yMUXMEhv3t8A83kp/G2MgW+4jEZKkB6STtHDmH6BFtwwgkr0qq+WWlolXQE/KiIXp/V3rRtQ6mvqkGu99CpyWzKKjDl8HH4aJv783UaciUpvTN0YT4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789611637; c=relaxed/simple;
+	bh=2hEhyk0s4WVmFdIupv816I4A+gouGd9M8wYttLHRGbg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ID6I/35gzwxFhIQjy3MwqIa3XJZ6/9dOrg6B56HbsNsInNp4KJ1AmNE7LQxHQ9+F8ARiBW1pdh8mQGJMSw8OFwf42eK1nhYVWFTPgxAcvb1hQU6BoPhtk6V4jbvHqUPrqss0MVRaZa15nu42tHDaDYk2ZtwqyN28+j1gCKho6gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=CPaKDwdl reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="kENMo65b"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=o1Pz6cK9WWefhD9XUw1TXNyAOo+Dq+yaiENB40+xMVA0hcl9GpH8gp6BPEuZk1bFivEwcPQdGKuMtKr6BLzxcpMaHOxLwtLfi9ueym8+jNWLUeYfFi+RFbgzkLDbvLrJilVosHGHFpGXEK84LsU8Q6h0fNI3pVHMicMf1uC3NJPbXH5CNQw/TY6Tf8yeesgPhLabk8INT/PN7Gg19ETY14swofki1V6BmMmJzBo/mfhVXWO6hUUS1FcZHInjfjOce4SubzlWBoIZfW/G7l+6UXiUjmcvxJetgDpmB1AqTS3PrbkV7qoYIaQ2wrc9DZawO8OEDlYGYGOqqcRnkDHkeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mw4iglQk0dlTUyHTRW1lm9fP8hCwuZuT1/2sS4LzHcY=;
- b=gYIdnjUYugMOX9KGW9m8lFzsTDNutRp9lRiVh8QHQOF0TG8Em/MQVRgseazHkJcw9zE4w00SkUdLnGPDo9RnUJ6lzgSuVf7mbi9Dbd8QLo7vuweNLAgRsSYCDauDhE0LpWC7KEmLYOwxm0z3thy1Iv4boVGsFr/Z10hdBKsY0bgQsyOhFWOfbXWRl5hz1cj4e0KcZw02IaJ04XVfcm++A0IXsTNgcrY6nBVMcudqrypI+9wRHf7s+gygMy7MUPtBEiaSsdqULeXYkGGkcP2EHJBGpTubYj4C7s/qgVbajg5fyZuiH9RAkRveC/1NdGRUEWEP9x1Ts0JoK4t2kZt/og==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mw4iglQk0dlTUyHTRW1lm9fP8hCwuZuT1/2sS4LzHcY=;
- b=kENMo65boqtztoy0GPUzilln9xQjqKh9CzpnlQCFpccn8X+e0JdmNudBcHE9OAxSPoYAxE98z+KcA73goiF5tZcPJ26EyR7pXqI7+w9lUtkEQEixJJLmKhnoYyOY5q6F0zYzvd5uZV5CCfvsIlKvxwP001SG2utN2XPnQPQBHeg=
-Received: from SJ0PR13CA0191.namprd13.prod.outlook.com (2603:10b6:a03:2c3::16)
- by PH7PR12MB9203.namprd12.prod.outlook.com (2603:10b6:510:2f2::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Wed, 16 Sep
- 2026 22:15:56 +0000
-Received: from SJ5PEPF00000203.namprd05.prod.outlook.com
- (2603:10b6:a03:2c3:cafe::40) by SJ0PR13CA0191.outlook.office365.com
- (2603:10b6:a03:2c3::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.7 via Frontend Transport; Wed, 16
- Sep 2026 22:15:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF00000203.mail.protection.outlook.com (10.167.244.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 22:15:56 +0000
-Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 16 Sep
- 2026 17:15:51 -0500
-From: Ashish Kalra <Ashish.Kalra@amd.com>
-To: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
-	<seanjc@google.com>, <peterz@infradead.org>, <thomas.lendacky@amd.com>,
-	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
-CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
-	<KPrateek.Nayak@amd.com>, <Tycho.Andersen@amd.com>,
-	<Nathan.Fontenot@amd.com>, <ackerleytng@google.com>, <jackyli@google.com>,
-	<pgonda@google.com>, <rientjes@google.com>, <jacobhxu@google.com>,
-	<xin@zytor.com>, <pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <darwi@linutronix.de>,
-	<linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>
-Subject: [PATCH v16 5/5] x86/sev: Re-enable RMP optimizations on SNP guest shutdown
-Date: Wed, 16 Sep 2026 22:15:37 +0000
-Message-ID: <7a15a880ea6b6d53b3702def3b3434307656afd7.1789594774.git.ashish.kalra@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1789594774.git.ashish.kalra@amd.com>
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="CPaKDwdl"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B90C440E00B9;
+	Thu, 17 Sep 2026 02:20:26 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Oqanxm5HEzvI; Thu, 17 Sep 2026 02:20:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1789611616; bh=t+xhCY2klvKxUHYu8YVGd1Jq3dnIAaBznhM5u4gjcEw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CPaKDwdlQE4UQKX5VEGrvNFhWWNdZ5an+ir3VDDwOLNb6Thz2NZnvhPfPvM++nh1s
+	 VROsc8PIAf1rBld9VtHkliStCc5QOBkUfvkvLN6XzSyomnq5VgwkOnTcHJYn5y9w4N
+	 SE8zZ5Jd3EO/527Jd5FDgUJeeFgZKkqi6SWcTs0LH6a0KFHG5Ff79mpy/E/tLpu8am
+	 ZiA7szmkmZy8E+3FKpU+4Eqfvr5JMqail4qIA9Xuu6sufv7nTP2Ohx079BBbTcSCCL
+	 kzannFLMQ2DHAqs/tnDbkk9thbJ4iMfo3muzW6OBGoi7XG3n+W64ijBmTVHuwr5wIO
+	 B6i/1t0bSpSdzJFB6PmqZ1LSgp8S5eSHypxnfW+BarzoQey4PtjgDGpTWVIwcm+il6
+	 bjKC2FbBgFO4QREQRreqD+80QNfypJB6GZJcRSmvruu4RRAoTve2bwj+gKNMFhFjj2
+	 5RISMtwUxlPOqPYDNphTDxoIbghtrlNdnVdNcbmfIiv/dqOCMWNr3+1MP2KvnqZy3I
+	 6u9m+KPChF6vYRN2QhUwdKCyxQ4Q5X3ghAZENYaa14hVxAK23COKU6uaSESM6BPfc/
+	 h2my2Tpa8xQaGxnNFgyShc8qpJGhFS5mY7FESabANNs4/FR9yXHeSoVuBJRZKvqNxf
+	 C4zFsSARasged0QxHNaCVV3A=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1CEBE40E015B;
+	Thu, 17 Sep 2026 02:19:40 +0000 (UTC)
+Date: Wed, 16 Sep 2026 19:19:37 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: sashiko-reviews@lists.linux.dev
+Cc: Ashish Kalra <Ashish.Kalra@amd.com>, kvm@vger.kernel.org,
+	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	darwi@linutronix.de, linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v16 2/5] x86/sev: Disable CPU hotplug while SNP is active
+Message-ID: <20260917021937.GEaqtOOfbceTzNy0um@fat_crate.local>
 References: <cover.1789594774.git.ashish.kalra@amd.com>
+ <cd6962a88d691a020c2bf40fe77a6a3f3852fdfc.1789594774.git.ashish.kalra@amd.com>
+ <20260916223630.C5E1C1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF00000203:EE_|PH7PR12MB9203:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3cff6f0c-80f7-45d5-00fd-08df14401460
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700016|23010399003|7416014|82310400026|1800799024|921020|56012099006|11063799006|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	Os+Bif6SkLROewAw+GGh33upxyh5ilhfrgTa6H71Y4Hx4cb02Cvk8aD0RUKny7/zLM3YUEtaHGkY+0/RHx6QiX3q3fPIfAk4Mp9BsxZIjLfdz2atuzfTS8xFq6iVY4Vl9qmAel2bFvItHwJ65mbCgeBkRMJh5VY2G6AAyjIRZ2DOoghulb6XxPf0K5IEZYPsvrRAtjv686ehze27JaWnyvLGPjczP43fj9ip//yiL1elXzc9qU1Htg8xHflrKfWqgcrdG7hUwILa09WTvkqamLgYp6DobH9kYFbhajA0n7DXvI6pY1ER2HLh75J6zQmhR4qfCOPxQFq1Znioy2OcRKv69GHUeSJ/LSDjnKcXgx27oBIgyl4HZ+Lm/IdsaUKl2D5sjc6cBOV4g7ZPJt2FK86r5NUeLb2c3MNKijFuEeAvIwycmJ2AQ8csIY9OGuBM+/ISnK2zpMzwOZ+QKaYhLdmqtzVxmflNTHWPj4k8tiHxpYqe6hbWOg4T+ym5MnUrNtDy0fTGR7RF6GRTkHSErZY18PQ4NvWPLggKJZmEZZ3E2Zm8pYsMVSNrrQIiWWZe3rhmEH7jA3zPgWRnJ0W0MFJLOToJliHkykA4Yq33byjVxwwnsVqf9DrEOAgYOBD+g5be6ZAQv36K6PyoVxPd/LuJNIpA28BoJbXUJDCo8ebH38tWt7JTf6RpL7EjQBIPVc7pIV9HoWDyI9dN4q0LtvdV4rh+fdoVd9SRbFfAtg8/avkjWVMQ2g/zR2NGtuO5
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(23010399003)(7416014)(82310400026)(1800799024)(921020)(56012099006)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	FrJyJCRmZzB0IzVRME4vrjDF5jhEJ0WMGzeeD25NO5yN5TgOvJ+jRXOPdIZrXMqrc0KuCOBV8CVm1E0ad8M6jGQXm7SrpQ2T+fXqnc85JCh+xvRbqtzHk7hcf0nrZH7i9icZaRPR2TYCqnOMCKJqvOxi4applASRNJRsjxGqJT0uFQRwX9PexlAtYyBhzHQJ1EIvltsHiiAV/wQfoPfnpqRtG9rreZbcRTG1G8kmt3q01Hx07Y6XOKQEF3kGGjzelksveJZiEY6pCq8FvpJI2rtxNOj8pSwU9eoC3YbUnTef9SAifz9XJgXDgw+Q2oRTdcXW/0UOL5RXbimHTzwMa13R75HSpNnAWd89oiMv6ZE7tyFRxbeRQtBddm3om5f8iWnparuVuys0bD0nqGwUdpgEa2657GvsqRyqHpFvhdcCvlWgi78hQiTiZ9m7ShVb
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 22:15:56.0907
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3cff6f0c-80f7-45d5-00fd-08df14401460
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF00000203.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9203
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260916223630.C5E1C1F000FF@smtp.kernel.org>
+Content-Transfer-Encoding: quoted-printable
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+On Wed, Sep 16, 2026 at 10:36:30PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential is=
+sue(s) to consider:
+> - [High] x86/sev: CPU hotplug disablement bypassed on early kexec error=
+s
+> --
+>=20
+> commit ac084f2d7188c520f2ee3ced2ab76e4c068df91f
+> Author: Ashish Kalra <ashish.kalra@amd.com>
+>=20
+> x86/sev: Disable CPU hotplug while SNP is active
+>=20
+> This commit disables CPU hotplug when SNP is enabled to prevent SNP gue=
+st
+> memory from being broken by CPUs coming online without the SnpEn bit se=
+t.
+> It ties CPU hotplug to the SNP-enable bit, disabling it in snp_prepare(=
+)
+> and re-enabling it in snp_shutdown() when SNP is disabled. It also
+> explicitly disables CPU hotplug during kexec if SNP is already enabled.
+>=20
+> > diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+> > index cff285d8ad8e3..558f7924a3f85 100644
+> > --- a/arch/x86/virt/svm/sev.c
+> > +++ b/arch/x86/virt/svm/sev.c
+>=20
+> [ ... ]
+>=20
+> > @@ -577,6 +582,8 @@ EXPORT_SYMBOL_FOR_MODULES(snp_shutdown, "ccp");
+> >   */
+> >  int __init snp_rmptable_init(void)
+> >  {
+> > +	u64 val;
+> > +
+> >  	if (WARN_ON_ONCE(!cc_platform_has(CC_ATTR_HOST_SEV_SNP)))
+> >  		return -ENOSYS;
+> > =20
+> > @@ -586,6 +593,15 @@ int __init snp_rmptable_init(void)
+> >  	if (!setup_rmptable())
+> >  		return -ENOSYS;
+> > =20
+> > +	/*
+> > +	 * On a kexec boot SNP may already be enabled (legacy firmware leav=
+es
+> > +	 * SnpEn set across shutdown), in which case snp_prepare() bails wi=
+thout
+> > +	 * disabling CPU hotplug, so disable it here.
+> > +	 */
+> > +	rdmsrq(MSR_AMD64_SYSCFG, val);
+> > +	if (val & MSR_AMD64_SYSCFG_SNP_EN)
+> > +		cpu_hotplug_disable();
+>=20
+> [Severity: High]
+> If a kexec kernel boots into a system where the previous kernel left
+> MSR_AMD64_SYSCFG_SNP_EN active, and an early initialization step fails
+> (such as passing amd_iommu=3Doff
 
-The RMPOPT table is a per-CPU table which indicates whether 1GB regions
-of physical memory are entirely hypervisor-owned.
+amd_iommu=3Doff means no SNP.
 
-When performing host memory accesses in hypervisor mode as well as
-non-SNP guest mode, the processor may consult the RMPOPT table to
-potentially skip an RMP access and improve performance.
+> on the kernel command line resulting in !amd_iommu_snp_en, or
+> setup_rmptable() failing),
 
-Normal guest events disable RMP optimizations: pages are converted from
-shared to private as SNP guests are launched, and large pages are split
-and collapsed during guest operation -- both disable the RMPOPT
-optimizations for the affected 1GB regions.
+The same happens in that case:
 
-When guests are torn down, their pages are converted back to shared, so
-those regions may become eligible for RMPOPT optimization again. Without
-some intervention, all RMP optimizations would eventually be lost, so
-re-optimize all of physical memory on SNP guest teardown by calling
-snp_enable_rmpopt().
+        if (snp_rmptable_init()) {
+                pr_warn("SNP: RMP initialization failed, SNP cannot be su=
+pported.\n");
+                goto disable_snp;
+		     ^^^^^^^^^^^
 
-snp_enable_rmpopt() performs the re-optimization after a delay, using
-mod_delayed_work() so that the delay timer is reset on each call. This
-batches multiple guest terminations into a single pass: the
-re-optimization runs 10 seconds after the *last* termination rather than
-after the first. mod_delayed_work() also re-queues work that is already
-in-flight, so a re-scan request during an active scan is not silently
-dropped.
+Does Sashiko not see that or somehow it ate a lot of credits so it cannot=
+ use
+enough now to "swap in" the whole context... if that is the AI that is go=
+ing
+to destroy the world, then I'm not too worried. :)
 
-Guest teardown is currently the only event that returns guest memory to
-hypervisor ownership: SNP guests do not support ballooning or memory
-hotplug, so pages freed during a guest's lifetime remain guest-owned.
-It is therefore the only point at which memory becomes eligible for RMP
-re-optimization, which is why re-optimization is driven by guest
-teardown rather than by a periodic scan.
+Or is my AI failing me right now?
 
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
----
-Changes in v15:
-- Call snp_enable_rmpopt() on guest teardown instead of a separate
-  snp_rmpopt_all_physmem(); the delayed re-optimization now lives in
-  snp_enable_rmpopt().
- arch/x86/kvm/svm/sev.c  | 2 ++
- arch/x86/virt/svm/sev.c | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+:-P
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 5705723f1f41..4d5e30af1ade 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -3032,6 +3032,8 @@ void sev_vm_destroy(struct kvm *kvm)
- 		 */
- 		if (snp_decommission_context(kvm))
- 			return;
-+
-+		snp_enable_rmpopt();
- 	} else {
- 		sev_unbind_asid(kvm, sev->handle);
- 	}
-diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-index bd97135cacc2..13d9acb319aa 100644
---- a/arch/x86/virt/svm/sev.c
-+++ b/arch/x86/virt/svm/sev.c
-@@ -702,7 +702,7 @@ void snp_enable_rmpopt(void)
- 
- 	pr_info_once("RMPOPT optimizations enabled\n");
- }
--EXPORT_SYMBOL_FOR_MODULES(snp_enable_rmpopt, "ccp");
-+EXPORT_SYMBOL_FOR_MODULES(snp_enable_rmpopt, "ccp,kvm-amd");
- 
- /*
-  * Do the necessary preparations which are verified by the firmware as
--- 
-2.43.0
+Leaving in the rest.
 
+> snp_rmptable_init() will
+> return -ENOSYS before checking the physical MSR hardware state and
+> disabling CPU hotplug.
+>=20
+> Because hotplug remains enabled and the CCP driver skips initialization=
+ on
+> failure (bypassing snp_prepare()), could a subsequently hotplugged CPU =
+come
+> online without the SNP_EN bit set?
+
+Yes, but the above disabled all our intention of running SNP in the first
+place...
+=20
+> If this results in a mixed hardware state, does it violate firmware
+> constraints and cause fatal RMP faults when the new CPU accesses memory=
+?
+>=20
+> Should the hardware state be checked and hotplug disabled unconditional=
+ly
+> before the software configuration checks?
+>=20
+> --=20
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.178959477=
+4.git.ashish.kalra@amd.com?part=3D2
+
+--=20
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
