@@ -1,163 +1,180 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B978151FCD4
-	for <linux-coco@lists.linux.dev>; Thu, 17 Sep 2026 13:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789651046; cv=pass; b=hIreUbQsKdkhfgMk9cjV7o5jZgsgtymhDHlFMAAjg7Ek3J6036riQh1MAxU8QFo32pQbcMdN9uPkwgd2GI1mnCmvIakWNQ5jtSs5wA9tvx7Qxf5zOO1afcsMKbaorTGs7t1dSByhz4gM5dZCFnyBIcQTQ8qoaoWSq9V5hy8G070=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789651046; c=relaxed/simple;
-	bh=kO4HLKikSv+g/tlkono8w2r9mfJw0DOnYzMEnSqFOZQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PXi0ZN/RP/LNRKCvm8gwa3+35U7cGSa3rhZ8XeF0ml7WLK/eMiy+YIhurFzTOg0viG4ZvOxHk5pU0qc5isINw62YDDSfpL14NeRjbqMT6px1CDnjuDe9w5/lsMPgVg89AvITmvlXrSJ2EK31hd9TcFKGOPztSGFtvMarrqazLdE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M1ttT79+; arc=pass smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F6757D230;
+	Thu, 17 Sep 2026 14:02:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789653753; cv=none; b=ayJ8Dx4hFNKKryN+f5f/FNTpdxJ88U2PUV/2Yli4oqen7YT7BXisbCR6LUCIiIXn6jGFr1P2eiLpmeoNsNeTbaFcbhRHp2B4bUrXT2qVgUwh/QN3LLqERE7WjnE0DrI64jCX7GmVlY1r0tkoxX8X4M6oy3kX+rNp8JjMdAXvRYo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789653753; c=relaxed/simple;
+	bh=UL2y8zOrLA4NiU4VIcQUTmVYr/Y/eUfnHg52b7dqraA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EBdoJY4bsXZo2XS8Yx6FrU8DYCZ6Z+ZIMwCqOPmFFWIRM8S/ZoVmQFihOVVRRDWxP96dh412GVAxJo5qekCQQFE31THgAObozUOICve+h/0zUq1CC9YFXlXrYUf4HXxxiLKgqVX/Nd4NOVqWRzOPuy7A1q/JLzyxOcZdGWgkZVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WgRfl2k7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M1ttT79+"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5b83c1421ecso1852e87.1
-        for <linux-coco@lists.linux.dev>; Thu, 17 Sep 2026 06:17:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789651042; cv=none;
-        d=google.com; s=arc-20260327;
-        b=c7YCS6aPCMp2iehVflVEpwuUwV7iVxEH5rFA7gVEQtsGkpycEHT1EfYFiXiAmJkl7f
-         jeIpZF0pbweLbZArBCFZ4h0RpuGVdlq4IdLy7zcEYHFgifUxseySUkEViD/trv76+9Tt
-         f2J+LE3YbE7Lq0yVC1PuNuEN1Olbj9BfU877EiBVmjRG9LPJ4DW6TKK/MJ1hd2x0E8gv
-         cYe8zogmq3keHam7wPs0b4r56iypzCmd/JG0THfrqIrfWupfZIORy3xhD1Dtc4ohUrMI
-         I5rFlhnT/u82kkKtbAiZ/1Bp+go2GYhKFNd26duAKb0QuWoa6R6pGLejGKsJE434hTsQ
-         e9vg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=yvMJselGvAoMrhysUaGitx662yndDSgH+0mQM9lz22E=;
-        fh=Jj0pjE0Wxkf2erOcbq2uRCi8QdkVDcTq9Wm+C61rbFw=;
-        b=RgXqYr2iglRy8vTsTt1ihqfz5/W5eNOZ+RuPRlKzAByXWlmjb2Qo52F3rantkLEerI
-         ge2KKdEbgWIz78R+hJ1aGcDktFDb9YFPqZdPjYb/Q5tI2gM/7HKoH5Zy9pk1VomQmjC+
-         OV9IkqzcHcc8PISSb7kDpvxTfAZ3W5aeAzAgPsoyk3IAZLXuztM3B0mNZDD7Y3a9gdtr
-         nQzDsMrQEHrJTg+9PBQNwonrgIW2DhOEzGRwcCYfZb0jWVb15DUDbt3fe05QpFpLWQwc
-         IUVmbBcmCtygjL2merWcb7a3LTee2z9x2BKSgjZX44Ps+BQe+1/tBZYEHYkNMmexcPB3
-         ONmA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789651042; x=1790255842; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yvMJselGvAoMrhysUaGitx662yndDSgH+0mQM9lz22E=;
-        b=M1ttT79+L5OHqipV5A/SVZBeZwxINuz0MShBgki6MtoauOuuni2ywaRoQq5Bx0Kc10
-         KKb6KmxvIY4tbPSF/8zR4xI1/jmgGh8rlTw0cGgoCZqWWCqOkgYXBSOZYseN44OOPfiL
-         mUss3DmTadB8ZkrCIZq8DYlZX3uwxLzz9Wx+Wy/oyePSjVMcc663Lu682mqKVzXB8toF
-         Vq8Cv8W/N/4dmEq4il/Aa22Rdly6qq1VWZbDYRhQrxI1RItgzrF26+NGZTOnt8v4h/+u
-         jaeS25LPr8iPGhuJKSjsb+bonWP/ECNK2LpwP6Q3XtYLXe1VLR2/2F+gsAxVguKpPueR
-         snJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789651042; x=1790255842;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=yvMJselGvAoMrhysUaGitx662yndDSgH+0mQM9lz22E=;
-        b=lfNh9l3ePQT5hiwHUZdWWmHtBWqQNMkQQcK5/uhdRYPzVkO4haj0ss1zgOBWk/Gxap
-         dqwA7SaXk+SbI32NaxyCDPefGucNwACf/ycg6to11K5N8Iw9dW7zjr3hbr5BBSF4/23p
-         3Ld42/TnGPsaMndXb9C7ONQzkJ9HCxLDVGjEc3C61R54tSdU341cVqs9H/OSfD3vzYxM
-         UZzguGA7qmHZ2dfBbkTiBf2Sv9DRslaSgyc84hh6rLWsT6YkDi0ZaZseLk2cxU08Fgue
-         yYgdqy/xfuS3BHd6646FXCSkb0SeHcasTenY/36QDe52QhOfJOUe8YM+9g0d9Gdo+zSy
-         RjwA==
-X-Forwarded-Encrypted: i=1; AKwUvBzKUBB35xtRpjQidx/iFNwi+gqujhqAopAiIK4GSANTDyymHb0AsCWGZvryZqJ5N3BiD6TMl3AGQ3Ft@lists.linux.dev
-X-Gm-Message-State: AFuF++moJw9XFiQ/EX1P7CbLbEyaXUBcsl1Rztd+gWQGdqEOp6NpAAfR
-	HLieL/jvlmvLu+xvsbXHcE9Gl56he1sVvhwxawkA6iv04MAIRcn8uAsFr+M7pqUtQDH2lD1ske6
-	6+eInOcsMiTOvPb6lffXeCEp4x2y1SBYkF1oPL2wf
-X-Gm-Gg: AYBFou077vrai2krv/sP2M664LtAZTKLtZxBxZ4MVwQ8TnIv79hD2GIJTfx5rwFt3bZ
-	7UTdrmCV7fKbduGCZNfmzcENJ5uH3hINVEj2M+X1Imnu2atcnYSqsagwT/Z0SrDPcIXKGbhOgrm
-	KBzEIUKg7lmtA6TRvN/+lcxNpEBQcSBo4QpWE50DNhecJmp7skuMCpamAbB1hYYx5h+4YoX33fM
-	vPTz8cHtMORxEUCwyg5XcZfyKjVweWB2i5i0lDi5cz+aF1HCDJSVbZTYqwPJIkct9ypYk8v/gBn
-	5+gods1VoPCYB3XDKInLZVZafO9yRUjwC8tcbknn9vl1k2f0LMJqSfHV4e5oRkJ6fI6if+GWHXw
-	m8PB2oeOCY/Q9kA==
-X-Received: by 2002:ac2:4c50:0:b0:5b2:8963:e5d4 with SMTP id
- 2adb3069b0e04-5b8bff1d051mr39681e87.5.1789651041084; Thu, 17 Sep 2026
- 06:17:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WgRfl2k7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF591F000FF;
+	Thu, 17 Sep 2026 14:02:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789653751;
+	bh=LzKajrBn/qC8mgh1RH/uGLuNLuDzCmGSRhLwjf+Ueok=;
+	h=From:To:Cc:Subject:Date;
+	b=WgRfl2k7qtXCTWaiEs2GORh3UIHYae846WygWIEpP2Qk6WuoA4xOXCb/CEXjMwKMF
+	 89DR4VlDKnRG9OzYg47Ir1zCSDss9G+/ITNRKe3WXP56LXtwCSw6qng9+ooE4S5iiL
+	 bFD5XJUEbtrsObxAtWcwbnKaFT9NuAeoUd2wcx6oX74Byy30MhzSYdfHcDsCN5yWiJ
+	 gKNSZM36ZZSASo1R39OZdlcIukVQdcyrwIgi/s/Kb0TCt9FYZFEU6USzj6QLDHVr5w
+	 SFsuP/hyZnZU31n+M3SH0S0dJO/qGhLFR18wJPrQVFgDbSCaAtQyqpymiekBoRdEx2
+	 ViZu+WIgsLygQ==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev,
+	iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [RFC PATCH v6 00/11] iommufd: Infrastructure for vIOMMU creation for confidential guests and guest TSM requests
+Date: Thu, 17 Sep 2026 19:31:48 +0530
+Message-ID: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260915160141.3543048-1-suzuki.poulose@arm.com> <20260915160141.3543048-21-suzuki.poulose@arm.com>
-In-Reply-To: <20260915160141.3543048-21-suzuki.poulose@arm.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 17 Sep 2026 14:16:44 +0100
-X-Gm-Features: AcwNN1VtWWKyrr6h6sFHMUccgZH0Chs5OMidTNSOoiZ_fDx_6ZmQhtU1SR2DO2Y
-Message-ID: <CA+EHjTwYqTFzGdNPproWW5L6j5pNqmuWeFuu9HbHa8LBLPvY2A@mail.gmail.com>
-Subject: Re: [PATCH v18 20/23] KVM: arm64: CCA: Don't expose unsupported
- capabilities for realm guests
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
-	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
-	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
-	joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, 
-	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
-	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
-	lpieralisi@kernel.org, enju.kohei@fujitsu.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi Suzuki,
+This series adds the IOMMUFD and PCI/TSM infrastructure required for device
+assignment. It introduces an IOMMUFD-owned vIOMMU provider registry and the
+IOMMU_VDEVICE_TSM_REQ ioctl.
 
-On Tue, 15 Sep 2026 17:01:38 +0100, Suzuki K Poulose
-<suzuki.poulose@arm.com> wrote:
-[...]
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-[...]
-> +static inline bool kvm_realm_ext_allowed(long ext)
-> +{
-> +        switch (ext) {
-> +        case KVM_CAP_ARM_PSCI:
-> +        case KVM_CAP_ARM_PSCI_0_2:
-> +        case KVM_CAP_NR_VCPUS:
-> +        case KVM_CAP_MAX_VCPUS:
-> +        case KVM_CAP_MAX_VCPU_ID:
-> +        case KVM_CAP_MSI_DEVID:
-> +        case KVM_CAP_ARM_VM_IPA_SIZE:
-> +        case KVM_CAP_ARM_SVE:
-> +        case KVM_CAP_ONE_REG:
-> +        case KVM_CAP_ARM_PTRAUTH_ADDRESS:
-> +        case KVM_CAP_ARM_PTRAUTH_GENERIC:
-> +        case KVM_CAP_SYNC_MMU:
-> +                return true;
-> +        }
-> +        return false;
-> +}
+The series adds a vIOMMU provider abstraction that allows a subsystem
+other than the physical IOMMU driver to implement a vIOMMU type. It groups
+the vIOMMU operations with their module owner and private data, and makes
+that implementation discoverable during vIOMMU allocation.
 
-I'd keep KVM_CAP_IRQCHIP in this list. api.rst has it advertising
-KVM_IRQ_LINE as well as KVM_CREATE_IRQCHIP, so the cap means in-kernel
-irqchip rather than GICv2, and the GICv2 case is already rejected by
-patch 18 in kvm_vgic_create(). It also keeps the two protected lists
-the same where the support is the same. And could this live in
-kvm_rmi.h, next to where kvm_pkvm_ext_allowed() lives in kvm_pkvm.h,
-rather than in arm.c?
+External providers are selected by exact vIOMMU type. When no provider
+matches, vIOMMU creation falls back to the physical IOMMU driver. Once a
+provider matches, its result is authoritative and failures do not trigger
+fallback.
 
-[...]
-> +static inline bool kvm_arch_vm_ioctl_allowed(struct kvm *kvm, unsigned int ioctl)
-> +{
-> +        long ext;
-> +        int r;
-> +
-> +        r = kvm_get_cap_for_kvm_ioctl(ioctl, &ext);
-> +        if (WARN_ON_ONCE(r < 0))
-> +                return false;
+Guest TSM requests are dispatched through the vdevice. PCI/TSM uses
+reference-counted contexts to retain the resources needed by providers,
+without introducing separate IOMMUFD TSM bind or unbind ioctls.
 
-You told Sashiko my fix covers this one [1], but that fix changes
-kvm_pkvm_ioctl_allowed(), which this patch deletes, so the `if (r <
-0)` has to go into this copy too. The guard you posted for the second
-finding still leaves the WARN reachable on pKVM and Realm hosts, which
-is the case the fix removed.
+Note: Codex was used to assist with commit message formatting and code
+rearrangement.
 
-nit: kvm_arch_ is the prefix generic KVM uses for the hooks it calls
-into the arch. For two static helpers in arm.c, kvm_vm_ext_allowed()
-and kvm_vm_ioctl_allowed() would avoid the collision, and the same for
-kvm_arch_vm_ext_allowed() above.
+Changes from v5:
+https://lore.kernel.org/all/20260525154816.1029642-1-aneesh.kumar@kernel.org
+* Replace the TSM bind/unbind interface with reference-counted contexts.
+* Add the IOMMUFD vIOMMU provider abstraction.
+* Route TSM guest requests through viommu operations.
 
-Cheers,
-/fuad
+Changes from v4:
+https://lore.kernel.org/all/20260427061005.901854-1-aneesh.kumar@kernel.org
+* Switch VFIO/iommufd to use struct file *kvm_file instead of relying on
+  kvm->users_count references.
+* Define TSM request scope values globally in iommufd.
+* Rename the ioctl to IOMMU_VDEVICE_TSM_REQ.
+* Address other review feedback.
 
-[1] https://lore.kernel.org/all/20260914093838.1082637-1-fuad.tabba@linux.dev/
+Changes from v2:
+https://lore.kernel.org/all/20260309111704.2330479-1-aneesh.kumar@kernel.org
+* Bump the series revision to v4 to keep it in sync with the dependent CCA DA
+  patchsets. There was no v3 posting.
+* Drop [PATCH v2 1/3] iommufd/viommu: Allow associating a KVM VM fd with a
+  vIOMMU
+* Add two new patches to associate a struct kvm * with iommufd objects:
+  iommufd/device: Associate a kvm pointer to iommufd_device
+  iommufd/viommu: Associate a kvm pointer to iommufd_viommu
+* Address review feedback
+
+Changes from v1:
+https://lore.kernel.org/all/20250728135216.48084-8-aneesh.kumar@kernel.org
+* Rebase onto the latest kernel
+* Address review feedback
+* Drop the TSM map ioctl; the KVM prefault patch will be used instead to
+  ensure that private memory is preallocated
+
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Alexey Kardashevskiy <aik@amd.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Kevin Tian <kevin.tian@intel.com>
+Cc: Nicolin Chen <nicolinc@nvidia.com>
+Cc: Samuel Ortiz <sameo@rivosinc.com>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+
+Aneesh Kumar K.V (Arm) (9):
+  vfio: cache KVM VM file references instead of raw struct kvm pointers
+  vfio: cdev: Reject duplicate bind before updating KVM file
+  iommu: Add a helper to validate a vIOMMU parent
+  iommu: Add a helper to query vIOMMU hardware parameters
+  coco: tsm: Expose active-user lifetime references
+  iommufd: Add vIOMMU provider support
+  iommufd: Add the vdevice TSM request ioctl
+  PCI/TSM: Remove the legacy guest request interface
+  PCI/TSM: Add reference-counted contexts for vdevice providers
+
+Nicolin Chen (1):
+  iommufd/viommu: Keep a reference to the KVM file
+
+Shameer Kolothum (1):
+  iommufd/device: Associate KVM file pointer with iommufd_device
+
+ Documentation/ABI/testing/sysfs-bus-pci |  29 ++-
+ drivers/iommu/iommu.c                   |  22 ++
+ drivers/iommu/iommufd/Makefile          |   5 +-
+ drivers/iommu/iommufd/device.c          |   7 +-
+ drivers/iommu/iommufd/iommufd_private.h |  32 +++
+ drivers/iommu/iommufd/main.c            |   3 +
+ drivers/iommu/iommufd/selftest.c        |   2 +-
+ drivers/iommu/iommufd/tsm.c             |  98 ++++++++
+ drivers/iommu/iommufd/viommu.c          |  36 ++-
+ drivers/iommu/iommufd/viommu_provider.c | 160 ++++++++++++
+ drivers/pci/tsm/core.c                  | 312 ++++++++++--------------
+ drivers/s390/crypto/vfio_ap_ops.c       |   5 +-
+ drivers/vfio/device_cdev.c              |  14 +-
+ drivers/vfio/group.c                    |  14 +-
+ drivers/vfio/iommufd.c                  |   3 +-
+ drivers/vfio/pci/vfio_pci_zdev.c        |   7 +-
+ drivers/vfio/vfio.h                     |  16 +-
+ drivers/vfio/vfio_main.c                |  81 +++---
+ drivers/virt/coco/tsm-core.c            |  55 ++++-
+ include/linux/iommu.h                   |  15 ++
+ include/linux/iommufd.h                 |  42 +++-
+ include/linux/kvm_host.h                |   3 +
+ include/linux/pci-tsm.h                 | 140 ++++-------
+ include/linux/tsm.h                     |  38 +++
+ include/linux/vfio.h                    |  17 +-
+ include/uapi/linux/iommufd.h            |  73 ++++++
+ samples/devsec/link_tsm.c               | 146 -----------
+ tools/testing/devsec/devsec.sh          |  27 +-
+ virt/kvm/kvm_main.c                     |   2 +
+ 29 files changed, 866 insertions(+), 538 deletions(-)
+ create mode 100644 drivers/iommu/iommufd/tsm.c
+ create mode 100644 drivers/iommu/iommufd/viommu_provider.c
+
+-- 
+2.43.0
+
