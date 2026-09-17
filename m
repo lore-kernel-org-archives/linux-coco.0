@@ -1,114 +1,189 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEA64B402C
-	for <linux-coco@lists.linux.dev>; Thu, 17 Sep 2026 09:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C829B343893
+	for <linux-coco@lists.linux.dev>; Thu, 17 Sep 2026 10:22:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789639033; cv=none; b=gjKA41pizlLeuMKN6O3FatfIPF4EYaqWck1le3tb0LBEKWRCn72xaeGXGYJ5InSdXZIkJrLO2nxh1uJTR76jDwnSqT0fSgE+p5CZFjS43nqDq2edyRGTTtufwErdmzOtxEkaZp/XqxE7Or9/e2Nh1/AJHVKScK1D9QBeyApOkmI=
+	t=1789640551; cv=none; b=JCV46Zd0DmmRcb0layuWWJdaX/OXyYmBtiCIhR2nG/l7w3AxWhAcWtf4+LHTwNKYjVUYBhqpo5yfghr7v/Ovt0f/HmOLCNpEMEoFdqChPMD6jY76ctaiBn8V+ftYxlXs4H3SkDFySaYBVgApsADnRhcGsvkx0LkchWXzRM7lDU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789639033; c=relaxed/simple;
-	bh=MystT138xR+WElV4qva3izvJ/ENfjI4PQpKKdQVx3Oc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZVCREdrm0MDHrgHpudGaTOPRe52A9YUANox+Ocf2Dacsjyeeb+Ky8ZtaB66KdRer7BiJSKHgSsHDCDym9du2E01KQmAr9FMtU7R0QRkSEgSl41UUibWwt6Oq6UHrxjcygZkaKf8Lc6I3s3yLE4CUtZo2ob2vw25xHc/9s2ciT2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=UrIEyXDb; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1789640551; c=relaxed/simple;
+	bh=FMK0j1cD9oVuGtD8qu0jG7j2ZEkw1Z91TBlshXuldO0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=DaF2WHxB+1PiC73et2lFoyZnBfqh66a6JZdZUd++/NpTLeKgGL5RFi5N2QCtgKZ0PPNo2Tc0CLmf96/8aEz0wgxVgeScxAqNao9+2Tg2TNKED8aURZqKssS/wHao6XCjT/tflll6waCiv3mctX9IxC+cvNqBX6fOCaz9JD9EfqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hgTRNkqy; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="UrIEyXDb"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 64CA61476;
-	Thu, 17 Sep 2026 02:56:53 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2D5AB3F7B4;
-	Thu, 17 Sep 2026 02:56:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789639017; bh=MystT138xR+WElV4qva3izvJ/ENfjI4PQpKKdQVx3Oc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UrIEyXDbpHvb5imXK3xXbqGf5/C6i3JpVnVkFA+MtaiCw5mMgwu8X4D2s4knT/I/m
-	 8Vwg8qziKHCebU+u33vXQ8N08svoxwaD7gtz9TagLvJ9oqoHpIMUS7+D8VzxO5+twu
-	 Xdhx6ch6nqtHlax2kAvi9DKw0cVUiVRWuJL84ByM=
-Date: Thu, 17 Sep 2026 10:56:52 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Andre Przywara <andre.przywara@arm.com>
-Subject: Re: [PATCH v11 7/7] coco: guest: arm64: Replace dummy CCA device
- with sysfs ABI
-Message-ID: <aqu5ZI6433cV2PDy@arm.com>
-References: <20260914060511.277948-1-aneesh.kumar@kernel.org>
- <20260914060511.277948-8-aneesh.kumar@kernel.org>
- <aqp2DRInEhzpEqAc@arm.com>
- <yq5ald911e4o.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hgTRNkqy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789640547; x=1821176547;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=FMK0j1cD9oVuGtD8qu0jG7j2ZEkw1Z91TBlshXuldO0=;
+  b=hgTRNkqy6vlq+Lfbq/ostkTv1hgwmdOobb2WtMbbaCAwEyXgYwhJ3gzZ
+   eC+fLCpDbqQpzzPB4scuxeHajRIYg7+/R79LLyqJDYto4YPYEnOnPypWC
+   BZzoWwU1EpWY2WBMrRp9rsl2PfS/vzdGeX8u9j38iHcdzZk2vt+GFEl3Z
+   g0XvWUJt+5JlcjG7cEOl3z4PCA94UVx5+8S9YxvBpMrWm+eXDWeYUqopx
+   Bq+NMmG2CgjRjjcxxkVMrOOD57rkoMsNUKgGi+VT6oJasybVA1qBkB04M
+   /xI3iEYgScC5QS8ImWinjCmCLUmWwrN2xeiCNf/xeCLZkNEth+JzhKS2S
+   A==;
+X-CSE-ConnectionGUID: 7/PVMKwISVyQmTZh8fsRmQ==
+X-CSE-MsgGUID: Csi9oCNKQ86PIWHXd+t9Wg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="77612444"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="77612444"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 03:22:25 -0700
+X-CSE-ConnectionGUID: I/BT8hxyTH2Iec9pyI32Wg==
+X-CSE-MsgGUID: EZh/2oHnQSCfWKz7EtCYww==
+X-ExtLoop1: 1
+Received: from ubuntu.bj.intel.com ([10.238.152.72])
+  by fmviesa003.fm.intel.com with ESMTP; 17 Sep 2026 03:22:22 -0700
+From: Jun Miao <jun.miao@intel.com>
+To: sathyanarayanan.kuppuswamy@linux.intel.com,
+	rick.p.edgecombe@intel.com,
+	dave.hansen@linux.intel.com,
+	kas@kernel.org
+Cc: linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jun.miao@intel.com
+Subject: [PATCH v3] virt: tdx-guest: Use read_poll_timeout() to shorten get-quote polling interval
+Date: Thu, 17 Sep 2026 18:22:02 +0800
+Message-Id: <20260917102202.750895-1-jun.miao@intel.com>
+X-Mailer: git-send-email 2.32.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5ald911e4o.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 16, 2026 at 07:39:59PM +0530, Aneesh Kumar K.V wrote:
-> Catalin Marinas <catalin.marinas@arm.com> writes:
-> > On Mon, Sep 14, 2026 at 11:35:11AM +0530, Aneesh Kumar K.V (Arm) wrote:
-> >> diff --git a/Documentation/ABI/testing/sysfs-firmware-cca b/Documentation/ABI/testing/sysfs-firmware-cca
-> >> new file mode 100644
-> >> index 000000000000..bf177d636b92
-> >> --- /dev/null
-> >> +++ b/Documentation/ABI/testing/sysfs-firmware-cca
-> >> @@ -0,0 +1,10 @@
-> >> +What:		/sys/firmware/cca/realm_guest
-> >> +Date:		May 2026
-> >> +Contact:	Linux ARM Kernel Mailing list <linux-arm-kernel@lists.infradead.org>
-> >> +Description:	Read-only. Indicates whether the kernel is running as an
-> >> +		Arm Confidential Compute Architecture (CCA) Realm guest.
-> >> +
-> >> +		The value is one of:
-> >> +
-> >> +		0: the kernel is not running as a Realm guest
-> >> +		1: the kernel is running as a Realm guest
-> >
-> > Does this file ever read as 0? It is created only if rsi_present and
-> > always reads as 1. That's fine by me but we shouldn't document 0 as a
-> > value. More like if present, it always reads 1 and RSI is present.
-> >
-> 
-> For now, that is correct. However, the two checks could diverge if Realm
-> guest support is enabled only after additional checks, such as version
-> compatibility.
-> 
-> In that case, is_realm_world() and static_branch_unlikely(&rsi_present)
-> could return different results.
+The TD guest sends TDREPORT to the TD Quoting Enclave via a vsock or
+a tdvmcall. In general, vsock is indeed much faster than tdvmcall,
+and Quote requests usually take a few millisecond to complete rather
+than seconds based on actual measurements.
 
-They can indeed diverge in either direction but would we ever end up
-reporting 0? I also think we should gate realm_sysfs_init() on
-is_realm_world() rather than rsi_present. I know it's the same at the
-moment but it would read better if we just did:
+The following get quote time via tdvmcall were obtained on the GNR.
+Test case tdx-quote-generation-sample/test_tdx_attest:
+Start tdx_att_get_quote concurrent loop, duration: 1 s.
 
-	if (!is_realm_world())
-		return 0;
+| msleep_interruptible(time)| 1s       | 5ms      | 2ms      | 1ms    |
+| ------------------------- | -------- | -------- | -------- |--------|
+| Duration                  | 1.004 s  | 1.005 s  | 1.003 s  |1.036 s |
+| Total(Get Quote)          | 2        | 201      | 451      |490     |
+| Success:                  | 2        | 201      | 451      |490     |
+| Failure:                  | 0        | 0        | 0        |0       |
+| Avg total / 1s            | 1.03     | 200.05   | 450.05   |489.89  |
+| Avg success / 1s          | 1.03     | 200.05   | 450.05   |489.89  |
+| Avg total / 1s / thread   | 1.03     | 200.05   | 450.05   |489.89  |
+| Avg success / 1s / thread | 1.03     | 200.05   | 450.05   |489.89  |
+| Min elapsed_time          | 938.05 ms| 4.84 ms  | 1.86 ms  |1.80 ms |
+| Max elapsed_time          | 938.05 ms| 5.04 ms  | 4.71 ms  |3.82 ms |
 
-and realm_guest_show() just return 1.
+According to trace analysis, the typical execution tdvmcall get the
+quote time is 1.8 ms. Therefore, 2 ms is a reasonable balance between
+performance efficiency and CPU overhead.
 
-The file description could be (without any values 0 or 1):
+Since it's a real issue, updating the polling interval to 2ms. Given
+that deployed QEs respond fast, we should also reduce the maximum wait
+time to 1 seconds (from 30 seconds) to fail faster on errors.
 
-Description:  Read-only. Present only when the kernel is running as an
-              Arm Confidential Compute Architecture (CCA) Realm guest, in
-              which case it reads 1. If the file does not exist, the kernel
-              is not running as a Realm guest.
+And compared to the previous throughput of one request per second,
+the current 5ms can get 451 requests per second delivers a
+451× performance improvement, which is critical for high-frequency
+use cases without vsock.
 
-or something along these lines, no description of value 0 (well, you
-could say if "if the file does not exist or reads 0..." but only if we
-envisage a use-case for this.
+So, change the 1s (MSEC_PER_SEC) -> 2ms (2 * USEC_PER_MSEC)
 
+Suggested-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Signed-off-by: Jun Miao <jun.miao@intel.com>
+---
+
+v1 -> v2:
+ - Add "Suggested-by: Sathyanarayanan Kuppuswamy"
+ - Use read_poll_timeout() from <linux/iopoll.h> to simplify the
+   timeout handling instead of manual loop counters.
+ - Reduce the maximum wait time to 2 seconds (from 30 seconds) to fail
+   faster on errors.
+
+v2 -> v3:
+ - Reflash the test (1s 5ms 2ms 1ms) results.
+ - Using read_poll_timeout() significantly shortens the wait compared with
+   the previous while loop. So reduce to 2ms from the test case results.
+ - Add the get quote test use case in commit:
+   tdx-quote-generation-sample/test_tdx_attest
+
+---
+ drivers/virt/coco/tdx-guest/tdx-guest.c | 32 +++++++++++++++++--------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+index d0303e31e816..bac7cb9403f9 100644
+--- a/drivers/virt/coco/tdx-guest/tdx-guest.c
++++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+@@ -16,6 +16,7 @@
+ #include <linux/set_memory.h>
+ #include <linux/io.h>
+ #include <linux/delay.h>
++#include <linux/iopoll.h>
+ #include <linux/sockptr.h>
+ #include <linux/tsm.h>
+ #include <linux/tsm-mr.h>
+@@ -198,10 +199,10 @@ static void *quote_data;
+ static DEFINE_MUTEX(quote_lock);
+ 
+ /*
+- * GetQuote request timeout in seconds. Expect that 30 seconds
++ * GetQuote request timeout in seconds. Expect that 1 seconds
+  * is enough time for QE to respond to any Quote requests.
+  */
+-static u32 getquote_timeout = 30;
++static u32 getquote_timeout = 1;
+ 
+ static long tdx_get_report0(struct tdx_report_req __user *req)
+ {
+@@ -251,18 +252,29 @@ static void *alloc_quote_buf(void)
+  */
+ static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u32 timeout)
+ {
+-	int i = 0;
++	u64 status;
++	int ret;
+ 
+ 	/*
+-	 * Quote requests usually take a few seconds to complete, so waking up
+-	 * once per second to recheck the status is fine for this use case.
++	 * Quote requests usually take a few milliseconds to complete, so waking
++	 * up once per 2 milliseconds to recheck the status is fine for this use
++	 * case.
++	 *
++	 * Also break out early if a signal is pending so the caller can be
++	 * interrupted while waiting.
+ 	 */
+-	while (quote_buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout) {
+-		if (msleep_interruptible(MSEC_PER_SEC))
+-			return -EINTR;
+-	}
++	ret = read_poll_timeout(READ_ONCE, status,
++				status != GET_QUOTE_IN_FLIGHT ||
++					signal_pending(current),
++				2 * USEC_PER_MSEC, timeout * USEC_PER_SEC,
++				false, quote_buf->status);
++	if (ret)
++		return ret;
++
++	if (signal_pending(current))
++		return -EINTR;
+ 
+-	return (i == timeout) ? -ETIMEDOUT : 0;
++	return 0;
+ }
+ 
+ static int tdx_report_new_locked(struct tsm_report *report, void *data)
 -- 
-Catalin
+2.43.0
+
