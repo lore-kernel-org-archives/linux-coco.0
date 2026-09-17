@@ -1,94 +1,95 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E47503BED
-	for <linux-coco@lists.linux.dev>; Thu, 17 Sep 2026 12:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B978151FCD4
+	for <linux-coco@lists.linux.dev>; Thu, 17 Sep 2026 13:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789649846; cv=pass; b=Jb6XZ0S1o/wsfYEX9Ibig2TfSd1exOcLQxOCiCnwPXJ8HYWyE2TywdwA/sRpdPcRXzYcuUffjJa/+avfXlkQdxs4XBLu3B+N/qB34kgp2wkVBRt5WJyA7RoIGzEErdEp4s7xdX8jtP/0KR0kzmzK+X3WzlMs6B0OvJFaMqDeu3Y=
+	t=1789651046; cv=pass; b=hIreUbQsKdkhfgMk9cjV7o5jZgsgtymhDHlFMAAjg7Ek3J6036riQh1MAxU8QFo32pQbcMdN9uPkwgd2GI1mnCmvIakWNQ5jtSs5wA9tvx7Qxf5zOO1afcsMKbaorTGs7t1dSByhz4gM5dZCFnyBIcQTQ8qoaoWSq9V5hy8G070=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789649846; c=relaxed/simple;
-	bh=yjGleyBftL4mc4+T7OaOkxuKfXAcAseCzpwWbCEkYR8=;
+	s=arc-20240116; t=1789651046; c=relaxed/simple;
+	bh=kO4HLKikSv+g/tlkono8w2r9mfJw0DOnYzMEnSqFOZQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kHP4xPObtpu///SDzcJU1xfqpM7eONIVqQ08yFW6ceOmsOWfvJ/j5tG1P7VhCUUgWsfh9XenF0s2Oj1NCiRsAsJIkkGYBXq/AKhIPmyhAmHx+xUS2sMrAWjldNWfVaU+8WHCJ7bAxZOTtIzOjUC9V5Z9QUomN5P+s+3xOfqbLkw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rlcACcQu; arc=pass smtp.client-ip=209.85.167.43
+	 To:Cc:Content-Type; b=PXi0ZN/RP/LNRKCvm8gwa3+35U7cGSa3rhZ8XeF0ml7WLK/eMiy+YIhurFzTOg0viG4ZvOxHk5pU0qc5isINw62YDDSfpL14NeRjbqMT6px1CDnjuDe9w5/lsMPgVg89AvITmvlXrSJ2EK31hd9TcFKGOPztSGFtvMarrqazLdE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M1ttT79+; arc=pass smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rlcACcQu"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5b83c1421ecso1629e87.1
-        for <linux-coco@lists.linux.dev>; Thu, 17 Sep 2026 05:57:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789649840; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M1ttT79+"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5b83c1421ecso1852e87.1
+        for <linux-coco@lists.linux.dev>; Thu, 17 Sep 2026 06:17:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789651042; cv=none;
         d=google.com; s=arc-20260327;
-        b=ZCHxMFHAfQLRVmM2GTzHpYKmbovcECOT4xvQgPJ5YvipcM+hWwg7hKArWQM9tyhkUP
-         c7FRt+UVlTOaRmFQgxrqhvmeQaKVfgiGGWY6CHUzyYzVa79l0XBkMvf3uhtIHfMof9EL
-         qKfI83NjTi7cfAmk9j2Ra74BjWaI4qfbA9/rrpVFuln5P3gdrcJh6WQKO3k5h/sjAp84
-         eYSUqdlBQnij1WgXCL6AwxaCkrbuBav11jErX3rMgAhqaJIpNCnvME0s/W3l4l1JtQFq
-         CoMLQWKhYeSgWpV6SPeWVvjKTVFzPpeCkUZjq3EInniij3k8946bfOH3Pk2BfWDv+LTc
-         uiww==
+        b=c7YCS6aPCMp2iehVflVEpwuUwV7iVxEH5rFA7gVEQtsGkpycEHT1EfYFiXiAmJkl7f
+         jeIpZF0pbweLbZArBCFZ4h0RpuGVdlq4IdLy7zcEYHFgifUxseySUkEViD/trv76+9Tt
+         f2J+LE3YbE7Lq0yVC1PuNuEN1Olbj9BfU877EiBVmjRG9LPJ4DW6TKK/MJ1hd2x0E8gv
+         cYe8zogmq3keHam7wPs0b4r56iypzCmd/JG0THfrqIrfWupfZIORy3xhD1Dtc4ohUrMI
+         I5rFlhnT/u82kkKtbAiZ/1Bp+go2GYhKFNd26duAKb0QuWoa6R6pGLejGKsJE434hTsQ
+         e9vg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=wCB7kYcnG02MJOJXUn6C/taoVXipNbSEcZ1HCYhjZfo=;
-        fh=6bgxzaiOXpOEv6vGg6LEOxwIewSofOQj7HS5s8cOrZw=;
-        b=RslrVHAINRnpj6kQhb7o0KCgA2qgt1ltfPI5BDNU+ofiK5awdCJW6nmlARxHh/nr+5
-         5ecz2oUub317mKyvCF3GzIXoZxf2b1vzGqWQKcVayCh19P7G4Cy97mLiHpinAiaioLEu
-         dAqIqa8Q7IOt4lsvDSStrw5y5mTRa0w+7ftiAhUxylLQhAHaAOvq76UkcnTbnYJdFuSC
-         I0QK3sn2ybidd09CVAmTQ/kwsloD/XOOh024RA7VfX3dWdetyqg6ovNkZkdCjcHPwVJ3
-         8LJKVHJFk/3LjgFIjSDf32Wj1DnSZ0ve39+cM7MNVPF2/lY2FdDX8qpzbk3y+2Jpol+r
-         nqIw==;
+        bh=yvMJselGvAoMrhysUaGitx662yndDSgH+0mQM9lz22E=;
+        fh=Jj0pjE0Wxkf2erOcbq2uRCi8QdkVDcTq9Wm+C61rbFw=;
+        b=RgXqYr2iglRy8vTsTt1ihqfz5/W5eNOZ+RuPRlKzAByXWlmjb2Qo52F3rantkLEerI
+         ge2KKdEbgWIz78R+hJ1aGcDktFDb9YFPqZdPjYb/Q5tI2gM/7HKoH5Zy9pk1VomQmjC+
+         OV9IkqzcHcc8PISSb7kDpvxTfAZ3W5aeAzAgPsoyk3IAZLXuztM3B0mNZDD7Y3a9gdtr
+         nQzDsMrQEHrJTg+9PBQNwonrgIW2DhOEzGRwcCYfZb0jWVb15DUDbt3fe05QpFpLWQwc
+         IUVmbBcmCtygjL2merWcb7a3LTee2z9x2BKSgjZX44Ps+BQe+1/tBZYEHYkNMmexcPB3
+         ONmA==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789649840; x=1790254640; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1789651042; x=1790255842; darn=lists.linux.dev;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=wCB7kYcnG02MJOJXUn6C/taoVXipNbSEcZ1HCYhjZfo=;
-        b=rlcACcQuIZURHu+UgUXo15rg6D4xY4BtfJNAii0A7W6jN/HXlq5rMNoVyH6xNrM0ci
-         16rVthC7T204OzNOBcrudWll3GDLEN8Y4Y1vMpV30V7fz6SjXEZyGI+yTmgeHKcYALDC
-         VDh4h6QIBBSjeJu5APurH0rhoGW427ZB1smBUgS2ciCCQviIYji7Q1ZnVdSpevSbz1e9
-         NqV+sy0Z0qlph+Q/0Vb0SmyqrhXrcr49gL8xYRcu7c+LSVBXPNQ8n8X4nCtraueMR3c6
-         S4CEt8B5XPxPbz6m6oeubnMPETPx0wScFIZNGd2G2BVQLFlRWVADTtnTQEVEeAo4DIeV
-         cspg==
+        bh=yvMJselGvAoMrhysUaGitx662yndDSgH+0mQM9lz22E=;
+        b=M1ttT79+L5OHqipV5A/SVZBeZwxINuz0MShBgki6MtoauOuuni2ywaRoQq5Bx0Kc10
+         KKb6KmxvIY4tbPSF/8zR4xI1/jmgGh8rlTw0cGgoCZqWWCqOkgYXBSOZYseN44OOPfiL
+         mUss3DmTadB8ZkrCIZq8DYlZX3uwxLzz9Wx+Wy/oyePSjVMcc663Lu682mqKVzXB8toF
+         Vq8Cv8W/N/4dmEq4il/Aa22Rdly6qq1VWZbDYRhQrxI1RItgzrF26+NGZTOnt8v4h/+u
+         jaeS25LPr8iPGhuJKSjsb+bonWP/ECNK2LpwP6Q3XtYLXe1VLR2/2F+gsAxVguKpPueR
+         snJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789649840; x=1790254640;
+        d=1e100.net; s=20260707; t=1789651042; x=1790255842;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=wCB7kYcnG02MJOJXUn6C/taoVXipNbSEcZ1HCYhjZfo=;
-        b=2fjBjBv4yEFIIcpAw08h9kTwbqts0vUsorQXxtXFcwwutKY02KzctC8YVsVX/8HblS
-         GkYB2yAtq6E7BDkEsM3Pz5d/ouSEFZfcuR5NURvILT7B4GQp9CoNZsWyWlYtKFHWyio9
-         vQVkdq1fbzNE2+/NmTz5Vzw/Tw2gbu5THfKO0If4eW+X5BWPBbn4AJLFkZIEphNoIGzO
-         OhPwuSemvTect791hXaZDpQQ/FcJtTByS3Cd4nFyPdHZWCwohH1MuuY+/2VM7hRor1jV
-         9hvtneO5FbthNG32oellMC97Tmb8YWpIFmmsYt05Gt92c4T0R6h0Ww7FSQR/F7VGVVLU
-         /CCg==
-X-Forwarded-Encrypted: i=1; AKwUvBylPMxjH+ZMs601VRJNRQpzIvSU2k4z0STiN9gpAS+3sqw5T/I+L9PiWoTXtHePtcmHiiI75GItwwsn@lists.linux.dev
-X-Gm-Message-State: AFuF++m/iXyYa0KQh2vxDtt0AIG8yY4e/Zi9Fm0jd0MA/KvrbiR8UK5k
-	ptQaG9hhdx4W7p7OEXnyf+rTSLBzyMEff0uH8RvmYbVvNf2JqFF1ENINg76obFp2TXTfMlhEb2u
-	qYcQoyN2/aoXmgQBiboRAkvfsC9uWwaAKyiFFfFap
-X-Gm-Gg: AYBFou3Dxvr7M7nMRgy5Hee1TsqmdkzDZIyHVuYJ95GvbGNEaftldxsstACbVxqrloV
-	XPHmrpJJ2Rqy1f+paV6O+8S4iDyh3iifPF2QXofSRnihedQ32ItTeElZZnCYmZuTShg56hTmJjs
-	pVIlHxgcU9gDW/B0NUVdAK7yNaM9KUtmDuMj7hbm4Nh8rTwP93ya7vtEvdcvAkwz3hAZBOrMlK1
-	k1bUTsjPi7btyoDhvjP/hB4ofOSssx/mVd27H/N+TAqhmYYSoQoiS28C44SdPmYAnyzh1xJQssf
-	MxWG/u7EkVCqX9/ep297N4ruwVYH2iIWmfP/vGSMNSyrRV1rA/r12yz8/UnLguQvOaBvACTqnj9
-	4rb70E4VsBCzR1Q==
-X-Received: by 2002:a05:6512:b97:b0:5b1:571f:715f with SMTP id
- 2adb3069b0e04-5b8bff16793mr25923e87.3.1789649839151; Thu, 17 Sep 2026
- 05:57:19 -0700 (PDT)
+        bh=yvMJselGvAoMrhysUaGitx662yndDSgH+0mQM9lz22E=;
+        b=lfNh9l3ePQT5hiwHUZdWWmHtBWqQNMkQQcK5/uhdRYPzVkO4haj0ss1zgOBWk/Gxap
+         dqwA7SaXk+SbI32NaxyCDPefGucNwACf/ycg6to11K5N8Iw9dW7zjr3hbr5BBSF4/23p
+         3Ld42/TnGPsaMndXb9C7ONQzkJ9HCxLDVGjEc3C61R54tSdU341cVqs9H/OSfD3vzYxM
+         UZzguGA7qmHZ2dfBbkTiBf2Sv9DRslaSgyc84hh6rLWsT6YkDi0ZaZseLk2cxU08Fgue
+         yYgdqy/xfuS3BHd6646FXCSkb0SeHcasTenY/36QDe52QhOfJOUe8YM+9g0d9Gdo+zSy
+         RjwA==
+X-Forwarded-Encrypted: i=1; AKwUvBzKUBB35xtRpjQidx/iFNwi+gqujhqAopAiIK4GSANTDyymHb0AsCWGZvryZqJ5N3BiD6TMl3AGQ3Ft@lists.linux.dev
+X-Gm-Message-State: AFuF++moJw9XFiQ/EX1P7CbLbEyaXUBcsl1Rztd+gWQGdqEOp6NpAAfR
+	HLieL/jvlmvLu+xvsbXHcE9Gl56he1sVvhwxawkA6iv04MAIRcn8uAsFr+M7pqUtQDH2lD1ske6
+	6+eInOcsMiTOvPb6lffXeCEp4x2y1SBYkF1oPL2wf
+X-Gm-Gg: AYBFou077vrai2krv/sP2M664LtAZTKLtZxBxZ4MVwQ8TnIv79hD2GIJTfx5rwFt3bZ
+	7UTdrmCV7fKbduGCZNfmzcENJ5uH3hINVEj2M+X1Imnu2atcnYSqsagwT/Z0SrDPcIXKGbhOgrm
+	KBzEIUKg7lmtA6TRvN/+lcxNpEBQcSBo4QpWE50DNhecJmp7skuMCpamAbB1hYYx5h+4YoX33fM
+	vPTz8cHtMORxEUCwyg5XcZfyKjVweWB2i5i0lDi5cz+aF1HCDJSVbZTYqwPJIkct9ypYk8v/gBn
+	5+gods1VoPCYB3XDKInLZVZafO9yRUjwC8tcbknn9vl1k2f0LMJqSfHV4e5oRkJ6fI6if+GWHXw
+	m8PB2oeOCY/Q9kA==
+X-Received: by 2002:ac2:4c50:0:b0:5b2:8963:e5d4 with SMTP id
+ 2adb3069b0e04-5b8bff1d051mr39681e87.5.1789651041084; Thu, 17 Sep 2026
+ 06:17:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260915160141.3543048-1-suzuki.poulose@arm.com> <20260915160141.3543048-19-suzuki.poulose@arm.com>
-In-Reply-To: <20260915160141.3543048-19-suzuki.poulose@arm.com>
+References: <20260915160141.3543048-1-suzuki.poulose@arm.com> <20260915160141.3543048-21-suzuki.poulose@arm.com>
+In-Reply-To: <20260915160141.3543048-21-suzuki.poulose@arm.com>
 From: Fuad Tabba <tabba@google.com>
-Date: Thu, 17 Sep 2026 13:57:00 +0100
-X-Gm-Features: AcwNN1X3rwZaClpg5QtpbmDuAi81nkVt-NA4XEMnqdzMUr4WqSiJJDooQvLcWZ4
-Message-ID: <CA+EHjTzKjjEuAuoOuzGG0uKyVZE-r+CEreca2H2kEQYuRPpgUw@mail.gmail.com>
-Subject: Re: [PATCH v18 18/23] KVM: arm64: CCA: Mandate VGIC_V3 for Realms
+Date: Thu, 17 Sep 2026 14:16:44 +0100
+X-Gm-Features: AcwNN1VtWWKyrr6h6sFHMUccgZH0Chs5OMidTNSOoiZ_fDx_6ZmQhtU1SR2DO2Y
+Message-ID: <CA+EHjTwYqTFzGdNPproWW5L6j5pNqmuWeFuu9HbHa8LBLPvY2A@mail.gmail.com>
+Subject: Re: [PATCH v18 20/23] KVM: arm64: CCA: Don't expose unsupported
+ capabilities for realm guests
 To: Suzuki K Poulose <suzuki.poulose@arm.com>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
 	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
@@ -102,24 +103,61 @@ Content-Type: text/plain; charset="UTF-8"
 
 Hi Suzuki,
 
-On Tue, 15 Sep 2026 17:01:36 +0100, Suzuki K Poulose
+On Tue, 15 Sep 2026 17:01:38 +0100, Suzuki K Poulose
 <suzuki.poulose@arm.com> wrote:
 [...]
-> diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
 [...]
-> @@ -84,6 +84,9 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
->                  !kvm_vgic_global_state.can_emulate_gicv2)
->                  return -ENODEV;
->
-> +        /* Realms only support VGIC_V3 */
-> +        if (kvm_vm_is_realm(kvm) && type != KVM_DEV_TYPE_ARM_VGIC_V3)
-> +                return -ENODEV;
+> +static inline bool kvm_realm_ext_allowed(long ext)
+> +{
+> +        switch (ext) {
+> +        case KVM_CAP_ARM_PSCI:
+> +        case KVM_CAP_ARM_PSCI_0_2:
+> +        case KVM_CAP_NR_VCPUS:
+> +        case KVM_CAP_MAX_VCPUS:
+> +        case KVM_CAP_MAX_VCPU_ID:
+> +        case KVM_CAP_MSI_DEVID:
+> +        case KVM_CAP_ARM_VM_IPA_SIZE:
+> +        case KVM_CAP_ARM_SVE:
+> +        case KVM_CAP_ONE_REG:
+> +        case KVM_CAP_ARM_PTRAUTH_ADDRESS:
+> +        case KVM_CAP_ARM_PTRAUTH_GENERIC:
+> +        case KVM_CAP_SYNC_MMU:
+> +                return true;
+> +        }
+> +        return false;
+> +}
 
-Could this be kvm_vm_hyp_is_distrusting(kvm) (with patch 13's compare
-as >=) rather than a Realm-only check? A GICv2 isn't possible under
-pKVM either, but there the v2 mapping is only rejected later, in
-kvm_vgic_map_resources() at the first run; this would give both the
-same -ENODEV at KVM_CREATE_DEVICE.
+I'd keep KVM_CAP_IRQCHIP in this list. api.rst has it advertising
+KVM_IRQ_LINE as well as KVM_CREATE_IRQCHIP, so the cap means in-kernel
+irqchip rather than GICv2, and the GICv2 case is already rejected by
+patch 18 in kvm_vgic_create(). It also keeps the two protected lists
+the same where the support is the same. And could this live in
+kvm_rmi.h, next to where kvm_pkvm_ext_allowed() lives in kvm_pkvm.h,
+rather than in arm.c?
+
+[...]
+> +static inline bool kvm_arch_vm_ioctl_allowed(struct kvm *kvm, unsigned int ioctl)
+> +{
+> +        long ext;
+> +        int r;
+> +
+> +        r = kvm_get_cap_for_kvm_ioctl(ioctl, &ext);
+> +        if (WARN_ON_ONCE(r < 0))
+> +                return false;
+
+You told Sashiko my fix covers this one [1], but that fix changes
+kvm_pkvm_ioctl_allowed(), which this patch deletes, so the `if (r <
+0)` has to go into this copy too. The guard you posted for the second
+finding still leaves the WARN reachable on pKVM and Realm hosts, which
+is the case the fix removed.
+
+nit: kvm_arch_ is the prefix generic KVM uses for the hooks it calls
+into the arch. For two static helpers in arm.c, kvm_vm_ext_allowed()
+and kvm_vm_ioctl_allowed() would avoid the collision, and the same for
+kvm_arch_vm_ext_allowed() above.
 
 Cheers,
 /fuad
+
+[1] https://lore.kernel.org/all/20260914093838.1082637-1-fuad.tabba@linux.dev/
