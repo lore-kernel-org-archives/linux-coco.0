@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8844FDA64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E154FDE7B
 	for <linux-coco@lists.linux.dev>; Fri, 18 Sep 2026 13:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789738317; cv=none; b=Jsgi8EIXZOSKX0gi9/WjOFTwCsju5ws60L72yMkfPzyB3ExLVLuVmqwn7p2ZV36HJ6m5rNseX7p2DUBKnkc5BbbirFAjhDDfMVxpWMC3/vq1yQxQ6hWyXKEAo8Ab+fLYQebYEd5Z2MBgNT0chfqO63RcJfik30ZxODbmhMqgHnk=
+	t=1789738318; cv=none; b=PlsNQuxKaKF//e127lf4hgeBe5n56+28g8SZayMtk76G1AKRaVpjC/qDQBoj0IpWuBKy/dxHysWoLbBf+FWO8EapPj3AmP7UBySwLiCvB0K5CN2k6iaQeK9+PoWRrCoh7TApuclNJlXS7RbPPhp/rS3rwQDsTDtcoRRrDCjVUUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789738317; c=relaxed/simple;
-	bh=fKmfnpJ5kVfOzdLTI5grolxxwlUvkZawqEiCJanMfzo=;
+	s=arc-20240116; t=1789738318; c=relaxed/simple;
+	bh=MNmxRyRUy3Nzhgb9gzZzsOfr9IqYajZHJ+kbSSWtbJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kZgDHe9bNxvT6WUGo5qwzS69KWffSJNdaASidp6eWTCjlnCGIgGGwSCtznmAGmshaI8UcjKT2ewdCCrBlPpEsvz38aZXb2NFfqsGwtyXZKUOXyvQSZQwe9q8nz24q3g4gTU80hzf2C1n1x+m0pfSuy7w+HCrsRfJnQdNyh4LZQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EZy/rEzp; arc=none smtp.client-ip=192.198.163.7
+	 MIME-Version; b=ptkq1TGoplQfoD7XofOI6YSbY1mEVYxU8K4/FjBva4y0XVngXJfUrannAPtfH+TpNBxWkWuv4PSrZBhTWmVyUHf1Jv1cKEQlz0aMhBD40AAwC22zbi3ZXd7mnXQW8qat9AFyCz0Q9cufPwl/vZCxCqwHjDCHwW48teegadURNKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gkoa2A2H; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EZy/rEzp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gkoa2A2H"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789738315; x=1821274315;
+  t=1789738316; x=1821274316;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=fKmfnpJ5kVfOzdLTI5grolxxwlUvkZawqEiCJanMfzo=;
-  b=EZy/rEzpEbUP5aGZiAzzuJglQAs5dvcAawsPdkNY4MvgaHpkgkniT2GQ
-   E6LNm97LSx1q3gWsWPJqaL5q2Mb7s999jpfXP0E0tJmXhInSBbyVqAczH
-   LRIWwMEahqr/Rzrb8oiGOwXyvGpFpMTkiAf78tvY2gXxytnge3pxcIfDS
-   etAoBcQO4xXVbeTCqZ85SFc0kIe5BuOEAeRZGA+Yrf5E7jpKlZ5Oa31qb
-   0qxnJxamNZX+Sx8NcWGQvZz7VcoS3Xfr+JW0wphYwEKTmK2dktFgdnT14
-   FTiNo6WsTI8LeFZL9DrqjX+YbLx/u/7uOT2aM/U72H7eEvBauXeZfl49q
-   Q==;
-X-CSE-ConnectionGUID: OBl4Vq+yR8S7IXbbanVrQw==
-X-CSE-MsgGUID: 6lt2WdXyQlOh9VZgqgJYGg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11908"; a="115776173"
+  bh=MNmxRyRUy3Nzhgb9gzZzsOfr9IqYajZHJ+kbSSWtbJQ=;
+  b=gkoa2A2HMBNtJqXyKKSVIxSBxxMn/zd48oYVR5N60nsfSHa3vr3fUbtv
+   O+Q3KnQTxVMt++WpuIVVZ67Zsb0OrF74j30TxhQE7La5NuewsjwTMmpfj
+   T/vcP7mG7rBRYf1svg1BCc7R7eHecAqGgHqNvsLSweQgitFgcUHnycTNL
+   6woc8nZM3WUHBhDo90FvezqsYjck5s9ge6/oRkHKEeNgQTDg0kwcqz7eF
+   JPjv/JySrG0KvlvQ5CRLb10i3AUAw1hBRulBvfU9bFbpwJ5CUuEfdhCRZ
+   lPC57sNPoa3LkTAG8Oa64vryqdRIy8nXjBQjDDJrI7b+f1zvLKxZyuKdY
+   g==;
+X-CSE-ConnectionGUID: GEsP4roITlKrhzNJiG2Aeg==
+X-CSE-MsgGUID: BemjSjdQQd2eZC4EuhEJzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11908"; a="115776186"
 X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
-   d="scan'208";a="115776173"
+   d="scan'208";a="115776186"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:31:46 -0700
-X-CSE-ConnectionGUID: zbHHxWCuRx+WBVmX7P34lg==
-X-CSE-MsgGUID: rngrD0LATMy6ccLzJ2AwCw==
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:31:47 -0700
+X-CSE-ConnectionGUID: dTQIsb7tSBm24NV2/yGdSg==
+X-CSE-MsgGUID: 8B4hV1w3RLizDNzg9vbkAA==
 X-ExtLoop1: 1
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:31:46 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:31:47 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -55,9 +55,9 @@ Cc: yilun.xu@linux.intel.com,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	Kiryl Shutsemau <kas@kernel.org>,
 	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [RFC PATCH v2 09/10] x86/virt/tdx: Use early returns in get_tdx_sys_info()
-Date: Fri, 18 Sep 2026 06:29:28 -0700
-Message-ID: <20260918132946.76533-10-chao.gao@intel.com>
+Subject: [RFC PATCH v2 10/10] x86/virt/tdx: Verify structure member sizes against metadata field IDs
+Date: Fri, 18 Sep 2026 06:29:29 -0700
+Message-ID: <20260918132946.76533-11-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260918132946.76533-1-chao.gao@intel.com>
 References: <20260918132946.76533-1-chao.gao@intel.com>
@@ -69,81 +69,83 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-get_tdx_sys_info() was generated by a script. It chains its metadata reads
-with:
+A metadata field ID encodes the size of a single element. TDX_SYSINFO_MAP()
+instead derives the copy size from the destination member, and nothing
+verifies that the two sizes agree.
 
-      ret = ret ?: get_tdx_sys_info_foo(...);
+A wrongly typed member is a kernel bug: declaring a u32 for an 8-byte
+metadata field would silently store only its low 4 bytes.
 
-The function is maintained by hand now. Use conventional early returns
-instead.
+Add macros to extract the element size encoded in a field ID and verify it
+against the destination member size at build time.
 
-AI was used under supervision to review code and workshop logs.
+BUILD_BUG_ON() cannot be used in a structure initializer, so use
+BUILD_BUG_ON_ZERO() and add its zero result to the .size initializer. This
+performs the build-time check without changing the stored size.
+
+AI was used under supervision to review code and workshop logs. It
+suggested extracting TDX_MD_FIELD_SIZE_CHECK() instead of open coding the
+check in TDX_SYSINFO_MAP(), to keep the .size line from being too long.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 ---
- arch/x86/virt/vmx/tdx/tdx.c | 33 +++++++++++++++++++++++++--------
- 1 file changed, 25 insertions(+), 8 deletions(-)
+ arch/x86/virt/vmx/tdx/tdx.c | 12 +++++++++++-
+ arch/x86/virt/vmx/tdx/tdx.h | 15 +++++++++++++++
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 9f9f2ef80f55..9d5a3296d3c0 100644
+index 9d5a3296d3c0..6dc328561009 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -564,19 +564,33 @@ static __init int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *td_conf)
- 
- static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
- {
--	int ret = 0;
-+	int ret;
- 
--	ret = ret ?: get_tdx_sys_info_version(&sysinfo->version);
-+	ret = get_tdx_sys_info_version(&sysinfo->version);
- 
- 	pr_info("Module version: " TDX_VERSION_FMT "\n",
- 		sysinfo->version.major_version,
- 		sysinfo->version.minor_version,
- 		sysinfo->version.update_version);
- 
--	ret = ret ?: get_tdx_sys_info_features(&sysinfo->features);
--	ret = ret ?: get_tdx_sys_info_tdmr(&sysinfo->tdmr);
--	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
--	ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
-+	if (ret)
-+		return ret;
-+
-+	ret = get_tdx_sys_info_features(&sysinfo->features);
-+	if (ret)
-+		return ret;
-+
-+	ret = get_tdx_sys_info_tdmr(&sysinfo->tdmr);
-+	if (ret)
-+		return ret;
-+
-+	ret = get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
-+	if (ret)
-+		return ret;
-+
-+	ret = get_tdx_sys_info_td_conf(&sysinfo->td_conf);
-+	if (ret)
-+		return ret;
- 
- 	/*
- 	 * The kernel supports using TDX without DPAMT, so
-@@ -584,10 +598,13 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
- 	 * try to support buggy TDX modules that advertise
- 	 * DPAMT but don't expose the metadata.
- 	 */
--	if (!ret && tdx_supports_dynamic_pamt(sysinfo))
-+	if (tdx_supports_dynamic_pamt(sysinfo)) {
- 		ret = get_tdx_sys_info_tdmr_dpamt(&sysinfo->tdmr);
-+		if (ret)
-+			return ret;
-+	}
- 
--	return ret;
-+	return 0;
+@@ -424,11 +424,21 @@ static int __read_sys_metadata_table(const struct field_mapping *mappings,
+ 	return 0;
  }
  
- static __init int check_features(struct tdx_sys_info *sysinfo)
++/*
++ * The size encoded in the field ID and the size of the destination C
++ * member must agree.
++ */
++#define TDX_MD_FIELD_SIZE_CHECK(_field, _type, _member)	\
++	BUILD_BUG_ON_ZERO(sizeof_field(_type, _member) !=	\
++			  TDX_MD_FIELD_ELE_SIZE(TDX_MD_FIELD_ID_##_field))
++
+ #define TDX_SYSINFO_MAP(_field, _type, _member)			\
+ {								\
+ 	.field_id	= TDX_MD_FIELD_ID_##_field,		\
+ 	.offset		= offsetof(_type, _member),		\
+-	.size		= sizeof_field(_type, _member),		\
++	.size		= sizeof_field(_type, _member) +	\
++			  TDX_MD_FIELD_SIZE_CHECK(		\
++				_field, _type, _member),	\
+ }
+ 
+ #define TDX_SYSINFO_MAP_VERSION(_field_id, _member) \
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index 407aded3137a..17fdb682410e 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -99,6 +99,21 @@
+ /* Class "TDX Module Handoff" */
+ #define TDX_MD_FIELD_ID_MODULE_HV			0x8900000100000000ULL
+ 
++/*
++ * Sub-field definitions of TDX global metadata field IDs.
++ *
++ * See "Metadata Field Identifier" in the Intel TDX Module ABI
++ * Specification.
++ *
++ *  - Bit 33:32: ELEMENT_SIZE_CODE -- log2 of a single metadata
++ *                                    element's size in bytes
++ */
++#define TDX_MD_FIELD_ELE_SIZE_CODE(field_id)	\
++	(((field_id) & GENMASK_ULL(33, 32)) >> 32)
++
++#define TDX_MD_FIELD_ELE_SIZE(field_id)	\
++	(1 << TDX_MD_FIELD_ELE_SIZE_CODE(field_id))
++
+ /* TDX page types */
+ #define	PT_NDA		0x0
+ #define	PT_RSVD		0x1
 -- 
 2.52.0
 
