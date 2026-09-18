@@ -1,256 +1,191 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACE451A127
-	for <linux-coco@lists.linux.dev>; Fri, 18 Sep 2026 18:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789754507; cv=none; b=MPRVh6l4HQyaxeEN9KWLm5WqCz8r2loXxEU0yk61S+newsEPxd/RM8gd7rIAVD4r8ylt43m6K8MvumnFHdXTGZfrnWZy+8BBuYlw5/zOMcc09wU2z2qaKC5ENbr8YuhNnKtGkx2ncYI1+hHksF5zXN5UzlkzTDCT1fcJFhaoxfA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789754507; c=relaxed/simple;
-	bh=OhEhLLsIoIfy5GHA41zX2jbBNoqjEV2J/4j8Ln8O36M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Uupnuq8D60lWMfkgRtIei2unpbB+xjcNm7FOVpy6c6jRCveuFj6Fkn41FAza4obXq3dqPZxhMRRkmq7YQfr+2u4k3Uq2e40kaWFIONgEEODCW5UfCNw8Ax1PDFM9+2lQfZsp2g1fApmE1YnCPQcewRO5TzynJ44Rs5xp91EmGGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=gqpaSw1N; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCEB49EC5E
+	for <linux-coco@lists.linux.dev>; Fri, 18 Sep 2026 20:25:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789763117; cv=fail; b=M9T3PAynl3NpC2v6+nHzPKPY1TRLtKWWdYh2oMKbKwSjEi9il3CGVTr+8qgvZumpaNhSw9SaBkVqjuiLMK8mYV45VSyOQ5+Uf6FIxxCPZc2olKZQ7G92PNHuMTfZqLCaQdKPTxUpAYngbepdkQSzBw7A8x95DqreU2Jpp8J4Lds=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789763117; c=relaxed/simple;
+	bh=T95o/cb7iDF/SByX7ElGwHT4IyIwS+AhvjA26YhoGHU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=DYIxOkbSnLWDdO9Ixo7fE5TTD4YeWIjiZoM+dydvNqjmX9omwksbyp5lSG7lXRwT1Yx2zm/APwn0BYv1Dw7vAK3Qjs5OtGyrQmGz8ksQE5qmttzVNu6pjSGJg4C3az73QppVgKNYgkTDl7DC5OlBFHWD3zD3v9scbe6dG2tiJNw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HctfmqR7; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="gqpaSw1N"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 515F240E00E5;
-	Fri, 18 Sep 2026 18:01:41 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id UWP2W9vP4TKJ; Fri, 18 Sep 2026 18:01:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1789754490; bh=To2NtLovobbsVi+zYzNAooWSosUMaxwE9+3unUn2R8I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gqpaSw1N8+80u3oWbbKLdEWMvW7Oubu2njowZa3TGpVsEdN4anqh8cFxVdGXGxz1t
-	 2VPVF7fmWRKogVD15HKDjFh2P87wQjEb6KDjIzvK36syfdnJa8g+FTvAOJdsccWbP5
-	 Pu7GP6sPbzKYOeRDkAOZ1+eA4kIJguYvabFTI2pduLVHksvaWnDyhsoK5gZbIfOML1
-	 SRjHmgE0wtD+BU6dmf164CeklInFauRhozNmtnOqDQHtT8H1YrH/0sQ6OmXVPuuGRT
-	 WRwClEdlq2Cn14dwDanPsGQjMi7AZkQxPEnzsQGSzruS07zWa1jR4zqPoBeOjnRGAs
-	 kcLE8ClOn2OTF/RiLnKDua05Z3G+75hfAAG8bSJEH0s3G81l5N55xyl7hwWSuBsNBN
-	 ZHDOu1tt3jPbn+OiQaUt4W9lnwL5uN0Y6iwQ+zCK5m/2a5Kro7G4AWuLNQqRoVwCm0
-	 ou143zdnS7axg2AMMtG7ZigRLJmocLsvoahXisKtcR0DwqSsrGhs76pXhqPywd5r7d
-	 j/CHPEdtGdWd5n9ZFbKUmJ4J1WTDz2BKHXKfNQrGYBhNDwexU/k0o6EIWrquUGcClG
-	 BWcuWp92wzy7VSB6MqwciM6MmywREXPQN7Lce2RbbPbC5uBo9Dnq5RC9u9rf6r65uM
-	 fCAtlUgJla1DDEJGW7k3gG3E=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 836F740E00B9;
-	Fri, 18 Sep 2026 18:00:56 +0000 (UTC)
-Date: Fri, 18 Sep 2026 11:00:53 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	darwi@linutronix.de, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v16 3/5] x86/sev: Initialize RMPOPT configuration MSRs
-Message-ID: <20260918180053.GAaq18VQB9IOia1S-7@fat_crate.local>
-References: <cover.1789594774.git.ashish.kalra@amd.com>
- <7fdf0f5b1be4b561c884c5200d6606a947cbc09d.1789594774.git.ashish.kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HctfmqR7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789763116; x=1821299116;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=T95o/cb7iDF/SByX7ElGwHT4IyIwS+AhvjA26YhoGHU=;
+  b=HctfmqR7lRKHYz02gTihfftFkTdswPTFnXhmMzssEe4ADpyPN9VJ2F9P
+   cG1v3Vjn8jxj9IxHr5ExwdCtgUvHPEP1ZkGY9g7FbNVLy0jZ+7TK1QvyV
+   UczweABIEfGWkCBQkzgZLV7nGa47D0qyNQlmu/0dm48WTkLvKLuXvuDpf
+   GFBFvdp5xyKG0w6y09Rey49YgzcYJAvxFLW6fEasRjl1NhRD25i/hgM+n
+   TcVl9CBYXnruPyCULfo3xrUHk5fHI5EWamvWx+tmaOfNYfqynYo48QbHK
+   CqSRHrsKAZITDaFWztmcdkpAovXfES15R2Pg3aI3lLcf1QYkKBSvwnLZV
+   A==;
+X-CSE-ConnectionGUID: IxzCRRxDTtCYH4jQC7P5ww==
+X-CSE-MsgGUID: yTe1ikaAQG+cQAX2q616CQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11909"; a="90309957"
+X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
+   d="scan'208";a="90309957"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 13:25:15 -0700
+X-CSE-ConnectionGUID: Tbeik0OrTSW550UwI+bNHw==
+X-CSE-MsgGUID: MX6p7I/WRT6Kx5I04L1+ug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
+   d="scan'208";a="270275254"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 13:25:13 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Fri, 18 Sep 2026 13:25:13 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Fri, 18 Sep 2026 13:25:13 -0700
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.17) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Fri, 18 Sep 2026 13:25:13 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GnyrAmQxGa8XO9csC8Ae6JATVqUJUAGRABKwpPswxt2eJCv1ZOtHQPmPRWMje2OIvUzLb55Dkj+MXUoNS6W3u7I5QnNfyAFGb3dKj0Cw20MbS1IMqtJCuGqmuQJ36Mlozyj+2rZONaIss4k0oU8SFlAMl2Q0z66QFGvEbj4nBe7ga1jGPCzLh1K4+ckj/P4bYf1b4Ie/MuQ5wdC9QSBAOfnql+1THqnMpG/VcDEDoc1Zk9QX9Q1g9Qi4mOXzU0LJHG9UkK21XmdisLi8zAkQgqzqfBZG6LUmRaVCljV7vaUN7Ng7pUZTz9DgATfRr+D3hV7B0tjIkgd/cKw4ZPuPMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V7P78GqVNsyWbadSRLKeZWTLvPbL4g7XMRTwKKninmw=;
+ b=XQTN7dp8nUsQVMSvrnOMNaUxIMigI22/+KEH+MRc1s8qaJ+LhIiJfCLfAAqKkV40Jfe7eO9TninmQhqBTO1RNHNervKjSJ6eYCw1S4WYSo34nGKcOhResvtiiQFkWgOHqkZGNTh1b2yNhi1vwgSEzRNOhLcsWXLLGpvWhiePVCAr2QMNIPLNkLxYZEUryUqQf87h96WiFdglnBqW/BvyaWNt5FxjJGXzrLl99jzvqKJMnFOcPICRizmSFSDI688Nts5nczHzV5Nifobz4nkHvkZe4eDlFs/UO5KW15wJQmKRx65WisUVdXxKNnySyGAioYtnZ8EL7eM5Pr6aDQLKJw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB435924.namprd11.prod.outlook.com
+ (2603:10b6:610:34a::8) by DS4PR11MB331194.namprd11.prod.outlook.com
+ (2603:10b6:8:53e::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Fri, 18 Sep
+ 2026 20:25:11 +0000
+Received: from CH3PR11MB435924.namprd11.prod.outlook.com
+ ([fe80::1696:c90e:60af:a0cd]) by CH3PR11MB435924.namprd11.prod.outlook.com
+ ([fe80::1696:c90e:60af:a0cd%6]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
+ 20:25:10 +0000
+Date: Fri, 18 Sep 2026 13:25:09 -0700
+From: Peter Fang <peter.fang@intel.com>
+To: Nikolay Borisov <nik.borisov@suse.com>
+CC: <dave.hansen@linux.intel.com>, <rick.p.edgecombe@intel.com>,
+	<xiaoyao.li@intel.com>, <linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>,
+	<x86@kernel.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+Subject: Re: [PATCH v2] x86/tdx: Harden exports
+Message-ID: <aq2eJTrHj_xsSCHx@intel.com>
+References: <20260917110714.1587301-1-nik.borisov@suse.com>
+ <aq0GHXV67ROAhILB@intel.com>
+ <477fe308-0028-4ce6-a57e-fefa1a611126@suse.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <477fe308-0028-4ce6-a57e-fefa1a611126@suse.com>
+X-ClientProxiedBy: SJ0PR03CA0178.namprd03.prod.outlook.com
+ (2603:10b6:a03:338::33) To CH3PR11MB435924.namprd11.prod.outlook.com
+ (2603:10b6:610:34a::8)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <7fdf0f5b1be4b561c884c5200d6606a947cbc09d.1789594774.git.ashish.kalra@amd.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB435924:EE_|DS4PR11MB331194:EE_
+X-MS-Office365-Filtering-Correlation-Id: 582c7e5d-5f15-49d3-722e-08df15c2f038
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|23010399003|56012099006|11063799006|4143699003|6133799003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: QlB1oGtmBrajVTVgoeywkuF7TqTXGb14aAIoiybtoXAqFqnVsbuLWIIuxsPMWKgtVdjXxEkeSbhRJHdjR656TbMTEfKyT5/zt9e+H8wLQVOIKu1KQjm17qx/JlQ+TMpy69AXBsS0J2qWvRivXKhiXUxfvsyCNa5T/L0nBU4C/LGlO680J8ZTK+CebomJrA20x2lNXmPzG2QGCm7wHhBqdijGqHWtVD1MZBB5iniUsX1Xg1oK6rZKkv8iS69gXP7mxPMo0VerwVmsQUV85g/wMw4CgZ8aCXKJwctjcZPAOeALO2raCfpRD0lXGVuhLD4D1WdXuupO4MqJBuiPY6UAn3gRXbhW0t4/0jEYfWsw8V6Fgxk0QL6uW4aZ8zn61fEX56/BNXWcrGsBUoesD9v60eD3HdHggza4y0ETx5VERlJUkxpq3r4oLC5nRJDYIMt7q1Q3fJ/A8dCkkIEMmrAA296u34YeL8/7UlzsDUGH5I53qBFlbAfaqaYWHJ0agN6JmvVZT1NA18az+ARNP3EeYVhVGTzux4sNH8e/Kc+k4prXXDLLUT3hL/tQnaEtWf+DSCkkIHk0YXnUbDVuslV7UsH3Mcgk2UkpnZLOl9waI85SBF0itr2ftrNC/fz0u1aqntH7EO2tgr59W/dBj9OiaSf1W727MMIhOcbCEaMBBsE=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB435924.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(56012099006)(11063799006)(4143699003)(6133799003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WFp0VHhhV1JFZi8zU2VGR0pvM0VVeTZCdUY1LzdjYlJTNnh5SG5vZzJuc0hN?=
+ =?utf-8?B?RncveCtiT1lLd0ZyTVZlL3FUbkV1Q2JjSWtkL0pudEl0bFR2UGFZRy9Ia2Vw?=
+ =?utf-8?B?L1V1S202cHJMV21INS9QeGJyY09WZWhTQkNHaXNSdm9DNVVydTJ4V0tQbkwy?=
+ =?utf-8?B?b3B1VVdFVlJEbUN3VFVsQ2JONGFwbWd3aUtPeTFRSWptN1ZtWm1Eb0ZWY1Fw?=
+ =?utf-8?B?aC9KZ1g5SkRpN1IrN2hCemhXMDJ2VW5Ea0hrTXlNQXlndmVoVjBscUphRisx?=
+ =?utf-8?B?ZXhPUnZFbzBCNHJLaUduWC9WVDAzM1RyOFQyc3R2RVRlcG4wQlBadmhBOG5G?=
+ =?utf-8?B?a2JxajFaNnF5NjdSMDQ1MUdyOEJ1d2xsYzhENHJrZGRxMXFNMm4rUUdCVDU3?=
+ =?utf-8?B?VFhRVjIrR0JraCtqd1JiQjVNcUFyVmNBZXlEazZtckoxWWNKWHY3Mk4zanpW?=
+ =?utf-8?B?L0NkMllKSXl0NE5yTFBYN2t0MlcxWXdDaHhIaXM1N0lwZGQrU2ZCbnRXT3ds?=
+ =?utf-8?B?RzRCWWtpdkN6akJaVXpXWFZSTEhPcjJNcHI4eHBWT2wwNEg3U1dObElzbi9I?=
+ =?utf-8?B?ZWpSZWxESWFGVXVjdmx4dllVa0xKU3hGY2w1d2YzcjJkZVJsRDgzdlBzY1dH?=
+ =?utf-8?B?NCt3clJrZWFWeVEwNy9seGNVWjZZZWxLQzVOOWZiTWZJTm9HMG9GamRINWJN?=
+ =?utf-8?B?dGJqMVBxMU1XV2tvdUk2SnRqQktRRS84SjFXNUFaVWlhUTBVUkRSbTNDZXky?=
+ =?utf-8?B?emtoaDYxTDRyVldLVVY3aGIwdWpQTXB2M0FUMmxoL09qV0Roa09qdHlHUmNC?=
+ =?utf-8?B?bUNMakN3bm9GN25RNTc5bHRkMDg0dmdHUGE3MTFyamJYUmdmYTRnc3pxRlda?=
+ =?utf-8?B?WmtJbThWZmNJQzFCYUwwUVFDQm83ZTRnVS8wRUN3ckpUNENlRm1ZYW5PQ3po?=
+ =?utf-8?B?Yzl3TStuaHRhR3hzeWhPRzFjY2ViSHIvaTN2WGNNM0gwanlRK1RNdnpzS2Jl?=
+ =?utf-8?B?TEFicHFoTVo5WG5jTW91c283UGs0TjlMOExzci9FRlhDSWphSFJSNzVjZXJj?=
+ =?utf-8?B?NSs0NEdHRXV5L3UxQlV6c3M4WXJUVzBNdDhpLys3MGxPME9KZllZRjgwMElV?=
+ =?utf-8?B?OS9wWDdOMU5lSS9wcFdOU1FxSWRGMU0xYWJqN1A4K3hjL0xyWWd3c3EyQmtJ?=
+ =?utf-8?B?YTEyS3pWeGMxYU8xVFZHam8yOTZlNE1jNm5xVWdndk5VK1J2SmdWUWY1RUt3?=
+ =?utf-8?B?ZStFeFJBUjdRNjVzMU01LzZSVFlIaWdTSTl5OXYza0hHQlBCN1hqcWRNSTJM?=
+ =?utf-8?B?alVscFFUTGVYMDY1MStwREI2UEl2c2w3b3I1ZzQ2c2lTLzFYek5lekVHdGhV?=
+ =?utf-8?B?MGI0bUZrdDhCRFlGSWhYQzJrTzFnNW9wT3IvMjhrcTRMb0RsM3RQTWxSSTh6?=
+ =?utf-8?B?eU5Nb1E3bkRBNTByZnQweTRpOE9Zd3dsZnZ6ZGZJeFY0ekFZZDI0cDJ5aFdu?=
+ =?utf-8?B?bVNkRUlwUDh4T2RwU1B5REgzZmJ1dnhBVGpBa1kxOWZCdUVWaU5hbHg2Zk1U?=
+ =?utf-8?B?UWtBSzEzTDhsTVFTQkhTTjlQR2x3b1hrbTNBMzRyY0hSY04raE9yTWtDMm8v?=
+ =?utf-8?B?UmxSaUJMQUV5OEhIc05zdjJGSVF2ZGRoYXlqSVlhUkZPMnU0Z1FvZTJmVysx?=
+ =?utf-8?B?Y2pURXZkdEdjeG5GRU5oWWc2MnYvdnB3MFpuMS8zclRoc1BQM2FVakdMZ0Rs?=
+ =?utf-8?B?Smp2YzQzZ2JrNFJ4Rm5GQ0NlWnBCT2RDdy9TS3NPWlFOS0hheHJoRGJCWUFh?=
+ =?utf-8?B?c3h6aVpUMWcyTWtpMU1nMXh1TXpIaTYyOFZmUXlleHVsZUJNT2VXMGV1RTVB?=
+ =?utf-8?B?Z0JrMkZSbG1LcjljM0NKZ1RGTnI3Y3BXbEVQZElGby9yM2xla1RLNzdTQkx4?=
+ =?utf-8?B?WlpMZGwyOWdYWmRzSDEybzQrRHFZditFaDY0MWJWTnBXOS9hY3FHRHdwMGZs?=
+ =?utf-8?B?cnluKzg1QUk2emlvbmJ3T2Excms0UnhubTJLVktnTUtsZXVPckZYNlorVTZD?=
+ =?utf-8?B?Z1RBRDF2K3ZHWUhrWDZVVW1YL2c2SUZyZkRMVEhwNXpEK3FwWERUSEgzZnMz?=
+ =?utf-8?B?bUdLUlBTYVFIcVg2UWVycXFJMUh3SGF6MndIOGFZVUlXaWhwZDRlemFXMWk0?=
+ =?utf-8?B?OGd5ckR2MmJDeW14bkFaMlN2VjZhM1NxYWRuMXNrVCthTzI0NWtlOUJMUnFq?=
+ =?utf-8?B?WWV3Z0p5SDhDaEJMVjlwemhlSmxOalU0aHJTNk5nK3FVbXZKQkkrNW10ZnBk?=
+ =?utf-8?B?NU1OK09FM1JLa2pUQ0VLNWliTFVSbjhlekUrbm1GNXhSam14dFAzdz09?=
+X-Exchange-RoutingPolicyChecked: BmcXZYR7/gpAOT1jBjW0T1v8myfDykxRqNCEG7di1h4xPbOBrYwB0jU7k2lzGp38uSsulvu51QCcnIhhETklzZU/61w2EpqFibTa6MVdBWDFK0DMiyFaKf8nq7HbNsSkovEeuxYh/8C24XkaMiLiRQrEMsWMqrCNJkxD4x/nDVjx1ZLA2PQs8K13sv3u7khnMr43SYJsnSqMxqj1K/iGLBf+jSF6uzng0BxlQ5RhmwUzqT72Ns7P9qc4NmvPujMxq3JxiBWCiOnmfteNWRZo5iuTqztGHJSZ5DoC9ofo/Yt9sl9J8flyi2McA6cIm2LTy5+x4SroFVmXJd2ZmSH2pQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 582c7e5d-5f15-49d3-722e-08df15c2f038
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB435924.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 20:25:10.8897
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LN2E/XECE6WAApwxm4lwwqLVGctt9SwyneuYfhLBCfF6m0mkkDlnm6SCinuZsXJwe82IMLG2rWYhdlqu120Wyg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR11MB331194
+X-OriginatorOrg: intel.com
 
-On Wed, Sep 16, 2026 at 10:14:52PM +0000, Ashish Kalra wrote:
-> Changes in v15:
-> - Rename snp_setup_rmpopt() to snp_enable_rmpopt().
-> - Program each core's RMPOPT_BASE only when it is not already set.
->  arch/x86/include/asm/msr-index.h |  3 ++
->  arch/x86/include/asm/sev.h       |  2 +
->  arch/x86/virt/svm/sev.c          | 66 +++++++++++++++++++++++++++++---
->  drivers/crypto/ccp/sev-dev.c     |  2 +
->  4 files changed, 68 insertions(+), 5 deletions(-)
+On Fri, Sep 18, 2026 at 01:03:46PM +0300, Nikolay Borisov wrote:
+> 
+> 
+> On 18.09.26 г. 12:36 ч., Peter Fang wrote:
+> > On Thu, Sep 17, 2026 at 02:07:14PM +0300, Nikolay Borisov wrote:
+> > > tdx_* function aren't supposed to be used by the kernel at large, rather
+> > > they are mostly used by KVM and a very small number of them are exposed
+> > > via the tdx-guest/tdx-host drivers. Reflect this fact in their
+> > 
+> > "exposed via" sounds a bit off? Perhaps "exposed to"?
+> 
+> What I meant was that the functionality of those functions is exposed via
+> the tdx-guest/tdx-host drivers. I.e those drivers present interfaces to
+> userspace to enable them to use the functionality of said functions. I.e
+> those functions are only used by those drivers.
 
-Did some scrubbing:
+Ah I see. Maybe a tiny bit of polishing would be enough. Thanks.
 
-commit 61132258c7a139a9533ae24b056a099184b70e50 (HEAD -> refs/heads/tip-x86-sev)
-Author: Ashish Kalra <ashish.kalra@amd.com>
-Date:   Wed Sep 16 22:14:52 2026 +0000
-
-    x86/sev: Initialize RMPOPT configuration MSRs
-    
-    The new RMPOPT instruction helps manage per-CPU RMP optimization
-    structures inside the CPU. It takes a 1GB-aligned physical address and
-    either returns the status of the optimizations or tries to enable the
-    optimizations.
-    
-    Initialize the per-CPU RMPOPT table base to the starting physical
-    address.  This enables RMP optimization for up to 2 TB of system RAM on
-    all CPUs because this is the maximum the RMPOPT tables support.
-    
-    The RMPOPT_BASE MSR can only be written after SNP is enabled, so the
-    enabling runs from the ccp SNP init path (and again on guest teardown)
-    rather than from an initcall. This is also in line with the intention to
-    not enable SNP by default but enable it on demand, when the ccp module
-    is loaded.
-    
-    RMPOPT_BASE is programmed on all primary threads.  RMPOPT_EN cannot be
-    cleared while SNP is enabled, and CPU hotplug is disabled while SNP is
-    active, so once programmed the MSRs stay set on all CPUs until SNP is
-    disabled.  A set RMPOPT_EN on the local CPU therefore means the
-    programming has already been done and thus it can be skipped.
-    
-      [ bp:
-        - Massage commit message
-        - move enabling logic into the commit message
-        - zap unnecessary comments
-        - cleanup ]
-    
-    Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
-    Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-    Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-    Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-    Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-    Link: https://patch.msgid.link/7fdf0f5b1be4b561c884c5200d6606a947cbc09d.1789594774.git.ashish.kalra@amd.com
-
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 3a8e51a0c9e8..1635e2e1c576 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -761,6 +761,9 @@
- #define MSR_AMD64_SEG_RMP_ENABLED_BIT	0
- #define MSR_AMD64_SEG_RMP_ENABLED	BIT_ULL(MSR_AMD64_SEG_RMP_ENABLED_BIT)
- #define MSR_AMD64_RMP_SEGMENT_SHIFT(x)	(((x) & GENMASK_ULL(13, 8)) >> 8)
-+#define MSR_AMD64_RMPOPT_BASE		0xc0010139
-+#define MSR_AMD64_RMPOPT_ENABLE_BIT	0
-+#define MSR_AMD64_RMPOPT_ENABLE		BIT_ULL(MSR_AMD64_RMPOPT_ENABLE_BIT)
- 
- #define MSR_SVSM_CAA			0xc001f000
- 
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 9e7a077c445d..fa81aa004e8b 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -662,6 +662,7 @@ static inline void snp_leak_pages(u64 pfn, unsigned int pages)
- 	__snp_leak_pages(pfn, pages, true);
- }
- int snp_prepare(void);
-+void snp_enable_rmpopt(void);
- void snp_shutdown(void);
- #else
- static inline bool snp_probe_rmptable_info(void) { return false; }
-@@ -680,6 +681,7 @@ static inline void snp_leak_pages(u64 pfn, unsigned int npages) {}
- static inline void kdump_sev_callback(void) { }
- static inline void snp_fixup_e820_tables(void) {}
- static inline int snp_prepare(void) { return -ENODEV; }
-+static inline void snp_enable_rmpopt(void) {}
- static inline void snp_shutdown(void) {}
- #endif
- 
-diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-index 558f7924a3f8..1fecd246ce5f 100644
---- a/arch/x86/virt/svm/sev.c
-+++ b/arch/x86/virt/svm/sev.c
-@@ -124,6 +124,8 @@ static void *rmp_bookkeeping __ro_after_init;
- 
- static u64 probed_rmp_base, probed_rmp_size;
- 
-+static phys_addr_t rmpopt_pa_start;
-+
- static LIST_HEAD(snp_leaked_pages_list);
- static DEFINE_SPINLOCK(snp_leaked_pages_list_lock);
- 
-@@ -575,6 +577,34 @@ void snp_shutdown(void)
- }
- EXPORT_SYMBOL_FOR_MODULES(snp_shutdown, "ccp");
- 
-+static bool rmpopt_capable(void)
-+{
-+	return cpu_feature_enabled(X86_FEATURE_RMPOPT) &&
-+	       cc_platform_has(CC_ATTR_HOST_SEV_SNP);
-+}
-+
-+void snp_enable_rmpopt(void)
-+{
-+	u64 base;
-+	int cpu;
-+
-+	if (!rmpopt_capable())
-+		return;
-+
-+	rmpopt_pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
-+
-+	/*
-+	 * Per-CPU RMPOPT tables cover at most 2 TB.  Program each core's
-+	 * RMPOPT_BASE with the start of RAM to optimize up to 2 TB.
-+	 */
-+	rdmsrq(MSR_AMD64_RMPOPT_BASE, base);
-+	if (!(base & MSR_AMD64_RMPOPT_ENABLE))
-+		for_each_cpu(cpu, cpu_primary_thread_mask)
-+			wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE,
-+				      rmpopt_pa_start | MSR_AMD64_RMPOPT_ENABLE);
-+}
-+EXPORT_SYMBOL_FOR_MODULES(snp_enable_rmpopt, "ccp");
-+
- /*
-  * Do the necessary preparations which are verified by the firmware as
-  * described in the SNP_INIT_EX firmware command description in the SNP
-@@ -699,13 +729,21 @@ static bool probe_segmented_rmptable_info(void)
- 
- bool snp_probe_rmptable_info(void)
- {
--	if (cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP))
-+	if (cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP)) {
- 		rdmsrq(MSR_AMD64_RMP_CFG, rmp_cfg);
- 
--	if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED)
--		return probe_segmented_rmptable_info();
--	else
--		return probe_contiguous_rmptable_info();
-+		if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) {
-+			if (probe_segmented_rmptable_info())
-+				return true;
-+
-+			setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
-+			return false;
-+		}
-+	} else {
-+		setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
-+	}
-+
-+	return probe_contiguous_rmptable_info();
- }
- 
- /*
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index f833cb7e4da3..5c996ab63895 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -1663,6 +1663,8 @@ static int __sev_snp_init_locked(int *error, unsigned int max_snp_asid)
- 
- 	sev_es_tmr_size = SNP_TMR_SIZE;
- 
-+	snp_enable_rmpopt();
-+
- 	return 0;
- }
- 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> 
+> 
+> > 
+> > And this patch only touches functions exported to tdx-guest... In fact
+> > tdx-host only uses functions from arch/x86/virt/vmx/tdx/ (guest code vs
+> > host code). Maybe the log could be a bit more precise.
+> 
+> Fair point.
+> 
+> > 
