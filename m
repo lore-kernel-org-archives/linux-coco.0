@@ -1,90 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD663CC33C;
-	Fri, 18 Sep 2026 06:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F5A4BD36B;
+	Fri, 18 Sep 2026 08:59:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789711651; cv=none; b=YzU+h3yStjZcHjKp+jrgdWNtfuGVpJERxof0n2PUaOqcZ5HwiuY2Zd0r+tcicxesNmyDV8p48WfE9fcWfhxffBKrnHYQLwi2h/kqaUufrEEkrsMESegLdyys2+9qTNdYqYP/RgEFA+JR2xWGQjNAigZnxeccAtbXiKh6lfwNpwo=
+	t=1789721961; cv=none; b=joVqwJKV3wOdi+SNae+nVBSjM4rjQUP2Hz9xLo3jxSTmhLtyYsrJwVqw8FTgm0Ug+ooN95rYYlrbszw2EqSPfTwUrlpTTuvxg1l40iq/pZyWIF7Gv7C6ACYOyZDnj7OTgaZRRw/Oh6VOs+I03nW798JUxkZsRTbnsK44BJrRGYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789711651; c=relaxed/simple;
-	bh=Fn6rADDGdB42fgFMk2BH+v/fIX9Rf7QfewJfhr7z/C8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ntHY0+ky0rvn3fg4YMFF9/taXuJxgtH3hdMtsnb8acFoiMRl5nvmY79ey1mkensxPa7XqNfNGn1ov0XIWREzyL1vhGtwTcfBd7OVckISM7FjprA05B0n/l33Va+hmJNWjybsCLVDCxzMldvv9L9r0Sq4NdbwMZhFX2KI0OLkiM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h4WFQ/8W; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789721961; c=relaxed/simple;
+	bh=1M1QtH7NdzkDYZ09YQzOvcKU43QqUz+DMQ3u7GB+BTA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MdyDjQ8AZLWyX9fK0TEqIQn0H01WPJSiHY+1V1uAUNuvZszsy3i/XRFWP9+oPnn2u14sHvB9lKKn11DX2a83ucDcYUdkxJLhrbtWFs0pniB2T8ZrPsYLllT3hKgJKJR2KJWYgFu60lpPBORtS7aENuywcfXPV/gsVHbCyMr0XW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=gMhNVUf7; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h4WFQ/8W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26481F00893;
-	Fri, 18 Sep 2026 06:07:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789711648;
-	bh=rwSgmxUrtbpCmxPEYK9er5gynnTViPyV6I3RqSz3ERI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=h4WFQ/8Wc/jggR8sKMBzi2Zlht6du789DaDJ0xTGa3JZxxXMy3ltKR660bjxlErF1
-	 FT3+cxLFUPnHHaKuFhc++j4Z8W+41fqBWqnj+1PY3zM/0Oh13Q+kd44C9AHaB9B7Js
-	 COpd1XPqwmy3nelnzVqVVOVLWvRdF6WcrA/ZQHy4UdIUXA/7QZLnFcKZPzAVTgqYLy
-	 UEvNgLl/qu6IGBTHfLvqNRg7x1W8+0ImKiTUDfRJsRQe6fR2Uc8kv7O9tytP0pQRTu
-	 3BrOT1anVyp1KVv1s4Gam0IwYcCAh2bwKD5Xyr3XUGsM73cIzWpMqH+zhQ4F78TITo
-	 CTSF7QWrP/pgQ==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Ankit Agrawal <ankita@nvidia.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc: Alexey Kardashevskiy <aik@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [PATCH v5 11/15] coco: host: arm64: Connect RMM pdev streams
- for IDE devices
-In-Reply-To: <SAWPR12MB9992670293875EF547CA440A18B0872@SAWPR12MB999267.namprd12.prod.outlook.com>
-References: <20260910140509.868402-1-aneesh.kumar@kernel.org>
- <20260910140509.868402-12-aneesh.kumar@kernel.org>
- <SAWPR12MB9992670293875EF547CA440A18B0872@SAWPR12MB999267.namprd12.prod.outlook.com>
-Date: Fri, 18 Sep 2026 11:37:20 +0530
-Message-ID: <yq5aa4pf149z.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="gMhNVUf7"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F1C06168F;
+	Fri, 18 Sep 2026 01:59:14 -0700 (PDT)
+Received: from [10.57.6.197] (unknown [10.57.6.197])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A15FA3F86F;
+	Fri, 18 Sep 2026 01:59:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789721958; bh=1M1QtH7NdzkDYZ09YQzOvcKU43QqUz+DMQ3u7GB+BTA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gMhNVUf7FU14C3AvALw/IJRAU0r5ZC7LybOmBcwkNWc+DAjCckG9KnP01I1wmlwyC
+	 jwkpPhL4ENWatRqaHBHlgShatqY/nVK4er+43d5StSotzGLtEXPJotp0f1EKvtUnpj
+	 Bzj946PL96YGt37gh2bvsO5zxsWPabKAQrRAacd0=
+Message-ID: <e26cbb4e-84e2-4fcc-9eb0-93bfd4aff4a7@arm.com>
+Date: Fri, 18 Sep 2026 09:59:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 05/23] KVM: arm64: Track the type of VM in kvm_arch
+Content-Language: en-GB
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+ gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+ alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+ lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
+ <20260915160141.3543048-6-suzuki.poulose@arm.com>
+ <CA+EHjTz65G0MM=tOrzmk=jMweBX1us6FqfrmSkQs4KSyAEoxhg@mail.gmail.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CA+EHjTz65G0MM=tOrzmk=jMweBX1us6FqfrmSkQs4KSyAEoxhg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Ankit Agrawal <ankita@nvidia.com> writes:
+On 17/09/2026 12:24, Fuad Tabba wrote:
+> Hi Suzuki,
+> 
+> On Tue, 15 Sep 2026 17:01:23 +0100, Suzuki K Poulose
+> <suzuki.poulose@arm.com> wrote:
+> [...]
+>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> [...]
+>> +#define kvm_vm_hyp_is_pkvm(kvm)                (is_protected_kvm_enabled())
+> 
+> I'd keep is_protected_kvm_enabled() at the three call sites: this
+> takes a VM and ignores it, so it reads as per-VM when it's the mode,
+> and patch 20's comment about not being able to use the kvm_vm_ helpers
+> with a NULL kvm goes away too.
 
-> Hi Aneesh
->
-> As I read it, the address ranges handed to RMM in this patch are captured
-> once and at the point cca_tsm_connect() runs. That becomes the address
-> range RMM has on record for the pdev/stream going forward.
->
-> So a couple of questions on that..
-> 1.  Is connect -> {driver probe / vfio-pci bind } the intended
->      sequence or is that ordering left entirely to userspace/VMM policy?
->
-
-We can tsm connect the device even while its driver is bound.
-
-> 2. Are the resources/BARs captured at connect time assumed to be
->     fixed for the lifetime of the PDEV? If a PCI rescan (or resource
->     reassignment such as pci=realloc, a hotplug re-enumeration
->     happens after connect, is that expected to be rejected/blocked?
-
-
-IIUC, a normal rescan neither rereads nor relocates an already known and
-assigned BAR? To discover an externally changed BAR, the device would
-normally need to be removed before rescanning. Device removal reaches
-pci_destroy_dev(), which calls pci_tsm_destroy() -> pci_tsm_disconnect()
+Actually, that comment is invalid. kvm_arch_vm_ioctl_allowed, is only
+called from the kvm_arch_vm_ioctl() with a valid kvm instance. I have 
+changed that hunk to:
 
 
--aneesh
++/*
++ * Check whether the KVM VM IOCTL is allowed. For pKVM and Realm VMs, 
+certain
++ * ioctls are not allowed. Further, certain features are allowed only for
++ * non-protected VMs in pKVM.
++ */
++static inline bool kvm_arch_vm_ioctl_allowed(struct kvm *kvm, unsigned 
+int ioctl)
++{
++       long ext;
++       int r;
++
++       /*
++        * We are guaranteed to be called with a valid kvm instance, as the
++        * only caller is kvm_arch_vm_ioctl(). Catch any deviations, as we
++        * rely on the kvm instance below.
++        */
++       if (WARN_ON_ONCE(!kvm))
++               return false;
++
++       /* Cover both pKVM host and Realm VMs */
++       if (!kvm_vm_hyp_is_distrusting(kvm))
++               return true;
++
+
+I resorted to is_protected_kvm_enabled() to make it faster than using
+the vm_flavor checks. I could rever those anyways.
+
+> 
+>> diff --git a/arch/arm64/kvm/hyp/nvhe/pkvm.c b/arch/arm64/kvm/hyp/nvhe/pkvm.c
+> [...]
+>> @@ -432,7 +432,7 @@ static void init_pkvm_hyp_vm(struct kvm *host_kvm, struct pkvm_hyp_vm *hyp_vm,
+>>
+>>           hyp_vm->host_kvm = host_kvm;
+>>           hyp_vm->kvm.created_vcpus = nr_vcpus;
+>> -        hyp_vm->kvm.arch.pkvm.is_protected = READ_ONCE(host_kvm->arch.pkvm.is_protected);
+>> +        hyp_vm->kvm.arch.vm_flavor = READ_ONCE(host_kvm->arch.vm_flavor);
+> 
+> Could EL2 reduce this to VM_PKVM or VM_PROTECTED_PKVM here instead of
+> storing what it reads? The host supplies the value, and it's now an
+> enum rather than a bool. Patch 12 relies on EL2 only ever seeing those
+> two, and with VM_REALM above the marker a host-written value passes
+> kvm_vm_is_protected() but not the == form, if EL2 ever adds one.
+
+Do you mean something like :
+
+	if (kvm_vm_is_protected_pkvm(host_kvm))
+		hyp_vm->kvm.arch.vm_flavor = VM_PROTECTED_PKVM;
+	else
+		hyp_vm->kvm.arch.vm_flavor = VM_PKVM;
+
+Do we additionally need to WARN_ON() if we encounter a VM_REALM ?
+
+> 
+> Both hunks are new since v17, which is where I gave the Reviewed-by.
+> Happy to keep it if you can settle these please.
+
+Apologies, I thought this one didn't change, but later patches changes 
+them, which is why I kept this.
+
+Cheers
+Suzuki
+
