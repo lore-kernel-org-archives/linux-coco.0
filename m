@@ -1,115 +1,160 @@
-Received: from mail-qk2-f41.google.com (mail-qk2-f41.google.com [74.125.230.233])
+Received: from mail-qv2-f20.google.com (mail-qv2-f20.google.com [74.125.230.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3DA51AECB
-	for <linux-coco@lists.linux.dev>; Fri, 18 Sep 2026 16:53:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.233
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789750400; cv=none; b=WXfZkZ9AGJyT9deDd+Ec49WVwxT7oGQWfqlSbIX5Znl3ooYKpEqIeHA8azt+O4+X97K/EBFgnerbz9e3ahGP9mfcvLIY6OO2xfZRBmdwkV9M4+ily/cAUU70nWZb9WiqVLUfxH0AVcMO1C/wh1Jqryi6y9KCO6dufTUJ7rzx5TU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789750400; c=relaxed/simple;
-	bh=QHr3HItRfGIiXW33vm4AJyjNNIRgLrxwO2wwjz3RPCc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jdoKsTa+9NwC2UVB73322rV8P+Om6ZNTmaB0EqGA53wUavNBv1DugCmrC8gfKEwQCWklDQX6v4SeqtqlJzJG2E+xEIhiyUlEknMvwWJFrILkw3NVeRVOJClFOPR9BfRILAWYUmDL2185dB0Cpp4CUa7esJDZy7Gt4nBSCd2PihA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=pB5gO3mD; arc=none smtp.client-ip=74.125.230.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E10951A14D
+	for <linux-coco@lists.linux.dev>; Fri, 18 Sep 2026 16:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.148
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789750594; cv=pass; b=dOlKJhJChF8Y+35Ge8IJtNJfjVCuyEiDXQciqXK6GFCsWLRXYSDqunHAG5sH710SvCxpfHCDwdQ34aan4WT46MziJtF9Efgkc74ejxAzlHTfY0dpwQGYgTJu9nZC7tB1OATguGoLFgEvcJaGPlYv4jpFs8//1Jws556dS5UAb+8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789750594; c=relaxed/simple;
+	bh=Q77Bix35TqUYi11B20K9mAkgbUq61MX1Rmo97L+4Qmg=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LmvwLI9foIj0hp7/2L2eRFgxf7RbLUzbEIM4+rD4OSQzMXb4pMv/ekubzotLl0W4Dgmo6urcnBdsXpGltY/zGR51ZDl50uLaS+llapLPdYNudf/RfRKlyvqXUoFXeoRcnDt+sztF7pztobVBmLGzUZbJMJ/BE67+CEcD42RgiPw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=snnTuE2g; arc=pass smtp.client-ip=74.125.230.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="pB5gO3mD"
-Received: by mail-qk2-f41.google.com with SMTP id af79cd13be357-93910ad2273so121546285a.0
-        for <linux-coco@lists.linux.dev>; Fri, 18 Sep 2026 09:53:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="snnTuE2g"
+Received: by mail-qv2-f20.google.com with SMTP id 6a1803df08f44-90cdfc9b6e4so10113556d6.3
+        for <linux-coco@lists.linux.dev>; Fri, 18 Sep 2026 09:56:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789750591; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZcPgiDHrh5t/4lJ1GRY5U0nVT+w8DTHRiZ0kdTrNi95gwkyp4qbSPT2Mzza3OFF3WO
+         L2KBWwd3kLKVau9KdnMboelidExfEJGY4HDvvFtSMFnphJWxlw2Il01bH7MFjA47RXfD
+         tpWo8w7IjS/kahetHGCodH/UuxSy3fDWEx+nDEteoTxMxiC2Hfb5cISiS2UQQD6MJ2aI
+         9X4gkmc7AhDwI7bKi3mg2AHcamyAC7HMwzFPGO5BQbNcoxry4WvT0EAL70+255tuopWK
+         prlR/XfCsxuPX1aUpZdLEeCSU9HMF5K1q24oeMShWUAq/Y9908LMqO4hem4KJi4uiGj+
+         Cc5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=/3hfhz8Hbq1oioh3pabRNXznpcstGu9TRDyQ4WeUxrU=;
+        fh=tafHgnVD4ubnx4Xfj88aqGRHoXmUUbAgxiwjRXMymhw=;
+        b=DSflkTMyF89NWVAElobJPzs8aaP3INbkIxFdf432Ao9WeCjAGJTgDK9ncr9r70QNjP
+         SC3d7EpnGx4gKsZe9t9el46QsogRwFbqvTwQpHVwx7TYGHkF/LGtPTC2c71RptWE6P48
+         sXOEOlSj4MQI3gb/TG5tn7IOcpwIEkf12CqhDsDHsBj7paoUGwf4qW9/LAygOSYgUXK3
+         s7xPKWgsIJZEvHbklohkgsRqS3sPnRNuPXadthn5uLmiPCQKenUlITKN9RP+bQDcXOjl
+         rhXUZkc7wCUe+zeTzNsG+b+l4fe7shYsA56JCp7njitBbDNi6xrVvlxWxamXI/obzvwV
+         R39g==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1789750397; x=1790355197; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xZHhNZflcpTf7gpMtfLnrd+b6TKn7wbbrgvwwdWjf0M=;
-        b=pB5gO3mDN1zFng2UzRAaAMcg/2DgorsFsoNSlY0HwOHCNY9m48jA8HES6C7+/vXb5N
-         DEvZIgK/Z8/xT20/4l4SYZEcR1CjIBD8UR7OuFVyZhFY6yLmPk7dxfJ8q6j7Zj6VODth
-         wgJKkG5W9G6pvSt2k464qwAvMBnwq5DvPQvivZ7V2oi22nbuhYmfgb4/7LeLu1mgh0JK
-         oVX9ZLI+gt9evdOM/191RE8UlhxDDURPCvswkLwctcAsGLPar8d7y5SkzWNDZ6xsbJ7a
-         6N8BR3UXZfs/9zdo9y1Uk6o0/ZbGFfmoPVXxqYoOJaENm3PXB+vE/SC+kUtg1SCmeeOc
-         BXpg==
+        d=google.com; s=20251104; t=1789750591; x=1790355391; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/3hfhz8Hbq1oioh3pabRNXznpcstGu9TRDyQ4WeUxrU=;
+        b=snnTuE2g+isbN8c8PJ3Jn2KvJ1AnuxFbOXPukg+BOAAirRA63n6grECF5wldcqdBwB
+         1QrGM7ZT+oA3FWFnj238X/T0miP1iz4UW9WKpTTBU3A5q+C41zJ/yoEt0xJ8GPhyaDGC
+         mnDSsFctD35EX+cwbzQb31lH4BVdoUbozsXU3R4zepnWpbb8Ds6w6Vok+rix+BrDBKCj
+         JwBiuw2DiO1wejh+aYQC+3DFjvSzupB5t53a/LMqzanrakCmgHs0ybWfVee2GHEWDyzB
+         r0g+Tv9lt/HoqUii32c273i1bmzMdIIunlt6GZxWLmzeXd9NqiFLVgMpDxUnC27ZiiWH
+         LGyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789750397; x=1790355197;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=xZHhNZflcpTf7gpMtfLnrd+b6TKn7wbbrgvwwdWjf0M=;
-        b=xGRUjqICutqEW6Qs+KM6uTAb4WV3f9l/C6Ulhg13eCOcGKAPNvXAlioyHfwj/yUA0m
-         /LX1zkesrth/5gFr3aS7TQoGN13dv2h+8Picbo3BZpITXx9lAOAt/GOog1MRXKrH/uNg
-         xdIR1RRyhAxw0V+SO6xrbRaeD0pSXwtsAegV5M6BcyBdEY2WsXB53+1mrEwsih4nNSUs
-         mYBtrrcEk4c+7nOt4xkSgruV2o2xc098dGJy74g9lCtF0rL5BA+xgoTTBip6uAjp3Gp5
-         SdOYzDxYcgf5L54AGK5HkFo5lGaR0NTaarPd0VzKdrbhwXCN6VEX5IJTJk3uWvSltoqk
-         eQUw==
-X-Forwarded-Encrypted: i=1; AKwUvBx5ilEvBRSilOgZyBo5Koqr1O9AAZwHLmzRxID6KyrRIK7UI+0BVzojAvt8H1HM9uEN+B/uPBmiEC8A@lists.linux.dev
-X-Gm-Message-State: AFuF++kgDEyXr1pmxoeteth1xkAaOTm2q0APZ1xQufoNwRrzpgKOjY81
-	nboOuXZpG1dPvxEbl81LAr/riKQPvbRuy08+Mzk8hdadbhLdNc9/jLPhshF1O1Vbot4=
-X-Gm-Gg: AYBFou01CIcMH6QMpKn2RgsfbZvCa9pYMgagEgVNoOL97qtuecazFu3NAtRdCVeNfqR
-	zjEO81e42h8NZnH7uvxocGLljHPi4763IysDx1UyxAKFCnH2nfKnQfEY6qfqlqDmLVgm6hTYEAx
-	+T7CvH7E2HAIy0eLlB3+1WwLm8WPTxCfVH55aow7/aDgmu6m9qQfZ8LHgITXyN0TfrWMdy3PdAq
-	zBr4DYWo3GwrYdDx83GmSsSpx6riZHJeOdvAgtU7OHEiVkPu8vXqUSz3ayGD19LR6N4KsGNasFj
-	p2S7ITkHjhu2gdWVRQhUm7nKKoN9Xkh5fFCX3WhTyRPK25B/TryNTdhvWHABDzYpaYMIGDu32r4
-	R3Xhcabkx9FboMBRDNaBbAnn8aoo6GE24/io3M3uBDJm/cpv2L2hTm1tjZpxNGM87G5gvIk+3ym
-	SCgNbUcWCMrW9N7HVXh5SEJQc9usa1mAeMlALub7aEIq8cKxqoHXOUksjs+eOjc8nQIHmVoTYcI
-	wG+E0UoWLpLsFdp64WrwiB3BVHwl4aQCopEyVY8ot4eN5b5Si21Z37g
-X-Received: by 2002:a05:620a:1a17:b0:939:ee44:36bf with SMTP id af79cd13be357-93bdc72000dmr495588285a.29.1789750396680;
-        Fri, 18 Sep 2026 09:53:16 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91260a60f21sm68476d6.19.2026.09.18.09.53.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 09:53:16 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x7bpr-00000001yyx-21Yo;
-	Fri, 18 Sep 2026 13:53:15 -0300
-Date: Fri, 18 Sep 2026 13:53:15 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	"T.J. Mercier" <tjmercier@google.com>
-Subject: Re: [PATCH v6 7/9] dma-buf: system_heap: Enforce shared-granule
- alignment for cc-shared buffers
-Message-ID: <20260918165315.GF11599@ziepe.ca>
-References: <aq1V3oeDdvXobt8J@arm.com>
- <97c30fce-9bda-4c61-b1b9-10297b89c8d9@amd.com>
- <20260918153642.GD11599@ziepe.ca>
- <d8123f21-d5ce-415b-a05a-392d97b8b57d@amd.com>
+        d=1e100.net; s=20260707; t=1789750591; x=1790355391;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/3hfhz8Hbq1oioh3pabRNXznpcstGu9TRDyQ4WeUxrU=;
+        b=sMzBZxbwrvuw5QHNFibYhz0kj8JcID3eCd6RiWvfPS5Z2XPES+RQICuvNoqxZeFbCO
+         VqTG6NgA9t3RKsbfBlSnYQqbqbRcGTvclY4qRVvEmhSaYt/NOYg9ALf66Co67fbwGDP9
+         UWtVntme9hDt2fpAkIahXcbjq7JUZQIt0akR3T/5W4dMmk5sYWTr25G5sMLb87GsYZH9
+         eFWhwO3E8bA0G5AMtzYJGKhehdZZx0sCjlhVWHjTJtKA+tZKnn6cfYk+2xSXqHH+HnDc
+         mIBnARXn927U8TEISxMpYDJr6uKwMMrFTFMZQhaEON4iZT4xO/e2nkPMWDOPtbHLbngB
+         KygA==
+X-Forwarded-Encrypted: i=1; AKwUvBzBvn9ROvBeImK0NQ9ich+fNgoHG/ufJ1+3zmEVwpv5rBQ094c4p3cohRzFuOXQF/MWv9JDRpSxP7nZ@lists.linux.dev
+X-Gm-Message-State: AFuF++kFzQbD3XD/1fI9Ircdgk6h65HrIKmrnKbV6x2Voa3VMO+gHfWp
+	4Nv+deW5y3v+qYwpKlersHTL+KB199z0joWwBR137oVMqNLHJi0Ps/Yyx/7QiaYoNhEOSUU1e38
+	nBPfHVOwlXBarIcm8Jqzx6MbRjvcZHiK+HrFxOtbp
+X-Gm-Gg: AYBFou3Mu7jaQyPrAV1FeFF92tuyI+lDEoZ4+H8KKXWPea+zlOhvO+7FWLTr16igM9F
+	pphTFf3vmDKZx44XbtcfIpMYQaKbBi2JIgnYdYtZ3r7ETYN/gfFFQvvoNHJlWgTpRibCBur/xY6
+	+wNeaEBKc0j9ZKC22uI9m7L6OVdH47pvztPI0remhuqhYPINN0RjzdIj9lIFWxExYxhaaFhKtjY
+	AieSOzddehel2iZbIDzMwgStac1+XMy4tR8la0b89z04fEm0veT3aTRqwObTRoYz3iqkOLpI7YN
+	zSjYsX/ZHWUXiY4TN+pY6eTV+OrAiYzUgmwqatpn9uwDaRHHsPyhd19e1KM+fOXvJuQxrGf8I8j
+	FzoAb+IF8HqvvgiVwROylozoWOn+uNPL0qiL3DcFpyA==
+X-Received: by 2002:a05:6214:83cb:10b0:90e:94e5:79f8 with SMTP id
+ 6a1803df08f44-91254b3cc0fmr42995266d6.23.1789750590126; Fri, 18 Sep 2026
+ 09:56:30 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 18 Sep 2026 09:56:29 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 18 Sep 2026 09:56:29 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <aqw_uBIYig_uo5Eq@google.com>
+References: <b91dbfae-20f1-4b9f-a25b-4397afae80f9@kernel.org>
+ <16ffff40-4ef0-4312-a700-348603f05c0c@kernel.org> <CAEvNRgGW_VHmT82q+bUqHh_5G2Z9sUF1jJOTiVN4Z8_cA9A50g@mail.gmail.com>
+ <aqw_uBIYig_uo5Eq@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d8123f21-d5ce-415b-a05a-392d97b8b57d@amd.com>
+Date: Fri, 18 Sep 2026 09:56:29 -0700
+X-Gm-Features: AcwNN1X5D8x79th8tANMR24DjHce_J2gDtrs-KgBIrDOaE8qCS7M_N_lTAQKK6Y
+Message-ID: <CAEvNRgGXi0U1gWY_m5aa5fW66fAXnU+3jw2sov3eykDzodvrvQ@mail.gmail.com>
+Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2026-09-17
+To: Sean Christopherson <seanjc@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	KVM <kvm@vger.kernel.org>, amit@infradead.org, aneeshkumar.kizhakeveetil@arm.com, 
+	ashish.kalra@amd.com, dwmw2@infradead.org, eberman@quicinc.com, 
+	fvdl@google.com, gshan@redhat.com, jackmanb@google.com, jackyli@google.com, 
+	jthoughton@google.com, kalyazin@amazon.com, kas@kernel.org, 
+	kevinloughlin@google.com, liruxin@google.com, michael.day@amd.com, 
+	michael.roth@amd.com, mike.rapoport@gmail.com, mvaralar@redhat.com, 
+	pankaj.gupta@amd.com, papaluri@amd.com, patrick.roy@linux.dev, 
+	Peter Xu <peterx@redhat.com>, pheragu@quicinc.com, pkondeti@qti.qualcomm.com, 
+	prty@google.com, psalian@google.com, qinkun@google.com, shan.gavin@gmail.com, 
+	shivankg@amd.com, sidtelang@google.com, suzuki.poulose@arm.com, 
+	tabba@google.com, tatashin@google.com, vannapurve@google.com, vbabka@suse.com, 
+	wyihan@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Sep 18, 2026 at 05:39:55PM +0200, Christian König wrote:
+Sean Christopherson <seanjc@google.com> writes:
 
-> > Arch code can figure out how to do it. If some ARM configs only give
-> > order 4 folios or whatever then dmabuf heap doesn't care.
-> 
-> The fundamental problem is that DMA allocations are highly
-> architecture and device specific while Linux memory allocation APIs
-> are generic.
+> On Thu, Sep 17, 2026, Ackerley Tng wrote:
+>> At the call Sean suggested mirroring the RMM's tracking in KVM, but that
+>> sounds quite arch-specific and it's like doing arch-specific validation
+>> within KVM.
+>
+> I suggested "mirroring" the tracking in KVM arm64, not in guest_memfd.
+>
+> E.g. put a structure in arm64's kvm_vcpu_arch with a list_head object, then insert
+> into a per-VM list store in kvm_arch on a conversion request.  But before inserting,
+> walk the list to see if there are conflicting requests, and if so, reject the new
+> request.
+>
+> Then on KVM_RUN, if a vCPU has an outstanding request, verify the gmem page exists,
+> is in the correct state, and is mapped into the guest (or at least, is known to the
+> RMM?).  If any steps fail, exit to userspace with -EFAULT + KVM_EXIT_MEMORY_FAULT.
+>
+> The downside to such a simplistic implementation is that it'll require a per-VM
+> lock to serialize the requests.  If the contention ends up being too painful, e.g.
+> because there are usage patterns where guests due batched conversions across many
+> vCPUs, then KVM could use a more sophisticated approach as needed.  E.g. shard the
+> tracking+locking at 1GiB or something?
+>
 
-This isn't a dma allocation, this is a memory allocation.
+Perhaps naive question: What if, in the complete_userspace_io handler,
+RMI_RTT_SET_RIPAS reads the vcpu_run struct and passes on exactly what
+userspace said was handled? (Make the vcpu_run struct for
+KVM_EXIT_MEMORY_FAULT bidirectional.)
 
-We made things so the CC shared folios are DMA mappable through the
-DMA API. From the heap perspective the only difference is passing an
-additional DMA_ATTR_CC_SHARED when DMA mapping the folio.
+Is the issue context switches? If the vcpu continuing the vcpu_run is
+not the same vcpu that exited?
 
-Jason
+Perhaps userspace can track conversion requests, like on
+KVM_EXIT_MEMORY_FAULT, save the request as <TOKEN>. Then any CPU can
+take the token and do the conversion with guest_memfd, associate results
+with <TOKEN>. Then on continuing the given vCPU associated with <TOKEN>,
+pick up the results for that token and continue.
+
+With that, all races and errors are for the guest/RMM/userspace to
+report and handle.
+
+
+>> p.s. Fuad, for pKVM you also mentioned that you'll need to check if the
+>> guest had requested for conversion first? This might be the same/similar
+>> problem.
