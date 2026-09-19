@@ -1,132 +1,133 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54923AA1BF
-	for <linux-coco@lists.linux.dev>; Fri, 18 Sep 2026 23:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789774806; cv=none; b=sVFo23JhbNJXTngbuZWJm/aP4lTfloupvTzi5Y+ZKiyd7/5kBKnQ9tJak2dPBJzaqqshjj9bmmFoxRrqEmx4rAwx+9WSerHI7HBYawSRay37P/pK4P7a9xN0rQW1DMKV0FdgrOl4JVTInZspUlgOduA6GQE7jyBl/Z8WuvvnIX8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789774806; c=relaxed/simple;
-	bh=f1i4j4wFPGQ3PlrQcFZCJSySXFx3gJOSaObAZfFD6z0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N/wl6toIan2uICisvzGCiHv1QISA94SczZ5lZuS5X7jlXg/G2pG6bHTqcHwuxr3xxDcgHqw9ew+Tl3vyzQRdhckO7BfFDAvdLKDGx2zSXxXq596Xvaueiw7+4FO1FkCKGPcyp5QbQFwetBnc74gvD76l9ModbVO84M3WGT9fkvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Gq4dvspR; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36B22D7DE9
+	for <linux-coco@lists.linux.dev>; Sat, 19 Sep 2026 00:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789777648; cv=pass; b=i+BsbFzQRIqTqacD4awsM5MIKkpc1Evx8BOIGmF19Nrf2JY/Y0Wrw63TtE6kxhm7rsHaGBXh2KSFGHRinMl1pBLfEZES49GcR4ck4Z1aga5iUo2GNqZ8BPRxK6z1bdOo1FNaWUhIwy6mZQW8iIItnHnR1V20SgYOG5hwyZux0K0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789777648; c=relaxed/simple;
+	bh=eRYDYXq8mO0xqUTiGna2hw3VEfXp06tx+s1Wx9I3ALI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rCHvX8ENPkar7y9oxyJTIinD2YBDVfvXUKwUmIYGmwM7ehil90N5jRtSkfBPbNYoqqVah/fMqmrbfDOIvIzjRTEgQrEfjRA7aK0op9IbSapTc53rNac39GGQtJqXhbGl3B/iSbushoV0hoDEBGB+fv/e7xMdZlbezVz4AwPAm7s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CXVfNfmf; arc=pass smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Gq4dvspR"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2D3DF40E00E5;
-	Fri, 18 Sep 2026 23:40:01 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ovnvQ4Bb8XjR; Fri, 18 Sep 2026 23:39:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1789774791; bh=RQiq7JrJpJYJbr52IzNuLiSYVxDM/UptMCGU7a7i5fI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Gq4dvspRN59lENIAsfQtHq+auv+Uk/ZscQveXp8by9nxGcRecIRwDdRbEyol/dZgX
-	 hUHXy1Cg9yIr1L4Ii2LaZy1SYABQKqaIbyo9oHT9PAiM20cWA+vmtYOkfSO3YT3wb1
-	 5qcstlueMNOTnmKkaegf2SvsYb2vBHzJliYVluTwOt+s98jv9+7bdiVICegS5ShC1S
-	 i8rjvMP+kJcFG7ZF3dVeXwOKaua38VVNizTT+ODBoZsRD1uCV4327+tD3g2fN55sb9
-	 VIR5JvBA0pgCNww/RURMBs7mZj+a0GFo6+Yk/8WfQZM/HECdxbDEdeFwcaF+iBQ/fQ
-	 C5gdT3dKcoeicY1sqRSdoqmx4KPuEoiHrbhywJBb8tyQpQqglLiRJn3BcNGuvnqIGA
-	 lA8xEtKI1csSaYto6txGYrQOp8Tw6mbiPUj9MBoGqQYy2GgDge0pVFWLK7H8laCyNg
-	 ns92X6Z4eHotnTtNbS/+eub0mLq+wzzZVVGGDeQrb2EFobQ16hMaDbCJ70nUdLR6Qn
-	 TN/w/k6sKU9t5rWwk1i6zkZrh46JRwMMCfFSqD3FuVFSJprotcJfwKmaUsBDjjb796
-	 wuSELJsjr8/cqq+AoTcDLFYe/jrgqEFLCCZqNhB/W5PCmmrfsp2moIxV5EM0zxDBG5
-	 mTXQPtfP5PMftuYEoKo3feko=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4D36D40E00B9;
-	Fri, 18 Sep 2026 23:39:17 +0000 (UTC)
-Date: Fri, 18 Sep 2026 16:39:13 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	darwi@linutronix.de, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v16 4/5] x86/sev: Perform RMP optimizations asynchronously
-Message-ID: <20260918233913.GBaq3LoXAJHIHv5abI@fat_crate.local>
-References: <cover.1789594774.git.ashish.kalra@amd.com>
- <daa513fbe8f0672b00bc5e026e4399244be6dc72.1789594774.git.ashish.kalra@amd.com>
- <20260918222326.GBaq253l7rsV04EUpy@fat_crate.local>
- <49aa3713-d8af-4c9d-a67e-81c1f776a876@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CXVfNfmf"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2db33db4de9so44575ad.0
+        for <linux-coco@lists.linux.dev>; Fri, 18 Sep 2026 17:27:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789777642; cv=none;
+        d=google.com; s=arc-20260327;
+        b=OBRk+Uj5fIrFAGa8W2hZ5IIf2XqXEg97r7ScvW+hMM6vLg0PmroyI3sAQyGRNlS5iI
+         +xi24Kk/+R1ry/0DGOGW+G0e6qMsGyckKRWiXwsDQO/LAiCwjydI8zsA7zCHrli7g4pD
+         cdHhnrQGg1tZ7KRIYZvUVkwnQ3mrsz9Z3mJWkMCNkhfovWS38etyEUgB3NkVcgs2DJOs
+         qwNujWXC9yg/xyQju30dilUjMs8BN83nKZn6M2+T2vqzC6NwanyvkmBILe7FjZawLJ2Z
+         Ke9UOAKgE3JpGKm3owbRKor5szs/GIyPyEQLH7xShLoZVg5kKqyIfuTceq3zcvgj0d3z
+         6asw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LmqMKPHBB/mFOUskOMGcF49EXv1ypL8clVxsz/MHGR0=;
+        fh=KVkfuoMCsSClsErhNxjeasW/ZXo3BwuzKtZ4psveIbk=;
+        b=N79pF/gWMyQHYd507Xd49l/58a5ZvWfMeVZsZG2/aVVD4reI6tuPXZgF0/s2QAW148
+         4teMzSf+qxIP0e52hHG5XuR36L+Bj/IAjAReVdH8LMXoPzzeH3dfdDs3ERecC/hAHdGY
+         kKx0aWm8Oa+TexyEPjgQjvYL1AQYL+DtStAlHR4fFE/kbMK0vFS26TluSzyDRjm0dG+y
+         mwYzz3us5kN5HOeWqYx8N73Uj6juJq2tKGpGV3OqUfPBJL35DbmbRgOMLLSpLVTgVj6d
+         MSQ4EcZ8upNwGPJdBrbp8EYNQXwZ6OTxcOiymSBpVQftGriAFuR/SLcf0gm9xyVTEEav
+         2L/Q==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789777642; x=1790382442; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LmqMKPHBB/mFOUskOMGcF49EXv1ypL8clVxsz/MHGR0=;
+        b=CXVfNfmffgE3Rz6VtSlURMi8YDLOC0C07gYmxsvxLiFkbvmcQRVUcjF9sNoHBg1sRx
+         pFp+H6BhIbeFc8fkGRuN2f3NL9xFxlPe64WxMpLjbo8HHICbM0VOF/QosjSm64LvBtNp
+         MDVc67es0UvNIIRUKBKzjlVR7eUp91ZdGd0nVRVOGy5k1w8JoSSWvCOHzlLluAVmm7XD
+         cte8opsfpvCvmSOVcm4YpWFa69lgumImvbE5BC2V57RjR2E4Nbjke+N7r/u6Oy6tMHmz
+         xVnRu2GFO6Gbpz6yZhDzQiLwbgmX7sOfoVfhOgd5iF00bVL9/p6N6nU2mwfrt56aOeaJ
+         auDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789777642; x=1790382442;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LmqMKPHBB/mFOUskOMGcF49EXv1ypL8clVxsz/MHGR0=;
+        b=LSxzRBmUUyzf0zLiroUw2pxqxcr5MXIfoF7GHodq5eLTRAVzU9zPFQBH95KWSd6l3i
+         XGC3UulvmbgYl6l/s55k7JwyGvpapyzQSAOThiq0FV2Boyo/LMLHANx+yjJ8TmrNMhQg
+         NHOKu9QE4eAZYL6r0HPfqRn08Cbs2jP53UufRwQ7pfnaoTSNeqjbpFGgjKQ24CorRqR2
+         EDIMnrjMXDswb2prG6thMtphd6FdNkYb6LAq8Dk1WE4TF0rgbdK4PjsS2Iv0XJqP/3zC
+         hOdOmqs63j9ahe8HcBG9GHoyCUhCWpx5noEj2LoWJl5x5e+1Nw52Cwe9d7RUgzwoUlwu
+         U4Ow==
+X-Forwarded-Encrypted: i=1; AKwUvBwGLj5Fd6Yzo76VXkFiTnmuxM/dfISDJ7ed5Mtp61w9ifKKNL8iiwcRhBkoyOIAFHmyfcLN4UYHJVze@lists.linux.dev
+X-Gm-Message-State: AFuF++k/V/d1PPBkjWWSA/2an0rtxwP/ZXbyORBJzkzFpe0Cxl68EhN3
+	kF/a5eimvii8XAdIEfPd2GQ0mnktOGJtrPdYJewZe5JBIilmEspsBWglyLKmQADp+jPoFZBLCcg
+	SuSuaImXfhbmRDku0PGxrN6tAFmrR3/3q9iXt9zmy
+X-Gm-Gg: AYBFou1q4wShhUsU11OXt95CN+qrqwaVWHLhv50ob3gDULk3AXi7No8T/iXQlQowjf0
+	a8foXpzK/dgxkKqTDhtPj5F8x7Tft87qcW7djcXxKIGri431eEKsXPdCJ36pNR47X7ikQVvMQcf
+	ebAX5r4I5aHb5HfcDaf7gciq4o6HV9PHpfnVGt04OyG8/pB+6dRvaxLW8PGLTNxPLSlTp1LzdqJ
+	vgCDXfvcT4chSv+ToetOAjE9786LMookBXkyUedmYfInK3T8HffIt+RAlwfvIFbT4egLhGTYX8I
+	QLbWdbk0ZLRqwVfm1tXT06AXoL0fSvFqkuRHCYevohekT5No8LTTQ0u8wGZZrkJS7htYcTHtppn
+	R3is7yLiP5g==
+X-Received: by 2002:a17:902:ffce:b0:2d5:db3d:1a44 with SMTP id
+ d9443c01a7336-2dec1f19e92mr1672875ad.17.1789777641256; Fri, 18 Sep 2026
+ 17:27:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <49aa3713-d8af-4c9d-a67e-81c1f776a876@amd.com>
+References: <20260819094903.3060020-1-xiaoyao.li@intel.com>
+In-Reply-To: <20260819094903.3060020-1-xiaoyao.li@intel.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Fri, 18 Sep 2026 17:27:07 -0700
+X-Gm-Features: AcwNN1VzCFV9uA1sUp0UBFirw4LC7YC87Ka8strvz1IBLR6XIOyhlpfD4-o1ujQ
+Message-ID: <CAGtprH9a3Cu80coUpg-1sHrmVF2c6ZQOSe1pOTUbEx4_xuHiEA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/9] KVM: TDX: Enable VM-DoS Prevention Features for TDX
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	nik.borisov@suse.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 18, 2026 at 05:46:00PM -0500, Kalra, Ashish wrote:
-> Looks good.
+On Wed, Aug 19, 2026 at 2:59=E2=80=AFAM Xiaoyao Li <xiaoyao.li@intel.com> w=
+rote:
+>
+> Xiaoyao Li (9):
+>   KVM: TDX: Enable Notify VM exit
+>   KVM: TDX: Check if there is valid exit infos based on vp_enter_ret
+>   KVM: TDX: Set bits 31:16 to 0 for the synthesized Exit Reason
+>   KVM: TDX: Don't assume exit_reason[31:16] is all-0 in
+>     tdx_to_vmx_exit_reason()
+>   KVM: TDX: Update exit_reason on wait_for_sept_zap return
+>   KVM: VMX: Preserve negative return value in vmx_handle_exit() with bus
+>     lock detected
+>   KVM: VMX: Make handle_bus_lock_vmexit() a shared helper
+>   KVM: TDX: Enable Bus Lock VM exit
+>   KVM: VMX: Consolidate the exit handler for VMX and TDX
 
-Thx.
+Reviewed-By: Vishal Annapurve <vannapurve@google.com> for the complete seri=
+es.
 
-> One comment here, i originally had pr_info_once() for printing this once during SNP init, 
-> if you change it to pr_info(), it will get printed again at every SNP guest teardown too,
-> i am fine with it and actually it keeps the user aware that RMPOPT optimizations are
-> being re-applied/re-enabled, but there may be just too many kernel messages dumped.
 
-Yeah, I had the exact same internal conflict :)
-
-I guess we should do the below instead. This tells us that all the necessary
-stuff needed for RMP optimizations has been set up and we can assume that
-those optimizations will happen from now on.
-
-We can later add some more non-screaming reporting to user - ratelimited or
-whatnot - which gives more info.
-
-But let's do that when we cross that bridge and we decide that they're
-actually necessary.
-
-Thx.
-
---
-
-diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-index afa5f78808fe..bd70c4d0b774 100644
---- a/arch/x86/virt/svm/sev.c
-+++ b/arch/x86/virt/svm/sev.c
-@@ -656,6 +656,8 @@ static int __init rmpopt_init(void)
- 	if ((rmpopt_pa_end - rmpopt_pa_start) > SZ_2T)
- 		rmpopt_pa_end = rmpopt_pa_start + SZ_2T;
- 
-+	pr_info("RMPOPT optimizations enabled\n");
-+
- 	rmpopt_soft_init = true;
- 
- 	return 0;
-@@ -688,8 +690,6 @@ void snp_enable_rmpopt(void)
- 
- 	mod_delayed_work(rmpopt_wq, &rmpopt_delayed_work,
- 			 msecs_to_jiffies(RMPOPT_WORK_TIMEOUT));
--
--	pr_info("RMPOPT optimizations enabled\n");
- }
- EXPORT_SYMBOL_FOR_MODULES(snp_enable_rmpopt, "ccp,kvm-amd");
- 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+>
+>  arch/x86/kvm/vmx/common.h | 20 ++++++++++
+>  arch/x86/kvm/vmx/main.c   | 49 ++++++++++++++++++-----
+>  arch/x86/kvm/vmx/tdx.c    | 82 ++++++++++++++++++++++++++++++---------
+>  arch/x86/kvm/vmx/vmx.c    | 46 ++--------------------
+>  4 files changed, 126 insertions(+), 71 deletions(-)
+>
+>
+> base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
+> --
+> 2.43.0
+>
+>
