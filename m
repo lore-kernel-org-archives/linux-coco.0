@@ -1,133 +1,211 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36B22D7DE9
-	for <linux-coco@lists.linux.dev>; Sat, 19 Sep 2026 00:27:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789777648; cv=pass; b=i+BsbFzQRIqTqacD4awsM5MIKkpc1Evx8BOIGmF19Nrf2JY/Y0Wrw63TtE6kxhm7rsHaGBXh2KSFGHRinMl1pBLfEZES49GcR4ck4Z1aga5iUo2GNqZ8BPRxK6z1bdOo1FNaWUhIwy6mZQW8iIItnHnR1V20SgYOG5hwyZux0K0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789777648; c=relaxed/simple;
-	bh=eRYDYXq8mO0xqUTiGna2hw3VEfXp06tx+s1Wx9I3ALI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rCHvX8ENPkar7y9oxyJTIinD2YBDVfvXUKwUmIYGmwM7ehil90N5jRtSkfBPbNYoqqVah/fMqmrbfDOIvIzjRTEgQrEfjRA7aK0op9IbSapTc53rNac39GGQtJqXhbGl3B/iSbushoV0hoDEBGB+fv/e7xMdZlbezVz4AwPAm7s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CXVfNfmf; arc=pass smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F07363089;
+	Sat, 19 Sep 2026 01:28:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789781292; cv=none; b=jnB92XJc3xx/RJHLoUSwKF63DsGQ9SV0VcKZb6y8zNwenaCZK/f0XIhE8iu6zpVZkYOC8Ds3yhFSq9kFQNYNpP5mx5iXGQe9An5UDe91EAR49vMqZvv/PrFpnax2jyKdqf9CjNRf1Z+SwK1nNhOgGY4RTBSSdfbae9RYC9pMf/A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789781292; c=relaxed/simple;
+	bh=xBkyZH6iSdSNdymCclTI0r6wLkOufX0u7rLgRDfRSAQ=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=JRsseZrgmayFB6Anx5uieyb0NA13XRMhe03C2MOnnGM5jYxxPYapfC+dXRn5/PE/WW2Rlfu9oTh+btNXS+RUnX/cudaOP474+t/KaB3c5G7VZMnlDTabpTXHlAldw9cPC6FUCd/pNjSzWe3I66KnqEGXFo+6wRMbs5xwQcAPwcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CtZTTJsN; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CXVfNfmf"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2db33db4de9so44575ad.0
-        for <linux-coco@lists.linux.dev>; Fri, 18 Sep 2026 17:27:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789777642; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OBRk+Uj5fIrFAGa8W2hZ5IIf2XqXEg97r7ScvW+hMM6vLg0PmroyI3sAQyGRNlS5iI
-         +xi24Kk/+R1ry/0DGOGW+G0e6qMsGyckKRWiXwsDQO/LAiCwjydI8zsA7zCHrli7g4pD
-         cdHhnrQGg1tZ7KRIYZvUVkwnQ3mrsz9Z3mJWkMCNkhfovWS38etyEUgB3NkVcgs2DJOs
-         qwNujWXC9yg/xyQju30dilUjMs8BN83nKZn6M2+T2vqzC6NwanyvkmBILe7FjZawLJ2Z
-         Ke9UOAKgE3JpGKm3owbRKor5szs/GIyPyEQLH7xShLoZVg5kKqyIfuTceq3zcvgj0d3z
-         6asw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LmqMKPHBB/mFOUskOMGcF49EXv1ypL8clVxsz/MHGR0=;
-        fh=KVkfuoMCsSClsErhNxjeasW/ZXo3BwuzKtZ4psveIbk=;
-        b=N79pF/gWMyQHYd507Xd49l/58a5ZvWfMeVZsZG2/aVVD4reI6tuPXZgF0/s2QAW148
-         4teMzSf+qxIP0e52hHG5XuR36L+Bj/IAjAReVdH8LMXoPzzeH3dfdDs3ERecC/hAHdGY
-         kKx0aWm8Oa+TexyEPjgQjvYL1AQYL+DtStAlHR4fFE/kbMK0vFS26TluSzyDRjm0dG+y
-         mwYzz3us5kN5HOeWqYx8N73Uj6juJq2tKGpGV3OqUfPBJL35DbmbRgOMLLSpLVTgVj6d
-         MSQ4EcZ8upNwGPJdBrbp8EYNQXwZ6OTxcOiymSBpVQftGriAFuR/SLcf0gm9xyVTEEav
-         2L/Q==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789777642; x=1790382442; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LmqMKPHBB/mFOUskOMGcF49EXv1ypL8clVxsz/MHGR0=;
-        b=CXVfNfmffgE3Rz6VtSlURMi8YDLOC0C07gYmxsvxLiFkbvmcQRVUcjF9sNoHBg1sRx
-         pFp+H6BhIbeFc8fkGRuN2f3NL9xFxlPe64WxMpLjbo8HHICbM0VOF/QosjSm64LvBtNp
-         MDVc67es0UvNIIRUKBKzjlVR7eUp91ZdGd0nVRVOGy5k1w8JoSSWvCOHzlLluAVmm7XD
-         cte8opsfpvCvmSOVcm4YpWFa69lgumImvbE5BC2V57RjR2E4Nbjke+N7r/u6Oy6tMHmz
-         xVnRu2GFO6Gbpz6yZhDzQiLwbgmX7sOfoVfhOgd5iF00bVL9/p6N6nU2mwfrt56aOeaJ
-         auDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789777642; x=1790382442;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LmqMKPHBB/mFOUskOMGcF49EXv1ypL8clVxsz/MHGR0=;
-        b=LSxzRBmUUyzf0zLiroUw2pxqxcr5MXIfoF7GHodq5eLTRAVzU9zPFQBH95KWSd6l3i
-         XGC3UulvmbgYl6l/s55k7JwyGvpapyzQSAOThiq0FV2Boyo/LMLHANx+yjJ8TmrNMhQg
-         NHOKu9QE4eAZYL6r0HPfqRn08Cbs2jP53UufRwQ7pfnaoTSNeqjbpFGgjKQ24CorRqR2
-         EDIMnrjMXDswb2prG6thMtphd6FdNkYb6LAq8Dk1WE4TF0rgbdK4PjsS2Iv0XJqP/3zC
-         hOdOmqs63j9ahe8HcBG9GHoyCUhCWpx5noEj2LoWJl5x5e+1Nw52Cwe9d7RUgzwoUlwu
-         U4Ow==
-X-Forwarded-Encrypted: i=1; AKwUvBwGLj5Fd6Yzo76VXkFiTnmuxM/dfISDJ7ed5Mtp61w9ifKKNL8iiwcRhBkoyOIAFHmyfcLN4UYHJVze@lists.linux.dev
-X-Gm-Message-State: AFuF++k/V/d1PPBkjWWSA/2an0rtxwP/ZXbyORBJzkzFpe0Cxl68EhN3
-	kF/a5eimvii8XAdIEfPd2GQ0mnktOGJtrPdYJewZe5JBIilmEspsBWglyLKmQADp+jPoFZBLCcg
-	SuSuaImXfhbmRDku0PGxrN6tAFmrR3/3q9iXt9zmy
-X-Gm-Gg: AYBFou1q4wShhUsU11OXt95CN+qrqwaVWHLhv50ob3gDULk3AXi7No8T/iXQlQowjf0
-	a8foXpzK/dgxkKqTDhtPj5F8x7Tft87qcW7djcXxKIGri431eEKsXPdCJ36pNR47X7ikQVvMQcf
-	ebAX5r4I5aHb5HfcDaf7gciq4o6HV9PHpfnVGt04OyG8/pB+6dRvaxLW8PGLTNxPLSlTp1LzdqJ
-	vgCDXfvcT4chSv+ToetOAjE9786LMookBXkyUedmYfInK3T8HffIt+RAlwfvIFbT4egLhGTYX8I
-	QLbWdbk0ZLRqwVfm1tXT06AXoL0fSvFqkuRHCYevohekT5No8LTTQ0u8wGZZrkJS7htYcTHtppn
-	R3is7yLiP5g==
-X-Received: by 2002:a17:902:ffce:b0:2d5:db3d:1a44 with SMTP id
- d9443c01a7336-2dec1f19e92mr1672875ad.17.1789777641256; Fri, 18 Sep 2026
- 17:27:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CtZTTJsN"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68INwXdt2267664;
+	Sat, 19 Sep 2026 01:27:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	SWy/LsEtrczjIIVigdhZqWco2xuU9StAi1HysiyiSHk=; b=CtZTTJsNUNQt+rP4
+	yP7Vv86AgmvcgvJ152qKl4CIqEbHPntz9nDIrJe9ZBbTvbcU2IFDiGR3UnZDDd+R
+	Hqq43wxdv17ZxxurFvsz0ue28qtoI98OKEbYc0/Cqljl+5ioEcYj3or41jJ1sSAP
+	G8ubNzGhaI5yxA6vVtTad/NQRnRtrObdHZRG7C9GJzgDBikFjoTjUQh4Y1DPTHV6
+	StOqWS/PAUbE0DiP33byaTFWxWkW6c/5Lf7z4BfeVHKnD2JF5D7VheprUEd0N+DZ
+	ZL94zIsVhK054kAUCc/KnHwijkSlsmi06acFOFxMnuMWv27dc7sE+CQ7Uv8mSOKV
+	coVyUw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gs72u281g-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Sat, 19 Sep 2026 01:27:51 +0000 (GMT)
+Received: from hu-devc-lv-u24-a.qualcomm.com (hu-jcameron-lv.qualcomm.com [10.81.84.69])
+	by NALASPPMTA02.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTPS id 68J1RppH3471038
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Sat, 19 Sep 2026 01:27:51 GMT
+Received: from hu-jcameron-lv.qualcomm.com (localhost [127.0.0.1])
+	by hu-devc-lv-u24-a.qualcomm.com (Postfix) with ESMTP id 1AAAE24DF8;
+	Fri, 18 Sep 2026 18:27:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260819094903.3060020-1-xiaoyao.li@intel.com>
-In-Reply-To: <20260819094903.3060020-1-xiaoyao.li@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Fri, 18 Sep 2026 17:27:07 -0700
-X-Gm-Features: AcwNN1VzCFV9uA1sUp0UBFirw4LC7YC87Ka8strvz1IBLR6XIOyhlpfD4-o1ujQ
-Message-ID: <CAGtprH9a3Cu80coUpg-1sHrmVF2c6ZQOSe1pOTUbEx4_xuHiEA@mail.gmail.com>
-Subject: Re: [PATCH v4 0/9] KVM: TDX: Enable VM-DoS Prevention Features for TDX
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	nik.borisov@suse.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v18 6/7] firmware: arm_rmm: Ensure the RMM has GPT
+ entries for memory
+From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+        will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+        aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+        joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+        linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+        sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+        WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+In-Reply-To: <20260912083611.2513845-7-suzuki.poulose@arm.com>
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
+ <20260912083611.2513845-7-suzuki.poulose@arm.com>
+Date: Fri, 18 Sep 2026 18:27:45 -0700
+Message-Id: <178978126543.2352296.12214136703168879825.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-QCInternal: smtphost
+X-Proofpoint-ORIG-GUID: FGz3-zyLI-E1WYi31zj9H_PjW-jtmjH_
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE5MDAxNiBTYWx0ZWRfX+OGK14wbLIFE
+ 4FcADTlI6cQIrwnz4K/3OUFsAwE+yD86FEr2QQXZATQik8472EqKg+O+0dJIlv3aFdi+5kjMiqi
+ AsDX9+yyimwZNz7aM157X0+VbEdmKOs=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE5MDAxNiBTYWx0ZWRfX9/wNJxj4wJbb
+ +cJI2epfBASP2611cG46ZRhY+q0rAVp5PPpWrv/J6+q1W+Vwf4AruR5IhaXttCotEouuomMy4Mg
+ 0h+mNfKzo9c9WWEZSpuj2rexnk5pexaXThTLEE+OQQ6Vo1RPVkA4MW+AvGHpbL3CvKCHdaxQvxF
+ 6sWUqugH6Smhshw/kKNxH5ZFHBH4oq7C94t8jHC7Vo9PgmqrUvxiqsDgZKShENYPygYVoDNQMtr
+ 62d+gtRhqtS1joaVrFzbbgK+XeM6P3Z+/JYjx4JyLJptgXekSpHMCFdVBpVh7msVpM4U/rdYZeh
+ 0i7f2NTjUDyBum0bMgBL6Tvu2OEzKLvkf1BO1o6CDRxmS63DQ31f38y9AeQBn+p/k2OGJfoUf8x
+ WOzNha0YBdl7+N2FJGjkjXnFZIijwRccu3bHWBdn1fCO348tha3ErEkcUQg+nuoL5gedW8jTK1e
+ HQu8uvCIlWJybhu+uwg==
+X-Proofpoint-GUID: FGz3-zyLI-E1WYi31zj9H_PjW-jtmjH_
+X-Authority-Analysis: v=2.4 cv=DO8acCNb c=1 sm=1 tr=0 ts=6aade517 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=7CQSdrXTAAAA:8
+ a=EUspDBNiAAAA:8 a=ANFCpyTuUsUUZqEkrDcA:9 a=QEXdDO2ut3YA:10
+ a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-18_07,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 clxscore=1011 impostorscore=0 suspectscore=0 bulkscore=0
+ adultscore=0 spamscore=0 malwarescore=0 phishscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609190016
 
-On Wed, Aug 19, 2026 at 2:59=E2=80=AFAM Xiaoyao Li <xiaoyao.li@intel.com> w=
-rote:
->
-> Xiaoyao Li (9):
->   KVM: TDX: Enable Notify VM exit
->   KVM: TDX: Check if there is valid exit infos based on vp_enter_ret
->   KVM: TDX: Set bits 31:16 to 0 for the synthesized Exit Reason
->   KVM: TDX: Don't assume exit_reason[31:16] is all-0 in
->     tdx_to_vmx_exit_reason()
->   KVM: TDX: Update exit_reason on wait_for_sept_zap return
->   KVM: VMX: Preserve negative return value in vmx_handle_exit() with bus
->     lock detected
->   KVM: VMX: Make handle_bus_lock_vmexit() a shared helper
->   KVM: TDX: Enable Bus Lock VM exit
->   KVM: VMX: Consolidate the exit handler for VMX and TDX
+> The RMM maintains the state of all the granules in the system to make
+> sure that the host is abiding by the rules. This state can be maintained
+> at different granularity, per page (TRACKING_FINE) or per region
+> (TRACKING_COARSE or TRACKING_INTERMEDIATE). The region size depends on the
+> underlying "RMI_GRANULE_SIZE". For a "coarse"/"intermediate" region, all pages
+> in the region must be of the same state, this implies we need to have "fine"
+> tracking for DRAM, so that we can delegate individual pages.
+> 
+> For now we only support a statically carved out memory for tracking
+> granules for the "fine" regions. This can be extended in the future to
+> allow modifying the tracking granularity and remove the need for a
+> static allocation by the firmware.
+> 
+> Similarly, the firmware may create L0 GPT entries describing the total
+> address space. But if we change the "PAS" (Physical Address Space) of a
+> granule, then the firmware may need to create L1 tables to track the PAS
+> at a finer granularity. Linux therefore checks if the platform firmware manages
+> the PAR region. i.e., the firmware is in charge of managing the L1 GPTs
+> (creation and the required memory for the GPT tables - via static carveouts)
+> without host intervention. Support for dynamic GPT creation by the host will be
+> added later.
+> 
+> If the firmware requires us to manage the tracking or GPT memory, Deactivate
+> the RMM and reclaim any memory donated at RMM activation.
+> 
+> Apply the same checks when hotplugged memory is brought online.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> [ Switch to RMI_GPT_L1_INFO for checking GPTs and deactivate RMM ]
+> Co-Developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-Reviewed-By: Vishal Annapurve <vannapurve@google.com> for the complete seri=
-es.
+A few comments inline.
 
 
+> ---
+>  Changes since v17:
+>      * Move wrappers that may not be used elsewhere, out of arm-rmi-cmds.h
+>  Changes since v16:
+>      * Check fine tracking and create L1 GPTs for hotplug-added memory.
+>      * Clarify the L1 GPT setup and move the explanatory comment.
+>      * Switch to using RMI_GPT_INFO command for checking the GPTs.
+>      * Deactivate the RMM and reclaim the memory if we can't proceed.
+>  Changes since v15:
+>      * Skip firmware-reserved NOMAP memory in rmi_init_metadata()
+>      * Handle negative error codes from wrappers.
+>  Changes since v14:
+>      * Move the implementation into drivers/firmware/arm_rmm.
+>  Changes since v13:
+>      * Moved out of KVM
+> ---
+>  drivers/firmware/arm_rmm/rmi.c | 200 +++++++++++++++++++++++++++++++++
+>  include/linux/arm-rmi-cmds.h   |   2 +
+>  2 files changed, 202 insertions(+)
 >
->  arch/x86/kvm/vmx/common.h | 20 ++++++++++
->  arch/x86/kvm/vmx/main.c   | 49 ++++++++++++++++++-----
->  arch/x86/kvm/vmx/tdx.c    | 82 ++++++++++++++++++++++++++++++---------
->  arch/x86/kvm/vmx/vmx.c    | 46 ++--------------------
->  4 files changed, 126 insertions(+), 71 deletions(-)
->
->
-> base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
-> --
-> 2.43.0
->
->
+> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+> index ecc89e91d264..583e1aca9b15 100644
+> --- a/drivers/firmware/arm_rmm/rmi.c
+> +++ b/drivers/firmware/arm_rmm/rmi.c
+
+
+> + */
+> +static inline long rmi_gpt_info(unsigned long start, unsigned long end,
+
+Why inline vs letting compiler make it's mind up?
+Same in other places
+
+> +				unsigned long *out_top,
+> +				unsigned long *out_gpt_par_state)
+> +{
+> +	struct arm_smccc_1_2_regs regs = {
+> +		SMC_RMI_GPT_INFO, start, end,
+> +	};
+> +
+> +	rmi_smccc_invoke(&regs);
+> +	if (regs.a0 != RMI_SUCCESS)
+> +		return regs.a0;
+> +
+> +	if (out_top)
+> +		*out_top = regs.a1;
+> +	if (out_gpt_par_state)
+> +		*out_gpt_par_state = regs.a2;
+> +
+> +	return RMI_SUCCESS;
+> +}
+
+
+
+>  static int __init arm64_init_rmi(void)
+>  {
+>  	int ret;
+> @@ -786,8 +970,24 @@ static int __init arm64_init_rmi(void)
+>  	if (ret) {
+>  		pr_err("RMM activate failed\n");
+>  		ret = ret < 0 ? ret : -ENXIO;
+> +		return ret;
+
+Why did this change?
+
+>  	}
+>  
+> +	ret = rmi_init_metadata();
+> +	if (ret)
+
+And this is hitting another bit of guidance in cleanup.h.
+Functions shouldn't be mixing __free and friends with
+gotos.  Again, not a bug here but there are large ugly
+monsters around this stuff, hence the blanket guidance.
+I haven't thought that hard on how you avoid it here, but
+usually it's a combination of suitable helpers and wrappers
+and resulting code is often more readable as a result.
+
+-- 
+Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
